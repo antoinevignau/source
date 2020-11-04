@@ -2318,7 +2318,7 @@ rectAPPEAR
          TCS
          RTL
 
-*---
+*--- AV 202010
 
 doTHERMOMETER	ENT
          TSC
@@ -2329,46 +2329,158 @@ doTHERMOMETER	ENT
          INC
          TCD
          PHA
-         LDA   #$0001
-         PHA
+         pea   #$0001
          _SetResourceFileDepth
          STA   L02C957
          PLA
          STA   $1E
          PHA
          PHA
-         LDA   #$8004
-         PHA
-         LDX   $25
-         LDA   $23
-         PHX
-         PHA
+         pea   #$8004
+         pei   $25
+         pei   $23
          _LoadResource
          STA   L02C957
          PLA
          STA   $16
          PLA
          STA   $18
-         LDA   L02C957
+         LDA   L02C957	; check error
          PHA
-         LDA   #$2401
-         PHA
+         pea   #$2401
          JSL   L020419
          PHA
-         LDA   $1E
-         PHA
+         pei   $1E
          _SetResourceFileDepth
          STA   L02C957
          PLA
          STA   $1E
-         LDX   $18
-         LDA   $16
-         PHX
-         PHA
+
+         pei   $18
+         pei   $16
          _HLock
          STA   L02C957
 
-* ...
+* Get the data
+
+         LDY   #$0002	; get the pointer
+         LDA   [$16],Y
+         TAX
+         LDA   [$16]
+         STA   $00
+         STX   $02
+
+* Get the number of parms (we handle 8 parms max)
+
+	lda	[$00]	
+	cmp	#8
+	bcs	okTHERMO	; if >=8, do nothing
+
+	pei	$18
+	pei	$16
+	_HUnlock
+
+	pea	$0000	; make it $1e bytes long
+	pea	$001e
+	pei	$18
+	pei	$16
+	_SetHandleSize
+
+	pei	$18	; lock it
+	pei	$16
+	_HLock
+
+         LDY   #$0002	; get the pointer
+         LDA   [$16],Y
+         TAX
+         LDA   [$16]
+         STA   $00
+         STX   $02
+
+	lda	#8	; New nb of parms now
+	sta	[$00]
+	ldy	#$1a	; initial value for position
+	lda	#0
+	sta	[$00],y
+	ldy	#$1c	; initial value for scale
+	lda	#100
+	sta	[$00],y
+
+okTHERMO
+         LDY   #$0004	; get its ID
+         LDA   [$00],Y
+         pha
+         LDY   #$0002
+         LDA   [$00],Y
+         pha
+         LDX   #^L02BDAD
+         LDA   #L02BDAD
+         PHX
+         PHA
+         JSL   L030000
+
+         LDY   #$0018	; get the refcon
+         LDA   [$00],Y
+         pha
+         LDY   #$0016
+         LDA   [$00],Y
+         pha
+         LDX   #^L02BAAD
+         LDA   #L02BAAD
+         PHX
+         PHA
+         JSL   L030000
+
+	ldy	#$1a	; get penWidth
+	lda	[$00],y
+	pha
+	PushLong #strTHERMOD2
+	PushWord #4
+	_Int2Hex
+
+	ldy	#$1c	; get penHeight
+	lda	[$00],y
+	pha
+	PushLong #strTHERMOF2
+	PushWord #4
+	_Int2Hex
+
+*--- Reset all controls (and we'll change the value afterwards)
+
+*        lda   #$0000	; invisible
+*        pha
+*        pha
+*        pha
+*        pha
+*        pha
+*	pha
+*	pea   $0007
+*       _GetCtlHandleFromID
+*        _SetCtlValue
+
+        lda   #$0000	; vertical
+        pha
+        pha
+        pha
+        pha
+        pha
+	pha
+	pea   $0009
+        _GetCtlHandleFromID
+        _SetCtlValue
+
+        lda   #$0000	; horizontal
+        pha
+        pha
+        pha
+        pha
+        pha
+	pha
+	pea   $000a
+        _GetCtlHandleFromID
+        _SetCtlValue
+
+*---
 
          JSL   showTHERMOMETER	; do window
          PHA
@@ -2380,12 +2492,57 @@ doTHERMOMETER	ENT
          PLA
          STA   L02B9AB
 
+*--- Update some flags
+
          LDY   #$0002
          LDA   [$16],Y
          TAX
          LDA   [$16]
          STA   $00
          STX   $02
+
+*--- Control's visibility
+
+	ldy	#$12
+	lda	[$00],y
+	and	#%00000000_10000000
+	beq	thermoVISIBLE
+
+        lda   #$0001
+        pha
+        pha
+        pha
+        pea   $0000
+        pea   $0000
+	pea   $0000
+	pea   $0007
+        _GetCtlHandleFromID
+        _SetCtlValue
+
+thermoVISIBLE	
+
+*--- Control's appearance
+
+	ldy	#$12
+	lda	[$00],y
+	and	#%00000000_00000001
+
+	clc
+	adc	#9	; because control 9 is radio button vertical
+	tax
+
+        lda   #$0001
+        pha
+        pha
+        pha
+        pea   $0000
+        pea   $0000
+	pea   $0000
+	phx		; <= the control to activate
+        _GetCtlHandleFromID
+        _SetCtlValue
+
+*---
 
          PHA
          LDA   #$0001

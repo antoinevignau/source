@@ -8,6 +8,8 @@
 	ext	showTHERMOMETER
 	ext	strRECTD2
 	ext	strRECTF2
+	ext	strTHERMOD2
+	ext	strTHERMOF2
          EXT   L02C5F5
          EXT   L020419
          EXT   L02892D

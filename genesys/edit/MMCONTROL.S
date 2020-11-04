@@ -10506,7 +10506,6 @@ rectNEXT6
 	ora	1,s
 	plx
 	sta	[$00],y
-	stal	$300
 	
 rectNEXT7
 	
@@ -10593,7 +10592,7 @@ rectNEXT8
          TCS
          RTL
 
-*--- Thermometer control template feedback (from the window to the resource)
+*--- Thermo control template feedback (from the window to the resource)
 
 updateTHERMO
 	 TSC
@@ -10682,15 +10681,22 @@ updateTHERMO
 	pei	$16
 	_HLock
 
+         LDY   #$0002	; get its pointer
+         LDA   [$16],Y
+         TAX
+         LDA   [$16]
+         STA   $00
+         STX   $02
+	 
 	lda	#8	; pCount
 	sta	[$00]
 
-	ldy	#$1a	; penHeight
-	lda	#1
+	ldy	#$1a	; position of mercury
+	lda	#0
 	sta	[$00],y
 
-	ldy	#$1c	; penWidth
-	lda	#2 
+	ldy	#$1c	; scale
+	lda	#100
 	sta	[$00],y
 
 thermo8OK	
@@ -10723,7 +10729,7 @@ thermoISINVISIBLE
 
 thermoNEXT
 
-*--- The value word
+*--- The position of mercury word
 
 	pha
 	pha
@@ -10788,7 +10794,7 @@ thermoNEXT
 
 thermoNEXT2
 
-*--- The data word
+*--- The scale word
 
 	pha
 	pha
@@ -10866,7 +10872,7 @@ thermoNEXT3
          _GetCtlValue
 	 pla
 	 beq	thermoNEXT4
-	 ldx	#$0000	; vertical
+	 ldx	#$0000	; vertical thermometer
 	 bra	thermoNEXT6
 
 thermoNEXT4	 
@@ -10876,20 +10882,23 @@ thermoNEXT4
          PEA   $0000
          PEA   $0000
 	 pea   $0000
-         pea   $0009
+         pea   $000a
          _GetCtlHandleFromID
          _GetCtlValue
 	 pla
 	 beq	thermoNEXT5
-	 ldx	#$0001	; horizontal
-	 bra	thermoNEXT6
+	 ldx	#$0001	; horizontal thermometer
 
 thermoNEXT5
 thermoNEXT6
 	ldy	#$12	; save the control's appearance
-	txa
+	phx
+	lda	[$00],y
+	and	#%11111111_11111100
+	ora	1,s
+	plx
 	sta	[$00],y
-
+	
 thermoNEXT7
 	
 *--- The refCon
@@ -14786,7 +14795,7 @@ writeRECTANGLE
          PLA
          STA   L02758C+2
 
-         LDA   L02758C+2
+*         LDA   L02758C+2
          PHA
          LDA   L02758C
          PHA
@@ -14895,7 +14904,7 @@ writeTHERMOMETER
          PLA
          STA   L02758C+2
 
-         LDA   L02758C+2
+*         LDA   L02758C+2
          PHA
          LDA   L02758C
          PHA
@@ -14914,7 +14923,27 @@ writeTHERMOMETER
          PLA
          STA   L02758C+2
 
-         PEA   ^thermoTEMPLATE	; Line edit control template
+*         LDA   L02758C+2
+         PHA
+         LDA   L02758C
+         PHA
+         _HUnlock
+
+         PEA   $0000
+         PEA   $001e
+         LDA   L02758C+2
+         PHA
+         LDA   L02758C
+         PHA
+         _SetHandleSize
+
+         LDA   L02758C+2
+         PHA
+         LDA   L02758C
+         PHA
+         _HLock
+
+         PEA   ^thermoTEMPLATE	; Thermometer control template
          PEA   thermoTEMPLATE
          LDA   L02758C+2
          PHA
@@ -14931,12 +14960,14 @@ writeTHERMOMETER
          LDA   thermoID
          PHA
          _MarkResourceChange
+
          PEA   $8004
          LDA   thermoID+2
          PHA
          LDA   thermoID
          PHA
          _WriteResource
+
          PEA   $FFFF
          PEA   $8004
          LDA   thermoID+2
@@ -14958,11 +14989,11 @@ thermoID   ADRL  $00000000 ; ID
          DW    $0017
          DW    $0096
          ADRL  $87FF0002 ; procRef
-         DW    $0000	; flag
+         DW    $0001	; flag
          DW    $1000	; moreFlags
          ADRL  $00000000 ; refCon
-         DW    $0001	; value
-	 DW    $0002	; data
+         DW    $0000	; value
+	 DW    $0064	; data
 
 *--- Write an line edit resource
 
@@ -20332,7 +20363,7 @@ winTHERMOMETER
          ADRL  $00000000  ; window defproc
          ADRL  $00000000  ; info bar defproc
          ADRL  $00000000  ; content defproc
-         DW    85      ; content rect - was 100
+         DW    70      ; content rect - was 100
          DW    280
          DW    198
          DW    636
@@ -20349,48 +20380,228 @@ clrTHERMOMETER
 titleTHERMOMETER	str	' Thermometer '
 
 ctlTHERMOMETER
-	adrl	theCHANGE
-	adrl	theCANCEL
+	adrl	ctlTHERMO1
+	adrl	ctlTHERMO2
+	adrl	ctlTHERMO3
+	adrl	ctlTHERMO4
+	adrl	ctlTHERMO5
+	adrl	ctlTHERMO6
+	adrl	ctlTHERMO7
+	adrl	ctlTHERMO8
+	adrl	ctlTHERMO9
+	adrl	ctlTHERMOA	; no B control
+	adrl	ctlTHERMOC
+	adrl	ctlTHERMOD
+	adrl	ctlTHERMOE
+	adrl	ctlTHERMOF
 	adrl	$0
 
-theCHANGE
-         DW    $0009      ; pCount - Change button
+ctlTHERMO1 DW    $0009      ; pCount - Change button
          ADRL  $00000001  ; ID
-         DW    85      ; rect - was 73
+         DW    104      ; rect - was 73
          DW    $00D0
-         DW    101      ; was 86
+         DW    120      ; was 86
          DW    $012A
          ADRL  $80000000  ; procRef
          DW    $0001      ; flag
          DW    $3000      ; moreFlags
          ADRL  $00000000  ; refCon
-         ADRL  strTCHANGE    ; titleRef
+         ADRL  strTHERMO1    ; titleRef
          ADRL  $00000000  ; colorTableRef
          ASC   0D         ; keyequivalent
          ASC   0D         ; 2nd key equivalent
          DW    $0000      ; keyModifiers
          DW    $0000      ; keyCareBits
 
-theCANCEL
-         DW    $0009      ; pCount - Cancel button
+ctlTHERMO2 DW    $0009      ; pCount - Cancel button
          ADRL  $00000002  ; ID
-         DW    85      ; rect - was 73
+         DW    104      ; rect - was 73
          DW    $003C
-         DW    101      ; was 86
+         DW    120      ; was 86
          DW    $0096
          ADRL  $80000000  ; procRef
          DW    $0000      ; flag
          DW    $3000      ; moreFlags
          ADRL  $00000000  ; refCon
-         ADRL  strTCANCEL    ; titleRef
+         ADRL  strTHERMO2    ; titleRef
          ADRL  $00000000  ; colorTableRef
          ASC   1E         ; keyequivalent
          ASC   1E         ; 2nd key equivalent
          DW    $0000      ; keyModifiers
          DW    $0000      ; keyCareBits
 
-strTCHANGE	str	'Change'
-strTCANCEL	str	'Cancel'
+ctlTHERMO3  DW    $0008      ; pCount - ID text
+         ADRL  $00000003  ; ID
+         DW    9      ; rect
+         DW    200
+         DW    18
+         DW    230
+         ADRL  $81000000  ; procRef
+         DW    $0000      ; flag
+         DW    $1000      ; moreFlags
+         ADRL  $00000000  ; refCon
+         ADRL  strTHERMO3    ; textRef
+         DW    $0002      ; textSize
+
+ctlTHERMO4  DW    $0008      ; pCount - ID value
+         ADRL  $00000004  ; ID
+         DW    9      ; rect
+         DW    234
+         DW    18
+         DW    310
+         ADRL  $81000000  ; procRef
+         DW    $0000      ; flag
+         DW    $1000      ; moreFlags
+         ADRL  $00000000  ; refCon
+         ADRL  L02BDAE    ; textRef
+         DW    $0008      ; textSize
+
+ctlTHERMO5  DW    $0008      ; pCount - Ref Con text
+         ADRL  $00000005  ; ID
+         DW    25      ; rect
+         DW    24
+         DW    34
+         DW    100
+         ADRL  $81000000  ; procRef
+         DW    $0000      ; flag
+         DW    $1000      ; moreFlags
+         ADRL  $00000000  ; refCon
+         ADRL  strTHERMO5    ; textRef
+         DW    $0007      ; textSize
+
+ctlTHERMO6  DW    $0008      ; pCount - Ref Con value
+         ADRL  $00000006  ; ID
+         DW    23      ; rect
+         DW    104
+         DW    36
+         DW    180
+         ADRL  $83000000  ; procRef
+         DW    $0000      ; flag
+         DW    $7000      ; moreFlags
+         ADRL  $00000000  ; refCon
+         DW    $0008      ; maxSize
+         ADRL  L02BAAD    ; defaultRef
+
+ctlTHERMO7  DW    $0008      ; pCount - Invisible
+         ADRL  $00000007  ; ID
+         DW    9      ; rect
+         DW    24
+         DW    18
+         DW    124
+         ADRL  $82000000  ; procRef
+         DW    $0000      ; flag
+         DW    $1000      ; moreFlags
+         ADRL  $00000000  ; refCon
+         ADRL  strTHERMO7    ; titleRef
+         DW    $0000      ; initialValue
+
+ctlTHERMO8  DW    $0008      ; pCount - Orientation
+         ADRL  $00000008  ; ID
+         DW    43      ; rect
+         DW    24
+         DW    52
+         DW    124
+         ADRL  $81000000  ; procRef
+         DW    $0000      ; flag
+         DW    $1000      ; moreFlags
+         ADRL  $00000000  ; refCon
+         ADRL  strTHERMO8    ; textRef
+         DW    11      ; textSize
+
+ctlTHERMO9 DW    $0008      ; pCount - Vertical
+         ADRL  $0000009  ; ID
+         DW    43      ; rect
+         DW    130
+         DW    52
+         DW    270
+         ADRL  $84000000  ; procRef
+         DW    $0000      ; flag
+         DW    $1000      ; moreFlags
+         ADRL  $00000000  ; refCon
+         ADRL  strTHERMO9   ; titleRef
+         DW    $0000      ; initialValue
+
+ctlTHERMOA DW    $0008      ; pCount - Horizontal
+         ADRL  $000000A  ; ID
+         DW    54      ; rect
+         DW    130
+         DW    63
+         DW    270
+         ADRL  $84000000  ; procRef
+         DW    $0000      ; flag
+         DW    $1000      ; moreFlags
+         ADRL  $00000000  ; refCon
+         ADRL  strTHERMOA   ; titleRef
+         DW    $0000      ; initialValue
+
+ctlTHERMOC  DW    $0008      ; pCount - Position
+         ADRL  $0000000C  ; ID
+         DW    70      ; rect
+         DW    24
+         DW    79
+         DW    110
+         ADRL  $81000000  ; procRef
+         DW    $0000      ; flag
+         DW    $1000      ; moreFlags
+         ADRL  $00000000  ; refCon
+         ADRL  strTHERMOC  ; textRef
+         DW    8      ; textSize
+
+ctlTHERMOD  DW    $0008      ; pCount - Position value
+         ADRL  $0000000D  ; ID
+         DW    68      ; rect
+         DW    114
+         DW    81
+         DW    162
+         ADRL  $83000000  ; procRef
+         DW    $0000      ; flag
+         DW    $7000      ; moreFlags
+         ADRL  $00000000  ; refCon
+         DW    $0004      ; maxSize
+         ADRL  strTHERMOD    ; defaultRef
+	 
+ctlTHERMOE  DW    $0008      ; pCount - Scale text
+         ADRL  $0000000E  ; ID
+         DW    86      ; rect
+         DW    24
+         DW    95
+         DW    110
+         ADRL  $81000000  ; procRef
+         DW    $0000      ; flag
+         DW    $1000      ; moreFlags
+         ADRL  $00000000  ; refCon
+         ADRL  strTHERMOE  ; textRef
+         DW    5      ; textSize
+
+ctlTHERMOF  DW    $0008      ; pCount - Scale value
+         ADRL  $0000000F  ; ID
+         DW    84      ; rect
+         DW    114
+         DW    97
+         DW    162
+         ADRL  $83000000  ; procRef
+         DW    $0000      ; flag
+         DW    $7000      ; moreFlags
+         ADRL  $00000000  ; refCon
+         DW    $0004      ; maxSize
+         ADRL  strTHERMOF   ; defaultRef
+
+strTHERMO1	str	'Change'
+strTHERMO2	str	'Cancel'
+strTHERMO3	asc	'ID'
+strTHERMO5	asc	'Ref Con'
+strTHERMO7	str	'Invisible'
+strTHERMO8	asc	'Orientation'
+strTHERMO9	str	'Vertical'
+strTHERMOA	str	'Horizontal'
+strTHERMOC	asc	'Position'
+strTHERMOD	db	$04
+strTHERMOD2	ENT
+		asc	'0001'
+strTHERMOE	asc	'Scale'
+strTHERMOF	db	$04
+strTHERMOF2	ENT
+		asc	'0002'
 
 *---
 

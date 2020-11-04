@@ -1,8 +1,22 @@
 *
-* Genesys v1.2.4
+* Genesys v1.2.4 -> V1.3.4
 * Main program
 *
+* (c) 1990-1991, SSSi
+* (c) 2020, Brutal Deluxe Software
+*
 
+* v1.3.4 - AV 202010
+* - Main program
+*   - new resource types added
+* - Editor / Control
+*   - disassembly & re-assembly
+*   - existing controls support 6.0 and 6.0.1 bits
+*   - rectangle and thermometer controls support added
+* - Editor / Versions
+*   - WIP (should be fun to understand how they communicate)
+*
+ 
          mx    %00
          rel
          lst   off
@@ -324,8 +338,8 @@ L020363  DW    $0000      ;  version number
          DW    $0001
          DW    $0000
 
-L020369  STR   'Shell v1.2.5'
-L020376  STR   'v1.2.5'
+L020369  STR   'Shell v1.3.4'
+L020376  STR   'v1.3.4'
          DB    $00
          DB    $00
          DB    $00
@@ -1556,9 +1570,26 @@ L020F02  PEA   $0000
          SEC
          SBC   L02105B
          PHA
-         PEA   $000E
+         PEA   $000E	; 14
          _MoveTo
          _DrawString
+
+	 pha
+	 PushLong #copyBRUTAL
+	 _StringWidth
+	 pla
+	 sta	L02105B
+	 
+	 lda	#$154
+	 sec
+	 sbc	L02105B
+	 pha
+	 pea	$001a	; 26
+	 _MoveTo
+	 
+	 PushLong #copyBRUTAL
+	 _DrawString
+
          LDA   $0B,S
          ORA   $0D,S
          BNE   L021034
@@ -1572,7 +1603,7 @@ L020F02  PEA   $0000
          SEC
          SBC   L02105B
          PHA
-         PEA   $0026
+         PEA   $0026	; 38
          _MoveTo
          PEA   ^L02105D
          PEA   L02105D
@@ -1618,6 +1649,8 @@ L021046  PHD
          LDA   #$0000
          CLC
          RTL
+
+copyBRUTAL	str	'(c) 2020, Brutal Deluxe'
 
 L02105B  DW    $0000
 L02105D  ASC   '   0k free memory'00

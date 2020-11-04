@@ -19707,20 +19707,48 @@ L029CA8  ADRL  L029E2C	; 1
 	 adrl	ctlNOTAPWD	; F
 	 adrl	ctlKEYMASK	; 10
 	 adrl	ctlKEYMASKVALUE	; 11
+	 adrl	ctlLEDOLLAR1	; 12
+	 adrl	ctlLEDOLLAR2	; 13
          ADRL  $00000000
 
+ctlLEDOLLAR1  DW    $0008      ; pCount - pwChar $
+         ADRL  $00000012  ; ID
+         DW    70      ; rect
+         DW    94
+         DW    79
+         DW    103
+         ADRL  $81000000  ; procRef
+         DW    $0000      ; flag
+         DW    $1000      ; moreFlags
+         ADRL  $00000000  ; refCon
+         ADRL  strLEDOLLAR1  ; textRef
+         DW    1      ; textSize
+
+ctlLEDOLLAR2 DW    $0008      ; pCount - Key mask $
+         ADRL  $00000013  ; ID
+         DW    10      ; rect
+         DW    269
+         DW    19
+         DW    278
+         ADRL  $81000000  ; procRef
+         DW    $0000      ; flag
+         DW    $1000      ; moreFlags
+         ADRL  $00000000  ; refCon
+         ADRL  strLEDOLLAR1  ; textRef
+         DW    1      ; textSize
+	 
 ctlPWCHAR  DW    $0008      ; pCount - Password char text
          ADRL  $0000000D  ; ID
          DW    70      ; rect
-         DW    $0018
+         DW    24
          DW    79
-         DW    $0063
+         DW    89
          ADRL  $81000000  ; procRef
          DW    $0000      ; flag
          DW    $1000      ; moreFlags
          ADRL  $00000000  ; refCon
          ADRL  strPWCHAR  ; textRef
-         DW    $0008      ; textSize
+         DW    8      ; textSize
 
 ctlPWCHARVALUE  DW    $0008      ; pCount - Password char value in hex
          ADRL  $0000000E  ; ID
@@ -19753,7 +19781,7 @@ ctlKEYMASK  DW    $0008      ; pCount - Key mask text
          DW    10      ; rect
          DW    186
          DW    19
-         DW    275
+         DW    265
          ADRL  $81000000  ; procRef
          DW    $0000      ; flag
          DW    $1000      ; moreFlags
@@ -19952,12 +19980,15 @@ strNOTPWD	str	'Not a password'
 strPWCHAR	asc	'Pwd char'
 pwChar0	db	$04
 pwChar	ENT
-	asc	'FFFF'0000	; Default password character
+	asc	'FFFF'	; Default password character
 
 strKEYMASK	asc	'Key mask'
 keyMask0	db $04
 keyMask	ENT
-	asc	'0001'0000	; Default key mask
+	asc	'0001'	; Default key mask
+strLEDOLLAR1	asc	'$'
+
+*---
 
 L029EB5  DW    $0050
          DW    $80A0      ; frame bits
@@ -20084,6 +20115,8 @@ ctlRECTANGLE
 	adrl	ctlRECTD
 	adrl	ctlRECTE
 	adrl	ctlRECTF
+	adrl	ctlRECT10
+	adrl	ctlRECT11
 	adrl	$0
 
 ctlRECT1 DW    $0009      ; pCount - Change button
@@ -20242,7 +20275,7 @@ ctlRECTC  DW    $0008      ; pCount - Pen height text
          DW    81      ; rect
          DW    24
          DW    90
-         DW    110
+         DW    103
          ADRL  $81000000  ; procRef
          DW    $0000      ; flag
          DW    $1000      ; moreFlags
@@ -20268,7 +20301,7 @@ ctlRECTE  DW    $0008      ; pCount - Pen width text
          DW    81      ; rect
          DW    180
          DW    90
-         DW    260
+         DW    250
          ADRL  $81000000  ; procRef
          DW    $0000      ; flag
          DW    $1000      ; moreFlags
@@ -20289,6 +20322,32 @@ ctlRECTF  DW    $0008      ; pCount - Pen width value
          DW    $0004      ; maxSize
          ADRL  strRECTF   ; defaultRef
 
+ctlRECT10  DW    $0008      ; pCount - Pen height $
+         ADRL  $00000010  ; ID
+         DW    81      ; rect
+         DW    104
+         DW    90
+         DW    113
+         ADRL  $81000000  ; procRef
+         DW    $0000      ; flag
+         DW    $1000      ; moreFlags
+         ADRL  $00000000  ; refCon
+         ADRL  strRECT10  ; textRef
+         DW    1      ; textSize
+
+ctlRECT11 DW    $0008      ; pCount - Pen width $
+         ADRL  $00000011  ; ID
+         DW    81      ; rect
+         DW    254
+         DW    90
+         DW    263
+         ADRL  $81000000  ; procRef
+         DW    $0000      ; flag
+         DW    $1000      ; moreFlags
+         ADRL  $00000000  ; refCon
+         ADRL  strRECT10  ; textRef
+         DW    1      ; textSize
+	 
 strRECT1	str	'Change'
 strRECT2	str	'Cancel'
 strRECT3	asc	'ID'
@@ -20306,6 +20365,7 @@ strRECTE	asc	'Pen width'
 strRECTF	db	$04
 strRECTF2	ENT
 		asc	'0002'
+strRECT10	asc	'$'
 
 *---
 
@@ -20394,6 +20454,8 @@ ctlTHERMOMETER
 	adrl	ctlTHERMOD
 	adrl	ctlTHERMOE
 	adrl	ctlTHERMOF
+	adrl	ctlTHERMO10
+	adrl	ctlTHERMO11
 	adrl	$0
 
 ctlTHERMO1 DW    $0009      ; pCount - Change button
@@ -20539,7 +20601,7 @@ ctlTHERMOC  DW    $0008      ; pCount - Position
          DW    70      ; rect
          DW    24
          DW    79
-         DW    110
+         DW    103
          ADRL  $81000000  ; procRef
          DW    $0000      ; flag
          DW    $1000      ; moreFlags
@@ -20565,7 +20627,7 @@ ctlTHERMOE  DW    $0008      ; pCount - Scale text
          DW    86      ; rect
          DW    24
          DW    95
-         DW    110
+         DW    103
          ADRL  $81000000  ; procRef
          DW    $0000      ; flag
          DW    $1000      ; moreFlags
@@ -20586,6 +20648,32 @@ ctlTHERMOF  DW    $0008      ; pCount - Scale value
          DW    $0004      ; maxSize
          ADRL  strTHERMOF   ; defaultRef
 
+ctlTHERMO10  DW    $0008      ; pCount - Position $
+         ADRL  $00000010  ; ID
+         DW    70      ; rect
+         DW    104
+         DW    79
+         DW    113
+         ADRL  $81000000  ; procRef
+         DW    $0000      ; flag
+         DW    $1000      ; moreFlags
+         ADRL  $00000000  ; refCon
+         ADRL  strTHERMO10  ; textRef
+         DW    1      ; textSize
+
+ctlTHERMO11 DW    $0008      ; pCount - Scale $
+         ADRL  $00000011  ; ID
+         DW    86      ; rect
+         DW    104
+         DW    95
+         DW    113
+         ADRL  $81000000  ; procRef
+         DW    $0000      ; flag
+         DW    $1000      ; moreFlags
+         ADRL  $00000000  ; refCon
+         ADRL  strTHERMO10  ; textRef
+         DW    1      ; textSize
+
 strTHERMO1	str	'Change'
 strTHERMO2	str	'Cancel'
 strTHERMO3	asc	'ID'
@@ -20602,6 +20690,7 @@ strTHERMOE	asc	'Scale'
 strTHERMOF	db	$04
 strTHERMOF2	ENT
 		asc	'0002'
+strTHERMO10	asc	'$'
 
 *---
 

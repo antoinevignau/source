@@ -2157,28 +2157,19 @@ okRECT
 	lda	[$00],y
 	pha
 	PushLong #strRECTD2
-	PushWord #4
-	_Int2Hex
+	PushWord #5
+	PushWord #0
+	_Int2Dec
 
 	ldy	#$1c	; get penHeight
 	lda	[$00],y
 	pha
 	PushLong #strRECTF2
-	PushWord #4
-	_Int2Hex
+	PushWord #5
+	PushWord #0
+	_Int2Dec
 
 *--- Reset all controls (and we'll change the value afterwards)
-
-*        lda   #$0000	; invisible
-*        pha
-*        pha
-*        pha
-*        pha
-*        pha
-*	pha
-*	pea   $0007
-*       _GetCtlHandleFromID
-*        _SetCtlValue
 
         lda   #$0000	; transparent
         pha
@@ -2431,32 +2422,23 @@ okTHERMO
          PHA
          JSL   L030000
 
-	ldy	#$1a	; get penWidth
+	ldy	#$1a	; get position
 	lda	[$00],y
 	pha
 	PushLong #strTHERMOD2
-	PushWord #4
-	_Int2Hex
+	PushWord #5
+	PushWord #0
+	_Int2Dec
 
-	ldy	#$1c	; get penHeight
+	ldy	#$1c	; get scale
 	lda	[$00],y
 	pha
 	PushLong #strTHERMOF2
-	PushWord #4
-	_Int2Hex
+	PushWord #5
+	PushWord #0
+	_Int2Dec
 
 *--- Reset all controls (and we'll change the value afterwards)
-
-*        lda   #$0000	; invisible
-*        pha
-*        pha
-*        pha
-*        pha
-*        pha
-*	pha
-*	pea   $0007
-*       _GetCtlHandleFromID
-*        _SetCtlValue
 
         lda   #$0000	; vertical
         pha

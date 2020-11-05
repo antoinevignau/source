@@ -7074,6 +7074,8 @@ L023BFA  JSL   L0222F2
          TCS
          RTL
 
+theLENGTH	ds	2	; length of the Line Edit text
+theHANDLE	ds	4	; handle to the line edit control
 thePOINTER	ds	4	; pointer to the pwCHAR on feedback
 thePWCHAR	ds	2	; the returned value
 theKEYMASK	ds	2	; the second returned value
@@ -10349,15 +10351,23 @@ rectNEXT
 
 	ldy	#$1e	; get the handle to the text
 	lda	[$00],y
+	sta	theHANDLE+2
 	pha
 	ldy	#$1c
 	lda	[$00],y
+	sta	theHANDLE
 	pha
 	_LEGetTextHand
 	pla
 	sta	$00
 	pla
 	sta	$02
+
+	pha		; get the length of the text
+	PushLong theHANDLE
+	_LEGetTextLen
+	pla
+	sta	theLENGTH
 	
 	ldy	#2	; we point to the text now
 	lda	[$00],y
@@ -10373,13 +10383,11 @@ rectNEXT
         STX   $02
 			; we do not init the value
 			
-	pha		; from a hex string to a int value
-	lda	thePOINTER+2
-	pha
-	lda	thePOINTER
-	pha
-	pea	$0004
-	_Hex2Int
+	pha		; from a dec string to an unsigned int value
+	PushLong thePOINTER
+	PushWord theLENGTH
+	PushWord #0
+	_Dec2Int
 	pla
 	bcs	rectNEXT2
 
@@ -10414,9 +10422,11 @@ rectNEXT2
 
 	ldy	#$1e	; get the handle to the text
 	lda	[$00],y
+	sta	theHANDLE+2
 	pha
 	ldy	#$1c
 	lda	[$00],y
+	sta	theHANDLE
 	pha
 	_LEGetTextHand
 	pla
@@ -10424,6 +10434,12 @@ rectNEXT2
 	pla
 	sta	$02
 	
+	pha		; get the length of the text
+	PushLong theHANDLE
+	_LEGetTextLen
+	pla
+	sta	theLENGTH
+
 	ldy	#2	; we point to the text now
 	lda	[$00],y
 	sta	thePOINTER+2
@@ -10438,13 +10454,11 @@ rectNEXT2
         STX   $02
 			; we do not init the value
 			
-	pha		; from a hex string to a int value
-	lda	thePOINTER+2
-	pha
-	lda	thePOINTER
-	pha
-	pea	$0004
-	_Hex2Int
+	pha		; from a dec string to an unsigned int value
+	PushLong thePOINTER
+	PushWord theLENGTH
+	PushWord #0
+	_Dec2Int
 	pla
 	bcs	rectNEXT3
 
@@ -10755,15 +10769,23 @@ thermoNEXT
 
 	ldy	#$1e	; get the handle to the text
 	lda	[$00],y
+	sta	theHANDLE+2
 	pha
 	ldy	#$1c
 	lda	[$00],y
+	sta	theHANDLE
 	pha
 	_LEGetTextHand
 	pla
 	sta	$00
 	pla
 	sta	$02
+
+	pha		; get the length of the text
+	PushLong theHANDLE
+	_LEGetTextLen
+	pla
+	sta	theLENGTH
 	
 	ldy	#2	; we point to the text now
 	lda	[$00],y
@@ -10779,13 +10801,11 @@ thermoNEXT
         STX   $02
 			; we do not init the value
 			
-	pha		; from a hex string to a int value
-	lda	thePOINTER+2
-	pha
-	lda	thePOINTER
-	pha
-	pea	$0004
-	_Hex2Int
+	pha		; from a dec string to an unsigned int value
+	PushLong thePOINTER
+	PushWord theLENGTH
+	PushWord #0
+	_Dec2Int
 	pla
 	bcs	thermoNEXT2
 
@@ -10820,15 +10840,23 @@ thermoNEXT2
 
 	ldy	#$1e	; get the handle to the text
 	lda	[$00],y
+	sta	theHANDLE+2
 	pha
 	ldy	#$1c
 	lda	[$00],y
+	sta	theHANDLE
 	pha
 	_LEGetTextHand
 	pla
 	sta	$00
 	pla
 	sta	$02
+
+	pha		; get the length of the text
+	PushLong theHANDLE
+	_LEGetTextLen
+	pla
+	sta	theLENGTH
 	
 	ldy	#2	; we point to the text now
 	lda	[$00],y
@@ -10844,13 +10872,11 @@ thermoNEXT2
         STX   $02
 			; we do not init the value
 			
-	pha		; from a hex string to a int value
-	lda	thePOINTER+2
-	pha
-	lda	thePOINTER
-	pha
-	pea	$0004
-	_Hex2Int
+	pha		; from a dec string to an unsigned int value
+	PushLong thePOINTER
+	PushWord theLENGTH
+	PushWord #0
+	_Dec2Int
 	pla
 	bcs	thermoNEXT3
 
@@ -19690,25 +19716,26 @@ L029C59  ENT
          PLD
          RTL
 
-L029CA8  ADRL  L029E2C	; 1
+L029CA8
+	 adrl	ctlPWCHAR	; D
+	 adrl	ctlNOTAPWD	; F
+	 adrl	ctlKEYMASK	; 10
+	 adrl	ctlLEDOLLAR1	; 12
+	 adrl	ctlLEDOLLAR2	; 13
+         ADRL  L029E2C	; 1
          ADRL  L029E0C	; 2
          ADRL  L029DEC	; 3
          ADRL  L029D8C	; 4
-         ADRL  L029D6C	; 5
-         ADRL  L029D4C	; 6
-         ADRL  L029D2C	; 7
-         ADRL  L029DCC	; 8
-         ADRL  L029DAC	; 9
+         ADRL  L029DCC	; 9 refCon text
+         ADRL  L029D4C	; 7 Text string
+         ADRL  L029DAC	; 8 refCon value
+	 adrl	ctlKEYMASKVALUE	; 11 keyMask value
+	 adrl	ctlPWCHARVALUE	; E pwChar value
+         ADRL  L029D6C	; 4 maxChar value
+         ADRL  L029D2C	; 6 Text value
          ADRL  L029E4C	; A
          ADRL  L029D04	; B
          ADRL  L029CDC	; C
-	 adrl	ctlPWCHAR	; D
-	 adrl	ctlPWCHARVALUE	; E
-	 adrl	ctlNOTAPWD	; F
-	 adrl	ctlKEYMASK	; 10
-	 adrl	ctlKEYMASKVALUE	; 11
-	 adrl	ctlLEDOLLAR1	; 12
-	 adrl	ctlLEDOLLAR2	; 13
          ADRL  $00000000
 
 ctlLEDOLLAR1  DW    $0008      ; pCount - pwChar $
@@ -20100,23 +20127,21 @@ clrRECTANGLE
 titleRECTANGLE	str	' Rectangle '
 
 ctlRECTANGLE
-	adrl	ctlRECT1
-	adrl	ctlRECT2
-	adrl	ctlRECT3
-	adrl	ctlRECT4
-	adrl	ctlRECT5
-	adrl	ctlRECT6
-	adrl	ctlRECT7
-	adrl	ctlRECT8
-	adrl	ctlRECT9
-	adrl	ctlRECTA
-	adrl	ctlRECTB
-	adrl	ctlRECTC
-	adrl	ctlRECTD
+	adrl	ctlRECTF	; penWidth
 	adrl	ctlRECTE
-	adrl	ctlRECTF
-	adrl	ctlRECT10
-	adrl	ctlRECT11
+	adrl	ctlRECTD	; penHeight
+	adrl	ctlRECTC
+	adrl	ctlRECTB
+	adrl	ctlRECTA
+	adrl	ctlRECT9
+	adrl	ctlRECT8
+	adrl	ctlRECT7
+	adrl	ctlRECT6	; refCon value
+	adrl	ctlRECT5
+	adrl	ctlRECT4
+	adrl	ctlRECT3
+	adrl	ctlRECT2
+	adrl	ctlRECT1
 	adrl	$0
 
 ctlRECT1 DW    $0009      ; pCount - Change button
@@ -20288,12 +20313,12 @@ ctlRECTD  DW    $0008      ; pCount - Pen height value
          DW    79      ; rect
          DW    114
          DW    92
-         DW    162
+         DW    172	; 162 - LOGO
          ADRL  $83000000  ; procRef
          DW    $0000      ; flag
          DW    $7000      ; moreFlags
          ADRL  $00000000  ; refCon
-         DW    $0004      ; maxSize
+         DW    $0005      ; maxSize - $0004 LOGO
          ADRL  strRECTD    ; defaultRef
 	 
 ctlRECTE  DW    $0008      ; pCount - Pen width text
@@ -20314,39 +20339,13 @@ ctlRECTF  DW    $0008      ; pCount - Pen width value
          DW    79      ; rect
          DW    264
          DW    92
-         DW    312
+         DW    322
          ADRL  $83000000  ; procRef
          DW    $0000      ; flag
          DW    $7000      ; moreFlags
          ADRL  $00000000  ; refCon
-         DW    $0004      ; maxSize
+         DW    $0005      ; maxSize
          ADRL  strRECTF   ; defaultRef
-
-ctlRECT10  DW    $0008      ; pCount - Pen height $
-         ADRL  $00000010  ; ID
-         DW    81      ; rect
-         DW    104
-         DW    90
-         DW    113
-         ADRL  $81000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $00000000  ; refCon
-         ADRL  strRECT10  ; textRef
-         DW    1      ; textSize
-
-ctlRECT11 DW    $0008      ; pCount - Pen width $
-         ADRL  $00000011  ; ID
-         DW    81      ; rect
-         DW    254
-         DW    90
-         DW    263
-         ADRL  $81000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $00000000  ; refCon
-         ADRL  strRECT10  ; textRef
-         DW    1      ; textSize
 	 
 strRECT1	str	'Change'
 strRECT2	str	'Cancel'
@@ -20358,14 +20357,13 @@ strRECT9	str	'Transparent'
 strRECTA	str	'Grey pattern'
 strRECTB	str	'Black pattern'
 strRECTC	asc	'Pen height'
-strRECTD	db	$04
+strRECTD	db	$05
 strRECTD2	ENT
-		asc	'0001'
+		asc	'00001'
 strRECTE	asc	'Pen width'
-strRECTF	db	$04
+strRECTF	db	$05
 strRECTF2	ENT
-		asc	'0002'
-strRECT10	asc	'$'
+		asc	'00002'
 
 *---
 
@@ -20440,22 +20438,20 @@ clrTHERMOMETER
 titleTHERMOMETER	str	' Thermometer '
 
 ctlTHERMOMETER
-	adrl	ctlTHERMO1
-	adrl	ctlTHERMO2
-	adrl	ctlTHERMO3
-	adrl	ctlTHERMO4
-	adrl	ctlTHERMO5
-	adrl	ctlTHERMO6
-	adrl	ctlTHERMO7
-	adrl	ctlTHERMO8
-	adrl	ctlTHERMO9
-	adrl	ctlTHERMOA	; no B control
-	adrl	ctlTHERMOC
-	adrl	ctlTHERMOD
-	adrl	ctlTHERMOE
 	adrl	ctlTHERMOF
-	adrl	ctlTHERMO10
-	adrl	ctlTHERMO11
+	adrl	ctlTHERMOE
+	adrl	ctlTHERMOD
+	adrl	ctlTHERMOC
+	adrl	ctlTHERMOA	; no B control
+	adrl	ctlTHERMO9
+	adrl	ctlTHERMO8
+	adrl	ctlTHERMO7
+	adrl	ctlTHERMO6
+	adrl	ctlTHERMO5
+	adrl	ctlTHERMO4
+	adrl	ctlTHERMO3
+	adrl	ctlTHERMO2
+	adrl	ctlTHERMO1
 	adrl	$0
 
 ctlTHERMO1 DW    $0009      ; pCount - Change button
@@ -20614,12 +20610,12 @@ ctlTHERMOD  DW    $0008      ; pCount - Position value
          DW    68      ; rect
          DW    114
          DW    81
-         DW    162
+         DW    172
          ADRL  $83000000  ; procRef
          DW    $0000      ; flag
          DW    $7000      ; moreFlags
          ADRL  $00000000  ; refCon
-         DW    $0004      ; maxSize
+         DW    $0005      ; maxSize
          ADRL  strTHERMOD    ; defaultRef
 	 
 ctlTHERMOE  DW    $0008      ; pCount - Scale text
@@ -20640,39 +20636,14 @@ ctlTHERMOF  DW    $0008      ; pCount - Scale value
          DW    84      ; rect
          DW    114
          DW    97
-         DW    162
+         DW    172
          ADRL  $83000000  ; procRef
          DW    $0000      ; flag
          DW    $7000      ; moreFlags
          ADRL  $00000000  ; refCon
-         DW    $0004      ; maxSize
+         DW    $0005      ; maxSize
          ADRL  strTHERMOF   ; defaultRef
 
-ctlTHERMO10  DW    $0008      ; pCount - Position $
-         ADRL  $00000010  ; ID
-         DW    70      ; rect
-         DW    104
-         DW    79
-         DW    113
-         ADRL  $81000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $00000000  ; refCon
-         ADRL  strTHERMO10  ; textRef
-         DW    1      ; textSize
-
-ctlTHERMO11 DW    $0008      ; pCount - Scale $
-         ADRL  $00000011  ; ID
-         DW    86      ; rect
-         DW    104
-         DW    95
-         DW    113
-         ADRL  $81000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $00000000  ; refCon
-         ADRL  strTHERMO10  ; textRef
-         DW    1      ; textSize
 
 strTHERMO1	str	'Change'
 strTHERMO2	str	'Cancel'
@@ -20683,14 +20654,13 @@ strTHERMO8	asc	'Orientation'
 strTHERMO9	str	'Vertical'
 strTHERMOA	str	'Horizontal'
 strTHERMOC	asc	'Position'
-strTHERMOD	db	$04
+strTHERMOD	db	$05
 strTHERMOD2	ENT
-		asc	'0001'
+		asc	'00001'
 strTHERMOE	asc	'Scale'
-strTHERMOF	db	$04
+strTHERMOF	db	$05
 strTHERMOF2	ENT
-		asc	'0002'
-strTHERMO10	asc	'$'
+		asc	'00002'
 
 *---
 

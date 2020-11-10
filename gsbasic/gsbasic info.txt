@@ -1,0 +1,539 @@
+Enjoy!
+
+SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+	A IIGS BASIC FILE
+SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+HEADER
++00	byte	02
++01	byte	10	version
++02	byte	05	LISTTAB, see page 321
++03	byte	02	INDENT, see page 321
++04	byte	00	
+
+LINE
++00	byte	xx	length of label name + 1, or
+			offset to tokenized line
+				=01, there is no label name
+				>01, offset to tokenized line
++01	byte	xx	length of tokenized line, or
+			offset to next line
++02	word	0A 00	line number
++03	byte	CE	token, see below
++xx	byte	00	end of line
+
+There are tokens that take one byte, like CE (PRINT) but nouns take two bytes or more:
+	DF D8	DF = noun, D8 = VAR$(
+	DF AE	DF = noun, AE = BASIC@(
+	F0 = 0	I am sure there is more work here, it is more than F0..FF, I am sure (see page 374)
+	22 to close one parenthesis
+	22 to close one parenthesis
+You will see that IIgs BASIC is able to open parenthesis naturally as those are in the commands, but one has to close them specifically!
+
+SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+	IIGS BASIC EXAMPLES
+SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+
+)LIST                                                                           
+                                                                                
+   10 LOGO:PRINT "LoGo was here"                                                
+   20 TOTO:PRINT "Toto was here"                                                
+)                                                                               
+
+SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+00/0000: 04 10 05 02 00 05 4C 4F 47 4F 14 0A 00 CE 22 4C    ......LOGO...N"L    
+00/0010: 6F 47 6F 20 77 61 73 20 68 65 72 65 22 00 05 54    oGo was here"..T    
+00/0020: 4F 54 4F 14 14 00 CE 22 54 6F 74 6F 20 77 61 73    OTO...N"Toto was    
+00/0030: 20 68 65 72 65 22 00 01 00 00 00                    here".....         
+SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+
+)LIST                                                                           
+                                                                                
+   20 PRINT "Apple IIGS BASIC V1.0 BETA 5.0 28 Jan 2019"                        
+   38 PRINT:PRINT "GS BASIC AUTHOR: ";VAR$(BASIC@(0))                           
+   39 PRINT:PRINT "CONTRIBUTORS:  ";VAR$(BASIC@(1))                             
+   40 PRINT                                                                     
+   49 CLEAR 65600                                                               
+   50 PRINT "USER MEMORY ALLOCATED ";FRE;" BYTES"                               
+   55 PRINT:PRINT "User data seg allocation controlled by 'CLEAR nnnnnn'"       
+   57 PRINT "where nnnnnn is the seg size in bytes (approx)"                    
+   60 PREFIX 6,"*/TDFS"                                                         
+)                                                                               
+
+SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+00/0000: 04 10 05 02 00 01 31 14 00 CE 22 41 70 70 6C 65    ......1..N"Apple    
+00/0010: 20 49 49 47 53 20 42 41 53 49 43 20 56 31 2E 30     IIGS BASIC V1.0    
+00/0020: 20 42 45 54 41 20 35 2E 30 20 32 38 20 4A 61 6E     BETA 5.0 28 Jan    
+00/0030: 20 32 30 31 39 22 00 01 22 26 00 CE 3A CE 22 47     2019".."&.N:N"G    
+00/0040: 53 20 42 41 53 49 43 20 41 55 54 48 4F 52 3A 20    S BASIC AUTHOR:     
+00/0050: 22 3B DF D8 DF AE F0 29 29 00 01 20 27 00 CE 3A    ";_X_.p)).. '.N:    
+00/0060: CE 22 43 4F 4E 54 52 49 42 55 54 4F 52 53 3A 20    N"CONTRIBUTORS:     
+00/0070: 20 22 3B DF D8 DF AE F1 29 29 00 01 05 28 00 CE     ";_X_.q))...(.N    
+00/0080: 00 01 0A 31 00 CF FC 40 00 01 00 00 01 29 32 00    ...1.O|@.....)2.    
+00/0090: CE 22 55 53 45 52 20 4D 45 4D 4F 52 59 20 41 4C    N"USER MEMORY AL    
+00/00A0: 4C 4F 43 41 54 45 44 20 22 3B DF ED 3B 22 20 42    LOCATED ";_m;" B    
+00/00B0: 59 54 45 53 22 00 01 3E 37 00 CE 3A CE 22 55 73    YTES"..>7.N:N"Us    
+00/00C0: 65 72 20 64 61 74 61 20 73 65 67 20 61 6C 6C 6F    er data seg allo    
+00/00D0: 63 61 74 69 6F 6E 20 63 6F 6E 74 72 6F 6C 6C 65    cation controlle    
+00/00E0: 64 20 62 79 20 27 43 4C 45 41 52 20 6E 6E 6E 6E    d by 'CLEAR nnnn    
+00/00F0: 6E 6E 27 22 00 01 35 39 00 CE 22 77 68 65 72 65    nn'"..59.N"where    
+00/0100: 20 6E 6E 6E 6E 6E 6E 20 69 73 20 74 68 65 20 73     nnnnnn is the s    
+00/0110: 65 67 20 73 69 7A 65 20 69 6E 20 62 79 74 65 73    eg size in bytes    
+00/0120: 20 28 61 70 70 72 6F 78 29 22 00 01 0F 3C 00 9B     (approx)"...<..    
+00/0130: F6 2C 22 2A 2F 54 44 46 53 22 00 01 00 00 00       v,"*/TDFS".....     
+SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+
+SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+The IIgs BASIC commands
+SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+
+L23FE    DCI   'AUTO'     ; ADDRESS FOUND
+         DCI   'DEL'      ;
+         DCI   'EDIT'     ;
+         DCI   'HLIST'    ;
+         DCI   'LIST'     ;
+         DCI   'RENUM'    ;
+
+L2417    DCI   'BREAK'    ; ADDRESS FOUND
+         DCI   'FN'       ;
+         DCI   'PROC'     ;
+         DCI   'GOSUB'    ;
+         DCI   'GOTO'     ;
+         DCI   'FOR'      ;
+         DCI   'THEN'     ;
+         DCI   'ELSE'     ;
+         DCI   'NEXT'     ;
+         DCI   'OFF'      ;
+         DCI   'ON'       ;
+         DCI   'INPUT'    ;
+         DCI   'OUTPUT'   ;
+         DCI   'TEXT'     ;
+         DCI   'TIMER'    ;
+         DCI   'EXCEPTION' ;
+         DCI   'CAT'      ;
+         DCI   'COPY'     ;
+         DCI   'INIT'     ;
+         DCI   'INVOKE'   ;
+         DCI   'LIBRARY'  ;
+         DCI   'PREFIX'   ;
+         DCI   'TYPE'     ;
+         DCI   'LOAD'     ;
+         DCI   'SAVE'     ;
+         DCI   'DELETE'   ;
+         DCI   'RUN'      ;
+         DCI   'RENAME'   ;
+         DCI   'CREATE'   ;
+         DCI   'LOCK'     ;
+         DCI   'UNLOCK'   ;
+         DCI   'EXEC'     ;
+         DCI   'CHAIN'    ;
+         DCI   'CATALOG'  ;
+         DCI   'OPEN'     ;
+         DCI   'QUIT'     ;
+
+L24BD    DCI   'DIR'      ; ADDRESS FOUND
+         DCI   'DIM'      ;
+         DCI   'READ'     ;
+         DCI   'WRITE'    ;
+         DCI   'CLOSE'    ;
+         DCI   'TASKPOLL' ;
+         DCI   'LOCATE'   ;
+         DCI   'EVENTDEF' ;
+         DCI   'MENUDEF'  ;
+         DCI   'VOLUMES'  ;
+         DCI   'CALL%'    ;
+         DCI   'CALL'     ;
+         DCI   '_'        ;
+         DCI   'TEXTPORT' ;
+         DCI   'PERFORM'  ;
+         DCI   'GRAF'     ;
+         DCI   'DBUG'     ;
+         DCI   'POP'      ;
+         DCI   'HOME'     ;
+         DCI   'SUB$('    ;
+         DCI   'TRACE'    ;
+         DCI   'NOTRACE'  ;
+         DCI   'NORMAL'   ;
+         DCI   'INVERSE'  ;
+         DCI   'RESUME'   ;
+         DCI   'LET'      ;
+         DCI   'IF'       ;
+         DCI   'RESTORE'  ;
+         DCI   'SWAP'     ;
+         DCI   'RETURN'   ;
+         DCI   'REM'      ;
+         DCI   'STOP'     ;
+         DCI   'DATA'     ;
+         DCI   'IMAGE'    ;
+         DCI   'LIBFIND'  ;
+         DCI   'DEF'      ;
+         DCI   'PRINT'    ;
+         DCI   'CLEAR'    ;
+         DCI   'RANDOMIZE' ;
+         DCI   'NEW'      ;
+         DCI   'POKE'     ;
+         DCI   'ASSIGN'   ;
+         DCI   'GET'      ;
+         DCI   'PUT'      ;
+         DCI   'SET'      ;
+         DCI   'ERROR'    ;
+         DCI   'ERASE'    ;
+         DCI   'LOCAL'    ;
+         DCI   'WHILE'    ;
+         DCI   'CONT'     ;
+         DCI   'DO'       ;
+         DCI   'UNTIL'    ;
+         DCI   'END'      ;
+         DCI   ' '        ; EVERYTHING BUT VERBS
+
+L25BD    DCI   'HPOS'     ; VERBS
+         DCI   'VPOS'     ;
+         DCI   'TIME$'    ;
+         DCI   'DATE$'    ;
+         DCI   'PREFIX$'  ;
+         DCI   'PROGNAM$' ;
+         DCI   'OUTREC'   ;
+         DCI   'INDENT'   ;
+         DCI   'SHOWDIGITS' ;
+         DCI   'LISTTAB'  ;
+         DCI   'AUXID@'   ;
+         DCI   'EXFN'     ;
+         DCI   'SECONDS@' ;
+         DCI   'FRE'      ;
+         DCI   'ERRLIN'   ;
+         DCI   'ERR'      ;
+         DCI   'KBD'      ;
+         DCI   'EOF'      ;
+         DCI   'JOYY'     ;
+         DCI   'PDL9'     ;
+         DCI   'PI'       ;
+         DCI   'ERRTOOL'  ;
+         DCI   'TAB('     ;
+         DCI   'TO'       ;
+         DCI   'SPC('     ;
+         DCI   'USING'    ;
+         DCI   'APPEND'   ;
+         DCI   'MOD'      ;
+         DCI   'REMDR'    ;
+         DCI   'STEP'     ;
+         DCI   'AND'      ;
+         DCI   'OR'       ;
+         DCI   'XOR'      ;
+         DCI   'DIV'      ;
+         DCI   'SRC'      ;
+         DCI   'NOT'      ;
+         DCI   'DIR'      ;
+         DCI   'UPDATE'   ;
+         DCI   'TXT'      ;
+         DCI   'BDF'      ;
+         DCI   'FILTYP='  ;
+         DCI   'AS'       ;
+         DCI   'AUTO'     ;
+         DCI   ' '        ;
+
+         DCI   'SGN('     ; ADDRESS FOUND
+         DCI   'INT('     ;
+         DCI   'ABS('     ;
+         DCI   'TYP('     ;
+         DCI   'REC('     ;
+         DCI   'JOYX('    ;
+         DCI   'PDL('     ;
+         DCI   'BTN('     ;
+         DCI   'R.STACK%(' ;
+         DCI   'R.STACK@(' ;
+         DCI   'R.STACK&(' ;
+         DCI   'SQR('     ;
+         DCI   'RND('     ;
+         DCI   'LOG('     ;
+         DCI   'LOG1('    ;
+         DCI   'LOG2('    ;
+         DCI   'LOGB%('   ;
+         DCI   'EXP('     ;
+         DCI   'EXP1('    ;
+         DCI   'EXP2('    ;
+         DCI   'COS('     ;
+         DCI   'SIN('     ;
+         DCI   'TAN('     ;
+         DCI   'ATN('     ;
+         DCI   'BASIC@('  ;
+         DCI   'DATE('    ;
+         DCI   'EOFMARK(' ;
+         DCI   'FILTYP('  ;
+         DCI   'FIX('     ;
+         DCI   'FREMEM('  ;
+         DCI   'NEGATE('  ;
+         DCI   'PEEK('    ;
+         DCI   'ROUND('   ;
+         DCI   'TASKREC%(' ;
+         DCI   'TASKREC@(' ;
+         DCI   'TIME('    ;
+         DCI   'UIR('     ;
+         DCI   'STR$('    ;
+         DCI   'HEX$('    ;
+         DCI   'PFX$('    ;
+         DCI   'SPACE$('  ;
+         DCI   'ERRTXT$(' ;
+         DCI   'CHR$('    ;
+         DCI   'RELATION(' ;
+         DCI   'ANU('     ;
+         DCI   'COMPI('   ;
+         DCI   'SCALB('   ;
+         DCI   'SCALE('   ;
+         DCI   'LEN('     ;
+         DCI   'VAL('     ;
+         DCI   'ASC('     ;
+         DCI   'UCASE$('  ;
+         DCI   'TEN('     ;
+         DCI   'CONV#('   ;
+         DCI   'CONV@('   ;
+         DCI   'CONV('    ;
+         DCI   'CONV&('   ;
+         DCI   'CONV$('   ;
+         DCI   'CONV%('   ;
+         DCI   'LEFT$('   ;
+         DCI   'RIGHT$('  ;
+         DCI   'REP$('    ;
+         DCI   'MID$('    ;
+         DCI   'INSTR('   ;
+         DCI   'VARPTR('  ;
+         DCI   'VARPTR$(' ;
+         DCI   'VAR$('    ;
+         DCI   'VAR('     ;
+         DCI   'UBOUND('  ;
+         DCI   'FILE('    ;
+         DCI   'EXEVENT@(' ;
+
+SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+The IIgs BASIC values
+SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+
+*---------------------------------------
+* GS BASIC TOKENS: VERBS
+*---------------------------------------
+
+* The first six are direct commands and cannot be in source code
+* The others are verbs
+* DF is reserved for nouns
+* Where are adverbs and operators?
+
+L2210    DA    L4274-1	; 80 AUTO*
+         DA    L490B-1	; 81 DEL*
+         DA    L4329-1	; 82 EDIT*
+         DA    L41CA-1	; 83 HLIST*
+         DA    L41D0-1	; 84 LIST*
+         DA    L4F9E-1	; 85 RENUM*
+
+         DA    L352C-1	; 86 BREAK
+         DA    L8324-1	; 87 FN
+         DA    L852D-1	; 88 PROC
+         DA    L8B0D-1	; 89 GOSUB
+         DA    L8B5A-1	; 8A GOTO
+         DA    L8A02-1	; 8B FOR
+         DA    L8C79-1	; 8C THEN
+         DA    L8C79-1	; 8D ELSE
+         DA    L8D56-1	; 8E NEXT
+         DA    L81E2-1	; 8F OFF
+         DA    L8CDC-1	; 90 ON
+         DA    L7DB1-1	; 91 INPUT
+         DA    LA888-1	; 92 OUTPUT
+         DA    L752A-1	; 93 TEXT
+         DA    L32A3-1	; 94 TIMER
+         DA    L80F0-1	; 95 EXCEPTION
+
+L223C    DA    LC1E4-1	; 96 CAT
+         DA    LBABF-1	; 97 COPY
+         DA    LBC74-1	; 98 INIT
+         DA    LCCAE-1	; 99 INVOKE
+         DA    LCA89-1	; 9A LIBRARY
+         DA    LBF82-1	; 9B PREFIX
+         DA    LC0D3-1	; 9C TYPE
+         DA    LBE50-1	; 9D LOAD
+         DA    LBCFE-1	; 9E SAVE
+         DA    LBF7A-1	; 9F DELETE
+         DA    L38B1-1	; A0 RUN
+         DA    LBF11-1	; A1 RENAME
+         DA    LBC12-1	; A2 CREATE
+         DA    LBF61-1	; A3 LOCK
+         DA    LBF5D-1	; A4 UNLOCK
+         DA    LA89C-1	; A5 EXEC
+         DA    LBA70-1	; A6 CHAIN
+         DA    LC1E8-1	; A7 CATALOG
+         DA    LAFBF-1	; A8 OPEN
+         DA    L3E73-1	; A9 QUIT
+         DA    LC1C8-1	; AA DIR
+         DA    L6442-1	; AB DIM
+         DA    L7FA4-1	; AC READ
+         DA    LB3F8-1	; AD WRITE
+         DA    LAC81-1	; AE CLOSE
+         DA    L918F-1	; AF TASKPOLL
+         DA    LABFA-1	; B0 LOCATE
+         DA    L9138-1	; B1 EVENTDEF
+         DA    L90B7-1	; B2 MENUDEF
+         DA    LC037-1	; B3 VOLUMES
+         DA    LD3D2-1	; B4 CALL%
+         DA    LD522-1	; B5 CALL
+         DA    LD522-1	; B6 _
+         DA    LAB7D-1	; B7 TEXTPORT
+         DA    LD592-1	; B8 PERFORM
+         DA    L7446-1	; B9 GRAF
+         DA    L7AA5-1  ; BA DBUG
+         DA    L8C3B-1	; BB POP
+         DA    L7545-1	; BC HOME
+         DA    L71E7-1	; BD SUB$(
+         DA    L750F-1	; BE TRACE
+         DA    L7523-1	; BF NOTRACE
+         DA    L7505-1	; C0 NORMAL
+         DA    L750A-1	; C1 INVERSE
+         DA    L8061-1	; C2 RESUME
+         DA    L5DD8-1	; C3 LET
+         DA    L8E11-1	; C4 IF
+         DA    L3D84-1	; C5 RESTORE
+         DA    L7709-1	; C6 SWAP
+         DA    L8BEE-1	; C7 RETURN
+         DA    L8C7C-1	; C8 REM
+         DA    L3DFB-1	; C9 STOP
+         DA    L8C79-1	; CA DATA
+         DA    L8C79-1	; CB IMAGE
+         DA    LD0C2-1	; CC LIBFIND
+         DA    L82FD-1	; CD DEF
+         DA    L93BE-1	; CE PRINT
+         DA    L5990-1	; CF CLEAR
+         DA    L7494-1	; D0 RANDOMIZE
+         DA    L59EC-1	; D1 NEW
+         DA    L7AC5-1	; D2 POKE
+         DA    L754C-1	; D3 ASSIGN
+         DA    LB37E-1	; D4 GET
+         DA    LB3D6-1	; D5 PUT
+         DA    L5F0E-1	; D6 SET
+         DA    L7ACF-1	; D7 ERROR
+         DA    L69DC-1	; D8 ERASE
+         DA    L8901-1	; D9 LOCAL
+         DA    L8944-1	; DA WHILE
+         DA    L3E35-1	; DB CONT
+         DA    L89EC-1	; DC DO
+         DA    L89C8-1	; DD UNTIL
+         DA    L85EE-1	; DE END
+         DA    L6356-1	; DF * EVERYTHING BUT VERBS LIKE NOUNS
+* E0-E9 - weird verbs
+         DA    L74D4-1	; E0 
+         DA    L74F3-1	; E1 
+         DA    L6F8C-1	; E2 
+         DA    L6F9B-1	; E3 
+         DA    L7102-1	; E4 
+         DA    L7135-1	; E5 
+         DA    L74C0-1	; E6 
+         DA    L74C7-1	; E7 
+         DA    L7472-1	; E8 
+         DA    L74B9-1	; E9 
+         DA    L3F9A-1	; EA NOT IMPLEMENTED
+         DA    L3F9A-1	; EB NOT IMPLEMENTED
+         DA    L3F9A-1	; EC NOT IMPLEMENTED
+         DA    L3F9A-1	; ED NOT IMPLEMENTED
+         DA    L3F9A-1	; EE NOT IMPLEMENTED
+         DA    L3F9A-1	; EF NOT IMPLEMENTED
+         DA    L3F9A-1	; F0 NOT IMPLEMENTED
+         DA    L3F9A-1	; F1 NOT IMPLEMENTED
+         DA    L3F9A-1	; F2 NOT IMPLEMENTED
+         DA    L3F9A-1	; F3 NOT IMPLEMENTED
+         DA    L3F9A-1	; F4 NOT IMPLEMENTED
+         DA    L3F9A-1	; F5 NOT IMPLEMENTED
+
+* THE RESERVED VARIABLES?
+
+L22FC    DA    L7A8A
+L22FE    DA    L7A9D
+         DA    L6F56
+         DA    L6F5C
+         DA    L70DE
+         DA    L711E
+         DA    L7C01
+         DA    L7C06
+         DA    L747B
+         DA    L7BFC
+         DA    LB630
+         DA    LD5AD
+         DA    L793F
+         DA    L77C4
+         DA    L7BEC
+         DA    L7C14
+         DA    L7C0B
+         DA    L7C10
+         DA    L7BA5
+         DA    L7BAB
+         DA    L7481
+         DA    L748D
+
+*---------------------------------------
+* GS BASIC TOKENS: NOUNS WITH A (
+*---------------------------------------
+
+         DA    LDF01-1	; 96 SGN(
+         DA    LDF18-1	; 97 INT(
+         DA    LDF70-1	; 98 ABS(
+         DA    LB64F-1	; 99 TYP(
+         DA    LB684-1	; 9A REC(
+         DA    L7B48-1	; 9B JOYX(
+         DA    L7B04-1	; 9C PDL(
+         DA    L7BB4-1	; 9D BTN(
+         DA    L78FC-1	; 9E R.STACK%(
+         DA    L78D1-1	; 9F R.STACK@(
+         DA    L78A9-1	; A0 R.STACK&(
+         DA    LDF61-1	; A1 SQR(
+         DA    LE115-1	; A2 RND(
+         DA    LE0DE-1	; A3 LOG(
+         DA    LE0E3-1	; A4 LOG1(
+         DA    LE0E8-1	; A5 LOG2(
+         DA    LE0ED-1	; A6 LOGB%(
+         DA    LE0F2-1	; A7 EXP(
+         DA    LE0F7-1	; A8 EXP1(
+         DA    LE0FC-1	; A9 EXP2(
+         DA    LE101-1	; AA COS(
+         DA    LE106-1	; AB SIN(
+         DA    LE10B-1	; AC TAN(
+         DA    LE110-1	; AD ATN(
+         DA    L791E-1	; AE BASIC@(
+         DA    L6FF9-1	; AF DATE( 
+         DA    LB6B1-1	; B0 EOFMARK(
+         DA    LB640-1	; B1 FILTYP(
+         DA    LDF66-1	; B2 FIX(
+         DA    L77E3-1	; B3 FREMEN(
+         DA    LDF83-1	; B4 NEGATE(
+         DA    L7AAE-1	; B5 PEEK(
+         DA    LDF57-1	; B6 ROUND(
+         DA    L92D4-1	; B7 TASKREC%(
+         DA    L92EA-1	; B8 TASKREC@(
+         DA    L7031-1	; B9 TIME(
+         DA    L7D9B-1	; BA UIR(
+         DA    L6F50-1	; BB STR$(
+         DA    L76D2-1	; BC HEX$(
+         DA    L70B6-1	; BD PFX$(
+         DA    L7079-1	; BE SPACE$(
+         DA    L7047-1	; BF ERRTXT$(
+         DA    L72E4-1	; C0 CHR$(
+         DA    LDC74-1	; C1 RELATION(
+         DA    LE193-1	; C2 ANU(
+         DA    LE197-1	; C3 COMPI(
+         DA    LDEF6-1	; C4 SCALB(
+         DA    L6356-1	; C5 SCALE(
+         DA    L737D-1	; C6 LEN(
+         DA    L73E4-1	; C7 VAL(
+         DA    L73AD-1	; C8 ASC(
+         DA    L71C5-1	; C9 UCASE$(
+         DA    L765A-1	; CA TEN(
+         DA    LE1A5-1	; CB CONV#(
+         DA    LE1C0-1	; CC CONV@(
+         DA    LE1AE-1	; CD CONV(
+         DA    LE1B7-1	; CE CONV&(
+         DA    LE1DA-1	; CF CONV$(
+         DA    LE1C9-1	; D0 CONV%(
+         DA    L72F6-1	; D1 LEFT$(
+         DA    L732B-1	; D2 RIGHT$(
+         DA    L7096-1	; D3 REP$(
+         DA    L7336-1	; D4 MID$(
+         DA    L713B-1	; D5 INSTR(
+         DA    L7A39-1	; D6 VARPTR(
+         DA    L7A5F-1	; D7 VARPTR$(
+         DA    L79FF-1	; D8 VAR$(
+         DA    L7954-1	; D9 VAR(
+         DA    L6979-1	; DA UBOUND(
+         DA    L75DB-1	; DB FILE(
+         DA    L762A-1	; DC EXEVENT@(

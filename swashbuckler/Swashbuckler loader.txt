@@ -1,0 +1,175 @@
+The Flaming Bird Disassembler    Written by Ferox - (c) 1994 Phoenix corporation
+SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+00/0335: A903                       LDA   #$03                                  
+00/0337: A020                       LDY   #$20                                  
+00/0339: 20D903                     JSR   $03D9                                 
+00/033C: 60                         RTS                                         
+00/033D: A901                       LDA   #$01            ; READ                
+00/033F: 8D2C03                     STA   $032C                                 
+00/0342: AD1E03                     LDA   $031E           ; S                   
+00/0345: 8D2503                     STA   $0325                                 
+00/0348: AD1D03                     LDA   $031D           ; T                   
+00/034B: 8D2403                     STA   $0324                                 
+00/034E: 203503                     JSR   $0335                                 
+00/0351: 60                         RTS                                         
+00/0352: A910                       LDA   #$10            ; NB SEC              
+00/0354: 8D1C03                     STA   $031C                                 
+00/0357: 203D03                     JSR   $033D           ; READ TS             
+00/035A: EE1E03                     INC   $031E           ; S++                 
+00/035D: EE2903                     INC   $0329           ; PTR HIGH++          
+00/0360: CE1C03                     DEC   $031C           ; NB SEC--            
+00/0363: D0F2                       BNE   $0357                                 
+00/0365: 60                         RTS                                         
+00/0366: 8D1D03                     STA   $031D           ; TRACK               
+00/0369: 8E2803                     STX   $0328           ; PTR LOW             
+00/036C: 8C2903                     STY   $0329           ; PTR HIGH            
+00/036F: A900                       LDA   #$00                                  
+00/0371: 8D1E03                     STA   $031E           ; S=0                 
+00/0374: 205203                     JSR   $0352           ; READ TRACK          
+00/0377: EE1D03                     INC   $031D           ; T++                 
+00/037A: A900                       LDA   #$00                                  
+00/037C: 8D1E03                     STA   $031E           ; S=0                 
+00/037F: 205203                     JSR   $0352           ; READ TRACK          
+00/0382: 60                         RTS                                         
+
+; ENTRY POINT
+
+00/0383: A907                       LDA   #$07            ; ENTRY POINT         
+00/0385: A200                       LDX   #$00                                  
+00/0387: A040                       LDY   #$40                                  
+00/0389: 206603                     JSR   $0366                                 
+00/038C: AD57C0                     LDA   HIRES                                 
+00/038F: AD55C0                     LDA   TXTPAGE2                              
+00/0392: AD50C0                     LDA   TXTCLR                                
+00/0395: AD52C0                     LDA   MIXCLR                                
+00/0398: A900                       LDA   #$00            ; $1000               
+00/039A: 8D2803                     STA   $0328                                 
+00/039D: 8D1E03                     STA   $031E                                 
+00/03A0: A904                       LDA   #$04            ; T=4                 
+00/03A2: 8D1D03                     STA   $031D                                 
+00/03A5: A910                       LDA   #$10                                  
+00/03A7: 8D2903                     STA   $0329                                 
+00/03AA: 205203                     JSR   $0352           ; READ TRACK          
+00/03AD: 4C001B                     JMP   $1B00           ; NEXT STAGE          
+SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+
+
+The Flaming Bird Disassembler    Written by Ferox - (c) 1994 Phoenix corporation
+SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+00/1B00: A900                       LDA   #$00            ; ENTRY POINT         
+00/1B02: 8D2803                     STA   $0328           ; PTR LOW                      
+00/1B05: 8D1E03                     STA   $031E           ; S0                      
+00/1B08: A903                       LDA   #$03                                  
+00/1B0A: 8D1D03                     STA   $031D           ; T3                      
+00/1B0D: A908                       LDA   #$08                                  
+00/1B0F: 8D2903                     STA   $0329           ; PTR HIGH                     
+00/1B12: A907                       LDA   #$07                                  
+00/1B14: 8D1F03                     STA   $031F           ; LAST SEC = 7                      
+00/1B17: 203D03                     JSR   $033D           ; READ 1TS AT 0800
+00/1B1A: EE1E03                     INC   $031E           ; S++                      
+00/1B1D: EE2903                     INC   $0329           ; PTR HIGH++                      
+00/1B20: AD1E03                     LDA   $031E           ; S                      
+00/1B23: CD1F03                     CMP   $031F           ; = LAST SEC?                      
+00/1B26: D0EF                       BNE   $1B17           ; NOPE                      
+00/1B28: 203D03                     JSR   $033D           ; READ LAST
+00/1B2B: A909                       LDA   #$09            ; T9-A                      
+00/1B2D: A200                       LDX   #$00            ; 6000..7FFF                      
+00/1B2F: A060                       LDY   #$60                                  
+00/1B31: 206603                     JSR   $0366                                 
+
+00/1B34: A90F                       LDA   #$0F            ; TF-10                      
+00/1B36: A200                       LDX   #$00            ; 8000..9FFF                      
+00/1B38: A080                       LDY   #$80                                  
+00/1B3A: 206603                     JSR   $0366                                 
+00/1B3D: A915                       LDA   #$15            ; T15-16                      
+00/1B3F: A200                       LDX   #$00            ; 2000..3FFF                      
+00/1B41: A020                       LDY   #$20                                  
+00/1B43: 206603                     JSR   $0366                                 
+00/1B46: 20AC1C                     JSR   $1CAC           ; DO SOMETHING                      
+00/1B49: 2C00C0                     BIT   KBD                                   
+00/1B4C: 10FB                       BPL   $1B49                                 
+00/1B4E: A900                       LDA   #$00                                  
+00/1B50: 8D10C0                     STA   KBDSTROBE                             
+00/1B53: 20B71C                     JSR   $1CB7           ; DO SOMETHING                      
+00/1B56: 200018                     JSR   $1800           ; DO SOMETHING                     
+00/1B59: 2058FC                     JSR   HOME                                  
+00/1B5C: A903                       LDA   #$03                                  
+00/1B5E: 8D1D03                     STA   $031D           ; T3                      
+00/1B61: A90C                       LDA   #$0C                                  
+00/1B63: 8D1E03                     STA   $031E           ; SC                      
+00/1B66: A900                       LDA   #$00                                  
+00/1B68: 8D2803                     STA   $0328                                 
+00/1B6B: A940                       LDA   #$40                                  
+00/1B6D: 8D2903                     STA   $0329           ; PTR HIGH                      
+00/1B70: 203D03                     JSR   $033D           ; READ 1TS AT $4000                     
+00/1B73: 4C0040                     JMP   $4000           ; NEXT STAGE                      
+SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+
+LOAD GAME DATA
+
+The Flaming Bird Disassembler    Written by Ferox - (c) 1994 Phoenix corporation
+SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+00/1B76: ADC009                     LDA   $09C0                                 
+00/1B79: C915                       CMP   #$15                                  
+00/1B7B: F01F                       BEQ   $1B9C                                 
+00/1B7D: C921                       CMP   #$21                                  
+00/1B7F: F025                       BEQ   $1BA6                                 
+00/1B81: C92B                       CMP   #$2B                                  
+00/1B83: F02B                       BEQ   $1BB0                                 
+00/1B85: C936                       CMP   #$36                                  
+00/1B87: F02C                       BEQ   $1BB5                                 
+00/1B89: C93E                       CMP   #$3E                                  
+00/1B8B: F032                       BEQ   $1BBF                                 
+00/1B8D: C94A                       CMP   #$4A                                  
+00/1B8F: F033                       BEQ   $1BC4                                 
+00/1B91: C953                       CMP   #$53                                  
+00/1B93: F034                       BEQ   $1BC9                                 
+00/1B95: C962                       CMP   #$62                                  
+00/1B97: F035                       BEQ   $1BCE                                 
+00/1B99: 4C8919                     JMP   $1989                                 
+
+00/1B9C: A909                       LDA   #$09                                  
+00/1B9E: 8D0115                     STA   $1501                                 
+00/1BA1: A90B                       LDA   #$0B                                  
+00/1BA3: 4CD41B                     JMP   $1BD4                                 
+00/1BA6: A913                       LDA   #$13                                  
+00/1BA8: 20DE1B                     JSR   $1BDE                                 
+00/1BAB: A91F                       LDA   #$1F                                  
+00/1BAD: 4CD41B                     JMP   $1BD4                                 
+00/1BB0: A91B                       LDA   #$1B                                  
+00/1BB2: 4CD41B                     JMP   $1BD4                                 
+00/1BB5: A905                       LDA   #$05                                  
+00/1BB7: 20DE1B                     JSR   $1BDE                                 
+00/1BBA: A90B                       LDA   #$0B                                  
+00/1BBC: 4CD41B                     JMP   $1BD4                                 
+00/1BBF: A917                       LDA   #$17                                  
+00/1BC1: 4CD41B                     JMP   $1BD4                                 
+00/1BC4: A921                       LDA   #$21                                  
+00/1BC6: 4CD41B                     JMP   $1BD4                                 
+00/1BC9: A919                       LDA   #$19                                  
+00/1BCB: 4CD41B                     JMP   $1BD4                                 
+00/1BCE: A90D                       LDA   #$0D                                  
+00/1BD0: 4CD41B                     JMP   $1BD4                                 
+00/1BD3: 60                         RTS                                         
+00/1BD4: A200                       LDX   #$00                                  
+00/1BD6: A080                       LDY   #$80                                  
+00/1BD8: 206603                     JSR   $0366                                 
+00/1BDB: 4C0D18                     JMP   $180D                                 
+00/1BDE: 8D55C0                     STA   TXTPAGE2                              
+00/1BE1: A200                       LDX   #$00                                  
+00/1BE3: A020                       LDY   #$20                                  
+00/1BE5: 206603                     JSR   $0366                                 
+00/1BE8: 20801C                     JSR   $1C80                                 
+00/1BEB: 208919                     JSR   $1989                                 
+00/1BEE: 60                         RTS                                         
+00/1BEF: 4149                       EOR   ($49,X)                               
+00/1BF1: 4E203F                     LSR   $3F20                                 
+00/1BF4: 202859                     JSR   $5928                                 
+00/1BF7: 2F4E2920                   ANDL  $20294E                               
+00/1BFB: 223B3ABE                   JSL   $BE3A3B                               
+00/1BFF: 4124                       EOR   ($24,X)                               
+00/1C01: 3A                         DEC                                         
+00/1C02: AD4124                     LDA   $2441                                 
+SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+:_                                                                              
+

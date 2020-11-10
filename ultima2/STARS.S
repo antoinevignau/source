@@ -1,0 +1,693 @@
+*
+* Ultima II: The Revenge of the Enchanteress
+*
+* (c) 1982, Sierra On-Line
+* (s) 2020, John Disam
+*
+
+         TYP   BIN
+         ORG   $8900
+         MX    %11
+         LST   OFF
+
+*----------------------------
+
+KBD      EQU   $C000
+KBDSTROBE EQU  $C010
+SPKR     EQU   $C030
+TXTCLR   EQU   $C050
+HIRES    EQU   $C057
+WAIT     EQU   $FCA8
+PRBYTE   EQU   $FDDA
+COUT     EQU   $FDED
+
+*----------------------------
+
+L8900    JSR   L8C01
+         LDA   HIRES
+         LDA   TXTCLR
+         LDA   #$80
+         STA   $1F80
+         LDA   #$40
+         STA   $1F81
+         LDX   $4E37
+         LDA   L8E28,X
+         STA   $1F89
+         LDA   L8E32,X
+         STA   $1F8A
+         LDA   L8E3C,X
+         STA   $1F8B
+         SED
+         LDA   $4EAF
+         SEC
+         SBC   #$01
+         STA   $4EAF
+         CLD
+         LDA   #$28
+         STA   $21
+         LDX   #$1E
+         LDY   #$14
+         JSR   $458A
+         JSR   $402C
+         ASC   "  FUEL="00
+         LDX   #$1E
+         LDY   #$15
+         JSR   $458A
+         JSR   $402C
+         ASC   "  XENO="00
+         LDX   #$1E
+         LDY   #$16
+         JSR   $458A
+         JSR   $402C
+         ASC   "  YAKO="00
+         LDX   #$1E
+         LDY   #$17
+         JSR   $458A
+         JSR   $402C
+         ASC   "  ZABO="00
+         LDA   #$20
+         STA   $21
+         JSR   L8DE4
+         JSR   L8C18
+         JSR   L8C92
+         LDA   $4E2C
+         CMP   #$05
+         BCS   L89AF
+         JSR   $402C
+         ASC   8D
+         ASC   "YOU HAVE EXPLODED!"8D8D00
+L89AC    JMP   L89AC
+
+L89AF    JSR   L8DE4
+         JSR   $402C
+         ASC   "CMD: "00
+L89BB    JSR   L8A66
+         LDA   KBD
+         BPL   L89BB
+         BIT   KBDSTROBE
+         CMP   #$88
+         BNE   L89CD
+         JMP   L8A00
+
+L89CD    CMP   #$95
+         BNE   L89D4
+         JMP   L8A19
+
+L89D4    CMP   #$8D
+         BNE   L89DB
+         JMP   L8A33
+
+L89DB    CMP   #$AF       ; /
+         BNE   L89E2
+         JMP   L8A4D
+
+L89E2    CMP   #$C8       ; H
+         BNE   L89E9
+         JMP   L8D20
+
+L89E9    CMP   #$CC       ; L
+         BNE   L89F0
+         JMP   L8F8B
+
+L89F0    JSR   L8BA7
+         LDA   #$80
+         STA   $1F80
+         LDA   #$40
+         STA   $1F81
+         JMP   L89BB
+
+L8A00    JSR   $402C
+         ASC   "LEFT"8D00
+         JSR   L8BA7
+         LDA   #$20
+         STA   $1F80
+         LDA   #$40
+         STA   $1F81
+         JMP   L89AF
+
+L8A19    JSR   $402C
+         ASC   "RIGHT"8D00
+         JSR   L8BA7
+         LDA   #$DF
+         STA   $1F80
+         LDA   #$40
+         STA   $1F81
+         JMP   L89AF
+
+L8A33    JSR   $402C
+         ASC   "CLIMB"8D00
+         JSR   L8BA7
+         LDA   #$10
+         STA   $1F81
+         LDA   #$80
+         STA   $1F80
+         JMP   L89AF
+
+L8A4D    JSR   $402C
+         ASC   "DIVE"8D00
+         JSR   L8BA7
+         LDA   #$6F
+         STA   $1F81
+         LDA   #$80
+         STA   $1F80
+         JMP   L89AF
+
+L8A66    JSR   L8C38
+         LDY   #$00
+L8A6B    LDA   $1F00,Y
+         STA   $1F82
+         SEC
+         SBC   $1F80
+         BCS   L8A90
+         EOR   #$FF
+         LSR
+         LSR
+         LSR
+         LSR
+         TAX
+         LDA   $1F82
+         SEC
+         SBC   L8B51,X
+         BCS   L8A8A
+         JMP   L8B20
+
+L8A8A    STA   $1F84
+         JMP   L8AA4
+
+L8A90    LSR
+         LSR
+         LSR
+         LSR
+         TAX
+         LDA   $1F82
+         CLC
+         ADC   L8B51,X
+         STA   $1F84
+         BCC   L8AA4
+         JMP   L8B20
+
+L8AA4    LDA   $1F40,Y
+         STA   $1F83
+         SEC
+         SBC   $1F81
+         BCS   L8AC6
+         EOR   #$FF
+         LSR
+         LSR
+         LSR
+         LSR
+         TAX
+         LDA   $1F83
+         SEC
+         SBC   L8B61,X
+         STA   $1F85
+         BPL   L8AD7
+         JMP   L8B20
+
+L8AC6    LSR
+         LSR
+         LSR
+         LSR
+         TAX
+         LDA   $1F83
+         CLC
+         ADC   L8B61,X
+         BMI   L8B20
+         STA   $1F85
+L8AD7    STY   $1F88
+         LDA   $1F86
+         BEQ   L8AEC
+         LDA   $1F82
+         STA   $60
+         LDA   $1F83
+         STA   $61
+         JSR   L8B87
+L8AEC    LDY   $1F88
+         LDA   $1F84
+         STA   $60
+         STA   $1F00,Y
+         LDA   $1F85
+         STA   $61
+         STA   $1F40,Y
+         JSR   L8B69
+         LDY   $1F88
+         INY
+         CPY   #$40
+         BEQ   L8B17
+         LDA   $1F86
+         CMP   #$02
+         BCS   L8B14
+         BIT   SPKR
+L8B14    JMP   L8A6B
+
+L8B17    LDA   $1F86
+         BEQ   L8B1F
+         JSR   WAIT
+L8B1F    RTS
+
+L8B20    BIT   SPKR
+         LDA   $1F00,Y
+         STA   $1F82
+         LDA   $1F40,Y
+         STA   $1F83
+         JSR   L8B43
+         STA   $1F84
+         JSR   L8B43
+         AND   #$7F
+         STA   $1F85
+         BIT   SPKR
+         JMP   L8AD7
+
+L8B43    CLC
+         LDA   $4E
+         ADC   #$09
+         ADC   $4F
+         LDX   $4E
+         STA   $4E
+         STX   $4F
+         RTS
+
+L8B51    HEX   0102030405060708090A0B0C0D0E0F10
+L8B61    HEX   0102030405060708
+
+L8B69    LDA   $61
+         CLC
+         ADC   #$10
+         TAY
+         LDA   $472C,Y
+         STA   $FE
+         LDA   $47EC,Y
+         STA   $FF
+         LDX   $60
+         LDY   $48AC,X
+         INY
+         LDA   $49CB,X
+         ORA   ($FE),Y
+         STA   ($FE),Y
+         RTS
+
+L8B87    LDA   $61
+         CLC
+         ADC   #$10
+         TAY
+         LDA   $472C,Y
+         STA   $FE
+         LDA   $47EC,Y
+         STA   $FF
+         LDX   $60
+         LDY   $48AC,X
+         INY
+         LDA   $49CB,X
+         EOR   #$FF
+         AND   ($FE),Y
+         STA   ($FE),Y
+         RTS
+
+L8BA7    LDA   $1F80
+         STA   $60
+         LDA   $1F81
+         SEC
+         SBC   #$03
+         STA   $61
+         JSR   L8B87
+         INC   $61
+         JSR   L8B87
+         INC   $61
+         JSR   L8B87
+         INC   $61
+         JSR   L8B87
+         INC   $61
+         JSR   L8B87
+         INC   $61
+         JSR   L8B87
+         INC   $61
+         JSR   L8B87
+         LDA   $1F80
+         SEC
+         SBC   #$03
+         STA   $60
+         LDA   $1F81
+         STA   $61
+         JSR   L8B87
+         INC   $60
+         JSR   L8B87
+         INC   $60
+         JSR   L8B87
+         INC   $60
+         INC   $60
+         JSR   L8B87
+         INC   $60
+         JSR   L8B87
+         INC   $60
+         JSR   L8B87
+         RTS
+
+L8C01    LDA   #$20
+         STA   $FD
+         LDA   #$00
+         TAY
+         STA   $FC
+L8C0A    STA   ($FC),Y
+         INY
+         BNE   L8C0A
+         INC   $FD
+         LDX   $FD
+         CPX   #$40
+         BCC   L8C0A
+         RTS
+
+L8C18    JSR   L8C2F
+         LDY   #$3F
+L8C1D    JSR   L8B43
+         STA   $1F00,Y
+         JSR   L8B43
+         AND   #$7F
+         STA   $1F40,Y
+         DEY
+         BPL   L8C1D
+         RTS
+
+L8C2F    LDA   #$3B
+         STA   $4E
+         LDA   #$67
+         STA   $4F
+         RTS
+
+L8C38    LDA   $1F80
+         STA   $60
+         LDA   $1F81
+         SEC
+         SBC   #$03
+         STA   $61
+         JSR   L8B69
+         INC   $61
+         JSR   L8B69
+         INC   $61
+         JSR   L8B69
+         INC   $61
+         JSR   L8B69
+         INC   $61
+         JSR   L8B69
+         INC   $61
+         JSR   L8B69
+         INC   $61
+         JSR   L8B69
+         LDA   $1F80
+         SEC
+         SBC   #$03
+         STA   $60
+         LDA   $1F81
+         STA   $61
+         JSR   L8B69
+         INC   $60
+         JSR   L8B69
+         INC   $60
+         JSR   L8B69
+         INC   $60
+         INC   $60
+         JSR   L8B69
+         INC   $60
+         JSR   L8B69
+         INC   $60
+         JSR   L8B69
+         RTS
+
+L8C92    JSR   $402C
+         ASC   "HYPERWARP ENGAGED!"8D00
+         LDA   #$80
+         STA   $1F87
+         LDA   #$00
+         STA   $1F86
+         JSR   L8C2F
+L8CB6    JSR   L8A66
+         DEC   $1F87
+         BNE   L8CB6
+         LDA   #$80
+         STA   $1F87
+         LDA   #$01
+         STA   $1F86
+         JSR   L8DE4
+         JSR   L8C2F
+L8CCE    JSR   L8A66
+         DEC   $1F87
+         BNE   L8CCE
+         INC   $1F86
+L8CD9    JSR   L8A66
+         INC   $1F86
+         INC   $1F86
+         BPL   L8CD9
+         LDA   $4EAF
+         LSR
+         BCC   L8D1C
+         LSR
+         BCC   L8D1C
+         STA   $4F
+         JSR   $402C
+         ASC   "SHIP OFF COURSE!"8D00
+         JSR   L8B43
+         AND   #$07
+         STA   $1F89
+         JSR   L8B43
+         AND   #$07
+         STA   $1F8A
+         JSR   L8B43
+         AND   #$07
+         STA   $1F8B
+L8D1C    JSR   L8E46
+         RTS
+
+L8D20    LDA   $4EAF
+         BNE   L8D36
+         JSR   $402C
+         ASC   "NO FUEL!"878D00
+         JMP   L89AF
+
+L8D36    SED
+         SEC
+         SBC   #$01
+         STA   $4EAF
+         CLD
+         JSR   L8BA7
+         LDA   #$80
+         STA   $1F80
+         LDA   #$40
+         STA   $1F81
+         JSR   $402C
+         ASC   "HYPERWARP TO:"8D
+         ASC   "XENO="00
+         JSR   L8DCA
+         STA   $1F89
+         JSR   $402C
+         ASC   " YAKO="00
+         JSR   L8DCA
+         STA   $1F8A
+         JSR   $402C
+         ASC   " ZABO="00
+         JSR   L8DCA
+         STA   $1F8B
+         JSR   $402C
+         ASC   8D
+         ASC   "PREPARE FOR HYPERWARP!"8D00
+         JSR   L8C2F
+L8DA7    JSR   L8A66
+         DEC   $1F86
+         LDA   $1F86
+         CMP   #$02
+         BNE   L8DA7
+         LDA   #$40
+         STA   $1F87
+         JSR   L8C2F
+L8DBC    JSR   L8A66
+         DEC   $1F87
+         BNE   L8DBC
+         JSR   L8C92
+         JMP   L89AF
+
+L8DCA    JSR   L8A66
+         LDA   KBD
+         CMP   #$B0
+         BCC   L8DCA
+         CMP   #$BA
+         BCS   L8DCA
+         BIT   KBDSTROBE
+         PHA
+         JSR   COUT
+         PLA
+         SEC
+         SBC   #$B0
+         RTS
+
+L8DE4    LDA   #$28
+         STA   $21
+         LDX   #$25
+         LDY   #$14
+         JSR   $458A
+         LDA   $4EAF
+         JSR   PRBYTE
+         LDX   #$25
+         LDY   #$15
+         JSR   $458A
+         LDA   $1F89
+         JSR   PRBYTE
+         LDX   #$25
+         LDY   #$16
+         JSR   $458A
+         LDA   $1F8A
+         JSR   PRBYTE
+         LDX   #$25
+         LDY   #$17
+         JSR   $458A
+         LDA   $1F8B
+         JSR   PRBYTE
+         LDA   #$20
+         STA   $21
+         LDX   #$00
+         LDY   #$17
+         JSR   $458A
+         RTS
+
+* PLANET COORDINATES
+
+L8E28    HEX   06050306010209040009
+L8E32    HEX   06040302030804000109
+L8E3C    HEX   06050403040506050409
+
+L8E46    LDA   $1F89
+         CMP   #$04
+         BNE   L8E78
+         LDA   $1F8A
+         CMP   #$04
+         BNE   L8E78
+         LDA   $1F8B
+         CMP   #$04
+         BNE   L8E78
+         JSR   $402C
+         ASC   8D8D
+         ASC   "YOU HIT THE SUN!"8D00
+         JSR   L8C01
+L8E75    JMP   L8E75
+
+L8E78    LDX   #$09
+L8E7A    LDA   L8E28,X
+         CMP   $1F89
+         BNE   L8E92
+         LDA   L8E32,X
+         CMP   $1F8A
+         BNE   L8E92
+         LDA   L8E3C,X
+         CMP   $1F8B
+         BEQ   L8EB8
+L8E92    DEX
+         BPL   L8E7A
+         JSR   $402C
+         ASC   "YOU ARE IN DEEP SPACE."8D00
+         LDA   #$0A
+         STA   $4E37
+         JMP   L8F8A
+
+L8EB8    TXA
+         STA   $4E37
+         JSR   $402C
+         ASC   "YOU ARE ORBITING "00
+         LDA   $4E37
+         CMP   #$00
+         BEQ   L8EFB
+         CMP   #$01
+         BEQ   L8F09
+         CMP   #$02
+         BEQ   L8F19
+         CMP   #$03
+         BEQ   L8F27
+         CMP   #$04
+         BEQ   L8F34
+         CMP   #$05
+         BEQ   L8F44
+         CMP   #$06
+         BEQ   L8F53
+         CMP   #$07
+         BEQ   L8F62
+         CMP   #$08
+         BEQ   L8F72
+         JMP   L8F80
+
+L8EFB    JSR   $402C
+         ASC   "EARTH."8D00
+         JMP   L8F8A
+
+L8F09    JSR   $402C
+         ASC   "MERCURY."8D00
+         JMP   L8F8A
+
+L8F19    JSR   $402C
+         ASC   "VENUS."8D00
+         JMP   L8F8A
+
+L8F27    JSR   $402C
+         ASC   "MARS."8D00
+         JMP   L8F8A
+
+L8F34    JSR   $402C
+         ASC   "JUPITER."8D00
+         JMP   L8F8A
+
+L8F44    JSR   $402C
+         ASC   "SATURN."8D00
+         JMP   L8F8A
+
+L8F53    JSR   $402C
+         ASC   "URANUS."8D00
+         JMP   L8F8A
+
+L8F62    JSR   $402C
+         ASC   "NEPTUNE."8D00
+         JMP   L8F8A
+
+L8F72    JSR   $402C
+         ASC   "PLUTO."8D00
+         JMP   L8F8A
+
+L8F80    JSR   $402C
+         ASC   "X."8D00
+         JMP   L8F8A
+L8F8A    RTS
+
+L8F8B    JSR   L8BA7
+         LDA   #$80
+         STA   $1F80
+         LDA   #$40
+         STA   $1F81
+         JSR   $402C
+         ASC   "LANDING REQUESTED!"8D00
+         JSR   L8E46
+         LDA   $4E37
+         CMP   #$0A
+         BNE   L8FD0
+         JSR   $402C
+         ASC   "REQUEST DENIED!"8D00
+         JMP   L89AF
+
+L8FD0    CMP   #$00
+         BNE   L9002
+         JSR   $402C
+         ASC   "(INSERT PLAYER DISK)"8D00
+L8FED    JSR   L8A66
+         LDA   KBD
+         CMP   #$9B
+         BNE   L8FED
+         LDA   #$00
+         STA   $4E14
+         LDA   #$04
+         STA   $4E13
+         RTS
+
+L9002    JSR   $402C
+         ASC   "(INSERT GALACTIC DISK)"8D00
+L901D    JSR   L8A66
+         LDA   KBD
+         CMP   #$9B
+         BNE   L901D
+         LDA   #$00
+         STA   $4E14
+         LDA   $4E37
+         STA   $4E13
+         RTS

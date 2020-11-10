@@ -1,0 +1,60 @@
+
+* TFBD generated externals
+*     (c) PHC 1992,93
+
+
+         EXT   L0110F7
+         EXT   L010922
+         EXT   L0B0002
+         EXT   L040619
+         EXT   L024DE0
+         EXT   L0B0082
+         EXT   L021DFD
+         EXT   L025330
+         EXT   L0242F7
+         EXT   L01092D
+         EXT   L010DD9
+         EXT   L010AAE
+         EXT   L010AF3
+         EXT   L0C10BE
+         EXT   L010BC3
+         EXT   L040E53
+         EXT   L01020C
+         EXT   L040000
+         EXT   L0B0084
+         EXT   L0C1A7A
+         EXT   L0C1AB2
+         EXT   L010CB2
+         EXT   L06063A
+         EXT   L0252AD
+         EXT   L010CA2
+         EXT   L0C24F0
+         EXT   L0C24EE
+         EXT   L0C24F2
+         EXT   L0109B2
+         EXT   L04169A
+         EXT   L0B0054
+         EXT   L0B0052
+         EXT   L0B0058
+         EXT   L0B0056
+         EXT   L0B00E9
+         EXT   L0B00AE
+         EXT   L0B00BF
+         EXT   L0B00BD
+         EXT   L0B00E3
+         EXT   L0B00E1
+         EXT   L0C25B1
+         EXT   L0C25B6
+         EXT   L0C2356
+         EXT   L0C25BC
+         EXT   L0C25C2
+         EXT   L0C25C7
+         EXT   L0C25CC
+         EXT   L0C25D4
+         EXT   L0C25DC
+         EXT   L0C25E4
+         EXT   L0C25E5
+         EXT   L0C25EA
+         EXT   L0C2416
+         EXT   L0C2156
+         EXT   L0C25F0

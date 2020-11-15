@@ -1,6 +1,6 @@
 *
-* Genesys v1.2.4
-* Tool Table editor
+* Genesys v1.3.4
+* Versions editor
 *
 
          mx    %00
@@ -11,6 +11,7 @@
 
          use   4/Ctl.Macs
          use   4/Int.Macs
+	 use   4/Line.Macs
          use   4/Mem.Macs
          use   4/QD.Macs
          use   4/Resource.Macs
@@ -22,13 +23,39 @@
 
 GSOS     EQU   $E100A8
 
+*----------------------------
+* Process
+*
+* Command 3 is launched at boot time
+* Command 0 is launched at each Add
+*
+
+*----------------------------
+* Ewen's Versions resource type $DEAD:
+*
+* +0000 word version must be zero
+* +0004 long resource ID of string holding app's display name
+* +0008 long resource ID of string holding author's name
+* +000c long resource ID of string URL to the downloads folder
+* +0010 long resource ID of string for downloadable archive name
+* +0014 long resource ID of string for Versions.List data file
+*
+
 sizeHEADER	=	$000c	; standard header size
 sizeSTDREC	=	$0054	; 12 entries x 4 + header = $54
 sizeFULLREC	=	$0084	; 30 entries x 4 + header = $84
-resTYPE	=	$8013	; resource type supported by the editor
+resSIZE	=	22	; 2 + 5 x 4
+resTYPE	=	$dead	; resource type supported by the editor
+
+rPString	=	$8006
 
 *----------------------------
 
+	lda	#myRESOURCE
+	stal	$300
+	lda	#^myRESOURCE
+	stal	$302
+	
          LDA   $04,S
          STA   ptrBUFFER
          LDA   $06,S
@@ -58,19 +85,19 @@ showWINDOW
          PEA   $800E
          _NewWindow2
          PLA
-         STA   haWINDOW
+         STA   ptrWINDOW
          PLA
-         STA   haWINDOW+2
-         LDA   haWINDOW+2
+         STA   ptrWINDOW+2
+         LDA   ptrWINDOW+2
          PHA
-         LDA   haWINDOW
+         LDA   ptrWINDOW
          PHA
          _SetPort
          PEA   $0000
          PEA   $0000
-         LDA   haWINDOW+2
+         LDA   ptrWINDOW+2
          PHA
-         LDA   haWINDOW
+         LDA   ptrWINDOW
          PHA
          PEA   $0003
          PEA   ^ctlWINDOW
@@ -83,504 +110,169 @@ showWINDOW
          RTL
 
 ctlWINDOW
-         ADRL  L010D
-         ADRL  L012D
-         ADRL  L014D
-         ADRL  L016D
-         ADRL  L018D
-         ADRL  L01AD
-         ADRL  L01CD
-         ADRL  L01ED
-         ADRL  L020D
-         ADRL  L022D
-         ADRL  L024D
-         ADRL  L026D
-         ADRL  L028D
-         ADRL  L02AD
-         ADRL  L02CD
-         ADRL  L02ED
-         ADRL  L030D
-         ADRL  L032D
-         ADRL  L034D
-         ADRL  L036D
-         ADRL  L038D
-         ADRL  L03AD
-         ADRL  L03CD
-         ADRL  L03ED
-         ADRL  L040D
-         ADRL  L042D
-         ADRL  L044D
-         ADRL  L046D
-         ADRL  L048D
-         ADRL  L04AD
-         ADRL  L04CD
-         ADRL  L04ED
-         ADRL  L050D
-         ADRL  L052D
-         ADRL  L054D
-         ADRL  $00000000
+	adrl	ctlSTR5
+	adrl	ctlSTR4
+	adrl	ctlSTR3
+	adrl	ctlSTR2
+	adrl	ctlSTR1
+	adrl	ctlLE5
+	adrl	ctlLE4
+	adrl	ctlLE3
+	adrl	ctlLE2
+	adrl	ctlLE1
+	adrl	$00000000
 
-L010D    DW    $0008      ; pCount
-         ADRL  $00000001  ; ID
-         DW    $0005      ; rect
-         DW    $000C
-         DW    $0000
-         DW    $0000
-         ADRL  $82000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $00000001  ; refCon
-         ADRL  L0714      ; titleRef
-         DW    $0000      ; initialValue
-L012D    DW    $0008      ; pCount
-         ADRL  $00000002  ; ID
-         DW    $000F      ; rect
-         DW    $000C
-         DW    $0000
-         DW    $0000
-         ADRL  $82000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $00000002  ; refCon
-         ADRL  L0705      ; titleRef
-         DW    $0000      ; initialValue
-L014D    DW    $0008      ; pCount
-         ADRL  $00000003  ; ID
-         DW    $0019      ; rect
-         DW    $000C
-         DW    $0000
-         DW    $0000
-         ADRL  $82000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $00000003  ; refCon
-         ADRL  L06F7      ; titleRef
-         DW    $0000      ; initialValue
-L016D    DW    $0008      ; pCount
-         ADRL  $00000004  ; ID
-         DW    $0023      ; rect
-         DW    $000C
-         DW    $0000
-         DW    $0000
-         ADRL  $82000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $00000004  ; refCon
-         ADRL  L06EA      ; titleRef
-         DW    $0000      ; initialValue
-L018D    DW    $0008      ; pCount
+ctlSTR5
+         DW    $0008      ; pCount - ID text
          ADRL  $00000005  ; ID
-         DW    $002D      ; rect
-         DW    $000C
-         DW    $0000
-         DW    $0000
-         ADRL  $82000000  ; procRef
+         DW    129          ; rect
+         DW    10
+         DW    138
+         DW    230
+         ADRL  $81000000  ; procRef
          DW    $0000      ; flag
          DW    $1000      ; moreFlags
-         ADRL  $00000005  ; refCon
-         ADRL  L06DD      ; titleRef
-         DW    $0000      ; initialValue
-L01AD    DW    $0008      ; pCount
-         ADRL  $00000006  ; ID
-         DW    $0037      ; rect
-         DW    $000C
-         DW    $0000
-         DW    $0000
-         ADRL  $82000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $00000006  ; refCon
-         ADRL  L06CF      ; titleRef
-         DW    $0000      ; initialValue
-L01CD    DW    $0008      ; pCount
-         ADRL  $00000007  ; ID
-         DW    $0041      ; rect
-         DW    $000C
-         DW    $0000
-         DW    $0000
-         ADRL  $82000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $00000007  ; refCon
-         ADRL  L06C5      ; titleRef
-         DW    $0000      ; initialValue
-L01ED    DW    $0008      ; pCount
-         ADRL  $00000008  ; ID
-         DW    $004B      ; rect
-         DW    $000C
-         DW    $0000
-         DW    $0000
-         ADRL  $82000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $00000008  ; refCon
-         ADRL  L06BF      ; titleRef
-         DW    $0000      ; initialValue
-L020D    DW    $0008      ; pCount
-         ADRL  $00000009  ; ID
-         DW    $0055      ; rect
-         DW    $000C
-         DW    $0000
-         DW    $0000
-         ADRL  $82000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $00000009  ; refCon
-         ADRL  L06BB      ; titleRef
-         DW    $0000      ; initialValue
-L022D    DW    $0008      ; pCount
-         ADRL  $0000000A  ; ID
-         DW    $005F      ; rect
-         DW    $000C
-         DW    $0000
-         DW    $0000
-         ADRL  $82000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $0000000A  ; refCon
-         ADRL  L06B6      ; titleRef
-         DW    $0000      ; initialValue
-L024D    DW    $0008      ; pCount
-         ADRL  $0000000B  ; ID
-         DW    $0005      ; rect
-         DW    $00A2
-         DW    $0000
-         DW    $0000
-         ADRL  $82000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $0000000B  ; refCon
-         ADRL  L06A9      ; titleRef
-         DW    $0000      ; initialValue
-L026D    DW    $0008      ; pCount
-         ADRL  $0000000C  ; ID
-         DW    $000F      ; rect
-         DW    $00A2
-         DW    $0000
-         DW    $0000
-         ADRL  $82000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $0000000C  ; refCon
-         ADRL  L06A4      ; titleRef
-         DW    $0000      ; initialValue
-L028D    DW    $0008      ; pCount
-         ADRL  $0000000E  ; ID
-         DW    $0019      ; rect
-         DW    $00A2
-         DW    $0000
-         DW    $0000
-         ADRL  $82000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $0000000E  ; refCon
-         ADRL  L0695      ; titleRef
-         DW    $0000      ; initialValue
-L02AD    DW    $0008      ; pCount
-         ADRL  $0000000F  ; ID
-         DW    $0023      ; rect
-         DW    $00A2
-         DW    $0000
-         DW    $0000
-         ADRL  $82000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $0000000F  ; refCon
-         ADRL  L0688      ; titleRef
-         DW    $0000      ; initialValue
-L02CD    DW    $0008      ; pCount
-         ADRL  $00000010  ; ID
-         DW    $002D      ; rect
-         DW    $00A2
-         DW    $0000
-         DW    $0000
-         ADRL  $82000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $00000010  ; refCon
-         ADRL  L0678      ; titleRef
-         DW    $0000      ; initialValue
-L02ED    DW    $0008      ; pCount
-         ADRL  $00000011  ; ID
-         DW    $0037      ; rect
-         DW    $00A2
-         DW    $0000
-         DW    $0000
-         ADRL  $82000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $00000011  ; refCon
-         ADRL  L066A      ; titleRef
-         DW    $0000      ; initialValue
-L030D    DW    $0008      ; pCount
-         ADRL  $00000012  ; ID
-         DW    $0041      ; rect
-         DW    $00A2
-         DW    $0000
-         DW    $0000
-         ADRL  $82000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $00000012  ; refCon
-         ADRL  L065B      ; titleRef
-         DW    $0000      ; initialValue
-L032D    DW    $0008      ; pCount
-         ADRL  $00000013  ; ID
-         DW    $004B      ; rect
-         DW    $00A2
-         DW    $0000
-         DW    $0000
-         ADRL  $82000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $00000013  ; refCon
-         ADRL  L064D      ; titleRef
-         DW    $0000      ; initialValue
-L034D    DW    $0008      ; pCount
-         ADRL  $00000014  ; ID
-         DW    $0055      ; rect
-         DW    $00A2
-         DW    $0000
-         DW    $0000
-         ADRL  $82000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $00000014  ; refCon
-         ADRL  L0643      ; titleRef
-         DW    $0000      ; initialValue
-L036D    DW    $0008      ; pCount
-         ADRL  $00000015  ; ID
-         DW    $005F      ; rect
-         DW    $00A2
-         DW    $0000
-         DW    $0000
-         ADRL  $82000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $00000015  ; refCon
-         ADRL  L0634      ; titleRef
-         DW    $0000      ; initialValue
-L038D    DW    $0008      ; pCount
-         ADRL  $00000016  ; ID
-         DW    $0005      ; rect
-         DW    $0138
-         DW    $0000
-         DW    $0000
-         ADRL  $82000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $00000016  ; refCon
-         ADRL  L0626      ; titleRef
-         DW    $0000      ; initialValue
-L03AD    DW    $0008      ; pCount
-         ADRL  $00000017  ; ID
-         DW    $000F      ; rect
-         DW    $0138
-         DW    $0000
-         DW    $0000
-         ADRL  $82000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $00000017  ; refCon
-         ADRL  L0618      ; titleRef
-         DW    $0000      ; initialValue
-L03CD    DW    $0008      ; pCount
-         ADRL  $00000019  ; ID
-         DW    $0019      ; rect
-         DW    $0138
-         DW    $0000
-         DW    $0000
-         ADRL  $82000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $00000019  ; refCon
-         ADRL  L0607      ; titleRef
-         DW    $0000      ; initialValue
-L03ED    DW    $0008      ; pCount
-         ADRL  $0000001A  ; ID
-         DW    $0023      ; rect
-         DW    $0138
-         DW    $0000
-         DW    $0000
-         ADRL  $82000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $0000001A  ; refCon
-         ADRL  L05F8      ; titleRef
-         DW    $0000      ; initialValue
-L040D    DW    $0008      ; pCount
-         ADRL  $0000001B  ; ID
-         DW    $002D      ; rect
-         DW    $0138
-         DW    $0000
-         DW    $0000
-         ADRL  $82000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $0000001B  ; refCon
-         ADRL  L05EB      ; titleRef
-         DW    $0000      ; initialValue
-L042D    DW    $0008      ; pCount
-         ADRL  $0000001C  ; ID
-         DW    $0037      ; rect
-         DW    $0138
-         DW    $0000
-         DW    $0000
-         ADRL  $82000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $0000001C  ; refCon
-         ADRL  L05DE      ; titleRef
-         DW    $0000      ; initialValue
-L044D    DW    $0008      ; pCount
-         ADRL  $0000001D  ; ID
-         DW    $0041      ; rect
-         DW    $0138
-         DW    $0000
-         DW    $0000
-         ADRL  $82000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $0000001D  ; refCon
-         ADRL  L05DA      ; titleRef
-         DW    $0000      ; initialValue
-L046D    DW    $0008      ; pCount
-         ADRL  $0000001E  ; ID
-         DW    $004B      ; rect
-         DW    $0138
-         DW    $0000
-         DW    $0000
-         ADRL  $82000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $0000001E  ; refCon
-         ADRL  L059C      ; titleRef
-         DW    $0000      ; initialValue
-L048D    DW    $0008      ; pCount
-         ADRL  $00000020  ; ID
-         DW    $0055      ; rect
-         DW    $0138
-         DW    $0000
-         DW    $0000
-         ADRL  $82000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $00000020  ; refCon
-         ADRL  L0597      ; titleRef
-         DW    $0000      ; initialValue
-L04AD    DW    $0008      ; pCount
-         ADRL  $00000022  ; ID
-         DW    $005F      ; rect
-         DW    $0138
-         DW    $0000
-         DW    $0000
-         ADRL  $82000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $00000022  ; refCon
-         ADRL  L058D      ; titleRef
-         DW    $0000      ; initialValue
-L04CD    DW    $0008      ; pCount
-         ADRL  $00000320  ; ID
-         DW    $006D      ; rect
-         DW    $000E
-         DW    $0000
-         DW    $0000
-         ADRL  $84000000  ; procRef
-         DW    $0005      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $00000320  ; refCon
-         ADRL  L05C0      ; titleRef
-         DW    $0000      ; initialValue
-L04ED    DW    $0008      ; pCount
-         ADRL  $00000640  ; ID
-         DW    $0077      ; rect
-         DW    $000E
-         DW    $0000
-         DW    $0000
-         ADRL  $84000000  ; procRef
-         DW    $0005      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $00000640  ; refCon
-         ADRL  L05B7      ; titleRef
-         DW    $0001      ; initialValue
-L050D    DW    $0008      ; pCount
-         ADRL  $00001001  ; ID
-         DW    $006D      ; rect
-         DW    $00A2
-         DW    $0000
-         DW    $0000
-         ADRL  $82000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $00001001  ; refCon
-         ADRL  L057E      ; titleRef
-         DW    $0000      ; initialValue
-L052D    DW    $0008      ; pCount
-         ADRL  $00001002  ; ID
-         DW    $0077      ; rect
-         DW    $00A2
-         DW    $0000
-         DW    $0000
-         ADRL  $82000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $00001002  ; refCon
-         ADRL  L056B      ; titleRef
-         DW    $0000      ; initialValue
-L054D    DW    $0007      ; pCount
-         ADRL  $00001000  ; ID
-         DW    $0070      ; rect
-         DW    $015C
-         DW    $007D
-         DW    $01C0
-         ADRL  $80000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $00001000  ; refCon
-         ADRL  L05AD      ; titleRef
+         ADRL  $00000000  ; refCon
+         ADRL  strSTR5    ; textRef
+         DW    23         ; textSize
 
-L056B    STR   'Hardware shadowing'
-L057E    STR   'Fastport aware'
-L058D    STR   'Text edit'
-L0597    STR   'MIDI'
-L059C    STR   'Resource manager'
-L05AD    STR   'Preferred'
-L05B7    STR   '640 Mode'
-L05C0    STR   '320 Mode'
-         STR   'Resource manager'
-L05DA    STR   'ACE'
-L05DE    STR   'List manager'
-L05EB    STR   'Font manager'
-L05F8    STR   'Note sequencer'
-L0607    STR   'Note synthesizer'
-L0618    STR   'Standard file'
-L0626    STR   'Scrap manager'
-L0634    STR   'Dialog manager'
-L0643    STR   'Line edit'
-L064D    STR   'Print manager'
-L065B    STR   'QuickDraw Aux.'
-L066A    STR   'System loader'
-L0678    STR   'Control manager'
-L0688    STR   'Menu manager'
-L0695    STR   'Window manager'
-L06A4    STR   'Text'
-L06A9    STR   'Integer math'
-L06B6    STR   'SANE'
-L06BB    STR   'ADB'
-L06BF    STR   'Sound'
-L06C5    STR   'Scheduler'
-L06CF    STR   'Event manager'
-L06DD    STR   'Desk manager'
-L06EA    STR   'QuickDraw II'
-L06F7    STR   'Miscellaneous'
-L0705    STR   'Memory manager'
-L0714    STR   'Tool locator'
-L0721    STR   ' Tool Table '
+ctlSTR4
+         DW    $0008      ; pCount - ID text
+         ADRL  $00000004  ; ID
+         DW    99          ; rect
+         DW    10
+         DW    108
+         DW    230
+         ADRL  $81000000  ; procRef
+         DW    $0000      ; flag
+         DW    $1000      ; moreFlags
+         ADRL  $00000000  ; refCon
+         ADRL  strSTR4    ; textRef
+         DW    25         ; textSize
+
+ctlSTR3
+         DW    $0008      ; pCount - ID text
+         ADRL  $00000003  ; ID
+         DW    69          ; rect
+         DW    10
+         DW    78
+         DW    230
+         ADRL  $81000000  ; procRef
+         DW    $0000      ; flag
+         DW    $1000      ; moreFlags
+         ADRL  $00000000  ; refCon
+         ADRL  strSTR3    ; textRef
+         DW    23         ; textSize
+
+ctlSTR2
+         DW    $0008      ; pCount - ID text
+         ADRL  $00000002  ; ID
+         DW    39          ; rect
+         DW    10
+         DW    48
+         DW    230
+         ADRL  $81000000  ; procRef
+         DW    $0000      ; flag
+         DW    $1000      ; moreFlags
+         ADRL  $00000000  ; refCon
+         ADRL  strSTR2    ; textRef
+         DW    13         ; textSize
+
+ctlSTR1
+         DW    $0008      ; pCount - ID text
+         ADRL  $00000001  ; ID
+         DW    9          ; rect
+         DW    10
+         DW    18
+         DW    230
+         ADRL  $81000000  ; procRef
+         DW    $0000      ; flag
+         DW    $1000      ; moreFlags
+         ADRL  $00000000  ; refCon
+         ADRL  strSTR1    ; textRef
+         DW    26         ; textSize
+
+ctlLE5
+         DW    $0008      ; pCount
+         ADRL  $0000000A  ; ID
+         DW    140      ; rect
+         DW    20
+         DW    153
+         DW    280
+         ADRL  $83000000  ; procRef
+         DW    $0000      ; flag
+         DW    $7000      ; moreFlags
+         ADRL  $00000000  ; refCon
+         DW    255        ; maxSize
+         ADRL  mySTRING5B  ; defaultRef
+	 
+ctlLE4
+         DW    $0008      ; pCount
+         ADRL  $00000009  ; ID
+         DW    110      ; rect
+         DW    20
+         DW    123
+         DW    280
+         ADRL  $83000000  ; procRef
+         DW    $0000      ; flag
+         DW    $7000      ; moreFlags
+         ADRL  $00000000  ; refCon
+         DW    255        ; maxSize
+         ADRL  mySTRING4B  ; defaultRef
+	 
+ctlLE3
+         DW    $0008      ; pCount
+         ADRL  $00000008  ; ID
+         DW    80      ; rect
+         DW    20
+         DW    93
+         DW    280
+         ADRL  $83000000  ; procRef
+         DW    $0000      ; flag
+         DW    $7000      ; moreFlags
+         ADRL  $00000000  ; refCon
+         DW    255        ; maxSize
+         ADRL  mySTRING3B  ; defaultRef
+	 
+ctlLE2
+         DW    $0008      ; pCount
+         ADRL  $00000007  ; ID
+         DW    50      ; rect
+         DW    20
+         DW    63
+         DW    280
+         ADRL  $83000000  ; procRef
+         DW    $0000      ; flag
+         DW    $7000      ; moreFlags
+         ADRL  $00000000  ; refCon
+         DW    255        ; maxSize
+         ADRL  mySTRING2B  ; defaultRef
+	 
+ctlLE1
+         DW    $0008      ; pCount
+         ADRL  $00000006  ; ID
+         DW    20      ; rect
+         DW    20
+         DW    33
+         DW    280
+         ADRL  $83000000  ; procRef
+         DW    $0000      ; flag
+         DW    $7000      ; moreFlags
+         ADRL  $00000000  ; refCon
+         DW    255        ; maxSize
+         ADRL  mySTRING1B  ; defaultRef
+	 
+strSTR5	asc	'Versions.List data file'
+strSTR4	asc	'Downloadable archive name'
+strSTR3	asc	'URL of downloads folder'
+strSTR2	asc	'Author'27's name'
+strSTR1	asc	'Application'27's display name'
+
+winTITLE	str	' Versions '
 
 myWINDOW DW    $0050
          DW    $C080      ; frame bits
-         ADRL  L0721      ; title ptr
+         ADRL  winTITLE   ; title ptr
          ADRL  $00000000  ; refcon
          DW    $0000      ; zoom rect
          DW    $0000
@@ -602,10 +294,10 @@ myWINDOW DW    $0050
          ADRL  $00000000  ; window defproc
          ADRL  $00000000  ; info bar defproc
          ADRL  $00000000  ; content defproc
-         DW    $0024      ; content rect
-         DW    $001E
-         DW    $00A6
-         DW    $01F4
+         DW    36         ; content rect
+         DW    30
+         DW    196
+         DW    340
          ADRL  $FFFFFFFF  ; starting plane
          ADRL  $00000000  ; storage ptr
          DW    $0000
@@ -632,18 +324,9 @@ refreshWINDOW
          PEA   $0000
          _GetPort
          _DrawControls
-         PEA   $000A
-         PEA   $006A
-         _MoveTo
-         PEA   $01CC
-         PEA   $006A
-         _LineTo
          _SetCurResourceFile
          PLB
          PLD
-         RTL
-
-         BRK   $69
          RTL
 
 *--- Write the resource
@@ -789,7 +472,7 @@ readRESOURCE
          PHD
          INC
          TCD
-         LDA   #$0000
+         LDA   #$0000	; no resource is loaded
          STA   $16
          LDA   #$0000
          STA   $18
@@ -805,7 +488,7 @@ readRESOURCE
          BRL   L095C
 L0959    BRL   L0A27
 
-* File depth search failed
+* File depth search succeeded
 
 L095C    LDA   #$0001
          EOR   #$FFFF
@@ -835,7 +518,7 @@ L095C    LDA   #$0001
          BRL   L0999
 L0996    BRL   L0A27
 
-* Getting resource attributes failed
+* Getting resource attributes succeeded
 
 L0999    LDA   $24
          AND   #$0020
@@ -853,7 +536,7 @@ L0999    LDA   $24
          BRL   L09BD
 L09BA    BRL   L0A27
 
-* Setting bit 5 failed
+* Setting bit 5 succeeded
 
 L09BD    PHA
          PHA
@@ -874,7 +557,7 @@ L09BD    PHA
          BRL   L09E3
 L09E0    BRL   L0A27
 
-* Resource exists
+* Resource was loaded, it exists
 
 L09E3    LDX   $22
          LDA   $20
@@ -887,7 +570,7 @@ L09E3    LDX   $22
          BRL   L09FE
 L09FB    BRL   L0A27
 
-* memory lock failed
+* memory lock succeeded
 
 L09FE    LDA   $24
          PHA
@@ -904,6 +587,7 @@ L09FE    LDA   $24
          BRL   L0A1F
 L0A1C    BRL   L0A27
 
+* If we're here, our resource is in memory
 L0A1F    LDX   $22
          LDA   $20
          STX   $18
@@ -922,7 +606,7 @@ L0A27    PHA
          STA   $2F
          LDA   $28
          STA   $2E
-         LDX   $18
+         LDX   $18	; return resource
          LDY   $16
          PLD
          TSC
@@ -950,7 +634,7 @@ makeSTDRESOURCE
          LDA   $2B
          PHX
          PHA
-         JSL   readRESOURCE
+         JSL   readRESOURCE	; load resource in memory
          STX   $22
          STA   $20
          LDA   $20
@@ -958,7 +642,7 @@ makeSTDRESOURCE
          BEQ   L0A75
          BRL   L0AB5
 
-* Cannot load resource
+* Cannot load resource, it does not exist
 
 L0A75    LDX   #^myBUFFER2
          LDA   #myBUFFER2
@@ -987,7 +671,7 @@ L0A75    LDX   #^myBUFFER2
          BRL   L0AB2
 L0AB2    BRL   L0D66
 
-* Resource is loaded
+* Resource is loaded, it exists
 
 L0AB5    LDX   $22
          LDA   $20
@@ -995,7 +679,7 @@ L0AB5    LDX   $22
          PHA
          _HUnlock
          STA   L2BCB
-         LDA   #sizeSTDREC
+         LDA   #resSIZE	; was sizeSTDREC
          LDX   #$0000
          TAY
          BPL   L0ACF
@@ -1085,265 +769,15 @@ L0B67    LDX   $22
          STX   $08
          STA   $06
 
-         LDA   #$0000	; format the header
-         STA   [$06]
-         LDY   #$0002
-         LDA   #$C080
-         STA   [$06],Y
-         LDY   #$0004
-         LDA   #$0000
-         STA   [$06],Y
-         LDY   #$0006
-         LDA   #$0000
-         STA   [$06],Y
-         INY
-         INY
-         LDA   #$0000
-         STA   [$06],Y
-         LDY   #$000A
-         LDA   #$0012
-         STA   [$06],Y
+	ldy	#0	; make all zeroes
+	tya
+]lp	sta	[$06],y
+	iny
+	iny
+	cpy	#resSIZE
+	bcc	]lp
 
-         LDY   #$000C	; format the toolrec
-         PHY
-         LDA   #$0001
-         DEC
-         ASL
-         ASL
-         CLC
-         ADC   $01,S
-         STA   $01,S
-         PLY
-         LDA   #$0003
-         STA   [$06],Y
-         LDY   #$000C
-         PHY
-         LDA   #$0002
-         DEC
-         ASL
-         ASL
-         CLC
-         ADC   $01,S
-         STA   $01,S
-         PLY
-         LDA   #$0004
-         STA   [$06],Y
-         LDY   #$000C
-         PHY
-         LDA   #$0003
-         DEC
-         ASL
-         ASL
-         CLC
-         ADC   $01,S
-         STA   $01,S
-         PLY
-         LDA   #$0005
-         STA   [$06],Y
-         LDY   #$000C
-         PHY
-         LDA   #$0004
-         DEC
-         ASL
-         ASL
-         CLC
-         ADC   $01,S
-         STA   $01,S
-         PLY
-         LDA   #$0006
-         STA   [$06],Y
-         LDY   #$000C
-         PHY
-         LDA   #$0005
-         DEC
-         ASL
-         ASL
-         CLC
-         ADC   $01,S
-         STA   $01,S
-         PLY
-         LDA   #$000B
-         STA   [$06],Y
-         LDY   #$000C
-         PHY
-         LDA   #$0006
-         DEC
-         ASL
-         ASL
-         CLC
-         ADC   $01,S
-         STA   $01,S
-         PLY
-         LDA   #$000E
-         STA   [$06],Y
-         LDY   #$000C
-         PHY
-         LDA   #$0007
-         DEC
-         ASL
-         ASL
-         CLC
-         ADC   $01,S
-         STA   $01,S
-         PLY
-         LDA   #$000F
-         STA   [$06],Y
-         LDY   #$000C
-         PHY
-         LDA   #$0008
-         DEC
-         ASL
-         ASL
-         CLC
-         ADC   $01,S
-         STA   $01,S
-         PLY
-         LDA   #$0010
-         STA   [$06],Y
-         LDY   #$000C
-         PHY
-         LDA   #$0009
-         DEC
-         ASL
-         ASL
-         CLC
-         ADC   $01,S
-         STA   $01,S
-         PLY
-         LDA   #$0012
-         STA   [$06],Y
-         LDY   #$000C
-         PHY
-         LDA   #$000A
-         DEC
-         ASL
-         ASL
-         CLC
-         ADC   $01,S
-         STA   $01,S
-         PLY
-         LDA   #$0013
-         STA   [$06],Y
-         LDY   #$000C
-         PHY
-         LDA   #$000B
-         DEC
-         ASL
-         ASL
-         CLC
-         ADC   $01,S
-         STA   $01,S
-         PLY
-         LDA   #$0014
-         STA   [$06],Y
-         LDY   #$000C
-         PHY
-         LDA   #$000C
-         DEC
-         ASL
-         ASL
-         CLC
-         ADC   $01,S
-         STA   $01,S
-         PLY
-         LDA   #$0015
-         STA   [$06],Y
-         LDY   #$000C
-         PHY
-         LDA   #$000D
-         DEC
-         ASL
-         ASL
-         CLC
-         ADC   $01,S
-         STA   $01,S
-         PLY
-         LDA   #$0016
-         STA   [$06],Y
-         LDY   #$000C
-         PHY
-         LDA   #$000E
-         DEC
-         ASL
-         ASL
-         CLC
-         ADC   $01,S
-         STA   $01,S
-         PLY
-         LDA   #$0017
-         STA   [$06],Y
-         LDY   #$000C
-         PHY
-         LDA   #$000F
-         DEC
-         ASL
-         ASL
-         CLC
-         ADC   $01,S
-         STA   $01,S
-         PLY
-         LDA   #$001B
-         STA   [$06],Y
-         LDY   #$000C
-         PHY
-         LDA   #$0010
-         DEC
-         ASL
-         ASL
-         CLC
-         ADC   $01,S
-         STA   $01,S
-         PLY
-         LDA   #$001C
-         STA   [$06],Y
-         LDY   #$000C
-         PHY
-         LDA   #$0011
-         DEC
-         ASL
-         ASL
-         CLC
-         ADC   $01,S
-         STA   $01,S
-         PLY
-         LDA   #$001E
-         STA   [$06],Y
-         LDY   #$000C
-         PHY
-         LDA   #$0012
-         DEC
-         ASL
-         ASL
-         CLC
-         ADC   $01,S
-         STA   $01,S
-         PLY
-         LDA   #$0022
-         STA   [$06],Y
-         LDA   #$0001
-         STA   $26
-
-L0D2E    LDY   #$000C
-         PHY
-         LDA   $26
-         DEC
-         ASL
-         ASL
-         CLC
-         ADC   $01,S
-         STA   $01,S
-         PLY
-         TYA
-         CLC
-         ADC   #$0002
-         TAY
-         LDA   #$0000
-         STA   [$06],Y
-         INC   $26
-         LDA   $26
-         CMP   #$0013
-         BEQ   L0D54
-         BRL   L0D2E
+*---
 
 L0D54    LDA   $2F
          PHA
@@ -1811,7 +1245,8 @@ L128B    ASC   '52~Tool editor: Could not write resource. Creation aborted.~^#0'
 
 *---
 
-createRESOURCE    TSC
+createRESOURCE
+         TSC
          SEC
          SBC   #$0020
          TCS
@@ -1822,11 +1257,17 @@ createRESOURCE    TSC
          LDA   ptrBUFFER
          STA   $00
          STX   $02
+
+         ldy   #$003C	; memID
+         lda   [$00],Y
+	 sta   memID
+
          LDY   #$0048
          LDA   [$00],Y
          AND   #$8000
          BNE   L12EA
          BRL   L1929
+
 L12EA    LDA   $2B
          PHA
          LDX   $29
@@ -1878,7 +1319,7 @@ L1344    LDX   $18
          PHA
          _HUnlock
          STA   L2BCB
-         LDA   #sizeFULLREC
+         LDA   #resSIZE	; was sizeFULLREC
          LDX   #$0000
          TAY
          BPL   L135E
@@ -1959,683 +1400,628 @@ L13F6    LDX   $18
          _HLock
          STA   L2BCB
 
-* Now, prepare the resource handle
+* Now, prepare the resource handle LOGO
 
-         LDA   #$0000
-         STA   $1C
-         LDA   #$0001
-         STA   $1A
-L1410    PHA
-         PHA
-         PHA
-         LDX   $25
-         LDA   $23
-         PHX
-         PHA
-         LDA   #$0000
-         CLC
-         ADC   $1A
-         LDX   #$0000
-         TAY
-         BPL   L1426
-         DEX
-L1426    PHX
-         PHA
-         _GetCtlHandleFromID
-         STA   L2BCB
-         _GetCtlValue
-         STA   L2BCB
-         PLA
-         BNE   L1442
-         BRL   L149C
-L1442    LDA   $1C
-         CLC
-         ADC   #$0001
-         STA   $1C
-         LDY   #$0002
-         LDA   [$16],Y
-         PHA
-         LDA   [$16]
-         PHA
-         PLA
-         CLC
-         ADC   #$000C
-         PHA
-         LDA   $1C
-         DEC
-         ASL
-         ASL
-         CLC
-         ADC   $01,S
-         STA   $01,S
-         PLA
-         STA   $00
-         PLA
-         STA   $02
-         LDA   $1A
-         STA   [$00]
-         LDY   #$0002
-         LDA   [$16],Y
-         PHA
-         LDA   [$16]
-         PHA
-         PLA
-         CLC
-         ADC   #$000C
-         PHA
-         LDA   $1C
-         DEC
-         ASL
-         ASL
-         CLC
-         ADC   $01,S
-         STA   $01,S
-         PLA
-         CLC
-         ADC   #$0002
-         PHA
-         LDA   $1A
-         DEC
-         ASL
-         TAX
-         LDA   theTOOLREC,X
-         PLX
-         STX   $00
-         PLX
-         STX   $02
-         STA   [$00]
-L149C    INC   $1A
-         LDA   $1A
-         CMP   #$000D
-         BEQ   L14A8
-         BRL   L1410
+* 1. We see if we have IDs of 0 or a real ID for each string
+*	=> we'll use the myRESOURCE thing
+* 2. We ask for an rPString ID if needed
+* 3. We build the rUpdate accordingly
+* 4. We save or update the five pStrings
 
-L14A8    LDA   #$000E
-         STA   $1A
-L14AD    PHA
-         PHA
-         PHA
-         LDX   $25
-         LDA   $23
-         PHX
-         PHA
-         LDA   #$0000
-         CLC
-         ADC   $1A
-         LDX   #$0000
-         TAY
-         BPL   L14C3
-         DEX
-L14C3    PHX
-         PHA
-         _GetCtlHandleFromID
-         STA   L2BCB
-         _GetCtlValue
-         STA   L2BCB
-         PLA
-         BNE   L14DF
-         BRL   L1539
-L14DF    LDA   $1C
-         CLC
-         ADC   #$0001
-         STA   $1C
-         LDY   #$0002
-         LDA   [$16],Y
-         PHA
-         LDA   [$16]
-         PHA
-         PLA
-         CLC
-         ADC   #$000C
-         PHA
-         LDA   $1C
-         DEC
-         ASL
-         ASL
-         CLC
-         ADC   $01,S
-         STA   $01,S
-         PLA
-         STA   $00
-         PLA
-         STA   $02
-         LDA   $1A
-         STA   [$00]
-         LDY   #$0002
-         LDA   [$16],Y
-         PHA
-         LDA   [$16]
-         PHA
-         PLA
-         CLC
-         ADC   #$000C
-         PHA
-         LDA   $1C
-         DEC
-         ASL
-         ASL
-         CLC
-         ADC   $01,S
-         STA   $01,S
-         PLA
-         CLC
-         ADC   #$0002
-         PHA
-         LDA   $1A
-         DEC
-         ASL
-         TAX
-         LDA   theTOOLREC,X
-         PLX
-         STX   $00
-         PLX
-         STX   $02
-         STA   [$00]
-L1539    INC   $1A
-         LDA   $1A
-         CMP   #$0018
-         BEQ   L1545
-         BRL   L14AD
-L1545    LDA   #$0019
-         STA   $1A
-L154A    PHA
-         PHA
-         PHA
-         LDX   $25
-         LDA   $23
-         PHX
-         PHA
-         LDA   #$0000
-         CLC
-         ADC   $1A
-         LDX   #$0000
-         TAY
-         BPL   L1560
-         DEX
-L1560    PHX
-         PHA
-         _GetCtlHandleFromID
-         STA   L2BCB
-         _GetCtlValue
-         STA   L2BCB
-         PLA
-         BNE   L157C
-         BRL   L15D6
-L157C    LDA   $1C
-         CLC
-         ADC   #$0001
-         STA   $1C
-         LDY   #$0002
-         LDA   [$16],Y
-         PHA
-         LDA   [$16]
-         PHA
-         PLA
-         CLC
-         ADC   #$000C
-         PHA
-         LDA   $1C
-         DEC
-         ASL
-         ASL
-         CLC
-         ADC   $01,S
-         STA   $01,S
-         PLA
-         STA   $00
-         PLA
-         STA   $02
-         LDA   $1A
-         STA   [$00]
-         LDY   #$0002
-         LDA   [$16],Y
-         PHA
-         LDA   [$16]
-         PHA
-         PLA
-         CLC
-         ADC   #$000C
-         PHA
-         LDA   $1C
-         DEC
-         ASL
-         ASL
-         CLC
-         ADC   $01,S
-         STA   $01,S
-         PLA
-         CLC
-         ADC   #$0002
-         PHA
-         LDA   $1A
-         DEC
-         ASL
-         TAX
-         LDA   theTOOLREC,X
-         PLX
-         STX   $00
-         PLX
-         STX   $02
-         STA   [$00]
-L15D6    INC   $1A
-         LDA   $1A
-         CMP   #$001F	; number of entries supported
-         BEQ   L15E2
-         BRL   L154A
-L15E2    PHA
-         PHA
-         PHA
-         LDX   $25
-         LDA   $23
-         PHX
-         PHA
-         LDA   #$0020
-         LDX   #$0000
-         TAY
-         BPL   L15F5
-         DEX
-L15F5    PHX
-         PHA
-         _GetCtlHandleFromID
-         STA   L2BCB
-         _GetCtlValue
-         STA   L2BCB
-         PLA
-         BNE   L1611
-         BRL   L166D
-L1611    LDA   $1C
-         CLC
-         ADC   #$0001
-         STA   $1C
-         LDY   #$0002
-         LDA   [$16],Y
-         PHA
-         LDA   [$16]
-         PHA
-         PLA
-         CLC
-         ADC   #$000C
-         PHA
-         LDA   $1C
-         DEC
-         ASL
-         ASL
-         CLC
-         ADC   $01,S
-         STA   $01,S
-         PLA
-         STA   $00
-         PLA
-         STA   $02
-         LDA   #$0020
-         STA   [$00]
-         LDY   #$0002
-         LDA   [$16],Y
-         PHA
-         LDA   [$16]
-         PHA
-         PLA
-         CLC
-         ADC   #$000C
-         PHA
-         LDA   $1C
-         DEC
-         ASL
-         ASL
-         CLC
-         ADC   $01,S
-         STA   $01,S
-         PLA
-         CLC
-         ADC   #$0002
-         PHA
-         LDA   #$0020
-         DEC
-         ASL
-         TAX
-         LDA   theTOOLREC,X
-         PLX
-         STX   $00
-         PLX
-         STX   $02
-         STA   [$00]
-L166D    PHA
-         PHA
-         PHA
-         LDX   $25
-         LDA   $23
-         PHX
-         PHA
-         LDA   #$0022
-         LDX   #$0000
-         TAY
-         BPL   L1680
-         DEX
-L1680    PHX
-         PHA
-         _GetCtlHandleFromID
-         STA   L2BCB
-         _GetCtlValue
-         STA   L2BCB
-         PLA
-         BNE   L169C
-         BRL   L16F8
-L169C    LDA   $1C
-         CLC
-         ADC   #$0001
-         STA   $1C
-         LDY   #$0002
-         LDA   [$16],Y
-         PHA
-         LDA   [$16]
-         PHA
-         PLA
-         CLC
-         ADC   #$000C
-         PHA
-         LDA   $1C
-         DEC
-         ASL
-         ASL
-         CLC
-         ADC   $01,S
-         STA   $01,S
-         PLA
-         STA   $00
-         PLA
-         STA   $02
-         LDA   #$0022
-         STA   [$00]
-         LDY   #$0002
-         LDA   [$16],Y
-         PHA
-         LDA   [$16]
-         PHA
-         PLA
-         CLC
-         ADC   #$000C
-         PHA
-         LDA   $1C
-         DEC
-         ASL
-         ASL
-         CLC
-         ADC   $01,S
-         STA   $01,S
-         PLA
-         CLC
-         ADC   #$0002
-         PHA
-         LDA   #$0022
-         DEC
-         ASL
-         TAX
-         LDA   theTOOLREC,X
-         PLX
-         STX   $00
-         PLX
-         STX   $02
-         STA   [$00]
+* Set depth
 
-L16F8    LDY   #$0002	; +0A - numTools
-         LDA   [$16],Y
-         TAX
-         LDA   [$16]
-         CLC
-         ADC   #$000A
-         STA   $00
-         STX   $02
-         LDA   $1C
-         STA   [$00]
+*	pha
+*	PushWord #1
+*	_SetResourceFileDepth
+*	PullWord resDepth
+	
+* Clear my string buffers
 
-         LDY   #$0002	; +02 - videoMode for 0
-         LDA   [$16],Y
-         TAX
-         LDA   [$16]
-         CLC
-         ADC   #$0002
-         STA   $00
-         STX   $02
-         LDA   #$0000
-         STA   [$00]
+	ldx	#256-2
+]lp	stz	mySTRING1,x
+	stz	mySTRING2,x
+	stz	mySTRING3,x
+	stz	mySTRING4,x
+	stz	mySTRING5,x
+	dex
+	dex
+	bpl	]lp
 
-         PHA		; +02 - videoMode for bit 14
-         PHA
-         PHA
-         LDX   $25
-         LDA   $23
-         PHX
-         PHA
-         LDA   #$1001
-         LDX   #$0000
-         TAY
-         BPL   L1734
-         DEX
-L1734    PHX
-         PHA
-         _GetCtlHandleFromID
-         STA   L2BCB
-         _GetCtlValue
-         STA   L2BCB
-         PLA
-         BNE   L1750
-         BRL   L1765
-L1750    LDY   #$0002
-         LDA   [$16],Y
-         TAX
-         LDA   [$16]
-         CLC
-         ADC   #$0002
-         STA   $00
-         STX   $02
-         LDA   #$4000
-         STA   [$00]
+*----------------------------	
+*--- Handle resource string 1
 
-L1765    PHA		; +02 - videoMode for bit 15
-         PHA
-         PHA
-         LDX   $25
-         LDA   $23
-         PHX
-         PHA
-         LDA   #$1002
-         LDX   #$0000
-         TAY
-         BPL   L1778
-         DEX
-L1778    PHX
-         PHA
-         _GetCtlHandleFromID
-         STA   L2BCB
-         _GetCtlValue
-         STA   L2BCB
-         PLA
-         BNE   L1794
-         BRL   L17BF
+	lda	strID1
+	ora	strID1+2
+	bne	ID1exists
 
-L1794    LDY   #$0002
-         LDA   [$16],Y
-         PHA
-         LDA   [$16]
-         PHA
-         PLA
-         CLC
-         ADC   #$0002
-         PHA
-         LDY   #$0002
-         LDA   [$16],Y
-         TAX
-         LDA   [$16]
-         STA   $00
-         STX   $02
-         LDY   #$0002
-         LDA   [$00],Y
-         ORA   #$8000
-         PLX
-         STX   $00
-         PLX
-         STX   $02
-         STA   [$00]
+	pha
+	pha
+	PushWord #$ffff
+	PushWord #rPString
+	_UniqueResourceID
+	PullLong strID1
+	
+ID1exists
 
-L17BF    PHA		; +02 - videoMode for bit 7
-         PHA
-         PHA
-         LDX   $25
-         LDA   $23
-         PHX
-         PHA
-         LDA   #$0640
-         LDX   #$0000
-         TAY
-         BPL   L17D2
-         DEX
-L17D2    PHX
-         PHA
-         _GetCtlHandleFromID
-         STA   L2BCB
-         _GetCtlValue
-         STA   L2BCB
-         PLA
-         BNE   L17EE
-         BRL   L1819
+*-
 
-L17EE    LDY   #$0002
-         LDA   [$16],Y
-         PHA
-         LDA   [$16]
-         PHA
-         PLA
-         CLC
-         ADC   #$0002
-         PHA
-         LDY   #$0002
-         LDA   [$16],Y
-         TAX
-         LDA   [$16]
-         STA   $00
-         STX   $02
-         LDY   #$0002
-         LDA   [$00],Y
-         ORA   #$0080
-         PLX
-         STX   $00
-         PLX
-         STX   $02
-         STA   [$00]
+	PushWord #rPString
+	PushLong strID1
+	_RemoveResource
 
-L1819    LDY   #$0002	; +04 - resFileID
-         LDA   [$16],Y
-         TAX
-         LDA   [$16]
-         CLC
-         ADC   #$0004
-         STA   $00
-         STX   $02
-         LDA   #$0000
-         STA   [$00]
+*-
 
-         LDY   #$0002	; +06 - dPageHandle
-         LDA   [$16],Y
-         PHA
-         LDA   [$16]
-         PHA
-         PLA
-         CLC
-         ADC   #$0006
-         PHA
-         PLA
-         STA   $00
-         PLA
-         STA   $02
-         LDA   #$0000
-         STA   [$00]
-         LDY   #$0002
-         LDA   #$0000
-         STA   [$00],Y
+	pha
+	pha
+	PushLong #$100	; maxSize
+	PushWord memID
+	PushWord #$c018
+	PushLong #0
+	_NewHandle
+	PullLong haID1
+	
+*-
 
-         LDX   $18
-         LDA   $16
-         PHX
-         PHA
-         _HUnlock
-         STA   L2BCB
-         LDA   $1C	; number of entries
-         LDX   #$0004	; x 4
-         JSL   L3154
-         CLC
-         ADC   #sizeHEADER	; + header
-         LDX   #$0000
-         TAY
-         BPL   L1874
-         DEX
-L1874    PHX
-         PHA
-         LDX   $18
-         LDA   $16
-         PHX
-         PHA
-         _SetHandleSize
-         STA   L2BCB
-         LDA   L2BCB
-         BNE   L188E
-         BRL   L190C
+	pha	; for string 1
+	pha
+	PushLong ptrWINDOW
+	PushLong #6
+	_GetCtlHandleFromID
+	pla
+	sta	$00
+	pla
+	sta	$02
+	
+	ldy	#2
+	lda	[$00],y
+	tax
+	lda	[$00]
+	sta	$00
+	stx	$02
+	
+	ldy	#$1e
+	lda	[$00],y
+	sta	theHANDLE+2
+	ldy	#$1c
+	lda	[$00],y
+	sta	theHANDLE
 
-* Memory handle cannot be resized, display error
+	pha
+	PushLong theHANDLE
+	_LEGetTextLen
+	PullWord lenSTRING1
 
-L188E    PHA
-         LDA   #$0001
-         PHA
-         _SetResourceFileDepth
-         STA   L2BCB
-         PLA
-         STA   $1E
-         LDA   #$0001
-         EOR   #$FFFF
-         INC
-         PHA
-         LDA   $2B
-         PHA
-         LDX   $29
-         LDA   $27
-         PHX
-         PHA
-         _ReleaseResource
-         STA   L2BCB
-         PHA
-         LDA   $1E
-         PHA
-         _SetResourceFileDepth
-         STA   L2BCB
-         PLA
-         STA   $1E
-         LDX   #^myBUFFER2
-         LDA   #myBUFFER2
-         PHX
-         PHA
-         LDA   #$0100
-         PHA
-         PEA   ^L19B9	; cannot resize handle
-         PEA   L19B9
-         LDA   #$003F
-         PHA
-         JSL   copyDATA
-         PHA
-         LDA   #$0000
-         PHA
-         PEA   $0000
-         PEA   $0000
-         LDX   #^myBUFFER2
-         LDA   #myBUFFER2
-         PHX
-         PHA
-         _AlertWindow
-         STA   L2BCB
-         PLA
-         BEQ   L1909
-         BRL   L1909
-L1909    BRL   L1929
+	pha
+	pha
+	PushLong theHANDLE
+	_LEGetTextHand
+	PushLong #mySTRING1B
+	PushLong lenSTRING1
+	_HandToPtr
 
-* Resource is formatted
+*-
+
+	sep	#$20
+	lda	lenSTRING1
+	sta	mySTRING1
+	rep	#$20
+	
+*-
+
+	PushLong #mySTRING1
+	PushLong haID1
+	PushLong #$100
+	_PtrToHand
+
+*-
+	
+	PushLong haID1	; for string 1
+	_HUnlock
+	pea	$0000
+	lda	lenSTRING1
+	inc
+	pha
+	PushLong haID1
+	_SetHandleSize
+	PushLong haID1
+	_HLock
+
+*-
+	
+	PushLong haID1
+	PushWord #0
+	PushWord #rPString
+	PushLong strID1
+	_AddResource
+
+*-
+
+	PushWord #$ffff
+	PushWord #rPString
+	PushLong strID1
+	_ReleaseResource
+
+*----------------------------	
+*--- Handle resource string 2
+
+	lda	strID2
+	ora	strID2+2
+	bne	ID2exists
+
+	pha
+	pha
+	PushWord #$ffff
+	PushWord #rPString
+	_UniqueResourceID
+	PullLong strID2
+	
+ID2exists
+
+*-
+
+	PushWord #rPString
+	PushLong strID2
+	_RemoveResource
+
+*-
+
+	pha
+	pha
+	PushLong #$100	; maxSize
+	PushWord memID
+	PushWord #$c018
+	PushLong #0
+	_NewHandle
+	PullLong haID2
+	
+*-
+
+	pha	; for string 2
+	pha
+	PushLong ptrWINDOW
+	PushLong #7
+	_GetCtlHandleFromID
+	pla
+	sta	$00
+	pla
+	sta	$02
+	
+	ldy	#2
+	lda	[$00],y
+	tax
+	lda	[$00]
+	sta	$00
+	stx	$02
+	
+	ldy	#$1e
+	lda	[$00],y
+	sta	theHANDLE+2
+	ldy	#$1c
+	lda	[$00],y
+	sta	theHANDLE
+
+	pha
+	PushLong theHANDLE
+	_LEGetTextLen
+	PullWord lenSTRING2
+
+	pha
+	pha
+	PushLong theHANDLE
+	_LEGetTextHand
+	PushLong #mySTRING2B
+	PushLong lenSTRING2
+	_HandToPtr
+
+*-
+
+	sep	#$20
+	lda	lenSTRING2
+	sta	mySTRING2
+	rep	#$20
+	
+*-
+
+	PushLong #mySTRING2
+	PushLong haID2
+	PushLong #$100
+	_PtrToHand
+
+*-
+	
+	PushLong haID2	; for string 2
+	_HUnlock
+	pea	$0000
+	lda	lenSTRING2
+	inc
+	pha
+	PushLong haID2
+	_SetHandleSize
+	PushLong haID2
+	_HLock
+
+*-
+	
+	PushLong haID2
+	PushWord #0
+	PushWord #rPString
+	PushLong strID2
+	_AddResource
+
+*-
+
+	PushWord #$ffff
+	PushWord #rPString
+	PushLong strID2
+	_ReleaseResource
+
+*----------------------------	
+*--- Handle resource string 3
+
+	lda	strID3
+	ora	strID3+2
+	bne	ID3exists
+
+	pha
+	pha
+	PushWord #$ffff
+	PushWord #rPString
+	_UniqueResourceID
+	PullLong strID3
+	
+ID3exists
+
+*-
+
+	PushWord #rPString
+	PushLong strID3
+	_RemoveResource
+
+*-
+
+	pha
+	pha
+	PushLong #$100	; maxSize
+	PushWord memID
+	PushWord #$c018
+	PushLong #0
+	_NewHandle
+	PullLong haID3
+	
+*-
+
+	pha	; for string 3
+	pha
+	PushLong ptrWINDOW
+	PushLong #8
+	_GetCtlHandleFromID
+	pla
+	sta	$00
+	pla
+	sta	$02
+	
+	ldy	#2
+	lda	[$00],y
+	tax
+	lda	[$00]
+	sta	$00
+	stx	$02
+	
+	ldy	#$1e
+	lda	[$00],y
+	sta	theHANDLE+2
+	ldy	#$1c
+	lda	[$00],y
+	sta	theHANDLE
+
+	pha
+	PushLong theHANDLE
+	_LEGetTextLen
+	PullWord lenSTRING3
+
+	pha
+	pha
+	PushLong theHANDLE
+	_LEGetTextHand
+	PushLong #mySTRING3B
+	PushLong lenSTRING3
+	_HandToPtr
+
+*-
+
+	sep	#$20
+	lda	lenSTRING3
+	sta	mySTRING3
+	rep	#$20
+	
+*-
+
+	PushLong #mySTRING3
+	PushLong haID3
+	PushLong #$100
+	_PtrToHand
+
+*-
+	
+	PushLong haID3	; for string 3
+	_HUnlock
+	pea	$0000
+	lda	lenSTRING3
+	inc
+	pha
+	PushLong haID3
+	_SetHandleSize
+	PushLong haID3
+	_HLock
+
+*-
+	
+	PushLong haID3
+	PushWord #0
+	PushWord #rPString
+	PushLong strID3
+	_AddResource
+
+*-
+
+	PushWord #$ffff
+	PushWord #rPString
+	PushLong strID3
+	_ReleaseResource
+
+*----------------------------	
+*--- Handle resource string 4
+
+	lda	strID4
+	ora	strID4+2
+	bne	ID4exists
+
+	pha
+	pha
+	PushWord #$ffff
+	PushWord #rPString
+	_UniqueResourceID
+	PullLong strID4
+	
+ID4exists
+
+*-
+
+	PushWord #rPString
+	PushLong strID4
+	_RemoveResource
+
+*-
+
+	pha
+	pha
+	PushLong #$100	; maxSize
+	PushWord memID
+	PushWord #$c018
+	PushLong #0
+	_NewHandle
+	PullLong haID4
+	
+*-
+
+	pha	; for string 4
+	pha
+	PushLong ptrWINDOW
+	PushLong #9
+	_GetCtlHandleFromID
+	pla
+	sta	$00
+	pla
+	sta	$02
+	
+	ldy	#2
+	lda	[$00],y
+	tax
+	lda	[$00]
+	sta	$00
+	stx	$02
+	
+	ldy	#$1e
+	lda	[$00],y
+	sta	theHANDLE+2
+	ldy	#$1c
+	lda	[$00],y
+	sta	theHANDLE
+
+	pha
+	PushLong theHANDLE
+	_LEGetTextLen
+	PullWord lenSTRING4
+
+	pha
+	pha
+	PushLong theHANDLE
+	_LEGetTextHand
+	PushLong #mySTRING4B
+	PushLong lenSTRING4
+	_HandToPtr
+
+*-
+
+	sep	#$20
+	lda	lenSTRING4
+	sta	mySTRING4
+	rep	#$20
+	
+*-
+
+	PushLong #mySTRING4
+	PushLong haID4
+	PushLong #$100
+	_PtrToHand
+
+*-
+	
+	PushLong haID4	; for string 4
+	_HUnlock
+	pea	$0000
+	lda	lenSTRING4
+	inc
+	pha
+	PushLong haID4
+	_SetHandleSize
+	PushLong haID4
+	_HLock
+
+*-
+	
+	PushLong haID4
+	PushWord #0
+	PushWord #rPString
+	PushLong strID4
+	_AddResource
+
+*-
+
+	PushWord #$ffff
+	PushWord #rPString
+	PushLong strID4
+	_ReleaseResource
+
+*----------------------------	
+*--- Handle resource string 5
+
+	lda	strID5
+	ora	strID5+2
+	bne	ID5exists
+
+	pha
+	pha
+	PushWord #$ffff
+	PushWord #rPString
+	_UniqueResourceID
+	PullLong strID5
+	
+ID5exists
+
+*-
+
+	PushWord #rPString
+	PushLong strID5
+	_RemoveResource
+
+*-
+
+	pha
+	pha
+	PushLong #$100	; maxSize
+	PushWord memID
+	PushWord #$c018
+	PushLong #0
+	_NewHandle
+	PullLong haID5
+	
+*-
+
+	pha	; for string 5
+	pha
+	PushLong ptrWINDOW
+	PushLong #10
+	_GetCtlHandleFromID
+	pla
+	sta	$00
+	pla
+	sta	$02
+	
+	ldy	#2
+	lda	[$00],y
+	tax
+	lda	[$00]
+	sta	$00
+	stx	$02
+	
+	ldy	#$1e
+	lda	[$00],y
+	sta	theHANDLE+2
+	ldy	#$1c
+	lda	[$00],y
+	sta	theHANDLE
+
+	pha
+	PushLong theHANDLE
+	_LEGetTextLen
+	PullWord lenSTRING5
+
+	pha
+	pha
+	PushLong theHANDLE
+	_LEGetTextHand
+	PushLong #mySTRING5B
+	PushLong lenSTRING5
+	_HandToPtr
+
+*-
+
+	sep	#$20
+	lda	lenSTRING5
+	sta	mySTRING5
+	rep	#$20
+	
+*-
+
+	PushLong #mySTRING5
+	PushLong haID5
+	PushLong #$100
+	_PtrToHand
+
+*-
+	
+	PushLong haID5	; for string 5
+	_HUnlock
+	pea	$0000
+	lda	lenSTRING5
+	inc
+	pha
+	PushLong haID5
+	_SetHandleSize
+	PushLong haID5
+	_HLock
+
+*-
+	
+	PushLong haID5
+	PushWord #0
+	PushWord #rPString
+	PushLong strID5
+	_AddResource
+
+*-
+
+	PushWord #$ffff
+	PushWord #rPString
+	PushLong strID5
+	_ReleaseResource
+
+* The end
+
+	pha
+	PushWord resDepth
+	_SetResourceFileDepth
+	PullWord resDepth
+
+* Copy the updated resource
+
+	PushLong #myRESOURCE
+	pei	$18
+	pei	$16
+	PushLong #resSIZE
+	_PtrToHand
+
+* Clear the resource
+
+	ldx	#0
+]lp	stz	myRESOURCE,x
+	inx
+	inx
+	cpx	#resSIZE
+	bcc	]lp
+		
+* Resource is formatted, write it
 
 L190C    LDX   $18
          LDA   $16
@@ -2667,9 +2053,12 @@ L1939    ASC   '52~Tool editor: Could not load resource. Changes not saved.~^#0'
 L1978    ASC   '52~Tool editor: Could not resize resource. Changes not saved.~^#0'
 L19B9    ASC   '52~Tool editor: Could not resize handle. Changes not saved.~^#0'
 
+resDepth	ds	2
+
 *--- Init controls of the editor window
 
-initWINCONTROLS    TSC
+initWINCONTROLS
+         TSC
          SEC
          SBC   #$0028
          TCS
@@ -2680,164 +2069,7 @@ initWINCONTROLS    TSC
          STA   $16
          LDA   #$0001
          STA   $26
-L1A0B    LDA   #$0000
-         PHA
-         PHA
-         PHA
-         LDX   haWINDOW+2
-         LDA   haWINDOW
-         PHX
-         PHA
-         LDA   #$0000
-         CLC
-         ADC   $26
-         LDX   #$0000
-         TAY
-         BPL   L1A26
-         DEX
-L1A26    PHX
-         PHA
-         _GetCtlHandleFromID
-         STA   L2BCB
-         _SetCtlValue
-         STA   L2BCB
-         INC   $26
-         LDA   $26
-         CMP   #$000D
-         BEQ   L1A48
-         BRL   L1A0B
-L1A48    LDA   #$000E
-         STA   $26
-L1A4D    LDA   #$0000
-         PHA
-         PHA
-         PHA
-         LDX   haWINDOW+2
-         LDA   haWINDOW
-         PHX
-         PHA
-         LDA   #$0000
-         CLC
-         ADC   $26
-         LDX   #$0000
-         TAY
-         BPL   L1A68
-         DEX
-L1A68    PHX
-         PHA
-         _GetCtlHandleFromID
-         STA   L2BCB
-         _SetCtlValue
-         STA   L2BCB
-         INC   $26
-         LDA   $26
-         CMP   #$0018
-         BEQ   L1A8A
-         BRL   L1A4D
-L1A8A    LDA   #$0019
-         STA   $26
-L1A8F    LDA   #$0000
-         PHA
-         PHA
-         PHA
-         LDX   haWINDOW+2
-         LDA   haWINDOW
-         PHX
-         PHA
-         LDA   #$0000
-         CLC
-         ADC   $26
-         LDX   #$0000
-         TAY
-         BPL   L1AAA
-         DEX
-L1AAA    PHX
-         PHA
-         _GetCtlHandleFromID
-         STA   L2BCB
-         _SetCtlValue
-         STA   L2BCB
-         INC   $26
-         LDA   $26
-         CMP   #$001F
-         BEQ   L1ACC
-         BRL   L1A8F
-L1ACC    LDA   #$0000
-         PHA
-         PHA
-         PHA
-         LDX   haWINDOW+2
-         LDA   haWINDOW
-         PHX
-         PHA
-         LDA   #$0020
-         LDX   #$0000
-         TAY
-         BPL   L1AE4
-         DEX
-L1AE4    PHX
-         PHA
-         _GetCtlHandleFromID
-         STA   L2BCB
-         _SetCtlValue
-         STA   L2BCB
-         LDA   #$0000
-         PHA
-         PHA
-         PHA
-         LDX   haWINDOW+2
-         LDA   haWINDOW
-         PHX
-         PHA
-         LDA   #$0022
-         LDX   #$0000
-         TAY
-         BPL   L1B12
-         DEX
-L1B12    PHX
-         PHA
-         _GetCtlHandleFromID
-         STA   L2BCB
-         _SetCtlValue
-         STA   L2BCB
-         LDA   #$0000
-         PHA
-         PHA
-         PHA
-         LDX   haWINDOW+2
-         LDA   haWINDOW
-         PHX
-         PHA
-         LDA   #$1001
-         LDX   #$0000
-         TAY
-         BPL   L1B40
-         DEX
-L1B40    PHX
-         PHA
-         _GetCtlHandleFromID
-         STA   L2BCB
-         _SetCtlValue
-         STA   L2BCB
-         LDA   #$0000
-         PHA
-         PHA
-         PHA
-         LDX   haWINDOW+2
-         LDA   haWINDOW
-         PHX
-         PHA
-         LDA   #$1002
-         LDX   #$0000
-         TAY
-         BPL   L1B6E
-         DEX
-L1B6E    PHX
-         PHA
-         _GetCtlHandleFromID
-         STA   L2BCB
-         _SetCtlValue
-         STA   L2BCB
+
          LDX   ptrBUFFER+2
          LDA   ptrBUFFER
          STA   $00
@@ -2863,6 +2095,9 @@ L1B6E    PHX
          ORA   $22
          BEQ   L1BBC
          BRL   L1BFC
+
+* Cannot load resource
+
 L1BBC    LDX   #^myBUFFER2
          LDA   #myBUFFER2
          PHX
@@ -2889,159 +2124,335 @@ L1BBC    LDX   #^myBUFFER2
          BEQ   L1BF9
          BRL   L1BF9
 L1BF9    BRL   L1D68
+
+* Resource is now in memory
+
 L1BFC    LDX   $22
          LDA   $20
          PHX
          PHA
          _HLock
          STA   L2BCB
-         LDY   #$0002
+
+         LDY   #$0002	; set the pointer
          LDA   [$20],Y
          TAX
          LDA   [$20]
          STX   $08
          STA   $06
-         LDY   #$0002
-         LDA   [$06],Y
-         AND   #$8000
-         BNE   L1C25
-         BRL   L1C53
-L1C25    LDA   #$0001
-         PHA
-         PHA
-         PHA
-         LDX   haWINDOW+2
-         LDA   haWINDOW
-         PHX
-         PHA
-         LDA   #$1002
-         LDX   #$0000
-         TAY
-         BPL   L1C3D
-         DEX
-L1C3D    PHX
-         PHA
-         _GetCtlHandleFromID
-         STA   L2BCB
-         _SetCtlValue
-         STA   L2BCB
-L1C53    LDY   #$0002
-         LDA   [$06],Y
-         AND   #$4000
-         BNE   L1C60
-         BRL   L1C8E
-L1C60    LDA   #$0001
-         PHA
-         PHA
-         PHA
-         LDX   haWINDOW+2
-         LDA   haWINDOW
-         PHX
-         PHA
-         LDA   #$1001
-         LDX   #$0000
-         TAY
-         BPL   L1C78
-         DEX
-L1C78    PHX
-         PHA
-         _GetCtlHandleFromID
-         STA   L2BCB
-         _SetCtlValue
-         STA   L2BCB
-L1C8E    LDY   #$0002
-         LDA   [$06],Y
-         AND   #$0080
-         BNE   L1C9B
-         BRL   L1CCC
-L1C9B    LDA   #$0001
-         PHA
-         PHA
-         PHA
-         LDX   haWINDOW+2
-         LDA   haWINDOW
-         PHX
-         PHA
-         LDA   #$0640
-         LDX   #$0000
-         TAY
-         BPL   L1CB3
-         DEX
-L1CB3    PHX
-         PHA
-         _GetCtlHandleFromID
-         STA   L2BCB
-         _SetCtlValue
-         STA   L2BCB
-         BRL   L1CFA
-L1CCC    LDA   #$0001
-         PHA
-         PHA
-         PHA
-         LDX   haWINDOW+2
-         LDA   haWINDOW
-         PHX
-         PHA
-         LDA   #$0320
-         LDX   #$0000
-         TAY
-         BPL   L1CE4
-         DEX
-L1CE4    PHX
-         PHA
-         _GetCtlHandleFromID
-         STA   L2BCB
-         _SetCtlValue
-         STA   L2BCB
-L1CFA    LDY   #$000A
-         LDA   [$06],Y
-         STA   $0A
-         LDA   #$0001
-         STA   $26
-         LDA   $0A
-         SEC
-         SBC   $26
-         BVS   L1D10
-         EOR   #$8000
-L1D10    BMI   L1D15
-         BRL   L1D63
-L1D15    LDA   #$0001
-         PHA
-         PHA
-         PHA
-         LDX   haWINDOW+2
-         LDA   haWINDOW
-         PHX
-         PHA
-         LDY   #$000C
-         PHY
-         LDA   $26
-         DEC
-         ASL
-         ASL
-         CLC
-         ADC   $01,S
-         STA   $01,S
-         PLY
-         LDA   [$06],Y
-         CLC
-         ADC   #$0000
-         LDX   #$0000
-         TAY
-         BPL   L1D3F
-         DEX
-L1D3F    PHX
-         PHA
-         _GetCtlHandleFromID
-         STA   L2BCB
-         _SetCtlValue
-         STA   L2BCB
-         LDA   $0A
-         CMP   $26
-         BNE   L1D5E
-         BRL   L1D63
-L1D5E    INC   $26
-         BRL   L1D15
+
+* Copy the resource
+
+	ldy	#0
+]lp	lda	[$06],y
+	sta	myRESOURCE,y
+	iny
+	iny
+	cpy	#resSIZE
+	bcc	]lp
+	
+* Init my flags
+
+	stz	lenSTRING1	; 0 means empty string
+	stz	lenSTRING2
+	stz	lenSTRING3
+	stz	lenSTRING4
+	stz	lenSTRING5
+	
+	ldx	#256-2		; clear
+]lp	stz	mySTRING1,x
+	stz	mySTRING2,x
+	stz	mySTRING3,x
+	stz	mySTRING4,x
+	stz	mySTRING5,x
+	dex
+	dex
+	bpl	]lp
+
+* Now, load the associated 5 rPStrings
+
+	pha
+	pha
+	PushWord #rPString
+	ldy	#4
+	lda	[$06],y
+	pha
+	ldy	#2
+	lda	[$06],y
+	pha
+	_LoadResource
+	pla
+	plx
+	bcs	next2
+
+	phx
+	pha
+	PushLong #mySTRING1
+	PushLong #256
+	_HandToPtr
+
+	PushWord #-1
+	PushWord #rPString
+	ldy	#4
+	lda	[$06],y
+	pha
+	ldy	#2
+	lda	[$06],y
+	pha
+	_ReleaseResource
+	
+next2	pha		; get handle of control
+	pha
+	PushLong ptrWINDOW
+	PushLong #6
+	_GetCtlHandleFromID
+	pla
+	plx
+	bcs	next3
+	sta	theHANDLE
+	stx	theHANDLE+2
+
+	PushLong #mySTRING1B	; pointer to text
+	
+	lda	mySTRING1	; length of text
+	and	#$00ff
+	sta	lenSTRING1
+	pha
+	
+	pha		; get the line edit control from the lineedit control
+	pha
+	PushLong theHANDLE
+	_GetCtlTitle
+	_LESetText
+	
+* Now, load the associated 5 rPStrings
+
+next3	pha
+	pha
+	PushWord #rPString
+	ldy	#8
+	lda	[$06],y
+	pha
+	ldy	#6
+	lda	[$06],y
+	pha
+	_LoadResource
+	pla
+	plx
+	bcs	next4
+
+	phx
+	pha
+	PushLong #mySTRING2
+	PushLong #256
+	_HandToPtr
+
+	PushWord #-1
+	PushWord #rPString
+	ldy	#8
+	lda	[$06],y
+	pha
+	ldy	#6
+	lda	[$06],y
+	pha
+	_ReleaseResource
+	
+next4	pha		; get handle of control
+	pha
+	PushLong ptrWINDOW
+	PushLong #7
+	_GetCtlHandleFromID
+	pla
+	plx
+	bcs	next5
+	sta	theHANDLE
+	stx	theHANDLE+2
+
+	PushLong #mySTRING2B	; pointer to text
+	
+	lda	mySTRING2	; length of text
+	and	#$00ff
+	sta	lenSTRING2
+	pha
+	
+	pha		; get the line edit control from the lineedit control
+	pha
+	PushLong theHANDLE
+	_GetCtlTitle
+	_LESetText
+	
+* Now, load the associated 5 rPStrings
+
+next5	pha
+	pha
+	PushWord #rPString
+	ldy	#12
+	lda	[$06],y
+	pha
+	ldy	#10
+	lda	[$06],y
+	pha
+	_LoadResource
+	pla
+	plx
+	bcs	next6
+
+	phx
+	pha
+	PushLong #mySTRING3
+	PushLong #256
+	_HandToPtr
+
+	PushWord #-1
+	PushWord #rPString
+	ldy	#12
+	lda	[$06],y
+	pha
+	ldy	#10
+	lda	[$06],y
+	pha
+	_ReleaseResource
+	
+next6	pha		; get handle of control
+	pha
+	PushLong ptrWINDOW
+	PushLong #8
+	_GetCtlHandleFromID
+	pla
+	plx
+	bcs	next7
+	sta	theHANDLE
+	stx	theHANDLE+2
+
+	PushLong #mySTRING3B	; pointer to text
+	
+	lda	mySTRING3	; length of text
+	and	#$00ff
+	sta	lenSTRING3
+	pha
+	
+	pha		; get the line edit control from the lineedit control
+	pha
+	PushLong theHANDLE
+	_GetCtlTitle
+	_LESetText
+	
+* Now, load the associated 5 rPStrings
+
+next7	pha
+	pha
+	PushWord #rPString
+	ldy	#16
+	lda	[$06],y
+	pha
+	ldy	#14
+	lda	[$06],y
+	pha
+	_LoadResource
+	pla
+	plx
+	bcs	next8
+
+	phx
+	pha
+	PushLong #mySTRING4
+	PushLong #256
+	_HandToPtr
+
+	PushWord #-1
+	PushWord #rPString
+	ldy	#16
+	lda	[$06],y
+	pha
+	ldy	#14
+	lda	[$06],y
+	pha
+	_ReleaseResource
+	
+next8	pha		; get handle of control
+	pha
+	PushLong ptrWINDOW
+	PushLong #9
+	_GetCtlHandleFromID
+	pla
+	plx
+	bcs	next9
+	sta	theHANDLE
+	stx	theHANDLE+2
+
+	PushLong #mySTRING4B	; pointer to text
+	
+	lda	mySTRING4	; length of text
+	and	#$00ff
+	sta	lenSTRING4
+	pha
+	
+	pha		; get the line edit control from the lineedit control
+	pha
+	PushLong theHANDLE
+	_GetCtlTitle
+	_LESetText
+	
+* Now, load the associated 5 rPStrings
+
+next9	pha
+	pha
+	PushWord #rPString
+	ldy	#20
+	lda	[$06],y
+	pha
+	ldy	#18
+	lda	[$06],y
+	pha
+	_LoadResource
+	pla
+	plx
+	bcs	next10
+
+	phx
+	pha
+	PushLong #mySTRING5
+	PushLong #256
+	_HandToPtr
+
+	PushWord #-1
+	PushWord #rPString
+	ldy	#20
+	lda	[$06],y
+	pha
+	ldy	#18
+	lda	[$06],y
+	pha
+	_ReleaseResource
+	
+next10	pha		; get handle of control
+	pha
+	PushLong ptrWINDOW
+	PushLong #10
+	_GetCtlHandleFromID
+	pla
+	plx
+	bcs	next11
+	sta	theHANDLE
+	stx	theHANDLE+2
+
+	PushLong #mySTRING5B	; pointer to text
+	
+	lda	mySTRING5	; length of text
+	and	#$00ff
+	sta	lenSTRING5
+	pha
+	
+	pha		; get the line edit control from the lineedit control
+	pha
+	PushLong theHANDLE
+	_GetCtlTitle
+	_LESetText
+	
+next11			; end of the funny initialization, ahem...
+	
+*---
+
 L1D63    LDA   #$0000
          STA   $16
 L1D68    PHA
@@ -3095,7 +2506,8 @@ L1DCF    ASC   '52~Tool editor: Could not load resource. Setting aborted.~^#0'
 
 *--- Ask for memory
 
-prepareWINDOW    TSC
+prepareWINDOW
+         TSC
          SEC
          SBC   #$0016
          TCS
@@ -3242,8 +2654,8 @@ L1EBC    LDX   haMEMORY+2	; deref
 
          JSL   showWINDOW	; show my new window
 
-         LDX   haWINDOW+2
-         LDA   haWINDOW
+         LDX   ptrWINDOW+2
+         LDA   ptrWINDOW
          PHX
          PHA
          _SetPort
@@ -3262,8 +2674,8 @@ L1F4D    LDX   haMEMORY+2
          PHA
          _DisposeHandle
          STA   L2BCB
-         LDX   haWINDOW+2
-         LDA   haWINDOW
+         LDX   ptrWINDOW+2
+         LDA   ptrWINDOW
          PHX
          PHA
          _CloseWindow
@@ -3340,14 +2752,14 @@ L1FFC    LDA   xCOORD	; X-coord
          PHA
          LDA   YCOORD	; Y-coord
          PHA
-         LDX   haWINDOW+2
-         LDA   haWINDOW
+         LDX   ptrWINDOW+2
+         LDA   ptrWINDOW
          PHX
          PHA
          _MoveWindow
          STA   L2BCB
-         LDX   haWINDOW+2
-         LDA   haWINDOW
+         LDX   ptrWINDOW+2
+         LDA   ptrWINDOW
          PHX
          PHA
          _ShowWindow
@@ -3357,8 +2769,8 @@ L1FFC    LDA   xCOORD	; X-coord
          LDA   haMEMORY		; to the refcon of the window
          PHX
          PHA
-         LDX   haWINDOW+2
-         LDA   haWINDOW
+         LDX   ptrWINDOW+2
+         LDA   ptrWINDOW
          PHX
          PHA
          _SetWRefCon
@@ -3389,19 +2801,19 @@ getFRONTWINDOW    TSC
          _FrontWindow
          STA   L2BCB
          PLA
-         STA   haWINDOW
+         STA   ptrWINDOW
          PLA
-         STA   haWINDOW+2
-         LDX   haWINDOW+2
-         LDA   haWINDOW
+         STA   ptrWINDOW+2
+         LDX   ptrWINDOW+2
+         LDA   ptrWINDOW
          PHX
          PHA
          _SetPort
          STA   L2BCB
          PHA
          PHA
-         LDX   haWINDOW+2
-         LDA   haWINDOW
+         LDX   ptrWINDOW+2
+         LDA   ptrWINDOW
          PHX
          PHA
          _GetWRefCon
@@ -3444,14 +2856,14 @@ createDISPOSE    TSC
          LDA   [$00],Y
          PHX
          PHA
-         LDX   haWINDOW+2
-         LDA   haWINDOW
+         LDX   ptrWINDOW+2
+         LDA   ptrWINDOW
          PHX
          PHA
          JSL   createRESOURCE
 
-         LDX   haWINDOW+2	; close the window
-         LDA   haWINDOW
+         LDX   ptrWINDOW+2	; close the window
+         LDA   ptrWINDOW
          PHX
          PHA
          _CloseWindow
@@ -3745,7 +3157,7 @@ L23C9    PLD
          TCS
          RTL
 
-*--- Tool Table editor: entry point
+*--- Versions editor: entry point
 
 entryPOINT
          TSC
@@ -4050,213 +3462,37 @@ doCOMMAND3
          ADC   #$0036
          STA   $00
          STX   $02
+
          LDA   #resTYPE	; resource type that the editor handles
          STA   [$00]
 
-         LDA   #$0001	; prepare my resource data
-         DEC
-         ASL
-         TAX
-         LDA   #$0300
-         STA   theTOOLREC,X
-         LDA   #$0002
-         DEC
-         ASL
-         TAX
-         LDA   #$0300
-         STA   theTOOLREC,X
-         LDA   #$0003
-         DEC
-         ASL
-         TAX
-         LDA   #$0300
-         STA   theTOOLREC,X
-         LDA   #$0004
-         DEC
-         ASL
-         TAX
-         LDA   #$0301
-         STA   theTOOLREC,X
-         LDA   #$0005
-         DEC
-         ASL
-         TAX
-         LDA   #$0302
-         STA   theTOOLREC,X
-         LDA   #$0006
-         DEC
-         ASL
-         TAX
-         LDA   #$0300
-         STA   theTOOLREC,X
-         LDA   #$0007
-         DEC
-         ASL
-         TAX
-         LDA   #$0200
-         STA   theTOOLREC,X
-         LDA   #$0008
-         DEC
-         ASL
-         TAX
-         LDA   #$0301
-         STA   theTOOLREC,X
-         LDA   #$0009
-         DEC
-         ASL
-         TAX
-         LDA   #$0201
-         STA   theTOOLREC,X
-         LDA   #$000A
-         DEC
-         ASL
-         TAX
-         LDA   #$0202
-         STA   theTOOLREC,X
-         LDA   #$000B
-         DEC
-         ASL
-         TAX
-         LDA   #$0200
-         STA   theTOOLREC,X
-         LDA   #$000C
-         DEC
-         ASL
-         TAX
-         LDA   #$0201
-         STA   theTOOLREC,X
-         LDA   #$000D
-         DEC
-         ASL
-         TAX
-         LDA   #$0200
-         STA   theTOOLREC,X
-         LDA   #$000E
-         DEC
-         ASL
-         TAX
-         LDA   #$0301
-         STA   theTOOLREC,X
-         LDA   #$000F
-         DEC
-         ASL
-         TAX
-         LDA   #$0301
-         STA   theTOOLREC,X
-         LDA   #$0010
-         DEC
-         ASL
-         TAX
-         LDA   #$0301
-         STA   theTOOLREC,X
-         LDA   #$0011
-         DEC
-         ASL
-         TAX
-         LDA   #$0300
-         STA   theTOOLREC,X
-         LDA   #$0012
-         DEC
-         ASL
-         TAX
-         LDA   #$0301
-         STA   theTOOLREC,X
-         LDA   #$0013
-         DEC
-         ASL
-         TAX
-         LDA   #$0300
-         STA   theTOOLREC,X
-         LDA   #$0014
-         DEC
-         ASL
-         TAX
-         LDA   #$0301
-         STA   theTOOLREC,X
-         LDA   #$0015
-         DEC
-         ASL
-         TAX
-         LDA   #$0301
-         STA   theTOOLREC,X
-         LDA   #$0016
-         DEC
-         ASL
-         TAX
-         LDA   #$0300
-         STA   theTOOLREC,X
-         LDA   #$0017
-         DEC
-         ASL
-         TAX
-         LDA   #$0301
-         STA   theTOOLREC,X
-         LDA   #$0018
-         DEC
-         ASL
-         TAX
-         LDA   #$0000
-         STA   theTOOLREC,X
-         LDA   #$0019
-         DEC
-         ASL
-         TAX
-         LDA   #$0104
-         STA   theTOOLREC,X
-         LDA   #$001A
-         DEC
-         ASL
-         TAX
-         LDA   #$0104
-         STA   theTOOLREC,X
-         LDA   #$001B
-         DEC
-         ASL
-         TAX
-         LDA   #$0301
-         STA   theTOOLREC,X
-         LDA   #$001C
-         DEC
-         ASL
-         TAX
-         LDA   #$0301
-         STA   theTOOLREC,X
-         LDA   #$001D
-         DEC
-         ASL
-         TAX
-         LDA   #$0101
-         STA   theTOOLREC,X
-         LDA   #$001E
-         DEC
-         ASL
-         TAX
-         LDA   #$0100
-         STA   theTOOLREC,X
-         LDA   #$001F
-         DEC
-         ASL
-         TAX
-         LDA   #$0000
-         STA   theTOOLREC,X
-         LDA   #$0020
-         DEC
-         ASL
-         TAX
-         LDA   #$0103
-         STA   theTOOLREC,X
-         LDA   #$0021
-         DEC
-         ASL
-         TAX
-         LDA   #$0000
-         STA   theTOOLREC,X
-         LDA   #$0022
-         DEC
-         ASL
-         TAX
-         LDA   #$0101
-         STA   theTOOLREC,X
+* Clear the resource
+
+	ldx	#0
+]lp	stz	myRESOURCE,x
+	inx
+	inx
+	cpx	#resSIZE
+	bcc	]lp
+	
+* Init my flags
+
+	stz	lenSTRING1	; 0 means empty string
+	stz	lenSTRING2
+	stz	lenSTRING3
+	stz	lenSTRING4
+	stz	lenSTRING5
+	
+	ldx	#256-2		; clear
+]lp	stz	mySTRING1,x
+	stz	mySTRING2,x
+	stz	mySTRING3,x
+	stz	mySTRING4,x
+	stz	mySTRING5,x
+	dex
+	dex
+	bpl	]lp
+
          BRL   exitEDITOR
 	 
 *--- Command 4
@@ -4288,8 +3524,8 @@ doCOMMAND7
          LDA   [$00],Y
          PHX
          PHA
-         LDX   haWINDOW+2	; GRAFPORT
-         LDA   haWINDOW
+         LDX   ptrWINDOW+2	; GRAFPORT
+         LDA   ptrWINDOW
          PHX
          PHA
          JSL   createRESOURCE	; format resource
@@ -4325,7 +3561,8 @@ L27FC    DA    doCOMMAND0-1	; 0
          DA    doCOMMAND7-1	; 7
          DA    unsupCOMMAND-1	; 8
 
-exitEDITOR    LDA   #$0000
+exitEDITOR
+         LDA   #$0000
          STA   $16
          LDX   $16
          PLD
@@ -4336,25 +3573,57 @@ exitEDITOR    LDA   #$0000
          TXA
          RTL
 
-strEDITOR	ASC   'Tool table editor v1.2'
+strEDITOR	ASC   'rUpdateInfo editor v1'
 strEDITOR2
-strRESOURCE	ASC   'Tool table'
+strRESOURCE	ASC   'Update Info'
 strRESOURCE2
 
 YCOORD    DW    $0000
 xCOORD    DW    $0000
 ptrBUFFER    ADRL  $00000000	; pointer to the shell buffer
-busyFLAG    DW    $0000		; LOGO - could be the non-reentrant flag
+busyFLAG    DW    $0000		; the busy flag
 resfileID    DW    $0000
 haMEMORY    ADRL  $00000000
 haMEMORY2    ADRL  $00000000
-haWINDOW    ADRL  $00000000
-theTOOLREC    DS    $44
+ptrWINDOW    ADRL  $00000000
+theHANDLE	ds	4
+memID	ds	2
 
 *--- Buffers
 
+myRESOURCE
+	ds	2	; version = 0
+strID1	ds	4	; 0: ID to create, <>0: ID to use
+strID2	ds	4
+strID3	ds	4
+strID4	ds	4
+strID5	ds	4
+
+haID1	ds	4	; memory handle of rPString
+haID2	ds	4
+haID3	ds	4
+haID4	ds	4
+haID5	ds	4
+
 myBUFFER1    DS    $100
 myBUFFER2    DS    $100
+
+mySTRING1	ds	$1
+mySTRING1B	ds	$ff
+mySTRING2	ds	$1
+mySTRING2B	ds	$ff
+mySTRING3	ds	$1
+mySTRING3B	ds	$ff
+mySTRING4	ds	$1
+mySTRING4B	ds	$ff
+mySTRING5	ds	$1
+mySTRING5B	ds	$ff
+
+lenSTRING1	ds	4
+lenSTRING2	ds	4
+lenSTRING3	ds	4
+lenSTRING4	ds	4
+lenSTRING5	ds	4
 
 *--- Copy data
 *

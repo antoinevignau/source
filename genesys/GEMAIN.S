@@ -63,6 +63,12 @@ GSOS EQU $E100A8
          PHD
          PHK
          PLB
+	 
+	 lda	#L02434C
+	 stal	$300
+	 lda	#^L02434C
+	 stal	$302
+	 
          _TLStartUp
          PEA   $0000
          _TLVersion
@@ -1465,12 +1471,19 @@ L020E54  PHD
          LDA   #$2020
          STA   L02105D
          STA   L02105D+2
+	 sta   L02105D+4
          PEA   $0000
          PEA   $0000
          PEA   $0000
          PEA   $0000
-         PEA   $0000
-         PEA   $0000
+
+* AV 202010 - Fixed the About bug
+* It happened when users had more than 8MB
+
+*         PEA   $0000
+*         PEA   $0000
+	 pha
+	 pha
          _RealFreeMem
          LDX   #$2002
          JSL   L027D42
@@ -1481,7 +1494,7 @@ L020E54  PHD
          JSL   L027D42
          PEA   ^L02105D
          PEA   L02105D
-         PEA   $0004
+         PEA   $0006	; was 4
          PEA   $0000
          _Long2Dec
          LDX   #$2004
@@ -1653,7 +1666,7 @@ L021046  PHD
 copyBRUTAL	str	'(c) 2020, Brutal Deluxe'
 
 L02105B  DW    $0000
-L02105D  ASC   '   0k free memory'00
+L02105D  ASC   '     0k free memory'00
 L02106F  DW    $0000      ; event code
          ADRL  $00000000  ; event message
          ADRL  $00000000  ; tick count
@@ -13258,8 +13271,8 @@ strPRINTRECORD1	asc	'PRINTRECORD'00
 strPRINTRECORD2	asc	'Print Record'00
 strFONT1	asc	'FONT'00
 strFONT2	asc	'Font'00
-strVERSIONS1	asc	'VERSIONS'00
-strVERSIONS2	asc	'Versions'00
+strVERSIONS1	asc	'UPDATEINFO'00
+strVERSIONS2	asc	'Update Info'00
 
 L025F5A  ASC   'rType $%0.4X'00
 L025F67  ASC   'ICON'00

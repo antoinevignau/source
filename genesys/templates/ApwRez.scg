@@ -1,0 +1,2812 @@
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# APW REZ Template
+# v1.2b2  10Oct90, MWW - fixed alert templates
+#     b3  24Oct90, ZAK - reformatted all output to be "nice"
+#                        added TwoRects template
+#                        added CDEVFlags template
+#                        added wString
+#     b4  27Oct90, MWW - fixed rTextForLETextBox2
+#                        corrected rControl's ScrollControl
+#                        added array braces to rCursor
+#                        added StringList template
+# v1.3.4 12Nov20, CCV -  added RectangeControl template
+#                        added ThermometerControl template
+#                        added UpdateInfo template
+#                        added pw/keymask to EditLineControl
+#                        added Version Template
+#                        added Comment Template
+#                        added Bundle Template
+# Copyright 1990
+# Simple Software Systems International, Inc.
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+TITLE
+# LOAD   R127 $27    # set single quote char
+# CTRL   R127 7      # as exception character.
+IF R17 EQ 1
+  WRITE
+// --------------------------------------------------------------------\n
+  WRITE
+// Genesys created REZ data code\n
+  WRITE
+// Simple Software Systems International, Inc.\n
+  WRITE
+// APWREZ.SCG 1.2\n
+  WRITE
+// --------------------------------------------------------------------\n\n
+  WRITE
+#include "types.rez"\n\n
+ELSE
+IF R17 EQ 3
+  WRITE
+// --------------------------------------------------------------------\n
+  WRITE
+// Genesys created REZ defines\n
+  WRITE
+// Simple Software Systems International, Inc.\n
+  WRITE
+// APWREZ.SCG 1.2\n
+  WRITE
+// --------------------------------------------------------------------\n\n
+END
+DONE 0
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# handle undefined resource types as hex data
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+TYPE 0
+IF R15 EQ 1      put in header if first one
+  LOAD R1 R13
+  WRITE
+// --- type $%0.4lX is undefined and therefore created as hex DATA \n\n
+END
+LOAD R1 R13        # get resource type
+NAME R2 0          # get label (either from rResName or Genesys default)
+LOAD R3 R19
+WRITE
+data $%0.4lX (%s, $%0.4lX) {\n
+# do resource in hex bytes :::::::::::::::::::::::::::::::::::::::::::
+LOAD R20 R12       # get res size
+# where the action is ::::::::::::::::::::::::::::::::::::::::::::::::
+LOOP R24
+LOAD R21 32
+READ R1  BYTE
+WRITE
+       $"%0.2lX
+DEC R21 1          # remove one byte
+DEC R20 1
+LOOP R25
+READ R1 BYTE
+WRITE
+%0.2lX
+DEC R21 1          # remove another byte
+DEC R20 1
+IF R20 NE 0
+   IF R21 NE 0
+       CONT R25    # finish line
+   END
+END
+IF R20 NE 0
+WRITE
+"\n
+   CONT R24        # do next line
+ELSE
+WRITE
+";\n
+WRITE
+};\n\n
+END
+DONE 0
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# rIcon - $8001
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+TYPE $8001
+IF R15 EQ 1        # put in header if first one
+  WRITE
+// --- Icon Definitions\n\n
+END
+NAME R1 0          # get label (either from rResName or Genesys default)
+LOAD R2 R19
+WRITE
+resource rIcon (%s, $%0.4lX) {\n
+READ R1 WORD
+WRITE
+       $%0.4lX,                  // kind\n
+READ R20 WORD      # pull off iconSize word - calculated by REZ
+READ R1 WORD
+LOAD R20 R1        # keep for height pixel count
+WRITE
+       $%0.4lX,                  // height\n
+READ R1 WORD
+LOAD R21 R1        # keep for width pixel count
+WRITE
+       $%0.4lX,                  // width\n\n
+# do icon image ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+LOAD R22 R20       # get height (rows)
+LOOP R24
+LOAD R23 R21       # get width (pixels)
+READ R1 BYTE
+WRITE
+       $"%0.2lX
+DEC R23 2          # remove one byte
+LOOP R25
+READ R1 BYTE
+WRITE
+%0.2lX
+DEC R23 2          # remove another byte
+IF R23 NE 0
+   CONT R25        # finish line
+ELSE
+   IF R22 NE 1     # don't put the " on the last line
+WRITE
+"\n
+   END
+END
+DEC R22 1          # drop to next row
+IF R22 NE 0
+   CONT R24        # do next line
+ELSE
+WRITE
+",\n\n
+END
+# do icon mask :::::::::::::::::::::::::::::::::::::::::::::::::::::::
+LOOP R24
+LOAD R23 R21       # get width (pixels)
+READ R1 BYTE
+WRITE
+       $"%0.2lX
+DEC R23 2          # remove one byte
+LOOP R25
+READ R1 BYTE
+WRITE
+%0.2lX
+DEC R23 2          # remove another byte
+IF R23 NE 0
+   CONT R25        # finish line
+ELSE
+   IF R20 NE 1     # don't put the " on the last line
+WRITE
+"\n
+   END
+END
+DEC R20 1          # drop to next row
+IF R20 NE 0
+   CONT R24        # do next line
+ELSE
+WRITE
+";\n
+WRITE
+};\n\n
+END
+DONE $8001
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# rPicture - $8002
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+TYPE $8002
+IF R15 EQ 1        # put in header if first one
+  WRITE
+// --- Picture Definitions\n\n
+END
+NAME R1 0          # get label (either from rResName or Genesys default)
+LOAD R2 R19
+WRITE
+data rPicture (%s, $%0.4lX) {\n
+# do picture image in hex bytes ::::::::::::::::::::::::::::::::::::::
+LOAD R20 R12       # get res size
+# where the action is ::::::::::::::::::::::::::::::::::::::::::::::::
+LOOP R24
+LOAD R21 32
+READ R1 BYTE
+WRITE
+       $"%0.2lX
+DEC R21 1          # remove one byte
+DEC R20 1
+LOOP R25
+READ R1 BYTE
+WRITE
+%0.2lX
+DEC R21 1          # remove another byte
+DEC R20 1
+IF R20 NE 0
+   IF R21 NE 0
+       CONT R25    # finish line
+   END
+END
+IF R20 NE 0
+WRITE
+"\n
+   CONT R24        # do next line
+ELSE
+WRITE
+";\n
+WRITE
+};\n\n
+END
+DONE $8002
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# rControlList - $8003
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+TYPE $8003
+IF R15 EQ 1        # put in header if first one
+  WRITE
+// --- Control List Definitions\n\n
+END
+NAME R1 0          # get label (either from rResName or Genesys default)
+LOAD R2 R19
+WRITE
+resource rControlList (%s, $%0.4lX) {\n
+WRITE
+       {\n
+ LOAD R2  1        # look ahead 1, waiting for a 0 terminator
+ READ R21 LONG
+ LOOP R20
+ LOAD R1  R21
+ READ R21 LONG
+ IF R21 NE 0
+    NAME R1 $8004
+    WRITE
+       %s,        // control %ld\n
+ ELSE
+    NAME R1 $8004
+    WRITE
+       %s,        // control %ld\n
+ WRITE
+       };\n
+WRITE
+};\n\n
+ DONE 0
+ END
+ INC R2 1
+ CONT R20
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# rControlTemplate - $8004
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+TYPE $8004
+IF R15 EQ 1        # put in header if first one
+  WRITE
+// --- Control Templates\n\n
+END
+NAME R1 0       # get label (either from rResName or Genesys default)
+LOAD R2 R19
+WRITE
+resource rControlTemplate (%s, $%0.4lX) {\n
+# read in the standard control header info :::::::::::::::::::::::::::
+READ   R50 WORD    pcount - read in the standard '6'
+LOAD   R20 R50     keep a copy
+READ   R51 LONG    id
+READ   R52 WORD    \
+READ   R53 WORD     \ rect
+READ   R54 WORD     /
+READ   R55 WORD    /
+READ   R56 LONG    procref
+READ   R57 WORD    flag
+READ   R58 WORD    moreFlags
+READ   R59 LONG    refCon
+LOAD   R1  R51
+WRITE
+       $%0.8lX,              // ID\n
+LOAD   R1  R52     get control rect
+LOAD   R2  R53
+LOAD   R3  R54
+LOAD   R4  R55
+WRITE
+       {%.3ld,%.3ld,%.3ld,%.3ld},      // rect\n
+# iconButtonControl ::::::::::::::::::::::::::::::::::::::::::::::::::
+IF R56 EQ $7FF0001
+  WRITE
+       iconButtonControl
+ELSE
+# simpleButtonControl ::::::::::::::::::::::::::::::::::::::::::::::::
+IF R56 EQ $80000000
+  WRITE
+       simpleButtonControl
+ELSE
+# statTextControl ::::::::::::::::::::::::::::::::::::::::::::::::::::
+IF R56 EQ $81000000
+  WRITE
+       statTextControl
+ELSE
+# checkControl :::::::::::::::::::::::::::::::::::::::::::::::::::::::
+IF R56 EQ $82000000
+  WRITE
+       checkControl
+ELSE
+# editLineControl ::::::::::::::::::::::::::::::::::::::::::::::::::::
+IF R56 EQ $83000000
+  WRITE
+       editLineControl
+ELSE
+# radioControl :::::::::::::::::::::::::::::::::::::::::::::::::::::::
+IF R56 EQ $84000000
+  WRITE
+       radioControl
+ELSE
+# editTextControl ::::::::::::::::::::::::::::::::::::::::::::::::::::
+IF R56 EQ $85000000
+  WRITE
+       editTextControl
+ELSE
+# ScrollControl :::::::::::::::::::::::::::::::::::::::::::::::::::
+IF R56 EQ $86000000
+  WRITE
+       ScrollControl
+ELSE
+# popUpControl :::::::::::::::::::::::::::::::::::::::::::::::::::::::
+IF R56 EQ $87000000
+  WRITE
+       popUpControl
+ELSE
+# growControl ::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+IF R56 EQ $88000000
+  WRITE
+       growControl
+ELSE
+# listControl ::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+IF R56 EQ $89000000
+  WRITE
+       listControl
+ELSE
+# pictureControl :::::::::::::::::::::::::::::::::::::::::::::::::::::
+IF R56 EQ $8D000000
+  WRITE
+       pictureControl
+ELSE
+# thermometerControl ::::::::::::::::::::::::::::::::::::::::::::
+IF R56 EQ $87FF0002
+ WRITE
+       thermometerControl
+ELSE
+# rectangleControl ::::::::::::::::::::::::::::::::::::::::::::
+IF R56 EQ $87FF0003
+ WRITE
+       rectangleControl
+END
+# now, handle the remaining control header parms :::::::::::::::::::::
+WRITE
+ {{\n
+LOAD   R1  R57     get flag word
+WRITE
+               $%0.4lX,          // flag\n
+LOAD   R1  R58     get MoreFlags word
+WRITE
+               $%0.4lX,          // moreFlags\n
+LOAD   R1  R59     get refCon
+IF R56 EQ $88000000    handle a growControl with 6 parms
+  WRITE
+               $%0.8lX       // refCon\n
+ELSE
+  IF R56 EQ $87FF0003
+  AND R20 EQ 6
+    WRITE
+               $%0.8lX       // refCon\n
+  ELSE
+    WRITE     
+               $%0.8lX,      // refCon\n
+  END
+END
+#
+# Now the header is done, handle each control seperately :::::::::::::
+#
+# IconButtonControl ::::::::::::::::::::::::::::::::::::::::::::::::::
+IF R56 EQ $7FF0001                     pCount 7 8 9 10 11
+AND R20 EQ 7
+  READ R1 LONG     get iconRef
+  NAME R1 $8001
+  WRITE
+               %s   // iconRef\n
+END
+IF R56 EQ $7FF0001
+AND R20 GT 7
+  READ R1 LONG     get iconRef
+  NAME R1 $8001
+  WRITE
+               %s,  // iconRef\n
+END
+IF R56 EQ $7FF0001
+   AND R20 EQ 8
+       READ R1 LONG     get titleRef
+       NAME R1 $8006
+       WRITE
+               %s               // titleRef\n
+END
+IF R56 EQ $7FF0001
+   AND R20 GT 8
+       READ R1 LONG     get titleRef
+       NAME R1 $8006
+       WRITE
+               %s,              // titleRef\n
+END
+IF R56 EQ $7FF0001
+AND R20 EQ 9
+  READ R1 LONG     get colorTableRef
+  NAME R1 $800D
+  WRITE
+               %s               // colorTableRef\n
+END
+IF R56 EQ $7FF0001
+AND R20 GT 9
+  READ R1 LONG     get colorTableRef
+  NAME R1 $800D
+  WRITE
+               %s,              // colorTableRef\n
+END
+IF R56 EQ $7FF0001
+AND R20 EQ 10
+  READ R1 WORD     get displayMode
+  WRITE
+               $%0.4lX           // displayMode\n
+END
+IF R56 EQ $7FF0001
+AND R20 GT 10
+  READ R1 WORD     get displayMode
+  WRITE
+               $%0.4lX           // displayMode\n
+END
+IF R56 EQ $7FF0001
+AND R20 EQ 11
+  READ R1 BYTE
+  CTRL R1 5        convert to ASCII
+END
+IF R56 EQ $7FF0001
+AND R20 EQ 11
+AND R17 NE 1
+  WRITE
+               {"%s",
+END
+IF R56 EQ $7FF0001
+AND R20 EQ 11
+AND R17 EQ 1
+  WRITE
+               {"\\$%0.2lX",
+END
+IF R56 EQ $7FF0001
+AND R20 EQ 11
+  READ R1 BYTE
+  CTRL R1 5        convert to ASCII
+END
+IF R56 EQ $7FF0001
+AND R20 EQ 11
+AND R17 NE 1
+  WRITE
+"%s",
+END
+IF R56 EQ $7FF0001
+AND R20 EQ 11
+AND R17 EQ 1
+  WRITE
+"\\$%0.2lX",
+END
+IF R56 EQ $7FF0001
+AND R20 EQ 11
+  READ R1 WORD
+  READ R2 WORD
+  WRITE
+ $%0.4lX, $%0.4lX}   // key equivalents\n
+END
+IF R56 EQ $7FF0001
+  WRITE
+       }};\n
+  WRITE
+};\n\n
+END
+# SimpleButtonControl ::::::::::::::::::::::::::::::::::::::::::::::::
+IF R56 EQ $80000000                    pCount 7 8 9
+AND R20 EQ 7
+  READ R1 LONG     get titleRef
+  NAME R1 $8006
+  WRITE
+               %s   // titleRef\n
+END
+IF R56 EQ $80000000
+AND R20 GT 7
+  READ R1 LONG     get titleRef
+  NAME R1 $8006
+  WRITE
+               %s,  // titleRef\n
+END
+IF R56 EQ $80000000
+AND R20 EQ 8
+  READ R1 LONG     get colorTableRef
+  NAME R1 $800D
+  WRITE
+               %s               // colorTableRef\n
+END
+IF R56 EQ $80000000
+AND R20 GT 8
+  READ R1 LONG     get colorTableRef
+  NAME R1 $800D
+  WRITE
+               %s,              // colorTableRef\n
+END
+IF R56 EQ $80000000
+AND R20 EQ 9
+  READ R1 BYTE
+  CTRL R1 5        convert to ASCII
+END
+IF R56 EQ $80000000
+AND R20 EQ 9
+AND R17 NE 1
+  WRITE
+               {"%s",
+END
+IF R56 EQ $80000000
+AND R20 EQ 9
+AND R17 EQ 1
+  WRITE
+               {"\\$%0.2lX",
+END
+IF R56 EQ $80000000
+AND R20 EQ 9
+  READ R1 BYTE
+  CTRL R1 5        convert to ASCII
+END
+IF R56 EQ $80000000
+AND R20 EQ 9
+AND R17 NE 1
+  WRITE
+"%s",
+END
+IF R56 EQ $80000000
+AND R20 EQ 9
+AND R17 EQ 1
+  WRITE
+ "\\$%0.2lX",
+END
+IF R56 EQ $80000000
+AND R20 EQ 9
+  READ R1 WORD
+  READ R2 WORD
+  WRITE
+$%0.4lX,$%0.4lX}  // key equivalents\n
+END
+IF R56 EQ $80000000
+  WRITE
+       }};\n
+  WRITE
+};\n\n
+END
+# StatTextControl ::::::::::::::::::::::::::::::::::::::::::::::::::::
+IF R56 EQ $81000000                    pCount 7 8 9
+AND R20 EQ 7
+  READ R1 LONG     get textRef
+  NAME R1 $800B
+  WRITE
+               %s      // textRef\n
+END
+IF R56 EQ $81000000
+AND R20 GT 7
+  READ R1 LONG     get textRef
+  NAME R1 $800B
+  WRITE
+               %s,     // textRef\n
+END
+IF R56 EQ $81000000
+AND R20 EQ 8
+  WRITE
+               %s_CNT  // textSize\n
+END
+IF R56 EQ $81000000
+AND R20 GT 8
+  WRITE
+               %s_CNT, // textSize\n
+END
+IF R56 EQ $81000000
+AND R20 EQ 9
+  READ R1 WORD   ignore prior word
+  READ R1 WORD   get just
+  WRITE
+               $%0.4lX           // just\n
+END
+IF R56 EQ $81000000
+  WRITE
+       }};\n
+  WRITE
+};\n\n
+END
+# CheckControl :::::::::::::::::::::::::::::::::::::::::::::::::::::::
+IF R56 EQ $82000000                    pCount 8 9 10
+  READ R1 LONG     get titleRef
+  NAME R1 $8006
+  WRITE
+               %s,  // titleRef\n
+END
+IF R56 EQ $82000000
+AND R20 EQ 8
+  READ R1 WORD     get initialValue
+  WRITE
+               $%0.4lX           // initialValue\n
+END
+IF R56 EQ $82000000
+AND R20 GT 8
+  READ R1 WORD     get initialValue
+  WRITE
+               $%0.4lX,          // initialValue\n
+END
+IF R56 EQ $82000000
+AND R20 EQ 9
+  READ R1 LONG     get colorTableRef
+  NAME R1 $800D
+  WRITE
+               %s               // colorTableRef\n
+END
+IF R56 EQ $82000000
+AND R20 GT 9
+  READ R1 LONG     get colorTableRef
+  NAME R1 $800D
+  WRITE
+               %s,              // colorTableRef\n
+END
+IF R56 EQ $82000000
+AND R20 EQ 10
+  READ R1 BYTE
+  CTRL R1 5        convert to ASCII
+END
+IF R56 EQ $82000000
+AND R20 EQ 10
+AND R17 NE 1
+  WRITE
+               {"%s",
+END
+IF R56 EQ $82000000
+AND R20 EQ 10
+AND R17 EQ 1
+  WRITE
+               {"\\$%0.2lX",
+END
+IF R56 EQ $82000000
+AND R20 EQ 10
+  READ R1 BYTE
+  CTRL R1 5        convert to ASCII
+END
+IF R56 EQ $82000000
+AND R20 EQ 10
+AND R17 NE 1
+  WRITE
+"%s",
+END
+IF R56 EQ $82000000
+AND R20 EQ 10
+AND R17 EQ 1
+  WRITE
+"\\$%0.2lX",
+END
+IF R56 EQ $82000000
+AND R20 EQ 10
+  READ R1 WORD
+  READ R2 WORD
+  WRITE
+$%0.4lX,$%0.4lX}  // key equivalents\n
+END
+IF R56 EQ $82000000
+  WRITE
+       }};\n
+  WRITE
+};\n\n
+END
+# EditLineControl ::::::::::::::::::::::::::::::::::::::::::::::::::::
+IF R56 EQ $83000000                    pCount 8 9 10
+  READ R1 WORD     get maxSize
+  WRITE
+               $%0.4lX,          // maxSize\n
+END
+IF R56 EQ $83000000
+AND R20 EQ 8
+  READ R1 LONG     defaultRef
+  NAME R1 $8006
+  WRITE
+               %s   // defaultRef\n
+END
+IF R56 EQ $83000000
+AND R20 GT 8
+  READ R1 LONG     defaultRef
+  NAME R1 $8006
+  WRITE
+               %s,  // defaultRef\n
+END
+IF R56 EQ $83000000
+AND R20 EQ 9
+  READ R1 WORD     pwChar
+  WRITE
+               $%0.4lX           // pwChar\n
+END
+IF R56 EQ $83000000
+AND R20 GT 9
+  READ R1 WORD     pwChar
+  WRITE
+               $%0.4lX,          // pwChar\n
+END
+IF R56 EQ $83000000
+AND R20 EQ 10
+  READ R1 WORD     keyMask
+  WRITE
+               $%0.4lX           // KeyMask\n
+END             
+IF R56 EQ $83000000
+  WRITE
+       }};\n
+  WRITE
+};\n\n
+END
+# RadioControl :::::::::::::::::::::::::::::::::::::::::::::::::::::::
+IF R56 EQ $84000000                    pCount 8 9 10
+  READ R1 LONG     get titleRef
+  NAME R1 $8006
+  WRITE
+               %s,  // titleRef\n
+END
+IF R56 EQ $84000000
+AND R20 EQ 8
+  READ R1 WORD     get initialValue
+  WRITE
+               $%0.4lX           // initialValue\n
+END
+IF R56 EQ $84000000
+AND R20 GT 8
+  READ R1 WORD     get initialValue
+  WRITE
+               $%0.4lX,          // initialValue\n
+END
+IF R56 EQ $84000000
+AND R20 EQ 9
+  READ R1 LONG     get colorTableRef
+  NAME R1 $800D
+  WRITE
+               %s               // colorTableRef\n
+END
+IF R56 EQ $84000000
+AND R20 GT 9
+  READ R1 LONG     get colorTableRef
+  NAME R1 $800D
+  WRITE
+               %s,              // colorTableRef\n
+END
+IF R56 EQ $84000000
+AND R20 EQ 10
+  READ R1 BYTE
+  CTRL R1 5        convert to ASCII
+END
+IF R56 EQ $84000000
+AND R20 EQ 10
+AND R17 NE 1
+  WRITE
+               {"%s",
+END
+IF R56 EQ $84000000
+AND R20 EQ 10
+AND R17 EQ 1
+  WRITE
+               {"\\$%0.2lX",
+END
+IF R56 EQ $84000000
+AND R20 EQ 10
+  READ R1 BYTE
+  CTRL R1 5        convert to ASCII
+END
+IF R56 EQ $84000000
+AND R20 EQ 10
+AND R17 NE 1
+  WRITE
+"%s",
+END
+IF R56 EQ $84000000
+AND R20 EQ 10
+AND R17 EQ 1
+  WRITE
+"\\$%0.2lX",
+END
+IF R56 EQ $84000000
+AND R20 EQ 10
+  READ R1 WORD
+  READ R2 WORD
+  WRITE
+$%0.4lX,$%0.4lX}  // key equivalents\n
+END
+IF R56 EQ $84000000
+  WRITE
+       }};\n
+  WRITE
+};\n\n
+END
+# EditTextControl ::::::::::::::::::::::::::::::::::::::::::::::::::::
+IF R56 EQ $85000000                    pCount 7 to 23
+AND R20 EQ 7
+  READ R1 LONG     get textFlags
+  WRITE
+               $%0.8lX       // textFlags\n
+END
+IF R56 EQ $85000000
+AND R20 GT 7
+  READ R1 LONG     get textFlags
+  WRITE
+               $%0.8lX,      // textFlags\n
+END
+IF R56 EQ $85000000
+AND R20 EQ 8
+  WRITE
+               {
+  READ R1 WORD     get indentRect
+  READ R2 WORD
+  READ R3 WORD
+  READ R4 WORD
+  WRITE
+%.3ld,%.3ld,%.3ld,%.3ld}   // indentRect\n
+END
+IF R56 EQ $85000000
+AND R20 GT 8
+  WRITE
+               {
+  READ R1 WORD     get indentRect
+  READ R2 WORD
+  READ R3 WORD
+  READ R4 WORD
+  WRITE
+%.3ld,%.3ld,%.3ld,%.3ld},  // indentRect\n
+END
+IF R56 EQ $85000000
+AND R20 EQ 9
+  READ R1 LONG     get vertBar
+  WRITE
+               $%0.8lX       // vertBar\n
+END
+IF R56 EQ $85000000
+AND R20 GT 9
+  READ R1 LONG     get vertBar
+  WRITE
+               $%0.8lX,      // vertBar\n
+END
+IF R56 EQ $85000000
+AND R20 EQ 10
+  READ R1 WORD     get vertAmount
+  WRITE
+               $%0.4lX           // vertAmount\n
+END
+IF R56 EQ $85000000
+AND R20 GT 10
+  READ R1 WORD     get vertAmount
+  WRITE
+               $%0.4lX,          // vertAmount\n
+END
+IF R56 EQ $85000000
+AND R20 EQ 11
+  READ R1 LONG     get horzBar
+  WRITE
+               $%0.8lX       // horzBar\n
+END
+IF R56 EQ $85000000
+AND R20 GT 11
+  READ R1 LONG     get horzBar
+  WRITE
+               $%0.8lX,      // horzBar\n
+END
+IF R56 EQ $85000000
+AND R20 EQ 12
+  READ R1 WORD     get horzAmount
+  WRITE
+               $%0.4lX           // horzAmount\n
+END
+IF R56 EQ $85000000
+AND R20 GT 12
+  READ R1 WORD     get horzAmount
+  WRITE
+               $%0.4lX,          // horzAmount\n
+END
+IF R56 EQ $85000000
+AND R20 EQ 13
+  READ R1 LONG     get styleRef
+  WRITE
+               $%0.8lX       // styleRef\n
+END
+IF R56 EQ $85000000
+AND R20 GT 13
+  READ R1 LONG     get styleRef
+  WRITE
+               $%0.8lX,      // styleRef\n
+END
+IF R56 EQ $85000000
+AND R20 EQ 14
+  READ R1 WORD     get textDescriptor
+  WRITE
+               $%0.4lX           // textDescriptor\n
+END
+IF R56 EQ $85000000
+AND R20 GT 14
+  READ R1 WORD     get textDescriptor
+  WRITE
+               $%0.4lX,          // textDescriptor\n
+END
+IF R56 EQ $85000000
+AND R20 EQ 15
+  READ R1 LONG     get textRef
+  NAME R1 $8006
+  WRITE
+               %s   // textRef\n
+END
+IF R56 EQ $85000000
+AND R20 GT 15
+  READ R1 LONG     get textRef
+  NAME R1 $8006
+  WRITE
+               %s,  // textRef\n
+END
+IF R56 EQ $85000000
+AND R20 EQ 16
+  READ R1 LONG     get textLength
+  WRITE
+               $%0.8lX       // textLength\n
+END
+IF R56 EQ $85000000
+AND R20 GT 16
+  READ R1 LONG     get textLength
+  WRITE
+               $%0.8lX,      // textLength\n
+END
+IF R56 EQ $85000000
+AND R20 EQ 17
+  READ R1 LONG     get maxChars
+  WRITE
+               $%0.8lX       // maxChars\n
+END
+IF R56 EQ $85000000
+AND R20 GT 17
+  READ R1 LONG     get maxChars
+  WRITE
+               $%0.8lX,      // maxChars\n
+END
+IF R56 EQ $85000000
+AND R20 EQ 18
+  READ R1 LONG     get maxLines
+  WRITE
+               $%0.8lX       // maxLines\n
+END
+IF R56 EQ $85000000
+AND R20 GT 18
+  READ R1 LONG     get maxLines
+  WRITE
+               $%0.8lX,      // maxLines\n
+END
+IF R56 EQ $85000000
+AND R20 EQ 19
+  READ R1 WORD     get maxCharsPerLine
+  WRITE
+               $%0.4lX           // maxCharsPerLine\n
+END
+IF R56 EQ $85000000
+AND R20 GT 19
+  READ R1 WORD     get maxCharsPerLine
+  WRITE
+               $%0.4lX,          // maxCharsPerLine\n
+END
+IF R56 EQ $85000000
+AND R20 EQ 20
+  READ R1 WORD     get maxHeight
+  WRITE
+               $%0.4lX           // maxHeight\n
+END
+IF R56 EQ $85000000
+AND R20 GT 20
+  READ R1 WORD     get maxHeight
+  WRITE
+               $%0.4lX,          // maxHeight\n
+END
+IF R56 EQ $85000000
+AND R20 EQ 21
+  READ R1 LONG     get colorTableRef
+  NAME R1 $800D
+  WRITE
+               %s               // colorTableRef\n
+END
+IF R56 EQ $85000000
+AND R20 GT 21
+  READ R1 LONG     get colorTableRef
+  NAME R1 $800D
+  WRITE
+               %s,              // colorTableRef\n
+END
+IF R56 EQ $85000000
+AND R20 EQ 22
+  READ R1 WORD     get drawMode
+  WRITE
+               $%0.4lX           // drawMode\n
+END
+IF R56 EQ $85000000
+AND R20 GT 22
+  READ R1 LONG     get drawMode
+  WRITE
+               $%0.4lX,          // drawMode\n
+END
+IF R56 EQ $85000000
+AND R20 EQ 23
+  READ R1 LONG     get filterProcPtr
+  WRITE
+               $%0.8lX       // filterProcPtr\n
+END
+IF R56 EQ $85000000
+  WRITE
+       }};\n
+  WRITE
+};\n\n
+END
+# ScrollControl :::::::::::::::::::::::::::::::::::::::::::::::::::
+IF R56 EQ $86000000                    pCount 9 10
+  READ R1 WORD
+  WRITE
+               $%0.4lX,          // maxSize\n
+  READ R1 WORD
+  WRITE
+               $%0.4lX,          // viewSize\n
+END
+IF R56 EQ $86000000
+AND R20 EQ 9
+  READ R1 WORD     get initialValue
+  WRITE
+               $%0.4lX           // initialValue\n
+END
+IF R56 EQ $86000000
+AND R20 GT 9
+  READ R1 WORD     get initialValue
+  WRITE
+               $%0.4lX,          // initialValue\n
+END
+IF R56 EQ $86000000
+AND R20 EQ 10
+  READ R1 LONG     get colorTableRef
+  NAME R1 $800D
+  WRITE
+               %s               // colorTableRef\n
+END
+IF R56 EQ $86000000
+  WRITE
+       }};\n
+  WRITE
+};\n\n
+END
+# PopUpControl :::::::::::::::::::::::::::::::::::::::::::::::::::::::
+IF R56 EQ $87000000                    pCount 9 10
+  READ R1 WORD
+  WRITE
+               $%0.4lX,          // titleWidth\n
+  READ R1 LONG
+  NAME R1 $8009
+  WRITE
+               %s,  // menuRef\n
+END
+IF R56 EQ $87000000
+AND R20 EQ 9
+  READ R1 WORD     get initialValue
+  WRITE
+               $%0.4lX           // initialValue\n
+END
+IF R56 EQ $87000000
+AND R20 GT 9
+  READ R1 WORD     get initialValue
+  WRITE
+               $%0.4lX,          // initialValue\n
+END
+IF R56 EQ $87000000
+AND R20 EQ 10
+  READ R1 LONG     get colorTableRef
+  NAME R1 $800D
+  WRITE
+               %s               // colorTableRef\n
+END
+IF R56 EQ $87000000
+  WRITE
+       }};\n
+  WRITE
+};\n\n
+END
+# GrowControl ::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+IF R56 EQ $88000000                    pCount 6 7
+AND R20 EQ 7
+  READ R1 LONG     get colorTableRef
+  NAME R1 $800D
+  WRITE
+               %s               // colorTableRef\n
+END
+IF R56 EQ $88000000
+  WRITE
+       }};\n
+  WRITE
+};\n\n
+END
+# ListControl ::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+IF R56 EQ $89000000                    pCount 14 15
+  READ R1 WORD
+  WRITE
+               $%0.4lX,          // listSize\n
+  READ R1 WORD
+  WRITE
+               $%0.4lX,          // listView\n
+  READ R1 WORD
+  WRITE
+               $%0.4lX,          // listType\n
+  READ R1 WORD
+  WRITE
+               $%0.4lX,          // listStart\n
+  READ R1 LONG
+  WRITE
+               // $%0.8lX,      // listDraw (pointer to draw routine)\n
+  READ R1 WORD
+  WRITE
+               $%0.4lX,          // listMemHeight\n
+  READ R1 WORD
+  WRITE
+               $%0.4lX,          // listMemSize\n
+END
+IF R56 EQ $89000000
+AND R20 EQ 14
+  READ R1 LONG
+  WRITE
+               $%0.8lX       // listRef\n
+END
+IF R56 EQ $89000000
+AND R20 GT 14
+  READ R1 LONG
+  WRITE
+               $%0.8lX,      // listRef\n
+END
+IF R56 EQ $89000000
+AND R20 EQ 15
+  READ R1 LONG     get colorTableRef
+  NAME R1 $800D
+  WRITE
+               %s               // colorTableRef\n
+END
+IF R56 EQ $89000000
+  WRITE
+       }};\n
+  WRITE
+};\n\n
+END
+# PictureControl :::::::::::::::::::::::::::::::::::::::::::::::::::::
+IF R56 EQ $8D000000                    pCount 7
+  READ R1 LONG
+  NAME R1 $8002
+  WRITE
+               %s   // pictureRef\n
+  WRITE
+       }};\n
+  WRITE
+};\n\n
+
+END
+# ThermometerControl :::::::::::::::::::::::::::::::::::::::::::::::::::::
+IF R56 EQ $87FF0002                   pCount 8 9
+  READ R1 WORD
+  WRITE
+               $%0.4lX,		// value\n
+END
+IF R56 EQ $87FF0002
+AND R20 EQ 8
+  READ R1 WORD
+  WRITE
+               $%0.4lX		// scale\n
+END
+IF R56 EQ $87FF0002
+AND R20 GT 8
+  READ R1 WORD
+  WRITE
+               $%0.4lX,		// scale\n
+  READ R1 LONG     get colorTableRef
+  NAME R1 $800D
+  WRITE
+               %s               // colorTableRef\n
+END
+IF R56 EQ $87FF0002
+  WRITE
+       }};\n
+  WRITE
+};\n\n
+END
+# RectangleControl :::::::::::::::::::::::::::::::::::::::::::::::::::::
+IF R56 EQ $87FF0003                   pCount 6 8 9 10
+AND R20 EQ 8
+  READ R1 WORD
+  WRITE
+               $%0.4lX,              // pen height\n
+  READ R1 WORD
+END
+IF R56 EQ $87FF0003
+AND R20 GT 8
+  WRITE
+               $%0.4lX,              // pen width\n
+END
+IF R56 EQ $87FF0003
+AND R20 EQ 8
+  WRITE
+               $%0.4lX               // pen width\n
+END
+IF R56 EQ $87FF0003
+AND R20 GT 8
+  READ R1  WORD
+  WRITE
+       $"%0.4lX
+  READ R1 WORD
+  WRITE
+ %0.4lX
+  READ R1 WORD
+  WRITE
+ %0.4lX
+  READ R1 WORD
+END
+IF R56 EQ $87FF0003
+AND R20 GT 9
+  WRITE
+ %0.4lX",         // pen mask\n
+END
+IF R56 EQ $87FF0003
+AND R20 EQ 9
+  WRITE
+ %0.4lX"          // pen mask\n
+END
+IF R56 EQ $87FF0003
+AND R20 GT 9
+LOAD R21 32
+READ R1 WORD
+READ R2 WORD
+READ R3 WORD
+READ R4 WORD
+WRITE
+       $"%0.4lX %0.4lX %0.4lX %0.4lX"\n
+READ R1 WORD
+READ R2 WORD
+READ R3 WORD
+READ R4 WORD
+WRITE
+       $"%0.4lX %0.4lX %0.4lX %0.4lX"\n
+READ R1 WORD
+READ R2 WORD
+READ R3 WORD
+READ R4 WORD
+WRITE
+       $"%0.4lX %0.4lX %0.4lX %0.4lX"\n
+READ R1 WORD
+READ R2 WORD
+READ R3 WORD
+READ R4 WORD
+WRITE
+       $"%0.4lX %0.4lX %0.4lX %0.4lX"   // pen pattern\n
+END
+IF R56 EQ $87FF0003
+  WRITE                                              
+       }};\n
+  WRITE
+};\n\n
+END                                                     
+DONE $8004
+#
+#
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# rC1InputString   - $8005
+# rPString         - $8006
+# rTextForLETextBox2 $800B
+# rTextBlock       - $8011
+# rAlertString     - $8015
+# rText            - $8016
+# rCString         - $801D
+# rErrorString     - $8020
+# rWString         - $8022
+# rC1OutputString  - $8023
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+TYPE $8005 rC1InputString
+TYPE $8006 rPString
+TYPE $800B rTextForLETextBox2
+TYPE $8011 rTextBlock
+TYPE $8015 rAlertString
+TYPE $8016 rText
+TYPE $801D rCString
+TYPE $8020 rErrorString
+TYPE $8022 rWString
+TYPE $8023 rC1OutputString
+NAME R1 0
+LOAD R2 R19
+LOAD R25 R1
+IF R13 EQ $8005
+  IF R15 EQ 1          # put in header if first one
+    WRITE
+// --- rC1InputString Templates\n\n
+  END
+IF R13 EQ $8005
+  READ R20 WORD
+  WRITE
+resource rC1InputString (%s, $%0.4lX) {\n
+ELSE
+IF R13 EQ $8006
+  IF R15 EQ 1          # put in header if first one
+    WRITE
+// --- rPString Templates\n\n
+  END
+IF R13 EQ $8006
+  READ R20 BYTE
+  WRITE
+resource rPString (%s, $%0.4lX) {\n
+ELSE
+IF R13 EQ $800B
+  IF R15 EQ 1          # put in header if first one
+    WRITE
+// --- rTextForLETextBox2 Templates\n\n
+  END
+IF R13 EQ $800B
+  LOAD R20 R12
+  LOAD R2 R12
+  WRITE
+#define %s_CNT %ld /* move this line to the top of this file */\n\n
+  LOAD R2 R19
+  WRITE
+resource rTextForLETextBox2 (%s, $%0.4lX) {\n
+ELSE
+IF R13 EQ $8011
+  IF R15 EQ 1          # put in header if first one
+    WRITE
+// --- rTextBlock Templates\n\n
+  END
+IF R13 EQ $8011
+  LOAD R20 R12
+  WRITE
+resource rTextBlock (%s, $%0.4lX) {\n
+ELSE
+IF R13 EQ $8015
+  IF R15 EQ 1          # put in header if first one
+    WRITE
+// --- rAlertString Templates\n\n
+  END
+IF R13 EQ $8015
+  LOAD R20 R12
+  DEC R20 1
+  WRITE
+resource rAlertString (%s, $%0.4lX) {\n
+ELSE
+IF R13 EQ $8016
+  IF R15 EQ 1          # put in header if first one
+    WRITE
+// --- rText Templates\n\n
+  END
+IF R13 EQ $8016
+  LOAD R20 R12
+  WRITE
+resource rText (%s, $%0.4lX) {\n
+ELSE
+IF R13 EQ $801D
+  IF R15 EQ 1          # put in header if first one
+    WRITE
+// --- rCString Templates\n\n
+  END
+IF R13 EQ $801D
+  LOAD R20 R12
+  DEC R20 1
+  WRITE
+resource rCString (%s, $%0.4lX) {\n
+ELSE
+IF R13 EQ $8020
+  IF R15 EQ 1          # put in header if first one
+    WRITE
+// --- rErrorString Templates\n\n
+  END
+IF R13 EQ $8020
+  LOAD R20 R12
+  DEC R20 1
+  WRITE
+resource rErrorString (%s, $%0.4lX) {\n
+ELSE
+IF R13 EQ $8022
+  IF R15 EQ 1          # put in header if first one
+    WRITE
+// --- rWString Templates\n\n
+  END
+IF R13 EQ $8022
+  LOAD R20 R12
+  DEC R20 1
+  WRITE
+resource rWString (%s, $%0.4lX) {\n
+ELSE
+IF R13 EQ $8023
+  IF R15 EQ 1          # put in header if first one
+    WRITE
+// --- rC1OutputString Templates\n\n
+  END
+IF R13 EQ $8023
+  LOAD R20 R12
+  DEC R20 4
+  WRITE
+resource rC1OutputString (%s, $%0.4lX) {\n
+  READ R1 WORD
+  READ R2 WORD
+  WRITE
+       $%0.4lX,                  // buffer length\n
+END
+# insert the actual text here ::::::::::::::::::::::::::::::::::::::::
+WRITE
+       "
+LOOP R23
+LOAD R22 64         set the count to 64 characters per line...
+IF R20 LT 64
+  LOAD R22 R20                         ...or remaining characters
+END
+READ R1 NSTR R22    request a string of r22 characters
+IF R17 NE 1         a string is referenced by R1
+AND R20 GT 0
+  WRITE
+%s
+ELSE
+  IF R20 GT 0
+    WRITE
+\\$%0.2lX
+END
+DEC R20 R16         reduce the count by those processed
+IF R20 GT 0
+  WRITE
+"\n       "
+  CONT R23          go back if not done
+END
+IF R13 EQ $8015
+  WRITE
+"\n       "\\$00
+END
+WRITE
+"\n
+WRITE
+};\n\n
+#
+DONE 0
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# rStringList - $8007
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+TYPE $8007 rStringList
+IF R15 EQ 1         put a header in if this is the first one
+  WRITE
+// --- rStringList Templates\n\n
+END
+#
+NAME R20 0
+READ R21 WORD
+#
+LOAD R1 R20            name ref
+LOAD R2 R19
+WRITE
+resource rStringList (%s, $%0.4lX) {\n       {\n
+#
+LOOP R100
+#
+READ R23 BYTE
+LOAD R1 R23         length byte
+#
+LOOP R101
+#
+IF R23 GE 48        set the count to 48 or remaining characters
+  LOAD R24 48
+ELSE
+  LOAD R24 R23
+END
+READ R1 NSTR R24    request a string of r22 characters
+IF R17 EQ 0         a string is referenced by R1
+OR R17 EQ 2
+  WRITE
+       "%s"
+ELSE
+IF R17 EQ 1         a value is contained in R1
+  WRITE
+       "\$%0.2lX"
+END
+DEC R23 R16         reduce the count by those processed
+IF R23 GT 0
+  WRITE
+\n
+  CONT R101         go back if not done
+END
+DEC R21 1
+IF R21 GT 0
+  WRITE
+,\n
+  CONT R100
+END
+LOAD R1 R20
+WRITE
+\n       }\n};\n\n
+DONE 0
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# rMenuBar - $8008
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+TYPE $8008
+IF R15 EQ 1      put in header if first one
+  LOAD R1 R13
+  WRITE
+// --- Menu Bar Definitions\n\n
+END
+NAME R1 0
+LOAD R2 R19
+WRITE
+resource rMenuBar (%s, $%0.4lX) {\n
+WRITE
+       {\n
+ READ R1 WORD      # trash version
+ READ R1 WORD      # trash menuFlag
+ READ R21 LONG     # look ahead 1
+ LOOP R20
+ LOAD R1 R21
+ READ R21 LONG
+ NAME R1 $8009     # get rMenu
+ IF R21 NE 0
+   WRITE
+       %s,\n
+ ELSE
+   WRITE
+       %s\n
+ WRITE
+       };\n
+ WRITE
+};\n\n
+ DONE 0
+ END
+ CONT R20
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# rMenu - $8009
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+TYPE $8009
+IF R15 EQ 1      put in header if first one
+  LOAD R1 R13
+  WRITE
+// --- Menu Definitions\n\n
+END
+NAME R1 0
+LOAD R2 R19
+WRITE
+resource rMenu (%s, $%0.4lX) {\n
+READ R1 WORD       # trash version
+READ R1 WORD
+WRITE
+       $%0.4lX,                  // menuID\n
+READ R1 WORD
+WRITE
+       $%0.4lX,                  // menuFlag\n
+READ R1 LONG
+NAME R1 $8006
+WRITE
+       %s, {        // menuTitleRef\n
+ READ R21 LONG     # look ahead 1
+ LOOP R20
+ LOAD R1 R21
+ READ R21 LONG
+ NAME R1 $800A   # get rMenuItem
+ IF R21 NE 0
+   WRITE
+               %s,\n
+ ELSE
+   WRITE
+               %s\n
+ WRITE
+       };\n
+ WRITE
+};\n\n
+ DONE 0
+ END
+ CONT R20
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# rMenuItem - $800A
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+TYPE $800A
+IF R15 EQ 1      put in header if first one
+  LOAD R1 R13
+  WRITE
+// --- Menu Item Definitions\n\n
+END
+NAME R1 0
+LOAD R2 R19
+WRITE
+resource rMenuItem (%s, $%0.4lX) {\n
+READ R1 WORD       # trash version
+READ R1 WORD
+WRITE
+       $%0.4lX,                  // itemID\n
+READ R1 BYTE
+CTRL R1 5          # convert to ASCII
+IF R17 NE 1
+  WRITE
+       "%s",
+ELSE
+  WRITE
+       "",
+END
+READ R1 BYTE
+CTRL R1 5          # convert to ASCII
+IF R17 NE 1
+  WRITE
+"%s",                // itemChar, itemAltChar\n
+ELSE
+  WRITE
+"",                  // itemChar, itemAltChar\n
+END
+READ R1 WORD
+IF R1 EQ 0
+   WRITE
+       NIL,                    // itemCheck\n
+ELSE
+   WRITE
+       $%0.4lX,                  // itemCheck\n
+END
+READ R1 WORD
+WRITE
+       $%0.4lX,                  // itemFlag\n
+READ R1 LONG
+NAME R1 $8006
+WRITE
+       %s           // itemTitleRef\n
+WRITE
+};\n\n
+DONE $800A
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# rCtlDefProc - $800C
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+TYPE $800C
+IF R15 EQ 1      put in header if first one
+  LOAD R1 R13
+  WRITE
+// --- Control Definition Procedures\n\n
+END
+LOAD R1 R13        # get resource type
+NAME R2 0          # get label (either from rResName or Genesys default)
+LOAD R3 R19
+WRITE
+data $%0.4lX (%s, $%0.4lX) {\n
+# do resource in hex bytes :::::::::::::::::::::::::::::::::::::::::::
+LOAD R20 R12       # get res size
+# where the action is ::::::::::::::::::::::::::::::::::::::::::::::::
+LOOP R24
+LOAD R21 32
+READ R1  BYTE
+WRITE
+       $"%0.2lX
+DEC R21 1          # remove one byte
+DEC R20 1
+LOOP R25
+READ R1 BYTE
+WRITE
+%0.2lX
+DEC R21 1          # remove another byte
+DEC R20 1
+IF R20 NE 0
+   IF R21 NE 0
+       CONT R25    # finish line
+   END
+END
+IF R20 NE 0
+WRITE
+"\n
+   CONT R24        # do next line
+ELSE
+WRITE
+";\n
+WRITE
+};\n\n
+END
+DONE $800C
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# rWindParam1 - $800E
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+TYPE $800E
+IF R15 EQ 1      put in header if first one
+  LOAD R1 R13
+  WRITE
+// --- Window Templates\n\n
+END
+NAME R1 0
+LOAD R2 R19
+WRITE
+resource rWindParam1 (%s, $%0.4lX) {\n
+READ R1 WORD       # trash plLength
+READ R1 WORD
+WRITE
+       $%0.4lX,                  // plFrame (frame bits)\n
+READ R1 LONG
+IF R1 NE 0
+  NAME R1 $8006
+  WRITE
+       %s,          // plTitle (title ID)\n
+ELSE
+  WRITE
+       NIL,                    // plTitle (no Title)\n
+END
+READ R1 LONG
+WRITE
+       $%0.8lX,              // plRefCon\n
+READ R1 WORD
+READ R2 WORD
+READ R3 WORD
+READ R4 WORD
+WRITE
+       {%.3ld,%.3ld,%.3ld,%.3ld},      // plZoomRect\n
+READ R1 LONG
+IF R1 NE 0
+  NAME R1 $8010
+  WRITE
+       %s,        // plColorTable\n
+ELSE
+  WRITE
+       NIL,                    // plColorTable (standard colors)\n
+END
+READ R1 WORD
+READ R2 WORD
+WRITE
+       {$%0.4lX, $%0.4lX},         // plYOrigin, plXOrigin\n
+READ R1 WORD
+READ R2 WORD
+WRITE
+       {$%0.4lX, $%0.4lX},         // plDataHeight, plDataWidth\n
+READ R1 WORD
+READ R2 WORD
+WRITE
+       {$%0.4lX, $%0.4lX},         // plMaxHeight, plMaxWidth\n
+READ R1 WORD
+READ R2 WORD
+WRITE
+       {$%0.4lX, $%0.4lX},         // plVerScroll, plHorScroll\n
+READ R1 WORD
+READ R2 WORD
+WRITE
+       {$%0.4lX, $%0.4lX},         // plVerPage, plHorPage\n
+READ R1 LONG
+WRITE
+       $%0.8lX,              // plInfoText (info RefCon)\n
+READ R1 WORD
+WRITE
+       $%0.4lX,                  // plInfoHeight\n
+READ R1 LONG   # skip plDefProc
+READ R1 LONG   # skip plInfoDraw
+READ R1 LONG   # skip plContentDraw
+READ R1 WORD
+READ R2 WORD
+READ R3 WORD
+READ R4 WORD
+WRITE
+       {%.3ld,%.3ld,%.3ld,%.3ld},      // plPosition\n
+READ R1 LONG
+IF R1 EQ $FFFFFFFF
+  WRITE
+       infront,                // plPlane\n
+ELSE
+  WRITE
+       $%0.8lX,              // plPlane\n
+END
+READ R1 LONG
+READ R22 WORD
+LOAD R23 R22
+BIT R22 AND $F
+IF R22 EQ 9
+  LOAD R21 $8003    # rControlList
+ELSE
+  LOAD R21 $8004    # rControlTemplate
+END
+IF R1 NE 0
+  NAME R1 R21
+  WRITE
+       %s,        // plControlList\n
+ELSE
+ WRITE
+       NIL,                    // plControlList (none)\n
+END
+LOAD R1 R23
+WRITE
+       $%0.4lX                   // plInDesc\n
+WRITE
+};\n\n
+DONE $800E
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# rWindColor - $8010
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+TYPE $8010
+IF R15 EQ 1      put in header if first one
+  LOAD R1 R13
+  WRITE
+// --- Window Color Templates\n\n
+END
+NAME R1 0
+LOAD R2 R19
+WRITE
+resource rWindColor (%s, $%0.4lX) {\n
+READ R1 WORD
+WRITE
+       $%0.4lX,                  // frameColor\n
+READ R1 WORD
+WRITE
+       $%0.4lX,                  // titleColor\n
+READ R1 WORD
+WRITE
+       $%0.4lX,                  // tBarColor\n
+READ R1 WORD
+WRITE
+       $%0.4lX,                  // growColor\n
+READ R1 WORD
+WRITE
+       $%0.4lX                   // infoColor\n
+WRITE
+};\n\n
+DONE $8010
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# rToolStartup - $8013
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+TYPE $8013
+IF R15 EQ 1      put in header if first one
+  LOAD R1 R13
+  WRITE
+// --- Tool Startup Table Templates\n\n
+END
+PTEXT R51
+#Tool Locator
+PTEXT R52
+#Memory Manager
+PTEXT R53
+#Miscellaneous Tools
+PTEXT R54
+#QuickDraw II
+PTEXT R55
+#Desk Manager
+PTEXT R56
+#Event Manager
+PTEXT R57
+#Scheduler
+PTEXT R58
+#Sound Manager
+PTEXT R59
+#Apple Desktop Bus
+PTEXT R60
+#SANE
+PTEXT R61
+#Integer Math
+PTEXT R62
+#Text Tools
+PTEXT R63
+#(Invalid Tool)
+PTEXT R64
+#Window Manager
+PTEXT R65
+#Menu Manager
+PTEXT R66
+#Control Manager
+PTEXT R67
+#System Loader
+PTEXT R68
+#QuickDraw II Aux.
+PTEXT R69
+#Print Manager
+PTEXT R70
+#LineEdit Tools
+PTEXT R71
+#Dialog Manager
+PTEXT R72
+#Scrap Manager
+PTEXT R73
+#Standard File Tools
+PTEXT R74
+#Disk Utilities
+PTEXT R75
+#Note Synthesizer
+PTEXT R76
+#Note Sequencer
+PTEXT R77
+#Font Manager
+PTEXT R78
+#List Manager
+PTEXT R79
+#ACE Tools
+PTEXT R80
+#Resource Manager
+PTEXT R81
+#(Invalid Tool)
+PTEXT R82
+#MIDI Tool Set
+PTEXT R83
+#VOC Tool Set
+PTEXT R84
+#TextEdit Manager
+NAME R1 0
+LOAD R2 R19
+WRITE
+resource rToolStartup (%s, $%0.4lX) {\n
+READ R1 WORD   # trash flags
+READ R1 WORD
+WRITE
+       $%0.4lX, {                // videoMode\n
+ READ R1 WORD  # trash resFileID
+ READ R1 LONG  # trash dPageHandle
+ READ R21 WORD # keep numTools
+ LOOP R20
+ READ R1 WORD
+ READ R2 WORD
+ LOAD R50 R1
+ INC R50 50
+ WRITE
+               %.2ld, $%0.4lX
+ DEC R21 1
+ INDEX R1 R50
+ IF R21 NE 0
+   WRITE
+,      // %p \n
+ ELSE
+   WRITE
+       // %p \n
+ END
+IF R21 NE 0
+  CONT R20
+END
+WRITE
+       }\n
+WRITE
+};\n\n
+DONE $8013
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# rResName - $8014
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+TYPE $8014
+IF R15 EQ 1      put in header if first one
+  LOAD R1 R13
+  WRITE
+\n// --- type $%0.4lX defines\n\n
+END
+NAME R1 0
+LOAD R2 R14
+WRITE
+#define %s $%0.8lX\n
+DONE 0
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# rTwoRects - $801A
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+TYPE $801A
+IF R15 EQ 1
+   LOAD R1 R13
+   WRITE
+// --- TwoRects Templates\n\n
+END
+NAME R1 0
+LOAD R2 R19
+WRITE
+resource rTwoRects (%s, $%0.4lX) {\n
+READ R1 WORD
+READ R2 WORD
+READ R3 WORD
+READ R4 WORD
+WRITE
+       {%.3ld,%.3ld,%.3ld,%.3ld},      // rect 1\n
+READ R1 WORD
+READ R2 WORD
+READ R3 WORD
+READ R4 WORD
+WRITE
+       {%.3ld,%.3ld,%.3ld,%.3ld}       // rect 2\n
+WRITE
+};\n\n
+DONE $801A
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# rCDEVFlags - $8019
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+TYPE $8019
+IF R15 EQ 1      put in header if first one
+  LOAD R1 R13
+  WRITE
+// --- CDEVFlags Templates \n\n
+END
+NAME R1 0
+LOAD R2 R19
+WRITE
+resource rCDEVFlags (%s, $%0.4lX) {\n
+READ R1 WORD
+WRITE
+       $%0.4lX,                  // CDEVFlags\n
+READ R1 BYTE
+WRITE
+       $%0.2lX,                    // enabled\n
+READ R1 BYTE
+WRITE
+       $%0.2lX,                    // version\n
+READ R1 BYTE
+WRITE
+       $%0.2lX,                    // machine ROM version\n
+READ R1 BYTE
+WRITE
+       $%0.2lX,                    // System Disk version\n
+READ R1 WORD
+READ R2 WORD
+READ R3 WORD
+READ R4 WORD
+WRITE
+       {%.2ld,%.2ld,%.3ld,%.3ld},        // dataRect - top left MUST be 0,0\n
+READ R1 PSTR
+WRITE
+       "%s",\n
+READ R1 PSTR
+WRITE
+       "%s",\n
+READ R1 PSTR
+WRITE
+       "%s"\n
+WRITE
+};\n\n
+DONE $8019
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# rCursor - $8027
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+TYPE $8027
+IF R15 EQ 1      put in header if first one
+  LOAD R1 R13
+  WRITE
+// --- Cursor Templates \n\n
+END
+NAME R1 0
+LOAD R2 R19
+WRITE
+resource rCursor (%s, $%0.4lX) {\n
+READ R1 WORD
+LOAD R20 R1
+WRITE
+       $%0.4lX,                  // height\n
+READ R1 WORD
+LOAD R21 R1
+WRITE
+       $%0.4lX,                  // width\n       {\n
+# do cursor image ::::::::::::::::::::::::::::::::::::::::::::::::::::
+LOAD R22 R20
+LOOP R24
+LOAD R23 R21
+READ R1 WORD
+WRITE
+               $%0.4lX
+DEC R23 1
+LOOP R25
+READ R1 WORD
+WRITE
+, $%0.4lX
+DEC R23 1
+IF R23 NE 0
+  CONT R25
+ELSE
+  IF R22 NE 1
+    WRITE
+,\n
+END
+DEC R22 1      # do next row
+IF R22 NE 0
+  CONT R24
+ELSE
+  WRITE
+\n       },\n       {\n
+END
+# do cursor mask :::::::::::::::::::::::::::::::::::::::::::::::::::::
+LOOP R24
+LOAD R23 R21
+READ R1 WORD
+WRITE
+               $%0.4lX
+DEC R23 1
+LOOP R25
+READ R1 WORD
+WRITE
+, $%0.4lX
+DEC R23 1
+IF R23 NE 0
+  CONT R25
+ELSE
+  IF R20 NE 1
+    WRITE
+,\n
+END
+DEC R20 1      # do next row
+IF R20 NE 0
+  CONT R24
+ELSE
+  WRITE
+\n       },\n
+END
+READ R1 WORD
+WRITE
+       $%0.4lX,                  // hotspot Y\n
+READ R1 WORD
+WRITE
+       $%0.4lX,                  // hotspot X\n
+READ R1 WORD
+WRITE
+       $%0.4lX                   // cursor ID (640 mode)\n
+WRITE
+};\n\n
+DONE $8027
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# rVersion - $8029
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+TYPE $8029
+IF R15 EQ 1      put in header if first one
+  LOAD R1 R13
+  WRITE
+// --- Version Templates \n\n
+END
+NAME R1 0
+LOAD R2 R19
+WRITE
+resource rVersion (%s, $%0.4lX) {\n
+WRITE
+        {
+READ R21 BYTE    release
+READ R22 BYTE    stage
+READ R23 BYTE    minor/bug
+READ R1 BYTE    Major
+WRITE
+%ld,
+LOAD R1 R23
+DIV R1 16
+WRITE
+ %ld,
+LOAD R1 R23
+BIT R1 AND $F
+WRITE
+ %ld,
+BIT R22 SR 5
+IF R22 EQ 1
+  WRITE
+ development, 
+END
+IF R22 EQ 2
+  WRITE
+ alpha, 
+END
+IF R22 EQ 3
+  WRITE
+ beta, 
+END
+IF R22 EQ 4
+  WRITE
+ final, 
+END
+IF R22 EQ 5
+  WRITE
+ release, 
+END
+LOAD R1 R21
+WRITE
+%lx},\n
+READ R1 WORD                     Country Code
+IF R1 EQ 0
+    WRITE 
+        verUS,\n
+END
+IF R1 EQ 1
+    WRITE 
+        verFrance,\n
+END
+IF R1 EQ 2
+    WRITE 
+        verBritain,\n
+END
+IF R1 EQ 3
+    WRITE 
+        verGermany,\n
+END
+IF R1 EQ 4
+    WRITE 
+        verItaly,\n
+END
+IF R1 EQ 5
+    WRITE 
+        verNetherlands,\n
+END
+IF R1 EQ 6
+    WRITE 
+        verBelgiumLux,\n
+END
+IF R1 EQ 7
+    WRITE 
+        verSweden,\n
+END
+IF R1 EQ 8
+    WRITE 
+        verSpain,\n
+END
+IF R1 EQ 9
+    WRITE 
+        verDenmark,\n
+END
+IF R1 EQ 10
+    WRITE 
+        verPortugal,\n
+END
+IF R1 EQ 11
+    WRITE 
+        verFrCanada,\n
+END
+IF R1 EQ 12
+    WRITE 
+        verNorway,\n
+END
+IF R1 EQ 13
+    WRITE 
+        verIsrael,\n
+END
+IF R1 EQ 14
+    WRITE 
+        verJapan,\n
+END
+IF R1 EQ 15
+    WRITE 
+        verAustralia,\n
+END
+IF R1 EQ 16
+    WRITE 
+        verArabic,\n
+END
+IF R1 EQ 17
+    WRITE 
+        verFinland,\n
+END
+IF R1 EQ 18
+    WRITE 
+        verFRSwiss,\n
+END
+IF R1 EQ 19
+    WRITE 
+        verGRSwiss,\n
+END
+IF R1 EQ 20
+    WRITE 
+        verGreece,\n
+END
+IF R1 EQ 21
+    WRITE 
+        verIceland,\n
+END
+IF R1 EQ 22
+    WRITE 
+        verMalta,\n
+END
+IF R1 EQ 23
+    WRITE 
+        verCyprus,\n
+END
+IF R1 EQ 24
+    WRITE 
+        verTurkey,\n
+END
+IF R1 EQ 25
+    WRITE 
+        verYugoslavia,\n
+END
+IF R1 EQ 26
+    WRITE 
+        verIndia,\n
+END
+IF R1 EQ 27
+    WRITE 
+        verPakistan,\n
+END
+IF R1 EQ 41
+    WRITE 
+        verLithuania,\n
+END
+IF R1 EQ 42
+    WRITE 
+        verPoland,\n
+END
+IF R1 EQ 43
+    WRITE 
+        verHungary,\n
+END
+IF R1 EQ 44
+    WRITE 
+        verEstonia,\n
+END
+IF R1 EQ 45
+    WRITE
+        verLatvia,\n
+END
+IF R1 EQ 46
+    WRITE
+        verLapland,\n
+END
+IF R1 EQ 47
+    WRITE
+        verFaeroeIsl,\n
+END
+IF R1 EQ 48
+    WRITE
+        verIran,\n
+END
+IF R1 EQ 49
+    WRITE
+        verRussia,\n
+END
+IF R1 EQ 50
+    WRITE
+        verIreland,\n
+END
+IF R1 EQ 51
+    WRITE
+        verKorea,\n
+END
+IF R1 EQ 52
+    WRITE
+        verChina,\n
+END
+IF R1 EQ 53
+    WRITE
+        verTaiwan,\n
+END
+IF R1 EQ 54
+    WRITE
+        verThailand,\n
+END
+READ R1 PSTR
+WRITE
+        "%s",\n
+READ R1 PSTR
+WRITE
+        "%s"\n
+WRITE
+};\n\n
+DONE $8029
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# rComment - $802A
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+TYPE $802A
+IF R15 EQ 1      put in header if first one
+  LOAD R1 R13
+  WRITE
+// --- Comment Templates \n\n
+END
+NAME R1 0
+LOAD R2 R19
+WRITE
+resource rComment (%s, $%0.4lX) {\n
+WRITE
+       "
+LOAD R20 R12
+LOOP R23
+LOAD R22 64         set the count to 64 characters per line...
+IF R20 LT 64
+  LOAD R22 R20                         ...or remaining characters
+END
+READ R1 NSTR R22    request a string of r22 characters
+IF R17 NE 1         a string is referenced by R1
+AND R20 GT 0
+  WRITE
+%s
+ELSE
+  IF R20 GT 0
+    WRITE
+\\$%0.2lX
+END
+DEC R20 R16         reduce the count by those processed
+IF R20 GT 0
+  WRITE
+"\n       "
+  CONT R23          go back if not done
+END
+WRITE
+"\n
+WRITE
+};\n\n
+DONE $802A
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# rBundle - $802B
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+TYPE $802B
+IF R15 EQ 1      put in header if first one
+  LOAD R1 R13
+  WRITE
+// --- Bundle Templates \n\n
+END
+NAME R1 0
+LOAD R2 R19
+WRITE
+resource rBundle (%s, $%0.4lX) {\n
+READ R1 WORD    version 
+READ R20 WORD   offset
+READ R1 LONG
+NAME R1 $8001
+WRITE
+    %s,   // Icon ID for the application\n
+READ R1 LONG
+WRITE
+    $%0.8lX,          // Bundle ID of this resource\n
+READ R1 LONG    space for handle
+READ R21 WORD   OneDocCount
+WRITE
+    {\n
+LOOP R23
+  READ R24 WORD    struct size
+  READ R25 WORD    offset to match
+  READ R26 WORD    pCount
+  IF R26 GT 0
+    WRITE
+        {\n
+    READ R1 WORD
+    LOAD R28 R1
+    BIT R28 AND 1
+    IF R28 EQ 0
+      WRITE
+            DontLaunch
+    ELSE 
+      WRITE
+            LaunchThis
+    END
+    LOAD R28 R1
+    BIT R28 AND $10
+    IF R28 NE 0 
+      WRITE
+            +reads
+    END
+    LOAD R28 R1
+    BIT R28 AND $20
+    IF R28 NE 0
+      WRITE
+            +writes
+    END
+    LOAD R28 R1
+    BIT R28 AND $20
+    IF R28 NE 0
+      WRITE
+            +native
+    END
+    LOAD R28 R1
+    BIT R28 AND $40
+    IF R28 NE 0
+      WRITE
+            +creator
+    END
+    WRITE
+,     // voting clout\n
+  END
+  IF R26 GT 1
+    READ R1 LONG
+    IF R26 GT 2
+      WRITE
+           {%ld},
+    ELSE
+      WRITE
+           {%ld}
+    END
+    WRITE
+                    // rFinderPath ID space\n
+    READ R1 LONG      space for handle
+  END
+  IF R26 GT 2
+    READ R1 LONG
+    IF R26 GT 3
+      WRITE
+           {$%0.8lX},
+    ELSE 
+      WRITE
+           {$%0.8lX}
+    END
+    WRITE
+   // large rIcon ID for this document\n
+    READ R1 LONG      space for handle
+  END
+  IF R26 GT 3
+    READ R1 LONG
+    IF R26 GT 4
+      WRITE
+           {$%0.8lX},
+    ELSE
+      WRITE
+           {$%0.8lX}
+    END
+    WRITE
+   // small rIcon ID for this document\n
+    READ R1 LONG      space for handle
+  END
+  IF R26 GT 4
+    READ R1 PSTR
+    WRITE
+           "%s",\n
+  END
+  IF R26 NE 0
+    WRITE
+        },\n
+  END
+  READ R27 LONG
+  LOAD R1 R27
+  WRITE
+        $%0.4lX,  //match flags\n
+  READ R1 WORD    Key
+  IF R1 NE 0
+    WRITE
+        MatchFileType {{\n
+    READ R1 WORD
+    WRITE
+            $%0.4lX        // filetype to match\n
+    WRITE
+        }},\n
+  ELSE
+    READ R1 WORD
+    WRITE
+        Empty {},\n
+  END
+  READ R1 WORD    Key
+  IF R1 NE 0 
+    WRITE
+        MatchAuxType {{\n
+    READ R1 LONG
+    WRITE
+            $%0.8lX,        // auxtype mask\n
+    READ R1 LONG
+    WRITE
+            $%0.8lX         // auxtype to match\n
+    WRITE
+        }},\n
+  ELSE
+    READ R1 WORD
+    WRITE
+        Empty {},\n
+  END
+  READ R1 WORD    Key
+  IF R1 NE 0 
+    WRITE
+        MatchFileName {{\n
+    READ R1 PSTR
+    WRITE
+            "%s"        // filename string\n
+    WRITE
+        }},\n
+  ELSE
+    READ R1 WORD
+    WRITE
+        Empty {},\n
+  END
+  READ R1 WORD    Key
+  IF R1 NE 0 
+    WRITE
+        MatchCreateDate {{\n
+    READ R1 WORD
+    WRITE
+            $%0.4lX,            // compare how\n
+    READ R1 BYTE
+    READ R2 BYTE
+    READ R3 BYTE
+    READ R4 BYTE
+    READ R5 BYTE
+    READ R6 BYTE
+    READ R7 BYTE
+    READ R8 BYTE
+    WRITE
+            $"%0.2lX %0.2lX %0.2lX %0.2lX %0.2lX %0.2lX %0.2lX %0.2lX"\n
+    WRITE
+        }},\n
+  ELSE
+    READ R1 WORD
+    WRITE
+        Empty {},\n
+  END
+  READ R1 WORD    Key
+  IF R1 NE 0 
+    WRITE
+        MatchModDate {{\n
+    READ R1 WORD
+    WRITE
+            $%0.4lX,            // compare how\n
+    READ R1 BYTE
+    READ R2 BYTE
+    READ R3 BYTE
+    READ R4 BYTE
+    READ R5 BYTE
+    READ R6 BYTE
+    READ R7 BYTE
+    READ R8 BYTE
+    WRITE
+            $"%0.2lX %0.2lX %0.2lX %0.2lX %0.2lX %0.2lX %0.2lX %0.2lX"\n
+    WRITE
+        }},\n
+  ELSE
+    READ R1 WORD
+    WRITE
+        Empty {},\n
+  END
+  READ R1 WORD    Key
+  IF R1 NE 0 
+    WRITE
+        MatchLocalAccess {{\n
+    READ R1 WORD
+    WRITE
+            $%0.4lX,         // access word mask\n
+    READ R1 WORD
+    WRITE
+            $%0.4lX          // access word comparsion value\n
+    WRITE
+        }},\n
+  ELSE
+    READ R1 WORD
+    WRITE
+        Empty {},\n
+  END
+  READ R1 WORD    Key
+  IF R1 NE 0 
+    WRITE
+        MatchNetworkAccess {{\n
+    READ R1 LONG
+    WRITE
+            $%0.4lX,         // access word mask\n
+    READ R1 LONG
+    WRITE
+            $%0.4lX          // access word comparsion value\n
+    WRITE
+        }},\n
+  ELSE
+    READ R1 WORD
+    WRITE
+        Empty {},\n
+  END
+  READ R1 WORD    Key
+  IF R1 NE 0 
+    WRITE
+        MatchExtended {{\n
+    READ R1 WORD
+    WRITE
+            $%0.4lX,            // mask for bits\n
+    READ R1 WORD
+    WRITE
+            $%0.4lX             // is the file extended? (high bit)\n
+    WRITE
+        }},\n
+  ELSE
+    READ R1 WORD
+    WRITE
+        Empty {},\n
+  END
+  READ R1 WORD    Key
+  IF R1 NE 0 
+    WRITE
+        MatchHFSFileType {{\n
+    READ R1 LONG 
+    WRITE
+            $%0.8lX     // hfs filetype\n
+    WRITE
+        }},\n
+  ELSE
+    READ R1 WORD
+    WRITE
+        Empty {},\n
+  END
+  READ R1 WORD    Key
+  IF R1 NE 0 
+    WRITE
+        MatchHFSCreator {{\n
+    READ R1 LONG 
+    WRITE
+            $%0.8lX     // hfs creator type\n
+    WRITE
+        }},\n
+  ELSE
+    READ R1 WORD
+    WRITE
+        Empty {},\n
+  END
+  READ R1 WORD    Key
+  IF R1 NE 0 
+    WRITE
+        MatchOptionList {{\n
+    READ R29 WORD     optionCount
+    LOOP R30 
+      WRITE
+            {\n
+      READ R31 WORD    filesystems
+      WRITE
+                {
+      LOOP R32
+        READ R1 WORD
+        WRITE
+%0.4lX
+        DEC R31 1
+        IF R31 GT 0
+          WRITE
+,
+          CONT R32
+        END
+      WRITE
+},\n
+      READ R1 WORD
+      WRITE
+                $%0.4lX,\n
+      READ R1 LONG
+      WRITE
+                $%0.8lX,\n
+      READ R1 LONG
+      WRITE
+                $%0.8lX,\n
+      READ R1 WORD
+      WRITE
+                $%0.4lX,\n
+      DEC R29 1
+      IF R29 GT 0
+        WRITE   
+            },\n
+        CONT R30
+      END
+    WRITE
+            }\n
+    WRITE
+        }},\n
+  ELSE
+    WRITE
+        Empty {},\n
+  END
+  READ R1 WORD    Key
+  IF R1 NE 0 
+    WRITE
+        MatchEOF {{\n
+    READ R1 WORD
+    WRITE
+            %ld,\n
+    READ R1 LONG
+    WRITE
+            $%0.8lX\n
+    WRITE
+        }}\n
+  ELSE
+    WRITE
+        Empty {}\n
+  END
+  DEC R21 1
+  IF R21 GT 0
+    CONT R23
+  END
+WRITE 
+    }\n
+WRITE 
+};
+DONE $802B
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# rUpdateInfo - $DEAD
+# see https://speccie.uk/speccie/downloads/versions_developers_manual.pdf
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+TYPE $DEAD
+IF R15 EQ 1      put in header if first one
+  LOAD R1 R13
+  WRITE
+// --- UpdateInfo Templates \n\n
+  WRITE
+#ifndef rUpdateInfo\n
+  WRITE
+#define rUpdateInfo $DEAD\n
+  WRITE
+type rUpdateInfo {\n
+  WRITE
+     integer = 0;     // version must be zero */\n
+  WRITE
+     longint;         // Resource ID of string holding app's display name\n
+  WRITE
+     longint;         // ID of string holding author's name\n
+  WRITE
+     longint;         // ID of string URL to the downloads folder\n
+  WRITE
+     longint;         // ID of string for downloadable archive name\n
+  WRITE
+     longint;         // ID of string for Versions.List data file\n
+  WRITE
+};\n
+  WRITE
+#endif\n\n
+END
+NAME R1 0
+LOAD R2 R19
+WRITE
+resource rUpdateInfo (%s, $%0.4lX) {\n
+READ R1 WORD
+  WRITE
+    $%0.4lX,                     // Reserved - Must Be Zero\n
+READ R1 LONG
+NAME R1 $8006
+  WRITE
+    %s,     // Application Display Name\n
+READ R1 LONG
+NAME R1 $8006
+  WRITE
+    %s,     // Authors Name\n
+READ R1 LONG
+NAME R1 $8006
+  WRITE
+    %s,     // Download Folder URL\n
+READ R1 LONG
+NAME R1 $8006
+  WRITE
+    %s,     // Download Archive Name\n
+READ R1 LONG
+NAME R1 $8006
+  WRITE
+    %s      // Versions.List Data File\n
+  WRITE
+};\n\n
+DONE $DEAD
+#
+# End of APWREZ scg template... Have a nice day :)
+#

@@ -1,0 +1,46 @@
+*--- The commands
+
+0 - prepare me
+1 - return the name of the editor
+2 - interact with window
+3 - initializes the editor
+4 - get front windows, create a resource, dispose memory, exit
+5 - not handled
+6 - not handled
+7 - get front window, create a resource, exit
+8 - not handled
+
+*--- The buffer that is passed to the editor
+
+L02434C  DW    $0000      ; 00 event code
+L02434E  ADRL  $00000000  ; 02 event message
+         ADRL  $00000000  ; 06 tick count
+L024356  DW    $0000      ; 0A mouse location
+L024358  DW    $0000	  ; 0C
+L02435A  DW    $0000      ; 0E modifiers
+L02435C  ADRL  $00000000  ; 10 task data
+L024360  ADRL  $00000000  ; 14 task mask
+         ADRL  $00000000  ; 18
+L024368  DW    $0000	  ; 1C
+L02436A  ADRL  $00000000  ; 1E handle to control
+L02436E  DW    $0000      ; 22 
+         DW    $0000	  ; 
+L024372  ADRL  $00000000  ; 26 control ID - ()$0001 or $1002 or $1003 for tool table)
+         DW    $0000	  ; 
+         DW    $0000	  ; 
+L02437A  ADRL  $00000000  ; 2E O source pointer of data to be copied ($20 bytes) (STR 'Version')
+L02437E  ADRL  $00000000  ; 32 O another pointer (STR 'VERSIONS_01234567')
+L024382  DW    $0000	  ; 36 O supported resource type
+L024384  ADRL  $00000000  ; 38 resource ID
+L024388  DW    $0000	  ; 3C memory ID
+L02438A  DW    $0000	  ; 3E command (0..5)
+L02438C  DW    $0000	  ; 40 Y-coord
+L02438E  DW    $0000	  ; 42 X-coord
+         DW    $0000	  ; 
+         DW    $0000      ; 
+L024394  DW    $0000	  ; 48 flag (bit 15: is resource formatted?, did we handle the command?)
+L024396  DW    $0000	  ; 4A TaskMaster result
+         DW    $0000	  ; 
+L02439A  DW    $0000	  ; 4E Resource file ID
+L02439C  DW    $0000	  ; 50 Resource type
+L02439E  ADRL  $00000000  ; 52 Resource ID

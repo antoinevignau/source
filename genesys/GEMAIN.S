@@ -3,7 +3,7 @@
 * Main program
 *
 * (c) 1990-1991, SSSi
-* (c) 2020, Brutal Deluxe Software
+* (u) 2020, Brutal Deluxe Software
 *
 
 * v1.3.4 - AV 202010
@@ -14,7 +14,7 @@
 *   - existing controls support 6.0 and 6.0.1 bits
 *   - rectangle and thermometer controls support added
 * - Editor / Versions
-*   - WIP (should be fun to understand how they communicate)
+*   - Update Info (yeah)
 *
  
          mx    %00
@@ -1663,7 +1663,7 @@ L021046  PHD
          CLC
          RTL
 
-copyBRUTAL	str	'(c) 2020, Brutal Deluxe'
+copyBRUTAL	str	'(u) 2020, Brutal Deluxe'
 
 L02105B  DW    $0000
 L02105D  ASC   '     0k free memory'00

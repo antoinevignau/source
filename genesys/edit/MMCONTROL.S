@@ -1,5 +1,5 @@
 *
-* Genesys v1.2.4
+* Genesys v1.3.5
 * Control editor
 *
 
@@ -14518,6 +14518,8 @@ L0271EC  DW    $0000
          DW    $0000
 L0271F0  STR   'Check box'
 
+*--- Add a rIcon
+
 L0271FA  LDA   $04,S
          STA   L027390
          LDA   $06,S
@@ -14674,96 +14676,33 @@ L027390  ADRL  $00000000
          DW    $0006		; flag
          DW    $1020		; moreFlags
          ADRL  $00000000	; refCon
-	 adrl	$00000000	; iconRef
-	 adrl	$00000000	; titleRef
-	 adrl	$00000000	; colorTableRef
-	 dw	$0000		; displayMode
-	 ds	6		; keyEquivalent
-	 dw	$0000		; initialValue
+L0273A8	 ADRL  $00000000	; iconRef	AV 202102 - That label was misplaced
+	 adrl  $00000000	; titleRef
+	 adrl  $00000000	; colorTableRef
+	 dw    $0000		; displayMode
+	 ds    6		; keyEquivalent
+	 dw    $0000		; initialValue
 
-L0273A8  ADRL  $00000000
-         DB    $00
-         DB    $00
-         DB    $00
-         DB    $00
-         DB    $00
-         DB    $00
-         DB    $00
-         DB    $00
-         DB    $00
-         DB    $00
-L0273B6  DB    $00
-         DB    $00
-         DB    $20
-         DB    $00
-         DB    $08
-         DB    $00
-         DB    $08
-         DB    $00
-         DB    $00
-         DB    $00
-         DB    $00
-         DB    $0F
-         DB    $0F
-         DB    $FF
-         DB    $F0
-         DB    $F0
-         DB    $0F
-         DB    $FF
-         DB    $F0
-         DB    $00
-         DB    $0F
-         DB    $FF
-         DB    $FF
-         DB    $F0
-         DB    $0F
-         DB    $FF
-         DB    $FF
-         DB    $F0
-         DB    $0F
-         DB    $FF
-         DB    $FF
-         DB    $F0
-         DB    $0F
-         DB    $FF
-         DB    $FF
-         DB    $F0
-         DB    $00
-         DB    $00
-         DB    $00
-         DB    $00
-         DB    $FF
-         DB    $FF
-         DB    $FF
-         DB    $F0
-         DB    $FF
-         DB    $FF
-         DB    $FF
-         DB    $FF
-         DB    $FF
-         DB    $FF
-         DB    $FF
-         DB    $FF
-         DB    $FF
-         DB    $FF
-         DB    $FF
-         DB    $FF
-         DB    $FF
-         DB    $FF
-         DB    $FF
-         DB    $FF
-         DB    $FF
-         DB    $FF
-         DB    $FF
-         DB    $FF
-         DB    $FF
-         DB    $FF
-         DB    $FF
-         DB    $FF
-         DB    $FF
-         DB    $FF
-         DB    $FF
-         DB    $FF
+L0273B6  DW    $0000
+         DW    $0020
+         DW    $0008
+         DW    $0008
+	 HEX   0000000F
+	 HEX   0FFFF0F0
+	 HEX   0FFFF000
+	 HEX   0FFFFFF0
+	 HEX   0FFFFFF0
+	 HEX   0FFFFFF0
+	 HEX   0FFFFFF0
+	 HEX   00000000
+	 HEX   FFFFFFF0
+	 HEX   FFFFFFFF
+	 HEX   FFFFFFFF
+	 HEX   FFFFFFFF
+	 HEX   FFFFFFFF
+	 HEX   FFFFFFFF
+	 HEX   FFFFFFFF
+	 HEX   FFFFFFFF
 
 *--- AV 202010
 

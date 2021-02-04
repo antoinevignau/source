@@ -1,3 +1,11 @@
+Genesys v1.3.5 Readme - February 2021
+
+Editors
+- Control
+	A bug in icon control where I put the icon ref out of the control template (leading to storing 0 as icon reference)
+
+###
+
 Genesys v1.3.4 Readme - November 2020
 
 Shell

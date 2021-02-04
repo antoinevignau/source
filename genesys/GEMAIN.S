@@ -6,6 +6,10 @@
 * (u) 2020, Brutal Deluxe Software
 *
 
+* v1.3.5 - AV 202102
+* - Editor / Control
+*   - Bug in ref icon pointer fixed
+*
 * v1.3.4 - AV 202010
 * - Main program
 *   - new resource types added
@@ -63,11 +67,6 @@ GSOS EQU $E100A8
          PHD
          PHK
          PLB
-	 
-	 lda	#L02434C
-	 stal	$300
-	 lda	#^L02434C
-	 stal	$302
 	 
          _TLStartUp
          PEA   $0000
@@ -344,8 +343,8 @@ L020363  DW    $0000      ;  version number
          DW    $0001
          DW    $0000
 
-L020369  STR   'Shell v1.3.4'
-L020376  STR   'v1.3.4'
+L020369  STR   'Shell v1.3.5'
+L020376  STR   'v1.3.5'
          DB    $00
          DB    $00
          DB    $00
@@ -1663,7 +1662,7 @@ L021046  PHD
          CLC
          RTL
 
-copyBRUTAL	str	'(u) 2020, Brutal Deluxe'
+copyBRUTAL	str	'Brutal Deluxe Software'
 
 L02105B  DW    $0000
 L02105D  ASC   '     0k free memory'00

@@ -1,3 +1,11 @@
+Genesys v1.3.5 Readme - February 2021
+
+Editors
+- Control
+	A bug in icon control where I put the icon ref out of the control template (leading to storing 0 as icon reference)
+
+###
+
 Genesys v1.3.4 Readme - November 2020
 
 The well-known resource editor for the Apple IIgs, originally developed and distributed by SSSi, Inc. until 1991, is now available in a new version that supports resource controls introducted in System 6.0 and 6.0.1, and even more.

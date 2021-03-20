@@ -1705,7 +1705,8 @@ L040EC1  LDA   L040E86
          PHA
 L040ED3  RTS
 
-L040ED4  BRK   $00
+L040ED4  DW    $0000
+
 L040ED6  PHP
          REP   #$30
          LDA   $05,S
@@ -3956,7 +3957,8 @@ L041DD6  PLP
          SEC
          RTL
 
-L041DDA  BRK   $00
+L041DDA  DW    $0000
+
 L041DDC  ENT
          PHP
          REP   #$30
@@ -5083,6 +5085,7 @@ L042642  PHY
 
 L04264F  BRK   $00
 L042651  BRK   $00
+
 L042653  PHP
          REP   #$30
          SEC
@@ -7621,7 +7624,7 @@ L0439CF  BVS   L0439D4
 L0439D4  BRL   L043A2F
 L0439D7  JSR   L044071
          BRL   L043A4A
-L0439DD  BRK   $00
+L0439DD  DW    $0000
 L0439DF  LDX   #$0002
          STX   $C2
          STA   L043AFB
@@ -7729,8 +7732,8 @@ L043AA9  PHA
          JSR   L043A89
          SEP   #$10
 L043ABC  PLY
-         LDA   #$00
-         BRK   $38
+         LDA   #$0000
+         SEC
          ROL
 L043AC2  ASL
          DEY

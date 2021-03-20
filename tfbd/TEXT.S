@@ -1022,6 +1022,8 @@ L030670  ENT
          JSL   L03065A
          JMP   L03064C
 
+*--- Eval hex expression
+
 L030683  PHP
          REP   #$30
          PHD
@@ -1030,14 +1032,22 @@ L030683  PHP
          ADC   #$0007
          TCD
          LDA   [$00]
+	 and	#$00ff
+	 cmp	#$e1
+	 bcc	nochange2
+	 cmp	#$e7
+	 bcs	nochange2
+	 sec
+	 sbc	#$20
+nochange2
          AND   #$007F
-         CMP   #$0030
+         CMP   #$0030	; >0
          BCC   L0306A6
-         CMP   #$0047
+         CMP   #$0047	; >F
          BCS   L0306A6
-         CMP   #$003A
+         CMP   #$003A	; <9+1
          BCC   L0306AD
-         CMP   #$0041
+         CMP   #$0041	; >A
          BCS   L0306B3
 L0306A6  LDA   #$0000
          PLD
@@ -1046,10 +1056,10 @@ L0306A6  LDA   #$0000
          RTL
 
 L0306AD  SEC
-         SBC   #$0030
+         SBC   #$0030	; 0
          BRA   L0306B7
 L0306B3  SEC
-         SBC   #$0037
+         SBC   #$0037	; 7
 L0306B7  INC   $00
          PLD
          PLP
@@ -1108,6 +1118,7 @@ L03070D  LDA   #$0000
 
 L030715  DW    $0000
 L030717  DW    $0000
+
 L030719  ENT
          PHP
          REP   #$30

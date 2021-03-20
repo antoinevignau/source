@@ -429,7 +429,8 @@ L02018D  DB    $00
 L02018F  STRL  '9:Expand:'
 L02019A  STRL  '9:Configs:'
 
-L0201A6  STR   "The Flaming Bird Disassembler    Written by Ferox - (c) 1994 Phoenix corporation"
+*L0201A6  STR   "The Flaming Bird Disassembler    Written by Ferox - (c) 1994 Phoenix corporation"
+L0201A6  STR   "The Flaming Bird Disassembler      Written by Ferox - (c) 1994-2021 Phoenix Corp"
 L0201F7  STR   87">ERR: "
 
 L0201FF  DA    L020239	;  0 Not enough memory
@@ -2157,11 +2158,11 @@ L021367  PHP
          REP   #$30
          LDA   [$F8]
          AND   #$00FF
-         CMP   #$00A4
+         CMP   #$00A4	; $
          BEQ   L0213A6
-         CMP   #$00B0
+         CMP   #$00B0	; 0
          BCC   L0213BB
-         CMP   #$00BA
+         CMP   #$00BA	; 9+1
          BCC   L0213A8
          LDA   #L0213D1
          JSR   L021F2A
@@ -2188,7 +2189,7 @@ L0213A8  PEI   $FA
          PLX
          STX   $FA
          BCC   L0213CD
-L0213BB  LDA   #$0001
+L0213BB  LDA   #$0001	; Err: Syntax
 L0213BE  JSR   L020AB8
 L0213C1  PLP
          SEC
@@ -2630,7 +2631,7 @@ L021656  DW    $0100
 L021658  DS    $0002
 L02165A  DS    $00FE
 
-L021758  ADRL  L0217D6	; 0
+L021758  ADRL  L0217D6	; 0 DB
          ADRL  L0217D5	; 1
          ADRL  L0217D4	; 2
          ADRL  L0217D3	; 3
@@ -2698,6 +2699,7 @@ L0217D2  INY
 L0217D3  INY
 L0217D4  INY
 L0217D5  INY
+
 L0217D6  LDA   L021847,Y
          AND   #$00FF
          STA   L021843
@@ -3638,31 +3640,38 @@ L021F2A  PHP
          LDY   #$00
 L021F36  LDA   [$F8],Y
          BEQ   L021F85
+	 cmp	#'a'
+	 bcc	nochange
+	 cmp	#'z'+1
+	 bcs	nochange
+	 sec
+	 sbc	#$20
+nochange
          CMP   #$A0
          BEQ   L021F85
-         CMP   #$AC
+         CMP   #$AC	; ,
          BEQ   L021F85
-         CMP   #$AE
+         CMP   #$AE	; .
          BEQ   L021F85
-         CMP   #$BA
+         CMP   #$BA	; 9+1
          BEQ   L021F7C
-         CMP   #$B0
+         CMP   #$B0	; 0
          BCC   L021F6E
-         CMP   #$BA
+         CMP   #$BA	; 9+1
          BCC   L021F76
-         CMP   #$FE
+         CMP   #$FE	; {
          BEQ   L021F80
-         CMP   #$C1
+         CMP   #$C1	; A
          BCC   L021F6E
-         CMP   #$FB
+         CMP   #$FB	; z+1
          BCS   L021F6E
-         CMP   #$DD
+         CMP   #$DD	; ]
          BEQ   L021F7C
-         CMP   #$DF
+         CMP   #$DF	; _
          BEQ   L021F80
-         CMP   #$DB
+         CMP   #$DB	; [
          BCC   L021F80
-         CMP   #$E1
+         CMP   #$E1	; a
          BCS   L021F80
 L021F6E  LDA   #$04
          JSR   L020AB8
@@ -11168,12 +11177,13 @@ L0272CA  LDA   L027318,X
          RTS
 
 L02730B  STR   "TFB-Disasm v"
-L027318  STR   "1.0.4"	; was "1.0.2"
+L027318  STR   "1.0.5"	; was "1.0.4" was "1.0.2"
          DB    $00
          DB    $00
          DB    $00
          DB    $00
-L027322  STR   "   19-SEP-2020"8D	; was "10-MAY-94"
+*L027322  STR   "   19-SEP-2020"8D	; was "10-MAY-94"
+L027322  STR   "   21-MAR-2021"8D	; was "10-MAY-94"
 
 L027330  JSR   L021586
          LDA   L0215CD

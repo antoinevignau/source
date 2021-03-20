@@ -1031,26 +1031,29 @@ L030683  PHP
          TCD
          LDA   [$00]
          AND   #$007F
-         CMP   #$0030
-         BCC   L0306A6
-         CMP   #$0047
-         BCS   L0306A6
-         CMP   #$003A
-         BCC   L0306AD
-         CMP   #$0041
-         BCS   L0306B3
-L0306A6  LDA   #$0000
+
+         CMP   #'0'
+         BCC   :err
+         CMP   #'9'+1
+         BCC   :digit
+
+         CMP   #'A'
+         BCC   :err
+         AND   #$df	; uppercase it
+         CMP   #'F'+1
+         BCC   :alpha
+:err     LDA   #$0000
          PLD
          PLP
          SEC
          RTL
 
-L0306AD  SEC
-         SBC   #$0030
-         BRA   L0306B7
-L0306B3  SEC
-         SBC   #$0037
-L0306B7  INC   $00
+:digit   SEC
+         SBC   #'0'
+         BRA   :return
+:alpha   SEC
+         SBC   #'A'-10
+:return  INC   $00
          PLD
          PLP
          CLC

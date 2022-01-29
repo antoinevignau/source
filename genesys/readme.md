@@ -1,3 +1,11 @@
+Genesys v1.3.6 Readme - January 2022
+
+Shell
+- Now you can edit or ID resources in the system range.
+- Source file generation will now search for the @:Gen.Lang folder instead of the :Genesys.2 one (the name of the second floppy disk)
+
+###
+
 Genesys v1.3.5 Readme - February 2021
 
 Editors

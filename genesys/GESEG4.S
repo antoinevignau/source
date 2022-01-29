@@ -62,11 +62,9 @@ L040000  ENT
          LDA   [$01],Y
          PHA
          _SetCurResourceFile
-*         STA   L02DD98
          PHA
          PEA   $0001
          _SetResourceFileDepth
-*         STA   L02DD98
          PLA
          STA   $0B
          JSL   L040D38
@@ -91,7 +89,6 @@ L040000  ENT
          PHA
          PEI   $0B
          _SetResourceFileDepth
-*         STA   L02DD98
          PLA
          STA   $0B
          LDA   $07
@@ -236,7 +233,6 @@ L0401BB  PEA   $2001
          PHA
          PEI   $0B
          _SetResourceFileDepth
-*         STA   L02DD98
          PLA
          STA   $0B
          LDA   $07
@@ -271,7 +267,6 @@ L040217  LDA   #$0002
          PHA
          PEI   $0B
          _SetResourceFileDepth
-*         STA   L02DD98
          PLA
          STA   $0B
          LDA   $07
@@ -287,7 +282,6 @@ L040279  PEA   ^L027F61
          STA   [$01]
          PHA
          _CountTypes
-*         STA   L02DD98
          PLA
          STA   $0D
          LDX   L027EC1
@@ -341,7 +335,6 @@ L040307  TAX
 L04030D  PHA
          PEI   $07
          _GetIndType
-*         STA   L02DD98
          PLA
          STA   $17
          CMP   #$8014
@@ -386,7 +379,6 @@ L040371  PHA
          PHA
          PEI   $17
          _CountResources
-*         STA   L02DD98
          PLA
          PLX
          STA   $0F
@@ -430,7 +422,6 @@ L0403CA  PHA
 L0403D7  PHX
          PHA
          _GetIndResource
-*         STA   L02DD98
          PLA
          STA   $19
          PLA
@@ -459,7 +450,6 @@ L0403D7  PHX
          PHX
          PHA
          _GetResourceAttr
-*         STA   L02DD98
          PLA
          STA   $11
          PEA   $000C
@@ -469,7 +459,6 @@ L0403D7  PHX
          PHX
          PHA
          _SetResourceAttr
-*         STA   L02DD98
          PHA
          PHA
          PEI   $17
@@ -478,7 +467,6 @@ L0403D7  PHX
          PHX
          PHA
          _LoadResource
-*         STA   L02DD98
          PLA
          STA   $21
          PLA
@@ -488,7 +476,6 @@ L0403D7  PHX
          PHX
          PHA
          _HLock
-*         STA   L02DD98
          PEI   $11
          PEI   $17
          LDX   $1B
@@ -496,7 +483,6 @@ L0403D7  PHX
          PHX
          PHA
          _SetResourceAttr
-*         STA   L02DD98
          LDX   $1F
          LDA   $1D
          STX   L027EC5
@@ -542,7 +528,6 @@ L0403D7  PHX
          PHX
          PHA
          _GetHandleSize
-*         STA   L02DD98
          PEA   ^L028260
          PEA   L028260
          PLA
@@ -723,7 +708,6 @@ L040630  PEA   $FFFF
          PHX
          PHA
          _ReleaseResource
-*         STA   L02DD98
          INC   $09
          BRL   L040391
 L04064A  INC   $07
@@ -755,7 +739,6 @@ L04064F  PEA   $0002
          PHA
          PEI   $0B
          _SetResourceFileDepth
-*         STA   L02DD98
          PLA
          STA   $0B
          LDA   #$0000
@@ -880,7 +863,6 @@ L040768  TSC
          PEA   $0000
          PEA   $0000
          _NewHandle
-*         STA   L02DD98
          PLA
          STA   $09
          PLA
@@ -890,7 +872,6 @@ L040768  TSC
          PHX
          PHA
          _HLock
-*         STA   L02DD98
          LDY   #$0002
          LDA   [$09],Y
          TAX
@@ -1117,9 +1098,7 @@ L0409E4  LDA   $07
          PHX
          PHA
          _FindHandle
-*         STA   L02DD98
          _DisposeHandle
-*         STA   L02DD98
          LDA   $0B
          LDX   $0D
          STA   $07
@@ -1175,7 +1154,6 @@ L040A6C  TAX
          PHY
          PHA
          _DisposeHandle
-*         STA   L02DD98
          INC   $05
          BRA   L040A24
 L040A8A  PLD
@@ -1718,7 +1696,6 @@ L040E8E  PEA   ^L028854
          PEA   $0000
          PEA   $0000
          _NewHandle
-*         STA   L02DD98
          LDA   $0B
          ASL
          ASL
@@ -1747,7 +1724,6 @@ L040F1E  LDA   $0B
          PHY
          PHA
          _HLock
-*         STA   L02DD98
          LDA   $0B
          ASL
          ASL
@@ -4699,7 +4675,6 @@ L0426D3  TSC
          PHX
          PHA
          _HLock
-*         STA   L02DD98
          LDY   #$0002
          LDA   [$70],Y
          PHA
@@ -4749,7 +4724,6 @@ L0426FB  CLC
          PHX
          PHA
          _HUnlock
-*         STA   L02DD98
          LDA   $13
          STA   $05
          BRL   L0429D0
@@ -4778,7 +4752,6 @@ L04275C  LDA   #$0001
          PEA   $0000
          PEA   $0000
          _NewHandle
-*         STA   L02DD98
          PLA
          STA   $0F
          PLA
@@ -4806,7 +4779,6 @@ L04275C  LDA   #$0001
          PHX
          PHA
          _HUnlock
-*         STA   L02DD98
          LDA   $13
          STA   $05
          BRL   L0429D0
@@ -4815,7 +4787,6 @@ L0427DE  LDX   $11
          PHX
          PHA
          _HLock
-*         STA   L02DD98
          LDA   #$0004
          STA   $5B
          PEA   $0000
@@ -4872,7 +4843,6 @@ L0427DE  LDX   $11
          PHX
          PHA
          _DisposeHandle
-*         STA   L02DD98
          PEA   $3232
          JSL   L02CA27
          PHA
@@ -4882,7 +4852,6 @@ L0427DE  LDX   $11
          PHX
          PHA
          _HUnlock
-*         STA   L02DD98
          LDA   $13
          STA   $05
          BRL   L0429D0
@@ -4906,7 +4875,6 @@ L04288E  PEA   $2014
          PHX
          PHA
          _DisposeHandle
-*         STA   L02DD98
          PEA   $3041
          JSL   L02CA27
          PHA
@@ -4916,7 +4884,6 @@ L04288E  PEA   $2014
          PHX
          PHA
          _HUnlock
-*         STA   L02DD98
          LDA   $13
          STA   $05
          BRL   L0429D0
@@ -4996,13 +4963,10 @@ L042953  PEA   $000D
          PHA
          PHA
          _FrontWindow
-*         STA   L02DD98
          PEA   $0000
          PEA   $1000
          _GetCtlHandleFromID
-*         STA   L02DD98
          _TESetText
-*         STA   L02DD98
          PEA   $3050
          JSL   L02CA27
          PHA
@@ -5012,7 +4976,6 @@ L042953  PEA   $000D
          PHX
          PHA
          _DisposeHandle
-*         STA   L02DD98
          PEA   $3251
          JSL   L02CA27
          PHA
@@ -5022,7 +4985,6 @@ L042953  PEA   $000D
          PHX
          PHA
          _HUnlock
-*         STA   L02DD98
          LDA   #$0000
          STA   $05
 L0429D0  LDA   $6E
@@ -5063,7 +5025,6 @@ L0429E3  ENT
          ADC   #$0015
          PHA
          _SFGetFile2
-*         STA   L02DD98
          JSL   L02CA27
          STA   $13
          PEA   $3110
@@ -5083,7 +5044,6 @@ L042A48  TAX
          BNE   L042A4E
          BRL   L042C21
 L042A4E  _WaitCursor
-*         STA   L02DD98
          LDA   $1F
          LDX   $21
          STA   $01
@@ -5155,7 +5115,6 @@ L042AC1  CLC
          PHX
          PHA
          _HLock
-*         STA   L02DD98
          PHA
          PHA
          LDX   $0D
@@ -5173,7 +5132,6 @@ L042AC1  CLC
          PEA   $0FFB
          PEA   $800E
          _NewWindow2
-*         STA   L02DD98
          PLA
          STA   $07
          PLA
@@ -5192,7 +5150,6 @@ L042AC1  CLC
          PEA   $0000
          PEA   $0000
          _NewHandle
-*         STA   L02DD98
          PLA
          STA   $0F
          PLA
@@ -5210,7 +5167,6 @@ L042AC1  CLC
          PHX
          PHA
          _SetWRefCon
-*         STA   L02DD98
          PEA   $3123
          JSL   L02CA27
          PHA
@@ -5259,7 +5215,6 @@ L042AC1  CLC
          PHX
          PHA
          _SetPort
-*         STA   L02DD98
          LDA   $25
          LDX   $27
          PHX
@@ -5271,7 +5226,6 @@ L042AC1  CLC
          PHX
          PHA
          _DisposeHandle
-*         STA   L02DD98
          PEA   $3124
          JSL   L02CA27
          PHA
@@ -5281,13 +5235,11 @@ L042AC1  CLC
          PHX
          PHA
          _DisposeHandle
-*         STA   L02DD98
          PEA   $3125
          JSL   L02CA27
          PHA
          JSL   L027CEB
          _InitCursor
-*         STA   L02DD98
 L042C21  LDA   $13
          STA   $05
          LDY   $05
@@ -5313,9 +5265,7 @@ L042C42  ENT
          PHA
          PHA
          _FrontWindow
-*         STA   L02DD98
          _GetWRefCon
-*         STA   L02DD98
          PLA
          STA   $07
          PLA
@@ -5342,7 +5292,6 @@ L042C91  LDX   $09
          PHX
          PHA
          _DisposeHandle
-*         STA   L02DD98
          PEA   $3216
          JSL   L02CA27
          PHA
@@ -5350,9 +5299,7 @@ L042C91  LDX   $09
          PHA
          PHA
          _FrontWindow
-*         STA   L02DD98
          _CloseWindow
-*         STA   L02DD98
          PEA   $3220
          JSL   L02CA27
          PHA

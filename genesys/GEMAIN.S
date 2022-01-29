@@ -1,11 +1,15 @@
 *
-* Genesys v1.2.4 -> V1.3.4
+* Genesys v1.2.4 -> V1.3.6
 * Main program
 *
 * (c) 1990-1991, SSSi
-* (u) 2020, Brutal Deluxe Software
+* (u) 2020-2022, Brutal Deluxe Software
 *
 
+* v1.3.6 - AV 202201
+* - main program
+*   - allow all ID range
+*
 * v1.3.5 - AV 202102
 * - Editor / Control
 *   - Bug in ref icon pointer fixed
@@ -343,8 +347,8 @@ L020363  DW    $0000      ;  version number
          DW    $0001
          DW    $0000
 
-L020369  STR   'Shell v1.3.5'
-L020376  STR   'v1.3.5'
+L020369  STR   'Shell v1.3.6'
+L020376  STR   'v1.3.6'
          DB    $00
          DB    $00
          DB    $00
@@ -3247,11 +3251,9 @@ L022467  TSC
          PHD
          TCD
          _WaitCursor
-*         STA   L02DD98
          LDA   L0240D6
          PHA
          _SetCurResourceFile
-*         STA   L02DD98
          PEA   $B302
          JSL   L02CA27
          PHA
@@ -3259,7 +3261,6 @@ L022467  TSC
          PHA
          PEA   $0001
          _SetResourceFileDepth
-*         STA   L02DD98
          PLA
          STA   $09
          PEA   $B303
@@ -3403,7 +3404,6 @@ L022578  LDX   L0240CA
          STA   [$01],Y
 L0225CD  PHA
          _CountTypes
-*         STA   L02DD98
          PLA
          STA   L0240D2
          BNE   L0225E1
@@ -3430,7 +3430,6 @@ L0225E1  LDA   L0240D2
          PEA   $0000
          PEA   $0000
          _NewHandle
-*         STA   L02DD98
          PLA
          STA   $15
          PLA
@@ -3444,7 +3443,6 @@ L0225E1  LDA   L0240D2
          PHX
          PHA
          _HLock
-*         STA   L02DD98
          LDY   #$0002
          LDA   [$15],Y
          TAX
@@ -3473,7 +3471,6 @@ L0225E1  LDA   L0240D2
          PEA   $0000
          PEA   $0000
          _NewHandle
-*         STA   L02DD98
          PLA
          STA   $15
          PLA
@@ -3487,7 +3484,6 @@ L0225E1  LDA   L0240D2
          PHX
          PHA
          _HLock
-*         STA   L02DD98
          LDY   #$0002
          LDA   [$15],Y
          PHA
@@ -3537,7 +3533,6 @@ L0226FA  PHA
          INC
          PHA
          _GetIndType
-*         STA   L02DD98
          PLA
          STA   $0D
          LDX   L024106
@@ -3866,7 +3861,6 @@ L022942  LDX   L024106
          STZ   L0240CE
 L02299F  JSL   L0202F5
          _InitCursor
-*         STA   L02DD98
          PLD
          TSC
          CLC
@@ -3881,11 +3875,9 @@ L0229B5  TSC
          PHD
          TCD
          _WaitCursor
-*         STA   L02DD98
          LDA   L0240D6
          PHA
          _SetCurResourceFile
-*         STA   L02DD98
          PEA   $B402
          JSL   L02CA27
          PHA
@@ -3893,7 +3885,6 @@ L0229B5  TSC
          PHA
          PEA   $0001
          _SetResourceFileDepth
-*         STA   L02DD98
          PLA
          STA   $0D
          PEA   $B403
@@ -4050,7 +4041,6 @@ L022B28  LDA   $2A
          PHA
          PEI   $2A
          _CountResources
-*         STA   L02DD98
          LDA   $01,S
          STA   L0240CE
          LDA   $03,S
@@ -4086,7 +4076,6 @@ L022B5B  LDX   L0240D0
          PEA   $0000
          PEA   $0000
          _NewHandle
-*         STA   L02DD98
          PLA
          STA   $23
          PLA
@@ -4100,7 +4089,6 @@ L022B5B  LDX   L0240D0
          PHX
          PHA
          _HLock
-*         STA   L02DD98
          LDY   #$0002
          LDA   [$23],Y
          TAX
@@ -4130,7 +4118,6 @@ L022B5B  LDX   L0240D0
          PEA   $0000
          PEA   $0000
          _NewHandle
-*         STA   L02DD98
          PLA
          STA   $23
          PLA
@@ -4144,7 +4131,6 @@ L022B5B  LDX   L0240D0
          PHX
          PHA
          _HLock
-*         STA   L02DD98
          LDY   #$0002
          LDA   [$23],Y
          PHA
@@ -4208,7 +4194,6 @@ L022C91  PHX
          ADC   #$0001
          PHA
          _GetIndResource
-*         STA   L02DD98
          PLA
          STA   $17
          PLA
@@ -4864,7 +4849,6 @@ L0231B6  CLC
          INC   $15
          JSL   L0202F5
          _InitCursor
-*         STA   L02DD98
          PHA
          PEA   $0004
          PEA   ^L0245B2
@@ -4872,15 +4856,12 @@ L0231B6  CLC
          PEA   $0000
          PEA   $0011
          _AlertWindow
-*         STA   L02DD98
          PLA
          STA   $13
          _WaitCursor
-*         STA   L02DD98
          LDA   L0240D6
          PHA
          _SetCurResourceFile
-*         STA   L02DD98
          PEA   $B410
          JSL   L02CA27
          PHA
@@ -4888,7 +4869,6 @@ L0231B6  CLC
          PHA
          PEA   $0001
          _SetResourceFileDepth
-*         STA   L02DD98
          PLA
          STA   $0D
          PEA   $B411
@@ -5001,7 +4981,6 @@ L0232C2  LDX   L0240FE
          STA   [$01]
 L023316  JSL   L0202F5
          _InitCursor
-*         STA   L02DD98
          LDA   $28
          STA   $2C
          LDA   $27
@@ -5024,7 +5003,6 @@ L02333E  TSC
          PHA
          PHA
          _GetPort
-*         STA   L02DD98
          PLA
          STA   $0B
          PLA
@@ -5034,7 +5012,6 @@ L02333E  TSC
          PHX
          PHA
          _SetPort
-*         STA   L02DD98
          LDA   #$0000
          STA   L0240C6
          LDA   L0240D2
@@ -5076,7 +5053,6 @@ L023387  STA   $09
          PHX
          PHA
          _NewList2
-*         STA   L02DD98
          PEA   $B102
          JSL   L02CA27
          PHA
@@ -5091,7 +5067,6 @@ L0233E0  PEA   $0000
          PHX
          PHA
          _SortList2
-*         STA   L02DD98
          PEA   $B104
          JSL   L02CA27
          PHA
@@ -5340,7 +5315,6 @@ L0235C6  PEA   $0000
          PHX
          PHA
          _NewList2
-*         STA   L02DD98
          PEA   $B106
          JSL   L02CA27
          PHA
@@ -5387,7 +5361,6 @@ L023661  LDX   $0D
          PHX
          PHA
          _SetPort
-*         STA   L02DD98
          LDA   $10
          STA   $12
          LDA   $0F
@@ -5408,7 +5381,6 @@ L023681  TSC
          PHA
          PHA
          _GetPort
-*         STA   L02DD98
          PLA
          STA   $0B
          PLA
@@ -5418,7 +5390,6 @@ L023681  TSC
          PHX
          PHA
          _SetPort
-*         STA   L02DD98
          STZ   L0240DE+2
          STZ   L0240DE
          LDY   #$0000
@@ -5461,7 +5432,6 @@ L0236CA  STA   $09
          PHX
          PHA
          _NewList2
-*         STA   L02DD98
          PEA   $B202
          JSL   L02CA27
          PHA
@@ -5476,7 +5446,6 @@ L023726  PEA   $0000
          PHX
          PHA
          _SortList2
-*         STA   L02DD98
          PEA   $B204
          JSL   L02CA27
          PHA
@@ -5736,7 +5705,6 @@ L023921  PEA   $0000
          PHX
          PHA
          _NewList2
-*         STA   L02DD98
          PEA   $B206
          JSL   L02CA27
          PHA
@@ -5787,7 +5755,6 @@ L0239C8  LDX   $0D
          PHX
          PHA
          _SetPort
-*         STA   L02DD98
          LDA   $10
          STA   $14
          LDA   $0F
@@ -5902,7 +5869,6 @@ L023AB0  TSC
          PHD
          TCD
          _WaitCursor
-*         STA   L02DD98
          LDA   L0240C6
          STA   $0B
          LDX   L0240DE+2
@@ -5912,7 +5878,6 @@ L023AB0  TSC
          LDA   L0240D6
          PHA
          _SetCurResourceFile
-*         STA   L02DD98
          PEA   $B702
          JSL   L02CA27
          PHA
@@ -5920,7 +5885,6 @@ L023AB0  TSC
          PHA
          PEA   $0001
          _SetResourceFileDepth
-*         STA   L02DD98
          PLA
          STA   $07
          PEA   $B703
@@ -5931,7 +5895,6 @@ L023AB0  TSC
          PHA
          PEI   $18
          _CountResources
-*         STA   L02DD98
          PLA
          STA   $0D
          PLA
@@ -5942,7 +5905,6 @@ L023AB0  TSC
          JSL   L027CEB
          JSL   L0202F5
          _InitCursor
-*         STA   L02DD98
          LDA   $18
          CMP   $0B
          BNE   L023B76
@@ -6014,12 +5976,10 @@ L023BB7  TSC
          LDA   L02410E
          PHA
          _DisposeAll
-*         STA   L02DD98
          JSL   L02CA27
          TAX
          BEQ   L023BDE
          _SysBeep
-*         STA   L02DD98
 L023BDE  LDA   #$0000
          STA   L0240D2
          STZ   L0240D0
@@ -6107,7 +6067,6 @@ L023C66  LDX   L024106
          PHX
          PHA
          _NextMember2
-*         STA   L02DD98
          PLA
          DEC
          LDX   #$0007
@@ -6161,7 +6120,6 @@ L023CE6  LDX   L0240FE
          PHX
          PHA
          _NextMember2
-*         STA   L02DD98
          PLA
          DEC
          LDX   #$000B
@@ -6206,24 +6164,20 @@ L023D5F  TSC
          STA   $23
          PHA
          _GetCurResourceFile
-*         STA   L02DD98
          PLA
          STA   $0D
          LDA   L0240D6
          PHA
          _SetCurResourceFile
-*         STA   L02DD98
          PHA
          PEA   $0001
          _SetResourceFileDepth
-*         STA   L02DD98
          PLA
          STA   $0B
          PHA
          PHA
          PEI   $30
          _CountResources
-*         STA   L02DD98
          PLA
          STA   $1D
          PLA
@@ -6263,7 +6217,6 @@ L023DC7  PHX
          PEA   $0000
          PEA   $0000
          _NewHandle
-*         STA   L02DD98
          PLA
          STA   $25
          PLA
@@ -6444,7 +6397,6 @@ L023F4F  LDA   $21
          PHX
          PHA
          _DisposeHandle
-*         STA   L02DD98
          BRL   L024091
 L023F68  LDA   $30
          LDX   #$0000
@@ -6507,7 +6459,6 @@ L023F68  LDA   $30
          PHX
          PHA
          _SetHandleSize
-*         STA   L02DD98
          PEA   $BA12
          JSL   L02CA27
          PHA
@@ -6519,14 +6470,12 @@ L023F68  LDA   $30
          PHX
          PHA
          _ReleaseResource
-*         STA   L02DD98
          PEA   $8014
          LDX   $13
          LDA   $11
          PHX
          PHA
          _RemoveResource
-*         STA   L02DD98
          LDX   $27
          LDA   $25
          PHX
@@ -6538,7 +6487,6 @@ L023F68  LDA   $30
          PHX
          PHA
          _AddResource
-*         STA   L02DD98
          PEA   $BA20
          JSL   L02CA27
          PHA
@@ -6549,7 +6497,6 @@ L023F68  LDA   $30
          PHX
          PHA
          _WriteResource
-*         STA   L02DD98
          PEA   $BA21
          JSL   L02CA27
          PHA
@@ -6561,7 +6508,6 @@ L023F68  LDA   $30
          PHX
          PHA
          _ReleaseResource
-*         STA   L02DD98
          PEA   $BA22
          JSL   L02CA27
          PHA
@@ -6581,11 +6527,9 @@ L023F68  LDA   $30
          STA   [$01]
 L024091  PEI   $0D
          _SetCurResourceFile
-*         STA   L02DD98
          PHA
          PEI   $0B
          _SetResourceFileDepth
-*         STA   L02DD98
          PLA
          STA   $0B
          LDA   #$0000
@@ -6700,7 +6644,10 @@ L024118  DW    $000F      ; pCount
          DW    $0007      ; listMemSize
          ADRL  $00000000  ; listRef
          ADRL  $00000000  ; colorTableRef
-L02414A  STRL  ':Genesys.2:Gen.Lang'
+
+*L02414A  STRL  ':Genesys.2:Gen.Lang'
+L02414A  STRL  '@:Gen.Lang'
+
          DB    $00
          DB    $00
          DB    $00
@@ -12799,17 +12746,14 @@ L025A27  ENT
          TCD
          PHA
          _GetCurResourceFile
-*         STA   L02DD98
          PLA
          STA   $0F
          LDA   L0240D6
          PHA
          _SetCurResourceFile
-*         STA   L02DD98
          PHA
          PEA   $0001
          _SetResourceFileDepth
-*         STA   L02DD98
          PLA
          STA   $0D
          LDA   #$FFFF
@@ -12834,7 +12778,6 @@ L025A27  ENT
          PHX
          PHA
          _LoadResource
-*         STA   L02DD98
          PLA
          STA   $25
          PLA
@@ -12843,11 +12786,9 @@ L025A27  ENT
          STA   $11
          PEI   $0F
          _SetCurResourceFile
-*         STA   L02DD98
          PHA
          PEI   $0D
          _SetResourceFileDepth
-*         STA   L02DD98
          PLA
          STA   $0D
          LDA   $11
@@ -13030,7 +12971,6 @@ L025C19  PEA   $FFFF
          PHX
          PHA
          _ReleaseResource
-*         STA   L02DD98
 L025C2F  LDA   L025C98
          AND   #$00FF
          BNE   L025C74
@@ -16707,7 +16647,6 @@ L028999  PHA
          PHX
          PHA
          _GetSysWFlag
-*         STA   L02DD98
          PLA
          BNE   L028A19
          PHA
@@ -16717,7 +16656,6 @@ L028999  PHA
          PHX
          PHA
          _GetWRefCon
-*         STA   L02DD98
          PLA
          STA   $0F
          PLA
@@ -16800,7 +16738,6 @@ L028A3F  TSC
          LDA   L0240D6
          PHA
          _SetCurResourceFile
-*         STA   L02DD98
          PEA   $9002
          JSL   L02CA27
          PHA
@@ -16808,7 +16745,6 @@ L028A3F  TSC
          PHA
          PEA   $0001
          _SetResourceFileDepth
-*         STA   L02DD98
          PLA
          STA   $0B
          PEA   $9003
@@ -16822,7 +16758,6 @@ L028A3F  TSC
          PHX
          PHA
          _GetResourceAttr
-*         STA   L02DD98
          PLA
          STA   $09
          PEA   $9004
@@ -16833,7 +16768,6 @@ L028A3F  TSC
          PHA
          PEI   $7C
          _CountResources
-*         STA   L02DD98
          PLA
          STA   $1F
          PLA
@@ -16842,7 +16776,6 @@ L028A3F  TSC
          PHA
          PHA
          _GetPort
-*         STA   L02DD98
          PLA
          STA   $2B
          PLA
@@ -16852,7 +16785,6 @@ L028A3F  TSC
          PEA   L02AC66
          PEA   $0004
          _Int2Hex
-*         STA   L02DD98
          LDX   $80
          LDA   $7E
          PHX
@@ -16861,7 +16793,6 @@ L028A3F  TSC
          PEA   L02ABF9
          PEA   $0008
          _Long2Hex
-*         STA   L02DD98
          PEA   $0000
          PEA   $003F
          PEA   $0000
@@ -16891,7 +16822,6 @@ L028A3F  TSC
          PEA   $0FFE
          PEA   $800E
          _NewWindow2
-*         STA   L02DD98
          PLA
          STA   $27
          PLA
@@ -16905,7 +16835,6 @@ L028A3F  TSC
          PHX
          PHA
          _SetPort
-*         STA   L02DD98
          PHA
          PHA
          LDX   $29
@@ -16915,7 +16844,6 @@ L028A3F  TSC
          PEA   $0000
          PEA   $0004
          _GetCtlHandleFromID
-*         STA   L02DD98
          PLA
          STA   $47
          PLA
@@ -16941,7 +16869,6 @@ L028A3F  TSC
          PHX
          PHA
          _LESetText
-*         STA   L02DD98
          PHA
          PHA
          LDX   $29
@@ -16951,7 +16878,6 @@ L028A3F  TSC
          PEA   $0000
          PEA   $0003
          _GetCtlHandleFromID
-*         STA   L02DD98
          PLA
          STA   $47
          PLA
@@ -16981,7 +16907,6 @@ L028A3F  TSC
          PHX
          PHA
          _LESetText
-*         STA   L02DD98
          PEA   $0000
          PEI   $11
          LDX   $41
@@ -16989,7 +16914,6 @@ L028A3F  TSC
          PHX
          PHA
          _LESetSelect
-*         STA   L02DD98
          LDA   $09
          AND   #$0300
          STA   $0F
@@ -17006,9 +16930,7 @@ L028A3F  TSC
          PEA   $0000
          PEA   $0005
          _GetCtlHandleFromID
-*         STA   L02DD98
          _SetCtlValue
-*         STA   L02DD98
          BRL   L028CFA
 L028C76  LDA   $0F
          CMP   #$0100
@@ -17024,9 +16946,7 @@ L028C76  LDA   $0F
          PEA   $0000
          PEA   $0006
          _GetCtlHandleFromID
-*         STA   L02DD98
          _SetCtlValue
-*         STA   L02DD98
          BRA   L028CFA
 L028CA5  LDA   $0F
          CMP   #$0200
@@ -17042,9 +16962,7 @@ L028CA5  LDA   $0F
          PEA   $0000
          PEA   $0007
          _GetCtlHandleFromID
-*         STA   L02DD98
          _SetCtlValue
-*         STA   L02DD98
          BRA   L028CFA
 L028CD4  LDA   #$0001
          PHA
@@ -17057,9 +16975,7 @@ L028CD4  LDA   #$0001
          PEA   $0000
          PEA   $0008
          _GetCtlHandleFromID
-*         STA   L02DD98
          _SetCtlValue
-*         STA   L02DD98
 L028CFA  LDA   #$0009
          STA   $07
 L028CFF  LDA   $07
@@ -17090,9 +17006,7 @@ L028D08  LDA   $07
 L028D2C  PHX
          PHA
          _GetCtlHandleFromID
-*         STA   L02DD98
          _SetCtlValue
-*         STA   L02DD98
 L028D42  INC   $07
          BRA   L028CFF
 L028D46  PHA
@@ -17103,7 +17017,6 @@ L028D46  PHA
          ADC   #$004B
          PHA
          _TaskMaster
-*         STA   L02DD98
          PLA
          STA   $0D
          CMP   #$0008
@@ -17111,12 +17024,10 @@ L028D46  PHA
          PEA   $0088
          PEA   $0012
          _MoveTo
-*         STA   L02DD98
          PEA   ^L02AC66
          PEA   L02AC66
          PEA   $0004
          _DrawText
-*         STA   L02DD98
          BRL   L0297D9
 L028D8B  LDA   $0D
          CMP   #$0014
@@ -17131,7 +17042,6 @@ L028D8B  LDA   $0D
          PEA   $027F
          PEA   $00C7
          _SetRect
-*         STA   L02DD98
          PEA   $0000
          PEI   $57
          PEI   $55
@@ -17146,7 +17056,6 @@ L028D8B  LDA   $0D
          PHX
          PHA
          _DragWindow
-*         STA   L02DD98
          PEA   $9020
          JSL   L02CA27
          PHA
@@ -17200,9 +17109,7 @@ L028E27  PHA
 L028E39  PHX
          PHA
          _GetCtlHandleFromID
-*         STA   L02DD98
          _GetCtlValue
-*         STA   L02DD98
          PLA
          BEQ   L028E61
          LDA   $07
@@ -17228,7 +17135,6 @@ L028E6F  PHA
          PEA   $0000
          PEA   $0004
          _GetCtlHandleFromID
-*         STA   L02DD98
          PLA
          STA   $47
          PLA
@@ -17253,7 +17159,6 @@ L028E6F  PHA
          PHX
          PHA
          _LEGetTextHand
-*         STA   L02DD98
          PLA
          STA   $3B
          PLA
@@ -17264,7 +17169,6 @@ L028E6F  PHA
          PHX
          PHA
          _LEGetTextLen
-*         STA   L02DD98
          PLA
          STA   $15
          PHA
@@ -17277,7 +17181,6 @@ L028E6F  PHA
          PHA
          PEI   $15
          _Hex2Long
-*         STA   L02DD98
          PLA
          STA   $23
          PLA
@@ -17293,7 +17196,7 @@ L028F01  LDY   #$0000
          LDA   $23
          ORA   $25
          BNE   L028F0B
-         INY
+         INY		; bad ID (00000000) - v1.3.6 - allow all ranges of resource IDs
 L028F0B  TYA
          LDX   #$0000
          TAY
@@ -17302,26 +17205,27 @@ L028F0B  TYA
 L028F13  STX   $01
          ORA   $01
          BEQ   L028F1E
-         LDA   #$0001
-         BRA   L028F38
-L028F1E  PEI   $25
-         LDA   $23
-         AND   #$0000
-         PHA
-         LDA   $03,S
-         AND   #$F800
-         STA   $03,S
-         PLA
-         STA   $01
-         PLA
-         ORA   $01
-         BEQ   L028F38
-         LDA   #$0001
+         LDA   #$0001	; bad ID
+*         BRA   L028F38
+L028F1E
+*         PEI   $25
+*         LDA   $23
+*         AND   #$0000
+*         PHA
+*         LDA   $03,S
+*         AND   #$F800
+*         STA   $03,S
+*         PLA
+*         STA   $01
+*         PLA
+*         ORA   $01
+*         BEQ   L028F38
+*         LDA   #$0001	; bad ID (07FF0000++)
 L028F38  CMP   #$0000
          BEQ   L028F42
          LDA   #$0001
          BRA   L028F58
-L028F42  JSL   L02CA27
+L028F42  JSL   L02CA27	; get GS/OS error code
          LDX   #$0000
          CMP   #$0000
          BEQ   L028F4F
@@ -17330,8 +17234,8 @@ L028F4F  TXA
          CMP   #$0000
          BEQ   L028F58
          LDA   #$0001
-L028F58  TAX
-         BEQ   L028F82
+L028F58  TAX		; bad resource ID range
+         BEQ   L028F82	; if entry value <> 0
          PHA
          PEA   $0004
          PEA   ^L0245B2
@@ -17339,14 +17243,13 @@ L028F58  TAX
          PEA   $0000
          PEA   $0015
          _AlertWindow
-*         STA   L02DD98
          PLA
          STA   $1B
          LDA   #$0000
          STA   $19
          STA   $1D
          BRL   L0290A3
-L028F82  LDX   $80
+L028F82  LDX   $80	; resource ID range is OK
          LDA   $7E
          PHX
          PHA
@@ -17379,7 +17282,6 @@ L028FAC  PLA
          PEA   $0000
          PEA   $0014
          _AlertWindow
-*         STA   L02DD98
          PLA
          STA   $1B
          LDA   #$0000
@@ -17467,7 +17369,6 @@ L029043  BNE   L02909E
          PEA   $0000
          PEA   $0013
          _AlertWindow
-*         STA   L02DD98
          PLA
          STA   $1B
          LDA   #$0000
@@ -17487,7 +17388,6 @@ L0290AD  PHA
          PEA   $0000
          PEA   $0010
          _AlertWindow
-*         STA   L02DD98
          PLA
          STA   $1B
          LDA   $1B
@@ -17496,7 +17396,6 @@ L0290AD  PHA
 L0290D1  LDA   L0240D6
          PHA
          _SetCurResourceFile
-*         STA   L02DD98
          PEA   $9032
          JSL   L02CA27
          PHA
@@ -17504,7 +17403,6 @@ L0290D1  LDA   L0240D6
          PHA
          PEA   $0001
          _SetResourceFileDepth
-*         STA   L02DD98
          PLA
          STA   $0B
          PEA   $9033
@@ -17518,7 +17416,6 @@ L0290D1  LDA   L0240D6
          PHX
          PHA
          _SetResourceAttr
-*         STA   L02DD98
          PEA   $9034
          JSL   L02CA27
          PHA
@@ -17531,7 +17428,6 @@ L0290D1  LDA   L0240D6
          PHX
          PHA
          _LoadResource
-*         STA   L02DD98
          PLA
          STA   $43
          PLA
@@ -17546,13 +17442,11 @@ L0290D1  LDA   L0240D6
          PHX
          PHA
          _DetachResource
-*         STA   L02DD98
          LDX   $45
          LDA   $43
          PHX
          PHA
          _HLock
-*         STA   L02DD98
          LDX   $45
          LDA   $43
          PHX
@@ -17564,7 +17458,6 @@ L0290D1  LDA   L0240D6
          PHX
          PHA
          _AddResource
-*         STA   L02DD98
          PEA   $9038
          JSL   L02CA27
          PHA
@@ -17575,7 +17468,6 @@ L0290D1  LDA   L0240D6
          PHX
          PHA
          _WriteResource
-*         STA   L02DD98
          PEA   $9039
          JSL   L02CA27
          PHA
@@ -17586,7 +17478,6 @@ L0290D1  LDA   L0240D6
          PHX
          PHA
          _RemoveResource
-*         STA   L02DD98
          PEA   $903A
          JSL   L02CA27
          PHA
@@ -17706,7 +17597,6 @@ L0292B1  LDX   $80
          PEA   L02ABF9
          PEA   $0008
          _Long2Hex
-*         STA   L02DD98
          PEA   ^L02ABF9
          PEA   L02ABF9
          PEA   $0008
@@ -17715,7 +17605,6 @@ L0292B1  LDX   $80
          PHX
          PHA
          _LESetText
-*         STA   L02DD98
          PEA   $0000
          TDC
          CLC
@@ -17798,7 +17687,6 @@ L0292B1  LDX   $80
          ADC   #$0033
          PHA
          _InvalRect
-*         STA   L02DD98
 L029382  LDA   $17
          LDX   #$0000
          CMP   #$0001
@@ -17828,7 +17716,6 @@ L0293AD  PHA
          PEA   $0000
          PEA   $0003
          _GetCtlHandleFromID
-*         STA   L02DD98
          PLA
          STA   $47
          PLA
@@ -17853,7 +17740,6 @@ L0293AD  PHA
          PHX
          PHA
          _LEGetTextHand
-*         STA   L02DD98
          PLA
          STA   $3B
          PLA
@@ -17864,7 +17750,6 @@ L0293AD  PHA
          PHX
          PHA
          _LEGetTextLen
-*         STA   L02DD98
          PLA
          STA   $15
          LDX   #$0000
@@ -18028,7 +17913,6 @@ L02950E  CLC
          PEA   $0000
          PEA   $0012
          _AlertWindow
-*         STA   L02DD98
          PLA
          STA   $1B
          LDA   #$0000
@@ -18217,7 +18101,6 @@ L0296E0  TAX
 L029706  LDA   L0240D6
          PHA
          _SetCurResourceFile
-*         STA   L02DD98
          PEA   $9042
          JSL   L02CA27
          PHA
@@ -18225,7 +18108,6 @@ L029706  LDA   L0240D6
          PHA
          PEA   $0001
          _SetResourceFileDepth
-*         STA   L02DD98
          PLA
          STA   $0B
          PEA   $9043
@@ -18239,7 +18121,6 @@ L029706  LDA   L0240D6
          PHX
          PHA
          _SetResourceAttr
-*         STA   L02DD98
          PEA   $9044
          JSL   L02CA27
          PHA
@@ -18319,7 +18200,6 @@ L0297E8  LDX   $29
          PHX
          PHA
          _CloseWindow
-*         STA   L02DD98
          PEA   $9050
          JSL   L02CA27
          PHA
@@ -18329,7 +18209,6 @@ L0297E8  LDX   $29
          PHX
          PHA
          _SetPort
-*         STA   L02DD98
          LDA   #$0000
          STA   $05
          LDA   $7A
@@ -18370,7 +18249,6 @@ L029833  TSC
          PEA   $0000
          PEA   $0009
          _AlertWindow
-*         STA   L02DD98
          PLA
          STA   $07
          BRA   L02988B
@@ -18381,7 +18259,6 @@ L02986E  PHA
          PEA   $0000
          PEA   $000A
          _AlertWindow
-*         STA   L02DD98
          PLA
          STA   $07
 L02988B  LDA   $07
@@ -18389,7 +18266,6 @@ L02988B  LDA   $07
          LDA   L0240D6
          PHA
          _SetCurResourceFile
-*         STA   L02DD98
          PEA   $9102
          JSL   L02CA27
          PHA
@@ -18397,7 +18273,6 @@ L02988B  LDA   $07
          PHA
          PEA   $0001
          _SetResourceFileDepth
-*         STA   L02DD98
          PLA
          STA   $09
          PEA   $9103
@@ -18410,7 +18285,6 @@ L02988B  LDA   $07
          PHX
          PHA
          _RemoveResource
-*         STA   L02DD98
          PEA   $9104
          JSL   L02CA27
          PHA
@@ -18446,7 +18320,6 @@ L02990B  TSC
          LDA   L0240D6
          PHA
          _SetCurResourceFile
-*         STA   L02DD98
          PEA   $9202
          JSL   L02CA27
          PHA
@@ -18454,7 +18327,6 @@ L02990B  TSC
          PHA
          PEA   $0001
          _SetResourceFileDepth
-*         STA   L02DD98
          PLA
          STA   $09
          PEA   $9203
@@ -18468,7 +18340,6 @@ L02990B  TSC
          PHX
          PHA
          _GetResourceAttr
-*         STA   L02DD98
          PLA
          STA   $07
          PEA   $9204
@@ -18487,7 +18358,6 @@ L029976  JSL   L0202F5
          PEA   $0000
          PEA   $0008
          _AlertWindow
-*         STA   L02DD98
          PLA
          BNE   L02999E
          LDA   #$FFFF
@@ -18499,7 +18369,6 @@ L02999E  LDA   $07
          LDA   L0240D6
          PHA
          _SetCurResourceFile
-*         STA   L02DD98
          PEA   $9212
          JSL   L02CA27
          PHA
@@ -18507,7 +18376,6 @@ L02999E  LDA   $07
          PHA
          PEA   $0001
          _SetResourceFileDepth
-*         STA   L02DD98
          PLA
          STA   $09
          PEA   $9213
@@ -18521,7 +18389,6 @@ L02999E  LDA   $07
          PHX
          PHA
          _SetResourceAttr
-*         STA   L02DD98
          PEA   $9214
          JSL   L02CA27
          PHA
@@ -18551,7 +18418,6 @@ L029A18  TSC
          PHA
          PHA
          _FrontWindow
-*         STA   L02DD98
          PLA
          STA   $1B
          PLA
@@ -18571,7 +18437,6 @@ L029A47  PHA
          PHX
          PHA
          _GetWRefCon
-*         STA   L02DD98
          PLA
          STA   $1F
          PLA
@@ -18605,7 +18470,6 @@ L029A47  PHA
 L029A99  PHA
          PHA
          _GetPort
-*         STA   L02DD98
          PLA
          STA   $17
          PLA
@@ -18615,28 +18479,24 @@ L029A99  PHA
          PHX
          PHA
          _SetPort
-*         STA   L02DD98
          PEA   $0000
          TDC
          CLC
          ADC   #$0007
          PHA
          _GetPortRect
-*         STA   L02DD98
          PEA   $0000
          TDC
          CLC
          ADC   #$0007
          PHA
          _LocalToGlobal
-*         STA   L02DD98
          PEA   $0000
          TDC
          CLC
          ADC   #$000B
          PHA
          _LocalToGlobal
-*         STA   L02DD98
          LDA   $2A
          AND   #$0001
          BEQ   L029B55
@@ -18667,7 +18527,6 @@ L029A99  PHA
          PHX
          PHA
          _GetWFrame
-*         STA   L02DD98
          PLA
          AND   #$1000
          BEQ   L029B55
@@ -18719,7 +18578,6 @@ L029B5F  PEA   $0000
          PHX
          PHA
          _GetWFrame
-*         STA   L02DD98
          PLA
          AND   #$8000
          BEQ   L029BBD
@@ -18744,7 +18602,6 @@ L029BBD  PHA
          PHX
          PHA
          _GetWFrame
-*         STA   L02DD98
          PLA
          AND   #$0800
          BEQ   L029BEF
@@ -18769,7 +18626,6 @@ L029BEF  PHA
          PHX
          PHA
          _GetWFrame
-*         STA   L02DD98
          PLA
          AND   #$0010
          BEQ   L029C44
@@ -18783,7 +18639,6 @@ L029BEF  PHA
          PHX
          PHA
          _GetRectInfo
-*         STA   L02DD98
          STZ   $25
          TDC
          CLC
@@ -18813,7 +18668,6 @@ L029C44  LDA   $09
          PHX
          PHA
          _MoveWindow
-*         STA   L02DD98
          PEA   $9410
          JSL   L02CA27
          PHA
@@ -18823,7 +18677,6 @@ L029C44  LDA   $09
          PHX
          PHA
          _SetPort
-*         STA   L02DD98
 L029C78  LDA   #$0000
          STA   $05
          LDA   $28
@@ -18846,7 +18699,6 @@ L029C90  TSC
          PHD
          TCD
          _GrafOff
-*         STA   L02DD98
          PEA   ^L029CB8
          PEA   L029CB8
          JSL   L02C482
@@ -19086,7 +18938,6 @@ L029D22  TSC
          PHA
          PHA
          _GetPort
-*         STA   L02DD98
          PLA
          STA   $40
          PLA
@@ -19175,7 +19026,6 @@ L029F49  CMP   #$0000
          PHA
          PEA   $0004
          _Int2Hex
-*         STA   L02DD98
          PHA
          PHA
          PEA   $0000
@@ -19191,7 +19041,6 @@ L029F49  CMP   #$0000
          PEA   $0FFC
          PEA   $800E
          _NewWindow2
-*         STA   L02DD98
          PLA
          STA   $3C
          PLA
@@ -19205,7 +19054,6 @@ L029F49  CMP   #$0000
          PHX
          PHA
          _SetPort
-*         STA   L02DD98
          PHA
          PHA
          LDX   $3E
@@ -19215,7 +19063,6 @@ L029F49  CMP   #$0000
          PEA   $0000
          PEA   $0003
          _GetCtlHandleFromID
-*         STA   L02DD98
          PLA
          STA   $38
          PLA
@@ -19246,7 +19093,6 @@ L029F49  CMP   #$0000
          PHX
          PHA
          _LESetText
-*         STA   L02DD98
          PEA   $0000
          PEA   $0004
          LDX   $32
@@ -19254,7 +19100,6 @@ L029F49  CMP   #$0000
          PHX
          PHA
          _LESetSelect
-*         STA   L02DD98
 L02A03F  PHA
          PEA   $FFFF
          PEA   $0000
@@ -19263,7 +19108,6 @@ L02A03F  PHA
          ADC   #$0050
          PHA
          _TaskMaster
-*         STA   L02DD98
          PLA
          STA   $1C
          CMP   #$0014
@@ -19278,7 +19122,6 @@ L02A03F  PHA
          PEA   $027F
          PEA   $00C7
          _SetRect
-*         STA   L02DD98
          PEA   $0000
          PEI   $5C
          PEI   $5A
@@ -19293,7 +19136,6 @@ L02A03F  PHA
          PHX
          PHA
          _DragWindow
-*         STA   L02DD98
          BRL   L02A477
 L02A0A3  LDA   $1C
          CMP   #$0021
@@ -19329,7 +19171,6 @@ L02A0CF  LDA   #$0001
          PEA   $0000
          PEA   $0003
          _GetCtlHandleFromID
-*         STA   L02DD98
          PLA
          STA   $38
          PLA
@@ -19354,7 +19195,6 @@ L02A0CF  LDA   #$0001
          PHX
          PHA
          _LEGetTextHand
-*         STA   L02DD98
          PLA
          STA   $2C
          PLA
@@ -19372,11 +19212,9 @@ L02A0CF  LDA   #$0001
          PHX
          PHA
          _LEGetTextLen
-*         STA   L02DD98
          PLA
          PHA
          _Hex2Int
-*         STA   L02DD98
          PLA
          STA   $1E
          LDX   #$0000
@@ -19407,7 +19245,6 @@ L02A180  PHA
          PEA   $0000
          PEA   $0016
          _AlertWindow
-*         STA   L02DD98
          PLA
          STA   $1A
          LDA   L0240DA
@@ -19419,7 +19256,6 @@ L02A180  PHA
          PHA
          PEA   $0004
          _Int2Hex
-*         STA   L02DD98
          PEA   $0000
          TDC
          CLC
@@ -19431,7 +19267,6 @@ L02A180  PHA
          PHX
          PHA
          _LESetText
-*         STA   L02DD98
          PEA   $0000
          PEA   $0004
          LDX   $32
@@ -19439,7 +19274,6 @@ L02A180  PHA
          PHX
          PHA
          _LESetSelect
-*         STA   L02DD98
          PEA   $0000
          TDC
          CLC
@@ -19522,14 +19356,12 @@ L02A180  PHA
          ADC   #$0024
          PHA
          _InvalRect
-*         STA   L02DD98
          LDA   #$0008
          STA   $1C
          LDA   #$0000
          STA   $18
          BRL   L02A44F
 L02A295  _WaitCursor
-*         STA   L02DD98
          LDA   $1E
          STA   L0240DA
          PHA
@@ -19544,7 +19376,6 @@ L02A295  _WaitCursor
          PEA   $0000
          PEA   $0000
          _NewHandle
-*         STA   L02DD98
          PLA
          STA   $34
          PLA
@@ -19559,7 +19390,6 @@ L02A2D6  LDX   $36
          PHX
          PHA
          _HLock
-*         STA   L02DD98
          PEA   $2010
          PEA   $0000
          TDC
@@ -19624,7 +19454,6 @@ L02A2D6  LDX   $36
          LDA   L0240D6
          PHA
          _SetCurResourceFile
-*         STA   L02DD98
          PEA   $9E40
          JSL   L02CA27
          PHA
@@ -19632,7 +19461,6 @@ L02A2D6  LDX   $36
          PHA
          PEA   $0001
          _SetResourceFileDepth
-*         STA   L02DD98
          PLA
          STA   $16
          PEA   $9E41
@@ -19644,7 +19472,6 @@ L02A2D6  LDX   $36
          PEA   $FFFF
          PEI   $1E
          _UniqueResourceID
-*         STA   L02DD98
          PLA
          STA   $20
          PLA
@@ -19664,7 +19491,6 @@ L02A2D6  LDX   $36
          PHX
          PHA
          _AddResource
-*         STA   L02DD98
          PEA   $9E43
          JSL   L02CA27
          PHA
@@ -19675,7 +19501,6 @@ L02A2D6  LDX   $36
          PHX
          PHA
          _WriteResource
-*         STA   L02DD98
          PEA   $9E44
          JSL   L02CA27
          PHA
@@ -19687,7 +19512,6 @@ L02A2D6  LDX   $36
          PHX
          PHA
          _ReleaseResource
-*         STA   L02DD98
          PEA   $9E45
          JSL   L02CA27
          PHA
@@ -19732,7 +19556,6 @@ L02A477  LDA   $1C
 L02A481  PEA   $006A
          PEA   $000C
          _MoveTo
-*         STA   L02DD98
          LDX   #$0105
          LDA   $02,X
          PHA
@@ -19749,40 +19572,33 @@ L02A481  PEA   $006A
          LDA   [$01]
          PHA
          _DrawText
-*         STA   L02DD98
          PEA   $006A
          PEA   $0015
          _MoveTo
-*         STA   L02DD98
          PEA   $0000
          TDC
          CLC
          ADC   #$0007
          PHA
          _DrawCString
-*         STA   L02DD98
          PEA   $006A
          PEA   $001E
          _MoveTo
-*         STA   L02DD98
          PEA   $0000
          TDC
          CLC
          ADC   #$000B
          PHA
          _DrawCString
-*         STA   L02DD98
          PEA   $006A
          PEA   $0027
          _MoveTo
-*         STA   L02DD98
          PEA   $0000
          TDC
          CLC
          ADC   #$0044
          PHA
          _DrawCString
-*         STA   L02DD98
 L02A51E  LDA   $18
          BEQ   L02A525
          LDA   #$0001
@@ -19794,7 +19610,6 @@ L02A52D  LDX   $3E
          PHX
          PHA
          _CloseWindow
-*         STA   L02DD98
          PEA   $9E50
          JSL   L02CA27
          PHA
@@ -19804,9 +19619,7 @@ L02A52D  LDX   $3E
          PHX
          PHA
          _SetPort
-*         STA   L02DD98
          _InitCursor
-*         STA   L02DD98
          LDA   $1A
          STA   $05
          LDX   #$00FE
@@ -19968,11 +19781,9 @@ L02A59A  TSC
          STz   $65
          STz   $67
          _WaitCursor
-*         STA   L02DD98
          LDA   L0240D6
          PHA
          _SetCurResourceFile
-*         STA   L02DD98
          PEA   $9F02
          JSL   L02CA27
          PHA
@@ -19980,7 +19791,6 @@ L02A59A  TSC
          PHA
          PEA   $0001
          _SetResourceFileDepth
-*         STA   L02DD98
          PLA
          STA   $07
          PEA   $9F03
@@ -19994,7 +19804,6 @@ L02A59A  TSC
          PHX
          PHA
          _GetResourceAttr
-*         STA   L02DD98
          PLA
          STA   $0B
          PEA   $9F04
@@ -20008,7 +19817,6 @@ L02A59A  TSC
          PHX
          PHA
          _SetResourceAttr
-*         STA   L02DD98
          PEA   $9F05
          JSL   L02CA27
          PHA
@@ -20021,7 +19829,6 @@ L02A59A  TSC
          PHX
          PHA
          _LoadResource
-*         STA   L02DD98
          PLA
          STA   $0D
          PLA
@@ -20035,7 +19842,6 @@ L02A59A  TSC
          PHX
          PHA
          _SetResourceAttr
-*         STA   L02DD98
          PEA   $9F07
          JSL   L02CA27
          PHA
@@ -20043,7 +19849,6 @@ L02A59A  TSC
          PHA
          PEI   $07
          _SetResourceFileDepth
-*         STA   L02DD98
          PLA
          STA   $07
          PEA   $9F08
@@ -20060,13 +19865,11 @@ L02A77F  PEI   $82
          PHX
          PHA
          _DetachResource
-*         STA   L02DD98
          LDX   $0F
          LDA   $0D
          PHX
          PHA
          _HLock
-*         STA   L02DD98
          PEA   $2002
          PEA   $0000
          TDC
@@ -20124,7 +19927,6 @@ L02A7CD  PEA   $2010
          PHX
          PHA
          _GetHandleSize
-*         STA   L02DD98
          PLA
          STA   $71
          PLA
@@ -20154,9 +19956,7 @@ L02A857  LDX   $0F
          PHX
          PHA
          _DisposeHandle
-*         STA   L02DD98
          _InitCursor
-*         STA   L02DD98
          LDA   $09
          STA   $05
          LDA   $7C
@@ -20241,7 +20041,6 @@ L02A8F1  TSC
          PHA
          PHA
          _GetPort
-*         STA   L02DD98
          PLA
          STA   $0D
          PLA
@@ -20251,21 +20050,17 @@ L02A8F1  TSC
          PHX
          PHA
          _SetPort
-*         STA   L02DD98
          PEA   $0000
          TDC
          CLC
          ADC   #$0017
          PHA
          _GetPenState
-*         STA   L02DD98
          PEA   $0002
          PEA   $0001
          _SetPenSize
-*         STA   L02DD98
          PEA   $8002
          _SetPenMode
-*         STA   L02DD98
          LDA   $54
          STA   $11
          BRL   L02AB77
@@ -20306,9 +20101,7 @@ L02A990  PHA
          PHX
          PHA
          _GetUpdateRgn
-*         STA   L02DD98
          _EmptyRgn
-*         STA   L02DD98
          PLA
          BNE   L02A9B3
          BRL   L02AA77
@@ -20331,7 +20124,6 @@ L02A9B3  LDX   $58
          ADC   $01,S
          STA   $01,S
          _SetPenPat
-*         STA   L02DD98
          LDA   #$0000
          STA   $07
 L02A9E7  LDY   #$0002
@@ -20371,7 +20163,6 @@ L02AA03  LDY   #$0002
          PHX
          PHA
          _FrameRgn
-*         STA   L02DD98
          INC   $07
          BRA   L02A9E7
 L02AA34  LDY   #$0002
@@ -20429,7 +20220,6 @@ L02AA7A  LDX   $58
          ADC   $01,S
          STA   $01,S
          _SetPenPat
-*         STA   L02DD98
          LDA   #$0000
          STA   $07
 L02AAAE  LDY   #$0002
@@ -20469,7 +20259,6 @@ L02AACA  LDY   #$0002
          PHX
          PHA
          _FrameRgn
-*         STA   L02DD98
          INC   $07
          BRA   L02AAAE
 L02AAFB  BRL   L02AB91
@@ -20488,7 +20277,6 @@ L02AAFE  PEA   ^L02AC02
          ADC   $01,S
          STA   $01,S
          _SetPenPat
-*         STA   L02DD98
          LDA   #$0000
          STA   $07
 L02AB28  LDY   #$0002
@@ -20528,7 +20316,6 @@ L02AB44  LDY   #$0002
          PHX
          PHA
          _FrameRgn
-*         STA   L02DD98
          INC   $07
          BRA   L02AB28
 L02AB75  BRA   L02AB91
@@ -20553,13 +20340,11 @@ L02AB91  PEA   $0000
          ADC   #$0017
          PHA
          _SetPenState
-*         STA   L02DD98
          LDX   $0F
          LDA   $0D
          PHX
          PHA
          _SetPort
-*         STA   L02DD98
          LDA   $4A
          STA   $58
          LDA   $49
@@ -20900,13 +20685,11 @@ L02AD0D  LDA   $22
          PHA
          PHA
          _GetPort
-*         STA   L02DD98
          PLA
          STA   L02B368
          PLA
          STA   L02B36A
          _WaitCursor
-*         STA   L02DD98
          PHA
          PHA
          PEA   $0000
@@ -20922,7 +20705,6 @@ L02AD0D  LDA   $22
          PEA   L02B3D1
          PEA   $800E
          _NewWindow2
-*         STA   L02DD98
          PLA
          STA   L02B372
          PLA
@@ -20932,39 +20714,31 @@ L02AD0D  LDA   $22
          PHX
          PHA
          _SetPort
-*         STA   L02DD98
          PEA   $0013
          PEA   $000F
          _MoveTo
-*         STA   L02DD98
          PEA   ^L02B210
          PEA   L02B210
          _DrawCString
-*         STA   L02DD98
          BRL   L02B1F8
 L02ADA3  PEA   ^L02B3C9
          PEA   L02B3C9
          _EraseRect
-*         STA   L02DD98
          PEA   $0005
          PEA   $0002
          _SetPenSize
-*         STA   L02DD98
          PEA   $0013
          PEA   $000F
          _MoveTo
-*         STA   L02DD98
          LDA   L02B36C
          BNE   L02ADEA
          PEA   ^L02B222
          PEA   L02B222
          _DrawCString
-*         STA   L02DD98
          BRA   L02ADFA
 L02ADEA  PEA   ^L02B237
          PEA   L02B237
          _DrawCString
-*         STA   L02DD98
 L02ADFA  PHA
          PHA
          LDX   L02B374
@@ -20975,7 +20749,6 @@ L02ADFA  PHA
          PEA   ^L02B421
          PEA   L02B421
          _NewControl2
-*         STA   L02DD98
          PLA
          STA   L02B364
          PLA
@@ -20985,40 +20758,31 @@ L02ADFA  PHA
          PHX
          PHA
          _ShowControl
-*         STA   L02DD98
          LDX   L02B374
          LDA   L02B372
          PHX
          PHA
          _DrawControls
-*         STA   L02DD98
          PEA   $0002
          PEA   $0001
          _SetPenSize
-*         STA   L02DD98
          PEA   ^L02B3C1
          PEA   L02B3C1
          _FrameRect
-*         STA   L02DD98
          PEA   ^L02B37E
          PEA   L02B37E
          _FrameRect
-*         STA   L02DD98
          _PenNormal
-*         STA   L02DD98
          PEA   $0013
          PEA   $0037
          _MoveTo
-*         STA   L02DD98
          PEA   ^L02B24D
          PEA   L02B24D
          _DrawCString
-*         STA   L02DD98
          BRL   L02B1F8
 L02AEA0  PEA   $0013
          PEA   $001E
          _MoveTo
-*         STA   L02DD98
          PEA   $0000
          PEI   $16
          JSL   L02597E
@@ -21029,7 +20793,6 @@ L02AEA0  PEA   $0013
          PHX
          PHA
          _DrawCString
-*         STA   L02DD98
          LDX   $09
          LDA   $07
          PHX
@@ -21047,11 +20810,9 @@ L02AEA0  PEA   $0013
          ADC   $03,S
          STA   $03,S
          _DrawCString
-*         STA   L02DD98
          PEA   ^L02B386
          PEA   L02B386
          _EraseRect
-*         STA   L02DD98
          STZ   L02B370
          STZ   L02B36E
          BRL   L02B1F8
@@ -21101,15 +20862,12 @@ L02AF79  LDX   L02B374
          PHX
          PHA
          _CloseWindow
-*         STA   L02DD98
          LDX   L02B36A
          LDA   L02B368
          PHX
          PHA
          _SetPort
-*         STA   L02DD98
          _InitCursor
-*         STA   L02DD98
          BRL   L02B1F8
 L02AFAA  LDA   #$FFFE
          STA   $05
@@ -21131,7 +20889,6 @@ L02AFCA  LDA   #$0000
 L02AFCF  PHA
          PEA   $0000
          _Button
-*         STA   L02DD98
          PLA
          BEQ   L02B054
          PEA   $0000
@@ -21140,7 +20897,6 @@ L02AFCF  PHA
          ADC   #$000D
          PHA
          _GetMouse
-*         STA   L02DD98
          PHA
          PEA   $0000
          TDC
@@ -21150,7 +20906,6 @@ L02AFCF  PHA
          PEA   ^L02B376
          PEA   L02B376
          _PtInRect
-*         STA   L02DD98
          PLA
          BEQ   L02B030
          LDA   $0B
@@ -21161,7 +20916,6 @@ L02AFCF  PHA
          PHX
          PHA
          _HiliteControl
-*         STA   L02DD98
          LDA   #$FFFF
          STA   $0B
 L02B02E  BRA   L02B051
@@ -21174,7 +20928,6 @@ L02B030  LDA   $0B
          PHX
          PHA
          _HiliteControl
-*         STA   L02DD98
          LDA   #$0000
          STA   $0B
 L02B051  BRL   L02AFCF
@@ -21187,9 +20940,7 @@ L02B054  LDA   $0B
          PHX
          PHA
          _HiliteControl
-*         STA   L02DD98
          _InitCursor
-*         STA   L02DD98
          LDA   #$FFFF
          STA   $05
          BRL   L02B1FD
@@ -21302,32 +21053,25 @@ L02B10C  CLC
 L02B147  PEA   $0013
          PEA   $001E
          _MoveTo
-*         STA   L02DD98
          PEA   ^L02B258
          PEA   L02B258
          _DrawCString
-*         STA   L02DD98
          BRL   L02B1F8
 L02B16A  PEA   ^L02B3C1
          PEA   L02B3C1
          _EraseRect
-*         STA   L02DD98
          PEA   $0013
          PEA   $001E
          _MoveTo
-*         STA   L02DD98
          PEA   ^L02B28B
          PEA   L02B28B
          _DrawCString
-*         STA   L02DD98
          PEA   $0013
          PEA   $0027
          _MoveTo
-*         STA   L02DD98
          PEA   ^L02B2BE
          PEA   L02B2BE
          _DrawCString
-*         STA   L02DD98
          PEA   $012C
          PEA   $003A
          JSL   L02B2F1
@@ -21419,7 +21163,6 @@ L02B310  STA   $12
          ADC   #$0008
          PHA
          _SetRect
-*         STA   L02DD98
          PEA   $0000
          TDC
          CLC
@@ -21428,7 +21171,6 @@ L02B310  STA   $12
          PEA   $4444
          PEA   $4444
          _SpecialRect
-*         STA   L02DD98
          LDA   $0E
          STA   $12
          LDA   $0D
@@ -23090,9 +22832,7 @@ L02C20F  TSC
          PHX
          PHA
          _FindHandle
-*         STA   L02DD98
          _DisposeHandle
-*         STA   L02DD98
          LDA   $06
          STA   $0A
          LDA   $05

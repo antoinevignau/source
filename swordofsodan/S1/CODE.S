@@ -14052,7 +14052,7 @@ L7DF9    INY
          LDA   ($16),Y
          INY
          INY
-         JSR   LEFAC
+         JSR   LEFAC	; make mask
          LDA   ($16),Y
          INY
          INY
@@ -14123,7 +14123,7 @@ L7E80    STZ   LEFD3
 L7E83    LDA   #$FFFF
          INY
          INY
-L7E88    JSR   LEFAC
+L7E88    JSR   LEFAC	; make mask
          LDA   ($16),Y
          INY
          INY
@@ -23849,12 +23849,12 @@ LEDEF    DB    $00
 LEDF1    STA   $00
          STX   $02
          STY   $26
-         LDA   #$0082
+         LDA   #$0082	; BRL
          BRA   LEE05
 LEDFC    STA   $00
          STX   $02
          STY   $26
-         LDA   #$002C
+         LDA   #$002C	; BIT
 LEE05    SEP   #$20
          STA   LEE6C
          REP   #$20
@@ -23900,7 +23900,7 @@ LEE2D    LDY   LEEDA
          INY
          INY
          STY   $26
-         LDY   #$0003
+         LDY   #$0003	; PHD TXA TCD CLC
          LDX   #LEFA6
          JSR   LEF9A
          LDX   #$FFFF
@@ -23912,34 +23912,36 @@ LEE6C    BRL   LEEDC
          LDX   #$0000
 LEE76    LDA   [$00],Y
          BEQ   LEE8A
-         JSR   LEFD5
+         JSR   LEFD5	; calc value & mask
          STA   $10
          BIT   LEDEF
          BMI   LEE87
-         JSR   LEF75
-LEE87    JSR   LEEFF
-LEE8A    INX
+         JSR   LEF75	; new line
+LEE87    JSR   LEEFF	; output code
+LEE8A    INX	; next word
          INX
          DEY
          DEY
          BPL   LEE76
-LEE90    LDA   $20
+
+LEE90    LDA   $20	; move source pointer
          CLC
          ADC   $00
          STA   $00
          LDA   #$0000
          ADC   $02
          STA   $02
-         DEC   $14
-         BEQ   LEEB5
+         DEC   $14	; line--
+         BEQ   LEEB5	; exit
          LDA   LEDEF
          BPL   LEEAA
          LDA   #$0000
 LEEAA    ADC   #$00A0
          STA   LEDEF
          STA   LEDE9
-         BRA   LEE6C
-LEEB5    LDY   #$0001
+         BRA   LEE6C	; loop
+         
+LEEB5    LDY   #$0001	; PLD RTL
          LDX   #LEFAA
          JSR   LEF9A
          DEC   $6E
@@ -23976,22 +23978,23 @@ LEEF4    INX
          CPY   $20
          BCC   LEEE0
          BRL   LEE90
-LEEFF    LDA   $12
+LEEFF    LDA   $12	; compare previous word
          CMP   LEDEB
          BNE   LEF0D
          LDA   $10
          ORA   LEDE9
-         BEQ   LEF46
-LEF0D    LDA   #$00A9
+         BEQ   LEF46	; same means only a STA is required
+
+LEF0D    LDA   #$00A9	; LDA #
          STA   [$08]
          INC   $08
          LDA   $10
          STA   LEDE9
-         BEQ   LEF3B
+         BEQ   LEF3B	; if no transparency, skip AND ORA
          STA   [$08]
          INC   $08
          INC   $08
-         LDA   #$0025
+         LDA   #$0025	; AND $xxxx
          STA   [$08]
          INC   $08
          TXA
@@ -23999,8 +24002,8 @@ LEF0D    LDA   #$00A9
          INC   $08
          LDA   $12
          STA   LEDEB
-         BEQ   LEF46
-         LDA   #$0009
+         BEQ   LEF46	; if transparent, skip ORA
+         LDA   #$0009	; ORA #
          STA   [$08]
          INC   $08
 LEF3B    LDA   $12
@@ -24008,16 +24011,16 @@ LEF3B    LDA   $12
          STA   [$08]
          INC   $08
          INC   $08
-LEF46    LDA   #$0085
+LEF46    LDA   #$0085	; STA $
          STA   [$08]
          INC   $08
          TXA
          STA   [$08]
          INC   $08
          LDA   $08
-         CMP   #$FFF0
+         CMP   #$FFF0	; next bank
          BCC   LEF74
-         LDA   #$005C
+         LDA   #$005C	; JMPL $
          STA   [$08]
          INC   $08
          LDA   #$0000
@@ -24033,7 +24036,7 @@ LEF46    LDA   #$0085
 LEF74    RTS
 
 LEF75    PHA
-         LDA   #$697B
+         LDA   #$697B	; TDC ADC
          STA   [$08]
          INC   $08
          INC   $08
@@ -24041,7 +24044,7 @@ LEF75    PHA
          STA   [$08]
          INC   $08
          INC   $08
-         LDA   #$005B
+         LDA   #$005B	; TCD
          STA   [$08]
          INC   $08
          STA   LEDE9

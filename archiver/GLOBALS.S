@@ -1,0 +1,1628 @@
+*
+* Archiver GS
+*
+* (c) 1992, Apple Computer, Inc.
+* (s) 2023, Antoine Vignau
+*
+
+	mx	%00
+	rel
+	lst	off
+
+*-----------------------------------
+
+L060000     ENT
+            DB    $01
+            DB    $00
+L060002     ENT
+            DB    $00
+            DB    $00
+L060004     ENT
+            DB    $00
+            DB    $00
+L060006     ENT
+            DB    $00
+            DB    $00
+L060008     ENT
+            DB    $00
+            DB    $00
+L06000A     ENT
+            DB    $00
+            DB    $00
+L06000C     ENT
+            DB    $00
+            DB    $00
+L06000E     ENT
+            DB    $00
+            DB    $00
+L060010     ENT
+            DB    $00
+            DB    $00
+L060012     ENT
+            DB    $00
+            DB    $00
+L060014     ENT
+            DB    $00
+            DB    $00
+L060016     ENT
+            DB    $00
+            DB    $00
+L060018     ENT
+            DB    $00
+            DB    $00
+L06001A     ENT
+            DB    $00
+            DB    $00
+L06001C     ENT
+            DB    $00
+            DB    $00
+L06001E     ENT
+            DB    $00
+            DB    $00
+L060020     ENT
+            DB    $00
+            DB    $00
+L060022     ENT
+            DB    $00
+            DB    $00
+L060024     ENT
+            DB    $00
+            DB    $00
+L060026     ENT
+            DB    $00
+            DB    $00
+L060028     ENT
+            DB    $00
+            DB    $00
+L06002A     ENT
+            DB    $00
+            DB    $00
+L06002C     ENT
+            DB    $00
+            DB    $00
+L06002E     ENT
+            DB    $00
+            DB    $00
+L060030     ENT
+            DB    $00
+            DB    $00
+L060032     ENT
+            DB    $00
+            DB    $00
+L060034     ENT
+            DB    $00
+            DB    $00
+L060036     ENT
+            DB    $00
+            DB    $00
+L060038     ENT
+            DB    $00
+            DB    $00
+L06003A     ENT
+            DB    $00
+            DB    $00
+L06003C     ENT
+            DB    $00
+            DB    $00
+L06003E     ENT
+            DB    $00
+            DB    $00
+L060040     ENT
+            DB    $00
+            DB    $00
+L060042     ENT
+            DB    $00
+            DB    $00
+L060044     ENT
+            DB    $00
+            DB    $00
+L060046     ENT
+            DB    $00
+            DB    $00
+L060048     ENT
+            DB    $00
+            DB    $00
+L06004A     ENT
+            DB    $00
+            DB    $00
+L06004C     ENT
+            DB    $00
+            DB    $00
+L06004E     ENT
+            DB    $00
+            DB    $00
+L060050     ENT
+            DB    $00
+            DB    $00
+L060052     ENT
+            DB    $00
+            DB    $00
+L060054     ENT
+            DB    $00
+            DB    $00
+L060056     ENT
+            DB    $00
+            DB    $00
+L060058     ENT
+            DB    $00
+            DB    $00
+L06005A     ENT
+            DB    $00
+            DB    $00
+L06005C     ENT
+            DB    $00
+            DB    $00
+L06005E     ENT
+            DB    $00
+            DB    $00
+L060060     ENT
+            DB    $00
+            DB    $00
+L060062     ENT
+            DB    $00
+            DB    $00
+L060064     ENT
+            DB    $00
+            DB    $00
+L060066     ENT
+            DB    $00
+            DB    $00
+L060068     ENT
+            DB    $00
+            DB    $00
+L06006A     ENT
+            DB    $00
+            DB    $00
+L06006C     ENT
+            DB    $00
+            DB    $00
+L06006E     ENT
+            DB    $00
+            DB    $00
+L060070     ENT
+            DB    $00
+            DB    $00
+L060072     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L060076     ENT
+            DB    $00
+            DB    $00
+L060078     ENT
+            DB    $00
+            DB    $00
+L06007A     ENT
+            DB    $00
+            DB    $00
+L06007C     ENT
+            DB    $00
+            DB    $00
+L06007E     ENT
+            DB    $00
+            DB    $00
+L060080     ENT
+            DB    $00
+            DB    $00
+L060082     ENT
+            DB    $00
+            DB    $00
+L060084     ENT
+            DB    $00
+            DB    $00
+L060086     ENT
+            DB    $00
+            DB    $00
+L060088     ENT
+            DB    $00
+            DB    $00
+L06008A     ENT
+            DB    $00
+            DB    $00
+L06008C     ENT
+            DB    $00
+            DB    $00
+L06008E     ENT
+            DB    $00
+            DB    $00
+L060090     ENT
+            DB    $00
+            DB    $00
+L060092     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L060096     ENT
+            DB    $00
+            DB    $00
+L060098     ENT
+            DB    $00
+            DB    $00
+L06009A     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L06009E     ENT
+            DB    $00
+            DB    $00
+L0600A0     ENT
+            DB    $00
+            DB    $00
+L0600A2     ENT
+            DB    $00
+            DB    $00
+L0600A4     ENT
+            DB    $00
+            DB    $00
+L0600A6     ENT
+            DB    $00
+            DB    $00
+L0600A8     ENT
+            DB    $00
+            DB    $00
+L0600AA     ENT
+            DB    $00
+            DB    $00
+L0600AC     ENT
+            DB    $00
+            DB    $00
+L0600AE     ENT
+            DB    $00
+            DB    $00
+L0600B0     ENT
+            DB    $00
+            DB    $00
+L0600B2     ENT
+            DB    $00
+            DB    $00
+L0600B4     ENT
+            DB    $00
+            DB    $00
+L0600B6     ENT
+            DB    $00
+            DB    $00
+L0600B8     ENT
+            DB    $00
+            DB    $00
+L0600BA     ENT
+            DB    $00
+            DB    $00
+L0600BC     ENT
+            DB    $00
+            DB    $00
+L0600BE     ENT
+            DB    $00
+            DB    $00
+L0600C0     ENT
+            DB    $00
+            DB    $00
+L0600C2     ENT
+            DB    $00
+            DB    $00
+L0600C4     ENT
+            DB    $00
+            DB    $00
+L0600C6     ENT
+            DB    $00
+            DB    $00
+L0600C8     ENT
+            DB    $00
+            DB    $00
+L0600CA     ENT
+            DB    $00
+            DB    $00
+L0600CC     ENT
+            DB    $00
+            DB    $00
+L0600CE     ENT
+            DB    $00
+            DB    $00
+L0600D0     ENT
+            DB    $00
+            DB    $00
+L0600D2     ENT
+            DB    $00
+            DB    $00
+L0600D4     ENT
+            DB    $00
+            DB    $00
+L0600D6     ENT
+            DB    $00
+            DB    $00
+L0600D8     ENT
+            DB    $00
+            DB    $00
+L0600DA     ENT
+            DB    $00
+            DB    $00
+L0600DC     ENT
+            DB    $00
+            DB    $00
+L0600DE     ENT
+            DB    $00
+            DB    $00
+L0600E0     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $02
+            DB    $00
+            DB    $02
+            DB    $00
+            DB    $02
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $02
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $02
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $02
+            DB    $00
+            DB    $02
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $02
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $20
+L060122     ENT
+            DB    $20
+            DB    $00
+L060124     ENT
+            ADRL  L060140
+            ADRL  L060144
+            ADRL  L060148
+            ADRL  L06014C
+            ADRL  L060150
+            ADRL  L060154
+            ADRL  L060158
+L060140     STR   'Sun'
+L060144     STR   'Mon'
+L060148     STR   'Tue'
+L06014C     STR   'Wed'
+L060150     STR   'Thu'
+L060154     STR   'Fri'
+L060158     STR   'Sat'
+            ADRL  L06018C
+            ADRL  L060190
+            ADRL  L060194
+            ADRL  L060198
+            ADRL  L06019C
+            ADRL  L0601A0
+            ADRL  L0601A4
+            ADRL  L0601A8
+            ADRL  L0601AC
+            ADRL  L0601B0
+            ADRL  L0601B4
+            ADRL  L0601B8
+L06018C     STR   'Jan'
+L060190     STR   'Feb'
+L060194     STR   'Mar'
+L060198     STR   'Apr'
+L06019C     STR   'May'
+L0601A0     STR   'Jun'
+L0601A4     STR   'Jul'
+L0601A8     STR   'Aug'
+L0601AC     STR   'Sep'
+L0601B0     STR   'Oct'
+L0601B4     STR   'Nov'
+L0601B8     STR   'Dec'
+L0601BC     ENT
+            DB    $01
+            DB    $00
+L0601BE     ENT
+            DB    $00
+            DB    $00
+L0601C0     ENT
+            DB    $00
+            DB    $00
+L0601C2     ENT
+            DB    $00
+            DB    $00
+L0601C4     ENT
+            DB    $00
+            DB    $00
+L0601C6     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            ADRL  L0601DA
+            DB    $00
+            DB    $00
+            ADRL  L060206
+L0601DA     DB    $2C
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L060206     DB    $00
+            DB    $02
+L060208     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L06040C     ENT
+            DB    $00
+L06040D     ENT
+            STR   'Restore'
+L060415     ENT
+            STR   'Entire Volume Backup'
+            STR   'backup set.'
+L060436     ENT
+            STRL  '@:Arch.prefs'
+L060444     ENT
+            DB    $06
+            DB    $00
+L060446     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $FF
+            DB    $00
+L06044C     ENT
+            DB    $00
+            DB    $02
+L06044E     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L060454     ENT
+            DB    $00
+            DB    $02
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L06045A     ENT
+            ADRL  L0607FA
+            ADRL  L060AEC
+            ADRL  L060AEC
+            ADRL  L0606F6
+            ADRL  $00000000
+            ADRL  L060AEC
+            ADRL  $00000000
+            ADRL  L060C02
+            ADRL  $00000000
+            ADRL  $00000000
+            ADRL  $00000000
+            ADRL  $00000000
+            ADRL  $00000000
+            ADRL  $00000000
+            ADRL  L06099A
+            ADRL  L06099A
+            ADRL  L060D6A
+            ADRL  $00000000
+            ADRL  $00000000
+            ADRL  L060AEC
+            ADRL  L0606F6
+            ADRL  $00000000
+            ADRL  $00000000
+            ADRL  L0606F6
+            ADRL  L060D6A
+            ADRL  $00000000
+            ADRL  $00000000
+            ADRL  $00000000
+            ADRL  $00000000
+            ADRL  L060D6A
+            ADRL  L060D6A
+            ADRL  L060D6A
+            ADRL  L0610D2
+L0604DE     ENT
+            ADRL  $00000000
+            ADRL  L060AEC
+            ADRL  L060AEC
+            ADRL  L06102A
+            ADRL  $00000000
+            ADRL  L060AEC
+            ADRL  L0610D2
+            ADRL  L060C02
+            ADRL  $00000000
+            ADRL  $00000000
+            ADRL  $00000000
+            ADRL  $00000000
+            ADRL  $00000000
+            ADRL  $00000000
+            ADRL  L06099A
+            ADRL  L06099A
+            ADRL  L060D6A
+            ADRL  $00000000
+            ADRL  $00000000
+            ADRL  L060AEC
+            ADRL  L06102A
+            ADRL  $00000000
+            ADRL  $00000000
+            ADRL  L06102A
+            ADRL  L060D6A
+            ADRL  $00000000
+            ADRL  $00000000
+            ADRL  $00000000
+            ADRL  $00000000
+            ADRL  L060D6A
+            ADRL  L060D6A
+            ADRL  L060D6A
+            ADRL  L0610D2
+L060562     ENT
+            DW    $0014
+            DW    $0188
+            DW    $0025
+            DW    $01CE
+L06056A     ENT
+            DW    $006E
+            DW    $00FA
+            DW    $0080
+            DW    $0140
+L060572     ENT
+            DW    $0037
+            DW    $0188
+            DW    $0048
+            DW    $01CE
+L06057A     ENT
+            DW    $0014
+            DW    $00FA
+            DW    $0026
+            DW    $0140
+L060582     ENT
+            DW    $0000       ; Icon type
+            DW    $00B6       ; Icon size
+            DW    $000E       ; Icon height
+            DW    $001A       ; Icon width
+            HEX   FF00000000FFFFFFFFFFFFFFFF  ; Icon image
+            HEX   F0FFFFFFFF0FFFFFFFFFFFFFFF
+            HEX   0000000000000000000000000F
+            HEX   0FFFFFFFFFFFFFFFFFFFFFFFF0
+            HEX   0FFFFFFFFFFFFFFFFFFFFFFFF0
+            HEX   0FFFFFFFFFFFFFFFFFFFFFFFF0
+            HEX   0FFFFFFFFFFFFFFFFFFFFFFFF0
+            HEX   0FFFFFFFFFFFFFFFFFFFFFFFF0
+            HEX   0FFFFFFFFFFFFFFFFFFFFFFFF0
+            HEX   0FFFFFFFFFFFFFFFFFFFFFFFF0
+            HEX   0FFFFFFFFFFFFFFFFFFFFFFFF0
+            HEX   0FFFFFFFFFFFFFFFFFFFFFFFF0
+            HEX   0FFFFFFFFFFFFFFFFFFFFFFFF0
+            HEX   00000000000000000000000000
+            HEX   00FFFFFFFF0000000000000000  ; Icon mask
+            HEX   0FFFFFFFFFF000000000000000
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFF0
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFF
+L0606F6     DW    $0000       ; Icon type
+            DW    $007E       ; Icon size
+            DW    $000E       ; Icon height
+            DW    $0012       ; Icon width
+            HEX   000000000000000000  ; Icon image
+            HEX   0F0FFFFFFFFFFFF0F0
+            HEX   0F0FFFFFFFFFFFF0F0
+            HEX   0F0FFFFFFFFFFFF0F0
+            HEX   0F0FFFFFFFFFFFF0F0
+            HEX   0F0FFFFFFFFFFFF0F0
+            HEX   0F0FFFFFFFFFFFF0F0
+            HEX   0F00000000000000F0
+            HEX   0FFFFFFFFFFFFFFFF0
+            HEX   0FFFFCCCCCCCCFFFF0
+            HEX   0FFFFCCFCCCCCFFFF0
+            HEX   0FFFFCCFCCCCCFFFF0
+            HEX   F0FFFCCFCCCCCFFFF0
+            HEX   FF0000000000000000
+            HEX   FFFFFFFFFFFFFFFFFF  ; Icon mask
+            HEX   FFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFF
+            HEX   0FFFFFFFFFFFFFFFFF
+            HEX   00FFFFFFFFFFFFFFFF
+L0607FA     DW    $0000       ; Icon type
+            DW    $00CC       ; Icon size
+            DW    $0011       ; Icon height
+            DW    $0018       ; Icon width
+            HEX   F00000000000000000000000  ; Icon image
+            HEX   F0FFFFFFFFFFFFFFFFFFFFF0
+            HEX   F0FFFFFFFFFFFFFFFFFFFFF0
+            HEX   F0FFFFFFFFFFFFFFFFFFFF0F
+            HEX   F0FFFFFFFFFFFFFFFFFFFFF0
+            HEX   F0FFFFFFFFFFFFFFFFFFFFF0
+            HEX   F0FFFFFFFFF000FFFFFFFFF0
+            HEX   F0FFFFFFFF00000FFFFFFFF0
+            HEX   F0FFFFFFFFF000FFFFFFFFF0
+            HEX   F0FFFFFFFFFFFFFFFFFFFFF0
+            HEX   F0FFFFFFFFFF0FFFFFFFFFF0
+            HEX   F0FFFFFFFFF000FFFFFFFFF0
+            HEX   F0FFFFFFFFF000FFFFFFFFF0
+            HEX   F0FFFFFFFFF000FFFFFFFFF0
+            HEX   F0FFFFFFFFF000FFFFFFFFF0
+            HEX   F0FFFFFFFFFF0FFFFFFFFFF0
+            HEX   F00000000000000000000000
+            HEX   0FFFFFFFFFFFFFFFFFFFFFFF  ; Icon mask
+            HEX   0FFFFFFFFFFFFFFFFFFFFFFF
+            HEX   0FFFFFFFFFFFFFFFFFFFFFFF
+            HEX   0FFFFFFFFFFFFFFFFFFFFFF0
+            HEX   0FFFFFFFFFFFFFFFFFFFFFFF
+            HEX   0FFFFFFFFFFFFFFFFFFFFFFF
+            HEX   0FFFFFFFFFFFFFFFFFFFFFFF
+            HEX   0FFFFFFFFFFFFFFFFFFFFFFF
+            HEX   0FFFFFFFFFFFFFFFFFFFFFFF
+            HEX   0FFFFFFFFFFFFFFFFFFFFFFF
+            HEX   0FFFFFFFFFFFFFFFFFFFFFFF
+            HEX   0FFFFFFFFFFFFFFFFFFFFFFF
+            HEX   0FFFFFFFFFFFFFFFFFFFFFFF
+            HEX   0FFFFFFFFFFFFFFFFFFFFFFF
+            HEX   0FFFFFFFFFFFFFFFFFFFFFFF
+            HEX   0FFFFFFFFFFFFFFFFFFFFFFF
+            HEX   0FFFFFFFFFFFFFFFFFFFFFFF
+L06099A     DW    $8000       ; Icon type
+            DW    $00A5       ; Icon size
+            DW    $000B       ; Icon height
+            DW    $001E       ; Icon width
+            HEX   FFF000000000000000000000000000  ; Icon image
+            HEX   FF0BBBBBBBBBBBBBBBBBBBBBBBBBB0
+            HEX   F0B0B0B0B0B0B0B0B0B0B0B0B0B0B0
+            HEX   0BB0B0B0B0B0B0B0B0B0B0B0B0B0B0
+            HEX   0BBBBBBBBBBBBBBBBBBBBBBBBBBBB0
+            HEX   0BB0B0B0B0B0B0B0B0B0B0B0B0B0B0
+            HEX   0BB0B0B0B0B0B0B0B0B0B0B0B0B0B0
+            HEX   0BBBBBBBBBBBBBBBBBBBBBBBBBBBB0
+            HEX   000000000000000000000000000000
+            HEX   FFFFFFFFFFFFFFFFFF06E6E6E6E60F
+            HEX   FFFFFFFFFFFFFFFFFF00000000000F
+            HEX   000FFFFFFFFFFFFFFFFFFFFFFFFFFF  ; Icon mask
+            HEX   00FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            HEX   0FFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            HEX   000000000000000000FFFFFFFFFFF0
+            HEX   000000000000000000FFFFFFFFFFF0
+L060AEC     DW    $8000       ; Icon type
+            DW    $0087       ; Icon size
+            DW    $0009       ; Icon height
+            DW    $001E       ; Icon width
+            HEX   000000000000000000000000000000  ; Icon image
+            HEX   033333333333333333333333333330
+            HEX   033333333333333333333333344330
+            HEX   033333333333333333333333333330
+            HEX   033333333333333333333333333330
+            HEX   033333333333333333333333333330
+            HEX   033333333333333333333333333330
+            HEX   033333333333333333333333333330
+            HEX   000000000000000000000000000000
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF  ; Icon mask
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+L060C02     DW    $0000       ; Icon type
+            DW    $00B0       ; Icon size
+            DW    $0010       ; Icon height
+            DW    $0016       ; Icon width
+            HEX   F00000000000000000000F  ; Icon image
+            HEX   03FFFFF00000000FFFFF30
+            HEX   03FFF003333333300FFF30
+            HEX   0FFF03333333333330FFF0
+            HEX   0FF0333333333333330FF0
+            HEX   0FF0333333003333330FF0
+            HEX   0F03333330FF03333330F0
+            HEX   0F0333330FFFF0333330F0
+            HEX   0F0333330FFFF0333330F0
+            HEX   0F03333330FF03333330F0
+            HEX   0FF0333333003333330FF0
+            HEX   0FF0333333333333330FF0
+            HEX   0FFF03333333333330FFF0
+            HEX   0000000000000000000000
+            HEX   F0FFFFFFFFFFFFFFFFFF0F
+            HEX   FF000000333333000000FF
+            HEX   0FFFFFFFFFFFFFFFFFFFF0  ; Icon mask
+            HEX   FFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFF
+            HEX   0FFFFFFFFFFFFFFFFFFFF0
+            HEX   00FFFFFFFFFFFFFFFFFF00
+L060D6A     DW    $0000       ; Icon type
+            DW    $00D8       ; Icon size
+            DW    $0012       ; Icon height
+            DW    $0018       ; Icon width
+            HEX   FFFFFFFFFF0FF0000000FFFF  ; Icon image
+            HEX   FFFFFFFFF0F0F0FFFF030FFF
+            HEX   FFFF000F0FFF00FFFF0330FF
+            HEX   FF00FFF00000F0FFFF0000FF
+            HEX   FF0FFFFFFFF0FF0FFFFFF0FF
+            HEX   FF0FFFFFFFF0FFF0FFFFF0FF
+            HEX   FF0FFFFFFFF0FF0FFFFFF0FF
+            HEX   000000000000000000000000
+            HEX   F0333333333333333333330F
+            HEX   FF00000000000000000000FF
+            HEX   FFFFFFFFFFFFFFF030FFFFFF
+            HEX   FFFFFFFFFFFFFF00000FFFFF
+            HEX   FFFFFFFFFFFFFF0FFF0FFFFF
+            HEX   FFFFFFFFFFFFFF00000FFFFF
+            HEX   FFFFFFFFFFFFFF03030FFFFF
+            HEX   0F00000000000033033000F0
+            HEX   3F33333333333330F03333F3
+            HEX   0F0000000000000FFF0000F0
+            HEX   0000000000F00FFFFFFF0000  ; Icon mask
+            HEX   000000000FFF0FFFFFFFF000
+            HEX   0000FFF0FFFFFFFFFFFFFF00
+            HEX   00FFFFFFFFFFFFFFFFFFFF00
+            HEX   00FFFFFFFFFFFFFFFFFFFF00
+            HEX   00FFFFFFFFFFFFFFFFFFFF00
+            HEX   00FFFFFFFFFFFFFFFFFFFF00
+            HEX   00FFFFFFFFFFFFFFFFFFFF00
+            HEX   0FFFFFFFFFFFFFFFFFFFFFF0
+            HEX   00FFFFFFFFFFFFFFFFFFFF00
+            HEX   000000000000000FFF000000
+            HEX   00000000000000FFFFF00000
+            HEX   00000000000000FFFFF00000
+            HEX   00000000000000FFFFF00000
+            HEX   00000000000000FFFFF00000
+            HEX   F0FFFFFFFFFFFFFFFFFFFF0F
+            HEX   F0FFFFFFFFFFFFFF0FFFFF0F
+            HEX   F0FFFFFFFFFFFFF000FFFF0F
+L060F22     ENT
+            DW    $0000       ; Icon type
+            DW    $0080       ; Icon size
+            DW    $0010       ; Icon height
+            DW    $0010       ; Icon width
+            HEX   00000000000000FF  ; Icon image
+            HEX   0FFFFFFFFFFF0F0F
+            HEX   0FFFFFFFFFFF0FF0
+            HEX   0FFFFFFFFFFF0000
+            HEX   0FFFFFFFFFFFFFF0
+            HEX   0FFFFFFFFFFFFFF0
+            HEX   0FFFFFFFFFFFFFF0
+            HEX   0FFFFFFFFFFFFFF0
+            HEX   0FFFFFFFFFFFFFF0
+            HEX   0FFFFFFFFFFFFFF0
+            HEX   0FFFFFFFFFFFFFF0
+            HEX   0FFFFFFFFFFFFFF0
+            HEX   0FFFFFFFFFFFFFF0
+            HEX   0FFFFFFFFFFFFFF0
+            HEX   0FFFFFFFFFFFFFF0
+            HEX   0000000000000000
+            HEX   FFFFFFFFFFFFFF00  ; Icon mask
+            HEX   FFFFFFFFFFFFFFF0
+            HEX   FFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFF
+L06102A     DW    $8000       ; Icon type
+            DW    $0050       ; Icon size
+            DW    $0008       ; Icon height
+            DW    $0014       ; Icon width
+            HEX   00000000000000000000  ; Icon image
+            HEX   03333333333333333330
+            HEX   04430000000000003330
+            HEX   03333333333333333330
+            HEX   03333333333333333330
+            HEX   03333333333333333330
+            HEX   03333333333333333330
+            HEX   00000000000000000000
+            HEX   FFFFFFFFFFFFFFFFFFFF  ; Icon mask
+            HEX   FFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFF
+L0610D2     DW    $8000       ; Icon type
+            DW    $0096       ; Icon size
+            DW    $000A       ; Icon height
+            DW    $001E       ; Icon width
+            HEX   000000000000000000000000000000  ; Icon image
+            HEX   033333333333333333333333333330
+            HEX   033333333333333333333BB3344330
+            HEX   033333333333333333333333333330
+            HEX   033333333333330000000000333330
+            HEX   033333333333330000000000333330
+            HEX   033333333333333333333333333330
+            HEX   030C0C0C0C0C0C0C0C0C0C0C0C0C30
+            HEX   030C0C0C0C0C0C0C0C0C0C0C0C0C30
+            HEX   000000000000000000000000000000
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF  ; Icon mask
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+L061206     ENT
+            DW    $0FF0
+            DW    $0FF0
+            DW    $0FF0
+            DW    $0FF0
+L06120E     ENT
+            DW    $FFFF
+            DW    $FFFF
+            DW    $FFFF
+            DW    $FFFF
+L061216     ENT
+            DW    $0001
+            DW    $0002
+            DW    $0003
+            DW    $0004
+            DW    $0008
+            DW    $0010
+L061222     ENT
+            DW    $02A4
+L061224     ENT
+            DW    $0000
+            DW    $02A6
+            DW    $0000
+            DW    $02A5
+            DW    $0000
+            DW    $02A7
+            DW    $0000
+L061232     ENT
+            DW    $0000
+L061234     ENT
+            DW    $0000
+            DW    $02A8
+            DW    $0000
+            DW    $0000
+            DW    $0000
+            DW    $02A9
+            DW    $0000
+L061242     ENT
+            DW    $005A
+            DW    $005A
+            DW    $005A
+            DW    $005A
+L06124A     ENT
+            DW    $0007
+L06124C     ENT
+            DW    $0000
+            DW    $0007
+            DW    $0000
+            DW    $0006
+            DW    $0000
+            DW    $0006
+            DW    $0000
+L06125A     ENT
+            STR   'You must start up from System 6.0'
+L06127C     ENT
+            STR   'or later to run Archiver.'
+L061296     ENT
+            STR   ''
+L061297     ENT
+            STR   '                           Quit '0F1B'M'0E18
+L0612BD     ENT
+            DB    $00
+            DB    $00
+L0612BF     ENT
+            DB    $00
+            DB    $00
+L0612C1     ENT
+            DB    $00
+            DB    $00
+L0612C3     ENT
+            DB    $00
+            DB    $00
+L0612C5     ENT
+            DB    $00
+            DB    $00
+L0612C7     ENT
+            DB    $00
+            DB    $00
+L0612C9     ENT
+            DB    $00
+            DB    $00
+L0612CB     ENT
+            DB    $00
+            DB    $00
+L0612CD     ENT
+            DB    $00
+            DB    $00
+L0612CF     ENT
+            DB    $00
+            DB    $00
+L0612D1     ENT
+            DB    $00
+            DB    $00
+L0612D3     ENT
+            DB    $00
+            DB    $00
+L0612D5     ENT
+            DB    $00
+            DB    $00
+L0612D7     ENT
+            DB    $00
+            DB    $00
+L0612D9     ENT
+            DB    $00
+            DB    $00
+L0612DB     ENT
+            DB    $00
+            DB    $00
+L0612DD     ENT
+            DB    $00
+            DB    $00
+L0612DF     ENT
+            DB    $00
+            DB    $00
+L0612E1     ENT
+            DB    $00
+            DB    $00
+L0612E3     ENT
+            DB    $00
+            DB    $00
+L0612E5     ENT
+            DB    $00
+            DB    $00
+L0612E7     ENT
+            DB    $00
+            DB    $00
+L0612E9     ENT
+            DB    $00
+            DB    $00
+L0612EB     ENT
+            DB    $00
+            DB    $00
+L0612ED     ENT
+            DB    $00
+            DB    $00
+L0612EF     ENT
+            DB    $00
+            DB    $00
+L0612F1     ENT
+            DB    $00
+            DB    $00
+L0612F3     ENT
+            DB    $00
+            DB    $00
+L0612F5     ENT
+            DB    $00
+            DB    $00
+

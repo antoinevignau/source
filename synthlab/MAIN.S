@@ -1060,12 +1060,14 @@ L020A81     STZ   L020C27
             PHA
             PHA
             PHA
-            PEA   $0FB7
+*            PEA   $0FB7
+	pea   $0000		; 202303 - Ask for a userID
             PEA   ^L020C46
             PEA   L020C46
             PEA   $0001
             _InitialLoad
             PLA
+	sta   userID	; 202303 - Assigned userID
             PLA
             STA   L020C26
             PLA
@@ -1081,6 +1083,8 @@ L020A81     STZ   L020C27
             PHA
             _SetTSPtr
 L020ACD     RTS
+
+userID      ds    2		; 202303 - Room for the userID
 
 L020ACE     JSL   GSOS
             DW    $0010         ; Open
@@ -1159,9 +1163,11 @@ L020B7B     LDA   #L020BA3
             BRA   L020B6F
 L020B80     LDA   #L020BC4
             BRA   L020B6F
-L020B85     STR   'CanUt find RMidi.SetupS file.'
-L020BA3     STR   'CanUt find the MIDI driver file.'
+
+L020B85     STR   'Can'D5't find 'D2'Midi.Setup'D3' file.'
+L020BA3     STR   'Can'D5't find the MIDI driver file.'
 L020BC4     STR   'Error in starting the MIDI driver.'
+
 L020BE7     DW    $0000         ;  ref num
             ADRL  L020C2A       ;  path name
             ADRL  $00000000     ;  reserved
@@ -1254,17 +1260,19 @@ L020C85     DB    $00
             STR   'Initializing SynthLAB...'
             STR   'Sound Manager startup ERROR.'
 L020CBD     STR   'MIDI Synth (Tool035) startup ERROR.'
-L020CE1     STR   'CanUt find MIDI Synth (Tool035).'
+L020CE1     STR   'Can'D5't find MIDI Synth (Tool035).'
             STR   'ProDOS Error #0000.'
             STR   'Tool00 not found in Tools Dir.'
-            STR   'CanUt find -Apple.Midi- driver file.'
+            STR   'Can'D5't find -Apple.Midi- driver file.'
 L020D5A     STR   'Error occurred while starting up tools.'
 L020D82     JSL   L030033
             _MSShutDown
             LDA   L020C27
             BEQ   L020DA1
             PHA
-            PEA   $4023
+*            PEA   $4023
+	lda   userID	; 202303 - Shutdown assigned userID
+	pha
             PEA   $0000
             _UserShutDown
             PLA
@@ -3869,8 +3877,8 @@ L022112     LDA   L02000D
 L022139     CLC
             RTS
 
-L02213B     BRK   $00
-L02213D     BRK   $00
+L02213B     DW    $0000
+L02213D     DW    $0000
 L02213F     LDA   L02213B
             BMI   L02214B
             CMP   #$0010
@@ -15893,7 +15901,7 @@ L0263DC     LDA   L0212DF
 
 L0263EB     DW    $0000
             DW    $0004
-            BRK   $00
+            DW    $0000
 L0263F1     DW    $003C         ; dtBoundsRect
             DW    $00DA
             DW    $0084
@@ -17279,7 +17287,7 @@ L02726E     JSR   L02732A
             INC   L02728E
             RTS
 
-L02728E     BRK   $00
+L02728E     DW    $0000
 L027290     JSR   L02737E
             LDA   L027426
             AND   #$FDFF
@@ -19276,7 +19284,7 @@ L02851A     _InitCursor
             SEC
             RTS
 
-L02852C     STR   'CanUt load Wave File:'
+L02852C     STR   'Can'D5't load Wave File:'
 L028542     DW    $0000         ;  ref num
 L028544     ADRL  L028350       ;  path name
             ADRL  $00000000     ;  reserved
@@ -19508,7 +19516,7 @@ L0286F9     _InitCursor
             SEC
             RTS
 
-L02870B     STR   'CanUt load Instrument File:'
+L02870B     STR   'Can'D5't load Instrument File:'
 L028727     DW    $0000         ;  ref num
 L028729     ADRL  L0285EC       ;  path name
             ADRL  $00000000     ;  reserved
@@ -20001,7 +20009,7 @@ L028BE0     LDA   L028BDE
             JSR   L0291C6
             RTS
 
-L028C02     STR   'CanUt play Instrument #01'
+L028C02     STR   'Can'D5't play Instrument #01'
 L028C1C     STR   'Parameter out of range.'
 L028C34     LDA   $5E
             PHA
@@ -20611,8 +20619,8 @@ L02910D     STX   L029198
             JMP   L02027A
 
 L029198     DW    $0000
-L02919A     BRK   $00
-L02919C     STR   'Sorry, canUt start synthLAB . . .'
+L02919A     DW    $0000
+L02919C     STR   'Sorry, can'D5't start synthLAB . . .'
 L0291BE     DW    $001B
             DW    $0084
             DW    $009B
@@ -21995,9 +22003,7 @@ L029E8B     DW    $0000
             DW    $0000
             DW    $0000
             DW    $0020
-            DB    L029FBF
-            DB    $9F
-            DA    $0002
+            ADRL  L029FBF
 L029E99     DW    $0000
             DW    $0122
             DW    $0000
@@ -22210,6 +22216,7 @@ L02A1E0     DW    $0023
             DW    $00F4
 L02A1E8     ASC   'MM/DD/YY'
 L02A1F0     ASC   ' 12:00:00 am       '
+
 L02A203     PEA   ^L02A1E8
             PEA   L02A1E8
             _ReadAsciiTime
@@ -22263,6 +22270,9 @@ L02A294     DW    $0007
             ADRL  L049452
             DA    L021B6E
             DA    L021B67
+
+*--- DEAD CODE
+
             LDA   L02A353
             BEQ   L02A2B0
             BRL   L02A327
@@ -22281,7 +22291,12 @@ L02A2B0     PHA
             PLA
             STA   $40
             BCC   L02A2D6
-            BRK   $13           ; LOGO - There's a BREAK
+
+*            BRK   $13           ; LOGO - There's a BREAK
+	dec   L02A353	; 202303 - no more crash
+	clc
+	rts
+	
 L02A2D6     LDY   #$0002
             LDA   [$3E]
             STA   L02A355
@@ -22342,6 +22357,7 @@ L02A377     ADRL  $00000000     ;  request count
             ADRL  $00000000     ;  transfer count
 L02A37F     DW    $0000         ;  ref num
 L02A381     STR   'gunshots.raw'
+
 L02A38E     JSR   L0205B5
             JSR   L0206FC
             JSR   L0219FA

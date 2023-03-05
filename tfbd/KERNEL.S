@@ -101,7 +101,10 @@ L040326  ENT
          ASC   "ST"	; 15
          ASC   'R'
          ASC   "CH"	; 16
-         ASC   'K'00
+         ASC   'K'
+         ASC   "REC"	; 17 - AV 202303 - RECT
+         ASC   'T'
+         ASC   00
 
 L040358  ENT
          ASC   "LA"	; 0

@@ -430,7 +430,7 @@ L02018F  STRL  '9:Expand:'
 L02019A  STRL  '9:Configs:'
 
 *L0201A6  STR   "The Flaming Bird Disassembler    Written by Ferox - (c) 1994 Phoenix corporation"
-L0201A6  STR   "The Flaming Bird Disassembler      Written by Ferox - (c) 1994-2021 Phoenix Corp"
+L0201A6  STR   "The Flaming Bird Disassembler      Written by Ferox - (c) 1994-2023 Phoenix Corp"
 L0201F7  STR   87">ERR: "
 
 L0201FF  DA    L020239	;  0 Not enough memory
@@ -2298,9 +2298,9 @@ L02142C  JSR   L021339
          STA   L021496
          JSR   L021309
          BCS   L021479
-         CMP   #$00AE
+         CMP   #$00AE	; .
          BEQ   L021465
-L021442  CMP   #$00AC
+L021442  CMP   #$00AC	; ,
          BNE   L021491
          JSR   L021564
          BCS   L02148E
@@ -2341,10 +2341,10 @@ L02148E  PLP
 
 L021491  LDA   #$0001
          BRA   L02148B
-L021496  DB    $00
-         DB    $00
-L021498  DB    $00
-         DB    $00
+
+L021496  DW    $0000
+L021498  DW    $0000
+
 L02149A  PHP
          REP   #$30
          JSR   L021309
@@ -2404,12 +2404,10 @@ L02151C  PLP
          SEC
          RTS
 
-L02151F  DB    $00
-         DB    $00
-L021521  DB    $00
-         DB    $00
-L021523  DB    $00
-         DB    $00
+L02151F  DW    $0000
+L021521  DW    $0000
+L021523  DW    $0000
+
 L021525  PHP
          REP   #$30
          JSR   L02149A
@@ -2632,40 +2630,42 @@ L021658  DS    $0002
 L02165A  DS    $00FE
 
 L021758  ADRL  L0217D6	; 0 DB
-         ADRL  L0217D5	; 1
-         ADRL  L0217D4	; 2
-         ADRL  L0217D3	; 3
-         ADRL  L0217D2	; 4
-         ADRL  L0217D1	; 5
-         ADRL  L0217D0	; 6
-         ADRL  L021858	; 7
-         ADRL  L02186B	; 8
-         ADRL  L0218B5	; 9
-         ADRL  L0219C7	; 10
-         ADRL  L0218B0	; 11
-         ADRL  L0217AD	; 12
-         ADRL  L0217AD	; 13
-         ADRL  L021A4A	; 14
-         ADRL  L021A45	; 15
-         ADRL  L0217C6	; 16
-	 
-L02179C  DB    $C0
-         DB    $C0
-         DB    $C0
-         DB    $C0
-         DB    $C0
-         DB    $C0
-         DB    $C0
-         DB    $C0
-         DB    $C0
-         DB    $C0
-         DB    $C0
-         DB    $C0
-         DB    $C0
-         DB    $C0
-         DB    $C0
-         DB    $C0
-         DB    $C0
+         ADRL  L0217D5	; 1 DW
+         ADRL  L0217D4	; 2 DDB
+         ADRL  L0217D3	; 3 DA
+         ADRL  L0217D2	; 4 ADRL
+         ADRL  L0217D1	; 5 ADR
+         ADRL  L0217D0	; 6 FLO
+         ADRL  L021858	; 7 HEX
+         ADRL  L02186B	; 8 DS
+         ADRL  L0218B5	; 9 ASC
+         ADRL  L0219C7	; 10 DCI
+         ADRL  L0218B0	; 11 REV
+         ADRL  L0217AD	; 12 INV
+         ADRL  L0217AD	; 13 FLS
+         ADRL  L021A4A	; 14 STRL
+         ADRL  L021A45	; 15 STR
+         ADRL  L0217C6	; 16 CHK
+         adrl  doRECT	; 17 - AV 202303 RECT
+
+L02179C  DB    $C0	; 0 DB
+         DB    $C0	; 1
+         DB    $C0	; 2
+         DB    $C0	; 3
+         DB    $C0	; 4
+         DB    $C0	; 5
+         DB    $C0	; 6
+         DB    $C0	; 7
+         DB    $C0	; 8
+         DB    $C0	; 9
+         DB    $C0	; 10
+         DB    $C0	; 11
+         DB    $C0	; 12
+         DB    $C0	; 13
+         DB    $C0	; 14
+         DB    $C0	; 15
+         DB    $C0	; 16
+         db    $c0	; 17 - AV 202303 RECT
 
 L0217AD  CLC
          RTS
@@ -2683,6 +2683,7 @@ L0217AD  CLC
          PLP
          RTS
 
+doRECT   iny	; AV 202303 - a RECT is 4 DW
 L0217C6  INY
          INY
          INY
@@ -2702,20 +2703,37 @@ L0217D5  INY
 
 L0217D6  LDA   L021847,Y
          AND   #$00FF
-         STA   L021843
-         STY   L021841
-         JSR   L021339
+         STA   L021843	; number of bytes to disassemble
+         STY   L021841	; Y is the index
+         JSR   L021339	; check syntax
          BCS   L0217F7
-         STA   L02183F
-         STY   L02183D
-         JSR   L02141A
+         STA   L02183F	; address
+         STY   L02183D	; segment
+         JSR   L02141A	; check count
          BCS   L0217F7
-         STY   L021845
+         STY   L021845	; count
          BRA   L0217F9
 L0217F7  CLC
          RTS
 
-L0217F9  LDX   L021845
+* AV 202303 - check if a RECT is required
+
+L0217F9	lda	L021843	; is that a rect
+	cmp	#$0082
+	bne	L0217FA	; not a rect
+	
+	and	#$007f	; yes, erase bit 7
+	sta	L021843	; we want 2 bytes as a word
+	
+	lda	#1	; command is DW - disassemble 2 bytes (ie. a word)
+	sta	L021841
+	
+	lda	L021845	; but 4 times each count
+	asl		; as a RECT is 4 words
+	asl
+	sta	L021845
+
+L0217FA  LDX   L021845
          DEX
          BEQ   L021819
          LDA   L021841
@@ -2730,33 +2748,29 @@ L02180C  ADC   L021843
          STA   L021843
          INX
          STX   L021845
-L021819  LDA   L02183D
+L021819  LDA   L02183D	; segment
          PHA
-         LDA   L02183F
+         LDA   L02183F	; address
          PHA
-         LDA   L021843
+         LDA   L021843	; number of bytes
          PHA
-         LDA   L021841
+         LDA   L021841	; command
          PHA
          JSL   L043069
-         LDA   L02183F
-         ADC   L021843
-         STA   L02183F
-         DEC   L021845
-         BNE   L021819
+         LDA   L02183F	; address
+         ADC   L021843	; + length
+         STA   L02183F	; = address
+         DEC   L021845	; count--
+         BNE   L021819	; loop
          CLC
          RTS
 
-L02183D  DB    $00
-         DB    $00
-L02183F  DB    $00
-         DB    $00
-L021841  DB    $00
-         DB    $00
-L021843  DB    $00
-         DB    $00
-L021845  DB    $00
-         DB    $00
+L02183D  DW    $0000
+L02183F  DW    $0000
+L021841  DW    $0000
+L021843  DW    $0000
+L021845  DW    $0000
+
 L021847  DB    $01
          DB    $02
          DB    $02
@@ -2774,6 +2788,8 @@ L021847  DB    $01
          DB    $00
          DB    $00
          DB    $01
+         db    $82	; AV 202303 - bit 7 to ID a rect
+
 L021858  JSR   L02141C
          BCS   L021869
          PEI   $42
@@ -2819,11 +2835,10 @@ L021895  REP   #$20
 L0218A9  CLV
          RTS
 
-L0218AB  DB    $00
-         DB    $00
-L0218AD  DB    $00
-         DB    $00
+L0218AB  DW    $0000
+L0218AD  DW    $0000
 L0218AF  DB    $00
+
 L0218B0  LDA   #$000B
          BRA   L0218B8
 L0218B5  LDA   #$0009
@@ -2917,23 +2932,23 @@ L021969  STX   L0219C2
          STA   L0219C0
          BRA   L02192A
 
-	 MX    %10
+         MX    %10
 	 
 L021978  PHY
 L021979  LDA   [$3A],Y
          PHA
          AND   #$80
-	 STA   L0219C6
-	 PLA
-	 AND   #$7F
-	 CMP   #$20
-	 BCS   L02198B
-	 INY
-	 BNE   L021979
+         STA   L0219C6
+         PLA
+         AND   #$7F
+         CMP   #$20
+         BCS   L02198B
+         INY
+         BNE   L021979
 L02198B  PLY
          RTS
 
-	 MX    %00
+         MX    %00
 
 L02198D  REP   #$20
          PEI   $42
@@ -2959,14 +2974,10 @@ L02198D  REP   #$20
          SEP   #$20
          RTS
 
-L0219BE  DB    $00
-         DB    $00
-L0219C0  DB    $00
-         DB    $00
-L0219C2  DB    $00
-         DB    $00
-L0219C4  DB    $00
-         DB    $00
+L0219BE  DW    $0000
+L0219C0  DW    $0000
+L0219C2  DW    $0000
+L0219C4  DW    $0000
 L0219C6  DB    $00
 
 L0219C7  PHP
@@ -3024,11 +3035,11 @@ L021A35  PLP
 L021A38  LDA   #$0007
 L021A3B  JSR   L020AB8
          BRA   L021A35
+
 L021A40  DB    $00
-L021A41  DB    $00
-         DB    $00
-L021A43  DB    $00
-         DB    $00
+L021A41  DW    $0000
+L021A43  DW    $0000
+
 L021A45  LDA   #$000F
          BRA   L021A4D
 L021A4A  LDA   #$000E
@@ -3089,12 +3100,9 @@ L021ABF  SEC
          CLV
          RTS
 
-L021AC2  DB    $00
-         DB    $00
-L021AC4  DB    $00
-         DB    $00
-L021AC6  DB    $00
-         DB    $00
+L021AC2  DW    $0000
+L021AC4  DW    $0000
+L021AC6  DW    $0000
 
 L021AC8  ADRL  L028C04	; 0  LOAD
          ADRL  L021BC7	; 1  TCLR
@@ -3150,8 +3158,8 @@ L021AC8  ADRL  L028C04	; 0  LOAD
 
 * AV 202010 - Two new commands
 
-	adrl	doCHON	; 51 ONEON
-	adrl	doCHOFF	; 52 ONEOFF
+	adrl	doCHON	; 51 CHON
+	adrl	doCHOFF	; 52 CHOFF
 
 *---
 
@@ -3209,8 +3217,8 @@ L021B94  DB    $00      ; 0  LOAD
 
 * AV 202010 - Two new commands
 
-	db	$00	; 51 ONEON
-	db	$00	; 52 ONEOFF
+	db	$00	; 51 CHON
+	db	$00	; 52 CHOFF
 
 *--- end of AV 202010
 
@@ -8163,7 +8171,7 @@ L0245BB ASC     8D
 L02483E DW      L024B44-L024840
 L024840	ASC     8D
 	ASC	"Constants (followed by address [,num]):"8D8D
-	ASC	"  DB/DW ........................ Byte/Word"8D
+	ASC	"  DB/DW/RECT ................... Byte/Word/Rect"8D
 	ASC	"  DDB .......................... Double byte"8D
 	ASC	"  DA/ADR/ADRL .................. 2/3/4 bytes address"8D
 	ASC	"  DCI .......................... Hi-bit ended string"8D
@@ -11177,13 +11185,14 @@ L0272CA  LDA   L027318,X
          RTS
 
 L02730B  STR   "TFB-Disasm v"
-L027318  STR   "1.0.5"	; was "1.0.4" was "1.0.2"
+L027318  STR   "1.0.6"	; was "1.0.5" "1.0.4" was "1.0.2"
          DB    $00
          DB    $00
          DB    $00
          DB    $00
 *L027322  STR   "   19-SEP-2020"8D	; was "10-MAY-94"
-L027322  STR   "   21-MAR-2021"8D	; was "10-MAY-94"
+*L027322  STR   "   21-MAR-2021"8D	; was "10-MAY-94"
+L027322  STR   "    5-MAR-2023"8D	; was "21-MAR-2021"
 
 L027330  JSR   L021586
          LDA   L0215CD

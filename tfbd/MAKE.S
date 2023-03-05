@@ -2,7 +2,7 @@
 * Expansion linker file
 
          DSK   TFBD
-         TYP   S16
+         TYP   $B3
 
 * Assemble files
 

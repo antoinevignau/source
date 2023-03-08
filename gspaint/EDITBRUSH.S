@@ -8,7 +8,6 @@
 
 	 mx	%00
          rel
-	 use	EDITBRUSH.E
 	 use	EDITBRUSH.X
 	 lst	off
 	 

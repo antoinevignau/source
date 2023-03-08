@@ -8,7 +8,6 @@
 
 	 mx	%00
          rel
-	 use	EDITCOLOR.E
 	 use	EDITCOLOR.X
 	 lst	off
 	 

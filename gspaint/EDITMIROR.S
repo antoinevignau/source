@@ -8,7 +8,6 @@
 
 	 mx	%00
          rel
-	 use	EDITMIROR.E
 	 use	EDITMIROR.X
 	 lst	off
 	 

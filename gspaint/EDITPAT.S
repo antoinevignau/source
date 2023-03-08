@@ -8,7 +8,6 @@
 
 	 mx	%00
          rel
-	 use	EDITPAT.E
 	 use	EDITPAT.X
 	 lst	off
 	 

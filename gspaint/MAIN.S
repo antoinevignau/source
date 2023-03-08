@@ -13,6 +13,12 @@
 	 
 *-------------------------------
 
+MSLOT EQU $07F8
+KEYMODREG EQU $C025
+BUTN1 EQU $C062
+CLRROM EQU $CFFF
+GSOS EQU $E100A8
+
 LANGUAGE	=	2	; 1 for FR, 2 for US, ...
 
 *-------------------------------

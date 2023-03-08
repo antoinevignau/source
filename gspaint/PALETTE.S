@@ -14,6 +14,8 @@
 	 
 *-------------------------------
 
+GSOS EQU $E100A8
+
 	use	4/Ctl.Macs
 	use	4/Desk.Macs
 	use	4/Dialog.Macs

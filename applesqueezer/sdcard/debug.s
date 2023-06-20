@@ -244,7 +244,6 @@ found	lda	proDINFO+8           ; block device?
 	dw	$202f
 	adrl	proDREAD
 	jsr	showERRCODE
-
 	jsr	printBUFFER	; output two lines of buffer
 	
 	lda	errCODE	; only write if read is OK
@@ -456,6 +455,6 @@ haBUFFER	ds	4
 
 *----------
 
-myBUFFER	ds	512
+myBUFFER	ds	512,$bd
 myLIST	ds	512
 

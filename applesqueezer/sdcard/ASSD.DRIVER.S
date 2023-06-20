@@ -38,6 +38,7 @@ maxBLOCKS	=	$ffffffff	; that is a huge number of blocks
 
 dftCHAR	=	$03EC	; default characteristics
 dftSLOT	=	$8000	; not slot dependent
+dftUNIT	=	$0001	; unit 1
 dftVERSION	=	$1000	; v1
 
 *-----------------------------------------------
@@ -406,7 +407,7 @@ MyDIB	ds	4	; +00 pointer to the next DIB
 	str	'ASSDDevice' ; +0E device name
 	ds	21	; 32 - 11 = 21
 	dw	dftSLOT	; +2E slot number
-	dw	$0000	; +30 unit number
+	dw	dftUNIT	; +30 unit number
 	dw	dftVERSION	; +32 version
 	dw	devHDD	; +34 device ID
 	dw	$0000	; +36 first linked device

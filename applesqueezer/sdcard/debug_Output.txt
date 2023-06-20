@@ -361,285 +361,436 @@
   562 |  1 debug.s    244 | Data        | 00 |         |    2 | 00/0233 : 2F 20       |                dw        $202f          
   563 |  1 debug.s    245 | Data        | 00 |  3      |    4 | 00/0235 : 01 04 00 00 |                adrl      proDREAD       
   564 |  1 debug.s    246 | Code        | 00 |  2      |    3 | 00/0239 : 20 5F 02    |                jsr       showERRCODE    
-  565 |  1 debug.s    247 | Empty       | 00 |         |    0 | 00/023C               |                                         
-  566 |  1 debug.s    248 | Code        | 00 |  2      |    3 | 00/023C : 20 80 02    |                jsr       printBUFFER    ; output two lines of buffer
-  567 |  1 debug.s    249 | Empty       | 00 |         |    0 | 00/023F               |                                         
-  568 |  1 debug.s    250 | Code        | 00 |  2      |    3 | 00/023F : AD E1 03    |                lda       errCODE        ; only write if read is OK
-  569 |  1 debug.s    251 | Code        | 00 |         |    2 | 00/0242 : F0 01       |                beq       okWRITE        
-  570 |  1 debug.s    252 | Code        | 00 |         |    1 | 00/0244 : 60          |                rts                      
-  571 |  1 debug.s    253 | Empty       | 00 |         |    0 | 00/0245               |                                         
-  572 |  1 debug.s    254 | Comment     | 00 |         |    0 | 00/0245               | *--- Perform a DWrite
-  573 |  1 debug.s    255 | Empty       | 00 |         |    0 | 00/0245               |                                         
-  574 |  1 debug.s    256 | Macro       | 00 |         |    0 | 00/0245               | okWRITE        PushLong  #strDWRITE     ; show the string
-  578 |  1 debug.s    256 | Code        | 00 |  1 >>16 |    3 | 00/0245 : F4 00 00    |                PEA       #^#strDWRITE   
-  585 |  1 debug.s    256 | Code        | 00 |  2      |    3 | 00/0248 : F4 24 03    |                PEA       #strDWRITE     
-  588 |  1 debug.s    257 | Macro       | 00 |         |    0 | 00/024B               |                _WriteCString                 
-  590 |  1 debug.s    257 | Code        | 00 |         |    3 | 00/024B : A2 0C 20    |                LDX       #$200C         ; load tool call #
-  591 |  1 debug.s    257 | Code        | 00 |         |    4 | 00/024E : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
-  592 |  1 debug.s    258 | Empty       | 00 |         |    0 | 00/0252               |                                         
-  593 |  1 debug.s    259 | Code        | 00 |         |    4 | 00/0252 : 22 A8 00 E1 |                jsl       {$e100a8}      
-  594 |  1 debug.s    260 | Data        | 00 |         |    2 | 00/0256 : 30 20       |                dw        $2030          
-  595 |  1 debug.s    261 | Data        | 00 |  3      |    4 | 00/0258 : 17 04 00 00 |                adrl      proDWRITE      
-  596 |  1 debug.s    262 | Code        | 00 |  2      |    3 | 00/025C : 4C 5F 02    |                jmp       showERRCODE    
-  597 |  1 debug.s    263 | Empty       | 00 |         |    0 | 00/025F               |                                         
-  598 |  1 debug.s    264 | Comment     | 00 |         |    0 | 00/025F               | *--- Code end
-  599 |  1 debug.s    265 | Empty       | 00 |         |    0 | 00/025F               |                                         
-  600 |  1 debug.s    266 | Empty       | 00 |         |    0 | 00/025F               | showERRCODE                             
-  601 |  1 debug.s    267 | Code        | 00 |  2      |    3 | 00/025F : 8D E1 03    |                sta       errCODE        ; save it
-  602 |  1 debug.s    268 | Empty       | 00 |         |    0 | 00/0262               |                                         
-  603 |  1 debug.s    269 | Macro       | 00 |         |    0 | 00/0262               |                PushLong  #strERR        ; show the string
-  607 |  1 debug.s    269 | Code        | 00 |  1 >>16 |    3 | 00/0262 : F4 00 00    |                PEA       #^#strERR      
-  614 |  1 debug.s    269 | Code        | 00 |  2      |    3 | 00/0265 : F4 62 03    |                PEA       #strERR        
-  617 |  1 debug.s    270 | Macro       | 00 |         |    0 | 00/0268               |                _WriteCString                 
-  619 |  1 debug.s    270 | Code        | 00 |         |    3 | 00/0268 : A2 0C 20    |                LDX       #$200C         ; load tool call #
-  620 |  1 debug.s    270 | Code        | 00 |         |    4 | 00/026B : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
-  621 |  1 debug.s    271 | Empty       | 00 |         |    0 | 00/026F               |                                         
-  622 |  1 debug.s    272 | Code        | 00 |  2      |    3 | 00/026F : AD E1 03    |                lda       errCODE        ; show the error code
-  623 |  1 debug.s    273 | Code        | 00 |  2      |    3 | 00/0272 : 20 B5 03    |                jsr       showHEX        
-  624 |  1 debug.s    274 | Empty       | 00 |         |    0 | 00/0275               |                                         
-  625 |  1 debug.s    275 | Macro       | 00 |         |    0 | 00/0275               |                PushWord  #$0d           
-  627 |  1 debug.s    275 | Code        | 00 |         |    3 | 00/0275 : F4 0D 00    |                PEA       #$0d           
-  630 |  1 debug.s    276 | Macro       | 00 |         |    0 | 00/0278               |                _WriteChar                 
-  632 |  1 debug.s    276 | Code        | 00 |         |    3 | 00/0278 : A2 0C 18    |                LDX       #$180C         ; load tool call #
-  633 |  1 debug.s    276 | Code        | 00 |         |    4 | 00/027B : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
-  634 |  1 debug.s    277 | Code        | 00 |         |    1 | 00/027F : 60          |                rts                      
-  635 |  1 debug.s    278 | Empty       | 00 |         |    0 | 00/0280               |                                         
-  636 |  1 debug.s    279 | Comment     | 00 |         |    0 | 00/0280               | *--- Print a line of buffer
-  637 |  1 debug.s    280 | Empty       | 00 |         |    0 | 00/0280               |                                         
-  638 |  1 debug.s    281 | Macro       | 00 |         |    0 | 00/0280               | printBUFFER    PushWord  #$20           
-  640 |  1 debug.s    281 | Code        | 00 |         |    3 | 00/0280 : F4 20 00    |                PEA       #$20           
-  643 |  1 debug.s    282 | Macro       | 00 |         |    0 | 00/0283               |                _WriteChar                 
-  645 |  1 debug.s    282 | Code        | 00 |         |    3 | 00/0283 : A2 0C 18    |                LDX       #$180C         ; load tool call #
-  646 |  1 debug.s    282 | Code        | 00 |         |    4 | 00/0286 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
-  647 |  1 debug.s    283 | Empty       | 00 |         |    0 | 00/028A               |                                         
-  648 |  1 debug.s    284 | Code        | 00 |  2      |    3 | 00/028A : AD 8D 04    |                lda       myBUFFER       
-  649 |  1 debug.s    285 | Code        | 00 |  2      |    3 | 00/028D : 20 FB 02    |                jsr       printME        
-  650 |  1 debug.s    286 | Code        | 00 |  2      |    3 | 00/0290 : AD 8F 04    |                lda       myBUFFER+2     
-  651 |  1 debug.s    287 | Code        | 00 |  2      |    3 | 00/0293 : 20 FB 02    |                jsr       printME        
-  652 |  1 debug.s    288 | Code        | 00 |  2      |    3 | 00/0296 : AD 91 04    |                lda       myBUFFER+4     
-  653 |  1 debug.s    289 | Code        | 00 |  2      |    3 | 00/0299 : 20 FB 02    |                jsr       printME        
-  654 |  1 debug.s    290 | Code        | 00 |  2      |    3 | 00/029C : AD 93 04    |                lda       myBUFFER+6     
-  655 |  1 debug.s    291 | Code        | 00 |  2      |    3 | 00/029F : 20 FB 02    |                jsr       printME        
-  656 |  1 debug.s    292 | Code        | 00 |  2      |    3 | 00/02A2 : AD 95 04    |                lda       myBUFFER+8     
-  657 |  1 debug.s    293 | Code        | 00 |  2      |    3 | 00/02A5 : 20 FB 02    |                jsr       printME        
-  658 |  1 debug.s    294 | Code        | 00 |  2      |    3 | 00/02A8 : AD 97 04    |                lda       myBUFFER+10    
-  659 |  1 debug.s    295 | Code        | 00 |  2      |    3 | 00/02AB : 20 FB 02    |                jsr       printME        
-  660 |  1 debug.s    296 | Code        | 00 |  2      |    3 | 00/02AE : AD 99 04    |                lda       myBUFFER+12    
-  661 |  1 debug.s    297 | Code        | 00 |  2      |    3 | 00/02B1 : 20 FB 02    |                jsr       printME        
-  662 |  1 debug.s    298 | Code        | 00 |  2      |    3 | 00/02B4 : AD 9B 04    |                lda       myBUFFER+14    
-  663 |  1 debug.s    299 | Code        | 00 |  2      |    3 | 00/02B7 : 20 FB 02    |                jsr       printME        
-  664 |  1 debug.s    300 | Empty       | 00 |         |    0 | 00/02BA               |                                         
-  665 |  1 debug.s    301 | Macro       | 00 |         |    0 | 00/02BA               |                PushWord  #$0d           
-  667 |  1 debug.s    301 | Code        | 00 |         |    3 | 00/02BA : F4 0D 00    |                PEA       #$0d           
-  670 |  1 debug.s    302 | Macro       | 00 |         |    0 | 00/02BD               |                _WriteChar                 
-  672 |  1 debug.s    302 | Code        | 00 |         |    3 | 00/02BD : A2 0C 18    |                LDX       #$180C         ; load tool call #
-  673 |  1 debug.s    302 | Code        | 00 |         |    4 | 00/02C0 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
-  674 |  1 debug.s    303 | Empty       | 00 |         |    0 | 00/02C4               |                                         
-  675 |  1 debug.s    304 | Macro       | 00 |         |    0 | 00/02C4               |                PushWord  #$20           
-  677 |  1 debug.s    304 | Code        | 00 |         |    3 | 00/02C4 : F4 20 00    |                PEA       #$20           
-  680 |  1 debug.s    305 | Macro       | 00 |         |    0 | 00/02C7               |                _WriteChar                 
-  682 |  1 debug.s    305 | Code        | 00 |         |    3 | 00/02C7 : A2 0C 18    |                LDX       #$180C         ; load tool call #
-  683 |  1 debug.s    305 | Code        | 00 |         |    4 | 00/02CA : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
-  684 |  1 debug.s    306 | Empty       | 00 |         |    0 | 00/02CE               |                                         
-  685 |  1 debug.s    307 | Code        | 00 |  2      |    3 | 00/02CE : AD 9D 04    |                lda       myBUFFER+16    
-  686 |  1 debug.s    308 | Code        | 00 |  2      |    3 | 00/02D1 : 20 FB 02    |                jsr       printME        
-  687 |  1 debug.s    309 | Code        | 00 |  2      |    3 | 00/02D4 : AD 9F 04    |                lda       myBUFFER+18    
-  688 |  1 debug.s    310 | Code        | 00 |  2      |    3 | 00/02D7 : 20 FB 02    |                jsr       printME        
-  689 |  1 debug.s    311 | Code        | 00 |  2      |    3 | 00/02DA : AD A1 04    |                lda       myBUFFER+20    
-  690 |  1 debug.s    312 | Code        | 00 |  2      |    3 | 00/02DD : 20 FB 02    |                jsr       printME        
-  691 |  1 debug.s    313 | Code        | 00 |  2      |    3 | 00/02E0 : AD A3 04    |                lda       myBUFFER+22    
-  692 |  1 debug.s    314 | Code        | 00 |  2      |    3 | 00/02E3 : 20 FB 02    |                jsr       printME        
-  693 |  1 debug.s    315 | Code        | 00 |  2      |    3 | 00/02E6 : AD A5 04    |                lda       myBUFFER+24    
-  694 |  1 debug.s    316 | Code        | 00 |  2      |    3 | 00/02E9 : 20 FB 02    |                jsr       printME        
-  695 |  1 debug.s    317 | Code        | 00 |  2      |    3 | 00/02EC : AD A7 04    |                lda       myBUFFER+26    
-  696 |  1 debug.s    318 | Code        | 00 |  2      |    3 | 00/02EF : 20 FB 02    |                jsr       printME        
-  697 |  1 debug.s    319 | Code        | 00 |  2      |    3 | 00/02F2 : AD A9 04    |                lda       myBUFFER+28    
-  698 |  1 debug.s    320 | Code        | 00 |  2      |    3 | 00/02F5 : 20 FB 02    |                jsr       printME        
-  699 |  1 debug.s    321 | Code        | 00 |  2      |    3 | 00/02F8 : AD AB 04    |                lda       myBUFFER+30    ; ends into the code below...
-  700 |  1 debug.s    322 | Empty       | 00 |         |    0 | 00/02FB               |                                         
-  701 |  1 debug.s    323 | Code        | 00 |         |    1 | 00/02FB : 48          | printME        pha                      ; from a word to a string
-  702 |  1 debug.s    324 | Code        | 00 |         |    1 | 00/02FC : 48          |                pha                      
-  703 |  1 debug.s    325 | Code        | 00 |         |    1 | 00/02FD : 48          |                pha                      ; <= here, really
-  704 |  1 debug.s    326 | Macro       | 00 |         |    0 | 00/02FE               |                _HexIt                   
-  706 |  1 debug.s    326 | Code        | 00 |         |    3 | 00/02FE : A2 0B 2A    |                LDX       #$2A0B         ; load tool call #
-  707 |  1 debug.s    326 | Code        | 00 |         |    4 | 00/0301 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
-  708 |  1 debug.s    327 | Macro       | 00 |         |    0 | 00/0305               |                PullLong  strBUFFER      
-  711 |  1 debug.s    327 | Code        | 00 |         |    1 | 00/0305 : 68          |                PLA                      
-  713 |  1 debug.s    327 | Code        | 00 |  2      |    3 | 00/0306 : 8D DB 03    |                STA       strBUFFER      
-  718 |  1 debug.s    327 | Code        | 00 |         |    1 | 00/0309 : 68          |                PLA                      
-  720 |  1 debug.s    327 | Code        | 00 |  2      |    3 | 00/030A : 8D DD 03    |                STA       strBUFFER+2    
-  726 |  1 debug.s    328 | Empty       | 00 |         |    0 | 00/030D               |                                         
-  727 |  1 debug.s    329 | Macro       | 00 |         |    0 | 00/030D               |                PushLong  #strBUFFER     ; show the string
-  731 |  1 debug.s    329 | Code        | 00 |  1 >>16 |    3 | 00/030D : F4 00 00    |                PEA       #^#strBUFFER   
-  738 |  1 debug.s    329 | Code        | 00 |  2      |    3 | 00/0310 : F4 DB 03    |                PEA       #strBUFFER     
-  741 |  1 debug.s    330 | Macro       | 00 |         |    0 | 00/0313               |                _WriteCString                 
-  743 |  1 debug.s    330 | Code        | 00 |         |    3 | 00/0313 : A2 0C 20    |                LDX       #$200C         ; load tool call #
-  744 |  1 debug.s    330 | Code        | 00 |         |    4 | 00/0316 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
-  745 |  1 debug.s    331 | Code        | 00 |         |    1 | 00/031A : 60          |                rts                      
-  746 |  1 debug.s    332 | Empty       | 00 |         |    0 | 00/031B               |                                         
-  747 |  1 debug.s    333 | Comment     | 00 |         |    0 | 00/031B               | *---------- Data
-  748 |  1 debug.s    334 | Empty       | 00 |         |    0 | 00/031B               |                                         
-  749 |  1 debug.s    335 | Data        | 00 |         |    9 | 00/031B : 0D 0D 44 52 | strDREAD       asc       0d0d'DRead '00 
+  565 |  1 debug.s    247 | Code        | 00 |  2      |    3 | 00/023C : 20 80 02    |                jsr       printBUFFER    ; output two lines of buffer
+  566 |  1 debug.s    248 | Empty       | 00 |         |    0 | 00/023F               |                                         
+  567 |  1 debug.s    249 | Code        | 00 |  2      |    3 | 00/023F : AD E1 03    |                lda       errCODE        ; only write if read is OK
+  568 |  1 debug.s    250 | Code        | 00 |         |    2 | 00/0242 : F0 01       |                beq       okWRITE        
+  569 |  1 debug.s    251 | Code        | 00 |         |    1 | 00/0244 : 60          |                rts                      
+  570 |  1 debug.s    252 | Empty       | 00 |         |    0 | 00/0245               |                                         
+  571 |  1 debug.s    253 | Comment     | 00 |         |    0 | 00/0245               | *--- Perform a DWrite
+  572 |  1 debug.s    254 | Empty       | 00 |         |    0 | 00/0245               |                                         
+  573 |  1 debug.s    255 | Macro       | 00 |         |    0 | 00/0245               | okWRITE        PushLong  #strDWRITE     ; show the string
+  577 |  1 debug.s    255 | Code        | 00 |  1 >>16 |    3 | 00/0245 : F4 00 00    |                PEA       #^#strDWRITE   
+  584 |  1 debug.s    255 | Code        | 00 |  2      |    3 | 00/0248 : F4 24 03    |                PEA       #strDWRITE     
+  587 |  1 debug.s    256 | Macro       | 00 |         |    0 | 00/024B               |                _WriteCString                 
+  589 |  1 debug.s    256 | Code        | 00 |         |    3 | 00/024B : A2 0C 20    |                LDX       #$200C         ; load tool call #
+  590 |  1 debug.s    256 | Code        | 00 |         |    4 | 00/024E : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  591 |  1 debug.s    257 | Empty       | 00 |         |    0 | 00/0252               |                                         
+  592 |  1 debug.s    258 | Code        | 00 |         |    4 | 00/0252 : 22 A8 00 E1 |                jsl       {$e100a8}      
+  593 |  1 debug.s    259 | Data        | 00 |         |    2 | 00/0256 : 30 20       |                dw        $2030          
+  594 |  1 debug.s    260 | Data        | 00 |  3      |    4 | 00/0258 : 17 04 00 00 |                adrl      proDWRITE      
+  595 |  1 debug.s    261 | Code        | 00 |  2      |    3 | 00/025C : 4C 5F 02    |                jmp       showERRCODE    
+  596 |  1 debug.s    262 | Empty       | 00 |         |    0 | 00/025F               |                                         
+  597 |  1 debug.s    263 | Comment     | 00 |         |    0 | 00/025F               | *--- Code end
+  598 |  1 debug.s    264 | Empty       | 00 |         |    0 | 00/025F               |                                         
+  599 |  1 debug.s    265 | Empty       | 00 |         |    0 | 00/025F               | showERRCODE                             
+  600 |  1 debug.s    266 | Code        | 00 |  2      |    3 | 00/025F : 8D E1 03    |                sta       errCODE        ; save it
+  601 |  1 debug.s    267 | Empty       | 00 |         |    0 | 00/0262               |                                         
+  602 |  1 debug.s    268 | Macro       | 00 |         |    0 | 00/0262               |                PushLong  #strERR        ; show the string
+  606 |  1 debug.s    268 | Code        | 00 |  1 >>16 |    3 | 00/0262 : F4 00 00    |                PEA       #^#strERR      
+  613 |  1 debug.s    268 | Code        | 00 |  2      |    3 | 00/0265 : F4 62 03    |                PEA       #strERR        
+  616 |  1 debug.s    269 | Macro       | 00 |         |    0 | 00/0268               |                _WriteCString                 
+  618 |  1 debug.s    269 | Code        | 00 |         |    3 | 00/0268 : A2 0C 20    |                LDX       #$200C         ; load tool call #
+  619 |  1 debug.s    269 | Code        | 00 |         |    4 | 00/026B : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  620 |  1 debug.s    270 | Empty       | 00 |         |    0 | 00/026F               |                                         
+  621 |  1 debug.s    271 | Code        | 00 |  2      |    3 | 00/026F : AD E1 03    |                lda       errCODE        ; show the error code
+  622 |  1 debug.s    272 | Code        | 00 |  2      |    3 | 00/0272 : 20 B5 03    |                jsr       showHEX        
+  623 |  1 debug.s    273 | Empty       | 00 |         |    0 | 00/0275               |                                         
+  624 |  1 debug.s    274 | Macro       | 00 |         |    0 | 00/0275               |                PushWord  #$0d           
+  626 |  1 debug.s    274 | Code        | 00 |         |    3 | 00/0275 : F4 0D 00    |                PEA       #$0d           
+  629 |  1 debug.s    275 | Macro       | 00 |         |    0 | 00/0278               |                _WriteChar                 
+  631 |  1 debug.s    275 | Code        | 00 |         |    3 | 00/0278 : A2 0C 18    |                LDX       #$180C         ; load tool call #
+  632 |  1 debug.s    275 | Code        | 00 |         |    4 | 00/027B : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  633 |  1 debug.s    276 | Code        | 00 |         |    1 | 00/027F : 60          |                rts                      
+  634 |  1 debug.s    277 | Empty       | 00 |         |    0 | 00/0280               |                                         
+  635 |  1 debug.s    278 | Comment     | 00 |         |    0 | 00/0280               | *--- Print a line of buffer
+  636 |  1 debug.s    279 | Empty       | 00 |         |    0 | 00/0280               |                                         
+  637 |  1 debug.s    280 | Macro       | 00 |         |    0 | 00/0280               | printBUFFER    PushWord  #$20           
+  639 |  1 debug.s    280 | Code        | 00 |         |    3 | 00/0280 : F4 20 00    |                PEA       #$20           
+  642 |  1 debug.s    281 | Macro       | 00 |         |    0 | 00/0283               |                _WriteChar                 
+  644 |  1 debug.s    281 | Code        | 00 |         |    3 | 00/0283 : A2 0C 18    |                LDX       #$180C         ; load tool call #
+  645 |  1 debug.s    281 | Code        | 00 |         |    4 | 00/0286 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  646 |  1 debug.s    282 | Empty       | 00 |         |    0 | 00/028A               |                                         
+  647 |  1 debug.s    283 | Code        | 00 |  2      |    3 | 00/028A : AD 8D 04    |                lda       myBUFFER       
+  648 |  1 debug.s    284 | Code        | 00 |  2      |    3 | 00/028D : 20 FB 02    |                jsr       printME        
+  649 |  1 debug.s    285 | Code        | 00 |  2      |    3 | 00/0290 : AD 8F 04    |                lda       myBUFFER+2     
+  650 |  1 debug.s    286 | Code        | 00 |  2      |    3 | 00/0293 : 20 FB 02    |                jsr       printME        
+  651 |  1 debug.s    287 | Code        | 00 |  2      |    3 | 00/0296 : AD 91 04    |                lda       myBUFFER+4     
+  652 |  1 debug.s    288 | Code        | 00 |  2      |    3 | 00/0299 : 20 FB 02    |                jsr       printME        
+  653 |  1 debug.s    289 | Code        | 00 |  2      |    3 | 00/029C : AD 93 04    |                lda       myBUFFER+6     
+  654 |  1 debug.s    290 | Code        | 00 |  2      |    3 | 00/029F : 20 FB 02    |                jsr       printME        
+  655 |  1 debug.s    291 | Code        | 00 |  2      |    3 | 00/02A2 : AD 95 04    |                lda       myBUFFER+8     
+  656 |  1 debug.s    292 | Code        | 00 |  2      |    3 | 00/02A5 : 20 FB 02    |                jsr       printME        
+  657 |  1 debug.s    293 | Code        | 00 |  2      |    3 | 00/02A8 : AD 97 04    |                lda       myBUFFER+10    
+  658 |  1 debug.s    294 | Code        | 00 |  2      |    3 | 00/02AB : 20 FB 02    |                jsr       printME        
+  659 |  1 debug.s    295 | Code        | 00 |  2      |    3 | 00/02AE : AD 99 04    |                lda       myBUFFER+12    
+  660 |  1 debug.s    296 | Code        | 00 |  2      |    3 | 00/02B1 : 20 FB 02    |                jsr       printME        
+  661 |  1 debug.s    297 | Code        | 00 |  2      |    3 | 00/02B4 : AD 9B 04    |                lda       myBUFFER+14    
+  662 |  1 debug.s    298 | Code        | 00 |  2      |    3 | 00/02B7 : 20 FB 02    |                jsr       printME        
+  663 |  1 debug.s    299 | Empty       | 00 |         |    0 | 00/02BA               |                                         
+  664 |  1 debug.s    300 | Macro       | 00 |         |    0 | 00/02BA               |                PushWord  #$0d           
+  666 |  1 debug.s    300 | Code        | 00 |         |    3 | 00/02BA : F4 0D 00    |                PEA       #$0d           
+  669 |  1 debug.s    301 | Macro       | 00 |         |    0 | 00/02BD               |                _WriteChar                 
+  671 |  1 debug.s    301 | Code        | 00 |         |    3 | 00/02BD : A2 0C 18    |                LDX       #$180C         ; load tool call #
+  672 |  1 debug.s    301 | Code        | 00 |         |    4 | 00/02C0 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  673 |  1 debug.s    302 | Empty       | 00 |         |    0 | 00/02C4               |                                         
+  674 |  1 debug.s    303 | Macro       | 00 |         |    0 | 00/02C4               |                PushWord  #$20           
+  676 |  1 debug.s    303 | Code        | 00 |         |    3 | 00/02C4 : F4 20 00    |                PEA       #$20           
+  679 |  1 debug.s    304 | Macro       | 00 |         |    0 | 00/02C7               |                _WriteChar                 
+  681 |  1 debug.s    304 | Code        | 00 |         |    3 | 00/02C7 : A2 0C 18    |                LDX       #$180C         ; load tool call #
+  682 |  1 debug.s    304 | Code        | 00 |         |    4 | 00/02CA : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  683 |  1 debug.s    305 | Empty       | 00 |         |    0 | 00/02CE               |                                         
+  684 |  1 debug.s    306 | Code        | 00 |  2      |    3 | 00/02CE : AD 9D 04    |                lda       myBUFFER+16    
+  685 |  1 debug.s    307 | Code        | 00 |  2      |    3 | 00/02D1 : 20 FB 02    |                jsr       printME        
+  686 |  1 debug.s    308 | Code        | 00 |  2      |    3 | 00/02D4 : AD 9F 04    |                lda       myBUFFER+18    
+  687 |  1 debug.s    309 | Code        | 00 |  2      |    3 | 00/02D7 : 20 FB 02    |                jsr       printME        
+  688 |  1 debug.s    310 | Code        | 00 |  2      |    3 | 00/02DA : AD A1 04    |                lda       myBUFFER+20    
+  689 |  1 debug.s    311 | Code        | 00 |  2      |    3 | 00/02DD : 20 FB 02    |                jsr       printME        
+  690 |  1 debug.s    312 | Code        | 00 |  2      |    3 | 00/02E0 : AD A3 04    |                lda       myBUFFER+22    
+  691 |  1 debug.s    313 | Code        | 00 |  2      |    3 | 00/02E3 : 20 FB 02    |                jsr       printME        
+  692 |  1 debug.s    314 | Code        | 00 |  2      |    3 | 00/02E6 : AD A5 04    |                lda       myBUFFER+24    
+  693 |  1 debug.s    315 | Code        | 00 |  2      |    3 | 00/02E9 : 20 FB 02    |                jsr       printME        
+  694 |  1 debug.s    316 | Code        | 00 |  2      |    3 | 00/02EC : AD A7 04    |                lda       myBUFFER+26    
+  695 |  1 debug.s    317 | Code        | 00 |  2      |    3 | 00/02EF : 20 FB 02    |                jsr       printME        
+  696 |  1 debug.s    318 | Code        | 00 |  2      |    3 | 00/02F2 : AD A9 04    |                lda       myBUFFER+28    
+  697 |  1 debug.s    319 | Code        | 00 |  2      |    3 | 00/02F5 : 20 FB 02    |                jsr       printME        
+  698 |  1 debug.s    320 | Code        | 00 |  2      |    3 | 00/02F8 : AD AB 04    |                lda       myBUFFER+30    ; ends into the code below...
+  699 |  1 debug.s    321 | Empty       | 00 |         |    0 | 00/02FB               |                                         
+  700 |  1 debug.s    322 | Code        | 00 |         |    1 | 00/02FB : 48          | printME        pha                      ; from a word to a string
+  701 |  1 debug.s    323 | Code        | 00 |         |    1 | 00/02FC : 48          |                pha                      
+  702 |  1 debug.s    324 | Code        | 00 |         |    1 | 00/02FD : 48          |                pha                      ; <= here, really
+  703 |  1 debug.s    325 | Macro       | 00 |         |    0 | 00/02FE               |                _HexIt                   
+  705 |  1 debug.s    325 | Code        | 00 |         |    3 | 00/02FE : A2 0B 2A    |                LDX       #$2A0B         ; load tool call #
+  706 |  1 debug.s    325 | Code        | 00 |         |    4 | 00/0301 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  707 |  1 debug.s    326 | Macro       | 00 |         |    0 | 00/0305               |                PullLong  strBUFFER      
+  710 |  1 debug.s    326 | Code        | 00 |         |    1 | 00/0305 : 68          |                PLA                      
+  712 |  1 debug.s    326 | Code        | 00 |  2      |    3 | 00/0306 : 8D DB 03    |                STA       strBUFFER      
+  717 |  1 debug.s    326 | Code        | 00 |         |    1 | 00/0309 : 68          |                PLA                      
+  719 |  1 debug.s    326 | Code        | 00 |  2      |    3 | 00/030A : 8D DD 03    |                STA       strBUFFER+2    
+  725 |  1 debug.s    327 | Empty       | 00 |         |    0 | 00/030D               |                                         
+  726 |  1 debug.s    328 | Macro       | 00 |         |    0 | 00/030D               |                PushLong  #strBUFFER     ; show the string
+  730 |  1 debug.s    328 | Code        | 00 |  1 >>16 |    3 | 00/030D : F4 00 00    |                PEA       #^#strBUFFER   
+  737 |  1 debug.s    328 | Code        | 00 |  2      |    3 | 00/0310 : F4 DB 03    |                PEA       #strBUFFER     
+  740 |  1 debug.s    329 | Macro       | 00 |         |    0 | 00/0313               |                _WriteCString                 
+  742 |  1 debug.s    329 | Code        | 00 |         |    3 | 00/0313 : A2 0C 20    |                LDX       #$200C         ; load tool call #
+  743 |  1 debug.s    329 | Code        | 00 |         |    4 | 00/0316 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  744 |  1 debug.s    330 | Code        | 00 |         |    1 | 00/031A : 60          |                rts                      
+  745 |  1 debug.s    331 | Empty       | 00 |         |    0 | 00/031B               |                                         
+  746 |  1 debug.s    332 | Comment     | 00 |         |    0 | 00/031B               | *---------- Data
+  747 |  1 debug.s    333 | Empty       | 00 |         |    0 | 00/031B               |                                         
+  748 |  1 debug.s    334 | Data        | 00 |         |    9 | 00/031B : 0D 0D 44 52 | strDREAD       asc       0d0d'DRead '00 
       |                   |             |    |         |      |           65 61 64 20 |
       |                   |             |    |         |      |           00          |
-  750 |  1 debug.s    336 | Data        | 00 |         |   10 | 00/0324 : 0D 0D 44 57 | strDWRITE      asc       0d0d'DWrite '00
+  749 |  1 debug.s    335 | Data        | 00 |         |   10 | 00/0324 : 0D 0D 44 57 | strDWRITE      asc       0d0d'DWrite '00
       |                   |             |    |         |      |           72 69 74 65 |
       |                   |             |    |         |      |           20 00       |
-  751 |  1 debug.s    337 | Data        | 00 |         |   11 | 00/032E : 0D 0D 44 53 | strDSTATUS     asc       0d0d'DStatus '00
+  750 |  1 debug.s    336 | Data        | 00 |         |   11 | 00/032E : 0D 0D 44 53 | strDSTATUS     asc       0d0d'DStatus '00
       |                   |             |    |         |      |           74 61 74 75 |
       |                   |             |    |         |      |           73 20 00    |
-  752 |  1 debug.s    338 | Empty       | 00 |         |    0 | 00/0339               |                                         
-  753 |  1 debug.s    339 | Data        | 00 |         |   20 | 00/0339 : 20 43 68 61 | strCHARS       asc       ' Characteristics:  '00
+  751 |  1 debug.s    337 | Empty       | 00 |         |    0 | 00/0339               |                                         
+  752 |  1 debug.s    338 | Data        | 00 |         |   20 | 00/0339 : 20 43 68 61 | strCHARS       asc       ' Characteristics:  '00
       |                   |             |    |         |      |           72 61 63 74 |
       |                   |             |    |         |      |           65 72 69 73 |
       |                   |             |    |         |      |           74 69 63 73 |
       |                   |             |    |         |      |           3A 20 20 00 |
-  754 |  1 debug.s    340 | Data        | 00 |         |   21 | 00/034D : 0D 20 4E 75 | strBLOCKS      asc       0d' Number of blocks: '00
+  753 |  1 debug.s    339 | Data        | 00 |         |   21 | 00/034D : 0D 20 4E 75 | strBLOCKS      asc       0d' Number of blocks: '00
       |                   |             |    |         |      |           6D 62 65 72 |
       |                   |             |    |         |      |           20 6F 66 20 |
       |                   |             |    |         |      |           62 6C 6F 63 |
       |                   |             |    |         |      |           6B 73 3A 20 |
       |                   |             |    |         |      |           00          |
-  755 |  1 debug.s    341 | Empty       | 00 |         |    0 | 00/0362               |                                         
-  756 |  1 debug.s    342 | Data        | 00 |         |   14 | 00/0362 : 2D 20 45 72 | strERR         asc       '- Error code '00
+  754 |  1 debug.s    340 | Empty       | 00 |         |    0 | 00/0362               |                                         
+  755 |  1 debug.s    341 | Data        | 00 |         |   14 | 00/0362 : 2D 20 45 72 | strERR         asc       '- Error code '00
       |                   |             |    |         |      |           72 6F 72 20 |
       |                   |             |    |         |      |           63 6F 64 65 |
       |                   |             |    |         |      |           20 00       |
-  757 |  1 debug.s    343 | Empty       | 00 |         |    0 | 00/0370               |                                         
-  758 |  1 debug.s    344 | Comment     | 00 |         |    0 | 00/0370               | *----------------------------
-  759 |  1 debug.s    345 | Comment     | 00 |         |    0 | 00/0370               | * TEXT ROUTINES
-  760 |  1 debug.s    346 | Comment     | 00 |         |    0 | 00/0370               | *----------------------------
-  761 |  1 debug.s    347 | Empty       | 00 |         |    0 | 00/0370               |                                         
-  762 |  1 debug.s    348 | Comment     | 00 |         |    0 | 00/0370               | *---------- Wait for a key
-  763 |  1 debug.s    349 | Empty       | 00 |         |    0 | 00/0370               |                                         
-  764 |  1 debug.s    350 | Macro       | 00 |         |    0 | 00/0370               | waitFORKEY     PushWord  #0             ; wait for key
-  766 |  1 debug.s    350 | Code        | 00 |         |    3 | 00/0370 : F4 00 00    |                PEA       #0             
-  769 |  1 debug.s    351 | Macro       | 00 |         |    0 | 00/0373               |                PushWord  #1             ; echo char
-  771 |  1 debug.s    351 | Code        | 00 |         |    3 | 00/0373 : F4 01 00    |                PEA       #1             
-  774 |  1 debug.s    352 | Macro       | 00 |         |    0 | 00/0376               |                _ReadChar                 
-  776 |  1 debug.s    352 | Code        | 00 |         |    3 | 00/0376 : A2 0C 22    |                LDX       #$220C         ; load tool call #
-  777 |  1 debug.s    352 | Code        | 00 |         |    4 | 00/0379 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
-  778 |  1 debug.s    353 | Empty       | 00 |         |    0 | 00/037D               |                                         
-  779 |  1 debug.s    354 | Code        | 00 |         |    2 | 00/037D : A3 01       | waitKEY1       lda       1,s            ; check CR
-  780 |  1 debug.s    355 | Code        | 00 |         |    3 | 00/037F : 29 FF 00    |                and       #$ff           ; of typed
-  781 |  1 debug.s    356 | Code        | 00 |         |    2 | 00/0382 : 83 01       |                sta       1,s            ; in char
-  782 |  1 debug.s    357 | Code        | 00 |         |    3 | 00/0384 : C9 8D 00    |                cmp       #$8d           
-  783 |  1 debug.s    358 | Code        | 00 |         |    2 | 00/0387 : F0 0A       |                beq       waitKEY9       
-  784 |  1 debug.s    359 | Empty       | 00 |         |    0 | 00/0389               |                                         
-  785 |  1 debug.s    360 | Macro       | 00 |         |    0 | 00/0389               | waitKEY8       PushWord  #$0d           ; return
-  787 |  1 debug.s    360 | Code        | 00 |         |    3 | 00/0389 : F4 0D 00    |                PEA       #$0d           
-  790 |  1 debug.s    361 | Macro       | 00 |         |    0 | 00/038C               |                _WriteChar                 
-  792 |  1 debug.s    361 | Code        | 00 |         |    3 | 00/038C : A2 0C 18    |                LDX       #$180C         ; load tool call #
-  793 |  1 debug.s    361 | Code        | 00 |         |    4 | 00/038F : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
-  794 |  1 debug.s    362 | Empty       | 00 |         |    0 | 00/0393               |                                         
-  795 |  1 debug.s    363 | Code        | 00 |         |    1 | 00/0393 : 68          | waitKEY9       pla                      ; restore entered char
-  796 |  1 debug.s    364 | Code        | 00 |         |    1 | 00/0394 : 60          |                rts                      
-  797 |  1 debug.s    365 | Empty       | 00 |         |    0 | 00/0395               |                                         
-  798 |  1 debug.s    366 | Comment     | 00 |         |    0 | 00/0395               | *---------- Display a word
-  799 |  1 debug.s    367 | Empty       | 00 |         |    0 | 00/0395               |                                         
-  800 |  1 debug.s    368 | Code        | 00 |         |    1 | 00/0395 : 48          | showWORD       pha                      ; from a word to a string
-  801 |  1 debug.s    369 | Code        | 00 |         |    1 | 00/0396 : 48          |                pha                      
-  802 |  1 debug.s    370 | Code        | 00 |         |    1 | 00/0397 : 48          |                pha                      ; <= here, really
-  803 |  1 debug.s    371 | Macro       | 00 |         |    0 | 00/0398               |                _HexIt                   
-  805 |  1 debug.s    371 | Code        | 00 |         |    3 | 00/0398 : A2 0B 2A    |                LDX       #$2A0B         ; load tool call #
-  806 |  1 debug.s    371 | Code        | 00 |         |    4 | 00/039B : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
-  807 |  1 debug.s    372 | Macro       | 00 |         |    0 | 00/039F               |                PullLong  strHEX         
-  810 |  1 debug.s    372 | Code        | 00 |         |    1 | 00/039F : 68          |                PLA                      
-  812 |  1 debug.s    372 | Code        | 00 |  2      |    3 | 00/03A0 : 8D D6 03    |                STA       strHEX         
-  817 |  1 debug.s    372 | Code        | 00 |         |    1 | 00/03A3 : 68          |                PLA                      
-  819 |  1 debug.s    372 | Code        | 00 |  2      |    3 | 00/03A4 : 8D D8 03    |                STA       strHEX+2       
-  825 |  1 debug.s    373 | Empty       | 00 |         |    0 | 00/03A7               |                                         
-  826 |  1 debug.s    374 | Macro       | 00 |         |    0 | 00/03A7               |                PushLong  #strHEX        ; show the string
-  830 |  1 debug.s    374 | Code        | 00 |  1 >>16 |    3 | 00/03A7 : F4 00 00    |                PEA       #^#strHEX      
-  837 |  1 debug.s    374 | Code        | 00 |  2      |    3 | 00/03AA : F4 D6 03    |                PEA       #strHEX        
-  840 |  1 debug.s    375 | Macro       | 00 |         |    0 | 00/03AD               |                _WriteCString                 
-  842 |  1 debug.s    375 | Code        | 00 |         |    3 | 00/03AD : A2 0C 20    |                LDX       #$200C         ; load tool call #
-  843 |  1 debug.s    375 | Code        | 00 |         |    4 | 00/03B0 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
-  844 |  1 debug.s    376 | Code        | 00 |         |    1 | 00/03B4 : 60          |                rts                      
-  845 |  1 debug.s    377 | Empty       | 00 |         |    0 | 00/03B5               |                                         
-  846 |  1 debug.s    378 | Comment     | 00 |         |    0 | 00/03B5               | *---------- Display a hex word with a $
-  847 |  1 debug.s    379 | Empty       | 00 |         |    0 | 00/03B5               |                                         
-  848 |  1 debug.s    380 | Code        | 00 |         |    1 | 00/03B5 : 48          | showHEX        pha                      ; from a word to a string
-  849 |  1 debug.s    381 | Code        | 00 |         |    1 | 00/03B6 : 48          |                pha                      
-  850 |  1 debug.s    382 | Code        | 00 |         |    1 | 00/03B7 : 48          |                pha                      ; <= here, really
-  851 |  1 debug.s    383 | Macro       | 00 |         |    0 | 00/03B8               |                _HexIt                   
-  853 |  1 debug.s    383 | Code        | 00 |         |    3 | 00/03B8 : A2 0B 2A    |                LDX       #$2A0B         ; load tool call #
-  854 |  1 debug.s    383 | Code        | 00 |         |    4 | 00/03BB : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
-  855 |  1 debug.s    384 | Macro       | 00 |         |    0 | 00/03BF               |                PullLong  strHEX         
-  858 |  1 debug.s    384 | Code        | 00 |         |    1 | 00/03BF : 68          |                PLA                      
-  860 |  1 debug.s    384 | Code        | 00 |  2      |    3 | 00/03C0 : 8D D6 03    |                STA       strHEX         
-  865 |  1 debug.s    384 | Code        | 00 |         |    1 | 00/03C3 : 68          |                PLA                      
-  867 |  1 debug.s    384 | Code        | 00 |  2      |    3 | 00/03C4 : 8D D8 03    |                STA       strHEX+2       
-  873 |  1 debug.s    385 | Empty       | 00 |         |    0 | 00/03C7               |                                         
-  874 |  1 debug.s    386 | Macro       | 00 |         |    0 | 00/03C7               |                PushLong  #strHEX1       ; show the string
-  878 |  1 debug.s    386 | Code        | 00 |  1 >>16 |    3 | 00/03C7 : F4 00 00    |                PEA       #^#strHEX1     
-  885 |  1 debug.s    386 | Code        | 00 |  2      |    3 | 00/03CA : F4 D5 03    |                PEA       #strHEX1       
-  888 |  1 debug.s    387 | Macro       | 00 |         |    0 | 00/03CD               |                _WriteCString                 
-  890 |  1 debug.s    387 | Code        | 00 |         |    3 | 00/03CD : A2 0C 20    |                LDX       #$200C         ; load tool call #
-  891 |  1 debug.s    387 | Code        | 00 |         |    4 | 00/03D0 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
-  892 |  1 debug.s    388 | Code        | 00 |         |    1 | 00/03D4 : 60          |                rts                      
-  893 |  1 debug.s    389 | Empty       | 00 |         |    0 | 00/03D5               |                                         
-  894 |  1 debug.s    390 | Comment     | 00 |         |    0 | 00/03D5               | *--- Data
-  895 |  1 debug.s    391 | Empty       | 00 |         |    0 | 00/03D5               |                                         
-  896 |  1 debug.s    392 | Data        | 00 |         |    1 | 00/03D5 : 24          | strHEX1        asc       '$'            
-  897 |  1 debug.s    393 | Data        | 00 |         |    5 | 00/03D6 : 30 30 30 30 | strHEX         asc       '0000'00       
+  756 |  1 debug.s    342 | Empty       | 00 |         |    0 | 00/0370               |                                         
+  757 |  1 debug.s    343 | Comment     | 00 |         |    0 | 00/0370               | *----------------------------
+  758 |  1 debug.s    344 | Comment     | 00 |         |    0 | 00/0370               | * TEXT ROUTINES
+  759 |  1 debug.s    345 | Comment     | 00 |         |    0 | 00/0370               | *----------------------------
+  760 |  1 debug.s    346 | Empty       | 00 |         |    0 | 00/0370               |                                         
+  761 |  1 debug.s    347 | Comment     | 00 |         |    0 | 00/0370               | *---------- Wait for a key
+  762 |  1 debug.s    348 | Empty       | 00 |         |    0 | 00/0370               |                                         
+  763 |  1 debug.s    349 | Macro       | 00 |         |    0 | 00/0370               | waitFORKEY     PushWord  #0             ; wait for key
+  765 |  1 debug.s    349 | Code        | 00 |         |    3 | 00/0370 : F4 00 00    |                PEA       #0             
+  768 |  1 debug.s    350 | Macro       | 00 |         |    0 | 00/0373               |                PushWord  #1             ; echo char
+  770 |  1 debug.s    350 | Code        | 00 |         |    3 | 00/0373 : F4 01 00    |                PEA       #1             
+  773 |  1 debug.s    351 | Macro       | 00 |         |    0 | 00/0376               |                _ReadChar                 
+  775 |  1 debug.s    351 | Code        | 00 |         |    3 | 00/0376 : A2 0C 22    |                LDX       #$220C         ; load tool call #
+  776 |  1 debug.s    351 | Code        | 00 |         |    4 | 00/0379 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  777 |  1 debug.s    352 | Empty       | 00 |         |    0 | 00/037D               |                                         
+  778 |  1 debug.s    353 | Code        | 00 |         |    2 | 00/037D : A3 01       | waitKEY1       lda       1,s            ; check CR
+  779 |  1 debug.s    354 | Code        | 00 |         |    3 | 00/037F : 29 FF 00    |                and       #$ff           ; of typed
+  780 |  1 debug.s    355 | Code        | 00 |         |    2 | 00/0382 : 83 01       |                sta       1,s            ; in char
+  781 |  1 debug.s    356 | Code        | 00 |         |    3 | 00/0384 : C9 8D 00    |                cmp       #$8d           
+  782 |  1 debug.s    357 | Code        | 00 |         |    2 | 00/0387 : F0 0A       |                beq       waitKEY9       
+  783 |  1 debug.s    358 | Empty       | 00 |         |    0 | 00/0389               |                                         
+  784 |  1 debug.s    359 | Macro       | 00 |         |    0 | 00/0389               | waitKEY8       PushWord  #$0d           ; return
+  786 |  1 debug.s    359 | Code        | 00 |         |    3 | 00/0389 : F4 0D 00    |                PEA       #$0d           
+  789 |  1 debug.s    360 | Macro       | 00 |         |    0 | 00/038C               |                _WriteChar                 
+  791 |  1 debug.s    360 | Code        | 00 |         |    3 | 00/038C : A2 0C 18    |                LDX       #$180C         ; load tool call #
+  792 |  1 debug.s    360 | Code        | 00 |         |    4 | 00/038F : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  793 |  1 debug.s    361 | Empty       | 00 |         |    0 | 00/0393               |                                         
+  794 |  1 debug.s    362 | Code        | 00 |         |    1 | 00/0393 : 68          | waitKEY9       pla                      ; restore entered char
+  795 |  1 debug.s    363 | Code        | 00 |         |    1 | 00/0394 : 60          |                rts                      
+  796 |  1 debug.s    364 | Empty       | 00 |         |    0 | 00/0395               |                                         
+  797 |  1 debug.s    365 | Comment     | 00 |         |    0 | 00/0395               | *---------- Display a word
+  798 |  1 debug.s    366 | Empty       | 00 |         |    0 | 00/0395               |                                         
+  799 |  1 debug.s    367 | Code        | 00 |         |    1 | 00/0395 : 48          | showWORD       pha                      ; from a word to a string
+  800 |  1 debug.s    368 | Code        | 00 |         |    1 | 00/0396 : 48          |                pha                      
+  801 |  1 debug.s    369 | Code        | 00 |         |    1 | 00/0397 : 48          |                pha                      ; <= here, really
+  802 |  1 debug.s    370 | Macro       | 00 |         |    0 | 00/0398               |                _HexIt                   
+  804 |  1 debug.s    370 | Code        | 00 |         |    3 | 00/0398 : A2 0B 2A    |                LDX       #$2A0B         ; load tool call #
+  805 |  1 debug.s    370 | Code        | 00 |         |    4 | 00/039B : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  806 |  1 debug.s    371 | Macro       | 00 |         |    0 | 00/039F               |                PullLong  strHEX         
+  809 |  1 debug.s    371 | Code        | 00 |         |    1 | 00/039F : 68          |                PLA                      
+  811 |  1 debug.s    371 | Code        | 00 |  2      |    3 | 00/03A0 : 8D D6 03    |                STA       strHEX         
+  816 |  1 debug.s    371 | Code        | 00 |         |    1 | 00/03A3 : 68          |                PLA                      
+  818 |  1 debug.s    371 | Code        | 00 |  2      |    3 | 00/03A4 : 8D D8 03    |                STA       strHEX+2       
+  824 |  1 debug.s    372 | Empty       | 00 |         |    0 | 00/03A7               |                                         
+  825 |  1 debug.s    373 | Macro       | 00 |         |    0 | 00/03A7               |                PushLong  #strHEX        ; show the string
+  829 |  1 debug.s    373 | Code        | 00 |  1 >>16 |    3 | 00/03A7 : F4 00 00    |                PEA       #^#strHEX      
+  836 |  1 debug.s    373 | Code        | 00 |  2      |    3 | 00/03AA : F4 D6 03    |                PEA       #strHEX        
+  839 |  1 debug.s    374 | Macro       | 00 |         |    0 | 00/03AD               |                _WriteCString                 
+  841 |  1 debug.s    374 | Code        | 00 |         |    3 | 00/03AD : A2 0C 20    |                LDX       #$200C         ; load tool call #
+  842 |  1 debug.s    374 | Code        | 00 |         |    4 | 00/03B0 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  843 |  1 debug.s    375 | Code        | 00 |         |    1 | 00/03B4 : 60          |                rts                      
+  844 |  1 debug.s    376 | Empty       | 00 |         |    0 | 00/03B5               |                                         
+  845 |  1 debug.s    377 | Comment     | 00 |         |    0 | 00/03B5               | *---------- Display a hex word with a $
+  846 |  1 debug.s    378 | Empty       | 00 |         |    0 | 00/03B5               |                                         
+  847 |  1 debug.s    379 | Code        | 00 |         |    1 | 00/03B5 : 48          | showHEX        pha                      ; from a word to a string
+  848 |  1 debug.s    380 | Code        | 00 |         |    1 | 00/03B6 : 48          |                pha                      
+  849 |  1 debug.s    381 | Code        | 00 |         |    1 | 00/03B7 : 48          |                pha                      ; <= here, really
+  850 |  1 debug.s    382 | Macro       | 00 |         |    0 | 00/03B8               |                _HexIt                   
+  852 |  1 debug.s    382 | Code        | 00 |         |    3 | 00/03B8 : A2 0B 2A    |                LDX       #$2A0B         ; load tool call #
+  853 |  1 debug.s    382 | Code        | 00 |         |    4 | 00/03BB : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  854 |  1 debug.s    383 | Macro       | 00 |         |    0 | 00/03BF               |                PullLong  strHEX         
+  857 |  1 debug.s    383 | Code        | 00 |         |    1 | 00/03BF : 68          |                PLA                      
+  859 |  1 debug.s    383 | Code        | 00 |  2      |    3 | 00/03C0 : 8D D6 03    |                STA       strHEX         
+  864 |  1 debug.s    383 | Code        | 00 |         |    1 | 00/03C3 : 68          |                PLA                      
+  866 |  1 debug.s    383 | Code        | 00 |  2      |    3 | 00/03C4 : 8D D8 03    |                STA       strHEX+2       
+  872 |  1 debug.s    384 | Empty       | 00 |         |    0 | 00/03C7               |                                         
+  873 |  1 debug.s    385 | Macro       | 00 |         |    0 | 00/03C7               |                PushLong  #strHEX1       ; show the string
+  877 |  1 debug.s    385 | Code        | 00 |  1 >>16 |    3 | 00/03C7 : F4 00 00    |                PEA       #^#strHEX1     
+  884 |  1 debug.s    385 | Code        | 00 |  2      |    3 | 00/03CA : F4 D5 03    |                PEA       #strHEX1       
+  887 |  1 debug.s    386 | Macro       | 00 |         |    0 | 00/03CD               |                _WriteCString                 
+  889 |  1 debug.s    386 | Code        | 00 |         |    3 | 00/03CD : A2 0C 20    |                LDX       #$200C         ; load tool call #
+  890 |  1 debug.s    386 | Code        | 00 |         |    4 | 00/03D0 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  891 |  1 debug.s    387 | Code        | 00 |         |    1 | 00/03D4 : 60          |                rts                      
+  892 |  1 debug.s    388 | Empty       | 00 |         |    0 | 00/03D5               |                                         
+  893 |  1 debug.s    389 | Comment     | 00 |         |    0 | 00/03D5               | *--- Data
+  894 |  1 debug.s    390 | Empty       | 00 |         |    0 | 00/03D5               |                                         
+  895 |  1 debug.s    391 | Data        | 00 |         |    1 | 00/03D5 : 24          | strHEX1        asc       '$'            
+  896 |  1 debug.s    392 | Data        | 00 |         |    5 | 00/03D6 : 30 30 30 30 | strHEX         asc       '0000'00       
       |                   |             |    |         |      |           00          |
-  898 |  1 debug.s    394 | Data        | 00 |         |    6 | 00/03DB : 30 30 30 30 | strBUFFER      asc       '0000 '00      
+  897 |  1 debug.s    393 | Data        | 00 |         |    6 | 00/03DB : 30 30 30 30 | strBUFFER      asc       '0000 '00      
       |                   |             |    |         |      |           20 00       |
-  899 |  1 debug.s    395 | Empty       | 00 |         |    0 | 00/03E1               |                                         
-  900 |  1 debug.s    396 | Comment     | 00 |         |    0 | 00/03E1               | *----------------------------
-  901 |  1 debug.s    397 | Comment     | 00 |         |    0 | 00/03E1               | * DATA
-  902 |  1 debug.s    398 | Comment     | 00 |         |    0 | 00/03E1               | *----------------------------
-  903 |  1 debug.s    399 | Empty       | 00 |         |    0 | 00/03E1               |                                         
-  904 |  1 debug.s    400 | Data        | 00 |         |    2 | 00/03E1 : 00 00       | errCODE        ds        2              
-  905 |  1 debug.s    401 | Empty       | 00 |         |    0 | 00/03E3               |                                         
-  906 |  1 debug.s    402 | Data        | 00 |         |    2 | 00/03E3 : 02 00       | proQUIT        dw        2              ; pCount
-  907 |  1 debug.s    403 | Data        | 00 |         |    4 | 00/03E5 : 00 00 00 00 |                ds        4              ; 02 pathname
-  908 |  1 debug.s    404 | Data        | 00 |         |    2 | 00/03E9 : 00 00       |                ds        2              ; 06 flags
-  909 |  1 debug.s    405 | Empty       | 00 |         |    0 | 00/03EB               |                                         
-  910 |  1 debug.s    406 | Data        | 00 |         |    2 | 00/03EB : 08 00       | proDINFO       dw        8              ; Parms for DInfo
-  911 |  1 debug.s    407 | Data        | 00 |         |    2 | 00/03ED : 00 00       |                ds        2              ; 02 device num
-  912 |  1 debug.s    408 | Data        | 00 |  3      |    4 | 00/03EF : 4B 04 00 00 |                adrl      devINFO        ; 04 device name
-  913 |  1 debug.s    409 | Data        | 00 |         |    2 | 00/03F3 : 00 00       |                ds        2              ; 08 characteristics
-  914 |  1 debug.s    410 | Data        | 00 |         |    4 | 00/03F5 : 00 00 00 00 |                ds        4              ; 0A total blocks
-  915 |  1 debug.s    411 | Data        | 00 |         |    2 | 00/03F9 : 00 00       |                ds        2              ; 0E slot number
-  916 |  1 debug.s    412 | Data        | 00 |         |    2 | 00/03FB : 00 00       |                ds        2              ; 10 unit number
-  917 |  1 debug.s    413 | Data        | 00 |         |    2 | 00/03FD : 00 00       |                ds        2              ; 12 version
-  918 |  1 debug.s    414 | Data        | 00 |         |    2 | 00/03FF : 00 00       |                ds        2              ; 14 device id
-  919 |  1 debug.s    415 | Empty       | 00 |         |    0 | 00/0401               |                                         
-  920 |  1 debug.s    416 | Data        | 00 |         |    2 | 00/0401 : 06 00       | proDREAD       dw        6              ; pCount
-  921 |  1 debug.s    417 | Data        | 00 |         |    2 | 00/0403 : 00 00       |                ds        2              ; 02 devNum
-  922 |  1 debug.s    418 | Data        | 00 |  3      |    4 | 00/0405 : 8D 04 00 00 |                adrl      myBUFFER       ; 04 buffer
-  923 |  1 debug.s    419 | Data        | 00 |         |    4 | 00/0409 : 00 02 00 00 |                adrl      512            ; 08 requestCount
-  924 |  1 debug.s    420 | Data        | 00 |         |    4 | 00/040D : 00 00 00 00 |                ds        4              ; 0C startingBlock
-  925 |  1 debug.s    421 | Data        | 00 |         |    2 | 00/0411 : 00 02       |                dw        512            ; 10 blockSize
-  926 |  1 debug.s    422 | Data        | 00 |         |    4 | 00/0413 : 00 00 00 00 |                ds        4              ; 14 transferCount
-  927 |  1 debug.s    423 | Empty       | 00 |         |    0 | 00/0417               |                                         
-  928 |  1 debug.s    424 | Data        | 00 |         |    2 | 00/0417 : 06 00       | proDWRITE      dw        6              ; pCount
-  929 |  1 debug.s    425 | Data        | 00 |         |    2 | 00/0419 : 00 00       |                ds        2              ; 02 devNum
-  930 |  1 debug.s    426 | Data        | 00 |  3      |    4 | 00/041B : 8D 04 00 00 |                adrl      myBUFFER       ; 04 buffer
-  931 |  1 debug.s    427 | Data        | 00 |         |    4 | 00/041F : 00 02 00 00 |                adrl      512            ; 08 requestCount
-  932 |  1 debug.s    428 | Data        | 00 |         |    4 | 00/0423 : 00 00 00 00 |                ds        4              ; 0C startingBlock
-  933 |  1 debug.s    429 | Data        | 00 |         |    2 | 00/0427 : 00 02       |                dw        512            ; 10 blockSize
-  934 |  1 debug.s    430 | Data        | 00 |         |    4 | 00/0429 : 00 00 00 00 |                ds        4              ; 14 transferCount
-  935 |  1 debug.s    431 | Empty       | 00 |         |    0 | 00/042D               |                                         
-  936 |  1 debug.s    432 | Data        | 00 |         |    2 | 00/042D : 05 00       | proDSTATUS     dw        5              ; pCount
-  937 |  1 debug.s    433 | Data        | 00 |         |    2 | 00/042F : 00 00       |                ds        2              ; 02 devNum
-  938 |  1 debug.s    434 | Data        | 00 |         |    2 | 00/0431 : 00 00       |                ds        2              ; 04 code ($0000 = Device Status)
-  939 |  1 debug.s    435 | Data        | 00 |  3      |    4 | 00/0433 : 8D 06 00 00 |                adrl      myLIST         ; 06 list
-  940 |  1 debug.s    436 | Data        | 00 |         |    4 | 00/0437 : 00 02 00 00 |                adrl      512            ; 0A requestCount (a big buffer)
-  941 |  1 debug.s    437 | Data        | 00 |         |    4 | 00/043B : 00 00 00 00 |                ds        4              ; 0E transferCount
-  942 |  1 debug.s    438 | Empty       | 00 |         |    0 | 00/043F               |                                         
-  943 |  1 debug.s    439 | Comment     | 00 |         |    0 | 00/043F               | *----------
-  944 |  1 debug.s    440 | Empty       | 00 |         |    0 | 00/043F               |                                         
-  945 |  1 debug.s    441 | Data        | 00 |         |   12 | 00/043F : 0B 2E 41 53 | strDEVICE      str       '.ASSDDevice'  ; length is 12 chars (including length byte)
+  898 |  1 debug.s    394 | Empty       | 00 |         |    0 | 00/03E1               |                                         
+  899 |  1 debug.s    395 | Comment     | 00 |         |    0 | 00/03E1               | *----------------------------
+  900 |  1 debug.s    396 | Comment     | 00 |         |    0 | 00/03E1               | * DATA
+  901 |  1 debug.s    397 | Comment     | 00 |         |    0 | 00/03E1               | *----------------------------
+  902 |  1 debug.s    398 | Empty       | 00 |         |    0 | 00/03E1               |                                         
+  903 |  1 debug.s    399 | Data        | 00 |         |    2 | 00/03E1 : 00 00       | errCODE        ds        2              
+  904 |  1 debug.s    400 | Empty       | 00 |         |    0 | 00/03E3               |                                         
+  905 |  1 debug.s    401 | Data        | 00 |         |    2 | 00/03E3 : 02 00       | proQUIT        dw        2              ; pCount
+  906 |  1 debug.s    402 | Data        | 00 |         |    4 | 00/03E5 : 00 00 00 00 |                ds        4              ; 02 pathname
+  907 |  1 debug.s    403 | Data        | 00 |         |    2 | 00/03E9 : 00 00       |                ds        2              ; 06 flags
+  908 |  1 debug.s    404 | Empty       | 00 |         |    0 | 00/03EB               |                                         
+  909 |  1 debug.s    405 | Data        | 00 |         |    2 | 00/03EB : 08 00       | proDINFO       dw        8              ; Parms for DInfo
+  910 |  1 debug.s    406 | Data        | 00 |         |    2 | 00/03ED : 00 00       |                ds        2              ; 02 device num
+  911 |  1 debug.s    407 | Data        | 00 |  3      |    4 | 00/03EF : 4B 04 00 00 |                adrl      devINFO        ; 04 device name
+  912 |  1 debug.s    408 | Data        | 00 |         |    2 | 00/03F3 : 00 00       |                ds        2              ; 08 characteristics
+  913 |  1 debug.s    409 | Data        | 00 |         |    4 | 00/03F5 : 00 00 00 00 |                ds        4              ; 0A total blocks
+  914 |  1 debug.s    410 | Data        | 00 |         |    2 | 00/03F9 : 00 00       |                ds        2              ; 0E slot number
+  915 |  1 debug.s    411 | Data        | 00 |         |    2 | 00/03FB : 00 00       |                ds        2              ; 10 unit number
+  916 |  1 debug.s    412 | Data        | 00 |         |    2 | 00/03FD : 00 00       |                ds        2              ; 12 version
+  917 |  1 debug.s    413 | Data        | 00 |         |    2 | 00/03FF : 00 00       |                ds        2              ; 14 device id
+  918 |  1 debug.s    414 | Empty       | 00 |         |    0 | 00/0401               |                                         
+  919 |  1 debug.s    415 | Data        | 00 |         |    2 | 00/0401 : 06 00       | proDREAD       dw        6              ; pCount
+  920 |  1 debug.s    416 | Data        | 00 |         |    2 | 00/0403 : 00 00       |                ds        2              ; 02 devNum
+  921 |  1 debug.s    417 | Data        | 00 |  3      |    4 | 00/0405 : 8D 04 00 00 |                adrl      myBUFFER       ; 04 buffer
+  922 |  1 debug.s    418 | Data        | 00 |         |    4 | 00/0409 : 00 02 00 00 |                adrl      512            ; 08 requestCount
+  923 |  1 debug.s    419 | Data        | 00 |         |    4 | 00/040D : 00 00 00 00 |                ds        4              ; 0C startingBlock
+  924 |  1 debug.s    420 | Data        | 00 |         |    2 | 00/0411 : 00 02       |                dw        512            ; 10 blockSize
+  925 |  1 debug.s    421 | Data        | 00 |         |    4 | 00/0413 : 00 00 00 00 |                ds        4              ; 14 transferCount
+  926 |  1 debug.s    422 | Empty       | 00 |         |    0 | 00/0417               |                                         
+  927 |  1 debug.s    423 | Data        | 00 |         |    2 | 00/0417 : 06 00       | proDWRITE      dw        6              ; pCount
+  928 |  1 debug.s    424 | Data        | 00 |         |    2 | 00/0419 : 00 00       |                ds        2              ; 02 devNum
+  929 |  1 debug.s    425 | Data        | 00 |  3      |    4 | 00/041B : 8D 04 00 00 |                adrl      myBUFFER       ; 04 buffer
+  930 |  1 debug.s    426 | Data        | 00 |         |    4 | 00/041F : 00 02 00 00 |                adrl      512            ; 08 requestCount
+  931 |  1 debug.s    427 | Data        | 00 |         |    4 | 00/0423 : 00 00 00 00 |                ds        4              ; 0C startingBlock
+  932 |  1 debug.s    428 | Data        | 00 |         |    2 | 00/0427 : 00 02       |                dw        512            ; 10 blockSize
+  933 |  1 debug.s    429 | Data        | 00 |         |    4 | 00/0429 : 00 00 00 00 |                ds        4              ; 14 transferCount
+  934 |  1 debug.s    430 | Empty       | 00 |         |    0 | 00/042D               |                                         
+  935 |  1 debug.s    431 | Data        | 00 |         |    2 | 00/042D : 05 00       | proDSTATUS     dw        5              ; pCount
+  936 |  1 debug.s    432 | Data        | 00 |         |    2 | 00/042F : 00 00       |                ds        2              ; 02 devNum
+  937 |  1 debug.s    433 | Data        | 00 |         |    2 | 00/0431 : 00 00       |                ds        2              ; 04 code ($0000 = Device Status)
+  938 |  1 debug.s    434 | Data        | 00 |  3      |    4 | 00/0433 : 8D 06 00 00 |                adrl      myLIST         ; 06 list
+  939 |  1 debug.s    435 | Data        | 00 |         |    4 | 00/0437 : 00 02 00 00 |                adrl      512            ; 0A requestCount (a big buffer)
+  940 |  1 debug.s    436 | Data        | 00 |         |    4 | 00/043B : 00 00 00 00 |                ds        4              ; 0E transferCount
+  941 |  1 debug.s    437 | Empty       | 00 |         |    0 | 00/043F               |                                         
+  942 |  1 debug.s    438 | Comment     | 00 |         |    0 | 00/043F               | *----------
+  943 |  1 debug.s    439 | Empty       | 00 |         |    0 | 00/043F               |                                         
+  944 |  1 debug.s    440 | Data        | 00 |         |   12 | 00/043F : 0B 2E 41 53 | strDEVICE      str       '.ASSDDevice'  ; length is 12 chars (including length byte)
       |                   |             |    |         |      |           53 44 44 65 |
       |                   |             |    |         |      |           76 69 63 65 |
-  946 |  1 debug.s    442 | Empty       | 00 |         |    0 | 00/044B               |                                         
-  947 |  1 debug.s    443 | Data        | 00 |         |    2 | 00/044B : 32 00       | devINFO        dw        $0032          ; buffer size
-  948 |  1 debug.s    444 | Data        | 00 |         |    1 | 00/044D : 00          | devINFO1       db        $00            ; length
-  949 |  1 debug.s    445 | Data        | 00 |         |    1 | 00/044E : 00          | devINFO2       db        $00            
-  950 |  1 debug.s    446 | Data        | 00 |         |   48 | 00/044F : 00 00 00 00 | devINFO3       ds        $30            ; data
+  945 |  1 debug.s    441 | Empty       | 00 |         |    0 | 00/044B               |                                         
+  946 |  1 debug.s    442 | Data        | 00 |         |    2 | 00/044B : 32 00       | devINFO        dw        $0032          ; buffer size
+  947 |  1 debug.s    443 | Data        | 00 |         |    1 | 00/044D : 00          | devINFO1       db        $00            ; length
+  948 |  1 debug.s    444 | Data        | 00 |         |    1 | 00/044E : 00          | devINFO2       db        $00            
+  949 |  1 debug.s    445 | Data        | 00 |         |   48 | 00/044F : 00 00 00 00 | devINFO3       ds        $30            ; data
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+  950 |  1 debug.s    446 | Empty       | 00 |         |    0 | 00/047F               |                                         
+  951 |  1 debug.s    447 | Comment     | 00 |         |    0 | 00/047F               | *----------
+  952 |  1 debug.s    448 | Empty       | 00 |         |    0 | 00/047F               |                                         
+  953 |  1 debug.s    449 | Data        | 00 |         |    2 | 00/047F : 00 00       | appID          ds        2              
+  954 |  1 debug.s    450 | Data        | 00 |         |    2 | 00/0481 : 00 00       | myID           ds        2              
+  955 |  1 debug.s    451 | Empty       | 00 |         |    0 | 00/0483               |                                         
+  956 |  1 debug.s    452 | Data        | 00 |         |    2 | 00/0483 : 00 00       | myDP           ds        2              
+  957 |  1 debug.s    453 | Data        | 00 |         |    4 | 00/0485 : 00 00 00 00 | ptrBUFFER      ds        4              
+  958 |  1 debug.s    454 | Data        | 00 |         |    4 | 00/0489 : 00 00 00 00 | haBUFFER       ds        4              
+  959 |  1 debug.s    455 | Empty       | 00 |         |    0 | 00/048D               |                                         
+  960 |  1 debug.s    456 | Comment     | 00 |         |    0 | 00/048D               | *----------
+  961 |  1 debug.s    457 | Empty       | 00 |         |    0 | 00/048D               |                                         
+  962 |  1 debug.s    458 | Data        | 00 |         |  512 | 00/048D : BD BD BD BD | myBUFFER       ds        512,$bd        
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+  963 |  1 debug.s    459 | Data        | 00 |         |  512 | 00/068D : 00 00 00 00 | myLIST         ds        512            
       |                   |             |    |         |      |           00 00 00 00 |
       |                   |             |    |         |      |           00 00 00 00 |
       |                   |             |    |         |      |           00 00 00 00 |
@@ -651,19 +802,6 @@
       |                   |             |    |         |      |           00 00 00 00 |
       |                   |             |    |         |      |           00 00 00 00 |
       |                   |             |    |         |      |           00 00 00 00 |
-  951 |  1 debug.s    447 | Empty       | 00 |         |    0 | 00/047F               |                                         
-  952 |  1 debug.s    448 | Comment     | 00 |         |    0 | 00/047F               | *----------
-  953 |  1 debug.s    449 | Empty       | 00 |         |    0 | 00/047F               |                                         
-  954 |  1 debug.s    450 | Data        | 00 |         |    2 | 00/047F : 00 00       | appID          ds        2              
-  955 |  1 debug.s    451 | Data        | 00 |         |    2 | 00/0481 : 00 00       | myID           ds        2              
-  956 |  1 debug.s    452 | Empty       | 00 |         |    0 | 00/0483               |                                         
-  957 |  1 debug.s    453 | Data        | 00 |         |    2 | 00/0483 : 00 00       | myDP           ds        2              
-  958 |  1 debug.s    454 | Data        | 00 |         |    4 | 00/0485 : 00 00 00 00 | ptrBUFFER      ds        4              
-  959 |  1 debug.s    455 | Data        | 00 |         |    4 | 00/0489 : 00 00 00 00 | haBUFFER       ds        4              
-  960 |  1 debug.s    456 | Empty       | 00 |         |    0 | 00/048D               |                                         
-  961 |  1 debug.s    457 | Comment     | 00 |         |    0 | 00/048D               | *----------
-  962 |  1 debug.s    458 | Empty       | 00 |         |    0 | 00/048D               |                                         
-  963 |  1 debug.s    459 | Data        | 00 |         |  512 | 00/048D : 00 00 00 00 | myBUFFER       ds        512            
       |                   |             |    |         |      |           00 00 00 00 |
       |                   |             |    |         |      |           00 00 00 00 |
       |                   |             |    |         |      |           00 00 00 00 |
@@ -780,145 +918,6 @@
       |                   |             |    |         |      |           00 00 00 00 |
       |                   |             |    |         |      |           00 00 00 00 |
       |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-  964 |  1 debug.s    460 | Data        | 00 |         |  512 | 00/068D : 00 00 00 00 | myLIST         ds        512            
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
-      |                   |             |    |         |      |           00 00 00 00 |
+  964 |  1 debug.s    460 | Empty       | 00 |         |    0 | 00/088D               |                                         
   965 |  1 debug.s    461 | Empty       | 00 |         |    0 | 00/088D               |                                         
-  966 |  1 debug.s    462 | Empty       | 00 |         |    0 | 00/088D               |                                         
 ------+-------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

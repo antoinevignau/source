@@ -245,6 +245,8 @@ found	lda	proDINFO+8           ; block device?
 	adrl	proDREAD
 	jsr	showERRCODE
 
+	jsr	printBUFFER	; output two lines of buffer
+	
 	lda	errCODE	; only write if read is OK
 	beq	okWRITE
 	rts
@@ -274,11 +276,64 @@ showERRCODE
 	_WriteChar
 	rts
 
+*--- Print a line of buffer
+
+printBUFFER	PushWord	#$20
+	_WriteChar
+
+	lda	myBUFFER
+	jsr	printME
+	lda	myBUFFER+2
+	jsr	printME
+	lda	myBUFFER+4
+	jsr	printME
+	lda	myBUFFER+6
+	jsr	printME
+	lda	myBUFFER+8
+	jsr	printME
+	lda	myBUFFER+10
+	jsr	printME
+	lda	myBUFFER+12
+	jsr	printME
+	lda	myBUFFER+14
+	jsr	printME
+
+	PushWord	#$0d
+	_WriteChar
+
+	PushWord	#$20
+	_WriteChar
+
+	lda	myBUFFER+16
+	jsr	printME
+	lda	myBUFFER+18
+	jsr	printME
+	lda	myBUFFER+20
+	jsr	printME
+	lda	myBUFFER+22
+	jsr	printME
+	lda	myBUFFER+24
+	jsr	printME
+	lda	myBUFFER+26
+	jsr	printME
+	lda	myBUFFER+28
+	jsr	printME
+	lda	myBUFFER+30	; ends into the code below...
+
+printME	pha	; from a word to a string
+	pha
+	pha	; <= here, really
+	_HexIt
+	PullLong  strBUFFER
+
+	PushLong  #strBUFFER	; show the string
+	_WriteCString
+	rts
 	
 *---------- Data
 
 strDREAD	asc	0d0d'DRead '00
-strDWRITE	asc	0d'DWrite '00
+strDWRITE	asc	0d0d'DWrite '00
 strDSTATUS	asc	0d0d'DStatus '00
 
 strCHARS	asc	' Characteristics:  '00
@@ -336,6 +391,7 @@ showHEX	pha	; from a word to a string
 
 strHEX1	asc	'$'
 strHEX	asc	'0000'00
+strBUFFER	asc	'0000 '00
 
 *----------------------------
 * DATA

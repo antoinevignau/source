@@ -23,6 +23,23 @@
 	
 	use	4/Util.Macs
 
+*-----------------------------------
+* AS DRIVER EQUATES
+*-----------------------------------
+
+maxIMAGES	=	1	; no more than N images
+blockSIZE	=	512	; ProDOS 8 block size
+maxBLOCKS	=	$ffffffff	; that is a huge number of blocks
+
+* 0 0000
+* 3 0011 not speed dependent
+* E 1110 block device + write allowed + read allowed
+* C 1100 format allowed + removable media
+
+dftCHAR	=	$03EC	; default characteristics
+dftSLOT	=	$8000	; not slot dependent
+dftVERSION	=	$1000	; v1
+
 *-----------------------------------------------
 
 *
@@ -387,11 +404,11 @@ MyDIB	ds	4	; +00 pointer to the next DIB
 	dw	dftCHAR	; +08 characteristics
 	ds	4	; +0A block count
 	str	'ASSDDevice' ; +0E device name
-	ds	21	; 32 - 12 = 20
-	dw	$0000	; +2E slot number
+	ds	21	; 32 - 11 = 21
+	dw	dftSLOT	; +2E slot number
 	dw	$0000	; +30 unit number
 	dw	dftVERSION	; +32 version
-	dw	dftHDD	; +34 device ID
+	dw	devHDD	; +34 device ID
 	dw	$0000	; +36 first linked device
 	dw	$0000	; +38 next linked device
 	adrl	$00000000	; +3A extended DIB ptr

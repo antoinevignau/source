@@ -240,6 +240,8 @@ found	lda	proDINFO+8           ; block device?
 	PushLong  #strDREAD	; show the string
 	_WriteCString
 
+	jsr	debugBORDER
+	
 	jsl	GSOS
 	dw	$202f
 	adrl	proDREAD
@@ -341,6 +343,18 @@ strBLOCKS	asc	0d' Number of blocks: '00
 strERR	asc	'- Error code '00
 
 *----------------------------
+* DEBUG
+*----------------------------
+
+debugBORDER
+	sep	#$20
+	ldal	$c034
+	inc
+	stal	$c034
+	rep	#$20
+	rts
+
+*----------------------------
 * TEXT ROUTINES
 *----------------------------
 
@@ -416,7 +430,7 @@ proDREAD	dw	6	; pCount
 	ds	2	; 02 devNum
 	adrl	myBUFFER	; 04 buffer
 	adrl	512	; 08 requestCount
-	ds	4	; 0C startingBlock
+	adrl	117	; 0C startingBlock
 	dw	512	; 10 blockSize
 	ds	4	; 14 transferCount
 	
@@ -424,7 +438,7 @@ proDWRITE	dw	6	; pCount
 	ds	2	; 02 devNum
 	adrl	myBUFFER	; 04 buffer
 	adrl	512	; 08 requestCount
-	ds	4	; 0C startingBlock
+	adrl	117	; 0C startingBlock
 	dw	512	; 10 blockSize
 	ds	4	; 14 transferCount
 

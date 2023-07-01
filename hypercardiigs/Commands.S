@@ -1089,9 +1089,9 @@ L11081D  PHY
          JSL   L16073C
          PLA
          STA   $01
-         PEA   ^L16073C
-         PEA   L16073C
-         JSL   L07187A
+*         PEA   ^L16073C
+*         PEA   L16073C
+*         JSL   L07187A
 L11083B  JSL   L0E0000
          PLY
          PLY

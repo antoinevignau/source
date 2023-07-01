@@ -2538,9 +2538,9 @@ L0F1518  PHY
          JSL   L160720
          PLA
          STA   $0D
-         PEA   ^L160720
-         PEA   L160720
-         JSL   L07187A
+*         PEA   ^L160720
+*         PEA   L160720
+*         JSL   L07187A
          PHY
          PEA   $1000
          PEA   $0000

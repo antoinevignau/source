@@ -1,0 +1,935 @@
+------+--------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File              Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+--------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1   HPrintCard.S      1 | Comment     | 11 |         |    0 | 00/0000               | *
+    2 |  1   HPrintCard.S      2 | Comment     | 11 |         |    0 | 00/0000               | * HypercardGS
+    3 |  1   HPrintCard.S      3 | Comment     | 11 |         |    0 | 00/0000               | * segment: $24 HPrintCard
+    4 |  1   HPrintCard.S      4 | Comment     | 11 |         |    0 | 00/0000               | *
+    5 |  1   HPrintCard.S      5 | Comment     | 11 |         |    0 | 00/0000               | * (k) 2015, Brutal Deluxe Software
+    6 |  1   HPrintCard.S      6 | Comment     | 11 |         |    0 | 00/0000               | *
+    7 |  1   HPrintCard.S      7 | Empty       | 11 |         |    0 | 00/0000               |                                  
+    8 |  1   HPrintCard.S      8 | Directive   | 00 |         |    0 | 00/0000               |             mx    %00            
+    9 |  1   HPrintCard.S      9 | Directive   | 00 |         |    0 | 00/0000               |             rel                  
+   10 |  1   HPrintCard.S     10 | Directive   | 00 |         |    0 | 00/0000               |             dsk   HPrintCard.l   
+   11 |  1   HPrintCard.S     11 | Directive   | 00 |         |    0 | 00/0000               |             lst   off            
+   12 |  1   HPrintCard.S     12 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   13 |  1   HPrintCard.S     13 | Comment     | 00 |         |    0 | 00/0000               | *---------------------------------------
+   14 |  1   HPrintCard.S     14 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   15 |  1   HPrintCard.S     15 | Directive   | 00 |         |    0 | 00/0000               |             use   HPrintCard.X   
+   16 |  2 HPrintCard.X.s      1 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   17 |  2 HPrintCard.X.s      2 | Comment     | 00 |         |    0 | 00/0000               | * TFBD generated externals
+   18 |  2 HPrintCard.X.s      3 | Comment     | 00 |         |    0 | 00/0000               | *     (c) PHC 1992,93
+   19 |  2 HPrintCard.X.s      4 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   20 |  2 HPrintCard.X.s      5 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   21 |  2 HPrintCard.X.s      6 | External    | 00 |         |    0 | 00/0000               | L0313BE     EXT                  
+   22 |  2 HPrintCard.X.s      7 | External    | 00 |         |    0 | 00/0000               | L07187A     EXT                  
+   23 |  2 HPrintCard.X.s      8 | External    | 00 |         |    0 | 00/0000               | L073C22     EXT                  
+   24 |  2 HPrintCard.X.s      9 | External    | 00 |         |    0 | 00/0000               | L0727BF     EXT                  
+   25 |  2 HPrintCard.X.s     10 | External    | 00 |         |    0 | 00/0000               | L07185A     EXT                  
+   26 |  2 HPrintCard.X.s     11 | External    | 00 |         |    0 | 00/0000               | L072834     EXT                  
+   27 |  2 HPrintCard.X.s     12 | External    | 00 |         |    0 | 00/0000               | L0736C8     EXT                  
+   28 |  2 HPrintCard.X.s     13 | External    | 00 |         |    0 | 00/0000               | L072634     EXT                  
+   29 |  2 HPrintCard.X.s     14 | External    | 00 |         |    0 | 00/0000               | L0724F7     EXT                  
+   30 |  2 HPrintCard.X.s     15 | External    | 00 |         |    0 | 00/0000               | L0711EB     EXT                  
+   31 |  2 HPrintCard.X.s     16 | External    | 00 |         |    0 | 00/0000               | L072E7C     EXT                  
+   32 |  2 HPrintCard.X.s     17 | External    | 00 |         |    0 | 00/0000               | L150493     EXT                  
+   33 |  2 HPrintCard.X.s     18 | External    | 00 |         |    0 | 00/0000               | L15102F     EXT                  
+   34 |  2 HPrintCard.X.s     19 | External    | 00 |         |    0 | 00/0000               | L151131     EXT                  
+   35 |  2 HPrintCard.X.s     20 | External    | 00 |         |    0 | 00/0000               | L0540A1     EXT                  
+   36 |  2 HPrintCard.X.s     21 | External    | 00 |         |    0 | 00/0000               | L1506B3     EXT                  
+   37 |  2 HPrintCard.X.s     22 | External    | 00 |         |    0 | 00/0000               | L1517CD     EXT                  
+   38 |  2 HPrintCard.X.s     23 | External    | 00 |         |    0 | 00/0000               | L1506AD     EXT                  
+   39 |  2 HPrintCard.X.s     24 | External    | 00 |         |    0 | 00/0000               | L0540AB     EXT                  
+   40 |  2 HPrintCard.X.s     25 | External    | 00 |         |    0 | 00/0000               | L0540A9     EXT                  
+   41 |  2 HPrintCard.X.s     26 | External    | 00 |         |    0 | 00/0000               | L150482     EXT                  
+   42 |  2 HPrintCard.X.s     27 | External    | 00 |         |    0 | 00/0000               | L151005     EXT                  
+   43 |  2 HPrintCard.X.s     28 | External    | 00 |         |    0 | 00/0000               | L150D20     EXT                  
+   44 |  2 HPrintCard.X.s     29 | External    | 00 |         |    0 | 00/0000               | L150B34     EXT                  
+   45 |  2 HPrintCard.X.s     30 | External    | 00 |         |    0 | 00/0000               | L073CDF     EXT                  
+   46 |  2 HPrintCard.X.s     31 | External    | 00 |         |    0 | 00/0000               | L09AFB1     EXT                  
+   47 |  2 HPrintCard.X.s     32 | External    | 00 |         |    0 | 00/0000               | L1511C8     EXT                  
+   48 |  2 HPrintCard.X.s     33 | External    | 00 |         |    0 | 00/0000               | L073B05     EXT                  
+   49 |  2 HPrintCard.X.s     34 | External    | 00 |         |    0 | 00/0000               | L0540AD     EXT                  
+   50 |  2 HPrintCard.X.s     35 | External    | 00 |         |    0 | 00/0000               | L055327     EXT                  
+   51 |  2 HPrintCard.X.s     36 | External    | 00 |         |    0 | 00/0000               | L055329     EXT                  
+   52 |  2 HPrintCard.X.s     37 | External    | 00 |         |    0 | 00/0000               | L073CFE     EXT                  
+   53 |  2 HPrintCard.X.s     38 | External    | 00 |         |    0 | 00/0000               | L072B6B     EXT                  
+   54 |  2 HPrintCard.X.s     39 | External    | 00 |         |    0 | 00/0000               | L073032     EXT                  
+   55 |  2 HPrintCard.X.s     40 | External    | 00 |         |    0 | 00/0000               | L150FE7     EXT                  
+   56 |  2 HPrintCard.X.s     41 | External    | 00 |         |    0 | 00/0000               | L072354     EXT                  
+   57 |  2 HPrintCard.X.s     42 | External    | 00 |         |    0 | 00/0000               | L150FF3     EXT                  
+   58 |  2 HPrintCard.X.s     43 | External    | 00 |         |    0 | 00/0000               | L055335     EXT                  
+   59 |  2 HPrintCard.X.s     44 | External    | 00 |         |    0 | 00/0000               | L051EF0     EXT                  
+   60 |  2 HPrintCard.X.s     45 | External    | 00 |         |    0 | 00/0000               | L051EF4     EXT                  
+   61 |  2 HPrintCard.X.s     46 | External    | 00 |         |    0 | 00/0000               | L051EF6     EXT                  
+   62 |  2 HPrintCard.X.s     47 | External    | 00 |         |    0 | 00/0000               | L160A3E     EXT                  
+   63 |  2 HPrintCard.X.s     48 | External    | 00 |         |    0 | 00/0000               | L160A5A     EXT                  
+   64 |  2 HPrintCard.X.s     49 | External    | 00 |         |    0 | 00/0000               | L051F16     EXT                  
+   65 |  2 HPrintCard.X.s     50 | External    | 00 |         |    0 | 00/0000               | L160B3A     EXT                  
+   66 |  2 HPrintCard.X.s     51 | External    | 00 |         |    0 | 00/0000               | L05531F     EXT                  
+   67 |  2 HPrintCard.X.s     52 | External    | 00 |         |    0 | 00/0000               | L055321     EXT                  
+   68 |  2 HPrintCard.X.s     53 | External    | 00 |         |    0 | 00/0000               | L05533F     EXT                  
+   69 |  2 HPrintCard.X.s     54 | External    | 00 |         |    0 | 00/0000               | L05533D     EXT                  
+   70 |  2 HPrintCard.X.s     55 | External    | 00 |         |    0 | 00/0000               | L160B56     EXT                  
+   71 |  2 HPrintCard.X.s     56 | External    | 00 |         |    0 | 00/0000               | L160B80     EXT                  
+   72 |  2 HPrintCard.X.s     57 | External    | 00 |         |    0 | 00/0000               | L15038F     EXT                  
+   73 |  2 HPrintCard.X.s     58 | External    | 00 |         |    0 | 00/0000               | L160BAA     EXT                  
+   74 |  2 HPrintCard.X.s     59 | External    | 00 |         |    0 | 00/0000               | L160BB8     EXT                  
+   75 |  2 HPrintCard.X.s     60 | External    | 00 |         |    0 | 00/0000               | L160BC6     EXT                  
+   76 |  2 HPrintCard.X.s     61 | External    | 00 |         |    0 | 00/0000               | L160BD4     EXT                  
+   77 |  2 HPrintCard.X.s     62 | External    | 00 |         |    0 | 00/0000               | L160BE2     EXT                  
+   78 |  2 HPrintCard.X.s     63 | External    | 00 |         |    0 | 00/0000               | L150AF2     EXT                  
+   79 |  2 HPrintCard.X.s     64 | External    | 00 |         |    0 | 00/0000               | L160BF0     EXT                  
+   80 |  2 HPrintCard.X.s     65 | External    | 00 |         |    0 | 00/0000               | L051EF2     EXT                  
+   81 |  2 HPrintCard.X.s     66 | External    | 00 |         |    0 | 00/0000               | L051F20     EXT                  
+   82 |  2 HPrintCard.X.s     67 | External    | 00 |         |    0 | 00/0000               | L0408D5     EXT                  
+   83 |  2 HPrintCard.X.s     68 | External    | 00 |         |    0 | 00/0000               | L0408DE     EXT                  
+   84 |  2 HPrintCard.X.s     69 | External    | 00 |         |    0 | 00/0000               | L0408DF     EXT                  
+   85 |  2 HPrintCard.X.s     70 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   86 |  1   HPrintCard.S     16 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   87 |  1   HPrintCard.S     17 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Ctl.Macs     
+   88 |  1   HPrintCard.S     18 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Desk.Macs    
+   89 |  1   HPrintCard.S     19 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Dialog.Macs  
+   90 |  1   HPrintCard.S     20 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Event.Macs   
+   91 |  1   HPrintCard.S     21 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Int.Macs     
+   92 |  1   HPrintCard.S     22 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Line.Macs    
+   93 |  1   HPrintCard.S     23 | Directive   | 00 |         |    0 | 00/0000               |             use   4/List.Macs    
+   94 |  1   HPrintCard.S     24 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Locator.Macs 
+   95 |  1   HPrintCard.S     25 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Mem.Macs     
+   96 |  1   HPrintCard.S     26 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Menu.Macs    
+   97 |  1   HPrintCard.S     27 | Directive   | 00 |         |    0 | 00/0000               |             use   4/MidiSyn.Macs 
+   98 |  1   HPrintCard.S     28 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Misc.Macs    
+   99 |  1   HPrintCard.S     29 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Qd.Macs      
+  100 |  1   HPrintCard.S     30 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Sound.Macs   
+  101 |  1   HPrintCard.S     31 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Std.Macs     
+  102 |  1   HPrintCard.S     32 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Text.Macs    
+  103 |  1   HPrintCard.S     33 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Util.Macs    
+  104 |  1   HPrintCard.S     34 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Window.Macs  
+  105 |  1   HPrintCard.S     35 | Empty       | 00 |         |    0 | 00/0000               |                                  
+  106 |  1   HPrintCard.S     36 | Comment     | 00 |         |    0 | 00/0000               | *---------------------------------------
+  107 |  1   HPrintCard.S     37 | Empty       | 00 |         |    0 | 00/0000               |                                  
+  108 |  1   HPrintCard.S     38 | Global      | 00 |         |    0 | 00/0000               | L240000     ENT                  
+  109 |  1   HPrintCard.S     39 | Code        | 00 |         |    1 | 00/0000 : 0B          |             PHD                  
+  110 |  1   HPrintCard.S     40 | Code        | 00 |         |    1 | 00/0001 : 3B          |             TSC                  
+  111 |  1   HPrintCard.S     41 | Code        | 00 |         |    1 | 00/0002 : 18          |             CLC                  
+  112 |  1   HPrintCard.S     42 | Code        | 00 |         |    3 | 00/0003 : 69 F0 FF    |             ADC   #$FFF0         
+  113 |  1   HPrintCard.S     43 | Code        | 00 |         |    1 | 00/0006 : 1B          |             TCS                  
+  114 |  1   HPrintCard.S     44 | Code        | 00 |         |    1 | 00/0007 : 5B          |             TCD                  
+  115 |  1   HPrintCard.S     45 | Code        | 00 |         |    1 | 00/0008 : 5A          |             PHY                  
+  116 |  1   HPrintCard.S     46 | Code        | 00 |E 3      |    4 | 00/0009 : 22 98 3C 06 |             JSL   L073CDF        
+  117 |  1   HPrintCard.S     47 | Code        | 00 |         |    1 | 00/000D : 68          |             PLA                  
+  118 |  1   HPrintCard.S     48 | Code        | 00 |         |    2 | 00/000E : 85 0B       |             STA   $0B            
+  119 |  1   HPrintCard.S     49 | Code        | 00 |         |    2 | 00/0010 : A5 1A       |             LDA   $1A            
+  120 |  1   HPrintCard.S     50 | Code        | 00 |         |    2 | 00/0012 : F0 07       |             BEQ   L24001B        
+  121 |  1   HPrintCard.S     51 | Code        | 00 |         |    3 | 00/0014 : A9 08 00    |             LDA   #$0008         
+  122 |  1   HPrintCard.S     52 | Code        | 00 |         |    2 | 00/0017 : 85 09       |             STA   $09            
+  123 |  1   HPrintCard.S     53 | Code        | 00 |         |    2 | 00/0019 : 80 05       |             BRA   L240020        
+  124 |  1   HPrintCard.S     54 | Code        | 00 |         |    3 | 00/001B : A9 10 00    | L24001B     LDA   #$0010         
+  125 |  1   HPrintCard.S     55 | Code        | 00 |         |    2 | 00/001E : 85 09       |             STA   $09            
+  126 |  1   HPrintCard.S     56 | Code        | 00 |         |    1 | 00/0020 : 5A          | L240020     PHY                  
+  127 |  1   HPrintCard.S     57 | Code        | 00 |         |    2 | 00/0021 : D4 09       |             PEI   $09            
+  128 |  1   HPrintCard.S     58 | Code        | 00 |         |    3 | 00/0023 : A0 38 00    |             LDY   #$0038         
+  129 |  1   HPrintCard.S     59 | Code        | 00 |         |    2 | 00/0026 : B7 16       |             LDA   [$16],Y        
+  130 |  1   HPrintCard.S     60 | Code        | 00 |         |    1 | 00/0028 : 48          |             PHA                  
+  131 |  1   HPrintCard.S     61 | Code        | 00 |         |    1 | 00/0029 : 88          |             DEY                  
+  132 |  1   HPrintCard.S     62 | Code        | 00 |         |    1 | 00/002A : 88          |             DEY                  
+  133 |  1   HPrintCard.S     63 | Code        | 00 |         |    2 | 00/002B : B7 16       |             LDA   [$16],Y        
+  134 |  1   HPrintCard.S     64 | Code        | 00 |         |    1 | 00/002D : 48          |             PHA                  
+  135 |  1   HPrintCard.S     65 | Code        | 00 |E 3      |    4 | 00/002E : 22 5A 0A 15 |             JSL   L160A5A        
+  136 |  1   HPrintCard.S     66 | Code        | 00 |         |    1 | 00/0032 : 68          |             PLA                  
+  137 |  1   HPrintCard.S     67 | Code        | 00 |         |    1 | 00/0033 : 4A          |             LSR                  
+  138 |  1   HPrintCard.S     68 | Code        | 00 |         |    2 | 00/0034 : 90 52       |             BCC   L240092        
+  139 |  1   HPrintCard.S     69 | Code        | 00 |         |    1 | 00/0036 : 5A          |             PHY                  
+  140 |  1   HPrintCard.S     70 | Code        | 00 |E 1 >>16 |    3 | 00/0037 : F4 00 00    |             PEA   ^L0408D5       
+  141 |  1   HPrintCard.S     71 | Code        | 00 |E 2      |    3 | 00/003A : F4 D5 08    |             PEA   L0408D5        
+  142 |  1   HPrintCard.S     72 | Code        | 00 |E 3      |    4 | 00/003D : 22 56 0B 15 |             JSL   L160B56        
+  143 |  1   HPrintCard.S     73 | Code        | 00 |         |    1 | 00/0041 : 68          |             PLA                  
+  144 |  1   HPrintCard.S     74 | Code        | 00 |         |    1 | 00/0042 : 4A          |             LSR                  
+  145 |  1   HPrintCard.S     75 | Code        | 00 |         |    2 | 00/0043 : 90 43       |             BCC   L240092        
+  146 |  1   HPrintCard.S     76 | Code        | 00 |         |    2 | 00/0045 : D4 1A       |             PEI   $1A            
+  147 |  1   HPrintCard.S     77 | Code        | 00 |E 3      |    4 | 00/0047 : 22 AA 0B 15 |             JSL   L160BAA        
+  148 |  1   HPrintCard.S     78 | Comment     | 00 |         |    0 | 00/004B               | *         PEA   ^L160BAA
+  149 |  1   HPrintCard.S     79 | Comment     | 00 |         |    0 | 00/004B               | *         PEA   L160BAA
+  150 |  1   HPrintCard.S     80 | Comment     | 00 |         |    0 | 00/004B               | *         JSL   L07187A
+  151 |  1   HPrintCard.S     81 | Code        | 00 |         |    1 | 00/004B : 7B          |             TDC                  
+  152 |  1   HPrintCard.S     82 | Code        | 00 |         |    1 | 00/004C : 18          |             CLC                  
+  153 |  1   HPrintCard.S     83 | Code        | 00 |         |    3 | 00/004D : 69 01 00    |             ADC   #$0001         
+  154 |  1   HPrintCard.S     84 | Code        | 00 |         |    3 | 00/0050 : F4 00 00    |             PEA   $0000          
+  155 |  1   HPrintCard.S     85 | Code        | 00 |         |    1 | 00/0053 : 48          |             PHA                  
+  156 |  1   HPrintCard.S     86 | Code        | 00 |         |    3 | 00/0054 : A9 01 00    |             LDA   #$0001         
+  157 |  1   HPrintCard.S     87 | Code        | 00 |         |    1 | 00/0057 : 18          |             CLC                  
+  158 |  1   HPrintCard.S     88 | Code        | 00 |         |    2 | 00/0058 : 65 16       |             ADC   $16            
+  159 |  1   HPrintCard.S     89 | Code        | 00 |         |    2 | 00/005A : A6 18       |             LDX   $18            
+  160 |  1   HPrintCard.S     90 | Code        | 00 |         |    2 | 00/005C : 90 01       |             BCC   L240069        
+  161 |  1   HPrintCard.S     91 | Code        | 00 |         |    1 | 00/005E : E8          |             INX                  
+  162 |  1   HPrintCard.S     92 | Code        | 00 |         |    1 | 00/005F : DA          | L240069     PHX                  
+  163 |  1   HPrintCard.S     93 | Code        | 00 |         |    1 | 00/0060 : 48          |             PHA                  
+  164 |  1   HPrintCard.S     94 | Code        | 00 |         |    3 | 00/0061 : F4 08 00    |             PEA   $0008          
+  165 |  1   HPrintCard.S     95 | Code        | 00 |E 3      |    4 | 00/0064 : 22 BE 13 02 |             JSL   L0313BE        
+  166 |  1   HPrintCard.S     96 | Code        | 00 |         |    1 | 00/0068 : 7B          |             TDC                  
+  167 |  1   HPrintCard.S     97 | Code        | 00 |         |    1 | 00/0069 : 18          |             CLC                  
+  168 |  1   HPrintCard.S     98 | Code        | 00 |         |    3 | 00/006A : 69 01 00    |             ADC   #$0001         
+  169 |  1   HPrintCard.S     99 | Code        | 00 |         |    3 | 00/006D : F4 00 00    |             PEA   $0000          
+  170 |  1   HPrintCard.S    100 | Code        | 00 |         |    1 | 00/0070 : 48          |             PHA                  
+  171 |  1   HPrintCard.S    101 | Code        | 00 |         |    3 | 00/0071 : F4 FE FF    |             PEA   $FFFE          
+  172 |  1   HPrintCard.S    102 | Code        | 00 |         |    3 | 00/0074 : F4 00 00    |             PEA   $0000          
+  173 |  1   HPrintCard.S    103 | Code        | 00 |E 3      |    4 | 00/0077 : 22 05 10 14 |             JSL   L151005        
+  174 |  1   HPrintCard.S    104 | Code        | 00 |         |    1 | 00/007B : 7B          |             TDC                  
+  175 |  1   HPrintCard.S    105 | Code        | 00 |         |    1 | 00/007C : 18          |             CLC                  
+  176 |  1   HPrintCard.S    106 | Code        | 00 |         |    3 | 00/007D : 69 01 00    |             ADC   #$0001         
+  177 |  1   HPrintCard.S    107 | Code        | 00 |         |    3 | 00/0080 : F4 00 00    |             PEA   $0000          
+  178 |  1   HPrintCard.S    108 | Code        | 00 |         |    1 | 00/0083 : 48          |             PHA                  
+  179 |  1   HPrintCard.S    109 | Code        | 00 |E 3      |    4 | 00/0084 : 22 34 0B 14 |             JSL   L150B34        
+  180 |  1   HPrintCard.S    110 | Code        | 00 |         |    2 | 00/0088 : D4 09       | L240092     PEI   $09            
+  181 |  1   HPrintCard.S    111 | Code        | 00 |         |    3 | 00/008A : A0 38 00    |             LDY   #$0038         
+  182 |  1   HPrintCard.S    112 | Code        | 00 |         |    2 | 00/008D : B7 16       |             LDA   [$16],Y        
+  183 |  1   HPrintCard.S    113 | Code        | 00 |         |    1 | 00/008F : 48          |             PHA                  
+  184 |  1   HPrintCard.S    114 | Code        | 00 |         |    1 | 00/0090 : 88          |             DEY                  
+  185 |  1   HPrintCard.S    115 | Code        | 00 |         |    1 | 00/0091 : 88          |             DEY                  
+  186 |  1   HPrintCard.S    116 | Code        | 00 |         |    2 | 00/0092 : B7 16       |             LDA   [$16],Y        
+  187 |  1   HPrintCard.S    117 | Code        | 00 |         |    1 | 00/0094 : 48          |             PHA                  
+  188 |  1   HPrintCard.S    118 | Code        | 00 |E 3      |    4 | 00/0095 : 22 80 0B 15 |             JSL   L160B80        
+  189 |  1   HPrintCard.S    119 | Code        | 00 |         |    2 | 00/0099 : D4 0B       |             PEI   $0B            
+  190 |  1   HPrintCard.S    120 | Code        | 00 |E 3      |    4 | 00/009B : 22 B0 24 06 |             JSL   L0724F7        
+  191 |  1   HPrintCard.S    121 | Code        | 00 |         |    2 | 00/009F : A5 14       |             LDA   $14            
+  192 |  1   HPrintCard.S    122 | Code        | 00 |         |    2 | 00/00A1 : 85 1A       |             STA   $1A            
+  193 |  1   HPrintCard.S    123 | Code        | 00 |         |    2 | 00/00A3 : A5 13       |             LDA   $13            
+  194 |  1   HPrintCard.S    124 | Code        | 00 |         |    2 | 00/00A5 : 85 19       |             STA   $19            
+  195 |  1   HPrintCard.S    125 | Code        | 00 |         |    2 | 00/00A7 : A5 11       |             LDA   $11            
+  196 |  1   HPrintCard.S    126 | Code        | 00 |         |    1 | 00/00A9 : 5B          |             TCD                  
+  197 |  1   HPrintCard.S    127 | Code        | 00 |         |    1 | 00/00AA : 3B          |             TSC                  
+  198 |  1   HPrintCard.S    128 | Code        | 00 |         |    1 | 00/00AB : 18          |             CLC                  
+  199 |  1   HPrintCard.S    129 | Code        | 00 |         |    3 | 00/00AC : 69 18 00    |             ADC   #$0018         
+  200 |  1   HPrintCard.S    130 | Code        | 00 |         |    1 | 00/00AF : 1B          |             TCS                  
+  201 |  1   HPrintCard.S    131 | Code        | 00 |         |    1 | 00/00B0 : 6B          |             RTL                  
+  202 |  1   HPrintCard.S    132 | Empty       | 00 |         |    0 | 00/00B1               |                                  
+  203 |  1   HPrintCard.S    133 | Code        | 00 |         |    1 | 00/00B1 : 0B          | L2400BB     PHD                  
+  204 |  1   HPrintCard.S    134 | Code        | 00 |         |    1 | 00/00B2 : 3B          |             TSC                  
+  205 |  1   HPrintCard.S    135 | Code        | 00 |         |    1 | 00/00B3 : 18          |             CLC                  
+  206 |  1   HPrintCard.S    136 | Code        | 00 |         |    3 | 00/00B4 : 69 FA FF    |             ADC   #$FFFA         
+  207 |  1   HPrintCard.S    137 | Code        | 00 |         |    1 | 00/00B7 : 1B          |             TCS                  
+  208 |  1   HPrintCard.S    138 | Code        | 00 |         |    1 | 00/00B8 : 5B          |             TCD                  
+  209 |  1   HPrintCard.S    139 | Code        | 00 |         |    2 | 00/00B9 : 64 01       |             STZ   $01            
+  210 |  1   HPrintCard.S    140 | Code        | 00 |E 3      |    4 | 00/00BB : AF F0 1E 04 |             LDAL  L051EF0        
+  211 |  1   HPrintCard.S    141 | Code        | 00 |         |    1 | 00/00BF : 3A          |             DEC                  
+  212 |  1   HPrintCard.S    142 | Code        | 00 |         |    2 | 00/00C0 : F0 05       |             BEQ   L2400D1        
+  213 |  1   HPrintCard.S    143 | Code        | 00 |         |    3 | 00/00C2 : A9 FF 00    |             LDA   #$00FF         
+  214 |  1   HPrintCard.S    144 | Code        | 00 |         |    2 | 00/00C5 : 85 01       |             STA   $01            
+  215 |  1   HPrintCard.S    145 | Code        | 00 |         |    2 | 00/00C7 : D4 01       | L2400D1     PEI   $01            
+  216 |  1   HPrintCard.S    146 | Code        | 00 |         |    3 | 00/00C9 : A0 17 00    |             LDY   #$0017         
+  217 |  1   HPrintCard.S    147 | Code        | 00 |         |    2 | 00/00CC : B7 0C       |             LDA   [$0C],Y        
+  218 |  1   HPrintCard.S    148 | Code        | 00 |         |    1 | 00/00CE : 48          |             PHA                  
+  219 |  1   HPrintCard.S    149 | Code        | 00 |         |    1 | 00/00CF : 88          |             DEY                  
+  220 |  1   HPrintCard.S    150 | Code        | 00 |         |    1 | 00/00D0 : 88          |             DEY                  
+  221 |  1   HPrintCard.S    151 | Code        | 00 |         |    2 | 00/00D1 : B7 0C       |             LDA   [$0C],Y        
+  222 |  1   HPrintCard.S    152 | Code        | 00 |         |    1 | 00/00D3 : 48          |             PHA                  
+  223 |  1   HPrintCard.S    153 | Code        | 00 |         |    3 | 00/00D4 : F4 0B 00    |             PEA   $000B          
+  224 |  1   HPrintCard.S    154 | Code        | 00 |E 3      |    4 | 00/00D7 : 22 35 2E 06 |             JSL   L072E7C        
+  225 |  1   HPrintCard.S    155 | Code        | 00 |         |    2 | 00/00DB : A5 0A       |             LDA   $0A            
+  226 |  1   HPrintCard.S    156 | Code        | 00 |         |    2 | 00/00DD : 85 0E       |             STA   $0E            
+  227 |  1   HPrintCard.S    157 | Code        | 00 |         |    2 | 00/00DF : A5 09       |             LDA   $09            
+  228 |  1   HPrintCard.S    158 | Code        | 00 |         |    2 | 00/00E1 : 85 0D       |             STA   $0D            
+  229 |  1   HPrintCard.S    159 | Code        | 00 |         |    2 | 00/00E3 : A5 07       |             LDA   $07            
+  230 |  1   HPrintCard.S    160 | Code        | 00 |         |    1 | 00/00E5 : 5B          |             TCD                  
+  231 |  1   HPrintCard.S    161 | Code        | 00 |         |    1 | 00/00E6 : 3B          |             TSC                  
+  232 |  1   HPrintCard.S    162 | Code        | 00 |         |    1 | 00/00E7 : 18          |             CLC                  
+  233 |  1   HPrintCard.S    163 | Code        | 00 |         |    3 | 00/00E8 : 69 0C 00    |             ADC   #$000C         
+  234 |  1   HPrintCard.S    164 | Code        | 00 |         |    1 | 00/00EB : 1B          |             TCS                  
+  235 |  1   HPrintCard.S    165 | Code        | 00 |         |    1 | 00/00EC : 6B          |             RTL                  
+  236 |  1   HPrintCard.S    166 | Empty       | 00 |         |    0 | 00/00ED               |                                  
+  237 |  1   HPrintCard.S    167 | Code        | 00 |         |    1 | 00/00ED : 0B          | L2400F7     PHD                  
+  238 |  1   HPrintCard.S    168 | Code        | 00 |         |    1 | 00/00EE : 3B          |             TSC                  
+  239 |  1   HPrintCard.S    169 | Code        | 00 |         |    1 | 00/00EF : 18          |             CLC                  
+  240 |  1   HPrintCard.S    170 | Code        | 00 |         |    3 | 00/00F0 : 69 FA FF    |             ADC   #$FFFA         
+  241 |  1   HPrintCard.S    171 | Code        | 00 |         |    1 | 00/00F3 : 1B          |             TCS                  
+  242 |  1   HPrintCard.S    172 | Code        | 00 |         |    1 | 00/00F4 : 5B          |             TCD                  
+  243 |  1   HPrintCard.S    173 | Code        | 00 |         |    2 | 00/00F5 : 64 01       |             STZ   $01            
+  244 |  1   HPrintCard.S    174 | Code        | 00 |E 3      |    4 | 00/00F7 : AF F2 1E 04 |             LDAL  L051EF2        
+  245 |  1   HPrintCard.S    175 | Code        | 00 |         |    1 | 00/00FB : 3A          |             DEC                  
+  246 |  1   HPrintCard.S    176 | Code        | 00 |         |    1 | 00/00FC : 3A          |             DEC                  
+  247 |  1   HPrintCard.S    177 | Code        | 00 |         |    2 | 00/00FD : D0 05       |             BNE   L24010E        
+  248 |  1   HPrintCard.S    178 | Code        | 00 |         |    3 | 00/00FF : A9 FF 00    |             LDA   #$00FF         
+  249 |  1   HPrintCard.S    179 | Code        | 00 |         |    2 | 00/0102 : 85 01       |             STA   $01            
+  250 |  1   HPrintCard.S    180 | Code        | 00 |         |    2 | 00/0104 : D4 01       | L24010E     PEI   $01            
+  251 |  1   HPrintCard.S    181 | Code        | 00 |         |    3 | 00/0106 : A0 17 00    |             LDY   #$0017         
+  252 |  1   HPrintCard.S    182 | Code        | 00 |         |    2 | 00/0109 : B7 0C       |             LDA   [$0C],Y        
+  253 |  1   HPrintCard.S    183 | Code        | 00 |         |    1 | 00/010B : 48          |             PHA                  
+  254 |  1   HPrintCard.S    184 | Code        | 00 |         |    1 | 00/010C : 88          |             DEY                  
+  255 |  1   HPrintCard.S    185 | Code        | 00 |         |    1 | 00/010D : 88          |             DEY                  
+  256 |  1   HPrintCard.S    186 | Code        | 00 |         |    2 | 00/010E : B7 0C       |             LDA   [$0C],Y        
+  257 |  1   HPrintCard.S    187 | Code        | 00 |         |    1 | 00/0110 : 48          |             PHA                  
+  258 |  1   HPrintCard.S    188 | Code        | 00 |         |    3 | 00/0111 : F4 0D 00    |             PEA   $000D          
+  259 |  1   HPrintCard.S    189 | Code        | 00 |E 3      |    4 | 00/0114 : 22 35 2E 06 |             JSL   L072E7C        
+  260 |  1   HPrintCard.S    190 | Code        | 00 |         |    2 | 00/0118 : A5 0A       |             LDA   $0A            
+  261 |  1   HPrintCard.S    191 | Code        | 00 |         |    2 | 00/011A : 85 0E       |             STA   $0E            
+  262 |  1   HPrintCard.S    192 | Code        | 00 |         |    2 | 00/011C : A5 09       |             LDA   $09            
+  263 |  1   HPrintCard.S    193 | Code        | 00 |         |    2 | 00/011E : 85 0D       |             STA   $0D            
+  264 |  1   HPrintCard.S    194 | Code        | 00 |         |    2 | 00/0120 : A5 07       |             LDA   $07            
+  265 |  1   HPrintCard.S    195 | Code        | 00 |         |    1 | 00/0122 : 5B          |             TCD                  
+  266 |  1   HPrintCard.S    196 | Code        | 00 |         |    1 | 00/0123 : 3B          |             TSC                  
+  267 |  1   HPrintCard.S    197 | Code        | 00 |         |    1 | 00/0124 : 18          |             CLC                  
+  268 |  1   HPrintCard.S    198 | Code        | 00 |         |    3 | 00/0125 : 69 0C 00    |             ADC   #$000C         
+  269 |  1   HPrintCard.S    199 | Code        | 00 |         |    1 | 00/0128 : 1B          |             TCS                  
+  270 |  1   HPrintCard.S    200 | Code        | 00 |         |    1 | 00/0129 : 6B          |             RTL                  
+  271 |  1   HPrintCard.S    201 | Empty       | 00 |         |    0 | 00/012A               |                                  
+  272 |  1   HPrintCard.S    202 | Code        | 00 |         |    1 | 00/012A : 0B          | L240134     PHD                  
+  273 |  1   HPrintCard.S    203 | Code        | 00 |         |    1 | 00/012B : 3B          |             TSC                  
+  274 |  1   HPrintCard.S    204 | Code        | 00 |         |    1 | 00/012C : 18          |             CLC                  
+  275 |  1   HPrintCard.S    205 | Code        | 00 |         |    3 | 00/012D : 69 FC FF    |             ADC   #$FFFC         
+  276 |  1   HPrintCard.S    206 | Code        | 00 |         |    1 | 00/0130 : 1B          |             TCS                  
+  277 |  1   HPrintCard.S    207 | Code        | 00 |         |    1 | 00/0131 : 5B          |             TCD                  
+  278 |  1   HPrintCard.S    208 | Code        | 00 |         |    3 | 00/0132 : A0 2B 00    |             LDY   #$002B         
+  279 |  1   HPrintCard.S    209 | Code        | 00 |         |    2 | 00/0135 : B7 0A       |             LDA   [$0A],Y        
+  280 |  1   HPrintCard.S    210 | Code        | 00 |         |    2 | 00/0137 : F0 1D       |             BEQ   L240160        
+  281 |  1   HPrintCard.S    211 | Code        | 00 |         |    3 | 00/0139 : F4 01 00    |             PEA   $0001          
+  282 |  1   HPrintCard.S    212 | Code        | 00 |         |    3 | 00/013C : A0 17 00    |             LDY   #$0017         
+  283 |  1   HPrintCard.S    213 | Code        | 00 |         |    2 | 00/013F : B7 0A       |             LDA   [$0A],Y        
+  284 |  1   HPrintCard.S    214 | Code        | 00 |         |    1 | 00/0141 : 48          |             PHA                  
+  285 |  1   HPrintCard.S    215 | Code        | 00 |         |    1 | 00/0142 : 88          |             DEY                  
+  286 |  1   HPrintCard.S    216 | Code        | 00 |         |    1 | 00/0143 : 88          |             DEY                  
+  287 |  1   HPrintCard.S    217 | Code        | 00 |         |    2 | 00/0144 : B7 0A       |             LDA   [$0A],Y        
+  288 |  1   HPrintCard.S    218 | Code        | 00 |         |    1 | 00/0146 : 48          |             PHA                  
+  289 |  1   HPrintCard.S    219 | Code        | 00 |         |    3 | 00/0147 : F4 07 00    |             PEA   $0007          
+  290 |  1   HPrintCard.S    220 | Code        | 00 |E 3      |    4 | 00/014A : 22 BE 3A 06 |             JSL   L073B05        
+  291 |  1   HPrintCard.S    221 | Code        | 00 |         |    3 | 00/014E : A9 00 00    |             LDA   #$0000         
+  292 |  1   HPrintCard.S    222 | Code        | 00 |         |    3 | 00/0151 : A0 2B 00    |             LDY   #$002B         
+  293 |  1   HPrintCard.S    223 | Code        | 00 |         |    2 | 00/0154 : 97 0A       |             STA   [$0A],Y        
+  294 |  1   HPrintCard.S    224 | Code        | 00 |         |    2 | 00/0156 : A5 08       | L240160     LDA   $08            
+  295 |  1   HPrintCard.S    225 | Code        | 00 |         |    2 | 00/0158 : 85 0C       |             STA   $0C            
+  296 |  1   HPrintCard.S    226 | Code        | 00 |         |    2 | 00/015A : A5 07       |             LDA   $07            
+  297 |  1   HPrintCard.S    227 | Code        | 00 |         |    2 | 00/015C : 85 0B       |             STA   $0B            
+  298 |  1   HPrintCard.S    228 | Code        | 00 |         |    2 | 00/015E : A5 05       |             LDA   $05            
+  299 |  1   HPrintCard.S    229 | Code        | 00 |         |    1 | 00/0160 : 5B          |             TCD                  
+  300 |  1   HPrintCard.S    230 | Code        | 00 |         |    1 | 00/0161 : 7A          |             PLY                  
+  301 |  1   HPrintCard.S    231 | Code        | 00 |         |    1 | 00/0162 : 7A          |             PLY                  
+  302 |  1   HPrintCard.S    232 | Code        | 00 |         |    1 | 00/0163 : 7A          |             PLY                  
+  303 |  1   HPrintCard.S    233 | Code        | 00 |         |    1 | 00/0164 : 7A          |             PLY                  
+  304 |  1   HPrintCard.S    234 | Code        | 00 |         |    1 | 00/0165 : 7A          |             PLY                  
+  305 |  1   HPrintCard.S    235 | Code        | 00 |         |    1 | 00/0166 : 6B          |             RTL                  
+  306 |  1   HPrintCard.S    236 | Empty       | 00 |         |    0 | 00/0167               |                                  
+  307 |  1   HPrintCard.S    237 | Code        | 00 |         |    1 | 00/0167 : 0B          | L240171     PHD                  
+  308 |  1   HPrintCard.S    238 | Code        | 00 |         |    1 | 00/0168 : 3B          |             TSC                  
+  309 |  1   HPrintCard.S    239 | Code        | 00 |         |    1 | 00/0169 : 18          |             CLC                  
+  310 |  1   HPrintCard.S    240 | Code        | 00 |         |    3 | 00/016A : 69 C6 FF    |             ADC   #$FFC6         
+  311 |  1   HPrintCard.S    241 | Code        | 00 |         |    1 | 00/016D : 1B          |             TCS                  
+  312 |  1   HPrintCard.S    242 | Code        | 00 |         |    1 | 00/016E : 5B          |             TCD                  
+  313 |  1   HPrintCard.S    243 | Code        | 00 |E 1 >>16 |    3 | 00/016F : F4 00 00    |             PEA   ^L051EF0       
+  314 |  1   HPrintCard.S    244 | Code        | 00 |E 2      |    3 | 00/0172 : F4 F0 1E    |             PEA   L051EF0        
+  315 |  1   HPrintCard.S    245 | Code        | 00 |         |    1 | 00/0175 : 7B          |             TDC                  
+  316 |  1   HPrintCard.S    246 | Code        | 00 |         |    1 | 00/0176 : 18          |             CLC                  
+  317 |  1   HPrintCard.S    247 | Code        | 00 |         |    3 | 00/0177 : 69 01 00    |             ADC   #$0001         
+  318 |  1   HPrintCard.S    248 | Code        | 00 |         |    3 | 00/017A : F4 00 00    |             PEA   $0000          
+  319 |  1   HPrintCard.S    249 | Code        | 00 |         |    1 | 00/017D : 48          |             PHA                  
+  320 |  1   HPrintCard.S    250 | Code        | 00 |E 3      |    4 | 00/017E : 22 3E 0A 15 |             JSL   L160A3E        
+  321 |  1   HPrintCard.S    251 | Code        | 00 |         |    1 | 00/0182 : 7B          |             TDC                  
+  322 |  1   HPrintCard.S    252 | Code        | 00 |         |    1 | 00/0183 : 18          |             CLC                  
+  323 |  1   HPrintCard.S    253 | Code        | 00 |         |    3 | 00/0184 : 69 01 00    |             ADC   #$0001         
+  324 |  1   HPrintCard.S    254 | Code        | 00 |         |    3 | 00/0187 : F4 00 00    |             PEA   $0000          
+  325 |  1   HPrintCard.S    255 | Code        | 00 |         |    1 | 00/018A : 48          |             PHA                  
+  326 |  1   HPrintCard.S    256 | Code        | 00 |         |    3 | 00/018B : A9 01 00    |             LDA   #$0001         
+  327 |  1   HPrintCard.S    257 | Code        | 00 |         |    1 | 00/018E : 18          |             CLC                  
+  328 |  1   HPrintCard.S    258 | Code        | 00 |         |    2 | 00/018F : 65 40       |             ADC   $40            
+  329 |  1   HPrintCard.S    259 | Code        | 00 |         |    2 | 00/0191 : A6 42       |             LDX   $42            
+  330 |  1   HPrintCard.S    260 | Code        | 00 |         |    2 | 00/0193 : 90 01       |             BCC   L2401A0        
+  331 |  1   HPrintCard.S    261 | Code        | 00 |         |    1 | 00/0195 : E8          |             INX                  
+  332 |  1   HPrintCard.S    262 | Code        | 00 |         |    1 | 00/0196 : DA          | L2401A0     PHX                  
+  333 |  1   HPrintCard.S    263 | Code        | 00 |         |    1 | 00/0197 : 48          |             PHA                  
+  334 |  1   HPrintCard.S    264 | Code        | 00 |E 3      |    4 | 00/0198 : 22 C6 0B 15 |             JSL   L160BC6        
+  335 |  1   HPrintCard.S    265 | Code        | 00 |         |    2 | 00/019C : A5 3E       |             LDA   $3E            
+  336 |  1   HPrintCard.S    266 | Code        | 00 |         |    2 | 00/019E : 85 42       |             STA   $42            
+  337 |  1   HPrintCard.S    267 | Code        | 00 |         |    2 | 00/01A0 : A5 3D       |             LDA   $3D            
+  338 |  1   HPrintCard.S    268 | Code        | 00 |         |    2 | 00/01A2 : 85 41       |             STA   $41            
+  339 |  1   HPrintCard.S    269 | Code        | 00 |         |    2 | 00/01A4 : A5 3B       |             LDA   $3B            
+  340 |  1   HPrintCard.S    270 | Code        | 00 |         |    1 | 00/01A6 : 5B          |             TCD                  
+  341 |  1   HPrintCard.S    271 | Code        | 00 |         |    1 | 00/01A7 : 3B          |             TSC                  
+  342 |  1   HPrintCard.S    272 | Code        | 00 |         |    1 | 00/01A8 : 18          |             CLC                  
+  343 |  1   HPrintCard.S    273 | Code        | 00 |         |    3 | 00/01A9 : 69 40 00    |             ADC   #$0040         
+  344 |  1   HPrintCard.S    274 | Code        | 00 |         |    1 | 00/01AC : 1B          |             TCS                  
+  345 |  1   HPrintCard.S    275 | Code        | 00 |         |    1 | 00/01AD : 6B          |             RTL                  
+  346 |  1   HPrintCard.S    276 | Empty       | 00 |         |    0 | 00/01AE               |                                  
+  347 |  1   HPrintCard.S    277 | Global      | 00 |         |    0 | 00/01AE               | L2401B8     ENT                  
+  348 |  1   HPrintCard.S    278 | Code        | 00 |         |    1 | 00/01AE : 0B          |             PHD                  
+  349 |  1   HPrintCard.S    279 | Code        | 00 |         |    1 | 00/01AF : 3B          |             TSC                  
+  350 |  1   HPrintCard.S    280 | Code        | 00 |         |    1 | 00/01B0 : 18          |             CLC                  
+  351 |  1   HPrintCard.S    281 | Code        | 00 |         |    3 | 00/01B1 : 69 D0 FF    |             ADC   #$FFD0         
+  352 |  1   HPrintCard.S    282 | Code        | 00 |         |    1 | 00/01B4 : 1B          |             TCS                  
+  353 |  1   HPrintCard.S    283 | Code        | 00 |         |    1 | 00/01B5 : 5B          |             TCD                  
+  354 |  1   HPrintCard.S    284 | Code        | 00 |         |    1 | 00/01B6 : 5A          |             PHY                  
+  355 |  1   HPrintCard.S    285 | Code        | 00 |         |    1 | 00/01B7 : 5A          |             PHY                  
+  356 |  1   HPrintCard.S    286 | Code        | 00 |E 3      |    4 | 00/01B8 : 22 93 04 14 |             JSL   L150493        
+  357 |  1   HPrintCard.S    287 | Code        | 00 |         |    1 | 00/01BC : 68          |             PLA                  
+  358 |  1   HPrintCard.S    288 | Code        | 00 |         |    2 | 00/01BD : 85 1B       |             STA   $1B            
+  359 |  1   HPrintCard.S    289 | Code        | 00 |         |    1 | 00/01BF : FA          |             PLX                  
+  360 |  1   HPrintCard.S    290 | Code        | 00 |         |    2 | 00/01C0 : 86 1D       |             STX   $1D            
+  361 |  1   HPrintCard.S    291 | Code        | 00 |         |    2 | 00/01C2 : D4 3C       |             PEI   $3C            
+  362 |  1   HPrintCard.S    292 | Code        | 00 |         |    2 | 00/01C4 : D4 3A       |             PEI   $3A            
+  363 |  1   HPrintCard.S    293 | Code        | 00 |         |    1 | 00/01C6 : 5A          |             PHY                  
+  364 |  1   HPrintCard.S    294 | Code        | 00 |         |    1 | 00/01C7 : 5A          |             PHY                  
+  365 |  1   HPrintCard.S    295 | Code        | 00 |         |    3 | 00/01C8 : F4 35 08    |             PEA   $0835          
+  366 |  1   HPrintCard.S    296 | Code        | 00 |E 3      |    4 | 00/01CB : 22 EB 11 06 |             JSL   L0711EB        
+  367 |  1   HPrintCard.S    297 | Code        | 00 |E 1 >>16 |    3 | 00/01CF : F4 00 00    |             PEA   ^L0408DE       
+  368 |  1   HPrintCard.S    298 | Code        | 00 |E 2      |    3 | 00/01D2 : F4 DE 08    |             PEA   L0408DE        
+  369 |  1   HPrintCard.S    299 | Code        | 00 |E 1 >>16 |    3 | 00/01D5 : F4 00 00    |             PEA   ^L0408DF       
+  370 |  1   HPrintCard.S    300 | Code        | 00 |E 2      |    3 | 00/01D8 : F4 DF 08    |             PEA   L0408DF        
+  371 |  1   HPrintCard.S    301 | Code        | 00 |E 3      |    4 | 00/01DB : 22 DB 3B 06 |             JSL   L073C22        
+  372 |  1   HPrintCard.S    302 | Code        | 00 |         |    1 | 00/01DF : 5A          |             PHY                  
+  373 |  1   HPrintCard.S    303 | Code        | 00 |         |    1 | 00/01E0 : 5A          |             PHY                  
+  374 |  1   HPrintCard.S    304 | Code        | 00 |         |    3 | 00/01E1 : F4 AC 3F    |             PEA   $3FAC          
+  375 |  1   HPrintCard.S    305 | Code        | 00 |E 3      |    4 | 00/01E4 : 22 ED 27 06 |             JSL   L072834        
+  376 |  1   HPrintCard.S    306 | Code        | 00 |         |    1 | 00/01E8 : 68          |             PLA                  
+  377 |  1   HPrintCard.S    307 | Code        | 00 |         |    2 | 00/01E9 : 85 15       |             STA   $15            
+  378 |  1   HPrintCard.S    308 | Code        | 00 |         |    1 | 00/01EB : FA          |             PLX                  
+  379 |  1   HPrintCard.S    309 | Code        | 00 |         |    2 | 00/01EC : 86 17       |             STX   $17            
+  380 |  1   HPrintCard.S    310 | Code        | 00 |         |    1 | 00/01EE : 5A          |             PHY                  
+  381 |  1   HPrintCard.S    311 | Code        | 00 |         |    1 | 00/01EF : 5A          |             PHY                  
+  382 |  1   HPrintCard.S    312 | Code        | 00 |E 3      |    4 | 00/01F0 : 22 F3 0F 14 |             JSL   L150FF3        
+  383 |  1   HPrintCard.S    313 | Code        | 00 |         |    1 | 00/01F4 : 68          |             PLA                  
+  384 |  1   HPrintCard.S    314 | Code        | 00 |         |    2 | 00/01F5 : 85 09       |             STA   $09            
+  385 |  1   HPrintCard.S    315 | Code        | 00 |         |    1 | 00/01F7 : FA          |             PLX                  
+  386 |  1   HPrintCard.S    316 | Code        | 00 |         |    2 | 00/01F8 : 86 0B       |             STX   $0B            
+  387 |  1   HPrintCard.S    317 | Code        | 00 |         |    3 | 00/01FA : A2 00 00    |             LDX   #$0000         
+  388 |  1   HPrintCard.S    318 | Code        | 00 |         |    3 | 00/01FD : A9 01 00    |             LDA   #$0001         
+  389 |  1   HPrintCard.S    319 | Code        | 00 |         |    2 | 00/0200 : 25 0B       |             AND   $0B            
+  390 |  1   HPrintCard.S    320 | Code        | 00 |         |    2 | 00/0202 : D0 01       |             BNE   L24020F        
+  391 |  1   HPrintCard.S    321 | Code        | 00 |         |    1 | 00/0204 : E8          |             INX                  
+  392 |  1   HPrintCard.S    322 | Code        | 00 |         |    1 | 00/0205 : 8A          | L24020F     TXA                  
+  393 |  1   HPrintCard.S    323 | Code        | 00 |         |    2 | 00/0206 : 85 29       |             STA   $29            
+  394 |  1   HPrintCard.S    324 | Code        | 00 |E 3      |    4 | 00/0208 : AF F4 1E 04 |             LDAL  L051EF4        
+  395 |  1   HPrintCard.S    325 | Code        | 00 |         |    1 | 00/020C : 48          |             PHA                  
+  396 |  1   HPrintCard.S    326 | Code        | 00 |         |    2 | 00/020D : D4 17       |             PEI   $17            
+  397 |  1   HPrintCard.S    327 | Code        | 00 |         |    2 | 00/020F : D4 15       |             PEI   $15            
+  398 |  1   HPrintCard.S    328 | Code        | 00 |         |    3 | 00/0211 : F4 0B 00    |             PEA   $000B          
+  399 |  1   HPrintCard.S    329 | Code        | 00 |E 3      |    4 | 00/0214 : 22 BE 3A 06 |             JSL   L073B05        
+  400 |  1   HPrintCard.S    330 | Code        | 00 |E 3      |    4 | 00/0218 : AF F6 1E 04 |             LDAL  L051EF6        
+  401 |  1   HPrintCard.S    331 | Code        | 00 |         |    1 | 00/021C : 48          |             PHA                  
+  402 |  1   HPrintCard.S    332 | Code        | 00 |         |    2 | 00/021D : D4 17       |             PEI   $17            
+  403 |  1   HPrintCard.S    333 | Code        | 00 |         |    2 | 00/021F : D4 15       |             PEI   $15            
+  404 |  1   HPrintCard.S    334 | Code        | 00 |         |    3 | 00/0221 : F4 0A 00    |             PEA   $000A          
+  405 |  1   HPrintCard.S    335 | Code        | 00 |E 3      |    4 | 00/0224 : 22 BE 3A 06 |             JSL   L073B05        
+  406 |  1   HPrintCard.S    336 | Code        | 00 |E 3      |    4 | 00/0228 : AF 20 1F 04 |             LDAL  L051F20        
+  407 |  1   HPrintCard.S    337 | Code        | 00 |         |    1 | 00/022C : 48          |             PHA                  
+  408 |  1   HPrintCard.S    338 | Code        | 00 |         |    2 | 00/022D : D4 17       |             PEI   $17            
+  409 |  1   HPrintCard.S    339 | Code        | 00 |         |    2 | 00/022F : D4 15       |             PEI   $15            
+  410 |  1   HPrintCard.S    340 | Code        | 00 |         |    3 | 00/0231 : F4 0D 00    |             PEA   $000D          
+  411 |  1   HPrintCard.S    341 | Code        | 00 |E 3      |    4 | 00/0234 : 22 BE 3A 06 |             JSL   L073B05        
+  412 |  1   HPrintCard.S    342 | Code        | 00 |E 2      |    3 | 00/0238 : AD 27 53    |             LDA   L055327        
+  413 |  1   HPrintCard.S    343 | Code        | 00 |E 2      |    3 | 00/023B : AE 29 53    |             LDX   L055329        
+  414 |  1   HPrintCard.S    344 | Code        | 00 |         |    2 | 00/023E : 85 2D       |             STA   $2D            
+  415 |  1   HPrintCard.S    345 | Code        | 00 |         |    2 | 00/0240 : 86 2F       |             STX   $2F            
+  416 |  1   HPrintCard.S    346 | Code        | 00 |         |    3 | 00/0242 : A0 02 00    |             LDY   #$0002         
+  417 |  1   HPrintCard.S    347 | Code        | 00 |         |    2 | 00/0245 : B7 2D       |             LDA   [$2D],Y        
+  418 |  1   HPrintCard.S    348 | Code        | 00 |         |    1 | 00/0247 : AA          |             TAX                  
+  419 |  1   HPrintCard.S    349 | Code        | 00 |         |    2 | 00/0248 : A7 2D       |             LDA   [$2D]          
+  420 |  1   HPrintCard.S    350 | Code        | 00 |         |    1 | 00/024A : 18          |             CLC                  
+  421 |  1   HPrintCard.S    351 | Code        | 00 |         |    3 | 00/024B : 69 18 00    |             ADC   #$0018         
+  422 |  1   HPrintCard.S    352 | Code        | 00 |         |    2 | 00/024E : 90 01       |             BCC   L24025B        
+  423 |  1   HPrintCard.S    353 | Code        | 00 |         |    1 | 00/0250 : E8          |             INX                  
+  424 |  1   HPrintCard.S    354 | Code        | 00 |         |    2 | 00/0251 : 85 2D       | L24025B     STA   $2D            
+  425 |  1   HPrintCard.S    355 | Code        | 00 |         |    2 | 00/0253 : 86 2F       |             STX   $2F            
+  426 |  1   HPrintCard.S    356 | Code        | 00 |         |    3 | 00/0255 : A9 20 00    |             LDA   #$0020         
+  427 |  1   HPrintCard.S    357 | Code        | 00 |         |    2 | 00/0258 : 27 2D       |             AND   [$2D]          
+  428 |  1   HPrintCard.S    358 | Code        | 00 |         |    2 | 00/025A : F0 03       |             BEQ   L240269        
+  429 |  1   HPrintCard.S    359 | Code        | 00 |         |    3 | 00/025C : A9 01 00    |             LDA   #$0001         
+  430 |  1   HPrintCard.S    360 | Code        | 00 |         |    2 | 00/025F : 25 29       | L240269     AND   $29            
+  431 |  1   HPrintCard.S    361 | Code        | 00 |         |    2 | 00/0261 : F0 07       |             BEQ   L240274        
+  432 |  1   HPrintCard.S    362 | Code        | 00 |         |    3 | 00/0263 : A9 12 00    |             LDA   #$0012         
+  433 |  1   HPrintCard.S    363 | Code        | 00 |         |    2 | 00/0266 : 85 21       |             STA   $21            
+  434 |  1   HPrintCard.S    364 | Code        | 00 |         |    2 | 00/0268 : 80 05       |             BRA   L240279        
+  435 |  1   HPrintCard.S    365 | Code        | 00 |         |    3 | 00/026A : A9 13 00    | L240274     LDA   #$0013         
+  436 |  1   HPrintCard.S    366 | Code        | 00 |         |    2 | 00/026D : 85 21       |             STA   $21            
+  437 |  1   HPrintCard.S    367 | Code        | 00 |         |    2 | 00/026F : D4 17       | L240279     PEI   $17            
+  438 |  1   HPrintCard.S    368 | Code        | 00 |         |    2 | 00/0271 : D4 15       |             PEI   $15            
+  439 |  1   HPrintCard.S    369 | Code        | 00 |         |    2 | 00/0273 : D4 21       |             PEI   $21            
+  440 |  1   HPrintCard.S    370 | Code        | 00 |E 3      |    4 | 00/0275 : 22 B7 3C 06 |             JSL   L073CFE        
+  441 |  1   HPrintCard.S    371 | Code        | 00 |         |    1 | 00/0279 : 5A          |             PHY                  
+  442 |  1   HPrintCard.S    372 | Code        | 00 |         |    2 | 00/027A : D4 17       |             PEI   $17            
+  443 |  1   HPrintCard.S    373 | Code        | 00 |         |    2 | 00/027C : D4 15       |             PEI   $15            
+  444 |  1   HPrintCard.S    374 | Code        | 00 |E 3      |    4 | 00/027E : 22 E2 0B 15 |             JSL   L160BE2        
+  445 |  1   HPrintCard.S    375 | Code        | 00 |         |    1 | 00/0282 : 68          |             PLA                  
+  446 |  1   HPrintCard.S    376 | Code        | 00 |         |    2 | 00/0283 : 85 2B       |             STA   $2B            
+  447 |  1   HPrintCard.S    377 | Code        | 00 |         |    3 | 00/0285 : F4 00 00    |             PEA   $0000          
+  448 |  1   HPrintCard.S    378 | Code        | 00 |         |    1 | 00/0288 : 0B          |             PHD                  
+  449 |  1   HPrintCard.S    379 | Code        | 00 |  3      |    4 | 00/0289 : 22 ED 00 00 |             JSL   L2400F7        
+  450 |  1   HPrintCard.S    380 | Code        | 00 |         |    3 | 00/028D : F4 00 00    |             PEA   $0000          
+  451 |  1   HPrintCard.S    381 | Code        | 00 |         |    1 | 00/0290 : 0B          |             PHD                  
+  452 |  1   HPrintCard.S    382 | Code        | 00 |  3      |    4 | 00/0291 : 22 B1 00 00 |             JSL   L2400BB        
+  453 |  1   HPrintCard.S    383 | Code        | 00 |E 3      |    4 | 00/0295 : AF 16 1F 04 |             LDAL  L051F16        
+  454 |  1   HPrintCard.S    384 | Code        | 00 |         |    1 | 00/0299 : 48          |             PHA                  
+  455 |  1   HPrintCard.S    385 | Code        | 00 |         |    2 | 00/029A : D4 17       |             PEI   $17            
+  456 |  1   HPrintCard.S    386 | Code        | 00 |         |    2 | 00/029C : D4 15       |             PEI   $15            
+  457 |  1   HPrintCard.S    387 | Code        | 00 |         |    3 | 00/029E : F4 0C 00    |             PEA   $000C          
+  458 |  1   HPrintCard.S    388 | Code        | 00 |E 3      |    4 | 00/02A1 : 22 BE 3A 06 |             JSL   L073B05        
+  459 |  1   HPrintCard.S    389 | Code        | 00 |E 3      |    4 | 00/02A5 : AF F0 1E 04 |             LDAL  L051EF0        
+  460 |  1   HPrintCard.S    390 | Code        | 00 |         |    1 | 00/02A9 : 48          |             PHA                  
+  461 |  1   HPrintCard.S    391 | Code        | 00 |         |    2 | 00/02AA : D4 17       |             PEI   $17            
+  462 |  1   HPrintCard.S    392 | Code        | 00 |         |    2 | 00/02AC : D4 15       |             PEI   $15            
+  463 |  1   HPrintCard.S    393 | Code        | 00 |         |    3 | 00/02AE : F4 0E 00    |             PEA   $000E          
+  464 |  1   HPrintCard.S    394 | Code        | 00 |E 3      |    4 | 00/02B1 : 22 BE 3A 06 |             JSL   L073B05        
+  465 |  1   HPrintCard.S    395 | Code        | 00 |E 3      |    4 | 00/02B5 : AF F2 1E 04 |             LDAL  L051EF2        
+  466 |  1   HPrintCard.S    396 | Code        | 00 |         |    1 | 00/02B9 : 48          |             PHA                  
+  467 |  1   HPrintCard.S    397 | Code        | 00 |         |    2 | 00/02BA : D4 17       |             PEI   $17            
+  468 |  1   HPrintCard.S    398 | Code        | 00 |         |    2 | 00/02BC : D4 15       |             PEI   $15            
+  469 |  1   HPrintCard.S    399 | Code        | 00 |         |    3 | 00/02BE : F4 05 00    |             PEA   $0005          
+  470 |  1   HPrintCard.S    400 | Code        | 00 |E 3      |    4 | 00/02C1 : 22 BE 3A 06 |             JSL   L073B05        
+  471 |  1   HPrintCard.S    401 | Code        | 00 |         |    1 | 00/02C5 : 5A          |             PHY                  
+  472 |  1   HPrintCard.S    402 | Code        | 00 |         |    1 | 00/02C6 : 5A          |             PHY                  
+  473 |  1   HPrintCard.S    403 | Code        | 00 |E 3      |    4 | 00/02C7 : 22 D4 0B 15 |             JSL   L160BD4        
+  474 |  1   HPrintCard.S    404 | Code        | 00 |         |    1 | 00/02CB : 68          |             PLA                  
+  475 |  1   HPrintCard.S    405 | Code        | 00 |         |    2 | 00/02CC : 85 0D       |             STA   $0D            
+  476 |  1   HPrintCard.S    406 | Code        | 00 |         |    1 | 00/02CE : FA          |             PLX                  
+  477 |  1   HPrintCard.S    407 | Code        | 00 |         |    2 | 00/02CF : 86 0F       |             STX   $0F            
+  478 |  1   HPrintCard.S    408 | Code        | 00 |         |    2 | 00/02D1 : A5 0D       |             LDA   $0D            
+  479 |  1   HPrintCard.S    409 | Code        | 00 |         |    2 | 00/02D3 : 05 0F       |             ORA   $0F            
+  480 |  1   HPrintCard.S    410 | Code        | 00 |         |    2 | 00/02D5 : D0 03       |             BNE   L2402E4        
+  481 |  1   HPrintCard.S    411 | Code        | 00 |         |    3 | 00/02D7 : 82 C8 03    |             BRL   L2406AC        
+  482 |  1   HPrintCard.S    412 | Code        | 00 |         |    1 | 00/02DA : 5A          | L2402E4     PHY                  
+  483 |  1   HPrintCard.S    413 | Code        | 00 |E 2      |    3 | 00/02DB : AD 27 53    |             LDA   L055327        
+  484 |  1   HPrintCard.S    414 | Code        | 00 |E 2      |    3 | 00/02DE : AE 29 53    |             LDX   L055329        
+  485 |  1   HPrintCard.S    415 | Code        | 00 |         |    1 | 00/02E1 : DA          |             PHX                  
+  486 |  1   HPrintCard.S    416 | Code        | 00 |         |    1 | 00/02E2 : 48          |             PHA                  
+  487 |  1   HPrintCard.S    417 | Code        | 00 |E 3      |    4 | 00/02E3 : 22 8F 03 14 |             JSL   L15038F        
+  488 |  1   HPrintCard.S    418 | Code        | 00 |         |    1 | 00/02E7 : 68          |             PLA                  
+  489 |  1   HPrintCard.S    419 | Code        | 00 |         |    2 | 00/02E8 : D0 07       |             BNE   L2402FB        
+  490 |  1   HPrintCard.S    420 | Code        | 00 |         |    3 | 00/02EA : A9 0F 00    |             LDA   #$000F         
+  491 |  1   HPrintCard.S    421 | Code        | 00 |         |    2 | 00/02ED : 85 1F       |             STA   $1F            
+  492 |  1   HPrintCard.S    422 | Code        | 00 |         |    2 | 00/02EF : 80 05       |             BRA   L240300        
+  493 |  1   HPrintCard.S    423 | Code        | 00 |         |    3 | 00/02F1 : A9 10 00    | L2402FB     LDA   #$0010         
+  494 |  1   HPrintCard.S    424 | Code        | 00 |         |    2 | 00/02F4 : 85 1F       |             STA   $1F            
+  495 |  1   HPrintCard.S    425 | Code        | 00 |         |    2 | 00/02F6 : D4 17       | L240300     PEI   $17            
+  496 |  1   HPrintCard.S    426 | Code        | 00 |         |    2 | 00/02F8 : D4 15       |             PEI   $15            
+  497 |  1   HPrintCard.S    427 | Code        | 00 |         |    2 | 00/02FA : D4 1F       |             PEI   $1F            
+  498 |  1   HPrintCard.S    428 | Code        | 00 |E 3      |    4 | 00/02FC : 22 B7 3C 06 |             JSL   L073CFE        
+  499 |  1   HPrintCard.S    429 | Code        | 00 |         |    1 | 00/0300 : 7B          |             TDC                  
+  500 |  1   HPrintCard.S    430 | Code        | 00 |         |    1 | 00/0301 : 18          |             CLC                  
+  501 |  1   HPrintCard.S    431 | Code        | 00 |         |    3 | 00/0302 : 69 01 00    |             ADC   #$0001         
+  502 |  1   HPrintCard.S    432 | Code        | 00 |         |    3 | 00/0305 : F4 00 00    |             PEA   $0000          
+  503 |  1   HPrintCard.S    433 | Code        | 00 |         |    1 | 00/0308 : 48          |             PHA                  
+  504 |  1   HPrintCard.S    434 | Code        | 00 |         |    1 | 00/0309 : 5A          |             PHY                  
+  505 |  1   HPrintCard.S    435 | Code        | 00 |         |    1 | 00/030A : 5A          |             PHY                  
+  506 |  1   HPrintCard.S    436 | Code        | 00 |         |    2 | 00/030B : D4 17       |             PEI   $17            
+  507 |  1   HPrintCard.S    437 | Code        | 00 |         |    2 | 00/030D : D4 15       |             PEI   $15            
+  508 |  1   HPrintCard.S    438 | Code        | 00 |         |    2 | 00/030F : D4 1F       |             PEI   $1F            
+  509 |  1   HPrintCard.S    439 | Code        | 00 |E 3      |    4 | 00/0311 : 22 EB 2F 06 |             JSL   L073032        
+  510 |  1   HPrintCard.S    440 | Code        | 00 |         |    3 | 00/0315 : F4 08 00    |             PEA   $0008          
+  511 |  1   HPrintCard.S    441 | Code        | 00 |E 3      |    4 | 00/0318 : 22 BE 13 02 |             JSL   L0313BE        
+  512 |  1   HPrintCard.S    442 | Code        | 00 |         |    1 | 00/031C : 7B          |             TDC                  
+  513 |  1   HPrintCard.S    443 | Code        | 00 |         |    1 | 00/031D : 18          |             CLC                  
+  514 |  1   HPrintCard.S    444 | Code        | 00 |         |    3 | 00/031E : 69 01 00    |             ADC   #$0001         
+  515 |  1   HPrintCard.S    445 | Code        | 00 |         |    3 | 00/0321 : F4 00 00    |             PEA   $0000          
+  516 |  1   HPrintCard.S    446 | Code        | 00 |         |    1 | 00/0324 : 48          |             PHA                  
+  517 |  1   HPrintCard.S    447 | Code        | 00 |         |    3 | 00/0325 : F4 08 00    |             PEA   $0008          
+  518 |  1   HPrintCard.S    448 | Code        | 00 |         |    3 | 00/0328 : F4 04 00    |             PEA   $0004          
+  519 |  1   HPrintCard.S    449 | Code        | 00 |E 3      |    4 | 00/032B : 22 05 10 14 |             JSL   L151005        
+  520 |  1   HPrintCard.S    450 | Code        | 00 |         |    2 | 00/032F : D4 17       |             PEI   $17            
+  521 |  1   HPrintCard.S    451 | Code        | 00 |         |    2 | 00/0331 : D4 15       |             PEI   $15            
+  522 |  1   HPrintCard.S    452 | Code        | 00 |E 3      |    4 | 00/0333 : 22 2F 10 14 |             JSL   L15102F        
+  523 |  1   HPrintCard.S    453 | Code        | 00 |         |    2 | 00/0337 : D4 17       |             PEI   $17            
+  524 |  1   HPrintCard.S    454 | Code        | 00 |         |    2 | 00/0339 : D4 15       |             PEI   $15            
+  525 |  1   HPrintCard.S    455 | Code        | 00 |E 3      |    4 | 00/033B : 22 C8 11 14 |             JSL   L1511C8        
+  526 |  1   HPrintCard.S    456 | Code        | 00 |         |    2 | 00/033F : D4 17       |             PEI   $17            
+  527 |  1   HPrintCard.S    457 | Code        | 00 |         |    2 | 00/0341 : D4 15       |             PEI   $15            
+  528 |  1   HPrintCard.S    458 | Code        | 00 |E 3      |    4 | 00/0343 : 22 31 11 14 |             JSL   L151131        
+  529 |  1   HPrintCard.S    459 | Code        | 00 |         |    1 | 00/0347 : 5A          |             PHY                  
+  530 |  1   HPrintCard.S    460 | Code        | 00 |E 3      |    4 | 00/0348 : 22 78 27 06 |             JSL   L0727BF        
+  531 |  1   HPrintCard.S    461 | Code        | 00 |         |    1 | 00/034C : 68          |             PLA                  
+  532 |  1   HPrintCard.S    462 | Code        | 00 |         |    2 | 00/034D : 85 19       |             STA   $19            
+  533 |  1   HPrintCard.S    463 | Code        | 00 |E 2      |    3 | 00/034F : 9C 3F 53    |             STZ   L05533F        
+  534 |  1   HPrintCard.S    464 | Code        | 00 |E 2      |    3 | 00/0352 : 9C 3D 53    |             STZ   L05533D        
+  535 |  1   HPrintCard.S    465 | Code        | 00 |         |    1 | 00/0355 : 5A          | L24035F     PHY                  
+  536 |  1   HPrintCard.S    466 | Code        | 00 |         |    3 | 00/0356 : F4 01 00    |             PEA   $0001          
+  537 |  1   HPrintCard.S    467 | Code        | 00 |E 3      |    4 | 00/0359 : 22 81 36 06 |             JSL   L0736C8        
+  538 |  1   HPrintCard.S    468 | Code        | 00 |         |    1 | 00/035D : 68          |             PLA                  
+  539 |  1   HPrintCard.S    469 | Code        | 00 |         |    2 | 00/035E : 85 23       |             STA   $23            
+  540 |  1   HPrintCard.S    470 | Code        | 00 |         |    1 | 00/0360 : 5A          |             PHY                  
+  541 |  1   HPrintCard.S    471 | Code        | 00 |         |    1 | 00/0361 : 7B          |             TDC                  
+  542 |  1   HPrintCard.S    472 | Code        | 00 |         |    1 | 00/0362 : 18          |             CLC                  
+  543 |  1   HPrintCard.S    473 | Code        | 00 |         |    3 | 00/0363 : 69 11 00    |             ADC   #$0011         
+  544 |  1   HPrintCard.S    474 | Code        | 00 |         |    3 | 00/0366 : F4 00 00    |             PEA   $0000          
+  545 |  1   HPrintCard.S    475 | Code        | 00 |         |    1 | 00/0369 : 48          |             PHA                  
+  546 |  1   HPrintCard.S    476 | Code        | 00 |E 3      |    4 | 00/036A : AF AB 40 04 |             LDAL  L0540AB        
+  547 |  1   HPrintCard.S    477 | Code        | 00 |         |    1 | 00/036E : 48          |             PHA                  
+  548 |  1   HPrintCard.S    478 | Code        | 00 |E 3      |    4 | 00/036F : AF A9 40 04 |             LDAL  L0540A9        
+  549 |  1   HPrintCard.S    479 | Code        | 00 |         |    1 | 00/0373 : 48          |             PHA                  
+  550 |  1   HPrintCard.S    480 | Code        | 00 |         |    2 | 00/0374 : D4 17       |             PEI   $17            
+  551 |  1   HPrintCard.S    481 | Code        | 00 |         |    2 | 00/0376 : D4 15       |             PEI   $15            
+  552 |  1   HPrintCard.S    482 | Code        | 00 |E 3      |    4 | 00/0378 : 22 82 04 14 |             JSL   L150482        
+  553 |  1   HPrintCard.S    483 | Code        | 00 |         |    1 | 00/037C : 68          |             PLA                  
+  554 |  1   HPrintCard.S    484 | Code        | 00 |         |    2 | 00/037D : 85 21       |             STA   $21            
+  555 |  1   HPrintCard.S    485 | Code        | 00 |         |    3 | 00/037F : A9 FD FF    |             LDA   #$FFFD         
+  556 |  1   HPrintCard.S    486 | Code        | 00 |         |    2 | 00/0382 : C5 23       |             CMP   $23            
+  557 |  1   HPrintCard.S    487 | Code        | 00 |         |    2 | 00/0384 : F0 03       |             BEQ   L240393        
+  558 |  1   HPrintCard.S    488 | Code        | 00 |         |    3 | 00/0386 : 82 15 01    |             BRL   L2404A8        
+  559 |  1   HPrintCard.S    489 | Code        | 00 |         |    3 | 00/0389 : A9 7F 00    | L240393     LDA   #$007F         
+  560 |  1   HPrintCard.S    490 | Code        | 00 |E 3      |    4 | 00/038C : 2F A1 40 04 |             ANDL  L0540A1        
+  561 |  1   HPrintCard.S    491 | Code        | 00 |         |    2 | 00/0390 : 85 21       |             STA   $21            
+  562 |  1   HPrintCard.S    492 | Code        | 00 |         |    2 | 00/0392 : A5 21       |             LDA   $21            
+  563 |  1   HPrintCard.S    493 | Code        | 00 |         |    1 | 00/0394 : 38          |             SEC                  
+  564 |  1   HPrintCard.S    494 | Code        | 00 |         |    3 | 00/0395 : E9 08 00    |             SBC   #$0008         
+  565 |  1   HPrintCard.S    495 | Code        | 00 |         |    2 | 00/0398 : 10 03       |             BPL   L2403A7        
+  566 |  1   HPrintCard.S    496 | Code        | 00 |         |    3 | 00/039A : 82 AA 00    |             BRL   L240451        
+  567 |  1   HPrintCard.S    497 | Code        | 00 |         |    3 | 00/039D : C9 78 00    | L2403A7     CMP   #$0078         
+  568 |  1   HPrintCard.S    498 | Code        | 00 |         |    2 | 00/03A0 : 30 03       |             BMI   L2403AF        
+  569 |  1   HPrintCard.S    499 | Code        | 00 |         |    3 | 00/03A2 : 82 A2 00    |             BRL   L240451        
+  570 |  1   HPrintCard.S    500 | Code        | 00 |         |    1 | 00/03A5 : 38          | L2403AF     SEC                  
+  571 |  1   HPrintCard.S    501 | Code        | 00 |         |    3 | 00/03A6 : E9 00 00    |             SBC   #$0000         
+  572 |  1   HPrintCard.S    502 | Code        | 00 |         |    2 | 00/03A9 : F0 50       |             BEQ   L240405        
+  573 |  1   HPrintCard.S    503 | Code        | 00 |         |    1 | 00/03AB : 3A          |             DEC                  
+  574 |  1   HPrintCard.S    504 | Code        | 00 |         |    2 | 00/03AC : F0 3E       |             BEQ   L2403F6        
+  575 |  1   HPrintCard.S    505 | Code        | 00 |         |    1 | 00/03AE : 38          |             SEC                  
+  576 |  1   HPrintCard.S    506 | Code        | 00 |         |    3 | 00/03AF : E9 04 00    |             SBC   #$0004         
+  577 |  1   HPrintCard.S    507 | Code        | 00 |         |    2 | 00/03B2 : F0 47       |             BEQ   L240405        
+  578 |  1   HPrintCard.S    508 | Code        | 00 |         |    1 | 00/03B4 : 38          |             SEC                  
+  579 |  1   HPrintCard.S    509 | Code        | 00 |         |    3 | 00/03B5 : E9 08 00    |             SBC   #$0008         
+  580 |  1   HPrintCard.S    510 | Code        | 00 |         |    2 | 00/03B8 : F0 41       |             BEQ   L240405        
+  581 |  1   HPrintCard.S    511 | Code        | 00 |         |    1 | 00/03BA : 3A          |             DEC                  
+  582 |  1   HPrintCard.S    512 | Code        | 00 |         |    1 | 00/03BB : 3A          |             DEC                  
+  583 |  1   HPrintCard.S    513 | Code        | 00 |         |    1 | 00/03BC : 3A          |             DEC                  
+  584 |  1   HPrintCard.S    514 | Code        | 00 |         |    2 | 00/03BD : F0 3C       |             BEQ   L240405        
+  585 |  1   HPrintCard.S    515 | Code        | 00 |         |    1 | 00/03BF : 3A          |             DEC                  
+  586 |  1   HPrintCard.S    516 | Code        | 00 |         |    1 | 00/03C0 : 3A          |             DEC                  
+  587 |  1   HPrintCard.S    517 | Code        | 00 |         |    1 | 00/03C1 : 3A          |             DEC                  
+  588 |  1   HPrintCard.S    518 | Code        | 00 |         |    2 | 00/03C2 : F0 37       |             BEQ   L240405        
+  589 |  1   HPrintCard.S    519 | Code        | 00 |         |    1 | 00/03C4 : 38          |             SEC                  
+  590 |  1   HPrintCard.S    520 | Code        | 00 |         |    3 | 00/03C5 : E9 28 00    |             SBC   #$0028         
+  591 |  1   HPrintCard.S    521 | Code        | 00 |         |    2 | 00/03C8 : F0 40       |             BEQ   L240414        
+  592 |  1   HPrintCard.S    522 | Code        | 00 |         |    1 | 00/03CA : 38          |             SEC                  
+  593 |  1   HPrintCard.S    523 | Code        | 00 |         |    3 | 00/03CB : E9 13 00    |             SBC   #$0013         
+  594 |  1   HPrintCard.S    524 | Code        | 00 |         |    2 | 00/03CE : F0 3A       |             BEQ   L240414        
+  595 |  1   HPrintCard.S    525 | Code        | 00 |         |    1 | 00/03D0 : 3A          |             DEC                  
+  596 |  1   HPrintCard.S    526 | Code        | 00 |         |    1 | 00/03D1 : 3A          |             DEC                  
+  597 |  1   HPrintCard.S    527 | Code        | 00 |         |    2 | 00/03D2 : F0 36       |             BEQ   L240414        
+  598 |  1   HPrintCard.S    528 | Code        | 00 |         |    1 | 00/03D4 : 38          |             SEC                  
+  599 |  1   HPrintCard.S    529 | Code        | 00 |         |    3 | 00/03D5 : E9 0B 00    |             SBC   #$000B         
+  600 |  1   HPrintCard.S    530 | Code        | 00 |         |    2 | 00/03D8 : F0 30       |             BEQ   L240414        
+  601 |  1   HPrintCard.S    531 | Code        | 00 |         |    1 | 00/03DA : 38          |             SEC                  
+  602 |  1   HPrintCard.S    532 | Code        | 00 |         |    3 | 00/03DB : E9 13 00    |             SBC   #$0013         
+  603 |  1   HPrintCard.S    533 | Code        | 00 |         |    2 | 00/03DE : F0 2A       |             BEQ   L240414        
+  604 |  1   HPrintCard.S    534 | Code        | 00 |         |    1 | 00/03E0 : 3A          |             DEC                  
+  605 |  1   HPrintCard.S    535 | Code        | 00 |         |    1 | 00/03E1 : 3A          |             DEC                  
+  606 |  1   HPrintCard.S    536 | Code        | 00 |         |    2 | 00/03E2 : F0 26       |             BEQ   L240414        
+  607 |  1   HPrintCard.S    537 | Code        | 00 |         |    1 | 00/03E4 : 38          |             SEC                  
+  608 |  1   HPrintCard.S    538 | Code        | 00 |         |    3 | 00/03E5 : E9 07 00    |             SBC   #$0007         
+  609 |  1   HPrintCard.S    539 | Code        | 00 |         |    2 | 00/03E8 : F0 11       |             BEQ   L240405        
+  610 |  1   HPrintCard.S    540 | Code        | 00 |         |    2 | 00/03EA : 80 5B       |             BRA   L240451        
+  611 |  1   HPrintCard.S    541 | Code        | 00 |         |    1 | 00/03EC : 5A          | L2403F6     PHY                  
+  612 |  1   HPrintCard.S    542 | Code        | 00 |         |    1 | 00/03ED : 5A          |             PHY                  
+  613 |  1   HPrintCard.S    543 | Code        | 00 |E 3      |    4 | 00/03EE : 22 E7 0F 14 |             JSL   L150FE7        
+  614 |  1   HPrintCard.S    544 | Code        | 00 |         |    1 | 00/03F2 : 68          |             PLA                  
+  615 |  1   HPrintCard.S    545 | Code        | 00 |         |    2 | 00/03F3 : 85 11       |             STA   $11            
+  616 |  1   HPrintCard.S    546 | Code        | 00 |         |    1 | 00/03F5 : FA          |             PLX                  
+  617 |  1   HPrintCard.S    547 | Code        | 00 |         |    2 | 00/03F6 : 86 13       |             STX   $13            
+  618 |  1   HPrintCard.S    548 | Code        | 00 |         |    3 | 00/03F8 : 82 A3 00    |             BRL   L2404A8        
+  619 |  1   HPrintCard.S    549 | Code        | 00 |         |    1 | 00/03FB : 5A          | L240405     PHY                  
+  620 |  1   HPrintCard.S    550 | Code        | 00 |         |    2 | 00/03FC : D4 17       |             PEI   $17            
+  621 |  1   HPrintCard.S    551 | Code        | 00 |         |    2 | 00/03FE : D4 15       |             PEI   $15            
+  622 |  1   HPrintCard.S    552 | Code        | 00 |E 3      |    4 | 00/0400 : 22 0D 23 06 |             JSL   L072354        
+  623 |  1   HPrintCard.S    553 | Code        | 00 |         |    1 | 00/0404 : 68          |             PLA                  
+  624 |  1   HPrintCard.S    554 | Code        | 00 |         |    2 | 00/0405 : 85 23       |             STA   $23            
+  625 |  1   HPrintCard.S    555 | Code        | 00 |         |    3 | 00/0407 : 82 94 00    |             BRL   L2404A8        
+  626 |  1   HPrintCard.S    556 | Code        | 00 |         |    3 | 00/040A : A9 00 01    | L240414     LDA   #$0100         
+  627 |  1   HPrintCard.S    557 | Code        | 00 |E 3      |    4 | 00/040D : 2F AD 40 04 |             ANDL  L0540AD        
+  628 |  1   HPrintCard.S    558 | Code        | 00 |         |    2 | 00/0411 : F0 32       |             BEQ   L24044F        
+  629 |  1   HPrintCard.S    559 | Code        | 00 |         |    2 | 00/0413 : D4 21       |             PEI   $21            
+  630 |  1   HPrintCard.S    560 | Code        | 00 |         |    1 | 00/0415 : 5A          |             PHY                  
+  631 |  1   HPrintCard.S    561 | Code        | 00 |         |    1 | 00/0416 : 5A          |             PHY                  
+  632 |  1   HPrintCard.S    562 | Code        | 00 |E 3      |    4 | 00/0417 : 22 F2 0A 14 |             JSL   L150AF2        
+  633 |  1   HPrintCard.S    563 | Code        | 00 |         |    1 | 00/041B : 68          |             PLA                  
+  634 |  1   HPrintCard.S    564 | Code        | 00 |         |    1 | 00/041C : FA          |             PLX                  
+  635 |  1   HPrintCard.S    565 | Code        | 00 |         |    2 | 00/041D : 85 2D       |             STA   $2D            
+  636 |  1   HPrintCard.S    566 | Code        | 00 |         |    2 | 00/041F : 86 2F       |             STX   $2F            
+  637 |  1   HPrintCard.S    567 | Code        | 00 |         |    3 | 00/0421 : A0 02 00    |             LDY   #$0002         
+  638 |  1   HPrintCard.S    568 | Code        | 00 |         |    2 | 00/0424 : B7 2D       |             LDA   [$2D],Y        
+  639 |  1   HPrintCard.S    569 | Code        | 00 |         |    1 | 00/0426 : AA          |             TAX                  
+  640 |  1   HPrintCard.S    570 | Code        | 00 |         |    2 | 00/0427 : A7 2D       |             LDA   [$2D]          
+  641 |  1   HPrintCard.S    571 | Code        | 00 |         |    1 | 00/0429 : 18          |             CLC                  
+  642 |  1   HPrintCard.S    572 | Code        | 00 |         |    3 | 00/042A : 69 1C 00    |             ADC   #$001C         
+  643 |  1   HPrintCard.S    573 | Code        | 00 |         |    2 | 00/042D : 90 01       |             BCC   L24043A        
+  644 |  1   HPrintCard.S    574 | Code        | 00 |         |    1 | 00/042F : E8          |             INX                  
+  645 |  1   HPrintCard.S    575 | Code        | 00 |         |    2 | 00/0430 : 85 2D       | L24043A     STA   $2D            
+  646 |  1   HPrintCard.S    576 | Code        | 00 |         |    2 | 00/0432 : 86 2F       |             STX   $2F            
+  647 |  1   HPrintCard.S    577 | Code        | 00 |         |    3 | 00/0434 : A0 02 00    |             LDY   #$0002         
+  648 |  1   HPrintCard.S    578 | Code        | 00 |         |    2 | 00/0437 : B7 2D       |             LDA   [$2D],Y        
+  649 |  1   HPrintCard.S    579 | Code        | 00 |         |    1 | 00/0439 : AA          |             TAX                  
+  650 |  1   HPrintCard.S    580 | Code        | 00 |         |    2 | 00/043A : A7 2D       |             LDA   [$2D]          
+  651 |  1   HPrintCard.S    581 | Code        | 00 |         |    1 | 00/043C : DA          |             PHX                  
+  652 |  1   HPrintCard.S    582 | Code        | 00 |         |    1 | 00/043D : 48          |             PHA                  
+  653 |  1   HPrintCard.S    583 | Code        | 00 |         |    3 | 00/043E : F4 02 00    |             PEA   $0002          
+  654 |  1   HPrintCard.S    584 | Code        | 00 |E 3      |    4 | 00/0441 : 22 3A 0B 15 |             JSL   L160B3A        
+  655 |  1   HPrintCard.S    585 | Code        | 00 |         |    2 | 00/0445 : 80 57       | L24044F     BRA   L2404A8        
+  656 |  1   HPrintCard.S    586 | Code        | 00 |         |    2 | 00/0447 : A5 21       | L240451     LDA   $21            
+  657 |  1   HPrintCard.S    587 | Code        | 00 |         |    1 | 00/0449 : 38          |             SEC                  
+  658 |  1   HPrintCard.S    588 | Code        | 00 |         |    3 | 00/044A : E9 30 00    |             SBC   #$0030         
+  659 |  1   HPrintCard.S    589 | Code        | 00 |         |    2 | 00/044D : 70 03       |             BVS   L24045C        
+  660 |  1   HPrintCard.S    590 | Code        | 00 |         |    3 | 00/044F : 49 00 80    |             EOR   #$8000         
+  661 |  1   HPrintCard.S    591 | Code        | 00 |         |    2 | 00/0452 : 30 05       | L24045C     BMI   L240463        
+  662 |  1   HPrintCard.S    592 | Code        | 00 |         |    3 | 00/0454 : A9 00 00    |             LDA   #$0000         
+  663 |  1   HPrintCard.S    593 | Code        | 00 |         |    2 | 00/0457 : 80 03       |             BRA   L240466        
+  664 |  1   HPrintCard.S    594 | Code        | 00 |         |    3 | 00/0459 : A9 01 00    | L240463     LDA   #$0001         
+  665 |  1   HPrintCard.S    595 | Code        | 00 |         |    1 | 00/045C : 48          | L240466     PHA                  
+  666 |  1   HPrintCard.S    596 | Code        | 00 |         |    2 | 00/045D : A5 21       |             LDA   $21            
+  667 |  1   HPrintCard.S    597 | Code        | 00 |         |    1 | 00/045F : 38          |             SEC                  
+  668 |  1   HPrintCard.S    598 | Code        | 00 |         |    3 | 00/0460 : E9 3A 00    |             SBC   #$003A         
+  669 |  1   HPrintCard.S    599 | Code        | 00 |         |    2 | 00/0463 : 70 03       |             BVS   L240472        
+  670 |  1   HPrintCard.S    600 | Code        | 00 |         |    3 | 00/0465 : 49 00 80    |             EOR   #$8000         
+  671 |  1   HPrintCard.S    601 | Code        | 00 |         |    2 | 00/0468 : 10 05       | L240472     BPL   L240479        
+  672 |  1   HPrintCard.S    602 | Code        | 00 |         |    3 | 00/046A : A9 00 00    |             LDA   #$0000         
+  673 |  1   HPrintCard.S    603 | Code        | 00 |         |    2 | 00/046D : 80 03       |             BRA   L24047C        
+  674 |  1   HPrintCard.S    604 | Code        | 00 |         |    3 | 00/046F : A9 01 00    | L240479     LDA   #$0001         
+  675 |  1   HPrintCard.S    605 | Code        | 00 |         |    2 | 00/0472 : 23 01       | L24047C     AND   $01,S          
+  676 |  1   HPrintCard.S    606 | Code        | 00 |         |    1 | 00/0474 : FA          |             PLX                  
+  677 |  1   HPrintCard.S    607 | Code        | 00 |         |    1 | 00/0475 : 48          |             PHA                  
+  678 |  1   HPrintCard.S    608 | Code        | 00 |         |    3 | 00/0476 : A2 00 00    |             LDX   #$0000         
+  679 |  1   HPrintCard.S    609 | Code        | 00 |         |    3 | 00/0479 : A9 00 10    |             LDA   #$1000         
+  680 |  1   HPrintCard.S    610 | Code        | 00 |E 3      |    4 | 00/047C : 2F AD 40 04 |             ANDL  L0540AD        
+  681 |  1   HPrintCard.S    611 | Code        | 00 |         |    2 | 00/0480 : D0 01       |             BNE   L24048D        
+  682 |  1   HPrintCard.S    612 | Code        | 00 |         |    1 | 00/0482 : E8          |             INX                  
+  683 |  1   HPrintCard.S    613 | Code        | 00 |         |    1 | 00/0483 : 8A          | L24048D     TXA                  
+  684 |  1   HPrintCard.S    614 | Code        | 00 |         |    2 | 00/0484 : 23 01       |             AND   $01,S          
+  685 |  1   HPrintCard.S    615 | Code        | 00 |         |    1 | 00/0486 : FA          |             PLX                  
+  686 |  1   HPrintCard.S    616 | Code        | 00 |         |    1 | 00/0487 : 4A          |             LSR                  
+  687 |  1   HPrintCard.S    617 | Code        | 00 |         |    2 | 00/0488 : 90 14       |             BCC   L2404A8        
+  688 |  1   HPrintCard.S    618 | Code        | 00 |         |    1 | 00/048A : 5A          |             PHY                  
+  689 |  1   HPrintCard.S    619 | Code        | 00 |         |    2 | 00/048B : D4 17       |             PEI   $17            
+  690 |  1   HPrintCard.S    620 | Code        | 00 |         |    2 | 00/048D : D4 15       |             PEI   $15            
+  691 |  1   HPrintCard.S    621 | Code        | 00 |E 3      |    4 | 00/048F : 22 0D 23 06 |             JSL   L072354        
+  692 |  1   HPrintCard.S    622 | Code        | 00 |         |    1 | 00/0493 : 68          |             PLA                  
+  693 |  1   HPrintCard.S    623 | Code        | 00 |         |    2 | 00/0494 : 85 23       |             STA   $23            
+  694 |  1   HPrintCard.S    624 | Code        | 00 |         |    3 | 00/0496 : F4 00 00    |             PEA   $0000          
+  695 |  1   HPrintCard.S    625 | Code        | 00 |         |    1 | 00/0499 : 0B          |             PHD                  
+  696 |  1   HPrintCard.S    626 | Code        | 00 |  3      |    4 | 00/049A : 22 2A 01 00 |             JSL   L240134        
+  697 |  1   HPrintCard.S    627 | Code        | 00 |         |    3 | 00/049E : A9 FE FF    | L2404A8     LDA   #$FFFE         
+  698 |  1   HPrintCard.S    628 | Code        | 00 |         |    2 | 00/04A1 : C5 23       |             CMP   $23            
+  699 |  1   HPrintCard.S    629 | Code        | 00 |         |    2 | 00/04A3 : D0 05       |             BNE   L2404B4        
+  700 |  1   HPrintCard.S    630 | Code        | 00 |         |    3 | 00/04A5 : A9 63 00    |             LDA   #$0063         
+  701 |  1   HPrintCard.S    631 | Code        | 00 |         |    2 | 00/04A8 : 85 23       |             STA   $23            
+  702 |  1   HPrintCard.S    632 | Code        | 00 |         |    2 | 00/04AA : A5 23       | L2404B4     LDA   $23            
+  703 |  1   HPrintCard.S    633 | Code        | 00 |         |    1 | 00/04AC : 3A          |             DEC                  
+  704 |  1   HPrintCard.S    634 | Code        | 00 |         |    2 | 00/04AD : 10 03       |             BPL   L2404BC        
+  705 |  1   HPrintCard.S    635 | Code        | 00 |         |    3 | 00/04AF : 82 C5 01    |             BRL   L240681        
+  706 |  1   HPrintCard.S    636 | Code        | 00 |         |    3 | 00/04B2 : C9 63 00    | L2404BC     CMP   #$0063         
+  707 |  1   HPrintCard.S    637 | Code        | 00 |         |    2 | 00/04B5 : 30 03       |             BMI   L2404C4        
+  708 |  1   HPrintCard.S    638 | Code        | 00 |         |    3 | 00/04B7 : 82 BD 01    |             BRL   L240681        
+  709 |  1   HPrintCard.S    639 | Code        | 00 |         |    1 | 00/04BA : 38          | L2404C4     SEC                  
+  710 |  1   HPrintCard.S    640 | Code        | 00 |         |    3 | 00/04BB : E9 00 00    |             SBC   #$0000         
+  711 |  1   HPrintCard.S    641 | Code        | 00 |         |    2 | 00/04BE : D0 03       |             BNE   L2404CD        
+  712 |  1   HPrintCard.S    642 | Code        | 00 |         |    3 | 00/04C0 : 82 86 00    |             BRL   L240553        
+  713 |  1   HPrintCard.S    643 | Code        | 00 |         |    1 | 00/04C3 : 3A          | L2404CD     DEC                  
+  714 |  1   HPrintCard.S    644 | Code        | 00 |         |    2 | 00/04C4 : D0 03       |             BNE   L2404D3        
+  715 |  1   HPrintCard.S    645 | Code        | 00 |         |    3 | 00/04C6 : 82 8F 00    |             BRL   L240562        
+  716 |  1   HPrintCard.S    646 | Code        | 00 |         |    1 | 00/04C9 : 3A          | L2404D3     DEC                  
+  717 |  1   HPrintCard.S    647 | Code        | 00 |         |    2 | 00/04CA : D0 03       |             BNE   L2404D9        
+  718 |  1   HPrintCard.S    648 | Code        | 00 |         |    3 | 00/04CC : 82 92 00    |             BRL   L24056B        
+  719 |  1   HPrintCard.S    649 | Code        | 00 |         |    1 | 00/04CF : 3A          | L2404D9     DEC                  
+  720 |  1   HPrintCard.S    650 | Code        | 00 |         |    2 | 00/04D0 : D0 03       |             BNE   L2404DF        
+  721 |  1   HPrintCard.S    651 | Code        | 00 |         |    3 | 00/04D2 : 82 9A 00    |             BRL   L240579        
+  722 |  1   HPrintCard.S    652 | Code        | 00 |         |    1 | 00/04D5 : 3A          | L2404DF     DEC                  
+  723 |  1   HPrintCard.S    653 | Code        | 00 |         |    2 | 00/04D6 : D0 03       |             BNE   L2404E5        
+  724 |  1   HPrintCard.S    654 | Code        | 00 |         |    3 | 00/04D8 : 82 6D 01    |             BRL   L240652        
+  725 |  1   HPrintCard.S    655 | Code        | 00 |         |    1 | 00/04DB : 3A          | L2404E5     DEC                  
+  726 |  1   HPrintCard.S    656 | Code        | 00 |         |    2 | 00/04DC : D0 03       |             BNE   L2404EB        
+  727 |  1   HPrintCard.S    657 | Code        | 00 |         |    3 | 00/04DE : 82 9C 00    |             BRL   L240587        
+  728 |  1   HPrintCard.S    658 | Code        | 00 |         |    1 | 00/04E1 : 3A          | L2404EB     DEC                  
+  729 |  1   HPrintCard.S    659 | Code        | 00 |         |    2 | 00/04E2 : D0 03       |             BNE   L2404F1        
+  730 |  1   HPrintCard.S    660 | Code        | 00 |         |    3 | 00/04E4 : 82 B0 00    |             BRL   L2405A1        
+  731 |  1   HPrintCard.S    661 | Code        | 00 |         |    1 | 00/04E7 : 3A          | L2404F1     DEC                  
+  732 |  1   HPrintCard.S    662 | Code        | 00 |         |    2 | 00/04E8 : D0 03       |             BNE   L2404F7        
+  733 |  1   HPrintCard.S    663 | Code        | 00 |         |    3 | 00/04EA : 82 AA 00    |             BRL   L2405A1        
+  734 |  1   HPrintCard.S    664 | Code        | 00 |         |    1 | 00/04ED : 3A          | L2404F7     DEC                  
+  735 |  1   HPrintCard.S    665 | Code        | 00 |         |    2 | 00/04EE : D0 03       |             BNE   L2404FD        
+  736 |  1   HPrintCard.S    666 | Code        | 00 |         |    3 | 00/04F0 : 82 A4 00    |             BRL   L2405A1        
+  737 |  1   HPrintCard.S    667 | Code        | 00 |         |    1 | 00/04F3 : 3A          | L2404FD     DEC                  
+  738 |  1   HPrintCard.S    668 | Code        | 00 |         |    2 | 00/04F4 : D0 03       |             BNE   L240503        
+  739 |  1   HPrintCard.S    669 | Code        | 00 |         |    3 | 00/04F6 : 82 EF 00    |             BRL   L2405F2        
+  740 |  1   HPrintCard.S    670 | Code        | 00 |         |    1 | 00/04F9 : 3A          | L240503     DEC                  
+  741 |  1   HPrintCard.S    671 | Code        | 00 |         |    2 | 00/04FA : D0 03       |             BNE   L240509        
+  742 |  1   HPrintCard.S    672 | Code        | 00 |         |    3 | 00/04FC : 82 CA 00    |             BRL   L2405D3        
+  743 |  1   HPrintCard.S    673 | Code        | 00 |         |    1 | 00/04FF : 3A          | L240509     DEC                  
+  744 |  1   HPrintCard.S    674 | Code        | 00 |         |    2 | 00/0500 : D0 03       |             BNE   L24050F        
+  745 |  1   HPrintCard.S    675 | Code        | 00 |         |    3 | 00/0502 : 82 30 01    |             BRL   L24063F        
+  746 |  1   HPrintCard.S    676 | Code        | 00 |         |    1 | 00/0505 : 3A          | L24050F     DEC                  
+  747 |  1   HPrintCard.S    677 | Code        | 00 |         |    2 | 00/0506 : D0 03       |             BNE   L240515        
+  748 |  1   HPrintCard.S    678 | Code        | 00 |         |    3 | 00/0508 : 82 97 00    |             BRL   L2405AC        
+  749 |  1   HPrintCard.S    679 | Code        | 00 |         |    1 | 00/050B : 3A          | L240515     DEC                  
+  750 |  1   HPrintCard.S    680 | Code        | 00 |         |    2 | 00/050C : D0 03       |             BNE   L24051B        
+  751 |  1   HPrintCard.S    681 | Code        | 00 |         |    3 | 00/050E : 82 F5 00    |             BRL   L240610        
+  752 |  1   HPrintCard.S    682 | Code        | 00 |         |    1 | 00/0511 : 38          | L24051B     SEC                  
+  753 |  1   HPrintCard.S    683 | Code        | 00 |         |    3 | 00/0512 : E9 55 00    |             SBC   #$0055         
+  754 |  1   HPrintCard.S    684 | Code        | 00 |         |    2 | 00/0515 : F0 03       |             BEQ   L240524        
+  755 |  1   HPrintCard.S    685 | Code        | 00 |         |    3 | 00/0517 : 82 5D 01    |             BRL   L240681        
+  756 |  1   HPrintCard.S    686 | Code        | 00 |         |    2 | 00/051A : D4 17       | L240524     PEI   $17            
+  757 |  1   HPrintCard.S    687 | Code        | 00 |         |    2 | 00/051C : D4 15       |             PEI   $15            
+  758 |  1   HPrintCard.S    688 | Code        | 00 |E 3      |    4 | 00/051E : 22 B3 06 14 |             JSL   L1506B3        
+  759 |  1   HPrintCard.S    689 | Code        | 00 |E 2      |    3 | 00/0522 : AD 1F 53    |             LDA   L05531F        
+  760 |  1   HPrintCard.S    690 | Code        | 00 |E 2      |    3 | 00/0525 : AE 21 53    |             LDX   L055321        
+  761 |  1   HPrintCard.S    691 | Code        | 00 |         |    1 | 00/0528 : DA          |             PHX                  
+  762 |  1   HPrintCard.S    692 | Code        | 00 |         |    1 | 00/0529 : 48          |             PHA                  
+  763 |  1   HPrintCard.S    693 | Code        | 00 |E 3      |    4 | 00/052A : 22 20 0D 14 |             JSL   L150D20        
+  764 |  1   HPrintCard.S    694 | Code        | 00 |         |    2 | 00/052E : D4 17       |             PEI   $17            
+  765 |  1   HPrintCard.S    695 | Code        | 00 |         |    2 | 00/0530 : D4 15       |             PEI   $15            
+  766 |  1   HPrintCard.S    696 | Code        | 00 |E 3      |    4 | 00/0532 : 22 CD 17 14 |             JSL   L1517CD        
+  767 |  1   HPrintCard.S    697 | Code        | 00 |         |    3 | 00/0536 : F4 00 00    |             PEA   $0000          
+  768 |  1   HPrintCard.S    698 | Code        | 00 |         |    1 | 00/0539 : 0B          |             PHD                  
+  769 |  1   HPrintCard.S    699 | Code        | 00 |  3      |    4 | 00/053A : 22 67 01 00 |             JSL   L240171        
+  770 |  1   HPrintCard.S    700 | Code        | 00 |         |    2 | 00/053E : D4 17       |             PEI   $17            
+  771 |  1   HPrintCard.S    701 | Code        | 00 |         |    2 | 00/0540 : D4 15       |             PEI   $15            
+  772 |  1   HPrintCard.S    702 | Code        | 00 |E 3      |    4 | 00/0542 : 22 AD 06 14 |             JSL   L1506AD        
+  773 |  1   HPrintCard.S    703 | Code        | 00 |         |    3 | 00/0546 : 82 2E 01    |             BRL   L240681        
+  774 |  1   HPrintCard.S    704 | Code        | 00 |         |    3 | 00/0549 : A9 01 00    | L240553     LDA   #$0001         
+  775 |  1   HPrintCard.S    705 | Code        | 00 |E 2      |    3 | 00/054C : 8D 3F 53    |             STA   L05533F        
+  776 |  1   HPrintCard.S    706 | Code        | 00 |         |    3 | 00/054F : A9 01 00    |             LDA   #$0001         
+  777 |  1   HPrintCard.S    707 | Code        | 00 |E 2      |    3 | 00/0552 : 8D 3D 53    |             STA   L05533D        
+  778 |  1   HPrintCard.S    708 | Code        | 00 |         |    3 | 00/0555 : 82 1F 01    |             BRL   L240681        
+  779 |  1   HPrintCard.S    709 | Code        | 00 |         |    3 | 00/0558 : A9 01 00    | L240562     LDA   #$0001         
+  780 |  1   HPrintCard.S    710 | Code        | 00 |E 2      |    3 | 00/055B : 8D 3F 53    |             STA   L05533F        
+  781 |  1   HPrintCard.S    711 | Code        | 00 |         |    3 | 00/055E : 82 16 01    |             BRL   L240681        
+  782 |  1   HPrintCard.S    712 | Code        | 00 |         |    3 | 00/0561 : F4 01 00    | L24056B     PEA   $0001          
+  783 |  1   HPrintCard.S    713 | Code        | 00 |         |    3 | 00/0564 : F4 00 00    |             PEA   $0000          
+  784 |  1   HPrintCard.S    714 | Code        | 00 |         |    1 | 00/0567 : 0B          |             PHD                  
+  785 |  1   HPrintCard.S    715 | Code        | 00 |  3      |    4 | 00/0568 : 22 00 00 00 |             JSL   L240000        
+  786 |  1   HPrintCard.S    716 | Code        | 00 |         |    3 | 00/056C : 82 08 01    |             BRL   L240681        
+  787 |  1   HPrintCard.S    717 | Code        | 00 |         |    3 | 00/056F : F4 00 00    | L240579     PEA   $0000          
+  788 |  1   HPrintCard.S    718 | Code        | 00 |         |    3 | 00/0572 : F4 00 00    |             PEA   $0000          
+  789 |  1   HPrintCard.S    719 | Code        | 00 |         |    1 | 00/0575 : 0B          |             PHD                  
+  790 |  1   HPrintCard.S    720 | Code        | 00 |  3      |    4 | 00/0576 : 22 00 00 00 |             JSL   L240000        
+  791 |  1   HPrintCard.S    721 | Code        | 00 |         |    3 | 00/057A : 82 FA 00    |             BRL   L240681        
+  792 |  1   HPrintCard.S    722 | Code        | 00 |         |    2 | 00/057D : A5 2B       | L240587     LDA   $2B            
+  793 |  1   HPrintCard.S    723 | Code        | 00 |         |    2 | 00/057F : D0 13       |             BNE   L24059E        
+  794 |  1   HPrintCard.S    724 | Code        | 00 |         |    3 | 00/0581 : F4 01 00    |             PEA   $0001          
+  795 |  1   HPrintCard.S    725 | Code        | 00 |         |    2 | 00/0584 : D4 17       |             PEI   $17            
+  796 |  1   HPrintCard.S    726 | Code        | 00 |         |    2 | 00/0586 : D4 15       |             PEI   $15            
+  797 |  1   HPrintCard.S    727 | Code        | 00 |         |    3 | 00/0588 : F4 06 00    |             PEA   $0006          
+  798 |  1   HPrintCard.S    728 | Code        | 00 |E 3      |    4 | 00/058B : 22 BE 3A 06 |             JSL   L073B05        
+  799 |  1   HPrintCard.S    729 | Code        | 00 |         |    3 | 00/058F : A9 01 00    |             LDA   #$0001         
+  800 |  1   HPrintCard.S    730 | Code        | 00 |         |    2 | 00/0592 : 85 2B       |             STA   $2B            
+  801 |  1   HPrintCard.S    731 | Code        | 00 |         |    3 | 00/0594 : 82 E0 00    | L24059E     BRL   L240681        
+  802 |  1   HPrintCard.S    732 | Code        | 00 |         |    3 | 00/0597 : F4 00 00    | L2405A1     PEA   $0000          
+  803 |  1   HPrintCard.S    733 | Code        | 00 |         |    1 | 00/059A : 0B          |             PHD                  
+  804 |  1   HPrintCard.S    734 | Code        | 00 |  3      |    4 | 00/059B : 22 2A 01 00 |             JSL   L240134        
+  805 |  1   HPrintCard.S    735 | Code        | 00 |         |    3 | 00/059F : 82 D5 00    |             BRL   L240681        
+  806 |  1   HPrintCard.S    736 | Code        | 00 |         |    3 | 00/05A2 : A9 01 00    | L2405AC     LDA   #$0001         
+  807 |  1   HPrintCard.S    737 | Code        | 00 |         |    1 | 00/05A5 : 38          |             SEC                  
+  808 |  1   HPrintCard.S    738 | Code        | 00 |E 3      |    4 | 00/05A6 : EF 20 1F 04 |             SBCL  L051F20        
+  809 |  1   HPrintCard.S    739 | Code        | 00 |E 3      |    4 | 00/05AA : 8F 20 1F 04 |             STAL  L051F20        
+  810 |  1   HPrintCard.S    740 | Code        | 00 |E 3      |    4 | 00/05AE : AF 20 1F 04 |             LDAL  L051F20        
+  811 |  1   HPrintCard.S    741 | Code        | 00 |         |    1 | 00/05B2 : 48          |             PHA                  
+  812 |  1   HPrintCard.S    742 | Code        | 00 |         |    2 | 00/05B3 : D4 17       |             PEI   $17            
+  813 |  1   HPrintCard.S    743 | Code        | 00 |         |    2 | 00/05B5 : D4 15       |             PEI   $15            
+  814 |  1   HPrintCard.S    744 | Code        | 00 |         |    3 | 00/05B7 : F4 0D 00    |             PEA   $000D          
+  815 |  1   HPrintCard.S    745 | Code        | 00 |E 3      |    4 | 00/05BA : 22 BE 3A 06 |             JSL   L073B05        
+  816 |  1   HPrintCard.S    746 | Code        | 00 |         |    3 | 00/05BE : F4 00 00    |             PEA   $0000          
+  817 |  1   HPrintCard.S    747 | Code        | 00 |         |    1 | 00/05C1 : 0B          |             PHD                  
+  818 |  1   HPrintCard.S    748 | Code        | 00 |  3      |    4 | 00/05C2 : 22 67 01 00 |             JSL   L240171        
+  819 |  1   HPrintCard.S    749 | Code        | 00 |         |    3 | 00/05C6 : 82 AE 00    |             BRL   L240681        
+  820 |  1   HPrintCard.S    750 | Code        | 00 |         |    3 | 00/05C9 : A9 01 00    | L2405D3     LDA   #$0001         
+  821 |  1   HPrintCard.S    751 | Code        | 00 |         |    1 | 00/05CC : 38          |             SEC                  
+  822 |  1   HPrintCard.S    752 | Code        | 00 |E 3      |    4 | 00/05CD : EF F4 1E 04 |             SBCL  L051EF4        
+  823 |  1   HPrintCard.S    753 | Code        | 00 |E 3      |    4 | 00/05D1 : 8F F4 1E 04 |             STAL  L051EF4        
+  824 |  1   HPrintCard.S    754 | Code        | 00 |E 3      |    4 | 00/05D5 : AF F4 1E 04 |             LDAL  L051EF4        
+  825 |  1   HPrintCard.S    755 | Code        | 00 |         |    1 | 00/05D9 : 48          |             PHA                  
+  826 |  1   HPrintCard.S    756 | Code        | 00 |         |    2 | 00/05DA : D4 17       |             PEI   $17            
+  827 |  1   HPrintCard.S    757 | Code        | 00 |         |    2 | 00/05DC : D4 15       |             PEI   $15            
+  828 |  1   HPrintCard.S    758 | Code        | 00 |         |    3 | 00/05DE : F4 0B 00    |             PEA   $000B          
+  829 |  1   HPrintCard.S    759 | Code        | 00 |E 3      |    4 | 00/05E1 : 22 BE 3A 06 |             JSL   L073B05        
+  830 |  1   HPrintCard.S    760 | Code        | 00 |         |    3 | 00/05E5 : 82 8F 00    |             BRL   L240681        
+  831 |  1   HPrintCard.S    761 | Code        | 00 |         |    3 | 00/05E8 : A9 01 00    | L2405F2     LDA   #$0001         
+  832 |  1   HPrintCard.S    762 | Code        | 00 |         |    1 | 00/05EB : 38          |             SEC                  
+  833 |  1   HPrintCard.S    763 | Code        | 00 |E 3      |    4 | 00/05EC : EF F6 1E 04 |             SBCL  L051EF6        
+  834 |  1   HPrintCard.S    764 | Code        | 00 |E 3      |    4 | 00/05F0 : 8F F6 1E 04 |             STAL  L051EF6        
+  835 |  1   HPrintCard.S    765 | Code        | 00 |E 3      |    4 | 00/05F4 : AF F6 1E 04 |             LDAL  L051EF6        
+  836 |  1   HPrintCard.S    766 | Code        | 00 |         |    1 | 00/05F8 : 48          |             PHA                  
+  837 |  1   HPrintCard.S    767 | Code        | 00 |         |    2 | 00/05F9 : D4 17       |             PEI   $17            
+  838 |  1   HPrintCard.S    768 | Code        | 00 |         |    2 | 00/05FB : D4 15       |             PEI   $15            
+  839 |  1   HPrintCard.S    769 | Code        | 00 |         |    3 | 00/05FD : F4 0A 00    |             PEA   $000A          
+  840 |  1   HPrintCard.S    770 | Code        | 00 |E 3      |    4 | 00/0600 : 22 BE 3A 06 |             JSL   L073B05        
+  841 |  1   HPrintCard.S    771 | Code        | 00 |         |    2 | 00/0604 : 80 71       |             BRA   L240681        
+  842 |  1   HPrintCard.S    772 | Code        | 00 |         |    1 | 00/0606 : 5A          | L240610     PHY                  
+  843 |  1   HPrintCard.S    773 | Code        | 00 |         |    2 | 00/0607 : D4 17       |             PEI   $17            
+  844 |  1   HPrintCard.S    774 | Code        | 00 |         |    2 | 00/0609 : D4 15       |             PEI   $15            
+  845 |  1   HPrintCard.S    775 | Code        | 00 |         |    3 | 00/060B : F4 0E 00    |             PEA   $000E          
+  846 |  1   HPrintCard.S    776 | Code        | 00 |E 3      |    4 | 00/060E : 22 24 2B 06 |             JSL   L072B6B        
+  847 |  1   HPrintCard.S    777 | Code        | 00 |         |    1 | 00/0612 : 68          |             PLA                  
+  848 |  1   HPrintCard.S    778 | Code        | 00 |         |    2 | 00/0613 : 85 21       |             STA   $21            
+  849 |  1   HPrintCard.S    779 | Code        | 00 |E 3      |    4 | 00/0615 : AF F0 1E 04 |             LDAL  L051EF0        
+  850 |  1   HPrintCard.S    780 | Code        | 00 |         |    2 | 00/0619 : C5 21       |             CMP   $21            
+  851 |  1   HPrintCard.S    781 | Code        | 00 |         |    2 | 00/061B : F0 16       |             BEQ   L24063D        
+  852 |  1   HPrintCard.S    782 | Code        | 00 |         |    2 | 00/061D : A5 21       |             LDA   $21            
+  853 |  1   HPrintCard.S    783 | Code        | 00 |E 3      |    4 | 00/061F : 8F F0 1E 04 |             STAL  L051EF0        
+  854 |  1   HPrintCard.S    784 | Code        | 00 |         |    3 | 00/0623 : F4 00 00    |             PEA   $0000          
+  855 |  1   HPrintCard.S    785 | Code        | 00 |         |    1 | 00/0626 : 0B          |             PHD                  
+  856 |  1   HPrintCard.S    786 | Code        | 00 |  3      |    4 | 00/0627 : 22 B1 00 00 |             JSL   L2400BB        
+  857 |  1   HPrintCard.S    787 | Code        | 00 |         |    3 | 00/062B : F4 00 00    |             PEA   $0000          
+  858 |  1   HPrintCard.S    788 | Code        | 00 |         |    1 | 00/062E : 0B          |             PHD                  
+  859 |  1   HPrintCard.S    789 | Code        | 00 |  3      |    4 | 00/062F : 22 67 01 00 |             JSL   L240171        
+  860 |  1   HPrintCard.S    790 | Code        | 00 |         |    2 | 00/0633 : 80 42       | L24063D     BRA   L240681        
+  861 |  1   HPrintCard.S    791 | Code        | 00 |         |    1 | 00/0635 : 5A          | L24063F     PHY                  
+  862 |  1   HPrintCard.S    792 | Code        | 00 |         |    2 | 00/0636 : D4 17       |             PEI   $17            
+  863 |  1   HPrintCard.S    793 | Code        | 00 |         |    2 | 00/0638 : D4 15       |             PEI   $15            
+  864 |  1   HPrintCard.S    794 | Code        | 00 |         |    3 | 00/063A : F4 0C 00    |             PEA   $000C          
+  865 |  1   HPrintCard.S    795 | Code        | 00 |E 3      |    4 | 00/063D : 22 24 2B 06 |             JSL   L072B6B        
+  866 |  1   HPrintCard.S    796 | Code        | 00 |         |    1 | 00/0641 : 68          |             PLA                  
+  867 |  1   HPrintCard.S    797 | Code        | 00 |E 3      |    4 | 00/0642 : 8F 16 1F 04 |             STAL  L051F16        
+  868 |  1   HPrintCard.S    798 | Code        | 00 |         |    2 | 00/0646 : 80 2F       |             BRA   L240681        
+  869 |  1   HPrintCard.S    799 | Code        | 00 |         |    1 | 00/0648 : 5A          | L240652     PHY                  
+  870 |  1   HPrintCard.S    800 | Code        | 00 |         |    2 | 00/0649 : D4 17       |             PEI   $17            
+  871 |  1   HPrintCard.S    801 | Code        | 00 |         |    2 | 00/064B : D4 15       |             PEI   $15            
+  872 |  1   HPrintCard.S    802 | Code        | 00 |         |    3 | 00/064D : F4 05 00    |             PEA   $0005          
+  873 |  1   HPrintCard.S    803 | Code        | 00 |E 3      |    4 | 00/0650 : 22 24 2B 06 |             JSL   L072B6B        
+  874 |  1   HPrintCard.S    804 | Code        | 00 |         |    1 | 00/0654 : 68          |             PLA                  
+  875 |  1   HPrintCard.S    805 | Code        | 00 |         |    2 | 00/0655 : 85 21       |             STA   $21            
+  876 |  1   HPrintCard.S    806 | Code        | 00 |E 3      |    4 | 00/0657 : AF F2 1E 04 |             LDAL  L051EF2        
+  877 |  1   HPrintCard.S    807 | Code        | 00 |         |    2 | 00/065B : C5 21       |             CMP   $21            
+  878 |  1   HPrintCard.S    808 | Code        | 00 |         |    2 | 00/065D : F0 16       |             BEQ   L24067F        
+  879 |  1   HPrintCard.S    809 | Code        | 00 |         |    2 | 00/065F : A5 21       |             LDA   $21            
+  880 |  1   HPrintCard.S    810 | Code        | 00 |E 3      |    4 | 00/0661 : 8F F2 1E 04 |             STAL  L051EF2        
+  881 |  1   HPrintCard.S    811 | Code        | 00 |         |    3 | 00/0665 : F4 00 00    |             PEA   $0000          
+  882 |  1   HPrintCard.S    812 | Code        | 00 |         |    1 | 00/0668 : 0B          |             PHD                  
+  883 |  1   HPrintCard.S    813 | Code        | 00 |  3      |    4 | 00/0669 : 22 ED 00 00 |             JSL   L2400F7        
+  884 |  1   HPrintCard.S    814 | Code        | 00 |         |    3 | 00/066D : F4 00 00    |             PEA   $0000          
+  885 |  1   HPrintCard.S    815 | Code        | 00 |         |    1 | 00/0670 : 0B          |             PHD                  
+  886 |  1   HPrintCard.S    816 | Code        | 00 |  3      |    4 | 00/0671 : 22 67 01 00 |             JSL   L240171        
+  887 |  1   HPrintCard.S    817 | Code        | 00 |         |    2 | 00/0675 : 80 00       | L24067F     BRA   L240681        
+  888 |  1   HPrintCard.S    818 | Code        | 00 |E 2      |    3 | 00/0677 : AD 3F 53    | L240681     LDA   L05533F        
+  889 |  1   HPrintCard.S    819 | Code        | 00 |         |    2 | 00/067A : D0 03       |             BNE   L240689        
+  890 |  1   HPrintCard.S    820 | Code        | 00 |         |    3 | 00/067C : 82 D6 FC    |             BRL   L24035F        
+  891 |  1   HPrintCard.S    821 | Code        | 00 |E 2      |    3 | 00/067F : AD 3D 53    | L240689     LDA   L05533D        
+  892 |  1   HPrintCard.S    822 | Code        | 00 |         |    2 | 00/0682 : F0 1E       |             BEQ   L2406AC        
+  893 |  1   HPrintCard.S    823 | Code        | 00 |         |    2 | 00/0684 : D4 17       |             PEI   $17            
+  894 |  1   HPrintCard.S    824 | Code        | 00 |         |    2 | 00/0686 : D4 15       |             PEI   $15            
+  895 |  1   HPrintCard.S    825 | Code        | 00 |         |    2 | 00/0688 : D4 2B       |             PEI   $2B            
+  896 |  1   HPrintCard.S    826 | Code        | 00 |E 3      |    4 | 00/068A : 22 F0 0B 15 |             JSL   L160BF0        
+  897 |  1   HPrintCard.S    827 | Code        | 00 |E 2      |    3 | 00/068E : AD 35 53    |             LDA   L055335        
+  898 |  1   HPrintCard.S    828 | Code        | 00 |         |    1 | 00/0691 : 48          |             PHA                  
+  899 |  1   HPrintCard.S    829 | Code        | 00 |         |    1 | 00/0692 : 5A          |             PHY                  
+  900 |  1   HPrintCard.S    830 | Code        | 00 |         |    2 | 00/0693 : D4 0F       |             PEI   $0F            
+  901 |  1   HPrintCard.S    831 | Code        | 00 |         |    2 | 00/0695 : D4 0D       |             PEI   $0D            
+  902 |  1   HPrintCard.S    832 | Code        | 00 |E 3      |    4 | 00/0697 : 22 B8 0B 15 |             JSL   L160BB8        
+  903 |  1   HPrintCard.S    833 | Code        | 00 |         |    1 | 00/069B : 68          |             PLA                  
+  904 |  1   HPrintCard.S    834 | Code        | 00 |         |    2 | 00/069C : 03 01       |             ORA   $01,S          
+  905 |  1   HPrintCard.S    835 | Code        | 00 |         |    1 | 00/069E : FA          |             PLX                  
+  906 |  1   HPrintCard.S    836 | Code        | 00 |E 2      |    3 | 00/069F : 8D 35 53    |             STA   L055335        
+  907 |  1   HPrintCard.S    837 | Code        | 00 |         |    2 | 00/06A2 : D4 17       | L2406AC     PEI   $17            
+  908 |  1   HPrintCard.S    838 | Code        | 00 |         |    2 | 00/06A4 : D4 15       |             PEI   $15            
+  909 |  1   HPrintCard.S    839 | Code        | 00 |E 3      |    4 | 00/06A6 : 22 ED 25 06 |             JSL   L072634        
+  910 |  1   HPrintCard.S    840 | Code        | 00 |         |    2 | 00/06AA : D4 19       |             PEI   $19            
+  911 |  1   HPrintCard.S    841 | Code        | 00 |E 3      |    4 | 00/06AC : 22 B0 24 06 |             JSL   L0724F7        
+  912 |  1   HPrintCard.S    842 | Code        | 00 |         |    2 | 00/06B0 : D4 1D       |             PEI   $1D            
+  913 |  1   HPrintCard.S    843 | Code        | 00 |         |    2 | 00/06B2 : D4 1B       |             PEI   $1B            
+  914 |  1   HPrintCard.S    844 | Code        | 00 |E 3      |    4 | 00/06B4 : 22 31 11 14 |             JSL   L151131        
+  915 |  1   HPrintCard.S    845 | Code        | 00 |E 3      |    4 | 00/06B8 : 22 82 AF 08 |             JSL   L09AFB1        
+  916 |  1   HPrintCard.S    846 | Code        | 00 |         |    2 | 00/06BC : D4 0F       |             PEI   $0F            
+  917 |  1   HPrintCard.S    847 | Code        | 00 |         |    2 | 00/06BE : D4 0D       |             PEI   $0D            
+  918 |  1   HPrintCard.S    848 | Code        | 00 |E 3      |    4 | 00/06C0 : 22 5A 18 06 |             JSL   L07185A        
+  919 |  1   HPrintCard.S    849 | Code        | 00 |         |    2 | 00/06C4 : A5 34       |             LDA   $34            
+  920 |  1   HPrintCard.S    850 | Code        | 00 |         |    2 | 00/06C6 : 85 3C       |             STA   $3C            
+  921 |  1   HPrintCard.S    851 | Code        | 00 |         |    2 | 00/06C8 : A5 33       |             LDA   $33            
+  922 |  1   HPrintCard.S    852 | Code        | 00 |         |    2 | 00/06CA : 85 3B       |             STA   $3B            
+  923 |  1   HPrintCard.S    853 | Code        | 00 |         |    2 | 00/06CC : A5 31       |             LDA   $31            
+  924 |  1   HPrintCard.S    854 | Code        | 00 |         |    1 | 00/06CE : 5B          |             TCD                  
+  925 |  1   HPrintCard.S    855 | Code        | 00 |         |    1 | 00/06CF : 3B          |             TSC                  
+  926 |  1   HPrintCard.S    856 | Code        | 00 |         |    1 | 00/06D0 : 18          |             CLC                  
+  927 |  1   HPrintCard.S    857 | Code        | 00 |         |    3 | 00/06D1 : 69 3A 00    |             ADC   #$003A         
+  928 |  1   HPrintCard.S    858 | Code        | 00 |         |    1 | 00/06D4 : 1B          |             TCS                  
+  929 |  1   HPrintCard.S    859 | Code        | 00 |         |    1 | 00/06D5 : 6B          |             RTL                  
+  930 |  1   HPrintCard.S    860 | Empty       | 00 |         |    0 | 00/06D6               |                                  
+  931 |  1   HPrintCard.S    861 | Empty       | 00 |         |    0 | 00/06D6               |                                  
+------+--------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

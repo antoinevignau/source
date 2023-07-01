@@ -4646,9 +4646,9 @@ L032EB8  PHD
          PLA
          LSR
          BCC   L032F10
-         PEA   ^L160170
-         PEA   L160170
-         JSL   L07187A
+*         PEA   ^L160170
+*         PEA   L160170
+*         JSL   L07187A
          LDA   #$FFFF
          STA   L0550B9
          JSL   L0A3E17

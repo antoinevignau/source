@@ -503,9 +503,9 @@ L23034D  PHY
          BCC   L2303BF
          PEI   $1A
          JSL   L160BAA
-         PEA   ^L160BAA
-         PEA   L160BAA
-         JSL   L07187A
+*         PEA   ^L160BAA
+*         PEA   L160BAA
+*         JSL   L07187A
          TDC
          CLC
          ADC   #$0001

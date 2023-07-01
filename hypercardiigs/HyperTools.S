@@ -3282,9 +3282,9 @@ L0919D9  PEI   $4F
          PEI   $4D
          PEA   $0000
          JSL   L1601EE
-         PEA   ^L1601EE
-         PEA   L1601EE
-         JSL   L07187A
+*         PEA   ^L1601EE
+*         PEA   L1601EE
+*         JSL   L07187A
          LDY   #$0002
          LDA   [$4D],Y
          TAX

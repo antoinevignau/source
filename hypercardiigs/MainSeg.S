@@ -146,12 +146,12 @@ L0A00D2  PEA   ^L0532BD
          LDA   #$FFFF
          STA   L0550B9
          JSL   L09B058
-         PEA   ^L160242
-         PEA   L160242
-         JSL   L07187A
-         PEA   ^L160250
-         PEA   L160250
-         JSL   L07187A
+*         PEA   ^L160242
+*         PEA   L160242
+*         JSL   L07187A
+*         PEA   ^L160250
+*         PEA   L160250
+*         JSL   L07187A
          PLY
          PLY
          PLY
@@ -3083,9 +3083,9 @@ L0A1A5F  ENT
          TCD
          JSL   L0A20CA
          JSL   L0903F2
-         PEA   ^L1604D4
-         PEA   L1604D4
-         JSL   L07187A
+*         PEA   ^L1604D4
+*         PEA   L1604D4
+*         JSL   L07187A
          JSL   L09AE9F
          LDA   #$FFFF
          STA   L0550B9
@@ -3690,9 +3690,9 @@ L0A1F68  PHD
          PEA   $0001
          JSL   L090635
          JSL   L0952F7
-         PEA   ^L1604D4
-         PEA   L1604D4
-         JSL   L07187A
+*         PEA   ^L1604D4
+*         PEA   L1604D4
+*         JSL   L07187A
          JSL   L09AE9F
          LDA   L055051
          BNE   L0A1F9C
@@ -3751,12 +3751,12 @@ L0A1FF2  PHY
 L0A2005  PEA   ^L053259
          PEA   L053259
          JSL   L086C8B
-         PEA   ^L1604F0
-         PEA   L1604F0
-         JSL   L07187A
-         PEA   ^L1604E2
-         PEA   L1604E2
-         JSL   L07187A
+*         PEA   ^L1604F0
+*         PEA   L1604F0
+*         JSL   L07187A
+*         PEA   ^L1604E2
+*         PEA   L1604E2
+*         JSL   L07187A
 L0A2023  LDA   $0A
          STA   $0C
          LDA   $09
@@ -5375,40 +5375,41 @@ L0A2E33  ASL
          PHA
          RTS
 
-L0A2E3B  DA    L0A2E53+1
-         DA    L0A2E66+2
-         DA    L0A2E71+1
-         DA    L0A2EE7+1
-         DA    L0A2E84+1
-         DA    L0A2EAC+1
-         DA    L0A2EB5+1
-         DA    L0A2EE7+1
-         DA    L0A2EC4+1
-         DA    L0A2ECD+1
-         DA    L0A2ED6+1
-         DA    L0A2EE7+1
-L0A2E53  DA    L0A2EDF+1
-         PHY
+L0A2E3B  DA    L0A2E55-1
+         DA    L0A2E69-1
+         DA    L0A2E73-1
+         DA    L0A2EE9-1
+         DA    L0A2E86-1
+         DA    L0A2EAE-1
+         DA    L0A2EB7-1
+         DA    L0A2EE9-1
+         DA    L0A2EC6-1
+         DA    L0A2ECF-1
+         DA    L0A2ED8-1
+         DA    L0A2EE9-1
+         DA    L0A2EE1-1
+
+L0A2E55  PHY
          PEA   ^L040295
          PEA   L040295
          PEA   $0000
          JSL   L091037
          PLA
          STA   $01
-L0A2E66  BRL   L0A2EE9
-         PEA   $0000
+         BRL   L0A2EE9
+L0A2E69  PEA   $0000
          PHD
          JSL   L0A2C7F
-L0A2E71  BRA   L0A2EE9
-         PHY
+         BRA   L0A2EE9
+L0A2E73  PHY
          PEA   ^L040296
          PEA   L040296
          PEA   $0000
          JSL   L098B31
          PLA
          STA   $01
-L0A2E84  BRA   L0A2EE9
-         PHY
+         BRA   L0A2EE9
+L0A2E86  PHY
          PEA   ^L040297
          PEA   L040297
          JSL   L0946A2
@@ -5416,36 +5417,40 @@ L0A2E84  BRA   L0A2EE9
          LSR
          BCC   L0A2EA5
          JSL   L160536
-         PEA   ^L160536
-         PEA   L160536
-         JSL   L07187A
-         BRA   L0A2EAC
+*         PEA   ^L160536
+*         PEA   L160536
+*         JSL   L07187A
+*         BRA   L0A2EAC
+         bra   L0A2EE9
 L0A2EA5  PEA   $0035
          JSL   L0727E0
-L0A2EAC  BRA   L0A2EE9
-         PEA   $0006
+         BRA   L0A2EE9
+L0A2EAE  PEA   $0006
          JSL   L0A3F63
-L0A2EB5  BRA   L0A2EE9
-         PHY
+         BRA   L0A2EE9
+L0A2EB7  PHY
          JSL   L0A2112
          PLA
          LSR
-         BCC   L0A2EC4
+*         BCC   L0A2EC4
+         bcc   L0A2EE9
          JSL   L160544
 L0A2EC4  BRA   L0A2EE9
-         PEA   $0001
+L0A2EC6  PEA   $0001
          JSL   L0A1F68
-L0A2ECD  BRA   L0A2EE9
-         PEA   $0002
+         BRA   L0A2EE9
+L0A2ECF  PEA   $0002
          JSL   L0A1F68
-L0A2ED6  BRA   L0A2EE9
-         PEA   $0003
+         BRA   L0A2EE9
+L0A2ED8  PEA   $0003
          JSL   L0A1F68
-L0A2EDF  BRA   L0A2EE9
-         LDA   #$0001
+         BRA   L0A2EE9
+L0A2EE1  LDA   #$0001
          STA   L05524F
-L0A2EE7  BRA   L0A2EE9
+L0A2EE7
+*  BRA   L0A2EE9
 L0A2EE9  BRL   L0A314E
+
 L0A2EEC  LDA   $0C
          SEC
          SBC   #$04B1
@@ -5458,48 +5463,51 @@ L0A2EEC  LDA   $0C
          PHA
          RTS
 
-L0A2F01  DA    L0A2F11+1
-         DA    L0A2F24+1
-         DA    L0A2F2E+1
-         DA    L0A2F64+1
-         DA    L0A2F41+1
-         DA    L0A2F4A+1
-         DA    L0A2F53+1
-         DA    L0A2F64+1
-L0A2F11  DA    L0A2F5C+1
-         PHY
+L0A2F01  DA    L0A2F13-1
+         DA    L0A2F26-1
+         DA    L0A2F30-1
+         DA    L0A2F66-1
+         DA    L0A2F43-1
+         DA    L0A2F4C-1
+         DA    L0A2F55-1
+         DA    L0A2F66-1
+         DA    L0A2F5E-1
+
+L0A2F13  PHY
          PEA   ^L04029F
          PEA   L04029F
          PEA   $0000
          JSL   L091037
          PLA
          STA   $01
-L0A2F24  BRA   L0A2F66
-         PEA   $0000
+         BRA   L0A2F66
+L0A2F26  PEA   $0000
          PHD
          JSL   L0A2C7F
-L0A2F2E  BRA   L0A2F66
-         PHY
+         BRA   L0A2F66
+L0A2F30  PHY
          PEA   ^L0402A0
          PEA   L0402A0
          PEA   $0000
          JSL   L098B31
          PLA
          STA   $01
-L0A2F41  BRA   L0A2F66
-         PEA   $0001
+         BRA   L0A2F66
+L0A2F43  PEA   $0001
          JSL   L0A1F68
-L0A2F4A  BRA   L0A2F66
-         PEA   $0002
+         BRA   L0A2F66
+L0A2F4C  PEA   $0002
          JSL   L0A1F68
-L0A2F53  BRA   L0A2F66
-         PEA   $0003
+         BRA   L0A2F66
+L0A2F55  PEA   $0003
          JSL   L0A1F68
-L0A2F5C  BRA   L0A2F66
-         LDA   #$0001
+         BRA   L0A2F66
+L0A2F5E  LDA   #$0001
          STA   L05524F
-L0A2F64  BRA   L0A2F66
+L0A2F64
+*  BRA   L0A2F66
 L0A2F66  BRL   L0A314E
+
 L0A2F69  LDA   $0C
          SEC
          SBC   #$00FE
@@ -5665,50 +5673,53 @@ L0A30CA  CMP   #$000C
          PHA
          RTS
 
-L0A30D7  DA    L0A30ED+1
-         DA    L0A30F6+1
-         DA    L0A30FF+1
-         DA    L0A3108+1
-         DA    L0A3111+1
-         DA    L0A314A+1
-         DA    L0A311A+1
-         DA    L0A3123+1
-         DA    L0A314A+1
-         DA    L0A312C+1
-         DA    L0A3138+1
-L0A30ED  DA    L0A3144+1
-         PEA   $0002
+L0A30D7  DA    L0A30EF-1
+         DA    L0A30F8-1
+         DA    L0A3101-1
+         DA    L0A310A-1
+         DA    L0A3113-1
+         DA    L0A314C-1
+         DA    L0A311C-1
+         DA    L0A3125-1
+         DA    L0A314C-1
+         DA    L0A312E-1
+         DA    L0A313A-1
+         DA    L0A3146-1
+
+L0A30EF  PEA   $0002
          JSL   L0A3F63
-L0A30F6  BRA   L0A314C
-         PEA   $0004
+         BRA   L0A314C
+L0A30F8  PEA   $0004
          JSL   L0A3F63
-L0A30FF  BRA   L0A314C
-         PEA   $0003
+         BRA   L0A314C
+L0A3101  PEA   $0003
          JSL   L0A3F63
-L0A3108  BRA   L0A314C
-         PEA   $0001
+         BRA   L0A314C
+L0A310A  PEA   $0001
          JSL   L0A3F63
-L0A3111  BRA   L0A314C
-         PEA   $0005
+         BRA   L0A314C
+L0A3113  PEA   $0005
          JSL   L0A3F63
-L0A311A  BRA   L0A314C
-         PEA   $0000
+         BRA   L0A314C
+L0A311C  PEA   $0000
          JSL   L160552
-L0A3123  BRA   L0A314C
-         PEA   $0001
+         BRA   L0A314C
+L0A3125  PEA   $0001
          JSL   L160552
-L0A312C  BRA   L0A314C
-         PEA   $0001
+         BRA   L0A314C
+L0A312E  PEA   $0001
          PEA   $0000
          JSL   L1604D4
-L0A3138  BRA   L0A314C
-         PEA   $0002
+         BRA   L0A314C
+L0A313A  PEA   $0002
          PEA   $0000
          JSL   L1604D4
-L0A3144  BRA   L0A314C
-         JSL   L160560
-L0A314A  BRA   L0A314C
-L0A314C  BRA   L0A314E
+         BRA   L0A314C
+L0A3146  JSL   L160560
+L0A314A
+*  BRA   L0A314C
+L0A314C
+*  BRA   L0A314E
 L0A314E  STZ   L05523D
 L0A3151  LDA   $0A
          STA   $0E
@@ -7155,12 +7166,12 @@ L0A3E17  ENT
          ADC   #$FFFC
          TCS
          TCD
-         PEA   ^L160242
-         PEA   L160242
-         JSL   L07187A
-         PEA   ^L160250
-         PEA   L160250
-         JSL   L07187A
+*         PEA   ^L160242
+*         PEA   L160242
+*         JSL   L07187A
+*         PEA   ^L160250
+*         PEA   L160250
+*         JSL   L07187A
          STZ   L0550B9
          STZ   L05514D
          STZ   L05514B
@@ -7331,30 +7342,36 @@ L0A3F63  ENT
          PHA
          RTS
 
-L0A3F8F  DA    L0A3F99+1
-         DA    L0A3F9F+1
-         DA    L0A3FA5+1
-         DA    L0A3FAB+1
-         DA    L0A3FB1+1
-L0A3F99  DA    L0A3FB7+1
-         JSL   L1605C2
-L0A3F9F  BRA   L0A3FBF
-         JSL   L1605D0
-L0A3FA5  BRA   L0A3FBF
-         JSL   L1605DE
-L0A3FAB  BRA   L0A3FBF
-         JSL   L1605EC
-L0A3FB1  BRA   L0A3FBF
-         JSL   L1605FA
-L0A3FB7  BRA   L0A3FBF
-         JSL   L160608
+L0A3F8F  DA    L0A3F9B-1
+         DA    L0A3FA1-1
+         DA    L0A3FA7-1
+         DA    L0A3FAD-1
+         DA    L0A3FB3-1
+         DA    L0A3FB9-1
+
+L0A3F9B  JSL   L1605C2
          BRA   L0A3FBF
-L0A3FBF  PEA   ^L1605C2
-         PEA   L1605C2
-         JSL   L07187A
-         BRA   L0A3FD2
+L0A3FA1  JSL   L1605D0
+         BRA   L0A3FBF
+L0A3FA7  JSL   L1605DE
+         BRA   L0A3FBF
+L0A3FAD  JSL   L1605EC
+         BRA   L0A3FBF
+L0A3FB3  JSL   L1605FA
+         BRA   L0A3FBF
+L0A3FB9  JSL   L160608
+         BRA   L0A3FBF
+
+*L0A3FBF
+*         PEA   ^L1605C2
+*         PEA   L1605C2
+*         JSL   L07187A
+*         BRA   L0A3FD2
+
 L0A3FCB  PEA   $0035
          JSL   L0727E0
+
+L0A3FBF
 L0A3FD2  LDA   $08
          STA   $0A
          LDA   $07

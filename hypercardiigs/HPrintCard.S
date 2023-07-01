@@ -75,9 +75,9 @@ L240020  PHY
          BCC   L240092
          PEI   $1A
          JSL   L160BAA
-         PEA   ^L160BAA
-         PEA   L160BAA
-         JSL   L07187A
+*         PEA   ^L160BAA
+*         PEA   L160BAA
+*         JSL   L07187A
          TDC
          CLC
          ADC   #$0001

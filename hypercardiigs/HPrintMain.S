@@ -4789,9 +4789,9 @@ L1F25CE  PHY
          JSL   L16095E
          PLA
          STA   $10
-         PEA   ^L16095E
-         PEA   L16095E
-         JSL   L07187A
+*         PEA   ^L16095E
+*         PEA   L16095E
+*         JSL   L07187A
          JSL   L1F2B4D
 L1F25E8  PEI   $01
          JSL   L0724F7
@@ -5078,9 +5078,9 @@ L1F2833  PHY
          JSL   L16096C
          PLA
          STA   $0E
-         PEA   ^L16096C
-         PEA   L16096C
-         JSL   L07187A
+*         PEA   ^L16096C
+*         PEA   L16096C
+*         JSL   L07187A
          JSL   L1F2B4D
 L1F284B  PEI   $01
          JSL   L0724F7
@@ -5139,9 +5139,9 @@ L1F2898  STA   $03
          JSL   L16097A
          PLA
          STA   [$03]
-         PEA   ^L16097A
-         PEA   L16097A
-         JSL   L07187A
+*         PEA   ^L16097A
+*         PEA   L16097A
+*         JSL   L07187A
 L1F28BB  LDA   $0A
          STA   $0E
          LDA   $09
@@ -5203,9 +5203,9 @@ L1F2910  PHY
          JSL   L160988
          PLA
          STA   $12
-         PEA   ^L160988
-         PEA   L160988
-         JSL   L07187A
+*         PEA   ^L160988
+*         PEA   L160988
+*         JSL   L07187A
 L1F2931  BRA   L1F2969
 L1F2933  PHY
          PEA   ^L040856
@@ -5222,9 +5222,10 @@ L1F2933  PHY
          PEA   $0000
          PHD
          JSL   L1F2862
-L1F2953  PEA   ^L160996
-         PEA   L160996
-         JSL   L07187A
+L1F2953
+*         PEA   ^L160996
+*         PEA   L160996
+*         JSL   L07187A
 L1F295D  BRA   L1F2969
 L1F295F  PEA   $0000
          PHD
@@ -5286,9 +5287,9 @@ L1F29BB  PHY
          JSL   L1609A4
          PLA
          STA   $10
-         PEA   ^L1609A4
-         PEA   L1609A4
-         JSL   L07187A
+*         PEA   ^L1609A4
+*         PEA   L1609A4
+*         JSL   L07187A
 L1F29DC  BRA   L1F2A01
 L1F29DE  PHY
          PEA   ^L04086B
@@ -5301,9 +5302,9 @@ L1F29DE  PHY
          JSL   L160996
          PLA
          STA   $10
-         PEA   ^L160996
-         PEA   L160996
-         JSL   L07187A
+*         PEA   ^L160996
+*         PEA   L160996
+*         JSL   L07187A
 L1F29FF  BRA   L1F2A01
 L1F2A01  JSL   L1F2B4D
          PEI   $03
@@ -5392,9 +5393,9 @@ L1F2A8E  PHY
          BRA   L1F2AA7
 L1F2AA7  PEA   $0001
          JSL   L1F1EBC
-         PEA   ^L1609B2
-         PEA   L1609B2
-         JSL   L07187A
+*         PEA   ^L1609B2
+*         PEA   L1609B2
+*         JSL   L07187A
          JSL   L1F2B4D
 L1F2ABC  PEI   $01
          JSL   L0724F7
@@ -5443,8 +5444,9 @@ L1F2B0B  PHY
          JSL   L1F27B5
          PLA
          LSR
-         BCS   L1F2B16
-         BRA   L1F2B35
+*         BCS   L1F2B16
+*         BRA   L1F2B35
+         bcc   L1F2B35
 L1F2B16  PHY
          TDC
          CLC
@@ -5454,9 +5456,9 @@ L1F2B16  PHY
          JSL   L1609C0
          PLA
          STA   $24
-         PEA   ^L1609C0
-         PEA   L1609C0
-         JSL   L07187A
+*         PEA   ^L1609C0
+*         PEA   L1609C0
+*         JSL   L07187A
          JSL   L1F2B4D
 L1F2B35  PEI   $15
          JSL   L0724F7
@@ -5480,8 +5482,9 @@ L1F2B4D  PHD
          TCD
          LDA   L055345
          AND   L05510D
-         BNE   L1F2B5F
-         BRA   L1F2B78
+*         BNE   L1F2B5F
+*         BRA   L1F2B78
+         beq   L012B78
 L1F2B5F  JSL   L1506E7
          PEA   $0013
          JSL   L151331

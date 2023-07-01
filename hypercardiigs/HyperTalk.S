@@ -1278,7 +1278,7 @@ L0B0923  LDA   L0553A5
          ORA   $01,S
          PLX
          STA   L0553A5
-         LDA   L0553A5	; LOGO
+*         LDA   L0553A5	; LOGO
          BEQ   L0B093B
          BRL   L0B0B68
 L0B093B  LDA   #$0001
@@ -10447,11 +10447,11 @@ L0B511D  STA   $01
 L0B513B  PEI   $0E
          PEI   $0C
          JSL   L0B422F
-         LDA   $01
-         BEQ   L0B514F
-         PEI   $0E
-         PEI   $0C
-         JSL   L07187A
+*         LDA   $01
+*         BEQ   L0B514F
+*         PEI   $0E
+*         PEI   $0C
+*         JSL   L07187A
 L0B514F  LDA   $0A
          STA   $0E
          LDA   $09
@@ -10858,8 +10858,8 @@ L0B547B  LDA   #$0008
          LDAL  L032DA0+2,X
          PHA
          LDAL  L032DA0,X
-         PLX
-         PHX
+*         PLX
+*         PHX
          PHA
          JSL   L0E0F0F
          JSL   L0B0000
@@ -11275,21 +11275,23 @@ L0B5825  JSL   L0B0000
          LDA   #$0008
          CMP   $EF
          BNE   L0B5840
-         LDA   $E9
-         DEC
-         STA   $E9
+*         LDA   $E9
+*         DEC
+*         STA   $E9
+         dec   $e9
 L0B5840  LDA   $EF
          DEC
          ASL
          ASL
          TAX
          LDAL  L0327D4+2,X
-         PHA
+*         PHA
+         sta   $ed
          LDAL  L0327D4,X
-         PLX
+*         PLX
          STA   $EB
-         STX   $ED
-         LDA   $EB
+*         STX   $ED
+*         LDA   $EB
          ORA   $ED
          BEQ   L0B585D
          LDA   #$0001
@@ -11320,8 +11322,8 @@ L0B5870  STA   $E7
          LDAL  L0326C6+2,X
          PHA
          LDAL  L0326C6,X
-         PLX
-         PHX
+*         PLX
+*         PHX
          PHA
          JSL   L0B0897
          BRL   L0B5943
@@ -11340,8 +11342,8 @@ L0B58A2  PHY
          LDAL  L0326C6+2,X
          PHA
          LDAL  L0326C6,X
-         PLX
-         PHX
+*         PLX
+*         PHX
          PHA
          JSL   L0B0841
          JSL   L0E0000
@@ -11377,8 +11379,8 @@ L0B58E8  STA   $E7
          LDAL  L0326C6+2,X
          PHA
          LDAL  L0326C6,X
-         PLX
-         PHX
+*         PLX
+*         PHX
          PHA
          JSL   L0B0897
          JSL   L0E0000

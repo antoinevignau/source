@@ -13,6 +13,9 @@
 * v1.1 (202306) - AV
 *   Writes a sector too!
 *
+* v1.2 (202307) - AV
+*   Uses disk insertion status
+*
 
 	mx	%00
 	rel
@@ -259,8 +262,10 @@ SGetStatus	lda	#2		; GetDeviceStatus
 	sta	[statusListPtr],y
 
 SGS1	ldx	#diskInDriveBit
-	lda	fgSTARTED		; send the status of the driver
-	bne	SGS2
+	ldal	SD_CARD_INSERTED	; check if a card is inserted
+	and	#$ff
+	cmp	#1
+	beq	SGS2		; yes, a SD card is inserted
 	inx
 SGS2	txa
 	ora	#uncertainBlockCountBit	; we are uncertain of the block count
@@ -378,13 +383,15 @@ ds6	lda	requestCount	; assume transfer=request
 *----------------------------
 
 checkSWITCHED
-	lda	fgSTARTED
-	bne	cs1
+	ldal	SD_CARD_INSERTED
+	and	#$ff
+	cmp	#1
+	beq	cs1
 	
 	jsl	SET_DISKSW
 
-	lda	#1
-	sta	fgSTARTED
+*	lda	#1
+*	sta	fgSTARTED
 	lda	#$002e
 	sta	errCODE
 	sec

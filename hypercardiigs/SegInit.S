@@ -2850,11 +2850,12 @@ L17194C  STA   $65
          STA   L05501B
          STX   L05501D
          LDAL  L040243+2
-         TAX
+*         TAX
+         stal  L052528
          LDAL  L040243
          STAL  L052526
-         TXA
-         STAL  L052528
+*         TXA
+*         STAL  L052528
          PHY
          PHY
          PEA   $0000

@@ -3128,9 +3128,9 @@ L07186C  LDA   $04
          RTL
 
 L07187A  ENT
-         PHD
-         TSC
-         TCD
+*         PHD
+*         TSC
+*         TCD
 * AV 202208
 *         PHA
 *         PHA
@@ -3145,16 +3145,16 @@ L07187A  ENT
 *L071893  PLA
 *         PLX
 *         PLY
-         LDA   $04
-         STA   $08
-         LDA   $03
-         STA   $07
-         TDC
-         TCS
-         PLD
-         PLY
-         PLY
-         RTL
+*         LDA   $04
+*         STA   $08
+*         LDA   $03
+*         STA   $07
+*         TDC
+*         TCS
+*         PLD
+*         PLY
+*         PLY
+*         RTL
 
 L0718A4  ENT
          PHD

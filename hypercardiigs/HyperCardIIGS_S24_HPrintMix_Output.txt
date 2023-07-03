@@ -1,0 +1,1435 @@
+------+-------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File             Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+-------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1   HPrintMix.S      1 | Comment     | 11 |         |    0 | 00/0000               | *
+    2 |  1   HPrintMix.S      2 | Comment     | 11 |         |    0 | 00/0000               | * HypercardGS
+    3 |  1   HPrintMix.S      3 | Comment     | 11 |         |    0 | 00/0000               | * segment: $25 HPrintMix
+    4 |  1   HPrintMix.S      4 | Comment     | 11 |         |    0 | 00/0000               | *
+    5 |  1   HPrintMix.S      5 | Comment     | 11 |         |    0 | 00/0000               | * (k) 2015, Brutal Deluxe Software
+    6 |  1   HPrintMix.S      6 | Comment     | 11 |         |    0 | 00/0000               | *
+    7 |  1   HPrintMix.S      7 | Empty       | 11 |         |    0 | 00/0000               |                                  
+    8 |  1   HPrintMix.S      8 | Directive   | 00 |         |    0 | 00/0000               |             mx    %00            
+    9 |  1   HPrintMix.S      9 | Directive   | 00 |         |    0 | 00/0000               |             rel                  
+   10 |  1   HPrintMix.S     10 | Directive   | 00 |         |    0 | 00/0000               |             dsk   HPrintMix.l    
+   11 |  1   HPrintMix.S     11 | Directive   | 00 |         |    0 | 00/0000               |             lst   off            
+   12 |  1   HPrintMix.S     12 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   13 |  1   HPrintMix.S     13 | Comment     | 00 |         |    0 | 00/0000               | *---------------------------------------
+   14 |  1   HPrintMix.S     14 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   15 |  1   HPrintMix.S     15 | Directive   | 00 |         |    0 | 00/0000               |             use   HPrintMix.X    
+   16 |  2 HPrintMix.X.s      1 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   17 |  2 HPrintMix.X.s      2 | Comment     | 00 |         |    0 | 00/0000               | * TFBD generated externals
+   18 |  2 HPrintMix.X.s      3 | Comment     | 00 |         |    0 | 00/0000               | *     (c) PHC 1992,93
+   19 |  2 HPrintMix.X.s      4 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   20 |  2 HPrintMix.X.s      5 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   21 |  2 HPrintMix.X.s      6 | External    | 00 |         |    0 | 00/0000               | L033477     EXT                  
+   22 |  2 HPrintMix.X.s      7 | External    | 00 |         |    0 | 00/0000               | L0313BE     EXT                  
+   23 |  2 HPrintMix.X.s      8 | External    | 00 |         |    0 | 00/0000               | L150488     EXT                  
+   24 |  2 HPrintMix.X.s      9 | External    | 00 |         |    0 | 00/0000               | L150D50     EXT                  
+   25 |  2 HPrintMix.X.s     10 | External    | 00 |         |    0 | 00/0000               | L150F53     EXT                  
+   26 |  2 HPrintMix.X.s     11 | External    | 00 |         |    0 | 00/0000               | L07346C     EXT                  
+   27 |  2 HPrintMix.X.s     12 | External    | 00 |         |    0 | 00/0000               | L1509CE     EXT                  
+   28 |  2 HPrintMix.X.s     13 | External    | 00 |         |    0 | 00/0000               | L0718BF     EXT                  
+   29 |  2 HPrintMix.X.s     14 | External    | 00 |         |    0 | 00/0000               | L071C56     EXT                  
+   30 |  2 HPrintMix.X.s     15 | External    | 00 |         |    0 | 00/0000               | L072FD5     EXT                  
+   31 |  2 HPrintMix.X.s     16 | External    | 00 |         |    0 | 00/0000               | L072FA6     EXT                  
+   32 |  2 HPrintMix.X.s     17 | External    | 00 |         |    0 | 00/0000               | L0718DA     EXT                  
+   33 |  2 HPrintMix.X.s     18 | External    | 00 |         |    0 | 00/0000               | L0711EB     EXT                  
+   34 |  2 HPrintMix.X.s     19 | External    | 00 |         |    0 | 00/0000               | L074B81     EXT                  
+   35 |  2 HPrintMix.X.s     20 | External    | 00 |         |    0 | 00/0000               | L077624     EXT                  
+   36 |  2 HPrintMix.X.s     21 | External    | 00 |         |    0 | 00/0000               | L0718A4     EXT                  
+   37 |  2 HPrintMix.X.s     22 | External    | 00 |         |    0 | 00/0000               | L0551AD     EXT                  
+   38 |  2 HPrintMix.X.s     23 | External    | 00 |         |    0 | 00/0000               | L150493     EXT                  
+   39 |  2 HPrintMix.X.s     24 | External    | 00 |         |    0 | 00/0000               | L151131     EXT                  
+   40 |  2 HPrintMix.X.s     25 | External    | 00 |         |    0 | 00/0000               | L053251     EXT                  
+   41 |  2 HPrintMix.X.s     26 | External    | 00 |         |    0 | 00/0000               | L055051     EXT                  
+   42 |  2 HPrintMix.X.s     27 | External    | 00 |         |    0 | 00/0000               | L08090C     EXT                  
+   43 |  2 HPrintMix.X.s     28 | External    | 00 |         |    0 | 00/0000               | L077B28     EXT                  
+   44 |  2 HPrintMix.X.s     29 | External    | 00 |         |    0 | 00/0000               | L1500F5     EXT                  
+   45 |  2 HPrintMix.X.s     30 | External    | 00 |         |    0 | 00/0000               | L150318     EXT                  
+   46 |  2 HPrintMix.X.s     31 | External    | 00 |         |    0 | 00/0000               | L1510C5     EXT                  
+   47 |  2 HPrintMix.X.s     32 | External    | 00 |         |    0 | 00/0000               | L15042E     EXT                  
+   48 |  2 HPrintMix.X.s     33 | External    | 00 |         |    0 | 00/0000               | L15059E     EXT                  
+   49 |  2 HPrintMix.X.s     34 | External    | 00 |         |    0 | 00/0000               | L150592     EXT                  
+   50 |  2 HPrintMix.X.s     35 | External    | 00 |         |    0 | 00/0000               | L055243     EXT                  
+   51 |  2 HPrintMix.X.s     36 | External    | 00 |         |    0 | 00/0000               | L055327     EXT                  
+   52 |  2 HPrintMix.X.s     37 | External    | 00 |         |    0 | 00/0000               | L055329     EXT                  
+   53 |  2 HPrintMix.X.s     38 | External    | 00 |         |    0 | 00/0000               | L15063B     EXT                  
+   54 |  2 HPrintMix.X.s     39 | External    | 00 |         |    0 | 00/0000               | L053ADB     EXT                  
+   55 |  2 HPrintMix.X.s     40 | External    | 00 |         |    0 | 00/0000               | L053AD9     EXT                  
+   56 |  2 HPrintMix.X.s     41 | External    | 00 |         |    0 | 00/0000               | L150695     EXT                  
+   57 |  2 HPrintMix.X.s     42 | External    | 00 |         |    0 | 00/0000               | L055337     EXT                  
+   58 |  2 HPrintMix.X.s     43 | External    | 00 |         |    0 | 00/0000               | L055341     EXT                  
+   59 |  2 HPrintMix.X.s     44 | External    | 00 |         |    0 | 00/0000               | L055343     EXT                  
+   60 |  2 HPrintMix.X.s     45 | External    | 00 |         |    0 | 00/0000               | L160ACA     EXT                  
+   61 |  2 HPrintMix.X.s     46 | External    | 00 |         |    0 | 00/0000               | L1609CE     EXT                  
+   62 |  2 HPrintMix.X.s     47 | External    | 00 |         |    0 | 00/0000               | L1609F8     EXT                  
+   63 |  2 HPrintMix.X.s     48 | External    | 00 |         |    0 | 00/0000               | L160A06     EXT                  
+   64 |  2 HPrintMix.X.s     49 | External    | 00 |         |    0 | 00/0000               | L160A4C     EXT                  
+   65 |  2 HPrintMix.X.s     50 | External    | 00 |         |    0 | 00/0000               | L160A5A     EXT                  
+   66 |  2 HPrintMix.X.s     51 | External    | 00 |         |    0 | 00/0000               | L160A84     EXT                  
+   67 |  2 HPrintMix.X.s     52 | External    | 00 |         |    0 | 00/0000               | L160A92     EXT                  
+   68 |  2 HPrintMix.X.s     53 | External    | 00 |         |    0 | 00/0000               | L160AA0     EXT                  
+   69 |  2 HPrintMix.X.s     54 | External    | 00 |         |    0 | 00/0000               | L160AAE     EXT                  
+   70 |  2 HPrintMix.X.s     55 | External    | 00 |         |    0 | 00/0000               | L160AD8     EXT                  
+   71 |  2 HPrintMix.X.s     56 | External    | 00 |         |    0 | 00/0000               | L160AE6     EXT                  
+   72 |  2 HPrintMix.X.s     57 | External    | 00 |         |    0 | 00/0000               | L151287     EXT                  
+   73 |  2 HPrintMix.X.s     58 | External    | 00 |         |    0 | 00/0000               | L160AF4     EXT                  
+   74 |  2 HPrintMix.X.s     59 | External    | 00 |         |    0 | 00/0000               | L1511A4     EXT                  
+   75 |  2 HPrintMix.X.s     60 | External    | 00 |         |    0 | 00/0000               | L15149C     EXT                  
+   76 |  2 HPrintMix.X.s     61 | External    | 00 |         |    0 | 00/0000               | L1513E8     EXT                  
+   77 |  2 HPrintMix.X.s     62 | External    | 00 |         |    0 | 00/0000               | L1505CE     EXT                  
+   78 |  2 HPrintMix.X.s     63 | External    | 00 |         |    0 | 00/0000               | L160B10     EXT                  
+   79 |  2 HPrintMix.X.s     64 | External    | 00 |         |    0 | 00/0000               | L160B80     EXT                  
+   80 |  2 HPrintMix.X.s     65 | External    | 00 |         |    0 | 00/0000               | L160B8E     EXT                  
+   81 |  2 HPrintMix.X.s     66 | External    | 00 |         |    0 | 00/0000               | L053253     EXT                  
+   82 |  2 HPrintMix.X.s     67 | External    | 00 |         |    0 | 00/0000               | L151059     EXT                  
+   83 |  2 HPrintMix.X.s     68 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   84 |  1   HPrintMix.S     16 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   85 |  1   HPrintMix.S     17 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Ctl.Macs     
+   86 |  1   HPrintMix.S     18 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Desk.Macs    
+   87 |  1   HPrintMix.S     19 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Dialog.Macs  
+   88 |  1   HPrintMix.S     20 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Event.Macs   
+   89 |  1   HPrintMix.S     21 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Int.Macs     
+   90 |  1   HPrintMix.S     22 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Line.Macs    
+   91 |  1   HPrintMix.S     23 | Directive   | 00 |         |    0 | 00/0000               |             use   4/List.Macs    
+   92 |  1   HPrintMix.S     24 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Locator.Macs 
+   93 |  1   HPrintMix.S     25 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Mem.Macs     
+   94 |  1   HPrintMix.S     26 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Menu.Macs    
+   95 |  1   HPrintMix.S     27 | Directive   | 00 |         |    0 | 00/0000               |             use   4/MidiSyn.Macs 
+   96 |  1   HPrintMix.S     28 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Misc.Macs    
+   97 |  1   HPrintMix.S     29 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Qd.Macs      
+   98 |  1   HPrintMix.S     30 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Sound.Macs   
+   99 |  1   HPrintMix.S     31 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Std.Macs     
+  100 |  1   HPrintMix.S     32 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Text.Macs    
+  101 |  1   HPrintMix.S     33 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Util.Macs    
+  102 |  1   HPrintMix.S     34 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Window.Macs  
+  103 |  1   HPrintMix.S     35 | Empty       | 00 |         |    0 | 00/0000               |                                  
+  104 |  1   HPrintMix.S     36 | Comment     | 00 |         |    0 | 00/0000               | *---------------------------------------
+  105 |  1   HPrintMix.S     37 | Empty       | 00 |         |    0 | 00/0000               |                                  
+  106 |  1   HPrintMix.S     38 | Global      | 00 |         |    0 | 00/0000               | L250000     ENT                  
+  107 |  1   HPrintMix.S     39 | Data        | 00 |         |    2 | 00/0000 : 16 00       |             DW    $0016          
+  108 |  1   HPrintMix.S     40 | Data        | 00 |         |    2 | 00/0002 : 00 0A       | L250002     DW    $0A00          
+  109 |  1   HPrintMix.S     41 | Data        | 00 |         |    2 | 00/0004 : 16 00       | L250004     DW    $0016          
+  110 |  1   HPrintMix.S     42 | Data        | 00 |         |    2 | 00/0006 : 00 0C       | L250006     DW    $0C00          
+  111 |  1   HPrintMix.S     43 | Empty       | 00 |         |    0 | 00/0008               |                                  
+  112 |  1   HPrintMix.S     44 | Global      | 00 |         |    0 | 00/0008               | L250008     ENT                  
+  113 |  1   HPrintMix.S     45 | Code        | 00 |         |    1 | 00/0008 : 0B          |             PHD                  
+  114 |  1   HPrintMix.S     46 | Code        | 00 |         |    1 | 00/0009 : 3B          |             TSC                  
+  115 |  1   HPrintMix.S     47 | Code        | 00 |         |    1 | 00/000A : 18          |             CLC                  
+  116 |  1   HPrintMix.S     48 | Code        | 00 |         |    3 | 00/000B : 69 EA FF    |             ADC   #$FFEA         
+  117 |  1   HPrintMix.S     49 | Code        | 00 |         |    1 | 00/000E : 1B          |             TCS                  
+  118 |  1   HPrintMix.S     50 | Code        | 00 |         |    1 | 00/000F : 5B          |             TCD                  
+  119 |  1   HPrintMix.S     51 | Code        | 00 |         |    2 | 00/0010 : 64 20       |             STZ   $20            
+  120 |  1   HPrintMix.S     52 | Code        | 00 |         |    2 | 00/0012 : 64 0D       |             STZ   $0D            
+  121 |  1   HPrintMix.S     53 | Code        | 00 |         |    2 | 00/0014 : 64 0F       |             STZ   $0F            
+  122 |  1   HPrintMix.S     54 | Code        | 00 |         |    1 | 00/0016 : 5A          |             PHY                  
+  123 |  1   HPrintMix.S     55 | Code        | 00 |         |    3 | 00/0017 : F4 03 00    |             PEA   $0003          
+  124 |  1   HPrintMix.S     56 | Code        | 00 |         |    3 | 00/001A : F4 00 00    |             PEA   $0000          
+  125 |  1   HPrintMix.S     57 | Code        | 00 |         |    3 | 00/001D : F4 00 00    |             PEA   $0000          
+  126 |  1   HPrintMix.S     58 | Code        | 00 |E 3      |    4 | 00/0020 : 22 5A 0A 15 |             JSL   L160A5A        
+  127 |  1   HPrintMix.S     59 | Code        | 00 |         |    1 | 00/0024 : 68          |             PLA                  
+  128 |  1   HPrintMix.S     60 | Code        | 00 |         |    1 | 00/0025 : 4A          |             LSR                  
+  129 |  1   HPrintMix.S     61 | Code        | 00 |         |    2 | 00/0026 : B0 03       |             BCS   L25002B        
+  130 |  1   HPrintMix.S     62 | Code        | 00 |         |    3 | 00/0028 : 82 FD 00    |             BRL   L250128        
+  131 |  1   HPrintMix.S     63 | Code        | 00 |         |    3 | 00/002B : F4 03 00    | L25002B     PEA   $0003          
+  132 |  1   HPrintMix.S     64 | Code        | 00 |E 3      |    4 | 00/002E : 22 4C 0A 15 |             JSL   L160A4C        
+  133 |  1   HPrintMix.S     65 | Code        | 00 |         |    1 | 00/0032 : 5A          |             PHY                  
+  134 |  1   HPrintMix.S     66 | Code        | 00 |         |    1 | 00/0033 : 5A          |             PHY                  
+  135 |  1   HPrintMix.S     67 | Code        | 00 |E 3      |    4 | 00/0034 : 22 8E 0B 15 |             JSL   L160B8E        
+  136 |  1   HPrintMix.S     68 | Code        | 00 |         |    1 | 00/0038 : 68          |             PLA                  
+  137 |  1   HPrintMix.S     69 | Code        | 00 |         |    2 | 00/0039 : 85 05       |             STA   $05            
+  138 |  1   HPrintMix.S     70 | Code        | 00 |         |    1 | 00/003B : FA          |             PLX                  
+  139 |  1   HPrintMix.S     71 | Code        | 00 |         |    2 | 00/003C : 86 07       |             STX   $07            
+  140 |  1   HPrintMix.S     72 | Code        | 00 |         |    2 | 00/003E : A5 05       |             LDA   $05            
+  141 |  1   HPrintMix.S     73 | Code        | 00 |         |    2 | 00/0040 : 05 07       |             ORA   $07            
+  142 |  1   HPrintMix.S     74 | Code        | 00 |         |    2 | 00/0042 : D0 03       |             BNE   L250047        
+  143 |  1   HPrintMix.S     75 | Code        | 00 |         |    3 | 00/0044 : 82 E1 00    |             BRL   L250128        
+  144 |  1   HPrintMix.S     76 | Code        | 00 |         |    1 | 00/0047 : 5A          | L250047     PHY                  
+  145 |  1   HPrintMix.S     77 | Code        | 00 |         |    2 | 00/0048 : D4 07       |             PEI   $07            
+  146 |  1   HPrintMix.S     78 | Code        | 00 |         |    2 | 00/004A : D4 05       |             PEI   $05            
+  147 |  1   HPrintMix.S     79 | Code        | 00 |E 3      |    4 | 00/004C : 22 7A 18 06 |             JSL   L0718A4        
+  148 |  1   HPrintMix.S     80 | Code        | 00 |         |    1 | 00/0050 : 68          |             PLA                  
+  149 |  1   HPrintMix.S     81 | Code        | 00 |         |    2 | 00/0051 : 85 11       |             STA   $11            
+  150 |  1   HPrintMix.S     82 | Code        | 00 |         |    2 | 00/0053 : D4 07       |             PEI   $07            
+  151 |  1   HPrintMix.S     83 | Code        | 00 |         |    2 | 00/0055 : D4 05       |             PEI   $05            
+  152 |  1   HPrintMix.S     84 | Code        | 00 |E 3      |    4 | 00/0057 : 22 95 18 06 |             JSL   L0718BF        
+  153 |  1   HPrintMix.S     85 | Code        | 00 |         |    3 | 00/005B : A0 02 00    |             LDY   #$0002         
+  154 |  1   HPrintMix.S     86 | Code        | 00 |         |    2 | 00/005E : B7 05       |             LDA   [$05],Y        
+  155 |  1   HPrintMix.S     87 | Code        | 00 |         |    1 | 00/0060 : AA          |             TAX                  
+  156 |  1   HPrintMix.S     88 | Code        | 00 |         |    2 | 00/0061 : A7 05       |             LDA   [$05]          
+  157 |  1   HPrintMix.S     89 | Code        | 00 |         |    2 | 00/0063 : 85 01       |             STA   $01            
+  158 |  1   HPrintMix.S     90 | Code        | 00 |         |    2 | 00/0065 : 86 03       |             STX   $03            
+  159 |  1   HPrintMix.S     91 | Code        | 00 |         |    3 | 00/0067 : A0 0E 00    |             LDY   #$000E         
+  160 |  1   HPrintMix.S     92 | Code        | 00 |         |    2 | 00/006A : B7 01       |             LDA   [$01],Y        
+  161 |  1   HPrintMix.S     93 | Code        | 00 |         |    2 | 00/006C : F0 42       |             BEQ   L2500B0        
+  162 |  1   HPrintMix.S     94 | Code        | 00 |         |    3 | 00/006E : A9 9E 00    |             LDA   #$009E         
+  163 |  1   HPrintMix.S     95 | Code        | 00 |         |    1 | 00/0071 : 18          |             CLC                  
+  164 |  1   HPrintMix.S     96 | Code        | 00 |         |    2 | 00/0072 : 65 01       |             ADC   $01            
+  165 |  1   HPrintMix.S     97 | Code        | 00 |         |    2 | 00/0074 : A6 03       |             LDX   $03            
+  166 |  1   HPrintMix.S     98 | Code        | 00 |         |    2 | 00/0076 : 90 01       |             BCC   L250079        
+  167 |  1   HPrintMix.S     99 | Code        | 00 |         |    1 | 00/0078 : E8          |             INX                  
+  168 |  1   HPrintMix.S    100 | Code        | 00 |         |    1 | 00/0079 : DA          | L250079     PHX                  
+  169 |  1   HPrintMix.S    101 | Code        | 00 |         |    1 | 00/007A : 48          |             PHA                  
+  170 |  1   HPrintMix.S    102 | Code        | 00 |         |    3 | 00/007B : A0 0E 00    |             LDY   #$000E         
+  171 |  1   HPrintMix.S    103 | Code        | 00 |         |    2 | 00/007E : B7 01       |             LDA   [$01],Y        
+  172 |  1   HPrintMix.S    104 | Code        | 00 |E 3      |    4 | 00/0080 : 22 88 04 14 |             JSL   L150488        
+  173 |  1   HPrintMix.S    105 | Code        | 00 |         |    1 | 00/0084 : A8          |             TAY                  
+  174 |  1   HPrintMix.S    106 | Code        | 00 |         |    2 | 00/0085 : D0 01       |             BNE   L250088        
+  175 |  1   HPrintMix.S    107 | Code        | 00 |         |    1 | 00/0087 : CA          |             DEX                  
+  176 |  1   HPrintMix.S    108 | Code        | 00 |         |    1 | 00/0088 : 3A          | L250088     DEC                  
+  177 |  1   HPrintMix.S    109 | Code        | 00 |         |    3 | 00/0089 : F4 00 00    |             PEA   $0000          
+  178 |  1   HPrintMix.S    110 | Code        | 00 |         |    3 | 00/008C : F4 0A 00    |             PEA   $000A          
+  179 |  1   HPrintMix.S    111 | Code        | 00 |E 3      |    4 | 00/008F : 22 50 0D 14 |             JSL   L150D50        
+  180 |  1   HPrintMix.S    112 | Code        | 00 |         |    1 | 00/0093 : 68          |             PLA                  
+  181 |  1   HPrintMix.S    113 | Code        | 00 |         |    1 | 00/0094 : FA          |             PLX                  
+  182 |  1   HPrintMix.S    114 | Code        | 00 |E 3      |    4 | 00/0095 : 22 53 0F 14 |             JSL   L150F53        
+  183 |  1   HPrintMix.S    115 | Code        | 00 |         |    1 | 00/0099 : 18          |             CLC                  
+  184 |  1   HPrintMix.S    116 | Code        | 00 |         |    3 | 00/009A : 69 02 00    |             ADC   #$0002         
+  185 |  1   HPrintMix.S    117 | Code        | 00 |         |    2 | 00/009D : 90 01       |             BCC   L2500A0        
+  186 |  1   HPrintMix.S    118 | Code        | 00 |         |    1 | 00/009F : E8          |             INX                  
+  187 |  1   HPrintMix.S    119 | Code        | 00 |         |    2 | 00/00A0 : 85 13       | L2500A0     STA   $13            
+  188 |  1   HPrintMix.S    120 | Code        | 00 |         |    2 | 00/00A2 : 86 15       |             STX   $15            
+  189 |  1   HPrintMix.S    121 | Code        | 00 |         |    3 | 00/00A4 : A0 02 00    |             LDY   #$0002         
+  190 |  1   HPrintMix.S    122 | Code        | 00 |         |    2 | 00/00A7 : B7 13       |             LDA   [$13],Y        
+  191 |  1   HPrintMix.S    123 | Code        | 00 |         |    1 | 00/00A9 : AA          |             TAX                  
+  192 |  1   HPrintMix.S    124 | Code        | 00 |         |    2 | 00/00AA : A7 13       |             LDA   [$13]          
+  193 |  1   HPrintMix.S    125 | Code        | 00 |         |    2 | 00/00AC : 85 0D       |             STA   $0D            
+  194 |  1   HPrintMix.S    126 | Code        | 00 |         |    2 | 00/00AE : 86 0F       |             STX   $0F            
+  195 |  1   HPrintMix.S    127 | Code        | 00 |         |    2 | 00/00B0 : D4 07       | L2500B0     PEI   $07            
+  196 |  1   HPrintMix.S    128 | Code        | 00 |         |    2 | 00/00B2 : D4 05       |             PEI   $05            
+  197 |  1   HPrintMix.S    129 | Code        | 00 |         |    2 | 00/00B4 : D4 11       |             PEI   $11            
+  198 |  1   HPrintMix.S    130 | Code        | 00 |E 3      |    4 | 00/00B6 : 22 B0 18 06 |             JSL   L0718DA        
+  199 |  1   HPrintMix.S    131 | Code        | 00 |E 3      |    4 | 00/00BA : AF DB 3A 04 |             LDAL  L053ADB        
+  200 |  1   HPrintMix.S    132 | Code        | 00 |         |    1 | 00/00BE : 48          |             PHA                  
+  201 |  1   HPrintMix.S    133 | Code        | 00 |E 3      |    4 | 00/00BF : AF D9 3A 04 |             LDAL  L053AD9        
+  202 |  1   HPrintMix.S    134 | Code        | 00 |         |    1 | 00/00C3 : 48          |             PHA                  
+  203 |  1   HPrintMix.S    135 | Code        | 00 |         |    3 | 00/00C4 : F4 52 54    |             PEA   $5452          
+  204 |  1   HPrintMix.S    136 | Code        | 00 |         |    3 | 00/00C7 : F4 4D 50    |             PEA   $504D          
+  205 |  1   HPrintMix.S    137 | Code        | 00 |         |    3 | 00/00CA : F4 00 00    |             PEA   $0000          
+  206 |  1   HPrintMix.S    138 | Code        | 00 |E 3      |    4 | 00/00CD : 22 3A 4B 06 |             JSL   L074B81        
+  207 |  1   HPrintMix.S    139 | Code        | 00 |         |    2 | 00/00D1 : A5 0D       |             LDA   $0D            
+  208 |  1   HPrintMix.S    140 | Code        | 00 |         |    2 | 00/00D3 : 05 0F       |             ORA   $0F            
+  209 |  1   HPrintMix.S    141 | Code        | 00 |         |    2 | 00/00D5 : F0 51       |             BEQ   L250128        
+  210 |  1   HPrintMix.S    142 | Code        | 00 |         |    1 | 00/00D7 : 5A          |             PHY                  
+  211 |  1   HPrintMix.S    143 | Code        | 00 |         |    1 | 00/00D8 : 5A          |             PHY                  
+  212 |  1   HPrintMix.S    144 | Code        | 00 |         |    2 | 00/00D9 : D4 0F       |             PEI   $0F            
+  213 |  1   HPrintMix.S    145 | Code        | 00 |         |    2 | 00/00DB : D4 0D       |             PEI   $0D            
+  214 |  1   HPrintMix.S    146 | Code        | 00 |         |    3 | 00/00DD : F4 4E 54    |             PEA   $544E          
+  215 |  1   HPrintMix.S    147 | Code        | 00 |         |    3 | 00/00E0 : F4 50 52    |             PEA   $5250          
+  216 |  1   HPrintMix.S    148 | Code        | 00 |         |    3 | 00/00E3 : F4 00 00    |             PEA   $0000          
+  217 |  1   HPrintMix.S    149 | Code        | 00 |E 3      |    4 | 00/00E6 : 22 DD 75 06 |             JSL   L077624        
+  218 |  1   HPrintMix.S    150 | Code        | 00 |         |    1 | 00/00EA : 68          |             PLA                  
+  219 |  1   HPrintMix.S    151 | Code        | 00 |         |    2 | 00/00EB : 85 09       |             STA   $09            
+  220 |  1   HPrintMix.S    152 | Code        | 00 |         |    1 | 00/00ED : FA          |             PLX                  
+  221 |  1   HPrintMix.S    153 | Code        | 00 |         |    2 | 00/00EE : 86 0B       |             STX   $0B            
+  222 |  1   HPrintMix.S    154 | Code        | 00 |         |    2 | 00/00F0 : A5 09       |             LDA   $09            
+  223 |  1   HPrintMix.S    155 | Code        | 00 |         |    2 | 00/00F2 : 05 0B       |             ORA   $0B            
+  224 |  1   HPrintMix.S    156 | Code        | 00 |         |    2 | 00/00F4 : F0 32       |             BEQ   L250128        
+  225 |  1   HPrintMix.S    157 | Code        | 00 |         |    2 | 00/00F6 : D4 1E       |             PEI   $1E            
+  226 |  1   HPrintMix.S    158 | Code        | 00 |         |    2 | 00/00F8 : D4 1C       |             PEI   $1C            
+  227 |  1   HPrintMix.S    159 | Code        | 00 |         |    3 | 00/00FA : A0 02 00    |             LDY   #$0002         
+  228 |  1   HPrintMix.S    160 | Code        | 00 |         |    2 | 00/00FD : B7 09       |             LDA   [$09],Y        
+  229 |  1   HPrintMix.S    161 | Code        | 00 |         |    1 | 00/00FF : AA          |             TAX                  
+  230 |  1   HPrintMix.S    162 | Code        | 00 |         |    2 | 00/0100 : A7 09       |             LDA   [$09]          
+  231 |  1   HPrintMix.S    163 | Code        | 00 |         |    1 | 00/0102 : 18          |             CLC                  
+  232 |  1   HPrintMix.S    164 | Code        | 00 |         |    3 | 00/0103 : 69 0C 00    |             ADC   #$000C         
+  233 |  1   HPrintMix.S    165 | Code        | 00 |         |    2 | 00/0106 : 90 01       |             BCC   L250109        
+  234 |  1   HPrintMix.S    166 | Code        | 00 |         |    1 | 00/0108 : E8          |             INX                  
+  235 |  1   HPrintMix.S    167 | Code        | 00 |         |    1 | 00/0109 : DA          | L250109     PHX                  
+  236 |  1   HPrintMix.S    168 | Code        | 00 |         |    1 | 00/010A : 48          |             PHA                  
+  237 |  1   HPrintMix.S    169 | Code        | 00 |         |    3 | 00/010B : F4 14 00    |             PEA   $0014          
+  238 |  1   HPrintMix.S    170 | Code        | 00 |E 3      |    4 | 00/010E : 22 BE 13 02 |             JSL   L0313BE        
+  239 |  1   HPrintMix.S    171 | Code        | 00 |         |    2 | 00/0112 : D4 0F       |             PEI   $0F            
+  240 |  1   HPrintMix.S    172 | Code        | 00 |         |    2 | 00/0114 : D4 0D       |             PEI   $0D            
+  241 |  1   HPrintMix.S    173 | Code        | 00 |         |    3 | 00/0116 : F4 4E 54    |             PEA   $544E          
+  242 |  1   HPrintMix.S    174 | Code        | 00 |         |    3 | 00/0119 : F4 50 52    |             PEA   $5250          
+  243 |  1   HPrintMix.S    175 | Code        | 00 |         |    3 | 00/011C : F4 00 00    |             PEA   $0000          
+  244 |  1   HPrintMix.S    176 | Code        | 00 |E 3      |    4 | 00/011F : 22 3A 4B 06 |             JSL   L074B81        
+  245 |  1   HPrintMix.S    177 | Code        | 00 |         |    3 | 00/0123 : A9 01 00    |             LDA   #$0001         
+  246 |  1   HPrintMix.S    178 | Code        | 00 |         |    2 | 00/0126 : 85 20       |             STA   $20            
+  247 |  1   HPrintMix.S    179 | Code        | 00 |         |    2 | 00/0128 : A5 1A       | L250128     LDA   $1A            
+  248 |  1   HPrintMix.S    180 | Code        | 00 |         |    2 | 00/012A : 85 1E       |             STA   $1E            
+  249 |  1   HPrintMix.S    181 | Code        | 00 |         |    2 | 00/012C : A5 19       |             LDA   $19            
+  250 |  1   HPrintMix.S    182 | Code        | 00 |         |    2 | 00/012E : 85 1D       |             STA   $1D            
+  251 |  1   HPrintMix.S    183 | Code        | 00 |         |    2 | 00/0130 : A5 17       |             LDA   $17            
+  252 |  1   HPrintMix.S    184 | Code        | 00 |         |    1 | 00/0132 : 5B          |             TCD                  
+  253 |  1   HPrintMix.S    185 | Code        | 00 |         |    1 | 00/0133 : 3B          |             TSC                  
+  254 |  1   HPrintMix.S    186 | Code        | 00 |         |    1 | 00/0134 : 18          |             CLC                  
+  255 |  1   HPrintMix.S    187 | Code        | 00 |         |    3 | 00/0135 : 69 1C 00    |             ADC   #$001C         
+  256 |  1   HPrintMix.S    188 | Code        | 00 |         |    1 | 00/0138 : 1B          |             TCS                  
+  257 |  1   HPrintMix.S    189 | Code        | 00 |         |    1 | 00/0139 : 6B          |             RTL                  
+  258 |  1   HPrintMix.S    190 | Empty       | 00 |         |    0 | 00/013A               |                                  
+  259 |  1   HPrintMix.S    191 | Global      | 00 |         |    0 | 00/013A               | L25013A     ENT                  
+  260 |  1   HPrintMix.S    192 | Code        | 00 |         |    1 | 00/013A : 0B          |             PHD                  
+  261 |  1   HPrintMix.S    193 | Code        | 00 |         |    1 | 00/013B : 3B          |             TSC                  
+  262 |  1   HPrintMix.S    194 | Code        | 00 |         |    1 | 00/013C : 18          |             CLC                  
+  263 |  1   HPrintMix.S    195 | Code        | 00 |         |    3 | 00/013D : 69 D8 FF    |             ADC   #$FFD8         
+  264 |  1   HPrintMix.S    196 | Code        | 00 |         |    1 | 00/0140 : 1B          |             TCS                  
+  265 |  1   HPrintMix.S    197 | Code        | 00 |         |    1 | 00/0141 : 5B          |             TCD                  
+  266 |  1   HPrintMix.S    198 | Code        | 00 |         |    2 | 00/0142 : 64 30       |             STZ   $30            
+  267 |  1   HPrintMix.S    199 | Code        | 00 |E 2      |    3 | 00/0144 : AD 43 52    |             LDA   L055243        
+  268 |  1   HPrintMix.S    200 | Code        | 00 |         |    3 | 00/0147 : 49 01 00    |             EOR   #$0001         
+  269 |  1   HPrintMix.S    201 | Code        | 00 |E 2      |    3 | 00/014A : 2D 51 50    |             AND   L055051        
+  270 |  1   HPrintMix.S    202 | Code        | 00 |         |    2 | 00/014D : F0 03       |             BEQ   L250152        
+  271 |  1   HPrintMix.S    203 | Code        | 00 |         |    3 | 00/014F : 82 AD 01    |             BRL   L2502FF        
+  272 |  1   HPrintMix.S    204 | Code        | 00 |         |    2 | 00/0152 : 64 19       | L250152     STZ   $19            
+  273 |  1   HPrintMix.S    205 | Code        | 00 |         |    2 | 00/0154 : 64 1B       |             STZ   $1B            
+  274 |  1   HPrintMix.S    206 | Code        | 00 |         |    1 | 00/0156 : 5A          |             PHY                  
+  275 |  1   HPrintMix.S    207 | Code        | 00 |         |    3 | 00/0157 : F4 03 00    |             PEA   $0003          
+  276 |  1   HPrintMix.S    208 | Code        | 00 |         |    3 | 00/015A : F4 00 00    |             PEA   $0000          
+  277 |  1   HPrintMix.S    209 | Code        | 00 |         |    3 | 00/015D : F4 00 00    |             PEA   $0000          
+  278 |  1   HPrintMix.S    210 | Code        | 00 |E 3      |    4 | 00/0160 : 22 5A 0A 15 |             JSL   L160A5A        
+  279 |  1   HPrintMix.S    211 | Code        | 00 |         |    1 | 00/0164 : 68          |             PLA                  
+  280 |  1   HPrintMix.S    212 | Code        | 00 |         |    1 | 00/0165 : 4A          |             LSR                  
+  281 |  1   HPrintMix.S    213 | Code        | 00 |         |    2 | 00/0166 : B0 03       |             BCS   L25016B        
+  282 |  1   HPrintMix.S    214 | Code        | 00 |         |    3 | 00/0168 : 82 94 01    |             BRL   L2502FF        
+  283 |  1   HPrintMix.S    215 | Code        | 00 |         |    3 | 00/016B : F4 03 00    | L25016B     PEA   $0003          
+  284 |  1   HPrintMix.S    216 | Code        | 00 |E 3      |    4 | 00/016E : 22 4C 0A 15 |             JSL   L160A4C        
+  285 |  1   HPrintMix.S    217 | Code        | 00 |         |    1 | 00/0172 : 5A          |             PHY                  
+  286 |  1   HPrintMix.S    218 | Code        | 00 |         |    1 | 00/0173 : 5A          |             PHY                  
+  287 |  1   HPrintMix.S    219 | Code        | 00 |E 3      |    4 | 00/0174 : 22 8E 0B 15 |             JSL   L160B8E        
+  288 |  1   HPrintMix.S    220 | Code        | 00 |         |    1 | 00/0178 : 68          |             PLA                  
+  289 |  1   HPrintMix.S    221 | Code        | 00 |         |    2 | 00/0179 : 85 11       |             STA   $11            
+  290 |  1   HPrintMix.S    222 | Code        | 00 |         |    1 | 00/017B : FA          |             PLX                  
+  291 |  1   HPrintMix.S    223 | Code        | 00 |         |    2 | 00/017C : 86 13       |             STX   $13            
+  292 |  1   HPrintMix.S    224 | Code        | 00 |         |    2 | 00/017E : A5 11       |             LDA   $11            
+  293 |  1   HPrintMix.S    225 | Code        | 00 |         |    2 | 00/0180 : 05 13       |             ORA   $13            
+  294 |  1   HPrintMix.S    226 | Code        | 00 |         |    2 | 00/0182 : D0 03       |             BNE   L250187        
+  295 |  1   HPrintMix.S    227 | Code        | 00 |         |    3 | 00/0184 : 82 78 01    |             BRL   L2502FF        
+  296 |  1   HPrintMix.S    228 | Code        | 00 |         |    1 | 00/0187 : 5A          | L250187     PHY                  
+  297 |  1   HPrintMix.S    229 | Code        | 00 |         |    2 | 00/0188 : D4 13       |             PEI   $13            
+  298 |  1   HPrintMix.S    230 | Code        | 00 |         |    2 | 00/018A : D4 11       |             PEI   $11            
+  299 |  1   HPrintMix.S    231 | Code        | 00 |E 3      |    4 | 00/018C : 22 7A 18 06 |             JSL   L0718A4        
+  300 |  1   HPrintMix.S    232 | Code        | 00 |         |    1 | 00/0190 : 68          |             PLA                  
+  301 |  1   HPrintMix.S    233 | Code        | 00 |         |    2 | 00/0191 : 85 21       |             STA   $21            
+  302 |  1   HPrintMix.S    234 | Code        | 00 |         |    2 | 00/0193 : D4 13       |             PEI   $13            
+  303 |  1   HPrintMix.S    235 | Code        | 00 |         |    2 | 00/0195 : D4 11       |             PEI   $11            
+  304 |  1   HPrintMix.S    236 | Code        | 00 |E 3      |    4 | 00/0197 : 22 95 18 06 |             JSL   L0718BF        
+  305 |  1   HPrintMix.S    237 | Code        | 00 |         |    2 | 00/019B : 64 23       |             STZ   $23            
+  306 |  1   HPrintMix.S    238 | Code        | 00 |         |    3 | 00/019D : A0 02 00    |             LDY   #$0002         
+  307 |  1   HPrintMix.S    239 | Code        | 00 |         |    2 | 00/01A0 : B7 11       |             LDA   [$11],Y        
+  308 |  1   HPrintMix.S    240 | Code        | 00 |         |    1 | 00/01A2 : AA          |             TAX                  
+  309 |  1   HPrintMix.S    241 | Code        | 00 |         |    2 | 00/01A3 : A7 11       |             LDA   [$11]          
+  310 |  1   HPrintMix.S    242 | Code        | 00 |         |    2 | 00/01A5 : 85 0D       |             STA   $0D            
+  311 |  1   HPrintMix.S    243 | Code        | 00 |         |    2 | 00/01A7 : 86 0F       |             STX   $0F            
+  312 |  1   HPrintMix.S    244 | Code        | 00 |         |    2 | 00/01A9 : A5 0D       |             LDA   $0D            
+  313 |  1   HPrintMix.S    245 | Code        | 00 |         |    2 | 00/01AB : A6 0F       |             LDX   $0F            
+  314 |  1   HPrintMix.S    246 | Code        | 00 |         |    2 | 00/01AD : 85 09       |             STA   $09            
+  315 |  1   HPrintMix.S    247 | Code        | 00 |         |    2 | 00/01AF : 86 0B       |             STX   $0B            
+  316 |  1   HPrintMix.S    248 | Code        | 00 |         |    3 | 00/01B1 : A0 0E 00    |             LDY   #$000E         
+  317 |  1   HPrintMix.S    249 | Code        | 00 |         |    2 | 00/01B4 : B7 09       |             LDA   [$09],Y        
+  318 |  1   HPrintMix.S    250 | Code        | 00 |         |    2 | 00/01B6 : F0 42       |             BEQ   L2501FA        
+  319 |  1   HPrintMix.S    251 | Code        | 00 |         |    3 | 00/01B8 : A9 9E 00    |             LDA   #$009E         
+  320 |  1   HPrintMix.S    252 | Code        | 00 |         |    1 | 00/01BB : 18          |             CLC                  
+  321 |  1   HPrintMix.S    253 | Code        | 00 |         |    2 | 00/01BC : 65 09       |             ADC   $09            
+  322 |  1   HPrintMix.S    254 | Code        | 00 |         |    2 | 00/01BE : A6 0B       |             LDX   $0B            
+  323 |  1   HPrintMix.S    255 | Code        | 00 |         |    2 | 00/01C0 : 90 01       |             BCC   L2501C3        
+  324 |  1   HPrintMix.S    256 | Code        | 00 |         |    1 | 00/01C2 : E8          |             INX                  
+  325 |  1   HPrintMix.S    257 | Code        | 00 |         |    1 | 00/01C3 : DA          | L2501C3     PHX                  
+  326 |  1   HPrintMix.S    258 | Code        | 00 |         |    1 | 00/01C4 : 48          |             PHA                  
+  327 |  1   HPrintMix.S    259 | Code        | 00 |         |    3 | 00/01C5 : A0 0E 00    |             LDY   #$000E         
+  328 |  1   HPrintMix.S    260 | Code        | 00 |         |    2 | 00/01C8 : B7 09       |             LDA   [$09],Y        
+  329 |  1   HPrintMix.S    261 | Code        | 00 |E 3      |    4 | 00/01CA : 22 88 04 14 |             JSL   L150488        
+  330 |  1   HPrintMix.S    262 | Code        | 00 |         |    1 | 00/01CE : A8          |             TAY                  
+  331 |  1   HPrintMix.S    263 | Code        | 00 |         |    2 | 00/01CF : D0 01       |             BNE   L2501D2        
+  332 |  1   HPrintMix.S    264 | Code        | 00 |         |    1 | 00/01D1 : CA          |             DEX                  
+  333 |  1   HPrintMix.S    265 | Code        | 00 |         |    1 | 00/01D2 : 3A          | L2501D2     DEC                  
+  334 |  1   HPrintMix.S    266 | Code        | 00 |         |    3 | 00/01D3 : F4 00 00    |             PEA   $0000          
+  335 |  1   HPrintMix.S    267 | Code        | 00 |         |    3 | 00/01D6 : F4 0A 00    |             PEA   $000A          
+  336 |  1   HPrintMix.S    268 | Code        | 00 |E 3      |    4 | 00/01D9 : 22 50 0D 14 |             JSL   L150D50        
+  337 |  1   HPrintMix.S    269 | Code        | 00 |         |    1 | 00/01DD : 68          |             PLA                  
+  338 |  1   HPrintMix.S    270 | Code        | 00 |         |    1 | 00/01DE : FA          |             PLX                  
+  339 |  1   HPrintMix.S    271 | Code        | 00 |E 3      |    4 | 00/01DF : 22 53 0F 14 |             JSL   L150F53        
+  340 |  1   HPrintMix.S    272 | Code        | 00 |         |    1 | 00/01E3 : 18          |             CLC                  
+  341 |  1   HPrintMix.S    273 | Code        | 00 |         |    3 | 00/01E4 : 69 02 00    |             ADC   #$0002         
+  342 |  1   HPrintMix.S    274 | Code        | 00 |         |    2 | 00/01E7 : 90 01       |             BCC   L2501EA        
+  343 |  1   HPrintMix.S    275 | Code        | 00 |         |    1 | 00/01E9 : E8          |             INX                  
+  344 |  1   HPrintMix.S    276 | Code        | 00 |         |    2 | 00/01EA : 85 25       | L2501EA     STA   $25            
+  345 |  1   HPrintMix.S    277 | Code        | 00 |         |    2 | 00/01EC : 86 27       |             STX   $27            
+  346 |  1   HPrintMix.S    278 | Code        | 00 |         |    3 | 00/01EE : A0 02 00    |             LDY   #$0002         
+  347 |  1   HPrintMix.S    279 | Code        | 00 |         |    2 | 00/01F1 : B7 25       |             LDA   [$25],Y        
+  348 |  1   HPrintMix.S    280 | Code        | 00 |         |    1 | 00/01F3 : AA          |             TAX                  
+  349 |  1   HPrintMix.S    281 | Code        | 00 |         |    2 | 00/01F4 : A7 25       |             LDA   [$25]          
+  350 |  1   HPrintMix.S    282 | Code        | 00 |         |    2 | 00/01F6 : 85 19       |             STA   $19            
+  351 |  1   HPrintMix.S    283 | Code        | 00 |         |    2 | 00/01F8 : 86 1B       |             STX   $1B            
+  352 |  1   HPrintMix.S    284 | Code        | 00 |         |    2 | 00/01FA : A5 19       | L2501FA     LDA   $19            
+  353 |  1   HPrintMix.S    285 | Code        | 00 |         |    2 | 00/01FC : 05 1B       |             ORA   $1B            
+  354 |  1   HPrintMix.S    286 | Code        | 00 |         |    2 | 00/01FE : D0 03       |             BNE   L250203        
+  355 |  1   HPrintMix.S    287 | Code        | 00 |         |    3 | 00/0200 : 82 96 00    |             BRL   L250299        
+  356 |  1   HPrintMix.S    288 | Code        | 00 |         |    1 | 00/0203 : 5A          | L250203     PHY                  
+  357 |  1   HPrintMix.S    289 | Code        | 00 |         |    1 | 00/0204 : 5A          |             PHY                  
+  358 |  1   HPrintMix.S    290 | Code        | 00 |         |    2 | 00/0205 : D4 1B       |             PEI   $1B            
+  359 |  1   HPrintMix.S    291 | Code        | 00 |         |    2 | 00/0207 : D4 19       |             PEI   $19            
+  360 |  1   HPrintMix.S    292 | Code        | 00 |         |    3 | 00/0209 : F4 4E 54    |             PEA   $544E          
+  361 |  1   HPrintMix.S    293 | Code        | 00 |         |    3 | 00/020C : F4 50 52    |             PEA   $5250          
+  362 |  1   HPrintMix.S    294 | Code        | 00 |         |    3 | 00/020F : F4 00 00    |             PEA   $0000          
+  363 |  1   HPrintMix.S    295 | Code        | 00 |E 3      |    4 | 00/0212 : 22 DD 75 06 |             JSL   L077624        
+  364 |  1   HPrintMix.S    296 | Code        | 00 |         |    1 | 00/0216 : 68          |             PLA                  
+  365 |  1   HPrintMix.S    297 | Code        | 00 |         |    2 | 00/0217 : 85 15       |             STA   $15            
+  366 |  1   HPrintMix.S    298 | Code        | 00 |         |    1 | 00/0219 : FA          |             PLX                  
+  367 |  1   HPrintMix.S    299 | Code        | 00 |         |    2 | 00/021A : 86 17       |             STX   $17            
+  368 |  1   HPrintMix.S    300 | Code        | 00 |         |    2 | 00/021C : A5 15       |             LDA   $15            
+  369 |  1   HPrintMix.S    301 | Code        | 00 |         |    2 | 00/021E : 05 17       |             ORA   $17            
+  370 |  1   HPrintMix.S    302 | Code        | 00 |         |    2 | 00/0220 : F0 77       |             BEQ   L250299        
+  371 |  1   HPrintMix.S    303 | Code        | 00 |         |    1 | 00/0222 : 5A          |             PHY                  
+  372 |  1   HPrintMix.S    304 | Code        | 00 |         |    2 | 00/0223 : D4 17       |             PEI   $17            
+  373 |  1   HPrintMix.S    305 | Code        | 00 |         |    2 | 00/0225 : D4 15       |             PEI   $15            
+  374 |  1   HPrintMix.S    306 | Code        | 00 |E 3      |    4 | 00/0227 : 22 7A 18 06 |             JSL   L0718A4        
+  375 |  1   HPrintMix.S    307 | Code        | 00 |         |    1 | 00/022B : 68          |             PLA                  
+  376 |  1   HPrintMix.S    308 | Code        | 00 |         |    2 | 00/022C : 85 1F       |             STA   $1F            
+  377 |  1   HPrintMix.S    309 | Code        | 00 |         |    2 | 00/022E : D4 17       |             PEI   $17            
+  378 |  1   HPrintMix.S    310 | Code        | 00 |         |    2 | 00/0230 : D4 15       |             PEI   $15            
+  379 |  1   HPrintMix.S    311 | Code        | 00 |E 3      |    4 | 00/0232 : 22 95 18 06 |             JSL   L0718BF        
+  380 |  1   HPrintMix.S    312 | Code        | 00 |         |    3 | 00/0236 : A0 02 00    |             LDY   #$0002         
+  381 |  1   HPrintMix.S    313 | Code        | 00 |         |    2 | 00/0239 : B7 15       |             LDA   [$15],Y        
+  382 |  1   HPrintMix.S    314 | Code        | 00 |         |    1 | 00/023B : AA          |             TAX                  
+  383 |  1   HPrintMix.S    315 | Code        | 00 |         |    2 | 00/023C : A7 15       |             LDA   [$15]          
+  384 |  1   HPrintMix.S    316 | Code        | 00 |         |    2 | 00/023E : 85 05       |             STA   $05            
+  385 |  1   HPrintMix.S    317 | Code        | 00 |         |    2 | 00/0240 : 86 07       |             STX   $07            
+  386 |  1   HPrintMix.S    318 | Code        | 00 |         |    3 | 00/0242 : A0 20 00    |             LDY   #$0020         
+  387 |  1   HPrintMix.S    319 | Code        | 00 |         |    2 | 00/0245 : B7 05       |             LDA   [$05],Y        
+  388 |  1   HPrintMix.S    320 | Code        | 00 |         |    2 | 00/0247 : 85 1D       |             STA   $1D            
+  389 |  1   HPrintMix.S    321 | Code        | 00 |         |    2 | 00/0249 : A5 2E       |             LDA   $2E            
+  390 |  1   HPrintMix.S    322 | Code        | 00 |         |    2 | 00/024B : F0 0C       |             BEQ   L250259        
+  391 |  1   HPrintMix.S    323 | Code        | 00 |         |    3 | 00/024D : A9 00 40    |             LDA   #$4000         
+  392 |  1   HPrintMix.S    324 | Code        | 00 |         |    2 | 00/0250 : 05 1D       |             ORA   $1D            
+  393 |  1   HPrintMix.S    325 | Code        | 00 |         |    3 | 00/0252 : A0 20 00    |             LDY   #$0020         
+  394 |  1   HPrintMix.S    326 | Code        | 00 |         |    2 | 00/0255 : 97 05       |             STA   [$05],Y        
+  395 |  1   HPrintMix.S    327 | Code        | 00 |         |    2 | 00/0257 : 80 0A       |             BRA   L250263        
+  396 |  1   HPrintMix.S    328 | Code        | 00 |         |    3 | 00/0259 : A9 FF BF    | L250259     LDA   #$BFFF         
+  397 |  1   HPrintMix.S    329 | Code        | 00 |         |    2 | 00/025C : 25 1D       |             AND   $1D            
+  398 |  1   HPrintMix.S    330 | Code        | 00 |         |    3 | 00/025E : A0 20 00    |             LDY   #$0020         
+  399 |  1   HPrintMix.S    331 | Code        | 00 |         |    2 | 00/0261 : 97 05       |             STA   [$05],Y        
+  400 |  1   HPrintMix.S    332 | Code        | 00 |         |    3 | 00/0263 : A2 00 00    | L250263     LDX   #$0000         
+  401 |  1   HPrintMix.S    333 | Code        | 00 |         |    3 | 00/0266 : A0 20 00    |             LDY   #$0020         
+  402 |  1   HPrintMix.S    334 | Code        | 00 |         |    2 | 00/0269 : B7 05       |             LDA   [$05],Y        
+  403 |  1   HPrintMix.S    335 | Code        | 00 |         |    2 | 00/026B : C5 1D       |             CMP   $1D            
+  404 |  1   HPrintMix.S    336 | Code        | 00 |         |    2 | 00/026D : F0 01       |             BEQ   L250270        
+  405 |  1   HPrintMix.S    337 | Code        | 00 |         |    1 | 00/026F : E8          |             INX                  
+  406 |  1   HPrintMix.S    338 | Code        | 00 |         |    1 | 00/0270 : 8A          | L250270     TXA                  
+  407 |  1   HPrintMix.S    339 | Code        | 00 |         |    2 | 00/0271 : 85 23       |             STA   $23            
+  408 |  1   HPrintMix.S    340 | Code        | 00 |         |    2 | 00/0273 : D4 17       |             PEI   $17            
+  409 |  1   HPrintMix.S    341 | Code        | 00 |         |    2 | 00/0275 : D4 15       |             PEI   $15            
+  410 |  1   HPrintMix.S    342 | Code        | 00 |         |    2 | 00/0277 : D4 1F       |             PEI   $1F            
+  411 |  1   HPrintMix.S    343 | Code        | 00 |E 3      |    4 | 00/0279 : 22 B0 18 06 |             JSL   L0718DA        
+  412 |  1   HPrintMix.S    344 | Code        | 00 |         |    2 | 00/027D : D4 1B       |             PEI   $1B            
+  413 |  1   HPrintMix.S    345 | Code        | 00 |         |    2 | 00/027F : D4 19       |             PEI   $19            
+  414 |  1   HPrintMix.S    346 | Code        | 00 |         |    3 | 00/0281 : F4 4E 54    |             PEA   $544E          
+  415 |  1   HPrintMix.S    347 | Code        | 00 |         |    3 | 00/0284 : F4 50 52    |             PEA   $5250          
+  416 |  1   HPrintMix.S    348 | Code        | 00 |E 2      |    3 | 00/0287 : AD 51 50    |             LDA   L055051        
+  417 |  1   HPrintMix.S    349 | Code        | 00 |         |    3 | 00/028A : 49 01 00    |             EOR   #$0001         
+  418 |  1   HPrintMix.S    350 | Code        | 00 |         |    2 | 00/028D : 25 23       |             AND   $23            
+  419 |  1   HPrintMix.S    351 | Code        | 00 |         |    1 | 00/028F : 48          |             PHA                  
+  420 |  1   HPrintMix.S    352 | Code        | 00 |E 3      |    4 | 00/0290 : 22 3A 4B 06 |             JSL   L074B81        
+  421 |  1   HPrintMix.S    353 | Code        | 00 |         |    3 | 00/0294 : A9 01 00    |             LDA   #$0001         
+  422 |  1   HPrintMix.S    354 | Code        | 00 |         |    2 | 00/0297 : 85 30       |             STA   $30            
+  423 |  1   HPrintMix.S    355 | Code        | 00 |         |    2 | 00/0299 : A5 23       | L250299     LDA   $23            
+  424 |  1   HPrintMix.S    356 | Code        | 00 |         |    2 | 00/029B : F0 3B       |             BEQ   L2502D8        
+  425 |  1   HPrintMix.S    357 | Code        | 00 |         |    2 | 00/029D : A5 0D       |             LDA   $0D            
+  426 |  1   HPrintMix.S    358 | Code        | 00 |         |    2 | 00/029F : A6 0F       |             LDX   $0F            
+  427 |  1   HPrintMix.S    359 | Code        | 00 |         |    2 | 00/02A1 : 85 01       |             STA   $01            
+  428 |  1   HPrintMix.S    360 | Code        | 00 |         |    2 | 00/02A3 : 86 03       |             STX   $03            
+  429 |  1   HPrintMix.S    361 | Code        | 00 |         |    3 | 00/02A5 : A9 9E 00    |             LDA   #$009E         
+  430 |  1   HPrintMix.S    362 | Code        | 00 |         |    1 | 00/02A8 : 18          |             CLC                  
+  431 |  1   HPrintMix.S    363 | Code        | 00 |         |    2 | 00/02A9 : 65 01       |             ADC   $01            
+  432 |  1   HPrintMix.S    364 | Code        | 00 |         |    2 | 00/02AB : A6 03       |             LDX   $03            
+  433 |  1   HPrintMix.S    365 | Code        | 00 |         |    2 | 00/02AD : 90 01       |             BCC   L2502B0        
+  434 |  1   HPrintMix.S    366 | Code        | 00 |         |    1 | 00/02AF : E8          |             INX                  
+  435 |  1   HPrintMix.S    367 | Code        | 00 |         |    1 | 00/02B0 : DA          | L2502B0     PHX                  
+  436 |  1   HPrintMix.S    368 | Code        | 00 |         |    1 | 00/02B1 : 48          |             PHA                  
+  437 |  1   HPrintMix.S    369 | Code        | 00 |         |    3 | 00/02B2 : A0 0E 00    |             LDY   #$000E         
+  438 |  1   HPrintMix.S    370 | Code        | 00 |         |    2 | 00/02B5 : B7 01       |             LDA   [$01],Y        
+  439 |  1   HPrintMix.S    371 | Code        | 00 |E 3      |    4 | 00/02B7 : 22 88 04 14 |             JSL   L150488        
+  440 |  1   HPrintMix.S    372 | Code        | 00 |         |    1 | 00/02BB : A8          |             TAY                  
+  441 |  1   HPrintMix.S    373 | Code        | 00 |         |    2 | 00/02BC : D0 01       |             BNE   L2502BF        
+  442 |  1   HPrintMix.S    374 | Code        | 00 |         |    1 | 00/02BE : CA          |             DEX                  
+  443 |  1   HPrintMix.S    375 | Code        | 00 |         |    1 | 00/02BF : 3A          | L2502BF     DEC                  
+  444 |  1   HPrintMix.S    376 | Code        | 00 |         |    3 | 00/02C0 : F4 00 00    |             PEA   $0000          
+  445 |  1   HPrintMix.S    377 | Code        | 00 |         |    3 | 00/02C3 : F4 0A 00    |             PEA   $000A          
+  446 |  1   HPrintMix.S    378 | Code        | 00 |E 3      |    4 | 00/02C6 : 22 50 0D 14 |             JSL   L150D50        
+  447 |  1   HPrintMix.S    379 | Code        | 00 |         |    1 | 00/02CA : 68          |             PLA                  
+  448 |  1   HPrintMix.S    380 | Code        | 00 |         |    1 | 00/02CB : FA          |             PLX                  
+  449 |  1   HPrintMix.S    381 | Code        | 00 |E 3      |    4 | 00/02CC : 22 53 0F 14 |             JSL   L150F53        
+  450 |  1   HPrintMix.S    382 | Code        | 00 |         |    2 | 00/02D0 : 85 25       |             STA   $25            
+  451 |  1   HPrintMix.S    383 | Code        | 00 |         |    2 | 00/02D2 : 86 27       |             STX   $27            
+  452 |  1   HPrintMix.S    384 | Code        | 00 |         |    2 | 00/02D4 : A5 1D       |             LDA   $1D            
+  453 |  1   HPrintMix.S    385 | Code        | 00 |         |    2 | 00/02D6 : 87 25       |             STA   [$25]          
+  454 |  1   HPrintMix.S    386 | Code        | 00 |         |    2 | 00/02D8 : D4 13       | L2502D8     PEI   $13            
+  455 |  1   HPrintMix.S    387 | Code        | 00 |         |    2 | 00/02DA : D4 11       |             PEI   $11            
+  456 |  1   HPrintMix.S    388 | Code        | 00 |         |    2 | 00/02DC : D4 21       |             PEI   $21            
+  457 |  1   HPrintMix.S    389 | Code        | 00 |E 3      |    4 | 00/02DE : 22 B0 18 06 |             JSL   L0718DA        
+  458 |  1   HPrintMix.S    390 | Code        | 00 |E 3      |    4 | 00/02E2 : AF DB 3A 04 |             LDAL  L053ADB        
+  459 |  1   HPrintMix.S    391 | Code        | 00 |         |    1 | 00/02E6 : 48          |             PHA                  
+  460 |  1   HPrintMix.S    392 | Code        | 00 |E 3      |    4 | 00/02E7 : AF D9 3A 04 |             LDAL  L053AD9        
+  461 |  1   HPrintMix.S    393 | Code        | 00 |         |    1 | 00/02EB : 48          |             PHA                  
+  462 |  1   HPrintMix.S    394 | Code        | 00 |         |    3 | 00/02EC : F4 52 54    |             PEA   $5452          
+  463 |  1   HPrintMix.S    395 | Code        | 00 |         |    3 | 00/02EF : F4 4D 50    |             PEA   $504D          
+  464 |  1   HPrintMix.S    396 | Code        | 00 |E 2      |    3 | 00/02F2 : AD 51 50    |             LDA   L055051        
+  465 |  1   HPrintMix.S    397 | Code        | 00 |         |    3 | 00/02F5 : 49 01 00    |             EOR   #$0001         
+  466 |  1   HPrintMix.S    398 | Code        | 00 |         |    2 | 00/02F8 : 25 23       |             AND   $23            
+  467 |  1   HPrintMix.S    399 | Code        | 00 |         |    1 | 00/02FA : 48          |             PHA                  
+  468 |  1   HPrintMix.S    400 | Code        | 00 |E 3      |    4 | 00/02FB : 22 3A 4B 06 |             JSL   L074B81        
+  469 |  1   HPrintMix.S    401 | Code        | 00 |         |    2 | 00/02FF : A5 2C       | L2502FF     LDA   $2C            
+  470 |  1   HPrintMix.S    402 | Code        | 00 |         |    2 | 00/0301 : 85 2E       |             STA   $2E            
+  471 |  1   HPrintMix.S    403 | Code        | 00 |         |    2 | 00/0303 : A5 2B       |             LDA   $2B            
+  472 |  1   HPrintMix.S    404 | Code        | 00 |         |    2 | 00/0305 : 85 2D       |             STA   $2D            
+  473 |  1   HPrintMix.S    405 | Code        | 00 |         |    2 | 00/0307 : A5 29       |             LDA   $29            
+  474 |  1   HPrintMix.S    406 | Code        | 00 |         |    1 | 00/0309 : 5B          |             TCD                  
+  475 |  1   HPrintMix.S    407 | Code        | 00 |         |    1 | 00/030A : 3B          |             TSC                  
+  476 |  1   HPrintMix.S    408 | Code        | 00 |         |    1 | 00/030B : 18          |             CLC                  
+  477 |  1   HPrintMix.S    409 | Code        | 00 |         |    3 | 00/030C : 69 2C 00    |             ADC   #$002C         
+  478 |  1   HPrintMix.S    410 | Code        | 00 |         |    1 | 00/030F : 1B          |             TCS                  
+  479 |  1   HPrintMix.S    411 | Code        | 00 |         |    1 | 00/0310 : 6B          |             RTL                  
+  480 |  1   HPrintMix.S    412 | Empty       | 00 |         |    0 | 00/0311               |                                  
+  481 |  1   HPrintMix.S    413 | Global      | 00 |         |    0 | 00/0311               | L250311     ENT                  
+  482 |  1   HPrintMix.S    414 | Code        | 00 |         |    1 | 00/0311 : 0B          |             PHD                  
+  483 |  1   HPrintMix.S    415 | Code        | 00 |         |    1 | 00/0312 : 3B          |             TSC                  
+  484 |  1   HPrintMix.S    416 | Code        | 00 |         |    1 | 00/0313 : 18          |             CLC                  
+  485 |  1   HPrintMix.S    417 | Code        | 00 |         |    3 | 00/0314 : 69 4C FC    |             ADC   #$FC4C         
+  486 |  1   HPrintMix.S    418 | Code        | 00 |         |    1 | 00/0317 : 1B          |             TCS                  
+  487 |  1   HPrintMix.S    419 | Code        | 00 |         |    3 | 00/0318 : 69 CB 02    |             ADC   #$02CB         
+  488 |  1   HPrintMix.S    420 | Code        | 00 |         |    1 | 00/031B : 5B          |             TCD                  
+  489 |  1   HPrintMix.S    421 | Code        | 00 |         |    1 | 00/031C : 5A          |             PHY                  
+  490 |  1   HPrintMix.S    422 | Code        | 00 |         |    1 | 00/031D : 5A          |             PHY                  
+  491 |  1   HPrintMix.S    423 | Code        | 00 |E 3      |    4 | 00/031E : 22 95 06 14 |             JSL   L150695        
+  492 |  1   HPrintMix.S    424 | Code        | 00 |         |    1 | 00/0322 : 68          |             PLA                  
+  493 |  1   HPrintMix.S    425 | Code        | 00 |         |    2 | 00/0323 : 85 A9       |             STA   $A9            
+  494 |  1   HPrintMix.S    426 | Code        | 00 |         |    1 | 00/0325 : FA          |             PLX                  
+  495 |  1   HPrintMix.S    427 | Code        | 00 |         |    2 | 00/0326 : 86 AB       |             STX   $AB            
+  496 |  1   HPrintMix.S    428 | Code        | 00 |         |    1 | 00/0328 : 5A          |             PHY                  
+  497 |  1   HPrintMix.S    429 | Code        | 00 |         |    1 | 00/0329 : 5A          |             PHY                  
+  498 |  1   HPrintMix.S    430 | Code        | 00 |E 3      |    4 | 00/032A : 22 93 04 14 |             JSL   L150493        
+  499 |  1   HPrintMix.S    431 | Code        | 00 |         |    1 | 00/032E : 68          |             PLA                  
+  500 |  1   HPrintMix.S    432 | Code        | 00 |         |    2 | 00/032F : 85 C1       |             STA   $C1            
+  501 |  1   HPrintMix.S    433 | Code        | 00 |         |    1 | 00/0331 : FA          |             PLX                  
+  502 |  1   HPrintMix.S    434 | Code        | 00 |         |    2 | 00/0332 : 86 C3       |             STX   $C3            
+  503 |  1   HPrintMix.S    435 | Code        | 00 |         |    2 | 00/0334 : D4 EE       |             PEI   $EE            
+  504 |  1   HPrintMix.S    436 | Code        | 00 |         |    1 | 00/0336 : 5A          |             PHY                  
+  505 |  1   HPrintMix.S    437 | Code        | 00 |E 3      |    4 | 00/0337 : 22 A0 0A 15 |             JSL   L160AA0        
+  506 |  1   HPrintMix.S    438 | Code        | 00 |         |    1 | 00/033B : 68          |             PLA                  
+  507 |  1   HPrintMix.S    439 | Code        | 00 |         |    2 | 00/033C : 85 E5       |             STA   $E5            
+  508 |  1   HPrintMix.S    440 | Code        | 00 |         |    1 | 00/033E : 68          |             PLA                  
+  509 |  1   HPrintMix.S    441 | Code        | 00 |         |    2 | 00/033F : 25 E5       |             AND   $E5            
+  510 |  1   HPrintMix.S    442 | Code        | 00 |         |    2 | 00/0341 : 85 E3       |             STA   $E3            
+  511 |  1   HPrintMix.S    443 | Code        | 00 |E 2      |    3 | 00/0343 : AD 27 53    |             LDA   L055327        
+  512 |  1   HPrintMix.S    444 | Code        | 00 |E 2      |    3 | 00/0346 : AE 29 53    |             LDX   L055329        
+  513 |  1   HPrintMix.S    445 | Code        | 00 |         |    2 | 00/0349 : 85 E5       |             STA   $E5            
+  514 |  1   HPrintMix.S    446 | Code        | 00 |         |    2 | 00/034B : 86 E7       |             STX   $E7            
+  515 |  1   HPrintMix.S    447 | Code        | 00 |         |    3 | 00/034D : A0 02 00    |             LDY   #$0002         
+  516 |  1   HPrintMix.S    448 | Code        | 00 |         |    2 | 00/0350 : B7 E5       |             LDA   [$E5],Y        
+  517 |  1   HPrintMix.S    449 | Code        | 00 |         |    1 | 00/0352 : AA          |             TAX                  
+  518 |  1   HPrintMix.S    450 | Code        | 00 |         |    2 | 00/0353 : A7 E5       |             LDA   [$E5]          
+  519 |  1   HPrintMix.S    451 | Code        | 00 |         |    1 | 00/0355 : 9B          |             TXY                  
+  520 |  1   HPrintMix.S    452 | Code        | 00 |         |    3 | 00/0356 : A2 4D FD    |             LDX   #$FD4D         
+  521 |  1   HPrintMix.S    453 | Code        | 00 |         |    2 | 00/0359 : 95 00       |             STA   $00,X          
+  522 |  1   HPrintMix.S    454 | Code        | 00 |         |    1 | 00/035B : 98          |             TYA                  
+  523 |  1   HPrintMix.S    455 | Code        | 00 |         |    2 | 00/035C : 95 02       |             STA   $02,X          
+  524 |  1   HPrintMix.S    456 | Code        | 00 |         |    3 | 00/035E : A2 4D FD    |             LDX   #$FD4D         
+  525 |  1   HPrintMix.S    457 | Code        | 00 |         |    2 | 00/0361 : B5 02       |             LDA   $02,X          
+  526 |  1   HPrintMix.S    458 | Code        | 00 |         |    1 | 00/0363 : A8          |             TAY                  
+  527 |  1   HPrintMix.S    459 | Code        | 00 |         |    2 | 00/0364 : B5 00       |             LDA   $00,X          
+  528 |  1   HPrintMix.S    460 | Code        | 00 |         |    1 | 00/0366 : BB          |             TYX                  
+  529 |  1   HPrintMix.S    461 | Code        | 00 |         |    1 | 00/0367 : 18          |             CLC                  
+  530 |  1   HPrintMix.S    462 | Code        | 00 |         |    3 | 00/0368 : 69 50 00    |             ADC   #$0050         
+  531 |  1   HPrintMix.S    463 | Code        | 00 |         |    2 | 00/036B : 90 01       |             BCC   L25036E        
+  532 |  1   HPrintMix.S    464 | Code        | 00 |         |    1 | 00/036D : E8          |             INX                  
+  533 |  1   HPrintMix.S    465 | Code        | 00 |         |    1 | 00/036E : 18          | L25036E     CLC                  
+  534 |  1   HPrintMix.S    466 | Code        | 00 |         |    3 | 00/036F : 69 08 00    |             ADC   #$0008         
+  535 |  1   HPrintMix.S    467 | Code        | 00 |         |    2 | 00/0372 : 90 01       |             BCC   L250375        
+  536 |  1   HPrintMix.S    468 | Code        | 00 |         |    1 | 00/0374 : E8          |             INX                  
+  537 |  1   HPrintMix.S    469 | Code        | 00 |         |    2 | 00/0375 : 85 E5       | L250375     STA   $E5            
+  538 |  1   HPrintMix.S    470 | Code        | 00 |         |    2 | 00/0377 : 86 E7       |             STX   $E7            
+  539 |  1   HPrintMix.S    471 | Code        | 00 |E 2      |    3 | 00/0379 : A9 CA 0A    |             LDA   #L160ACA       
+  540 |  1   HPrintMix.S    472 | Code        | 00 |E 1 >>16 |    3 | 00/037C : A2 00 00    |             LDX   #^L160ACA      
+  541 |  1   HPrintMix.S    473 | Code        | 00 |         |    2 | 00/037F : 87 E5       |             STA   [$E5]          
+  542 |  1   HPrintMix.S    474 | Code        | 00 |         |    1 | 00/0381 : 8A          |             TXA                  
+  543 |  1   HPrintMix.S    475 | Code        | 00 |         |    3 | 00/0382 : A0 02 00    |             LDY   #$0002         
+  544 |  1   HPrintMix.S    476 | Code        | 00 |         |    2 | 00/0385 : 97 E5       |             STA   [$E5],Y        
+  545 |  1   HPrintMix.S    477 | Code        | 00 |E 2      |    3 | 00/0387 : 9C 41 53    |             STZ   L055341        
+  546 |  1   HPrintMix.S    478 | Code        | 00 |E 2      |    3 | 00/038A : 9C 43 53    |             STZ   L055343        
+  547 |  1   HPrintMix.S    479 | Code        | 00 |         |    2 | 00/038D : A5 E3       |             LDA   $E3            
+  548 |  1   HPrintMix.S    480 | Code        | 00 |         |    2 | 00/038F : D0 03       |             BNE   L250394        
+  549 |  1   HPrintMix.S    481 | Code        | 00 |         |    3 | 00/0391 : 82 95 00    |             BRL   L250429        
+  550 |  1   HPrintMix.S    482 | Code        | 00 |         |    3 | 00/0394 : A2 4D FD    | L250394     LDX   #$FD4D         
+  551 |  1   HPrintMix.S    483 | Code        | 00 |         |    2 | 00/0397 : B5 02       |             LDA   $02,X          
+  552 |  1   HPrintMix.S    484 | Code        | 00 |         |    1 | 00/0399 : A8          |             TAY                  
+  553 |  1   HPrintMix.S    485 | Code        | 00 |         |    2 | 00/039A : B5 00       |             LDA   $00,X          
+  554 |  1   HPrintMix.S    486 | Code        | 00 |         |    1 | 00/039C : BB          |             TYX                  
+  555 |  1   HPrintMix.S    487 | Code        | 00 |         |    1 | 00/039D : 18          |             CLC                  
+  556 |  1   HPrintMix.S    488 | Code        | 00 |         |    3 | 00/039E : 69 50 00    |             ADC   #$0050         
+  557 |  1   HPrintMix.S    489 | Code        | 00 |         |    2 | 00/03A1 : 90 01       |             BCC   L2503A4        
+  558 |  1   HPrintMix.S    490 | Code        | 00 |         |    1 | 00/03A3 : E8          |             INX                  
+  559 |  1   HPrintMix.S    491 | Code        | 00 |         |    1 | 00/03A4 : 18          | L2503A4     CLC                  
+  560 |  1   HPrintMix.S    492 | Code        | 00 |         |    3 | 00/03A5 : 69 06 00    |             ADC   #$0006         
+  561 |  1   HPrintMix.S    493 | Code        | 00 |         |    2 | 00/03A8 : 90 01       |             BCC   L2503AB        
+  562 |  1   HPrintMix.S    494 | Code        | 00 |         |    1 | 00/03AA : E8          |             INX                  
+  563 |  1   HPrintMix.S    495 | Code        | 00 |         |    1 | 00/03AB : DA          | L2503AB     PHX                  
+  564 |  1   HPrintMix.S    496 | Code        | 00 |         |    1 | 00/03AC : 48          |             PHA                  
+  565 |  1   HPrintMix.S    497 | Code        | 00 |         |    3 | 00/03AD : A2 4D FD    |             LDX   #$FD4D         
+  566 |  1   HPrintMix.S    498 | Code        | 00 |         |    2 | 00/03B0 : B5 02       |             LDA   $02,X          
+  567 |  1   HPrintMix.S    499 | Code        | 00 |         |    1 | 00/03B2 : A8          |             TAY                  
+  568 |  1   HPrintMix.S    500 | Code        | 00 |         |    2 | 00/03B3 : B5 00       |             LDA   $00,X          
+  569 |  1   HPrintMix.S    501 | Code        | 00 |         |    1 | 00/03B5 : BB          |             TYX                  
+  570 |  1   HPrintMix.S    502 | Code        | 00 |         |    1 | 00/03B6 : 18          |             CLC                  
+  571 |  1   HPrintMix.S    503 | Code        | 00 |         |    3 | 00/03B7 : 69 50 00    |             ADC   #$0050         
+  572 |  1   HPrintMix.S    504 | Code        | 00 |         |    2 | 00/03BA : 90 01       |             BCC   L2503BD        
+  573 |  1   HPrintMix.S    505 | Code        | 00 |         |    1 | 00/03BC : E8          |             INX                  
+  574 |  1   HPrintMix.S    506 | Code        | 00 |         |    1 | 00/03BD : 18          | L2503BD     CLC                  
+  575 |  1   HPrintMix.S    507 | Code        | 00 |         |    3 | 00/03BE : 69 06 00    |             ADC   #$0006         
+  576 |  1   HPrintMix.S    508 | Code        | 00 |         |    2 | 00/03C1 : 90 01       |             BCC   L2503C4        
+  577 |  1   HPrintMix.S    509 | Code        | 00 |         |    1 | 00/03C3 : E8          |             INX                  
+  578 |  1   HPrintMix.S    510 | Code        | 00 |         |    2 | 00/03C4 : 85 E5       | L2503C4     STA   $E5            
+  579 |  1   HPrintMix.S    511 | Code        | 00 |         |    2 | 00/03C6 : 86 E7       |             STX   $E7            
+  580 |  1   HPrintMix.S    512 | Code        | 00 |         |    3 | 00/03C8 : A9 FF 00    |             LDA   #$00FF         
+  581 |  1   HPrintMix.S    513 | Code        | 00 |         |    2 | 00/03CB : 27 E5       |             AND   [$E5]          
+  582 |  1   HPrintMix.S    514 | Code        | 00 |         |    3 | 00/03CD : 29 00 FF    |             AND   #$FF00         
+  583 |  1   HPrintMix.S    515 | Code        | 00 |         |    1 | 00/03D0 : 48          |             PHA                  
+  584 |  1   HPrintMix.S    516 | Code        | 00 |         |    1 | 00/03D1 : 68          |             PLA                  
+  585 |  1   HPrintMix.S    517 | Code        | 00 |         |    1 | 00/03D2 : FA          |             PLX                  
+  586 |  1   HPrintMix.S    518 | Code        | 00 |         |    2 | 00/03D3 : 86 E5       |             STX   $E5            
+  587 |  1   HPrintMix.S    519 | Code        | 00 |         |    1 | 00/03D5 : FA          |             PLX                  
+  588 |  1   HPrintMix.S    520 | Code        | 00 |         |    2 | 00/03D6 : 86 E7       |             STX   $E7            
+  589 |  1   HPrintMix.S    521 | Code        | 10 |         |    2 | 00/03D8 : E2 20       |             SEP   #$20           
+  590 |  1   HPrintMix.S    522 | Code        | 10 |         |    2 | 00/03DA : 87 E5       |             STA   [$E5]          
+  591 |  1   HPrintMix.S    523 | Code        | 00 |         |    2 | 00/03DC : C2 20       |             REP   #$20           
+  592 |  1   HPrintMix.S    524 | Code        | 00 |         |    3 | 00/03DE : A2 4D FD    |             LDX   #$FD4D         
+  593 |  1   HPrintMix.S    525 | Code        | 00 |         |    2 | 00/03E1 : B5 02       |             LDA   $02,X          
+  594 |  1   HPrintMix.S    526 | Code        | 00 |         |    1 | 00/03E3 : A8          |             TAY                  
+  595 |  1   HPrintMix.S    527 | Code        | 00 |         |    2 | 00/03E4 : B5 00       |             LDA   $00,X          
+  596 |  1   HPrintMix.S    528 | Code        | 00 |         |    1 | 00/03E6 : BB          |             TYX                  
+  597 |  1   HPrintMix.S    529 | Code        | 00 |         |    1 | 00/03E7 : 18          |             CLC                  
+  598 |  1   HPrintMix.S    530 | Code        | 00 |         |    3 | 00/03E8 : 69 18 00    |             ADC   #$0018         
+  599 |  1   HPrintMix.S    531 | Code        | 00 |         |    2 | 00/03EB : 90 01       |             BCC   L2503EE        
+  600 |  1   HPrintMix.S    532 | Code        | 00 |         |    1 | 00/03ED : E8          |             INX                  
+  601 |  1   HPrintMix.S    533 | Code        | 00 |         |    2 | 00/03EE : 85 E5       | L2503EE     STA   $E5            
+  602 |  1   HPrintMix.S    534 | Code        | 00 |         |    2 | 00/03F0 : 86 E7       |             STX   $E7            
+  603 |  1   HPrintMix.S    535 | Code        | 00 |         |    2 | 00/03F2 : A7 E5       |             LDA   [$E5]          
+  604 |  1   HPrintMix.S    536 | Code        | 00 |         |    2 | 00/03F4 : 85 D7       |             STA   $D7            
+  605 |  1   HPrintMix.S    537 | Code        | 00 |         |    3 | 00/03F6 : A2 4D FD    |             LDX   #$FD4D         
+  606 |  1   HPrintMix.S    538 | Code        | 00 |         |    2 | 00/03F9 : B5 02       |             LDA   $02,X          
+  607 |  1   HPrintMix.S    539 | Code        | 00 |         |    1 | 00/03FB : A8          |             TAY                  
+  608 |  1   HPrintMix.S    540 | Code        | 00 |         |    2 | 00/03FC : B5 00       |             LDA   $00,X          
+  609 |  1   HPrintMix.S    541 | Code        | 00 |         |    1 | 00/03FE : BB          |             TYX                  
+  610 |  1   HPrintMix.S    542 | Code        | 00 |         |    1 | 00/03FF : 18          |             CLC                  
+  611 |  1   HPrintMix.S    543 | Code        | 00 |         |    3 | 00/0400 : 69 18 00    |             ADC   #$0018         
+  612 |  1   HPrintMix.S    544 | Code        | 00 |         |    2 | 00/0403 : 90 01       |             BCC   L250406        
+  613 |  1   HPrintMix.S    545 | Code        | 00 |         |    1 | 00/0405 : E8          |             INX                  
+  614 |  1   HPrintMix.S    546 | Code        | 00 |         |    1 | 00/0406 : DA          | L250406     PHX                  
+  615 |  1   HPrintMix.S    547 | Code        | 00 |         |    1 | 00/0407 : 48          |             PHA                  
+  616 |  1   HPrintMix.S    548 | Code        | 00 |         |    3 | 00/0408 : A2 4D FD    |             LDX   #$FD4D         
+  617 |  1   HPrintMix.S    549 | Code        | 00 |         |    2 | 00/040B : B5 02       |             LDA   $02,X          
+  618 |  1   HPrintMix.S    550 | Code        | 00 |         |    1 | 00/040D : A8          |             TAY                  
+  619 |  1   HPrintMix.S    551 | Code        | 00 |         |    2 | 00/040E : B5 00       |             LDA   $00,X          
+  620 |  1   HPrintMix.S    552 | Code        | 00 |         |    1 | 00/0410 : BB          |             TYX                  
+  621 |  1   HPrintMix.S    553 | Code        | 00 |         |    1 | 00/0411 : 18          |             CLC                  
+  622 |  1   HPrintMix.S    554 | Code        | 00 |         |    3 | 00/0412 : 69 18 00    |             ADC   #$0018         
+  623 |  1   HPrintMix.S    555 | Code        | 00 |         |    2 | 00/0415 : 90 01       |             BCC   L250418        
+  624 |  1   HPrintMix.S    556 | Code        | 00 |         |    1 | 00/0417 : E8          |             INX                  
+  625 |  1   HPrintMix.S    557 | Code        | 00 |         |    2 | 00/0418 : 85 E5       | L250418     STA   $E5            
+  626 |  1   HPrintMix.S    558 | Code        | 00 |         |    2 | 00/041A : 86 E7       |             STX   $E7            
+  627 |  1   HPrintMix.S    559 | Code        | 00 |         |    3 | 00/041C : A9 0A 00    |             LDA   #$000A         
+  628 |  1   HPrintMix.S    560 | Code        | 00 |         |    2 | 00/041F : 07 E5       |             ORA   [$E5]          
+  629 |  1   HPrintMix.S    561 | Code        | 00 |         |    1 | 00/0421 : FA          |             PLX                  
+  630 |  1   HPrintMix.S    562 | Code        | 00 |         |    2 | 00/0422 : 86 E5       |             STX   $E5            
+  631 |  1   HPrintMix.S    563 | Code        | 00 |         |    1 | 00/0424 : FA          |             PLX                  
+  632 |  1   HPrintMix.S    564 | Code        | 00 |         |    2 | 00/0425 : 86 E7       |             STX   $E7            
+  633 |  1   HPrintMix.S    565 | Code        | 00 |         |    2 | 00/0427 : 87 E5       |             STA   [$E5]          
+  634 |  1   HPrintMix.S    566 | Code        | 00 |         |    1 | 00/0429 : 5A          | L250429     PHY                  
+  635 |  1   HPrintMix.S    567 | Code        | 00 |E 2      |    3 | 00/042A : AD 27 53    |             LDA   L055327        
+  636 |  1   HPrintMix.S    568 | Code        | 00 |E 2      |    3 | 00/042D : AE 29 53    |             LDX   L055329        
+  637 |  1   HPrintMix.S    569 | Code        | 00 |         |    1 | 00/0430 : DA          |             PHX                  
+  638 |  1   HPrintMix.S    570 | Code        | 00 |         |    1 | 00/0431 : 48          |             PHA                  
+  639 |  1   HPrintMix.S    571 | Code        | 00 |         |    3 | 00/0432 : F4 01 00    |             PEA   $0001          
+  640 |  1   HPrintMix.S    572 | Code        | 00 |E 3      |    4 | 00/0435 : 22 AE 0A 15 |             JSL   L160AAE        
+  641 |  1   HPrintMix.S    573 | Code        | 00 |         |    1 | 00/0439 : 68          |             PLA                  
+  642 |  1   HPrintMix.S    574 | Code        | 00 |         |    2 | 00/043A : 85 D5       |             STA   $D5            
+  643 |  1   HPrintMix.S    575 | Code        | 00 |         |    1 | 00/043C : 7B          |             TDC                  
+  644 |  1   HPrintMix.S    576 | Code        | 00 |         |    1 | 00/043D : 18          |             CLC                  
+  645 |  1   HPrintMix.S    577 | Code        | 00 |         |    3 | 00/043E : 69 51 00    |             ADC   #$0051         
+  646 |  1   HPrintMix.S    578 | Code        | 00 |         |    3 | 00/0441 : F4 00 00    |             PEA   $0000          
+  647 |  1   HPrintMix.S    579 | Code        | 00 |         |    1 | 00/0444 : 48          |             PHA                  
+  648 |  1   HPrintMix.S    580 | Code        | 00 |         |    1 | 00/0445 : 5A          |             PHY                  
+  649 |  1   HPrintMix.S    581 | Code        | 00 |         |    1 | 00/0446 : 5A          |             PHY                  
+  650 |  1   HPrintMix.S    582 | Code        | 00 |         |    3 | 00/0447 : F4 37 08    |             PEA   $0837          
+  651 |  1   HPrintMix.S    583 | Code        | 00 |E 3      |    4 | 00/044A : 22 EB 11 06 |             JSL   L0711EB        
+  652 |  1   HPrintMix.S    584 | Code        | 00 |         |    3 | 00/044E : F4 14 00    |             PEA   $0014          
+  653 |  1   HPrintMix.S    585 | Code        | 00 |E 3      |    4 | 00/0451 : 22 BE 13 02 |             JSL   L0313BE        
+  654 |  1   HPrintMix.S    586 | Code        | 00 |         |    1 | 00/0455 : 7B          |             TDC                  
+  655 |  1   HPrintMix.S    587 | Code        | 00 |         |    1 | 00/0456 : 18          |             CLC                  
+  656 |  1   HPrintMix.S    588 | Code        | 00 |         |    3 | 00/0457 : 69 65 00    |             ADC   #$0065         
+  657 |  1   HPrintMix.S    589 | Code        | 00 |         |    3 | 00/045A : F4 00 00    |             PEA   $0000          
+  658 |  1   HPrintMix.S    590 | Code        | 00 |         |    1 | 00/045D : 48          |             PHA                  
+  659 |  1   HPrintMix.S    591 | Code        | 00 |E 3      |    4 | 00/045E : 22 D8 0A 15 |             JSL   L160AD8        
+  660 |  1   HPrintMix.S    592 | Code        | 00 |         |    1 | 00/0462 : 7B          |             TDC                  
+  661 |  1   HPrintMix.S    593 | Code        | 00 |         |    1 | 00/0463 : 18          |             CLC                  
+  662 |  1   HPrintMix.S    594 | Code        | 00 |         |    3 | 00/0464 : 69 65 00    |             ADC   #$0065         
+  663 |  1   HPrintMix.S    595 | Code        | 00 |         |    3 | 00/0467 : F4 00 00    |             PEA   $0000          
+  664 |  1   HPrintMix.S    596 | Code        | 00 |         |    1 | 00/046A : 48          |             PHA                  
+  665 |  1   HPrintMix.S    597 | Code        | 00 |         |    1 | 00/046B : 7B          |             TDC                  
+  666 |  1   HPrintMix.S    598 | Code        | 00 |         |    1 | 00/046C : 18          |             CLC                  
+  667 |  1   HPrintMix.S    599 | Code        | 00 |         |    3 | 00/046D : 69 51 00    |             ADC   #$0051         
+  668 |  1   HPrintMix.S    600 | Code        | 00 |         |    3 | 00/0470 : F4 00 00    |             PEA   $0000          
+  669 |  1   HPrintMix.S    601 | Code        | 00 |         |    1 | 00/0473 : 48          |             PHA                  
+  670 |  1   HPrintMix.S    602 | Code        | 00 |         |    3 | 00/0474 : F4 00 00    |             PEA   $0000          
+  671 |  1   HPrintMix.S    603 | Code        | 00 |         |    1 | 00/0477 : 7B          |             TDC                  
+  672 |  1   HPrintMix.S    604 | Code        | 00 |         |    1 | 00/0478 : 18          |             CLC                  
+  673 |  1   HPrintMix.S    605 | Code        | 00 |         |    3 | 00/0479 : 69 51 FF    |             ADC   #$FF51         
+  674 |  1   HPrintMix.S    606 | Code        | 00 |         |    1 | 00/047C : 48          |             PHA                  
+  675 |  1   HPrintMix.S    607 | Code        | 00 |E 3      |    4 | 00/047D : 22 84 0A 15 |             JSL   L160A84        
+  676 |  1   HPrintMix.S    608 | Code        | 00 |E 2      |    3 | 00/0481 : AD 27 53    |             LDA   L055327        
+  677 |  1   HPrintMix.S    609 | Code        | 00 |E 2      |    3 | 00/0484 : AE 29 53    |             LDX   L055329        
+  678 |  1   HPrintMix.S    610 | Code        | 00 |         |    2 | 00/0487 : 85 E5       |             STA   $E5            
+  679 |  1   HPrintMix.S    611 | Code        | 00 |         |    2 | 00/0489 : 86 E7       |             STX   $E7            
+  680 |  1   HPrintMix.S    612 | Code        | 00 |         |    3 | 00/048B : A0 02 00    |             LDY   #$0002         
+  681 |  1   HPrintMix.S    613 | Code        | 00 |         |    2 | 00/048E : B7 E5       |             LDA   [$E5],Y        
+  682 |  1   HPrintMix.S    614 | Code        | 00 |         |    1 | 00/0490 : AA          |             TAX                  
+  683 |  1   HPrintMix.S    615 | Code        | 00 |         |    2 | 00/0491 : A7 E5       |             LDA   [$E5]          
+  684 |  1   HPrintMix.S    616 | Code        | 00 |         |    1 | 00/0493 : 9B          |             TXY                  
+  685 |  1   HPrintMix.S    617 | Code        | 00 |         |    3 | 00/0494 : A2 49 FD    |             LDX   #$FD49         
+  686 |  1   HPrintMix.S    618 | Code        | 00 |         |    2 | 00/0497 : 95 00       |             STA   $00,X          
+  687 |  1   HPrintMix.S    619 | Code        | 00 |         |    1 | 00/0499 : 98          |             TYA                  
+  688 |  1   HPrintMix.S    620 | Code        | 00 |         |    2 | 00/049A : 95 02       |             STA   $02,X          
+  689 |  1   HPrintMix.S    621 | Code        | 00 |         |    1 | 00/049C : 7B          |             TDC                  
+  690 |  1   HPrintMix.S    622 | Code        | 00 |         |    1 | 00/049D : 18          |             CLC                  
+  691 |  1   HPrintMix.S    623 | Code        | 00 |         |    3 | 00/049E : 69 AD 00    |             ADC   #$00AD         
+  692 |  1   HPrintMix.S    624 | Code        | 00 |         |    3 | 00/04A1 : F4 00 00    |             PEA   $0000          
+  693 |  1   HPrintMix.S    625 | Code        | 00 |         |    1 | 00/04A4 : 48          |             PHA                  
+  694 |  1   HPrintMix.S    626 | Code        | 00 |         |    3 | 00/04A5 : A2 49 FD    |             LDX   #$FD49         
+  695 |  1   HPrintMix.S    627 | Code        | 00 |         |    2 | 00/04A8 : B5 02       |             LDA   $02,X          
+  696 |  1   HPrintMix.S    628 | Code        | 00 |         |    1 | 00/04AA : A8          |             TAY                  
+  697 |  1   HPrintMix.S    629 | Code        | 00 |         |    2 | 00/04AB : B5 00       |             LDA   $00,X          
+  698 |  1   HPrintMix.S    630 | Code        | 00 |         |    1 | 00/04AD : BB          |             TYX                  
+  699 |  1   HPrintMix.S    631 | Code        | 00 |         |    1 | 00/04AE : 18          |             CLC                  
+  700 |  1   HPrintMix.S    632 | Code        | 00 |         |    3 | 00/04AF : 69 02 00    |             ADC   #$0002         
+  701 |  1   HPrintMix.S    633 | Code        | 00 |         |    2 | 00/04B2 : 90 01       |             BCC   L2504B5        
+  702 |  1   HPrintMix.S    634 | Code        | 00 |         |    1 | 00/04B4 : E8          |             INX                  
+  703 |  1   HPrintMix.S    635 | Code        | 00 |         |    1 | 00/04B5 : 18          | L2504B5     CLC                  
+  704 |  1   HPrintMix.S    636 | Code        | 00 |         |    3 | 00/04B6 : 69 06 00    |             ADC   #$0006         
+  705 |  1   HPrintMix.S    637 | Code        | 00 |         |    2 | 00/04B9 : 90 01       |             BCC   L2504BC        
+  706 |  1   HPrintMix.S    638 | Code        | 00 |         |    1 | 00/04BB : E8          |             INX                  
+  707 |  1   HPrintMix.S    639 | Code        | 00 |         |    1 | 00/04BC : DA          | L2504BC     PHX                  
+  708 |  1   HPrintMix.S    640 | Code        | 00 |         |    1 | 00/04BD : 48          |             PHA                  
+  709 |  1   HPrintMix.S    641 | Code        | 00 |         |    3 | 00/04BE : F4 08 00    |             PEA   $0008          
+  710 |  1   HPrintMix.S    642 | Code        | 00 |E 3      |    4 | 00/04C1 : 22 BE 13 02 |             JSL   L0313BE        
+  711 |  1   HPrintMix.S    643 | Code        | 00 |         |    1 | 00/04C5 : 7B          |             TDC                  
+  712 |  1   HPrintMix.S    644 | Code        | 00 |         |    1 | 00/04C6 : 18          |             CLC                  
+  713 |  1   HPrintMix.S    645 | Code        | 00 |         |    3 | 00/04C7 : 69 B5 00    |             ADC   #$00B5         
+  714 |  1   HPrintMix.S    646 | Code        | 00 |         |    3 | 00/04CA : F4 00 00    |             PEA   $0000          
+  715 |  1   HPrintMix.S    647 | Code        | 00 |         |    1 | 00/04CD : 48          |             PHA                  
+  716 |  1   HPrintMix.S    648 | Code        | 00 |         |    1 | 00/04CE : 7B          |             TDC                  
+  717 |  1   HPrintMix.S    649 | Code        | 00 |         |    1 | 00/04CF : 18          |             CLC                  
+  718 |  1   HPrintMix.S    650 | Code        | 00 |         |    3 | 00/04D0 : 69 AD 00    |             ADC   #$00AD         
+  719 |  1   HPrintMix.S    651 | Code        | 00 |         |    3 | 00/04D3 : F4 00 00    |             PEA   $0000          
+  720 |  1   HPrintMix.S    652 | Code        | 00 |         |    1 | 00/04D6 : 48          |             PHA                  
+  721 |  1   HPrintMix.S    653 | Code        | 00 |         |    3 | 00/04D7 : F4 08 00    |             PEA   $0008          
+  722 |  1   HPrintMix.S    654 | Code        | 00 |E 3      |    4 | 00/04DA : 22 BE 13 02 |             JSL   L0313BE        
+  723 |  1   HPrintMix.S    655 | Code        | 00 |         |    2 | 00/04DE : A5 EE       |             LDA   $EE            
+  724 |  1   HPrintMix.S    656 | Code        | 00 |         |    2 | 00/04E0 : F0 0F       |             BEQ   L2504F1        
+  725 |  1   HPrintMix.S    657 | Code        | 00 |  3      |    4 | 00/04E2 : AF 06 00 00 |             LDAL  L250006        
+  726 |  1   HPrintMix.S    658 | Code        | 00 |         |    1 | 00/04E6 : AA          |             TAX                  
+  727 |  1   HPrintMix.S    659 | Code        | 00 |  3      |    4 | 00/04E7 : AF 04 00 00 |             LDAL  L250004        
+  728 |  1   HPrintMix.S    660 | Code        | 00 |         |    2 | 00/04EB : 85 A1       |             STA   $A1            
+  729 |  1   HPrintMix.S    661 | Code        | 00 |         |    2 | 00/04ED : 86 A3       |             STX   $A3            
+  730 |  1   HPrintMix.S    662 | Code        | 00 |         |    2 | 00/04EF : 80 0D       |             BRA   L2504FE        
+  731 |  1   HPrintMix.S    663 | Code        | 00 |E 3      |    4 | 00/04F1 : AF 53 32 04 | L2504F1     LDAL  L053253        
+  732 |  1   HPrintMix.S    664 | Code        | 00 |         |    1 | 00/04F5 : AA          |             TAX                  
+  733 |  1   HPrintMix.S    665 | Code        | 00 |E 3      |    4 | 00/04F6 : AF 51 32 04 |             LDAL  L053251        
+  734 |  1   HPrintMix.S    666 | Code        | 00 |         |    2 | 00/04FA : 85 A1       |             STA   $A1            
+  735 |  1   HPrintMix.S    667 | Code        | 00 |         |    2 | 00/04FC : 86 A3       |             STX   $A3            
+  736 |  1   HPrintMix.S    668 | Code        | 00 |         |    1 | 00/04FE : 5A          | L2504FE     PHY                  
+  737 |  1   HPrintMix.S    669 | Code        | 00 |         |    1 | 00/04FF : 7B          |             TDC                  
+  738 |  1   HPrintMix.S    670 | Code        | 00 |         |    1 | 00/0500 : 18          |             CLC                  
+  739 |  1   HPrintMix.S    671 | Code        | 00 |         |    3 | 00/0501 : 69 A1 00    |             ADC   #$00A1         
+  740 |  1   HPrintMix.S    672 | Code        | 00 |         |    3 | 00/0504 : F4 00 00    |             PEA   $0000          
+  741 |  1   HPrintMix.S    673 | Code        | 00 |         |    1 | 00/0507 : 48          |             PHA                  
+  742 |  1   HPrintMix.S    674 | Code        | 00 |         |    3 | 00/0508 : F4 00 00    |             PEA   $0000          
+  743 |  1   HPrintMix.S    675 | Code        | 00 |E 3      |    4 | 00/050B : 22 92 0A 15 |             JSL   L160A92        
+  744 |  1   HPrintMix.S    676 | Code        | 00 |         |    1 | 00/050F : 68          |             PLA                  
+  745 |  1   HPrintMix.S    677 | Code        | 00 |         |    1 | 00/0510 : 18          |             CLC                  
+  746 |  1   HPrintMix.S    678 | Code        | 00 |         |    2 | 00/0511 : 65 AD       |             ADC   $AD            
+  747 |  1   HPrintMix.S    679 | Code        | 00 |         |    2 | 00/0513 : 85 D3       |             STA   $D3            
+  748 |  1   HPrintMix.S    680 | Code        | 00 |         |    1 | 00/0515 : 5A          |             PHY                  
+  749 |  1   HPrintMix.S    681 | Code        | 00 |         |    3 | 00/0516 : F4 00 00    |             PEA   $0000          
+  750 |  1   HPrintMix.S    682 | Code        | 00 |         |    1 | 00/0519 : 7B          |             TDC                  
+  751 |  1   HPrintMix.S    683 | Code        | 00 |         |    1 | 00/051A : 18          |             CLC                  
+  752 |  1   HPrintMix.S    684 | Code        | 00 |         |    3 | 00/051B : 69 51 FF    |             ADC   #$FF51         
+  753 |  1   HPrintMix.S    685 | Code        | 00 |         |    1 | 00/051E : 48          |             PHA                  
+  754 |  1   HPrintMix.S    686 | Code        | 00 |E 3      |    4 | 00/051F : 22 3B 06 14 |             JSL   L15063B        
+  755 |  1   HPrintMix.S    687 | Code        | 00 |         |    1 | 00/0523 : 68          |             PLA                  
+  756 |  1   HPrintMix.S    688 | Code        | 00 |         |    1 | 00/0524 : 18          |             CLC                  
+  757 |  1   HPrintMix.S    689 | Code        | 00 |         |    3 | 00/0525 : 69 14 00    |             ADC   #$0014         
+  758 |  1   HPrintMix.S    690 | Code        | 00 |         |    2 | 00/0528 : 85 CD       |             STA   $CD            
+  759 |  1   HPrintMix.S    691 | Code        | 00 |         |    1 | 00/052A : 5A          |             PHY                  
+  760 |  1   HPrintMix.S    692 | Code        | 00 |         |    2 | 00/052B : D4 F6       |             PEI   $F6            
+  761 |  1   HPrintMix.S    693 | Code        | 00 |         |    2 | 00/052D : D4 F4       |             PEI   $F4            
+  762 |  1   HPrintMix.S    694 | Code        | 00 |E 3      |    4 | 00/052F : 22 3B 06 14 |             JSL   L15063B        
+  763 |  1   HPrintMix.S    695 | Code        | 00 |         |    1 | 00/0533 : 68          |             PLA                  
+  764 |  1   HPrintMix.S    696 | Code        | 00 |         |    2 | 00/0534 : 85 CF       |             STA   $CF            
+  765 |  1   HPrintMix.S    697 | Code        | 00 |         |    1 | 00/0536 : 5A          |             PHY                  
+  766 |  1   HPrintMix.S    698 | Code        | 00 |         |    2 | 00/0537 : A5 BB       |             LDA   $BB            
+  767 |  1   HPrintMix.S    699 | Code        | 00 |         |    1 | 00/0539 : 38          |             SEC                  
+  768 |  1   HPrintMix.S    700 | Code        | 00 |         |    2 | 00/053A : E5 CF       |             SBC   $CF            
+  769 |  1   HPrintMix.S    701 | Code        | 00 |         |    1 | 00/053C : 48          |             PHA                  
+  770 |  1   HPrintMix.S    702 | Code        | 00 |         |    2 | 00/053D : A5 CD       |             LDA   $CD            
+  771 |  1   HPrintMix.S    703 | Code        | 00 |         |    1 | 00/053F : 18          |             CLC                  
+  772 |  1   HPrintMix.S    704 | Code        | 00 |         |    2 | 00/0540 : 65 B7       |             ADC   $B7            
+  773 |  1   HPrintMix.S    705 | Code        | 00 |         |    1 | 00/0542 : 48          |             PHA                  
+  774 |  1   HPrintMix.S    706 | Code        | 00 |E 3      |    4 | 00/0543 : 22 5F 2F 06 |             JSL   L072FA6        
+  775 |  1   HPrintMix.S    707 | Code        | 00 |         |    1 | 00/0547 : 68          |             PLA                  
+  776 |  1   HPrintMix.S    708 | Code        | 00 |         |    2 | 00/0548 : 85 CD       |             STA   $CD            
+  777 |  1   HPrintMix.S    709 | Code        | 00 |         |    2 | 00/054A : A5 EE       |             LDA   $EE            
+  778 |  1   HPrintMix.S    710 | Code        | 00 |         |    2 | 00/054C : F0 0F       |             BEQ   L25055D        
+  779 |  1   HPrintMix.S    711 | Code        | 00 |  3      |    4 | 00/054E : AF 02 00 00 |             LDAL  L250002        
+  780 |  1   HPrintMix.S    712 | Code        | 00 |         |    1 | 00/0552 : AA          |             TAX                  
+  781 |  1   HPrintMix.S    713 | Code        | 00 |         |    4 | 00/0553 : AF 90 D0 03 |             LDAL  250000         
+  782 |  1   HPrintMix.S    714 | Code        | 00 |         |    2 | 00/0557 : 85 A5       |             STA   $A5            
+  783 |  1   HPrintMix.S    715 | Code        | 00 |         |    2 | 00/0559 : 86 A7       |             STX   $A7            
+  784 |  1   HPrintMix.S    716 | Code        | 00 |         |    2 | 00/055B : 80 0C       |             BRA   L250569        
+  785 |  1   HPrintMix.S    717 | Code        | 00 |         |    3 | 00/055D : A0 02 00    | L25055D     LDY   #$0002         
+  786 |  1   HPrintMix.S    718 | Code        | 00 |         |    2 | 00/0560 : B7 F0       |             LDA   [$F0],Y        
+  787 |  1   HPrintMix.S    719 | Code        | 00 |         |    1 | 00/0562 : AA          |             TAX                  
+  788 |  1   HPrintMix.S    720 | Code        | 00 |         |    2 | 00/0563 : A7 F0       |             LDA   [$F0]          
+  789 |  1   HPrintMix.S    721 | Code        | 00 |         |    2 | 00/0565 : 85 A5       |             STA   $A5            
+  790 |  1   HPrintMix.S    722 | Code        | 00 |         |    2 | 00/0567 : 86 A7       |             STX   $A7            
+  791 |  1   HPrintMix.S    723 | Code        | 00 |         |    1 | 00/0569 : 5A          | L250569     PHY                  
+  792 |  1   HPrintMix.S    724 | Code        | 00 |         |    1 | 00/056A : 7B          |             TDC                  
+  793 |  1   HPrintMix.S    725 | Code        | 00 |         |    1 | 00/056B : 18          |             CLC                  
+  794 |  1   HPrintMix.S    726 | Code        | 00 |         |    3 | 00/056C : 69 A5 00    |             ADC   #$00A5         
+  795 |  1   HPrintMix.S    727 | Code        | 00 |         |    3 | 00/056F : F4 00 00    |             PEA   $0000          
+  796 |  1   HPrintMix.S    728 | Code        | 00 |         |    1 | 00/0572 : 48          |             PHA                  
+  797 |  1   HPrintMix.S    729 | Code        | 00 |         |    3 | 00/0573 : F4 00 00    |             PEA   $0000          
+  798 |  1   HPrintMix.S    730 | Code        | 00 |E 3      |    4 | 00/0576 : 22 92 0A 15 |             JSL   L160A92        
+  799 |  1   HPrintMix.S    731 | Code        | 00 |         |    1 | 00/057A : 68          |             PLA                  
+  800 |  1   HPrintMix.S    732 | Code        | 00 |         |    2 | 00/057B : 85 E1       |             STA   $E1            
+  801 |  1   HPrintMix.S    733 | Code        | 00 |         |    2 | 00/057D : A5 E1       |             LDA   $E1            
+  802 |  1   HPrintMix.S    734 | Code        | 00 |         |    1 | 00/057F : 0A          |             ASL                  
+  803 |  1   HPrintMix.S    735 | Code        | 00 |         |    2 | 00/0580 : 85 DD       |             STA   $DD            
+  804 |  1   HPrintMix.S    736 | Code        | 00 |         |    2 | 00/0582 : A5 DD       |             LDA   $DD            
+  805 |  1   HPrintMix.S    737 | Code        | 00 |         |    1 | 00/0584 : 18          |             CLC                  
+  806 |  1   HPrintMix.S    738 | Code        | 00 |         |    2 | 00/0585 : 65 D3       |             ADC   $D3            
+  807 |  1   HPrintMix.S    739 | Code        | 00 |         |    2 | 00/0587 : 85 AD       |             STA   $AD            
+  808 |  1   HPrintMix.S    740 | Code        | 00 |         |    2 | 00/0589 : A5 B1       |             LDA   $B1            
+  809 |  1   HPrintMix.S    741 | Code        | 00 |         |    1 | 00/058B : 38          |             SEC                  
+  810 |  1   HPrintMix.S    742 | Code        | 00 |         |    2 | 00/058C : E5 DD       |             SBC   $DD            
+  811 |  1   HPrintMix.S    743 | Code        | 00 |         |    2 | 00/058E : 85 B1       |             STA   $B1            
+  812 |  1   HPrintMix.S    744 | Code        | 00 |         |    2 | 00/0590 : D4 B1       |             PEI   $B1            
+  813 |  1   HPrintMix.S    745 | Code        | 00 |         |    2 | 00/0592 : A5 B1       |             LDA   $B1            
+  814 |  1   HPrintMix.S    746 | Code        | 00 |         |    1 | 00/0594 : 38          |             SEC                  
+  815 |  1   HPrintMix.S    747 | Code        | 00 |         |    2 | 00/0595 : E5 AD       |             SBC   $AD            
+  816 |  1   HPrintMix.S    748 | Code        | 00 |         |    1 | 00/0597 : 48          |             PHA                  
+  817 |  1   HPrintMix.S    749 | Code        | 00 |         |    2 | 00/0598 : D4 E1       |             PEI   $E1            
+  818 |  1   HPrintMix.S    750 | Code        | 00 |E 3      |    4 | 00/059A : 22 18 03 14 |             JSL   L150318        
+  819 |  1   HPrintMix.S    751 | Code        | 00 |         |    1 | 00/059E : FA          |             PLX                  
+  820 |  1   HPrintMix.S    752 | Code        | 00 |         |    1 | 00/059F : FA          |             PLX                  
+  821 |  1   HPrintMix.S    753 | Code        | 00 |         |    2 | 00/05A0 : 85 E5       |             STA   $E5            
+  822 |  1   HPrintMix.S    754 | Code        | 00 |         |    1 | 00/05A2 : 68          |             PLA                  
+  823 |  1   HPrintMix.S    755 | Code        | 00 |         |    1 | 00/05A3 : 38          |             SEC                  
+  824 |  1   HPrintMix.S    756 | Code        | 00 |         |    2 | 00/05A4 : E5 E5       |             SBC   $E5            
+  825 |  1   HPrintMix.S    757 | Code        | 00 |         |    2 | 00/05A6 : 85 B1       |             STA   $B1            
+  826 |  1   HPrintMix.S    758 | Code        | 00 |         |    2 | 00/05A8 : A5 B1       |             LDA   $B1            
+  827 |  1   HPrintMix.S    759 | Code        | 00 |         |    1 | 00/05AA : 38          |             SEC                  
+  828 |  1   HPrintMix.S    760 | Code        | 00 |         |    2 | 00/05AB : E5 AD       |             SBC   $AD            
+  829 |  1   HPrintMix.S    761 | Code        | 00 |         |    1 | 00/05AD : 48          |             PHA                  
+  830 |  1   HPrintMix.S    762 | Code        | 00 |         |    2 | 00/05AE : D4 E1       |             PEI   $E1            
+  831 |  1   HPrintMix.S    763 | Code        | 00 |E 3      |    4 | 00/05B0 : 22 F5 00 14 |             JSL   L1500F5        
+  832 |  1   HPrintMix.S    764 | Code        | 00 |         |    1 | 00/05B4 : FA          |             PLX                  
+  833 |  1   HPrintMix.S    765 | Code        | 00 |         |    1 | 00/05B5 : FA          |             PLX                  
+  834 |  1   HPrintMix.S    766 | Code        | 00 |         |    2 | 00/05B6 : 85 DB       |             STA   $DB            
+  835 |  1   HPrintMix.S    767 | Code        | 00 |         |    2 | 00/05B8 : A5 E1       |             LDA   $E1            
+  836 |  1   HPrintMix.S    768 | Code        | 00 |         |    1 | 00/05BA : 18          |             CLC                  
+  837 |  1   HPrintMix.S    769 | Code        | 00 |         |    2 | 00/05BB : 65 B1       |             ADC   $B1            
+  838 |  1   HPrintMix.S    770 | Code        | 00 |         |    2 | 00/05BD : 85 D1       |             STA   $D1            
+  839 |  1   HPrintMix.S    771 | Code        | 00 |         |    3 | 00/05BF : A9 01 00    |             LDA   #$0001         
+  840 |  1   HPrintMix.S    772 | Code        | 00 |         |    2 | 00/05C2 : 85 D9       |             STA   $D9            
+  841 |  1   HPrintMix.S    773 | Code        | 00 |         |    2 | 00/05C4 : 64 C5       |             STZ   $C5            
+  842 |  1   HPrintMix.S    774 | Code        | 00 |         |    2 | 00/05C6 : 64 C7       |             STZ   $C7            
+  843 |  1   HPrintMix.S    775 | Code        | 00 |         |    3 | 00/05C8 : F4 00 00    |             PEA   $0000          
+  844 |  1   HPrintMix.S    776 | Code        | 00 |E 3      |    4 | 00/05CB : 22 F8 09 15 |             JSL   L1609F8        
+  845 |  1   HPrintMix.S    777 | Code        | 00 |         |    3 | 00/05CF : F4 00 00    |             PEA   $0000          
+  846 |  1   HPrintMix.S    778 | Code        | 00 |         |    1 | 00/05D2 : 7B          |             TDC                  
+  847 |  1   HPrintMix.S    779 | Code        | 00 |         |    1 | 00/05D3 : 18          |             CLC                  
+  848 |  1   HPrintMix.S    780 | Code        | 00 |         |    3 | 00/05D4 : 69 51 FE    |             ADC   #$FE51         
+  849 |  1   HPrintMix.S    781 | Code        | 00 |         |    1 | 00/05D7 : 48          |             PHA                  
+  850 |  1   HPrintMix.S    782 | Code        | 00 |E 3      |    4 | 00/05D8 : 22 E6 0A 15 |             JSL   L160AE6        
+  851 |  1   HPrintMix.S    783 | Code        | 00 |         |    3 | 00/05DC : A9 00 00    |             LDA   #$0000         
+  852 |  1   HPrintMix.S    784 | Code        | 00 |E 3      |    4 | 00/05DF : 8F AD 51 04 |             STAL  L0551AD        
+  853 |  1   HPrintMix.S    785 | Code        | 00 |         |    1 | 00/05E3 : 5A          |             PHY                  
+  854 |  1   HPrintMix.S    786 | Code        | 00 |         |    1 | 00/05E4 : 5A          |             PHY                  
+  855 |  1   HPrintMix.S    787 | Code        | 00 |E 2      |    3 | 00/05E5 : AD 27 53    |             LDA   L055327        
+  856 |  1   HPrintMix.S    788 | Code        | 00 |E 2      |    3 | 00/05E8 : AE 29 53    |             LDX   L055329        
+  857 |  1   HPrintMix.S    789 | Code        | 00 |         |    1 | 00/05EB : DA          |             PHX                  
+  858 |  1   HPrintMix.S    790 | Code        | 00 |         |    1 | 00/05EC : 48          |             PHA                  
+  859 |  1   HPrintMix.S    791 | Code        | 00 |         |    3 | 00/05ED : F4 00 00    |             PEA   $0000          
+  860 |  1   HPrintMix.S    792 | Code        | 00 |         |    3 | 00/05F0 : F4 00 00    |             PEA   $0000          
+  861 |  1   HPrintMix.S    793 | Code        | 00 |E 3      |    4 | 00/05F3 : 22 87 12 14 |             JSL   L151287        
+  862 |  1   HPrintMix.S    794 | Code        | 00 |         |    1 | 00/05F7 : 68          |             PLA                  
+  863 |  1   HPrintMix.S    795 | Code        | 00 |         |    2 | 00/05F8 : 85 BD       |             STA   $BD            
+  864 |  1   HPrintMix.S    796 | Code        | 00 |         |    1 | 00/05FA : FA          |             PLX                  
+  865 |  1   HPrintMix.S    797 | Code        | 00 |         |    2 | 00/05FB : 86 BF       |             STX   $BF            
+  866 |  1   HPrintMix.S    798 | Code        | 00 |E 3      |    4 | 00/05FD : 22 F4 0A 15 |             JSL   L160AF4        
+  867 |  1   HPrintMix.S    799 | Code        | 00 |         |    1 | 00/0601 : 5A          |             PHY                  
+  868 |  1   HPrintMix.S    800 | Code        | 00 |E 3      |    4 | 00/0602 : 22 06 0A 15 |             JSL   L160A06        
+  869 |  1   HPrintMix.S    801 | Code        | 00 |         |    1 | 00/0606 : 68          |             PLA                  
+  870 |  1   HPrintMix.S    802 | Code        | 00 |         |    2 | 00/0607 : F0 03       |             BEQ   L25060C        
+  871 |  1   HPrintMix.S    803 | Code        | 00 |         |    3 | 00/0609 : 82 D8 01    |             BRL   L2507E4        
+  872 |  1   HPrintMix.S    804 | Code        | 00 |         |    2 | 00/060C : D4 BF       | L25060C     PEI   $BF            
+  873 |  1   HPrintMix.S    805 | Code        | 00 |         |    2 | 00/060E : D4 BD       |             PEI   $BD            
+  874 |  1   HPrintMix.S    806 | Code        | 00 |         |    3 | 00/0610 : F4 00 00    |             PEA   $0000          
+  875 |  1   HPrintMix.S    807 | Code        | 00 |         |    3 | 00/0613 : F4 00 00    |             PEA   $0000          
+  876 |  1   HPrintMix.S    808 | Code        | 00 |E 3      |    4 | 00/0616 : 22 A4 11 14 |             JSL   L1511A4        
+  877 |  1   HPrintMix.S    809 | Code        | 00 |E 3      |    4 | 00/061A : 22 F4 0A 15 |             JSL   L160AF4        
+  878 |  1   HPrintMix.S    810 | Code        | 00 |         |    1 | 00/061E : 5A          |             PHY                  
+  879 |  1   HPrintMix.S    811 | Code        | 00 |E 3      |    4 | 00/061F : 22 06 0A 15 |             JSL   L160A06        
+  880 |  1   HPrintMix.S    812 | Code        | 00 |         |    1 | 00/0623 : 68          |             PLA                  
+  881 |  1   HPrintMix.S    813 | Code        | 00 |         |    2 | 00/0624 : F0 03       |             BEQ   L250629        
+  882 |  1   HPrintMix.S    814 | Code        | 00 |         |    3 | 00/0626 : 82 73 01    |             BRL   L25079C        
+  883 |  1   HPrintMix.S    815 | Code        | 00 |         |    2 | 00/0629 : D4 A3       | L250629     PEI   $A3            
+  884 |  1   HPrintMix.S    816 | Code        | 00 |         |    2 | 00/062B : D4 A1       |             PEI   $A1            
+  885 |  1   HPrintMix.S    817 | Code        | 00 |E 3      |    4 | 00/062D : 22 CE 09 15 |             JSL   L1609CE        
+  886 |  1   HPrintMix.S    818 | Code        | 00 |         |    2 | 00/0631 : D4 B7       |             PEI   $B7            
+  887 |  1   HPrintMix.S    819 | Code        | 00 |         |    2 | 00/0633 : D4 D3       |             PEI   $D3            
+  888 |  1   HPrintMix.S    820 | Code        | 00 |E 3      |    4 | 00/0635 : 22 C5 10 14 |             JSL   L1510C5        
+  889 |  1   HPrintMix.S    821 | Code        | 00 |         |    2 | 00/0639 : A5 F4       |             LDA   $F4            
+  890 |  1   HPrintMix.S    822 | Code        | 00 |         |    2 | 00/063B : 05 F6       |             ORA   $F6            
+  891 |  1   HPrintMix.S    823 | Code        | 00 |         |    2 | 00/063D : F0 2A       |             BEQ   L250669        
+  892 |  1   HPrintMix.S    824 | Code        | 00 |         |    3 | 00/063F : F4 00 00    |             PEA   $0000          
+  893 |  1   HPrintMix.S    825 | Code        | 00 |         |    1 | 00/0642 : 7B          |             TDC                  
+  894 |  1   HPrintMix.S    826 | Code        | 00 |         |    1 | 00/0643 : 18          |             CLC                  
+  895 |  1   HPrintMix.S    827 | Code        | 00 |         |    3 | 00/0644 : 69 51 FF    |             ADC   #$FF51         
+  896 |  1   HPrintMix.S    828 | Code        | 00 |         |    1 | 00/0647 : 48          |             PHA                  
+  897 |  1   HPrintMix.S    829 | Code        | 00 |E 3      |    4 | 00/0648 : 22 92 05 14 |             JSL   L150592        
+  898 |  1   HPrintMix.S    830 | Code        | 00 |         |    3 | 00/064C : A9 FF 00    |             LDA   #$00FF         
+  899 |  1   HPrintMix.S    831 | Code        | 00 |         |    2 | 00/064F : 27 F4       |             AND   [$F4]          
+  900 |  1   HPrintMix.S    832 | Code        | 00 |         |    1 | 00/0651 : 38          |             SEC                  
+  901 |  1   HPrintMix.S    833 | Code        | 00 |         |    3 | 00/0652 : E9 00 00    |             SBC   #$0000         
+  902 |  1   HPrintMix.S    834 | Code        | 00 |         |    2 | 00/0655 : 30 12       |             BMI   L250669        
+  903 |  1   HPrintMix.S    835 | Code        | 00 |         |    2 | 00/0657 : F0 10       |             BEQ   L250669        
+  904 |  1   HPrintMix.S    836 | Code        | 00 |         |    2 | 00/0659 : D4 CD       |             PEI   $CD            
+  905 |  1   HPrintMix.S    837 | Code        | 00 |         |    2 | 00/065B : D4 D3       |             PEI   $D3            
+  906 |  1   HPrintMix.S    838 | Code        | 00 |E 3      |    4 | 00/065D : 22 C5 10 14 |             JSL   L1510C5        
+  907 |  1   HPrintMix.S    839 | Code        | 00 |         |    2 | 00/0661 : D4 F6       |             PEI   $F6            
+  908 |  1   HPrintMix.S    840 | Code        | 00 |         |    2 | 00/0663 : D4 F4       |             PEI   $F4            
+  909 |  1   HPrintMix.S    841 | Code        | 00 |E 3      |    4 | 00/0665 : 22 92 05 14 |             JSL   L150592        
+  910 |  1   HPrintMix.S    842 | Code        | 00 |         |    2 | 00/0669 : D4 A7       | L250669     PEI   $A7            
+  911 |  1   HPrintMix.S    843 | Code        | 00 |         |    2 | 00/066B : D4 A5       |             PEI   $A5            
+  912 |  1   HPrintMix.S    844 | Code        | 00 |E 3      |    4 | 00/066D : 22 CE 09 15 |             JSL   L1609CE        
+  913 |  1   HPrintMix.S    845 | Code        | 00 |         |    1 | 00/0671 : 5A          |             PHY                  
+  914 |  1   HPrintMix.S    846 | Code        | 00 |         |    2 | 00/0672 : D4 FA       |             PEI   $FA            
+  915 |  1   HPrintMix.S    847 | Code        | 00 |         |    2 | 00/0674 : D4 F8       |             PEI   $F8            
+  916 |  1   HPrintMix.S    848 | Code        | 00 |E 3      |    4 | 00/0676 : 22 7A 18 06 |             JSL   L0718A4        
+  917 |  1   HPrintMix.S    849 | Code        | 00 |         |    1 | 00/067A : 68          |             PLA                  
+  918 |  1   HPrintMix.S    850 | Code        | 00 |         |    2 | 00/067B : 85 DF       |             STA   $DF            
+  919 |  1   HPrintMix.S    851 | Code        | 00 |         |    2 | 00/067D : D4 FA       |             PEI   $FA            
+  920 |  1   HPrintMix.S    852 | Code        | 00 |         |    2 | 00/067F : D4 F8       |             PEI   $F8            
+  921 |  1   HPrintMix.S    853 | Code        | 00 |E 3      |    4 | 00/0681 : 22 95 18 06 |             JSL   L0718BF        
+  922 |  1   HPrintMix.S    854 | Code        | 00 |         |    3 | 00/0685 : A0 1A 00    |             LDY   #$001A         
+  923 |  1   HPrintMix.S    855 | Code        | 00 |         |    2 | 00/0688 : B7 BD       |             LDA   [$BD],Y        
+  924 |  1   HPrintMix.S    856 | Code        | 00 |         |    1 | 00/068A : AA          |             TAX                  
+  925 |  1   HPrintMix.S    857 | Code        | 00 |         |    1 | 00/068B : 88          |             DEY                  
+  926 |  1   HPrintMix.S    858 | Code        | 00 |         |    1 | 00/068C : 88          |             DEY                  
+  927 |  1   HPrintMix.S    859 | Code        | 00 |         |    2 | 00/068D : B7 BD       |             LDA   [$BD],Y        
+  928 |  1   HPrintMix.S    860 | Code        | 00 |         |    2 | 00/068F : 85 E5       |             STA   $E5            
+  929 |  1   HPrintMix.S    861 | Code        | 00 |         |    2 | 00/0691 : 86 E7       |             STX   $E7            
+  930 |  1   HPrintMix.S    862 | Code        | 00 |         |    3 | 00/0693 : A0 02 00    |             LDY   #$0002         
+  931 |  1   HPrintMix.S    863 | Code        | 00 |         |    2 | 00/0696 : B7 E5       |             LDA   [$E5],Y        
+  932 |  1   HPrintMix.S    864 | Code        | 00 |         |    1 | 00/0698 : AA          |             TAX                  
+  933 |  1   HPrintMix.S    865 | Code        | 00 |         |    2 | 00/0699 : A7 E5       |             LDA   [$E5]          
+  934 |  1   HPrintMix.S    866 | Code        | 00 |         |    1 | 00/069B : 18          |             CLC                  
+  935 |  1   HPrintMix.S    867 | Code        | 00 |         |    3 | 00/069C : 69 02 00    |             ADC   #$0002         
+  936 |  1   HPrintMix.S    868 | Code        | 00 |         |    2 | 00/069F : 90 01       |             BCC   L2506A2        
+  937 |  1   HPrintMix.S    869 | Code        | 00 |         |    1 | 00/06A1 : E8          |             INX                  
+  938 |  1   HPrintMix.S    870 | Code        | 00 |         |    1 | 00/06A2 : DA          | L2506A2     PHX                  
+  939 |  1   HPrintMix.S    871 | Code        | 00 |         |    1 | 00/06A3 : 48          |             PHA                  
+  940 |  1   HPrintMix.S    872 | Code        | 00 |         |    1 | 00/06A4 : 7B          |             TDC                  
+  941 |  1   HPrintMix.S    873 | Code        | 00 |         |    1 | 00/06A5 : 18          |             CLC                  
+  942 |  1   HPrintMix.S    874 | Code        | 00 |         |    3 | 00/06A6 : 69 AD 00    |             ADC   #$00AD         
+  943 |  1   HPrintMix.S    875 | Code        | 00 |         |    3 | 00/06A9 : F4 00 00    |             PEA   $0000          
+  944 |  1   HPrintMix.S    876 | Code        | 00 |         |    1 | 00/06AC : 48          |             PHA                  
+  945 |  1   HPrintMix.S    877 | Code        | 00 |         |    3 | 00/06AD : F4 08 00    |             PEA   $0008          
+  946 |  1   HPrintMix.S    878 | Code        | 00 |E 3      |    4 | 00/06B0 : 22 BE 13 02 |             JSL   L0313BE        
+  947 |  1   HPrintMix.S    879 | Code        | 00 |         |    1 | 00/06B4 : 5A          |             PHY                  
+  948 |  1   HPrintMix.S    880 | Code        | 00 |         |    3 | 00/06B5 : A0 02 00    |             LDY   #$0002         
+  949 |  1   HPrintMix.S    881 | Code        | 00 |         |    2 | 00/06B8 : B7 F8       |             LDA   [$F8],Y        
+  950 |  1   HPrintMix.S    882 | Code        | 00 |         |    1 | 00/06BA : 48          |             PHA                  
+  951 |  1   HPrintMix.S    883 | Code        | 00 |         |    2 | 00/06BB : A7 F8       |             LDA   [$F8]          
+  952 |  1   HPrintMix.S    884 | Code        | 00 |         |    1 | 00/06BD : 48          |             PHA                  
+  953 |  1   HPrintMix.S    885 | Code        | 00 |         |    1 | 00/06BE : 7B          |             TDC                  
+  954 |  1   HPrintMix.S    886 | Code        | 00 |         |    1 | 00/06BF : 18          |             CLC                  
+  955 |  1   HPrintMix.S    887 | Code        | 00 |         |    3 | 00/06C0 : 69 AD 00    |             ADC   #$00AD         
+  956 |  1   HPrintMix.S    888 | Code        | 00 |         |    3 | 00/06C3 : F4 00 00    |             PEA   $0000          
+  957 |  1   HPrintMix.S    889 | Code        | 00 |         |    1 | 00/06C6 : 48          |             PHA                  
+  958 |  1   HPrintMix.S    890 | Code        | 00 |         |    3 | 00/06C7 : F4 00 00    |             PEA   $0000          
+  959 |  1   HPrintMix.S    891 | Code        | 00 |         |    2 | 00/06CA : D4 E1       |             PEI   $E1            
+  960 |  1   HPrintMix.S    892 | Code        | 00 |         |    2 | 00/06CC : D4 C5       |             PEI   $C5            
+  961 |  1   HPrintMix.S    893 | Code        | 00 |E 3      |    4 | 00/06CE : 22 0C 09 07 |             JSL   L08090C        
+  962 |  1   HPrintMix.S    894 | Code        | 00 |         |    1 | 00/06D2 : 68          |             PLA                  
+  963 |  1   HPrintMix.S    895 | Code        | 00 |         |    2 | 00/06D3 : 85 DD       |             STA   $DD            
+  964 |  1   HPrintMix.S    896 | Code        | 00 |         |    2 | 00/06D5 : D4 FA       |             PEI   $FA            
+  965 |  1   HPrintMix.S    897 | Code        | 00 |         |    2 | 00/06D7 : D4 F8       |             PEI   $F8            
+  966 |  1   HPrintMix.S    898 | Code        | 00 |         |    2 | 00/06D9 : D4 DF       |             PEI   $DF            
+  967 |  1   HPrintMix.S    899 | Code        | 00 |E 3      |    4 | 00/06DB : 22 B0 18 06 |             JSL   L0718DA        
+  968 |  1   HPrintMix.S    900 | Code        | 00 |         |    2 | 00/06DF : D4 C7       |             PEI   $C7            
+  969 |  1   HPrintMix.S    901 | Code        | 00 |         |    2 | 00/06E1 : D4 C5       |             PEI   $C5            
+  970 |  1   HPrintMix.S    902 | Code        | 00 |         |    2 | 00/06E3 : A5 DB       |             LDA   $DB            
+  971 |  1   HPrintMix.S    903 | Code        | 00 |E 3      |    4 | 00/06E5 : 22 88 04 14 |             JSL   L150488        
+  972 |  1   HPrintMix.S    904 | Code        | 00 |E 3      |    4 | 00/06E9 : 22 53 0F 14 |             JSL   L150F53        
+  973 |  1   HPrintMix.S    905 | Code        | 00 |         |    2 | 00/06ED : 85 C5       |             STA   $C5            
+  974 |  1   HPrintMix.S    906 | Code        | 00 |         |    2 | 00/06EF : 86 C7       |             STX   $C7            
+  975 |  1   HPrintMix.S    907 | Code        | 00 |         |    2 | 00/06F1 : D4 C7       |             PEI   $C7            
+  976 |  1   HPrintMix.S    908 | Code        | 00 |         |    2 | 00/06F3 : D4 C5       |             PEI   $C5            
+  977 |  1   HPrintMix.S    909 | Code        | 00 |         |    2 | 00/06F5 : A5 DD       |             LDA   $DD            
+  978 |  1   HPrintMix.S    910 | Code        | 00 |E 3      |    4 | 00/06F7 : 22 88 04 14 |             JSL   L150488        
+  979 |  1   HPrintMix.S    911 | Code        | 00 |E 3      |    4 | 00/06FB : 22 6D 34 02 |             JSL   L033477        
+  980 |  1   HPrintMix.S    912 | Code        | 00 |         |    2 | 00/06FF : 70 03       |             BVS   L250704        
+  981 |  1   HPrintMix.S    913 | Code        | 00 |         |    3 | 00/0701 : 49 00 80    |             EOR   #$8000         
+  982 |  1   HPrintMix.S    914 | Code        | 00 |         |    2 | 00/0704 : 10 05       | L250704     BPL   L25070B        
+  983 |  1   HPrintMix.S    915 | Code        | 00 |         |    3 | 00/0706 : A9 00 00    |             LDA   #$0000         
+  984 |  1   HPrintMix.S    916 | Code        | 00 |         |    2 | 00/0709 : 80 03       |             BRA   L25070E        
+  985 |  1   HPrintMix.S    917 | Code        | 00 |         |    3 | 00/070B : A9 01 00    | L25070B     LDA   #$0001         
+  986 |  1   HPrintMix.S    918 | Code        | 00 |         |    1 | 00/070E : 48          | L25070E     PHA                  
+  987 |  1   HPrintMix.S    919 | Code        | 00 |         |    2 | 00/070F : A5 D9       |             LDA   $D9            
+  988 |  1   HPrintMix.S    920 | Code        | 00 |         |    1 | 00/0711 : 38          |             SEC                  
+  989 |  1   HPrintMix.S    921 | Code        | 00 |         |    3 | 00/0712 : E9 01 00    |             SBC   #$0001         
+  990 |  1   HPrintMix.S    922 | Code        | 00 |         |    2 | 00/0715 : F0 07       |             BEQ   L25071E        
+  991 |  1   HPrintMix.S    923 | Code        | 00 |         |    2 | 00/0717 : 70 03       |             BVS   L25071C        
+  992 |  1   HPrintMix.S    924 | Code        | 00 |         |    3 | 00/0719 : 49 00 80    |             EOR   #$8000         
+  993 |  1   HPrintMix.S    925 | Code        | 00 |         |    2 | 00/071C : 30 05       | L25071C     BMI   L250723        
+  994 |  1   HPrintMix.S    926 | Code        | 00 |         |    3 | 00/071E : A9 00 00    | L25071E     LDA   #$0000         
+  995 |  1   HPrintMix.S    927 | Code        | 00 |         |    2 | 00/0721 : 80 03       |             BRA   L250726        
+  996 |  1   HPrintMix.S    928 | Code        | 00 |         |    3 | 00/0723 : A9 01 00    | L250723     LDA   #$0001         
+  997 |  1   HPrintMix.S    929 | Code        | 00 |         |    2 | 00/0726 : 03 01       | L250726     ORA   $01,S          
+  998 |  1   HPrintMix.S    930 | Code        | 00 |         |    1 | 00/0728 : FA          |             PLX                  
+  999 |  1   HPrintMix.S    931 | Code        | 00 |         |    1 | 00/0729 : 4A          |             LSR                  
+ 1000 |  1   HPrintMix.S    932 | Code        | 00 |         |    2 | 00/072A : 90 70       |             BCC   L25079C        
+ 1001 |  1   HPrintMix.S    933 | Code        | 00 |         |    2 | 00/072C : D4 A3       |             PEI   $A3            
+ 1002 |  1   HPrintMix.S    934 | Code        | 00 |         |    2 | 00/072E : D4 A1       |             PEI   $A1            
+ 1003 |  1   HPrintMix.S    935 | Code        | 00 |E 3      |    4 | 00/0730 : 22 CE 09 15 |             JSL   L1609CE        
+ 1004 |  1   HPrintMix.S    936 | Code        | 00 |         |    1 | 00/0734 : 7B          |             TDC                  
+ 1005 |  1   HPrintMix.S    937 | Code        | 00 |         |    1 | 00/0735 : 18          |             CLC                  
+ 1006 |  1   HPrintMix.S    938 | Code        | 00 |         |    3 | 00/0736 : 69 51 00    |             ADC   #$0051         
+ 1007 |  1   HPrintMix.S    939 | Code        | 00 |         |    3 | 00/0739 : F4 00 00    |             PEA   $0000          
+ 1008 |  1   HPrintMix.S    940 | Code        | 00 |         |    1 | 00/073C : 48          |             PHA                  
+ 1009 |  1   HPrintMix.S    941 | Code        | 00 |         |    1 | 00/073D : 5A          |             PHY                  
+ 1010 |  1   HPrintMix.S    942 | Code        | 00 |         |    1 | 00/073E : 5A          |             PHY                  
+ 1011 |  1   HPrintMix.S    943 | Code        | 00 |         |    3 | 00/073F : F4 39 08    |             PEA   $0839          
+ 1012 |  1   HPrintMix.S    944 | Code        | 00 |E 3      |    4 | 00/0742 : 22 EB 11 06 |             JSL   L0711EB        
+ 1013 |  1   HPrintMix.S    945 | Code        | 00 |         |    3 | 00/0746 : F4 00 00    |             PEA   $0000          
+ 1014 |  1   HPrintMix.S    946 | Code        | 00 |         |    1 | 00/0749 : 7B          |             TDC                  
+ 1015 |  1   HPrintMix.S    947 | Code        | 00 |         |    1 | 00/074A : 18          |             CLC                  
+ 1016 |  1   HPrintMix.S    948 | Code        | 00 |         |    3 | 00/074B : 69 35 FD    |             ADC   #$FD35         
+ 1017 |  1   HPrintMix.S    949 | Code        | 00 |         |    1 | 00/074E : 48          |             PHA                  
+ 1018 |  1   HPrintMix.S    950 | Code        | 00 |         |    2 | 00/074F : A5 D9       |             LDA   $D9            
+ 1019 |  1   HPrintMix.S    951 | Code        | 00 |E 3      |    4 | 00/0751 : 22 88 04 14 |             JSL   L150488        
+ 1020 |  1   HPrintMix.S    952 | Code        | 00 |         |    1 | 00/0755 : DA          |             PHX                  
+ 1021 |  1   HPrintMix.S    953 | Code        | 00 |         |    1 | 00/0756 : 48          |             PHA                  
+ 1022 |  1   HPrintMix.S    954 | Code        | 00 |E 3      |    4 | 00/0757 : 22 25 34 06 |             JSL   L07346C        
+ 1023 |  1   HPrintMix.S    955 | Code        | 00 |         |    3 | 00/075B : F4 00 00    |             PEA   $0000          
+ 1024 |  1   HPrintMix.S    956 | Code        | 00 |         |    1 | 00/075E : 7B          |             TDC                  
+ 1025 |  1   HPrintMix.S    957 | Code        | 00 |         |    1 | 00/075F : 18          |             CLC                  
+ 1026 |  1   HPrintMix.S    958 | Code        | 00 |         |    3 | 00/0760 : 69 51 FD    |             ADC   #$FD51         
+ 1027 |  1   HPrintMix.S    959 | Code        | 00 |         |    1 | 00/0763 : 48          |             PHA                  
+ 1028 |  1   HPrintMix.S    960 | Code        | 00 |         |    3 | 00/0764 : F4 02 00    |             PEA   $0002          
+ 1029 |  1   HPrintMix.S    961 | Code        | 00 |E 3      |    4 | 00/0767 : 22 CE 09 14 |             JSL   L1509CE        
+ 1030 |  1   HPrintMix.S    962 | Code        | 00 |         |    3 | 00/076B : F4 14 00    |             PEA   $0014          
+ 1031 |  1   HPrintMix.S    963 | Code        | 00 |E 3      |    4 | 00/076E : 22 BE 13 02 |             JSL   L0313BE        
+ 1032 |  1   HPrintMix.S    964 | Code        | 00 |         |    1 | 00/0772 : 5A          |             PHY                  
+ 1033 |  1   HPrintMix.S    965 | Code        | 00 |         |    1 | 00/0773 : 7B          |             TDC                  
+ 1034 |  1   HPrintMix.S    966 | Code        | 00 |         |    1 | 00/0774 : 18          |             CLC                  
+ 1035 |  1   HPrintMix.S    967 | Code        | 00 |         |    3 | 00/0775 : 69 51 00    |             ADC   #$0051         
+ 1036 |  1   HPrintMix.S    968 | Code        | 00 |         |    3 | 00/0778 : F4 00 00    |             PEA   $0000          
+ 1037 |  1   HPrintMix.S    969 | Code        | 00 |         |    1 | 00/077B : 48          |             PHA                  
+ 1038 |  1   HPrintMix.S    970 | Code        | 00 |E 3      |    4 | 00/077C : 22 3B 06 14 |             JSL   L15063B        
+ 1039 |  1   HPrintMix.S    971 | Code        | 00 |         |    1 | 00/0780 : 68          |             PLA                  
+ 1040 |  1   HPrintMix.S    972 | Code        | 00 |         |    2 | 00/0781 : 85 CF       |             STA   $CF            
+ 1041 |  1   HPrintMix.S    973 | Code        | 00 |         |    2 | 00/0783 : A5 BB       |             LDA   $BB            
+ 1042 |  1   HPrintMix.S    974 | Code        | 00 |         |    1 | 00/0785 : 38          |             SEC                  
+ 1043 |  1   HPrintMix.S    975 | Code        | 00 |         |    2 | 00/0786 : E5 CF       |             SBC   $CF            
+ 1044 |  1   HPrintMix.S    976 | Code        | 00 |         |    1 | 00/0788 : 48          |             PHA                  
+ 1045 |  1   HPrintMix.S    977 | Code        | 00 |         |    2 | 00/0789 : D4 D1       |             PEI   $D1            
+ 1046 |  1   HPrintMix.S    978 | Code        | 00 |E 3      |    4 | 00/078B : 22 C5 10 14 |             JSL   L1510C5        
+ 1047 |  1   HPrintMix.S    979 | Code        | 00 |         |    1 | 00/078F : 7B          |             TDC                  
+ 1048 |  1   HPrintMix.S    980 | Code        | 00 |         |    1 | 00/0790 : 18          |             CLC                  
+ 1049 |  1   HPrintMix.S    981 | Code        | 00 |         |    3 | 00/0791 : 69 51 00    |             ADC   #$0051         
+ 1050 |  1   HPrintMix.S    982 | Code        | 00 |         |    3 | 00/0794 : F4 00 00    |             PEA   $0000          
+ 1051 |  1   HPrintMix.S    983 | Code        | 00 |         |    1 | 00/0797 : 48          |             PHA                  
+ 1052 |  1   HPrintMix.S    984 | Code        | 00 |E 3      |    4 | 00/0798 : 22 92 05 14 |             JSL   L150592        
+ 1053 |  1   HPrintMix.S    985 | Code        | 00 |         |    2 | 00/079C : D4 BF       | L25079C     PEI   $BF            
+ 1054 |  1   HPrintMix.S    986 | Code        | 00 |         |    2 | 00/079E : D4 BD       |             PEI   $BD            
+ 1055 |  1   HPrintMix.S    987 | Code        | 00 |E 3      |    4 | 00/07A0 : 22 9C 14 14 |             JSL   L15149C        
+ 1056 |  1   HPrintMix.S    988 | Code        | 00 |E 3      |    4 | 00/07A4 : 22 F4 0A 15 |             JSL   L160AF4        
+ 1057 |  1   HPrintMix.S    989 | Code        | 00 |         |    2 | 00/07A8 : A5 D9       |             LDA   $D9            
+ 1058 |  1   HPrintMix.S    990 | Code        | 00 |         |    1 | 00/07AA : 1A          |             INC                  
+ 1059 |  1   HPrintMix.S    991 | Code        | 00 |         |    2 | 00/07AB : 85 D9       |             STA   $D9            
+ 1060 |  1   HPrintMix.S    992 | Code        | 00 |         |    2 | 00/07AD : D4 C7       |             PEI   $C7            
+ 1061 |  1   HPrintMix.S    993 | Code        | 00 |         |    2 | 00/07AF : D4 C5       |             PEI   $C5            
+ 1062 |  1   HPrintMix.S    994 | Code        | 00 |         |    2 | 00/07B1 : A5 DD       |             LDA   $DD            
+ 1063 |  1   HPrintMix.S    995 | Code        | 00 |E 3      |    4 | 00/07B3 : 22 88 04 14 |             JSL   L150488        
+ 1064 |  1   HPrintMix.S    996 | Code        | 00 |E 3      |    4 | 00/07B7 : 22 6D 34 02 |             JSL   L033477        
+ 1065 |  1   HPrintMix.S    997 | Code        | 00 |         |    2 | 00/07BB : 70 03       |             BVS   L2507C0        
+ 1066 |  1   HPrintMix.S    998 | Code        | 00 |         |    3 | 00/07BD : 49 00 80    |             EOR   #$8000         
+ 1067 |  1   HPrintMix.S    999 | Code        | 00 |         |    2 | 00/07C0 : 30 05       | L2507C0     BMI   L2507C7        
+ 1068 |  1   HPrintMix.S   1000 | Code        | 00 |         |    3 | 00/07C2 : A9 00 00    |             LDA   #$0000         
+ 1069 |  1   HPrintMix.S   1001 | Code        | 00 |         |    2 | 00/07C5 : 80 03       |             BRA   L2507CA        
+ 1070 |  1   HPrintMix.S   1002 | Code        | 00 |         |    3 | 00/07C7 : A9 01 00    | L2507C7     LDA   #$0001         
+ 1071 |  1   HPrintMix.S   1003 | Code        | 00 |         |    1 | 00/07CA : 48          | L2507CA     PHA                  
+ 1072 |  1   HPrintMix.S   1004 | Code        | 00 |         |    1 | 00/07CB : 5A          |             PHY                  
+ 1073 |  1   HPrintMix.S   1005 | Code        | 00 |E 3      |    4 | 00/07CC : 22 06 0A 15 |             JSL   L160A06        
+ 1074 |  1   HPrintMix.S   1006 | Code        | 00 |         |    1 | 00/07D0 : 68          |             PLA                  
+ 1075 |  1   HPrintMix.S   1007 | Code        | 00 |         |    2 | 00/07D1 : D0 05       |             BNE   L2507D8        
+ 1076 |  1   HPrintMix.S   1008 | Code        | 00 |         |    3 | 00/07D3 : A9 00 00    |             LDA   #$0000         
+ 1077 |  1   HPrintMix.S   1009 | Code        | 00 |         |    2 | 00/07D6 : 80 03       |             BRA   L2507DB        
+ 1078 |  1   HPrintMix.S   1010 | Code        | 00 |         |    3 | 00/07D8 : A9 01 00    | L2507D8     LDA   #$0001         
+ 1079 |  1   HPrintMix.S   1011 | Code        | 00 |         |    2 | 00/07DB : 03 01       | L2507DB     ORA   $01,S          
+ 1080 |  1   HPrintMix.S   1012 | Code        | 00 |         |    1 | 00/07DD : FA          |             PLX                  
+ 1081 |  1   HPrintMix.S   1013 | Code        | 00 |         |    1 | 00/07DE : 4A          |             LSR                  
+ 1082 |  1   HPrintMix.S   1014 | Code        | 00 |         |    2 | 00/07DF : B0 03       |             BCS   L2507E4        
+ 1083 |  1   HPrintMix.S   1015 | Code        | 00 |         |    3 | 00/07E1 : 82 28 FE    |             BRL   L25060C        
+ 1084 |  1   HPrintMix.S   1016 | Code        | 00 |         |    2 | 00/07E4 : D4 BF       | L2507E4     PEI   $BF            
+ 1085 |  1   HPrintMix.S   1017 | Code        | 00 |         |    2 | 00/07E6 : D4 BD       |             PEI   $BD            
+ 1086 |  1   HPrintMix.S   1018 | Code        | 00 |E 3      |    4 | 00/07E8 : 22 E8 13 14 |             JSL   L1513E8        
+ 1087 |  1   HPrintMix.S   1019 | Code        | 00 |E 3      |    4 | 00/07EC : 22 F4 0A 15 |             JSL   L160AF4        
+ 1088 |  1   HPrintMix.S   1020 | Code        | 00 |E 2      |    3 | 00/07F0 : AD 27 53    |             LDA   L055327        
+ 1089 |  1   HPrintMix.S   1021 | Code        | 00 |E 2      |    3 | 00/07F3 : AE 29 53    |             LDX   L055329        
+ 1090 |  1   HPrintMix.S   1022 | Code        | 00 |         |    2 | 00/07F6 : 85 E5       |             STA   $E5            
+ 1091 |  1   HPrintMix.S   1023 | Code        | 00 |         |    2 | 00/07F8 : 86 E7       |             STX   $E7            
+ 1092 |  1   HPrintMix.S   1024 | Code        | 00 |         |    3 | 00/07FA : A0 02 00    |             LDY   #$0002         
+ 1093 |  1   HPrintMix.S   1025 | Code        | 00 |         |    2 | 00/07FD : B7 E5       |             LDA   [$E5],Y        
+ 1094 |  1   HPrintMix.S   1026 | Code        | 00 |         |    1 | 00/07FF : AA          |             TAX                  
+ 1095 |  1   HPrintMix.S   1027 | Code        | 00 |         |    2 | 00/0800 : A7 E5       |             LDA   [$E5]          
+ 1096 |  1   HPrintMix.S   1028 | Code        | 00 |         |    1 | 00/0802 : 18          |             CLC                  
+ 1097 |  1   HPrintMix.S   1029 | Code        | 00 |         |    3 | 00/0803 : 69 50 00    |             ADC   #$0050         
+ 1098 |  1   HPrintMix.S   1030 | Code        | 00 |         |    2 | 00/0806 : 90 01       |             BCC   L250809        
+ 1099 |  1   HPrintMix.S   1031 | Code        | 00 |         |    1 | 00/0808 : E8          |             INX                  
+ 1100 |  1   HPrintMix.S   1032 | Code        | 00 |         |    1 | 00/0809 : 18          | L250809     CLC                  
+ 1101 |  1   HPrintMix.S   1033 | Code        | 00 |         |    3 | 00/080A : 69 06 00    |             ADC   #$0006         
+ 1102 |  1   HPrintMix.S   1034 | Code        | 00 |         |    2 | 00/080D : 90 01       |             BCC   L250810        
+ 1103 |  1   HPrintMix.S   1035 | Code        | 00 |         |    1 | 00/080F : E8          |             INX                  
+ 1104 |  1   HPrintMix.S   1036 | Code        | 00 |         |    2 | 00/0810 : 85 E5       | L250810     STA   $E5            
+ 1105 |  1   HPrintMix.S   1037 | Code        | 00 |         |    2 | 00/0812 : 86 E7       |             STX   $E7            
+ 1106 |  1   HPrintMix.S   1038 | Code        | 00 |         |    3 | 00/0814 : A9 FF 00    |             LDA   #$00FF         
+ 1107 |  1   HPrintMix.S   1039 | Code        | 00 |         |    2 | 00/0817 : 27 E5       |             AND   [$E5]          
+ 1108 |  1   HPrintMix.S   1040 | Code        | 00 |         |    3 | 00/0819 : 29 FF 00    |             AND   #$00FF         
+ 1109 |  1   HPrintMix.S   1041 | Code        | 00 |         |    3 | 00/081C : C9 80 00    |             CMP   #$0080         
+ 1110 |  1   HPrintMix.S   1042 | Code        | 00 |         |    2 | 00/081F : D0 5F       |             BNE   L250880        
+ 1111 |  1   HPrintMix.S   1043 | Code        | 00 |         |    1 | 00/0821 : 5A          |             PHY                  
+ 1112 |  1   HPrintMix.S   1044 | Code        | 00 |E 3      |    4 | 00/0822 : 22 06 0A 15 |             JSL   L160A06        
+ 1113 |  1   HPrintMix.S   1045 | Code        | 00 |         |    1 | 00/0826 : 68          |             PLA                  
+ 1114 |  1   HPrintMix.S   1046 | Code        | 00 |         |    2 | 00/0827 : D0 57       |             BNE   L250880        
+ 1115 |  1   HPrintMix.S   1047 | Code        | 00 |         |    1 | 00/0829 : 5A          |             PHY                  
+ 1116 |  1   HPrintMix.S   1048 | Code        | 00 |         |    1 | 00/082A : 5A          |             PHY                  
+ 1117 |  1   HPrintMix.S   1049 | Code        | 00 |E 3      |    4 | 00/082B : 22 2E 04 14 |             JSL   L15042E        
+ 1118 |  1   HPrintMix.S   1050 | Code        | 00 |         |    3 | 00/082F : A9 00 28    |             LDA   #$2800         
+ 1119 |  1   HPrintMix.S   1051 | Code        | 00 |         |    3 | 00/0832 : A2 00 00    |             LDX   #$0000         
+ 1120 |  1   HPrintMix.S   1052 | Code        | 00 |E 3      |    4 | 00/0835 : 22 6D 34 02 |             JSL   L033477        
+ 1121 |  1   HPrintMix.S   1053 | Code        | 00 |         |    2 | 00/0839 : F0 07       |             BEQ   L250842        
+ 1122 |  1   HPrintMix.S   1054 | Code        | 00 |         |    2 | 00/083B : 70 03       |             BVS   L250840        
+ 1123 |  1   HPrintMix.S   1055 | Code        | 00 |         |    3 | 00/083D : 49 00 80    |             EOR   #$8000         
+ 1124 |  1   HPrintMix.S   1056 | Code        | 00 |         |    2 | 00/0840 : 30 04       | L250840     BMI   L250846        
+ 1125 |  1   HPrintMix.S   1057 | Code        | 00 |E 3      |    4 | 00/0842 : 22 9E 05 14 | L250842     JSL   L15059E        
+ 1126 |  1   HPrintMix.S   1058 | Code        | 00 |         |    1 | 00/0846 : 5A          | L250846     PHY                  
+ 1127 |  1   HPrintMix.S   1059 | Code        | 00 |         |    1 | 00/0847 : 5A          |             PHY                  
+ 1128 |  1   HPrintMix.S   1060 | Code        | 00 |E 3      |    4 | 00/0848 : 22 2E 04 14 |             JSL   L15042E        
+ 1129 |  1   HPrintMix.S   1061 | Code        | 00 |         |    3 | 00/084C : A9 00 28    |             LDA   #$2800         
+ 1130 |  1   HPrintMix.S   1062 | Code        | 00 |         |    3 | 00/084F : A2 00 00    |             LDX   #$0000         
+ 1131 |  1   HPrintMix.S   1063 | Code        | 00 |E 3      |    4 | 00/0852 : 22 6D 34 02 |             JSL   L033477        
+ 1132 |  1   HPrintMix.S   1064 | Code        | 00 |         |    2 | 00/0856 : F0 21       |             BEQ   L250879        
+ 1133 |  1   HPrintMix.S   1065 | Code        | 00 |         |    2 | 00/0858 : 70 03       |             BVS   L25085D        
+ 1134 |  1   HPrintMix.S   1066 | Code        | 00 |         |    3 | 00/085A : 49 00 80    |             EOR   #$8000         
+ 1135 |  1   HPrintMix.S   1067 | Code        | 00 |         |    2 | 00/085D : 10 1A       | L25085D     BPL   L250879        
+ 1136 |  1   HPrintMix.S   1068 | Code        | 00 |E 2      |    3 | 00/085F : AD 27 53    |             LDA   L055327        
+ 1137 |  1   HPrintMix.S   1069 | Code        | 00 |E 2      |    3 | 00/0862 : AE 29 53    |             LDX   L055329        
+ 1138 |  1   HPrintMix.S   1070 | Code        | 00 |         |    1 | 00/0865 : DA          |             PHX                  
+ 1139 |  1   HPrintMix.S   1071 | Code        | 00 |         |    1 | 00/0866 : 48          |             PHA                  
+ 1140 |  1   HPrintMix.S   1072 | Code        | 00 |         |    3 | 00/0867 : F4 00 00    |             PEA   $0000          
+ 1141 |  1   HPrintMix.S   1073 | Code        | 00 |         |    3 | 00/086A : F4 00 00    |             PEA   $0000          
+ 1142 |  1   HPrintMix.S   1074 | Code        | 00 |         |    3 | 00/086D : F4 00 00    |             PEA   $0000          
+ 1143 |  1   HPrintMix.S   1075 | Code        | 00 |         |    3 | 00/0870 : F4 00 00    |             PEA   $0000          
+ 1144 |  1   HPrintMix.S   1076 | Code        | 00 |E 3      |    4 | 00/0873 : 22 CE 05 14 |             JSL   L1505CE        
+ 1145 |  1   HPrintMix.S   1077 | Code        | 00 |         |    2 | 00/0877 : 80 07       |             BRA   L250880        
+ 1146 |  1   HPrintMix.S   1078 | Code        | 00 |         |    3 | 00/0879 : F4 09 13    | L250879     PEA   $1309          
+ 1147 |  1   HPrintMix.S   1079 | Code        | 00 |E 3      |    4 | 00/087C : 22 F8 09 15 |             JSL   L1609F8        
+ 1148 |  1   HPrintMix.S   1080 | Code        | 00 |         |    3 | 00/0880 : A9 01 00    | L250880     LDA   #$0001         
+ 1149 |  1   HPrintMix.S   1081 | Code        | 00 |E 3      |    4 | 00/0883 : 8F AD 51 04 |             STAL  L0551AD        
+ 1150 |  1   HPrintMix.S   1082 | Code        | 00 |         |    2 | 00/0887 : A5 E3       |             LDA   $E3            
+ 1151 |  1   HPrintMix.S   1083 | Code        | 00 |         |    2 | 00/0889 : F0 21       |             BEQ   L2508AC        
+ 1152 |  1   HPrintMix.S   1084 | Code        | 00 |E 2      |    3 | 00/088B : AD 27 53    |             LDA   L055327        
+ 1153 |  1   HPrintMix.S   1085 | Code        | 00 |E 2      |    3 | 00/088E : AE 29 53    |             LDX   L055329        
+ 1154 |  1   HPrintMix.S   1086 | Code        | 00 |         |    2 | 00/0891 : 85 E5       |             STA   $E5            
+ 1155 |  1   HPrintMix.S   1087 | Code        | 00 |         |    2 | 00/0893 : 86 E7       |             STX   $E7            
+ 1156 |  1   HPrintMix.S   1088 | Code        | 00 |         |    3 | 00/0895 : A0 02 00    |             LDY   #$0002         
+ 1157 |  1   HPrintMix.S   1089 | Code        | 00 |         |    2 | 00/0898 : B7 E5       |             LDA   [$E5],Y        
+ 1158 |  1   HPrintMix.S   1090 | Code        | 00 |         |    1 | 00/089A : AA          |             TAX                  
+ 1159 |  1   HPrintMix.S   1091 | Code        | 00 |         |    2 | 00/089B : A7 E5       |             LDA   [$E5]          
+ 1160 |  1   HPrintMix.S   1092 | Code        | 00 |         |    1 | 00/089D : 18          |             CLC                  
+ 1161 |  1   HPrintMix.S   1093 | Code        | 00 |         |    3 | 00/089E : 69 18 00    |             ADC   #$0018         
+ 1162 |  1   HPrintMix.S   1094 | Code        | 00 |         |    2 | 00/08A1 : 90 01       |             BCC   L2508A4        
+ 1163 |  1   HPrintMix.S   1095 | Code        | 00 |         |    1 | 00/08A3 : E8          |             INX                  
+ 1164 |  1   HPrintMix.S   1096 | Code        | 00 |         |    2 | 00/08A4 : 85 E5       | L2508A4     STA   $E5            
+ 1165 |  1   HPrintMix.S   1097 | Code        | 00 |         |    2 | 00/08A6 : 86 E7       |             STX   $E7            
+ 1166 |  1   HPrintMix.S   1098 | Code        | 00 |         |    2 | 00/08A8 : A5 D7       |             LDA   $D7            
+ 1167 |  1   HPrintMix.S   1099 | Code        | 00 |         |    2 | 00/08AA : 87 E5       |             STA   [$E5]          
+ 1168 |  1   HPrintMix.S   1100 | Code        | 00 |E 2      |    3 | 00/08AC : AD 27 53    | L2508AC     LDA   L055327        
+ 1169 |  1   HPrintMix.S   1101 | Code        | 00 |E 2      |    3 | 00/08AF : AE 29 53    |             LDX   L055329        
+ 1170 |  1   HPrintMix.S   1102 | Code        | 00 |         |    1 | 00/08B2 : DA          |             PHX                  
+ 1171 |  1   HPrintMix.S   1103 | Code        | 00 |         |    1 | 00/08B3 : 48          |             PHA                  
+ 1172 |  1   HPrintMix.S   1104 | Code        | 00 |         |    2 | 00/08B4 : D4 D5       |             PEI   $D5            
+ 1173 |  1   HPrintMix.S   1105 | Code        | 00 |E 3      |    4 | 00/08B6 : 22 10 0B 15 |             JSL   L160B10        
+ 1174 |  1   HPrintMix.S   1106 | Code        | 00 |         |    2 | 00/08BA : D4 C3       |             PEI   $C3            
+ 1175 |  1   HPrintMix.S   1107 | Code        | 00 |         |    2 | 00/08BC : D4 C1       |             PEI   $C1            
+ 1176 |  1   HPrintMix.S   1108 | Code        | 00 |E 3      |    4 | 00/08BE : 22 31 11 14 |             JSL   L151131        
+ 1177 |  1   HPrintMix.S   1109 | Code        | 00 |         |    2 | 00/08C2 : D4 AB       |             PEI   $AB            
+ 1178 |  1   HPrintMix.S   1110 | Code        | 00 |         |    2 | 00/08C4 : D4 A9       |             PEI   $A9            
+ 1179 |  1   HPrintMix.S   1111 | Code        | 00 |E 3      |    4 | 00/08C6 : 22 CE 09 15 |             JSL   L1609CE        
+ 1180 |  1   HPrintMix.S   1112 | Code        | 00 |         |    1 | 00/08CA : 5A          |             PHY                  
+ 1181 |  1   HPrintMix.S   1113 | Code        | 00 |E 3      |    4 | 00/08CB : 22 06 0A 15 |             JSL   L160A06        
+ 1182 |  1   HPrintMix.S   1114 | Code        | 00 |         |    1 | 00/08CF : 68          |             PLA                  
+ 1183 |  1   HPrintMix.S   1115 | Code        | 00 |         |    2 | 00/08D0 : F0 05       |             BEQ   L2508D7        
+ 1184 |  1   HPrintMix.S   1116 | Code        | 00 |         |    3 | 00/08D2 : A9 00 00    |             LDA   #$0000         
+ 1185 |  1   HPrintMix.S   1117 | Code        | 00 |         |    2 | 00/08D5 : 80 03       |             BRA   L2508DA        
+ 1186 |  1   HPrintMix.S   1118 | Code        | 00 |         |    3 | 00/08D7 : A9 01 00    | L2508D7     LDA   #$0001         
+ 1187 |  1   HPrintMix.S   1119 | Code        | 00 |         |    2 | 00/08DA : 85 FC       | L2508DA     STA   $FC            
+ 1188 |  1   HPrintMix.S   1120 | Code        | 00 |         |    2 | 00/08DC : A5 EC       |             LDA   $EC            
+ 1189 |  1   HPrintMix.S   1121 | Code        | 00 |         |    2 | 00/08DE : 85 FA       |             STA   $FA            
+ 1190 |  1   HPrintMix.S   1122 | Code        | 00 |         |    2 | 00/08E0 : A5 EB       |             LDA   $EB            
+ 1191 |  1   HPrintMix.S   1123 | Code        | 00 |         |    2 | 00/08E2 : 85 F9       |             STA   $F9            
+ 1192 |  1   HPrintMix.S   1124 | Code        | 00 |         |    2 | 00/08E4 : A5 E9       |             LDA   $E9            
+ 1193 |  1   HPrintMix.S   1125 | Code        | 00 |         |    1 | 00/08E6 : 5B          |             TCD                  
+ 1194 |  1   HPrintMix.S   1126 | Code        | 00 |         |    1 | 00/08E7 : 3B          |             TSC                  
+ 1195 |  1   HPrintMix.S   1127 | Code        | 00 |         |    1 | 00/08E8 : 18          |             CLC                  
+ 1196 |  1   HPrintMix.S   1128 | Code        | 00 |         |    3 | 00/08E9 : 69 C4 03    |             ADC   #$03C4         
+ 1197 |  1   HPrintMix.S   1129 | Code        | 00 |         |    1 | 00/08EC : 1B          |             TCS                  
+ 1198 |  1   HPrintMix.S   1130 | Code        | 00 |         |    1 | 00/08ED : 6B          |             RTL                  
+ 1199 |  1   HPrintMix.S   1131 | Empty       | 00 |         |    0 | 00/08EE               |                                  
+ 1200 |  1   HPrintMix.S   1132 | Global      | 00 |         |    0 | 00/08EE               | L2508EE     ENT                  
+ 1201 |  1   HPrintMix.S   1133 | Code        | 00 |         |    1 | 00/08EE : 0B          |             PHD                  
+ 1202 |  1   HPrintMix.S   1134 | Code        | 00 |         |    1 | 00/08EF : 3B          |             TSC                  
+ 1203 |  1   HPrintMix.S   1135 | Code        | 00 |         |    1 | 00/08F0 : 18          |             CLC                  
+ 1204 |  1   HPrintMix.S   1136 | Code        | 00 |         |    3 | 00/08F1 : 69 FA FF    |             ADC   #$FFFA         
+ 1205 |  1   HPrintMix.S   1137 | Code        | 00 |         |    1 | 00/08F4 : 1B          |             TCS                  
+ 1206 |  1   HPrintMix.S   1138 | Code        | 00 |         |    1 | 00/08F5 : 5B          |             TCD                  
+ 1207 |  1   HPrintMix.S   1139 | Code        | 00 |         |    2 | 00/08F6 : 64 01       |             STZ   $01            
+ 1208 |  1   HPrintMix.S   1140 | Code        | 00 |         |    1 | 00/08F8 : 5A          |             PHY                  
+ 1209 |  1   HPrintMix.S   1141 | Code        | 00 |         |    3 | 00/08F9 : F4 01 00    |             PEA   $0001          
+ 1210 |  1   HPrintMix.S   1142 | Code        | 00 |         |    3 | 00/08FC : F4 00 00    |             PEA   $0000          
+ 1211 |  1   HPrintMix.S   1143 | Code        | 00 |         |    3 | 00/08FF : F4 00 00    |             PEA   $0000          
+ 1212 |  1   HPrintMix.S   1144 | Code        | 00 |E 3      |    4 | 00/0902 : 22 5A 0A 15 |             JSL   L160A5A        
+ 1213 |  1   HPrintMix.S   1145 | Code        | 00 |         |    1 | 00/0906 : 68          |             PLA                  
+ 1214 |  1   HPrintMix.S   1146 | Code        | 00 |         |    1 | 00/0907 : 4A          |             LSR                  
+ 1215 |  1   HPrintMix.S   1147 | Code        | 00 |         |    2 | 00/0908 : 90 10       |             BCC   L25091A        
+ 1216 |  1   HPrintMix.S   1148 | Code        | 00 |         |    1 | 00/090A : 5A          |             PHY                  
+ 1217 |  1   HPrintMix.S   1149 | Code        | 00 |E 2      |    3 | 00/090B : AD 27 53    |             LDA   L055327        
+ 1218 |  1   HPrintMix.S   1150 | Code        | 00 |E 2      |    3 | 00/090E : AE 29 53    |             LDX   L055329        
+ 1219 |  1   HPrintMix.S   1151 | Code        | 00 |         |    1 | 00/0911 : DA          |             PHX                  
+ 1220 |  1   HPrintMix.S   1152 | Code        | 00 |         |    1 | 00/0912 : 48          |             PHA                  
+ 1221 |  1   HPrintMix.S   1153 | Code        | 00 |E 3      |    4 | 00/0913 : 22 59 10 14 |             JSL   L151059        
+ 1222 |  1   HPrintMix.S   1154 | Code        | 00 |         |    1 | 00/0917 : 68          |             PLA                  
+ 1223 |  1   HPrintMix.S   1155 | Code        | 00 |         |    2 | 00/0918 : 85 01       |             STA   $01            
+ 1224 |  1   HPrintMix.S   1156 | Code        | 00 |         |    2 | 00/091A : A5 01       | L25091A     LDA   $01            
+ 1225 |  1   HPrintMix.S   1157 | Code        | 00 |         |    2 | 00/091C : 85 0C       |             STA   $0C            
+ 1226 |  1   HPrintMix.S   1158 | Code        | 00 |         |    2 | 00/091E : A5 01       |             LDA   $01            
+ 1227 |  1   HPrintMix.S   1159 | Code        | 00 |E 2      |    3 | 00/0920 : 0D 37 53    |             ORA   L055337        
+ 1228 |  1   HPrintMix.S   1160 | Code        | 00 |E 2      |    3 | 00/0923 : 8D 37 53    |             STA   L055337        
+ 1229 |  1   HPrintMix.S   1161 | Code        | 00 |         |    3 | 00/0926 : F4 01 00    |             PEA   $0001          
+ 1230 |  1   HPrintMix.S   1162 | Code        | 00 |         |    3 | 00/0929 : F4 00 00    |             PEA   $0000          
+ 1231 |  1   HPrintMix.S   1163 | Code        | 00 |         |    3 | 00/092C : F4 00 00    |             PEA   $0000          
+ 1232 |  1   HPrintMix.S   1164 | Code        | 00 |E 3      |    4 | 00/092F : 22 80 0B 15 |             JSL   L160B80        
+ 1233 |  1   HPrintMix.S   1165 | Code        | 00 |         |    1 | 00/0933 : 7A          |             PLY                  
+ 1234 |  1   HPrintMix.S   1166 | Code        | 00 |         |    1 | 00/0934 : 7A          |             PLY                  
+ 1235 |  1   HPrintMix.S   1167 | Code        | 00 |         |    1 | 00/0935 : 7A          |             PLY                  
+ 1236 |  1   HPrintMix.S   1168 | Code        | 00 |         |    1 | 00/0936 : 2B          |             PLD                  
+ 1237 |  1   HPrintMix.S   1169 | Code        | 00 |         |    1 | 00/0937 : 6B          |             RTL                  
+ 1238 |  1   HPrintMix.S   1170 | Empty       | 00 |         |    0 | 00/0938               |                                  
+ 1239 |  1   HPrintMix.S   1171 | Global      | 00 |         |    0 | 00/0938               | L250938     ENT                  
+ 1240 |  1   HPrintMix.S   1172 | Code        | 00 |         |    1 | 00/0938 : 0B          |             PHD                  
+ 1241 |  1   HPrintMix.S   1173 | Code        | 00 |         |    1 | 00/0939 : 3B          |             TSC                  
+ 1242 |  1   HPrintMix.S   1174 | Code        | 00 |         |    1 | 00/093A : 18          |             CLC                  
+ 1243 |  1   HPrintMix.S   1175 | Code        | 00 |         |    3 | 00/093B : 69 E0 FF    |             ADC   #$FFE0         
+ 1244 |  1   HPrintMix.S   1176 | Code        | 00 |         |    1 | 00/093E : 1B          |             TCS                  
+ 1245 |  1   HPrintMix.S   1177 | Code        | 00 |         |    1 | 00/093F : 5B          |             TCD                  
+ 1246 |  1   HPrintMix.S   1178 | Code        | 00 |         |    2 | 00/0940 : 64 2A       |             STZ   $2A            
+ 1247 |  1   HPrintMix.S   1179 | Code        | 00 |         |    2 | 00/0942 : 64 19       |             STZ   $19            
+ 1248 |  1   HPrintMix.S   1180 | Code        | 00 |E 2      |    3 | 00/0944 : AD 43 52    |             LDA   L055243        
+ 1249 |  1   HPrintMix.S   1181 | Code        | 00 |         |    3 | 00/0947 : 49 01 00    |             EOR   #$0001         
+ 1250 |  1   HPrintMix.S   1182 | Code        | 00 |E 2      |    3 | 00/094A : 2D 51 50    |             AND   L055051        
+ 1251 |  1   HPrintMix.S   1183 | Code        | 00 |         |    2 | 00/094D : F0 03       |             BEQ   L250952        
+ 1252 |  1   HPrintMix.S   1184 | Code        | 00 |         |    3 | 00/094F : 82 60 01    |             BRL   L250AB2        
+ 1253 |  1   HPrintMix.S   1185 | Code        | 00 |         |    1 | 00/0952 : 5A          | L250952     PHY                  
+ 1254 |  1   HPrintMix.S   1186 | Code        | 00 |         |    1 | 00/0953 : 5A          |             PHY                  
+ 1255 |  1   HPrintMix.S   1187 | Code        | 00 |E 3      |    4 | 00/0954 : 22 8E 0B 15 |             JSL   L160B8E        
+ 1256 |  1   HPrintMix.S   1188 | Code        | 00 |         |    1 | 00/0958 : 68          |             PLA                  
+ 1257 |  1   HPrintMix.S   1189 | Code        | 00 |         |    2 | 00/0959 : 85 09       |             STA   $09            
+ 1258 |  1   HPrintMix.S   1190 | Code        | 00 |         |    1 | 00/095B : FA          |             PLX                  
+ 1259 |  1   HPrintMix.S   1191 | Code        | 00 |         |    2 | 00/095C : 86 0B       |             STX   $0B            
+ 1260 |  1   HPrintMix.S   1192 | Code        | 00 |         |    2 | 00/095E : A5 09       |             LDA   $09            
+ 1261 |  1   HPrintMix.S   1193 | Code        | 00 |         |    2 | 00/0960 : 05 0B       |             ORA   $0B            
+ 1262 |  1   HPrintMix.S   1194 | Code        | 00 |         |    2 | 00/0962 : D0 03       |             BNE   L250967        
+ 1263 |  1   HPrintMix.S   1195 | Code        | 00 |         |    3 | 00/0964 : 82 4B 01    |             BRL   L250AB2        
+ 1264 |  1   HPrintMix.S   1196 | Code        | 00 |         |    1 | 00/0967 : 5A          | L250967     PHY                  
+ 1265 |  1   HPrintMix.S   1197 | Code        | 00 |         |    2 | 00/0968 : D4 0B       |             PEI   $0B            
+ 1266 |  1   HPrintMix.S   1198 | Code        | 00 |         |    2 | 00/096A : D4 09       |             PEI   $09            
+ 1267 |  1   HPrintMix.S   1199 | Code        | 00 |E 3      |    4 | 00/096C : 22 7A 18 06 |             JSL   L0718A4        
+ 1268 |  1   HPrintMix.S   1200 | Code        | 00 |         |    1 | 00/0970 : 68          |             PLA                  
+ 1269 |  1   HPrintMix.S   1201 | Code        | 00 |         |    2 | 00/0971 : 85 17       |             STA   $17            
+ 1270 |  1   HPrintMix.S   1202 | Code        | 00 |         |    2 | 00/0973 : D4 0B       |             PEI   $0B            
+ 1271 |  1   HPrintMix.S   1203 | Code        | 00 |         |    2 | 00/0975 : D4 09       |             PEI   $09            
+ 1272 |  1   HPrintMix.S   1204 | Code        | 00 |E 3      |    4 | 00/0977 : 22 95 18 06 |             JSL   L0718BF        
+ 1273 |  1   HPrintMix.S   1205 | Code        | 00 |         |    2 | 00/097B : 64 1B       |             STZ   $1B            
+ 1274 |  1   HPrintMix.S   1206 | Code        | 00 |         |    3 | 00/097D : A0 02 00    |             LDY   #$0002         
+ 1275 |  1   HPrintMix.S   1207 | Code        | 00 |         |    2 | 00/0980 : B7 09       |             LDA   [$09],Y        
+ 1276 |  1   HPrintMix.S   1208 | Code        | 00 |         |    1 | 00/0982 : AA          |             TAX                  
+ 1277 |  1   HPrintMix.S   1209 | Code        | 00 |         |    2 | 00/0983 : A7 09       |             LDA   [$09]          
+ 1278 |  1   HPrintMix.S   1210 | Code        | 00 |         |    2 | 00/0985 : 85 01       |             STA   $01            
+ 1279 |  1   HPrintMix.S   1211 | Code        | 00 |         |    2 | 00/0987 : 86 03       |             STX   $03            
+ 1280 |  1   HPrintMix.S   1212 | Code        | 00 |         |    3 | 00/0989 : A0 0E 00    |             LDY   #$000E         
+ 1281 |  1   HPrintMix.S   1213 | Code        | 00 |         |    2 | 00/098C : B7 01       |             LDA   [$01],Y        
+ 1282 |  1   HPrintMix.S   1214 | Code        | 00 |         |    2 | 00/098E : 85 15       |             STA   $15            
+ 1283 |  1   HPrintMix.S   1215 | Code        | 00 |         |    1 | 00/0990 : 5A          |             PHY                  
+ 1284 |  1   HPrintMix.S   1216 | Code        | 00 |         |    3 | 00/0991 : A0 10 00    |             LDY   #$0010         
+ 1285 |  1   HPrintMix.S   1217 | Code        | 00 |         |    2 | 00/0994 : B7 01       |             LDA   [$01],Y        
+ 1286 |  1   HPrintMix.S   1218 | Code        | 00 |         |    1 | 00/0996 : 48          |             PHA                  
+ 1287 |  1   HPrintMix.S   1219 | Code        | 00 |         |    3 | 00/0997 : F4 20 00    |             PEA   $0020          
+ 1288 |  1   HPrintMix.S   1220 | Code        | 00 |E 3      |    4 | 00/099A : 22 8E 2F 06 |             JSL   L072FD5        
+ 1289 |  1   HPrintMix.S   1221 | Code        | 00 |         |    1 | 00/099E : 68          |             PLA                  
+ 1290 |  1   HPrintMix.S   1222 | Code        | 00 |         |    2 | 00/099F : 85 13       |             STA   $13            
+ 1291 |  1   HPrintMix.S   1223 | Code        | 00 |         |    3 | 00/09A1 : A9 01 00    |             LDA   #$0001         
+ 1292 |  1   HPrintMix.S   1224 | Code        | 00 |         |    2 | 00/09A4 : 85 11       |             STA   $11            
+ 1293 |  1   HPrintMix.S   1225 | Code        | 00 |         |    3 | 00/09A6 : A0 02 00    | L2509A6     LDY   #$0002         
+ 1294 |  1   HPrintMix.S   1226 | Code        | 00 |         |    2 | 00/09A9 : B7 09       |             LDA   [$09],Y        
+ 1295 |  1   HPrintMix.S   1227 | Code        | 00 |         |    1 | 00/09AB : AA          |             TAX                  
+ 1296 |  1   HPrintMix.S   1228 | Code        | 00 |         |    2 | 00/09AC : A7 09       |             LDA   [$09]          
+ 1297 |  1   HPrintMix.S   1229 | Code        | 00 |         |    1 | 00/09AE : 18          |             CLC                  
+ 1298 |  1   HPrintMix.S   1230 | Code        | 00 |         |    3 | 00/09AF : 69 9E 00    |             ADC   #$009E         
+ 1299 |  1   HPrintMix.S   1231 | Code        | 00 |         |    2 | 00/09B2 : 90 01       |             BCC   L2509B5        
+ 1300 |  1   HPrintMix.S   1232 | Code        | 00 |         |    1 | 00/09B4 : E8          |             INX                  
+ 1301 |  1   HPrintMix.S   1233 | Code        | 00 |         |    1 | 00/09B5 : DA          | L2509B5     PHX                  
+ 1302 |  1   HPrintMix.S   1234 | Code        | 00 |         |    1 | 00/09B6 : 48          |             PHA                  
+ 1303 |  1   HPrintMix.S   1235 | Code        | 00 |         |    2 | 00/09B7 : A5 11       |             LDA   $11            
+ 1304 |  1   HPrintMix.S   1236 | Code        | 00 |E 3      |    4 | 00/09B9 : 22 88 04 14 |             JSL   L150488        
+ 1305 |  1   HPrintMix.S   1237 | Code        | 00 |         |    1 | 00/09BD : A8          |             TAY                  
+ 1306 |  1   HPrintMix.S   1238 | Code        | 00 |         |    2 | 00/09BE : D0 01       |             BNE   L2509C1        
+ 1307 |  1   HPrintMix.S   1239 | Code        | 00 |         |    1 | 00/09C0 : CA          |             DEX                  
+ 1308 |  1   HPrintMix.S   1240 | Code        | 00 |         |    1 | 00/09C1 : 3A          | L2509C1     DEC                  
+ 1309 |  1   HPrintMix.S   1241 | Code        | 00 |         |    3 | 00/09C2 : F4 00 00    |             PEA   $0000          
+ 1310 |  1   HPrintMix.S   1242 | Code        | 00 |         |    3 | 00/09C5 : F4 0A 00    |             PEA   $000A          
+ 1311 |  1   HPrintMix.S   1243 | Code        | 00 |E 3      |    4 | 00/09C8 : 22 50 0D 14 |             JSL   L150D50        
+ 1312 |  1   HPrintMix.S   1244 | Code        | 00 |         |    1 | 00/09CC : 68          |             PLA                  
+ 1313 |  1   HPrintMix.S   1245 | Code        | 00 |         |    1 | 00/09CD : FA          |             PLX                  
+ 1314 |  1   HPrintMix.S   1246 | Code        | 00 |E 3      |    4 | 00/09CE : 22 53 0F 14 |             JSL   L150F53        
+ 1315 |  1   HPrintMix.S   1247 | Code        | 00 |         |    1 | 00/09D2 : 18          |             CLC                  
+ 1316 |  1   HPrintMix.S   1248 | Code        | 00 |         |    3 | 00/09D3 : 69 02 00    |             ADC   #$0002         
+ 1317 |  1   HPrintMix.S   1249 | Code        | 00 |         |    2 | 00/09D6 : 90 01       |             BCC   L2509D9        
+ 1318 |  1   HPrintMix.S   1250 | Code        | 00 |         |    1 | 00/09D8 : E8          |             INX                  
+ 1319 |  1   HPrintMix.S   1251 | Code        | 00 |         |    2 | 00/09D9 : 85 1D       | L2509D9     STA   $1D            
+ 1320 |  1   HPrintMix.S   1252 | Code        | 00 |         |    2 | 00/09DB : 86 1F       |             STX   $1F            
+ 1321 |  1   HPrintMix.S   1253 | Code        | 00 |         |    3 | 00/09DD : A0 02 00    |             LDY   #$0002         
+ 1322 |  1   HPrintMix.S   1254 | Code        | 00 |         |    2 | 00/09E0 : B7 1D       |             LDA   [$1D],Y        
+ 1323 |  1   HPrintMix.S   1255 | Code        | 00 |         |    1 | 00/09E2 : AA          |             TAX                  
+ 1324 |  1   HPrintMix.S   1256 | Code        | 00 |         |    2 | 00/09E3 : A7 1D       |             LDA   [$1D]          
+ 1325 |  1   HPrintMix.S   1257 | Code        | 00 |         |    2 | 00/09E5 : 85 0D       |             STA   $0D            
+ 1326 |  1   HPrintMix.S   1258 | Code        | 00 |         |    2 | 00/09E7 : 86 0F       |             STX   $0F            
+ 1327 |  1   HPrintMix.S   1259 | Code        | 00 |         |    1 | 00/09E9 : 5A          |             PHY                  
+ 1328 |  1   HPrintMix.S   1260 | Code        | 00 |         |    1 | 00/09EA : 5A          |             PHY                  
+ 1329 |  1   HPrintMix.S   1261 | Code        | 00 |         |    2 | 00/09EB : D4 0F       |             PEI   $0F            
+ 1330 |  1   HPrintMix.S   1262 | Code        | 00 |         |    2 | 00/09ED : D4 0D       |             PEI   $0D            
+ 1331 |  1   HPrintMix.S   1263 | Code        | 00 |         |    3 | 00/09EF : F4 4E 54    |             PEA   $544E          
+ 1332 |  1   HPrintMix.S   1264 | Code        | 00 |         |    3 | 00/09F2 : F4 50 52    |             PEA   $5250          
+ 1333 |  1   HPrintMix.S   1265 | Code        | 00 |         |    3 | 00/09F5 : F4 00 00    |             PEA   $0000          
+ 1334 |  1   HPrintMix.S   1266 | Code        | 00 |E 3      |    4 | 00/09F8 : 22 DD 75 06 |             JSL   L077624        
+ 1335 |  1   HPrintMix.S   1267 | Code        | 00 |         |    1 | 00/09FC : 68          |             PLA                  
+ 1336 |  1   HPrintMix.S   1268 | Code        | 00 |         |    2 | 00/09FD : 85 05       |             STA   $05            
+ 1337 |  1   HPrintMix.S   1269 | Code        | 00 |         |    1 | 00/09FF : FA          |             PLX                  
+ 1338 |  1   HPrintMix.S   1270 | Code        | 00 |         |    2 | 00/0A00 : 86 07       |             STX   $07            
+ 1339 |  1   HPrintMix.S   1271 | Code        | 00 |         |    2 | 00/0A02 : A5 05       |             LDA   $05            
+ 1340 |  1   HPrintMix.S   1272 | Code        | 00 |         |    2 | 00/0A04 : 05 07       |             ORA   $07            
+ 1341 |  1   HPrintMix.S   1273 | Code        | 00 |         |    2 | 00/0A06 : F0 61       |             BEQ   L250A69        
+ 1342 |  1   HPrintMix.S   1274 | Code        | 00 |         |    1 | 00/0A08 : 5A          |             PHY                  
+ 1343 |  1   HPrintMix.S   1275 | Code        | 00 |         |    2 | 00/0A09 : D4 28       |             PEI   $28            
+ 1344 |  1   HPrintMix.S   1276 | Code        | 00 |         |    2 | 00/0A0B : D4 26       |             PEI   $26            
+ 1345 |  1   HPrintMix.S   1277 | Code        | 00 |         |    3 | 00/0A0D : A0 02 00    |             LDY   #$0002         
+ 1346 |  1   HPrintMix.S   1278 | Code        | 00 |         |    2 | 00/0A10 : B7 05       |             LDA   [$05],Y        
+ 1347 |  1   HPrintMix.S   1279 | Code        | 00 |         |    1 | 00/0A12 : AA          |             TAX                  
+ 1348 |  1   HPrintMix.S   1280 | Code        | 00 |         |    2 | 00/0A13 : A7 05       |             LDA   [$05]          
+ 1349 |  1   HPrintMix.S   1281 | Code        | 00 |         |    1 | 00/0A15 : 18          |             CLC                  
+ 1350 |  1   HPrintMix.S   1282 | Code        | 00 |         |    3 | 00/0A16 : 69 0C 00    |             ADC   #$000C         
+ 1351 |  1   HPrintMix.S   1283 | Code        | 00 |         |    2 | 00/0A19 : 90 01       |             BCC   L250A1C        
+ 1352 |  1   HPrintMix.S   1284 | Code        | 00 |         |    1 | 00/0A1B : E8          |             INX                  
+ 1353 |  1   HPrintMix.S   1285 | Code        | 00 |         |    1 | 00/0A1C : DA          | L250A1C     PHX                  
+ 1354 |  1   HPrintMix.S   1286 | Code        | 00 |         |    1 | 00/0A1D : 48          |             PHA                  
+ 1355 |  1   HPrintMix.S   1287 | Code        | 00 |E 3      |    4 | 00/0A1E : 22 0F 1C 06 |             JSL   L071C56        
+ 1356 |  1   HPrintMix.S   1288 | Code        | 00 |         |    1 | 00/0A22 : 68          |             PLA                  
+ 1357 |  1   HPrintMix.S   1289 | Code        | 00 |         |    2 | 00/0A23 : 85 19       |             STA   $19            
+ 1358 |  1   HPrintMix.S   1290 | Code        | 00 |         |    2 | 00/0A25 : D4 0F       |             PEI   $0F            
+ 1359 |  1   HPrintMix.S   1291 | Code        | 00 |         |    2 | 00/0A27 : D4 0D       |             PEI   $0D            
+ 1360 |  1   HPrintMix.S   1292 | Code        | 00 |         |    3 | 00/0A29 : F4 4E 54    |             PEA   $544E          
+ 1361 |  1   HPrintMix.S   1293 | Code        | 00 |         |    3 | 00/0A2C : F4 50 52    |             PEA   $5250          
+ 1362 |  1   HPrintMix.S   1294 | Code        | 00 |         |    3 | 00/0A2F : F4 00 00    |             PEA   $0000          
+ 1363 |  1   HPrintMix.S   1295 | Code        | 00 |E 3      |    4 | 00/0A32 : 22 3A 4B 06 |             JSL   L074B81        
+ 1364 |  1   HPrintMix.S   1296 | Code        | 00 |         |    2 | 00/0A36 : D4 0F       |             PEI   $0F            
+ 1365 |  1   HPrintMix.S   1297 | Code        | 00 |         |    2 | 00/0A38 : D4 0D       |             PEI   $0D            
+ 1366 |  1   HPrintMix.S   1298 | Code        | 00 |E 3      |    4 | 00/0A3A : 22 E1 7A 06 |             JSL   L077B28        
+ 1367 |  1   HPrintMix.S   1299 | Code        | 00 |         |    2 | 00/0A3E : A5 19       |             LDA   $19            
+ 1368 |  1   HPrintMix.S   1300 | Code        | 00 |         |    2 | 00/0A40 : F0 27       |             BEQ   L250A69        
+ 1369 |  1   HPrintMix.S   1301 | Code        | 00 |         |    2 | 00/0A42 : A5 15       |             LDA   $15            
+ 1370 |  1   HPrintMix.S   1302 | Code        | 00 |         |    2 | 00/0A44 : C5 11       |             CMP   $11            
+ 1371 |  1   HPrintMix.S   1303 | Code        | 00 |         |    2 | 00/0A46 : F0 1C       |             BEQ   L250A64        
+ 1372 |  1   HPrintMix.S   1304 | Code        | 00 |         |    3 | 00/0A48 : A0 02 00    |             LDY   #$0002         
+ 1373 |  1   HPrintMix.S   1305 | Code        | 00 |         |    2 | 00/0A4B : B7 09       |             LDA   [$09],Y        
+ 1374 |  1   HPrintMix.S   1306 | Code        | 00 |         |    1 | 00/0A4D : AA          |             TAX                  
+ 1375 |  1   HPrintMix.S   1307 | Code        | 00 |         |    2 | 00/0A4E : A7 09       |             LDA   [$09]          
+ 1376 |  1   HPrintMix.S   1308 | Code        | 00 |         |    1 | 00/0A50 : 18          |             CLC                  
+ 1377 |  1   HPrintMix.S   1309 | Code        | 00 |         |    3 | 00/0A51 : 69 0E 00    |             ADC   #$000E         
+ 1378 |  1   HPrintMix.S   1310 | Code        | 00 |         |    2 | 00/0A54 : 90 01       |             BCC   L250A57        
+ 1379 |  1   HPrintMix.S   1311 | Code        | 00 |         |    1 | 00/0A56 : E8          |             INX                  
+ 1380 |  1   HPrintMix.S   1312 | Code        | 00 |         |    2 | 00/0A57 : 85 1D       | L250A57     STA   $1D            
+ 1381 |  1   HPrintMix.S   1313 | Code        | 00 |         |    2 | 00/0A59 : 86 1F       |             STX   $1F            
+ 1382 |  1   HPrintMix.S   1314 | Code        | 00 |         |    2 | 00/0A5B : A5 11       |             LDA   $11            
+ 1383 |  1   HPrintMix.S   1315 | Code        | 00 |         |    2 | 00/0A5D : 87 1D       |             STA   [$1D]          
+ 1384 |  1   HPrintMix.S   1316 | Code        | 00 |         |    3 | 00/0A5F : A9 01 00    |             LDA   #$0001         
+ 1385 |  1   HPrintMix.S   1317 | Code        | 00 |         |    2 | 00/0A62 : 85 1B       |             STA   $1B            
+ 1386 |  1   HPrintMix.S   1318 | Code        | 00 |         |    3 | 00/0A64 : A9 01 00    | L250A64     LDA   #$0001         
+ 1387 |  1   HPrintMix.S   1319 | Code        | 00 |         |    2 | 00/0A67 : 85 2A       |             STA   $2A            
+ 1388 |  1   HPrintMix.S   1320 | Code        | 00 |         |    2 | 00/0A69 : A5 11       | L250A69     LDA   $11            
+ 1389 |  1   HPrintMix.S   1321 | Code        | 00 |         |    1 | 00/0A6B : 1A          |             INC                  
+ 1390 |  1   HPrintMix.S   1322 | Code        | 00 |         |    2 | 00/0A6C : 85 11       |             STA   $11            
+ 1391 |  1   HPrintMix.S   1323 | Code        | 00 |         |    2 | 00/0A6E : A5 11       |             LDA   $11            
+ 1392 |  1   HPrintMix.S   1324 | Code        | 00 |         |    1 | 00/0A70 : 38          |             SEC                  
+ 1393 |  1   HPrintMix.S   1325 | Code        | 00 |         |    2 | 00/0A71 : E5 13       |             SBC   $13            
+ 1394 |  1   HPrintMix.S   1326 | Code        | 00 |         |    2 | 00/0A73 : F0 07       |             BEQ   L250A7C        
+ 1395 |  1   HPrintMix.S   1327 | Code        | 00 |         |    2 | 00/0A75 : 70 03       |             BVS   L250A7A        
+ 1396 |  1   HPrintMix.S   1328 | Code        | 00 |         |    3 | 00/0A77 : 49 00 80    |             EOR   #$8000         
+ 1397 |  1   HPrintMix.S   1329 | Code        | 00 |         |    2 | 00/0A7A : 30 05       | L250A7A     BMI   L250A81        
+ 1398 |  1   HPrintMix.S   1330 | Code        | 00 |         |    3 | 00/0A7C : A9 00 00    | L250A7C     LDA   #$0000         
+ 1399 |  1   HPrintMix.S   1331 | Code        | 00 |         |    2 | 00/0A7F : 80 03       |             BRA   L250A84        
+ 1400 |  1   HPrintMix.S   1332 | Code        | 00 |         |    3 | 00/0A81 : A9 01 00    | L250A81     LDA   #$0001         
+ 1401 |  1   HPrintMix.S   1333 | Code        | 00 |         |    2 | 00/0A84 : 05 19       | L250A84     ORA   $19            
+ 1402 |  1   HPrintMix.S   1334 | Code        | 00 |         |    2 | 00/0A86 : D0 03       |             BNE   L250A8B        
+ 1403 |  1   HPrintMix.S   1335 | Code        | 00 |         |    3 | 00/0A88 : 82 1B FF    |             BRL   L2509A6        
+ 1404 |  1   HPrintMix.S   1336 | Code        | 00 |         |    2 | 00/0A8B : D4 0B       | L250A8B     PEI   $0B            
+ 1405 |  1   HPrintMix.S   1337 | Code        | 00 |         |    2 | 00/0A8D : D4 09       |             PEI   $09            
+ 1406 |  1   HPrintMix.S   1338 | Code        | 00 |         |    2 | 00/0A8F : D4 17       |             PEI   $17            
+ 1407 |  1   HPrintMix.S   1339 | Code        | 00 |E 3      |    4 | 00/0A91 : 22 B0 18 06 |             JSL   L0718DA        
+ 1408 |  1   HPrintMix.S   1340 | Code        | 00 |E 3      |    4 | 00/0A95 : AF DB 3A 04 |             LDAL  L053ADB        
+ 1409 |  1   HPrintMix.S   1341 | Code        | 00 |         |    1 | 00/0A99 : 48          |             PHA                  
+ 1410 |  1   HPrintMix.S   1342 | Code        | 00 |E 3      |    4 | 00/0A9A : AF D9 3A 04 |             LDAL  L053AD9        
+ 1411 |  1   HPrintMix.S   1343 | Code        | 00 |         |    1 | 00/0A9E : 48          |             PHA                  
+ 1412 |  1   HPrintMix.S   1344 | Code        | 00 |         |    3 | 00/0A9F : F4 52 54    |             PEA   $5452          
+ 1413 |  1   HPrintMix.S   1345 | Code        | 00 |         |    3 | 00/0AA2 : F4 4D 50    |             PEA   $504D          
+ 1414 |  1   HPrintMix.S   1346 | Code        | 00 |E 2      |    3 | 00/0AA5 : AD 51 50    |             LDA   L055051        
+ 1415 |  1   HPrintMix.S   1347 | Code        | 00 |         |    3 | 00/0AA8 : 49 01 00    |             EOR   #$0001         
+ 1416 |  1   HPrintMix.S   1348 | Code        | 00 |         |    2 | 00/0AAB : 25 1B       |             AND   $1B            
+ 1417 |  1   HPrintMix.S   1349 | Code        | 00 |         |    1 | 00/0AAD : 48          |             PHA                  
+ 1418 |  1   HPrintMix.S   1350 | Code        | 00 |E 3      |    4 | 00/0AAE : 22 3A 4B 06 |             JSL   L074B81        
+ 1419 |  1   HPrintMix.S   1351 | Code        | 00 |         |    2 | 00/0AB2 : A5 24       | L250AB2     LDA   $24            
+ 1420 |  1   HPrintMix.S   1352 | Code        | 00 |         |    2 | 00/0AB4 : 85 28       |             STA   $28            
+ 1421 |  1   HPrintMix.S   1353 | Code        | 00 |         |    2 | 00/0AB6 : A5 23       |             LDA   $23            
+ 1422 |  1   HPrintMix.S   1354 | Code        | 00 |         |    2 | 00/0AB8 : 85 27       |             STA   $27            
+ 1423 |  1   HPrintMix.S   1355 | Code        | 00 |         |    2 | 00/0ABA : A5 21       |             LDA   $21            
+ 1424 |  1   HPrintMix.S   1356 | Code        | 00 |         |    1 | 00/0ABC : 5B          |             TCD                  
+ 1425 |  1   HPrintMix.S   1357 | Code        | 00 |         |    1 | 00/0ABD : 3B          |             TSC                  
+ 1426 |  1   HPrintMix.S   1358 | Code        | 00 |         |    1 | 00/0ABE : 18          |             CLC                  
+ 1427 |  1   HPrintMix.S   1359 | Code        | 00 |         |    3 | 00/0ABF : 69 26 00    |             ADC   #$0026         
+ 1428 |  1   HPrintMix.S   1360 | Code        | 00 |         |    1 | 00/0AC2 : 1B          |             TCS                  
+ 1429 |  1   HPrintMix.S   1361 | Code        | 00 |         |    1 | 00/0AC3 : 6B          |             RTL                  
+ 1430 |  1   HPrintMix.S   1362 | Empty       | 00 |         |    0 | 00/0AC4               |                                  
+ 1431 |  1   HPrintMix.S   1363 | Empty       | 00 |         |    0 | 00/0AC4               |                                  
+------+-------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

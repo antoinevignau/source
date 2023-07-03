@@ -1,0 +1,66 @@
+------+------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File            Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1   FirstSeg.S      1 | Comment     | 11 |         |    0 | 00/0000               | *
+    2 |  1   FirstSeg.S      2 | Comment     | 11 |         |    0 | 00/0000               | * HypercardGS
+    3 |  1   FirstSeg.S      3 | Comment     | 11 |         |    0 | 00/0000               | * segment: $02 FirstSeg
+    4 |  1   FirstSeg.S      4 | Comment     | 11 |         |    0 | 00/0000               | *
+    5 |  1   FirstSeg.S      5 | Comment     | 11 |         |    0 | 00/0000               | * (k) 2015, Brutal Deluxe Software
+    6 |  1   FirstSeg.S      6 | Comment     | 11 |         |    0 | 00/0000               | *
+    7 |  1   FirstSeg.S      7 | Empty       | 11 |         |    0 | 00/0000               |                                  
+    8 |  1   FirstSeg.S      8 | Directive   | 00 |         |    0 | 00/0000               |             mx    %00            
+    9 |  1   FirstSeg.S      9 | Directive   | 00 |         |    0 | 00/0000               |             rel                  
+   10 |  1   FirstSeg.S     10 | Directive   | 00 |         |    0 | 00/0000               |             dsk   FirstSeg.l     
+   11 |  1   FirstSeg.S     11 | Directive   | 00 |         |    0 | 00/0000               |             lst   off            
+   12 |  1   FirstSeg.S     12 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   13 |  1   FirstSeg.S     13 | Comment     | 00 |         |    0 | 00/0000               | *---------------------------------------
+   14 |  1   FirstSeg.S     14 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   15 |  1   FirstSeg.S     15 | Directive   | 00 |         |    0 | 00/0000               |             use   FirstSeg.E     
+   16 |  2 FirstSeg.E.s      1 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   17 |  2 FirstSeg.E.s      2 | Comment     | 00 |         |    0 | 00/0000               | * TFBD generated equates
+   18 |  2 FirstSeg.E.s      3 | Comment     | 00 |         |    0 | 00/0000               | *    (c) PHC 1992,93
+   19 |  2 FirstSeg.E.s      4 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   20 |  2 FirstSeg.E.s      5 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   21 |  2 FirstSeg.E.s      6 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   22 |  1   FirstSeg.S     16 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   23 |  1   FirstSeg.S     17 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Ctl.Macs     
+   24 |  1   FirstSeg.S     18 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Desk.Macs    
+   25 |  1   FirstSeg.S     19 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Dialog.Macs  
+   26 |  1   FirstSeg.S     20 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Event.Macs   
+   27 |  1   FirstSeg.S     21 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Int.Macs     
+   28 |  1   FirstSeg.S     22 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Line.Macs    
+   29 |  1   FirstSeg.S     23 | Directive   | 00 |         |    0 | 00/0000               |             use   4/List.Macs    
+   30 |  1   FirstSeg.S     24 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Locator.Macs 
+   31 |  1   FirstSeg.S     25 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Mem.Macs     
+   32 |  1   FirstSeg.S     26 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Menu.Macs    
+   33 |  1   FirstSeg.S     27 | Directive   | 00 |         |    0 | 00/0000               |             use   4/MidiSyn.Macs 
+   34 |  1   FirstSeg.S     28 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Misc.Macs    
+   35 |  1   FirstSeg.S     29 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Qd.Macs      
+   36 |  1   FirstSeg.S     30 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Sound.Macs   
+   37 |  1   FirstSeg.S     31 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Std.Macs     
+   38 |  1   FirstSeg.S     32 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Text.Macs    
+   39 |  1   FirstSeg.S     33 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Util.Macs    
+   40 |  1   FirstSeg.S     34 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Window.Macs  
+   41 |  1   FirstSeg.S     35 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   42 |  1   FirstSeg.S     36 | Comment     | 00 |         |    0 | 00/0000               | *---------------------------------------
+   43 |  1   FirstSeg.S     37 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   44 |  1   FirstSeg.S     38 | Code        | 00 |         |    1 | 00/0000 : 5A          |             PHY                  
+   45 |  1   FirstSeg.S     39 | Code        | 00 |         |    1 | 00/0001 : 5A          |             PHY                  
+   46 |  1   FirstSeg.S     40 | Macro       | 00 |         |    0 | 00/0002               |             _TotalMem                 
+   48 |  1   FirstSeg.S     40 | Code        | 00 |         |    3 | 00/0002 : A2 02 1D    |             LDX   #$1D02         ; load tool call #
+   49 |  1   FirstSeg.S     40 | Code        | 00 |         |    4 | 00/0005 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+   50 |  1   FirstSeg.S     41 | Code        | 00 |         |    1 | 00/0009 : 7A          |             PLY                  
+   51 |  1   FirstSeg.S     42 | Code        | 00 |         |    1 | 00/000A : 68          |             PLA                  
+   52 |  1   FirstSeg.S     43 | Code        | 00 |         |    3 | 00/000B : C9 1D 00    |             CMP   #$001D         
+   53 |  1   FirstSeg.S     44 | Code        | 00 |         |    2 | 00/000E : B0 11       |             BCS   L020021        
+   54 |  1   FirstSeg.S     45 | Code        | 00 |         |    3 | 00/0010 : F4 00 00    |             PEA   $0000          
+   55 |  1   FirstSeg.S     46 | Macro       | 00 |         |    0 | 00/0013               |             _PurgeAll                 
+   57 |  1   FirstSeg.S     46 | Code        | 00 |         |    3 | 00/0013 : A2 02 13    |             LDX   #$1302         ; load tool call #
+   58 |  1   FirstSeg.S     46 | Code        | 00 |         |    4 | 00/0016 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+   59 |  1   FirstSeg.S     47 | Macro       | 00 |         |    0 | 00/001A               |             _CompactMem                 
+   61 |  1   FirstSeg.S     47 | Code        | 00 |         |    3 | 00/001A : A2 02 1F    |             LDX   #$1F02         ; load tool call #
+   62 |  1   FirstSeg.S     47 | Code        | 00 |         |    4 | 00/001D : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+   63 |  1   FirstSeg.S     48 | Code        | 00 |         |    1 | 00/0021 : 6B          | L020021     RTL                  
+   64 |  1   FirstSeg.S     49 | Empty       | 00 |         |    0 | 00/0022               |                                  
+   65 |  1   FirstSeg.S     50 | Empty       | 00 |         |    0 | 00/0022               |                                  
+------+------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

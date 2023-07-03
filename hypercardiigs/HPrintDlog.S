@@ -5871,9 +5871,9 @@ L22249F  LDA   $0B
 L2224DB  PHX
          PHA
          JSL   L160B64
-         PEA   ^L160B64
-         PEA   L160B64
-         JSL   L07187A
+*         PEA   ^L160B64
+*         PEA   L160B64
+*         JSL   L07187A
 L2224EB  BRA   L222535
 L2224ED  PHY
          PEA   ^L0408A3
@@ -5909,9 +5909,9 @@ L2224ED  PHY
 L222525  PHX
          PHA
          JSL   L160B72
-         PEA   ^L160B72
-         PEA   L160B72
-         JSL   L07187A
+*         PEA   ^L160B72
+*         PEA   L160B72
+*         JSL   L07187A
 L222535  PEA   ^L051EF0
          PEA   L051EF0
          LDY   #$006D

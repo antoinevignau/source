@@ -2492,9 +2492,10 @@ L12140E  BRL   L1214A3
          PEA   $0000
          PHA
          JSL   L0B0841
-L12144C  PEA   ^L16074A
-         PEA   L16074A
-         JSL   L07187A
+L12144C
+*         PEA   ^L16074A
+*         PEA   L16074A
+*         JSL   L07187A
 L121456  BRA   L1214A3
          PHY
          PHY
@@ -3549,9 +3550,9 @@ L121CC3  ENT
          JSL   L16073C
          PLA
          STA   $01
-         PEA   ^L16073C
-         PEA   L16073C
-         JSL   L07187A
+*         PEA   ^L16073C
+*         PEA   L16073C
+*         JSL   L07187A
 L121CF4  JSL   L0E0000
          BRA   L121D33
 L121CFA  PHY

@@ -44,6 +44,7 @@ SD_ADDRESS_SET_MSB_3	=	$e40006
 SD_START_READ	=	$e40008	; starts reading the sector (if it was idle)
 SD_ACCESS 		=	$e4000a 
 SD_START_WRITE 	=	$e4000c	; starts writing the sector (if it was idle)
+SD_CARD_INSERTED		$e40012	; 1 if inserted, 0 instead
 
 STA_NOINIT	=	1	; Drive not initialized
 STA_NODISK	=	2	; No medium in the drive

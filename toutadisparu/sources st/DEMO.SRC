@@ -1,0 +1,1036 @@
+$C+
+RESERVE 220000
+mini_malloc%=70000
+ON BREAK GOSUB fin
+'
+' check!=TRUE
+' ramdisk!=TRUE
+generique!=TRUE
+ste!=STE?
+' ste!=0                !pour tester avec un STF
+stf!=NOT (ste!)
+'
+initialisation_absolue
+main
+'
+PROCEDURE main
+  generique                               !AFFICHAGE DU GENERIQUE
+  DO                                      !ON COMMENCE A BOUCLER INDEFINIEMENT
+    initialisation_relative               !ON CHARGE LES TEXTES CORRESPONDANTS..
+      .
+    fadeout(palette$)
+    REPEAT                                !ET ON BOUCLE POUR L'AVENTURE
+      nouvelle_scene(scene_actuelle|)     !ON INITIALISE LA SCENE
+      image(scene_actuelle|)              !ON CHARGE UNE IMAGE VENTUELLE
+      texte$=texte$(scene_actuelle|)      !ON DETERMINE LE TEXTE
+      ecran$=@affiche_texte$(texte$)      !QU'ON AFFICHE...
+      suite_forcee!=@suite_forcee(scene_actuelle|)
+      IF suite_forcee!=FALSE              !S'IL Y A DES MOTS A CLIQUER...
+        mots_clicables(ecran$)
+        fadein_mid
+        REPEAT
+          mot$=@clic_mot$(ecran$)         !ON ATTEND QU'ON CLIQUE QUELQUE PART
+          IF suite_forcee!=FALSE          !SI ON NE SORT PAS PAR UN "LOAD" OU UN
+             "ESC"
+            scene_actuelle|=@aiguillage(scene_actuelle|,mot$) !ON FAIT CLIGNOTER
+               LE MOT (S'IL CORRESPOND A QUELQUE CHOSE)
+          ENDIF
+        UNTIL deplacement!=TRUE           !ON BOUCLE JUSQU'A CE QU'ON CHANGE DE 
+          SCENE
+      ENDIF
+    UNTIL escape!=TRUE                    !ON CHANGE D'AVENTURE SI ON TAPE "ESCA
+      PE"
+    fin_aventure
+  LOOP
+RETURN
+'
+PROCEDURE generique
+  IF generique!=TRUE
+    tag
+    cprint("un logiciel de Franáois Coulon",8,3)
+    cprint("&",9,3)
+    cprint("Sylvie Sarrat, Faustino Ribeiro, Laurent Cotton",10,3)
+    cprint("programmation: Pascal Piat  noiz': Erik Ecqier",12,3)
+    cprint("Les logiciels d'en face 1992",18,3)
+    cprint("VERSION DêMO",16,3)
+    '
+    IF stf!                 !SI C'EST UN STF
+      fichier$="zikmu.mod"
+      ramdisk
+      cprint("TAPEZ ESC",14,3)
+      musique(fichier$) !DEBUT D'UNE MUSIQUE
+      fin_musique  !ON ARRETE LA MUSIQUE SUR UN STF (PAS D'INTERRUPTIONS)
+    ELSE
+      fichier$="zikmu.mod"
+      musique(fichier$) !DEBUT D'UNE MUSIQUE
+      attente
+      fin_musique
+    ENDIF
+    '
+    noircit_ecran
+    CLS
+  ENDIF
+  '
+RETURN
+PROCEDURE tag
+  LOCAL crayon$,numero|,i|,ecran1%,ecran2%,fichier_ecriture$
+  HIDEM                         !ON CACHE LA SOURIS
+  CLS
+  noircit_ecran                 !ON CACHE CE QUI VA S'AFFICHER
+  DIM x2|(5000),y2|(5000)       !ON DECLARE LE TABLEAU DES COORDONNêES
+  DEFFILL 1,2,8                 !ET ON DESSINE LE "CRAYON"
+  PBOX 0,0,5,2                  !UN RECTANGLE...
+  COLOR 3
+  PLOT 0,0                      !AVEC LES 4 COINS EN MOINS
+  PLOT 0,2
+  PLOT 5,0
+  PLOT 5,2
+  GET 0,0,5,2,crayon$           !ON LE CAPTURE
+  CLS
+  '
+  fichier_ecriture$="1.ecr"
+  ecriture%=MALLOC(10000)     !ON OUVRE UN BUFFER
+  BLOAD fichier_ecriture$,ecriture%   !ON CHARGE LE FICHIER
+  point2&=DPEEK(ecriture%)    !ON REPERE LE NOMBRE DE COORDONNêES X,Y
+  FOR i%=1 TO point2&         !ET ON LES CAPTURE DANS UN TABLEAU
+    x2|(i%)=PEEK(ecriture%+2*i%)
+    y2|(i%)=PEEK(ecriture%+2*i%+1)
+  NEXT i%
+  ~MFREE(ecriture%)           !ON FERME LE BUFFER INUTILE
+  '
+  SETCOLOR 1,7,7,7              !ON VALIDE LES COULEURS
+  SETCOLOR 0,0,0,0              !BORDS NOIRS, FOND BLANC...
+  SETCOLOR 3,7,7,7
+  SETCOLOR 2,4,4,7
+  '
+  FOR i%=1 TO point2&         !ON TRACE LES POINTS UN PAR UN
+    PAUSE 0.01
+    x1&=x2|(i%)+194           !(ON LES REPLACE AU CENTRE DE L'ECRAN
+    y1&=y2|(i%)               !(CAR ILS NE SONT CODES QUE DE 0 ∂ 255)
+    PUT x1&,y1&,crayon$
+  NEXT i%
+  '
+  '
+  ERASE x2|(),y2|()                 !SINON ON FERME LES TABLEAUX
+  '
+RETURN
+'
+PROCEDURE initialisation_absolue
+  GRAPHMODE 1
+  OPTION BASE 1             !TABLEAUX COMMENCANT A L'ELEMENT 1 (ET NON 0)
+  initialisation_resolution
+  noircit_ecran
+  initialisation_constantes
+  initialisation_fonte
+  initialisation_fond
+  initialisation_souris
+RETURN
+PROCEDURE initialisation_constantes
+  SPOKE &H484,PEEK(&H484) AND &HFE ! PAS DE BIP CLAVIER
+  max_musiques|=3        !NOMBRE DE MUSIQUES DE PRESENTATION
+  max_colonnes|=75       !NOMBRE DE CARACTERE PAR LIGNE
+  max_lignes|=18         !NOMBRE MAXI DE LIGNES SUR L'ECRAN
+  largeur_caractere|=8   !LARGEUR EN PIXEL DE CHAQUE CARACTERE
+  hauteur_caractere|=11
+  marge_gauche|=3        !MARGE DE GAUCHE EN CARACTERES
+  '                      !MARGE EN NOMBRE DE PIXELS:
+  marge_gauche_pixel&=marge_gauche|*largeur_caractere|
+  '
+  ' ON PRECALCULE LES COORDONNêES SUR L'ECRAN DE CHAQUE CARACTERE
+  '
+  DIM x_texte%(max_colonnes|,max_lignes|),y_texte%(max_colonnes|,max_lignes|)
+  FOR i%=1 TO max_colonnes|
+    FOR j%=1 TO max_lignes|
+      x_texte%(i%,j%)=(i%-2)*largeur_caractere|+marge_gauche_pixel&
+      y_texte%(i%,j%)=PRED(j%)*hauteur_caractere|+1
+    NEXT j%
+  NEXT i%
+  '
+  '
+  max_mots|=15           !NOMBRE MAXI DE MOTS "CLICABLES" A CHAQUE SCENE
+  taille_image%=32000    !TAILLE D'UNE IMAGE CAPTUREE
+  '                      !CARACTERES COMPOSANT UN MOT:
+  '
+  alphabet$="AZERTYUIOPQSDFGHJKLMWXCVBNêäÄ∂_"+CHR$(131)+CHR$(180)+CHR$(136)+CHR$
+    (147)+CHR$(181)+CHR$(139)
+  ' 131: a^ 180: OE  136: e^  181: oe  139: iπ
+RETURN
+PROCEDURE initialisation_resolution
+  CLS            !ON EFFACE L'ECRAN
+  IF XBIOS(4)<>1 !SI ON EST PAS EN MOYENNE RESOLUTION
+    ALERT 3,"Passez en moyenne rÇsolution",1,"SVP",a%
+    SYSTEM       !ON REVIENT AU BUREAU
+  ENDIF
+RETURN
+PROCEDURE initialisation_fonte
+  '
+  LOCAL fichier$,i&,j|,pointeur_caracteres|,max_caracteres|
+  CLR pointeur_caracteres|
+  '                          !NOM DE L'IMAGE CONTENANT LES CARACTERES A CAPTURER
+  fichier$="0FONTE.PI2"
+  ramdisk
+  charge_image(fichier$)         !ON CHARGE L'IMAGE...
+  image_ecran(adresse_image%)   !ON L'AFFICHE (SANS FAIRE VOIR LA PALETTE)
+  '
+  max_caracteres|=182
+  DIM caractere$(max_caracteres|)       !BLOCS CORRESPONDANT A CHAQUE CARCTERE
+  FOR j|=7 TO 200 STEP hauteur_caractere|
+    FOR i&=0 TO 600 STEP largeur_caractere|+1
+      INC pointeur_caracteres|                  !ON CAPTURE LE DESSIN DE CHAQUE
+      IF pointeur_caracteres|<=max_caracteres|  !CARACTERE
+        GET i&,j|+1,i&+largeur_caractere|-1,j|+hauteur_caractere|-1,caractere$(p
+          ointeur_caracteres|)
+      ELSE
+        EXIT IF 0=0
+      ENDIF
+      IF pointeur_caracteres|>max_caracteres|
+        EXIT IF 0=0
+      ENDIF
+    NEXT i&
+  NEXT j|
+  '
+RETURN
+PROCEDURE initialisation_fond
+  '
+  ' ON CHARGE DANS LA VARIABLE FOND$ L'IMAGE A METTRE DERRIERE LE TEXTE
+  '
+  fichier$="0FOND.PI2"
+  ramdisk
+  charge_image(fichier$)
+  image_ecran(adresse_image%)
+  SGET fond$            !ON LA CAPTURE SANS LA MONTRER
+  '
+RETURN
+PROCEDURE initialisation_souris
+  '
+  '
+  ' Mouse-Convert data in string
+  LET risou$=MKI$(14)+MKI$(1)
+  LET risou$=risou$+MKI$(0)
+  LET risou$=risou$+MKI$(0)
+  LET risou$=risou$+MKI$(1)
+  FOR i%=1 TO 16
+    READ backgrnd
+    LET risou$=risou$+MKI$(backgrnd)
+  NEXT i%
+  FOR i%=1 TO 16
+    READ foregrnd
+    LET risou$=risou$+MKI$(foregrnd)
+  NEXT i%
+  DATA 0,2,0,10,58,230,900,3596,6152,12312,8208,8240,8224,8288,192,3968
+  DATA 0,6,30,116,460,1800,7192,12304,24624,16416,16480,16448,16576,24960,16128,
+    0
+  DEFMOUSE risou$
+RETURN
+'
+PROCEDURE initialisation_relative
+  initialisation_textes
+  initialisation_tableaux
+  initialisation_cache
+  debut_aventure
+RETURN
+PROCEDURE initialisation_textes
+  '
+  LOCAL fichier$,erreur%
+  CLR nombre_scenes|
+  '
+  fichier$="DEMO.TEX"
+  ramdisk
+  '
+  '
+  debut_texte%=MALLOC(70000)   !TAILLE MAXI THEORIQUE D'UN TEXTE
+  BLOAD fichier$,debut_texte%
+  '
+  nombre_scenes|=PEEK(debut_texte%)*256+PEEK(debut_texte%+1)
+  '             !ON RECAPTURE LE NOMBRE DE SCENES (CODE SUR 2 OCTETS)
+  pointeur%=debut_texte%+2
+  '
+  ' ON REPERE L'OCTET NUL QUI DELIMITENT LE DEBUT DE CHAQUE PARAGRAPHE
+  '
+  DIM texte$(256)       !TABLEAU CONTENANT LE TEXTE DE CHAQUE SCENE
+  '
+  FOR i%=1 TO nombre_scenes|
+    texte$(i%)=CHAR{pointeur%}
+    ADD pointeur%,LEN(texte$(i%))+1
+  NEXT i%
+  '
+  ~MFREE(debut_texte%)
+  DEC nombre_scenes|   !ON NE TIENT PAS COMPTE DE LA DERNIERE SCENE ("FIN")
+  '
+RETURN
+PROCEDURE initialisation_tableaux
+  LOCAL i%,j%,scene|,fichier$,espace%,phrase$,longueur%,index%,pointeur%
+  DIM fonction_mot$(nombre_scenes|,max_mots|)!MOTS QUI VONT "REAGIR"
+  DIM aiguillage|(nombre_scenes|,max_mots|)  !SCENE CORRESPONDANT AU MOT...
+  DIM condition&(nombre_scenes|,max_mots|)   !SCENE DEVANT AVOIR ETE VUE (OU NON
+     SI NEGATIF)
+  DIM pointeur_mots|(nombre_scenes|)    !NOMBRE DE MOTS POUR CHAQUE SCENE
+  DIM scene_visitee!(nombre_scenes|)    !LE JOUEUR EST-IL PASSE PAR CETTE SCENE?
+  DIM phrase$(nombre_scenes|,max_mots|) !PHRASE EXPLICATIVE A CHAQUE MOT CLIQUE
+  DIM image_a_charger$(nombre_scenes|)   !NOM DES FICHIERS IMAGE A CHARGER A CHA
+    QUE SCENE
+  DIM rouge1|(nombre_scenes|),vert1|(nombre_scenes|),bleu1|(nombre_scenes|) !COM
+    POSANTE DE LA COULEUR DU FOND DU TEXTE
+  DIM rouge2|(nombre_scenes|),vert2|(nombre_scenes|),bleu2|(nombre_scenes|)
+  '
+  ARRAYFILL rouge1|(),4          !ON REMPLIT PAR DEFAUT LES COMPOSANTES
+  ARRAYFILL vert1|(),7           !(FOND DU TEXTE VERT CLAIR)
+  ARRAYFILL bleu1|(),0
+  ARRAYFILL rouge2|(),1
+  ARRAYFILL vert2|(),7
+  ARRAYFILL bleu2|(),0
+  '
+  fichier$="DEMO.IND"
+  ramdisk
+  '
+  index%=MALLOC(10000)       !TAILLE MAXI THEORIQUE D'UN FICHIER .IND DECOMPACTE
+  BLOAD fichier$,index%
+  '
+  pointeur%=index%
+  REPEAT                         !ON VA DECODER TOUT CA...
+    ligne$=CHAR{pointeur%}       !ON CAPTURE UNE LIGNE (SEPARES PAR UN OCTET NUL
+      )
+    instruction$=LEFT$(ligne$,1) !ON REGARDE LE PREMIER CARACTERE
+    ADD pointeur%,LEN(ligne$)+1  !ON DEPLACE D'AVANCE LE POINTEUR
+    ligne$=MID$(ligne$,2)        !ON SAUTE LE PREMIER CARACTERE DE LA LIGNE
+    '
+    SELECT instruction$
+      '
+    CASE "&"                            !ON INDIQUE UNE IMAGE A CHARGER?
+      '
+      scene|=ASC(LEFT$(ligne$,1))       !ON REPERE LE NUMERO DE LA SCENE
+      fichier$=MID$(ligne$,2)           !LE NOM DU FICHIER IMAGE A CHARGER
+      image_a_charger$(scene|)=fichier$ !ON LE STOCKE DANS UN TABLEAU
+      '
+    CASE "%"                            !LA COULEUR DE FOND DU TEXTE??
+      '
+      scene|=ASC(LEFT$(ligne$,1))
+      rouge1|(scene|)=VAL(MID$(ligne$,2,1))
+      vert1|(scene|)=VAL(MID$(ligne$,3,1))
+      bleu1|(scene|)=VAL(MID$(ligne$,4,1))
+      rouge2|(scene|)=VAL(MID$(ligne$,5,1))
+      vert2|(scene|)=VAL(MID$(ligne$,6,1))
+      bleu2|(scene|)=VAL(MID$(ligne$,7,1))
+      '
+    CASE "#"                            !UN MOT CLICABLE?
+      scene|=ASC(LEFT$(ligne$,1))       !ON  LIT LE NUMERO DE LA SCENE
+      '
+      INC pointeur_mots|(scene|)        !ET UN MOT EN PLUS!
+      espace%=INSTR(ligne$," ",2)       !ON REPERE LE CARACTERE ESPACE
+      fonction_mot$(scene|,pointeur_mots|(scene|))=MID$(ligne$,2,espace%-2)
+      condition&(scene|,pointeur_mots|(scene|))=ASC(MID$(ligne$,espace%+2,1))*VA
+        L(MID$(ligne$,espace%+1,1)+"1")
+      aiguillage|(scene|,pointeur_mots|(scene|))=ASC(MID$(ligne$,espace%+3))
+      CLR phrase$
+      phrase$=phrase$+MID$(ligne$,espace%+4)
+      phrase$(scene|,pointeur_mots|(scene|))=phrase$
+      '
+    ENDSELECT
+    '
+  UNTIL ASC(instruction$)=0             !ON CONTINUE JUSQU'A LA FIN DU FICHIER
+  ~MFREE(index%)                        !ET ON DETRUIT LE BUFFER PROVISOIRE
+  '
+RETURN
+PROCEDURE initialisation_cache
+  '
+  nombre_cache%=(MALLOC(-1)-mini_malloc%)/taille_image% !ON OUVRE UN FICHIER CON
+    TENANT LES IMAGES
+  IF nombre_cache%<=0                   !DEJA CHARGEES,EN FONCTION DE LA
+    nombre_cache%=1                     !MEMOIRE DISPONIBLE
+  ENDIF
+  DIM adresse_cache%(nombre_cache%),numero_cache%(nombre_cache%),palette_cache$(
+    nombre_cache%)
+  FOR i%=1 TO nombre_cache%             !ON OUVRE LES BUFFERS
+    adresse_cache%(i%)=MALLOC(taille_image%)  !POUR NE PAS FAUSSER LE MALLOC(-1)
+  NEXT i%
+RETURN
+PROCEDURE debut_aventure
+  scene_actuelle|=1                     !ON DEBUT A LA SCENE 1
+  ARRAYFILL scene_visitee!(),FALSE      !RAZ DES INDICATEURS
+  deplacement!=TRUE                     !ET INDIQUE QU'ON DOIT CHANGER DE SCENE
+RETURN
+PROCEDURE fin_aventure
+  noircit_ecran         !ON CACHE L'ECRAN
+  ERASE texte$()        !ET ON DETRUIT TOUS LES TABLEAUX
+  ERASE fonction_mot$()
+  ERASE aiguillage|()
+  ERASE condition&()
+  ERASE pointeur_mots|()
+  ERASE scene_visitee!()
+  ERASE phrase$()
+  ERASE image_a_charger$()
+  ERASE rouge1|(),vert1|(),bleu1|()
+  ERASE rouge2|(),vert2|(),bleu2|()
+  FOR i%=1 TO nombre_cache%
+    ~MFREE(adresse_cache%(i%))
+  NEXT i%
+  ERASE adresse_cache%(),numero_cache%(),palette_cache$()
+  escape!=FALSE
+  ~FRE(0)
+RETURN
+'
+PROCEDURE fin
+  '                           !SI ON INTERROMPT LE PROGRAMME INTERPRETE
+  ~MFREE(debut_texte%)        !ON FERME LE BUFFER TEXTE (IL DOIT DEJA L'ETRE)
+  ~MFREE(index%)              !LE BUFFER INDEX (IL DOIT DEJA L'ETRE)
+  ~MFREE(adresse_image%)
+  FOR i%=1 TO nombre_cache%
+    ~MFREE(adresse_cache%(i%))
+  NEXT i%
+  SETCOLOR 0,7,7,7            !ON REMET LES COULEURS FOND ET TEXTE
+  SETCOLOR 3,0,0,0            !NORMALEMENT
+  fin_musique
+  RESERVE
+  EDIT
+  END
+RETURN
+'
+PROCEDURE nouvelle_scene(scene|)
+  scene_visitee!(scene|)=TRUE !ON MARQUE LE PASSAGE
+  deplacement!=FALSE          !LE JOUEUR N'A PAS (ENCORE)CHANGE DE SALLE...
+  CLR option_mot$             !AUCUN MOT ENCORE CLIQUê
+RETURN
+FUNCTION affiche_texte$(texte$)
+  '
+  LOCAL longueur_texte%,i%,j%,ligne_max$,b$,return$,return%,longueur%
+  '
+  i%=1
+  WHILE LEFT$(texte$,1)="ú"     !ON SUPPRIME D'EVENTUELS SIGNES "ú" (RETOUR CHAR
+    IOT)
+    texte$=MID$(texte$,2)       !AU DEBUT DU TEXTE
+  WEND
+  '
+  longueur_texte%=LEN(texte$)
+  CLR b$
+  HIDEM
+  '
+  ' ON JUSTIFIE LE TEXTE POUR UN AFFICHAGE EN 80 COLONNES, ET ON RENVOIT UNE
+  ' VARIABLE ALPHA CONTENANT DES ESPACES A LA FIN DE CHAQUE LIGNE
+  '
+  REPEAT
+    '
+    ligne_max$=MID$(texte$,i%,max_colonnes|)
+    return$=LEFT$(ligne_max$,INSTR(ligne_max$,"ú"))
+    return%=LEN(return$)
+    '
+    SELECT return%
+      '
+    CASE 0      !SI AUCUN CODE "ú" N'EST PRESENT,ON COUPE LE TEXTE
+      ligne_max$=LEFT$(ligne_max$,RINSTR(ligne_max$," "))
+      b$=b$+ligne_max$+SPACE$(max_colonnes|-LEN(ligne_max$))
+      ADD i%,LEN(ligne_max$)
+      '
+    CASE 1      !SI C'EST UN RETURN SEUL ON CREE UNE LIGNE BLANCHE
+      INC i%
+      b$=b$+SPACE$(max_colonnes|)
+      '
+    DEFAULT     !SINON ON COMBLE D'ESPACE LE RESTE DE LA LIGNE
+      DEC return%
+      ligne_max$=LEFT$(return$,return%)
+      b$=b$+ligne_max$+SPACE$(max_colonnes|-return%)
+      ADD i%,return%+1
+    ENDSELECT
+    '
+  UNTIL i%>=longueur_texte%
+  '
+  b$=b$+SPACE$(LEN(b$) MOD max_colonnes|)      !ON COMBLE DE LIGNES BLANCHES
+  avant!=TRUE                                  !LE TEXTE EN HAUT ET EN BAS
+  REPEAT                                       !POUR OBTENIR UN TEXTE COUVRANT
+    IF avant!=FALSE                            !TOUT L'ECRAN ET BIEN CENTRE
+      b$=b$+SPACE$(max_colonnes|)              !(ON COMMENCE PAR AJOUTER UNE
+      avant!=TRUE                              !LIGNE BLANCHE AU DEBUT)
+    ELSE
+      b$=SPACE$(max_colonnes|)+b$
+      avant!=FALSE
+    ENDIF
+  UNTIL LEN(b$)>=max_lignes|*max_colonnes|     !JUSQU'A CE QUE LE TEXTE DEPASSE
+  '                                            !LE NOMBRE DE SIGNES SUR L'ECRAN
+  SPUT fond$                               !ON AFFICHE LE FOND
+  '
+  IF scene_actuelle|=1                     !SI ON EST A LA PREMIERE SCENE
+    CLR dedicace2$                         !ON IMPRIME LA DEDICACE (VIDE DANS LE
+    dedicace$=MID$("&,ôoABCDEF                                                  
+                       ",5)
+    dedicace$=TRIM$(dedicace$)             !CODE SOURCE ET REPEREE PAR "&,ôO"
+    FOR i%=1 TO LEN(dedicace$)             !ON LA DECODE (PAS VISIBLE DS LE SOUR
+      CE
+      dedicace2$=dedicace2$+CHR$(ASC(MID$(dedicace$,i%,1)) XOR 71)
+    NEXT i%
+    print(dedicace2$,1,1,4)                !ET ON L'êCRIT EN HAUT DE L'êCRAN
+  ENDIF
+  '
+  longueur%=LEN(b$)                        !ON SCANNE TOUTE LA LONGUEUR DU TEXTE
+  CLR j%
+  FOR i%=1 TO longueur% STEP max_colonnes|
+    INC j%
+    texte$=TRIM$(MID$(b$,i%,max_colonnes|))!ET ON ECRIT LA LIGNE AVEC LA ROUTINE
+    print(texte$,1,j%,4)                   !MAISON, SANS ESPACE AVANT ET APRES
+  NEXT i%
+  '
+  ~FRE(0)
+  ~MALLOC(-1)
+  '
+  IF check!=TRUE
+    PRINT AT(1,1);"fre = ";FRE(0);" fre gemdos = ";MALLOC(-1);" cache=";nombre_c
+      ache%
+  ENDIF
+  '
+  RETURN b$
+  '
+ENDFUNC
+FUNCTION suite_forcee(scene|)
+  IF UPPER$(fonction_mot$(scene|,1))="SUITE"    !SI LE MOT A CLIQUER EST "SUITE"
+    HIDEM                                       !DIRECTEMENT SUR LA SCENE
+    fadein_mid
+    attente                                     !SPêCIFIêE
+    fadeout_mid
+    deplacement!=TRUE                           !ALORS IL N'Y A PAS DE CHOIX
+    scene_actuelle|=aiguillage|(scene|,1)       !POSSIBLE, ON S'AIGUILLE
+    RETURN TRUE
+  ELSE
+    RETURN FALSE                                !SINON ON AGIT NORMALEMENT
+  ENDIF
+ENDFUNC
+FUNCTION clic_mot$(texte$)
+  '
+  LOCAL x&,y&,i%,a$,longueur_texte%,pointeur2%,clavier$
+  '
+  longueur_texte%=LEN(texte$)
+  CLR mot$
+  '
+  SHOWM
+  REPEAT                                !ON SCRUTE LE CLAVIER...
+    ~FRE(1)
+    clavier$=RIGHT$(INKEY$,1)
+    undo!=FALSE
+    IF MOUSEK=2 AND image_chargee!=TRUE !ON SWITCHE SUR L'IMAGE (BOUTON DROIT)
+      SGET ecran_texte$                 !ON MEMORISE L'ECRAN TEXTE
+      affiche_image(adresse_cache%(scene_cache%),palette_cache$(scene_cache%),FA
+        LSE) !ON AFFICHE LE DESSIN
+      palette_texte                     !ON RESTORE LA PALETTE TEXTE
+      SPUT ecran_texte$                 !ET L'ECRAN TEXTE
+      CLR ecran_texte$
+    ENDIF
+    ~FRE(1)
+  UNTIL MOUSEK=1 OR undo!=TRUE           !UN MOT EST CLIQUE?? (BOUTON GAUCHE) (A
+     MOINS QUE L'ON REVIENNE AU DEBUT DE L'AVENTURE)
+  '
+  ' ON CAPTURE LES COORDONNEES DE LA SOURIS QU'ON CONVERTIT EN UNE SEULE
+  '
+  x&=INT(MOUSEX/largeur_caractere|)+1-marge_gauche|
+  IF x&<0       !LA PRESENCE DE LA MARGE PERMETTRAIT DES COORDONNêES
+    x&=0        !NEGATIVES...
+  ENDIF
+  y&=INT(MOUSEY/hauteur_caractere|)
+  pointeur_mot%=y&*max_colonnes|+x&     !CONVERSION EN COORD. ABSOLUES
+  '
+  ' SI L'ENDROIT POINTê EST BIEN UN CARACTERE AUTORISê,
+  ' ON REGARDE QUEL MOT DANS LE TEXTE Y CORRESPOND
+  '
+  CLR mot2$
+  IF pointeur_mot%<LEN(texte$) AND INSTR(alphabet$,UPPER$(MID$(texte$,pointeur_m
+    ot%,1)))
+    '
+    pointeur2%=pointeur_mot%-1           !ON COMMENCE A SCANNER AU CARACTERE CLI
+      QUE
+    REPEAT
+      INC pointeur2%                     !ON AVANCE D'UN CARACTERE
+      EXIT IF pointeur2%>longueur_texte% !ON S'EN VA SI ON ARRIVE A LA FIN DU TE
+        XTE
+      a$=MID$(texte$,pointeur2%,1)       !ON CAPTURE CE CARACTERE
+      IF INSTR(alphabet$,UPPER$(a$))     !SI CE CARACTERE FAIT PARTIE DE CEUX CO
+        MPOSANT UN MOT
+        mot$=mot$+a$                     !ON L'AJOUTE AU MOT "CLIQUê"
+        sortie!=FALSE                    !ET ON CONTINUE
+      ELSE
+        sortie!=TRUE                     !SINON LE MOT EST TERMINê
+      ENDIF
+    UNTIL sortie!=TRUE
+    '
+    pointeur2%=pointeur_mot%             !MEME CHOSE POUR LES CARACTERES
+    REPEAT                               !SITUES AVANT L'ENDROIT CLIQUê
+      DEC pointeur2%
+      EXIT IF pointeur2%<=0
+      a$=MID$(texte$,pointeur2%,1)
+      IF INSTR(alphabet$,UPPER$(a$))
+        mot$=a$+mot$
+        sortie!=FALSE
+      ELSE
+        sortie!=TRUE
+      ENDIF
+    UNTIL sortie!=TRUE
+    '
+  ENDIF
+  '
+  pointeur_mot%=pointeur2%+1    !ON GARDE LES COORD. EXACTES DU DEBUT DU MOT
+  '
+  HIDEM
+  RETURN mot$                   !ET ON RENVOIT CE MOT EN TOUTES LETTRES
+  '
+ENDFUNC
+FUNCTION aiguillage(scene_actuelle|,mot$)
+  LOCAL i|,condition&,nouvelle_scene|
+  nouvelle_scene|=scene_actuelle|
+  CLR numero_mot|
+  '
+  IF mot$<>""                                    !SI LE MOT N'EST PAS VIDE
+    FOR i|=1 TO pointeur_mots|(scene_actuelle|)  !ON SCANNE TOUS LES MOTS-CLES
+      '                                          !ON LE CHERCHE DANS LA LISTE
+      IF UPPER$(fonction_mot$(scene_actuelle|,i|))=UPPER$(mot$)
+        condition&=condition&(scene_actuelle|,i|)
+        '                                 !ON TESTE SI LA CONDITION
+        '                                 !EST SATISFAITE (NEGATIVE OU POSITIVE)
+        IF (condition&>0 AND scene_visitee!(ABS(condition&))=TRUE) OR (condition
+          &<0 AND scene_visitee!(ABS(-condition&))=FALSE)
+          numero_mot|=i|                  ! SI C'EST OK ON VALIDE LE MOT
+        ENDIF
+      ENDIF
+      '
+    NEXT i|
+    '
+    IF numero_mot|<>0                            !SI LE MOT EST DANS LA LISTE...
+      '
+      IF option_mot$=mot$               !SI LE MOT A DEJA ETE CLIQUê PRêCêDEMENT
+        surligner_mot(ecran$,mot$,pointeur_mot%,6)       !ON LE REFAIT CLIGNOTER
+        deplacement!=TRUE                                 !ET ON CHANGE DE SCENE
+        fadeout_mid
+        nouvelle_scene|=aiguillage|(scene_actuelle|,numero_mot|)
+        '
+      ELSE                            !SI C'EST LA PREMIERE FOIS QU'ON LE CLIQUE
+        option_mot$=mot$                                           !ON LE VALIDE
+        '                                   !ON EFFACE LA LIGNE DE COMMENTAIRES:
+        cprint(SPACE$(max_colonnes|),max_lignes|,0)
+        '                                 !ON AFFICHE LES NOUVEAUX COMMENTAIRES:
+        cprint(CHR$(34)+mot$+CHR$(34)+" : "+phrase$(scene_actuelle|,numero_mot|)
+          +"...",max_lignes|,6)
+        '                                !ET ON SURLIGNE LE MOT PLUS BRIEVEMENT:
+        surligner_mot(ecran$,mot$,pointeur_mot%,3)
+        REPEAT                 !ET ON NE CONTINUE QUE SI LA SOURIS EST RELACHêE:
+        UNTIL MOUSEK=0
+      ENDIF
+    ENDIF
+  ENDIF
+  '
+  RETURN nouvelle_scene|
+  '
+ENDFUNC
+PROCEDURE surligner_mot(texte$,mot$,pointeur_mot%,cycles|)
+  '
+  LOCAL x&,y&,i|
+  '
+  y&=INT(pointeur_mot%/max_colonnes|)+1 !CALCUL DES COORD. A PARTIR DU MOT
+  x&=(pointeur_mot% MOD max_colonnes|)  !CLIQUE...
+  '
+  FOR i|=1 TO cycles|         !SELON LE NOMBRE DE FOIS QUE LE MOT DOIT CLIGNOTER
+    IF ODD(i|)=TRUE           !ON LE SURLIGNE UNE FOIS SUR DEUX
+      print(mot$,x&,y&,7)
+      PAUSE 1
+    ELSE                      !UNE FOIS SUR DEUX
+      print(mot$,x&,y&,4)     !ON LE REAFFICHE NORMALEMENT
+      PAUSE 1                 !ET ON ATTEND UNE FRACTION DE SECONDE
+    ENDIF
+  NEXT i|
+  '
+RETURN
+PROCEDURE print(texte$,colonne&,ligne&,mode|)
+  ' DEC colonne&
+  '  DEC ligne&
+  FOR z%=1 TO LEN(texte$)       !ON AFFICHE UN PAR UN LES CARACTERES
+    '                           !SELON LEUR IMAGE RESPECTIVE CAPTURêE DANS LE
+    '                           !FICHIER "0FONTE.PI1"
+    '    PUT (colonne&+PRED(z%))*largeur_caractere|+marge_gauche_pixel&,ligne&*h
+      auteur_caractere|+1,caractere$(ASC(MID$(texte$,z%,1))),mode|
+    PUT x_texte%(colonne&+z%,ligne&),y_texte%(colonne&+z%,ligne&),caractere$(ASC
+      (MID$(texte$,z%,1))),mode|
+  NEXT z%
+RETURN
+'
+'
+PROCEDURE cprint(texte$,ligne&,mode|)
+  '
+  '     !CENTRE UNE LIGNE D'APRES LE NOMBRE DE CARACTERE PAR COLONNE
+  print(texte$,(max_colonnes|-LEN(texte$))/2,ligne&,mode|)
+RETURN
+PROCEDURE attente
+  REPEAT                          !ON ATTEND QU'ON RELACHE TOUT
+  UNTIL INKEY$="" AND MOUSEK=0
+  REPEAT
+  UNTIL INKEY$<>"" OR MOUSEK<>0   !PUIS QU'ON ACTIVE LA SOURIS OU LE CLAVIER
+  REPEAT
+  UNTIL INKEY$="" AND MOUSEK=0    !PUIS QU'ON RELACHE TOUT A NOUVEAU
+RETURN
+PROCEDURE image(scene|)
+  '
+  LOCAL fichier$,fichier_present!
+  '
+  IF image_a_charger$(scene|)<>"" !LA SCENE CHARGE-T-ELLE UNE IMAGE?
+    '                             !ON CREE LE NOM DU FICHIER COMPLET D'ICELLE
+    fichier$=UPPER$(image_a_charger$(scene|))
+    ramdisk
+    image_chargee!=TRUE         !ON SAIT QU'ON PEUT CHARGER L'IMAGE
+    scene_cache%=@cache(scene|) !ON VOIT SI ELLE EST PRESENTE DANS LE CACHE
+    IF scene_cache%=0           !NON??
+      scene_cache%=@chargement_hard(fichier$)  !ON CHARGE DANS LE CACHE
+    ENDIF
+    '                           !ON MONTRE L'IMAGE DU CACHE
+    affiche_image(adresse_cache%(scene_cache%),palette_cache$(scene_cache%),TRUE
+      )
+  ELSE
+    image_chargee!=FALSE        !S'IL N'Y A PAS D'IMAGES ON EMPECHERA LE
+  ENDIF                         !SWITCH MOYENNE/BASSE RESOLUTION (BOUTON DROIT)
+  '
+  '
+RETURN
+FUNCTION chargement_hard(fichier$)
+  '
+  FOR i%=nombre_cache% DOWNTO 1         !ON DOIT CHARGER L'IMAGE SUR LE
+    IF numero_cache%(i%)=0              !DISQUE...ON CHERCHE L'ENDROIT OU LA
+      nouveau_numero%=i%                !CASER DANS LA MEMOIRE CACHE
+    ENDIF
+  NEXT i%
+  '
+  IF nouveau_numero%=0                    !SI PAS D'ENDROIT VIDE, ON PREND UN
+    nouveau_numero%=RAND(nombre_cache%)+1 !EMPLACEMENT AU HASARD
+  ENDIF
+  '
+  charge_image(fichier$)              !ON CHARGE L'IMAGE...
+  noircit_ecran                   !ON MASQUE L'ECRAN
+  image_ecran(adresse_image%)        !ON L'AFFICHE... (SANS MONTRER LA PALETTE)
+  '
+  numero_cache%(nouveau_numero%)=scene|         !ET ON MEMORISE TOUT CA DANS
+  '  SGET image_cache$(nouveau_numero%)            !LE FICHIER "CACHE"
+  BMOVE XBIOS(2),adresse_cache%(nouveau_numero%),taille_image%
+  palette_cache$(nouveau_numero%)=palette$      !AINSI QUE LA PALETTE
+  '
+  RETURN nouveau_numero%     !ON RENVOIT LE NUMERO DANS LEQUEL SE TROUVE L'IMAGE
+  '
+ENDFUNC
+PROCEDURE affiche_image(adresse_image%,palette$,fondu!)
+  ~FRE(1)
+  IF image_chargee!=TRUE        !SI IL Y A UNE IMAGE A MONTRER...
+    HIDEM                       !ON CACHE LA SOURIS
+    noircit_ecran
+    ~XBIOS(5,L:-1,L:-1,0)       !ON PASSE EN BASSE RESOLUTION
+    noircit_ecran
+    BMOVE adresse_image%,XBIOS(2),taille_image%
+    IF fondu!=FALSE
+      palette(palette$)
+    ELSE
+      fadein(palette$)            !ON FAIT APPARAITRE L'IMAGE
+    ENDIF
+    attente                     !ON ATTEND....
+    noircit_ecran
+    ~XBIOS(5,L:-1,L:-1,1)       !ON REPASSE EN MOYENNE RESOLUTION
+    SHOWM                       !ON MONTRE LA SOURIS
+    IF fondu!=FALSE
+      palette_texte
+    ELSE
+      ' noircit_ecran
+    ENDIF
+  ENDIF
+RETURN
+PROCEDURE charge_image(fichier$)
+  adresse_image%=MALLOC(32066)   !BUFFER DE LA TAILLE D'UNE IMAGE DEGAS PI1
+  BLOAD fichier$,adresse_image%  !ON LA CHARGE (DECOMPACTAGE AUTOMATIQUE)
+  palette$=SPACE$(32)            !ET ON CAPTURE LA PALETTE AU DEBUT
+  BMOVE adresse_image%+2,VARPTR(palette$),32
+RETURN
+PROCEDURE image_ecran(adresse_image%)
+  '
+  '                  ON DEPLACE L'IMAGE (SANS LA PALETTE) DANS LA MEMOIRE ECRAN
+  BMOVE adresse_image%+34,XBIOS(3),taille_image%
+  ~MFREE(adresse_image%)                     !ET ON LIBERE LE BUFFER PROVISOIRE
+RETURN
+'
+PROCEDURE fadein(palette2$)
+  LOCAL i%,j%,pas,p%
+  DIM depart(16,3),arrivee%(16,3),increment(16,3)
+  FOR i%=1 TO 16
+    couleur$=RIGHT$("00"+HEX$(DPEEK(VARPTR(palette2$)-2+2*i%)),3)
+    FOR j%=1 TO 3
+      arrivee%(i%,j%)=VAL(MID$(couleur$,j%,1))
+    NEXT j%
+  NEXT i%
+  '
+  pas=15
+  FOR i%=1 TO 16
+    FOR j%=1 TO 3
+      increment(i%,j%)=arrivee%(i%,j%)/pas
+    NEXT j%
+  NEXT i%
+  '
+  FOR p%=1 TO pas
+    VSYNC
+    FOR i%=1 TO 16
+      SETCOLOR i%-1,depart(i%,1),depart(i%,2),depart(i%,3)
+    NEXT i%
+    FOR i%=1 TO 16
+      FOR j%=1 TO 3
+        ADD depart(i%,j%),increment(i%,j%)
+      NEXT j%
+    NEXT i%
+  NEXT p%
+  palette(palette$)
+  ERASE depart(),arrivee%(),increment()
+  '
+RETURN
+PROCEDURE fadeout(palette2$)
+  LOCAL i%,j%,pas,p%
+  DIM depart(16,3),arrivee%(16,3),increment(16,3)
+  FOR i%=1 TO 16
+    couleur$=RIGHT$("00"+HEX$(DPEEK(VARPTR(palette2$)-2+2*i%)),3)
+    FOR j%=1 TO 3
+      depart(i%,j%)=VAL(MID$(couleur$,j%,1))
+    NEXT j%
+  NEXT i%
+  '
+  pas=15
+  FOR i%=1 TO 16
+    FOR j%=1 TO 3
+      increment(i%,j%)=depart(i%,j%)/pas
+    NEXT j%
+  NEXT i%
+  '
+  FOR p%=1 TO pas
+    VSYNC
+    FOR i%=1 TO 16
+      SETCOLOR i%-1,depart(i%,1),depart(i%,2),depart(i%,3)
+    NEXT i%
+    FOR i%=1 TO 16
+      FOR j%=1 TO 3
+        SUB depart(i%,j%),increment(i%,j%)
+      NEXT j%
+    NEXT i%
+  NEXT p%
+  noircit_ecran
+  ERASE depart(),arrivee%(),increment()
+  '
+RETURN
+PROCEDURE fadein_mid
+  LOCAL i%,j%,pas,p%                           !ON FAIT UN FADE IN
+  DIM depart(4,3),arrivee%(4,3),increment(4,3) !EN MOYENNE RESOLUTION
+  arrivee%(1,1)=0                              !(AFFICHAGE DU TEXTE)
+  arrivee%(1,2)=0
+  arrivee%(1,3)=0
+  arrivee%(2,1)=rouge1|(scene_actuelle|)
+  arrivee%(2,2)=vert1|(scene_actuelle|)
+  arrivee%(2,3)=bleu1|(scene_actuelle|)
+  arrivee%(3,1)=rouge2|(scene_actuelle|)
+  arrivee%(3,2)=vert2|(scene_actuelle|)
+  arrivee%(3,3)=bleu2|(scene_actuelle|)
+  arrivee%(4,1)=7
+  arrivee%(4,2)=7
+  arrivee%(4,3)=7
+  '
+  pas=15
+  FOR i%=1 TO 4
+    FOR j%=1 TO 3
+      increment(i%,j%)=arrivee%(i%,j%)/pas
+    NEXT j%
+  NEXT i%
+  '
+  FOR p%=1 TO pas
+    VSYNC
+    FOR i%=1 TO 4
+      SETCOLOR i%-1,depart(i%,1),depart(i%,2),depart(i%,3)
+    NEXT i%
+    FOR i%=1 TO 4
+      FOR j%=1 TO 3
+        ADD depart(i%,j%),increment(i%,j%)
+      NEXT j%
+    NEXT i%
+  NEXT p%
+  palette_texte
+  ERASE depart(),arrivee%(),increment()
+  '
+RETURN
+PROCEDURE fadeout_mid
+  LOCAL i%,j%,pas,p%
+  DIM depart(4,3),arrivee%(4,3),increment(4,3)
+  depart(1,1)=0
+  depart(1,2)=0
+  depart(1,3)=0
+  depart(2,1)=rouge1|(scene_actuelle|)
+  depart(2,2)=vert1|(scene_actuelle|)
+  depart(2,3)=bleu1|(scene_actuelle|)
+  depart(3,1)=rouge2|(scene_actuelle|)
+  depart(3,2)=vert2|(scene_actuelle|)
+  depart(3,3)=bleu2|(scene_actuelle|)
+  depart(4,1)=7
+  depart(4,2)=7
+  depart(4,3)=7
+  '
+  pas=15
+  FOR i%=1 TO 4
+    FOR j%=1 TO 3
+      increment(i%,j%)=depart(i%,j%)/pas
+    NEXT j%
+  NEXT i%
+  '
+  FOR p%=1 TO pas
+    VSYNC
+    FOR i%=1 TO 4
+      SETCOLOR i%-1,depart(i%,1),depart(i%,2),depart(i%,3)
+    NEXT i%
+    FOR i%=1 TO 4
+      FOR j%=1 TO 3
+        SUB depart(i%,j%),increment(i%,j%)
+      NEXT j%
+    NEXT i%
+  NEXT p%
+  noircit_ecran
+  ERASE depart(),arrivee%(),increment()
+  '
+RETURN
+PROCEDURE palette_texte
+  SETCOLOR 0,0,0,0     !CONTOUR DE L'ECRAN EN NOIR
+  SETCOLOR 3,7,7,7     !SOURIS ET TEXTE EN BLANC
+  '                     !FOND DU TEXTE D'UNE COULEUR SPECIFIEE
+  SETCOLOR 1,rouge1|(scene_actuelle|),vert1|(scene_actuelle|),bleu1|(scene_actue
+    lle|)
+  SETCOLOR 2,rouge2|(scene_actuelle|),vert2|(scene_actuelle|),bleu2|(scene_actue
+    lle|)
+RETURN
+PROCEDURE noircit_ecran
+  LOCAL i|,noir$
+  IF check!=FALSE
+    noir$=STRING$(32,0)                 !ON REMPLIT LA PALETTE
+    VSYNC                               !DE COULEURS NOIRES
+    ~XBIOS(6,L:VARPTR(noir$))
+  ENDIF
+RETURN
+PROCEDURE palette(palette$)
+  ~XBIOS(6,L:VARPTR(palette$))  !ON VALIDE LA PALETTE
+RETURN
+'
+PROCEDURE mots_clicables(texte$)
+  LOCAL pointeur_mot%,i%,texte2$,mot$,condition&,affichage!
+  CLR mot$,pointeur_mot%,affichage!,texte2$
+  '
+  texte2$=UPPER$(texte$)              !ON RECHERCHE SUR LE TEXTE EN MAJUSCULES
+  FOR i%=1 TO pointeur_mots|(scene_actuelle|)  !ON SCANNE TOUTES LES COMMANDES
+    mot$=fonction_mot$(scene_actuelle|,i%)
+    mot2$=UPPER$(mot$)                               !ON CONVERTI EN MAJUSCULE
+    REPEAT
+      '                !ON REPERE L'ENDROIT OU SE TROUVE LE MOT DANS LE TEXTE:
+      pointeur_mot%=INSTR(texte2$,mot2$,pointeur_mot%)
+      '                                !ON VERIFIE SI C'EST BIEN UN MOT ISOLê:
+      IF INSTR(alphabet$,UPPER$(MID$(texte$,pointeur_mot%-1,1)),1)=0 AND INSTR(a
+        lphabet$,UPPER$(MID$(texte$,pointeur_mot%+LEN(mot$),1)))=0
+        affichage!=TRUE                        !SI OUI ON SORTIRA DE LA BOUCLE
+        '                !LE MOT EXISTE, MAIS EST-IL CLICABLE POUR LE MOMENT?:
+        condition&=condition&(scene_actuelle|,i%)
+        IF (condition&>0 AND scene_visitee!(ABS(condition&))=TRUE) OR (condition
+          &<0 AND scene_visitee!(ABS(-condition&))=FALSE)
+          '                      !OUI? ALORS ON SURLIGNE EFFECTIVEMENT LE MOT:
+          surligner_mot(texte$,MID$(texte$,pointeur_mot%,LEN(mot$)),pointeur_mot
+            %,1)
+        ENDIF
+        '
+      ENDIF
+      INC pointeur_mot% !SI LE MOT N'EST PAS ISOLE (EX="CLIC" et "CLICABLE") ON 
+        CONTINUE LA RECHERCHE
+    UNTIL affichage!=TRUE !SI LE MOT A ETE SURLIGNE (OU DU MOINS QU'IL EXISTE)
+    CLR pointeur_mot%,affichage!      !ON SORT...
+  NEXT i%
+RETURN
+PROCEDURE ramdisk
+  LOCAL fichier2$,znort%,long%,i%,j%
+  IF ramdisk!=TRUE                                      !SI LE RAMDISK EXISTE...
+    REPEAT
+      i%=j%
+      j%=INSTR(fichier$,"\",i%+1) !CAPTURE DU NOM DU FICHIER (SANS PATH)
+    UNTIL j%=0
+    '
+    fichier2$="E:"+MID$(fichier$,i%)   !PATH QU'ON REMPLACE PAR CELUI DU RAMDISK
+    IF EXIST(fichier2$)                !SI LE FICHIER EXISTE DEJA SUR LE RAMDISK
+      fichier$=fichier2$
+    ELSE
+      OPEN "i",#99,fichier$          !SINON ON REGARDE LA LONGUEUR DU FICHIER...
+      long%=LOF(#99)
+      CLOSE
+      IF DFREE(5)>long%+70000 AND MALLOC(-1)>long%+30000     !ASSEZ DE PLACE?
+        znort%=MALLOC(long%)          !ON CREE UN BUFFER DE LA TAILLE DU FICHIER
+        BLOAD fichier$,znort%               !ON CHARGE LE FICHIER DANS LE BUFFER
+        BSAVE fichier2$,znort%,long%             !ET ON LE SAUVE DANS LE RAMDISK
+        ~MFREE(znort%)                     !ON SUPPRIME LE BUFFER DEVENU INUTILE
+      ENDIF
+    ENDIF
+  ENDIF
+RETURN
+FUNCTION cache(numero_image%)
+  '
+  LOCAL i%
+  CLR cache_affiche%
+  '
+  FOR i%=1 TO nombre_cache%             !ON RECHECHE SI L'IMAGE EST DEJA
+    IF numero_image%=numero_cache%(i%)  !STOCKêE DANS LA MêMOIRE CACHE
+      cache_affiche%=i%                 !SI OUI ON RETOURNE LE NUMERO (SINON 0)
+    ENDIF
+  NEXT i%
+  '
+  RETURN cache_affiche%
+  '
+ENDFUNC
+'
+PROCEDURE musique(module$)
+  '
+  IF ste!
+    musique!=TRUE
+    '
+    fichier$="dma.bin"
+    dma%=MALLOC(21144)          !TAILLE DECOMPACTEE DE LA ROUTINE
+    BLOAD fichier$,dma%
+    '
+    module%=MALLOC(76000)       !TAILLE MAXI D'UNE MUSIQUE
+    BLOAD module$,module%
+    '
+    ' Paramätrage du DMA STE
+    '
+    VOID C:dma%(W:0,W:1)        ! sauve l'etat du DMA
+    VOID C:dma%(W:1,W:0,W:40)   ! Master Volume
+    VOID C:dma%(W:1,W:1,W:20)   ! Volume droite
+    VOID C:dma%(W:1,W:2,W:20)   ! Volume gauche
+    VOID C:dma%(W:1,W:3,W:6)    ! TonalitÇ Graves
+    VOID C:dma%(W:1,W:4,W:6)    ! TonalitÇ Aigus
+    VOID C:dma%(W:3,W:1,L:module%)   ! Lance le module
+    '
+  ELSE                          !SI C'EST UN STF
+    '
+    fichier$="users.bin"
+    tracker%=MALLOC(37872)      !TAILLE DE LA ROUTINE DECOMPACTEE
+    BLOAD fichier$,tracker%
+    '
+    module%=MALLOC(76000)
+    BLOAD module$,module%
+    '
+    volume%=GEMDOS(72,L:18000)              ! On reserve pour la table de volume
+    output%=&H1                       ! sortie STF ETENDU
+    '
+    VOID C:tracker%(L:module%,W:output%,L:volume%)     ! Appel du Player
+    '
+    VOID GEMDOS(73,L:module%)                ! Libere la mÇmoire
+    VOID GEMDOS(73,L:tracker%)
+    VOID GEMDOS(73,L:volume%)
+  ENDIF
+  '
+RETURN
+PROCEDURE fin_musique
+  '
+  IF ste! AND musique!=TRUE  !SI ON EST SUR STE ET SI UNE MUSIQUE EST JOUEE
+    VOID C:dma%(W:3,W:0)     ! stoppe le module
+    VOID C:dma%(W:0,W:2)     ! Restaure l'etat du DMA
+    ~MFREE(module%)
+    ~MFREE(dma%)
+    musique!=FALSE
+  ENDIF
+  '
+RETURN
+'
+'  Ajouter un Çcran cachÇ (si on reste plus de dix minutes sur la musique)
+'  NE PAS COMPACTER LE PROGRAMME
+'  COMPACTER LES IMAGES AVEC ATOMIK 3.5
+'  DOC:- NOM DE L'ACHETEUR PLUSIEURS FOIS DANS LE JEU
+'      - POSSIBILITê D'ACHAT D'AUTRES EXEMPLAIRES A PRIX REDUIT
+' altair et esat software ds la doc
+

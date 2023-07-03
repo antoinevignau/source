@@ -1,0 +1,64 @@
+LE FICHIER TEX
+le premier word = nombre de scnes
+le reste sont les textes des scnes
+fin de ligne = \0
+
+LE FICHER IND
+& (\26) + octet pour la scene + nom fichier + \0
+% (\25) + RGBRGB + \0
+# (\23) + octet pour la scene + mot + " " + signe + abs(condition) + aiguillage + phrase + \¯
+  + (\2B) - condition
+  - (\2D) - condition
+  =  - direction
+  !  - commentaire
+
+# 01 "suite " + 
+#igloo=DEVANT_BOITE	+ 01 scene
+#mer-la mer = LA MER	- 02 scene
+#place+PLACE=PLACE	+ 35 35 
+
+si absence de 0 aprs "condition + les 2 scnes" alors c'est un commentaire jusqu'ˆ \0
+
+---
+
+je prends une ligne
+
+%	couleur de fond du texte
+01	scene en hexa
+167367	RVB RVB
+00	-fin
+=> on remplit les deux tableaux rouge/vert/bleu
+
+&	image ˆ charger
+01	scene en hexa
+1METRO.PI1	image ˆ charger
+00	-fin
+=> on remplit image_a_charger
+
+#	un mot clicable
+01	scene en hexa
+suite 	mot + espace
+2B = +	espace+1
+01	espace+2
+47 = G	espace+3
+00	espace+4
+
+#
+02
+plage 	mot + espace
+2B = +	espace+1
+01	espace+2
+03	espace+3
+Fred retourne sur la plage	espace+4
+00
+
+condition	: espace+1 et espace+2
+  condition&(scene|,pointeur_mots|(scene|)) =
+    ASC(MID$(ligne$,espace%+2,1)) * VAL(MID$(ligne$,espace%+1,1)+"1")
+    => 01			=> 2B + 31 = 5C
+    => 70			=> 2D + 31 = 5E
+    
+aiguillage	: espace+3
+  aiguillage|(scene|,pointeur_mots|(scene|)) = ASC(MID$(ligne$,espace%+3))
+
+phrase	: espace+4

@@ -1,0 +1,81 @@
+Module name: 2ZIKMU.MOD
+Number of tracks: 4
+Number of patterns: 7
+Number of pattern positions: 18
+
+Module instrument oscillator requirements:
+Instrument   1: 1 oscillator
+Instrument   2: 1 oscillator
+Instrument   3: 1 oscillator
+Instrument   4: 2 oscillators
+Instrument   5: 2 oscillators
+Instrument   6: 2 oscillators
+
+NTP Instruments:
+number=  1, modnumber=  1, type=%0000, streamed=no , length= 1544, volume=64, finetune= 0, docptr=$6800, docsiz=%011011, pos=$001CCC
+number=  2, modnumber=  2, type=%0000, streamed=no , length= 1506, volume=64, finetune= 0, docptr=$7000, docsiz=%011011, pos=$0022D4
+number=  3, modnumber=  3, type=%0000, streamed=no , length=  698, volume=20, finetune= 0, docptr=$3c00, docsiz=%010010, pos=$0028B6
+number=  4, modnumber=  4, type=%0001, streamed=no , length=14612, volume=64, finetune= 0, docptr=$0000, docsiz=%110110, pos=$002B70
+number=  5, modnumber=  5, type=%0010, streamed=no , length= 5366, volume=64, finetune= 0, docptr=$8000, docsiz=%101101, pos=$006484
+number=  6, modnumber=  5, type=%0011, streamed=no , length=  416, volume=64, finetune= 0, docptr=$3a00, docsiz=%001001, pos=$00797A
+number=  7, modnumber=  6, type=%0001, streamed=no , length= 9304, volume=64, finetune= 0, docptr=$4000, docsiz=%110110, pos=$007B1A
+
+modnumber - Instrument number in the original module
+type - Bitmap field, see file format in source code archive
+docptr - Pointer to which page in sound ram the instrument is placed (streamed samples have a 0 here).
+docsiz - Bitmap field, see Apple IIGS hardware reference.
+pos - Position in NTP file where the instrument is stored at.
+
+DOC ram usage:
+$0000 1111111111111111
+$1000 1111111111111111
+$2000 1111111111111111
+$3000 1111111111111110
+$4000 1111111111111111
+$5000 1111111111111111
+$6000 1111100011111110
+$7000 1111110000000000
+$8000 1111111111111111
+$9000 1111100000000000
+$a000 0000000000000000
+$b000 0000000000000000
+$c000 0000000000000000
+$d000 0000000000000000
+$e000 0000000000000000
+$f000 0000000000000000
+0=free, 1=instrument, 2=stream buffer, 3=interrupt timer
+
+Oscillator usage:
+Oscillator 00: Track 1
+Oscillator 01: free
+Oscillator 02: Track 2
+Oscillator 03: Track 2
+Oscillator 04: Track 3
+Oscillator 05: Track 3
+Oscillator 06: Track 4
+Oscillator 07: Track 4
+Oscillator 08: free
+Oscillator 09: free
+Oscillator 10: free
+Oscillator 11: free
+Oscillator 12: free
+Oscillator 13: free
+Oscillator 14: free
+Oscillator 15: free
+Oscillator 16: free
+Oscillator 17: free
+Oscillator 18: free
+Oscillator 19: free
+Oscillator 20: free
+Oscillator 21: free
+Oscillator 22: free
+Oscillator 23: free
+Oscillator 24: free
+Oscillator 25: free
+Oscillator 26: free
+Oscillator 27: free
+Oscillator 28: free
+Oscillator 29: free
+Oscillator 30: free
+Oscillator 31: Music timer
+

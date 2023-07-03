@@ -1,0 +1,225 @@
+CLS
+'
+' Charge un fichier ascii des textes (type TEXTESx.ASC), le dÇcode et le sauve
+' sous forme TEXTESx.TEX et TEXTESx.IND, fichiers Ö compacter ensuite avec ATOMI
+  K
+'
+RESERVE 100000
+DO
+  PRINT "Ce programme va convertir les fichiers TEXTE*.ASC prÇsents dans le lect
+    eur"
+  PRINT "virtuel E: afin de donner des fichiers compactacles par Atomik 3.5"
+  PRINT
+  FOR scan%=1 TO 3
+    f$="e:\textes"+STR$(scan%)+".asc"
+    IF EXIST(f$)
+      init
+      repertoire
+      recherche
+      fin
+    ENDIF
+  NEXT scan%
+  SYSTEM
+LOOP
+'
+PROCEDURE init
+  DIM scene$(300)  !REPERTOIRE DES NOMS DES SCENES ET DES IMAGES
+  CLR scene%,pointeur_scene&
+  '
+  f2$=LEFT$(f$,INSTR(f$,".")-1)+".tex"    !ET ON CREE LE FICHIER A COMPACTER
+  f3$=LEFT$(f$,INSTR(f$,".")-1)+".ind"    !ET LE FICHIER INDEX
+  OPEN "I",#1,f$
+  OPEN "O",#2,f2$
+  OPEN "o",#3,f3$
+  '
+RETURN
+PROCEDURE repertoire
+  REPEAT
+    LINE INPUT #1;ligne$                !ON CAPTURE UNE LIGNE DU TEXTE
+    IF LEFT$(ligne$,1)="*"              !INDICATEUR DU DêBUT D'UNE SCENE?
+      INC pointeur_scene&               !UNE SCENE DE PLUS...
+      scene$(pointeur_scene&)=MID$(ligne$,2)    !LE NOM EST APRES LE "*"
+      '
+      PRINT "*";pointeur_scene&'scene$(pointeur_scene&)  !ON L'AFFICHE
+    ENDIF
+    '
+  UNTIL ligne$="*FIN"
+  CLOSE #1
+  '
+  OPEN "I",#1,f$
+  '
+  PRINT #2;CHR$(PEEK(VARPTR(pointeur_scene&)));CHR$(PEEK(VARPTR(pointeur_scene&)
+    +1));
+  '  ON ECRIT AU DEBUT DU FICHIER .TEX LE NOMBRE DE SCENES (SUR 2 OCTETS)
+  DIM ok!(pointeur_scene&)
+  '
+RETURN
+PROCEDURE recherche
+  REPEAT
+    LINE INPUT #1;ligne$                  !ON LIT UNE LIGNE...
+    SELECT LEFT$(ligne$,1)                !ON TESTE LE DEBUT DE LA LIGNE
+      '
+    CASE "*"                              !DEBUT D'UNE AUTRE SCENE
+      IF scene%<>0
+        PRINT #2;CHR$(0);                 !ON ECRIT UN OCTET NUL DE SEPARTION
+      ENDIF
+      scene%=@recherche_scene(UPPER$(MID$(ligne$,2)))!ELLE EXISTE??
+      '
+    CASE "&"                              !C'EST LE NOM D'UNE IMAGE?
+      PRINT #3;"&"+CHR$(scene%)+UPPER$(MID$(ligne$,2))+CHR$(0);
+      '
+    CASE "$"                            !LE NOM D'UNE MUSIQUE??
+      PRINT #3;"$"+CHR$(scene%)+UPPER$(MID$(ligne$,2))+CHR$(0);
+      '
+    CASE "%"                              !INDICATION D'UNE COULEUR DE FOND
+      PRINT #3;"%"+CHR$(scene%)+MID$(ligne$,2)+CHR$(0);
+      '
+    CASE "$"                              !INDICATION D'UNE MUSIQUE
+      PRINT #3;","+MID$(ligne$,2)+CHR$(0);
+      '
+    CASE "#"                              !C'EST UNE LIGNE D'INSTRUCTIONS?
+      decode(MID$(ligne$,2))
+      '
+    DEFAULT
+      '
+      ligne2$=ligne$
+      IF ligne2$=""
+        ligne2$="ú"
+      ELSE
+        IF RIGHT$(ligne2$,1)<>" "
+          ligne2$=ligne2$+"ú"
+        ENDIF
+      ENDIF
+      '
+      PRINT #2;ligne2$;
+      '
+    ENDSELECT
+    '
+    DO UNTIL MOUSEK=0
+    LOOP
+    '
+  UNTIL ligne$="*FIN"
+  PRINT #2;CHR$(0);CHR$(0);CHR$(0);CHR$(0);
+  PRINT #3;CHR$(0);CHR$(0);
+  CLOSE
+  '
+RETURN
+FUNCTION recherche_scene(scene$)
+  LOCAL scene%
+  scene$=TRIM$(UPPER$(scene$))
+  scene_trouvee!=FALSE
+  FOR i%=1 TO pointeur_scene&   !ON CHERCHE LE NOM DE LA SCENE DANS CEUX
+    IF scene$=UPPER$(TRIM$(scene$(i%)))        !DEJA EXISTANT
+      ok!(i%)=TRUE
+      RETURN i%
+    ENDIF
+  NEXT i%
+  '
+  IF i%>=pointeur_scene&
+    PRINT "scene ";scene$;" non trouvÇe"
+    ~INP(2)
+    END
+  ENDIF
+  '
+ENDFUNC
+PROCEDURE decode(ligne$)
+  CLR aiguillage$,mot$,condition$,mode%,phrase$,phrase2$
+  FOR i%=1 TO LEN(ligne$)      !ON SCANNE LA LIGNE D'INSTRUCTION POUR
+    b$=MID$(ligne$,i%,1)       !LA DECODER
+    SELECT b$
+    CASE "+"
+      mode%=1                  !MODE CONDITION
+    CASE "-"
+      mode%=1                  !MODE CONDITION
+    CASE "="
+      mode%=2                  !MODE DIRECTION
+      INC i%                   !(ON PASSE LE SIGNE "=")
+    CASE "!"
+      mode%=3                  !MODE COMMENTAIRE
+      phrase$=phrase$+MID$(ligne$,i%+1)
+      i%=LEN(ligne$)
+    ENDSELECT
+    '
+    b$=MID$(ligne$,i%,1)       !ON RESCANNE LA LIGNE (POINTEUR MODIFIE...)
+    SELECT mode%
+    CASE 0                     !LE MOT A CLIQUER
+      mot$=mot$+b$
+    CASE 1                     !LA CONDITION A SATISFAIRE
+      condition$=condition$+b$
+    CASE 2                     !LA SCENE VERS LAQUELLE ON SE DIRIGE
+      aiguillage$=aiguillage$+b$
+    ENDSELECT
+  NEXT i%
+  '
+  IF condition$=""    !SI AUCUNE CONDITION N'EST PREVUE, ON EN CREE UNE
+    condition$="+dÇbut"   !TOUJOURS SATISFAITE (AVOIR VU LA SCENE 1)
+  ENDIF
+  '                   !ON RECHERCHE A QUELLE SCENE LA CONDITION CORRESPOND
+  condition%=@recherche_scene(MID$(condition$,2))
+  signe$=LEFT$(condition$,1)    !ET ON MEMORISE LE SIGNE + OU -
+  '
+  aiguillage%=@recherche_scene(aiguillage$)
+  '
+  CLR code$            ! ON CODE TOUT CECI...
+  code$="#"+CHR$(scene%)+mot$+" "+signe$+CHR$(ABS(condition%))+CHR$(aiguillage%)
+    +phrase$+CHR$(0)
+  ' PRINT "code=";code$
+  '
+  PRINT #3;code$;                     !ET ON SAUVE LE TOUT
+RETURN
+PROCEDURE fin
+  FOR i%=1 TO pointeur_scene&
+    IF ok!(i%)<>TRUE
+      PRINT "scene non reliÇe"
+      ~INP(2)
+      END
+    ENDIF
+  NEXT i%
+  KILL f$
+  CLOSE
+  ERASE scene$(),ok!()
+  '
+  '
+RETURN
+PROCEDURE attente
+  '  VOID INP(2)
+RETURN
+'
+PROCEDURE verif
+  PRINT
+  PRINT "scene=";scene%
+  PRINT "mot=";mot$;"*"
+  PRINT "condition =";condition$;"(";condition%;")"
+  PRINT "aiguillage =";aiguillage$;"(";aiguillage%;")"
+  PRINT "commentaire =";phrase$;"*"
+  '
+  CLR code$
+  FOR i%=1 TO LEN(code2$)
+    code$=code$+CHR$(ASC(MID$(code2$,i%,1)))
+  NEXT i%
+  scene%=ASC(LEFT$(code$,1))
+  code$=MID$(code$,2)
+  espace%=INSTR(code$," ")
+  mot$=MID$(code$,1,espace%-1)
+  code$=MID$(code$,espace%+1)
+  signe$=LEFT$(code$,1)
+  condition%=ASC(MID$(code$,2,1))
+  condition%=VAL(signe$+STR$(condition%))
+  phrase$=MID$(code$,3)
+  '
+  PRINT
+  PRINT "scene=";scene%
+  PRINT "mot=";mot$;"*"
+  PRINT "condition =";condition%
+  PRINT "aiguillage =";aiguillage%
+  PRINT "commentaire =";phrase$;"*"
+  attente
+  '
+  '
+  '
+  '
+RETURN
+PROCEDURE xx
+  '  PRINT TRACE$
+RETURN
+

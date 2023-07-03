@@ -1,0 +1,91 @@
+Module name: 1ZIKMU.MOD
+Number of tracks: 4
+Number of patterns: 20
+Number of pattern positions: 24
+
+Module instrument oscillator requirements:
+Instrument   1: 1 oscillator
+Instrument   2: 1 oscillator
+Instrument   3: 1 oscillator
+Instrument   4: 2 oscillators
+Instrument   5: 1 oscillator
+Instrument   6: 1 oscillator
+Instrument   7: 1 oscillator
+Instrument   8: 1 oscillator
+Instrument   9: 2 oscillators
+Instrument  10: 1 oscillator
+Instrument  11: 1 oscillator
+
+NTP Instruments:
+number=  1, modnumber=  1, type=%0000, streamed=no , length= 3594, volume=64, finetune= 0, docptr=$6000, docsiz=%100100, pos=$005168
+number=  2, modnumber=  2, type=%0000, streamed=no , length=  698, volume=39, finetune= 0, docptr=$cc00, docsiz=%010010, pos=$005F72
+number=  3, modnumber=  3, type=%0000, streamed=no , length=23754, volume=64, finetune= 0, docptr=$0000, docsiz=%111111, pos=$00622C
+number=  4, modnumber=  4, type=%0001, streamed=no , length= 9508, volume=28, finetune= 0, docptr=$8000, docsiz=%110110, pos=$00BEF6
+number=  5, modnumber=  5, type=%0000, streamed=no , length= 1570, volume=26, finetune= 0, docptr=$d000, docsiz=%011011, pos=$00E41A
+number=  6, modnumber=  6, type=%0000, streamed=no , length= 1528, volume=64, finetune= 0, docptr=$d800, docsiz=%011011, pos=$00EA3C
+number=  7, modnumber=  7, type=%0000, streamed=no , length= 1828, volume=64, finetune= 0, docptr=$a800, docsiz=%011011, pos=$00F034
+number=  8, modnumber=  8, type=%0000, streamed=no , length= 3652, volume=32, finetune= 0, docptr=$7000, docsiz=%100100, pos=$00F758
+number=  9, modnumber=  9, type=%0010, streamed=no , length= 2208, volume=21, finetune= 0, docptr=$c000, docsiz=%100100, pos=$01059C
+number= 10, modnumber=  9, type=%0011, streamed=no , length= 3146, volume=21, finetune= 0, docptr=$b000, docsiz=%100100, pos=$010E3C
+number= 11, modnumber= 10, type=%0000, streamed=no , length= 1414, volume=64, finetune= 0, docptr=$e000, docsiz=%011011, pos=$011A86
+number= 12, modnumber= 11, type=%0000, streamed=no , length= 1060, volume=64, finetune= 0, docptr=$e800, docsiz=%011011, pos=$01200C
+
+modnumber - Instrument number in the original module
+type - Bitmap field, see file format in source code archive
+docptr - Pointer to which page in sound ram the instrument is placed (streamed samples have a 0 here).
+docsiz - Bitmap field, see Apple IIGS hardware reference.
+pos - Position in NTP file where the instrument is stored at.
+
+DOC ram usage:
+$0000 1111111111111111
+$1000 1111111111111111
+$2000 1111111111111111
+$3000 1111111111111111
+$4000 1111111111111111
+$5000 1111111111111000
+$6000 1111111111111110
+$7000 1111111111111110
+$8000 1111111111111111
+$9000 1111111111111111
+$a000 1111110011111111
+$b000 1111111111111000
+$c000 1111111110001110
+$d000 1111111011111100
+$e000 1111110011111000
+$f000 0000000000000000
+0=free, 1=instrument, 2=stream buffer, 3=interrupt timer
+
+Oscillator usage:
+Oscillator 00: Track 1
+Oscillator 01: Track 4
+Oscillator 02: Track 2
+Oscillator 03: Track 2
+Oscillator 04: Track 3
+Oscillator 05: Track 3
+Oscillator 06: free
+Oscillator 07: free
+Oscillator 08: free
+Oscillator 09: free
+Oscillator 10: free
+Oscillator 11: free
+Oscillator 12: free
+Oscillator 13: free
+Oscillator 14: free
+Oscillator 15: free
+Oscillator 16: free
+Oscillator 17: free
+Oscillator 18: free
+Oscillator 19: free
+Oscillator 20: free
+Oscillator 21: free
+Oscillator 22: free
+Oscillator 23: free
+Oscillator 24: free
+Oscillator 25: free
+Oscillator 26: free
+Oscillator 27: free
+Oscillator 28: free
+Oscillator 29: free
+Oscillator 30: free
+Oscillator 31: Music timer
+

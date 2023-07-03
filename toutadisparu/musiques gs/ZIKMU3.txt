@@ -1,0 +1,80 @@
+Module name: 3ZIKMU.MOD
+Number of tracks: 4
+Number of patterns: 8
+Number of pattern positions: 14
+
+Module instrument oscillator requirements:
+Instrument   1: 1 oscillator
+Instrument   2: 1 oscillator
+Instrument   3: 1 oscillator
+Instrument   4: 1 oscillator
+Instrument   5: 1 oscillator
+Instrument   6: 1 oscillator
+
+NTP Instruments:
+number=  1, modnumber=  1, type=%0000, streamed=no , length= 3152, volume=64, finetune= 0, docptr=$5000, docsiz=%100100, pos=$0020F6
+number=  2, modnumber=  2, type=%0000, streamed=no , length= 1724, volume=64, finetune= 0, docptr=$3800, docsiz=%011011, pos=$002D46
+number=  3, modnumber=  3, type=%0000, streamed=no , length= 1506, volume=43, finetune= 0, docptr=$6800, docsiz=%011011, pos=$003402
+number=  4, modnumber=  4, type=%0000, streamed=no , length= 3584, volume=64, finetune= 0, docptr=$4000, docsiz=%100100, pos=$0039E4
+number=  5, modnumber=  5, type=%0000, streamed=no , length= 1610, volume=64, finetune= 0, docptr=$6000, docsiz=%011011, pos=$0047E4
+number=  6, modnumber=  6, type=%0000, streamed=no , length=12880, volume=64, finetune= 0, docptr=$0000, docsiz=%110110, pos=$004E2E
+
+modnumber - Instrument number in the original module
+type - Bitmap field, see file format in source code archive
+docptr - Pointer to which page in sound ram the instrument is placed (streamed samples have a 0 here).
+docsiz - Bitmap field, see Apple IIGS hardware reference.
+pos - Position in NTP file where the instrument is stored at.
+
+DOC ram usage:
+$0000 1111111111111111
+$1000 1111111111111111
+$2000 1111111111111111
+$3000 1110000011111110
+$4000 1111111111111100
+$5000 1111111111111000
+$6000 1111111011111100
+$7000 0000000000000000
+$8000 0000000000000000
+$9000 0000000000000000
+$a000 0000000000000000
+$b000 0000000000000000
+$c000 0000000000000000
+$d000 0000000000000000
+$e000 0000000000000000
+$f000 0000000000000000
+0=free, 1=instrument, 2=stream buffer, 3=interrupt timer
+
+Oscillator usage:
+Oscillator 00: Track 1
+Oscillator 01: Track 2
+Oscillator 02: Track 3
+Oscillator 03: Track 4
+Oscillator 04: free
+Oscillator 05: free
+Oscillator 06: free
+Oscillator 07: free
+Oscillator 08: free
+Oscillator 09: free
+Oscillator 10: free
+Oscillator 11: free
+Oscillator 12: free
+Oscillator 13: free
+Oscillator 14: free
+Oscillator 15: free
+Oscillator 16: free
+Oscillator 17: free
+Oscillator 18: free
+Oscillator 19: free
+Oscillator 20: free
+Oscillator 21: free
+Oscillator 22: free
+Oscillator 23: free
+Oscillator 24: free
+Oscillator 25: free
+Oscillator 26: free
+Oscillator 27: free
+Oscillator 28: free
+Oscillator 29: free
+Oscillator 30: free
+Oscillator 31: Music timer
+

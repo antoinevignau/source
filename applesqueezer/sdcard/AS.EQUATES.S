@@ -73,12 +73,13 @@ diskSwitchedBit  =     $0001
 diskInDriveBit   =     $0010
 diskModifyBit    =     $0100
 
-devHDD	     =     $0013		; device ID for HDD (generic)
+devRAMDISK	=	$000e	; device ID for RAM/ROM disks
+devHDD	=	$0013	; device ID for HDD (generic)
 
-dchar            =     $08
-dblockcount      =     $0a
-ddeviceid        =     $34
-ddevnumber       =     $3e
+dchar	=	$08
+dblockcount	=	$0a
+ddeviceid	=	$34
+ddevnumber	=	$3e
 
 *-----------------------------------
 * GS/OS DIRECT PAGE

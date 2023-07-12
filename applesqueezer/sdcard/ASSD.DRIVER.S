@@ -43,7 +43,8 @@ maxBLOCKP	=	65536	; 65536 blocks for ProDOS 8
 * E 1110 block device + write allowed + read allowed
 * C 1100 format allowed + removable media
 
-dftCHAR	=	$03EC	; default characteristics
+*dftCHAR	=	$03EC	; default characteristics
+dftCHAR	=	$8BEC	; default characteristics - LOGO
 dftSLOT	=	$8000	; not slot dependent
 dftUNIT	=	$0001	; unit 1
 dftVERSION	=	$1000	; v1
@@ -520,7 +521,7 @@ formatOptionsTable
 
 * 16 bytes
 	dw	1	; formatOptionNum
-	dw	0	; linkRefNum
+	dw	2	; linkRefNum
 	dw	%0000_1101	; flags 1101 - GB size - Apple format
 	adrl	maxBLOCKS	; blockCount is the max for HFS
 	dw	blockSIZE	; blockSize is 512 bytes
@@ -560,7 +561,8 @@ MyDevName	ds	32	; +0E device name
 	dw	dftSLOT	; +2E slot number
 	dw	dftUNIT	; +30 unit number
 	dw	dftVERSION	; +32 version
-	dw	devHDD	; +34 device ID
+*	dw	devHDD	; +34 device ID
+	dw	devRAMDISK	; +34 device ID - LOGO
 	dw	$0000	; +36 first linked device
 	dw	$0000	; +38 next linked device
 	adrl	$00000000	; +3A extended DIB ptr

@@ -47,12 +47,12 @@
 	jsr	cprint
 	eom
 
-@print	mac
-	lda	#]1
-	ldx	#]2
-	ldy	#]3
-	jsr	print
-	eom
+*@print	mac
+*	lda	#]1
+*	ldx	#]2
+*	ldy	#]3
+*	jsr	print
+*	eom
 
 @val	mac
 	PushWord ]2
@@ -126,6 +126,9 @@ mode_640	=	$80
 
 screen_320	=	320
 screen_640	=	640
+
+ptr012000	=	$012000
+ptrE12000	=	$e12000
 
 *---
 
@@ -207,15 +210,13 @@ okMEM1
 	stx	ptrFOND+2	; l'image de fond
 	rep	#$10
 
-*--- 64K pour les images compressees + l'image de la police
+*--- 64K pour les images compressees
 
 	jsr	make64KB
 	bcs	koMEM
 
 	sty	ptrUNPACK
 	stx	ptrUNPACK+2
-	stx	ptrFONT+2
-	stx	ptrToSourceLocInfo+4	; +2 is already set to $8000
 	
 *--- 64K pour les INDEX des textes
 
@@ -266,7 +267,8 @@ okTOOL	_HideMenuBar
 * INITIALISATIONS
 *----------------------------------------
 
-	jsr	loadFONT	; charge l'image de la police
+*	jsr	loadFONT	; charge l'image de la police
+	jsr	load_font	; charge courier.10
 	jsr	initNTP
 	jsr	randomNTP	; select a sequence 0-7
 	
@@ -1050,8 +1052,6 @@ ptrMENU	adrl	$8000	; $8000: the menu picture
 ptrFOND	adrl	$8000	; $0000: copy/paste du desktop, $8000: the fond picture
 
 ptrUNPACK	ds	4	; $0000: where the background picture is laoded
-ptrFONT	ds	4	; $8000: the font picture
-
 ptrINDEX	ds	4	; les index des textes
 ptrTEXTES	ds	4	; les textes
 
@@ -1065,6 +1065,8 @@ saveLANGUAGE	ds	2
 
 verSTR1	str	'System 6.0.1 Required!'
 verSTR2	str	'Press a key to quit'
+fntSTR1	str	'Courier.10 font missing'
+fntSTR2	str	'Please install it!'
 tolSTR1	str	'Error while loading tools'
 memSTR1	str	'Cannot allocate memory'
 filSTR1	str	'Cannot load file'
@@ -1196,8 +1198,7 @@ loadERR	jsr	loadFILE2
 
 *--- GS/OS data
 
-proERR
-	ds	2
+proERR	ds	2
 
 *--- For the game party
 

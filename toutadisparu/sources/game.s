@@ -17,32 +17,30 @@ NB_INDEX	=	512	; nombre de fiches du jeu
 NB_TEXTES	=	512	; nombre de textes du jeu
 
 *-----------------------
-* loadFONT
+* load_font
 *-----------------------
 
-loadFONT
-	lda	#pFONT
-	ldx	ptrUNPACK+2
-	ldy	ptrUNPACK
-	jsr	loadFILE
+load_font
+	jsr	font_it
 	bcc	lf_ok
 
 	pha
-	PushLong #filSTR1
-	PushLong #errSTR2
-	PushLong #errSTR1
+	PushLong #fntSTR1
+	PushLong #fntSTR2
+	PushLong #errSTR3
 	PushLong #errSTR2
 	_TLTextMountVolume
 	pla
-	brl   meQUIT
 
-lf_ok	tya
-	jsr	unpackLZ4
+lf_ok	rts
 
-	PushLong	ptrIMAGE
-	PushLong	ptrFONT
-	PushLong	#32768
-	_BlockMove
+*--- Really load the font
+
+font_it
+	PushWord #$0A00	; Taille 10
+	PushWord #$0016	; Courier
+	PushWord #0
+	_InstallFont
 	rts
 	
 *-----------------------
@@ -343,7 +341,7 @@ it1	lda	ptrTEXTES
 	xba
 	sta	nbTEXTES2	; pour comparer avec notre valeur
 
-	lda	dpFROM	; * += 2
+	lda	dpFROM	; += 2
 	clc
 	adc	#2
 	sta	dpFROM
@@ -426,8 +424,8 @@ get_textes2
 * main
 
 main
-	jsr	switch_320
 	jsr	choix_aventure
+	jsr	help
 	jsr	initialisation_relative
 	jmp	fadeOUT
 
@@ -439,12 +437,6 @@ aventure	ds	2
 nombre_scenes ds	2
 scene_actuelle ds	2
 max_musiques ds	2
-max_colonnes ds	2
-max_lignes	ds	2
-largeur_caractere ds	2
-hauteur_caractere ds	2
-marge_gauche ds	2
-marge_gauche_pixel ds	2
 max_mots	ds	2
 taille_image ds	2	; not used
 i	ds	2
@@ -496,16 +488,23 @@ generique
 	_SetForeColor
 	PushWord	#0
 	_SetBackColor
+
+*	PushLong	#gen_str0
+*	PushWord	#8
+*	PushWord	#8
+*	PushWord	#0
+*	jsr	print
 	
 	@cprint	#gen_str1;8
 	@cprint	#gen_str2;9
 	@cprint	#gen_str3;10
 	@cprint	#gen_str4;12
 
-	@cprint	#gen_str6;14	; Apple IIgs
-	@cprint	#gen_str7;15	; version by nous :-)
+	@cprint	#gen_str7;14	; Apple IIgs
+	@cprint	#gen_str8;15	; version by nous :-)
 	
 	@cprint	#gen_str5;17
+	@cprint	#gen_str6;18
 
 	jsr	waitEVENT
 	
@@ -516,13 +515,14 @@ generique
 
 *-----------
 
-gen_str1	str	'un logiciel de Fran'8d'ois Coulon'
-gen_str2	str	'&'
-gen_str3	str	'Sylvie Sarrat, Faustino Ribeiro, Laurent Cotton'
-gen_str4	str	'programmation: Pascal Piat  noiz'27': Erik Ecqier'
-gen_str5	str	'Les logiciels d'27'en face 1992. Reproduction, location et revente interdites'
-gen_str6	str	'Version Apple IIgs par Brutal Deluxe Software'
-gen_str7	str	'Antoine Vignau & Olivier Zardini'
+gen_str1	asc	'Un logiciel de Fran'8d'ois Coulon'00
+gen_str2	asc	'&'00
+gen_str3	asc	'Sylvie Sarrat, Faustino Ribeiro, Laurent Cotton'00
+gen_str4	asc	'Programmation : Pascal Piat - Noiz'27': Erik Ecqier'00
+gen_str5	asc	'Les logiciels d'27'en face 1992'00
+gen_str6	asc	'Reproduction, location et revente interdites'00
+gen_str7	asc	'Version Apple IIgs par Brutal Deluxe Software'00
+gen_str8	asc	'Antoine Vignau & Olivier Zardini'00
 
 *-----------------------
 * TAG - OK 
@@ -645,7 +645,8 @@ ca_ok	tya
 	_GetBackPat
 
 	lda	#2
-	jmp	nowWAIT
+	jsr	nowWAIT
+	jmp	fadeOUT
 	
 *----------- Wait for a click
 
@@ -717,18 +718,18 @@ initialisation_absolue
 initialisation_constantes
 	lda	#3
 	sta	max_musiques
-	lda	#75
-	sta	max_colonnes
-	lda	#18
-	sta	max_lignes
-	lda	#8
-	sta	largeur_caractere
-	lda	#11
-	sta	hauteur_caractere
-	lda	#3
-	sta	marge_gauche
-	lda	#3*8	; marge_gauche * largeur_caractere
-	sta	marge_gauche_pixel
+*	lda	#75
+*	sta	max_colonnes
+*	lda	#18
+*	sta	max_lignes
+*	lda	#8
+*	sta	largeur_caractere
+*	lda	#11
+*	sta	hauteur_caractere
+*	lda	#3
+*	sta	marge_gauche
+*	lda	#3*8	; marge_gauche * largeur_caractere
+*	sta	marge_gauche_pixel
 	
 	lda	#NB_MOTS
 	sta	max_mots
@@ -906,96 +907,110 @@ surligner_mot
 * PRINT
 *-----------------------
 * print(texte$,colonne&,ligne&,mode)
-* A= ptr to string
-* X= column index
-* Y= line index
+* 1,s	w	return address
+* 3,s	w	mode
+* 5,s	w	Y
+* 7,s	w	X
+* 9,s	l	text pointer
 
-print
-	pea	^print
-	pha	; ptr to string
+max_colonnes =	80
+max_lignes	=	20
+largeur_caractere = 	8
+hauteur_caractere =	10
 
-	phx	; push X for _MoveTo
+*---
+
+print	lda	11,s
+	sta	dpFROM+2
+	lda	9,s
+	sta	dpFROM
+	lda	7,s
+	sta	printX
+	lda	5,s
+	sta	printY
+	lda	3,s
+	sta	printMODE
 	
-	pha	; space for result
-	pha
-	phy	; push ligne
-	PushWord	hauteur_caractere	; 11
-	_Multiply
-	pla	; get low result
-	plx	; skip high result
-	pha	; or lda 1,s sta 3,s pla
-	_MoveTo
-	_DrawString
+printLOOP	lda	[dpFROM]
+	and	#$ff
+	bne	print1
+
+printEXIT	lda	1,s
+	plx
+	plx
+	plx
+	plx
+	plx
+	sta	1,s
 	rts
 
-*-----------------------
-* NEWPRINT
-*-----------------------
+* 1- Get address of character in ptrFONT
 
-	PushLong #paintParamPtr
-	_PaintPixels
+print1	pha
 
-	lda	#8
-	sta	largeur_caractere
-	lda	#11
-	sta	hauteur_caractere
-
-*--- Next X,Y on screen
-
-	lda	ptrToDestPoint+2	; next X
-	clc
-	adc	largeur_caractere
-	sta	ptrToDestPoint+2
-	cmp	#screen_640
-	bcc	ok_nextchar
-
-	stz	ptrToDestPoint+2	; new line
-	lda	ptrToDestPoint
-	clc
-	adc	hauteur_caractere
-	sta	ptrToDestPoint
-	cmp	#200
-	bcc	ok_nextchar
-	stz	ptrToDestPoint
-
-ok_nextchar	rts
+	lda	printX
+	asl
+	tax
+	lda	x_coord,x
+	pha
 	
-paintParamPtr
-	adrl	ptrToSourceLocInfo
-	adrl	ptrToDestLocInfo
-	adrl	ptrToSourceRect
-	adrl	ptrToDestPoint
-	ds	2	; mode
-	ds	4	; maskHandle
+	lda	printY
+	asl
+	tay
+	lda	y_coord,y
+	pha
+	_MoveTo
+	_DrawChar
 
-ptrToSourceLocInfo		; this is where FONT is
-	dw	mode_640
-	adrl	$8000
-	dw	160
-	dw	0
-	dw	0
-	dw	640
-	dw	200
+* 4- next character
+
+	inc	dpFROM
+	bne	print2
+	inc	dpFROM+2
+
+* 5- next X/Y in SHR
+
+print2	inc	printX
+	lda	printX
+	cmp	#max_colonnes
+	bcc	print3
+
+	lda	7,s	; reset X-coord
+	sta	printX
+
+	inc	printY
+	lda	printY
+	cmp	#max_lignes
+	bcc	print3
 	
-ptrToDestLocInfo		; this is where to draw
-	dw	mode_640
-	adrl	$e12000
-	dw	160
-	dw	0
-	dw	0
-	dw	640
-	dw	200
-	
-ptrToSourceRect		; this is the rect of the source char
-	ds	2	; y0
-	ds	2	; x0
-	ds	2	; y1
-	ds	2	; x1
-	
-ptrToDestPoint		; and where to print on screen
-	ds	2	; y0
-	ds	2	; x0
-	
+	brl	printEXIT	; out of SHR screen, we exit
+
+* 6- we loop
+
+print3	brl	printLOOP
+
+*---
+
+printMODE	ds	2
+printX	ds	2
+printY	ds	2
+
+*---
+
+x_coord	=	*
+]x	=	0	; Première ligne
+	lup	max_colonnes
+	dw	]x
+]x	=	]x+largeur_caractere
+	--^
+
+y_coord	=	*
+]y	=	0	; Première ligne
+	lup	max_lignes
+	dw	]y
+]y	=	]y+hauteur_caractere
+	--^
+
 *-----------------------
 * CPRINT - OK
 *-----------------------
@@ -1003,71 +1018,48 @@ ptrToDestPoint		; and where to print on screen
 * A= ptr to string
 * Y= line index
 
-cprint
+cprint	pea	^cprint	; ptr to text
 	pha
-	phy
-	
-	pea	$0000	; space for result
-	pea	^cprint	; pointer to string
-	pha
-	_StringWidth
+	pha	; X
+	phy	; Y
+	pea	$0000	; mode
 
-	lda	mainWIDTH	; 320 - 
+*	pea	$0000	; space for result
+*	pea	^cprint	; pointer to string
+*	pha
+*	_CStringWidth
+
+	pea	$0000	; count nb of chars in the string
+	sta	dpFROM
+	
+	ldy	#0
+	sep	#$20
+]lp	lda	(dpFROM),y
+	beq	cprint1
+	iny
+	bne	]lp
+
+cprint1	rep	#$20	; nb chars x 8 to get width
+	tya
+	asl
+	asl
+	asl
+	sta	1,s
+
+*--- now, calculate where we should display it online
+	
+	lda	mainWIDTH	; 320 or 640
 	sec
 	sbc	1,s	; stringWidth in pixels
+	plx		; free stack
 	lsr		; /2
-	sta	1,s
-	plx		; =W X
-	ply
-	pla
-	jmp	print
-
-*-----------------------
-* LES DONNES DE LA POLICE
-*-----------------------
-* on a 2 lignes de 67 caractères, 1 de 52
-* les lignes sont à Y=10, 20, 30
-
-tblFONT_X	=	*
-
-]ligne10	=	0
-]index	=	0
-	lup	67
-	dfb	]ligne10+]index
-]index	=	]index+2
-	--^
-
-]ligne20	=	0
-]index	=	0
-	lup	67
-	dfb	]ligne20+]index
-]index	=	]index+2
-	--^
-
-]ligne30	=	0
-]index	=	0
-	lup	52
-	dfb	]ligne30+]index
-]index	=	]index+2
-	--^
-
-tblFONT_Y	=	*
-
-]ligne10	=	10
-	lup	67
-	dfb	]ligne10
-	--^
-
-]ligne20	=	20
-	lup	67
-	dfb	]ligne20
-	--^
-
-]ligne30	=	30
-	lup	52
-	dfb	]ligne30
-	--^
-
+	lsr		; /4
+	lsr		; /8
+	lsr		; /16
+	sta	5,s	; fill X from above
+	jsr	print
+	rts		; must be RTS
+	
 *-----------------------
 * ATTENTE - OK
 *-----------------------
@@ -1245,9 +1237,79 @@ palette
 *-----------------------
 * help
 
-help
-	rts
+help	jsr	switch_640
+
+	ldx	ptrFOND+2
+	ldy	ptrFOND
+	jsr	fadeIN
+
+	PushLong	#old_pattern
+	_GetPenPat
+
+	PushLong	#white_pattern	; black pattern
+	_SetPenPat
+
+	PushLong	#white_pattern	; black pattern
+	_SetBackPat
+
+	PushWord	#0
+	_GetForeColor
+	PushWord	#0
+	_GetBackColor
+
+	PushWord	#0
+	_SetForeColor
+	PushWord	#15
+	_SetBackColor
+
+	PushLong #helpRECT
+	PushWord #3
+	PushWord #3
+	_PaintRRect
+	PushLong #helpRECT
+	PushWord #3
+	PushWord #3
+	_FrameRRect
 	
+	lda	aventure
+	cmp	#2
+	beq	help2
+	cmp	#3
+	beq	help3
+
+	@cprint	#help_str11;3
+	@cprint	#help_str12;5
+	bra	help9
+help2	@cprint	#help_str21;3
+	@cprint	#help_str22;5
+	bra	help9
+help3	@cprint	#help_str31;3
+	@cprint	#help_str32;5
+
+help9	jsr	waitEVENT
+	
+	PushLong	#old_pattern
+	_GetPenPat
+
+	_SetBackColor
+	_SetForeColor
+
+	jmp	fadeOUT
+
+*---
+
+helpRECT	dw	5,125,195,515
+
+white_pattern
+	ds	32,$ff
+	
+help_str11	asc	'1. 'd2' Heurts d'27'ouverture 'd300
+help_str12	asc	'- Fran'8d'ois Coulon et Sylvie Sarrat -'00
+help_str21	asc	'2. 'd2' Cheek to cheek & ashes to ashes 'd300
+help_str22	asc	'- Fran'8d'ois Coulon et Faustino Ribeiro -'00
+help_str31	asc	'3. 'd2' Un appel '88' la m'8e'moire 'd300
+help_str32	asc	'- Fran'8d'ois Coulon et Laurent Cotton -'00
+
 *-----------------------
 * MOTS_CLICABLES
 *-----------------------
@@ -1556,4 +1618,3 @@ nbTEXTES2	ds	2	; nombre de textes indiqué dans le fichier .TEX
 
 tblINDEX	ds	4*NB_INDEX
 tblTEXTES	ds	4*NB_TEXTES
-

@@ -489,12 +489,6 @@ generique
 	PushWord	#0
 	_SetBackColor
 
-*	PushLong	#gen_str0
-*	PushWord	#8
-*	PushWord	#8
-*	PushWord	#0
-*	jsr	print
-	
 	@cprint	#gen_str1;8
 	@cprint	#gen_str2;9
 	@cprint	#gen_str3;10
@@ -904,7 +898,7 @@ surligner_mot
 	rts
 	
 *-----------------------
-* PRINT
+* PRINT - OK
 *-----------------------
 * print(texte$,colonne&,ligne&,mode)
 * 1,s	w	return address
@@ -1243,72 +1237,82 @@ help	jsr	switch_640
 	ldy	ptrFOND
 	jsr	fadeIN
 
-	PushLong	#old_pattern
+	PushLong	#old_pattern	; save current pattern
 	_GetPenPat
 
-	PushLong	#white_pattern	; black pattern
+* The frame
+
+	PushLong	#black_pattern	; black pattern
 	_SetPenPat
 
-	PushLong	#white_pattern	; black pattern
-	_SetBackPat
-
-	PushWord	#0
-	_GetForeColor
-	PushWord	#0
-	_GetBackColor
-
-	PushWord	#0
-	_SetForeColor
-	PushWord	#15
-	_SetBackColor
-
-	PushLong #helpRECT
-	PushWord #3
-	PushWord #3
-	_PaintRRect
-	PushLong #helpRECT
-	PushWord #3
-	PushWord #3
+	PushLong #helpRECT1
+	PushWord #10
+	PushWord #10
 	_FrameRRect
 	
+* The rectangle
+
+	PushLong	#white_pattern	; white pattern
+	_SetPenPat
+
+	PushLong #helpRECT2
+	PushWord #10
+	PushWord #10
+	_PaintRRect
+
 	lda	aventure
 	cmp	#2
 	beq	help2
 	cmp	#3
 	beq	help3
 
-	@cprint	#help_str11;3
-	@cprint	#help_str12;5
-	bra	help9
-help2	@cprint	#help_str21;3
-	@cprint	#help_str22;5
-	bra	help9
-help3	@cprint	#help_str31;3
-	@cprint	#help_str32;5
+	@cprint	#help_str1_1;3
+	@cprint	#help_str1_2;5
+	bra	help4
+help2	@cprint	#help_str2_1;3
+	@cprint	#help_str2_2;5
+	bra	help4
+help3	@cprint	#help_str3_1;3
+	@cprint	#help_str3_2;5
 
+help4
+	@cprint	#help_str8;8
+	@cprint	#help_str9;9
+	@cprint	#help_str11;11
+	@cprint	#help_str13;13
+	@cprint	#help_str14;14
+	@cprint	#help_str16;16
+	
 help9	jsr	waitEVENT
+
+*--- Restore all
 	
 	PushLong	#old_pattern
-	_GetPenPat
-
-	_SetBackColor
-	_SetForeColor
+	_SetPenPat
 
 	jmp	fadeOUT
 
 *---
 
-helpRECT	dw	5,125,195,515
+helpRECT1	dw	5,125,195,515
+helpRECT2	dw	7,127,193,512
 
 white_pattern
 	ds	32,$ff
 	
-help_str11	asc	'1. 'd2' Heurts d'27'ouverture 'd300
-help_str12	asc	'- Fran'8d'ois Coulon et Sylvie Sarrat -'00
-help_str21	asc	'2. 'd2' Cheek to cheek & ashes to ashes 'd300
-help_str22	asc	'- Fran'8d'ois Coulon et Faustino Ribeiro -'00
-help_str31	asc	'3. 'd2' Un appel '88' la m'8e'moire 'd300
-help_str32	asc	'- Fran'8d'ois Coulon et Laurent Cotton -'00
+help_str1_1	asc	'1. 'd2' Heurts d'27'ouverture 'd300
+help_str1_2	asc	'- Fran'8d'ois Coulon et Sylvie Sarrat -'00
+help_str2_1	asc	'2. 'd2' Cheek to cheek & ashes to ashes 'd300
+help_str2_2	asc	'- Fran'8d'ois Coulon et Faustino Ribeiro -'00
+help_str3_1	asc	'3. 'd2' Un appel '88' la m'8e'moire 'd300
+help_str3_2	asc	'- Fran'8d'ois Coulon et Laurent Cotton -'00
+
+help_str8	asc	'OA-S : sauver la situation'00
+help_str9	asc	'OA-O : recharger une situation'00
+help_str11	asc	'OA-Z : musique on/off'00
+help_str13	asc	'OA-R : retour au d'8e'but de l'27'aventure'00
+help_str14	asc	'ESC: retour au menu'00
+help_str16	asc	'Toute autre touche : retour '88' l'27'aventure'00
 
 *-----------------------
 * MOTS_CLICABLES

@@ -5,15 +5,15 @@
 
 * Expansion linker file
 
-         DSK   ToolTable
-         TYP   $BC
+	DSK   ToolTable
+	TYP   $BC
 
 * Assemble files
 
-	 XPL
+	XPL
 	 
-         ASM   TOOLTABLE.S
-         KND   $0000
-         SNA   ToolTable
+	ASM   TOOLTABLE.S
+	KND   $0000
+	SNA   ToolTable
 
 

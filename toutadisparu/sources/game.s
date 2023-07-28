@@ -1311,7 +1311,7 @@ help_str8	asc	'OA-S : sauver la situation'00
 help_str9	asc	'OA-O : recharger une situation'00
 help_str11	asc	'OA-Z : musique on/off'00
 help_str13	asc	'OA-R : retour au d'8e'but de l'27'aventure'00
-help_str14	asc	'ESC: retour au menu'00
+help_str14	asc	'ESC : retour au menu'00
 help_str16	asc	'Toute autre touche : retour '88' l'27'aventure'00
 
 *-----------------------

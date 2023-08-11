@@ -8,12 +8,11 @@
 	mx	%00
 
 *-----------------------
-* constantes
+* CONSTANTES
 *-----------------------
 
 NB_INDICATEURS =	10
 NB_MOTS	=	25	; on ne peut pas avoir plus de 25 mots par ecran
-NB_INDEX	=	512	; nombre de fiches du jeu
 NB_TEXTES	=	512	; nombre de textes du jeu
 
 *-----------------------
@@ -177,88 +176,14 @@ li_err2
 	brl	meQUIT1
 
 *-----------------------
-* init_index
+* next_index
 *-----------------------
 
-init_index
-	stz	nbINDEX	; 0 texts on entry
-
-	lda	proEOF	; is file empty?
-	ora	proEOF+2
-	bne	ii1
-	rts
-
-ii1	lda	ptrINDEX
-	sta	dpFROM
-	clc
-	adc	proEOF
-	sta	dpTO
-	lda	ptrINDEX+2
-	sta	dpFROM+2
-	adc	proEOF+2
-	sta	dpTO+2
-
-	ldy	#1	; tell to store string
-ii2	cpy	#1	; save string pointer?
-	bne	ii3	; nope
-
-	lda	nbINDEX	; yes, save the address of the string
-	asl
-	asl
-	tax
-	lda	dpFROM
-	sta	tblINDEX,x
-	lda	dpFROM+2
-	sta	tblINDEX+2,x
-	dey		; string is saved
-
-	inc	nbINDEX	; increment the number of strings
-	lda	nbINDEX	; into our limit
-	cmp	#NB_INDEX
-	bcc	ii3
-	rts
-
-ii3	lda	[dpFROM]	; is it the end of a string?
+next_index	inc	dpINDEX
+	bne	ni_1
+	inc	dpINDEX+2
+ni_1	lda	[dpINDEX]
 	and	#$ff
-	bne	ii4	; nope
-	iny		; yes, tell to store string
-	
-ii4	inc	dpFROM
-	bne	ii5
-	inc	dpFROM+2
-	
-ii5	lda	dpFROM+2	; did we reach the end of the file?
-	cmp	dpTO+2
-	bcc	ii2
-	lda	dpFROM
-	cmp	dpTO
-	bcc	ii2
-	rts		; we are done!
-
-*-----------------------
-* get_index(index%)
-*-----------------------
-
-get_index
-	cmp	#0
-	bne	get_index1
-	rts
-
-get_index1
-	cmp	nbINDEX
-	bcc	get_index2
-	beq	get_index2
-	rts
-
-get_index2
-	dec
-	asl
-	asl
-	tax
-	lda	tblINDEX,x
-	sta	dpINDEX
-	lda	tblINDEX+2,x
-	sta	dpINDEX+2
 	rts
 
 *-----------------------
@@ -392,19 +317,15 @@ it5	lda	dpFROM+2	; did we reach the end of the file?
 * get_textes(textes%)
 *-----------------------
 
-get_textes
-	cmp	#0
-	bne	get_textes1
-	rts
-
-get_textes1
+get_textes	cmp	#0
+	beq	get_textes1
 	cmp	nbTEXTES
 	bcc	get_textes2
 	beq	get_textes2
+get_textes1	sec
 	rts
 
-get_textes2
-	dec
+get_textes2	dec
 	asl
 	asl
 	tax
@@ -412,63 +333,12 @@ get_textes2
 	sta	dpTEXTES
 	lda	tblTEXTES+2,x
 	sta	dpTEXTES+2
+	clc
 	rts
 
 *-----------------------
 * LE JEU
 *-----------------------
-
-*-----------------------
-* MAIN - OK
-*-----------------------
-* main
-
-main
-	jsr	choix_aventure
-	jsr	help
-	jsr	initialisation_relative
-	jmp	fadeOUT
-
-*-----------
-
-DEBUT_DATA	=	*	; C'est vachement pratique pour tout effacer !
-
-aventure	ds	2
-nombre_scenes ds	2
-scene_actuelle ds	2
-max_musiques ds	2
-max_mots	ds	2
-taille_image ds	2	; not used
-i	ds	2
-j	ds	2
-scene	ds	2
-deplacement	ds	2
-fichier	ds	2
-espace	ds	2
-phrase	ds	2
-longueur	ds	2
-index	ds	2
-pointeur	ds	2
-fonction_mots ds	2
-aiguillage	ds	2
-conditions	ds	2
-pointeur_mots ds	2
-numero_mot	ds	2	; WORD
-mot	ds	128	; le mot à chercher (jusqu'au caractère espace)
-option_mot	ds	128	; le mot est enregistré s'il est dans la liste (c'est bien long quand même)
-scene_visitee	ds	NB_TEXTES	; BYTE - par scene, on met true ou false
-image_a_charger	ds	NB_TEXTES*2	; WORD - par scene, on y met le pointeur vers le nom de l'image
-image_chargee ds	2	; WORD - TRUE or FALSE
-escape	ds	2	; WORD - TRUE or FALSE
-
-rouge1	ds	NB_TEXTES	; les composants RVB pour le fond
-vert1	ds	NB_TEXTES
-bleu1	ds	NB_TEXTES
-rouge2	ds	NB_TEXTES
-vert2	ds	NB_TEXTES
-bleu2	ds	NB_TEXTES
-
-FIN_DATA	=	*	; Ben, ouais !
 
 *-----------------------
 * GENERIQUE - OK
@@ -710,26 +580,6 @@ initialisation_absolue
 * initialisation_constantes
 
 initialisation_constantes
-	lda	#3
-	sta	max_musiques
-*	lda	#75
-*	sta	max_colonnes
-*	lda	#18
-*	sta	max_lignes
-*	lda	#8
-*	sta	largeur_caractere
-*	lda	#11
-*	sta	hauteur_caractere
-*	lda	#3
-*	sta	marge_gauche
-*	lda	#3*8	; marge_gauche * largeur_caractere
-*	sta	marge_gauche_pixel
-	
-	lda	#NB_MOTS
-	sta	max_mots
-	
-	lda	#32000
-	sta	taille_image
 	rts
 	
 *-----------------------
@@ -821,10 +671,151 @@ initialisation_textes
 * INITIALISATION_TABLEAUX - OK
 *-----------------------
 
+instrDIESE	=	$23
+instrECOMM	=	$26
+instrPERCE	=	$25
+
+*---
+
 initialisation_tableaux
 	jsr	load_index	; exit if error
-	jmp	init_index
+
+	lda	ptrINDEX	; début du fichier IND
+	sta	dpINDEX
+	lda	ptrINDEX+2
+	sta	dpINDEX+2
+
+*--- Initialise les valeurs RVB
+
+	ldx	#1	; RVB par défaut
+	sep	#$20
+]lp	lda	#4
+	sta	rouge1-1,x
+	lda	#1
+	sta	rouge2-1,x
+	lda	#7
+	sta	vert1-1,x
+	sta	vert2-1,x
+	stz	bleu1-1,x
+	stz	bleu2-1,x
+	inx
+	cpx	#NB_TEXTES
+	bcc	]lp
+	beq	]lp
+	rep	#$20
+
+*--- Initialise le tableau des pointeurs d'image
+
+	ldy	#1
+]lp	tya
+	asl
+	tax
+	stz	image_a_charger-2,x
+	iny
+	cpy	#NB_TEXTES
+	bcc	]lp
+	beq	]lp
+	rep	#$20
+
+*--- Decode chaque ligne
+
+itab_loop	lda	[dpINDEX]	; read a byte
+	and	#$ff
+	bne	itab_1
+	rts		; we reached 0, we exit
+
+itab_1	cmp	#instrECOMM
+	bne	itab_2
+
+	jsr	doECOMM	; handle & - "image à charger"
+	bra	itab_4
 	
+itab_2	cmp	#instrPERCE
+	bne	itab_3
+
+	jsr	doPERCE	; handle % - "couleur de fond du texte"
+	bra	itab_4
+	
+itab_3	cmp	#instrDIESE
+	bne	itab_4
+
+	jsr	doDIESE	; handle # - "mot clicable"
+
+*--- Next index
+
+itab_4	jsr	next_index	; move to the first char of the next line
+	bra	itab_loop	; loop
+
+*--- Handle % - les valeurs RVB
+
+doPERCE	jsr	next_index
+	dec
+	tax		; la scene
+
+	jsr	next_index
+	sep	#$20
+	sec
+	sbc	#'0'
+	sta	rouge1,x
+	rep	#$20
+
+	jsr	next_index
+	sep	#$20
+	sec
+	sbc	#'0'
+	sta	vert1,x
+	rep	#$20
+
+	jsr	next_index
+	sep	#$20
+	sec
+	sbc	#'0'
+	sta	bleu1,x
+	rep	#$20
+
+	jsr	next_index
+	sep	#$20
+	sec
+	sbc	#'0'
+	sta	rouge2,x
+	rep	#$20
+
+	jsr	next_index
+	sep	#$20
+	sec
+	sbc	#'0'
+	sta	vert2,x
+	rep	#$20
+
+	jsr	next_index
+	sep	#$20
+	sec
+	sbc	#'0'
+	sta	bleu2,x
+	rep	#$20
+	
+	jmp	next_index	; skip the final 0
+
+*--- Handle & - une image à charger
+
+doECOMM	jsr	next_index
+	dec
+	asl		; tableau de words
+	tax		; index du nom de l'image
+
+	jsr	next_index	; pointe sur le nom du fichier
+	lda	dpINDEX	; sauve son adresse dans le tableau
+	sta	image_a_charger,x
+
+	jmp	next_index	; skip the final 0
+
+*--- Handle # - les mots cliquables
+
+doDIESE	jsr	next_index
+	dec
+	tax		; la scene
+
+
 *-----------------------
 * INITIALISATION_CACHE - OK
 *-----------------------
@@ -841,7 +832,19 @@ initialisation_cache
 debut_aventure
 	lda	#1
 	sta	scene_actuelle
+
+	ldx	#1
+	sep	#$20
+	lda	#FALSE
+]lp	sta	scene_visitee-1,x
+	inx
+	cpx	#NB_TEXTES
+	bcc	]lp
+	beq	]lp
+	rep	#$20
 	
+	lda	#TRUE
+	sta	deplacement
 	rts
 	
 *-----------------------
@@ -854,7 +857,6 @@ fin_aventure
 	
 	ldx	#DEBUT_DATA	; on efface tout
 ]lp	stz	|$0000,x
-	inx
 	inx
 	cpx	#FIN_DATA
 	bcc	]lp
@@ -874,10 +876,11 @@ fin
 *-----------------------
 * NOUVELLE_SCENE - OK
 *-----------------------
-* nouvelle_scene(scene)
+* nouvelle_scene(scene à charger)
 
 nouvelle_scene
-	ldx	scene
+*	ldx	scene
+	tax
 	lda	#TRUE
 	sep	#$20
 	sta	scene_visitee,x
@@ -1063,10 +1066,9 @@ cprint1	rep	#$20	; nb chars x 8 to get width
 *-----------------------
 * IMAGE - OK
 *-----------------------
-* image(scene)
+* image(scene à charger)
 
 image
-	lda	scene
 	asl
 	tax
 	lda	image_a_charger,x
@@ -1231,7 +1233,10 @@ palette
 *-----------------------
 * help
 
-help	jsr	switch_640
+help	lda	mainWIDTH	; save current width
+	sta	oldWIDTH
+	jsr	saveBACK	; save background
+	jsr	switch_640	; switch to 640
 
 	ldx	ptrFOND+2
 	ldy	ptrFOND
@@ -1279,6 +1284,7 @@ help4
 	@cprint	#help_str8;8
 	@cprint	#help_str9;9
 	@cprint	#help_str11;11
+	@cprint	#help_str12;12
 	@cprint	#help_str13;13
 	@cprint	#help_str14;14
 	@cprint	#help_str16;16
@@ -1290,7 +1296,11 @@ help9	jsr	waitEVENT
 	PushLong	#old_pattern
 	_SetPenPat
 
-	jmp	fadeOUT
+	jsr	fadeOUT	; fade
+	jsr	loadBACK	; restore background
+	lda	oldWIDTH	; restore width
+	sta	mainWIDTH
+	rts		; and exit
 
 *---
 
@@ -1310,9 +1320,10 @@ help_str3_2	asc	'- Fran'8d'ois Coulon et Laurent Cotton -'00
 help_str8	asc	'OA-S : sauver la situation'00
 help_str9	asc	'OA-O : recharger une situation'00
 help_str11	asc	'OA-Z : musique on/off'00
-help_str13	asc	'OA-R : retour au d'8e'but de l'27'aventure'00
-help_str14	asc	'ESC : retour au menu'00
-help_str16	asc	'Toute autre touche : retour '88' l'27'aventure'00
+help_str12	asc	'OA-R : retour au d'8e'but de l'27'aventure'00
+help_str13	asc	'ESC : retour au menu'00
+help_str14	asc	'Toute autre touche : retour '88' l'27'aventure'00
+help_str16	asc	'OA-Q : quitter le jeu'00
 
 *-----------------------
 * MOTS_CLICABLES
@@ -1595,30 +1606,3 @@ strcmp2
 	cmp	#TRUE	; met les valeurs de comparaison
 	rts
 
-*-----------------------
-* data
-*-----------------------
-
-theDATA	=	*
-
-*-----------------------
-* Variables 
-*-----------------------
-
-*--- Variables du jeu
-
-debutVARIABLES	=	*
-
-C1	ds	1
-P	ds	1
-	
-finVARIABLES	=	*
-
-*--- Variables Apple IIgs
-
-nbINDEX	ds	2
-nbTEXTES	ds	2
-nbTEXTES2	ds	2	; nombre de textes indiqué dans le fichier .TEX
-
-tblINDEX	ds	4*NB_INDEX
-tblTEXTES	ds	4*NB_TEXTES

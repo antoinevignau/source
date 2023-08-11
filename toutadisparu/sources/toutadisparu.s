@@ -277,8 +277,24 @@ okTOOL	_HideMenuBar
 
 	jsr	initialisation_absolue
 	jsr	generique
-	jsr	main
 
+*-----------------------
+* MAIN - OK
+*-----------------------
+* main
+
+main
+	jsr	choix_aventure
+	jsr	initialisation_relative
+	jsr	fadeOUT
+
+mainLOOP
+	lda	scene_actuelle
+	jsr	nouvelle_scene
+	lda	scene_actuelle
+	jsr	image
+*	jsr	affiche_texte
+	
 *----------------------------------------
 * TASK MASTER
 *----------------------------------------
@@ -345,12 +361,14 @@ tblKEYVALUE
 	asc	'QqOoSs'
 	asc	'Rr'
 	asc	'Zz'
+	asc	'?'
 	hex	ff
 	
 tblKEYADDRESS
 	da	doQUIT,doQUIT,doLOAD,doLOAD,doSAVE,doSAVE
 	da	doRESTART,doRESTART
 	da	doMUSIK,doMUSIK
+	da	help
 
 *----------------------------------- Gestion des contrôles (ça veut dire boutons ou lineedit)
 
@@ -412,6 +430,7 @@ switch_res
 *-----------
 
 mainWIDTH	ds	2
+oldWIDTH	ds	2
 mainPORT	ds	4
 
 *----------------------------------- Open
@@ -1297,6 +1316,7 @@ pGAME	strl	'0/               '
 *----------------------------------------
 
 	put	game.s
+	put	data.s
 	put	ecr.s
 	put	ntp.s
 	

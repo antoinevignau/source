@@ -28,16 +28,12 @@ PROCEDURE main
         fadein_mid
         REPEAT
           mot$=@clic_mot$(ecran$)         !ON ATTEND QU'ON CLIQUE QUELQUE PART
-          IF suite_forcee!=FALSE          !SI ON NE SORT PAS PAR UN "LOAD" OU UN
-             "ESC"
-            scene_actuelle|=@aiguillage(scene_actuelle|,mot$) !ON FAIT CLIGNOTER
-               LE MOT (S'IL CORRESPOND A QUELQUE CHOSE)
+          IF suite_forcee!=FALSE          !SI ON NE SORT PAS PAR UN "LOAD" OU UN "ESC"
+            scene_actuelle|=@aiguillage(scene_actuelle|,mot$) !ON FAIT CLIGNOTER LE MOT (S'IL CORRESPOND A QUELQUE CHOSE)
           ENDIF
-        UNTIL deplacement!=TRUE           !ON BOUCLE JUSQU'A CE QU'ON CHANGE DE 
-          SCENE
+        UNTIL deplacement!=TRUE           !ON BOUCLE JUSQU'A CE QU'ON CHANGE DE SCENE
       ENDIF
-    UNTIL escape!=TRUE                    !ON CHANGE D'AVENTURE SI ON TAPE "ESCA
-      PE"
+    UNTIL escape!=TRUE                    !ON CHANGE D'AVENTURE SI ON TAPE "ESCAPE"
     fin_aventure
   LOOP
 RETURN
@@ -48,8 +44,7 @@ PROCEDURE generique
   cprint("&",9,3)
   cprint("Sylvie Sarrat, Faustino Ribeiro, Laurent Cotton",10,3)
   cprint("programmation: Pascal Piat  noiz': Erik Ecqier",12,3)
-  cprint("Les logiciels d'en face 1992. Reproduction, location et revente interd
-    ites",18,3)
+  cprint("Les logiciels d'en face 1992. Reproduction, location et revente interdites",18,3)
   '
   IF stf!                 !SI C'EST UN STF
     f=FRE()
@@ -294,15 +289,12 @@ PROCEDURE initialisation_tableaux
   LOCAL i%,j%,scene|,fichier$,espace%,phrase$,longueur%,index%,pointeur%
   DIM fonction_mot$(nombre_scenes|,max_mots|)!MOTS QUI VONT "REAGIR"
   DIM aiguillage|(nombre_scenes|,max_mots|)  !SCENE CORRESPONDANT AU MOT...
-  DIM condition&(nombre_scenes|,max_mots|)   !SCENE DEVANT AVOIR ETE VUE (OU NON
-     SI NEGATIF)
+  DIM condition&(nombre_scenes|,max_mots|)   !SCENE DEVANT AVOIR ETE VUE (OU NON SI NEGATIF)
   DIM pointeur_mots|(nombre_scenes|)    !NOMBRE DE MOTS POUR CHAQUE SCENE
   DIM scene_visitee!(nombre_scenes|)    !LE JOUEUR EST-IL PASSE PAR CETTE SCENE?
   DIM phrase$(nombre_scenes|,max_mots|) !PHRASE EXPLICATIVE A CHAQUE MOT CLIQUE
-  DIM image_a_charger$(nombre_scenes|)   !NOM DES FICHIERS IMAGE A CHARGER A CHA
-    QUE SCENE
-  DIM rouge1|(nombre_scenes|),vert1|(nombre_scenes|),bleu1|(nombre_scenes|) !COM
-    POSANTE DE LA COULEUR DU FOND DU TEXTE
+  DIM image_a_charger$(nombre_scenes|)   !NOM DES FICHIERS IMAGE A CHARGER A CHAQUE SCENE
+  DIM rouge1|(nombre_scenes|),vert1|(nombre_scenes|),bleu1|(nombre_scenes|) !COMPOSANTE DE LA COULEUR DU FOND DU TEXTE
   DIM rouge2|(nombre_scenes|),vert2|(nombre_scenes|),bleu2|(nombre_scenes|)
   '
   ARRAYFILL rouge1|(),4          !ON REMPLIT PAR DEFAUT LES COMPOSANTES
@@ -349,8 +341,7 @@ PROCEDURE initialisation_tableaux
       INC pointeur_mots|(scene|)        !ET UN MOT EN PLUS!
       espace%=INSTR(ligne$," ",2)       !ON REPERE LE CARACTERE ESPACE
       fonction_mot$(scene|,pointeur_mots|(scene|))=MID$(ligne$,2,espace%-2)
-      condition&(scene|,pointeur_mots|(scene|))=ASC(MID$(ligne$,espace%+2,1))*VA
-        L(MID$(ligne$,espace%+1,1)+"1")
+      condition&(scene|,pointeur_mots|(scene|))=ASC(MID$(ligne$,espace%+2,1))*VAL(MID$(ligne$,espace%+1,1)+"1")
       aiguillage|(scene|,pointeur_mots|(scene|))=ASC(MID$(ligne$,espace%+3))
       CLR phrase$
       phrase$=phrase$+MID$(ligne$,espace%+4)

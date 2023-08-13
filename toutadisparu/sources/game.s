@@ -686,6 +686,8 @@ initialisation_tableaux
 	lda	ptrINDEX+2
 	sta	dpINDEX+2
 
+	bra	onsaute
+	
 *--- Initialise les valeurs du jeu
 
 	ldx	#SUITE_DATA	; on efface tout
@@ -695,6 +697,8 @@ initialisation_tableaux
 	bcc	]lp
 
 *--- Initialise les valeurs RVB
+
+onsaute
 
 	ldx	#1	; RVB par dŽfaut
 	sep	#$20
@@ -803,7 +807,9 @@ doECOMM	jsr	next_index
 	lda	dpINDEX	; sauve son adresse dans le tableau
 	sta	image_a_charger,x
 
-	jmp	next_index	; skip the final 0
+]lp	jsr	next_index	; move to the end of the string (final zero)
+	bne	]lp
+	rts
 
 *--- Handle # - les mots cliquables
 
@@ -887,8 +893,6 @@ doDIESE	jsr	next_index
 	lda	[dpINDEX]	; prend le mot sur 8-bit
 	sta	aiguillage,x
 	rep	#$20
-	
-	jsr	next_index
 
 *--- Recopie la phrase si elle existe
 
@@ -906,13 +910,12 @@ doDIESE1	lda	localOFFSET	; 0/25/50 => 0/50/100
 	tax
 	pla
 	
-	lda	[dpINDEX]	; prend le mot sur 16-bit
+	lda	dpINDEX	; prend le mot sur 16-bit
 	sta	phrase,x
 
-*--- Maintenant, on parcout la cha”ne jusqu'ˆ l'espace
+*--- Maintenant, on parcout la cha”ne jusqu'ˆ la fin de la chaine
 
 ]lp	jsr	next_index
-	cmp	#instrSPACE
 	bne	]lp
 	rts
 

@@ -153,13 +153,6 @@ FALSE	=	0
 	tdc
 	sta	myDP
 	
-*---
-
-	lda	#main
-	stal	$310
-	lda	#^main
-	stal	$312
-
 *--- Version du systeme
 
 	jsl	GSOS
@@ -274,7 +267,7 @@ okTOOL	_HideMenuBar
 	
 	jsr	set_language
 	jsr	doSOUNDON	; NTP on
-
+	
 	jsr	initialisation_absolue
 	jsr	generique
 
@@ -287,6 +280,8 @@ main
 	jsr	choix_aventure
 	jsr	initialisation_relative
 	jsr	fadeOUT
+
+* LOGO
 
 	lda	#SUITE_DATA
 	stal	$300
@@ -302,8 +297,6 @@ main
 	stal	$310
 	lda	ptrTEXTES+2
 	stal	$312
-	
-	brk	$bd
 	
 mainLOOP
 	lda	scene_actuelle

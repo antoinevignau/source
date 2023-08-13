@@ -809,7 +809,6 @@ doECOMM	jsr	next_index
 
 doDIESE	jsr	next_index
 	dec
-	sta	localSCENE
 	tax		; la scene
 	
 	sep	#$20	; un mot en plus
@@ -847,7 +846,7 @@ doDIESE	jsr	next_index
 
 	jsr	next_index
 
-*--- Maintenant, on parcout le tableau jusqu'à l'espace
+*--- Maintenant, on parcout la chaîne jusqu'à l'espace
 
 ]lp	jsr	next_index
 	cmp	#instrSPACE
@@ -880,6 +879,25 @@ doDIESE	jsr	next_index
 
 	lda	localOFFSET	; 0/25/50 => 0/50/100
 	asl
+	clc
+	adc	localPOINT	; +=
+	tax
+	
+	sep	#$20
+	lda	[dpINDEX]	; prend le mot sur 8-bit
+	sta	aiguillage,x
+	rep	#$20
+	
+	jsr	next_index
+
+*--- Recopie la phrase si elle existe
+
+	jsr	next_index
+	bne	doDIESE1	; on a une chaîne
+	rts
+
+doDIESE1	lda	localOFFSET	; 0/25/50 => 0/50/100
+	asl
 	pha
 	lda	localPOINT	; 0/1/2 => 0/2/4
 	asl
@@ -889,14 +907,17 @@ doDIESE	jsr	next_index
 	pla
 	
 	lda	[dpINDEX]	; prend le mot sur 16-bit
-	sta	condition,x
+	sta	phrase,x
 
-	jsr	next_index
+*--- Maintenant, on parcout la chaîne jusqu'à l'espace
 
+]lp	jsr	next_index
+	cmp	#instrSPACE
+	bne	]lp
+	rts
 
 *--- Local data
 
-localSCENE	ds	2	; index de la scene
 localOFFSET	ds	2	; offset de chaque rangée
 localPOINT	ds	2	; index du mot
 

@@ -13,7 +13,7 @@
 
 NB_INDICATEURS =	10
 NB_MOTS	=	25	; on ne peut pas avoir plus de 25 mots par ecran
-NB_TEXTES	=	512	; nombre de textes du jeu
+NB_TEXTES	=	160	; nombre de textes du jeu
 
 *-----------------------
 * load_font
@@ -671,6 +671,7 @@ initialisation_textes
 * INITIALISATION_TABLEAUX - OK
 *-----------------------
 
+instrSPACE	=	$20
 instrDIESE	=	$23
 instrECOMM	=	$26
 instrPERCE	=	$25
@@ -684,6 +685,14 @@ initialisation_tableaux
 	sta	dpINDEX
 	lda	ptrINDEX+2
 	sta	dpINDEX+2
+
+*--- Initialise les valeurs du jeu
+
+	ldx	#SUITE_DATA	; on efface tout
+]lp	stz	|$0000,x
+	inx
+	cpx	#FIN_DATA
+	bcc	]lp
 
 *--- Initialise les valeurs RVB
 
@@ -700,19 +709,6 @@ initialisation_tableaux
 	stz	bleu2-1,x
 	inx
 	cpx	#NB_TEXTES
-	bcc	]lp
-	beq	]lp
-	rep	#$20
-
-*--- Initialise le tableau des pointeurs d'image
-
-	ldy	#1
-]lp	tya
-	asl
-	tax
-	stz	image_a_charger-2,x
-	iny
-	cpy	#NB_TEXTES
 	bcc	]lp
 	beq	]lp
 	rep	#$20
@@ -813,8 +809,96 @@ doECOMM	jsr	next_index
 
 doDIESE	jsr	next_index
 	dec
+	sta	localSCENE
 	tax		; la scene
+	
+	sep	#$20	; un mot en plus
+	inc	pointeur_mots,x
+	lda	pointeur_mots,x
+	dec
+	sta	localPOINT
+	rep	#$20
 
+	pha		; calcul l'index dans la dimension NB_MOTS
+	pha
+	phx		; index de scène
+	PushWord #NB_MOTS	; taille d'une dimension
+	_Multiply
+	pla
+	sta	localOFFSET	; 0=>0, 1=>25, 2=>50
+	pla
+
+*-- fonction_mot$(scene|,pointeur_mots|(scene|))=MID$(ligne$,2,espace%-2)
+
+	jsr	next_index
+
+	lda	localOFFSET	; 0/25/50 => 0/50/100
+	asl
+	pha
+	lda	localPOINT	; 0/1/2 => 0/2/4
+	asl
+	clc
+	adc	1,s	; +=
+	tax
+	pla
+	
+	lda	dpINDEX	; sauve l'offset du mot
+	sta	fonction_mots,x
+
+	jsr	next_index
+
+*--- Maintenant, on parcout le tableau jusqu'à l'espace
+
+]lp	jsr	next_index
+	cmp	#instrSPACE
+	bne	]lp
+
+*--- condition&(scene|,pointeur_mots|(scene|)) = 
+*--- ASC(MID$(ligne$,espace%+2,1))*VAL(MID$(ligne$,espace%+1,1)+"1")
+*--- Ici, on ne fait pas le calcul de la version Atari pour le moment
+
+	jsr	next_index
+
+	lda	localOFFSET	; 0/25/50 => 0/50/100
+	asl
+	pha
+	lda	localPOINT	; 0/1/2 => 0/2/4
+	asl
+	clc
+	adc	1,s	; +=
+	tax
+	pla
+	
+	lda	[dpINDEX]	; prend le mot sur 16-bit
+	sta	condition,x
+
+	jsr	next_index
+
+*--- aiguillage|(scene|,pointeur_mots|(scene|))=ASC(MID$(ligne$,espace%+3))
+
+	jsr	next_index
+
+	lda	localOFFSET	; 0/25/50 => 0/50/100
+	asl
+	pha
+	lda	localPOINT	; 0/1/2 => 0/2/4
+	asl
+	clc
+	adc	1,s	; +=
+	tax
+	pla
+	
+	lda	[dpINDEX]	; prend le mot sur 16-bit
+	sta	condition,x
+
+	jsr	next_index
+
+
+*--- Local data
+
+localSCENE	ds	2	; index de la scene
+localOFFSET	ds	2	; offset de chaque rangée
+localPOINT	ds	2	; index du mot
 
 *-----------------------
 * INITIALISATION_CACHE - OK
@@ -1144,8 +1228,7 @@ affiche_image
 	beq	ai_1
 	rts
 
-ai_1
-	jsr	switch_320
+ai_1	jsr	switch_320
 	jsr	noircit_ecran
 	ldx	ptrIMAGE+2
 	ldy	ptrIMAGE

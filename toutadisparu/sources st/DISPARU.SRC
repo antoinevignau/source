@@ -338,6 +338,12 @@ PROCEDURE initialisation_tableaux
     CASE "#"                            !UN MOT CLICABLE?
       scene|=ASC(LEFT$(ligne$,1))       !ON  LIT LE NUMERO DE LA SCENE
       '
+      
+      0         1         2         3         4
+      01234567890123456789012345678901234567890
+      #1suite +1G0
+      #2plage +13Fred retourne sur la plage0
+
       INC pointeur_mots|(scene|)        !ET UN MOT EN PLUS!
       espace%=INSTR(ligne$," ",2)       !ON REPERE LE CARACTERE ESPACE
       fonction_mot$(scene|,pointeur_mots|(scene|))=MID$(ligne$,2,espace%-2)

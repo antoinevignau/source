@@ -288,6 +288,23 @@ main
 	jsr	initialisation_relative
 	jsr	fadeOUT
 
+	lda	#SUITE_DATA
+	stal	$300
+	lda	#^SUITE_DATA
+	stal	$302
+
+	lda	ptrINDEX
+	stal	$308
+	lda	ptrINDEX+2
+	stal	$30a
+	
+	lda	ptrTEXTES
+	stal	$310
+	lda	ptrTEXTES+2
+	stal	$312
+	
+	brk	$bd
+	
 mainLOOP
 	lda	scene_actuelle
 	jsr	nouvelle_scene

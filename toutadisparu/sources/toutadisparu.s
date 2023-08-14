@@ -5,14 +5,7 @@
 * (c) 2022, Antoine Vignau & Olivier Zardini
 *
 
-	lst   off
-	rel
-	typ   $B3
-	dsk   ToutADisparu.l
-
 	mx    %00
-	xc
-	xc
 
 *----------------------------------- Macros
 
@@ -1183,13 +1176,11 @@ loadPATH1
 * GS/OS
 *----------------------------------------
 
-loadFILE
-	sta	proOPEN+4  ; filename
+loadFILE	sta	proOPEN+4  ; filename
 	sty	proREAD+4  ; RAM pointer low
 	stx	proREAD+6  ; RAM pointer high
 
-loadFILE1
-	stz	proERR
+loadFILE1	stz	proERR
 
 	jsl	GSOS
 	dw	$2010
@@ -1210,16 +1201,17 @@ loadFILE1
 	adrl	proREAD
 	bcs	loadERR
 
-loadFILE2
-	jsl	GSOS
+loadFILE2	jsl	GSOS
 	dw	$2014
 	adrl	proCLOSE
 
 	ldy	proREAD+12 ; length read
 	ldx	proREAD+14
+	clc
 	rts
 
-loadERR	jsr	loadFILE2
+loadERR	sta	proERR
+	jsr	loadFILE2
 	ldy	#0
 	tyx
 	sec

@@ -913,7 +913,7 @@ doDIESE1	lda	localOFFSET	; 0/25/50 => 0/50/100
 	lda	dpINDEX	; prend le mot sur 16-bit
 	sta	phrase,x
 
-*--- Maintenant, on parcout la cha”ne jusqu'ˆ la fin de la chaine
+*--- Maintenant, on parcout la cha”ne jusqu'ˆ la fin (00)
 
 ]lp	jsr	next_index
 	bne	]lp
@@ -988,6 +988,9 @@ fin
 
 nouvelle_scene
 *	ldx	scene
+	cmp	#0	; not 0
+	beq	ns_99
+	dec
 	tax
 	lda	#TRUE
 	sep	#$20
@@ -998,7 +1001,7 @@ nouvelle_scene
 	sta	deplacement
 	
 	stz	option_mot
-	rts
+ns_99	rts
 	
 *-----------------------
 * SURLIGNER_MOT
@@ -1176,11 +1179,13 @@ cprint1	rep	#$20	; nb chars x 8 to get width
 *-----------------------
 * image(scene ˆ charger)
 
-image
+image	cmp	#0	; not 0
+	beq	image_ko
+	dec
 	asl
 	tax
 	lda	image_a_charger,x
-	beq	image_1
+	bne	image_1
 	
 image_ko	lda	#FALSE
 	sta	image_chargee
@@ -1215,7 +1220,7 @@ image_1	sta	Debut
 
 	tya
 	clc
-	adc	#5	; strl (2) + '7/' (2) + la correction sur la longueur de cha”ne
+	adc	#3	; strl (2) + '7/' (2) + la correction sur la longueur de cha”ne
 	sta	pIMAGE
 	rep	#$20
 	

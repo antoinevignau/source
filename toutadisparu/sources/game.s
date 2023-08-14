@@ -890,7 +890,7 @@ doDIESE	jsr	next_index
 	tax
 	
 	sep	#$20
-	lda	[dpINDEX]	; prend le mot sur 8-bit
+	lda	[dpINDEX]	; prend le caractère 8-bit
 	sta	aiguillage,x
 	rep	#$20
 
@@ -987,7 +987,6 @@ fin
 * nouvelle_scene(scene à charger)
 
 nouvelle_scene
-*	ldx	scene
 	cmp	#0	; not 0
 	beq	ns_99
 	dec
@@ -1172,7 +1171,8 @@ cprint1	rep	#$20	; nb chars x 8 to get width
 * ATTENTE - OK
 *-----------------------
 * attente
-	jmp	waitEVENT	; LoGo - check if we support keypresses as well
+
+attente	jmp	waitEVENT	; LoGo - check if we support keypresses as well
 	
 *-----------------------
 * IMAGE - OK
@@ -1265,7 +1265,65 @@ ai_1	jsr	switch_320
 	jsr	waitEVENT
 	jsr	fadeOUT	; noircit_ecran
 	jmp	switch_640
+
+*-----------------------
+* SUITE_FORCEE - 
+*-----------------------
+* suite_forcee(scene)
+
+suite_forcee
+	cmp	#0
+	bne	sf_2
 	
+sf_1	lda	#FALSE
+	rts
+
+sf_2	dec		; prend la scene
+	pha		; calcul l'index dans la dimension NB_MOTS
+	pha
+	pha		; index de scène
+	PushWord #NB_MOTS	; taille d'une dimension
+	_Multiply
+	pla
+	sta	localOFFSET	; 0=>0, 1=>25, 2=>50
+	asl		; parce qu'on est sur des words
+	clc
+	adc	#fonction_mots
+	sta	dpFROM	; on pointe sur l'index du premier mot
+	pla
+
+	lda	(dpFROM)	; prend la valeur du premier mot
+	sta	dpINDEX	; de fonction_mots
+	lda	ptrINDEX
+	sta	dpINDEX+2	; et met son pointeur 32-bits
+
+	ldy	#6-2	; len('suite ') sur 16-bits
+]lp	lda	[dpINDEX],y
+	cmp	strSUITE,y
+	bne	sf_1
+	dey
+	dey
+	bpl	]lp
+
+	jsr	attente	; on attend
+
+	lda	#aiguillage
+	clc
+	adc	localOFFSET
+	sta	dpFROM
+	
+	lda	(dpFROM)	; la prochaine scène
+	and	#$ff
+	sta	scene_actuelle
+	
+	lda	#TRUE
+	sta	deplacement
+	rts
+sf_99	lda	#FALSE
+	rts
+
+strSUITE	asc	'suite '
+
 *-----------------------
 * CHARGE_IMAGE - OK
 *-----------------------
@@ -1341,7 +1399,7 @@ palette
 	rts
 	
 *-----------------------
-* HELP
+* HELP - OK
 *-----------------------
 * help
 

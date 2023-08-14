@@ -30,12 +30,12 @@ P	ds	1
 aventure	ds	2
 nombre_scenes ds	2
 scene_actuelle ds	2
-i	ds	2
-j	ds	2
-scene	ds	2
+*i	ds	2
+*j	ds	2
+*scene	ds	2
 deplacement	ds	2
-fichier	ds	2
-espace	ds	2
+*fichier	ds	2
+*espace	ds	2
 longueur	ds	2
 index	ds	2
 pointeur	ds	2
@@ -43,12 +43,13 @@ numero_mot	ds	2	; WORD
 mot	ds	128	; le mot à chercher (jusqu'au caractère espace)
 option_mot	ds	128	; le mot est enregistré s'il est dans la liste
 image_chargee ds	2	; WORD - TRUE or FALSE
-escape	ds	2	; WORD - TRUE or FALSE
+escape	ds	2	; BOOL - TRUE or FALSE
+fgSUITEFORCEE ds	2	; BOOL - TRUE or FALSE
 
 * Toujours en décalé : index 1 démarre à 0 (NB_TEXTES est toujours > au nombre de scènes)
 
 	asc	"SUITE_DATA"
-SUITE_DATA	=	*	; C'est vachement pratique pour tout effacer !
+SUITE_DATA	=	*	; C'est vachement pratique pour tout effacer (encore) !
 
 	asc	"FONCTION_MOTS"
 fonction_mots ds	NB_TEXTES*NB_MOTS*2	; PNTR - mots qui vont "réagir"

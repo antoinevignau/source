@@ -419,8 +419,7 @@ FUNCTION affiche_texte$(texte$)
   LOCAL longueur_texte%,i%,j%,ligne_max$,b$,return$,return%,longueur%
   '
   i%=1
-  WHILE LEFT$(texte$,1)="œ"     !ON SUPPRIME D'EVENTUELS SIGNES "œ" (RETOUR CHAR
-    IOT)
+  WHILE LEFT$(texte$,1)="œ"     !ON SUPPRIME D'EVENTUELS SIGNES "œ" (RETOUR CHARIOT)
     texte$=MID$(texte$,2)       !AU DEBUT DU TEXTE
   WEND
   '

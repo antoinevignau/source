@@ -30,21 +30,20 @@ P	ds	1
 aventure	ds	2
 nombre_scenes ds	2
 scene_actuelle ds	2
-*i	ds	2
-*j	ds	2
-*scene	ds	2
-deplacement	ds	2
-*fichier	ds	2
-*espace	ds	2
-longueur	ds	2
-index	ds	2
-pointeur	ds	2
+scene_nouvelle ds	2
+deplacement	ds	2	; BOOL - TRUE (new scene) or FALSE (same scene)
 numero_mot	ds	2	; WORD
 mot	ds	128	; le mot ˆ chercher (jusqu'au caractre espace)
 option_mot	ds	128	; le mot est enregistr s'il est dans la liste
 image_chargee ds	2	; WORD - TRUE or FALSE
 escape	ds	2	; BOOL - TRUE or FALSE
 fgSUITEFORCEE ds	2	; BOOL - TRUE or FALSE
+
+* Le texte ˆ afficher
+
+texte	ds	max_colonnes*max_lignes	; the text from the .TXT file
+texte_final	ds	max_colonnes*max_lignes	; the final text - known as b$ in Atari ST
+	ds	2
 
 * Toujours en dcal : index 1 dmarre ˆ 0 (NB_TEXTES est toujours > au nombre de scnes)
 

@@ -345,8 +345,7 @@ get_textes2	dec
 *-----------------------
 * generique
 
-generique
-	jsr	switch_640
+generique	jsr	switch_640
 	jsr	tag
 	
 	PushWord	#0
@@ -931,7 +930,51 @@ localPOINT	ds	2	; index du mot
 
 initialisation_cache
 	rts
-	
+
+*-----------------------
+* AFFICHE_TEXTE
+*-----------------------
+* affiche_texte
+
+texteSPACE	=	$5f
+texteRC	=	$9c
+
+affiche_texte
+
+* 1- saute les premiers RC
+
+	ldy	#0
+	tyx
+	sep	#$20
+]lp	lda	[dpTEXTES],y
+	cmp	#texteRC
+	bne	at_1
+	iny
+	bne	]lp
+
+* 2- recopie le texte
+
+at_1	lda	[dpTEXTES],y
+	sta	texte,x
+	iny
+	inx
+	cmp	#0
+	bne	at_1	; jusqu'à la fin du texte de la scène
+
+	inx
+	stx	longueur_texte
+	rep	#$20
+
+* 3- calcul le texte final
+
+
+	rts
+
+*--- Local data
+
+longueur_texte ds	2	; nombre de caracteres du texte d'origine
+return	ds	2	; nombre de RC dans une ligne
+
 *-----------------------
 * DEBUT_AVENTURE - OK
 *-----------------------
@@ -1001,7 +1044,15 @@ nouvelle_scene
 	
 	stz	option_mot
 ns_99	rts
-	
+
+*-----------------------
+* CLIC_MOT
+*-----------------------
+* clic_mot
+
+clic_mot
+	rts
+
 *-----------------------
 * SURLIGNER_MOT
 *-----------------------
@@ -1051,9 +1102,11 @@ printEXIT	lda	1,s
 	sta	1,s
 	rts
 
-* 1- Get address of character in ptrFONT
+* 1- print char
 
-print1	pha
+print1	cmp	#instrSPACE	; skip space char
+	beq	print2
+	pha
 
 	lda	printX
 	asl
@@ -1071,16 +1124,16 @@ print1	pha
 
 * 4- next character
 
-	inc	dpFROM
-	bne	print2
+print2	inc	dpFROM
+	bne	print3
 	inc	dpFROM+2
 
 * 5- next X/Y in SHR
 
-print2	inc	printX
+print3	inc	printX
 	lda	printX
 	cmp	#max_colonnes
-	bcc	print3
+	bcc	print4
 
 	lda	7,s	; reset X-coord
 	sta	printX
@@ -1088,13 +1141,13 @@ print2	inc	printX
 	inc	printY
 	lda	printY
 	cmp	#max_lignes
-	bcc	print3
+	bcc	print4
 	
 	brl	printEXIT	; out of SHR screen, we exit
 
 * 6- we loop
 
-print3	brl	printLOOP
+print4	brl	printLOOP
 
 *---
 

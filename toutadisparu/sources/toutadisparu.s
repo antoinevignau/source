@@ -297,8 +297,11 @@ mainLOOP	lda	scene_actuelle
 	jsr	nouvelle_scene
 	lda	scene_actuelle
 	jsr	image
-*	jsr	affiche_texte
-	
+	lda	scene_actuelle
+	jsr	get_textes		; prend le texte de l'écran
+	jsr	affiche_texte	; affiche-le
+
+	lda	scene_actuelle
 	jsr	suite_forcee
 	sta	fgSUITEFORCEE	; true if no words but 'suite'
 
@@ -306,8 +309,7 @@ mainLOOP	lda	scene_actuelle
 * TASK MASTER
 *----------------------------------------
 
-taskLOOP
-	PushWord #0
+taskLOOP	PushWord #0
 	PushWord #0
 	PushWord #$c000
 	PushWord #0
@@ -328,15 +330,15 @@ taskLOOP
 	tax
 	jsr	(taskTBL,x)
 
-*--- Handle clicks
-
-	bra	taskLOOP
+	lda	deplacement	; si on doit bouger, on fait un...
+	cmp	#TRUE
+	beq	mainLOOP	; ...grand saut
+	bne	taskLOOP	; ...sinon on attend
 
 *----------------------------------- Gestion du keyDown
 * on gère les open-apple-qqch
 
-doKEYDOWN
-	lda	taskMODIFIERS
+doKEYDOWN	lda	taskMODIFIERS
 	and	#appleKey
 	cmp	#appleKey
 	beq	doOPENAPPLE
@@ -381,16 +383,28 @@ tblKEYADDRESS
 	da	help
 
 *----------------------------------- Gestion des contrôles (ça veut dire boutons ou lineedit)
-
-doCONTROL
-	lda	taskREC+38
-	rts
+*
+*doCONTROL
+*	lda	taskREC+38
+*	rts
 
 *----------------------------------- Gestion du mouseUp
 * on compare les coordonnées avec celles du incontent
 * si dans le même rectangle, on traite
 
-doMOUSEUP
+doMOUSEUP	lda	fgSUITEFORCEE
+	cmp	#FALSE
+	beq	mup1
+	rts
+mup1	jsr	clic_mot	; on vérifie si on a cliqué sur un mot => mot$
+
+	lda	scene_actuelle
+	sta	scene_nouvelle
+
+*--- LOGO
+
+	lda	scene_nouvelle
+	sta	scene_actuelle
 	rts
 
 *-----------------------------------
@@ -597,7 +611,7 @@ saveIT
 	adrl	proWRITEGAME
 	rts
 
-*----------------------------------- Restart
+*----------------------------------- Restart - LOGO (must handle escape)
 
 doRESTART
 	jsr	saveBACK
@@ -1152,7 +1166,7 @@ taskTBL  da    doNOT      ; Null
          da    doNOT      ; wInCalledSysEdit
          da    doNOT      ; wInTrackZoom
          da    doNOT      ; wInHitFrame
-         da    doCONTROL  ; wInControl
+         da    doNOT      ; wInControl
          da    doNOT      ; wInControlMenu
 
 *----------------------------------------

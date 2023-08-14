@@ -290,14 +290,18 @@ main
 	stal	$310
 	lda	ptrTEXTES+2
 	stal	$312
+
+*---
 	
-mainLOOP
-	lda	scene_actuelle
+mainLOOP	lda	scene_actuelle
 	jsr	nouvelle_scene
 	lda	scene_actuelle
 	jsr	image
 *	jsr	affiche_texte
 	
+	jsr	suite_forcee
+	sta	fgSUITEFORCEE	; true if no words but 'suite'
+
 *----------------------------------------
 * TASK MASTER
 *----------------------------------------
@@ -323,6 +327,9 @@ taskLOOP
 	asl
 	tax
 	jsr	(taskTBL,x)
+
+*--- Handle clicks
+
 	bra	taskLOOP
 
 *----------------------------------- Gestion du keyDown

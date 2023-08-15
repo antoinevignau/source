@@ -1011,7 +1011,7 @@ at_3	inx
 
 at_case0	ldx	#max_colonnes-1
 ]lp	lda	ligne_max,x
-	cmp	#texteSPACE
+	cmp	#instrSPACE	; un vrai espace
 	beq	at_4
 	dex
 	bne	]lp
@@ -1123,32 +1123,82 @@ at_9	ldx	#0	; on remplit de space chars
 	
 * on imprime le texte (enfin)
 
+modeForeCopy =	$0004	; QDII Table 16-10
+
 	mx	%00
 	
 	rep	#$20
 	
 	jsr	switch_640	; switch to 640
 
+* on s'occupe des couleurs d'index 5 et A
+
+	bra	skipME
+	
+	lda	ptrFOND
+	sta	dpFROM
+	lda	ptrFOND+2
+	sta	dpFROM+2
+
+	ldx	scene_actuelle
+	sep	#$20
+	lda	rouge1-1,x
+	sta	rvb5+1
+	lda	vert1-1,x
+	asl
+	asl
+	asl
+	asl
+	sta	rvb5
+	lda	bleu1-1,x
+	ora	rvb5
+	sta	rvb5
+
+	lda	rouge2-1,x
+	sta	rvbA+1
+	lda	vert2-1,x
+	asl
+	asl
+	asl
+	asl
+	sta	rvbA
+	lda	bleu2-1,x
+	ora	rvbA
+	sta	rvbA
+
+	rep	#$20
+
+	ldy	#$7E00+$0A	; 5x2
+	lda	rvb5
+	sta	[dpFROM],y
+
+	ldy	#$7E00+$14	; Ax2
+	lda	rvbA
+	sta	[dpFROM],y
+
+skipME
+
+* et on affiche enfin
+
 	ldx	ptrFOND+2
 	ldy	ptrFOND
 	jsr	fadeIN
 
 	PushWord	#0	; save current mode
-	_GetPenMode
+	_GetTextMode
 
-	PushWord	#1	; mode OR
-	_SetPenMode
+	PushWord	#modeForeCopy
+	_SetTextMode
 
 	PushLong	#texte
-	PushWord	#0
-	PushWord	#0
-	PushWord	#0
+	PushWord	#1
+	PushWord	#1
+	PushWord	#0	; c'est normalement le modeForeCopy
 	jsr	print
 
-	_SetPenMode		; restore original mode
+	_SetTextMode	; restore original mode
 	
 	jsr	attente
-	
 	rts
 
 *--- output X space char dans texte final
@@ -1177,6 +1227,8 @@ len_max	ds	2	; longueur de ligne_max
 longueur_texte ds	2	; nombre de caracteres du texte d'origine
 return	ds	2	; premier RC dans une ligne
 i	ds	2	; index dans texte
+rvb5	ds	2
+rvbA	ds	2
 
 	mx	%00	; on revient en 16-bits
 	
@@ -1313,6 +1365,12 @@ print1	cmp	#instrSPACE	; skip space char
 	beq	print2
 	cmp	#texteSPACE
 	beq	print2
+	cmp	#texteRC
+	beq	print3
+
+	tax
+	lda	tblATARI,x
+	and	#$ff
 	pha
 
 	lda	printX
@@ -1331,18 +1389,12 @@ print1	cmp	#instrSPACE	; skip space char
 
 * 4- next character
 
-print2	inc	dpFROM
-	bne	print3
-	inc	dpFROM+2
-
-* 5- next X/Y in SHR
-
-print3	inc	printX
+print2	inc	printX
 	lda	printX
 	cmp	#max_colonnes
 	bcc	print4
 
-	lda	7,s	; reset X-coord
+print3	lda	7,s	; reset X-coord
 	sta	printX
 
 	inc	printY
@@ -1354,7 +1406,11 @@ print3	inc	printX
 
 * 6- we loop
 
-print4	brl	printLOOP
+print4	inc	dpFROM
+	bne	print5
+	inc	dpFROM+2
+
+print5	brl	printLOOP
 
 *---
 
@@ -1377,6 +1433,40 @@ y_coord	=	*
 	dw	]y
 ]y	=	]y+hauteur_caractere
 	--^
+
+*---
+
+* Apple		Atari
+* 88	à	85
+* 89	â	83
+* 8D	ç	87
+* 8E	é	82
+* 8F	è	8A
+* 90	ê	88
+* 91	ë	
+* 94	î	8C
+* 95	ï	8B
+* 99	ô	93
+* 9E	ù	97
+* CE	OE	B4
+* CF	oe	B5
+
+tblATARI	hex	000102030405060708090A0B0C0D0E0F
+	hex	101112131415161718191A1B1C1D1E1F
+	hex	202122232425262728292A2B2C2D2E2F
+	hex	303132333435363738393A3B3C3D3E3F
+	hex	404142434445464748494A4B4C4D4E4F
+	hex	505152535455565758595A5B5C5D5E5F
+	hex	606162636465666768696A6B6C6D6E6F
+	hex	707172737475767778797A7B7C7D7E7F
+	hex	80818E898488868D88898F90948D8E8F
+	hex	909192999495969E98999A9B9C9D9E9F
+	hex	A0A1A2A3A4A5A6A7A8A9AAABACADAEAF
+	hex	B0B1B2B3CECFB6B7B8B9BBBABCBDBEBF
+	hex	C0C1C2C3C4C5C6C7C8C9CACBCCCDCECF
+	hex	D0D1D2D3D4D5D6D7D8D9DADBDCDDDEDF
+	hex	E0E1E2E3E4E5E6E7E8E9EAEBECEDEEEF
+	hex	F0F1F2F3F4F5F6F7F8F9FAFBFCFDFEFF
 
 *-----------------------
 * CPRINT - OK

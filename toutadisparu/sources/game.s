@@ -1058,7 +1058,38 @@ at_case1	ldx	i	; on utilise X pour tre en 16-bits
 
 * DEFAULT
 
-at_default
+* DEC return%
+
+at_default	dec	return
+
+* ligne_max$=LEFT$(return$,return%)
+
+	ldx	#0
+]lp	lda	ligne_max,x
+	jsr	set_textefinal
+	inx
+	cpx	return
+	bcc	]lp
+
+* b$=b$+ligne_max$+SPACE$(max_colonnes|-return%)
+
+	rep	#$20
+	lda	#max_colonnes
+	sec
+	sbc	return
+	tax
+	sep	#$20
+	jsr	set_space
+
+* ADD i%,return%+1
+	
+	rep	#$20
+	lda	i
+	clc
+	adc	return
+	inc
+	sta	i
+	sep	#$20
 
 * UNTIL i%>=longueur_texte%
 
@@ -1067,24 +1098,63 @@ at_8	ldx	i
 	bcs	at_9
 	brl	at_2	; we loop
 
+* on comble de lignes blanches
+	
+at_9	ldx	#0	; on remplit de space chars
+	lda	#texteSPACE
+]lp	sta	texte,x
+	inx
+	cpx	#max_colonnes*max_lignes
+	bcc	]lp
+
+	rep	#$20	; la longueur du texte final
+	lda	dpTO
+	sec
+	sbc	#texte_final
+	sta	return
+	sep	#$20
+	
+	ldx	#0
+]lp	lda	texte_final,x
+	sta	texte+max_colonnes,x
+	inx
+	cpx	return
+	bcc	]lp
+	
 * on imprime le texte (enfin)
 
-at_9	jsr	switch_640	; switch to 640
+	mx	%00
+	
+	rep	#$20
+	
+	jsr	switch_640	; switch to 640
 
 	ldx	ptrFOND+2
 	ldy	ptrFOND
 	jsr	fadeIN
-	
+
+	PushWord	#0	; save current mode
+	_GetPenMode
+
+	PushWord	#1	; mode OR
+	_SetPenMode
+
 	PushLong	#texte
 	PushWord	#0
 	PushWord	#0
 	PushWord	#0
 	jsr	print
 
+	_SetPenMode		; restore original mode
+	
+	jsr	attente
+	
 	rts
 
 *--- output X space char dans texte final
 
+	mx	%10
+	
 set_space
 	lda	#texteSPACE
 ]lp	jsr	set_textefinal
@@ -1105,7 +1175,7 @@ set_tf1	rts
 
 len_max	ds	2	; longueur de ligne_max
 longueur_texte ds	2	; nombre de caracteres du texte d'origine
-return	ds	2	; nombre de RC dans une ligne
+return	ds	2	; premier RC dans une ligne
 i	ds	2	; index dans texte
 
 	mx	%00	; on revient en 16-bits
@@ -1240,6 +1310,8 @@ printEXIT	lda	1,s
 * 1- print char
 
 print1	cmp	#instrSPACE	; skip space char
+	beq	print2
+	cmp	#texteSPACE
 	beq	print2
 	pha
 

@@ -276,20 +276,10 @@ main
 
 * LOGO
 
-	lda	#SUITE_DATA
+	lda	#LES_TEXTES
 	stal	$300
-	lda	#^SUITE_DATA
+	lda	#^LES_TEXTES
 	stal	$302
-
-	lda	ptrINDEX
-	stal	$308
-	lda	ptrINDEX+2
-	stal	$30a
-	
-	lda	ptrTEXTES
-	stal	$310
-	lda	ptrTEXTES+2
-	stal	$312
 
 *---
 	

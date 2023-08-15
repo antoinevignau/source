@@ -941,11 +941,18 @@ texteRC	=	$9c
 
 affiche_texte
 
+	lda	#1
+	sta	i	; on commence ˆ 1
+
+	lda	#texte_final
+	sta	dpTO
+
+	sep	#$20	; A en 8-bits
+
 * 1- saute les premiers RC
 
 	ldy	#0
 	tyx
-	sep	#$20
 ]lp	lda	[dpTEXTES],y
 	cmp	#texteRC
 	bne	at_1
@@ -963,18 +970,146 @@ at_1	lda	[dpTEXTES],y
 
 	inx
 	stx	longueur_texte
+
+* ligne_max$=MID$(texte$,i%,max_colonnes|)
+
+at_2	sep	#$20
+
+	ldy	#0
+	ldx	i
+]lp	lda	texte-1,x
+	sta	ligne_max,y
+	inx
+	iny
+	cpy	#max_colonnes
+	bcc	]lp
+
+* return$=LEFT$(ligne_max$,INSTR(ligne_max$,"œ"))
+
+	ldx	#0
+]lp	lda	texte,x
+	sta	ligne_return,x
+	cmp	#texteRC
+	beq	at_3	; on a trouvŽ un RC
+	inx
+	cpx	#max_colonnes
+	bcc	]lp
+	ldx	#-1	; on n'a pas trouvŽ
+
+at_3	inx
+	stx	return	; on a l'index du RC
+
+	cpx	#0
+	beq	at_case0
+	cpx	#1
+	beq	at_case1
+	brl	at_default
+	
+* CASE 0 - aucun RC, on coupe le texte
+
+* ligne_max$=LEFT$(ligne_max$,RINSTR(ligne_max$," "))
+
+at_case0	ldx	#max_colonnes-1
+]lp	lda	ligne_max,x
+	cmp	#texteSPACE
+	beq	at_4
+	dex
+	bne	]lp
+
+at_4	inx
+	stx	len_max
+
+* b$=b$+ligne_max$+SPACE$(max_colonnes|-LEN(ligne_max$))
+
+	ldx	#0
+]lp	lda	ligne_max,x
+	jsr	set_textefinal
+	inx
+	cpx	len_max
+	bcc	]lp
+
 	rep	#$20
+	lda	#max_colonnes
+	sec
+	sbc	len_max
+	tax
+	sep	#$20
+	jsr	set_space
+	
+* ADD i%,LEN(ligne_max$)
 
-* 3- calcul le texte final
+	rep	#$20
+	lda	i
+	clc
+	adc	len_max
+	sta	i
+	sep	#$20
+	bra	at_8
+	
+* CASE 1 - ligne blanche
 
+at_case1	ldx	i	; on utilise X pour tre en 16-bits
+	inx
+	stx	i
+
+	ldx	#max_colonnes
+	jsr	set_space
+	bra	at_8
+
+* DEFAULT
+
+at_default
+
+* UNTIL i%>=longueur_texte%
+
+at_8	ldx	i
+	cpx	longueur_texte
+	bcs	at_9
+	brl	at_2	; we loop
+
+* on imprime le texte (enfin)
+
+at_9	jsr	switch_640	; switch to 640
+
+	ldx	ptrFOND+2
+	ldy	ptrFOND
+	jsr	fadeIN
+	
+	PushLong	#texte
+	PushWord	#0
+	PushWord	#0
+	PushWord	#0
+	jsr	print
 
 	rts
 
+*--- output X space char dans texte final
+
+set_space
+	lda	#texteSPACE
+]lp	jsr	set_textefinal
+	dex
+	bne	]lp
+	rts
+
+*--- output dans texte final
+
+set_textefinal
+	sta	(dpTO)
+	inc	dpTO
+	bne	set_tf1
+	inc	dpTO+1
+set_tf1	rts
+
 *--- Local data
 
+len_max	ds	2	; longueur de ligne_max
 longueur_texte ds	2	; nombre de caracteres du texte d'origine
 return	ds	2	; nombre de RC dans une ligne
+i	ds	2	; index dans texte
 
+	mx	%00	; on revient en 16-bits
+	
 *-----------------------
 * DEBUT_AVENTURE - OK
 *-----------------------

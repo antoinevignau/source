@@ -41,6 +41,8 @@ fgSUITEFORCEE ds	2	; BOOL - TRUE or FALSE
 
 * Le texte ˆ afficher
 
+ligne_max	ds	max_colonnes	; une ligne du texte
+ligne_return ds	max_colonnes	; une sous-partie de la ligne du dessus
 texte	ds	max_colonnes*max_lignes	; the text from the .TXT file
 texte_final	ds	max_colonnes*max_lignes	; the final text - known as b$ in Atari ST
 	ds	2

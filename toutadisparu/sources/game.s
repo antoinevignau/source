@@ -968,15 +968,15 @@ at_1	lda	[dpTEXTES],y
 	cmp	#0
 	bne	at_1	; jusqu'à la fin du texte de la scène
 
-	inx
+*	inx
 	stx	longueur_texte
 
 * ligne_max$=MID$(texte$,i%,max_colonnes|)
 
 at_2	sep	#$20
 
-	ldy	#0
 	ldx	i
+	ldy	#0
 ]lp	lda	texte-1,x
 	sta	ligne_max,y
 	inx
@@ -987,10 +987,10 @@ at_2	sep	#$20
 * return$=LEFT$(ligne_max$,INSTR(ligne_max$,"ú"))
 
 	ldx	#0
-]lp	lda	texte,x
-	sta	ligne_return,x
+]lp	lda	ligne_max,x	; was texte
 	cmp	#texteRC
 	beq	at_3	; on a trouvé un RC
+	sta	ligne_return,x
 	inx
 	cpx	#max_colonnes
 	bcc	]lp
@@ -1016,13 +1016,14 @@ at_case0	ldx	#max_colonnes-1
 	dex
 	bne	]lp
 
-at_4	inx
+at_4
+	inx
 	stx	len_max
 
 * b$=b$+ligne_max$+SPACE$(max_colonnes|-LEN(ligne_max$))
 
-	ldx	#0
-]lp	lda	ligne_max,x
+	ldx	#1
+]lp	lda	ligne_max-1,x
 	jsr	set_textefinal
 	inx
 	cpx	len_max
@@ -1032,6 +1033,7 @@ at_4	inx
 	lda	#max_colonnes
 	sec
 	sbc	len_max
+	dec
 	tax
 	sep	#$20
 	jsr	set_space
@@ -1042,6 +1044,7 @@ at_4	inx
 	lda	i
 	clc
 	adc	len_max
+	dec		; NOW
 	sta	i
 	sep	#$20
 	bra	at_8
@@ -1064,8 +1067,8 @@ at_default	dec	return
 
 * ligne_max$=LEFT$(return$,return%)
 
-	ldx	#0
-]lp	lda	ligne_max,x
+	ldx	#1
+]lp	lda	ligne_return-1,x
 	jsr	set_textefinal
 	inx
 	cpx	return
@@ -1077,6 +1080,7 @@ at_default	dec	return
 	lda	#max_colonnes
 	sec
 	sbc	return
+	dec
 	tax
 	sep	#$20
 	jsr	set_space
@@ -1205,7 +1209,7 @@ skipME
 	mx	%10
 	
 set_space
-	lda	#texteSPACE
+	lda	#instrSPACE
 ]lp	jsr	set_textefinal
 	dex
 	bne	]lp

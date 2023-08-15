@@ -290,20 +290,17 @@ mainLOOP	lda	scene_actuelle
 	lda	scene_actuelle
 	jsr	get_textes		; prend le texte de l'écran
 	jsr	affiche_texte	; affiche-le
+	jsr	attente
+	
+	lda	scene_actuelle
+	jsr	suite_forcee
+	sta	fgSUITEFORCEE	; true if no words but 'suite'
 
 *----------------------------------------
-* TASK MASTER
+* TASK MASTER (no more)
 *----------------------------------------
 
-taskLOOP	PushWord #0
-	PushWord #0
-	PushWord #$c000
-	PushWord #0
-	_HandleDiskInsert
-	pla
-	pla
-
-	inc	VBLCounter0
+taskLOOP	inc	VBLCounter0
 
 	PushWord #0
 	PushWord #%11111111_11111111
@@ -311,7 +308,7 @@ taskLOOP	PushWord #0
 	_TaskMaster
 	pla
 	beq	taskLOOP
-	 
+
 	asl
 	tax
 	jsr	(taskTBL,x)
@@ -379,11 +376,6 @@ tblKEYADDRESS
 * si dans le même rectangle, on traite
 
 doMOUSEUP
-	lda	scene_actuelle
-	jsr	suite_forcee
-	sta	fgSUITEFORCEE	; true if no words but 'suite'
-	stal	$310
-	
 	lda	fgSUITEFORCEE
 	cmp	#FALSE
 	beq	mup1

@@ -291,10 +291,6 @@ mainLOOP	lda	scene_actuelle
 	jsr	get_textes		; prend le texte de l'écran
 	jsr	affiche_texte	; affiche-le
 
-	lda	scene_actuelle
-	jsr	suite_forcee
-	sta	fgSUITEFORCEE	; true if no words but 'suite'
-
 *----------------------------------------
 * TASK MASTER
 *----------------------------------------
@@ -382,7 +378,13 @@ tblKEYADDRESS
 * on compare les coordonnées avec celles du incontent
 * si dans le même rectangle, on traite
 
-doMOUSEUP	lda	fgSUITEFORCEE
+doMOUSEUP
+	lda	scene_actuelle
+	jsr	suite_forcee
+	sta	fgSUITEFORCEE	; true if no words but 'suite'
+	stal	$310
+	
+	lda	fgSUITEFORCEE
 	cmp	#FALSE
 	beq	mup1
 	rts

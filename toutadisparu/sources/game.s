@@ -1198,7 +1198,6 @@ skipME
 
 	_SetTextMode	; restore original mode
 	
-	jsr	attente
 	rts
 
 *--- output X space char dans texte final

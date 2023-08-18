@@ -983,7 +983,7 @@ at_2	sep	#$20
 	iny
 	cpy	#max_colonnes
 	bcc	]lp
-
+	
 * return$=LEFT$(ligne_max$,INSTR(ligne_max$,"œ"))
 
 	ldx	#0
@@ -1016,8 +1016,7 @@ at_case0	ldx	#max_colonnes-1
 	dex
 	bne	]lp
 
-at_4
-	inx
+at_4	inx
 	stx	len_max
 
 * b$=b$+ligne_max$+SPACE$(max_colonnes|-LEN(ligne_max$))
@@ -1067,8 +1066,8 @@ at_default	dec	return
 
 * ligne_max$=LEFT$(return$,return%)
 
-	ldx	#1
-]lp	lda	ligne_return-1,x
+	ldx	#0
+]lp	lda	ligne_return,x
 	jsr	set_textefinal
 	inx
 	cpx	return
@@ -1208,8 +1207,7 @@ skipME
 
 	mx	%10
 	
-set_space
-	lda	#instrSPACE
+set_space	lda	#instrSPACE
 ]lp	jsr	set_textefinal
 	dex
 	bne	]lp

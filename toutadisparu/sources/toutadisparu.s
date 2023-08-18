@@ -264,6 +264,9 @@ okTOOL	_HideMenuBar
 	jsr	set_language
 	jsr	doSOUNDON	; NTP on
 	
+	lda	fgNTP
+	stal	$333
+
 	jsr	initialisation_absolue
 	jsr	generique
 
@@ -384,6 +387,17 @@ tblKEYADDRESS
 
 doMOUSEDOWN
 doMOUSEUP
+	lda	scene_actuelle
+	inc
+	cmp	nombre_scenes
+	bcc	okok
+	lda	#1
+okok	sta	scene_actuelle
+
+	lda	#TRUE
+	sta	deplacement
+	rts
+
 	lda	fgSUITEFORCEE
 	cmp	#FALSE
 	beq	mup1

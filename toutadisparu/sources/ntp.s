@@ -66,8 +66,7 @@ doMUSIK
 	beq	doSOUNDON
 	bne	doSOUNDOFF
 
-nozik99
-	rts
+nozik99	rts
 	
 *--------------------------------------
 

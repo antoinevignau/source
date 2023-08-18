@@ -940,36 +940,23 @@ texteSPACE	=	$5f
 texteRC	=	$9c
 
 affiche_texte
-
-	lda	#1
-	sta	i	; on commence à 1
+	stz	i	; on commence à 0
 
 	lda	#texte_final
 	sta	dpTO
 
 	sep	#$20	; A en 8-bits
 
-* 1- saute les premiers RC
+* 1- recopie le texte entier
 
 	ldy	#0
-	tyx
 ]lp	lda	[dpTEXTES],y
-	cmp	#texteRC
-	bne	at_1
+	sta	texte,y
 	iny
+	cmp	#0
 	bne	]lp
 
-* 2- recopie le texte
-
-at_1	lda	[dpTEXTES],y
-	sta	texte,x
-	iny
-	inx
-	cmp	#0
-	bne	at_1	; jusqu'à la fin du texte de la scène
-
-*	inx
-	stx	longueur_texte
+	sty	longueur_texte
 
 * ligne_max$=MID$(texte$,i%,max_colonnes|)
 
@@ -977,33 +964,29 @@ at_2	sep	#$20
 
 	ldx	i
 	ldy	#0
-]lp	lda	texte-1,x
+]lp	lda	texte,x
 	sta	ligne_max,y
 	inx
 	iny
 	cpy	#max_colonnes
 	bcc	]lp
 	
-* return$=LEFT$(ligne_max$,INSTR(ligne_max$,"ú"))
+* return$=LEFT$(ligne_max$,INSTR(ligne_max$,"ú")) = index d'un RC
 
 	ldx	#0
-]lp	lda	ligne_max,x	; was texte
+]lp	lda	ligne_max,x
 	cmp	#texteRC
 	beq	at_3	; on a trouvé un RC
-	sta	ligne_return,x
 	inx
 	cpx	#max_colonnes
 	bcc	]lp
-	ldx	#-1	; on n'a pas trouvé
+	bcs	at_case0	; pas de RC sur la ligne
 
-at_3	inx
-	stx	return	; on a l'index du RC
+at_3	stx	return	; on a l'index du RC
 
 	cpx	#0
-	beq	at_case0
-	cpx	#1
-	beq	at_case1
-	brl	at_default
+	beq	at_case1	; 1er car est un RC, on sort une ligne blanche
+	brl	at_default	; on a un RC qq part
 	
 * CASE 0 - aucun RC, on coupe le texte
 
@@ -1015,14 +998,14 @@ at_case0	ldx	#max_colonnes-1
 	beq	at_4
 	dex
 	bne	]lp
+	ldx	#1	; eventuel cas douteux
 
-at_4	inx
-	stx	len_max
+at_4	stx	len_max
 
 * b$=b$+ligne_max$+SPACE$(max_colonnes|-LEN(ligne_max$))
 
-	ldx	#1
-]lp	lda	ligne_max-1,x
+	ldx	#0
+]lp	lda	ligne_max,x
 	jsr	set_textefinal
 	inx
 	cpx	len_max
@@ -1032,7 +1015,6 @@ at_4	inx
 	lda	#max_colonnes
 	sec
 	sbc	len_max
-	dec
 	tax
 	sep	#$20
 	jsr	set_space
@@ -1043,7 +1025,7 @@ at_4	inx
 	lda	i
 	clc
 	adc	len_max
-	dec		; NOW
+	inc
 	sta	i
 	sep	#$20
 	bra	at_8
@@ -1060,14 +1042,15 @@ at_case1	ldx	i	; on utilise X pour être en 16-bits
 
 * DEFAULT
 
-* DEC return%
+* DEC return% - useless
 
-at_default	dec	return
+at_default
+*	dec	return
 
 * ligne_max$=LEFT$(return$,return%)
 
-	ldx	#1
-]lp	lda	ligne_return-1,x
+	ldx	#0
+]lp	lda	ligne_max,x
 	jsr	set_textefinal
 	inx
 	cpx	return
@@ -1079,7 +1062,6 @@ at_default	dec	return
 	lda	#max_colonnes
 	sec
 	sbc	return
-	dec
 	tax
 	sep	#$20
 	jsr	set_space
@@ -1096,7 +1078,14 @@ at_default	dec	return
 
 * UNTIL i%>=longueur_texte%
 
-at_8	ldx	i
+at_8
+	rep	#$20
+	lda	dpTO
+	dec
+	sta	dpTO
+	sep	#$20
+
+	ldx	i
 	cpx	longueur_texte
 	bcs	at_9
 	brl	at_2	; we loop
@@ -1329,8 +1318,8 @@ surligner_mot
 * 7,s	w	X
 * 9,s	l	text pointer
 
-max_colonnes =	75	; 80
-max_lignes	=	18	; 20
+max_colonnes =	75	; 80 - 75
+max_lignes	=	20	; 20 - 18
 largeur_caractere = 	8
 hauteur_caractere =	10
 
@@ -1450,7 +1439,8 @@ y_coord	=	*
 * 94	î	8C
 * 95	ï	8B
 * 99	ô	93
-* 9E	ù	97
+* 9E	û	96
+* 9D	ù	97
 * CE	OE	B4
 * CF	oe	B5
 
@@ -1462,10 +1452,10 @@ tblATARI	hex	000102030405060708090A0B0C0D0E0F
 	hex	505152535455565758595A5B5C5D5E5F
 	hex	606162636465666768696A6B6C6D6E6F
 	hex	707172737475767778797A7B7C7D227F
-	hex	82818E898488868D90898F90948D8E8F
-	hex	909192999495969E98999A9B9C9D9E9F
+	hex	82818E898488868D90898F95948D8E8F
+	hex	9091929994959E9D98999A9B9C9D9E9F
 	hex	A0A1A2A3A4A5A6A7A8A9AAABACADAEAF
-	hex	B0B1B2B3CECFB6B7B8B9BBBABCBDBEBF
+	hex	B0B1B2B3CFCEB6B7B8B9BBBABCBDBEBF
 	hex	C0C1C2C3C4C5C6C7C8C9CACBCCCDCECF
 	hex	D0D1D2D3D4D5D6D7D8D9DADBDCDDDEDF
 	hex	E0E1E2E3E4E5E6E7E8E9EAEBECEDEEEF

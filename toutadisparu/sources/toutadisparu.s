@@ -248,6 +248,9 @@ okTOOL	_HideMenuBar
 	PushLong	#0
 	_GetPort
 	PullLong	mainPORT
+
+	PushLong	mainPORT
+	_SetPort
 	
 *----------------------------------------
 * INITIALISATIONS
@@ -302,10 +305,14 @@ mainLOOP	lda	scene_actuelle
 
 taskLOOP	inc	VBLCounter0
 
+*	PushWord #0
+*	PushWord #%11111111_11111111
+*	PushLong #taskREC
+*	_TaskMaster
 	PushWord #0
-	PushWord #%11111111_11111111
+	PushWord #%00000000_00001110
 	PushLong #taskREC
-	_TaskMaster
+	_GetNextEvent
 	pla
 	beq	taskLOOP
 
@@ -375,6 +382,7 @@ tblKEYADDRESS
 * on compare les coordonnées avec celles du incontent
 * si dans le même rectangle, on traite
 
+doMOUSEDOWN
 doMOUSEUP
 	lda	fgSUITEFORCEE
 	cmp	#FALSE
@@ -1103,55 +1111,55 @@ errSTR3	str	'Continue'
 
 *----------------------- Window manager
 
-taskREC  ds    2          ; wmWhat           +0
-taskMESSAGE ds 4          ; wmMessage        +2
-taskWHEN ds    4          ; wmWhen           +6
-taskWHERE ds   4          ; wmWhere          +10
-taskMODIFIERS ds 2        ; wmModifiers      +14
-taskDATA ds    4          ; wmTaskData       +16
-         adrl  $001fffff  ; wmTaskMask       +20
-         ds    4          ; wmLastClickTick  +24
-         ds    2          ; wmClickCount     +28
-         ds    4          ; wmTaskData2      +30
-         ds    4          ; wmTaskData3      +34
-         ds    4          ; wmTaskData4      +38
-         ds    4          ; wmLastClickPt    +42
+taskREC	ds	2	; wmWhat           +0
+taskMESSAGE	ds	4	; wmMessage        +2
+taskWHEN	ds	4	; wmWhen           +6
+taskWHERE	ds	4	; wmWhere          +10
+taskMODIFIERS ds	2	; wmModifiers      +14
+taskDATA	ds	4	; wmTaskData       +16
+	adrl	$001fffff	; wmTaskMask       +20
+	ds	4	; wmLastClickTick  +24
+	ds	2	; wmClickCount     +28
+	ds	4	; wmTaskData2      +30
+	ds	4	; wmTaskData3      +34
+	ds	4	; wmTaskData4      +38
+	ds	4	; wmLastClickPt    +42
 
-taskTBL  da    doNOT      ; Null
-         da    doNOT      ; mouseDownEvt
-         da    doMOUSEUP  ; mouseUpEvt
-         da    doKEYDOWN  ; keyDownEvt
-         da    doNOT
-         da    doNOT      ; autoKeyEvt
-         da    doNOT      ; updateEvt
-         da    doNOT
-         da    doNOT      ; activateEvt
-         da    doNOT      ; switchEvt
-         da    doNOT      ; deskAccEvt
-         da    doNOT      ; driverEvt
-         da    doNOT      ; app1Evt
-         da    doNOT      ; app2Evt
-         da    doNOT      ; app3Evt
-         da    doNOT      ; app4Evt
-         da    doNOT      ; wInDesk
-         da    doNOT      ; wInMenuBar
-         da    doNOT      ; wCLickCalled
-         da    doNOT      ; wInContent - was doCONTENT
-         da    doNOT      ; wInDrag
-         da    doNOT      ; wInGrow
-         da    doNOT      ; wInGoAway
-         da    doNOT      ; wInZoom
-         da    doNOT      ; wInInfo
-         da    doNOT      ; wInSpecial
-         da    doNOT      ; wInDeskItem
-         da    doNOT      ; wInFrame
-         da    doNOT      ; wInactMenu
-         da    doNOT      ; wInClosedNDA
-         da    doNOT      ; wInCalledSysEdit
-         da    doNOT      ; wInTrackZoom
-         da    doNOT      ; wInHitFrame
-         da    doNOT      ; wInControl
-         da    doNOT      ; wInControlMenu
+taskTBL	da	doNOT	; Null
+	da	doMOUSEDOWN	; mouseDownEvt
+	da	doMOUSEUP	; mouseUpEvt
+	da	doKEYDOWN	; keyDownEvt
+	da	doNOT
+	da	doNOT	; autoKeyEvt
+	da	doNOT	; updateEvt
+	da	doNOT
+	da	doNOT	; activateEvt
+	da	doNOT	; switchEvt
+	da	doNOT	; deskAccEvt
+	da	doNOT	; driverEvt
+	da	doNOT	; app1Evt
+	da	doNOT	; app2Evt
+	da	doNOT	; app3Evt
+	da	doNOT	; app4Evt
+	da	doNOT	; wInDesk
+	da	doNOT	; wInMenuBar
+	da	doNOT	; wCLickCalled
+	da	doNOT	; wInContent - was doCONTENT
+	da	doNOT	; wInDrag
+	da	doNOT	; wInGrow
+	da	doNOT	; wInGoAway
+	da	doNOT	; wInZoom
+	da	doNOT	; wInInfo
+	da	doNOT	; wInSpecial
+	da	doNOT	; wInDeskItem
+	da	doNOT	; wInFrame
+	da	doNOT	; wInactMenu
+	da	doNOT	; wInClosedNDA
+	da	doNOT	; wInCalledSysEdit
+	da	doNOT	; wInTrackZoom
+	da	doNOT	; wInHitFrame
+	da	doNOT	; wInControl
+	da	doNOT	; wInControlMenu
 
 *----------------------------------------
 * STD FILE

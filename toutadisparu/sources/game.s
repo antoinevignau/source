@@ -1066,8 +1066,8 @@ at_default	dec	return
 
 * ligne_max$=LEFT$(return$,return%)
 
-	ldx	#0
-]lp	lda	ligne_return,x
+	ldx	#1
+]lp	lda	ligne_return-1,x
 	jsr	set_textefinal
 	inx
 	cpx	return
@@ -1329,8 +1329,8 @@ surligner_mot
 * 7,s	w	X
 * 9,s	l	text pointer
 
-max_colonnes =	80
-max_lignes	=	20
+max_colonnes =	75	; 80
+max_lignes	=	18	; 20
 largeur_caractere = 	8
 hauteur_caractere =	10
 

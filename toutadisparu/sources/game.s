@@ -1046,7 +1046,7 @@ at_case1	ldx	i	; on utilise X pour tre en 16-bits
 * DEC return% - useless
 
 at_default
-	dec	return
+*	dec	return
 
 * ligne_max$=LEFT$(return$,return%)
 
@@ -1063,7 +1063,6 @@ at_default
 	lda	#max_colonnes
 	sec
 	sbc	return
-	inc
 	tax
 	sep	#$20
 	jsr	set_space

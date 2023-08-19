@@ -1036,13 +1036,11 @@ PROCEDURE mots_clicables(texte$)
       '                !ON REPERE L'ENDROIT OU SE TROUVE LE MOT DANS LE TEXTE:
       pointeur_mot%=INSTR(texte2$,mot2$,pointeur_mot%)
       '                                !ON VERIFIE SI C'EST BIEN UN MOT ISOL:
-      IF INSTR(alphabet$,UPPER$(MID$(texte$,pointeur_mot%-1,1)),1)=0 AND INSTR(a
-        lphabet$,UPPER$(MID$(texte$,pointeur_mot%+LEN(mot$),1)))=0
+      IF INSTR(alphabet$,UPPER$(MID$(texte$,pointeur_mot%-1,1)),1)=0 AND INSTR(alphabet$,UPPER$(MID$(texte$,pointeur_mot%+LEN(mot$),1)))=0
         affichage!=TRUE                        !SI OUI ON SORTIRA DE LA BOUCLE
         '                !LE MOT EXISTE, MAIS EST-IL CLICABLE POUR LE MOMENT?:
         condition&=condition&(scene_actuelle|,i%)
-        IF (condition&>0 AND scene_visitee!(ABS(condition&))=TRUE) OR (condition
-          &<0 AND scene_visitee!(ABS(-condition&))=FALSE)
+        IF (condition&>0 AND scene_visitee!(ABS(condition&))=TRUE) OR (condition&<0 AND scene_visitee!(ABS(-condition&))=FALSE)
           '                      !OUI? ALORS ON SURLIGNE EFFECTIVEMENT LE MOT:
           surligner_mot(texte$,MID$(texte$,pointeur_mot%,LEN(mot$)),pointeur_mot
             %,1)

@@ -27,12 +27,22 @@ P	ds	1
 
 *--- Variables Atari ST
 
+i	ds	2	; un index
+localOFFSET	ds	2	; offset de chaque range
+localPOINT	ds	2	; index du mot
+len_max	ds	2	; longueur de ligne_max
+longueur_texte ds	2	; nombre de caracteres du texte d'origine
+return	ds	2	; premier RC dans une ligne
+rvb5	ds	2
+rvbA	ds	2
+index_mot	ds	2	; un autre index qui pointe
+nb_mots	ds	2	; nombre de mots dans la scene
+
 aventure	ds	2
 nombre_scenes ds	2
 scene_actuelle ds	2
 scene_nouvelle ds	2
 deplacement	ds	2	; BOOL - TRUE (new scene) or FALSE (same scene)
-numero_mot	ds	2	; WORD
 mot	ds	128	; le mot ˆ chercher (jusqu'au caractre espace)
 option_mot	ds	128	; le mot est enregistr s'il est dans la liste
 image_chargee ds	2	; WORD - TRUE or FALSE
@@ -50,6 +60,8 @@ texte	ds	max_colonnes*max_lignes	; the text from the .TXT file
 	asc	"TEXTE_FINAL"
 texte_final	ds	max_colonnes*max_lignes	; the final text - known as b$ in Atari ST
 	ds	2
+	asc	"TEXTE_LIENS"
+texte_liens	ds	max_colonnes*max_lignes	; FALSE: not a link, TRUE est un mot cliquable
 
 * Toujours en dcal : index 1 dmarre ˆ 0 (NB_TEXTES est toujours > au nombre de scnes)
 

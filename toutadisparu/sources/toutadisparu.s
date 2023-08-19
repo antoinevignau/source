@@ -145,6 +145,11 @@ FALSE	=	0
 
 	tdc
 	sta	myDP
+
+	lda	#mots_clicables
+	stal	$300
+	lda	#^mots_clicables
+	stal	$302
 	
 *--- Version du systeme
 
@@ -180,8 +185,7 @@ koMEM	pha
 	pla
 	brl   meQUIT1
 
-okMEM1
-	sty	ptrIMAGE
+okMEM1	sty	ptrIMAGE
 	stx	ptrIMAGE+2
 	stx	ptrMENU+2	; l'image de menu
 
@@ -264,9 +268,6 @@ okTOOL	_HideMenuBar
 	jsr	set_language
 	jsr	doSOUNDON	; NTP on
 	
-	lda	fgNTP
-	stal	$333
-
 	jsr	initialisation_absolue
 	jsr	generique
 
@@ -280,13 +281,9 @@ main
 	jsr	initialisation_relative
 	jsr	fadeOUT
 
-* LOGO
-
-	lda	#LES_TEXTES
-	stal	$300
-	lda	#^LES_TEXTES
-	stal	$302
-
+	lda	#2
+	sta	scene_actuelle
+	
 *---
 	
 mainLOOP	lda	scene_actuelle
@@ -296,12 +293,12 @@ mainLOOP	lda	scene_actuelle
 	lda	scene_actuelle
 	jsr	get_textes		; prend le texte de l'écran
 	jsr	affiche_texte	; affiche-le
-	jsr	attente
+	jsr	mots_clicables
 	
 	lda	scene_actuelle
 	jsr	suite_forcee
 	sta	fgSUITEFORCEE	; true if no words but 'suite'
-
+		
 *----------------------------------------
 * TASK MASTER (no more)
 *----------------------------------------

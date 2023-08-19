@@ -918,11 +918,6 @@ doDIESE1	lda	localOFFSET	; 0/25/50 => 0/50/100
 	bne	]lp
 	rts
 
-*--- Local data
-
-localOFFSET	ds	2	; offset de chaque rangŽe
-localPOINT	ds	2	; index du mot
-
 *-----------------------
 * INITIALISATION_CACHE - OK
 *-----------------------
@@ -1190,15 +1185,6 @@ set_textefinal
 	inc	dpTO+1
 set_tf1	rts
 
-*--- Local data
-
-len_max	ds	2	; longueur de ligne_max
-longueur_texte ds	2	; nombre de caracteres du texte d'origine
-return	ds	2	; premier RC dans une ligne
-i	ds	2	; index dans texte
-rvb5	ds	2
-rvbA	ds	2
-
 	mx	%00	; on revient en 16-bits
 	
 *-----------------------
@@ -1301,6 +1287,7 @@ max_colonnes =	75	; 80 - 75
 max_lignes	=	20	; 20 - 18
 largeur_caractere = 	8
 hauteur_caractere =	10
+marge_gauche =	3	; nombre de caractres sautŽs pour la marge
 
 *---
 
@@ -1390,7 +1377,7 @@ printY	ds	2
 *---
 
 x_coord	=	*
-]x	=	0	; Premire ligne
+]x	=	marge_gauche*largeur_caractere	; Premire ligne
 	lup	max_colonnes
 	dw	]x
 ]x	=	]x+largeur_caractere
@@ -1469,11 +1456,6 @@ cprint	pea	^cprint	; ptr to text
 	pha	; X
 	phy	; Y
 	pea	$0000	; mode
-
-*	pea	$0000	; space for result
-*	pea	^cprint	; pointer to string
-*	pha
-*	_CStringWidth
 
 	pea	$0000	; count nb of chars in the string
 	sta	dpFROM
@@ -1612,12 +1594,9 @@ ai_1	jsr	switch_320
 
 suite_forcee
 	cmp	#0
-	bne	sf_2
+	beq	sf_false
 	
-sf_1	lda	#FALSE
-	rts
-
-sf_2	dec		; prend la scene
+	dec		; prend la scene
 	pha		; calcul l'index dans la dimension NB_MOTS
 	pha
 	pha		; index de scne
@@ -1633,18 +1612,16 @@ sf_2	dec		; prend la scene
 
 	lda	(dpFROM)	; prend la valeur du premier mot
 	sta	dpINDEX	; de fonction_mots
-	lda	ptrINDEX
+	lda	ptrINDEX+2
 	sta	dpINDEX+2	; et met son pointeur 32-bits
 
 	ldy	#6-2	; len('suite ') sur 16-bits
 ]lp	lda	[dpINDEX],y
 	cmp	strSUITE,y
-	bne	sf_1
+	bne	sf_false
 	dey
 	dey
 	bpl	]lp
-
-*	jsr	attente	; on attend
 
 	lda	#aiguillage
 	clc
@@ -1656,9 +1633,9 @@ sf_2	dec		; prend la scene
 	sta	scene_actuelle
 	
 	lda	#TRUE
-	sta	deplacement
-	rts
-sf_99	lda	#FALSE
+	bra	sf_99
+sf_false	lda	#FALSE
+sf_99	sta	deplacement
 	rts
 
 strSUITE	asc	'suite '
@@ -1670,7 +1647,7 @@ strSUITE	asc	'suite '
 
 charge_image
 	rts
-	
+1F9C	
 *-----------------------
 * IMAGE_ECRAN - OK
 *-----------------------
@@ -1840,7 +1817,147 @@ help_str16	asc	'OA-Q : quitter le jeu'00
 * mots_clicables(texte$)
 
 mots_clicables
+	sep	#$20	; texte2$=UPPER$(texte$)
+	ldx	#0
+]lp	lda	#FALSE	; on efface texte_liens
+	sta	texte_liens,x
+
+	lda	texte_final,x	; on majusculinise le texte
+	tay
+	lda	tblUPPER,y
+	sta	texte,x
+	inx
+	cpx	#max_colonnes*max_lignes
+	bcc	]lp
+	
+	ldx	scene_actuelle
+	lda	pointeur_mots-1,x
+	sta	nb_mots
+	stz	index_mot
+
+* FOR i%=1 TO pointeur_mots|(scene_actuelle|)
+
+mc_1	rep	#$20
+
+	pha		; calcul l'index dans la dimension NB_MOTS
+	pha
+	lda	scene_actuelle
+	dec
+	pha
+	PushWord	#NB_MOTS	; taille d'une dimension
+	_Multiply
+	pla
+	asl
+	sta	localOFFSET
+	clc
+	adc	#fonction_mots
+	sta	dpINDEX	; on pointe sur fonction_mots(scene_actuelle)
+	pla
+
+	stz	i	; l'index dans texte
+	
+*-- mot$=fonction_mot$(scene_actuelle|,i%)
+*-- mot2$=UPPER$(mot$)
+
+	lda	index_mot	; prend l'adresse du mot
+	asl		; dans ptrINDEX
+	tay
+	lda	(dpINDEX),y
+	sta	dpINDEX
+	lda	ptrINDEX+2
+	sta	dpINDEX+2
+
+	sep	#$20	; on majusculinise le mot
+	ldy	#0	; ˆ chercher
+]lp	lda	[dpINDEX],y
+	tax
+	lda	tblUPPER,x
+	sta	mot,y
+	cmp	#instrSPACE
+	beq	mc_2
+	iny
+	bne	]lp
+
+mc_2	sty	len_max
+
+*--- REPEAT
+*--- pointeur_mot%=INSTR(texte2$,mot2$,pointeur_mot%)
+*--- IF INSTR(alphabet$,UPPER$(MID$(texte$,pointeur_mot%-1,1)),1)=0 AND INSTR(alphabet$,UPPER$(MID$(texte$,pointeur_mot%+LEN(mot$),1)))=0
+	
+	ldx	i	; on commence avec -1
+mc_3	ldy	#0
+]lp	lda	mot,y	; compare le mot
+	cmp	texte,x
+	bne	mc_5	; pas le mme mot
+	
+	inx
+	iny
+	cpy	len_max
+	bne	]lp
+	
+	ldal	$c034
+	inc
+	stal	$c034
+
+	jsr	test_condition	; on a trouvŽ le mot
+	bra	mc_6
+
+mc_5	inx	
+	cpx	#max_colonnes*max_lignes
+	bcc	mc_3
+
+*--- UNTIL affichage!=TRUE
+
+*--- NEXT i%
+
+mc_6	inc	index_mot
+	lda	index_mot
+	cmp	nb_mots
+	bcs	mc_99
+	brl	mc_1
+mc_99	rep	#$20	; on sort
 	rts
+
+*---
+* test_condition
+* on entre en A=8-bits
+* on doit ressortir en A=8-bits
+* si le mot est cliquable on remplit texte_liens
+
+
+	mx	%10
+	
+test_condition
+*	rep	#$20
+	phx		; 3,s
+	phy		; 1,s
+
+* condition&=condition&(scene_actuelle|,i%)
+
+*	lda	index_mot
+*	asl
+*	clc
+*	adc	localOFFSET
+*	tax
+*	lda	condition,x
+
+	lda	#TRUE
+]lp	dex
+	dey
+	bmi	tc_99
+	sta	texte_liens,x
+	bra	]lp
+	
+* IF (condition&>0 AND scene_visitee!(ABS(condition&))=TRUE) OR (condition&<0 AND scene_visitee!(ABS(-condition&))=FALSE)
+
+tc_99	ply
+	plx
+	
+tc_ok
+*	sep	%20
+	rts
+
+	mx	%00
 	
 *-----------------------
 * MUSIQUE - OK

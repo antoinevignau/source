@@ -947,7 +947,16 @@ affiche_texte
 
 	sep	#$20	; A en 8-bits
 
-* 1- recopie le texte entier
+* 1- clear le texte final
+
+	ldx	#0	; on remplit de space chars
+	lda	#texteSPACE
+]lp	sta	texte_final,x
+	inx
+	cpx	#max_colonnes*max_lignes
+	bcc	]lp
+
+* 2- recopie le texte entier
 
 	ldy	#0
 ]lp	lda	[dpTEXTES],y
@@ -964,7 +973,7 @@ at_2	sep	#$20
 
 	ldx	i
 	ldy	#0
-]lp	lda	texte,x
+]lp	lda	texte,x	
 	sta	ligne_max,y
 	inx
 	iny
@@ -1010,15 +1019,17 @@ at_4	stx	len_max
 	inx
 	cpx	len_max
 	bcc	]lp
-	beq	]lp
 
-	rep	#$20
-	lda	#max_colonnes
-	sec
-	sbc	len_max
-	tax
-	sep	#$20
-	jsr	set_space
+	cpx	#max_colonnes
+	bcs	noSPC
+	
+	lda	#instrSPACE
+]lp	jsr	set_textefinal
+	inx
+	cpx	#max_colonnes
+	bcc	]lp
+	
+noSPC
 	
 * ADD i%,LEN(ligne_max$)
 
@@ -1037,20 +1048,17 @@ at_case1	ldx	i	; on utilise X pour tre en 16-bits
 	inx
 	stx	i
 
-	ldx	#max_colonnes
-	jsr	set_space
-	bra	at_8
+	ldx	#0
+	lda	#instrSPACE
+]lp	jsr	set_textefinal
+	inx
+	cpx	#max_colonnes
+	bcc	]lp
+	bcs	at_8
 
 * DEFAULT
 
-* DEC return% - useless
-
-at_default
-*	dec	return
-
-* ligne_max$=LEFT$(return$,return%)
-
-	ldx	#0
+at_default	ldx	#0	; ligne_max$=LEFT$(return$,return%)
 ]lp	lda	ligne_max,x
 	jsr	set_textefinal
 	inx
@@ -1059,13 +1067,16 @@ at_default
 
 * b$=b$+ligne_max$+SPACE$(max_colonnes|-return%)
 
-	rep	#$20
-	lda	#max_colonnes
-	sec
-	sbc	return
-	tax
-	sep	#$20
-	jsr	set_space
+	cpx	#max_colonnes
+	bcs	noSPC2
+	
+	lda	#instrSPACE
+]lp	jsr	set_textefinal
+	inx
+	cpx	#max_colonnes
+	bcc	]lp
+
+noSPC2	
 
 * ADD i%,return%+1
 	
@@ -1079,8 +1090,7 @@ at_default
 
 * UNTIL i%>=longueur_texte%
 
-at_8
-	rep	#$20
+at_8	rep	#$20
 	lda	dpTO
 	dec
 	sta	dpTO
@@ -1091,42 +1101,18 @@ at_8
 	bcs	at_9
 	brl	at_2	; we loop
 
-* on comble de lignes blanches
-	
-at_9	ldx	#0	; on remplit de space chars
-	lda	#texteSPACE
-]lp	sta	texte,x
-	inx
-	cpx	#max_colonnes*max_lignes
-	bcc	]lp
-
-	rep	#$20	; la longueur du texte final
-	lda	dpTO
-	sec
-	sbc	#texte_final
-	sta	return
-	sep	#$20
-	
-	ldx	#0
-]lp	lda	texte_final,x
-	sta	texte+max_colonnes,x
-	inx
-	cpx	return
-	bcc	]lp
+at_9
+	mx	%00
 	
 * on imprime le texte (enfin)
 
 modeForeCopy =	$0004	; QDII Table 16-10
 
-	mx	%00
-	
 	rep	#$20
-	
 	jsr	switch_640	; switch to 640
+	bra	skipME
 
 * on s'occupe des couleurs d'index 5 et A
-
-	bra	skipME
 	
 	lda	ptrFOND
 	sta	dpFROM
@@ -1183,7 +1169,7 @@ skipME
 	PushWord	#modeForeCopy
 	_SetTextMode
 
-	PushLong	#texte
+	PushLong	#texte_final
 	PushWord	#1
 	PushWord	#1
 	PushWord	#0	; c'est normalement le modeForeCopy
@@ -1193,18 +1179,10 @@ skipME
 	
 	rts
 
-*--- output X space char dans texte final
+*--- output dans texte final
 
 	mx	%10
 	
-set_space	lda	#instrSPACE
-]lp	jsr	set_textefinal
-	dex
-	bne	]lp
-	rts
-
-*--- output dans texte final
-
 set_textefinal
 	sta	(dpTO)
 	inc	dpTO
@@ -1457,6 +1435,23 @@ tblATARI	hex	000102030405060708090A0B0C0D0E0F
 	hex	9091929994959E9D98999A9B9C9D9E9F
 	hex	A0A1A2A3A4A5A6A7A8A9AAABACADAEAF
 	hex	B0B1B2B3CFCEB6B7B8B9BBBABCBDBEBF
+	hex	C0C1C2C3C4C5C6C7C8C9CACBCCCDCECF
+	hex	D0D1D2D3D4D5D6D7D8D9DADBDCDDDEDF
+	hex	E0E1E2E3E4E5E6E7E8E9EAEBECEDEEEF
+	hex	F0F1F2F3F4F5F6F7F8F9FAFBFCFDFEFF
+
+tblUPPER	hex	000102030405060708090A0B0C0D0E0F
+	hex	101112131415161718191A1B1C1D1E1F
+	hex	202122232425262728292A2B2C2D2E2F
+	hex	303132333435363738393A3B3C3D3E3F
+	hex	404142434445464748494A4B4C4D4E4F
+	hex	505152535455565758595A5B5C5D5E5F
+	hex	604142434445464748494A4B4C4D4E4F	; a-z => A-Z
+	hex	505152535455565758595A7B7C7D7E7F
+	hex	808182838485868788898A8B8C8D8E8F
+	hex	909192939495969798999A9B9C9D9E9F
+	hex	A0A1A2A3A4A5A6A7A8A9AAABACADAEAF
+	hex	B0B1B2B3B4B5B6B7B8B9BABBBCBDBEBF
 	hex	C0C1C2C3C4C5C6C7C8C9CACBCCCDCECF
 	hex	D0D1D2D3D4D5D6D7D8D9DADBDCDDDEDF
 	hex	E0E1E2E3E4E5E6E7E8E9EAEBECEDEEEF

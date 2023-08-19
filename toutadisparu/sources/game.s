@@ -15,6 +15,12 @@ NB_INDICATEURS =	10
 NB_MOTS	=	25	; on ne peut pas avoir plus de 25 mots par ecran
 NB_TEXTES	=	160	; nombre de textes du jeu
 
+linksON	=	TRUE
+linksOFF	=	FALSE
+
+colorBLACK	=	0
+colorWHITE	=	15
+
 *-----------------------
 * load_font
 *-----------------------
@@ -927,14 +933,14 @@ initialisation_cache
 	rts
 
 *-----------------------
-* AFFICHE_TEXTE
+* PREPARE_TEXTE
 *-----------------------
-* affiche_texte
+* prepare_texte
 
 texteSPACE	=	$5f
 texteRC	=	$9c
 
-affiche_texte
+prepare_texte
 	stz	i	; on commence à 0
 
 	lda	#texte_final
@@ -1096,14 +1102,32 @@ at_8	rep	#$20
 	bcs	at_9
 	brl	at_2	; we loop
 
-at_9
-	mx	%00
+at_9	rep	#$20
+	rts
+
+*--- output dans texte final
+
+	mx	%10
+	
+set_textefinal
+	sta	(dpTO)
+	inc	dpTO
+	bne	set_tf1
+	inc	dpTO+1
+set_tf1	rts
+
+	mx	%00	; on revient en 16-bits
+
+*-----------------------
+* AFFICHE_TEXTE
+*-----------------------
+* affiche_texte
 	
 * on imprime le texte (enfin)
 
 modeForeCopy =	$0004	; QDII Table 16-10
 
-	rep	#$20
+affiche_texte
 	jsr	switch_640	; switch to 640
 	bra	skipME
 
@@ -1164,29 +1188,16 @@ skipME
 	PushWord	#modeForeCopy
 	_SetTextMode
 
+	PushLong	#texte_liens
 	PushLong	#texte_final
 	PushWord	#1
 	PushWord	#1
-	PushWord	#0	; c'est normalement le modeForeCopy
+	PushWord	#linksON	; on affiche 
 	jsr	print
 
 	_SetTextMode	; restore original mode
-	
 	rts
 
-*--- output dans texte final
-
-	mx	%10
-	
-set_textefinal
-	sta	(dpTO)
-	inc	dpTO
-	bne	set_tf1
-	inc	dpTO+1
-set_tf1	rts
-
-	mx	%00	; on revient en 16-bits
-	
 *-----------------------
 * DEBUT_AVENTURE - OK
 *-----------------------
@@ -1282,6 +1293,7 @@ surligner_mot
 * 5,s	w	Y
 * 7,s	w	X
 * 9,s	l	text pointer
+* 13,s	l	link pointer
 
 max_colonnes =	75	; 80 - 75
 max_lignes	=	20	; 20 - 18
@@ -1291,7 +1303,11 @@ marge_gauche =	3	; nombre de caractères sautés pour la marge
 
 *---
 
-print	lda	11,s
+print	lda	15,s
+	sta	dpTO+2
+	lda	13,s
+	sta	dpTO
+	lda	11,s
 	sta	dpFROM+2
 	lda	9,s
 	sta	dpFROM
@@ -1307,6 +1323,8 @@ printLOOP	lda	[dpFROM]
 	bne	print1
 
 printEXIT	lda	1,s
+	plx
+	plx
 	plx
 	plx
 	plx
@@ -1341,7 +1359,19 @@ print1	cmp	#instrSPACE	; skip space char
 	lda	y_coord,y
 	pha
 	_MoveTo
-	_DrawChar
+
+* Check font color
+
+	lda	printMODE
+	cmp	#FALSE
+	beq	print11
+	
+	lda	[dpTO]
+	and	#$ff
+	pha
+	_SetForeColor
+	
+print11	_DrawChar
 
 * 4- next character
 
@@ -1366,7 +1396,15 @@ print4	inc	dpFROM
 	bne	print5
 	inc	dpFROM+2
 
-print5	brl	printLOOP
+print5	lda	printMODE	; do we use links?
+	cmp	#FALSE
+	beq	print6
+	
+	inc	dpTO	; yes, we do
+	bne	print6
+	inc	dpTO+2
+	
+print6	brl	printLOOP
 
 *---
 
@@ -1451,11 +1489,12 @@ tblUPPER	hex	000102030405060708090A0B0C0D0E0F
 * A= ptr to string
 * Y= line index
 
-cprint	pea	^cprint	; ptr to text
+cprint	PushLong	#0	; no link pointer
+	pea	^cprint	; ptr to text
 	pha
 	pha	; X
 	phy	; Y
-	pea	$0000	; mode
+	PushWord	#linksOFF	; mode
 
 	pea	$0000	; count nb of chars in the string
 	sta	dpFROM
@@ -1819,7 +1858,7 @@ help_str16	asc	'OA-Q : quitter le jeu'00
 mots_clicables
 	sep	#$20	; texte2$=UPPER$(texte$)
 	ldx	#0
-]lp	lda	#FALSE	; on efface texte_liens
+]lp	lda	#colorBLACK	; on efface texte_liens
 	sta	texte_liens,x
 
 	lda	texte_final,x	; on majusculinise le texte
@@ -1878,13 +1917,14 @@ mc_1	rep	#$20
 	iny
 	bne	]lp
 
-mc_2	sty	len_max
+mc_2	dey
+	sty	len_max
 
 *--- REPEAT
 *--- pointeur_mot%=INSTR(texte2$,mot2$,pointeur_mot%)
 *--- IF INSTR(alphabet$,UPPER$(MID$(texte$,pointeur_mot%-1,1)),1)=0 AND INSTR(alphabet$,UPPER$(MID$(texte$,pointeur_mot%+LEN(mot$),1)))=0
 	
-	ldx	i	; on commence avec -1
+	ldx	i	; on commence avec 0
 mc_3	ldy	#0
 ]lp	lda	mot,y	; compare le mot
 	cmp	texte,x
@@ -1895,10 +1935,6 @@ mc_3	ldy	#0
 	cpy	len_max
 	bne	]lp
 	
-	ldal	$c034
-	inc
-	stal	$c034
-
 	jsr	test_condition	; on a trouvé le mot
 	bra	mc_6
 
@@ -1941,7 +1977,7 @@ test_condition
 *	tax
 *	lda	condition,x
 
-	lda	#TRUE
+	lda	#colorWHITE
 ]lp	dex
 	dey
 	bmi	tc_99

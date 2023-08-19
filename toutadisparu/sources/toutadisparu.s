@@ -292,9 +292,11 @@ mainLOOP	lda	scene_actuelle
 	jsr	image
 	lda	scene_actuelle
 	jsr	get_textes		; prend le texte de l'écran
-	jsr	affiche_texte	; affiche-le
+	jsr	prepare_texte	; affiche-le
 	jsr	mots_clicables
-	
+	jsr	affiche_texte
+	jsr	attente
+
 	lda	scene_actuelle
 	jsr	suite_forcee
 	sta	fgSUITEFORCEE	; true if no words but 'suite'

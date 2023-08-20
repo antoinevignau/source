@@ -302,8 +302,9 @@ mainLOOP	lda	scene_actuelle
 *	cmp	#$47
 *	bne	okboss
 *	brk	$bd
-	
-okboss	jsr	attente		; attend sur l'image
+*okboss
+
+	jsr	attente		; attend sur l'image
 
 *----------------------------------------
 * TASK MASTER (no more)

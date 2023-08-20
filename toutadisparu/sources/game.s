@@ -1866,6 +1866,8 @@ mots_clicables
 	ldx	#0
 ]lp	lda	texte_final,x
 	tay
+	lda	tblATARI,y
+	tay
 	lda	tblUPPER,y
 	sta	texte,x
 	inx

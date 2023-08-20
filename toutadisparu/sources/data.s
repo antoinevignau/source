@@ -36,6 +36,9 @@ rvb5	ds	2
 rvbA	ds	2
 index_mot	ds	2	; un autre index qui pointe
 nb_mots	ds	2	; nombre de mots dans la scene
+mot_clique	ds	2	; index du mot cliqué
+mot_ancien	ds	2	; index du mot précédemment cliqué
+valeur_condition ds	2	; valeur condition 2B xx ou 2D yy
 aventure	ds	2
 nombre_scenes ds	2
 scene_actuelle ds	2

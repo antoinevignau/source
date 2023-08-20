@@ -297,8 +297,6 @@ mainLOOP	lda	scene_actuelle
 
 taskLOOP	inc	VBLCounter0
 
-	jsr	test_curseur
-	
 *	PushWord #0
 *	PushWord #%11111111_11111111
 *	PushLong #taskREC
@@ -381,19 +379,23 @@ doMOUSEUP
 	lda	scene_actuelle	; a-t-on des mots cliquables ?
 	jsr	suite_forcee
 	
-	lda	fgSUITEFORCEE	; non, on sort
+	lda	fgSUITEFORCEE
 	cmp	#FALSE
 	beq	mup1
-	rts
+	rts		; non, on sort
 
 mup1	jsr	clic_mot	; oui, on vérifie si on a cliqué sur un mot => mot$
-	bcs	mup9	; on sort sans clic sur un mot
-	jsr	aiguillage	; on aiguille le joueur
+	bcc	mup2	; oui
+	rts
 	
-	lda	#TRUE	; aiguillons les amis !
-	sta	deplacement
-
-mup9	rts
+mup2	lda	mot_clique	; a-t-on cliqué de nouveau sur le même mot ?
+	cmp	mot_ancien
+	beq	mup3
+	jsr	affiche_commentaire
+	rts
+mup3	lda	scene_actuelle
+	jsr	aiguille	; on aiguille le joueur si c'est le second clic
+	rts
 
 *-----------------------------------
 * AUTRES ROUTINES
@@ -440,8 +442,7 @@ mainPORT	ds	4
 
 *----------------------------------- Open
 
-doLOAD
-	jsr	suspendMUSIC	; NTP off
+doLOAD	jsr	suspendMUSIC	; NTP off
 	jsr	saveBACK
 	
 	PushWord #30
@@ -465,8 +466,7 @@ doLOAD1
 	
 *----------------------------------- Save
 
-doSAVE
-	jsr	suspendMUSIC	; NTP off
+doSAVE	jsr	suspendMUSIC	; NTP off
 	jsr	saveBACK
 	
 	PushWord #25
@@ -594,8 +594,7 @@ saveIT
 
 *----------------------------------- Restart - LOGO (must handle escape)
 
-doRESTART
-	jsr	saveBACK
+doRESTART	jsr	saveBACK
 
 	PushWord #0
 	PushWord #5
@@ -613,13 +612,11 @@ doRESTART
 	beq	re1
 	rts
 
-re1
-	jmp	initialisation_relative
+re1	jmp	initialisation_relative
 
 *----------------------------------- Quit
 
-doQUIT
-	jsr	saveBACK
+doQUIT	jsr	saveBACK
 	
 	PushWord #0
 	PushWord #5
@@ -639,8 +636,7 @@ doQUIT
 
 *----------------------------------- Quit
 
-meQUIT
-	jsr	stopNTP
+meQUIT	jsr	stopNTP
 	
 meQUIT0
 	PushWord #refIsHandle
@@ -666,8 +662,7 @@ meQUIT1
 * MEMOIRE
 *----------------------------------------
 
-make64KB
-	pha
+make64KB	pha
 	pha
 	PushLong #$010000
 	PushWord myID

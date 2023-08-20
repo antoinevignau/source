@@ -865,7 +865,7 @@ doDIESE	jsr	next_index
 
 *--- condition&(scene|,pointeur_mots|(scene|)) = 
 *--- ASC(MID$(ligne$,espace%+2,1))*VAL(MID$(ligne$,espace%+1,1)+"1")
-*--- Ici, on ne fait pas le calcul de la version Atari pour le moment
+*--- Ici, on ne fait pas le calcul de la version Atari
 
 	jsr	next_index
 
@@ -1271,13 +1271,53 @@ nouvelle_scene
 ns_99	rts
 
 *-----------------------
-* CLIC_MOT
+* CLIC_MOT - OK
 *-----------------------
 * clic_mot
+* on regarde sur quel mot on a cliqué
 
 clic_mot
+	lda	taskWHERE+2	; X
+	asl
+	tax
+	lda	x_text,x
+	bpl	tc_1
+	lda	#0
+tc_1	pha
+	
+	lda	taskWHERE	; Y
+	asl
+	tax
+	lda	y_text,x
+	clc
+	adc	1,s
+	tax
+	pla
+
+	lda	texte_index,x
+	and	#$ff
+	bne	tc_2
+	sec		; pas de mot
+	rts
+tc_2	ldx	mot_clique	; on sauvegarde l'ancien mot
+	stx	mot_ancien
+	sta	mot_clique	; et le nouveau
+	clc		; on a un mot
 	rts
 
+*-----------------------
+* AFFICHE_COMMENTAIRE
+*-----------------------
+* affiche_commentaire
+
+affiche_commentaire
+	sep	#$20
+	ldal	$c034
+	inc
+	stal	$c034
+	rep	#$20
+	rts
+	
 *-----------------------
 * SURLIGNER_MOT
 *-----------------------
@@ -1703,114 +1743,41 @@ sf_99	sta	deplacement
 strSUITE	asc	'suite '
 
 *-----------------------
-* TEST_CURSEUR
+* AIGUILLAGE
 *-----------------------
-* test_curseur
-* on regarde si le curseur se trouve sur un mot cliquable
+* aiguille(scene)
+* parce que le tableau aiguillag existe
 
-test_curseur
-	lda	taskWHERE+2
-	sta	x1
-	lda	taskWHERE
-	sta	y1
-
-	lda	#'  '
-	sta	strX1
-	sta	strX1+2
-	sta	strY1
-	sta	strY1+2
-	sta	strX2
-	sta	strX2+2
-	sta	strY2
-	sta	strY2+2
-	sta	strIDX
-	sta	strIDX+2
-
-	lda	taskWHERE+2	; X
-	asl
-	tax
-	lda	x_text,x
-	bpl	tc_1
-	lda	#0
-tc_1	sta	x2
+aiguille	cmp	#0
+	beq	ai_false
+	
+	dec		; prend la scene
+	pha		; calcul l'index dans la dimension NB_MOTS
 	pha
-	
-	lda	taskWHERE	; Y
-	asl
-	tax
-	lda	y_text,x
-	sta	y2
-	
-	clc
-	adc	1,s
-	tax
-	sta	idx
-	pla		; on a l'index dans le texte
+	pha		; index de scène
+	PushWord #NB_MOTS	; taille d'une dimension
+	_Multiply
+	pla
+	clc		; 0=>0, 1=>25, 2=>50
+	adc	#aiguillage
+	sta	dpFROM	; on pointe sur l'index du premier mot
+	pla
 
-	lda	texte_index,x
+	ldy	mot_clique
+	dey
+	lda	(dpFROM),y	; la prochaine scène
 	and	#$ff
-	ora	#'0'
-	sep	#$20
-	sta	strHIT
-	rep	#$20
-
-	PushWord	x1
-	PushLong	#strX1
-	PushWord	#4
-	_Int2Hex
+	sta	scene_actuelle
 	
-	PushWord	y1
-	PushLong	#strY1
-	PushWord	#4
-	_Int2Hex
-	
-	PushWord	x2
-	PushLong	#strX2
-	PushWord	#4
-	_Int2Hex
-	
-	PushWord	y2
-	PushLong	#strY2
-	PushWord	#4
-	_Int2Hex
-	
-	PushWord	idx
-	PushLong	#strIDX
-	PushWord	#4
-	_Int2Hex
-	
-	PushWord	#150
-	PushWord	#150
-	_MoveTo
-	PushLong	#string
-	_DrawCString
-	
-	ldal	KBD-1
-	bmi	boum
+	lda	#TRUE
+	sta	deplacement
+	lda	#FALSE
+	sta	fgSUITEFORCEE
 	rts
-boum	stal	KBDSTROBE-1
-
-	lda	#texte_index
-	brk	$bd
-	
-x1	ds	2
-y1	ds	2
-x2	ds	2
-y2	ds	2
-idx	ds	2
-
-string	asc	'X1='
-strX1	asc	'    '
-	asc	' Y1='
-strY1	asc	'    '
-	asc	' X2='
-strX2	asc	'    '
-	asc	' Y2='
-strY2	asc	'    '
-	asc	' IDX='
-strIDX	asc	'    '
-	asc	' HIT='
-strHIT	asc	' '00
+ai_false	lda	#FALSE
+	sta	deplacement
+	sta	fgSUITEFORCEE
+	rts
 
 *-----------------------
 * CHARGE_IMAGE - OK
@@ -1989,6 +1956,9 @@ help_str16	asc	'OA-Q : quitter le jeu'00
 * mots_clicables(texte$)
 
 mots_clicables
+	lda	#-1	; force un mot différent en entrée de scène
+	sta	mot_ancien
+
 	lda	#0	; on init les registres (mais pourquoi ?)
 	tax
 	tay

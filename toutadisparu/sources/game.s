@@ -1431,28 +1431,22 @@ y_coord	=	*
 	--^
 
 x_text	=	*
+	dw	-1,-1,-1,-1,-1,-1,-1,-1
+	dw	-1,-1,-1,-1,-1,-1,-1,-1
+	dw	-1,-1,-1,-1,-1,-1,-1,-1
 ]x	=	0	; Premire colonne
 	lup	max_colonnes
-	dw	]x
-	dw	]x
-	dw	]x
-	dw	]x
+	dw	]x,]x,]x,]x,]x,]x,]x,]x
 ]x	=	]x+1
 	--^
+	dw	-1,-1,-1,-1,-1,-1,-1,-1
+	dw	-1,-1,-1,-1,-1,-1,-1,-1
+	dw	-1,-1,-1,-1,-1,-1,-1,-1
 
 y_text	=	*
 ]y	=	0	; Premire ligne
 	lup	max_lignes
-	dw	]y
-	dw	]y
-	dw	]y
-	dw	]y
-	dw	]y
-	dw	]y
-	dw	]y
-	dw	]y
-	dw	]y
-	dw	]y
+	dw	]y,]y,]y,]y,]y,]y,]y,]y,]y,]y
 ]y	=	]y+max_colonnes
 	--^
 
@@ -1719,17 +1713,26 @@ test_curseur
 	sta	x1
 	lda	taskWHERE
 	sta	y1
-	
+
+	lda	#'  '
+	sta	strX1
+	sta	strX1+2
+	sta	strY1
+	sta	strY1+2
+	sta	strX2
+	sta	strX2+2
+	sta	strY2
+	sta	strY2+2
+	sta	strIDX
+	sta	strIDX+2
+
 	lda	taskWHERE+2	; X
-	sec
-	sbc	#marge_gauche*largeur_caractere
-	bpl	tc_1
-	lda	#0
-tc_1	asl
+	asl
 	tax
 	lda	x_text,x
-	bmi	tc_2
-	sta	x2
+	bpl	tc_1
+	lda	#0
+tc_1	sta	x2
 	pha
 	
 	lda	taskWHERE	; Y
@@ -1744,24 +1747,70 @@ tc_1	asl
 	sta	idx
 	pla		; on a l'index dans le texte
 
-	lda	texte_liens,x
+	lda	texte_index,x
 	and	#$ff
-	cmp	#FALSE
-	beq	tc_2
-
-	sep	#$20	; c'est un mot cliquable
-	ldal	$c034
-	inc
-	stal	$c034
+	ora	#'0'
+	sep	#$20
+	sta	strHIT
 	rep	#$20
-	
-tc_2	rts
 
+	PushWord	x1
+	PushLong	#strX1
+	PushWord	#4
+	_Int2Hex
+	
+	PushWord	y1
+	PushLong	#strY1
+	PushWord	#4
+	_Int2Hex
+	
+	PushWord	x2
+	PushLong	#strX2
+	PushWord	#4
+	_Int2Hex
+	
+	PushWord	y2
+	PushLong	#strY2
+	PushWord	#4
+	_Int2Hex
+	
+	PushWord	idx
+	PushLong	#strIDX
+	PushWord	#4
+	_Int2Hex
+	
+	PushWord	#150
+	PushWord	#150
+	_MoveTo
+	PushLong	#string
+	_DrawCString
+	
+	ldal	KBD-1
+	bmi	boum
+	rts
+boum	stal	KBDSTROBE-1
+
+	lda	#texte_index
+	brk	$bd
+	
 x1	ds	2
 y1	ds	2
 x2	ds	2
 y2	ds	2
 idx	ds	2
+
+string	asc	'X1='
+strX1	asc	'    '
+	asc	' Y1='
+strY1	asc	'    '
+	asc	' X2='
+strX2	asc	'    '
+	asc	' Y2='
+strY2	asc	'    '
+	asc	' IDX='
+strIDX	asc	'    '
+	asc	' HIT='
+strHIT	asc	' '00
 
 *-----------------------
 * CHARGE_IMAGE - OK
@@ -2024,8 +2073,8 @@ mc_3	ldy	#0
 	cpy	len_max
 	bcc	]lp
 
-	jsr	test_condition	; on a trouvŽ le mot
-	bra	mc_6
+	jsr	test_condition	; vŽrifie s'il est cliquable
+	bra	mc_6		; mot suivant
 
 mc_5	inx	
 	cpx	#max_colonnes*max_lignes
@@ -2050,25 +2099,48 @@ mc_99	rep	#$20	; on sort
 * si le mot est cliquable on remplit texte_liens
 
 
-	mx	%10
+	mx	%00
 	
 test_condition
-*	rep	#$20
+	rep	#$20
 	phx		; 3,s
 	phy		; 1,s
-
+	
 * condition&=condition&(scene_actuelle|,i%)
 
-*	lda	index_mot
-*	asl
-*	clc
-*	adc	localOFFSET
-*	tax
-*	lda	condition,x
+	lda	index_mot
+	asl
+	clc
+	adc	localOFFSET
+	tax
+	lda	condition,x	; xxx2B ou yy2D
+	pha
+	and	#$ff00	; index dans scene_visitee
+	xba
+	tax
+	lda	scene_visitee-1,x
+	and	#$ff
+	tax		; true ou false
+	pla
+	and	#$00ff	; 2B ou 2D
 
+* IF (condition&>0 AND scene_visitee!(ABS(condition&))=TRUE) OR (condition&<0 AND scene_visitee!(ABS(-condition&))=FALSE)
+
+	cmp	#'+'
+	bne	tc_moins
+	cpx	#TRUE
+	beq	tc_addmot
+	bne	tc_prendpas
+
+tc_moins	cpx	#FALSE
+	bne	tc_prendpas
+
+tc_addmot	ply		; marque le mot dans les buffers
+	plx
+	sep	#$20
 ]lp	dex
 	dey
-	bmi	tc_99
+	bmi	tc_ok	; on sort sans dŽpiler
 	lda	#colorWHITE
 	sta	texte_liens,x
 	lda	index_mot
@@ -2076,15 +2148,14 @@ test_condition
 	sta	texte_index,x
 	bra	]lp
 	
-* IF (condition&>0 AND scene_visitee!(ABS(condition&))=TRUE) OR (condition&<0 AND scene_visitee!(ABS(-condition&))=FALSE)
-
-tc_99	ply
+tc_prendpas	ply
 	plx
 	
-tc_ok
-*	sep	%20
+tc_ok	sep	#$20
 	rts
 
+	mx	%00
+	
 *-----------------------
 * MUSIQUE - OK
 *-----------------------

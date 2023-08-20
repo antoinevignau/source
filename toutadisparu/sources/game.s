@@ -950,9 +950,12 @@ prepare_texte
 
 * 1- clear le texte final
 
-	ldx	#0	; on remplit de space chars
-	lda	#texteSPACE
-]lp	sta	texte_final,x
+	ldx	#0	; on initialise les buffers
+]lp	lda	#texteSPACE
+	sta	texte_final,x
+	lda	#colorBLACK
+	sta	texte_liens,x
+	stz	texte_index,x
 	inx
 	cpx	#max_colonnes*max_lignes
 	bcc	]lp
@@ -1244,8 +1247,7 @@ fin_aventure
 *-----------------------
 * fin
 
-fin
-	rts
+fin	rts
 	
 *-----------------------
 * NOUVELLE_SCENE - OK
@@ -1293,7 +1295,7 @@ surligner_mot
 * 5,s	w	Y
 * 7,s	w	X
 * 9,s	l	text pointer
-* 13,s	l	link pointer
+* 13,s	l	color pointer
 
 max_colonnes =	75	; 80 - 75
 max_lignes	=	20	; 20 - 18
@@ -1675,6 +1677,7 @@ suite_forcee
 	bra	sf_99
 sf_false	lda	#FALSE
 sf_99	sta	deplacement
+	sta	fgSUITEFORCEE
 	rts
 
 strSUITE	asc	'suite '
@@ -1856,12 +1859,12 @@ help_str16	asc	'OA-Q : quitter le jeu'00
 * mots_clicables(texte$)
 
 mots_clicables
+	lda	#0	; on init les registres (mais pourquoi ?)
+	tax
+	tay
 	sep	#$20	; texte2$=UPPER$(texte$)
 	ldx	#0
-]lp	lda	#colorBLACK	; on efface texte_liens
-	sta	texte_liens,x
-
-	lda	texte_final,x	; on majusculinise le texte
+]lp	lda	texte_final,x
 	tay
 	lda	tblUPPER,y
 	sta	texte,x
@@ -1905,20 +1908,23 @@ mc_1	rep	#$20
 	sta	dpINDEX
 	lda	ptrINDEX+2
 	sta	dpINDEX+2
-
-	sep	#$20	; on majusculinise le mot
-	ldy	#0	; ˆ chercher
-]lp	lda	[dpINDEX],y
+	
+	lda	#0	; on initialise les registres
 	tax
-	lda	tblUPPER,x
-	sta	mot,y
+	tay
+	sep	#$20	; on majusculinise le mot
+]lp	lda	[dpINDEX],y
 	cmp	#instrSPACE
 	beq	mc_2
+	tax
+	lda	tblATARI,x	; from Atari to IIgs
+	tax
+	lda	tblUPPER,x	; to upper case
+	sta	mot,y
 	iny
 	bne	]lp
 
-mc_2	dey
-	sty	len_max
+mc_2	sty	len_max
 
 *--- REPEAT
 *--- pointeur_mot%=INSTR(texte2$,mot2$,pointeur_mot%)
@@ -1929,12 +1935,12 @@ mc_3	ldy	#0
 ]lp	lda	mot,y	; compare le mot
 	cmp	texte,x
 	bne	mc_5	; pas le mme mot
-	
+
 	inx
 	iny
 	cpy	len_max
-	bne	]lp
-	
+	bcc	]lp
+
 	jsr	test_condition	; on a trouvŽ le mot
 	bra	mc_6
 
@@ -1977,11 +1983,14 @@ test_condition
 *	tax
 *	lda	condition,x
 
-	lda	#colorWHITE
 ]lp	dex
 	dey
 	bmi	tc_99
+	lda	#colorWHITE
 	sta	texte_liens,x
+	lda	index_mot
+	inc
+	sta	texte_index,x
 	bra	]lp
 	
 * IF (condition&>0 AND scene_visitee!(ABS(condition&))=TRUE) OR (condition&<0 AND scene_visitee!(ABS(-condition&))=FALSE)
@@ -1991,6 +2000,17 @@ tc_99	ply
 	
 tc_ok
 *	sep	%20
+	rts
+
+*-----------------------
+* DEBUG - OK
+*-----------------------
+
+	mx	%10
+
+DEBUG	ldal	$c034
+	inc
+	stal	$c034
 	rts
 
 	mx	%00

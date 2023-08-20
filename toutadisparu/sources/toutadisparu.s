@@ -151,6 +151,11 @@ FALSE	=	0
 	lda	#^mots_clicables
 	stal	$302
 	
+	lda	#LES_TEXTES
+	stal	$310
+	lda	#^LES_TEXTES
+	stal	$312
+	
 *--- Version du systeme
 
 	jsl	GSOS
@@ -281,9 +286,6 @@ main
 	jsr	initialisation_relative
 	jsr	fadeOUT
 
-	lda	#2
-	sta	scene_actuelle
-	
 *---
 	
 mainLOOP	lda	scene_actuelle
@@ -292,15 +294,17 @@ mainLOOP	lda	scene_actuelle
 	jsr	image
 	lda	scene_actuelle
 	jsr	get_textes		; prend le texte de l'écran
-	jsr	prepare_texte	; affiche-le
-	jsr	mots_clicables
-	jsr	affiche_texte
-	jsr	attente
+	jsr	prepare_texte	; prepare le texte
+	jsr	mots_clicables	; ajoute les mots cliquables
+	jsr	affiche_texte	; affiche le texte
 
-	lda	scene_actuelle
-	jsr	suite_forcee
-	sta	fgSUITEFORCEE	; true if no words but 'suite'
-		
+*	lda	scene_actuelle
+*	cmp	#$47
+*	bne	okboss
+*	brk	$bd
+	
+okboss	jsr	attente		; attend sur l'image
+
 *----------------------------------------
 * TASK MASTER (no more)
 *----------------------------------------
@@ -386,6 +390,17 @@ tblKEYADDRESS
 
 doMOUSEDOWN
 doMOUSEUP
+	lda	scene_actuelle	; a-t-on des mots cliquables ?
+	jsr	suite_forcee
+	
+	lda	fgSUITEFORCEE	; non, on sort
+	cmp	#FALSE
+	beq	mup1
+	rts
+mup1	jsr	clic_mot		; oui, on vérifie si on a cliqué sur un mot => mot$
+
+*--- LOGO
+
 	lda	scene_actuelle
 	inc
 	cmp	nombre_scenes
@@ -395,21 +410,6 @@ okok	sta	scene_actuelle
 
 	lda	#TRUE
 	sta	deplacement
-	rts
-
-	lda	fgSUITEFORCEE
-	cmp	#FALSE
-	beq	mup1
-	rts
-mup1	jsr	clic_mot	; on vérifie si on a cliqué sur un mot => mot$
-
-	lda	scene_actuelle
-	sta	scene_nouvelle
-
-*--- LOGO
-
-	lda	scene_nouvelle
-	sta	scene_actuelle
 	rts
 
 *-----------------------------------

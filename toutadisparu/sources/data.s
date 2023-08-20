@@ -62,6 +62,8 @@ texte_final	ds	max_colonnes*max_lignes	; the final text - known as b$ in Atari S
 	ds	2
 	asc	"TEXTE_LIENS"
 texte_liens	ds	max_colonnes*max_lignes	; FALSE: not a link, TRUE est un mot cliquable
+	asc	"TEXTE_INDEX"
+texte_index	ds	max_colonnes*max_lignes	; numro du mot
 
 * Toujours en dcal : index 1 dmarre ˆ 0 (NB_TEXTES est toujours > au nombre de scnes)
 

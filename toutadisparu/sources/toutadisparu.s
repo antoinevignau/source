@@ -107,12 +107,14 @@ keyDownEvt	=	$0003
 dpFROM	=	$80
 dpTO	=	dpFROM+4
 
-dpINDEX	= 	$90	; pointeur vers les INDEX
+dpINDEX	= 	dpFROM+$10	; pointeur vers les INDEX
 dpTEXTES	=	dpINDEX+4	; pointeur vers les TEXTES
 
-Debut	=	$a0
+Debut	=	dpINDEX+$10
 Arrivee	=	Debut+4
 Second	=	Arrivee+4
+
+*---
 
 mode_320	=	$00
 mode_640	=	$80
@@ -146,16 +148,6 @@ FALSE	=	0
 	tdc
 	sta	myDP
 
-	lda	#mots_clicables
-	stal	$300
-	lda	#^mots_clicables
-	stal	$302
-	
-	lda	#LES_TEXTES
-	stal	$310
-	lda	#^LES_TEXTES
-	stal	$312
-	
 *--- Version du systeme
 
 	jsl	GSOS
@@ -297,13 +289,6 @@ mainLOOP	lda	scene_actuelle
 	jsr	prepare_texte	; prepare le texte
 	jsr	mots_clicables	; ajoute les mots cliquables
 	jsr	affiche_texte	; affiche le texte
-
-*	lda	scene_actuelle
-*	cmp	#$47
-*	bne	okboss
-*	brk	$bd
-*okboss
-
 	jsr	attente		; attend sur l'image
 
 *----------------------------------------
@@ -312,6 +297,8 @@ mainLOOP	lda	scene_actuelle
 
 taskLOOP	inc	VBLCounter0
 
+	jsr	test_curseur
+	
 *	PushWord #0
 *	PushWord #%11111111_11111111
 *	PushLong #taskREC
@@ -398,42 +385,30 @@ doMOUSEUP
 	cmp	#FALSE
 	beq	mup1
 	rts
-mup1	jsr	clic_mot		; oui, on vérifie si on a cliqué sur un mot => mot$
 
-*--- LOGO
-
-	lda	scene_actuelle
-	inc
-	cmp	nombre_scenes
-	bcc	okok
-	lda	#1
-okok	sta	scene_actuelle
-
-	lda	#TRUE
+mup1	jsr	clic_mot	; oui, on vérifie si on a cliqué sur un mot => mot$
+	bcs	mup9	; on sort sans clic sur un mot
+	jsr	aiguillage	; on aiguille le joueur
+	
+	lda	#TRUE	; aiguillons les amis !
 	sta	deplacement
-	rts
+
+mup9	rts
 
 *-----------------------------------
 * AUTRES ROUTINES
 *-----------------------------------
 
-*----------------------------------- Switch to 320 mode
-
-switch_320
-	lda	#0
+switch_320	lda	#0	; Switch to 320 mode
 	ldy	#screen_320
 	bra	switch_res
-	
-*----------------------------------- Switch to 640 mode
 
-switch_640
-	lda	#$80
+switch_640	lda	#$80	; Switch to 640 mode
 	ldy	#screen_640
 	
 *-----------
 
-switch_res
-	sty	mainWIDTH
+switch_res	sty	mainWIDTH
 	pha
 	pha
 	_SetMasterSCB
@@ -750,15 +725,15 @@ waitEVENT	inc	VBLCounter0
 
 *--------------------------------------
 
-fadeIN   sty   Debut
-         stx   Debut+2
+fadeIN	sty   Debut
+	stx   Debut+2
 
-         _HideCursor
+	_HideCursor
          
-         ldy   #$2000
-         sty   Arrivee
-         ldx   #$00e1
-         stx   Arrivee+2
+	ldy   #$2000
+	sty   Arrivee
+	ldx   #$00e1
+	stx   Arrivee+2
 
 	ldy	#$7e00
 	lda	#0

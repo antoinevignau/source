@@ -1430,6 +1430,32 @@ y_coord	=	*
 ]y	=	]y+hauteur_caractere
 	--^
 
+x_text	=	*
+]x	=	0	; Première colonne
+	lup	max_colonnes
+	dw	]x
+	dw	]x
+	dw	]x
+	dw	]x
+]x	=	]x+1
+	--^
+
+y_text	=	*
+]y	=	0	; Première ligne
+	lup	max_lignes
+	dw	]y
+	dw	]y
+	dw	]y
+	dw	]y
+	dw	]y
+	dw	]y
+	dw	]y
+	dw	]y
+	dw	]y
+	dw	]y
+]y	=	]y+max_colonnes
+	--^
+
 *---
 
 * Apple		Atari
@@ -1683,6 +1709,61 @@ sf_99	sta	deplacement
 strSUITE	asc	'suite '
 
 *-----------------------
+* TEST_CURSEUR
+*-----------------------
+* test_curseur
+* on regarde si le curseur se trouve sur un mot cliquable
+
+test_curseur
+	lda	taskWHERE+2
+	sta	x1
+	lda	taskWHERE
+	sta	y1
+	
+	lda	taskWHERE+2	; X
+	sec
+	sbc	#marge_gauche*largeur_caractere
+	bpl	tc_1
+	lda	#0
+tc_1	asl
+	tax
+	lda	x_text,x
+	bmi	tc_2
+	sta	x2
+	pha
+	
+	lda	taskWHERE	; Y
+	asl
+	tax
+	lda	y_text,x
+	sta	y2
+	
+	clc
+	adc	1,s
+	tax
+	sta	idx
+	pla		; on a l'index dans le texte
+
+	lda	texte_liens,x
+	and	#$ff
+	cmp	#FALSE
+	beq	tc_2
+
+	sep	#$20	; c'est un mot cliquable
+	ldal	$c034
+	inc
+	stal	$c034
+	rep	#$20
+	
+tc_2	rts
+
+x1	ds	2
+y1	ds	2
+x2	ds	2
+y2	ds	2
+idx	ds	2
+
+*-----------------------
 * CHARGE_IMAGE - OK
 *-----------------------
 * charge_image(fichier$)
@@ -1731,7 +1812,7 @@ fadeout_mid
 	rts
 	
 *-----------------------
-* PALETTE_TEXTE - OK
+* PALETTE - OK
 *-----------------------
 * palette_texte
 
@@ -2004,19 +2085,6 @@ tc_ok
 *	sep	%20
 	rts
 
-*-----------------------
-* DEBUG - OK
-*-----------------------
-
-	mx	%10
-
-DEBUG	ldal	$c034
-	inc
-	stal	$c034
-	rts
-
-	mx	%00
-	
 *-----------------------
 * MUSIQUE - OK
 *-----------------------

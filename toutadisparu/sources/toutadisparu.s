@@ -35,8 +35,9 @@
 *-----------------------
 
 @cprint	mac
-	lda	#]1
-	ldy	#]2
+	ldx	#^]1
+	ldy	#]1
+	lda	#]2
 	jsr	cprint
 	eom
 
@@ -103,16 +104,13 @@ FALSE	=	0
 	pha
 	_MMStartUp
 	pla
+	sta	mainID
+	ora	#$0100
 	sta	myID
 
 	tdc
 	sta	myDP
 
-	lda	#SUITE_DATA
-	stal	$300
-	lda	#^SUITE_DATA
-	stal	$302
-	
 *--- Version du systeme
 
 	jsl	GSOS
@@ -190,7 +188,7 @@ okMEM1	sty	ptrIMAGE
 
 	pha
 	pha
-	PushWord	myID
+	PushWord	mainID
 	PushWord	#refIsResource
 	PushLong	#1
 	_StartUpTools
@@ -261,6 +259,7 @@ mainLOOP	lda	scene_actuelle
 	jsr	nouvelle_scene	; on initialise la scène
 	lda	scene_actuelle
 	jsr	image		; on charge une image éventuelle
+	jsr	attente		; attend un clic
 	lda	scene_actuelle
 	jsr	get_textes		; on détermine le texte
 	jsr	prepare_texte	; que l'on prepare le texte
@@ -279,15 +278,14 @@ mainLOOP	lda	scene_actuelle
 
 taskLOOP	inc	VBLCounter0
 
-*	jsr	DEBUG
-
 *	PushWord #0
 *	PushWord #%11111111_11111111
 *	PushLong #taskREC
 *	_TaskMaster
 
 	pha
-	PushWord #%00000000_00001110	; mouse + keyboard
+*	PushWord #%00000000_00001110	; mouse + keyboard
+	PushWord #%11111111_11111111
 	PushLong #taskREC
 	_GetNextEvent
 	pla
@@ -630,7 +628,10 @@ meQUIT1
 	PushWord myID
 	_DisposeAll
 
-	PushWord myID
+	PushWord mainID
+	_DisposeAll
+
+	PushWord mainID
 	_MMShutDown
 
 	_TLShutDown
@@ -694,7 +695,8 @@ waitKEY	ldal	KBD-1
 waitEVENT	inc	VBLCounter0
 
 	pha
-	PushWord #%00000000_00001110	; mouse + keyboard
+*	PushWord #%00000000_00001110	; mouse + keyboard
+	PushWord #%11111111_11111111
 	PushLong #taskREC
 	_GetNextEvent
 	pla
@@ -1042,7 +1044,8 @@ nowWAIT1	pha
 
 *----------------------- Memory manager
 
-myID	ds	2
+mainID	ds	2	; app ID
+myID	ds	2	; user ID
 myDP	ds	2
 
 SStopREC	ds	4
@@ -1094,7 +1097,7 @@ taskDATA	ds	4	; wmTaskData       +16
 
 taskTBL	da	doNOT	; Null
 	da	doMOUSEDOWN	; mouseDownEvt
-	da	doMOUSEUP	; mouseUpEvt
+	da	doNOT	; mouseUpEvt
 	da	doKEYDOWN	; keyDownEvt
 	da	doNOT
 	da	doNOT	; autoKeyEvt

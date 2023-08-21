@@ -1318,7 +1318,122 @@ tc_2	ldx	mot_clique	; on sauvegarde l'ancien mot
 * affiche_commentaire
 
 affiche_commentaire
+	cmp	#0
+	bne	ac_1
 	rts
+	
+ac_1	dec		; prend la scene
+	pha		; calcul l'index dans la dimension NB_MOTS
+	pha
+	pha		; index de scène
+	PushWord #NB_MOTS	; taille d'une dimension
+	_Multiply
+
+	lda	1,s	; calcule l'offset pour les deux tableaux utiles
+	asl
+	sta	1,s
+
+	lda	mot_clique
+	dec
+	asl
+	clc
+	adc	1,s
+	sta	localOFFSET
+	pla
+	pla
+
+*--- on construit la chaîne
+
+* 1- le mot
+
+	lda	localOFFSET
+	clc
+	adc	#fonction_mots
+	sta	dpFROM
+	lda	(dpFROM)
+	sta	dpINDEX
+	lda	ptrINDEX+2
+	sta	dpINDEX+2
+
+	sep	#$20
+	ldy	#0
+]lp	lda	[dpINDEX],y
+	cmp	#instrSPACE
+	beq	ac_2
+	sta	ligne_commentaire+1,y
+	iny
+	bne	]lp
+
+* 2- la séparation
+
+ac_2	tyx
+	rep	#$20
+	lda	#$20d3	; double quote fermant + espace
+	sta	ligne_commentaire+1,x
+	lda	#$203a	; deux-points + espace
+	sta	ligne_commentaire+3,x
+
+* 3- le commentaire
+
+	lda	localOFFSET
+	clc
+	adc	#phrase
+	sta	dpFROM
+	lda	(dpFROM)
+	sta	dpINDEX
+	lda	ptrINDEX+2
+	sta	dpINDEX+2
+
+	sep	#$20
+	ldy	#0
+]lp	lda	[dpINDEX],y
+	beq	ac_3
+	sta	ligne_commentaire+5,x
+	iny
+	inx
+	cpx	#126	; len max
+	bcc	]lp
+
+ac_3	stz	ligne_commentaire+5,x	; pour finir
+	
+	rep	#$20
+	
+*--- Prépare l'écran
+
+	PushLong	#old_pattern
+	_GetPenPat
+
+	pha
+	_GetForeColor
+
+	pha
+	_GetTextMode
+
+	PushLong	#black_pattern	; black pattern
+	_SetPenPat
+
+	PushLong #commentRECT
+	_PaintRect
+
+	PushWord	#15
+	_SetForeColor
+
+	PushWord	#modeForeCopy
+	_SetTextMode
+	
+	ldx	#^ligne_commentaire
+	ldy	#ligne_commentaire
+	lda	#19
+	jsr	cprint
+
+	_SetTextMode
+	_SetForeColor
+	_SetPenPat
+	rts
+
+*---
+
+commentRECT	dw	182,16,192,623
 	
 *-----------------------
 * SURLIGNER_MOT
@@ -1647,20 +1762,21 @@ tblUPPER	hex	000102030405060708090A0B0C0D0E0F
 * CPRINT - OK
 *-----------------------
 * cprint(texte$,ligne&)
-* A= ptr to string
-* Y= line index
+* X/Y= ptr to string
+* A= line index
 
-cprint	pea	^cprint	; ptr to text
-	pha
-	pha	; X
-	phy	; Y
+cprint	phx		; ptr to text
+	phy
+	pea	$0000	; X	; qu'on va initialiser
+	pha		; Y
 
 	pea	$0000	; count nb of chars in the string
-	sta	dpFROM
+	sty	dpFROM
+	stx	dpFROM+2
 	
 	ldy	#0
 	sep	#$20
-]lp	lda	(dpFROM),y
+]lp	lda	[dpFROM],y
 	beq	cprint1
 	iny
 	bne	]lp
@@ -1847,8 +1963,12 @@ strSUITE	asc	'suite '
 aiguille	ldx	mot_clique	; a-t-on cliqué de nouveau sur le même mot ?
 	cpx	mot_ancien
 	beq	ai_entry
-	jmp	affiche_commentaire
-
+	jsr	affiche_commentaire
+	
+	lda	#FALSE
+	sta	deplacement
+	rts
+	
 ai_entry	cmp	#0
 	beq	ai_false
 	

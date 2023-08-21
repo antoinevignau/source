@@ -49,7 +49,10 @@ escape	ds	2	; BOOL - TRUE or FALSE
 fgSUITEFORCEE ds	2	; BOOL - TRUE or FALSE
 
 mot	ds	128	; le mot à chercher (jusqu'au caractère espace)
-
+ligne_commentaire		; la phrase de commentaire "mot" : explication
+	asc	D2	; on démarre avec le "
+	ds	127
+	
 * Le texte à afficher
 
 ligne_max	ds	max_colonnes	; une ligne du texte

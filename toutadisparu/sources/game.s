@@ -171,8 +171,7 @@ li_err
 	dw	$2014
 	adrl	proCLOSE
 
-li_err2	brk	$ba
-	pha
+li_err2	pha
 	PushLong #filSTR1
 	PushLong #errSTR2
 	PushLong #errSTR1
@@ -234,8 +233,7 @@ lt_err
 	dw	$2014
 	adrl	proCLOSE
 
-lt_err2	brk	$bb
-	pha
+lt_err2	pha
 	PushLong #filSTR1
 	PushLong #errSTR2
 	PushLong #errSTR1
@@ -470,7 +468,6 @@ ca_1	cmp	#fgRESTART
 	jsr	loadFILE
 	bcc	ca_ok
 
-	brk	$bc
 	pha
 	PushLong #filSTR1
 	PushLong #errSTR2
@@ -626,7 +623,6 @@ initialisation_fond
 	jsr	loadFILE
 	bcc	fo_ok
 
-	brk	$bd
 	pha
 	PushLong #filSTR1
 	PushLong #errSTR2

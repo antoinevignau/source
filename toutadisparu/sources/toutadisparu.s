@@ -40,46 +40,6 @@
 	jsr	cprint
 	eom
 
-*@print	mac
-*	lda	#]1
-*	ldx	#]2
-*	ldy	#]3
-*	jsr	print
-*	eom
-
-@val	mac
-	PushWord ]2
-	PushWord ]1
-	jsr	val
-	eom
-	
-@left	mac
-	PushWord ]3
-	PushWord ]2
-	PushWord ]1
-	jsr	left
-	eom
-
-@charcmp	mac
-	PushWord #]2
-	PushWord #]1
-	jsr	charcmp
-	eom
-
-@copystring	mac
-	PushWord #]3
-	PushWord #]2
-	PushWord #]1
-	jsr	copy_string
-	eom
-
-@instr	mac
-	PushWord #]3
-	PushWord #]2
-	PushWord #]1
-	jsr	instr
-	eom
-
 *----------------------------------- Constantes
 
 *-------------- Softswitches
@@ -325,8 +285,9 @@ taskLOOP	inc	VBLCounter0
 *	PushWord #%11111111_11111111
 *	PushLong #taskREC
 *	_TaskMaster
-	PushWord #0
-	PushWord #%00000000_00001110
+
+	pha
+	PushWord #%00000000_00001110	; mouse + keyboard
 	PushLong #taskREC
 	_GetNextEvent
 	pla
@@ -345,27 +306,6 @@ taskLOOP	inc	VBLCounter0
 	beq	mainLOOP	; ...grand saut
 	bne	taskLOOP	; ...sinon on attend
 
-*---------- DEBUG
-
-DEBUG
-	lda	#'  '
-	sta	theSTRING
-	sta	theSTRING+2
-	
-	PushWord	scene_actuelle
-	PushLong	#theSTRING
-	PushWord	#4
-	_Int2Hex
-	
-	PushWord	#150
-	PushWord	#150
-	_MoveTo
-	
-	PushLong	#theSTRING
-	_DrawCString
-	rts
-
-theSTRING	asc	'    '00
 *----------------------------------- Gestion du keyDown
 * on gère les open-apple-qqch
 
@@ -753,8 +693,8 @@ waitKEY	ldal	KBD-1
 
 waitEVENT	inc	VBLCounter0
 
-	PushWord #0	; wait for a mouse-up event
-	PushWord #4
+	pha
+	PushWord #%00000000_00001110	; mouse + keyboard
 	PushLong #taskREC
 	_GetNextEvent
 	pla

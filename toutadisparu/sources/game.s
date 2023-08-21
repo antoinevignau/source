@@ -1331,7 +1331,7 @@ surligner_mot
 *-----------------------
 * PRINT - OK
 *-----------------------
-* print(texte$,colonne&,ligne&,mode)
+* print(couleur$,texte$,colonne&,ligne&,mode)
 * 1,s	w	return address
 * 3,s	w	mode
 * 5,s	w	Y
@@ -1450,7 +1450,97 @@ print5	lda	printMODE	; do we use links?
 	
 print6	brl	printLOOP
 
+*-----------------------
+* PRINTC - OK
+*-----------------------
+* printc(texte$,colonne&,ligne&)
+* 1,s	w	return address
+* 3,s	w	Y
+* 5,s	w	X
+* 7,s	l	text pointer
+
+max_colonnes2 =	80	; 80 - 75
+
 *---
+
+printc	lda	9,s
+	sta	dpFROM+2
+	lda	7,s
+	sta	dpFROM
+	lda	5,s
+	sta	printX
+	lda	3,s
+	sta	printY
+	
+printcLOOP	lda	[dpFROM]
+	and	#$ff
+	bne	printc1
+
+printcEXIT	lda	1,s
+	plx
+	plx
+	plx
+	plx
+	sta	1,s
+	rts
+
+* 1- print char
+
+printc1	cmp	#instrSPACE	; skip space char
+	beq	printc2
+	cmp	#texteSPACE
+	beq	printc2
+	cmp	#texteRC
+	beq	printc3
+
+	tax
+	lda	tblATARI,x
+	and	#$ff
+	pha
+
+	lda	printX
+	asl
+	tax
+	lda	x_coord2,x
+	pha
+	
+	lda	printY
+	asl
+	tay
+	lda	y_coord,y
+	pha
+	_MoveTo
+
+	_DrawChar
+
+* 4- next character
+
+printc2	inc	printX
+	lda	printX
+	cmp	#max_colonnes2
+	bcc	printc4
+
+printc3	lda	7,s	; reset X-coord
+	sta	printX
+
+	inc	printY
+	lda	printY
+	cmp	#max_lignes
+	bcc	printc4
+	
+	brl	printcEXIT	; out of SHR screen, we exit
+
+* 6- we loop
+
+printc4	inc	dpFROM
+	bne	printc5
+	inc	dpFROM+2
+
+printc5	brl	printcLOOP
+
+*-----------------------
+* DATA FOR PRINT
+*-----------------------
 
 printMODE	ds	2
 printX	ds	2
@@ -1458,9 +1548,16 @@ printY	ds	2
 
 *---
 
-x_coord	=	*
+x_coord	=	*	; For game texts
 ]x	=	marge_gauche*largeur_caractere	; Première ligne
 	lup	max_colonnes
+	dw	]x
+]x	=	]x+largeur_caractere
+	--^
+
+x_coord2	=	*	; For centered texts
+]x	=	0
+	lup	max_colonnes2
 	dw	]x
 ]x	=	]x+largeur_caractere
 	--^
@@ -1549,16 +1646,14 @@ tblUPPER	hex	000102030405060708090A0B0C0D0E0F
 *-----------------------
 * CPRINT - OK
 *-----------------------
-* cprint(texte$,ligne&,mode)
+* cprint(texte$,ligne&)
 * A= ptr to string
 * Y= line index
 
-cprint	PushLong	#0	; no link pointer
-	pea	^cprint	; ptr to text
+cprint	pea	^cprint	; ptr to text
 	pha
 	pha	; X
 	phy	; Y
-	PushWord	#linksOFF	; mode
 
 	pea	$0000	; count nb of chars in the string
 	sta	dpFROM
@@ -1587,8 +1682,8 @@ cprint1	rep	#$20	; nb chars x 8 to get width
 	lsr		; /4
 	lsr		; /8
 	lsr		; /16
-	sta	5,s	; fill X from above
-	jsr	print
+	sta	3,s	; fill X from above
+	jsr	printc	; the new centered print routine
 	rts		; must be RTS
 	
 *-----------------------
@@ -2144,261 +2239,7 @@ musique
 
 fin_musique
 	rts
-	
-*-----------------------
-* TEXT ROUTINES
-*-----------------------
 
 *-----------------------
-* add_char
+* IT'S THE END - Antoine
 *-----------------------
-* 5,s char to add
-* 3,s pointer to string
-* 1,s RTS
-
-add_char
-	lda	3,s
-	sta	dpTO
-
-	sep	#$30		; 02 AB
-	lda	(dpTO)	; cannot exceed 255 chars
-	cmp	#$ff
-	bcs	add_char1
-
-	inc			; 03 AB
-	sta	(dpTO)		; 03
-	tay
-	lda	5,s		; C
-	sta	(dpTO),y	; 03 ABC
-	
-add_char1
-	rep	#$30
-	lda	1,s	; récupère RTS
-	plx		; dépile les paramètres
-	plx
-	sta	1,s	; remet le RTS
-	rts
-
-*-----------------------
-* copy_string
-*-----------------------
-* 7,s number of chars to copy
-* 5,s pointer to source string
-* 3,s pointer to destination string
-* 1,s RTS
-
-copy_string
-	lda	5,s
-	sta	dpFROM
-	lda	3,s
-	sta	dpTO
-
-	sep	#$20
-	ldy	#0
-]lp	lda	(dpFROM),y	; recopie les caractères
-	sta	(dpTO),y
-	iny
-	tya
-	cmp	7,s
-	bcc	]lp
-*	beq	]lp
-	
-	rep	#$20
-	lda	1,s	; récupère RTS
-	plx		; dépile les paramètres
-	plx
-	plx
-	sta	1,s	; remet le RTS
-	rts
-
-*-----------------------
-* charcmp
-*-----------------------
-* 5,s char to compare
-* 3,s pointer to string
-* 1,s RTS
-
-charcmp
-	lda	3,s
-	sta	dpFROM
-	
-	ldx	#FALSE	; default value, les chaînes sont différentes
-
-	sep	#$20
-	lda	(dpFROM)
-	cmp	5,s	; compare strings
-	bne	charcmp1
-
-	ldx	#TRUE	; même chaîne
-
-charcmp1
-	rep	#$20
-	lda	1,s	; récupère RTS
-	ply		; dépile les paramètres
-	ply
-	sta	1,s	; remet le RTS
-	txa		; return value
-	cmp	#TRUE	; met les valeurs de comparaison
-	rts
-
-*-----------------------
-* left
-*-----------------------
-* 7,s number of chars to copy
-* 5,s pointer to source string
-* 3,s pointer to destination string
-* 1,s RTS
-
-left
-	lda	5,s
-	sta	dpFROM
-	lda	3,s
-	sta	dpTO
-
-* check added length
-
-	sep	#$30	; check length
-
-	ldy	#0
-]lp	lda	(dpFROM),y	; recopie les caractères
-	sta	(dpTO),y
-	iny
-	tya
-	cmp	7,s
-	bcc	]lp
-*	beq	]lp
-	
-	rep	#$30
-	lda	1,s	; récupère RTS
-	plx		; dépile les paramètres
-	plx
-	plx
-	sta	1,s	; remet le RTS
-	rts
-
-*-----------------------
-* val
-*-----------------------
-* 5,s string length
-* 3,s pointer to source string
-* 1,s RTS
-* on return, A = unsigned value
-
-val
-	lda	3,s
-	sta	dpFROM
-
-	sep	#$20
-	ldy	#0
-	tyx
-]lp	lda	(dpFROM),y	; recopie les caractères
-	cmp	#' '	; skip space char
-	beq	val1
-	sta	val_temp,x	; save
-	inx
-val1	iny
-	tya
-	cmp	5,s
-	bcc	]lp
-*	beq	]lp
-
-	cpx	#0	; exit if len is still 0
-	beq	val2
-
-	rep	#$20
-	
-	PushWord #0		; wordspace
-	PushLong #val_temp	; strPtr
-	phx		; strLength
-	pea	$0000	; signedFlag
-	_Dec2Int
-	plx		; intResult
-	
-val2
-	rep	#$20
-	lda	1,s	; récupère RTS
-	ply		; dépile les paramètres
-	ply
-	sta	1,s	; remet le RTS
-	txa		; return value
-	rts
-
-val_temp	ds	8	; longueur de la chaîne temporaire
-
-*-----------------------
-* instr
-*-----------------------
-* 7,s length of string to search
-* 5,s pointer to character to find
-* 3,s pointer to source string
-* 1,s RTS
-
-instr
-	lda	3,s
-	sta	dpFROM
-
-	sep	#$20
-	
-	ldy	#0	; AB
-]lp	lda	(dpFROM),y
-	iny
-	cmp	5,s
-	beq	instr2	; on a trouvé le caractère
-	tya
-	cmp	7,s
-	bcc	]lp
-*	beq	]lp
-instr1
-	ldy	#-1	; on n'a pas trouvé le caractère
-
-instr2
-	rep	#$20
-	lda	1,s	; récupère RTS
-	plx		; dépile les paramètres
-	plx
-	plx
-	sta	1,s	; remet le RTS
-	tya		; return value
-	rts
-
-*-----------------------
-* strcmp
-*-----------------------
-* 7,s length to compare
-* 5,s pointer to string 2
-* 3,s pointer to string 1
-* 1,s RTS
-
-strcmp
-	lda	3,s
-	sta	dpFROM
-	lda	5,s
-	sta	dpTO
-	
-	ldx	#FALSE	; default value, les chaînes sont différentes
-
-	sep	#$30
-
-	ldy	#0		; AB
-]lp	lda	(dpFROM),y
-	cmp	(dpTO),y
-	bne	strcmp2
-	iny
-	tya
-	cmp	7,s
-	bcc	]lp
-*	beq	]lp
-strcmp1
-	ldx	#TRUE	; même chaîne
-
-strcmp2
-	rep	#$30
-	lda	1,s	; récupère RTS
-	ply		; dépile les paramètres
-	ply
-	ply
-	sta	1,s	; remet le RTS
-	txa		; return value
-	cmp	#TRUE	; met les valeurs de comparaison
-	rts
-

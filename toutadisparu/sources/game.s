@@ -171,7 +171,7 @@ li_err
 	dw	$2014
 	adrl	proCLOSE
 
-li_err2
+li_err2	brk	$ba
 	pha
 	PushLong #filSTR1
 	PushLong #errSTR2
@@ -234,7 +234,7 @@ lt_err
 	dw	$2014
 	adrl	proCLOSE
 
-lt_err2
+lt_err2	brk	$bb
 	pha
 	PushLong #filSTR1
 	PushLong #errSTR2
@@ -380,7 +380,7 @@ generique	jsr	switch_640
 	_SetBackColor
 	_SetForeColor
 	
-	jmp	fadeOUT
+	rts
 
 *-----------
 
@@ -457,14 +457,20 @@ tag_rect	ds	2	; y0
 * choix_aventure
 
 choix_aventure
-	jsr	switch_320
+	lda	escape
+	cmp	#fgLOAD
+	bne	ca_1
+	rts
+ca_1	cmp	#fgRESTART
+	beq	ca_restart
 	
-	lda	#pMENU
+	lda	#pMENU	; premier chargement
 	ldx	ptrUNPACK+2
 	ldy	ptrUNPACK
 	jsr	loadFILE
 	bcc	ca_ok
 
+	brk	$bc
 	pha
 	PushLong #filSTR1
 	PushLong #errSTR2
@@ -481,6 +487,10 @@ ca_ok	tya
 	PushLong	ptrMENU
 	PushLong	#32768
 	_BlockMove
+
+*--- On arrive ici si restart
+	
+ca_restart	jsr	switch_320
 	
 	ldx	ptrMENU+2
 	ldy	ptrMENU
@@ -520,8 +530,9 @@ ca_ok	tya
 *----------- Wait for a click
 
 ca_choice	jsr	waitEVENT
-	beq	ca_choice
-
+	cmp	#mouseDownEvt
+	bne	ca_choice
+	
 	lda	taskREC+12	; where did we click?
 	cmp	#106+1
 	bcc	ca_clear23
@@ -615,6 +626,7 @@ initialisation_fond
 	jsr	loadFILE
 	bcc	fo_ok
 
+	brk	$bd
 	pha
 	PushLong #filSTR1
 	PushLong #errSTR2
@@ -1206,12 +1218,19 @@ skipME
 * debut_aventure
 
 debut_aventure
-	lda	#1
-	sta	scene_actuelle
 	lda	#-1
 	sta	scene_ancienne
 	sta	mot_ancien
+
+	lda	escape	; on saute ce que l'on vient
+	cmp	#fgLOAD	; de charger en mémoire !
+	beq	da_1
 	
+	lda	#1
+	sta	scene_actuelle
+	lda	#TRUE
+	sta	deplacement
+
 	ldx	#1
 	sep	#$20
 	lda	#FALSE
@@ -1221,9 +1240,9 @@ debut_aventure
 	bcc	]lp
 	beq	]lp
 	rep	#$20
-	
-	lda	#TRUE
-	sta	deplacement
+
+da_1	lda	#FALSE
+	sta	escape
 	rts
 	
 *-----------------------
@@ -1239,9 +1258,6 @@ fin_aventure
 	inx
 	cpx	#FIN_DATA
 	bcc	]lp
-
-	lda	#FALSE
-	sta	escape
 	rts
 	
 *-----------------------
@@ -1368,9 +1384,9 @@ ac_1	dec		; prend la scene
 
 ac_2	tyx
 	rep	#$20
-	lda	#$20d3	; double quote fermant + espace
+	lda	#$20d3	; double quote fermant + espace "-" -"
 	sta	ligne_commentaire+1,x
-	lda	#$203a	; deux-points + espace
+	lda	#$203a	; deux-points + espace "-: -"
 	sta	ligne_commentaire+3,x
 
 * 3- le commentaire

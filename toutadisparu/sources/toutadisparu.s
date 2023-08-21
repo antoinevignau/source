@@ -55,11 +55,12 @@ GSOS	=	$e100a8
 alertQUIT	=	$0100
 alertRESTART =	$0200
 
-refIsPointer = $0
-refIsHandle	=  $1
-refIsResource = $2
+refIsPointer =	0
+refIsHandle	=	1
+refIsResource =	2
 
 appleKey	=	$0100
+mouseDownEvt =	$0001
 mouseUpEvt	=	$0002
 keyDownEvt	=	$0003
 
@@ -90,6 +91,9 @@ ptrE12000	=	$e12000
 
 TRUE	=	1
 FALSE	=	0
+
+fgLOAD	=	1	; flags for choix_aventure
+fgRESTART	=	2
 
 *----------------------------------- Entry point
 
@@ -207,13 +211,14 @@ okMEM1	sty	ptrIMAGE
 *--- Et la musique...
 
 okTOOL	_HideMenuBar
-	_InitCursor
 
 	PushWord	#0
 	PushWord	#%11111111_11111111
 	PushWord	#0
 	_FlushEvents
 	pla
+
+	_InitCursor
 
 	PushLong	#0
 	_GetPort
@@ -237,18 +242,12 @@ okTOOL	_HideMenuBar
 	jsr	initialisation_absolue
 	jsr	generique
 
-	PushWord	#0
-	PushWord	#%11111111_11111111
-	PushWord	#0
-	_FlushEvents
-	pla
-
 *-----------------------
 * MAIN - OK
 *-----------------------
 * main
 
-main
+main	jsr	fadeOUT
 	jsr	choix_aventure
 	jsr	initialisation_relative
 	jsr	fadeOUT
@@ -259,18 +258,11 @@ mainLOOP	lda	scene_actuelle
 	jsr	nouvelle_scene	; on initialise la scène
 	lda	scene_actuelle
 	jsr	image		; on charge une image éventuelle
-	jsr	attente		; attend un clic
 	lda	scene_actuelle
 	jsr	get_textes		; on détermine le texte
 	jsr	prepare_texte	; que l'on prepare le texte
 	jsr	mots_clicables	; on y ajoute les mots cliquables
 	jsr	affiche_texte	; et on l'affiche
-
-	PushWord	#0
-	PushWord	#%11111111_11111111
-	PushWord	#0
-	_FlushEvents
-	pla
 
 *----------------------------------------
 * TASK MASTER (no more)
@@ -278,23 +270,30 @@ mainLOOP	lda	scene_actuelle
 
 taskLOOP	inc	VBLCounter0
 
-*	PushWord #0
-*	PushWord #%11111111_11111111
-*	PushLong #taskREC
-*	_TaskMaster
+	PushWord #0
+	PushWord #0
+	PushWord #$c000
+	PushWord #0
+	_HandleDiskInsert
+	pla
+	pla
 
 	pha
-*	PushWord #%00000000_00001110	; mouse + keyboard
-	PushWord #%11111111_11111111
+	PushWord #%00000000_00001010
 	PushLong #taskREC
 	_GetNextEvent
 	pla
 	beq	taskLOOP
 
+	lda	taskREC
 	asl
 	tax
 	jsr	(taskTBL,x)
 
+	lda	escape	; on a une condition de sortie
+	cmp	#FALSE
+	bne	main
+	
 	lda	fgSUITEFORCEE
 	cmp	#TRUE
 	beq	mainLOOP
@@ -351,19 +350,13 @@ tblKEYADDRESS
 	da	doMUSIK,doMUSIK
 	da	help
 
-*----------------------------------- Gestion des contrôles (ça veut dire boutons ou lineedit)
-*
-*doCONTROL
-*	lda	taskREC+38
-*	rts
-
 *----------------------------------- Gestion du mouseUp
 * on compare les coordonnées avec celles du incontent
 * si dans le même rectangle, on traite
 
 doMOUSEDOWN
-doMOUSEUP
-	lda	scene_actuelle	; a-t-on des mots cliquables ?
+
+doMOUSEUP	lda	scene_actuelle	; a-t-on des mots cliquables ?
 	jsr	suite_forcee
 	
 	lda	fgSUITEFORCEE
@@ -441,9 +434,30 @@ doLOAD	jsr	suspendMUSIC	; NTP off
 	bne	doLOAD1
 	rts
 
-doLOAD1
-	jsr	copyPATH
-	jmp	loadALL
+doLOAD1	jsr	copyPATH
+	jsr	loadALL
+	bcc	doLOAD2
+	rts
+doLOAD2	jsr	fin_aventure
+	jsr	initialisation_absolue
+
+	lda	fiAVENTURE
+	sta	aventure
+	lda	fiSCENEACTUELLE
+	sta	scene_actuelle
+	
+	sep	#$20
+	ldx	#0
+]lp	lda	fiSCENEVISITEE,x
+	sta	scene_visitee,x
+	inx
+	cpx	#NB_TEXTES
+	bcc	]lp
+	rep	#$20
+	
+	lda	#fgLOAD
+	sta	escape
+	rts
 	
 *----------------------------------- Save
 
@@ -465,8 +479,7 @@ doSAVE	jsr	suspendMUSIC	; NTP off
 	bne	doSAVE1
 	rts
 
-doSAVE1
-	jsr	copyPATH
+doSAVE1	jsr	copyPATH
 	jmp	saveALL
 	
 *--- Recopie le filename du fichier de sauvegarde
@@ -508,15 +521,15 @@ loadKO99	rts
 *---
 
 loadPART	ldx	#2
-	lda	#aventure
+	ldy	#fiAVENTURE
 	jsr	loadIT
 
 	ldx	#2
-	lda	#scene_actuelle
+	ldy	#fiSCENEACTUELLE
 	jsr	loadIT
 	
 	ldx	#NB_TEXTES
-	ldy	#scene_visitee
+	ldy	#fiSCENEVISITEE
 	
 loadIT	stx	proREADGAME+8
 	sty	proREADGAME+4
@@ -556,11 +569,11 @@ saveKO99	rts
 *---
 
 savePART	ldx	#2
-	lda	#aventure
+	ldy	#aventure
 	jsr	saveIT
 
 	ldx	#2
-	lda	#scene_actuelle
+	ldy	#scene_actuelle
 	jsr	saveIT
 	
 	ldx	#NB_TEXTES
@@ -580,7 +593,6 @@ doRESTART	jsr	saveBACK
 	PushWord #0
 	PushWord #5
 	PushLong #0
-*	PushLong #alertRESTART
 	pea	$0000
 	lda	#alertRESTART
 	ora	saveLANGUAGE
@@ -593,7 +605,11 @@ doRESTART	jsr	saveBACK
 	beq	re1
 	rts
 
-re1	jmp	initialisation_relative
+re1	jsr	fin_aventure
+	jsr	initialisation_absolue
+	lda	#fgRESTART
+	sta	escape
+	rts
 
 *----------------------------------- Quit
 
@@ -602,7 +618,6 @@ doQUIT	jsr	saveBACK
 	PushWord #0
 	PushWord #5
 	PushLong #0
-*	PushLong #alertQUIT
 	pea	$0000
 	lda	#alertQUIT
 	ora	saveLANGUAGE
@@ -692,15 +707,31 @@ waitKEY	ldal	KBD-1
 	stal	KBDSTROBE-1
 	rts
 
+*--- On attend un clic ou une combinaison de touches
+
 waitEVENT	inc	VBLCounter0
 
-	pha
-*	PushWord #%00000000_00001110	; mouse + keyboard
-	PushWord #%11111111_11111111
+	PushWord #0
+	PushWord #%00000000_00001010
 	PushLong #taskREC
 	_GetNextEvent
 	pla
 	beq	waitEVENT
+	
+	lda	taskREC
+	cmp	#mouseDownEvt
+	beq	we_1
+	rts
+	
+we_1	inc	VBLCounter0
+
+	PushWord	#0
+	PushWord	#0
+	_StillDown
+	pla
+	bne	we_1
+	
+	lda	#mouseDownEvt
 	rts
 
 *--------------------------------------
@@ -1087,49 +1118,23 @@ taskWHEN	ds	4	; wmWhen           +6
 taskWHERE	ds	4	; wmWhere          +10
 taskMODIFIERS ds	2	; wmModifiers      +14
 taskDATA	ds	4	; wmTaskData       +16
-	adrl	$001fffff	; wmTaskMask       +20
-	ds	4	; wmLastClickTick  +24
-	ds	2	; wmClickCount     +28
-	ds	4	; wmTaskData2      +30
-	ds	4	; wmTaskData3      +34
-	ds	4	; wmTaskData4      +38
-	ds	4	; wmLastClickPt    +42
 
-taskTBL	da	doNOT	; Null
-	da	doMOUSEDOWN	; mouseDownEvt
-	da	doNOT	; mouseUpEvt
-	da	doKEYDOWN	; keyDownEvt
+taskTBL	da	doNOT	; 0 Null
+	da	doMOUSEDOWN	; 1 mouseDownEvt
+	da	doMOUSEUP	; 2 mouseUpEvt
+	da	doKEYDOWN	; 3 keyDownEvt
 	da	doNOT
-	da	doNOT	; autoKeyEvt
-	da	doNOT	; updateEvt
+	da	doNOT	; 5 autoKeyEvt
+	da	doNOT	; 6 updateEvt
 	da	doNOT
-	da	doNOT	; activateEvt
-	da	doNOT	; switchEvt
-	da	doNOT	; deskAccEvt
-	da	doNOT	; driverEvt
-	da	doNOT	; app1Evt
-	da	doNOT	; app2Evt
-	da	doNOT	; app3Evt
-	da	doNOT	; app4Evt
-	da	doNOT	; wInDesk
-	da	doNOT	; wInMenuBar
-	da	doNOT	; wCLickCalled
-	da	doNOT	; wInContent - was doCONTENT
-	da	doNOT	; wInDrag
-	da	doNOT	; wInGrow
-	da	doNOT	; wInGoAway
-	da	doNOT	; wInZoom
-	da	doNOT	; wInInfo
-	da	doNOT	; wInSpecial
-	da	doNOT	; wInDeskItem
-	da	doNOT	; wInFrame
-	da	doNOT	; wInactMenu
-	da	doNOT	; wInClosedNDA
-	da	doNOT	; wInCalledSysEdit
-	da	doNOT	; wInTrackZoom
-	da	doNOT	; wInHitFrame
-	da	doNOT	; wInControl
-	da	doNOT	; wInControlMenu
+	da	doNOT	; 8 activateEvt
+	da	doNOT	; 9 switchEvt
+	da	doNOT	; A deskAccEvt
+	da	doNOT	; B driverEvt
+	da	doNOT	; C app1Evt
+	da	doNOT	; D app2Evt
+	da	doNOT	; E app3Evt
+	da	doNOT	; F app4Evt
 
 *----------------------------------------
 * STD FILE

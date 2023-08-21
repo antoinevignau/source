@@ -17,11 +17,6 @@ DEBUT_DATA	=	*	; C'est vachement pratique pour tout effacer !
 
 tblTEXTES	ds	4*NB_TEXTES
 
-*--- Pour la sauvegarde
-
-C1	ds	1
-P	ds	1
-
 *--- Variables Atari ST
 
 nbTEXTES	ds	2
@@ -83,4 +78,10 @@ bleu2	ds	NB_TEXTES
 FIN_DATA	=	*	; Ben, ouais !
 
 	ds	2	; padding, we never know :-)
+
+* Données des fichiers de sauvegarde
+
+fiAVENTURE	ds	2
+fiSCENEACTUELLE	ds	2
+fiSCENEVISITEE	ds	NB_TEXTES
 

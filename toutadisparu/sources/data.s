@@ -42,26 +42,21 @@ valeur_condition ds	2	; valeur condition 2B xx ou 2D yy
 aventure	ds	2
 nombre_scenes ds	2
 scene_actuelle ds	2
-scene_nouvelle ds	2
+scene_ancienne ds	2
 deplacement	ds	2	; BOOL - TRUE (new scene) or FALSE (same scene)
 image_chargee ds	2	; WORD - TRUE or FALSE
 escape	ds	2	; BOOL - TRUE or FALSE
 fgSUITEFORCEE ds	2	; BOOL - TRUE or FALSE
 
 mot	ds	128	; le mot ˆ chercher (jusqu'au caractre espace)
-option_mot	ds	128	; le mot est enregistr s'il est dans la liste
 
 * Le texte ˆ afficher
 
 ligne_max	ds	max_colonnes	; une ligne du texte
-	asc	"TEXTE"
 texte	ds	max_colonnes*max_lignes	; the text from the .TXT file
-	asc	"TEXTE_FINAL"
 texte_final	ds	max_colonnes*max_lignes	; the final text - known as b$ in Atari ST
 	ds	2
-	asc	"TEXTE_LIENS"
 texte_liens	ds	max_colonnes*max_lignes	; FALSE: not a link, TRUE est un mot cliquable
-	asc	"TEXTE_INDEX"
 texte_index	ds	max_colonnes*max_lignes	; numro du mot
 
 * Toujours en dcal : index 1 dmarre ˆ 0 (NB_TEXTES est toujours > au nombre de scnes)

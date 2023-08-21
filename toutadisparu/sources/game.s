@@ -889,7 +889,6 @@ doDIESE	jsr	next_index
 	jsr	next_index
 
 	lda	localOFFSET	; 0/25/50 => 0/50/100
-	asl
 	clc
 	adc	localPOINT	; +=
 	tax
@@ -1209,7 +1208,10 @@ skipME
 debut_aventure
 	lda	#1
 	sta	scene_actuelle
-
+	lda	#-1
+	sta	scene_ancienne
+	sta	mot_ancien
+	
 	ldx	#1
 	sep	#$20
 	lda	#FALSE
@@ -1257,17 +1259,22 @@ fin	rts
 nouvelle_scene
 	cmp	#0	; not 0
 	beq	ns_99
+	cmp	scene_ancienne
+	beq	ns_98
+
+	ldx	scene_actuelle
+	stx	scene_ancienne
+
 	dec
 	tax
 	lda	#TRUE
 	sep	#$20
 	sta	scene_visitee,x
 	rep	#$20
-	
-	lda	#FALSE
+
+ns_98	lda	#FALSE
 	sta	deplacement
 	
-	stz	option_mot
 ns_99	rts
 
 *-----------------------
@@ -1311,11 +1318,6 @@ tc_2	ldx	mot_clique	; on sauvegarde l'ancien mot
 * affiche_commentaire
 
 affiche_commentaire
-	sep	#$20
-	ldal	$c034
-	inc
-	stal	$c034
-	rep	#$20
 	rts
 	
 *-----------------------
@@ -1736,8 +1738,7 @@ suite_forcee
 	lda	#TRUE
 	bra	sf_99
 sf_false	lda	#FALSE
-sf_99	sta	deplacement
-	sta	fgSUITEFORCEE
+sf_99	sta	fgSUITEFORCEE
 	rts
 
 strSUITE	asc	'suite '
@@ -1748,7 +1749,12 @@ strSUITE	asc	'suite '
 * aiguille(scene)
 * parce que le tableau aiguillag existe
 
-aiguille	cmp	#0
+aiguille	ldx	mot_clique	; a-t-on cliqué de nouveau sur le même mot ?
+	cpx	mot_ancien
+	beq	ai_entry
+	jmp	affiche_commentaire
+
+ai_entry	cmp	#0
 	beq	ai_false
 	
 	dec		; prend la scene
@@ -1763,20 +1769,17 @@ aiguille	cmp	#0
 	sta	dpFROM	; on pointe sur l'index du premier mot
 	pla
 
-	ldy	mot_clique
+	ldy	mot_clique	; 1..+
 	dey
 	lda	(dpFROM),y	; la prochaine scène
 	and	#$ff
 	sta	scene_actuelle
-	
 	lda	#TRUE
 	sta	deplacement
-	lda	#FALSE
-	sta	fgSUITEFORCEE
 	rts
+
 ai_false	lda	#FALSE
 	sta	deplacement
-	sta	fgSUITEFORCEE
 	rts
 
 *-----------------------
@@ -1786,7 +1789,7 @@ ai_false	lda	#FALSE
 
 charge_image
 	rts
-1F9C	
+
 *-----------------------
 * IMAGE_ECRAN - OK
 *-----------------------

@@ -148,6 +148,11 @@ FALSE	=	0
 	tdc
 	sta	myDP
 
+	lda	#SUITE_DATA
+	stal	$300
+	lda	#^SUITE_DATA
+	stal	$302
+	
 *--- Version du systeme
 
 	jsl	GSOS
@@ -246,6 +251,12 @@ okMEM1	sty	ptrIMAGE
 okTOOL	_HideMenuBar
 	_InitCursor
 
+	PushWord	#0
+	PushWord	#%11111111_11111111
+	PushWord	#0
+	_FlushEvents
+	pla
+
 	PushLong	#0
 	_GetPort
 	PullLong	mainPORT
@@ -268,6 +279,12 @@ okTOOL	_HideMenuBar
 	jsr	initialisation_absolue
 	jsr	generique
 
+	PushWord	#0
+	PushWord	#%11111111_11111111
+	PushWord	#0
+	_FlushEvents
+	pla
+
 *-----------------------
 * MAIN - OK
 *-----------------------
@@ -281,21 +298,28 @@ main
 *---
 	
 mainLOOP	lda	scene_actuelle
-	jsr	nouvelle_scene
+	jsr	nouvelle_scene	; on initialise la scène
 	lda	scene_actuelle
-	jsr	image
+	jsr	image		; on charge une image éventuelle
 	lda	scene_actuelle
-	jsr	get_textes		; prend le texte de l'écran
-	jsr	prepare_texte	; prepare le texte
-	jsr	mots_clicables	; ajoute les mots cliquables
-	jsr	affiche_texte	; affiche le texte
-	jsr	attente		; attend sur l'image
+	jsr	get_textes		; on détermine le texte
+	jsr	prepare_texte	; que l'on prepare le texte
+	jsr	mots_clicables	; on y ajoute les mots cliquables
+	jsr	affiche_texte	; et on l'affiche
+
+	PushWord	#0
+	PushWord	#%11111111_11111111
+	PushWord	#0
+	_FlushEvents
+	pla
 
 *----------------------------------------
 * TASK MASTER (no more)
 *----------------------------------------
 
 taskLOOP	inc	VBLCounter0
+
+*	jsr	DEBUG
 
 *	PushWord #0
 *	PushWord #%11111111_11111111
@@ -312,11 +336,36 @@ taskLOOP	inc	VBLCounter0
 	tax
 	jsr	(taskTBL,x)
 
+	lda	fgSUITEFORCEE
+	cmp	#TRUE
+	beq	mainLOOP
+
 	lda	deplacement	; si on doit bouger, on fait un...
 	cmp	#TRUE
 	beq	mainLOOP	; ...grand saut
 	bne	taskLOOP	; ...sinon on attend
 
+*---------- DEBUG
+
+DEBUG
+	lda	#'  '
+	sta	theSTRING
+	sta	theSTRING+2
+	
+	PushWord	scene_actuelle
+	PushLong	#theSTRING
+	PushWord	#4
+	_Int2Hex
+	
+	PushWord	#150
+	PushWord	#150
+	_MoveTo
+	
+	PushLong	#theSTRING
+	_DrawCString
+	rts
+
+theSTRING	asc	'    '00
 *----------------------------------- Gestion du keyDown
 * on gère les open-apple-qqch
 
@@ -387,16 +436,10 @@ doMOUSEUP
 mup1	jsr	clic_mot	; oui, on vérifie si on a cliqué sur un mot => mot$
 	bcc	mup2	; oui
 	rts
-	
-mup2	lda	mot_clique	; a-t-on cliqué de nouveau sur le même mot ?
-	cmp	mot_ancien
-	beq	mup3
-	jsr	affiche_commentaire
-	rts
-mup3	lda	scene_actuelle
+mup2	lda	scene_actuelle
 	jsr	aiguille	; on aiguille le joueur si c'est le second clic
 	rts
-
+	
 *-----------------------------------
 * AUTRES ROUTINES
 *-----------------------------------
@@ -507,8 +550,7 @@ copyPATH
 
 *--- Charge le fichier de sauvegarde en mémoire
 
-loadALL
-	jsl	GSOS
+loadALL	jsl	GSOS
 	dw	$2010
 	adrl	proOPENGAME
 	bcs	loadKO99
@@ -523,21 +565,22 @@ loadALL
 	dw	$2014
 	adrl	proCLOSE
 
-loadKO99
-	rts
+loadKO99	rts
 
 *---
 
-loadPART
-	ldx	#NB_INDICATEURS
-	ldy	#C1
+loadPART	ldx	#2
+	lda	#aventure
+	jsr	loadIT
+
+	ldx	#2
+	lda	#scene_actuelle
 	jsr	loadIT
 	
-	ldx	#2
-	ldy	#P
+	ldx	#NB_TEXTES
+	ldy	#scene_visitee
 	
-loadIT
-	stx	proREADGAME+8
+loadIT	stx	proREADGAME+8
 	sty	proREADGAME+4
 	jsl	GSOS
 	dw	$2012
@@ -546,8 +589,7 @@ loadIT
 
 *--- Enregistre le fichier de sauvegarde
 
-saveALL
-	jsl	GSOS
+saveALL	jsl	GSOS
 	dw	$2002
 	adrl	proDESTROYGAME
 	
@@ -571,21 +613,22 @@ saveALL
 	dw	$2014
 	adrl	proCLOSE
 
-saveKO99
-	rts
+saveKO99	rts
 
 *---
 
-savePART
-	ldx	#NB_INDICATEURS
-	ldy	#C1
+savePART	ldx	#2
+	lda	#aventure
+	jsr	saveIT
+
+	ldx	#2
+	lda	#scene_actuelle
 	jsr	saveIT
 	
-	ldx	#2
-	ldy	#P
-
-saveIT
-	stx	proWRITEGAME+8
+	ldx	#NB_TEXTES
+	ldy	#scene_visitee
+	
+saveIT	stx	proWRITEGAME+8
 	sty	proWRITEGAME+4
 	jsl	GSOS
 	dw	$2013

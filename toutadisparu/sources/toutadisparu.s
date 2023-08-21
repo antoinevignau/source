@@ -219,7 +219,8 @@ okTOOL	_HideMenuBar
 	pla
 
 	_InitCursor
-
+	_HideCursor
+	
 	PushLong	#0
 	_GetPort
 	PullLong	mainPORT
@@ -231,7 +232,6 @@ okTOOL	_HideMenuBar
 * INITIALISATIONS
 *----------------------------------------
 
-*	jsr	loadFONT	; charge l'image de la police
 	jsr	load_font	; charge courier.10
 	jsr	initNTP
 	jsr	randomNTP	; select a sequence 0-7

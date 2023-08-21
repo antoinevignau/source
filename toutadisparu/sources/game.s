@@ -350,6 +350,7 @@ get_textes2	dec
 * generique
 
 generique	jsr	switch_640
+	_HideCursor
 	jsr	tag
 	
 	PushWord	#0
@@ -488,7 +489,7 @@ ca_ok	tya
 *--- On arrive ici si restart
 	
 ca_restart	jsr	switch_320
-	
+
 	ldx	ptrMENU+2
 	ldy	ptrMENU
 	jsr	fadeIN
@@ -1905,6 +1906,7 @@ affiche_image
 	rts
 
 ai_1	jsr	switch_320
+	_HideCursor
 	jsr	noircit_ecran
 	ldx	ptrIMAGE+2
 	ldy	ptrIMAGE
@@ -2092,7 +2094,7 @@ help	lda	mainWIDTH	; save current width
 	sta	oldWIDTH
 	jsr	saveBACK	; save background
 	jsr	switch_640	; switch to 640
-
+	
 	ldx	ptrFOND+2
 	ldy	ptrFOND
 	jsr	fadeIN
@@ -2140,7 +2142,6 @@ help4
 	@cprint	#help_str9;9
 	@cprint	#help_str11;11
 	@cprint	#help_str12;12
-	@cprint	#help_str13;13
 	@cprint	#help_str14;14
 	@cprint	#help_str16;16
 	
@@ -2164,20 +2165,21 @@ helpRECT2	dw	7,127,193,512
 
 white_pattern
 	ds	32,$ff
+
+*--- Caractères Atari SVP
 	
 help_str1_1	asc	'1. 'd2' Heurts d'27'ouverture 'd300
 help_str1_2	asc	'- Fran'8d'ois Coulon et Sylvie Sarrat -'00
 help_str2_1	asc	'2. 'd2' Cheek to cheek & ashes to ashes 'd300
 help_str2_2	asc	'- Fran'8d'ois Coulon et Faustino Ribeiro -'00
-help_str3_1	asc	'3. 'd2' Un appel '88' la m'8e'moire 'd300
+help_str3_1	asc	'3. 'd2' Un appel '85' la m'8e'moire 'd300
 help_str3_2	asc	'- Fran'8d'ois Coulon et Laurent Cotton -'00
 
 help_str8	asc	'OA-S : sauver la situation'00
 help_str9	asc	'OA-O : recharger une situation'00
 help_str11	asc	'OA-Z : musique on/off'00
-help_str12	asc	'OA-R : retour au d'8e'but de l'27'aventure'00
-help_str13	asc	'ESC : retour au menu'00
-help_str14	asc	'Toute autre touche : retour '88' l'27'aventure'00
+help_str12	asc	'OA-R : retour au menu'00
+help_str14	asc	'Toute autre touche : retour '85' l'27'aventure'00
 help_str16	asc	'OA-Q : quitter le jeu'00
 
 *-----------------------

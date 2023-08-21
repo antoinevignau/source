@@ -457,10 +457,7 @@ tag_rect	ds	2	; y0
 
 choix_aventure
 	lda	escape
-	cmp	#fgLOAD
-	bne	ca_1
-	rts
-ca_1	cmp	#fgRESTART
+	cmp	#fgRESTART
 	beq	ca_restart
 	
 	lda	#pMENU	; premier chargement
@@ -488,7 +485,11 @@ ca_ok	tya
 
 *--- On arrive ici si restart
 	
-ca_restart	jsr	switch_320
+ca_restart	lda	escape
+	cmp	#fgLOAD
+	beq	ca_load
+	
+	jsr	switch_320
 
 	ldx	ptrMENU+2
 	ldy	ptrMENU
@@ -507,6 +508,7 @@ ca_restart	jsr	switch_320
 
 *--- Prépare le préfixe GS/OS 7 pour les images
 
+ca_load	lda	aventure
 	sep	#$20	; sauve
 	ora	#'0'
 	sta	pathIMAGES+25
@@ -518,7 +520,12 @@ ca_restart	jsr	switch_320
 	
 *---
 
-	PushLong	#old_pattern
+	lda	escape
+	cmp	#fgLOAD
+	bne	ca_exit
+	rts
+	
+ca_exit	PushLong	#old_pattern
 	_GetBackPat
 
 	lda	#2
@@ -950,7 +957,8 @@ texteRC	=	$9c
 
 prepare_texte
 	stz	i	; on commence à 0
-
+	stz	nb_lignes
+	
 	lda	#texte_final
 	sta	dpTO
 
@@ -1088,7 +1096,7 @@ at_default	ldx	#0	; ligne_max$=LEFT$(return$,return%)
 	cpx	#max_colonnes
 	bcc	]lp
 
-noSPC2	
+noSPC2
 
 * ADD i%,return%+1
 	
@@ -1098,7 +1106,6 @@ noSPC2
 	adc	return
 	inc
 	sta	i
-	sep	#$20
 
 * UNTIL i%>=longueur_texte%
 
@@ -1108,12 +1115,61 @@ at_8	rep	#$20
 	sta	dpTO
 	sep	#$20
 
+	inc	nb_lignes
+
 	ldx	i
 	cpx	longueur_texte
 	bcs	at_9
 	brl	at_2	; we loop
 
-at_9	rep	#$20
+at_9	mx	%10
+
+*--- on centre le texte
+
+	lda	#max_lignes	; on est au max, on ne fait rien
+	sec
+	sbc	nb_lignes
+	cmp	#2
+	bcs	at_10
+	rep	#$20
+	rts
+
+	mx	%10
+	
+at_10	ldx	#0	; on remplit texte de blanc
+	lda	#instrSPACE
+]lp	sta	texte,x
+	inx
+	cpx	#max_colonnes*max_lignes
+	bcc	]lp
+
+	rep	#$20	; calcul de la destination
+	lda	#max_lignes
+	sec
+	sbc	nb_lignes
+	lsr		; /2 pour les pairs/impairs
+	asl
+	tax
+	lda	y_text2,x
+	tax
+	sep	#$20
+	
+	ldy	#0	; on recopie en décalé
+]lp	lda	texte_final,y
+	sta	texte,x
+	iny
+	inx
+	cpx	#max_colonnes*max_lignes
+	bcc	]lp
+
+	ldx	#0	; on fait une dernière copie
+]lp	lda	texte,x
+	sta	texte_final,x
+	inx
+	cpx	#max_colonnes*max_lignes
+	bcc	]lp
+	
+	rep	#$20
 	rts
 
 *--- output dans texte final
@@ -1690,7 +1746,7 @@ x_coord2	=	*	; For centered texts
 ]x	=	]x+largeur_caractere
 	--^
 
-y_coord	=	*
+y_coord	=	*	; For all texts
 ]y	=	0	; Première ligne
 	lup	max_lignes
 	dw	]y
@@ -1716,6 +1772,14 @@ y_text	=	*
 	dw	]y,]y,]y,]y,]y,]y,]y,]y,]y,]y
 ]y	=	]y+max_colonnes
 	--^
+
+y_text2	=	*	; Offset in text page
+]y	=	0	; Première ligne
+	lup	max_lignes
+	dw	]y
+]y	=	]y+max_colonnes
+	--^
+
 
 *---
 

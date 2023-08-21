@@ -337,11 +337,18 @@ doNOT
 
 *---
 
+doCRASH
+	lda	nb_lignes
+	brk	$bd
+	
+*---
+
 tblKEYVALUE
 	asc	'QqOoSs'
 	asc	'Rr'
 	asc	'Zz'
 	asc	'?'
+	asc	'*'
 	hex	ff
 	
 tblKEYADDRESS
@@ -349,6 +356,7 @@ tblKEYADDRESS
 	da	doRESTART,doRESTART
 	da	doMUSIK,doMUSIK
 	da	help
+	da	doCRASH
 
 *----------------------------------- Gestion du mouseUp
 * on compare les coordonnées avec celles du incontent

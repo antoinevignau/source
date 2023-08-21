@@ -22,6 +22,7 @@ tblTEXTES	ds	4*NB_TEXTES
 nbTEXTES	ds	2
 nbTEXTES2	ds	2	; nombre de textes indiqu dans le fichier .TEX
 i	ds	2	; un index
+nb_lignes	ds	2	; nombre de lignes de texte (c'est pour centrer)
 localOFFSET	ds	2	; offset de chaque range
 localPOINT	ds	2	; index du mot
 len_max	ds	2	; longueur de ligne_max
@@ -52,10 +53,10 @@ ligne_commentaire		; la phrase de commentaire "mot" : explication
 
 ligne_max	ds	max_colonnes	; une ligne du texte
 texte	ds	max_colonnes*max_lignes	; the text from the .TXT file
-texte_final	ds	max_colonnes*max_lignes	; the final text - known as b$ in Atari ST
-	ds	2
 texte_liens	ds	max_colonnes*max_lignes	; FALSE: not a link, TRUE est un mot cliquable
 texte_index	ds	max_colonnes*max_lignes	; numro du mot
+texte_final	ds	max_colonnes*max_lignes	; the final text - known as b$ in Atari ST
+	ds	2
 
 * Toujours en dcal : index 1 dmarre ˆ 0 (NB_TEXTES est toujours > au nombre de scnes)
 

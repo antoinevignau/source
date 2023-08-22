@@ -28,8 +28,8 @@ localPOINT	ds	2	; index du mot
 len_max	ds	2	; longueur de ligne_max
 longueur_texte ds	2	; nombre de caracteres du texte d'origine
 return	ds	2	; premier RC dans une ligne
-rvb5	ds	2
-rvbA	ds	2
+rvb1	ds	2	; index 1/5/9/D
+rvb2	ds	2	; index 2/6/A/E
 index_mot	ds	2	; un autre index qui pointe
 nb_mots	ds	2	; nombre de mots dans la scene
 mot_clique	ds	2	; index du mot cliqué

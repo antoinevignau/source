@@ -708,19 +708,7 @@ initialisation_tableaux
 	lda	ptrINDEX+2
 	sta	dpINDEX+2
 
-	bra	onsaute
-	
-*--- Initialise les valeurs du jeu
-
-	ldx	#SUITE_DATA	; on efface tout
-]lp	stz	|$0000,x
-	inx
-	cpx	#FIN_DATA
-	bcc	]lp
-
 *--- Initialise les valeurs RVB
-
-onsaute
 
 	ldx	#1	; RVB par défaut
 	sep	#$20
@@ -1166,9 +1154,8 @@ modeForeCopy =	$0004	; QDII Table 16-10
 
 affiche_texte
 	jsr	switch_640	; switch to 640
-	bra	skipME
 
-* on s'occupe des couleurs d'index 5 et A
+* on s'occupe des couleurs de la palette
 	
 	lda	ptrFOND
 	sta	dpFROM
@@ -1178,40 +1165,56 @@ affiche_texte
 	ldx	scene_actuelle
 	sep	#$20
 	lda	rouge1-1,x
-	sta	rvb5+1
+	asl
+	sta	rvb1+1
 	lda	vert1-1,x
 	asl
 	asl
 	asl
 	asl
-	sta	rvb5
+	asl
+	sta	rvb1
 	lda	bleu1-1,x
-	ora	rvb5
-	sta	rvb5
+	asl
+	ora	rvb1
+	sta	rvb1
 
 	lda	rouge2-1,x
-	sta	rvbA+1
+	asl
+	sta	rvb2+1
 	lda	vert2-1,x
 	asl
 	asl
 	asl
 	asl
-	sta	rvbA
+	asl
+	sta	rvb2
 	lda	bleu2-1,x
-	ora	rvbA
-	sta	rvbA
+	asl
+	ora	rvb2
+	sta	rvb2
 
 	rep	#$20
 
-	ldy	#$7E00+$0A	; 5x2
-	lda	rvb5
+	lda	rvb2
+	ldy	#$7E02
+	sta	[dpFROM],y
+	ldy	#$7E0A
+	sta	[dpFROM],y
+	ldy	#$7E12
+	sta	[dpFROM],y
+	ldy	#$7E1A
 	sta	[dpFROM],y
 
-	ldy	#$7E00+$14	; Ax2
-	lda	rvbA
+	lda	rvb1
+	ldy	#$7E04
 	sta	[dpFROM],y
-
-skipME
+	ldy	#$7E0C
+	sta	[dpFROM],y
+	ldy	#$7E14
+	sta	[dpFROM],y
+	ldy	#$7E1C
+	sta	[dpFROM],y
 
 * et on affiche enfin
 

@@ -1231,7 +1231,6 @@ affiche_texte
 	PushLong	#texte_liens
 	PushLong	#texte_final
 	PushWord	#3		; x
-*	PushWord	#0		; y
 	PushWord	printY		; y
 	PushWord	#max_colonnes	; largeur
 	jsr	print
@@ -1498,7 +1497,41 @@ commentRECT	dw	182,16,192,623
 * surligner_mot(texte$,mot$,pointeur_mot%,cycles)
 
 surligner_mot
+	pha
+	_HideCursor
+	pla
+	
+]lp	pha
+	jsr	sm_blink
+	pla
+	dec
+	bne	]lp
+	
+	_ShowCursor
 	rts
+
+* noir puis blanc
+
+sm_blink	PushWord	#colorBLACK
+	_SetForeColor
+	jsr	sm_print
+	PushWord	#colorWHITE
+	_SetForeColor
+
+* affiche
+	
+sm_print	PushLong	#mot
+	PushWord	motX
+	PushWord	motY
+	jsr	printc
+
+	lda	#3	; wait 3 VBLS
+	jmp	nowWAIT1	; or 1/20 sec
+
+*--- Data
+
+motX	ds	2
+motY	ds	2
 	
 *-----------------------
 * PRINT - OK
@@ -2009,8 +2042,15 @@ strSUITE	asc	'suite '
 aiguille	ldx	mot_clique	; a-t-on cliqué de nouveau sur le même mot ?
 	cpx	mot_ancien
 	beq	ai_entry
-	jsr	affiche_commentaire
 	
+	pha
+	
+	lda	#1	; fait clignoter
+	jsr	surligner_mot
+	
+	pla
+	jsr	affiche_commentaire
+
 	lda	#FALSE
 	sta	deplacement
 	rts
@@ -2022,6 +2062,10 @@ ai_entry	cmp	#0
 	pha		; calcul l'index dans la dimension NB_MOTS
 	pha
 	pha		; index de scène
+	
+	lda	#3	; bien placé le saut :-)
+	jsr	surligner_mot
+	
 	PushWord #NB_MOTS	; taille d'une dimension
 	_Multiply
 	pla

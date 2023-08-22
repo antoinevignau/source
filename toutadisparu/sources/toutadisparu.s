@@ -220,7 +220,7 @@ okTOOL	_HideMenuBar
 
 	_InitCursor
 	_HideCursor
-	
+
 	PushLong	#0
 	_GetPort
 	PullLong	mainPORT
@@ -402,6 +402,8 @@ switch_res	sty	mainWIDTH
 	PushWord	#200
 	_ClampMouse
 	_HomeMouse
+	PushLong	#monCURSEUR
+	_SetCursor
 	_ShowCursor
 	_WindNewRes
 	_MenuNewRes

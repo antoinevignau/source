@@ -520,6 +520,8 @@ ca_load	lda	aventure
 	
 *---
 
+	jsr	resumeMUSIC	; NTP on
+
 	lda	escape
 	cmp	#fgLOAD
 	bne	ca_exit
@@ -1109,69 +1111,38 @@ noSPC2
 
 * UNTIL i%>=longueur_texte%
 
-at_8	rep	#$20
-	lda	dpTO
-	dec
-	sta	dpTO
-	sep	#$20
-
-	inc	nb_lignes
+	mx	%10
+	
+at_8	inc	nb_lignes
 
 	ldx	i
 	cpx	longueur_texte
 	bcs	at_9
 	brl	at_2	; we loop
 
-at_9	mx	%10
-
+at_9
+	
 *--- on centre le texte
 
+	rep	#$20
+	
 	lda	#max_lignes	; on est au max, on ne fait rien
 	sec
 	sbc	nb_lignes
-	cmp	#2
-	bcs	at_10
-	rep	#$20
+	bpl	at_10
+	lda	#0
+at_10	clc
+	adc	#1
+	lsr
+	sta	printY	; output line
+	asl
+	tax
+	lda	y_coord,x
+	sta	offsetY
 	rts
 
 	mx	%10
 	
-at_10	ldx	#0	; on remplit texte de blanc
-	lda	#instrSPACE
-]lp	sta	texte,x
-	inx
-	cpx	#max_colonnes*max_lignes
-	bcc	]lp
-
-	rep	#$20	; calcul de la destination
-	lda	#max_lignes
-	sec
-	sbc	nb_lignes
-	lsr		; /2 pour les pairs/impairs
-	asl
-	tax
-	lda	y_text2,x
-	tax
-	sep	#$20
-	
-	ldy	#0	; on recopie en décalé
-]lp	lda	texte_final,y
-	sta	texte,x
-	iny
-	inx
-	cpx	#max_colonnes*max_lignes
-	bcc	]lp
-
-	ldx	#0	; on fait une dernière copie
-]lp	lda	texte,x
-	sta	texte_final,x
-	inx
-	cpx	#max_colonnes*max_lignes
-	bcc	]lp
-	
-	rep	#$20
-	rts
-
 *--- output dans texte final
 
 	mx	%10
@@ -1257,9 +1228,10 @@ skipME
 
 	PushLong	#texte_liens
 	PushLong	#texte_final
-	PushWord	#1
-	PushWord	#1
-	PushWord	#linksON	; on affiche 
+	PushWord	#3		; x
+*	PushWord	#0		; y
+	PushWord	printY		; y
+	PushWord	#max_colonnes	; largeur
 	jsr	print
 
 	_SetTextMode	; restore original mode
@@ -1275,6 +1247,9 @@ debut_aventure
 	sta	scene_ancienne
 	sta	mot_ancien
 
+	lda	#$d2	; initialise la chaîne de commentaire
+	sta	ligne_commentaire
+	
 	lda	escape	; on saute ce que l'on vient
 	cmp	#fgLOAD	; de charger en mémoire !
 	beq	da_1
@@ -1354,14 +1329,25 @@ ns_99	rts
 
 clic_mot
 	lda	taskWHERE+2	; X
-	asl
-	tax
-	lda	x_text,x
-	bpl	tc_1
-	lda	#0
-tc_1	pha
+	cmp	#marge_gauche*largeur_caractere
+	bcc	tc_ko
+	cmp	#640-{2*largeur_caractere}
+	bcs	tc_ko
+	
+	sec
+	sbc	#marge_gauche*largeur_caractere
+	clc
+	adc	#7
+	lsr
+	lsr
+	lsr
+	pha
 	
 	lda	taskWHERE	; Y
+	sec
+	sbc	offsetY	; décalage lié au centrage du texte
+	clc
+	adc	#9
 	asl
 	tax
 	lda	y_text,x
@@ -1373,7 +1359,7 @@ tc_1	pha
 	lda	texte_index,x
 	and	#$ff
 	bne	tc_2
-	sec		; pas de mot
+tc_ko	sec		; pas de mot
 	rts
 tc_2	ldx	mot_clique	; on sauvegarde l'ancien mot
 	stx	mot_ancien
@@ -1515,9 +1501,9 @@ surligner_mot
 *-----------------------
 * PRINT - OK
 *-----------------------
-* print(couleur$,texte$,colonne&,ligne&,mode)
+* print(couleur$,texte$,colonne&,ligne&,largeur&)
 * 1,s	w	return address
-* 3,s	w	mode
+* 3,s	w	width
 * 5,s	w	Y
 * 7,s	w	X
 * 9,s	l	text pointer
@@ -1525,6 +1511,7 @@ surligner_mot
 
 max_colonnes =	75	; 80 - 75
 max_lignes	=	20	; 20 - 18
+max_colonnes2 =	80	; 80 - 75
 largeur_caractere = 	8
 hauteur_caractere =	10
 marge_gauche =	3	; nombre de caractères sautés pour la marge
@@ -1543,8 +1530,13 @@ print	lda	15,s
 	sta	printX
 	lda	5,s
 	sta	printY
-	lda	3,s
-	sta	printMODE
+	lda	3,s	; calcule la largeur de texte
+	clc
+	adc	printX
+	cmp	#max_colonnes2
+	bcc	printINIT
+	lda	#max_colonnes2
+printINIT	sta	printWIDTH
 	
 printLOOP	lda	[dpFROM]
 	and	#$ff
@@ -1588,24 +1580,20 @@ print1	cmp	#instrSPACE	; skip space char
 	pha
 	_MoveTo
 
-* Check font color
+* Set font color
 
-	lda	printMODE
-	cmp	#FALSE
-	beq	print11
-	
 	lda	[dpTO]
 	and	#$ff
 	pha
 	_SetForeColor
 	
-print11	_DrawChar
+	_DrawChar
 
 * 4- next character
 
 print2	inc	printX
 	lda	printX
-	cmp	#max_colonnes
+	cmp	printWIDTH
 	bcc	print4
 
 print3	lda	7,s	; reset X-coord
@@ -1624,11 +1612,7 @@ print4	inc	dpFROM
 	bne	print5
 	inc	dpFROM+2
 
-print5	lda	printMODE	; do we use links?
-	cmp	#FALSE
-	beq	print6
-	
-	inc	dpTO	; yes, we do
+print5	inc	dpTO	; next color char
 	bne	print6
 	inc	dpTO+2
 	
@@ -1642,10 +1626,6 @@ print6	brl	printLOOP
 * 3,s	w	Y
 * 5,s	w	X
 * 7,s	l	text pointer
-
-max_colonnes2 =	80	; 80 - 75
-
-*---
 
 printc	lda	9,s
 	sta	dpFROM+2
@@ -1685,7 +1665,7 @@ printc1	cmp	#instrSPACE	; skip space char
 	lda	printX
 	asl
 	tax
-	lda	x_coord2,x
+	lda	x_coord,x
 	pha
 	
 	lda	printY
@@ -1726,21 +1706,15 @@ printc5	brl	printcLOOP
 * DATA FOR PRINT
 *-----------------------
 
-printMODE	ds	2
+printWIDTH	ds	2
 printX	ds	2
 printY	ds	2
+offsetY	ds	2
 
 *---
 
-x_coord	=	*	; For game texts
-]x	=	marge_gauche*largeur_caractere	; Première ligne
-	lup	max_colonnes
-	dw	]x
-]x	=	]x+largeur_caractere
-	--^
-
-x_coord2	=	*	; For centered texts
-]x	=	0
+x_coord	=	*	; For all texts
+]x	=	0	; Première ligne
 	lup	max_colonnes2
 	dw	]x
 ]x	=	]x+largeur_caractere
@@ -1754,17 +1728,11 @@ y_coord	=	*	; For all texts
 	--^
 
 x_text	=	*
-	dw	-1,-1,-1,-1,-1,-1,-1,-1
-	dw	-1,-1,-1,-1,-1,-1,-1,-1
-	dw	-1,-1,-1,-1,-1,-1,-1,-1
 ]x	=	0	; Première colonne
 	lup	max_colonnes
 	dw	]x,]x,]x,]x,]x,]x,]x,]x
 ]x	=	]x+1
 	--^
-	dw	-1,-1,-1,-1,-1,-1,-1,-1
-	dw	-1,-1,-1,-1,-1,-1,-1,-1
-	dw	-1,-1,-1,-1,-1,-1,-1,-1
 
 y_text	=	*
 ]y	=	0	; Première ligne
@@ -1779,7 +1747,6 @@ y_text2	=	*	; Offset in text page
 	dw	]y
 ]y	=	]y+max_colonnes
 	--^
-
 
 *---
 

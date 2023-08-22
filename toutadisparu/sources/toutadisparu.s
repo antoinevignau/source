@@ -263,7 +263,7 @@ mainLOOP	lda	scene_actuelle
 	jsr	prepare_texte	; que l'on prepare le texte
 	jsr	mots_clicables	; on y ajoute les mots cliquables
 	jsr	affiche_texte	; et on l'affiche
-
+	
 *----------------------------------------
 * TASK MASTER (no more)
 *----------------------------------------
@@ -337,18 +337,11 @@ doNOT
 
 *---
 
-doCRASH
-	lda	nb_lignes
-	brk	$bd
-	
-*---
-
 tblKEYVALUE
 	asc	'QqOoSs'
 	asc	'Rr'
 	asc	'Zz'
 	asc	'?'
-	asc	'*'
 	hex	ff
 	
 tblKEYADDRESS
@@ -356,7 +349,6 @@ tblKEYADDRESS
 	da	doRESTART,doRESTART
 	da	doMUSIK,doMUSIK
 	da	help
-	da	doCRASH
 
 *----------------------------------- Gestion du mouseUp
 * on compare les coordonnées avec celles du incontent
@@ -436,10 +428,10 @@ doLOAD	jsr	suspendMUSIC	; NTP off
 	_SFGetFile
 
 	jsr	loadBACK
-	jsr	resumeMUSIC	; NTP on
-	
+
 	lda	replyPTR
 	bne	doLOAD1
+	jsr	resumeMUSIC	; NTP on
 	rts
 
 doLOAD1	jsr	copyPATH
@@ -594,9 +586,10 @@ saveIT	stx	proWRITEGAME+8
 	adrl	proWRITEGAME
 	rts
 
-*----------------------------------- Restart - LOGO (must handle escape)
+*----------------------------------- Restart
 
-doRESTART	jsr	saveBACK
+doRESTART	jsr	suspendMUSIC	; NTP off
+	jsr	saveBACK
 
 	PushWord #0
 	PushWord #5
@@ -611,8 +604,8 @@ doRESTART	jsr	saveBACK
 	
 	pla
 	beq	re1
-	rts
-
+	jmp	resumeMUSIC	; NTP on
+	
 re1	jsr	fin_aventure
 	jsr	initialisation_absolue
 	lda	#fgRESTART
@@ -621,7 +614,8 @@ re1	jsr	fin_aventure
 
 *----------------------------------- Quit
 
-doQUIT	jsr	saveBACK
+doQUIT	jsr	suspendMUSIC	; NTP off
+	jsr	saveBACK
 	
 	PushWord #0
 	PushWord #5
@@ -633,6 +627,7 @@ doQUIT	jsr	saveBACK
 	_AlertWindow
 	
 	jsr	loadBACK
+	jsr	resumeMUSIC	; NTP on
 	
 	pla
 	beq	meQUIT

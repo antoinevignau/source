@@ -55,6 +55,7 @@ ligne_max	ds	max_colonnes	; une ligne du texte
 texte	ds	max_colonnes*max_lignes	; the text from the .TXT file
 texte_liens	ds	max_colonnes*max_lignes	; FALSE: not a link, TRUE est un mot cliquable
 texte_index	ds	max_colonnes*max_lignes	; numéro du mot
+	asc	"TEXTE_FINAL"
 texte_final	ds	max_colonnes*max_lignes	; the final text - known as b$ in Atari ST
 	ds	2
 

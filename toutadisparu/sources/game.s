@@ -135,43 +135,23 @@ tblLANG
 
 load_index
 	lda	#pINDEX
-	sta	proOPEN+4
-
-	jsl	GSOS
-	dw	$2010
-	adrl	proOPEN
-	bcs	li_err2
-
-	lda	proOPEN+2
-	sta	proREAD+2
-	sta	proCLOSE+2
-
-	lda	ptrINDEX
-	sta	proREAD+4
-	lda	ptrINDEX+2
-	sta	proREAD+6
-	
-	lda	proEOF
-	sta	proREAD+8
-	lda	proEOF+2
-	sta	proREAD+10
-
-	jsl	GSOS
-	dw	$2012
-	adrl	proREAD
+	ldx	ptrUNPACK+2
+	ldy	ptrUNPACK
+	jsr	loadFILE
 	bcs	li_err
 
-	jsl	GSOS
-	dw	$2014
-	adrl	proCLOSE
+	tya
+	jsr	unpackLZ4
+
+	PushLong	ptrIMAGE
+	PushLong	ptrINDEX
+	PushLong	lenDATA
+	_BlockMove
+
+	clc
 	rts
 
-li_err
-	jsl	GSOS
-	dw	$2014
-	adrl	proCLOSE
-
-li_err2	pha
+li_err	pha
 	PushLong #filSTR1
 	PushLong #errSTR2
 	PushLong #errSTR1
@@ -197,43 +177,23 @@ ni_1	lda	[dpINDEX]
 
 load_textes
 	lda	#pTEXTES
-	sta	proOPEN+4
-
-	jsl	GSOS
-	dw	$2010
-	adrl	proOPEN
-	bcs	lt_err2
-
-	lda	proOPEN+2
-	sta	proREAD+2
-	sta	proCLOSE+2
-
-	lda	ptrTEXTES
-	sta	proREAD+4
-	lda	ptrTEXTES+2
-	sta	proREAD+6
-	
-	lda	proEOF
-	sta	proREAD+8
-	lda	proEOF+2
-	sta	proREAD+10
-
-	jsl	GSOS
-	dw	$2012
-	adrl	proREAD
+	ldx	ptrUNPACK+2
+	ldy	ptrUNPACK
+	jsr	loadFILE
 	bcs	lt_err
 
-	jsl	GSOS
-	dw	$2014
-	adrl	proCLOSE
+	tya
+	jsr	unpackLZ4
+
+	PushLong	ptrIMAGE
+	PushLong	ptrTEXTES
+	PushLong	lenDATA
+	_BlockMove
+
+	clc
 	rts
 
-lt_err
-	jsl	GSOS
-	dw	$2014
-	adrl	proCLOSE
-
-lt_err2	pha
+lt_err	pha
 	PushLong #filSTR1
 	PushLong #errSTR2
 	PushLong #errSTR1
@@ -455,10 +415,6 @@ tag_rect	ds	2	; y0
 * choix_aventure
 
 choix_aventure
-	lda	escape
-	cmp	#fgRESTART
-	beq	ca_restart
-	
 	lda	#pMENU	; premier chargement
 	ldx	ptrUNPACK+2
 	ldy	ptrUNPACK
@@ -1356,7 +1312,7 @@ clic_mot
 	lda	y_text2,x
 	clc
 	adc	motY
-	sta	motY	; la ligne
+	sta	motY2	; la ligne
 	lda	y_text,x
 	sta	motOFFSET	; l'offset dans le texte
 	clc
@@ -1388,8 +1344,8 @@ tc_2	ldx	mot_clique	; on sauvegarde l'ancien mot
 	beq	tc_debut
 	lda	(dpFROM),y
 	and	#$ff
-	cmp	#instrSPACE
-	beq	tc_debutok
+	cmp	#'A'-1	; instrSPACE
+	bcc	tc_debutok	; beq
 	dey
 	bra	]lp
 
@@ -1401,8 +1357,8 @@ tc_debut	sty	motX	; on a le debut
 ]lp	cpy	#max_colonnes
 	bcs	tc_fin
 	lda	(dpFROM),y
-	cmp	#instrSPACE
-	beq	tc_fin
+	cmp	#'A'-1	; #instrSPACE
+	bcc	tc_fin	; beq
 	sta	mot,x
 	iny
 	inx
@@ -1585,7 +1541,7 @@ sm_blink	PushWord	#colorBLACK
 	
 sm_print	PushLong	#mot
 	PushWord	motX
-	PushWord	motY
+	PushWord	motY2
 	jsr	printc
 
 	lda	#3	; wait 3 VBLS
@@ -1595,6 +1551,7 @@ sm_print	PushLong	#mot
 
 motX	ds	2
 motY	ds	2
+motY2	ds	2
 motOFFSET	ds	2
 	
 *-----------------------

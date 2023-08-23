@@ -881,7 +881,7 @@ fadeOUT5 dey
 *  A: packed data size
 *
 * Exit:
-*  A: unpacked data size
+*  lenDATA: unpacked data size
 *
 *----------------------------
 
@@ -1296,8 +1296,8 @@ proVERS
 pMENU	strl	'1/data/images/general/menu.lz4'
 pFOND	strl	'1/data/images/general/fond.lz4'
 pFONT	strl	'1/data/images/general/font.lz4'
-pINDEX	strl	'1/data/textes/fr/TEXTES1.IND'
-pTEXTES	strl	'1/data/textes/fr/TEXTES1.TEX'
+pINDEX	strl	'1/data/textes/fr/TEXTES1IND.lz4'
+pTEXTES	strl	'1/data/textes/fr/TEXTES1TEX.lz4'
 
 *--- offset to aventure number is +25
 

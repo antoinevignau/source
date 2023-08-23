@@ -1122,6 +1122,7 @@ at_10	clc
 	adc	#1
 	lsr
 	sta	printY	; output line
+	sta	motY
 	asl
 	tax
 	lda	y_coord,x
@@ -1342,6 +1343,7 @@ clic_mot
 	lsr
 	lsr
 	lsr
+	sta	motX
 	pha
 	
 	lda	taskWHERE	; Y
@@ -1351,7 +1353,12 @@ clic_mot
 	adc	#9
 	asl
 	tax
+	lda	y_text2,x
+	clc
+	adc	motY
+	sta	motY	; la ligne
 	lda	y_text,x
+	sta	motOFFSET	; l'offset dans le texte
 	clc
 	adc	1,s
 	tax
@@ -1362,10 +1369,54 @@ clic_mot
 	bne	tc_2
 tc_ko	sec		; pas de mot
 	rts
+
+*--- on a un mot
+
 tc_2	ldx	mot_clique	; on sauvegarde l'ancien mot
 	stx	mot_ancien
 	sta	mot_clique	; et le nouveau
-	clc		; on a un mot
+	
+	lda	motOFFSET	; on en a encore besoin
+	clc
+	adc	#texte_final
+	sta	dpFROM
+
+*- on cherche le début
+
+	ldy	motX
+]lp	cpy	#0	; condition de sortie : on est à gauche
+	beq	tc_debut
+	lda	(dpFROM),y
+	and	#$ff
+	cmp	#instrSPACE
+	beq	tc_debutok
+	dey
+	bra	]lp
+
+tc_debutok	iny	
+tc_debut	sty	motX	; on a le debut
+
+	ldx	#0
+	sep	#$20
+]lp	cpy	#max_colonnes
+	bcs	tc_fin
+	lda	(dpFROM),y
+	cmp	#instrSPACE
+	beq	tc_fin
+	sta	mot,x
+	iny
+	inx
+	bne	]lp	; on a recopié le mot
+	
+tc_fin	stz	mot,x	; fin de chaîne
+	rep	#$20
+
+	lda	motX	; corrige la marge
+	clc
+	adc	#marge_gauche
+	sta	motX
+
+	clc
 	rts
 
 *-----------------------
@@ -1377,7 +1428,7 @@ affiche_commentaire
 	cmp	#0
 	bne	ac_1
 	rts
-	
+
 ac_1	dec		; prend la scene
 	pha		; calcul l'index dans la dimension NB_MOTS
 	pha
@@ -1497,16 +1548,28 @@ commentRECT	dw	182,16,192,623
 * surligner_mot(texte$,mot$,pointeur_mot%,cycles)
 
 surligner_mot
-	pha
+	pha		; le nombre de cycles
+
 	_HideCursor
+
+	pha		; save current mode
+	_GetTextMode
 	pla
+	sta	motOFFSET
 	
+	PushWord	#modeForeCopy
+	_SetTextMode
+
+	pla		; le nombre de cycles
+
 ]lp	pha
 	jsr	sm_blink
 	pla
 	dec
 	bne	]lp
-	
+
+	PushWord	motOFFSET
+	_SetTextMode
 	_ShowCursor
 	rts
 
@@ -1532,6 +1595,7 @@ sm_print	PushLong	#mot
 
 motX	ds	2
 motY	ds	2
+motOFFSET	ds	2
 	
 *-----------------------
 * PRINT - OK
@@ -1776,11 +1840,11 @@ y_text	=	*
 ]y	=	]y+max_colonnes
 	--^
 
-y_text2	=	*	; Offset in text page
+y_text2	=	*
 ]y	=	0	; Première ligne
 	lup	max_lignes
-	dw	]y
-]y	=	]y+max_colonnes
+	dw	]y,]y,]y,]y,]y,]y,]y,]y,]y,]y
+]y	=	]y+1
 	--^
 
 *---

@@ -547,18 +547,14 @@ FUNCTION clic_mot$(texte$)
   ' ON REGARDE QUEL MOT DANS LE TEXTE Y CORRESPOND
   '
   CLR mot2$
-  IF pointeur_mot%<LEN(texte$) AND INSTR(alphabet$,UPPER$(MID$(texte$,pointeur_m
-    ot%,1)))
+  IF pointeur_mot%<LEN(texte$) AND INSTR(alphabet$,UPPER$(MID$(texte$,pointeur_mot%,1)))
     '
-    pointeur2%=pointeur_mot%-1           !ON COMMENCE A SCANNER AU CARACTERE CLI
-      QUE
+    pointeur2%=pointeur_mot%-1           !ON COMMENCE A SCANNER AU CARACTERE CLIQUE
     REPEAT
       INC pointeur2%                     !ON AVANCE D'UN CARACTERE
-      EXIT IF pointeur2%>longueur_texte% !ON S'EN VA SI ON ARRIVE A LA FIN DU TE
-        XTE
+      EXIT IF pointeur2%>longueur_texte% !ON S'EN VA SI ON ARRIVE A LA FIN DU TEXTE
       a$=MID$(texte$,pointeur2%,1)       !ON CAPTURE CE CARACTERE
-      IF INSTR(alphabet$,UPPER$(a$))     !SI CE CARACTERE FAIT PARTIE DE CEUX CO
-        MPOSANT UN MOT
+      IF INSTR(alphabet$,UPPER$(a$))     !SI CE CARACTERE FAIT PARTIE DE CEUX COMPOSANT UN MOT
         mot$=mot$+a$                     !ON L'AJOUTE AU MOT "CLIQU"
         sortie!=FALSE                    !ET ON CONTINUE
       ELSE
@@ -602,8 +598,7 @@ FUNCTION aiguillage(scene_actuelle|,mot$)
         condition&=condition&(scene_actuelle|,i|)
         '                                 !ON TESTE SI LA CONDITION
         '                                 !EST SATISFAITE (NEGATIVE OU POSITIVE)
-        IF (condition&>0 AND scene_visitee!(ABS(condition&))=TRUE) OR (condition
-          &<0 AND scene_visitee!(ABS(-condition&))=FALSE)
+        IF (condition&>0 AND scene_visitee!(ABS(condition&))=TRUE) OR (condition&<0 AND scene_visitee!(ABS(-condition&))=FALSE)
           numero_mot|=i|                  ! SI C'EST OK ON VALIDE LE MOT
         ENDIF
       ENDIF

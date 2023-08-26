@@ -383,8 +383,6 @@ switch_res	sty	mainWIDTH
 	pha
 	_SetMasterSCB
 	_SetAllSCBs
-	PushLong	#$e19e00
-	_InitColorTable
 	_InitCursor
 	PushLong mainPORT
 	_InitPort
@@ -821,17 +819,17 @@ fadeIN6  dey
          dex
          bpl   fadeIN2
          
-         _ShowCursor
-         rts
+	_ShowCursor
+	rts
 
 *---
 
-fadeOUT  lda   #$9e00
-         sta   Debut
-         lda   #$00e1
-         sta   Debut+2
+fadeOUT	lda	#$9e00
+	sta	Debut
+	lda	#$00e1
+	sta	Debut+2
 
-         _HideCursor
+	_HideCursor
          
          ldx   #$000f
 fadeOUT1 ldy   #$01fe
@@ -864,8 +862,8 @@ fadeOUT5 dey
          dex
          bpl   fadeOUT1
          
-         _ShowCursor
-         jmp	noircit_ecran
+	_ShowCursor
+	jmp	noircit_ecran
 
 *----------------------------
 * unpackLZ4
@@ -882,8 +880,7 @@ fadeOUT5 dey
 *
 *----------------------------
 
-unpackLZ4
-	sta	LZ4_Limit+1
+unpackLZ4	sta	LZ4_Limit+1
 	
 	jsr	suspendMUSIC
 	sep	#$20

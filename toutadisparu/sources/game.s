@@ -173,8 +173,7 @@ ni_1	lda	[dpINDEX]
 * load_textes
 *-----------------------
 
-load_textes
-	lda	#pTEXTES
+load_textes	lda	#pTEXTES
 	ldx	ptrUNPACK+2
 	ldy	ptrUNPACK
 	jsr	loadFILE
@@ -318,6 +317,10 @@ get_textes2	dec
 * generique
 
 generique	jsr	switch_640
+
+	PushLong	#$e19e00
+	_InitColorTable
+
 	jsr	tag
 	
 	PushWord	#0
@@ -1783,8 +1786,8 @@ affiche_image
 	beq	ai_1
 	rts
 
-ai_1	jsr	switch_320
-	jsr	noircit_ecran
+ai_1	jsr	noircit_ecran
+	jsr	switch_320
 
 	lda	#TRUE
 	ldx	ptrIMAGE+2
@@ -2353,10 +2356,6 @@ image_ecran
 *-----------------------
 * fadeout(palette2$)
 	rts
-
-palette_320
-	hex	0000770741082C070F008000700F000D
-	hex	A90FF00FE000DF04AF0D8F07CC0CFF0F
 
 *-----------------------
 * FADEIN_MID - OK

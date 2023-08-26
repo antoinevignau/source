@@ -20,7 +20,6 @@ tblTEXTES	ds	4*NB_TEXTES
 *--- Variables Atari ST
 
 nbTEXTES	ds	2
-nbTEXTES2	ds	2	; nombre de textes indiqué dans le fichier .TEX
 i	ds	2	; un index
 nb_lignes	ds	2	; nombre de lignes de texte (c'est pour centrer)
 localOFFSET	ds	2	; offset de chaque rangée
@@ -32,8 +31,7 @@ rvb1	ds	2	; index 1/5/9/D
 rvb2	ds	2	; index 2/6/A/E
 index_mot	ds	2	; un autre index qui pointe
 nb_mots	ds	2	; nombre de mots dans la scene
-mot_clique	ds	2	; index du mot cliqué
-mot_ancien	ds	2	; index du mot précédemment cliqué
+numero_mot	ds	2	; index du mot cliqué après condition
 valeur_condition ds	2	; valeur condition 2B xx ou 2D yy
 aventure	ds	2
 nombre_scenes ds	2
@@ -45,6 +43,8 @@ escape	ds	2	; BOOL - TRUE or FALSE
 fgSUITEFORCEE ds	2	; BOOL - TRUE or FALSE
 
 mot	ds	128	; le mot à chercher (jusqu'au caractère espace)
+mot_upper	ds	128	; le même mot mais en IIgs majusculanisé
+option_mot	ds	128	; la copie du premier mot cherché
 ligne_commentaire		; la phrase de commentaire "mot" : explication
 	ds	128
 	
@@ -52,8 +52,7 @@ ligne_commentaire		; la phrase de commentaire "mot" : explication
 
 ligne_max	ds	max_colonnes	; une ligne du texte
 texte	ds	max_colonnes*max_lignes	; the text from the .TXT file
-texte_liens	ds	max_colonnes*max_lignes	; FALSE: not a link, TRUE est un mot cliquable
-texte_index	ds	max_colonnes*max_lignes	; numéro du mot
+texte_color	ds	max_colonnes*max_lignes	; FALSE: not a link, TRUE est un mot cliquable
 texte_final	ds	max_colonnes*max_lignes	; the final text - known as b$ in Atari ST
 	ds	2
 

@@ -1041,8 +1041,7 @@ PROCEDURE mots_clicables(texte$)
         ENDIF
         '
       ENDIF
-      INC pointeur_mot% !SI LE MOT N'EST PAS ISOLE (EX="CLIC" et "CLICABLE") ON 
-        CONTINUE LA RECHERCHE
+      INC pointeur_mot% !SI LE MOT N'EST PAS ISOLE (EX="CLIC" et "CLICABLE") ON CONTINUE LA RECHERCHE
     UNTIL affichage!=TRUE !SI LE MOT A ETE SURLIGNE (OU DU MOINS QU'IL EXISTE)
     CLR pointeur_mot%,affichage!      !ON SORT...
   NEXT i%

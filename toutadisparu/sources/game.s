@@ -25,8 +25,7 @@ colorWHITE	=	15
 * load_font
 *-----------------------
 
-load_font
-	jsr	font_it
+load_font	jsr	font_it
 	bcc	lf_ok
 
 	pha
@@ -41,8 +40,7 @@ lf_ok	rts
 
 *--- Really load the font
 
-font_it
-	PushWord #$0A00	; Taille 10
+font_it	PushWord #$0A00	; Taille 10
 	PushWord #$0016	; Courier
 	PushWord #0
 	_InstallFont
@@ -185,6 +183,11 @@ load_textes
 	tya
 	jsr	unpackLZ4
 
+	lda	lenDATA
+	sta	proEOF
+	lda	lenDATA+2
+	sta	proEOF+2
+	
 	PushLong	ptrIMAGE
 	PushLong	ptrTEXTES
 	PushLong	lenDATA
@@ -224,11 +227,7 @@ it1	lda	ptrTEXTES
 	adc	proEOF+2
 	sta	dpTO+2
 
-*--- Nombre de textes en little endian
-
-	lda	[dpFROM]	; le premier word est le nombre de textes
-	xba
-	sta	nbTEXTES2	; pour comparer avec notre valeur
+*--- Saute le nombre de textes (en little endian)
 
 	lda	dpFROM	; += 2
 	clc
@@ -281,11 +280,20 @@ it5	lda	dpFROM+2	; did we reach the end of the file?
 * get_textes(textes%)
 *-----------------------
 
-get_textes	cmp	#0
+get_textes	lda	scene_actuelle
 	beq	get_textes1
 	cmp	nbTEXTES
 	bcc	get_textes2
 	beq	get_textes2
+
+	pha
+	PushLong #pgmSTR1
+	PushLong #pgmSTR2
+	PushLong #errSTR3
+	PushLong #errSTR2
+	_TLTextMountVolume
+	pla
+
 get_textes1	sec
 	rts
 
@@ -333,7 +341,7 @@ generique	jsr	switch_640
 	@cprint	#gen_str5;17
 	@cprint	#gen_str6;18
 
-	jsr	waitEVENT
+	jsr	attente
 	
 	_SetBackColor
 	_SetForeColor
@@ -356,8 +364,7 @@ gen_str8	asc	'Antoine Vignau & Olivier Zardini'00
 *-----------------------
 * tag
 
-tag
-	PushLong	#old_pattern
+tag	PushLong	#old_pattern
 	_GetPenPat
 
 	PushLong	#the_pattern	; blue pattern
@@ -446,6 +453,7 @@ ca_restart	lda	escape
 	
 	jsr	switch_320
 
+	lda	#TRUE
 	ldx	ptrMENU+2
 	ldy	ptrMENU
 	jsr	fadeIN
@@ -491,7 +499,7 @@ ca_exit	PushLong	#old_pattern
 	
 *----------- Wait for a click
 
-ca_choice	jsr	waitEVENT
+ca_choice	jsr	attente
 	cmp	#mouseDownEvt
 	bne	ca_choice
 	
@@ -915,8 +923,8 @@ prepare_texte
 ]lp	lda	#texteSPACE
 	sta	texte_final,x
 	lda	#colorBLACK
-	sta	texte_liens,x
-	stz	texte_index,x
+	sta	texte_color,x
+*	stz	texte_index,x
 	inx
 	cpx	#max_colonnes*max_lignes
 	bcc	]lp
@@ -1175,6 +1183,7 @@ affiche_texte
 
 * et on affiche enfin
 
+	lda	#TRUE
 	ldx	ptrFOND+2
 	ldy	ptrFOND
 	jsr	fadeIN
@@ -1185,7 +1194,7 @@ affiche_texte
 	PushWord	#modeForeCopy
 	_SetTextMode
 
-	PushLong	#texte_liens
+	PushLong	#texte_color
 	PushLong	#texte_final
 	PushWord	#3		; x
 	PushWord	printY		; y
@@ -1203,7 +1212,7 @@ affiche_texte
 debut_aventure
 	lda	#-1
 	sta	scene_ancienne
-	sta	mot_ancien
+*	sta	mot_ancien
 
 	lda	#$d2	; initialise la chaîne de commentaire
 	sta	ligne_commentaire
@@ -1259,19 +1268,18 @@ fin	rts
 * nouvelle_scene(scene à charger)
 
 nouvelle_scene
-	cmp	#0	; not 0
+	lda	scene_actuelle
 	beq	ns_99
-	cmp	scene_ancienne
-	beq	ns_98
+*	cmp	scene_ancienne
+*	beq	ns_98
 
-	ldx	scene_actuelle
-	stx	scene_ancienne
+*	ldx	scene_actuelle
+*	stx	scene_ancienne
 
-	dec
 	tax
 	lda	#TRUE
 	sep	#$20
-	sta	scene_visitee,x
+	sta	scene_visitee-1,x
 	rep	#$20
 
 ns_98	lda	#FALSE
@@ -1279,224 +1287,7 @@ ns_98	lda	#FALSE
 	
 ns_99	rts
 
-*-----------------------
-* CLIC_MOT - OK
-*-----------------------
-* clic_mot
-* on regarde sur quel mot on a cliqué
-
-clic_mot
-	lda	taskWHERE+2	; X
-	cmp	#marge_gauche*largeur_caractere
-	bcc	tc_ko
-	cmp	#640-{2*largeur_caractere}
-	bcs	tc_ko
-	
-	sec
-	sbc	#marge_gauche*largeur_caractere
-	clc
-	adc	#7
-	lsr
-	lsr
-	lsr
-	sta	motX
-	pha
-	
-	lda	taskWHERE	; Y
-	sec
-	sbc	offsetY	; décalage lié au centrage du texte
-	clc
-	adc	#9
-	asl
-	tax
-	lda	y_text2,x
-	clc
-	adc	motY
-	sta	motY2	; la ligne
-	lda	y_text,x
-	sta	motOFFSET	; l'offset dans le texte
-	clc
-	adc	1,s
-	tax
-	pla
-
-	lda	texte_index,x
-	and	#$ff
-	bne	tc_2
-tc_ko	sec		; pas de mot
-	rts
-
-*--- on a un mot
-
-tc_2	ldx	mot_clique	; on sauvegarde l'ancien mot
-	stx	mot_ancien
-	sta	mot_clique	; et le nouveau
-	
-	lda	motOFFSET	; on en a encore besoin
-	clc
-	adc	#texte_final
-	sta	dpFROM
-
-*- on cherche le début
-
-	ldy	motX
-]lp	cpy	#0	; condition de sortie : on est à gauche
-	beq	tc_debut
-	lda	(dpFROM),y
-	and	#$ff
-	cmp	#'A'-1	; instrSPACE
-	bcc	tc_debutok	; beq
-	dey
-	bra	]lp
-
-tc_debutok	iny	
-tc_debut	sty	motX	; on a le debut
-
-	ldx	#0
-	sep	#$20
-]lp	cpy	#max_colonnes
-	bcs	tc_fin
-	lda	(dpFROM),y
-	cmp	#'A'-1	; #instrSPACE
-	bcc	tc_fin	; beq
-	sta	mot,x
-	iny
-	inx
-	bne	]lp	; on a recopié le mot
-	
-tc_fin	stz	mot,x	; fin de chaîne
-	rep	#$20
-
-	lda	motX	; corrige la marge
-	clc
-	adc	#marge_gauche
-	sta	motX
-
-	clc
-	rts
-
-*-----------------------
-* AFFICHE_COMMENTAIRE
-*-----------------------
-* affiche_commentaire
-
-affiche_commentaire
-	cmp	#0
-	bne	ac_1
-	rts
-
-ac_1	dec		; prend la scene
-	pha		; calcul l'index dans la dimension NB_MOTS
-	pha
-	pha		; index de scène
-	PushWord #NB_MOTS	; taille d'une dimension
-	_Multiply
-
-	lda	1,s	; calcule l'offset pour les deux tableaux utiles
-	asl
-	sta	1,s
-
-	lda	mot_clique
-	dec
-	asl
-	clc
-	adc	1,s
-	sta	localOFFSET
-	pla
-	pla
-
-*--- on construit la chaîne
-
-* 1- le mot
-
-	lda	localOFFSET
-	clc
-	adc	#fonction_mots
-	sta	dpFROM
-	lda	(dpFROM)
-	sta	dpINDEX
-	lda	ptrINDEX+2
-	sta	dpINDEX+2
-
-	sep	#$20
-	ldy	#0
-]lp	lda	[dpINDEX],y
-	cmp	#instrSPACE
-	beq	ac_2
-	sta	ligne_commentaire+1,y
-	iny
-	bne	]lp
-
-* 2- la séparation
-
-ac_2	tyx
-	rep	#$20
-	lda	#$20d3	; double quote fermant + espace "-" -"
-	sta	ligne_commentaire+1,x
-	lda	#$203a	; deux-points + espace "-: -"
-	sta	ligne_commentaire+3,x
-
-* 3- le commentaire
-
-	lda	localOFFSET
-	clc
-	adc	#phrase
-	sta	dpFROM
-	lda	(dpFROM)
-	sta	dpINDEX
-	lda	ptrINDEX+2
-	sta	dpINDEX+2
-
-	sep	#$20
-	ldy	#0
-]lp	lda	[dpINDEX],y
-	beq	ac_3
-	sta	ligne_commentaire+5,x
-	iny
-	inx
-	cpx	#126	; len max
-	bcc	]lp
-
-ac_3	stz	ligne_commentaire+5,x	; pour finir
-	
-	rep	#$20
-	
-*--- Prépare l'écran
-
-	PushLong	#old_pattern
-	_GetPenPat
-
-	pha
-	_GetForeColor
-
-	pha
-	_GetTextMode
-
-	PushLong	#black_pattern	; black pattern
-	_SetPenPat
-
-	PushLong #commentRECT
-	_PaintRect
-
-	PushWord	#15
-	_SetForeColor
-
-	PushWord	#modeForeCopy
-	_SetTextMode
-	
-	ldx	#^ligne_commentaire
-	ldy	#ligne_commentaire
-	lda	#19
-	jsr	cprint
-
-	_SetTextMode
-	_SetForeColor
-	_SetPenPat
-	rts
-
-*---
-
-commentRECT	dw	182,16,192,623
+	mx	%00
 	
 *-----------------------
 * SURLIGNER_MOT
@@ -1914,7 +1705,7 @@ attente	jmp	waitEVENT	; LoGo - check if we support keypresses as well
 *-----------------------
 * image(scene à charger)
 
-image	cmp	#0	; not 0
+image	lda	scene_actuelle	; not 0
 	beq	image_ko
 	dec
 	asl
@@ -1994,10 +1785,13 @@ affiche_image
 
 ai_1	jsr	switch_320
 	jsr	noircit_ecran
+
+	lda	#TRUE
 	ldx	ptrIMAGE+2
 	ldy	ptrIMAGE
 	jsr	fadeIN
-	jsr	waitEVENT
+
+	jsr	attente
 	jsr	fadeOUT	; noircit_ecran
 	jmp	switch_640
 
@@ -2007,7 +1801,7 @@ ai_1	jsr	switch_320
 * suite_forcee(scene)
 
 suite_forcee
-	cmp	#0
+	lda	scene_actuelle
 	beq	sf_false
 	
 	dec		; prend la scene
@@ -2029,13 +1823,32 @@ suite_forcee
 	lda	ptrINDEX+2
 	sta	dpINDEX+2	; et met son pointeur 32-bits
 
-	ldy	#6-2	; len('suite ') sur 16-bits
+*	ldy	#6-2	; len('suite ') sur 16-bits
+*]lp	lda	[dpINDEX],y
+*	sta	mot,y
+*	cmp	strSUITE,y
+*	bne	sf_false
+*	dey
+*	dey
+*	bpl	]lp
+
+	lda	#0
+	tax
+	txy
+
+	sep	#$20	; mot_upper$=UPPER$(mot$)
+	ldy	#6-1
 ]lp	lda	[dpINDEX],y
+	tax
+	lda	tblATARI,x
+	tax
+	lda	tblUPPER,x
 	cmp	strSUITE,y
 	bne	sf_false
 	dey
-	dey
 	bpl	]lp
+
+	rep	#$20
 
 	lda	#aiguillage
 	clc
@@ -2045,40 +1858,266 @@ suite_forcee
 	lda	(dpFROM)	; la prochaine scène
 	and	#$ff
 	sta	scene_actuelle
-	
+
 	lda	#TRUE
 	bra	sf_99
-sf_false	lda	#FALSE
+sf_false	rep	#$20
+	lda	#FALSE
 sf_99	sta	fgSUITEFORCEE
 	rts
 
-strSUITE	asc	'suite '
+strSUITE	asc	'SUITE '
+
+*-----------------------
+* CLIC_MOT - OK
+*-----------------------
+* clic_mot
+* on regarde sur quel mot on a cliqué
+
+clic_mot	lda	taskWHERE+2	; X
+	cmp	#marge_gauche*largeur_caractere
+	bcc	tc_ko
+	cmp	#640-{2*largeur_caractere}
+	bcs	tc_ko
+	
+	sec
+	sbc	#marge_gauche*largeur_caractere
+	clc
+	adc	#7
+	lsr
+	lsr
+	lsr
+	sta	motX
+	pha
+	
+	lda	taskWHERE	; Y
+	sec
+	sbc	offsetY	; décalage lié au centrage du texte
+	clc
+	adc	#9
+	asl
+	tax
+	lda	y_text2,x
+	clc
+	adc	motY
+	sta	motY2	; la ligne
+	lda	y_text,x
+	sta	motOFFSET	; l'offset dans le texte
+	clc
+	adc	1,s
+	tax
+	pla
+
+* on a un mot mais on ne sait pas lequel
+
+*	lda	texte_index,x
+	lda	texte_color,x
+	and	#$ff
+	bne	tc_2
+
+tc_ko	sec		; pas de mot
+	rts
+
+*--- on a un mot
+
+tc_2
+*	ldx	mot_clique	; on sauvegarde l'ancien mot
+*	stx	mot_ancien
+*	sta	mot_clique	; et le nouveau
+	
+	lda	motOFFSET	; on en a encore besoin
+	clc
+	adc	#texte_final
+	sta	dpFROM
+
+*- on cherche le début
+
+	ldy	motX
+]lp	cpy	#0	; condition de sortie : on est à gauche
+	beq	tc_debut
+	lda	(dpFROM),y
+	and	#$ff
+	cmp	#'A'-1	; instrSPACE
+	bcc	tc_debutok	; beq
+	dey
+	bra	]lp
+
+tc_debutok	iny	
+tc_debut	sty	motX	; on a le debut
+
+	ldx	#0
+	sep	#$20
+]lp	cpy	#max_colonnes
+	bcs	tc_fin
+	lda	(dpFROM),y
+	cmp	#'A'-1	; #instrSPACE
+	bcc	tc_fin	; beq
+	sta	mot,x
+	iny
+	inx
+	bne	]lp	; on a recopié le mot
+	
+tc_fin	stz	mot,x	; fin de chaîne
+	rep	#$20
+
+	lda	motX	; corrige la marge
+	clc
+	adc	#marge_gauche
+	sta	motX
+
+	clc		; on a un mot
+	rts
 
 *-----------------------
 * AIGUILLAGE
 *-----------------------
 * aiguille(scene)
-* parce que le tableau aiguillag existe
+* parce que le tableau aiguillage existe
+* si on est ici, on sait qu'on a un mot
 
-aiguille	ldx	mot_clique	; a-t-on cliqué de nouveau sur le même mot ?
-	cpx	mot_ancien
-	beq	ai_entry
+aiguille
+*	lda	scene_actuelle
+*	sta	scene_ancienne
+	stz	numero_mot	; l'index du mot en sortie, le vrai !
+
+*--- mot_upper$=UPPER$(mot$)
+
+	lda	#0	; on init les registres (mais pourquoi ?)
+	tax
+	tay
+
+	sep	#$20	; mot_upper$=UPPER$(mot$)
+	ldx	#0
+]lp	lda	mot,x
+	tay
+	lda	tblATARI,y
+	tay
+	lda	tblUPPER,y
+	sta	mot_upper,x
+	inx
+	cpx	#128
+	bcc	]lp
+	rep	#$20
 	
+*--- pointeur_mots|(scene_actuelle|)
+
+	pha		; calcul l'index dans la dimension NB_MOTS
 	pha
+	lda	scene_actuelle
+	dec
+	pha
+	PushWord	#NB_MOTS	; taille d'une dimension
+	_Multiply
+	pla
+	asl
+	sta	localOFFSET
+	clc
+	adc	#fonction_mots
+	sta	dpFROM	; on pointe sur fonction_mots(scene_actuelle)
+	pla
+
+	lda	#1
+	sta	i
+
+*--- FOR i|=1 TO pointeur_mots|(scene_actuelle|)
+
+aig_fori	rep	#$20
+
+	lda	i	; prend l'adresse du mot
+	dec
+	asl		; dans ptrINDEX
+	tay
+	lda	(dpFROM),y
+	sta	dpINDEX
+	lda	ptrINDEX+2
+	sta	dpINDEX+2
 	
+	lda	#0	; on initialise les registres
+	tax
+	tay
+	sep	#$20	; on majusculinise le mot
+]lp	lda	[dpINDEX],y
+	cmp	#instrSPACE
+	beq	aig_finmot
+	tax
+	lda	tblATARI,x	; from Atari to IIgs
+	tax
+	lda	tblUPPER,x	; to upper case
+	cmp	mot_upper,y
+	bne	aig_nexti
+	iny
+	cpy	#128
+	bcc	]lp
+	
+aig_finmot	lda	#0	; on met un zero final
+	sta	mot_upper,y
+	
+	jsr	aiguille_condition	; on teste la condition
+	bcs	aig_nexti		; non satisfaite
+
+	lda	i		; satisfaite
+	sta	numero_mot
+	
+*--- NEXT i%
+
+aig_nexti	inc	i
+	lda	i
+	cmp	nb_mots
+	bcc	aig_fori
+	beq	aig_fori
+	
+*-----------------------
+
+*--- IF numero_mot|<>0
+
+aig_suite	rep	#$20	; on sort
+
+	lda	numero_mot
+	bne	ai_onaunmot
+
+*	lda	scene_ancienne
+*	sta	scene_actuelle
+	rts
+
+*--- IF option_mot$=mot$
+	
+ai_onaunmot	sep	#$20
+	ldx	#0
+]lp	lda	mot_upper,x
+	cmp	option_mot,x
+	bne	ai_diff
+	cmp	#0	; fin de chaîne
+	beq	ai_entry
+	inx
+	cpx	#128
+	bcc	]lp
+
+*--- ELSE 
+
+ai_diff	ldx	#0	; option_mot$=mot$
+]lp	lda	mot_upper,x
+	sta	option_mot,x
+	inx
+	cpx	#128
+	bcc	]lp
+		
+	rep	#$20
+
 	lda	#1	; fait clignoter
 	jsr	surligner_mot
 	
-	pla
 	jsr	affiche_commentaire
 
-	lda	#FALSE
+ai_false	lda	#FALSE
 	sta	deplacement
 	rts
+
+*---
+	mx	%10
 	
-ai_entry	cmp	#0
-	beq	ai_false
-	
+ai_entry	rep	#$20	; même mot
+
+	lda	scene_actuelle
 	dec		; prend la scene
 	pha		; calcul l'index dans la dimension NB_MOTS
 	pha
@@ -2095,19 +2134,198 @@ ai_entry	cmp	#0
 	sta	dpFROM	; on pointe sur l'index du premier mot
 	pla
 
-	ldy	mot_clique	; 1..+
+	ldy	numero_mot	; 1..+
 	dey
 	lda	(dpFROM),y	; la prochaine scène
 	and	#$ff
 	sta	scene_actuelle
+
 	lda	#TRUE
 	sta	deplacement
 	rts
 
-ai_false	lda	#FALSE
-	sta	deplacement
+	mx	%00
+
+*-----------------------
+* AIGUILLE_CONDITION
+*-----------------------
+* aiguille_condition
+* test de la condition pour 
+* la routine aiguille
+
+* test_condition
+* on entre en A=8-bits
+* on doit ressortir en A=8-bits
+* si le mot est cliquable on remplit texte_color
+
+	mx	%00
+	
+aiguille_condition
+	rep	#$20
+	
+* condition&=condition&(scene_actuelle|,i%)
+
+	lda	i
+	dec
+	asl
+	clc
+	adc	localOFFSET
+	tax
+	lda	condition,x	; xx2B ou yy2D
+	pha
+	and	#$ff00	; index dans scene_visitee
+	xba
+	tax
+	lda	scene_visitee-1,x
+	and	#$ff
+	tax		; true ou false
+	pla
+	and	#$00ff	; 2B ou 2D
+
+* IF (condition&>0 AND scene_visitee!(ABS(condition&))=TRUE) OR (condition&<0 AND scene_visitee!(ABS(-condition&))=FALSE)
+
+	cmp	#'+'
+	bne	ac_moins
+	cpx	#TRUE
+	beq	ac_oui
+	bne	ac_non
+
+ac_moins	cpx	#FALSE
+	bne	ac_non
+
+ac_oui	sep	#$20
+	clc
+	rts
+	
+ac_non	sep	#$20
+	sec
+	rts
+	
+	mx	%00
+
+*-----------------------
+* AFFICHE_COMMENTAIRE
+*-----------------------
+* affiche_commentaire
+
+affiche_commentaire
+	lda	scene_actuelle
+	bne	ac_1
 	rts
 
+ac_1	dec		; prend la scene
+	pha		; calcul l'index dans la dimension NB_MOTS
+	pha
+	pha		; index de scène
+	PushWord #NB_MOTS	; taille d'une dimension
+	_Multiply
+
+	lda	1,s	; calcule l'offset pour les deux tableaux utiles
+	asl
+	sta	1,s
+
+	lda	numero_mot
+	dec
+	asl
+	clc
+	adc	1,s
+	sta	localOFFSET
+	pla
+	pla
+
+*--- on construit la chaîne
+
+* 1- le mot
+
+	lda	localOFFSET
+	clc
+	adc	#fonction_mots
+	sta	dpFROM
+	lda	(dpFROM)
+	sta	dpINDEX
+	lda	ptrINDEX+2
+	sta	dpINDEX+2
+
+	sep	#$20
+	ldy	#0
+]lp	lda	[dpINDEX],y
+	cmp	#instrSPACE
+	beq	ac_2
+	sta	ligne_commentaire+1,y
+	iny
+	bne	]lp
+
+* 2- la séparation
+
+ac_2	tyx
+	rep	#$20
+	lda	#$20d3	; double quote fermant + espace "-" -"
+	sta	ligne_commentaire+1,x
+	lda	#$203a	; deux-points + espace "-: -"
+	sta	ligne_commentaire+3,x
+
+* 3- le commentaire
+
+	lda	localOFFSET
+	clc
+	adc	#phrase
+	sta	dpFROM
+	lda	(dpFROM)
+	sta	dpINDEX
+	lda	ptrINDEX+2
+	sta	dpINDEX+2
+
+	sep	#$20
+	ldy	#0
+]lp	lda	[dpINDEX],y
+	beq	ac_3
+	sta	ligne_commentaire+5,x
+	iny
+	inx
+	cpx	#126	; len max
+	bcc	]lp
+
+ac_3	stz	ligne_commentaire+5,x	; pour finir
+	
+	rep	#$20
+	
+*--- Prépare l'écran
+
+	PushLong	#old_pattern
+	_GetPenPat
+
+	pha
+	_GetForeColor
+
+	pha
+	_GetTextMode
+
+	PushLong	#black_pattern	; black pattern
+	_SetPenPat
+
+	PushLong #commentRECT
+	_PaintRect
+
+	PushWord	#15
+	_SetForeColor
+
+	PushWord	#modeForeCopy
+	_SetTextMode
+	
+	ldx	#^ligne_commentaire
+	ldy	#ligne_commentaire
+	lda	#19
+	jsr	cprint
+
+	_SetTextMode
+	_SetForeColor
+	_SetPenPat
+	rts
+
+*---
+
+commentRECT	dw	182,16,192,623
+	
 *-----------------------
 * CHARGE_IMAGE - OK
 *-----------------------
@@ -2191,11 +2409,12 @@ help	lda	mainWIDTH	; save current width
 	sta	oldWIDTH
 	jsr	saveBACK	; save background
 	jsr	switch_640	; switch to 640
-	
+
+	lda	#TRUE
 	ldx	ptrFOND+2
 	ldy	ptrFOND
 	jsr	fadeIN
-
+	
 	PushLong	#old_pattern	; save current pattern
 	_GetPenPat
 
@@ -2241,8 +2460,8 @@ help4
 	@cprint	#help_str12;12
 	@cprint	#help_str14;14
 	@cprint	#help_str16;16
-	
-help9	jsr	waitEVENT
+
+	jsr	attente
 
 *--- Restore all
 	
@@ -2285,8 +2504,8 @@ help_str16	asc	'OA-Q : quitter le jeu'00
 * mots_clicables(texte$)
 
 mots_clicables
-	lda	#-1	; force un mot différent en entrée de scène
-	sta	mot_ancien
+*	lda	#-1	; force un mot différent en entrée de scène
+*	sta	mot_ancien
 
 	lda	#0	; on init les registres (mais pourquoi ?)
 	tax
@@ -2395,7 +2614,7 @@ mc_99	rep	#$20	; on sort
 * test_condition
 * on entre en A=8-bits
 * on doit ressortir en A=8-bits
-* si le mot est cliquable on remplit texte_liens
+* si le mot est cliquable on remplit texte_color
 
 
 	mx	%00
@@ -2441,10 +2660,10 @@ tc_addmot	ply		; marque le mot dans les buffers
 	dey
 	bmi	tc_ok	; on sort sans dépiler
 	lda	#colorWHITE
-	sta	texte_liens,x
-	lda	index_mot
-	inc
-	sta	texte_index,x
+	sta	texte_color,x
+*	lda	index_mot
+*	inc
+*	sta	texte_index,x
 	bra	]lp
 	
 tc_prendpas	ply
@@ -2454,7 +2673,7 @@ tc_ok	sep	#$20
 	rts
 
 	mx	%00
-	
+
 *-----------------------
 * MUSIQUE - OK
 *-----------------------
@@ -2475,10 +2694,11 @@ fin_musique
 * MON BEAU CURSEUR
 *-----------------------
 
-monCURSEUR	dw	16,4
+monCURSEUR
+	dw	16,4
 	hex	0000000000000000	; data
 	hex	00000000000000F0
-	hex	0000000000000000
+	hex	000000000000FFF0
 	hex	000000000000F0F0
 	hex	0000000000FFF0F0
 	hex	00000000FFF00FF0

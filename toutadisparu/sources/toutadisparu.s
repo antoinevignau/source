@@ -114,7 +114,7 @@ fgRESTART	=	2
 
 	tdc
 	sta	myDP
-
+	
 *--- Version du systeme
 
 	jsl	GSOS
@@ -254,15 +254,16 @@ main	jsr	fadeOUT
 
 *---
 	
-mainLOOP	lda	scene_actuelle
-	jsr	nouvelle_scene	; on initialise la scène
-	lda	scene_actuelle
+mainLOOP	jsr	nouvelle_scene	; on initialise la scène
 	jsr	image		; on charge une image éventuelle
-	lda	scene_actuelle
 	jsr	get_textes		; on détermine le texte
 	jsr	prepare_texte	; que l'on prepare le texte
+	jsr	suite_forcee	; a-t-on des mots cliquables ?
+	lda	fgSUITEFORCEE
+	cmp	#TRUE
+	beq	noMOTS
 	jsr	mots_clicables	; on y ajoute les mots cliquables
-	jsr	affiche_texte	; et on l'affiche
+noMOTS	jsr	affiche_texte	; et on l'affiche
 	
 *----------------------------------------
 * TASK MASTER (no more)
@@ -294,11 +295,8 @@ taskLOOP	inc	VBLCounter0
 	cmp	#FALSE
 	bne	main
 	
-	lda	fgSUITEFORCEE
-	cmp	#TRUE
-	beq	mainLOOP
-
 	lda	deplacement	; si on doit bouger, on fait un...
+	ora	fgSUITEFORCEE
 	cmp	#TRUE
 	beq	mainLOOP	; ...grand saut
 	bne	taskLOOP	; ...sinon on attend
@@ -356,10 +354,7 @@ tblKEYADDRESS
 
 doMOUSEDOWN
 
-doMOUSEUP	lda	scene_actuelle	; a-t-on des mots cliquables ?
-	jsr	suite_forcee
-	
-	lda	fgSUITEFORCEE
+doMOUSEUP	lda	fgSUITEFORCEE
 	cmp	#FALSE
 	beq	mup1
 	rts		; non, on sort
@@ -367,8 +362,7 @@ doMOUSEUP	lda	scene_actuelle	; a-t-on des mots cliquables ?
 mup1	jsr	clic_mot	; oui, on vérifie si on a cliqué sur un mot => mot$
 	bcc	mup2	; oui
 	rts
-mup2	lda	scene_actuelle
-	jsr	aiguille	; on aiguille le joueur si c'est le second clic
+mup2	jsr	aiguille	; on aiguille le joueur (1 ou 2 clics)
 	rts
 	
 *-----------------------------------
@@ -639,13 +633,11 @@ doQUIT	jsr	suspendMUSIC	; NTP off
 
 meQUIT	jsr	stopNTP
 	
-meQUIT0
-	PushWord #refIsHandle
+meQUIT0	PushWord #refIsHandle
 	PushLong SStopREC
 	_ShutDownTools
 
-meQUIT1
-	PushWord myID
+meQUIT1	PushWord myID
 	_DisposeAll
 
 	PushWord mainID
@@ -741,15 +733,16 @@ we_1	inc	VBLCounter0
 
 *--------------------------------------
 
-fadeIN	sty   Debut
-	stx   Debut+2
+fadeIN	pha
+	sty	Debut
+	stx	Debut+2
 
 	_HideCursor
          
-	ldy   #$2000
-	sty   Arrivee
-	ldx   #$00e1
-	stx   Arrivee+2
+	ldy	#$2000
+	sty	Arrivee
+	ldx	#$00e1
+	stx	Arrivee+2
 
 	ldy	#$7e00
 	lda	#0
@@ -758,12 +751,16 @@ fadeIN	sty   Debut
 	iny
 	bpl	]lp
 
-         ldy   #$7dfe
-]lp      lda   [Debut],y
-         sta   [Arrivee],y
-         dey
-         dey
-         bpl   ]lp
+	pla		; ne copie pas les données
+	cmp	#FALSE	; si à FALSE
+	beq	fadeIN1
+	
+	ldy	#$7dfe
+]lp	lda	[Debut],y
+	sta	[Arrivee],y
+	dey
+	dey
+	bpl	]lp
 
 fadeIN1  lda   Debut
          clc
@@ -1108,6 +1105,8 @@ verSTR1	str	'System 6.0.1 Required!'
 verSTR2	str	'Press a key to quit'
 fntSTR1	str	'Courier.10 font missing'
 fntSTR2	str	'Please install it!'
+pgmSTR1	str	'Data parsing error'
+pgmSTR2	str	'Please report!'
 tolSTR1	str	'Error while loading tools'
 memSTR1	str	'Cannot allocate memory'
 filSTR1	str	'Cannot load file'
@@ -1126,7 +1125,7 @@ taskDATA	ds	4	; wmTaskData       +16
 
 taskTBL	da	doNOT	; 0 Null
 	da	doMOUSEDOWN	; 1 mouseDownEvt
-	da	doMOUSEUP	; 2 mouseUpEvt
+	da	doNOT	; 2 mouseUpEvt
 	da	doKEYDOWN	; 3 keyDownEvt
 	da	doNOT
 	da	doNOT	; 5 autoKeyEvt

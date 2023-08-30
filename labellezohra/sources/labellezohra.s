@@ -187,22 +187,6 @@ okMEM1	sty	ptrIMAGE
 	sty	ptrUNPACK
 	stx	ptrUNPACK+2
 	
-*--- 64K pour les REFERENCES des textes
-
-	jsr	make64KB
-	bcs	koMEM
-
-	sty	ptrREF
-	stx	ptrREF+2
-	
-*--- 64K pour les TEXTES
-
-	jsr	make64KB
-	bcs	koMEM
-
-	sty	ptrTEXTES
-	stx	ptrTEXTES+2
-	
 *--- Chargement des outils
 
 	pha
@@ -254,18 +238,17 @@ okTOOL	_HideMenuBar
 * INITIALISATIONS
 *----------------------------------------
 
+entryPOINT
 	jsr	set_language
 	jsr	init
 	jsr	musique
 	jsr	init2
-
+	jsr	TWILIGHToff
+	
 *-----------------------
 * MAIN
 *-----------------------
 
-entryPOINT
-	@loadfile	#pFOND;ptrFOND
-	@loadfile	#pICONES;ptrICONES
 	@fadein	ptrFOND;#TRUE
 	jsr	waitEVENT
 	@fadein	ptrICONES;#TRUE
@@ -592,6 +575,7 @@ doQUIT
 
 meQUIT
 *	jsr	stopNTP
+	jsr	TWILIGHTon
 	
 meQUIT0	PushWord #refIsHandle
 	PushLong SStopREC
@@ -613,6 +597,113 @@ meQUIT1	PushWord myID
 	adrl	proQUIT
 
 monitor	brk	$bd
+
+*----------------------------------------
+* TWILIGHT
+*----------------------------------------
+
+*----------------------------
+* TWILIGHToff
+*  Turns Twilight II off
+*
+* Entry:
+*  n/a
+*
+* Exit:
+*  n/a
+*
+*----------------------------
+
+lenV1	=	$49bf
+lenV2	=	$539a
+
+offV1	=	$117a
+offV2	=	$154c
+
+TWILIGHToff
+	ldal	$e11600
+	sta	Debut
+	ldal	$e11602
+	sta	Debut+2
+
+TWILIGHToff1
+	ldy	#8
+	lda	[Debut],y
+	ldx	#offV1
+	cmp	#lenV1
+	beq	TWILIGHToff2
+	ldx	#offV2
+	cmp	#lenV2
+	bne	TWILIGHToff3
+	
+TWILIGHToff2
+	stx	offTWILIGHT
+         
+	lda	[Debut]
+	sta	Arrivee
+	sta	ptrTWILIGHT
+	ldy	#2
+	lda	[Debut],y
+	sta	Arrivee+2
+	sta	ptrTWILIGHT+2
+	
+	txy
+	lda	[Arrivee],y
+	cmp	#$0ef0
+	bne	TWILIGHToff3
+	lda	#$0e80
+	sta	[Arrivee],y
+	inc	fgTWILIGHT
+	rts
+
+TWILIGHToff3
+	ldy	#16
+	lda	[Debut],y
+	tax
+	iny
+	iny
+	lda	[Debut],y
+	sta	Debut+2
+	txa
+	sta	Debut
+	
+	lda	Debut
+	ora	Debut+2
+	bne	TWILIGHToff1
+	rts
+
+*----------------------------
+* TWILIGHTon
+*  Turns Twilight II on
+*
+* Entry:
+*  n/a
+*
+* Exit:
+*  n/a
+*
+*----------------------------
+
+TWILIGHTon
+	lda	fgTWILIGHT
+	bne	TWILIGHTon1
+	rts
+
+TWILIGHTon1
+	lda	ptrTWILIGHT
+	sta	Arrivee
+	lda	ptrTWILIGHT+2
+	sta	Arrivee+2
+	ldy	offTWILIGHT
+	lda	#$0ef0
+	sta	[Arrivee],y
+	rts
+
+*--- Twilight II
+
+ptrTWILIGHT	ds	4
+fgTWILIGHT	ds	2
+offTWILIGHT	ds	2
 
 *----------------------------------------
 * MEMOIRE
@@ -1048,8 +1139,23 @@ ptrIMAGE	ds	4	; $0000: where a scene image is loaded
 ptrFOND	ds	4	; $0000: fond de jeu
 ptrICONES	adrl	$8000	; $0000: fond d'icônes du jeu
 ptrUNPACK	ds	4	; $0000: where the background picture is laoded
-ptrREF	ds	4	; les index des textes
-ptrTEXTES	ds	4	; les textes
+
+ptrREF1	ds	4	; les pointeurs des references
+ptrREF2	ds	4
+ptrREF3	ds	4
+ptrREF4	ds	4
+ptrREF5	ds	4
+ptrREF6	ds	4
+ptrREF7	ds	4
+ptrREF8	ds	4
+ptrTXT1	ds	4	; les pointeurs des textes
+ptrTXT2	ds	4
+ptrTXT3	ds	4
+ptrTXT4	ds	4
+ptrTXT5	ds	4
+ptrTXT6	ds	4
+ptrTXT7	ds	4
+ptrTXT8	ds	4
 
 temp	ds	2
 
@@ -1245,7 +1351,7 @@ pIMAGE	strl	'1/data/images/PIC1.PIC'
 pFOND	strl	'1/data/images/PIC10.PIC'
 pICONES	strl	'1/data/images/PIC11.PIC'
 pREF	strl	'1/data/textes/fr/REF1.TXT'
-pTEXTES	strl	'1/data/textes/fr/TXT1.TXT'
+pTXT	strl	'1/data/textes/fr/TXT1.TXT'
 
 *--- offset to aventure number is +25
 

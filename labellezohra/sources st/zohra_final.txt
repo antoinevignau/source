@@ -78,6 +78,7 @@ PROCEDURE vigil(max_x%,max_y%,max_xx%,max_yy%,sauvegarde!)
   HIDEM                                        !ON REFAIT DISPARAITRE LE CURSEUR
   '
 RETURN
+'
 PROCEDURE teste_fin
   '
   IF paragraphes_lus%=pointeur_paragraphes%-1
@@ -85,6 +86,7 @@ PROCEDURE teste_fin
   ENDIF
   '
 RETURN
+'
 PROCEDURE demande_objet
   ARRAYFILL icone_objets!(),FALSE          !RAZ DE CHAQUE INDICATEUR D'AFFICHAGE
   '
@@ -123,6 +125,7 @@ PROCEDURE demande_objet
   UNTIL objet%<>0     !ON CONTINUE JUSQU'A TEMPS QUE LA SOURIS DESIGNE UNE ICONE
   '
 RETURN
+'
 PROCEDURE demande_peche
   '
   ARRAYFILL icone_peches!(),FALSE          !RAZ DE CHAQUE INDICATEUR D'AFFICHAGE
@@ -171,6 +174,7 @@ PROCEDURE demande_peche
   ENDIF
   '
 RETURN
+'
 PROCEDURE recherche_references
   '
   CLR i%
@@ -185,6 +189,7 @@ PROCEDURE recherche_references
   paragraphe%=i%                                !SINON C'EST CE TEXTE QU'ON LIRA
   '
 RETURN
+'
 PROCEDURE affiche_image
   IF ancien_objet%=objet%                !SI L'OBJET CHOISI EST LE MEME QU'AVANT
     palette(palette_image$)
@@ -232,6 +237,7 @@ PROCEDURE sauvegarde
   fin
   '
 RETURN
+'
 PROCEDURE chargement
   '
   LOCAL a$,b$,fichier$
@@ -265,6 +271,7 @@ PROCEDURE chargement
   ENDIF
   '
 RETURN
+'
 PROCEDURE the_end
   CLS
   fichier$="textes\page.sav"
@@ -296,6 +303,7 @@ PROCEDURE pre_scrolling
   '
   scrolling
 RETURN
+'
 PROCEDURE scrolling
   LOCAL a$,mouvement%,souris_motif%
   '
@@ -405,6 +413,7 @@ PROCEDURE init
   init_routines                              !ON CHARGE LES ROUTINES SON ET TINY
   xb2%=XBIOS(2)            !ADRESSE INVARIABLE DE L'ECRAN (POUR LE SCROLLING...)
 RETURN
+'
 PROCEDURE init2
   init_objets
   init_peches
@@ -417,12 +426,14 @@ PROCEDURE init2
   chargement
   mouse_on
 RETURN
+'
 PROCEDURE init_resolution
   IF XBIOS(4)<>0                         !SI ON EST PAS EN BASSE RESOLUTION...
     ALERT 3,"basse rÇsolution,|  scrogneugneu!!",1,"fichtre!",a%
     END
   ENDIF
 RETURN
+'
 PROCEDURE init_indicateurs
   nombre_indicateurs%=30                              !NOMBRE MAXI D'INDICATEURS
   pointeur_indicateurs%=0                         !CLEAR DU NOMBRE D'INDICATEURS
@@ -439,6 +450,7 @@ PROCEDURE init_indicateurs
   indicateur!(0)=TRUE                       !INDICATEUR VIRTUEL TOUJOURS POSITIF
   '
 RETURN
+'
 PROCEDURE init_objets
   nombre_objets%=8                                              !NOMBRE D'OBJETS
   DIM objet$(nombre_objets%)                                !NOM DE CHAQUE OBJET
@@ -448,6 +460,7 @@ PROCEDURE init_objets
   NEXT i%
   CLR ancien_objet%
 RETURN
+'
 PROCEDURE init_peches
   nombre_peches%=7                                             !NOMBRE DE PECHES
   DIM peche$(nombre_peches%+1)   !NOM DE CHAQUE PECHE (+1 POUR L'INDIC SUITE...)
@@ -456,6 +469,7 @@ PROCEDURE init_peches
     READ peche$(i%)
   NEXT i%
 RETURN
+'
 PROCEDURE init_icones
   '
   DIM icone_objets!(nombre_objets%)                 !ICONES ALLUMêES OU ETEINTES
@@ -511,9 +525,11 @@ PROCEDURE init_icones
   palette_bureau$=palette$               !ON MEMORISE LA PALETTE DE L'IMAGE...
   '
 RETURN
+'
 PROCEDURE init_routines
   INLINE routine_decomp%,5000
 RETURN
+'
 PROCEDURE init_fenetres
   INC nombre_objets%
   '                           !COORDONNêES DES FENETRES DE TEXTE (UNE PAR IMAGE)
@@ -528,12 +544,14 @@ PROCEDURE init_fenetres
   '
   DEC nombre_objets%                   !ON RAMENE LE NOMBRE D'OBJETS A 8 (9=FIN)
 RETURN
+'
 PROCEDURE init_souris
   INLINE souris%,74
   FOR i%=0 TO 73
     souris$=souris$+CHR$(PEEK(souris%+i%))
   NEXT i%
 RETURN
+'
 PROCEDURE datas_init
 fenetres:
   DATA 10,100,310,190
@@ -606,6 +624,7 @@ PROCEDURE init_texte
   init_indicateurs_texte                                 !ET ON PASSE A LA SUITE
   '
 RETURN
+'
 PROCEDURE init_indicateurs_texte
   '
   LOCAL i%
@@ -684,6 +703,7 @@ PROCEDURE init_indicateurs_texte
   NEXT i%
   '
 RETURN
+'
 PROCEDURE lookindex
   j1%=INSTR(index$,"ú",j%)           !ON CHERCHE LE PROCHAIN PSEUDO RETURN ("ú")
   IF j1%<>0 AND j1%<>LEN(index$)            !SI ON EST PAS A LA FIN DE LA CHAINE
@@ -815,6 +835,7 @@ PROCEDURE shoot_text
   UNTIL TIMER>temps+200
   '
 RETURN
+'
 PROCEDURE shoot_ligne
   LOCAL i%
   FOR i%=0 TO 8              !on scanne toute la hauteur de la ligne
@@ -823,6 +844,7 @@ PROCEDURE shoot_ligne
   NEXT i%
   CLS                        !puis on efface l'Çcran
 RETURN
+'
 PROCEDURE cree_fenetre(objet%,paragraphe%)
   LOCAL i%
   x%=fenetre_x%(objet%) !ON PREND LES COORDONNEES CORRESPONDANT A L'OBJET CHOISI
@@ -846,6 +868,7 @@ PROCEDURE cree_fenetre(objet%,paragraphe%)
     display_text(i%,y%+1+i%)        !ET ON AFFICHE LES PREMIERES LIGNES DU TEXTE
   NEXT i%
 RETURN
+'
 PROCEDURE display_text(ligne%,niveau%)
   PUT x%+10,niveau%,bloc_text$(ligne%),12 !on l'affiche Ö l'endroit voulu
 RETURN
@@ -860,10 +883,12 @@ PROCEDURE ice_load(fichier$)
   palette$=SPACE$(32)
   BMOVE adresse_image%+2,VARPTR(palette$),32
 RETURN
+'
 PROCEDURE ice_disp(adresse_image%)
   BMOVE adresse_image%+34,XBIOS(3),32000
   ~MFREE(adresse_image%)
 RETURN
+'
 PROCEDURE palette(palette$)
   ~XBIOS(6,L:VARPTR(palette$))
 RETURN
@@ -874,24 +899,29 @@ PROCEDURE hide_screen
   ~XBIOS(5,L:ecran%,L:-1,L:-1)!ON CACHE CE QUI SE PASSE ∂ L'êCRAN
   VSYNC
 RETURN
+'
 PROCEDURE show_screen
   ~XBIOS(5,L:XBIOS(2),L:XBIOS(2),W:-1)   !ON RêTABLIT L'AFFICHAGE NORMAL
   ~MFREE(ecran%)                   !ON FERME LE BUFFER
 RETURN
+'
 PROCEDURE hide_screen2
   ecran2%=MALLOC(32000)       !on ouvre un buffer de la taille de l'Çcran
   BMOVE XBIOS(3),ecran2%,32000     !on copie l'Çcran dedans
   ~XBIOS(5,L:-1,L:ecran2%,L:-1)!on cache ce qui se passe Ö l'Çcran
   VSYNC
 RETURN
+'
 PROCEDURE show_screen2
   ~XBIOS(5,L:xb2%,L:xb2%,W:-1)   !on rÇtablit l'affiche normal
   ~MFREE(ecran2%)          !on ferme le buffer
 RETURN
+'
 PROCEDURE mouse_on
   OUT 4,8
   DEFMOUSE souris$
 RETURN
+'
 PROCEDURE mouse_off
   OUT 4,18
   HIDEM
@@ -911,6 +941,7 @@ PROCEDURE musique
   @fin_musique
   '
 RETURN
+'
 PROCEDURE init_musique
   son%=10                                   !NOMBRE MAXI DE SAMPLES
   SPOKE &H484,PEEK(&H484) AND &HFE          !PAS DE BIP CLAVIER
@@ -924,6 +955,7 @@ PROCEDURE init_musique
   SETCOLOR 0,0,0,0
   '
 RETURN
+'
 PROCEDURE rythme(rythme%)
   '
   FOR i%=10 DOWNTO 1              !RAZ DES BUFFERS CONTENANT LES SAMPLES
@@ -949,6 +981,7 @@ PROCEDURE rythme(rythme%)
   ~MFREE(ancienne_adresse%)
   '
 RETURN
+'
 PROCEDURE charge_son
   REPEAT
     READ nom_son$,frequence_son%(son%+1),sous_titre1$(son%+1),sous_titre2$(son%+1)
@@ -965,6 +998,7 @@ PROCEDURE charge_son
   UNTIL nom_son$="FIN"
   '
 RETURN
+'
 PROCEDURE clavier_sonore
   REPEAT
   UNTIL INKEY$=""
@@ -999,12 +1033,15 @@ PROCEDURE clavier_sonore
   REPEAT                                              !ON VIDE LE BUFFER CLAVIER
   UNTIL INKEY$=""
 RETURN
+'
 PROCEDURE mix(numero_son%)
   ~C:routine_decomp%(L:-VARPTR(son$(numero_son%)),L:LEN(son$(numero_son%)),W:frequence_son%(numero_son%),W:100)
 RETURN
+'
 PROCEDURE stop_sample
   ~C:routine_decomp%(L:-1)  !FORCAGE DE LA FIN DU SAMPLE
 RETURN
+'
 PROCEDURE fin_musique
   @stop_sample
   ~MFREE(adresse_rythme%)
@@ -1012,6 +1049,7 @@ PROCEDURE fin_musique
   ERASE frequence_son%()
   ERASE sous_titre$()
 RETURN
+'
 PROCEDURE data_fichiers_musique
 musique:
   DATA 1cemonsi,7500,"ce monsieur!",""

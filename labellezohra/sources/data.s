@@ -71,110 +71,99 @@ tblUPPER	hex	000102030405060708090A0B0C0D0E0F
 
 DEBUT_DATA	=	*
 
+*--- Mes variables
+
+fgTHEEND	ds	2	; LOGO
+i	ds	2
+index	ds	2
+theX	ds	2
+theY	ds	2
+
+*--- Variables du jeu
+
 nombre_indicateurs	=	30	; NOMBRE MAXI D'INDICATEURS
 pointeur_indicateurs	=	0	; CLEAR DU NOMBRE D'INDICATEURS
 nombre_paragraphes	=	110	; NOMBRE MAXI DE TEXTES
-indicateur$		ds	nombre_indicateurs	; NOM DES INDICATEURS UTILISES PAR MOI
-indicateur!		ds	nombre_indicateurs	; INDICATEUR EN LUI-MEME
+
+indicateurTEXT	ds	nombre_indicateurs	; NOM DES INDICATEURS UTILISES PAR MOI
+indicateur		ds	nombre_indicateurs	; INDICATEUR EN LUI-MEME
 paragraphe_lu	ds	nombre_paragraphes
-
-indicateur_paragraphes%	ds	nombre_paragraphes	; NUMERO DE L'INDIC CRêE A CHAQUE TEXTE
-indicateur_paragraphes_prealables%	ds	nombre_paragraphes ; NUMERO DE L'INDIC NECESSAIRE POUR LIRE CE TEXTE
-
-* LOGO indicateur!(0)=TRUE                       !INDICATEUR VIRTUEL TOUJOURS POSITIF
+indicateur_paragraphes	ds	nombre_paragraphes	; NUMERO DE L'INDIC CRêE A CHAQUE TEXTE
+indicateur_paragraphes_prealables	ds	nombre_paragraphes ; NUMERO DE L'INDIC NECESSAIRE POUR LIRE CE TEXTE
 
 *---
 
-nombre_objets	=	8	; NOMBRE D'OBJETS
-objet$	ds	nombre_objets	; !NOM DE CHAQUE OBJET
+icone_objets	ds	nombre_objets	; ICONES ALLUMêES OU ETEINTES
+icone_peches	ds	nombre_peches+1	; (+1 POUR L'INDICATEUR DE SUITE...)
 
 *---
 
-nombre_peches	=	7	; NOMBRE DE PECHES
-peche$	ds	nombre_peches+1	; NOM DE CHAQUE PECHE (+1 POUR L'INDIC SUITE...)
+fenetre_x	dw	10,10,10,120,10,10,10,10,10
+fenetre_y	dw	100,100,100,10,100,100,100,10,100
+fenetre_xx	dw	310,310,310,310,310,310,310,200,310
+fenetre_yy	dw	190,190,190,190,190,190,190,190,190
 
 *---
 
-icone_objets!	ds	nombre_objets	; ICONES ALLUMêES OU ETEINTES
-icone_peches!	ds	nombre_peches+1	; (+1 POUR L'INDICATEUR DE SUITE...)
+nombre_objets =	8	; NOMBRE D'OBJETS
 
-icone_objets	ds	nombre_objets	; BLOCS GRAPHIQUES DES ICONES
-icone_peches	ds	nombre_peches
+objetTEXT	da	objetSTR1	; !NOM DE CHAQUE OBJET
+	da	objetSTR2
+	da	objetSTR3
+	da	objetSTR4
+	da	objetSTR5
+	da	objetSTR6
+	da	objetSTR7
+	da	objetSTR8
+	da	objetSTR9
 
-objet_x	ds	nombre_objets	; COORDONNêES DES ICONES DES OBJETS
-objet_y	ds	nombre_objets
-objet_xx	ds	nombre_objets
-objet_yy	ds	nombre_objets
+objetSTR1	asc	"LUNETTES"
+objetSTR2	asc	"CUILLERE"
+objetSTR3	asc	"FLEUR"
+objetSTR4	asc	"CARNET"
+objetSTR5	asc	"DICO"
+objetSTR6	asc	"BIJOUX"
+objetSTR7	asc	"CLES"
+objetSTR8	asc	"ARGENT"
+objetSTR9	asc	"FIN"
 
-peche_x	ds	nombre_peches	; COORDONNêE DES ICONES DES PECHES
-peche_y	ds	nombre_peches
-peche_xx	ds	nombre_peches
-peche_yy	ds	nombre_peches
+ancien_objet ds	2
+
+objet_x	dw	238,222,195,0,27,131,276,133
+objet_y	dw	51,110,0,17,55,32,19,69
+objet_xx	dw	283,268,266,57,106,178,319,188
+objet_yy	dw	88,151,39,54,103,64,50,101
 
 *---
+	
+nombre_peches =	7	; NOMBRE DE PECHES
 
-fenetre_x	ds	nombre_objets
-fenetre_y	ds	nombre_objets
-fenetre_xx	ds	nombre_objets
-fenetre_yy	ds	nombre_objets
+pecheTEXT	da	pecheSTR1	; NOM DE CHAQUE PECHE (+1 POUR L'INDIC SUITE...)
+	da	pecheSTR2
+	da	pecheSTR3
+	da	pecheSTR4
+	da	pecheSTR5
+	da	pecheSTR6
+	da	pecheSTR7
+	da	pecheSTR8
 
-*---
+pecheSTR1	asc	"ORGUEIL"
+pecheSTR2	asc	"AVARICE"
+pecheSTR3	asc	"GOURMANDISE"
+pecheSTR4	asc	"ENVIE"
+pecheSTR5	asc	"LUXURE"
+pecheSTR6	asc	"COLERE"
+pecheSTR7	asc	"PARESSE"
+pecheSTR8	asc	"suite"
 
-fenetres
-	dw	10,100,310,190
-	dw	10,100,310,190
-	dw	10,100,310,190
-	dw	120,10,310,190
-	dw	10,100,310,190
-	dw	10,100,310,190
-	dw	10,100,310,190
-	dw	10,10,200,190
-	dw	10,100,310,190
-
-objets
-	asc	"LUNETTES"
-	asc	"CUILLERE"
-	asc	"FLEUR"
-	asc	"CARNET"
-	asc	"DICO"
-	asc	"BIJOUX"
-	asc	"CLES"
-	asc	"ARGENT"
-	asc	"FIN"
-
-peches
-	asc	"ORGUEIL"
-	asc	"AVARICE"
-	asc	"GOURMANDISE"
-	asc	"ENVIE"
-	asc	"LUXURE"
-	asc	"COLERE"
-	asc	"PARESSE"
-	asc	"suite"
-
-coordonnees_objets
-	dw	238,51,283,88
-	dw	222,110,268,151
-	dw	195,0,266,39
-	dw	0,17,57,54
-	dw	27,55,106,103
-	dw	131,32,178,64
-	dw	276,19,319,50
-	dw	133,69,188,101
-
-coordonnees_peches
-	dw	184,162,227,199
-	dw	0,162,43,199
-	dw	46,162,89,199
-	dw	276,162,319,199
-	dw	92,162,135,199
-	dw	138,162,181,199
-	dw	230,162,273,199
+peche_x	dw	184,0,46,276,92,138,230
+peche_y	dw	162,162,162,162,162,162,162
+peche_xx	dw	227,43,89,319,135,181,273
+peche_yy	dw	199,199,199,199,199,199,199
 
 *---
 
 bloc_texte	ds	2000
-*texte	ds	110000
 mot	ds	128
 
 *---

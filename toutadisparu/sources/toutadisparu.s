@@ -232,9 +232,9 @@ okTOOL	_HideMenuBar
 * INITIALISATIONS
 *----------------------------------------
 
-	jsr	load_font	; charge courier.10
 	jsr	initNTP
 	jsr	randomNTP	; select a sequence 0-7
+	jsr	TWILIGHToff
 	
 	jsr	set_language
 	jsr	doSOUNDON	; NTP on
@@ -630,6 +630,7 @@ doQUIT	jsr	suspendMUSIC	; NTP off
 *----------------------------------- Quit
 
 meQUIT	jsr	stopNTP
+	jsr	TWILIGHTon
 	
 meQUIT0	PushWord #refIsHandle
 	PushLong SStopREC
@@ -651,6 +652,113 @@ meQUIT1	PushWord myID
 	adrl	proQUIT
 
 	brk	$bd
+
+*----------------------------------------
+* TWILIGHT
+*----------------------------------------
+
+*----------------------------
+* TWILIGHToff
+*  Turns Twilight II off
+*
+* Entry:
+*  n/a
+*
+* Exit:
+*  n/a
+*
+*----------------------------
+
+lenV1	=	$49bf
+lenV2	=	$539a
+
+offV1	=	$117a
+offV2	=	$154c
+
+TWILIGHToff
+	ldal	$e11600
+	sta	Debut
+	ldal	$e11602
+	sta	Debut+2
+
+TWILIGHToff1
+	ldy	#8
+	lda	[Debut],y
+	ldx	#offV1
+	cmp	#lenV1
+	beq	TWILIGHToff2
+	ldx	#offV2
+	cmp	#lenV2
+	bne	TWILIGHToff3
+	
+TWILIGHToff2
+	stx	offTWILIGHT
+         
+	lda	[Debut]
+	sta	Arrivee
+	sta	ptrTWILIGHT
+	ldy	#2
+	lda	[Debut],y
+	sta	Arrivee+2
+	sta	ptrTWILIGHT+2
+	
+	txy
+	lda	[Arrivee],y
+	cmp	#$0ef0
+	bne	TWILIGHToff3
+	lda	#$0e80
+	sta	[Arrivee],y
+	inc	fgTWILIGHT
+	rts
+
+TWILIGHToff3
+	ldy	#16
+	lda	[Debut],y
+	tax
+	iny
+	iny
+	lda	[Debut],y
+	sta	Debut+2
+	txa
+	sta	Debut
+	
+	lda	Debut
+	ora	Debut+2
+	bne	TWILIGHToff1
+	rts
+
+*----------------------------
+* TWILIGHTon
+*  Turns Twilight II on
+*
+* Entry:
+*  n/a
+*
+* Exit:
+*  n/a
+*
+*----------------------------
+
+TWILIGHTon
+	lda	fgTWILIGHT
+	bne	TWILIGHTon1
+	rts
+
+TWILIGHTon1
+	lda	ptrTWILIGHT
+	sta	Arrivee
+	lda	ptrTWILIGHT+2
+	sta	Arrivee+2
+	ldy	offTWILIGHT
+	lda	#$0ef0
+	sta	[Arrivee],y
+	rts
+
+*--- Twilight II
+
+ptrTWILIGHT	ds	4
+fgTWILIGHT	ds	2
+offTWILIGHT	ds	2
 
 *----------------------------------------
 * MEMOIRE
@@ -881,8 +989,8 @@ fadeOUT5 dey
 *----------------------------
 
 unpackLZ4	sta	LZ4_Limit+1
-	
-	jsr	suspendMUSIC
+
+	sei
 	sep	#$20
 
 *--- Source
@@ -981,7 +1089,8 @@ LZ4_GetLength_3 ADC LZ4_GetLength_2+1
 *----------------
 
 LZ4_End	sty	lenDATA		; Y = length of unpacked data
-	jmp	resumeMUSIC
+	cli
+	rts
 
 *---
 
@@ -1100,8 +1209,6 @@ saveLANGUAGE	ds	2
 
 verSTR1	str	'System 6.0.1 Required!'
 verSTR2	str	'Press a key to quit'
-fntSTR1	str	'Courier.10 font missing'
-fntSTR2	str	'Please install it!'
 pgmSTR1	str	'Data parsing error'
 pgmSTR2	str	'Please report!'
 tolSTR1	str	'Error while loading tools'

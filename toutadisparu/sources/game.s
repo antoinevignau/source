@@ -22,31 +22,6 @@ colorBLACK	=	0
 colorWHITE	=	15
 
 *-----------------------
-* load_font
-*-----------------------
-
-load_font	jsr	font_it
-	bcc	lf_ok
-
-	pha
-	PushLong #fntSTR1
-	PushLong #fntSTR2
-	PushLong #errSTR3
-	PushLong #errSTR2
-	_TLTextMountVolume
-	pla
-
-lf_ok	rts
-
-*--- Really load the font
-
-font_it	PushWord #$0A00	; Taille 10
-	PushWord #$0016	; Courier
-	PushWord #0
-	_InstallFont
-	rts
-	
-*-----------------------
 * set_language
 *-----------------------
 

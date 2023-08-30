@@ -30,6 +30,24 @@
 	use   4/Util.Macs
 	use   4/Window.Macs
 
+*-----------------------
+* macros
+*-----------------------
+
+@loadfile	mac
+	lda	]1
+	ldx	]2+2
+	ldy	]2
+	jsr	loadFILE
+	eom
+
+@fadein	mac
+	lda	]2
+	ldx	]1+2
+	ldy	]1
+	jsr	fadeIN
+	eom
+	
 *----------------------------------- Constantes
 
 *-------------- Softswitches
@@ -103,6 +121,11 @@ fgRESTART	=	2
 
 	tdc
 	sta	myDP
+
+	lda	#entryPOINT
+	stal	$300
+	lda	#^entryPOINT
+	stal	$302
 	
 *--- Version du systeme
 
@@ -145,7 +168,7 @@ okMEM1	sty	ptrIMAGE
 	stx	loadBACK1+3	; with the toolbox
 	rep	#$10
 	
-*--- 64K pour la sauvegarde de l'écran
+*--- 64K pour les images du jeu
 
 	jsr	make64KB
 	bcs	koMEM
@@ -153,7 +176,9 @@ okMEM1	sty	ptrIMAGE
 	sty	ptrFOND
 	stx	ptrFOND+2
 	stx	ptrICONES+2
-
+	stx	fondToSourceLocInfo+4	; fond
+	stx	iconToSourceLocInfo+4	; icon
+	
 *--- 64K pour les images compressees
 
 	jsr	make64KB
@@ -162,7 +187,7 @@ okMEM1	sty	ptrIMAGE
 	sty	ptrUNPACK
 	stx	ptrUNPACK+2
 	
-*--- 64K pour les INDEX des textes
+*--- 64K pour les REFERENCES des textes
 
 	jsr	make64KB
 	bcs	koMEM
@@ -209,7 +234,14 @@ okTOOL	_HideMenuBar
 	pla
 
 	_InitCursor
-	_HideCursor
+
+	PushLong #0
+	PushWord #5	; SetDeskPat
+	PushWord #$4000
+	PushWord #$0000
+	_Desktop
+	pla
+	pla
 
 	PushLong	#0
 	_GetPort
@@ -230,8 +262,14 @@ okTOOL	_HideMenuBar
 *-----------------------
 * MAIN
 *-----------------------
-* main
 
+entryPOINT
+	@loadfile	#pFOND;ptrFOND
+	@loadfile	#pICONES;ptrICONES
+	@fadein	ptrFOND;#TRUE
+	jsr	waitEVENT
+	@fadein	ptrICONES;#TRUE
+	
 mainLOOP	jsr	teste_fin
 	jsr	demande_objet
 	
@@ -337,50 +375,11 @@ doMOUSEUP
 *	bcc	mup2	; oui
 *	rts
 *mup2	jsr	aiguille	; on aiguille le joueur (1 ou 2 clics)
-*	rts
+	rts
 	
 *-----------------------------------
 * AUTRES ROUTINES
 *-----------------------------------
-
-switch_320	lda	#0	; Switch to 320 mode
-	ldy	#screen_320
-	bra	switch_res
-
-switch_640	lda	#$80	; Switch to 640 mode
-	ldy	#screen_640
-	
-*-----------
-
-switch_res	sty	mainWIDTH
-	pha
-	pha
-	_SetMasterSCB
-	_SetAllSCBs
-	_InitCursor
-	PushLong mainPORT
-	_InitPort
-	_HideCursor
-
-	PushWord	#0
-	PushWord	mainWIDTH
-	PushWord	#0
-	PushWord	#200
-	_ClampMouse
-	_HomeMouse
-*	PushLong	#monCURSEUR
-*	_SetCursor
-	_ShowCursor
-	_WindNewRes
-	_MenuNewRes
-	_CtlNewRes
-	rts
-
-*-----------
-
-mainWIDTH	ds	2
-oldWIDTH	ds	2
-mainPORT	ds	4
 
 *----------------------------------- Open
 
@@ -1041,16 +1040,14 @@ nowWAIT1	pha
 mainID	ds	2	; app ID
 myID	ds	2	; user ID
 myDP	ds	2
+mainPORT	ds	4	; default grafport
 
 SStopREC	ds	4
 
 ptrIMAGE	ds	4	; $0000: where a scene image is loaded
-
 ptrFOND	ds	4	; $0000: fond de jeu
 ptrICONES	adrl	$8000	; $0000: fond d'icônes du jeu
-
 ptrUNPACK	ds	4	; $0000: where the background picture is laoded
-
 ptrREF	ds	4	; les index des textes
 ptrTEXTES	ds	4	; les textes
 

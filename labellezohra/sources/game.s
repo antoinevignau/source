@@ -20,6 +20,130 @@
 	eom
 
 *-----------------------
+* GESTION DES ICONES
+*-----------------------
+
+test_icone
+	lda	#0			; from 1
+]lp	pha
+	asl
+	asl
+	asl
+	tax
+	lda	taskWHERE+2		; compare le X
+	cmp	coordonnees_peches,x
+	bcc	icone_ko
+	lda	coordonnees_peches+4,x
+	cmp	taskWHERE+2
+	bcc	icone_ko
+	
+	lda	taskWHERE		; et le Y
+	cmp	coordonnees_peches+2,x
+	bcc	icone_ko
+	lda	coordonnees_peches+6,x
+	cmp	taskWHERE
+	bcc	icone_ko
+	
+	pla				; on a notre ic™ne
+	inc
+*	sta	instruction2
+	rts
+
+icone_ko
+	pla
+	inc
+	cmp	#nombre_objets-1		; et non plus nombre_icones
+	bcc	]lp
+	rts
+
+*---
+
+efface_icone	; X is object
+	cpx	#0
+	beq	ei1
+	jsr	set_icone
+
+	_HideCursor
+	PushLong #iconParamPtr
+	_PaintPixels
+	_ShowCursor	
+ei1	rts
+	
+*---
+
+affiche_icone	; X is object
+	cpx	#0
+	beq	ai1
+	jsr	set_icone
+
+	_HideCursor
+	PushLong #fondParamPtr
+	_PaintPixels
+	_ShowCursor	
+ai1	rts
+
+*---
+
+set_icone	txa
+	dec
+	asl
+	asl
+	asl		; because we are 16-bit
+	tax
+	lda	coordonnees_peches+2,x
+	sta	iconToSourceRect
+	sta	iconToDestPoint
+	lda	coordonnees_peches,x
+	sta	iconToSourceRect+2
+	sta	iconToDestPoint+2
+	lda	coordonnees_peches+6,x
+	sta	iconToSourceRect+4
+	lda	coordonnees_peches+4,x
+	sta	iconToSourceRect+6
+	rts
+
+*---
+
+fondParamPtr
+	adrl	fondToSourceLocInfo
+	adrl	iconToDestLocInfo
+	adrl	iconToSourceRect
+	adrl	iconToDestPoint
+	dw	$0000	; mode copy
+	ds	4
+
+iconParamPtr
+	adrl	iconToSourceLocInfo
+	adrl	iconToDestLocInfo
+	adrl	iconToSourceRect
+	adrl	iconToDestPoint
+	dw	$0000	; mode copy
+	ds	4
+
+fondToSourceLocInfo
+	dw	mode_320	; mode 320
+	ds	4	; ptrFOND - $0000 on entry, high set after _NewHandle
+	dw	160
+	dw	0,0,199,319
+	
+iconToSourceLocInfo
+	dw	mode_320	; mode 320
+	adrl	$8000	; ptrICON - $8000 on entry, high set after _NewHandle
+	dw	160
+	dw	0,0,199,319
+	
+iconToDestLocInfo
+	dw	mode_320	; mode 320
+	adrl	ptrE12000
+	dw	160
+	dw	0,0,199,319
+	
+iconToSourceRect
+	dw	3,0,109,272
+iconToDestPoint
+	dw	3,0
+
+*-----------------------
 * set_language
 *-----------------------
 

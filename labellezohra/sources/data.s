@@ -82,9 +82,9 @@ theY	ds	2
 *--- Variables du jeu
 
 nombre_indicateurs	=	30	; NOMBRE MAXI D'INDICATEURS
-pointeur_indicateurs	=	0	; CLEAR DU NOMBRE D'INDICATEURS
 nombre_paragraphes	=	110	; NOMBRE MAXI DE TEXTES
 
+pointeur_indicateurs	ds	2
 indicateurTEXT	ds	nombre_indicateurs	; NOM DES INDICATEURS UTILISES PAR MOI
 indicateur		ds	nombre_indicateurs	; INDICATEUR EN LUI-MEME
 paragraphe_lu	ds	nombre_paragraphes
@@ -169,61 +169,56 @@ mot	ds	128
 *---
 
 paragraphe	ds	nombre_paragraphes	; INDEX DE DES DEBUTS DES PARAGRAPHES
-* LOGO paragraphe%(1)=0
 pointeur_paragraphes	ds	2
 paragraphes_lus	ds	2
 reference_objet	ds	nombre_paragraphes	; NUMERO DE L'OBJET ASSOCIE A CHAQUE PARAGRAPHE
 reference_peche	ds	nombre_paragraphes	; NUMERO DU PECHE ASSOCIE A CHAQUE PARAGRAPHE
 
-*---
+*--- Sound files
+* SNDxy.SND where x is the scene, y the file index (0..9)
 
-*  DATA 1cemonsi,7500,"ce monsieur!",""
-*  DATA 1safemme,7500,"sa femme!",""
-*  DATA 1lechame,7500,"le chameau!",""
-*  DATA 1smala,7500,"et toute la smala!",""
-*  DATA fx_batte,10000,"",""
-*  DATA fx_flute,5000,"",""
-*  DATA fx_synth,5000,"",""
-*  DATA fx_tromp,7500,"",""
-*  DATA fx_tromp,10000,"",""
-*  DATA FIN,0,"",""
+* 10 1cemonsi,7500,"ce monsieur!",""
+* 11 1safemme,7500,"sa femme!",""
+* 12 1lechame,7500,"le chameau!",""
+* 13 1smala,7500,"et toute la smala!",""
+* 14 fx_batte,10000,"",""
+* 15 fx_flute,5000,"",""
+* 16 fx_synth,5000,"",""
+* 17 fx_tromp,7500,"",""
+* 18 fx_tromp,10000,"",""
 *  '
-*  DATA 2coinfli,7500,"des coins o—","les flics ne vont plus"
-*  DATA 2kararab,7500,"y'a des quartiers arab'",""
-*  DATA 2karbret,7500,"si c'‚tait des quartiers bretons...",""
-*  DATA 2gensnan,7500,"some people from Nanterre,","some people from Belleville!"
-*  DATA fx_boing,5000,"",""
-*  DATA fx_couic,5000,"",""
-*  DATA fx_siren,5000,"",""
-*  DATA fx_guita,5000,"",""
-*  DATA fx_guita,7500,"",""
-*  DATA FIN,0,"",""
+* 20 2coinfli,7500,"des coins o—","les flics ne vont plus"
+* 21 2kararab,7500,"y'a des quartiers arab'",""
+* 22 2karbret,7500,"si c'‚tait des quartiers bretons...",""
+* 23 2gensnan,7500,"some people from Nanterre,","some people from Belleville!"
+* 24 fx_boing,5000,"",""
+* 25 fx_couic,5000,"",""
+* 26 fx_siren,5000,"",""
+* 27 fx_guita,5000,"",""
+* 28 fx_guita,7500,"",""
 *  '
-*  DATA 3BOPARLE,7500,"ces beaux-parleurs","de la t‚l‚vision?"
-*  DATA 3FAITFRA,7500,"qu'est-ce qu'ils ont fait","pour la france?"
-*  DATA 3PASMILI,7500,"les trois quarts du temps, y z'ont","pas fait leur service miliaire"
-*  DATA 3UNPEUPE,7500,"y sont meme un peu p‚d‚ sur les bords!",""
-*  DATA fx_hey,7500,"hey hey hey!",""
-*  DATA fx_cuivr,7500,"",""
-*  DATA fx_dzoin,7500,"",""
-*  DATA fx_dehem,7500,"",""
-*  DATA fx_dehem,10000,"",""
-*  DATA FIN,0,"",""
+* 30 3BOPARLE,7500,"ces beaux-parleurs","de la t‚l‚vision?"
+* 31 3FAITFRA,7500,"qu'est-ce qu'ils ont fait","pour la france?"
+* 32 3PASMILI,7500,"les trois quarts du temps, y z'ont","pas fait leur service miliaire"
+* 33 3UNPEUPE,7500,"y sont meme un peu p‚d‚ sur les bords!",""
+* 34 fx_hey,7500,"hey hey hey!",""
+* 35 fx_cuivr,7500,"",""
+* 36 fx_dzoin,7500,"",""
+* 37 fx_dehem,7500,"",""
+* 38 fx_dehem,10000,"",""
 *  '
-*  DATA 4algefra,7500,"nous n'‚tions pas pour","l'alg‚rie francaise"
-*  DATA 4algesah,7500,"nous ‚tions pour l'alg‚rie et","le sahara francais!"
-*  DATA 4sousoff,7500,"les sous-off' de la coloniale,","dont j'‚tais"
-*  DATA FIN,0,"",""
+* 40 4algefra,7500,"nous n'‚tions pas pour","l'alg‚rie francaise"
+* 41 4algesah,7500,"nous ‚tions pour l'alg‚rie et","le sahara francais!"
+* 42 4sousoff,7500,"les sous-off' de la coloniale,","dont j'‚tais"
 *  '
-*  DATA 5haine,7500,"qui a la haine de l'‚tranger?",""
-*  DATA 5terrfra,7500,"la terre de france, elle est","d'abord aux fran‡ais"
-*  DATA 5collabo,7500,"on nous parle des collabos,","y z'en ont fait moins"
-*  DATA 5clepen,7500,"c'est Le Pen (de ch'val)",""
-*  DATA 5antifra,7500,"est anti-fran‡ais",""
-*  DATA 5abrutis,7500,"nous sommes des a.....s",""
-*  DATA fx_beat,7500,"",""
-*  DATA fx_glin1,7500,"",""
-*  DATA fx_glin2,7500,"",""
-*  DATA FIN,0,"",""
+* 50 5haine,7500,"qui a la haine de l'‚tranger?",""
+* 51 5terrfra,7500,"la terre de france, elle est","d'abord aux fran‡ais"
+* 52 5collabo,7500,"on nous parle des collabos,","y z'en ont fait moins"
+* 53 5clepen,7500,"c'est Le Pen (de ch'val)",""
+* 54 5antifra,7500,"est anti-fran‡ais",""
+* 55 5abrutis,7500,"nous sommes des a.....s",""
+* 56 fx_beat,7500,"",""
+* 57 fx_glin1,7500,"",""
+* 58 fx_glin2,7500,"",""
 
 FIN_DATA	=	*

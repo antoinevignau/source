@@ -417,8 +417,7 @@ doSAVE1	jsr	copyPATH
 	
 *--- Recopie le filename du fichier de sauvegarde
 
-copyPATH
-	sep	#$20
+copyPATH	sep	#$20
 	ldx	#16-1
 ]lp	lda	namePATH1,x
 	sta	pGAME+4,x
@@ -453,23 +452,26 @@ loadKO99	rts
 
 *---
 
-loadPART
-*	ldx	#2
-*	ldy	#fiAVENTURE
-*	jsr	loadIT
-*
-*	ldx	#2
-*	ldy	#fiSCENEACTUELLE
-*	jsr	loadIT
-*	
-*	ldx	#NB_TEXTES
-*	ldy	#fiSCENEVISITEE
-*	
-*loadIT	stx	proREADGAME+8
-*	sty	proREADGAME+4
-*	jsl	GSOS
-*	dw	$2012
-*	adrl	proREADGAME
+loadPART	ldx	#2
+	ldy	#pointeur_indicateurs
+	jsr	loadIT
+
+	ldx	#2
+	ldy	#pointeur_paragraphes
+	jsr	loadIT
+
+	ldx	#nombre_indicateurs
+	ldy	#indicateur
+	jsr	loadIT
+
+	ldx	#nombre_paragraphes
+	ldy	#paragraphe_lu
+	
+loadIT	stx	proREADGAME+8
+	sty	proREADGAME+4
+	jsl	GSOS
+	dw	$2012
+	adrl	proREADGAME
 	rts
 
 *--- Enregistre le fichier de sauvegarde
@@ -502,23 +504,26 @@ saveKO99	rts
 
 *---
 
-savePART
-*	ldx	#2
-*	ldy	#aventure
-*	jsr	saveIT
-*
-*	ldx	#2
-*	ldy	#scene_actuelle
-*	jsr	saveIT
-*	
-*	ldx	#NB_TEXTES
-*	ldy	#scene_visitee
-*	
-*saveIT	stx	proWRITEGAME+8
-*	sty	proWRITEGAME+4
-*	jsl	GSOS
-*	dw	$2013
-*	adrl	proWRITEGAME
+savePART	ldx	#2
+	ldy	#pointeur_indicateurs
+	jsr	saveIT
+
+	ldx	#2
+	ldy	#pointeur_paragraphes
+	jsr	saveIT
+
+	ldx	#nombre_indicateurs
+	ldy	#indicateur
+	jsr	saveIT
+
+	ldx	#nombre_paragraphes
+	ldy	#paragraphe_lu
+	
+saveIT	stx	proWRITEGAME+8
+	sty	proWRITEGAME+4
+	jsl	GSOS
+	dw	$2013
+	adrl	proWRITEGAME
 	rts
 
 *----------------------------------- Restart

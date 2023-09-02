@@ -122,9 +122,9 @@ fgRESTART	=	2
 	tdc
 	sta	myDP
 
-	lda	#entryPOINT
+	lda	#clavier_sonore
 	stal	$300
-	lda	#^entryPOINT
+	lda	#^clavier_sonore
 	stal	$302
 	
 *--- Version du systeme
@@ -1162,6 +1162,28 @@ ptrTXT6	ds	4
 ptrTXT7	ds	4
 ptrTXT8	ds	4
 
+haBEAT	ds	4
+ptrBEAT	ds	4
+
+haSND1	ds	4
+haSND2	ds	4
+haSND3	ds	4
+haSND4	ds	4
+haSND5	ds	4
+haSND6	ds	4
+haSND7	ds	4
+haSND8	ds	4
+haSND9	ds	4
+ptrSND1	ds	4
+ptrSND2	ds	4
+ptrSND3	ds	4
+ptrSND4	ds	4
+ptrSND5	ds	4
+ptrSND6	ds	4
+ptrSND7	ds	4
+ptrSND8	ds	4
+ptrSND9	ds	4
+
 temp	ds	2
 
 saveLANGUAGE	ds	2
@@ -1351,14 +1373,19 @@ proVERS	dw	1	; pcount
 *--- offset to image number is +19
 *--- offset to language is +16
 *--- offset to text number is +22
+*--- offset to beat number is +22
+*--- offset to sfxs number is +21
+
+*                                1         2         3
+*                        23456789012345678901234567890123456789
 
 pIMAGE	strl	'1/data/images/PIC1.PIC'
 pFOND	strl	'1/data/images/PIC10.PIC'
 pICONES	strl	'1/data/images/PIC11.PIC'
 pREF	strl	'1/data/textes/fr/REF1.TXT'
 pTXT	strl	'1/data/textes/fr/TXT1.TXT'
-
-*--- offset to aventure number is +25
+pBEAT	strl	'1/data/musiques/BEAT1.SPL'
+pSND	strl	'1/data/musiques/SND10.SND'
 
 pGAME	strl	'0/               '
 

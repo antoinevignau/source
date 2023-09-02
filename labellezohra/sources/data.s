@@ -75,6 +75,7 @@ DEBUT_DATA	=	*
 
 fgTHEEND	ds	2	; LOGO
 i	ds	2
+j	ds	2
 index	ds	2
 theX	ds	2
 theY	ds	2
@@ -174,8 +175,66 @@ paragraphes_lus	ds	2
 reference_objet	ds	nombre_paragraphes	; NUMERO DE L'OBJET ASSOCIE A CHAQUE PARAGRAPHE
 reference_peche	ds	nombre_paragraphes	; NUMERO DU PECHE ASSOCIE A CHAQUE PARAGRAPHE
 
+FIN_DATA	=	*
+
 *--- Sound files
 * SNDxy.SND where x is the scene, y the file index (0..9)
+
+tblSND	da	sndPART1
+	da	sndPART2
+	da	sndPART3
+	da	sndPART4
+	da	sndPART5
+	dw	-1
+
+sndPART1	da	snd10
+	da	snd11
+	da	snd12
+	da	snd13
+	da	snd14
+	da	snd15
+	da	snd16
+	da	snd17
+	da	snd18
+	dw	-1
+	
+sndPART2	da	snd20
+	da	snd21
+	da	snd22
+	da	snd23
+	da	snd24
+	da	snd25
+	da	snd26
+	da	snd27
+	da	snd28
+	dw	-1
+	
+sndPART3	da	snd30
+	da	snd31
+	da	snd32
+	da	snd33
+	da	snd34
+	da	snd35
+	da	snd36
+	da	snd37
+	da	snd38
+	dw	-1
+	
+sndPART4	da	snd40
+	da	snd41
+	da	snd42
+	dw	-1
+	
+sndPART5	da	snd50
+	da	snd51
+	da	snd52
+	da	snd53
+	da	snd54
+	da	snd55
+	da	snd56
+	da	snd57
+	da	snd58
+	dw	-1
 
 * 10 1cemonsi,7500,"ce monsieur!",""
 * 11 1safemme,7500,"sa femme!",""
@@ -186,7 +245,44 @@ reference_peche	ds	nombre_paragraphes	; NUMERO DU PECHE ASSOCIE A CHAQUE PARAGRA
 * 16 fx_synth,5000,"",""
 * 17 fx_tromp,7500,"",""
 * 18 fx_tromp,10000,"",""
-*  '
+
+snd10	asc	'10'
+	dw	217
+	str	'ce monsieur!'
+	str	''
+snd11	asc	'11'
+	dw	217
+	str	'sa femme!'
+	str	''
+snd12	asc	'12'
+	dw	217
+	str	'le chameau!'
+	str	''
+snd13	asc	'13'
+	dw	217
+	str	'et toute la smala!'
+	str	''
+snd14	asc	'14'
+	dw	290
+	str	''
+	str	''
+snd15	asc	'15'
+	dw	145
+	str	''
+	str	''
+snd16	asc	'16'
+	dw	145
+	str	''
+	str	''
+snd17	asc	'17'
+	dw	217
+	str	''
+	str	''
+snd18	asc	'18'
+	dw	290
+	str	''
+	str	''
+
 * 20 2coinfli,7500,"des coins oó","les flics ne vont plus"
 * 21 2kararab,7500,"y'a des quartiers arab'",""
 * 22 2karbret,7500,"si c'Çtait des quartiers bretons...",""
@@ -196,7 +292,44 @@ reference_peche	ds	nombre_paragraphes	; NUMERO DU PECHE ASSOCIE A CHAQUE PARAGRA
 * 26 fx_siren,5000,"",""
 * 27 fx_guita,5000,"",""
 * 28 fx_guita,7500,"",""
-*  '
+
+snd20	asc	'20'
+	dw	217
+	str	'des coins o'9d
+	str	'les flics ne vont plus'
+snd21	asc	'21'
+	dw	217
+	str	'y'27'a des quartiers arab'
+	str	''
+snd22	asc	'22'
+	dw	217
+	str	'si c'278e'tait des quartiers bretons...'
+	str	''
+snd23	asc	'23'
+	dw	217
+	str	'some people from Nanterre'
+	str	'some people from Belleville!'
+snd24	asc	'24'
+	dw	145
+	str	''
+	str	''
+snd25	asc	'25'
+	dw	145
+	str	''
+	str	''
+snd26	asc	'26'
+	dw	145
+	str	''
+	str	''
+snd27	asc	'27'
+	dw	145
+	str	''
+	str	''
+snd28	asc	'28'
+	dw	217
+	str	''
+	str	''
+
 * 30 3BOPARLE,7500,"ces beaux-parleurs","de la tÇlÇvision?"
 * 31 3FAITFRA,7500,"qu'est-ce qu'ils ont fait","pour la france?"
 * 32 3PASMILI,7500,"les trois quarts du temps, y z'ont","pas fait leur service miliaire"
@@ -206,11 +339,62 @@ reference_peche	ds	nombre_paragraphes	; NUMERO DU PECHE ASSOCIE A CHAQUE PARAGRA
 * 36 fx_dzoin,7500,"",""
 * 37 fx_dehem,7500,"",""
 * 38 fx_dehem,10000,"",""
-*  '
+
+snd30	asc	'30'
+	dw	217
+	str	'ces beaux-parleurs'
+	str	'de la t'8e'l'8e'vision?'
+snd31	asc	'31'
+	dw	217
+	str	'qu'27'est-ce qu'27'ils ont fait'
+	str	'pour la france?'
+snd32	asc	'32'
+	dw	217
+	str	'les trois quarts du temps, y z'27'ont'
+	str	'pas fait leur service militaire'
+snd33	asc	'33'
+	dw	217
+	str	'y sont meme un peu p'8e'd'8e' sur les bords!'
+	str	''
+snd34	asc	'34'
+	dw	217
+	str	'hey hey hey!'
+	str	''
+snd35	asc	'35'
+	dw	217
+	str	''
+	str	''
+snd36	asc	'36'
+	dw	217
+	str	''
+	str	''
+snd37	asc	'37'
+	dw	217
+	str	''
+	str	''
+snd38	asc	'38'
+	dw	290
+	str	''
+	str	''
+	
+
 * 40 4algefra,7500,"nous n'Çtions pas pour","l'algÇrie francaise"
 * 41 4algesah,7500,"nous Çtions pour l'algÇrie et","le sahara francais!"
 * 42 4sousoff,7500,"les sous-off' de la coloniale,","dont j'Çtais"
-*  '
+
+snd40	asc	'40'
+	dw	217
+	str	'nous n'278e'tions pas pour'
+	str	'l'27'alg'8e'rie francaise'
+snd41	asc	'41'
+	dw	217
+	str	'nous '8e'tions pour l'27'alg'8e'rie et'
+	str	'le sahara francais!'
+snd42	asc	'42'
+	dw	217
+	str	'les sous-off de la coloniale'
+	str	'dont j'278e'tais'
+
 * 50 5haine,7500,"qui a la haine de l'Çtranger?",""
 * 51 5terrfra,7500,"la terre de france, elle est","d'abord aux franáais"
 * 52 5collabo,7500,"on nous parle des collabos,","y z'en ont fait moins"
@@ -221,4 +405,54 @@ reference_peche	ds	nombre_paragraphes	; NUMERO DU PECHE ASSOCIE A CHAQUE PARAGRA
 * 57 fx_glin1,7500,"",""
 * 58 fx_glin2,7500,"",""
 
-FIN_DATA	=	*
+snd50	asc	'50'
+	dw	217
+	str	'qui a la haine de l'278e'tranger?'
+	str	''
+snd51	asc	'51'
+	dw	217
+	str	'la terre de france, elle est'
+	str	'd'27'abord aux fran'8d'ais'
+snd52	asc	'52'
+	dw	217
+	str	'on nous parle des collabos'
+	str	'y z'27'en ont fait moins'
+snd53	asc	'53'
+	dw	217
+	str	'c'27'est Le Pen (de ch'27'val)'
+	str	''
+snd54	asc	'54'
+	dw	217
+	str	'est anti-fran'8d'ais'
+	str	''
+snd55	asc	'55'
+	dw	217
+	str	'nous sommes des a.....s'
+	str	''
+snd56	asc	'56'
+	dw	217
+	str	''
+	str	''
+snd57	asc	'57'
+	dw	217
+	str	''
+	str	''
+snd58	asc	'58'
+	dw	217
+	str	''
+	str	''
+
+*--- Donnees Sound Tool Set
+
+waveSTART	ds	4	; waveStart
+waveSIZE	ds	2	; waveSize
+waveFREQ	dw	214	; freqOffset
+	dw	$0000	; docBuffer
+	dw	$0000	; bufferSize
+	ds	4	; nextWavePtr
+	dw	255	; volSetting
+
+tblSTR1	ds	10*2	; pointeur sur la première phrase
+tblSTR2	ds	10*2	; pointeur sur la seconde phrase
+tblSIZE	ds	10*2	; taille de chaque son
+tblFREQ	ds	10*2	; fréquence de chaque son

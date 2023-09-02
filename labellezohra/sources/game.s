@@ -1042,40 +1042,325 @@ mouse_off
 	rts
 
 *-----------------------
-* 
+* MUSIQUE - OK
 *-----------------------
+* musique
 
-musique
+musique	jsr	init_musique
+
+	lda	#1
+	sta	i
+	
+]lp	lda	i
+	jsr	rythme
+	lda	i
+	jsr	charge_son
+	jsr	clavier_sonore
+	jsr	nettoie_musique
+	inc	i
+	lda	i
+	cmp	#5
+	bcc	]lp
+	beq	]lp
 	rts
 
 *-----------------------
-* 
+* NETTOIE_MUSIQUE - OK
+*-----------------------
+* nettoie_musique
+
+nettoie_musique
+	PushLong	haBEAT
+	_DisposeHandle
+
+	lda	#0
+]lp	pha
+	asl
+	asl
+	tax
+	lda	haSND1+2,x
+	pha
+	lda	haSND1,x
+	pha
+	_DisposeHandle
+	pla
+	inc
+	cmp	j	; nombre de sons
+	bcc	]lp
+	rts
+
+*-----------------------
+* INIT_MUSIQUE - OK
 *-----------------------
 
 init_musique
+	PushWord	#$ffff
+	_ClearScreen
 	rts
 
 *-----------------------
-* 
+* RYTHME - OK
 *-----------------------
 * rythme(rythme%)
 
-rythme
+*--- offset to beat number is +22
+
+rythme	sep	#$20
+	ora	#'0'
+	sta	pBEAT+22
+	rep	#$20
+
+*---
+
+	lda	#pBEAT
+	sta	proOPEN+4  ; filename
+
+	jsl	GSOS
+	dw	$2010
+	adrl	proOPEN
+	bcs	ry_err2
+	
+	lda	proOPEN+2
+	sta	proREAD+2
+	sta	proCLOSE+2
+	
+	ldy	proEOF
+	sty	proREAD+8
+	ldx	proEOF+2
+	stx	proREAD+10
+
+	pha
+	pha
+	phx
+	phy
+	PushWord	myID
+	PushWord	#%11000000_00001100
+	PushLong	#0
+	_NewHandle
+	phd
+	tsc
+	tcd
+	lda	[3]
+	sta	ptrBEAT
+	sta	proREAD+4
+	ldy	#2
+	lda	[3],y
+	sta	ptrBEAT+2
+	sta	proREAD+6
+	pld
+	pla
+	sta	haBEAT
+	pla
+	sta	haBEAT+2
+	bcs	ry_err1
+	
+	jsl	GSOS
+	dw	$2012
+	adrl	proREAD
+
+ry_err1	jsl	GSOS
+	dw	$2014
+	adrl	proCLOSE
+	clc
+ry_err2	rts
+
+*-----------------------
+* CHARGE_SON - OK
+*-----------------------
+* charge_son
+
+*--- offset to sfxs number is +21
+
+charge_son	dec
+	asl		; pointe sur la table de pointeurs
+	tax		; par niveau (1..5)
+	lda	tblSND,x
+	cmp	#-1
+	bne	ch_1
+	sec
 	rts
+ch_1	sta	dpFROM	; pointe sur sndPARTx
 
-*-----------------------
-* 
-*-----------------------
-
-charge_son
+	lda	#1	; on charge tous les sons maintenant
+	sta	j
+	
+]lp	lda	j
+	dec
+	asl
+	tay
+	tax
+	lda	(dpFROM),y
+	cmp	#-1	; fin d'une structure
+	bne	ch_2
+	clc
 	rts
+ch_2	sta	dpTO	; pointe sur l'entrée de la structure d'un son
+
+	lda	(dpTO)	; nom du son
+	sta	pSND+21
+	ldy	#2
+	lda	(dpTO),y
+	sta	tblFREQ,x	; la fréquence du son
+
+	lda	dpTO
+	clc
+	adc	#4
+	sta	tblSTR1,x	; on pointe sur la première string
+	sta	dpTO
+	lda	(dpTO)
+	and	#$ff
+	clc
+	adc	tblSTR1,x
+	inc
+	sta	tblSTR2,x
+
+	jsr	charge_un_son
+
+	inc	j
+	bra	]lp
+	
+*---
+
+charge_un_son
+	lda	#pSND
+	sta	proOPEN+4  ; filename
+
+	jsl	GSOS
+	dw	$2010
+	adrl	proOPEN
+	bcs	cus_err2
+	
+	lda	proOPEN+2
+	sta	proREAD+2
+	sta	proCLOSE+2
+	
+	ldy	proEOF
+	sty	proREAD+8
+	ldx	proEOF+2
+	stx	proREAD+10
+
+	pha
+	pha
+	phx
+	phy
+	PushWord	myID
+	PushWord	#%11000000_00001100
+	PushLong	#0
+	_NewHandle
+	phd
+	tsc
+	tcd
+	
+	lda	j
+	dec
+	asl
+	tay
+	asl
+	tax
+	lda	proEOF+1	; nombre de pages
+	sta	tblSIZE,y
+
+	lda	[3]
+	sta	ptrSND1,x
+	sta	proREAD+4
+	ldy	#2
+	lda	[3],y
+	sta	ptrSND1+2,x
+	sta	proREAD+6
+	pld
+	pla
+	sta	haSND1,x
+	pla
+	sta	haSND1+2,x
+	bcs	cus_err1
+	
+	jsl	GSOS
+	dw	$2012
+	adrl	proREAD
+
+cus_err1	jsl	GSOS
+	dw	$2014
+	adrl	proCLOSE
+	clc
+cus_err2	rts
 
 *-----------------------
-* 
+* CLAVIER_SONORE - OK
 *-----------------------
 
 clavier_sonore
-	rts
+	pha
+	_GetForeColor
+	pha
+	_GetBackColor
+	
+	PushWord	#0
+	_SetForeColor
+	PushWord	#15
+	_SetBackColor
+	
+cl_loop	pha
+	PushWord #%00000000_00001010
+	PushLong #taskREC
+	_GetNextEvent
+	pla
+	beq	cl_loop
+
+	lda	taskREC	; une touche ?
+	cmp	#keyDownEvt
+	bne	cl_loop
+
+	lda	taskMESSAGE	; entre 0 et 9 ?
+	cmp	#'0'
+	bne	cl_1
+	
+	_SetBackColor
+	_SetForeColor
+	rts		; on sort
+
+cl_1	cmp	#'1'
+	bcc	cl_loop
+	cmp	#'9'+1
+	bcs	cl_loop
+
+	sec
+	sbc	#'1'
+	cmp	j	; dans la limite du nombre de sons
+	bcs	cl_loop
+	
+	asl		; affiche les chaînes
+	tax
+	phx
+	lda	tblSIZE,x
+	sta	waveSIZE
+	lda	tblFREQ,x
+	sta	waveFREQ
+
+	txa
+	asl
+	tay
+	lda	ptrSND1,y
+	sta	waveSTART
+	lda	ptrSND1+2,y
+	sta	waveSTART+2
+	
+	lda	tblSTR1,x
+	ldy	#22
+	jsr	t
+
+	plx
+	lda	tblSTR2,x
+	ldy	#23
+	jsr	t
+
+	PushWord #%0000_0000_1000_0000	; play the sound
+	_FFStopSound
+
+	PushWord #$0701
+	PushLong #waveSTART
+	_FFStartSound
+	
+	brl	cl_loop
 
 *-----------------------
 * 
@@ -1086,22 +1371,25 @@ mix
 	rts
 
 *-----------------------
-* 
+* STOP_SAMPLE - OK
 *-----------------------
+* stop_sample
 
 stop_sample
 	rts
 
 *-----------------------
-* 
+* FIN_MUSIQUE - OK
 *-----------------------
+* fin_musique
 
 fin_musique
 	rts
 
 *-----------------------
-* 
+* DATA_FICHIERS_MUSIQUE - OK
 *-----------------------
+* data_fichiers_musique
 
 data_fichiers_musique
 	rts
@@ -1152,40 +1440,40 @@ fin
 *-----------------------
 
 monCURSEUR
-	dw	16,4
-	hex	FF00000000000000	; data
-	hex	F0F0000000000000
-	hex	F00F000000000000
-	hex	F000F00000000000
-	hex	F0000F000FFFFF00
-	hex	F00000F0F00000F0
-	hex	F000000F00FFF00F
-	hex	F0000FFF00F0F00F
-	hex	F0F00F0F00F0F00F
-	hex	FF0F00FF00F0F00F
-	hex	F000F00FFFFFF00F
-	hex	00000F00000000F0
-	hex	000000FFFFFFFF00
-	hex	0FFFFFFF00F00000
-	hex	F00000000F000000
-	hex	0FFFFFFFF0000000
+	dw	16,5
+	hex	FF000000000000000000	; data
+	hex	F0F00000000000000000
+	hex	F00F0000000000000000
+	hex	F000F000000000000000
+	hex	F0000F000FFFFF000000
+	hex	F00000F0F00000F00000
+	hex	F000000F00FFF00F0000
+	hex	F0000FFF00F0F00F0000
+	hex	F0F00F0F00F0F00F0000
+	hex	FF0F00FF00F0F00F0000
+	hex	F000F00FFFFFF00F0000
+	hex	00000F00000000F00000
+	hex	000000FFFFFFFF000000
+	hex	0FFFFFFF00F000000000
+	hex	F00000000F0000000000
+	hex	0FFFFFFFF00000000000
 
-	hex	FF00000000000000	; mask
-	hex	FFF0000000000000
-	hex	FFFF000000000000
-	hex	FFFFF00000000000
-	hex	FFFFFF000FFFFF00
-	hex	FFFFFFF0FFFFFFF0
-	hex	FFFFFFFFFFFFFFFF
-	hex	FFFFFFFFFFF0FFFF
-	hex	FFFFFF0FFFF0FFFF
-	hex	FF0FFFFFFFF0FFFF
-	hex	F000FFFFFFFFFFFF
-	hex	00000FFFFFFFFFF0
-	hex	000000FFFFFFFF00
-	hex	0FFFFFFFFFF00000
-	hex	FFFFFFFFFF000000
-	hex	0FFFFFFFF0000000
+	hex	FF000000000000000000	; mask
+	hex	FFF00000000000000000
+	hex	FFFF0000000000000000
+	hex	FFFFF000000000000000
+	hex	FFFFFF000FFFFF000000
+	hex	FFFFFFF0FFFFFFF00000
+	hex	FFFFFFFFFFFFFFFF0000
+	hex	FFFFFFFFFFF0FFFF0000
+	hex	FFFFFF0FFFF0FFFF0000
+	hex	FF0FFFFFFFF0FFFF0000
+	hex	F000FFFFFFFFFFFF0000
+	hex	00000FFFFFFFFFF00000
+	hex	000000FFFFFFFF000000
+	hex	0FFFFFFFFFF000000000
+	hex	FFFFFFFFFF0000000000
+	hex	0FFFFFFFF00000000000
 	
 	dw	1,1
 

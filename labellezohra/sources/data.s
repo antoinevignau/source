@@ -456,3 +456,12 @@ tblSTR1	ds	10*2	; pointeur sur la première phrase
 tblSTR2	ds	10*2	; pointeur sur la seconde phrase
 tblSIZE	ds	10*2	; taille de chaque son
 tblFREQ	ds	10*2	; fréquence de chaque son
+
+zikPLAY	ds	2
+zikMUSIC	ds	4
+sndVECTOR	ds	4
+zikPAGE	ds	2
+ptrMUSIC	ds	4
+zikPTR	ds	4
+fgPAGE	ds	2
+whichSND	ds	2

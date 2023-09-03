@@ -1387,6 +1387,287 @@ fin_musique
 	rts
 
 *-----------------------
+* ENSONIQ ROUTINES
+*-----------------------
+
+initMUSIC	sei
+	pha
+	pha
+	PushWord	#11
+	_GetVector
+	PullLong	sndVECTOR
+	
+	PushWord	#11
+	PushLong	#sndINTERRUPT
+	_SetVector
+	
+	lda	#$373
+	sta	zikPAGE
+	lda	ptrMUSIC
+	sta	zikMUSIC
+	lda	ptrMUSIC+2
+	sta	zikMUSIC+2
+
+	sep	#$20
+	ldal	$e100ca
+	and	#$0f
+	stal	$e0c03c
+
+	ldy	#$04
+	tya
+	ora	#$00
+	stal	$e0c03e
+	lda	#$d1
+	stal	$e0c03d
+	tya
+	ora	#$01
+	stal	$e0c03e
+	lda	#$d1
+	stal	$e0c03d
+	tya
+	ora	#$20
+	stal	$e0c03e
+	lda	#$00
+	stal	$e0c03d
+	tya
+	ora	#$21
+	stal	$e0c03e
+	lda	#0
+	stal	$e0c03d
+	tya
+	ora	#$40
+	stal	$e0c03e
+	lda	#$f0
+	stal	$e0c03d
+	tya
+	ora	#$41
+	stal	$e0c03e
+	lda	#$f0
+	stal	$e0c03d
+	tya
+	ora	#$80
+	stal	$e0c03e
+	lda	#$3e
+	stal	$e0c03d
+	tya
+	ora	#$81
+	stal	$e0c03e
+	lda	#$3f
+	stal	$e0c03d
+	tya
+	ora	#$c0
+	stal	$e0c03e
+	lda	#0
+	stal	$e0c03d
+	tya
+	ora	#$c1
+	stal	$e0c03e
+	lda	#0
+	stal	$e0c03d
+	rep	#$20
+	jsr	shutMUSIC2
+	lda	#1
+	sta	zikPLAY
+	rts
+
+*---
+
+shutMUSIC	sei
+	stz	zikPLAY
+
+	PushWord	#11
+	PushLong	sndVECTOR
+	_SetVector
+
+shutMUSIC1	sep	#$30
+
+	ldal	$e100ca
+	and	#%0000_1111
+	stal	$e0c03c
+
+	ldy	#$1f
+]lp	tya
+	ora	#$a0
+	stal	$e0c03e
+	lda	#$01
+	stal	$e0c03d
+	dey
+	bpl	]lp
+
+	rep	#$30
+	cli
+	rts
+
+*---
+
+shutMUSIC2	sei
+	phd
+	lda	#$c000
+	tcd
+	jsr	sndINTERRUPT2
+	rep	#$20
+	pld
+	cli
+	rts
+
+*---
+
+sndINTERRUPT
+	ldal	zikPLAY
+	beq	sndINTERRUPT1
+
+	phb
+	phd
+	phk
+	plb
+
+	rep	#$30
+
+	lda	#$c000
+	tcd
+
+]lp	jsr	sndINTERRUPT2
+
+	mx	%10
+
+	ldal	$e100ca
+	sta	$3c
+	lda	#$e0
+	sta	$3e
+	lda	$3d
+	lda	$3d
+	bpl	]lp
+
+	sep	#$30
+
+	pld
+	plb
+	clc
+sndINTERRUPT1
+	rtl
+
+*---
+
+	mx	%10
+
+sndINTERRUPT2
+	sep	#$20
+
+	ldal	$e100ca
+	and	#%0000_1111
+	ora	#%0110_0000
+	sta	$3c
+
+	stz	$3e
+	lda	#$3e
+	ora	fgPAGE
+	eor	#1
+	sta	$3f
+
+	ldy	zikMUSIC
+	lda	zikMUSIC+2
+	pha
+	plb
+	
+*	jsr	sndINTERRUPT10
+
+]move	=	$00
+	lup	256
+	lda	]move,y
+	sta	$3d
+]move	=	]move+1
+	--^
+
+	phk
+	plb
+
+	rep	#$20
+
+	inc	zikMUSIC+1
+	dec	zikPAGE
+	bne	sndINTERRUPT3
+
+	lda	whichSND
+	beq	sndINTERRUPT21
+
+	sep	#$20
+
+	ldal	$e100ca
+	and	#$0f
+	sta	$3c
+
+	lda	#$a4
+	sta	$3e
+	lda	#%0000_0011
+	sta	$3d
+	inc	$3e
+	lda	#%0001_0011
+	sta	$3d
+	bra	sndINTERRUPT5
+
+	mx	%00
+
+sndINTERRUPT21
+	lda	#$373
+	sta	zikPAGE
+	lda	ptrMUSIC
+	sta	zikMUSIC
+	lda	ptrMUSIC+2
+	sta	zikMUSIC+2
+
+sndINTERRUPT3
+	sep	#$20
+
+	ldal	$e100ca
+	and	#$0f
+	sta	$3c
+
+	ldy	#$04
+
+	ldx	fgPAGE
+	bne	sndINTERRUPT4
+
+	tya
+	ora	#$a0
+	sta	$3e
+	lda	#%0000_1110
+	sta	$3d
+	inc	$3e
+	lda	#%0001_1111
+	sta	$3d
+	bra	sndINTERRUPT5
+
+sndINTERRUPT4
+	tya
+	ora	#$a0
+	sta	$3e
+	lda	#%0000_1111
+	sta	$3d
+	inc	$3e
+	lda	#%0001_1110
+	sta	$3d
+
+sndINTERRUPT5
+	lda	fgPAGE
+	eor	#1
+	sta	fgPAGE
+	rts
+
+*---
+*
+*sndINTERRUPT10 = *
+*
+*]move	=	$00
+*	lup	256
+*	lda	]move,y
+*	sta	$3d
+*]move	=	]move+1
+*	--^
+*	rts
+
+	mx	%00
+
+*-----------------------
 * DATA_FICHIERS_MUSIQUE - OK
 *-----------------------
 * data_fichiers_musique

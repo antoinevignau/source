@@ -1046,23 +1046,29 @@ mouse_off
 *-----------------------
 * musique
 
-musique	jsr	init_musique
+musique	lda	fgSND	; can we play?
+	bne	mu_1	; yes
+	rts		; no
+
+mu_1	jsr	init_musique
 
 	lda	#1
 	sta	i
 	
 ]lp	lda	i
 	jsr	rythme
+	jsr	rythme_joue	; joue le rythme
 	lda	i
 	jsr	charge_son
 	jsr	clavier_sonore
+	bcs	mu_exit	; si *, on quitte le clavier sonore
 	jsr	nettoie_musique
 	inc	i
 	lda	i
 	cmp	#5
 	bcc	]lp
 	beq	]lp
-	rts
+mu_exit	rts
 
 *-----------------------
 * NETTOIE_MUSIQUE - OK
@@ -1163,6 +1169,116 @@ ry_err1	jsl	GSOS
 	adrl	proCLOSE
 	clc
 ry_err2	rts
+
+*-----------------------
+* RYTHME_JOUE - OK
+*-----------------------
+* rythme_joue
+
+rythme_joue
+	lda	ptrBEAT
+	sta	dpFROM
+	lda	ptrBEAT+2
+	sta	dpFROM+2
+	
+* 1. on met en RAM son
+
+	sei
+	sep	#$20
+
+	ldal	$e100ca
+	ora	#%0110_0000
+	stal	$c03c
+
+	lda	#0
+	stal	$c03e
+	stal	$c03f
+
+	ldy	#0
+]lp	lda	[dpFROM],y
+	stal	$c03d
+	iny
+	cpy	proEOF
+	bcc	]lp
+
+* 2. on lance le rythme en mode loop sur deux oscillos
+
+	ldy	#0	; oscillos 0 & 1
+
+	ldal	$e100ca	; volume
+	and	#$0f
+	stal	$c03c
+
+	tya		; fréquence basse
+	stal	$c03e
+	lda	#217
+	stal	$c03d
+	tya
+	ora	#$01
+	stal	$c03e
+	lda	#217
+	stal	$c03d
+
+	tya		; fréquence haute
+	ora	#$20
+	stal	$c03e
+	lda	#0
+	stal	$c03d
+	tya
+	ora	#$21
+	stal	$c03e
+	lda	#0
+	stal	$c03d
+
+	tya		; volume
+	ora	#$40
+	stal	$c03e
+	lda	#$ff
+	stal	$c03d
+	tya
+	ora	#$41
+	stal	$c03e
+	lda	#$ff
+	stal	$c03d
+
+	tya		; address pointer
+	ora	#$80
+	stal	$c03e
+	lda	#0
+	stal	$c03d
+	tya
+	ora	#$81
+	stal	$c03e
+	lda	#0
+	stal	$c03d
+
+	tya		; waveform table size (32K)
+	ora	#$c0
+	stal	$c03e
+	lda	#%00111111
+	stal	$c03d
+	tya
+	ora	#$c1
+	stal	$c03e
+	lda	#%00111111
+	stal	$c03d
+
+	tya		; control register
+	ora	#$a0
+	stal	$c03e
+	lda	#%0000_0000
+	stal	$c03d
+	tya
+	ora	#$a1
+	stal	$c03e
+	lda	#%0001_0000
+	stal	$c03d
+	
+* 3. on sort et ça joue
+
+	rep	#$20
+	cli
+	rts
 
 *-----------------------
 * CHARGE_SON - OK
@@ -1311,12 +1427,18 @@ cl_loop	pha
 	bne	cl_loop
 
 	lda	taskMESSAGE	; entre 0 et 9 ?
+	cmp	#'*'
+	beq	cl_exit
 	cmp	#'0'
 	bne	cl_1
-	
+	clc
+cl_0	php
 	_SetBackColor
 	_SetForeColor
+	plp
 	rts		; on sort
+cl_exit	sec		; définitivement
+	bra	cl_0
 
 cl_1	cmp	#'1'
 	bcc	cl_loop
@@ -1353,6 +1475,8 @@ cl_1	cmp	#'1'
 	ldy	#23
 	jsr	t
 
+	brl	cl_loop	; LOGO
+	
 	PushWord #%0000_0000_1000_0000	; play the sound
 	_FFStopSound
 

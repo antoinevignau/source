@@ -122,11 +122,7 @@ fgRESTART	=	2
 	tdc
 	sta	myDP
 
-	lda	#clavier_sonore
-	stal	$300
-	lda	#^clavier_sonore
-	stal	$302
-	
+
 *--- Version du systeme
 
 	jsl	GSOS
@@ -147,9 +143,20 @@ fgRESTART	=	2
 	pla
 	brl	meQUIT1
 
+*--- Compacte la mémoire
+
+okVERS	PushLong	#0
+	PushLong	#$8fffff
+	PushWord	myID
+	PushWord	#%11000000_00000000
+	PushLong	#0
+	_NewHandle
+	_DisposeHandle
+	_CompactMem
+
 *--- 64K pour les images des scènes
 
-okVERS	jsr	make64KB
+	jsr	make64KB
 	bcc	okMEM1
 
 koMEM	pha
@@ -209,7 +216,15 @@ okMEM1	sty	ptrIMAGE
 
 *--- Et la musique...
 
-okTOOL	_HideMenuBar
+okTOOL	pha
+	_SoundToolStatus
+	pla
+	bne	noSOUND
+
+	lda	#1
+	sta	fgSND
+
+noSOUND	_HideMenuBar
 
 	PushWord	#0
 	PushWord	#%11111111_11111111

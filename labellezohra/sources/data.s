@@ -457,6 +457,7 @@ tblSTR2	ds	10*2	; pointeur sur la seconde phrase
 tblSIZE	ds	10*2	; taille de chaque son
 tblFREQ	ds	10*2	; fréquence de chaque son
 
+fgSND	ds	2	; 0 means no sound
 zikPLAY	ds	2
 zikMUSIC	ds	4
 sndVECTOR	ds	4

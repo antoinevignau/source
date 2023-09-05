@@ -8,6 +8,13 @@
 	mx    %00
 
 *-----------------------
+
+soundctl	=	$3c	; $c03c
+sounddata	=	$3d	; $c03d
+soundadrl	=	$3e	; $c03e
+soundadrh	=	$3f	; $c03f
+
+*-----------------------
 * macros
 *-----------------------
 
@@ -1068,7 +1075,7 @@ mu_1	jsr	init_musique
 	cmp	#5
 	bcc	]lp
 	beq	]lp
-mu_exit	rts
+mu_exit	jmp	fin_musique
 
 *-----------------------
 * NETTOIE_MUSIQUE - OK
@@ -1100,8 +1107,20 @@ nettoie_musique
 *-----------------------
 
 init_musique
+	sei
+	pha
+	pha
+	PushWord	#11
+	_GetVector
+	PullLong	sndVECTOR
+	
+	PushWord	#11
+	PushLong	#sndINTERRUPT
+	_SetVector
+	cli
+
 	PushWord	#$ffff
-	_ClearScreen
+	_ClearScreen	
 	rts
 
 *-----------------------
@@ -1177,109 +1196,129 @@ ry_err2	rts
 
 rythme_joue
 	lda	ptrBEAT
-	sta	dpFROM
-	lda	ptrBEAT+2
-	sta	dpFROM+2
+	sta	rj_from+1
+	lda	ptrBEAT+1
+	sta	rj_from+2
+	lda	proEOF
+	sta	rj_eof+1
 	
 * 1. on met en RAM son
 
 	sei
+	phd
+	lda	#$c000
+	tcd
 	sep	#$20
 
 	ldal	$e100ca
+	and	#%0000_1111
 	ora	#%0110_0000
-	stal	$c03c
+	sta	soundctl
 
 	lda	#0
-	stal	$c03e
-	stal	$c03f
+	sta	soundadrl
+	sta	soundadrh
 
-	ldy	#0
-]lp	lda	[dpFROM],y
-	stal	$c03d
-	iny
-	cpy	proEOF
-	bcc	]lp
+	ldx	#0
+rj_from	ldal	$aabbcc,x
+	sta	sounddata
+	inx
+rj_eof	cpx	#$ffff
+	bcc	rj_from
 
-* 2. on lance le rythme en mode loop sur deux oscillos
+* 2. on démarre
 
-	ldy	#0	; oscillos 0 & 1
-
-	ldal	$e100ca	; volume
-	and	#$0f
-	stal	$c03c
-
-	tya		; fréquence basse
-	stal	$c03e
-	lda	#217
-	stal	$c03d
-	tya
-	ora	#$01
-	stal	$c03e
-	lda	#217
-	stal	$c03d
-
-	tya		; fréquence haute
-	ora	#$20
-	stal	$c03e
-	lda	#0
-	stal	$c03d
-	tya
-	ora	#$21
-	stal	$c03e
-	lda	#0
-	stal	$c03d
-
-	tya		; volume
-	ora	#$40
-	stal	$c03e
-	lda	#$ff
-	stal	$c03d
-	tya
-	ora	#$41
-	stal	$c03e
-	lda	#$ff
-	stal	$c03d
-
-	tya		; address pointer
-	ora	#$80
-	stal	$c03e
-	lda	#0
-	stal	$c03d
-	tya
-	ora	#$81
-	stal	$c03e
-	lda	#0
-	stal	$c03d
-
-	tya		; waveform table size (32K)
-	ora	#$c0
-	stal	$c03e
-	lda	#%00111111
-	stal	$c03d
-	tya
-	ora	#$c1
-	stal	$c03e
-	lda	#%00111111
-	stal	$c03d
-
-	tya		; control register
-	ora	#$a0
-	stal	$c03e
-	lda	#%0000_0000
-	stal	$c03d
-	tya
-	ora	#$a1
-	stal	$c03e
-	lda	#%0001_0000
-	stal	$c03d
-	
+	jsr	ensoniq_beat
+		
 * 3. on sort et ça joue
 
 	rep	#$20
+	pld
 	cli
 	rts
 
+*-----------------------
+* ENSONIQ_BEAT - OK
+*-----------------------
+* ensoniq_beat
+
+	mx	%10
+	
+ensoniq_beat
+	ldy	#0	; oscillos 0 & 1
+
+	ldal	$e100ca	; volume
+	and	#%0000_1111
+	sta	soundctl
+
+	tya		; fréquence basse
+	sta	soundadrl
+	lda	#217
+	sta	sounddata
+	tya
+	ora	#$01
+	sta	soundadrl
+	lda	#217
+	sta	sounddata
+
+	tya		; fréquence haute
+	ora	#$20
+	sta	soundadrl
+	lda	#0
+	sta	sounddata
+	tya
+	ora	#$21
+	sta	soundadrl
+	lda	#0
+	sta	sounddata
+
+	tya		; volume
+	ora	#$40
+	sta	soundadrl
+	lda	#$ff
+	sta	sounddata
+	tya
+	ora	#$41
+	sta	soundadrl
+	lda	#$ff
+	sta	sounddata
+
+	tya		; address pointer
+	ora	#$80
+	sta	soundadrl
+	lda	#0
+	sta	sounddata
+	tya
+	ora	#$81
+	sta	soundadrl
+	lda	#0
+	sta	sounddata
+
+	tya		; waveform table size (32K)
+	ora	#$c0
+	sta	soundadrl
+	lda	#%00111111
+	sta	sounddata
+	tya
+	ora	#$c1
+	sta	soundadrl
+	lda	#%00111111
+	sta	sounddata
+
+	tya		; control register
+	ora	#$a0
+	sta	soundadrl
+	lda	#%0000_0000
+	sta	sounddata
+	tya
+	ora	#$a1
+	sta	soundadrl
+	lda	#%0001_1000	; with interrupt
+	sta	sounddata
+	rts
+	
+	mx	%00
+	
 *-----------------------
 * CHARGE_SON - OK
 *-----------------------
@@ -1431,14 +1470,16 @@ cl_loop	pha
 	beq	cl_exit
 	cmp	#'0'
 	bne	cl_1
-	clc
-cl_0	php
-	_SetBackColor
+
+cl_0	_SetBackColor
 	_SetForeColor
-	plp
+	clc
 	rts		; on sort
-cl_exit	sec		; définitivement
-	bra	cl_0
+
+cl_exit	_SetBackColor
+	_SetForeColor
+	sec		; définitivement
+	rts
 
 cl_1	cmp	#'1'
 	bcc	cl_loop
@@ -1487,7 +1528,7 @@ cl_1	cmp	#'1'
 	brl	cl_loop
 
 *-----------------------
-* 
+* MIX - OK
 *-----------------------
 * mix(numero_son%)
 
@@ -1508,24 +1549,43 @@ stop_sample
 * fin_musique
 
 fin_musique
+	sei
+
+	PushWord	#11
+	PushLong	sndVECTOR
+	_SetVector
+
+	phd
+	lda	#$c000
+	tcd
+	sep	#$20
+
+	ldal	$e100ca
+	and	#%0000_1111
+	sta	soundctl
+
+	ldx	#2	; boucle 2 fois
+fm_1	ldy	#$1f
+]lp	tya
+	ora	#$a0
+	sta	soundadrl
+	lda	#$01
+	sta	sounddata
+	dey
+	bpl	]lp
+	dex
+	bne	fm_1
+
+	rep	#$20
+	pld
+	cli
 	rts
 
 *-----------------------
 * ENSONIQ ROUTINES
 *-----------------------
 
-initMUSIC	sei
-	pha
-	pha
-	PushWord	#11
-	_GetVector
-	PullLong	sndVECTOR
-	
-	PushWord	#11
-	PushLong	#sndINTERRUPT
-	_SetVector
-	
-	lda	#$373
+initMUSIC	lda	#$373
 	sta	zikPAGE
 	lda	ptrMUSIC
 	sta	zikMUSIC
@@ -1589,85 +1649,52 @@ initMUSIC	sei
 	lda	#0
 	stal	$e0c03d
 	rep	#$20
-	jsr	shutMUSIC2
 	lda	#1
 	sta	zikPLAY
 	rts
 
 *---
 
-shutMUSIC	sei
-	stz	zikPLAY
-
-	PushWord	#11
-	PushLong	sndVECTOR
-	_SetVector
-
-shutMUSIC1	sep	#$30
-
-	ldal	$e100ca
-	and	#%0000_1111
-	stal	$e0c03c
-
-	ldy	#$1f
-]lp	tya
-	ora	#$a0
-	stal	$e0c03e
-	lda	#$01
-	stal	$e0c03d
-	dey
-	bpl	]lp
-
-	rep	#$30
-	cli
-	rts
-
-*---
-
-shutMUSIC2	sei
-	phd
-	lda	#$c000
-	tcd
-	jsr	sndINTERRUPT2
-	rep	#$20
-	pld
-	cli
-	rts
-
-*---
-
-sndINTERRUPT
-	ldal	zikPLAY
-	beq	sndINTERRUPT1
-
+	mx	%00
+	
+sndINTERRUPT	
 	phb
 	phd
 	phk
 	plb
 
+	clc
+	xce
 	rep	#$30
 
 	lda	#$c000
 	tcd
 
-]lp	jsr	sndINTERRUPT2
+	sep	#$20
 
-	mx	%10
+]lp	lda	soundctl
+	bmi	]lp
 
 	ldal	$e100ca
-	sta	$3c
-	lda	#$e0
-	sta	$3e
-	lda	$3d
-	lda	$3d
-	bpl	]lp
+	and	#%0000_1111
+	sta	soundctl
 
+	lda	#$e0	; which oscillo
+	sta	soundadrl	; has generated
+	lda	sounddata	; the interrupt?
+	lda	sounddata
+	and	#%0011_1110
+	lsr
+	cmp	#1	; oscillo 1
+	bne	sndINTERRUPT99
+
+	jsr	ensoniq_beat
+
+sndINTERRUPT99
 	sep	#$30
-
 	pld
 	plb
 	clc
-sndINTERRUPT1
 	rtl
 
 *---
@@ -1776,18 +1803,6 @@ sndINTERRUPT5
 	eor	#1
 	sta	fgPAGE
 	rts
-
-*---
-*
-*sndINTERRUPT10 = *
-*
-*]move	=	$00
-*	lup	256
-*	lda	]move,y
-*	sta	$3d
-*]move	=	]move+1
-*	--^
-*	rts
 
 	mx	%00
 

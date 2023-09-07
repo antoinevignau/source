@@ -254,11 +254,11 @@ noSOUND	_HideMenuBar
 *----------------------------------------
 
 entryPOINT
+	jsr	TWILIGHToff
 	jsr	set_language
 	jsr	init
 	jsr	musique
 	jsr	init2
-	jsr	TWILIGHToff
 	
 *-----------------------
 * MAIN

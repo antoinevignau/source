@@ -674,7 +674,7 @@ init_texte
 	lda	index	; charge la référence
 	jsr	load_reference
 
-	lda	#4
+	lda	#2
 	jsr	nowWAIT
 	
 	lda	index
@@ -1283,15 +1283,15 @@ ensoniq_beat
 	lda	#$ff
 	sta	sounddata
 
-	tya		; address pointer
+	tya		; address pointer (at $4000)
 	ora	#$80
 	sta	soundadrl
-	lda	#0
+	lda	#$40
 	sta	sounddata
 	tya
 	ora	#$81
 	sta	soundadrl
-	lda	#0
+	lda	#$40
 	sta	sounddata
 
 	tya		; waveform table size (32K)
@@ -1453,7 +1453,15 @@ clavier_sonore
 	_SetForeColor
 	PushWord	#15
 	_SetBackColor
-	
+
+	ldx	#0	; init keyboard
+	lda	#FALSE
+]lp	sta	sndKEY,x
+	inx
+	inx
+	cpx	#10*2
+	bcc	]lp
+
 cl_loop	pha
 	PushWord #%00000000_00001010
 	PushLong #taskREC
@@ -1490,7 +1498,7 @@ cl_1	cmp	#'1'
 	sbc	#'1'
 	cmp	j	; dans la limite du nombre de sons
 	bcs	cl_loop
-	
+
 	asl		; affiche les chaînes
 	tax
 	phx
@@ -1506,6 +1514,12 @@ cl_1	cmp	#'1'
 	sta	waveSTART
 	lda	ptrSND1+2,y
 	sta	waveSTART+2
+
+	lda	sndKEY,x	; did we press the key?
+	cmp	#TRUE
+	beq	cl_2
+	lda	#TRUE
+	sta	sndKEY,x
 	
 	lda	tblSTR1,x
 	ldy	#22
@@ -1517,7 +1531,10 @@ cl_1	cmp	#'1'
 	jsr	t
 
 	brl	cl_loop	; LOGO
-	
+
+cl_2	plx
+	brl	cl_loop
+
 	PushWord #%0000_0000_1000_0000	; play the sound
 	_FFStopSound
 
@@ -1685,11 +1702,22 @@ sndINTERRUPT
 	lda	sounddata
 	and	#%0011_1110
 	lsr
-	cmp	#1	; oscillo 1
+	cmp	#1	; oscillo 1 (lié à 0)
+	beq	sndINTERRUPT1
+	cmp	#5	; oscillo 5 (lié à 4)
+	beq	sndINTERRUPT2
 	bne	sndINTERRUPT99
 
-	jsr	ensoniq_beat
-
+sndINTERRUPT1
+	lda	#$a0	; oscillos 0 & 1
+	sta	soundadrl
+	lda	#%0000_0000
+	sta	sounddata
+	lda	#$a1
+	sta	soundadrl
+	lda	#%0001_1000	; with interrupt
+	sta	sounddata
+	
 sndINTERRUPT99
 	sep	#$30
 	pld
@@ -1702,30 +1730,26 @@ sndINTERRUPT99
 	mx	%10
 
 sndINTERRUPT2
-	sep	#$20
-
 	ldal	$e100ca
 	and	#%0000_1111
 	ora	#%0110_0000
-	sta	$3c
+	sta	soundctl
 
-	stz	$3e
-	lda	#$3e
+	stz	soundadrl
+	lda	soundadrl
 	ora	fgPAGE
 	eor	#1
-	sta	$3f
+	sta	soundadrh
 
 	ldy	zikMUSIC
 	lda	zikMUSIC+2
 	pha
 	plb
 	
-*	jsr	sndINTERRUPT10
-
 ]move	=	$00
 	lup	256
 	lda	]move,y
-	sta	$3d
+	sta	sounddata
 ]move	=	]move+1
 	--^
 
@@ -1738,40 +1762,40 @@ sndINTERRUPT2
 	dec	zikPAGE
 	bne	sndINTERRUPT3
 
-	lda	whichSND
-	beq	sndINTERRUPT21
-
-	sep	#$20
-
-	ldal	$e100ca
-	and	#$0f
-	sta	$3c
-
-	lda	#$a4
-	sta	$3e
-	lda	#%0000_0011
-	sta	$3d
-	inc	$3e
-	lda	#%0001_0011
-	sta	$3d
-	bra	sndINTERRUPT5
-
-	mx	%00
+*	lda	whichSND
+*	beq	sndINTERRUPT21
+*
+*	sep	#$20
+*
+*	ldal	$e100ca
+*	and	#$0f
+*	sta	soundctl
+*
+*	lda	#$a4
+*	sta	soundadrl
+*	lda	#%0000_0011
+*	sta	sounddata
+*	inc	soundadrh
+*	lda	#%0001_0011
+*	sta	sounddata
+*	bra	sndINTERRUPT5
+*
+*	mx	%00
 
 sndINTERRUPT21
-	lda	#$373
+	lda	waveSIZE
 	sta	zikPAGE
-	lda	ptrMUSIC
+	lda	waveSTART
 	sta	zikMUSIC
-	lda	ptrMUSIC+2
+	lda	waveSTART+2
 	sta	zikMUSIC+2
 
 sndINTERRUPT3
 	sep	#$20
 
 	ldal	$e100ca
-	and	#$0f
-	sta	$3c
+	and	#%0000_1111
+	sta	soundctl
 
 	ldy	#$04
 
@@ -1780,29 +1804,34 @@ sndINTERRUPT3
 
 	tya
 	ora	#$a0
-	sta	$3e
+	sta	soundadrl
 	lda	#%0000_1110
-	sta	$3d
-	inc	$3e
+	sta	sounddata
+	inc	soundadrl
 	lda	#%0001_1111
-	sta	$3d
+	sta	sounddata
 	bra	sndINTERRUPT5
 
 sndINTERRUPT4
 	tya
 	ora	#$a0
-	sta	$3e
+	sta	soundadrl
 	lda	#%0000_1111
-	sta	$3d
-	inc	$3e
+	sta	sounddata
+	inc	soundadrl
 	lda	#%0001_1110
-	sta	$3d
+	sta	sounddata
 
 sndINTERRUPT5
 	lda	fgPAGE
 	eor	#1
 	sta	fgPAGE
-	rts
+	
+	sep	#$30
+	pld
+	plb
+	clc
+	rtl
 
 	mx	%00
 

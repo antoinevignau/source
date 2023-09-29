@@ -456,7 +456,7 @@ tblSTR1	ds	10*2	; pointeur sur la première phrase
 tblSTR2	ds	10*2	; pointeur sur la seconde phrase
 tblSIZE	ds	10*2	; taille de chaque son
 tblFREQ	ds	10*2	; fréquence de chaque son
-sndKEY	ds	10	; FALSE: not pressed, TRUE: key pressed
+sndKEY	ds	10*2	; FALSE: not pressed, TRUE: key pressed
 
 fgSND	ds	2	; 0 means no sound
 zikPLAY	ds	2

@@ -1468,6 +1468,11 @@ try_again        JSR   device_call
                  SEC
 L0C92            RTS
 
+* Boot sector
+* +$0000 - BS_jmpBoot - EB or E9
+* +$000B - BPB_BytsPerSec - $0200
+* +$01FE - BP_Signature - $AA55
+
 id_no_error      LDA   [$04]
                  AND   #$00FF
                  CMP   #$00EB
@@ -2615,6 +2620,15 @@ one_entry_time   	DW	$0000	; +22
 one_entry_date   	DW	$0000	; +24
 one_entry_start_cluster	DW	$0000	; +26
 one_entry_file_size	ADRL	$00000000	: +28
+
+rfork_entry		=	*
+rfork_entry_name	DS	11	; +00
+rfork_entry_attributes	DB	$00	; +11
+rfork_entry_reserved	DS	10	; +12
+rfork_entry_time   	DW	$0000	; +22
+rfork_entry_date   	DW	$0000	; +24
+rfork_entry_start_cluster DW	$0000	; +26
+rfork_entry_file_size	ADRL	$00000000	: +28
 
 rfork_entry      DB    $00
 one_entry+last_mod_index	; ...the FST writes in the resource fork entry

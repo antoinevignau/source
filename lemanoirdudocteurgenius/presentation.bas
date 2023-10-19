@@ -1,0 +1,143 @@
+2 REM LE MANOIR DU DOCTEUR GENIUS 
+3 REM COPYRIGHT LORICIELS 83 L.BENES
+4 REM VERSION VG5000 FRED_72 2021
+5 REM VERSION APPLE II BRUTAL DELUXE 2023
+6 REM
+10 REM CLEAR 300,-16385
+12 D$=CHR$(4)
+20 PRINT "DISKLOAD CODE":REM CALL-16384
+25 REM POKE&"47FD",0
+26 HOME
+30 VTAB 3: HTAB 10: PRINT "LORICIELS, FRED_72 &"
+31 VTAB 4: HTAB 9: PRINT "BRUTAL DELUXE SOFTWARE"
+32 VTAB 5: HTAB 5: PRINT "SONT FIERS DE VOUS PRESENTER :"
+40 VTAB 21: PRINT "Programme original de L.Benes (1983)"
+45 VTAB 22: PRINT "Adaptation VG5000 par Fred_72 (2021)"
+46 VTAB 23: PRINT "et Apple II par Brutal Deluxe (2023)"
+50 FOR I = 1 TO 6000 : NEXT I
+55 REM SETEG 92,"3E7F7F7F7F7F7F7F3E00"
+60 REM SETEG 32,"00000000000000000000"
+65 REM & INIT0,0: & EG 3,0,0: PRINT
+66 HOME
+100 HTAB 2: PRINT "\   \\\   \   \ \\\ \  \ \\\ \ \\\"
+105 HTAB 2: PRINT "\   \     \\ \\ \ \ \\ \ \ \ \ \ \"
+110 HTAB 2: PRINT "\   \\\   \ \ \ \\\ \\\\ \ \ \ \\\"
+115 HTAB 2: PRINT "\   \     \   \ \ \ \ \\ \ \ \ \\"
+120 HTAB 2: PRINT "\\\ \\\   \   \ \ \ \  \ \\\ \ \ \"
+130 HTAB 5: VTAB 7: PRINT "\\  \ \     \\": HTAB 5: PRINT "\ \ \ \     \ \ \": HTAB 5: PRINT "\ \ \ \"
+135 HTAB 17: VTAB 9: PRINT "\ \ \\": HTAB 5: PRINT "\ \ \ \     \ \ \ \": HTAB 5: PRINT "\\\ \\\"
+140 HTAB 17: VTAB 11: PRINT "\\\ \": HTAB 2: VTAB 15: PRINT "\\\\  \\\\  \\  \  \  \  \  \\\\"
+145 HTAB 2: VTAB 16: PRINT "\  \  \     \\  \  \  \  \  \": HTAB 2: PRINT "\     \     \\\ \  \  \"
+150 HTAB 27: VTAB 17: PRINT "\  \": HTAB 2: PRINT "\     \\\   \ \ \  \  \  \  \\\\"
+155 HTAB 2: VTAB 19: PRINT "\ \\  \     \ \\\  \  \  \     \": HTAB 2: PRINT "\  \  \     \  \\"
+160 HTAB 21: VTAB 20: PRINT "\  \  \     \": HTAB 2: PRINT "\\\\  \\\\  \  \\  \  \\\\  \\\\ \ \"
+170 GOSUB 3000
+180 GOSUB 1000
+200 GOSUB 800
+230 PRINT: PRINT: INPUT"La liste des instructions (O/N) ";V$
+240 IF V$ = "O" OR V$ = "o" THEN 500
+245 IF V$ = "N" OR V$ = "n" THEN 300 
+255 GOTO 230   
+
+300 VTAB 23: PRINT SPC(8)"Chargement en cours..."
+304 REM ACTIVER FOUDRE (1 pour descativer)
+305 POKE 255,0: REM & W,50
+310 PRINT D$"RUN JEU"
+ 
+500 REM & INIT 0,0:& TX3,0,0
+501 HOME
+510 PRINT: PRINT "Vous voici arrive dans le manoir du"
+511 PRINT "Dr Genius..."
+515 PRINT: PRINT "Pour converser avec l'ordinateur, il"
+516 PRINT "faut rentrer les ordres en 1 ou 2"
+520 PRINT: PRINT "mots tels que :": PRINT: PRINT "     NORD"
+525 PRINT: PRINT "     PRENDS PILULE"
+530 PRINT: PRINT "ou pour commencer : ENTRE"
+540 REM & W,400
+545 GOSUB 800
+550 PRINT: PRINTSPC(8)"Liste du vocabulaire"
+555 PRINT: PRINT
+560 PRINT " ACTIONNE     ENTRE       PAPIER"
+565 PRINT " ALLUME       ESCALIER    PASSE"
+570 PRINT " APPUIE       EST (E)     PETROLE"
+575 PRINT " ATTENDS      ETEINS      PISTOLET"
+580 PRINT " AVANCE       FERME       PLACARD"
+585 PRINT " BLEU         GRIMPE      POIGNARDE"
+590 PRINT " BRIQUET      INVENTAIRE  PORTE"
+595 PRINT " CISEAU       JETTE       POSE"
+600 PRINT " CLEF         LAMPE       POT"
+605 PRINT " CODE         LANCE       PRENDS"
+610 PRINT " COFFRE       LIS         RAMASSE"
+615 PRINT " COMBINAISON  LISTE       REGARDE"
+620 PRINT " COUTEAU      LIT         REMPLIS"
+625 PRINT " DEPANNE      LIVRE       RENIFLE"
+630 PRINT " DESCENDS     MONSTRE     RENTRE"
+635 PRINT " EAU          MONTE       REPARE"
+640 PRINT " ENFILE       NORD (N)    RETOURNE"
+645 PRINT " ENFONCE      OUEST (O)   RIEN"
+650 PRINT " ENLEVE       OUVRE       ROBINET"
+660 GOSUB 800
+670 PRINT: PRINTSPC(8)"Liste du vocabulaire"
+675 PRINT: PRINT
+680 PRINT " ROUGE       TELEPORTEUR   TOURNE"
+685 PRINT " SENS        TITRE         VERT"
+690 PRINT " SUD (S)     TORCHE        VIDE"
+700 GOSUB 800
+710 PRINT: PRINT "  Un dernier conseil:"
+715 REM & W,150
+720 PRINT "Il peut parfois y avoir une porte
+725 PRINT "derriere vous."
+730 REM & W,200
+735 PRINT: PRINT: PRINT: PRINT "Bonne chance..."
+740 REM & W,200
+750 GOTO300
+800 WAIT -16384,128:POKE -16368,0
+830 RETURN
+
+1000 HOME: PRINT: PRINT: PRINT "ATTENTION ................."
+1005 PRINT: PRINT "L'utilisation de ce programme est"
+1010 PRINT: PRINT "deconseillee aux personnes sensibles"
+1020 PRINT: PRINT "aux enfants en bas age, ainsi qu'a"
+1030 PRINT: PRINT "toute personne susceptible d'avoir"
+1040 PRINT: PRINT "des malaises cardiaques."
+1050 PRINT: PRINT "Nous ne pourrions etre tenus responsa-"
+1060 PRINT: PRINT "bles, des troubles physiques ou mentaux"
+1070 PRINT: PRINT "provoques par votre echec dans"
+1080 PRINT: PRINT "le Manoir du Dr GENIUS ............. "
+1099 REM & W,400
+1100 RETURN
+
+3000 REM      BADINERIE
+3005 REM RESTORE 3030
+3010 FOR N=1 TO 97
+3015 READ A1,A2,A3
+3020 REM & M,1,A1,A2,10
+3021 REM & P,1,0,0,100
+3023 REM & W,A3
+3025 REM & P,0,0,0,0:
+3026 NEXT N
+3030 DATA 4,12,20,5,3,10,4,12,10,4,7,20
+3035 DATA 4,12,10,4,7,10,4,3,20,4,7,10
+3040 DATA 4,3,10,3,12,40,3,7,10,3,12,10
+3045 DATA 4,3,10,3,12,10,4,2,10,3,12,10
+3050 DATA 4,2,10,3,12,10,3,11,10,4,2,10
+3055 DATA 4,5,10,4,2,10,4,3,20,3,12,20
+3060 DATA 4,12,20,5,3,10,4,12,10,4,7,20
+3065 DATA 4,12,10,4,7,10,4,3,20,4,7,10
+3070 DATA 4,3,10,3,12,40,4,3,20,4,3,20
+3075 DATA 4,3,20,4,3,20,4,12,20,4,3,20
+3080 DATA 4,3,7,4,5,7,4,3,7
+3085 DATA 4,2,20,4,7,20,4,7,20,4,7,20
+3090 DATA 4,7,20,5,3,20,4,7,20,4,7,7
+3100 DATA 4,8,7,4,7,7,4,6,20,4,2,10
+3105 DATA 4,7,10,4,10,10,4,7,10,4,9,10
+3115 DATA 4,7,10,4,6,10,4,9,10,4,12,10
+3120 DATA 4,9,10,4,10,10,4,9,10,4,10,10
+3125 DATA 4,9,10,4,7,10,4,10,10,4,7,10
+3130 DATA 4,6,10,4,7,10,4,12,10,4,7,10
+3145 DATA 4,6,10,4,7,10,5,2,10,4,7,10
+3150 DATA 4,6,10,4,7,10,5,3,10,4,7,10
+3155 DATA 4,6,10,4,7,10,5,3,10,5,2,10
+3160 DATA 4,12,10,5,2,10,4,10,10,4,9,10
+3165 DATA 4,7,10,4,10,10,4,9,7,4,10,7,4,9,7,4,7,20
+3170 RETURN

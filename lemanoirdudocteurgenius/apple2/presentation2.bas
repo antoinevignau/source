@@ -29,9 +29,9 @@
 25 HTAB  3: VTAB 19: PRINT "@  @  @     @  @@  @  @  @     @"
 26 HTAB  3: VTAB 20: PRINT "@@@@  @@@@  @  @@  @  @@@@  @@@@ @ @"
 
-30 HTAB  6: VTAB 22: PRINT "     VERSION APPLE II PAR     ": & W 1000
-31 HTAB  6: VTAB 22: PRINT "    BRUTAL DELUXE SOFTWARE    ": & W 1000
-32 HTAB  6: VTAB 22: PRINT "        MERCI FRED_72         ": & W 1000
+30 HTAB  6: VTAB 22: PRINT "     VERSION APPLE II PAR     ": & W 300
+31 HTAB  6: VTAB 22: PRINT "    BRUTAL DELUXE SOFTWARE    ": & W 300
+32 HTAB  6: VTAB 22: PRINT "        MERCI FRED_72         ": & W 300
 33 HTAB  6: VTAB 22: PRINT "(C) 1983, L. BENES & LORICIELS"
 34 GOSUB 31000: GOSUB 51000
 
@@ -52,7 +52,7 @@
 57 PRINT: PRINT: PRINT: PRINT: PRINT "        pressez une touche": GET X$
 
 58 HOME: PRINT: PRINT "  Un dernier conseil:";: & W 200: PRINT "Il peut parfois": PRINT
-59 PRINT "y avoir une porte derriere vous.": & W 1000
+59 PRINT "y avoir une porte derriere vous.": & W 200
 
 60 HOME: HTAB 12: VTAB 12: FLASH: PRINT "VEUILLEZ PATIENTER": NORMAL
 61 POKE 16384,0: POKE 103,1: POKE 104,64: REM $4001

@@ -132,9 +132,9 @@
   127 |  1 ampersand.s    127 | Data        | 11 |         |    2 | 00/1870 : 04 1A       |              da    doP-1          
   128 |  1 ampersand.s    128 | Data        | 11 |         |    2 | 00/1872 : 13 1A       |              da    doH-1          
   129 |  1 ampersand.s    129 | Data        | 11 |         |    2 | 00/1874 : 2D 1A       |              da    doW-1          
-  130 |  1 ampersand.s    130 | Data        | 11 |         |    2 | 00/1876 : 3F 1A       |              da    doE-1          
-  131 |  1 ampersand.s    131 | Data        | 11 |         |    2 | 00/1878 : 43 1A       |              da    doR-1          
-  132 |  1 ampersand.s    132 | Data        | 11 |         |    2 | 00/187A : 5C 1A       |              da    doG-1          
+  130 |  1 ampersand.s    130 | Data        | 11 |         |    2 | 00/1876 : 46 1A       |              da    doE-1          
+  131 |  1 ampersand.s    131 | Data        | 11 |         |    2 | 00/1878 : 4A 1A       |              da    doR-1          
+  132 |  1 ampersand.s    132 | Data        | 11 |         |    2 | 00/187A : 63 1A       |              da    doG-1          
   133 |  1 ampersand.s    133 | Empty       | 11 |         |    0 | 00/187C               |                                   
   134 |  1 ampersand.s    134 | Comment     | 11 |         |    0 | 00/187C               | *----------------------------------- Data
   135 |  1 ampersand.s    135 | Empty       | 11 |         |    0 | 00/187C               |                                   
@@ -357,60 +357,65 @@
   328 |  1 ampersand.s    328 | Code        | 11 |         |    3 | 00/1A31 : 20 67 DD    |              jsr   {$dd67}        ; eval expression
   329 |  1 ampersand.s    329 | Code        | 11 |         |    3 | 00/1A34 : 20 52 E7    |              jsr   {$e752}        ; convert to int
   330 |  1 ampersand.s    330 | Empty       | 11 |         |    0 | 00/1A37               |                                   
-  331 |  1 ampersand.s    331 | Code        | 11 |         |    2 | 00/1A37 : 46 51       |              lsr   {$50}+1        
-  332 |  1 ampersand.s    332 | Code        | 11 |         |    2 | 00/1A39 : 66 50       |              ror   {$50}          
-  333 |  1 ampersand.s    333 | Code        | 11 |         |    2 | 00/1A3B : A5 50       |              lda   {$50}          
-  334 |  1 ampersand.s    334 | Code        | 11 |         |    3 | 00/1A3D : 4C A8 FC    |              jmp   {$fca8}        
-  335 |  1 ampersand.s    335 | Empty       | 11 |         |    0 | 00/1A40               |                                   
-  336 |  1 ampersand.s    336 | Comment     | 11 |         |    0 | 00/1A40               | *----------------------------------- EXPLODE
-  337 |  1 ampersand.s    337 | Empty       | 11 |         |    0 | 00/1A40               |                                   
-  338 |  1 ampersand.s    338 | Empty       | 11 |         |    0 | 00/1A40               | doE                               
-  339 |  1 ampersand.s    339 | Code        | 11 |         |    3 | 00/1A40 : 20 B1 00    |              jsr   {$b1}          
-  340 |  1 ampersand.s    340 | Code        | 11 |         |    1 | 00/1A43 : 60          |              rts                  
-  341 |  1 ampersand.s    341 | Empty       | 11 |         |    0 | 00/1A44               |                                   
-  342 |  1 ampersand.s    342 | Comment     | 11 |         |    0 | 00/1A44               | *----------------------------------- RESTORE address
-  343 |  1 ampersand.s    343 | Empty       | 11 |         |    0 | 00/1A44               |                                   
-  344 |  1 ampersand.s    344 | Empty       | 11 |         |    0 | 00/1A44               | doR                               
-  345 |  1 ampersand.s    345 | Code        | 11 |         |    3 | 00/1A44 : 20 B1 00    |              jsr   {$b1}          ; get next token
-  346 |  1 ampersand.s    346 | Code        | 11 |         |    3 | 00/1A47 : 20 67 DD    |              jsr   {$dd67}        ; eval expression
-  347 |  1 ampersand.s    347 | Code        | 11 |         |    3 | 00/1A4A : 20 52 E7    |              jsr   {$e752}        ; convert to int
-  348 |  1 ampersand.s    348 | Code        | 11 |         |    3 | 00/1A4D : 20 1A D6    |              jsr   {$d61a}        ; find chosen line no.
-  349 |  1 ampersand.s    349 | Empty       | 11 |         |    0 | 00/1A50               |                                   
-  350 |  1 ampersand.s    350 | Code        | 11 |         |    2 | 00/1A50 : A4 9C       |              ldy   {$9b}+1        ; point DATPTR at byte before it
-  351 |  1 ampersand.s    351 | Code        | 11 |         |    2 | 00/1A52 : A6 9B       |              ldx   {$9b}          
-  352 |  1 ampersand.s    352 | Code        | 11 |         |    2 | 00/1A54 : D0 01       |              bne   dx             
-  353 |  1 ampersand.s    353 | Code        | 11 |         |    1 | 00/1A56 : 88          |              dey                  
-  354 |  1 ampersand.s    354 | Code        | 11 |         |    1 | 00/1A57 : CA          | dx           dex                  
-  355 |  1 ampersand.s    355 | Code        | 11 |         |    2 | 00/1A58 : 84 7E       |              sty   {$7d}+1        
-  356 |  1 ampersand.s    356 | Code        | 11 |         |    2 | 00/1A5A : 86 7D       |              stx   {$7d}          
-  357 |  1 ampersand.s    357 | Code        | 11 |         |    1 | 00/1A5C : 60          |              rts                  
-  358 |  1 ampersand.s    358 | Empty       | 11 |         |    0 | 00/1A5D               |                                   
-  359 |  1 ampersand.s    359 | Comment     | 11 |         |    0 | 00/1A5D               | *----------------------------------- GOSUB address
-  360 |  1 ampersand.s    360 | Empty       | 11 |         |    0 | 00/1A5D               |                                   
-  361 |  1 ampersand.s    361 | Empty       | 11 |         |    0 | 00/1A5D               | doG                               
-  362 |  1 ampersand.s    362 | Code        | 11 |         |    2 | 00/1A5D : A9 03       |              lda   #3             ; make sure there's enough stack
-  363 |  1 ampersand.s    363 | Code        | 11 |         |    3 | 00/1A5F : 20 D6 D3    |              jsr   {$d3d6}        
-  364 |  1 ampersand.s    364 | Empty       | 11 |         |    0 | 00/1A62               |                                   
-  365 |  1 ampersand.s    365 | Code        | 11 |         |    2 | 00/1A62 : A5 B9       |              lda   {$b8}+1        ; push marker for RETURN
-  366 |  1 ampersand.s    366 | Code        | 11 |         |    1 | 00/1A64 : 48          |              pha                  
-  367 |  1 ampersand.s    367 | Code        | 11 |         |    2 | 00/1A65 : A5 B8       |              lda   {$b8}          
-  368 |  1 ampersand.s    368 | Code        | 11 |         |    1 | 00/1A67 : 48          |              pha                  
-  369 |  1 ampersand.s    369 | Code        | 11 |         |    2 | 00/1A68 : A5 76       |              lda   {$75}+1        
-  370 |  1 ampersand.s    370 | Code        | 11 |         |    1 | 00/1A6A : 48          |              pha                  
-  371 |  1 ampersand.s    371 | Code        | 11 |         |    2 | 00/1A6B : A5 75       |              lda   {$75}          
-  372 |  1 ampersand.s    372 | Code        | 11 |         |    1 | 00/1A6D : 48          |              pha                  
-  373 |  1 ampersand.s    373 | Code        | 11 |         |    2 | 00/1A6E : A9 B0       |              lda   #{$b0}         
-  374 |  1 ampersand.s    374 | Code        | 11 |         |    1 | 00/1A70 : 48          |              pha                  
-  375 |  1 ampersand.s    375 | Empty       | 11 |         |    0 | 00/1A71               |                                   
-  376 |  1 ampersand.s    376 | Code        | 11 |         |    3 | 00/1A71 : 20 B1 00    |              jsr   {$b1}          ; get next token
-  377 |  1 ampersand.s    377 | Code        | 11 |         |    3 | 00/1A74 : 20 67 DD    |              jsr   {$dd67}        ; parse numeric expr
-  378 |  1 ampersand.s    378 | Code        | 11 |         |    3 | 00/1A77 : 20 52 E7    |              jsr   {$e752}        ; convert it to int
-  379 |  1 ampersand.s    379 | Code        | 11 |         |    3 | 00/1A7A : 20 41 D9    |              jsr   {$d93e}+3      ; point at chosen statement
-  380 |  1 ampersand.s    380 | Code        | 11 |         |    3 | 00/1A7D : 4C D2 D7    |              jmp   {$d7d2}        ; start running it
-  381 |  1 ampersand.s    381 | Empty       | 11 |         |    0 | 00/1A80               |                                   
-  382 |  1 ampersand.s    382 | Comment     | 11 |         |    0 | 00/1A80               | *--- End of code
-  383 |  1 ampersand.s    383 | Empty       | 11 |         |    0 | 00/1A80               |                                   
-  384 |  1 ampersand.s    384 | Data        | 11 |         |   42 | 00/1A80 : A8 E3 A9 A0 |              asc   "(c) 2023, Antoine Vignau & Olivier Zardini"
+  331 |  1 ampersand.s    331 | Code        | 11 |         |    2 | 00/1A37 : A6 51       |              ldx   {$50}+1        
+  332 |  1 ampersand.s    332 | Code        | 11 |         |    2 | 00/1A39 : A4 50       | doW1         ldy   {$50}          
+  333 |  1 ampersand.s    333 | Code        | 11 |         |    2 | 00/1A3B : A9 3C       | ozunid_2     lda   #60            ; 1/100ème de seconde
+  334 |  1 ampersand.s    334 | Code        | 11 |         |    3 | 00/1A3D : 20 A8 FC    |              jsr   {$fca8}        
+  335 |  1 ampersand.s    335 | Code        | 11 |         |    1 | 00/1A40 : 88          |              dey                  
+  336 |  1 ampersand.s    336 | Code        | 11 |         |    2 | 00/1A41 : D0 F8       |              bne   ozunid_2       
+  337 |  1 ampersand.s    337 | Code        | 11 |         |    1 | 00/1A43 : CA          |              dex                  
+  338 |  1 ampersand.s    338 | Code        | 11 |         |    2 | 00/1A44 : 10 F3       |              bpl   doW1           
+  339 |  1 ampersand.s    339 | Code        | 11 |         |    1 | 00/1A46 : 60          |              rts                  
+  340 |  1 ampersand.s    340 | Empty       | 11 |         |    0 | 00/1A47               |                                   
+  341 |  1 ampersand.s    341 | Comment     | 11 |         |    0 | 00/1A47               | *----------------------------------- EXPLODE
+  342 |  1 ampersand.s    342 | Empty       | 11 |         |    0 | 00/1A47               |                                   
+  343 |  1 ampersand.s    343 | Empty       | 11 |         |    0 | 00/1A47               | doE                               
+  344 |  1 ampersand.s    344 | Code        | 11 |         |    3 | 00/1A47 : 20 B1 00    |              jsr   {$b1}          
+  345 |  1 ampersand.s    345 | Code        | 11 |         |    1 | 00/1A4A : 60          |              rts                  
+  346 |  1 ampersand.s    346 | Empty       | 11 |         |    0 | 00/1A4B               |                                   
+  347 |  1 ampersand.s    347 | Comment     | 11 |         |    0 | 00/1A4B               | *----------------------------------- RESTORE address
+  348 |  1 ampersand.s    348 | Empty       | 11 |         |    0 | 00/1A4B               |                                   
+  349 |  1 ampersand.s    349 | Empty       | 11 |         |    0 | 00/1A4B               | doR                               
+  350 |  1 ampersand.s    350 | Code        | 11 |         |    3 | 00/1A4B : 20 B1 00    |              jsr   {$b1}          ; get next token
+  351 |  1 ampersand.s    351 | Code        | 11 |         |    3 | 00/1A4E : 20 67 DD    |              jsr   {$dd67}        ; eval expression
+  352 |  1 ampersand.s    352 | Code        | 11 |         |    3 | 00/1A51 : 20 52 E7    |              jsr   {$e752}        ; convert to int
+  353 |  1 ampersand.s    353 | Code        | 11 |         |    3 | 00/1A54 : 20 1A D6    |              jsr   {$d61a}        ; find chosen line no.
+  354 |  1 ampersand.s    354 | Empty       | 11 |         |    0 | 00/1A57               |                                   
+  355 |  1 ampersand.s    355 | Code        | 11 |         |    2 | 00/1A57 : A4 9C       |              ldy   {$9b}+1        ; point DATPTR at byte before it
+  356 |  1 ampersand.s    356 | Code        | 11 |         |    2 | 00/1A59 : A6 9B       |              ldx   {$9b}          
+  357 |  1 ampersand.s    357 | Code        | 11 |         |    2 | 00/1A5B : D0 01       |              bne   dx             
+  358 |  1 ampersand.s    358 | Code        | 11 |         |    1 | 00/1A5D : 88          |              dey                  
+  359 |  1 ampersand.s    359 | Code        | 11 |         |    1 | 00/1A5E : CA          | dx           dex                  
+  360 |  1 ampersand.s    360 | Code        | 11 |         |    2 | 00/1A5F : 84 7E       |              sty   {$7d}+1        
+  361 |  1 ampersand.s    361 | Code        | 11 |         |    2 | 00/1A61 : 86 7D       |              stx   {$7d}          
+  362 |  1 ampersand.s    362 | Code        | 11 |         |    1 | 00/1A63 : 60          |              rts                  
+  363 |  1 ampersand.s    363 | Empty       | 11 |         |    0 | 00/1A64               |                                   
+  364 |  1 ampersand.s    364 | Comment     | 11 |         |    0 | 00/1A64               | *----------------------------------- GOSUB address
+  365 |  1 ampersand.s    365 | Empty       | 11 |         |    0 | 00/1A64               |                                   
+  366 |  1 ampersand.s    366 | Empty       | 11 |         |    0 | 00/1A64               | doG                               
+  367 |  1 ampersand.s    367 | Code        | 11 |         |    2 | 00/1A64 : A9 03       |              lda   #3             ; make sure there's enough stack
+  368 |  1 ampersand.s    368 | Code        | 11 |         |    3 | 00/1A66 : 20 D6 D3    |              jsr   {$d3d6}        
+  369 |  1 ampersand.s    369 | Empty       | 11 |         |    0 | 00/1A69               |                                   
+  370 |  1 ampersand.s    370 | Code        | 11 |         |    2 | 00/1A69 : A5 B9       |              lda   {$b8}+1        ; push marker for RETURN
+  371 |  1 ampersand.s    371 | Code        | 11 |         |    1 | 00/1A6B : 48          |              pha                  
+  372 |  1 ampersand.s    372 | Code        | 11 |         |    2 | 00/1A6C : A5 B8       |              lda   {$b8}          
+  373 |  1 ampersand.s    373 | Code        | 11 |         |    1 | 00/1A6E : 48          |              pha                  
+  374 |  1 ampersand.s    374 | Code        | 11 |         |    2 | 00/1A6F : A5 76       |              lda   {$75}+1        
+  375 |  1 ampersand.s    375 | Code        | 11 |         |    1 | 00/1A71 : 48          |              pha                  
+  376 |  1 ampersand.s    376 | Code        | 11 |         |    2 | 00/1A72 : A5 75       |              lda   {$75}          
+  377 |  1 ampersand.s    377 | Code        | 11 |         |    1 | 00/1A74 : 48          |              pha                  
+  378 |  1 ampersand.s    378 | Code        | 11 |         |    2 | 00/1A75 : A9 B0       |              lda   #{$b0}         
+  379 |  1 ampersand.s    379 | Code        | 11 |         |    1 | 00/1A77 : 48          |              pha                  
+  380 |  1 ampersand.s    380 | Empty       | 11 |         |    0 | 00/1A78               |                                   
+  381 |  1 ampersand.s    381 | Code        | 11 |         |    3 | 00/1A78 : 20 B1 00    |              jsr   {$b1}          ; get next token
+  382 |  1 ampersand.s    382 | Code        | 11 |         |    3 | 00/1A7B : 20 67 DD    |              jsr   {$dd67}        ; parse numeric expr
+  383 |  1 ampersand.s    383 | Code        | 11 |         |    3 | 00/1A7E : 20 52 E7    |              jsr   {$e752}        ; convert it to int
+  384 |  1 ampersand.s    384 | Code        | 11 |         |    3 | 00/1A81 : 20 41 D9    |              jsr   {$d93e}+3      ; point at chosen statement
+  385 |  1 ampersand.s    385 | Code        | 11 |         |    3 | 00/1A84 : 4C D2 D7    |              jmp   {$d7d2}        ; start running it
+  386 |  1 ampersand.s    386 | Empty       | 11 |         |    0 | 00/1A87               |                                   
+  387 |  1 ampersand.s    387 | Comment     | 11 |         |    0 | 00/1A87               | *--- End of code
+  388 |  1 ampersand.s    388 | Empty       | 11 |         |    0 | 00/1A87               |                                   
+  389 |  1 ampersand.s    389 | Data        | 11 |         |   42 | 00/1A87 : A8 E3 A9 A0 |              asc   "(c) 2023, Antoine Vignau & Olivier Zardini"
       |                       |             |    |         |      |           B2 B0 B2 B3 |
       |                       |             |    |         |      |           AC A0 C1 EE |
       |                       |             |    |         |      |           F4 EF E9 EE |
@@ -421,5 +426,5 @@
       |                       |             |    |         |      |           E5 F2 A0 DA |
       |                       |             |    |         |      |           E1 F2 E4 E9 |
       |                       |             |    |         |      |           EE E9       |
-  385 |  1 ampersand.s    385 | Empty       | 11 |         |    0 | 00/1AAA               |                                   
+  390 |  1 ampersand.s    390 | Empty       | 11 |         |    0 | 00/1AB1               |                                   
 ------+-----------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

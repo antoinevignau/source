@@ -328,10 +328,15 @@ doW
 	jsr	FRMNUM	; eval expression
 	jsr	GETADR	; convert to int
 
-	lsr	LINNUM+1
-	ror	LINNUM
-	lda	LINNUM
-	jmp	WAIT
+	ldx	LINNUM+1
+doW1	ldy	LINNUM
+]lp	lda	#60	; 1/100ème de seconde
+	jsr	WAIT
+	dey
+	bne	]lp
+	dex
+	bpl	doW1
+	rts
 
 *----------------------------------- EXPLODE
 

@@ -29,6 +29,8 @@ Y0	=	$e2	; Y-coord
 HPAG	=	$e6
 AMPERV	=	$3f5
 
+MIXCLR	=	$c052	; clears 4 lines of text
+
 GETSTK	=	$d3d6	; check stack space
 FNDLIN	=	$d61a	; find line in memory
 NEWSTT	=	$d7d2	; execute statements
@@ -319,6 +321,7 @@ doH
 	jsr	HOME
 
 	jsr	HGR
+	sta	MIXCLR
 	rts
 
 *----------------------------------- WAIT x

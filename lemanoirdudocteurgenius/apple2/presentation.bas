@@ -5,7 +5,7 @@
 5 REM PAR BRUTAL DELUXE SOFTWARE : ANTOINE VIGNAU & OLIVIER ZARDINI
 
 6 HOME: TEXT: NORMAL: HTAB 4: VTAB 12: PRINT "LORICIELS EST FIER DE PRESENTER :"
-7 PRINT CHR$(4)"BLOAD AMPERSAND,A$1800": CALL 6144: REM $1800
+7 PRINT CHR$(4);"BLOAD AMPERSAND,A$1800": CALL 6144: REM $1800
 8 HOME
 9 REM ... COPYRIGHT LORICIELS TOUT      DROIT DE REPRODUCTION INTERDIT .....
 
@@ -43,20 +43,20 @@
 45 GOTO 42
 
 50 HOME: PRINT: PRINT "Vous voici arrive dans le manoir du             Dr Genius..."
-51 & W 350: PRINT: PRINT "Pour converser avec l'ordinateur,il   faut rentrer les ordres"
-52 & W 300: PRINT: PRINT "en 1 ou 2 mots tels que:": PRINT: & W 200: PRINT "     NORD"
-53 & W 200: PRINT: PRINT "     PRENDS PILLULE"
-54 & W 200: PRINT: PRINT "ou pour commencer:";: & W 150: PRINT "ENTRE"
-55 & W 300: PRINT: PRINT: PRINT "Si vous voulez faire durer la phrase  decrivant";
-56 PRINT " la salle taper une touche": & W 400
-57 PRINT: PRINT: PRINT: PRINT: PRINT "        pressez une touche": GET X$
+51 & W 350: PRINT: PRINT "Pour converser avec l'ordinateur, il"
+52 & W 300: PRINT "faut rentrer les ordres en 1 ou 2 mots": PRINT "tels que :": PRINT: & W 200: PRINT "     NORD"
+53 & W 200: PRINT: PRINT "     PRENDS PILULE"
+54 & W 200: PRINT: PRINT "ou pour commencer : ";: & W 150: PRINT "ENTRE"
+55 & W 300: PRINT: PRINT: PRINT "Si vous voulez faire durer la phrase"
+56 PRINT "decrivant la salle, tapez une touche": & W 400
+57 PRINT: PRINT: PRINT: PRINT: PRINT "        Pressez une touche": GET X$
 
-58 HOME: PRINT: PRINT "  Un dernier conseil:";: & W 200: PRINT "Il peut parfois": PRINT
-59 PRINT "y avoir une porte derriere vous.": & W 200
+58 HOME: PRINT: PRINT "  Un dernier conseil : ";: & W 200: PRINT "Il peut parfois": PRINT
+59 PRINT "y avoir une porte derriere vous...": & W 200
 
 60 HOME: HTAB 12: VTAB 12: FLASH: PRINT "VEUILLEZ PATIENTER": NORMAL
 61 POKE 16384,0: POKE 103,1: POKE 104,64: REM $4001
-62 PRINT CHR$(4);"RUN JEU"
+62 PRINT CHR$(4);"RUN INITIALISATION"
 
 31000 REM      BADINERIE
 31005 RETURN: REM RESTORE

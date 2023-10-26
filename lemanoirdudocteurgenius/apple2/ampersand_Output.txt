@@ -62,86 +62,88 @@
    59 |  1 ampersand.s     59 | Comment     | 11 |         |    0 | 00/1800               | *  DRAW	D
    60 |  1 ampersand.s     60 | Comment     | 11 |         |    0 | 00/1800               | *  RESTORE  R to a line number
    61 |  1 ampersand.s     61 | Comment     | 11 |         |    0 | 00/1800               | *  GOSUB    G to an expression
-   62 |  1 ampersand.s     62 | Empty       | 11 |         |    0 | 00/1800               |                                   
-   63 |  1 ampersand.s     63 | Comment     | 11 |         |    0 | 00/1800               | *
-   64 |  1 ampersand.s     64 | Comment     | 11 |         |    0 | 00/1800               | * On ne fait pas :
-   65 |  1 ampersand.s     65 | Comment     | 11 |         |    0 | 00/1800               | *  CIRCLE	C
-   66 |  1 ampersand.s     66 | Comment     | 11 |         |    0 | 00/1800               | *  EXPLODE	E
-   67 |  1 ampersand.s     67 | Comment     | 11 |         |    0 | 00/1800               | *
-   68 |  1 ampersand.s     68 | Comment     | 11 |         |    0 | 00/1800               | * On des/installe par CALL 6144
-   69 |  1 ampersand.s     69 | Empty       | 11 |         |    0 | 00/1800               |                                   
-   70 |  1 ampersand.s     70 | Comment     | 11 |         |    0 | 00/1800               | *-----------------------------------
-   71 |  1 ampersand.s     71 | Empty       | 11 |         |    0 | 00/1800               |                                   
-   72 |  1 ampersand.s     72 | Code        | 11 |         |    2 | 00/1800 : A9 00       | myENTRY      lda   #0             
-   73 |  1 ampersand.s     73 | Code        | 11 |         |    2 | 00/1802 : D0 25       |              bne   doUNINSTALL    
-   74 |  1 ampersand.s     74 | Empty       | 11 |         |    0 | 00/1804               |                                   
-   75 |  1 ampersand.s     75 | Code        | 11 |         |    3 | 00/1804 : EE 01 18    |              inc   myENTRY+1      ; on dit qu'on installe
-   76 |  1 ampersand.s     76 | Empty       | 11 |         |    0 | 00/1807               |                                   
-   77 |  1 ampersand.s     77 | Code        | 11 |         |    3 | 00/1807 : AD F5 03    |              lda   {$3f5}         ; on sauve
-   78 |  1 ampersand.s     78 | Code        | 11 |         |    3 | 00/180A : 8D 3F 18    |              sta   myPTR          
-   79 |  1 ampersand.s     79 | Code        | 11 |         |    3 | 00/180D : AD F6 03    |              lda   {$3f5}+1       
-   80 |  1 ampersand.s     80 | Code        | 11 |         |    3 | 00/1810 : 8D 40 18    |              sta   myPTR+1        
-   81 |  1 ampersand.s     81 | Code        | 11 |         |    3 | 00/1813 : AD F7 03    |              lda   {$3f5}+2       
-   82 |  1 ampersand.s     82 | Code        | 11 |         |    3 | 00/1816 : 8D 41 18    |              sta   myPTR+2        
-   83 |  1 ampersand.s     83 | Empty       | 11 |         |    0 | 00/1819               |                                   
-   84 |  1 ampersand.s     84 | Code        | 11 |         |    2 | 00/1819 : A9 4C       |              lda   #$4c           ; on installe le vecteur
-   85 |  1 ampersand.s     85 | Code        | 11 |         |    3 | 00/181B : 8D F5 03    |              sta   {$3f5}         
-   86 |  1 ampersand.s     86 | Code        | 11 |         |    2 | 00/181E : A9 42       |              lda   #<myVECTOR     
-   87 |  1 ampersand.s     87 | Code        | 11 |         |    3 | 00/1820 : 8D F6 03    |              sta   {$3f5}+1       
-   88 |  1 ampersand.s     88 | Code        | 11 |         |    2 | 00/1823 : A9 18       |              lda   #>myVECTOR     
-   89 |  1 ampersand.s     89 | Code        | 11 |         |    3 | 00/1825 : 8D F7 03    |              sta   {$3f5}+2       
-   90 |  1 ampersand.s     90 | Code        | 11 |         |    1 | 00/1828 : 60          |              rts                  
-   91 |  1 ampersand.s     91 | Empty       | 11 |         |    0 | 00/1829               |                                   
-   92 |  1 ampersand.s     92 | Code        | 11 |         |    3 | 00/1829 : CE 01 18    | doUNINSTALL  dec   myENTRY+1      
-   93 |  1 ampersand.s     93 | Empty       | 11 |         |    0 | 00/182C               |                                   
-   94 |  1 ampersand.s     94 | Code        | 11 |         |    3 | 00/182C : AD 3F 18    |              lda   myPTR          
-   95 |  1 ampersand.s     95 | Code        | 11 |         |    3 | 00/182F : 8D F5 03    |              sta   {$3f5}         
-   96 |  1 ampersand.s     96 | Code        | 11 |         |    3 | 00/1832 : AD 40 18    |              lda   myPTR+1        
-   97 |  1 ampersand.s     97 | Code        | 11 |         |    3 | 00/1835 : 8D F6 03    |              sta   {$3f5}+1       
-   98 |  1 ampersand.s     98 | Code        | 11 |         |    3 | 00/1838 : AD 41 18    |              lda   myPTR+2        
-   99 |  1 ampersand.s     99 | Code        | 11 |         |    3 | 00/183B : 8D F7 03    |              sta   {$3f5}+2       
-  100 |  1 ampersand.s    100 | Code        | 11 |         |    1 | 00/183E : 60          |              rts                  
-  101 |  1 ampersand.s    101 | Empty       | 11 |         |    0 | 00/183F               |                                   
-  102 |  1 ampersand.s    102 | Data        | 11 |         |    3 | 00/183F : 00 00 00    | myPTR        ds    3              ; 4C xx yy
-  103 |  1 ampersand.s    103 | Empty       | 11 |         |    0 | 00/1842               |                                   
-  104 |  1 ampersand.s    104 | Comment     | 11 |         |    0 | 00/1842               | *-----------------------------------
-  105 |  1 ampersand.s    105 | Empty       | 11 |         |    0 | 00/1842               |                                   
-  106 |  1 ampersand.s    106 | Code        | 11 |         |    2 | 00/1842 : A2 0A       | myVECTOR     ldx   #myADRS-myCMDS-1
-  107 |  1 ampersand.s    107 | Code        | 11 |         |    3 | 00/1844 : DD 5B 18    | ozunid_1     cmp   myCMDS,x       
-  108 |  1 ampersand.s    108 | Code        | 11 |         |    2 | 00/1847 : F0 06       |              beq   doVECTOR       
-  109 |  1 ampersand.s    109 | Code        | 11 |         |    1 | 00/1849 : CA          |              dex                  
-  110 |  1 ampersand.s    110 | Code        | 11 |         |    2 | 00/184A : 10 F8       |              bpl   ozunid_1       
-  111 |  1 ampersand.s    111 | Code        | 11 |         |    3 | 00/184C : 4C C9 DE    |              jmp   {$dec9}        
-  112 |  1 ampersand.s    112 | Empty       | 11 |         |    0 | 00/184F               |                                   
-  113 |  1 ampersand.s    113 | Code        | 11 |         |    1 | 00/184F : 8A          | doVECTOR     txa                  
-  114 |  1 ampersand.s    114 | Code        | 11 |         |    1 | 00/1850 : 0A          |              asl                  
-  115 |  1 ampersand.s    115 | Code        | 11 |         |    1 | 00/1851 : AA          |              tax                  
-  116 |  1 ampersand.s    116 | Code        | 11 |         |    3 | 00/1852 : BD 67 18    |              lda   myADRS+1,x     
-  117 |  1 ampersand.s    117 | Code        | 11 |         |    1 | 00/1855 : 48          |              pha                  
-  118 |  1 ampersand.s    118 | Code        | 11 |         |    3 | 00/1856 : BD 66 18    |              lda   myADRS,x       
-  119 |  1 ampersand.s    119 | Code        | 11 |         |    1 | 00/1859 : 48          |              pha                  
-  120 |  1 ampersand.s    120 | Code        | 11 |         |    1 | 00/185A : 60          |              rts                  
-  121 |  1 ampersand.s    121 | Empty       | 11 |         |    0 | 00/185B               |                                   
-  122 |  1 ampersand.s    122 | Data        | 11 |         |   11 | 00/185B : 53 4D 44 43 | myCMDS       asc   'SMDCIPHWERG'  
+   62 |  1 ampersand.s     62 | Comment     | 11 |         |    0 | 00/1800               | *  GOTO     T to an expression
+   63 |  1 ampersand.s     63 | Empty       | 11 |         |    0 | 00/1800               |                                   
+   64 |  1 ampersand.s     64 | Comment     | 11 |         |    0 | 00/1800               | *
+   65 |  1 ampersand.s     65 | Comment     | 11 |         |    0 | 00/1800               | * On ne fait pas :
+   66 |  1 ampersand.s     66 | Comment     | 11 |         |    0 | 00/1800               | *  CIRCLE	C
+   67 |  1 ampersand.s     67 | Comment     | 11 |         |    0 | 00/1800               | *  EXPLODE	E
+   68 |  1 ampersand.s     68 | Comment     | 11 |         |    0 | 00/1800               | *
+   69 |  1 ampersand.s     69 | Comment     | 11 |         |    0 | 00/1800               | * On des/installe par CALL 6144
+   70 |  1 ampersand.s     70 | Empty       | 11 |         |    0 | 00/1800               |                                   
+   71 |  1 ampersand.s     71 | Comment     | 11 |         |    0 | 00/1800               | *-----------------------------------
+   72 |  1 ampersand.s     72 | Empty       | 11 |         |    0 | 00/1800               |                                   
+   73 |  1 ampersand.s     73 | Code        | 11 |         |    2 | 00/1800 : A9 00       | myENTRY      lda   #0             
+   74 |  1 ampersand.s     74 | Code        | 11 |         |    2 | 00/1802 : D0 25       |              bne   doUNINSTALL    
+   75 |  1 ampersand.s     75 | Empty       | 11 |         |    0 | 00/1804               |                                   
+   76 |  1 ampersand.s     76 | Code        | 11 |         |    3 | 00/1804 : EE 01 18    |              inc   myENTRY+1      ; on dit qu'on installe
+   77 |  1 ampersand.s     77 | Empty       | 11 |         |    0 | 00/1807               |                                   
+   78 |  1 ampersand.s     78 | Code        | 11 |         |    3 | 00/1807 : AD F5 03    |              lda   {$3f5}         ; on sauve
+   79 |  1 ampersand.s     79 | Code        | 11 |         |    3 | 00/180A : 8D 3F 18    |              sta   myPTR          
+   80 |  1 ampersand.s     80 | Code        | 11 |         |    3 | 00/180D : AD F6 03    |              lda   {$3f5}+1       
+   81 |  1 ampersand.s     81 | Code        | 11 |         |    3 | 00/1810 : 8D 40 18    |              sta   myPTR+1        
+   82 |  1 ampersand.s     82 | Code        | 11 |         |    3 | 00/1813 : AD F7 03    |              lda   {$3f5}+2       
+   83 |  1 ampersand.s     83 | Code        | 11 |         |    3 | 00/1816 : 8D 41 18    |              sta   myPTR+2        
+   84 |  1 ampersand.s     84 | Empty       | 11 |         |    0 | 00/1819               |                                   
+   85 |  1 ampersand.s     85 | Code        | 11 |         |    2 | 00/1819 : A9 4C       |              lda   #$4c           ; on installe le vecteur
+   86 |  1 ampersand.s     86 | Code        | 11 |         |    3 | 00/181B : 8D F5 03    |              sta   {$3f5}         
+   87 |  1 ampersand.s     87 | Code        | 11 |         |    2 | 00/181E : A9 42       |              lda   #<myVECTOR     
+   88 |  1 ampersand.s     88 | Code        | 11 |         |    3 | 00/1820 : 8D F6 03    |              sta   {$3f5}+1       
+   89 |  1 ampersand.s     89 | Code        | 11 |         |    2 | 00/1823 : A9 18       |              lda   #>myVECTOR     
+   90 |  1 ampersand.s     90 | Code        | 11 |         |    3 | 00/1825 : 8D F7 03    |              sta   {$3f5}+2       
+   91 |  1 ampersand.s     91 | Code        | 11 |         |    1 | 00/1828 : 60          |              rts                  
+   92 |  1 ampersand.s     92 | Empty       | 11 |         |    0 | 00/1829               |                                   
+   93 |  1 ampersand.s     93 | Code        | 11 |         |    3 | 00/1829 : CE 01 18    | doUNINSTALL  dec   myENTRY+1      
+   94 |  1 ampersand.s     94 | Empty       | 11 |         |    0 | 00/182C               |                                   
+   95 |  1 ampersand.s     95 | Code        | 11 |         |    3 | 00/182C : AD 3F 18    |              lda   myPTR          
+   96 |  1 ampersand.s     96 | Code        | 11 |         |    3 | 00/182F : 8D F5 03    |              sta   {$3f5}         
+   97 |  1 ampersand.s     97 | Code        | 11 |         |    3 | 00/1832 : AD 40 18    |              lda   myPTR+1        
+   98 |  1 ampersand.s     98 | Code        | 11 |         |    3 | 00/1835 : 8D F6 03    |              sta   {$3f5}+1       
+   99 |  1 ampersand.s     99 | Code        | 11 |         |    3 | 00/1838 : AD 41 18    |              lda   myPTR+2        
+  100 |  1 ampersand.s    100 | Code        | 11 |         |    3 | 00/183B : 8D F7 03    |              sta   {$3f5}+2       
+  101 |  1 ampersand.s    101 | Code        | 11 |         |    1 | 00/183E : 60          |              rts                  
+  102 |  1 ampersand.s    102 | Empty       | 11 |         |    0 | 00/183F               |                                   
+  103 |  1 ampersand.s    103 | Data        | 11 |         |    3 | 00/183F : 00 00 00    | myPTR        ds    3              ; 4C xx yy
+  104 |  1 ampersand.s    104 | Empty       | 11 |         |    0 | 00/1842               |                                   
+  105 |  1 ampersand.s    105 | Comment     | 11 |         |    0 | 00/1842               | *-----------------------------------
+  106 |  1 ampersand.s    106 | Empty       | 11 |         |    0 | 00/1842               |                                   
+  107 |  1 ampersand.s    107 | Code        | 11 |         |    2 | 00/1842 : A2 0B       | myVECTOR     ldx   #myADRS-myCMDS-1
+  108 |  1 ampersand.s    108 | Code        | 11 |         |    3 | 00/1844 : DD 5B 18    | ozunid_1     cmp   myCMDS,x       
+  109 |  1 ampersand.s    109 | Code        | 11 |         |    2 | 00/1847 : F0 06       |              beq   doVECTOR       
+  110 |  1 ampersand.s    110 | Code        | 11 |         |    1 | 00/1849 : CA          |              dex                  
+  111 |  1 ampersand.s    111 | Code        | 11 |         |    2 | 00/184A : 10 F8       |              bpl   ozunid_1       
+  112 |  1 ampersand.s    112 | Code        | 11 |         |    3 | 00/184C : 4C C9 DE    |              jmp   {$dec9}        
+  113 |  1 ampersand.s    113 | Empty       | 11 |         |    0 | 00/184F               |                                   
+  114 |  1 ampersand.s    114 | Code        | 11 |         |    1 | 00/184F : 8A          | doVECTOR     txa                  
+  115 |  1 ampersand.s    115 | Code        | 11 |         |    1 | 00/1850 : 0A          |              asl                  
+  116 |  1 ampersand.s    116 | Code        | 11 |         |    1 | 00/1851 : AA          |              tax                  
+  117 |  1 ampersand.s    117 | Code        | 11 |         |    3 | 00/1852 : BD 68 18    |              lda   myADRS+1,x     
+  118 |  1 ampersand.s    118 | Code        | 11 |         |    1 | 00/1855 : 48          |              pha                  
+  119 |  1 ampersand.s    119 | Code        | 11 |         |    3 | 00/1856 : BD 67 18    |              lda   myADRS,x       
+  120 |  1 ampersand.s    120 | Code        | 11 |         |    1 | 00/1859 : 48          |              pha                  
+  121 |  1 ampersand.s    121 | Code        | 11 |         |    1 | 00/185A : 60          |              rts                  
+  122 |  1 ampersand.s    122 | Empty       | 11 |         |    0 | 00/185B               |                                   
+  123 |  1 ampersand.s    123 | Data        | 11 |         |   12 | 00/185B : 53 4D 44 43 | myCMDS       asc   'SMDCIPHWERGT' 
       |                       |             |    |         |      |           49 50 48 57 |
-      |                       |             |    |         |      |           45 52 47    |
-  123 |  1 ampersand.s    123 | Empty       | 11 |         |    0 | 00/1866               |                                   
-  124 |  1 ampersand.s    124 | Data        | 11 |         |    2 | 00/1866 : ED 18       | myADRS       da    doS-1          
-  125 |  1 ampersand.s    125 | Data        | 11 |         |    2 | 00/1868 : 22 19       |              da    doM-1          
-  126 |  1 ampersand.s    126 | Data        | 11 |         |    2 | 00/186A : 65 19       |              da    doD-1          
-  127 |  1 ampersand.s    127 | Data        | 11 |         |    2 | 00/186C : D8 19       |              da    doC-1          
-  128 |  1 ampersand.s    128 | Data        | 11 |         |    2 | 00/186E : F5 19       |              da    doI-1          
-  129 |  1 ampersand.s    129 | Data        | 11 |         |    2 | 00/1870 : 04 1A       |              da    doP-1          
-  130 |  1 ampersand.s    130 | Data        | 11 |         |    2 | 00/1872 : 13 1A       |              da    doH-1          
-  131 |  1 ampersand.s    131 | Data        | 11 |         |    2 | 00/1874 : 30 1A       |              da    doW-1          
-  132 |  1 ampersand.s    132 | Data        | 11 |         |    2 | 00/1876 : 49 1A       |              da    doE-1          
-  133 |  1 ampersand.s    133 | Data        | 11 |         |    2 | 00/1878 : 4D 1A       |              da    doR-1          
-  134 |  1 ampersand.s    134 | Data        | 11 |         |    2 | 00/187A : 66 1A       |              da    doG-1          
-  135 |  1 ampersand.s    135 | Empty       | 11 |         |    0 | 00/187C               |                                   
-  136 |  1 ampersand.s    136 | Comment     | 11 |         |    0 | 00/187C               | *----------------------------------- Data
-  137 |  1 ampersand.s    137 | Empty       | 11 |         |    0 | 00/187C               |                                   
-  138 |  1 ampersand.s    138 | Data        | 11 |         |    2 | 00/187C : 8C 00       | theX         dw    140            ; milieu de l'écran par défaut
-  139 |  1 ampersand.s    139 | Data        | 11 |         |   96 | 00/187E : 00 00 00 00 | theY         ds    96             
+      |                       |             |    |         |      |           45 52 47 54 |
+  124 |  1 ampersand.s    124 | Empty       | 11 |         |    0 | 00/1867               |                                   
+  125 |  1 ampersand.s    125 | Data        | 11 |         |    2 | 00/1867 : F0 18       | myADRS       da    doS-1          
+  126 |  1 ampersand.s    126 | Data        | 11 |         |    2 | 00/1869 : 25 19       |              da    doM-1          
+  127 |  1 ampersand.s    127 | Data        | 11 |         |    2 | 00/186B : 68 19       |              da    doD-1          
+  128 |  1 ampersand.s    128 | Data        | 11 |         |    2 | 00/186D : DB 19       |              da    doC-1          
+  129 |  1 ampersand.s    129 | Data        | 11 |         |    2 | 00/186F : F8 19       |              da    doI-1          
+  130 |  1 ampersand.s    130 | Data        | 11 |         |    2 | 00/1871 : 07 1A       |              da    doP-1          
+  131 |  1 ampersand.s    131 | Data        | 11 |         |    2 | 00/1873 : 16 1A       |              da    doH-1          
+  132 |  1 ampersand.s    132 | Data        | 11 |         |    2 | 00/1875 : 33 1A       |              da    doW-1          
+  133 |  1 ampersand.s    133 | Data        | 11 |         |    2 | 00/1877 : 4C 1A       |              da    doE-1          
+  134 |  1 ampersand.s    134 | Data        | 11 |         |    2 | 00/1879 : 50 1A       |              da    doR-1          
+  135 |  1 ampersand.s    135 | Data        | 11 |         |    2 | 00/187B : 69 1A       |              da    doG-1          
+  136 |  1 ampersand.s    136 | Data        | 11 |         |    2 | 00/187D : 8C 1A       |              da    doT-1          
+  137 |  1 ampersand.s    137 | Empty       | 11 |         |    0 | 00/187F               |                                   
+  138 |  1 ampersand.s    138 | Comment     | 11 |         |    0 | 00/187F               | *----------------------------------- Data
+  139 |  1 ampersand.s    139 | Empty       | 11 |         |    0 | 00/187F               |                                   
+  140 |  1 ampersand.s    140 | Data        | 11 |         |    2 | 00/187F : 8C 00       | theX         dw    140            ; milieu de l'écran par défaut
+  141 |  1 ampersand.s    141 | Data        | 11 |         |   96 | 00/1881 : 00 00 00 00 | theY         ds    96             
       |                       |             |    |         |      |           00 00 00 00 |
       |                       |             |    |         |      |           00 00 00 00 |
       |                       |             |    |         |      |           00 00 00 00 |
@@ -165,260 +167,268 @@
       |                       |             |    |         |      |           00 00 00 00 |
       |                       |             |    |         |      |           00 00 00 00 |
       |                       |             |    |         |      |           00 00 00 00 |
-  140 |  1 ampersand.s    140 | Data        | 11 |         |    2 | 00/18DE : 00 00       | theX2        ds    2              
-  141 |  1 ampersand.s    141 | Data        | 11 |         |    2 | 00/18E0 : 00 00       | theY2        ds    2              
-  142 |  1 ampersand.s    142 | Data        | 11 |         |    1 | 00/18E2 : 00          | theRADIUS    ds    1              
-  143 |  1 ampersand.s    143 | Data        | 11 |         |    1 | 00/18E3 : 00          | theFB        ds    1              
-  144 |  1 ampersand.s    144 | Data        | 11 |         |    1 | 00/18E4 : 00          | theINK       ds    1              
-  145 |  1 ampersand.s    145 | Data        | 11 |         |    1 | 00/18E5 : 00          | thePAPER     ds    1              
-  146 |  1 ampersand.s    146 | Empty       | 11 |         |    0 | 00/18E6               |                                   
-  147 |  1 ampersand.s    147 | Comment     | 11 |         |    0 | 00/18E6               | *	APPLE	ORIC
-  148 |  1 ampersand.s    148 | Comment     | 11 |         |    0 | 00/18E6               | * 0	black1	black
-  149 |  1 ampersand.s    149 | Comment     | 11 |         |    0 | 00/18E6               | * 1	green	red
-  150 |  1 ampersand.s    150 | Comment     | 11 |         |    0 | 00/18E6               | * 2	blue	green
-  151 |  1 ampersand.s    151 | Comment     | 11 |         |    0 | 00/18E6               | * 3	white1	yellow
-  152 |  1 ampersand.s    152 | Comment     | 11 |         |    0 | 00/18E6               | * 4	black2	blue
-  153 |  1 ampersand.s    153 | Comment     | 11 |         |    0 | 00/18E6               | * 5	-	magenta
-  154 |  1 ampersand.s    154 | Comment     | 11 |         |    0 | 00/18E6               | * 6	-	cyan
-  155 |  1 ampersand.s    155 | Comment     | 11 |         |    0 | 00/18E6               | * 7	white2	white
-  156 |  1 ampersand.s    156 | Empty       | 11 |         |    0 | 00/18E6               |                                   
-  157 |  1 ampersand.s    157 | Data        | 11 |         |    8 | 00/18E6 : 07 05 01 06 | oric2hgr     hex   0705010602030400
+  142 |  1 ampersand.s    142 | Data        | 11 |         |    2 | 00/18E1 : 00 00       | theX2        ds    2              
+  143 |  1 ampersand.s    143 | Data        | 11 |         |    2 | 00/18E3 : 00 00       | theY2        ds    2              
+  144 |  1 ampersand.s    144 | Data        | 11 |         |    1 | 00/18E5 : 00          | theRADIUS    ds    1              
+  145 |  1 ampersand.s    145 | Data        | 11 |         |    1 | 00/18E6 : 00          | theFB        ds    1              
+  146 |  1 ampersand.s    146 | Data        | 11 |         |    1 | 00/18E7 : 00          | theINK       ds    1              
+  147 |  1 ampersand.s    147 | Data        | 11 |         |    1 | 00/18E8 : 00          | thePAPER     ds    1              
+  148 |  1 ampersand.s    148 | Empty       | 11 |         |    0 | 00/18E9               |                                   
+  149 |  1 ampersand.s    149 | Comment     | 11 |         |    0 | 00/18E9               | *	APPLE	ORIC
+  150 |  1 ampersand.s    150 | Comment     | 11 |         |    0 | 00/18E9               | * 0	black1	black
+  151 |  1 ampersand.s    151 | Comment     | 11 |         |    0 | 00/18E9               | * 1	green	red
+  152 |  1 ampersand.s    152 | Comment     | 11 |         |    0 | 00/18E9               | * 2	blue	green
+  153 |  1 ampersand.s    153 | Comment     | 11 |         |    0 | 00/18E9               | * 3	white1	yellow
+  154 |  1 ampersand.s    154 | Comment     | 11 |         |    0 | 00/18E9               | * 4	black2	blue
+  155 |  1 ampersand.s    155 | Comment     | 11 |         |    0 | 00/18E9               | * 5	-	magenta
+  156 |  1 ampersand.s    156 | Comment     | 11 |         |    0 | 00/18E9               | * 6	-	cyan
+  157 |  1 ampersand.s    157 | Comment     | 11 |         |    0 | 00/18E9               | * 7	white2	white
+  158 |  1 ampersand.s    158 | Empty       | 11 |         |    0 | 00/18E9               |                                   
+  159 |  1 ampersand.s    159 | Data        | 11 |         |    8 | 00/18E9 : 07 05 01 06 | oric2hgr     hex   0705010602030400
       |                       |             |    |         |      |           02 03 04 00 |
-  158 |  1 ampersand.s    158 | Empty       | 11 |         |    0 | 00/18EE               |                                   
-  159 |  1 ampersand.s    159 | Comment     | 11 |         |    0 | 00/18EE               | *----------------------------------- CURSET x,y,fb
-  160 |  1 ampersand.s    160 | Empty       | 11 |         |    0 | 00/18EE               |                                   
-  161 |  1 ampersand.s    161 | Empty       | 11 |         |    0 | 00/18EE               | doS                               
-  162 |  1 ampersand.s    162 | Code        | 11 |         |    3 | 00/18EE : 20 B1 00    |              jsr   {$b1}          ; get next token
-  163 |  1 ampersand.s    163 | Code        | 11 |         |    3 | 00/18F1 : 20 67 DD    |              jsr   {$dd67}        ; eval expression
-  164 |  1 ampersand.s    164 | Code        | 11 |         |    3 | 00/18F4 : 20 52 E7    |              jsr   {$e752}        ; convert to int
-  165 |  1 ampersand.s    165 | Code        | 11 |         |    2 | 00/18F7 : A5 50       |              lda   {$50}          
-  166 |  1 ampersand.s    166 | Code        | 11 |         |    3 | 00/18F9 : 8D 7C 18    |              sta   theX           
-  167 |  1 ampersand.s    167 | Code        | 11 |         |    2 | 00/18FC : A5 51       |              lda   {$50}+1        
-  168 |  1 ampersand.s    168 | Code        | 11 |         |    3 | 00/18FE : 8D 7D 18    |              sta   theX+1         ; new X-coord
-  169 |  1 ampersand.s    169 | Empty       | 11 |         |    0 | 00/1901               |                                   
-  170 |  1 ampersand.s    170 | Code        | 11 |         |    3 | 00/1901 : 20 BE DE    |              jsr   {$debe}        ; check for comma
-  171 |  1 ampersand.s    171 | Code        | 11 |         |    3 | 00/1904 : 20 67 DD    |              jsr   {$dd67}        ; eval expression
-  172 |  1 ampersand.s    172 | Code        | 11 |         |    3 | 00/1907 : 20 52 E7    |              jsr   {$e752}        ; convert to int
-  173 |  1 ampersand.s    173 | Code        | 11 |         |    2 | 00/190A : A5 50       |              lda   {$50}          
-  174 |  1 ampersand.s    174 | Code        | 11 |         |    3 | 00/190C : 8D 7E 18    |              sta   theY           
-  175 |  1 ampersand.s    175 | Code        | 11 |         |    2 | 00/190F : A5 51       |              lda   {$50}+1        
-  176 |  1 ampersand.s    176 | Code        | 11 |         |    3 | 00/1911 : 8D 7F 18    |              sta   theY+1         ; new Y-coord
-  177 |  1 ampersand.s    177 | Empty       | 11 |         |    0 | 00/1914               |                                   
-  178 |  1 ampersand.s    178 | Code        | 11 |         |    3 | 00/1914 : 20 BE DE    |              jsr   {$debe}        ; check for comma
-  179 |  1 ampersand.s    179 | Code        | 11 |         |    3 | 00/1917 : 20 67 DD    |              jsr   {$dd67}        ; eval expression
-  180 |  1 ampersand.s    180 | Code        | 11 |         |    3 | 00/191A : 20 52 E7    |              jsr   {$e752}        ; convert to int
-  181 |  1 ampersand.s    181 | Code        | 11 |         |    2 | 00/191D : A5 50       |              lda   {$50}          
-  182 |  1 ampersand.s    182 | Code        | 11 |         |    3 | 00/191F : 8D E3 18    |              sta   theFB          
-  183 |  1 ampersand.s    183 | Code        | 11 |         |    1 | 00/1922 : 60          |              rts                  
-  184 |  1 ampersand.s    184 | Empty       | 11 |         |    0 | 00/1923               |                                   
-  185 |  1 ampersand.s    185 | Comment     | 11 |         |    0 | 00/1923               | *----------------------------------- CURMOV x,y,fb
-  186 |  1 ampersand.s    186 | Empty       | 11 |         |    0 | 00/1923               |                                   
-  187 |  1 ampersand.s    187 | Empty       | 11 |         |    0 | 00/1923               | doM                               
-  188 |  1 ampersand.s    188 | Code        | 11 |         |    3 | 00/1923 : 20 B1 00    |              jsr   {$b1}          ; get next token
-  189 |  1 ampersand.s    189 | Code        | 11 |         |    3 | 00/1926 : 20 67 DD    |              jsr   {$dd67}        ; eval expression
-  190 |  1 ampersand.s    190 | Code        | 11 |         |    3 | 00/1929 : 20 52 E7    |              jsr   {$e752}        ; convert to int
-  191 |  1 ampersand.s    191 | Code        | 11 |         |    2 | 00/192C : A5 50       |              lda   {$50}          
-  192 |  1 ampersand.s    192 | Code        | 11 |         |    1 | 00/192E : 18          |              clc                  
-  193 |  1 ampersand.s    193 | Code        | 11 |         |    3 | 00/192F : 6D 7C 18    |              adc   theX           
-  194 |  1 ampersand.s    194 | Code        | 11 |         |    3 | 00/1932 : 8D 7C 18    |              sta   theX           
-  195 |  1 ampersand.s    195 | Code        | 11 |         |    2 | 00/1935 : A5 51       |              lda   {$50}+1        
-  196 |  1 ampersand.s    196 | Code        | 11 |         |    3 | 00/1937 : 6D 7D 18    |              adc   theX+1         
-  197 |  1 ampersand.s    197 | Code        | 11 |         |    3 | 00/193A : 8D 7D 18    |              sta   theX+1         ; new X-coord
-  198 |  1 ampersand.s    198 | Empty       | 11 |         |    0 | 00/193D               |                                   
-  199 |  1 ampersand.s    199 | Code        | 11 |         |    3 | 00/193D : 20 BE DE    |              jsr   {$debe}        ; check for comma
-  200 |  1 ampersand.s    200 | Code        | 11 |         |    3 | 00/1940 : 20 67 DD    |              jsr   {$dd67}        ; eval expression
-  201 |  1 ampersand.s    201 | Code        | 11 |         |    3 | 00/1943 : 20 52 E7    |              jsr   {$e752}        ; convert to int
-  202 |  1 ampersand.s    202 | Code        | 11 |         |    2 | 00/1946 : A5 50       |              lda   {$50}          
-  203 |  1 ampersand.s    203 | Code        | 11 |         |    1 | 00/1948 : 18          |              clc                  
-  204 |  1 ampersand.s    204 | Code        | 11 |         |    3 | 00/1949 : 6D 7E 18    |              adc   theY           
-  205 |  1 ampersand.s    205 | Code        | 11 |         |    3 | 00/194C : 8D 7E 18    |              sta   theY           
-  206 |  1 ampersand.s    206 | Code        | 11 |         |    2 | 00/194F : A5 51       |              lda   {$50}+1        
-  207 |  1 ampersand.s    207 | Code        | 11 |         |    3 | 00/1951 : 6D 7F 18    |              adc   theY+1         
-  208 |  1 ampersand.s    208 | Code        | 11 |         |    3 | 00/1954 : 8D 7F 18    |              sta   theY+1         ; new Y-coord
-  209 |  1 ampersand.s    209 | Empty       | 11 |         |    0 | 00/1957               |                                   
-  210 |  1 ampersand.s    210 | Code        | 11 |         |    3 | 00/1957 : 20 BE DE    |              jsr   {$debe}        ; check for comma
-  211 |  1 ampersand.s    211 | Code        | 11 |         |    3 | 00/195A : 20 67 DD    |              jsr   {$dd67}        ; eval expression
-  212 |  1 ampersand.s    212 | Code        | 11 |         |    3 | 00/195D : 20 52 E7    |              jsr   {$e752}        ; convert to int
-  213 |  1 ampersand.s    213 | Code        | 11 |         |    2 | 00/1960 : A5 50       |              lda   {$50}          
-  214 |  1 ampersand.s    214 | Code        | 11 |         |    3 | 00/1962 : 8D E3 18    |              sta   theFB          
-  215 |  1 ampersand.s    215 | Code        | 11 |         |    1 | 00/1965 : 60          |              rts                  
-  216 |  1 ampersand.s    216 | Empty       | 11 |         |    0 | 00/1966               |                                   
-  217 |  1 ampersand.s    217 | Comment     | 11 |         |    0 | 00/1966               | *----------------------------------- DRAW x,y,fb
-  218 |  1 ampersand.s    218 | Empty       | 11 |         |    0 | 00/1966               |                                   
-  219 |  1 ampersand.s    219 | Empty       | 11 |         |    0 | 00/1966               | doD                               
-  220 |  1 ampersand.s    220 | Code        | 11 |         |    3 | 00/1966 : 20 B1 00    |              jsr   {$b1}          ; get next token
-  221 |  1 ampersand.s    221 | Code        | 11 |         |    3 | 00/1969 : 20 67 DD    |              jsr   {$dd67}        ; eval expression
-  222 |  1 ampersand.s    222 | Code        | 11 |         |    3 | 00/196C : 20 52 E7    |              jsr   {$e752}        ; convert to int
-  223 |  1 ampersand.s    223 | Code        | 11 |         |    2 | 00/196F : A5 50       |              lda   {$50}          
-  224 |  1 ampersand.s    224 | Code        | 11 |         |    1 | 00/1971 : 18          |              clc                  
-  225 |  1 ampersand.s    225 | Code        | 11 |         |    3 | 00/1972 : 6D 7C 18    |              adc   theX           
-  226 |  1 ampersand.s    226 | Code        | 11 |         |    3 | 00/1975 : 8D DE 18    |              sta   theX2          
-  227 |  1 ampersand.s    227 | Code        | 11 |         |    2 | 00/1978 : A5 51       |              lda   {$50}+1        
-  228 |  1 ampersand.s    228 | Code        | 11 |         |    3 | 00/197A : 6D 7D 18    |              adc   theX+1         
-  229 |  1 ampersand.s    229 | Code        | 11 |         |    3 | 00/197D : 8D DF 18    |              sta   theX2+1        ; new X-coord
-  230 |  1 ampersand.s    230 | Empty       | 11 |         |    0 | 00/1980               |                                   
-  231 |  1 ampersand.s    231 | Code        | 11 |         |    3 | 00/1980 : 20 BE DE    |              jsr   {$debe}        ; check for comma
-  232 |  1 ampersand.s    232 | Code        | 11 |         |    3 | 00/1983 : 20 67 DD    |              jsr   {$dd67}        ; eval expression
-  233 |  1 ampersand.s    233 | Code        | 11 |         |    3 | 00/1986 : 20 52 E7    |              jsr   {$e752}        ; convert to int
-  234 |  1 ampersand.s    234 | Code        | 11 |         |    2 | 00/1989 : A5 50       |              lda   {$50}          
-  235 |  1 ampersand.s    235 | Code        | 11 |         |    1 | 00/198B : 18          |              clc                  
-  236 |  1 ampersand.s    236 | Code        | 11 |         |    3 | 00/198C : 6D 7E 18    |              adc   theY           
-  237 |  1 ampersand.s    237 | Code        | 11 |         |    3 | 00/198F : 8D E0 18    |              sta   theY2          
-  238 |  1 ampersand.s    238 | Code        | 11 |         |    2 | 00/1992 : A5 51       |              lda   {$50}+1        
-  239 |  1 ampersand.s    239 | Code        | 11 |         |    3 | 00/1994 : 6D 7E 18    |              adc   theY           
-  240 |  1 ampersand.s    240 | Code        | 11 |         |    3 | 00/1997 : 8D E1 18    |              sta   theY2+1        ; new Y-coord
-  241 |  1 ampersand.s    241 | Empty       | 11 |         |    0 | 00/199A               |                                   
-  242 |  1 ampersand.s    242 | Code        | 11 |         |    3 | 00/199A : 20 BE DE    |              jsr   {$debe}        ; check for comma
-  243 |  1 ampersand.s    243 | Code        | 11 |         |    3 | 00/199D : 20 67 DD    |              jsr   {$dd67}        ; eval expression
-  244 |  1 ampersand.s    244 | Code        | 11 |         |    3 | 00/19A0 : 20 52 E7    |              jsr   {$e752}        ; convert to int
-  245 |  1 ampersand.s    245 | Code        | 11 |         |    2 | 00/19A3 : A5 50       |              lda   {$50}          
-  246 |  1 ampersand.s    246 | Code        | 11 |         |    3 | 00/19A5 : 8D E3 18    |              sta   theFB          
-  247 |  1 ampersand.s    247 | Empty       | 11 |         |    0 | 00/19A8               |                                   
-  248 |  1 ampersand.s    248 | Comment     | 11 |         |    0 | 00/19A8               | *---------- It is now time to draw as we have all variables
-  249 |  1 ampersand.s    249 | Empty       | 11 |         |    0 | 00/19A8               |                                   
-  250 |  1 ampersand.s    250 | Code        | 11 |         |    3 | 00/19A8 : AC E4 18    |              ldy   theINK         ; the ink color
-  251 |  1 ampersand.s    251 | Code        | 11 |         |    3 | 00/19AB : BE E6 18    |              ldx   oric2hgr,y     ; from the Oric to the Apple II
-  252 |  1 ampersand.s    252 | Code        | 11 |         |    3 | 00/19AE : 20 EC F6    |              jsr   {$f6e9}+3      ; to skip CHRGET
-  253 |  1 ampersand.s    253 | Empty       | 11 |         |    0 | 00/19B1               |                                   
-  254 |  1 ampersand.s    254 | Code        | 11 |         |    3 | 00/19B1 : AE 7C 18    |              ldx   theX           ; HPLOT x,y
-  255 |  1 ampersand.s    255 | Code        | 11 |         |    3 | 00/19B4 : AC 7D 18    |              ldy   theX+1         
-  256 |  1 ampersand.s    256 | Code        | 11 |         |    3 | 00/19B7 : AD 7E 18    |              lda   theY           
-  257 |  1 ampersand.s    257 | Code        | 11 |         |    3 | 00/19BA : 20 57 F4    |              jsr   {$f457}        
-  258 |  1 ampersand.s    258 | Empty       | 11 |         |    0 | 00/19BD               |                                   
-  259 |  1 ampersand.s    259 | Code        | 11 |         |    3 | 00/19BD : AD DE 18    |              lda   theX2          ; TO x2,Y2
-  260 |  1 ampersand.s    260 | Code        | 11 |         |    3 | 00/19C0 : AE DF 18    |              ldx   theX2+1        
-  261 |  1 ampersand.s    261 | Code        | 11 |         |    3 | 00/19C3 : AC E0 18    |              ldy   theY2          
-  262 |  1 ampersand.s    262 | Code        | 11 |         |    3 | 00/19C6 : 20 3A F5    |              jsr   {$f53a}        ; draw the line
-  263 |  1 ampersand.s    263 | Empty       | 11 |         |    0 | 00/19C9               |                                   
-  264 |  1 ampersand.s    264 | Code        | 11 |         |    2 | 00/19C9 : A5 E0       |              lda   {$e0}          ; save the updated coords
-  265 |  1 ampersand.s    265 | Code        | 11 |         |    3 | 00/19CB : 8D 7C 18    |              sta   theX           
-  266 |  1 ampersand.s    266 | Code        | 11 |         |    2 | 00/19CE : A5 E1       |              lda   {$e1}          
-  267 |  1 ampersand.s    267 | Code        | 11 |         |    3 | 00/19D0 : 8D 7D 18    |              sta   theX+1         
-  268 |  1 ampersand.s    268 | Code        | 11 |         |    2 | 00/19D3 : A5 E2       |              lda   {$e2}          
-  269 |  1 ampersand.s    269 | Code        | 11 |         |    3 | 00/19D5 : 8D 7E 18    |              sta   theY           
-  270 |  1 ampersand.s    270 | Code        | 11 |         |    1 | 00/19D8 : 60          |              rts                  
-  271 |  1 ampersand.s    271 | Empty       | 11 |         |    0 | 00/19D9               |                                   
-  272 |  1 ampersand.s    272 | Comment     | 11 |         |    0 | 00/19D9               | *----------------------------------- CIRCLE n,fb
-  273 |  1 ampersand.s    273 | Empty       | 11 |         |    0 | 00/19D9               |                                   
-  274 |  1 ampersand.s    274 | Empty       | 11 |         |    0 | 00/19D9               | doC                               
-  275 |  1 ampersand.s    275 | Code        | 11 |         |    3 | 00/19D9 : 20 B1 00    |              jsr   {$b1}          ; get next token
-  276 |  1 ampersand.s    276 | Code        | 11 |         |    3 | 00/19DC : 20 67 DD    |              jsr   {$dd67}        ; eval expression
-  277 |  1 ampersand.s    277 | Code        | 11 |         |    3 | 00/19DF : 20 52 E7    |              jsr   {$e752}        ; convert to int
-  278 |  1 ampersand.s    278 | Code        | 11 |         |    2 | 00/19E2 : A5 50       |              lda   {$50}          
-  279 |  1 ampersand.s    279 | Code        | 11 |         |    3 | 00/19E4 : 8D E2 18    |              sta   theRADIUS      ; the radius
-  280 |  1 ampersand.s    280 | Empty       | 11 |         |    0 | 00/19E7               |                                   
-  281 |  1 ampersand.s    281 | Code        | 11 |         |    3 | 00/19E7 : 20 BE DE    |              jsr   {$debe}        ; check for comma
-  282 |  1 ampersand.s    282 | Code        | 11 |         |    3 | 00/19EA : 20 67 DD    |              jsr   {$dd67}        ; eval expression
-  283 |  1 ampersand.s    283 | Code        | 11 |         |    3 | 00/19ED : 20 52 E7    |              jsr   {$e752}        ; convert to int
-  284 |  1 ampersand.s    284 | Code        | 11 |         |    2 | 00/19F0 : A5 50       |              lda   {$50}          
-  285 |  1 ampersand.s    285 | Code        | 11 |         |    3 | 00/19F2 : 8D E3 18    |              sta   theFB          ; the foreground color
-  286 |  1 ampersand.s    286 | Code        | 11 |         |    1 | 00/19F5 : 60          |              rts                  
-  287 |  1 ampersand.s    287 | Empty       | 11 |         |    0 | 00/19F6               |                                   
-  288 |  1 ampersand.s    288 | Comment     | 11 |         |    0 | 00/19F6               | *----------------------------------- INK fb
-  289 |  1 ampersand.s    289 | Empty       | 11 |         |    0 | 00/19F6               |                                   
-  290 |  1 ampersand.s    290 | Empty       | 11 |         |    0 | 00/19F6               | doI                               
-  291 |  1 ampersand.s    291 | Code        | 11 |         |    3 | 00/19F6 : 20 B1 00    |              jsr   {$b1}          ; get next token
-  292 |  1 ampersand.s    292 | Code        | 11 |         |    3 | 00/19F9 : 20 67 DD    |              jsr   {$dd67}        ; eval expression
-  293 |  1 ampersand.s    293 | Code        | 11 |         |    3 | 00/19FC : 20 52 E7    |              jsr   {$e752}        ; convert to int
-  294 |  1 ampersand.s    294 | Code        | 11 |         |    2 | 00/19FF : A5 50       |              lda   {$50}          
-  295 |  1 ampersand.s    295 | Code        | 11 |         |    3 | 00/1A01 : 8D E4 18    |              sta   theINK         
-  296 |  1 ampersand.s    296 | Code        | 11 |         |    1 | 00/1A04 : 60          |              rts                  
-  297 |  1 ampersand.s    297 | Empty       | 11 |         |    0 | 00/1A05               |                                   
-  298 |  1 ampersand.s    298 | Comment     | 11 |         |    0 | 00/1A05               | *----------------------------------- PAPER fb
-  299 |  1 ampersand.s    299 | Empty       | 11 |         |    0 | 00/1A05               |                                   
-  300 |  1 ampersand.s    300 | Empty       | 11 |         |    0 | 00/1A05               | doP                               
-  301 |  1 ampersand.s    301 | Code        | 11 |         |    3 | 00/1A05 : 20 B1 00    |              jsr   {$b1}          ; get next token
-  302 |  1 ampersand.s    302 | Code        | 11 |         |    3 | 00/1A08 : 20 67 DD    |              jsr   {$dd67}        ; eval expression
-  303 |  1 ampersand.s    303 | Code        | 11 |         |    3 | 00/1A0B : 20 52 E7    |              jsr   {$e752}        ; convert to int
-  304 |  1 ampersand.s    304 | Code        | 11 |         |    2 | 00/1A0E : A5 50       |              lda   {$50}          
-  305 |  1 ampersand.s    305 | Code        | 11 |         |    3 | 00/1A10 : 8D E5 18    |              sta   thePAPER       
-  306 |  1 ampersand.s    306 | Code        | 11 |         |    1 | 00/1A13 : 60          |              rts                  
-  307 |  1 ampersand.s    307 | Empty       | 11 |         |    0 | 00/1A14               |                                   
-  308 |  1 ampersand.s    308 | Comment     | 11 |         |    0 | 00/1A14               | *----------------------------------- HIRES
-  309 |  1 ampersand.s    309 | Empty       | 11 |         |    0 | 00/1A14               |                                   
-  310 |  1 ampersand.s    310 | Empty       | 11 |         |    0 | 00/1A14               | doH                               
-  311 |  1 ampersand.s    311 | Code        | 11 |         |    3 | 00/1A14 : 20 B1 00    |              jsr   {$b1}          ; get next token
-  312 |  1 ampersand.s    312 | Empty       | 11 |         |    0 | 00/1A17               |                                   
-  313 |  1 ampersand.s    313 | Code        | 11 |         |    2 | 00/1A17 : A9 00       |              lda   #0             
-  314 |  1 ampersand.s    314 | Code        | 11 |         |    2 | 00/1A19 : 85 20       |              sta   {$20}          
-  315 |  1 ampersand.s    315 | Code        | 11 |         |    2 | 00/1A1B : A9 28       |              lda   #40            
-  316 |  1 ampersand.s    316 | Code        | 11 |         |    2 | 00/1A1D : 85 21       |              sta   {$21}          
-  317 |  1 ampersand.s    317 | Code        | 11 |         |    2 | 00/1A1F : A9 14       |              lda   #20            
-  318 |  1 ampersand.s    318 | Code        | 11 |         |    2 | 00/1A21 : 85 22       |              sta   {$22}          
-  319 |  1 ampersand.s    319 | Code        | 11 |         |    2 | 00/1A23 : A9 18       |              lda   #24            
-  320 |  1 ampersand.s    320 | Code        | 11 |         |    2 | 00/1A25 : 85 23       |              sta   {$23}          
-  321 |  1 ampersand.s    321 | Code        | 11 |         |    3 | 00/1A27 : 20 58 FC    |              jsr   {$fc58}        
-  322 |  1 ampersand.s    322 | Empty       | 11 |         |    0 | 00/1A2A               |                                   
-  323 |  1 ampersand.s    323 | Code        | 11 |         |    3 | 00/1A2A : 20 E2 F3    |              jsr   {$f3e2}        
-  324 |  1 ampersand.s    324 | Code        | 11 |         |    3 | 00/1A2D : 8D 52 C0    |              sta   {$c052}        
-  325 |  1 ampersand.s    325 | Code        | 11 |         |    1 | 00/1A30 : 60          |              rts                  
-  326 |  1 ampersand.s    326 | Empty       | 11 |         |    0 | 00/1A31               |                                   
-  327 |  1 ampersand.s    327 | Comment     | 11 |         |    0 | 00/1A31               | *----------------------------------- WAIT x
-  328 |  1 ampersand.s    328 | Empty       | 11 |         |    0 | 00/1A31               |                                   
-  329 |  1 ampersand.s    329 | Empty       | 11 |         |    0 | 00/1A31               | doW                               
-  330 |  1 ampersand.s    330 | Code        | 11 |         |    3 | 00/1A31 : 20 B1 00    |              jsr   {$b1}          ; get next token
-  331 |  1 ampersand.s    331 | Code        | 11 |         |    3 | 00/1A34 : 20 67 DD    |              jsr   {$dd67}        ; eval expression
-  332 |  1 ampersand.s    332 | Code        | 11 |         |    3 | 00/1A37 : 20 52 E7    |              jsr   {$e752}        ; convert to int
-  333 |  1 ampersand.s    333 | Empty       | 11 |         |    0 | 00/1A3A               |                                   
-  334 |  1 ampersand.s    334 | Code        | 11 |         |    2 | 00/1A3A : A6 51       |              ldx   {$50}+1        
-  335 |  1 ampersand.s    335 | Code        | 11 |         |    2 | 00/1A3C : A4 50       | doW1         ldy   {$50}          
-  336 |  1 ampersand.s    336 | Code        | 11 |         |    2 | 00/1A3E : A9 3C       | ozunid_2     lda   #60            ; 1/100ème de seconde
-  337 |  1 ampersand.s    337 | Code        | 11 |         |    3 | 00/1A40 : 20 A8 FC    |              jsr   {$fca8}        
-  338 |  1 ampersand.s    338 | Code        | 11 |         |    1 | 00/1A43 : 88          |              dey                  
-  339 |  1 ampersand.s    339 | Code        | 11 |         |    2 | 00/1A44 : D0 F8       |              bne   ozunid_2       
-  340 |  1 ampersand.s    340 | Code        | 11 |         |    1 | 00/1A46 : CA          |              dex                  
-  341 |  1 ampersand.s    341 | Code        | 11 |         |    2 | 00/1A47 : 10 F3       |              bpl   doW1           
-  342 |  1 ampersand.s    342 | Code        | 11 |         |    1 | 00/1A49 : 60          |              rts                  
-  343 |  1 ampersand.s    343 | Empty       | 11 |         |    0 | 00/1A4A               |                                   
-  344 |  1 ampersand.s    344 | Comment     | 11 |         |    0 | 00/1A4A               | *----------------------------------- EXPLODE
-  345 |  1 ampersand.s    345 | Empty       | 11 |         |    0 | 00/1A4A               |                                   
-  346 |  1 ampersand.s    346 | Empty       | 11 |         |    0 | 00/1A4A               | doE                               
-  347 |  1 ampersand.s    347 | Code        | 11 |         |    3 | 00/1A4A : 20 B1 00    |              jsr   {$b1}          
-  348 |  1 ampersand.s    348 | Code        | 11 |         |    1 | 00/1A4D : 60          |              rts                  
-  349 |  1 ampersand.s    349 | Empty       | 11 |         |    0 | 00/1A4E               |                                   
-  350 |  1 ampersand.s    350 | Comment     | 11 |         |    0 | 00/1A4E               | *----------------------------------- RESTORE address
-  351 |  1 ampersand.s    351 | Empty       | 11 |         |    0 | 00/1A4E               |                                   
-  352 |  1 ampersand.s    352 | Empty       | 11 |         |    0 | 00/1A4E               | doR                               
-  353 |  1 ampersand.s    353 | Code        | 11 |         |    3 | 00/1A4E : 20 B1 00    |              jsr   {$b1}          ; get next token
-  354 |  1 ampersand.s    354 | Code        | 11 |         |    3 | 00/1A51 : 20 67 DD    |              jsr   {$dd67}        ; eval expression
-  355 |  1 ampersand.s    355 | Code        | 11 |         |    3 | 00/1A54 : 20 52 E7    |              jsr   {$e752}        ; convert to int
-  356 |  1 ampersand.s    356 | Code        | 11 |         |    3 | 00/1A57 : 20 1A D6    |              jsr   {$d61a}        ; find chosen line no.
-  357 |  1 ampersand.s    357 | Empty       | 11 |         |    0 | 00/1A5A               |                                   
-  358 |  1 ampersand.s    358 | Code        | 11 |         |    2 | 00/1A5A : A4 9C       |              ldy   {$9b}+1        ; point DATPTR at byte before it
-  359 |  1 ampersand.s    359 | Code        | 11 |         |    2 | 00/1A5C : A6 9B       |              ldx   {$9b}          
-  360 |  1 ampersand.s    360 | Code        | 11 |         |    2 | 00/1A5E : D0 01       |              bne   dx             
-  361 |  1 ampersand.s    361 | Code        | 11 |         |    1 | 00/1A60 : 88          |              dey                  
-  362 |  1 ampersand.s    362 | Code        | 11 |         |    1 | 00/1A61 : CA          | dx           dex                  
-  363 |  1 ampersand.s    363 | Code        | 11 |         |    2 | 00/1A62 : 84 7E       |              sty   {$7d}+1        
-  364 |  1 ampersand.s    364 | Code        | 11 |         |    2 | 00/1A64 : 86 7D       |              stx   {$7d}          
-  365 |  1 ampersand.s    365 | Code        | 11 |         |    1 | 00/1A66 : 60          |              rts                  
-  366 |  1 ampersand.s    366 | Empty       | 11 |         |    0 | 00/1A67               |                                   
-  367 |  1 ampersand.s    367 | Comment     | 11 |         |    0 | 00/1A67               | *----------------------------------- GOSUB address
-  368 |  1 ampersand.s    368 | Empty       | 11 |         |    0 | 00/1A67               |                                   
-  369 |  1 ampersand.s    369 | Empty       | 11 |         |    0 | 00/1A67               | doG                               
-  370 |  1 ampersand.s    370 | Code        | 11 |         |    2 | 00/1A67 : A9 03       |              lda   #3             ; make sure there's enough stack
-  371 |  1 ampersand.s    371 | Code        | 11 |         |    3 | 00/1A69 : 20 D6 D3    |              jsr   {$d3d6}        
-  372 |  1 ampersand.s    372 | Empty       | 11 |         |    0 | 00/1A6C               |                                   
-  373 |  1 ampersand.s    373 | Code        | 11 |         |    2 | 00/1A6C : A5 B9       |              lda   {$b8}+1        ; push marker for RETURN
-  374 |  1 ampersand.s    374 | Code        | 11 |         |    1 | 00/1A6E : 48          |              pha                  
-  375 |  1 ampersand.s    375 | Code        | 11 |         |    2 | 00/1A6F : A5 B8       |              lda   {$b8}          
+  160 |  1 ampersand.s    160 | Empty       | 11 |         |    0 | 00/18F1               |                                   
+  161 |  1 ampersand.s    161 | Comment     | 11 |         |    0 | 00/18F1               | *----------------------------------- CURSET x,y,fb
+  162 |  1 ampersand.s    162 | Empty       | 11 |         |    0 | 00/18F1               |                                   
+  163 |  1 ampersand.s    163 | Empty       | 11 |         |    0 | 00/18F1               | doS                               
+  164 |  1 ampersand.s    164 | Code        | 11 |         |    3 | 00/18F1 : 20 B1 00    |              jsr   {$b1}          ; get next token
+  165 |  1 ampersand.s    165 | Code        | 11 |         |    3 | 00/18F4 : 20 67 DD    |              jsr   {$dd67}        ; eval expression
+  166 |  1 ampersand.s    166 | Code        | 11 |         |    3 | 00/18F7 : 20 52 E7    |              jsr   {$e752}        ; convert to int
+  167 |  1 ampersand.s    167 | Code        | 11 |         |    2 | 00/18FA : A5 50       |              lda   {$50}          
+  168 |  1 ampersand.s    168 | Code        | 11 |         |    3 | 00/18FC : 8D 7F 18    |              sta   theX           
+  169 |  1 ampersand.s    169 | Code        | 11 |         |    2 | 00/18FF : A5 51       |              lda   {$50}+1        
+  170 |  1 ampersand.s    170 | Code        | 11 |         |    3 | 00/1901 : 8D 80 18    |              sta   theX+1         ; new X-coord
+  171 |  1 ampersand.s    171 | Empty       | 11 |         |    0 | 00/1904               |                                   
+  172 |  1 ampersand.s    172 | Code        | 11 |         |    3 | 00/1904 : 20 BE DE    |              jsr   {$debe}        ; check for comma
+  173 |  1 ampersand.s    173 | Code        | 11 |         |    3 | 00/1907 : 20 67 DD    |              jsr   {$dd67}        ; eval expression
+  174 |  1 ampersand.s    174 | Code        | 11 |         |    3 | 00/190A : 20 52 E7    |              jsr   {$e752}        ; convert to int
+  175 |  1 ampersand.s    175 | Code        | 11 |         |    2 | 00/190D : A5 50       |              lda   {$50}          
+  176 |  1 ampersand.s    176 | Code        | 11 |         |    3 | 00/190F : 8D 81 18    |              sta   theY           
+  177 |  1 ampersand.s    177 | Code        | 11 |         |    2 | 00/1912 : A5 51       |              lda   {$50}+1        
+  178 |  1 ampersand.s    178 | Code        | 11 |         |    3 | 00/1914 : 8D 82 18    |              sta   theY+1         ; new Y-coord
+  179 |  1 ampersand.s    179 | Empty       | 11 |         |    0 | 00/1917               |                                   
+  180 |  1 ampersand.s    180 | Code        | 11 |         |    3 | 00/1917 : 20 BE DE    |              jsr   {$debe}        ; check for comma
+  181 |  1 ampersand.s    181 | Code        | 11 |         |    3 | 00/191A : 20 67 DD    |              jsr   {$dd67}        ; eval expression
+  182 |  1 ampersand.s    182 | Code        | 11 |         |    3 | 00/191D : 20 52 E7    |              jsr   {$e752}        ; convert to int
+  183 |  1 ampersand.s    183 | Code        | 11 |         |    2 | 00/1920 : A5 50       |              lda   {$50}          
+  184 |  1 ampersand.s    184 | Code        | 11 |         |    3 | 00/1922 : 8D E6 18    |              sta   theFB          
+  185 |  1 ampersand.s    185 | Code        | 11 |         |    1 | 00/1925 : 60          |              rts                  
+  186 |  1 ampersand.s    186 | Empty       | 11 |         |    0 | 00/1926               |                                   
+  187 |  1 ampersand.s    187 | Comment     | 11 |         |    0 | 00/1926               | *----------------------------------- CURMOV x,y,fb
+  188 |  1 ampersand.s    188 | Empty       | 11 |         |    0 | 00/1926               |                                   
+  189 |  1 ampersand.s    189 | Empty       | 11 |         |    0 | 00/1926               | doM                               
+  190 |  1 ampersand.s    190 | Code        | 11 |         |    3 | 00/1926 : 20 B1 00    |              jsr   {$b1}          ; get next token
+  191 |  1 ampersand.s    191 | Code        | 11 |         |    3 | 00/1929 : 20 67 DD    |              jsr   {$dd67}        ; eval expression
+  192 |  1 ampersand.s    192 | Code        | 11 |         |    3 | 00/192C : 20 52 E7    |              jsr   {$e752}        ; convert to int
+  193 |  1 ampersand.s    193 | Code        | 11 |         |    2 | 00/192F : A5 50       |              lda   {$50}          
+  194 |  1 ampersand.s    194 | Code        | 11 |         |    1 | 00/1931 : 18          |              clc                  
+  195 |  1 ampersand.s    195 | Code        | 11 |         |    3 | 00/1932 : 6D 7F 18    |              adc   theX           
+  196 |  1 ampersand.s    196 | Code        | 11 |         |    3 | 00/1935 : 8D 7F 18    |              sta   theX           
+  197 |  1 ampersand.s    197 | Code        | 11 |         |    2 | 00/1938 : A5 51       |              lda   {$50}+1        
+  198 |  1 ampersand.s    198 | Code        | 11 |         |    3 | 00/193A : 6D 80 18    |              adc   theX+1         
+  199 |  1 ampersand.s    199 | Code        | 11 |         |    3 | 00/193D : 8D 80 18    |              sta   theX+1         ; new X-coord
+  200 |  1 ampersand.s    200 | Empty       | 11 |         |    0 | 00/1940               |                                   
+  201 |  1 ampersand.s    201 | Code        | 11 |         |    3 | 00/1940 : 20 BE DE    |              jsr   {$debe}        ; check for comma
+  202 |  1 ampersand.s    202 | Code        | 11 |         |    3 | 00/1943 : 20 67 DD    |              jsr   {$dd67}        ; eval expression
+  203 |  1 ampersand.s    203 | Code        | 11 |         |    3 | 00/1946 : 20 52 E7    |              jsr   {$e752}        ; convert to int
+  204 |  1 ampersand.s    204 | Code        | 11 |         |    2 | 00/1949 : A5 50       |              lda   {$50}          
+  205 |  1 ampersand.s    205 | Code        | 11 |         |    1 | 00/194B : 18          |              clc                  
+  206 |  1 ampersand.s    206 | Code        | 11 |         |    3 | 00/194C : 6D 81 18    |              adc   theY           
+  207 |  1 ampersand.s    207 | Code        | 11 |         |    3 | 00/194F : 8D 81 18    |              sta   theY           
+  208 |  1 ampersand.s    208 | Code        | 11 |         |    2 | 00/1952 : A5 51       |              lda   {$50}+1        
+  209 |  1 ampersand.s    209 | Code        | 11 |         |    3 | 00/1954 : 6D 82 18    |              adc   theY+1         
+  210 |  1 ampersand.s    210 | Code        | 11 |         |    3 | 00/1957 : 8D 82 18    |              sta   theY+1         ; new Y-coord
+  211 |  1 ampersand.s    211 | Empty       | 11 |         |    0 | 00/195A               |                                   
+  212 |  1 ampersand.s    212 | Code        | 11 |         |    3 | 00/195A : 20 BE DE    |              jsr   {$debe}        ; check for comma
+  213 |  1 ampersand.s    213 | Code        | 11 |         |    3 | 00/195D : 20 67 DD    |              jsr   {$dd67}        ; eval expression
+  214 |  1 ampersand.s    214 | Code        | 11 |         |    3 | 00/1960 : 20 52 E7    |              jsr   {$e752}        ; convert to int
+  215 |  1 ampersand.s    215 | Code        | 11 |         |    2 | 00/1963 : A5 50       |              lda   {$50}          
+  216 |  1 ampersand.s    216 | Code        | 11 |         |    3 | 00/1965 : 8D E6 18    |              sta   theFB          
+  217 |  1 ampersand.s    217 | Code        | 11 |         |    1 | 00/1968 : 60          |              rts                  
+  218 |  1 ampersand.s    218 | Empty       | 11 |         |    0 | 00/1969               |                                   
+  219 |  1 ampersand.s    219 | Comment     | 11 |         |    0 | 00/1969               | *----------------------------------- DRAW x,y,fb
+  220 |  1 ampersand.s    220 | Empty       | 11 |         |    0 | 00/1969               |                                   
+  221 |  1 ampersand.s    221 | Empty       | 11 |         |    0 | 00/1969               | doD                               
+  222 |  1 ampersand.s    222 | Code        | 11 |         |    3 | 00/1969 : 20 B1 00    |              jsr   {$b1}          ; get next token
+  223 |  1 ampersand.s    223 | Code        | 11 |         |    3 | 00/196C : 20 67 DD    |              jsr   {$dd67}        ; eval expression
+  224 |  1 ampersand.s    224 | Code        | 11 |         |    3 | 00/196F : 20 52 E7    |              jsr   {$e752}        ; convert to int
+  225 |  1 ampersand.s    225 | Code        | 11 |         |    2 | 00/1972 : A5 50       |              lda   {$50}          
+  226 |  1 ampersand.s    226 | Code        | 11 |         |    1 | 00/1974 : 18          |              clc                  
+  227 |  1 ampersand.s    227 | Code        | 11 |         |    3 | 00/1975 : 6D 7F 18    |              adc   theX           
+  228 |  1 ampersand.s    228 | Code        | 11 |         |    3 | 00/1978 : 8D E1 18    |              sta   theX2          
+  229 |  1 ampersand.s    229 | Code        | 11 |         |    2 | 00/197B : A5 51       |              lda   {$50}+1        
+  230 |  1 ampersand.s    230 | Code        | 11 |         |    3 | 00/197D : 6D 80 18    |              adc   theX+1         
+  231 |  1 ampersand.s    231 | Code        | 11 |         |    3 | 00/1980 : 8D E2 18    |              sta   theX2+1        ; new X-coord
+  232 |  1 ampersand.s    232 | Empty       | 11 |         |    0 | 00/1983               |                                   
+  233 |  1 ampersand.s    233 | Code        | 11 |         |    3 | 00/1983 : 20 BE DE    |              jsr   {$debe}        ; check for comma
+  234 |  1 ampersand.s    234 | Code        | 11 |         |    3 | 00/1986 : 20 67 DD    |              jsr   {$dd67}        ; eval expression
+  235 |  1 ampersand.s    235 | Code        | 11 |         |    3 | 00/1989 : 20 52 E7    |              jsr   {$e752}        ; convert to int
+  236 |  1 ampersand.s    236 | Code        | 11 |         |    2 | 00/198C : A5 50       |              lda   {$50}          
+  237 |  1 ampersand.s    237 | Code        | 11 |         |    1 | 00/198E : 18          |              clc                  
+  238 |  1 ampersand.s    238 | Code        | 11 |         |    3 | 00/198F : 6D 81 18    |              adc   theY           
+  239 |  1 ampersand.s    239 | Code        | 11 |         |    3 | 00/1992 : 8D E3 18    |              sta   theY2          
+  240 |  1 ampersand.s    240 | Code        | 11 |         |    2 | 00/1995 : A5 51       |              lda   {$50}+1        
+  241 |  1 ampersand.s    241 | Code        | 11 |         |    3 | 00/1997 : 6D 81 18    |              adc   theY           
+  242 |  1 ampersand.s    242 | Code        | 11 |         |    3 | 00/199A : 8D E4 18    |              sta   theY2+1        ; new Y-coord
+  243 |  1 ampersand.s    243 | Empty       | 11 |         |    0 | 00/199D               |                                   
+  244 |  1 ampersand.s    244 | Code        | 11 |         |    3 | 00/199D : 20 BE DE    |              jsr   {$debe}        ; check for comma
+  245 |  1 ampersand.s    245 | Code        | 11 |         |    3 | 00/19A0 : 20 67 DD    |              jsr   {$dd67}        ; eval expression
+  246 |  1 ampersand.s    246 | Code        | 11 |         |    3 | 00/19A3 : 20 52 E7    |              jsr   {$e752}        ; convert to int
+  247 |  1 ampersand.s    247 | Code        | 11 |         |    2 | 00/19A6 : A5 50       |              lda   {$50}          
+  248 |  1 ampersand.s    248 | Code        | 11 |         |    3 | 00/19A8 : 8D E6 18    |              sta   theFB          
+  249 |  1 ampersand.s    249 | Empty       | 11 |         |    0 | 00/19AB               |                                   
+  250 |  1 ampersand.s    250 | Comment     | 11 |         |    0 | 00/19AB               | *---------- It is now time to draw as we have all variables
+  251 |  1 ampersand.s    251 | Empty       | 11 |         |    0 | 00/19AB               |                                   
+  252 |  1 ampersand.s    252 | Code        | 11 |         |    3 | 00/19AB : AC E7 18    |              ldy   theINK         ; the ink color
+  253 |  1 ampersand.s    253 | Code        | 11 |         |    3 | 00/19AE : BE E9 18    |              ldx   oric2hgr,y     ; from the Oric to the Apple II
+  254 |  1 ampersand.s    254 | Code        | 11 |         |    3 | 00/19B1 : 20 EC F6    |              jsr   {$f6e9}+3      ; to skip CHRGET
+  255 |  1 ampersand.s    255 | Empty       | 11 |         |    0 | 00/19B4               |                                   
+  256 |  1 ampersand.s    256 | Code        | 11 |         |    3 | 00/19B4 : AE 7F 18    |              ldx   theX           ; HPLOT x,y
+  257 |  1 ampersand.s    257 | Code        | 11 |         |    3 | 00/19B7 : AC 80 18    |              ldy   theX+1         
+  258 |  1 ampersand.s    258 | Code        | 11 |         |    3 | 00/19BA : AD 81 18    |              lda   theY           
+  259 |  1 ampersand.s    259 | Code        | 11 |         |    3 | 00/19BD : 20 57 F4    |              jsr   {$f457}        
+  260 |  1 ampersand.s    260 | Empty       | 11 |         |    0 | 00/19C0               |                                   
+  261 |  1 ampersand.s    261 | Code        | 11 |         |    3 | 00/19C0 : AD E1 18    |              lda   theX2          ; TO x2,Y2
+  262 |  1 ampersand.s    262 | Code        | 11 |         |    3 | 00/19C3 : AE E2 18    |              ldx   theX2+1        
+  263 |  1 ampersand.s    263 | Code        | 11 |         |    3 | 00/19C6 : AC E3 18    |              ldy   theY2          
+  264 |  1 ampersand.s    264 | Code        | 11 |         |    3 | 00/19C9 : 20 3A F5    |              jsr   {$f53a}        ; draw the line
+  265 |  1 ampersand.s    265 | Empty       | 11 |         |    0 | 00/19CC               |                                   
+  266 |  1 ampersand.s    266 | Code        | 11 |         |    2 | 00/19CC : A5 E0       |              lda   {$e0}          ; save the updated coords
+  267 |  1 ampersand.s    267 | Code        | 11 |         |    3 | 00/19CE : 8D 7F 18    |              sta   theX           
+  268 |  1 ampersand.s    268 | Code        | 11 |         |    2 | 00/19D1 : A5 E1       |              lda   {$e1}          
+  269 |  1 ampersand.s    269 | Code        | 11 |         |    3 | 00/19D3 : 8D 80 18    |              sta   theX+1         
+  270 |  1 ampersand.s    270 | Code        | 11 |         |    2 | 00/19D6 : A5 E2       |              lda   {$e2}          
+  271 |  1 ampersand.s    271 | Code        | 11 |         |    3 | 00/19D8 : 8D 81 18    |              sta   theY           
+  272 |  1 ampersand.s    272 | Code        | 11 |         |    1 | 00/19DB : 60          |              rts                  
+  273 |  1 ampersand.s    273 | Empty       | 11 |         |    0 | 00/19DC               |                                   
+  274 |  1 ampersand.s    274 | Comment     | 11 |         |    0 | 00/19DC               | *----------------------------------- CIRCLE n,fb
+  275 |  1 ampersand.s    275 | Empty       | 11 |         |    0 | 00/19DC               |                                   
+  276 |  1 ampersand.s    276 | Empty       | 11 |         |    0 | 00/19DC               | doC                               
+  277 |  1 ampersand.s    277 | Code        | 11 |         |    3 | 00/19DC : 20 B1 00    |              jsr   {$b1}          ; get next token
+  278 |  1 ampersand.s    278 | Code        | 11 |         |    3 | 00/19DF : 20 67 DD    |              jsr   {$dd67}        ; eval expression
+  279 |  1 ampersand.s    279 | Code        | 11 |         |    3 | 00/19E2 : 20 52 E7    |              jsr   {$e752}        ; convert to int
+  280 |  1 ampersand.s    280 | Code        | 11 |         |    2 | 00/19E5 : A5 50       |              lda   {$50}          
+  281 |  1 ampersand.s    281 | Code        | 11 |         |    3 | 00/19E7 : 8D E5 18    |              sta   theRADIUS      ; the radius
+  282 |  1 ampersand.s    282 | Empty       | 11 |         |    0 | 00/19EA               |                                   
+  283 |  1 ampersand.s    283 | Code        | 11 |         |    3 | 00/19EA : 20 BE DE    |              jsr   {$debe}        ; check for comma
+  284 |  1 ampersand.s    284 | Code        | 11 |         |    3 | 00/19ED : 20 67 DD    |              jsr   {$dd67}        ; eval expression
+  285 |  1 ampersand.s    285 | Code        | 11 |         |    3 | 00/19F0 : 20 52 E7    |              jsr   {$e752}        ; convert to int
+  286 |  1 ampersand.s    286 | Code        | 11 |         |    2 | 00/19F3 : A5 50       |              lda   {$50}          
+  287 |  1 ampersand.s    287 | Code        | 11 |         |    3 | 00/19F5 : 8D E6 18    |              sta   theFB          ; the foreground color
+  288 |  1 ampersand.s    288 | Code        | 11 |         |    1 | 00/19F8 : 60          |              rts                  
+  289 |  1 ampersand.s    289 | Empty       | 11 |         |    0 | 00/19F9               |                                   
+  290 |  1 ampersand.s    290 | Comment     | 11 |         |    0 | 00/19F9               | *----------------------------------- INK fb
+  291 |  1 ampersand.s    291 | Empty       | 11 |         |    0 | 00/19F9               |                                   
+  292 |  1 ampersand.s    292 | Empty       | 11 |         |    0 | 00/19F9               | doI                               
+  293 |  1 ampersand.s    293 | Code        | 11 |         |    3 | 00/19F9 : 20 B1 00    |              jsr   {$b1}          ; get next token
+  294 |  1 ampersand.s    294 | Code        | 11 |         |    3 | 00/19FC : 20 67 DD    |              jsr   {$dd67}        ; eval expression
+  295 |  1 ampersand.s    295 | Code        | 11 |         |    3 | 00/19FF : 20 52 E7    |              jsr   {$e752}        ; convert to int
+  296 |  1 ampersand.s    296 | Code        | 11 |         |    2 | 00/1A02 : A5 50       |              lda   {$50}          
+  297 |  1 ampersand.s    297 | Code        | 11 |         |    3 | 00/1A04 : 8D E7 18    |              sta   theINK         
+  298 |  1 ampersand.s    298 | Code        | 11 |         |    1 | 00/1A07 : 60          |              rts                  
+  299 |  1 ampersand.s    299 | Empty       | 11 |         |    0 | 00/1A08               |                                   
+  300 |  1 ampersand.s    300 | Comment     | 11 |         |    0 | 00/1A08               | *----------------------------------- PAPER fb
+  301 |  1 ampersand.s    301 | Empty       | 11 |         |    0 | 00/1A08               |                                   
+  302 |  1 ampersand.s    302 | Empty       | 11 |         |    0 | 00/1A08               | doP                               
+  303 |  1 ampersand.s    303 | Code        | 11 |         |    3 | 00/1A08 : 20 B1 00    |              jsr   {$b1}          ; get next token
+  304 |  1 ampersand.s    304 | Code        | 11 |         |    3 | 00/1A0B : 20 67 DD    |              jsr   {$dd67}        ; eval expression
+  305 |  1 ampersand.s    305 | Code        | 11 |         |    3 | 00/1A0E : 20 52 E7    |              jsr   {$e752}        ; convert to int
+  306 |  1 ampersand.s    306 | Code        | 11 |         |    2 | 00/1A11 : A5 50       |              lda   {$50}          
+  307 |  1 ampersand.s    307 | Code        | 11 |         |    3 | 00/1A13 : 8D E8 18    |              sta   thePAPER       
+  308 |  1 ampersand.s    308 | Code        | 11 |         |    1 | 00/1A16 : 60          |              rts                  
+  309 |  1 ampersand.s    309 | Empty       | 11 |         |    0 | 00/1A17               |                                   
+  310 |  1 ampersand.s    310 | Comment     | 11 |         |    0 | 00/1A17               | *----------------------------------- HIRES
+  311 |  1 ampersand.s    311 | Empty       | 11 |         |    0 | 00/1A17               |                                   
+  312 |  1 ampersand.s    312 | Empty       | 11 |         |    0 | 00/1A17               | doH                               
+  313 |  1 ampersand.s    313 | Code        | 11 |         |    3 | 00/1A17 : 20 B1 00    |              jsr   {$b1}          ; get next token
+  314 |  1 ampersand.s    314 | Empty       | 11 |         |    0 | 00/1A1A               |                                   
+  315 |  1 ampersand.s    315 | Code        | 11 |         |    2 | 00/1A1A : A9 00       |              lda   #0             
+  316 |  1 ampersand.s    316 | Code        | 11 |         |    2 | 00/1A1C : 85 20       |              sta   {$20}          
+  317 |  1 ampersand.s    317 | Code        | 11 |         |    2 | 00/1A1E : A9 28       |              lda   #40            
+  318 |  1 ampersand.s    318 | Code        | 11 |         |    2 | 00/1A20 : 85 21       |              sta   {$21}          
+  319 |  1 ampersand.s    319 | Code        | 11 |         |    2 | 00/1A22 : A9 14       |              lda   #20            
+  320 |  1 ampersand.s    320 | Code        | 11 |         |    2 | 00/1A24 : 85 22       |              sta   {$22}          
+  321 |  1 ampersand.s    321 | Code        | 11 |         |    2 | 00/1A26 : A9 18       |              lda   #24            
+  322 |  1 ampersand.s    322 | Code        | 11 |         |    2 | 00/1A28 : 85 23       |              sta   {$23}          
+  323 |  1 ampersand.s    323 | Code        | 11 |         |    3 | 00/1A2A : 20 58 FC    |              jsr   {$fc58}        
+  324 |  1 ampersand.s    324 | Empty       | 11 |         |    0 | 00/1A2D               |                                   
+  325 |  1 ampersand.s    325 | Code        | 11 |         |    3 | 00/1A2D : 20 E2 F3    |              jsr   {$f3e2}        
+  326 |  1 ampersand.s    326 | Code        | 11 |         |    3 | 00/1A30 : 8D 52 C0    |              sta   {$c052}        
+  327 |  1 ampersand.s    327 | Code        | 11 |         |    1 | 00/1A33 : 60          |              rts                  
+  328 |  1 ampersand.s    328 | Empty       | 11 |         |    0 | 00/1A34               |                                   
+  329 |  1 ampersand.s    329 | Comment     | 11 |         |    0 | 00/1A34               | *----------------------------------- WAIT x
+  330 |  1 ampersand.s    330 | Empty       | 11 |         |    0 | 00/1A34               |                                   
+  331 |  1 ampersand.s    331 | Empty       | 11 |         |    0 | 00/1A34               | doW                               
+  332 |  1 ampersand.s    332 | Code        | 11 |         |    3 | 00/1A34 : 20 B1 00    |              jsr   {$b1}          ; get next token
+  333 |  1 ampersand.s    333 | Code        | 11 |         |    3 | 00/1A37 : 20 67 DD    |              jsr   {$dd67}        ; eval expression
+  334 |  1 ampersand.s    334 | Code        | 11 |         |    3 | 00/1A3A : 20 52 E7    |              jsr   {$e752}        ; convert to int
+  335 |  1 ampersand.s    335 | Empty       | 11 |         |    0 | 00/1A3D               |                                   
+  336 |  1 ampersand.s    336 | Code        | 11 |         |    2 | 00/1A3D : A6 51       |              ldx   {$50}+1        
+  337 |  1 ampersand.s    337 | Code        | 11 |         |    2 | 00/1A3F : A4 50       | doW1         ldy   {$50}          
+  338 |  1 ampersand.s    338 | Code        | 11 |         |    2 | 00/1A41 : A9 3C       | ozunid_2     lda   #60            ; 1/100ème de seconde
+  339 |  1 ampersand.s    339 | Code        | 11 |         |    3 | 00/1A43 : 20 A8 FC    |              jsr   {$fca8}        
+  340 |  1 ampersand.s    340 | Code        | 11 |         |    1 | 00/1A46 : 88          |              dey                  
+  341 |  1 ampersand.s    341 | Code        | 11 |         |    2 | 00/1A47 : D0 F8       |              bne   ozunid_2       
+  342 |  1 ampersand.s    342 | Code        | 11 |         |    1 | 00/1A49 : CA          |              dex                  
+  343 |  1 ampersand.s    343 | Code        | 11 |         |    2 | 00/1A4A : 10 F3       |              bpl   doW1           
+  344 |  1 ampersand.s    344 | Code        | 11 |         |    1 | 00/1A4C : 60          |              rts                  
+  345 |  1 ampersand.s    345 | Empty       | 11 |         |    0 | 00/1A4D               |                                   
+  346 |  1 ampersand.s    346 | Comment     | 11 |         |    0 | 00/1A4D               | *----------------------------------- EXPLODE
+  347 |  1 ampersand.s    347 | Empty       | 11 |         |    0 | 00/1A4D               |                                   
+  348 |  1 ampersand.s    348 | Empty       | 11 |         |    0 | 00/1A4D               | doE                               
+  349 |  1 ampersand.s    349 | Code        | 11 |         |    3 | 00/1A4D : 20 B1 00    |              jsr   {$b1}          
+  350 |  1 ampersand.s    350 | Code        | 11 |         |    1 | 00/1A50 : 60          |              rts                  
+  351 |  1 ampersand.s    351 | Empty       | 11 |         |    0 | 00/1A51               |                                   
+  352 |  1 ampersand.s    352 | Comment     | 11 |         |    0 | 00/1A51               | *----------------------------------- RESTORE address
+  353 |  1 ampersand.s    353 | Empty       | 11 |         |    0 | 00/1A51               |                                   
+  354 |  1 ampersand.s    354 | Empty       | 11 |         |    0 | 00/1A51               | doR                               
+  355 |  1 ampersand.s    355 | Code        | 11 |         |    3 | 00/1A51 : 20 B1 00    |              jsr   {$b1}          ; get next token
+  356 |  1 ampersand.s    356 | Code        | 11 |         |    3 | 00/1A54 : 20 67 DD    |              jsr   {$dd67}        ; eval expression
+  357 |  1 ampersand.s    357 | Code        | 11 |         |    3 | 00/1A57 : 20 52 E7    |              jsr   {$e752}        ; convert to int
+  358 |  1 ampersand.s    358 | Code        | 11 |         |    3 | 00/1A5A : 20 1A D6    |              jsr   {$d61a}        ; find chosen line no.
+  359 |  1 ampersand.s    359 | Empty       | 11 |         |    0 | 00/1A5D               |                                   
+  360 |  1 ampersand.s    360 | Code        | 11 |         |    2 | 00/1A5D : A4 9C       |              ldy   {$9b}+1        ; point DATPTR at byte before it
+  361 |  1 ampersand.s    361 | Code        | 11 |         |    2 | 00/1A5F : A6 9B       |              ldx   {$9b}          
+  362 |  1 ampersand.s    362 | Code        | 11 |         |    2 | 00/1A61 : D0 01       |              bne   dx             
+  363 |  1 ampersand.s    363 | Code        | 11 |         |    1 | 00/1A63 : 88          |              dey                  
+  364 |  1 ampersand.s    364 | Code        | 11 |         |    1 | 00/1A64 : CA          | dx           dex                  
+  365 |  1 ampersand.s    365 | Code        | 11 |         |    2 | 00/1A65 : 84 7E       |              sty   {$7d}+1        
+  366 |  1 ampersand.s    366 | Code        | 11 |         |    2 | 00/1A67 : 86 7D       |              stx   {$7d}          
+  367 |  1 ampersand.s    367 | Code        | 11 |         |    1 | 00/1A69 : 60          |              rts                  
+  368 |  1 ampersand.s    368 | Empty       | 11 |         |    0 | 00/1A6A               |                                   
+  369 |  1 ampersand.s    369 | Comment     | 11 |         |    0 | 00/1A6A               | *----------------------------------- GOSUB expression
+  370 |  1 ampersand.s    370 | Empty       | 11 |         |    0 | 00/1A6A               |                                   
+  371 |  1 ampersand.s    371 | Empty       | 11 |         |    0 | 00/1A6A               | doG                               
+  372 |  1 ampersand.s    372 | Code        | 11 |         |    2 | 00/1A6A : A9 03       |              lda   #3             ; make sure there's enough stack
+  373 |  1 ampersand.s    373 | Code        | 11 |         |    3 | 00/1A6C : 20 D6 D3    |              jsr   {$d3d6}        
+  374 |  1 ampersand.s    374 | Empty       | 11 |         |    0 | 00/1A6F               |                                   
+  375 |  1 ampersand.s    375 | Code        | 11 |         |    2 | 00/1A6F : A5 B9       |              lda   {$b8}+1        ; push marker for RETURN
   376 |  1 ampersand.s    376 | Code        | 11 |         |    1 | 00/1A71 : 48          |              pha                  
-  377 |  1 ampersand.s    377 | Code        | 11 |         |    2 | 00/1A72 : A5 76       |              lda   {$75}+1        
+  377 |  1 ampersand.s    377 | Code        | 11 |         |    2 | 00/1A72 : A5 B8       |              lda   {$b8}          
   378 |  1 ampersand.s    378 | Code        | 11 |         |    1 | 00/1A74 : 48          |              pha                  
-  379 |  1 ampersand.s    379 | Code        | 11 |         |    2 | 00/1A75 : A5 75       |              lda   {$75}          
+  379 |  1 ampersand.s    379 | Code        | 11 |         |    2 | 00/1A75 : A5 76       |              lda   {$75}+1        
   380 |  1 ampersand.s    380 | Code        | 11 |         |    1 | 00/1A77 : 48          |              pha                  
-  381 |  1 ampersand.s    381 | Code        | 11 |         |    2 | 00/1A78 : A9 B0       |              lda   #{$b0}         
+  381 |  1 ampersand.s    381 | Code        | 11 |         |    2 | 00/1A78 : A5 75       |              lda   {$75}          
   382 |  1 ampersand.s    382 | Code        | 11 |         |    1 | 00/1A7A : 48          |              pha                  
-  383 |  1 ampersand.s    383 | Empty       | 11 |         |    0 | 00/1A7B               |                                   
-  384 |  1 ampersand.s    384 | Code        | 11 |         |    3 | 00/1A7B : 20 B1 00    |              jsr   {$b1}          ; get next token
-  385 |  1 ampersand.s    385 | Code        | 11 |         |    3 | 00/1A7E : 20 67 DD    |              jsr   {$dd67}        ; parse numeric expr
-  386 |  1 ampersand.s    386 | Code        | 11 |         |    3 | 00/1A81 : 20 52 E7    |              jsr   {$e752}        ; convert it to int
-  387 |  1 ampersand.s    387 | Code        | 11 |         |    3 | 00/1A84 : 20 41 D9    |              jsr   {$d93e}+3      ; point at chosen statement
-  388 |  1 ampersand.s    388 | Code        | 11 |         |    3 | 00/1A87 : 4C D2 D7    |              jmp   {$d7d2}        ; start running it
-  389 |  1 ampersand.s    389 | Empty       | 11 |         |    0 | 00/1A8A               |                                   
-  390 |  1 ampersand.s    390 | Comment     | 11 |         |    0 | 00/1A8A               | *--- End of code
-  391 |  1 ampersand.s    391 | Empty       | 11 |         |    0 | 00/1A8A               |                                   
-  392 |  1 ampersand.s    392 | Data        | 11 |         |   42 | 00/1A8A : A8 E3 A9 A0 |              asc   "(c) 2023, Antoine Vignau & Olivier Zardini"
+  383 |  1 ampersand.s    383 | Code        | 11 |         |    2 | 00/1A7B : A9 B0       |              lda   #{$b0}         
+  384 |  1 ampersand.s    384 | Code        | 11 |         |    1 | 00/1A7D : 48          |              pha                  
+  385 |  1 ampersand.s    385 | Empty       | 11 |         |    0 | 00/1A7E               |                                   
+  386 |  1 ampersand.s    386 | Code        | 11 |         |    3 | 00/1A7E : 20 B1 00    |              jsr   {$b1}          ; get next token
+  387 |  1 ampersand.s    387 | Code        | 11 |         |    3 | 00/1A81 : 20 67 DD    |              jsr   {$dd67}        ; parse numeric expr
+  388 |  1 ampersand.s    388 | Code        | 11 |         |    3 | 00/1A84 : 20 52 E7    |              jsr   {$e752}        ; convert it to int
+  389 |  1 ampersand.s    389 | Code        | 11 |         |    3 | 00/1A87 : 20 41 D9    |              jsr   {$d93e}+3      ; point at chosen statement
+  390 |  1 ampersand.s    390 | Code        | 11 |         |    3 | 00/1A8A : 4C D2 D7    |              jmp   {$d7d2}        ; start running it
+  391 |  1 ampersand.s    391 | Empty       | 11 |         |    0 | 00/1A8D               |                                   
+  392 |  1 ampersand.s    392 | Comment     | 11 |         |    0 | 00/1A8D               | *----------------------------------- GOTO expression
+  393 |  1 ampersand.s    393 | Empty       | 11 |         |    0 | 00/1A8D               |                                   
+  394 |  1 ampersand.s    394 | Empty       | 11 |         |    0 | 00/1A8D               | doT                               
+  395 |  1 ampersand.s    395 | Code        | 11 |         |    3 | 00/1A8D : 20 B1 00    |              jsr   {$b1}          ; get next token
+  396 |  1 ampersand.s    396 | Code        | 11 |         |    3 | 00/1A90 : 20 67 DD    |              jsr   {$dd67}        ; parse numeric expr
+  397 |  1 ampersand.s    397 | Code        | 11 |         |    3 | 00/1A93 : 20 52 E7    |              jsr   {$e752}        ; convert it to int
+  398 |  1 ampersand.s    398 | Code        | 11 |         |    3 | 00/1A96 : 4C 41 D9    |              jmp   {$d93e}+3      ; point at chosen statement
+  399 |  1 ampersand.s    399 | Empty       | 11 |         |    0 | 00/1A99               |                                   
+  400 |  1 ampersand.s    400 | Comment     | 11 |         |    0 | 00/1A99               | *--- End of code
+  401 |  1 ampersand.s    401 | Empty       | 11 |         |    0 | 00/1A99               |                                   
+  402 |  1 ampersand.s    402 | Data        | 11 |         |   42 | 00/1A99 : A8 E3 A9 A0 |              asc   "(c) 2023, Antoine Vignau & Olivier Zardini"
       |                       |             |    |         |      |           B2 B0 B2 B3 |
       |                       |             |    |         |      |           AC A0 C1 EE |
       |                       |             |    |         |      |           F4 EF E9 EE |
@@ -429,5 +439,5 @@
       |                       |             |    |         |      |           E5 F2 A0 DA |
       |                       |             |    |         |      |           E1 F2 E4 E9 |
       |                       |             |    |         |      |           EE E9       |
-  393 |  1 ampersand.s    393 | Empty       | 11 |         |    0 | 00/1AB4               |                                   
+  403 |  1 ampersand.s    403 | Empty       | 11 |         |    0 | 00/1AC3               |                                   
 ------+-----------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

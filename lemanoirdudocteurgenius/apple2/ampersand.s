@@ -59,6 +59,7 @@ WAIT	=	$fca8	; WAIT routine
 *  DRAW	D
 *  RESTORE  R to a line number
 *  GOSUB    G to an expression
+*  GOTO     T to an expression
 
 *
 * On ne fait pas :
@@ -119,7 +120,7 @@ doVECTOR	txa
 	pha
 	rts
 	
-myCMDS	asc	'SMDCIPHWERG'
+myCMDS	asc	'SMDCIPHWERGT'
 
 myADRS	da	doS-1
 	da	doM-1
@@ -132,6 +133,7 @@ myADRS	da	doS-1
 	da	doE-1
 	da	doR-1
 	da	doG-1
+	da	doT-1
 	
 *----------------------------------- Data
 
@@ -364,7 +366,7 @@ dx	dex
 	stx	DATPTR
 	rts
 
-*----------------------------------- GOSUB address
+*----------------------------------- GOSUB expression
 
 doG	
 	lda	#3	; make sure there's enough stack
@@ -386,6 +388,14 @@ doG
 	jsr	GETADR	; convert it to int
 	jsr	GOTO+3	; point at chosen statement
 	jmp	NEWSTT	; start running it
+
+*----------------------------------- GOTO expression
+
+doT	
+	jsr	CHRGET	; get next token
+	jsr	FRMNUM	; parse numeric expr
+	jsr	GETADR	; convert it to int
+	jmp	GOTO+3	; point at chosen statement
 
 *--- End of code
 

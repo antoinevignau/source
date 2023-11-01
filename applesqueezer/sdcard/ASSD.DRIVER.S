@@ -43,8 +43,8 @@ maxBLOCKP	=	65536	; 65536 blocks for ProDOS 8
 * E 1110 block device + write allowed + read allowed
 * C 1100 format allowed + removable media
 
-*dftCHAR	=	$03EC	; default characteristics
-dftCHAR	=	$8BEC	; default characteristics - LOGO
+dftCHAR	=	$03EC	; default characteristics
+*dftCHAR	=	$8BEC	; default characteristics - LOGO
 dftSLOT	=	$8000	; not slot dependent
 dftUNIT	=	$0001	; unit 1
 dftVERSION	=	$1000	; v1
@@ -556,13 +556,13 @@ MyDIB	ds	4	; +00 pointer to the next DIB
 	dw	dftCHAR	; +08 characteristics
 	adrl	maxBLOCKS	; +0A block count
 MyDevName	ds	32	; +0E device name
-*	str	'ASSDDevice' ; +0E device name
+*	str	'ASSDDevice' ; +0E device name - LOGO
 *	ds	21	; 32 - 11 = 21
 	dw	dftSLOT	; +2E slot number
 	dw	dftUNIT	; +30 unit number
 	dw	dftVERSION	; +32 version
-*	dw	devHDD	; +34 device ID
-	dw	devRAMDISK	; +34 device ID - LOGO
+	dw	devHDD	; +34 device ID
+*	dw	devRAMDISK	; +34 device ID - LOGO
 	dw	$0000	; +36 first linked device
 	dw	$0000	; +38 next linked device
 	adrl	$00000000	; +3A extended DIB ptr

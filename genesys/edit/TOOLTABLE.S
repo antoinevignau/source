@@ -113,11 +113,13 @@ ctlWINDOW
          ADRL  L046D
          ADRL  L048D
          ADRL  L04AD
-         ADRL  L04CD
-         ADRL  L04ED
-         ADRL  L050D
-         ADRL  L052D
-         ADRL  L054D
+         adrl  cTANIM
+         ADRL  c320
+         ADRL  c640
+         ADRL  cFAAW
+         ADRL  cHWSHA
+         adrl  cSHRON	; new
+         ADRL  cPREF
          ADRL  $00000000
 
 L010D    DW    $0008      ; pCount
@@ -468,6 +470,7 @@ L048D    DW    $0008      ; pCount
          ADRL  $00000020  ; refCon
          ADRL  L0597      ; titleRef
          DW    $0000      ; initialValue
+
 L04AD    DW    $0008      ; pCount
          ADRL  $00000022  ; ID
          DW    $005F      ; rect
@@ -480,9 +483,23 @@ L04AD    DW    $0008      ; pCount
          ADRL  $00000022  ; refCon
          ADRL  L058D      ; titleRef
          DW    $0000      ; initialValue
-L04CD    DW    $0008      ; pCount
+
+cTANIM   DW    $0008      ; pCount
+         ADRL  $00000025  ; ID
+         DW    $0069      ; rect
+         DW    $0138
+         DW    $0000
+         DW    $0000
+         ADRL  $82000000  ; procRef
+         DW    $0000      ; flag
+         DW    $1000      ; moreFlags
+         ADRL  $00000022  ; refCon
+         ADRL  sTANIM     ; titleRef
+         DW    $0000      ; initialValue
+
+c320     DW    $0008      ; pCount
          ADRL  $00000320  ; ID
-         DW    $006D      ; rect
+         DW    $0077      ; rect
          DW    $000E
          DW    $0000
          DW    $0000
@@ -490,11 +507,12 @@ L04CD    DW    $0008      ; pCount
          DW    $0005      ; flag
          DW    $1000      ; moreFlags
          ADRL  $00000320  ; refCon
-         ADRL  L05C0      ; titleRef
+         ADRL  s320      ; titleRef
          DW    $0000      ; initialValue
-L04ED    DW    $0008      ; pCount
+
+c640     DW    $0008      ; pCount
          ADRL  $00000640  ; ID
-         DW    $0077      ; rect
+         DW    $0081      ; rect
          DW    $000E
          DW    $0000
          DW    $0000
@@ -502,22 +520,11 @@ L04ED    DW    $0008      ; pCount
          DW    $0005      ; flag
          DW    $1000      ; moreFlags
          ADRL  $00000640  ; refCon
-         ADRL  L05B7      ; titleRef
+         ADRL  s640      ; titleRef
          DW    $0001      ; initialValue
-L050D    DW    $0008      ; pCount
+
+cFAAW    DW    $0008      ; pCount
          ADRL  $00001001  ; ID
-         DW    $006D      ; rect
-         DW    $00A2
-         DW    $0000
-         DW    $0000
-         ADRL  $82000000  ; procRef
-         DW    $0000      ; flag
-         DW    $1000      ; moreFlags
-         ADRL  $00001001  ; refCon
-         ADRL  L057E      ; titleRef
-         DW    $0000      ; initialValue
-L052D    DW    $0008      ; pCount
-         ADRL  $00001002  ; ID
          DW    $0077      ; rect
          DW    $00A2
          DW    $0000
@@ -525,29 +532,59 @@ L052D    DW    $0008      ; pCount
          ADRL  $82000000  ; procRef
          DW    $0000      ; flag
          DW    $1000      ; moreFlags
-         ADRL  $00001002  ; refCon
-         ADRL  L056B      ; titleRef
+         ADRL  $00001001  ; refCon
+         ADRL  sFAAW      ; titleRef
          DW    $0000      ; initialValue
-L054D    DW    $0007      ; pCount
+
+cHWSHA   DW    $0008      ; pCount
+         ADRL  $00001002  ; ID
+         DW    $0081      ; rect
+         DW    $00A2
+         DW    $0000
+         DW    $0000
+         ADRL  $82000000  ; procRef
+         DW    $0000      ; flag
+         DW    $1000      ; moreFlags
+         ADRL  $00001002  ; refCon
+         ADRL  sHWSHA      ; titleRef
+         DW    $0000      ; initialValue
+
+cSHRON   DW    $0008      ; pCount
+         ADRL  $00001003  ; ID
+         DW    $008b      ; rect
+         DW    $00A2
+         DW    $0000
+         DW    $0000
+         ADRL  $82000000  ; procRef
+         DW    $0000      ; flag
+         DW    $1000      ; moreFlags
+         ADRL  $00001002  ; refCon
+         ADRL  sSHRON      ; titleRef
+         DW    $0000      ; initialValue
+
+cPREF    DW    $0007      ; pCount
          ADRL  $00001000  ; ID
-         DW    $0070      ; rect
+         DW    $007f      ; rect
          DW    $015C
-         DW    $007D
+         DW    $008c
          DW    $01C0
          ADRL  $80000000  ; procRef
          DW    $0000      ; flag
          DW    $1000      ; moreFlags
          ADRL  $00001000  ; refCon
-         ADRL  L05AD      ; titleRef
+         ADRL  sPREF      ; titleRef
 
-L056B    STR   'Hardware shadowing'
-L057E    STR   'Fastport aware'
+sSHRON	str	'Keep SHR screen on'
+sHWSHA	str	'Hardware shadowing'
+sFAAW	str	'Fastport aware'
+
+sTANIM	str	'Animation'
 L058D    STR   'Text edit'
 L0597    STR   'MIDI'
 L059C    STR   'Resource manager'
-L05AD    STR   'Preferred'
-L05B7    STR   '640 Mode'
-L05C0    STR   '320 Mode'
+sPREF    STR   'Preferred'
+s640     STR   '640 Mode'
+s320     STR   '320 Mode'
          STR   'Resource manager'
 L05DA    STR   'ACE'
 L05DE    STR   'List manager'
@@ -604,7 +641,7 @@ myWINDOW DW    $0050
          ADRL  $00000000  ; content defproc
          DW    $0024      ; content rect
          DW    $001E
-         DW    $00A6
+         DW    $00ba	; was $A6
          DW    $01F4
          ADRL  $FFFFFFFF  ; starting plane
          ADRL  $00000000  ; storage ptr
@@ -633,10 +670,10 @@ refreshWINDOW
          _GetPort
          _DrawControls
          PEA   $000A
-         PEA   $006A
+         PEA   $0074	; was $006A
          _MoveTo
          PEA   $01CC
-         PEA   $006A
+         PEA   $0074	; was $006A
          _LineTo
          _SetCurResourceFile
          PLB
@@ -1088,7 +1125,7 @@ L0B67    LDX   $22
          LDA   #$0000	; format the header
          STA   [$06]
          LDY   #$0002
-         LDA   #$C080
+         LDA   #$C180	; with bit 8
          STA   [$06],Y
          LDY   #$0004
          LDA   #$0000
@@ -1284,6 +1321,7 @@ L0B67    LDX   $22
          PLY
          LDA   #$001B
          STA   [$06],Y
+
          LDY   #$000C
          PHY
          LDA   #$0010
@@ -1296,6 +1334,7 @@ L0B67    LDX   $22
          PLY
          LDA   #$001C
          STA   [$06],Y
+
          LDY   #$000C
          PHY
          LDA   #$0011
@@ -1308,6 +1347,7 @@ L0B67    LDX   $22
          PLY
          LDA   #$001E
          STA   [$06],Y
+
          LDY   #$000C
          PHY
          LDA   #$0012
@@ -1320,6 +1360,7 @@ L0B67    LDX   $22
          PLY
          LDA   #$0022
          STA   [$06],Y
+
          LDA   #$0001
          STA   $26
 
@@ -1339,18 +1380,17 @@ L0D2E    LDY   #$000C
          TAY
          LDA   #$0000
          STA   [$06],Y
+
          INC   $26
          LDA   $26
          CMP   #$0013
-         BEQ   L0D54
-         BRL   L0D2E
+         bne   L0D2E
 
-L0D54    LDA   $2F
-         PHA
-         LDX   $2D
-         LDA   $2B
-         PHX
-         PHA
+*---
+
+L0D54    pei   $2F
+         pei   $2D
+         pei   $2B
          JSL   writeRESOURCE
          LDA   #$0000
          STA   $16
@@ -2299,28 +2339,19 @@ L1611    LDA   $1C
          PLX
          STX   $02
          STA   [$00]
+
 L166D    PHA
          PHA
          PHA
-         LDX   $25
-         LDA   $23
-         PHX
-         PHA
-         LDA   #$0022
-         LDX   #$0000
-         TAY
-         BPL   L1680
-         DEX
-L1680    PHX
-         PHA
+         pei	$25
+         pei	$23
+         pea	$0000
+         pea	$0022
          _GetCtlHandleFromID
-         STA   L2BCB
          _GetCtlValue
-         STA   L2BCB
          PLA
-         BNE   L169C
-         BRL   L16F8
-L169C    LDA   $1C
+         beq   L16F7
+         LDA   $1C
          CLC
          ADC   #$0001
          STA   $1C
@@ -2346,7 +2377,7 @@ L169C    LDA   $1C
          STA   $02
          LDA   #$0022
          STA   [$00]
-         LDY   #$0002
+*         LDY   #$0002
          LDA   [$16],Y
          PHA
          LDA   [$16]
@@ -2376,6 +2407,78 @@ L169C    LDA   $1C
          PLX
          STX   $02
          STA   [$00]
+
+*--- Animation Tool
+
+L16F7    PHA
+         PHA
+         PHA
+         pei	$25
+         pei	$23
+         pea	$0000
+         pea	$0025
+         _GetCtlHandleFromID
+         _GetCtlValue
+         PLA
+         beq   L16F8
+         LDA   $1C
+         CLC
+         ADC   #$0001
+         STA   $1C
+         LDY   #$0002
+         LDA   [$16],Y
+         PHA
+         LDA   [$16]
+         PHA
+         PLA
+         CLC
+         ADC   #$000C
+         PHA
+         LDA   $1C
+         DEC
+         ASL
+         ASL
+         CLC
+         ADC   $01,S
+         STA   $01,S
+         PLA
+         STA   $00
+         PLA
+         STA   $02
+         LDA   #$0025
+         STA   [$00]
+*         LDY   #$0002
+         LDA   [$16],Y
+         PHA
+         LDA   [$16]
+         PHA
+         PLA
+         CLC
+         ADC   #$000C
+         PHA
+         LDA   $1C
+         DEC
+         ASL
+         ASL
+         CLC
+         ADC   $01,S
+         STA   $01,S
+         PLA
+         CLC
+         ADC   #$0002
+         PHA
+         LDA   #$0025
+         DEC
+         ASL
+         TAX
+         LDA   theTOOLREC,X
+         PLX
+         STX   $00
+         PLX
+         STX   $02
+         STA   [$00]
+
+*--- end of Animation Tool
 
 L16F8    LDY   #$0002	; +0A - numTools
          LDA   [$16],Y
@@ -2418,9 +2521,9 @@ L1734    PHX
          _GetCtlValue
          STA   L2BCB
          PLA
-         BNE   L1750
-         BRL   L1765
-L1750    LDY   #$0002
+         beq   L1765
+
+         LDY   #$0002
          LDA   [$16],Y
          TAX
          LDA   [$16]
@@ -2434,26 +2537,16 @@ L1750    LDY   #$0002
 L1765    PHA		; +02 - videoMode for bit 15
          PHA
          PHA
-         LDX   $25
-         LDA   $23
-         PHX
-         PHA
-         LDA   #$1002
-         LDX   #$0000
-         TAY
-         BPL   L1778
-         DEX
-L1778    PHX
-         PHA
+         pei	$25
+         pei	$23
+         pea	$0000
+         pea	$1002
          _GetCtlHandleFromID
-         STA   L2BCB
          _GetCtlValue
-         STA   L2BCB
          PLA
-         BNE   L1794
-         BRL   L17BF
+         beq   L17BF
 
-L1794    LDY   #$0002
+         LDY   #$0002
          LDA   [$16],Y
          PHA
          LDA   [$16]
@@ -2462,13 +2555,13 @@ L1794    LDY   #$0002
          CLC
          ADC   #$0002
          PHA
-         LDY   #$0002
+*         LDY   #$0002
          LDA   [$16],Y
          TAX
          LDA   [$16]
          STA   $00
          STX   $02
-         LDY   #$0002
+*         LDY   #$0002
          LDA   [$00],Y
          ORA   #$8000
          PLX
@@ -2480,26 +2573,16 @@ L1794    LDY   #$0002
 L17BF    PHA		; +02 - videoMode for bit 7
          PHA
          PHA
-         LDX   $25
-         LDA   $23
-         PHX
-         PHA
-         LDA   #$0640
-         LDX   #$0000
-         TAY
-         BPL   L17D2
-         DEX
-L17D2    PHX
-         PHA
+         pei	$25
+         pei	$23
+         pea	$0000
+         pea	$0640
          _GetCtlHandleFromID
-         STA   L2BCB
          _GetCtlValue
-         STA   L2BCB
          PLA
-         BNE   L17EE
-         BRL   L1819
+         beq   L1819
 
-L17EE    LDY   #$0002
+         LDY   #$0002
          LDA   [$16],Y
          PHA
          LDA   [$16]
@@ -2523,7 +2606,47 @@ L17EE    LDY   #$0002
          STX   $02
          STA   [$00]
 
-L1819    LDY   #$0002	; +04 - resFileID
+*--- Begin of Leave SHR screen on
+
+L1819    PHA		; +02 - videoMode for bit 8
+         PHA
+         PHA
+         pei	$25
+         pei	$23
+         pea	$0000
+         pea	$1003
+         _GetCtlHandleFromID
+         _GetCtlValue
+         PLA
+         beq   L181A
+
+         LDY   #$0002
+         LDA   [$16],Y
+         PHA
+         LDA   [$16]
+         PHA
+         PLA
+         CLC
+         ADC   #$0002
+         PHA
+*         LDY   #$0002
+         LDA   [$16],Y
+         TAX
+         LDA   [$16]
+         STA   $00
+         STX   $02
+*         LDY   #$0002
+         LDA   [$00],Y
+         ORA   #$0100	; This is bit 8
+         PLX
+         STX   $00
+         PLX
+         STX   $02
+         STA   [$00]
+
+*--- end of "Leave SHR screen on"
+
+L181A    LDY   #$0002	; +04 - resFileID
          LDA   [$16],Y
          TAX
          LDA   [$16]
@@ -2706,8 +2829,10 @@ L1A26    PHX
          CMP   #$000D
          BEQ   L1A48
          BRL   L1A0B
+
 L1A48    LDA   #$000E
          STA   $26
+
 L1A4D    LDA   #$0000
          PHA
          PHA
@@ -2716,26 +2841,21 @@ L1A4D    LDA   #$0000
          LDA   haWINDOW
          PHX
          PHA
-         LDA   #$0000
-         CLC
-         ADC   $26
-         LDX   #$0000
-         TAY
-         BPL   L1A68
-         DEX
-L1A68    PHX
-         PHA
+         pea	$0000
+         pei	$26
          _GetCtlHandleFromID
-         STA   L2BCB
          _SetCtlValue
-         STA   L2BCB
+
          INC   $26
          LDA   $26
          CMP   #$0018
-         BEQ   L1A8A
-         BRL   L1A4D
+         bne   L1A4D
+
+*---
+
 L1A8A    LDA   #$0019
          STA   $26
+
 L1A8F    LDA   #$0000
          PHA
          PHA
@@ -2744,24 +2864,18 @@ L1A8F    LDA   #$0000
          LDA   haWINDOW
          PHX
          PHA
-         LDA   #$0000
-         CLC
-         ADC   $26
-         LDX   #$0000
-         TAY
-         BPL   L1AAA
-         DEX
-L1AAA    PHX
-         PHA
+         pea	$0000
+         pei	$26
          _GetCtlHandleFromID
-         STA   L2BCB
          _SetCtlValue
-         STA   L2BCB
+
          INC   $26
          LDA   $26
          CMP   #$001F
-         BEQ   L1ACC
-         BRL   L1A8F
+         bne   L1A8F
+
+* MIDI Toolset
+
 L1ACC    LDA   #$0000
          PHA
          PHA
@@ -2770,17 +2884,13 @@ L1ACC    LDA   #$0000
          LDA   haWINDOW
          PHX
          PHA
-         LDA   #$0020
-         LDX   #$0000
-         TAY
-         BPL   L1AE4
-         DEX
-L1AE4    PHX
-         PHA
+         pea	$0000
+         pea	$0020
          _GetCtlHandleFromID
-         STA   L2BCB
          _SetCtlValue
-         STA   L2BCB
+
+* Text Edit
+
          LDA   #$0000
          PHA
          PHA
@@ -2789,17 +2899,13 @@ L1AE4    PHX
          LDA   haWINDOW
          PHX
          PHA
-         LDA   #$0022
-         LDX   #$0000
-         TAY
-         BPL   L1B12
-         DEX
-L1B12    PHX
-         PHA
+         pea	$0000
+         pea	$0022
          _GetCtlHandleFromID
-         STA   L2BCB
          _SetCtlValue
-         STA   L2BCB
+
+* Animation
+
          LDA   #$0000
          PHA
          PHA
@@ -2808,17 +2914,13 @@ L1B12    PHX
          LDA   haWINDOW
          PHX
          PHA
-         LDA   #$1001
-         LDX   #$0000
-         TAY
-         BPL   L1B40
-         DEX
-L1B40    PHX
-         PHA
+         pea	$0000
+         pea	$0025
          _GetCtlHandleFromID
-         STA   L2BCB
          _SetCtlValue
-         STA   L2BCB
+
+* Fastport aware
+
          LDA   #$0000
          PHA
          PHA
@@ -2827,17 +2929,43 @@ L1B40    PHX
          LDA   haWINDOW
          PHX
          PHA
-         LDA   #$1002
-         LDX   #$0000
-         TAY
-         BPL   L1B6E
-         DEX
-L1B6E    PHX
-         PHA
+         pea	$0000
+         pea	$1001
          _GetCtlHandleFromID
-         STA   L2BCB
          _SetCtlValue
-         STA   L2BCB
+
+* Hardware shadowing
+
+         LDA   #$0000
+         PHA
+         PHA
+         PHA
+         LDX   haWINDOW+2
+         LDA   haWINDOW
+         PHX
+         PHA
+         pea	$0000
+         pea	$1002
+         _GetCtlHandleFromID
+         _SetCtlValue
+
+* Keep SHR screen on
+
+         LDA   #$0000
+         PHA
+         PHA
+         PHA
+         LDX   haWINDOW+2
+         LDA   haWINDOW
+         PHX
+         PHA
+         pea	$0000
+         pea	$1003
+         _GetCtlHandleFromID
+         _SetCtlValue
+
+*---
+
          LDX   ptrBUFFER+2
          LDA   ptrBUFFER
          STA   $00
@@ -2895,18 +3023,22 @@ L1BFC    LDX   $22
          PHA
          _HLock
          STA   L2BCB
+
          LDY   #$0002
          LDA   [$20],Y
          TAX
          LDA   [$20]
          STX   $08
          STA   $06
+
+* Check bit 8
+
          LDY   #$0002
          LDA   [$06],Y
-         AND   #$8000
-         BNE   L1C25
-         BRL   L1C53
-L1C25    LDA   #$0001
+         AND   #$0100
+         beq   L1C52
+
+         LDA   #$0001
          PHA
          PHA
          PHA
@@ -2914,23 +3046,39 @@ L1C25    LDA   #$0001
          LDA   haWINDOW
          PHX
          PHA
-         LDA   #$1002
-         LDX   #$0000
-         TAY
-         BPL   L1C3D
-         DEX
-L1C3D    PHX
-         PHA
+         pea	$0000
+         pea	$1003
          _GetCtlHandleFromID
-         STA   L2BCB
          _SetCtlValue
-         STA   L2BCB
+
+* Check bit 15
+
+L1C52    LDY   #$0002
+         LDA   [$06],Y
+         AND   #$8000
+         beq   L1C53
+
+         LDA   #$0001
+         PHA
+         PHA
+         PHA
+         LDX   haWINDOW+2
+         LDA   haWINDOW
+         PHX
+         PHA
+         pea	$0000
+         pea	$1002
+         _GetCtlHandleFromID
+         _SetCtlValue
+
+* Check bit 14
+
 L1C53    LDY   #$0002
          LDA   [$06],Y
          AND   #$4000
-         BNE   L1C60
-         BRL   L1C8E
-L1C60    LDA   #$0001
+         beq   L1C8E
+
+         LDA   #$0001
          PHA
          PHA
          PHA
@@ -2938,42 +3086,23 @@ L1C60    LDA   #$0001
          LDA   haWINDOW
          PHX
          PHA
-         LDA   #$1001
-         LDX   #$0000
-         TAY
-         BPL   L1C78
-         DEX
-L1C78    PHX
-         PHA
+         pea	$0000
+         pea	$1001
          _GetCtlHandleFromID
-         STA   L2BCB
          _SetCtlValue
-         STA   L2BCB
+
+* Check Video Mode
+
 L1C8E    LDY   #$0002
          LDA   [$06],Y
+         
+	ldy	#$0320	; mode 320
+         
          AND   #$0080
-         BNE   L1C9B
-         BRL   L1CCC
-L1C9B    LDA   #$0001
-         PHA
-         PHA
-         PHA
-         LDX   haWINDOW+2
-         LDA   haWINDOW
-         PHX
-         PHA
-         LDA   #$0640
-         LDX   #$0000
-         TAY
-         BPL   L1CB3
-         DEX
-L1CB3    PHX
-         PHA
-         _GetCtlHandleFromID
-         STA   L2BCB
-         _SetCtlValue
-         STA   L2BCB
-         BRL   L1CFA
+         beq   L1CCC
+	
+	ldy	#$0640	; mode 640
+	
 L1CCC    LDA   #$0001
          PHA
          PHA
@@ -2982,18 +3111,14 @@ L1CCC    LDA   #$0001
          LDA   haWINDOW
          PHX
          PHA
-         LDA   #$0320
-         LDX   #$0000
-         TAY
-         BPL   L1CE4
-         DEX
-L1CE4    PHX
-         PHA
+         pea	$0000
+         phy
          _GetCtlHandleFromID
-         STA   L2BCB
          _SetCtlValue
-         STA   L2BCB
-L1CFA    LDY   #$000A
+
+*---
+
+         LDY   #$000A
          LDA   [$06],Y
          STA   $0A
          LDA   #$0001
@@ -4257,6 +4382,12 @@ doCOMMAND3
          TAX
          LDA   #$0101
          STA   theTOOLREC,X
+         LDA   #$0025
+         DEC
+         ASL
+         TAX
+         LDA   #$0100
+         STA   theTOOLREC,X
          BRL   exitEDITOR
 	 
 *--- Command 4
@@ -4336,7 +4467,7 @@ exitEDITOR    LDA   #$0000
          TXA
          RTL
 
-strEDITOR	ASC   'Tool table editor v1.2'
+strEDITOR	ASC   'Tool table editor v1.3'
 strEDITOR2
 strRESOURCE	ASC   'Tool table'
 strRESOURCE2
@@ -4349,7 +4480,7 @@ resfileID    DW    $0000
 haMEMORY    ADRL  $00000000
 haMEMORY2    ADRL  $00000000
 haWINDOW    ADRL  $00000000
-theTOOLREC    DS    $44
+theTOOLREC    DS    $400	; 256 tools x 2 words
 
 *--- Buffers
 

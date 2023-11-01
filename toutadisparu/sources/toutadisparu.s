@@ -5,14 +5,7 @@
 * (c) 2022, Antoine Vignau & Olivier Zardini
 *
 
-	lst   off
-	rel
-	typ   $B3
-	dsk   ToutADisparu.l
-
 	mx    %00
-	xc
-	xc
 
 *----------------------------------- Macros
 
@@ -42,49 +35,10 @@
 *-----------------------
 
 @cprint	mac
-	lda	#]1
-	ldy	#]2
+	ldx	#^]1
+	ldy	#]1
+	lda	#]2
 	jsr	cprint
-	eom
-
-*@print	mac
-*	lda	#]1
-*	ldx	#]2
-*	ldy	#]3
-*	jsr	print
-*	eom
-
-@val	mac
-	PushWord ]2
-	PushWord ]1
-	jsr	val
-	eom
-	
-@left	mac
-	PushWord ]3
-	PushWord ]2
-	PushWord ]1
-	jsr	left
-	eom
-
-@charcmp	mac
-	PushWord #]2
-	PushWord #]1
-	jsr	charcmp
-	eom
-
-@copystring	mac
-	PushWord #]3
-	PushWord #]2
-	PushWord #]1
-	jsr	copy_string
-	eom
-
-@instr	mac
-	PushWord #]3
-	PushWord #]2
-	PushWord #]1
-	jsr	instr
 	eom
 
 *----------------------------------- Constantes
@@ -101,11 +55,12 @@ GSOS	=	$e100a8
 alertQUIT	=	$0100
 alertRESTART =	$0200
 
-refIsPointer = $0
-refIsHandle	=  $1
-refIsResource = $2
+refIsPointer =	0
+refIsHandle	=	1
+refIsResource =	2
 
 appleKey	=	$0100
+mouseDownEvt =	$0001
 mouseUpEvt	=	$0002
 keyDownEvt	=	$0003
 
@@ -114,12 +69,14 @@ keyDownEvt	=	$0003
 dpFROM	=	$80
 dpTO	=	dpFROM+4
 
-dpINDEX	= 	$90	; pointeur vers les INDEX
+dpINDEX	= 	dpFROM+$10	; pointeur vers les INDEX
 dpTEXTES	=	dpINDEX+4	; pointeur vers les TEXTES
 
-Debut	=	$a0
+Debut	=	dpINDEX+$10
 Arrivee	=	Debut+4
 Second	=	Arrivee+4
+
+*---
 
 mode_320	=	$00
 mode_640	=	$80
@@ -135,6 +92,9 @@ ptrE12000	=	$e12000
 TRUE	=	1
 FALSE	=	0
 
+fgLOAD	=	1	; flags for choix_aventure
+fgRESTART	=	2
+
 *----------------------------------- Entry point
 
 	phk
@@ -148,18 +108,13 @@ FALSE	=	0
 	pha
 	_MMStartUp
 	pla
+	sta	mainID
+	ora	#$0100
 	sta	myID
 
 	tdc
 	sta	myDP
 	
-*---
-
-	lda	#main
-	stal	$310
-	lda	#^main
-	stal	$312
-
 *--- Version du systeme
 
 	jsl	GSOS
@@ -194,8 +149,7 @@ koMEM	pha
 	pla
 	brl   meQUIT1
 
-okMEM1
-	sty	ptrIMAGE
+okMEM1	sty	ptrIMAGE
 	stx	ptrIMAGE+2
 	stx	ptrMENU+2	; l'image de menu
 
@@ -238,7 +192,7 @@ okMEM1
 
 	pha
 	pha
-	PushWord	myID
+	PushWord	mainID
 	PushWord	#refIsResource
 	PushLong	#1
 	_StartUpTools
@@ -257,33 +211,66 @@ okMEM1
 *--- Et la musique...
 
 okTOOL	_HideMenuBar
+
+	PushWord	#0
+	PushWord	#%11111111_11111111
+	PushWord	#0
+	_FlushEvents
+	pla
+
 	_InitCursor
+	_HideCursor
 
 	PushLong	#0
 	_GetPort
 	PullLong	mainPORT
+
+	PushLong	mainPORT
+	_SetPort
 	
 *----------------------------------------
 * INITIALISATIONS
 *----------------------------------------
 
-*	jsr	loadFONT	; charge l'image de la police
-	jsr	load_font	; charge courier.10
 	jsr	initNTP
 	jsr	randomNTP	; select a sequence 0-7
+	jsr	TWILIGHToff
 	
 	jsr	set_language
 	jsr	doSOUNDON	; NTP on
-
+	
 	jsr	initialisation_absolue
 	jsr	generique
-	jsr	main
 
+*-----------------------
+* MAIN - OK
+*-----------------------
+* main
+
+main	jsr	fadeOUT
+	jsr	choix_aventure
+	jsr	initialisation_relative
+	jsr	fadeOUT
+
+*---
+	
+mainLOOP	jsr	nouvelle_scene	; on initialise la scène
+	jsr	image		; on charge une image éventuelle
+	jsr	get_textes		; on détermine le texte
+	jsr	prepare_texte	; que l'on prepare le texte
+	jsr	suite_forcee	; a-t-on des mots cliquables ?
+	lda	fgSUITEFORCEE
+	cmp	#TRUE
+	beq	noMOTS
+	jsr	mots_clicables	; on y ajoute les mots cliquables
+noMOTS	jsr	affiche_texte	; et on l'affiche
+	
 *----------------------------------------
-* TASK MASTER
+* TASK MASTER (no more)
 *----------------------------------------
 
-taskLOOP
+taskLOOP	inc	VBLCounter0
+
 	PushWord #0
 	PushWord #0
 	PushWord #$c000
@@ -292,25 +279,32 @@ taskLOOP
 	pla
 	pla
 
-	inc	VBLCounter0
-
-	PushWord #0
-	PushWord #%11111111_11111111
+	pha
+	PushWord #%00000000_00001010
 	PushLong #taskREC
-	_TaskMaster
+	_GetNextEvent
 	pla
 	beq	taskLOOP
-	 
+
+	lda	taskREC
 	asl
 	tax
 	jsr	(taskTBL,x)
-	bra	taskLOOP
+
+	lda	escape	; on a une condition de sortie
+	cmp	#FALSE
+	bne	main
+	
+	lda	deplacement	; si on doit bouger, on fait un...
+	ora	fgSUITEFORCEE
+	cmp	#TRUE
+	beq	mainLOOP	; ...grand saut
+	bne	taskLOOP	; ...sinon on attend
 
 *----------------------------------- Gestion du keyDown
 * on gère les open-apple-qqch
 
-doKEYDOWN
-	lda	taskMODIFIERS
+doKEYDOWN	lda	taskMODIFIERS
 	and	#appleKey
 	cmp	#appleKey
 	beq	doOPENAPPLE
@@ -345,53 +339,50 @@ tblKEYVALUE
 	asc	'QqOoSs'
 	asc	'Rr'
 	asc	'Zz'
+	asc	'?'
 	hex	ff
 	
 tblKEYADDRESS
 	da	doQUIT,doQUIT,doLOAD,doLOAD,doSAVE,doSAVE
 	da	doRESTART,doRESTART
 	da	doMUSIK,doMUSIK
-
-*----------------------------------- Gestion des contrôles (ça veut dire boutons ou lineedit)
-
-doCONTROL
-	lda	taskREC+38
-	rts
+	da	help
 
 *----------------------------------- Gestion du mouseUp
 * on compare les coordonnées avec celles du incontent
 * si dans le même rectangle, on traite
 
-doMOUSEUP
-	rts
+doMOUSEDOWN
 
+doMOUSEUP	lda	fgSUITEFORCEE
+	cmp	#FALSE
+	beq	mup1
+	rts		; non, on sort
+
+mup1	jsr	clic_mot	; oui, on vérifie si on a cliqué sur un mot => mot$
+	bcc	mup2	; oui
+	rts
+mup2	jsr	aiguille	; on aiguille le joueur (1 ou 2 clics)
+	rts
+	
 *-----------------------------------
 * AUTRES ROUTINES
 *-----------------------------------
 
-*----------------------------------- Switch to 320 mode
-
-switch_320
-	lda	#0
+switch_320	lda	#0	; Switch to 320 mode
 	ldy	#screen_320
 	bra	switch_res
-	
-*----------------------------------- Switch to 640 mode
 
-switch_640
-	lda	#$80
+switch_640	lda	#$80	; Switch to 640 mode
 	ldy	#screen_640
 	
 *-----------
 
-switch_res
-	sty	mainWIDTH
+switch_res	sty	mainWIDTH
 	pha
 	pha
 	_SetMasterSCB
 	_SetAllSCBs
-	PushLong	#$e19e00
-	_InitColorTable
 	_InitCursor
 	PushLong mainPORT
 	_InitPort
@@ -403,6 +394,8 @@ switch_res
 	PushWord	#200
 	_ClampMouse
 	_HomeMouse
+	PushLong	#monCURSEUR
+	_SetCursor
 	_ShowCursor
 	_WindNewRes
 	_MenuNewRes
@@ -412,12 +405,12 @@ switch_res
 *-----------
 
 mainWIDTH	ds	2
+oldWIDTH	ds	2
 mainPORT	ds	4
 
 *----------------------------------- Open
 
-doLOAD
-	jsr	suspendMUSIC	; NTP off
+doLOAD	jsr	suspendMUSIC	; NTP off
 	jsr	saveBACK
 	
 	PushWord #30
@@ -429,20 +422,40 @@ doLOAD
 	_SFGetFile
 
 	jsr	loadBACK
-	jsr	resumeMUSIC	; NTP on
-	
+
 	lda	replyPTR
 	bne	doLOAD1
+	jsr	resumeMUSIC	; NTP on
 	rts
 
-doLOAD1
-	jsr	copyPATH
-	jmp	loadALL
+doLOAD1	jsr	copyPATH
+	jsr	loadALL
+	bcc	doLOAD2
+	rts
+doLOAD2	jsr	fin_aventure
+	jsr	initialisation_absolue
+
+	lda	fiAVENTURE
+	sta	aventure
+	lda	fiSCENEACTUELLE
+	sta	scene_actuelle
+	
+	sep	#$20
+	ldx	#0
+]lp	lda	fiSCENEVISITEE,x
+	sta	scene_visitee,x
+	inx
+	cpx	#NB_TEXTES
+	bcc	]lp
+	rep	#$20
+	
+	lda	#fgLOAD
+	sta	escape
+	rts
 	
 *----------------------------------- Save
 
-doSAVE
-	jsr	suspendMUSIC	; NTP off
+doSAVE	jsr	suspendMUSIC	; NTP off
 	jsr	saveBACK
 	
 	PushWord #25
@@ -460,8 +473,7 @@ doSAVE
 	bne	doSAVE1
 	rts
 
-doSAVE1
-	jsr	copyPATH
+doSAVE1	jsr	copyPATH
 	jmp	saveALL
 	
 *--- Recopie le filename du fichier de sauvegarde
@@ -483,8 +495,7 @@ copyPATH
 
 *--- Charge le fichier de sauvegarde en mémoire
 
-loadALL
-	jsl	GSOS
+loadALL	jsl	GSOS
 	dw	$2010
 	adrl	proOPENGAME
 	bcs	loadKO99
@@ -499,21 +510,22 @@ loadALL
 	dw	$2014
 	adrl	proCLOSE
 
-loadKO99
-	rts
+loadKO99	rts
 
 *---
 
-loadPART
-	ldx	#NB_INDICATEURS
-	ldy	#C1
+loadPART	ldx	#2
+	ldy	#fiAVENTURE
+	jsr	loadIT
+
+	ldx	#2
+	ldy	#fiSCENEACTUELLE
 	jsr	loadIT
 	
-	ldx	#2
-	ldy	#P
+	ldx	#NB_TEXTES
+	ldy	#fiSCENEVISITEE
 	
-loadIT
-	stx	proREADGAME+8
+loadIT	stx	proREADGAME+8
 	sty	proREADGAME+4
 	jsl	GSOS
 	dw	$2012
@@ -522,8 +534,7 @@ loadIT
 
 *--- Enregistre le fichier de sauvegarde
 
-saveALL
-	jsl	GSOS
+saveALL	jsl	GSOS
 	dw	$2002
 	adrl	proDESTROYGAME
 	
@@ -547,21 +558,22 @@ saveALL
 	dw	$2014
 	adrl	proCLOSE
 
-saveKO99
-	rts
+saveKO99	rts
 
 *---
 
-savePART
-	ldx	#NB_INDICATEURS
-	ldy	#C1
+savePART	ldx	#2
+	ldy	#aventure
+	jsr	saveIT
+
+	ldx	#2
+	ldy	#scene_actuelle
 	jsr	saveIT
 	
-	ldx	#2
-	ldy	#P
-
-saveIT
-	stx	proWRITEGAME+8
+	ldx	#NB_TEXTES
+	ldy	#scene_visitee
+	
+saveIT	stx	proWRITEGAME+8
 	sty	proWRITEGAME+4
 	jsl	GSOS
 	dw	$2013
@@ -570,13 +582,12 @@ saveIT
 
 *----------------------------------- Restart
 
-doRESTART
+doRESTART	jsr	suspendMUSIC	; NTP off
 	jsr	saveBACK
 
 	PushWord #0
 	PushWord #5
 	PushLong #0
-*	PushLong #alertRESTART
 	pea	$0000
 	lda	#alertRESTART
 	ora	saveLANGUAGE
@@ -587,20 +598,22 @@ doRESTART
 	
 	pla
 	beq	re1
+	jmp	resumeMUSIC	; NTP on
+	
+re1	jsr	fin_aventure
+	jsr	initialisation_absolue
+	lda	#fgRESTART
+	sta	escape
 	rts
-
-re1
-	jmp	initialisation_relative
 
 *----------------------------------- Quit
 
-doQUIT
+doQUIT	jsr	suspendMUSIC	; NTP off
 	jsr	saveBACK
 	
 	PushWord #0
 	PushWord #5
 	PushLong #0
-*	PushLong #alertQUIT
 	pea	$0000
 	lda	#alertQUIT
 	ora	saveLANGUAGE
@@ -608,6 +621,7 @@ doQUIT
 	_AlertWindow
 	
 	jsr	loadBACK
+	jsr	resumeMUSIC	; NTP on
 	
 	pla
 	beq	meQUIT
@@ -615,19 +629,20 @@ doQUIT
 
 *----------------------------------- Quit
 
-meQUIT
-	jsr	stopNTP
+meQUIT	jsr	stopNTP
+	jsr	TWILIGHTon
 	
-meQUIT0
-	PushWord #refIsHandle
+meQUIT0	PushWord #refIsHandle
 	PushLong SStopREC
 	_ShutDownTools
 
-meQUIT1
-	PushWord myID
+meQUIT1	PushWord myID
 	_DisposeAll
 
-	PushWord myID
+	PushWord mainID
+	_DisposeAll
+
+	PushWord mainID
 	_MMShutDown
 
 	_TLShutDown
@@ -639,11 +654,117 @@ meQUIT1
 	brk	$bd
 
 *----------------------------------------
+* TWILIGHT
+*----------------------------------------
+
+*----------------------------
+* TWILIGHToff
+*  Turns Twilight II off
+*
+* Entry:
+*  n/a
+*
+* Exit:
+*  n/a
+*
+*----------------------------
+
+lenV1	=	$49bf
+lenV2	=	$539a
+
+offV1	=	$117a
+offV2	=	$154c
+
+TWILIGHToff
+	ldal	$e11600
+	sta	Debut
+	ldal	$e11602
+	sta	Debut+2
+
+TWILIGHToff1
+	ldy	#8
+	lda	[Debut],y
+	ldx	#offV1
+	cmp	#lenV1
+	beq	TWILIGHToff2
+	ldx	#offV2
+	cmp	#lenV2
+	bne	TWILIGHToff3
+	
+TWILIGHToff2
+	stx	offTWILIGHT
+         
+	lda	[Debut]
+	sta	Arrivee
+	sta	ptrTWILIGHT
+	ldy	#2
+	lda	[Debut],y
+	sta	Arrivee+2
+	sta	ptrTWILIGHT+2
+	
+	txy
+	lda	[Arrivee],y
+	cmp	#$0ef0
+	bne	TWILIGHToff3
+	lda	#$0e80
+	sta	[Arrivee],y
+	inc	fgTWILIGHT
+	rts
+
+TWILIGHToff3
+	ldy	#16
+	lda	[Debut],y
+	tax
+	iny
+	iny
+	lda	[Debut],y
+	sta	Debut+2
+	txa
+	sta	Debut
+	
+	lda	Debut
+	ora	Debut+2
+	bne	TWILIGHToff1
+	rts
+
+*----------------------------
+* TWILIGHTon
+*  Turns Twilight II on
+*
+* Entry:
+*  n/a
+*
+* Exit:
+*  n/a
+*
+*----------------------------
+
+TWILIGHTon
+	lda	fgTWILIGHT
+	bne	TWILIGHTon1
+	rts
+
+TWILIGHTon1
+	lda	ptrTWILIGHT
+	sta	Arrivee
+	lda	ptrTWILIGHT+2
+	sta	Arrivee+2
+	ldy	offTWILIGHT
+	lda	#$0ef0
+	sta	[Arrivee],y
+	rts
+
+*--- Twilight II
+
+ptrTWILIGHT	ds	4
+fgTWILIGHT	ds	2
+offTWILIGHT	ds	2
+
+*----------------------------------------
 * MEMOIRE
 *----------------------------------------
 
-make64KB
-	pha
+make64KB	pha
 	pha
 	PushLong #$010000
 	PushWord myID
@@ -689,27 +810,45 @@ waitKEY	ldal	KBD-1
 	stal	KBDSTROBE-1
 	rts
 
+*--- On attend un clic ou une combinaison de touches
+
 waitEVENT	inc	VBLCounter0
 
-	PushWord #0	; wait for a mouse-up event
-	PushWord #4
+	PushWord #0
+	PushWord #%00000000_00001010
 	PushLong #taskREC
 	_GetNextEvent
 	pla
 	beq	waitEVENT
+	
+	lda	taskREC
+	cmp	#mouseDownEvt
+	beq	we_1
+	rts
+	
+we_1	inc	VBLCounter0
+
+	PushWord	#0
+	PushWord	#0
+	_StillDown
+	pla
+	bne	we_1
+	
+	lda	#mouseDownEvt
 	rts
 
 *--------------------------------------
 
-fadeIN   sty   Debut
-         stx   Debut+2
+fadeIN	pha
+	sty	Debut
+	stx	Debut+2
 
-         _HideCursor
+	_HideCursor
          
-         ldy   #$2000
-         sty   Arrivee
-         ldx   #$00e1
-         stx   Arrivee+2
+	ldy	#$2000
+	sty	Arrivee
+	ldx	#$00e1
+	stx	Arrivee+2
 
 	ldy	#$7e00
 	lda	#0
@@ -718,12 +857,16 @@ fadeIN   sty   Debut
 	iny
 	bpl	]lp
 
-         ldy   #$7dfe
-]lp      lda   [Debut],y
-         sta   [Arrivee],y
-         dey
-         dey
-         bpl   ]lp
+	pla		; ne copie pas les données
+	cmp	#FALSE	; si à FALSE
+	beq	fadeIN1
+	
+	ldy	#$7dfe
+]lp	lda	[Debut],y
+	sta	[Arrivee],y
+	dey
+	dey
+	bpl	]lp
 
 fadeIN1  lda   Debut
          clc
@@ -784,17 +927,17 @@ fadeIN6  dey
          dex
          bpl   fadeIN2
          
-         _ShowCursor
-         rts
+	_ShowCursor
+	rts
 
 *---
 
-fadeOUT  lda   #$9e00
-         sta   Debut
-         lda   #$00e1
-         sta   Debut+2
+fadeOUT	lda	#$9e00
+	sta	Debut
+	lda	#$00e1
+	sta	Debut+2
 
-         _HideCursor
+	_HideCursor
          
          ldx   #$000f
 fadeOUT1 ldy   #$01fe
@@ -827,8 +970,8 @@ fadeOUT5 dey
          dex
          bpl   fadeOUT1
          
-         _ShowCursor
-         jmp	noircit_ecran
+	_ShowCursor
+	jmp	noircit_ecran
 
 *----------------------------
 * unpackLZ4
@@ -841,14 +984,13 @@ fadeOUT5 dey
 *  A: packed data size
 *
 * Exit:
-*  A: unpacked data size
+*  lenDATA: unpacked data size
 *
 *----------------------------
 
-unpackLZ4
-	sta	LZ4_Limit+1
-	
-	jsr	suspendMUSIC
+unpackLZ4	sta	LZ4_Limit+1
+
+	sei
 	sep	#$20
 
 *--- Source
@@ -947,7 +1089,8 @@ LZ4_GetLength_3 ADC LZ4_GetLength_2+1
 *----------------
 
 LZ4_End	sty	lenDATA		; Y = length of unpacked data
-	jmp	resumeMUSIC
+	cli
+	rts
 
 *---
 
@@ -1040,7 +1183,8 @@ nowWAIT1	pha
 
 *----------------------- Memory manager
 
-myID	ds	2
+mainID	ds	2	; app ID
+myID	ds	2	; user ID
 myDP	ds	2
 
 SStopREC	ds	4
@@ -1065,8 +1209,8 @@ saveLANGUAGE	ds	2
 
 verSTR1	str	'System 6.0.1 Required!'
 verSTR2	str	'Press a key to quit'
-fntSTR1	str	'Courier.10 font missing'
-fntSTR2	str	'Please install it!'
+pgmSTR1	str	'Data parsing error'
+pgmSTR2	str	'Please report!'
 tolSTR1	str	'Error while loading tools'
 memSTR1	str	'Cannot allocate memory'
 filSTR1	str	'Cannot load file'
@@ -1076,55 +1220,29 @@ errSTR3	str	'Continue'
 
 *----------------------- Window manager
 
-taskREC  ds    2          ; wmWhat           +0
-taskMESSAGE ds 4          ; wmMessage        +2
-taskWHEN ds    4          ; wmWhen           +6
-taskWHERE ds   4          ; wmWhere          +10
-taskMODIFIERS ds 2        ; wmModifiers      +14
-taskDATA ds    4          ; wmTaskData       +16
-         adrl  $001fffff  ; wmTaskMask       +20
-         ds    4          ; wmLastClickTick  +24
-         ds    2          ; wmClickCount     +28
-         ds    4          ; wmTaskData2      +30
-         ds    4          ; wmTaskData3      +34
-         ds    4          ; wmTaskData4      +38
-         ds    4          ; wmLastClickPt    +42
+taskREC	ds	2	; wmWhat           +0
+taskMESSAGE	ds	4	; wmMessage        +2
+taskWHEN	ds	4	; wmWhen           +6
+taskWHERE	ds	4	; wmWhere          +10
+taskMODIFIERS ds	2	; wmModifiers      +14
+taskDATA	ds	4	; wmTaskData       +16
 
-taskTBL  da    doNOT      ; Null
-         da    doNOT      ; mouseDownEvt
-         da    doMOUSEUP  ; mouseUpEvt
-         da    doKEYDOWN  ; keyDownEvt
-         da    doNOT
-         da    doNOT      ; autoKeyEvt
-         da    doNOT      ; updateEvt
-         da    doNOT
-         da    doNOT      ; activateEvt
-         da    doNOT      ; switchEvt
-         da    doNOT      ; deskAccEvt
-         da    doNOT      ; driverEvt
-         da    doNOT      ; app1Evt
-         da    doNOT      ; app2Evt
-         da    doNOT      ; app3Evt
-         da    doNOT      ; app4Evt
-         da    doNOT      ; wInDesk
-         da    doNOT      ; wInMenuBar
-         da    doNOT      ; wCLickCalled
-         da    doNOT      ; wInContent - was doCONTENT
-         da    doNOT      ; wInDrag
-         da    doNOT      ; wInGrow
-         da    doNOT      ; wInGoAway
-         da    doNOT      ; wInZoom
-         da    doNOT      ; wInInfo
-         da    doNOT      ; wInSpecial
-         da    doNOT      ; wInDeskItem
-         da    doNOT      ; wInFrame
-         da    doNOT      ; wInactMenu
-         da    doNOT      ; wInClosedNDA
-         da    doNOT      ; wInCalledSysEdit
-         da    doNOT      ; wInTrackZoom
-         da    doNOT      ; wInHitFrame
-         da    doCONTROL  ; wInControl
-         da    doNOT      ; wInControlMenu
+taskTBL	da	doNOT	; 0 Null
+	da	doMOUSEDOWN	; 1 mouseDownEvt
+	da	doNOT	; 2 mouseUpEvt
+	da	doKEYDOWN	; 3 keyDownEvt
+	da	doNOT
+	da	doNOT	; 5 autoKeyEvt
+	da	doNOT	; 6 updateEvt
+	da	doNOT
+	da	doNOT	; 8 activateEvt
+	da	doNOT	; 9 switchEvt
+	da	doNOT	; A deskAccEvt
+	da	doNOT	; B driverEvt
+	da	doNOT	; C app1Evt
+	da	doNOT	; D app2Evt
+	da	doNOT	; E app3Evt
+	da	doNOT	; F app4Evt
 
 *----------------------------------------
 * STD FILE
@@ -1154,13 +1272,11 @@ loadPATH1
 * GS/OS
 *----------------------------------------
 
-loadFILE
-	sta	proOPEN+4  ; filename
+loadFILE	sta	proOPEN+4  ; filename
 	sty	proREAD+4  ; RAM pointer low
 	stx	proREAD+6  ; RAM pointer high
 
-loadFILE1
-	stz	proERR
+loadFILE1	stz	proERR
 
 	jsl	GSOS
 	dw	$2010
@@ -1181,16 +1297,17 @@ loadFILE1
 	adrl	proREAD
 	bcs	loadERR
 
-loadFILE2
-	jsl	GSOS
+loadFILE2	jsl	GSOS
 	dw	$2014
 	adrl	proCLOSE
 
 	ldy	proREAD+12 ; length read
 	ldx	proREAD+14
+	clc
 	rts
 
-loadERR	jsr	loadFILE2
+loadERR	sta	proERR
+	jsr	loadFILE2
 	ldy	#0
 	tyx
 	sec
@@ -1282,8 +1399,8 @@ proVERS
 pMENU	strl	'1/data/images/general/menu.lz4'
 pFOND	strl	'1/data/images/general/fond.lz4'
 pFONT	strl	'1/data/images/general/font.lz4'
-pINDEX	strl	'1/data/textes/fr/TEXTES1.IND'
-pTEXTES	strl	'1/data/textes/fr/TEXTES1.TEX'
+pINDEX	strl	'1/data/textes/fr/TEXTES1IND.lz4'
+pTEXTES	strl	'1/data/textes/fr/TEXTES1TEX.lz4'
 
 *--- offset to aventure number is +25
 
@@ -1297,6 +1414,7 @@ pGAME	strl	'0/               '
 *----------------------------------------
 
 	put	game.s
+	put	data.s
 	put	ecr.s
 	put	ntp.s
 	

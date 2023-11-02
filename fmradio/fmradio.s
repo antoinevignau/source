@@ -300,7 +300,7 @@ broadcastRangeMENU
 	bne	brmOK
 	jmp	mainMENU             ; or even 0 to exit
 
-brmOK	cmp	#"4"+1
+brmOK	cmp	#"5"+1
 	bcs	]lp
 
 	sec                            ; we have our device ID
@@ -318,13 +318,15 @@ brmOK	cmp	#"4"+1
 
 strBROADCASTMENU
 	asc	0d'Select your area:'0d
-	asc	' 1. Brazil (76.1 MHz to 108 MHz)'0d
-	asc	' 2. Europe (87.5 MHz to 108 MHz)'0d
-	asc	' 3. Japan (76 MHz to 95 MHz)'0d
-	asc	' 4. USA (88 MHz to 108 MHz)'0d
+	asc	' 1. Australia (87.5 MHz to 108 MHz)'0d
+	asc	' 2. Brazil (76.1 MHz to 108 MHz)'0d
+	asc	' 3. Europe (87.5 MHz to 108 MHz)'0d
+	asc	' 4. Japan (76 MHz to 95 MHz)'0d
+	asc	' 5. USA (88 MHz to 108 MHz)'0d
 	asc	' 0. Back to main menu'0d00
 
 freqTABLE
+	dw	$1EB0,$2518	; Australia
 	dw	$1B20,$2518	; Brazil
 	dw	$1EB0,$2518	; Europe
 	dw	$1B18,$2108	; Japan

@@ -61,11 +61,7 @@ SETKBD	=	$FE89
 BEEP	=	$FF3A
 
 *-----------------------------------
-* CODE BASIC EN ASM :-)
-*-----------------------------------
-	
-*-----------------------------------
-* 200 - description salle
+* MACROS
 *-----------------------------------
 
 @print	mac
@@ -74,12 +70,26 @@ BEEP	=	$FF3A
 	jsr	printCSTRING
 	eom
 
+@wait	mac
+	ldx	#>]1
+	ldy	#<]1
+	jsr	waitMS
+	eom
+
+*-----------------------------------
+* CODE BASIC EN ASM :-)
+*-----------------------------------
+	
+*-----------------------------------
+* 200 - description salle
+*-----------------------------------
+
 *-----------------------------------
 
 sub200
 	@print	#strSUBVOUS	; always output "VOUS ETES "
 
-	lda	salle
+	lda	SALLE
 	sec
 	sbc	#1
 	asl
@@ -102,12 +112,14 @@ sub200
 	cmp	#1
 	beq	:350
 
-	@print	#strILYAANS
+	@print	#strILYADANS
 	
 	lda	#1
 	sta	H
 
-goto350	
+:350	
+
+:400	rts
 
 *----------
 
@@ -336,26 +348,26 @@ strSUB7240	asc	"DANS LE DRESSING"00
 
 sub8000
 	lda	#1
-	sta	SAL
+	sta	SALLE
 	
 	ldx	#10
 	txa
-]lp	sta	P,x
-	sta	C,x
+]lp	sta	P-1,x
+	sta	C-1,x
 	dex
 	bne	]lp
 	
 	lda	#0
-	sta	P+11
-	sta	P+12
+	sta	P-1+11
+	sta	P-1+12
 	
 	lda	#14
-	sta	C+3
+	sta	C-1+3
 	lda	#12
-	sta	C+7
-	sta	C+9
+	sta	C-1+7
+	sta	C-1+9
 	lda	#80
-	sta	C+1
+	sta	C-1+1
 	
 * PL=INT(RND(1)*9000+1000)
 
@@ -366,7 +378,33 @@ sub8000
 * 10000 - LES IMAGES
 *-----------------------------------
 
-
+sub10000
+sub10100
+sub10200
+sub10300
+sub10400
+sub10500
+sub10600
+sub10700
+sub10800
+sub10900
+sub11000
+sub11100
+sub11200
+sub11300
+sub11400
+sub11500
+sub11600
+sub11700
+sub11800
+sub11900
+sub12000
+sub12100
+sub12200
+sub12300
+sub12400
+	rts
+	
 *-----------------------------------
 * 13000 - WAIT FOR KEYPRESS
 *-----------------------------------
@@ -435,6 +473,12 @@ setMIXEDON			; HGR + 4 LINES OF TEXT
 setMIXEDOFF			; TEXT ONLNY
 	sta	TXTSET
 	sta	MIXCLR
+	rts
+
+printCSTRING
+	rts
+
+waitMS
 	rts
 
 *-----------------------------------
@@ -515,7 +559,7 @@ tblV$
 
 *---
 
-O	=	25
+* O	=	25
 
 tblO	dfb	06,05,05,08,08,00,00,11,11
 	dfb	13,20,18,16,16,16,16,00,21
@@ -552,7 +596,7 @@ tblO$
 
 *---
 
-M	=	25
+* M	=	25
 
 tblM$
 	asc	"00"00
@@ -583,7 +627,7 @@ tblM$
 
 *---
 
-A	=	128
+* A	=	128
 
 tblA$
 	asc	"1400A01.I02D02M."00
@@ -717,7 +761,7 @@ tblA$
 
 *---
 
-C	=	14
+* C	=	14
 
 tblC$
 	asc	"G03E03.D00N."00
@@ -737,7 +781,11 @@ tblC$
 
 *-----------------------------------
 
-P	ds	13
-SAL	ds	1
 C	ds	10
+F1	ds	1
+H	ds	1
+LX	ds	1
+N	ds	1
+P	ds	13
+SALLE	ds	1
 

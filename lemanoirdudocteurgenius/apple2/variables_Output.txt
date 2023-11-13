@@ -1,0 +1,1717 @@
+------+-----------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File           Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+-----------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1 variables.s      1 | Comment     | 11 |         |    0 | 00/8000               | *
+    2 |  1 variables.s      2 | Comment     | 11 |         |    0 | 00/8000               | * Le manoir du Dr Genius
+    3 |  1 variables.s      3 | Comment     | 11 |         |    0 | 00/8000               | *
+    4 |  1 variables.s      4 | Comment     | 11 |         |    0 | 00/8000               | * (c) 1983, Loriciels (Oric)
+    5 |  1 variables.s      5 | Comment     | 11 |         |    0 | 00/8000               | * (c) 2023, Brutal Deluxe Software (Apple II)
+    6 |  1 variables.s      6 | Comment     | 11 |         |    0 | 00/8000               | *
+    7 |  1 variables.s      7 | Empty       | 11 |         |    0 | 00/8000               |                                            
+    8 |  1 variables.s      8 | Directive   | 11 |         |    0 | 00/8000               |               mx      %11                  
+    9 |  1 variables.s      9 | Directive   | 11 |         |    0 | 00/8000               |               org     $4000                
+   10 |  1 variables.s     10 | Directive   | 11 |         |    0 | 00/4000               |               lst     off                  
+   11 |  1 variables.s     11 | Empty       | 11 |         |    0 | 00/4000               |                                            
+   12 |  1 variables.s     12 | Comment     | 11 |         |    0 | 00/4000               | *-----------------------------------
+   13 |  1 variables.s     13 | Comment     | 11 |         |    0 | 00/4000               | * SOFTSWITCHES AND FRIENDS
+   14 |  1 variables.s     14 | Comment     | 11 |         |    0 | 00/4000               | *-----------------------------------
+   15 |  1 variables.s     15 | Empty       | 11 |         |    0 | 00/4000               |                                            
+   16 |  1 variables.s     16 | Equivalence | 11 |         |    0 | 00/4000               | WNDLFT        =       $20                  ; left edge of text window
+   17 |  1 variables.s     17 | Equivalence | 11 |         |    0 | 00/4000               | WNDWDTH       =       $21                  ; width of text window
+   18 |  1 variables.s     18 | Equivalence | 11 |         |    0 | 00/4000               | WNDTOP        =       $22                  ; top of text window
+   19 |  1 variables.s     19 | Equivalence | 11 |         |    0 | 00/4000               | WNDBTM        =       $23                  ; bottom+1 of text window
+   20 |  1 variables.s     20 | Equivalence | 11 |         |    0 | 00/4000               | CH            =       $24                  ; cursor horizontal position
+   21 |  1 variables.s     21 | Equivalence | 11 |         |    0 | 00/4000               | CV            =       $25                  ; cursor vertical position
+   22 |  1 variables.s     22 | Empty       | 11 |         |    0 | 00/4000               |                                            
+   23 |  1 variables.s     23 | Equivalence | 11 |         |    0 | 00/4000               | KBD           =       $c000                
+   24 |  1 variables.s     24 | Equivalence | 11 |         |    0 | 00/4000               | CLR80COL      =       $c000                
+   25 |  1 variables.s     25 | Equivalence | 11 |         |    0 | 00/4000               | SET80COL      =       $c001                
+   26 |  1 variables.s     26 | Equivalence | 11 |         |    0 | 00/4000               | CLR80VID      =       $c00c                
+   27 |  1 variables.s     27 | Equivalence | 11 |         |    0 | 00/4000               | SET80VID      =       $c00d                
+   28 |  1 variables.s     28 | Equivalence | 11 |         |    0 | 00/4000               | KBDSTROBE     =       $c010                
+   29 |  1 variables.s     29 | Equivalence | 11 |         |    0 | 00/4000               | MONOCOLOR     =       $c021                
+   30 |  1 variables.s     30 | Equivalence | 11 |         |    0 | 00/4000               | NEWVIDEO      =       $c029                
+   31 |  1 variables.s     31 | Equivalence | 11 |         |    0 | 00/4000               | TXTCLR        =       $c050                
+   32 |  1 variables.s     32 | Equivalence | 11 |         |    0 | 00/4000               | TXTSET        =       $c051                
+   33 |  1 variables.s     33 | Equivalence | 11 |         |    0 | 00/4000               | MIXCLR        =       $c052                
+   34 |  1 variables.s     34 | Equivalence | 11 |         |    0 | 00/4000               | MIXSET        =       $c053                
+   35 |  1 variables.s     35 | Equivalence | 11 |         |    0 | 00/4000               | TXTPAGE1      =       $c054                
+   36 |  1 variables.s     36 | Equivalence | 11 |         |    0 | 00/4000               | TXTPAGE2      =       $c055                
+   37 |  1 variables.s     37 | Equivalence | 11 |         |    0 | 00/4000               | LORES         =       $c056                
+   38 |  1 variables.s     38 | Equivalence | 11 |         |    0 | 00/4000               | HIRES         =       $c057                
+   39 |  1 variables.s     39 | Equivalence | 11 |         |    0 | 00/4000               | CLRAN         =       $c05d                
+   40 |  1 variables.s     40 | Equivalence | 11 |         |    0 | 00/4000               | SETAN3        =       $c05e                
+   41 |  1 variables.s     41 | Equivalence | 11 |         |    0 | 00/4000               | CLRAN3        =       $c05f                
+   42 |  1 variables.s     42 | Empty       | 11 |         |    0 | 00/4000               |                                            
+   43 |  1 variables.s     43 | Comment     | 11 |         |    0 | 00/4000               | *--- The firmware routines
+   44 |  1 variables.s     44 | Empty       | 11 |         |    0 | 00/4000               |                                            
+   45 |  1 variables.s     45 | Equivalence | 11 |         |    0 | 00/4000               | AUXMOVE       =       $C311                
+   46 |  1 variables.s     46 | Equivalence | 11 |         |    0 | 00/4000               | INIT          =       $FB2F                
+   47 |  1 variables.s     47 | Equivalence | 11 |         |    0 | 00/4000               | TABV          =       $FB5B                
+   48 |  1 variables.s     48 | Equivalence | 11 |         |    0 | 00/4000               | BS            =       $FC10                
+   49 |  1 variables.s     49 | Equivalence | 11 |         |    0 | 00/4000               | HOME          =       $FC58                
+   50 |  1 variables.s     50 | Equivalence | 11 |         |    0 | 00/4000               | CLREOL        =       $FC9C                
+   51 |  1 variables.s     51 | Equivalence | 11 |         |    0 | 00/4000               | RDKEY         =       $FD0C                
+   52 |  1 variables.s     52 | Equivalence | 11 |         |    0 | 00/4000               | KEYIN         =       $FD1B                
+   53 |  1 variables.s     53 | Equivalence | 11 |         |    0 | 00/4000               | GETLNZ        =       $FD67                
+   54 |  1 variables.s     54 | Equivalence | 11 |         |    0 | 00/4000               | GETLN         =       $FD6A                
+   55 |  1 variables.s     55 | Equivalence | 11 |         |    0 | 00/4000               | CROUT         =       $FD8E                
+   56 |  1 variables.s     56 | Equivalence | 11 |         |    0 | 00/4000               | PRBYTE        =       $FDDA                
+   57 |  1 variables.s     57 | Equivalence | 11 |         |    0 | 00/4000               | COUT          =       $FDED                
+   58 |  1 variables.s     58 | Equivalence | 11 |         |    0 | 00/4000               | IDROUTINE     =       $FE1F                
+   59 |  1 variables.s     59 | Equivalence | 11 |         |    0 | 00/4000               | SETNORM       =       $FE84                
+   60 |  1 variables.s     60 | Equivalence | 11 |         |    0 | 00/4000               | SETKBD        =       $FE89                
+   61 |  1 variables.s     61 | Equivalence | 11 |         |    0 | 00/4000               | BEEP          =       $FF3A                
+   62 |  1 variables.s     62 | Empty       | 11 |         |    0 | 00/4000               |                                            
+   63 |  1 variables.s     63 | Comment     | 11 |         |    0 | 00/4000               | *-----------------------------------
+   64 |  1 variables.s     64 | Comment     | 11 |         |    0 | 00/4000               | * MACROS
+   65 |  1 variables.s     65 | Comment     | 11 |         |    0 | 00/4000               | *-----------------------------------
+   66 |  1 variables.s     66 | Empty       | 11 |         |    0 | 00/4000               |                                            
+   67 |  1 variables.s     67 | Directive   | 11 |         |    0 | 00/4000               | @print        mac                          
+   68 |  1 variables.s     68 | Directive   | 11 |         |    0 | 00/4000               |               ldx     #>]1                 
+   69 |  1 variables.s     69 | Directive   | 11 |         |    0 | 00/4000               |               ldy     #<]1                 
+   70 |  1 variables.s     70 | Directive   | 11 |         |    0 | 00/4000               |               jsr     printCSTRING         
+   71 |  1 variables.s     71 | Directive   | 11 |         |    0 | 00/4000               |               eom                          
+   72 |  1 variables.s     72 | Empty       | 11 |         |    0 | 00/4000               |                                            
+   73 |  1 variables.s     73 | Directive   | 11 |         |    0 | 00/4000               | @wait         mac                          
+   74 |  1 variables.s     74 | Directive   | 11 |         |    0 | 00/4000               |               ldx     #>]1                 
+   75 |  1 variables.s     75 | Directive   | 11 |         |    0 | 00/4000               |               ldy     #<]1                 
+   76 |  1 variables.s     76 | Directive   | 11 |         |    0 | 00/4000               |               jsr     waitMS               
+   77 |  1 variables.s     77 | Directive   | 11 |         |    0 | 00/4000               |               eom                          
+   78 |  1 variables.s     78 | Empty       | 11 |         |    0 | 00/4000               |                                            
+   79 |  1 variables.s     79 | Comment     | 11 |         |    0 | 00/4000               | *-----------------------------------
+   80 |  1 variables.s     80 | Comment     | 11 |         |    0 | 00/4000               | * CODE BASIC EN ASM :-)
+   81 |  1 variables.s     81 | Comment     | 11 |         |    0 | 00/4000               | *-----------------------------------
+   82 |  1 variables.s     82 | Empty       | 11 |         |    0 | 00/4000               |                                            
+   83 |  1 variables.s     83 | Comment     | 11 |         |    0 | 00/4000               | *-----------------------------------
+   84 |  1 variables.s     84 | Comment     | 11 |         |    0 | 00/4000               | * 200 - description salle
+   85 |  1 variables.s     85 | Comment     | 11 |         |    0 | 00/4000               | *-----------------------------------
+   86 |  1 variables.s     86 | Empty       | 11 |         |    0 | 00/4000               |                                            
+   87 |  1 variables.s     87 | Comment     | 11 |         |    0 | 00/4000               | *-----------------------------------
+   88 |  1 variables.s     88 | Empty       | 11 |         |    0 | 00/4000               |                                            
+   89 |  1 variables.s     89 | Empty       | 11 |         |    0 | 00/4000               | sub200                                     
+   90 |  1 variables.s     90 | Macro       | 11 |         |    0 | 00/4000               |               @print  #strSUBVOUS          ; always output "VOUS ETES "
+   91 |  1 variables.s     90 | Code        | 11 |         |    2 | 00/4000 : A2 41       |               ldx     #>#strSUBVOUS        
+   92 |  1 variables.s     90 | Code        | 11 |         |    2 | 00/4002 : A0 E7       |               ldy     #<#strSUBVOUS        
+   93 |  1 variables.s     90 | Code        | 11 |         |    3 | 00/4004 : 20 C7 44    |               jsr     printCSTRING         
+   94 |  1 variables.s     91 | Empty       | 11 |         |    0 | 00/4007               |                                            
+   95 |  1 variables.s     92 | Code        | 11 |         |    3 | 00/4007 : AD 04 52    |               lda     SALLE                
+   96 |  1 variables.s     93 | Code        | 11 |         |    1 | 00/400A : 38          |               sec                          
+   97 |  1 variables.s     94 | Code        | 11 |         |    2 | 00/400B : E9 01       |               sbc     #1                   
+   98 |  1 variables.s     95 | Code        | 11 |         |    1 | 00/400D : 0A          |               asl                          
+   99 |  1 variables.s     96 | Code        | 11 |         |    1 | 00/400E : AA          |               tax                          
+  100 |  1 variables.s     97 | Code        | 11 |         |    3 | 00/400F : FC 56 40    |               jsr     (tbl7000,x)          
+  101 |  1 variables.s     98 | Empty       | 11 |         |    0 | 00/4012               |                                            
+  102 |  1 variables.s     99 | Code        | 11 |         |    3 | 00/4012 : 20 7F 44    |               jsr     sub13000             ; check keypress
+  103 |  1 variables.s    100 | Empty       | 11 |         |    0 | 00/4015               |                                            
+  104 |  1 variables.s    101 | Code        | 11 |         |    2 | 00/4015 : A9 00       |               lda     #0                   
+  105 |  1 variables.s    102 | Code        | 11 |         |    3 | 00/4017 : 8D F4 51    |               sta     H                    
+  106 |  1 variables.s    103 | Code        | 11 |         |    2 | 00/401A : A9 01       |               lda     #1                   
+  107 |  1 variables.s    104 | Code        | 11 |         |    3 | 00/401C : 8D F6 51    |               sta     N                    
+  108 |  1 variables.s    105 | Empty       | 11 |         |    0 | 00/401F               |                                            
+  109 |  1 variables.s    106 | Code        | 11 |         |    3 | 00/401F : AE F6 51    |               ldx     N                    
+  110 |  1 variables.s    107 | Code        | 11 |         |    3 | 00/4022 : BD A2 46    |               lda     tblO-1,x             
+  111 |  1 variables.s    108 | Code        | 11 |         |    3 | 00/4025 : CD 04 52    |               cmp     SALLE                
+  112 |  1 variables.s    109 | Code        | 11 |         |    2 | 00/4028 : D0 13       |               bne     _400                 
+  113 |  1 variables.s    110 | Empty       | 11 |         |    0 | 00/402A               |                                            
+  114 |  1 variables.s    111 | Code        | 11 |         |    3 | 00/402A : AD F4 51    |               lda     H                    
+  115 |  1 variables.s    112 | Code        | 11 |         |    2 | 00/402D : C9 01       |               cmp     #1                   
+  116 |  1 variables.s    113 | Code        | 11 |         |    2 | 00/402F : F0 0C       |               beq     _350                 
+  117 |  1 variables.s    114 | Empty       | 11 |         |    0 | 00/4031               |                                            
+  118 |  1 variables.s    115 | Macro       | 11 |         |    0 | 00/4031               |               @print  #strILYADANS         
+  119 |  1 variables.s    115 | Code        | 11 |         |    2 | 00/4031 : A2 40       |               ldx     #>#strILYADANS       
+  120 |  1 variables.s    115 | Code        | 11 |         |    2 | 00/4033 : A0 3E       |               ldy     #<#strILYADANS       
+  121 |  1 variables.s    115 | Code        | 11 |         |    3 | 00/4035 : 20 C7 44    |               jsr     printCSTRING         
+  122 |  1 variables.s    116 | Empty       | 11 |         |    0 | 00/4038               |                                            
+  123 |  1 variables.s    117 | Code        | 11 |         |    2 | 00/4038 : A9 01       |               lda     #1                   
+  124 |  1 variables.s    118 | Code        | 11 |         |    3 | 00/403A : 8D F4 51    |               sta     H                    
+  125 |  1 variables.s    119 | Empty       | 11 |         |    0 | 00/403D               |                                            
+  126 |  1 variables.s    120 | Empty       | 11 |         |    0 | 00/403D               | _350                                       
+  127 |  1 variables.s    121 | Empty       | 11 |         |    0 | 00/403D               |                                            
+  128 |  1 variables.s    122 | Code        | 11 |         |    1 | 00/403D : 60          | _400          rts                          
+  129 |  1 variables.s    123 | Empty       | 11 |         |    0 | 00/403E               |                                            
+  130 |  1 variables.s    124 | Comment     | 11 |         |    0 | 00/403E               | *----------
+  131 |  1 variables.s    125 | Empty       | 11 |         |    0 | 00/403E               |                                            
+  132 |  1 variables.s    126 | Data        | 11 |         |   24 | 00/403E : C9 CC A0 D9 | strILYADANS   asc     "IL Y A DANS LA SALLE : "00
+      |                       |             |    |         |      |           A0 C1 A0 C4 |
+      |                       |             |    |         |      |           C1 CE D3 A0 |
+      |                       |             |    |         |      |           CC C1 A0 D3 |
+      |                       |             |    |         |      |           C1 CC CC C5 |
+      |                       |             |    |         |      |           A0 BA A0 00 |
+  133 |  1 variables.s    127 | Empty       | 11 |         |    0 | 00/4056               |                                            
+  134 |  1 variables.s    128 | Comment     | 11 |         |    0 | 00/4056               | *-----------------------------------
+  135 |  1 variables.s    129 | Comment     | 11 |         |    0 | 00/4056               | * 7000
+  136 |  1 variables.s    130 | Comment     | 11 |         |    0 | 00/4056               | *-----------------------------------
+  137 |  1 variables.s    131 | Empty       | 11 |         |    0 | 00/4056               |                                            
+  138 |  1 variables.s    132 | Empty       | 11 |         |    0 | 00/4056               | tbl7000                                    
+  139 |  1 variables.s    133 | Data        | 11 |         |    2 | 00/4056 : 88 40       |               da      sub7000              
+  140 |  1 variables.s    134 | Data        | 11 |         |    2 | 00/4058 : A1 40       |               da      sub7010              
+  141 |  1 variables.s    135 | Data        | 11 |         |    2 | 00/405A : AC 40       |               da      sub7020              
+  142 |  1 variables.s    136 | Data        | 11 |         |    2 | 00/405C : B7 40       |               da      sub7030              
+  143 |  1 variables.s    137 | Data        | 11 |         |    2 | 00/405E : C7 40       |               da      sub7040              
+  144 |  1 variables.s    138 | Data        | 11 |         |    2 | 00/4060 : D7 40       |               da      sub7050              
+  145 |  1 variables.s    139 | Data        | 11 |         |    2 | 00/4062 : E2 40       |               da      sub7060              
+  146 |  1 variables.s    140 | Data        | 11 |         |    2 | 00/4064 : ED 40       |               da      sub7070              
+  147 |  1 variables.s    141 | Data        | 11 |         |    2 | 00/4066 : FD 40       |               da      sub7080              
+  148 |  1 variables.s    142 | Data        | 11 |         |    2 | 00/4068 : 08 41       |               da      sub7090              
+  149 |  1 variables.s    143 | Data        | 11 |         |    2 | 00/406A : 18 41       |               da      sub7100              
+  150 |  1 variables.s    144 | Data        | 11 |         |    2 | 00/406C : 28 41       |               da      sub7110              
+  151 |  1 variables.s    145 | Data        | 11 |         |    2 | 00/406E : 38 41       |               da      sub7120              
+  152 |  1 variables.s    146 | Data        | 11 |         |    2 | 00/4070 : 48 41       |               da      sub7130              
+  153 |  1 variables.s    147 | Data        | 11 |         |    2 | 00/4072 : 49 41       |               da      sub7140              
+  154 |  1 variables.s    148 | Data        | 11 |         |    2 | 00/4074 : 59 41       |               da      sub7150              
+  155 |  1 variables.s    149 | Data        | 11 |         |    2 | 00/4076 : 64 41       |               da      sub7160              
+  156 |  1 variables.s    150 | Data        | 11 |         |    2 | 00/4078 : 74 41       |               da      sub7170              
+  157 |  1 variables.s    151 | Data        | 11 |         |    2 | 00/407A : 86 41       |               da      sub7180              
+  158 |  1 variables.s    152 | Data        | 11 |         |    2 | 00/407C : 91 41       |               da      sub7190              
+  159 |  1 variables.s    153 | Data        | 11 |         |    2 | 00/407E : A1 41       |               da      sub7200              
+  160 |  1 variables.s    154 | Data        | 11 |         |    2 | 00/4080 : B1 41       |               da      sub7210              
+  161 |  1 variables.s    155 | Data        | 11 |         |    2 | 00/4082 : C1 41       |               da      sub7220              
+  162 |  1 variables.s    156 | Data        | 11 |         |    2 | 00/4084 : D1 41       |               da      sub7230              
+  163 |  1 variables.s    157 | Data        | 11 |         |    2 | 00/4086 : DC 41       |               da      sub7240              
+  164 |  1 variables.s    158 | Empty       | 11 |         |    0 | 00/4088               |                                            
+  165 |  1 variables.s    159 | Empty       | 11 |         |    0 | 00/4088               | sub7000                                    
+  166 |  1 variables.s    160 | Code        | 11 |         |    3 | 00/4088 : 20 7E 44    |               jsr     sub10000             
+  167 |  1 variables.s    161 | Macro       | 11 |         |    0 | 00/408B               |               @print  #strSUB7000          
+  168 |  1 variables.s    161 | Code        | 11 |         |    2 | 00/408B : A2 41       |               ldx     #>#strSUB7000        
+  169 |  1 variables.s    161 | Code        | 11 |         |    2 | 00/408D : A0 F2       |               ldy     #<#strSUB7000        
+  170 |  1 variables.s    161 | Code        | 11 |         |    3 | 00/408F : 20 C7 44    |               jsr     printCSTRING         
+  171 |  1 variables.s    162 | Macro       | 11 |         |    0 | 00/4092               |               @wait   #250                 
+  172 |  1 variables.s    162 | Code        | 11 |         |    2 | 00/4092 : A2 00       |               ldx     #>#250               
+  173 |  1 variables.s    162 | Code        | 11 |         |    2 | 00/4094 : A0 FA       |               ldy     #<#250               
+  174 |  1 variables.s    162 | Code        | 11 |         |    3 | 00/4096 : 20 C8 44    |               jsr     waitMS               
+  175 |  1 variables.s    163 | Macro       | 11 |         |    0 | 00/4099               |               @print  #strSUB7001          
+  176 |  1 variables.s    163 | Code        | 11 |         |    2 | 00/4099 : A2 42       |               ldx     #>#strSUB7001        
+  177 |  1 variables.s    163 | Code        | 11 |         |    2 | 00/409B : A0 0D       |               ldy     #<#strSUB7001        
+  178 |  1 variables.s    163 | Code        | 11 |         |    3 | 00/409D : 20 C7 44    |               jsr     printCSTRING         
+  179 |  1 variables.s    164 | Code        | 11 |         |    1 | 00/40A0 : 60          |               rts                          
+  180 |  1 variables.s    165 | Empty       | 11 |         |    0 | 00/40A1               |                                            
+  181 |  1 variables.s    166 | Empty       | 11 |         |    0 | 00/40A1               | sub7010                                    
+  182 |  1 variables.s    167 | Code        | 11 |         |    3 | 00/40A1 : 20 7E 44    |               jsr     sub10100             
+  183 |  1 variables.s    168 | Macro       | 11 |         |    0 | 00/40A4               |               @print  #strSUB7010          
+  184 |  1 variables.s    168 | Code        | 11 |         |    2 | 00/40A4 : A2 42       |               ldx     #>#strSUB7010        
+  185 |  1 variables.s    168 | Code        | 11 |         |    2 | 00/40A6 : A0 23       |               ldy     #<#strSUB7010        
+  186 |  1 variables.s    168 | Code        | 11 |         |    3 | 00/40A8 : 20 C7 44    |               jsr     printCSTRING         
+  187 |  1 variables.s    169 | Code        | 11 |         |    1 | 00/40AB : 60          |               rts                          
+  188 |  1 variables.s    170 | Empty       | 11 |         |    0 | 00/40AC               |                                            
+  189 |  1 variables.s    171 | Empty       | 11 |         |    0 | 00/40AC               | sub7020                                    
+  190 |  1 variables.s    172 | Code        | 11 |         |    3 | 00/40AC : 20 7E 44    |               jsr     sub10200             
+  191 |  1 variables.s    173 | Macro       | 11 |         |    0 | 00/40AF               |               @print  #strSUB7020          
+  192 |  1 variables.s    173 | Code        | 11 |         |    2 | 00/40AF : A2 42       |               ldx     #>#strSUB7020        
+  193 |  1 variables.s    173 | Code        | 11 |         |    2 | 00/40B1 : A0 3C       |               ldy     #<#strSUB7020        
+  194 |  1 variables.s    173 | Code        | 11 |         |    3 | 00/40B3 : 20 C7 44    |               jsr     printCSTRING         
+  195 |  1 variables.s    174 | Code        | 11 |         |    1 | 00/40B6 : 60          |               rts                          
+  196 |  1 variables.s    175 | Empty       | 11 |         |    0 | 00/40B7               |                                            
+  197 |  1 variables.s    176 | Empty       | 11 |         |    0 | 00/40B7               | sub7030                                    
+  198 |  1 variables.s    177 | Code        | 11 |         |    2 | 00/40B7 : A9 00       |               lda     #0                   
+  199 |  1 variables.s    178 | Code        | 11 |         |    3 | 00/40B9 : 8D F3 51    |               sta     F1                   
+  200 |  1 variables.s    179 | Code        | 11 |         |    3 | 00/40BC : 20 7E 44    |               jsr     sub10300             
+  201 |  1 variables.s    180 | Macro       | 11 |         |    0 | 00/40BF               |               @print  #strSUB7030          
+  202 |  1 variables.s    180 | Code        | 11 |         |    2 | 00/40BF : A2 42       |               ldx     #>#strSUB7030        
+  203 |  1 variables.s    180 | Code        | 11 |         |    2 | 00/40C1 : A0 68       |               ldy     #<#strSUB7030        
+  204 |  1 variables.s    180 | Code        | 11 |         |    3 | 00/40C3 : 20 C7 44    |               jsr     printCSTRING         
+  205 |  1 variables.s    181 | Code        | 11 |         |    1 | 00/40C6 : 60          |               rts                          
+  206 |  1 variables.s    182 | Empty       | 11 |         |    0 | 00/40C7               |                                            
+  207 |  1 variables.s    183 | Empty       | 11 |         |    0 | 00/40C7               | sub7040                                    
+  208 |  1 variables.s    184 | Code        | 11 |         |    2 | 00/40C7 : A9 01       |               lda     #1                   
+  209 |  1 variables.s    185 | Code        | 11 |         |    3 | 00/40C9 : 8D F3 51    |               sta     F1                   
+  210 |  1 variables.s    186 | Code        | 11 |         |    3 | 00/40CC : 20 7E 44    |               jsr     sub10300             
+  211 |  1 variables.s    187 | Macro       | 11 |         |    0 | 00/40CF               |               @print  #strSUB7040          
+  212 |  1 variables.s    187 | Code        | 11 |         |    2 | 00/40CF : A2 42       |               ldx     #>#strSUB7040        
+  213 |  1 variables.s    187 | Code        | 11 |         |    2 | 00/40D1 : A0 7F       |               ldy     #<#strSUB7040        
+  214 |  1 variables.s    187 | Code        | 11 |         |    3 | 00/40D3 : 20 C7 44    |               jsr     printCSTRING         
+  215 |  1 variables.s    188 | Code        | 11 |         |    1 | 00/40D6 : 60          |               rts                          
+  216 |  1 variables.s    189 | Empty       | 11 |         |    0 | 00/40D7               |                                            
+  217 |  1 variables.s    190 | Empty       | 11 |         |    0 | 00/40D7               | sub7050                                    
+  218 |  1 variables.s    191 | Code        | 11 |         |    3 | 00/40D7 : 20 7E 44    |               jsr     sub10500             
+  219 |  1 variables.s    192 | Macro       | 11 |         |    0 | 00/40DA               |               @print  #strSUB7050          
+  220 |  1 variables.s    192 | Code        | 11 |         |    2 | 00/40DA : A2 42       |               ldx     #>#strSUB7050        
+  221 |  1 variables.s    192 | Code        | 11 |         |    2 | 00/40DC : A0 A4       |               ldy     #<#strSUB7050        
+  222 |  1 variables.s    192 | Code        | 11 |         |    3 | 00/40DE : 20 C7 44    |               jsr     printCSTRING         
+  223 |  1 variables.s    193 | Code        | 11 |         |    1 | 00/40E1 : 60          |               rts                          
+  224 |  1 variables.s    194 | Empty       | 11 |         |    0 | 00/40E2               |                                            
+  225 |  1 variables.s    195 | Empty       | 11 |         |    0 | 00/40E2               | sub7060                                    
+  226 |  1 variables.s    196 | Code        | 11 |         |    3 | 00/40E2 : 20 7E 44    |               jsr     sub10600             
+  227 |  1 variables.s    197 | Macro       | 11 |         |    0 | 00/40E5               |               @print  #strSUB7060          
+  228 |  1 variables.s    197 | Code        | 11 |         |    2 | 00/40E5 : A2 42       |               ldx     #>#strSUB7060        
+  229 |  1 variables.s    197 | Code        | 11 |         |    2 | 00/40E7 : A0 B7       |               ldy     #<#strSUB7060        
+  230 |  1 variables.s    197 | Code        | 11 |         |    3 | 00/40E9 : 20 C7 44    |               jsr     printCSTRING         
+  231 |  1 variables.s    198 | Code        | 11 |         |    1 | 00/40EC : 60          |               rts                          
+  232 |  1 variables.s    199 | Empty       | 11 |         |    0 | 00/40ED               |                                            
+  233 |  1 variables.s    200 | Empty       | 11 |         |    0 | 00/40ED               | sub7070                                    
+  234 |  1 variables.s    201 | Code        | 11 |         |    2 | 00/40ED : A9 00       |               lda     #0                   
+  235 |  1 variables.s    202 | Code        | 11 |         |    3 | 00/40EF : 8D F5 51    |               sta     LX                   
+  236 |  1 variables.s    203 | Code        | 11 |         |    3 | 00/40F2 : 20 7E 44    |               jsr     sub10700             
+  237 |  1 variables.s    204 | Macro       | 11 |         |    0 | 00/40F5               |               @print  #strSUB7070          
+  238 |  1 variables.s    204 | Code        | 11 |         |    2 | 00/40F5 : A2 42       |               ldx     #>#strSUB7070        
+  239 |  1 variables.s    204 | Code        | 11 |         |    2 | 00/40F7 : A0 C5       |               ldy     #<#strSUB7070        
+  240 |  1 variables.s    204 | Code        | 11 |         |    3 | 00/40F9 : 20 C7 44    |               jsr     printCSTRING         
+  241 |  1 variables.s    205 | Code        | 11 |         |    1 | 00/40FC : 60          |               rts                          
+  242 |  1 variables.s    206 | Empty       | 11 |         |    0 | 00/40FD               |                                            
+  243 |  1 variables.s    207 | Empty       | 11 |         |    0 | 00/40FD               | sub7080                                    
+  244 |  1 variables.s    208 | Code        | 11 |         |    3 | 00/40FD : 20 7E 44    |               jsr     sub10800             
+  245 |  1 variables.s    209 | Macro       | 11 |         |    0 | 00/4100               |               @print  #strSUB7080          
+  246 |  1 variables.s    209 | Code        | 11 |         |    2 | 00/4100 : A2 42       |               ldx     #>#strSUB7080        
+  247 |  1 variables.s    209 | Code        | 11 |         |    2 | 00/4102 : A0 D6       |               ldy     #<#strSUB7080        
+  248 |  1 variables.s    209 | Code        | 11 |         |    3 | 00/4104 : 20 C7 44    |               jsr     printCSTRING         
+  249 |  1 variables.s    210 | Code        | 11 |         |    1 | 00/4107 : 60          |               rts                          
+  250 |  1 variables.s    211 | Empty       | 11 |         |    0 | 00/4108               |                                            
+  251 |  1 variables.s    212 | Empty       | 11 |         |    0 | 00/4108               | sub7090                                    
+  252 |  1 variables.s    213 | Code        | 11 |         |    2 | 00/4108 : A9 00       |               lda     #0                   
+  253 |  1 variables.s    214 | Code        | 11 |         |    3 | 00/410A : 8D F5 51    |               sta     LX                   
+  254 |  1 variables.s    215 | Code        | 11 |         |    3 | 00/410D : 20 7E 44    |               jsr     sub10900             
+  255 |  1 variables.s    216 | Macro       | 11 |         |    0 | 00/4110               |               @print  #strSUB7090          
+  256 |  1 variables.s    216 | Code        | 11 |         |    2 | 00/4110 : A2 42       |               ldx     #>#strSUB7090        
+  257 |  1 variables.s    216 | Code        | 11 |         |    2 | 00/4112 : A0 E7       |               ldy     #<#strSUB7090        
+  258 |  1 variables.s    216 | Code        | 11 |         |    3 | 00/4114 : 20 C7 44    |               jsr     printCSTRING         
+  259 |  1 variables.s    217 | Code        | 11 |         |    1 | 00/4117 : 60          |               rts                          
+  260 |  1 variables.s    218 | Empty       | 11 |         |    0 | 00/4118               |                                            
+  261 |  1 variables.s    219 | Empty       | 11 |         |    0 | 00/4118               | sub7100                                    
+  262 |  1 variables.s    220 | Code        | 11 |         |    2 | 00/4118 : A9 00       |               lda     #0                   
+  263 |  1 variables.s    221 | Code        | 11 |         |    3 | 00/411A : 8D F5 51    |               sta     LX                   
+  264 |  1 variables.s    222 | Code        | 11 |         |    3 | 00/411D : 20 7E 44    |               jsr     sub11000             
+  265 |  1 variables.s    223 | Macro       | 11 |         |    0 | 00/4120               |               @print  #strSUB7100          
+  266 |  1 variables.s    223 | Code        | 11 |         |    2 | 00/4120 : A2 43       |               ldx     #>#strSUB7100        
+  267 |  1 variables.s    223 | Code        | 11 |         |    2 | 00/4122 : A0 03       |               ldy     #<#strSUB7100        
+  268 |  1 variables.s    223 | Code        | 11 |         |    3 | 00/4124 : 20 C7 44    |               jsr     printCSTRING         
+  269 |  1 variables.s    224 | Code        | 11 |         |    1 | 00/4127 : 60          |               rts                          
+  270 |  1 variables.s    225 | Empty       | 11 |         |    0 | 00/4128               |                                            
+  271 |  1 variables.s    226 | Empty       | 11 |         |    0 | 00/4128               | sub7110                                    
+  272 |  1 variables.s    227 | Code        | 11 |         |    2 | 00/4128 : A9 02       |               lda     #2                   
+  273 |  1 variables.s    228 | Code        | 11 |         |    3 | 00/412A : 8D F5 51    |               sta     LX                   
+  274 |  1 variables.s    229 | Code        | 11 |         |    3 | 00/412D : 20 7E 44    |               jsr     sub10700             
+  275 |  1 variables.s    230 | Macro       | 11 |         |    0 | 00/4130               |               @print  #strSUB7110          
+  276 |  1 variables.s    230 | Code        | 11 |         |    2 | 00/4130 : A2 43       |               ldx     #>#strSUB7110        
+  277 |  1 variables.s    230 | Code        | 11 |         |    2 | 00/4132 : A0 15       |               ldy     #<#strSUB7110        
+  278 |  1 variables.s    230 | Code        | 11 |         |    3 | 00/4134 : 20 C7 44    |               jsr     printCSTRING         
+  279 |  1 variables.s    231 | Code        | 11 |         |    1 | 00/4137 : 60          |               rts                          
+  280 |  1 variables.s    232 | Empty       | 11 |         |    0 | 00/4138               |                                            
+  281 |  1 variables.s    233 | Empty       | 11 |         |    0 | 00/4138               | sub7120                                    
+  282 |  1 variables.s    234 | Code        | 11 |         |    2 | 00/4138 : A9 01       |               lda     #1                   
+  283 |  1 variables.s    235 | Code        | 11 |         |    3 | 00/413A : 8D F5 51    |               sta     LX                   
+  284 |  1 variables.s    236 | Code        | 11 |         |    3 | 00/413D : 20 7E 44    |               jsr     sub10700             
+  285 |  1 variables.s    237 | Macro       | 11 |         |    0 | 00/4140               |               @print  #strSUB7120          
+  286 |  1 variables.s    237 | Code        | 11 |         |    2 | 00/4140 : A2 43       |               ldx     #>#strSUB7120        
+  287 |  1 variables.s    237 | Code        | 11 |         |    2 | 00/4142 : A0 2F       |               ldy     #<#strSUB7120        
+  288 |  1 variables.s    237 | Code        | 11 |         |    3 | 00/4144 : 20 C7 44    |               jsr     printCSTRING         
+  289 |  1 variables.s    238 | Code        | 11 |         |    1 | 00/4147 : 60          |               rts                          
+  290 |  1 variables.s    239 | Empty       | 11 |         |    0 | 00/4148               |                                            
+  291 |  1 variables.s    240 | Empty       | 11 |         |    0 | 00/4148               | sub7130                                    ; nada
+  292 |  1 variables.s    241 | Code        | 11 |         |    1 | 00/4148 : 60          |               rts                          
+  293 |  1 variables.s    242 | Empty       | 11 |         |    0 | 00/4149               |                                            
+  294 |  1 variables.s    243 | Empty       | 11 |         |    0 | 00/4149               | sub7140                                    
+  295 |  1 variables.s    244 | Code        | 11 |         |    2 | 00/4149 : A9 02       |               lda     #2                   
+  296 |  1 variables.s    245 | Code        | 11 |         |    3 | 00/414B : 8D F5 51    |               sta     LX                   
+  297 |  1 variables.s    246 | Code        | 11 |         |    3 | 00/414E : 20 7E 44    |               jsr     sub12200             
+  298 |  1 variables.s    247 | Macro       | 11 |         |    0 | 00/4151               |               @print  #strSUB7140          
+  299 |  1 variables.s    247 | Code        | 11 |         |    2 | 00/4151 : A2 43       |               ldx     #>#strSUB7140        
+  300 |  1 variables.s    247 | Code        | 11 |         |    2 | 00/4153 : A0 41       |               ldy     #<#strSUB7140        
+  301 |  1 variables.s    247 | Code        | 11 |         |    3 | 00/4155 : 20 C7 44    |               jsr     printCSTRING         
+  302 |  1 variables.s    248 | Code        | 11 |         |    1 | 00/4158 : 60          |               rts                          
+  303 |  1 variables.s    249 | Empty       | 11 |         |    0 | 00/4159               |                                            
+  304 |  1 variables.s    250 | Empty       | 11 |         |    0 | 00/4159               | sub7150                                    
+  305 |  1 variables.s    251 | Code        | 11 |         |    3 | 00/4159 : 20 7E 44    |               jsr     sub11500             
+  306 |  1 variables.s    252 | Macro       | 11 |         |    0 | 00/415C               |               @print  #strSUB7150          
+  307 |  1 variables.s    252 | Code        | 11 |         |    2 | 00/415C : A2 43       |               ldx     #>#strSUB7150        
+  308 |  1 variables.s    252 | Code        | 11 |         |    2 | 00/415E : A0 57       |               ldy     #<#strSUB7150        
+  309 |  1 variables.s    252 | Code        | 11 |         |    3 | 00/4160 : 20 C7 44    |               jsr     printCSTRING         
+  310 |  1 variables.s    253 | Code        | 11 |         |    1 | 00/4163 : 60          |               rts                          
+  311 |  1 variables.s    254 | Empty       | 11 |         |    0 | 00/4164               |                                            
+  312 |  1 variables.s    255 | Empty       | 11 |         |    0 | 00/4164               | sub7160                                    
+  313 |  1 variables.s    256 | Code        | 11 |         |    2 | 00/4164 : A9 01       |               lda     #1                   
+  314 |  1 variables.s    257 | Code        | 11 |         |    3 | 00/4166 : 8D F5 51    |               sta     LX                   
+  315 |  1 variables.s    258 | Code        | 11 |         |    3 | 00/4169 : 20 7E 44    |               jsr     sub10900             
+  316 |  1 variables.s    259 | Macro       | 11 |         |    0 | 00/416C               |               @print  #strSUB7160          
+  317 |  1 variables.s    259 | Code        | 11 |         |    2 | 00/416C : A2 43       |               ldx     #>#strSUB7160        
+  318 |  1 variables.s    259 | Code        | 11 |         |    2 | 00/416E : A0 6E       |               ldy     #<#strSUB7160        
+  319 |  1 variables.s    259 | Code        | 11 |         |    3 | 00/4170 : 20 C7 44    |               jsr     printCSTRING         
+  320 |  1 variables.s    260 | Code        | 11 |         |    1 | 00/4173 : 60          |               rts                          
+  321 |  1 variables.s    261 | Empty       | 11 |         |    0 | 00/4174               |                                            
+  322 |  1 variables.s    262 | Empty       | 11 |         |    0 | 00/4174               | sub7170                                    
+  323 |  1 variables.s    263 | Macro       | 11 |         |    0 | 00/4174               |               @wait   #300                 
+  324 |  1 variables.s    263 | Code        | 11 |         |    2 | 00/4174 : A2 01       |               ldx     #>#300               
+  325 |  1 variables.s    263 | Code        | 11 |         |    2 | 00/4176 : A0 2C       |               ldy     #<#300               
+  326 |  1 variables.s    263 | Code        | 11 |         |    3 | 00/4178 : 20 C8 44    |               jsr     waitMS               
+  327 |  1 variables.s    264 | Code        | 11 |         |    3 | 00/417B : 20 7E 44    |               jsr     sub11700             
+  328 |  1 variables.s    265 | Macro       | 11 |         |    0 | 00/417E               |               @print  #strSUB7170          
+  329 |  1 variables.s    265 | Code        | 11 |         |    2 | 00/417E : A2 43       |               ldx     #>#strSUB7170        
+  330 |  1 variables.s    265 | Code        | 11 |         |    2 | 00/4180 : A0 89       |               ldy     #<#strSUB7170        
+  331 |  1 variables.s    265 | Code        | 11 |         |    3 | 00/4182 : 20 C7 44    |               jsr     printCSTRING         
+  332 |  1 variables.s    266 | Code        | 11 |         |    1 | 00/4185 : 60          |               rts                          
+  333 |  1 variables.s    267 | Empty       | 11 |         |    0 | 00/4186               |                                            
+  334 |  1 variables.s    268 | Empty       | 11 |         |    0 | 00/4186               | sub7180                                    
+  335 |  1 variables.s    269 | Code        | 11 |         |    3 | 00/4186 : 20 7E 44    |               jsr     sub11800             
+  336 |  1 variables.s    270 | Macro       | 11 |         |    0 | 00/4189               |               @print  #strSUB7180          
+  337 |  1 variables.s    270 | Code        | 11 |         |    2 | 00/4189 : A2 43       |               ldx     #>#strSUB7180        
+  338 |  1 variables.s    270 | Code        | 11 |         |    2 | 00/418B : A0 B4       |               ldy     #<#strSUB7180        
+  339 |  1 variables.s    270 | Code        | 11 |         |    3 | 00/418D : 20 C7 44    |               jsr     printCSTRING         
+  340 |  1 variables.s    271 | Code        | 11 |         |    1 | 00/4190 : 60          |               rts                          
+  341 |  1 variables.s    272 | Empty       | 11 |         |    0 | 00/4191               |                                            
+  342 |  1 variables.s    273 | Empty       | 11 |         |    0 | 00/4191               | sub7190                                    
+  343 |  1 variables.s    274 | Code        | 11 |         |    2 | 00/4191 : A9 02       |               lda     #2                   
+  344 |  1 variables.s    275 | Code        | 11 |         |    3 | 00/4193 : 8D F5 51    |               sta     LX                   
+  345 |  1 variables.s    276 | Code        | 11 |         |    3 | 00/4196 : 20 7E 44    |               jsr     sub10900             
+  346 |  1 variables.s    277 | Macro       | 11 |         |    0 | 00/4199               |               @print  #strSUB7190          
+  347 |  1 variables.s    277 | Code        | 11 |         |    2 | 00/4199 : A2 43       |               ldx     #>#strSUB7190        
+  348 |  1 variables.s    277 | Code        | 11 |         |    2 | 00/419B : A0 CD       |               ldy     #<#strSUB7190        
+  349 |  1 variables.s    277 | Code        | 11 |         |    3 | 00/419D : 20 C7 44    |               jsr     printCSTRING         
+  350 |  1 variables.s    278 | Code        | 11 |         |    1 | 00/41A0 : 60          |               rts                          
+  351 |  1 variables.s    279 | Empty       | 11 |         |    0 | 00/41A1               |                                            
+  352 |  1 variables.s    280 | Empty       | 11 |         |    0 | 00/41A1               | sub7200                                    
+  353 |  1 variables.s    281 | Code        | 11 |         |    2 | 00/41A1 : A9 01       |               lda     #1                   
+  354 |  1 variables.s    282 | Code        | 11 |         |    3 | 00/41A3 : 8D F5 51    |               sta     LX                   
+  355 |  1 variables.s    283 | Code        | 11 |         |    3 | 00/41A6 : 20 7E 44    |               jsr     sub12200             
+  356 |  1 variables.s    284 | Macro       | 11 |         |    0 | 00/41A9               |               @print  #strSUB7200          
+  357 |  1 variables.s    284 | Code        | 11 |         |    2 | 00/41A9 : A2 43       |               ldx     #>#strSUB7200        
+  358 |  1 variables.s    284 | Code        | 11 |         |    2 | 00/41AB : A0 E4       |               ldy     #<#strSUB7200        
+  359 |  1 variables.s    284 | Code        | 11 |         |    3 | 00/41AD : 20 C7 44    |               jsr     printCSTRING         
+  360 |  1 variables.s    285 | Code        | 11 |         |    1 | 00/41B0 : 60          |               rts                          
+  361 |  1 variables.s    286 | Empty       | 11 |         |    0 | 00/41B1               |                                            
+  362 |  1 variables.s    287 | Empty       | 11 |         |    0 | 00/41B1               | sub7210                                    
+  363 |  1 variables.s    288 | Code        | 11 |         |    2 | 00/41B1 : A9 01       |               lda     #1                   
+  364 |  1 variables.s    289 | Code        | 11 |         |    3 | 00/41B3 : 8D F5 51    |               sta     LX                   
+  365 |  1 variables.s    290 | Code        | 11 |         |    3 | 00/41B6 : 20 7E 44    |               jsr     sub11000             
+  366 |  1 variables.s    291 | Macro       | 11 |         |    0 | 00/41B9               |               @print  #strSUB7210          
+  367 |  1 variables.s    291 | Code        | 11 |         |    2 | 00/41B9 : A2 43       |               ldx     #>#strSUB7210        
+  368 |  1 variables.s    291 | Code        | 11 |         |    2 | 00/41BB : A0 F8       |               ldy     #<#strSUB7210        
+  369 |  1 variables.s    291 | Code        | 11 |         |    3 | 00/41BD : 20 C7 44    |               jsr     printCSTRING         
+  370 |  1 variables.s    292 | Code        | 11 |         |    1 | 00/41C0 : 60          |               rts                          
+  371 |  1 variables.s    293 | Empty       | 11 |         |    0 | 00/41C1               |                                            
+  372 |  1 variables.s    294 | Empty       | 11 |         |    0 | 00/41C1               | sub7220                                    
+  373 |  1 variables.s    295 | Code        | 11 |         |    2 | 00/41C1 : A9 00       |               lda     #0                   
+  374 |  1 variables.s    296 | Code        | 11 |         |    3 | 00/41C3 : 8D F5 51    |               sta     LX                   
+  375 |  1 variables.s    297 | Code        | 11 |         |    3 | 00/41C6 : 20 7E 44    |               jsr     sub12200             
+  376 |  1 variables.s    298 | Macro       | 11 |         |    0 | 00/41C9               |               @print  #strSUB7220          
+  377 |  1 variables.s    298 | Code        | 11 |         |    2 | 00/41C9 : A2 44       |               ldx     #>#strSUB7220        
+  378 |  1 variables.s    298 | Code        | 11 |         |    2 | 00/41CB : A0 0F       |               ldy     #<#strSUB7220        
+  379 |  1 variables.s    298 | Code        | 11 |         |    3 | 00/41CD : 20 C7 44    |               jsr     printCSTRING         
+  380 |  1 variables.s    299 | Code        | 11 |         |    1 | 00/41D0 : 60          |               rts                          
+  381 |  1 variables.s    300 | Empty       | 11 |         |    0 | 00/41D1               |                                            
+  382 |  1 variables.s    301 | Empty       | 11 |         |    0 | 00/41D1               | sub7230                                    
+  383 |  1 variables.s    302 | Code        | 11 |         |    3 | 00/41D1 : 20 7E 44    |               jsr     sub12300             
+  384 |  1 variables.s    303 | Macro       | 11 |         |    0 | 00/41D4               |               @print  #strSUB7230          
+  385 |  1 variables.s    303 | Code        | 11 |         |    2 | 00/41D4 : A2 44       |               ldx     #>#strSUB7230        
+  386 |  1 variables.s    303 | Code        | 11 |         |    2 | 00/41D6 : A0 25       |               ldy     #<#strSUB7230        
+  387 |  1 variables.s    303 | Code        | 11 |         |    3 | 00/41D8 : 20 C7 44    |               jsr     printCSTRING         
+  388 |  1 variables.s    304 | Code        | 11 |         |    1 | 00/41DB : 60          |               rts                          
+  389 |  1 variables.s    305 | Empty       | 11 |         |    0 | 00/41DC               |                                            
+  390 |  1 variables.s    306 | Empty       | 11 |         |    0 | 00/41DC               | sub7240                                    
+  391 |  1 variables.s    307 | Code        | 11 |         |    3 | 00/41DC : 20 7E 44    |               jsr     sub12400             
+  392 |  1 variables.s    308 | Macro       | 11 |         |    0 | 00/41DF               |               @print  #strSUB7240          
+  393 |  1 variables.s    308 | Code        | 11 |         |    2 | 00/41DF : A2 44       |               ldx     #>#strSUB7240        
+  394 |  1 variables.s    308 | Code        | 11 |         |    2 | 00/41E1 : A0 41       |               ldy     #<#strSUB7240        
+  395 |  1 variables.s    308 | Code        | 11 |         |    3 | 00/41E3 : 20 C7 44    |               jsr     printCSTRING         
+  396 |  1 variables.s    309 | Code        | 11 |         |    1 | 00/41E6 : 60          |               rts                          
+  397 |  1 variables.s    310 | Empty       | 11 |         |    0 | 00/41E7               |                                            
+  398 |  1 variables.s    311 | Comment     | 11 |         |    0 | 00/41E7               | *----------
+  399 |  1 variables.s    312 | Empty       | 11 |         |    0 | 00/41E7               |                                            
+  400 |  1 variables.s    313 | Comment     | 11 |         |    0 | 00/41E7               | *		"0         1         2         3         "
+  401 |  1 variables.s    314 | Comment     | 11 |         |    0 | 00/41E7               | *		"0123456789012345678901234567890123456789"
+  402 |  1 variables.s    315 | Comment     | 11 |         |    0 | 00/41E7               | *		"----------------------------------------"
+  403 |  1 variables.s    316 | Empty       | 11 |         |    0 | 00/41E7               |                                            
+  404 |  1 variables.s    317 | Data        | 11 |         |   11 | 00/41E7 : D6 CF D5 D3 | strSUBVOUS    asc     "VOUS ETES "00       
+      |                       |             |    |         |      |           A0 C5 D4 C5 |
+      |                       |             |    |         |      |           D3 A0 00    |
+  405 |  1 variables.s    318 | Data        | 11 |         |   27 | 00/41F2 : C4 C5 D6 C1 | strSUB7000    asc     "DEVANT LE MANOIR DU DEFUNT"00
+      |                       |             |    |         |      |           CE D4 A0 CC |
+      |                       |             |    |         |      |           C5 A0 CD C1 |
+      |                       |             |    |         |      |           CE CF C9 D2 |
+      |                       |             |    |         |      |           A0 C4 D5 A0 |
+      |                       |             |    |         |      |           C4 C5 C6 D5 |
+      |                       |             |    |         |      |           CE D4 00    |
+  406 |  1 variables.s    319 | Data        | 11 |         |   22 | 00/420D : A0 A0 A0 A0 | strSUB7001    asc     "            DR GENIUS"00
+      |                       |             |    |         |      |           A0 A0 A0 A0 |
+      |                       |             |    |         |      |           A0 A0 A0 A0 |
+      |                       |             |    |         |      |           C4 D2 A0 C7 |
+      |                       |             |    |         |      |           C5 CE C9 D5 |
+      |                       |             |    |         |      |           D3 00       |
+  407 |  1 variables.s    320 | Data        | 11 |         |   25 | 00/4223 : C4 C1 CE D3 | strSUB7010    asc     "DANS LE HALL D'A7'ENTREE"00
+      |                       |             |    |         |      |           A0 CC C5 A0 |
+      |                       |             |    |         |      |           C8 C1 CC CC |
+      |                       |             |    |         |      |           A0 C4 A7 C1 |
+      |                       |             |    |         |      |           B7 A7 C5 CE |
+      |                       |             |    |         |      |           D4 D2 C5 C5 |
+      |                       |             |    |         |      |           00          |
+  408 |  1 variables.s    321 | Data        | 11 |         |   44 | 00/423C : C5 CE A0 C2 | strSUB7020    asc     "EN BAS DE L'A7'ESCALIER MENANTAU 2EME ETAGE"00
+      |                       |             |    |         |      |           C1 D3 A0 C4 |
+      |                       |             |    |         |      |           C5 A0 CC A7 |
+      |                       |             |    |         |      |           C1 B7 A7 C5 |
+      |                       |             |    |         |      |           D3 C3 C1 CC |
+      |                       |             |    |         |      |           C9 C5 D2 A0 |
+      |                       |             |    |         |      |           CD C5 CE C1 |
+      |                       |             |    |         |      |           CE D4 C1 D5 |
+      |                       |             |    |         |      |           A0 B2 C5 CD |
+      |                       |             |    |         |      |           C5 A0 C5 D4 |
+      |                       |             |    |         |      |           C1 C7 C5 00 |
+  409 |  1 variables.s    322 | Data        | 11 |         |   23 | 00/4268 : C4 C1 CE D3 | strSUB7030    asc     "DANS LA SALLE A MANGER"00
+      |                       |             |    |         |      |           A0 CC C1 A0 |
+      |                       |             |    |         |      |           D3 C1 CC CC |
+      |                       |             |    |         |      |           C5 A0 C1 A0 |
+      |                       |             |    |         |      |           CD C1 CE C7 |
+      |                       |             |    |         |      |           C5 D2 00    |
+  410 |  1 variables.s    323 | Data        | 11 |         |   37 | 00/427F : C4 C1 CE D3 | strSUB7040    asc     "DANS UNE BIBLIOTHEQUE SANS LIVRE...!"00
+      |                       |             |    |         |      |           A0 D5 CE C5 |
+      |                       |             |    |         |      |           A0 C2 C9 C2 |
+      |                       |             |    |         |      |           CC C9 CF D4 |
+      |                       |             |    |         |      |           C8 C5 D1 D5 |
+      |                       |             |    |         |      |           C5 A0 D3 C1 |
+      |                       |             |    |         |      |           CE D3 A0 CC |
+      |                       |             |    |         |      |           C9 D6 D2 C5 |
+      |                       |             |    |         |      |           AE AE AE A1 |
+      |                       |             |    |         |      |           00          |
+  411 |  1 variables.s    324 | Data        | 11 |         |   19 | 00/42A4 : C4 C1 CE D3 | strSUB7050    asc     "DANS UNE BUANDERIE"00
+      |                       |             |    |         |      |           A0 D5 CE C5 |
+      |                       |             |    |         |      |           A0 C2 D5 C1 |
+      |                       |             |    |         |      |           CE C4 C5 D2 |
+      |                       |             |    |         |      |           C9 C5 00    |
+  412 |  1 variables.s    325 | Data        | 11 |         |   14 | 00/42B7 : C4 C1 CE D3 | strSUB7060    asc     "DANS LE SALON"00    
+      |                       |             |    |         |      |           A0 CC C5 A0 |
+      |                       |             |    |         |      |           D3 C1 CC CF |
+      |                       |             |    |         |      |           CE 00       |
+  413 |  1 variables.s    326 | Data        | 11 |         |   17 | 00/42C5 : C4 C1 CE D3 | strSUB7070    asc     "DANS UNE CHAMBRE"00 
+      |                       |             |    |         |      |           A0 D5 CE C5 |
+      |                       |             |    |         |      |           A0 C3 C8 C1 |
+      |                       |             |    |         |      |           CD C2 D2 C5 |
+      |                       |             |    |         |      |           00          |
+  414 |  1 variables.s    327 | Data        | 11 |         |   17 | 00/42D6 : C4 C1 CE D3 | strSUB7080    asc     "DANS UN CORRIDOR"00 
+      |                       |             |    |         |      |           A0 D5 CE A0 |
+      |                       |             |    |         |      |           C3 CF D2 D2 |
+      |                       |             |    |         |      |           C9 C4 CF D2 |
+      |                       |             |    |         |      |           00          |
+  415 |  1 variables.s    328 | Data        | 11 |         |   28 | 00/42E7 : C4 C1 CE D3 | strSUB7090    asc     "DANS UNE SALLE D'A7'ATTENTE"00
+      |                       |             |    |         |      |           A0 D5 CE C5 |
+      |                       |             |    |         |      |           A0 D3 C1 CC |
+      |                       |             |    |         |      |           CC C5 A0 C4 |
+      |                       |             |    |         |      |           A7 C1 B7 A7 |
+      |                       |             |    |         |      |           C1 D4 D4 C5 |
+      |                       |             |    |         |      |           CE D4 C5 00 |
+  416 |  1 variables.s    329 | Data        | 11 |         |   18 | 00/4303 : C4 C1 CE D3 | strSUB7100    asc     "DANS LE VESTIBULE"00
+      |                       |             |    |         |      |           A0 CC C5 A0 |
+      |                       |             |    |         |      |           D6 C5 D3 D4 |
+      |                       |             |    |         |      |           C9 C2 D5 CC |
+      |                       |             |    |         |      |           C5 00       |
+  417 |  1 variables.s    330 | Data        | 11 |         |   26 | 00/4315 : C4 C1 CE D3 | strSUB7110    asc     "DANS LA CHAMBRE D'A7'AMIS"00
+      |                       |             |    |         |      |           A0 CC C1 A0 |
+      |                       |             |    |         |      |           C3 C8 C1 CD |
+      |                       |             |    |         |      |           C2 D2 C5 A0 |
+      |                       |             |    |         |      |           C4 A7 C1 B7 |
+      |                       |             |    |         |      |           A7 C1 CD C9 |
+      |                       |             |    |         |      |           D3 00       |
+  418 |  1 variables.s    331 | Data        | 11 |         |   17 | 00/432F : C4 C1 CE D3 | strSUB7120    asc     "DANS UNE CHAMBRE"00 
+      |                       |             |    |         |      |           A0 D5 CE C5 |
+      |                       |             |    |         |      |           A0 C3 C8 C1 |
+      |                       |             |    |         |      |           CD C2 D2 C5 |
+      |                       |             |    |         |      |           00          |
+  419 |  1 variables.s    332 | Data        | 11 |         |    1 | 00/4340 : 00          | strSUB7130    asc     ""00                 ; nada
+  420 |  1 variables.s    333 | Data        | 11 |         |   22 | 00/4341 : C4 C1 CE D3 | strSUB7140    asc     "DANS UNE PETITE SALLE"00
+      |                       |             |    |         |      |           A0 D5 CE C5 |
+      |                       |             |    |         |      |           A0 D0 C5 D4 |
+      |                       |             |    |         |      |           C9 D4 C5 A0 |
+      |                       |             |    |         |      |           D3 C1 CC CC |
+      |                       |             |    |         |      |           C5 00       |
+  421 |  1 variables.s    334 | Data        | 11 |         |   23 | 00/4357 : C4 C1 CE D3 | strSUB7150    asc     "DANS LE LABORATOIRE DU"00; + SUB7001
+      |                       |             |    |         |      |           A0 CC C5 A0 |
+      |                       |             |    |         |      |           CC C1 C2 CF |
+      |                       |             |    |         |      |           D2 C1 D4 CF |
+      |                       |             |    |         |      |           C9 D2 C5 A0 |
+      |                       |             |    |         |      |           C4 D5 00    |
+  422 |  1 variables.s    335 | Data        | 11 |         |   27 | 00/436E : C4 C1 CE D3 | strSUB7160    asc     "DANS UNE PETITE PIECE VIDE"00
+      |                       |             |    |         |      |           A0 D5 CE C5 |
+      |                       |             |    |         |      |           A0 D0 C5 D4 |
+      |                       |             |    |         |      |           C9 D4 C5 A0 |
+      |                       |             |    |         |      |           D0 C9 C5 C3 |
+      |                       |             |    |         |      |           C5 A0 D6 C9 |
+      |                       |             |    |         |      |           C4 C5 00    |
+  423 |  1 variables.s    336 | Data        | 11 |         |   43 | 00/4389 : A1 A0 CA D5 | strSUB7170    asc     "! JUSTEMENT, VOUS NE SAVEZ PASOU VOUS ETES"00
+      |                       |             |    |         |      |           D3 D4 C5 CD |
+      |                       |             |    |         |      |           C5 CE D4 AC |
+      |                       |             |    |         |      |           A0 D6 CF D5 |
+      |                       |             |    |         |      |           D3 A0 CE C5 |
+      |                       |             |    |         |      |           A0 D3 C1 D6 |
+      |                       |             |    |         |      |           C5 DA A0 D0 |
+      |                       |             |    |         |      |           C1 D3 CF D5 |
+      |                       |             |    |         |      |           A0 D6 CF D5 |
+      |                       |             |    |         |      |           D3 A0 C5 D4 |
+      |                       |             |    |         |      |           C5 D3 00    |
+  424 |  1 variables.s    337 | Data        | 11 |         |   25 | 00/43B4 : C5 CE A0 C8 | strSUB7180    asc     "EN HAUT DE L'A7'ESCALIER"00
+      |                       |             |    |         |      |           C1 D5 D4 A0 |
+      |                       |             |    |         |      |           C4 C5 A0 CC |
+      |                       |             |    |         |      |           A7 C1 B7 A7 |
+      |                       |             |    |         |      |           C5 D3 C3 C1 |
+      |                       |             |    |         |      |           CC C9 C5 D2 |
+      |                       |             |    |         |      |           00          |
+  425 |  1 variables.s    338 | Data        | 11 |         |   23 | 00/43CD : C4 C1 CE D3 | strSUB7190    asc     "DANS LA SALLE DE BAINS"00
+      |                       |             |    |         |      |           A0 CC C1 A0 |
+      |                       |             |    |         |      |           D3 C1 CC CC |
+      |                       |             |    |         |      |           C5 A0 C4 C5 |
+      |                       |             |    |         |      |           A0 C2 C1 C9 |
+      |                       |             |    |         |      |           CE D3 00    |
+  426 |  1 variables.s    339 | Data        | 11 |         |   20 | 00/43E4 : C4 C1 CE D3 | strSUB7200    asc     "DANS LE LIVING ROOM"00
+      |                       |             |    |         |      |           A0 CC C5 A0 |
+      |                       |             |    |         |      |           CC C9 D6 C9 |
+      |                       |             |    |         |      |           CE C7 A0 D2 |
+      |                       |             |    |         |      |           CF CF CD 00 |
+  427 |  1 variables.s    340 | Data        | 11 |         |   23 | 00/43F8 : C4 C1 CE D3 | strSUB7210    asc     "DANS UNE PIECE ENFUMEE"00
+      |                       |             |    |         |      |           A0 D5 CE C5 |
+      |                       |             |    |         |      |           A0 D0 C9 C5 |
+      |                       |             |    |         |      |           C3 C5 A0 C5 |
+      |                       |             |    |         |      |           CE C6 D5 CD |
+      |                       |             |    |         |      |           C5 C5 00    |
+  428 |  1 variables.s    341 | Data        | 11 |         |   22 | 00/440F : C4 C1 CE D3 | strSUB7220    asc     "DANS UNE GRANDE PIECE"00
+      |                       |             |    |         |      |           A0 D5 CE C5 |
+      |                       |             |    |         |      |           A0 C7 D2 C1 |
+      |                       |             |    |         |      |           CE C4 C5 A0 |
+      |                       |             |    |         |      |           D0 C9 C5 C3 |
+      |                       |             |    |         |      |           C5 00       |
+  429 |  1 variables.s    342 | Data        | 11 |         |   28 | 00/4425 : C4 C1 CE D3 | strSUB7230    asc     "DANS UNE PIECE DE RANGEMENT"00
+      |                       |             |    |         |      |           A0 D5 CE C5 |
+      |                       |             |    |         |      |           A0 D0 C9 C5 |
+      |                       |             |    |         |      |           C3 C5 A0 C4 |
+      |                       |             |    |         |      |           C5 A0 D2 C1 |
+      |                       |             |    |         |      |           CE C7 C5 CD |
+      |                       |             |    |         |      |           C5 CE D4 00 |
+  430 |  1 variables.s    343 | Data        | 11 |         |   17 | 00/4441 : C4 C1 CE D3 | strSUB7240    asc     "DANS LE DRESSING"00 
+      |                       |             |    |         |      |           A0 CC C5 A0 |
+      |                       |             |    |         |      |           C4 D2 C5 D3 |
+      |                       |             |    |         |      |           D3 C9 CE C7 |
+      |                       |             |    |         |      |           00          |
+  431 |  1 variables.s    344 | Empty       | 11 |         |    0 | 00/4452               |                                            
+  432 |  1 variables.s    345 | Comment     | 11 |         |    0 | 00/4452               | *-----------------------------------
+  433 |  1 variables.s    346 | Comment     | 11 |         |    0 | 00/4452               | * 8000 - CHARGEMENT VARIABLES
+  434 |  1 variables.s    347 | Comment     | 11 |         |    0 | 00/4452               | *-----------------------------------
+  435 |  1 variables.s    348 | Empty       | 11 |         |    0 | 00/4452               |                                            
+  436 |  1 variables.s    349 | Empty       | 11 |         |    0 | 00/4452               | sub8000                                    
+  437 |  1 variables.s    350 | Code        | 11 |         |    2 | 00/4452 : A9 01       |               lda     #1                   
+  438 |  1 variables.s    351 | Code        | 11 |         |    3 | 00/4454 : 8D 04 52    |               sta     SALLE                
+  439 |  1 variables.s    352 | Empty       | 11 |         |    0 | 00/4457               |                                            
+  440 |  1 variables.s    353 | Code        | 11 |         |    2 | 00/4457 : A2 0A       |               ldx     #10                  
+  441 |  1 variables.s    354 | Code        | 11 |         |    1 | 00/4459 : 8A          |               txa                          
+  442 |  1 variables.s    355 | Code        | 11 |         |    3 | 00/445A : 9D F6 51    | ozunid_1      sta     P-1,x                
+  443 |  1 variables.s    356 | Code        | 11 |         |    3 | 00/445D : 9D E8 51    |               sta     C-1,x                
+  444 |  1 variables.s    357 | Code        | 11 |         |    1 | 00/4460 : CA          |               dex                          
+  445 |  1 variables.s    358 | Code        | 11 |         |    2 | 00/4461 : D0 F7       |               bne     ozunid_1             
+  446 |  1 variables.s    359 | Empty       | 11 |         |    0 | 00/4463               |                                            
+  447 |  1 variables.s    360 | Code        | 11 |         |    2 | 00/4463 : A9 00       |               lda     #0                   
+  448 |  1 variables.s    361 | Code        | 11 |         |    3 | 00/4465 : 8D 01 52    |               sta     P-1+11               
+  449 |  1 variables.s    362 | Code        | 11 |         |    3 | 00/4468 : 8D 02 52    |               sta     P-1+12               
+  450 |  1 variables.s    363 | Empty       | 11 |         |    0 | 00/446B               |                                            
+  451 |  1 variables.s    364 | Code        | 11 |         |    2 | 00/446B : A9 0E       |               lda     #14                  
+  452 |  1 variables.s    365 | Code        | 11 |         |    3 | 00/446D : 8D EB 51    |               sta     C-1+3                
+  453 |  1 variables.s    366 | Code        | 11 |         |    2 | 00/4470 : A9 0C       |               lda     #12                  
+  454 |  1 variables.s    367 | Code        | 11 |         |    3 | 00/4472 : 8D EF 51    |               sta     C-1+7                
+  455 |  1 variables.s    368 | Code        | 11 |         |    3 | 00/4475 : 8D F1 51    |               sta     C-1+9                
+  456 |  1 variables.s    369 | Code        | 11 |         |    2 | 00/4478 : A9 50       |               lda     #80                  
+  457 |  1 variables.s    370 | Code        | 11 |         |    3 | 00/447A : 8D E9 51    |               sta     C-1+1                
+  458 |  1 variables.s    371 | Empty       | 11 |         |    0 | 00/447D               |                                            
+  459 |  1 variables.s    372 | Comment     | 11 |         |    0 | 00/447D               | * PL=INT(RND(1)*9000+1000)
+  460 |  1 variables.s    373 | Empty       | 11 |         |    0 | 00/447D               |                                            
+  461 |  1 variables.s    374 | Empty       | 11 |         |    0 | 00/447D               |                                            
+  462 |  1 variables.s    375 | Code        | 11 |         |    1 | 00/447D : 60          |               rts                          
+  463 |  1 variables.s    376 | Empty       | 11 |         |    0 | 00/447E               |                                            
+  464 |  1 variables.s    377 | Comment     | 11 |         |    0 | 00/447E               | *-----------------------------------
+  465 |  1 variables.s    378 | Comment     | 11 |         |    0 | 00/447E               | * 10000 - LES IMAGES
+  466 |  1 variables.s    379 | Comment     | 11 |         |    0 | 00/447E               | *-----------------------------------
+  467 |  1 variables.s    380 | Empty       | 11 |         |    0 | 00/447E               |                                            
+  468 |  1 variables.s    381 | Empty       | 11 |         |    0 | 00/447E               | sub10000                                   
+  469 |  1 variables.s    382 | Empty       | 11 |         |    0 | 00/447E               | sub10100                                   
+  470 |  1 variables.s    383 | Empty       | 11 |         |    0 | 00/447E               | sub10200                                   
+  471 |  1 variables.s    384 | Empty       | 11 |         |    0 | 00/447E               | sub10300                                   
+  472 |  1 variables.s    385 | Empty       | 11 |         |    0 | 00/447E               | sub10400                                   
+  473 |  1 variables.s    386 | Empty       | 11 |         |    0 | 00/447E               | sub10500                                   
+  474 |  1 variables.s    387 | Empty       | 11 |         |    0 | 00/447E               | sub10600                                   
+  475 |  1 variables.s    388 | Empty       | 11 |         |    0 | 00/447E               | sub10700                                   
+  476 |  1 variables.s    389 | Empty       | 11 |         |    0 | 00/447E               | sub10800                                   
+  477 |  1 variables.s    390 | Empty       | 11 |         |    0 | 00/447E               | sub10900                                   
+  478 |  1 variables.s    391 | Empty       | 11 |         |    0 | 00/447E               | sub11000                                   
+  479 |  1 variables.s    392 | Empty       | 11 |         |    0 | 00/447E               | sub11100                                   
+  480 |  1 variables.s    393 | Empty       | 11 |         |    0 | 00/447E               | sub11200                                   
+  481 |  1 variables.s    394 | Empty       | 11 |         |    0 | 00/447E               | sub11300                                   
+  482 |  1 variables.s    395 | Empty       | 11 |         |    0 | 00/447E               | sub11400                                   
+  483 |  1 variables.s    396 | Empty       | 11 |         |    0 | 00/447E               | sub11500                                   
+  484 |  1 variables.s    397 | Empty       | 11 |         |    0 | 00/447E               | sub11600                                   
+  485 |  1 variables.s    398 | Empty       | 11 |         |    0 | 00/447E               | sub11700                                   
+  486 |  1 variables.s    399 | Empty       | 11 |         |    0 | 00/447E               | sub11800                                   
+  487 |  1 variables.s    400 | Empty       | 11 |         |    0 | 00/447E               | sub11900                                   
+  488 |  1 variables.s    401 | Empty       | 11 |         |    0 | 00/447E               | sub12000                                   
+  489 |  1 variables.s    402 | Empty       | 11 |         |    0 | 00/447E               | sub12100                                   
+  490 |  1 variables.s    403 | Empty       | 11 |         |    0 | 00/447E               | sub12200                                   
+  491 |  1 variables.s    404 | Empty       | 11 |         |    0 | 00/447E               | sub12300                                   
+  492 |  1 variables.s    405 | Empty       | 11 |         |    0 | 00/447E               | sub12400                                   
+  493 |  1 variables.s    406 | Code        | 11 |         |    1 | 00/447E : 60          |               rts                          
+  494 |  1 variables.s    407 | Empty       | 11 |         |    0 | 00/447F               |                                            
+  495 |  1 variables.s    408 | Comment     | 11 |         |    0 | 00/447F               | *-----------------------------------
+  496 |  1 variables.s    409 | Comment     | 11 |         |    0 | 00/447F               | * 13000 - WAIT FOR KEYPRESS
+  497 |  1 variables.s    410 | Comment     | 11 |         |    0 | 00/447F               | *-----------------------------------
+  498 |  1 variables.s    411 | Empty       | 11 |         |    0 | 00/447F               |                                            
+  499 |  1 variables.s    412 | Code        | 11 |         |    3 | 00/447F : AD 00 C0    | sub13000      lda     {$c000}              ; on keypress, wait 5s
+  500 |  1 variables.s    413 | Code        | 11 |         |    2 | 00/4482 : 10 0A       |               bpl     sub13001             ; or 1s if none
+  501 |  1 variables.s    414 | Code        | 11 |         |    3 | 00/4484 : 2C 10 C0    |               bit     {$c010}              
+  502 |  1 variables.s    415 | Empty       | 11 |         |    0 | 00/4487               |                                            
+  503 |  1 variables.s    416 | Macro       | 11 |         |    0 | 00/4487               |               @wait   #400                 
+  504 |  1 variables.s    416 | Code        | 11 |         |    2 | 00/4487 : A2 01       |               ldx     #>#400               
+  505 |  1 variables.s    416 | Code        | 11 |         |    2 | 00/4489 : A0 90       |               ldy     #<#400               
+  506 |  1 variables.s    416 | Code        | 11 |         |    3 | 00/448B : 20 C8 44    |               jsr     waitMS               
+  507 |  1 variables.s    417 | Empty       | 11 |         |    0 | 00/448E               |                                            
+  508 |  1 variables.s    418 | Macro       | 11 |         |    0 | 00/448E               | sub13001      @wait   #100                 
+  509 |  1 variables.s    418 | Code        | 11 |         |    2 | 00/448E : A2 00       |               ldx     #>#100               
+  510 |  1 variables.s    418 | Code        | 11 |         |    2 | 00/4490 : A0 64       |               ldy     #<#100               
+  511 |  1 variables.s    418 | Code        | 11 |         |    3 | 00/4492 : 20 C8 44    |               jsr     waitMS               
+  512 |  1 variables.s    419 | Code        | 11 |         |    1 | 00/4495 : 60          |               rts                          
+  513 |  1 variables.s    420 | Empty       | 11 |         |    0 | 00/4496               |                                            
+  514 |  1 variables.s    421 | Comment     | 11 |         |    0 | 00/4496               | *-----------------------------------
+  515 |  1 variables.s    422 | Comment     | 11 |         |    0 | 00/4496               | * 30000 - SARABANDE
+  516 |  1 variables.s    423 | Comment     | 11 |         |    0 | 00/4496               | *-----------------------------------
+  517 |  1 variables.s    424 | Empty       | 11 |         |    0 | 00/4496               |                                            
+  518 |  1 variables.s    425 | Empty       | 11 |         |    0 | 00/4496               | sub30000                                   
+  519 |  1 variables.s    426 | Code        | 11 |         |    1 | 00/4496 : 60          |               rts                          
+  520 |  1 variables.s    427 | Empty       | 11 |         |    0 | 00/4497               |                                            
+  521 |  1 variables.s    428 | Comment     | 11 |         |    0 | 00/4497               | *-----------------------------------
+  522 |  1 variables.s    429 | Comment     | 11 |         |    0 | 00/4497               | * 31000 - BADINERIE
+  523 |  1 variables.s    430 | Comment     | 11 |         |    0 | 00/4497               | *-----------------------------------
+  524 |  1 variables.s    431 | Empty       | 11 |         |    0 | 00/4497               |                                            
+  525 |  1 variables.s    432 | Empty       | 11 |         |    0 | 00/4497               | sub31000                                   
+  526 |  1 variables.s    433 | Code        | 11 |         |    1 | 00/4497 : 60          |               rts                          
+  527 |  1 variables.s    434 | Empty       | 11 |         |    0 | 00/4498               |                                            
+  528 |  1 variables.s    435 | Comment     | 11 |         |    0 | 00/4498               | *-----------------------------------
+  529 |  1 variables.s    436 | Comment     | 11 |         |    0 | 00/4498               | * 32000 - TEA FOR TWO
+  530 |  1 variables.s    437 | Comment     | 11 |         |    0 | 00/4498               | *-----------------------------------
+  531 |  1 variables.s    438 | Empty       | 11 |         |    0 | 00/4498               |                                            
+  532 |  1 variables.s    439 | Empty       | 11 |         |    0 | 00/4498               | sub32000                                   
+  533 |  1 variables.s    440 | Code        | 11 |         |    1 | 00/4498 : 60          |               rts                          
+  534 |  1 variables.s    441 | Empty       | 11 |         |    0 | 00/4499               |                                            
+  535 |  1 variables.s    442 | Comment     | 11 |         |    0 | 00/4499               | *-----------------------------------
+  536 |  1 variables.s    443 | Comment     | 11 |         |    0 | 00/4499               | * 33000 - GAGNE
+  537 |  1 variables.s    444 | Comment     | 11 |         |    0 | 00/4499               | *-----------------------------------
+  538 |  1 variables.s    445 | Empty       | 11 |         |    0 | 00/4499               |                                            
+  539 |  1 variables.s    446 | Empty       | 11 |         |    0 | 00/4499               | sub33000                                   
+  540 |  1 variables.s    447 | Code        | 11 |         |    3 | 00/4499 : 20 9D 44    |               jsr     setTEXTFULL          
+  541 |  1 variables.s    448 | Code        | 11 |         |    1 | 00/449C : 60          |               rts                          
+  542 |  1 variables.s    449 | Empty       | 11 |         |    0 | 00/449D               |                                            
+  543 |  1 variables.s    450 | Comment     | 11 |         |    0 | 00/449D               | *-----------------------------------
+  544 |  1 variables.s    451 | Comment     | 11 |         |    0 | 00/449D               | * CODE 6502
+  545 |  1 variables.s    452 | Comment     | 11 |         |    0 | 00/449D               | *-----------------------------------
+  546 |  1 variables.s    453 | Empty       | 11 |         |    0 | 00/449D               |                                            
+  547 |  1 variables.s    454 | Empty       | 11 |         |    0 | 00/449D               | setTEXTFULL                                ; 40x24 text
+  548 |  1 variables.s    455 | Code        | 11 |         |    3 | 00/449D : 8D 0C C0    |               sta     {$c00c}              
+  549 |  1 variables.s    456 | Code        | 11 |         |    3 | 00/44A0 : 20 2F FB    |               jsr     {$FB2F}              ; text screen
+  550 |  1 variables.s    457 | Code        | 11 |         |    3 | 00/44A3 : 20 84 FE    |               jsr     {$FE84}              ; set normal text mode
+  551 |  1 variables.s    458 | Code        | 11 |         |    3 | 00/44A6 : 20 89 FE    |               jsr     {$FE89}              ; reset input to keyboard
+  552 |  1 variables.s    459 | Code        | 11 |         |    3 | 00/44A9 : 4C 58 FC    |               jmp     {$FC58}              ; home cursor and clear to end of page
+  553 |  1 variables.s    460 | Empty       | 11 |         |    0 | 00/44AC               |                                            
+  554 |  1 variables.s    461 | Empty       | 11 |         |    0 | 00/44AC               | setHGR1                                    ; HGR1
+  555 |  1 variables.s    462 | Code        | 11 |         |    3 | 00/44AC : 8D 50 C0    |               sta     {$c050}              
+  556 |  1 variables.s    463 | Code        | 11 |         |    3 | 00/44AF : 8D 52 C0    |               sta     {$c052}              
+  557 |  1 variables.s    464 | Code        | 11 |         |    3 | 00/44B2 : 8D 54 C0    |               sta     {$c054}              
+  558 |  1 variables.s    465 | Code        | 11 |         |    3 | 00/44B5 : 8D 57 C0    |               sta     {$c057}              
+  559 |  1 variables.s    466 | Code        | 11 |         |    1 | 00/44B8 : 60          |               rts                          ;
+  560 |  1 variables.s    467 | Empty       | 11 |         |    0 | 00/44B9               |                                            
+  561 |  1 variables.s    468 | Empty       | 11 |         |    0 | 00/44B9               | setMIXEDON                                 ; HGR + 4 LINES OF TEXT
+  562 |  1 variables.s    469 | Code        | 11 |         |    3 | 00/44B9 : 8D 50 C0    |               sta     {$c050}              
+  563 |  1 variables.s    470 | Code        | 11 |         |    3 | 00/44BC : 8D 53 C0    |               sta     {$c053}              
+  564 |  1 variables.s    471 | Code        | 11 |         |    1 | 00/44BF : 60          |               rts                          
+  565 |  1 variables.s    472 | Empty       | 11 |         |    0 | 00/44C0               |                                            
+  566 |  1 variables.s    473 | Empty       | 11 |         |    0 | 00/44C0               | setMIXEDOFF                                ; TEXT ONLNY
+  567 |  1 variables.s    474 | Code        | 11 |         |    3 | 00/44C0 : 8D 51 C0    |               sta     {$c051}              
+  568 |  1 variables.s    475 | Code        | 11 |         |    3 | 00/44C3 : 8D 52 C0    |               sta     {$c052}              
+  569 |  1 variables.s    476 | Code        | 11 |         |    1 | 00/44C6 : 60          |               rts                          
+  570 |  1 variables.s    477 | Empty       | 11 |         |    0 | 00/44C7               |                                            
+  571 |  1 variables.s    478 | Empty       | 11 |         |    0 | 00/44C7               | printCSTRING                               
+  572 |  1 variables.s    479 | Code        | 11 |         |    1 | 00/44C7 : 60          |               rts                          
+  573 |  1 variables.s    480 | Empty       | 11 |         |    0 | 00/44C8               |                                            
+  574 |  1 variables.s    481 | Empty       | 11 |         |    0 | 00/44C8               | waitMS                                     
+  575 |  1 variables.s    482 | Code        | 11 |         |    1 | 00/44C8 : 60          |               rts                          
+  576 |  1 variables.s    483 | Empty       | 11 |         |    0 | 00/44C9               |                                            
+  577 |  1 variables.s    484 | Comment     | 11 |         |    0 | 00/44C9               | *-----------------------------------
+  578 |  1 variables.s    485 | Comment     | 11 |         |    0 | 00/44C9               | * VARIABLES
+  579 |  1 variables.s    486 | Comment     | 11 |         |    0 | 00/44C9               | *-----------------------------------
+  580 |  1 variables.s    487 | Empty       | 11 |         |    0 | 00/44C9               |                                            
+  581 |  1 variables.s    488 | Empty       | 11 |         |    0 | 00/44C9               | tblV$                                      
+  582 |  1 variables.s    489 | Data        | 11 |         |    4 | 00/44C9 : B0 B1 CE 00 |               asc     "01N"00              
+  583 |  1 variables.s    490 | Data        | 11 |         |    7 | 00/44CD : B0 B1 CE CF |               asc     "01NORD"00           
+      |                       |             |    |         |      |           D2 C4 00    |
+  584 |  1 variables.s    491 | Data        | 11 |         |    4 | 00/44D4 : B0 B2 D3 00 |               asc     "02S"00              
+  585 |  1 variables.s    492 | Data        | 11 |         |    6 | 00/44D8 : B0 B2 D3 D5 |               asc     "02SUD"00            
+      |                       |             |    |         |      |           C4 00       |
+  586 |  1 variables.s    493 | Data        | 11 |         |    4 | 00/44DE : B0 B3 C5 00 |               asc     "03E"00              
+  587 |  1 variables.s    494 | Data        | 11 |         |    6 | 00/44E2 : B0 B3 C5 D3 |               asc     "03EST"00            
+      |                       |             |    |         |      |           D4 00       |
+  588 |  1 variables.s    495 | Data        | 11 |         |    4 | 00/44E8 : B0 B4 CF 00 |               asc     "04O"00              
+  589 |  1 variables.s    496 | Data        | 11 |         |    8 | 00/44EC : B0 B4 CF D5 |               asc     "04OUEST"00          
+      |                       |             |    |         |      |           C5 D3 D4 00 |
+  590 |  1 variables.s    497 | Data        | 11 |         |    7 | 00/44F4 : B0 B5 CD CF |               asc     "05MONT"00           
+      |                       |             |    |         |      |           CE D4 00    |
+  591 |  1 variables.s    498 | Data        | 11 |         |    7 | 00/44FB : B0 B5 C7 D2 |               asc     "05GRIM"00           
+      |                       |             |    |         |      |           C9 CD 00    |
+  592 |  1 variables.s    499 | Data        | 11 |         |    7 | 00/4502 : B0 B6 C4 C5 |               asc     "06DESC"00           
+      |                       |             |    |         |      |           D3 C3 00    |
+  593 |  1 variables.s    500 | Data        | 11 |         |    7 | 00/4509 : B1 B0 D0 D2 |               asc     "10PREN"00           
+      |                       |             |    |         |      |           C5 CE 00    |
+  594 |  1 variables.s    501 | Data        | 11 |         |    7 | 00/4510 : B1 B0 D2 C1 |               asc     "10RAMA"00           
+      |                       |             |    |         |      |           CD C1 00    |
+  595 |  1 variables.s    502 | Data        | 11 |         |    7 | 00/4517 : B1 B1 D0 CF |               asc     "11POSE"00           
+      |                       |             |    |         |      |           D3 C5 00    |
+  596 |  1 variables.s    503 | Data        | 11 |         |    7 | 00/451E : B1 B2 CF D5 |               asc     "12OUVR"00           
+      |                       |             |    |         |      |           D6 D2 00    |
+  597 |  1 variables.s    504 | Data        | 11 |         |    7 | 00/4525 : B1 B3 C6 C5 |               asc     "13FERM"00           
+      |                       |             |    |         |      |           D2 CD 00    |
+  598 |  1 variables.s    505 | Data        | 11 |         |    7 | 00/452C : B1 B4 C5 CE |               asc     "14ENTR"00           
+      |                       |             |    |         |      |           D4 D2 00    |
+  599 |  1 variables.s    506 | Data        | 11 |         |    7 | 00/4533 : B1 B4 C1 D6 |               asc     "14AVAN"00           
+      |                       |             |    |         |      |           C1 CE 00    |
+  600 |  1 variables.s    507 | Data        | 11 |         |    7 | 00/453A : B1 B5 C1 CC |               asc     "15ALLU"00           
+      |                       |             |    |         |      |           CC D5 00    |
+  601 |  1 variables.s    508 | Data        | 11 |         |    7 | 00/4541 : B1 B6 C5 D4 |               asc     "16ETEI"00           
+      |                       |             |    |         |      |           C5 C9 00    |
+  602 |  1 variables.s    509 | Data        | 11 |         |    7 | 00/4548 : B1 B7 D2 C5 |               asc     "17REPA"00           
+      |                       |             |    |         |      |           D0 C1 00    |
+  603 |  1 variables.s    510 | Data        | 11 |         |    7 | 00/454F : B1 B7 C4 C5 |               asc     "17DEPA"00           
+      |                       |             |    |         |      |           D0 C1 00    |
+  604 |  1 variables.s    511 | Data        | 11 |         |    6 | 00/4556 : B1 B8 CC C9 |               asc     "18LIS"00            
+      |                       |             |    |         |      |           D3 00       |
+  605 |  1 variables.s    512 | Data        | 11 |         |    7 | 00/455C : B1 B9 D2 C5 |               asc     "19REGA"00           
+      |                       |             |    |         |      |           C7 C1 00    |
+  606 |  1 variables.s    513 | Data        | 11 |         |    7 | 00/4563 : B2 B0 D2 C5 |               asc     "20RETO"00           
+      |                       |             |    |         |      |           D4 CF 00    |
+  607 |  1 variables.s    514 | Data        | 11 |         |    7 | 00/456A : B2 B1 D2 C5 |               asc     "21RENI"00           
+      |                       |             |    |         |      |           CE C9 00    |
+  608 |  1 variables.s    515 | Data        | 11 |         |    7 | 00/4571 : B2 B1 D3 C5 |               asc     "21SENS"00           
+      |                       |             |    |         |      |           CE D3 00    |
+  609 |  1 variables.s    516 | Data        | 11 |         |    7 | 00/4578 : B2 B2 D2 C5 |               asc     "22REMP"00           
+      |                       |             |    |         |      |           CD D0 00    |
+  610 |  1 variables.s    517 | Data        | 11 |         |    7 | 00/457F : B2 B3 D6 C9 |               asc     "23VIDE"00           
+      |                       |             |    |         |      |           C4 C5 00    |
+  611 |  1 variables.s    518 | Data        | 11 |         |    7 | 00/4586 : B2 B4 C9 CE |               asc     "24INVE"00           
+      |                       |             |    |         |      |           D6 C5 00    |
+  612 |  1 variables.s    519 | Data        | 11 |         |    7 | 00/458D : B2 B4 CC C9 |               asc     "24LIST"00           
+      |                       |             |    |         |      |           D3 D4 00    |
+  613 |  1 variables.s    520 | Data        | 11 |         |    7 | 00/4594 : B2 B5 D2 C9 |               asc     "25RIEN"00           
+      |                       |             |    |         |      |           C5 CE 00    |
+  614 |  1 variables.s    521 | Data        | 11 |         |    7 | 00/459B : B2 B5 C1 D4 |               asc     "25ATTE"00           
+      |                       |             |    |         |      |           D4 C5 00    |
+  615 |  1 variables.s    522 | Data        | 11 |         |    7 | 00/45A2 : B2 B6 D0 CF |               asc     "26POIG"00           
+      |                       |             |    |         |      |           C9 C7 00    |
+  616 |  1 variables.s    523 | Data        | 11 |         |    7 | 00/45A9 : B2 B7 C3 CF |               asc     "27COUT"00           
+      |                       |             |    |         |      |           D5 D4 00    |
+  617 |  1 variables.s    524 | Data        | 11 |         |    7 | 00/45B0 : B2 B8 D4 CF |               asc     "28TOUR"00           
+      |                       |             |    |         |      |           D5 D2 00    |
+  618 |  1 variables.s    525 | Data        | 11 |         |    7 | 00/45B7 : B2 B9 CC C1 |               asc     "29LAMP"00           
+      |                       |             |    |         |      |           CD D0 00    |
+  619 |  1 variables.s    526 | Data        | 11 |         |    7 | 00/45BE : B3 B0 C3 CF |               asc     "30CODE"00           
+      |                       |             |    |         |      |           C4 C5 00    |
+  620 |  1 variables.s    527 | Data        | 11 |         |    7 | 00/45C5 : B3 B1 C5 D3 |               asc     "31ESCA"00           
+      |                       |             |    |         |      |           C3 C1 00    |
+  621 |  1 variables.s    528 | Data        | 11 |         |    7 | 00/45CC : B3 B2 D0 C9 |               asc     "32PIST"00           
+      |                       |             |    |         |      |           D3 D4 00    |
+  622 |  1 variables.s    529 | Data        | 11 |         |    7 | 00/45D3 : B3 B3 D0 CC |               asc     "33PLAC"00           
+      |                       |             |    |         |      |           C1 C3 00    |
+  623 |  1 variables.s    530 | Data        | 11 |         |    7 | 00/45DA : B3 B4 D4 CF |               asc     "34TORC"00           
+      |                       |             |    |         |      |           D2 C3 00    |
+  624 |  1 variables.s    531 | Data        | 11 |         |    7 | 00/45E1 : B3 B5 D4 C5 |               asc     "35TELE"00           
+      |                       |             |    |         |      |           CC C5 00    |
+  625 |  1 variables.s    532 | Data        | 11 |         |    7 | 00/45E8 : B3 B6 CD CF |               asc     "36MONS"00           
+      |                       |             |    |         |      |           CE D3 00    |
+  626 |  1 variables.s    533 | Data        | 11 |         |    7 | 00/45EF : B3 B7 D0 C5 |               asc     "37PETR"00           
+      |                       |             |    |         |      |           D4 D2 00    |
+  627 |  1 variables.s    534 | Data        | 11 |         |    6 | 00/45F6 : B3 B8 D0 CF |               asc     "38POT"00            
+      |                       |             |    |         |      |           D4 00       |
+  628 |  1 variables.s    535 | Data        | 11 |         |    6 | 00/45FC : B1 B8 CC C9 |               asc     "18LIT"00            
+      |                       |             |    |         |      |           D4 00       |
+  629 |  1 variables.s    536 | Data        | 11 |         |    7 | 00/4602 : B3 B9 C3 CC |               asc     "39CLEF"00           
+      |                       |             |    |         |      |           C5 C6 00    |
+  630 |  1 variables.s    537 | Data        | 11 |         |    7 | 00/4609 : B4 B0 D0 C1 |               asc     "40PAPI"00           
+      |                       |             |    |         |      |           D0 C9 00    |
+  631 |  1 variables.s    538 | Data        | 11 |         |    7 | 00/4610 : B4 B1 CC C9 |               asc     "41LIVR"00           
+      |                       |             |    |         |      |           D6 D2 00    |
+  632 |  1 variables.s    539 | Data        | 11 |         |    7 | 00/4617 : B4 B2 C2 D2 |               asc     "42BRIQ"00           
+      |                       |             |    |         |      |           C9 D1 00    |
+  633 |  1 variables.s    540 | Data        | 11 |         |    7 | 00/461E : B4 B3 C3 CF |               asc     "43COMB"00           
+      |                       |             |    |         |      |           CD C2 00    |
+  634 |  1 variables.s    541 | Data        | 11 |         |    7 | 00/4625 : B4 B4 C3 CF |               asc     "44COFF"00           
+      |                       |             |    |         |      |           C6 C6 00    |
+  635 |  1 variables.s    542 | Data        | 11 |         |    7 | 00/462C : B4 B5 D2 CF |               asc     "45ROUG"00           
+      |                       |             |    |         |      |           D5 C7 00    |
+  636 |  1 variables.s    543 | Data        | 11 |         |    7 | 00/4633 : B4 B6 C2 CC |               asc     "46BLEU"00           
+      |                       |             |    |         |      |           C5 D5 00    |
+  637 |  1 variables.s    544 | Data        | 11 |         |    7 | 00/463A : B4 B7 D6 C5 |               asc     "47VERT"00           
+      |                       |             |    |         |      |           D2 D4 00    |
+  638 |  1 variables.s    545 | Data        | 11 |         |    7 | 00/4641 : B4 B8 D4 C9 |               asc     "48TITR"00           
+      |                       |             |    |         |      |           D4 D2 00    |
+  639 |  1 variables.s    546 | Data        | 11 |         |    7 | 00/4648 : B4 B9 D2 CF |               asc     "49ROBI"00           
+      |                       |             |    |         |      |           C2 C9 00    |
+  640 |  1 variables.s    547 | Data        | 11 |         |    7 | 00/464F : B5 B0 C3 C9 |               asc     "50CISE"00           
+      |                       |             |    |         |      |           D3 C5 00    |
+  641 |  1 variables.s    548 | Data        | 11 |         |    7 | 00/4656 : B5 B1 D0 CF |               asc     "51PORT"00           
+      |                       |             |    |         |      |           D2 D4 00    |
+  642 |  1 variables.s    549 | Data        | 11 |         |    7 | 00/465D : B5 B2 C1 C3 |               asc     "52ACTI"00           
+      |                       |             |    |         |      |           D4 C9 00    |
+  643 |  1 variables.s    550 | Data        | 11 |         |    7 | 00/4664 : B5 B3 CA C5 |               asc     "53JETE"00           
+      |                       |             |    |         |      |           D4 C5 00    |
+  644 |  1 variables.s    551 | Data        | 11 |         |    8 | 00/466B : B5 B3 CC C1 |               asc     "53LANCE"00          
+      |                       |             |    |         |      |           CE C3 C5 00 |
+  645 |  1 variables.s    552 | Data        | 11 |         |    6 | 00/4673 : B5 B4 C5 C1 |               asc     "54EAU"00            
+      |                       |             |    |         |      |           D5 00       |
+  646 |  1 variables.s    553 | Data        | 11 |         |    7 | 00/4679 : B5 B5 C5 CE |               asc     "55ENFI"00           
+      |                       |             |    |         |      |           C6 C9 00    |
+  647 |  1 variables.s    554 | Data        | 11 |         |    7 | 00/4680 : B5 B5 D0 C1 |               asc     "55PASS"00           
+      |                       |             |    |         |      |           D3 D3 00    |
+  648 |  1 variables.s    555 | Data        | 11 |         |    7 | 00/4687 : B5 B6 C1 D0 |               asc     "56APPU"00           
+      |                       |             |    |         |      |           D0 D5 00    |
+  649 |  1 variables.s    556 | Data        | 11 |         |    7 | 00/468E : B5 B6 C5 CE |               asc     "56ENFO"00           
+      |                       |             |    |         |      |           C6 CF 00    |
+  650 |  1 variables.s    557 | Data        | 11 |         |    7 | 00/4695 : B5 B7 C5 CE |               asc     "57ENLE"00           
+      |                       |             |    |         |      |           CC C5 00    |
+  651 |  1 variables.s    558 | Data        | 11 |         |    7 | 00/469C : B5 B8 D2 C5 |               asc     "58RENT"00           
+      |                       |             |    |         |      |           CE D4 00    |
+  652 |  1 variables.s    559 | Empty       | 11 |         |    0 | 00/46A3               |                                            
+  653 |  1 variables.s    560 | Comment     | 11 |         |    0 | 00/46A3               | *---
+  654 |  1 variables.s    561 | Empty       | 11 |         |    0 | 00/46A3               |                                            
+  655 |  1 variables.s    562 | Comment     | 11 |         |    0 | 00/46A3               | * O	=	25
+  656 |  1 variables.s    563 | Empty       | 11 |         |    0 | 00/46A3               |                                            
+  657 |  1 variables.s    564 | Data        | 11 |         |    9 | 00/46A3 : 06 05 05 08 | tblO          dfb     06,05,05,08,08,00,00,11,11
+      |                       |             |    |         |      |           08 00 00 0B |
+      |                       |             |    |         |      |           0B          |
+  658 |  1 variables.s    565 | Data        | 11 |         |    9 | 00/46AC : 0D 14 12 10 |               dfb     13,20,18,16,16,16,16,00,21
+      |                       |             |    |         |      |           10 10 10 00 |
+      |                       |             |    |         |      |           15          |
+  659 |  1 variables.s    566 | Data        | 11 |         |    7 | 00/46B5 : 00 16 19 0C |               dfb     00,22,25,12,00,25,00 
+      |                       |             |    |         |      |           00 19 00    |
+  660 |  1 variables.s    567 | Empty       | 11 |         |    0 | 00/46BC               |                                            
+  661 |  1 variables.s    568 | Comment     | 11 |         |    0 | 00/46BC               | *---
+  662 |  1 variables.s    569 | Empty       | 11 |         |    0 | 00/46BC               |                                            
+  663 |  1 variables.s    570 | Empty       | 11 |         |    0 | 00/46BC               | tblO$                                      
+  664 |  1 variables.s    571 | Data        | 11 |         |   22 | 00/46BC : D5 CE C5 A0 |               asc     "UNE TORCHE ELECTRIQUE"00
+      |                       |             |    |         |      |           D4 CF D2 C3 |
+      |                       |             |    |         |      |           C8 C5 A0 C5 |
+      |                       |             |    |         |      |           CC C5 C3 D4 |
+      |                       |             |    |         |      |           D2 C9 D1 D5 |
+      |                       |             |    |         |      |           C5 00       |
+  665 |  1 variables.s    572 | Data        | 11 |         |   11 | 00/46D2 : D5 CE A0 D2 |               asc     "UN ROBINET"00       
+      |                       |             |    |         |      |           CF C2 C9 CE |
+      |                       |             |    |         |      |           C5 D4 00    |
+  666 |  1 variables.s    573 | Data        | 11 |         |   10 | 00/46DD : D5 CE A0 C3 |               asc     "UN CISEAU"00        
+      |                       |             |    |         |      |           C9 D3 C5 C1 |
+      |                       |             |    |         |      |           D5 00       |
+  667 |  1 variables.s    574 | Data        | 11 |         |   13 | 00/46E7 : D5 CE A0 D4 |               asc     "UN TOURNEVIS"00     
+      |                       |             |    |         |      |           CF D5 D2 CE |
+      |                       |             |    |         |      |           C5 D6 C9 D3 |
+      |                       |             |    |         |      |           00          |
+  668 |  1 variables.s    575 | Data        | 11 |         |   20 | 00/46F4 : D5 CE C5 A0 |               asc     "UNE LAMPE A PETROLE"00
+      |                       |             |    |         |      |           CC C1 CD D0 |
+      |                       |             |    |         |      |           C5 A0 C1 A0 |
+      |                       |             |    |         |      |           D0 C5 D4 D2 |
+      |                       |             |    |         |      |           CF CC C5 00 |
+  669 |  1 variables.s    576 | Data        | 11 |         |   17 | 00/4708 : D5 CE C5 A0 |               asc     "UNE LAMPE PLEINE"00 
+      |                       |             |    |         |      |           CC C1 CD D0 |
+      |                       |             |    |         |      |           C5 A0 D0 CC |
+      |                       |             |    |         |      |           C5 C9 CE C5 |
+      |                       |             |    |         |      |           00          |
+  670 |  1 variables.s    577 | Data        | 11 |         |   17 | 00/4719 : D5 CE C5 A0 |               asc     "UNE LAMPE ALLUME"00 
+      |                       |             |    |         |      |           CC C1 CD D0 |
+      |                       |             |    |         |      |           C5 A0 C1 CC |
+      |                       |             |    |         |      |           CC D5 CD C5 |
+      |                       |             |    |         |      |           00          |
+  671 |  1 variables.s    578 | Data        | 11 |         |   11 | 00/472A : D5 CE A0 C3 |               asc     "UN COUTEAU"00       
+      |                       |             |    |         |      |           CF D5 D4 C5 |
+      |                       |             |    |         |      |           C1 D5 00    |
+  672 |  1 variables.s    579 | Data        | 11 |         |   10 | 00/4735 : D5 CE A0 D0 |               asc     "UN PAPIER"00        
+      |                       |             |    |         |      |           C1 D0 C9 C5 |
+      |                       |             |    |         |      |           D2 00       |
+  673 |  1 variables.s    580 | Data        | 11 |         |    9 | 00/473F : D5 CE A0 CC |               asc     "UN LIVRE"00         
+      |                       |             |    |         |      |           C9 D6 D2 C5 |
+      |                       |             |    |         |      |           00          |
+  674 |  1 variables.s    581 | Data        | 11 |         |   33 | 00/4748 : C4 D5 A0 D0 |               asc     "DU PETROLE DANS UN LAVABO BOUCHE"00
+      |                       |             |    |         |      |           C5 D4 D2 CF |
+      |                       |             |    |         |      |           CC C5 A0 C4 |
+      |                       |             |    |         |      |           C1 CE D3 A0 |
+      |                       |             |    |         |      |           D5 CE A0 CC |
+      |                       |             |    |         |      |           C1 D6 C1 C2 |
+      |                       |             |    |         |      |           CF A0 C2 CF |
+      |                       |             |    |         |      |           D5 C3 C8 C5 |
+      |                       |             |    |         |      |           00          |
+  675 |  1 variables.s    582 | Data        | 11 |         |    9 | 00/4769 : D5 CE C5 A0 |               asc     "UNE CLEF"00         
+      |                       |             |    |         |      |           C3 CC C5 C6 |
+      |                       |             |    |         |      |           00          |
+  676 |  1 variables.s    583 | Data        | 11 |         |   16 | 00/4772 : D5 CE A0 C2 |               asc     "UN BOUTON ROUGE"00  
+      |                       |             |    |         |      |           CF D5 D4 CF |
+      |                       |             |    |         |      |           CE A0 D2 CF |
+      |                       |             |    |         |      |           D5 C7 C5 00 |
+  677 |  1 variables.s    584 | Data        | 11 |         |   15 | 00/4782 : D5 CE A0 C2 |               asc     "UN BOUTON BLEU"00   
+      |                       |             |    |         |      |           CF D5 D4 CF |
+      |                       |             |    |         |      |           CE A0 C2 CC |
+      |                       |             |    |         |      |           C5 D5 00    |
+  678 |  1 variables.s    585 | Data        | 11 |         |   15 | 00/4791 : D5 CE A0 C2 |               asc     "UN BOUTON VERT"00   
+      |                       |             |    |         |      |           CF D5 D4 CF |
+      |                       |             |    |         |      |           CE A0 D6 C5 |
+      |                       |             |    |         |      |           D2 D4 00    |
+  679 |  1 variables.s    586 | Data        | 11 |         |   15 | 00/47A0 : D5 CE A0 D4 |               asc     "UN TELEPORTEUR"00   
+      |                       |             |    |         |      |           C5 CC C5 D0 |
+      |                       |             |    |         |      |           CF D2 D4 C5 |
+      |                       |             |    |         |      |           D5 D2 00    |
+  680 |  1 variables.s    587 | Data        | 11 |         |   22 | 00/47AF : D5 CE A0 D4 |               asc     "UN TELEPORTEUR REPARE"00
+      |                       |             |    |         |      |           C5 CC C5 D0 |
+      |                       |             |    |         |      |           CF D2 D4 C5 |
+      |                       |             |    |         |      |           D5 D2 A0 D2 |
+      |                       |             |    |         |      |           C5 D0 C1 D2 |
+      |                       |             |    |         |      |           C5 00       |
+  681 |  1 variables.s    588 | Data        | 11 |         |   25 | 00/47C5 : D5 CE C5 A0 |               asc     "UNE COMBINAISON ARGENTEE"00
+      |                       |             |    |         |      |           C3 CF CD C2 |
+      |                       |             |    |         |      |           C9 CE C1 C9 |
+      |                       |             |    |         |      |           D3 CF CE A0 |
+      |                       |             |    |         |      |           C1 D2 C7 C5 |
+      |                       |             |    |         |      |           CE D4 C5 C5 |
+      |                       |             |    |         |      |           00          |
+  682 |  1 variables.s    589 | Data        | 11 |         |   24 | 00/47DE : D5 CE C5 A0 |               asc     "UNE COMBINAISON ENFILEE"00
+      |                       |             |    |         |      |           C3 CF CD C2 |
+      |                       |             |    |         |      |           C9 CE C1 C9 |
+      |                       |             |    |         |      |           D3 CF CE A0 |
+      |                       |             |    |         |      |           C5 CE C6 C9 |
+      |                       |             |    |         |      |           CC C5 C5 00 |
+  683 |  1 variables.s    590 | Data        | 11 |         |   22 | 00/47F6 : D5 CE A0 CD |               asc     "UN MONSTRE ALL'A7'EST"00
+      |                       |             |    |         |      |           CF CE D3 D4 |
+      |                       |             |    |         |      |           D2 C5 A0 C1 |
+      |                       |             |    |         |      |           CC CC A7 C1 |
+      |                       |             |    |         |      |           B7 A7 C5 D3 |
+      |                       |             |    |         |      |           D4 00       |
+  684 |  1 variables.s    591 | Data        | 11 |         |   12 | 00/480C : D5 CE A0 D0 |               asc     "UN PISTOLET"00      
+      |                       |             |    |         |      |           C9 D3 D4 CF |
+      |                       |             |    |         |      |           CC C5 D4 00 |
+  685 |  1 variables.s    592 | Data        | 11 |         |   11 | 00/4818 : D5 CE A0 C2 |               asc     "UN BRIQUET"00       
+      |                       |             |    |         |      |           D2 C9 D1 D5 |
+      |                       |             |    |         |      |           C5 D4 00    |
+  686 |  1 variables.s    593 | Data        | 11 |         |   18 | 00/4823 : D5 CE A0 C2 |               asc     "UN BRIQUET ALLUME"00
+      |                       |             |    |         |      |           D2 C9 D1 D5 |
+      |                       |             |    |         |      |           C5 D4 A0 C1 |
+      |                       |             |    |         |      |           CC CC D5 CD |
+      |                       |             |    |         |      |           C5 00       |
+  687 |  1 variables.s    594 | Data        | 11 |         |    7 | 00/4835 : D5 CE A0 D0 |               asc     "UN POT"00           
+      |                       |             |    |         |      |           CF D4 00    |
+  688 |  1 variables.s    595 | Data        | 11 |         |   22 | 00/483C : D5 CE A0 D0 |               asc     "UN POT PLEIN D'A7'EAU"00
+      |                       |             |    |         |      |           CF D4 A0 D0 |
+      |                       |             |    |         |      |           CC C5 C9 CE |
+      |                       |             |    |         |      |           A0 C4 A7 C1 |
+      |                       |             |    |         |      |           B7 A7 C5 C1 |
+      |                       |             |    |         |      |           D5 00       |
+  689 |  1 variables.s    596 | Empty       | 11 |         |    0 | 00/4852               |                                            
+  690 |  1 variables.s    597 | Comment     | 11 |         |    0 | 00/4852               | *---
+  691 |  1 variables.s    598 | Empty       | 11 |         |    0 | 00/4852               |                                            
+  692 |  1 variables.s    599 | Comment     | 11 |         |    0 | 00/4852               | * M	=	25
+  693 |  1 variables.s    600 | Empty       | 11 |         |    0 | 00/4852               |                                            
+  694 |  1 variables.s    601 | Empty       | 11 |         |    0 | 00/4852               | tblM$                                      
+  695 |  1 variables.s    602 | Data        | 11 |         |    3 | 00/4852 : B0 B0 00    |               asc     "00"00               
+  696 |  1 variables.s    603 | Data        | 11 |         |   11 | 00/4855 : B0 B4 B0 B3 |               asc     "0403030400"00       
+      |                       |             |    |         |      |           B0 B3 B0 B4 |
+      |                       |             |    |         |      |           B0 B0 00    |
+  697 |  1 variables.s    604 | Data        | 11 |         |    7 | 00/4860 : B0 B3 B0 B2 |               asc     "030200"00           
+      |                       |             |    |         |      |           B0 B0 00    |
+  698 |  1 variables.s    605 | Data        | 11 |         |   15 | 00/4867 : B0 B4 B0 B2 |               asc     "04020305010600"00   
+      |                       |             |    |         |      |           B0 B3 B0 B5 |
+      |                       |             |    |         |      |           B0 B1 B0 B6 |
+      |                       |             |    |         |      |           B0 B0 00    |
+  699 |  1 variables.s    606 | Data        | 11 |         |   15 | 00/4876 : B0 B4 B0 B4 |               asc     "04040107032000"00   
+      |                       |             |    |         |      |           B0 B1 B0 B7 |
+      |                       |             |    |         |      |           B0 B3 B2 B0 |
+      |                       |             |    |         |      |           B0 B0 00    |
+  700 |  1 variables.s    607 | Data        | 11 |         |    7 | 00/4885 : B0 B2 B0 B4 |               asc     "020400"00           
+      |                       |             |    |         |      |           B0 B0 00    |
+  701 |  1 variables.s    608 | Data        | 11 |         |   15 | 00/488C : B0 B4 B0 B8 |               asc     "04080109020500"00   
+      |                       |             |    |         |      |           B0 B1 B0 B9 |
+      |                       |             |    |         |      |           B0 B2 B0 B5 |
+      |                       |             |    |         |      |           B0 B0 00    |
+  702 |  1 variables.s    609 | Data        | 11 |         |    7 | 00/489B : B0 B3 B0 B7 |               asc     "030700"00           
+      |                       |             |    |         |      |           B0 B0 00    |
+  703 |  1 variables.s    610 | Data        | 11 |         |   15 | 00/48A2 : B0 B4 B1 B3 |               asc     "04130207031000"00   
+      |                       |             |    |         |      |           B0 B2 B0 B7 |
+      |                       |             |    |         |      |           B0 B3 B1 B0 |
+      |                       |             |    |         |      |           B0 B0 00    |
+  704 |  1 variables.s    611 | Data        | 11 |         |   11 | 00/48B1 : B0 B4 B0 B9 |               asc     "0409021100"00       
+      |                       |             |    |         |      |           B0 B2 B1 B1 |
+      |                       |             |    |         |      |           B0 B0 00    |
+  705 |  1 variables.s    612 | Data        | 11 |         |   11 | 00/48BC : B0 B1 B1 B0 |               asc     "0110031200"00       
+      |                       |             |    |         |      |           B0 B3 B1 B2 |
+      |                       |             |    |         |      |           B0 B0 00    |
+  706 |  1 variables.s    613 | Data        | 11 |         |    7 | 00/48C7 : B0 B4 B1 B1 |               asc     "041100"00           
+      |                       |             |    |         |      |           B0 B0 00    |
+  707 |  1 variables.s    614 | Data        | 11 |         |    7 | 00/48CE : B0 B3 B0 B9 |               asc     "030900"00           
+      |                       |             |    |         |      |           B0 B0 00    |
+  708 |  1 variables.s    615 | Data        | 11 |         |   11 | 00/48D5 : B0 B2 B0 B9 |               asc     "0209031500"00       
+      |                       |             |    |         |      |           B0 B3 B1 B5 |
+      |                       |             |    |         |      |           B0 B0 00    |
+  709 |  1 variables.s    616 | Data        | 11 |         |    3 | 00/48E0 : B0 B0 00    |               asc     "00"00               
+  710 |  1 variables.s    617 | Data        | 11 |         |    3 | 00/48E3 : B0 B0 00    |               asc     "00"00               
+  711 |  1 variables.s    618 | Data        | 11 |         |    3 | 00/48E6 : B0 B0 00    |               asc     "00"00               
+  712 |  1 variables.s    619 | Data        | 11 |         |    3 | 00/48E9 : B0 B0 00    |               asc     "00"00               
+  713 |  1 variables.s    620 | Data        | 11 |         |   11 | 00/48EC : B0 B1 B2 B2 |               asc     "0122032100"00       
+      |                       |             |    |         |      |           B0 B3 B2 B1 |
+      |                       |             |    |         |      |           B0 B0 00    |
+  714 |  1 variables.s    621 | Data        | 11 |         |    7 | 00/48F7 : B0 B4 B0 B5 |               asc     "040500"00           
+      |                       |             |    |         |      |           B0 B0 00    |
+  715 |  1 variables.s    622 | Data        | 11 |         |   11 | 00/48FE : B0 B1 B2 B5 |               asc     "0125022200"00       
+      |                       |             |    |         |      |           B0 B2 B2 B2 |
+      |                       |             |    |         |      |           B0 B0 00    |
+  716 |  1 variables.s    623 | Data        | 11 |         |    7 | 00/4909 : B0 B1 B2 B1 |               asc     "012100"00           
+      |                       |             |    |         |      |           B0 B0 00    |
+  717 |  1 variables.s    624 | Data        | 11 |         |   11 | 00/4910 : B0 B1 B2 B4 |               asc     "0124042200"00       
+      |                       |             |    |         |      |           B0 B4 B2 B2 |
+      |                       |             |    |         |      |           B0 B0 00    |
+  718 |  1 variables.s    625 | Data        | 11 |         |    7 | 00/491B : B0 B2 B2 B3 |               asc     "022300"00           
+      |                       |             |    |         |      |           B0 B0 00    |
+  719 |  1 variables.s    626 | Data        | 11 |         |    7 | 00/4922 : B0 B2 B2 B1 |               asc     "022100"00           
+      |                       |             |    |         |      |           B0 B0 00    |
+  720 |  1 variables.s    627 | Empty       | 11 |         |    0 | 00/4929               |                                            
+  721 |  1 variables.s    628 | Comment     | 11 |         |    0 | 00/4929               | *---
+  722 |  1 variables.s    629 | Empty       | 11 |         |    0 | 00/4929               |                                            
+  723 |  1 variables.s    630 | Comment     | 11 |         |    0 | 00/4929               | * A	=	128
+  724 |  1 variables.s    631 | Empty       | 11 |         |    0 | 00/4929               |                                            
+  725 |  1 variables.s    632 | Empty       | 11 |         |    0 | 00/4929               | tblA$                                      
+  726 |  1 variables.s    633 | Data        | 11 |         |   17 | 00/4929 : B1 B4 B0 B0 |               asc     "1400A01.I02D02M."00 
+      |                       |             |    |         |      |           C1 B0 B1 AE |
+      |                       |             |    |         |      |           C9 B0 B2 C4 |
+      |                       |             |    |         |      |           B0 B2 CD AE |
+      |                       |             |    |         |      |           00          |
+  727 |  1 variables.s    634 | Data        | 11 |         |   17 | 00/493A : B0 B5 B0 B0 |               asc     "0500A03D08.D03N."00 
+      |                       |             |    |         |      |           C1 B0 B3 C4 |
+      |                       |             |    |         |      |           B0 B8 AE C4 |
+      |                       |             |    |         |      |           B0 B3 CE AE |
+      |                       |             |    |         |      |           00          |
+  728 |  1 variables.s    635 | Data        | 11 |         |   32 | 00/494B : B0 B5 B0 B0 |               asc     "0500A03E08E09D24.D04D05I19E02M."00
+      |                       |             |    |         |      |           C1 B0 B3 C5 |
+      |                       |             |    |         |      |           B0 B8 C5 B0 |
+      |                       |             |    |         |      |           B9 C4 B2 B4 |
+      |                       |             |    |         |      |           AE C4 B0 B4 |
+      |                       |             |    |         |      |           C4 B0 B5 C9 |
+      |                       |             |    |         |      |           B1 B9 C5 B0 |
+      |                       |             |    |         |      |           B2 CD AE 00 |
+  729 |  1 variables.s    636 | Data        | 11 |         |   23 | 00/496B : B0 B5 B0 B0 |               asc     "0500A03E08D24.D04D06N."00
+      |                       |             |    |         |      |           C1 B0 B3 C5 |
+      |                       |             |    |         |      |           B0 B8 C4 B2 |
+      |                       |             |    |         |      |           B4 AE C4 B0 |
+      |                       |             |    |         |      |           B4 C4 B0 B6 |
+      |                       |             |    |         |      |           CE AE 00    |
+  730 |  1 variables.s    637 | Data        | 11 |         |   17 | 00/4982 : B0 B5 B0 B0 |               asc     "0500A03E07.I19M."00 
+      |                       |             |    |         |      |           C1 B0 B3 C5 |
+      |                       |             |    |         |      |           B0 B7 AE C9 |
+      |                       |             |    |         |      |           B1 B9 CD AE |
+      |                       |             |    |         |      |           00          |
+  731 |  1 variables.s    638 | Data        | 11 |         |   17 | 00/4993 : B0 B5 B0 B0 |               asc     "0500A03E03.I19M."00 
+      |                       |             |    |         |      |           C1 B0 B3 C5 |
+      |                       |             |    |         |      |           B0 B3 AE C9 |
+      |                       |             |    |         |      |           B1 B9 CD AE |
+      |                       |             |    |         |      |           00          |
+  732 |  1 variables.s    639 | Data        | 11 |         |   17 | 00/49A4 : B0 B5 B0 B0 |               asc     "0500A03.I19E02M."00 
+      |                       |             |    |         |      |           C1 B0 B3 AE |
+      |                       |             |    |         |      |           C9 B1 B9 C5 |
+      |                       |             |    |         |      |           B0 B2 CD AE |
+      |                       |             |    |         |      |           00          |
+  733 |  1 variables.s    640 | Data        | 11 |         |   17 | 00/49B5 : B0 B6 B0 B0 |               asc     "0600A19D08.D03N."00 
+      |                       |             |    |         |      |           C1 B1 B9 C4 |
+      |                       |             |    |         |      |           B0 B8 AE C4 |
+      |                       |             |    |         |      |           B0 B3 CE AE |
+      |                       |             |    |         |      |           00          |
+  734 |  1 variables.s    641 | Data        | 11 |         |   29 | 00/49C6 : B0 B6 B0 B0 |               asc     "0600A19E08E09D24.D04D05I03M."00
+      |                       |             |    |         |      |           C1 B1 B9 C5 |
+      |                       |             |    |         |      |           B0 B8 C5 B0 |
+      |                       |             |    |         |      |           B9 C4 B2 B4 |
+      |                       |             |    |         |      |           AE C4 B0 B4 |
+      |                       |             |    |         |      |           C4 B0 B5 C9 |
+      |                       |             |    |         |      |           B0 B3 CD AE |
+      |                       |             |    |         |      |           00          |
+  735 |  1 variables.s    642 | Data        | 11 |         |   23 | 00/49E3 : B0 B6 B0 B0 |               asc     "0600A19E08D24.D04D06N."00
+      |                       |             |    |         |      |           C1 B1 B9 C5 |
+      |                       |             |    |         |      |           B0 B8 C4 B2 |
+      |                       |             |    |         |      |           B4 AE C4 B0 |
+      |                       |             |    |         |      |           B4 C4 B0 B6 |
+      |                       |             |    |         |      |           CE AE 00    |
+  736 |  1 variables.s    643 | Data        | 11 |         |   14 | 00/49FA : B0 B6 B0 B0 |               asc     "0600A19.I03M."00    
+      |                       |             |    |         |      |           C1 B1 B9 AE |
+      |                       |             |    |         |      |           C9 B0 B3 CD |
+      |                       |             |    |         |      |           AE 00       |
+  737 |  1 variables.s    644 | Data        | 11 |         |   20 | 00/4A08 : B0 B1 B0 B0 |               asc     "0100A09E07B22.D07N."00
+      |                       |             |    |         |      |           C1 B0 B9 C5 |
+      |                       |             |    |         |      |           B0 B7 C2 B2 |
+      |                       |             |    |         |      |           B2 AE C4 B0 |
+      |                       |             |    |         |      |           B7 CE AE 00 |
+  738 |  1 variables.s    645 | Data        | 11 |         |   20 | 00/4A1C : B0 B1 B0 B0 |               asc     "0100A09E03B05.D07N."00
+      |                       |             |    |         |      |           C1 B0 B9 C5 |
+      |                       |             |    |         |      |           B0 B3 C2 B0 |
+      |                       |             |    |         |      |           B5 AE C4 B0 |
+      |                       |             |    |         |      |           B7 CE AE 00 |
+  739 |  1 variables.s    646 | Data        | 11 |         |   17 | 00/4A30 : B0 B1 B0 B0 |               asc     "0100A09.I14E02M."00 
+      |                       |             |    |         |      |           C1 B0 B9 AE |
+      |                       |             |    |         |      |           C9 B1 B4 C5 |
+      |                       |             |    |         |      |           B0 B2 CD AE |
+      |                       |             |    |         |      |           00          |
+  740 |  1 variables.s    647 | Data        | 11 |         |   17 | 00/4A41 : B0 B1 B0 B0 |               asc     "0100A14.I16E02M."00 
+      |                       |             |    |         |      |           C1 B1 B4 AE |
+      |                       |             |    |         |      |           C9 B1 B6 C5 |
+      |                       |             |    |         |      |           B0 B2 CD AE |
+      |                       |             |    |         |      |           00          |
+  741 |  1 variables.s    648 | Data        | 11 |         |   20 | 00/4A52 : B0 B2 B0 B0 |               asc     "0200A16E07B22.D07N."00
+      |                       |             |    |         |      |           C1 B1 B6 C5 |
+      |                       |             |    |         |      |           B0 B7 C2 B2 |
+      |                       |             |    |         |      |           B2 AE C4 B0 |
+      |                       |             |    |         |      |           B7 CE AE 00 |
+  742 |  1 variables.s    649 | Data        | 11 |         |   20 | 00/4A66 : B0 B2 B0 B0 |               asc     "0200A16E03B05.D07N."00
+      |                       |             |    |         |      |           C1 B1 B6 C5 |
+      |                       |             |    |         |      |           B0 B3 C2 B0 |
+      |                       |             |    |         |      |           B5 AE C4 B0 |
+      |                       |             |    |         |      |           B7 CE AE 00 |
+  743 |  1 variables.s    650 | Data        | 11 |         |   17 | 00/4A7A : B0 B2 B0 B0 |               asc     "0200A16.I14E02M."00 
+      |                       |             |    |         |      |           C1 B1 B6 AE |
+      |                       |             |    |         |      |           C9 B1 B4 C5 |
+      |                       |             |    |         |      |           B0 B2 CD AE |
+      |                       |             |    |         |      |           00          |
+  744 |  1 variables.s    651 | Data        | 11 |         |   20 | 00/4A8B : B0 B4 B0 B0 |               asc     "0400A15E03B05.D07N."00
+      |                       |             |    |         |      |           C1 B1 B5 C5 |
+      |                       |             |    |         |      |           B0 B3 C2 B0 |
+      |                       |             |    |         |      |           B5 AE C4 B0 |
+      |                       |             |    |         |      |           B7 CE AE 00 |
+  745 |  1 variables.s    652 | Data        | 11 |         |   20 | 00/4A9F : B0 B4 B0 B0 |               asc     "0400A15E07B22.D07N."00
+      |                       |             |    |         |      |           C1 B1 B5 C5 |
+      |                       |             |    |         |      |           B0 B7 C2 B2 |
+      |                       |             |    |         |      |           B2 AE C4 B0 |
+      |                       |             |    |         |      |           B7 CE AE 00 |
+  746 |  1 variables.s    653 | Data        | 11 |         |   17 | 00/4AB3 : B0 B4 B0 B0 |               asc     "0400A15.I14E02M."00 
+      |                       |             |    |         |      |           C1 B1 B5 AE |
+      |                       |             |    |         |      |           C9 B1 B4 C5 |
+      |                       |             |    |         |      |           B0 B2 CD AE |
+      |                       |             |    |         |      |           00          |
+  747 |  1 variables.s    654 | Data        | 11 |         |   17 | 00/4AC4 : B0 B1 B0 B0 |               asc     "0100A15E03.I17M."00 
+      |                       |             |    |         |      |           C1 B1 B5 C5 |
+      |                       |             |    |         |      |           B0 B3 AE C9 |
+      |                       |             |    |         |      |           B1 B7 CD AE |
+      |                       |             |    |         |      |           00          |
+  748 |  1 variables.s    655 | Data        | 11 |         |   17 | 00/4AD5 : B0 B1 B0 B0 |               asc     "0100A15E07.I17M."00 
+      |                       |             |    |         |      |           C1 B1 B5 C5 |
+      |                       |             |    |         |      |           B0 B7 AE C9 |
+      |                       |             |    |         |      |           B1 B7 CD AE |
+      |                       |             |    |         |      |           00          |
+  749 |  1 variables.s    656 | Data        | 11 |         |   17 | 00/4AE6 : B0 B1 B0 B0 |               asc     "0100A15.I17E02M."00 
+      |                       |             |    |         |      |           C1 B1 B5 AE |
+      |                       |             |    |         |      |           C9 B1 B7 C5 |
+      |                       |             |    |         |      |           B0 B2 CD AE |
+      |                       |             |    |         |      |           00          |
+  750 |  1 variables.s    657 | Data        | 11 |         |   17 | 00/4AF7 : B0 B2 B0 B0 |               asc     "0200A17.F01I15M."00 
+      |                       |             |    |         |      |           C1 B1 B7 AE |
+      |                       |             |    |         |      |           C6 B0 B1 C9 |
+      |                       |             |    |         |      |           B1 B5 CD AE |
+      |                       |             |    |         |      |           00          |
+  751 |  1 variables.s    658 | Data        | 11 |         |   14 | 00/4B08 : B0 B3 B0 B0 |               asc     "0300A17.D08N."00    
+      |                       |             |    |         |      |           C1 B1 B7 AE |
+      |                       |             |    |         |      |           C4 B0 B8 CE |
+      |                       |             |    |         |      |           AE 00       |
+  752 |  1 variables.s    659 | Data        | 11 |         |   14 | 00/4B16 : B0 B4 B0 B0 |               asc     "0400A17.D09K."00    
+      |                       |             |    |         |      |           C1 B1 B7 AE |
+      |                       |             |    |         |      |           C4 B0 B9 CB |
+      |                       |             |    |         |      |           AE 00       |
+  753 |  1 variables.s    660 | Data        | 11 |         |   26 | 00/4B24 : B0 B3 B0 B0 |               asc     "0300A18.D10F03E01E02I17M."00
+      |                       |             |    |         |      |           C1 B1 B8 AE |
+      |                       |             |    |         |      |           C4 B1 B0 C6 |
+      |                       |             |    |         |      |           B0 B3 C5 B0 |
+      |                       |             |    |         |      |           B1 C5 B0 B2 |
+      |                       |             |    |         |      |           C9 B1 B7 CD |
+      |                       |             |    |         |      |           AE 00       |
+  754 |  1 variables.s    661 | Data        | 11 |         |   17 | 00/4B3E : B0 B4 B0 B0 |               asc     "0400A21E03.I19M."00 
+      |                       |             |    |         |      |           C1 B2 B1 C5 |
+      |                       |             |    |         |      |           B0 B3 AE C9 |
+      |                       |             |    |         |      |           B1 B9 CD AE |
+      |                       |             |    |         |      |           00          |
+  755 |  1 variables.s    662 | Data        | 11 |         |   17 | 00/4B4F : B0 B4 B0 B0 |               asc     "0400A21E07.I19M."00 
+      |                       |             |    |         |      |           C1 B2 B1 C5 |
+      |                       |             |    |         |      |           B0 B7 AE C9 |
+      |                       |             |    |         |      |           B1 B9 CD AE |
+      |                       |             |    |         |      |           00          |
+  756 |  1 variables.s    663 | Data        | 11 |         |   17 | 00/4B60 : B0 B4 B0 B0 |               asc     "0400A21.I19E02M."00 
+      |                       |             |    |         |      |           C1 B2 B1 AE |
+      |                       |             |    |         |      |           C9 B1 B9 C5 |
+      |                       |             |    |         |      |           B0 B2 CD AE |
+      |                       |             |    |         |      |           00          |
+  757 |  1 variables.s    664 | Data        | 11 |         |   17 | 00/4B71 : B0 B2 B0 B0 |               asc     "0200A22E03.I19M."00 
+      |                       |             |    |         |      |           C1 B2 B2 C5 |
+      |                       |             |    |         |      |           B0 B3 AE C9 |
+      |                       |             |    |         |      |           B1 B9 CD AE |
+      |                       |             |    |         |      |           00          |
+  758 |  1 variables.s    665 | Data        | 11 |         |   17 | 00/4B82 : B0 B2 B0 B0 |               asc     "0200A22E07.I19M."00 
+      |                       |             |    |         |      |           C1 B2 B2 C5 |
+      |                       |             |    |         |      |           B0 B7 AE C9 |
+      |                       |             |    |         |      |           B1 B9 CD AE |
+      |                       |             |    |         |      |           00          |
+  759 |  1 variables.s    666 | Data        | 11 |         |   17 | 00/4B93 : B0 B2 B0 B0 |               asc     "0200A22.I19E02M."00 
+      |                       |             |    |         |      |           C1 B2 B2 AE |
+      |                       |             |    |         |      |           C9 B1 B9 C5 |
+      |                       |             |    |         |      |           B0 B2 CD AE |
+      |                       |             |    |         |      |           00          |
+  760 |  1 variables.s    667 | Data        | 11 |         |   14 | 00/4BA4 : B0 B2 B0 B0 |               asc     "0200A19.D11N."00    
+      |                       |             |    |         |      |           C1 B1 B9 AE |
+      |                       |             |    |         |      |           C4 B1 B1 CE |
+      |                       |             |    |         |      |           AE 00       |
+  761 |  1 variables.s    668 | Data        | 11 |         |   14 | 00/4BB2 : B0 B4 B0 B0 |               asc     "0400A19.D11N."00    
+      |                       |             |    |         |      |           C1 B1 B9 AE |
+      |                       |             |    |         |      |           C4 B1 B1 CE |
+      |                       |             |    |         |      |           AE 00       |
+  762 |  1 variables.s    669 | Data        | 11 |         |   17 | 00/4BC0 : B0 B3 B0 B0 |               asc     "0300A22.D12I23M."00 
+      |                       |             |    |         |      |           C1 B2 B2 AE |
+      |                       |             |    |         |      |           C4 B1 B2 C9 |
+      |                       |             |    |         |      |           B2 B3 CD AE |
+      |                       |             |    |         |      |           00          |
+  763 |  1 variables.s    670 | Data        | 11 |         |   13 | 00/4BD1 : B2 B5 B0 B0 |               asc     "2500A01.D13."00     
+      |                       |             |    |         |      |           C1 B0 B1 AE |
+      |                       |             |    |         |      |           C4 B1 B3 AE |
+      |                       |             |    |         |      |           00          |
+  764 |  1 variables.s    671 | Data        | 11 |         |   14 | 00/4BDE : B2 B5 B0 B0 |               asc     "2500I01.D14K."00    
+      |                       |             |    |         |      |           C9 B0 B1 AE |
+      |                       |             |    |         |      |           C4 B1 B4 CB |
+      |                       |             |    |         |      |           AE 00       |
+  765 |  1 variables.s    672 | Data        | 11 |         |   14 | 00/4BEC : B1 B2 B4 B4 |               asc     "1244A03.D15M."00    
+      |                       |             |    |         |      |           C1 B0 B3 AE |
+      |                       |             |    |         |      |           C4 B1 B5 CD |
+      |                       |             |    |         |      |           AE 00       |
+  766 |  1 variables.s    673 | Data        | 11 |         |   14 | 00/4BFA : B1 B0 B3 B4 |               asc     "1034B01.B01J."00    
+      |                       |             |    |         |      |           C2 B0 B1 AE |
+      |                       |             |    |         |      |           C2 B0 B1 CA |
+      |                       |             |    |         |      |           AE 00       |
+  767 |  1 variables.s    674 | Data        | 11 |         |   14 | 00/4C08 : B1 B0 B2 B7 |               asc     "1027B08.B08J."00    
+      |                       |             |    |         |      |           C2 B0 B8 AE |
+      |                       |             |    |         |      |           C2 B0 B8 CA |
+      |                       |             |    |         |      |           AE 00       |
+  768 |  1 variables.s    675 | Data        | 11 |         |   14 | 00/4C16 : B1 B0 B2 B8 |               asc     "1028B04.B04J."00    
+      |                       |             |    |         |      |           C2 B0 B4 AE |
+      |                       |             |    |         |      |           C2 B0 B4 CA |
+      |                       |             |    |         |      |           AE 00       |
+  769 |  1 variables.s    676 | Data        | 11 |         |   14 | 00/4C24 : B1 B0 B2 B9 |               asc     "1029B05.B05J."00    
+      |                       |             |    |         |      |           C2 B0 B5 AE |
+      |                       |             |    |         |      |           C2 B0 B5 CA |
+      |                       |             |    |         |      |           AE 00       |
+  770 |  1 variables.s    677 | Data        | 11 |         |   14 | 00/4C32 : B1 B0 B3 B2 |               asc     "1032B21.B21J."00    
+      |                       |             |    |         |      |           C2 B2 B1 AE |
+      |                       |             |    |         |      |           C2 B2 B1 CA |
+      |                       |             |    |         |      |           AE 00       |
+  771 |  1 variables.s    678 | Data        | 11 |         |   14 | 00/4C40 : B1 B0 B3 B8 |               asc     "1038B24.B24J."00    
+      |                       |             |    |         |      |           C2 B2 B4 AE |
+      |                       |             |    |         |      |           C2 B2 B4 CA |
+      |                       |             |    |         |      |           AE 00       |
+  772 |  1 variables.s    679 | Data        | 11 |         |   14 | 00/4C4E : B1 B0 B3 B9 |               asc     "1039B12.B12J."00    
+      |                       |             |    |         |      |           C2 B1 B2 AE |
+      |                       |             |    |         |      |           C2 B1 B2 CA |
+      |                       |             |    |         |      |           AE 00       |
+  773 |  1 variables.s    680 | Data        | 11 |         |   14 | 00/4C5C : B1 B0 B4 B0 |               asc     "1040B09.B09J."00    
+      |                       |             |    |         |      |           C2 B0 B9 AE |
+      |                       |             |    |         |      |           C2 B0 B9 CA |
+      |                       |             |    |         |      |           AE 00       |
+  774 |  1 variables.s    681 | Data        | 11 |         |   14 | 00/4C6A : B1 B0 B4 B1 |               asc     "1041B10.B10J."00    
+      |                       |             |    |         |      |           C2 B1 B0 AE |
+      |                       |             |    |         |      |           C2 B1 B0 CA |
+      |                       |             |    |         |      |           AE 00       |
+  775 |  1 variables.s    682 | Data        | 11 |         |   14 | 00/4C78 : B1 B0 B4 B3 |               asc     "1043B18.B18J."00    
+      |                       |             |    |         |      |           C2 B1 B8 AE |
+      |                       |             |    |         |      |           C2 B1 B8 CA |
+      |                       |             |    |         |      |           AE 00       |
+  776 |  1 variables.s    683 | Data        | 11 |         |   14 | 00/4C86 : B1 B0 B5 B0 |               asc     "1050B03.B03J."00    
+      |                       |             |    |         |      |           C2 B0 B3 AE |
+      |                       |             |    |         |      |           C2 B0 B3 CA |
+      |                       |             |    |         |      |           AE 00       |
+  777 |  1 variables.s    684 | Data        | 11 |         |   14 | 00/4C94 : B1 B0 B4 B2 |               asc     "1042B22.B22J."00    
+      |                       |             |    |         |      |           C2 B2 B2 AE |
+      |                       |             |    |         |      |           C2 B2 B2 CA |
+      |                       |             |    |         |      |           AE 00       |
+  778 |  1 variables.s    685 | Data        | 11 |         |   26 | 00/4CA2 : B1 B0 B3 B7 |               asc     "1037A20B05.H11P05E05D16K."00
+      |                       |             |    |         |      |           C1 B2 B0 C2 |
+      |                       |             |    |         |      |           B0 B5 AE C8 |
+      |                       |             |    |         |      |           B1 B1 D0 B0 |
+      |                       |             |    |         |      |           B5 C5 B0 B5 |
+      |                       |             |    |         |      |           C4 B1 B6 CB |
+      |                       |             |    |         |      |           AE 00       |
+  779 |  1 variables.s    686 | Data        | 11 |         |   14 | 00/4CBC : B1 B0 B3 B7 |               asc     "1037A20.D17K."00    
+      |                       |             |    |         |      |           C1 B2 B0 AE |
+      |                       |             |    |         |      |           C4 B1 B7 CB |
+      |                       |             |    |         |      |           AE 00       |
+  780 |  1 variables.s    687 | Data        | 11 |         |   11 | 00/4CCA : B1 B1 B3 B4 |               asc     "1134.C01J."00       
+      |                       |             |    |         |      |           AE C3 B0 B1 |
+      |                       |             |    |         |      |           CA AE 00    |
+  781 |  1 variables.s    688 | Data        | 11 |         |   11 | 00/4CD5 : B1 B1 B2 B7 |               asc     "1127.C08J."00       
+      |                       |             |    |         |      |           AE C3 B0 B8 |
+      |                       |             |    |         |      |           CA AE 00    |
+  782 |  1 variables.s    689 | Data        | 11 |         |   11 | 00/4CE0 : B1 B1 B2 B8 |               asc     "1128.C04J."00       
+      |                       |             |    |         |      |           AE C3 B0 B4 |
+      |                       |             |    |         |      |           CA AE 00    |
+  783 |  1 variables.s    690 | Data        | 11 |         |   11 | 00/4CEB : B1 B1 B2 B9 |               asc     "1129.C05J."00       
+      |                       |             |    |         |      |           AE C3 B0 B5 |
+      |                       |             |    |         |      |           CA AE 00    |
+  784 |  1 variables.s    691 | Data        | 11 |         |   11 | 00/4CF6 : B1 B1 B3 B2 |               asc     "1132.C21J."00       
+      |                       |             |    |         |      |           AE C3 B2 B1 |
+      |                       |             |    |         |      |           CA AE 00    |
+  785 |  1 variables.s    692 | Data        | 11 |         |   11 | 00/4D01 : B1 B1 B3 B8 |               asc     "1138.C24J."00       
+      |                       |             |    |         |      |           AE C3 B2 B4 |
+      |                       |             |    |         |      |           CA AE 00    |
+  786 |  1 variables.s    693 | Data        | 11 |         |   14 | 00/4D0C : B1 B1 B4 B3 |               asc     "1143E09.D62K."00    
+      |                       |             |    |         |      |           C5 B0 B9 AE |
+      |                       |             |    |         |      |           C4 B6 B2 CB |
+      |                       |             |    |         |      |           AE 00       |
+  787 |  1 variables.s    694 | Data        | 11 |         |   11 | 00/4D1A : B1 B1 B3 B9 |               asc     "1139.C12J."00       
+      |                       |             |    |         |      |           AE C3 B1 B2 |
+      |                       |             |    |         |      |           CA AE 00    |
+  788 |  1 variables.s    695 | Data        | 11 |         |   11 | 00/4D25 : B1 B1 B4 B0 |               asc     "1140.C09J."00       
+      |                       |             |    |         |      |           AE C3 B0 B9 |
+      |                       |             |    |         |      |           CA AE 00    |
+  789 |  1 variables.s    696 | Data        | 11 |         |   11 | 00/4D30 : B1 B1 B4 B1 |               asc     "1141.C10J."00       
+      |                       |             |    |         |      |           AE C3 B1 B0 |
+      |                       |             |    |         |      |           CA AE 00    |
+  790 |  1 variables.s    697 | Data        | 11 |         |   11 | 00/4D3B : B1 B1 B4 B3 |               asc     "1143.C18J."00       
+      |                       |             |    |         |      |           AE C3 B1 B8 |
+      |                       |             |    |         |      |           CA AE 00    |
+  791 |  1 variables.s    698 | Data        | 11 |         |   11 | 00/4D46 : B1 B1 B5 B0 |               asc     "1150.C03J."00       
+      |                       |             |    |         |      |           AE C3 B0 B3 |
+      |                       |             |    |         |      |           CA AE 00    |
+  792 |  1 variables.s    699 | Data        | 11 |         |   11 | 00/4D51 : B1 B1 B4 B2 |               asc     "1142.C22J."00       
+      |                       |             |    |         |      |           AE C3 B2 B2 |
+      |                       |             |    |         |      |           CA AE 00    |
+  793 |  1 variables.s    700 | Data        | 11 |         |   11 | 00/4D5C : B2 B4 B0 B0 |               asc     "2400.A00L."00       
+      |                       |             |    |         |      |           AE C1 B0 B0 |
+      |                       |             |    |         |      |           CC AE 00    |
+  794 |  1 variables.s    701 | Data        | 11 |         |   22 | 00/4D67 : B1 B2 B4 B9 |               asc     "1249A05.E04D20G0405J."00
+      |                       |             |    |         |      |           C1 B0 B5 AE |
+      |                       |             |    |         |      |           C5 B0 B4 C4 |
+      |                       |             |    |         |      |           B2 B0 C7 B0 |
+      |                       |             |    |         |      |           B4 B0 B5 CA |
+      |                       |             |    |         |      |           AE 00       |
+  795 |  1 variables.s    702 | Data        | 11 |         |   14 | 00/4D7D : B1 B3 B4 B9 |               asc     "1349A05.F04J."00    
+      |                       |             |    |         |      |           C1 B0 B5 AE |
+      |                       |             |    |         |      |           C6 B0 B4 CA |
+      |                       |             |    |         |      |           AE 00       |
+  796 |  1 variables.s    703 | Data        | 11 |         |   20 | 00/4D8B : B2 B2 B3 B8 |               asc     "2238A05E04.P24E08J."00
+      |                       |             |    |         |      |           C1 B0 B5 C5 |
+      |                       |             |    |         |      |           B0 B4 AE D0 |
+      |                       |             |    |         |      |           B2 B4 C5 B0 |
+      |                       |             |    |         |      |           B8 CA AE 00 |
+  797 |  1 variables.s    704 | Data        | 11 |         |   20 | 00/4D9F : B2 B3 B3 B8 |               asc     "2338A05E08.F08P24J."00
+      |                       |             |    |         |      |           C1 B0 B5 C5 |
+      |                       |             |    |         |      |           B0 B8 AE C6 |
+      |                       |             |    |         |      |           B0 B8 D0 B2 |
+      |                       |             |    |         |      |           B4 CA AE 00 |
+  798 |  1 variables.s    705 | Data        | 11 |         |   14 | 00/4DB3 : B2 B3 B3 B8 |               asc     "2338E08.D21N."00    
+      |                       |             |    |         |      |           C5 B0 B8 AE |
+      |                       |             |    |         |      |           C4 B2 B1 CE |
+      |                       |             |    |         |      |           AE 00       |
+  799 |  1 variables.s    706 | Data        | 11 |         |   14 | 00/4DC1 : B1 B8 B4 B8 |               asc     "1848B10.D22L."00    
+      |                       |             |    |         |      |           C2 B1 B0 AE |
+      |                       |             |    |         |      |           C4 B2 B2 CC |
+      |                       |             |    |         |      |           AE 00       |
+  800 |  1 variables.s    707 | Data        | 11 |         |   14 | 00/4DCF : B1 B8 B4 B1 |               asc     "1841B10.D23N."00    
+      |                       |             |    |         |      |           C2 B1 B0 AE |
+      |                       |             |    |         |      |           C4 B2 B3 CE |
+      |                       |             |    |         |      |           AE 00       |
+  801 |  1 variables.s    708 | Data        | 11 |         |   14 | 00/4DDD : B1 B8 B4 B0 |               asc     "1840B09.D24K."00    
+      |                       |             |    |         |      |           C2 B0 B9 AE |
+      |                       |             |    |         |      |           C4 B2 B4 CB |
+      |                       |             |    |         |      |           AE 00       |
+  802 |  1 variables.s    709 | Data        | 11 |         |   14 | 00/4DEB : B2 B0 B4 B0 |               asc     "2040B09.D25K."00    
+      |                       |             |    |         |      |           C2 B0 B9 AE |
+      |                       |             |    |         |      |           C4 B2 B5 CB |
+      |                       |             |    |         |      |           AE 00       |
+  803 |  1 variables.s    710 | Data        | 11 |         |   14 | 00/4DF9 : B1 B9 B5 B1 |               asc     "1951A02.D26M."00    
+      |                       |             |    |         |      |           C1 B0 B2 AE |
+      |                       |             |    |         |      |           C4 B2 B6 CD |
+      |                       |             |    |         |      |           AE 00       |
+  804 |  1 variables.s    711 | Data        | 11 |         |   11 | 00/4E07 : B1 B9 B5 B1 |               asc     "1951.D27K."00       
+      |                       |             |    |         |      |           AE C4 B2 B7 |
+      |                       |             |    |         |      |           CB AE 00    |
+  805 |  1 variables.s    712 | Data        | 11 |         |   14 | 00/4E12 : B2 B1 B0 B0 |               asc     "2100A14.D28K."00    
+      |                       |             |    |         |      |           C1 B1 B4 AE |
+      |                       |             |    |         |      |           C4 B2 B8 CB |
+      |                       |             |    |         |      |           AE 00       |
+  806 |  1 variables.s    713 | Data        | 11 |         |   11 | 00/4E20 : B2 B1 B0 B0 |               asc     "2100.D29K."00       
+      |                       |             |    |         |      |           AE C4 B2 B9 |
+      |                       |             |    |         |      |           CB AE 00    |
+  807 |  1 variables.s    714 | Data        | 11 |         |   14 | 00/4E2B : B1 B5 B4 B2 |               asc     "1542C22.D33K."00    
+      |                       |             |    |         |      |           C3 B2 B2 AE |
+      |                       |             |    |         |      |           C4 B3 B3 CB |
+      |                       |             |    |         |      |           AE 00       |
+  808 |  1 variables.s    715 | Data        | 11 |         |   14 | 00/4E39 : B1 B5 B4 B2 |               asc     "1542E07.D30K."00    
+      |                       |             |    |         |      |           C5 B0 B7 AE |
+      |                       |             |    |         |      |           C4 B3 B0 CB |
+      |                       |             |    |         |      |           AE 00       |
+  809 |  1 variables.s    716 | Data        | 11 |         |   14 | 00/4E47 : B1 B5 B4 B2 |               asc     "1542A14.D07N."00    
+      |                       |             |    |         |      |           C1 B1 B4 AE |
+      |                       |             |    |         |      |           C4 B0 B7 CE |
+      |                       |             |    |         |      |           AE 00       |
+  810 |  1 variables.s    717 | Data        | 11 |         |   17 | 00/4E55 : B1 B5 B4 B2 |               asc     "1542A17E01.D10K."00 
+      |                       |             |    |         |      |           C1 B1 B7 C5 |
+      |                       |             |    |         |      |           B0 B1 AE C4 |
+      |                       |             |    |         |      |           B1 B0 CB AE |
+      |                       |             |    |         |      |           00          |
+  811 |  1 variables.s    718 | Data        | 11 |         |   23 | 00/4E66 : B1 B5 B4 B2 |               asc     "1542E02.F02E07E06P22M."00
+      |                       |             |    |         |      |           C5 B0 B2 AE |
+      |                       |             |    |         |      |           C6 B0 B2 C5 |
+      |                       |             |    |         |      |           B0 B7 C5 B0 |
+      |                       |             |    |         |      |           B6 D0 B2 B2 |
+      |                       |             |    |         |      |           CD AE 00    |
+  812 |  1 variables.s    719 | Data        | 11 |         |   14 | 00/4E7D : B1 B5 B4 B2 |               asc     "1542.E07P22J."00    
+      |                       |             |    |         |      |           AE C5 B0 B7 |
+      |                       |             |    |         |      |           D0 B2 B2 CA |
+      |                       |             |    |         |      |           AE 00       |
+  813 |  1 variables.s    720 | Data        | 11 |         |   14 | 00/4E8B : B1 B5 B2 B9 |               asc     "1529C05.D33K."00    
+      |                       |             |    |         |      |           C3 B0 B5 AE |
+      |                       |             |    |         |      |           C4 B3 B3 CB |
+      |                       |             |    |         |      |           AE 00       |
+  814 |  1 variables.s    721 | Data        | 11 |         |   14 | 00/4E99 : B1 B5 B2 B9 |               asc     "1529E03.D30K."00    
+      |                       |             |    |         |      |           C5 B0 B3 AE |
+      |                       |             |    |         |      |           C4 B3 B0 CB |
+      |                       |             |    |         |      |           AE 00       |
+  815 |  1 variables.s    722 | Data        | 11 |         |   14 | 00/4EA7 : B1 B5 B2 B9 |               asc     "1529F07.D31L."00    
+      |                       |             |    |         |      |           C6 B0 B7 AE |
+      |                       |             |    |         |      |           C4 B3 B1 CC |
+      |                       |             |    |         |      |           AE 00       |
+  816 |  1 variables.s    723 | Data        | 11 |         |   14 | 00/4EB5 : B1 B5 B2 B9 |               asc     "1529F05.D32L."00    
+      |                       |             |    |         |      |           C6 B0 B5 AE |
+      |                       |             |    |         |      |           C4 B3 B2 CC |
+      |                       |             |    |         |      |           AE 00       |
+  817 |  1 variables.s    724 | Data        | 11 |         |   26 | 00/4EC3 : B1 B5 B2 B9 |               asc     "1529E02.F02E03E06P06P05M."00
+      |                       |             |    |         |      |           C5 B0 B2 AE |
+      |                       |             |    |         |      |           C6 B0 B2 C5 |
+      |                       |             |    |         |      |           B0 B3 C5 B0 |
+      |                       |             |    |         |      |           B6 D0 B0 B6 |
+      |                       |             |    |         |      |           D0 B0 B5 CD |
+      |                       |             |    |         |      |           AE 00       |
+  818 |  1 variables.s    725 | Data        | 11 |         |   17 | 00/4EDD : B1 B5 B2 B9 |               asc     "1529.E03P06P05J."00 
+      |                       |             |    |         |      |           AE C5 B0 B3 |
+      |                       |             |    |         |      |           D0 B0 B6 D0 |
+      |                       |             |    |         |      |           B0 B5 CA AE |
+      |                       |             |    |         |      |           00          |
+  819 |  1 variables.s    726 | Data        | 11 |         |   14 | 00/4EEE : B1 B6 B4 B2 |               asc     "1642C22.D33K."00    
+      |                       |             |    |         |      |           C3 B2 B2 AE |
+      |                       |             |    |         |      |           C4 B3 B3 CB |
+      |                       |             |    |         |      |           AE 00       |
+  820 |  1 variables.s    727 | Data        | 11 |         |   14 | 00/4EFC : B1 B6 B4 B2 |               asc     "1642F07.D30K."00    
+      |                       |             |    |         |      |           C6 B0 B7 AE |
+      |                       |             |    |         |      |           C4 B3 B0 CB |
+      |                       |             |    |         |      |           AE 00       |
+  821 |  1 variables.s    728 | Data        | 11 |         |   23 | 00/4F0A : B1 B6 B4 B2 |               asc     "1642E06E03.D36F07P22M."00
+      |                       |             |    |         |      |           C5 B0 B6 C5 |
+      |                       |             |    |         |      |           B0 B3 AE C4 |
+      |                       |             |    |         |      |           B3 B6 C6 B0 |
+      |                       |             |    |         |      |           B7 D0 B2 B2 |
+      |                       |             |    |         |      |           CD AE 00    |
+  822 |  1 variables.s    729 | Data        | 11 |         |   23 | 00/4F21 : B1 B6 B4 B2 |               asc     "1642E06.E02F07F06P22M."00
+      |                       |             |    |         |      |           C5 B0 B6 AE |
+      |                       |             |    |         |      |           C5 B0 B2 C6 |
+      |                       |             |    |         |      |           B0 B7 C6 B0 |
+      |                       |             |    |         |      |           B6 D0 B2 B2 |
+      |                       |             |    |         |      |           CD AE 00    |
+  823 |  1 variables.s    730 | Data        | 11 |         |   14 | 00/4F38 : B1 B6 B4 B2 |               asc     "1642.F07P22M."00    
+      |                       |             |    |         |      |           AE C6 B0 B7 |
+      |                       |             |    |         |      |           D0 B2 B2 CD |
+      |                       |             |    |         |      |           AE 00       |
+  824 |  1 variables.s    731 | Data        | 11 |         |   14 | 00/4F46 : B1 B6 B2 B9 |               asc     "1629C05.D33K."00    
+      |                       |             |    |         |      |           C3 B0 B5 AE |
+      |                       |             |    |         |      |           C4 B3 B3 CB |
+      |                       |             |    |         |      |           AE 00       |
+  825 |  1 variables.s    732 | Data        | 11 |         |   14 | 00/4F54 : B1 B6 B2 B9 |               asc     "1629F03.D30K."00    
+      |                       |             |    |         |      |           C6 B0 B3 AE |
+      |                       |             |    |         |      |           C4 B3 B0 CB |
+      |                       |             |    |         |      |           AE 00       |
+  826 |  1 variables.s    733 | Data        | 11 |         |   23 | 00/4F62 : B1 B6 B2 B9 |               asc     "1629E07E06.D34F03P05M."00
+      |                       |             |    |         |      |           C5 B0 B7 C5 |
+      |                       |             |    |         |      |           B0 B6 AE C4 |
+      |                       |             |    |         |      |           B3 B4 C6 B0 |
+      |                       |             |    |         |      |           B3 D0 B0 B5 |
+      |                       |             |    |         |      |           CD AE 00    |
+  827 |  1 variables.s    734 | Data        | 11 |         |   23 | 00/4F79 : B1 B6 B2 B9 |               asc     "1629E06.E02F06F03P05M."00
+      |                       |             |    |         |      |           C5 B0 B6 AE |
+      |                       |             |    |         |      |           C5 B0 B2 C6 |
+      |                       |             |    |         |      |           B0 B6 C6 B0 |
+      |                       |             |    |         |      |           B3 D0 B0 B5 |
+      |                       |             |    |         |      |           CD AE 00    |
+  828 |  1 variables.s    735 | Data        | 11 |         |   14 | 00/4F90 : B1 B6 B2 B9 |               asc     "1629.F03P05M."00    
+      |                       |             |    |         |      |           AE C6 B0 B3 |
+      |                       |             |    |         |      |           D0 B0 B5 CD |
+      |                       |             |    |         |      |           AE 00       |
+  829 |  1 variables.s    736 | Data        | 11 |         |   14 | 00/4F9E : B1 B5 B3 B4 |               asc     "1534B01.D35N."00    
+      |                       |             |    |         |      |           C2 B0 B1 AE |
+      |                       |             |    |         |      |           C4 B3 B5 CE |
+      |                       |             |    |         |      |           AE 00       |
+  830 |  1 variables.s    737 | Data        | 11 |         |   14 | 00/4FAC : B1 B7 B3 B5 |               asc     "1735I16.D45K."00    
+      |                       |             |    |         |      |           C9 B1 B6 AE |
+      |                       |             |    |         |      |           C4 B4 B5 CB |
+      |                       |             |    |         |      |           AE 00       |
+  831 |  1 variables.s    738 | Data        | 11 |         |   14 | 00/4FBA : B1 B7 B3 B5 |               asc     "1735E02.D43K."00    
+      |                       |             |    |         |      |           C5 B0 B2 AE |
+      |                       |             |    |         |      |           C4 B4 B3 CB |
+      |                       |             |    |         |      |           AE 00       |
+  832 |  1 variables.s    739 | Data        | 11 |         |   14 | 00/4FC8 : B1 B7 B3 B5 |               asc     "1735F03.D44K."00    
+      |                       |             |    |         |      |           C6 B0 B3 AE |
+      |                       |             |    |         |      |           C4 B4 B4 CB |
+      |                       |             |    |         |      |           AE 00       |
+  833 |  1 variables.s    740 | Data        | 11 |         |   14 | 00/4FD6 : B1 B7 B3 B5 |               asc     "1735C04.D46K."00    
+      |                       |             |    |         |      |           C3 B0 B4 AE |
+      |                       |             |    |         |      |           C4 B4 B6 CB |
+      |                       |             |    |         |      |           AE 00       |
+  834 |  1 variables.s    741 | Data        | 11 |         |   14 | 00/4FE4 : B1 B7 B3 B5 |               asc     "1735.P16E10J."00    
+      |                       |             |    |         |      |           AE D0 B1 B6 |
+      |                       |             |    |         |      |           C5 B1 B0 CA |
+      |                       |             |    |         |      |           AE 00       |
+  835 |  1 variables.s    742 | Data        | 11 |         |   17 | 00/4FF2 : B5 B6 B0 B0 |               asc     "5600A16F10.D47K."00 
+      |                       |             |    |         |      |           C1 B1 B6 C6 |
+      |                       |             |    |         |      |           B1 B0 AE C4 |
+      |                       |             |    |         |      |           B4 B7 CB AE |
+      |                       |             |    |         |      |           00          |
+  836 |  1 variables.s    743 | Data        | 11 |         |   14 | 00/5003 : B5 B6 B4 B6 |               asc     "5646A16.D48N."00    
+      |                       |             |    |         |      |           C1 B1 B6 AE |
+      |                       |             |    |         |      |           C4 B4 B8 CE |
+      |                       |             |    |         |      |           AE 00       |
+  837 |  1 variables.s    744 | Data        | 11 |         |   14 | 00/5011 : B5 B6 B4 B7 |               asc     "5647A16.D48N."00    
+      |                       |             |    |         |      |           C1 B1 B6 AE |
+      |                       |             |    |         |      |           C4 B4 B8 CE |
+      |                       |             |    |         |      |           AE 00       |
+  838 |  1 variables.s    745 | Data        | 11 |         |   20 | 00/501F : B5 B6 B4 B5 |               asc     "5645A16F09.D50D06N."00
+      |                       |             |    |         |      |           C1 B1 B6 C6 |
+      |                       |             |    |         |      |           B0 B9 AE C4 |
+      |                       |             |    |         |      |           B5 B0 C4 B0 |
+      |                       |             |    |         |      |           B6 CE AE 00 |
+  839 |  1 variables.s    746 | Data        | 11 |         |   17 | 00/5033 : B5 B6 B4 B5 |               asc     "5645A16.D49I18M."00 
+      |                       |             |    |         |      |           C1 B1 B6 AE |
+      |                       |             |    |         |      |           C4 B4 B9 C9 |
+      |                       |             |    |         |      |           B1 B8 CD AE |
+      |                       |             |    |         |      |           00          |
+  840 |  1 variables.s    747 | Data        | 11 |         |   17 | 00/5044 : B5 B5 B4 B3 |               asc     "5543D18E09.D30K."00 
+      |                       |             |    |         |      |           C4 B1 B8 C5 |
+      |                       |             |    |         |      |           B0 B9 AE C4 |
+      |                       |             |    |         |      |           B3 B0 CB AE |
+      |                       |             |    |         |      |           00          |
+  841 |  1 variables.s    748 | Data        | 11 |         |   17 | 00/5055 : B5 B5 B4 B3 |               asc     "5543D18.P18E09J."00 
+      |                       |             |    |         |      |           C4 B1 B8 AE |
+      |                       |             |    |         |      |           D0 B1 B8 C5 |
+      |                       |             |    |         |      |           B0 B9 CA AE |
+      |                       |             |    |         |      |           00          |
+  842 |  1 variables.s    749 | Data        | 11 |         |   22 | 00/5066 : B5 B7 B4 A6 |               asc     "574& E AND18F09.D30K."00
+      |                       |             |    |         |      |           A0 C5 A0 C1 |
+      |                       |             |    |         |      |           CE C4 B1 B8 |
+      |                       |             |    |         |      |           C6 B0 B9 AE |
+      |                       |             |    |         |      |           C4 B3 B0 CB |
+      |                       |             |    |         |      |           AE 00       |
+  843 |  1 variables.s    750 | Data        | 11 |         |   17 | 00/507C : B5 B7 B4 B3 |               asc     "5743D18.P18F09J."00 
+      |                       |             |    |         |      |           C4 B1 B8 AE |
+      |                       |             |    |         |      |           D0 B1 B8 C6 |
+      |                       |             |    |         |      |           B0 B9 CA AE |
+      |                       |             |    |         |      |           00          |
+  844 |  1 variables.s    751 | Data        | 11 |         |   17 | 00/508D : B1 B2 B3 B3 |               asc     "1233A24C12.D51K."00 
+      |                       |             |    |         |      |           C1 B2 B4 C3 |
+      |                       |             |    |         |      |           B1 B2 AE C4 |
+      |                       |             |    |         |      |           B5 B1 CB AE |
+      |                       |             |    |         |      |           00          |
+  845 |  1 variables.s    752 | Data        | 11 |         |   17 | 00/509E : B1 B2 B3 B3 |               asc     "1233A24C03.D52N."00 
+      |                       |             |    |         |      |           C1 B2 B4 C3 |
+      |                       |             |    |         |      |           B0 B3 AE C4 |
+      |                       |             |    |         |      |           B5 B2 CE AE |
+      |                       |             |    |         |      |           00          |
+  846 |  1 variables.s    753 | Data        | 11 |         |   22 | 00/50AF : B1 B2 B3 B3 |               asc     "1233A24.G0503E11D63K."00
+      |                       |             |    |         |      |           C1 B2 B4 AE |
+      |                       |             |    |         |      |           C7 B0 B5 B0 |
+      |                       |             |    |         |      |           B3 C5 B1 B1 |
+      |                       |             |    |         |      |           C4 B6 B3 CB |
+      |                       |             |    |         |      |           AE 00       |
+  847 |  1 variables.s    754 | Data        | 11 |         |   20 | 00/50C5 : B2 B6 B3 B6 |               asc     "2636E11.D54F11D55K."00
+      |                       |             |    |         |      |           C5 B1 B1 AE |
+      |                       |             |    |         |      |           C4 B5 B4 C6 |
+      |                       |             |    |         |      |           B1 B1 C4 B5 |
+      |                       |             |    |         |      |           B5 CB AE 00 |
+  848 |  1 variables.s    755 | Data        | 11 |         |   20 | 00/50D9 : B5 B3 B5 B0 |               asc     "5350E11.D54F11D55K."00
+      |                       |             |    |         |      |           C5 B1 B1 AE |
+      |                       |             |    |         |      |           C4 B5 B4 C6 |
+      |                       |             |    |         |      |           B1 B1 C4 B5 |
+      |                       |             |    |         |      |           B5 CB AE 00 |
+  849 |  1 variables.s    756 | Data        | 11 |         |   14 | 00/50ED : B5 B2 B3 B2 |               asc     "5232B21.D56N."00    
+      |                       |             |    |         |      |           C2 B2 B1 AE |
+      |                       |             |    |         |      |           C4 B5 B6 CE |
+      |                       |             |    |         |      |           AE 00       |
+  850 |  1 variables.s    757 | Data        | 11 |         |   13 | 00/50FB : B5 B8 B3 B0 |               asc     "5830F08.D57."00     
+      |                       |             |    |         |      |           C6 B0 B8 AE |
+      |                       |             |    |         |      |           C4 B5 B7 AE |
+      |                       |             |    |         |      |           00          |
+  851 |  1 variables.s    758 | Data        | 11 |         |   13 | 00/5108 : B5 B8 B3 B0 |               asc     "5830.D58D59."00     
+      |                       |             |    |         |      |           AE C4 B5 B8 |
+      |                       |             |    |         |      |           C4 B5 B9 AE |
+      |                       |             |    |         |      |           00          |
+  852 |  1 variables.s    759 | Data        | 11 |         |   14 | 00/5115 : B1 B2 B3 B3 |               asc     "1233A06.D61M."00    
+      |                       |             |    |         |      |           C1 B0 B6 AE |
+      |                       |             |    |         |      |           C4 B6 B1 CD |
+      |                       |             |    |         |      |           AE 00       |
+  853 |  1 variables.s    760 | Data        | 11 |         |   14 | 00/5123 : B1 B2 B3 B3 |               asc     "1233A25.D64N."00    
+      |                       |             |    |         |      |           C1 B2 B5 AE |
+      |                       |             |    |         |      |           C4 B6 B4 CE |
+      |                       |             |    |         |      |           AE 00       |
+  854 |  1 variables.s    761 | Empty       | 11 |         |    0 | 00/5131               |                                            
+  855 |  1 variables.s    762 | Comment     | 11 |         |    0 | 00/5131               | *---
+  856 |  1 variables.s    763 | Empty       | 11 |         |    0 | 00/5131               |                                            
+  857 |  1 variables.s    764 | Comment     | 11 |         |    0 | 00/5131               | * C	=	14
+  858 |  1 variables.s    765 | Empty       | 11 |         |    0 | 00/5131               |                                            
+  859 |  1 variables.s    766 | Empty       | 11 |         |    0 | 00/5131               | tblC$                                      
+  860 |  1 variables.s    767 | Data        | 11 |         |   13 | 00/5131 : C7 B0 B3 C5 |               asc     "G03E03.D00N."00     
+      |                       |             |    |         |      |           B0 B3 AE C4 |
+      |                       |             |    |         |      |           B0 B0 CE AE |
+      |                       |             |    |         |      |           00          |
+  861 |  1 variables.s    768 | Data        | 11 |         |   13 | 00/513E : C7 B0 B4 C5 |               asc     "G04E04.D01N."00     
+      |                       |             |    |         |      |           B0 B4 AE C4 |
+      |                       |             |    |         |      |           B0 B1 CE AE |
+      |                       |             |    |         |      |           00          |
+  862 |  1 variables.s    769 | Data        | 11 |         |   18 | 00/514B : C9 B1 B4 C9 |               asc     "I14I16I17I19.F02."00
+      |                       |             |    |         |      |           B1 B6 C9 B1 |
+      |                       |             |    |         |      |           B7 C9 B1 B9 |
+      |                       |             |    |         |      |           AE C6 B0 B2 |
+      |                       |             |    |         |      |           AE 00       |
+  863 |  1 variables.s    770 | Data        | 11 |         |   13 | 00/515D : C7 B0 B7 C5 |               asc     "G07E07.D18N."00     
+      |                       |             |    |         |      |           B0 B7 AE C4 |
+      |                       |             |    |         |      |           B1 B8 CE AE |
+      |                       |             |    |         |      |           00          |
+  864 |  1 variables.s    771 | Data        | 11 |         |   10 | 00/516A : C7 CF B1 AE |               asc     "GO1.D19N."00        
+      |                       |             |    |         |      |           C4 B1 B9 CE |
+      |                       |             |    |         |      |           AE 00       |
+  865 |  1 variables.s    772 | Data        | 11 |         |   16 | 00/5174 : C8 B0 B6 C3 |               asc     "H06C03C08.D37N."00  
+      |                       |             |    |         |      |           B0 B3 C3 B0 |
+      |                       |             |    |         |      |           B8 AE C4 B3 |
+      |                       |             |    |         |      |           B7 CE AE 00 |
+  866 |  1 variables.s    773 | Data        | 11 |         |   13 | 00/5184 : C8 B0 B8 C4 |               asc     "H08D08.D39L."00     
+      |                       |             |    |         |      |           B0 B8 AE C4 |
+      |                       |             |    |         |      |           B3 B9 CC AE |
+      |                       |             |    |         |      |           00          |
+  867 |  1 variables.s    774 | Data        | 11 |         |   13 | 00/5191 : C8 B0 B6 C4 |               asc     "H06D03.D38L."00     
+      |                       |             |    |         |      |           B0 B3 AE C4 |
+      |                       |             |    |         |      |           B3 B8 CC AE |
+      |                       |             |    |         |      |           00          |
+  868 |  1 variables.s    775 | Data        | 11 |         |   19 | 00/519E : C7 B0 B8 C5 |               asc     "G08E08B24.D40D21N."00
+      |                       |             |    |         |      |           B0 B8 C2 B2 |
+      |                       |             |    |         |      |           B4 AE C4 B4 |
+      |                       |             |    |         |      |           B0 C4 B2 B1 |
+      |                       |             |    |         |      |           CE AE 00    |
+  869 |  1 variables.s    776 | Data        | 11 |         |   10 | 00/51B1 : C8 B0 B2 AE |               asc     "H02.D41N."00        
+      |                       |             |    |         |      |           C4 B4 B1 CE |
+      |                       |             |    |         |      |           AE 00       |
+  870 |  1 variables.s    777 | Data        | 11 |         |   13 | 00/51BB : C7 B0 B9 C5 |               asc     "G09E02.D42N."00     
+      |                       |             |    |         |      |           B0 B2 AE C4 |
+      |                       |             |    |         |      |           B4 B2 CE AE |
+      |                       |             |    |         |      |           00          |
+  871 |  1 variables.s    778 | Data        | 11 |         |   13 | 00/51C8 : C7 B0 B5 C5 |               asc     "G05E11.D52N."00     
+      |                       |             |    |         |      |           B1 B1 AE C4 |
+      |                       |             |    |         |      |           B5 B2 CE AE |
+      |                       |             |    |         |      |           00          |
+  872 |  1 variables.s    779 | Data        | 11 |         |   16 | 00/51D5 : C9 B2 B4 C5 |               asc     "I24E11.D53D52N."00  
+      |                       |             |    |         |      |           B1 B1 AE C4 |
+      |                       |             |    |         |      |           B5 B3 C4 B5 |
+      |                       |             |    |         |      |           B2 CE AE 00 |
+  873 |  1 variables.s    780 | Data        | 11 |         |    4 | 00/51E5 : AE CC AE 00 |               asc     ".L."00              
+  874 |  1 variables.s    781 | Empty       | 11 |         |    0 | 00/51E9               |                                            
+  875 |  1 variables.s    782 | Comment     | 11 |         |    0 | 00/51E9               | *-----------------------------------
+  876 |  1 variables.s    783 | Empty       | 11 |         |    0 | 00/51E9               |                                            
+  877 |  1 variables.s    784 | Data        | 11 |         |   10 | 00/51E9 : 00 00 00 00 | C             ds      10                   
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00       |
+  878 |  1 variables.s    785 | Data        | 11 |         |    1 | 00/51F3 : 00          | F1            ds      1                    
+  879 |  1 variables.s    786 | Data        | 11 |         |    1 | 00/51F4 : 00          | H             ds      1                    
+  880 |  1 variables.s    787 | Data        | 11 |         |    1 | 00/51F5 : 00          | LX            ds      1                    
+  881 |  1 variables.s    788 | Data        | 11 |         |    1 | 00/51F6 : 00          | N             ds      1                    
+  882 |  1 variables.s    789 | Data        | 11 |         |   13 | 00/51F7 : 00 00 00 00 | P             ds      13                   
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00          |
+  883 |  1 variables.s    790 | Data        | 11 |         |    1 | 00/5204 : 00          | SALLE         ds      1                    
+  884 |  1 variables.s    791 | Empty       | 11 |         |    0 | 00/5205               |                                            
+  885 |  1 variables.s    792 | Empty       | 11 |         |    0 | 00/5205               |                                            
+------+-----------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

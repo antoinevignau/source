@@ -1,0 +1,829 @@
+------+-----------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File           Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+-----------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1 quicktest.s      1 | Comment     | 11 |         |    0 | 00/8000               | *
+    2 |  1 quicktest.s      2 | Comment     | 11 |         |    0 | 00/8000               | * QuickTake Protocol Test
+    3 |  1 quicktest.s      3 | Comment     | 11 |         |    0 | 00/8000               | *
+    4 |  1 quicktest.s      4 | Empty       | 11 |         |    0 | 00/8000               |                                      
+    5 |  1 quicktest.s      5 | Directive   | 00 |         |    0 | 00/8000               |                 mx    %00            
+    6 |  1 quicktest.s      6 | Directive   | 00 |         |    0 | 00/8000               |                 org   $1000          
+    7 |  1 quicktest.s      7 | Directive   | 00 |         |    0 | 00/1000               |                 lst   off            
+    8 |  1 quicktest.s      8 | Empty       | 00 |         |    0 | 00/1000               |                                      
+    9 |  1 quicktest.s      9 | Comment     | 00 |         |    0 | 00/1000               | *-------------------------------------------------
+   10 |  1 quicktest.s     10 | Empty       | 00 |         |    0 | 00/1000               |                                      
+   11 |  1 quicktest.s     11 | Directive   | 00 |         |    0 | 00/1000               |                 use   4/Mem.Macs     
+   12 |  1 quicktest.s     12 | Directive   | 00 |         |    0 | 00/1000               |                 use   4/Misc.Macs    
+   13 |  1 quicktest.s     13 | Directive   | 00 |         |    0 | 00/1000               |                 use   4/Util.Macs    
+   14 |  1 quicktest.s     14 | Empty       | 00 |         |    0 | 00/1000               |                                      
+   15 |  1 quicktest.s     15 | Comment     | 00 |         |    0 | 00/1000               | *-------------------------------------------------
+   16 |  1 quicktest.s     16 | Empty       | 00 |         |    0 | 00/1000               |                                      
+   17 |  1 quicktest.s     17 | Code        | 00 |         |    1 | 00/1000 : 18          |                 clc                  
+   18 |  1 quicktest.s     18 | Code        | 00 |         |    1 | 00/1001 : FB          |                 xce                  
+   19 |  1 quicktest.s     19 | Code        | 00 |         |    2 | 00/1002 : C2 30       |                 rep   #$30           
+   20 |  1 quicktest.s     20 | Empty       | 00 |         |    0 | 00/1004               |                                      
+   21 |  1 quicktest.s     21 | Code        | 00 |         |    3 | 00/1004 : A9 00 00    |                 lda   #0             
+   22 |  1 quicktest.s     22 | Code        | 00 |         |    1 | 00/1007 : AA          |                 tax                  
+   23 |  1 quicktest.s     23 | Code        | 00 |         |    1 | 00/1008 : A8          |                 tay                  
+   24 |  1 quicktest.s     24 | Code        | 11 |         |    2 | 00/1009 : E2 30       |                 sep   #$30           
+   25 |  1 quicktest.s     25 | Empty       | 11 |         |    0 | 00/100B               |                                      
+   26 |  1 quicktest.s     26 | Code        | 11 |         |    3 | 00/100B : 20 22 10    |                 jsr   call0          ; init all
+   27 |  1 quicktest.s     27 | Empty       | 11 |         |    0 | 00/100E               |                                      
+   28 |  1 quicktest.s     28 | Code        | 11 |         |    3 | 00/100E : 2C 32 10    |                 bit   call1          ; say hello
+   29 |  1 quicktest.s     29 | Code        | 11 |         |    3 | 00/1011 : 2C 78 10    |                 bit   call2          ; turn even parity on before calling
+   30 |  1 quicktest.s     30 | Code        | 11 |         |    3 | 00/1014 : 2C 93 10    |                 bit   call3          ; get information
+   31 |  1 quicktest.s     31 | Empty       | 11 |         |    0 | 00/1017               |                                      
+   32 |  1 quicktest.s     32 | Code        | 11 |         |    3 | 00/1017 : 2C 39 11    |                 bit   call4          ; à la manière de dandumontp
+   33 |  1 quicktest.s     33 | Code        | 11 |         |    3 | 00/101A : 2C FC 11    |                 bit   shutDown       
+   34 |  1 quicktest.s     34 | Empty       | 11 |         |    0 | 00/101D               |                                      
+   35 |  1 quicktest.s     35 | Code        | 11 |         |    1 | 00/101D : 38          |                 sec                  
+   36 |  1 quicktest.s     36 | Code        | 11 |         |    1 | 00/101E : FB          |                 xce                  
+   37 |  1 quicktest.s     37 | Code        | 11 |         |    2 | 00/101F : E2 20       |                 sep   #$20           
+   38 |  1 quicktest.s     38 | Code        | 11 |         |    1 | 00/1021 : 60          |                 rts                  
+   39 |  1 quicktest.s     39 | Empty       | 11 |         |    0 | 00/1022               |                                      
+   40 |  1 quicktest.s     40 | Comment     | 11 |         |    0 | 00/1022               | *----------- Init me
+   41 |  1 quicktest.s     41 | Empty       | 11 |         |    0 | 00/1022               |                                      
+   42 |  1 quicktest.s     42 | Code        | 11 |         |    3 | 00/1022 : 20 6E 11    | call0           jsr   init           
+   43 |  1 quicktest.s     43 | Code        | 11 |         |    3 | 00/1025 : 20 75 12    |                 jsr   raisedtr       
+   44 |  1 quicktest.s     44 | Empty       | 11 |         |    0 | 00/1028               |                                      
+   45 |  1 quicktest.s     45 | Code        | 11 |         |    2 | 00/1028 : A0 04       |                 ldy   #4             
+   46 |  1 quicktest.s     46 | Code        | 11 |         |    3 | 00/102A : 20 9F 13    |                 jsr   setspeed       
+   47 |  1 quicktest.s     47 | Empty       | 11 |         |    0 | 00/102D               |                                      
+   48 |  1 quicktest.s     48 | Code        | 11 |         |    2 | 00/102D : A9 00       |                 lda   #0             
+   49 |  1 quicktest.s     49 | Code        | 11 |         |    3 | 00/102F : 4C 80 13    |                 jmp   wait           
+   50 |  1 quicktest.s     50 | Empty       | 11 |         |    0 | 00/1032               |                                      
+   51 |  1 quicktest.s     51 | Comment     | 11 |         |    0 | 00/1032               | *----------- Say hello
+   52 |  1 quicktest.s     52 | Empty       | 11 |         |    0 | 00/1032               |                                      
+   53 |  1 quicktest.s     53 | Code        | 11 |         |    2 | 00/1032 : A2 00       | call1           ldx   #0             
+   54 |  1 quicktest.s     54 | Code        | 11 |         |    3 | 00/1034 : 20 40 12    | ozunid_4        jsr   receive        
+   55 |  1 quicktest.s     55 | Code        | 11 |         |    3 | 00/1037 : 9D 5A 10    |                 sta   response1,x    
+   56 |  1 quicktest.s     56 | Code        | 11 |         |    1 | 00/103A : E8          |                 inx                  
+   57 |  1 quicktest.s     57 | Code        | 11 |         |    2 | 00/103B : E0 07       |                 cpx   #response1end-response1
+   58 |  1 quicktest.s     58 | Code        | 11 |         |    2 | 00/103D : D0 F5       |                 bne   ozunid_4       
+   59 |  1 quicktest.s     59 | Empty       | 11 |         |    0 | 00/103F               |                                      
+   60 |  1 quicktest.s     60 | Code        | 11 |         |    2 | 00/103F : A2 00       |                 ldx   #0             
+   61 |  1 quicktest.s     61 | Code        | 11 |         |    3 | 00/1041 : BD 61 10    | ozunid_5        lda   answer1,x      
+   62 |  1 quicktest.s     62 | Code        | 11 |         |    3 | 00/1044 : 20 7F 12    |                 jsr   send           
+   63 |  1 quicktest.s     63 | Code        | 11 |         |    1 | 00/1047 : E8          |                 inx                  
+   64 |  1 quicktest.s     64 | Code        | 11 |         |    2 | 00/1048 : E0 0D       |                 cpx   #answer1end-answer1
+   65 |  1 quicktest.s     65 | Code        | 11 |         |    2 | 00/104A : D0 F5       |                 bne   ozunid_5       
+   66 |  1 quicktest.s     66 | Empty       | 11 |         |    0 | 00/104C               |                                      
+   67 |  1 quicktest.s     67 | Code        | 11 |         |    2 | 00/104C : A2 00       |                 ldx   #0             
+   68 |  1 quicktest.s     68 | Code        | 11 |         |    3 | 00/104E : 20 40 12    | ozunid_6        jsr   receive        
+   69 |  1 quicktest.s     69 | Code        | 11 |         |    3 | 00/1051 : 9D 6E 10    |                 sta   response2,x    
+   70 |  1 quicktest.s     70 | Code        | 11 |         |    1 | 00/1054 : E8          |                 inx                  
+   71 |  1 quicktest.s     71 | Code        | 11 |         |    2 | 00/1055 : E0 0A       |                 cpx   #response2end-response2
+   72 |  1 quicktest.s     72 | Code        | 11 |         |    2 | 00/1057 : D0 F5       |                 bne   ozunid_6       
+   73 |  1 quicktest.s     73 | Code        | 11 |         |    1 | 00/1059 : 60          |                 rts                  
+   74 |  1 quicktest.s     74 | Empty       | 11 |         |    0 | 00/105A               |                                      
+   75 |  1 quicktest.s     75 | Comment     | 11 |         |    0 | 00/105A               | *---
+   76 |  1 quicktest.s     76 | Empty       | 11 |         |    0 | 00/105A               |                                      
+   77 |  1 quicktest.s     77 | Data        | 11 |         |    7 | 00/105A : 00 00 00 00 | response1       ds    7              
+      |                       |             |    |         |      |           00 00 00    |
+   78 |  1 quicktest.s     78 | Empty       | 11 |         |    0 | 00/1061               | response1end                         
+   79 |  1 quicktest.s     79 | Empty       | 11 |         |    0 | 00/1061               |                                      
+   80 |  1 quicktest.s     80 | Data        | 11 |         |   13 | 00/1061 : 5A A5 55 05 | answer1         hex   5A,A5,55,05,00,00,25,80,00,80,02,00,80
+      |                       |             |    |         |      |           00 00 25 80 |
+      |                       |             |    |         |      |           00 80 02 00 |
+      |                       |             |    |         |      |           80          |
+   81 |  1 quicktest.s     81 | Empty       | 11 |         |    0 | 00/106E               | answer1end                           
+   82 |  1 quicktest.s     82 | Empty       | 11 |         |    0 | 00/106E               |                                      
+   83 |  1 quicktest.s     83 | Data        | 11 |         |   10 | 00/106E : 00 00 00 00 | response2       ds    10             
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00       |
+   84 |  1 quicktest.s     84 | Empty       | 11 |         |    0 | 00/1078               | response2end                         
+   85 |  1 quicktest.s     85 | Empty       | 11 |         |    0 | 00/1078               |                                      
+   86 |  1 quicktest.s     86 | Comment     | 11 |         |    0 | 00/1078               | *----------- Separator (change parity in the control panel before call)
+   87 |  1 quicktest.s     87 | Empty       | 11 |         |    0 | 00/1078               |                                      
+   88 |  1 quicktest.s     88 | Code        | 11 |         |    2 | 00/1078 : A2 00       | call2           ldx   #0             
+   89 |  1 quicktest.s     89 | Code        | 11 |         |    3 | 00/107A : BD 8C 10    | ozunid_7        lda   str3,x         
+   90 |  1 quicktest.s     90 | Code        | 11 |         |    3 | 00/107D : 20 7F 12    |                 jsr   send           
+   91 |  1 quicktest.s     91 | Code        | 11 |         |    1 | 00/1080 : E8          |                 inx                  
+   92 |  1 quicktest.s     92 | Code        | 11 |         |    2 | 00/1081 : E0 07       |                 cpx   #str3end-str3  
+   93 |  1 quicktest.s     93 | Code        | 11 |         |    2 | 00/1083 : D0 F5       |                 bne   ozunid_7       
+   94 |  1 quicktest.s     94 | Empty       | 11 |         |    0 | 00/1085               |                                      
+   95 |  1 quicktest.s     95 | Code        | 11 |         |    3 | 00/1085 : 20 40 12    |                 jsr   receive        
+   96 |  1 quicktest.s     96 | Code        | 11 |         |    3 | 00/1088 : 20 DA FD    |                 jsr   $fdda          
+   97 |  1 quicktest.s     97 | Code        | 11 |         |    1 | 00/108B : 60          |                 rts                  
+   98 |  1 quicktest.s     98 | Empty       | 11 |         |    0 | 00/108C               |                                      
+   99 |  1 quicktest.s     99 | Comment     | 11 |         |    0 | 00/108C               | *---
+  100 |  1 quicktest.s    100 | Empty       | 11 |         |    0 | 00/108C               |                                      
+  101 |  1 quicktest.s    101 | Data        | 11 |         |    7 | 00/108C : 16 00 00 00 | str3            hex   16,00,00,00,00,00,00
+      |                       |             |    |         |      |           00 00 00    |
+  102 |  1 quicktest.s    102 | Empty       | 11 |         |    0 | 00/1093               | str3end                              
+  103 |  1 quicktest.s    103 | Empty       | 11 |         |    0 | 00/1093               |                                      
+  104 |  1 quicktest.s    104 | Comment     | 11 |         |    0 | 00/1093               | *----------- Get camera information
+  105 |  1 quicktest.s    105 | Empty       | 11 |         |    0 | 00/1093               |                                      
+  106 |  1 quicktest.s    106 | Code        | 11 |         |    2 | 00/1093 : A2 00       | call3           ldx   #0             
+  107 |  1 quicktest.s    107 | Code        | 11 |         |    3 | 00/1095 : BD AE 10    | ozunid_8        lda   str4,x         
+  108 |  1 quicktest.s    108 | Code        | 11 |         |    3 | 00/1098 : 20 7F 12    |                 jsr   send           
+  109 |  1 quicktest.s    109 | Code        | 11 |         |    1 | 00/109B : E8          |                 inx                  
+  110 |  1 quicktest.s    110 | Code        | 11 |         |    2 | 00/109C : E0 0B       |                 cpx   #str4end-str4  
+  111 |  1 quicktest.s    111 | Code        | 11 |         |    2 | 00/109E : D0 F5       |                 bne   ozunid_8       
+  112 |  1 quicktest.s    112 | Empty       | 11 |         |    0 | 00/10A0               |                                      
+  113 |  1 quicktest.s    113 | Code        | 11 |         |    2 | 00/10A0 : A2 00       |                 ldx   #0             
+  114 |  1 quicktest.s    114 | Code        | 11 |         |    3 | 00/10A2 : 20 40 12    | ozunid_9        jsr   receive        
+  115 |  1 quicktest.s    115 | Code        | 11 |         |    3 | 00/10A5 : 9D B9 10    |                 sta   response3,x    
+  116 |  1 quicktest.s    116 | Code        | 11 |         |    1 | 00/10A8 : E8          |                 inx                  
+  117 |  1 quicktest.s    117 | Code        | 11 |         |    2 | 00/10A9 : E0 80       |                 cpx   #response3end-response3
+  118 |  1 quicktest.s    118 | Code        | 11 |         |    2 | 00/10AB : D0 F5       |                 bne   ozunid_9       
+  119 |  1 quicktest.s    119 | Code        | 11 |         |    1 | 00/10AD : 60          |                 rts                  
+  120 |  1 quicktest.s    120 | Empty       | 11 |         |    0 | 00/10AE               |                                      
+  121 |  1 quicktest.s    121 | Comment     | 11 |         |    0 | 00/10AE               | *---
+  122 |  1 quicktest.s    122 | Empty       | 11 |         |    0 | 00/10AE               |                                      
+  123 |  1 quicktest.s    123 | Data        | 11 |         |   11 | 00/10AE : 16 28 00 30 | str4            hex   16,28,00,30,00,00,00,00,00,80,00
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 80 00    |
+  124 |  1 quicktest.s    124 | Empty       | 11 |         |    0 | 00/10B9               | str4end                              
+  125 |  1 quicktest.s    125 | Empty       | 11 |         |    0 | 00/10B9               |                                      
+  126 |  1 quicktest.s    126 | Data        | 11 |         |  128 | 00/10B9 : 00 00 00 00 | response3       ds    128            
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+  127 |  1 quicktest.s    127 | Empty       | 11 |         |    0 | 00/1139               | response3end                         
+  128 |  1 quicktest.s    128 | Empty       | 11 |         |    0 | 00/1139               |                                      
+  129 |  1 quicktest.s    129 | Comment     | 11 |         |    0 | 00/1139               | *----------- A la manière de dandumontp (parité paire)
+  130 |  1 quicktest.s    130 | Empty       | 11 |         |    0 | 00/1139               |                                      
+  131 |  1 quicktest.s    131 | Code        | 11 |         |    2 | 00/1139 : A9 05       | call4           lda   #5             
+  132 |  1 quicktest.s    132 | Code        | 11 |         |    3 | 00/113B : 20 7F 12    |                 jsr   send           
+  133 |  1 quicktest.s    133 | Empty       | 11 |         |    0 | 00/113E               |                                      
+  134 |  1 quicktest.s    134 | Code        | 11 |         |    3 | 00/113E : 20 40 12    |                 jsr   receive        
+  135 |  1 quicktest.s    135 | Code        | 11 |         |    3 | 00/1141 : 4C DA FD    |                 jmp   $fdda          
+  136 |  1 quicktest.s    136 | Empty       | 11 |         |    0 | 00/1144               |                                      
+  137 |  1 quicktest.s    137 | Comment     | 11 |         |    0 | 00/1144               | *-------------------------------------------------
+  138 |  1 quicktest.s    138 | Comment     | 11 |         |    0 | 00/1144               | * GS Port Driver Bios -- Slot #2
+  139 |  1 quicktest.s    139 | Comment     | 11 |         |    0 | 00/1144               | *
+  140 |  1 quicktest.s    140 | Comment     | 11 |         |    0 | 00/1144               | * written by Andy Nicholas on July 26, 1987
+  141 |  1 quicktest.s    141 | Comment     | 11 |         |    0 | 00/1144               | *
+  142 |  1 quicktest.s    142 | Comment     | 11 |         |    0 | 00/1144               | * History:
+  143 |  1 quicktest.s    143 | Comment     | 11 |         |    0 | 00/1144               | *
+  144 |  1 quicktest.s    144 | Comment     | 11 |         |    0 | 00/1144               | * Modified to use an 16k buffer May, 1991 by andy
+  145 |  1 quicktest.s    145 | Comment     | 11 |         |    0 | 00/1144               | *-------------------------------------------------
+  146 |  1 quicktest.s    146 | Empty       | 11 |         |    0 | 00/1144               |                                      
+  147 |  1 quicktest.s    147 | Equivalence | 11 |         |    0 | 00/1144               | cr              equ   $0d            
+  148 |  1 quicktest.s    148 | Equivalence | 11 |         |    0 | 00/1144               | lf              equ   $0a            
+  149 |  1 quicktest.s    149 | Empty       | 11 |         |    0 | 00/1144               |                                      
+  150 |  1 quicktest.s    150 | Equivalence | 11 |         |    0 | 00/1144               | initstr         equ   $11d0          
+  151 |  1 quicktest.s    151 | Equivalence | 11 |         |    0 | 00/1144               | ansstr          equ   $11c0          
+  152 |  1 quicktest.s    152 | Equivalence | 11 |         |    0 | 00/1144               | cdbyte          equ   $11bf          
+  153 |  1 quicktest.s    153 | Empty       | 11 |         |    0 | 00/1144               |                                      
+  154 |  1 quicktest.s    154 | Comment     | 11 |         |    0 | 00/1144               | *--------
+  155 |  1 quicktest.s    155 | Empty       | 11 |         |    0 | 00/1144               |                                      
+  156 |  1 quicktest.s    156 | Data        | 11 |         |    1 | 00/1144 : 20          |                 hex   20             ;serial card slot * 16
+  157 |  1 quicktest.s    157 | Data        | 11 |         |    1 | 00/1145 : 05          | initspd         dfb   5              
+  158 |  1 quicktest.s    158 | Data        | 11 |         |    1 | 00/1146 : 00          | callspd         dfb   0              ; speed of call
+  159 |  1 quicktest.s    159 | Empty       | 11 |         |    0 | 00/1147               |                                      
+  160 |  1 quicktest.s    160 | Data        | 11 |         |    3 | 00/1147 : 00 00 00    | bytcnt          dfb   0,0,0          
+  161 |  1 quicktest.s    161 | Empty       | 11 |         |    0 | 00/114A               |                                      
+  162 |  1 quicktest.s    162 | Code        | 11 |         |    3 | 00/114A : 4C 6E 11    |                 jmp   init           
+  163 |  1 quicktest.s    163 | Code        | 11 |         |    3 | 00/114D : 4C 98 12    |                 jmp   ringset        
+  164 |  1 quicktest.s    164 | Code        | 11 |         |    3 | 00/1150 : 4C F8 12    |                 jmp   ring           
+  165 |  1 quicktest.s    165 | Code        | 11 |         |    3 | 00/1153 : 4C 08 13    |                 jmp   answerRing     
+  166 |  1 quicktest.s    166 | Code        | 11 |         |    3 | 00/1156 : 4C 72 13    |                 jmp   hangup         
+  167 |  1 quicktest.s    167 | Code        | 11 |         |    3 | 00/1159 : 4C 40 12    |                 jmp   inp            
+  168 |  1 quicktest.s    168 | Code        | 11 |         |    3 | 00/115C : 4C 7F 12    |                 jmp   out            
+  169 |  1 quicktest.s    169 | Code        | 11 |         |    3 | 00/115F : 4C 5E 12    |                 jmp   getcarr        
+  170 |  1 quicktest.s    170 | Code        | 11 |         |    3 | 00/1162 : 4C 9F 13    |                 jmp   setspeed       
+  171 |  1 quicktest.s    171 | Code        | 11 |         |    3 | 00/1165 : 4C 75 12    |                 jmp   raisedtr       
+  172 |  1 quicktest.s    172 | Code        | 11 |         |    3 | 00/1168 : 4C 64 13    |                 jmp   flush          ;mdmFlush
+  173 |  1 quicktest.s    173 | Code        | 11 |         |    3 | 00/116B : 4C FC 11    |                 jmp   shutDown       ;shutdown
+  174 |  1 quicktest.s    174 | Empty       | 11 |         |    0 | 00/116E               |                                      
+  175 |  1 quicktest.s    175 | Comment     | 11 |         |    0 | 00/116E               | *-------------------------------------------------
+  176 |  1 quicktest.s    176 | Comment     | 11 |         |    0 | 00/116E               | * init the serial port pascal locations
+  177 |  1 quicktest.s    177 | Empty       | 11 |         |    0 | 00/116E               |                                      
+  178 |  1 quicktest.s    178 | Code        | 11 |         |    3 | 00/116E : AD 0D C2    | init            lda   $c20d          ;get init address
+  179 |  1 quicktest.s    179 | Code        | 11 |         |    3 | 00/1171 : 8D 1B 14    |                 sta   doinit+1       
+  180 |  1 quicktest.s    180 | Code        | 11 |         |    3 | 00/1174 : AD 0E C2    |                 lda   $c20e          ;get read address
+  181 |  1 quicktest.s    181 | Code        | 11 |         |    3 | 00/1177 : 8D 1E 14    |                 sta   doread+1       
+  182 |  1 quicktest.s    182 | Code        | 11 |         |    3 | 00/117A : AD 0F C2    |                 lda   $c20f          ;get write address
+  183 |  1 quicktest.s    183 | Code        | 11 |         |    3 | 00/117D : 8D 21 14    |                 sta   dowrite+1      
+  184 |  1 quicktest.s    184 | Code        | 11 |         |    3 | 00/1180 : AD 10 C2    |                 lda   $c210          ;get status address
+  185 |  1 quicktest.s    185 | Code        | 11 |         |    3 | 00/1183 : 8D 24 14    |                 sta   dostatus+1     
+  186 |  1 quicktest.s    186 | Code        | 11 |         |    3 | 00/1186 : AD 12 C2    |                 lda   $c212          
+  187 |  1 quicktest.s    187 | Code        | 11 |         |    3 | 00/1189 : 8D 27 14    |                 sta   doext+1        
+  188 |  1 quicktest.s    188 | Empty       | 11 |         |    0 | 00/118C               |                                      
+  189 |  1 quicktest.s    189 | Code        | 11 |         |    2 | 00/118C : A9 74       |                 lda   #<GetOutBuffer 
+  190 |  1 quicktest.s    190 | Code        | 11 |         |    2 | 00/118E : A2 14       |                 ldx   #>GetOutBuffer 
+  191 |  1 quicktest.s    191 | Code        | 11 |         |    2 | 00/1190 : A0 00       |                 ldy   #0             
+  192 |  1 quicktest.s    192 | Code        | 11 |         |    3 | 00/1192 : 20 26 14    |                 jsr   doext          
+  193 |  1 quicktest.s    193 | Empty       | 11 |         |    0 | 00/1195               |                                      
+  194 |  1 quicktest.s    194 | Code        | 11 |         |    2 | 00/1195 : A9 88       |                 lda   #<GetInBuffer  
+  195 |  1 quicktest.s    195 | Code        | 11 |         |    2 | 00/1197 : A2 14       |                 ldx   #>GetInBuffer  
+  196 |  1 quicktest.s    196 | Code        | 11 |         |    2 | 00/1199 : A0 00       |                 ldy   #0             
+  197 |  1 quicktest.s    197 | Code        | 11 |         |    3 | 00/119B : 20 26 14    |                 jsr   doext          
+  198 |  1 quicktest.s    198 | Empty       | 11 |         |    0 | 00/119E               |                                      
+  199 |  1 quicktest.s    199 | Code        | 11 |         |    1 | 00/119E : 18          |                 clc                  
+  200 |  1 quicktest.s    200 | Code        | 11 |         |    1 | 00/119F : FB          |                 xce                  
+  201 |  1 quicktest.s    201 | Code        | 00 |         |    2 | 00/11A0 : C2 30       |                 rep   #$30           
+  202 |  1 quicktest.s    202 | Directive   | 00 |         |    0 | 00/11A2               |                 mx    %00            
+  203 |  1 quicktest.s    203 | Empty       | 00 |         |    0 | 00/11A2               |                                      
+  204 |  1 quicktest.s    204 | Code        | 00 |         |    1 | 00/11A2 : 48          |                 pha                  
+  205 |  1 quicktest.s    205 | Code        | 00 |         |    3 | 00/11A3 : F4 00 10    |                 pea   $1000          ;type 1, application, auxID = 0
+  206 |  1 quicktest.s    206 | Macro       | 00 |         |    0 | 00/11A6               |                 _GetNewID                 
+  208 |  1 quicktest.s    206 | Code        | 00 |         |    3 | 00/11A6 : A2 03 20    |                 LDX   #$2003         ; load tool call #
+  209 |  1 quicktest.s    206 | Code        | 00 |         |    4 | 00/11A9 : 22 00 00 E1 |                 JSL   $E10000        ; go to dispatcher
+  210 |  1 quicktest.s    207 | Code        | 00 |         |    1 | 00/11AD : 68          |                 pla                  
+  211 |  1 quicktest.s    208 | Code        | 00 |         |    3 | 00/11AE : 8D 37 14    |                 sta   OurID          
+  212 |  1 quicktest.s    209 | Empty       | 00 |         |    0 | 00/11B1               |                                      
+  213 |  1 quicktest.s    210 | Code        | 00 |         |    1 | 00/11B1 : 48          |                 pha                  
+  214 |  1 quicktest.s    211 | Code        | 00 |         |    1 | 00/11B2 : 48          |                 pha                  
+  215 |  1 quicktest.s    212 | Code        | 00 |         |    3 | 00/11B3 : F4 00 00    |                 pea   0              
+  216 |  1 quicktest.s    213 | Code        | 00 |         |    3 | 00/11B6 : F4 00 40    |                 pea   $4000          ;want 16k
+  217 |  1 quicktest.s    214 | Code        | 00 |         |    1 | 00/11B9 : 48          |                 pha                  ;our user id
+  218 |  1 quicktest.s    215 | Code        | 00 |         |    3 | 00/11BA : F4 18 C0    |                 pea   $c018          ;locked, fixed, NO special memory, noCross
+  219 |  1 quicktest.s    216 | Code        | 00 |         |    3 | 00/11BD : F4 00 00    |                 pea   0              ;(if we use special memory, acos gets clobbered)
+  220 |  1 quicktest.s    217 | Code        | 00 |         |    3 | 00/11C0 : F4 00 00    |                 pea   0              ;no fixed location
+  221 |  1 quicktest.s    218 | Macro       | 00 |         |    0 | 00/11C3               |                 _NewHandle                 
+  223 |  1 quicktest.s    218 | Code        | 00 |         |    3 | 00/11C3 : A2 02 09    |                 LDX   #$902          ; load tool call #
+  224 |  1 quicktest.s    218 | Code        | 00 |         |    4 | 00/11C6 : 22 00 00 E1 |                 JSL   $E10000        ; go to dispatcher
+  225 |  1 quicktest.s    219 | Code        | 00 |         |    2 | 00/11CA : 90 0D       |                 bcc   _good          
+  226 |  1 quicktest.s    220 | Empty       | 00 |         |    0 | 00/11CC               |                                      
+  227 |  1 quicktest.s    221 | Code        | 00 |         |    1 | 00/11CC : 68          |                 pla                  
+  228 |  1 quicktest.s    222 | Code        | 00 |         |    1 | 00/11CD : 68          |                 pla                  
+  229 |  1 quicktest.s    223 | Code        | 00 |         |    3 | 00/11CE : A9 EA EA    |                 lda   #$eaea         ;put no-ops over the input buffer change
+  230 |  1 quicktest.s    224 | Code        | 00 |         |    3 | 00/11D1 : 8D 00 14    |                 sta   patchIn        ;JSR if we couldn't get any memory
+  231 |  1 quicktest.s    225 | Code        | 00 |         |    3 | 00/11D4 : 8D 01 14    |                 sta   patchIn+1      
+  232 |  1 quicktest.s    226 | Code        | 00 |         |    2 | 00/11D7 : 80 20       |                 bra   _done          
+  233 |  1 quicktest.s    227 | Empty       | 00 |         |    0 | 00/11D9               |                                      
+  234 |  1 quicktest.s    228 | Code        | 00 |         |    1 | 00/11D9 : 68          | _good           pla                  
+  235 |  1 quicktest.s    229 | Code        | 00 |         |    2 | 00/11DA : 85 00       |                 sta   0              ;get the handle
+  236 |  1 quicktest.s    230 | Code        | 00 |         |    3 | 00/11DC : 8D 39 14    |                 sta   OurHandle      
+  237 |  1 quicktest.s    231 | Code        | 00 |         |    1 | 00/11DF : 68          |                 pla                  
+  238 |  1 quicktest.s    232 | Code        | 00 |         |    2 | 00/11E0 : 85 02       |                 sta   2              
+  239 |  1 quicktest.s    233 | Code        | 00 |         |    3 | 00/11E2 : 8D 3B 14    |                 sta   OurHandle+2    
+  240 |  1 quicktest.s    234 | Empty       | 00 |         |    0 | 00/11E5               |                                      
+  241 |  1 quicktest.s    235 | Code        | 00 |         |    2 | 00/11E5 : A7 00       |                 lda   [0]            ;deref the handle and put the address
+  242 |  1 quicktest.s    236 | Code        | 00 |         |    1 | 00/11E7 : AA          |                 tax                  
+  243 |  1 quicktest.s    237 | Code        | 00 |         |    3 | 00/11E8 : A0 02 00    |                 ldy   #2             
+  244 |  1 quicktest.s    238 | Code        | 00 |         |    2 | 00/11EB : B7 00       |                 lda   [0],y          
+  245 |  1 quicktest.s    239 | Code        | 00 |         |    3 | 00/11ED : 8D 98 14    |                 sta   In_Buf+4+2     
+  246 |  1 quicktest.s    240 | Code        | 00 |         |    3 | 00/11F0 : 8E 96 14    |                 stx   In_Buf+4       
+  247 |  1 quicktest.s    241 | Empty       | 00 |         |    0 | 00/11F3               |                                      
+  248 |  1 quicktest.s    242 | Code        | 00 |         |    3 | 00/11F3 : A9 00 40    |                 lda   #$4000         ;how big, 16k
+  249 |  1 quicktest.s    243 | Code        | 00 |         |    3 | 00/11F6 : 8D 9A 14    |                 sta   In_Buf+8       
+  250 |  1 quicktest.s    244 | Empty       | 00 |         |    0 | 00/11F9               |                                      
+  251 |  1 quicktest.s    245 | Directive   | 11 |         |    0 | 00/11F9               |                 mx    %11            
+  252 |  1 quicktest.s    246 | Code        | 11 |         |    1 | 00/11F9 : 38          | _done           sec                  
+  253 |  1 quicktest.s    247 | Code        | 11 |         |    1 | 00/11FA : FB          |                 xce                  
+  254 |  1 quicktest.s    248 | Code        | 11 |         |    1 | 00/11FB : 60          |                 rts                  
+  255 |  1 quicktest.s    249 | Empty       | 11 |         |    0 | 00/11FC               |                                      
+  256 |  1 quicktest.s    250 | Comment     | 11 |         |    0 | 00/11FC               | *-------------------------------------------------
+  257 |  1 quicktest.s    251 | Comment     | 11 |         |    0 | 00/11FC               | * shutDown -- reset the port buffer to its old buffer size and
+  258 |  1 quicktest.s    252 | Comment     | 11 |         |    0 | 00/11FC               | *             address, and kill the memory we allocated for the 16k
+  259 |  1 quicktest.s    253 | Comment     | 11 |         |    0 | 00/11FC               | *             buffer which we used.
+  260 |  1 quicktest.s    254 | Comment     | 11 |         |    0 | 00/11FC               | *
+  261 |  1 quicktest.s    255 | Comment     | 11 |         |    0 | 00/11FC               | *             We do this for both the input and output buffers
+  262 |  1 quicktest.s    256 | Empty       | 11 |         |    0 | 00/11FC               |                                      
+  263 |  1 quicktest.s    257 | Empty       | 11 |         |    0 | 00/11FC               | shutDown                             
+  264 |  1 quicktest.s    258 | Code        | 11 |         |    2 | 00/11FC : A2 05       |                 ldx   #5             ;move 6 bytes
+  265 |  1 quicktest.s    259 | Code        | 11 |         |    3 | 00/11FE : BD 78 14    | ozunid_1        lda   GetOutBuffer+4,x
+  266 |  1 quicktest.s    260 | Code        | 11 |         |    3 | 00/1201 : 9D 82 14    |                 sta   Out_Buf+4,x    
+  267 |  1 quicktest.s    261 | Code        | 11 |         |    1 | 00/1204 : CA          |                 dex                  
+  268 |  1 quicktest.s    262 | Code        | 11 |         |    2 | 00/1205 : 10 F7       |                 bpl   ozunid_1       
+  269 |  1 quicktest.s    263 | Empty       | 11 |         |    0 | 00/1207               |                                      
+  270 |  1 quicktest.s    264 | Code        | 11 |         |    2 | 00/1207 : A2 05       |                 ldx   #5             ;move 6 bytes
+  271 |  1 quicktest.s    265 | Code        | 11 |         |    3 | 00/1209 : BD 8C 14    | _loop2          lda   GetInBuffer+4,x
+  272 |  1 quicktest.s    266 | Code        | 11 |         |    3 | 00/120C : 9D 96 14    |                 sta   In_Buf+4,x     
+  273 |  1 quicktest.s    267 | Code        | 11 |         |    1 | 00/120F : CA          |                 dex                  
+  274 |  1 quicktest.s    268 | Code        | 11 |         |    2 | 00/1210 : 10 F7       |                 bpl   _loop2         
+  275 |  1 quicktest.s    269 | Empty       | 11 |         |    0 | 00/1212               |                                      
+  276 |  1 quicktest.s    270 | Code        | 11 |         |    3 | 00/1212 : AD 00 14    |                 lda   patchIn        ;did the allocate succeed?
+  277 |  1 quicktest.s    271 | Code        | 11 |         |    2 | 00/1215 : C9 EA       |                 cmp   #$ea           ;if this is patched out, it didn't so don't
+  278 |  1 quicktest.s    272 | Code        | 11 |         |    2 | 00/1217 : F0 1E       |                 beq   _noInputBuffer ;reset the input buffer and dispose memory
+  279 |  1 quicktest.s    273 | Empty       | 11 |         |    0 | 00/1219               |                                      
+  280 |  1 quicktest.s    274 | Code        | 11 |         |    2 | 00/1219 : A9 92       |                 lda   #<In_Buf       ;reset the input buffer
+  281 |  1 quicktest.s    275 | Code        | 11 |         |    2 | 00/121B : A2 14       |                 ldx   #>In_Buf       
+  282 |  1 quicktest.s    276 | Code        | 11 |         |    2 | 00/121D : A0 00       |                 ldy   #0             
+  283 |  1 quicktest.s    277 | Code        | 11 |         |    3 | 00/121F : 20 26 14    |                 jsr   doext          
+  284 |  1 quicktest.s    278 | Empty       | 11 |         |    0 | 00/1222               |                                      
+  285 |  1 quicktest.s    279 | Code        | 11 |         |    1 | 00/1222 : 18          |                 clc                  
+  286 |  1 quicktest.s    280 | Code        | 11 |         |    1 | 00/1223 : FB          |                 xce                  
+  287 |  1 quicktest.s    281 | Code        | 00 |         |    2 | 00/1224 : C2 30       |                 rep   #$30           
+  288 |  1 quicktest.s    282 | Directive   | 00 |         |    0 | 00/1226               |                 mx    %00            
+  289 |  1 quicktest.s    283 | Empty       | 00 |         |    0 | 00/1226               |                                      
+  290 |  1 quicktest.s    284 | Code        | 00 |         |    3 | 00/1226 : AD 3B 14    |                 lda   OurHandle+2    
+  291 |  1 quicktest.s    285 | Code        | 00 |         |    1 | 00/1229 : 48          |                 pha                  
+  292 |  1 quicktest.s    286 | Code        | 00 |         |    3 | 00/122A : AD 39 14    |                 lda   OurHandle      
+  293 |  1 quicktest.s    287 | Code        | 00 |         |    1 | 00/122D : 48          |                 pha                  
+  294 |  1 quicktest.s    288 | Macro       | 00 |         |    0 | 00/122E               |                 _DisposeHandle                 
+  296 |  1 quicktest.s    288 | Code        | 00 |         |    3 | 00/122E : A2 02 10    |                 LDX   #$1002         ; load tool call #
+  297 |  1 quicktest.s    288 | Code        | 00 |         |    4 | 00/1231 : 22 00 00 E1 |                 JSL   $E10000        ; go to dispatcher
+  298 |  1 quicktest.s    289 | Empty       | 00 |         |    0 | 00/1235               |                                      
+  299 |  1 quicktest.s    290 | Directive   | 11 |         |    0 | 00/1235               |                 mx    %11            
+  300 |  1 quicktest.s    291 | Code        | 11 |         |    1 | 00/1235 : 38          |                 sec                  
+  301 |  1 quicktest.s    292 | Code        | 11 |         |    1 | 00/1236 : FB          |                 xce                  
+  302 |  1 quicktest.s    293 | Empty       | 11 |         |    0 | 00/1237               |                                      
+  303 |  1 quicktest.s    294 | Empty       | 11 |         |    0 | 00/1237               | _noInputBuffer                       
+  304 |  1 quicktest.s    295 | Empty       | 11 |         |    0 | 00/1237               |                                      
+  305 |  1 quicktest.s    296 | Code        | 11 |         |    2 | 00/1237 : A9 7E       |                 lda   #<Out_Buf      ;reset the input buffer
+  306 |  1 quicktest.s    297 | Code        | 11 |         |    2 | 00/1239 : A2 14       |                 ldx   #>Out_Buf      
+  307 |  1 quicktest.s    298 | Code        | 11 |         |    2 | 00/123B : A0 00       |                 ldy   #0             
+  308 |  1 quicktest.s    299 | Code        | 11 |         |    3 | 00/123D : 4C 26 14    |                 jmp   doext          
+  309 |  1 quicktest.s    300 | Empty       | 11 |         |    0 | 00/1240               |                                      
+  310 |  1 quicktest.s    301 | Comment     | 11 |         |    0 | 00/1240               | *-------------------------------------------------
+  311 |  1 quicktest.s    302 | Comment     | 11 |         |    0 | 00/1240               | * input data
+  312 |  1 quicktest.s    303 | Empty       | 11 |         |    0 | 00/1240               |                                      
+  313 |  1 quicktest.s    304 | Empty       | 11 |         |    0 | 00/1240               | receive                              
+  314 |  1 quicktest.s    305 | Code        | 11 |         |    1 | 00/1240 : DA          | inp             phx                  ;save x
+  315 |  1 quicktest.s    306 | Code        | 11 |         |    1 | 00/1241 : 5A          |                 phy                  
+  316 |  1 quicktest.s    307 | Code        | 11 |         |    2 | 00/1242 : A2 C2       |                 ldx   #$c2           ;are we ready?
+  317 |  1 quicktest.s    308 | Code        | 11 |         |    2 | 00/1244 : A0 20       |                 ldy   #$20           
+  318 |  1 quicktest.s    309 | Code        | 11 |         |    2 | 00/1246 : A9 01       |                 lda   #1             
+  319 |  1 quicktest.s    310 | Code        | 11 |         |    3 | 00/1248 : 20 23 14    |                 jsr   dostatus       
+  320 |  1 quicktest.s    311 | Code        | 11 |         |    2 | 00/124B : 90 0B       |                 bcc   inp2           ;nope, exit
+  321 |  1 quicktest.s    312 | Empty       | 11 |         |    0 | 00/124D               |                                      
+  322 |  1 quicktest.s    313 | Code        | 11 |         |    2 | 00/124D : A2 C2       |                 ldx   #$c2           ;yes, read
+  323 |  1 quicktest.s    314 | Code        | 11 |         |    2 | 00/124F : A0 20       |                 ldy   #$20           
+  324 |  1 quicktest.s    315 | Code        | 11 |         |    3 | 00/1251 : 20 1D 14    |                 jsr   doread         
+  325 |  1 quicktest.s    316 | Empty       | 11 |         |    0 | 00/1254               |                                      
+  326 |  1 quicktest.s    317 | Code        | 11 |         |    1 | 00/1254 : 38          |                 sec                  
+  327 |  1 quicktest.s    318 | Code        | 11 |         |    1 | 00/1255 : 7A          |                 ply                  
+  328 |  1 quicktest.s    319 | Code        | 11 |         |    1 | 00/1256 : FA          |                 plx                  ;restore & return
+  329 |  1 quicktest.s    320 | Code        | 11 |         |    1 | 00/1257 : 60          |                 rts                  
+  330 |  1 quicktest.s    321 | Empty       | 11 |         |    0 | 00/1258               |                                      
+  331 |  1 quicktest.s    322 | Code        | 11 |         |    2 | 00/1258 : A9 00       | inp2            lda   #0             
+  332 |  1 quicktest.s    323 | Code        | 11 |         |    1 | 00/125A : 18          |                 clc                  
+  333 |  1 quicktest.s    324 | Code        | 11 |         |    1 | 00/125B : 7A          |                 ply                  
+  334 |  1 quicktest.s    325 | Code        | 11 |         |    1 | 00/125C : FA          |                 plx                  ;restore & return
+  335 |  1 quicktest.s    326 | Code        | 11 |         |    1 | 00/125D : 60          |                 rts                  
+  336 |  1 quicktest.s    327 | Empty       | 11 |         |    0 | 00/125E               |                                      
+  337 |  1 quicktest.s    328 | Comment     | 11 |         |    0 | 00/125E               | *-------------------------------------------------
+  338 |  1 quicktest.s    329 | Comment     | 11 |         |    0 | 00/125E               | * Check for carrier using Get_Port_Stat routine
+  339 |  1 quicktest.s    330 | Empty       | 11 |         |    0 | 00/125E               |                                      
+  340 |  1 quicktest.s    331 | Code        | 11 |         |    1 | 00/125E : DA          | getcarr         phx                  
+  341 |  1 quicktest.s    332 | Code        | 11 |         |    1 | 00/125F : 5A          |                 phy                  
+  342 |  1 quicktest.s    333 | Empty       | 11 |         |    0 | 00/1260               |                                      
+  343 |  1 quicktest.s    334 | Code        | 11 |         |    2 | 00/1260 : A9 9C       |                 lda   #Carrlist      
+  344 |  1 quicktest.s    335 | Code        | 11 |         |    2 | 00/1262 : A2 14       |                 ldx   #>Carrlist     
+  345 |  1 quicktest.s    336 | Code        | 11 |         |    2 | 00/1264 : A0 00       |                 ldy   #0             
+  346 |  1 quicktest.s    337 | Code        | 11 |         |    3 | 00/1266 : 20 26 14    |                 jsr   doext          
+  347 |  1 quicktest.s    338 | Empty       | 11 |         |    0 | 00/1269               |                                      
+  348 |  1 quicktest.s    339 | Code        | 11 |         |    3 | 00/1269 : AD A0 14    |                 lda   carrbits       
+  349 |  1 quicktest.s    340 | Code        | 11 |         |    3 | 00/126C : 2D BF 11    |                 and   {$11bf}        
+  350 |  1 quicktest.s    341 | Code        | 11 |         |    2 | 00/126F : F0 E7       |                 beq   inp2           ;do a dirty and use common exit routines
+  351 |  1 quicktest.s    342 | Empty       | 11 |         |    0 | 00/1271               |                                      
+  352 |  1 quicktest.s    343 | Code        | 11 |         |    1 | 00/1271 : 38          |                 sec                  
+  353 |  1 quicktest.s    344 | Code        | 11 |         |    1 | 00/1272 : 7A          |                 ply                  
+  354 |  1 quicktest.s    345 | Code        | 11 |         |    1 | 00/1273 : FA          |                 plx                  ;restore & return
+  355 |  1 quicktest.s    346 | Code        | 11 |         |    1 | 00/1274 : 60          |                 rts                  
+  356 |  1 quicktest.s    347 | Empty       | 11 |         |    0 | 00/1275               |                                      
+  357 |  1 quicktest.s    348 | Comment     | 11 |         |    0 | 00/1275               | *-------------------------------------------------
+  358 |  1 quicktest.s    349 | Comment     | 11 |         |    0 | 00/1275               | * raise dtr
+  359 |  1 quicktest.s    350 | Empty       | 11 |         |    0 | 00/1275               |                                      
+  360 |  1 quicktest.s    351 | Code        | 11 |         |    2 | 00/1275 : A9 00       | raisedtr        lda   #0             
+  361 |  1 quicktest.s    352 | Code        | 11 |         |    1 | 00/1277 : DA          |                 phx                  
+  362 |  1 quicktest.s    353 | Code        | 11 |         |    1 | 00/1278 : 5A          |                 phy                  
+  363 |  1 quicktest.s    354 | Empty       | 11 |         |    0 | 00/1279               |                                      
+  364 |  1 quicktest.s    355 | Code        | 11 |         |    3 | 00/1279 : 20 74 13    |                 jsr   gsdtr          
+  365 |  1 quicktest.s    356 | Empty       | 11 |         |    0 | 00/127C               |                                      
+  366 |  1 quicktest.s    357 | Code        | 11 |         |    1 | 00/127C : 7A          |                 ply                  
+  367 |  1 quicktest.s    358 | Code        | 11 |         |    1 | 00/127D : FA          |                 plx                  ;restore & return
+  368 |  1 quicktest.s    359 | Code        | 11 |         |    1 | 00/127E : 60          |                 rts                  
+  369 |  1 quicktest.s    360 | Empty       | 11 |         |    0 | 00/127F               |                                      
+  370 |  1 quicktest.s    361 | Comment     | 11 |         |    0 | 00/127F               | *-------------------------------------------------
+  371 |  1 quicktest.s    362 | Comment     | 11 |         |    0 | 00/127F               | * output data
+  372 |  1 quicktest.s    363 | Empty       | 11 |         |    0 | 00/127F               |                                      
+  373 |  1 quicktest.s    364 | Empty       | 11 |         |    0 | 00/127F               | send                                 
+  374 |  1 quicktest.s    365 | Code        | 11 |         |    1 | 00/127F : DA          | out             phx                  ;save x
+  375 |  1 quicktest.s    366 | Code        | 11 |         |    1 | 00/1280 : 5A          |                 phy                  ;save y
+  376 |  1 quicktest.s    367 | Code        | 11 |         |    1 | 00/1281 : 48          |                 pha                  ;save a
+  377 |  1 quicktest.s    368 | Empty       | 11 |         |    0 | 00/1282               |                                      
+  378 |  1 quicktest.s    369 | Code        | 11 |         |    2 | 00/1282 : A2 C2       | out1            ldx   #$c2           ;ready for send?
+  379 |  1 quicktest.s    370 | Code        | 11 |         |    2 | 00/1284 : A0 20       |                 ldy   #$20           
+  380 |  1 quicktest.s    371 | Code        | 11 |         |    2 | 00/1286 : A9 00       |                 lda   #$00           
+  381 |  1 quicktest.s    372 | Code        | 11 |         |    3 | 00/1288 : 20 23 14    |                 jsr   dostatus       
+  382 |  1 quicktest.s    373 | Code        | 11 |         |    2 | 00/128B : 90 F5       |                 bcc   out1           ;nope
+  383 |  1 quicktest.s    374 | Empty       | 11 |         |    0 | 00/128D               |                                      
+  384 |  1 quicktest.s    375 | Code        | 11 |         |    1 | 00/128D : 68          |                 pla                  ;get a
+  385 |  1 quicktest.s    376 | Code        | 11 |         |    2 | 00/128E : A2 C2       |                 ldx   #$c2           
+  386 |  1 quicktest.s    377 | Code        | 11 |         |    2 | 00/1290 : A0 20       |                 ldy   #$20           
+  387 |  1 quicktest.s    378 | Code        | 11 |         |    3 | 00/1292 : 20 20 14    |                 jsr   dowrite        ;send it
+  388 |  1 quicktest.s    379 | Empty       | 11 |         |    0 | 00/1295               |                                      
+  389 |  1 quicktest.s    380 | Code        | 11 |         |    1 | 00/1295 : 7A          |                 ply                  
+  390 |  1 quicktest.s    381 | Code        | 11 |         |    1 | 00/1296 : FA          |                 plx                  ;restore & return
+  391 |  1 quicktest.s    382 | Code        | 11 |         |    1 | 00/1297 : 60          |                 rts                  
+  392 |  1 quicktest.s    383 | Empty       | 11 |         |    0 | 00/1298               |                                      
+  393 |  1 quicktest.s    384 | Comment     | 11 |         |    0 | 00/1298               | *-------------------------------------------------
+  394 |  1 quicktest.s    385 | Comment     | 11 |         |    0 | 00/1298               | * setup for call
+  395 |  1 quicktest.s    386 | Empty       | 11 |         |    0 | 00/1298               |                                      
+  396 |  1 quicktest.s    387 | Code        | 11 |         |    3 | 00/1298 : 20 72 13    | ringset         jsr   hangup         
+  397 |  1 quicktest.s    388 | Empty       | 11 |         |    0 | 00/129B               |                                      
+  398 |  1 quicktest.s    389 | Code        | 11 |         |    2 | 00/129B : A9 00       |                 lda   #0             ;let modem reset
+  399 |  1 quicktest.s    390 | Code        | 11 |         |    3 | 00/129D : 20 80 13    |                 jsr   wait           
+  400 |  1 quicktest.s    391 | Code        | 11 |         |    3 | 00/12A0 : 20 80 13    |                 jsr   wait           
+  401 |  1 quicktest.s    392 | Empty       | 11 |         |    0 | 00/12A3               |                                      
+  402 |  1 quicktest.s    393 | Code        | 11 |         |    2 | 00/12A3 : A9 00       |                 lda   #$00           
+  403 |  1 quicktest.s    394 | Code        | 11 |         |    3 | 00/12A5 : 20 74 13    |                 jsr   gsdtr          
+  404 |  1 quicktest.s    395 | Empty       | 11 |         |    0 | 00/12A8               |                                      
+  405 |  1 quicktest.s    396 | Code        | 11 |         |    3 | 00/12A8 : AC 45 11    |                 ldy   initspd        ;set init speed
+  406 |  1 quicktest.s    397 | Code        | 11 |         |    3 | 00/12AB : 20 9F 13    |                 jsr   setspeed       
+  407 |  1 quicktest.s    398 | Empty       | 11 |         |    0 | 00/12AE               |                                      
+  408 |  1 quicktest.s    399 | Code        | 11 |         |    2 | 00/12AE : A9 00       |                 lda   #0             ;slight delay (let modem do init)
+  409 |  1 quicktest.s    400 | Code        | 11 |         |    3 | 00/12B0 : 20 80 13    |                 jsr   wait           
+  410 |  1 quicktest.s    401 | Empty       | 11 |         |    0 | 00/12B3               |                                      
+  411 |  1 quicktest.s    402 | Code        | 11 |         |    2 | 00/12B3 : A2 FF       |                 ldx   #$FF           
+  412 |  1 quicktest.s    403 | Code        | 11 |         |    1 | 00/12B5 : E8          | rset2           inx                  ;do pre-inc
+  413 |  1 quicktest.s    404 | Code        | 11 |         |    3 | 00/12B6 : BD D0 11    |                 lda   {$11d0},x      ;get modem init string
+  414 |  1 quicktest.s    405 | Code        | 11 |         |    2 | 00/12B9 : F0 05       |                 beq   rset3          ;we are done
+  415 |  1 quicktest.s    406 | Empty       | 11 |         |    0 | 00/12BB               |                                      
+  416 |  1 quicktest.s    407 | Code        | 11 |         |    3 | 00/12BB : 20 7F 12    |                 jsr   out            ;output
+  417 |  1 quicktest.s    408 | Code        | 11 |         |    2 | 00/12BE : 80 F5       |                 bra   rset2          ;loop (Z-bit set after wait)
+  418 |  1 quicktest.s    409 | Empty       | 11 |         |    0 | 00/12C0               |                                      
+  419 |  1 quicktest.s    410 | Code        | 11 |         |    2 | 00/12C0 : A2 06       | rset3           ldx   #6             
+  420 |  1 quicktest.s    411 | Code        | 11 |         |    3 | 00/12C2 : 8E 3D 14    |                 stx   count          
+  421 |  1 quicktest.s    412 | Empty       | 11 |         |    0 | 00/12C5               |                                      
+  422 |  1 quicktest.s    413 | Code        | 11 |         |    2 | 00/12C5 : A0 FF       | rset4           ldy   #$FF           
+  423 |  1 quicktest.s    414 | Code        | 11 |         |    1 | 00/12C7 : 88          | rset5           dey                  
+  424 |  1 quicktest.s    415 | Code        | 11 |         |    2 | 00/12C8 : F0 0E       |                 beq   decount        
+  425 |  1 quicktest.s    416 | Empty       | 11 |         |    0 | 00/12CA               |                                      
+  426 |  1 quicktest.s    417 | Code        | 11 |         |    3 | 00/12CA : 20 40 12    |                 jsr   inp            
+  427 |  1 quicktest.s    418 | Code        | 11 |         |    2 | 00/12CD : 90 F8       |                 bcc   rset5          
+  428 |  1 quicktest.s    419 | Code        | 11 |         |    2 | 00/12CF : 29 7F       |                 and   #$7f           
+  429 |  1 quicktest.s    420 | Code        | 11 |         |    2 | 00/12D1 : C9 30       |                 cmp   #'0'           ;check for "0" result
+  430 |  1 quicktest.s    421 | Code        | 11 |         |    2 | 00/12D3 : F0 0E       |                 beq   leave          
+  431 |  1 quicktest.s    422 | Code        | 11 |         |    3 | 00/12D5 : 4C C7 12    |                 jmp   rset5          
+  432 |  1 quicktest.s    423 | Empty       | 11 |         |    0 | 00/12D8               |                                      
+  433 |  1 quicktest.s    424 | Code        | 11 |         |    1 | 00/12D8 : CA          | decount         dex                  
+  434 |  1 quicktest.s    425 | Code        | 11 |         |    2 | 00/12D9 : D0 EA       |                 bne   rset4          
+  435 |  1 quicktest.s    426 | Code        | 11 |         |    3 | 00/12DB : CE 3D 14    |                 dec   count          
+  436 |  1 quicktest.s    427 | Code        | 11 |         |    2 | 00/12DE : D0 E5       |                 bne   rset4          
+  437 |  1 quicktest.s    428 | Code        | 11 |         |    3 | 00/12E0 : 4C 98 12    |                 jmp   ringset        
+  438 |  1 quicktest.s    429 | Empty       | 11 |         |    0 | 00/12E3               |                                      
+  439 |  1 quicktest.s    430 | Code        | 11 |         |    3 | 00/12E3 : 20 40 12    | leave           jsr   inp            ;grab the <cr> off the tail end of the "0"
+  440 |  1 quicktest.s    431 | Code        | 11 |         |    2 | 00/12E6 : 90 FB       |                 bcc   leave          
+  441 |  1 quicktest.s    432 | Empty       | 11 |         |    0 | 00/12E8               |                                      
+  442 |  1 quicktest.s    433 | Code        | 11 |         |    3 | 00/12E8 : 20 64 13    |                 jsr   flush          
+  443 |  1 quicktest.s    434 | Empty       | 11 |         |    0 | 00/12EB               |                                      
+  444 |  1 quicktest.s    435 | Code        | 11 |         |    2 | 00/12EB : A9 00       |                 lda   #0             
+  445 |  1 quicktest.s    436 | Code        | 11 |         |    3 | 00/12ED : 8D 47 11    |                 sta   bytcnt         ;reset byte counter
+  446 |  1 quicktest.s    437 | Code        | 11 |         |    3 | 00/12F0 : 8D 48 11    |                 sta   bytcnt+1       
+  447 |  1 quicktest.s    438 | Code        | 11 |         |    3 | 00/12F3 : 8D 49 11    |                 sta   bytcnt+2       
+  448 |  1 quicktest.s    439 | Code        | 11 |         |    1 | 00/12F6 : 18          |                 clc                  
+  449 |  1 quicktest.s    440 | Code        | 11 |         |    1 | 00/12F7 : 60          |                 rts                  ;return
+  450 |  1 quicktest.s    441 | Empty       | 11 |         |    0 | 00/12F8               |                                      
+  451 |  1 quicktest.s    442 | Comment     | 11 |         |    0 | 00/12F8               | *-------------------------------
+  452 |  1 quicktest.s    443 | Comment     | 11 |         |    0 | 00/12F8               | * test for a ring and handle it
+  453 |  1 quicktest.s    444 | Empty       | 11 |         |    0 | 00/12F8               |                                      
+  454 |  1 quicktest.s    445 | Code        | 11 |         |    3 | 00/12F8 : 20 40 12    | ring            jsr   inp            ;check for a char
+  455 |  1 quicktest.s    446 | Code        | 11 |         |    2 | 00/12FB : 90 0E       |                 bcc   noRing         ;nope...
+  456 |  1 quicktest.s    447 | Empty       | 11 |         |    0 | 00/12FD               |                                      
+  457 |  1 quicktest.s    448 | Code        | 11 |         |    2 | 00/12FD : 29 7F       |                 and   #$7f           ;strip high
+  458 |  1 quicktest.s    449 | Code        | 11 |         |    2 | 00/12FF : C9 32       |                 cmp   #'2'           ;is it a 'ring'? (numeric)
+  459 |  1 quicktest.s    450 | Code        | 11 |         |    2 | 00/1301 : D0 0A       |                 bne   notRing        ;nope, check for connect messages
+  460 |  1 quicktest.s    451 | Empty       | 11 |         |    0 | 00/1303               |                                      
+  461 |  1 quicktest.s    452 | Comment     | 11 |         |    0 | 00/1303               | ********************************
+  462 |  1 quicktest.s    453 | Code        | 11 |         |    3 | 00/1303 : 20 40 12    | grabCR          jsr   inp            ;grab the <cr> off the tail end of the "2"
+  463 |  1 quicktest.s    454 | Code        | 11 |         |    2 | 00/1306 : 90 FB       |                 bcc   grabCR         
+  464 |  1 quicktest.s    455 | Empty       | 11 |         |    0 | 00/1308               |                                      
+  465 |  1 quicktest.s    456 | Code        | 11 |         |    3 | 00/1308 : 20 8C 13    | answerRing      jsr   answer         ;the phone rang, so send 'ATA'
+  466 |  1 quicktest.s    457 | Empty       | 11 |         |    0 | 00/130B               |                                      
+  467 |  1 quicktest.s    458 | Code        | 11 |         |    1 | 00/130B : 18          | noRing          clc                  
+  468 |  1 quicktest.s    459 | Code        | 11 |         |    1 | 00/130C : 60          |                 rts                  
+  469 |  1 quicktest.s    460 | Empty       | 11 |         |    0 | 00/130D               |                                      
+  470 |  1 quicktest.s    461 | Comment     | 11 |         |    0 | 00/130D               | ********************************
+  471 |  1 quicktest.s    462 | Empty       | 11 |         |    0 | 00/130D               | notRing                              
+  472 |  1 quicktest.s    463 | Code        | 11 |         |    2 | 00/130D : C9 31       |                 cmp   #'1'           ;is it a '1' or '10' or '11' or '12' or '14'?
+  473 |  1 quicktest.s    464 | Code        | 11 |         |    2 | 00/130F : F0 04       |                 beq   gotCode        ;yes, save it
+  474 |  1 quicktest.s    465 | Code        | 11 |         |    2 | 00/1311 : C9 35       |                 cmp   #'5'           ;is it connect 1200?
+  475 |  1 quicktest.s    466 | Code        | 11 |         |    2 | 00/1313 : D0 F6       |                 bne   noRing         ;nope
+  476 |  1 quicktest.s    467 | Empty       | 11 |         |    0 | 00/1315               |                                      
+  477 |  1 quicktest.s    468 | Code        | 11 |         |    3 | 00/1315 : 8D 3E 14    | gotCode         sta   code           
+  478 |  1 quicktest.s    469 | Empty       | 11 |         |    0 | 00/1318               |                                      
+  479 |  1 quicktest.s    470 | Code        | 11 |         |    3 | 00/1318 : 20 40 12    | secondChar      jsr   inp            ;second character will ALWAYS be there
+  480 |  1 quicktest.s    471 | Code        | 11 |         |    2 | 00/131B : 90 FB       |                 bcc   secondChar     
+  481 |  1 quicktest.s    472 | Empty       | 11 |         |    0 | 00/131D               |                                      
+  482 |  1 quicktest.s    473 | Code        | 11 |         |    2 | 00/131D : 29 7F       |                 and   #$7f           ;strip high
+  483 |  1 quicktest.s    474 | Code        | 11 |         |    2 | 00/131F : C9 0D       |                 cmp   #{$0d}         ;but might be a <cr>
+  484 |  1 quicktest.s    475 | Code        | 11 |         |    2 | 00/1321 : D0 11       |                 bne   multiCode      
+  485 |  1 quicktest.s    476 | Empty       | 11 |         |    0 | 00/1323               |                                      
+  486 |  1 quicktest.s    477 | Comment     | 11 |         |    0 | 00/1323               | ********************************
+  487 |  1 quicktest.s    478 | Code        | 11 |         |    2 | 00/1323 : A0 00       | singleCode      ldy   #0             ;connect 300?
+  488 |  1 quicktest.s    479 | Code        | 11 |         |    3 | 00/1325 : AD 3E 14    |                 lda   code           
+  489 |  1 quicktest.s    480 | Code        | 11 |         |    2 | 00/1328 : C9 31       |                 cmp   #'1'           
+  490 |  1 quicktest.s    481 | Code        | 11 |         |    2 | 00/132A : F0 26       |                 beq   ring3          
+  491 |  1 quicktest.s    482 | Empty       | 11 |         |    0 | 00/132C               |                                      
+  492 |  1 quicktest.s    483 | Code        | 11 |         |    1 | 00/132C : C8          |                 iny                  
+  493 |  1 quicktest.s    484 | Code        | 11 |         |    2 | 00/132D : C9 35       |                 cmp   #'5'           ;connect 1200?
+  494 |  1 quicktest.s    485 | Code        | 11 |         |    2 | 00/132F : F0 21       |                 beq   ring3          ;nope, unknown code, keep checking
+  495 |  1 quicktest.s    486 | Code        | 11 |         |    3 | 00/1331 : 4C 0B 13    |                 jmp   noRing         
+  496 |  1 quicktest.s    487 | Empty       | 11 |         |    0 | 00/1334               |                                      
+  497 |  1 quicktest.s    488 | Comment     | 11 |         |    0 | 00/1334               | ********************************
+  498 |  1 quicktest.s    489 | Empty       | 11 |         |    0 | 00/1334               | multiCode                            
+  499 |  1 quicktest.s    490 | Code        | 11 |         |    3 | 00/1334 : 8D 3F 14    |                 sta   code+1         
+  500 |  1 quicktest.s    491 | Empty       | 11 |         |    0 | 00/1337               |                                      
+  501 |  1 quicktest.s    492 | Code        | 11 |         |    3 | 00/1337 : AD 3E 14    |                 lda   code           ;get the first code char
+  502 |  1 quicktest.s    493 | Code        | 11 |         |    2 | 00/133A : C9 31       |                 cmp   #'1'           ;must be a one
+  503 |  1 quicktest.s    494 | Code        | 11 |         |    2 | 00/133C : D0 CD       |                 bne   noRing         ;if not, then keep trying
+  504 |  1 quicktest.s    495 | Empty       | 11 |         |    0 | 00/133E               |                                      
+  505 |  1 quicktest.s    496 | Code        | 11 |         |    2 | 00/133E : A2 06       |                 ldx   #rCodesEnd-rCodes-1
+  506 |  1 quicktest.s    497 | Code        | 11 |         |    3 | 00/1340 : AD 3F 14    |                 lda   code+1         
+  507 |  1 quicktest.s    498 | Code        | 11 |         |    3 | 00/1343 : DD 29 14    | ozunid_2        cmp   rCodes,x       
+  508 |  1 quicktest.s    499 | Code        | 11 |         |    2 | 00/1346 : F0 06       |                 beq   _bingo         
+  509 |  1 quicktest.s    500 | Code        | 11 |         |    1 | 00/1348 : CA          |                 dex                  
+  510 |  1 quicktest.s    501 | Code        | 11 |         |    2 | 00/1349 : 10 F8       |                 bpl   ozunid_2       
+  511 |  1 quicktest.s    502 | Code        | 11 |         |    3 | 00/134B : 4C 0B 13    |                 jmp   noRing         
+  512 |  1 quicktest.s    503 | Empty       | 11 |         |    0 | 00/134E               |                                      
+  513 |  1 quicktest.s    504 | Code        | 11 |         |    3 | 00/134E : BD 30 14    | _bingo          lda   sCodes,x       
+  514 |  1 quicktest.s    505 | Code        | 11 |         |    1 | 00/1351 : A8          |                 tay                  
+  515 |  1 quicktest.s    506 | Code        | 11 |         |    3 | 00/1352 : 20 9F 13    | ring3           jsr   setspeed       ;set the correct speed
+  516 |  1 quicktest.s    507 | Empty       | 11 |         |    0 | 00/1355               |                                      
+  517 |  1 quicktest.s    508 | Code        | 11 |         |    2 | 00/1355 : A0 05       |                 ldy   #5             
+  518 |  1 quicktest.s    509 | Code        | 11 |         |    2 | 00/1357 : A9 00       | ring4           lda   #0             ;let carrier's settle
+  519 |  1 quicktest.s    510 | Code        | 11 |         |    3 | 00/1359 : 20 80 13    |                 jsr   wait           
+  520 |  1 quicktest.s    511 | Code        | 11 |         |    1 | 00/135C : 88          |                 dey                  
+  521 |  1 quicktest.s    512 | Code        | 11 |         |    2 | 00/135D : D0 F8       |                 bne   ring4          
+  522 |  1 quicktest.s    513 | Empty       | 11 |         |    0 | 00/135F               |                                      
+  523 |  1 quicktest.s    514 | Code        | 11 |         |    3 | 00/135F : 20 64 13    |                 jsr   flush          ;remove any garbage
+  524 |  1 quicktest.s    515 | Code        | 11 |         |    1 | 00/1362 : 38          |                 sec                  ;we have a connection!
+  525 |  1 quicktest.s    516 | Code        | 11 |         |    1 | 00/1363 : 60          |                 rts                  
+  526 |  1 quicktest.s    517 | Empty       | 11 |         |    0 | 00/1364               |                                      
+  527 |  1 quicktest.s    518 | Comment     | 11 |         |    0 | 00/1364               | *-------------------------------
+  528 |  1 quicktest.s    519 | Comment     | 11 |         |    0 | 00/1364               | * clear the input buffer
+  529 |  1 quicktest.s    520 | Empty       | 11 |         |    0 | 00/1364               |                                      
+  530 |  1 quicktest.s    521 | Empty       | 11 |         |    0 | 00/1364               | flush                                
+  531 |  1 quicktest.s    522 | Code        | 11 |         |    1 | 00/1364 : DA          |                 phx                  
+  532 |  1 quicktest.s    523 | Code        | 11 |         |    1 | 00/1365 : 5A          |                 phy                  
+  533 |  1 quicktest.s    524 | Empty       | 11 |         |    0 | 00/1366               |                                      
+  534 |  1 quicktest.s    525 | Code        | 11 |         |    2 | 00/1366 : A9 A8       |                 lda   #Flush_List    
+  535 |  1 quicktest.s    526 | Code        | 11 |         |    2 | 00/1368 : A2 14       |                 ldx   #>Flush_List   
+  536 |  1 quicktest.s    527 | Code        | 11 |         |    2 | 00/136A : A0 00       |                 ldy   #0             
+  537 |  1 quicktest.s    528 | Code        | 11 |         |    3 | 00/136C : 20 26 14    |                 jsr   doext          
+  538 |  1 quicktest.s    529 | Empty       | 11 |         |    0 | 00/136F               |                                      
+  539 |  1 quicktest.s    530 | Code        | 11 |         |    1 | 00/136F : 7A          |                 ply                  
+  540 |  1 quicktest.s    531 | Code        | 11 |         |    1 | 00/1370 : FA          |                 plx                  
+  541 |  1 quicktest.s    532 | Code        | 11 |         |    1 | 00/1371 : 60          |                 rts                  
+  542 |  1 quicktest.s    533 | Empty       | 11 |         |    0 | 00/1372               |                                      
+  543 |  1 quicktest.s    534 | Comment     | 11 |         |    0 | 00/1372               | *-------------------------------------------------
+  544 |  1 quicktest.s    535 | Comment     | 11 |         |    0 | 00/1372               | * set DTR on GS Serial Port, and hangup if needed
+  545 |  1 quicktest.s    536 | Empty       | 11 |         |    0 | 00/1372               |                                      
+  546 |  1 quicktest.s    537 | Code        | 11 |         |    2 | 00/1372 : A9 80       | hangup          lda   #$80           ;blow 'em off (hangup)
+  547 |  1 quicktest.s    538 | Code        | 11 |         |    3 | 00/1374 : 8D A6 14    | gsdtr           sta   DTRstate       
+  548 |  1 quicktest.s    539 | Empty       | 11 |         |    0 | 00/1377               |                                      
+  549 |  1 quicktest.s    540 | Code        | 11 |         |    2 | 00/1377 : A9 A2       |                 lda   #DTR_List      
+  550 |  1 quicktest.s    541 | Code        | 11 |         |    2 | 00/1379 : A2 14       |                 ldx   #>DTR_List     
+  551 |  1 quicktest.s    542 | Code        | 11 |         |    2 | 00/137B : A0 00       |                 ldy   #0             
+  552 |  1 quicktest.s    543 | Code        | 11 |         |    3 | 00/137D : 4C 26 14    |                 jmp   doext          
+  553 |  1 quicktest.s    544 | Empty       | 11 |         |    0 | 00/1380               |                                      
+  554 |  1 quicktest.s    545 | Comment     | 11 |         |    0 | 00/1380               | *-------------------------------------------------
+  555 |  1 quicktest.s    546 | Comment     | 11 |         |    0 | 00/1380               | * wait routine
+  556 |  1 quicktest.s    547 | Empty       | 11 |         |    0 | 00/1380               |                                      
+  557 |  1 quicktest.s    548 | Code        | 11 |         |    1 | 00/1380 : 38          | wait            sec                  ;from apple ][+ ref man - pg 147
+  558 |  1 quicktest.s    549 | Code        | 11 |         |    1 | 00/1381 : 48          | wait2           pha                  
+  559 |  1 quicktest.s    550 | Code        | 11 |         |    2 | 00/1382 : E9 01       | wait3           sbc   #1             
+  560 |  1 quicktest.s    551 | Code        | 11 |         |    2 | 00/1384 : D0 FC       |                 bne   wait3          
+  561 |  1 quicktest.s    552 | Code        | 11 |         |    1 | 00/1386 : 68          |                 pla                  
+  562 |  1 quicktest.s    553 | Code        | 11 |         |    2 | 00/1387 : E9 01       |                 sbc   #1             
+  563 |  1 quicktest.s    554 | Code        | 11 |         |    2 | 00/1389 : D0 F6       |                 bne   wait2          
+  564 |  1 quicktest.s    555 | Code        | 11 |         |    1 | 00/138B : 60          |                 rts                  
+  565 |  1 quicktest.s    556 | Empty       | 11 |         |    0 | 00/138C               |                                      
+  566 |  1 quicktest.s    557 | Comment     | 11 |         |    0 | 00/138C               | *-------------------------------------------------
+  567 |  1 quicktest.s    558 | Comment     | 11 |         |    0 | 00/138C               | * send ata to phone
+  568 |  1 quicktest.s    559 | Empty       | 11 |         |    0 | 00/138C               |                                      
+  569 |  1 quicktest.s    560 | Code        | 11 |         |    2 | 00/138C : A9 80       | answer          lda   #$80           
+  570 |  1 quicktest.s    561 | Code        | 11 |         |    3 | 00/138E : 20 80 13    |                 jsr   wait           
+  571 |  1 quicktest.s    562 | Empty       | 11 |         |    0 | 00/1391               |                                      
+  572 |  1 quicktest.s    563 | Code        | 11 |         |    2 | 00/1391 : A2 FF       |                 ldx   #$ff           
+  573 |  1 quicktest.s    564 | Code        | 11 |         |    1 | 00/1393 : E8          | answer2         inx                  
+  574 |  1 quicktest.s    565 | Code        | 11 |         |    3 | 00/1394 : BD C0 11    |                 lda   {$11c0},x      ;get text
+  575 |  1 quicktest.s    566 | Code        | 11 |         |    2 | 00/1397 : F0 05       |                 beq   answer3        ;we are done
+  576 |  1 quicktest.s    567 | Empty       | 11 |         |    0 | 00/1399               |                                      
+  577 |  1 quicktest.s    568 | Code        | 11 |         |    3 | 00/1399 : 20 7F 12    |                 jsr   out            ;send it
+  578 |  1 quicktest.s    569 | Code        | 11 |         |    2 | 00/139C : 80 F5       |                 bra   answer2        
+  579 |  1 quicktest.s    570 | Empty       | 11 |         |    0 | 00/139E               |                                      
+  580 |  1 quicktest.s    571 | Code        | 11 |         |    1 | 00/139E : 60          | answer3         rts                  
+  581 |  1 quicktest.s    572 | Empty       | 11 |         |    0 | 00/139F               |                                      
+  582 |  1 quicktest.s    573 | Comment     | 11 |         |    0 | 00/139F               | *-------------------------------------------------
+  583 |  1 quicktest.s    574 | Comment     | 11 |         |    0 | 00/139F               | * set the rs-232 speed, speed offset in Y
+  584 |  1 quicktest.s    575 | Comment     | 11 |         |    0 | 00/139F               | *
+  585 |  1 quicktest.s    576 | Comment     | 11 |         |    0 | 00/139F               | * 0 =   300 baud
+  586 |  1 quicktest.s    577 | Comment     | 11 |         |    0 | 00/139F               | * 1 =  1200 baud
+  587 |  1 quicktest.s    578 | Comment     | 11 |         |    0 | 00/139F               | * 2 =  2400 baud
+  588 |  1 quicktest.s    579 | Comment     | 11 |         |    0 | 00/139F               | * 3 =  4800 baud
+  589 |  1 quicktest.s    580 | Comment     | 11 |         |    0 | 00/139F               | * 4 =  9600 baud
+  590 |  1 quicktest.s    581 | Comment     | 11 |         |    0 | 00/139F               | * 5 = 19200 baud
+  591 |  1 quicktest.s    582 | Comment     | 11 |         |    0 | 00/139F               | *-------------------------------------------------
+  592 |  1 quicktest.s    583 | Empty       | 11 |         |    0 | 00/139F               |                                      
+  593 |  1 quicktest.s    584 | Code        | 11 |         |    1 | 00/139F : DA          | setspeed        phx                  
+  594 |  1 quicktest.s    585 | Code        | 11 |         |    1 | 00/13A0 : 5A          |                 phy                  
+  595 |  1 quicktest.s    586 | Empty       | 11 |         |    0 | 00/13A1               |                                      
+  596 |  1 quicktest.s    587 | Code        | 11 |         |    2 | 00/13A1 : A9 01       |                 lda   #1             ;find caller speed (x300)
+  597 |  1 quicktest.s    588 | Code        | 11 |         |    3 | 00/13A3 : 8D 46 11    |                 sta   callspd        
+  598 |  1 quicktest.s    589 | Code        | 11 |         |    2 | 00/13A6 : C0 00       |                 cpy   #0             ;at 300?
+  599 |  1 quicktest.s    590 | Code        | 11 |         |    2 | 00/13A8 : F0 09       |                 beq   Do_Baud        ;yep
+  600 |  1 quicktest.s    591 | Empty       | 11 |         |    0 | 00/13AA               |                                      
+  601 |  1 quicktest.s    592 | Code        | 11 |         |    3 | 00/13AA : 0E 46 11    |                 asl   callspd        ;speed = speed * 2
+  602 |  1 quicktest.s    593 | Code        | 11 |         |    3 | 00/13AD : 0E 46 11    | setspeed2       asl   callspd        ;speed = speed * 2
+  603 |  1 quicktest.s    594 | Code        | 11 |         |    1 | 00/13B0 : 88          |                 dey                  
+  604 |  1 quicktest.s    595 | Code        | 11 |         |    2 | 00/13B1 : D0 FA       |                 bne   setspeed2      ;loop until correct speed found
+  605 |  1 quicktest.s    596 | Empty       | 11 |         |    0 | 00/13B3               |                                      
+  606 |  1 quicktest.s    597 | Code        | 11 |         |    1 | 00/13B3 : 68          | Do_Baud         pla                  ;get y-reg
+  607 |  1 quicktest.s    598 | Code        | 11 |         |    1 | 00/13B4 : 0A          |                 asl   a              
+  608 |  1 quicktest.s    599 | Code        | 11 |         |    1 | 00/13B5 : A8          |                 tay                  
+  609 |  1 quicktest.s    600 | Code        | 11 |         |    3 | 00/13B6 : B9 05 14    |                 lda   baudAddresses,y
+  610 |  1 quicktest.s    601 | Code        | 11 |         |    3 | 00/13B9 : 8D D1 13    |                 sta   Baudread+1     
+  611 |  1 quicktest.s    602 | Code        | 11 |         |    3 | 00/13BC : B9 06 14    |                 lda   baudAddresses+1,y
+  612 |  1 quicktest.s    603 | Code        | 11 |         |    3 | 00/13BF : 8D D2 13    |                 sta   Baudread+2     
+  613 |  1 quicktest.s    604 | Empty       | 11 |         |    0 | 00/13C2               |                                      
+  614 |  1 quicktest.s    605 | Code        | 11 |         |    2 | 00/13C2 : A2 C2       | SetBaud         ldx   #$c2           
+  615 |  1 quicktest.s    606 | Code        | 11 |         |    2 | 00/13C4 : A0 20       |                 ldy   #$20           
+  616 |  1 quicktest.s    607 | Code        | 11 |         |    3 | 00/13C6 : 20 1A 14    |                 jsr   doinit         
+  617 |  1 quicktest.s    608 | Empty       | 11 |         |    0 | 00/13C9               |                                      
+  618 |  1 quicktest.s    609 | Code        | 11 |         |    2 | 00/13C9 : A9 01       |                 lda   #$01           ;firmware attention character
+  619 |  1 quicktest.s    610 | Code        | 11 |         |    3 | 00/13CB : 20 7F 12    |                 jsr   out            
+  620 |  1 quicktest.s    611 | Empty       | 11 |         |    0 | 00/13CE               |                                      
+  621 |  1 quicktest.s    612 | Code        | 11 |         |    2 | 00/13CE : A2 00       |                 ldx   #0             
+  622 |  1 quicktest.s    613 | Code        | 11 |         |    3 | 00/13D0 : BD FF FF    | Baudread        lda   $ffff,x        
+  623 |  1 quicktest.s    614 | Code        | 11 |         |    1 | 00/13D3 : 48          |                 pha                  
+  624 |  1 quicktest.s    615 | Code        | 11 |         |    3 | 00/13D4 : 20 7F 12    |                 jsr   out            
+  625 |  1 quicktest.s    616 | Code        | 11 |         |    1 | 00/13D7 : 68          |                 pla                  
+  626 |  1 quicktest.s    617 | Code        | 11 |         |    2 | 00/13D8 : C9 42       |                 cmp   #'B'           ;finish -after- we get a 'B'
+  627 |  1 quicktest.s    618 | Code        | 11 |         |    2 | 00/13DA : F0 03       |                 beq   Fin_Init       
+  628 |  1 quicktest.s    619 | Code        | 11 |         |    1 | 00/13DC : E8          |                 inx                  
+  629 |  1 quicktest.s    620 | Code        | 11 |         |    2 | 00/13DD : 80 F1       |                 bra   Baudread       
+  630 |  1 quicktest.s    621 | Empty       | 11 |         |    0 | 00/13DF               |                                      
+  631 |  1 quicktest.s    622 | Code        | 11 |         |    2 | 00/13DF : A2 00       | Fin_Init        ldx   #0             
+  632 |  1 quicktest.s    623 | Code        | 11 |         |    3 | 00/13E1 : BD 50 14    | Init_Loop       lda   Port_Init,x    
+  633 |  1 quicktest.s    624 | Code        | 11 |         |    2 | 00/13E4 : F0 06       |                 beq   doneBaud       
+  634 |  1 quicktest.s    625 | Code        | 11 |         |    3 | 00/13E6 : 20 7F 12    |                 jsr   out            
+  635 |  1 quicktest.s    626 | Code        | 11 |         |    1 | 00/13E9 : E8          |                 inx                  
+  636 |  1 quicktest.s    627 | Code        | 11 |         |    2 | 00/13EA : 80 F5       |                 bra   Init_Loop      
+  637 |  1 quicktest.s    628 | Empty       | 11 |         |    0 | 00/13EC               |                                      
+  638 |  1 quicktest.s    629 | Empty       | 11 |         |    0 | 00/13EC               | doneBaud                             
+  639 |  1 quicktest.s    630 | Code        | 11 |         |    2 | 00/13EC : A2 05       |                 ldx   #5             
+  640 |  1 quicktest.s    631 | Code        | 11 |         |    3 | 00/13EE : BD 6E 14    | ozunid_3        lda   OutDefaults,x  
+  641 |  1 quicktest.s    632 | Code        | 11 |         |    3 | 00/13F1 : 9D 82 14    |                 sta   Out_Buf+4,x    
+  642 |  1 quicktest.s    633 | Code        | 11 |         |    1 | 00/13F4 : CA          |                 dex                  
+  643 |  1 quicktest.s    634 | Code        | 11 |         |    2 | 00/13F5 : 10 F7       |                 bpl   ozunid_3       
+  644 |  1 quicktest.s    635 | Empty       | 11 |         |    0 | 00/13F7               |                                      
+  645 |  1 quicktest.s    636 | Code        | 11 |         |    2 | 00/13F7 : A9 7E       |                 lda   #<Out_Buf      
+  646 |  1 quicktest.s    637 | Code        | 11 |         |    2 | 00/13F9 : A2 14       |                 ldx   #>Out_Buf      
+  647 |  1 quicktest.s    638 | Code        | 11 |         |    2 | 00/13FB : A0 00       |                 ldy   #0             
+  648 |  1 quicktest.s    639 | Code        | 11 |         |    3 | 00/13FD : 20 26 14    |                 jsr   doext          
+  649 |  1 quicktest.s    640 | Empty       | 11 |         |    0 | 00/1400               |                                      
+  650 |  1 quicktest.s    641 | Code        | 11 |         |    3 | 00/1400 : 20 11 14    | patchIn         jsr   inbuff         ;set the input buffer, can be self-modified
+  651 |  1 quicktest.s    642 | Empty       | 11 |         |    0 | 00/1403               |                                      
+  652 |  1 quicktest.s    643 | Code        | 11 |         |    1 | 00/1403 : FA          |                 plx                  
+  653 |  1 quicktest.s    644 | Code        | 11 |         |    1 | 00/1404 : 60          |                 rts                  
+  654 |  1 quicktest.s    645 | Empty       | 11 |         |    0 | 00/1405               |                                      
+  655 |  1 quicktest.s    646 | Comment     | 11 |         |    0 | 00/1405               | ********************************
+  656 |  1 quicktest.s    647 | Empty       | 11 |         |    0 | 00/1405               | baudAddresses                        
+  657 |  1 quicktest.s    648 | Data        | 11 |         |    2 | 00/1405 : 40 14       |                 da    Baud300        
+  658 |  1 quicktest.s    649 | Data        | 11 |         |    2 | 00/1407 : 42 14       |                 da    Baud1200       
+  659 |  1 quicktest.s    650 | Data        | 11 |         |    2 | 00/1409 : 44 14       |                 da    Baud2400       
+  660 |  1 quicktest.s    651 | Data        | 11 |         |    2 | 00/140B : 47 14       |                 da    Baud4800       
+  661 |  1 quicktest.s    652 | Data        | 11 |         |    2 | 00/140D : 4A 14       |                 da    Baud9600       
+  662 |  1 quicktest.s    653 | Data        | 11 |         |    2 | 00/140F : 4D 14       |                 da    Baud19200      
+  663 |  1 quicktest.s    654 | Empty       | 11 |         |    0 | 00/1411               |                                      
+  664 |  1 quicktest.s    655 | Empty       | 11 |         |    0 | 00/1411               | inbuff                               
+  665 |  1 quicktest.s    656 | Code        | 11 |         |    2 | 00/1411 : A9 92       |                 lda   #<In_Buf       ;reset the input buffer
+  666 |  1 quicktest.s    657 | Code        | 11 |         |    2 | 00/1413 : A2 14       |                 ldx   #>In_Buf       
+  667 |  1 quicktest.s    658 | Code        | 11 |         |    2 | 00/1415 : A0 00       |                 ldy   #0             
+  668 |  1 quicktest.s    659 | Code        | 11 |         |    3 | 00/1417 : 4C 26 14    |                 jmp   doext          
+  669 |  1 quicktest.s    660 | Empty       | 11 |         |    0 | 00/141A               |                                      
+  670 |  1 quicktest.s    661 | Comment     | 11 |         |    0 | 00/141A               | *-------------------------------------------------
+  671 |  1 quicktest.s    662 | Comment     | 11 |         |    0 | 00/141A               | * globals
+  672 |  1 quicktest.s    663 | Empty       | 11 |         |    0 | 00/141A               |                                      
+  673 |  1 quicktest.s    664 | Code        | 11 |         |    3 | 00/141A : 4C 00 C2    | doinit          jmp   $c200          
+  674 |  1 quicktest.s    665 | Code        | 11 |         |    3 | 00/141D : 4C 00 C2    | doread          jmp   $c200          
+  675 |  1 quicktest.s    666 | Code        | 11 |         |    3 | 00/1420 : 4C 00 C2    | dowrite         jmp   $c200          
+  676 |  1 quicktest.s    667 | Code        | 11 |         |    3 | 00/1423 : 4C 00 C2    | dostatus        jmp   $c200          
+  677 |  1 quicktest.s    668 | Code        | 11 |         |    3 | 00/1426 : 4C 00 C2    | doext           jmp   $c200          
+  678 |  1 quicktest.s    669 | Empty       | 11 |         |    0 | 00/1429               |                                      
+  679 |  1 quicktest.s    670 | Data        | 11 |         |    1 | 00/1429 : 30          | rCodes          asc   '0'            ;2400
+  680 |  1 quicktest.s    671 | Data        | 11 |         |    1 | 00/142A : 31          |                 asc   '1'            ;4800
+  681 |  1 quicktest.s    672 | Data        | 11 |         |    1 | 00/142B : 32          |                 asc   '2'            ;9600
+  682 |  1 quicktest.s    673 | Data        | 11 |         |    1 | 00/142C : 34          |                 asc   '4'            ;19200
+  683 |  1 quicktest.s    674 | Data        | 11 |         |    1 | 00/142D : 35          |                 asc   '5'            ;1200/ARQ
+  684 |  1 quicktest.s    675 | Data        | 11 |         |    1 | 00/142E : 36          |                 asc   '6'            ;2400/ARQ
+  685 |  1 quicktest.s    676 | Data        | 11 |         |    1 | 00/142F : 37          |                 asc   '7'            ;9600/ARQ
+  686 |  1 quicktest.s    677 | Empty       | 11 |         |    0 | 00/1430               | rCodesEnd                            
+  687 |  1 quicktest.s    678 | Empty       | 11 |         |    0 | 00/1430               |                                      
+  688 |  1 quicktest.s    679 | Data        | 11 |         |    1 | 00/1430 : 02          | sCodes          dfb   2              ;2400
+  689 |  1 quicktest.s    680 | Data        | 11 |         |    1 | 00/1431 : 03          |                 dfb   3              ;4800
+  690 |  1 quicktest.s    681 | Data        | 11 |         |    1 | 00/1432 : 04          |                 dfb   4              ;9600
+  691 |  1 quicktest.s    682 | Data        | 11 |         |    1 | 00/1433 : 05          |                 dfb   5              ;19200
+  692 |  1 quicktest.s    683 | Data        | 11 |         |    1 | 00/1434 : 01          |                 dfb   1              ;1200/ARQ
+  693 |  1 quicktest.s    684 | Data        | 11 |         |    1 | 00/1435 : 02          |                 dfb   2              ;2400/ARQ
+  694 |  1 quicktest.s    685 | Data        | 11 |         |    1 | 00/1436 : 04          |                 dfb   4              ;9600/ARQ
+  695 |  1 quicktest.s    686 | Empty       | 11 |         |    0 | 00/1437               |                                      
+  696 |  1 quicktest.s    687 | Data        | 11 |         |    2 | 00/1437 : 00 00       | OurID           ds    2              
+  697 |  1 quicktest.s    688 | Data        | 11 |         |    4 | 00/1439 : 00 00 00 00 | OurHandle       ds    4              
+  698 |  1 quicktest.s    689 | Data        | 11 |         |    1 | 00/143D : 00          | count           db    0              
+  699 |  1 quicktest.s    690 | Data        | 11 |         |    2 | 00/143E : 00 00       | code            ds    2              ;2 byte code returned by modem
+  700 |  1 quicktest.s    691 | Empty       | 11 |         |    0 | 00/1440               |                                      
+  701 |  1 quicktest.s    692 | Data        | 11 |         |    2 | 00/1440 : 36 42       | Baud300         asc   '6B'           
+  702 |  1 quicktest.s    693 | Data        | 11 |         |    2 | 00/1442 : 38 42       | Baud1200        asc   '8B'           
+  703 |  1 quicktest.s    694 | Data        | 11 |         |    3 | 00/1444 : 31 30 42    | Baud2400        asc   '10B'          
+  704 |  1 quicktest.s    695 | Data        | 11 |         |    3 | 00/1447 : 31 32 42    | Baud4800        asc   '12B'          
+  705 |  1 quicktest.s    696 | Data        | 11 |         |    3 | 00/144A : 31 34 42    | Baud9600        asc   '14B'          
+  706 |  1 quicktest.s    697 | Data        | 11 |         |    3 | 00/144D : 31 35 42    | Baud19200       asc   '15B'          
+  707 |  1 quicktest.s    698 | Empty       | 11 |         |    0 | 00/1450               |                                      
+  708 |  1 quicktest.s    699 | Empty       | 11 |         |    0 | 00/1450               | Port_Init                            
+  709 |  1 quicktest.s    700 | Data        | 11 |         |    1 | 00/1450 : 01          |                 hex   01             
+  710 |  1 quicktest.s    701 | Data        | 11 |         |    2 | 00/1451 : 30 44       |                 asc   '0D'           ;8 bits
+  711 |  1 quicktest.s    702 | Data        | 11 |         |    1 | 00/1453 : 01          |                 hex   01             
+  712 |  1 quicktest.s    703 | Data        | 11 |         |    2 | 00/1454 : 32 50       |                 asc   '2P'           ;no parity
+  713 |  1 quicktest.s    704 | Data        | 11 |         |    1 | 00/1456 : 01          |                 hex   01             
+  714 |  1 quicktest.s    705 | Data        | 11 |         |    2 | 00/1457 : 41 44       |                 asc   'AD'           ;auto-tabbing
+  715 |  1 quicktest.s    706 | Data        | 11 |         |    1 | 00/1459 : 01          |                 hex   01             
+  716 |  1 quicktest.s    707 | Data        | 11 |         |    2 | 00/145A : 58 44       |                 asc   'XD'           ;no xoff recognition
+  717 |  1 quicktest.s    708 | Data        | 11 |         |    1 | 00/145C : 01          |                 hex   01             
+  718 |  1 quicktest.s    709 | Data        | 11 |         |    2 | 00/145D : 46 44       |                 asc   'FD'           ;no find keyboard
+  719 |  1 quicktest.s    710 | Data        | 11 |         |    1 | 00/145F : 01          |                 hex   01             
+  720 |  1 quicktest.s    711 | Data        | 11 |         |    2 | 00/1460 : 43 44       |                 asc   'CD'           ;no column overflow
+  721 |  1 quicktest.s    712 | Data        | 11 |         |    1 | 00/1462 : 01          |                 hex   01             
+  722 |  1 quicktest.s    713 | Data        | 11 |         |    2 | 00/1463 : 45 44       |                 asc   'ED'           ;echo disabled
+  723 |  1 quicktest.s    714 | Data        | 11 |         |    1 | 00/1465 : 01          |                 hex   01             
+  724 |  1 quicktest.s    715 | Data        | 11 |         |    2 | 00/1466 : 4D 44       |                 asc   'MD'           ;no lf masking
+  725 |  1 quicktest.s    716 | Data        | 11 |         |    1 | 00/1468 : 01          |                 hex   01             
+  726 |  1 quicktest.s    717 | Data        | 11 |         |    2 | 00/1469 : 42 45       |                 asc   'BE'           ;buffering enabled
+  727 |  1 quicktest.s    718 | Data        | 11 |         |    1 | 00/146B : 01          |                 hex   01             
+  728 |  1 quicktest.s    719 | Data        | 11 |         |    1 | 00/146C : 5A          |                 asc   'Z'            
+  729 |  1 quicktest.s    720 | Data        | 11 |         |    1 | 00/146D : 00          |                 hex   00             
+  730 |  1 quicktest.s    721 | Empty       | 11 |         |    0 | 00/146E               |                                      
+  731 |  1 quicktest.s    722 | Comment     | 11 |         |    0 | 00/146E               | *-------------------------------------------------
+  732 |  1 quicktest.s    723 | Comment     | 11 |         |    0 | 00/146E               | * These get copied to Out_Buf
+  733 |  1 quicktest.s    724 | Empty       | 11 |         |    0 | 00/146E               |                                      
+  734 |  1 quicktest.s    725 | Empty       | 11 |         |    0 | 00/146E               | OutDefaults                          
+  735 |  1 quicktest.s    726 | Data        | 11 |         |    4 | 00/146E : AC 14 00 00 |                 adrl  buffer         
+  736 |  1 quicktest.s    727 | Data        | 11 |         |    2 | 00/1472 : 03 00       |                 dw    3              
+  737 |  1 quicktest.s    728 | Empty       | 11 |         |    0 | 00/1474               |                                      
+  738 |  1 quicktest.s    729 | Comment     | 11 |         |    0 | 00/1474               | *-------------------------------------------------
+  739 |  1 quicktest.s    730 | Empty       | 11 |         |    0 | 00/1474               | GetOutBuffer                         
+  740 |  1 quicktest.s    731 | Data        | 11 |         |    1 | 00/1474 : 04          |                 hex   04             
+  741 |  1 quicktest.s    732 | Data        | 11 |         |    1 | 00/1475 : 11          |                 hex   11             
+  742 |  1 quicktest.s    733 | Data        | 11 |         |    2 | 00/1476 : 00 00       |                 dw    0              ;result
+  743 |  1 quicktest.s    734 | Data        | 11 |         |    4 | 00/1478 : 00 00 00 00 |                 ds    4              ;address
+  744 |  1 quicktest.s    735 | Data        | 11 |         |    2 | 00/147C : 00 00       |                 dw    0              ;length
+  745 |  1 quicktest.s    736 | Empty       | 11 |         |    0 | 00/147E               |                                      
+  746 |  1 quicktest.s    737 | Comment     | 11 |         |    0 | 00/147E               | *-------------------------------------------------
+  747 |  1 quicktest.s    738 | Data        | 11 |         |    1 | 00/147E : 04          | Out_Buf         hex   04             ;Parameters to set the
+  748 |  1 quicktest.s    739 | Data        | 11 |         |    1 | 00/147F : 13          |                 hex   13             ;Output buffer
+  749 |  1 quicktest.s    740 | Data        | 11 |         |    2 | 00/1480 : 00 00       |                 da    0              
+  750 |  1 quicktest.s    741 | Data        | 11 |         |    4 | 00/1482 : AC 14 00 00 |                 adrl  buffer         ;Buffer it where
+  751 |  1 quicktest.s    742 | Data        | 11 |         |    2 | 00/1486 : 03 00       |                 dw    3              ;buffer 3 bytes
+  752 |  1 quicktest.s    743 | Empty       | 11 |         |    0 | 00/1488               |                                      
+  753 |  1 quicktest.s    744 | Comment     | 11 |         |    0 | 00/1488               | *-------------------------------------------------
+  754 |  1 quicktest.s    745 | Empty       | 11 |         |    0 | 00/1488               | GetInBuffer                          
+  755 |  1 quicktest.s    746 | Data        | 11 |         |    1 | 00/1488 : 04          |                 hex   04             
+  756 |  1 quicktest.s    747 | Data        | 11 |         |    1 | 00/1489 : 10          |                 hex   10             
+  757 |  1 quicktest.s    748 | Data        | 11 |         |    2 | 00/148A : 00 00       |                 dw    0              ;result
+  758 |  1 quicktest.s    749 | Data        | 11 |         |    4 | 00/148C : 00 00 00 00 |                 ds    4              ;address
+  759 |  1 quicktest.s    750 | Data        | 11 |         |    2 | 00/1490 : 00 00       |                 dw    0              ;length
+  760 |  1 quicktest.s    751 | Empty       | 11 |         |    0 | 00/1492               |                                      
+  761 |  1 quicktest.s    752 | Comment     | 11 |         |    0 | 00/1492               | *-------------------------------------------------
+  762 |  1 quicktest.s    753 | Data        | 11 |         |    1 | 00/1492 : 04          | In_Buf          hex   04             ;Parameters to set the
+  763 |  1 quicktest.s    754 | Data        | 11 |         |    1 | 00/1493 : 12          |                 hex   12             ;Output buffer
+  764 |  1 quicktest.s    755 | Data        | 11 |         |    2 | 00/1494 : 00 00       |                 da    0              
+  765 |  1 quicktest.s    756 | Data        | 11 |         |    4 | 00/1496 : AC 14 00 00 |                 adrl  buffer         ;Buffer it where (modified later)
+  766 |  1 quicktest.s    757 | Data        | 11 |         |    2 | 00/149A : 00 40       |                 dw    $4000          ;buffer 16k
+  767 |  1 quicktest.s    758 | Empty       | 11 |         |    0 | 00/149C               |                                      
+  768 |  1 quicktest.s    759 | Comment     | 11 |         |    0 | 00/149C               | *-------------------------------------------------
+  769 |  1 quicktest.s    760 | Data        | 11 |         |    1 | 00/149C : 03          | Carrlist        hex   03             ;Parameter list for
+  770 |  1 quicktest.s    761 | Data        | 11 |         |    1 | 00/149D : 06          |                 hex   06             ;detecting carrier drop
+  771 |  1 quicktest.s    762 | Data        | 11 |         |    2 | 00/149E : 00 00       |                 da    0              
+  772 |  1 quicktest.s    763 | Data        | 11 |         |    2 | 00/14A0 : 00 00       | carrbits        da    0              ;Carrier
+  773 |  1 quicktest.s    764 | Empty       | 11 |         |    0 | 00/14A2               |                                      
+  774 |  1 quicktest.s    765 | Comment     | 11 |         |    0 | 00/14A2               | *-------------------------------------------------
+  775 |  1 quicktest.s    766 | Data        | 11 |         |    1 | 00/14A2 : 03          | DTR_List        hex   03             ;Parameter list for
+  776 |  1 quicktest.s    767 | Data        | 11 |         |    1 | 00/14A3 : 0B          |                 hex   0b             ;setting DTR
+  777 |  1 quicktest.s    768 | Data        | 11 |         |    2 | 00/14A4 : 00 00       |                 da    0              
+  778 |  1 quicktest.s    769 | Data        | 11 |         |    2 | 00/14A6 : 00 00       | DTRstate        da    0              ;bit
+  779 |  1 quicktest.s    770 | Empty       | 11 |         |    0 | 00/14A8               |                                      
+  780 |  1 quicktest.s    771 | Comment     | 11 |         |    0 | 00/14A8               | *-------------------------------------------------
+  781 |  1 quicktest.s    772 | Data        | 11 |         |    1 | 00/14A8 : 02          | Flush_List      hex   02             ;parameter list for flushing input queue
+  782 |  1 quicktest.s    773 | Data        | 11 |         |    1 | 00/14A9 : 14          |                 hex   14             
+  783 |  1 quicktest.s    774 | Data        | 11 |         |    2 | 00/14AA : 00 00       |                 da    0              
+  784 |  1 quicktest.s    775 | Empty       | 11 |         |    0 | 00/14AC               |                                      
+  785 |  1 quicktest.s    776 | Data        | 11 |         |    3 | 00/14AC : 00 00 00    | buffer          ds    3              
+  786 |  1 quicktest.s    777 | Empty       | 11 |         |    0 | 00/14AF               |                                      
+  787 |  1 quicktest.s    778 | Empty       | 11 |         |    0 | 00/14AF               |                                      
+  788 |  1 quicktest.s    779 | Empty       | 11 |         |    0 | 00/14AF               |                                      
+------+-----------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

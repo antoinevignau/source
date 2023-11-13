@@ -1,0 +1,639 @@
+<!DOCTYPE html> 
+<html class="" lang="en-US" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="profile" href="https://gmpg.org/xfn/11">
+			<meta name="twitter:card" content="summary">
+	<meta property="og:type" content="website">
+		<meta property="og:url" content="https://www.colino.net/wordpress/en/archives/2023/10/29/the-apple-quicktake-100-serial-communication-protocol/">
+	<meta property="og:title" content="The Apple Quicktake 100 serial communication protocol">
+	<meta property="og:description" content="The basics of communicating with a Quicktake 100 camera over the serial port.">
+		<meta property="og:locale" content="en_US">
+		<meta name="twitter:url" content="https://www.colino.net/wordpress/en/archives/2023/10/29/the-apple-quicktake-100-serial-communication-protocol/">
+	<meta name="twitter:title" content="The Apple Quicktake 100 serial communication protocol">
+	<meta name="twitter:description" content="The basics of communicating with a Quicktake 100 camera over the serial port.">
+	<meta name="description" content="The basics of communicating with a Quicktake 100 camera over the serial port.">
+	<link media="all" href="https://www.colino.net/wordpress/wp-content/cache/autoptimize/css/autoptimize_0a58cb847607d91b73cecb41f85fe7ca.css" rel="stylesheet"><title>The Apple Quicktake 100 serial communication protocol &#8211; colin@colino.net</title>
+<script>window.koko_analytics = {"url":"https:\/\/www.colino.net\/wordpress\/koko-analytics-collect.php","post_id":5738,"use_cookie":0,"cookie_path":"\/wordpress"};</script><meta name='robots' content='max-image-preview:large' />
+<link rel='dns-prefetch' href='//www.colino.net' />
+<link rel="alternate" type="application/rss+xml" title="colin@colino.net &raquo; Feed" href="https://www.colino.net/wordpress/en/feed/" />
+<link rel="alternate" type="application/rss+xml" title="colin@colino.net &raquo; Comments Feed" href="https://www.colino.net/wordpress/en/comments/feed/" />
+<link rel="alternate" type="application/rss+xml" title="colin@colino.net &raquo; The Apple Quicktake 100 serial communication protocol Comments Feed" href="https://www.colino.net/wordpress/en/archives/2023/10/29/the-apple-quicktake-100-serial-communication-protocol/feed/" />
+
+
+
+
+
+
+
+
+
+
+
+<link rel="https://api.w.org/" href="https://www.colino.net/wordpress/wp-json/" /><link rel="alternate" type="application/json" href="https://www.colino.net/wordpress/wp-json/wp/v2/posts/5738" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.colino.net/wordpress/xmlrpc.php?rsd" />
+<meta name="generator" content="WordPress 6.3.2" />
+<link rel="canonical" href="https://www.colino.net/wordpress/en/archives/2023/10/29/the-apple-quicktake-100-serial-communication-protocol/" />
+<link rel='shortlink' href='https://www.colino.net/wordpress/?p=5738' />
+<link rel="alternate" type="application/json+oembed" href="https://www.colino.net/wordpress/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.colino.net%2Fwordpress%2Fen%2Farchives%2F2023%2F10%2F29%2Fthe-apple-quicktake-100-serial-communication-protocol%2F" />
+<link rel="alternate" type="text/xml+oembed" href="https://www.colino.net/wordpress/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.colino.net%2Fwordpress%2Fen%2Farchives%2F2023%2F10%2F29%2Fthe-apple-quicktake-100-serial-communication-protocol%2F&#038;format=xml" />
+</head>
+
+<body class="post-template-default single single-post postid-5738 single-format-standard wp-featherlight-captions col-2cl full-width logged-out" text="#333333" bgcolor="#ffffff" link="#807042" vlink="#b19c5e" alink="#000000">
+
+<a class="skip-link screen-reader-text" href="#page">Skip to content</a>
+
+<div id="wrapper">
+	<!--bool(false)
+-->	<div class="site-header" style="background-image: url('/wordpress/wp-content/uploads/header-1.png');">
+		<h1 class="site-title"><a href="https://www.colino.net/wordpress/" rel="home">colin@colino.net</a></h1>
+	</div>
+
+	<div id="wrapper-inner">
+
+		<div class="main" id="page">
+			<div class="main-inner group">
+
+<div class="content">
+	
+		
+		<article id="post-5738" class="post-5738 post type-post status-publish format-standard hentry category-computers-en">
+			<div class="blog-card group">
+
+				<div class="blog-card-inner">
+					
+					<div class="entry-media">
+											</div>
+
+				</div>
+				
+				<div class="blog-card-bottom">
+					<div class="entry-meta group">
+						<span class="entry-date"><i class="far fa-calendar"></i>2023/10/29</span>
+						<span class="entry-meta-separator"> - </span>
+						<span class="entry-read-time"><i class="far fa-clock"></i>About 7 minutes read</span>
+					</div>
+					<div class="progress-container">
+						<div id="progress-bar" class="progress-bar"></div>
+					</div>
+				</div>
+
+				<header class="entry-header group">
+					<h1 class="entry-title">The Apple Quicktake 100 serial communication protocol</h1>
+				</header>
+				
+				<div class="entry-content">
+					<div class="entry themeform">	
+						
+<h2 class="wp-block-heading">Connecting</h2>
+
+
+
+<p>The Quicktake 100 is connected via serial. Once connected, one has to open the lens cover to power on the camera. Unusually enough, the &#8220;conversation&#8221; is started by the camera, which is the first to send bytes to the computer. The computer signals it is ready to interact by opening the serial port at 9600bps, 8 data bits, 1 stop bit, no parity, and then pulling DTR down. The flow is the following:</p>
+
+
+
+<ul>
+<li>Camera: sends 7 bytes &#8211; I have not yet found a use for them.</li>
+
+
+
+<li>Computer: replies with {0x5A,0xA5,0x55,0x05,0x00,0x00,0x25,0x80,0x00,0x80,0x02,0x00,0x80}</li>
+
+
+
+<li>Camera: sends 10 bytes &#8211; I have not yet found a use for them.</li>
+</ul>
+
+
+
+<p>At this point, the computer is expected to turn Even parity on. It is also at that moment that the computer can renegotiate serial settings like speed, but I have, so far, problems with the exact implementation.</p>
+
+
+
+<p>After Even parity is set, a slight delay is needed before continuing:</p>
+
+
+
+<ul>
+<li>Computer: sends {0x16,0x00,0x00,0x00,0x00,0x00,0x00}. I call it a &#8220;separator&#8221;, it seems to be a way to tell the camera to reset, or prepare, for another command.</li>
+
+
+
+<li>Camera: sends {0x00} &#8211; an ack. The camera will ack some commands, and a non-zero response means there was an error processing the command. I mostly got 0x02 in case of problems in my commands. Other commands will be &#8220;acked&#8221; with a direct response.</li>
+</ul>
+
+
+
+<h2 class="wp-block-heading">Getting camera information</h2>
+
+
+
+<p>The flow for getting the camera information is the following:</p>
+
+
+
+<ul>
+<li>Computer: sends {0x16,0x28,0x00,0x30,0x00,0x00,0x00,0x00,0x00,0x80,0x00} </li>
+
+
+
+<li>Camera: responds with 128 bytes of data.</li>
+</ul>
+
+
+
+<p>In the response data, starting from byte 0, are the following:</p>
+
+
+
+<ul>
+<li>byte 0x04: Number of pictures taken (8-bit value)</li>
+
+
+
+<li>byte 0x06: Number of pictures left (in the current quality mode)</li>
+
+
+
+<li>byte 0x07: Current quality mode (1: 320&#215;240, 2: 640&#215;480)</li>
+
+
+
+<li>byte 0x10: Current month</li>
+
+
+
+<li>byte 0x11: Current day of month</li>
+
+
+
+<li>byte 0x12: Current year (this is also an 8-bit value, so &#8220;23&#8221; for 2023)</li>
+
+
+
+<li>byte 0x13: Current hour</li>
+
+
+
+<li>byte 0x14: Current minute</li>
+
+
+
+<li>bytes 0x2F to 0x4F: Name of the camera, trailed with spaces to 31 characters, and NULL-terminated</li>
+</ul>
+
+
+
+<p>(As an aside, in most commands sent by the computer, bytes 7 to 9 (counting from 0) contain the expected response size, in 24 bits, big-endian format)</p>
+
+
+
+<h2 class="wp-block-heading">Getting a picture</h2>
+
+
+
+<p>There are two commands to get a picture.</p>
+
+
+
+<p><strong>Getting the &#8220;header&#8221;, basic information about the picture</strong>:</p>
+
+
+
+<p>It will be needed later. The flow for getting the header is the following:</p>
+
+
+
+<ul>
+<li>Computer: sends {0x16,0x28,0x00,0x21,0x00,0x00,<strong>0x03</strong>,0x00,0x00,0x40,0x00}. Byte 0x06 is the picture number, starting from 1 and up to the number of pictures stored in the camera (picture 3 in this example) .</li>
+
+
+
+<li>Camera: acks with {0x00}</li>
+
+
+
+<li>Computer: responds with {0x06}</li>
+
+
+
+<li>Camera: responds with 64 bytes of data.</li>
+</ul>
+
+
+
+<p>In the response data, starting from byte 0, are the following:</p>
+
+
+
+<ul>
+<li>byte 0x04-0x40: the important part of the <em>qtkt</em> header, notably containing:</li>
+
+
+
+<li>byte 0x08-0x09: Image width, 16-bits, big-endian</li>
+
+
+
+<li>byte 0x0A-0x0B: Image height, 16-bits, big-endian</li>
+
+
+
+<li>byte 0x05-0x07: Image size, 24-bytes, big-endian. It will either be 115200 (high quality) or 28800 (standard quality).</li>
+</ul>
+
+
+
+<p>Before getting the picture, which will be raw ADPCM-compressed data, it might be useful to prepare the header of the output file, so that tools like <em>dcraw</em> can read and decode them. The qtkt file has the following format:</p>
+
+
+
+<ul>
+<li>starts with {0x71,0x6B,0x74,0x6B,0x00,0x00,0x00,0x04,0x00,0x00,0x73,0xE4,0x00,0x01}</li>
+
+
+
+<li>736 bytes long header</li>
+
+
+
+<li>byte 0x0E, the last 60 bytes of the camera&#8217;s response: the important part of the qtkt header</li>
+
+
+
+<li>bytes 0x220-0x221: height of the picture (again), 16-bit word, big-endian</li>
+
+
+
+<li>bytes 0x222-0x223: width of the picture, 16-bit word, big-endian</li>
+
+
+
+<li>0x2E0-end of file: the image data</li>
+</ul>
+
+
+
+<p>The easiest way to build the header is to write 736 NULL bytes to the output file, rewind, seek, and write the relevant parts. I am unsure if the resulting file is valid for the official, vintage Quicktake software, but it is valid enough for <em>dcraw</em> to decode it correctly.</p>
+
+
+
+<p><strong>Getting the picture:</strong></p>
+
+
+
+<p>The next command will get the data of the photo. The flow is the following:</p>
+
+
+
+<ul>
+<li>Computer: sends {0x16,0x28,0x00,0x10,0x00,0x00,<strong>0x01,0x00,0x70,0x80</strong>,0x00}. Byte 0x06 is the number of the picture, and bytes 0x07-0x09 are the size of the answer we expect, as a 24-bit, big-endian number. It has to match the size of the picture that we learnt in the previous command. (Picture 1 in this example, 0x007080 bytes long)</li>
+
+
+
+<li>Camera: sends {0x00}</li>
+
+
+
+<li>Computer: sends {0x06}</li>
+
+
+
+<li>Camera: send N bytes of data, depending on the picture&#8217;s quality (0x7080 or 0x01C200). The data is sent by blocks of 512 bytes, and the computer acks each block by sending {0x06}. At the end of the transfer, the last block will be shorter than 512 bytes (it will be <em>size modulo 512</em> bytes), and the computer must not send a {0x06} ack at the end of it.</li>
+</ul>
+
+
+
+<p><strong>Getting a thumbnail: </strong></p>
+
+
+
+<p>It is possible to get a thumbnail version of the picture, but I didn&#8217;t make use of them yet, I didn&#8217;t investigate the format. It&#8217;s a thumbnail of 80&#215;60 pixels and we receive 2400 bytes of data, so I suppose it&#8217;s encoded at 4-bits per pixel and should be easy to decode, but I didn&#8217;t do it yet. The flow is the same as getting the full picture, and the command is {0x16,0x28,0x00,0x00,0x00,0x00,0x01,0x00,0x09,0x60,0x00}. Byte 0x03 is different, and bytes 0x07-0x09 are 0x000960, which is 2400 bytes.</p>
+
+
+
+<h2 class="wp-block-heading">Deleting all photos on the camera</h2>
+
+
+
+<p>It is only possible to delete all pictures, but not possible to delete a single one. The flow for deleting all pictures is:</p>
+
+
+
+<ul>
+<li>Computer: sends {0x16,0x00,0x00,0x00,0x00,0x00,0x00}</li>
+
+
+
+<li>Computer: sends {0x16,0x00,0x00,0x00,0x00,0x00,0x00} again</li>
+
+
+
+<li>Computer: sends {0x16,0x29,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}</li>
+
+
+
+<li>Camera: sends {0x00}</li>
+</ul>
+
+
+
+<p>The computer does not answer that {0x00} ack.</p>
+
+
+
+<h2 class="wp-block-heading">Setting the camera name</h2>
+
+
+
+<p>It is possible to change the camera&#8217;s name in the following way:</p>
+
+
+
+<ul>
+<li>Computer: sends {0x16,0x2a,0x00,0x02,0x00,0x00,0x00,0x00,0x00,0x22,0x00,0x02,0x20,<strong>0x43,0x6F,0x6C,0x69,0x6E,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20</strong>}</li>
+
+
+
+<li>Camera: acks with {0x00}</li>
+</ul>
+
+
+
+<p>The computer does not answer that ack. The new camera name is at byte 0x0D, and must be precisely 32 bytes long (padded with trailing spaces). In this example, the camera name is &#8220;Colin                           &#8220;.</p>
+
+
+
+<h2 class="wp-block-heading">Setting the camera time</h2>
+
+
+
+<p>It is possible to set the camera&#8217;s time in the following way:</p>
+
+
+
+<ul>
+<li>Computer: sends {0x16,0x2A,0x00,0x01,0x00,0x00,0x00,0x00,0x00,0x08,0x00,0x01,0x06,<strong>0x00,0x00,0x00,0x00,0x00,0x00</strong>}</li>
+
+
+
+<li>Camera: acks with {0x00}</li>
+</ul>
+
+
+
+<p>The computer does not answer that ack. The date and time are encoded in one 8-bit value per field:</p>
+
+
+
+<ul>
+<li>byte 0x0D: month (1 to 12)</li>
+
+
+
+<li>byte 0x0E: day</li>
+
+
+
+<li>byte 0x0F: year (23 for 2023)</li>
+
+
+
+<li>byte 0x10: hour</li>
+
+
+
+<li>byte 0x11: minute</li>
+
+
+
+<li>byte 0x12: second</li>
+</ul>
+
+
+
+<h2 class="wp-block-heading">Final words</h2>
+
+
+
+<p>There may be errors or omissions in this document. It has been derived from my implementation of the Quicktake 100 serial protocol, so in case of doubts, please check the source code. I will gladly correct this document if needed, and will complete it with other findings, like when I&#8217;ll have figured how to negociate the speed.</p>
+<div class="msb-container">		<p>
+			<a href="https://facebook.com/sharer.php?u=https%3A%2F%2Fwww.colino.net%2Fwordpress%2Fen%2Farchives%2F2023%2F10%2F29%2Fthe-apple-quicktake-100-serial-communication-protocol%2F&#038;t=The%20Apple%20Quicktake%20100%20serial%20communication%20protocol" target="_blank" class="minimal-share-button msb-facebook" aria-label="Share on Facebook" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" class="icon" aria-hidden="true"><use xlink:href="https://www.colino.net/wordpress/wp-content/plugins/minimal-share-buttons/assets/images/icons.svg#icon-facebook-square"></use></svg></a><a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.colino.net%2Fwordpress%2Fen%2Farchives%2F2023%2F10%2F29%2Fthe-apple-quicktake-100-serial-communication-protocol%2F&#038;text=The%20Apple%20Quicktake%20100%20serial%20communication%20protocol" target="_blank" class="minimal-share-button msb-twitter" aria-label="Share on Twitter" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" class="icon" aria-hidden="true"><use xlink:href="https://www.colino.net/wordpress/wp-content/plugins/minimal-share-buttons/assets/images/icons.svg#icon-twitter-square"></use></svg></a><a href="https://toot.kytta.dev/?text=The%20Apple%20Quicktake%20100%20serial%20communication%20protocol%20-%20https%3A%2F%2Fwww.colino.net%2Fwordpress%2Fen%2Farchives%2F2023%2F10%2F29%2Fthe-apple-quicktake-100-serial-communication-protocol%2F" target="_blank" class="minimal-share-button msb-mastodon" aria-label="Share on Mastodon" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" class="icon" aria-hidden="true"><use xlink:href="https://www.colino.net/wordpress/wp-content/plugins/minimal-share-buttons/assets/images/icons.svg#icon-mastodon-square"></use></svg></a><a href="https://pinterest.com/pin/create/button/?url=https%3A%2F%2Fwww.colino.net%2Fwordpress%2Fen%2Farchives%2F2023%2F10%2F29%2Fthe-apple-quicktake-100-serial-communication-protocol%2F&#038;description=The%20Apple%20Quicktake%20100%20serial%20communication%20protocol" target="_blank" class="minimal-share-button msb-pinterest" aria-label="Share on Pinterest" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" class="icon" aria-hidden="true"><use xlink:href="https://www.colino.net/wordpress/wp-content/plugins/minimal-share-buttons/assets/images/icons.svg#icon-pinterest-square"></use></svg></a>		</p>
+		</div>												<div class="clear"></div>				
+					</div><!--/.entry-->
+				</div>
+				<div class="entry-footer group">
+					
+										
+					<div class="clear"></div>
+					
+					
+
+<h4 class="heading">
+	<i class="fas fa-hand-point-right"></i>You may also like...</h4>
+
+<ul class="related-posts group">
+	
+		<li class="related">
+		<article class="related-post">
+
+			<div class="related-thumbnail">
+				<a href="https://www.colino.net/wordpress/en/archives/2017/12/17/strava-auto-start-stop-an-android-app-to-automatically-start-strava-rides/">
+					<h4 class="related-title">Stravomatic: an Android app to automatically start Strava rides</h4>
+					<div class="related-img-wrapper">
+											<img src="https://www.colino.net/wordpress/wp-content/themes/fast-boxcard/img/thumb-small.png" alt="Stravomatic: an Android app to automatically start Strava rides" />
+										</div>
+																			</a>
+			</div><!--/.post-thumbnail-->
+			
+		</article>
+	</li><!--/.related-->
+		<li class="related">
+		<article class="related-post">
+
+			<div class="related-thumbnail">
+				<a href="https://www.colino.net/wordpress/en/archives/2009/06/07/webkit2pdf/">
+					<h4 class="related-title">Webkit2pdf</h4>
+					<div class="related-img-wrapper">
+											<img src="https://www.colino.net/wordpress/wp-content/themes/fast-boxcard/img/thumb-small.png" alt="Webkit2pdf" />
+										</div>
+																			</a>
+			</div><!--/.post-thumbnail-->
+			
+		</article>
+	</li><!--/.related-->
+		<li class="related">
+		<article class="related-post">
+
+			<div class="related-thumbnail">
+				<a href="https://www.colino.net/wordpress/en/archives/2022/11/27/wordpress-fix-thumbnail-on-mastodons-preview-cards/">
+					<h4 class="related-title">WordPress: Fix thumbnail on Mastodon&#8217;s preview cards</h4>
+					<div class="related-img-wrapper">
+											<img width="113" height="113" src="https://www.colino.net/wordpress/wp-content/uploads/image-63-200x200.png" class="attachment-fast_boxcard-small size-fast_boxcard-small wp-post-image" alt="" decoding="async" />										</div>
+																			</a>
+			</div><!--/.post-thumbnail-->
+			
+		</article>
+	</li><!--/.related-->
+		
+</ul><!--/.post-related-->
+
+					
+						<h3 class="post-nav-header"> Articles</h3>
+	<ul class="post-nav group">
+		<li class="next"></li>
+		<li class="previous"><a href="https://www.colino.net/wordpress/en/archives/2022/11/27/wordpress-fix-thumbnail-on-mastodons-preview-cards/" rel="prev"><i class="fas fa-chevron-left"></i><strong>Previous</strong> <span>WordPress: Fix thumbnail on Mastodon&#8217;s preview cards</span></a></li>
+	</ul>
+
+					
+<div id="comments" class="themeform">
+	
+	
+					<!-- comments open, no comments -->
+			
+		
+		<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">Leave a Reply</h3><form action="https://www.colino.net/wordpress/wp-comments-post.php" method="post" id="commentform" class="comment-form"><p class="comment-notes"><span id="email-notes">Your email address will not be published.</span> <span class="required-field-message">Required fields are marked <span class="required">*</span></span></p><p class="comment-form-comment"><label for="comment">Comment <span class="required">*</span></label> <textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" required="required"></textarea></p><p class="comment-form-author"><label for="author">Name <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" maxlength="245" autocomplete="name" required="required" /></p>
+<p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="email" type="text" value="" size="30" maxlength="100" aria-describedby="email-notes" autocomplete="email" required="required" /></p>
+<p class="comment-form-url"><label for="url">Website</label> <input id="url" name="url" type="text" value="" size="30" maxlength="200" autocomplete="url" /></p>
+<p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Post Comment" /> <input type='hidden' name='comment_post_ID' value='5738' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+</p><p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="68488b5a04" /></p><p style="display: none !important;"><label>&#916;<textarea name="ak_hp_textarea" cols="45" rows="8" maxlength="100"></textarea></label><input type="hidden" id="ak_js_1" name="ak_js" value="91"/><script>document.getElementById( "ak_js_1" ).setAttribute( "value", ( new Date() ).getTime() );</script></p></form>	</div><!-- #respond -->
+	<p class="akismet_comment_form_privacy_notice">This site uses Akismet to reduce spam. <a href="https://akismet.com/privacy/" target="_blank" rel="nofollow noopener">Learn how your comment data is processed</a>.</p>
+</div><!--/#comments-->
+					
+				</div>
+				
+				
+			</div>
+		</article><!--/.post-->
+		
+		
+</div><!--/.content-->
+
+<div id="move-sidebar-content"></div>
+
+			</div><!--/.main-inner-->
+				
+			<footer id="footer">
+			
+				<div id="footer-bottom">
+					
+					<a id="back-to-top" href="#"><i class="fas fa-angle-up"></i></a>
+						
+					<div class="pad group">
+						
+						<div class="grid one-full">
+							
+							<div id="copyright">
+								<p>colin@colino.net &copy; 2023. All Rights Reserved.</p>
+							</div><!--/#copyright-->
+							
+							<div id="credit">
+								<p>Powered by <a href="http://wordpress.org" rel="nofollow">WordPress</a>, Theme derived from <a href="http://alx.media" rel="nofollow">Alx Boxcard</a>, <a href="https://status.colino.net/">Status page</a> by <a href="https://updown.io">Updown</a>. </p>
+							</div><!--/#credit-->
+							<div id="fediverse">
+								<p><a rel="me" href="https://www.colino.net/wordpress/archives/author/colin/"></a></p>
+							</div>
+							
+						</div>
+						
+						<div class="grid one-full">	
+						</div>
+						
+					</div><!--/.pad-->
+
+				</div><!--/#footer-bottom-->
+
+			</footer><!--/#footer-->
+	
+		</div><!--/.main-->	
+		<header id="header">
+			<p class="site-description">News for few, stuff no-one cares about</p>
+	
+	<div class="header-search">
+		<form method="get" class="searchform themeform" action="https://www.colino.net/wordpress/en/">
+	<div>
+		<input type="text" class="search" name="s" onBlur="if(this.value=='')this.value='To search type and hit enter';" onFocus="if(this.value=='To search type and hit enter')this.value='';" value="To search type and hit enter" />
+	</div>
+</form>
+	</div>
+
+			<div id="wrap-nav-header" class="wrap-nav">
+			<nav id="nav-header-nav" class="main-navigation nav-menu"><button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><div class="menu-toggle-icon"><span></span><span></span><span></span></div></button><div class="menu-header-en-container"><ul id="nav-header" class="menu"><li id="menu-item-5249" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5249"><span class="menu-item-wrapper"><a href="https://www.colino.net/wordpress/en/welcome/">Welcome</a></span></li>
+<li id="menu-item-1919" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item menu-item-home menu-item-1919"><span class="menu-item-wrapper"><a href="https://www.colino.net/wordpress"><span class="screen-reader-text">Current Page: </span>Blog</a></span></li>
+<li id="menu-item-1920" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1920"><span class="menu-item-wrapper"><a href="https://www.colino.net/wordpress/en/contact-en/">Contact</a></span></li>
+<li id="menu-item-1921" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1921"><span class="menu-item-wrapper"><a href="https://www.colino.net/wordpress/cv-administrateur-systeme-reseau-clusters/">CV</a></span></li>
+<li id="menu-item-1931" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1931"><span class="menu-item-wrapper"><a href="/jeput">JEPUT</a></span></li>
+<li id="menu-item-1932" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1932"><span class="menu-item-wrapper"><a href="https://www.colino.net/wordpress/en/stravomatic-an-app-to-start-strava-automatically/">Stravomatic</a></span></li>
+<li id="menu-item-5591" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5591"><span class="menu-item-wrapper"><a title="A Mastodon client for the Apple 2" href="https://www.colino.net/wordpress/en/mastodon-for-apple-ii/">Mastodon for Apple II</a></span></li>
+<li id="menu-item-5770" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5770"><span class="menu-item-wrapper"><a href="https://www.colino.net/wordpress/en/quicktake-100-for-apple-ii/">Quicktake for Apple II</a></span></li>
+<li id="menu-item-5672" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5672"><span class="menu-item-wrapper"><a href="https://www.colino.net/wordpress/a2trace-debug-and-profile-cc65-apple2-programs-with-mame/">a2trace debugger</a></span></li>
+</ul></div></nav>		</div>
+		
+	<div id="move-sidebar-header"></div>
+		<div class="sidebar s1">
+		
+		<div class="sidebar-content">
+
+			<div id="polylang-4" class="widget widget_polylang"><ul>
+	<li class="lang-item lang-item-15 lang-item-en current-lang lang-item-first"><a  lang="en-US" hreflang="en-US" href="https://www.colino.net/wordpress/en/archives/2023/10/29/the-apple-quicktake-100-serial-communication-protocol/"><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body><img src="/wordpress/wp-content/polylang/en_US.png" alt="English" border="0"><script defer src="https://www.colino.net/wordpress/wp-content/cache/autoptimize/js/autoptimize_13e7529fa7fb11c156543adac1a7d511.js"></script></body></html>
+<span style="margin-left:0.3em;">English</span></a></li>
+</ul>
+</div><div id="categories-2" class="widget widget_categories"><h3 class="group"><span>Categories</span></h3>
+			<ul>
+					<li class="cat-item cat-item-33"><a href="https://www.colino.net/wordpress/en/archives/category/velo-en/">Bicycles</a>
+</li>
+	<li class="cat-item cat-item-40"><a href="https://www.colino.net/wordpress/en/archives/category/claws-mail-en/">Claws Mail</a>
+</li>
+	<li class="cat-item cat-item-29"><a href="https://www.colino.net/wordpress/en/archives/category/computers-en/">Computers</a>
+</li>
+	<li class="cat-item cat-item-35"><a href="https://www.colino.net/wordpress/en/archives/category/bricolage-en/">DIY</a>
+</li>
+	<li class="cat-item cat-item-45"><a href="https://www.colino.net/wordpress/en/archives/category/environnement-en/">Environment</a>
+</li>
+	<li class="cat-item cat-item-31"><a href="https://www.colino.net/wordpress/en/archives/category/personal-en/">Personal</a>
+</li>
+	<li class="cat-item cat-item-42"><a href="https://www.colino.net/wordpress/en/archives/category/photo-en/">Pictures</a>
+</li>
+	<li class="cat-item cat-item-38"><a href="https://www.colino.net/wordpress/en/archives/category/sysadmin-en/">Sysadmin</a>
+</li>
+	<li class="cat-item cat-item-17"><a href="https://www.colino.net/wordpress/en/archives/category/uncategorized-en/">Uncategorized</a>
+</li>
+			</ul>
+
+			</div><div id="custom_html-5" class="widget_text widget widget_custom_html"><h3 class="group"><span>RSS</span></h3><div class="textwidget custom-html-widget"><ul>
+	<li>
+		<a href="/wordpress/feed/">
+			<i class="fa fa-rss" aria-hidden="true"></i>&nbsp;Articles RSS feed
+		</a>
+	</li>
+</ul></div></div><div id="custom_html-6" class="widget_text widget widget_custom_html"><h3 class="group"><span>Social</span></h3><div class="textwidget custom-html-widget"><div style="text-align: center">
+	<a rel="me" href="https://piaille.fr/@colin_mcmillen"><img src="/wordpress/wp-content/themes/fast-boxcard/img/mstdn.png" alt="Mastodon" width=32 height=32/></a>
+</div></div></div>			
+		</div><!--/.sidebar-content-->
+		
+	</div><!--/.sidebar-->
+	
+</header><!--/#header-->
+
+	
+	</div><!--/#wrapper-inner-->
+</div><!--/#wrapper-->
+
+
+
+
+
+
+
+</body>
+</html>
+<!--
+Performance optimized by Redis Object Cache. Learn more: https://wprediscache.com
+
+Retrieved 1083 objects (386 KB) from Redis using PhpRedis (v5.3.7).
+-->

@@ -19,6 +19,7 @@ WNDTOP	=	$22	; top of text window
 WNDBTM	=	$23	; bottom+1 of text window 
 CH	=	$24	; cursor horizontal position 
 CV	=	$25	; cursor vertical position 
+LINNUM	=	$50	; result from GETADR
 
 KBD	=	$c000
 CLR80COL	=	$c000
@@ -48,6 +49,7 @@ TABV	=	$FB5B
 BS	=	$FC10
 HOME	=	$FC58
 CLREOL	=	$FC9C
+WAIT	=	$FCA8
 RDKEY	=	$FD0C
 KEYIN	=	$FD1B
 GETLNZ	=	$FD67
@@ -70,6 +72,12 @@ BEEP	=	$FF3A
 	jsr	printCSTRING
 	eom
 
+@draw	mac
+	ldx	#>]1
+	ldy	#<]1
+	jsr	drawPICTURE
+	eom
+
 @wait	mac
 	ldx	#>]1
 	ldy	#<]1
@@ -79,6 +87,17 @@ BEEP	=	$FF3A
 *-----------------------------------
 * CODE BASIC EN ASM :-)
 *-----------------------------------
+
+	jsr	setTEXTFULL
+	
+	lda	#20
+	jsr	TABV
+	
+	jsr	initALL
+
+	jsr	sub200
+	
+	rts
 	
 *-----------------------------------
 * 200 - description salle
@@ -157,156 +176,156 @@ tbl7000
 	da	sub7240
 
 sub7000
-	jsr	sub10000
 	@print	#strSUB7000
 	@wait	#250
 	@print	#strSUB7001
+	jsr	sub10000
 	rts
 
 sub7010
-	jsr	sub10100
 	@print	#strSUB7010
+	jsr	sub10100
 	rts
 
 sub7020
-	jsr	sub10200
 	@print	#strSUB7020
+	jsr	sub10200
 	rts
 
 sub7030
+	@print	#strSUB7030
 	lda	#0
 	sta	F1
 	jsr	sub10300
-	@print	#strSUB7030
 	rts
 
 sub7040
+	@print	#strSUB7040
 	lda	#1
 	sta	F1
 	jsr	sub10300
-	@print	#strSUB7040
 	rts
 
 sub7050
-	jsr	sub10500
 	@print	#strSUB7050
+	jsr	sub10500
 	rts
 
 sub7060
-	jsr	sub10600
 	@print	#strSUB7060
+	jsr	sub10600
 	rts
 
 sub7070
+	@print	#strSUB7070
 	lda	#0
 	sta	LX
 	jsr	sub10700
-	@print	#strSUB7070
 	rts
 
 sub7080
-	jsr	sub10800
 	@print	#strSUB7080
+	jsr	sub10800
 	rts
 
 sub7090
+	@print	#strSUB7090
 	lda	#0
 	sta	LX
 	jsr	sub10900
-	@print	#strSUB7090
 	rts
 
 sub7100
+	@print	#strSUB7100
 	lda	#0
 	sta	LX
 	jsr	sub11000
-	@print	#strSUB7100
 	rts
 
 sub7110
+	@print	#strSUB7110
 	lda	#2
 	sta	LX
 	jsr	sub10700
-	@print	#strSUB7110
 	rts
 
 sub7120
+	@print	#strSUB7120
 	lda	#1
 	sta	LX
 	jsr	sub10700
-	@print	#strSUB7120
 	rts
 
 sub7130		; nada
 	rts
 
 sub7140
+	@print	#strSUB7140
 	lda	#2
 	sta	LX
 	jsr	sub12200
-	@print	#strSUB7140
 	rts
 
 sub7150
-	jsr	sub11500
 	@print	#strSUB7150
 	@print	#strSUB7001
+	jsr	sub11500
 	rts
 
 sub7160
+	@print	#strSUB7160
 	lda	#1
 	sta	LX
 	jsr	sub10900
-	@print	#strSUB7160
 	rts
 
 sub7170
 	@wait	#300
-	jsr	sub11700
 	@print	#strSUB7170
+	jsr	sub11700
 	rts
 
 sub7180
-	jsr	sub11800
 	@print	#strSUB7180
+	jsr	sub11800
 	rts
 
 sub7190
+	@print	#strSUB7190
 	lda	#2
 	sta	LX
 	jsr	sub10900
-	@print	#strSUB7190
 	rts
 
 sub7200
+	@print	#strSUB7200
 	lda	#1
 	sta	LX
 	jsr	sub12200
-	@print	#strSUB7200
 	rts
 
 sub7210
+	@print	#strSUB7210
 	lda	#1
 	sta	LX
 	jsr	sub11000
-	@print	#strSUB7210
 	rts
 
 sub7220
+	@print	#strSUB7220
 	lda	#0
 	sta	LX
 	jsr	sub12200
-	@print	#strSUB7220
 	rts
 
 sub7230
-	jsr	sub12300
 	@print	#strSUB7230
+	jsr	sub12300
 	rts
 
 sub7240
-	jsr	sub12400
 	@print	#strSUB7240
+	jsr	sub12400
 	rts
 
 *----------
@@ -347,7 +366,7 @@ strSUB7240	asc	"DANS LE DRESSING"00
 * 8000 - CHARGEMENT VARIABLES
 *-----------------------------------
 
-sub8000
+initALL
 	lda	#1
 	sta	SALLE
 	
@@ -371,7 +390,6 @@ sub8000
 	sta	C-1+1
 	
 * PL=INT(RND(1)*9000+1000)
-
 
 	rts
 
@@ -404,12 +422,13 @@ sub12100
 sub12200
 sub12300
 sub12400
+	rts
 
 *-----------------------------------
 * DONNEES DES IMAGES
 *-----------------------------------
 
-*----- 10000
+data10000
 	asc	"S"
 	dw	100,190
 	asc	"D"
@@ -563,7 +582,8 @@ sub12400
 	asc	"I"
 	dfb	3
 	dfb	$ff
-*------ 10100
+
+data10100
 	asc	"S"
 	dw	15,190
 	asc	"D"
@@ -689,7 +709,8 @@ sub12400
 	asc	"I"
 	dfb	3
 	dfb	$ff
-*------ 10200
+
+data10200
 	asc	"S"
 	dw	15,190
 	asc	"D"
@@ -881,7 +902,8 @@ sub12400
 	asc	"I"
 	dfb	3
 	dfb	$ff
-*------ 10300
+	
+data10300
 	asc	"S"
 	dw	15,190
 	asc	"D"
@@ -946,10 +968,14 @@ sub12400
 	dw	0,60
 	asc	"S"
 	dw	60,86
-*IF F1=0 THEN 	asc	"I"
+	dfb	$ff
+data10301
+*IF F1=0 THEN
+ 	asc	"I"
 	dfb	3
 	dfb	$ff
-*------ 10400
+
+data10400
 	asc	"S"
 	dw	124,80
 	asc	"D"
@@ -1032,8 +1058,9 @@ sub12400
 	dw	0,-16
 	asc	"I"
 	dfb	3
-	dfb	$ff 
-*------ 10500
+	dfb	$ff
+	
+data10500
 	asc	"S"
 	dw	13,180
 	asc	"D"
@@ -1151,7 +1178,8 @@ sub12400
 	asc	"I"
 	dfb	3
 	dfb	$ff
-*------ 10600
+	
+data10600
 	asc	"S"
 	dw	15,190
 	asc	"D"
@@ -1272,7 +1300,6 @@ sub12400
 	dw	-5,-7
 	asc	"D"
 	dw	-21,0
-
 	asc	"D"
 	dw	5,7
 	asc	"D"
@@ -1306,7 +1333,8 @@ sub12400
 	asc	"I"
 	dfb	3
 	dfb	$ff
-*------ 10700
+	
+data10700
 	asc	"S"
 	dw	15,190
 	asc	"D"
@@ -1391,15 +1419,21 @@ sub12400
 	dw	55,0
 	asc	"D"
 	dw	8,15
+	dfb	$ff
 *IF LX=2 THEN GOTO 10745
+data10701
 	asc	"S"
 	dw	197,93
 	asc	"C"
 	dfb	1
-*IF LX=0 THEN 	asc	"I"
+	dfb	$ff
+*IF LX=0 THEN
+data10702
+	asc	"I"
 	dfb	3
 	dfb	$ff
 *IF LX=1 THEN GOTO 10780
+data10703
 	asc	"S"
 	dw	202,137
 	asc	"D"
@@ -1458,7 +1492,8 @@ sub12400
 	asc	"I"
 	dfb	3
 	dfb	$ff
-*------ 10800
+
+data10800
 	asc	"S"
 	dw	15,190
 	asc	"D"
@@ -1530,7 +1565,8 @@ sub12400
 	asc	"I"
 	dfb	3
 	dfb	$ff
-*------ 10900
+	
+data10900
 	asc	"S"
 	dw	232,190
 	asc	"D"
@@ -1551,11 +1587,16 @@ sub12400
 	dw	-75,30
 	asc	"D"
 	dw	0,150
-*IF LX=0 THEN 	asc	"D"
+	dfb	$ff
+*IF LX=0 THEN
+data10901
+ 	asc	"D"
 	dw	75,-130
 	asc	"D"
 	dw	-23,40
+	dfb	$ff
 *GOTO10920
+data10902
 	asc	"D"
 	dw	30,-52
 	asc	"D"
@@ -1568,6 +1609,9 @@ sub12400
 	dw	-22,0
 	asc	"D"
 	dw	22,0
+	dfb	$ff
+* 10920
+data10903
 	asc	"D"
 	dw	0,-58
 	asc	"D"
@@ -1580,16 +1624,22 @@ sub12400
 	dw	60,0
 	asc	"D"
 	dw	82,130
-*IF LX=0 THEN 	asc	"S"
+	dfb	$ff
+*IF LX=0 THEN
+data10904
+ 	asc	"S"
 	dw	63,78
 	asc	"C"
 	dfb	1
 	asc	"I"
 	dfb	3
 	dfb	$ff
-*IF LX=1 THEN 	asc	"I"
+*IF LX=1 THEN
+data10905
+ 	asc	"I"
 	dfb	3
 	dfb	$ff
+data10906
 	asc	"S"
 	dw	210,100
 	asc	"D"
@@ -1631,7 +1681,8 @@ sub12400
 	asc	"I"
 	dfb	3
 	dfb	$ff
-*------ 11000
+
+data11000
 	asc	"S"
 	dw	15,190
 	asc	"D"
@@ -1682,10 +1733,14 @@ sub12400
 	dw	0,24
 	asc	"M"
 	dw	-3,-12
-*IF LX=0 THEN 	asc	"I"
+	dfb	$ff
+*IF LX=0 THEN
+data11001
+ 	asc	"I"
 	dfb	3
 	dfb	$ff
 *ELSE
+data11002
 	asc	"S"
 	dw	187,104
 	asc	"D"
@@ -1715,7 +1770,8 @@ sub12400
 	asc	"I"
 	dfb	3
 	dfb	$ff
-*------ 11500
+	
+data11500
 	asc	"S"
 	dw	15,180
 	asc	"D"
@@ -1801,7 +1857,8 @@ sub12400
 	asc	"I"
 	dfb	3
 	dfb	$ff
-*------ 11700
+	
+data11700
 	asc	"S"
 	dw	15,190
 	asc	"D"
@@ -1919,7 +1976,8 @@ sub12400
 	asc	"I"
 	dfb	3
 	dfb	$ff
-*------ 11800
+	
+data11800
 	asc	"S"
 	dw	15,191
 	asc	"D"
@@ -2033,7 +2091,8 @@ sub12400
 	asc	"I"
 	dfb	3
 	dfb	$ff
-*------ 12200
+	
+data12200
 	asc	"S"
 	dw	15,190
 	asc	"D"
@@ -2068,7 +2127,10 @@ sub12400
 	dw	-30,0
 	asc	"D"
 	dw	-30,53
-*IF LX=2 THEN 	asc	"D"
+	dfb	$ff
+*IF LX=2 THEN
+data12201
+ 	asc	"D"
 	dw	-23,0
 	asc	"D"
 	dw	23,0
@@ -2078,24 +2140,37 @@ sub12400
 	dw	-23,17
 	asc	"D"
 	dw	0,80
-*IF LX<>2 THEN 	asc	"D"
+	dfb	$ff
+*IF LX<>2 THEN
+data12202
+	asc	"D"
 	dw	23,-37
 	asc	"D"
 	dw	-23,37
+	dfb	$ff
+* 12230
+data12203
 	asc	"D"
 	dw	-22,40
-*IF LX<>2 THEN 	asc	"S"
+	dfb	$ff
+*IF LX<>2 THEN
+data12204
+ 	asc	"S"
 	dw	57,88
 	asc	"C"
 	dfb	1
-*IF LX<>0 THEN 	asc	"S"
+	dfb	$ff
+*IF LX<>0 THEN
+data12205
+ 	asc	"S"
 	dw	117,45
 	asc	"C"
 	dfb	1
 	asc	"I"
 	dfb	3
 	dfb	$ff
-*----- 12240
+	
+data12240
 	asc	"S"
 	dw	105,60
 	asc	"D"
@@ -2115,7 +2190,8 @@ sub12400
 	asc	"I"
 	dfb	3
 	dfb	$ff
-*------ 12300
+
+data12300
 	asc	"S"
 	dw	15,190
 	asc	"D"
@@ -2177,7 +2253,8 @@ sub12400
 	asc	"I"
 	dfb	3
 	dfb	$ff
-*------ 12400
+	
+data12400
 	asc	"S"
 	dw	30,164
 	asc	"D"
@@ -2298,12 +2375,20 @@ sub33000
 * CODE 6502
 *-----------------------------------
 
+*----------------------
+* setTEXTFULL
+*----------------------
+
 setTEXTFULL			; 40x24 text
 	sta	CLR80VID
 	jsr	INIT	; text screen
 	jsr	SETNORM	; set normal text mode
 	jsr	SETKBD	; reset input to keyboard
 	jmp	HOME	; home cursor and clear to end of page
+
+*----------------------
+* setHGR1
+*----------------------
 
 setHGR1			; HGR1
 	sta	TXTCLR
@@ -2312,20 +2397,58 @@ setHGR1			; HGR1
 	sta	HIRES	
 	rts		; 
 
+*----------------------
+* setMIXEDON
+*----------------------
+
 setMIXEDON			; HGR + 4 LINES OF TEXT
 	sta	TXTCLR
 	sta	MIXSET
 	rts
 	
+*----------------------
+* setMIXEDOFF
+*----------------------
+
 setMIXEDOFF			; TEXT ONLNY
 	sta	TXTSET
 	sta	MIXCLR
 	rts
 
+*----------------------
+* printCSTR
+*----------------------
+
 printCSTRING
-	rts
+	sty	pcs1+1
+	stx	pcs1+2
+	
+pcs1	lda	$ffff
+	beq	pcs2
+	jsr	COUT
+	
+	inc	pcs1+1
+	bne	pcs1
+	inc	pcs1+2
+	bne	pcs1
+	
+pcs2	rts
+
+*----------------------
+* waitMS
+*----------------------
 
 waitMS
+	sty	LINNUM
+doW1	ldy	LINNUM
+]lp	lda	#60	; 1/100ème de seconde
+	jsr	WAIT
+	dey
+	bne	]lp
+	dex
+	bpl	doW1
+	rts
+
 	rts
 
 *-----------------------------------

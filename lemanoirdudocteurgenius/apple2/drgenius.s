@@ -20,6 +20,13 @@ WNDBTM	=	$23	; bottom+1 of text window
 CH	=	$24	; cursor horizontal position 
 CV	=	$25	; cursor vertical position 
 LINNUM	=	$50	; result from GETADR
+X0L	=	$e0	; X-coord
+X0H	=	$e1
+Y0	=	$e2	; Y-coord
+HPAG	=	$e6
+
+dpFROM	=	$fc
+dpTO	=	$fe
 
 KBD	=	$c000
 CLR80COL	=	$c000
@@ -44,6 +51,10 @@ CLRAN3	=	$c05f
 *--- The firmware routines
 
 AUXMOVE	=	$C311
+HGR	=	$F3E2	; HGR
+HPLOT	=	$F457	; HPLOT
+HILIN	=	$F53A	; HPLOT TO
+HCOLOR	=	$F6E9	; HCOLOR= (call+3)
 INIT	=	$FB2F
 TABV	=	$FB5B
 BS	=	$FC10
@@ -61,6 +72,7 @@ IDROUTINE	=	$FE1F
 SETNORM	=	$FE84
 SETKBD	=	$FE89
 BEEP	=	$FF3A
+MONZ	=	$FF69
 
 *-----------------------------------
 * MACROS
@@ -88,14 +100,21 @@ BEEP	=	$FF3A
 * CODE BASIC EN ASM :-)
 *-----------------------------------
 
+	jsr	introPIC	; la picture GR
+	jsr	sub51000	; le disclaimer
+	jsr	sub40000	; les instructions
+
+REPLAY
 	jsr	setTEXTFULL
-	
+
 	lda	#20
 	jsr	TABV
 	
 	jsr	initALL
 
 	jsr	sub200
+	jsr	RDKEY
+	jsr	sub20000
 	
 	rts
 	
@@ -115,7 +134,7 @@ sub200
 	tax
 	jsr	(tbl7000,x)
 	
-	jsr	sub13000	; check keypress
+	jsr	KEY$	; check keypress
 	
 	lda	#0
 	sta	H
@@ -337,24 +356,24 @@ sub7240
 strSUBVOUS	asc	8D"VOUS ETES "00
 strSUB7000	asc	"DEVANT LE MANOIR DU DEFUNT"00
 strSUB7001	asc	8D"            DR GENIUS"00
-strSUB7010	asc	"DANS LE HALL D'A7'ENTREE"00
-strSUB7020	asc	"EN BAS DE L'A7'ESCALIER MENANTAU 2EME ETAGE"00
+strSUB7010	asc	"DANS LE HALL D"A7"ENTREE"00
+strSUB7020	asc	"EN BAS DE L"A7"ESCALIER MENANTAU 2EME ETAGE"00
 strSUB7030	asc	"DANS LA SALLE A MANGER"00
 strSUB7040	asc	"DANS UNE BIBLIOTHEQUE SANS LIVRE...!"00
 strSUB7050	asc	"DANS UNE BUANDERIE"00
 strSUB7060	asc	"DANS LE SALON"00
 strSUB7070	asc	"DANS UNE CHAMBRE"00
 strSUB7080	asc	"DANS UN CORRIDOR"00
-strSUB7090	asc	"DANS UNE SALLE D'A7'ATTENTE"00
+strSUB7090	asc	"DANS UNE SALLE D"A7"ATTENTE"00
 strSUB7100	asc	"DANS LE VESTIBULE"00
-strSUB7110	asc	"DANS LA CHAMBRE D'A7'AMIS"00
+strSUB7110	asc	"DANS LA CHAMBRE D"A7"AMIS"00
 strSUB7120	asc	"DANS UNE CHAMBRE"00
 strSUB7130	asc	""00	; nada
 strSUB7140	asc	"DANS UNE PETITE SALLE"00
 strSUB7150	asc	"DANS LE LABORATOIRE DU"00	; + SUB7001
 strSUB7160	asc	"DANS UNE PETITE PIECE VIDE"00
 strSUB7170	asc	"! JUSTEMENT, VOUS NE SAVEZ PASOU VOUS ETES"00
-strSUB7180	asc	"EN HAUT DE L'A7'ESCALIER"00
+strSUB7180	asc	"EN HAUT DE L"A7"ESCALIER"00
 strSUB7190	asc	"DANS LA SALLE DE BAINS"00
 strSUB7200	asc	"DANS LE LIVING ROOM"00
 strSUB7210	asc	"DANS UNE PIECE ENFUMEE"00
@@ -372,22 +391,22 @@ initALL
 	
 	ldx	#10
 	txa
-]lp	sta	P-1,x
-	sta	C-1,x
+]lp	sta	P,x
+	sta	C,x
 	dex
 	bne	]lp
 	
 	lda	#0
-	sta	P-1+11
-	sta	P-1+12
+	sta	P+11
+	sta	P+12
 	
 	lda	#14
-	sta	C-1+3
+	sta	C+3
 	lda	#12
-	sta	C-1+7
-	sta	C-1+9
+	sta	C+7
+	sta	C+9
 	lda	#80
-	sta	C-1+1
+	sta	C+1
 	
 * PL=INT(RND(1)*9000+1000)
 
@@ -398,37 +417,603 @@ initALL
 *-----------------------------------
 
 sub10000
-sub10100
-sub10200
-sub10300
-sub10400
-sub10500
-sub10600
-sub10700
-sub10800
-sub10900
-sub11000
-sub11100
-sub11200
-sub11300
-sub11400
-sub11500
-sub11600
-sub11700
-sub11800
-sub11900
-sub12000
-sub12100
-sub12200
-sub12300
-sub12400
+	@draw	#data10000
 	rts
+	
+sub10100
+	@draw	#data10100
+	rts
+	
+sub10200
+	@draw	#data10200
+	rts
+	
+sub10300
+	@draw	#data10300
+	lda	F1
+	bne	sub10301
+	@draw	#data10301
+sub10301	rts
+	
+sub10400
+	@draw	#data10400
+	rts
+	
+sub10500
+	@draw	#data10500
+	rts
+	
+sub10600
+	@draw	#data10600
+	rts
+	
+sub10700
+	@draw	#data10700
+	lda	LX
+	cmp	#2
+	beq	sub10745
+	@draw	#data10701
+sub10745	lda	LX
+	bne	sub10750
+	@draw	#data10702
+	rts
+sub10750	cmp	#1
+	beq	sub10780
+	@draw	#data10703
+	rts
+sub10780	@draw	#data10704
+	rts
+
+sub10800
+	@draw	#data10800
+	rts
+	
+sub10900
+	@draw	#data10900
+	lda	LX
+	bne	sub10915
+	@draw	#data10901
+	jmp	sub10920
+sub10915	@draw	#data10902
+sub10920	@draw	#data10903
+	lda	LX
+	bne	sub10935
+	@draw	#data10904
+	rts
+sub10935	cmp	#1
+	bne	sub10940
+	@draw	#data10905
+	rts
+sub10940	@draw	#data10906
+	rts
+	
+sub11000
+	@draw	#data11000
+	lda	LX
+	bne	sub11030
+	@draw	#data11001
+	rts
+sub11030	@draw	#data11002
+	rts
+
+sub11500
+	@draw	#data11500
+	rts
+	
+sub11700
+	@draw	#data11700
+	rts
+	
+sub11800
+	@draw	#data11800
+	rts
+	
+sub12200
+	@draw	#data12200
+	lda	LX
+	cmp	#2
+	bne	sub12220
+	@draw	#data12201
+sub12220	@draw	#data12202
+	lda	LX
+	cmp	#2
+	beq	sub12230
+	@draw	#data12203
+sub12230	@draw	#data12204
+	lda	LX
+	cmp	#2
+	beq	sub12235
+	@draw	#data12205
+sub12235	lda	LX
+	beq	sub12240
+	@draw	#data12206
+	rts
+sub12240	@draw	#data12207
+	rts
+	
+sub12300
+	@draw	#data12300
+	rts
+	
+sub12400
+	@draw	#data12400
+	rts
+	
+sub13000
+	@draw	#data13000
+	rts
+
+*-----------------------------------
+* KEY$ - WAIT FOR KEYPRESS
+*-----------------------------------
+
+KEY$	lda	KBD	; on keypress, wait 5s
+	bpl	key$1	; or 1s IF none
+	bit	KBDSTROBE
+	
+	@wait	#400
+
+key$1	@wait	#100
+	rts
+
+*-----------------------------------
+* 20000 - PERDU
+*-----------------------------------
+
+sub20000
+	jsr	sub13000	; tombe
+	jsr	sub30000	; sarabande
+	jsr	RDKEY
+
+sub20100
+	jsr	setTEXTFULL
+]lp	@print	#strREPLAY
+	jsr	RDKEY
+	cmp	#"N"
+	beq	sub20001
+	cmp	#"O"
+	bne	]lp
+	jmp	REPLAY
+sub20001	jmp	MONZ
+
+*---------
+
+strREPLAY	asc	8D"VOULEZ-VOUS REJOUER ? "00
+	
+*-----------------------------------
+* 30000 - SARABANDE
+*-----------------------------------
+
+sub30000
+	rts
+	
+*-----------------------------------
+* 31000 - BADINERIE
+*-----------------------------------
+
+sub31000
+	rts
+	
+*-----------------------------------
+* 32000 - TEA FOR TWO
+*-----------------------------------
+
+sub32000
+	rts
+	
+*-----------------------------------
+* 33000 - GAGNE
+*-----------------------------------
+
+sub33000
+	jsr	setTEXTFULL
+	@print	#strGAGNE
+	jmp	sub20100
+
+*---------
+
+strGAGNE	asc	"CELA EST EXCEPTIONNEL. VOUS ETES LE"8D
+	asc	"PREMIER A ETRE SORTI VIVANT DE CETTE"8D
+	asc	"MAISON, MAIS SI J'ETAIS VOUS, JE ME"8D
+	asc	"METTRAIS A COURIR CAR UN NAIN RODE"8D
+	asc	"PEUT-ETRE DANS LES PARAGES..."8D00
+	
+*-----------------------------------
+* 40000 - LISTE DES INSTRUCTIONS
+*-----------------------------------
+
+sub40000
+	jsr	setTEXTFULL
+]lp	@print	#strINSTR
+	jsr	RDKEY
+	cmp	#"N"
+	beq	sub40001
+	cmp	#"O"
+	bne	]lp
+
+	@print	#strINSTR2
+	jsr	RDKEY
+	
+sub40001	rts
+
+*---------
+
+strINSTR	asc	"LA LISTE DES INSTRUCTIONS ? "00
+
+strINSTR2	asc	8D8D
+	asc	"VOUS VOICI ARRIVE DANS LE MANOIR DU"8D
+	asc	"            DR GENIUS..."8D
+	asc	8D
+	asc	"POUR CONVERSER AVEC L"A7"ORDINATEUR, IL"8D
+	asc	"FAUT RENTRER LES ORDRES EN 1 OU 2 MOTS"8D
+	asc	"TELS QUE :"8D
+	asc	"           NORD"8D
+	asc	"           PRENDS PILULE"8D
+	asc	8D
+	asc	"OU POUR COMMENCER :"8D
+	asc	"           ENTRE"8D
+	asc	8D8D
+	asc	"SI VOUS VOULEZ FAIRE DURER LA PHRASE"8D
+	asc	"DECRIVANT LA SALLE, TAPEZ UNE TOUCHE "8D
+	asc	8D
+	asc	"UN DERNIER CONSEIL : IL PEUT PARFOIS Y"8D
+	asc	"AVOIR UNE PORTE DERRIERE VOUS. "00
+
+*-----------------------------------
+* 51000 - DISCLAIMER
+*-----------------------------------
+
+sub51000
+	jsr	setTEXTFULL
+	@print	#strDISCLAIMER
+	jmp	RDKEY
+
+*---------
+
+strDISCLAIMER
+	asc	"L"A7"UTLISATION DE CE PROGRAMME EST"8D8D
+	asc	"DECONSEILLEE AUX PERSONNES SENSIBLES,"8D8D
+	asc	"AUX ENFANTS EN BAS AGE, AINSI QU"A7"A"8D8D
+	asc	"TOUTE PERSONNE SUSCEPTIBLE D"A7"AVOIR"8D8D
+	asc	"DES MALAISES CARDIAQUES."8D8D
+	asc	8D8D
+	asc	"NOUS NE POURRIONS ETRE TENUS RESPONSA-"8D8D
+	asc	"-BLES DES TROUBLES PHYSIQUES OU MENTAUX"8D8D
+	asc	"PROVOQUES PAR VOTRE ECHEC DANS"8D8D
+	asc	"LE MANOIR DU DR GENIUS ............."00
+	
+*-----------------------------------
+* introPIC - la picture GR
+*-----------------------------------
+
+introPIC
+	jsr	setTEXTFULL
+
+	lda	#3
+	sta	CH
+	lda	#11
+	jsr	TABV
+	@print	#strLORICIELS
+	@wait	#300
+
+	jsr	HOME
+	@print	#strLEMANOIR
+
+	lda	#5
+	sta	CH
+	lda	#22
+	jsr	TABV
+	@print	#strINTRO1
+	@wait	#300
+
+	lda	#5
+	sta	CH
+	@print	#strINTRO2
+	@wait	#300
+
+	lda	#5
+	sta	CH
+	@print	#strINTRO3
+	@wait	#300
+
+	lda	#5
+	sta	CH
+	@print	#strINTRO4
+	jmp	RDKEY
+	
+*---------
+
+strLORICIELS
+	asc	"LORICIELS EST FIER DE PRESENTER :"00
+
+strLEMANOIR
+	asc	"   @   @@@   @   @ @@@ @  @ @@@ @ @@@"8D
+	asc	"   @   @     @@ @@ @ @ @@ @ @ @ @ @ @"8D
+	asc	"   @   @@    @ @ @ @@@ @@@@ @ @ @ @@@"8D
+	asc	"   @   @     @   @ @ @ @ @@ @ @ @ @@"8D
+	asc	"   @@@ @@@   @   @ @ @ @  @ @@@ @ @ @"8D
+	asc	8D
+	asc	"      @@  @ @     @@"8D
+	asc	"      @ @ @ @     @ @ @"8D
+	asc	"      @ @ @ @     @ @ @@"8D
+	asc	"      @ @ @ @     @ @ @ @"8D
+	asc	"      @@@ @@@     @@@ @"8D
+	asc	8D8D
+	asc	"   @@@@  @@@@  @@  @  @  @  @  @@@@"8D
+	asc	"   @  @  @     @@  @  @  @  @  @"8D
+	asc	"   @     @     @@@ @  @  @  @  @"8D
+	asc	"   @     @@@   @ @ @  @  @  @  @@@@"8D
+	asc	"   @ @@  @     @ @@@  @  @  @     @"8D
+	asc	"   @  @  @     @  @@  @  @  @     @"8D
+	asc	"   @@@@  @@@@  @  @@  @  @@@@  @@@@ @ @"00
+
+strINTRO1	asc	"     VERSION APPLE II PAR     "00
+strINTRO2	asc	"    BRUTAL DELUXE SOFTWARE    "00
+strINTRO3	asc	"        MERCI FRED_72         "00
+strINTRO4	asc	"(C) 1983, L. BENES & LORICIELS"00
+
+*-----------------------------------
+* CODE 6502
+*-----------------------------------
+
+*----------------------
+* setTEXTFULL
+*----------------------
+
+setTEXTFULL			; 40x24 text
+	sta	CLR80VID
+	jsr	INIT	; text screen
+	jsr	SETNORM	; set normal text mode
+	jsr	SETKBD	; reset input to keyboard
+	jmp	HOME	; home cursor and clear to end of page
+
+*----------------------
+* setHGR1
+*----------------------
+
+setHGR1			; HGR1
+	sta	TXTCLR
+	sta	MIXCLR
+	sta	TXTPAGE1
+	sta	HIRES	
+	rts
+
+*----------------------
+* setMIXEDON
+*----------------------
+
+setMIXEDON		; HGR + 4 LINES OF TEXT
+	sta	TXTCLR
+	sta	MIXSET
+	rts
+	
+*----------------------
+* setMIXEDOFF
+*----------------------
+
+setMIXEDOFF		; TEXT ONLNY
+	sta	TXTSET
+	sta	MIXCLR
+	rts
+
+*----------------------
+* printCSTR
+*----------------------
+
+printCSTRING
+	sty	pcs1+1
+	stx	pcs1+2
+	
+pcs1	lda	$ffff
+	beq	pcs2
+	jsr	COUT
+	
+	inc	pcs1+1
+	bne	pcs1
+	inc	pcs1+2
+	bne	pcs1
+	
+pcs2	rts
+
+*----------------------
+* waitMS
+*----------------------
+
+waitMS
+	sty	LINNUM
+doW1	ldy	LINNUM
+]lp	lda	#60	; 1/100ème de seconde
+	jsr	WAIT
+	dey
+	bne	]lp
+	dex
+	bpl	doW1
+	rts
+
+*----------------------
+* drawPICTURE
+*----------------------
+
+drawPICTURE
+	sty	drawREAD+1
+	stx	drawREAD+2
+
+drawLOOP	jsr	drawREAD
+	cmp	#$ff
+	bne	drawPIC1
+	rts		; the end
+
+drawPIC1	ldx	#myADRS-myCMDS-1
+]lp	cmp	myCMDS,x
+	beq	drawPIC2
+	dex
+	bpl	]lp
+	rts
+
+drawPIC2	txa
+	asl
+	tax
+	jsr	(myADRS,x)
+	jmp	drawLOOP
+
+*-------- Read data
+	
+drawREAD	lda	$bdbd
+	inc	drawREAD+1
+	bne	drawREAD1
+	inc	drawREAD+2
+drawREAD1	rts
+
+*----------------------------------- CURSET x,y,fb
+
+doS	
+	jsr	drawREAD
+	sta	theX
+	jsr	drawREAD
+	sta	theX+1
+	
+	jsr	drawREAD
+	sta	theY
+	jsr	drawREAD
+	sta	theY+1
+	rts
+
+*----------------------------------- CURMOV x,y,fb
+
+doM
+	jsr	drawREAD
+	clc
+	adc	theX
+	sta	theX
+	jsr	drawREAD
+	adc	theX+1
+	sta	theX+1	; new X-coord
+
+	jsr	drawREAD
+	clc
+	adc	theY
+	sta	theY
+	jsr	drawREAD
+	adc	theY+1
+	sta	theY+1	; new X-coord
+	rts
+
+*----------------------------------- DRAW x,y,fb
+
+doD	
+	jsr	drawREAD
+	clc
+	adc	theX
+	sta	theX2
+	jsr	drawREAD
+	adc	theX+1
+	sta	theX2+1	; new X-coord
+
+	jsr	drawREAD
+	clc
+	adc	theY
+	sta	theY2
+	jsr	drawREAD
+	adc	theY
+	sta	theY2+1	; new Y-coord
+
+*---------- It is now time to draw as we have all variables
+
+	ldy	theINK	; the ink color
+	ldx	oric2hgr,y	; from the Oric to the Apple II
+	jsr	HCOLOR+3	; to skip CHRGET 
+
+	ldx	theX	; HPLOT x,y
+	ldy	theX+1
+	lda	theY
+	jsr	HPLOT
+
+	lda	theX2	; TO x2,Y2
+	ldx	theX2+1
+	ldy	theY2
+	jsr	HILIN	; draw the line
+
+	lda	X0L	; save the updated coords
+	sta	theX
+	lda	X0H
+	sta	theX+1
+	lda	Y0
+	sta	theY
+	rts
+	
+*----------------------------------- CIRCLE n,fb
+
+doC	
+	jsr	drawREAD
+	sta	theRADIUS	; the radius
+	rts
+
+*----------------------------------- INK fb
+
+doI
+	jsr	drawREAD
+	sta	theINK
+	rts
+
+*----------------------------------- PAPER fb
+
+doP	
+	jsr	drawREAD
+	sta	thePAPER
+	rts
+
+*----------------------------------- HIRES
+
+doH
+	jsr	HGR
+	sta	MIXCLR
+	rts
+
+*----------------------
+* Données du moteur
+*----------------------
+
+myCMDS	asc	"SMDCIPH"
+
+myADRS	da	doS	; curset
+	da	doM	; curmov
+	da	doD	; draw
+	da	doC	; circle
+	da	doI	; ink
+	da	doP	; paper
+	da	doH	; hires
+	
+*----------------------
+
+theX	dw	140	; milieu de l'écran par défaut
+theY	ds	96
+theX2	ds	2
+theY2	ds	2
+theRADIUS	ds	1
+theFB	ds	1
+theINK	ds	1
+thePAPER	ds	1
+
+*	APPLE	ORIC
+* 0	black1	black
+* 1	green	red
+* 2	blue	green
+* 3	white1	yellow
+* 4	black2	blue
+* 5	-	magenta
+* 6	-	cyan
+* 7	white2	white
+
+oric2hgr	hex	0705010602030400
 
 *-----------------------------------
 * DONNEES DES IMAGES
 *-----------------------------------
 
 data10000
+	asc	"H"
+	asc	"I"
+	dfb	0
 	asc	"S"
 	dw	100,190
 	asc	"D"
@@ -584,6 +1169,9 @@ data10000
 	dfb	$ff
 
 data10100
+	asc	"H"
+	asc	"I"
+	dfb	0
 	asc	"S"
 	dw	15,190
 	asc	"D"
@@ -711,6 +1299,9 @@ data10100
 	dfb	$ff
 
 data10200
+	asc	"H"
+	asc	"I"
+	dfb	0
 	asc	"S"
 	dw	15,190
 	asc	"D"
@@ -904,6 +1495,9 @@ data10200
 	dfb	$ff
 	
 data10300
+	asc	"H"
+	asc	"I"
+	dfb	0
 	asc	"S"
 	dw	15,190
 	asc	"D"
@@ -976,6 +1570,9 @@ data10301
 	dfb	$ff
 
 data10400
+	asc	"H"
+	asc	"I"
+	dfb	0
 	asc	"S"
 	dw	124,80
 	asc	"D"
@@ -1061,6 +1658,9 @@ data10400
 	dfb	$ff
 	
 data10500
+	asc	"H"
+	asc	"I"
+	dfb	0
 	asc	"S"
 	dw	13,180
 	asc	"D"
@@ -1180,6 +1780,9 @@ data10500
 	dfb	$ff
 	
 data10600
+	asc	"H"
+	asc	"I"
+	dfb	0
 	asc	"S"
 	dw	15,190
 	asc	"D"
@@ -1335,6 +1938,9 @@ data10600
 	dfb	$ff
 	
 data10700
+	asc	"H"
+	asc	"I"
+	dfb	0
 	asc	"S"
 	dw	15,190
 	asc	"D"
@@ -1475,6 +2081,7 @@ data10703
 	asc	"I"
 	dfb	3
 	dfb	$ff
+data10704
 	asc	"S"
 	dw	30,50
 	asc	"D"
@@ -1494,6 +2101,9 @@ data10703
 	dfb	$ff
 
 data10800
+	asc	"H"
+	asc	"I"
+	dfb	0
 	asc	"S"
 	dw	15,190
 	asc	"D"
@@ -1567,6 +2177,9 @@ data10800
 	dfb	$ff
 	
 data10900
+	asc	"H"
+	asc	"I"
+	dfb	0
 	asc	"S"
 	dw	232,190
 	asc	"D"
@@ -1683,6 +2296,9 @@ data10906
 	dfb	$ff
 
 data11000
+	asc	"H"
+	asc	"I"
+	dfb	0
 	asc	"S"
 	dw	15,190
 	asc	"D"
@@ -1772,6 +2388,9 @@ data11002
 	dfb	$ff
 	
 data11500
+	asc	"H"
+	asc	"I"
+	dfb	0
 	asc	"S"
 	dw	15,180
 	asc	"D"
@@ -1859,6 +2478,9 @@ data11500
 	dfb	$ff
 	
 data11700
+	asc	"H"
+	asc	"I"
+	dfb	0
 	asc	"S"
 	dw	15,190
 	asc	"D"
@@ -1978,6 +2600,9 @@ data11700
 	dfb	$ff
 	
 data11800
+	asc	"H"
+	asc	"I"
+	dfb	0
 	asc	"S"
 	dw	15,191
 	asc	"D"
@@ -2093,6 +2718,9 @@ data11800
 	dfb	$ff
 	
 data12200
+	asc	"H"
+	asc	"I"
+	dfb	0
 	asc	"S"
 	dw	15,190
 	asc	"D"
@@ -2135,6 +2763,8 @@ data12201
 	asc	"D"
 	dw	23,0
 	asc	"D"
+	dfb	$ff
+data12202
 	dw	0,-60
 	asc	"D"
 	dw	-23,17
@@ -2142,26 +2772,26 @@ data12201
 	dw	0,80
 	dfb	$ff
 *IF LX<>2 THEN
-data12202
+data12203
 	asc	"D"
 	dw	23,-37
 	asc	"D"
 	dw	-23,37
 	dfb	$ff
 * 12230
-data12203
+data12204
 	asc	"D"
 	dw	-22,40
 	dfb	$ff
 *IF LX<>2 THEN
-data12204
+data12205
  	asc	"S"
 	dw	57,88
 	asc	"C"
 	dfb	1
 	dfb	$ff
 *IF LX<>0 THEN
-data12205
+data12206
  	asc	"S"
 	dw	117,45
 	asc	"C"
@@ -2169,8 +2799,7 @@ data12205
 	asc	"I"
 	dfb	3
 	dfb	$ff
-	
-data12240
+data12207
 	asc	"S"
 	dw	105,60
 	asc	"D"
@@ -2192,6 +2821,9 @@ data12240
 	dfb	$ff
 
 data12300
+	asc	"H"
+	asc	"I"
+	dfb	0
 	asc	"S"
 	dw	15,190
 	asc	"D"
@@ -2255,6 +2887,9 @@ data12300
 	dfb	$ff
 	
 data12400
+	asc	"H"
+	asc	"I"
+	dfb	0
 	asc	"S"
 	dw	30,164
 	asc	"D"
@@ -2328,128 +2963,120 @@ data12400
 	asc	"I"
 	dfb	3
 	dfb	$ff
-	
-*-----------------------------------
-* 13000 - WAIT FOR KEYPRESS
-*-----------------------------------
 
-sub13000	lda	KBD	; on keypress, wait 5s
-	bpl	sub13001	; or 1s IF none
-	bit	KBDSTROBE
-	
-	@wait	#400
-
-sub13001	@wait	#100
-	rts
-
-*-----------------------------------
-* 30000 - SARABANDE
-*-----------------------------------
-
-sub30000
-	rts
-	
-*-----------------------------------
-* 31000 - BADINERIE
-*-----------------------------------
-
-sub31000
-	rts
-	
-*-----------------------------------
-* 32000 - TEA FOR TWO
-*-----------------------------------
-
-sub32000
-	rts
-	
-*-----------------------------------
-* 33000 - GAGNE
-*-----------------------------------
-
-sub33000
-	jsr	setTEXTFULL
-	rts
-	
-*-----------------------------------
-* CODE 6502
-*-----------------------------------
-
-*----------------------
-* setTEXTFULL
-*----------------------
-
-setTEXTFULL			; 40x24 text
-	sta	CLR80VID
-	jsr	INIT	; text screen
-	jsr	SETNORM	; set normal text mode
-	jsr	SETKBD	; reset input to keyboard
-	jmp	HOME	; home cursor and clear to end of page
-
-*----------------------
-* setHGR1
-*----------------------
-
-setHGR1			; HGR1
-	sta	TXTCLR
-	sta	MIXCLR
-	sta	TXTPAGE1
-	sta	HIRES	
-	rts		; 
-
-*----------------------
-* setMIXEDON
-*----------------------
-
-setMIXEDON			; HGR + 4 LINES OF TEXT
-	sta	TXTCLR
-	sta	MIXSET
-	rts
-	
-*----------------------
-* setMIXEDOFF
-*----------------------
-
-setMIXEDOFF			; TEXT ONLNY
-	sta	TXTSET
-	sta	MIXCLR
-	rts
-
-*----------------------
-* printCSTR
-*----------------------
-
-printCSTRING
-	sty	pcs1+1
-	stx	pcs1+2
-	
-pcs1	lda	$ffff
-	beq	pcs2
-	jsr	COUT
-	
-	inc	pcs1+1
-	bne	pcs1
-	inc	pcs1+2
-	bne	pcs1
-	
-pcs2	rts
-
-*----------------------
-* waitMS
-*----------------------
-
-waitMS
-	sty	LINNUM
-doW1	ldy	LINNUM
-]lp	lda	#60	; 1/100ème de seconde
-	jsr	WAIT
-	dey
-	bne	]lp
-	dex
-	bpl	doW1
-	rts
-
-	rts
+data13000
+	asc	"H"
+	asc	"I"
+	dfb	0
+	asc	"S"
+	dw	75,62
+	asc	"D"
+	dw	-5,0
+	asc	"D"
+	dw	-55,108
+	asc	"D"
+	dw	37,-10
+	asc	"D"
+	dw	30,-90
+	asc	"D"
+	dw	-19,5
+	asc	"D"
+	dw	19,-5
+	asc	"D"
+	dw	20,5
+	asc	"D"
+	dw	-12,94
+	asc	"D"
+	dw	-38,-10
+	asc	"D"
+	dw	38,10
+	asc	"D"
+	dw	0,20
+	asc	"D"
+	dw	-75,0
+	asc	"D"
+	dw	0,-20
+	asc	"D"
+	dw	0,20
+	asc	"D"
+	dw	75,0
+	asc	"D"
+	dw	15,-112
+	asc	"D"
+	dw	0,-15
+	asc	"D"
+	dw	-3,14
+	asc	"D"
+	dw	3,-14
+	asc	"D"
+	dw	-13,0
+	asc	"D"
+	dw	0,-12
+	asc	"D"
+	dw	0,12
+	asc	"D"
+	dw	-4,10
+	asc	"D"
+	dw	0,-22
+	asc	"D"
+	dw	12,0
+	asc	"D"
+	dw	4,-7
+	asc	"D"
+	dw	0,-15
+	asc	"D"
+	dw	-4,6
+	asc	"D"
+	dw	0,16
+	asc	"D"
+	dw	0,-16
+	asc	"D"
+	dw	-12,0
+	asc	"D"
+	dw	4,-6
+	asc	"D"
+	dw	12,0
+	asc	"D"
+	dw	-12,0
+	asc	"D"
+	dw	0,-16
+	asc	"D"
+	dw	-4,6
+	asc	"D"
+	dw	0,16
+	asc	"D"
+	dw	0,-16
+	asc	"D"
+	dw	-12,0
+	asc	"D"
+	dw	4,-6
+	asc	"D"
+	dw	12,0
+	asc	"D"
+	dw	-12,0
+	asc	"D"
+	dw	-4,6
+	asc	"D"
+	dw	0,16
+	asc	"D"
+	dw	-12,0
+	asc	"D"
+	dw	4,-6
+	asc	"D"
+	dw	7,0
+	asc	"D"
+	dw	-7,0
+	asc	"D"
+	dw	-4,6
+	asc	"D"
+	dw	0,16
+	asc	"D"
+	dw	12,0
+	asc	"D"
+	dw	0,22
+	asc	"I"
+	dfb	3
+	dfb	$ff
 
 *-----------------------------------
 * VARIABLES
@@ -2557,12 +3184,12 @@ tblO$
 	asc	"UN TELEPORTEUR REPARE"00
 	asc	"UNE COMBINAISON ARGENTEE"00
 	asc	"UNE COMBINAISON ENFILEE"00
-	asc	"UN MONSTRE ALL'A7'EST"00
+	asc	"UN MONSTRE ALL"A7"EST"00
 	asc	"UN PISTOLET"00
 	asc	"UN BRIQUET"00
 	asc	"UN BRIQUET ALLUME"00
 	asc	"UN POT"00
-	asc	"UN POT PLEIN D'A7'EAU"00
+	asc	"UN POT PLEIN D"A7"EAU"00
 
 *---
 
@@ -2751,11 +3378,11 @@ tblC$
 
 *-----------------------------------
 
-C	ds	10
+C	ds	10+1
 F1	ds	1
 H	ds	1
 LX	ds	1
 N	ds	1
-P	ds	13
+P	ds	13+1
 SALLE	ds	1
 

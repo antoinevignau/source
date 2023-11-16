@@ -36,6 +36,8 @@ SET80VID	=	$c00d
 KBDSTROBE	=	$c010
 MONOCOLOR	=	$c021
 NEWVIDEO	=	$c029
+SPKR	=	$c030
+CYAREG	=	$C036
 TXTCLR	=	$c050
 TXTSET	=	$c051
 MIXCLR	=	$c052
@@ -78,16 +80,26 @@ MONZ	=	$FF69
 * MACROS
 *-----------------------------------
 
-@print	mac
-	ldx	#>]1
-	ldy	#<]1
-	jsr	printCSTRING
-	eom
-
 @draw	mac
 	ldx	#>]1
 	ldy	#<]1
 	jsr	drawPICTURE
+	eom
+
+@key$	mac
+	jsr	KEY$
+	eom
+
+@play	mac
+	ldx	#>]1
+	ldy	#<]1
+	jsr	playMUSIC
+	eom
+
+@print	mac
+	ldx	#>]1
+	ldy	#<]1
+	jsr	printCSTRING
 	eom
 
 @wait	mac
@@ -100,32 +112,82 @@ MONZ	=	$FF69
 * CODE BASIC EN ASM :-)
 *-----------------------------------
 
+	sec		; 1 MHz vaincra!
+	jsr	IDROUTINE
+	bcs	notiigs
+
+	lda	CYAREG
+	and	#%0111_1111
+	sta	CYAREG
+notiigs
 	jsr	introPIC	; la picture GR
-	jsr	sub51000	; le disclaimer
-	jsr	sub40000	; les instructions
+	jsr	:51000	; le disclaimer
+	jsr	:40000	; les instructions
 
 REPLAY
-	jsr	setTEXTFULL
-
-	lda	#20
-	jsr	TABV
-	
 	jsr	initALL
 
-	jsr	sub200
-	jsr	RDKEY
-	jsr	sub20000
-	
-	rts
-	
+*-----------------------------------
+* DU BASIC A L'ASSEMBLEUR (BEURK)
+*-----------------------------------
+
+:100	lda	SALLE
+	cmp	#14
+	beq	:101
+	cmp	#16
+	beq	:101
+	cmp	#17
+	beq	:101
+	cmp	#19
+	bne	:105
+
+:101	lda	#0
+	ldx	#2
+	sta	P,x
+
+:105	ldx	#2
+	lda	P,x
+	cmp	#2
+	bne	:200
+
+	ldx	#22
+	lda	O,x
+	cmp	SALLE
+	bne	:107
+	ldx	#7
+	lda	P,x
+	cmp	#1
+	beq	:200
+
+:107	ldx	#5
+	lda	O,x
+	cmp	SALLE
+	bne	:110
+	ldx	#3
+	lda	P,x
+	cmp	#1
+	beq	:200
+
+:110	ldx	#9
+	lda	C,x
+	cmp	#2
+	bcc	:130
+	sec		; enter if >1
+	sbc	#1
+	sta	C,x
+
+:130	jsr	HGR
+	jsr	setMIXEDON
+	@print	#strILFAITNOIR
+	@wait	#400
+	jmp	:500
+
 *-----------------------------------
 * 200 - description salle
 *-----------------------------------
 
-*-----------------------------------
-
-sub200
-	@print	#strSUBVOUS	; always output "VOUS ETES "
+:200
+	@print	#strVOUS	; always output "VOUS ETES "
 
 	lda	SALLE
 	sec
@@ -134,15 +196,15 @@ sub200
 	tax
 	jsr	(tbl7000,x)
 	
-	jsr	KEY$	; check keypress
+	@key$
 	
 	lda	#0
 	sta	H
 	lda	#1
 	sta	N
 	
-	ldx	N
-	lda	tblO-1,x
+:310	ldx	N
+	lda	O,x
 	cmp	SALLE
 	bne	:400
 	
@@ -150,201 +212,317 @@ sub200
 	cmp	#1
 	beq	:350
 
-	@print	#strILYADANS
+	@print	#strILYA
 	
 	lda	#1
 	sta	H
 
-:350	
+:350	@print	#strSPACE
+	lda	N
+	asl
+	tax
+	ldy	tblO$,x
+	lda	tblO$+1,x
+	tax
+	jsr	printCSTRING
+	@wait	#150
+	
+:400	lda	N
+	clc
+	adc	#1
+	sta	N
+	cmp	#O	; la constante 25
+	bcc	:310
+	beq	:310
 
-:400	rts
-
-*----------
-
-strILYADANS	asc	"IL Y A DANS LA SALLE : "00
+	@print	#strRETURN
 
 *-----------------------------------
-* 7000
+* 500 - ACCEPTATION COMMANDE
+*-----------------------------------
+
+:500	lda	#1
+	sta	T
+	lda	#0
+	sta	Y1
+	sta	Y2
+	sta	N
+	jmp	:1000
+
+:530
+
+*---------
+
+strILFAITNOIR
+	asc	"IL FAIT NOIR COMME DANS UN FOUR, IL"8D
+	asc	"FAUDRAIT PEUT-ETRE ALLUMER"00
+		
+strILYA	asc	"IL Y A DANS LA SALLE :"00
+strSPACE	asc	" "00
+strRETURN	asc	8D
+
+*-----------------------------------
+* 900 - CONTROLE MVT
+*-----------------------------------
+
+:900	lda	#1
+	sta	Z
+
+:1000
+
+*-----------------------------------
+* 4000 - LES REPONSES
+*-----------------------------------
+
+*---------
+
+:4600
+	@wait	#200	; et le texte
+	@print	#strCODEEXACT
+	@wait	#400
+	jsr	:10000
+	@print	#strENDEHORS
+	jmp	:32000
+
+strCODEEXACT
+	asc	"LE CODE EST EXACT... LA PORTE S"A7"OUVRE..."00
+strENDEHORS
+	asc	"VOUS VOILA EN DEHORS DE LA MAISON..."
+
+*---------
+
+:4610
+	@print	#str4610
+	@wait	#400
+	@print	#str4615
+	@wait	#150
+	rts
+
+str4610	asc	"A L"A7"INTERIEUR DU PLACARD, IL Y A UN MOT"8D
+	asc	"PARLE D"A7"UN TELEPORTEUR"00
+str4615	asc	"TIENS LE PLACARD SE FERME TOUT SEUL..."00
+
+*---------
+
+:4620
+	@print	#str4620
+	@wait	#350
+	rts
+	
+str4620	asc	"AVANT DE LA POSER A TERRE, IL FAUDRAIT"8D
+	asc	"PEUT-ETRE L"A7"ENLEVER"00
+
+*	asc	"1234567890123456789012345678901234567890"
+
+
+*---------
+
+:4630
+	@print	#str4630
+	@wait	#400
+	rts
+	
+str4630	asc	"IL Y A UN HORRIBLE MONSTRE DEVANT VOUS"8D
+	asc	"QUI EST SORTI DU PLACARD."00
+	
+*---------
+
+:4640
+	@print	#str4640
+	@wait	#350
+	rts
+
+str4640	asc	"LE PLACARD ETAIT PIEGE, VOUS N"A7"AURIEZ"8D
+	asc	"PAS DU L"A7"OUVRIR"00
+
+*-----------------------------------
+* 6000 - ANALYSE DU MOT
+*-----------------------------------
+
+:6000
+
+*-----------------------------------
+* 7000 - DESCRIPTION DES PIECES
 *-----------------------------------
 
 tbl7000
-	da	sub7000
-	da	sub7010
-	da	sub7020
-	da	sub7030
-	da	sub7040
-	da	sub7050
-	da	sub7060
-	da	sub7070
-	da	sub7080
-	da	sub7090
-	da	sub7100
-	da	sub7110
-	da	sub7120
-	da	sub7130
-	da	sub7140
-	da	sub7150
-	da	sub7160
-	da	sub7170
-	da	sub7180
-	da	sub7190
-	da	sub7200
-	da	sub7210
-	da	sub7220
-	da	sub7230
-	da	sub7240
+	da	:7000
+	da	:7010
+	da	:7020
+	da	:7030
+	da	:7040
+	da	:7050
+	da	:7060
+	da	:7070
+	da	:7080
+	da	:7090
+	da	:7100
+	da	:7110
+	da	:7120
+	da	:7130
+	da	:7140
+	da	:7150
+	da	:7160
+	da	:7170
+	da	:7180
+	da	:7190
+	da	:7200
+	da	:7210
+	da	:7220
+	da	:7230
+	da	:7240
 
-sub7000
-	@print	#strSUB7000
+:7000
+	@print	#str7000
 	@wait	#250
-	@print	#strSUB7001
-	jsr	sub10000
+	@print	#str7001
+	jsr	:10000
 	rts
 
-sub7010
-	@print	#strSUB7010
-	jsr	sub10100
+:7010
+	@print	#str7010
+	jsr	:10100
 	rts
 
-sub7020
-	@print	#strSUB7020
-	jsr	sub10200
+:7020
+	@print	#str7020
+	jsr	:10200
 	rts
 
-sub7030
-	@print	#strSUB7030
+:7030
+	@print	#str7030
 	lda	#0
 	sta	F1
-	jsr	sub10300
+	jsr	:10300
 	rts
 
-sub7040
-	@print	#strSUB7040
+:7040
+	@print	#str7040
 	lda	#1
 	sta	F1
-	jsr	sub10300
+	jsr	:10300
 	rts
 
-sub7050
-	@print	#strSUB7050
-	jsr	sub10500
+:7050
+	@print	#str7050
+	jsr	:10500
 	rts
 
-sub7060
-	@print	#strSUB7060
-	jsr	sub10600
+:7060
+	@print	#str7060
+	jsr	:10600
 	rts
 
-sub7070
-	@print	#strSUB7070
+:7070
+	@print	#str7070
 	lda	#0
 	sta	LX
-	jsr	sub10700
+	jsr	:10700
 	rts
 
-sub7080
-	@print	#strSUB7080
-	jsr	sub10800
+:7080
+	@print	#str7080
+	jsr	:10800
 	rts
 
-sub7090
-	@print	#strSUB7090
+:7090
+	@print	#str7090
 	lda	#0
 	sta	LX
-	jsr	sub10900
+	jsr	:10900
 	rts
 
-sub7100
-	@print	#strSUB7100
+:7100
+	@print	#str7100
 	lda	#0
 	sta	LX
-	jsr	sub11000
+	jsr	:11000
 	rts
 
-sub7110
-	@print	#strSUB7110
+:7110
+	@print	#str7110
 	lda	#2
 	sta	LX
-	jsr	sub10700
+	jsr	:10700
 	rts
 
-sub7120
-	@print	#strSUB7120
+:7120
+	@print	#str7120
 	lda	#1
 	sta	LX
-	jsr	sub10700
+	jsr	:10700
 	rts
 
-sub7130		; nada
+:7130		; nada
 	rts
 
-sub7140
-	@print	#strSUB7140
+:7140
+	@print	#str7140
 	lda	#2
 	sta	LX
-	jsr	sub12200
+	jsr	:12200
 	rts
 
-sub7150
-	@print	#strSUB7150
-	@print	#strSUB7001
-	jsr	sub11500
+:7150
+	@print	#str7150
+	@print	#str7001
+	jsr	:11500
 	rts
 
-sub7160
-	@print	#strSUB7160
+:7160
+	@print	#str7160
 	lda	#1
 	sta	LX
-	jsr	sub10900
+	jsr	:10900
 	rts
 
-sub7170
+:7170
 	@wait	#300
-	@print	#strSUB7170
-	jsr	sub11700
+	@print	#str7170
+	jsr	:11700
 	rts
 
-sub7180
-	@print	#strSUB7180
-	jsr	sub11800
+:7180
+	@print	#str7180
+	jsr	:11800
 	rts
 
-sub7190
-	@print	#strSUB7190
+:7190
+	@print	#str7190
 	lda	#2
 	sta	LX
-	jsr	sub10900
+	jsr	:10900
 	rts
 
-sub7200
-	@print	#strSUB7200
+:7200
+	@print	#str7200
 	lda	#1
 	sta	LX
-	jsr	sub12200
+	jsr	:12200
 	rts
 
-sub7210
-	@print	#strSUB7210
+:7210
+	@print	#str7210
 	lda	#1
 	sta	LX
-	jsr	sub11000
+	jsr	:11000
 	rts
 
-sub7220
-	@print	#strSUB7220
+:7220
+	@print	#str7220
 	lda	#0
 	sta	LX
-	jsr	sub12200
+	jsr	:12200
 	rts
 
-sub7230
-	@print	#strSUB7230
-	jsr	sub12300
+:7230
+	@print	#str7230
+	jsr	:12300
 	rts
 
-sub7240
-	@print	#strSUB7240
-	jsr	sub12400
+:7240
+	@print	#str7240
+	jsr	:12400
 	rts
 
 *----------
@@ -353,33 +531,33 @@ sub7240
 *		"0123456789012345678901234567890123456789"
 *		"----------------------------------------"
 
-strSUBVOUS	asc	8D"VOUS ETES "00
-strSUB7000	asc	"DEVANT LE MANOIR DU DEFUNT"00
-strSUB7001	asc	8D"            DR GENIUS"00
-strSUB7010	asc	"DANS LE HALL D"A7"ENTREE"00
-strSUB7020	asc	"EN BAS DE L"A7"ESCALIER MENANTAU 2EME ETAGE"00
-strSUB7030	asc	"DANS LA SALLE A MANGER"00
-strSUB7040	asc	"DANS UNE BIBLIOTHEQUE SANS LIVRE...!"00
-strSUB7050	asc	"DANS UNE BUANDERIE"00
-strSUB7060	asc	"DANS LE SALON"00
-strSUB7070	asc	"DANS UNE CHAMBRE"00
-strSUB7080	asc	"DANS UN CORRIDOR"00
-strSUB7090	asc	"DANS UNE SALLE D"A7"ATTENTE"00
-strSUB7100	asc	"DANS LE VESTIBULE"00
-strSUB7110	asc	"DANS LA CHAMBRE D"A7"AMIS"00
-strSUB7120	asc	"DANS UNE CHAMBRE"00
-strSUB7130	asc	""00	; nada
-strSUB7140	asc	"DANS UNE PETITE SALLE"00
-strSUB7150	asc	"DANS LE LABORATOIRE DU"00	; + SUB7001
-strSUB7160	asc	"DANS UNE PETITE PIECE VIDE"00
-strSUB7170	asc	"! JUSTEMENT, VOUS NE SAVEZ PASOU VOUS ETES"00
-strSUB7180	asc	"EN HAUT DE L"A7"ESCALIER"00
-strSUB7190	asc	"DANS LA SALLE DE BAINS"00
-strSUB7200	asc	"DANS LE LIVING ROOM"00
-strSUB7210	asc	"DANS UNE PIECE ENFUMEE"00
-strSUB7220	asc	"DANS UNE GRANDE PIECE"00
-strSUB7230	asc	"DANS UNE PIECE DE RANGEMENT"00
-strSUB7240	asc	"DANS LE DRESSING"00
+strVOUS	asc	8D"VOUS ETES "00
+str7000	asc	"DEVANT LE MANOIR DU DEFUNT"00
+str7001	asc	8D"            DR GENIUS"00
+str7010	asc	"DANS LE HALL D"A7"ENTREE"00
+str7020	asc	"EN BAS DE L"A7"ESCALIER MENANTAU 2EME ETAGE"00
+str7030	asc	"DANS LA SALLE A MANGER"00
+str7040	asc	"DANS UNE BIBLIOTHEQUE SANS LIVRE...!"00
+str7050	asc	"DANS UNE BUANDERIE"00
+str7060	asc	"DANS LE SALON"00
+str7070	asc	"DANS UNE CHAMBRE"00
+str7080	asc	"DANS UN CORRIDOR"00
+str7090	asc	"DANS UNE SALLE D"A7"ATTENTE"00
+str7100	asc	"DANS LE VESTIBULE"00
+str7110	asc	"DANS LA CHAMBRE D"A7"AMIS"00
+str7120	asc	"DANS UNE CHAMBRE"00
+str7130	asc	""00	; nada
+str7140	asc	"DANS UNE PETITE SALLE"00
+str7150	asc	"DANS LE LABORATOIRE DU"00	; + :7001
+str7160	asc	"DANS UNE PETITE PIECE VIDE"00
+str7170	asc	"! JUSTEMENT, VOUS NE SAVEZ PASOU VOUS ETES"00
+str7180	asc	"EN HAUT DE L"A7"ESCALIER"00
+str7190	asc	"DANS LA SALLE DE BAINS"00
+str7200	asc	"DANS LE LIVING ROOM"00
+str7210	asc	"DANS UNE PIECE ENFUMEE"00
+str7220	asc	"DANS UNE GRANDE PIECE"00
+str7230	asc	"DANS UNE PIECE DE RANGEMENT"00
+str7240	asc	"DANS LE DRESSING"00
 
 *-----------------------------------
 * 8000 - CHARGEMENT VARIABLES
@@ -390,7 +568,7 @@ initALL
 	sta	SALLE
 	
 	ldx	#10
-	txa
+	lda	#0
 ]lp	sta	P,x
 	sta	C,x
 	dex
@@ -416,225 +594,187 @@ initALL
 * 10000 - LES IMAGES
 *-----------------------------------
 
-sub10000
+:10000
 	@draw	#data10000
 	rts
 	
-sub10100
+:10100
 	@draw	#data10100
 	rts
 	
-sub10200
+:10200
 	@draw	#data10200
 	rts
 	
-sub10300
+:10300
 	@draw	#data10300
 	lda	F1
-	bne	sub10301
+	bne	:10301
 	@draw	#data10301
-sub10301	rts
+:10301	rts
 	
-sub10400
+:10400
 	@draw	#data10400
 	rts
 	
-sub10500
+:10500
 	@draw	#data10500
 	rts
 	
-sub10600
+:10600
 	@draw	#data10600
 	rts
 	
-sub10700
+:10700
 	@draw	#data10700
 	lda	LX
 	cmp	#2
-	beq	sub10745
+	beq	:10745
 	@draw	#data10701
-sub10745	lda	LX
-	bne	sub10750
+:10745	lda	LX
+	bne	:10750
 	@draw	#data10702
 	rts
-sub10750	cmp	#1
-	beq	sub10780
+:10750	cmp	#1
+	beq	:10780
 	@draw	#data10703
 	rts
-sub10780	@draw	#data10704
+:10780	@draw	#data10704
 	rts
 
-sub10800
+:10800
 	@draw	#data10800
 	rts
 	
-sub10900
+:10900
 	@draw	#data10900
 	lda	LX
-	bne	sub10915
+	bne	:10915
 	@draw	#data10901
-	jmp	sub10920
-sub10915	@draw	#data10902
-sub10920	@draw	#data10903
+	jmp	:10920
+:10915	@draw	#data10902
+:10920	@draw	#data10903
 	lda	LX
-	bne	sub10935
+	bne	:10935
 	@draw	#data10904
 	rts
-sub10935	cmp	#1
-	bne	sub10940
+:10935	cmp	#1
+	bne	:10940
 	@draw	#data10905
 	rts
-sub10940	@draw	#data10906
+:10940	@draw	#data10906
 	rts
 	
-sub11000
+:11000
 	@draw	#data11000
 	lda	LX
-	bne	sub11030
+	bne	:11030
 	@draw	#data11001
 	rts
-sub11030	@draw	#data11002
+:11030	@draw	#data11002
 	rts
 
-sub11500
+:11500
 	@draw	#data11500
 	rts
 	
-sub11700
+:11700
 	@draw	#data11700
 	rts
 	
-sub11800
+:11800
 	@draw	#data11800
 	rts
 	
-sub12200
+:12200
 	@draw	#data12200
 	lda	LX
 	cmp	#2
-	bne	sub12220
+	bne	:12220
 	@draw	#data12201
-sub12220	@draw	#data12202
+:12220	@draw	#data12202
 	lda	LX
 	cmp	#2
-	beq	sub12230
+	beq	:12230
 	@draw	#data12203
-sub12230	@draw	#data12204
+:12230	@draw	#data12204
 	lda	LX
 	cmp	#2
-	beq	sub12235
+	beq	:12235
 	@draw	#data12205
-sub12235	lda	LX
-	beq	sub12240
+:12235	lda	LX
+	beq	:12240
 	@draw	#data12206
 	rts
-sub12240	@draw	#data12207
+:12240	@draw	#data12207
 	rts
 	
-sub12300
+:12300
 	@draw	#data12300
 	rts
 	
-sub12400
+:12400
 	@draw	#data12400
 	rts
 	
-sub13000
-	@draw	#data13000
-	rts
-
-*-----------------------------------
-* KEY$ - WAIT FOR KEYPRESS
-*-----------------------------------
-
-KEY$	lda	KBD	; on keypress, wait 5s
-	bpl	key$1	; or 1s IF none
-	bit	KBDSTROBE
-	
-	@wait	#400
-
-key$1	@wait	#100
-	rts
-
 *-----------------------------------
 * 20000 - PERDU
 *-----------------------------------
 
-sub20000
-	jsr	sub13000	; tombe
-	jsr	sub30000	; sarabande
-	jsr	RDKEY
-
-sub20100
+:20000
+	@draw	#data13000
+	@play	#zikPERDU
 	jsr	setTEXTFULL
+
+:20100
 ]lp	@print	#strREPLAY
 	jsr	RDKEY
 	cmp	#"N"
-	beq	sub20001
+	beq	:20001
 	cmp	#"O"
 	bne	]lp
 	jmp	REPLAY
-sub20001	jmp	MONZ
+:20001	jmp	MONZ
 
 *---------
 
 strREPLAY	asc	8D"VOULEZ-VOUS REJOUER ? "00
 	
 *-----------------------------------
-* 30000 - SARABANDE
+* 32000 - GAGNE
 *-----------------------------------
 
-sub30000
-	rts
-	
-*-----------------------------------
-* 31000 - BADINERIE
-*-----------------------------------
-
-sub31000
-	rts
-	
-*-----------------------------------
-* 32000 - TEA FOR TWO
-*-----------------------------------
-
-sub32000
-	rts
-	
-*-----------------------------------
-* 33000 - GAGNE
-*-----------------------------------
-
-sub33000
+:32000
 	jsr	setTEXTFULL
 	@print	#strGAGNE
-	jmp	sub20100
+	@play	#zikGAGNE
+	jmp	:20100
 
 *---------
 
-strGAGNE	asc	"CELA EST EXCEPTIONNEL. VOUS ETES LE"8D
-	asc	"PREMIER A ETRE SORTI VIVANT DE CETTE"8D
-	asc	"MAISON, MAIS SI J'ETAIS VOUS, JE ME"8D
-	asc	"METTRAIS A COURIR CAR UN NAIN RODE"8D
-	asc	"PEUT-ETRE DANS LES PARAGES..."8D00
+strGAGNE	asc	"CELA EST EXCEPTIONNEL. VOUS ETES LE"8D8D
+	asc	"PREMIER A ETRE SORTI VIVANT DE CETTE"8D8D
+	asc	"MAISON, MAIS SI J'ETAIS VOUS, JE ME"8D8D
+	asc	"METTRAIS A COURIR CAR UN NAIN RODE"8D8D
+	asc	"PEUT-ETRE DANS LES PARAGES..."00
 	
 *-----------------------------------
 * 40000 - LISTE DES INSTRUCTIONS
 *-----------------------------------
 
-sub40000
+:40000
 	jsr	setTEXTFULL
 ]lp	@print	#strINSTR
 	jsr	RDKEY
 	cmp	#"N"
-	beq	sub40001
+	beq	:40001
 	cmp	#"O"
 	bne	]lp
 
 	@print	#strINSTR2
 	jsr	RDKEY
 	
-sub40001	rts
+:40001	rts
 
 *---------
 
@@ -663,7 +803,7 @@ strINSTR2	asc	8D8D
 * 51000 - DISCLAIMER
 *-----------------------------------
 
-sub51000
+:51000
 	jsr	setTEXTFULL
 	@print	#strDISCLAIMER
 	jmp	RDKEY
@@ -719,7 +859,9 @@ introPIC
 	lda	#5
 	sta	CH
 	@print	#strINTRO4
-	jmp	RDKEY
+	
+	@play	#zikINTRODUCTION
+	rts
 	
 *---------
 
@@ -753,6 +895,19 @@ strINTRO3	asc	"        MERCI FRED_72         "00
 strINTRO4	asc	"(C) 1983, L. BENES & LORICIELS"00
 
 *-----------------------------------
+* KEY$ - WAIT FOR KEYPRESS
+*-----------------------------------
+
+KEY$	lda	KBD	; on keypress, wait 5s
+	bpl	key$1	; or 1s IF none
+	bit	KBDSTROBE
+	
+	@wait	#400
+
+key$1	@wait	#100
+	rts
+
+*-----------------------------------
 * CODE 6502
 *-----------------------------------
 
@@ -760,7 +915,7 @@ strINTRO4	asc	"(C) 1983, L. BENES & LORICIELS"00
 * setTEXTFULL
 *----------------------
 
-setTEXTFULL			; 40x24 text
+setTEXTFULL		; 40x24 text
 	sta	CLR80VID
 	jsr	INIT	; text screen
 	jsr	SETNORM	; set normal text mode
@@ -768,10 +923,10 @@ setTEXTFULL			; 40x24 text
 	jmp	HOME	; home cursor and clear to end of page
 
 *----------------------
-* setHGR1
+* setHGR
 *----------------------
 
-setHGR1			; HGR1
+setHGR			; HGR
 	sta	TXTCLR
 	sta	MIXCLR
 	sta	TXTPAGE1
@@ -785,7 +940,12 @@ setHGR1			; HGR1
 setMIXEDON		; HGR + 4 LINES OF TEXT
 	sta	TXTCLR
 	sta	MIXSET
-	rts
+	
+	lda	#20	; et c'est fenêtré en plus !
+	sta	WNDTOP
+	lda	#24
+	sta	WNDBTM
+	jmp	HOME
 	
 *----------------------
 * setMIXEDOFF
@@ -1007,2226 +1167,169 @@ thePAPER	ds	1
 oric2hgr	hex	0705010602030400
 
 *-----------------------------------
-* DONNEES DES IMAGES
-*-----------------------------------
-
-data10000
-	asc	"H"
-	asc	"I"
-	dfb	0
-	asc	"S"
-	dw	100,190
-	asc	"D"
-	dw	0,-60
-	asc	"D"
-	dw	97,0
-	asc	"D"
-	dw	7,10
-	asc	"D"
-	dw	-97,0
-	asc	"D"
-	dw	-7,-10
-	asc	"D"
-	dw	15,-20
-	asc	"D"
-	dw	-30,-50
-	asc	"D"
-	dw	-15,20
-	asc	"D"
-	dw	30,50
-	asc	"S"
-	dw	100,190
-	asc	"D"
-	dw	-30,-50
-	asc	"D"
-	dw	0,-60
-	asc	"S"
-	dw	100,190
-	asc	"D"
-	dw	22,0
-	asc	"D"
-	dw	0,-30
-	asc	"D"
-	dw	15,0
-	asc	"D"
-	dw	0,30
-	asc	"D"
-	dw	60,0
-	asc	"D"
-	dw	0,-50
-	asc	"M"
-	dw	0,-10
-	asc	"D"
-	dw	0,-30
-	asc	"D"
-	dw	-67,-40
-	asc	"D"
-	dw	-23,30
-	asc	"D"
-	dw	-30,-50
-	asc	"D"
-	dw	23,-30
-	asc	"D"
-	dw	30,50
-	asc	"S"
-	dw	197,100
-	asc	"D"
-	dw	-45,-60
-	asc	"D"
-	dw	-52,-30
-	asc	"S"
-	dw	85,60
-	asc	"D"
-	dw	0,-6
-	asc	"S"
-	dw	115,110
-	asc	"D"
-	dw	0,-30
-	asc	"M"
-	dw	7,0
-	asc	"D"
-	dw	7,-10
-	asc	"D"
-	dw	7,10
-	asc	"D"
-	dw	0,20
-	asc	"D"
-	dw	-15,0
-	asc	"D"
-	dw	0,-20
-	asc	"M"
-	dw	7,-10
-	asc	"D"
-	dw	0,30
-	asc	"S"
-	dw	182,100
-	asc	"D"
-	dw	-30,0
-	asc	"D"
-	dw	0,20
-	asc	"D"
-	dw	30,0
-	asc	"D"
-	dw	0,-20
-	asc	"M"
-	dw	-7,0
-	asc	"D"
-	dw	0,20
-	asc	"M"
-	dw	-16,0
-	asc	"D"
-	dw	0,-20
-	asc	"S"
-	dw	122,190
-	asc	"D"
-	dw	13,7
-	asc	"D"
-	dw	0,-30
-	asc	"D"
-	dw	-13,-7
-	asc	"S"
-	dw	133,182
-	asc	"S"
-	dw	182,150
-	asc	"D"
-	dw	-30,0
-	asc	"D"
-	dw	0,20
-	asc	"D"
-	dw	30,0
-	asc	"D"
-	dw	0,-20
-	asc	"M"
-	dw	-7,0
-	asc	"D"
-	dw	0,20
-	asc	"M"
-	dw	-16,0
-	asc	"D"
-	dw	0,-20
-	asc	"S"
-	dw	78,130
-	asc	"D"
-	dw	15,25
-	asc	"D"
-	dw	0,-20
-	asc	"D"
-	dw	-15,-25
-	asc	"D"
-	dw	0,20
-	asc	"M"
-	dw	3,5
-	asc	"D"
-	dw	0,-20
-	asc	"M"
-	dw	9,15
-	asc	"D"
-	dw	0,20
-	asc	"I"
-	dfb	3
-	asc	"I"
-	dfb	3
-	dfb	$ff
-
-data10100
-	asc	"H"
-	asc	"I"
-	dfb	0
-	asc	"S"
-	dw	15,190
-	asc	"D"
-	dw	0,-160
-	asc	"D"
-	dw	75,-20
-	asc	"D"
-	dw	0,40
-	asc	"D"
-	dw	0,-40
-	asc	"D"
-	dw	60,0
-	asc	"D"
-	dw	0,20
-	asc	"D"
-	dw	10,10
-	asc	"D"
-	dw	-40,0
-	asc	"D"
-	dw	40,0
-	asc	"D"
-	dw	0,3
-	asc	"D"
-	dw	-40,0
-	asc	"D"
-	dw	0,-3
-	asc	"D"
-	dw	0,-10
-	asc	"D"
-	dw	30,0
-	asc	"D"
-	dw	0,-20
-	asc	"D"
-	dw	82,20
-	asc	"D"
-	dw	0,160
-	asc	"D"
-	dw	-73,-126
-	asc	"D"
-	dw	73,126
-	asc	"D"
-	dw	-30,-50
-	asc	"D"
-	dw	0,-80
-	asc	"D"
-	dw	-22,-16
-	asc	"D"
-	dw	0,58
-	asc	"M"
-	dw	19,-9
-	asc	"C"
-	dfb	1
-	asc	"S"
-	dw	15,190
-	asc	"D"
-	dw	37,-68
-	asc	"D"
-	dw	0,-70
-	asc	"D"
-	dw	18,-13
-	asc	"D"
-	dw	0,50
-	asc	"D"
-	dw	-18,33
-	asc	"D"
-	dw	38,-71
-	asc	"D"
-	dw	31,0
-	asc	"D"
-	dw	0,-8
-	asc	"D"
-	dw	0,23
-	asc	"D"
-	dw	3,0
-	asc	"D"
-	dw	0,-23
-	asc	"D"
-	dw	0,8
-	asc	"D"
-	dw	21,0
-	asc	"D"
-	dw	0,-8
-	asc	"D"
-	dw	0,8
-	asc	"D"
-	dw	1,2
-	asc	"D"
-	dw	0,-10
-	asc	"D"
-	dw	0,10
-	asc	"D"
-	dw	2,0
-	asc	"D"
-	dw	0,-10
-	asc	"D"
-	dw	0,8
-	asc	"D"
-	dw	2,0
-	asc	"D"
-	dw	0,-8
-	asc	"D"
-	dw	0,8
-	asc	"D"
-	dw	3,5
-	asc	"D"
-	dw	0,-12
-	asc	"D"
-	dw	0,20
-	asc	"D"
-	dw	2,3
-	asc	"D"
-	dw	0,-23
-	asc	"D"
-	dw	0,23
-	asc	"D"
-	dw	3,0
-	asc	"D"
-	dw	0,-23
-	asc	"S"
-	dw	67,68
-	asc	"C"
-	dfb	1
-	asc	"I"
-	dfb	3
-	dfb	$ff
-
-data10200
-	asc	"H"
-	asc	"I"
-	dfb	0
-	asc	"S"
-	dw	15,190
-	asc	"D"
-	dw	0,-120
-	asc	"D"
-	dw	105,-50
-	asc	"D"
-	dw	60,0
-	asc	"D"
-	dw	45,50
-	asc	"D"
-	dw	0,110
-	asc	"D"
-	dw	-45,-100
-	asc	"M"
-	dw	0,-60
-	asc	"D"
-	dw	0,60
-	asc	"D"
-	dw	-60,0
-	asc	"M"
-	dw	0,-60
-	asc	"D"
-	dw	0,60
-	asc	"D"
-	dw	-52,54
-	asc	"S"
-	dw	15,190
-	asc	"D"
-	dw	24,-26
-	asc	"D"
-	dw	0,-104
-	asc	"D"
-	dw	0,60
-	asc	"D"
-	dw	27,14
-	asc	"D"
-	dw	0,-10
-	asc	"D"
-	dw	53,-50
-	asc	"D"
-	dw	-6,-2
-	asc	"D"
-	dw	-54,47
-	asc	"M"
-	dw	7,3
-	asc	"D"
-	dw	-7,-3
-	asc	"D"
-	dw	0,-10
-	asc	"D"
-	dw	53,-44
-	asc	"D"
-	dw	0,8
-	asc	"D"
-	dw	0,-8
-	asc	"D"
-	dw	-5,-2
-	asc	"D"
-	dw	-56,40
-	asc	"D"
-	dw	9,4
-	asc	"D"
-	dw	-9,-4
-	asc	"D"
-	dw	0,-10
-	asc	"D"
-	dw	55,-36
-	asc	"D"
-	dw	0,7
-	asc	"D"
-	dw	0,-7
-	asc	"D"
-	dw	-5,-2
-	asc	"D"
-	dw	-56,33
-	asc	"D"
-	dw	7,3
-	asc	"D"
-	dw	-7,-3
-	asc	"D"
-	dw	0,-10
-	asc	"D"
-	dw	-5,-2
-	asc	"D"
-	dw	5,2
-	asc	"D"
-	dw	57,-30
-	asc	"D"
-	dw	0,8
-	asc	"D"
-	dw	0,-8
-	asc	"D"
-	dw	-5,-2
-	asc	"D"
-	dw	-57,25
-	asc	"D"
-	dw	57,-25
-	asc	"D"
-	dw	0,-7
-	asc	"D"
-	dw	-57,24
-	asc	"D"
-	dw	57,-24
-	asc	"D"
-	dw	-5,-2
-	asc	"D"
-	dw	-16,5
-	asc	"D"
-	dw	16,-5
-	asc	"D"
-	dw	0,-4
-	asc	"S"
-	dw	211,146
-	asc	"D"
-	dw	0,-64
-	asc	"D"
-	dw	-15,-20
-	asc	"D"
-	dw	0,52
-	asc	"S"
-	dw	207,108
-	asc	"C"
-	dfb	1
-	asc	"S"
-	dw	156,80
-	asc	"D"
-	dw	24,0
-	asc	"D"
-	dw	6,12
-	asc	"D"
-	dw	-6,-12
-	asc	"D"
-	dw	0,-40
-	asc	"D"
-	dw	-26,0
-	asc	"D"
-	dw	0,40
-	asc	"D"
-	dw	5,12
-	asc	"D"
-	dw	27,0
-	asc	"D"
-	dw	0,-42
-	asc	"D"
-	dw	-6,-10
-	asc	"D"
-	dw	6,10
-	asc	"D"
-	dw	-27,0
-	asc	"D"
-	dw	-4,-10
-	asc	"D"
-	dw	4,10
-	asc	"D"
-	dw	0,42
-	asc	"S"
-	dw	169,70
-	asc	"C"
-	dfb	4
-	asc	"S"
-	dw	169,66
-	asc	"D"
-	dw	0,-3
-	asc	"S"
-	dw	169,74
-	asc	"D"
-	dw	0,2
-	asc	"S"
-	dw	165,70
-	asc	"D"
-	dw	-2,0
-	asc	"S"
-	dw	173,70
-	asc	"D"
-	dw	2,0
-	asc	"S"
-	dw	165,58
-	asc	"C"
-	dfb	1
-	asc	"S"
-	dw	170,58
-	asc	"C"
-	dfb	1
-	asc	"S"
-	dw	175,58
-	asc	"C"
-	dfb	1
-	asc	"I"
-	dfb	3
-	dfb	$ff
-	
-data10300
-	asc	"H"
-	asc	"I"
-	dfb	0
-	asc	"S"
-	dw	15,190
-	asc	"D"
-	dw	67,-110
-	asc	"D"
-	dw	68,0
-	asc	"D"
-	dw	82,110
-	asc	"D"
-	dw	0,-140
-	asc	"D"
-	dw	-82,-40
-	asc	"D"
-	dw	0,70,0
-	asc	"D"
-	dw	0,-70
-	asc	"D"
-	dw	-68,0
-	asc	"D"
-	dw	0,70,0
-	asc	"D"
-	dw	0,-70
-	asc	"D"
-	dw	-67,40
-	asc	"D"
-	dw	0,140
-	asc	"S"
-	dw	90,80
-	asc	"D"
-	dw	0,-50
-	asc	"D"
-	dw	24,0
-	asc	"D"
-	dw	0,50
-	asc	"D"
-	dw	-24,0
-	asc	"D"
-	dw	18,10
-	asc	"D"
-	dw	0,-50
-	asc	"D"
-	dw	-18,-10
-	asc	"S"
-	dw	105,64
-	asc	"S"
-	dw	210,160
-	asc	"D"
-	dw	0,-90
-	asc	"D"
-	dw	-23,-14
-	asc	"D"
-	dw	0,74
-	asc	"S"
-	dw	205,110
-	asc	"S"
-	dw	45,140
-	asc	"D"
-	dw	0,-74
-	asc	"D"
-	dw	18,-14
-	asc	"D"
-	dw	0,60
-	asc	"S"
-	dw	60,86
-	dfb	$ff
-data10301
-*IF F1=0 THEN
- 	asc	"I"
-	dfb	3
-	dfb	$ff
-
-data10400
-	asc	"H"
-	asc	"I"
-	dfb	0
-	asc	"S"
-	dw	124,80
-	asc	"D"
-	dw	26,0
-	asc	"D"
-	dw	0,-70
-	asc	"D"
-	dw	0,70
-	asc	"S"
-	dw	149,80
-	asc	"D"
-	dw	12,14
-	asc	"S"
-	dw	150,80
-	asc	"D"
-	dw	10,14
-	asc	"S"
-	dw	168,18
-	asc	"D"
-	dw	0,86
-	asc	"D"
-	dw	-38,0
-	asc	"D"
-	dw	0,-86
-	asc	"D"
-	dw	38,0
-	asc	"D"
-	dw	-38,0
-	asc	"D"
-	dw	-6,-8
-	asc	"D"
-	dw	0,70
-	asc	"D"
-	dw	6,24
-	asc	"S"
-	dw	168,94
-	asc	"D"
-	dw	-38,0
-	asc	"S"
-	dw	168,94
-	asc	"D"
-	dw	-8,-10
-	asc	"S"
-	dw	168,84
-	asc	"D"
-	dw	-38,0
-	asc	"S"
-	dw	168,84
-	asc	"D"
-	dw	-8,-10
-	asc	"S"
-	dw	168,74
-	asc	"D"
-	dw	-38,0
-	asc	"S"
-	dw	168,74
-	asc	"D"
-	dw	-9,-10
-	asc	"S"
-	dw	168,64
-	asc	"D"
-	dw	-38,0
-	asc	"S"
-	dw	168,64
-	asc	"D"
-	dw	-9,-10
-	asc	"S"
-	dw	168,54
-	asc	"D"
-	dw	-38,0
-	asc	"S"
-	dw	168,54
-	asc	"D"
-	dw	-18,-18
-	asc	"D"
-	dw	-18,0
-	asc	"D"
-	dw	18,0
-	asc	"D"
-	dw	0,-16
-	asc	"I"
-	dfb	3
-	dfb	$ff
-	
-data10500
-	asc	"H"
-	asc	"I"
-	dfb	0
-	asc	"S"
-	dw	13,180
-	asc	"D"
-	dw	0,-132
-	asc	"D"
-	dw	63,-28
-	asc	"D"
-	dw	83,0
-	asc	"D"
-	dw	67,30
-	asc	"D"
-	dw	0,130
-	asc	"D"
-	dw	-11,-14
-	asc	"D"
-	dw	-4,-4
-	asc	"D"
-	dw	-17,-25
-	asc	"D"
-	dw	-24,-36
-	asc	"D"
-	dw	-12,-20
-	asc	"D"
-	dw	0,-61
-	asc	"D"
-	dw	0,61
-	asc	"D"
-	dw	-83,0
-	asc	"D"
-	dw	0,-60
-	asc	"D"
-	dw	0,60
-	asc	"D"
-	dw	-63,100
-	asc	"S"
-	dw	22,90
-	asc	"D"
-	dw	19,0
-	asc	"D"
-	dw	0,-30
-	asc	"D"
-	dw	-19,0
-	asc	"D"
-	dw	0,30
-	asc	"D"
-	dw	0,-30
-	asc	"D"
-	dw	33,-20
-	asc	"D"
-	dw	13,0
-	asc	"D"
-	dw	0,20
-	asc	"D"
-	dw	-28,30
-	asc	"D"
-	dw	0,-30
-	asc	"D"
-	dw	27,-20
-	asc	"D"
-	dw	-11,9
-	asc	"D"
-	dw	0,23
-	asc	"S"
-	dw	52,64
-	asc	"S"
-	dw	60,58
-	asc	"S"
-	dw	157,100
-	asc	"D"
-	dw	30,0
-	asc	"D"
-	dw	29,34
-	asc	"D"
-	dw	-40,0
-	asc	"D"
-	dw	0,2
-	asc	"D"
-	dw	40,0
-	asc	"D"
-	dw	0,-2
-	asc	"D"
-	dw	0,2
-	asc	"D"
-	dw	-2,0
-	asc	"D"
-	dw	0,34
-	asc	"D"
-	dw	-3,0
-	asc	"D"
-	dw	0,-34
-	asc	"D"
-	dw	-30,0
-	asc	"D"
-	dw	0,34
-	asc	"D"
-	dw	-3,0
-	asc	"D"
-	dw	0,-34
-	asc	"D"
-	dw	-2,0
-	asc	"D"
-	dw	-20,-34
-	asc	"D"
-	dw	0,-2
-	asc	"D"
-	dw	20,34
-	asc	"S"
-	dw	159,104
-	asc	"D"
-	dw	0,24
-	asc	"D"
-	dw	3,0
-	asc	"D"
-	dw	0,-18
-	asc	"I"
-	dfb	3
-	dfb	$ff
-	
-data10600
-	asc	"H"
-	asc	"I"
-	dfb	0
-	asc	"S"
-	dw	15,190
-	asc	"D"
-	dw	0,-130
-	asc	"D"
-	dw	75,-50
-	asc	"D"
-	dw	52,0
-	asc	"D"
-	dw	90,50
-	asc	"D"
-	dw	0,130
-	asc	"D"
-	dw	-22,-32
-	asc	"D"
-	dw	0,-52
-	asc	"D"
-	dw	-3,-5
-	asc	"D"
-	dw	-42,-43
-	asc	"D"
-	dw	-6,0
-	asc	"D"
-	dw	-2,4
-	asc	"D"
-	dw	0,10
-	asc	"D"
-	dw	-12,0
-	asc	"D"
-	dw	5,0
-	asc	"D"
-	dw	-7,-10
-	asc	"D"
-	dw	0,-50
-	asc	"D"
-	dw	0,50
-	asc	"D"
-	dw	-22,0
-	asc	"D"
-	dw	0,-30
-	asc	"D"
-	dw	-15,0
-	asc	"D"
-	dw	13,3
-	asc	"D"
-	dw	0,30
-	asc	"D"
-	dw	-13,-3
-	asc	"D"
-	dw	0,-30
-	asc	"D"
-	dw	0,30
-	asc	"D"
-	dw	-15,0
-	asc	"D"
-	dw	0,-50
-	asc	"D"
-	dw	0,50
-	asc	"D"
-	dw	-23,40
-	asc	"D"
-	dw	-22,0
-	asc	"D"
-	dw	22,0
-	asc	"D"
-	dw	0,-52
-	asc	"D"
-	dw	-22,22
-	asc	"D"
-	dw	0,70
-	asc	"D"
-	dw	-30,50
-	asc	"S"
-	dw	116,49
-	asc	"S"
-	dw	210,158
-	asc	"D"
-	dw	-45,0
-	asc	"D"
-	dw	0,-18
-	asc	"D"
-	dw	0,18
-	asc	"D"
-	dw	-26,-60
-	asc	"D"
-	dw	0,-10
-	asc	"D"
-	dw	6,-16
-	asc	"D"
-	dw	12,0
-	asc	"D"
-	dw	4,4
-	asc	"D"
-	dw	-12,0
-	asc	"D"
-	dw	-4,-4
-	asc	"D"
-	dw	4,4
-	asc	"D"
-	dw	-6,14
-	asc	"D"
-	dw	10,-2
-	asc	"D"
-	dw	9,0
-	asc	"D"
-	dw	0,-11
-	asc	"D"
-	dw	0,11
-	asc	"D"
-	dw	19,25
-	asc	"S"
-	dw	165,140
-	asc	"D"
-	dw	10,-20
-	asc	"D"
-	dw	21,0
-	asc	"D"
-	dw	-5,-7
-	asc	"D"
-	dw	-21,0
-	asc	"D"
-	dw	5,7
-	asc	"D"
-	dw	-5,-7
-	asc	"D"
-	dw	-7,14
-	asc	"D"
-	dw	-20,-37
-	asc	"S"
-	dw	165,140
-	asc	"D"
-	dw	-26,-50
-	asc	"S"
-	dw	165,158
-	asc	"D"
-	dw	-26,-59
-	asc	"D"
-	dw	0,-1
-	asc	"S"
-	dw	196,120
-	asc	"D"
-	dw	0,-14
-	asc	"D"
-	dw	2,-5
-	asc	"D"
-	dw	9,0
-	asc	"D"
-	dw	-9,0
-	asc	"D"
-	dw	-39,-43
-	asc	"I"
-	dfb	3
-	dfb	$ff
-	
-data10700
-	asc	"H"
-	asc	"I"
-	dfb	0
-	asc	"S"
-	dw	15,190
-	asc	"D"
-	dw	57,-106
-	asc	"D"
-	dw	-57,106
-	asc	"D"
-	dw	0,-150
-	asc	"D"
-	dw	67,-30
-	asc	"D"
-	dw	0,32
-	asc	"D"
-	dw	0,-32
-	asc	"D"
-	dw	75,0
-	asc	"D"
-	dw	0,50
-	asc	"D"
-	dw	0,-50
-	asc	"D"
-	dw	75,30
-	asc	"D"
-	dw	0,150
-	asc	"D"
-	dw	-75,-130
-	asc	"S"
-	dw	202,138
-	asc	"D"
-	dw	0,-78
-	asc	"D"
-	dw	-22,-18
-	asc	"D"
-	dw	0,56
-	asc	"S"
-	dw	157,60
-	asc	"D"
-	dw	-9,0
-	asc	"D"
-	dw	2,3
-	asc	"D"
-	dw	-78,0
-	asc	"D"
-	dw	0,8
-	asc	"D"
-	dw	78,0
-	asc	"D"
-	dw	0,-8
-	asc	"D"
-	dw	0,20
-	asc	"D"
-	dw	-78,0
-	asc	"D"
-	dw	0,-38
-	asc	"D"
-	dw	10,-12
-	asc	"S"
-	dw	82,42
-	asc	"D"
-	dw	-10,13
-	asc	"D"
-	dw	6,1
-	asc	"D"
-	dw	9,-13
-	asc	"D"
-	dw	-4,-1
-	asc	"D"
-	dw	4,1
-	asc	"D"
-	dw	0,6
-	asc	"D"
-	dw	-9,13
-	asc	"D"
-	dw	0,1
-	asc	"D"
-	dw	0,-7
-	asc	"D"
-	dw	0,6
-	asc	"D"
-	dw	9,-13
-	asc	"D"
-	dw	55,0
-	asc	"D"
-	dw	8,15
-	dfb	$ff
-*IF LX=2 THEN GOTO 10745
-data10701
-	asc	"S"
-	dw	197,93
-	asc	"C"
-	dfb	1
-	dfb	$ff
-*IF LX=0 THEN
-data10702
-	asc	"I"
-	dfb	3
-	dfb	$ff
-*IF LX=1 THEN GOTO 10780
-data10703
-	asc	"S"
-	dw	202,137
-	asc	"D"
-	dw	0,-77,0
-	asc	"D"
-	dw	-22,-18
-	asc	"D"
-	dw	0,55,0
-	asc	"S"
-	dw	30,162
-	asc	"D"
-	dw	26,-49
-	asc	"D"
-	dw	0,1,0
-	asc	"D"
-	dw	-26,49
-	asc	"S"
-	dw	30,162
-	asc	"D"
-	dw	0,-80
-	asc	"D"
-	dw	22,-22
-	asc	"D"
-	dw	0,9
-	asc	"D"
-	dw	0,-9
-	asc	"D"
-	dw	-22,22
-	asc	"D"
-	dw	27,-15
-	asc	"D"
-	dw	0,77
-	asc	"D"
-	dw	-25,18
-	asc	"S"
-	dw	51,111
-	asc	"C"
-	dfb	1
-	asc	"I"
-	dfb	3
-	dfb	$ff
-data10704
-	asc	"S"
-	dw	30,50
-	asc	"D"
-	dw	0,40
-	asc	"D"
-	dw	22,-24
-	asc	"D"
-	dw	0,-29
-	asc	"D"
-	dw	-22,14
-	asc	"D"
-	dw	12,-8
-	asc	"D"
-	dw	0,33
-	asc	"I"
-	dfb	3
-	dfb	$ff
-
-data10800
-	asc	"H"
-	asc	"I"
-	dfb	0
-	asc	"S"
-	dw	15,190
-	asc	"D"
-	dw	0,-140
-	asc	"D"
-	dw	82,-40
-	asc	"D"
-	dw	53,0
-	asc	"D"
-	dw	75,40
-	asc	"D"
-	dw	0,140
-	asc	"D"
-	dw	-30,-50
-	asc	"D"
-	dw	0,-80
-	asc	"D"
-	dw	-26,-22
-	asc	"D"
-	dw	0,60
-	asc	"D"
-	dw	26,0
-	asc	"D"
-	dw	-26,0
-	asc	"D"
-	dw	-19,-30
-	asc	"D"
-	dw	0,-58
-	asc	"D"
-	dw	0,58
-	asc	"D"
-	dw	-22,0
-	asc	"D"
-	dw	0,-40
-	asc	"D"
-	dw	-15,0
-	asc	"D"
-	dw	13,4
-	asc	"D"
-	dw	0,40
-	asc	"D"
-	dw	-13,-4
-	asc	"D"
-	dw	0,-40
-	asc	"D"
-	dw	0,40
-	asc	"D"
-	dw	-15,0
-	asc	"D"
-	dw	0,-58
-	asc	"D"
-	dw	0,58
-	asc	"D"
-	dw	-30,42
-	asc	"D"
-	dw	-22,0
-	asc	"D"
-	dw	22,0
-	asc	"D"
-	dw	0,-68
-	asc	"D"
-	dw	-22,16
-	asc	"D"
-	dw	0,86
-	asc	"D"
-	dw	-30,43
-	asc	"S"
-	dw	123,52
-	asc	"I"
-	dfb	3
-	dfb	$ff
-	
-data10900
-	asc	"H"
-	asc	"I"
-	dfb	0
-	asc	"S"
-	dw	232,190
-	asc	"D"
-	dw	0,-150
-	asc	"D"
-	dw	-82,-30
-	asc	"D"
-	dw	0,50
-	asc	"D"
-	dw	0,-50
-	asc	"D"
-	dw	-60,0
-	asc	"D"
-	dw	0,50
-	asc	"D"
-	dw	0,-50
-	asc	"D"
-	dw	-75,30
-	asc	"D"
-	dw	0,150
-	dfb	$ff
-*IF LX=0 THEN
-data10901
- 	asc	"D"
-	dw	75,-130
-	asc	"D"
-	dw	-23,40
-	dfb	$ff
-*GOTO10920
-data10902
-	asc	"D"
-	dw	30,-52
-	asc	"D"
-	dw	-30,52
-	asc	"D"
-	dw	75,-130
-	asc	"D"
-	dw	-23,40
-	asc	"D"
-	dw	-22,0
-	asc	"D"
-	dw	22,0
-	dfb	$ff
-* 10920
-data10903
-	asc	"D"
-	dw	0,-58
-	asc	"D"
-	dw	-22,16
-	asc	"D"
-	dw	0,80
-	asc	"S"
-	dw	90,60
-	asc	"D"
-	dw	60,0
-	asc	"D"
-	dw	82,130
-	dfb	$ff
-*IF LX=0 THEN
-data10904
- 	asc	"S"
-	dw	63,78
-	asc	"C"
-	dfb	1
-	asc	"I"
-	dfb	3
-	dfb	$ff
-*IF LX=1 THEN
-data10905
- 	asc	"I"
-	dfb	3
-	dfb	$ff
-data10906
-	asc	"S"
-	dw	210,100
-	asc	"D"
-	dw	-15,0
-	asc	"D"
-	dw	-3,-10
-	asc	"D"
-	dw	18,0
-	asc	"D"
-	dw	0,10
-	asc	"D"
-	dw	0,-10
-	asc	"D"
-	dw	-27,-25
-	asc	"D"
-	dw	0,5
-	asc	"D"
-	dw	20,20
-	asc	"D"
-	dw	-20,-20
-	asc	"D"
-	dw	-8,0
-	asc	"D"
-	dw	8,0
-	asc	"D"
-	dw	0,-5
-	asc	"D"
-	dw	-12,0
-	asc	"D"
-	dw	21,25
-	asc	"D"
-	dw	-21,-25
-	asc	"D"
-	dw	-1,0
-	asc	"D"
-	dw	2,8
-	asc	"D"
-	dw	21,26
-	asc	"I"
-	dfb	3
-	dfb	$ff
-
-data11000
-	asc	"H"
-	asc	"I"
-	dfb	0
-	asc	"S"
-	dw	15,190
-	asc	"D"
-	dw	0,-150
-	asc	"D"
-	dw	82,-30
-	asc	"D"
-	dw	0,40
-	asc	"D"
-	dw	0,-40
-	asc	"D"
-	dw	60,0
-	asc	"D"
-	dw	0,40
-	asc	"D"
-	dw	0,-40
-	asc	"D"
-	dw	75,30
-	asc	"D"
-	dw	0,150
-	asc	"D"
-	dw	-22,-42
-	asc	"D"
-	dw	0,-75
-	asc	"D"
-	dw	-23,-21
-	asc	"D"
-	dw	0,52
-	asc	"D"
-	dw	23,0
-	asc	"D"
-	dw	-23,0
-	asc	"D"
-	dw	-30,-54
-	asc	"D"
-	dw	-60,0
-	asc	"D"
-	dw	-82,140
-	asc	"D"
-	dw	82,-140
-	asc	"D"
-	dw	15,0
-	asc	"D"
-	dw	0,-24
-	asc	"D"
-	dw	12,0
-	asc	"D"
-	dw	0,24
-	asc	"M"
-	dw	-3,-12
-	dfb	$ff
-*IF LX=0 THEN
-data11001
- 	asc	"I"
-	dfb	3
-	dfb	$ff
-*ELSE
-data11002
-	asc	"S"
-	dw	187,104
-	asc	"D"
-	dw	22,0
-	asc	"M"
-	dw	-22,0
-	asc	"D"
-	dw	23,44
-	asc	"M"
-	dw	-5,-45
-	asc	"C"
-	dfb	1
-	asc	"S"
-	dw	30,50
-	asc	"D"
-	dw	0,40
-	asc	"D"
-	dw	37,-34
-	asc	"D"
-	dw	0,-25
-	asc	"D"
-	dw	-37,20
-	asc	"D"
-	dw	21,-10
-	asc	"D"
-	dw	0,31
-	asc	"I"
-	dfb	3
-	dfb	$ff
-	
-data11500
-	asc	"H"
-	asc	"I"
-	dfb	0
-	asc	"S"
-	dw	15,180
-	asc	"D"
-	dw	0,-140
-	asc	"D"
-	dw	67,-30
-	asc	"D"
-	dw	75,0
-	asc	"D"
-	dw	67,30
-	asc	"D"
-	dw	0,150
-	asc	"D"
-	dw	-42,-70
-	asc	"D"
-	dw	0,-70
-	asc	"D"
-	dw	-24,-20
-	asc	"D"
-	dw	0,-20
-	asc	"D"
-	dw	0,20
-	asc	"D"
-	dw	-45,0
-	asc	"D"
-	dw	-15,20
-	asc	"D"
-	dw	85,0
-	asc	"D"
-	dw	-33,0
-	asc	"D"
-	dw	0,70
-	asc	"D"
-	dw	33,0
-	asc	"D"
-	dw	-34,0
-	asc	"D"
-	dw	-14,-40
-	asc	"D"
-	dw	0,-30
-	asc	"D"
-	dw	0,30
-	asc	"D"
-	dw	-22,0
-	asc	"D"
-	dw	0,-30
-	asc	"D"
-	dw	0,30
-	asc	"D"
-	dw	-15,40
-	asc	"D"
-	dw	0,-70
-	asc	"D"
-	dw	0,30
-	asc	"D"
-	dw	-15,0
-	asc	"D"
-	dw	0,-70
-	asc	"D"
-	dw	0,70
-	asc	"D"
-	dw	-67,100
-	asc	"S"
-	dw	167,60
-	asc	"C"
-	dfb	1
-	asc	"M"
-	dw	0,10
-	asc	"C"
-	dfb	1
-	asc	"M"
-	dw	0,10
-	asc	"C"
-	dfb	1
-	asc	"M"
-	dw	0,20
-	asc	"D"
-	dw	6,2
-	asc	"D"
-	dw	-6,-2
-	asc	"C"
-	dfb	8
-	asc	"I"
-	dfb	3
-	dfb	$ff
-	
-data11700
-	asc	"H"
-	asc	"I"
-	dfb	0
-	asc	"S"
-	dw	15,190
-	asc	"D"
-	dw	0,-140
-	asc	"D"
-	dw	60,-40
-	asc	"D"
-	dw	75,00
-	asc	"D"
-	dw	82,40
-	asc	"D"
-	dw	0,140
-	asc	"D"
-	dw	-45,-72
-	asc	"D"
-	dw	0,-54
-	asc	"D"
-	dw	-15,-14
-	asc	"D"
-	dw	0,44
-	asc	"S"
-	dw	232,190
-	asc	"D"
-	dw	-82,-130
-	asc	"D"
-	dw	0,-50
-	asc	"D"
-	dw	0,50
-	asc	"D"
-	dw	-75,0
-	asc	"D"
-	dw	0,-50
-	asc	"D"
-	dw	0,50
-	asc	"D"
-	dw	-4,10
-	asc	"D"
-	dw	9,0
-	asc	"D"
-	dw	-23,0
-	asc	"D"
-	dw	-34,50
-	asc	"D"
-	dw	39,0
-	asc	"D"
-	dw	18,-50
-	asc	"D"
-	dw	0,4
-	asc	"D"
-	dw	-18,52
-	asc	"D"
-	dw	0,-6
-	asc	"D"
-	dw	0,6
-	asc	"D"
-	dw	-39,0
-	asc	"D"
-	dw	0,-6
-	asc	"S"
-	dw	15,190
-	asc	"D"
-	dw	15,-33
-	asc	"D"
-	dw	0,-30
-	asc	"D"
-	dw	4,0
-	asc	"D"
-	dw	0,37
-	asc	"D"
-	dw	-4,0
-	asc	"D"
-	dw	0,-7
-	asc	"D"
-	dw	0,7
-	asc	"D"
-	dw	4,0
-	asc	"D"
-	dw	3,-8
-	asc	"D"
-	dw	0,-29
-	asc	"D"
-	dw	15,0
-	asc	"D"
-	dw	0,37
-	asc	"D"
-	dw	4,0
-	asc	"D"
-	dw	0,-37
-	asc	"D"
-	dw	0,37
-	asc	"D"
-	dw	3,-8
-	asc	"D"
-	dw	0,-29
-	asc	"D"
-	dw	-14,0
-	asc	"D"
-	dw	-7,16
-	asc	"S"
-	dw	74,93
-	asc	"D"
-	dw	0,12
-	asc	"D"
-	dw	3,0
-	asc	"D"
-	dw	0,-19
-	asc	"D"
-	dw	0,19
-	asc	"D"
-	dw	2,-7
-	asc	"D"
-	dw	0,-18
-	asc	"S"
-	dw	184,86
-	asc	"I"
-	dfb	3
-	dfb	$ff
-	
-data11800
-	asc	"H"
-	asc	"I"
-	dfb	0
-	asc	"S"
-	dw	15,191
-	asc	"D"
-	dw	0,-160
-	asc	"D"
-	dw	75,-30
-	asc	"D"
-	dw	52,0
-	asc	"D"
-	dw	90,30
-	asc	"D"
-	dw	0,160
-	asc	"S"
-	dw	15,191
-	asc	"D"
-	dw	75,-140
-	asc	"D"
-	dw	0,-50
-	asc	"D"
-	dw	0,50
-	asc	"D"
-	dw	15,0
-	asc	"D"
-	dw	0,-30
-	asc	"D"
-	dw	12,4
-	asc	"D"
-	dw	0,30
-	asc	"D"
-	dw	-12,-4
-	asc	"D"
-	dw	0,-30
-	asc	"D"
-	dw	15,0
-	asc	"D"
-	dw	0,30
-	asc	"D"
-	dw	22,0
-	asc	"D"
-	dw	0,-50
-	asc	"D"
-	dw	0,50
-	asc	"D"
-	dw	36,55
-	asc	"D"
-	dw	21,0
-	asc	"D"
-	dw	-21,0
-	asc	"D"
-	dw	0,-60
-	asc	"D"
-	dw	21,15
-	asc	"D"
-	dw	0,74
-	asc	"D"
-	dw	6,8
-	asc	"D"
-	dw	-106,0
-	asc	"D"
-	dw	-15,46
-	asc	"D"
-	dw	15,-46
-	asc	"D"
-	dw	0,10
-	asc	"D"
-	dw	106,0
-	asc	"D"
-	dw	0,-10
-	asc	"D"
-	dw	0,10
-	asc	"D"
-	dw	4,5
-	asc	"D"
-	dw	-112,0
-	asc	"D"
-	dw	2,-5
-	asc	"D"
-	dw	-2,5
-	asc	"D"
-	dw	0,10
-	asc	"D"
-	dw	112,0
-	asc	"D"
-	dw	0,-10
-	asc	"D"
-	dw	0,10
-	asc	"D"
-	dw	4,6
-	asc	"D"
-	dw	-119,0
-	asc	"D"
-	dw	3,-6
-	asc	"D"
-	dw	-3,6
-	asc	"D"
-	dw	0,10
-	asc	"D"
-	dw	119,0
-	asc	"D"
-	dw	0,-10
-	asc	"D"
-	dw	0,10
-	asc	"D"
-	dw	4,6
-	asc	"D"
-	dw	-126,0
-	asc	"D"
-	dw	3,-6
-	asc	"S"
-	dw	115,49
-	asc	"I"
-	dfb	3
-	dfb	$ff
-	
-data12200
-	asc	"H"
-	asc	"I"
-	dfb	0
-	asc	"S"
-	dw	15,190
-	asc	"D"
-	dw	0,-150
-	asc	"D"
-	dw	75,-30
-	asc	"D"
-	dw	0,50
-	asc	"D"
-	dw	0,-50
-	asc	"D"
-	dw	60,0
-	asc	"D"
-	dw	0,50
-	asc	"D"
-	dw	0,-50
-	asc	"D"
-	dw	82,30
-	asc	"D"
-	dw	0,150
-	asc	"D"
-	dw	-82,-130
-	asc	"D"
-	dw	-45,0
-	asc	"D"
-	dw	0,-30
-	asc	"D"
-	dw	15,0
-	asc	"D"
-	dw	0,30
-	asc	"D"
-	dw	-30,0
-	asc	"D"
-	dw	-30,53
-	dfb	$ff
-*IF LX=2 THEN
-data12201
- 	asc	"D"
-	dw	-23,0
-	asc	"D"
-	dw	23,0
-	asc	"D"
-	dfb	$ff
-data12202
-	dw	0,-60
-	asc	"D"
-	dw	-23,17
-	asc	"D"
-	dw	0,80
-	dfb	$ff
-*IF LX<>2 THEN
-data12203
-	asc	"D"
-	dw	23,-37
-	asc	"D"
-	dw	-23,37
-	dfb	$ff
-* 12230
-data12204
-	asc	"D"
-	dw	-22,40
-	dfb	$ff
-*IF LX<>2 THEN
-data12205
- 	asc	"S"
-	dw	57,88
-	asc	"C"
-	dfb	1
-	dfb	$ff
-*IF LX<>0 THEN
-data12206
- 	asc	"S"
-	dw	117,45
-	asc	"C"
-	dfb	1
-	asc	"I"
-	dfb	3
-	dfb	$ff
-data12207
-	asc	"S"
-	dw	105,60
-	asc	"D"
-	dw	15,0
-	asc	"M"
-	dw	-15,0
-	asc	"D"
-	dw	0,-30
-	asc	"D"
-	dw	12,3
-	asc	"D"
-	dw	0,30
-	asc	"D"
-	dw	-12,-4
-	asc	"S"
-	dw	115,48
-	asc	"I"
-	dfb	3
-	dfb	$ff
-
-data12300
-	asc	"H"
-	asc	"I"
-	dfb	0
-	asc	"S"
-	dw	15,190
-	asc	"D"
-	dw	0,-150
-	asc	"D"
-	dw	67,-30
-	asc	"D"
-	dw	67,0
-	asc	"D"
-	dw	82,30
-	asc	"D"
-	dw	0,150
-	asc	"D"
-	dw	-65,-104
-	asc	"D"
-	dw	0,-54
-	asc	"D"
-	dw	-16,-10
-	asc	"D"
-	dw	0,-10
-	asc	"D"
-	dw	0,10
-	asc	"D"
-	dw	-37,0
-	asc	"D"
-	dw	-3,10
-	asc	"D"
-	dw	0,54
-	asc	"D"
-	dw	56,0
-	asc	"D"
-	dw	0,-54
-	asc	"D"
-	dw	-28,0
-	asc	"D"
-	dw	0,54
-	asc	"D"
-	dw	0,-54
-	asc	"D"
-	dw	-28,0
-	asc	"D"
-	dw	0,30
-	asc	"D"
-	dw	-27,0
-	asc	"D"
-	dw	0,-50
-	asc	"D"
-	dw	0,50
-	asc	"D"
-	dw	-67,130
-	asc	"S"
-	dw	133,60
-	asc	"C"
-	dfb	1
-	asc	"M"
-	dw	11,0
-	asc	"C"
-	dfb	1
-	asc	"I"
-	dfb	3
-	dfb	$ff
-	
-data12400
-	asc	"H"
-	asc	"I"
-	dfb	0
-	asc	"S"
-	dw	30,164
-	asc	"D"
-	dw	-15,26
-	asc	"D"
-	dw	0,-143
-	asc	"D"
-	dw	15,-7
-	asc	"D"
-	dw	0,124
-	asc	"D"
-	dw	15,0
-	asc	"D"
-	dw	0,-124
-	asc	"D"
-	dw	-15,0
-	asc	"D"
-	dw	15,0
-	asc	"D"
-	dw	45,-30
-	asc	"D"
-	dw	 0,13
-	asc	"D"
-	dw	0,-13
-	asc	"D"
-	dw	60,0
-	asc	"D"
-	dw	0,50
-	asc	"D"
-	dw	0,-50
-	asc	"D"
-	dw	82,30
-	asc	"D"
-	dw	0,150
-	asc	"D"
-	dw	-82,-130
-	asc	"D"
-	dw	-50,0
-	asc	"D"
-	dw	-32,104
-	asc	"D"
-	dw	-22,0
-	asc	"D"
-	dw	22,0
-	asc	"D"
-	dw	0,-92
-	asc	"D"
-	dw	-22,0
-	asc	"D"
-	dw	44,-48
-	asc	"D"
-	dw	10,0
-	asc	"D"
-	dw	-32,48
-	asc	"D"
-	dw	32,-48
-	asc	"D"
-	dw	0,35
-	asc	"D"
-	dw	-14,46
-	asc	"D"
-	dw	0,-61
-	asc	"S"
-	dw	81,88
-	asc	"C"
-	dfb	1
-	asc	"M"
-	dw	11,-21
-	asc	"C"
-	dfb	1
-	asc	"I"
-	dfb	3
-	dfb	$ff
-
-data13000
-	asc	"H"
-	asc	"I"
-	dfb	0
-	asc	"S"
-	dw	75,62
-	asc	"D"
-	dw	-5,0
-	asc	"D"
-	dw	-55,108
-	asc	"D"
-	dw	37,-10
-	asc	"D"
-	dw	30,-90
-	asc	"D"
-	dw	-19,5
-	asc	"D"
-	dw	19,-5
-	asc	"D"
-	dw	20,5
-	asc	"D"
-	dw	-12,94
-	asc	"D"
-	dw	-38,-10
-	asc	"D"
-	dw	38,10
-	asc	"D"
-	dw	0,20
-	asc	"D"
-	dw	-75,0
-	asc	"D"
-	dw	0,-20
-	asc	"D"
-	dw	0,20
-	asc	"D"
-	dw	75,0
-	asc	"D"
-	dw	15,-112
-	asc	"D"
-	dw	0,-15
-	asc	"D"
-	dw	-3,14
-	asc	"D"
-	dw	3,-14
-	asc	"D"
-	dw	-13,0
-	asc	"D"
-	dw	0,-12
-	asc	"D"
-	dw	0,12
-	asc	"D"
-	dw	-4,10
-	asc	"D"
-	dw	0,-22
-	asc	"D"
-	dw	12,0
-	asc	"D"
-	dw	4,-7
-	asc	"D"
-	dw	0,-15
-	asc	"D"
-	dw	-4,6
-	asc	"D"
-	dw	0,16
-	asc	"D"
-	dw	0,-16
-	asc	"D"
-	dw	-12,0
-	asc	"D"
-	dw	4,-6
-	asc	"D"
-	dw	12,0
-	asc	"D"
-	dw	-12,0
-	asc	"D"
-	dw	0,-16
-	asc	"D"
-	dw	-4,6
-	asc	"D"
-	dw	0,16
-	asc	"D"
-	dw	0,-16
-	asc	"D"
-	dw	-12,0
-	asc	"D"
-	dw	4,-6
-	asc	"D"
-	dw	12,0
-	asc	"D"
-	dw	-12,0
-	asc	"D"
-	dw	-4,6
-	asc	"D"
-	dw	0,16
-	asc	"D"
-	dw	-12,0
-	asc	"D"
-	dw	4,-6
-	asc	"D"
-	dw	7,0
-	asc	"D"
-	dw	-7,0
-	asc	"D"
-	dw	-4,6
-	asc	"D"
-	dw	0,16
-	asc	"D"
-	dw	12,0
-	asc	"D"
-	dw	0,22
-	asc	"I"
-	dfb	3
-	dfb	$ff
-
-*-----------------------------------
 * VARIABLES
 *-----------------------------------
 
 tblV$
-	asc	"01N"00
-	asc	"01NORD"00
-	asc	"02S"00
-	asc	"02SUD"00
-	asc	"03E"00
-	asc	"03EST"00
-	asc	"04O"00
-	asc	"04OUEST"00
-	asc	"05MONT"00
-	asc	"05GRIM"00
-	asc	"06DESC"00
-	asc	"10PREN"00
-	asc	"10RAMA"00
-	asc	"11POSE"00
-	asc	"12OUVR"00
-	asc	"13FERM"00
-	asc	"14ENTR"00
-	asc	"14AVAN"00
-	asc	"15ALLU"00
-	asc	"16ETEI"00
-	asc	"17REPA"00
-	asc	"17DEPA"00
-	asc	"18LIS"00
-	asc	"19REGA"00
-	asc	"20RETO"00
-	asc	"21RENI"00
-	asc	"21SENS"00
-	asc	"22REMP"00
-	asc	"23VIDE"00
-	asc	"24INVE"00
-	asc	"24LIST"00
-	asc	"25RIEN"00
-	asc	"25ATTE"00
-	asc	"26POIG"00
-	asc	"27COUT"00
-	asc	"28TOUR"00
-	asc	"29LAMP"00
-	asc	"30CODE"00
-	asc	"31ESCA"00
-	asc	"32PIST"00
-	asc	"33PLAC"00
-	asc	"34TORC"00
-	asc	"35TELE"00
-	asc	"36MONS"00
-	asc	"37PETR"00
-	asc	"38POT"00
-	asc	"18LIT"00
-	asc	"39CLEF"00
-	asc	"40PAPI"00
-	asc	"41LIVR"00
-	asc	"42BRIQ"00
-	asc	"43COMB"00
-	asc	"44COFF"00
-	asc	"45ROUG"00
-	asc	"46BLEU"00
-	asc	"47VERT"00
-	asc	"48TITR"00
-	asc	"49ROBI"00
-	asc	"50CISE"00
-	asc	"51PORT"00
-	asc	"52ACTI"00
-	asc	"53JETE"00
-	asc	"53LANCE"00
-	asc	"54EAU"00
-	asc	"55ENFI"00
-	asc	"55PASS"00
-	asc	"56APPU"00
-	asc	"56ENFO"00
-	asc	"57ENLE"00
-	asc	"58RENT"00
+	da	V$1,V$2,V$3,V$4,V$5,V$6,V$7,V$8,V$9
+	da	V$10,V$11,V$12,V$13,V$14,V$15,V$16,V$17,V$18,V$19
+	da	V$20,V$21,V$22,V$23,V$24,V$25,V$26,V$27,V$28,V$29
+	da	V$30,V$31,V$32,V$33,V$34,V$35,V$36,V$37,V$38,V$39
+	da	V$40,V$41,V$42,V$43,V$44,V$45,V$46,V$47,V$48,V$49
+	da	V$50,V$51,V$52,V$53,V$54,V$55,V$56,V$57,V$58,V$59
+	da	V$60,V$61,V$62,V$63,V$64,V$65,V$66,V$67,V$68,V$69
+	da	V$70
+	
+V$1	asc	"01N"00
+V$2	asc	"01NORD"00
+V$3	asc	"02S"00
+V$4	asc	"02SUD"00
+V$5	asc	"03E"00
+V$6	asc	"03EST"00
+V$7	asc	"04O"00
+V$8	asc	"04OUEST"00
+V$9	asc	"05MONT"00
+V$10	asc	"05GRIM"00
+V$11	asc	"06DESC"00
+V$12	asc	"10PREN"00
+V$13	asc	"10RAMA"00
+V$14	asc	"11POSE"00
+V$15	asc	"12OUVR"00
+V$16	asc	"13FERM"00
+V$17	asc	"14ENTR"00
+V$18	asc	"14AVAN"00
+V$19	asc	"15ALLU"00
+V$20	asc	"16ETEI"00
+V$21	asc	"17REPA"00
+V$22	asc	"17DEPA"00
+V$23	asc	"18LIS"00
+V$24	asc	"19REGA"00
+V$25	asc	"20RETO"00
+V$26	asc	"21RENI"00
+V$27	asc	"21SENS"00
+V$28	asc	"22REMP"00
+V$29	asc	"23VIDE"00
+V$30	asc	"24INVE"00
+V$31	asc	"24LIST"00
+V$32	asc	"25RIEN"00
+V$33	asc	"25ATTE"00
+V$34	asc	"26POIG"00
+V$35	asc	"27COUT"00
+V$36	asc	"28TOUR"00
+V$37	asc	"29LAMP"00
+V$38	asc	"30CODE"00
+V$39	asc	"31ESCA"00
+V$40	asc	"32PIST"00
+V$41	asc	"33PLAC"00
+V$42	asc	"34TORC"00
+V$43	asc	"35TELE"00
+V$44	asc	"36MONS"00
+V$45	asc	"37PETR"00
+V$46	asc	"38POT"00
+V$47	asc	"18LIT"00
+V$48	asc	"39CLEF"00
+V$49	asc	"40PAPI"00
+V$50	asc	"41LIVR"00
+V$51	asc	"42BRIQ"00
+V$52	asc	"43COMB"00
+V$53	asc	"44COFF"00
+V$54	asc	"45ROUG"00
+V$55	asc	"46BLEU"00
+V$56	asc	"47VERT"00
+V$57	asc	"48TITR"00
+V$58	asc	"49ROBI"00
+V$59	asc	"50CISE"00
+V$60	asc	"51PORT"00
+V$61	asc	"52ACTI"00
+V$62	asc	"53JETE"00
+V$63	asc	"53LANCE"00
+V$64	asc	"54EAU"00
+V$65	asc	"55ENFI"00
+V$66	asc	"55PASS"00
+V$67	asc	"56APPU"00
+V$68	asc	"56ENFO"00
+V$69	asc	"57ENLE"00
+V$70	asc	"58RENT"00
 
 *---
 
 * O	=	25
 
-tblO	dfb	06,05,05,08,08,00,00,11,11
+O	dfb	06,05,05,08,08,00,00,11,11
 	dfb	13,20,18,16,16,16,16,00,21
 	dfb	00,22,25,12,00,25,00
 
 *---
 
-tblO$
-	asc	"UNE TORCHE ELECTRIQUE"00
-	asc	"UN ROBINET"00
-	asc	"UN CISEAU"00
-	asc	"UN TOURNEVIS"00
-	asc	"UNE LAMPE A PETROLE"00
-	asc	"UNE LAMPE PLEINE"00
-	asc	"UNE LAMPE ALLUME"00
-	asc	"UN COUTEAU"00
-	asc	"UN PAPIER"00
-	asc	"UN LIVRE"00
-	asc	"DU PETROLE DANS UN LAVABO BOUCHE"00
-	asc	"UNE CLEF"00
-	asc	"UN BOUTON ROUGE"00
-	asc	"UN BOUTON BLEU"00
-	asc	"UN BOUTON VERT"00
-	asc	"UN TELEPORTEUR"00
-	asc	"UN TELEPORTEUR REPARE"00
-	asc	"UNE COMBINAISON ARGENTEE"00
-	asc	"UNE COMBINAISON ENFILEE"00
-	asc	"UN MONSTRE ALL"A7"EST"00
-	asc	"UN PISTOLET"00
-	asc	"UN BRIQUET"00
-	asc	"UN BRIQUET ALLUME"00
-	asc	"UN POT"00
-	asc	"UN POT PLEIN D"A7"EAU"00
+tblO$	da	O$1,O$2,O$3,O$4,O$5,O$6,O$7,O$8,O$9
+	da	O$10,O$11,O$12,O$13,O$14,O$15,O$16,O$17,O$18,O$19
+	da	O$20,O$21,O$22,O$23,O$24,O$25
+
+O$1	asc	"UNE TORCHE ELECTRIQUE"00
+O$2	asc	"UN ROBINET"00
+O$3	asc	"UN CISEAU"00
+O$4	asc	"UN TOURNEVIS"00
+O$5	asc	"UNE LAMPE A PETROLE"00
+O$6	asc	"UNE LAMPE PLEINE"00
+O$7	asc	"UNE LAMPE ALLUME"00
+O$8	asc	"UN COUTEAU"00
+O$9	asc	"UN PAPIER"00
+O$10	asc	"UN LIVRE"00
+O$11	asc	"DU PETROLE DANS UN LAVABO BOUCHE"00
+O$12	asc	"UNE CLEF"00
+O$13	asc	"UN BOUTON ROUGE"00
+O$14	asc	"UN BOUTON BLEU"00
+O$15	asc	"UN BOUTON VERT"00
+O$16	asc	"UN TELEPORTEUR"00
+O$17	asc	"UN TELEPORTEUR REPARE"00
+O$18	asc	"UNE COMBINAISON ARGENTEE"00
+O$19	asc	"UNE COMBINAISON ENFILEE"00
+O$20	asc	"UN MONSTRE ALL"A7"EST"00
+O$21	asc	"UN PISTOLET"00
+O$22	asc	"UN BRIQUET"00
+O$23	asc	"UN BRIQUET ALLUME"00
+O$24	asc	"UN POT"00
+O$25	asc	"UN POT PLEIN D"A7"EAU"00
 
 *---
 
 * M	=	25
 
-tblM$
-	asc	"00"00
-	asc	"0403030400"00
-	asc	"030200"00
-	asc	"04020305010600"00
-	asc	"04040107032000"00
-	asc	"020400"00
-	asc	"04080109020500"00
-	asc	"030700"00
-	asc	"04130207031000"00
-	asc	"0409021100"00
-	asc	"0110031200"00
-	asc	"041100"00
-	asc	"030900"00
-	asc	"0209031500"00
-	asc	"00"00
-	asc	"00"00
-	asc	"00"00
-	asc	"00"00
-	asc	"0122032100"00
-	asc	"040500"00
-	asc	"0125022200"00
-	asc	"012100"00
-	asc	"0124042200"00
-	asc	"022300"00
-	asc	"022100"00
+tblM$	da	M$1,M$2,M$3,M$4,M$5,M$6,M$7,M$8,M$9
+	da	M$10,M$11,M$12,M$13,M$14,M$15,M$16,M$17,M$18,M$19
+	da	M$20,M$21,M$22,M$23,M$24,M$25
+
+M$1	asc	"00"00
+M$2	asc	"0403030400"00
+M$3	asc	"030200"00
+M$4	asc	"04020305010600"00
+M$5	asc	"04040107032000"00
+M$6	asc	"020400"00
+M$7	asc	"04080109020500"00
+M$8	asc	"030700"00
+M$9	asc	"04130207031000"00
+M$10	asc	"0409021100"00
+M$11	asc	"0110031200"00
+M$12	asc	"041100"00
+M$13	asc	"030900"00
+M$14	asc	"0209031500"00
+M$15	asc	"00"00
+M$16	asc	"00"00
+M$17	asc	"00"00
+M$18	asc	"00"00
+M$19	asc	"0122032100"00
+M$20	asc	"040500"00
+M$21	asc	"0125022200"00
+M$22	asc	"012100"00
+M$23	asc	"0124042200"00
+M$24	asc	"022300"00
+M$25	asc	"022100"00
 
 *---
 
 * A	=	128
 
-tblA$
+A$
 	asc	"1400A01.I02D02M."00
 	asc	"0500A03D08.D03N."00
 	asc	"0500A03E08E09D24.D04D05I19E02M."00
@@ -3360,24 +1463,27 @@ tblA$
 
 * C	=	14
 
-tblC$
-	asc	"G03E03.D00N."00
-	asc	"G04E04.D01N."00
-	asc	"I14I16I17I19.F02."00
-	asc	"G07E07.D18N."00
-	asc	"GO1.D19N."00
-	asc	"H06C03C08.D37N."00
-	asc	"H08D08.D39L."00
-	asc	"H06D03.D38L."00
-	asc	"G08E08B24.D40D21N."00
-	asc	"H02.D41N."00
-	asc	"G09E02.D42N."00
-	asc	"G05E11.D52N."00
-	asc	"I24E11.D53D52N."00
-	asc	".L."00
+tblC$	da	C$1,C$2,C$3,C$4,C$5,C$6,C$7,C$8,C$9
+	da	C$10,C$11,C$12,C$13,C$14
+	
+C$1	asc	"G03E03.D00N."00
+C$2	asc	"G04E04.D01N."00
+C$3	asc	"I14I16I17I19.F02."00
+C$4	asc	"G07E07.D18N."00
+C$5	asc	"GO1.D19N."00
+C$6	asc	"H06C03C08.D37N."00
+C$7	asc	"H08D08.D39L."00
+C$8	asc	"H06D03.D38L."00
+C$9	asc	"G08E08B24.D40D21N."00
+C$10	asc	"H02.D41N."00
+C$11	asc	"G09E02.D42N."00
+C$12	asc	"G05E11.D52N."00
+C$13	asc	"I24E11.D53D52N."00
+C$14	asc	".L."00
 
 *-----------------------------------
 
+BREAK	ds	2
 C	ds	10+1
 F1	ds	1
 H	ds	1
@@ -3385,4 +1491,14 @@ LX	ds	1
 N	ds	1
 P	ds	13+1
 SALLE	ds	1
+T	ds	1
+Y1	ds	1
+Y2	ds	1
+Z	ds	1
 
+*-----------------------------------
+* LES AUTRES FICHIERS
+*-----------------------------------
+
+	put	images.s
+	put	musiques.s

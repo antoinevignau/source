@@ -271,6 +271,101 @@ strRETURN	asc	8D
 :1000
 
 *-----------------------------------
+* 1400 - CONDITIONS
+*-----------------------------------
+
+:1400	lda	#1
+	sta	E
+	
+:1420	ldx	E
+	lda	E$,x
+	cmp	#"."
+	bne	:1430
+	jmp	:1700
+
+:1430	lda	#0
+	sta	OK
+	
+	lda	E$+1,x
+	sec
+	sbc	#"0"
+	tay
+	lda	tblD2H,y
+	sta	L
+
+	lda	E$+1,x
+	sec
+	sbc	#"0"
+	clc
+	adc	L
+	sta	L
+
+	ldx	E
+	lda	E$,x
+	sec
+	sbc	#"A"
+	asl
+	tax
+	jsr	(tbl1500,x)
+	
+	lda	OK
+	cmp	#0
+	bne	:1470
+	jmp	:1100
+
+:1470	lda	E
+	clc
+	adc	#3
+	sta	E
+	jmp	:1420
+
+*---------
+
+tbl1500	da	:1500,:1510,:1520,:1530,:1540
+	da	:1550,:1560,:1570,:1580
+	
+*---------
+
+:1500
+
+*---------
+
+:1510
+
+*---------
+
+:1520
+
+*---------
+
+:1530
+
+*---------
+
+:1540
+
+*---------
+
+:1550
+
+*---------
+
+:1560
+
+*---------
+
+:1570
+
+*---------
+
+:1580	lda	N
+	cmp	SALLE
+	beq	:1585
+	lda	#1
+	sta	OK
+:1585	rts
+
+*-----------------------------------
 * 4000 - LES REPONSES
 *-----------------------------------
 
@@ -1446,7 +1541,7 @@ A$
 	asc	"5645A16.D49I18M."00
 	asc	"5543D18E09.D30K."00
 	asc	"5543D18.P18E09J."00
-	asc	"574& E AND18F09.D30K."00
+	asc	"574EXPLODEAND18F09.D30K."00
 	asc	"5743D18.P18F09J."00
 	asc	"1233A24C12.D51K."00
 	asc	"1233A24C03.D52N."00
@@ -1485,8 +1580,11 @@ C$14	asc	".L."00
 
 BREAK	ds	2
 C	ds	10+1
+E	ds	1
+E$	ds	32	; the longest string
 F1	ds	1
 H	ds	1
+L	ds	1
 LX	ds	1
 N	ds	1
 P	ds	13+1
@@ -1496,6 +1594,10 @@ Y1	ds	1
 Y2	ds	1
 Z	ds	1
 
+*--- The lazy decimal to hexadecimal conversion
+
+tblD2H	dfb	0,10,20,30,40,50,60,70,80,90
+	
 *-----------------------------------
 * LES AUTRES FICHIERS
 *-----------------------------------

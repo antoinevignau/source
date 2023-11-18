@@ -19,6 +19,7 @@ WNDTOP	=	$22	; top of text window
 WNDBTM	=	$23	; bottom+1 of text window 
 CH	=	$24	; cursor horizontal position 
 CV	=	$25	; cursor vertical position 
+PROMPT	=	$33	; prompt character
 LINNUM	=	$50	; result from GETADR
 X0L	=	$e0	; X-coord
 X0H	=	$e1
@@ -32,7 +33,7 @@ chrRET	=	$0d
 chrSPC	=	$20
 chrRET2	=	$8d
 chrSPC2	=	$a0
-
+cursorCHAR =	">"
 TEXTBUFFER = 	$200
 
 KBD	=	$c000
@@ -74,7 +75,6 @@ CLREOL	=	$FC9C
 WAIT	=	$FCA8
 RDKEY	=	$FD0C
 KEYIN	=	$FD1B
-GETLNZ	=	$FD67
 GETLN	=	$FD6A
 CROUT	=	$FD8E
 PRBYTE	=	$FDDA
@@ -135,7 +135,9 @@ notiigs
 
 REPLAY
 	jsr	initALL
-
+	jsr	HGR
+	jsr	setHGR
+	
 *-----------------------------------
 * DU BASIC A L'ASSEMBLEUR (BEURK)
 *-----------------------------------
@@ -195,15 +197,16 @@ REPLAY
 * 200 - description salle
 *-----------------------------------
 
-:200	@print	#strVOUS	; always output "VOUS ETES "
+:200	jsr	HGR
+	jsr	setMIXEDOFF
+	
+	@print	#strVOUS	; always output "VOUS ETES "
 
 	lda	SALLE
-	sec
-	sbc	#1
 	asl
 	tax
 	jsr	(tbl7000,x)
-	@key$
+	jsr	setMIXEDON
 	
 :300	lda	#0
 	sta	H
@@ -302,11 +305,8 @@ REPLAY
 	sta	C,x
 	
 :550	@print	#strCOMMANDE
-
-*	lda	#cursorCHAR
-*	sta	PROMPT
 	jsr	GETLN
-	
+
 	lda	TEXTBUFFER
 	cmp	#chrRET2
 	bne	:570
@@ -357,7 +357,7 @@ REPLAY
 
 :940	lda	T$
 	cmp	MO$1
-	beq	:950
+	bne	:970
 	lda	T$+1
 	cmp	MO$1+1
 	bne	:970
@@ -425,7 +425,7 @@ REPLAY
 	jmp	:1400
 
 :1150	lda	NL
-	cmp	AA
+	cmp	#AA
 	bcc	:1200
 	beq	:1200
 
@@ -453,8 +453,67 @@ REPLAY
 :1190	@print	#strEXCLAM
 	jmp	:100
 	
-:1200
+:1200	lda	NL
+	asl
+	tax
+	lda	tblA$,x
+	sta	LINNUM
+	lda	tblA$+1,x
+	sta	LINNUM+1
+	
+	ldy	#1
+	lda	(LINNUM),y
+	cmp	MO$1
+	beq	:1201
+	iny
+	lda	(LINNUM),y
+	cmp	MO$1+1
+	bne	:1210
+:1201	jmp	:1100
 
+:1210	iny
+	lda	(LINNUM),y
+	sta	Y$
+	iny
+	lda	(LINNUM),y
+	sta	Y$+1
+
+	cmp	Y$
+	bne	:1225
+	cmp	#"0"
+	bne	:1225
+	jmp	:1100
+
+:1225	lda	Y$
+	cmp	MO$2
+	beq	:1227
+	lda	Y$+1
+	cmp	MO$2+1
+	bne	:1230
+:1227	jmp	:1100
+	
+:1230	ldy	#0
+	lda	(LINNUM),y
+	sec
+	sbc	#4
+	sta	E$
+
+	lda	LINNUM
+	clc
+	adc	#4
+	sta	LINNUM
+	lda	LINNUM+1
+	adc	#0
+	sta	LINNUM+1
+
+	ldy	#1
+]lp	lda	(LINNUM),y
+	sta	E$,y
+	iny
+	cpy	E$
+	bcc	]lp
+	beq	]lp
+		
 *-----------------------------------
 * 1400 - CONDITIONS
 *-----------------------------------
@@ -1127,7 +1186,7 @@ nbCAR	=	100	; on ne depasse pas 100 caracteres
 ]lp	lda	TEXTBUFFER,x
 	cmp	#chrRET2
 	beq	:6021
-	cmp	#" "
+	cmp	#chrSPC2
 	bne	:6022
 	inx
 	cpx	lenSTRING
@@ -1139,10 +1198,10 @@ nbCAR	=	100	; on ne depasse pas 100 caracteres
 * 2. recopie le mot
 
 :6022	ldy	#1
-	lda	TEXTBUFFER,x
-	cmp	#chrSPC2
-	beq	:6023
+]lp	lda	TEXTBUFFER,x
 	cmp	#chrRET2
+	beq	:6023
+	cmp	#chrSPC2
 	beq	:6023
 	sta	X$1,y
 	inx
@@ -1151,30 +1210,36 @@ nbCAR	=	100	; on ne depasse pas 100 caracteres
 	iny
 	cpy	#4
 	bcc	]lp
-:6023	sty	X$1	; sauve la longueur
+	beq	]lp
+:6023	dey
+	sty	X$1	; sauve la longueur
 
-* 3. cherche l'index du second mot
+* 3. cherche un espace
 
 	inx
 ]lp	lda	TEXTBUFFER,x
 	cmp	#chrRET2
-	beq	:6021
-	cmp	#" "
-	bne	:6032
+	beq	:6031
+	cmp	#chrSPC2
+	beq	:6032
 	inx
 	cpx	lenSTRING
 	bcs	:6031
 	cpx	#nbCAR
 	bcc	]lp
-:6031	rts		; retourne sans avoir trouve
+:6031	jmp	:6160	; retourne sans avoir trouve
+
+* 0123456789012
+* PRENDRE LAMPE
 
 * 4. recopie le mot
 
-:6032	ldy	#1
-	lda	TEXTBUFFER,x
-	cmp	#chrSPC2
-	beq	:6033
+:6032	inx
+	ldy	#1
+]lp	lda	TEXTBUFFER,x
 	cmp	#chrRET2
+	beq	:6033
+	cmp	#chrSPC2
 	beq	:6033
 	sta	X$2,y
 	inx
@@ -1183,8 +1248,13 @@ nbCAR	=	100	; on ne depasse pas 100 caracteres
 	iny
 	cpy	#4
 	bcc	]lp
-:6033	sty	X$2	; sauve la longueur
+	beq	]lp
+:6033	dey
+	sty	X$2	; sauve la longueur
 
+* 5. cherche le mot dans les options
+* X$1 PREN
+* X$2 LAMP
 
 *--------
 	
@@ -1198,6 +1268,7 @@ X$2	ds	4+1	; second mot saisi
 *-----------------------------------
 
 tbl7000
+	da	$bdbd
 	da	:7000
 	da	:7010
 	da	:7020
@@ -1228,82 +1299,69 @@ tbl7000
 	@print	#str7000
 	@wait	#250
 	@print	#str7001
-	jsr	:10000
-	rts
+	jmp	:10000
 
 :7010
 	@print	#str7010
-	jsr	:10100
-	rts
+	jmp	:10100
 
 :7020
 	@print	#str7020
-	jsr	:10200
-	rts
+	jmp	:10200
 
 :7030
 	@print	#str7030
 	lda	#0
 	sta	F1
-	jsr	:10300
-	rts
+	jmp	:10300
 
 :7040
 	@print	#str7040
 	lda	#1
 	sta	F1
-	jsr	:10300
-	rts
+	jmp	:10300
 
 :7050
 	@print	#str7050
-	jsr	:10500
-	rts
+	jmp	:10500
 
 :7060
 	@print	#str7060
-	jsr	:10600
-	rts
+	jmp	:10600
 
 :7070
 	@print	#str7070
 	lda	#0
 	sta	LX
-	jsr	:10700
-	rts
+	jmp	:10700
 
 :7080
 	@print	#str7080
-	jsr	:10800
-	rts
+	jmp	:10800
 
 :7090
 	@print	#str7090
 	lda	#0
 	sta	LX
-	jsr	:10900
-	rts
+	jmp	:10900
 
 :7100
 	@print	#str7100
 	lda	#0
 	sta	LX
-	jsr	:11000
-	rts
+	jmp	:11000
 
 :7110
 	@print	#str7110
 	lda	#2
 	sta	LX
-	jsr	:10700
-	rts
+	jmp	:10700
 
 :7120
 	@print	#str7120
 	lda	#1
 	sta	LX
-	jsr	:10700
-	rts
+	jmp	:10700
 
 :7130		; nada
 	rts
@@ -1312,70 +1370,59 @@ tbl7000
 	@print	#str7140
 	lda	#2
 	sta	LX
-	jsr	:12200
-	rts
+	jmp	:12200
 
 :7150
 	@print	#str7150
 	@print	#str7001
-	jsr	:11500
-	rts
+	jmp	:11500
 
 :7160
 	@print	#str7160
 	lda	#1
 	sta	LX
-	jsr	:10900
-	rts
+	jmp	:10900
 
 :7170
 	@wait	#300
 	@print	#str7170
-	jsr	:11700
-	rts
+	jmp	:11700
 
 :7180
 	@print	#str7180
-	jsr	:11800
-	rts
+	jmp	:11800
 
 :7190
 	@print	#str7190
 	lda	#2
 	sta	LX
-	jsr	:10900
-	rts
+	jmp	:10900
 
 :7200
 	@print	#str7200
 	lda	#1
 	sta	LX
-	jsr	:12200
-	rts
+	jmp	:12200
 
 :7210
 	@print	#str7210
 	lda	#1
 	sta	LX
-	jsr	:11000
-	rts
+	jmp	:11000
 
 :7220
 	@print	#str7220
 	lda	#0
 	sta	LX
-	jsr	:12200
-	rts
+	jmp	:12200
 
 :7230
 	@print	#str7230
-	jsr	:12300
-	rts
+	jmp	:12300
 
 :7240
 	@print	#str7240
-	jsr	:12400
-	rts
+	jmp	:12400
 
 *--------
 
@@ -2214,7 +2261,7 @@ M$25	str	"022100"
 
 *---
 
-* A	=	128
+AA	=	128
 
 tblA$	da	$bdbd
 	da	A$1,A$2,A$3,A$4,A$5,A$6,A$7,A$8,A$9
@@ -2385,7 +2432,6 @@ C$14	str	".L."
 
 *-----------------------------------
 
-AA	ds	1	; copycat of A
 A1	ds	1
 BREAK	ds	1
 C	ds	10+1
@@ -2411,6 +2457,7 @@ S	ds	2	; pour S(1)
 SALLE	ds	1
 T	ds	1
 T$	ds	2	; "00"
+Y$	ds	2	; "00"
 Y1	ds	1
 Y2	ds	1
 Z	ds	1
@@ -2428,12 +2475,12 @@ strILFAITNOIR
 	asc	"IL FAIT NOIR COMME DANS UN FOUR, IL"8D
 	asc	"FAUDRAIT PEUT-ETRE ALLUMER"00
 		
-strILYA	asc	8D"IL Y A DANS LA SALLE :"00
+strILYA	asc	"IL Y A DANS LA SALLE :"00
 strSPACE	asc	" "00
-strRETURN	asc	8D
+strRETURN	asc	8D00
 
 strCOMMANDE
-	asc	8D"QUE FAITES-VOUS ? "
+	asc	"QUE FAITES-VOUS ? "00
 
 strJENECOMPRENDS
 	asc	8D"JE NE COMPRENDS PAS..."00

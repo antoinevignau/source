@@ -1,8 +1,3 @@
-1200 IF MID$(A$(NL),1,2)<>MO$(1) THEN 1100 
-1210 Y$=MID$(A$(NL),3,2)
-1220 IF Y$<>"00" AND Y$<>MO$(2) THEN 1100
-1230 E$=MID$(A$(NL),5)
-
 4000 HIRES:FORN=1TO20:EXPLODE:WAIT4:NEXT
 4001 PRINT"Vous avez gardez la lampe trop        longtemps allumee,elle a explose"
 4005 WAIT400:RETURN

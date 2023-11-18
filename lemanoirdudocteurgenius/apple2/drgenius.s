@@ -95,6 +95,10 @@ MONZ	=	$FF69
 	jsr	drawPICTURE
 	eom
 
+@explode	mac
+	jsr	EXPLODE
+	eom
+	
 @key$	mac
 	jsr	KEY$
 	eom
@@ -1042,65 +1046,474 @@ tbl4000	da	:4000,:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
 	da	:4400,:4410,:4420,:4430,:4440,:4450,:4460,:4470,:4480,:4490
 	da	:4500,:4510,:4520,:4530,:4540,:4550,:4560,:4570,:4580,:4590
 
-:4000
-:4010
-:4020
-:4030
-:4040
-:4050
-:4060
-:4070
-:4080
-:4090
-:4100
-:4110
-:4120
-:4130
-:4140
+
+*--------
+
+:4000	@explode
+	@print	#4000
+	@wait	#400
+	rts
+
+str4000	asc	"VOUS AVEZ GARDE LA LAMPE TROP LONGTEMPS"8D
+	asc	"ALLUMEE, ELLE A EXPLOSE"00
+
+*--------
+
+:4010	@print	#str4010
+	@wait	#500
+	rts
+
+str4010	asc	"VOUS AVEZ OUBLIE DE FERMER LE ROBINET"8D
+	asc	"VOUS MOUREZ SOUS DES TONNES D"A7"EAU"00
+
+*--------
+
+:4020	@print	#str4020
+	@wait	#500
+	rts
+
+str4020	asc	"LA PORTE VIENT DE SE REFERMER DERRIERE"8D
+	asc	"VOUS, VOUS VOILA PRISONNIER..."00
+
+
+*--------
+
+:4030	@print	#str4030
+	@wait	#500
+	rts
+
+str4030	asc	"VOUS AVEZ TREBUCHE DANS L"A7"ESCALIER, VOUS"
+	asc	"VOUS EMPALEZ SUR LE COUTEAU !"00
+
+*--------
+
+:4040	@print	#str4040
+	@wait	#300
+	@print	#str4042
+	@wait	#300
+	rts
+
+str4040	asc	"VOUS RENVERSEZ L'EAU DANS L'ESCALIER,"8D
+	asc	"CE QUI PROVOQUE UNE DECHARGE DE LA"00
+str4042	asc	8D"PRISE ELECTRIQUE"00
+
+*--------
+
+:4050	@print	#str4050
+	@wait	#500
+	rts
+
+str4050	asc	"VOUS ETES SAUF GRACE A LA COMBINAISON"8D
+	asc	"QUE VOUS AVEZ ENFILEE...!"00
+
+*--------
+
+:4060	@print	#str4060
+	@wait	#300
+	rts
+
+str4060	asc	"VOUS MOUREZ ELECTROCUTE..."00
+
+*--------
+
+:4070	@explode
+	@print	#str4070
+	@wait	#500
+	@print	#str4072
+	@wait	#300
+	rts
+
+str4070	asc	"LA PIECE ETAIT PLEINE DE GAZ EXPLOSIF,"8D
+	asc	"VOUS AURIEZ DU ETEINDRE..."00
+str4072	asc	8D"ON RAMASSERA VOS MORCEAUX UN AUTRE"8D
+	asc	"JOUR...!"00
+
+*--------
+
+:4080	@print	#str4080
+	@wait	#400
+	rts
+
+str4080	asc	"VOUS MOUREZ EMPALE SUR DES LANCES"8D
+	asc	"SORTIES DU MUR... !"00
+
+*--------
+
+:4090	@print	#str4090
+	@wait	#300
+	rts
+
+str4090	asc	"LA PORTE NE S'OUVRE PAS DE CETTE PIECE"00
+
+*--------
+
+:4100	@print	#str4100
+	@wait	#400
+	rts
+
+str4100	asc	"LA LAMPE ET LE BRIQUET REFUSENT DE"8D
+	asc	"MARCHER DANS CETTE PIECE"00
+
+*--------
+
+:4110	@print	#str4110
+	@wait	#500
+	rts
+
+str4110	asc	"VOUS TOMBEZ DANS UNE TRAPPE, VOUS VOUS"8D
+	asc	"DISLOQUEZ EN ARRIVANT AU SOL..."00
+
+*--------
+
+:4120	@print	#str4120
+	@wait	#400
+	@print	#str4124
+	@wait	#250
+	rts
+
+str4120	asc	"VOUS AVEZ RAISON DE PASSER, CAR CE"8D
+	asc	"MONSTRE N"A7"ETAIT QU"A7"UNE PROJECTION"00
+str4124	asc	8D"EN 3 DIMENSIONS SUR UN ECRAN DE FUMEE"00
+
+*--------
+
+:4130	@print	#str4130
+	@wait	#400
+	
+	pla
+	pla
+	
+	@print	#str4133
+	@wait	#200
+	jmp	:20100
+
+str4130	asc	"VOUS AVEZ RAISON, LA CURIOSITE EST UN"8D
+	asc	"VILAIN DEFAUT"00
+str4133	asc	"            AU REVOIR"00
+*--------
+
+:4140	@print	#str4140
+	@wait	#450
+	rts
+
+str4140	asc	"VOUS AVEZ RAISON D"A7"ATTENDRE, MAIS CELA"
+	asc	"NE POURRA PAS DURER ETERNELLEMENT..."00
+
+*--------
+
 :4150
-:4160
-:4170
-:4180
-:4190
-:4200
+
+*		"0123456789012345678901234567890123456789"
+str4150	asc	""00
+
+*--------
+
+:4160	@print	#str4160
+	@wait	#400
+	rts
+
+str4160	asc	"MAINTENANT, VOUS AVEZ UNE LAMPE PLEINE"8D
+	asc	"DE PETROLE"00
+
+*--------
+
+:4170	@print	#str4170
+	@wait	#400
+	rts
+
+str4170	asc	"VOUS N"A7"AVEZ RIEN POUR TRANSPORTER LE"8D
+	asc	"PETROLE"00
+
+*--------
+
+:4180	@print	#str4180
+	@explode
+	@wait	#300
+	@print	#str4185
+	@wait	#200
+	rts
+
+str4180	asc	"LE BRIQUET QUE VOUS AVIEZ LAISSE ALLUME"8D
+	asc	"VIENT D'EXPLOSER"00
+str4185	asc	8D"CA TUE L"A7"ETOURDIE..."00
+
+*--------
+
+:4190	@print	#str4190
+	@wait	#300
+	@print	#str4195
+	@wait	#300
+	rts
+
+str4190	asc	"A FORCE DE MARCHER EN LONG ET EN LARGE"8D
+	asc	"DANS CETTE MAISON,"00
+str4195	asc	"VOUS SOMBREZ DANS UN COMA DES PLUS"8D
+	asc	"MORTELS..."00
+
+*--------
+
+:4200	@print	#str4200
+	rts
+
+str4200	asc	"L"A7"EAU COULE..."00
+
+*--------
+
 :4210
+
+*--------
+
 :4220
+
+*--------
+
 :4230
+
+*--------
+
 :4240
+
+*--------
+
 :4250
+
+*--------
+
 :4260
+
+*--------
+
 :4270
+
+*--------
+
 :4280
+
+*--------
+
 :4290
-:4300
-:4310
-:4320
-:4330
-:4340
-:4350
-:4360
-:4370
-:4380
-:4390
-:4400
-:4410
-:4420
-:4430
-:4440
-:4450
-:4460
-:4470
-:4480
-:4490
+
+*--------
+
+:4300	@print	#str4300
+	@wait	#300
+	rts
+
+str4300	asc	"C"A7"EST DEJA FAIT, ESPECE DE RIGOLO"00
+
+*--------
+
+:4310	@print	#str4310
+	@wait	#300
+	rts
+
+str4310	asc	"IL FAUDRAIT PEUT-ETRE DU FEU"00
+
+*--------
+
+:4320	@print	#str4320
+	@wait	#300
+	rts
+
+str4320	asc	"LA LAMPE NE CONTIENT PAS DE PETROLE"00
+
+*--------
+
+:4330	@print	#str4330
+	@wait	#200
+	rts
+
+str4330	asc	"VOUS NE L"A7"AVEZ PAS"00
+
+*--------
+
+:4340	@print	#str4340
+	@wait	#300
+	rts
+
+str4340	asc	"LE BRIQUET EST ENCORE ALLUME ET IL"8D
+	asc	"ECLAIRE LA PIECE."00
+	
+*--------
+
+:4350	@explode
+	@print	#str4350
+	@wait	#400
+	rts
+
+str4350	asc	"LA TORCHE ETAIT PIEGEE, ELLE VOUS"8D
+	asc	"EXPLOSE DANS LES MAINS..."00
+	
+*--------
+
+:4360	@print	#str4360
+	@wait	#300
+	rts
+
+str4360	asc	"LA LAMPE EST ENCORE ALLUMEE ET ELLE VOUS"
+	asc	"ECLAIRE"00
+
+
+*--------
+
+:4370	@print	#str4370
+	@wait	#300
+	rts
+
+str4370	asc	"UN NAIN VIENT DE VOUS LANCER UN POIGNARD"
+	asc	"EN PLEIN COEUR..."00
+	
+*--------
+
+:4380	@print	#str4380
+	@wait	#400
+	rts
+	
+str4380	asc	"UN NAIN VIENT DE SE PRECIPITER SUR VOUS,"
+	asc	"IL S"A7"EMPALE SUR VOTRE CISEAU"00
+
+*--------
+
+:4390	@print	#str4390
+	@wait	#400
+	rts
+	
+str4390	asc	"UN NAIN VIENT DE SE PRECIPITER SUR VOUS,"
+	asc	"IL S"A7"EMPALE SUR VOTRE COUTEAU"00
+
+*--------
+
+:4400	@print	#str4400
+	@wait	#150
+	rts
+
+str4400	asc	"VOUS VENEZ DE RENVERSER LE POT"00
+
+*--------
+
+:4410	@print	#str4410
+	@wait	#200
+	@print	#str4412
+	@wait	#200
+	rts
+
+str4410	asc	"LA FOUDRE VIENT DE TOMBER SUR LA MAISON"8D
+str4412	asc	8D"LA MAISON N"A7"EXISTE PLUS, VOUS NON PLUS"00
+
+*--------
+
+:4420	@print	#str4420
+	@wait	#200
+	@print	#str4425
+	@wait	#200
+	rts
+
+str4420	asc	"A FORCE DE MARCHER DANS LE NOIR, VOUS"8D
+	asc	"AVEZ TREBUCHE"00
+str4425	asc	8D"VOUS MOUREZ D"A7"UNE FRACTURE DU CRANE"00
+
+*--------
+
+:4430	@print	#str4430
+	@wait	#300
+	rts
+
+
+str4430	asc	"VOUS NE POUVEZ PAS TRAVAILLER DANS LE"8D
+	asc	"NOIR..."00
+
+*--------
+
+:4440	@print	#str4440
+	@wait	#400
+	rts
+
+str4440	asc	"LA LUMIERE DU BRIQUE NE SUFFIT PAS"8D
+	asc	"POUR TRAVAILLER..."00
+
+*--------
+
+:4450	@print	#str4450
+	@wait	#100
+	rts
+
+str4450	asc	"IMPOSSIBLE !"00
+
+*--------
+
+:4460	@print	#str4460
+	@wait	#250
+	rts
+
+str4460	asc	"VOUS N"A7"AVEZ AUCUN OUTIL..."
+
+*--------
+
+:4470	@print	#str4470
+	@wait	#400
+	rts
+
+str4470	asc	"LE TELEPORTEUR EST EN PANNE, LES BOUTONS"
+	asc	"NE FONCTIONNENT PAS."00
+
+*--------
+
+:4480	@explode
+	@print	#str4480
+	@wait	#400
+	rts
+	
+str4480	asc	"LE TELEPORTEUR VIENT D"A7"EXPLOSER, VOUS"8D
+	asc	"ETES DECOMPOSEE... !"00
+	
+*--------
+
+:4490	@explode
+	@print	#str4490
+	@wait	#400
+	rts
+	
+str4490	asc	"LE TELEPORTEUR SE MET EN MARCHE, VOUS"8D
+	asc	"DISPARAISSEZ"00
+	
+*--------
+
 :4500
+
+*--------
+
 :4510
+
+*--------
+
 :4520
+
+*--------
+
 :4530
+
+*--------
+
 :4540
+
+*--------
+
 :4550
+
+*--------
+
 :4560
+
+*--------
+
 :4570
+
+*--------
+
 :4580
+
+*--------
+
 :4590
 	rts
 	
@@ -1173,6 +1586,8 @@ nbCAR	=	100	; on ne depasse pas 100 caracteres
 :6000	lda	#0
 	sta	N
 	sta	GN
+	sta	X$1
+	sta	X$2
 
 	lda	#"0"	; initialise les mots
 	sta	MO$1
@@ -1227,10 +1642,7 @@ nbCAR	=	100	; on ne depasse pas 100 caracteres
 	bcs	:6031
 	cpx	#nbCAR
 	bcc	]lp
-:6031	jmp	:6160	; retourne sans avoir trouve
-
-* 0123456789012
-* PRENDRE LAMPE
+:6031	rts
 
 * 4. recopie le mot
 
@@ -1253,13 +1665,73 @@ nbCAR	=	100	; on ne depasse pas 100 caracteres
 	sty	X$2	; sauve la longueur
 
 * 5. cherche le mot dans les options
-* X$1 PREN
-* X$2 LAMP
+* X$1 4 PREN
+* X$2 4 LAMP
+* V$x 6 04PREN 
+*     0 123456
+
+	lda	#0
+	sta	W
+	
+:6180	lda	#1
+	sta	N
+
+:6200	lda	N
+	asl
+	tax
+	lda	tblV$,x
+	sta	LINNUM
+	lda	tblV$+1,x
+	sta	LINNUM+1
+
+	ldy	#3
+	ldx	#1
+]lp	lda	(LINNUM),y
+	cmp	X$1,x
+	bne	:6250
+	iny
+	inx
+	cpx	X$1
+	bcc	]lp
+	beq	]lp
+	
+	lda	W	; recopie l'index du mot
+	asl
+	tax
+	ldy	#1
+	lda	(LINNUM),y
+	sta	MO$1,x
+	iny
+	lda	(LINNUM),y
+	sta	MO$1+1,x
+	jmp	:6300
+	
+:6250	lda	N
+	clc
+	adc	#1
+	sta	N
+	cmp	#V
+	bcc	:6200
+	beq	:6200
+
+* 6. on change de mot
+
+:6300	ldx	#5-1
+]lp	lda	X$2,x
+	sta	X$1,x
+	dex
+	bpl	]lp
+	
+	lda	W
+	clc
+	adc	#1
+	sta	W
+	cmp	#3
+	bcc	:6180
+	rts
 
 *--------
 	
-:6160	brk	$bd
-
 X$1	ds	4+1	; premier mot saisi
 X$2	ds	4+1	; second mot saisi
 
@@ -1806,7 +2278,7 @@ strINTRO3	asc	"        MERCI FRED_72         "00
 strINTRO4	asc	"(C) 1983, L. BENES & LORICIELS"00
 
 *-----------------------------------
-* KEY$ - WAIT FOR KEYPRESS
+* ORIC
 *-----------------------------------
 
 KEY$	lda	KBD	; on keypress, wait 5s
@@ -1816,6 +2288,19 @@ KEY$	lda	KBD	; on keypress, wait 5s
 	@wait	#400
 
 key$1	@wait	#100
+	rts
+
+*--------
+
+EXPLODE	ldx	#$25
+]lp	lda	TXTSET
+	lda	#$25
+	jsr	WAIT
+	lda	TXTCLR
+	lda	#$25
+	jsr	WAIT
+	dex
+	bpl	]lp
 	rts
 
 *-----------------------------------
@@ -2457,6 +2942,7 @@ S	ds	2	; pour S(1)
 SALLE	ds	1
 T	ds	1
 T$	ds	2	; "00"
+W	ds	1
 Y$	ds	2	; "00"
 Y1	ds	1
 Y2	ds	1
@@ -2498,3 +2984,5 @@ strEXCLAM
 
 	put	images.s
 	put	musiques.s
+
+*--- It's the end

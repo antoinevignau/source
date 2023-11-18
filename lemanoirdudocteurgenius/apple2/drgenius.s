@@ -28,6 +28,13 @@ HPAG	=	$e6
 dpFROM	=	$fc
 dpTO	=	$fe
 
+chrRET	=	$0d
+chrSPC	=	$20
+chrRET2	=	$8d
+chrSPC2	=	$a0
+
+TEXTBUFFER = 	$200
+
 KBD	=	$c000
 CLR80COL	=	$c000
 SET80COL	=	$c001
@@ -249,17 +256,76 @@ REPLAY
 	sta	N
 	jmp	:1000
 
-:530
+:530	ldx	#7
+	lda	C,x
+	cmp	#1+1
+	bcc	:540
+	lda	P,x
+	cmp	#1
+	bne	:540
+	lda	C,x
+	sec
+	sbc	#1
+	sta	C,x
+	
+:540	ldx	#3
+	lda	C,x
+	cmp	#1+1
+	bcc	:545
+	lda	P,x
+	cmp	#1
+	bne	:545
+	lda	C,x
+	sec
+	sbc	#1
+	sta	C,x
+	
+:545	ldx	#4
+	lda	C,x
+	cmp	#1+1
+	bcc	:547
+	lda	P,x
+	cmp	#1
+	bne	:547
+	lda	C,x
+	sec
+	sbc	#1
+	sta	C,x
+	
+:547	ldx	#5
+	lda	C,x
+	cmp	#1+1
+	bcc	:550
+	lda	C,x
+	sec
+	sbc	#1
+	sta	C,x
+	
+:550	@print	#strCOMMANDE
 
-*--------
+*	lda	#cursorCHAR
+*	sta	PROMPT
+	jsr	GETLN
+	
+	lda	TEXTBUFFER
+	cmp	#chrRET2
+	bne	:570
+	jsr	switchVIDEO
+	jmp	:550
 
-strILFAITNOIR
-	asc	"IL FAIT NOIR COMME DANS UN FOUR, IL"8D
-	asc	"FAUDRAIT PEUT-ETRE ALLUMER"00
-		
-strILYA	asc	8D"IL Y A DANS LA SALLE :"00
-strSPACE	asc	" "00
-strRETURN	asc	8D
+:570	stx	lenSTRING	; longueur de la chaine saisie
+	jsr	:6000
+
+	lda	MO$1
+	cmp	#"0"
+	bne	:900
+	lda	MO$1+1
+	cmp	#"0"
+	bne	:900
+	
+	@print	#strJENECOMPRENDS
+	@wait	#200
+	jmp	:100
 
 *-----------------------------------
 * 900 - CONTROLE MVT
@@ -340,7 +406,22 @@ strRETURN	asc	8D
 	cmp	#0
 	beq	:1150
 
-* make :1120
+	lda	NL	; E$=C$(NL)
+	asl
+	tax
+	lda	tblC$,x
+	sta	LINNUM
+	lda	tblC$+1,x
+	sta	LINNUM+1
+
+	ldy	#0
+	lda	(LINNUM),y
+	tax
+]lp	lda	(LINNUM),y
+	sta	E$,y
+	iny
+	dex
+	bpl	]lp
 	jmp	:1400
 
 :1150	lda	NL
@@ -360,17 +441,20 @@ strRETURN	asc	8D
 
 :1170	@print	#strIMPOSSIBLE
 
+	lda	MO$1
+	cmp	#"0"
+	bne	:1190
+	lda	MO$1+1
+	cmp	#"9"+1
+	bcs	:1190
+	
+	@print	#strCECHEMIN
+	
+:1190	@print	#strEXCLAM
+	jmp	:100
+	
 :1200
 
-*--------
-
-strIMPOSSIBLE
-	asc	8D"IMPOSSIBLE "00
-strCECHEMIN
-	asc	"DE PRENDRE CE CHEMIN"00
-strEXCLAM
-	asc	"!"00
-	
 *-----------------------------------
 * 1400 - CONDITIONS
 *-----------------------------------
@@ -603,6 +687,8 @@ tbl1500	da	:1500,:1510,:1520,:1530,:1540
 
 tblBRKV	dfb	10,30,50,53
 tblBRKA	da	:100,:300,:500,:530
+	
+	hex	BDBDBD
 	
 *-----------------------------------
 * 1800
@@ -1023,7 +1109,89 @@ str4640	asc	"LE PLACARD ETAIT PIEGE, VOUS N"A7"AURIEZ"8D
 * 6000 - ANALYSE DU MOT
 *-----------------------------------
 
-:6000
+nbCAR	=	100	; on ne depasse pas 100 caracteres
+
+:6000	lda	#0
+	sta	N
+	sta	GN
+
+	lda	#"0"	; initialise les mots
+	sta	MO$1
+	sta	MO$1+1
+	sta	MO$2
+	sta	MO$2+1
+
+* 1. cherche l'index du premier mot
+
+	ldx	#0	; cherche le premier caractere
+]lp	lda	TEXTBUFFER,x
+	cmp	#chrRET2
+	beq	:6021
+	cmp	#" "
+	bne	:6022
+	inx
+	cpx	lenSTRING
+	bcs	:6021
+	cpx	#nbCAR
+	bcc	]lp
+:6021	rts		; retourne sans avoir trouve
+
+* 2. recopie le mot
+
+:6022	ldy	#1
+	lda	TEXTBUFFER,x
+	cmp	#chrSPC2
+	beq	:6023
+	cmp	#chrRET2
+	beq	:6023
+	sta	X$1,y
+	inx
+	cpx	lenSTRING
+	bcs	:6023
+	iny
+	cpy	#4
+	bcc	]lp
+:6023	sty	X$1	; sauve la longueur
+
+* 3. cherche l'index du second mot
+
+	inx
+]lp	lda	TEXTBUFFER,x
+	cmp	#chrRET2
+	beq	:6021
+	cmp	#" "
+	bne	:6032
+	inx
+	cpx	lenSTRING
+	bcs	:6031
+	cpx	#nbCAR
+	bcc	]lp
+:6031	rts		; retourne sans avoir trouve
+
+* 4. recopie le mot
+
+:6032	ldy	#1
+	lda	TEXTBUFFER,x
+	cmp	#chrSPC2
+	beq	:6033
+	cmp	#chrRET2
+	beq	:6033
+	sta	X$2,y
+	inx
+	cpx	lenSTRING
+	bcs	:6033
+	iny
+	cpy	#4
+	bcc	]lp
+:6033	sty	X$2	; sauve la longueur
+
+
+*--------
+	
+:6160	brk	$bd
+
+X$1	ds	4+1	; premier mot saisi
+X$2	ds	4+1	; second mot saisi
 
 *-----------------------------------
 * 7000 - DESCRIPTION DES PIECES
@@ -1630,11 +1798,20 @@ setHGR			; HGR
 	rts
 
 *----------------------
+* switchVIDEO
+*----------------------
+
+switchVIDEO
+	lda	#0
+	eor	#1
+	sta	switchVIDEO+1
+	beq	setMIXEDOFF
+	
+*----------------------
 * setMIXEDON
 *----------------------
 
 setMIXEDON		; HGR + 4 LINES OF TEXT
-	sta	TXTCLR
 	sta	MIXSET
 	
 	lda	#20	; et c'est fenêtré en plus !
@@ -1647,8 +1824,7 @@ setMIXEDON		; HGR + 4 LINES OF TEXT
 * setMIXEDOFF
 *----------------------
 
-setMIXEDOFF		; TEXT ONLNY
-	sta	TXTSET
+setMIXEDOFF		; FULL HGR
 	sta	MIXCLR
 	rts
 
@@ -2218,13 +2394,14 @@ E	ds	1
 E$	ds	32	; the longest string
 F1	ds	1
 G	ds	1
+GN	ds	1
 H	ds	1
 HH	ds	1
 L	ds	1
 LI	ds	1
 LX	ds	1
-MO$1	ds	2	; "00"
-MO$2	ds	2	; "00"
+MO$1	ds	2	; "00" (une chaine raccourcie)
+MO$2	ds	2	; "00" (une chaine raccourcie)
 N	ds	1
 NL	ds	1
 OK	ds	1
@@ -2241,6 +2418,32 @@ Z	ds	1
 *--- The lazy decimal to hexadecimal conversion
 
 tblD2H	dfb	0,10,20,30,40,50,60,70,80,90
+lenSTRING	ds	1
+
+*-----------------------------------
+* STRINGS
+*-----------------------------------
+
+strILFAITNOIR
+	asc	"IL FAIT NOIR COMME DANS UN FOUR, IL"8D
+	asc	"FAUDRAIT PEUT-ETRE ALLUMER"00
+		
+strILYA	asc	8D"IL Y A DANS LA SALLE :"00
+strSPACE	asc	" "00
+strRETURN	asc	8D
+
+strCOMMANDE
+	asc	8D"QUE FAITES-VOUS ? "
+
+strJENECOMPRENDS
+	asc	8D"JE NE COMPRENDS PAS..."00
+	
+strIMPOSSIBLE
+	asc	8D"IMPOSSIBLE "00
+strCECHEMIN
+	asc	"DE PRENDRE CE CHEMIN"00
+strEXCLAM
+	asc	" !"00
 	
 *-----------------------------------
 * LES AUTRES FICHIERS

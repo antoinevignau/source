@@ -863,7 +863,7 @@ strEVIDENT
 	asc	"PAS PORTER TANT DE CHOSES !!"00
 strVOUSLAVEZ
 	asc	8D"VOUS L"A7"AVEZ DEJA. VOUS ETES ETOURDI"8D
-	asc	"ET DANS CETTE MAISON, CE N'EST PAS"00
+	asc	"ET DANS CETTE MAISON, CE N"A7"EST PAS"00
 strCONSEILLE
 	asc	"TRES CONSEILLE"00
 	
@@ -1093,7 +1093,7 @@ str4030	asc	"VOUS AVEZ TREBUCHE DANS L"A7"ESCALIER, VOUS"
 	@wait	#300
 	rts
 
-str4040	asc	"VOUS RENVERSEZ L'EAU DANS L'ESCALIER,"8D
+str4040	asc	"VOUS RENVERSEZ L"A7"EAU DANS L"A7"ESCALIER,"8D
 	asc	"CE QUI PROVOQUE UNE DECHARGE DE LA"00
 str4042	asc	8D"PRISE ELECTRIQUE"00
 
@@ -1143,7 +1143,7 @@ str4080	asc	"VOUS MOUREZ EMPALE SUR DES LANCES"8D
 	@wait	#300
 	rts
 
-str4090	asc	"LA PORTE NE S'OUVRE PAS DE CETTE PIECE"00
+str4090	asc	"LA PORTE NE S"A7"OUVRE PAS DE CETTE PIECE"00
 
 *--------
 
@@ -1201,10 +1201,20 @@ str4140	asc	"VOUS AVEZ RAISON D"A7"ATTENDRE, MAIS CELA"
 
 *--------
 
-:4150
+:4150	@print	#str4150
+	@wait	#400
+	@print	#str4152
+	@wait	#500
+	@print	#str4156
+	@wait	#200
+	rts
 
-*		"0123456789012345678901234567890123456789"
-str4150	asc	""00
+str4150	asc	"VOUS AVEZ DE LA CHANCE CAR CE COFFRE"8D
+	asc	"ETAIT OUVERT."00
+str4152	asc	8D"UN MESSAGE A L"A7"INTERIEUR DIT : NE"8D
+	asc	"RESPECTEZ PAS LES COULEURS DU CODE DE LA"8D
+	asc	"ROUTE...?"00
+str4156	asc	"TIENS LE COFFRE SE REFERME"00
 
 *--------
 
@@ -1234,7 +1244,7 @@ str4170	asc	"VOUS N"A7"AVEZ RIEN POUR TRANSPORTER LE"8D
 	rts
 
 str4180	asc	"LE BRIQUET QUE VOUS AVIEZ LAISSE ALLUME"8D
-	asc	"VIENT D'EXPLOSER"00
+	asc	"VIENT D"A7"EXPLOSER"00
 str4185	asc	8D"CA TUE L"A7"ETOURDIE..."00
 
 *--------
@@ -1259,39 +1269,87 @@ str4200	asc	"L"A7"EAU COULE..."00
 
 *--------
 
-:4210
+:4210	@print	#str4210
+	@wait	#400
+	@print	#str4215
+	@wait	#300
+	rts
+
+str4210	asc	"VOUS AVEZ LES PIEDS TREMPES ET CELA VOUS"
+	asc	"REND TRES MALADE..."00
+str4215	asc	8D"VOUS MOUREZ D"A7"UNE TRIPLE PNEUMONIE...!"00
 
 *--------
 
-:4220
+:4220	@print	#str4220
+	@wait	#200
+	@print	#str4225
+	@wait	#300
+	rts
+
+str4220	asc	"LE TITRE EST : "00
+str4225	asc	8D"LA MORT A LA PREMIERE PAGE."00
 
 *--------
 
-:4230
+:4230	@explode
+	@print	#str4230
+	@wait	#400
+	rts
+
+str4230	asc	"LE LIVRE A EXPLOSE LORSQUE VOUS L"A7"AVEZ"8D
+	asc	"OUVERT..."00
 
 *--------
 
-:4240
+:4240	@print	#str4240
+	@wait	#300
+	rts
+
+str4240	asc	"LE PAPIER INDIQUE : CHERCHEZ LA CLEF."00
 
 *--------
 
-:4250
+:4250	@print	#str4250
+	@wait	#400
+	rts
+
+str4250	asc	"LA CLEF VOUS PERMETTRA DE TROUVER LE"8D
+	asc	"CODE DE LA PORTE D"A7"ENTREE."00
 
 *--------
 
-:4260
+:4260	@print	#str4260
+	@wait	#400
+	rts
+
+str4260	asc	"IL Y A, A COTE DE LA PORTE, UN CLAVIER"8D
+	asc	"NUMERIQUE PERMETTANT D"A7"ENTRER UN CODE"00
 
 *--------
 
-:4270
+:4270	@print	#str4270
+	@wait	#200
+	rts
+
+str4270	asc	"POUR FAIRE QUOI...?"00
 
 *--------
 
-:4280
+:4280	@print	#str4280
+	@wait	#300
+	rts
+
+str4280	asc	"IL Y A UNE ODEUR DE GAZ."00
 
 *--------
 
-:4290
+:4290	@print	#str4290
+	@wait	#300
+	rts
+
+str4290	asc	"APPAREMMENT, IL N"A7"Y A AUCUNE ODEUR"8D
+	asc	"MAIS..."00
 
 *--------
 
@@ -1478,45 +1536,112 @@ str4490	asc	"LE TELEPORTEUR SE MET EN MARCHE, VOUS"8D
 	
 *--------
 
-:4500
-
-*--------
-
-:4510
-
-*--------
-
-:4520
-
-*--------
-
-:4530
-
-*--------
-
-:4540
-
-*--------
-
-:4550
-
-*--------
-
-:4560
-
-*--------
-
-:4570
-
-*--------
-
-:4580
-
-*--------
-
-:4590
+:4500	@print	#str4500
+	@wait	#300
 	rts
-	
+
+str4500	asc	"VOUS PRENEZ DU 30000 VOLTS DANS LES"8D
+	asc	"DOIGTS"00
+
+*--------
+
+:4510	@print	#str4510
+	@wait	#150
+	rts
+
+str4510	asc	"LE PLACARD EST FERME A CLEF"00
+
+*--------
+
+:4520	@print	#str4520
+	@wait	#400
+	rts
+
+str4520	asc	"L"A7"HORRIBLE MONSTRE SORTI DU PLACARD"8D
+	asc	"VIENT DE VOUS DEVORER"00
+
+*--------
+
+:4530	@print	#str4530
+	@wait	#200
+	rts
+
+str4530	asc	"IL NE FALLAIT PAS FUIR"00
+
+*--------
+
+:4540	@print	#str4540
+	@wait	#400
+	rts
+
+str4540	asc	"VOUS AVEZ RAISON D"A7"UTILISER LE CISEAU,"8D
+	asc	"LE MONSTRE EST MORT"00
+
+*--------
+
+:4550	@print	#str4550
+	@print	#PL
+	@print	#str4552
+	@wait	#300
+	@print	#str4555
+	@wait	#150
+	rts
+
+str4550	asc	"A L"A7"INTERIEUR DU PLACARD, LE NO "00
+str4552	asc	8D" EST INSCRIT"00
+str4555	asc	8D"LE PLACARD SE REFERME."00
+
+*--------
+
+:4560	@explode
+	@print	#str4560
+	@wait	#200
+	rts
+
+str4560	asc	"LE PISTOLET A EXPLOSE"00
+
+*--------
+
+:4570	@explode
+	@print	#str4570
+	@wait	#250
+	rts
+
+str4570	asc	"LE CLAVIER NUMERIQUE A EXPLOSE"00
+
+*--------
+
+:4580	@print	#str4580
+	@wait	#300
+	@print	#str4582
+	@wait	#100
+	@print	#str4585
+	@wait	#400
+	rts
+
+str4580	asc	"LE CLAVIER NUMERIQUE PREND FEU,"8D
+	asc	"HEUREUSEMENT, VOUS AVIEZ "00
+str4582	asc	"UN POT PLEIN"00
+str4585	asc	8D"D"A7"EAU QUI VOUS PERMET D"A7"ETEINDRE LE FEU"00
+
+*--------
+
+:4590	@print	#str4590
+	jsr	GETLN
+	cpx	#4
+	bne	:4595
+
+	ldx	#4-1
+]lp	lda	TEXTBUFFER,x
+	cmp	PL,x
+	bne	:4595
+	dex
+	bpl	]lp
+	jmp	:4600	; t'as gagné
+:4595	jmp	:4570	; t'as perdu
+
+str4590	asc	"NO DE CODE "00
+
 *-----------------------------------
 * 4600
 *-----------------------------------
@@ -1959,6 +2084,20 @@ initALL
 	
 * PL=INT(RND(1)*9000+1000)
 
+	ldx	#0
+]lp	lda	VBL
+	eor	VERTCNT
+	and	#%0000_0111
+	clc
+	adc	#1
+	cmp	#9+1
+	bcs	]lp
+	ora	#"0"
+	sta	PL,x
+	inx
+	cpx	#4
+	bcc	]lp
+
 	ldx	#nbO	; reset object table
 ]lp	lda	refO,x
 	sta	O,x
@@ -2137,7 +2276,7 @@ strREPLAY	asc	8D"VOULEZ-VOUS REJOUER ? "00
 
 strGAGNE	asc	"CELA EST EXCEPTIONNEL. VOUS ETES LE"8D8D
 	asc	"PREMIER A ETRE SORTI VIVANT DE CETTE"8D8D
-	asc	"MAISON, MAIS SI J'ETAIS VOUS, JE ME"8D8D
+	asc	"MAISON, MAIS SI J"A7"ETAIS VOUS, JE ME"8D8D
 	asc	"METTRAIS A COURIR CAR UN NAIN RODE"8D8D
 	asc	"PEUT-ETRE DANS LES PARAGES..."00
 	
@@ -2938,6 +3077,7 @@ NL	ds	1
 OK	ds	1
 P	ds	13+1
 PY	ds	1
+PL	ds	5	; 1111/0
 S	ds	2	; pour S(1)
 SALLE	ds	1
 T	ds	1

@@ -321,10 +321,6 @@ REPLAY
 	jsr	:6000
 
 	lda	MO$1
-	cmp	#"0"
-	bne	:900
-	lda	MO$1+1
-	cmp	#"0"
 	bne	:900
 	
 	@print	#strJENECOMPRENDS
@@ -335,8 +331,7 @@ REPLAY
 * 900 - CONTROLE MVT
 *-----------------------------------
 
-:900	lda	#1
-	sta	Z
+:900	ldy	#0
 
 :920	lda	SALLE	; T$=MID(M$(SALLE),Z,2)
 	asl
@@ -346,49 +341,18 @@ REPLAY
 	lda	tblM$+1,x
 	sta	LINNUM+1
 	
-	ldy	Z
 	lda	(LINNUM),y
-	sta	T$+1
-	dey
-	lda	(LINNUM),y
-	sta	T$
-	
-	cmp	#"0"
-	bne	:940
-	lda	T$+1
-	cmp	#"0"
 	beq	:980
-
-:940	lda	T$
 	cmp	MO$1
-	bne	:970
-	lda	T$+1
-	cmp	MO$1+1
 	bne	:970
 
 :950	iny
-	iny
 	lda	(LINNUM),y
-	sec
-	sbc	#"0"
-	tax
-	lda	tblD2H,x
-	sta	SALLE
-
-	iny
-	lda	(LINNUM),y
-	sec
-	sbc	#"0"
-	clc
-	adc	SALLE
 	sta	SALLE
 	jmp	:100
 	
-:970	lda	Z
-	clc
-	adc	#4
-	sta	Z
-	jmp	:920
+:970	iny
+	bne	:920
 
 :980	lda	#0
 	sta	T
@@ -398,13 +362,10 @@ REPLAY
 * 1000 - CONTROLE
 *-----------------------------------
 
-:1000	lda	#0
+:1000	lda	#-1
 	sta	NL
 
-:1100	lda	NL
-	clc
-	adc	#1
-	sta	NL
+:1100	inc	NL
 	
 	lda	T
 	cmp	#0
@@ -445,11 +406,8 @@ REPLAY
 
 :1170	@print	#strIMPOSSIBLE
 
-	lda	MO$1
-	cmp	#"0"
-	bne	:1190
-	lda	MO$1+1
-	cmp	#"9"+1
+	lda	MO$1	; les directions
+	cmp	#10+1
 	bcs	:1190
 	
 	@print	#strCECHEMIN
@@ -460,41 +418,16 @@ REPLAY
 :1200	lda	NL
 	asl
 	tax
-	lda	tblA$,x
-	sta	LINNUM
-	lda	tblA$+1,x
-	sta	LINNUM+1
-	
-	ldy	#1
-	lda	(LINNUM),y
+	lda	tblA,x
 	cmp	MO$1
-	beq	:1201
-	iny
-	lda	(LINNUM),y
-	cmp	MO$1+1
-	bne	:1210
-:1201	jmp	:1100
-
-:1210	iny
-	lda	(LINNUM),y
-	sta	Y$
-	iny
-	lda	(LINNUM),y
-	sta	Y$+1
-
-	cmp	Y$
-	bne	:1225
-	cmp	#"0"
-	bne	:1225
+	beq	:1210
 	jmp	:1100
 
-:1225	lda	Y$
+:1210	lda	tblA+1,x
+	beq	:1230
 	cmp	MO$2
-	beq	:1227
-	lda	Y$+1
-	cmp	MO$2+1
-	bne	:1230
-:1227	jmp	:1100
+	beq	:1230
+	jmp	:1100
 	
 :1230	ldy	#0
 	lda	(LINNUM),y
@@ -677,11 +610,7 @@ tbl1500	da	:1500,:1510,:1520,:1530,:1540
 * 1700 - ACTIONS
 *-----------------------------------
 
-:1700
-	lda	E
-	clc
-	adc	#1
-	sta	E
+:1700	inc	E
 	
 	lda	#1
 	sta	A1
@@ -768,10 +697,8 @@ tbl1800	da	$bdbd
 	sta	G
 	sta	HH
 
-:1810	lda	G
-	clc
-	adc	#1
-	sta	G
+:1810	inc	G
+	lda	G
 	tax
 	lda	O,x
 	cmp	#-1
@@ -1714,11 +1641,8 @@ nbCAR	=	100	; on ne depasse pas 100 caracteres
 	sta	X$1
 	sta	X$2
 
-	lda	#"0"	; initialise les mots
 	sta	MO$1
-	sta	MO$1+1
 	sta	MO$2
-	sta	MO$2+1
 
 * 1. cherche l'index du premier mot
 
@@ -2724,77 +2648,88 @@ tblV$	da	$bdbd
 	da	V$50,V$51,V$52,V$53,V$54,V$55,V$56,V$57,V$58,V$59
 	da	V$60,V$61,V$62,V$63,V$64,V$65,V$66,V$67,V$68,V$69
 	da	V$70
-	
-V$1	str	"01N"
-V$2	str	"01NORD"
-V$3	str	"02S"
-V$4	str	"02SUD"
-V$5	str	"03E"
-V$6	str	"03EST"
-V$7	str	"04O"
-V$8	str	"04OUEST"
-V$9	str	"05MONT"
-V$10	str	"05GRIM"
-V$11	str	"06DESC"
-V$12	str	"10PREN"
-V$13	str	"10RAMA"
-V$14	str	"11POSE"
-V$15	str	"12OUVR"
-V$16	str	"13FERM"
-V$17	str	"14ENTR"
-V$18	str	"14AVAN"
-V$19	str	"15ALLU"
-V$20	str	"16ETEI"
-V$21	str	"17REPA"
-V$22	str	"17DEPA"
-V$23	str	"18LIS"
-V$24	str	"19REGA"
-V$25	str	"20RETO"
-V$26	str	"21RENI"
-V$27	str	"21SENS"
-V$28	str	"22REMP"
-V$29	str	"23VIDE"
-V$30	str	"24INVE"
-V$31	str	"24LIST"
-V$32	str	"25RIEN"
-V$33	str	"25ATTE"
-V$34	str	"26POIG"
-V$35	str	"27COUT"
-V$36	str	"28TOUR"
-V$37	str	"29LAMP"
-V$38	str	"30CODE"
-V$39	str	"31ESCA"
-V$40	str	"32PIST"
-V$41	str	"33PLAC"
-V$42	str	"34TORC"
-V$43	str	"35TELE"
-V$44	str	"36MONS"
-V$45	str	"37PETR"
-V$46	str	"38POT"
-V$47	str	"18LIT"
-V$48	str	"39CLEF"
-V$49	str	"40PAPI"
-V$50	str	"41LIVR"
-V$51	str	"42BRIQ"
-V$52	str	"43COMB"
-V$53	str	"44COFF"
-V$54	str	"45ROUG"
-V$55	str	"46BLEU"
-V$56	str	"47VERT"
-V$57	str	"48TITR"
-V$58	str	"49ROBI"
-V$59	str	"50CISE"
-V$60	str	"51PORT"
-V$61	str	"52ACTI"
-V$62	str	"53JETE"
-V$63	str	"53LANCE"
-V$64	str	"54EAU"
-V$65	str	"55ENFI"
-V$66	str	"55PASS"
-V$67	str	"56APPU"
-V$68	str	"56ENFO"
-V$69	str	"57ENLE"
-V$70	str	"58RENT"
+
+V$1	str	"N"
+V$2	str	"NORD"
+V$3	str	"S"
+V$4	str	"SUD"
+V$5	str	"E"
+V$6	str	"EST"
+V$7	str	"O"
+V$8	str	"OUEST"
+V$9	str	"MONT"
+V$10	str	"GRIM"
+V$11	str	"DESC"
+V$12	str	"PREN"
+V$13	str	"RAMA"
+V$14	str	"POSE"
+V$15	str	"OUVR"
+V$16	str	"FERM"
+V$17	str	"ENTR"
+V$18	str	"AVAN"
+V$19	str	"ALLU"
+V$20	str	"ETEI"
+V$21	str	"REPA"
+V$22	str	"DEPA"
+V$23	str	"LIS"
+V$24	str	"REGA"
+V$25	str	"RETO"
+V$26	str	"RENI"
+V$27	str	"SENS"
+V$28	str	"REMP"
+V$29	str	"VIDE"
+V$30	str	"INVE"
+V$31	str	"LIST"
+V$32	str	"RIEN"
+V$33	str	"ATTE"
+V$34	str	"POIG"
+V$35	str	"COUT"
+V$36	str	"TOUR"
+V$37	str	"LAMP"
+V$38	str	"CODE"
+V$39	str	"ESCA"
+V$40	str	"PIST"
+V$41	str	"PLAC"
+V$42	str	"TORC"
+V$43	str	"TELE"
+V$44	str	"MONS"
+V$45	str	"PETR"
+V$46	str	"POT"
+V$47	str	"LIT"
+V$48	str	"CLEF"
+V$49	str	"PAPI"
+V$50	str	"LIVR"
+V$51	str	"BRIQ"
+V$52	str	"COMB"
+V$53	str	"COFF"
+V$54	str	"ROUG"
+V$55	str	"BLEU"
+V$56	str	"VERT"
+V$57	str	"TITR"
+V$58	str	"ROBI"
+V$59	str	"CISE"
+V$60	str	"PORT"
+V$61	str	"ACTI"
+V$62	str	"JETE"
+V$63	str	"LANCE"
+V$64	str	"EAU"
+V$65	str	"ENFI"
+V$66	str	"PASS"
+V$67	str	"APPU"
+V$68	str	"ENFO"
+V$69	str	"ENLE"
+V$70	str	"RENT"
+
+tblV	dfb	$bd
+	dfb	01,01,02,02,03,03,04,04
+	dfb	05,05,06,10,10,11,12,13
+	dfb	14,14,15,16,17,17,18,19
+	dfb	20,21,21,22,23,24,24,25
+	dfb	25,26,27,28,29,30,31,32
+	dfb	33,34,35,36,37,38,18,39
+	dfb	40,41,42,43,44,45,46,47
+	dfb	48,49,50,51,52,53,53,54
+	dfb	55,55,56,56,57,58
 
 *---
 
@@ -2857,38 +2792,37 @@ tblM$	da	$bdbd
 	da	M$10,M$11,M$12,M$13,M$14,M$15,M$16,M$17,M$18,M$19
 	da	M$20,M$21,M$22,M$23,M$24,M$25
 
-M$1	str	"00"
-M$2	str	"0403030400"
-M$3	str	"030200"
-M$4	str	"04020305010600"
-M$5	str	"04040107032000"
-M$6	str	"020400"
-M$7	str	"04080109020500"
-M$8	str	"030700"
-M$9	str	"04130207031000"
-M$10	str	"0409021100"
-M$11	str	"0110031200"
-M$12	str	"041100"
-M$13	str	"030900"
-M$14	str	"0209031500"
-M$15	str	"00"
-M$16	str	"00"
-M$17	str	"00"
-M$18	str	"00"
-M$19	str	"0122032100"
-M$20	str	"040500"
-M$21	str	"0125022200"
-M$22	str	"012100"
-M$23	str	"0124042200"
-M$24	str	"022300"
-M$25	str	"022100"
+M$1	dfb	00
+M$2	dfb	04,03,03,04,00
+M$3	dfb	03,02,00
+M$4	dfb	04,02,03,05,01,06,00
+M$5	dfb	04,04,01,07,03,20,00
+M$6	dfb	02,04,00
+M$7	dfb	04,08,01,09,02,05,00
+M$8	dfb	03,07,00
+M$9	dfb	04,13,02,07,03,10,00
+M$10	dfb	04,09,02,11,00
+M$11	dfb	01,10,03,12,00
+M$12	dfb	04,11,00
+M$13	dfb	03,09,00
+M$14	dfb	02,09,03,15,00
+M$15	dfb	00
+M$16	dfb	00
+M$17	dfb	00
+M$18	dfb	00
+M$19	dfb	01,22,03,21,00
+M$20	dfb	04,05,00
+M$21	dfb	01,25,02,22,00
+M$22	dfb	01,21,00
+M$23	dfb	01,24,04,22,00
+M$24	dfb	02,23,00
+M$25	dfb	02,21,00
 
-*---
+*--- On commence ˆ index 0
 
 AA	=	128
 
-tblA$	da	$bdbd
-	da	A$1,A$2,A$3,A$4,A$5,A$6,A$7,A$8,A$9
+tblA$	da	A$1,A$2,A$3,A$4,A$5,A$6,A$7,A$8,A$9
 	da	A$10,A$11,A$12,A$13,A$14,A$15,A$16,A$17,A$18,A$19
 	da	A$20,A$21,A$22,A$23,A$24,A$25,A$26,A$27,A$28,A$29
 	da	A$30,A$31,A$32,A$33,A$34,A$35,A$36,A$37,A$38,A$39
@@ -2902,141 +2836,269 @@ tblA$	da	$bdbd
 	da	A$110,A$111,A$112,A$113,A$114,A$115,A$116,A$117,A$118,A$119
 	da	A$120,A$121,A$122,A$123,A$124,A$125,A$126,A$127,A$128
 
-A$1	str	"1400A01.I02D02M."
-A$2	str	"0500A03D08.D03N."
-A$3	str	"0500A03E08E09D24.D04D05I19E02M."
-A$4	str	"0500A03E08D24.D04D06N."
-A$5	str	"0500A03E07.I19M."
-A$6	str	"0500A03E03.I19M."
-A$7	str	"0500A03.I19E02M."
-A$8	str	"0600A19D08.D03N."
-A$9	str	"0600A19E08E09D24.D04D05I03M."
-A$10	str	"0600A19E08D24.D04D06N."
-A$11	str	"0600A19.I03M."
-A$12	str	"0100A09E07B22.D07N."
-A$13	str	"0100A09E03B05.D07N."
-A$14	str	"0100A09.I14E02M."
-A$15	str	"0100A14.I16E02M."
-A$16	str	"0200A16E07B22.D07N."
-A$17	str	"0200A16E03B05.D07N."
-A$18	str	"0200A16.I14E02M."
-A$19	str	"0400A15E03B05.D07N."
-A$20	str	"0400A15E07B22.D07N."
-A$21	str	"0400A15.I14E02M."
-A$22	str	"0100A15E03.I17M."
-A$23	str	"0100A15E07.I17M."
-A$24	str	"0100A15.I17E02M."
-A$25	str	"0200A17.F01I15M."
-A$26	str	"0300A17.D08N."
-A$27	str	"0400A17.D09K."
-A$28	str	"0300A18.D10F03E01E02I17M."
-A$29	str	"0400A21E03.I19M."
-A$30	str	"0400A21E07.I19M."
-A$31	str	"0400A21.I19E02M."
-A$32	str	"0200A22E03.I19M."
-A$33	str	"0200A22E07.I19M."
-A$34	str	"0200A22.I19E02M."
-A$35	str	"0200A19.D11N."
-A$36	str	"0400A19.D11N."
-A$37	str	"0300A22.D12I23M."
-A$38	str	"2500A01.D13."
-A$39	str	"2500I01.D14K."
-A$40	str	"1244A03.D15M."
-A$41	str	"1034B01.B01J."
-A$42	str	"1027B08.B08J."
-A$43	str	"1028B04.B04J."
-A$44	str	"1029B05.B05J."
-A$45	str	"1032B21.B21J."
-A$46	str	"1038B24.B24J."
-A$47	str	"1039B12.B12J."
-A$48	str	"1040B09.B09J."
-A$49	str	"1041B10.B10J."
-A$50	str	"1043B18.B18J."
-A$51	str	"1050B03.B03J."
-A$52	str	"1042B22.B22J."
-A$53	str	"1037A20B05.H11P05E05D16K."
-A$54	str	"1037A20.D17K."
-A$55	str	"1134.C01J."
-A$56	str	"1127.C08J."
-A$57	str	"1128.C04J."
-A$58	str	"1129.C05J."
-A$59	str	"1132.C21J."
-A$60	str	"1138.C24J."
-A$61	str	"1143E09.D62K."
-A$62	str	"1139.C12J."
-A$63	str	"1140.C09J."
-A$64	str	"1141.C10J."
-A$65	str	"1143.C18J."
-A$66	str	"1150.C03J."
-A$67	str	"1142.C22J."
-A$68	str	"2400.A00L."
-A$69	str	"1249A05.E04D20G0405J."
-A$70	str	"1349A05.F04J."
-A$71	str	"2238A05E04.P24E08J."
-A$72	str	"2338A05E08.F08P24J."
-A$73	str	"2338E08.D21N."
-A$74	str	"1848B10.D22L."
-A$75	str	"1841B10.D23N."
-A$76	str	"1840B09.D24K."
-A$77	str	"2040B09.D25K."
-A$78	str	"1951A02.D26M."
-A$79	str	"1951.D27K."
-A$80	str	"2100A14.D28K."
-A$81	str	"2100.D29K."
-A$82	str	"1542C22.D33K."
-A$83	str	"1542E07.D30K."
-A$84	str	"1542A14.D07N."
-A$85	str	"1542A17E01.D10K."
-A$86	str	"1542E02.F02E07E06P22M."
-A$87	str	"1542.E07P22J."
-A$88	str	"1529C05.D33K."
-A$89	str	"1529E03.D30K."
-A$90	str	"1529F07.D31L."
-A$91	str	"1529F05.D32L."
-A$92	str	"1529E02.F02E03E06P06P05M."
-A$93	str	"1529.E03P06P05J."
-A$94	str	"1642C22.D33K."
-A$95	str	"1642F07.D30K."
-A$96	str	"1642E06E03.D36F07P22M."
-A$97	str	"1642E06.E02F07F06P22M."
-A$98	str	"1642.F07P22M."
-A$99	str	"1629C05.D33K."
-A$100	str	"1629F03.D30K."
-A$101	str	"1629E07E06.D34F03P05M."
-A$102	str	"1629E06.E02F06F03P05M."
-A$103	str	"1629.F03P05M."
-A$104	str	"1534B01.D35N."
-A$105	str	"1735I16.D45K."
-A$106	str	"1735E02.D43K."
-A$107	str	"1735F03.D44K."
-A$108	str	"1735C04.D46K."
-A$109	str	"1735.P16E10J."
-A$110	str	"5600A16F10.D47K."
-A$111	str	"5646A16.D48N."
-A$112	str	"5647A16.D48N."
-A$113	str	"5645A16F09.D50D06N."
-A$114	str	"5645A16.D49I18M."
-A$115	str	"5543D18E09.D30K."
-A$116	str	"5543D18.P18E09J."
-A$117	str	"574EXPLODEAND18F09.D30K."
-A$118	str	"5743D18.P18F09J."
-A$119	str	"1233A24C12.D51K."
-A$120	str	"1233A24C03.D52N."
-A$121	str	"1233A24.G0503E11D63K."
-A$122	str	"2636E11.D54F11D55K."
-A$123	str	"5350E11.D54F11D55K."
-A$124	str	"5232B21.D56N."
-A$125	str	"5830F08.D57."
-A$126	str	"5830.D58D59."
-A$127	str	"1233A06.D61M."
-A$128	str	"1233A25.D64N."
+A$1	str	"A01.I02D02M."
+A$2	str	"A03D08.D03N."
+A$3	str	"A03E08E09D24.D04D05I19E02M."
+A$4	str	"A03E08D24.D04D06N."
+A$5	str	"A03E07.I19M."
+A$6	str	"A03E03.I19M."
+A$7	str	"A03.I19E02M."
+A$8	str	"A19D08.D03N."
+A$9	str	"A19E08E09D24.D04D05I03M."
+A$10	str	"A19E08D24.D04D06N."
+A$11	str	"A19.I03M."
+A$12	str	"A09E07B22.D07N."
+A$13	str	"A09E03B05.D07N."
+A$14	str	"A09.I14E02M."
+A$15	str	"A14.I16E02M."
+A$16	str	"A16E07B22.D07N."
+A$17	str	"A16E03B05.D07N."
+A$18	str	"A16.I14E02M."
+A$19	str	"A15E03B05.D07N."
+A$20	str	"A15E07B22.D07N."
+A$21	str	"A15.I14E02M."
+A$22	str	"A15E03.I17M."
+A$23	str	"A15E07.I17M."
+A$24	str	"A15.I17E02M."
+A$25	str	"A17.F01I15M."
+A$26	str	"A17.D08N."
+A$27	str	"A17.D09K."
+A$28	str	"A18.D10F03E01E02I17M."
+A$29	str	"A21E03.I19M."
+A$30	str	"A21E07.I19M."
+A$31	str	"A21.I19E02M."
+A$32	str	"A22E03.I19M."
+A$33	str	"A22E07.I19M."
+A$34	str	"A22.I19E02M."
+A$35	str	"A19.D11N."
+A$36	str	"A19.D11N."
+A$37	str	"A22.D12I23M."
+A$38	str	"A01.D13."
+A$39	str	"I01.D14K."
+A$40	str	"A03.D15M."
+A$41	str	"B01.B01J."
+A$42	str	"B08.B08J."
+A$43	str	"B04.B04J."
+A$44	str	"B05.B05J."
+A$45	str	"B21.B21J."
+A$46	str	"B24.B24J."
+A$47	str	"B12.B12J."
+A$48	str	"B09.B09J."
+A$49	str	"B10.B10J."
+A$50	str	"B18.B18J."
+A$51	str	"B03.B03J."
+A$52	str	"B22.B22J."
+A$53	str	"A20B05.H11P05E05D16K."
+A$54	str	"A20.D17K."
+A$55	str	".C01J."
+A$56	str	".C08J."
+A$57	str	".C04J."
+A$58	str	".C05J."
+A$59	str	".C21J."
+A$60	str	".C24J."
+A$61	str	"E09.D62K."
+A$62	str	".C12J."
+A$63	str	".C09J."
+A$64	str	".C10J."
+A$65	str	".C18J."
+A$66	str	".C03J."
+A$67	str	".C22J."
+A$68	str	".A00L."
+A$69	str	"A05.E04D20G0405J."
+A$70	str	"A05.F04J."
+A$71	str	"A05E04.P24E08J."
+A$72	str	"A05E08.F08P24J."
+A$73	str	"E08.D21N."
+A$74	str	"B10.D22L."
+A$75	str	"B10.D23N."
+A$76	str	"B09.D24K."
+A$77	str	"B09.D25K."
+A$78	str	"A02.D26M."
+A$79	str	".D27K."
+A$80	str	"A14.D28K."
+A$81	str	".D29K."
+A$82	str	"C22.D33K."
+A$83	str	"E07.D30K."
+A$84	str	"A14.D07N."
+A$85	str	"A17E01.D10K."
+A$86	str	"E02.F02E07E06P22M."
+A$87	str	".E07P22J."
+A$88	str	"C05.D33K."
+A$89	str	"E03.D30K."
+A$90	str	"F07.D31L."
+A$91	str	"F05.D32L."
+A$92	str	"E02.F02E03E06P06P05M."
+A$93	str	".E03P06P05J."
+A$94	str	"C22.D33K."
+A$95	str	"F07.D30K."
+A$96	str	"E06E03.D36F07P22M."
+A$97	str	"E06.E02F07F06P22M."
+A$98	str	".F07P22M."
+A$99	str	"C05.D33K."
+A$100	str	"F03.D30K."
+A$101	str	"E07E06.D34F03P05M."
+A$102	str	"E06.E02F06F03P05M."
+A$103	str	".F03P05M."
+A$104	str	"B01.D35N."
+A$105	str	"I16.D45K."
+A$106	str	"E02.D43K."
+A$107	str	"F03.D44K."
+A$108	str	"C04.D46K."
+A$109	str	".P16E10J."
+A$110	str	"A16F10.D47K."
+A$111	str	"A16.D48N."
+A$112	str	"A16.D48N."
+A$113	str	"A16F09.D50D06N."
+A$114	str	"A16.D49I18M."
+A$115	str	"D18E09.D30K."
+A$116	str	"D18.P18E09J."
+A$117	str	"XPLODEAND18F09.D30K."
+A$118	str	"D18.P18F09J."
+A$119	str	"A24C12.D51K."
+A$120	str	"A24C03.D52N."
+A$121	str	"A24.G0503E11D63K."
+A$122	str	"E11.D54F11D55K."
+A$123	str	"E11.D54F11D55K."
+A$124	str	"B21.D56N."
+A$125	str	"F08.D57."
+A$126	str	".D58D59."
+A$127	str	"A06.D61M."
+A$128	str	"A25.D64N."
 
-*---
+tblA	dfb	14,00
+	dfb	05,00
+	dfb	05,00
+	dfb	05,00
+	dfb	05,00
+	dfb	05,00
+	dfb	05,00
+	dfb	06,00
+	dfb	06,00
+	dfb	06,00
+	dfb	06,00
+	dfb	01,00
+	dfb	01,00
+	dfb	01,00
+	dfb	01,00
+	dfb	02,00
+	dfb	02,00
+	dfb	02,00
+	dfb	04,00
+	dfb	04,00
+	dfb	04,00
+	dfb	01,00
+	dfb	01,00
+	dfb	01,00
+	dfb	02,00
+	dfb	03,00
+	dfb	04,00
+	dfb	03,00
+	dfb	04,00
+	dfb	04,00
+	dfb	04,00
+	dfb	02,00
+	dfb	02,00
+	dfb	02,00
+	dfb	02,00
+	dfb	04,00
+	dfb	03,00
+	dfb	25,00
+	dfb	25,00
+	dfb	12,44
+	dfb	10,34
+	dfb	10,27
+	dfb	10,28
+	dfb	10,29
+	dfb	10,32
+	dfb	10,38
+	dfb	10,39
+	dfb	10,40
+	dfb	10,41
+	dfb	10,43
+	dfb	10,50
+	dfb	10,42
+	dfb	10,37
+	dfb	10,37
+	dfb	11,34
+	dfb	11,27
+	dfb	11,28
+	dfb	11,29
+	dfb	11,32
+	dfb	11,38
+	dfb	11,43
+	dfb	11,39
+	dfb	11,40
+	dfb	11,41
+	dfb	11,43
+	dfb	11,50
+	dfb	11,42
+	dfb	24,00
+	dfb	12,49
+	dfb	13,49
+	dfb	22,38
+	dfb	23,38
+	dfb	23,38
+	dfb	18,48
+	dfb	18,41
+	dfb	18,40
+	dfb	20,40
+	dfb	19,51
+	dfb	19,51
+	dfb	21,00
+	dfb	21,00
+	dfb	15,42
+	dfb	15,42
+	dfb	15,42
+	dfb	15,42
+	dfb	15,42
+	dfb	15,42
+	dfb	15,29
+	dfb	15,29
+	dfb	15,29
+	dfb	15,29
+	dfb	15,29
+	dfb	15,29
+	dfb	16,42
+	dfb	16,42
+	dfb	16,42
+	dfb	16,42
+	dfb	16,42
+	dfb	16,29
+	dfb	16,29
+	dfb	16,29
+	dfb	16,29
+	dfb	16,29
+	dfb	15,34
+	dfb	17,35
+	dfb	17,35
+	dfb	17,35
+	dfb	17,35
+	dfb	17,35
+	dfb	56,00
+	dfb	56,46
+	dfb	56,47
+	dfb	56,45
+	dfb	56,45
+	dfb	55,43
+	dfb	55,43
+	dfb	57,4E
+	dfb	57,43
+	dfb	12,33
+	dfb	12,33
+	dfb	12,33
+	dfb	26,36
+	dfb	53,50
+	dfb	52,32
+	dfb	58,30
+	dfb	58,30
+	dfb	12,33
+	dfb	12,33
+
+*--- On commence ˆ index 0
 
 * C	=	14
 
-tblC$	da	$bdbd
-	da	C$1,C$2,C$3,C$4,C$5,C$6,C$7,C$8,C$9
+tblC$	da	C$1,C$2,C$3,C$4,C$5,C$6,C$7,C$8,C$9
 	da	C$10,C$11,C$12,C$13,C$14
 	
 C$1	str	"G03E03.D00N."
@@ -3070,8 +3132,8 @@ HH	ds	1
 L	ds	1
 LI	ds	1
 LX	ds	1
-MO$1	ds	2	; "00" (une chaine raccourcie)
-MO$2	ds	2	; "00" (une chaine raccourcie)
+MO$1	ds	1	; mot 1
+MO$2	ds	1	; mot 2
 N	ds	1
 NL	ds	1
 OK	ds	1
@@ -3081,9 +3143,7 @@ PL	ds	5	; 1111/0
 S	ds	2	; pour S(1)
 SALLE	ds	1
 T	ds	1
-T$	ds	2	; "00"
 W	ds	1
-Y$	ds	2	; "00"
 Y1	ds	1
 Y2	ds	1
 Z	ds	1

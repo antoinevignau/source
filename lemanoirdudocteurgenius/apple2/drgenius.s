@@ -75,7 +75,7 @@ CLREOL	=	$FC9C
 WAIT	=	$FCA8
 RDKEY	=	$FD0C
 KEYIN	=	$FD1B
-GETLN	=	$FD6A
+GETLN1	=	$FD6F
 CROUT	=	$FD8E
 PRBYTE	=	$FDDA
 COUT	=	$FDED
@@ -203,6 +203,12 @@ REPLAY
 
 :200	jsr	HGR
 	jsr	setMIXEDOFF
+
+	lda	#20	; et c'est fenêtré en plus !
+	sta	WNDTOP
+	lda	#24
+	sta	WNDBTM
+	jsr	HOME
 	
 	@print	#strVOUS	; always output "VOUS ETES "
 
@@ -241,11 +247,9 @@ REPLAY
 	jsr	printCSTRING
 	@wait	#150
 	
-:400	lda	N
-	clc
-	adc	#1
-	sta	N
-	cmp	#O	; la constante 25
+:400	inc	N
+	lda	N
+	cmp	#nbO	; la constante 25
 	bcc	:310
 	beq	:310
 
@@ -309,7 +313,7 @@ REPLAY
 	sta	C,x
 	
 :550	@print	#strCOMMANDE
-	jsr	GETLN
+	jsr	GETLN1
 
 	lda	TEXTBUFFER
 	cmp	#chrRET2
@@ -352,6 +356,7 @@ REPLAY
 	jmp	:100
 	
 :970	iny
+	iny
 	bne	:920
 
 :980	lda	#0
@@ -362,13 +367,12 @@ REPLAY
 * 1000 - CONTROLE
 *-----------------------------------
 
-:1000	lda	#-1
+:1000	lda	#0
 	sta	NL
 
 :1100	inc	NL
 	
 	lda	T
-	cmp	#0
 	beq	:1150
 
 	lda	NL	; E$=C$(NL)
@@ -414,8 +418,10 @@ REPLAY
 	
 :1190	@print	#strEXCLAM
 	jmp	:100
-	
+
 :1200	lda	NL
+	sec
+	sbc	#1
 	asl
 	tax
 	lda	tblA,x
@@ -429,28 +435,20 @@ REPLAY
 	beq	:1230
 	jmp	:1100
 	
-:1230	ldy	#0
-	lda	(LINNUM),y
-	sec
-	sbc	#4
-	sta	E$
-
-	lda	LINNUM
-	clc
-	adc	#4
+:1230	lda	tblA$,x
 	sta	LINNUM
-	lda	LINNUM+1
-	adc	#0
+	lda	tblA$+1,x
 	sta	LINNUM+1
 
-	ldy	#1
+	ldy	#0
+	lda	(LINNUM),y
+	tax
 ]lp	lda	(LINNUM),y
 	sta	E$,y
 	iny
-	cpy	E$
-	bcc	]lp
-	beq	]lp
-		
+	dex
+	bpl	]lp
+	
 *-----------------------------------
 * 1400 - CONDITIONS
 *-----------------------------------
@@ -458,13 +456,18 @@ REPLAY
 :1400	lda	#1
 	sta	E
 	
-:1420	ldx	E
-	lda	E$,x
+:1420	ldx	E	; 7893
+	lda	E$,x	; 7894
 	cmp	#"."
 	bne	:1430
-	jmp	:1700
+	jmp	:1700	; do actions
 
-:1430	lda	#0
+:1430	sec		; 428F
+	sbc	#"A"
+	asl
+	pha
+	
+	lda	#0
 	sta	OK
 	
 	lda	E$+1,x
@@ -472,25 +475,20 @@ REPLAY
 	sbc	#"0"
 	tay
 	lda	tblD2H,y
-	sta	L
+	sta	N
 
 	lda	E$+2,x
 	sec
 	sbc	#"0"
 	clc
-	adc	L
-	sta	L
+	adc	N
+	sta	N
 
-	ldx	E
-	lda	E$,x
-	sec
-	sbc	#"A"
-	asl
+	pla
 	tax
 	jsr	(tbl1500,x)
 	
 	lda	OK
-*	cmp	#0
 	bne	:1470
 	jmp	:1100
 
@@ -623,7 +621,8 @@ tbl1500	da	:1500,:1510,:1520,:1530,:1540
 
 :1720	sec
 	sbc	#"A"
-	sta	LI
+	asl
+	pha		; LI
 
 	lda	E$+1,x
 	cmp	#"."
@@ -645,8 +644,7 @@ tbl1500	da	:1500,:1510,:1520,:1530,:1540
 :1740	lda	#0
 	sta	BREAK
 
-	lda	LI
-	asl
+	pla
 	tax
 	jsr	(tbl1800,x)
 
@@ -679,8 +677,6 @@ tbl1500	da	:1500,:1510,:1520,:1530,:1540
 
 tblBRKV	dfb	10,30,50,53
 tblBRKA	da	:100,:300,:500,:530
-	
-	hex	BDBDBD
 	
 *-----------------------------------
 * 1800
@@ -779,10 +775,7 @@ strPOINT
 	sta	O,x
 	
 	ldx	#1
-	lda	S,x
-	clc
-	adc	#1
-	sta	S,x
+	inc	S,x
 	rts
 
 strEVIDENT
@@ -807,10 +800,7 @@ strCONSEILLE
 :2030	lda	SALLE
 	sta	O,x
 
-	lda	S,x
-	sec
-	sbc	#1
-	sta	S,x
+	dec	S,x
 	rts
 
 strNOTOWNED
@@ -846,6 +836,8 @@ strNOTOWNED
 *--------
 
 :2400	lda	N
+	sec
+	sbc	#1
 	asl
 	tax
 	lda	tblA$,x
@@ -853,10 +845,11 @@ strNOTOWNED
 	lda	tblA$+1,x
 	sta	LINNUM+1
 	
-	ldy	E	; +2 and not +3
-	iny		; as we begin at +0
-	iny		; and not at +1
+	ldy	E	; +3
+	iny
+	iny
 	sty	E
+	iny
 	lda	(LINNUM),y
 	sec
 	sbc	#"0"
@@ -930,8 +923,9 @@ strDACCORD
 
 *--------
 
-:3100	pla
-	pla
+:3100
+*	pla
+*	pla
 	jmp	:20000
 
 *--------
@@ -1107,8 +1101,8 @@ str4124	asc	8D"EN 3 DIMENSIONS SUR UN ECRAN DE FUMEE"00
 :4130	@print	#str4130
 	@wait	#400
 	
-	pla
-	pla
+*	pla
+*	pla
 	
 	@print	#str4133
 	@wait	#200
@@ -1554,7 +1548,7 @@ str4585	asc	8D"D"A7"EAU QUI VOUS PERMET D"A7"ETEINDRE LE FEU"00
 *--------
 
 :4590	@print	#str4590
-	jsr	GETLN
+	jsr	GETLN1
 	cpx	#4
 	bne	:4595
 
@@ -1719,7 +1713,7 @@ nbCAR	=	100	; on ne depasse pas 100 caracteres
 * V$x 6 04PREN 
 *     0 123456
 
-	lda	#0
+	lda	#1
 	sta	W
 	
 :6180	lda	#1
@@ -1733,7 +1727,7 @@ nbCAR	=	100	; on ne depasse pas 100 caracteres
 	lda	tblV$+1,x
 	sta	LINNUM+1
 
-	ldy	#3
+	ldy	#1
 	ldx	#1
 ]lp	lda	(LINNUM),y
 	cmp	X$1,x
@@ -1747,18 +1741,15 @@ nbCAR	=	100	; on ne depasse pas 100 caracteres
 	lda	W	; recopie l'index du mot
 	asl
 	tax
-	ldy	#1
-	lda	(LINNUM),y
-	sta	MO$1,x
-	iny
-	lda	(LINNUM),y
-	sta	MO$1+1,x
+	lda	N
+	asl
+	tay
+	lda	tblV,y
+	sta	MO$2,x
 	jmp	:6300
 	
-:6250	lda	N
-	clc
-	adc	#1
-	sta	N
+:6250	inc	N
+	lda	N
 	cmp	#V
 	bcc	:6200
 	beq	:6200
@@ -1771,12 +1762,8 @@ nbCAR	=	100	; on ne depasse pas 100 caracteres
 	dex
 	bpl	]lp
 	
-	lda	W
-	clc
-	adc	#1
-	sta	W
-	cmp	#3
-	bcc	:6180
+	dec	W
+	bpl	:6180
 	rts
 
 *--------
@@ -1820,8 +1807,9 @@ tbl7000
 	@print	#str7000
 	@wait	#250
 	@print	#str7001
-	jmp	:10000
-
+	jsr	:10000
+	rts
+	
 :7010
 	@print	#str7010
 	jmp	:10100
@@ -1951,7 +1939,7 @@ tbl7000
 *		"0123456789012345678901234567890123456789"
 *		"----------------------------------------"
 
-strVOUS	asc	8D"VOUS ETES "00
+strVOUS	asc	"VOUS ETES "00
 str7000	asc	"DEVANT LE MANOIR DU DEFUNT"00
 str7001	asc	8D"            DR GENIUS"00
 str7010	asc	"DANS LE HALL D"A7"ENTREE"00
@@ -1983,6 +1971,8 @@ str7240	asc	"DANS LE DRESSING"00
 * 8000 - CHARGEMENT VARIABLES
 *-----------------------------------
 
+	hex	bdbdbdbd
+	
 initALL
 	lda	#1
 	sta	SALLE
@@ -2224,7 +2214,7 @@ strGAGNE	asc	"CELA EST EXCEPTIONNEL. VOUS ETES LE"8D8D
 
 *--------
 
-strINSTR	asc	"LA LISTE DES INSTRUCTIONS ? "00
+strINSTR	asc	8D"LA LISTE DES INSTRUCTIONS ? "00
 
 strINSTR2	asc	8D8D
 	asc	"VOUS VOICI ARRIVE DANS LE MANOIR DU"8D
@@ -2408,13 +2398,8 @@ switchVIDEO
 
 setMIXEDON		; HGR + 4 LINES OF TEXT
 	sta	MIXSET
-	
-	lda	#20	; et c'est fenêtré en plus !
-	sta	WNDTOP
-	lda	#24
-	sta	WNDBTM
-	jmp	HOME
-	
+	rts
+
 *----------------------
 * setMIXEDOFF
 *----------------------
@@ -2952,7 +2937,7 @@ A$113	str	"A16F09.D50D06N."
 A$114	str	"A16.D49I18M."
 A$115	str	"D18E09.D30K."
 A$116	str	"D18.P18E09J."
-A$117	str	"XPLODEAND18F09.D30K."
+A$117	str	"5743D18F09.D30K."
 A$118	str	"D18.P18F09J."
 A$119	str	"A24C12.D51K."
 A$120	str	"A24C03.D52N."
@@ -3081,7 +3066,7 @@ tblA	dfb	14,00
 	dfb	56,45
 	dfb	55,43
 	dfb	55,43
-	dfb	57,4E
+	dfb	57,43
 	dfb	57,43
 	dfb	12,33
 	dfb	12,33
@@ -3098,7 +3083,8 @@ tblA	dfb	14,00
 
 * C	=	14
 
-tblC$	da	C$1,C$2,C$3,C$4,C$5,C$6,C$7,C$8,C$9
+tblC$	da	$bdbd
+	da	C$1,C$2,C$3,C$4,C$5,C$6,C$7,C$8,C$9
 	da	C$10,C$11,C$12,C$13,C$14
 	
 C$1	str	"G03E03.D00N."
@@ -3130,10 +3116,9 @@ GN	ds	1
 H	ds	1
 HH	ds	1
 L	ds	1
-LI	ds	1
 LX	ds	1
-MO$1	ds	1	; mot 1
 MO$2	ds	1	; mot 2
+MO$1	ds	1	; mot 1
 N	ds	1
 NL	ds	1
 OK	ds	1

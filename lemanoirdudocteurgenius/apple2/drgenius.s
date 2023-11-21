@@ -10,6 +10,19 @@
 	lst	off
 
 *-----------------------------------
+* SOLUTION
+*
+* ENTRE
+* O MONT E PREN COMBI, O DESC E E E PREN CISEAU, N O PREN TOUR,
+* PREN LAMP E N E S E PREN BRIQ, O N O S S E  PREN PETRO,
+* O N N N N ALLU BRIQ, ALLU LAMP, ETEI BRIQ, ENFI COMBI
+* REPARE TELE POSE TOURN , APPUI ROUG, PREN CLEF,
+*  E S O S S S O O O O MONT N E N OUVR PLAC,
+* LANC CISE, (Code 5943) S O S DESC E E
+* RENTR CODE
+*-----------------------------------
+
+*-----------------------------------
 * SOFTSWITCHES AND FRIENDS
 *-----------------------------------
 
@@ -344,8 +357,6 @@ REPLAY
 	sta	LINNUM
 	lda	tblM$+1,x
 	sta	LINNUM+1
-	
-	brk	$bd
 	
 	lda	(LINNUM),y
 	beq	:980
@@ -1253,7 +1264,7 @@ str4270	asc	"POUR FAIRE QUOI...?"00
 	@wait	#300
 	rts
 
-str4280	asc	"IL Y A UNE ODEUR DE GAZ."00
+str4280	asc	8D"IL Y A UNE ODEUR DE GAZ."00
 
 *--------
 
@@ -1626,7 +1637,6 @@ nbCAR	=	100	; on ne depasse pas 100 caracteres
 
 :6000	lda	#0
 	sta	N
-	sta	GN
 	sta	X$1
 	sta	X$2
 
@@ -1733,12 +1743,8 @@ nbCAR	=	100	; on ne depasse pas 100 caracteres
 	bcc	]lp
 	beq	]lp
 	
-	lda	W	; recopie l'index du mot
-	asl
-	tax
-	lda	N
-	asl
-	tay
+	ldx	W	; recopie l'index du mot
+	ldy	N
 	lda	tblV,y
 	sta	MO$1,x
 	jmp	:6300
@@ -1751,15 +1757,21 @@ nbCAR	=	100	; on ne depasse pas 100 caracteres
 
 * 6. on change de mot
 
-:6300	ldx	#5-1
+:6300	lda	X$2	; on n'a pas de second mot
+	beq	:6350
+
+	ldx	#5-1
 ]lp	lda	X$2,x
 	sta	X$1,x
 	dex
 	bpl	]lp
 	
 	inc	W
-	bpl	:6180
-	rts
+	lda	W
+	cmp	#2
+	bcc	:6180
+
+:6350	rts
 
 *--------
 	
@@ -1938,7 +1950,7 @@ strVOUS	asc	"VOUS ETES "00
 str7000	asc	"DEVANT LE MANOIR DU DEFUNT"00
 str7001	asc	8D"            DR GENIUS"00
 str7010	asc	"DANS LE HALL D"A7"ENTREE"00
-str7020	asc	"EN BAS DE L"A7"ESCALIER MENANTAU 2EME ETAGE"00
+str7020	asc	"EN BAS DE L"A7"ESCALIER MENANT AU2E ETAGE"00
 str7030	asc	"DANS LA SALLE A MANGER"00
 str7040	asc	"DANS UNE BIBLIOTHEQUE SANS LIVRE...!"00
 str7050	asc	"DANS UNE BUANDERIE"00
@@ -3122,7 +3134,6 @@ E	ds	1
 E$	ds	32	; the longest string
 F1	ds	1
 G	ds	1
-GN	ds	1
 H	ds	1
 HH	ds	1
 L	ds	1
@@ -3153,13 +3164,13 @@ lenSTRING	ds	1
 strILFAITNOIR
 	asc	"IL FAIT NOIR COMME DANS UN FOUR, IL"8D
 	asc	"FAUDRAIT PEUT-ETRE ALLUMER"00
-		
-strILYA	asc	"IL Y A DANS LA SALLE :"00
-strSPACE	asc	" "00
+
+strILYA	asc	8D"IL Y A DANS LA SALLE :"00
+strSPACE	asc	", "00
 strRETURN	asc	8D00
 
 strCOMMANDE
-	asc	"QUE FAITES-VOUS ? "00
+	asc	8D"QUE FAITES-VOUS ? "00
 
 strJENECOMPRENDS
 	asc	8D"JE NE COMPRENDS PAS..."00

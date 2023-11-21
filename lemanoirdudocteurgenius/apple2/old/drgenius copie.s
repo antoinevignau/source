@@ -26,8 +26,6 @@ X0H	=	$e1
 Y0	=	$e2	; Y-coord
 HPAG	=	$e6
 
-maxY	=	191	; 0 to 191 = 192
-
 dpFROM	=	$fc
 dpTO	=	$fe
 
@@ -100,7 +98,7 @@ MONZ	=	$FF69
 @explode	mac
 	jsr	EXPLODE
 	eom
-
+	
 @key$	mac
 	jsr	KEY$
 	eom
@@ -142,7 +140,7 @@ notiigs
 REPLAY
 	jsr	initALL
 	jsr	HGR
-*	jsr	setHGR
+	jsr	setHGR
 	
 *-----------------------------------
 * DU BASIC A L'ASSEMBLEUR (BEURK)
@@ -150,21 +148,22 @@ REPLAY
 
 :100	lda	SALLE
 	cmp	#14
-	beq	:105
+	beq	:101
 	cmp	#16
-	beq	:105
+	beq	:101
 	cmp	#17
-	beq	:105
+	beq	:101
 	cmp	#19
-	beq	:105
+	bne	:105
 
-	lda	#0
+:101	lda	#0
 	ldx	#2
 	sta	P,x
 
 :105	ldx	#2
 	lda	P,x
-	beq	:200
+	cmp	#2
+	bne	:200
 
 	ldx	#22
 	lda	O,x
@@ -202,7 +201,8 @@ REPLAY
 * 200 - description salle
 *-----------------------------------
 
-:200	jsr	setHGR
+:200	jsr	HGR
+	jsr	setMIXEDOFF
 
 	lda	#20	; et c'est fenêtré en plus !
 	sta	WNDTOP
@@ -262,8 +262,8 @@ REPLAY
 :500	lda	#1
 	sta	T
 	lda	#0
-*	sta	Y1
-*	sta	Y2
+	sta	Y1
+	sta	Y2
 	sta	N
 	jmp	:1000
 
@@ -344,8 +344,6 @@ REPLAY
 	sta	LINNUM
 	lda	tblM$+1,x
 	sta	LINNUM+1
-	
-	brk	$bd
 	
 	lda	(LINNUM),y
 	beq	:980
@@ -522,7 +520,7 @@ tbl1500	da	:1500,:1510,:1520,:1530,:1540
 	lda	O,x
 	cmp	#-1
 	beq	:1515
-	cmp	SALLE
+	cmp	#SALLE
 	bne	:1516
 :1515	lda	#1
 	sta	OK
@@ -652,6 +650,11 @@ tbl1500	da	:1500,:1510,:1520,:1530,:1540
 
 	lda	BREAK
 	beq	:1780
+
+	ldx	#0
+:1761	cmp	tblBRKV,x
+	bne	:1763
+	txa
 	asl
 	tax
 	lda	tblBRKA,x
@@ -659,6 +662,10 @@ tbl1500	da	:1500,:1510,:1520,:1530,:1540
 	lda	tblBRKA+1,x
 	sta	:1762+2
 :1762	jmp	$bdbd
+
+:1763	inx
+	cpx	#tblBRKA-tblBRKV
+	bcc	:1761
 
 :1780	lda	E
 	clc
@@ -668,14 +675,15 @@ tbl1500	da	:1500,:1510,:1520,:1530,:1540
 
 *-------- The modified BREAK table
 
-tblBRKA	da	$bdbd
-	da	:100,:300,:500,:530,:20000
+tblBRKV	dfb	10,30,50,53
+tblBRKA	da	:100,:300,:500,:530
 	
 *-----------------------------------
 * 1800
 *-----------------------------------
 
-tbl1800	da	:1800,:1900
+tbl1800	da	$bdbd
+	da	:1800,:1900
 	da	:2000,:2100,:2200,:2300,:2400,:2500,:2600,:2700,:2800,:2900
 	da	:3000,:3100,:3200,:3300
 	
@@ -748,7 +756,7 @@ strPOINT
 	@print	#strEVIDENT
 
 :1920	@wait	#250
-	lda	#1
+	lda	#10
 	sta	BREAK
 	rts
 
@@ -888,7 +896,7 @@ strNOTOWNED
 
 :2700	@print	#strDACCORD
 	@wait	#150
-	lda	#2
+	lda	#30
 	sta	BREAK
 	rts
 
@@ -897,19 +905,19 @@ strDACCORD
 	
 *--------
 
-:2800	lda	#3
+:2800	lda	#50
 	sta	BREAK
 	rts
 
 *--------
 
-:2900	lda	#4
+:2900	lda	#53
 	sta	BREAK
 	rts
 
 *--------
 
-:3000	lda	#1
+:3000	lda	#10
 	sta	BREAK
 	rts
 
@@ -958,7 +966,7 @@ tbl4000	da	:4000,:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
 	da	:4300,:4310,:4320,:4330,:4340,:4350,:4360,:4370,:4380,:4390
 	da	:4400,:4410,:4420,:4430,:4440,:4450,:4460,:4470,:4480,:4490
 	da	:4500,:4510,:4520,:4530,:4540,:4550,:4560,:4570,:4580,:4590
-	da	:4600,:4610,:4620,:4630,:4640
+
 
 *--------
 
@@ -1518,9 +1526,6 @@ str4560	asc	"LE PISTOLET A EXPLOSE"00
 :4570	@explode
 	@print	#str4570
 	@wait	#250
-	
-	lda	#5
-	sta	BREAK
 	rts
 
 str4570	asc	"LE CLAVIER NUMERIQUE A EXPLOSE"00
@@ -1633,14 +1638,14 @@ nbCAR	=	100	; on ne depasse pas 100 caracteres
 	sta	MO$1
 	sta	MO$2
 
-* 1. cherche le premier caractère
+* 1. cherche l'index du premier mot
 
 	ldx	#0	; cherche le premier caractere
 ]lp	lda	TEXTBUFFER,x
 	cmp	#chrRET2
 	beq	:6021
 	cmp	#chrSPC2
-	bne	:6022	; on a trouvé un caractère
+	bne	:6022
 	inx
 	cpx	lenSTRING
 	bcs	:6021
@@ -1672,16 +1677,16 @@ nbCAR	=	100	; on ne depasse pas 100 caracteres
 	inx
 ]lp	lda	TEXTBUFFER,x
 	cmp	#chrRET2
-	beq	:6032
+	beq	:6031
 	cmp	#chrSPC2
 	beq	:6032
 	inx
 	cpx	lenSTRING
-	bcs	:6100
+	bcs	:6031
 	cpx	#nbCAR
 	bcc	]lp
-	bcs	:6100
-	
+:6031	rts
+
 * 4. recopie le mot
 
 :6032	inx
@@ -1708,7 +1713,7 @@ nbCAR	=	100	; on ne depasse pas 100 caracteres
 * V$x 6 04PREN 
 *     0 123456
 
-:6100	lda	#0
+	lda	#1
 	sta	W
 	
 :6180	lda	#1
@@ -1740,7 +1745,7 @@ nbCAR	=	100	; on ne depasse pas 100 caracteres
 	asl
 	tay
 	lda	tblV,y
-	sta	MO$1,x
+	sta	MO$2,x
 	jmp	:6300
 	
 :6250	inc	N
@@ -1757,7 +1762,7 @@ nbCAR	=	100	; on ne depasse pas 100 caracteres
 	dex
 	bpl	]lp
 	
-	inc	W
+	dec	W
 	bpl	:6180
 	rts
 
@@ -2521,24 +2526,9 @@ doD
 	adc	theY
 	sta	theY2
 	jsr	drawREAD
-	adc	theY+1
+	adc	theY
 	sta	theY2+1	; new Y-coord
 
-*---------- Check height
-
-	lda	theY
-	cmp	#maxY
-	bcc	doD1
-	lda	#maxY
-	sta	theY
-
-doD1	lda	theY2
-	cmp	#maxY
-	bcc	doD2
-	lda	#maxY
-	sta	theY2
-doD2
-	
 *---------- It is now time to draw as we have all variables
 
 	ldy	theINK	; the ink color
@@ -3127,8 +3117,8 @@ H	ds	1
 HH	ds	1
 L	ds	1
 LX	ds	1
-MO$1	ds	1	; mot 1
 MO$2	ds	1	; mot 2
+MO$1	ds	1	; mot 1
 N	ds	1
 NL	ds	1
 OK	ds	1
@@ -3139,6 +3129,8 @@ S	ds	2	; pour S(1)
 SALLE	ds	1
 T	ds	1
 W	ds	1
+Y1	ds	1
+Y2	ds	1
 Z	ds	1
 
 *--- The lazy decimal to hexadecimal conversion

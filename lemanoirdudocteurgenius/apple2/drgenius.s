@@ -187,7 +187,12 @@ REPLAY
 	lda	SALLE
 	asl
 	tax
-	jsr	(tbl7000,x)
+	lda	tbl7000,x
+	sta	:222+1
+	lda	tbl7000+1,x
+	sta	:222+2
+	
+:222	jsr	$bdbd
 	jsr	setMIXEDON
 	
 :300	lda	#0
@@ -472,7 +477,12 @@ REPLAY
 
 	pla
 	tax
-	jsr	(tbl1500,x)
+	lda	tbl1500,x
+	sta	:1450+1
+	lda	tbl1500+1,x
+	sta	:1450+2
+	
+:1450	jsr	$bdbd
 	
 	lda	OK
 	bne	:1470
@@ -632,7 +642,12 @@ tbl1500	da	:1500,:1510,:1520,:1530,:1540
 
 	pla
 	tax
-	jsr	(tbl1800,x)
+	lda	tbl1800,x
+	sta	:1750+1
+	lda	tbl1800+1,x
+	sta	:1750+2
+
+:1750	jsr	$bdbd
 
 	lda	BREAK
 	beq	:1780
@@ -797,8 +812,12 @@ strNOTOWNED
 	lda	N
 	asl
 	tax
-	jsr	(tbl4000,x)
-	rts
+	lda	tbl4000,x
+	sta	:2112+1
+	lda	tbl4000+1,x
+	sta	:2112+2
+
+:2112	jmp	$bdbd
 
 *--------
 
@@ -2528,7 +2547,11 @@ drawPIC1	ldx	#myADRS-myCMDS-1
 drawPIC2	txa
 	asl
 	tax
-	jsr	(myADRS,x)
+	lda	myADRS,x
+	sta	drawPIC3+1
+	lda	myADRS+1,x
+	sta	drawPIC3+2
+drawPIC3	jsr	$bdbd
 	jmp	drawLOOP
 
 *-------- Read data

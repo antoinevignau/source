@@ -10,19 +10,6 @@
 	lst	off
 
 *-----------------------------------
-* SOLUTION
-*
-* ENTRE
-* O MONT E PREN COMBI, O DESC E E E PREN CISEAU, N O PREN TOUR,
-* PREN LAMP E N E S E PREN BRIQ, O N O S S E  PREN PETRO,
-* O N N N N ALLU BRIQ, ALLU LAMP, ETEI BRIQ, ENFI COMBI
-* REPARE TELE POSE TOURN , APPUI ROUG, PREN CLEF,
-*  E S O S S S O O O O MONT N E N OUVR PLAC,
-* LANC CISE, (Code 5943) S O S DESC E E
-* RENTR CODE
-*-----------------------------------
-
-*-----------------------------------
 * SOFTSWITCHES AND FRIENDS
 *-----------------------------------
 
@@ -41,15 +28,14 @@ HPAG	=	$e6
 
 maxY	=	191	; 0 to 191 = 192
 
-dpFROM	=	$fc
-dpTO	=	$fe
-
 chrRET	=	$0d
 chrSPC	=	$20
 chrRET2	=	$8d
 chrSPC2	=	$a0
 cursorCHAR =	">"
 TEXTBUFFER = 	$200
+
+PRODOS	=	$bf00
 
 KBD	=	$c000
 CLR80COL	=	$c000
@@ -77,28 +63,20 @@ CLRAN3	=	$c05f
 
 *--- The firmware routines
 
-AUXMOVE	=	$C311
 HGR	=	$F3E2	; HGR
 HPLOT	=	$F457	; HPLOT
 HILIN	=	$F53A	; HPLOT TO
 HCOLOR	=	$F6E9	; HCOLOR= (call+3)
 INIT	=	$FB2F
 TABV	=	$FB5B
-BS	=	$FC10
 HOME	=	$FC58
-CLREOL	=	$FC9C
 WAIT	=	$FCA8
 RDKEY	=	$FD0C
-KEYIN	=	$FD1B
 GETLN1	=	$FD6F
-CROUT	=	$FD8E
-PRBYTE	=	$FDDA
 COUT	=	$FDED
 IDROUTINE	=	$FE1F
 SETNORM	=	$FE84
 SETKBD	=	$FE89
-BEEP	=	$FF3A
-MONZ	=	$FF69
 
 *-----------------------------------
 * MACROS
@@ -112,10 +90,6 @@ MONZ	=	$FF69
 
 @explode	mac
 	jsr	EXPLODE
-	eom
-
-@key$	mac
-	jsr	KEY$
 	eom
 
 @play	mac
@@ -140,23 +114,37 @@ MONZ	=	$FF69
 * CODE BASIC EN ASM :-)
 *-----------------------------------
 
+	ldx	#>PL
+	ldy	#<PL
+	
 	sec		; 1 MHz vaincra!
 	jsr	IDROUTINE
 	bcs	notiigs
 
 	lda	CYAREG
+	sta	sauveCYA
 	and	#%0111_1111
 	sta	CYAREG
 notiigs
 	jsr	introPIC	; la picture GR
 	jsr	:51000	; le disclaimer
 	jsr	:40000	; les instructions
-
+	
 REPLAY
 	jsr	initALL
 	jsr	HGR
 *	jsr	setHGR
+
+*	jsr	HOME
+*	lda	#20
+*	jsr	TABV
 	
+	lda	#20	; et c'est fentrŽ en plus !
+	sta	WNDTOP
+	lda	#24
+	sta	WNDBTM
+	jsr	HOME
+
 *-----------------------------------
 * DU BASIC A L'ASSEMBLEUR (BEURK)
 *-----------------------------------
@@ -217,12 +205,6 @@ REPLAY
 
 :200	jsr	setHGR
 
-	lda	#20	; et c'est fentrŽ en plus !
-	sta	WNDTOP
-	lda	#24
-	sta	WNDBTM
-	jsr	HOME
-	
 	@print	#strVOUS	; always output "VOUS ETES "
 
 	lda	SALLE
@@ -341,7 +323,8 @@ REPLAY
 	jmp	:550
 
 :570	stx	lenSTRING	; longueur de la chaine saisie
-	jsr	:6000
+	jsr	rewriteSTRING	; from lower to upper
+	jsr	:6000	; cherche les mots
 
 	lda	MO$1
 	bne	:900
@@ -351,14 +334,22 @@ REPLAY
 	jmp	:100
 
 *-----------------------------------
-* 900 - CONTROLE MVT
+* 900 - CONTROLES APPLE II
 *-----------------------------------
 
 :900	cmp	#59	; switch wait to de/accelerate the game
-	bne	:910
+	bne	:905
 
 	jsr	switchWAIT
 	jmp	:100
+
+:905	cmp	#60	; quitter
+	bne	:910
+	jmp	:20050
+	
+*-----------------------------------
+* 910 - CONTROLE MVT
+*-----------------------------------
 
 :910	ldy	#0
 
@@ -799,7 +790,7 @@ strVOUSLAVEZ
 	asc	8D"VOUS L"A7"AVEZ DEJA. VOUS ETES ETOURDI"8D
 	asc	"ET DANS CETTE MAISON, CE N"A7"EST PAS"00
 strCONSEILLE
-	asc	"TRES CONSEILLE"00
+	asc	8D"TRES CONSEILLE"00
 	
 *--------
 
@@ -825,7 +816,8 @@ strNOTOWNED
 * 2100
 *-----------------------------------
 
-:2100	jsr	HOME
+:2100
+*	jsr	HOME
 
 	lda	N
 	asl
@@ -1116,11 +1108,12 @@ str4124	asc	8D"EN 3 DIMENSIONS SUR UN ECRAN DE FUMEE"00
 	
 	@print	#str4133
 	@wait	#200
-	jmp	:20100
+	jmp	:20050
 
 str4130	asc	"VOUS AVEZ RAISON, LA CURIOSITE EST UN"8D
 	asc	"VILAIN DEFAUT"00
-str4133	asc	"            AU REVOIR"00
+str4133	asc	8D"            AU REVOIR"00
+
 *--------
 
 :4140	@print	#str4140
@@ -1145,7 +1138,7 @@ str4150	asc	"VOUS AVEZ DE LA CHANCE CAR CE COFFRE"8D
 str4152	asc	8D"UN MESSAGE A L"A7"INTERIEUR DIT : NE"8D
 	asc	"RESPECTEZ PAS LES COULEURS DU CODE DE LA"8D
 	asc	"ROUTE...?"00
-str4156	asc	"TIENS LE COFFRE SE REFERME"00
+str4156	asc	8D"TIENS LE COFFRE SE REFERME"00
 
 *--------
 
@@ -1188,7 +1181,7 @@ str4185	asc	8D"CA TUE L"A7"ETOURDIE..."00
 
 str4190	asc	"A FORCE DE MARCHER EN LONG ET EN LARGE"8D
 	asc	"DANS CETTE MAISON,"00
-str4195	asc	"VOUS SOMBREZ DANS UN COMA DES PLUS"8D
+str4195	asc	8D"VOUS SOMBREZ DANS UN COMA DES PLUS"8D
 	asc	"MORTELS..."00
 
 *--------
@@ -1536,9 +1529,6 @@ str4560	asc	"LE PISTOLET A EXPLOSE"00
 :4570	@explode
 	@print	#str4570
 	@wait	#250
-	
-	lda	#5
-	sta	BREAK
 	rts
 
 str4570	asc	"LE CLAVIER NUMERIQUE A EXPLOSE"00
@@ -1562,8 +1552,8 @@ str4585	asc	8D"D"A7"EAU QUI VOUS PERMET D"A7"ETEINDRE LE FEU"00
 
 :4590	@print	#str4590
 	jsr	GETLN1
-	cpx	#4
-	bne	:4595
+*	cpx	#4
+*	bne	:4595
 
 	ldx	#4-1
 ]lp	lda	TEXTBUFFER,x
@@ -1571,10 +1561,10 @@ str4585	asc	8D"D"A7"EAU QUI VOUS PERMET D"A7"ETEINDRE LE FEU"00
 	bne	:4595
 	dex
 	bpl	]lp
-	jmp	:4600	; t'as gagnŽ
+	bmi	:4600	; t'as gagnŽ
 :4595	jmp	:4570	; t'as perdu
 
-str4590	asc	"NO DE CODE "00
+str4590	asc	8D"NO DE CODE : "00
 
 *-----------------------------------
 * 4600
@@ -1591,7 +1581,7 @@ str4590	asc	"NO DE CODE "00
 strCODEEXACT
 	asc	"LE CODE EST EXACT... LA PORTE S"A7"OUVRE..."00
 strENDEHORS
-	asc	"VOUS VOILA EN DEHORS DE LA MAISON..."
+	asc	8D"VOUS VOILA EN DEHORS DE LA MAISON..."
 
 *--------
 
@@ -1604,7 +1594,7 @@ strENDEHORS
 
 str4610	asc	"A L"A7"INTERIEUR DU PLACARD, IL Y A UN MOT"8D
 	asc	"PARLE D"A7"UN TELEPORTEUR"00
-str4615	asc	"TIENS LE PLACARD SE FERME TOUT SEUL..."00
+str4615	asc	8D"TIENS LE PLACARD SE FERME TOUT SEUL..."00
 
 *--------
 
@@ -1640,8 +1630,6 @@ str4640	asc	"LE PLACARD ETAIT PIEGE, VOUS N"A7"AURIEZ"8D
 * 6000 - ANALYSE DU MOT
 *-----------------------------------
 
-nbCAR	=	100	; on ne depasse pas 100 caracteres
-
 :6000	lda	#0
 	sta	N
 	sta	X$1
@@ -1654,18 +1642,22 @@ nbCAR	=	100	; on ne depasse pas 100 caracteres
 
 	ldx	#0	; cherche le premier caractere
 ]lp	lda	TEXTBUFFER,x
-	cmp	#chrRET2
-	beq	:6021
+*	cmp	#chrRET2
+*	beq	:6021
 	cmp	#chrSPC2
 	bne	:6022	; on a trouvŽ un caractre
 	inx
 	cpx	lenSTRING
-	bcs	:6021
-	cpx	#nbCAR
+*	bcs	:6021
+*	cpx	#nbCAR
 	bcc	]lp
 :6021	rts		; retourne sans avoir trouve
 
 * 2. recopie le mot
+
+* 0123456789A
+* 123456789
+* PREN COMBI\
 
 :6022	ldy	#1
 ]lp	lda	TEXTBUFFER,x
@@ -1673,7 +1665,7 @@ nbCAR	=	100	; on ne depasse pas 100 caracteres
 	beq	:6023
 	cmp	#chrSPC2
 	beq	:6023
-	sta	X$1,y
+	sta	X$1,y	; 0P1R2E3N4
 	inx
 	cpx	lenSTRING
 	bcs	:6023
@@ -1681,24 +1673,24 @@ nbCAR	=	100	; on ne depasse pas 100 caracteres
 	cpy	#4
 	bcc	]lp
 	beq	]lp
-:6023	dey
-	sty	X$1	; sauve la longueur
+	dey
+:6023	sty	X$1	; sauve la longueur
 
 * 3. cherche un espace
 
-	inx
+*	inx
 ]lp	lda	TEXTBUFFER,x
-	cmp	#chrRET2
-	beq	:6032
+*	cmp	#chrRET2
+*	beq	:6032
 	cmp	#chrSPC2
 	beq	:6032
-	inx
+	inx		; 5
 	cpx	lenSTRING
-	bcs	:6100
-	cpx	#nbCAR
+*	bcs	:6100
+*	cpx	#nbCAR
 	bcc	]lp
 	bcs	:6100
-	
+		
 * 4. recopie le mot
 
 :6032	inx
@@ -1716,8 +1708,8 @@ nbCAR	=	100	; on ne depasse pas 100 caracteres
 	cpy	#4
 	bcc	]lp
 	beq	]lp
-:6033	dey
-	sty	X$2	; sauve la longueur
+	dey
+:6033	sty	X$2	; sauve la longueur
 
 * 5. cherche le mot dans les options
 * X$1 4 PREN
@@ -1725,65 +1717,71 @@ nbCAR	=	100	; on ne depasse pas 100 caracteres
 * V$x 6 04PREN 
 *     0 123456
 
-:6100	lda	#0
-	sta	W
+:6100	lda	X$1
+	bne	:6110
+	rts
 	
-:6180	lda	#1
-	sta	N
-
-:6200	lda	N
+:6110	ldy	#1
+]lp	tya
 	asl
 	tax
 	lda	tblV$,x
-	sta	LINNUM
+	sta	:6225+1
 	lda	tblV$+1,x
-	sta	LINNUM+1
+	sta	:6225+2
 
-	ldy	#1
 	ldx	#1
-]lp	lda	(LINNUM),y
+:6225	lda	$bdbd,x
 	cmp	X$1,x
 	bne	:6250
-	iny
 	inx
 	cpx	X$1
+	bcc	:6225
+	beq	:6225
+	
+	lda	tblV,y
+	sta	MO$1
+	bne	:6300
+	
+:6250	iny
+	cpy	#V
 	bcc	]lp
 	beq	]lp
 	
-	ldx	W	; recopie l'index du mot
-	ldy	N
-	lda	tblV,y
-	sta	MO$1,x
-	jmp	:6300
-	
-:6250	inc	N
-	lda	N
-	cmp	#V
-	bcc	:6200
-	beq	:6200
-
 * 6. on change de mot
 
-:6300	lda	X$2	; on n'a pas de second mot
-	beq	:6350
-
-	ldx	#5-1
-]lp	lda	X$2,x
-	sta	X$1,x
-	dex
-	bpl	]lp
+:6300	lda	X$2
+	bne	:6310
+	rts
 	
-	inc	W
-	lda	W
-	cmp	#2
-	bcc	:6180
+:6310	ldy	#1
+]lp	tya
+	asl
+	tax
+	lda	tblV$,x
+	sta	:6325+1
+	lda	tblV$+1,x
+	sta	:6325+2
 
-:6350	rts
-
-*--------
+	ldx	#1
+:6325	lda	$bdbd,x
+	cmp	X$2,x
+	bne	:6350
+	inx
+	cpx	X$1
+	bcc	:6325
+	beq	:6325
 	
-X$1	ds	4+1	; premier mot saisi
-X$2	ds	4+1	; second mot saisi
+	lda	tblV,y
+	sta	MO$2
+	bne	:6400
+	
+:6350	iny
+	cpy	#V
+	bcc	]lp
+	beq	]lp
+
+:6400	rts
 
 *-----------------------------------
 * 7000 - DESCRIPTION DES PIECES
@@ -1953,7 +1951,7 @@ tbl7000
 *		"0123456789012345678901234567890123456789"
 *		"----------------------------------------"
 
-strVOUS	asc	"VOUS ETES "00
+strVOUS	asc	8D"VOUS ETES "00
 str7000	asc	"DEVANT LE MANOIR DU DEFUNT"00
 str7001	asc	8D"            DR GENIUS"00
 str7010	asc	"DANS LE HALL D"A7"ENTREE"00
@@ -1988,20 +1986,28 @@ str7240	asc	"DANS LE DRESSING"00
 	hex	bdbdbdbd
 	
 initALL
+	ldx	#FIN_DATA-DEBUT_DATA-1
+	lda	#0
+]lp	sta	A1,x
+	dex
+	bpl	]lp
+
+*---
+
 	lda	#1
 	sta	SALLE
 	
-	ldx	#10
-	lda	#0
-]lp	sta	P,x
-	sta	C,x
-	dex
-	bne	]lp
+*	ldx	#10
+*	lda	#0
+*]lp	sta	P,x
+*	sta	C,x
+*	dex
+*	bne	]lp
 	
-	lda	#0
-	sta	P+11
-	sta	P+12
-	
+*	lda	#0
+*	sta	P+11
+*	sta	P+12
+
 	lda	#14
 	sta	C+3
 	lda	#12
@@ -2026,6 +2032,8 @@ initALL
 	cpx	#4
 	bcc	]lp
 
+*---
+
 	ldx	#nbO	; reset object table
 ]lp	lda	refO,x
 	sta	O,x
@@ -2037,7 +2045,6 @@ initALL
 	sta	tblO$,x
 	dex
 	bpl	]lp
-	
 	rts
 
 *-----------------------------------
@@ -2166,7 +2173,7 @@ initALL
 :12400
 	@draw	#data12400
 	rts
-	
+
 *-----------------------------------
 * 20000 - PERDU
 *-----------------------------------
@@ -2174,18 +2181,36 @@ initALL
 :20000
 	@draw	#data13000
 	@play	#zikPERDU
-	jsr	setTEXTFULL
 
-:20100
+:20050			; commun avec gagne
+	jsr	setTEXTFULL
 ]lp	@print	#strREPLAY
-	jsr	RDKEY
+	jsr	translateKEY
 	cmp	#"N"
 	beq	:20001
 	cmp	#"O"
 	bne	]lp
 	jmp	REPLAY
-:20001	jmp	MONZ
 
+:20001
+	lda	sauveCYA
+	sta	CYAREG
+
+	jsr	PRODOS	; exit
+	dfb	$65
+	da	proQUIT
+	brk	$bd	; on ne se refait pas ;-)
+
+*--- Data
+
+proQUIT	dfb	4
+	ds	1
+	ds	2
+	ds	1
+	ds	2
+
+sauveCYA	ds	1
+	
 *--------
 
 strREPLAY	asc	8D"VOULEZ-VOUS REJOUER ? "00
@@ -2195,10 +2220,14 @@ strREPLAY	asc	8D"VOULEZ-VOUS REJOUER ? "00
 *-----------------------------------
 
 :32000
+	@play	#zikGAGNE
 	jsr	setTEXTFULL
 	@print	#strGAGNE
-	@play	#zikGAGNE
-	jmp	:20100
+	jmp	:20050
+
+*  o
+*  O
+* / \
 
 *--------
 
@@ -2215,14 +2244,14 @@ strGAGNE	asc	"CELA EST EXCEPTIONNEL. VOUS ETES LE"8D8D
 :40000
 	jsr	setTEXTFULL
 ]lp	@print	#strINSTR
-	jsr	RDKEY
+	jsr	translateKEY
 	cmp	#"N"
 	beq	:40001
 	cmp	#"O"
 	bne	]lp
 
 	@print	#strINSTR2
-	jsr	RDKEY
+	jsr	translateKEY
 	
 :40001	rts
 
@@ -2256,7 +2285,7 @@ strINSTR2	asc	8D8D
 :51000
 	jsr	setTEXTFULL
 	@print	#strDISCLAIMER
-	jmp	RDKEY
+	jmp	translateKEY
 
 *--------
 
@@ -2390,17 +2419,16 @@ setHGR			; HGR
 *----------------------
 
 switchVIDEO
-	lda	#0
-	sta	CH
-	lda	CV
-	sec
-	sbc	#1
-	sta	CV
-	jsr	TABV
-	
-	lda	#0
+*	lda	#0
+*	sta	CH
+*	lda	CV
+*	sec
+*	sbc	#1
+*	jsr	TABV
+
+swVI	lda	#0
 	eor	#1
-	sta	switchVIDEO+1
+	sta	swVI+1
 	bne	setMIXEDOFF
 	
 *----------------------
@@ -2448,8 +2476,7 @@ switchWAIT
 	sta	waitMS+1
 	rts
 
-waitMS
-	lda	#0	; skip if not zero
+waitMS	lda	#0	; skip if not zero
 	bne	waitMS9
 	
 	sty	LINNUM
@@ -2654,10 +2681,52 @@ thePAPER	ds	1
 oric2hgr	hex	0705010602030400
 
 *-----------------------------------
+* rewriteSTRING (lower -> upper)
+*-----------------------------------
+
+rewriteSTRING
+	ldx	#0
+]lp	ldy	TEXTBUFFER,x
+	lda	tblKEY,y
+	sta	TEXTBUFFER,x
+	inx
+	cpx	lenSTRING
+	bcc	]lp
+	rts
+
+*-----------------------------------
+* translateKEY (lower -> upper)
+*-----------------------------------
+
+translateKEY
+	jsr	RDKEY
+	tax
+	lda	tblKEY,x
+	rts
+
+tblKEY
+	hex	00,01,02,03,04,05,06,07,08,09,0A,0B,0C,0D,0E,0F
+	hex	10,11,12,13,14,15,16,17,18,19,1A,1B,1C,1D,1E,1F
+	hex	20,21,22,23,24,25,26,27,28,29,2A,2B,2C,2D,2E,2F
+	hex	30,31,32,33,34,35,36,37,38,39,3A,3B,3C,3D,3E,3F
+	hex	40,41,42,43,44,45,46,47,48,49,4A,4B,4C,4D,4E,4F
+	hex	50,51,52,53,54,55,56,57,58,59,5A,5B,5C,5D,5E,5F
+	hex	60,61,62,63,64,65,66,67,68,69,6A,6B,6C,6D,6E,6F
+	hex	70,71,72,73,74,75,76,77,78,79,7A,7B,7C,7D,7E,7F
+	hex	80,81,82,83,84,85,86,87,88,89,8A,8B,8C,8D,8E,8F
+	hex	90,91,92,93,94,95,96,97,98,99,9A,9B,9C,9D,9E,9F
+	hex	A0,A1,A2,A3,A4,A5,A6,A7,A8,A9,AA,AB,AC,AD,AE,AF
+	hex	B0,B1,B2,B3,B4,B5,B6,B7,B8,B9,BA,BB,BC,BD,BE,BF
+	hex	C0,C1,C2,C3,C4,C5,C6,C7,C8,C9,CA,CB,CC,CD,CE,CF
+	hex	D0,D1,D2,D3,D4,D5,D6,D7,D8,D9,DA,DB,DC,DD,DE,DF
+	hex	E0,C1,C2,C3,C4,C5,C6,C7,C8,C9,CA,CB,CC,CD,CE,CF
+	hex	D0,D1,D2,D3,D4,D5,D6,D7,D8,D9,DA,FB,FC,FD,FE,FF
+	
+*-----------------------------------
 * VARIABLES
 *-----------------------------------
 
-V	=	71
+V	=	72
 
 tblV$	da	$bdbd
 	da	V$1,V$2,V$3,V$4,V$5,V$6,V$7,V$8,V$9
@@ -2667,7 +2736,7 @@ tblV$	da	$bdbd
 	da	V$40,V$41,V$42,V$43,V$44,V$45,V$46,V$47,V$48,V$49
 	da	V$50,V$51,V$52,V$53,V$54,V$55,V$56,V$57,V$58,V$59
 	da	V$60,V$61,V$62,V$63,V$64,V$65,V$66,V$67,V$68,V$69
-	da	V$70,V$71
+	da	V$70,V$71,V$72
 
 V$1	str	"N"
 V$2	str	"NORD"
@@ -2740,6 +2809,7 @@ V$68	str	"ENFO"
 V$69	str	"ENLE"
 V$70	str	"RENT"
 V$71	str	"TEMPO"
+V$72	str	"QUITTER"
 
 tblV	dfb	$bd
 	dfb	01,01,02,02,03,03,04,04,05,05
@@ -2749,7 +2819,7 @@ tblV	dfb	$bd
 	dfb	33,34,35,36,37,38,18,39,40,41
 	dfb	42,43,44,45,46,47,48,49,50,51
 	dfb	52,53,53,54,55,55,56,56,57,58
-	dfb	59
+	dfb	59,60
 
 *---
 
@@ -2796,7 +2866,7 @@ O$16	asc	"UN TELEPORTEUR"00
 O$17	asc	"UN TELEPORTEUR REPARE"00
 O$18	asc	"UNE COMBINAISON ARGENTEE"00
 O$19	asc	"UNE COMBINAISON ENFILEE"00
-O$20	asc	"UN MONSTRE ALL"A7"EST"00
+O$20	asc	"UN MONSTRE A L"A7"EST"00
 O$21	asc	"UN PISTOLET"00
 O$22	asc	"UN BRIQUET"00
 O$23	asc	"UN BRIQUET ALLUME"00
@@ -2972,7 +3042,7 @@ A$113	str	"A16F09.D50D06N."
 A$114	str	"A16.D49I18M."
 A$115	str	"D18E09.D30K."
 A$116	str	"D18.P18E09J."
-A$117	str	"5743D18F09.D30K."
+A$117	str	"D18F09.D30K."
 A$118	str	"D18.P18F09J."
 A$119	str	"A24C12.D51K."
 A$120	str	"A24C03.D52N."
@@ -3139,6 +3209,8 @@ C$14	str	".L."
 
 *-----------------------------------
 
+DEBUT_DATA
+
 A1	ds	1
 BREAK	ds	1
 E	ds	1
@@ -3164,6 +3236,10 @@ C	ds	10+1
 E$	ds	32	; the longest string
 P	ds	13+1
 PL	ds	5	; 1111/0
+X$1	ds	4+1	; premier mot saisi
+X$2	ds	4+1	; second mot saisi
+
+FIN_DATA
 
 *--- The lazy decimal to hexadecimal conversion
 

@@ -13,39 +13,27 @@
 * SOFTSWITCHES AND FRIENDS
 *-----------------------------------
 
-WNDLFT	=	$20	; left edge of text window 
-WNDWDTH	=	$21	; width of text window 
 WNDTOP	=	$22	; top of text window 
 WNDBTM	=	$23	; bottom+1 of text window 
 CH	=	$24	; cursor horizontal position 
 CV	=	$25	; cursor vertical position 
-PROMPT	=	$33	; prompt character
 LINNUM	=	$50	; result from GETADR
 X0L	=	$e0	; X-coord
 X0H	=	$e1
 Y0	=	$e2	; Y-coord
-HPAG	=	$e6
 
 maxY	=	191	; 0 to 191 = 192
 
-chrRET	=	$0d
-chrSPC	=	$20
 chrRET2	=	$8d
 chrSPC2	=	$a0
-cursorCHAR =	">"
 TEXTBUFFER = 	$200
 
 PRODOS	=	$bf00
 
 KBD	=	$c000
-CLR80COL	=	$c000
-SET80COL	=	$c001
 CLR80VID	=	$c00c
-SET80VID	=	$c00d
 KBDSTROBE	=	$c010
 VBL	=	$c019
-MONOCOLOR	=	$c021
-NEWVIDEO	=	$c029
 VERTCNT	=	$c02e
 SPKR	=	$c030
 CYAREG	=	$C036
@@ -57,9 +45,6 @@ TXTPAGE1	=	$c054
 TXTPAGE2	=	$c055
 LORES	=	$c056
 HIRES	=	$c057
-CLRAN	=	$c05d
-SETAN3	=	$c05e
-CLRAN3	=	$c05f
 
 *--- The firmware routines
 
@@ -114,9 +99,6 @@ SETKBD	=	$FE89
 * CODE BASIC EN ASM :-)
 *-----------------------------------
 
-	ldx	#>PL
-	ldy	#<PL
-	
 	sec		; 1 MHz vaincra!
 	jsr	IDROUTINE
 	bcs	notiigs
@@ -133,12 +115,7 @@ notiigs
 REPLAY
 	jsr	initALL
 	jsr	HGR
-*	jsr	setHGR
 
-*	jsr	HOME
-*	lda	#20
-*	jsr	TABV
-	
 	lda	#20	; et c'est fentrŽ en plus !
 	sta	WNDTOP
 	lda	#24
@@ -263,8 +240,6 @@ REPLAY
 :500	lda	#1
 	sta	T
 	lda	#0
-*	sta	Y1
-*	sta	Y2
 	sta	N
 	jmp	:1000
 
@@ -1564,7 +1539,7 @@ str4585	asc	8D"D"A7"EAU QUI VOUS PERMET D"A7"ETEINDRE LE FEU"00
 	bmi	:4600	; t'as gagnŽ
 :4595	jmp	:4570	; t'as perdu
 
-str4590	asc	8D"NO DE CODE : "00
+str4590	asc	8D"NO DE CODE? "00
 
 *-----------------------------------
 * 4600
@@ -2221,13 +2196,54 @@ strREPLAY	asc	8D"VOULEZ-VOUS REJOUER ? "00
 
 :32000
 	@play	#zikGAGNE
+
+:32010
 	jsr	setTEXTFULL
 	@print	#strGAGNE
-	jmp	:20050
 
-*  o
-*  O
-* / \
+*--- L'animation du nain qui rode
+
+	ldx	#1
+	ldy	#190
+]lp	lda	#" "
+	sta	$551,x
+	sta	$5d1,x
+	sta	$650,x
+
+	lda	#"o"
+	sta	$552,x
+	lda	#"O"
+	sta	$5d2,x
+	lda	#"/"
+	sta	$651,x
+	lda	#"\"
+	sta	$653,x
+
+	bit	SPKR
+
+	tya
+	jsr	WAIT
+	
+	lda	#"\"
+	sta	$651,x
+	lda	#"/"
+	sta	$653,x
+	
+	tya
+	jsr	WAIT
+
+	bit	SPKR
+
+	tya
+	clc
+	adc	#2
+	tay
+	
+	inx
+	cpx	#30
+	bcc	]lp
+
+	jmp	:20050
 
 *--------
 

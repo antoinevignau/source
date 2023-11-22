@@ -233,6 +233,7 @@ REPLAY
 	
 :300	lda	#0
 	sta	H
+	sta	HH	; for comma
 	lda	#1
 	sta	N
 	
@@ -242,15 +243,18 @@ REPLAY
 	bne	:400
 	
 	lda	H
-	cmp	#1
-	beq	:350
+	bne	:350
 
 	@print	#strILYA
 	
-	lda	#1
-	sta	H
+	inc	H
 
-:350	@print	#strSPACE
+:350	lda	HH
+	beq	:360
+
+	@print	#strCOMMA
+
+:360	@print	#strSPACE
 	lda	N
 	asl
 	tax
@@ -259,6 +263,8 @@ REPLAY
 	tax
 	jsr	printCSTRING
 	@wait	#150
+
+	inc	HH
 	
 :400	inc	N
 	lda	N
@@ -348,7 +354,13 @@ REPLAY
 * 900 - CONTROLE MVT
 *-----------------------------------
 
-:900	ldy	#0
+:900	cmp	#59	; switch wait to de/accelerate the game
+	bne	:910
+
+	jsr	switchWAIT
+	jmp	:100
+
+:910	ldy	#0
 
 :920	lda	SALLE	; T$=MID(M$(SALLE),Z,2)
 	asl
@@ -411,11 +423,6 @@ REPLAY
 	bcc	:1200
 	beq	:1200
 
-	lda	#23
-	sta	PY
-	lda	#12
-	sta	CO
-	
 	lda	A1
 	cmp	#1
 	bne	:1170
@@ -695,6 +702,7 @@ tbl1800	da	:1800,:1900
 :1800	lda	#0
 	sta	G
 	sta	HH
+	sta	H	; for comma
 
 :1810	inc	G
 	lda	G
@@ -714,10 +722,14 @@ tbl1800	da	:1800,:1900
 	@print	#strVOUSDETENEZ
 	@wait	#100
 	
-:1850	lda	#1
-	sta	HH
+:1850	inc	HH
 
-	lda	G
+	lda	H
+	beq	:1860
+	
+	@print	#strCOMMA
+
+:1860	lda	G
 	asl
 	tax
 	ldy	tblO$,x
@@ -726,14 +738,15 @@ tbl1800	da	:1800,:1900
 	jsr	printCSTRING
 	@print	#strSPACE
 	@wait	#150
+
+	inc	H
 	
 	lda	G
 	cmp	#V
 	bcc	:1810
 	
 :1870	lda	HH
-	cmp	#1
-	bne	:1880
+	beq	:1880
 
 	@print	#strPOINT
 	rts
@@ -751,8 +764,7 @@ strPOINT
 	
 *--------
 
-:1900	ldx	#1
-	lda	S,x
+:1900	lda	S
 	cmp	#5
 	bcc	:1930
 	
@@ -777,8 +789,7 @@ strPOINT
 	lda	#-1
 	sta	O,x
 	
-	ldx	#1
-	inc	S,x
+	inc	S
 	rts
 
 strEVIDENT
@@ -803,7 +814,7 @@ strCONSEILLE
 :2030	lda	SALLE
 	sta	O,x
 
-	dec	S,x
+	dec	S
 	rts
 
 strNOTOWNED
@@ -878,11 +889,7 @@ strNOTOWNED
 	cmp	#-1
 	bne	:2510
 	
-	ldx	#1
-	lda	S,x
-	sec
-	sbc	#1
-	sta	S,x
+	dec	S
 
 :2510	ldx	N
 	lda	#0
@@ -1419,7 +1426,7 @@ str4440	asc	"LA LUMIERE DU BRIQUE NE SUFFIT PAS"8D
 	@wait	#100
 	rts
 
-str4450	asc	"IMPOSSIBLE !"00
+str4450	asc	"IMPOSSIBLE !"8D00
 
 *--------
 
@@ -2341,17 +2348,6 @@ strINTRO4	asc	"(C) 1983, L. BENES & LORICIELS"00
 * ORIC
 *-----------------------------------
 
-KEY$	lda	KBD	; on keypress, wait 5s
-	bpl	key$1	; or 1s IF none
-	bit	KBDSTROBE
-	
-	@wait	#400
-
-key$1	@wait	#100
-	rts
-
-*--------
-
 EXPLODE	ldx	#$25
 ]lp	lda	TXTSET
 	lda	#$25
@@ -2395,9 +2391,17 @@ setHGR			; HGR
 
 switchVIDEO
 	lda	#0
+	sta	CH
+	lda	CV
+	sec
+	sbc	#1
+	sta	CV
+	jsr	TABV
+	
+	lda	#0
 	eor	#1
 	sta	switchVIDEO+1
-	beq	setMIXEDOFF
+	bne	setMIXEDOFF
 	
 *----------------------
 * setMIXEDON
@@ -2438,7 +2442,16 @@ pcs2	rts
 * waitMS
 *----------------------
 
+switchWAIT
+	lda	waitMS+1
+	eor	#1
+	sta	waitMS+1
+	rts
+
 waitMS
+	lda	#0	; skip if not zero
+	bne	waitMS9
+	
 	sty	LINNUM
 doW1	ldy	LINNUM
 ]lp	lda	#60	; 1/100ème de seconde
@@ -2447,7 +2460,7 @@ doW1	ldy	LINNUM
 	bne	]lp
 	dex
 	bpl	doW1
-	rts
+waitMS9	rts
 
 *----------------------
 * drawPICTURE
@@ -2644,7 +2657,7 @@ oric2hgr	hex	0705010602030400
 * VARIABLES
 *-----------------------------------
 
-V	=	70
+V	=	71
 
 tblV$	da	$bdbd
 	da	V$1,V$2,V$3,V$4,V$5,V$6,V$7,V$8,V$9
@@ -2654,7 +2667,7 @@ tblV$	da	$bdbd
 	da	V$40,V$41,V$42,V$43,V$44,V$45,V$46,V$47,V$48,V$49
 	da	V$50,V$51,V$52,V$53,V$54,V$55,V$56,V$57,V$58,V$59
 	da	V$60,V$61,V$62,V$63,V$64,V$65,V$66,V$67,V$68,V$69
-	da	V$70
+	da	V$70,V$71
 
 V$1	str	"N"
 V$2	str	"NORD"
@@ -2726,17 +2739,17 @@ V$67	str	"APPU"
 V$68	str	"ENFO"
 V$69	str	"ENLE"
 V$70	str	"RENT"
+V$71	str	"TEMPO"
 
 tblV	dfb	$bd
-	dfb	01,01,02,02,03,03,04,04
-	dfb	05,05,06,10,10,11,12,13
-	dfb	14,14,15,16,17,17,18,19
-	dfb	20,21,21,22,23,24,24,25
-	dfb	25,26,27,28,29,30,31,32
-	dfb	33,34,35,36,37,38,18,39
-	dfb	40,41,42,43,44,45,46,47
-	dfb	48,49,50,51,52,53,53,54
-	dfb	55,55,56,56,57,58
+	dfb	01,01,02,02,03,03,04,04,05,05
+	dfb	06,10,10,11,12,13,14,14,15,16
+	dfb	17,17,18,19,20,21,21,22,23,24
+	dfb	24,25,25,26,27,28,29,30,31,32
+	dfb	33,34,35,36,37,38,18,39,40,41
+	dfb	42,43,44,45,46,47,48,49,50,51
+	dfb	52,53,53,54,55,55,56,56,57,58
+	dfb	59
 
 *---
 
@@ -3128,10 +3141,7 @@ C$14	str	".L."
 
 A1	ds	1
 BREAK	ds	1
-C	ds	10+1
-CO	ds	1
 E	ds	1
-E$	ds	32	; the longest string
 F1	ds	1
 G	ds	1
 H	ds	1
@@ -3143,19 +3153,21 @@ MO$2	ds	1	; mot 2
 N	ds	1
 NL	ds	1
 OK	ds	1
-P	ds	13+1
-PY	ds	1
-PL	ds	5	; 1111/0
-S	ds	2	; pour S(1)
+S	ds	1
 SALLE	ds	1
 T	ds	1
 W	ds	1
 Z	ds	1
+lenSTRING	ds	1
+
+C	ds	10+1
+E$	ds	32	; the longest string
+P	ds	13+1
+PL	ds	5	; 1111/0
 
 *--- The lazy decimal to hexadecimal conversion
 
 tblD2H	dfb	0,10,20,30,40,50,60,70,80,90
-lenSTRING	ds	1
 
 *-----------------------------------
 * STRINGS
@@ -3166,7 +3178,8 @@ strILFAITNOIR
 	asc	"FAUDRAIT PEUT-ETRE ALLUMER"00
 
 strILYA	asc	8D"IL Y A DANS LA SALLE :"00
-strSPACE	asc	", "00
+strCOMMA	asc	","00
+strSPACE	asc	" "00
 strRETURN	asc	8D00
 
 strCOMMANDE

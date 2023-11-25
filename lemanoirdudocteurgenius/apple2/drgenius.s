@@ -99,15 +99,28 @@ SETKBD	=	$FE89
 * CODE BASIC EN ASM :-)
 *-----------------------------------
 
-	sec		; 1 MHz vaincra!
+	sec
 	jsr	IDROUTINE
 	bcs	notiigs
 
-	lda	CYAREG
+	lda	CYAREG	; 1 MHz vaincra!
 	sta	sauveCYA
 	and	#%0111_1111
 	sta	CYAREG
 notiigs
+
+*-------- CAN WE DO lowercase?
+
+	lda	$FBB3
+	cmp	#$06
+	beq	lowerOK
+	
+	lda	#$80	; ONLY UPPERCASE
+	sta	fgCASE	
+lowerOK
+
+*--------
+
 	jsr	introPIC	; la picture GR
 	jsr	:51000	; le disclaimer
 	jsr	:40000	; les instructions
@@ -326,12 +339,18 @@ REPLAY
 :905	cmp	#60	; quitter
 	bne	:910
 	jmp	:20050
+
+:910	cmp	#61
+	bne	:915
 	
+	jsr	switchCASE
+	jmp	:100
+
 *-----------------------------------
 * 910 - CONTROLE MVT
 *-----------------------------------
 
-:910	ldy	#0
+:915	ldy	#0
 
 :920	lda	SALLE	; T$=MID(M$(SALLE),Z,2)
 	asl
@@ -736,13 +755,6 @@ tbl1800	da	:1800,:1900
 	@wait	#200
 	rts
 
-strVOUSDETENEZ
-	asc	8D"VOUS DETENEZ : "00
-strVOUSRIEN
-	asc	8D"VOUS NE DETENEZ ABSOLUMENT RIEN !!!"00
-strPOINT
-	asc	"."00
-	
 *--------
 
 :1900	lda	S
@@ -773,15 +785,6 @@ strPOINT
 	inc	S
 	rts
 
-strEVIDENT
-	asc	8D"IL PARAIT EVIDENT QUE VOUS NE POUVEZ"8D
-	asc	"PAS PORTER TANT DE CHOSES !!"00
-strVOUSLAVEZ
-	asc	8D"VOUS L"A7"AVEZ DEJA. VOUS ETES ETOURDI"8D
-	asc	"ET DANS CETTE MAISON, CE N"A7"EST PAS"00
-strCONSEILLE
-	asc	8D"TRES CONSEILLE"00
-	
 *--------
 
 :2000	ldx	N
@@ -797,10 +800,6 @@ strCONSEILLE
 
 	dec	S
 	rts
-
-strNOTOWNED
-	asc	8D"COMMENT VOULEZ-VOUS POSER CE QUE VOUS"8D
-	asc	"N"A7"AVEZ PAS ?"00
 
 *-----------------------------------
 * 2100
@@ -896,9 +895,6 @@ strNOTOWNED
 	sta	BREAK
 	rts
 
-strDACCORD
-	asc	8D"D"A7"ACCORD"00
-	
 *--------
 
 :2800	lda	#3
@@ -971,17 +967,11 @@ tbl4000	da	:4000,:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
 	@wait	#400
 	rts
 
-str4000	asc	"VOUS AVEZ GARDE LA LAMPE TROP LONGTEMPS"8D
-	asc	"ALLUMEE, ELLE A EXPLOSE"00
-
 *--------
 
 :4010	@print	#str4010
 	@wait	#500
 	rts
-
-str4010	asc	"VOUS AVEZ OUBLIE DE FERMER LE ROBINET"8D
-	asc	"VOUS MOUREZ SOUS DES TONNES D"A7"EAU"00
 
 *--------
 
@@ -989,18 +979,11 @@ str4010	asc	"VOUS AVEZ OUBLIE DE FERMER LE ROBINET"8D
 	@wait	#500
 	rts
 
-str4020	asc	"LA PORTE VIENT DE SE REFERMER DERRIERE"8D
-	asc	"VOUS, VOUS VOILA PRISONNIER..."00
-
-
 *--------
 
 :4030	@print	#str4030
 	@wait	#500
 	rts
-
-str4030	asc	"VOUS AVEZ TREBUCHE DANS L"A7"ESCALIER, VOUS"
-	asc	"VOUS EMPALEZ SUR LE COUTEAU !"00
 
 *--------
 
@@ -1010,26 +993,17 @@ str4030	asc	"VOUS AVEZ TREBUCHE DANS L"A7"ESCALIER, VOUS"
 	@wait	#300
 	rts
 
-str4040	asc	"VOUS RENVERSEZ L"A7"EAU DANS L"A7"ESCALIER,"8D
-	asc	"CE QUI PROVOQUE UNE DECHARGE DE LA"00
-str4042	asc	8D"PRISE ELECTRIQUE"00
-
 *--------
 
 :4050	@print	#str4050
 	@wait	#500
 	rts
 
-str4050	asc	"VOUS ETES SAUF GRACE A LA COMBINAISON"8D
-	asc	"QUE VOUS AVEZ ENFILEE...!"00
-
 *--------
 
 :4060	@print	#str4060
 	@wait	#300
 	rts
-
-str4060	asc	"VOUS MOUREZ ELECTROCUTE..."00
 
 *--------
 
@@ -1040,19 +1014,11 @@ str4060	asc	"VOUS MOUREZ ELECTROCUTE..."00
 	@wait	#300
 	rts
 
-str4070	asc	"LA PIECE ETAIT PLEINE DE GAZ EXPLOSIF,"8D
-	asc	"VOUS AURIEZ DU ETEINDRE..."00
-str4072	asc	8D"ON RAMASSERA VOS MORCEAUX UN AUTRE"8D
-	asc	"JOUR...!"00
-
 *--------
 
 :4080	@print	#str4080
 	@wait	#400
 	rts
-
-str4080	asc	"VOUS MOUREZ EMPALE SUR DES LANCES"8D
-	asc	"SORTIES DU MUR... !"00
 
 *--------
 
@@ -1060,25 +1026,17 @@ str4080	asc	"VOUS MOUREZ EMPALE SUR DES LANCES"8D
 	@wait	#300
 	rts
 
-str4090	asc	"LA PORTE NE S"A7"OUVRE PAS DE CETTE PIECE"00
-
 *--------
 
 :4100	@print	#str4100
 	@wait	#400
 	rts
 
-str4100	asc	"LA LAMPE ET LE BRIQUET REFUSENT DE"8D
-	asc	"MARCHER DANS CETTE PIECE"00
-
 *--------
 
 :4110	@print	#str4110
 	@wait	#500
 	rts
-
-str4110	asc	"VOUS TOMBEZ DANS UNE TRAPPE, VOUS VOUS"8D
-	asc	"DISLOQUEZ EN ARRIVANT AU SOL..."00
 
 *--------
 
@@ -1087,10 +1045,6 @@ str4110	asc	"VOUS TOMBEZ DANS UNE TRAPPE, VOUS VOUS"8D
 	@print	#str4124
 	@wait	#250
 	rts
-
-str4120	asc	"VOUS AVEZ RAISON DE PASSER, CAR CE"8D
-	asc	"MONSTRE N"A7"ETAIT QU"A7"UNE PROJECTION"00
-str4124	asc	8D"EN 3 DIMENSIONS SUR UN ECRAN DE FUMEE"00
 
 *--------
 
@@ -1104,18 +1058,11 @@ str4124	asc	8D"EN 3 DIMENSIONS SUR UN ECRAN DE FUMEE"00
 	@wait	#200
 	jmp	:20050
 
-str4130	asc	"VOUS AVEZ RAISON, LA CURIOSITE EST UN"8D
-	asc	"VILAIN DEFAUT"00
-str4133	asc	8D"            AU REVOIR"00
-
 *--------
 
 :4140	@print	#str4140
 	@wait	#450
 	rts
-
-str4140	asc	"VOUS AVEZ RAISON D"A7"ATTENDRE, MAIS CELA"
-	asc	"NE POURRA PAS DURER ETERNELLEMENT..."00
 
 *--------
 
@@ -1127,30 +1074,17 @@ str4140	asc	"VOUS AVEZ RAISON D"A7"ATTENDRE, MAIS CELA"
 	@wait	#200
 	rts
 
-str4150	asc	"VOUS AVEZ DE LA CHANCE CAR CE COFFRE"8D
-	asc	"ETAIT OUVERT."00
-str4152	asc	8D"UN MESSAGE A L"A7"INTERIEUR DIT : NE"8D
-	asc	"RESPECTEZ PAS LES COULEURS DU CODE DE LA"8D
-	asc	"ROUTE...?"00
-str4156	asc	8D"TIENS LE COFFRE SE REFERME"00
-
 *--------
 
 :4160	@print	#str4160
 	@wait	#400
 	rts
 
-str4160	asc	"MAINTENANT, VOUS AVEZ UNE LAMPE PLEINE"8D
-	asc	"DE PETROLE"00
-
 *--------
 
 :4170	@print	#str4170
 	@wait	#400
 	rts
-
-str4170	asc	"VOUS N"A7"AVEZ RIEN POUR TRANSPORTER LE"8D
-	asc	"PETROLE"00
 
 *--------
 
@@ -1161,10 +1095,6 @@ str4170	asc	"VOUS N"A7"AVEZ RIEN POUR TRANSPORTER LE"8D
 	@wait	#200
 	rts
 
-str4180	asc	"LE BRIQUET QUE VOUS AVIEZ LAISSE ALLUME"8D
-	asc	"VIENT D"A7"EXPLOSER"00
-str4185	asc	8D"CA TUE L"A7"ETOURDIE..."00
-
 *--------
 
 :4190	@print	#str4190
@@ -1173,17 +1103,10 @@ str4185	asc	8D"CA TUE L"A7"ETOURDIE..."00
 	@wait	#300
 	rts
 
-str4190	asc	"A FORCE DE MARCHER EN LONG ET EN LARGE"8D
-	asc	"DANS CETTE MAISON,"00
-str4195	asc	8D"VOUS SOMBREZ DANS UN COMA DES PLUS"8D
-	asc	"MORTELS..."00
-
 *--------
 
 :4200	@print	#str4200
 	rts
-
-str4200	asc	"L"A7"EAU COULE..."00
 
 *--------
 
@@ -1193,10 +1116,6 @@ str4200	asc	"L"A7"EAU COULE..."00
 	@wait	#300
 	rts
 
-str4210	asc	"VOUS AVEZ LES PIEDS TREMPES ET CELA VOUS"
-	asc	"REND TRES MALADE..."00
-str4215	asc	8D"VOUS MOUREZ D"A7"UNE TRIPLE PNEUMONIE...!"00
-
 *--------
 
 :4220	@print	#str4220
@@ -1205,9 +1124,6 @@ str4215	asc	8D"VOUS MOUREZ D"A7"UNE TRIPLE PNEUMONIE...!"00
 	@wait	#300
 	rts
 
-str4220	asc	"LE TITRE EST : "00
-str4225	asc	8D"LA MORT A LA PREMIERE PAGE."00
-
 *--------
 
 :4230	@explode
@@ -1215,16 +1131,11 @@ str4225	asc	8D"LA MORT A LA PREMIERE PAGE."00
 	@wait	#400
 	rts
 
-str4230	asc	"LE LIVRE A EXPLOSE LORSQUE VOUS L"A7"AVEZ"8D
-	asc	"OUVERT..."00
-
 *--------
 
 :4240	@print	#str4240
 	@wait	#300
 	rts
-
-str4240	asc	"LE PAPIER INDIQUE : CHERCHEZ LA CLEF."00
 
 *--------
 
@@ -1232,17 +1143,11 @@ str4240	asc	"LE PAPIER INDIQUE : CHERCHEZ LA CLEF."00
 	@wait	#400
 	rts
 
-str4250	asc	"LA CLEF VOUS PERMETTRA DE TROUVER LE"8D
-	asc	"CODE DE LA PORTE D"A7"ENTREE."00
-
 *--------
 
 :4260	@print	#str4260
 	@wait	#400
 	rts
-
-str4260	asc	"IL Y A, A COTE DE LA PORTE, UN CLAVIER"8D
-	asc	"NUMERIQUE PERMETTANT D"A7"ENTRER UN CODE"00
 
 *--------
 
@@ -1250,15 +1155,11 @@ str4260	asc	"IL Y A, A COTE DE LA PORTE, UN CLAVIER"8D
 	@wait	#200
 	rts
 
-str4270	asc	"POUR FAIRE QUOI...?"00
-
 *--------
 
 :4280	@print	#str4280
 	@wait	#300
 	rts
-
-str4280	asc	8D"IL Y A UNE ODEUR DE GAZ."00
 
 *--------
 
@@ -1266,16 +1167,11 @@ str4280	asc	8D"IL Y A UNE ODEUR DE GAZ."00
 	@wait	#300
 	rts
 
-str4290	asc	"APPAREMMENT, IL N"A7"Y A AUCUNE ODEUR"8D
-	asc	"MAIS..."00
-
 *--------
 
 :4300	@print	#str4300
 	@wait	#300
 	rts
-
-str4300	asc	"C"A7"EST DEJA FAIT, ESPECE DE RIGOLO"00
 
 *--------
 
@@ -1283,15 +1179,11 @@ str4300	asc	"C"A7"EST DEJA FAIT, ESPECE DE RIGOLO"00
 	@wait	#300
 	rts
 
-str4310	asc	"IL FAUDRAIT PEUT-ETRE DU FEU"00
-
 *--------
 
 :4320	@print	#str4320
 	@wait	#300
 	rts
-
-str4320	asc	"LA LAMPE NE CONTIENT PAS DE PETROLE"00
 
 *--------
 
@@ -1299,17 +1191,12 @@ str4320	asc	"LA LAMPE NE CONTIENT PAS DE PETROLE"00
 	@wait	#200
 	rts
 
-str4330	asc	"VOUS NE L"A7"AVEZ PAS"00
-
 *--------
 
 :4340	@print	#str4340
 	@wait	#300
 	rts
 
-str4340	asc	"LE BRIQUET EST ENCORE ALLUME ET IL"8D
-	asc	"ECLAIRE LA PIECE."00
-	
 *--------
 
 :4350	@explode
@@ -1317,18 +1204,11 @@ str4340	asc	"LE BRIQUET EST ENCORE ALLUME ET IL"8D
 	@wait	#400
 	rts
 
-str4350	asc	"LA TORCHE ETAIT PIEGEE, ELLE VOUS"8D
-	asc	"EXPLOSE DANS LES MAINS..."00
-	
 *--------
 
 :4360	@print	#str4360
 	@wait	#300
 	rts
-
-str4360	asc	"LA LAMPE EST ENCORE ALLUMEE ET ELLE VOUS"
-	asc	"ECLAIRE"00
-
 
 *--------
 
@@ -1336,34 +1216,23 @@ str4360	asc	"LA LAMPE EST ENCORE ALLUMEE ET ELLE VOUS"
 	@wait	#300
 	rts
 
-str4370	asc	"UN NAIN VIENT DE VOUS LANCER UN POIGNARD"
-	asc	"EN PLEIN COEUR..."00
-	
 *--------
 
 :4380	@print	#str4380
 	@wait	#400
 	rts
 	
-str4380	asc	"UN NAIN VIENT DE SE PRECIPITER SUR VOUS,"
-	asc	"IL S"A7"EMPALE SUR VOTRE CISEAU"00
-
 *--------
 
 :4390	@print	#str4390
 	@wait	#400
 	rts
 	
-str4390	asc	"UN NAIN VIENT DE SE PRECIPITER SUR VOUS,"
-	asc	"IL S"A7"EMPALE SUR VOTRE COUTEAU"00
-
 *--------
 
 :4400	@print	#str4400
 	@wait	#150
 	rts
-
-str4400	asc	"VOUS VENEZ DE RENVERSER LE POT"00
 
 *--------
 
@@ -1373,9 +1242,6 @@ str4400	asc	"VOUS VENEZ DE RENVERSER LE POT"00
 	@wait	#200
 	rts
 
-str4410	asc	"LA FOUDRE VIENT DE TOMBER SUR LA MAISON"8D
-str4412	asc	8D"LA MAISON N"A7"EXISTE PLUS, VOUS NON PLUS"00
-
 *--------
 
 :4420	@print	#str4420
@@ -1384,19 +1250,11 @@ str4412	asc	8D"LA MAISON N"A7"EXISTE PLUS, VOUS NON PLUS"00
 	@wait	#200
 	rts
 
-str4420	asc	"A FORCE DE MARCHER DANS LE NOIR, VOUS"8D
-	asc	"AVEZ TREBUCHE"00
-str4425	asc	8D"VOUS MOUREZ D"A7"UNE FRACTURE DU CRANE"00
-
 *--------
 
 :4430	@print	#str4430
 	@wait	#300
 	rts
-
-
-str4430	asc	"VOUS NE POUVEZ PAS TRAVAILLER DANS LE"8D
-	asc	"NOIR..."00
 
 *--------
 
@@ -1404,16 +1262,11 @@ str4430	asc	"VOUS NE POUVEZ PAS TRAVAILLER DANS LE"8D
 	@wait	#400
 	rts
 
-str4440	asc	"LA LUMIERE DU BRIQUE NE SUFFIT PAS"8D
-	asc	"POUR TRAVAILLER..."00
-
 *--------
 
 :4450	@print	#str4450
 	@wait	#100
 	rts
-
-str4450	asc	"IMPOSSIBLE !"8D00
 
 *--------
 
@@ -1421,16 +1274,11 @@ str4450	asc	"IMPOSSIBLE !"8D00
 	@wait	#250
 	rts
 
-str4460	asc	"VOUS N"A7"AVEZ AUCUN OUTIL..."
-
 *--------
 
 :4470	@print	#str4470
 	@wait	#400
 	rts
-
-str4470	asc	"LE TELEPORTEUR EST EN PANNE, LES BOUTONS"
-	asc	"NE FONCTIONNENT PAS."00
 
 *--------
 
@@ -1439,9 +1287,6 @@ str4470	asc	"LE TELEPORTEUR EST EN PANNE, LES BOUTONS"
 	@wait	#400
 	rts
 	
-str4480	asc	"LE TELEPORTEUR VIENT D"A7"EXPLOSER, VOUS"8D
-	asc	"ETES DECOMPOSEE... !"00
-	
 *--------
 
 :4490	@explode
@@ -1449,17 +1294,11 @@ str4480	asc	"LE TELEPORTEUR VIENT D"A7"EXPLOSER, VOUS"8D
 	@wait	#400
 	rts
 	
-str4490	asc	"LE TELEPORTEUR SE MET EN MARCHE, VOUS"8D
-	asc	"DISPARAISSEZ"00
-	
 *--------
 
 :4500	@print	#str4500
 	@wait	#300
 	rts
-
-str4500	asc	"VOUS PRENEZ DU 30000 VOLTS DANS LES"8D
-	asc	"DOIGTS"00
 
 *--------
 
@@ -1467,16 +1306,11 @@ str4500	asc	"VOUS PRENEZ DU 30000 VOLTS DANS LES"8D
 	@wait	#150
 	rts
 
-str4510	asc	"LE PLACARD EST FERME A CLEF"00
-
 *--------
 
 :4520	@print	#str4520
 	@wait	#400
 	rts
-
-str4520	asc	"L"A7"HORRIBLE MONSTRE SORTI DU PLACARD"8D
-	asc	"VIENT DE VOUS DEVORER"00
 
 *--------
 
@@ -1484,16 +1318,11 @@ str4520	asc	"L"A7"HORRIBLE MONSTRE SORTI DU PLACARD"8D
 	@wait	#200
 	rts
 
-str4530	asc	"IL NE FALLAIT PAS FUIR"00
-
 *--------
 
 :4540	@print	#str4540
 	@wait	#400
 	rts
-
-str4540	asc	"VOUS AVEZ RAISON D"A7"UTILISER LE CISEAU,"8D
-	asc	"LE MONSTRE EST MORT"00
 
 *--------
 
@@ -1505,10 +1334,6 @@ str4540	asc	"VOUS AVEZ RAISON D"A7"UTILISER LE CISEAU,"8D
 	@wait	#150
 	rts
 
-str4550	asc	"A L"A7"INTERIEUR DU PLACARD, LE NO "00
-str4552	asc	8D" EST INSCRIT"00
-str4555	asc	8D"LE PLACARD SE REFERME."00
-
 *--------
 
 :4560	@explode
@@ -1516,16 +1341,12 @@ str4555	asc	8D"LE PLACARD SE REFERME."00
 	@wait	#200
 	rts
 
-str4560	asc	"LE PISTOLET A EXPLOSE"00
-
 *--------
 
 :4570	@explode
 	@print	#str4570
 	@wait	#250
 	rts
-
-str4570	asc	"LE CLAVIER NUMERIQUE A EXPLOSE"00
 
 *--------
 
@@ -1536,11 +1357,6 @@ str4570	asc	"LE CLAVIER NUMERIQUE A EXPLOSE"00
 	@print	#str4585
 	@wait	#400
 	rts
-
-str4580	asc	"LE CLAVIER NUMERIQUE PREND FEU,"8D
-	asc	"HEUREUSEMENT, VOUS AVIEZ "00
-str4582	asc	"UN POT PLEIN"00
-str4585	asc	8D"D"A7"EAU QUI VOUS PERMET D"A7"ETEINDRE LE FEU"00
 
 *--------
 
@@ -1558,8 +1374,6 @@ str4585	asc	8D"D"A7"EAU QUI VOUS PERMET D"A7"ETEINDRE LE FEU"00
 	bmi	:4600	; t'as gagné
 :4595	jmp	:4570	; t'as perdu
 
-str4590	asc	8D"NO DE CODE? "00
-
 *-----------------------------------
 * 4600
 *-----------------------------------
@@ -1572,11 +1386,6 @@ str4590	asc	8D"NO DE CODE? "00
 	@print	#strENDEHORS
 	jmp	:32000
 
-strCODEEXACT
-	asc	"LE CODE EST EXACT... LA PORTE S"A7"OUVRE..."00
-strENDEHORS
-	asc	8D"VOUS VOILA EN DEHORS DE LA MAISON..."
-
 *--------
 
 :4610
@@ -1586,10 +1395,6 @@ strENDEHORS
 	@wait	#150
 	rts
 
-str4610	asc	"A L"A7"INTERIEUR DU PLACARD, IL Y A UN MOT"8D
-	asc	"PARLE D"A7"UN TELEPORTEUR"00
-str4615	asc	8D"TIENS LE PLACARD SE FERME TOUT SEUL..."00
-
 *--------
 
 :4620
@@ -1597,9 +1402,6 @@ str4615	asc	8D"TIENS LE PLACARD SE FERME TOUT SEUL..."00
 	@wait	#350
 	rts
 	
-str4620	asc	"AVANT DE LA POSER A TERRE, IL FAUDRAIT"8D
-	asc	"PEUT-ETRE L"A7"ENLEVER"00
-
 *--------
 
 :4630
@@ -1607,18 +1409,12 @@ str4620	asc	"AVANT DE LA POSER A TERRE, IL FAUDRAIT"8D
 	@wait	#400
 	rts
 	
-str4630	asc	"IL Y A UN HORRIBLE MONSTRE DEVANT VOUS"8D
-	asc	"QUI EST SORTI DU PLACARD."00
-	
 *--------
 
 :4640
 	@print	#str4640
 	@wait	#350
 	rts
-
-str4640	asc	"LE PLACARD ETAIT PIEGE, VOUS N"A7"AURIEZ"8D
-	asc	"PAS DU L"A7"OUVRIR"00
 
 *-----------------------------------
 * 6000 - ANALYSE DU MOT
@@ -1941,38 +1737,6 @@ tbl7000
 
 *--------
 
-*		"0         1         2         3         "
-*		"0123456789012345678901234567890123456789"
-*		"----------------------------------------"
-
-strVOUS	asc	8D"VOUS ETES "00
-str7000	asc	"DEVANT LE MANOIR DU DEFUNT"00
-str7001	asc	8D"            DR GENIUS"00
-str7010	asc	"DANS LE HALL D"A7"ENTREE"00
-str7020	asc	"EN BAS DE L"A7"ESCALIER MENANT AU2E ETAGE"00
-str7030	asc	"DANS LA SALLE A MANGER"00
-str7040	asc	"DANS UNE BIBLIOTHEQUE SANS LIVRE...!"00
-str7050	asc	"DANS UNE BUANDERIE"00
-str7060	asc	"DANS LE SALON"00
-str7070	asc	"DANS UNE CHAMBRE"00
-str7080	asc	"DANS UN CORRIDOR"00
-str7090	asc	"DANS UNE SALLE D"A7"ATTENTE"00
-str7100	asc	"DANS LE VESTIBULE"00
-str7110	asc	"DANS LA CHAMBRE D"A7"AMIS"00
-str7120	asc	"DANS UNE CHAMBRE"00
-str7130	asc	""00	; nada
-str7140	asc	"DANS UNE PETITE SALLE"00
-str7150	asc	"DANS LE LABORATOIRE DU"00	; + :7001
-str7160	asc	"DANS UNE PETITE PIECE VIDE"00
-str7170	asc	"! JUSTEMENT, VOUS NE SAVEZ PASOU VOUS ETES"00
-str7180	asc	"EN HAUT DE L"A7"ESCALIER"00
-str7190	asc	"DANS LA SALLE DE BAINS"00
-str7200	asc	"DANS LE LIVING ROOM"00
-str7210	asc	"DANS UNE PIECE ENFUMEE"00
-str7220	asc	"DANS UNE GRANDE PIECE"00
-str7230	asc	"DANS UNE PIECE DE RANGEMENT"00
-str7240	asc	"DANS LE DRESSING"00
-
 *-----------------------------------
 * 8000 - CHARGEMENT VARIABLES
 *-----------------------------------
@@ -2205,10 +1969,6 @@ proQUIT	dfb	4
 
 sauveCYA	ds	1
 	
-*--------
-
-strREPLAY	asc	8D"VOULEZ-VOUS REJOUER ? "00
-	
 *-----------------------------------
 * 32000 - GAGNE
 *-----------------------------------
@@ -2264,14 +2024,6 @@ strREPLAY	asc	8D"VOULEZ-VOUS REJOUER ? "00
 
 	jmp	:20050
 
-*--------
-
-strGAGNE	asc	"CELA EST EXCEPTIONNEL. VOUS ETES LE"8D8D
-	asc	"PREMIER A ETRE SORTI VIVANT DE CETTE"8D8D
-	asc	"MAISON, MAIS SI J"A7"ETAIS VOUS, JE ME"8D8D
-	asc	"METTRAIS A COURIR CAR UN NAIN RODE"8D8D
-	asc	"PEUT-ETRE DANS LES PARAGES..."00
-	
 *-----------------------------------
 * 40000 - LISTE DES INSTRUCTIONS
 *-----------------------------------
@@ -2290,29 +2042,6 @@ strGAGNE	asc	"CELA EST EXCEPTIONNEL. VOUS ETES LE"8D8D
 	
 :40001	rts
 
-*--------
-
-strINSTR	asc	8D"LA LISTE DES INSTRUCTIONS ? "00
-
-strINSTR2	asc	8D8D
-	asc	"VOUS VOICI ARRIVE DANS LE MANOIR DU"8D
-	asc	"            DR GENIUS..."8D
-	asc	8D
-	asc	"POUR CONVERSER AVEC L"A7"ORDINATEUR, IL"8D
-	asc	"FAUT RENTRER LES ORDRES EN 1 OU 2 MOTS"8D
-	asc	"TELS QUE :"8D
-	asc	"           NORD"8D
-	asc	"           PRENDS PILULE"8D
-	asc	8D
-	asc	"OU POUR COMMENCER :"8D
-	asc	"           ENTRE"8D
-	asc	8D8D
-	asc	"SI VOUS VOULEZ FAIRE DURER LA PHRASE"8D
-	asc	"DECRIVANT LA SALLE, TAPEZ UNE TOUCHE "8D
-	asc	8D
-	asc	"UN DERNIER CONSEIL : IL PEUT PARFOIS Y"8D
-	asc	"AVOIR UNE PORTE DERRIERE VOUS. "00
-
 *-----------------------------------
 * 51000 - DISCLAIMER
 *-----------------------------------
@@ -2322,20 +2051,6 @@ strINSTR2	asc	8D8D
 	@print	#strDISCLAIMER
 	jmp	translateKEY
 
-*--------
-
-strDISCLAIMER
-	asc	"L"A7"UTLISATION DE CE PROGRAMME EST"8D8D
-	asc	"DECONSEILLEE AUX PERSONNES SENSIBLES,"8D8D
-	asc	"AUX ENFANTS EN BAS AGE, AINSI QU"A7"A"8D8D
-	asc	"TOUTE PERSONNE SUSCEPTIBLE D"A7"AVOIR"8D8D
-	asc	"DES MALAISES CARDIAQUES."8D8D
-	asc	8D8D
-	asc	"NOUS NE POURRIONS ETRE TENUS RESPONSA-"8D8D
-	asc	"-BLES DES TROUBLES PHYSIQUES OU MENTAUX"8D8D
-	asc	"PROVOQUES PAR VOTRE ECHEC DANS"8D8D
-	asc	"LE MANOIR DU DR GENIUS ............."00
-	
 *-----------------------------------
 * introPIC - la picture GR
 *-----------------------------------
@@ -2377,37 +2092,6 @@ introPIC
 	@play	#zikINTRODUCTION
 	rts
 	
-*--------
-
-strLORICIELS
-	asc	"LORICIELS EST FIER DE PRESENTER :"00
-
-strLEMANOIR
-	asc	"   @   @@@   @   @ @@@ @  @ @@@ @ @@@"8D
-	asc	"   @   @     @@ @@ @ @ @@ @ @ @ @ @ @"8D
-	asc	"   @   @@    @ @ @ @@@ @@@@ @ @ @ @@@"8D
-	asc	"   @   @     @   @ @ @ @ @@ @ @ @ @@"8D
-	asc	"   @@@ @@@   @   @ @ @ @  @ @@@ @ @ @"8D
-	asc	8D
-	asc	"      @@  @ @     @@"8D
-	asc	"      @ @ @ @     @ @ @"8D
-	asc	"      @ @ @ @     @ @ @@"8D
-	asc	"      @ @ @ @     @ @ @ @"8D
-	asc	"      @@@ @@@     @@@ @"8D
-	asc	8D8D
-	asc	"   @@@@  @@@@  @@  @  @  @  @  @@@@"8D
-	asc	"   @  @  @     @@  @  @  @  @  @"8D
-	asc	"   @     @     @@@ @  @  @  @  @"8D
-	asc	"   @     @@@   @ @ @  @  @  @  @@@@"8D
-	asc	"   @ @@  @     @ @@@  @  @  @     @"8D
-	asc	"   @  @  @     @  @@  @  @  @     @"8D
-	asc	"   @@@@  @@@@  @  @@  @  @@@@  @@@@ @ @"00
-
-strINTRO1	asc	"     VERSION APPLE II PAR     "00
-strINTRO2	asc	"    BRUTAL DELUXE SOFTWARE    "00
-strINTRO3	asc	"        MERCI FRED_72         "00
-strINTRO4	asc	"(C) 1983, L. BENES & LORICIELS"00
-
 *-----------------------------------
 * ORIC
 *-----------------------------------
@@ -2454,17 +2138,20 @@ setHGR			; HGR
 *----------------------
 
 switchVIDEO
-*	lda	#0
-*	sta	CH
-*	lda	CV
-*	sec
-*	sbc	#1
-*	jsr	TABV
-
-swVI	lda	#0
+	lda	#0
 	eor	#1
-	sta	swVI+1
+	sta	switchVIDEO+1
 	bne	setMIXEDOFF
+	
+*----------------------
+* switchCASE
+*----------------------
+
+switchCASE
+	lda	fgCASE
+	eor	#$80
+	sta	fgCASE
+	rts
 	
 *----------------------
 * setMIXEDON
@@ -2491,15 +2178,26 @@ printCSTRING
 	stx	pcs1+2
 	
 pcs1	lda	$ffff
-	beq	pcs2
-	jsr	COUT
+	beq	pcs3
+	
+	bit	fgCASE
+	bpl	pcs2
+	
+	tax		; from lower to upper
+	lda	tblKEY,x
+	
+pcs2	jsr	COUT
 	
 	inc	pcs1+1
 	bne	pcs1
 	inc	pcs1+2
 	bne	pcs1
 	
-pcs2	rts
+pcs3	rts
+
+*--------
+
+fgCASE	ds	1	; $00 lower OK, $80 otherwise
 
 *----------------------
 * waitMS
@@ -2765,7 +2463,7 @@ tblKEY
 * VARIABLES
 *-----------------------------------
 
-V	=	72
+V	=	73
 
 tblV$	da	$bdbd
 	da	V$1,V$2,V$3,V$4,V$5,V$6,V$7,V$8,V$9
@@ -2775,80 +2473,7 @@ tblV$	da	$bdbd
 	da	V$40,V$41,V$42,V$43,V$44,V$45,V$46,V$47,V$48,V$49
 	da	V$50,V$51,V$52,V$53,V$54,V$55,V$56,V$57,V$58,V$59
 	da	V$60,V$61,V$62,V$63,V$64,V$65,V$66,V$67,V$68,V$69
-	da	V$70,V$71,V$72
-
-V$1	str	"N"
-V$2	str	"NORD"
-V$3	str	"S"
-V$4	str	"SUD"
-V$5	str	"E"
-V$6	str	"EST"
-V$7	str	"O"
-V$8	str	"OUEST"
-V$9	str	"MONT"
-V$10	str	"GRIM"
-V$11	str	"DESC"
-V$12	str	"PREN"
-V$13	str	"RAMA"
-V$14	str	"POSE"
-V$15	str	"OUVR"
-V$16	str	"FERM"
-V$17	str	"ENTR"
-V$18	str	"AVAN"
-V$19	str	"ALLU"
-V$20	str	"ETEI"
-V$21	str	"REPA"
-V$22	str	"DEPA"
-V$23	str	"LIS"
-V$24	str	"REGA"
-V$25	str	"RETO"
-V$26	str	"RENI"
-V$27	str	"SENS"
-V$28	str	"REMP"
-V$29	str	"VIDE"
-V$30	str	"INVE"
-V$31	str	"LIST"
-V$32	str	"RIEN"
-V$33	str	"ATTE"
-V$34	str	"POIG"
-V$35	str	"COUT"
-V$36	str	"TOUR"
-V$37	str	"LAMP"
-V$38	str	"CODE"
-V$39	str	"ESCA"
-V$40	str	"PIST"
-V$41	str	"PLAC"
-V$42	str	"TORC"
-V$43	str	"TELE"
-V$44	str	"MONS"
-V$45	str	"PETR"
-V$46	str	"POT"
-V$47	str	"LIT"
-V$48	str	"CLEF"
-V$49	str	"PAPI"
-V$50	str	"LIVR"
-V$51	str	"BRIQ"
-V$52	str	"COMB"
-V$53	str	"COFF"
-V$54	str	"ROUG"
-V$55	str	"BLEU"
-V$56	str	"VERT"
-V$57	str	"TITR"
-V$58	str	"ROBI"
-V$59	str	"CISE"
-V$60	str	"PORT"
-V$61	str	"ACTI"
-V$62	str	"JETE"
-V$63	str	"LANCE"
-V$64	str	"EAU"
-V$65	str	"ENFI"
-V$66	str	"PASS"
-V$67	str	"APPU"
-V$68	str	"ENFO"
-V$69	str	"ENLE"
-V$70	str	"RENT"
-V$71	str	"TEMPO"
-V$72	str	"QUITTER"
+	da	V$70,V$71,V$72,V$73
 
 tblV	dfb	$bd
 	dfb	01,01,02,02,03,03,04,04,05,05
@@ -2858,7 +2483,7 @@ tblV	dfb	$bd
 	dfb	33,34,35,36,37,38,18,39,40,41
 	dfb	42,43,44,45,46,47,48,49,50,51
 	dfb	52,53,53,54,55,55,56,56,57,58
-	dfb	59,60
+	dfb	59,60,61
 
 *---
 
@@ -2885,32 +2510,6 @@ tblO$	da	$bdbd
 	da	O$1,O$2,O$3,O$4,O$5,O$6,O$7,O$8,O$9
 	da	O$10,O$11,O$12,O$13,O$14,O$15,O$16,O$17,O$18,O$19
 	da	O$20,O$21,O$22,O$23,O$24,O$25
-
-O$1	asc	"UNE TORCHE ELECTRIQUE"00
-O$2	asc	"UN ROBINET"00
-O$3	asc	"UN CISEAU"00
-O$4	asc	"UN TOURNEVIS"00
-O$5	asc	"UNE LAMPE A PETROLE"00
-O$6	asc	"UNE LAMPE PLEINE"00
-O$7	asc	"UNE LAMPE ALLUME"00
-O$8	asc	"UN COUTEAU"00
-O$9	asc	"UN PAPIER"00
-O$10	asc	"UN LIVRE"00
-O$11	asc	"DU PETROLE DANS UN LAVABO BOUCHE"00
-O$12	asc	"UNE CLEF"00
-O$13	asc	"UN BOUTON ROUGE"00
-O$14	asc	"UN BOUTON BLEU"00
-O$15	asc	"UN BOUTON VERT"00
-O$16	asc	"UN TELEPORTEUR"00
-O$17	asc	"UN TELEPORTEUR REPARE"00
-O$18	asc	"UNE COMBINAISON ARGENTEE"00
-O$19	asc	"UNE COMBINAISON ENFILEE"00
-O$20	asc	"UN MONSTRE A L"A7"EST"00
-O$21	asc	"UN PISTOLET"00
-O$22	asc	"UN BRIQUET"00
-O$23	asc	"UN BRIQUET ALLUME"00
-O$24	asc	"UN POT"00
-O$25	asc	"UN POT PLEIN D"A7"EAU"00
 
 *---
 
@@ -3285,35 +2884,10 @@ FIN_DATA
 tblD2H	dfb	0,10,20,30,40,50,60,70,80,90
 
 *-----------------------------------
-* STRINGS
-*-----------------------------------
-
-strILFAITNOIR
-	asc	"IL FAIT NOIR COMME DANS UN FOUR, IL"8D
-	asc	"FAUDRAIT PEUT-ETRE ALLUMER"00
-
-strILYA	asc	8D"IL Y A DANS LA SALLE :"00
-strCOMMA	asc	","00
-strSPACE	asc	" "00
-strRETURN	asc	8D00
-
-strCOMMANDE
-	asc	8D"QUE FAITES-VOUS ? "00
-
-strJENECOMPRENDS
-	asc	8D"JE NE COMPRENDS PAS..."00
-	
-strIMPOSSIBLE
-	asc	8D"IMPOSSIBLE "00
-strCECHEMIN
-	asc	"DE PRENDRE CE CHEMIN"00
-strEXCLAM
-	asc	" !"00
-	
-*-----------------------------------
 * LES AUTRES FICHIERS
 *-----------------------------------
 
+	put	fr.s
 	put	images.s
 	put	musiques.s
 

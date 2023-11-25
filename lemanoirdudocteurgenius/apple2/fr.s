@@ -304,7 +304,7 @@ strINSTR2	asc	8D8D
 	asc	"           ENTRE"8D
 	asc	8D8D
 	asc	"Si vous voulez faire durer la phrase"8D
-	asc	"décrivant la salle, tapez une touche"8D
+	asc	"decrivant la salle, tapez une touche"8D
 	asc	8D
 	asc	"Un dernier conseil : il peut parfois y"8D
 	asc	"avoir une porte derriere vous. "00
@@ -314,7 +314,7 @@ strINSTR2	asc	8D8D
 *-----------------------------------
 
 strDISCLAIMER
-	asc	"L"A7"utilisation de ce programme"8D8D
+	asc	"L"A7"utilisation de ce programme est"8D8D
 	asc	"deconseillee aux personnes sensibles,"8D8D
 	asc	"aux enfants en bas age, ainsi qu"A7"a"8D8D
 	asc	"tout personne susceptible d"A7"avoir"8D8D

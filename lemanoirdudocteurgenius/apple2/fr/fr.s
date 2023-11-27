@@ -27,7 +27,7 @@ strEVIDENT
 	asc	8D"Il parait evident que vous ne pouvez"8D
 	asc	"pas porter tant de choses !!"00
 strVOUSLAVEZ
-	asc	8D"Vous l"A7"avez deja. Voues etes etourdi"8D
+	asc	8D"Vous l"A7"avez deja. Vous etes etourdi"8D
 	asc	"et dans cette maison, ce n"A7"est pas"00
 strCONSEILLE
 	asc	8D"tres conseille"00
@@ -185,7 +185,7 @@ str4450	asc	"Impossible !"8D00
 
 str4460	asc	"Vous n"A7"avez aucun outil..."
 
-str4470	asc	"Le teleporteur est en panne, les boutons"
+str4470	asc	"Le teleporteur est en panne, les boutons"8D
 	asc	"ne fonctionnent pas."00
 
 str4480	asc	"Le teleporteur vient d"A7"exploser, vous"8D

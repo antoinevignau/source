@@ -28,6 +28,9 @@ chrRET2	=	$8d
 chrSPC2	=	$a0
 TEXTBUFFER = 	$200
 
+chrOUI	=	"O"
+chrNON	=	"N"
+
 PRODOS	=	$bf00
 
 KBD	=	$c000
@@ -1944,9 +1947,9 @@ initALL
 	jsr	setTEXTFULL
 ]lp	@print	#strREPLAY
 	jsr	translateKEY
-	cmp	#"N"
+	cmp	#chrNON
 	beq	:20001
-	cmp	#"O"
+	cmp	#chrOUI
 	bne	]lp
 	jmp	REPLAY
 
@@ -2032,9 +2035,9 @@ sauveCYA	ds	1
 	jsr	setTEXTFULL
 ]lp	@print	#strINSTR
 	jsr	translateKEY
-	cmp	#"N"
+	cmp	#chrNON
 	beq	:40001
-	cmp	#"O"
+	cmp	#chrOUI
 	bne	]lp
 
 	@print	#strINSTR2
@@ -2888,7 +2891,7 @@ tblD2H	dfb	0,10,20,30,40,50,60,70,80,90
 *-----------------------------------
 
 	put	fr.s
-	put	images.s
-	put	musiques.s
+	put	../common/images.s
+	put	../common/musiques.s
 
 *--- It's the end

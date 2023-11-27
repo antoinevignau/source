@@ -17,228 +17,214 @@
 *-----------------------------------
 
 strVOUSDETENEZ
-	asc	8D"Vous detenez : "00
+	asc	8D"You carry: "00
 strVOUSRIEN
-	asc	8D"Vous ne detenez absolument rien !!!"00
+	asc	8D"You carry absolutely nothing!!!"00
 strPOINT
 	asc	"."00
 	
 strEVIDENT
-	asc	8D"Il parait evident que vous ne pouvez"8D
-	asc	"pas porter tant de choses !!"00
+	asc	8D"It seems abvious that you can only"8D
+	asc	"carry so much stuff!!"00
 strVOUSLAVEZ
-	asc	8D"Vous l'avez deja. Voues etes etourdi"8D
-	asc	"et dans cette maison, ce n'est pas"00
+	asc	8D"You already have it. You are dizzy"8D
+	asc	"and in this house, it is not"00
 strCONSEILLE
-	asc	8D"tres conseille"00
+	asc	8D"very advisable"00
 	
 strNOTOWNED
-	asc	8D"Comment voulez-vous poser ce que vous"8D
-	asc	"n'avez pas ?"00
+	asc	8D"How do you want to drop what you"8D
+	asc	"do not carry?"00
 
 strDACCORD
-	asc	8D"D'accord"00
+	asc	8D"OK"00
 	
 *-----------------------------------
 * 4000 - LES REPONSES
 *-----------------------------------
 
-str4000	asc	"VOUS AVEZ GARDE LA LAMPE TROP LONGTEMPS"8D
-	asc	"ALLUMEE, ELLE A EXPLOSE"00
+str4000	asc	"You kept the lamp on too long,"8D
+	asc	"it exploded"00
 
-str4010	asc	"VOUS AVEZ OUBLIE DE FERMER LE ROBINET"8D
-	asc	"VOUS MOUREZ SOUS DES TONNES D'EAU"00
+str4010	asc	"You forgot to close the faucet"8D
+	asc	"You die under tons of water"00
 
-str4020	asc	"LA PORTE VIENT DE SE REFERMER DERRIERE"8D
-	asc	"VOUS, VOUS VOILA PRISONNIER..."00
+str4020	asc	"The door has just closed behind you"8D
+	asc	"You are a prisoner..."00
 
-str4030	asc	"VOUS AVEZ TREBUCHE DANS L'ESCALIER, VOUS"
-	asc	"VOUS EMPALEZ SUR LE COUTEAU !"00
+str4030	asc	"You triped on the stairs,"8D
+	asc	"you are impaled on the knife!"00
 
-str4040	asc	"VOUS RENVERSEZ L'EAU DANS L'ESCALIER,"8D
-	asc	"CE QUI PROVOQUE UNE DECHARGE DE LA"00
-str4042	asc	8D"PRISE ELECTRIQUE"00
+str4040	asc	"You spill the water down the stairs,"8D
+	asc	"causing a discharge of the"00
+str4042	asc	8D"electrical outlet"00
 
-str4050	asc	"VOUS ETES SAUF GRACE A LA COMBINAISON"8D
-	asc	"QUE VOUS AVEZ ENFILEE...!"00
+str4050	asc	"You are safe thanks to the suit"8D
+	asc	"you have put on...!"00
 
-str4060	asc	"VOUS MOUREZ ELECTROCUTE..."00
+str4060	asc	"You die of electric shot..."00
 
-str4070	asc	"LA PIECE ETAIT PLEINE DE GAZ EXPLOSIF,"8D
-	asc	"VOUS AURIEZ DU ETEINDRE..."00
-str4072	asc	8D"ON RAMASSERA VOS MORCEAUX UN AUTRE"8D
-	asc	"JOUR...!"00
+str4070	asc	"The room was full of explosive gas,"8D
+	asc	"you should have extinguished..."00
+str4072	asc	8D"We will pick up your pieces"8D
+	asc	"another day...!"00
 
-str4080	asc	"VOUS MOUREZ EMPALE SUR DES LANCES"8D
-	asc	"SORTIES DU MUR... !"00
+str4080	asc	"You die impalted on spears of the"8D
+	asc	"wall...!"00
 
-str4090	asc	"LA PORTE NE S'OUVRE PAS DE CETTE PIECE"00
+str4090	asc	"The door does not open from this room"00
 
-str4100	asc	"LA LAMPE ET LE BRIQUET REFUSENT DE"8D
-	asc	"MARCHER DANS CETTE PIECE"00
+str4100	asc	"The lamp and the lighter refuse to"8D
+	asc	"work in this room"00
 
-str4110	asc	"VOUS TOMBEZ DANS UNE TRAPPE, VOUS VOUS"8D
-	asc	"DISLOQUEZ EN ARRIVANT AU SOL..."00
+str4110	asc	"You fall into a trap, you dislocate"8D
+	asc	"arriving on the ground..."00
 
-str4120	asc	"VOUS AVEZ RAISON DE PASSER, CAR CE"8D
-	asc	"MONSTRE N'ETAIT QU'UNE PROJECTION"00
-str4124	asc	8D"EN 3 DIMENSIONS SUR UN ECRAN DE FUMEE"00
+str4120	asc	"You are right to pass, because this"8D
+	asc	"monster was only a 3D projection"00
+str4124	asc	8D"on a smoken screen"00
 
-str4130	asc	"VOUS AVEZ RAISON, LA CURIOSITE EST UN"8D
-	asc	"VILAIN DEFAUT"00
-str4133	asc	8D"            AU REVOIR"00
+str4130	asc	"You are right, curiosity killed the cat"00
+str4133	asc	8D"            Bye"00
 
-str4140	asc	"VOUS AVEZ RAISON D'ATTENDRE, MAIS CELA"
-	asc	"NE POURRA PAS DURER ETERNELLEMENT..."00
+str4140	asc	"You are right to wait, but this"
+	asc	"cannot last forever..."00
 
-str4150	asc	"VOUS AVEZ DE LA CHANCE CAR CE COFFRE"8D
-	asc	"ETAIT OUVERT."00
-str4152	asc	8D"UN MESSAGE A L'INTERIEUR DIT : NE"8D
-	asc	"RESPECTEZ PAS LES COULEURS DU CODE DE LA"8D
-	asc	"ROUTE...?"00
-str4156	asc	8D"TIENS LE COFFRE SE REFERME"00
+str4150	asc	"You are lucky because this chest was open"00
+str4152	asc	8D"A message inside says: do not"8D
+	asc	"respect the colors of the Highway code?"00
+str4156	asc	8D"Hold on, the chest closes"00
 
-str4160	asc	"MAINTENANT, VOUS AVEZ UNE LAMPE PLEINE"8D
-	asc	"DE PETROLE"00
+str4160	asc	"Now you have a lamp full of oil"00
 
-str4170	asc	"VOUS N'AVEZ RIEN POUR TRANSPORTER LE"8D
-	asc	"PETROLE"00
+str4170	asc	"You have nothing to carry the oil"00
 
-str4180	asc	"LE BRIQUET QUE VOUS AVIEZ LAISSE ALLUME"8D
-	asc	"VIENT D'EXPLOSER"00
-str4185	asc	8D"CA TUE L'ETOURDIE..."00
+str4180	asc	"The lighter you left lit exploded"00
+str4185	asc	8D"It kills thoughtlessness..."00
 
-str4190	asc	"A FORCE DE MARCHER EN LONG ET EN LARGE"8D
-	asc	"dans CETTE MAISON,"00
-str4195	asc	8D"VOUS SOMBREZ DANS UN COMA DES PLUS"8D
-	asc	"MORTELS..."00
+str4190	asc	"Walking long and large in this house"00
+str4195	asc	8D"you fall into a deadly coma"00
 
-str4200	asc	"L'EAU COULE..."00
+str4200	asc	"Water flows..."00
 
-str4210	asc	"VOUS AVEZ LES PIEDS TREMPES ET CELA VOUS"
-	asc	"REND TRES MALADE..."00
-str4215	asc	8D"VOUS MOUREZ D'UNE TRIPLE PNEUMONIE...!"00
+str4210	asc	"Your feet are soaked and it makes you"8D
+	asc	"very sick..."00
+str4215	asc	8D"You die of triple pneumonia...!"00
 
-str4220	asc	"LE TITRE EST : "00
-str4225	asc	8D"LA MORT A LA PREMIERE PAGE."00
+str4220	asc	"The title is: "00
+str4225	asc	8D"Death on the first page."00
 
-str4230	asc	"LE LIVRE A EXPLOSE LORSQUE VOUS L'AVEZ"8D
-	asc	"OUVERT..."00
+str4230	asc	"The book exploded when you opened it..."00
 
-str4240	asc	"LE PAPIER INDIQUE : CHERCHEZ LA CLEF."00
+str4240	asc	"The paper says: search the key."00
 
-str4250	asc	"LA CLEF VOUS PERMETTRA DE TROUVER LE"8D
-	asc	"CODE DE LA PORTE D'ENTREE."00
+str4250	asc	"The key will allow you to find the"8D
+	asc	"entrance door code."00
 
-str4260	asc	"IL Y A, A COTE DE LA PORTE, UN CLAVIER"8D
-	asc	"NUMERIQUE PERMETTANT D'ENTRER UN CODE"00
+str4260	asc	"There is, next to the door, a numerical"8D
+	asc	"keypad for entering a code"00
 
-str4270	asc	"POUR FAIRE QUOI...?"00
+str4270	asc	"To do what...?"00
 
-str4280	asc	8D"IL Y A UNE ODEUR DE GAZ."00
+str4280	asc	8D"There is a smell of gas."00
 
-str4290	asc	"APPAREMMENT, IL N'Y A AUCUNE ODEUR"8D
-	asc	"MAIS..."00
+str4290	asc	"Apparently, there is no smell but..."00
 
-str4300	asc	"C'EST DEJA FAIT, ESPECE DE RIGOLO"00
+str4300	asc	"It is already done, you funny fool"00
 
-str4310	asc	"IL FAUDRAIT PEUT-ETRE DU FEU"00
+str4310	asc	"Maybe you need a fire"00
 
-str4320	asc	"LA LAMPE NE CONTIENT PAS DE PETROLE"00
+str4320	asc	"The lamp does not contain oil"00
 
-str4330	asc	"VOUS NE L'AVEZ PAS"00
+str4330	asc	"You do not have it"00
 
-str4340	asc	"LE BRIQUET EST ENCORE ALLUME ET IL"8D
-	asc	"ECLAIRE LA PIECE."00
+str4340	asc	"The lighter is still lit and"8D
+	asc	"it lights up the room."00
 	
-str4350	asc	"LA TORCHE ETAIT PIEGEE, ELLE VOUS"8D
-	asc	"EXPLOSE DANS LES MAINS..."00
+str4350	asc	"The torch was trapped, it"8D
+	asc	"exploded in your hands..."00
 	
-str4360	asc	"LA LAMPE EST ENCORE ALLUMEE ET ELLE VOUS"
-	asc	"ECLAIRE"00
+str4360	asc	"The lamp is still lit and it"8D
+	asc	"enlightened"00
 
-str4370	asc	"UN NAIN VIENT DE VOUS LANCER UN POIGNARD"
-	asc	"EN PLEIN COEUR..."00
+str4370	asc	"A dwarf just throwed a stab at you"8D
+	asc	"in the heart..."00
 	
-str4380	asc	"UN NAIN VIENT DE SE PRECIPITER SUR VOUS,"
-	asc	"IL S'EMPALE SUR VOTRE CISEAU"00
+str4380	asc	"A dwarf just rushed at you, it impales"8D
+	asc	"on your scissor"00
 
-str4390	asc	"UN NAIN VIENT DE SE PRECIPITER SUR VOUS,"
-	asc	"IL S'EMPALE SUR VOTRE COUTEAU"00
+str4390	asc	"A dwarf just rushed at you, it impales"8D
+	asc	"on your knife"00
 
-str4400	asc	"VOUS VENEZ DE RENVERSER LE POT"00
+str4400	asc	"You just spilled the pot"00
 
-str4410	asc	"LA FOUDRE VIENT DE TOMBER SUR LA MAISON"8D
-str4412	asc	8D"LA MAISON N'EXISTE PLUS, VOUS NON PLUS"00
+str4410	asc	"The lighting just fell on the house"00
+str4412	asc	8D"The house no longer exists, neither you"00
 
-str4420	asc	"A FORCE DE MARCHER DANS LE NOIR, VOUS"8D
-	asc	"AVEZ TREBUCHE"00
-str4425	asc	8D"VOUS MOUREZ D'UNE FRACTURE DU CRANE"00
+str4420	asc	"Walking in the dark, you tripped"00
+str4425	asc	8D"you die of a skull fracture"00
 
-str4430	asc	"VOUS NE POUVEZ PAS TRAVAILLER DANS LE"8D
-	asc	"NOIR..."00
+str4430	asc	"You cannot work in the dark"00
 
-str4440	asc	"LA LUMIERE DU BRIQUE NE SUFFIT PAS"8D
-	asc	"POUR TRAVAILLER..."00
+str4440	asc	"The light of the lighter is not enough"8D
+	asc	"to work..."00
 
-str4450	asc	"IMPOSSIBLE !"8D00
+str4450	asc	"Impossible!"8D00
 
-str4460	asc	"VOUS N'AVEZ AUCUN OUTIL..."
+str4460	asc	"You have no tools..."
 
-str4470	asc	"LE TELEPORTEUR EST EN PANNE, LES BOUTONS"
-	asc	"NE FONCTIONNENT PAS."00
+str4470	asc	"The teleporter is broken, the buttons"8D
+	asc	"do not work."00
 
-str4480	asc	"LE TELEPORTEUR VIENT D'EXPLOSER, VOUS"8D
-	asc	"ETES DECOMPOSEE... !"00
+str4480	asc	"The teleporter just exploded, you"8D
+	asc	"are decomposed...!"00
 	
-str4490	asc	"LE TELEPORTEUR SE MET EN MARCHE, VOUS"8D
-	asc	"DISPARAISSEZ"00
+str4490	asc	"The teleporter stars, you disappear"00
 	
-str4500	asc	"VOUS PRENEZ DU 30000 VOLTS DANS LES"8D
-	asc	"DOIGTS"00
+str4500	asc	"You take 30,0000 Volts in your fingers"00
 
-str4510	asc	"LE PLACARD EST FERME A CLEF"00
+str4510	asc	"The closet is locked"00
 
-str4520	asc	"L'HORRIBLE MONSTRE SORTI DU PLACARD"8D
-	asc	"VIENT DE VOUS DEVORER"00
+str4520	asc	"The horrible monster out of the closet"8D
+	asc	"just devoured you"00
 
-str4530	asc	"IL NE FALLAIT PAS FUIR"00
+str4530	asc	"You should not flee"00
 
-str4540	asc	"VOUS AVEZ RAISON D'UTILISER LE CISEAU,"8D
-	asc	"LE MONSTRE EST MORT"00
+str4540	asc	"You are right to use the scissors,"8D
+	asc	"the monster is dead"00
 
-str4550	asc	"A L'INTERIEUR DU PLACARD, LE NO "00
-str4552	asc	8D" EST INSCRIT"00
-str4555	asc	8D"LE PLACARD SE REFERME."00
+str4550	asc	"Inside the closet, number "00
+str4552	asc	8D" is registered"00
+str4555	asc	8D"The closet closes."00
 
-str4560	asc	"LE PISTOLET A EXPLOSE"00
+str4560	asc	"The gun exploded"00
 
-str4570	asc	"LE CLAVIER NUMERIQUE A EXPLOSE"00
+str4570	asc	"The numeric keyboard exploded"00
 
-str4580	asc	"LE CLAVIER NUMERIQUE PREND FEU,"8D
-	asc	"HEUREUSEMENT, VOUS AVIEZ "00
-str4582	asc	"UN POT PLEIN"00
-str4585	asc	8D"D'EAU QUI VOUS PERMET D'ETEINDRE LE FEU"00
+str4580	asc	"The numeric keyboard caught fire,"8D
+	asc	"Luckily, you had "00
+str4582	asc	"a pot full of ware"00
+str4585	asc	8D"that allows you extinguish the fire"00
 
-str4590	asc	8D"NO DE CODE? "00
+str4590	asc	8D"Code number? "00
 
 strCODEEXACT
-	asc	"LE CODE EST EXACT... LA PORTE S'OUVRE..."00
+	asc	"The code is exact... The door opens......"00
 strENDEHORS
-	asc	8D"VOUS VOILA EN DEHORS DE LA MAISON..."
+	asc	8D"You are now outside the house..."
 
-str4610	asc	"A L'INTERIEUR DU PLACARD, IL Y A UN MOT"8D
-	asc	"PARLE D'UN TELEPORTEUR"00
-str4615	asc	8D"TIENS LE PLACARD SE FERME TOUT SEUL..."00
+str4610	asc	"Inside the closet, there is a word"8D
+	asc	"talking about a teleporter"00
+str4615	asc	8D"Hold on, the closed closes by itself..."00
 
-str4620	asc	"AVANT DE LA POSER A TERRE, IL FAUDRAIT"8D
-	asc	"PEUT-ETRE L'ENLEVER"00
+str4620	asc	"Before putting it on the ground, you"8D
+	asc	"may need to remove it"00
 
-str4630	asc	"IL Y A UN HORRIBLE MONSTRE DEVANT VOUS"8D
-	asc	"QUI EST SORTI DU PLACARD."00
+str4630	asc	"Thee is a horrible monster in front of you"8D
+	asc	"that came out of the closet."00
 
-str4640	asc	"LE PLACARD ETAIT PIEGE, VOUS N'AURIEZ"8D
-	asc	"PAS DU L'OUVRIR"00
+str4640	asc	"The closet was trapped, you should not"8D
+	asc	"have opened it"00
 
 *-----------------------------------
 * LIEUX
@@ -267,7 +253,7 @@ str7130	asc	""00	; nada
 str7140	asc	"in a small room"00
 str7150	asc	"in the laboratory of"00	; + :7001
 str7160	asc	"in a small empty room"00
-str7170	asc	"! You actually do not know"8D"
+str7170	asc	"! You actually do not know"8D
 	asc	"where you are"00
 str7180	asc	"at the top of the stairs"00
 str7190	asc	"in the bathroom"00
@@ -319,7 +305,7 @@ strDISCLAIMER
 	asc	"The use of this program is not"8D8D
 	asc	"recommended to sensitive people,"8D8D
 	asc	"young children, as well as"8D8D
-	asc	"anyone like to have heart diseases."8D8D
+	asc	"anyone who have heart diseases."8D8D
 	asc	8D8D
 	asc	"We cannot be held responsible for any"8D8D
 	asc	"physical or mental disorder caused"8D8D
@@ -402,7 +388,7 @@ V$36	str	"SCRE"	; TOURNEVIE
 V$37	str	"LAMP"	; LAMPE
 V$38	str	"CODE"	; CODE
 V$39	str	"STAI"	; ESCALIER
-V$40	str	"PIST"	; PISTOLET
+V$40	str	"GUN"	; PISTOLET
 V$41	str	"CLOS"	; PLACARD
 V$42	str	"TORC"	; TORCHE
 V$43	str	"TELE"	; TELEPORTEUR

@@ -1096,9 +1096,9 @@
  1057 |  1           drgenius.s    967 | Empty       | 11 |         |    0 | 00/468C               |                                                
  1058 |  1           drgenius.s    968 | Macro       | 11 |         |    0 | 00/468C               | _4000             @explode                       
  1059 |  1           drgenius.s    968 | Code        | 11 |         |    3 | 00/468C : 20 D0 50    |                   jsr     EXPLODE              
- 1060 |  1           drgenius.s    969 | Macro       | 11 |         |    0 | 00/468F               |                   @print  #4000                
- 1061 |  1           drgenius.s    969 | Code        | 11 |         |    2 | 00/468F : A2 0F       |                   ldx     #>#4000              
- 1062 |  1           drgenius.s    969 | Code        | 11 |         |    2 | 00/4691 : A0 A0       |                   ldy     #<#4000              
+ 1060 |  1           drgenius.s    969 | Macro       | 11 |         |    0 | 00/468F               |                   @print  #str4000             
+ 1061 |  1           drgenius.s    969 | Code        | 11 |         |    2 | 00/468F : A2 60       |                   ldx     #>#str4000           
+ 1062 |  1           drgenius.s    969 | Code        | 11 |         |    2 | 00/4691 : A0 5F       |                   ldy     #<#str4000           
  1063 |  1           drgenius.s    969 | Code        | 11 |         |    3 | 00/4693 : 20 1C 51    |                   jsr     printCSTRING         
  1064 |  1           drgenius.s    970 | Macro       | 11 |         |    0 | 00/4696               |                   @wait   #400                 
  1065 |  1           drgenius.s    970 | Code        | 11 |         |    2 | 00/4696 : A2 01       |                   ldx     #>#400               

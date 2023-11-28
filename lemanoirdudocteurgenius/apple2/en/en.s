@@ -74,7 +74,7 @@ str4080	asc	"You die impalted on spears of the"8D
 
 str4090	asc	"The door does not open from this room"00
 
-str4100	asc	"The lamp and the lighter refuse to"8D
+str4100	asc	"The lamp and the fire refuse to"8D
 	asc	"work in this room"00
 
 str4110	asc	"You fall into a trap, you dislocate"8D
@@ -99,7 +99,7 @@ str4160	asc	"Now you have a lamp full of oil"00
 
 str4170	asc	"You have nothing to carry the oil"00
 
-str4180	asc	"The lighter you left lit exploded"00
+str4180	asc	"The fire you left lit exploded"00
 str4185	asc	8D"It kills thoughtlessness..."00
 
 str4190	asc	"Walking long and large in this house"00
@@ -138,7 +138,7 @@ str4320	asc	"The lamp does not contain oil"00
 
 str4330	asc	"You do not have it"00
 
-str4340	asc	"The lighter is still lit and"8D
+str4340	asc	"The fire is still lit and"8D
 	asc	"it lights up the room."00
 	
 str4350	asc	"The torch was trapped, it"8D
@@ -166,7 +166,7 @@ str4425	asc	8D"you die of a skull fracture"00
 
 str4430	asc	"You cannot work in the dark"00
 
-str4440	asc	"The light of the lighter is not enough"8D
+str4440	asc	"The light of the fire is not enough"8D
 	asc	"to work..."00
 
 str4450	asc	"Impossible!"8D00
@@ -238,7 +238,8 @@ strVOUS	asc	8D"You are "00
 str7000	asc	"in front of the manor of"00
 str7001	asc	8D"            Dr Genius"00
 str7010	asc	"in the entrance hall"00
-str7020	asc	"At the bottom of the stairs tothe 2nd floor"00
+str7020	asc	"at the bottom of the stairs to"8D
+	asc	"the 2nd floor"00
 str7030	asc	"in the dining room"00
 str7040	asc	"in a library without books...!"00
 str7050	asc	"in a laundry room"00
@@ -399,7 +400,7 @@ V$47	str	"BED"	; LIT
 V$48	str	"KEY"	; CLEF
 V$49	str	"PAPE"	; PAPIER
 V$50	str	"BOOK"	; LIVRE
-V$51	str	"LIGH"	; BRIQUET
+V$51	str	"FIRE"	; BRIQUET
 V$52	str	"SUIT"	; COMBINAISON
 V$53	str	"CHES"	; COFFRE
 V$54	str	"RED"	; ROUGE
@@ -448,8 +449,8 @@ O$18	asc	"a silver suit"00
 O$19	asc	"a coated suit"00
 O$20	asc	"a monster to the east"00
 O$21	asc	"a gun"00
-O$22	asc	"a lighter"00
-O$23	asc	"a lighted lighter"00
+O$22	asc	"a fire"00
+O$23	asc	"a lighted fire"00
 O$24	asc	"a pot"00
 O$25	asc	"a pot full of water"00
 

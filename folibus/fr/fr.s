@@ -76,7 +76,7 @@ str7220	asc	"La porte est fermee a clef"00
 str7230	asc	"Tiens, la porte du placard se referme."00
 str7240	asc	"La generatrice vient d"A7"exploser,"8D
 	asc	"l"A7"ascenseur est detruit. Vous en echap-"8D
-	asc	"-pez de justesse"00
+	asc	"-pez de justesse"8D00
 str7250	asc	"Vous etes mort electrocute"00
 str7260	asc	"Vous avez raison, rien ne sert de courir"00
 str7270	asc	"Dehors il fait noir, on ne voit pas le"8D
@@ -247,8 +247,8 @@ V$12	str	"DESC"
 V$13	str	"ENTR"
 V$14	str	"AVAN"
 V$15	str	"HAUT"
-V$16	str	"BAS "
-V$17	str	"LIT "
+V$16	str	"BAS"
+V$17	str	"LIT"
 V$18	str	"REGA"
 V$19	str	"TOUR"
 V$20	str	"RETO"
@@ -292,7 +292,7 @@ V$57	str	"FRAP"
 V$58	str	"PASS"
 V$59	str	"AVEN"
 V$60	str	"PRES"
-V$61	str	"MET "
+V$61	str	"MET"
 V$62	str	"AVAL"
 V$63	str	"GANT"
 V$64	str	"K"
@@ -332,11 +332,6 @@ O$17	asc	"pilule Q"00
 O$18	asc	"pilule Q avalee"00
 O$19	asc	"pistolet laser"00
 O$20	asc	"livre"00
-O$21	asc	"briquet"00
-O$22	asc	"briquet allume"00
-O$23	asc	"bougie"00
-O$24	asc	"bougie allumee"00
-O$25	asc	"placard"00
 
 *-----------------------------------
 * STRINGS

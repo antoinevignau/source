@@ -256,7 +256,7 @@ REPLAY
 
 :1615	ldy	#0
 
-:1620	lda	SALLE	; T$=MID(M$(SALLE),Z,2)
+	lda	SALLE	; T$=MID(M$(SALLE),Z,2)
 	asl
 	tax
 	lda	tblM$,x
@@ -264,7 +264,7 @@ REPLAY
 	lda	tblM$+1,x
 	sta	LINNUM+1
 	
-	lda	(LINNUM),y
+:1620	lda	(LINNUM),y
 	beq	:1900
 	cmp	MO$1
 	bne	:1700
@@ -342,10 +342,15 @@ REPLAY
 	beq	:2410
 	jmp	:2100
 
-:2410	lda	tblA+1,x
-	beq	:2430
-	cmp	MO$2
-	beq	:2430
+:2410	ldy	#0	; New try
+	lda	tblA+1,x
+	beq	:2415
+	iny
+:2415	cmp	MO$2
+	beq	:2420
+	iny
+:2420	cpy	#2
+	bne	:2430
 	jmp	:2100
 	
 :2430	lda	tblA$,x
@@ -433,8 +438,7 @@ tbl2900	da	:2900,:2910,:2920,:2930,:2940,:2950,:2960,:2970
 
 :2910	ldx	N
 	lda	O,x
-	cmp	#-1
-	beq	:2915
+	bmi	:2915
 	cmp	SALLE
 	bne	:2916
 :2915	sty	OK
@@ -444,10 +448,9 @@ tbl2900	da	:2900,:2910,:2920,:2930,:2940,:2950,:2960,:2970
 
 :2920	ldx	N
 	lda	O,x
-	cmp	SALLE
-	bne	:2925
+	bpl	:2925
 	rts
-:2925	cmp	#-1
+:2925	cmp	SALLE
 	bne	:2927
 	rts
 :2927	sty	OK
@@ -457,8 +460,7 @@ tbl2900	da	:2900,:2910,:2920,:2930,:2940,:2950,:2960,:2970
 
 :2930	ldx	N
 	lda	O,x
-	cmp	#-1
-	bne	:2935
+	bpl	:2935
 	sty	OK
 :2935	rts
 
@@ -466,7 +468,7 @@ tbl2900	da	:2900,:2910,:2920,:2930,:2940,:2950,:2960,:2970
 
 :2940	ldx	N
 	lda	S,x
-	beq	:2945
+*	beq	:2945
 	sty	OK
 :2945	rts
 
@@ -726,7 +728,8 @@ tbl4000	da	:4000,:4100,:4200,:4300,:4400,:4500,:4600,:4700,:4800,:4900
 	ldx	#1
 	dec	S,x
 
-:4910	lda	#0
+:4910	ldx	N
+	lda	#0
 	sta	O,x
 	rts
 	
@@ -1777,7 +1780,7 @@ tblA	dfb	07,00
 	
 *--- On commence ˆ index 0
 
-* C	=	13
+nbC	=	13
 
 tblC$	da	$bdbd
 	da	C$1,C$2,C$3,C$4,C$5,C$6,C$7,C$8,C$9,C$10

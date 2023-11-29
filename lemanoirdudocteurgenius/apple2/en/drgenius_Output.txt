@@ -345,7 +345,7 @@
   342 |  1           drgenius.s    315 | Code        | 11 |         |    3 | 00/419F : AD 00 02    |                   lda     {$200}               
   343 |  1           drgenius.s    316 | Code        | 11 |         |    2 | 00/41A2 : C9 8D       |                   cmp     #{$8d}               
   344 |  1           drgenius.s    317 | Code        | 11 |         |    2 | 00/41A4 : D0 06       |                   bne     _570                 
-  345 |  1           drgenius.s    318 | Code        | 11 |         |    3 | 00/41A6 : 20 02 51    |                   jsr     switchVIDEO          
+  345 |  1           drgenius.s    318 | Code        | 11 |         |    3 | 00/41A6 : 20 0B 51    |                   jsr     switchVIDEO          
   346 |  1           drgenius.s    319 | Code        | 11 |         |    3 | 00/41A9 : 4C 95 41    |                   jmp     _550                 
   347 |  1           drgenius.s    320 | Empty       | 11 |         |    0 | 00/41AC               |                                                
   348 |  1           drgenius.s    321 | Code        | 11 |         |    3 | 00/41AC : 8E FB 5E    | _570              stx     lenSTRING            ; longueur de la chaine saisie
@@ -382,7 +382,7 @@
   379 |  1           drgenius.s    346 | Code        | 11 |         |    2 | 00/41DC : C9 3D       | _910              cmp     #61                  
   380 |  1           drgenius.s    347 | Code        | 11 |         |    2 | 00/41DE : D0 06       |                   bne     _915                 
   381 |  1           drgenius.s    348 | Empty       | 11 |         |    0 | 00/41E0               |                                                
-  382 |  1           drgenius.s    349 | Code        | 11 |         |    3 | 00/41E0 : 20 0B 51    |                   jsr     switchCASE           
+  382 |  1           drgenius.s    349 | Code        | 11 |         |    3 | 00/41E0 : 20 02 51    |                   jsr     switchCASE           
   383 |  1           drgenius.s    350 | Code        | 11 |         |    3 | 00/41E3 : 4C 37 40    |                   jmp     _100                 
   384 |  1           drgenius.s    351 | Empty       | 11 |         |    0 | 00/41E6               |                                                
   385 |  1           drgenius.s    352 | Comment     | 11 |         |    0 | 00/41E6               | *-----------------------------------
@@ -3019,24 +3019,24 @@
  2980 |  1           drgenius.s   2137 | Code        | 11 |         |    1 | 00/5101 : 60          |                   rts                          
  2981 |  1           drgenius.s   2138 | Empty       | 11 |         |    0 | 00/5102               |                                                
  2982 |  1           drgenius.s   2139 | Comment     | 11 |         |    0 | 00/5102               | *----------------------
- 2983 |  1           drgenius.s   2140 | Comment     | 11 |         |    0 | 00/5102               | * switchVIDEO
+ 2983 |  1           drgenius.s   2140 | Comment     | 11 |         |    0 | 00/5102               | * switchCASE
  2984 |  1           drgenius.s   2141 | Comment     | 11 |         |    0 | 00/5102               | *----------------------
  2985 |  1           drgenius.s   2142 | Empty       | 11 |         |    0 | 00/5102               |                                                
- 2986 |  1           drgenius.s   2143 | Empty       | 11 |         |    0 | 00/5102               | switchVIDEO                                    
- 2987 |  1           drgenius.s   2144 | Code        | 11 |         |    2 | 00/5102 : A9 00       |                   lda     #0                   
- 2988 |  1           drgenius.s   2145 | Code        | 11 |         |    2 | 00/5104 : 49 01       |                   eor     #1                   
- 2989 |  1           drgenius.s   2146 | Code        | 11 |         |    3 | 00/5106 : 8D 03 51    |                   sta     switchVIDEO+1        
- 2990 |  1           drgenius.s   2147 | Code        | 11 |         |    2 | 00/5109 : D0 0D       |                   bne     setMIXEDOFF          
+ 2986 |  1           drgenius.s   2143 | Empty       | 11 |         |    0 | 00/5102               | switchCASE                                     
+ 2987 |  1           drgenius.s   2144 | Code        | 11 |         |    3 | 00/5102 : AD 3E 51    |                   lda     fgCASE               
+ 2988 |  1           drgenius.s   2145 | Code        | 11 |         |    2 | 00/5105 : 49 80       |                   eor     #$80                 
+ 2989 |  1           drgenius.s   2146 | Code        | 11 |         |    3 | 00/5107 : 8D 3E 51    |                   sta     fgCASE               
+ 2990 |  1           drgenius.s   2147 | Code        | 11 |         |    1 | 00/510A : 60          |                   rts                          
  2991 |  1           drgenius.s   2148 | Empty       | 11 |         |    0 | 00/510B               |                                                
  2992 |  1           drgenius.s   2149 | Comment     | 11 |         |    0 | 00/510B               | *----------------------
- 2993 |  1           drgenius.s   2150 | Comment     | 11 |         |    0 | 00/510B               | * switchCASE
+ 2993 |  1           drgenius.s   2150 | Comment     | 11 |         |    0 | 00/510B               | * switchVIDEO
  2994 |  1           drgenius.s   2151 | Comment     | 11 |         |    0 | 00/510B               | *----------------------
  2995 |  1           drgenius.s   2152 | Empty       | 11 |         |    0 | 00/510B               |                                                
- 2996 |  1           drgenius.s   2153 | Empty       | 11 |         |    0 | 00/510B               | switchCASE                                     
- 2997 |  1           drgenius.s   2154 | Code        | 11 |         |    3 | 00/510B : AD 3E 51    |                   lda     fgCASE               
- 2998 |  1           drgenius.s   2155 | Code        | 11 |         |    2 | 00/510E : 49 80       |                   eor     #$80                 
- 2999 |  1           drgenius.s   2156 | Code        | 11 |         |    3 | 00/5110 : 8D 3E 51    |                   sta     fgCASE               
- 3000 |  1           drgenius.s   2157 | Code        | 11 |         |    1 | 00/5113 : 60          |                   rts                          
+ 2996 |  1           drgenius.s   2153 | Empty       | 11 |         |    0 | 00/510B               | switchVIDEO                                    
+ 2997 |  1           drgenius.s   2154 | Code        | 11 |         |    2 | 00/510B : A9 00       |                   lda     #0                   
+ 2998 |  1           drgenius.s   2155 | Code        | 11 |         |    2 | 00/510D : 49 01       |                   eor     #1                   
+ 2999 |  1           drgenius.s   2156 | Code        | 11 |         |    3 | 00/510F : 8D 0C 51    |                   sta     switchVIDEO+1        
+ 3000 |  1           drgenius.s   2157 | Code        | 11 |         |    2 | 00/5112 : D0 04       |                   bne     setMIXEDOFF          
  3001 |  1           drgenius.s   2158 | Empty       | 11 |         |    0 | 00/5114               |                                                
  3002 |  1           drgenius.s   2159 | Comment     | 11 |         |    0 | 00/5114               | *----------------------
  3003 |  1           drgenius.s   2160 | Comment     | 11 |         |    0 | 00/5114               | * setMIXEDON

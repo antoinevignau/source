@@ -2137,16 +2137,6 @@ setHGR			; HGR
 	rts
 
 *----------------------
-* switchVIDEO
-*----------------------
-
-switchVIDEO
-	lda	#0
-	eor	#1
-	sta	switchVIDEO+1
-	bne	setMIXEDOFF
-	
-*----------------------
 * switchCASE
 *----------------------
 
@@ -2155,6 +2145,16 @@ switchCASE
 	eor	#$80
 	sta	fgCASE
 	rts
+	
+*----------------------
+* switchVIDEO
+*----------------------
+
+switchVIDEO
+	lda	#0
+	eor	#1
+	sta	switchVIDEO+1
+	bne	setMIXEDOFF
 	
 *----------------------
 * setMIXEDON

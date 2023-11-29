@@ -95,9 +95,9 @@ str4152	asc	8D"A message inside says: do not"8D
 	asc	"respect the colors of the Highway code?"00
 str4156	asc	8D"Hold on, the chest closes"00
 
-str4160	asc	"Now you have a lamp full of oil"00
+str4160	asc	"Now you have a lamp full of petrol"00
 
-str4170	asc	"You have nothing to carry the oil"00
+str4170	asc	"You have nothing to carry the petrol"00
 
 str4180	asc	"The fire you left lit exploded"00
 str4185	asc	8D"It kills thoughtlessness..."00
@@ -116,9 +116,9 @@ str4225	asc	8D"Death on the first page."00
 
 str4230	asc	"The book exploded when you opened it..."00
 
-str4240	asc	"The paper says: search the key."00
+str4240	asc	"The paper says: search the keys."00
 
-str4250	asc	"The key will allow you to find the"8D
+str4250	asc	"The keys will allow you to find the"8D
 	asc	"entrance door code."00
 
 str4260	asc	"There is, next to the door, a numerical"8D
@@ -134,7 +134,7 @@ str4300	asc	"It is already done, you funny fool"00
 
 str4310	asc	"Maybe you need a fire"00
 
-str4320	asc	"The lamp does not contain oil"00
+str4320	asc	"The lamp does not contain petrol"00
 
 str4330	asc	"You do not have it"00
 
@@ -365,13 +365,13 @@ V$12	str	"TAKE"	; PRENDRE
 V$13	str	"PICK"	; RAMASSER
 V$14	str	"DROP"	; POSER
 V$15	str	"OPEN"	; OUVRIR
-V$16	str	"CLOS"	; FERMER
+V$16	str	"SHUT"	; FERMER
 V$17	str	"ENTE"	; ENTRER
 V$18	str	"MOVE"	; AVANCER
 V$19	str	"LIGH"	; ALLUMER
 V$20	str	"EXTI"	; ETEINDRE
 V$21	str	"REPA"	; REPARER
-V$22	str	"DEPA"	; DEPANNER
+V$22	str	"HELP"	; DEPANNER
 V$23	str	"READ"	; LIS (LIRE)
 V$24	str	"LOOK"	; REGARDER
 V$25	str	"TURN"	; RETOURNER
@@ -385,7 +385,7 @@ V$32	str	"NOTH"	; RIEN
 V$33	str	"WARN"	; ATTENTION
 V$34	str	"DAGG"	; POIGNARD
 V$35	str	"KNIF"	; COUTEAU
-V$36	str	"SCRE"	; TOURNEVIE
+V$36	str	"SCRE"	; TOURNEVIS
 V$37	str	"LAMP"	; LAMPE
 V$38	str	"CODE"	; CODE
 V$39	str	"STAI"	; ESCALIER
@@ -394,32 +394,32 @@ V$41	str	"CLOS"	; PLACARD
 V$42	str	"TORC"	; TORCHE
 V$43	str	"TELE"	; TELEPORTEUR
 V$44	str	"MONS"	; MONSTRE
-V$45	str	"OIL"	; PETROLE
+V$45	str	"PETR"	; PETROLE (NOT OIL)
 V$46	str	"POT"	; POT
 V$47	str	"BED"	; LIT
-V$48	str	"KEY"	; CLEF
+V$48	str	"KEYS"	; CLEF
 V$49	str	"PAPE"	; PAPIER
 V$50	str	"BOOK"	; LIVRE
 V$51	str	"FIRE"	; BRIQUET
 V$52	str	"SUIT"	; COMBINAISON
 V$53	str	"CHES"	; COFFRE
-V$54	str	"RED"	; ROUGE
+V$54	str	"YELL"	; JAUNE (au lieu de ROUGE)
 V$55	str	"BLUE"	; BLEU
 V$56	str	"GREE"	; VERT
 V$57	str	"TITL"	; TITRE
-V$58	str	"TAP"	; ROBINET
+V$58	str	"FAUC"	; ROBINET
 V$59	str	"SCIS"	; CISEAU
 V$60	str	"CARR"	; PORTER
 V$61	str	"ENAB"	; ACTIVER
-V$62	str	"THRO"	; JETER
+V$62	str	"DISC"	; JETER
 V$63	str	"THRO"	; LANCER
-V$64	str	"WAT"	; EAU
+V$64	str	"WATE"	; EAU
 V$65	str	"WEAR"	; ENFILER
 V$66	str	"PASS"	; PASSER
-V$67	str	"PRES"	; APPUYER
+V$67	str	"PUSH"	; APPUYER
 V$68	str	"BURY"	; ENFOUIR
 V$69	str	"REMO"	; ENLEVER
-V$70	str	"RETU"	; RENTRER
+V$70	str	"TYPE"	; RENTRER (CODE)
 V$71	str	"TEMPO"	; TEMPO - Apple II
 V$72	str	"QUIT"	; QUITTER - Apple II
 V$73	str	"CASE"	; CASSE - Apple II
@@ -432,15 +432,15 @@ O$1	asc	"an electric torch"00
 O$2	asc	"a tap"00
 O$3	asc	"scissors"00
 O$4	asc	"a screwdriver"00
-O$5	asc	"an oil lamp"00
+O$5	asc	"a petrol lamp"00
 O$6	asc	"a full lamp"00
 O$7	asc	"a lighted lamp"00
 O$8	asc	"a knife"00
 O$9	asc	"a paper"00
 O$10	asc	"a book"00
-O$11	asc	"oil in a clogged sink"00
-O$12	asc	"a key"00
-O$13	asc	"a red button"00
+O$11	asc	"petrol in a sink"00
+O$12	asc	"keys"00
+O$13	asc	"a yellow button"00
 O$14	asc	"a blue button"00
 O$15	asc	"a green button"00
 O$16	asc	"a teleporter"00

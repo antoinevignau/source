@@ -41,69 +41,71 @@ strDACCORD
 * 7000 - LES REPONSES
 *-----------------------------------
 
-str7000	asc	"La generatrice vient d"A7"exploser. La"8D
+str7010	asc	"La generatrice vient d"A7"exploser. La"8D
 	asc	"maison n"A7"existe plus, vous non plus."00
-str7010	asc	"L"A7"ascenseur ne bouge pas. Il faudrait"8D
+str7020	asc	"L"A7"ascenseur ne bouge pas. Il faudrait"8D
 	asc	"peut-etre du courant ?"00
-str7020	asc	"La porte vient de se fermer. Impossible"8D
+str7030	asc	"La porte vient de se fermer. Impossible"8D
 	asc	"de l"A7"ouvrir..."00
-str7030	asc	"Vous avez raison. La curiosite est un"8D
+str7040	asc	"Vous avez raison. La curiosite est un"8D
 	asc	"vilain defaut..."00
-str7040	asc	"L"A7"odeur que vous sentiez etait celle d"A78D
+str7050	asc	"L"A7"odeur que vous sentiez etait celle d"A78D
 	asc	"un gaz explosif. Vous etes mort."00
-str7050	asc	"Il faudrait peut-etre du feu..."00
-str7060	asc	"Ah, ah... Vous etes prisonnier"00
-str7070	asc	"Vous avez dit papier ? Quel papier ?"00
-str7080	asc	"Bravez les interdits."00
-str7090	asc	"Elle a l"A7"air de s"A7"emballer..."00
-str7100	asc	"La generatrice se met en marche"00
-str7110	asc	"Impossible, elle ne veut rien savoir"00
-str7120	asc	"Bravo, je ne savais pas que vous aviez"8D
+str7060	asc	"Il faudrait peut-etre du feu..."00
+str7070	asc	"Ah, ah... Vous etes prisonnier"00
+str7080	asc	"Vous avez dit papier ? Quel papier ?"00
+str7090	asc	"Bravez les interdits."00
+str7100	asc	"Elle a l"A7"air de s"A7"emballer..."00
+str7110	asc	"La generatrice se met en marche"00
+str7120	asc	"Impossible, elle ne veut rien savoir"00
+str7130	asc	"Bravo, je ne savais pas que vous aviez"8D
 	asc	"des dons d"A7"electricien."00
-str7130	asc	"Votre machine est reparee. Mais elle"8D
+str7140	asc	"Votre machine est reparee. Mais elle"8D
 	asc	"sent le chaud."00
-str7140	asc	"La machine est reparee. Dommage qu"A7"il"8D
+str7150	asc	"La machine est reparee. Dommage qu"A7"il"8D
 	asc	"n"A7"y ait pas de courant."00
-str7150	asc	"Il faudrait peut-etre des outils."00
-str7160	asc	"L"A7"ascenseur semble monter..."00
-str7170	asc	"L"A7"ascenseur ne bouge pas"00
-str7180	asc	"Le cable vient de casser. Vous vous"8D
+str7160	asc	"Il faudrait peut-etre des outils."00
+str7170	asc	"L"A7"ascenseur semble monter..."00
+str7180	asc	"L"A7"ascenseur ne bouge pas"00
+str7190	asc	"Le cable vient de casser. Vous vous"8D
 	asc	"ecrasez en bas : mort"00
-str7190	asc	"Il faut noir. Il faut allumer"00
-str7200	asc	"Vous vous ecrasez au sol"00
-str7210	asc	"Il y a une clef."00
-str7220	asc	"La porte est fermee a clef"00
-str7230	asc	"Tiens, la porte du placard se referme."00
-str7240	asc	"La generatrice vient d"A7"exploser,"8D
-	asc	"l"A7"ascenseur est detruit. Vous en echap-"8D
-	asc	"-pez de justesse"8D00
-str7250	asc	"Vous etes mort electrocute"00
-str7260	asc	"Vous avez raison, rien ne sert de courir"00
-str7270	asc	"Dehors il fait noir, on ne voit pas le"8D
+str7200	asc	"Il faut noir. Il faudrait allumer"00
+str7210	asc	"Vous vous ecrasez au sol"00
+str7220	asc	"Il y a une clef."00
+str7230	asc	"La porte est fermee a clef"00
+str7240	asc	"Tiens, la porte du placard se referme."8D00
+str7250	asc	"La generatrice vient d"A7"exploser,"8D
+	asc	"l"A7"ascenseur est detruit. Vous en"8D
+	asc	"rechappez de justesse"8D00
+str7260	asc	"Vous etes mort electrocute"00
+str7270	asc	"Vous avez raison, rien ne sert de courir"
+	asc	"Une fumee monte du sol. Il faut sortir"8D
+	asc	"quand meme."00
+str7280	asc	"Dehors il fait noir, on ne voit pas le"8D
 	asc	"sol."00
-str7280	asc	"C"A7"est deja fait."00
-str7290	asc	"Vous etes au bout de la corde."00
-str7300	asc	"Vraiment pas au point cette machine."8D
+str7290	asc	"C"A7"est deja fait."00
+str7300	asc	"Vous etes au bout de la corde."00
+str7310	asc	"Vraiment pas au point cette machine."8D
 	asc	"Vous etes mort"00
-str7310	asc	"Il faudrait peut-etre ouvrir la fenetre."00
-str7320	asc	"Tant pis. On a essaye."00
-str7330	asc	"Bravo, quel trait de genie."00
-str7340	asc	"Une trappe s"A7"ouvre sous vos pieds."8D
+str7320	asc	"Il faudrait peut-etre ouvrir la fenetre."00
+str7330	asc	"Tant pis. On a essaye."00
+str7340	asc	"Bravo, quel trait de genie."00
+str7350	asc	"Une trappe s"A7"ouvre sous vos pieds."8D
 	asc	"Vous etes mort."00
-str7350	asc	"Sage precaution."00
-str7360	asc	"C"A7"est du poison. Vous etes mort."00
-str7370	asc	"Vous apprenez a piloter une soucoupe en"8D
+str7360	asc	"Sage precaution."00
+str7370	asc	"C"A7"est du poison. Vous etes mort."00
+str7380	asc	"Vous apprenez a piloter une soucoupe en"8D
 	asc	"une lecon"00
-str7380	asc	"Ca ne se pilote pas comme ca"00
-str7390	asc	"C"A7"est de l"A7"acide. Vous etes mort."00
-str7400	asc	"Il y a de l"A7"eau. Vous vous noyez"00
-str7410	asc	"Ouf, vous vous retrouvez dehors.."00
-str7420	asc	"Sain et sauf..."00
-str7430	asc	"Ca marche... Mais il n"A7"y avait pas assez"
+str7390	asc	"Ca ne se pilote pas comme ca"00
+str7400	asc	"C"A7"est de l"A7"acide. Vous etes mort."00
+str7410	asc	"Il y a de l"A7"eau. Vous vous noyez"00
+str7420	asc	"Ouf, vous vous retrouvez dehors.."00
+str7430	asc	"Sain et sauf..."00
+str7440	asc	"Ca marche... Mais il n"A7"y avait pas assez"
 	asc	"de carburant"00
-str7440	asc	"Mais. Vous etes tout bleu, ce doit etre"8D
+str7450	asc	"Mais. Vous etes tout bleu, ce doit etre"8D
 	asc	"les pilules"00
-str7450	asc	"Et irradie. Vous mourez au bout de"8D
+str7460	asc	"Et irradie. Vous mourez au bout de"8D
 	asc	"quelques jours"00
 
 *-----------------------------------
@@ -114,39 +116,39 @@ str7450	asc	"Et irradie. Vous mourez au bout de"8D
 *		"0123456789012345678901234567890123456789"
 *		"----------------------------------------"
 
-str8000	asc	"Vous etes devant une maison, la porte"8D
+str8010	asc	"Vous etes devant une maison, la porte"8D
 	asc	"est ouverte."00
-str8010	asc	"Vous etes dans un couloir. Il y a une"8D
+str8020	asc	"Vous etes dans un couloir. Il y a une"8D
 	asc	"porte a l"A7"est et une porte a l"A7"ouest."00
-str8020	asc	"Vous etes dans un salon. Il y a une"8D
+str8030	asc	"Vous etes dans un salon. Il y a une"8D
 	asc	"porte a l"A7"ouest."00
-str8030	asc	"Il y a une drole d"A7"odeur."00
-str8040	asc	"Il y a une grosse machine qui ressemble"8D
+str8040	asc	"Il y a une drole d"A7"odeur."00
+str8050	asc	"Il y a une grosse machine qui ressemble"8D
 	asc	"a 1 generatrice avec un bouton vert, un"8D
 	asc	"bouton rouge. Il y a une porte au nord."00
-str8050	asc	"Une machinerie d"A7"ascenseur. Une porte"8D
+str8060	asc	"Une machinerie d"A7"ascenseur. Une porte"8D
 	asc	"au nord."00
-str8060	asc	"Il y a plein de materiel."00
-str8070	asc	"Vous etes dans un ascenseur. Il y a un"8D
-	asc	"bouton haut, un bouton bas."00
-str8080	asc	"L"A7"ascenseur vient de s"A7"arreter."00
-str8090	asc	"La piece est humide, il y a des fils qui"
+str8070	asc	"Il y a plein de materiel."00
+str8080	asc	"Vous etes dans un ascenseur. Il y a un"8D
+	asc	"bouton monter, un bouton descendre."00
+str8090	asc	"L"A7"ascenseur vient de s"A7"arreter."00
+str8100	asc	"La piece est humide, il y a des fils qui"
 	asc	"trainent par terre. Il y a une fenetre"8D
 	asc	"et une porte au nord."00
-str8100	asc	"La porte vient de se refermer. Bonjour.."
+str8110	asc	"La porte vient de se refermer. Bonjour.."
 	asc	"Comment ecrivez-vous ceci en 4 lettres ?"00
-str8110	asc	"Vous etes dans une machine a remonter le"
+str8120	asc	"Vous etes dans une machine a remonter le"
 	asc	"temps. Trois boutons : passe, present et"
 	asc	"avenir."00
-str8120	asc	"Vous vous retrouvez dans le laboratoire"8D
+str8130	asc	"Vous vous retrouvez dans le laboratoire"8D
 	asc	"du Professeur. Il y a une porte en fer a"
 	asc	"l"A7"ouest, porte au sud marque danger."00
-str8130	asc	"Il y a une douche. Un trou dans le sol."00
-str8140	asc	"Il y a un cube noir d"A7"au moins une"8D
+str8140	asc	"Il y a une douche. Un trou dans le sol."00
+str8150	asc	"Il y a un cube noir d"A7"au moins une"8D
 	asc	"tonne, une echelle monte. Une porte a"8D
 	asc	"l"A7"est."00
-str8150	asc	"Vous etes dans une bibliotheque."00
-str8160	asc	"Vous etes dans une soucoupe sur une"8D
+str8160	asc	"Vous etes dans une bibliotheque."00
+str8170	asc	"Vous etes dans une soucoupe sur une"8D
 	asc	"terrasse."00
 
 strREPLAY	asc	8D"Voulez-vous rejouer ? "00
@@ -226,7 +228,8 @@ strLEMANOIR
 
 strINTRO1	asc	"     Version Apple II par     "00
 strINTRO2	asc	"    Brutal Deluxe Software    "00
-strINTRO3	asc	"   (C) 1982, Alain Bregeon    "00
+strINTRO3	asc	"       Merci a XavSnap        "00
+strINTRO4	asc	"   (C) 1982, Alain Bregeon    "00
 	
 *-----------------------------------
 * VOCABULAIRE

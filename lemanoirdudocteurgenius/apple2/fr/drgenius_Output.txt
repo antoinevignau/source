@@ -1874,7 +1874,7 @@
  1835 |  1           drgenius.s   1333 | Code        | 11 |         |    3 | 00/4A88 : 20 1C 51    |                   jsr     printCSTRING         
  1836 |  1           drgenius.s   1334 | Macro       | 11 |         |    0 | 00/4A8B               |                   @print  #str4552             
  1837 |  1           drgenius.s   1334 | Code        | 11 |         |    2 | 00/4A8B : A2 6C       |                   ldx     #>#str4552           
- 1838 |  1           drgenius.s   1334 | Code        | 11 |         |    2 | 00/4A8D : A0 E6       |                   ldy     #<#str4552           
+ 1838 |  1           drgenius.s   1334 | Code        | 11 |         |    2 | 00/4A8D : A0 E7       |                   ldy     #<#str4552           
  1839 |  1           drgenius.s   1334 | Code        | 11 |         |    3 | 00/4A8F : 20 1C 51    |                   jsr     printCSTRING         
  1840 |  1           drgenius.s   1335 | Macro       | 11 |         |    0 | 00/4A92               |                   @wait   #300                 
  1841 |  1           drgenius.s   1335 | Code        | 11 |         |    2 | 00/4A92 : A2 01       |                   ldx     #>#300               
@@ -2191,7 +2191,7 @@
  2152 |  1           drgenius.s   1561 | Code        | 11 |         |    3 | 00/4C46 : DD 3F 5F    |                   cmp     X$2,x                
  2153 |  1           drgenius.s   1562 | Code        | 11 |         |    2 | 00/4C49 : D0 10       |                   bne     _6350                
  2154 |  1           drgenius.s   1563 | Code        | 11 |         |    1 | 00/4C4B : E8          |                   inx                          
- 2155 |  1           drgenius.s   1564 | Code        | 11 |         |    3 | 00/4C4C : EC 3A 5F    |                   cpx     X$1                  
+ 2155 |  1           drgenius.s   1564 | Code        | 11 |         |    3 | 00/4C4C : EC 3F 5F    |                   cpx     X$2                  
  2156 |  1           drgenius.s   1565 | Code        | 11 |         |    2 | 00/4C4F : 90 F2       |                   bcc     _6325                
  2157 |  1           drgenius.s   1566 | Code        | 11 |         |    2 | 00/4C51 : F0 F0       |                   beq     _6325                
  2158 |  1           drgenius.s   1567 | Empty       | 11 |         |    0 | 00/4C53               |                                                
@@ -5363,19 +5363,19 @@
       |                                |             |    |         |      |           F3 F4 A0 ED |
       |                                |             |    |         |      |           EF F2 F4 00 |
  3945 |  2                 fr.s    209 | Empty       | 11 |         |    0 | 00/6CC5               |                                                
- 3946 |  2                 fr.s    210 | Data        | 11 |         |   33 | 00/6CC5 : C1 A0 EC A7 | str4550           asc     "A l"A7"interieur du placard, le No "00
-      |                                |             |    |         |      |           E9 EE F4 E5 |
-      |                                |             |    |         |      |           F2 E9 E5 F5 |
-      |                                |             |    |         |      |           F2 A0 E4 F5 |
-      |                                |             |    |         |      |           A0 F0 EC E1 |
-      |                                |             |    |         |      |           E3 E1 F2 E4 |
-      |                                |             |    |         |      |           AC A0 EC E5 |
-      |                                |             |    |         |      |           A0 CE EF A0 |
+ 3946 |  2                 fr.s    210 | Data        | 11 |         |   34 | 00/6CC5 : 8D C1 A0 EC | str4550           asc     8D"A l"A7"interieur du placard, le No "00
+      |                                |             |    |         |      |           A7 E9 EE F4 |
+      |                                |             |    |         |      |           E5 F2 E9 E5 |
+      |                                |             |    |         |      |           F5 F2 A0 E4 |
+      |                                |             |    |         |      |           F5 A0 F0 EC |
+      |                                |             |    |         |      |           E1 E3 E1 F2 |
+      |                                |             |    |         |      |           E4 AC A0 EC |
+      |                                |             |    |         |      |           E5 A0 CE EF |
+      |                                |             |    |         |      |           A0 00       |
+ 3947 |  2                 fr.s    211 | Data        | 11 |         |   13 | 00/6CE7 : A0 E5 F3 F4 | str4552           asc     " est inscrit"00     
+      |                                |             |    |         |      |           A0 E9 EE F3 |
+      |                                |             |    |         |      |           E3 F2 E9 F4 |
       |                                |             |    |         |      |           00          |
- 3947 |  2                 fr.s    211 | Data        | 11 |         |   14 | 00/6CE6 : 8D A0 E5 F3 | str4552           asc     8D" est inscrit"00   
-      |                                |             |    |         |      |           F4 A0 E9 EE |
-      |                                |             |    |         |      |           F3 E3 F2 E9 |
-      |                                |             |    |         |      |           F4 00       |
  3948 |  2                 fr.s    212 | Data        | 11 |         |   24 | 00/6CF4 : 8D CC E5 A0 | str4555           asc     8D"Le placard se referme."00
       |                                |             |    |         |      |           F0 EC E1 E3 |
       |                                |             |    |         |      |           E1 F2 E4 A0 |

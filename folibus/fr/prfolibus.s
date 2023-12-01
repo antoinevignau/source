@@ -124,17 +124,20 @@ REPLAY
 
 :110	ldx	#2
 	lda	C,x
+	bmi	:120
 	beq	:120
 	dec	C,x
 
 :120	ldx	#3
 	lda	S,x
-	bne	:200
+	cmp	#1
+	bcs	:200
 	
 	@print	#strILFAITNOIR
 	
 	ldx	#3
 	lda	C,x
+	bmi	:150
 	beq	:150
 	dec	C,x
 	
@@ -160,12 +163,12 @@ REPLAY
 	sta	H
 	sta	HH	; for comma
 	lda	#1
-	sta	N
+	sta	X
 	
-:310	ldx	N
+:310	ldx	X
 	lda	O,x
 	cmp	SALLE
-	bne	:400
+	bne	:500
 	
 	lda	H
 	bne	:350
@@ -175,12 +178,12 @@ REPLAY
 	inc	H
 
 :350	lda	HH
-	beq	:360
+	beq	:400
 
 	@print	#strCOMMA
 
-:360	@print	#strSPACE
-	lda	N
+:400	@print	#strSPACE
+	lda	X
 	asl
 	tax
 	ldy	tblO$,x
@@ -190,8 +193,8 @@ REPLAY
 
 	inc	HH
 	
-:400	inc	N
-	lda	N
+:500	inc	X
+	lda	X
 	cmp	#nbO	; la constante 25
 	bcc	:310
 	beq	:310
@@ -204,17 +207,19 @@ REPLAY
 
 :1000	lda	#1
 	sta	T
-	lda	#0
-	sta	N
+*	lda	#0
+*	sta	N
 	jmp	:2000
 
 :1100	ldx	#1
 	lda	C,x
+	bmi	:1110
 	beq	:1110
 	dec	C,x
 	
 :1110	ldx	#4
 	lda	C,x
+	bmi	:1120
 	beq	:1120
 	dec	C,x
 	
@@ -280,7 +285,7 @@ REPLAY
 
 :1900	lda	#0
 	sta	T
-	sta	CORRESP
+	sta	XXO
 	
 *-----------------------------------
 * 2000 - CONTROLE
@@ -317,7 +322,7 @@ REPLAY
 	bcc	:2400
 	beq	:2400
 
-	lda	CORRESP
+	lda	XXO
 	beq	:2320
 	jmp	:1000
 
@@ -333,8 +338,6 @@ REPLAY
 	jmp	:100
 
 :2400	lda	CP
-	sec
-	sbc	#1
 	asl
 	tax
 	lda	tblA,x
@@ -352,6 +355,12 @@ REPLAY
 :2420	cpy	#2
 	bne	:2430
 	jmp	:2100
+
+*:2410	lda	tblA+1,x
+*	beq	:2430
+*	cmp	MO$2
+*	beq	:2430
+*	jmp	:2100
 	
 :2430	lda	tblA$,x
 	sta	LINNUM
@@ -409,7 +418,6 @@ REPLAY
 	lda	tbl2900+1,x
 	sta	:2800+2
 
-	ldy	#1	; pour OK si condition vŽrifiŽe
 :2800	jsr	$bdbd
 	
 	lda	OK
@@ -431,7 +439,8 @@ tbl2900	da	:2900,:2910,:2920,:2930,:2940,:2950,:2960,:2970
 :2900	lda	N
 	cmp	SALLE
 	bne	:2905
-	sty	OK
+	lda	#1
+	sta	OK
 :2905	rts
 	
 *-------- B, si l'objet N est present ou transporte
@@ -441,7 +450,8 @@ tbl2900	da	:2900,:2910,:2920,:2930,:2940,:2950,:2960,:2970
 	bmi	:2915
 	cmp	SALLE
 	bne	:2916
-:2915	sty	OK
+:2915	lda	#1
+	sta	OK
 :2916	rts
 	
 *-------- C, si l'objet N est present ou non transporte
@@ -453,7 +463,8 @@ tbl2900	da	:2900,:2910,:2920,:2930,:2940,:2950,:2960,:2970
 :2925	cmp	SALLE
 	bne	:2927
 	rts
-:2927	sty	OK
+:2927	lda	#1
+	sta	OK
 	rts
 
 *-------- D, si l'objet N est transporte
@@ -461,15 +472,17 @@ tbl2900	da	:2900,:2910,:2920,:2930,:2940,:2950,:2960,:2970
 :2930	ldx	N
 	lda	O,x
 	bpl	:2935
-	sty	OK
+	lda	#1
+	sta	OK
 :2935	rts
 
 *-------- E, si le pointeur N est active
 
 :2940	ldx	N
 	lda	S,x
-*	beq	:2945
-	sty	OK
+	beq	:2945
+	lda	#1
+	sta	OK
 :2945	rts
 
 *-------- F, si le pointeur n'est pas active
@@ -477,7 +490,8 @@ tbl2900	da	:2900,:2910,:2920,:2930,:2940,:2950,:2960,:2970
 :2950	ldx	N
 	lda	S,x
 	bne	:2955
-	sty	OK
+	lda	#1
+	sta	OK
 :2955	rts
 
 *-------- G, si le compteur a atteint la valeur 1
@@ -486,7 +500,8 @@ tbl2900	da	:2900,:2910,:2920,:2930,:2940,:2950,:2960,:2970
 	lda	C,x
 	cmp	#1
 	bne	:2965
-	sty	OK
+	lda	#1
+	sta	OK
 :2965	rts
 
 *-------- H, si le nombre aleatoire (1-99) est inferieur a N
@@ -495,18 +510,19 @@ tbl2900	da	:2900,:2910,:2920,:2930,:2940,:2950,:2960,:2970
 	eor	VERTCNT
 	cmp	N
 	bcs	:2975
-	sty	OK
+	lda	#1
+	sta	OK
 :2975	rts
 
 *-----------------------------------
 * 3000 - ACTIONS
 *-----------------------------------
 
-:3000	inc	E
-	
-	lda	#1
-	sta	CORRESP
+:3000	lda	#1
+	sta	XXO
 
+	inc	E
+	
 :3100	ldx	E
 	lda	E$,x
 	cmp	#"."
@@ -515,10 +531,17 @@ tbl2900	da	:2900,:2910,:2920,:2930,:2940,:2950,:2960,:2970
 
 :3120	sec
 	sbc	#"A"
-	asl
+	cmp	#20
+	bcc	:3125
+
+	lda	#-1	; erreur de donnŽes
+	pha
+	bne	:3130
+
+:3125	asl
 	pha		; TYPE
 
-	lda	E$+1,x
+:3130	lda	E$+1,x
 	cmp	#"."
 	beq	:3200
 
@@ -539,6 +562,9 @@ tbl2900	da	:2900,:2910,:2920,:2930,:2940,:2950,:2960,:2970
 	sta	BREAK
 
 	pla
+	cmp	#-1	; saute si erreur de donnŽes
+	beq	:3215
+	
 	tax
 	lda	tbl4000,x
 	sta	:3210+1
@@ -547,7 +573,7 @@ tbl2900	da	:2900,:2910,:2920,:2930,:2940,:2950,:2960,:2970
 
 :3210	jsr	$bdbd
 
-	lda	BREAK
+:3215	lda	BREAK
 	beq	:3230
 	asl
 	tax
@@ -570,15 +596,69 @@ tblBRKA	da	$bdbd
 	da	:100,:1000,:1100
 	
 *-----------------------------------
-* 1800
+* 1800 - ACTIONS
 *-----------------------------------
 
 tbl4000	da	:4000,:4100,:4200,:4300,:4400,:4500,:4600,:4700,:4800,:4900
-	da	:5000,:5100,:5200,:5300,:5400,:5500,:5600,:5700,:4100
+	da	:5000,:5100,:5200,:5300,:5400,:5500,:5600,:4000,:4100,:5600
 	
-*-------- A, si nous sommes dans la salle N
+*-------- A, INVENTAIRE
 
-:4000	rts
+:4000	lda	#0
+	sta	G
+	sta	HH
+	sta	H	; for comma
+
+:4010	inc	G
+	lda	G
+	tax
+	lda	O,x
+	cmp	#-1
+	beq	:4040
+
+	lda	G
+	cmp	#nbO
+	bcc	:4010
+	bcs	:4070
+	
+:4040	lda	HH
+	bne	:4050
+
+	@print	#strVOUSDETENEZ
+	
+:4050	inc	HH
+
+	lda	H
+	beq	:4060
+	
+	@print	#strCOMMA
+
+:4060	lda	G
+	asl
+	tax
+	ldy	tblO$,x
+	lda	tblO$+1,x
+	tax
+	jsr	printCSTRING
+	@print	#strSPACE
+
+	inc	H
+	
+	lda	G
+	cmp	#V
+	bcc	:4010
+	
+:4070	lda	HH
+	beq	:4080
+
+	@print	#strPOINT
+	rts
+
+:4080	@print	#strVOUSRIEN
+
+	lda	#1
+	sta	BREAK
+	rts
 
 *-------- B, transportes objets N
 
@@ -629,8 +709,7 @@ tbl4000	da	:4000,:4100,:4200,:4300,:4400,:4500,:4600,:4700,:4800,:4900
 
 *-------- D, affiche le message en 7000+N*10
 
-:4300
-	@print	#strRETURN
+:4300	@print	#strRETURN
 
 	lda	N
 	asl
@@ -658,32 +737,20 @@ tbl4000	da	:4000,:4100,:4200,:4300,:4400,:4500,:4600,:4700,:4800,:4900
 
 *-------- G, fixe le compteur N ˆ M
 
-:4600	lda	N
+:4600	ldx	E
+	lda	E$+3,x
 	sec
-	sbc	#1
-	asl
-	tax
-	lda	tblA$,x
-	sta	LINNUM
-	lda	tblA$+1,x
-	sta	LINNUM+1
-	
-	ldy	E	; +2
+	sbc	#"0"
+	tay
+	lda	tblD2H,y
+	ldx	N
+	sta	C,x
+
+	ldy	E
+	lda	E$+4,y
 	iny
 	iny
 	sty	E
-	iny		; +3
-	lda	(LINNUM),y
-	sec
-	sbc	#"0"
-	tax
-	lda	tblD2H,x
-	
-	ldx	N
-	sta	C,x
-	
-	iny
-	lda	(LINNUM),y
 	sec
 	sbc	#"0"
 	clc
@@ -769,7 +836,7 @@ tbl4000	da	:4000,:4100,:4200,:4300,:4400,:4500,:4600,:4700,:4800,:4900
 
 :5600	jmp	:20000
 
-*-------- R, inventaire
+*-------- R, inventaire sans le BREAK
 
 :5700	lda	#0
 	sta	G
@@ -822,12 +889,7 @@ tbl4000	da	:4000,:4100,:4200,:4300,:4400,:4500,:4600,:4700,:4800,:4900
 	rts
 
 :5780	@print	#strVOUSRIEN
-
-	lda	#1
-	sta	BREAK
 	rts
-
-*-------- S, prendre un objet => :4100
 
 *-----------------------------------
 * 6000 - ANALYSE DU MOT
@@ -971,7 +1033,7 @@ tbl4000	da	:4000,:4100,:4200,:4300,:4400,:4500,:4600,:4700,:4800,:4900
 	cmp	X$2,x
 	bne	:6350
 	inx
-	cpx	X$1
+	cpx	X$2
 	bcc	:6325
 	beq	:6325
 	
@@ -990,34 +1052,32 @@ tbl4000	da	:4000,:4100,:4200,:4300,:4400,:4500,:4600,:4700,:4800,:4900
 * 7000 - LES REPONSES
 *-----------------------------------
 
-tbl7000	da	:7000,:7010,:7020,:7030,:7040,:7050,:7060,:7070,:7080,:7090
-	da	:7100,:7110,:7120,:7130,:7140,:7150,:7160,:7170,:7180,:7190
-	da	:7200,:7210,:7220,:7230,:7240,:7250,:7260,:7270,:7280,:7290
-	da	:7300,:7310,:7320,:7330,:7340,:7350,:7360,:7370,:7380,:7390
-	da	:7400,:7410,:7420,:7430,:7440,:7450
+tbl7000	da	$bdbd
+	da	:7010,:7020,:7030,:7040,:7050,:7060,:7070,:7080,:7090,:7100
+	da	:7110,:7120,:7130,:7140,:7150,:7160,:7170,:7180,:7190,:7200
+	da	:7210,:7220,:7230,:7240,:7250,:7260,:7270,:7280,:7290,:7300
+	da	:7310,:7320,:7330,:7340,:7350,:7360,:7370,:7380,:7390,:7400
+	da	:7410,:7420,:7430,:7440,:7450,:7460
 
 *--------
 
-:7000	@print	#str7000
+:7010	@print	#str7010
 	@explode
 	rts		; jmp	:20000
-
-:7010	@print	#str7010
-	rts
 
 :7020	@print	#str7020
 	rts
 
 :7030	@print	#str7030
-	@explode
-	rts		; jmp	:20000
+	rts
 
 :7040	@print	#str7040
 	@explode
 	rts		; jmp	:20000
 
 :7050	@print	#str7050
-	rts
+	@explode
+	rts		; jmp	:20000
 
 :7060	@print	#str7060
 	rts
@@ -1042,10 +1102,10 @@ tbl7000	da	:7000,:7010,:7020,:7030,:7040,:7050,:7060,:7070,:7080,:7090
 
 :7130	@print	#str7130
 	rts
-	
+
 :7140	@print	#str7140
 	rts
-
+	
 :7150	@print	#str7150
 	rts
 
@@ -1056,18 +1116,18 @@ tbl7000	da	:7000,:7010,:7020,:7030,:7040,:7050,:7060,:7070,:7080,:7090
 	rts
 
 :7180	@print	#str7180
-	@explode
-	rts		; jmp	:20000
+	rts
 
 :7190	@print	#str7190
-	rts
-
-:7200	@print	#str7200
 	@explode
 	rts		; jmp	:20000
 
-:7210	@print	#str7210
+:7200	@print	#str7200
 	rts
+
+:7210	@print	#str7210
+	@explode
+	rts		; jmp	:20000
 
 :7220	@print	#str7220
 	rts
@@ -1079,11 +1139,11 @@ tbl7000	da	:7000,:7010,:7020,:7030,:7040,:7050,:7060,:7070,:7080,:7090
 	rts
 
 :7250	@print	#str7250
-	@explode
-	rts		; jmp	:20000
+	rts
 
 :7260	@print	#str7260
-	rts
+	@explode
+	rts		; jmp	:20000
 
 :7270	@print	#str7270
 	rts
@@ -1095,11 +1155,11 @@ tbl7000	da	:7000,:7010,:7020,:7030,:7040,:7050,:7060,:7070,:7080,:7090
 	rts
 
 :7300	@print	#str7300
-	@explode
-	rts		; jmp	:20000
+	rts
 
 :7310	@print	#str7310
-	rts
+	@explode
+	rts		; jmp	:20000
 
 :7320	@print	#str7320
 	rts
@@ -1108,36 +1168,36 @@ tbl7000	da	:7000,:7010,:7020,:7030,:7040,:7050,:7060,:7070,:7080,:7090
 	rts
 
 :7340	@print	#str7340
-	@explode
-	rts		; jmp	:20000
+	rts
 
 :7350	@print	#str7350
-	rts
-
-:7360	@print	#str7360
 	@explode
 	rts		; jmp	:20000
 
-:7370	@print	#str7370
+:7360	@print	#str7360
 	rts
+
+:7370	@print	#str7370
+	@explode
+	rts		; jmp	:20000
 
 :7380	@print	#str7380
 	rts
-	
+
 :7390	@print	#str7390
+	rts
+	
+:7400	@print	#str7400
 	@explode
 	rts		; jmp	:20000
 	
-:7400	@print	#str7400
+:7410	@print	#str7410
 	rts
 
-:7410	@print	#str7410
+:7420	@print	#str7420
 	@explode
 	rts		; jmp	:32000
 	
-:7420	@print	#str7420
-	rts
-
 :7430	@print	#str7430
 	rts
 
@@ -1145,6 +1205,9 @@ tbl7000	da	:7000,:7010,:7020,:7030,:7040,:7050,:7060,:7070,:7080,:7090
 	rts
 
 :7450	@print	#str7450
+	rts
+
+:7460	@print	#str7460
 	@explode
 	rts		; jmp	:20000
 
@@ -1154,7 +1217,6 @@ tbl7000	da	:7000,:7010,:7020,:7030,:7040,:7050,:7060,:7070,:7080,:7090
 
 tbl8000
 	da	$bdbd
-	da	:8000
 	da	:8010
 	da	:8020
 	da	:8030
@@ -1171,10 +1233,8 @@ tbl8000
 	da	:8140
 	da	:8150
 	da	:8160
+	da	:8170
 
-:8000	@print	#str8000
-	rts
-	
 :8010	@print	#str8010
 	rts
 
@@ -1223,6 +1283,9 @@ tbl8000
 :8160	@print	#str8160
 	rts
 
+:8170	@print	#str8170
+	rts
+
 *-----------------------------------
 * 8000 - CHARGEMENT VARIABLES
 *-----------------------------------
@@ -1230,7 +1293,7 @@ tbl8000
 initALL
 	ldx	#FIN_DATA-DEBUT_DATA-1
 	lda	#0
-]lp	sta	CORRESP,x
+]lp	sta	XXO,x
 	dex
 	bpl	]lp
 
@@ -1291,18 +1354,6 @@ proQUIT	dfb	4
 sauveCYA	ds	1
 	
 *-----------------------------------
-* 32000 - GAGNE
-*-----------------------------------
-
-:32000
-	@play	#zikGAGNE
-
-:32010
-	jsr	HOME
-	@print	#strGAGNE
-	jmp	:20050
-
-*-----------------------------------
 * 40000 - LISTE DES INSTRUCTIONS
 *-----------------------------------
 
@@ -1361,6 +1412,11 @@ introPIC
 	lda	#5
 	sta	CH
 	@print	#strINTRO3
+	@wait	#300
+
+	lda	#5
+	sta	CH
+	@print	#strINTRO4
 	@wait	#300
 
 	@play	#zikINTRODUCTION
@@ -1581,7 +1637,8 @@ M$17	dfb	06,15,00
 
 AA	=	92
 
-tblA$	da	A$1,A$2,A$3,A$4,A$5,A$6,A$7,A$8,A$9,A$10
+tblA$	da	$bdbd
+	da	A$1,A$2,A$3,A$4,A$5,A$6,A$7,A$8,A$9,A$10
 	da	A$11,A$12,A$13,A$14,A$15,A$16,A$17,A$18,A$19,A$20
 	da	A$21,A$22,A$23,A$24,A$25,A$26,A$27,A$28,A$29,A$30
 	da	A$31,A$32,A$33,A$34,A$35,A$36,A$37,A$38,A$39,A$40
@@ -1685,7 +1742,8 @@ A$90	str	"A14E08E05F06.D42D43D45Q."
 A$91	str	"A14E08F05E06.D42D46Q."
 A$92	str	".N."
 
-tblA	dfb	07,00
+tblA	dfb	0,0
+	dfb	07,00
 	dfb	30,00
 	dfb	15,28
 	dfb	15,18
@@ -1776,7 +1834,7 @@ tblA	dfb	07,00
 	dfb	06,00
 	dfb	06,00
 	dfb	06,00
-	dfb	00,00	; 93 is ".N."
+	dfb	00,00	; 92 is ".N."
 	
 *--- On commence ˆ index 0
 
@@ -1804,7 +1862,7 @@ C$13	str	".N."
 
 DEBUT_DATA
 
-CORRESP	ds	1
+XXO	ds	1
 BREAK	ds	1
 E	ds	1
 F1	ds	1
@@ -1820,15 +1878,16 @@ CP	ds	1
 OK	ds	1
 SALLE	ds	1
 T	ds	1
+X	ds	1
 W	ds	1
 Z	ds	1
 lenSTRING	ds	1
 
-C	ds	5+1
-E$	ds	32	; the longest string
+C	ds	10+1
 S	ds	10+1	; was P in Le manoir
 X$1	ds	4+1	; premier mot saisi
 X$2	ds	4+1	; second mot saisi
+E$	ds	32	; the longest string
 
 FIN_DATA
 

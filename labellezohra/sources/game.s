@@ -328,6 +328,89 @@ iconToDestPoint
 	dw	3,0
 
 *-----------------------
+* GESTION DES OBJETS
+*-----------------------
+
+test_objet
+	lda	#0			; from 1
+]lp	pha
+	asl
+	asl
+	asl
+	tax
+	lda	taskWHERE+2		; compare le X
+	cmp	objet_x,x
+	bcc	objet_ko
+	lda	objet_xx,x
+	cmp	taskWHERE+2
+	bcc	objet_ko
+	
+	lda	taskWHERE		; et le Y
+	cmp	objet_y,x
+	bcc	objet_ko
+	lda	objet_yy,x
+	cmp	taskWHERE
+	bcc	objet_ko
+	
+	pla			; on a notre ic™ne
+	inc
+*	sta	instruction2
+	rts
+
+objet_ko
+	pla
+	inc
+	cmp	#nombre_objets	; et non plus nombre_objets
+	bcc	]lp
+	rts
+
+*---
+
+efface_objet	; X is object
+	cpx	#0
+	beq	eo1
+	jsr	set_objet
+
+	_HideCursor
+	PushLong #iconParamPtr
+	_PaintPixels
+	_ShowCursor	
+eo1	rts
+	
+*---
+
+affiche_objet	; X is object
+	cpx	#0
+	beq	ao1
+	jsr	set_objet
+
+	_HideCursor
+	PushLong #fondParamPtr
+	_PaintPixels
+	_ShowCursor	
+ao1	rts
+
+*---
+
+set_objet	txa
+	dec
+	asl
+	asl
+	asl		; because we are 16-bit
+	tax
+	lda	objet_y,x
+	sta	iconToSourceRect
+	sta	iconToDestPoint
+	lda	icon_x,x
+	sta	iconToSourceRect+2
+	sta	iconToDestPoint+2
+	lda	icon_yy,x
+	sta	iconToSourceRect+4
+	lda	icon_xx,x
+	sta	iconToSourceRect+6
+	rts
+
+*-----------------------
 * set_language
 *-----------------------
 
@@ -440,10 +523,61 @@ teste_fin	lda	paragraphes_lus
 tf_99	rts
 
 *-----------------------
-* 
+* DEMANDE_OBJET
 *-----------------------
 
 demande_objet
+	ldx	#1
+]lp	lda	reference_peche-1,x
+	and	#$ff
+	cmp	#8
+	beq	do_1
+
+	lda	paragraphe_lu-1,x
+	and	#$ff
+	cmp	#FALSE
+	bne	do_1
+
+	lda	indicateur_paragraphes_prealables-1,x
+	and	#$ff
+	tay
+	lda	indicateur-1,y
+	and	#$ff
+	cmp	#TRUE
+	bne	do_1
+	
+	lda	reference_objet-1,x
+	and	#$ff
+	tay
+	sep	#$20
+	lda	#TRUE
+	sta	icone_objets-1,y
+
+do_1	inx
+	cpx	pointeur_paragraphes
+	bcc	]lp
+	beq	]lp
+
+*-------- Affichage des objets
+
+	ldx	#1
+]lp	phx
+	lda	icone_objets-1,x
+	and	#$ff
+	cmp	#TRUE
+	bne	do_2
+
+	jsr	affiche_objet
+	
+do_2	plx
+	inx
+	cpx	#nombre_objets
+	bcc	]lp
+	beq	]lp
+
+*-------- Attend un clic
+
+
 	rts
 
 *-----------------------

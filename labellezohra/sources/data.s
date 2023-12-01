@@ -164,13 +164,13 @@ peche_yy	dw	199,199,199,199,199,199,199
 
 *---
 
-bloc_texte	ds	2000
+bloc_texte ds	2000
 mot	ds	128
 
 *---
 
 paragraphe	ds	nombre_paragraphes	; INDEX DE DES DEBUTS DES PARAGRAPHES
-pointeur_paragraphes	ds	2
+pointeur_paragraphes ds	2
 paragraphes_lus	ds	2
 reference_objet	ds	nombre_paragraphes	; NUMERO DE L'OBJET ASSOCIE A CHAQUE PARAGRAPHE
 reference_peche	ds	nombre_paragraphes	; NUMERO DU PECHE ASSOCIE A CHAQUE PARAGRAPHE

@@ -207,8 +207,8 @@ str4530	asc	"Il ne fallait pas fuir"00
 str4540	asc	"Vous avez raison d"A7"utiliser le ciseau,"8D
 	asc	"le monstre est mort"00
 
-str4550	asc	"A l"A7"interieur du placard, le No "00
-str4552	asc	8D" est inscrit"00
+str4550	asc	8D"A l"A7"interieur du placard, le No "00
+str4552	asc	" est inscrit"00
 str4555	asc	8D"Le placard se referme."00
 
 str4560	asc	"Le pistolet a explose"00

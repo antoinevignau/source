@@ -1530,22 +1530,25 @@ tblV	dfb	$bd
 
 *---
 
-nbO	=	1
+nbO	=	12
 
 refO	dfb	$bd
-	dfb	00,00
+	dfb	1,1,2,0,3,5
+	dfb	6,0,6,0,8,0
 
 O	dfb	$bd
-	dfb	00,00
+	dfb	1,1,2,0,3,5
+	dfb	6,0,6,0,8,0
 
 *---
 
 refO$	da	$bdbd	; see :3300
-	da	O$1,O$2
+	da	O$1,O$2,O$3,O$4,O$5,O$6
+	da	O$7,O$8,O$9,O$10,O$11,O$12
 	
 tblO$	da	$bdbd
-	da	O$1,O$2
-
+	da	O$1,O$2,O$3,O$4,O$5,O$6
+	da	O$7,O$8,O$9,O$10,O$11,O$12
 
 *---
 
@@ -1553,18 +1556,19 @@ M	=	8
 
 tblM$	da	$bdbd
 	da	M$1,M$2,M$3,M$4,M$5,M$6,M$7,M$8
-M$1	dfb	00
+	
+M$1	dfb	01,02,00
 M$2	dfb	00
-M$3	dfb	00
+M$3	dfb	02,02,00
 M$4	dfb	00
 M$5	dfb	00
-M$6	dfb	00
-M$7	dfb	00
-M$8	dfb	00
+M$6	dfb	04,05,00
+M$7	dfb	03,05,04,08,00
+M$8	dfb	03,02,00
 
 *--- On commence ˆ index 0
 
-AA	=	75
+AA	=	72
 
 tblA$	da	$bdbd
 	da	A$1,A$2,A$3,A$4,A$5,A$6,A$7,A$8,A$9,A$10
@@ -1649,7 +1653,8 @@ A$70	str	"B11.C11L."
 A$71	str	"A08E25.K07O."
 A$72	str	"E16B08.C08L."
 
-tblA	dfb	19,24
+tblA	dfb	0,0
+	dfb	19,24
 	dfb	19,23
 	dfb	41,24
 	dfb	41,23
@@ -1725,12 +1730,27 @@ tblA	dfb	19,24
 	
 *--- On commence ˆ index 0
 
-nbC	=	1
+nbC	=	15
 
 tblC$	da	$bdbd
-	da	C$1
+	da	C$1,C$2,C$3,C$4,C$5,C$6,C$7,C$8,C$9,C$10
+	da	C$11,C$12,C$13,C$14,C$15
 	
-C$1	str	"."
+C$1	str	"A02F18.E10D05."
+C$2	str	"A04E14.E17D10."
+C$3	str	"A05E12.D32."
+C$4	str	"A05F12.D33."
+C$5	str	"A07F16.D16Q."
+C$6	str	"A07B06.D14Q."
+C$7	str	"E14F20.G0404E20F21."
+C$8	str	"F14E20.E21."
+C$9	str	"G04F21.H11F14E15D27."
+C$10	str	"A02F06.D35."
+C$11	str	"A02E06.D34."
+C$12	str	"A02E09.D36."
+C$13	str	"A05E13.D36."
+C$14	str	"A08E25.D37."
+C$15	str	".N."
 
 *-----------------------------------
 

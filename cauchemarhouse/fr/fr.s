@@ -136,7 +136,7 @@ strINSTR	asc	8D"La liste des instructions ? "00
 
 strINSTR2	asc	8D8D
 	asc	"Vous voici arrive dans"8D
-	asc	"      Cauchemard House..."8D
+	asc	"      Cauchemar House..."8D
 	asc	8D
 	asc	"Pour converser avec l"A7"ordinateur, il"8D
 	asc	"faut rentrer les ordres en 1 ou 2 mots"8D
@@ -182,11 +182,11 @@ strLEMANOIR
 	asc	" vous a enleve pour vous faire tester..."
 	asc	8D8D
 	
-	asc	"@@@ @@@ @ @ @@@ @ @ @@@ @  @ @@@ @@@ @@ "
-	asc	"@   @ @ @ @ @   @ @ @   @@@@ @ @ @ @ @ @"
-	asc	"@   @@@ @ @ @   @@@ @@  @ @@ @@@ @@  @ @"
-	asc	"@   @ @ @ @ @   @ @ @   @  @ @ @ @ @ @ @"
-	asc	"@@@ @ @ @@@ @@@ @ @ @@@ @  @ @ @ @ @ @@ "
+	asc	"@@@ @@@ @ @ @@@ @ @ @@@ @   @ @@@ @@@"8D
+	asc	"@   @ @ @ @ @   @ @ @   @@ @@ @ @ @ @"8D
+	asc	"@   @@@ @ @ @   @@@ @@  @ @ @ @@@ @@ "8D
+	asc	"@   @ @ @ @ @   @ @ @   @   @ @ @ @ @"8D
+	asc	"@@@ @ @ @@@ @@@ @ @ @@@ @   @ @ @ @ @"8D
 	asc	8D
 	asc	"            @ @ @@@ @ @ @@@ @@@"8D
 	asc	"            @ @ @ @ @ @ @   @  "8D
@@ -260,16 +260,18 @@ V$75	str	"CASSE"	; Apple II
 * OBJETS
 *-----------------------------------
 
-O$1	asc	""00
-O$2	asc	""00
-O$3	asc	""00
-O$4	asc	""00
-O$5	asc	""00
-O$6	asc	""00
-O$7	asc	""00
-O$8	asc	""00
-O$9	asc	""00
-O$10	asc	""00
+O$1	asc	"pistolet laser"00
+O$2	asc	"outils"00
+O$3	asc	"combinaison"00
+O$4	asc	"combinaison mise"00
+O$5	asc	"flacon d"A7"acide"00
+O$6	asc	"boite noire"00
+O$7	asc	"gourde"00
+O$8	asc	"gourde vide"00
+O$9	asc	"cassette"00
+O$10	asc	"cassette effacee"00
+O$11	asc	"lampe"00
+O$12	asc	"lampe allumee"00
 
 *-----------------------------------
 * STRINGS

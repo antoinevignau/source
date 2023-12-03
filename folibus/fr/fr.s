@@ -69,7 +69,7 @@ str7170	asc	"L"A7"ascenseur semble monter..."00
 str7180	asc	"L"A7"ascenseur ne bouge pas"00
 str7190	asc	"Le cable vient de casser. Vous vous"8D
 	asc	"ecrasez en bas : mort"00
-str7200	asc	"Il faut noir. Il faudrait allumer"00
+str7200	asc	"Il fait noir. Il faudrait allumer"00
 str7210	asc	"Vous vous ecrasez au sol"00
 str7220	asc	"Il y a une clef."00
 str7230	asc	"La porte est fermee a clef"00
@@ -298,9 +298,9 @@ V$60	str	"PRES"
 V$61	str	"MET"
 V$62	str	"AVAL"
 V$63	str	"GANT"
-V$64	str	"K"
-V$65	str	"Q"
-V$66	str	"Z"
+V$64	str	"KK"
+V$65	str	"QQ"
+V$66	str	"ZZ"
 V$67	str	"ENFI"
 V$68	str	"LASE"
 V$69	str	"PIST"
@@ -327,12 +327,12 @@ O$9	asc	"fils repares"00
 O$10	asc	"une corde"00
 O$11	asc	"gants caoutchouc"00
 O$12	asc	"gants enfiles"00
-O$13	asc	"pilule K"00
-O$14	asc	"pilule K avalee"00
-O$15	asc	"pilule Z"00
-O$16	asc	"pilule Z avalee"00
-O$17	asc	"pilule Q"00
-O$18	asc	"pilule Q avalee"00
+O$13	asc	"pilule KK"00
+O$14	asc	"pilule KK avalee"00
+O$15	asc	"pilule ZZ"00
+O$16	asc	"pilule ZZ avalee"00
+O$17	asc	"pilule QQ"00
+O$18	asc	"pilule QQ avalee"00
 O$19	asc	"pistolet laser"00
 O$20	asc	"livre"00
 

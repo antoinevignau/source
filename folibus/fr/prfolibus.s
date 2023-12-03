@@ -1139,6 +1139,7 @@ tbl7000	da	$bdbd
 	rts
 
 :7250	@print	#str7250
+	@explode
 	rts
 
 :7260	@print	#str7260

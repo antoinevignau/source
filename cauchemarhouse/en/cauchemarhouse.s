@@ -1795,7 +1795,7 @@ tblD2H	dfb	0,10,20,30,40,50,60,70,80,90
 * LES AUTRES FICHIERS
 *-----------------------------------
 
-	put	fr.s
+	put	en.s
 	put	../common/musiques.s
 
 *--- It's the end

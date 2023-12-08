@@ -1,5 +1,5 @@
 *
-* Cauchemard House
+* Cauchemar House
 *
 * (c) 198?, Auteur inconnu
 * (c) 2023, Brutal Deluxe Software (Apple II)
@@ -68,7 +68,7 @@ str7160	asc	"Vous attrapez la peste. Vous mourez."00
 str7170	asc	"Deux lames de rasoir geantes se refer-"8D
 	asc	"-ment sur vous."00
 str7180	asc	"La bouteille fuyait. Vos mains sont ron-"
-	asc	"-gees. Vous attrapez aussitot la leptre."
+	asc	"-gees. Vous attrapez aussitot la lepre. "
 	asc	"La maladie vous emporte"00
 str7190	asc	"La porte s"A7"est ouverte."00
 str7200	asc	"Vous glissez. Vous vous ecrasez."00
@@ -124,9 +124,9 @@ str8080	asc	"Au nord il y a une porte avec un clavier"
 
 strREPLAY	asc	8D"Voulez-vous rejouer ? "00
 	
-strGAGNE	asc	"Cela est exceptionnel. Vous etes le "8D8D
+strGAGNE	asc	8D"Cela est exceptionnel. Vous etes le "8D8D
 	asc	"premier a etre sorti vivant de"8D8D
-	asc	"Cauchemard House"00
+	asc	"Cauchemar House"00
 	
 *-----------------------------------
 * 40000 - LISTE DES INSTRUCTIONS
@@ -161,22 +161,21 @@ strDISCLAIMER
 	asc	"L"A7"utilisation de ce programme est"8D8D
 	asc	"deconseillee aux personnes sensibles,"8D8D
 	asc	"aux enfants en bas age, ainsi qu"A7"a"8D8D
-	asc	"tout personne susceptible d"A7"avoir"8D8D
+	asc	"toute personne susceptible d"A7"avoir"8D8D
 	asc	"des malaises cardiaques."8D8D
 	asc	8D8D
 	asc	"Nous ne pourrions etre tenus responsa-"8D8D
 	asc	"-bles des troubles physiques ou mentaux"8D8D
 	asc	"provoques par votre echec dans"8D8D
-	asc	"Cauchemard House ............."00
+	asc	"Cauchemar House ............."00
 	
 *-----------------------------------
 * introPIC - la picture GR
 *-----------------------------------
 
 strLORICIELS
-	asc	"XavSnap et Brutal Deluxe presentent "00
-	asc	"MICRO-SYSTEMES est fier de presenter"00
-
+	asc	"Un auteur est fier de vous presenter"00
+	
 strLEMANOIR
 	asc	"Un maniaque, fou et sans scrupules,"8D
 	asc	" vous a enleve pour vous faire tester..."

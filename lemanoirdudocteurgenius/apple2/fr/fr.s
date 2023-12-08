@@ -317,7 +317,7 @@ strDISCLAIMER
 	asc	"L"A7"utilisation de ce programme est"8D8D
 	asc	"deconseillee aux personnes sensibles,"8D8D
 	asc	"aux enfants en bas age, ainsi qu"A7"a"8D8D
-	asc	"tout personne susceptible d"A7"avoir"8D8D
+	asc	"toute personne susceptible d"A7"avoir"8D8D
 	asc	"des malaises cardiaques."8D8D
 	asc	8D8D
 	asc	"Nous ne pourrions etre tenus responsa-"8D8D

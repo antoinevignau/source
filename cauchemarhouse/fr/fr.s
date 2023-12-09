@@ -253,7 +253,7 @@ V$46	str	"AMEN"
 V$47	str	"CODE"
 V$73	str	"TEMPO"	; Apple II
 V$74	str	"QUITTER"	; Apple II
-V$75	str	"CASSE"	; Apple II
+V$75	str	"CASE"	; Apple II
 
 *-----------------------------------
 * OBJETS

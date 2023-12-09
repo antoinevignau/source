@@ -81,7 +81,7 @@ str7270	asc	"The lamp batteries are dead."00
 str7280	asc	"With what???..."00
 str7290	asc	"Cheater... You have never read it."00
 str7300	asc	"The mummy turns to you and devours you."00
-str7310	asc	"A voice says, always take the second.'"00
+str7310	asc	"A voice says "A7"always take the second."A700
 str7320	asc	"-O-"00
 str7330	asc	"-O-"00
 str7340	asc	"There is a speaker pluggin in."00
@@ -198,14 +198,14 @@ strINTRO4	asc	"   (C) 198?, Unknown author   "00
 * VOCABULAIRE
 *-----------------------------------
 
-V$1	str	"NORTH"
-V$2	str	"WEST"
-V$3	str	"EAST"
-V$4	str	"SOUTH"
-V$5	str	"GO"
-V$6	str	"1"
-V$7	str	"2"
-V$8	str	"3"
+V$1	str	"NORTH"	; NORD
+V$2	str	"WEST"	; OUEST
+V$3	str	"EAST"	; EAST
+V$4	str	"SOUTH"	; SUD
+V$5	str	"ENTER"	; VAIS
+V$6	str	"1"	; 1
+V$7	str	"2"	; 2
+V$8	str	"3"	; 3
 V$9	str	"PULL"	; TIRE
 V$10	str	"PLUG"	; BRAN
 V$11	str	"SOCKET"	; PRIS

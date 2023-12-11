@@ -1,0 +1,1221 @@
+; Subroutine: Size=22, CC=1.
+; Called by: SUB2[819Bh].
+; Calls: SUB4.
+8000 SUB1:
+8000              di          
+8001              ld   a,(DATA01) 	; 7000h
+8004              ld   (DATA04),a 	; 72F9h
+8007              ld   a,(DATA02) 	; 7001h
+800A              ld   b,a    
+800B              ld   a,C8h  	; 200,  -56
+800D              sub  b      
+800E              ld   (DATA03),a 	; 72F8h
+8011              call SUB4   	; A670h
+8014              ei          
+8015              ret         
+
+8016              defb 00h    	; 0
+8017              defb 00h    	; 0
+8018              defb 00h    	; 0
+8019              defb 00h    	; 0
+801A              defb 00h    	; 0
+801B              defb 00h    	; 0
+801C              defb 00h    	; 0
+801D              defb 00h    	; 0
+801E              defb 00h    	; 0
+801F              defb 00h    	; 0
+
+; Subroutine: Size=69, CC=5.
+; Called by: -
+; Calls: SUB1, SUB2, SUB4.
+8020 SUB3:
+8020              ld   h,l    
+8021              add  a,b    
+8022              dec  c      
+8023              dec  c      
+8024              call SUB4   	; 8065h
+8027              inc  hl     
+8028              ld   a,h    
+8029              ld   bc,(DATA06) 	; 7FFAh
+802D              cp   b      
+802E              jp   nz,SUB2 	; 8011h
+8031              ld   a,l    
+8032              cp   c      
+8033              jp   nz,SUB2 	; 8011h
+8036              cp   e      
+8037              jr   nz,.sub3_l 	; 803Fh
+8039              ld   a,h    
+803A              cp   d      
+803B              jr   nz,.sub3_l 	; 803Fh
+803D              ei          
+803E              ret         
+803F .sub3_l:
+803F              ex   de,hl  
+8040              ld   de,(DATA06) 	; 7FFAh
+8044              and  a      
+8045              sbc  hl,de  
+8047              push hl     
+8048              pop  bc     
+8049              ld   de,7000h 	; 28672
+804C              ld   hl,(DATA06) 	; 7FFAh
+804F              ldir        
+8051              ld   hl,7000h 	; 28672
+8054              ld   a,(DATA07) 	; 7FFEh
+8057              push af     
+8058              ld   a,(DATA08) 	; 7FFFh
+805B              ld   (DATA07),a 	; 7FFEh
+805E              pop  af     
+805F              ld   (DATA08),a 	; 7FFFh
+8062              jp   SUB1   	; 8007h
+
+; Subroutine: Size=76, CC=2.
+; Called by: SUB3[8024h].
+; Calls: -
+8065 SUB4:
+8065              push hl     
+8066              push de     
+8067              push bc     
+8068              ld   hl,7FF0h 	; 32752
+806B              ld   a,b    
+806C              srl  b      
+806E              srl  b      
+8070              ld   (hl),b 
+8071              and  03h    	; 3
+8073              inc  hl     
+8074              ld   (hl),a 
+8075              ld   hl,37C0h 	; 14272
+8078              ld   b,00h  	; 0
+807A              add  hl,bc  
+807B              ld   e,(hl) 
+807C              ld   bc,0098h 	; 152
+807F              add  hl,bc  
+8080              ld   d,(hl) 
+8081              ex   de,hl  
+8082              ld   bc,(DATA04) 	; 7FF0h
+8086              ld   b,00h  	; 0
+8088              add  hl,bc  
+8089              ld   a,(hl) 
+808A              push hl     
+808B              ld   e,a    
+808C              ld   hl,7FF4h 	; 32756
+808F              ld   bc,(DATA05) 	; 7FF1h
+8093              ld   b,00h  	; 0
+8095              add  hl,bc  
+8096              and  (hl)   
+8097              jp   nz,.sub4_l 	; 80ACh
+809A              ld   a,e    
+809B              ld   hl,(DATA03) 	; 7FECh
+809E              add  hl,bc  
+809F              or   (hl)   
+80A0              pop  hl     
+80A1              ld   (hl),a 
+80A2              pop  bc     
+80A3              pop  de     
+80A4              pop  hl     
+80A5              ld   a,b    
+80A6              ld   (de),a 
+80A7              inc  de     
+80A8              ld   a,c    
+80A9              ld   (de),a 
+80AA              inc  de     
+80AB              ret         
+80AC .sub4_l:
+80AC              pop  bc     
+80AD              pop  bc     
+80AE              pop  de     
+80AF              pop  hl     
+80B0              ret         
+
+; Subroutine: Size=65, CC=3.
+; Called by: -
+; Calls: SUB2.
+80B1 SUB1:
+80B1              call m,SUB2 	; E519h
+80B4              ld   de,0050h 	; 80
+80B7              ld   hl,7FF3h 	; 32755
+80BA              ld   b,(hl) 
+80BB              pop  hl     
+80BC              inc  b      
+80BD              and  a      
+80BE .sub1_loop1:
+80BE              sbc  hl,de  
+80C0              djnz .sub1_loop1 	; 80BEh
+80C2              ld   bc,(DATA2) 	; 7FF0h
+80C6              ld   b,00h  	; 0
+80C8              add  hl,bc  
+80C9              ld   a,(hl) 
+80CA              push hl     
+80CB              push af     
+80CC              ld   hl,7FF4h 	; 32756
+80CF              ld   bc,(DATA3) 	; 7FF1h
+80D3              ld   b,00h  	; 0
+80D5              add  hl,bc  
+80D6              and  (hl)   
+80D7              jp   nz,.sub1_l 	; 80EDh
+80DA              ld   d,a    
+80DB              pop  af     
+80DC              ld   hl,7FE0h 	; 32736
+80DF              add  hl,bc  
+80E0              and  (hl)   
+80E1              ld   hl,(DATA1) 	; 7FECh
+80E4              add  hl,bc  
+80E5              or   (hl)   
+80E6              pop  hl     
+80E7              ld   (hl),a 
+80E8              ld   a,d    
+80E9 .sub1_loop2:
+80E9              pop  bc     
+80EA              pop  de     
+80EB              pop  hl     
+80EC              ret         
+80ED .sub1_l:
+80ED              pop  bc     
+80EE              pop  bc     
+80EF              jp   .sub1_loop2 	; 80E9h
+
+80F2              defb 00h    	; 0
+80F3              defb 00h    	; 0
+80F4              defb 00h    	; 0
+80F5              defb 00h    	; 0
+80F6              defb 00h    	; 0
+80F7              defb 00h    	; 0
+80F8              defb 00h    	; 0
+80F9              defb 00h    	; 0
+80FA              defb 03h    	; 3
+80FB              defb 00h    	; 0
+80FC              defb 00h    	; 0
+80FD              defb 00h    	; 0
+80FE              defb 00h    	; 0
+80FF              defb 00h    	; 0
+
+; Affiche une image
+; Subroutine: Size=161, CC=5.
+; Called by: -
+; Calls: SUB1, SUB3, SUB6, SUB7, SUB8, SUB9.
+8100 SUB2:
+8100              ld   a,(DATA05) 	; 7FDFh
+8103              add  a,a    
+8104              add  a,60h  	; 96, '`'
+8106              ld   e,a    
+8107              ld   d,7Fh  	; 127
+8109              ld   a,(de) 
+810A              ld   l,a    
+810B              inc  de     
+810C              ld   a,(de) 
+810D              ld   h,a    
+810E .sub2_loop1:
+810E              ld   a,(hl) 
+810F              cp   00h    	; 0
+8111              ret  z      
+8112              push hl     
+8113              push af     
+8114              and  C0h    	; 192,  -64
+8116              srl  a      
+8118              srl  a      
+811A              srl  a      
+811C              srl  a      
+811E              srl  a      
+8120              srl  a      
+8122              call SUB6   	; BBDEh - SET PEN
+8125              pop  af     
+8126              push af     
+8127              and  30h    	; 48, '0'
+8129              pop  de     
+812A              ld   a,d    
+812B              jp   nz,.sub2_l3 	; 817Bh
+812E              srl  a      
+8130              jp   c,.sub2_l1 	; 8151h
+8133              srl  a      
+8135              jp   c,.sub2_l2 	; 8166h
+8138              inc  hl     
+8139              ld   b,(hl) 
+813A              ld   c,b    
+813B              ld   a,02h  	; 2
+813D              push hl     
+813E              call SUB9   	; BC32h - SET INK
+8141              pop  hl     
+8142              inc  hl     
+8143              ld   b,(hl) 
+8144              ld   c,b    
+8145              ld   a,03h  	; 3
+8147              call SUB9   	; BC32h - SET INK
+814A .sub2_loop2:
+814A              pop  hl     
+814B              inc  hl     
+814C              inc  hl     
+814D              inc  hl     
+814E              jp   .sub2_loop1 	; 810Eh
+8151 .sub2_l1:
+8151              inc  hl     
+8152              push hl     
+8153              ld   a,(hl) 
+8154              ld   h,00h  	; 0
+8156              ld   l,a    
+8157              add  hl,hl  
+8158              ex   de,hl  
+8159              pop  hl     
+815A              inc  hl     
+815B              ld   a,(hl) 
+815C              ld   h,00h  	; 0
+815E              ld   l,a    
+815F              add  hl,hl  
+8160              call SUB8   	; BBF6h - LINE ABSOLUTE
+8163              jp   .sub2_loop2 	; 814Ah
+8166 .sub2_l2:
+8166              inc  hl     
+8167              push hl     
+8168              ld   a,(hl) 
+8169              ld   h,00h  	; 0
+816B              ld   l,a    
+816C              add  hl,hl  
+816D              ex   de,hl  
+816E              pop  hl     
+816F              inc  hl     
+8170              ld   a,(hl) 
+8171              ld   h,00h  	; 0
+8173              ld   l,a    
+8174              add  hl,hl  
+8175              call SUB7   	; BBEAh - PLOT ABSOLUTE
+8178              jp   .sub2_loop2 	; 814Ah
+817B .sub2_l3:
+817B              push af     
+817C              and  C0h    	; 192,  -64
+817E              call SUB3   	; 81A1h
+8181              ld   (DATA06),a 	; 7FFEh
+8184              pop  af     
+8185              and  30h    	; 48, '0'
+8187              sla  a      
+8189              sla  a      
+818B              call SUB3   	; 81A1h
+818E              ld   (DATA07),a 	; 7FFFh
+8191              inc  hl     
+8192              ld   a,(hl) 
+8193              ld   (DATA01),a 	; 7000h
+8196              inc  hl     
+8197              ld   a,(hl) 
+8198              ld   (DATA02),a 	; 7001h
+819B              call SUB1   	; 8000h
+819E              jp   .sub2_loop2 	; 814Ah
+
+
+; Subroutine: Size=19, CC=3.
+; Called by: SUB2[817Eh], SUB2[818Bh].
+; Calls: -
+81A1 SUB3:
+81A1              cp   40h    	; 64, '@'
+81A3              jp   nz,.sub3_l1 	; 81A9h
+81A6              ld   a,E4h  	; 228,  -28
+81A8              ret         
+81A9 .sub3_l1:
+81A9              cp   80h    	; 128, -128
+81AB              jp   nz,.sub3_l2 	; 81B1h
+81AE              ld   a,E8h  	; 232,  -24
+81B0              ret         
+81B1 .sub3_l2:
+81B1              ld   a,F4h  	; 244,  -12
+81B3              ret         
+
+
+81B4              defb 00h    	; 0
+81B5              defb 00h    	; 0
+81B6              defb 00h    	; 0
+81B7              defb 00h    	; 0
+81B8              defb 00h    	; 0
+81B9              defb 00h    	; 0
+81BA              defb 00h    	; 0
+81BB              defb 00h    	; 0
+81BC              defb 00h    	; 0
+81BD              defb 00h    	; 0
+81BE              defb 00h    	; 0
+81BF              defb 00h    	; 0
+
+; Retourne l'index du mot saisi
+; Subroutine: Size=38, CC=4.
+; Called by: -
+; Calls: -
+81C0 SUB1:
+81C0              ld   a,FFh  	; 255,   -1
+81C2              ld   (DATA1),a 	; 7004h
+81C5              ld   d,00h  	; 0
+81C7              ld   hl,7C10h 	; 31760
+81CA .sub1_loop1:
+81CA              ld   e,04h  	; 4 - longueur du mot
+81CC              ld   bc,7000h 	; 28672
+81CF .sub1_loop2:
+81CF              ld   a,(bc) 
+81D0              cp   (hl)   
+81D1              jp   nz,.sub1_l 	; 81DDh
+81D4              inc  bc     
+81D5              inc  hl     
+81D6              dec  e      
+81D7              jp   nz,.sub1_loop2 	; 81CFh
+81DA              ld   a,(hl) 
+81DB              ld   (bc),a 
+81DC              ret         
+81DD .sub1_l:
+81DD              inc  hl     
+81DE              add  hl,de  
+81DF              ld   a,(hl) 
+81E0              cp   FFh    	; 255,   -1
+81E2              ret  z      
+81E3              jp   .sub1_loop1 	; 81CAh
+
+; Analyse les actions
+; Subroutine: Size=210, CC=25.
+; Called by: -
+; Calls: -
+81E7 SUB1:
+81E7              ld   hl,6500h 	; 25856 - Les actions
+81EA              ld   ix,80FAh 	; 33018, -32518 - 
+81EE              ld   iy,7FDFh 	; 32735 - petit tableau
+81F2 .sub1_l01:
+81F2              ld   a,(hl) 
+81F3              cp   (ix+0) 
+81F6              jp   nz,.sub1_loop3 	; 82A6h
+81F9              inc  hl     
+81FA              ld   a,(hl) 
+81FB              cp   (ix+1) 
+81FE              jr   z,.sub1_loop1 	; 8205h
+8200              cp   00h    	; 0
+8202              jp   nz,.sub1_loop3 	; 82A6h
+8205 .sub1_loop1:
+8205              ld   de,7F00h 	; 32512
+8208              inc  hl     
+8209              ld   a,(hl) 
+820A              inc  hl     
+820B              ld   c,(hl) 
+820C              cp   41h    	; 65, 'A'
+820E              jr   z,.sub1_l02 	; 8238h
+8210              cp   42h    	; 66, 'B'
+8212              jr   z,.sub1_l03 	; 8240h
+8214              cp   43h    	; 67, 'C'
+8216              jr   z,.sub1_l04 	; 8251h
+8218              cp   44h    	; 68, 'D'
+821A              jr   z,.sub1_l05 	; 8262h
+821C              cp   45h    	; 69, 'E'
+821E              jr   z,.sub1_l06 	; 826Eh
+8220              cp   46h    	; 70, 'F'
+8222              jr   z,.sub1_l07 	; 827Dh
+8224              cp   47h    	; 71, 'G'
+8226              jr   z,.sub1_l08 	; 828Dh
+8228              cp   49h    	; 73, 'I'
+822A              jr   z,.sub1_l09 	; 829Dh
+822C              ld   bc,7000h 	; 28672
+822F .sub1_loop2:
+822F              ld   a,(hl) 
+8230              ld   (bc),a 
+8231              cp   FFh    	; 255,   -1
+8233              ret  z      
+8234              inc  hl     
+8235              inc  bc     
+8236              jr   .sub1_loop2 	; 822Fh
+8238 .sub1_l02:
+8238              ld   a,c    
+8239              cp   (iy+0) 
+823C              jr   nz,.sub1_loop3 	; 82A6h
+823E              jr   .sub1_loop1 	; 8205h
+8240 .sub1_l03:
+8240              ex   de,hl  
+8241              ld   b,00h  	; 0
+8243              add  hl,bc  
+8244              ld   a,(hl) 
+8245              ex   de,hl  
+8246              cp   (iy+0) 
+8249              jr   z,.sub1_loop1 	; 8205h
+824B              cp   FFh    	; 255,   -1
+824D              jr   z,.sub1_loop1 	; 8205h
+824F              jr   .sub1_loop3 	; 82A6h
+8251 .sub1_l04:
+8251              ex   de,hl  
+8252              ld   b,00h  	; 0
+8254              add  hl,bc  
+8255              ld   a,(hl) 
+8256              ex   de,hl  
+8257              cp   FFh    	; 255,   -1
+8259              jr   z,.sub1_loop3 	; 82A6h
+825B              cp   (iy+0) 
+825E              jr   z,.sub1_loop3 	; 82A6h
+8260              jr   .sub1_loop1 	; 8205h
+8262 .sub1_l05:
+8262              ex   de,hl  
+8263              ld   b,00h  	; 0
+8265              add  hl,bc  
+8266              ld   a,(hl) 
+8267              ex   de,hl  
+8268              cp   FFh    	; 255,   -1
+826A              jr   z,.sub1_loop1 	; 8205h
+826C              jr   .sub1_loop3 	; 82A6h
+826E .sub1_l06:
+826E              push hl     
+826F              ld   hl,7F40h 	; 32576
+8272              ld   b,00h  	; 0
+8274              add  hl,bc  
+8275              ld   a,(hl) 
+8276              pop  hl     
+8277              cp   00h    	; 0
+8279              jr   z,.sub1_loop3 	; 82A6h
+827B              jr   .sub1_loop1 	; 8205h
+827D .sub1_l07:
+827D              push hl     
+827E              ld   hl,7F40h 	; 32576
+8281              ld   b,00h  	; 0
+8283              add  hl,bc  
+8284              ld   a,(hl) 
+8285              pop  hl     
+8286              cp   00h    	; 0
+8288              jr   nz,.sub1_loop3 	; 82A6h
+828A              jp   .sub1_loop1 	; 8205h
+828D .sub1_l08:
+828D              push hl     
+828E              ld   hl,7F30h 	; 32560
+8291              ld   b,00h  	; 0
+8293              add  hl,bc  
+8294              ld   a,(hl) 
+8295              pop  hl     
+8296              cp   01h    	; 1
+8298              jr   nz,.sub1_loop3 	; 82A6h
+829A              jp   .sub1_loop1 	; 8205h
+829D .sub1_l09:
+829D              ld   a,c    
+829E              cp   (iy+0) 
+82A1              jr   z,.sub1_loop3 	; 82A6h
+82A3              jp   .sub1_loop1 	; 8205h
+82A6 .sub1_loop3:
+82A6              ld   a,(hl) 
+82A7              cp   FFh    	; 255,   -1
+82A9              jr   z,.sub1_l10 	; 82AEh
+82AB              inc  hl     
+82AC              jr   .sub1_loop3 	; 82A6h
+82AE .sub1_l10:
+82AE              inc  hl     
+82AF              ld   a,(hl) 
+82B0              cp   00h    	; 0
+82B2              jp   nz,.sub1_l01 	; 81F2h
+82B5              ld   (DATA1),a 	; 7000h
+82B8              ret         
+
+: Affiche le cadre
+; Subroutine: Size=75, CC=2.
+; Called by: -
+; Calls: SUB2, SUB3, SUB4.
+82B9 SUB1:
+82B9              ld   a,00h  	; 0
+82BB              call SUB2   	; BBDEh / SETPEN
+82BE              ld   de,0002h 	; 2
+82C1              ld   hl,0002h 	; 2
+82C4              call SUB3   	; BBEAh / PLOT ABSOLUTE
+82C7              ld   d,4Bh  	; 75, 'K'
+82C9              ld   bc,0002h 	; 2
+82CC .sub1_loop:
+82CC              push de     
+82CD              push bc     
+82CE              ld   hl,012Ah 	; 298
+82D1              and  a      
+82D2              sbc  hl,bc  
+82D4              pop  de     
+82D5              push hl     
+82D6              push bc     
+82D7              call SUB4   	; BBF6h / LINE ABSOLUTE
+82DA              pop  bc     
+82DB              ld   hl,018Eh 	; 398
+82DE              and  a      
+82DF              sbc  hl,bc  
+82E1              push hl     
+82E2              pop  de     
+82E3              pop  hl     
+82E4              push de     
+82E5              push bc     
+82E6              call SUB4   	; BBF6h / LINE ABSOLUTE
+82E9              pop  bc     
+82EA              pop  de     
+82EB              push bc     
+82EC              pop  hl     
+82ED              push bc     
+82EE              call SUB4   	; BBF6h / LINE ABSOLUTE
+82F1              pop  de     
+82F2              push de     
+82F3              pop  hl     
+82F4              inc  de     
+82F5              inc  de     
+82F6              push de     
+82F7              call SUB4   	; BBF6h / LINE ABSOLUTE
+82FA              pop  bc     
+82FB              pop  de     
+82FC              dec  d      
+82FD              ld   a,d    
+82FE              cp   00h    	; 0
+8300              ret  z      
+8301              jp   .sub1_loop 	; 82CCh
+
+; Retourne le pointeur vers le nom de la salle
+; in : en $7000 le numéro de salle
+; out: en $7000/$7001, le pointeur vers la string
+; Subroutine: Size=20, CC=3.
+; Called by: -
+; Calls: -
+8304 SUB1:
+8304              ld   hl,52A0h 	; 21152
+8307              ld   a,(DATA1) 	; 7000h
+830A              ld   b,a    
+830B .sub1_loop:
+830B              ld   a,(hl) 
+830C              inc  hl     
+830D              cp   00h    	; 0
+830F              jr   nz,.sub1_loop 	; 830Bh
+8311              dec  b      
+8312              jr   nz,.sub1_loop 	; 830Bh
+8314              ld   (DATA1),hl 	; 7000h
+8317              ret         
+
+; Retourne le pointeur vers la description
+; in : en $7000 le numéro à rechercher
+; out: en $7000/$7001, le pointeur vers la string
+
+; Subroutine: Size=22, CC=3.
+; Called by: -
+; Calls: -
+8318 SUB1:
+8318              ld   hl,5760h 	; 22368
+831B              jr   .sub1_loop1 	; 8307h
+
+...
+
+; Subroutine: Size=504, CC=19.
+; Called by: -
+; Calls: SUB2.
+A670 SUB1:
+A670              ld   hl,A868h 	; 43112, -22424
+A673              ld   d,00h  	; 0
+A675              ld   a,(DATA01) 	; 7FFEh
+A678              sub  E4h    	; 228,  -28
+A67A              ld   e,a    
+A67B              add  hl,de  
+A67C              ld   b,(hl) 
+A67D              ld   hl,A869h 	; 43113, -22423
+A680              ld   a,(DATA02) 	; 7FFFh
+A683              sub  E4h    	; 228,  -28
+A685              ld   e,a    
+A686              add  hl,de  
+A687              ld   a,(hl) 
+A688              or   b      
+A689              ld   (DATA09),a 	; A8B4h
+A68C              ld   hl,A868h 	; 43112, -22424
+A68F              ld   a,(DATA02) 	; 7FFFh
+A692              sub  E4h    	; 228,  -28
+A694              ld   e,a    
+A695              add  hl,de  
+A696              ld   b,(hl) 
+A697              ld   hl,A869h 	; 43113, -22423
+A69A              ld   a,(DATA01) 	; 7FFEh
+A69D              sub  E4h    	; 228,  -28
+A69F              ld   e,a    
+A6A0              add  hl,de  
+A6A1              ld   a,(hl) 
+A6A2              or   b      
+A6A3              ld   (DATA10),a 	; A8B5h
+A6A6              ld   ix,A86Fh 	; 43119, -22417
+A6AA              ld   iy,A874h 	; 43124, -22412
+A6AE              ld   hl,72F8h 	; 29432
+A6B1 .sub1_l01:
+A6B1              ld   b,(hl) 
+A6B2              inc  hl     
+A6B3              ld   a,(hl) 
+A6B4              ld   c,a    
+A6B5              inc  hl     
+A6B6              ld   (DATA03),a 	; A8ABh
+A6B9              ld   (DATA07),hl 	; A8B1h
+A6BC              ld   a,b    
+A6BD              ld   de,A8B4h 	; 43188, -22348
+A6C0              and  01h    	; 1
+A6C2              add  a,e    
+A6C3              ld   e,a    
+A6C4              ld   a,(de) 
+A6C5              ld   (DATA08),a 	; A8B3h
+A6C8              ld   a,b    
+A6C9              ld   (DATA05),a 	; A8ADh
+A6CC              and  F8h    	; 248,   -8
+A6CE              ld   l,a    
+A6CF              ld   h,00h  	; 0
+A6D1              ld   b,00h  	; 0
+A6D3              srl  c      
+A6D5              srl  c      
+A6D7              add  hl,hl  
+A6D8              ld   d,h    
+A6D9              ld   e,l    
+A6DA              add  hl,hl  
+A6DB              add  hl,hl  
+A6DC              add  hl,de  
+A6DD              add  hl,bc  
+A6DE              ld   a,(DATA05) 	; A8ADh
+A6E1              and  07h    	; 7
+A6E3              add  a,a    
+A6E4              add  a,a    
+A6E5              add  a,a    
+A6E6              ld   de,C000h 	; 49152, -16384
+A6E9              add  a,d    
+A6EA              ld   d,a    
+A6EB              add  hl,de  
+A6EC              ld   (DATA11),hl 	; A8B6h
+A6EF              ld   b,c    
+A6F0              ld   a,(DATA03) 	; A8ABh
+A6F3              and  03h    	; 3
+A6F5              ld   c,a    
+A6F6              ld   (DATA12),a 	; A8B8h
+A6F9              ld   (SELF_MOD01+2),a 	; A707h, WARNING: Instruction accesses code!
+A6FC              ld   a,b    
+A6FD              ld   (DATA13),a 	; A8B9h
+A700              ld   a,(DATA08) 	; A8B3h
+A703              ld   e,a    
+A704              ld   a,(hl) 
+
+
+; Data accessed by:
+; A6F9h(in SUB1)
+A705 SELF_MOD01:
+A705              and  (ix+0) 
+A708              jr   z,.sub1_l02 	; A70Dh
+A70A              jp   .sub1_l18 	; A856h
+A70D .sub1_l02:
+A70D              ld   a,c    
+A70E              ld   (SELF_MOD02+2),a 	; A719h, WARNING: Instruction accesses code!
+A711              ld   (SELF_MOD04+2),a 	; A74Bh, WARNING: Instruction accesses code!
+A714              ld   (SELF_MOD03+2),a 	; A71Ch, WARNING: Instruction accesses code!
+
+
+; Data accessed by:
+; A70Eh(in SUB1)
+A717 SELF_MOD02:
+A717              ld   a,(ix+0) 
+
+
+; Data accessed by:
+; A714h(in SUB1)
+A71A SELF_MOD03:
+A71A              or   (iy+0) 
+A71D              ld   d,a    
+A71E              and  (hl)   
+A71F              jr   nz,.sub1_l05 	; A741h
+A721              ld   a,e    
+A722              and  d      
+A723              or   (hl)   
+A724              ld   (hl),a 
+A725              ld   a,b    
+A726 .sub1_loop1:
+A726              inc  hl     
+A727              inc  a      
+A728              cp   32h    	; 50, '2'
+A72A              jr   nz,.sub1_l03 	; A730h
+A72C              ld   a,C8h  	; 200,  -56
+A72E              jr   .sub1_l07 	; A775h
+A730 .sub1_l03:
+A730              ld   d,a    
+A731              ld   a,(hl) 
+A732              and  a      
+A733              jr   nz,.sub1_l04 	; A739h
+A735              ld   a,d    
+A736              ld   (hl),e 
+A737              jr   .sub1_loop1 	; A726h
+A739 .sub1_l04:
+A739              ld   b,d    
+A73A              ld   c,00h  	; 0
+A73C              ld   a,00h  	; 0
+A73E              ld   (SELF_MOD04+2),a 	; A74Bh, WARNING: Instruction accesses code!
+A741 .sub1_l05:
+A741              ld   d,(hl) 
+A742              ld   a,(SELF_MOD04+2) 	; A74Bh, WARNING: Instruction accesses code!
+A745 .sub1_loop2:
+A745              ld   (SELF_MOD04+2),a 	; A74Bh, WARNING: Instruction accesses code!
+A748              ld   a,d    
+
+
+; Data accessed by:
+; A711h(in SUB1), A742h(in SUB1), A745h(in SUB1), A74Eh(in SUB1), A754h(in SUB1), A770h(in SUB1), A73Eh(in SUB1)
+A749 SELF_MOD04:
+A749              and  (ix+0) 
+A74C              jr   nz,.sub1_l06 	; A754h
+A74E              ld   a,(SELF_MOD04+2) 	; A74Bh, WARNING: Instruction accesses code!
+A751              inc  a      
+A752              jr   .sub1_loop2 	; A745h
+A754 .sub1_l06:
+A754              ld   a,(SELF_MOD04+2) 	; A74Bh, WARNING: Instruction accesses code!
+A757              add  a,0Bh  	; 11
+A759              ld   (SELF_MOD05+2),a 	; A766h, WARNING: Instruction accesses code!
+A75C              ld   a,c    
+A75D              dec  a      
+A75E              ld   (SELF_MOD06+2),a 	; A769h, WARNING: Instruction accesses code!
+A761              ld   a,(DATA08) 	; A8B3h
+
+
+; Data accessed by:
+; A759h(in SUB1)
+A764 SELF_MOD05:
+A764              and  (ix+0) 
+
+
+; Data accessed by:
+; A75Eh(in SUB1)
+A767 SELF_MOD06:
+A767              and  (iy+0) 
+A76A              or   (hl)   
+A76B              ld   (hl),a 
+A76C              ld   a,b    
+A76D              add  a,a    
+A76E              add  a,a    
+A76F              ld   l,a    
+A770              ld   a,(SELF_MOD04+2) 	; A74Bh, WARNING: Instruction accesses code!
+A773              add  a,l    
+A774              dec  a      
+A775 .sub1_l07:
+A775              ld   (DATA04),a 	; A8ACh
+A778              ld   hl,(DATA11) 	; A8B6h
+A77B              ld   a,(DATA13) 	; A8B9h
+A77E              ld   b,a    
+A77F              ld   a,(DATA03) 	; A8ABh
+A782              and  a      
+A783              jr   nz,.sub1_l08 	; A78Ch
+A785 .sub1_loop3:
+A785              ld   b,00h  	; 0
+A787              ld   a,00h  	; 0
+A789              jp   .sub1_l15 	; A81Ah
+A78C .sub1_l08:
+A78C              ld   a,(DATA12) 	; A8B8h
+A78F              ld   c,a    
+A790              dec  a      
+A791              cp   FFh    	; 255,   -1
+A793              jr   nz,.sub1_l09 	; A799h
+A795              dec  b      
+A796              dec  hl     
+A797              ld   a,03h  	; 3
+A799 .sub1_l09:
+A799              ld   c,a    
+A79A              ld   (SELF_MOD07+2),a 	; A7A7h, WARNING: Instruction accesses code!
+A79D              ld   (SELF_MOD09+2),a 	; A7D6h, WARNING: Instruction accesses code!
+A7A0              add  a,0Bh  	; 11
+A7A2              ld   (SELF_MOD08+2),a 	; A7AAh, WARNING: Instruction accesses code!
+
+
+; Data accessed by:
+; A79Ah(in SUB1)
+A7A5 SELF_MOD07:
+A7A5              ld   a,(ix+0) 
+
+
+; Data accessed by:
+; A7A2h(in SUB1)
+A7A8 SELF_MOD08:
+A7A8              or   (ix+0) 
+A7AB              ld   d,a    
+A7AC              and  (hl)   
+A7AD              jr   nz,.sub1_l11 	; A7CCh
+A7AF              ld   a,(DATA08) 	; A8B3h
+A7B2              ld   e,a    
+A7B3              and  d      
+A7B4              or   (hl)   
+A7B5              ld   (hl),a 
+A7B6              ld   a,b    
+A7B7 .sub1_loop4:
+A7B7              dec  a      
+A7B8              cp   FFh    	; 255,   -1
+A7BA              jr   z,.sub1_loop3 	; A785h
+A7BC              dec  hl     
+A7BD              ld   d,a    
+A7BE              ld   a,(hl) 
+A7BF              and  a      
+A7C0              jr   nz,.sub1_l10 	; A7C6h
+A7C2              ld   a,d    
+A7C3              ld   (hl),e 
+A7C4              jr   .sub1_loop4 	; A7B7h
+A7C6 .sub1_l10:
+A7C6              ld   a,03h  	; 3
+A7C8              ld   (SELF_MOD09+2),a 	; A7D6h, WARNING: Instruction accesses code!
+A7CB              ld   b,d    
+A7CC .sub1_l11:
+A7CC              ld   d,(hl) 
+A7CD              ld   a,(SELF_MOD09+2) 	; A7D6h, WARNING: Instruction accesses code!
+A7D0 .sub1_loop5:
+A7D0              ld   (SELF_MOD09+2),a 	; A7D6h, WARNING: Instruction accesses code!
+A7D3              ld   a,d    
+
+
+; Data accessed by:
+; A79Dh(in SUB1), A7CDh(in SUB1), A7D0h(in SUB1), A7D9h(in SUB1), A7C8h(in SUB1), A7DFh(in SUB1), A7FDh(in SUB1), A80Eh(in SUB1)
+A7D4 SELF_MOD09:
+A7D4              and  (ix+0) 
+A7D7              jr   nz,.sub1_l12 	; A7DFh
+A7D9              ld   a,(SELF_MOD09+2) 	; A7D6h, WARNING: Instruction accesses code!
+A7DC              dec  a      
+A7DD              jr   .sub1_loop5 	; A7D0h
+A7DF .sub1_l12:
+A7DF              ld   a,(SELF_MOD09+2) 	; A7D6h, WARNING: Instruction accesses code!
+A7E2 .sub1_loop6:
+A7E2              inc  a      
+A7E3              cp   04h    	; 4
+A7E5              jr   z,.sub1_l14 	; A7F8h
+A7E7              ld   (SELF_MOD10+2),a 	; A7ECh, WARNING: Instruction accesses code!
+
+
+; Data accessed by:
+; A7E7h(in SUB1), A7F0h(in SUB1), A7F5h(in SUB1)
+A7EA SELF_MOD10:
+A7EA              ld   a,(ix+0) 
+A7ED              and  (hl)   
+A7EE              jr   nz,.sub1_l13 	; A7F5h
+A7F0              ld   a,(SELF_MOD10+2) 	; A7ECh, WARNING: Instruction accesses code!
+A7F3              jr   .sub1_loop6 	; A7E2h
+A7F5 .sub1_l13:
+A7F5              ld   a,(SELF_MOD10+2) 	; A7ECh, WARNING: Instruction accesses code!
+A7F8 .sub1_l14:
+A7F8              add  a,0Bh  	; 11
+A7FA              ld   (SELF_MOD11+2),a 	; A808h, WARNING: Instruction accesses code!
+A7FD              ld   a,(SELF_MOD09+2) 	; A7D6h, WARNING: Instruction accesses code!
+A800              ld   (SELF_MOD12+2),a 	; A80Bh, WARNING: Instruction accesses code!
+A803              ld   a,(DATA08) 	; A8B3h
+
+
+; Data accessed by:
+; A7FAh(in SUB1)
+A806 SELF_MOD11:
+A806              and  (ix+0) 
+
+
+; Data accessed by:
+; A800h(in SUB1)
+A809 SELF_MOD12:
+A809              and  (iy+0) 
+A80C              or   (hl)   
+A80D              ld   (hl),a 
+A80E              ld   a,(SELF_MOD09+2) 	; A7D6h, WARNING: Instruction accesses code!
+A811              inc  a      
+A812              cp   04h    	; 4
+A814              jr   nz,.sub1_l15 	; A81Ah
+A816              inc  b      
+A817              inc  hl     
+A818              ld   a,00h  	; 0
+A81A .sub1_l15:
+A81A              ld   (DATA11),hl 	; A8B6h
+A81D              ld   c,a    
+A81E              ld   (DATA12),a 	; A8B8h
+A821              ld   a,b    
+A822              ld   (DATA13),a 	; A8B9h
+A825              ld   de,F800h 	; 63488,  -2048
+A828              ld   a,h    
+A829              cp   C8h    	; 200,  -56
+A82B              jr   nc,.sub1_l16 	; A830h
+A82D              ld   de,37B0h 	; 14256
+A830 .sub1_l16:
+A830              add  hl,de  
+A831              ld   a,(DATA05) 	; A8ADh
+A834              dec  a      
+A835              call SUB2   	; A8BAh
+A838              ld   a,(DATA13) 	; A8B9h
+A83B              ld   b,a    
+A83C              ld   a,(DATA12) 	; A8B8h
+A83F              ld   c,a    
+A840              ld   de,0800h 	; 2048
+A843              ld   hl,(DATA11) 	; A8B6h
+A846              ld   a,F7h  	; 247,   -9
+A848              cp   h      
+A849              jr   nc,.sub1_l17 	; A84Eh
+A84B              ld   de,C850h 	; 51280, -14256
+A84E .sub1_l17:
+A84E              add  hl,de  
+A84F              ld   a,(DATA05) 	; A8ADh
+A852              inc  a      
+A853              call SUB2   	; A8BAh
+A856 .sub1_l18:
+A856              ld   hl,(DATA07) 	; A8B1h
+A859              ld   a,h    
+A85A              cp   72h    	; 114, 'r'
+A85C              jr   z,.sub1_l19 	; A861h
+A85E              jp   .sub1_l01 	; A6B1h
+A861 .sub1_l19:
+A861              ld   a,l    
+A862              cp   FAh    	; 250,   -6
+A864              ret  z      
+A865              jp   .sub1_l01 	; A6B1h
+
+
+A868              defb A0h    	; 160,  -96
+A869              defb 50h    	; 80, 'P'
+A86A              defb 00h    	; 0
+A86B              defb 00h    	; 0
+A86C              defb 0Ah    	; 10
+A86D              defb 05h    	; 5
+A86E              defb 00h    	; 0
+A86F              defb 88h    	; 136, -120
+A870              defb 44h    	; 68, 'D'
+A871              defb 22h    	; 34, '"'
+A872              defb 11h    	; 17
+A873              defb FFh    	; 255,   -1
+A874              defb 77h    	; 119, 'w'
+A875              defb 33h    	; 51, '3'
+A876              defb 11h    	; 17
+A877              defb 00h    	; 0
+A878              defb AAh    	; 170,  -86
+A879              defb 55h    	; 85, 'U'
+A87A              defb 00h    	; 0
+A87B              defb 88h    	; 136, -120
+A87C              defb CCh    	; 204,  -52
+A87D              defb EEh    	; 238,  -18
+A87E              defb FFh    	; 255,   -1
+A87F              defb 50h    	; 80, 'P'
+A880              defb 61h    	; 97, 'a'
+A881              defb 74h    	; 116, 't'
+A882              defb 72h    	; 114, 'r'
+A883              defb 69h    	; 105, 'i'
+A884              defb 63h    	; 99, 'c'
+A885              defb 65h    	; 101, 'e'
+A886              defb 20h    	; 32, ' '
+A887              defb 47h    	; 71, 'G'
+A888              defb 55h    	; 85, 'U'
+A889              defb 45h    	; 69, 'E'
+A88A              defb 52h    	; 82, 'R'
+A88B              defb 4Ch    	; 76, 'L'
+A88C              defb 41h    	; 65, 'A'
+A88D              defb 49h    	; 73, 'I'
+A88E              defb 53h    	; 83, 'S'
+A88F              defb 20h    	; 32, ' '
+A890              defb 70h    	; 112, 'p'
+A891              defb 6Fh    	; 111, 'o'
+A892              defb 75h    	; 117, 'u'
+A893              defb 72h    	; 114, 'r'
+A894              defb 20h    	; 32, ' '
+A895              defb 4Ch    	; 76, 'L'
+A896              defb 4Fh    	; 79, 'O'
+A897              defb 52h    	; 82, 'R'
+A898              defb 49h    	; 73, 'I'
+A899              defb 43h    	; 67, 'C'
+A89A              defb 49h    	; 73, 'I'
+A89B              defb 45h    	; 69, 'E'
+A89C              defb 4Ch    	; 76, 'L'
+A89D              defb 53h    	; 83, 'S'
+A89E              defb 4Ch    	; 76, 'L'
+A89F              defb 65h    	; 101, 'e'
+A8A0              defb 20h    	; 32, ' '
+A8A1              defb 32h    	; 50, '2'
+A8A2              defb 39h    	; 57, '9'
+A8A3              defb 2Fh    	; 47, '/'
+A8A4              defb 30h    	; 48, '0'
+A8A5              defb 33h    	; 51, '3'
+A8A6              defb 2Fh    	; 47, '/'
+A8A7              defb 31h    	; 49, '1'
+A8A8              defb 39h    	; 57, '9'
+A8A9              defb 38h    	; 56, '8'
+A8AA              defb 35h    	; 53, '5'
+
+
+; Data accessed by:
+; A6B6h(in SUB1), A6F0h(in SUB1), A77Fh(in SUB1)
+A8AB DATA03:
+A8AB              defb 00h    	; 0
+
+
+; Data accessed by:
+; A775h(in SUB1), A915h(in SUB2), A964h(in SUB2)
+A8AC DATA04:
+A8AC              defb 00h    	; 0
+
+
+; Data accessed by:
+; A6C9h(in SUB1), A6DEh(in SUB1), A831h(in SUB1), A84Fh(in SUB1)
+A8AD DATA05:
+A8AD              defb 00h    	; 0
+
+
+; Data accessed by:
+; A8C0h(in SUB2), A922h(in SUB2)
+A8AE DATA06:
+A8AE              defb 00h    	; 0
+A8AF              defb 00h    	; 0
+A8B0              defb 00h    	; 0
+
+
+; Data accessed by:
+; A6B9h(in SUB1), A856h(in SUB1), A91Bh(in SUB2), A926h(in SUB2)
+A8B1 DATA07:
+A8B1              defb 00h    	; 0
+A8B2              defb 00h    	; 0
+
+
+; Data accessed by:
+; A6C5h(in SUB1), A700h(in SUB1), A761h(in SUB1), A7AFh(in SUB1), A803h(in SUB1)
+A8B3 DATA08:
+A8B3              defb 00h    	; 0
+
+
+; Data accessed by:
+; A689h(in SUB1)
+A8B4 DATA09:
+A8B4              defb 00h    	; 0
+
+
+; Data accessed by:
+; A6A3h(in SUB1)
+A8B5 DATA10:
+A8B5              defb 00h    	; 0
+
+
+; Data accessed by:
+; A6ECh(in SUB1), A778h(in SUB1), A81Ah(in SUB1), A843h(in SUB1)
+A8B6 DATA11:
+A8B6              defb 00h    	; 0
+A8B7              defb 00h    	; 0
+
+
+; Data accessed by:
+; A6F6h(in SUB1), A78Ch(in SUB1), A81Eh(in SUB1), A83Ch(in SUB1)
+A8B8 DATA12:
+A8B8              defb 00h    	; 0
+
+
+; Data accessed by:
+; A6FDh(in SUB1), A77Bh(in SUB1), A822h(in SUB1), A838h(in SUB1)
+A8B9 DATA13:
+A8B9              defb 00h    	; 0
+
+
+; Subroutine: Size=181, CC=17.
+; Called by: SUB1[A835h], SUB1[A853h].
+; Calls: -
+A8BA SUB2:
+A8BA              cp   C8h    	; 200,  -56
+A8BC              ret  z      
+A8BD              cp   30h    	; 48, '0'
+A8BF              ret  z      
+A8C0              ld   (DATA06),a 	; A8AEh
+A8C3              ld   d,(hl) 
+A8C4              ld   a,c    
+A8C5              ld   (SELF_MOD13+2),a 	; A8CBh, WARNING: Instruction accesses code!
+A8C8              ld   a,d    
+
+
+; Data accessed by:
+; A8C5h(in SUB2)
+A8C9 SELF_MOD13:
+A8C9              and  (ix+0) 
+A8CC              jr   z,.sub2_l4 	; A910h
+A8CE .sub2_l1:
+A8CE              ld   a,c    
+A8CF              cp   03h    	; 3
+A8D1              jr   z,.sub2_loop1 	; A8E5h
+A8D3              ld   (SELF_MOD14+2),a 	; A8DFh, WARNING: Instruction accesses code!
+A8D6              ld   (SELF_MOD15+2),a 	; A8E2h, WARNING: Instruction accesses code!
+A8D9              ld   (.sub2_loop2+2),a 	; A8FBh, WARNING: Instruction accesses code!
+A8DC              ld   a,d    
+
+
+; Data accessed by:
+; A8D3h(in SUB2)
+A8DD SELF_MOD14:
+A8DD              and  (iy+0) 
+
+
+; Data accessed by:
+; A8D6h(in SUB2)
+A8E0 SELF_MOD15:
+A8E0              cp   (iy+0) 
+A8E3              jr   nz,.sub2_loop2 	; A8F9h
+A8E5 .sub2_loop1:
+A8E5              inc  b      
+A8E6              ld   a,b    
+A8E7              cp   32h    	; 50, '2'
+A8E9              ret  z      
+A8EA              inc  hl     
+A8EB              ld   a,(hl) 
+A8EC              and  a      
+A8ED              jr   nz,.sub2_l2 	; A8F3h
+A8EF              ld   c,00h  	; 0
+A8F1              jr   .sub2_l4 	; A910h
+A8F3 .sub2_l2:
+A8F3              ld   d,a    
+A8F4              ld   a,00h  	; 0
+A8F6              ld   (.sub2_loop2+2),a 	; A8FBh, WARNING: Instruction accesses code!
+A8F9 .sub2_loop2:
+A8F9              ld   a,(ix+0) 
+A8FC              and  d      
+A8FD              jr   z,.sub2_l3 	; A90Ch
+A8FF              ld   a,(.sub2_loop2+2) 	; A8FBh, WARNING: Instruction accesses code!
+A902              inc  a      
+A903              cp   04h    	; 4
+A905              jr   z,.sub2_loop1 	; A8E5h
+A907              ld   (.sub2_loop2+2),a 	; A8FBh, WARNING: Instruction accesses code!
+A90A              jr   .sub2_loop2 	; A8F9h
+A90C .sub2_l3:
+A90C              ld   a,(.sub2_loop2+2) 	; A8FBh, WARNING: Instruction accesses code!
+A90F              ld   c,a    
+A910 .sub2_l4:
+A910              ld   a,b    
+A911              add  a,a    
+A912              add  a,a    
+A913              add  a,c    
+A914              ld   e,a    
+A915              ld   a,(DATA04) 	; A8ACh
+A918              cp   e      
+A919              ret  c      
+A91A              ld   a,e    
+A91B              ld   de,(DATA07) 	; A8B1h
+A91F              dec  de     
+A920              ld   (de),a 
+A921              dec  de     
+A922              ld   a,(DATA06) 	; A8AEh
+A925              ld   (de),a 
+A926              ld   (DATA07),de 	; A8B1h
+A92A              ld   a,c    
+A92B              ld   (SELF_MOD16+2),a 	; A932h, WARNING: Instruction accesses code!
+A92E              ld   a,(hl) 
+A92F              ld   d,a    
+
+
+; Data accessed by:
+; A92Bh(in SUB2), A935h(in SUB2)
+A930 SELF_MOD16:
+A930              and  (iy+0) 
+A933              jr   z,.sub2_loop3 	; A93Dh
+A935              ld   a,(SELF_MOD16+2) 	; A932h, WARNING: Instruction accesses code!
+A938              ld   (SELF_MOD17+2),a 	; A956h, WARNING: Instruction accesses code!
+A93B              jr   .sub2_loop4 	; A94Dh
+A93D .sub2_loop3:
+A93D              inc  b      
+A93E              ld   a,b    
+A93F              cp   32h    	; 50, '2'
+A941              ret  z      
+A942              inc  hl     
+A943              ld   a,(hl) 
+A944              and  a      
+A945              jr   z,.sub2_loop3 	; A93Dh
+A947              ld   d,a    
+A948              ld   a,FFh  	; 255,   -1
+A94A              ld   (SELF_MOD17+2),a 	; A956h, WARNING: Instruction accesses code!
+A94D .sub2_loop4:
+A94D              ld   a,(SELF_MOD17+2) 	; A956h, WARNING: Instruction accesses code!
+A950              inc  a      
+A951              ld   (SELF_MOD17+2),a 	; A956h, WARNING: Instruction accesses code!
+
+
+; Data accessed by:
+; A938h(in SUB2), A94Ah(in SUB2), A94Dh(in SUB2), A951h(in SUB2), A95Eh(in SUB2)
+A954 SELF_MOD17:
+A954              ld   a,(ix+0) 
+A957              and  d      
+A958              jr   z,.sub2_loop4 	; A94Dh
+A95A              ld   a,b    
+A95B              add  a,a    
+A95C              add  a,a    
+A95D              ld   e,a    
+A95E              ld   a,(SELF_MOD17+2) 	; A956h, WARNING: Instruction accesses code!
+A961              ld   c,a    
+A962              add  a,e    
+A963              ld   e,a    
+A964              ld   a,(DATA04) 	; A8ACh
+A967              cp   e      
+A968              ret  c      
+A969              ret  z      
+A96A              ld   a,(hl) 
+A96B              ld   d,a    
+A96C              jp   .sub2_l1 	; A8CEh
+
+
+A96F              defb 00h    	; 0
+; ...
+; ...
+; ...

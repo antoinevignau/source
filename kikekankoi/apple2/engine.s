@@ -231,15 +231,7 @@ drawREAD	lda	$bdbd
 	inc	drawREAD+1
 	bne	drawREAD1
 	inc	drawREAD+2
-drawREAD1	pha
-	lda	drawREAD+2
-	cmp	#$50
-	bcc	drawREAD2
-	pla
-	lda	#0
-	pha
-drawREAD2	pla
-	rts
+drawREAD1	rts
 	
 *----------------------
 * Données du moteur
@@ -271,3 +263,5 @@ oric2hgr	hex	0705010602030400
 *-----------------------------
 
 	put	common/images.s
+	put	fr/fr.s
+	

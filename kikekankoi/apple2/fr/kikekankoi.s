@@ -125,11 +125,8 @@ lowerOK
 *--------
 
 	jsr	introPIC	; la picture GR
-	jsr	:51000	; le disclaimer
-	jsr	:40000	; les instructions
 	
-REPLAY
-	jsr	initALL
+REPLAY	jsr	initALL
 	jsr	HGR
 
 	lda	#20	; et c'est fenêtré en plus !
@@ -152,8 +149,8 @@ REPLAY
 	cmp	#15
 	bne	:101
 
-:100_OK	lda	#1
-	ldx	#2
+:100_OK	ldx	#2
+	lda	#1
 	sta	P,x
 
 :101	lda	SALLE
@@ -166,8 +163,8 @@ REPLAY
 	cmp	#54
 	beq	:105
 	
-	lda	#0
 	ldx	#2
+	lda	#0
 	sta	P,x
 
 :105	ldx	#10
@@ -198,6 +195,8 @@ REPLAY
 
 :200	jsr	setHGR
 
+	@print	#strRETURN
+	
 	lda	SALLE
 	asl
 	tax
@@ -304,7 +303,18 @@ REPLAY
 :550	@print	#strCOMMANDE
 	jsr	GETLN1
 
-	lda	TEXTBUFFER
+	dec	TEMPS
+	lda	TEMPS
+	cmp	#-1
+	bne	:551
+	dec	TEMPS+1
+	lda	TEMPS+1
+	cmp	#-1
+	bne	:551
+
+	jsr	:4370
+
+:551	lda	TEXTBUFFER
 	cmp	#chrRET2
 	bne	:570
 	jsr	switchVIDEO
@@ -755,7 +765,6 @@ tbl1800	da	:1800,:1900
 	bne	:1960
 
 	@print	#strVOUSLAVEZ
-	@print	#strCONSEILLE
 	jmp	:1920
 
 :1960	ldx	N
@@ -1039,8 +1048,10 @@ tbl4000	da	:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
 :4360	@print	#str4360
 	rts
 
-:4370	@print	#str4370
-	rts
+:4370	@explode
+	@print	#str4370
+	@wait	#200
+	jmp	:18000
 
 :4380	@print	#str4380
 	rts
@@ -1500,6 +1511,11 @@ initALL
 
 	lda	#1
 	sta	SALLE
+
+	lda	#<5000
+	sta	TEMPS
+	lda	#>5000
+	sta	TEMPS+1
 	
 *---
 
@@ -1521,10 +1537,12 @@ initALL
 *-----------------------------------
 
 :18000
+	jsr	setTEXTFULL
+	@print	#strPERDU
 *	@play	#zikPERDU
+	@print	#strPERDU2
 
 :20050			; commun avec gagne
-	jsr	setTEXTFULL
 ]lp	@print	#strREPLAY
 	jsr	translateKEY
 	cmp	#chrNON
@@ -1557,39 +1575,10 @@ sauveCYA	ds	1
 *-----------------------------------
 
 :21000
-*	@play	#zikGAGNE
-
-:32010
 	jsr	setTEXTFULL
 	@print	#strGAGNE
+*	@play	#zikGAGNE
 	jmp	:20050
-
-*-----------------------------------
-* 40000 - LISTE DES INSTRUCTIONS
-*-----------------------------------
-
-:40000
-	jsr	setTEXTFULL
-]lp	@print	#strINSTR
-	jsr	translateKEY
-	cmp	#chrNON
-	beq	:40001
-	cmp	#chrOUI
-	bne	]lp
-
-	@print	#strINSTR2
-	jsr	translateKEY
-	
-:40001	rts
-
-*-----------------------------------
-* 51000 - DISCLAIMER
-*-----------------------------------
-
-:51000
-	jsr	setTEXTFULL
-	@print	#strDISCLAIMER
-	jmp	translateKEY
 
 *-----------------------------------
 * introPIC - la picture GR
@@ -1598,7 +1587,7 @@ sauveCYA	ds	1
 introPIC
 	jsr	setTEXTFULL
 
-	lda	#3
+	lda	#11
 	sta	CH
 	lda	#11
 	jsr	TABV
@@ -2025,6 +2014,7 @@ T	ds	1
 W	ds	1
 Z	ds	1
 lenSTRING	ds	1
+TEMPS	ds	2	; le temps = 5000
 
 C	ds	21+1
 E$	ds	32	; the longest string

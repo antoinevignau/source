@@ -9,42 +9,42 @@
 * Les chaines standards
 *
 
-strVOUS	asc	8D"Vous etes "00
-
 strVOUSDETENEZ
-	asc	8D"Vous detenez : "00
+	asc	8D"Vous avez en votre possession : "8D00
+
 strVOUSRIEN
-	asc	8D"Vous ne detenez absolument rien !!!"00
+	asc	8D"Pas la peine de regarder, vous n"A7"avez"8D
+	asc	"rien sur vous"00
+
 strPOINT
 	asc	"."00
 	
 strEVIDENT
-	asc	8D"Il parait evident que vous ne pouvez"8D
-	asc	"pas porter tant de choses !!"00
+	asc	8D"Vous vous prenez pour HULK..., vous ne"8D
+	asc	"porter tant de choses !"00
+
 strVOUSLAVEZ
-	asc	8D"Vous l"A7"avez deja. Vous etes etourdi"8D
-	asc	"et dans cette maison, ce n"A7"est pas"00
-strCONSEILLE
-	asc	8D"tres conseille"00
+	asc	8D"Vous l"A7"avez deja. Si votre memoire"8D
+	asc	"est mauvaise, faites la liste"00
 	
 strNOTOWNED
-	asc	8D"Comment voulez-vous poser ce que vous"8D
-	asc	"n"A7"avez pas ?"00
+	asc	8D"Jusqu"A7"a nouvel ordre, on ne peut poser"8D
+	asc	"ce que l"A7"on ne possede pas..."00
 
 strDACCORD
 	asc	8D"D"A7"accord"00
 
 strILFAITNOIR
-	asc	"Il fait noir comme dans un four, il"8D
-	asc	"faudrait peut-etre allumer"00
+	asc	"Il fait trop sombre pour voir quelque"8D
+	asc	"chose, il faudrait peut-etre allumer"00
 
-strILYA	asc	8D"Il y a dans la salle :"00
+strILYA	asc	8D"Ici, il y a egalement :"00
 strCOMMA	asc	","00
 strSPACE	asc	" "00
 strRETURN	asc	8D00
 
 strCOMMANDE
-	asc	8D"Que faites-vous ? "00
+	asc	8D"Votre commande ? "00
 
 strJENECOMPRENDS
 	asc	8D"Je ne comprends pas..."00
@@ -57,82 +57,64 @@ strEXCLAM
 	asc	" !"00
 
 strREPLAY	asc	8D"Voulez-vous rejouer ? "00
-	
-strGAGNE	asc	"Cela est exceptionnel. Vous etes le "8D8D
-	asc	"premier a etre sorti vivant de cette"8D8D
-	asc	"maison, mais si j"A7"etais vous, je me "8D8D
-	asc	"mettrais a courir car un nain rode"8D8D
-	asc	"peut-etre dans les parages..."00
-			
-*-----------------------------------
-* 40000 - LISTE DES INSTRUCTIONS
-*-----------------------------------
 
-strINSTR	asc	8D"La liste des instructions ? "00
+strPERDU
+	asc	"EN CETTE HEURE PENIBLE, MOI APPLE ]["8D8D
+	asc	"J"A7"ai le terrible devoir de vous"8D
+	asc	"annoncer la mort tragique de votre"8D
+	asc	"propre personne dans la redoutable"8D
+	asc	"KIKEKANKOI, mais peut-etre vous en"8D
+	asc	"etiez vous rendu compte...?"8D
+	asc	"Vos funerailles furent respectables,"8D
+	asc	"de par la preuve de courage que vous"8D
+	asc	"aviez donnee et pour la personne qui"8D
+	asc	"a cette heure-ci est encore prison-"8D
+	asc	"niere de la cite mysterieuse... "00
 
-strINSTR2	asc	8D8D
-	asc	"Vous voici arrive dans le manoir du"8D
-	asc	"            Dr Genius..."8D
-	asc	8D
-	asc	"Pour converser avec l"A7"ordinateur, il"8D
-	asc	"faut rentrer les ordres en 1 ou 2 mots"8D
-	asc	"tels que :"8D
-	asc	"           NORD"8D
-	asc	"           PRENDS PILULE"8D
-	asc	8D
-	asc	"ou pour commencer :"8D
-	asc	"           ENTRE"8D
-	asc	8D8D
-	asc	"Si vous voulez faire durer la phrase"8D
-	asc	"decrivant la salle, tapez une touche"8D
-	asc	8D
-	asc	"Un dernier conseil : il peut parfois y"8D
-	asc	"avoir une porte derriere vous. "00
+strPERDU2
+	asc	8D8D"OUF..... oui je sais, c"A7"est toujours"8D
+	asc	"trop long les sepultures..."8D8D00
 
-*-----------------------------------
-* 51000 - DISCLAIMER
-*-----------------------------------
+strGAGNE
+	asc	"Quelle classe..., ressortir vivant de"8D
+	asc	"KIKEKANKOI, il fallait le faire,"8D
+	asc	"d"A7"autant plus que vous ne vous etes"8D
+	asc	"meme pas ecorche un doigt! Mais ne"8D
+	asc	"restez pas trop dans les parages, car"8D
+	asc	"le savant fou a peut-etre encore"8D
+	asc	"quelques experiences a faire sur vous,"8D
+	asc	"comme vous greffer une tete de singe"8D
+	asc	"ou un cerveau electronique de 64 Ko..."8D
+	asc	"Merci d"A7"etre reste si longtemps a"8D
+	asc	"votre clavier et encore toutes mes"8D
+	asc	"felicitations"8D8D00
 
-strDISCLAIMER
-	asc	"L"A7"utilisation de ce programme est"8D8D
-	asc	"deconseillee aux personnes sensibles,"8D8D
-	asc	"aux enfants en bas age, ainsi qu"A7"a"8D8D
-	asc	"toute personne susceptible d"A7"avoir"8D8D
-	asc	"des malaises cardiaques."8D8D
-	asc	8D8D
-	asc	"Nous ne pourrions etre tenus responsa-"8D8D
-	asc	"-bles des troubles physiques ou mentaux"8D8D
-	asc	"provoques par votre echec dans"8D8D
-	asc	"le manoir du Dr Genius ............."00
-	
 *-----------------------------------
 * introPIC - la picture GR
 *-----------------------------------
 
 strLORICIELS
-	asc	"LORICIELS est fier de presenter :"00
+	asc	"LORICIELS presente"00
 
 strLEMANOIR
-	asc	"   @   @@@   @   @ @@@ @  @ @@@ @ @@@"8D
-	asc	"   @   @     @@ @@ @ @ @@ @ @ @ @ @ @"8D
-	asc	"   @   @@    @ @ @ @@@ @@@@ @ @ @ @@@"8D
-	asc	"   @   @     @   @ @ @ @ @@ @ @ @ @@"8D
-	asc	"   @@@ @@@   @   @ @ @ @  @ @@@ @ @ @"8D
+	asc	"@   @@@   @   @ @ @ @@@ @@@ @@@ @@@ @@@ "
+	asc	"@   @     @@ @@ @ @ @    @  @   @ @ @   "
+	asc	"@   @@    @ @ @ @@@ @@@  @  @@  @@  @@  "
+	asc	"@   @     @   @   @   @  @  @   @ @ @   "
+	asc	"@@@ @@@   @   @  @@ @@@  @  @@@ @ @ @@@ "
 	asc	8D
-	asc	"      @@  @ @     @@"8D
-	asc	"      @ @ @ @     @ @ @"8D
-	asc	"      @ @ @ @     @ @ @@"8D
-	asc	"      @ @ @ @     @ @ @ @"8D
-	asc	"      @@@ @@@     @@@ @"8D
-	asc	8D8D
-	asc	"   @@@@  @@@@  @@  @  @  @  @  @@@@"8D
-	asc	"   @  @  @     @@  @  @  @  @  @"8D
-	asc	"   @     @     @@@ @  @  @  @  @"8D
-	asc	"   @     @@@   @ @ @  @  @  @  @@@@"8D
-	asc	"   @ @@  @     @ @@@  @  @  @     @"8D
-	asc	"   @  @  @     @  @@  @  @  @     @"8D
-	asc	"   @@@@  @@@@  @  @@  @  @@@@  @@@@ @ @"00
-
+	asc	"    @@  @@@"8D
+	asc	"    @ @ @  "8D
+	asc	"    @ @ @@ "8D
+	asc	"    @ @ @  "8D
+	asc	"    @@  @@@"8D
+	asc	8D
+	asc	"@ @ @@@ @ @ @@@ @ @ @@@ @ @ @ @ @@@ @@@ "
+	asc	"@ @  @  @ @ @   @ @ @ @ @@  @ @ @ @  @  "
+	asc	"@@   @  @@  @@  @@  @@@ @ @ @@  @ @  @  "
+	asc	"@ @  @  @ @ @   @ @ @ @ @ @ @ @ @ @  @  "
+	asc	"@ @ @@@ @ @ @@@ @ @ @ @ @ @ @ @ @@@ @@@"00
+	
 strINTRO1	asc	"     Version Apple II par     "00
 strINTRO2	asc	"    Brutal Deluxe Software    "00
 strINTRO3	asc	"     Merci Herve & Xavier     "00
@@ -904,7 +886,7 @@ str4350	asc	"Le passe partout ne fonctionne pas avec"
 	asc	" cette serrure."00
 str4360	asc	"Les murs se rapprochent les uns des    "
 	asc	" autres, vous etes aplati."00
-str4370	asc	"Si cela vous plait de perdre du temps !"00
+str4370	asc	"Il ne vous reste plus de temps !"00
 str4380	asc	"Il faudrait peut etre de l"A7"electricite."
 	asc	"."00
 str4390	asc	"Il faudrait peut etre y visser une     "
@@ -925,7 +907,7 @@ str4470	asc	"Le marchand est fou, il se jette sur   "
 	asc	" vous et vous tue."00
 str4480	asc	"He! he! On ne rentre pas dans un temple"
 	asc	" avec ses chaussures, les gardes vous t"
-	asc	"ue"00
+	asc	"uent"00
 str4490	asc	"La piece etait pleine de mouches......."
 	asc	".tse-tse !!!"00
 str4500	asc	"Les murs s"A7"ecroulent sur vous, vous    "

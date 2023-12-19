@@ -1,0 +1,113 @@
+------+------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File      Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1 kkkk.s      1 | Comment     | 11 |         |    0 | 00/8000               | *
+    2 |  1 kkkk.s      2 | Comment     | 11 |         |    0 | 00/8000               | * Kikekankoi loader
+    3 |  1 kkkk.s      3 | Comment     | 11 |         |    0 | 00/8000               | *
+    4 |  1 kkkk.s      4 | Comment     | 11 |         |    0 | 00/8000               | * (c) 1985, Laurent Benes & Loriciels
+    5 |  1 kkkk.s      5 | Comment     | 11 |         |    0 | 00/8000               | * (c) 2023, Brutal Deluxe Software (Apple II)
+    6 |  1 kkkk.s      6 | Comment     | 11 |         |    0 | 00/8000               | *
+    7 |  1 kkkk.s      7 | Empty       | 11 |         |    0 | 00/8000               |                                  
+    8 |  1 kkkk.s      8 | Directive   | 11 |         |    0 | 00/8000               |             mx    %11            
+    9 |  1 kkkk.s      9 | Directive   | 11 |         |    0 | 00/8000               |             org   $2000          
+   10 |  1 kkkk.s     10 | Directive   | 11 |         |    0 | 00/2000               |             lst   off            
+   11 |  1 kkkk.s     11 | Empty       | 11 |         |    0 | 00/2000               |                                  
+   12 |  1 kkkk.s     12 | Comment     | 11 |         |    0 | 00/2000               | *-----------------------------------
+   13 |  1 kkkk.s     13 | Comment     | 11 |         |    0 | 00/2000               | * SOFTSWITCHES AND FRIENDS
+   14 |  1 kkkk.s     14 | Comment     | 11 |         |    0 | 00/2000               | *-----------------------------------
+   15 |  1 kkkk.s     15 | Empty       | 11 |         |    0 | 00/2000               |                                  
+   16 |  1 kkkk.s     16 | Equivalence | 11 |         |    0 | 00/2000               | leJEU       =     $800           
+   17 |  1 kkkk.s     17 | Empty       | 11 |         |    0 | 00/2000               |                                  
+   18 |  1 kkkk.s     18 | Equivalence | 11 |         |    0 | 00/2000               | ptrPREFIX   =     $280           
+   19 |  1 kkkk.s     19 | Equivalence | 11 |         |    0 | 00/2000               | proBUFFER   =     $b800          
+   20 |  1 kkkk.s     20 | Equivalence | 11 |         |    0 | 00/2000               | PRODOS      =     $bf00          
+   21 |  1 kkkk.s     21 | Empty       | 11 |         |    0 | 00/2000               |                                  
+   22 |  1 kkkk.s     22 | Comment     | 11 |         |    0 | 00/2000               | *-----------------------------------
+   23 |  1 kkkk.s     23 | Comment     | 11 |         |    0 | 00/2000               | * LOAD THE GAME
+   24 |  1 kkkk.s     24 | Comment     | 11 |         |    0 | 00/2000               | *-----------------------------------
+   25 |  1 kkkk.s     25 | Empty       | 11 |         |    0 | 00/2000               |                                  
+   26 |  1 kkkk.s     26 | Code        | 11 |         |    3 | 00/2000 : 20 00 BF    |             jsr   {$bf00}        ; get the prefix
+   27 |  1 kkkk.s     27 | Data        | 11 |         |    1 | 00/2003 : C7          |             dfb   $c7            
+   28 |  1 kkkk.s     28 | Data        | 11 |         |    2 | 00/2004 : 53 20       |             da    proGETPFX      
+   29 |  1 kkkk.s     29 | Empty       | 11 |         |    0 | 00/2006               |                                  
+   30 |  1 kkkk.s     30 | Code        | 11 |         |    3 | 00/2006 : 20 00 BF    |             jsr   {$bf00}        ; set it
+   31 |  1 kkkk.s     31 | Data        | 11 |         |    1 | 00/2009 : C6          |             dfb   $c6            
+   32 |  1 kkkk.s     32 | Data        | 11 |         |    2 | 00/200A : 53 20       |             da    proGETPFX      
+   33 |  1 kkkk.s     33 | Empty       | 11 |         |    0 | 00/200C               |                                  
+   34 |  1 kkkk.s     34 | Code        | 11 |         |    3 | 00/200C : 20 00 BF    |             jsr   {$bf00}        
+   35 |  1 kkkk.s     35 | Data        | 11 |         |    1 | 00/200F : C8          |             dfb   $c8            
+   36 |  1 kkkk.s     36 | Data        | 11 |         |    2 | 00/2010 : 56 20       |             da    proOPEN        
+   37 |  1 kkkk.s     37 | Code        | 11 |         |    2 | 00/2012 : B0 30       |             bcs   quitME         
+   38 |  1 kkkk.s     38 | Empty       | 11 |         |    0 | 00/2014               |                                  
+   39 |  1 kkkk.s     39 | Code        | 11 |         |    3 | 00/2014 : AD 5B 20    |             lda   proOPEN+5      ; zou, on prend l'ID
+   40 |  1 kkkk.s     40 | Code        | 11 |         |    3 | 00/2017 : 8D 5D 20    |             sta   proREAD+1      
+   41 |  1 kkkk.s     41 | Code        | 11 |         |    3 | 00/201A : 8D 6F 20    |             sta   proSETMARK+1   
+   42 |  1 kkkk.s     42 | Code        | 11 |         |    3 | 00/201D : 8D 65 20    |             sta   proREAD2+1     
+   43 |  1 kkkk.s     43 | Code        | 11 |         |    3 | 00/2020 : 8D 6D 20    |             sta   proCLOSE+1     
+   44 |  1 kkkk.s     44 | Empty       | 11 |         |    0 | 00/2023               |                                  
+   45 |  1 kkkk.s     45 | Code        | 11 |         |    3 | 00/2023 : 20 00 BF    |             jsr   {$bf00}        ; lecture du fichier
+   46 |  1 kkkk.s     46 | Data        | 11 |         |    1 | 00/2026 : CA          |             dfb   $ca            
+   47 |  1 kkkk.s     47 | Data        | 11 |         |    2 | 00/2027 : 5C 20       |             da    proREAD        
+   48 |  1 kkkk.s     48 | Code        | 11 |         |    2 | 00/2029 : B0 19       |             bcs   quitME         
+   49 |  1 kkkk.s     49 | Empty       | 11 |         |    0 | 00/202B               |                                  
+   50 |  1 kkkk.s     50 | Code        | 11 |         |    3 | 00/202B : 20 00 BF    |             jsr   {$bf00}        
+   51 |  1 kkkk.s     51 | Data        | 11 |         |    1 | 00/202E : CE          |             dfb   $ce            
+   52 |  1 kkkk.s     52 | Data        | 11 |         |    2 | 00/202F : 6E 20       |             da    proSETMARK     
+   53 |  1 kkkk.s     53 | Code        | 11 |         |    2 | 00/2031 : B0 11       |             bcs   quitME         
+   54 |  1 kkkk.s     54 | Empty       | 11 |         |    0 | 00/2033               |                                  
+   55 |  1 kkkk.s     55 | Code        | 11 |         |    3 | 00/2033 : 20 00 BF    |             jsr   {$bf00}        ; lecture du fichier
+   56 |  1 kkkk.s     56 | Data        | 11 |         |    1 | 00/2036 : CA          |             dfb   $ca            
+   57 |  1 kkkk.s     57 | Data        | 11 |         |    2 | 00/2037 : 64 20       |             da    proREAD2       
+   58 |  1 kkkk.s     58 | Empty       | 11 |         |    0 | 00/2039               |                                  
+   59 |  1 kkkk.s     59 | Code        | 11 |         |    3 | 00/2039 : 20 00 BF    |             jsr   {$bf00}        ; fermeture du fichier
+   60 |  1 kkkk.s     60 | Data        | 11 |         |    1 | 00/203C : CC          |             dfb   $cc            
+   61 |  1 kkkk.s     61 | Data        | 11 |         |    2 | 00/203D : 6C 20       |             da    proCLOSE       
+   62 |  1 kkkk.s     62 | Code        | 11 |         |    2 | 00/203F : B0 03       |             bcs   quitME         
+   63 |  1 kkkk.s     63 | Empty       | 11 |         |    0 | 00/2041               |                                  
+   64 |  1 kkkk.s     64 | Code        | 11 |         |    3 | 00/2041 : 4C 00 08    |             jmp   {$800}         
+   65 |  1 kkkk.s     65 | Empty       | 11 |         |    0 | 00/2044               |                                  
+   66 |  1 kkkk.s     66 | Code        | 11 |         |    3 | 00/2044 : 20 00 BF    | quitME      jsr   {$bf00}        ; exit
+   67 |  1 kkkk.s     67 | Data        | 11 |         |    1 | 00/2047 : 65          |             dfb   $65            
+   68 |  1 kkkk.s     68 | Data        | 11 |         |    2 | 00/2048 : 4C 20       |             da    proQUIT        
+   69 |  1 kkkk.s     69 | Code        | 11 |         |    2 | 00/204A : 00 BD       |             brk   $bd            ; on ne se refait pas ;-)
+   70 |  1 kkkk.s     70 | Empty       | 11 |         |    0 | 00/204C               |                                  
+   71 |  1 kkkk.s     71 | Comment     | 11 |         |    0 | 00/204C               | *--- Data
+   72 |  1 kkkk.s     72 | Empty       | 11 |         |    0 | 00/204C               |                                  
+   73 |  1 kkkk.s     73 | Data        | 11 |         |    1 | 00/204C : 04          | proQUIT     dfb   $4             
+   74 |  1 kkkk.s     74 | Data        | 11 |         |    1 | 00/204D : 00          |             ds    1              
+   75 |  1 kkkk.s     75 | Data        | 11 |         |    2 | 00/204E : 00 00       |             ds    2              
+   76 |  1 kkkk.s     76 | Data        | 11 |         |    1 | 00/2050 : 00          |             ds    1              
+   77 |  1 kkkk.s     77 | Data        | 11 |         |    2 | 00/2051 : 00 00       |             ds    2              
+   78 |  1 kkkk.s     78 | Empty       | 11 |         |    0 | 00/2053               |                                  
+   79 |  1 kkkk.s     79 | Data        | 11 |         |    1 | 00/2053 : 01          | proGETPFX   dfb   $1             
+   80 |  1 kkkk.s     80 | Data        | 11 |         |    2 | 00/2054 : 80 02       |             da    {$280}         
+   81 |  1 kkkk.s     81 | Empty       | 11 |         |    0 | 00/2056               |                                  
+   82 |  1 kkkk.s     82 | Data        | 11 |         |    1 | 00/2056 : 03          | proOPEN     dfb   $3             
+   83 |  1 kkkk.s     83 | Data        | 11 |         |    2 | 00/2057 : 73 20       |             da    pLEJEU         ; pathname (par défaut, le moteur)
+   84 |  1 kkkk.s     84 | Data        | 11 |         |    2 | 00/2059 : 00 B8       |             da    {$b800}        ; io_buffer
+   85 |  1 kkkk.s     85 | Data        | 11 |         |    1 | 00/205B : 00          |             ds    1              ; ref_num
+   86 |  1 kkkk.s     86 | Empty       | 11 |         |    0 | 00/205C               |                                  
+   87 |  1 kkkk.s     87 | Data        | 11 |         |    1 | 00/205C : 04          | proREAD     dfb   $4             
+   88 |  1 kkkk.s     88 | Data        | 11 |         |    1 | 00/205D : 00          |             ds    1              ; ref_num
+   89 |  1 kkkk.s     89 | Data        | 11 |         |    2 | 00/205E : 00 08       |             da    {$800}         ; data_buffer
+   90 |  1 kkkk.s     90 | Data        | 11 |         |    2 | 00/2060 : 00 18       |             dw    $1800          ; request_count
+   91 |  1 kkkk.s     91 | Data        | 11 |         |    2 | 00/2062 : 00 00       |             ds    2              ; transfer_count
+   92 |  1 kkkk.s     92 | Empty       | 11 |         |    0 | 00/2064               |                                  
+   93 |  1 kkkk.s     93 | Data        | 11 |         |    1 | 00/2064 : 04          | proREAD2    dfb   $4             
+   94 |  1 kkkk.s     94 | Data        | 11 |         |    1 | 00/2065 : 00          |             ds    1              ; ref_num
+   95 |  1 kkkk.s     95 | Data        | 11 |         |    2 | 00/2066 : 00 40       |             da    $4000          ; data_buffer
+   96 |  1 kkkk.s     96 | Data        | 11 |         |    2 | 00/2068 : 00 78       |             dw    $7800          ; request_count
+   97 |  1 kkkk.s     97 | Data        | 11 |         |    2 | 00/206A : 00 00       |             ds    2              ; transfer_count
+   98 |  1 kkkk.s     98 | Empty       | 11 |         |    0 | 00/206C               |                                  
+   99 |  1 kkkk.s     99 | Data        | 11 |         |    1 | 00/206C : 01          | proCLOSE    dfb   $1             
+  100 |  1 kkkk.s    100 | Data        | 11 |         |    1 | 00/206D : 00          |             ds    1              ; ref_num
+  101 |  1 kkkk.s    101 | Empty       | 11 |         |    0 | 00/206E               |                                  
+  102 |  1 kkkk.s    102 | Data        | 11 |         |    1 | 00/206E : 02          | proSETMARK  dfb   $2             
+  103 |  1 kkkk.s    103 | Data        | 11 |         |    1 | 00/206F : 00          |             ds    1              ; ref_num
+  104 |  1 kkkk.s    104 | Data        | 11 |         |    3 | 00/2070 : 00 38 00    |             adr   $3800          ; set_mark
+  105 |  1 kkkk.s    105 | Empty       | 11 |         |    0 | 00/2073               |                                  
+  106 |  1 kkkk.s    106 | Data        | 11 |         |   11 | 00/2073 : 0A 4B 69 6B | pLEJEU      str   'Kikekankoi'   
+      |                  |             |    |         |      |           65 6B 61 6E |
+      |                  |             |    |         |      |           6B 6F 69    |
+  107 |  1 kkkk.s    107 | Empty       | 11 |         |    0 | 00/207E               |                                  
+------+------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

@@ -124,13 +124,7 @@ lowerOK
 
 *--------
 
-	lda	#0
-	sta	deltaY
-	
 	jsr	introPIC	; la picture GR
-	
-	lda	#32
-	sta	deltaY
 	
 REPLAY	jsr	initALL
 	jsr	HGR
@@ -201,7 +195,7 @@ REPLAY	jsr	initALL
 
 :200	jsr	setHGR
 
-*	@print	#strRETURN
+	@print	#strRETURN
 	
 	lda	SALLE
 	asl
@@ -334,7 +328,7 @@ REPLAY	jsr	initALL
 	bne	:900
 	
 	@print	#strJENECOMPRENDS
-	jmp	:100
+	jmp	:530	; was :100
 
 *-----------------------------------
 * 900 - CONTROLES APPLE II
@@ -440,31 +434,38 @@ REPLAY	jsr	initALL
 	jmp	:100
 
 :1200	ldx	NL
-	lda	tblA1,x
+	lda	tblAL$,x
+	sta	LINNUM
+	lda	tblAH$,x
+	sta	LINNUM+1
+	
+	ldy	#0
+	lda	(LINNUM),y
 	cmp	MO$1
 	beq	:1210
 	jmp	:1100
 
-:1210	lda	tblA2,x
+:1210	iny
+	lda	(LINNUM),y
 	beq	:1230
 	cmp	MO$2
 	beq	:1230
 	jmp	:1100
 	
-:1230	lda	tblAL$,x
-	sta	LINNUM
-	lda	tblAH$,x
-	sta	LINNUM+1
-
-	ldy	#0
-	lda	(LINNUM),y
-	tax
+:1230	iny
+	ldx	#1	; start at 1
 ]lp	lda	(LINNUM),y
-	sta	E$,y
+	cmp	#-1
+	beq	:1240
+	sta	E$,x
 	iny
-	dex
-	bpl	]lp
-	
+	inx
+	bne	]lp
+
+:1240	lda	#"0"	; end of string
+	sta	E$,x
+	sta	E$+1,x
+
 *-----------------------------------
 * 1400 - CONDITIONS
 *-----------------------------------
@@ -472,13 +473,13 @@ REPLAY	jsr	initALL
 :1400	lda	#1
 	sta	E
 	
-:1420	ldx	E
-	lda	E$,x
+:1420	ldx	E	; 7893
+	lda	E$,x	; 7894
 	cmp	#"."
 	bne	:1430
 	jmp	:1700	; do actions
 
-:1430	sec
+:1430	sec		; 428F
 	sbc	#"A"
 	asl
 	pha
@@ -524,7 +525,7 @@ REPLAY	jsr	initALL
 tbl1500	da	:1500,:1510,:1520,:1530,:1540
 	da	:1550,:1560,:1570,:1580
 	
-*-------- A
+*--------
 
 :1500	lda	N
 	cmp	SALLE
@@ -533,7 +534,7 @@ tbl1500	da	:1500,:1510,:1520,:1530,:1540
 	sta	OK
 :1505	rts
 	
-*-------- B
+*--------
 
 :1510	ldx	N
 	lda	O,x
@@ -545,7 +546,7 @@ tbl1500	da	:1500,:1510,:1520,:1530,:1540
 	sta	OK
 :1516	rts
 	
-*-------- C
+*--------
 
 :1520	ldx	N
 	lda	O,x
@@ -559,7 +560,7 @@ tbl1500	da	:1500,:1510,:1520,:1530,:1540
 	sta	OK
 	rts
 
-*-------- D
+*--------
 
 :1530	ldx	N
 	lda	O,x
@@ -569,7 +570,7 @@ tbl1500	da	:1500,:1510,:1520,:1530,:1540
 	sta	OK
 :1535	rts
 
-*-------- E
+*--------
 
 :1540	ldx	N
 	lda	P,x
@@ -579,7 +580,7 @@ tbl1500	da	:1500,:1510,:1520,:1530,:1540
 	sta	OK
 :1545	rts
 
-*-------- F
+*--------
 
 :1550	ldx	N
 	lda	P,x
@@ -588,7 +589,7 @@ tbl1500	da	:1500,:1510,:1520,:1530,:1540
 	sta	OK
 :1555	rts
 
-*-------- G
+*--------
 
 :1560	ldx	N
 	lda	C,x
@@ -598,11 +599,9 @@ tbl1500	da	:1500,:1510,:1520,:1530,:1540
 	sta	OK
 :1565	rts
 
-*-------- H
+*--------
 
-:1570	rts		; LOGO
-
-	lda	VBL	; LOGO - Use a better RND?
+:1570	lda	VBL	; LOGO - Use a better RND?
 	eor	VERTCNT
 	cmp	N
 	bcs	:1575
@@ -610,7 +609,7 @@ tbl1500	da	:1500,:1510,:1520,:1530,:1540
 	sta	OK
 :1575	rts
 
-*-------- I
+*--------
 
 :1580	lda	N
 	cmp	SALLE
@@ -1147,9 +1146,9 @@ tbl4000	da	:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
 
 :4660	lda	VBL	; LOGO - Use a better RND?
 	eor	VERTCNT
-	and	#7
-	clc
-	adc	#1
+	beq	:4660
+	cmp	#9
+	bcc	:4660
 	asl
 	tax
 	ldy	tbl4660,x
@@ -1823,17 +1822,7 @@ waitMS9	rts
 * MOTEUR
 *-----------------------------
 
-showPIC	pha
-
-	jsr	HGR
-	sta	MIXCLR
-
-	ldx	#>picFRAME
-	ldy	#<picFRAME
-	jsr	drawPICTURE
-
-	pla
-	asl
+showPIC	asl
 	tax
 	lda	tblIMAGES,x
 	sta	LINNUM
@@ -1843,9 +1832,16 @@ showPIC	pha
 	bne	showPIC1
 	sec
 	rts
+showPIC1	jsr	HGR
+	sta	MIXCLR
 
-showPIC1	ldx	LINNUM+1
+	@draw	#picFRAME
+
+	ldx	LINNUM+1
 	ldy	LINNUM
+	jsr	drawPICTURE
+	clc
+	rts
 
 *----------------------
 * drawPICTURE
@@ -1858,7 +1854,6 @@ drawPICTURE
 drawLOOP	jsr	drawREAD
 	cmp	#0
 	bne	drawPIC1
-	clc
 	rts		; the end
 
 drawPIC1	pha
@@ -1934,17 +1929,11 @@ doD2
 	ldx	theX	; HPLOT x,y
 	ldy	theX+1
 	lda	theY
-	sec
-	sbc	deltaY	; -32 pour les images du jeu
 	jsr	HPLOT
 
-*	ldy	theY2
-	lda	theY2
-	sec
-	sbc	deltaY
-	tay
 	lda	theX2	; TO x2,Y2
 	ldx	theX2+1
+	ldy	theY2
 	jsr	HILIN	; draw the line
 
 	lda	X0L	; save the updated coords
@@ -1952,8 +1941,6 @@ doD2
 	lda	X0H
 	sta	theX+1
 	lda	Y0
-	clc
-	adc	deltaY
 	sta	theY
 	jmp	drawLOOP
 
@@ -1991,7 +1978,6 @@ theRADIUS	ds	1
 theFB	ds	1
 theINK	ds	1
 thePAPER	ds	1
-deltaY	ds	1	; 0 or 32
 
 *	APPLE	ORIC
 * 0	black1	black

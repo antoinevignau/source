@@ -189,7 +189,7 @@ A$140	hex	0B43460E2E4531344F33354AFF
 A$141	hex	0B482E4333314AFF
 A$142	hex	0B502E4332364AFF
 A$143	hex	0B442E4332374AFF
-A$144	hex	4C26441141342E43313748313742333441FF	; L6B54
+A$144	hex	4C26441141342E43313748313742333441FF
 A$145	hex	4C0041342E4436324BFF
 A$146	hex	4D504422412E2E4232364AFF
 A$147	hex	4D444422412C2E4232374AFF
@@ -235,23 +235,19 @@ A$184	hex	0B622E4332344AFF
 * Les objets dans les salles
 *
 
-L7F00       HEX   00,02,00,00,00,0E,00,00,13,00,00,14,00,12,0F,11
-            HEX   1A,1B,1C,21,22,23,00,2F,2F,2F,2E,2C,32,32,31,36
-            HEX   2A,2D,00,00,00,28,00,00,00,00,00,00,00,00,00,00
-
 nbO	=	37
 
 refO	dfb	$bd
 	dfb	02,00,05,00,14,00,00,19,00,00
 	dfb	20,00,18,15,17,26,27,28,33,34
 	dfb	35,00,47,47,47,46,44,50,50,49
-	dfb	54,42,45,00,00,53,40
+	dfb	54,42,45,00,00,00,40
 
 O	dfb	$bd
 	dfb	02,00,05,00,14,00,00,19,00,00
 	dfb	20,00,18,15,17,26,27,28,33,34
 	dfb	35,00,47,47,47,46,44,50,50,49
-	dfb	54,42,45,00,00,53,40
+	dfb	54,42,45,00,00,00,40
 
 refO$	da	$bdbd
 	da	O$1,O$2,O$3,O$4,O$5,O$6,O$7,O$8,O$9,O$10
@@ -300,7 +296,7 @@ O$32	asc	"Une hache"00
 O$33	asc	"Un pot de creme"00
 O$34	asc	"Une liasse de billets"00
 O$35	asc	"Vos chaussures"00
-O$36	asc	"Une super jolie fille ligotee... et nue qui plus est."00
+O$36	asc	"x"00
 O$37	asc	"Un maillet"00
 
 *

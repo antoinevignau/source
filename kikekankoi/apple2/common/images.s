@@ -6,7 +6,7 @@
 *
 
 tblIMAGES   =     *
-            DA    $0000
+            da    $bdbd
             DA    L8776	; 1
             DA    L7371	; 2
             DA    L3A14	; 3
@@ -16,57 +16,57 @@ tblIMAGES   =     *
             DA    L7580	; 7
             DA    L72FB	; 8
             DA    L51FE	; 9
-            DA    L8E2A	; A
-            DA    L4E01	; B
-            DA    L8976	; C
-            DA    L6D5B	; D
-            DA    L7477	; E
-            DA    LA598	; F
-            DA    L9AC8	; 10
-            DA    L50E9	; 11
-            DA    L997D	; 12
-            DA    L4EE9	; 13
-            DA    L4D0A	; 14
-            DA    L8D30	; 15
-            DA    L8BE2	; 16
-            DA    L7B08	; 17
-            DA    LA465	; 18
-            DA    LA0BD	; 19
-            DA    L7A32	; 1A
-            DA    LA1ED	; 1B
-            DA    LA329	; 1C
-            DA    L6F0D	; 1D
-            DA    L6E22	; 1E
-            DA    L792C	; 1F
-            DA    L7720	; 20
-            DA    L4FFE	; 21
-            DA    L762C	; 22
-            DA    L7826	; 23
-            DA    L97A1	; 24
-            DA    L41F2	; 25
-            DA    L431C	; 26
-            DA    L4624	; 27
-            DA    L93D1	; 28
-            DA    L928F	; 29
-            DA    L4AC2	; 2A
-*            DA    L0100	; 2B
-            DA    L40C8	; 2C
-            DA    L968C	; 2D
-            DA    L495F	; 2E
-            DA    L4796	; 2F
-            DA    L94A4	; 30
-            DA    L3F89	; 31
-            DA    L448B	; 32
-            DA    L9C4F	; 33
-            DA    L38F6	; 34
-L7FCA       DA    L8FEA       ; 35 OR $98CB
-            DA    L95F8	; 36
-            DA    L9E36	; 37
-            DA    L3E6E	; 38
-            DA    L9F7E	; 39
-            DA    L91AD	; 3A
-            DA    L98CB	; 3B new
-	  DA    L8779	; 3C new
+            DA    L8E2A	; 10
+            DA    L4E01	; 11
+            DA    L8976	; 12
+            DA    L6D5B	; 13
+            DA    L7477	; 14
+            DA    LA598	; 15
+            DA    L9AC8	; 16
+            DA    L50E9	; 17
+            DA    L997D	; 18
+            DA    L4EE9	; 19
+            DA    L4D0A	; 20
+            DA    L8D30	; 21
+            DA    L8BE2	; 22
+            DA    L7B08	; 23
+            DA    LA465	; 24
+            DA    LA0BD	; 25
+            DA    L7A32	; 26
+            DA    LA1ED	; 27
+            DA    LA329	; 28
+            DA    L6F0D	; 29
+            DA    L6E22	; 30
+            DA    L792C	; 31
+            DA    L7720	; 32
+            DA    L4FFE	; 33
+            DA    L762C	; 34
+            DA    L7826	; 35
+            DA    L97A1	; 36
+            DA    L41F2	; 37
+            DA    L431C	; 38
+            DA    L4624	; 39
+            DA    L93D1	; 40
+            DA    L928F	; 41
+            DA    L4AC2	; 42
+*            DA    L0100	; 
+            DA    L40C8	; 43
+            DA    L968C	; 44
+            DA    L495F	; 45
+            DA    L4796	; 46
+            DA    L94A4	; 47
+            DA    L3F89	; 48
+            DA    L448B	; 49
+            DA    L9C4F	; 50
+            DA    L38F6	; 51
+L7FCA       DA    L8FEA       ; 52 OR $98CB
+            DA    L95F8	; 53
+            DA    L9E36	; 54
+            DA    L3E6E	; 55
+            DA    L9F7E	; 56
+            DA    L91AD	; 57
+            DA    L98CB	; 58 new
+	  DA    L8779	; 59 new
 	  DA    $0000	; Fin des images
 
 *---

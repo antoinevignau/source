@@ -161,17 +161,17 @@ REPLAY	jsr	initALL
 	cmp	#54
 	beq	:100_OK
 	cmp	#15
-	bne	:105
+	bne	:103
 
-:100_OK	ldx	#2
-	lda	#1
+:100_OK	lda	#1
 	sta	P,x
 
-:105	ldx	#10
+:103	ldx	#10
 	lda	O,x
 	cmp	SALLE
 	beq	:200
-	cmp	#1	; LOGO - was -1
+*	cmp	#1	; LOGO - was -1
+	cmp	#-1
 	beq	:200
 
 	jsr	:2850
@@ -182,10 +182,10 @@ REPLAY	jsr	initALL
 
 	ldx	#3
 	lda	C,x
-	cmp	#0
+	cmp	#1
 	bcs	:200
 	lda	P,x
-	cmp	#1
+	cmp	#2
 	bcs	:200
 	
 *:115	ldx	#9
@@ -205,7 +205,7 @@ REPLAY	jsr	initALL
 
 :2850	ldx	#10
 ]lp	lda	C,x
-	bmi	:2860
+*	bmi	:2860
 	beq	:2860
 	dec	C,x
 :2860	dex
@@ -277,51 +277,10 @@ REPLAY	jsr	initALL
 * 500 - ACCEPTATION COMMANDE
 *-----------------------------------
 
-:500	jmp	:510	; LOGO
-
-	ldx	#1
-	lda	C,x
-	cmp	#2
-	bcc	:501
-	dec	C,x
-
-:501	ldx	#2
-	lda	C,x
-	cmp	#2
-	bcc	:502
-	dec	C,x
-
-:502	ldx	#4
-	lda	C,x
-	cmp	#2
-	bcc	:503
-	dec	C,x
-
-:503	ldx	#6
-	lda	C,x
-	cmp	#2
-	bcc	:504
-	dec	C,x
-
-:504	ldx	#10
-	lda	O,x
-	cmp	SALLE
-	beq	:505
-	cmp	#-1
-	bne	:510
-
-:505	ldx	#3
-	lda	C,x
-	cmp	#2
-	bcc	:510
-	dec	C,x
-
-*---
-
-:510	lda	#1
+:500	lda	#1
 	sta	T
-	lda	#0
-	sta	N
+*	lda	#0
+*	sta	N
 	jmp	:1000
 
 :550	jsr	:2850
@@ -569,12 +528,11 @@ tbl1500	da	:1500,:1510,:1520,:1530,:1540
 
 :1520	ldx	N
 	lda	O,x
-	bpl	:1525
-*	cmp	SALLE
-*	bne	:1525
+	cmp	SALLE
+	bne	:1525
 	rts
-:1525	cmp	SALLE	; #-1
-	bne	:1527
+:1525	lda	O,x	; #-1
+	bpl	:1527
 	rts
 :1527	lda	#1
 	sta	OK
@@ -595,8 +553,6 @@ tbl1500	da	:1500,:1510,:1520,:1530,:1540
 
 :1540	ldx	N
 	lda	P,x
-*	cmp	#1
-*	bne	:1545
 	beq	:1545
 	lda	#1
 	sta	OK
@@ -2181,9 +2137,9 @@ Z	ds	1
 lenSTRING	ds	1
 TEMPS	ds	2	; le temps = 5000
 
-C	ds	21+1
+C	ds	41+1
 E$	ds	32	; the longest string
-P	ds	21+1
+P	ds	41+1
 X$1	ds	4+1	; premier mot saisi
 X$2	ds	4+1	; second mot saisi
 

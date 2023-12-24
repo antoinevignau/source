@@ -705,8 +705,8 @@ tbl1800	da	:1800,:1900
 	sta	HH
 	sta	H	; for comma
 	
-*	lda	#2	; 500
-*	sta	BREAK
+	lda	#2	; 500
+	sta	BREAK
 
 :1810	inc	G
 	lda	G
@@ -777,7 +777,8 @@ tbl1800	da	:1800,:1900
 	@print	#strVOUSLAVEZ
 	jmp	:1920
 
-:1960	lda	#-1
+:1960	ldx	N
+	lda	#-1
 	sta	O,x
 	
 	inc	S
@@ -800,6 +801,8 @@ tbl1800	da	:1800,:1900
 	sta	O,x
 
 	dec	S
+	
+	@print	#strDACCORD
 	rts
 
 *-------- D
@@ -866,17 +869,6 @@ tbl1800	da	:1800,:1900
 	sta	O,x
 	rts
 
-*:2500	ldx	N
-*	lda	O,x
-*	cmp	#-1
-*	bne	:2510
-*	
-*	dec	S
-*
-*:2510	lda	#0
-*	sta	O,x
-*	rts
-*
 *:2500	lda	N	; exchange object
 *	asl		; do it here on pointers
 *	tax		; not on strings
@@ -906,10 +898,13 @@ tbl1800	da	:1800,:1900
 
 :2700	@print	#strDACCORD
 
+	lda	#2
+	sta	BREAK
+	rts
+
 *-------- K
 
-:2800
-	lda	#2
+:2800	lda	#2
 	sta	BREAK
 	rts
 
@@ -2191,9 +2186,9 @@ Z	ds	1
 lenSTRING	ds	1
 TEMPS	ds	2	; le temps = 5000
 
-C	ds	61+1
+C	ds	21+1
 E$	ds	32	; the longest string
-P	ds	61+1
+P	ds	21+1
 X$1	ds	4+1	; premier mot saisi
 X$2	ds	4+1	; second mot saisi
 

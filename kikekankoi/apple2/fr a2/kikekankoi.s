@@ -26,8 +26,6 @@ maxY	=	191	; 0 to 191 = 192
 nbLINES	=	200	; 200 lignes sur un CPC
 deltaY	=	32
 
-nbOaP	=	10	; on peut porter dix objets
-
 chrRET2	=	$8d
 chrSPC2	=	$a0
 TEXTBUFFER = 	$200
@@ -35,9 +33,9 @@ TEXTBUFFER = 	$200
 chrOUI	=	"O"
 chrNON	=	"N"
 
-idxTEMPO	=	130	; 200
-idxQUITTER =	131	; 201
-idxCASSE	=	132	; 202
+idxTEMPO	=	200
+idxQUITTER =	201
+idxCASSE	=	202
 
 PRODOS	=	$bf00
 
@@ -121,8 +119,7 @@ SETKBD	=	$FE89
 	
 	lda	MONOCOLOR
 	sta	sauveMONO
-*	ora	#%1000_0000
-	and	#%0111_1111
+	ora	#%1000_0000
 	sta	MONOCOLOR
 	
 notiigs
@@ -172,33 +169,50 @@ REPLAY	jsr	initALL
 	cmp	#54
 	beq	:100_OK
 	cmp	#15
-	bne	:105
+	bne	:103
 
 :100_OK	lda	#1
 	sta	P,x
 
-:105	ldx	#10
+:103	ldx	#10
 	lda	O,x
 	cmp	SALLE
 	beq	:200
-	cmp	#-1
+	cmp	#1	; set to 1 now? was -1
 	beq	:200
 
-	ldx	#2	; :106
+	jsr	:2850
+
+	ldx	#2
 	lda	P,x
 	beq	:200
 
-	ldx	#9	; :115
+	ldx	#3
 	lda	C,x
+	cmp	#1
+	bcs	:200
+	lda	P,x
 	cmp	#2
-	bcc	:200
-	dec	C,x
-
+	bcs	:200
+	
 	jsr	HGR
 	jsr	setMIXEDON
 	@print	#strILFAITNOIR
 	jmp	:500
 
+*-----------------------------------
+* 2850 - remise à zéro
+*-----------------------------------
+
+:2850	ldx	#10
+]lp	lda	C,x
+	cmp	#2
+	bcc	:2860
+	dec	C,x
+:2860	dex
+	bne	]lp
+	rts
+	
 *-----------------------------------
 * 200 - description salle
 *-----------------------------------
@@ -264,50 +278,14 @@ REPLAY	jsr	initALL
 * 500 - ACCEPTATION COMMANDE
 *-----------------------------------
 
-:500	ldx	#1
-	lda	C,x
-	cmp	#2
-	bcc	:501
-	dec	C,x
-
-:501	ldx	#2
-	lda	C,x
-	cmp	#2
-	bcc	:502
-	dec	C,x
-
-:502	ldx	#4
-	lda	C,x
-	cmp	#2
-	bcc	:503
-	dec	C,x
-
-:503	ldx	#6
-	lda	C,x
-	cmp	#2
-	bcc	:504
-	dec	C,x
-
-:504	ldx	#10
-	lda	O,x
-	cmp	SALLE
-	beq	:505
-	cmp	#-1
-	bne	:510
-
-:505	ldx	#3
-	lda	C,x
-	cmp	#2
-	bcc	:510
-	dec	C,x
-	
-:510	lda	#1
+:500	lda	#1
 	sta	T
-	lda	#0
-	sta	N
+*	lda	#0
+*	sta	N
 	jmp	:1000
 
-:530	@print	#strCOMMANDE
+:550	jsr	:2850
+	@print	#strCOMMANDE
 	jsr	GETLN1
 
 	dec	TEMPS
@@ -325,7 +303,7 @@ REPLAY	jsr	initALL
 	cmp	#chrRET2
 	bne	:570
 	jsr	switchVIDEO
-	jmp	:530
+	jmp	:550
 
 :570	stx	lenSTRING	; longueur de la chaine saisie
 	jsr	rewriteSTRING	; from lower to upper
@@ -673,6 +651,10 @@ tbl1500	da	:1500,:1510,:1520,:1530,:1540
 	beq	:1780
 	asl
 	tax
+	
+	lda	#0
+	sta	E
+
 	lda	tblBRKA,x
 	sta	:1762+1
 	lda	tblBRKA+1,x
@@ -688,7 +670,7 @@ tbl1500	da	:1500,:1510,:1520,:1530,:1540
 *-------- The modified BREAK table
 
 tblBRKA	da	$bdbd
-	da	:100,:500,:530
+	da	:100,:200,:500,:550,:18000
 	
 *-----------------------------------
 * 1800
@@ -696,7 +678,7 @@ tblBRKA	da	$bdbd
 
 tbl1800	da	:1800,:1900
 	da	:2000,:2100,:2200,:2300,:2400,:2500,:2600,:2700,:2800,:2900
-	da	:3000,:3100,:3200
+	da	:3000,:3100,:3200,:3300,:3400,:3500,:3600
 	
 *-------- A
 
@@ -705,8 +687,8 @@ tbl1800	da	:1800,:1900
 	sta	HH
 	sta	H	; for comma
 	
-*	lda	#2	; 500
-*	sta	BREAK
+	lda	#1
+	sta	BREAK
 
 :1810	inc	G
 	lda	G
@@ -745,7 +727,7 @@ tbl1800	da	:1800,:1900
 	inc	H
 	
 	lda	G
-	cmp	#nbO
+	cmp	#nbO	; LOGO - was V
 	bcc	:1810
 	
 :1870	lda	HH
@@ -759,14 +741,17 @@ tbl1800	da	:1800,:1900
 
 *-------- B
 
-:1900	lda	S
-	cmp	#nbOaP	; nombre d'objets à porter
+:1900	lda	#0
+	sta	OK
+	
+	lda	S
+	cmp	#6
 	bcc	:1930
 	
 	@print	#strEVIDENT
 
 :1920	lda	#1
-	sta	BREAK
+	sta	OK	; LOGO - why not BREAK?
 	rts
 
 :1930	ldx	N
@@ -777,7 +762,8 @@ tbl1800	da	:1800,:1900
 	@print	#strVOUSLAVEZ
 	jmp	:1920
 
-:1960	lda	#-1
+:1960	ldx	N
+	lda	#-1
 	sta	O,x
 	
 	inc	S
@@ -791,15 +777,14 @@ tbl1800	da	:1800,:1900
 	beq	:2030
 
 	@print	#strNOTOWNED
-
-	lda	#2
-	sta	BREAK
-	rts
+	jmp	:2910
 
 :2030	lda	SALLE
 	sta	O,x
 
 	dec	S
+	
+	@print	#strDACCORD
 	rts
 
 *-------- D
@@ -861,80 +846,97 @@ tbl1800	da	:1800,:1900
 
 *-------- H
 
-:2500	ldx	N
-	lda	#0
-	sta	O,x
+:2500	lda	N	; exchange object
+	asl		; do it here on pointers
+	tax		; not on strings
+	lda	tblO$,x
+	pha
+	lda	tblO$+1,x
+	pha
+	
+	lda	tblO$+2,x
+	sta	tblO$,x
+	lda	tblO$+3,x
+	sta	tblO$+1,x
+	
+	pla
+	sta	tblO$+3,x
+	pla
+	sta	tblO$+2,x
 	rts
-
-*:2500	ldx	N
-*	lda	O,x
-*	cmp	#-1
-*	bne	:2510
-*	
-*	dec	S
-*
-*:2510	lda	#0
-*	sta	O,x
-*	rts
-*
-*:2500	lda	N	; exchange object
-*	asl		; do it here on pointers
-*	tax		; not on strings
-*	lda	tblO$,x
-*	pha
-*	lda	tblO$+1,x
-*	pha
-*	
-*	lda	tblO$+2,x
-*	sta	tblO$,x
-*	lda	tblO$+3,x
-*	sta	tblO$+1,x
-*	
-*	pla
-*	sta	tblO$+3,x
-*	pla
-*	sta	tblO$+2,x
-*	rts
 
 *-------- I
 
-:2600	lda	N
-	sta	SALLE
+:2600	ldx	N
+	lda	SALLE
+	sta	O,x
 	rts
 
 *-------- J
 
-:2700	@print	#strDACCORD
+:2700	ldx	N
+	lda	O,x
+	cmp	#-1
+	bne	:2710
+	
+	dec	S
+
+:2710	lda	#0
+	sta	O,x
+	rts
 
 *-------- K
 
-:2800
-	lda	#2
-	sta	BREAK
+:2800	lda	N
+	sta	SALLE
 	rts
 
 *-------- L
 
-:2900	lda	#3
+:2900	@print	#strDACCORD
+
+:2910	@wait	#100
+	lda	#3
 	sta	BREAK
 	rts
 
 *-------- M
 
-:3000	lda	#1
+:3000	lda	#4
 	sta	BREAK
 	rts
-	
+
 *-------- N
 
-:3100	jmp	:18000
+:3100	lda	#3
+	sta	BREAK
+	rts
 
 *-------- O
 
-:3200	ldx	N
-	lda	SALLE
-	sta	O,x
+:3200	lda	#1
+	sta	BREAK
 	rts
+
+*-------- P
+
+:3300	jmp	:20050
+
+*-------- Q
+
+:3400	jmp	:20050
+
+*-------- R
+
+:3500	jmp	:18000
+
+*-------- S
+
+:3600	rts
+
+*-------- T
+
+:3700	rts
 
 *-----------------------------------
 * 4000 - LES REPONSES
@@ -947,7 +949,8 @@ tbl4000	da	:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
 	da	:4400,:4410,:4420,:4430,:4440,:4450,:4460,:4470,:4480,:4490
 	da	:4500,:4510,:4520,:4530,:4540,:4550,:4560,:4570,:4580,:4590
 	da	:4600,:4610,:4620,:4630,:4640,:4650,:4660,:4670,:4680,:4690
-	da	:4700,:4710,:4720,:4730,:4740,:4750
+	da	:4700,:4710,:4720,:4730,:4740,:4750,:4760,:4770,:4780,:4790
+	da	:4800
 	
 *--------
 
@@ -1162,31 +1165,67 @@ tbl4000	da	:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
 	rts
 
 :4670	lda	#1
-	bne	:4665
+	jmp	:4665
 	
 :4680	lda	#2
-	bne	:4665
+	jmp	:4665
 	
 :4690	lda	#3
-	bne	:4665
+	jmp	:4665
 	
 :4700	lda	#4
-	bne	:4665
+	jmp	:4665
 	
 :4710	lda	#5
-	bne	:4665
-
+	jmp	:4665
+	
 :4720	lda	#6
-	bne	:4665
+	jmp	:4665
 	
 :4730	lda	#7
-	bne	:4665
+	jmp	:4665
 	
 :4740	lda	#8
-	bne	:4665
+	jmp	:4665
 	
 :4750	lda	#9
-	bne	:4665
+	jmp	:4665
+
+:4760	@print	#str4760
+	rts
+	
+:4770	@print	#str4770
+	rts
+	
+:4780	@print	#str4780
+	rts
+
+:4790	lda	#53
+	sta	SALLE
+	
+	lda	#51
+	sta	O+6
+	lda	#-1
+	sta	O+2
+	sta	O+9
+	sta	O+11
+	sta	O+12
+	sta	O+13
+	sta	O+17
+	sta	O+20
+	sta	O+22
+	sta	O+23
+	sta	O+25
+	sta	O+26
+	sta	O+27
+	sta	O+29
+	sta	O+31
+	sta	O+34
+	sta	O+38
+	rts
+
+:4800	@print	#str4800
+	rts
 
 *-----------------------------------
 * 6000 - ANALYSE DU MOT
@@ -2191,9 +2230,9 @@ Z	ds	1
 lenSTRING	ds	1
 TEMPS	ds	2	; le temps = 5000
 
-C	ds	61+1
+C	ds	21+1
 E$	ds	32	; the longest string
-P	ds	61+1
+P	ds	21+1
 X$1	ds	4+1	; premier mot saisi
 X$2	ds	4+1	; second mot saisi
 

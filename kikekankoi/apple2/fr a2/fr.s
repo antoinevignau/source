@@ -124,7 +124,7 @@ strGAGNE
 * Les conditions
 *
 
-AA	=	181
+AA	=	184
 
 tblAL$	dfb	$bd
 	dfb	<A$1,<A$2,<A$3,<A$4,<A$5,<A$6,<A$7,<A$8,<A$9,<A$10
@@ -145,7 +145,7 @@ tblAL$	dfb	$bd
 	dfb	<A$151,<A$152,<A$153,<A$154,<A$155,<A$156,<A$157,<A$158,<A$159,<A$160
 	dfb	<A$161,<A$162,<A$163,<A$164,<A$165,<A$166,<A$167,<A$168,<A$169,<A$170
 	dfb	<A$171,<A$172,<A$173,<A$174,<A$175,<A$176,<A$177,<A$178,<A$179,<A$180
-	dfb	<A$181
+	dfb	<A$181,<A$182,<A$183,<A$184
 	
 tblAH$	dfb	$bd
 	dfb	>A$1,>A$2,>A$3,>A$4,>A$5,>A$6,>A$7,>A$8,>A$9,>A$10
@@ -166,190 +166,192 @@ tblAH$	dfb	$bd
 	dfb	>A$151,>A$152,>A$153,>A$154,>A$155,>A$156,>A$157,>A$158,>A$159,>A$160
 	dfb	>A$161,>A$162,>A$163,>A$164,>A$165,>A$166,>A$167,>A$168,>A$169,>A$170
 	dfb	>A$171,>A$172,>A$173,>A$174,>A$175,>A$176,>A$177,>A$178,>A$179,>A$180
-	dfb	>A$181
+	dfb	>A$181,>A$182,>A$183,>A$184
 
-A$1	str	"A25.D41N."
-A$2	str	"A02.D01N."
-A$3	str	"A13.D02N."
-A$4	str	"A16.D04N."
-A$5	str	"A16.D05G0207K."
+A$1	str	"A25.D41R."
+A$2	str	"A02.D01R."
+A$3	str	"A13.D02R."
+A$4	str	"A16.D04R."
+A$5	str	"A16.D05G0207N."
 A$6	str	"A16.D06L."
-A$7	str	"A08.D07N."
-A$8	str	".D37K."
-A$9	str	"A05.D08N."
-A$10	str	"B13C23.D09N."
-A$11	str	"B13.J."
-A$12	str	"A21.D10N."
-A$13	str	"A12D16E13.D11N."
-A$14	str	"A12E13.I28M."
-A$15	str	"A10F01F03.D12N."
-A$16	str	"A10F03D08E01.D13N."
-A$17	str	"A10E03.D59I36M."
-A$18	str	"A14C18C17.D03N."
-A$19	str	"A14D18C17.D14N."
-A$20	str	"A14D17E04.D16N."
-A$21	str	"A14D17.D15N."
-A$22	str	"A30.D17N."
-A$23	str	"A31.D18N."
-A$24	str	"A29F05.G0107I34M."
-A$25	str	"A29.I34M."
-A$26	str	"A28D19.D19N."
-A$27	str	"A28.I12M."
-A$28	str	"C02D08.D38K."
-A$29	str	"D10.D26K."
-A$30	str	"D08.D39K."
-A$31	str	"D09.G0313C09H09B10M."
-A$32	str	"C02D09.D38K."
-A$33	str	"C10.D40K."
-A$34	str	".C10H10B09M."
-A$35	str	"D05A08.C05H05B06J."
-A$36	str	"D05A09.C05H05B07J."
-A$37	str	"D05A05.C05H05B07J."
-A$38	str	"D05A18.C05H05B07J."
-A$39	str	"B01.B01J."
-A$40	str	"A05.F10I18M."
-A$41	str	"A09.E10I18M."
-A$42	str	"B06.B06J."
-A$43	str	"B07.B07J."
-A$44	str	"B05.B05J."
-A$45	str	"B09.B09J."
-A$46	str	"B10.B10J."
-A$47	str	"B08.B08J."
-A$48	str	"B11.B11J."
-A$49	str	"E09B12.B12J."
-A$50	str	"B13.B13J."
-A$51	str	"B14.B14J."
-A$52	str	"B15.B15J."
-A$53	str	"B16.B16J."
-A$54	str	"B17.B17J."
-A$55	str	"B18.B18J."
-A$56	str	"B19.B19J."
-A$57	str	"B21.B21J."
-A$58	str	"B20.B20J."
-A$59	str	"D02.D27K."
-A$60	str	".C01J."
-A$61	str	"A18E10.I09O03M."
-A$62	str	"A18.I05O03M."
-A$63	str	"D05.C05J."
-A$64	str	"D06.C06J."
-A$65	str	"D07.C07J."
-A$66	str	"D02.D27K."
-A$67	str	"D09.C09J."
-A$68	str	"D10.C10J."
-A$69	str	".C08J."
-A$70	str	".C11J."
-A$71	str	".C12J."
-A$72	str	".C13J."
-A$73	str	".C14J."
-A$74	str	".C15J."
-A$75	str	".C16J."
-A$76	str	".C17J."
-A$77	str	".C18J."
-A$78	str	".C19J."
-A$79	str	".C21J."
-A$80	str	".C20J."
-A$81	str	"A18E10.F10J."
-A$82	str	"A18.E10J."
-A$83	str	"D07I05I18I09.D20N."
-A$84	str	"D07.B05C07H07J."
-A$85	str	"D06.B05C06H06J."
-A$86	str	"D05.D21N."
-A$87	str	"D07I05I18I09I10.D20N."
-A$88	str	"D07A10.D22N."
-A$89	str	"D07.B05C07H07J."
-A$90	str	"D06I10.B05C06H06J."
-A$91	str	"D06.E03B05C06H06D23K."
-A$92	str	"D06.B05C06H06J."
-A$93	str	"D09D01.C01H01B02J."
-A$94	str	"B11.E11J."
-A$95	str	"B19.D24N."
-A$96	str	"D08D01.C01H01B02J."
-A$97	str	"B10.D56N."
-A$98	str	"D02.C02H02B01J."
-A$99	str	"B11F11F05.E05J."
-A$100	str	"B13C23.D09N."
-A$101	str	"B14.J."
-A$102	str	"B14.D28E04K."
-A$103	str	"B14.C13H13J."
-A$104	str	"B17.D29K."
-A$105	str	"B19.D24N."
-A$106	str	"B11.D30K."
-A$107	str	"D20D08.C20H20C08H08B09A."
-A$108	str	"D20.C20H20J."
-A$109	str	"B20.C20H20J."
-A$110	str	"B21D15.D31N."
-A$111	str	"A12C12C15.D34K."
-A$112	str	"A12C12.D35K."
-A$113	str	"A12.E13J."
-A$114	str	"A18F09.E09O12D32K."
-A$115	str	"A18E09.D33N."
-A$116	str	"A24.D36N."
+A$7	str	"A08.D07R."
+A$8	str	".D37N."
+A$9	str	"A05.D08R."
+A$10	str	"B13C23.D09R."
+A$11	str	"B13.J13."
+A$12	str	"A21.D10R."
+A$13	str	"A12D16E13.D11R."
+A$14	str	"A12E13.K28O."
+A$15	str	"A10F01F03.D12R."
+A$16	str	"A10F03D08E01.D13R."
+A$17	str	"A10E03.D59K36O."
+A$18	str	"A14C18C17.D03R."
+A$19	str	"A14D18C17.D14R."
+A$20	str	"A14D17E04.D16R."
+A$21	str	"A14D17.D15R."
+A$22	str	"A30.D17R."
+A$23	str	"A31.D18R."
+A$24	str	"A29F05.G0107K34O."
+A$25	str	"A29.K34O."
+A$26	str	"A28D19.D19R."
+A$27	str	"A28.K12O."
+A$28	str	"C02D08.D38N."
+A$29	str	"D10.D26N."
+A$30	str	"D08.D39N."
+A$31	str	"D09.G0313H09O."
+A$32	str	"C02D09.D38N."
+A$33	str	"C10.D40N."
+A$34	str	".H09O."
+A$35	str	"D05A08.H05O."
+A$36	str	"D05A09.J05B07L."
+A$37	str	"D05A05.J05B07L."
+A$38	str	"D05A18.J05B07L."
+A$39	str	"B01.B01L."
+A$40	str	"A05.F10K18D76O."
+A$41	str	"A09.E10K18D76O."
+A$42	str	"B06.B06L."
+A$43	str	"B07.B07L."
+A$44	str	"B05.B05L."
+A$45	str	"B09.B09L."
+A$46	str	"B10.B10L."
+A$47	str	"B08.B08L."
+A$48	str	"B11.B11L."
+A$49	str	"E09B12.B12J12."
+A$50	str	"B13.B13L."
+A$51	str	"B14.B14L."
+A$52	str	"B15.B15L."
+A$53	str	"B16.B16L."
+A$54	str	"B17.B17L."
+A$55	str	"B18.B18L."
+A$56	str	"B19.B19L."
+A$57	str	"B21.B21L."
+A$58	str	"B20.B20L."
+A$59	str	"D02.D27N."
+A$60	str	".C01."
+A$61	str	"A18E10.K09I03O."
+A$62	str	"A18.K05I03O."
+A$63	str	"D05.C05J05."
+A$64	str	"D06.C06J06."
+A$65	str	"D07.C07J07."
+A$66	str	"D02.D27N."
+A$67	str	"D09.C09J09."
+A$68	str	"D10.C10J10."
+A$69	str	".C08J08."
+A$70	str	".C11J11."
+A$71	str	".C12J12."
+A$72	str	".C13J13."
+A$73	str	".C14J14."
+A$74	str	".C15J15."
+A$75	str	".C16J16."
+A$76	str	".C17J17."
+A$77	str	".C18J18."
+A$78	str	".C19J19."
+A$79	str	".C20J20."
+A$80	str	".C21J21."
+A$81	str	"A18E10.F10D78O."
+A$82	str	"A18.E10D77O."
+A$83	str	"D07I05I18I09.D20R."
+A$84	str	"D07.J07B05L."
+A$85	str	"D06.H05L."
+A$86	str	"D05.D21R."
+A$87	str	"D07I05I18I09I10.D20R."
+A$88	str	"D07A10.D22R."
+A$89	str	"D07.J07B05L."
+A$90	str	"D06I10.H05O."
+A$91	str	"D06.E03H05D23N."
+A$92	str	"D06.H05O."
+A$93	str	"D09D01.H01L."
+A$94	str	"B11.E11J11."
+A$95	str	"B19.D24R."
+A$96	str	"D08D01.H01L."
+A$97	str	"B10.D56R."
+A$98	str	"D02.H01G0300O."
+A$99	str	"B11F11F05.E05L."
+A$100	str	"B13C23.D09R."
+A$101	str	"B14.J14."
+A$102	str	"B14.D28E04N."
+A$103	str	"B14.B14L."
+A$104	str	"B17.D29N."
+A$105	str	"B19.D24R."
+A$106	str	"B11.D30N."
+A$107	str	"D20D08.J20H08A."
+A$108	str	"D20.C20H20."
+A$109	str	"B20.C20H20."
+A$110	str	"B21D15.D31R."
+A$111	str	"A12C12C15.D34N."
+A$112	str	"A12C12.D35N."
+A$113	str	"A12.E13."
+A$114	str	"A18F09.E09I12D32N."
+A$115	str	"A18E09.D33R."
+A$116	str	"A24.D36R."
 A$117	str	".A."
-A$118	str	"B35.F14H35J."
-A$119	str	"B37.B37J."
-A$120	str	"B23.B23J."
-A$121	str	"B29.B29J."
-A$122	str	"B32.B32G0603J."
-A$123	str	"B30.B30J."
-A$124	str	"B33.B33J."
-A$125	str	"B28.B28G0405J."
-A$126	str	"B31.B31J."
-A$127	str	"A46B26.D46K."
-A$128	str	"B26.B26J."
-A$129	str	"A44B27.D46K."
-A$130	str	"B27.B27J."
-A$131	str	".C37J."
-A$132	str	"E16.F16C23J."
-A$133	str	".C23J."
-A$134	str	".C32J."
-A$135	str	".C29J."
-A$136	str	".C30J."
-A$137	str	".C33J."
-A$138	str	"F14.E14O35J."
-A$139	str	".C31J."
-A$140	str	".C26J."
-A$141	str	".C27J."
-A$142	str	"B17A52.C17H17B34A."
-A$143	str	"A52.D62K."
-A$144	str	"D34A46.B26J."
-A$145	str	"D34A44.B27J."
-A$146	str	"A37.I42M."
-A$147	str	"A39.I47M."
-A$148	str	"A39.I46M."
-A$149	str	"A36.I45M."
-A$150	str	"A38.I52M."
-A$151	str	"A37.D47N."
-A$152	str	"A36.I44M."
-A$153	str	"A48.I49M."
-A$154	str	"A51F14.D48N."
-A$155	str	"A51E14.I56M."
-A$156	str	"A57C31.D49N."
-A$157	str	"A57.I58M."
-A$158	str	"A58D29D37F15.D50N."	; CREU MUR
-A$159	str	"A58D29D37F17.D54N."	; CREU MUR
-A$160	str	"A58D29D37.D51K."		; CREU MUR
-A$161	str	"B23F16.E16J."		; METS MASQUE
-A$162	str	"B13D23F16.D52N."
-A$163	str	"B13I53E16.C13H13O22M."
-A$164	str	"B13E16.D53N."
-A$165	str	"B22.B22J."
-A$166	str	"A53B22F15.E15H36D65K."
-A$167	str	"A53F15.D55K."
-A$168	str	".C22J."
-A$169	str	"D26D27E15F17.E17C26H26C27H27J."
-A$170	str	"D27E15F19.E19C27H27J."
-A$171	str	"D27E15F19.E19C27H27J."
-A$172	str	"D26E15F18.E18C26H26J."
-A$173	str	"B25.B25J."
-A$174	str	"D25.C25H25E20J."
-A$175	str	"B25.H25E20J."
-A$176	str	"B24.B24J."
-A$177	str	"B24.D61N."
-A$178	str	"A52.D63K."
-A$179	str	".D64K."
-A$180	str	".C25J."
-A$181	str	".C24J."
-
+A$118	str	"B35.F14B35."
+A$119	str	"B38.B38L."
+A$120	str	"B23.B23L."
+A$121	str	"B29.B29L."
+A$122	str	"B32.B32G0603L."
+A$123	str	"B30.B30J30."
+A$124	str	"B33.B33J33."
+A$125	str	"B28.B28G0405L."
+A$126	str	"B31.B31L."
+A$127	str	"A46B26.D46N."
+A$128	str	"B26.B26L."
+A$129	str	"A44B27.D46N."
+A$130	str	"B27.B27L."
+A$131	str	".C38J38."
+A$132	str	"E16.F16C23."
+A$133	str	".C23."
+A$134	str	".C32."
+A$135	str	".C29."
+A$136	str	".C30."
+A$137	str	".C33."
+A$138	str	"F14.E14I35O."
+A$139	str	".C31."
+A$140	str	".C26."
+A$141	str	".C27."
+A$142	str	"B17A52.J17B34A."
+A$143	str	"A52.D62N."
+A$144	str	"D34A46.B26L."
+A$145	str	"D34A44.B27L."
+A$146	str	"A37.I42O."
+A$147	str	"A39.K47O."
+A$148	str	"A39.K46O."
+A$149	str	"A36.K45O."
+A$150	str	"A38.K52O."
+A$151	str	"A37.D47R."
+A$152	str	"A36.K44O."
+A$153	str	"A48.K49O."
+A$154	str	"A51F14.D48R."
+A$155	str	"A51E14.K56O."
+A$156	str	"A57C31.D49R."
+A$157	str	"A57.K58O."
+A$158	str	"A58D29D38F15.D50R."
+A$159	str	"A58D29D38F17.D54R."
+A$160	str	"A58D29D38.D51N."
+A$161	str	"B23F16.E16D80L."
+A$162	str	"B13D23F16.D52R."
+A$163	str	"B13I53E16.J13I22O."
+A$164	str	"B13E16.D53R."
+A$165	str	"B22.B22L."
+A$166	str	"A53B22F15.E15B36H36D65."
+A$167	str	"A53F15.D55N."
+A$168	str	".C22."
+A$169	str	"D26D27E15F17.E17J26J27L."
+A$170	str	"D27E15F19.E19J27L."
+A$171	str	"D27E15F19.E19J27L."
+A$172	str	"D26E15F18.E18J26L."
+A$173	str	"B25.B25L."
+A$174	str	"D25.J25E20L."
+A$175	str	"B25.J25E20L."
+A$176	str	"B24.B24L."
+A$177	str	"B24.D61R."
+A$178	str	"A52.D63N."
+A$179	str	".D64N."
+A$180	str	".C25."
+A$181	str	".C24."
+A$182	str	".D75R."
+A$183	str	".P."
+A$184	str	".D79O."
 
 tblA1	dfb	$bd
 	dfb	01,02,02,25,25,25,01,64,10,12
@@ -361,7 +363,7 @@ tblA1	dfb	$bd
 	dfb	11,11,11,11,11,11,11,11,11,11
 	dfb	11,11,11,11,11,11,11,11,11,11
 	dfb	63,63,19,19,19,19,24,24,24,24
-	dfb	24,11,51,19,19,51,56,56,26,57
+	dfb	24,11,51,19,19,51,96,96,26,57
 	dfb	12,16,24,58,12,59,54,57,24,12
 	dfb	12,12,12,62,62,12,20,10,10,10
 	dfb	10,10,10,10,10,10,10,10,10,10
@@ -370,9 +372,8 @@ tblA1	dfb	$bd
 	dfb	07,07,07,07,07,02,02,78,78,78
 	dfb	95,57,57,57,10,93,93,11,74,74
 	dfb	74,74,10,25,25,10,25,21,21,11
-	dfb	11
-	dfb	200,201,202
-	
+	dfb	11,07,99,56
+
 tblA2	dfb	$bd
 	dfb	00,00,00,45,46,47,00,00,28,29
 	dfb	29,44,00,00,00,00,00,00,00,00
@@ -381,7 +382,7 @@ tblA2	dfb	$bd
 	dfb	27,31,31,31,35,35,35,37,42,29
 	dfb	32,34,39,38,33,53,41,40,36,36
 	dfb	27,27,31,31,31,35,35,35,35,37
-	dfb	42,29,32,34,39,38,33,53,41,40
+	dfb	42,29,32,34,39,38,33,53,40,41
 	dfb	00,00,31,31,31,31,55,55,55,49
 	dfb	49,49,36,37,53,36,36,36,37,29
 	dfb	32,32,32,38,53,37,40,40,40,41
@@ -392,8 +393,7 @@ tblA2	dfb	$bd
 	dfb	89,90,91,92,92,00,00,79,79,79
 	dfb	66,29,29,29,96,94,94,96,75,75
 	dfb	68,80,97,97,97,98,98,00,00,97
-	dfb	98
-	dfb	0,0,0
+	dfb	98,27,00,00
 
 *
 * Les conditions
@@ -405,17 +405,17 @@ tblC$	da	$bdbd
 	da	C$1,C$2,C$3,C$4,C$5,C$6,C$7,C$8,C$9,C$10
 	da	C$11
 	
-C$1	str	"G01.D42N."
-C$2	str	"G02.D43N."
-C$3	str	"G03B10.D44N."
-C$4	str	"G09.D45N."
-C$5	str	"E18E19F21.E21E17L."
-C$6	str	"G04.D57N."
-C$7	str	"G06.D58N."
-C$8	str	"H20E14F20.D60N."
-C$9	str	"D26D27D34.C34H34L."
-C$10	str	"H08.D66L."
-C$11	str	".L."
+C$1	str	"G01.D42R."
+C$2	str	"G02.D43R."
+C$3	str	"G03B10.D44R."
+C$4	str	"G09.D45R."
+C$5	str	"E18E19F21.E21E17N."
+C$6	str	"G04.D57R."
+C$7	str	"G06.D58R."
+C$8	str	"H20E14F20.D60R."
+C$9	str	"D26D27D34.J34N."
+C$10	str	"H08.D66N."
+C$11	str	".M."
 
 *
 * Les objets dans les salles
@@ -427,13 +427,13 @@ refO	dfb	$bd
 	dfb	02,00,05,00,14,00,00,19,00,00
 	dfb	20,00,18,15,17,26,27,28,33,34
 	dfb	35,00,47,47,47,46,44,50,50,49
-	dfb	54,42,45,00,00,53,40,00
+	dfb	54,42,45,00,00,53,00,40
 
 O	dfb	$bd
 	dfb	02,00,05,00,14,00,00,19,00,00
 	dfb	20,00,18,15,17,26,27,28,33,34
 	dfb	35,00,47,47,47,46,44,50,50,49
-	dfb	54,42,45,00,00,53,40,00
+	dfb	54,42,45,00,00,53,00,40
 
 refO$	da	$bdbd
 	da	O$1,O$2,O$3,O$4,O$5,O$6,O$7,O$8,O$9,O$10
@@ -483,8 +483,8 @@ O$33	asc	"Un pot de creme"00
 O$34	asc	"Une liasse de billets"00
 O$35	asc	"Vos chaussures"00
 O$36	asc	"Une super jolie fille ligotee.... et nue qui plus est."00
-O$37	asc	"Un maillet"00
-O$38	asc	"Un masque a gaz porte"00
+O$37	asc	"Une super jolie fille libre..."00
+O$38	asc	"Un maillet"00
 
 *
 * Les directions
@@ -579,7 +579,8 @@ tblVL$	dfb	$bd
 	dfb	<V$91,<V$92,<V$93,<V$94,<V$95,<V$96,<V$97,<V$98,<V$99,<V$100
 	dfb	<V$101,<V$102,<V$103,<V$104,<V$105,<V$106,<V$107,<V$108,<V$109,<V$110
 	dfb	<V$111,<V$112,<V$113,<V$114,<V$115,<V$116,<V$117,<V$118,<V$119,<V$120
-	dfb	<V$121,<V$122,<V$123,<V$124,<V$125,<V$126,<V$127,<V$128,<V$129
+	dfb	<V$121,<V$122,<V$123,<V$124,<V$125,<V$126,<V$127,<V$128,<V$129,<V$130
+	dfb	<V$131,<V$132,<V$133
 	dfb	<V$200,<V$201,<V$202
 	
 tblVH$	dfb	$bd
@@ -595,24 +596,26 @@ tblVH$	dfb	$bd
 	dfb	>V$91,>V$92,>V$93,>V$94,>V$95,>V$96,>V$97,>V$98,>V$99,>V$100
 	dfb	>V$101,>V$102,>V$103,>V$104,>V$105,>V$106,>V$107,>V$108,>V$109,>V$110
 	dfb	>V$111,>V$112,>V$113,>V$114,>V$115,>V$116,>V$117,>V$118,>V$119,>V$120
-	dfb	>V$121,>V$122,>V$123,>V$124,>V$125,>V$126,>V$127,>V$128,>V$129
+	dfb	>V$121,>V$122,>V$123,>V$124,>V$125,>V$126,>V$127,>V$128,>V$129,>V$130
+	dfb	>V$131,>V$132,>V$133
 	dfb	>V$200,>V$201,>V$202
 	
 tblV	dfb	$bd
 	dfb	01,01,02,02,03,03,04,04,05,05
-	dfb	05,06,06,07,08,10,10,11,11,12
-	dfb	13,14,14,15,15,16,16,17,18,19
-	dfb	20,21,21,22,22,22,23,23,24,25
-	dfb	25,26,24,27,28,29,30,31,32,32
-	dfb	33,34,35,35,36,37,38,39,40,41
-	dfb	42,43,44,45,46,47,48,49,50,53
-	dfb	54,55,57,58,59,59,61,62,60,63
-	dfb	53,64,20,51,00,09,25,65,66,67
-	dfb	68,69,70,71,72,95,95,95,74,76
-	dfb	77,78,78,78,79,79,79,80,81,82
-	dfb	83,84,85,86,87,88,89,90,91,92
-	dfb	93,93,94,94,96,97,98,99,75
-	dfb	130,131,132
+	dfb	05,06,06,07,08,09,10,10,11,11
+	dfb	12,13,14,14,15,15,16,16,17,18
+	dfb	19,20,20,20,21,21,22,22,22,23
+	dfb	23,24,24,25,25,25,26,27,28,29
+	dfb	30,31,32,32,33,34,35,35,36,37
+	dfb	38,39,40,41,42,43,44,45,46,47
+	dfb	48,49,50,51,52,53,53,54,55,56
+	dfb	57,58,59,59,60,61,62,63,64,65
+	dfb	66,67,68,69,70,71,72,73,74,75
+	dfb	76,77,78,78,78,79,79,79,80,81
+	dfb	82,83,84,85,86,87,88,89,90,91
+	dfb	92,93,93,94,94,95,95,95,96,97
+	dfb	98,99,100
+	dfb	200,201,202
 	
 V$1	str	"N"
 V$2	str	"NORD"
@@ -629,120 +632,124 @@ V$12	str	"DESC"
 V$13	str	"D"
 V$14	str	"ENTR"
 V$15	str	"AVAN"
-V$16	str	"PREN"
-V$17	str	"RAMA"
-V$18	str	"POSE"
-V$19	str	"LAIS"
-V$20	str	"OUVR"
-V$21	str	"FERM"
-V$22	str	"ALLU"
-V$23	str	"ECLA"
-V$24	str	"ETEI"
-V$25	str	"ARRE"
-V$26	str	"LIS"
-V$27	str	"LIT"
-V$28	str	"REGA"
-V$29	str	"REMP"
-V$30	str	"VIDE"
-V$31	str	"INVE"
-V$32	str	"RIEN"
-V$33	str	"ATTE"
-V$34	str	"FRAP"
-V$35	str	"ASSO"
-V$36	str	"ATTA"
-V$37	str	"POUS"
-V$38	str	"TIRE"
-V$39	str	"JETT"
-V$40	str	"MANG"
-V$41	str	"GOUT"
-V$42	str	"BOIS"
+V$16	str	"SORS"
+V$17	str	"PREN"
+V$18	str	"RAMA"
+V$19	str	"POSE"
+V$20	str	"LAIS"
+V$21	str	"OUVR"
+V$22	str	"FERM"
+V$23	str	"ALLU"
+V$24	str	"ECLA"
+V$25	str	"ETEI"
+V$26	str	"ARRE"
+V$27	str	"LIS"
+V$28	str	"LIT"
+V$29	str	"REGA"
+V$30	str	"REMP"
+V$31	str	"VIDE"
+V$32	str	"INVE"
+V$33	str	"LIST"
+V$34	str	"I"
+V$35	str	"RIEN"
+V$36	str	"ATTE"
+V$37	str	"FRAP"
+V$38	str	"ASSO"
+V$39	str	"ATTA"
+V$40	str	"POUS"
+V$41	str	"TIRE"
+V$42	str	"JETT"
 V$43	str	"LANC"
-V$44	str	"BARQ"
-V$45	str	"RADE"
-V$46	str	"BOUT"
-V$47	str	"MESS"
-V$48	str	"SEAU"
-V$49	str	"MANU"
-V$50	str	"LIVR"
-V$51	str	"ECHE"
-V$52	str	"PASS"
-V$53	str	"LAMP"
-V$54	str	"TORC"
-V$55	str	"BATT"
-V$56	str	"FIOL"
-V$57	str	"DELT"
-V$58	str	"TOUR"
-V$59	str	"AMPO"
-V$60	str	"BOIT"
-V$61	str	"CLEF"
-V$62	str	"MARM"
-V$63	str	"ANNE"
-V$64	str	"ROUG"
-V$65	str	"VERT"
-V$66	str	"BLEU"
-V$67	str	"TRAP"
-V$68	str	"SABL"
-V$69	str	"ROBO"
-V$70	str	"COLL"
-V$71	str	"VISS"
-V$72	str	"EAU"
-V$73	str	"CASS"
-V$74	str	"ESSA"
-V$75	str	"SENS"
-V$76	str	"RENI"
-V$77	str	"ADHE"
-V$78	str	"DECO"
-V$79	str	"PLAC"
-V$80	str	"RAME"
-V$81	str	"TUBE"
-V$82	str	"CHRO"
-V$83	str	"LIST"
-V$84	str	"BRAN"
-V$85	str	"ESCA"
-V$86	str	"SORS"
-V$87	str	"AVAL"
-V$88	str	"MAIL"
-V$89	str	"MASQ"
-V$90	str	"CHAU"
-V$91	str	"ROBE"
-V$92	str	"PORT"
-V$93	str	"BROC"
-V$94	str	"HARN"
-V$95	str	"BOMB"
-V$96	str	"METS"
-V$97	str	"ENFI"
-V$98	str	"PASS"
+V$44	str	"MANG"
+V$45	str	"GOUT"
+V$46	str	"AVAL"
+V$47	str	"BOIS"
+V$48	str	"BARQ"
+V$49	str	"RADE"
+V$50	str	"BOUT"
+V$51	str	"MESS"
+V$52	str	"SEAU"
+V$53	str	"MANU"
+V$54	str	"LIVR"
+V$55	str	"ECHE"
+V$56	str	"PASS"
+V$57	str	"LAMP"
+V$58	str	"TORC"
+V$59	str	"BATT"
+V$60	str	"FIOL"
+V$61	str	"DELT"
+V$62	str	"TOUR"
+V$63	str	"AMPO"
+V$64	str	"BOIT"
+V$65	str	"CLEF"
+V$66	str	"MARM"
+V$67	str	"ANNE"
+V$68	str	"ROUG"
+V$69	str	"VERT"
+V$70	str	"BLEU"
+V$71	str	"TRAP"
+V$72	str	"SABL"
+V$73	str	"ROBO"
+V$74	str	"BRAN"
+V$75	str	""
+V$76	str	"TUBE"
+V$77	str	"COLL"
+V$78	str	"VISS"
+V$79	str	"EAU"
+V$80	str	"DEBO"
+V$81	str	"CASS"
+V$82	str	"ESSA"
+V$83	str	"SENS"
+V$84	str	"RENI"
+V$85	str	"PLAC"
+V$86	str	"ADHE"
+V$87	str	"DECO"
+V$88	str	"RAME"
+V$89	str	"CHRO"
+V$90	str	"MAIL"
+V$91	str	"MASQ"
+V$92	str	"CHAU"
+V$93	str	"ROBE"
+V$94	str	"PORT"
+V$95	str	"BROC"
+V$96	str	"HARN"
+V$97	str	"BOMB"
+V$98	str	""
 V$99	str	"DONN"
-V$100	str	"VEND"
-V$101	str	"ACHE"
-V$102	str	"ENLE"
-V$103	str	"ARRA"
-V$104	str	"CREU"
-V$105	str	"PIER"
-V$106	str	"BLOC"
-V$107	str	"MUR"
-V$108	str	"ESPA"
-V$109	str	"HACH"
-V$110	str	"POT"
-V$111	str	"LIAS"
-V$112	str	"TABA"
-V$113	str	"MEDE"
-V$114	str	"CHAU"
-V$115	str	"CREM"
-V$116	str	"TRAI"
-V$117	str	"BOUL"
-V$118	str	"TAIL"
-V$119	str	"DROG"
-V$120	str	"TEMP"
-V$121	str	"DELI"
-V$122	str	"LIBE"
-V$123	str	"FEMM"
-V$124	str	"FILL"
-V$125	str	"DEBR"
-V$126	str	"ASPI"
-V$127	str	"QUIN"
-V$128	str	"FIN"
-V$129	str	"VETE"
+V$100	str	"VETE"
+V$101	str	"VEND"
+V$102	str	"ACHE"
+V$103	str	"ENLE"
+V$104	str	"ARRA"
+V$105	str	"CREU"
+V$106	str	"PIER"
+V$107	str	"BLOC"
+V$108	str	"MUR"
+V$109	str	"ESPA"
+V$110	str	"HACH"
+V$111	str	"POT"
+V$112	str	"LIAS"
+V$113	str	"TABA"
+V$114	str	"MEDE"
+V$115	str	"CHAU"
+V$116	str	"CREM"
+V$117	str	"TRAI"
+V$118	str	"BOUL"
+V$119	str	"TAIL"
+V$120	str	"DROG"
+V$121	str	"TEMP"
+V$122	str	"DELI"
+V$123	str	"LIBE"
+V$124	str	"FEMM"
+V$125	str	"FILL"
+V$126	str	"METS"
+V$127	str	"ENFI"
+V$128	str	"PASS"
+V$129	str	"DEBR"
+V$130	str	"ASPI"
+V$131	str	"QUIN"
+V$132	str	"FIN"
+V$133	str	"ESCA"
 
 V$200	str	"TEMPO"
 V$201	str	"QUITTER"

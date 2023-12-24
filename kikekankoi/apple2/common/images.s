@@ -49,7 +49,6 @@ tblIMAGES   =     *
             DA    L93D1	; 40
             DA    L928F	; 41
             DA    L4AC2	; 42
-*            DA    L0100	; 
             DA    L40C8	; 43
             DA    L968C	; 44
             DA    L495F	; 45
@@ -67,7 +66,6 @@ L7FCA       DA    L8FEA       ; 52 OR $98CB
             DA    L91AD	; 57
             DA    L98CB	; 58 new
 	  DA    L8779	; 59 new
-	  DA    $0000	; Fin des images
 
 *---
 
@@ -17551,4 +17549,6 @@ L98CB       DB    $48	; The missing picture (patch line 3300)
             DB    $41
             DB    $97
             DB    $57
+            DB    $00
+            DB    $00
             DB    $00

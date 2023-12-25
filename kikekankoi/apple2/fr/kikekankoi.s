@@ -147,6 +147,8 @@ lowerOK
 *	lda	#32
 *	sta	deltaY
 
+	@wait	#200
+	
 REPLAY	jsr	initALL
 	jsr	HGR
 
@@ -191,10 +193,10 @@ REPLAY	jsr	initALL
 	ldx	#9	; :115
 	lda	C,x
 	cmp	#2
-	bcc	:200
+	bcc	:130
 	dec	C,x
 
-	jsr	HGR
+:130	jsr	HGR
 	jsr	setMIXEDON
 	@print	#strILFAITNOIR
 	jmp	:500
@@ -957,16 +959,16 @@ tbl4000	da	$bdbd
 *--------
 
 :4010	@print	#str4010
-	rts
+	jmp	:perdu
 
 :4020	@print	#str4020
-	rts
+	jmp	:perdu
 
 :4030	@print	#str4030
-	rts
+	jmp	:perdu
 
 :4040	@print	#str4040
-	rts
+	jmp	:perdu
 
 :4050	@print	#str4050
 	rts
@@ -975,58 +977,58 @@ tbl4000	da	$bdbd
 	rts
 
 :4070	@print	#str4070
-	rts
+	jmp	:perdu
 
 :4080	@print	#str4080
-	rts
+	jmp	:perdu
 
 :4090	@print	#str4090
-	rts
+	jmp	:perdu
 
 :4100	@print	#str4100
-	rts
+	jmp	:perdu
 
 :4110	@print	#str4110
-	rts
+	jmp	:perdu
 
 :4120	@print	#str4120
-	rts
+	jmp	:perdu
 
 :4130	@print	#str4130
-	rts
+	jmp	:perdu
 
 :4140	@print	#str4140
-	rts
+	jmp	:perdu
 
 :4150	@print	#str4150
-	rts
+	jmp	:perdu
 
 :4160	@print	#str4160
-	rts
+	jmp	:perdu
 
 :4170	@print	#str4170
-	rts
+	jmp	:perdu
 
 :4180	@print	#str4180
-	rts
+	jmp	:perdu
 
 :4190	@print	#str4190
-	rts
+	jmp	:perdu
 
 :4200	@print	#str4200
-	rts
+	jmp	:perdu
 
 :4210	@print	#str4210
-	rts
+	jmp	:perdu
 
 :4220	@print	#str4220
-	rts
+	jmp	:perdu
 
 :4230	@print	#str4230
 	rts
 
 :4240	@print	#str4240
-	rts
+	jmp	:perdu
 
 :4250	@print	#str4250
 	rts
@@ -1047,7 +1049,7 @@ tbl4000	da	$bdbd
 	rts
 
 :4310	@print	#str4310
-	rts
+	jmp	:perdu
 
 :4320	@print	#str4320
 	rts
@@ -1062,7 +1064,7 @@ tbl4000	da	$bdbd
 	rts
 
 :4360	@print	#str4360
-	rts
+	jmp	:perdu
 
 :4370	@print	#str4370
 	jmp	:perdu
@@ -1077,34 +1079,34 @@ tbl4000	da	$bdbd
 	rts
 
 :4410	@print	#str4410
-	rts
+	jmp	:perdu
 
 :4420	@print	#str4420
-	rts
+	jmp	:perdu
 
 :4430	@print	#str4430
-	rts
+	jmp	:perdu
 
 :4440	@print	#str4440
-	rts
+	jmp	:perdu
 
 :4450	@print	#str4450
-	rts
+	jmp	:perdu
 
 :4460	@print	#str4460
 	rts
 
 :4470	@print	#str4470
-	rts
+	jmp	:perdu
 
 :4480	@print	#str4480
-	rts
+	jmp	:perdu
 	
 :4490	@print	#str4490
-	rts
+	jmp	:perdu
 	
 :4500	@print	#str4500
-	rts
+	jmp	:perdu
 
 :4510	@print	#str4510
 	jmp	:gagne
@@ -1113,22 +1115,22 @@ tbl4000	da	$bdbd
 	jmp	:perdu
 	
 :4530	@print	#str4530
-	rts
+	jmp	:perdu
 
 :4540	@print	#str4540
-	rts
+	jmp	:perdu
 
 :4550	@print	#str4550
 	rts
 
 :4560	@print	#str4560
-	rts
+	jmp	:perdu
 
 :4570	@print	#str4570
-	rts
+	jmp	:perdu
 
 :4580	@print	#str4580
-	rts
+	jmp	:perdu
 
 :4590	@print	#str4590
 	rts
@@ -1137,7 +1139,7 @@ tbl4000	da	$bdbd
 	rts
 	
 :4610	@print	#str4610
-	rts
+	jmp	:perdu
 
 :4620	@print	#str4620
 	rts

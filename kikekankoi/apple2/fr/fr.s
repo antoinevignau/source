@@ -815,7 +815,7 @@ str8510	asc	"Devant un monument..? Le fameux temple a"
 str8520	asc	"Que vendez-vous ?"00
 str8530	asc	"La salle de la B.A."00
 str8540	asc	"Le mausolee de l"A7"exterminateur."00
-str8550	asc	"Le choeur du Temple."00
+str8550	asc	"Le coeur du Temple."00
 str8560	asc	"L"A7"antre du venere."8D
 	asc	"Il y a une porte au sud"00
 str8570	asc	"Le chemin des dipteres."00

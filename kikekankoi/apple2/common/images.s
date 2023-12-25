@@ -6,66 +6,67 @@
 *
 
 tblIMAGES   =     *
-            da    $bdbd
-            DA    L8776	; 1
-            DA    L7371	; 2
-            DA    L3A14	; 3
-            DA    L8894	; 4
-            DA    L8AC1	; 5
-            DA    L3CA9	; 6
-            DA    L7580	; 7
-            DA    L72FB	; 8
-            DA    L51FE	; 9
-            DA    L8E2A	; 10
-            DA    L4E01	; 11
-            DA    L8976	; 12
-            DA    L6D5B	; 13
-            DA    L7477	; 14
-            DA    LA598	; 15
-            DA    L9AC8	; 16
-            DA    L50E9	; 17
-            DA    L997D	; 18
-            DA    L4EE9	; 19
-            DA    L4D0A	; 20
-            DA    L8D30	; 21
-            DA    L8BE2	; 22
-            DA    L7B08	; 23
-            DA    LA465	; 24
-            DA    LA0BD	; 25
-            DA    L7A32	; 26
-            DA    LA1ED	; 27
-            DA    LA329	; 28
-            DA    L6F0D	; 29
-            DA    L6E22	; 30
-            DA    L792C	; 31
-            DA    L7720	; 32
-            DA    L4FFE	; 33
-            DA    L762C	; 34
-            DA    L7826	; 35
-            DA    L97A1	; 36
-            DA    L41F2	; 37
-            DA    L431C	; 38
-            DA    L4624	; 39
-            DA    L93D1	; 40
-            DA    L928F	; 41
-            DA    L4AC2	; 42
-            DA    L40C8	; 43
-            DA    L968C	; 44
-            DA    L495F	; 45
-            DA    L4796	; 46
-            DA    L94A4	; 47
-            DA    L3F89	; 48
-            DA    L448B	; 49
-            DA    L9C4F	; 50
-            DA    L38F6	; 51
-L7FCA       DA    L8FEA       ; 52 OR $98CB
-            DA    L95F8	; 53
-            DA    L9E36	; 54
-            DA    L3E6E	; 55
-            DA    L9F7E	; 56
-            DA    L91AD	; 57
-            DA    L98CB	; 58 new
-	  DA    L8779	; 59 new
+	da	$bdbd
+	DA	L8776	; 1
+	DA	L7371	; 2
+	DA	L3A14	; 3 - mort
+	DA	L8894	; 4
+	DA	L8AC1	; 5
+	DA	L3CA9	; 6 - lit
+	DA	L7580	; 7
+	DA	L72FB	; 8
+	DA	L51FE	; 9
+	DA	L8E2A	; 10
+	DA	L4E01	; 11
+	DA	L8976	; 12
+	DA	L6D5B	; 13
+	DA	L7477	; 14
+	DA	LA598	; 15
+	DA	L9AC8	; 16
+	DA	L50E9	; 17
+	DA	L997D	; 18
+	DA	L4EE9	; 19
+	DA	L4D0A	; 20
+	DA	L8D30	; 21
+	DA	L8BE2	; 22
+	DA	L7B08	; 23
+	DA	LA465	; 24
+	DA	LA0BD	; 25
+	DA	L7A32	; 26
+	DA	LA1ED	; 27
+	DA	LA329	; 28
+	DA	L6F0D	; 29
+	DA	L6E22	; 30
+	DA	L792C	; 31
+	DA	L7720	; 32
+	DA	L4FFE	; 33
+	DA	L762C	; 34
+	DA	L7826	; 35
+	DA	L97A1	; 36
+	DA	L41F2	; 37
+	DA	L431C	; 38
+	DA	L4624	; 39
+	DA	L93D1	; 40
+	DA	L928F	; 41
+	DA	L4AC2	; 42
+	DA	$0000	; image vide
+	DA	L40C8	; 43
+	DA	L968C	; 44
+	DA	L495F	; 45
+	DA	L4796	; 46
+	DA	L94A4	; 47
+	DA	L3F89	; 48
+	DA	L448B	; 49
+	DA	L9C4F	; 50 le coin sud-est de la ville
+	DA	L38F6	; 51 le temple de KikeKanKoi
+	DA	L98CB	; 52 que vendez-vous ?
+	DA	L95F8	; 53 salle de la BA vide
+	DA	L9E36	; 54 le mausolee de l'exterminateur
+	DA	L3E6E	; 55 le coeur du temple
+	DA	L9F7E	; 56 l'antre du venere
+	DA	L91AD	; 57 le chemin des dipteres
+	DA	L98CB	; 58 l'antre du victorieux
+	dw	$0000
 
 *---
 
@@ -16035,224 +16036,6 @@ L38F6       DB    $48	; une belle image
             DB    $00
             DB    $00
 
-*--- 8FEA can be replaced with 98CB
-
-L8FEA       DB    $41
-            DB    $84
-            DB    $4B
-            DB    $41
-            DB    $84
-            DB    $43
-            DB    $41
-            DB    $89
-            DB    $40
-            DB    $41
-            DB    $9D
-            DB    $3F
-            DB    $41
-            DB    $A7
-            DB    $42
-            DB    $41
-            DB    $AA
-            DB    $46
-            DB    $41
-            DB    $AA
-            DB    $4B
-            DB    $41
-            DB    $A5
-            DB    $4E
-            DB    $42
-            DB    $A9
-            DB    $4A
-            DB    $41
-            DB    $A5
-            DB    $46
-            DB    $41
-            DB    $9D
-            DB    $43
-            DB    $41
-            DB    $8A
-            DB    $44
-            DB    $41
-            DB    $85
-            DB    $48
-            DB    $42
-            DB    $0D
-            DB    $80
-            DB    $41
-            DB    $02
-            DB    $7C
-            DB    $42
-            DB    $02
-            DB    $5E
-            DB    $41
-            DB    $1A
-            DB    $6B
-            DB    $42
-            DB    $1A
-            DB    $4C
-            DB    $41
-            DB    $02
-            DB    $3E
-            DB    $42
-            DB    $35
-            DB    $7E
-            DB    $41
-            DB    $56
-            DB    $7E
-            DB    $41
-            DB    $87
-            DB    $91
-            DB    $42
-            DB    $35
-            DB    $65
-            DB    $41
-            DB    $56
-            DB    $65
-            DB    $41
-            DB    $87
-            DB    $79
-            DB    $42
-            DB    $45
-            DB    $89
-            DB    $41
-            DB    $45
-            DB    $7F
-            DB    $42
-            DB    $44
-            DB    $64
-            DB    $41
-            DB    $44
-            DB    $4D
-            DB    $42
-            DB    $6C
-            DB    $5A
-            DB    $41
-            DB    $6C
-            DB    $6D
-            DB    $42
-            DB    $6C
-            DB    $87
-            DB    $41
-            DB    $6C
-            DB    $93
-            DB    $42
-            DB    $77
-            DB    $89
-            DB    $41
-            DB    $77
-            DB    $73
-            DB    $42
-            DB    $C5
-            DB    $23
-            DB    $41
-            DB    $9F
-            DB    $01
-            DB    $42
-            DB    $C6
-            DB    $57
-            DB    $41
-            DB    $5C
-            DB    $01
-            DB    $42
-            DB    $83
-            DB    $4B
-            DB    $41
-            DB    $18
-            DB    $01
-            DB    $42
-            DB    $47
-            DB    $4A
-            DB    $41
-            DB    $1C
-            DB    $30
-            DB    $42
-            DB    $1C
-            DB    $57
-            DB    $41
-            DB    $32
-            DB    $64
-            DB    $42
-            DB    $A4
-            DB    $62
-            DB    $41
-            DB    $AC
-            DB    $67
-            DB    $42
-            DB    $1B
-            DB    $3E
-            DB    $41
-            DB    $32
-            DB    $3E
-            DB    $42
-            DB    $6E
-            DB    $3C
-            DB    $41
-            DB    $A4
-            DB    $3C
-            DB    $42
-            DB    $0C
-            DB    $20
-            DB    $41
-            DB    $44
-            DB    $20
-            DB    $42
-            DB    $83
-            DB    $20
-            DB    $41
-            DB    $C1
-            DB    $20
-            DB    $42
-            DB    $76
-            DB    $5C
-            DB    $41
-            DB    $89
-            DB    $5C
-            DB    $54
-            DB    $29
-            DB    $93
-            DB    $54
-            DB    $10
-            DB    $87
-            DB    $74
-            DB    $16
-            DB    $7C
-            DB    $54
-            DB    $A7
-            DB    $45
-            DB    $B4
-            DB    $87
-            DB    $49
-            DB    $F4
-            DB    $95
-            DB    $4A
-            DB    $64
-            DB    $52
-            DB    $8D
-            DB    $64
-            DB    $A8
-            DB    $93
-            DB    $64
-            DB    $A8
-            DB    $90
-            DB    $64
-            DB    $BD
-            DB    $7D
-            DB    $64
-            DB    $C4
-            DB    $78
-            DB    $A4
-            DB    $1B
-            DB    $93
-            DB    $A4
-            DB    $59
-            DB    $4F
-            DB    $00
-            DB    $00
-            DB    $00
-
-*---
-
 L95F8       DB    $48
             DB    $18
             DB    $1A
@@ -17134,6 +16917,217 @@ L9F7E       DB    $48
             DB    $94
             DB    $42
             DB    $89
+            DB    $4F
+
+L8FEA       DB    $41	; Le bout d'image qui manquait !
+            DB    $84
+            DB    $4B
+            DB    $41
+            DB    $84
+            DB    $43
+            DB    $41
+            DB    $89
+            DB    $40
+            DB    $41
+            DB    $9D
+            DB    $3F
+            DB    $41
+            DB    $A7
+            DB    $42
+            DB    $41
+            DB    $AA
+            DB    $46
+            DB    $41
+            DB    $AA
+            DB    $4B
+            DB    $41
+            DB    $A5
+            DB    $4E
+            DB    $42
+            DB    $A9
+            DB    $4A
+            DB    $41
+            DB    $A5
+            DB    $46
+            DB    $41
+            DB    $9D
+            DB    $43
+            DB    $41
+            DB    $8A
+            DB    $44
+            DB    $41
+            DB    $85
+            DB    $48
+            DB    $42
+            DB    $0D
+            DB    $80
+            DB    $41
+            DB    $02
+            DB    $7C
+            DB    $42
+            DB    $02
+            DB    $5E
+            DB    $41
+            DB    $1A
+            DB    $6B
+            DB    $42
+            DB    $1A
+            DB    $4C
+            DB    $41
+            DB    $02
+            DB    $3E
+            DB    $42
+            DB    $35
+            DB    $7E
+            DB    $41
+            DB    $56
+            DB    $7E
+            DB    $41
+            DB    $87
+            DB    $91
+            DB    $42
+            DB    $35
+            DB    $65
+            DB    $41
+            DB    $56
+            DB    $65
+            DB    $41
+            DB    $87
+            DB    $79
+            DB    $42
+            DB    $45
+            DB    $89
+            DB    $41
+            DB    $45
+            DB    $7F
+            DB    $42
+            DB    $44
+            DB    $64
+            DB    $41
+            DB    $44
+            DB    $4D
+            DB    $42
+            DB    $6C
+            DB    $5A
+            DB    $41
+            DB    $6C
+            DB    $6D
+            DB    $42
+            DB    $6C
+            DB    $87
+            DB    $41
+            DB    $6C
+            DB    $93
+            DB    $42
+            DB    $77
+            DB    $89
+            DB    $41
+            DB    $77
+            DB    $73
+            DB    $42
+            DB    $C5
+            DB    $23
+            DB    $41
+            DB    $9F
+            DB    $01
+            DB    $42
+            DB    $C6
+            DB    $57
+            DB    $41
+            DB    $5C
+            DB    $01
+            DB    $42
+            DB    $83
+            DB    $4B
+            DB    $41
+            DB    $18
+            DB    $01
+            DB    $42
+            DB    $47
+            DB    $4A
+            DB    $41
+            DB    $1C
+            DB    $30
+            DB    $42
+            DB    $1C
+            DB    $57
+            DB    $41
+            DB    $32
+            DB    $64
+            DB    $42
+            DB    $A4
+            DB    $62
+            DB    $41
+            DB    $AC
+            DB    $67
+            DB    $42
+            DB    $1B
+            DB    $3E
+            DB    $41
+            DB    $32
+            DB    $3E
+            DB    $42
+            DB    $6E
+            DB    $3C
+            DB    $41
+            DB    $A4
+            DB    $3C
+            DB    $42
+            DB    $0C
+            DB    $20
+            DB    $41
+            DB    $44
+            DB    $20
+            DB    $42
+            DB    $83
+            DB    $20
+            DB    $41
+            DB    $C1
+            DB    $20
+            DB    $42
+            DB    $76
+            DB    $5C
+            DB    $41
+            DB    $89
+            DB    $5C
+            DB    $54
+            DB    $29
+            DB    $93
+            DB    $54
+            DB    $10
+            DB    $87
+            DB    $74
+            DB    $16
+            DB    $7C
+            DB    $54
+            DB    $A7
+            DB    $45
+            DB    $B4
+            DB    $87
+            DB    $49
+            DB    $F4
+            DB    $95
+            DB    $4A
+            DB    $64
+            DB    $52
+            DB    $8D
+            DB    $64
+            DB    $A8
+            DB    $93
+            DB    $64
+            DB    $A8
+            DB    $90
+            DB    $64
+            DB    $BD
+            DB    $7D
+            DB    $64
+            DB    $C4
+            DB    $78
+            DB    $A4
+            DB    $1B
+            DB    $93
+            DB    $A4
+            DB    $59
             DB    $4F
             DB    $00
             DB    $00

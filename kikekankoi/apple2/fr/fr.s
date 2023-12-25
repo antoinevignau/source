@@ -10,7 +10,7 @@
 *
 
 strVOUSDETENEZ
-	asc	8D"Vous avez en votre possession : "8D00
+	asc	8D"Vous avez en votre possession : "00
 
 strVOUSRIEN
 	asc	8D"Pas la peine de regarder, vous n"A7"avez"8D
@@ -21,34 +21,47 @@ strPOINT
 	
 strEVIDENT
 	asc	8D"Vous vous prenez pour HULK..., vous ne"8D
-	asc	"porter tant de choses !"00
+	asc	"porter tant de choses !"8D00
 
 strVOUSLAVEZ
 	asc	8D"Vous l"A7"avez deja. Si votre memoire"8D
-	asc	"est mauvaise, faites la liste"00
+	asc	"est mauvaise, faites la liste"8D00
 	
 strNOTOWNED
 	asc	8D"Jusqu"A7"a nouvel ordre, on ne peut poser"8D
-	asc	"ce que l"A7"on ne possede pas..."00
+	asc	"ce que l"A7"on ne possede pas..."8D00
 
 strDACCORD
 	asc	"D"A7"accord"00
 
 strILFAITNOIR
 	asc	"Il fait trop sombre pour voir quelque"8D
-	asc	"chose, il faudrait peut-etre allumer"00
+	asc	"chose, il faudrait peut-etre allumer"8D00
 
 strILYA	asc	8D"Ici, il y a egalement :"00
 strCOMMA	asc	","00
-strSPACE	asc	" "00
+strSPACE	asc	8D" "00
 strRETURN	asc	8D00
 
 strCOMMANDE
 	asc	8D"Votre commande ? "00
 
-strJENECOMPRENDS
-	asc	8D"Je ne comprends pas..."00
+tbl580	da	$bdbd
+	da	str581,str582,str583,str584,str585
+	da	str586,str587,str588,str589,str590
 	
+str581	asc	8D"Ne racontez pas n"A7"importe quoi"00
+str582	asc	8D"Pardon"00
+str583	asc	8D"Comment"00
+str584	asc	8D"Je ne comprends pas"00
+str585	asc	8D"Sorry, I don"A7"t understand"00
+str586	asc	8D"Les rigolos qui m"A7"ont programme ne m"A7"ont"
+	asc	"pas appris ce vocabulaire"00
+str587	asc	8D"Je n"A7"ai pas compris"00
+str588	asc	8D"OK"00
+str589	asc	8D"Ca marche"00
+str590	asc	8D"D"A7"accord"00
+
 strIMPOSSIBLE
 	asc	8D"Impossible "00
 strCECHEMIN
@@ -65,6 +78,7 @@ strPERDU
 	asc	"propre personne dans la redoutable"8D
 	asc	"KIKEKANKOI, mais peut-etre vous en"8D
 	asc	"etiez vous rendu compte...?"8D
+	asc	8D
 	asc	"Vos funerailles furent respectables,"8D
 	asc	"de par la preuve de courage que vous"8D
 	asc	"aviez donnee et pour la personne qui"8D
@@ -85,41 +99,15 @@ strGAGNE
 	asc	"quelques experiences a faire sur vous,"8D
 	asc	"comme vous greffer une tete de singe"8D
 	asc	"ou un cerveau electronique de 64 Ko..."8D
+	asc	8D
 	asc	"Merci d"A7"etre reste si longtemps a"8D
 	asc	"votre clavier et encore toutes mes"8D
 	asc	"felicitations"8D8D00
 
 *-----------------------------------
-* introPIC - la picture GR
+* LES DONNEES
 *-----------------------------------
 
-*strLORICIELS
-*	asc	"LORICIELS presente"00
-*
-*strLEMANOIR
-*	asc	"@   @@@   @   @ @ @ @@@ @@@ @@@ @@@ @@@ "
-*	asc	"@   @     @@ @@ @ @ @    @  @   @ @ @   "
-*	asc	"@   @@    @ @ @ @@@ @@@  @  @@  @@  @@  "
-*	asc	"@   @     @   @   @   @  @  @   @ @ @   "
-*	asc	"@@@ @@@   @   @  @@ @@@  @  @@@ @ @ @@@ "
-*	asc	8D
-*	asc	"    @@  @@@"8D
-*	asc	"    @ @ @  "8D
-*	asc	"    @ @ @@ "8D
-*	asc	"    @ @ @  "8D
-*	asc	"    @@  @@@"8D
-*	asc	8D
-*	asc	"@ @ @@@ @ @ @@@ @ @ @@@ @ @ @ @ @@@ @@@ "
-*	asc	"@ @  @  @ @ @   @ @ @ @ @@  @ @ @ @  @  "
-*	asc	"@@   @  @@  @@  @@  @@@ @ @ @@  @ @  @  "
-*	asc	"@ @  @  @ @ @   @ @ @ @ @ @ @ @ @ @  @  "
-*	asc	"@ @ @@@ @ @ @@@ @ @ @ @ @ @ @ @ @@@ @@@"00
-*	
-*strINTRO1	asc	"     Version Apple II par     "00
-*strINTRO2	asc	"    Brutal Deluxe Software    "00
-*strINTRO3	asc	"     Merci Herve & Xavier     "00
-*strINTRO4	asc	"(C) 1985, L. BENES & LORICIELS"00
-	
 *
 * Les conditions
 *
@@ -325,8 +313,8 @@ A$154	str	"A51F14.D48N."
 A$155	str	"A51E14.I56M."
 A$156	str	"A57C31.D49N."
 A$157	str	"A57.I58M."
-A$158	str	"A58D29D37F15.D50N."	; CREU MUR
-A$159	str	"A58D29D37F17.D54N."	; CREU MUR
+A$158	str	"A58D29D37F15.D50N."	; CREU MUR +broche +maillet +fille delivree
+A$159	str	"A58D29D37F17.D54N."	; CREU MUR +broche +maillet +fille habillee
 A$160	str	"A58D29D37.D51K."		; CREU MUR
 A$161	str	"B23F16.E16J."		; METS MASQUE
 A$162	str	"B13D23F16.D52N."
@@ -350,7 +338,6 @@ A$179	str	".D64K."
 A$180	str	".C25J."
 A$181	str	".C24J."
 
-
 tblA1	dfb	$bd
 	dfb	01,02,02,25,25,25,01,64,10,12
 	dfb	12,23,06,06,04,04,04,02,02,02
@@ -361,7 +348,8 @@ tblA1	dfb	$bd
 	dfb	11,11,11,11,11,11,11,11,11,11
 	dfb	11,11,11,11,11,11,11,11,11,11
 	dfb	63,63,19,19,19,19,24,24,24,24
-	dfb	24,11,51,19,19,51,56,56,26,57
+*	dfb	24,11,51,19,19,51,56,56,26,57 DEBR BATT x 2 (56 => 96)
+	dfb	24,11,51,19,19,51,96,96,26,57
 	dfb	12,16,24,58,12,59,54,57,24,12
 	dfb	12,12,12,62,62,12,20,10,10,10
 	dfb	10,10,10,10,10,10,10,10,10,10
@@ -371,7 +359,6 @@ tblA1	dfb	$bd
 	dfb	95,57,57,57,10,93,93,11,74,74
 	dfb	74,74,10,25,25,10,25,21,21,11
 	dfb	11
-	dfb	200,201,202
 	
 tblA2	dfb	$bd
 	dfb	00,00,00,45,46,47,00,00,28,29
@@ -393,7 +380,6 @@ tblA2	dfb	$bd
 	dfb	66,29,29,29,96,94,94,96,75,75
 	dfb	68,80,97,97,97,98,98,00,00,97
 	dfb	98
-	dfb	0,0,0
 
 *
 * Les conditions
@@ -421,31 +407,31 @@ C$11	str	".L."
 * Les objets dans les salles
 *
 
-nbO	=	38
+nbO	=	37
 
 refO	dfb	$bd
 	dfb	02,00,05,00,14,00,00,19,00,00
 	dfb	20,00,18,15,17,26,27,28,33,34
 	dfb	35,00,47,47,47,46,44,50,50,49
-	dfb	54,42,45,00,00,53,40,00
+	dfb	54,42,45,00,00,53,40
 
 O	dfb	$bd
 	dfb	02,00,05,00,14,00,00,19,00,00
 	dfb	20,00,18,15,17,26,27,28,33,34
 	dfb	35,00,47,47,47,46,44,50,50,49
-	dfb	54,42,45,00,00,53,40,00
+	dfb	54,42,45,00,00,53,40
 
 refO$	da	$bdbd
 	da	O$1,O$2,O$3,O$4,O$5,O$6,O$7,O$8,O$9,O$10
 	da	O$11,O$12,O$13,O$14,O$15,O$16,O$17,O$18,O$19,O$20
 	da	O$21,O$22,O$23,O$24,O$25,O$26,O$27,O$28,O$29,O$30
-	da	O$31,O$32,O$33,O$34,O$35,O$36,O$37,O$38
+	da	O$31,O$32,O$33,O$34,O$35,O$36,O$37
 
 tblO$	da	$bdbd
 	da	O$1,O$2,O$3,O$4,O$5,O$6,O$7,O$8,O$9,O$10
 	da	O$11,O$12,O$13,O$14,O$15,O$16,O$17,O$18,O$19,O$20
 	da	O$21,O$22,O$23,O$24,O$25,O$26,O$27,O$28,O$29,O$30
-	da	O$31,O$32,O$33,O$34,O$35,O$36,O$37,O$38
+	da	O$31,O$32,O$33,O$34,O$35,O$36,O$37
 
 O$1	asc	"Une batterie"00
 O$2	asc	"Une batterie branchee"00
@@ -482,9 +468,8 @@ O$32	asc	"Une hache"00
 O$33	asc	"Un pot de creme"00
 O$34	asc	"Une liasse de billets"00
 O$35	asc	"Vos chaussures"00
-O$36	asc	"Une super jolie fille ligotee.... et nue qui plus est."00
+O$36	asc	"Une super jolie fille ligotee....et nue qui plus est."00
 O$37	asc	"Un maillet"00
-O$38	asc	"Un masque a gaz porte"00
 
 *
 * Les directions
@@ -564,7 +549,7 @@ M$58	dfb	01,57,00
 * on fera index-1 b/c 8-bits
 *
 
-V	=	133+3
+V	=	129+2
 
 tblVL$	dfb	$bd
 	dfb	<V$1,<V$2,<V$3,<V$4,<V$5,<V$6,<V$7,<V$8,<V$9,<V$10
@@ -580,7 +565,7 @@ tblVL$	dfb	$bd
 	dfb	<V$101,<V$102,<V$103,<V$104,<V$105,<V$106,<V$107,<V$108,<V$109,<V$110
 	dfb	<V$111,<V$112,<V$113,<V$114,<V$115,<V$116,<V$117,<V$118,<V$119,<V$120
 	dfb	<V$121,<V$122,<V$123,<V$124,<V$125,<V$126,<V$127,<V$128,<V$129
-	dfb	<V$200,<V$201,<V$202
+	dfb	<V$201,<V$202
 	
 tblVH$	dfb	$bd
 	dfb	>V$1,>V$2,>V$3,>V$4,>V$5,>V$6,>V$7,>V$8,>V$9,>V$10
@@ -596,7 +581,7 @@ tblVH$	dfb	$bd
 	dfb	>V$101,>V$102,>V$103,>V$104,>V$105,>V$106,>V$107,>V$108,>V$109,>V$110
 	dfb	>V$111,>V$112,>V$113,>V$114,>V$115,>V$116,>V$117,>V$118,>V$119,>V$120
 	dfb	>V$121,>V$122,>V$123,>V$124,>V$125,>V$126,>V$127,>V$128,>V$129
-	dfb	>V$200,>V$201,>V$202
+	dfb	>V$201,>V$202
 	
 tblV	dfb	$bd
 	dfb	01,01,02,02,03,03,04,04,05,05
@@ -612,7 +597,7 @@ tblV	dfb	$bd
 	dfb	77,78,78,78,79,79,79,80,81,82
 	dfb	83,84,85,86,87,88,89,90,91,92
 	dfb	93,93,94,94,96,97,98,99,75
-	dfb	130,131,132
+	dfb	201,202
 	
 V$1	str	"N"
 V$2	str	"NORD"
@@ -744,9 +729,8 @@ V$127	str	"QUIN"
 V$128	str	"FIN"
 V$129	str	"VETE"
 
-V$200	str	"TEMPO"
-V$201	str	"QUITTER"
-V$202	str	"CASSE"
+V$201	str	"QUIT"
+V$202	str	"CASE"
 
 *
 * Les lieux (str8xxx)
@@ -761,11 +745,11 @@ str8010	asc	"L"A7"antre du demon."8D
 str8020	asc	"Le repere du chirurgien."8D
 	asc	"Il y a une porte au sud, il y a plein de"
 	asc	"photos chirurgicales sur les murs"00
-str8030	asc	"8030"00	; X la mort
+str8030	asc	""00	; X la mort
 str8040	asc	"L"A7"antre du sorcier."00
 str8050	asc	"Au bord du lac."8D
 	asc	"Vous etes au bord d"A7"un lac souterrain"00
-str8060	asc	"Vous etes sur la rive nord du lac"00
+str8060	asc	""00	; X gagne
 str8070	asc	"Le repere du lecteur."00
 str8080	asc	"Au nord, un banc de sable. Vous etes sur"
 	asc	"le cote du lac, le seul chemin est au"8D
@@ -815,7 +799,7 @@ str8400	asc	"Le coin nord-ouest de la ville."00
 str8410	asc	"La fin de la ville !"00
 str8420	asc	"Dans le tabac."8D
 	asc	"Le vendeur dort sur le comptoir"00
-str8430	asc	"8430"00	; X rien
+str8430	asc	""00	; X rien
 str8440	asc	"Chez le tailleur."8D
 	asc	"Il y a plein d"A7"habits a vendre"00
 str8450	asc	"Vous etes dans la cremerie."00
@@ -838,8 +822,8 @@ str8570	asc	"Le chemin des dipteres."00
 str8580	asc	"L"A7"antre du victorieux."8D
 	asc	"Vous etes dans un reduit dont les murs"8D
 	asc	"sont faits de blocs de pierre."00
-str8590	asc	"8590"00
-str8600	asc	"8600"00
+str8590	asc	""00
+str8600	asc	""00
 
 *
 * Les reponses (str7xxx)
@@ -956,7 +940,7 @@ str4580	asc	"Vous trebuchez sur la hache..."8D
 	asc	"Que de sang..."00
 str4590	asc	"Voici enfin la ville des mutiles."8D
 	asc	"Pauvres survivants des experiences"8D
-	asc	"cruelles du savant fou."00
+	asc	"cruelles du savant fou."8D00
 str4600	asc	"Vous avez du prendre mal par les pieds."00
 str4610	asc	"La quinine etait trop forte, vous mourez"
 	asc	"empoisonne..."00
@@ -970,23 +954,16 @@ tbl4660	da	$bdbd
 	da	str4710,str4720,str4730,str4740
 	da	str4750
 	
-str4670	asc	"Courage, pensez a la recompense..."00
-str4680	asc	"Hum! Il y a de l"A7"idee dans ce que vous"8D
+str4670	asc	8D"Courage, pensez a la recompense..."00
+str4680	asc	8D"Hum! Il y a de l"A7"idee dans ce que vous"8D
 	asc	"faites."00 
-str4690	asc	"Je n"A7"aurais pas pense a faire cela."00
-str4700	asc	"Vous etes un habitue des jeux d"A78D
+str4690	asc	8D"Je n"A7"aurais pas pense a faire cela."00
+str4700	asc	8D"Vous etes un habitue des jeux d"A78D
 	asc	"aventures ?"00 
-str4710	asc	"Quelle drole d'idee ?"00 
-str4720	asc	"Pourquoi pas ?"00
-str4730	asc	"Quel aventurier vous faites...fiiuuue"00
-str4740	asc	"A ce train la, vous finirez bien par y"8D
+str4710	asc	8D"Quelle drole d'idee ?"00 
+str4720	asc	8D"Pourquoi pas ?"00
+str4730	asc	8D"Quel aventurier vous faites...fiiuuue"00
+str4740	asc	8D"A ce train la, vous finirez bien par y"8D
 	asc	"arriver"00
-str4750	asc	"Vous, vous avez pas de petrole, mais"8D
+str4750	asc	8D"Vous, vous avez pas de petrole, mais"8D
 	asc	"vous avez des idees"00
-
-str4760	asc	"Vous etes dans une barque rafistolee par"
-	asc	"de l"A7"adhesif"00
-str4770	asc	"Enfin la rive nord."00
-str4780	asc	"Enfin la rive sud."00
-str4790	asc	""00
-str4800	asc	"Masque sur le visage."00

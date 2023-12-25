@@ -35,9 +35,9 @@ TEXTBUFFER = 	$200
 chrOUI	=	"O"
 chrNON	=	"N"
 
-idxTEMPO	=	130	; 200
-idxQUITTER =	131	; 201
-idxCASSE	=	132	; 202
+idxTEMPO	=	200
+idxQUITTER =	201
+idxCASSE	=	202
 
 PRODOS	=	$bf00
 
@@ -242,6 +242,7 @@ REPLAY	jsr	initALL
 	@print	#strCOMMA
 
 :360	@print	#strSPACE
+
 	lda	N
 	asl
 	tax
@@ -333,21 +334,25 @@ REPLAY	jsr	initALL
 
 	lda	MO$1
 	bne	:900
-	
-	@print	#strJENECOMPRENDS
+
+	lda	VBL	; LOGO - Use a better RND?
+	eor	VERTCNT
+	and	#7
+	clc
+	adc	#1
+	asl
+	tax
+	ldy	tbl580,x
+	lda	tbl580+1,x
+	tax
+	jsr	printCSTRING
 	jmp	:100
 
 *-----------------------------------
 * 900 - CONTROLES APPLE II
 *-----------------------------------
 
-:900	cmp	#idxTEMPO	; switch wait to de/accelerate the game
-	bne	:905
-
-	jsr	switchWAIT
-	jmp	:100
-
-:905	cmp	#idxQUITTER	; quitter
+:900	cmp	#idxQUITTER	; quitter
 	bne	:910
 	jmp	:20050
 
@@ -601,15 +606,14 @@ tbl1500	da	:1500,:1510,:1520,:1530,:1540
 
 *-------- H
 
-:1570	inc	$c034
-	rts
-	lda	VBL	; LOGO - Use a better RND?
-	eor	VERTCNT
-	cmp	N
-	bcs	:1575
-	lda	#1
-	sta	OK
-:1575	rts
+:1570	rts
+*	lda	VBL	; LOGO - Use a better RND?
+*	eor	VERTCNT
+*	cmp	N
+*	bcs	:1575
+*	lda	#1
+*	sta	OK
+*:1575	rts
 
 *-------- I
 
@@ -927,7 +931,7 @@ tbl1800	da	:1800,:1900
 	
 *-------- N
 
-:3100	jmp	:18000
+:3100	jmp	:perdu
 
 *-------- O
 
@@ -940,7 +944,8 @@ tbl1800	da	:1800,:1900
 * 4000 - LES REPONSES
 *-----------------------------------
 
-tbl4000	da	:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
+tbl4000	da	$bdbd
+	da	:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
 	da	:4100,:4110,:4120,:4130,:4140,:4150,:4160,:4170,:4180,:4190
 	da	:4200,:4210,:4220,:4230,:4240,:4250,:4260,:4270,:4280,:4290
 	da	:4300,:4310,:4320,:4330,:4340,:4350,:4360,:4370,:4380,:4390
@@ -1059,10 +1064,8 @@ tbl4000	da	:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
 :4360	@print	#str4360
 	rts
 
-:4370	@explode
-	@print	#str4370
-	@wait	#200
-	jmp	:18000
+:4370	@print	#str4370
+	jmp	:perdu
 
 :4380	@print	#str4380
 	rts
@@ -1104,11 +1107,11 @@ tbl4000	da	:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
 	rts
 
 :4510	@print	#str4510
-	rts
+	jmp	:gagne
 
 :4520	@print	#str4520
-	rts
-
+	jmp	:perdu
+	
 :4530	@print	#str4530
 	rts
 
@@ -1632,7 +1635,11 @@ initALL
 * 20000 - PERDU
 *-----------------------------------
 
-:18000
+:perdu
+	@explode
+	@draw	#3
+	@wait	#400
+	
 	jsr	setTEXTFULL
 	@print	#strPERDU
 	@play	#zikPERDU
@@ -1673,10 +1680,12 @@ sauveMONO ds	1
 * 32000 - GAGNE
 *-----------------------------------
 
-:21000
+:gagne
+	@draw	#6
+	@wait	#400
 	jsr	setTEXTFULL
 	@print	#strGAGNE
-*	@play	#zikGAGNE
+	@play	#zikPERDU
 	jmp	:20050
 
 *-----------------------------------

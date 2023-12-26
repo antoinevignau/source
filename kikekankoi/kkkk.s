@@ -13,6 +13,7 @@
 * SOFTSWITCHES AND FRIENDS
 *-----------------------------------
 
+leLOADER	=	$300
 leJEU	=	$800
 
 ptrPREFIX	=	$280
@@ -560,22 +561,18 @@ theLOADER
 
 	ldx	#0
 ]lp	lda	from,x
-	sta	$ba00,x
+	sta	leLOADER,x
 	inx
-	bne	]lp
-	jmp	$ba00	; where the loader is really is
-
-	ds	\
+	bpl	]lp
+	jmp	leLOADER	; where the loader is really is
 	
 from	=	*
-
-*---
 
 *-----------------------------------
 * LOAD THE GAME
 *-----------------------------------
 
-	org	$ba00
+	org	leLOADER
 	
 	jsr	PRODOS	; get the prefix
 	dfb	$c7
@@ -658,6 +655,4 @@ proSETMARK dfb	$2
 	adr	$3800	; set_mark
 	
 pLEJEU	str	'Kikekankoi'
-
-	ds	\
 

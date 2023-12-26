@@ -28,9 +28,13 @@ deltaY	=	32
 
 nbOaP	=	10	; on peut porter dix objets
 
-chrRET2	=	$8d
-chrSPC2	=	$a0
+chrLA	=	$88
+chrRA	=	$95
+chrDEL	=	$ff
+chrRET	=	$8d
+chrSPC	=	$a0
 TEXTBUFFER = 	$200
+maxLEN	=	20
 
 chrOUI	=	"O"
 chrNON	=	"N"
@@ -38,6 +42,7 @@ chrNON	=	"N"
 idxTEMPO	=	200
 idxQUITTER =	201
 idxCASSE	=	202
+idxENERGIE	=	203
 
 PRODOS	=	$bf00
 
@@ -69,7 +74,7 @@ TABV	=	$FB5B
 HOME	=	$FC58
 WAIT	=	$FCA8
 RDKEY	=	$FD0C
-GETLN1	=	$FD6F
+*GETLN1	=	$FD6F	; using mine now
 COUT	=	$FDED
 IDROUTINE	=	$FE1F
 SETNORM	=	$FE84
@@ -310,27 +315,13 @@ REPLAY	jsr	initALL
 	sta	N
 	jmp	:1000
 
-:530	@print	#strCOMMANDE
-	jsr	GETLN1
+:530	lda	switchENERGIE+1
+	beq	:531
+	@print	#strCMD		; commande sans energie
+	jmp	:535	
+:531	@print	#strCOMMANDE	; commande avec energie
 
-	dec	TEMPS
-	lda	TEMPS
-	cmp	#-1
-	bne	:551
-	dec	TEMPS+1
-	lda	TEMPS+1
-	cmp	#-1
-	bne	:551
-
-	jsr	:4370
-
-:551	lda	TEXTBUFFER
-	cmp	#chrRET2
-	bne	:570
-	jsr	switchVIDEO
-	jmp	:530
-
-:570	stx	lenSTRING	; longueur de la chaine saisie
+:535	jsr	GETLN1
 	jsr	rewriteSTRING	; from lower to upper
 	jsr	:6000	; cherche les mots
 
@@ -355,13 +346,19 @@ REPLAY	jsr	initALL
 *-----------------------------------
 
 :900	cmp	#idxQUITTER	; quitter
-	bne	:910
+	bne	:905
 	jmp	:20050
 
-:910	cmp	#idxCASSE
-	bne	:915
+:905	cmp	#idxCASSE
+	bne	:910
 	
 	jsr	switchCASE
+	jmp	:100
+
+:910	cmp	#idxENERGIE
+	bne	:915
+	
+	jsr	switchENERGIE
 	jmp	:100
 
 *-----------------------------------
@@ -1149,9 +1146,20 @@ tbl4000	da	$bdbd
 	
 :4640	@print	#str4640
 	rts
+
+*--- On a libéré la fille !
 	
 :4650	@print	#str4650
+	@wait	#300
+	
+	lda	#<salleBA
+	sta	ptrSALLEBA
+	lda	#>salleBA
+	sta	ptrSALLEBA+1
+	@draw	#53
 	rts
+
+*---
 
 :4660	lda	VBL	; LOGO - Use a better RND?
 	eor	VERTCNT
@@ -1209,9 +1217,9 @@ tbl4000	da	$bdbd
 
 	ldx	#0	; cherche le premier caractere
 ]lp	lda	TEXTBUFFER,x
-*	cmp	#chrRET2
+*	cmp	#chrRET
 *	beq	:6021
-	cmp	#chrSPC2
+	cmp	#chrSPC
 	bne	:6022	; on a trouvé un caractère
 	inx
 	cpx	lenSTRING
@@ -1228,9 +1236,9 @@ tbl4000	da	$bdbd
 
 :6022	ldy	#1
 ]lp	lda	TEXTBUFFER,x
-	cmp	#chrRET2
+	cmp	#chrRET
 	beq	:6023
-	cmp	#chrSPC2
+	cmp	#chrSPC
 	beq	:6023
 	sta	X$1,y	; 0P1R2E3N4
 	inx
@@ -1247,9 +1255,9 @@ tbl4000	da	$bdbd
 
 *	inx
 ]lp	lda	TEXTBUFFER,x
-*	cmp	#chrRET2
+*	cmp	#chrRET
 *	beq	:6032
-	cmp	#chrSPC2
+	cmp	#chrSPC
 	beq	:6032
 	inx		; 5
 	cpx	lenSTRING
@@ -1263,9 +1271,9 @@ tbl4000	da	$bdbd
 :6032	inx
 	ldy	#1
 ]lp	lda	TEXTBUFFER,x
-	cmp	#chrRET2
+	cmp	#chrRET
 	beq	:6033
-	cmp	#chrSPC2
+	cmp	#chrSPC
 	beq	:6033
 	sta	X$2,y
 	inx
@@ -1610,13 +1618,20 @@ initALL
 
 *---
 
+	lda	#<filleNUE	; remet l'image sur la fille nue
+	sta	ptrSALLEBA
+	lda	#>filleNUE
+	sta	ptrSALLEBA+1
+	
 	lda	#1
 	sta	SALLE
 
-	lda	#<5000
+	lda	#5	; 5000
 	sta	TEMPS
-	lda	#>5000
+	lda	#0
 	sta	TEMPS+1
+	sta	TEMPS+2
+	sta	TEMPS+3
 	
 *---
 
@@ -1740,7 +1755,97 @@ switchCASE
 	eor	#$80
 	sta	fgCASE
 	rts
-	
+
+*----------------------
+* GETLEN1 par LoGo
+*----------------------
+
+GETLN1	ldx	#0
+]lp	jsr	RDKEY
+	cmp	#chrRET
+	beq	doRET
+	cmp	#chrDEL
+	beq	doBACK
+	cmp	#chrLA
+	beq	doBACK
+	cmp	#chrRA
+	beq	]lp
+
+	jsr	testENERGIE
+
+	sta	TEXTBUFFER,x
+	jsr	COUT
+doNEXT	inx
+	cpx	#maxLEN
+	bcc	]lp
+
+doEXIT	lda	#chrRET
+	sta	TEXTBUFFER,x
+	stx	lenSTRING
+	jmp	COUT
+
+doBACK	cpx	#0
+	beq	]lp
+	dec	CH
+	dex
+	jmp	]lp
+
+doRET	cpx	#0
+	bne	doEXIT
+
+	jsr	switchVIDEO
+	jmp	]lp
+
+*----------------------
+* ENERGIE
+*----------------------
+
+switchENERGIE
+	lda	#0
+	eor	#1
+	sta	switchENERGIE+1
+	rts
+
+testENERGIE	tay
+	lda	switchENERGIE+1
+	beq	wedoENERGIE
+	tya
+	rts
+
+wedoENERGIE	dec	TEMPS+3
+	lda	TEMPS+3
+	bpl	printENERGIE
+	lda	#9
+	sta	TEMPS+3
+	dec	TEMPS+2
+	bpl	printENERGIE
+	lda	#9
+	sta	TEMPS+2
+	dec	TEMPS+1
+	bpl	printENERGIE
+	lda	#9
+	sta	TEMPS+1
+	dec	TEMPS
+	bpl	printENERGIE
+	jmp	:4370	; la fin !!!
+
+printENERGIE
+	lda	TEMPS
+	ora	#"0"
+	sta	strTEMPS
+	lda	TEMPS+1
+	ora	#"0"
+	sta	strTEMPS+1
+	lda	TEMPS+2
+	ora	#"0"
+	sta	strTEMPS+2
+	lda	TEMPS+3
+	ora	#"0"
+	sta	strTEMPS+3
+
+	tya	; restore Y
+	rts
+
 *----------------------
 * switchVIDEO
 *----------------------
@@ -2200,7 +2305,7 @@ T	ds	1
 W	ds	1
 Z	ds	1
 lenSTRING	ds	1
-TEMPS	ds	2	; le temps = 5000
+TEMPS	ds	4	; le temps = 5000
 
 C	ds	61+1
 E$	ds	32	; the longest string

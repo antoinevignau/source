@@ -43,24 +43,26 @@ strCOMMA	asc	","00
 strSPACE	asc	8D" "00
 strRETURN	asc	8D00
 
-strCOMMANDE
-	asc	8D"Votre commande ? "00
+strCMD	asc	8D"Votre commande ? "00
+
+strCOMMANDE	asc	8D"Commande ("
+strTEMPS	asc	"5000) ? "00
 
 tbl580	da	$bdbd
 	da	str581,str582,str583,str584,str585
 	da	str586,str587,str588,str589,str590
 	
-str581	asc	8D"Ne racontez pas n"A7"importe quoi"00
-str582	asc	8D"Pardon"00
-str583	asc	8D"Comment"00
-str584	asc	8D"Je ne comprends pas"00
-str585	asc	8D"Sorry, I don"A7"t understand"00
+str581	asc	8D"Ne racontez pas n"A7"importe quoi"8D00
+str582	asc	8D"Pardon"8D00
+str583	asc	8D"Comment"8D00
+str584	asc	8D"Je ne comprends pas"8D00
+str585	asc	8D"Sorry, I don"A7"t understand"8D00
 str586	asc	8D"Les rigolos qui m"A7"ont programme ne m"A7"ont"
-	asc	"pas appris ce vocabulaire"00
-str587	asc	8D"Je n"A7"ai pas compris"00
-str588	asc	8D"OK"00
-str589	asc	8D"Ca marche"00
-str590	asc	8D"D"A7"accord"00
+	asc	"pas appris ce vocabulaire"8D00
+str587	asc	8D"Je n"A7"ai pas compris"8D00
+str588	asc	8D"OK"8D00
+str589	asc	8D"Ca marche"8D00
+str590	asc	8D"D"A7"accord"8D00
 
 strIMPOSSIBLE
 	asc	8D"Impossible "00
@@ -549,7 +551,7 @@ M$58	dfb	01,57,00
 * on fera index-1 b/c 8-bits
 *
 
-V	=	129+2
+V	=	129+3
 
 tblVL$	dfb	$bd
 	dfb	<V$1,<V$2,<V$3,<V$4,<V$5,<V$6,<V$7,<V$8,<V$9,<V$10
@@ -565,7 +567,7 @@ tblVL$	dfb	$bd
 	dfb	<V$101,<V$102,<V$103,<V$104,<V$105,<V$106,<V$107,<V$108,<V$109,<V$110
 	dfb	<V$111,<V$112,<V$113,<V$114,<V$115,<V$116,<V$117,<V$118,<V$119,<V$120
 	dfb	<V$121,<V$122,<V$123,<V$124,<V$125,<V$126,<V$127,<V$128,<V$129
-	dfb	<V$201,<V$202
+	dfb	<V$201,<V$202,<V$203
 	
 tblVH$	dfb	$bd
 	dfb	>V$1,>V$2,>V$3,>V$4,>V$5,>V$6,>V$7,>V$8,>V$9,>V$10
@@ -581,7 +583,7 @@ tblVH$	dfb	$bd
 	dfb	>V$101,>V$102,>V$103,>V$104,>V$105,>V$106,>V$107,>V$108,>V$109,>V$110
 	dfb	>V$111,>V$112,>V$113,>V$114,>V$115,>V$116,>V$117,>V$118,>V$119,>V$120
 	dfb	>V$121,>V$122,>V$123,>V$124,>V$125,>V$126,>V$127,>V$128,>V$129
-	dfb	>V$201,>V$202
+	dfb	>V$201,>V$202,>V$203
 	
 tblV	dfb	$bd
 	dfb	01,01,02,02,03,03,04,04,05,05
@@ -597,7 +599,7 @@ tblV	dfb	$bd
 	dfb	77,78,78,78,79,79,79,80,81,82
 	dfb	83,84,85,86,87,88,89,90,91,92
 	dfb	93,93,94,94,96,97,98,99,75
-	dfb	201,202
+	dfb	201,202,203
 	
 V$1	str	"N"
 V$2	str	"NORD"
@@ -731,6 +733,7 @@ V$129	str	"VETE"
 
 V$201	str	"QUIT"
 V$202	str	"CASE"
+V$203	str	"ENER"
 
 *
 * Les lieux (str8xxx)
@@ -870,7 +873,7 @@ str4180	asc	"Vous grillez sur le generateur de la"8D
 str4190	asc	"Vous glissez en montant, la colle gicle"8D
 	asc	"dans vos yeux."00
 str4200	asc	"L"A7"eau touche le systeme electrique..."8D
-	asc	" Vous grillez..."00
+	asc	"Vous grillez..."00
 str4210	asc	"La folie vous a pris (vider un seau"8D
 	asc	"vide), vous vous suicidez."00
 str4220	asc	"Vous electrocutez le robot, mais vous"8D

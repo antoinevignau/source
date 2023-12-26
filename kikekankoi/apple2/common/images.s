@@ -1,4 +1,4 @@
-*
+@*
 * Kikekankoi
 *
 * (c) 1985, Loriciels
@@ -49,23 +49,22 @@ tblIMAGES   =     *
 	DA	L93D1	; 40
 	DA	L928F	; 41
 	DA	L4AC2	; 42
-	DA	$0000	; image vide
-	DA	L40C8	; 43
-	DA	L968C	; 44
-	DA	L495F	; 45
-	DA	L4796	; 46
-	DA	L94A4	; 47
-	DA	L3F89	; 48
-	DA	L448B	; 49
-	DA	L9C4F	; 50 le coin sud-est de la ville
-	DA	L38F6	; 51 le temple de KikeKanKoi
-	DA	L98CB	; 52 que vendez-vous ?
-	DA	L95F8	; 53 salle de la BA vide
-	DA	L9E36	; 54 le mausolee de l'exterminateur
-	DA	L3E6E	; 55 le coeur du temple
-	DA	L9F7E	; 56 l'antre du venere
-	DA	L91AD	; 57 le chemin des dipteres
-	DA	L98CB	; 58 l'antre du victorieux
+	DA	$0000	; 43 image vide
+	DA	L40C8	; 44 43
+	DA	L968C	; 45 44
+	DA	L495F	; 46 45
+	DA	L4796	; 47 46
+	DA	L94A4	; 48 47
+	DA	L3F89	; 49 48
+	DA	L448B	; 50 49 le coin sud-est de la ville
+	DA	L9C4F	; 51 50 le temple de Kikekankoi
+	DA	L38F6	; 52 51 que vendez-vous ?
+ptrSALLEBA	DA	filleNUE	; 53 52 salle de la BA
+	DA	L95F8	; 54 53 le mausolee de l'exterminateur
+	DA	L9E36	; 55 54 le coeur du temple
+	DA	L3E6E	; 56 55 l'antre du venere
+	DA	L9F7E	; 57 56 le chemin des dipteres
+	DA	L91AD	; 58 57 l'antre du victorieux
 	dw	$0000
 
 *---
@@ -16036,6 +16035,462 @@ L38F6       DB    $48	; une belle image
             DB    $00
             DB    $00
 
+*--- SALLE DE LA B.A. AVEC LA FILLE
+
+filleNUE    DB    $48
+            DB    $10
+            DB    $18
+            DB    $42
+            DB    $47
+            DB    $01
+            DB    $41
+            DB    $47
+            DB    $1A
+            DB    $41
+            DB    $40
+            DB    $1A
+            DB    $41
+            DB    $40
+            DB    $20
+            DB    $41
+            DB    $93
+            DB    $20
+            DB    $41
+            DB    $AD
+            DB    $15
+            DB    $41
+            DB    $AD
+            DB    $10
+            DB    $41
+            DB    $93
+            DB    $1A
+            DB    $41
+            DB    $48
+            DB    $1A
+            DB    $42
+            DB    $93
+            DB    $1A
+            DB    $41
+            DB    $93
+            DB    $20
+            DB    $42
+            DB    $90
+            DB    $19
+            DB    $41
+            DB    $90
+            DB    $01
+            DB    $42
+            DB    $A9
+            DB    $11
+            DB    $41
+            DB    $A9
+            DB    $01
+            DB    $C2
+            DB    $5F
+            DB    $62
+            DB    $41
+            DB    $5D
+            DB    $6B
+            DB    $41
+            DB    $57
+            DB    $7F
+            DB    $41
+            DB    $57
+            DB    $85
+            DB    $41
+            DB    $60
+            DB    $8E
+            DB    $41
+            DB    $6B
+            DB    $8D
+            DB    $41
+            DB    $75
+            DB    $82
+            DB    $41
+            DB    $78
+            DB    $72
+            DB    $41
+            DB    $76
+            DB    $6F
+            DB    $41
+            DB    $74
+            DB    $5F
+            DB    $41
+            DB    $72
+            DB    $65
+            DB    $41
+            DB    $71
+            DB    $73
+            DB    $41
+            DB    $6E
+            DB    $7A
+            DB    $41
+            DB    $67
+            DB    $84
+            DB    $41
+            DB    $63
+            DB    $86
+            DB    $41
+            DB    $61
+            DB    $81
+            DB    $41
+            DB    $5D
+            DB    $84
+            DB    $41
+            DB    $5C
+            DB    $79
+            DB    $41
+            DB    $62
+            DB    $71
+            DB    $41
+            DB    $65
+            DB    $71
+            DB    $41
+            DB    $6E
+            DB    $78
+            DB    $42
+            DB    $63
+            DB    $71
+            DB    $41
+            DB    $5F
+            DB    $6F
+            DB    $41
+            DB    $5F
+            DB    $6C
+            DB    $41
+            DB    $62
+            DB    $66
+            DB    $41
+            DB    $5D
+            DB    $5E
+            DB    $41
+            DB    $5E
+            DB    $5E
+            DB    $41
+            DB    $5F
+            DB    $5B
+            DB    $41
+            DB    $62
+            DB    $59
+            DB    $41
+            DB    $66
+            DB    $57
+            DB    $42
+            DB    $64
+            DB    $57
+            DB    $41
+            DB    $63
+            DB    $53
+            DB    $41
+            DB    $69
+            DB    $48
+            DB    $41
+            DB    $68
+            DB    $40
+            DB    $41
+            DB    $6B
+            DB    $38
+            DB    $41
+            DB    $6C
+            DB    $34
+            DB    $42
+            DB    $6A
+            DB    $38
+            DB    $41
+            DB    $5C
+            DB    $30
+            DB    $41
+            DB    $4E
+            DB    $21
+            DB    $42
+            DB    $57
+            DB    $21
+            DB    $41
+            DB    $64
+            DB    $2D
+            DB    $41
+            DB    $75
+            DB    $38
+            DB    $42
+            DB    $7E
+            DB    $21
+            DB    $41
+            DB    $81
+            DB    $23
+            DB    $41
+            DB    $85
+            DB    $21
+            DB    $42
+            DB    $8B
+            DB    $21
+            DB    $41
+            DB    $87
+            DB    $26
+            DB    $41
+            DB    $84
+            DB    $2C
+            DB    $42
+            DB    $72
+            DB    $21
+            DB    $41
+            DB    $83
+            DB    $2C
+            DB    $41
+            DB    $86
+            DB    $32
+            DB    $41
+            DB    $85
+            DB    $39
+            DB    $41
+            DB    $80
+            DB    $41
+            DB    $41
+            DB    $7B
+            DB    $4B
+            DB    $41
+            DB    $7E
+            DB    $51
+            DB    $41
+            DB    $7F
+            DB    $55
+            DB    $41
+            DB    $87
+            DB    $4A
+            DB    $41
+            DB    $84
+            DB    $46
+            DB    $42
+            DB    $87
+            DB    $4A
+            DB    $41
+            DB    $89
+            DB    $4C
+            DB    $42
+            DB    $84
+            DB    $3C
+            DB    $41
+            DB    $8F
+            DB    $47
+            DB    $41
+            DB    $90
+            DB    $4A
+            DB    $41
+            DB    $88
+            DB    $5B
+            DB    $41
+            DB    $85
+            DB    $63
+            DB    $41
+            DB    $78
+            DB    $70
+            DB    $42
+            DB    $77
+            DB    $94
+            DB    $41
+            DB    $77
+            DB    $7A
+            DB    $42
+            DB    $84
+            DB    $94
+            DB    $41
+            DB    $84
+            DB    $65
+            DB    $42
+            DB    $84
+            DB    $4D
+            DB    $41
+            DB    $84
+            DB    $3D
+            DB    $54
+            DB    $7A
+            DB    $93
+            DB    $54
+            DB    $7E
+            DB    $4C
+            DB    $42
+            DB    $7F
+            DB    $56
+            DB    $41
+            DB    $7A
+            DB    $5C
+            DB    $41
+            DB    $79
+            DB    $5F
+            DB    $41
+            DB    $7A
+            DB    $62
+            DB    $42
+            DB    $6D
+            DB    $65
+            DB    $41
+            DB    $68
+            DB    $61
+            DB    $41
+            DB    $66
+            DB    $5E
+            DB    $41
+            DB    $67
+            DB    $5A
+            DB    $41
+            DB    $6C
+            DB    $57
+            DB    $41
+            DB    $73
+            DB    $59
+            DB    $42
+            DB    $6A
+            DB    $5D
+            DB    $82
+            DB    $7C
+            DB    $4D
+            DB    $81
+            DB    $7C
+            DB    $48
+            DB    $42
+            DB    $84
+            DB    $2D
+            DB    $42
+            DB    $6C
+            DB    $3D
+            DB    $42
+            DB    $6C
+            DB    $3E
+            DB    $42
+            DB    $6D
+            DB    $34
+            DB    $41
+            DB    $6C
+            DB    $36
+            DB    $41
+            DB    $6F
+            DB    $35
+            DB    $42
+            DB    $6D
+            DB    $35
+            DB    $A4
+            DB    $54
+            DB    $22
+            DB    $A4
+            DB    $87
+            DB    $22
+            DB    $A4
+            DB    $60
+            DB    $22
+            DB    $A4
+            DB    $6B
+            DB    $79
+            DB    $F4
+            DB    $74
+            DB    $6E
+            DB    $42
+            DB    $67
+            DB    $81
+            DB    $41
+            DB    $64
+            DB    $7F
+            DB    $42
+            DB    $65
+            DB    $7D
+            DB    $42
+            DB    $5D
+            DB    $7D
+            DB    $41
+            DB    $5F
+            DB    $7D
+            DB    $42
+            DB    $5E
+            DB    $7B
+            DB    $82
+            DB    $68
+            DB    $73
+            DB    $82
+            DB    $60
+            DB    $74
+            DB    $42
+            DB    $63
+            DB    $7A
+            DB    $42
+            DB    $62
+            DB    $79
+            DB    $42
+            DB    $62
+            DB    $78
+            DB    $42
+            DB    $63
+            DB    $78
+            DB    $42
+            DB    $63
+            DB    $7B
+            DB    $42
+            DB    $65
+            DB    $76
+            DB    $41
+            DB    $62
+            DB    $76
+            DB    $42
+            DB    $64
+            DB    $75
+            DB    $42
+            DB    $63
+            DB    $75
+            DB    $42
+            DB    $6D
+            DB    $66
+            DB    $42
+            DB    $6D
+            DB    $67
+            DB    $42
+            DB    $66
+            DB    $71
+            DB    $41
+            DB    $68
+            DB    $6F
+            DB    $41
+            DB    $68
+            DB    $6D
+            DB    $82
+            DB    $69
+            DB    $49
+            DB    $81
+            DB    $69
+            DB    $44
+            DB    $42
+            DB    $68
+            DB    $44
+            DB    $41
+            DB    $67
+            DB    $4A
+            DB    $42
+            DB    $63
+            DB    $57
+            DB    $41
+            DB    $63
+            DB    $55
+            DB    $82
+            DB    $7B
+            DB    $4D
+            DB    $81
+            DB    $7B
+            DB    $49
+            DB    $B4
+            DB    $49
+            DB    $02
+            DB    $74
+            DB    $95
+            DB    $02
+            DB    $64
+            DB    $43
+            DB    $1C
+            DB    $54
+            DB    $97
+            DB    $1C
+            DB    $42
+            DB    $69
+            DB    $49
+            DB    $00
+            DB    $00
+            DB    $00
+
 L95F8       DB    $48
             DB    $18
             DB    $1A
@@ -16918,8 +17373,7 @@ L9F7E       DB    $48
             DB    $42
             DB    $89
             DB    $4F
-
-L8FEA       DB    $41	; Le bout d'image qui manquait !
+            DB    $41
             DB    $84
             DB    $4B
             DB    $41
@@ -17364,9 +17818,9 @@ L91AD       DB    $48
             DB    $00
             DB    $00
 
-*---
+*--- salle de la BA sans la fille
 
-L98CB       DB    $48	; The missing picture (patch line 3300)
+salleBA     DB    $48
             DB    $10
             DB    $18
             DB    $42

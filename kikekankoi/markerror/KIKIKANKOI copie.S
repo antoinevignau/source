@@ -14432,6 +14432,9 @@ L8E2A       DB    $48
             DB    $34
             DB    $02
             DB    $00
+
+* FILLE NUE
+
             DB    $48
             DB    $10
             DB    $18
@@ -18529,7 +18532,7 @@ L9F7E       DB    $48
             DB    $42
             DB    $89
             DB    $4F
-L8FEA       DB    $41
+            DB    $41
             DB    $84
             DB    $4B
             DB    $41

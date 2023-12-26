@@ -79,7 +79,7 @@ SETKBD	=	$FE89
 	
 	@draw	#picFRAME
 
-	lda	$ff
+	lda	#1
 	jsr	showPIC
 	jsr	RDKEY
 	rts
@@ -100,6 +100,10 @@ showPIC1	ldx	$fe
 	ldy	$fd
 	jsr	drawPICTURE
 	rts
+
+tblIMAGES	da	$bdbd
+	da	L98CB
+	da	filleNUE
 
 *-----------------------------
 * MOTEUR
@@ -263,30 +267,19 @@ oric2hgr	hex	0705010602030400
 * DONNEES
 *-----------------------------
 
-	put	common/images.s
+*	put	common/images.s
 *	put	fr/fr.s
 
 *-----------------------------
 
 printCSTRING
+	sty	pcs1+1
+	stx	pcs1+2
+	
 	lda	#0
 	sta	CH
 	lda	#20
 	jsr	TABV
-	
-	lda	$ff
-	jsr	PRBYTE
-	
-	lda	#" "
-	jsr	COUT
-	
-	lda	$ff
-	asl
-	tax
-	lda	tbl7000,x
-	sta	pcs1+1
-	lda	tbl7000+1,x
-	sta	pcs1+2
 	
 pcs1	lda	$ffff
 	beq	pcs3
@@ -299,96 +292,635 @@ pcs3	rts
 
 *---
 
-tbl7000	da	$bdbd
-	da	str8010,str8020,str8030,str8040,str8050,str8060,str8070,str8080,str8090
-	da	str8100,str8110,str8120,str8130,str8140,str8150,str8160,str8170,str8180,str8190
-	da	str8200,str8210,str8220,str8230,str8240,str8250,str8260,str8270,str8280,str8290
-	da	str8300,str8310,str8320,str8330,str8340,str8350,str8360,str8370,str8380,str8390
-	da	str8400,str8410,str8420,str8430,str8440,str8450,str8460,str8470,str8480,str8490
-	da	str8500,str8510,str8520,str8530,str8540,str8550,str8560,str8570,str8580,str8590
-	da	str8600
+filleNUE    DB    $48
+            DB    $10
+            DB    $18
+            DB    $42
+            DB    $47
+            DB    $01
+            DB    $41
+            DB    $47
+            DB    $1A
+            DB    $41
+            DB    $40
+            DB    $1A
+            DB    $41
+            DB    $40
+            DB    $20
+            DB    $41
+            DB    $93
+            DB    $20
+            DB    $41
+            DB    $AD
+            DB    $15
+            DB    $41
+            DB    $AD
+            DB    $10
+            DB    $41
+            DB    $93
+            DB    $1A
+            DB    $41
+            DB    $48
+            DB    $1A
+            DB    $42
+            DB    $93
+            DB    $1A
+            DB    $41
+            DB    $93
+            DB    $20
+            DB    $42
+            DB    $90
+            DB    $19
+            DB    $41
+            DB    $90
+            DB    $01
+            DB    $42
+            DB    $A9
+            DB    $11
+            DB    $41
+            DB    $A9
+            DB    $01
+            DB    $C2
+            DB    $5F
+            DB    $62
+            DB    $41
+            DB    $5D
+            DB    $6B
+            DB    $41
+            DB    $57
+            DB    $7F
+            DB    $41
+            DB    $57
+            DB    $85
+            DB    $41
+            DB    $60
+            DB    $8E
+            DB    $41
+            DB    $6B
+            DB    $8D
+            DB    $41
+            DB    $75
+            DB    $82
+            DB    $41
+            DB    $78
+            DB    $72
+            DB    $41
+            DB    $76
+            DB    $6F
+            DB    $41
+            DB    $74
+            DB    $5F
+            DB    $41
+            DB    $72
+            DB    $65
+            DB    $41
+            DB    $71
+            DB    $73
+            DB    $41
+            DB    $6E
+            DB    $7A
+            DB    $41
+            DB    $67
+            DB    $84
+            DB    $41
+            DB    $63
+            DB    $86
+            DB    $41
+            DB    $61
+            DB    $81
+            DB    $41
+            DB    $5D
+            DB    $84
+            DB    $41
+            DB    $5C
+            DB    $79
+            DB    $41
+            DB    $62
+            DB    $71
+            DB    $41
+            DB    $65
+            DB    $71
+            DB    $41
+            DB    $6E
+            DB    $78
+            DB    $42
+            DB    $63
+            DB    $71
+            DB    $41
+            DB    $5F
+            DB    $6F
+            DB    $41
+            DB    $5F
+            DB    $6C
+            DB    $41
+            DB    $62
+            DB    $66
+            DB    $41
+            DB    $5D
+            DB    $5E
+            DB    $41
+            DB    $5E
+            DB    $5E
+            DB    $41
+            DB    $5F
+            DB    $5B
+            DB    $41
+            DB    $62
+            DB    $59
+            DB    $41
+            DB    $66
+            DB    $57
+            DB    $42
+            DB    $64
+            DB    $57
+            DB    $41
+            DB    $63
+            DB    $53
+            DB    $41
+            DB    $69
+            DB    $48
+            DB    $41
+            DB    $68
+            DB    $40
+            DB    $41
+            DB    $6B
+            DB    $38
+            DB    $41
+            DB    $6C
+            DB    $34
+            DB    $42
+            DB    $6A
+            DB    $38
+            DB    $41
+            DB    $5C
+            DB    $30
+            DB    $41
+            DB    $4E
+            DB    $21
+            DB    $42
+            DB    $57
+            DB    $21
+            DB    $41
+            DB    $64
+            DB    $2D
+            DB    $41
+            DB    $75
+            DB    $38
+            DB    $42
+            DB    $7E
+            DB    $21
+            DB    $41
+            DB    $81
+            DB    $23
+            DB    $41
+            DB    $85
+            DB    $21
+            DB    $42
+            DB    $8B
+            DB    $21
+            DB    $41
+            DB    $87
+            DB    $26
+            DB    $41
+            DB    $84
+            DB    $2C
+            DB    $42
+            DB    $72
+            DB    $21
+            DB    $41
+            DB    $83
+            DB    $2C
+            DB    $41
+            DB    $86
+            DB    $32
+            DB    $41
+            DB    $85
+            DB    $39
+            DB    $41
+            DB    $80
+            DB    $41
+            DB    $41
+            DB    $7B
+            DB    $4B
+            DB    $41
+            DB    $7E
+            DB    $51
+            DB    $41
+            DB    $7F
+            DB    $55
+            DB    $41
+            DB    $87
+            DB    $4A
+            DB    $41
+            DB    $84
+            DB    $46
+            DB    $42
+            DB    $87
+            DB    $4A
+            DB    $41
+            DB    $89
+            DB    $4C
+            DB    $42
+            DB    $84
+            DB    $3C
+            DB    $41
+            DB    $8F
+            DB    $47
+            DB    $41
+            DB    $90
+            DB    $4A
+            DB    $41
+            DB    $88
+            DB    $5B
+            DB    $41
+            DB    $85
+            DB    $63
+            DB    $41
+            DB    $78
+            DB    $70
+            DB    $42
+            DB    $77
+            DB    $94
+            DB    $41
+            DB    $77
+            DB    $7A
+            DB    $42
+            DB    $84
+            DB    $94
+            DB    $41
+            DB    $84
+            DB    $65
+            DB    $42
+            DB    $84
+            DB    $4D
+            DB    $41
+            DB    $84
+            DB    $3D
+            DB    $54
+            DB    $7A
+            DB    $93
+            DB    $54
+            DB    $7E
+            DB    $4C
+            DB    $42
+            DB    $7F
+            DB    $56
+            DB    $41
+            DB    $7A
+            DB    $5C
+            DB    $41
+            DB    $79
+            DB    $5F
+            DB    $41
+            DB    $7A
+            DB    $62
+            DB    $42
+            DB    $6D
+            DB    $65
+            DB    $41
+            DB    $68
+            DB    $61
+            DB    $41
+            DB    $66
+            DB    $5E
+            DB    $41
+            DB    $67
+            DB    $5A
+            DB    $41
+            DB    $6C
+            DB    $57
+            DB    $41
+            DB    $73
+            DB    $59
+            DB    $42
+            DB    $6A
+            DB    $5D
+            DB    $82
+            DB    $7C
+            DB    $4D
+            DB    $81
+            DB    $7C
+            DB    $48
+            DB    $42
+            DB    $84
+            DB    $2D
+            DB    $42
+            DB    $6C
+            DB    $3D
+            DB    $42
+            DB    $6C
+            DB    $3E
+            DB    $42
+            DB    $6D
+            DB    $34
+            DB    $41
+            DB    $6C
+            DB    $36
+            DB    $41
+            DB    $6F
+            DB    $35
+            DB    $42
+            DB    $6D
+            DB    $35
+            DB    $A4
+            DB    $54
+            DB    $22
+            DB    $A4
+            DB    $87
+            DB    $22
+            DB    $A4
+            DB    $60
+            DB    $22
+            DB    $A4
+            DB    $6B
+            DB    $79
+            DB    $F4
+            DB    $74
+            DB    $6E
+            DB    $42
+            DB    $67
+            DB    $81
+            DB    $41
+            DB    $64
+            DB    $7F
+            DB    $42
+            DB    $65
+            DB    $7D
+            DB    $42
+            DB    $5D
+            DB    $7D
+            DB    $41
+            DB    $5F
+            DB    $7D
+            DB    $42
+            DB    $5E
+            DB    $7B
+            DB    $82
+            DB    $68
+            DB    $73
+            DB    $82
+            DB    $60
+            DB    $74
+            DB    $42
+            DB    $63
+            DB    $7A
+            DB    $42
+            DB    $62
+            DB    $79
+            DB    $42
+            DB    $62
+            DB    $78
+            DB    $42
+            DB    $63
+            DB    $78
+            DB    $42
+            DB    $63
+            DB    $7B
+            DB    $42
+            DB    $65
+            DB    $76
+            DB    $41
+            DB    $62
+            DB    $76
+            DB    $42
+            DB    $64
+            DB    $75
+            DB    $42
+            DB    $63
+            DB    $75
+            DB    $42
+            DB    $6D
+            DB    $66
+            DB    $42
+            DB    $6D
+            DB    $67
+            DB    $42
+            DB    $66
+            DB    $71
+            DB    $41
+            DB    $68
+            DB    $6F
+            DB    $41
+            DB    $68
+            DB    $6D
+            DB    $82
+            DB    $69
+            DB    $49
+            DB    $81
+            DB    $69
+            DB    $44
+            DB    $42
+            DB    $68
+            DB    $44
+            DB    $41
+            DB    $67
+            DB    $4A
+            DB    $42
+            DB    $63
+            DB    $57
+            DB    $41
+            DB    $63
+            DB    $55
+            DB    $82
+            DB    $7B
+            DB    $4D
+            DB    $81
+            DB    $7B
+            DB    $49
+            DB    $B4
+            DB    $49
+            DB    $02
+            DB    $74
+            DB    $95
+            DB    $02
+            DB    $64
+            DB    $43
+            DB    $1C
+            DB    $54
+            DB    $97
+            DB    $1C
+            DB    $42
+            DB    $69
+            DB    $49
+            DB    $00
 
-str8010	asc	"L"A7"antre du demon."8D
-	asc	"Vous etes dans une grotte amenagee..."00
-str8020	asc	"Le repere du chirurgien."8D
-	asc	"Il y a une porte au sud, il y a plein de"
-	asc	"photos chirurgicales sur les murs"00
-str8030	asc	""00	; X la mort
-str8040	asc	"L"A7"antre du sorcier."00
-str8050	asc	"Au bord du lac."8D
-	asc	"Vous etes au bord d"A7"un lac souterrain"00
-str8060	asc	""00	; X gagne
-str8070	asc	"Le repere du lecteur."00
-str8080	asc	"Au nord, un banc de sable. Vous etes sur"
-	asc	"le cote du lac, le seul chemin est au"8D
-	asc	"nord sous la forme d"A7"un banc de sable"00
-str8090	asc	"Le bout du lac."00
-str8100	asc	"La salle mecanique."00
-str8110	asc	"Une grotte vide."00
-str8120	asc	"La trappe des enrages. Il y a une trappe"
-	asc	"au sol, munie d"A7"une serrure."00
-str8130	asc	"Il y a une porte au sud marquee EXIT."00
-str8140	asc	"Il y a une porte au sud avec le jour qui"
-	asc	"filtre en dessous"00
-str8150	asc	"L"A7"antre du lecteur."00
-str8160	asc	"Il y a trois marmites avec des soupes"8D
-	asc	"rouge, verte et bleue"00
-str8170	asc	"L"A7"atelier."00
-str8180	asc	"Dans une frele esquive en scotch et bois"
-	asc	"pourri, proche de la rive."00
-str8190	asc	"La chambre des lumieres."00
-str8200	asc	"Le refuge de l"A7"alchimiste."00
-str8210	asc	"Le gite du fakir."8D
-	asc	"Il y a un anneau fixe au mur"00
-str8220	asc	"L"A7"antre de la verite."00
-str8230	asc	"L"A7"antre du fou."00
-str8240	asc	"L"A7"antre du maigre."00
-str8250	asc	"Le repere de l"A7"embaumeur."00
-str8260	asc	"Le gite du bricoleur."8D
-	asc	"Il y a une ouverture au sud..."00
-str8270	asc	"Le repere du fuyard. Il y a une trappe."00
-str8280	asc	"Le refuge du montagnard."00
-str8290	asc	"Le chemin des rongeurs."00
-str8300	asc	"L"A7"antichambre de la mort."00
-str8310	asc	"Du bruit a l"A7"est."8D
-	asc	"Il y a une porte marquee DANGER au sud"00
-str8320	asc	"De la lumiere au sud."8D
-	asc	"Il y a au sud un passage d"A7"ou viennent"8D
-	asc	"de droles de bruits"00
-str8330	asc	"L"A7"antre du maniaque."00
-str8340	asc	"Le repere des rats."8D
-	asc	"Il y a des rats un peu partout..."00
-str8350	asc	"La salle des survivants."00
-str8360	asc	"La cremerie et le tailleur."00
-str8370	asc	"Le tabac et la boulangerie."00
-str8380	asc	"Le traiteur."00
-str8390	asc	"Le medecin et le chausseur."00
-str8400	asc	"Le coin nord-ouest de la ville."00
-str8410	asc	"La fin de la ville !"00
-str8420	asc	"Dans le tabac."8D
-	asc	"Le vendeur dort sur le comptoir"00
-str8430	asc	""00	; X rien
-str8440	asc	"Chez le tailleur."8D
-	asc	"Il y a plein d"A7"habits a vendre"00
-str8450	asc	"Vous etes dans la cremerie."00
-str8460	asc	"Vous etes chez le chausseur."8D
-	asc	"La boutique est bien achalandee"00
-str8470	asc	"Chez le medecin."8D
-	asc	"Le medecin est parti"00
-str8480	asc	"Vous etes face a la droguerie."00
-str8490	asc	"Dans la droguerie."00
-str8500	asc	"Le coin sud-est de la ville."00
-str8510	asc	"Devant un monument..? Le fameux temple a"
-	asc	"la gloire du GRAND KiKeKanKoi !"00
-str8520	asc	"Que vendez-vous ?"00
-str8530	asc	"La salle de la B.A."00
-str8540	asc	"Le mausolee de l"A7"exterminateur."00
-str8550	asc	"Le choeur du Temple."00
-str8560	asc	"L"A7"antre du venere."8D
-	asc	"Il y a une porte au sud"00
-str8570	asc	"Le chemin des dipteres."00
-str8580	asc	"L"A7"antre du victorieux."8D
-	asc	"Vous etes dans un reduit dont les murs"8D
-	asc	"sont faits de blocs de pierre."00
-str8590	asc	""00
-str8600	asc	""00
+L98CB       DB    $48	; The missing picture (patch line 3300)
+            DB    $10
+            DB    $18
+            DB    $42
+            DB    $01
+            DB    $01
+            DB    $41
+            DB    $58
+            DB    $69
+            DB    $41
+            DB    $58
+            DB    $94
+            DB    $42
+            DB    $59
+            DB    $69
+            DB    $41
+            DB    $90
+            DB    $69
+            DB    $42
+            DB    $98
+            DB    $69
+            DB    $41
+            DB    $C6
+            DB    $69
+            DB    $42
+            DB    $91
+            DB    $90
+            DB    $41
+            DB    $91
+            DB    $58
+            DB    $41
+            DB    $98
+            DB    $58
+            DB    $41
+            DB    $98
+            DB    $90
+            DB    $41
+            DB    $91
+            DB    $90
+            DB    $42
+            DB    $90
+            DB    $60
+            DB    $41
+            DB    $8A
+            DB    $60
+            DB    $41
+            DB    $72
+            DB    $43
+            DB    $41
+            DB    $72
+            DB    $3F
+            DB    $41
+            DB    $9B
+            DB    $3F
+            DB    $41
+            DB    $AC
+            DB    $5B
+            DB    $41
+            DB    $AC
+            DB    $60
+            DB    $41
+            DB    $99
+            DB    $60
+            DB    $42
+            DB    $AB
+            DB    $5F
+            DB    $41
+            DB    $9A
+            DB    $44
+            DB    $41
+            DB    $73
+            DB    $44
+            DB    $42
+            DB    $76
+            DB    $3E
+            DB    $41
+            DB    $76
+            DB    $2B
+            DB    $41
+            DB    $99
+            DB    $2B
+            DB    $41
+            DB    $AA
+            DB    $49
+            DB    $41
+            DB    $AA
+            DB    $57
+            DB    $42
+            DB    $98
+            DB    $2C
+            DB    $41
+            DB    $98
+            DB    $3E
+            DB    $42
+            DB    $01
+            DB    $3D
+            DB    $41
+            DB    $55
+            DB    $74
+            DB    $42
+            DB    $01
+            DB    $71
+            DB    $41
+            DB    $55
+            DB    $83
+            DB    $42
+            DB    $0B
+            DB    $73
+            DB    $41
+            DB    $0B
+            DB    $93
+            DB    $42
+            DB    $39
+            DB    $7E
+            DB    $41
+            DB    $39
+            DB    $93
+            DB    $42
+            DB    $23
+            DB    $77
+            DB    $41
+            DB    $23
+            DB    $57
+            DB    $42
+            DB    $4A
+            DB    $6E
+            DB    $41
+            DB    $4A
+            DB    $7F
+            DB    $42
+            DB    $39
+            DB    $61
+            DB    $41
+            DB    $39
+            DB    $47
+            DB    $42
+            DB    $0B
+            DB    $0E
+            DB    $41
+            DB    $0B
+            DB    $41
+            DB    $54
+            DB    $95
+            DB    $5B
+            DB    $42
+            DB    $9A
+            DB    $40
+            DB    $41
+            DB    $9A
+            DB    $43
+            DB    $54
+            DB    $AA
+            DB    $5B
+            DB    $64
+            DB    $96
+            DB    $42
+            DB    $74
+            DB    $A8
+            DB    $4F
+            DB    $F4
+            DB    $95
+            DB    $3B
+            DB    $B4
+            DB    $8C
+            DB    $5E
+            DB    $F4
+            DB    $02
+            DB    $06
+            DB    $74
+            DB    $5A
+            DB    $93
+            DB    $42
+            DB    $92
+            DB    $57
+            DB    $41
+            DB    $97
+            DB    $57
+            DB    $00
+            DB    $00
+            DB    $00

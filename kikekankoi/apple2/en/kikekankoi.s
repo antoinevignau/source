@@ -126,8 +126,8 @@ SETKBD	=	$FE89
 	
 	lda	MONOCOLOR
 	sta	sauveMONO
-*	ora	#%1000_0000
-	and	#%0111_1111
+	ora	#%1000_0000
+*	and	#%0111_1111
 	sta	MONOCOLOR
 	
 notiigs

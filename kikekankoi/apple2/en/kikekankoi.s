@@ -36,7 +36,7 @@ chrSPC	=	$a0
 TEXTBUFFER = 	$200
 maxLEN	=	20
 
-chrOUI	=	"O"
+chrOUI	=	"Y"
 chrNON	=	"N"
 
 idxTEMPO	=	200
@@ -225,7 +225,7 @@ REPLAY	jsr	initALL
 :222	jsr	$bdbd
 	jsr	setMIXEDON
 	
-:300	lda	#0
+	lda	#0
 	sta	H
 	sta	HH	; for comma
 	lda	#1
@@ -514,7 +514,7 @@ REPLAY	jsr	initALL
 	
 :1450	jsr	$bdbd
 	
-	lda	OK
+:1460	lda	OK
 	bne	:1470
 	jmp	:1100
 
@@ -672,7 +672,7 @@ tbl1500	da	:1500,:1510,:1520,:1530,:1540
 
 :1750	jsr	$bdbd
 
-	lda	BREAK
+:1760	lda	BREAK
 	beq	:1780
 	asl
 	tax
@@ -1150,13 +1150,10 @@ tbl4000	da	$bdbd
 *--- On a libéré la fille !
 	
 :4650	@print	#str4650
-	@wait	#300
-	
 	lda	#<salleBA
 	sta	ptrSALLEBA
 	lda	#>salleBA
 	sta	ptrSALLEBA+1
-	@draw	#53
 	rts
 
 *---
@@ -1610,11 +1607,11 @@ tbl7000	da	$bdbd
 *-----------------------------------
 
 initALL
-	ldx	#FIN_DATA-DEBUT_DATA-1
+	ldx	#FIN_DATA-DEBUT_DATA
 	lda	#0
-]lp	sta	A1,x
+]lp	sta	A1-1,x
 	dex
-	bpl	]lp
+	bne	]lp
 
 *---
 
@@ -1632,6 +1629,13 @@ initALL
 	sta	TEMPS+1
 	sta	TEMPS+2
 	sta	TEMPS+3
+
+	lda	#"5"
+	sta	strTEMPS
+	lda	#"0"
+	sta	strTEMPS+1
+	sta	strTEMPS+2
+	sta	strTEMPS+3
 	
 *---
 
@@ -2410,8 +2414,8 @@ zikINTRODUCTION
 	hex	260C1B260C1C260C1B260C1B2D0C1C2D 
 	hex	0C1E2D0C1C2D0C1C000C20000C22000C 
 	hex	20000C20000C26000C2D000C33000C39 
-	hex	000C2D390C26390C20390C1C400C1640 
 	ds	\
+*	hex	000C2D390C26390C20390C1C400C1640 
 *	hex	0C15400C16400103030C15440C1C440C 
 *	hex	22440C26440C22660C1C660C2B660C22 
 *	hex	660102020C39000C2B390C2D390C3339 

@@ -346,8 +346,8 @@ tblA1	dfb	$bd
 	dfb	11,11,11,11,11,11,11,11,11,11
 	dfb	11,11,11,11,11,11,11,11,11,11
 	dfb	63,63,19,19,19,19,24,24,24,24
-*	dfb	24,11,51,19,19,51,56,56,26,57 DEBR BATT x 2 (56 => 96)
-	dfb	24,11,51,19,19,51,96,96,26,57
+*	dfb	24,11,51,19,19,51,56,56,26,57 DEBR BATT x 2 (56 => 100)
+	dfb	24,11,51,19,19,51,100,100,26,57
 	dfb	12,16,24,58,12,59,54,57,24,12
 	dfb	12,12,12,62,62,12,20,10,10,10
 	dfb	10,10,10,10,10,10,10,10,10,10
@@ -431,43 +431,43 @@ tblO$	da	$bdbd
 	da	O$21,O$22,O$23,O$24,O$25,O$26,O$27,O$28,O$29,O$30
 	da	O$31,O$32,O$33,O$34,O$35,O$36,O$37
 
-O$1	asc	"Une batterie"00
-O$2	asc	"Une batterie branchee"00
-O$3	asc	"Une barque"00
-O$4	asc	"X"00
-O$5	asc	"Un seau"00
-O$6	asc	"Un seau plein de sable"00
-O$7	asc	"Un seau plein d"A7"eau"00
-O$8	asc	"Une lampe electrique"00
-O$9	asc	"Une lampe avec une ampoule"00
-O$10	asc	"Une lampe allumee"00
-O$11	asc	"Une fiole"00
-O$12	asc	"Une clef"00
-O$13	asc	"Une bouteille"00
-O$14	asc	"Un livre"00
-O$15	asc	"Un passe partout"00
-O$16	asc	"Un tournevis"00
-O$17	asc	"Un delta plane"00
-O$18	asc	"Une echelle de corde"00
-O$19	asc	"Un tube de colle"00
-O$20	asc	"Une ampoule"00
-O$21	asc	"Une boite"00
-O$22	asc	"Des debris de verre"00
-O$23	asc	"Un masque a gaz"00
-O$24	asc	"De la quinine"00
-O$25	asc	"Un aspirine"00
-O$26	asc	"Des espadrilles"00
-O$27	asc	"Une robe"00
-O$28	asc	"Un portefeuille"00
-O$29	asc	"Une broche"00
-O$30	asc	"Un harnais"00
-O$31	asc	"Une bombe insecticide"00
-O$32	asc	"Une hache"00
-O$33	asc	"Un pot de creme"00
-O$34	asc	"Une liasse de billets"00
-O$35	asc	"Vos chaussures"00
-O$36	asc	"Une super jolie fille ligotee....et nue qui plus est."00
-O$37	asc	"Un maillet"00
+O$1 	asc	"A battery"00
+O$2 	asc	"A connected battery"00
+O$3 	asc	"A boat"00
+O$4 	asc	"X"00
+O$5 	asc	"A bucket"00
+O$6 	asc	"A bucket full of sand"00
+O$7 	asc	"A bucket full of water"00
+O$8 	asc	"An electric lamp"00
+O$9 	asc	"A lamp with a bulb"00
+O$10 	asc	"A burning lamp"00
+O$11 	asc	"A flask"00
+O$12 	asc	"A key"00
+O$13 	asc	"A bottle"00
+O$14 	asc	"A book"00
+O$15 	asc	"A pass everywhere"00
+O$16 	asc	"A screwdriver"00
+O$17 	asc	"A delta plane"00
+O$18 	asc	"A rope ladder"00
+O$19 	asc	"A tube of glue"00
+O$20 	asc	"A light bulb"00
+O$21 	asc	"A box"00
+O$22 	asc	"Broken glass"00
+O$23 	asc	"A gas mask"00
+O$24 	asc	"Quinine"00
+O$25 	asc	"An aspirin"00
+O$26 	asc	"A pair of espadrilles"00
+O$27 	asc	"A dress"00
+O$28 	asc	"A wallet"00
+O$29 	asc	"A brooch"00
+O$30 	asc	"A harness"00
+O$31 	asc	"An insecticide bomb"00
+O$32 	asc	"An axe"00
+O$33 	asc	"A pot of cream"00
+O$34 	asc	"A wad of notes"00
+O$35 	asc	"Your shoes"00
+O$36 	asc	"A super pretty girl tied up and naked"00
+O$37 	asc	"A mallet"00
 
 *
 * Les directions
@@ -547,7 +547,7 @@ M$58	dfb	01,57,00
 * on fera index-1 b/c 8-bits
 *
 
-V	=	129+3
+V	=	130+3
 
 tblVL$	dfb	$bd
 	dfb	<V$1,<V$2,<V$3,<V$4,<V$5,<V$6,<V$7,<V$8,<V$9,<V$10
@@ -562,7 +562,7 @@ tblVL$	dfb	$bd
 	dfb	<V$91,<V$92,<V$93,<V$94,<V$95,<V$96,<V$97,<V$98,<V$99,<V$100
 	dfb	<V$101,<V$102,<V$103,<V$104,<V$105,<V$106,<V$107,<V$108,<V$109,<V$110
 	dfb	<V$111,<V$112,<V$113,<V$114,<V$115,<V$116,<V$117,<V$118,<V$119,<V$120
-	dfb	<V$121,<V$122,<V$123,<V$124,<V$125,<V$126,<V$127,<V$128,<V$129
+	dfb	<V$121,<V$122,<V$123,<V$124,<V$125,<V$126,<V$127,<V$128,<V$129,<V$130
 	dfb	<V$201,<V$202,<V$203
 	
 tblVH$	dfb	$bd
@@ -578,7 +578,7 @@ tblVH$	dfb	$bd
 	dfb	>V$91,>V$92,>V$93,>V$94,>V$95,>V$96,>V$97,>V$98,>V$99,>V$100
 	dfb	>V$101,>V$102,>V$103,>V$104,>V$105,>V$106,>V$107,>V$108,>V$109,>V$110
 	dfb	>V$111,>V$112,>V$113,>V$114,>V$115,>V$116,>V$117,>V$118,>V$119,>V$120
-	dfb	>V$121,>V$122,>V$123,>V$124,>V$125,>V$126,>V$127,>V$128,>V$129
+	dfb	>V$121,>V$122,>V$123,>V$124,>V$125,>V$126,>V$127,>V$128,>V$129,>V$130
 	dfb	>V$201,>V$202,>V$203
 	
 tblV	dfb	$bd
@@ -594,138 +594,140 @@ tblV	dfb	$bd
 	dfb	68,69,70,71,72,95,95,95,74,76
 	dfb	77,78,78,78,79,79,79,80,81,82
 	dfb	83,84,85,86,87,88,89,90,91,92
-	dfb	93,93,94,94,96,97,98,99,75
+	dfb	93,93,94,94,96,97,98,99,75,100
 	dfb	201,202,203
 	
 V$1	str	"N"   	; "N"
-V$2	str	"NORD"	; "NORD"
+V$2	str	"NORT"	; "NORD"
 V$3	str	"S"   	; "S"
-V$4	str	"SUD" 	; "SUD"
+V$4	str	"SOUT" 	; "SUD"
 V$5	str	"E"   	; "E"
-V$6	str	"EST" 	; "EST"
-V$7	str	"O"   	; "O"
-V$8	str	"OUES"	; "OUES"
-V$9	str	"M"   	; "M"
-V$10	str	"MONT"	; "MONT"
-V$11	str	"GRIM"	; "GRIM"
-V$12	str	"DESC"	; "DESC"
+V$6	str	"EAST" 	; "EST"
+V$7	str	"W"   	; "O"
+V$8	str	"WEST"	; "OUES"
+V$9	str	"U"   	; "M"
+V$10	str	"UP"	; "MONT"
+V$11	str	"CLIM"	; "GRIM"
+V$12	str	"DOWN"	; "DESC"
 V$13	str	"D"   	; "D"
-V$14	str	"ENTR"	; "ENTR"
-V$15	str	"AVAN"	; "AVAN"
-V$16	str	"PREN"	; "PREN"
-V$17	str	"RAMA"	; "RAMA"
-V$18	str	"POSE"	; "POSE"
-V$19	str	"LAIS"	; "LAIS"
-V$20	str	"OUVR"	; "OUVR"
-V$21	str	"FERM"	; "FERM"
-V$22	str	"ALLU"	; "ALLU"
-V$23	str	"ECLA"	; "ECLA"
-V$24	str	"ETEI"	; "ETEI"
-V$25	str	"ARRE"	; "ARRE"
-V$26	str	"LIS" 	; "LIS"
-V$27	str	"LIT" 	; "LIT"
-V$28	str	"REGA"	; "REGA"
-V$29	str	"REMP"	; "REMP"
-V$30	str	"VIDE"	; "VIDE"
+V$14	str	"ENTE"	; "ENTR"
+V$15	str	"ADVA"	; "AVAN"
+V$16	str	"TAKE"	; "PREN"
+V$17	str	"PICK"	; "RAMA"
+V$18	str	"DROP"	; "POSE"
+V$19	str	"LEAV"	; "LAIS"
+V$20	str	"OPEN"	; "OUVR"
+V$21	str	"CLOS"	; "FERM"
+V$22	str	"LIGH"	; "ALLU"
+V$23	str	"ILLU"	; "ECLA"
+V$24	str	"SWIT"	; "ETEI"
+V$25	str	"STOP"	; "ARRE"
+V$26	str	"READ" 	; "LIS"
+V$27	str	"READ" 	; "LIT"
+V$28	str	"LOOK"	; "REGA"
+V$29	str	"FILL"	; "REMP"
+V$30	str	"EMPT"	; "VIDE"
 V$31	str	"INVE"	; "INVE"
-V$32	str	"RIEN"	; "RIEN"
-V$33	str	"ATTE"	; "ATTE"
-V$34	str	"FRAP"	; "FRAP"
-V$35	str	"ASSO"	; "ASSO"
+V$32	str	"NOTH"	; "RIEN"
+V$33	str	"WAIT"	; "ATTE"
+V$34	str	"HIT"	; "FRAP"
+V$35	str	"KNOC"	; "ASSO"
 V$36	str	"ATTA"	; "ATTA"
-V$37	str	"POUS"	; "POUS"
-V$38	str	"TIRE"	; "TIRE"
-V$39	str	"JETT"	; "JETT"
-V$40	str	"MANG"	; "MANG"
-V$41	str	"GOUT"	; "GOUT"
-V$42	str	"BOIS"	; "BOIS"
-V$43	str	"LANC"	; "LANC"
-V$44	str	"BARQ"	; "BARQ"
-V$45	str	"RADE"	; "RADE"
-V$46	str	"BOUT"	; "BOUT"
+V$37	str	"PUSH"	; "POUS"
+V$38	str	"PULL"	; "TIRE"
+V$39	str	"DISC"	; "JETT"
+V$40	str	"EAT"	; "MANG"
+V$41	str	"TAST"	; "GOUT"
+V$42	str	"DRIN"	; "BOIS"
+V$43	str	"THRO"	; "LANC"
+V$44	str	"BOAT"	; "BARQ"
+V$45	str	"RAFT"	; "RADE"
+V$46	str	"BOTT"	; "BOUT"
 V$47	str	"MESS"	; "MESS"
-V$48	str	"SEAU"	; "SEAU"
+V$48	str	"BUCK"	; "SEAU"
 V$49	str	"MANU"	; "MANU"
-V$50	str	"LIVR"	; "LIVR"
-V$51	str	"ECHE"	; "ECHE"
+V$50	str	"BOOK"	; "LIVR"
+V$51	str	"LADD"	; "ECHE"
 V$52	str	"PASS"	; "PASS"
 V$53	str	"LAMP"	; "LAMP"
 V$54	str	"TORC"	; "TORC"
 V$55	str	"BATT"	; "BATT"
-V$56	str	"FIOL"	; "FIOL"
+V$56	str	"FLAS"	; "FIOL"
 V$57	str	"DELT"	; "DELT"
-V$58	str	"TOUR"	; "TOUR"
-V$59	str	"AMPO"	; "AMPO"
-V$60	str	"BOIT"	; "BOIT"
-V$61	str	"CLEF"	; "CLEF"
-V$62	str	"MARM"	; "MARM"
-V$63	str	"ANNE"	; "ANNE"
-V$64	str	"ROUG"	; "ROUG"
-V$65	str	"VERT"	; "VERT"
-V$66	str	"BLEU"	; "BLEU"
+V$58	str	"WICK"	; "TOUR" - TOURNEVIS = UNE MECHE
+V$59	str	"BULB"	; "AMPO"
+V$60	str	"BOX"	; "BOIT"
+V$61	str	"KEY"	; "CLEF"
+V$62	str	"POT"	; "MARM"
+V$63	str	"RING"	; "ANNE"
+V$64	str	"RED"	; "ROUG"
+V$65	str	"GREE"	; "VERT"
+V$66	str	"BLUE"	; "BLEU"
 V$67	str	"TRAP"	; "TRAP"
-V$68	str	"SABL"	; "SABL"
+V$68	str	"SAND"	; "SABL"
 V$69	str	"ROBO"	; "ROBO"
-V$70	str	"COLL"	; "COLL"
-V$71	str	"VISS"	; "VISS"
-V$72	str	"EAU" 	; "EAU"
-V$73	str	"CASS"	; "CASS"
-V$74	str	"ESSA"	; "ESSA"
-V$75	str	"SENS"	; "SENS"
-V$76	str	"RENI"	; "RENI"
+V$70	str	"GLUE"	; "COLL"
+V$71	str	"SCRE"	; "VISS"
+V$72	str	"WATE" 	; "EAU"
+V$73	str	"BREA"	; "CASS"
+V$74	str	"TRY"	; "ESSA"
+V$75	str	"FEEL"	; "SENS"
+V$76	str	"SMEL"	; "RENI"
 V$77	str	"ADHE"	; "ADHE"
-V$78	str	"DECO"	; "DECO"
+V$78	str	"CUT"	; "DECO"
 V$79	str	"PLAC"	; "PLAC"
-V$80	str	"RAME"	; "RAME"
+V$80	str	"ROW"	; "RAME"
 V$81	str	"TUBE"	; "TUBE"
 V$82	str	"CHRO"	; "CHRO"
 V$83	str	"LIST"	; "LIST"
-V$84	str	"BRAN"	; "BRAN"
-V$85	str	"ESCA"	; "ESCA"
-V$86	str	"SORS"	; "SORS"
-V$87	str	"AVAL"	; "AVAL"
-V$88	str	"MAIL"	; "MAIL"
-V$89	str	"MASQ"	; "MASQ"
-V$90	str	"CHAU"	; "CHAU"
-V$91	str	"ROBE"	; "ROBE"
-V$92	str	"PORT"	; "PORT"
-V$93	str	"BROC"	; "BROC"
+V$84	str	"PLUG"	; "BRAN"
+V$85	str	"STAI"	; "ESCA"
+V$86	str	"EXIT"	; "SORS"
+V$87	str	"SWAL"	; "AVAL"
+V$88	str	"MALL"	; "MAIL"
+V$89	str	"MASK"	; "MASQ"
+V$90	str	"BOOT"	; "CHAU"
+V$91	str	"DRES"	; "ROBE"
+V$92	str	"CARR"	; "PORT"
+V$93	str	"BROO"	; "BROC"
 V$94	str	"HARN"	; "HARN"
 V$95	str	"BOMB"	; "BOMB"
-V$96	str	"METS"	; "METS"
-V$97	str	"ENFI"	; "ENFI"
+V$96	str	"PUT"	; "METS"
+V$97	str	"WEAR"	; "ENFI"
 V$98	str	"PASS"	; "PASS"
-V$99	str	"DONN"	; "DONN"
-V$100	str	"VEND"	; "VEND"
-V$101	str	"ACHE"	; "ACHE"
-V$102	str	"ENLE"	; "ENLE"
-V$103	str	"ARRA"	; "ARRA"
-V$104	str	"CREU"	; "CREU"
-V$105	str	"PIER"	; "PIER"
+V$99	str	"GIVE"	; "DONN"
+V$100	str	"SELL"	; "VEND"
+V$101	str	"PURC"	; "ACHE"
+V$102	str	"REMO"	; "ENLE"
+V$103	str	"TEAR"	; "ARRA"
+V$104	str	"DIG"	; "CREU"
+V$105	str	"STON"	; "PIER"
 V$106	str	"BLOC"	; "BLOC"
-V$107	str	"MUR" 	; "MUR"
+V$107	str	"WALL" 	; "MUR"
 V$108	str	"ESPA"	; "ESPA"
-V$109	str	"HACH"	; "HACH"
+V$109	str	"AXE"	; "HACH"
 V$110	str	"POT" 	; "POT"
-V$111	str	"LIAS"	; "LIAS"
-V$112	str	"TABA"	; "TABA"
-V$113	str	"MEDE"	; "MEDE"
-V$114	str	"CHAU"	; "CHAU"
-V$115	str	"CREM"	; "CREM"
-V$116	str	"TRAI"	; "TRAI"
-V$117	str	"BOUL"	; "BOUL"
+V$111	str	"WAD"	; "LIAS"
+V$112	str	"TOBA"	; "TABA"
+V$113	str	"DOCT"	; "MEDE"
+V$114	str	"SHOE"	; "CHAU"
+V$115	str	"CREA"	; "CREM"
+V$116	str	"GROC"	; "TRAI"
+V$117	str	"BAKE"	; "BOUL"
 V$118	str	"TAIL"	; "TAIL"
-V$119	str	"DROG"	; "DROG"
+V$119	str	"DRUG"	; "DROG"
 V$120	str	"TEMP"	; "TEMP"
-V$121	str	"DELI"	; "DELI"
-V$122	str	"LIBE"	; "LIBE"
+V$121	str	"FREE"	; "DELI"
+V$122	str	"RELE"	; "LIBE"
 V$123	str	"WOMA"	; "FEMM"
 V$124	str	"GIRL"	; "FILL"
-V$125	str	"DEBR"	; "DEBR"
+V$125	str	"GLAS"	; "DEBR"
 V$126	str	"ASPI"	; "ASPI"
 V$127	str	"QUIN"	; "QUIN"
-V$128	str	"FIN" 	; "FIN"
-V$129	str	"VETE"	; "VETE"
+V$128	str	"END" 	; "FIN"
+V$129	str	"CLOT"	; "VETE"
+
+V$130	str	"UNPL"	; "DEBR"-anche, index 100
 
 V$201	str	"QUIT"
 V$202	str	"CASE"
@@ -739,88 +741,87 @@ V$203	str	"ENER"
 *		"0123456789012345678901234567890123456789"
 *		"----------------------------------------"
 
-str8010	asc	"L"A7"antre du demon."8D
-	asc	"Vous etes dans une grotte amenagee..."00
-str8020	asc	"Le repere du chirurgien."8D
-	asc	"Il y a une porte au sud, il y a plein de"
-	asc	"photos chirurgicales sur les murs"00
-str8030	asc	""00	; X la mort
-str8040	asc	"L"A7"antre du sorcier."00
-str8050	asc	"Au bord du lac."8D
-	asc	"Vous etes au bord d"A7"un lac souterrain"00
-str8060	asc	""00	; X gagne
-str8070	asc	"Le repere du lecteur."00
-str8080	asc	"Au nord, un banc de sable. Vous etes sur"
-	asc	"le cote du lac, le seul chemin est au"8D
-	asc	"nord sous la forme d"A7"un banc de sable"00
-str8090	asc	"Le bout du lac."00
-str8100	asc	"La salle mecanique."00
-str8110	asc	"Une grotte vide."00
-str8120	asc	"La trappe des enrages. Il y a une trappe"
-	asc	"au sol, munie d"A7"une serrure."00
-str8130	asc	"Il y a une porte au sud marquee EXIT."00
-str8140	asc	"Il y a une porte au sud avec le jour qui"
-	asc	"filtre en dessous"00
-str8150	asc	"L"A7"antre du lecteur."00
-str8160	asc	"Il y a trois marmites avec des soupes"8D
-	asc	"rouge, verte et bleue"00
-str8170	asc	"L"A7"atelier."00
-str8180	asc	"Dans une frele esquive en scotch et bois"
-	asc	"pourri, proche de la rive."00
-str8190	asc	"La chambre des lumieres."00
-str8200	asc	"Le refuge de l"A7"alchimiste."00
-str8210	asc	"Le gite du fakir."8D
-	asc	"Il y a un anneau fixe au mur"00
-str8220	asc	"L"A7"antre de la verite."00
-str8230	asc	"L"A7"antre du fou."00
-str8240	asc	"L"A7"antre du maigre."00
-str8250	asc	"Le repere de l"A7"embaumeur."00
-str8260	asc	"Le gite du bricoleur."8D
-	asc	"Il y a une ouverture au sud..."00
-str8270	asc	"Le repere du fuyard. Il y a une trappe."00
-str8280	asc	"Le refuge du montagnard."00
-str8290	asc	"Le chemin des rongeurs."00
-str8300	asc	"L"A7"antichambre de la mort."00
-str8310	asc	"Du bruit a l"A7"est."8D
-	asc	"Il y a une porte marquee DANGER au sud"00
-str8320	asc	"De la lumiere au sud."8D
-	asc	"Il y a au sud un passage d"A7"ou viennent"8D
-	asc	"de droles de bruits"00
-str8330	asc	"L"A7"antre du maniaque."00
-str8340	asc	"Le repere des rats."8D
-	asc	"Il y a des rats un peu partout..."00
-str8350	asc	"La salle des survivants."00
-str8360	asc	"La cremerie et le tailleur."00
-str8370	asc	"Le tabac et la boulangerie."00
-str8380	asc	"Le traiteur."00
-str8390	asc	"Le medecin et le chausseur."00
-str8400	asc	"Le coin nord-ouest de la ville."00
-str8410	asc	"La fin de la ville !"00
-str8420	asc	"Dans le tabac."8D
-	asc	"Le vendeur dort sur le comptoir"00
-str8430	asc	""00	; X rien
-str8440	asc	"Chez le tailleur."8D
-	asc	"Il y a plein d"A7"habits a vendre"00
-str8450	asc	"Vous etes dans la cremerie."00
-str8460	asc	"Vous etes chez le chausseur."8D
-	asc	"La boutique est bien achalandee"00
-str8470	asc	"Chez le medecin."8D
-	asc	"Le medecin est parti"00
-str8480	asc	"Vous etes face a la droguerie."00
-str8490	asc	"Dans la droguerie."00
-str8500	asc	"Le coin sud-est de la ville."00
-str8510	asc	"Devant un monument..? Le fameux temple a"
-	asc	"la gloire du GRAND KiKeKanKoi !"00
-str8520	asc	"Que vendez-vous ?"00
-str8530	asc	"La salle de la B.A."00
-str8540	asc	"Le mausolee de l"A7"exterminateur."00
-str8550	asc	"Le coeur du Temple."00
-str8560	asc	"L"A7"antre du venere."8D
-	asc	"Il y a une porte au sud"00
-str8570	asc	"Le chemin des dipteres."00
-str8580	asc	"L"A7"antre du victorieux."8D
-	asc	"Vous etes dans un reduit dont les murs"8D
-	asc	"sont faits de blocs de pierre."00
+str8010	asc	"The demon"A7"s lair. You are in a cave..."00
+str8020	asc	"The surgeon"A7"s landmark with a door to"8D
+	asc	"the south, there"A7"s lots of chirurgical"8D
+	asc	"photos on the walls"00
+str8030	asc	"The wizard"A7"s lair"00
+str8040	asc	"On the edge of the lake. You are on the"8D
+str8050	asc	"edge of an underground lake"00
+str8060	asc	""00
+str8070	asc	"The reader"A7"s landmark"00
+str8080	asc	"To the north, a sandbank. You are on the"
+	asc	"side of the lake, the only path is to"8D
+	asc	"the north in the form of a sandbar"00
+str8090	asc	"The end of the lake."00
+str8100	asc	"The mechnical room."00
+str8110	asc	"An empty cave."00
+str8120	asc	"The rage trap. There is a trap on the"8D
+	asc	"ground, fitted with a lock."00
+str8130	asc	"There"A7"s a door to the south marked EXIT."00
+str8140	asc	"There"A7"s a door to the south with day of"8D
+	asc	"light filtering underneath"00
+str8150	asc	"The reader"A7"s den"00
+str8160	asc	"There are three pots with red, green and"
+	asc	"blue soups"00
+str8170	asc	"The workshop."00
+str8180	asc	"In a frail droge made of tape and rodden"
+	asc	"wood, close to the shore."00
+str8190	asc	"The room of lights."00
+str8200	asc	"The alchemist"A7"s refuge"00
+str8210	asc	"The fakir"A7"s cottage. There is a ring"8D
+	asc	"fixed on the wall"00
+str8220	asc	"The lair of truth"00
+str8230	asc	"The madman"A7"s den."00
+str8240	asc	"The skinny guy"A7"s lair"00
+str8250	asc	"The embalmer"A7"s landmark."00
+str8260	asc	"The handyman"A7"s cottage."8D
+	asc	"There is an opening to the south..."00
+str8270	asc	"The fugitive"A7"s place. There"A7"s a trapdoor"00
+str8280	asc	"The mountaineer"A7"s refuge."00
+str8290	asc	"The path of rodents."00
+str8300	asc	"The antechamber of death."00
+str8310	asc	"Noise in the east."8D
+	asc	"A door marked DANGER to the south"00
+str8320	asc	"Light in the south."8D
+	asc	"There"A7"s a passage to the south where"8D
+	asc	"funny noises come from"00
+str8330	asc	"The maniac"A7"s lair"00
+str8340	asc	"The rat den."00
+	asc	"There are rats everywhere..."00
+str8350	asc	"The survivor"A7"s room."00
+str8360	asc	"The creamery and the tailor."00
+str8370	asc	"Tobacco shop and bakery."00
+str8380	asc	"The grocery."00
+str8390	asc	"The doctor and the bootmaker."00
+str8400	asc	"The northwest corner of the city."00
+str8410	asc	"The end of the city!"00
+str8420	asc	"In the tobacco shop."8D
+	asc	"The salesman sleeps on the counter"00
+str8430	asc	""00
+str8440	asc	"At the tailor"A7"s"00
+	asc	"There are plenty of clothes for sale"00
+str8450	asc	"You are in the creamery."00
+str8460	asc	"You are at the bootmaker"A7"s"00
+	asc	"The store is well stocked"00
+str8470	asc	"At the doctor"A7"s"00
+	asc	"The doctor left"00
+str8480	asc	"You are facing the drugstore."00
+str8490	asc	"In the drugstore."00
+str8500	asc	"The southeast corner of the city."00
+str8510	asc	"In front of a monument..? The famous"8D
+	asc	"Temple to the glory of the GREAT"8D
+	asc	"KiKeKanKoi"00
+str8520	asc	"What do you sell?"00
+str8530	asc	"The good deed room"00
+str8540	asc	"The exterminator"A7"s mausoleum."00
+str8550	asc	"The heart of the Temple."00
+str8560	asc	"The venere"A7"s lair."8D
+	asc	"There is a door to the south"00
+str8570	asc	"The path of the dipterans."00
+str8580	asc	"The lair of the victorious."8D
+	asc	"You are in a recess whose walls are made"
+	asc	"of stone blocks."00
 str8590	asc	""00
 str8600	asc	""00
 
@@ -832,121 +833,112 @@ str8600	asc	""00
 *		"0123456789012345678901234567890123456789"
 *		"----------------------------------------"
 
-str4010	asc	"Vous etes arrive dans la salle de dis-"8D
-	asc	"-section, et vous n"A7"avez pas fait de"8D
-	asc	"vieux os..."00
-str4020	asc	"Vous etes tombe dans l"A7"incinerateur"8D
-	asc	"d"A7"organes..."00
-str4030	asc	"Vous venez de faire une chute dans un"8D
-	asc	"precipice d"A7"au moins 200 m."00
-str4040	asc	"Cette soupe etait un acide sulfurique"8D
-	asc	"parfume... Hum! Douce mort."00
-str4050	asc	"Il ne se passe rien, cela fait toujours"8D
-	asc	"un repas de gagne."00
-str4060	asc	"La soupe est euphorisante, vous avez la"8D
-	asc	"vision d"A7"une ville doree."00
-str4070	asc	"Vous mourez etouffe dans les sables"8D
-	asc	"mouvants..."00
-str4080	asc	"Vous trebuchez en l"A7"abordant...."8D
-	asc	"Miam, miam (les piranhas)."00
-str4090	asc	"Des gaz mortels s"A7"echappent de la"8D
-	asc	"bouteille... c"A7"est triste."00
-str4100	asc	"Un panneau du mur pivote, des COBRAS en"8D
-	asc	" sortent... Adieu !"00
-str4110	asc	"Vous trebuchez et vous vous empallez sur"
-	asc	"le tournevis."00
-str4120	asc	"Vous avez ete broye !!!"00
-str4130	asc	"Le robot vous broie les os..."00
-str4140	asc	"Un barreau de l"A7"echelle se detache."00
-str4150	asc	"Vous ne saviez pas piloter le DELTA-"8D
-	asc	"PLANE... Adieu !"00
-str4160	asc	"J"A7"ai toujours pense qu"A7"en 10 lecons le"8D
-	asc	"DELTA c"A7"etait juste."00
-str4170	asc	"Vous avez ete happe par une presse"8D
-	asc	"hydraulique..."00
-str4180	asc	"Vous grillez sur le generateur de la"8D
-	asc	"salle d"A7"operation."00
-str4190	asc	"Vous glissez en montant, la colle gicle"8D
-	asc	"dans vos yeux."00
-str4200	asc	"L"A7"eau touche le systeme electrique..."8D
-	asc	"Vous grillez..."00
-str4210	asc	"La folie vous a pris (vider un seau"8D
-	asc	"vide), vous vous suicidez."00
-str4220	asc	"Vous electrocutez le robot, mais vous"8D
-	asc	"aussi par la meme occasion."00
-str4230	asc	"Petit genie, hein ? Vous avez enraye le"8D
-	asc	"mecanisme du robot."00
-str4240	asc	"Vous vous etes colles les doigts et, en"8D
-	asc	" voulant les separer a la lame de rasoir"
-	asc	"vous vous etes tranche la gorge."00
-str4250	asc	"Oh merci, merci beaucoup... SMACK !"00
-str4260	asc	"Vous l"A7"avez deja fait."00
-str4270	asc	"Il faudrait peut-etre debrancher la"8D
-	asc	"batterie."00
-str4280	asc	"Ce livre apprend le DELTA-PLANE en 10"8D
-	asc	"lecons."00
-str4290	asc	"L"A7"endroit est un peu trop exigu pour"8D
-	asc	"essayer une telle chose."00
-str4300	asc	"Vous avez l"A7"intention de vous shooter ?"00
-str4310	asc	"La boite explose !"00
-str4320	asc	"Il y a une clef sous l"A7"adhesif."00
-str4330	asc	"Cette fois vous en avez trop enleve, la"8D
-	asc	"barque part en miettes."00
-str4340	asc	"La trappe est fermee a clef."00
-str4350	asc	"Le passe partout ne fonctionne pas avec"8D
-	asc	"cette serrure."00
-str4360	asc	"Les murs se rapprochent les uns des"8D
-	asc	"autres, vous etes aplati."00
-str4370	asc	"Il ne vous reste plus de temps !"00
-str4380	asc	"Il faudrait peut etre de l"A7"electricite.."00
-str4390	asc	"Il faudrait peut etre y visser une"8D
-	asc	"ampoule."00
+str4010	asc	"You have arrived in the dissection room,"
+	asc	"and you didn"A7"t last long"00
+str4020	asc	"You fell into the incinerator organs..."00
+str4030	asc	"You just fell in a precipice of at least"
+	asc	"200 m."00
+str4040	asc	"This soup had sulfuric acid perfume..."8D
+	asc	"Hum! Sweet death."00
+str4050	asc	"Nothing happens, it always does"8D
+	asc	"a winning meal."00
+str4060	asc	"The soup is euphoric, you have it vision"
+	asc	"of a golden city."00
+str4070	asc	"You die choking in quicksand..."00
+str4080	asc	"You stumble when approaching him...."8D
+	asc	"Yum, yum (piranhas)."00
+str4090	asc	"Deadly gases are escaping from the"8D
+	asc	"bottle... it"A7"s sad."00
+str4100	asc	"A wall panel rotates, COBRAS in come"8D
+	asc	"out... Goodbye!"00
+str4110	asc	"You trip and impale yourself on the"8D
+	asc	"screwdriver."00
+str4120	asc	"You have been crushed!!!"00
+str4130	asc	"The robot is crushing your bones..."00
+str4140	asc	"A rung of the ladder comes loose."00
+str4150	asc	"You didn"A7"t know how to fly the DELTA-"8D
+	asc	"PLANE... Goodbye!"00
+str4160	asc	"I wondered if learning using a DELTA-"8D
+	asc	"PLANE in 10 lessons was OK."00
+str4170	asc	"You were hit by a hydraulic pump..."00
+str4180	asc	"You are burning on the generator of the"8D
+	asc	"operating room."00
+str4190	asc	"You slip on the way up, the glue squirts"
+	asc	"in your eyes."00
+str4200	asc	"Water is touching the electrical"8D
+	asc	"system... You are grilling..."00
+str4210	asc	"Madness has taken you (empty an empty"8D
+	asc	"bucket), you commit suicide."00
+str4220	asc	"You electrocute the robot, but you also"8D
+	asc	"at the same time."00
+str4230	asc	"Little genius, eh? You stopped the robot"
+	asc	"mechanism."00
+str4240	asc	"You stuck your fingers together and, in"8D
+	asc	"wanting to separate them with a razor"8D
+	asc	"blade, you cut your throat."00
+str4250	asc	"Oh thank you, thank you very much..."8D
+	asc	"SMACK!"00
+str4260	asc	"You already did it."00
+str4270	asc	"Maybe we should unplug it battery."00
+str4280	asc	"This book teaches DELTA-PLANE in 10"8D
+	asc	"lessons."00
+str4290	asc	"The place is a little too cramped to try"
+	asc	"such a thing."00
+str4300	asc	"Are you planning to shoot up?"00
+str4310	asc	"The box explodes!"00
+str4320	asc	"There is a key under the sticker."00
+str4330	asc	"This time you removed too much, the"8D
+	asc	Òboat goes to pieces.Ó00
+str4340	asc	"The hatch is locked."00
+str4350	asc	"The key does not work with this lock."00
+str4360	asc	"The walls are getting closer to each"8D
+	asc	"others, you are flattened."00
+str4370	asc	"You don"A7"t have any time left!"00
+str4380	asc	"Maybe we need electricity.."00
+str4390	asc	"Maybe we should screw one in light bulb."00
 str4400	asc	"IMPOSSIBLE"00
-str4410	asc	"Vous tombez dans un cercueil qui se"8D
-	asc	"referme sur vous."00
-str4420	asc	"Vous avez du attraper la rage aupres de"8D
-	asc	"rats..."00
-str4430	asc	"Vous avez mal digere la soupe, c"A7"est"8D
-	asc	" une intoxication."00
-str4440	asc	"Vous avez ete electrocute par la lampe."00
-str4450	asc	"A force de rester dans le noir, vous"8D
-	asc	"etes devenu fou !"00
-str4460	asc	"Vous ne pouvez prendre, il faut acheter."00
-str4470	asc	"Le marchand est fou, il se jette sur"8D
-	asc	"vous et vous tue."00
-str4480	asc	"He! he! On ne rentre pas dans un temple"8D
-	asc	"avec ses chaussures, les gardes vous"8D
-	asc	"tuent"00
-str4490	asc	"La piece etait pleine de mouches........"
-	asc	"tse-tse !!!"00
-str4500	asc	"Les murs s"A7"ecroulent sur vous, vous"8D
-	asc	"n"A7"auriez pas du la laisser, grand lache."00
-str4510	asc	"Toutes mes felicitations."00
-str4520	asc	"Il aurait fallu mettre le masque, les"8D
-	asc	"gaz vous tuent !"00
-str4530	asc	"La fille n"A7"avait pas de masque, elle"8D
-	asc	" meurt et vous aussi (le remord...)."00
-str4540	asc	"La fille etait nue, elle ne pouvait vous"
-	asc	"suivre. Pour se venger elle vous tranche"
-	asc	"la gorge avec les debris."00
-str4550	asc	"Vous n"A7"avez rien pour trancher les"8D
-	asc	"cordes."00
-str4560	asc	"Vous auriez du eteindre la lampe avant"8D
-	asc	"de debrancher. Quel court circuit !!!"00
-str4570	asc	"Le possesseur du portefeuille devait"8D
-	asc	"avoir la lepre..."00
-str4580	asc	"Vous trebuchez sur la hache..."8D
-	asc	"Que de sang..."00
-str4590	asc	"Voici enfin la ville des mutiles."8D
-	asc	"Pauvres survivants des experiences"8D
-	asc	"cruelles du savant fou."8D00
-str4600	asc	"Vous avez du prendre mal par les pieds."00
-str4610	asc	"La quinine etait trop forte, vous mourez"
-	asc	"empoisonne..."00
-str4620	asc	"Je ne suis pas interesse."00
-str4630	asc	"Alors, que faites vous la ?"00
-str4640	asc	"Si cela vous plait de perdre du temps"00
-str4650	asc	"Oh merci, merci beaucoup... "A7" SMACK "A700
+str4410	asc	"You fall into a coffin that closes"8D
+	asc	Òon you.Ó00
+str4420	asc	"You must have caught rabies from rats..."00
+str4430	asc	"You have difficulty digesting the soup,"8D
+	asc	"it"A7"s intoxication."00
+str4440	asc	"You were electrocuted by the lamp."00
+str4450	asc	"By remaining in the dark, you"A7"ve gone"8D
+	asc	"crazy!"00
+str4460	asc	"You cannot take, you must buy."00
+str4470	asc	"The merchant is crazy, he jumps on you"8D
+	asc	"and he kills you."00
+str4480	asc	"Hey! He! We"A7"re not going into a temple"8D
+	asc	"with his shoes, the guards kill you"00
+str4490	asc	"The room was full of tse-tse flies!!!"00
+str4500	asc	"The walls are collapsing on you, you"8D
+	asc	"shouldn"A7"t have left her, you big coward."00
+str4510	asc	"Congratulations."00
+str4520	asc	"We should have put the mask on, the"8D
+	asc	Ògases kill you!Ó00
+str4530	asc	"The girl didn"A7"t have a mask, she"8D
+	asc	"dies and so do you (remorse...)."00
+str4540	asc	"The girl was naked, she could not follow"
+	asc	"you. To take revenge she cuts your"8D
+	asc	"throat with the broken glass."00
+str4550	asc	"You have nothing to slice strings."00
+str4560	asc	"You should"A7"ve turned off the lamp before"
+	asc	"to unplug. What a short circuit!!!"00
+str4570	asc	"The owner of the wallet had to"8D
+	asc	"have leprosy..."00
+str4580	asc	"You trip over the axe..."8D
+	asc	"So much blood..."00
+str4590	asc	"Here at last is the city of the maimed."8D
+	asc	"Poor survivors of the experiments"8D
+	asc	"cruels of the mad scientist."8D00
+str4600	asc	"You must have had a hard time."00
+str4610	asc	"The quinine was too strong, you die"8D
+	asc	"poisoned..."00
+str4620	asc	"I"A7"m not interested."00
+str4630	asc	"So, what are you doing here?"00
+str4640	asc	"If you"A7"d like to waste time"00
+str4650	asc	"Oh thank you, thank you very much..."8D
+	asc	A7" SMACK "A700
 
 tbl4660	da	$bdbd
 	da	str4670,str4680,str4690,str4700

@@ -1150,13 +1150,10 @@ tbl4000	da	$bdbd
 *--- On a libéré la fille !
 	
 :4650	@print	#str4650
-	@wait	#300
-	
 	lda	#<salleBA
 	sta	ptrSALLEBA
 	lda	#>salleBA
 	sta	ptrSALLEBA+1
-	@draw	#53
 	rts
 
 *---
@@ -1610,11 +1607,11 @@ tbl7000	da	$bdbd
 *-----------------------------------
 
 initALL
-	ldx	#FIN_DATA-DEBUT_DATA-1
+	ldx	#FIN_DATA-DEBUT_DATA
 	lda	#0
-]lp	sta	A1,x
+]lp	sta	A1-1,x
 	dex
-	bpl	]lp
+	bne	]lp
 
 *---
 
@@ -1632,7 +1629,14 @@ initALL
 	sta	TEMPS+1
 	sta	TEMPS+2
 	sta	TEMPS+3
-	
+
+	lda	#"5"
+	sta	strTEMPS
+	lda	#"0"
+	sta	strTEMPS+1
+	sta	strTEMPS+2
+	sta	strTEMPS+3
+		
 *---
 
 	ldx	#nbO	; reset object table

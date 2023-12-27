@@ -2459,7 +2459,7 @@ zikINTRODUCTION
 *	hex	300C1C300102020C11560C1C560C2B56 
 *	hex	0C1C560C11300C1C300C11560C1C5630 
 *	hex	1040FFFFFE00FFFE1000000000000000 
-
+	
 *-----------------------------------
 * LES AUTRES FICHIERS
 *-----------------------------------
@@ -2467,7 +2467,7 @@ zikINTRODUCTION
 	ds	\
 	ds	$4000-*
 
-	put	fr.s
+	put	en.s
 	put	../common/images.s
 	put	../common/musiques.s
 	

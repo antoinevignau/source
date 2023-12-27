@@ -10,101 +10,97 @@
 *
 
 strVOUSDETENEZ
-	asc	8D"Vous avez en votre possession : "00
+	asc	8D"You carry: "00
 
 strVOUSRIEN
-	asc	8D"Pas la peine de regarder, vous n"A7"avez"8D
-	asc	"rien sur vous"00
+	asc	8D"Don"A7"t bother looking, you have nothing"8D
+	asc	"on you"00
 
 strPOINT
 	asc	"."00
 	
 strEVIDENT
-	asc	8D"Vous vous prenez pour HULK..., vous ne"8D
-	asc	"pouvez porter tant de choses !"8D00
+	asc	8D"You think you"A7"re the Hulk, you can"A7"t"8D
+	asc	"carry so much!"8D00
 
 strVOUSLAVEZ
-	asc	8D"Vous l"A7"avez deja. Si votre memoire"8D
-	asc	"est mauvaise, faites une liste"8D00
+	asc	8D"You already have it. If your memory is"8D
+	asc	"bad, make a list"8D00
 	
 strNOTOWNED
-	asc	8D"Jusqu"A7"a nouvel ordre, on ne peut poser"8D
-	asc	"ce que l"A7"on ne possede pas..."8D00
+	asc	8D"Until further notice, you can"A7"t put down"
+	asc	"what you do not own..."8D00
 
 strDACCORD
-	asc	"D"A7"accord"00
+	asc	"OK"00
 
 strILFAITNOIR
-	asc	"Il fait trop sombre pour voir quelque"8D
-	asc	"chose, il faudrait peut-etre allumer"8D00
+	asc	"It is very dark, perhaps you should"8D
+	asc	"switch on the lights"8D00
 
-strILYA	asc	8D"Ici, il y a egalement :"00
+strILYA	asc	8D"The room contains:"00
 strCOMMA	asc	","00
 strSPACE	asc	8D" "00
 strRETURN	asc	8D00
 
-strCMD	asc	8D"Votre commande ? "00
+strCMD	asc	8D"Your command? "00
 
-strCOMMANDE	asc	8D"Commande ("
+strCOMMANDE	asc	8D"Command ("
 strTEMPS	asc	"5000) ? "00
 
 tbl580	da	$bdbd
 	da	str581,str582,str583,str584,str585
 	da	str586,str587,str588,str589,str590
-	
-str581	asc	8D"Ne racontez pas n"A7"importe quoi"8D00
-str582	asc	8D"Pardon"8D00
-str583	asc	8D"Comment"8D00
-str584	asc	8D"Je ne comprends pas"8D00
+
+str581	asc	8D"Don"A7"t talk nonsense"8D00
+str582	asc	8D"Sorry"8D00
+str583	asc	8D"What?"8D00
+str584	asc	8D"I don"A7"t understand"8D00
 str585	asc	8D"Sorry, I don"A7"t understand"8D00
-str586	asc	8D"Les rigolos qui m"A7"ont programme ne m"A7"ont"
-	asc	"pas appris ce vocabulaire"8D00
-str587	asc	8D"Je n"A7"ai pas compris"8D00
+str586	asc	8D"The jokers who programmed me didn"A7"t"8D
+	asc	"teach me this vocabulary"8D00
+str587	asc	8D"I don"A7"t understand"8D00
 str588	asc	8D"OK"8D00
-str589	asc	8D"Ca marche"8D00
-str590	asc	8D"D"A7"accord"8D00
+str589	asc	8D"Okey dokey"8D00
+str590	asc	8D"All right"8D00
 
 strIMPOSSIBLE
-	asc	8D"Impossible "00
+	asc	8D"Not possible "00
 strCECHEMIN
-	asc	"de prendre ce chemin"00
+	asc	"to take this path"00
 strEXCLAM
 	asc	" !"8D00
 
-strREPLAY	asc	8D"Voulez-vous rejouer ? "00
+strREPLAY	asc	8D"Do you want to play again? "00
 
 strPERDU
-	asc	"EN CETTE HEURE PENIBLE, MOI APPLE ]["8D8D
-	asc	"J"A7"ai le terrible devoir de vous"8D
-	asc	"annoncer la mort tragique de votre"8D
-	asc	"propre personne dans la redoutable"8D
-	asc	"KIKEKANKOI, mais peut-etre vous en"8D
-	asc	"etiez vous rendu compte...?"8D
+	asc	"IN THIS PAINFUL HOUR, I APPLE ]["8D
+	asc	"I have the terrible duty to announce the"
+	asc	"tragic death of your own person in the"8D
+	asc	"formidable KIKEKANKOI, but perhaps you"8D
+	asc	"already knew...?"8D
 	asc	8D
-	asc	"Vos funerailles furent respectables,"8D
-	asc	"de par la preuve de courage que vous"8D
-	asc	"aviez donnee et pour la personne qui"8D
-	asc	"a cette heure-ci est encore prison-"8D
-	asc	"niere de la cite mysterieuse... "00
+	asc	"Your funeral was respectable, for the"8D
+	asc	"proof of courage you had given and for"8D
+	asc	"the person who at this time is still a"8D
+	asc	"prisoner of the mysterious city..."00
 
 strPERDU2
-	asc	8D8D"OUF..... oui je sais, c"A7"est toujours"8D
-	asc	"trop long les sepultures..."8D8D00
+	asc	8D8D"WOW... Yes, I know, burials are always"8D
+	asc	"too long..."8D8D00
 
 strGAGNE
-	asc	"Quelle classe..., ressortir vivant de"8D
-	asc	"KIKEKANKOI, il fallait le faire,"8D
-	asc	"d"A7"autant plus que vous ne vous etes"8D
-	asc	"meme pas ecorche un doigt! Mais ne"8D
-	asc	"restez pas trop dans les parages, car"8D
-	asc	"le savant fou a peut-etre encore"8D
-	asc	"quelques experiences a faire sur vous,"8D
-	asc	"comme vous greffer une tete de singe"8D
-	asc	"ou un cerveau electronique de 64 Ko..."8D
+	asc	"Awesome..., coming out of KIKEKANKOI"8D
+	asc	"alive, you had to do it, especially"8D
+	asc	"since you didn"A7"t even scratch a finger!"8D
+	asc	"But don"A7"t stick around too long, because"
+	asc	"the mad scientist may still have some"8D
+	asc	"experiments to do on you, like grafting"8D
+	asc	"you a monkey"A7"s head or a 64 KB brain..."8D
 	asc	8D
-	asc	"Merci d"A7"etre reste si longtemps a"8D
-	asc	"votre clavier et encore toutes mes"8D
-	asc	"felicitations"8D8D00
+	asc	"Thank you for staying at your keyboard"8D
+	asc	"for so long and again all my congratu-"8D
+	asc	"-lations"8D8D00
 
 *-----------------------------------
 * LES DONNEES
@@ -601,135 +597,135 @@ tblV	dfb	$bd
 	dfb	93,93,94,94,96,97,98,99,75
 	dfb	201,202,203
 	
-V$1	str	"N"
-V$2	str	"NORD"
-V$3	str	"S"
-V$4	str	"SUD"
-V$5	str	"E"
-V$6	str	"EST"
-V$7	str	"O"
-V$8	str	"OUES"
-V$9	str	"M"
-V$10	str	"MONT"
-V$11	str	"GRIM"
-V$12	str	"DESC"
-V$13	str	"D"
-V$14	str	"ENTR"
-V$15	str	"AVAN"
-V$16	str	"PREN"
-V$17	str	"RAMA"
-V$18	str	"POSE"
-V$19	str	"LAIS"
-V$20	str	"OUVR"
-V$21	str	"FERM"
-V$22	str	"ALLU"
-V$23	str	"ECLA"
-V$24	str	"ETEI"
-V$25	str	"ARRE"
-V$26	str	"LIS"
-V$27	str	"LIT"
-V$28	str	"REGA"
-V$29	str	"REMP"
-V$30	str	"VIDE"
-V$31	str	"INVE"
-V$32	str	"RIEN"
-V$33	str	"ATTE"
-V$34	str	"FRAP"
-V$35	str	"ASSO"
-V$36	str	"ATTA"
-V$37	str	"POUS"
-V$38	str	"TIRE"
-V$39	str	"JETT"
-V$40	str	"MANG"
-V$41	str	"GOUT"
-V$42	str	"BOIS"
-V$43	str	"LANC"
-V$44	str	"BARQ"
-V$45	str	"RADE"
-V$46	str	"BOUT"
-V$47	str	"MESS"
-V$48	str	"SEAU"
-V$49	str	"MANU"
-V$50	str	"LIVR"
-V$51	str	"ECHE"
-V$52	str	"PASS"
-V$53	str	"LAMP"
-V$54	str	"TORC"
-V$55	str	"BATT"
-V$56	str	"FIOL"
-V$57	str	"DELT"
-V$58	str	"TOUR"
-V$59	str	"AMPO"
-V$60	str	"BOIT"
-V$61	str	"CLEF"
-V$62	str	"MARM"
-V$63	str	"ANNE"
-V$64	str	"ROUG"
-V$65	str	"VERT"
-V$66	str	"BLEU"
-V$67	str	"TRAP"
-V$68	str	"SABL"
-V$69	str	"ROBO"
-V$70	str	"COLL"
-V$71	str	"VISS"
-V$72	str	"EAU"
-V$73	str	"CASS"
-V$74	str	"ESSA"
-V$75	str	"SENS"
-V$76	str	"RENI"
-V$77	str	"ADHE"
-V$78	str	"DECO"
-V$79	str	"PLAC"
-V$80	str	"RAME"
-V$81	str	"TUBE"
-V$82	str	"CHRO"
-V$83	str	"LIST"
-V$84	str	"BRAN"
-V$85	str	"ESCA"
-V$86	str	"SORS"
-V$87	str	"AVAL"
-V$88	str	"MAIL"
-V$89	str	"MASQ"
-V$90	str	"CHAU"
-V$91	str	"ROBE"
-V$92	str	"PORT"
-V$93	str	"BROC"
-V$94	str	"HARN"
-V$95	str	"BOMB"
-V$96	str	"METS"
-V$97	str	"ENFI"
-V$98	str	"PASS"
-V$99	str	"DONN"
-V$100	str	"VEND"
-V$101	str	"ACHE"
-V$102	str	"ENLE"
-V$103	str	"ARRA"
-V$104	str	"CREU"
-V$105	str	"PIER"
-V$106	str	"BLOC"
-V$107	str	"MUR"
-V$108	str	"ESPA"
-V$109	str	"HACH"
-V$110	str	"POT"
-V$111	str	"LIAS"
-V$112	str	"TABA"
-V$113	str	"MEDE"
-V$114	str	"CHAU"
-V$115	str	"CREM"
-V$116	str	"TRAI"
-V$117	str	"BOUL"
-V$118	str	"TAIL"
-V$119	str	"DROG"
-V$120	str	"TEMP"
-V$121	str	"DELI"
-V$122	str	"LIBE"
-V$123	str	"FEMM"
-V$124	str	"FILL"
-V$125	str	"DEBR"
-V$126	str	"ASPI"
-V$127	str	"QUIN"
-V$128	str	"FIN"
-V$129	str	"VETE"
+V$1	str	"N"   	; "N"
+V$2	str	"NORD"	; "NORD"
+V$3	str	"S"   	; "S"
+V$4	str	"SUD" 	; "SUD"
+V$5	str	"E"   	; "E"
+V$6	str	"EST" 	; "EST"
+V$7	str	"O"   	; "O"
+V$8	str	"OUES"	; "OUES"
+V$9	str	"M"   	; "M"
+V$10	str	"MONT"	; "MONT"
+V$11	str	"GRIM"	; "GRIM"
+V$12	str	"DESC"	; "DESC"
+V$13	str	"D"   	; "D"
+V$14	str	"ENTR"	; "ENTR"
+V$15	str	"AVAN"	; "AVAN"
+V$16	str	"PREN"	; "PREN"
+V$17	str	"RAMA"	; "RAMA"
+V$18	str	"POSE"	; "POSE"
+V$19	str	"LAIS"	; "LAIS"
+V$20	str	"OUVR"	; "OUVR"
+V$21	str	"FERM"	; "FERM"
+V$22	str	"ALLU"	; "ALLU"
+V$23	str	"ECLA"	; "ECLA"
+V$24	str	"ETEI"	; "ETEI"
+V$25	str	"ARRE"	; "ARRE"
+V$26	str	"LIS" 	; "LIS"
+V$27	str	"LIT" 	; "LIT"
+V$28	str	"REGA"	; "REGA"
+V$29	str	"REMP"	; "REMP"
+V$30	str	"VIDE"	; "VIDE"
+V$31	str	"INVE"	; "INVE"
+V$32	str	"RIEN"	; "RIEN"
+V$33	str	"ATTE"	; "ATTE"
+V$34	str	"FRAP"	; "FRAP"
+V$35	str	"ASSO"	; "ASSO"
+V$36	str	"ATTA"	; "ATTA"
+V$37	str	"POUS"	; "POUS"
+V$38	str	"TIRE"	; "TIRE"
+V$39	str	"JETT"	; "JETT"
+V$40	str	"MANG"	; "MANG"
+V$41	str	"GOUT"	; "GOUT"
+V$42	str	"BOIS"	; "BOIS"
+V$43	str	"LANC"	; "LANC"
+V$44	str	"BARQ"	; "BARQ"
+V$45	str	"RADE"	; "RADE"
+V$46	str	"BOUT"	; "BOUT"
+V$47	str	"MESS"	; "MESS"
+V$48	str	"SEAU"	; "SEAU"
+V$49	str	"MANU"	; "MANU"
+V$50	str	"LIVR"	; "LIVR"
+V$51	str	"ECHE"	; "ECHE"
+V$52	str	"PASS"	; "PASS"
+V$53	str	"LAMP"	; "LAMP"
+V$54	str	"TORC"	; "TORC"
+V$55	str	"BATT"	; "BATT"
+V$56	str	"FIOL"	; "FIOL"
+V$57	str	"DELT"	; "DELT"
+V$58	str	"TOUR"	; "TOUR"
+V$59	str	"AMPO"	; "AMPO"
+V$60	str	"BOIT"	; "BOIT"
+V$61	str	"CLEF"	; "CLEF"
+V$62	str	"MARM"	; "MARM"
+V$63	str	"ANNE"	; "ANNE"
+V$64	str	"ROUG"	; "ROUG"
+V$65	str	"VERT"	; "VERT"
+V$66	str	"BLEU"	; "BLEU"
+V$67	str	"TRAP"	; "TRAP"
+V$68	str	"SABL"	; "SABL"
+V$69	str	"ROBO"	; "ROBO"
+V$70	str	"COLL"	; "COLL"
+V$71	str	"VISS"	; "VISS"
+V$72	str	"EAU" 	; "EAU"
+V$73	str	"CASS"	; "CASS"
+V$74	str	"ESSA"	; "ESSA"
+V$75	str	"SENS"	; "SENS"
+V$76	str	"RENI"	; "RENI"
+V$77	str	"ADHE"	; "ADHE"
+V$78	str	"DECO"	; "DECO"
+V$79	str	"PLAC"	; "PLAC"
+V$80	str	"RAME"	; "RAME"
+V$81	str	"TUBE"	; "TUBE"
+V$82	str	"CHRO"	; "CHRO"
+V$83	str	"LIST"	; "LIST"
+V$84	str	"BRAN"	; "BRAN"
+V$85	str	"ESCA"	; "ESCA"
+V$86	str	"SORS"	; "SORS"
+V$87	str	"AVAL"	; "AVAL"
+V$88	str	"MAIL"	; "MAIL"
+V$89	str	"MASQ"	; "MASQ"
+V$90	str	"CHAU"	; "CHAU"
+V$91	str	"ROBE"	; "ROBE"
+V$92	str	"PORT"	; "PORT"
+V$93	str	"BROC"	; "BROC"
+V$94	str	"HARN"	; "HARN"
+V$95	str	"BOMB"	; "BOMB"
+V$96	str	"METS"	; "METS"
+V$97	str	"ENFI"	; "ENFI"
+V$98	str	"PASS"	; "PASS"
+V$99	str	"DONN"	; "DONN"
+V$100	str	"VEND"	; "VEND"
+V$101	str	"ACHE"	; "ACHE"
+V$102	str	"ENLE"	; "ENLE"
+V$103	str	"ARRA"	; "ARRA"
+V$104	str	"CREU"	; "CREU"
+V$105	str	"PIER"	; "PIER"
+V$106	str	"BLOC"	; "BLOC"
+V$107	str	"MUR" 	; "MUR"
+V$108	str	"ESPA"	; "ESPA"
+V$109	str	"HACH"	; "HACH"
+V$110	str	"POT" 	; "POT"
+V$111	str	"LIAS"	; "LIAS"
+V$112	str	"TABA"	; "TABA"
+V$113	str	"MEDE"	; "MEDE"
+V$114	str	"CHAU"	; "CHAU"
+V$115	str	"CREM"	; "CREM"
+V$116	str	"TRAI"	; "TRAI"
+V$117	str	"BOUL"	; "BOUL"
+V$118	str	"TAIL"	; "TAIL"
+V$119	str	"DROG"	; "DROG"
+V$120	str	"TEMP"	; "TEMP"
+V$121	str	"DELI"	; "DELI"
+V$122	str	"LIBE"	; "LIBE"
+V$123	str	"WOMA"	; "FEMM"
+V$124	str	"GIRL"	; "FILL"
+V$125	str	"DEBR"	; "DEBR"
+V$126	str	"ASPI"	; "ASPI"
+V$127	str	"QUIN"	; "QUIN"
+V$128	str	"FIN" 	; "FIN"
+V$129	str	"VETE"	; "VETE"
 
 V$201	str	"QUIT"
 V$202	str	"CASE"
@@ -957,16 +953,12 @@ tbl4660	da	$bdbd
 	da	str4710,str4720,str4730,str4740
 	da	str4750
 	
-str4670	asc	8D"Courage, pensez a la recompense..."00
-str4680	asc	8D"Hum! Il y a de l"A7"idee dans ce que vous"8D
-	asc	"faites."00 
-str4690	asc	8D"Je n"A7"aurais pas pense a faire cela."00
-str4700	asc	8D"Vous etes un habitue des jeux d"A78D
-	asc	"aventures ?"00 
-str4710	asc	8D"Quelle drole d"A7"idee ?"00 
-str4720	asc	8D"Pourquoi pas ?"00
-str4730	asc	8D"Quel aventurier vous faites...fiiuuue"00
-str4740	asc	8D"A ce train la, vous finirez bien par y"8D
-	asc	"arriver"00
-str4750	asc	8D"Vous, vous avez pas de petrole, mais"8D
-	asc	"vous avez des idees"00
+str4670	asc	8D"Be strong, think of the reward..."00
+str4680	asc	8D"Hum! There is an idea in what you do."00
+str4690	asc	8D"I wouldn"A7"t have thought of doing that."00
+str4700	asc	8D"Are you familiar with adventure games?"00
+str4710	asc	8D"What a funny idea!"00
+str4720	asc	8D"Why not?"00
+str4730	asc	8D"What an adventurer you are... fiiuuue"00
+str4740	asc	8D"At this rate, you will eventually get"8D"there"00
+str4750	asc	8D"You don"A7"t have oil, but you have ideas"00

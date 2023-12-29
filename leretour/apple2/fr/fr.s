@@ -13,57 +13,39 @@ strVOUSDETENEZ
 	asc	8D"Vous avez en votre possession : "00
 
 strVOUSRIEN
-	asc	8D"Pas la peine de regarder, vous n"A7"avez"8D
-	asc	"rien sur vous"00
+	asc	8D"Vous ne devez pas etre fatigue, vous"8D
+	asc	"n"A7"avez rien sur vous"00
 
 strPOINT
 	asc	"."00
 	
-strEVIDENT
-	asc	8D"Vous vous prenez pour HULK..., vous ne"8D
-	asc	"pouvez porter tant de choses !"8D00
-
 strVOUSLAVEZ
-	asc	8D"Vous l"A7"avez deja. Si votre memoire"8D
-	asc	"est mauvaise, faites une liste"8D00
-	
+	asc	8D"Vous avez deja cela... Etourdi !"8D00
+
 strNOTOWNED
-	asc	8D"Jusqu"A7"a nouvel ordre, on ne peut poser"8D
-	asc	"ce que l"A7"on ne possede pas..."8D00
+	asc	8D"Je ne savais pas qu"A7"on pouvait poser"8D
+	asc	"ce qu"A7"on ne possede pas..."8D00
 
 strDACCORD
 	asc	"D"A7"accord"00
 
 strILFAITNOIR
-	asc	"Il fait trop sombre pour voir quelque"8D
-	asc	"chose, il faudrait peut-etre allumer"8D00
+	asc	"La salle n"A7"est pas eclairee."8D00
 
-strILYA	asc	8D"Ici, il y a egalement :"00
+strVOSYEUX	asc	"Vos yeux ne voient plus rien."8D00
+
+strNIVEAU	asc	"NIVEAU : 0"00
+
+strILYA	asc	8D"Il y a aussi :"00
 strCOMMA	asc	","00
 strSPACE	asc	8D" "00
 strRETURN	asc	8D00
 
-strCMD	asc	8D"Votre commande ? "00
+strCOMMANDE	asc	8D"Ordre ? "00
 
-strCOMMANDE	asc	8D"Commande ("
-strTEMPS	asc	"5000) ? "00
-
-tbl580	da	$bdbd
-	da	str581,str582,str583,str584,str585
-	da	str586,str587,str588,str589,str590
+strJENECOMPRENDS
+	asc	8D"Je ne comprends pas"00
 	
-str581	asc	8D"Ne racontez pas n"A7"importe quoi"8D00
-str582	asc	8D"Pardon"8D00
-str583	asc	8D"Comment"8D00
-str584	asc	8D"Je ne comprends pas"8D00
-str585	asc	8D"Sorry, I don"A7"t understand"8D00
-str586	asc	8D"Les rigolos qui m"A7"ont programme ne m"A7"ont"
-	asc	"pas appris ce vocabulaire"8D00
-str587	asc	8D"Je n"A7"ai pas compris"8D00
-str588	asc	8D"OK"8D00
-str589	asc	8D"Ca marche"8D00
-str590	asc	8D"D"A7"accord"8D00
-
 strIMPOSSIBLE
 	asc	8D"Impossible "00
 strCECHEMIN
@@ -74,37 +56,21 @@ strEXCLAM
 strREPLAY	asc	8D"Voulez-vous rejouer ? "00
 
 strPERDU
-	asc	"EN CETTE HEURE PENIBLE, MOI APPLE ]["8D8D
-	asc	"J"A7"ai le terrible devoir de vous"8D
-	asc	"annoncer la mort tragique de votre"8D
-	asc	"propre personne dans la redoutable"8D
-	asc	"KIKEKANKOI, mais peut-etre vous en"8D
-	asc	"etiez vous rendu compte...?"8D
-	asc	8D
-	asc	"Vos funerailles furent respectables,"8D
-	asc	"de par la preuve de courage que vous"8D
-	asc	"aviez donnee et pour la personne qui"8D
-	asc	"a cette heure-ci est encore prison-"8D
-	asc	"niere de la cite mysterieuse... "00
 
-strPERDU2
-	asc	8D8D"OUF..... oui je sais, c"A7"est toujours"8D
-	asc	"trop long les sepultures..."8D8D00
+strGAGNE	asc	"   D"A7"accord,"8D
+	asc	"vous m"A7"avez battu, mais c"A7"est un coup"8D
+	asc	"de chance, et la prochaine fois ma"8D
+	asc	"vengeance sera terrible."8D
+	asc	"Prenez peur, car le jour ou je serai"8D
+	asc	"a nouveau la, ma puissance n"A7"aura plus"8D
+	asc	"de limites, alors l"A7"heure de la souf-"8D
+	asc	"-france aura sonne..."8D
+	asc	"                     Dr GENIUS."00
 
-strGAGNE
-	asc	"Quelle classe..., ressortir vivant de"8D
-	asc	"KIKEKANKOI, il fallait le faire,"8D
-	asc	"d"A7"autant plus que vous ne vous etes"8D
-	asc	"meme pas ecorche un doigt! Mais ne"8D
-	asc	"restez pas trop dans les parages, car"8D
-	asc	"le savant fou a peut-etre encore"8D
-	asc	"quelques experiences a faire sur vous,"8D
-	asc	"comme vous greffer une tete de singe"8D
-	asc	"ou un cerveau electronique de 64 Ko..."8D
-	asc	8D
-	asc	"Merci d"A7"etre reste si longtemps a"8D
-	asc	"votre clavier et encore toutes mes"8D
-	asc	"felicitations"8D8D00
+strINTRO	asc	"     LE RETOUR DU Dr GENIUS"8D
+	asc	"     Vous avez 20 minutes et"8D
+	asc	"    400 unites de force pour"8D
+	asc	"     remplir votre mission..."00
 
 *-----------------------------------
 * LES DONNEES
@@ -809,7 +775,7 @@ str4520	asc	"Le systeme automatique est deregle, il met du gaz carbonique a la p
 str4530	asc	"Vous respirez un grand coup."00
 str4540	asc	"Que voulez-vous respirer, il n"A7"y a plus d"A7"oxygene."00
 str4550	asc	"Vous avez deux essais pour"00
-str4552	asc	"Entrez le mot de passe."00
+str4552	asc	"entrer le mot de passe."00
 str4558	asc	"Exact, vous etes perspicace!"00
 str4559	asc	"UIN LOI QRU ILD ESP ECU TAS ASU VIE RAL HOU MEA"00
 str4560	asc	"C"A7"est d"A7"accord."00
@@ -818,7 +784,7 @@ str4580	asc	"Vous mourrez deshydrate."00
 str4610	asc	"Le sas se referme derriere vous, le tableau de controle s"A7"allume et l"A7"ordinateur de bord vous demande le mot de passe pour le retour ?"00
 str4615	asc	"Le vaisseau de secours s"A7"eloigne, au loin vous voyez Genius qui pleure derriere un hublot"00
 str4616	asc	"          VOUS AVEZ GAGNE"00
-str4618	asc	"Mais, que se passe-t-il,vous avez du vous tromper de mot de passe,votre "00
+str4618	asc	"Mais, que se passe-t-il,vous avez du vous tromper de mot de passe, votre "00
 str4620	asc	"La soucoupe a explose au decollage."00
 str4630	asc	"Energie restante :"00
 str4640	asc	"Petit drole...Le chronometre est affiche en permanence"00
@@ -828,7 +794,7 @@ str4656	asc	"Le mot de passe pour le retour est : "00	; MP$
 str4660	asc	"Votre trajectoire est bonne, pourquoi la corriger ?"00
 str4670	asc	"Le mur au nord coulisse, vous avancez dans cette salle."00
 str4680	asc	"Quel livre ?"00
-str4690	asc	"au dos du boitier est marque :"00
+str4690	asc	"Au dos du boitier est marque :"00
 str4692	asc	"        "A7"PROTEGEZ MOI"A7""00
 str4700	asc	"Vous remarquez un boitier de radiocommande."00
 str4730	asc	"Que regardez vous ?"00
@@ -857,7 +823,7 @@ str4920	asc	"Vous etes entre dans le vaisseau par le sas a l"A7"ouest qui ne s"A
 
 str5500	asc	"Etes-vous sur (O/N) ?"00
 
-str16000	asc	"vaisseau de poche fonce sur le soleil,"00
+str16000	asc	"vaisseau de poche fonce sur le soleil, "00
 str16010	asc	"Vous venez de realiser que Genius"00
 str16020	asc	"pleurait de JOIE...!"00
 str18005	asc	"Comme je le pensais , vous vous etes stupidement fait avoir, et votre cadavre (ou ce qu"A7"il en reste) reposera a jamais dans l"A7"espace..."00
@@ -865,19 +831,3 @@ str18005	asc	"Comme je le pensais , vous vous etes stupidement fait avoir, et vo
 str19050	asc	"   Merci d"A7"avoir essaye...!"00
 str19060	asc	"  Reveillez-vous , c"A7"est fini !"00
 
-strGAGNE
-	asc	"   D"A7"accord,"8D
-	asc	"vous m"A7"avez battu, mais c"A7"est un coup"8D
-	asc	"de chance, et la prochaine fois ma"8D
-	asc	"vengeance sera terrible."8D
-	asc	"Prenez peur, car le jour ou je serai"8D
-	asc	"a nouveau la, ma puissance n"A7"aura plus"8D
-	asc	"de limites, alors l"A7"heure de la souf-"8D
-	asc	"france aura sonne..."8D
-	asc	"                     Dr GENIUS."00
-
-strINTRO
-	asc	"     LE RETOUR DU Dr GENIUS"8D
-	asc	"     Vous avez 20 minutes , et"8D
-	asc	"    str400 unites de force pour"8D
-	asc	"     remplir votre mission..."00

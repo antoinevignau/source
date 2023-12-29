@@ -204,6 +204,11 @@ REPLAY	jsr	initALL
 	@print	#strILFAITNOIR
 	jmp	:500
 
+:140	jsr	HGR
+	jsr	setMIXEDON
+	@print	#strVOSYEUX
+	jmp	:500
+
 *-----------------------------------
 * 200 - description salle
 *-----------------------------------
@@ -313,11 +318,7 @@ REPLAY	jsr	initALL
 	sta	N
 	jmp	:1000
 
-:530	lda	switchENERGIE+1
-	beq	:531
-	@print	#strCMD		; commande sans energie
-	jmp	:535	
-:531	@print	#strCOMMANDE	; commande avec energie
+:530	@print	#strCOMMANDE	; commande avec energie
 
 :535	jsr	GETLN1
 	jsr	rewriteSTRING	; from lower to upper
@@ -326,17 +327,7 @@ REPLAY	jsr	initALL
 	lda	MO$1
 	bne	:900
 
-	lda	VBL	; LOGO - Use a better RND?
-	eor	VERTCNT
-	and	#7
-	clc
-	adc	#1
-	asl
-	tax
-	ldy	tbl580,x
-	lda	tbl580+1,x
-	tax
-	jsr	printCSTRING
+	@print	#strJENECOMPRENDS
 	jmp	:100
 
 *-----------------------------------
@@ -756,17 +747,7 @@ tbl1800	da	:1800,:1900
 
 *-------- B
 
-:1900	lda	S
-	cmp	#nbOaP	; nombre d'objets ˆ porter
-	bcc	:1930
-	
-	@print	#strEVIDENT
-
-:1920	lda	#1
-	sta	BREAK
-	rts
-
-:1930	ldx	N
+:1900	ldx	N
 	lda	O,x
 	cmp	#-1
 	bne	:1960
@@ -937,15 +918,16 @@ tbl1800	da	:1800,:1900
 * 4000 - LES REPONSES
 *-----------------------------------
 
-tbl4000	da	$bdbd
-	da	:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
+tbl4000	da	$bdbd,:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
 	da	:4100,:4110,:4120,:4130,:4140,:4150,:4160,:4170,:4180,:4190
 	da	:4200,:4210,:4220,:4230,:4240,:4250,:4260,:4270,:4280,:4290
 	da	:4300,:4310,:4320,:4330,:4340,:4350,:4360,:4370,:4380,:4390
 	da	:4400,:4410,:4420,:4430,:4440,:4450,:4460,:4470,:4480,:4490
 	da	:4500,:4510,:4520,:4530,:4540,:4550,:4560,:4570,:4580,:4590
 	da	:4600,:4610,:4620,:4630,:4640,:4650,:4660,:4670,:4680,:4690
-	da	:4700,:4710,:4720,:4730,:4740,:4750
+	da	:4700,:4710,:4720,:4730,:4740,:4750,:4760,:4770,:4780,:4790
+	da	:4800,:4810,:4820,:4830,:4840,:4850,:4860,:4870,:4880,:4890
+	da	:4900,:4910,:4920
 	
 *--------
 
@@ -1043,6 +1025,7 @@ tbl4000	da	$bdbd
 	rts
 
 :4320	@print	#str4320
+	@print	#str4321
 	rts
 
 :4330	@print	#str4330
@@ -1094,6 +1077,7 @@ tbl4000	da	$bdbd
 	rts
 	
 :4490	@print	#str4490
+	#print	#str4491
 	rts
 	
 :4500	@print	#str4500
@@ -1112,6 +1096,8 @@ tbl4000	da	$bdbd
 	rts
 
 :4550	@print	#str4550
+	@print	#str4552
+	@print	#str4558
 	rts
 
 :4560	@print	#str4560
@@ -1130,6 +1116,7 @@ tbl4000	da	$bdbd
 	rts
 	
 :4610	@print	#str4610
+	#print	#str4615
 	rts
 
 :4620	@print	#str4620
@@ -1142,49 +1129,93 @@ tbl4000	da	$bdbd
 	rts
 
 :4650	@print	#str4650
+	@print	#str4655
+	@print	#str4656
 	rts
 
-*---
-
-:4660	lda	VBL	; LOGO - Use a better RND?
-	eor	VERTCNT
-	and	#7
-	clc
-	adc	#1
-:4665	asl
-	tax
-	ldy	tbl4660,x
-	lda	tbl4660+1,x
-	tax
-	jsr	printCSTRING
+:4660	@print	#str4660
 	rts
 
-:4670	lda	#1
-	bne	:4665
-	
-:4680	lda	#2
-	bne	:4665
-	
-:4690	lda	#3
-	bne	:4665
-	
-:4700	lda	#4
-	bne	:4665
-	
-:4710	lda	#5
-	bne	:4665
+:4670	@print	#str4670
+	rts
 
-:4720	lda	#6
-	bne	:4665
-	
-:4730	lda	#7
-	bne	:4665
-	
-:4740	lda	#8
-	bne	:4665
-	
-:4750	lda	#9
-	bne	:4665
+:4680	@print	#str4680
+	rts
+
+:4690	@print	#str4690
+	@print	#str4692
+	rts
+
+:4700	@print	#str4700
+	rts
+
+:4710	@print	#str4710
+	rts
+
+:4720	@print	#str4720
+	rts
+
+:4730	@print	#str4730
+	rts
+
+:4740	@print	#str4740
+	rts
+
+:4750	@print	#str4750
+	rts
+
+:4760	@print	#str4760
+	rts
+
+:4770	@print	#str4770
+	rts
+
+:4780	@print	#str4780
+	rts
+
+:4790	@print	#str4790
+	rts
+
+:4800	@print	#str4800
+	rts
+
+:4810	@print	#str4810
+	rts
+
+:4820	@print	#str4820
+	rts
+
+:4830	@print	#str4830
+	rts
+
+:4840	@print	#str4840
+	rts
+
+:4850	@print	#str4850
+	rts
+
+:4860	@print	#str4860
+	rts
+
+:4870	@print	#str4870
+	@print	#str4874
+	rts
+
+:4880	@print	#str4880
+	rts
+
+:4890	@print	#str4890
+	@print	#str4891
+	rts
+
+:4900	@print	#str4900
+	rts
+
+:4910	@print	#str4910
+	rts
+
+:4920	@print	#str4920
+	rts
 
 *-----------------------------------
 * 6000 - ANALYSE DU MOT
@@ -2319,3 +2350,10 @@ tblD2H	dfb	0,10,20,30,40,50,60,70,80,90
 	put	../common/musiques.s
 	
 *--- It's the end
+
+tblIMAGES	da	L423B,L786F,L7974,L4F61,L4E95,L7CC8,L6BDC,L5EFA,L7DE2,L7F38
+	da	L62EF,L57EA,L5925,L63F6,L47C3,L5A21,L5021,L4DFF,L64EF,L4700
+	da	L5D77,L52CA,L4E41,L6AF2,L81EA,L827B,L61DF,L497F,L4C16,L4A8D
+	da	L4CEE,L5B40,L6FDD,L6F05,L65FF,L8088,L7A40,L774C,L7B63,L5CC6
+	da	L5BEE,L50F6,L6D58,L6C6E,L74D2,L70F6,L487A,L71E0,L4DAB,L55C8
+	da	L72CA,L6958,$0000,L5F6B,L60EB,L6812,L6E33,L8367

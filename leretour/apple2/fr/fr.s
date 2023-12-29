@@ -752,77 +752,132 @@ str8600	asc	""00
 *		"0123456789012345678901234567890123456789"
 *		"----------------------------------------"
 
-str4010	asc	""00
-str4020	asc	""00
-str4030	asc	""00
-str4040	asc	""00
-str4050	asc	""00
-str4060	asc	""00
-str4070	asc	""00
-str4080	asc	""00
-str4090	asc	""00
-str4100	asc	""00
-str4110	asc	""00
-str4120	asc	""00
-str4130	asc	""00
-str4140	asc	""00
-str4150	asc	""00
-str4160	asc	""00
-str4170	asc	""00
-str4180	asc	""00
-str4190	asc	""00
-str4200	asc	""00
-str4210	asc	""00
-str4220	asc	""00
-str4230	asc	""00
-str4240	asc	""00
-str4250	asc	""00
+str4010	asc	"Une boule d"A7"acier tombee du plafond vient de s"A7"ecraser sur votre casque."00
+str4020	asc	"Une boule d"A7"acier vient de tomber du plafond, vous avez le crane defonce..."00
+str4030	asc	"Vous venez de tomber dans une flaque d"A7"acide,ca crepite..."00
+str4040	asc	"Vous venez de rentrer dans le reacteur atomique du vaisseau..!"00
+str4050	asc	"La porte ne veut pas s"A7"ouvrir"00
+str4060	asc	"Un peu de memoire...comment etes-vous entre ?"00
+str4070	asc	"Je ne vous savais pas assez muscle pour soulever une tonne."00
+str4080	asc	"Vous avez raison, la vue c"A7"est la vie!"00
+str4090	asc	"Les gants etaient radioactifs, vous perdez la vue."00
+str4100	asc	"Vous l"A7"avez deja sur vous."00
+str4110	asc	"Impossible, je ne vois pas ceci ici."00
+str4120	asc	"Vous vous arrachez la tete en tombant des echasses."00
+str4130	asc	"Des monstres sortis des containers vous devorent tout cru!"00
+str4140	asc	"L"A7"air frais vous fait du bien. Dommage que l"A7"helice vous ait coupe la tete."00
+str4150	asc	"Qu"A7"est ce que vous voulez boire ???"00
+str4160	asc	"Ah oui...l"A7"eau est bonne."00
+str4170	asc	"Il n"A7"y a pas d"A7"eau ici."00
+str4180	asc	"L"A7"eau etait contaminee par les boites radioactives."00
+str4190	asc	"Vous retrecissez..petit..petit..et une araignee vous mange!"00
+str4200	asc	"Ca coupe une tronconneuse, comme le prouve votre tete au sol."00
+str4210	asc	"Vous glissez et tombez dans la flaque. L"A7"acide crepite."00
+str4220	asc	"Il n"A7"y a pas ici de porte verrouillee";
+str4230	asc	"En secouant le tube pour l"A7"ouvrir, la nitroglycerine a explose."00
+str4240	asc	"Pourquoi ouvrir un robinet qui ne ferme pas!"00
+str4250	asc	"Le robinet ne se ferme pas."00
 str4260	asc	""00
-str4270	asc	""00
-str4280	asc	""00
-str4290	asc	""00
-str4300	asc	""00
-str4310	asc	""00
-str4320	asc	""00
-str4330	asc	""00
-str4340	asc	""00
-str4350	asc	""00
-str4360	asc	""00
-str4370	asc	""00
-str4380	asc	""00
-str4390	asc	""00
-str4400	asc	""00
-str4410	asc	""00
-str4420	asc	""00
-str4430	asc	""00
-str4440	asc	""00
-str4450	asc	""00
-str4460	asc	""00
-str4470	asc	""00
-str4480	asc	""00
-str4490	asc	""00
-str4500	asc	""00
-str4510	asc	""00
-str4520	asc	""00
-str4530	asc	""00
-str4540	asc	""00
-str4550	asc	""00
-str4560	asc	""00
-str4570	asc	""00
-str4580	asc	""00
-str4590	asc	""00
-str4600	asc	""00
-str4610	asc	""00
-str4620	asc	""00
-str4630	asc	""00
-str4640	asc	""00
-str4650	asc	""00
-str4670	asc	""00
-str4680	asc	""00
-str4690	asc	""00
-str4700	asc	""00
-str4710	asc	""00
-str4720	asc	""00
-str4730	asc	""00
-str4740	asc	""00
-str4750	asc	""00
+str4270	asc	"La bibliotheque n"A7"a pas de porte..."00
+str4280	asc	"Il n"A7"y a rien de mieux sur les autres pages."00
+str4290	asc	"...c"A7"est toi J.R qui a pris ma femme et mon petrole, tu es infame."00
+str4300	asc	"Collection Arlepin, tout un reve d"A7"evasion."00
+str4310	asc	"...et c"A7"est moi Genius le grand qui crea un superbe manoir..."00
+str4320	asc	"1031141221242713182310291430271214232927102110272718311427103023141427142324303114212114"
+str4321	asc	" <tapez une touche> "00
+str4330	asc	"Vous l"A7"avez deja fait."00
+str4340	asc	"Le laser vient d"A7"exploser."00
+str4350	asc	"Il ne se passe rien."00
+str4360	asc	"Le sas s"A7"ouvre, vous passez dans la salle a cote."00
+str4370	asc	"Cela agit sur un contacteur a infrarouge qui commande l"A7"eclairage."00
+str4380	asc	"Allons enfants de la patrie..."00
+str4390	asc	"Vous entendez : "A7"Le laser ouvrira la porte"A7""00
+str4400	asc	"Les lunettes sont trop fortes, vous voyez trouble."00
+str4410	asc	"La salle est radioactive."00
+str4420	asc	"Vous avez quelque chose pour ?"00
+str4430	asc	"C"A7"est votre probleme, mais le temps passe."00
+str4440	asc	"Avez-vous si sommeil que ca ?"00
+str4450	asc	"Et puis quoi encore !"00
+str4460	asc	"Faites un plan..."00
+str4470	asc	"Vous entendez le ronronnement des moteurs."00
+str4480	asc	"J"A7"etais sur que vous etiez un lache."00
+str4490	asc	"Vous passez la tete a travers un sas,"00
+str4491	asc	"et appuyez sur le bouton de fermeture"00
+str4500	asc	"Quel bouton ?"00
+str4510	asc	"Les boutons ne fonctionnent pas car l"A7"ordinateur central les controle."00
+str4520	asc	"Le systeme automatique est deregle, il met du gaz carbonique a la place de l"A7"oxygene."00
+str4530	asc	"Vous respirez un grand coup."00
+str4540	asc	"Que voulez-vous respirer, il n"A7"y a plus d"A7"oxygene."00
+str4550	asc	"Vous avez deux essais pour"00
+str4552	asc	"Entrez le mot de passe."00
+str4558	asc	"Exact, vous etes perspicace!"00
+str4559	asc	"UIN LOI QRU ILD ESP ECU TAS ASU VIE RAL HOU MEA"00
+str4560	asc	"C"A7"est d"A7"accord."00
+str4570	asc	"Il etait temps, vous alliez mourir."00
+str4580	asc	"Vous mourrez deshydrate."00
+str4610	asc	"Le sas se referme derriere vous, le tableau de controle s"A7"allume et l"A7"ordinateur de bord vous demande le mot de passe pour le retour ?"00
+str4615	asc	"Le vaisseau de secours s"A7"eloigne, au loin vous voyez Genius qui pleure derriere un hublot"00
+str4616	asc	"          VOUS AVEZ GAGNE"00
+str4618	asc	"Mais, que se passe-t-il,vous avez du vous tromper de mot de passe,votre "00
+str4620	asc	"La soucoupe a explose au decollage."00
+str4630	asc	"Energie restante :"00
+str4640	asc	"Petit drole...Le chronometre est affiche en permanence"00
+str4650	asc	"Le temps que vous aviez pour votre mission est ecoule, vous avez echoue."00
+str4655	asc	" NOI THE"00	; LOGO
+str4656	asc	"Le mot de passe pour le retour est : "00	; MP$
+str4660	asc	"Votre trajectoire est bonne, pourquoi la corriger ?"00
+str4670	asc	"Le mur au nord coulisse, vous avancez dans cette salle."00
+str4680	asc	"Quel livre ?"00
+str4690	asc	"au dos du boitier est marque :"00
+str4692	asc	"        "A7"PROTEGEZ MOI"A7""00
+str4700	asc	"Vous remarquez un boitier de radiocommande."00
+str4730	asc	"Que regardez vous ?"00
+str4740	asc	"Le tube de nitroglycerine vient d"A7"exploser, vous etes pulverise."00
+str4750	asc	"La bombe a retardement vient d"A7"exploser, vous etes pulverise."00
+str4760	asc	"La bombe a retardement a explose, elle a endommage le systeme de chauffage, vous etes carbonise"00
+str4770	asc	"La bombe a explose, vous etiez trop pres et etes devenu fou..."00
+str4780	asc	"La bombe a retardement n"A7"etait pas assez forte, l"A7"ordinateur central n"A7"est qu"A7"endommage, il vous fait exploser..."00
+str4790	asc	"Bravo! L"A7"ordinateur central est detruit, mais le systeme d"A7"oxygenation ne fonctionne plus, de plus la trajectoire du vaisseau a change."00
+str4800	asc	"Vous n"A7"avez plus de souffle, vous etes mort asphyxie."00
+str4810	asc	"Vous auriez du corriger la trajectoire vous avez percute le soleil."00
+str4820	asc	"A force de traverser les salles radioactives, vous etes mort contamine."00
+str4830	asc	"Il fait de plus en plus chaud..."00
+str4840	asc	"L"A7"ordinateur vient d"A7"exploser!"00
+str4845	asc	"Vous avez du le laisser allume."00
+str4850	asc	"Comment !!! Vous etes aveugle."00
+str4860	asc	"Vous n"A7"aviez pas pris la radiocommande qui a explose quand le vaisseau a percute le soleil, son explosion a declenche la fin du monde."00
+str4870	asc	"Non! pas de strip-tease."00
+str4874	asc	"Vous avez pose tout ce que vous transportiez."00
+str4880	asc	"Ca ne se demande pas."00
+str4890	asc	"Il y a effectivement un ordinateur parmi le tableau de controle."00
+str4891	asc	"L"A7"ordinateur n"A7"est pas en fonction."00
+str4900	asc	"Sur le laser, vous voyez trois boutons : jaune, rouge et bleu."00
+str4910	asc	"Vous etes entre dans le desintegrateur de particules..."00
+str4920	asc	"Vous etes entre dans le vaisseau par le sas a l"A7"ouest qui ne s"A7"ouvre pas de l"A7"interieur."00
+
+str5500	asc	"Etes-vous sur (O/N) ?"00
+
+str16000	asc	"vaisseau de poche fonce sur le soleil,"00
+str16010	asc	"Vous venez de realiser que Genius"00
+str16020	asc	"pleurait de JOIE...!"00
+str18005	asc	"Comme je le pensais , vous vous etes stupidement fait avoir, et votre cadavre (ou ce qu"A7"il en reste) reposera a jamais dans l"A7"espace..."00
+
+str19050	asc	"   Merci d"A7"avoir essaye...!"00
+str19060	asc	"  Reveillez-vous , c"A7"est fini !"00
+
+strGAGNE
+	asc	"   D"A7"accord,"8D
+	asc	"vous m"A7"avez battu, mais c"A7"est un coup"8D
+	asc	"de chance, et la prochaine fois ma"8D
+	asc	"vengeance sera terrible."8D
+	asc	"Prenez peur, car le jour ou je serai"8D
+	asc	"a nouveau la, ma puissance n"A7"aura plus"8D
+	asc	"de limites, alors l"A7"heure de la souf-"8D
+	asc	"france aura sonne..."8D
+	asc	"                     Dr GENIUS."00
+
+strINTRO
+	asc	"     LE RETOUR DU Dr GENIUS"8D
+	asc	"     Vous avez 20 minutes , et"8D
+	asc	"    str400 unites de force pour"8D
+	asc	"     remplir votre mission..."00

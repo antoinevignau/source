@@ -197,9 +197,6 @@ SETKBD	=	$FE89
 	PushWord	#15
 	_SetForeColor
 
-	PushLong	#curPATTERN
-	_GetPenPat
-
 	PushLong	#whitePATTERN	; white pattern
 	_SetPenPat
 
@@ -259,7 +256,21 @@ myINDEX	ds	2
 
 *-----------------------------------
 
-curPATTERN	ds	32
+blackPATTERN ds	32,$00
+	ds	32,$11
+	ds	32,$22
+	ds	32,$33
+	ds	32,$44
+	ds	32,$55
+	ds	32,$66
+	ds	32,$77
+	ds	32,$88
+	ds	32,$99
+	ds	32,$aa
+	ds	32,$bb
+	ds	32,$cc
+	ds	32,$dd
+	ds	32,$ee
 whitePATTERN ds	32,$ff
 
 *----------------------------------- New Tool table

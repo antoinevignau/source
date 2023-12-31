@@ -126,7 +126,7 @@ L936A       sta	theFB
 	and	#$ff
 	eor	#-1
 	inc
-	and	#$ff
+*	and	#$ff
 	sta	theX
 	iny
 	lda	(dpFROM),y	; Y
@@ -148,7 +148,7 @@ L939A       sta	theFB
 	and	#$ff
 	eor	#-1
 	inc
-	and	#$ff
+*	and	#$ff
 	sta	theY
             jsr	DRAW
             jmp	skip2
@@ -162,14 +162,14 @@ L93CA       sta	theFB
 	and	#$ff
 	eor	#-1
 	inc
-	and	#$ff
+*	and	#$ff
 	sta	theX
 	iny
 	lda	(dpFROM),y	; Y
 	and	#$ff
 	eor	#-1
 	inc
-	and	#$ff
+*	and	#$ff
 	sta	theY
             jsr	DRAW
             jmp	skip2
@@ -238,6 +238,8 @@ L9462	iny
 	iny
 	lda	(dpFROM),y	; Y
 	and	#$ff
+	clc
+	adc	#8	; QDII: Y est le bas du texte, pas le haut
 	pha
 	_MoveTo
 	ldy	#3
@@ -319,14 +321,14 @@ DRAW	lda	theFB
 
 	PushWord	theX	; On trace une ligne
 	PushWord	theY
-	_LineTo
+	_Line
 	PushLong	#curY
 	_GetPen
 	rts
 
 DRAW9	PushWord	theX	; On déplace le curseur seulement
 	PushWord	theY
-	_MoveTo
+	_Move
 	PushLong	#curY
 	_GetPen
 	rts
@@ -337,6 +339,17 @@ INK	ldx	theINK
 	lda	o2gsCOLOR,x
 	and	#$ff
 	sta	iigsINK
+	
+	PushWord	#^blackPATTERN
+	asl
+	asl
+	asl
+	asl
+	asl
+	clc
+	adc	#blackPATTERN
+	pha
+	_SetPenPat
 	rts
 
 *-----------------------------------

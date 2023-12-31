@@ -22,6 +22,7 @@
 	use	4/Menu.Macs
 	use	4/Misc.Macs
 	use	4/QD.Macs
+	use	4/QDAux.Macs
 	use	4/Util.Macs
 	use	4/Window.Macs
 	
@@ -37,6 +38,9 @@ refIsResource =	$2
 
 TRUE	=	255
 FALSE	=	0
+
+ptr012000	=	$012000
+ptrE12000	=	$e12000
 
 mode320	=	$00
 mode640	=	$80
@@ -144,7 +148,7 @@ SETKBD	=	$FE89
 * DU 16-BITS
 *-----------------------------------
 
-	phk
+ICI	phk
 	plb
 	
 	clc
@@ -207,7 +211,8 @@ SETKBD	=	$FE89
 * AFFICHE UNE IMAGE
 *-----------------------------------
 
-	stz	myINDEX
+	lda	#12
+	sta	myINDEX
 	
 loop	lda	myINDEX
 	jsr	showIMAGE
@@ -221,7 +226,7 @@ loop	lda	myINDEX
 
 	inc	myINDEX
 	lda	myINDEX
-	cmp	#58
+	cmp	#14
 	bcc	loop
 
 *-----------------------------------
@@ -256,6 +261,12 @@ myINDEX	ds	2
 
 *-----------------------------------
 
+palette320	dw	$0000,$0777,$0841,$072C,$000F,$0080,$0F70,$0D00
+	dw	$0FA9,$0FF0,$00E0,$04DF,$0DAF,$078F,$0CCC,$0FFF
+
+palette640	dw	$0000,$000F,$0FF0,$0FFF,$0000,$0D00,$00E0,$0FFF
+	dw	$0000,$000F,$0FF0,$0FFF,$0000,$0D00,$00E0,$0FFF
+	
 blackPATTERN ds	32,$00
 	ds	32,$11
 	ds	32,$22
@@ -281,40 +292,38 @@ toolTBL	dw	$0000
 	dw	$0000
 	dw	$0000
 	ADRL	$00000000
-	dw	$0011
-	dw	$0003
-	dw	$0300
-	dw	$0004
-	dw	$0301
-	dw	$0005
-	dw	$0302
-	dw	$0006
-	dw	$0300
-	dw	$0008
-	dw	$0301
-	dw	$000B
-	dw	$0200
-	dw	$000E
-	dw	$0301
-	dw	$000F
-	dw	$0301
 	dw	$0010
-	dw	$0301
-	dw	$0012
-	dw	$0301
-	dw	$0014
-	dw	$0301
-	dw	$0015
-	dw	$0301
-	dw	$0016
+	dw	$0003	; Miscellaneous Tool
 	dw	$0300
-	dw	$0017
+	dw	$0004	; QuickDraw II
 	dw	$0301
-	dw	$001B
+	dw	$0005	; Desk Manager
+	dw	$0302
+	dw	$0006	; Event Manager
+	dw	$0300
+	dw	$000B	; Integer Math Tool Set
+	dw	$0200
+	dw	$000E	; Window Manager
 	dw	$0301
-	dw	$001C
+	dw	$000F	; Menu Manager
 	dw	$0301
-	dw	$001E
+	dw	$0010	; Control Manager
+	dw	$0301
+	dw	$0012	; QuickDraw II Auxiliary
+	dw	$0301
+	dw	$0014	; LineEdit Tool Set
+	dw	$0301
+	dw	$0015	; Dialog Manager
+	dw	$0301
+	dw	$0016	; Scrap Manager
+	dw	$0300
+	dw	$0017	; Standard File Tool Set
+	dw	$0301
+	dw	$001B	; Font Manager
+	dw	$0301
+	dw	$001C	; List Manager
+	dw	$0301
+	dw	$001E	; Resource Manager
 	dw	$0100
 
 *-----------------------------------

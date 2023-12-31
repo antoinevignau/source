@@ -126,7 +126,6 @@ L936A       sta	theFB
 	and	#$ff
 	eor	#-1
 	inc
-*	and	#$ff
 	sta	theX
 	iny
 	lda	(dpFROM),y	; Y
@@ -148,7 +147,6 @@ L939A       sta	theFB
 	and	#$ff
 	eor	#-1
 	inc
-*	and	#$ff
 	sta	theY
             jsr	DRAW
             jmp	skip2
@@ -162,14 +160,12 @@ L93CA       sta	theFB
 	and	#$ff
 	eor	#-1
 	inc
-*	and	#$ff
 	sta	theX
 	iny
 	lda	(dpFROM),y	; Y
 	and	#$ff
 	eor	#-1
 	inc
-*	and	#$ff
 	sta	theY
             jsr	DRAW
             jmp	skip2
@@ -281,10 +277,6 @@ skip2	inc	dpFROM
 skip1	inc	dpFROM
 skip0	inc	dpFROM
 
-	ldal	$c034
-	inc
-	stal	$c034
-
 	jmp	L92A6
 
 *-----------------------------------
@@ -339,17 +331,27 @@ INK	ldx	theINK
 	lda	o2gsCOLOR,x
 	and	#$ff
 	sta	iigsINK
+
+	PushWord	#0
+	PushWord	#15
 	
-	PushWord	#^blackPATTERN
 	asl
-	asl
-	asl
-	asl
-	asl
-	clc
-	adc	#blackPATTERN
+	tax
+	lda	palette320,x
 	pha
-	_SetPenPat
+	_SetColorEntry
+	
+*	PushWord	#^blackPATTERN
+*	
+*	asl
+*	asl
+*	asl
+*	asl
+*	asl
+*	clc
+*	adc	#blackPATTERN
+*	pha
+*	_SetPenPat
 	rts
 
 *-----------------------------------
@@ -358,11 +360,50 @@ PAPER	ldx	thePAPER
 	lda	o2gsCOLOR,x
 	and	#$ff
 	sta	iigsPAPER
+	
+	PushWord	#0
+	PushWord	#0
+	
+	asl
+	tax
+	lda	palette320,x
+	pha
+	_SetColorEntry
+	
+	ldal	$c034
+	inc
+	stal	$c034
 	rts
 
 *-----------------------------------
 
-FILL	rts	; NADA FOR NOW (FillRgn ou SeedFill)
+resMode	=	%0001_0000000000_10
+
+FILL	rts
+
+	ldx	fillCOLOR	; sets the pattern to use
+	lda	o2gsCOLOR,x
+	and	#$ff
+	asl
+	asl
+	asl
+	asl
+	asl
+	clc
+	adc	#blackPATTERN
+	sta	patternPtr
+
+	PushLong	#srcLocInfoPtr
+	PushLong	#srcRect
+	PushLong	#srcLocInfoPtr
+	PushLong	#srcRect
+	PushWord	fillX
+	PushWord	fillY
+	PushWord	#resMode
+	PushLong	patternPtr
+	PushLong	#leakTblPtr
+	_SeedFill
+	rts
 
 *-----------------------------------
 
@@ -411,29 +452,43 @@ CHAR_ALT	rts
 o2gsCOLOR	dfb	0,7,10,9,4,12,11,15
 o2gsFB	dfb	0,0,2,0
 
-ICI	=	*
-
 curY	ds	2	; cursor position
 curX	ds	2
+
+*----------- IIgs values
 
 iigsINK	ds	2	; translated IIgs data
 iigsPAPER	ds	2
 iigsFB	ds	2
+
+*----------- ORIC values
 
 theINK	ds	2	; original Oric data
 thePAPER	ds	2
 theFB	ds	2
 theX	ds	2
 theY	ds	2
-theX2	ds	2	; global dest X-coord (curX + theX)
-theY2	ds	2	; global dest Y-coord (curY + theY)
+
+*----------- FILL
+
 fillX	ds	2
 fillY	ds	2
 fillCOLOR	ds	2
-theCHAR	ds	2
-theRADIUS	ds	2
 
-nbTOURS	ds	5
+srcLocInfoPtr
+	dw	mode320	; mode 320
+	adrl	ptrE12000
+	dw	160
+srcRect	dw	0,0,159,239
+
+patternPtr	adrl	blackPATTERN ; pointer to pattern
+
+leakTblPtr	dw	1
+	dw	$0000	; color 0 is concerned
+	
+*----------- CIRCLE
+
+theRADIUS	ds	2
 
 circleRECT	ds	2	; Y0
 	ds	2	; X0

@@ -6,7 +6,6 @@
 *
 
 	mx	%11
-	org	$400
 	lst	off
 
 *-----------------------------------
@@ -21,10 +20,6 @@ LINNUM	=	$50	; result from GETADR
 X0L	=	$e0	; X-coord
 X0H	=	$e1
 Y0	=	$e2	; Y-coord
-
-maxY	=	191	; 0 to 191 = 192
-nbLINES	=	200	; 200 lignes sur un CPC
-deltaY	=	32
 
 nbOaP	=	10	; on peut porter dix objets
 
@@ -42,24 +37,9 @@ chrNON	=	"N"
 idxCASSE	=	200
 idxTIMER	=	201
 
-PRODOS	=	$bf00
+*--- Softswitches
 
-KBD	=	$c000
-CLR80VID	=	$c00c
-KBDSTROBE	=	$c010
-VBL	=	$c019
-MONOCOLOR	=	$c021
-VERTCNT	=	$c02e
-SPKR	=	$c030
-CYAREG	=	$C036
-TXTCLR	=	$c050
-TXTSET	=	$c051
-MIXCLR	=	$c052
-MIXSET	=	$c053
-TXTPAGE1	=	$c054
-TXTPAGE2	=	$c055
-LORES	=	$c056
-HIRES	=	$c057
+VBL	=	$e0c019
 
 *--- The firmware routines
 
@@ -104,7 +84,7 @@ SETKBD	=	$FE89
 	eom
 
 @wait	mac
-	ldx	#>]1
+	lda	#>]1
 	ldy	#<]1
 	jsr	waitMS
 	eom
@@ -113,46 +93,7 @@ SETKBD	=	$FE89
 * CODE BASIC EN ASM :-)
 *-----------------------------------
 
-	sec
-	jsr	IDROUTINE
-	bcs	notiigs
-
-	lda	CYAREG	; 1 MHz vaincra!
-	sta	sauveCYA
-	and	#%0111_1111
-	sta	CYAREG
-	
-	lda	MONOCOLOR
-	sta	sauveMONO
-	ora	#%1000_0000
-*	and	#%0111_1111
-	sta	MONOCOLOR
-	
-notiigs
-
-*-------- CAN WE DO lowercase?
-
-	lda	$FBB3
-	cmp	#$06
-	beq	lowerOK
-	
-	lda	#$80	; ONLY UPPERCASE
-	sta	fgCASE	
-lowerOK
-
-*--------
-
-*	lda	#0
-*	sta	deltaY
-*	
-*	jsr	introPIC	; la picture GR
-*	
-*	lda	#32
-*	sta	deltaY
-
-	@play	#zikINTRODUCTION
-	
-REPLAY	jsr	initALL
+PLAY	jsr	initALL
 	jsr	HGR
 
 	jsr	HOME	; clear text screen
@@ -753,7 +694,7 @@ tbl1800	da	:1800,:1900
 	bne	:1960
 
 	@print	#strVOUSLAVEZ
-	jmp	:1920
+	rts
 
 :1960	lda	#-1
 	sta	O,x
@@ -1077,7 +1018,7 @@ tbl4000	da	$bdbd,:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
 	rts
 	
 :4490	@print	#str4490
-	#print	#str4491
+	@print	#str4491
 	rts
 	
 :4500	@print	#str4500
@@ -1116,7 +1057,7 @@ tbl4000	da	$bdbd,:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
 	rts
 	
 :4610	@print	#str4610
-	#print	#str4615
+	@print	#str4615
 	rts
 
 :4620	@print	#str4620
@@ -1149,10 +1090,18 @@ tbl4000	da	$bdbd,:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
 :4700	@print	#str4700
 	rts
 
-:4710	@print	#str4710
+:4710	lda	SALLE
+	pha
+	@draw	#54
+	pla
+	sta	SALLE
 	rts
 
-:4720	@print	#str4720
+:4720	lda	SALLE
+	pha
+	@draw	#55
+	pla
+	sta	SALLE
 	rts
 
 :4730	@print	#str4730
@@ -1634,11 +1583,6 @@ initALL
 
 *---
 
-	lda	#<filleNUE	; remet l'image sur la fille nue
-	sta	ptrSALLEBA
-	lda	#>filleNUE
-	sta	ptrSALLEBA+1
-	
 	lda	#1
 	sta	SALLE
 
@@ -1681,8 +1625,7 @@ initALL
 	
 	jsr	setTEXTFULL
 	@print	#strPERDU
-	@play	#zikPERDU
-	@print	#strPERDU2
+*	@play	#zikPERDU
 
 :20050			; commun avec gagne
 ]lp	@print	#strREPLAY
@@ -1691,30 +1634,10 @@ initALL
 	beq	:20001
 	cmp	#chrOUI
 	bne	]lp
-	jmp	REPLAY
+	jmp	PLAY
 
-:20001
-	lda	sauveMONO
-	sta	MONOCOLOR
-	lda	sauveCYA
-	sta	CYAREG
+:20001	jmp	QUIT	; return to the IIgs
 
-	jsr	PRODOS	; exit
-	dfb	$65
-	da	proQUIT
-	brk	$bd	; on ne se refait pas ;-)
-
-*--- Data
-
-proQUIT	dfb	4
-	ds	1
-	ds	2
-	ds	1
-	ds	2
-
-sauveCYA	ds	1
-sauveMONO ds	1
-	
 *-----------------------------------
 * 32000 - GAGNE
 *-----------------------------------
@@ -1724,22 +1647,14 @@ sauveMONO ds	1
 	@wait	#400
 	jsr	setTEXTFULL
 	@print	#strGAGNE
-	@play	#zikINTRODUCTION
+*	@play	#zikINTRODUCTION
 	jmp	:20050
 
 *-----------------------------------
 * ORIC
 *-----------------------------------
 
-EXPLODE	ldx	#$25
-]lp	lda	TXTSET
-	lda	#$25
-	jsr	WAIT
-	lda	TXTCLR
-	lda	#$25
-	jsr	WAIT
-	dex
-	bpl	]lp
+EXPLODE	rts
 	rts
 
 *-----------------------------------
@@ -1750,30 +1665,19 @@ EXPLODE	ldx	#$25
 * setTEXTFULL
 *----------------------
 
-setTEXTFULL		; 40x24 text
-	sta	CLR80VID
-	jsr	INIT	; text screen
-	jsr	SETNORM	; set normal text mode
-	jsr	SETKBD	; reset input to keyboard
-	jmp	HOME	; home cursor and clear to end of page
+setTEXTFULL	rts	; 40x24 text
 
 *----------------------
 * setHGR
 *----------------------
 
-setHGR			; HGR
-	sta	TXTCLR
-	sta	MIXCLR
-	sta	TXTPAGE1
-	sta	HIRES	
-	rts
+setHGR	rts		; HGR
 
 *----------------------
 * switchCASE
 *----------------------
 
-switchCASE
-	lda	fgCASE
+switchCASE	lda	fgCASE
 	eor	#$80
 	sta	fgCASE
 	rts
@@ -1828,52 +1732,13 @@ switchENERGIE
 	sta	switchENERGIE+1
 	rts
 
-testENERGIE	tay
-	lda	switchENERGIE+1
-	beq	wedoENERGIE
-	tya
-	rts
-
-wedoENERGIE	dec	TEMPS+3
-	lda	TEMPS+3
-	bpl	printENERGIE
-	lda	#9
-	sta	TEMPS+3
-	dec	TEMPS+2
-	bpl	printENERGIE
-	lda	#9
-	sta	TEMPS+2
-	dec	TEMPS+1
-	bpl	printENERGIE
-	lda	#9
-	sta	TEMPS+1
-	dec	TEMPS
-	bpl	printENERGIE
-	jmp	:4370	; la fin !!!
-
-printENERGIE
-	lda	TEMPS
-	ora	#"0"
-	sta	strTEMPS
-	lda	TEMPS+1
-	ora	#"0"
-	sta	strTEMPS+1
-	lda	TEMPS+2
-	ora	#"0"
-	sta	strTEMPS+2
-	lda	TEMPS+3
-	ora	#"0"
-	sta	strTEMPS+3
-
-	tya	; restore Y
-	rts
+testENERGIE	rts
 
 *----------------------
 * switchVIDEO
 *----------------------
 
-switchVIDEO
-	lda	#0
+switchVIDEO	lda	#0
 	eor	#1
 	sta	switchVIDEO+1
 	bne	setMIXEDOFF
@@ -1883,8 +1748,6 @@ switchVIDEO
 *----------------------
 
 setMIXEDON		; HGR + 4 LINES OF TEXT
-	sta	TXTCLR
-	sta	MIXSET
 	rts
 
 *----------------------
@@ -1892,8 +1755,6 @@ setMIXEDON		; HGR + 4 LINES OF TEXT
 *----------------------
 
 setMIXEDOFF		; FULL HGR
-	sta	TXTSET
-	sta	MIXSET
 	rts
 
 *----------------------
@@ -1912,6 +1773,7 @@ pcs1	lda	$ffff
 	
 	tax		; from lower to upper
 	lda	tblKEY,x
+	and	#$ff
 	
 pcs2	jsr	COUT
 	
@@ -1930,8 +1792,7 @@ fgCASE	ds	1	; $00 lower OK, $80 otherwise
 * waitMS
 *----------------------
 
-switchWAIT
-	lda	waitMS+1
+switchWAIT	lda	waitMS+1
 	eor	#1
 	sta	waitMS+1
 	rts
@@ -1941,199 +1802,16 @@ waitMS	lda	#0	; skip if not zero
 	
 	sty	LINNUM
 doW1	ldy	LINNUM
-]lp	lda	#60	; 1/100me de seconde
-	jsr	WAIT
+doW2	lda	#60	; 1/100me de seconde
+]lp	ldal	VBL
+	bmi	]lp
+]lp	ldal	VBL
+	bpl	]lp
 	dey
-	bne	]lp
+	bne	doW2
 	dex
 	bpl	doW1
 waitMS9	rts
-
-*-----------------------------
-* MOTEUR
-*-----------------------------
-
-showPIC	pha
-
-	jsr	HGR
-	sta	MIXCLR
-
-	ldx	#>picFRAME
-	ldy	#<picFRAME
-	jsr	drawPICTURE
-
-	pla
-	asl
-	tax
-	lda	tblIMAGES,x
-	sta	LINNUM
-	lda	tblIMAGES+1,x
-	sta	LINNUM+1
-	ora	LINNUM
-	bne	showPIC1
-	sec
-	rts
-
-showPIC1	ldx	LINNUM+1
-	ldy	LINNUM
-
-*----------------------
-* drawPICTURE
-*----------------------
-
-drawPICTURE
-	sty	drawREAD+1
-	stx	drawREAD+2
-
-drawLOOP	jsr	drawREAD
-	cmp	#0
-	bne	drawPIC1
-	rts		; the end
-
-drawPIC1	pha
-	and	#%11_000000
-	lsr
-	lsr
-	lsr
-	lsr
-	lsr
-	lsr
-	sta	theINK	; c'est PEN mais bon
-
-	pla
-	lsr
-	bcs	doLINE
-	lsr
-	bcs	doPLOT
-
-* fill
-
-	jsr	drawREAD
-	jsr	drawREAD
-	jmp	drawLOOP
-
-*----------------------------------- PLOT
-
-doPLOT	jsr	drawREAD
-	sta	theX
-	jsr	drawREAD
-	sta	theY
-	
-	lda	#nbLINES
-	sec
-	sbc	theY
-	sta	theY
-	jmp	drawLOOP
-
-*----------------------------------- LINE ABS
-
-doLINE	jsr	drawREAD
-	sta	theX2
-
-	jsr	drawREAD
-	sta	theY2
-
-	lda	#nbLINES
-	sec
-	sbc	theY2
-	sta	theY2
-
-*---------- Check height
-
-	lda	theY
-	cmp	#maxY
-	bcc	doD1
-	lda	#maxY
-	sta	theY
-
-doD1	lda	theY2
-	cmp	#maxY
-	bcc	doD2
-	lda	#maxY
-	sta	theY2
-doD2
-	
-*---------- It is now time to draw as we have all variables
-
-*	ldy	theINK	; the ink color
-*	ldy	#0	; LOGO
-*	ldx	oric2hgr,y	; from the Oric to the Apple II
-	ldx	#7
-	jsr	HCOLOR+3	; to skip CHRGET 
-
-	ldx	theX	; HPLOT x,y
-	ldy	#0	; theX+1
-	lda	theY
-	sec
-	sbc	#deltaY	; -32 pour les images du jeu
-	jsr	HPLOT
-
-*	ldy	theY2
-	lda	theY2
-	sec
-	sbc	#deltaY
-	tay
-	lda	theX2	; TO x2,Y2
-	ldx	#0	; theX2+1
-	jsr	HILIN	; draw the line
-
-	lda	X0L	; save the updated coords
-	sta	theX
-*	lda	X0H
-*	sta	theX+1
-	lda	Y0
-	clc
-	adc	#deltaY
-	sta	theY
-	jmp	drawLOOP
-
-*-------- Read data
-	
-drawREAD	lda	$bdbd
-	inc	drawREAD+1
-	bne	drawREAD1
-	inc	drawREAD+2
-drawREAD1	rts
-	
-*----------------------
-* DonnŽes du moteur
-*----------------------
-
-picFRAME	hex	42
-	dfb	0,0
-	hex	41
-	dfb	0,149
-	hex	41
-	dfb	199,149
-	hex	41
-	dfb	199,0
-	hex	41
-	dfb	0,0
-	hex	00
-
-*---
-
-theX	dfb	140	; milieu de l'Žcran par dŽfaut
-theY	dfb	96
-theX2	ds	1
-theY2	ds	1
-theRADIUS	ds	1
-theFB	ds	1
-theINK	ds	1
-thePAPER	ds	1
-*deltaY	ds	1	; 0 or 32 - constante
-
-*	APPLE	ORIC
-* 0	black1	black
-* 1	green	red
-* 2	blue	green
-* 3	white1	yellow
-* 4	black2	blue
-* 5	-	magenta
-* 6	-	cyan
-* 7	white2	white
-
-*oric2hgr	hex	0705010602030400
 
 *-----------------------------------
 * rewriteSTRING (lower -> upper)
@@ -2176,130 +1854,6 @@ tblKEY
 	hex	D0,D1,D2,D3,D4,D5,D6,D7,D8,D9,DA,DB,DC,DD,DE,DF
 	hex	E0,C1,C2,C3,C4,C5,C6,C7,C8,C9,CA,CB,CC,CD,CE,CF
 	hex	D0,D1,D2,D3,D4,D5,D6,D7,D8,D9,DA,FB,FC,FD,FE,FF
-	
-*-----------------------------------
-* Electric Duet Player
-*-----------------------------------
-
-*-----------------------------------
-* PLAYMUSIC
-*-----------------------------------
-
-playMUSIC
-	sty	$1e
-	stx	$1f
-
-	LDA	#$01
-	STA	$09
-	STA	$1D
-	PHA
-	PHA
-	PHA
-	BNE	LA04D
-LA038	INY
-	LDA	($1E),Y
-	STA	$09
-	INY
-	LDA	($1E),Y
-	STA	$1D
-LA042	LDA	$1E
-	CLC	
-	ADC	#$03
-	STA	$1E
-	BCC	LA04D
-	INC	$1F
-LA04D	LDY	#$00
-	LDA	($1E),Y
-	CMP	#$01
-	BEQ	LA038
-	BCS	LA067
-	PLA
-	PLA
-	PLA
-LA05A	LDX	#$49
-	INY
-	LDA	($1E),Y
-	BNE	LA063
-	LDX	#$C9
-LA063	BIT	KBDSTROBE
-	RTS	
-
-LA067	STA	$08
-	JSR	LA05A
-	STX	LA0B6
-	STA	$06
-	LDX	$09
-LA073	LSR	
-	DEX	
-	BNE	LA073
-	STA	LA0AE+1
-	JSR	LA05A
-	STX	LA0EE
-	STA	$07
-	LDX	$1D
-LA084	LSR	
-	DEX	
-	BNE	LA084
-	STA	LA0E6+1
-*
-	PLA
-	TAY
-	PLA
-	TAX
-	PLA
-	BNE	LA098
-LA095	BIT	SPKR
-LA098	CMP	#$00
-	BMI	LA09F
-	NOP	
-	BPL	LA0A2
-LA09F	BIT	SPKR
-LA0A2	STA	$4E
-	BIT	KBD
-	BMI	LA063
-	DEY	
-	BNE	LA0AE
-	BEQ	LA0B4
-LA0AE	CPY	#$36
-	BEQ	LA0B6
-	BNE	LA0B8
-LA0B4	LDY	$06
-LA0B6	EOR	#$40
-LA0B8	BIT	$4E
-	BVC	LA0C3
-	BVS	LA0BE
-LA0BE	BPL	LA0C9
-	NOP	
-	BMI	LA0CC
-LA0C3	NOP	
-	BMI	LA0C9
-	NOP	
-	BPL	LA0CC
-LA0C9	CMP	SPKR
-LA0CC	DEC	$4F
-	BNE	LA0E1
-	DEC	$08
-	BNE	LA0E1
-	BVC	LA0D9
-	BIT	SPKR
-LA0D9	PHA
-	TXA
-	PHA
-	TYA
-	PHA
-	JMP	LA042
-
-LA0E1	DEX
-	BNE	LA0E6
-	BEQ	LA0EC
-LA0E6	CPX	#$0C
-	BEQ	LA0EE
-	BNE	LA0F0
-LA0EC	LDX	$07
-LA0EE	EOR	#$80
-LA0F0	BVS	LA095
-	NOP	
-	BVC	LA098
 
 *-----------------------------------
 * VARIABLES
@@ -2307,33 +1861,34 @@ LA0F0	BVS	LA095
 
 DEBUT_DATA
 
-A1	ds	1
-BREAK	ds	1
-E	ds	1
-F1	ds	1
-G	ds	1
-H	ds	1
-HH	ds	1
-L	ds	1
-LX	ds	1
-MO$1	ds	1	; mot 1
-MO$2	ds	1	; mot 2
-N	ds	1
-NL	ds	1
-OK	ds	1
-S	ds	1
-SALLE	ds	1
-T	ds	1
-W	ds	1
-Z	ds	1
-lenSTRING	ds	1
+A1	ds	2
+BREAK	ds	2
+E	ds	2
+F1	ds	2
+G	ds	2
+H	ds	2
+HH	ds	2
+L	ds	2
+LX	ds	2
+MO$1	ds	2	; mot 1
+MO$2	ds	2	; mot 2
+N	ds	2
+NL	ds	2
+OK	ds	2
+S	ds	2
+SALLE	ds	2
+T	ds	2
+W	ds	2
+Z	ds	2
+lenSTRING	ds	2
 TEMPS	ds	4	; le temps = 5000
+strTEMPS	ds	4+1
 
-C	ds	61+1
+C	ds	62+1
 E$	ds	32	; the longest string
-P	ds	61+1
-X$1	ds	4+1	; premier mot saisi
-X$2	ds	4+1	; second mot saisi
+P	ds	62+1
+X$1	ds	1+4	; premier mot saisi
+X$2	ds	1+4	; second mot saisi
 
 FIN_DATA
 
@@ -2341,19 +1896,3 @@ FIN_DATA
 
 tblD2H	dfb	0,10,20,30,40,50,60,70,80,90
 
-*-----------------------------------
-* LES AUTRES FICHIERS
-*-----------------------------------
-
-	put	fr.s
-	put	../common/images.s
-	put	../common/musiques.s
-	
-*--- It's the end
-
-tblIMAGES	da	L423B,L786F,L7974,L4F61,L4E95,L7CC8,L6BDC,L5EFA,L7DE2,L7F38
-	da	L62EF,L57EA,L5925,L63F6,L47C3,L5A21,L5021,L4DFF,L64EF,L4700
-	da	L5D77,L52CA,L4E41,L6AF2,L81EA,L827B,L61DF,L497F,L4C16,L4A8D
-	da	L4CEE,L5B40,L6FDD,L6F05,L65FF,L8088,L7A40,L774C,L7B63,L5CC6
-	da	L5BEE,L50F6,L6D58,L6C6E,L74D2,L70F6,L487A,L71E0,L4DAB,L55C8
-	da	L72CA,L6958,$0000,L5F6B,L60EB,L6812,L6E33,L8367

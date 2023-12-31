@@ -28,8 +28,7 @@
 	
 GSOS	=	$e100a8
 
-dpY	=	$70
-dpFROM	=	dpY+2
+dpFROM	=	$70
 dpTO	=	dpFROM+2
 
 refIsPointer =	$0
@@ -42,107 +41,13 @@ FALSE	=	0
 ptr012000	=	$012000
 ptrE12000	=	$e12000
 
+modeForeCopy =	$0004	; QDII Table 16-10
+
 mode320	=	$00
 mode640	=	$80
 
 maxX	=	320
 maxY	=	200
-
-*-----------------------------------
-* SOFTSWITCHES AND FRIENDS
-*-----------------------------------
-
-WNDTOP	=	$22	; top of text window 
-WNDBTM	=	$23	; bottom+1 of text window 
-CH	=	$24	; cursor horizontal position 
-CV	=	$25	; cursor vertical position 
-LINNUM	=	$50	; result from GETADR
-X0L	=	$e0	; X-coord
-X0H	=	$e1
-Y0	=	$e2	; Y-coord
-
-nbOaP	=	10	; on peut porter dix objets
-
-chrLA	=	$88
-chrRA	=	$95
-chrDEL	=	$ff
-chrRET	=	$8d
-chrSPC	=	$a0
-TEXTBUFFER = 	$200
-maxLEN	=	20
-
-chrOUI	=	"O"
-chrNON	=	"N"
-
-idxCASSE	=	200
-idxTIMER	=	201
-
-PRODOS	=	$bf00
-
-KBD	=	$c000
-CLR80VID	=	$c00c
-KBDSTROBE	=	$c010
-VBL	=	$c019
-MONOCOLOR	=	$c021
-VERTCNT	=	$c02e
-SPKR	=	$c030
-CYAREG	=	$C036
-TXTCLR	=	$c050
-TXTSET	=	$c051
-MIXCLR	=	$c052
-MIXSET	=	$c053
-TXTPAGE1	=	$c054
-TXTPAGE2	=	$c055
-LORES	=	$c056
-HIRES	=	$c057
-
-*--- The firmware routines
-
-HGR	=	$F3E2	; HGR
-HPLOT	=	$F457	; HPLOT
-HILIN	=	$F53A	; HPLOT TO
-HCOLOR	=	$F6E9	; HCOLOR= (call+3)
-INIT	=	$FB2F
-TABV	=	$FB5B
-HOME	=	$FC58
-WAIT	=	$FCA8
-RDKEY	=	$FD0C
-*GETLN1	=	$FD6F	; using mine now
-COUT	=	$FDED
-IDROUTINE	=	$FE1F
-SETNORM	=	$FE84
-SETKBD	=	$FE89
-
-*-----------------------------------
-* MACROS
-*-----------------------------------
-
-@draw	mac
-	lda	#]1
-	jsr	showPIC
-	eom
-
-@explode	mac
-	jsr	EXPLODE
-	eom
-
-@play	mac
-	ldx	#>]1
-	ldy	#<]1
-	jsr	playMUSIC
-	eom
-
-@print	mac
-	ldx	#>]1
-	ldy	#<]1
-	jsr	printCSTRING
-	eom
-
-@wait	mac
-	ldx	#>]1
-	ldy	#<]1
-	jsr	waitMS
-	eom
 
 *-----------------------------------
 * DU 16-BITS
@@ -167,6 +72,8 @@ ICI	phk
 	pha
 	_MMStartUp
 	pla
+	sta	appID
+	ora	#$0100
 	sta	myID
 
 	pha
@@ -189,6 +96,10 @@ ICI	phk
 	pla
 	pla
 
+*-----------------------------------
+* INITIALISATIONS DESKTOP
+*-----------------------------------
+
 	PushLong	#0
 	_GetPort
 	PullLong	mainPORT
@@ -207,33 +118,27 @@ ICI	phk
 	PushWord	#0
 	_ClearScreen
 
-*-----------------------------------
-* AFFICHE UNE IMAGE
-*-----------------------------------
-
-	lda	#12
-	sta	myINDEX
-	
-loop	lda	myINDEX
-	jsr	showIMAGE
-
-]lp	ldal	$bfff
-	bpl	]lp
-	stal	$c00f
-	
 	PushWord	#0
-	_ClearScreen
+	_GetMasterSCB
+	pla
+	bmi	okSHADOW	; shadowing is on if bit 15 is set
 
-	inc	myINDEX
-	lda	myINDEX
-	cmp	#14
-	bcc	loop
+	lda	#^ptrE12000	; shadowing is off, use slow RAM
+	sta	srcLocInfoPtr+4
 
+okSHADOW
+
+*-----------------------------------
+* IL FAUT JOUER MAINTENANT
+*-----------------------------------
+
+	jsr	PLAY
+	
 *-----------------------------------
 * AU REVOIR LE IIGS
 *-----------------------------------
 
-	_GrafOff	
+QUIT	_GrafOff	
 	
 	PushWord #refIsPointer
 	PushLong ssREC
@@ -242,7 +147,10 @@ loop	lda	myINDEX
 	PushWord myID
 	_DisposeAll
 
-	PushWord myID
+	PushWord appID
+	_DisposeAll
+
+	PushWord appID
 	_MMShutDown
 
 	_TLShutDown
@@ -288,10 +196,10 @@ whitePATTERN ds	32,$ff
 
 ssREC	ds	4
 
-toolTBL	dw	$0000
-	dw	$0000
-	dw	$0000
-	ADRL	$00000000
+toolTBL	dw	$0000	; flags
+	dw	$C000	; videoMode (shadowing + fast port)
+	dw	$0000	; resFileID
+	ADRL	$00000000	; dPageHandle
 	dw	$0010
 	dw	$0003	; Miscellaneous Tool
 	dw	$0300
@@ -334,6 +242,7 @@ proQUIT	dw	2	; pcount
 	
 *-----------------------------------
 
+appID	ds	2
 myID	ds	2
 myDP	ds	2
 
@@ -343,7 +252,9 @@ mainPORT	ds	4
 * CODE BASIC EN ASM :-)
 *-----------------------------------
 
+	put	leretour.s
 	put	engine.s
+	put	fr.s
 	put	../common/images.s
 	
 *--- It's the end

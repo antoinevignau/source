@@ -6,88 +6,242 @@
 *
 
 	mx	%00
+	lst	off
+
+*-----------------------------------
+* RECOPIE ACTION A$
+*-----------------------------------
+
+	mx	%11
+	
+checkACTION	lda	#<newA$	; POINTEUR
+	sta	dpFROM
+	lda	#>newA$
+	sta	dpFROM+1
+	
+L953B       LDY	#0
+            LDA	(dpFROM),Y
+            CMP	MO$1	; premier mot
+            BEQ	L9546
+            JMP	L95EF
+L9546       INY	
+            LDA	(dpFROM),Y
+            BEQ	L9552
+            CMP	MO$2	; second mot
+            BEQ	L9552
+            JMP	L95EF
+
+L9552       INY		; on a trouvé, on gère
+            LDA	(dpFROM),Y
+            INY	
+            TAX	
+            LDA	(dpFROM),Y
+            CPX	#$41	; A
+            BEQ	L958B
+            CPX	#$42	; B
+            BEQ	L9593
+            CPX	#$43	; C
+            BEQ	L95A3
+            CPX	#$44	; D
+            BEQ	L95B3
+            CPX	#$45	; E
+            BEQ	L95BE
+            CPX	#$46	; F
+            BEQ	L95C7
+            CPX	#$47	; G
+            BEQ	L95D0
+            CPX	#$48	; H
+            BEQ	L95DB
+            CPX	#$49	; I
+            BEQ	L95E7
+
+            LDX	#0	; sinon, on recopie until FF
+L957F       LDA	(dpFROM),Y
+            STA	E$+1,X
+            INY	
+            INX	
+            CMP	#-1
+            BNE	L957F
+	dex		; save len
+	stx	E$
+            rts
+
+*-- A - 
+
+L958B       CMP	SALLE
+            BNE	L95EF
+            JMP	L9552		; on boucle
+
+*-- B - 
+
+L9593       TAX
+            LDA	O,X	; les objets
+            CMP	#-1
+            BEQ	L9552
+            CMP	SALLE
+            BEQ	L9552
+            JMP	L95EF
+
+*-- C - 
+
+L95A3       TAX
+            LDA	O,X
+            CMP	#-1
+            BEQ	L95EF
+            CMP	SALLE
+            BEQ	L95EF
+            JMP	L9552
+
+*-- D - 
+
+L95B3       TAX
+            LDA	O,X
+            CMP	#-1
+            BEQ	L9552
+            JMP	L95EF
+
+*-- E - 
+
+L95BE       TAX
+            LDA	P,X
+            BNE	L9552
+            JMP	L95EF
+
+*-- F - 
+
+L95C7       TAX
+            LDA	P,X
+            BEQ	L9552
+            JMP	L95EF
+
+*-- G - 
+
+L95D0       TAX
+            LDA	C,X
+            CMP	#1
+            BNE	L95EF
+            JMP	L9552
+
+*-- H - RANDOM
+
+L95DB	jmp	L95EF	; LOGO - Use the QDII RND
+
+*	STA   $7C
+*           LDA   $0306
+*           CMP   $7C
+*           BCS   L95EF
+*           JMP   L9552
+
+*-- I - 
+
+L95E7       CMP	SALLE
+            BEQ	L95EF
+            JMP	L9552
+
+*--- next
+
+L95EF	inc	dpFROM
+	bne	L95F0
+	inc	dpFROM+1
+L95F0	lda	(dpFROM)	; until the end
+	cmp	#-1
+	bne	L95EF
+	
+	inc	dpFROM
+	bne	L95F1
+	inc	dpFROM+1
+L95F1	lda	(dpFROM)	; on a parcouru
+	beq	L9619	; le tableau, on sort
+	jmp	L953B
+L9619       sta	E$	; on n'a rien trouvé
+	rts
 
 *-----------------------------------
 * AFFICHE UNE IMAGE
 *-----------------------------------
 
-showIMAGE	asl
+	mx	%00
+	
+showPIC	rep	#$30
+	asl
 	tax
 	lda	tblIMAGES,x
 	bne	L92A5
+showPIC99	sep	#$30
 	rts
-	
+
+	mx	%00
+
 L92A5	sta	dpFROM
 
 L92A6	ldy	#0
 	lda	(dpFROM),y
 	and	#$ff
-	bne	L92A7
-	rts
+	beq	showPIC99
 
-L92A7	CMP	#'A'	; A
+L92A7	CMP	#'A'	; A $41 CURSET
             BNE	L92B1
             JMP	L9319
 
-L92B1	CMP	#'B'	; B
+L92B1	CMP	#'B'	; B $42 DRAW X,Y
             BNE	L92B8
             JMP	L933E
 
-L92B8	CMP	#'C'	; C
+L92B8	CMP	#'C'	; C $43 DRAW ^X,Y
             BNE	L92BF
             JMP	L9368
 
-L92BF	CMP	#'D'	; D
+L92BF	CMP	#'D'	; D $44 DRAW X,^Y
             BNE	L92C6
             JMP	L9398
 
-L92C6	CMP	#'E'	; E
+L92C6	CMP	#'E'	; E $45 DRAW ^X,^Y
             BNE	L92CD
             JMP	L93C8
 
-L92CD	CMP	#'F'	; F
+L92CD	CMP	#'F'	; F $46 MOVE X,Y
             BNE	L92D4
             JMP	L93FD
 
-L92D4	CMP	#'G'	; G
+L92D4	CMP	#'G'	; G $47 MOVE ^X,Y
             BNE	L92DB
             JMP	L9402
 
-L92DB	CMP	#'H'	; H
+L92DB	CMP	#'H'	; H $48 MOVE X,^Y
             BNE	L92E2
             JMP	L9407
 
-L92E2	CMP	#'I'	; I
+L92E2	CMP	#'I'	; I $49 MOVE ^X,^Y
             BNE	L92E9
             JMP	L940C
 
-L92E9	CMP	#'J'	; J
+L92E9	CMP	#'J'	; J $4A INK
             BNE	L92F0
             JMP	L9411
 
-L92F0	CMP	#'K'	; K
+L92F0	CMP	#'K'	; K $4B PAPER
             BNE	L92F7
             JMP	L9426
 
-L92F7	CMP	#'L'	; L
+L92F7	CMP	#'L'	; L $4C FILL
             BNE	L92FE
             JMP	L943B
 
-L92FE	CMP	#'M'	; M
+L92FE	CMP	#'M'	; M $4D MESSAGE
             BNE	L9305
             JMP	L9462
 
-L9305	CMP	#'N'	; N
+L9305	CMP	#'N'	; N $4E CIRCLE
             BNE	L930C
             JMP	L94BC
 
-L930C	CMP	#'O'	; O
+L930C	CMP	#'O'	; O $4F OUTPUT
             BNE	L9313
             JMP	L94D8
 
 L9313       brk	$bd
 
-*--- A - CURSET
+*--- A $41 - CURSET
 
 L9319       iny
             lda	(dpFROM),y	; X
@@ -102,7 +256,7 @@ L9319       iny
 	_MoveTo
 	jmp	skip2
 
-*--- B - DRAW X,Y
+*--- B $42 - DRAW X,Y
 
 L933E       lda	#$01
 L9340	sta	theFB
@@ -117,7 +271,7 @@ L9340	sta	theFB
             jsr	DRAW
             jmp	skip2
 
-*--- C - DRAW ^X,Y
+*--- C $43 - DRAW ^X,Y
 
 L9368       lda	#$01
 L936A       sta	theFB
@@ -134,7 +288,7 @@ L936A       sta	theFB
             jsr	DRAW
             jmp	skip2
 
-*--- D - DRAW X,^Y
+*--- D $44 - DRAW X,^Y
 
 L9398       lda	#$01
 L939A       sta	theFB
@@ -151,7 +305,7 @@ L939A       sta	theFB
             jsr	DRAW
             jmp	skip2
 
-*--- E - DRAW ^X,^Y
+*--- E $45 - DRAW ^X,^Y
 
 L93C8       lda	#$01
 L93CA       sta	theFB
@@ -170,27 +324,27 @@ L93CA       sta	theFB
             jsr	DRAW
             jmp	skip2
 
-*--- F - DRAW X,Y,3 = CURMOV
+*--- F $46 - DRAW X,Y,3 = CURMOV
 
 L93FD       lda	#$03
             jmp	L9340
 
-*--- G - DRAW ^X,Y,3 = CURMOV
+*--- G $47 - DRAW ^X,Y,3 = CURMOV
 
 L9402       lda	#$03
             jmp	L936A
 
-*--- H - DRAW X,^Y,3 = CURMOV
+*--- H $48 - DRAW X,^Y,3 = CURMOV
 
 L9407       lda	#$03
             jmp	L939A
 
-*--- I - DRAW ^X,^Y,3 = CURMOV
+*--- I $49 - DRAW ^X,^Y,3 = CURMOV
 
 L940C       lda	#$03
             jmp	L93CA
 
-*--- J - INK
+*--- J $4A - INK
 
 L9411	iny
             lda	(dpFROM),y	; X
@@ -199,7 +353,7 @@ L9411	iny
 	jsr	INK
 	jmp	skip1
 
-*--- K - PAPER
+*--- K $4B - PAPER
 
 L9426	iny
             lda	(dpFROM),y	; X
@@ -208,15 +362,19 @@ L9426	iny
 	jsr	PAPER
 	jmp	skip1
 
-*--- L - FILL
+*--- L $4C - FILL
 
 L943B	iny
             lda	(dpFROM),y	; X
 	and	#$ff
+	clc
+	lda	curX
 	sta	fillX
 	iny
 	lda	(dpFROM),y	; Y
 	and	#$ff
+	clc
+	lda	curY
 	sta	fillY
 	iny
 	lda	(dpFROM),y	; fill color
@@ -225,7 +383,7 @@ L943B	iny
 	jsr	FILL
 	jmp	skip3
 
-*--- M - CHAR_ALT
+*--- M $4D - CHAR_ALT
 
 L9462	iny
             lda	(dpFROM),y	; X
@@ -238,23 +396,33 @@ L9462	iny
 	adc	#8	; QDII: Y est le bas du texte, pas le haut
 	pha
 	_MoveTo
+	
+	PushWord	#0
+	_GetTextMode
+	
+	PushWord	#modeForeCopy
+	_SetTextMode
+
 	ldy	#3
-]lp	sty	dpY
-	lda	(dpFROM),y
+]lp	lda	(dpFROM),y
 	and	#$ff
 	beq	L94B9
+	phy
 	pha
 	_DrawChar
-	ldy	dpY
+	ply
 	iny
 	bne	]lp
-L94B9       tya
+L94B9	tya
 	clc
 	adc	dpFROM
 	sta	dpFROM
+
+	_SetTextMode
+
 	jmp	skip0
 
-*--- N - CIRCLE
+*--- N $4E - CIRCLE
 
 L94BC	iny
 	lda	(dpFROM),y	; radius
@@ -263,12 +431,15 @@ L94BC	iny
 	jsr	CIRCLE
 	jmp	skip1
 
-*--- O - OUT
+*--- O $4F - OUT
 
 L94D8	iny
 	lda	(dpFROM),y
 	and	#$ff
+	sep	#$30
 	rts
+
+	mx	%00
 
 *--- Next one, please...
 
@@ -334,7 +505,6 @@ INK	ldx	theINK
 
 	PushWord	#0
 	PushWord	#15
-	
 	asl
 	tax
 	lda	palette320,x
@@ -342,7 +512,6 @@ INK	ldx	theINK
 	_SetColorEntry
 	
 *	PushWord	#^blackPATTERN
-*	
 *	asl
 *	asl
 *	asl
@@ -379,9 +548,7 @@ PAPER	ldx	thePAPER
 
 resMode	=	%0001_0000000000_10
 
-FILL	rts
-
-	ldx	fillCOLOR	; sets the pattern to use
+FILL	ldx	fillCOLOR	; sets the pattern to use
 	lda	o2gsCOLOR,x
 	and	#$ff
 	asl
@@ -442,10 +609,6 @@ CIRCLE4	sta	circleRECT+4
 	rts
 
 *-----------------------------------
-
-CHAR_ALT	rts
-
-*-----------------------------------
 * DONNEES
 *-----------------------------------
 
@@ -477,9 +640,11 @@ fillCOLOR	ds	2
 
 srcLocInfoPtr
 	dw	mode320	; mode 320
-	adrl	ptrE12000
+	adrl	ptr012000
 	dw	160
-srcRect	dw	0,0,159,239
+	dw	0,0,199,239
+
+srcRect	dw	0,0,179,239
 
 patternPtr	adrl	blackPATTERN ; pointer to pattern
 

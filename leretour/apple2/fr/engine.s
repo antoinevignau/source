@@ -9,6 +9,50 @@
 	lst	off
 
 *-----------------------------------
+* LES PRIMITIVES 8-BITS EN 16-BITS
+*-----------------------------------
+
+HGR	rep	#$30
+	PushWord	#0
+	_ClearScreen
+	sep	#$30
+	rts
+
+*-----------------------------------
+
+RDKEY
+	PushWord	#0
+	PushWord	#%0000_0000_0000_1000
+	PushLong	#eventREC
+	_GetNextEvent
+	pla
+	beq	RDKEY
+
+	lda	eventREC
+	cmp	#
+         PEA   ^eventREC
+         PEA   eventREC
+         _GetNextEvent
+         PLA
+         TAY
+         beq   L011DBE
+         LDA   eventREC
+         CMP   #$0001	; mouseDownEvt
+         BEQ   L011DE4
+         BRL   L011EC4
+
+*--------
+
+eventREC
+oWHAT	DW	$0000	; what - event code
+oMESSAGE	ADRL	$00000000 	; message - event message
+	ADRL	$00000000	; when - tick count
+oWHERE
+oWHEREY	DW	$0000	; where - mouse location
+oWHEREX	DW	$0000
+oMODIFIERS	DW	$0000	; modifiers - modifiers
+
+*-----------------------------------
 * RECOPIE ACTION A$
 *-----------------------------------
 
@@ -163,6 +207,7 @@ L9619       sta	E$	; on n'a rien trouvé
 	mx	%00
 	
 showPIC	rep	#$30
+	and	#$00ff
 	asl
 	tax
 	lda	tblIMAGES,x
@@ -241,7 +286,7 @@ L930C	CMP	#'O'	; O $4F OUTPUT
 
 L9313       brk	$bd
 
-*--- A $41 - CURSET
+*--- A $41 CURSET
 
 L9319       iny
             lda	(dpFROM),y	; X
@@ -256,7 +301,7 @@ L9319       iny
 	_MoveTo
 	jmp	skip2
 
-*--- B $42 - DRAW X,Y
+*--- B $42 DRAW X,Y
 
 L933E       lda	#$01
 L9340	sta	theFB
@@ -271,7 +316,7 @@ L9340	sta	theFB
             jsr	DRAW
             jmp	skip2
 
-*--- C $43 - DRAW ^X,Y
+*--- C $43 DRAW ^X,Y
 
 L9368       lda	#$01
 L936A       sta	theFB
@@ -288,7 +333,7 @@ L936A       sta	theFB
             jsr	DRAW
             jmp	skip2
 
-*--- D $44 - DRAW X,^Y
+*--- D $44 DRAW X,^Y
 
 L9398       lda	#$01
 L939A       sta	theFB
@@ -305,7 +350,7 @@ L939A       sta	theFB
             jsr	DRAW
             jmp	skip2
 
-*--- E $45 - DRAW ^X,^Y
+*--- E $45 DRAW ^X,^Y
 
 L93C8       lda	#$01
 L93CA       sta	theFB
@@ -324,27 +369,27 @@ L93CA       sta	theFB
             jsr	DRAW
             jmp	skip2
 
-*--- F $46 - DRAW X,Y,3 = CURMOV
+*--- F $46 DRAW X,Y,3 = CURMOV
 
 L93FD       lda	#$03
             jmp	L9340
 
-*--- G $47 - DRAW ^X,Y,3 = CURMOV
+*--- G $47 DRAW ^X,Y,3 = CURMOV
 
 L9402       lda	#$03
             jmp	L936A
 
-*--- H $48 - DRAW X,^Y,3 = CURMOV
+*--- H $48 DRAW X,^Y,3 = CURMOV
 
 L9407       lda	#$03
             jmp	L939A
 
-*--- I $49 - DRAW ^X,^Y,3 = CURMOV
+*--- I $49 DRAW ^X,^Y,3 = CURMOV
 
 L940C       lda	#$03
             jmp	L93CA
 
-*--- J $4A - INK
+*--- J $4A INK
 
 L9411	iny
             lda	(dpFROM),y	; X
@@ -353,7 +398,7 @@ L9411	iny
 	jsr	INK
 	jmp	skip1
 
-*--- K $4B - PAPER
+*--- K $4B PAPER
 
 L9426	iny
             lda	(dpFROM),y	; X
@@ -362,7 +407,7 @@ L9426	iny
 	jsr	PAPER
 	jmp	skip1
 
-*--- L $4C - FILL
+*--- L $4C FILL
 
 L943B	iny
             lda	(dpFROM),y	; X
@@ -383,7 +428,7 @@ L943B	iny
 	jsr	FILL
 	jmp	skip3
 
-*--- M $4D - CHAR_ALT
+*--- M $4D CHAR_ALT
 
 L9462	iny
             lda	(dpFROM),y	; X
@@ -422,7 +467,7 @@ L94B9	tya
 
 	jmp	skip0
 
-*--- N $4E - CIRCLE
+*--- N $4E CIRCLE
 
 L94BC	iny
 	lda	(dpFROM),y	; radius
@@ -431,7 +476,7 @@ L94BC	iny
 	jsr	CIRCLE
 	jmp	skip1
 
-*--- O $4F - OUT
+*--- O $4F OUT
 
 L94D8	iny
 	lda	(dpFROM),y

@@ -17,6 +17,7 @@
 * MACROS
 *-----------------------------------
 
+	use	4/Event.Macs
 	use	4/Locator.Macs
 	use	4/Mem.Macs
 	use	4/Menu.Macs

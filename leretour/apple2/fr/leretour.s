@@ -43,15 +43,15 @@ VBL	=	$e0c019
 
 *--- The firmware routines
 
-HGR	=	$F3E2	; HGR
-HPLOT	=	$F457	; HPLOT
-HILIN	=	$F53A	; HPLOT TO
-HCOLOR	=	$F6E9	; HCOLOR= (call+3)
-INIT	=	$FB2F
-TABV	=	$FB5B
-HOME	=	$FC58
-WAIT	=	$FCA8
-RDKEY	=	$FD0C
+*HGR	=	$F3E2	; HGR
+*HPLOT	=	$F457	; HPLOT
+*HILIN	=	$F53A	; HPLOT TO
+*HCOLOR	=	$F6E9	; HCOLOR= (call+3)
+*INIT	=	$FB2F
+*TABV	=	$FB5B
+*HOME	=	$FC58
+*WAIT	=	$FCA8
+*RDKEY	=	$FD0C
 *GETLN1	=	$FD6F	; using mine now
 COUT	=	$FDED
 IDROUTINE	=	$FE1F
@@ -96,11 +96,11 @@ SETKBD	=	$FE89
 PLAY	jsr	initALL
 	jsr	HGR
 
-	jsr	HOME	; clear text screen
-	lda	#0	; move cursor to 0,20
-	sta	CH
-	lda	#20
-	jsr	TABV
+*	jsr	HOME	; clear text screen
+*	lda	#0	; move cursor to 0,20
+*	sta	CH
+*	lda	#20
+*	jsr	TABV
 
 *-----------------------------------
 * DU BASIC A L'ASSEMBLEUR (BEURK)

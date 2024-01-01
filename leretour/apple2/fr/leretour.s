@@ -12,47 +12,27 @@
 * SOFTSWITCHES AND FRIENDS
 *-----------------------------------
 
-WNDTOP	=	$22	; top of text window 
-WNDBTM	=	$23	; bottom+1 of text window 
 CH	=	$24	; cursor horizontal position 
 CV	=	$25	; cursor vertical position 
 LINNUM	=	$50	; result from GETADR
-X0L	=	$e0	; X-coord
-X0H	=	$e1
-Y0	=	$e2	; Y-coord
+
+textX	=	$30	; les X/Y pour afficher les 
+textY	=	textX+2	; caracteres QuickDraw II
 
 nbOaP	=	10	; on peut porter dix objets
 
-chrLA	=	$88
-chrRA	=	$95
-chrDEL	=	$ff
-chrRET	=	$8d
-chrSPC	=	$a0
-TEXTBUFFER = 	$200
-maxLEN	=	20
+chrLA	=	$08
+chrRA	=	$15
+chrDEL	=	$7f
+chrRET	=	$0d
+chrSPC	=	$20
+*TEXTBUFFER = 	$200
+maxLEN	=	40
 
-chrOUI	=	"O"
-chrNON	=	"N"
+chrOUI	=	'O'
+chrNON	=	'N'
 
-idxCASSE	=	200
-idxTIMER	=	201
-
-*--- The firmware routines
-
-*HGR	=	$F3E2	; HGR
-*HPLOT	=	$F457	; HPLOT
-*HILIN	=	$F53A	; HPLOT TO
-*HCOLOR	=	$F6E9	; HCOLOR= (call+3)
-*INIT	=	$FB2F
-*TABV	=	$FB5B
-*HOME	=	$FC58
-*WAIT	=	$FCA8
-*RDKEY	=	$FD0C
-*GETLN1	=	$FD6F	; using mine now
-COUT	=	$FDED
-IDROUTINE	=	$FE1F
-SETNORM	=	$FE84
-SETKBD	=	$FE89
+idxTIMER	=	200
 
 *-----------------------------------
 * MACROS
@@ -94,12 +74,26 @@ PLAY	sep	#$30
 	jsr	initALL
 	jsr	HGR
 
-*	jsr	HOME	; clear text screen
-*	lda	#0	; move cursor to 0,20
-*	sta	CH
-*	lda	#20
-*	jsr	TABV
+	jsr	HOME	; clear text screen
+	lda	#0	; move cursor to 0,20
+	sta	CH
+	lda	#16	; au lieu de 20 LoGo
+	jsr	TABV	; on a 20 lignes de 10 caractères de haut
 
+	jsr	:7110
+
+	@print	#strCOMMANDE	; commande avec energie
+	jsr	GETLN1
+
+	ldal	$c034
+	inc
+	stal	$c034
+	
+]lp	ldal	$c000
+	bpl	]lp
+	stal	$c010
+	jmp	QUIT
+	
 *-----------------------------------
 * DU BASIC A L'ASSEMBLEUR (BEURK)
 *-----------------------------------
@@ -273,13 +267,7 @@ PLAY	sep	#$30
 * 900 - CONTROLES APPLE II
 *-----------------------------------
 
-:900	cmp	#idxCASSE
-	bne	:910
-	
-	jsr	switchCASE
-	jmp	:100
-
-:910	cmp	#idxTIMER
+:900	cmp	#idxTIMER
 	bne	:915
 	
 	jsr	switchENERGIE
@@ -1581,7 +1569,7 @@ initALL
 
 *---
 
-	lda	#1
+	lda	#11
 	sta	SALLE
 
 	lda	#5	; 5000
@@ -1672,15 +1660,6 @@ setTEXTFULL	rts	; 40x24 text
 setHGR	rts		; HGR
 
 *----------------------
-* switchCASE
-*----------------------
-
-switchCASE	lda	fgCASE
-	eor	#$80
-	sta	fgCASE
-	rts
-
-*----------------------
 * GETLEN1 par LoGo
 *----------------------
 
@@ -1746,13 +1725,37 @@ switchVIDEO	lda	#0
 *----------------------
 
 setMIXEDON		; HGR + 4 LINES OF TEXT
-	rts
+*	rts
 
 *----------------------
 * setMIXEDOFF
 *----------------------
 
 setMIXEDOFF		; FULL HGR
+*	rts
+
+	lda	ptrSCREEN
+	sta	dpTO
+	lda	ptrSCREEN+2
+	sta	dpTO+2
+
+	lda	ptrTEXT
+	sta	dpTHREE
+	lda	ptrTEXT+2
+	sta	dpTHREE+2
+	
+	rep	#$30
+	ldy	#170*160-2
+]lp	lda	[dpTHREE],y
+	pha
+	lda	[dpTO],y
+	sta	[dpTHREE],y
+	pla
+	sta	[dpTO],y
+	dey
+	dey
+	bpl	]lp
+	sep	#$30
 	rts
 
 *----------------------
@@ -1766,13 +1769,6 @@ printCSTRING
 pcs1	lda	$ffff
 	beq	pcs3
 	
-	bit	fgCASE
-	bpl	pcs2
-	
-	tax		; from lower to upper
-	lda	tblKEY,x
-	and	#$ff
-	
 pcs2	jsr	COUT
 	
 	inc	pcs1+1
@@ -1781,10 +1777,6 @@ pcs2	jsr	COUT
 	bne	pcs1
 	
 pcs3	rts
-
-*--------
-
-fgCASE	ds	1	; $00 lower OK, $80 otherwise
 
 *----------------------
 * waitMS
@@ -1801,10 +1793,7 @@ waitMS	lda	#0	; skip if not zero
 	sty	LINNUM
 doW1	ldy	LINNUM
 doW2	lda	#60	; 1/100ème de seconde
-]lp	ldal	RDVBLBAR
-	bmi	]lp
-]lp	ldal	RDVBLBAR
-	bpl	]lp
+	jsr	WAIT
 	dey
 	bne	doW2
 	dex
@@ -1835,8 +1824,7 @@ translateKEY
 	lda	tblKEY,x
 	rts
 
-tblKEY
-	hex	00,01,02,03,04,05,06,07,08,09,0A,0B,0C,0D,0E,0F
+tblKEY	hex	00,01,02,03,04,05,06,07,08,09,0A,0B,0C,0D,0E,0F
 	hex	10,11,12,13,14,15,16,17,18,19,1A,1B,1C,1D,1E,1F
 	hex	20,21,22,23,24,25,26,27,28,29,2A,2B,2C,2D,2E,2F
 	hex	30,31,32,33,34,35,36,37,38,39,3A,3B,3C,3D,3E,3F
@@ -1853,40 +1841,44 @@ tblKEY
 	hex	E0,C1,C2,C3,C4,C5,C6,C7,C8,C9,CA,CB,CC,CD,CE,CF
 	hex	D0,D1,D2,D3,D4,D5,D6,D7,D8,D9,DA,FB,FC,FD,FE,FF
 
+TEXTBUFFER	ds	maxLEN+16	; le simulacre de la page 2
+
 *-----------------------------------
 * VARIABLES
 *-----------------------------------
 
 DEBUT_DATA
 
-A1	ds	2
-BREAK	ds	2
-E	ds	2
-F1	ds	2
-G	ds	2
-H	ds	2
-HH	ds	2
-L	ds	2
-LX	ds	2
-MO$1	ds	2	; mot 1
-MO$2	ds	2	; mot 2
-N	ds	2
-NL	ds	2
-OK	ds	2
-S	ds	2
-SALLE	ds	2
-T	ds	2
-W	ds	2
-Z	ds	2
-lenSTRING	ds	2
+A1	ds	1
+BREAK	ds	1
+E	ds	1
+F1	ds	1
+G	ds	1
+H	ds	1
+HH	ds	1
+L	ds	1
+LX	ds	1
+MO$1	ds	1	; mot 1
+MO$2	ds	1	; mot 2
+MO$3	ds	1	; mot 3
+N	ds	1
+NL	ds	1
+OK	ds	1
+S	ds	1
+SALLE	ds	1
+T	ds	1
+W	ds	1
+Z	ds	1
+lenSTRING	ds	1
 TEMPS	ds	4	; le temps = 5000
 strTEMPS	ds	4+1
 
-C	ds	62+1
+C	ds	48+1
 E$	ds	32	; the longest string
-P	ds	62+1
+P	ds	48+1
 X$1	ds	1+4	; premier mot saisi
-X$2	ds	1+4	; second mot saisi
+X$2	ds	1+4	; deuxième mot saisi
+X$3	ds	1+4	; troisième mot saisi
 
 FIN_DATA
 

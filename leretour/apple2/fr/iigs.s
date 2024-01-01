@@ -36,8 +36,9 @@ GSOS	=	$e100a8
 
 *-----------------------
 
-dpFROM	=	$70
-dpTO	=	dpFROM+2
+dpFROM	=	$80
+dpTO	=	dpFROM+4
+dpTHREE	=	dpTO+4
 
 *-----------------------
 
@@ -59,6 +60,9 @@ mode640	=	$80
 
 maxX	=	320
 maxY	=	200
+
+maxTCOLUMN	=	40
+maxTROW	=	19
 
 ptr012000	=	$012000
 ptrE12000	=	$e12000
@@ -82,9 +86,9 @@ ICI	phk
 	tdc
 	sta	myDP
 
-	lda	#ICI
+	lda	#TEXTBUFFER
 	stal	$300
-	lda	#^ICI
+	lda	#^TEXTBUFFER
 	stal	$302
 	
 	_TLStartUp
@@ -193,11 +197,16 @@ okTOOL	_HideMenuBar
 
 	lda	#^ptrE12000	; shadowing is off, use slow RAM
 	sta	srcLocInfoPtr+4
-
+	sta	ptrSCREEN+2
+	
 okSHADOW
 
 *-----------------------------------
 * IL FAUT JOUER MAINTENANT
+*-----------------------------------
+
+	jmp	PLAY
+
 *-----------------------------------
 
 	lda	#1
@@ -208,9 +217,6 @@ loop	rep	#$30
 	PushWord	#0
 	_ClearScreen
 	
-	PushLong	#frameRECT
-	_FrameRect
-
 	lda	myINDEX
 	jsr	showPIC
 	
@@ -259,8 +265,6 @@ meQUIT1	PushWord myID
 *-----------------------------------
 * UNE BELLE BIBLIOTHEQUE
 *-----------------------------------
-
-frameRECT	dw	0,0,167,239
 
 *-----------------------------------
 * RESERVE 64K
@@ -322,6 +326,8 @@ appID	ds	2
 myID	ds	2
 myDP	ds	2
 
+ptrSCREEN	adrl	ptr012000	; l'Žcran actif
+
 ptrTEXT	adrl	$00000000	; 32k bank 1
 ptrBACKGND	adrl	$00008000	; 32k
 ptrUNPACK	adrl	$00000000	; 32k bank 2
@@ -351,6 +357,8 @@ blackPATTERN ds	32,$00
 	ds	32,$dd
 	ds	32,$ee
 whitePATTERN ds	32,$ff
+
+curPATTERN	ds	32
 
 *----------------------------------- Error messages
 

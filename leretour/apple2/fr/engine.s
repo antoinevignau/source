@@ -20,16 +20,240 @@ HGR	rep	#$30
 
 *-----------------------------------
 
-RDKEY	rep	#$30
+RDKEY	phx
+	rep	#$30
 
 ]lp	pha
-	PushWord #%00000000_00001010
+	PushWord #%00000000_00001000
 	PushLong #taskREC
 	_GetNextEvent
 	pla
 	beq	]lp
 
+	lda	taskREC
+	cmp	#keyDownEvt
+	bne	]lp
+
+	lda	taskMESSAGE
+	
 	sep	#$30
+	plx
+	rts
+
+*-----------------------------------
+
+HOME	rep	#$30
+
+*----------- Efface le simulacre d'ecran texte
+
+	lda	ptrTEXT
+	sta	dpTO
+	lda	ptrTEXT+2
+	sta	dpTO+2
+	
+	ldy	#0
+	tya
+]lp	sta	[dpTO],y
+	iny
+	iny
+	bpl	]lp
+
+	lda	#bottomRECT
+	
+*----------- Efface les 3 lignes du bas
+	
+eraseLINES	sta	pointerRECT
+	
+	PushLong	#curPATTERN
+	_GetPenPat
+	
+	PushLong	#blackPATTERN
+	_SetPenPat
+
+	PushLong	pointerRECT
+	_PaintRect
+
+	PushLong	#curPATTERN
+	_SetPenPat
+	
+	sep	#$30
+	rts
+
+*-----------
+
+pointerRECT	adrl	bottomRECT
+
+bottomRECT	dw	170,0,199,319
+lastlineRECT dw	190,0,199,319
+
+*-----------------------------------
+
+	mx	%11
+	
+TABV	sta	CV	; 10 pixels de haut par ligne
+	rep	#$20
+	and	#$ff
+	asl
+	tax
+	lda	text2shr,x
+	sta	textY
+
+	lda	CH	; 8 pixels de large par caractere
+	and	#$ff
+	asl
+	asl
+	asl
+	sta	textX
+	
+	sep	#$20
+	rts
+
+*-----------------------------------
+
+	mx	%11
+	
+COUT	phx
+	phy
+	rep	#$30
+	and	#$ff
+	cmp	#chrRET	; next line, please
+	beq	COUT1
+	pha
+
+	PushWord	textX
+	PushWord	textY
+	_MoveTo
+	_DrawChar
+
+*----------- next X position
+
+	sep	#$20
+	inc	CH
+	rep	#$20
+	
+	lda	textX
+	clc
+	adc	#8
+	sta	textX
+	cmp	#maxX
+	bcs	COUT1
+	
+COUT99	sep	#$30
+	ply
+	plx
+	rts
+
+*----------- next Y position
+	
+	mx	%00
+
+COUT1	stz	textX	; a new line
+	sep	#$20
+	stz	CH
+
+	lda	CV	; où est-on ?
+	cmp	#maxTROW
+	bcs	COUT2	; on est deja sur la derniere ligne
+
+	inc	CV	; non, encore de la place
+	rep	#$20
+	lda	textY
+	clc
+	adc	#10
+	sta	textY
+	bra	COUT99	; on sort
+
+*----------- on doit bouger les écrans
+*
+* 1 - ptrTEXTE est décalé de 8 lignes vers le haut
+* 2 - on copie 10 lignes de l'écran vers ptrTEXT
+* 3 - on décale le texte d'une ligne vers le haut
+* 4 - on met un bloc noir
+
+	mx	%00
+
+COUT2	rep	#$20
+
+*----------- Etape 1
+
+	lda	ptrTEXT+2	; source commence ligne 10
+	pha
+	lda	ptrTEXT
+	clc
+	adc	#160*10
+	pha
+	PushLong	ptrTEXT	; destination en haut
+	PushLong	#160*170	; on copie 170 lignes
+	_BlockMove
+
+*----------- Etape 2
+
+	lda	ptrSCREEN+2	; source commence ligne 170
+	pha
+	lda	ptrSCREEN
+	clc
+	adc	#160*170
+	pha
+
+	lda	ptrTEXT+2	; destination commence ligne 160
+	pha
+	lda	ptrTEXT
+	clc
+	adc	#160*160
+	pha
+	PushLong	#160*10	; on copie 10 lignes
+	_BlockMove
+
+*----------- Etape 3
+
+	lda	ptrSCREEN+2	; source commence ligne 180
+	pha
+	lda	ptrSCREEN
+	clc
+	adc	#160*180
+	pha
+	
+	lda	ptrSCREEN+2	; destination commence ligne 170
+	pha
+	lda	ptrSCREEN
+	clc
+	adc	#160*170
+	pha
+	
+	PushLong	#160*20	; on copie 20 lignes
+	_BlockMove
+	
+*----------- Etape 3
+
+	lda	#lastlineRECT
+	jsr	eraseLINES	; en 8-bits à la sortie
+
+	mx	%11
+	
+	ply
+	plx
+	rts
+
+*----------- Exit
+
+text2shr	dw	10,20,30,40,50,60,70,80,90,100
+	dw	110,120,130,140,150,160,170,180,190,200
+	
+*text2shr	dw	8,16,24,32,40,48,56,64
+*	dw	72,80,88,96,104,112,120,128
+*	dw	136,144,152,160,168,176,184,192
+*	dw	200
+	
+*-----------------------------------
+
+	mx	%11
+	
+WAIT	pha
+]lp	ldal	RDVBLBAR
+	bmi	]lp
+]lp	ldal	RDVBLBAR
+	bpl	]lp
+	pla
 	rts
 
 *-----------------------------------

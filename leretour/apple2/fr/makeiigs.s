@@ -7,7 +7,7 @@
 
 * Expansion linker file
 
-         DSK   IIgs
+         DSK   iigs
          TYP   $B3
 
 * Assemble files

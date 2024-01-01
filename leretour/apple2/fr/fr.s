@@ -10,67 +10,67 @@
 *
 
 strVOUSDETENEZ
-	asc	8D"Vous avez en votre possession : "00
+	asc	0D'Vous avez en votre possession : '00
 
 strVOUSRIEN
-	asc	8D"Vous ne devez pas etre fatigue, vous"8D
-	asc	"n"A7"avez rien sur vous"00
+	asc	0D'Vous ne devez pas etre fatigue, vous'0D
+	asc	'n'27'avez rien sur vous'00
 
 strPOINT
-	asc	"."00
+	asc	'.'00
 	
 strVOUSLAVEZ
-	asc	8D"Vous avez deja cela... Etourdi !"8D00
+	asc	0D'Vous avez deja cela... Etourdi !'0D00
 
 strNOTOWNED
-	asc	8D"Je ne savais pas qu"A7"on pouvait poser"8D
-	asc	"ce qu"A7"on ne possede pas..."8D00
+	asc	0D'Je ne savais pas qu'27'on pouvait poser'0D
+	asc	'ce qu'27'on ne possede pas...'0D00
 
 strDACCORD
-	asc	"D"A7"accord"00
+	asc	'D'27'accord'00
 
 strILFAITNOIR
-	asc	"La salle n"A7"est pas eclairee."8D00
+	asc	'La salle n'27'est pas eclairee.'0D00
 
-strVOSYEUX	asc	"Vos yeux ne voient plus rien."8D00
+strVOSYEUX	asc	'Vos yeux ne voient plus rien.'0D00
 
-strNIVEAU	asc	"NIVEAU : 0"00
+strNIVEAU	asc	'NIVEAU : 0'00
 
-strILYA	asc	8D"Il y a aussi :"00
-strCOMMA	asc	","00
-strSPACE	asc	8D" "00
-strRETURN	asc	8D00
+strILYA	asc	0D'Il y a aussi :'00
+strCOMMA	asc	','00
+strSPACE	asc	0D' '00
+strRETURN	asc	0D00
 
-strCOMMANDE	asc	8D"Ordre ? "00
+strCOMMANDE	asc	0D'Ordre ? '00
 
 strJENECOMPRENDS
-	asc	8D"Je ne comprends pas"00
+	asc	0D'Je ne comprends pas'00
 	
 strIMPOSSIBLE
-	asc	8D"Impossible "00
+	asc	0D'Impossible '00
 strCECHEMIN
-	asc	"de prendre ce chemin"00
+	asc	'de prendre ce chemin'00
 strEXCLAM
-	asc	" !"8D00
+	asc	' !'0D00
 
-strREPLAY	asc	8D"Voulez-vous rejouer ? "00
+strREPLAY	asc	0D'Voulez-vous rejouer ? '00
 
 strPERDU
 
-strGAGNE	asc	"   D"A7"accord,"8D
-	asc	"vous m"A7"avez battu, mais c"A7"est un coup"8D
-	asc	"de chance, et la prochaine fois ma"8D
-	asc	"vengeance sera terrible."8D
-	asc	"Prenez peur, car le jour ou je serai"8D
-	asc	"a nouveau la, ma puissance n"A7"aura plus"8D
-	asc	"de limites, alors l"A7"heure de la souf-"8D
-	asc	"-france aura sonne..."8D
-	asc	"                     Dr GENIUS."00
+strGAGNE	asc	'   D'27'accord,'0D
+	asc	'vous m'27'avez battu, mais c'27'est un coup'0D
+	asc	'de chance, et la prochaine fois ma'0D
+	asc	'vengeance sera terrible.'0D
+	asc	'Prenez peur, car le jour ou je serai'0D
+	asc	'a nouveau la, ma puissance n'27'aura plus'0D
+	asc	'de limites, alors l'27'heure de la souf-'0D
+	asc	'-france aura sonne...'0D
+	asc	'                     Dr GENIUS.'00
 
-strINTRO	asc	"     LE RETOUR DU Dr GENIUS"8D
-	asc	"     Vous avez 20 minutes et"8D
-	asc	"    400 unites de force pour"8D
-	asc	"     remplir votre mission..."00
+strINTRO	asc	'     LE RETOUR DU Dr GENIUS'0D
+	asc	'     Vous avez 20 minutes et'0D
+	asc	'    400 unites de force pour'0D
+	asc	'     remplir votre mission...'00
 
 *-----------------------------------
 * LES DONNEES
@@ -329,7 +329,7 @@ A$47	str	"D14.D12N."
 A$48	str	"D14.D12N."
 A$49	str	"A20.D13N."
 A$50	str	"B11.D14N."
-A$51	str	"A15.E08D16K."
+A$51	str	"A15.E00D16K."
 A$52	str	"C07.D17K."
 A$53	str	".D18N."
 A$54	str	"D08.D19N."
@@ -513,25 +513,25 @@ tblO$	da	$bdbd
 	da	O$1,O$2,O$3,O$4,O$5,O$6,O$7,O$8,O$9,O$10
 	da	O$11,O$12,O$13,O$14,O$15,O$16,O$17,O$18,O$19
 	
-O$1	asc	"Un pistolet laser"00
-O$2	asc	"Des gants ensanglantes"00
-O$3	asc	"Une bombe a retardement"00
-O$4	asc	"Un tube"00
-O$5	asc	"Une glaciere"00
-O$6	asc	"Une boite vide"00
-O$7	asc	"Une boite pleine d"A7"eau"00
-O$8	asc	"Un vaporisateur"00
-O$9	asc	"Un magnetophone"00
-O$10	asc	"Un compteur Geiger"00
-O$11	asc	"Un ventilateur"00
-O$12	asc	"Un casque"00
-O$13	asc	"Un casque enfile"00
-O$14	asc	"Des echasses"00
-O$15	asc	"Des containers"00
-O$16	asc	"Une radiocommande"00
-O$17	asc	"Des lunettes de soleil"00
-O$18	asc	"Une tronconneuse"00
-O$19	asc	"La glaciere avec le tube a l"A7"interieur"00
+O$1	asc	'Un pistolet laser'00
+O$2	asc	'Des gants ensanglantes'00
+O$3	asc	'Une bombe a retardement'00
+O$4	asc	'Un tube'00
+O$5	asc	'Une glaciere'00
+O$6	asc	'Une boite vide'00
+O$7	asc	'Une boite pleine d'27'eau'00
+O$8	asc	'Un vaporisateur'00
+O$9	asc	'Un magnetophone'00
+O$10	asc	'Un compteur Geiger'00
+O$11	asc	'Un ventilateur'00
+O$12	asc	'Un casque'00
+O$13	asc	'Un casque enfile'00
+O$14	asc	'Des echasses'00
+O$15	asc	'Des containers'00
+O$16	asc	'Une radiocommande'00
+O$17	asc	'Des lunettes de soleil'00
+O$18	asc	'Une tronconneuse'00
+O$19	asc	'La glaciere avec le tube a l'27'interieur'00
 
 *
 * Les directions
@@ -606,7 +606,7 @@ M$53	dfb	2,29,0
 * on fera index-1 b/c 8-bits
 *
 
-V	=	139+2
+V	=	139+1
 
 tblVL$	dfb	$bd
 	dfb	<V$1,<V$2,<V$3,<V$4,<V$5,<V$6,<V$7,<V$8,<V$9,<V$10
@@ -623,7 +623,7 @@ tblVL$	dfb	$bd
 	dfb	<V$111,<V$112,<V$113,<V$114,<V$115,<V$116,<V$117,<V$118,<V$119,<V$120
 	dfb	<V$121,<V$122,<V$123,<V$124,<V$125,<V$126,<V$127,<V$128,<V$129,<V$130
 	dfb	<V$131,<V$132,<V$133,<V$134,<V$135,<V$136,<V$137,<V$138,<V$139
-	dfb	<V$200,<V$201
+	dfb	<V$200
 	
 tblVH$	dfb	$bd
 	dfb	>V$1,>V$2,>V$3,>V$4,>V$5,>V$6,>V$7,>V$8,>V$9,>V$10
@@ -640,7 +640,7 @@ tblVH$	dfb	$bd
 	dfb	>V$111,>V$112,>V$113,>V$114,>V$115,>V$116,>V$117,>V$118,>V$119,>V$120
 	dfb	<V$121,<V$122,<V$123,<V$124,<V$125,<V$126,<V$127,<V$128,<V$129,<V$130
 	dfb	>V$131,>V$132,>V$133,>V$134,>V$135,>V$136,>V$137,>V$138,>V$139
-	dfb	>V$200,>V$201
+	dfb	>V$200
 	
 tblV	dfb	$bd
 	dfb	01,01,02,02,03,03,04,04,05,05
@@ -657,150 +657,149 @@ tblV	dfb	$bd
 	dfb	75,76,77,77,78,78,79,80,80,80
 	dfb	81,81,82,83,83,84,84,84,85,85
 	dfb	85,86,87,87,88,88,89,89,00
-	dfb	200,201
+	dfb	200
 	
-V$1	str	"N"
-V$2	str	"NORD"
-V$3	str	"E"
-V$4	str	"EST "
-V$5	str	"S"
-V$6	str	"SUD "
-V$7	str	"O"
-V$8	str	"OUES"
-V$9	str	"G"
-V$10	str	"GRIM"
-V$11	str	"M"
-V$12	str	"MONT"
-V$13	str	"D"
-V$14	str	"DESC"
-V$15	str	"PREN"
-V$16	str	"SAIS"
-V$17	str	"RAMA"
-V$18	str	"POSE"
-V$19	str	"SAUT"
-V$20	str	"ENJA"
-V$21	str	"TELE"
-V$22	str	"TV"
-V$23	str	"GLAC"
-V$24	str	"OUVR"
-V$25	str	"RADI"
-V$26	str	"FLAC"
-V$27	str	"TUBE"
-V$28	str	"NITR"
-V$29	str	"BOMB"
-V$30	str	"LASE"
-V$31	str	"PIST"
-V$32	str	"APPU"
-V$33	str	"ENFO"
-V$34	str	"ROUG"
-V$35	str	"BLEU"
-V$36	str	"JAUN"
-V$37	str	"BOUT"
-V$38	str	"APPR"
-V$39	str	"EXAM"
-V$40	str	"REGA"
-V$41	str	"BIBL"
-V$42	str	"LIVR"
-V$43	str	"LIS"
-V$44	str	"MATH"
-V$45	str	"DALL"
-V$46	str	"ARLE"
-V$47	str	"MEMO"
-V$48	str	"BOIT"
-V$49	str	"REMP"
-V$50	str	"EAU"
-V$51	str	"H2O"
-V$52	str	"RETO"
-V$53	str	"ENTR"
-V$54	str	"ABOR"
-V$55	str	"VAIS"
-V$56	str	"SOUC"
-V$57	str	"ASTR"
-V$58	str	"SALL"
-V$59	str	"PIEC"
-V$60	str	"LIEU"
-V$61	str	"BOIS"
-V$62	str	"GANT"
-V$63	str	"VAPO"
-V$64	str	"MAGN"
-V$65	str	"LECT"
-V$66	str	"CASS"
-V$67	str	"CASQ"
-V$68	str	"ECHA"
-V$69	str	"CONT"
-V$70	str	"LUNE"
-V$71	str	"TRON"
-V$72	str	"ENFI"
-V$73	str	"PASS"
-V$74	str	"METS"
-V$75	str	"ENLE"
-V$76	str	"DEPO"
-V$77	str	"ENCL"
-V$78	str	"DECL"
-V$79	str	"ACTI"
-V$80	str	"VENT"
-V$81	str	"GEIG"
-V$82	str	"COMP"
-V$83	str	"REFL"
-V$84	str	"PENS"
-V$85	str	"RIEN"
-V$86	str	"ATTE"
-V$87	str	"DORS"
-V$88	str	"AIDE"
-V$89	str	"SECO"
-V$90	str	"CONS"
-V$91	str	"DEMA"
-V$92	str	"ECOU"
-V$93	str	"CHRO"
-V$94	str	"TEMP"
-V$95	str	"QUIT"
-V$96	str	"ABAN"
-V$97	str	"SUIC"
-V$98	str	"MANU"
-V$99	str	"AUTO"
-V$100	str	"FERM"
-V$101	str	"ROBI"
-V$102	str	"RETI"
-V$103	str	"ARRE"
-V$104	str	"RESP"
-V$105	str	"SOUF"
-V$106	str	"ALLU"
-V$107	str	"TABL"
-V$108	str	"REFR"
-V$109	str	"FRIG"
-V$110	str	"ORDI"
-V$111	str	"ESSA"
-V$112	str	"FLAQ"
-V$113	str	"PORT"
-V$114	str	"SAS"
-V$115	str	"LIST"
-V$116	str	"INVE"
-V$117	str	"ESCA"
-V$118	str	"VIDE"
-V$119	str	"VERS"
-V$120	str	"RENV"
-V$121	str	"FORC"
-V$122	str	"ENER"
-V$123	str	"TOUR"
-V$124	str	"PAGE"
-V$125	str	"FEUI"
-V$126	str	"SAVE"
-V$127	str	"SAUV"
-V$128	str	"CSAV"
-V$129	str	"LOAD"
-V$130	str	"CLOA"
-V$131	str	"ENRE"
-V$132	str	"ETEI"
-V$133	str	"RETA"
-V$134	str	"CORR"
-V$135	str	"DIRE"
-V$136	str	"TRAJ"
-V$137	str	"TOUT"
-V$138	str	"TOTA"
-V$139	str	"    "
+V$1	str	'N'
+V$2	str	'NORD'
+V$3	str	'E'
+V$4	str	'EST'
+V$5	str	'S'
+V$6	str	'SUD'
+V$7	str	'O'
+V$8	str	'OUES'
+V$9	str	'G'
+V$10	str	'GRIM'
+V$11	str	'M'
+V$12	str	'MONT'
+V$13	str	'D'
+V$14	str	'DESC'
+V$15	str	'PREN'
+V$16	str	'SAIS'
+V$17	str	'RAMA'
+V$18	str	'POSE'
+V$19	str	'SAUT'
+V$20	str	'ENJA'
+V$21	str	'TELE'
+V$22	str	'TV'
+V$23	str	'GLAC'
+V$24	str	'OUVR'
+V$25	str	'RADI'
+V$26	str	'FLAC'
+V$27	str	'TUBE'
+V$28	str	'NITR'
+V$29	str	'BOMB'
+V$30	str	'LASE'
+V$31	str	'PIST'
+V$32	str	'APPU'
+V$33	str	'ENFO'
+V$34	str	'ROUG'
+V$35	str	'BLEU'
+V$36	str	'JAUN'
+V$37	str	'BOUT'
+V$38	str	'APPR'
+V$39	str	'EXAM'
+V$40	str	'REGA'
+V$41	str	'BIBL'
+V$42	str	'LIVR'
+V$43	str	'LIS'
+V$44	str	'MATH'
+V$45	str	'DALL'
+V$46	str	'ARLE'
+V$47	str	'MEMO'
+V$48	str	'BOIT'
+V$49	str	'REMP'
+V$50	str	'EAU'
+V$51	str	'H2O'
+V$52	str	'RETO'
+V$53	str	'ENTR'
+V$54	str	'ABOR'
+V$55	str	'VAIS'
+V$56	str	'SOUC'
+V$57	str	'ASTR'
+V$58	str	'SALL'
+V$59	str	'PIEC'
+V$60	str	'LIEU'
+V$61	str	'BOIS'
+V$62	str	'GANT'
+V$63	str	'VAPO'
+V$64	str	'MAGN'
+V$65	str	'LECT'
+V$66	str	'CASS'
+V$67	str	'CASQ'
+V$68	str	'ECHA'
+V$69	str	'CONT'
+V$70	str	'LUNE'
+V$71	str	'TRON'
+V$72	str	'ENFI'
+V$73	str	'PASS'
+V$74	str	'METS'
+V$75	str	'ENLE'
+V$76	str	'DEPO'
+V$77	str	'ENCL'
+V$78	str	'DECL'
+V$79	str	'ACTI'
+V$80	str	'VENT'
+V$81	str	'GEIG'
+V$82	str	'COMP'
+V$83	str	'REFL'
+V$84	str	'PENS'
+V$85	str	'RIEN'
+V$86	str	'ATTE'
+V$87	str	'DORS'
+V$88	str	'AIDE'
+V$89	str	'SECO'
+V$90	str	'CONS'
+V$91	str	'DEMA'
+V$92	str	'ECOU'
+V$93	str	'CHRO'
+V$94	str	'TEMP'
+V$95	str	'QUIT'
+V$96	str	'ABAN'
+V$97	str	'SUIC'
+V$98	str	'MANU'
+V$99	str	'AUTO'
+V$100	str	'FERM'
+V$101	str	'ROBI'
+V$102	str	'RETI'
+V$103	str	'ARRE'
+V$104	str	'RESP'
+V$105	str	'SOUF'
+V$106	str	'ALLU'
+V$107	str	'TABL'
+V$108	str	'REFR'
+V$109	str	'FRIG'
+V$110	str	'ORDI'
+V$111	str	'ESSA'
+V$112	str	'FLAQ'
+V$113	str	'PORT'
+V$114	str	'SAS'
+V$115	str	'LIST'
+V$116	str	'INVE'
+V$117	str	'ESCA'
+V$118	str	'VIDE'
+V$119	str	'VERS'
+V$120	str	'RENV'
+V$121	str	'FORC'
+V$122	str	'ENER'
+V$123	str	'TOUR'
+V$124	str	'PAGE'
+V$125	str	'FEUI'
+V$126	str	'SAVE'
+V$127	str	'SAUV'
+V$128	str	'CSAV'
+V$129	str	'LOAD'
+V$130	str	'CLOA'
+V$131	str	'ENRE'
+V$132	str	'ETEI'
+V$133	str	'RETA'
+V$134	str	'CORR'
+V$135	str	'DIRE'
+V$136	str	'TRAJ'
+V$137	str	'TOUT'
+V$138	str	'TOTA'
+V$139	str	'    '
 
-V$200	str	"CASE"
-V$201	str	"TIME"
+V$200	str	'TIME'
 
 *
 * Les lieux (str8xxx)
@@ -810,189 +809,189 @@ V$201	str	"TIME"
 *		"0123456789012345678901234567890123456789"
 *		"----------------------------------------"
 
-str8010	asc	""00
-str8020	asc	""00
-str8030	asc	""00
-str8040	asc	""00
-str8050	asc	""00
-str8060	asc	""00
-str8070	asc	""00
-str8080	asc	""00
-str8090	asc	""00
-str8100	asc	""00
-str8110	asc	""00
-str8120	asc	""00
-str8130	asc	""00
-str8140	asc	""00
-str8150	asc	""00
-str8160	asc	""00
-str8170	asc	""00
-str8180	asc	""00
-str8190	asc	""00
-str8200	asc	""00
-str8210	asc	""00
-str8220	asc	""00
-str8230	asc	""00
-str8240	asc	""00
-str8250	asc	""00
-str8260	asc	""00
-str8270	asc	""00
-str8280	asc	""00
-str8290	asc	""00
-str8300	asc	""00
-str8310	asc	""00
-str8320	asc	""00
-str8330	asc	""00
-str8340	asc	""00
-str8350	asc	""00
-str8360	asc	""00
-str8370	asc	""00
-str8380	asc	""00
-str8390	asc	""00
-str8400	asc	""00
-str8410	asc	""00
-str8420	asc	""00
-str8430	asc	""00
-str8440	asc	""00
-str8450	asc	""00
-str8460	asc	""00
-str8470	asc	""00
-str8480	asc	""00
-str8490	asc	""00
-str8500	asc	""00
-str8510	asc	""00
-str8520	asc	""00
-str8530	asc	""00
-str8540	asc	""00
-str8550	asc	""00
-str8560	asc	""00
-str8570	asc	""00
-str8580	asc	""00
-str8590	asc	""00
-str8600	asc	""00
+str8010	asc	'Image 1'00
+str8020	asc	'Image 2'00
+str8030	asc	'Image 3'00
+str8040	asc	'Image 4'00
+str8050	asc	'Image 5'00
+str8060	asc	'Image 6'00
+str8070	asc	'Image 7'00
+str8080	asc	'Image 8'00
+str8090	asc	'Image 9'00
+str8100	asc	'Image 10'00
+str8110	asc	'Image 11'00
+str8120	asc	'Image 12'00
+str8130	asc	'Image 13'00
+str8140	asc	''00
+str8150	asc	''00
+str8160	asc	''00
+str8170	asc	''00
+str8180	asc	''00
+str8190	asc	''00
+str8200	asc	''00
+str8210	asc	''00
+str8220	asc	''00
+str8230	asc	''00
+str8240	asc	''00
+str8250	asc	''00
+str8260	asc	''00
+str8270	asc	''00
+str8280	asc	''00
+str8290	asc	''00
+str8300	asc	''00
+str8310	asc	''00
+str8320	asc	''00
+str8330	asc	''00
+str8340	asc	''00
+str8350	asc	''00
+str8360	asc	''00
+str8370	asc	''00
+str8380	asc	''00
+str8390	asc	''00
+str8400	asc	''00
+str8410	asc	''00
+str8420	asc	''00
+str8430	asc	''00
+str8440	asc	''00
+str8450	asc	''00
+str8460	asc	''00
+str8470	asc	''00
+str8480	asc	''00
+str8490	asc	''00
+str8500	asc	''00
+str8510	asc	''00
+str8520	asc	''00
+str8530	asc	''00
+str8540	asc	''00
+str8550	asc	''00
+str8560	asc	''00
+str8570	asc	''00
+str8580	asc	''00
+str8590	asc	''00
+str8600	asc	''00
 
 *
 * Les reponses (str7xxx)
 *
 
-*		"0         1         2         3         "
-*		"0123456789012345678901234567890123456789"
-*		"----------------------------------------"
+*		'0         1         2         3         '
+*		'0123456789012345678901234567890123456789'
+*		'----------------------------------------'
 
-str4010	asc	"Une boule d"A7"acier tombee du plafond vient de s"A7"ecraser sur votre casque."00
-str4020	asc	"Une boule d"A7"acier vient de tomber du plafond, vous avez le crane defonce..."00
-str4030	asc	"Vous venez de tomber dans une flaque d"A7"acide,ca crepite..."00
-str4040	asc	"Vous venez de rentrer dans le reacteur atomique du vaisseau..!"00
-str4050	asc	"La porte ne veut pas s"A7"ouvrir"00
-str4060	asc	"Un peu de memoire...comment etes-vous entre ?"00
-str4070	asc	"Je ne vous savais pas assez muscle pour soulever une tonne."00
-str4080	asc	"Vous avez raison, la vue c"A7"est la vie!"00
-str4090	asc	"Les gants etaient radioactifs, vous perdez la vue."00
-str4100	asc	"Vous l"A7"avez deja sur vous."00
-str4110	asc	"Impossible, je ne vois pas ceci ici."00
-str4120	asc	"Vous vous arrachez la tete en tombant des echasses."00
-str4130	asc	"Des monstres sortis des containers vous devorent tout cru!"00
-str4140	asc	"L"A7"air frais vous fait du bien. Dommage que l"A7"helice vous ait coupe la tete."00
-str4150	asc	"Qu"A7"est ce que vous voulez boire ???"00
-str4160	asc	"Ah oui...l"A7"eau est bonne."00
-str4170	asc	"Il n"A7"y a pas d"A7"eau ici."00
-str4180	asc	"L"A7"eau etait contaminee par les boites radioactives."00
-str4190	asc	"Vous retrecissez..petit..petit..et une araignee vous mange!"00
-str4200	asc	"Ca coupe une tronconneuse, comme le prouve votre tete au sol."00
-str4210	asc	"Vous glissez et tombez dans la flaque. L"A7"acide crepite."00
-str4220	asc	"Il n"A7"y a pas ici de porte verrouillee";
-str4230	asc	"En secouant le tube pour l"A7"ouvrir, la nitroglycerine a explose."00
-str4240	asc	"Pourquoi ouvrir un robinet qui ne ferme pas!"00
-str4250	asc	"Le robinet ne se ferme pas."00
-str4260	asc	""00
-str4270	asc	"La bibliotheque n"A7"a pas de porte..."00
-str4280	asc	"Il n"A7"y a rien de mieux sur les autres pages."00
-str4290	asc	"...c"A7"est toi J.R qui a pris ma femme et mon petrole, tu es infame."00
-str4300	asc	"Collection Arlepin, tout un reve d"A7"evasion."00
-str4310	asc	"...et c"A7"est moi Genius le grand qui crea un superbe manoir..."00
-str4320	asc	"1031141221242713182310291430271214232927102110272718311427103023141427142324303114212114"
-str4321	asc	" <tapez une touche> "00
-str4330	asc	"Vous l"A7"avez deja fait."00
-str4340	asc	"Le laser vient d"A7"exploser."00
-str4350	asc	"Il ne se passe rien."00
-str4360	asc	"Le sas s"A7"ouvre, vous passez dans la salle a cote."00
-str4370	asc	"Cela agit sur un contacteur a infrarouge qui commande l"A7"eclairage."00
-str4380	asc	"Allons enfants de la patrie..."00
-str4390	asc	"Vous entendez : "A7"Le laser ouvrira la porte"A7""00
-str4400	asc	"Les lunettes sont trop fortes, vous voyez trouble."00
-str4410	asc	"La salle est radioactive."00
-str4420	asc	"Vous avez quelque chose pour ?"00
-str4430	asc	"C"A7"est votre probleme, mais le temps passe."00
-str4440	asc	"Avez-vous si sommeil que ca ?"00
-str4450	asc	"Et puis quoi encore !"00
-str4460	asc	"Faites un plan..."00
-str4470	asc	"Vous entendez le ronronnement des moteurs."00
-str4480	asc	"J"A7"etais sur que vous etiez un lache."00
-str4490	asc	"Vous passez la tete a travers un sas,"00
-str4491	asc	"et appuyez sur le bouton de fermeture"00
-str4500	asc	"Quel bouton ?"00
-str4510	asc	"Les boutons ne fonctionnent pas car l"A7"ordinateur central les controle."00
-str4520	asc	"Le systeme automatique est deregle, il met du gaz carbonique a la place de l"A7"oxygene."00
-str4530	asc	"Vous respirez un grand coup."00
-str4540	asc	"Que voulez-vous respirer, il n"A7"y a plus d"A7"oxygene."00
-str4550	asc	"Vous avez deux essais pour"00
-str4552	asc	"entrer le mot de passe."00
-str4558	asc	"Exact, vous etes perspicace!"00
-str4559	asc	"UIN LOI QRU ILD ESP ECU TAS ASU VIE RAL HOU MEA"00
-str4560	asc	"C"A7"est d"A7"accord."00
-str4570	asc	"Il etait temps, vous alliez mourir."00
-str4580	asc	"Vous mourrez deshydrate."00
-str4590	asc	""00
-str4600	asc	""00
-str4610	asc	"Le sas se referme derriere vous, le tableau de controle s"A7"allume et l"A7"ordinateur de bord vous demande le mot de passe pour le retour ?"00
-str4615	asc	"Le vaisseau de secours s"A7"eloigne, au loin vous voyez Genius qui pleure derriere un hublot"00
-str4616	asc	"          VOUS AVEZ GAGNE"00
-str4618	asc	"Mais, que se passe-t-il,vous avez du vous tromper de mot de passe, votre "00
-str4620	asc	"La soucoupe a explose au decollage."00
-str4630	asc	"Energie restante :"00
-str4640	asc	"Petit drole...Le chronometre est affiche en permanence"00
-str4650	asc	"Le temps que vous aviez pour votre mission est ecoule, vous avez echoue."00
-str4655	asc	" NOI THE"00	; LOGO
-str4656	asc	"Le mot de passe pour le retour est : "00	; MP$
-str4660	asc	"Votre trajectoire est bonne, pourquoi la corriger ?"00
-str4670	asc	"Le mur au nord coulisse, vous avancez dans cette salle."00
-str4680	asc	"Quel livre ?"00
-str4690	asc	"Au dos du boitier est marque :"00
-str4692	asc	"        "A7"PROTEGEZ MOI"A700
-str4700	asc	"Vous remarquez un boitier de radiocommande."00
-str4710	asc	""00
-str4720	asc	""00
-str4730	asc	"Que regardez vous ?"00
-str4740	asc	"Le tube de nitroglycerine vient d"A7"exploser, vous etes pulverise."00
-str4750	asc	"La bombe a retardement vient d"A7"exploser, vous etes pulverise."00
-str4760	asc	"La bombe a retardement a explose, elle a endommage le systeme de chauffage, vous etes carbonise"00
-str4770	asc	"La bombe a explose, vous etiez trop pres et etes devenu fou..."00
-str4780	asc	"La bombe a retardement n"A7"etait pas assez forte, l"A7"ordinateur central n"A7"est qu"A7"endommage, il vous fait exploser..."00
-str4790	asc	"Bravo! L"A7"ordinateur central est detruit, mais le systeme d"A7"oxygenation ne fonctionne plus, de plus la trajectoire du vaisseau a change."00
-str4800	asc	"Vous n"A7"avez plus de souffle, vous etes mort asphyxie."00
-str4810	asc	"Vous auriez du corriger la trajectoire vous avez percute le soleil."00
-str4820	asc	"A force de traverser les salles radioactives, vous etes mort contamine."00
-str4830	asc	"Il fait de plus en plus chaud..."00
-str4840	asc	"L"A7"ordinateur vient d"A7"exploser!"00
-str4845	asc	"Vous avez du le laisser allume."00
-str4850	asc	"Comment !!! Vous etes aveugle."00
-str4860	asc	"Vous n"A7"aviez pas pris la radiocommande qui a explose quand le vaisseau a percute le soleil, son explosion a declenche la fin du monde."00
-str4870	asc	"Non! pas de strip-tease."00
-str4874	asc	"Vous avez pose tout ce que vous transportiez."00
-str4880	asc	"Ca ne se demande pas."00
-str4890	asc	"Il y a effectivement un ordinateur parmi le tableau de controle."00
-str4891	asc	"L"A7"ordinateur n"A7"est pas en fonction."00
-str4900	asc	"Sur le laser, vous voyez trois boutons : jaune, rouge et bleu."00
-str4910	asc	"Vous etes entre dans le desintegrateur de particules..."00
-str4920	asc	"Vous etes entre dans le vaisseau par le sas a l"A7"ouest qui ne s"A7"ouvre pas de l"A7"interieur."00
+str4010	asc	'Une boule d'27'acier tombee du plafond vient de s'27'ecraser sur votre casque.'00
+str4020	asc	'Une boule d'27'acier vient de tomber du plafond, vous avez le crane defonce...'00
+str4030	asc	'Vous venez de tomber dans une flaque d'27'acide,ca crepite...'00
+str4040	asc	'Vous venez de rentrer dans le reacteur atomique du vaisseau..!'00
+str4050	asc	'La porte ne veut pas s'27'ouvrir'00
+str4060	asc	'Un peu de memoire...comment etes-vous entre ?'00
+str4070	asc	'Je ne vous savais pas assez muscle pour soulever une tonne.'00
+str4080	asc	'Vous avez raison, la vue c'27'est la vie!'00
+str4090	asc	'Les gants etaient radioactifs, vous perdez la vue.'00
+str4100	asc	'Vous l'27'avez deja sur vous.'00
+str4110	asc	'Impossible, je ne vois pas ceci ici.'00
+str4120	asc	'Vous vous arrachez la tete en tombant des echasses.'00
+str4130	asc	'Des monstres sortis des containers vous devorent tout cru!'00
+str4140	asc	'L'27'air frais vous fait du bien. Dommage que l'27'helice vous ait coupe la tete.'00
+str4150	asc	'Qu'27'est ce que vous voulez boire ???'00
+str4160	asc	'Ah oui...l'27'eau est bonne.'00
+str4170	asc	'Il n'27'y a pas d'27'eau ici.'00
+str4180	asc	'L'27'eau etait contaminee par les boites radioactives.'00
+str4190	asc	'Vous retrecissez..petit..petit..et une araignee vous mange!'00
+str4200	asc	'Ca coupe une tronconneuse, comme le prouve votre tete au sol.'00
+str4210	asc	'Vous glissez et tombez dans la flaque. L'27'acide crepite.'00
+str4220	asc	'Il n'27'y a pas ici de porte verrouillee';
+str4230	asc	'En secouant le tube pour l'27'ouvrir, la nitroglycerine a explose.'00
+str4240	asc	'Pourquoi ouvrir un robinet qui ne ferme pas!'00
+str4250	asc	'Le robinet ne se ferme pas.'00
+str4260	asc	''00
+str4270	asc	'La bibliotheque n'27'a pas de porte...'00
+str4280	asc	'Il n'27'y a rien de mieux sur les autres pages.'00
+str4290	asc	'...c'27'est toi J.R qui a pris ma femme et mon petrole, tu es infame.'00
+str4300	asc	'Collection Arlepin, tout un reve d'27'evasion.'00
+str4310	asc	'...et c'27'est moi Genius le grand qui crea un superbe manoir...'00
+str4320	asc	'1031141221242713182310291430271214232927102110272718311427103023141427142324303114212114'
+str4321	asc	' <tapez une touche> '00
+str4330	asc	'Vous l'27'avez deja fait.'00
+str4340	asc	'Le laser vient d'27'exploser.'00
+str4350	asc	'Il ne se passe rien.'00
+str4360	asc	'Le sas s'27'ouvre, vous passez dans la salle a cote.'00
+str4370	asc	'Cela agit sur un contacteur a infrarouge qui commande l'27'eclairage.'00
+str4380	asc	'Allons enfants de la patrie...'00
+str4390	asc	'Vous entendez : '27'Le laser ouvrira la porte'27''00
+str4400	asc	'Les lunettes sont trop fortes, vous voyez trouble.'00
+str4410	asc	'La salle est radioactive.'00
+str4420	asc	'Vous avez quelque chose pour ?'00
+str4430	asc	'C'27'est votre probleme, mais le temps passe.'00
+str4440	asc	'Avez-vous si sommeil que ca ?'00
+str4450	asc	'Et puis quoi encore !'00
+str4460	asc	'Faites un plan...'00
+str4470	asc	'Vous entendez le ronronnement des moteurs.'00
+str4480	asc	'J'27'etais sur que vous etiez un lache.'00
+str4490	asc	'Vous passez la tete a travers un sas,'00
+str4491	asc	'et appuyez sur le bouton de fermeture'00
+str4500	asc	'Quel bouton ?'00
+str4510	asc	'Les boutons ne fonctionnent pas car l'27'ordinateur central les controle.'00
+str4520	asc	'Le systeme automatique est deregle, il met du gaz carbonique a la place de l'27'oxygene.'00
+str4530	asc	'Vous respirez un grand coup.'00
+str4540	asc	'Que voulez-vous respirer, il n'27'y a plus d'27'oxygene.'00
+str4550	asc	'Vous avez deux essais pour'00
+str4552	asc	'entrer le mot de passe.'00
+str4558	asc	'Exact, vous etes perspicace!'00
+str4559	asc	'UIN LOI QRU ILD ESP ECU TAS ASU VIE RAL HOU MEA'00
+str4560	asc	'C'27'est d'27'accord.'00
+str4570	asc	'Il etait temps, vous alliez mourir.'00
+str4580	asc	'Vous mourrez deshydrate.'00
+str4590	asc	''00
+str4600	asc	''00
+str4610	asc	'Le sas se referme derriere vous, le tableau de controle s'27'allume et l'27'ordinateur de bord vous demande le mot de passe pour le retour ?'00
+str4615	asc	'Le vaisseau de secours s'27'eloigne, au loin vous voyez Genius qui pleure derriere un hublot'00
+str4616	asc	'          VOUS AVEZ GAGNE'00
+str4618	asc	'Mais, que se passe-t-il,vous avez du vous tromper de mot de passe, votre '00
+str4620	asc	'La soucoupe a explose au decollage.'00
+str4630	asc	'Energie restante :'00
+str4640	asc	'Petit drole...Le chronometre est affiche en permanence'00
+str4650	asc	'Le temps que vous aviez pour votre mission est ecoule, vous avez echoue.'00
+str4655	asc	' NOI THE'00	; LOGO
+str4656	asc	'Le mot de passe pour le retour est : '00	; MP$
+str4660	asc	'Votre trajectoire est bonne, pourquoi la corriger ?'00
+str4670	asc	'Le mur au nord coulisse, vous avancez dans cette salle.'00
+str4680	asc	'Quel livre ?'00
+str4690	asc	'Au dos du boitier est marque :'00
+str4692	asc	'        '27'PROTEGEZ MOI'A700
+str4700	asc	'Vous remarquez un boitier de radiocommande.'00
+str4710	asc	''00
+str4720	asc	''00
+str4730	asc	'Que regardez vous ?'00
+str4740	asc	'Le tube de nitroglycerine vient d'27'exploser, vous etes pulverise.'00
+str4750	asc	'La bombe a retardement vient d'27'exploser, vous etes pulverise.'00
+str4760	asc	'La bombe a retardement a explose, elle a endommage le systeme de chauffage, vous etes carbonise'00
+str4770	asc	'La bombe a explose, vous etiez trop pres et etes devenu fou...'00
+str4780	asc	'La bombe a retardement n'27'etait pas assez forte, l'27'ordinateur central n'27'est qu'27'endommage, il vous fait exploser...'00
+str4790	asc	'Bravo! L'27'ordinateur central est detruit, mais le systeme d'27'oxygenation ne fonctionne plus, de plus la trajectoire du vaisseau a change.'00
+str4800	asc	'Vous n'27'avez plus de souffle, vous etes mort asphyxie.'00
+str4810	asc	'Vous auriez du corriger la trajectoire vous avez percute le soleil.'00
+str4820	asc	'A force de traverser les salles radioactives, vous etes mort contamine.'00
+str4830	asc	'Il fait de plus en plus chaud...'00
+str4840	asc	'L'27'ordinateur vient d'27'exploser!'00
+str4845	asc	'Vous avez du le laisser allume.'00
+str4850	asc	'Comment !!! Vous etes aveugle.'00
+str4860	asc	'Vous n'27'aviez pas pris la radiocommande qui a explose quand le vaisseau a percute le soleil, son explosion a declenche la fin du monde.'00
+str4870	asc	'Non! pas de strip-tease.'00
+str4874	asc	'Vous avez pose tout ce que vous transportiez.'00
+str4880	asc	'Ca ne se demande pas.'00
+str4890	asc	'Il y a effectivement un ordinateur parmi le tableau de controle.'00
+str4891	asc	'L'27'ordinateur n'27'est pas en fonction.'00
+str4900	asc	'Sur le laser, vous voyez trois boutons : jaune, rouge et bleu.'00
+str4910	asc	'Vous etes entre dans le desintegrateur de particules...'00
+str4920	asc	'Vous etes entre dans le vaisseau par le sas a l'27'ouest qui ne s'27'ouvre pas de l'27'interieur.'00
 
-str5500	asc	"Etes-vous sur (O/N) ?"00
+str5500	asc	'Etes-vous sur (O/N) ?'00
 
-str16000	asc	"vaisseau de poche fonce sur le soleil, "00
-str16010	asc	"Vous venez de realiser que Genius"00
-str16020	asc	"pleurait de JOIE...!"00
-str18005	asc	"Comme je le pensais , vous vous etes stupidement fait avoir, et votre cadavre (ou ce qu"A7"il en reste) reposera a jamais dans l"A7"espace..."00
+str16000	asc	'vaisseau de poche fonce sur le soleil, '00
+str16010	asc	'Vous venez de realiser que Genius'00
+str16020	asc	'pleurait de JOIE...!'00
+str18005	asc	'Comme je le pensais , vous vous etes stupidement fait avoir, et votre cadavre (ou ce qu'27'il en reste) reposera a jamais dans l'27'espace...'00
 
-str19050	asc	"   Merci d"A7"avoir essaye...!"00
-str19060	asc	"  Reveillez-vous , c"A7"est fini !"00
+str19050	asc	'   Merci d'27'avoir essaye...!'00
+str19060	asc	'  Reveillez-vous , c'27'est fini !'00
 

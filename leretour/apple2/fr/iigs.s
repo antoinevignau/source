@@ -27,20 +27,30 @@
 	use	4/Util.Macs
 	use	4/Window.Macs
 	
+*-----------------------
+
+KBD	=	$e0c000
+KBDSTROBE	=	$e0c010
+RDVBLBAR	=	$e0c019
 GSOS	=	$e100a8
+
+*-----------------------
 
 dpFROM	=	$70
 dpTO	=	dpFROM+2
+
+*-----------------------
 
 refIsPointer =	$0
 refIsHandle	=	$1
 refIsResource =	$2
 
-TRUE	=	255
-FALSE	=	0
+appleKey	=	$0100
+mouseDownEvt =	$0001
+mouseUpEvt	=	$0002
+keyDownEvt	=	$0003
 
-ptr012000	=	$012000
-ptrE12000	=	$e12000
+*-----------------------
 
 modeForeCopy =	$0004	; QDII Table 16-10
 
@@ -49,6 +59,14 @@ mode640	=	$80
 
 maxX	=	320
 maxY	=	200
+
+ptr012000	=	$012000
+ptrE12000	=	$e12000
+
+*-----------------------
+
+TRUE	=	1
+FALSE	=	0
 
 *-----------------------------------
 * DU 16-BITS
@@ -77,6 +95,39 @@ ICI	phk
 	ora	#$0100
 	sta	myID
 
+*-----------------------------------
+* MEMORY...
+*-----------------------------------
+
+	jsr	make64KB
+	bcc	okMEM1
+
+koMEM	pha
+	PushLong	#memSTR1
+	PushLong	#errSTR2
+	PushLong	#errSTR1
+	PushLong	#errSTR2
+	_TLTextMountVolume
+	pla
+	brl	meQUIT1
+
+okMEM1	sty	ptrTEXT
+	stx	ptrTEXT+2
+	stx	ptrBACKGND+2
+
+*-----------------------
+
+	jsr	make64KB
+	bcs	koMEM
+
+	sty	ptrUNPACK
+	stx	ptrUNPACK+2
+	stx	ptrIMAGE+2
+
+*-----------------------------------
+* DESKTOP MODE
+*-----------------------------------
+
 	pha
 	pha
 	PushWord	myID
@@ -84,15 +135,31 @@ ICI	phk
 	PushLong	#toolTBL
 	_StartUpTools
 	PullLong ssREC
+	bcc	okTOOL
 
-	_HideMenuBar
+	pha
+	PushLong	#tolSTR1
+	PushLong	#errSTR2
+	PushLong	#errSTR1
+	PushLong	#errSTR2
+	_TLTextMountVolume
+	pla
+	brl	meQUIT
+
+okTOOL	_HideMenuBar
 	_InitCursor
 	_HideCursor
 
-	PushLong #0
-	PushWord #5		; SetDeskPat
-	PushWord #$4000
-	PushWord #$0000
+	PushWord	#0
+	PushWord	#%11111111_11111111
+	PushWord	#0
+	_FlushEvents
+	pla
+
+	PushLong	#0
+	PushWord	#5	; SetDeskPat
+	PushWord	#$4000
+	PushWord	#$0000
 	_Desktop
 	pla
 	pla
@@ -139,13 +206,13 @@ okSHADOW
 * AU REVOIR LE IIGS
 *-----------------------------------
 
-QUIT	_GrafOff	
-	
-	PushWord #refIsPointer
+QUIT	rep	#$30
+
+meQUIT	PushWord #refIsPointer
 	PushLong ssREC
 	_ShutDownTools
 
-	PushWord myID
+meQUIT1	PushWord myID
 	_DisposeAll
 
 	PushWord appID
@@ -163,12 +230,75 @@ QUIT	_GrafOff
 	brk	$bd
 
 *-----------------------------------
+* UNE BELLE BIBLIOTHEQUE
+*-----------------------------------
+
+*-----------------------------------
+* RESERVE 64K
+*-----------------------------------
+
+make64KB	pha
+	pha
+	PushLong	#$010000
+	PushWord	myID
+	PushWord	#%11000000_00011100
+	PushLong	#0
+	_NewHandle
+	phd
+	tsc
+	tcd
+	ldy	#2
+	lda	[3],y
+	tax
+	lda	[3]
+	tay		; low in X
+	pld
+	pla		; we do not keep track of the handle
+	pla
+	rts
+
+*-----------------------------------
+* SAVE THE SHR SCREEN
+*-----------------------------------
+
+saveBACK	_HideCursor
+	PushLong	#ptrE12000
+	PushLong	ptrBACKGND
+	PushLong	#32768
+	_BlockMove
+	_ShowCursor
+	rts
+
+*-----------------------------------
+* RESTORE THE SHR SCREEN
+*-----------------------------------
+
+loadBACK	_HideCursor
+	PushLong	ptrBACKGND
+	PushLong	#ptrE12000
+	PushLong	#32768
+	_BlockMove
+	_ShowCursor
+	rts
+
+*-----------------------------------
 * DES DONNES 16-BITS
 *-----------------------------------
 
 myINDEX	ds	2
 
-*-----------------------------------
+*----------------------------------- Memory Manager
+
+appID	ds	2
+myID	ds	2
+myDP	ds	2
+
+ptrTEXT	adrl	$00000000	; 32k bank 1
+ptrBACKGND	adrl	$00008000	; 32k
+ptrUNPACK	adrl	$00000000	; 32k bank 2
+ptrIMAGE	adrl	$00008000	; 32k
+
+*----------------------------------- Quickdraw II
 
 palette320	dw	$0000,$0777,$0841,$072C,$000F,$0080,$0F70,$0D00
 	dw	$0FA9,$0FF0,$00E0,$04DF,$0DAF,$078F,$0CCC,$0FFF
@@ -193,7 +323,15 @@ blackPATTERN ds	32,$00
 	ds	32,$ee
 whitePATTERN ds	32,$ff
 
-*----------------------------------- New Tool table
+*----------------------------------- Error messages
+
+tolSTR1	str	'Error while loading tools'
+memSTR1	str	'Cannot allocate memory'
+filSTR1	str	'Cannot load file'
+errSTR1	str	'Quit'
+errSTR2	str	''
+
+*----------------------------------- Tool Locator
 
 ssREC	ds	4
 
@@ -235,19 +373,42 @@ toolTBL	dw	$0000	; flags
 	dw	$001E	; Resource Manager
 	dw	$0100
 
-*-----------------------------------
+*----------------------------------- GS/OS
+
+proERR	ds	2	; GS/OS error code
 
 proQUIT	dw	2	; pcount
 	ds	4	; pathname
 	ds	2	; flags
-	
-*-----------------------------------
 
-appID	ds	2
-myID	ds	2
-myDP	ds	2
+*----------------------------------- Window Manager
 
 mainPORT	ds	4
+
+taskREC	ds	2	; wmWhat           +0
+taskMESSAGE	ds	4	; wmMessage        +2
+taskWHEN	ds	4	; wmWhen           +6
+taskWHERE	ds	4	; wmWhere          +10
+taskMODIFIERS ds	2	; wmModifiers      +14
+taskDATA	ds	4	; wmTaskData       +16
+
+*----------------------------------- Standard File Tool Set
+
+strLOADFILE	str	'Charger quelle partie ?'
+strSAVEFILE	str	'Enregistrer sous...'
+
+typeLIST	hex	01
+	hex	5d	; Game/Edu files
+
+replyPTR	ds	2	; 0 good
+	ds	2	; 2 fileType
+	ds	2	; 4 auxFileType
+namePATH	hex	06	; 6 fileName
+namePATH1	asc	'Partie'	; 7 fileName (16 normally)
+	ds	9
+
+loadPATH	ds	1	; 22 fullPathname (string length)
+loadPATH1	ds	129	; 23 fullPathname (128 normally)
 
 *-----------------------------------
 * CODE BASIC EN ASM :-)

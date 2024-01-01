@@ -37,10 +37,6 @@ chrNON	=	"N"
 idxCASSE	=	200
 idxTIMER	=	201
 
-*--- Softswitches
-
-VBL	=	$e0c019
-
 *--- The firmware routines
 
 *HGR	=	$F3E2	; HGR
@@ -93,7 +89,9 @@ SETKBD	=	$FE89
 * CODE BASIC EN ASM :-)
 *-----------------------------------
 
-PLAY	jsr	initALL
+PLAY	sep	#$30
+
+	jsr	initALL
 	jsr	HGR
 
 *	jsr	HOME	; clear text screen
@@ -1803,9 +1801,9 @@ waitMS	lda	#0	; skip if not zero
 	sty	LINNUM
 doW1	ldy	LINNUM
 doW2	lda	#60	; 1/100ème de seconde
-]lp	ldal	VBL
+]lp	ldal	RDVBLBAR
 	bmi	]lp
-]lp	ldal	VBL
+]lp	ldal	RDVBLBAR
 	bpl	]lp
 	dey
 	bne	doW2

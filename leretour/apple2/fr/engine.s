@@ -20,37 +20,17 @@ HGR	rep	#$30
 
 *-----------------------------------
 
-RDKEY
-	PushWord	#0
-	PushWord	#%0000_0000_0000_1000
-	PushLong	#eventREC
+RDKEY	rep	#$30
+
+]lp	pha
+	PushWord #%00000000_00001010
+	PushLong #taskREC
 	_GetNextEvent
 	pla
-	beq	RDKEY
+	beq	]lp
 
-	lda	eventREC
-	cmp	#
-         PEA   ^eventREC
-         PEA   eventREC
-         _GetNextEvent
-         PLA
-         TAY
-         beq   L011DBE
-         LDA   eventREC
-         CMP   #$0001	; mouseDownEvt
-         BEQ   L011DE4
-         BRL   L011EC4
-
-*--------
-
-eventREC
-oWHAT	DW	$0000	; what - event code
-oMESSAGE	ADRL	$00000000 	; message - event message
-	ADRL	$00000000	; when - tick count
-oWHERE
-oWHEREY	DW	$0000	; where - mouse location
-oWHEREX	DW	$0000
-oMODIFIERS	DW	$0000	; modifiers - modifiers
+	sep	#$30
+	rts
 
 *-----------------------------------
 * RECOPIE ACTION A$

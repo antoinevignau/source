@@ -3007,7 +3007,7 @@ L50F6       DB    $41
             DB    $01
             ASC   'M'
             DB    $0C
-            DB    $AD
+            dfb   154	; $AD (174)
             ASC   'VOUS ETES DANS LE LABORATOIRE'00
             DB    $41
             DB    $96
@@ -3699,9 +3699,13 @@ L52CA       DB    $41
             DB    $08
             DB    $02
             ASC   'M'
-            DB    $0E
-            DB    $04
-            ASC   'VOUS ETES DANS LA SALLE DE PILOTAGE'00
+            dfb   16
+            dfb   4
+            ASC   'VOUS ETES DANS'00
+            ASC   'M'
+            dfb   22
+            dfb   13
+            ASC   'LA SALLE DE PILOTAGE'00
 *           DB    $41
 *           DB    $42
 *           DB    $38
@@ -5122,8 +5126,8 @@ L5A21       DB    $41
             DB    $0C
             DB    $00
             ASC   'M'
-            DB    $18
-            DB    $AC
+            dfb   8	; $18
+            dfb   154	; $AC (172)
             ASC   'IL Y A UN ROBINET TOUJOURS OUVERT'00
             DB    $41
             DB    $0C	; 12
@@ -8335,12 +8339,12 @@ L65FF       DB    $41
             DB    $7A
             ASC   'AUTO'00
             ASC   'M'
-            DB    $1E
-            DB    $A5
+            DB    $14	; was $1E
+            dfb   145	; was $A5 (165)
             ASC   'VOUS REMARQUEZ LE GENERATEUR'00
             ASC   'M'
-            DB    $1E
-            DB    $AD
+            DB    $14	; was $1E
+            dfb   154	; was $AD (173)
             ASC   'D'27'OXYGENE DU VAISSEAU'00
 *           DB    $41
 *           DB    $C6
@@ -11510,13 +11514,13 @@ L72CA       DB    $41
             DB    $00
             DB    $05
             ASC   'M'
-            DB    $3C
-            DB    $95
-            ASC   'LA CHAMBRE EST EQUIPEE'00
+            dfb   8	; $3C (60)
+            dfb   145	; $95 (149)
+            ASC   'LA CHAMBRE EST EQUIPEE D'27'UN'00
             ASC   'M'
-            DB    $18
-            DB    $9D
-            ASC   'D'27'UN SYSTEME D'27'OXYGENATION AUTONOME'00
+            dfb   8	; $18 (25)
+            dfb   154	; $9D (157)
+            ASC   'SYSTEME D'27'OXYGENATION AUTONOME'00
 *           DB    $41
 *           DB    $0C
 *           DB    $95
@@ -12153,8 +12157,8 @@ L74D2       DB    $41
             DB    $02
             DB    $02
             ASC   'M'
-            DB    $18
-            DB    $A0
+            DB    $10	; was $18
+            dfb   154	; $A0 (160)
             ASC   'VOUS ETES DANS LA BIBLIOTHEQUE'00
             DB    $4A
             DB    $06

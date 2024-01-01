@@ -200,7 +200,34 @@ okSHADOW
 * IL FAUT JOUER MAINTENANT
 *-----------------------------------
 
-	jsr	PLAY
+	lda	#1
+	sta	myINDEX
+	
+loop	rep	#$30
+
+	PushWord	#0
+	_ClearScreen
+	
+	PushLong	#frameRECT
+	_FrameRect
+
+	lda	myINDEX
+	jsr	showPIC
+	
+	mx	%11
+	
+]lp	ldal	$c000
+	bpl	]lp
+	stal	$c010
+	cmp	#$9b
+	beq	QUIT
+	
+	inc	myINDEX
+	lda	myINDEX
+	cmp	#58
+	bne	loop
+
+	mx	%00
 	
 *-----------------------------------
 * AU REVOIR LE IIGS
@@ -232,6 +259,8 @@ meQUIT1	PushWord myID
 *-----------------------------------
 * UNE BELLE BIBLIOTHEQUE
 *-----------------------------------
+
+frameRECT	dw	0,0,167,239
 
 *-----------------------------------
 * RESERVE 64K
@@ -303,8 +332,8 @@ ptrIMAGE	adrl	$00008000	; 32k
 palette320	dw	$0000,$0777,$0841,$072C,$000F,$0080,$0F70,$0D00
 	dw	$0FA9,$0FF0,$00E0,$04DF,$0DAF,$078F,$0CCC,$0FFF
 
-palette640	dw	$0000,$000F,$0FF0,$0FFF,$0000,$0D00,$00E0,$0FFF
-	dw	$0000,$000F,$0FF0,$0FFF,$0000,$0D00,$00E0,$0FFF
+palette640	dw	$0000,$000F,$00F0,$0FFF,$0000,$000F,$0FF0,$0FFF
+	dw	$0000,$0F00,$00F0,$0FFF,$0000,$000F,$0FF0,$0FFF
 	
 blackPATTERN ds	32,$00
 	ds	32,$11

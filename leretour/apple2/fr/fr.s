@@ -602,6 +602,19 @@ M$52	dfb	00
 M$53	dfb	2,29,0
 
 *
+* Les mots de passe
+*
+
+tblMP$	da	$bfff
+	da	MP$1,MP$2,MP$3,MP$4,MP$5
+
+MP$1	str	'ORIC1'
+MP$2	str	'ATMOS'
+MP$3	str	'GENIS'
+MP$4	str	'ECHEC'
+MP$5	str	'ARGON'
+
+*
 * Le vocabulaire
 * on fera index-1 b/c 8-bits
 *

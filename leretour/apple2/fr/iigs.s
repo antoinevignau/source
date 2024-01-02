@@ -53,6 +53,7 @@ keyDownEvt	=	$0003
 
 *-----------------------
 
+modeCopy	=	$0000
 modeForeCopy =	$0004	; QDII Table 16-10
 
 mode320	=	$00

@@ -21,6 +21,7 @@ HGR	rep	#$30
 *-----------------------------------
 
 RDKEY	phx
+	jsr	CURSOR	; shows the cursor
 	rep	#$30
 
 ]lp	pha
@@ -59,17 +60,19 @@ HOME	rep	#$30
 	bpl	]lp
 
 	lda	#bottomRECT
-	
+
 *----------- Efface les 3 lignes du bas
+	
+	mx	%00
 	
 eraseLINES	sta	pointerRECT
 	
 	PushLong	#curPATTERN
 	_GetPenPat
-	
+
 	PushLong	#blackPATTERN
 	_SetPenPat
-
+	
 	PushLong	pointerRECT
 	_PaintRect
 
@@ -85,13 +88,86 @@ pointerRECT	adrl	bottomRECT
 
 bottomRECT	dw	170,0,199,319
 lastlineRECT dw	190,0,199,319
+cursorRECT	dw	0,0,0,0	; y2 and x2 are y1+7 and x1+7
+
+testme	ds	2
+
+*-----------------------------------
+
+	mx	%11
+
+*CURSOR_ERASE
+	phx
+	lda	CH
+	pha
+	lda	CV
+	pha
+
+	lda	#' '
+	jsr	COUT
+
+	pla
+	sta	CV
+	pla
+	sta	CH
+
+	dec	CH
+	jsr	TABV
+	plx
+	rts
+
+*-----------------------------------
+
+	mx	%11
+
+CURSOR_ERASE
+	phx
+	rep	#$30
+
+	lda	textY
+	sta	cursorRECT+4
+	sec
+	sbc	#8
+	sta	cursorRECT
+	
+	lda	textX
+	sta	cursorRECT+2
+	clc
+	adc	#8
+	sta	cursorRECT+6
+	
+	lda	#cursorRECT
+	jsr	eraseLINES	; retour en 8-bits
+
+	mx	%11
+	
+	dec	CH
+	jsr	TABV
+	plx
+	rts
 
 *-----------------------------------
 
 	mx	%11
 	
-TABV	sta	CV	; 10 pixels de haut par ligne
-	rep	#$20
+CURSOR
+	lda	CH
+	pha
+	lda	CV
+	pha
+	lda	#$a5	; black bullet
+	jsr	COUT
+	pla
+	sta	CV
+	pla
+	sta	CH
+	
+*-----------------------------------
+
+	mx	%11
+	
+TABV	rep	#$30
+	lda	CV
 	and	#$ff
 	asl
 	tax
@@ -104,8 +180,7 @@ TABV	sta	CV	; 10 pixels de haut par ligne
 	asl
 	asl
 	sta	textX
-	
-	sep	#$20
+	sep	#$30
 	rts
 
 *-----------------------------------

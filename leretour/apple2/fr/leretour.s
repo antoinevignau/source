@@ -78,6 +78,7 @@ PLAY	sep	#$30
 	lda	#0	; move cursor to 0,20
 	sta	CH
 	lda	#16	; au lieu de 20 LoGo
+	sta	CV
 	jsr	TABV	; on a 20 lignes de 10 caractères de haut
 
 	jsr	:7110
@@ -1641,7 +1642,6 @@ initALL
 *-----------------------------------
 
 EXPLODE	rts
-	rts
 
 *-----------------------------------
 * CODE 6502
@@ -1663,6 +1663,8 @@ setHGR	rts		; HGR
 * GETLEN1 par LoGo
 *----------------------
 
+	mx	%11
+	
 GETLN1	ldx	#0
 ]lp	jsr	RDKEY
 	cmp	#chrRET
@@ -1671,8 +1673,8 @@ GETLN1	ldx	#0
 	beq	doBACK
 	cmp	#chrLA
 	beq	doBACK
-	cmp	#chrRA
-	beq	]lp
+	cmp	#chrSPC	; must not be another control character
+	bcc	]lp
 
 	jsr	testENERGIE
 
@@ -1689,7 +1691,7 @@ doEXIT	lda	#chrRET
 
 doBACK	cpx	#0
 	beq	]lp
-	dec	CH
+	jsr	CURSOR_ERASE	; contains dec CH & TABV
 	dex
 	jmp	]lp
 
@@ -1734,6 +1736,7 @@ setMIXEDON		; HGR + 4 LINES OF TEXT
 setMIXEDOFF		; FULL HGR
 *	rts
 
+	rep	#$30
 	lda	ptrSCREEN
 	sta	dpTO
 	lda	ptrSCREEN+2
@@ -1744,7 +1747,6 @@ setMIXEDOFF		; FULL HGR
 	lda	ptrTEXT+2
 	sta	dpTHREE+2
 	
-	rep	#$30
 	ldy	#170*160-2
 ]lp	lda	[dpTHREE],y
 	pha

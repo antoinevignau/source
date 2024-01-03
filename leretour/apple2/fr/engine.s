@@ -311,8 +311,8 @@ COUT2	rep	#$20
 
 *----------- Exit
 
-text2shr	dw	10,20,30,40,50,60,70,80,90,100
-	dw	110,120,130,140,150,160,170,180,190,200
+text2shr	dw	9,19,29,39,49,59,69,79,89,99
+	dw	109,119,129,139,149,159,169,179,189,199
 	
 *text2shr	dw	8,16,24,32,40,48,56,64
 *	dw	72,80,88,96,104,112,120,128
@@ -329,6 +329,17 @@ WAIT	pha
 ]lp	ldal	RDVBLBAR
 	bpl	]lp
 	pla
+	rts
+
+*-----------------------------------
+
+	mx	%11
+
+RND	rep	#$30
+	PushWord	#0
+	_Random
+	pla
+	sep	#$30
 	rts
 
 *-----------------------------------
@@ -563,8 +574,13 @@ L930C	CMP	#'O'	; O $4F OUTPUT
             BNE	L9313
             JMP	L94D8
 
-L9313       brk	$bd
+L9313       lda	#0
+	sep	#$30
+	sta	A2
+	rts
 
+	mx	%00
+	
 *--- A $41 CURSET
 
 L9319       iny
@@ -761,6 +777,7 @@ L94D8	iny
 	lda	(dpFROM),y
 	and	#$ff
 	sep	#$30
+	sta	A2	; the variable at $400
 	rts
 
 	mx	%00

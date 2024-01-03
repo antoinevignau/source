@@ -180,6 +180,9 @@ okTOOL	_HideMenuBar
 	PushLong	mainPORT
 	_SetPort
 
+	PushLong	#117117
+	_SetRandSeed
+
 	PushWord	#0
 	_SetBackColor
 	PushWord	#15

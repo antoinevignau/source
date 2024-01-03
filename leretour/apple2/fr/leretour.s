@@ -39,7 +39,7 @@ idxTIMER	=	200
 *-----------------------------------
 
 @draw	mac
-	lda	#]1
+	lda	]1
 	jsr	showPIC
 	eom
 
@@ -75,13 +75,11 @@ PLAY	sep	#$30
 	jsr	HGR
 
 	jsr	HOME	; clear text screen
-	lda	#0	; move cursor to 0,20
+	lda	#0	; move cursor to 0,16 au lieu de 0,20
 	sta	CH
 	lda	#16	; au lieu de 20 LoGo
 	sta	CV
 	jsr	TABV	; on a 20 lignes de 10 caractères de haut
-
-	jsr	:7110
 
 	@print	#strCOMMANDE	; commande avec energie
 	jsr	GETLN1
@@ -99,39 +97,52 @@ PLAY	sep	#$30
 * DU BASIC A L'ASSEMBLEUR (BEURK)
 *-----------------------------------
 
-:100	ldx	#2
-	lda	#0
-	sta	P,x
-	
-	lda	SALLE
-	cmp	#10
-	beq	:100_OK
-	cmp	#22
-	beq	:100_OK
-	cmp	#54
-	beq	:100_OK
-	cmp	#15
-	bne	:105
-
-:100_OK	lda	#1
-	sta	P,x
-
-:105	ldx	#10
-	lda	O,x
-	cmp	SALLE
-	beq	:200
-	cmp	#-1
-	beq	:200
-
-	ldx	#2	; :106
+:100	ldx	#$11
 	lda	P,x
-	beq	:200
+	cmp	#1
+	beq	:140
 
-	ldx	#9	; :115
-	lda	C,x
-	cmp	#2
-	bcc	:130
-	dec	C,x
+:101	lda	SALLE
+	cmp	#23
+	bne	:102
+	ldx	#3
+	lda	P,x
+	cmp	#1
+	beq	:130
+
+:102	lda	SALLE
+	cmp	#14
+	bne	:104
+	ldx	#4
+	lda	P,x
+	cmp	#1
+	beq	:130
+	
+:104	lda	SALLE
+	cmp	#20
+	bne	:106
+	ldx	#5
+	lda	P,x
+	cmp	#1
+	beq	:130
+
+:106	lda	SALLE
+	cmp	#29
+	bne	:108
+	ldx	#6
+	lda	P,x
+	cmp	#1
+	beq	:130
+	
+:108	lda	SALLE
+	cmp	#38
+	bne	:110
+	ldx	#7
+	lda	P,x
+	cmp	#1
+	beq	:130
+
+:110	jmp	:200
 
 :130	jsr	HGR
 	jsr	setMIXEDON
@@ -148,19 +159,19 @@ PLAY	sep	#$30
 *-----------------------------------
 
 :200	jsr	setHGR
+	@draw	SALLE
 
-*	@print	#strRETURN
-	
-	lda	SALLE
-	asl
-	tax
-	lda	tbl7000,x
-	sta	:222+1
-	lda	tbl7000+1,x
-	sta	:222+2
-	
-:222	jsr	$bdbd
-	jsr	setMIXEDON
+	lda	A2	; trace des dessins
+	beq	:206
+	cmp	#1
+	bne	:204
+	jsr	:12010
+	bra	:206
+:204	cmp	#2
+	bne	:206
+	jsr	:12020
+
+:206	lda	PP
 	
 :300	lda	#0
 	sta	H
@@ -1305,259 +1316,6 @@ tbl4000	da	$bdbd,:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
 :6400	rts
 
 *-----------------------------------
-* 7000 - DESCRIPTION DES PIECES
-*-----------------------------------
-
-tbl7000	da	$bdbd
-	da	:7010,:7020,:7030,:7040,:7050,:7060,:7070,:7080,:7090
-	da	:7100,:7110,:7120,:7130,:7140,:7150,:7160,:7170,:7180,:7190
-	da	:7200,:7210,:7220,:7230,:7240,:7250,:7260,:7270,:7280,:7290
-	da	:7300,:7310,:7320,:7330,:7340,:7350,:7360,:7370,:7380,:7390
-	da	:7400,:7410,:7420,:7430,:7440,:7450,:7460,:7470,:7480,:7490
-	da	:7500,:7510,:7520,:7530,:7540,:7550,:7560,:7570,:7580,:7590
-	da	:7600
-
-:7010	@print	#str8010
-	@draw	#1
-	rts
-
-:7020	@print	#str8020
-	@draw	#2
-	rts
-
-:7030	@print	#str8030
-	@draw	#3
-	rts
-
-:7040	@print	#str8040
-	@draw	#4
-	rts
-
-:7050	@print	#str8050
-	@draw	#5
-	rts
-
-:7060	@print	#str8060
-	@draw	#6
-	rts
-
-:7070	@print	#str8070
-	@draw	#7
-	rts
-
-:7080	@print	#str8080
-	@draw	#8
-	rts
-
-:7090	@print	#str8090
-	@draw	#9
-	rts
-
-:7100	@print	#str8100
-	@draw	#10
-	rts
-
-:7110	@print	#str8110
-	@draw	#11
-	rts
-
-:7120	@print	#str8120
-	@draw	#12
-	rts
-
-:7130	@print	#str8130
-	@draw	#13
-	rts
-
-:7140	@print	#str8140
-	@draw	#14
-	rts
-
-:7150	@print	#str8150
-	@draw	#15
-	rts
-
-:7160	@print	#str8160
-	@draw	#16
-	rts
-
-:7170	@print	#str8170
-	@draw	#17
-	rts
-
-:7180	@print	#str8180
-	@draw	#18
-	rts
-
-:7190	@print	#str8190
-	@draw	#19
-	rts
-
-:7200	@print	#str8200
-	@draw	#20
-	rts
-
-:7210	@print	#str8210
-	@draw	#21
-	rts
-
-:7220	@print	#str8220
-	@draw	#22
-	rts
-
-:7230	@print	#str8230
-	@draw	#23
-	rts
-
-:7240	@print	#str8240
-	@draw	#24
-	rts
-
-:7250	@print	#str8250
-	@draw	#25
-	rts
-
-:7260	@print	#str8260
-	@draw	#26
-	rts
-
-:7270	@print	#str8270
-	@draw	#27
-	rts
-
-:7280	@print	#str8280
-	@draw	#28
-	rts
-
-:7290	@print	#str8290
-	@draw	#29
-	rts
-
-:7300	@print	#str8300
-	@draw	#30
-	rts
-
-:7310	@print	#str8310
-	@draw	#31
-	rts
-
-:7320	@print	#str8320
-	@draw	#32
-	rts
-
-:7330	@print	#str8330
-	@draw	#33
-	rts
-
-:7340	@print	#str8340
-	@draw	#34
-	rts
-
-:7350	@print	#str8350
-	@draw	#35
-	rts
-
-:7360	@print	#str8360
-	@draw	#36
-	rts
-
-:7370	@print	#str8370
-	@draw	#37
-	rts
-
-:7380	@print	#str8380
-	@draw	#38
-	rts
-
-:7390	@print	#str8390
-	@draw	#39
-	rts
-
-:7400	@print	#str8400
-	@draw	#40
-	rts
-
-:7410	@print	#str8410
-	@draw	#41
-	rts
-
-:7420	@print	#str8420
-	@draw	#42
-	rts
-
-:7430	@print	#str8430
-	@draw	#43
-	rts
-
-:7440	@print	#str8440
-	@draw	#44
-	rts
-
-:7450	@print	#str8450
-	@draw	#45
-	rts
-
-:7460	@print	#str8460
-	@draw	#46
-	rts
-
-:7470	@print	#str8470
-	@draw	#47
-	rts
-
-:7480	@print	#str8480
-	@draw	#48
-	rts
-
-:7490	@print	#str8490
-	@draw	#49
-	rts
-
-:7500	@print	#str8500
-	@draw	#50
-	rts
-
-:7510	@print	#str8510
-	@draw	#51
-	rts
-
-:7520	@print	#str8520
-	@draw	#52
-	rts
-
-:7530	@print	#str8530
-	@draw	#53
-	rts
-
-:7540	@print	#str8540
-	@draw	#54
-	rts
-
-:7550	@print	#str8550
-	@draw	#55
-	rts
-
-:7560	@print	#str8560
-	@draw	#56
-	rts
-
-:7570	@print	#str8570
-	@draw	#57
-	rts
-
-:7580	@print	#str8580
-	@draw	#58
-	rts
-
-:7590	@print	#str8590
-	@draw	#59
-	rts
-
-:7600	@print	#str8600
-	@draw	#60
-	rts
-
-*-----------------------------------
 * 8000 - CHARGEMENT VARIABLES
 *-----------------------------------
 
@@ -1573,20 +1331,51 @@ initALL
 	lda	#11
 	sta	SALLE
 
-	lda	#5	; 5000
-	sta	TEMPS
-	lda	#0
-	sta	TEMPS+1
-	sta	TEMPS+2
-	sta	TEMPS+3
+	lda	#<4000
+	sta	FORCE
+	lda	#>4000
+	sta	FORCE+1
 
-	lda	#"5"
-	sta	strTEMPS
-	lda	#"0"
-	sta	strTEMPS+1
-	sta	strTEMPS+2
-	sta	strTEMPS+3
-		
+	lda	#20
+	sta	MINUTES
+	lda	#0
+	sta	SECONDES
+
+*--- ligne 51
+
+	ldx	#8
+	lda	#10
+	sta	C,x
+	
+	ldx	#5
+	lda	#18
+	sta	C,x
+	
+	ldx	#3
+	lda	#10
+	sta	C,x
+	
+	ldx	#6
+	lda	#22
+	sta	C,x
+	
+	ldx	#7
+	lda	#9
+	sta	C,x
+
+*--- ligne 70
+
+	ldx	#3
+	lda	#1
+]lp	sta	P,x
+	inx
+	cpx	#8
+	bcc	]lp
+	beq	]lp
+
+	ldx	#$c
+	sta	P,x
+
 *---
 
 	ldx	#nbO	; reset object table
@@ -1601,6 +1390,16 @@ initALL
 	dex
 	bpl	]lp
 	rts
+
+*-----------------------------------
+* LES TRACES DE CADRE
+*-----------------------------------
+
+:12000	rts
+
+:12010	rts
+
+:12020	rts
 
 *-----------------------------------
 * 20000 - PERDU
@@ -1852,28 +1651,33 @@ TEXTBUFFER	ds	maxLEN+16	; le simulacre de la page 2
 DEBUT_DATA
 
 A1	ds	1
+A2	ds	1	; $400
 BREAK	ds	1
 E	ds	1
-F1	ds	1
+*F1	ds	1
+FORCE	ds	2
 G	ds	1
 H	ds	1
 HH	ds	1
-L	ds	1
-LX	ds	1
+*L	ds	1
+*LX	ds	1
 MO$1	ds	1	; mot 1
 MO$2	ds	1	; mot 2
 MO$3	ds	1	; mot 3
 N	ds	1
+NIVEAU	ds	1
 NL	ds	1
 OK	ds	1
+PP	ds	1
 S	ds	1
 SALLE	ds	1
 T	ds	1
-W	ds	1
-Z	ds	1
+*W	ds	1
+*Z	ds	1
 lenSTRING	ds	1
-TEMPS	ds	4	; le temps = 5000
-strTEMPS	ds	4+1
+
+MINUTES	ds	2	; 0..20 en décimal
+SECONDES	ds	2	; 0..59
 
 C	ds	48+1
 E$	ds	32	; the longest string

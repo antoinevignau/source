@@ -34,7 +34,7 @@ strILFAITNOIR
 
 strVOSYEUX	asc	'Vos yeux ne voient plus rien.'0D00
 
-strNIVEAU	asc	'NIVEAU : 0'00
+strNIVEAU	asc	'NIVEAU : 0'00	; +9 pour le niveau
 
 strILYA	asc	0D'Il y a aussi :'00
 strCOMMA	asc	','00
@@ -605,14 +605,14 @@ M$53	dfb	2,29,0
 * Les mots de passe
 *
 
-tblMP$	da	$bfff
-	da	MP$1,MP$2,MP$3,MP$4,MP$5
+tblMP$	da	MP$1,MP$2,MP$3,MP$4,MP$5
 
-MP$1	str	'ORIC1'
-MP$2	str	'ATMOS'
-MP$3	str	'GENIS'
-MP$4	str	'ECHEC'
-MP$5	str	'ARGON'
+MP$	ds	6	; le mot de passe ˆ trouver (5 + 00)
+MP$1	asc	'ORIC1'
+MP$2	asc	'ATMOS'
+MP$3	asc	'GENIS'
+MP$4	asc	'ECHEC'
+MP$5	asc	'ARGON'
 
 *
 * Le vocabulaire
@@ -878,10 +878,18 @@ str4510	asc	'Les boutons ne fonctionnent pas car l'27'ordinateur central les con
 str4520	asc	'Le systeme automatique est deregle, il met du gaz carbonique a la place de l'27'oxygene.'00
 str4530	asc	'Vous respirez un grand coup.'00
 str4540	asc	'Que voulez-vous respirer, il n'27'y a plus d'27'oxygene.'00
+
 str4550	asc	'Vous avez deux essais pour'00
 str4552	asc	'entrer le mot de passe.'00
+str4553	asc	'FAUX!'00
+str4554	asc	'Encore rate. L'27'ordinateur vous explose a la figure.'00
+str4556	asc	'Mot de passe '00
 str4558	asc	'Exact, vous etes perspicace!'00
-str4559	asc	'UIN LOI QRU ILD ESP ECU TAS ASU VIE RAL HOU MEA'00
+str4559_1	asc	'UIN LOI QRU ILD ESP ECU TAS'00
+str4559_2	asc	'ASU VIE RAL HOU MEA NOI THE'00
+str4559_3	asc	'Le mot de passe pour le'00
+str4559_4	asc	'retour est : '00
+
 str4560	asc	'C'27'est d'27'accord.'00
 str4570	asc	'Il etait temps, vous alliez mourir.'00
 str4580	asc	'Vous mourrez deshydrate.'00
@@ -895,8 +903,6 @@ str4620	asc	'La soucoupe a explose au decollage.'00
 str4630	asc	'Energie restante :'00
 str4640	asc	'Petit drole...Le chronometre est affiche en permanence'00
 str4650	asc	'Le temps que vous aviez pour votre mission est ecoule, vous avez echoue.'00
-str4655	asc	' NOI THE'00	; LOGO
-str4656	asc	'Le mot de passe pour le retour est : '00	; MP$
 str4660	asc	'Votre trajectoire est bonne, pourquoi la corriger ?'00
 str4670	asc	'Le mur au nord coulisse, vous avancez dans cette salle.'00
 str4680	asc	'Quel livre ?'00
@@ -929,7 +935,7 @@ str4900	asc	'Sur le laser, vous voyez trois boutons : jaune, rouge et bleu.'00
 str4910	asc	'Vous etes entre dans le desintegrateur de particules...'00
 str4920	asc	'Vous etes entre dans le vaisseau par le sas a l'27'ouest qui ne s'27'ouvre pas de l'27'interieur.'00
 
-str5500	asc	'Etes-vous sur (O/N) ?'00
+str5500	asc	0d'Etes-vous sur (O/N) ?'00
 
 str16000	asc	'vaisseau de poche fonce sur le soleil, '00
 str16010	asc	'Vous venez de realiser que Genius'00

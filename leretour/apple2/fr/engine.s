@@ -12,6 +12,21 @@
 * LES PRIMITIVES 8-BITS EN 16-BITS
 *-----------------------------------
 
+	mx	%11
+	
+printNIVEAU	ora	#'0'
+	sta	strNIVEAU+9
+	
+	rep	#$30
+	PushLong	#strNIVEAU
+	_DrawCString
+	sep	#$30
+	rts
+
+*-----------------------------------
+
+	mx	%00
+	
 HGR	rep	#$30
 	PushWord	#0
 	_ClearScreen
@@ -186,6 +201,29 @@ TABV	rep	#$30
 *-----------------------------------
 
 	mx	%11
+
+GOTOXY	stx	textX
+	sty	textY
+	lda	#0
+	sta	textX+1
+	sta	textY+1
+	rts
+
+*-----------------------------------
+
+	mx	%11
+	
+COUTXY	pea	^COUTXY
+	phx
+	phy
+	rep	#$30
+	_DrawString
+	sep	#$30
+	rts
+
+*-----------------------------------
+
+	mx	%11
 	
 COUT	phx
 	phy
@@ -323,7 +361,8 @@ text2shr	dw	9,19,29,39,49,59,69,79,89,99
 
 	mx	%11
 	
-WAIT	pha
+WAIT	rts		; LOGO
+	pha
 ]lp	ldal	RDVBLBAR
 	bmi	]lp
 ]lp	ldal	RDVBLBAR
@@ -391,14 +430,12 @@ L9552       INY		; on a trouvé, on gère
 
             LDX	#0	; sinon, on recopie until FF
 L957F       LDA	(dpFROM),Y
-            STA	E$+1,X
+            STA	BFE0,X
             INY	
             INX	
             CMP	#-1
             BNE	L957F
-	dex		; save len
-	stx	E$
-            rts
+	RTS
 
 *-- A - 
 
@@ -487,8 +524,15 @@ L95F0	lda	(dpFROM)	; until the end
 L95F1	lda	(dpFROM)	; on a parcouru
 	beq	L9619	; le tableau, on sort
 	jmp	L953B
-L9619       sta	E$	; on n'a rien trouvé
-	rts
+
+L9619       LDA	#$00
+	STA	BFF0
+	RTS
+
+*--- data
+
+BFE0	ds	16
+BFF0	ds	16
 
 *-----------------------------------
 * AFFICHE UNE IMAGE

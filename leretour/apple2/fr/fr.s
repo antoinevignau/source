@@ -193,7 +193,13 @@ newA$	hex	0100411246012E4931394DFF
 	hex	3C3B2E4434364BFF
 	hex	3D002E4434374BFF
 	hex	4E002E41FF
-	hex	110E440444052E4330344330354830344830354231394AFF
+
+* 1714D04D05.C04C05H04H05B19J.	=> TUBE GLAC
+* $11 = TUBE / $0E = GLACE
+* $5A = METT / $11 = TUBE
+*	hex	110E440444052E4330344330354830344830354231394AFF
+	hex	5A11440444052E4330344330354830344830354231394AFF
+
 	hex	502144072E4330374830374230364AFF
 	hex	3F002E443438FF
 	hex	40002E4434394EFF
@@ -238,260 +244,6 @@ newA$	hex	0100411246012E4931394DFF
 	hex	00
 
 *
-* Les actions
-*
-
-AA	=	155
-
-tblAL$	dfb	$bd
-	dfb	<A$1,<A$2,<A$3,<A$4,<A$5,<A$6,<A$7,<A$8,<A$9,<A$10
-	dfb	<A$11,<A$12,<A$13,<A$14,<A$15,<A$16,<A$17,<A$18,<A$19,<A$20
-	dfb	<A$21,<A$22,<A$23,<A$24,<A$25,<A$26,<A$27,<A$28,<A$29,<A$30
-	dfb	<A$31,<A$32,<A$33,<A$34,<A$35,<A$36,<A$37,<A$38,<A$39,<A$40
-	dfb	<A$41,<A$42,<A$43,<A$44,<A$45,<A$46,<A$47,<A$48,<A$49,<A$50
-	dfb	<A$51,<A$52,<A$53,<A$54,<A$55,<A$56,<A$57,<A$58,<A$59,<A$60
-	dfb	<A$61,<A$62,<A$63,<A$64,<A$65,<A$66,<A$67,<A$68,<A$69,<A$70
-	dfb	<A$71,<A$72,<A$73,<A$74,<A$75,<A$76,<A$77,<A$78,<A$79,<A$80
-	dfb	<A$81,<A$82,<A$83,<A$84,<A$85,<A$86,<A$87,<A$88,<A$89,<A$90
-	dfb	<A$91,<A$92,<A$93,<A$94,<A$95,<A$96,<A$97,<A$98,<A$99,<A$100
-	dfb	<A$101,<A$102,<A$103,<A$104,<A$105,<A$106,<A$107,<A$108,<A$109,<A$110
-	dfb	<A$111,<A$112,<A$113,<A$114,<A$115,<A$116,<A$117,<A$118,<A$119,<A$120
-	dfb	<A$121,<A$122,<A$123,<A$124,<A$125,<A$126,<A$127,<A$128,<A$129,<A$130
-	dfb	<A$131,<A$132,<A$133,<A$134,<A$135,<A$136,<A$137,<A$138,<A$139,<A$140
-	dfb	<A$141,<A$142,<A$143,<A$144,<A$145,<A$146,<A$147,<A$148,<A$149,<A$150
-	dfb	<A$151,<A$152,<A$153,<A$154,<A$155	
-
-tblAH$	dfb	$bd
-	dfb	>A$1,>A$2,>A$3,>A$4,>A$5,>A$6,>A$7,>A$8,>A$9,>A$10
-	dfb	>A$11,>A$12,>A$13,>A$14,>A$15,>A$16,>A$17,>A$18,>A$19,>A$20
-	dfb	>A$21,>A$22,>A$23,>A$24,>A$25,>A$26,>A$27,>A$28,>A$29,>A$30
-	dfb	>A$31,>A$32,>A$33,>A$34,>A$35,>A$36,>A$37,>A$38,>A$39,>A$40
-	dfb	>A$41,>A$42,>A$43,>A$44,>A$45,>A$46,>A$47,>A$48,>A$49,>A$50
-	dfb	>A$51,>A$52,>A$53,>A$54,>A$55,>A$56,>A$57,>A$58,>A$59,>A$60
-	dfb	>A$61,>A$62,>A$63,>A$64,>A$65,>A$66,>A$67,>A$68,>A$69,>A$70
-	dfb	>A$71,>A$72,>A$73,>A$74,>A$75,>A$76,>A$77,>A$78,>A$79,>A$80
-	dfb	>A$81,>A$82,>A$83,>A$84,>A$85,>A$86,>A$87,>A$88,>A$89,>A$90
-	dfb	>A$91,>A$92,>A$93,>A$94,>A$95,>A$96,>A$97,>A$98,>A$99,>A$100
-	dfb	>A$101,>A$102,>A$103,>A$104,>A$105,>A$106,>A$107,>A$108,>A$109,>A$110
-	dfb	>A$111,>A$112,>A$113,>A$114,>A$115,>A$116,>A$117,>A$118,>A$119,>A$120
-	dfb	>A$121,>A$122,>A$123,>A$124,>A$125,>A$126,>A$127,>A$128,>A$129,>A$130
-	dfb	>A$131,>A$132,>A$133,>A$134,>A$135,>A$136,>A$137,>A$138,>A$139,>A$140
-	dfb	>A$141,>A$142,>A$143,>A$144,>A$145,>A$146,>A$147,>A$148,>A$149,>A$150
-	dfb	>A$151,>A$152,>A$153,>A$154,>A$155
-
-A$1	str	"A18F01.I19M."
-A$2	str	"A18E01.I11M."
-A$3	str	"A18.D03N."
-A$4	str	"A18.D03N."
-A$5	str	"E17.D85K."
-A$6	str	"A02.D04N."
-A$7	str	"A49.D05K."
-A$8	str	"A46.D06K."
-A$9	str	"B01.B01J."
-A$10	str	"B03.B03J."
-A$11	str	"B05.B05J."
-A$12	str	"B06.B06J."
-A$13	str	"B08.B08J."
-A$14	str	"B09.B09J."
-A$15	str	"B10.B10J."
-A$16	str	"B11.B11J."
-A$17	str	"B12.B12J."
-A$18	str	"B14.B14J."
-A$19	str	"B15.D07J."
-A$20	str	"A46F09.E09B16J."
-A$21	str	"B17.B17D08K."
-A$22	str	"B18.B18J."
-A$23	str	"E17B02.B02J."
-A$24	str	"B02.D09E17B02M."
-A$25	str	"B07.B07J."
-A$26	str	".C02J."
-A$27	str	".C01J."
-A$28	str	".C03J."
-A$29	str	".C14J."
-A$30	str	"B07.C07J."
-A$31	str	".C06J."
-A$32	str	"A21.D89K."
-A$33	str	".C08J."
-A$34	str	".C09J."
-A$35	str	".C10J."
-A$36	str	".C11J."
-A$37	str	"D13.O12C13H13J."
-A$38	str	".C12J."
-A$39	str	".C16J."
-A$40	str	".C17J."
-A$41	str	".C18J."
-A$42	str	"B04.B04J."
-A$43	str	"B19.C19H19B05B04J."
-A$44	str	"D04.C04J."
-A$45	str	"D19.C19H19B05O04J."
-A$46	str	"D14.D12N."
-A$47	str	"D14.D12N."
-A$48	str	"D14.D12N."
-A$49	str	"A20.D13N."
-A$50	str	"B11.D14N."
-A$51	str	"A15.E00D16K."
-A$52	str	"C07.D17K."
-A$53	str	".D18N."
-A$54	str	"D08.D19N."
-A$55	str	"D08.D19N."
-A$56	str	"D18.D20N."
-A$57	str	"A18.D21N."
-A$58	str	"B16.B16J."
-A$59	str	".D15K."
-A$60	str	"A49.D05K."
-A$61	str	"A46.D05K."
-A$62	str	".D22K."
-A$63	str	".D23N."
-A$64	str	"A15.D24K."
-A$65	str	"A15.D25K."
-A$66	str	"A30.I53M."
-A$67	str	"A30.I53M."
-A$68	str	"A44.D27K."
-A$69	str	"A44.D27K."
-A$70	str	"A53.I30M."
-A$71	str	"A44.D26K."
-A$72	str	"A44.D28K."
-A$73	str	"A44.D29K."
-A$74	str	"A44.D30K."
-A$75	str	"A44.D31K."
-A$76	str	"A44.D32K."
-A$77	str	"A15B06.C06H06B07J."
-A$78	str	"A15B07.D33K."
-A$79	str	"B19.B19J."
-A$80	str	"B19.C19J."
-A$81	str	".C05J."
-A$82	str	"D01.D34N."
-A$83	str	"D01I49I46.D35K."
-A$84	str	"D01A49.D36I46M."
-A$85	str	"D01A46.D36I49M."
-A$86	str	"D01I14I20I23I29I38.D35K."
-A$87	str	"D01A14.D37F04M."
-A$88	str	"D01A20.D37F05M."
-A$89	str	"D01A23.D37F03M."
-A$90	str	"D01A29.D37F06M."
-A$91	str	"D01.D37F07M."
-A$92	str	"B03F18.G0104E18J."
-A$93	str	"B03.D33K."
-A$94	str	"D13.D33K."
-A$95	str	"D12.C12H12B13J."
-A$96	str	"B09F11.D38K."
-A$97	str	"B09.D39K."
-A$98	str	"B09E11.F11J."
-A$99	str	"B09F11.E11J."
-A$100	str	"D17.D40K."
-A$101	str	"D17.D40K."
-A$102	str	"D17.J."
-A$103	str	"D13.C13H13B12J."
-A$104	str	"D10I04I17I22I48I51.D35K."
-A$105	str	"D10.D41K."
-A$106	str	".D42K."
-A$107	str	".D43K."
-A$108	str	".D44K."
-A$109	str	".D45K."
-A$110	str	".D46K."
-A$111	str	".D46K."
-A$112	str	".D47K."
-A$113	str	".A."
-A$114	str	"D04D05.C04C05H04H05B19J."
-A$115	str	"D07.C07H07B06J."
-A$116	str	".D48."
-A$117	str	".D49N."
-A$118	str	".D50K."
-A$119	str	"A34E12.D51K."
-A$120	str	"A34E12.D51K."
-A$121	str	"A34.D52N."
-A$122	str	"A34.E13D57K."
-A$123	str	"E12.D53E14G0205K."
-A$124	str	"F12I50F13.D54N."
-A$125	str	"F12E13.D53E14G0205K."
-A$126	str	"F12A50.D53E14G0205K."
-A$127	str	"A21E15.D33K."
-A$128	str	"A21.E15D55G0407K."
-A$129	str	"A21E15.F15G0400D56M."
-A$130	str	"A21.D53K."
-A$131	str	"E16A21.F16D57K."
-A$132	str	"A21.D66K."
-A$133	str	".D59."
-A$134	str	".D60."
-A$135	str	"A29D16F12.D61."
-A$136	str	"A29F12.D86N."
-A$137	str	"A29.D62N."
-A$138	str	"A44.D68K."
-A$139	str	".D64K."
-A$140	str	".D64K."
-A$141	str	".D63K."
-A$142	str	".D63K."
-A$143	str	"D16.D69K."
-A$144	str	"D16.D69K."
-A$145	str	"A46.D67I51M."
-A$146	str	"A46.D70K."
-A$147	str	"B09.D71K."
-A$148	str	"A50.D72K."
-A$149	str	"B01.D90K."
-A$150	str	"A08.D91N."
-A$151	str	"A53.I30M."
-A$152	str	".M."
-A$153	str	".D73K."
-A$154	str	".D87K."
-A$155	str	".D88K"
-
-tblA1	dfb	$bd
-	dfb	01,03,01,03,25,02,02,04,10,10
-	dfb	10,10,10,10,10,10,10,10,10,10
-	dfb	10,10,10,10,10,11,11,11,11,11
-	dfb	11,25,11,11,11,11,11,11,11,11
-	dfb	11,10,10,11,11,05,50,75,15,52
-	dfb	40,40,40,42,52,52,12,10,40,15
-	dfb	15,15,15,15,67,15,25,15,67,67
-	dfb	25,82,28,28,28,28,34,34,10,11
-	dfb	11,20,20,20,20,20,20,20,20,20
-	dfb	20,52,52,50,50,52,52,36,36,75
-	dfb	50,51,51,52,52,55,56,57,58,59
-	dfb	60,61,78,17,80,63,64,20,20,20
-	dfb	20,20,69,69,69,69,71,71,86,86
-	dfb	87,87,84,85,37,37,37,28,62,60
-	dfb	81,60,36,82,71,25,25,25,25,01
-	dfb	25,25,25,11,60
-	
-tblA2	dfb	$bd
-	dfb	00,00,00,00,00,00,00,00,19,18
-	dfb	14,33,42,43,54,53,45,46,47,16
-	dfb	48,49,41,41,33,41,19,18,46,33
-	dfb	33,74,42,43,54,53,45,45,16,48
-	dfb	49,17,17,17,17,46,46,46,47,53
-	dfb	35,35,35,00,42,49,76,16,00,77
-	dfb	77,77,17,68,68,73,73,26,26,73
-	dfb	26,83,30,31,32,29,33,33,14,14
-	dfb	14,23,22,22,22,21,21,21,21,21
-	dfb	21,18,18,45,45,43,43,44,44,48
-	dfb	48,48,45,54,54,00,00,00,00,00
-	dfb	59,00,00,14,33,00,00,24,66,65
-	dfb	66,65,70,70,70,70,74,74,74,74
-	dfb	88,88,00,00,38,38,38,27,00,62
-	dfb	00,81,16,16,13,13,43,72,19,00
-	dfb	39,39,00,89,00
-
-*
-* Les conditions
-*
-
-*C	=	10
-
-tblC$	da	$bdbd
-	da	C$1,C$2,C$3,C$4,C$5,C$6,C$7,C$8,C$9,C$10
-	
-C$1	str	""
-C$2	str	""
-C$3	str	""
-C$4	str	""
-C$5	str	""
-C$6	str	""
-C$7	str	""
-C$8	str	""
-C$9	str	""
-C$10	str	""
-
-*
 * Les objets dans les salles
 *
 
@@ -505,9 +257,9 @@ O	dfb	$bd
 	dfb	40,33,41,53,43,10,00,21,22,26
 	dfb	01,06,00,17,20,00,47,19,00
 
-refO$	da	$bdbd
-	da	O$1,O$2,O$3,O$4,O$5,O$6,O$7,O$8,O$9,O$10
-	da	O$11,O$12,O$13,O$14,O$15,O$16,O$17,O$18,O$19
+*refO$	da	$bdbd
+*	da	O$1,O$2,O$3,O$4,O$5,O$6,O$7,O$8,O$9,O$10
+*	da	O$11,O$12,O$13,O$14,O$15,O$16,O$17,O$18,O$19
 
 tblO$	da	$bdbd
 	da	O$1,O$2,O$3,O$4,O$5,O$6,O$7,O$8,O$9,O$10
@@ -669,7 +421,7 @@ tblV	dfb	$bd
 	dfb	68,69,69,70,70,71,72,73,73,74
 	dfb	75,76,77,77,78,78,79,80,80,80
 	dfb	81,81,82,83,83,84,84,84,85,85
-	dfb	85,86,87,87,88,88,89,89,00
+	dfb	85,86,87,87,88,88,89,89,90	; last was 00, now 90
 	dfb	200
 	
 V$1	str	'N'
@@ -810,7 +562,7 @@ V$135	str	'DIRE'
 V$136	str	'TRAJ'
 V$137	str	'TOUT'
 V$138	str	'TOTA'
-V$139	str	'    '
+V$139	str	'RANG'	; RANGER (TUBE DANS GLACE => RANG TUBE)
 
 V$200	str	'TIME'
 
@@ -898,7 +650,10 @@ str4600	asc	''00
 str4610	asc	'Le sas se referme derriere vous, le tableau de controle s'27'allume et l'27'ordinateur de bord vous demande le mot de passe pour le retour ?'00
 str4615	asc	'Le vaisseau de secours s'27'eloigne, au loin vous voyez Genius qui pleure derriere un hublot'00
 str4616	asc	'          VOUS AVEZ GAGNE'00
-str4618	asc	'Mais, que se passe-t-il,vous avez du vous tromper de mot de passe, votre '00
+str4618_1	asc	'Mais, que se passe-t-il,vous avez du vous tromper de mot de passe, votre vaisseau de poche fonce sur le soleil.'00
+str4618_2	asc	'Vous venez de realiser que Genius pleurait de JOIE...!'00
+str4618_3	asc	'Comme je le pensais , vous vous etes stupidement fait avoir, et votre cadavre (ou ce qu'27'il en reste) reposera a jamais dans l'27'espace...'00
+
 str4620	asc	'La soucoupe a explose au decollage.'00
 str4630	asc	'Energie restante :'00
 str4640	asc	'Petit drole...Le chronometre est affiche en permanence'00
@@ -933,14 +688,9 @@ str4890	asc	'Il y a effectivement un ordinateur parmi le tableau de controle.'00
 str4891	asc	'L'27'ordinateur n'27'est pas en fonction.'00
 str4900	asc	'Sur le laser, vous voyez trois boutons : jaune, rouge et bleu.'00
 str4910	asc	'Vous etes entre dans le desintegrateur de particules...'00
-str4920	asc	'Vous etes entre dans le vaisseau par le sas a l'27'ouest qui ne s'27'ouvre pas de l'27'interieur.'00
+str4920	asc	'Vous etes entre dans le vaisseau par le sas a l'27'ouest qui ne s'27'ouvre pas de'0d'l'27'interieur.'00
 
 str5500	asc	0d'Etes-vous sur (O/N) ?'00
-
-str16000	asc	'vaisseau de poche fonce sur le soleil, '00
-str16010	asc	'Vous venez de realiser que Genius'00
-str16020	asc	'pleurait de JOIE...!'00
-str18005	asc	'Comme je le pensais , vous vous etes stupidement fait avoir, et votre cadavre (ou ce qu'27'il en reste) reposera a jamais dans l'27'espace...'00
 
 str19050	asc	'   Merci d'27'avoir essaye...!'00
 str19060	asc	'  Reveillez-vous , c'27'est fini !'00

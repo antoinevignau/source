@@ -60,8 +60,8 @@ idxTIMER	=	200
 	eom
 
 @gotoxy	mac
-	ldx	#>]1
-	ldy	#<]1
+	ldx	#]1
+	ldy	#]2
 	jsr	GOTOXY
 	eom
 
@@ -93,18 +93,6 @@ PLAY	sep	#$30
 	sta	CV
 	jsr	TABV	; on a 20 lignes de 10 caractères de haut
 
-*	@print	#strCOMMANDE	; commande avec energie
-*	jsr	GETLN1
-*
-*	ldal	$c034
-*	inc
-*	stal	$c034
-*	
-*]lp	ldal	$c000
-*	bpl	]lp
-*	stal	$c010
-*	jmp	QUIT
-	
 *-----------------------------------
 * DU BASIC A L'ASSEMBLEUR (BEURK)
 *-----------------------------------
@@ -266,7 +254,7 @@ PLAY	sep	#$30
 	beq	:310
 
 	@print	#strRETURN
-
+	
 *-----------------------------------
 * 500 - ACCEPTATION COMMANDE
 *-----------------------------------
@@ -292,6 +280,8 @@ PLAY	sep	#$30
 	jmp	:4820	; mort par contamination radioactive
 
 :520	jmp	:3500
+
+*-----------
 
 :530	@print	#strCOMMANDE	; commande avec energie
 
@@ -367,236 +357,7 @@ PLAY	sep	#$30
 	
 :1040	@print	#strEXCLAM
 	jmp	:500
-		
-*	lda	E$
-*	bne	:1700
-*
-*:1000	lda	#0
-*	sta	NL
-*
-*:1100	inc	NL
-*	
-*	lda	T
-*	beq	:1150
-*
-*	lda	NL	; E$=C$(NL)
-*	asl
-*	tax
-*	lda	tblC$,x
-*	sta	LINNUM
-*	lda	tblC$+1,x
-*	sta	LINNUM+1
-*
-*	ldy	#0
-*	lda	(LINNUM),y
-*	tax
-*]lp	lda	(LINNUM),y
-*	sta	E$,y
-*	iny
-*	dex
-*	bpl	]lp
-*	jmp	:1400
-*
-*:1150	lda	NL
-*	cmp	#AA
-*	bcc	:1200
-*	beq	:1200
-*
-*	lda	A1
-*	cmp	#1
-*	bne	:1170
-*	jmp	:500
-*
-*:1170	@print	#strIMPOSSIBLE
-*
-*	lda	MO$1	; les directions
-*	cmp	#9
-*	bcs	:1190
-*	
-*	@print	#strCECHEMIN
-*	
-*:1190	@print	#strEXCLAM
-*	jmp	:500
-*
-*:1200	ldx	NL
-*	lda	tblA1,x
-*	cmp	MO$1
-*	beq	:1210
-*	jmp	:1100
-*
-*:1210	lda	tblA2,x
-*	beq	:1230
-*	cmp	MO$2
-*	beq	:1230
-*	jmp	:1100
-*	
-*:1230	lda	tblAL$,x
-*	sta	LINNUM
-*	lda	tblAH$,x
-*	sta	LINNUM+1
-*
-*	ldy	#0
-*	lda	(LINNUM),y
-*	tax
-*]lp	lda	(LINNUM),y
-*	sta	E$,y
-*	iny
-*	dex
-*	bpl	]lp
-*	
-*-----------------------------------
-* 1400 - CONDITIONS
-*-----------------------------------
-*
-*:1400	lda	#1
-*	sta	E
-*	
-*:1420	ldx	E
-*	lda	E$,x
-*	cmp	#"."
-*	bne	:1430
-*	jmp	:1700	; do actions
-*
-*:1430	sec
-*	sbc	#"A"
-*	asl
-*	pha
-*	
-*	lda	#0
-*	sta	OK
-*	
-*	lda	E$+1,x
-*	sec
-*	sbc	#"0"
-*	tay
-*	lda	tblD2H,y
-*	sta	N
-*
-*	lda	E$+2,x
-*	sec
-*	sbc	#"0"
-*	clc
-*	adc	N
-*	sta	N
-*
-*	pla
-*	tax
-*	lda	tbl1500,x
-*	sta	:1450+1
-*	lda	tbl1500+1,x
-*	sta	:1450+2
-*	
-*:1450	jsr	$bdbd
-*	
-*	lda	OK
-*	bne	:1470
-*	jmp	:1100
-*
-*:1470	lda	E
-*	clc
-*	adc	#3
-*	sta	E
-*	jmp	:1420
-*
-*--------
-*
-*tbl1500	da	:1500,:1510,:1520,:1530,:1540
-*	da	:1550,:1560,:1570,:1580
-*	
-*-------- A
-*
-*:1500	lda	N
-*	cmp	SALLE
-*	bne	:1505
-*	lda	#1
-*	sta	OK
-*:1505	rts
-*	
-*-------- B
-*
-*:1510	ldx	N
-*	lda	O,x
-*	cmp	#-1
-*	beq	:1515
-*	cmp	SALLE
-*	bne	:1516
-*:1515	lda	#1
-*	sta	OK
-*:1516	rts
-*	
-*-------- C
-*
-*:1520	ldx	N
-*	lda	O,x
-*	cmp	SALLE
-*	bne	:1525
-*	rts
-*:1525	cmp	#-1
-*	bne	:1527
-*	rts
-*:1527	lda	#1
-*	sta	OK
-*	rts
-*
-*-------- D
-*
-*:1530	ldx	N
-*	lda	O,x
-*	cmp	#-1
-*	bne	:1535
-*	lda	#1
-*	sta	OK
-*:1535	rts
-*
-*-------- E
-*
-*:1540	ldx	N
-*	lda	P,x
-*	cmp	#1
-*	bne	:1545
-*	lda	#1
-*	sta	OK
-*:1545	rts
-*
-*-------- F
-*
-*:1550	ldx	N
-*	lda	P,x
-*	bne	:1555
-*	lda	#1
-*	sta	OK
-*:1555	rts
-*
-*-------- G
-*
-*:1560	ldx	N
-*	lda	C,x
-*	cmp	#1
-*	bne	:1565
-*	lda	#1
-*	sta	OK
-*:1565	rts
-*
-*-------- H
-*
-*:1570	rts
-*	lda	VBL	; LOGO - Use a better RND?
-*	eor	VERTCNT
-*	cmp	N
-*	bcs	:1575
-*	lda	#1
-*	sta	OK
-*:1575	rts
-*
-*-------- I
-*
-*:1580	lda	N
-*	cmp	SALLE
-*	beq	:1585
-*	lda	#1
-*	sta	OK
-*:1585	rts
-*
+
 *-----------------------------------
 * 1700 - ACTIONS
 *-----------------------------------
@@ -614,22 +375,21 @@ PLAY	sep	#$30
 :1710	ldx	E
 	lda	E$,x
 	sec
-	sbc	#"A"
-	asl
+	sbc	#'A'
 	pha		; LI
 
 	lda	E$+1,x
-*	cmp	#"."
-*	beq	:1740
+	cmp	#'.'
+	beq	:1740
 	sec
-	sbc	#"0"
+	sbc	#'0'
 	tay
 	lda	tblD2H,y
 	sta	N
 
 	lda	E$+2,x
 	sec
-	sbc	#"0"
+	sbc	#'0'
 	clc
 	adc	N
 	sta	N
@@ -641,7 +401,8 @@ PLAY	sep	#$30
 	cmp	#190	; 255-65 = 190 = la fin
 	beq	:1760
 
-:1745	tax
+:1745	asl
+	tax
 	lda	tbl1800,x
 	sta	:1750+1
 	lda	tbl1800+1,x
@@ -803,35 +564,6 @@ tbl1800	da	:1800,:1900
 
 *-------- G
 
-*:2400	ldx	N
-*	lda	tblAL$,x
-*	sta	LINNUM
-*	lda	tblAH$,x
-*	sta	LINNUM+1
-*	
-*	ldy	E	; +3
-*	iny
-*	iny
-*	sty	E
-*	iny
-*	lda	(LINNUM),y
-*	sec
-*	sbc	#"0"
-*	tax
-*	lda	tblD2H,x
-*	
-*	ldx	N
-*	sta	C,x
-*	
-*	iny
-*	lda	(LINNUM),y
-*	sec
-*	sbc	#"0"
-*	clc
-*	adc	C,x
-*	sta	C,x
-*	rts
-
 :2400	ldy	E	; +3
 	iny
 	iny
@@ -839,7 +571,7 @@ tbl1800	da	:1800,:1900
 	iny
 	lda	E$,y
 	sec
-	sbc	#"0"
+	sbc	#'0'
 	tax
 	lda	tblD2H,x
 	
@@ -849,7 +581,7 @@ tbl1800	da	:1800,:1900
 	iny
 	lda	E$,y
 	sec
-	sbc	#"0"
+	sbc	#'0'
 	clc
 	adc	C,x
 	sta	C,x
@@ -861,36 +593,6 @@ tbl1800	da	:1800,:1900
 	lda	#0
 	sta	O,x
 	rts
-
-*:2500	ldx	N
-*	lda	O,x
-*	cmp	#-1
-*	bne	:2510
-*	
-*	dec	S
-*
-*:2510	lda	#0
-*	sta	O,x
-*	rts
-*
-*:2500	lda	N	; exchange object
-*	asl		; do it here on pointers
-*	tax		; not on strings
-*	lda	tblO$,x
-*	pha
-*	lda	tblO$+1,x
-*	pha
-*	
-*	lda	tblO$+2,x
-*	sta	tblO$,x
-*	lda	tblO$+3,x
-*	sta	tblO$+1,x
-*	
-*	pla
-*	sta	tblO$+3,x
-*	pla
-*	sta	tblO$+2,x
-*	rts
 
 *-------- I
 
@@ -979,9 +681,11 @@ tbl1800	da	:1800,:1900
 	lda	O,x
 	cmp	#-1
 	bne	:3516
+
+:3512	ldx	#8
+	dec	C,x
 	
 :3514	ldx	#8
-	dec	C,x
 	lda	C,x
 	bne	:3516
 	jmp	:4740
@@ -989,15 +693,16 @@ tbl1800	da	:1800,:1900
 :3516	ldx	#1
 	lda	C,x
 	beq	:3534
-	sec
-	sbc	#1
-	sta	C,x
+	
+:3518	dec	C,x
+
+:3520	lda	C,x
 	cmp	#1
 	bcs	:3534
 
 :3522	ldx	#3
 	lda	O,x
-	cmp	#255
+	cmp	#-1
 	bne	:3524
 	jmp	:4750
 
@@ -1017,7 +722,7 @@ tbl1800	da	:1800,:1900
 	ldx	#$13
 	lda	O,x
 	cmp	#51
-	bne	:3530
+	beq	:3530
 	jmp	:4780
 
 :3530	lda	SALLE
@@ -1040,7 +745,7 @@ tbl1800	da	:1800,:1900
 	lda	P,x
 	beq	:3537
 
-	ldx	#2
+:3535	ldx	#2
 	dec	C,x
 	lda	C,x
 	cmp	#1
@@ -1050,14 +755,11 @@ tbl1800	da	:1800,:1900
 	lda	#0
 	sta	P,x
 
-:3537	ldx	#$c
+:3537	ldx	#$c	; LOGO - It was a PEEK not a DEEK
 	lda	P,x
-	beq	:3538
-	bmi	:3538
-	lda	P+1,x
-	beq	:3538
-	bpl	:3540
-
+	cmp	#0
+	bcs	:3540
+	
 :3538	lda	SALLE
 	cmp	#50
 	beq	:3540
@@ -1078,7 +780,7 @@ tbl1800	da	:1800,:1900
 	lda	C,x
 	beq	:3548
 
-:3546	ldx	#6
+:3546	
 	dec	C,x
 	lda	C,x
 	bne	:3548
@@ -1103,7 +805,7 @@ tbl1800	da	:1800,:1900
 	lda	C,x
 	beq	:3556
 
-:3554	ldx	#4
+:3554
 	dec	C,x
 	lda	C,x
 	cmp	#1
@@ -1205,7 +907,8 @@ tbl4000	da	$bdbd,:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
 :4250	@print	#str4250
 	rts
 
-:4260	@draw	#57
+:4260	jsr	setHGR
+	@draw	#57
 	lda	#44
 	sta	SALLE
 	rts
@@ -1301,32 +1004,39 @@ tbl4000	da	$bdbd,:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
 :4540	@print	#str4540
 	rts
 
-:4550	@draw	#56	; LOGO
+:4550	jsr	setHGR
+	@draw	#56	; LOGO
 	jsr	:12020
 	lda	#21
 	sta	SALLE
 
-	@gotoxy	#43;#21-8
+	@gotoxy	#43;#21	; Vous avez deux essais pour
 	@printxy	#str4550
-	@gotoxy	#43;#29-8
+	@gotoxy	#43;#29	; entrer le mot de passe
 	@printxy	#str4552
+	
+	@gotoxy	#43;#37	; entrer le mot de passe
 	jsr	:4556_input	; saisie 1
 	bcc	:4554	; ok
+	@gotoxy	#43;#45	; entrer le mot de passe
 	@print	#str4553	; FAUX!
+
+	@gotoxy	#43;#37	; entrer le mot de passe
 	jsr	:4556_input	; saisie 2
 	bcc	:4554	; ok
+	@gotoxy	#43;#45	; entrer le mot de passe
 	@print	#str4554	; encore faux
 	jmp	:perdu	; ciao
 
-:4554	@gotoxy	#43;#42-8
+:4554	@gotoxy	#43;#56	; 42
 	@printxy	#str4558
-	@gotoxy	#43;#56-8
+	@gotoxy	#43;#64	; 56
 	@printxy	#str4559_1
-	@gotoxy	#43;#67-8
+	@gotoxy	#43;#72	; 67
 	@printxy	#str4559_2
-	@gotoxy	#43;#80-8
+	@gotoxy	#43;#80
 	@printxy	#str4559_3
-	@gotoxy	#43;#88-8
+	@gotoxy	#43;#88
 	@printxy	#str4559_4
 	
 	ldx	#>MP$
@@ -1382,11 +1092,30 @@ MDP$	asc	'MANOIR'
 
 :4610	@print	#str4610
 	jsr	GETLN1
+	cpx	#5
+	bcc	:4615
+	cpx	#6
+	bcs	:4615
 	jsr	rewriteSTRING
 
-	@print	#str4615
+	ldx	#5-1
+]lp	lda	TEXTBUFFER,x
+	cmp	MP$,x
+	bne	:4615
+	dex
+	bpl	]lp
+	jmp	:gagne
+
+:4615	@print	#str4615
+	@explode
 	@print	#str4616
-	rts
+	@wait	#400
+	@print	#str4618_1
+	@wait	#200
+	@print	#str4618_2
+	@wait	#200
+	@print	#str4618_3
+	jmp	:perdu
 
 :4620	@print	#str4620
 	rts
@@ -1418,6 +1147,7 @@ MDP$	asc	'MANOIR'
 
 :4710	lda	SALLE
 	pha
+	jsr	setHGR
 	@draw	#54
 	pla
 	sta	SALLE
@@ -1425,6 +1155,7 @@ MDP$	asc	'MANOIR'
 
 :4720	lda	SALLE
 	pha
+	jsr	setHGR
 	@draw	#55
 	pla
 	sta	SALLE
@@ -1756,6 +1487,25 @@ initALL
 	ldx	#$c
 	sta	P,x
 
+*--- Le mot de passe
+
+]lp	jsr	RND
+	and	#%0000_0111	; 7
+	cmp	#%0000_0101	; 5
+	bcs	]lp
+	asl
+	tax
+	lda	tblMP$,x
+	sta	LINNUM
+	lda	tblMP$+1,x
+	sta	LINNUM+1
+	
+	ldy	#5-1
+]lp	lda	(LINNUM),y
+	sta	MP$,y
+	dey
+	bpl	]lp
+
 *---
 
 	ldx	#nbO	; reset object table
@@ -1764,11 +1514,11 @@ initALL
 	dex
 	bpl	]lp
 	
-	ldx	#nbO*2	; reset object table
-]lp	lda	refO$,x
-	sta	tblO$,x
-	dex
-	bpl	]lp
+*	ldx	#nbO*2	; reset object table
+*]lp	lda	refO$,x
+*	sta	tblO$,x
+*	dex
+*	bpl	]lp
 	rts
 
 *-----------------------------------
@@ -1792,9 +1542,6 @@ initALL
 *-----------------------------------
 
 :perdu	@explode
-	@draw	#3
-	@wait	#400
-	
 	jsr	setTEXTFULL
 	@print	#strPERDU
 *	@play	#zikPERDU
@@ -1815,8 +1562,6 @@ initALL
 *-----------------------------------
 
 :gagne
-	@draw	#6
-	@wait	#400
 	jsr	setTEXTFULL
 	@print	#strGAGNE
 *	@play	#zikINTRODUCTION
@@ -1979,8 +1724,10 @@ waitMS	lda	#0	; skip if not zero
 	
 	sty	LINNUM
 doW1	ldy	LINNUM
-doW2	lda	#60	; 1/100ème de seconde
-	jsr	WAIT
+doW2	ldal	RDVBLBAR
+	bpl	doW2
+*doW3	ldal	RDVBLBAR
+*	bmi	doW3
 	dey
 	bne	doW2
 	dex

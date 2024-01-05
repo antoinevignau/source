@@ -32,6 +32,7 @@
 KBD	=	$e0c000
 KBDSTROBE	=	$e0c010
 RDVBLBAR	=	$e0c019
+VERTCNT	=	$e0c02e
 GSOS	=	$e100a8
 
 *-----------------------
@@ -87,9 +88,9 @@ ICI	phk
 	tdc
 	sta	myDP
 
-	lda	#TEXTBUFFER
+	lda	#tblMP$
 	stal	$300
-	lda	#^TEXTBUFFER
+	lda	#^tblMP$
 	stal	$302
 	
 	_TLStartUp

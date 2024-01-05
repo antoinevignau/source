@@ -14,10 +14,23 @@
 
 	mx	%11
 	
+BORDER	ldal	$c034
+	inc
+	stal	$c034
+	rts
+
+*-----------------------------------
+	
+	mx	%11
+	
 printNIVEAU	ora	#'0'
 	sta	strNIVEAU+9
 	
 	rep	#$30
+	
+	PushWord	#250
+	PushWord	#10
+	_MoveTo
 	PushLong	#strNIVEAU
 	_DrawCString
 	sep	#$30
@@ -39,7 +52,9 @@ RDKEY	phx
 	jsr	CURSOR	; shows the cursor
 	rep	#$30
 
-]lp	pha
+]lp	inc	VBLCounter0	; for RND
+
+	pha
 	PushWord #%00000000_00001000
 	PushLong #taskREC
 	_GetNextEvent
@@ -165,8 +180,7 @@ CURSOR_ERASE
 
 	mx	%11
 	
-CURSOR
-	lda	CH
+CURSOR	lda	CH
 	pha
 	lda	CV
 	pha
@@ -207,6 +221,12 @@ GOTOXY	stx	textX
 	lda	#0
 	sta	textX+1
 	sta	textY+1
+	
+	rep	#$30
+	PushWord	textX
+	PushWord	textY
+	_MoveTo
+	sep	#$30
 	rts
 
 *-----------------------------------
@@ -217,7 +237,7 @@ COUTXY	pea	^COUTXY
 	phx
 	phy
 	rep	#$30
-	_DrawString
+	_DrawCString
 	sep	#$30
 	rts
 
@@ -360,26 +380,25 @@ text2shr	dw	9,19,29,39,49,59,69,79,89,99
 *-----------------------------------
 
 	mx	%11
-	
-WAIT	rts		; LOGO
-	pha
-]lp	ldal	RDVBLBAR
-	bmi	]lp
-]lp	ldal	RDVBLBAR
-	bpl	]lp
-	pla
-	rts
 
-*-----------------------------------
-
-	mx	%11
+*RND	rep	#$30
+*	PushWord	#0
+*	_Random
+*	pla
+*	sep	#$30
+*	rts
 
 RND	rep	#$30
-	PushWord	#0
-	_Random
-	pla
+	ldal	VERTCNT
+	xba
+	clc
+	adc	VBLCounter0
+	sta	VBLCounter0
+	and	#$ff
 	sep	#$30
 	rts
+
+VBLCounter0	ds	2
 
 *-----------------------------------
 * RECOPIE ACTION A$
@@ -495,13 +514,12 @@ L95D0       TAX
 
 *-- H - RANDOM
 
-L95DB	jmp	L95EF	; LOGO - Use the QDII RND
-
-*	STA   $7C
-*           LDA   $0306
-*           CMP   $7C
-*           BCS   L95EF
-*           JMP   L9552
+L95DB	STA	$7C
+*	LDA	$0306
+	jsr	RND
+	CMP	$7C
+	BCS	L95EF
+	JMP	L9552
 
 *-- I - 
 

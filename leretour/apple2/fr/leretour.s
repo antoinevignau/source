@@ -13,7 +13,7 @@
 *-----------------------------------
 
 CH	=	$24	; cursor horizontal position 
-CV	=	$25	; cursor vertical position 
+CV	=	CH+2	; cursor vertical position 
 LINNUM	=	$50	; result from GETADR
 
 textX	=	$30	; les X/Y pour afficher les 
@@ -26,7 +26,6 @@ chrRA	=	$15
 chrDEL	=	$7f
 chrRET	=	$0d
 chrSPC	=	$20
-*TEXTBUFFER = 	$200
 maxLEN	=	40
 
 chrOUI	=	'O'
@@ -80,8 +79,8 @@ idxTIMER	=	200
 *-----------------------------------
 
 PLAY	sep	#$30
-
 	jsr	initALL
+REPLAY	sep	#$30
 	jsr	HGR
 
 	jsr	HOME	; clear text screen
@@ -978,7 +977,7 @@ tbl4000	da	$bdbd,:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
 :4470	@print	#str4470
 	rts
 
-:4480	jsr	:5500
+:4480	jsr	:5500	; QUITTER
 	cmp	#chrNON
 	bne	:4481
 	jmp	:500
@@ -1080,13 +1079,12 @@ MDP$	asc	'MANOIR'
 
 *----------- SAVE - LOGO
 
-:4590	@print	#str4590
-	rts
+:4590	jmp	doSAVE
 
 *----------- LOAD - LOGO
 
-:4600	@print	#str4600
-	rts
+:4600	jsr	doLOAD
+	jmp	REPLAY
 
 *----------- LE MOT DE PASSE FINAL
 
@@ -1521,12 +1519,6 @@ initALL
 	sta	O,x
 	dex
 	bpl	]lp
-	
-*	ldx	#nbO*2	; reset object table
-*]lp	lda	refO$,x
-*	sta	tblO$,x
-*	dex
-*	bpl	]lp
 	rts
 
 *-----------------------------------
@@ -1794,7 +1786,6 @@ H	ds	1
 HH	ds	1
 MO$1	ds	1	; mot 1
 MO$2	ds	1	; mot 2
-MO$3	ds	1	; mot 3
 N	ds	1
 NL	ds	1
 OK	ds	1
@@ -1807,12 +1798,13 @@ lenSTRING	ds	1
 MINUTES	ds	2	; 0..20 en décimal
 SECONDES	ds	2	; 0..59
 
+MP$	ds	6	; le mot de passe à trouver (5 + 00)
+
 C	ds	32+1
 E$	ds	32	; the longest string
 P	ds	32+1
 X$1	ds	1+4	; premier mot saisi
 X$2	ds	1+4	; deuxième mot saisi
-X$3	ds	1+4	; troisième mot saisi
 
 FIN_DATA
 

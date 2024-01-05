@@ -14,15 +14,6 @@
 
 	mx	%11
 	
-BORDER	ldal	$c034
-	inc
-	stal	$c034
-	rts
-
-*-----------------------------------
-	
-	mx	%11
-	
 printNIVEAU	ora	#'0'
 	sta	strNIVEAU+9
 	
@@ -372,21 +363,9 @@ COUT2	rep	#$20
 text2shr	dw	9,19,29,39,49,59,69,79,89,99
 	dw	109,119,129,139,149,159,169,179,189,199
 	
-*text2shr	dw	8,16,24,32,40,48,56,64
-*	dw	72,80,88,96,104,112,120,128
-*	dw	136,144,152,160,168,176,184,192
-*	dw	200
-	
 *-----------------------------------
 
 	mx	%11
-
-*RND	rep	#$30
-*	PushWord	#0
-*	_Random
-*	pla
-*	sep	#$30
-*	rts
 
 RND	rep	#$30
 	ldal	VERTCNT
@@ -422,14 +401,22 @@ playSOUND	sty	waveSTART
 	stx	waveSTART+2
 	sta	waveSIZE
 
-	PushWord #%0000_0000_1000_0000
+	lda	seqPlay	; midi playing
+	beq	playSOUND1	; nope
+	_MSSuspend
+	
+playSOUND1	PushWord #%0000_0000_1000_0000
 	_FFStopSound
 
 	PushWord #$0701
 	PushLong #waveSTART
 	_FFStartSound
 
-	sep	#$30
+	lda	seqPlay	; midi playing
+	beq	playSOUND2	; nope
+	_MSResume
+	
+playSOUND2	sep	#$30
 	rts
 
 *--- Donnees Sound Tool Set

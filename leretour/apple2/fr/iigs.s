@@ -21,10 +21,12 @@
 	use	4/Locator.Macs
 	use	4/Mem.Macs
 	use	4/Menu.Macs
+	use	4/MidiSyn.Macs
 	use	4/Misc.Macs
 	use	4/QD.Macs
 	use	4/QDAux.Macs
 	use	4/Sound.Macs
+	use	4/Std.Macs
 	use	4/Util.Macs
 	use	4/Window.Macs
 	
@@ -89,9 +91,9 @@ ICI	phk
 	tdc
 	sta	myDP
 
-	lda	#tblMP$
+	lda	#fgMIDI
 	stal	$300
-	lda	#^tblMP$
+	lda	#^fgMIDI
 	stal	$302
 	
 	_TLStartUp
@@ -206,6 +208,8 @@ okTOOL	_HideMenuBar
 	sta	ptrSCREEN+2
 	
 okSHADOW
+	jsr	initMIDI
+	jsr	doSOUNDON
 
 *-----------------------------------
 * IL FAUT JOUER MAINTENANT
@@ -214,39 +218,12 @@ okSHADOW
 	jmp	PLAY
 
 *-----------------------------------
-
-	lda	#1
-	sta	myINDEX
-	
-loop	rep	#$30
-
-	PushWord	#0
-	_ClearScreen
-	
-	lda	myINDEX
-	jsr	showPIC
-	
-	mx	%11
-	
-]lp	ldal	$c000
-	bpl	]lp
-	stal	$c010
-	cmp	#$9b
-	beq	QUIT
-	
-	inc	myINDEX
-	lda	myINDEX
-	cmp	#58
-	bne	loop
-
-	mx	%00
-	
-*-----------------------------------
 * AU REVOIR LE IIGS
 *-----------------------------------
 
 QUIT	rep	#$30
-
+	jsr	stopMIDI
+	
 meQUIT	PushWord #refIsPointer
 	PushLong ssREC
 	_ShutDownTools
@@ -321,10 +298,197 @@ loadBACK	_HideCursor
 	rts
 
 *-----------------------------------
-* DES DONNES 16-BITS
+* LOAD/SAVE
 *-----------------------------------
 
-myINDEX	ds	2
+*----------------------------------- Open
+
+doLOAD	rep	#$30
+	jsr	doSOUNDOFF
+	rep	#$30
+	jsr	saveBACK
+	
+	PushWord #30
+	PushWord #43
+	PushLong #strLOADFILE
+	PushLong #0
+	PushLong #typeLIST
+	PushLong #replyPTR
+	_SFGetFile
+
+	jsr	loadBACK
+	jsr	doSOUNDON
+	rep	#$30
+	
+	lda	replyPTR
+	bne	doLOAD1
+	rts
+
+doLOAD1	jsr	copyPATH
+	jsr	loadALL
+	sep	#$30
+	rts
+
+	mx	%
+	
+*----------------------------------- Save
+
+doSAVE	rep	#$30
+	jsr	doSOUNDOFF
+	rep	#$30
+	jsr	saveBACK
+	
+	PushWord #25
+	PushWord #36
+	PushLong #strSAVEFILE
+	PushLong #namePATH
+	PushWord #15
+	PushLong #replyPTR
+	_SFPutFile
+
+	jsr	loadBACK
+	jsr	doSOUNDON
+	rep	#$30
+	
+	lda	replyPTR
+	bne	doSAVE1
+	rts
+
+doSAVE1	jsr	copyPATH
+	jsr	saveALL
+	sep	#$30
+	rts
+
+*--- Recopie le filename du fichier de sauvegarde
+
+	mx	%00
+	
+copyPATH	sep	#$20
+	ldx	#16-1
+]lp	lda	namePATH1,x
+	sta	pGAME+4,x
+	dex
+	bpl	]lp
+	
+	lda	namePATH
+	inc
+	inc
+	sta	pGAME
+	rep	#$20
+	rts
+
+*--- Charge le fichier de sauvegarde en mémoire
+
+loadALL	jsl	GSOS
+	dw	$2010
+	adrl	proOPENGAME
+	bcs	loadKO99
+
+	lda	proOPENGAME+2
+	sta	proREADGAME+2
+	sta	proCLOSE+2
+	
+	jsr	loadPART
+	
+	jsl	GSOS
+	dw	$2014
+	adrl	proCLOSE
+
+loadKO99	rts
+
+*---
+
+loadPART	ldx	#FIN_DATA-DEBUT_DATA
+	ldy	#A1
+	
+loadIT	stx	proREADGAME+8
+	sty	proREADGAME+4
+	jsl	GSOS
+	dw	$2012
+	adrl	proREADGAME
+	rts
+
+*--- Enregistre le fichier de sauvegarde
+
+saveALL	jsl	GSOS
+	dw	$2002
+	adrl	proDESTROYGAME
+	
+	jsl	GSOS
+	dw	$2001
+	adrl	proCREATEGAME
+	bcs	saveKO99
+
+	jsl	GSOS
+	dw	$2010
+	adrl	proOPENGAME
+	bcs	saveKO99
+
+	lda	proOPENGAME+2
+	sta	proWRITEGAME+2
+	sta	proCLOSE+2
+	
+	jsr	savePART
+	
+	jsl	GSOS
+	dw	$2014
+	adrl	proCLOSE
+
+saveKO99	rts
+
+*---
+
+savePART	ldx	#FIN_DATA-DEBUT_DATA
+	ldy	#A1
+	
+saveIT	stx	proWRITEGAME+8
+	sty	proWRITEGAME+4
+	jsl	GSOS
+	dw	$2013
+	adrl	proWRITEGAME
+	rts
+
+*--- For the game party
+
+proCREATEGAME
+	dw	7	; pcount
+	adrl	pGAME	; pathname
+	dw	$c3	; access_code
+	dw	$5d	; file_type
+	adrl	$8020	; aux_type
+	ds	2	; storage_type
+	ds	4	; eof
+	ds	4	; resource_eof
+
+proDESTROYGAME
+	dw	1	; pcount
+	adrl	pGAME	; pathname
+
+proOPENGAME
+	dw	2
+	ds	2
+	adrl	pGAME
+
+proREADGAME
+	dw	4	; 0 - pcount
+	ds	2	; 2 - ref_num
+	adrl	pGAME	; 4 - data_buffer
+	ds	4	; 8 - request_count
+	ds	4	; C - transfer_count
+
+proWRITEGAME
+	dw	5	; 0 - pcount
+	ds	2	; 2 - ref_num
+	adrl	pGAME	; 4 - data_buffer (we are in same bank)
+	ds	4	; 8 - request_count
+	ds	4	; C - transfer_count
+	dw	1	; cache_priority
+
+pGAME	strl	'0/               '
+
+*-----------------------------------
+* DES DONNES 16-BITS
+*-----------------------------------
 
 *----------------------------------- Memory Manager
 
@@ -422,6 +586,9 @@ toolTBL	dw	$0000	; flags
 
 proERR	ds	2	; GS/OS error code
 
+proCLOSE	dw	1	; pcount
+	ds	2	; ID
+	
 proQUIT	dw	2	; pcount
 	ds	4	; pathname
 	ds	2	; flags
@@ -462,6 +629,7 @@ loadPATH1	ds	129	; 23 fullPathname (128 normally)
 	put	leretour.s
 	put	engine.s
 	put	fr.s
+	put	../common/midi.s
 	put	../common/images.s
 	
 *--- It's the end

@@ -401,6 +401,48 @@ RND	rep	#$30
 VBLCounter0	ds	2
 
 *-----------------------------------
+* LES SONS DE L'ORIC
+*-----------------------------------
+
+	ext	sndEXPLODE
+	ext	sndZAP
+	
+EXPLODE	rep	#$30
+	ldx	#^sndEXPLODE
+	ldy	#sndEXPLODE
+	lda	#139
+	bra	playSOUND
+	
+ZAP	rep	#$30
+	ldx	#^sndZAP
+	ldy	#sndZAP
+	lda	#22
+
+playSOUND	sty	waveSTART
+	stx	waveSTART+2
+	sta	waveSIZE
+
+	PushWord #%0000_0000_1000_0000
+	_FFStopSound
+
+	PushWord #$0701
+	PushLong #waveSTART
+	_FFStartSound
+
+	sep	#$30
+	rts
+
+*--- Donnees Sound Tool Set
+
+waveSTART	ds	4	; waveStart
+waveSIZE	ds	2	; waveSize
+	dw	428	; freqOffset
+	dw	$0000	; docBuffer
+	dw	$0000	; bufferSize
+	ds	4	; nextWavePtr
+	dw	255	; volSetting
+
+*-----------------------------------
 * RECOPIE ACTION A$
 *-----------------------------------
 

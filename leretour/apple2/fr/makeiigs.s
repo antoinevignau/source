@@ -14,5 +14,11 @@
 
          ASM   iigs.s
          KND   $0000
-         SNA   IIgs
+         SNA   LeRetour
+
+* Assemble files
+
+         ASM   ../common/sons.s
+         KND   $0000
+         SNA   DrGenius
 

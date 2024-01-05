@@ -24,6 +24,7 @@
 	use	4/Misc.Macs
 	use	4/QD.Macs
 	use	4/QDAux.Macs
+	use	4/Sound.Macs
 	use	4/Util.Macs
 	use	4/Window.Macs
 	
@@ -381,7 +382,7 @@ toolTBL	dw	$0000	; flags
 	dw	$C000	; videoMode (shadowing + fast port)
 	dw	$0000	; resFileID
 	ADRL	$00000000	; dPageHandle
-	dw	$0010
+	dw	$0011
 	dw	$0003	; Miscellaneous Tool
 	dw	$0300
 	dw	$0004	; QuickDraw II
@@ -390,6 +391,8 @@ toolTBL	dw	$0000	; flags
 	dw	$0302
 	dw	$0006	; Event Manager
 	dw	$0300
+	dw	$0008	; Sound Tool Set
+	dw	$0100
 	dw	$000B	; Integer Math Tool Set
 	dw	$0200
 	dw	$000E	; Window Manager

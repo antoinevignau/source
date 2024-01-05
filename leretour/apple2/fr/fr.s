@@ -690,7 +690,7 @@ str4900	asc	'Sur le laser, vous voyez trois boutons : jaune, rouge et bleu.'00
 str4910	asc	'Vous etes entre dans le desintegrateur de particules...'00
 str4920	asc	'Vous etes entre dans le vaisseau par le sas a l'27'ouest qui ne s'27'ouvre pas de'0d'l'27'interieur.'00
 
-str5500	asc	0d'Etes-vous sur (O/N) ?'00
+str5500	asc	0d'Etes-vous sur (O/N) ? '00
 
 str19050	asc	'   Merci d'27'avoir essaye...!'00
 str19060	asc	'  Reveillez-vous , c'27'est fini !'00

@@ -47,12 +47,6 @@ idxTIMER	=	200
 	jsr	EXPLODE
 	eom
 
-@play	mac
-	ldx	#>]1
-	ldy	#<]1
-	jsr	playMUSIC
-	eom
-
 @print	mac
 	ldx	#>]1
 	ldy	#<]1
@@ -75,6 +69,10 @@ idxTIMER	=	200
 	lda	#>]1
 	ldy	#<]1
 	jsr	waitMS
+	eom
+
+@zap	mac
+	jsr	ZAP
 	eom
 
 *-----------------------------------
@@ -898,6 +896,8 @@ tbl4000	da	$bdbd,:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
 	rts
 
 :4230	@explode
+	@wait	#100
+	@explode
 	@print	#str4230
 	rts
 
@@ -1107,9 +1107,11 @@ MDP$	asc	'MANOIR'
 	jmp	:gagne
 
 :4615	@print	#str4615
-	@explode
+	@zap
+	@wait	#100
 	@print	#str4616
-	@wait	#400
+	@zap
+	@wait	#300
 	@print	#str4618_1
 	@wait	#200
 	@print	#str4618_2
@@ -1117,7 +1119,8 @@ MDP$	asc	'MANOIR'
 	@print	#str4618_3
 	jmp	:perdu
 
-:4620	@print	#str4620
+:4620	@explode
+	@print	#str4620
 	rts
 	
 :4630	@print	#str4630
@@ -1165,14 +1168,18 @@ MDP$	asc	'MANOIR'
 	rts
 
 :4740	@explode
+	@wait	#100
+	@explode
 	@print	#str4740
 	jmp	:perdu
 
 :4750	@explode
+	@wait	#100
 	@print	#str4750
 	jmp	:perdu
 	
 :4760	@explode
+	@wait	#100
 	@print	#str4760
 	jmp	:perdu
 
@@ -1268,6 +1275,7 @@ MDP$	asc	'MANOIR'
 	jsr	GETLN1
 	cpx	#1
 	bne	:5500
+	jsr	rewriteSTRING
 	lda	TEXTBUFFER
 	cmp	#chrOUI
 	beq	:5510
@@ -1541,10 +1549,10 @@ initALL
 * 20000 - PERDU
 *-----------------------------------
 
-:perdu	@explode
+:perdu	@wait	#200
+	@explode
 	jsr	setTEXTFULL
 	@print	#strPERDU
-*	@play	#zikPERDU
 
 :20050			; commun avec gagne
 ]lp	@print	#strREPLAY
@@ -1564,14 +1572,7 @@ initALL
 :gagne
 	jsr	setTEXTFULL
 	@print	#strGAGNE
-*	@play	#zikINTRODUCTION
 	jmp	:20050
-
-*-----------------------------------
-* ORIC
-*-----------------------------------
-
-EXPLODE	rts
 
 *-----------------------------------
 * CODE 6502

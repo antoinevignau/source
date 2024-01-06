@@ -91,11 +91,6 @@ ICI	phk
 	tdc
 	sta	myDP
 
-	lda	#fgMIDI
-	stal	$300
-	lda	#^fgMIDI
-	stal	$302
-	
 	_TLStartUp
 	pha
 	_MMStartUp

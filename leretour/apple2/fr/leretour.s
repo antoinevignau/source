@@ -89,7 +89,7 @@ REPLAY	sep	#$30
 	lda	#16	; au lieu de 20 LoGo
 	sta	CV
 	jsr	TABV	; on a 20 lignes de 10 caractères de haut
-
+	
 *-----------------------------------
 * DU BASIC A L'ASSEMBLEUR (BEURK)
 *-----------------------------------
@@ -1670,12 +1670,12 @@ setMIXEDOFF		; FULL HGR
 	lda	ptrTEXT+2
 	sta	dpTHREE+2
 	
-	ldy	#170*160-2
+	ldy	#160*160-2
 ]lp	lda	[dpTHREE],y
-	pha
+	tax
 	lda	[dpTO],y
 	sta	[dpTHREE],y
-	pla
+	txa
 	sta	[dpTO],y
 	dey
 	dey

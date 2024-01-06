@@ -107,7 +107,7 @@ eraseLINES	sta	pointerRECT
 
 pointerRECT	adrl	bottomRECT
 
-bottomRECT	dw	170,0,199,319
+bottomRECT	dw	160,0,199,319
 lastlineRECT dw	190,0,199,319
 cursorRECT	dw	0,0,0,0	; y2 and x2 are y1+7 and x1+7
 
@@ -307,10 +307,28 @@ COUT2	rep	#$20
 	adc	#160*10
 	pha
 	PushLong	ptrTEXT	; destination en haut
-	PushLong	#160*170	; on copie 170 lignes
+	PushLong	#160*150	; on copie 150 lignes
 	_BlockMove
 
 *----------- Etape 2
+
+	lda	ptrSCREEN+2	; source commence ligne 160
+	pha
+	lda	ptrSCREEN
+	clc
+	adc	#160*160
+	pha
+
+	lda	ptrTEXT+2	; destination commence ligne 150
+	pha
+	lda	ptrTEXT
+	clc
+	adc	#160*150
+	pha
+	PushLong	#160*10	; on copie 10 lignes
+	_BlockMove
+
+*----------- Etape 3
 
 	lda	ptrSCREEN+2	; source commence ligne 170
 	pha
@@ -318,33 +336,15 @@ COUT2	rep	#$20
 	clc
 	adc	#160*170
 	pha
-
-	lda	ptrTEXT+2	; destination commence ligne 160
+	
+	lda	ptrSCREEN+2	; destination commence ligne 160
 	pha
-	lda	ptrTEXT
+	lda	ptrSCREEN
 	clc
 	adc	#160*160
 	pha
-	PushLong	#160*10	; on copie 10 lignes
-	_BlockMove
-
-*----------- Etape 3
-
-	lda	ptrSCREEN+2	; source commence ligne 180
-	pha
-	lda	ptrSCREEN
-	clc
-	adc	#160*180
-	pha
 	
-	lda	ptrSCREEN+2	; destination commence ligne 170
-	pha
-	lda	ptrSCREEN
-	clc
-	adc	#160*170
-	pha
-	
-	PushLong	#160*20	; on copie 20 lignes
+	PushLong	#160*30	; on copie 30 lignes
 	_BlockMove
 	
 *----------- Etape 3
@@ -359,9 +359,29 @@ COUT2	rep	#$20
 	rts
 
 *----------- Exit
+*
+* De 160 ˆ 199, ce sont les lignes de texte
 
-text2shr	dw	9,19,29,39,49,59,69,79,89,99
-	dw	109,119,129,139,149,159,169,179,189,199
+text2shr	dw	9	; 0
+	dw	19	; 1
+	dw	29	; 2
+	dw	39	; 3
+	dw	49	; 4
+	dw	59	; 5
+	dw	69	; 6
+	dw	79	; 7
+	dw	89	; 8
+	dw	99	; 9
+	dw	109	; 10
+	dw	119	; 11
+	dw	129	; 12
+	dw	139	; 13
+	dw	149	; 14
+	dw	159	; 15
+	dw	169	; 16
+	dw	179	; 17
+	dw	189	; 18
+	dw	199	; 19
 	
 *-----------------------------------
 
@@ -383,6 +403,8 @@ VBLCounter0	ds	2
 * LES SONS DE L'ORIC
 *-----------------------------------
 
+	mx	%11
+	
 	ext	sndEXPLODE
 	ext	sndZAP
 	
@@ -589,6 +611,7 @@ BFF0	ds	16
 	
 showPIC	rep	#$30
 	and	#$00ff
+	stal	$300	; LOGO - LA SALLE
 	asl
 	tax
 	lda	tblIMAGES,x
@@ -1074,7 +1097,7 @@ srcLocInfoPtr
 	dw	mode320	; mode 320
 	adrl	ptr012000
 	dw	160
-	dw	0,0,199,239
+	dw	0,0,179,239
 
 srcRect	dw	0,0,179,239
 

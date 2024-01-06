@@ -12,12 +12,12 @@
 *-----------------------------------
 
 tblIMAGES	da	$0000
-	da	L786F,L7974,L4F61,L4E95,L7CC8,L6BDC,L5EFA,L7DE2,L7F38,L62EF
-	da	L57EA,L5925,L63F6,L47C3,L5A21,L5021,L4DFF,L64EF,L4700,L5D77
-	da	L52CA,L4E41,L6AF2,L81EA,L827B,L61DF,L497F,L4C16,L4A8D,L4CEE
-	da	L5B40,L6FDD,L6F05,L65FF,L8088,L7A40,L774C,L7B63,L5CC6,L5BEE
-	da	L50F6,L6D58,L6C6E,L74D2,L70F6,L487A,L71E0,L4DAB,L55C8,L72CA
-	da	L6958,$0000,L5F6B,L60EB,L6812,L6E33,L8367
+	da	L786F,L7974,L4F61,L4E95,L7CC8,L6BDC,L5EFA,L7DE2,L7F38,L62EF	; 1
+	da	L57EA,L5925,L63F6,L47C3,L5A21,L5021,L4DFF,L64EF,L4700,L5D77	; 11
+	da	L52CA,L4E41,L6AF2,L81EA,L827B,L61DF,L497F,L4C16,L4A8D,L4CEE	; 21
+	da	L5B40,L6FDD,L6F05,L65FF,L8088,L7A40,L774C,L7B63,L5CC6,L5BEE	; 31
+	da	L50F6,L6D58,L6C6E,L74D2,L70F6,L487A,L71E0,L4DAB,L55C8,L72CA	; 41
+	da	L6958,$0000,L5F6B,L60EB,L6812,L6E33,L8367		; 51
 
 *-----------------------------------
 * DONNEES DES IMAGES
@@ -1339,8 +1339,8 @@ L4A8D       DB    $41
             DB    $4A
             DB    $06
             DB    $00
-L4C16       DB    $41
-            DB    $0D
+L4C16       DB    $41	; SALLE 28
+    	DB    $0D
             DB    $A6
             DB    $44
             DB    $22
@@ -1552,6 +1552,13 @@ L4C16       DB    $41
             DB    $43
             DB    $29
             DB    $1E
+	asc	'A'
+	dfb	40
+	dfb	40
+	asc	'L'
+	dfb	1
+	dfb	1
+	dfb	2
             DB    $4A
             DB    $02
             DB    $00
@@ -4297,7 +4304,7 @@ L55C8       DB    $41
             DB    $4A
             DB    $06
             DB    $00
-L57EA       DB    $41
+L57EA       DB    $41	; SALLE 11
             DB    $0E
             DB    $9B
             DB    $44
@@ -4609,6 +4616,20 @@ L57EA       DB    $41
             DB    $42
             DB    $03
             DB    $05
+	asc	'A'
+	dfb	120
+	dfb	20
+	asc	'L'
+	dfb	1
+	dfb	1
+	dfb	2
+	asc	'A'
+	dfb	120
+	dfb	40
+	asc	'L'
+	dfb	1
+	dfb	1
+	dfb	2
             DB    $4A
             DB    $02
             DB    $00
@@ -6834,7 +6855,7 @@ L60EB       DB    $41
             DB    $4A
             DB    $03
             DB    $00
-L61DF       DB    $41
+L61DF       DB    $41	; SALLE 26
             DB    $0D
             DB    $A6
             DB    $44
@@ -7089,20 +7110,37 @@ L61DF       DB    $41
             DB    $44
             DB    $1A
             DB    $0F
-            DB    $41
-            DB    $8A
-            DB    $53
-*            DB    $4C	; fill bleu retiré
+
+	asc	'A'
+	dfb	30
+	dfb	60
+	asc	'L'
+	dfb	1
+	dfb	1
+	dfb	6
+	asc	'A'
+	dfb	210
+	dfb	60
+	asc	'L'
+	dfb	1
+	dfb	1
+	dfb	6
+
+*            DB    $41
+*            DB    $8A
+*            DB    $53
+*            DB    $4C
 *            DB    $14
 *            DB    $01
 *            DB    $06
-            DB    $41
-            DB    125	; $66 102
-            DB    95	; $53 83
-            DB    $4C
-            DB    $14
-            DB    $01
-            DB    $02
+*            DB    $41
+*            DB    $66
+*            DB    $53
+*            DB    $4C
+*            DB    $14
+*            DB    $01
+*            DB    $02
+
             DB    $4A
             DB    $06
             DB    $00
@@ -7369,7 +7407,7 @@ L62EF       DB    $41
             DB    $4A
             DB    $02
             DB    $00
-L63F6       DB    $41
+L63F6       DB    $41	; SALLE 13
             DB    $46
             DB    $21
             DB    $43
@@ -7615,6 +7653,20 @@ L63F6       DB    $41
             DB    $43
             DB    $04
             DB    $12
+	asc	'A'
+	dfb	40
+	dfb	20
+	asc	'L'
+	dfb	1
+	dfb	1
+	dfb	3
+	asc	'A'
+	dfb	200
+	dfb	20
+	asc	'L'
+	dfb	1
+	dfb	1
+	dfb	3
             DB    $4A
             DB    $03
             DB    $00

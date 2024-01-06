@@ -12,10 +12,57 @@
 * LES PRIMITIVES 8-BITS EN 16-BITS
 *-----------------------------------
 
+*-----------------------------------
+* ROUTINE TEMPS (MERCI THE TINIES)
+*-----------------------------------
+
+	mx	%11
+	
+intTIME	ds	4
+	dw	60
+	dw	$a55a
+
+	lda	#60
+	stal	intTIME+4
+
+	ldal	fgTIME
+	beq	intTIME1
+
+	lda	switchENERGIE+1	; switch is off
+	bne	intTIME1
+	
+	sed
+	ldal	SECONDES
+	sec
+	sbc	#1
+	stal	SECONDES
+	cmp	#$99
+	bne	intTIME1
+
+	lda	#$59
+	stal	SECONDES
+
+	ldal	MINUTES
+	sec
+	sbc	#1
+	stal	MINUTES
+	cmp	#$99
+	bne	intTIME1
+
+	lda	#0
+	stal	MINUTES	; on a perdu !!!
+	stal	SECONDES
+
+intTIME1	cld
+	clc
+	rtl
+
+*-----------------------------------
+
 	mx	%11
 	
 printNIVEAU	ora	#'0'
-	sta	strNIVEAU+9
+	sta	strNIVEAU+7
 	
 	rep	#$30
 	
@@ -31,16 +78,68 @@ printNIVEAU	ora	#'0'
 
 	mx	%00
 	
-HGR	rep	#$30
-*	PushWord	#0
-*	_ClearScreen
+printTEMPS	lda	fgTIME
+	bne	pt1
+	rts
 
+pt1	sep	#$30
+	lda	MINUTES
+	and	#%1111_0000
+	lsr
+	lsr
+	lsr
+	lsr
+	ora	#'0'
+	sta	strTEMPS
+
+	lda	MINUTES
+	and	#%0000_1111
+	ora	#'0'
+	sta	strTEMPS+1
+
+	lda	SECONDES
+	and	#%1111_0000
+	lsr
+	lsr
+	lsr
+	lsr
+	ora	#'0'
+	sta	strTEMPS+3
+
+	lda	SECONDES
+	and	#%0000_1111
+	ora	#'0'
+	sta	strTEMPS+4
+
+	rep	#$30
+	PushWord	#250
+	PushWord	#20
+	_MoveTo
+	PushLong	#strTEMPS
+	_DrawCString
+	rts
+
+*-----------------------------------
+
+	mx	%00
+	
+FULLHGR	rep	#$30
+	PushWord	#0
+	_ClearScreen
+	sep	#$30
+	rts
+
+*-----------------------------------
+
+	mx	%00
+	
+HGR	rep	#$30
 	lda	ptrSCREEN
 	sta	dpTO
 	lda	ptrSCREEN+2
 	sta	dpTO+2
 
-	ldy	#160*160
+	ldy	#160*160-2
 	lda	#0
 ]lp	sta	[dpTO],y
 	dey
@@ -54,12 +153,15 @@ HGR	rep	#$30
 
 	mx	%11
 
-RDKEY	phx
-	jsr	CURSOR	; shows the cursor
-
+RDKEY	jsr	CURSOR	; shows the cursor
 	rep	#$30
 
 ]lp	inc	VBLCounter0	; for RND
+
+	jsr	checkREPLAY
+	jsr	printTEMPS
+	jsr	testENERGIE
+	bcs	RDKEY99
 
 	pha
 	PushWord #%00000000_00001000
@@ -75,7 +177,10 @@ RDKEY	phx
 	lda	taskMESSAGE
 	
 	sep	#$30
-	plx
+	clc
+	rts
+RDKEY99	sep	#$30
+	sec
 	rts
 
 *-----------------------------------
@@ -102,9 +207,10 @@ eraseLINES	sta	pointerRECT
 *-----------
 
 pointerRECT	adrl	bottomRECT
-
-bottomRECT	dw	row15+1,0,row19,319
-lastlineRECT dw	row18+1,0,row19,319
+screenRECT	dw	0,0,200,320
+drawRECT	dw	0,0,159,239	; 319
+bottomRECT	dw	160,0,199,319
+lastlineRECT dw	190,0,199,319
 cursorRECT	dw	0,0,0,0	; y2 and x2 are y1+charWIDTH and x1+charWIDTH
 
 *-----------------------------------
@@ -112,7 +218,6 @@ cursorRECT	dw	0,0,0,0	; y2 and x2 are y1+charWIDTH and x1+charWIDTH
 	mx	%11
 
 CURSOR_ERASE
-	phx
 	rep	#$30
 
 	lda	textY
@@ -137,8 +242,29 @@ CURSOR_ERASE
 	sta	textX
 
 	sep	#$30
-	plx
 	rts
+
+*-----------------------------------
+
+	mx	%11
+
+WHITE_SPACE
+	rep	#$30
+
+	lda	textY
+	sta	cursorRECT+4
+	sec
+	sbc	#charWIDTH
+	sta	cursorRECT
+	
+	lda	textX
+	sta	cursorRECT+2
+	clc
+	adc	#charWIDTH
+	sta	cursorRECT+6
+	
+	lda	#cursorRECT
+	jmp	eraseLINES	; retour en 8-bits
 
 *-----------------------------------
 
@@ -181,8 +307,7 @@ GOTOXY	stx	textX
 
 	mx	%11
 	
-COUT	phx
-	phy
+COUT
 	rep	#$30
 	and	#$ff
 	cmp	#chrRET	; next line, please
@@ -196,7 +321,7 @@ COUT	phx
 
 *----------- next X position
 
-	lda	textX
+COUT0	lda	textX
 	clc
 	adc	#charWIDTH
 	sta	textX
@@ -204,8 +329,6 @@ COUT	phx
 	bcs	COUT1
 	
 COUT99	sep	#$30
-	ply
-	plx
 	rts
 
 *----------- next Y position
@@ -291,31 +414,6 @@ COUT2	lda	#row19	; on se remet sur la dernière ligne
 	jsr	eraseLINES	; en 8-bits à la sortie
 	brl	COUT99
 
-*----------- Exit
-*
-* De 160 à 199, ce sont les lignes de texte
-*
-*text2shr	dw	9	; 0
-*	dw	19	; 1
-*	dw	29	; 2
-*	dw	39	; 3
-*	dw	49	; 4
-*	dw	59	; 5
-*	dw	69	; 6
-*	dw	79	; 7
-*	dw	89	; 8
-*	dw	99	; 9
-*	dw	109	; 10
-*	dw	119	; 11
-*	dw	129	; 12
-*	dw	139	; 13
-*	dw	149	; 14
-*	dw	159	; 15
-*	dw	169	; 16
-*	dw	179	; 17
-*	dw	189	; 18
-*	dw	199	; 19
-*	
 *-----------------------------------
 
 	mx	%11
@@ -542,23 +640,33 @@ BFF0	ds	16
 
 	mx	%00
 	
-showPIC	rep	#$30
+showPIC	stz	fgTIME
+	rep	#$30
 	and	#$00ff
 	asl
 	tax
 	lda	tblIMAGES,x
 	bne	L92A5
 showPIC99	sep	#$30
+	inc	fgTIME
 	rts
 
 	mx	%00
 
 L92A5	sta	dpFROM
 
+	PushLong	#drawRECT
+	_FrameRect
+	PushLong	#screenRECT
+	_GetPortRect
+	PushLong	#drawRECT
+	_SetPortRect
+	
 L92A6	ldy	#0
 	lda	(dpFROM),y
 	and	#$ff
-	beq	showPIC99
+	bne	L92A7
+	jmp	drawEXIT
 
 L92A7	CMP	#'A'	; A $41 CURSET
             BNE	L92B1
@@ -623,7 +731,7 @@ L930C	CMP	#'O'	; O $4F OUTPUT
 L9313       lda	#0
 	sep	#$30
 	sta	A2
-	rts
+	jmp	drawEXIT
 
 	mx	%00
 	
@@ -824,6 +932,14 @@ L94D8	iny
 	and	#$ff
 	sep	#$30
 	sta	A2	; the variable at $400
+
+drawEXIT	rep	#$30
+	
+	PushLong	#screenRECT
+	_SetPortRect
+
+	sep	#$30
+	inc	fgTIME
 	rts
 
 	mx	%00

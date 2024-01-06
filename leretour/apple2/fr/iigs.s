@@ -72,7 +72,7 @@ maxTROW	=	19
 charHEIGHT	=	10
 charWIDTH	=	8
 
-row0	=	charHEIGHT-1	; 9
+row0	=	charHEIGHT-2	; 9 - 1 partout...
 row1	=	row0+charHEIGHT	; 19
 row2	=	row1+charHEIGHT	; 29
 row3	=	row2+charHEIGHT	; 39
@@ -114,6 +114,11 @@ ICI	phk
 
 	tdc
 	sta	myDP
+
+	lda	#screenRECT
+	stal	$300
+	lda	#^screenRECT
+	stal	$302
 
 	_TLStartUp
 	pha
@@ -234,6 +239,10 @@ okSHADOW
 * IL FAUT JOUER MAINTENANT
 *-----------------------------------
 
+	sei
+	PushLong	#intTIME
+	_SetHeartBeat
+	cli
 	jmp	PLAY
 
 *-----------------------------------
@@ -242,6 +251,11 @@ okSHADOW
 
 QUIT	rep	#$30
 	jsr	stopMIDI
+
+	sei
+	PushLong	#intTIME
+	_DelHeartBeat
+	cli
 	
 meQUIT	PushWord #refIsPointer
 	PushLong ssREC
@@ -313,7 +327,6 @@ loadBACK	_HideCursor
 	PushLong	#ptrE12000
 	PushLong	#32768
 	_BlockMove
-	_ShowCursor
 	rts
 
 *-----------------------------------
@@ -322,9 +335,7 @@ loadBACK	_HideCursor
 
 *----------------------------------- Open
 
-doLOAD	rep	#$30
-	jsr	doSOUNDOFF
-	rep	#$30
+doLOAD	jsr	doSOUNDOFF
 	jsr	saveBACK
 	
 	PushWord #30
@@ -337,7 +348,6 @@ doLOAD	rep	#$30
 
 	jsr	loadBACK
 	jsr	doSOUNDON
-	rep	#$30
 	
 	lda	replyPTR
 	bne	doLOAD1
@@ -345,16 +355,13 @@ doLOAD	rep	#$30
 
 doLOAD1	jsr	copyPATH
 	jsr	loadALL
-	sep	#$30
 	rts
 
-	mx	%
+	mx	%00
 	
 *----------------------------------- Save
 
-doSAVE	rep	#$30
-	jsr	doSOUNDOFF
-	rep	#$30
+doSAVE	jsr	doSOUNDOFF
 	jsr	saveBACK
 	
 	PushWord #25
@@ -367,7 +374,6 @@ doSAVE	rep	#$30
 
 	jsr	loadBACK
 	jsr	doSOUNDON
-	rep	#$30
 	
 	lda	replyPTR
 	bne	doSAVE1
@@ -375,7 +381,6 @@ doSAVE	rep	#$30
 
 doSAVE1	jsr	copyPATH
 	jsr	saveALL
-	sep	#$30
 	rts
 
 *--- Recopie le filename du fichier de sauvegarde

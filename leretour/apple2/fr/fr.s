@@ -10,10 +10,10 @@
 *
 
 strVOUSDETENEZ
-	asc	0D'Vous avez en votre possession : '00
+	asc	'Vous avez en votre possession : '00
 
 strVOUSRIEN
-	asc	0D'Vous ne devez pas etre fatigue, vous'0D
+	asc	'Vous ne devez pas etre fatigue, vous'0D
 	asc	'n'27'avez rien sur vous'00
 
 strPOINT
@@ -34,7 +34,8 @@ strILFAITNOIR
 
 strVOSYEUX	asc	'Vos yeux ne voient plus rien.'0D00
 
-strNIVEAU	asc	'NIVEAU : 0'00	; +9 pour le niveau
+strNIVEAU	asc	'NIVEAU 0'00	; +7 pour le niveau
+strTEMPS	asc	'00:00'00
 
 strILYA	asc	0D'Il y a aussi :'00
 strCOMMA	asc	','00
@@ -44,7 +45,7 @@ strRETURN	asc	0D00
 strCOMMANDE	asc	0D'Ordre ? '00
 
 strJENECOMPRENDS
-	asc	0D'Je ne comprends pas'00
+	asc	'Je ne comprends pas'00
 	
 strIMPOSSIBLE
 	asc	0D'Impossible '00
@@ -55,21 +56,24 @@ strEXCLAM
 
 strREPLAY	asc	0D'Voulez-vous rejouer ? '00
 
-strPERDU
+strPERDU	asc	0d'Comme je le pensais, vous vous etes'0d
+	asc	'stupidement fait avoir, et votre cadavre'
+	asc	'(ou ce qu'27'il en reste) reposera a jamais'
+	asc	'dans l'27'espace...'0d00
 
-strGAGNE	asc	'   D'27'accord,'0D
-	asc	'vous m'27'avez battu, mais c'27'est un coup'0D
-	asc	'de chance, et la prochaine fois ma'0D
-	asc	'vengeance sera terrible.'0D
-	asc	'Prenez peur, car le jour ou je serai'0D
-	asc	'a nouveau la, ma puissance n'27'aura plus'0D
-	asc	'de limites, alors l'27'heure de la souf-'0D
-	asc	'-france aura sonne...'0D
-	asc	'                     Dr GENIUS.'00
+strGAGNE	asc	'D'27'accord,'0d
+	asc	'vous m'27'avez battu, mais c'27'est un coup'0d
+	asc	'de chance, et la prochaine fois ma'0d
+	asc	'vengeance sera terrible.'0d
+	asc	'Prenez peur, car le jour ou je serai'0d
+	asc	'a nouveau la, ma puissance n'27'aura plus'0d
+	asc	'de limites, alors l'27'heure de la souf-'0d
+	asc	'-france aura sonne...'0d
+	asc	'                     Dr GENIUS.'0d00
 
-strINTRO	asc	'     LE RETOUR DU Dr GENIUS'0D
-	asc	'     Vous avez 20 minutes et'0D
-	asc	'    400 unites de force pour'0D
+strINTRO	asc	'     LE RETOUR DU Dr GENIUS'0d
+	asc	'     Vous avez 20 minutes et'0d
+	asc	'    400 unites de force pour'0d
 	asc	'     remplir votre mission...'00
 
 *-----------------------------------
@@ -253,14 +257,6 @@ refO	dfb	$bd
 	dfb	40,33,41,53,43,10,00,21,22,26
 	dfb	01,06,00,17,20,00,47,19,00
 
-O	dfb	$bd
-	dfb	40,33,41,53,43,10,00,21,22,26
-	dfb	01,06,00,17,20,00,47,19,00
-
-*refO$	da	$bdbd
-*	da	O$1,O$2,O$3,O$4,O$5,O$6,O$7,O$8,O$9,O$10
-*	da	O$11,O$12,O$13,O$14,O$15,O$16,O$17,O$18,O$19
-
 tblO$	da	$bdbd
 	da	O$1,O$2,O$3,O$4,O$5,O$6,O$7,O$8,O$9,O$10
 	da	O$11,O$12,O$13,O$14,O$15,O$16,O$17,O$18,O$19
@@ -370,7 +366,7 @@ MP$5	asc	'ARGON'
 * on fera index-1 b/c 8-bits
 *
 
-V	=	139+1
+V	=	139+2
 
 tblVL$	dfb	$bd
 	dfb	<V$1,<V$2,<V$3,<V$4,<V$5,<V$6,<V$7,<V$8,<V$9,<V$10
@@ -387,7 +383,7 @@ tblVL$	dfb	$bd
 	dfb	<V$111,<V$112,<V$113,<V$114,<V$115,<V$116,<V$117,<V$118,<V$119,<V$120
 	dfb	<V$121,<V$122,<V$123,<V$124,<V$125,<V$126,<V$127,<V$128,<V$129,<V$130
 	dfb	<V$131,<V$132,<V$133,<V$134,<V$135,<V$136,<V$137,<V$138,<V$139
-	dfb	<V$200
+	dfb	<V$200,<V$201
 	
 tblVH$	dfb	$bd
 	dfb	>V$1,>V$2,>V$3,>V$4,>V$5,>V$6,>V$7,>V$8,>V$9,>V$10
@@ -404,7 +400,7 @@ tblVH$	dfb	$bd
 	dfb	>V$111,>V$112,>V$113,>V$114,>V$115,>V$116,>V$117,>V$118,>V$119,>V$120
 	dfb	>V$121,>V$122,>V$123,>V$124,>V$125,>V$126,>V$127,>V$128,>V$129,>V$130
 	dfb	>V$131,>V$132,>V$133,>V$134,>V$135,>V$136,>V$137,>V$138,>V$139
-	dfb	>V$200
+	dfb	>V$200,>V$201
 	
 tblV	dfb	$bd
 	dfb	01,01,02,02,03,03,04,04,05,05	; 1
@@ -421,7 +417,7 @@ tblV	dfb	$bd
 	dfb	75,76,77,77,78,78,79,80,80,80
 	dfb	81,81,82,83,83,84,84,84,85,85	; 121
 	dfb	85,86,87,87,88,88,89,89,90	; last was 00, now 90
-	dfb	200
+	dfb	200,201
 	
 V$1	str	'N'
 V$2	str	'NORD'
@@ -564,6 +560,7 @@ V$138	str	'TOTA'
 V$139	str	'RANG'	; RANGER (TUBE DANS GLACE => RANG TUBE)
 
 V$200	str	'TIME'
+V$201	str	'MUSI'
 
 *
 * Les reponses (str7xxx)
@@ -690,16 +687,12 @@ str4618_1	asc	'Mais, que se passe-t-il, vous avez du'0d
 	asc	'vaisseau de poche fonce sur le soleil.'00
 str4618_2	asc	'Vous venez de realiser que Genius'0d
 	asc	'pleurait de JOIE...!'00
-str4618_3	asc	'Comme je le pensais, vous vous etes'0d
-	asc	'stupidement fait avoir, et votre cadavre'
-	asc	'(ou ce qu'27'il en reste) reposera a jamais'
-	asc	'dans l'27'espace...'00
 
 str4620	asc	'La soucoupe a explose au decollage.'00
 str4630	asc	'Energie restante :'00
 str4640	asc	'Petit drole... Le chronometre est'0d
 	asc	'affiche en permanence'00
-str4650	asc	'Le temps que vous aviez pour votre'0d
+str4650	asc	0d'Le temps que vous aviez pour votre'0d
 	asc	'mission est ecoule, vous avez echoue.'00
 str4660	asc	'Votre trajectoire est bonne, pourquoi la'
 	asc	'corriger ?'00
@@ -713,7 +706,7 @@ str4700	asc	'Vous remarquez un boitier de radio-'0d
 str4710	asc	''00
 str4720	asc	''00
 str4730	asc	'Que regardez vous ?'00
-str4740	asc	'Le tube de nitroglycerine vient d'270d
+str4740	asc	0d'Le tube de nitroglycerine vient d'270d
 	asc	'exploser, vous etes pulverise.'00
 str4750	asc	'La bombe a retardement vient d'270d
 	asc	'exploser, vous etes pulverise.'00
@@ -735,7 +728,7 @@ str4810	asc	'Vous auriez du corriger la trajectoire,'0d
 	asc	'vous avez percute le soleil.'00
 str4820	asc	'A force de traverser les salles radio-'0d
 	asc	'-actives, vous etes mort contamine.'00
-str4830	asc	'Il fait de plus en plus chaud...'00
+str4830	asc	0d'Il fait de plus en plus chaud...'00
 str4840	asc	'L'27'ordinateur vient d'27'exploser!'00
 str4845	asc	'Vous avez du le laisser allume.'00
 str4850	asc	'Comment !!! Vous etes aveugle.'00

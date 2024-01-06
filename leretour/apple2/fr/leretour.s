@@ -12,14 +12,10 @@
 * SOFTSWITCHES AND FRIENDS
 *-----------------------------------
 
-CH	=	$24	; cursor horizontal position 
-CV	=	CH+2	; cursor vertical position 
-LINNUM	=	$50	; result from GETADR
-
 textX	=	$30	; les X/Y pour afficher les 
 textY	=	textX+2	; caracteres QuickDraw II
 
-nbOaP	=	10	; on peut porter dix objets
+LINNUM	=	$50	; result from GETADR
 
 chrLA	=	$08
 chrRA	=	$15
@@ -32,6 +28,7 @@ chrOUI	=	'O'
 chrNON	=	'N'
 
 idxTIMER	=	200
+idxMUSIC	=	201
 
 *-----------------------------------
 
@@ -84,20 +81,14 @@ idxTIMER	=	200
 PLAY	sep	#$30
 	jsr	initALL
 REPLAY	sep	#$30
-	jsr	HGR
-
-*	jsr	HOME	; clear text screen
-*	lda	#0	; move cursor to 0,16 au lieu de 0,20
-*	sta	CH
-*	lda	#16	; au lieu de 20 LoGo
-*	sta	CV
-*	jsr	TABV	; on a 20 lignes de 10 caractères de haut
-
-	lda	#0
-	sta	textX
+	jsr	FULLHGR
+	
+	rep	#$30	; init 16-bits, c'est mieux
+	stz	textX
 	lda	#row16
 	sta	textY
-
+	sep	#$30
+	
 *-----------------------------------
 * DU BASIC A L'ASSEMBLEUR (BEURK)
 *-----------------------------------
@@ -150,12 +141,11 @@ REPLAY	sep	#$30
 :110	jmp	:200
 
 :130	jsr	HGR
-	jsr	setMIXEDON
 	@print	#strILFAITNOIR
+	jsr	:30000
 	jmp	:500
 
 :140	jsr	HGR
-	jsr	setMIXEDON
 	@print	#strVOSYEUX
 	jmp	:500
 
@@ -163,7 +153,7 @@ REPLAY	sep	#$30
 * 200 - description salle
 *-----------------------------------
 
-:200	jsr	setHGR
+:200	jsr	HGR
 	@draw	SALLE
 
 	lda	A2	; trace des dessins
@@ -258,7 +248,7 @@ REPLAY	sep	#$30
 	bcc	:310
 	beq	:310
 
-	@print	#strRETURN
+*	@print	#strRETURN
 	
 *-----------------------------------
 * 500 - ACCEPTATION COMMANDE
@@ -305,9 +295,15 @@ REPLAY	sep	#$30
 *-----------------------------------
 
 :900	cmp	#idxTIMER
-	bne	:915
+	bne	:905
 	
 	jsr	switchENERGIE
+	jmp	:100
+
+:905	cmp	#idxMUSIC
+	bne	:915
+	
+	jsr	switchMUSIC
 	jmp	:100
 
 *-----------------------------------
@@ -914,7 +910,7 @@ tbl4000	da	$bdbd,:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
 :4250	@print	#str4250
 	rts
 
-:4260	jsr	setHGR
+:4260	jsr	HGR
 	@draw	#57
 	lda	#44
 	sta	SALLE
@@ -990,7 +986,7 @@ tbl4000	da	$bdbd,:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
 	bne	:4481
 	jmp	:500
 :4481	@print	#str4480
-	jmp	:perdu
+	jmp	:perdu_bis
 	
 :4490	@print	#str4490
 	@print	#str4491
@@ -1011,7 +1007,7 @@ tbl4000	da	$bdbd,:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
 :4540	@print	#str4540
 	rts
 
-:4550	jsr	setHGR
+:4550	jsr	HGR
 	@draw	#56	; LOGO
 	jsr	:12020
 	lda	#21
@@ -1087,11 +1083,20 @@ MDP$	asc	'MANOIR'
 
 *----------- SAVE - LOGO
 
-:4590	jmp	doSAVE
-
+:4590	stz	fgTIME
+	rep	#$30
+	jsr	doSAVE
+	sep	#$30
+	inc	fgTIME
+	rts
+	
 *----------- LOAD - LOGO
 
-:4600	jsr	doLOAD
+:4600	stz	fgTIME
+	rep	#$30
+	jsr	doLOAD
+	sep	#$30
+	inc	fgTIME
 	jmp	REPLAY
 
 *----------- LE MOT DE PASSE FINAL
@@ -1121,8 +1126,6 @@ MDP$	asc	'MANOIR'
 	@print	#str4618_1
 	@wait	#200
 	@print	#str4618_2
-	@wait	#200
-	@print	#str4618_3
 	jmp	:perdu
 
 :4620	@explode
@@ -1156,7 +1159,7 @@ MDP$	asc	'MANOIR'
 
 :4710	lda	SALLE
 	pha
-	jsr	setHGR
+	jsr	HGR
 	@draw	#54
 	pla
 	sta	SALLE
@@ -1164,7 +1167,7 @@ MDP$	asc	'MANOIR'
 
 :4720	lda	SALLE
 	pha
-	jsr	setHGR
+	jsr	HGR
 	@draw	#55
 	pla
 	sta	SALLE
@@ -1277,7 +1280,8 @@ MDP$	asc	'MANOIR'
 
 *-----------
 
-:5500	@print	#str5500
+:5500	stz	fgTIME
+	@print	#str5500
 	jsr	GETLN1
 	cpx	#1
 	bne	:5500
@@ -1287,7 +1291,8 @@ MDP$	asc	'MANOIR'
 	beq	:5510
 	cmp	#chrNON
 	bne	:5500
-:5510	rts
+:5510	inc	fgTIME
+	rts
 
 *-----------------------------------
 * 6000 - ANALYSE DU MOT
@@ -1444,27 +1449,11 @@ MDP$	asc	'MANOIR'
 * 8000 - CHARGEMENT VARIABLES
 *-----------------------------------
 
-initALL
-	ldx	#FIN_DATA-DEBUT_DATA
+initALL	ldx	#FIN_DATA-DEBUT_DATA
 	lda	#0
 ]lp	sta	A1-1,x
 	dex
 	bne	]lp
-
-*---
-
-	lda	#11
-	sta	SALLE
-
-	lda	#<4000
-	sta	FORCE
-	lda	#>4000
-	sta	FORCE+1
-
-	lda	#20
-	sta	MINUTES
-	lda	#0
-	sta	SECONDES
 
 *--- ligne 51
 
@@ -1527,6 +1516,24 @@ initALL
 	sta	O,x
 	dex
 	bpl	]lp
+
+*---
+
+	lda	#11
+	sta	SALLE
+
+	lda	#<4000
+	sta	FORCE
+	lda	#>4000
+	sta	FORCE+1
+
+	lda	#$20
+	sta	MINUTES
+	lda	#$00
+	sta	SECONDES
+
+	lda	#1	; le temps démarre !
+	sta	fgTIME
 	rts
 
 *-----------------------------------
@@ -1545,22 +1552,36 @@ initALL
 
 :30000	rts
 
+	rep	#$30
+	PushWord	#12
+	PushWord	#190
+	_MoveTo
+	
+	PushLong	#MP$
+	_DrawCString
+	sep	#$30
+	rts
+
 *-----------------------------------
 * 20000 - PERDU
 *-----------------------------------
 
-:perdu	@wait	#200
+:perdu	stz	fgTIME
+	@wait	#200
 	@explode
 	jsr	setTEXTFULL
 	@print	#strPERDU
+	bra	:20050
 
-:20050			; commun avec gagne
-]lp	@print	#strREPLAY
+:perdu_bis	@wait	#200
+	@explode
+	
+:20050	@print	#strREPLAY	; commun avec gagne
 	jsr	translateKEY
 	cmp	#chrNON
 	beq	:20001
 	cmp	#chrOUI
-	bne	]lp
+	bne	:20050
 	jmp	PLAY
 
 :20001	jmp	QUIT	; return to the IIgs
@@ -1569,7 +1590,9 @@ initALL
 * 32000 - GAGNE
 *-----------------------------------
 
-:gagne
+:gagne	stz	fgTIME
+	@wait	#200
+	@explode
 	jsr	setTEXTFULL
 	@print	#strGAGNE
 	jmp	:20050
@@ -1582,13 +1605,23 @@ initALL
 * setTEXTFULL
 *----------------------
 
-setTEXTFULL	rts	; 40x24 text
+	mx	%11
+	
+setTEXTFULL	jsr	HGR
+	rep	#$30
+
+	stz	textX
+	lda	#row0
+	sta	textY
+
+	sep	#$30
+	rts	; 40x24 text
 
 *----------------------
-* setHGR
+* LE TEMPS EST ECOULE
 *----------------------
 
-setHGR	jmp	HGR
+nomoreTIME	jmp	:4650
 
 *----------------------
 * GETLEN1 par LoGo
@@ -1597,7 +1630,10 @@ setHGR	jmp	HGR
 	mx	%11
 	
 GETLN1	ldx	#0
+GETLN2	stx	lenSTRING
 ]lp	jsr	RDKEY
+	bcs	nomoreTIME
+	ldx	lenSTRING
 	cmp	#chrRET
 	beq	doRET
 	cmp	#chrDEL
@@ -1606,25 +1642,35 @@ GETLN1	ldx	#0
 	beq	doBACK
 	cmp	#chrSPC	; must not be another control character
 	bcc	]lp
+	beq	doSPC
 
-	jsr	testENERGIE
-
-	sta	TEXTBUFFER,x
+doIT	sta	TEXTBUFFER,x
 	jsr	COUT
-doNEXT	inx
+doNEXT	ldx	lenSTRING
+	inx
 	cpx	#maxLEN
-	bcc	]lp
+	bcc	GETLN2
 
 doEXIT	lda	#chrRET
 	sta	TEXTBUFFER,x
 	stx	lenSTRING
-	jmp	COUT
+	jsr	CURSOR_ERASE
+	lda	#chrRET
+	jsr	COUT
+	ldx	lenSTRING
+	rts
+
+doSPC	jsr	WHITE_SPACE
+	ldx	lenSTRING
+	lda	#chrSPC
+	bra	doIT
 
 doBACK	cpx	#0
 	beq	]lp
-	jsr	CURSOR_ERASE	; contains dec CH & TABV
+	jsr	CURSOR_ERASE
+	ldx	lenSTRING
 	dex
-	jmp	]lp
+	jmp	GETLN2
 
 doRET	cpx	#0
 	bne	doEXIT
@@ -1633,41 +1679,71 @@ doRET	cpx	#0
 	jmp	]lp
 
 *----------------------
+* MUSIQUE
+*----------------------
+
+switchMUSIC
+	lda	#0
+	eor	#1
+	sta	switchMUSIC+1
+	bne	smoff
+	
+	rep	#$30
+	jsr	doSOUNDON
+	sep	#$30
+	rts
+
+smoff	rep	#$30
+	jsr	doSOUNDOFF
+	sep	#$30
+	rts
+
+*----------------------
 * ENERGIE
 *----------------------
 
+	mx	%11
+	
 switchENERGIE
 	lda	#0
 	eor	#1
 	sta	switchENERGIE+1
 	rts
 
-testENERGIE	rts
+testENERGIE	sep	#$30
+	lda	switchENERGIE+1	; switch is off
+	bne	te_ok
 
+	lda	fgTIME
+	beq	te_ok
+
+	lda	fgPERDU
+	bne	te_ok
+	
+	lda	MINUTES	; reste-t-il des minutes
+	ora	SECONDES	; ou des secondes ?
+	bne	te_ok
+	
+	lda	#1
+	sta	fgPERDU
+	
+	rep	#$30
+	sec		; non, on a perdu
+	rts
+
+te_ok	rep	#$30
+	clc
+	rts
+
+	mx	%11
+	
 *----------------------
 * switchVIDEO
 *----------------------
 
-switchVIDEO	lda	#0
-	eor	#1
-	sta	switchVIDEO+1
-	bne	setMIXEDOFF
+	mx	%00
 	
-*----------------------
-* setMIXEDON
-*----------------------
-
-setMIXEDON		; HGR + 4 LINES OF TEXT
-*	rts
-
-*----------------------
-* setMIXEDOFF
-*----------------------
-
-setMIXEDOFF		; FULL HGR
-*	rts
-
-	rep	#$30
+switchVIDEO	rep	#$30
 	lda	ptrSCREEN
 	sta	dpTO
 	lda	ptrSCREEN+2
@@ -1695,6 +1771,8 @@ setMIXEDOFF		; FULL HGR
 * printCSTR
 *----------------------
 
+	mx	%11
+	
 printCSTRING
 	sty	pcs1+1
 	stx	pcs1+2
@@ -1715,6 +1793,8 @@ pcs3	rts
 * waitMS
 *----------------------
 
+	mx	%11
+	
 switchWAIT	lda	waitMS+1
 	eor	#1
 	sta	waitMS+1
@@ -1739,6 +1819,8 @@ waitMS9	rts
 * rewriteSTRING (lower -> upper)
 *-----------------------------------
 
+	mx	%11
+	
 rewriteSTRING
 	ldx	#0
 ]lp	ldy	TEXTBUFFER,x
@@ -1753,9 +1835,13 @@ rewriteSTRING
 * translateKEY (lower -> upper)
 *-----------------------------------
 
+	mx	%11
+	
 translateKEY
 	jsr	RDKEY
-	tax
+	pha
+	jsr	COUT
+	plx
 	lda	tblKEY,x
 	rts
 
@@ -1803,10 +1889,17 @@ SALLE	ds	1
 T	ds	1
 lenSTRING	ds	1
 
-MINUTES	ds	2	; 0..20 en décimal
-SECONDES	ds	2	; 0..59
+fgTIME	ds	2	; 0: off, 1: on
+fgPERDU	ds	2	; 1: perdu
+
+MINUTES	ds	1	; 0..20 en décimal
+SECONDES	ds	1	; 0..59
 
 MP$	ds	6	; le mot de passe à trouver (5 + 00)
+
+O	dfb	$bd
+	dfb	40,33,41,53,43,10,00,21,22,26
+	dfb	01,06,00,17,20,00,47,19,00
 
 C	ds	32+1
 E$	ds	32	; the longest string

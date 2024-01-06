@@ -366,7 +366,7 @@ resumeMUSIC9
 	
 *--------------------------------------
 
-checkREPLAY
+checkREPLAY	rep	#$30
 	lda	fgMIDI
 	bne	checkREPLAY99
 	
@@ -376,7 +376,7 @@ checkREPLAY
 
 checkREPLAY99
 	rts
-	
+
 *--------------------------------------
 
 replayMUSIC

@@ -573,100 +573,69 @@ V$200	str	'TIME'
 *		'0123456789012345678901234567890123456789'
 *		'----------------------------------------'
 
-str4010	asc	'Une boule d'27'acier tombee du plafond'0d
-	asc	'vient de s'27'ecraser sur votre casque.'00
-str4020	asc	'Une boule d'27'acier vient de tomber du'0d
-	asc	'plafond, vous avez le crane defonce...'00
-str4030	asc	'Vous venez de tomber dans une flaque d'270d
-	asc	'acide, ca crepite...'00
-str4040	asc	'Vous venez de rentrer dans le reacteur'0d
-	asc	'atomique du vaisseau..!'00
+str4010	asc	'Une boule d'27'acier tombee du plafond vient de s'27'ecraser sur votre casque.'00
+str4020	asc	'Une boule d'27'acier vient de tomber du plafond, vous avez le crane defonce...'00
+str4030	asc	'Vous venez de tomber dans une flaque d'27'acide,ca crepite...'00
+str4040	asc	'Vous venez de rentrer dans le reacteur atomique du vaisseau..!'00
 str4050	asc	'La porte ne veut pas s'27'ouvrir'00
-str4060	asc	'Un peu de memoire... Comment etes-vous'0d
-	asc	'entre ?'00
-str4070	asc	'Je ne vous savais pas assez muscle pour '
-	asc	'soulever une tonne.'00
-str4080	asc	'Vous avez raison, la vue c'27'est la vie !'00
-str4090	asc	'Les gants etaient radioactifs, vous'0d
-	asc	'perdez la vue.'00
+str4060	asc	'Un peu de memoire...comment etes-vous entre ?'00
+str4070	asc	'Je ne vous savais pas assez muscle pour soulever une tonne.'00
+str4080	asc	'Vous avez raison, la vue c'27'est la vie!'00
+str4090	asc	'Les gants etaient radioactifs, vous perdez la vue.'00
 str4100	asc	'Vous l'27'avez deja sur vous.'00
 str4110	asc	'Impossible, je ne vois pas ceci ici.'00
-str4120	asc	'Vous vous arrachez la tete en tombant'0d
-	asc	'des echasses.'00
-str4130	asc	'Des monstres sortis des containers vous '
-	asc	'devorent tout cru !'00
-str4140	asc	'L'27'air frais vous fait du bien. Dommage'0d
-	asc	'que l'27'helice vous ait coupe la tete.'00
+str4120	asc	'Vous vous arrachez la tete en tombant des echasses.'00
+str4130	asc	'Des monstres sortis des containers vous devorent tout cru!'00
+str4140	asc	'L'27'air frais vous fait du bien. Dommage que l'27'helice vous ait coupe la tete.'00
 str4150	asc	'Qu'27'est ce que vous voulez boire ???'00
 str4160	asc	'Ah oui...l'27'eau est bonne.'00
 str4170	asc	'Il n'27'y a pas d'27'eau ici.'00
-str4180	asc	'L'27'eau etait contaminee par les boites'0d
-	asc	'radioactives.'00
-str4190	asc	'Vous retrecissez..petit..petit..et une'0d
-	asc	'araignee vous mange !'00
-str4200	asc	'Ca coupe une tronconneuse, comme le'0d
-	asc	'prouve votre tete au sol.'00
-str4210	asc	'Vous glissez et tombez dans la flaque.'0d
-	asc	'L'27'acide crepite.'00
-str4220	asc	'Il n'27'y a pas ici de porte verrouillee'
-str4230	asc	'En secouant le tube pour l'27'ouvrir,'0d
-	asc	'la nitroglycerine a explose.'00
-str4240	asc	'Pourquoi ouvrir un robinet qui ne ferme '
-	asc	'pas !'00
+str4180	asc	'L'27'eau etait contaminee par les boites radioactives.'00
+str4190	asc	'Vous retrecissez..petit..petit..et une araignee vous mange!'00
+str4200	asc	'Ca coupe une tronconneuse, comme le prouve votre tete au sol.'00
+str4210	asc	'Vous glissez et tombez dans la flaque. L'27'acide crepite.'00
+str4220	asc	'Il n'27'y a pas ici de porte verrouillee';
+str4230	asc	'En secouant le tube pour l'27'ouvrir, la nitroglycerine a explose.'00
+str4240	asc	'Pourquoi ouvrir un robinet qui ne ferme pas!'00
 str4250	asc	'Le robinet ne se ferme pas.'00
 str4260	asc	''00
 str4270	asc	'La bibliotheque n'27'a pas de porte...'00
-str4280	asc	'Il n'27'y a rien de mieux sur les autres'0d
-	asc	'pages.'00
-str4290	asc	'...c'27'est toi J.R qui a pris ma femme et '
-	asc	'mon petrole, tu es infame.'00
-str4300	asc	'Collection Arlepin, tout un reve'0d
-	asc	'd'27'evasion.'00
-str4310	asc	'...et c'27'est moi Genius le grand qui crea'
-	asc	'un superbe manoir...'00
-str4320	asc	'1031141221242713182310291430271214232927102110272718311427103023141427142324303114212114'00
+str4280	asc	'Il n'27'y a rien de mieux sur les autres pages.'00
+str4290	asc	'...c'27'est toi J.R qui a pris ma femme et mon petrole, tu es infame.'00
+str4300	asc	'Collection Arlepin, tout un reve d'27'evasion.'00
+str4310	asc	'...et c'27'est moi Genius le grand qui crea un superbe manoir...'00
+str4320	asc	'1031141221242713182310291430271214232927102110272718311427103023141427142324303114212114'
 str4321	asc	' <tapez une touche> '00
 str4330	asc	'Vous l'27'avez deja fait.'00
 str4340	asc	'Le laser vient d'27'exploser.'00
 str4350	asc	'Il ne se passe rien.'00
-str4360	asc	'Le sas s'27'ouvre, vous passez dans la'0d
-	asc	'salle a cote.'00
-str4370	asc	'Cela agit sur un contacteur a infrarouge'
-	asc	'qui commande l'27'eclairage.'00
+str4360	asc	'Le sas s'27'ouvre, vous passez dans la salle a cote.'00
+str4370	asc	'Cela agit sur un contacteur a infrarouge qui commande l'27'eclairage.'00
 str4380	asc	'Allons enfants de la patrie...'00
-str4390	asc	'Vous entendez : '27'Le laser ouvrira la'0d
-	asc	'porte'2700
-str4400	asc	'Les lunettes sont trop fortes, vous'0d
-	asc	'voyez trouble.'00
+str4390	asc	'Vous entendez : '27'Le laser ouvrira la porte'27''00
+str4400	asc	'Les lunettes sont trop fortes, vous voyez trouble.'00
 str4410	asc	'La salle est radioactive.'00
 str4420	asc	'Vous avez quelque chose pour ?'00
-str4430	asc	'C'27'est votre probleme, mais le temps'0d
-	asc	'passe.'00
+str4430	asc	'C'27'est votre probleme, mais le temps passe.'00
 str4440	asc	'Avez-vous si sommeil que ca ?'00
 str4450	asc	'Et puis quoi encore !'00
 str4460	asc	'Faites un plan...'00
-str4470	asc	'Vous entendez le ronronnement des'0d
-	asc	'moteurs.'00
+str4470	asc	'Vous entendez le ronronnement des moteurs.'00
 str4480	asc	'J'27'etais sur que vous etiez un lache.'00
 str4490	asc	'Vous passez la tete a travers un sas,'00
 str4491	asc	'et appuyez sur le bouton de fermeture'00
 str4500	asc	'Quel bouton ?'00
-str4510	asc	'Les boutons ne fonctionnent pas car'0d
-	asc	'l'27'ordinateur central les controle.'00
-str4520	asc	'Le systeme automatique est deregle, il'0d
-	asc	'met du gaz carbonique a la place de'0d
-	asc	'l'27'oxygene.'00
+str4510	asc	'Les boutons ne fonctionnent pas car l'27'ordinateur central les controle.'00
+str4520	asc	'Le systeme automatique est deregle, il met du gaz carbonique a la place de l'27'oxygene.'00
 str4530	asc	'Vous respirez un grand coup.'00
-str4540	asc	'Que voulez-vous respirer ? Il n'27'y a plus'
-	asc	'd'27'oxygene.'00
+str4540	asc	'Que voulez-vous respirer, il n'27'y a plus d'27'oxygene.'00
 
 str4550	asc	'Vous avez deux essais pour'00
 str4552	asc	'entrer le mot de passe.'00
 str4553	asc	'FAUX!'00
-str4554	asc	'Encore rate. L'27'ordinateur vous explose a'
-	asc	'la figure.'00
+str4554	asc	'Encore rate. L'27'ordinateur vous explose a la figure.'00
 str4556	asc	'Mot de passe '00
-str4558	asc	'Exact, vous etes perspicace !'00
+str4558	asc	'Exact, vous etes perspicace!'00
 str4559_1	asc	'UIN LOI QRU ILD ESP ECU TAS'00
 str4559_2	asc	'ASU VIE RAL HOU MEA NOI THE'00
 str4559_3	asc	'Le mot de passe pour le'00
@@ -677,86 +646,48 @@ str4570	asc	'Il etait temps, vous alliez mourir.'00
 str4580	asc	'Vous mourrez deshydrate.'00
 str4590	asc	''00
 str4600	asc	''00
-str4610	asc	'Le sas se referme derriere vous,'0d
-	asc	'le tableau de controle s'27'allume et'0d
-	asc	'l'27'ordinateur de bord vous demande le'0d
-	asc	'mot de passe pour le retour'00
-str4615	asc	'Le vaisseau de secours s'27'eloigne,'0d
-	asc	'au loin vous voyez Genius qui pleure'0d
-	asc	'derriere un hublot'00
+str4610	asc	'Le sas se referme derriere vous, le tableau de controle s'27'allume et l'27'ordinateur de bord vous demande le mot de passe pour le retour ?'00
+str4615	asc	'Le vaisseau de secours s'27'eloigne, au loin vous voyez Genius qui pleure derriere un hublot'00
 str4616	asc	'          VOUS AVEZ GAGNE'00
-str4618_1	asc	'Mais, que se passe-t-il, vous avez du'0d
-	asc	'vous tromper de mot de passe, votre'0d
-	asc	'vaisseau de poche fonce sur le soleil.'00
-str4618_2	asc	'Vous venez de realiser que Genius'0d
-	asc	'pleurait de JOIE...!'00
-str4618_3	asc	'Comme je le pensais, vous vous etes'0d
-	asc	'stupidement fait avoir, et votre cadavre'
-	asc	'(ou ce qu'27'il en reste) reposera a jamais'
-	asc	'dans l'27'espace...'00
+str4618_1	asc	'Mais, que se passe-t-il,vous avez du vous tromper de mot de passe, votre vaisseau de poche fonce sur le soleil.'00
+str4618_2	asc	'Vous venez de realiser que Genius pleurait de JOIE...!'00
+str4618_3	asc	'Comme je le pensais , vous vous etes stupidement fait avoir, et votre cadavre (ou ce qu'27'il en reste) reposera a jamais dans l'27'espace...'00
 
 str4620	asc	'La soucoupe a explose au decollage.'00
 str4630	asc	'Energie restante :'00
-str4640	asc	'Petit drole... Le chronometre est'0d
-	asc	'affiche en permanence'00
-str4650	asc	'Le temps que vous aviez pour votre'0d
-	asc	'mission est ecoule, vous avez echoue.'00
-str4660	asc	'Votre trajectoire est bonne, pourquoi la'
-	asc	'corriger ?'00
-str4670	asc	'Le mur au nord coulisse, vous avancez'0d
-	asc	'dans cette salle.'00
+str4640	asc	'Petit drole...Le chronometre est affiche en permanence'00
+str4650	asc	'Le temps que vous aviez pour votre mission est ecoule, vous avez echoue.'00
+str4660	asc	'Votre trajectoire est bonne, pourquoi la corriger ?'00
+str4670	asc	'Le mur au nord coulisse, vous avancez dans cette salle.'00
 str4680	asc	'Quel livre ?'00
 str4690	asc	'Au dos du boitier est marque :'00
 str4692	asc	'        '27'PROTEGEZ MOI'A700
-str4700	asc	'Vous remarquez un boitier de radio-'0d
-	asc	'commande.'00
+str4700	asc	'Vous remarquez un boitier de radiocommande.'00
 str4710	asc	''00
 str4720	asc	''00
 str4730	asc	'Que regardez vous ?'00
-str4740	asc	'Le tube de nitroglycerine vient d'270d
-	asc	'exploser, vous etes pulverise.'00
-str4750	asc	'La bombe a retardement vient d'270d
-	asc	'exploser, vous etes pulverise.'00
-str4760	asc	'La bombe a retardement a explose, elle a'
-	asc	'endommage le systeme de chauffage,'0d
-	asc	'vous etes carbonise'00
-str4770	asc	'La bombe a explose, vous etiez trop pres'
-	asc	'et etes devenu fou...'00
-str4780	asc	'La bombe a retardement n'27'etait pas assez'
-	asc	'forte, l'27'ordinateur central n'27'est qu'270d
-	asc	'endommage, il vous fait exploser...'00
-str4790	asc	'Bravo! L'27'ordinateur central est detruit,'
-	asc	'mais le systeme d'27'oxygenation ne fonc-'0d
-	asc	'-tionne plus, de plus la trajectoire du'0d
-	asc	'vaisseau a change.'00
-str4800	asc	'Vous n'27'avez plus de souffle,'0d
-	asc	'vous etes mort asphyxie.'00
-str4810	asc	'Vous auriez du corriger la trajectoire,'0d
-	asc	'vous avez percute le soleil.'00
-str4820	asc	'A force de traverser les salles radio-'0d
-	asc	'-actives, vous etes mort contamine.'00
+str4740	asc	'Le tube de nitroglycerine vient d'27'exploser, vous etes pulverise.'00
+str4750	asc	'La bombe a retardement vient d'27'exploser, vous etes pulverise.'00
+str4760	asc	'La bombe a retardement a explose, elle a endommage le systeme de chauffage, vous etes carbonise'00
+str4770	asc	'La bombe a explose, vous etiez trop pres et etes devenu fou...'00
+str4780	asc	'La bombe a retardement n'27'etait pas assez forte, l'27'ordinateur central n'27'est qu'27'endommage, il vous fait exploser...'00
+str4790	asc	'Bravo! L'27'ordinateur central est detruit, mais le systeme d'27'oxygenation ne fonctionne plus, de plus la trajectoire du vaisseau a change.'00
+str4800	asc	'Vous n'27'avez plus de souffle, vous etes mort asphyxie.'00
+str4810	asc	'Vous auriez du corriger la trajectoire vous avez percute le soleil.'00
+str4820	asc	'A force de traverser les salles radioactives, vous etes mort contamine.'00
 str4830	asc	'Il fait de plus en plus chaud...'00
 str4840	asc	'L'27'ordinateur vient d'27'exploser!'00
 str4845	asc	'Vous avez du le laisser allume.'00
 str4850	asc	'Comment !!! Vous etes aveugle.'00
-str4860	asc	'Vous n'27'aviez pas pris la radiocommande'0d
-	asc	'qui a explose quand le vaisseau a percu-'
-	asc	'-te le soleil, son explosion a declenche'
-	asc	'la fin du monde.'00
-str4870	asc	'Non ! pas de strip-tease.'00
-str4874	asc	'Vous avez pose tout ce que vous'
-	asc	'transportiez.'00
+str4860	asc	'Vous n'27'aviez pas pris la radiocommande qui a explose quand le vaisseau a percute le soleil, son explosion a declenche la fin du monde.'00
+str4870	asc	'Non! pas de strip-tease.'00
+str4874	asc	'Vous avez pose tout ce que vous transportiez.'00
 str4880	asc	'Ca ne se demande pas.'00
-str4890	asc	'Il y a effectivement un ordinateur parmi'
-	asc	'le tableau de controle.'00
+str4890	asc	'Il y a effectivement un ordinateur parmi le tableau de controle.'00
 str4891	asc	'L'27'ordinateur n'27'est pas en fonction.'00
-str4900	asc	'Sur le laser, vous voyez trois boutons :'
-	asc	'jaune, rouge et bleu.'00
-str4910	asc	'Vous etes entre dans le desintegrateur'0d
-	asc	'de particules...'00
-str4920	asc	'Vous etes entre dans le vaisseau par le '
-	asc	'sas a l'27'ouest qui ne s'27'ouvre pas de'0d
-	asc	'l'27'interieur.'00
+str4900	asc	'Sur le laser, vous voyez trois boutons : jaune, rouge et bleu.'00
+str4910	asc	'Vous etes entre dans le desintegrateur de particules...'00
+str4920	asc	'Vous etes entre dans le vaisseau par le sas a l'27'ouest qui ne s'27'ouvre pas de'0d'l'27'interieur.'00
 
 str5500	asc	0d'Etes-vous sur (O/N) ? '00
 

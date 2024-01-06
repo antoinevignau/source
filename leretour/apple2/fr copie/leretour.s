@@ -1018,9 +1018,9 @@ tbl4000	da	$bdbd,:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
 	sta	SALLE
 
 	@gotoxy	#43;#21	; Vous avez deux essais pour
-	@print	#str4550	; xy
+	@printxy	#str4550
 	@gotoxy	#43;#29	; entrer le mot de passe
-	@print	#str4552	; xy
+	@printxy	#str4552
 	
 	@gotoxy	#43;#37	; entrer le mot de passe
 	jsr	:4556_input	; saisie 1
@@ -1036,19 +1036,19 @@ tbl4000	da	$bdbd,:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
 	jmp	:perdu	; ciao
 
 :4554	@gotoxy	#43;#56	; 42
-	@print	#str4558	; xy
+	@printxy	#str4558
 	@gotoxy	#43;#64	; 56
-	@print	#str4559_1	; xy
+	@printxy	#str4559_1
 	@gotoxy	#43;#72	; 67
-	@print	#str4559_2	; xy
+	@printxy	#str4559_2
 	@gotoxy	#43;#80
-	@print	#str4559_3	; xy
+	@printxy	#str4559_3
 	@gotoxy	#43;#88
-	@print	#str4559_4	; xy
+	@printxy	#str4559_4
 	
 	ldx	#>MP$
 	ldy	#<MP$
-	jsr	printCSTRING	; COUTXY
+	jsr	COUTXY
 	rts
 
 *--- saisie du mot de passe

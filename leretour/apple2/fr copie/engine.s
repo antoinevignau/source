@@ -32,31 +32,15 @@ printNIVEAU	ora	#'0'
 	mx	%00
 	
 HGR	rep	#$30
-*	PushWord	#0
-*	_ClearScreen
-
-	lda	ptrSCREEN
-	sta	dpTO
-	lda	ptrSCREEN+2
-	sta	dpTO+2
-
-	ldy	#160*160
-	lda	#0
-]lp	sta	[dpTO],y
-	dey
-	dey
-	bpl	]lp
-
+	PushWord	#0
+	_ClearScreen
 	sep	#$30
 	rts
 
 *-----------------------------------
 
-	mx	%11
-
 RDKEY	phx
 	jsr	CURSOR	; shows the cursor
-
 	rep	#$30
 
 ]lp	inc	VBLCounter0	; for RND
@@ -79,6 +63,26 @@ RDKEY	phx
 	rts
 
 *-----------------------------------
+
+HOME	rep	#$30
+
+*----------- Efface le simulacre d'ecran texte
+
+	lda	ptrTEXT
+	sta	dpTO
+	lda	ptrTEXT+2
+	sta	dpTO+2
+	
+	ldy	#0
+	tya
+]lp	sta	[dpTO],y
+	iny
+	iny
+	bpl	]lp
+
+	lda	#bottomRECT
+
+*----------- Efface les 3 lignes du bas
 	
 	mx	%00
 	
@@ -103,9 +107,35 @@ eraseLINES	sta	pointerRECT
 
 pointerRECT	adrl	bottomRECT
 
-bottomRECT	dw	row15+1,0,row19,319
-lastlineRECT dw	row18+1,0,row19,319
-cursorRECT	dw	0,0,0,0	; y2 and x2 are y1+charWIDTH and x1+charWIDTH
+bottomRECT	dw	160,0,199,319
+lastlineRECT dw	190,0,199,319
+cursorRECT	dw	0,0,0,0	; y2 and x2 are y1+7 and x1+7
+
+testme	ds	2
+
+*-----------------------------------
+
+	mx	%11
+
+*CURSOR_ERASE
+	phx
+	lda	CH
+	pha
+	lda	CV
+	pha
+
+	lda	#' '
+	jsr	COUT
+
+	pla
+	sta	CV
+	pla
+	sta	CH
+
+	dec	CH
+	jsr	TABV
+	plx
+	rts
 
 *-----------------------------------
 
@@ -118,25 +148,22 @@ CURSOR_ERASE
 	lda	textY
 	sta	cursorRECT+4
 	sec
-	sbc	#charWIDTH
+	sbc	#8
 	sta	cursorRECT
 	
 	lda	textX
 	sta	cursorRECT+2
 	clc
-	adc	#charWIDTH
+	adc	#8
 	sta	cursorRECT+6
 	
 	lda	#cursorRECT
 	jsr	eraseLINES	; retour en 8-bits
-	rep	#$30
 
-	lda	textX
-	sec
-	sbc	#charWIDTH
-	sta	textX
-
-	sep	#$30
+	mx	%11
+	
+	dec	CH
+	jsr	TABV
 	plx
 	rts
 
@@ -144,22 +171,38 @@ CURSOR_ERASE
 
 	mx	%11
 	
-CURSOR	rep	#$30
-	lda	textX
+CURSOR	lda	CH
 	pha
-	lda	textY
+	lda	CV
 	pha
-	sep	#$30
 	lda	#$a5	; black bullet
-	jsr	COUT	; returns in 8-bit
-	rep	#$30
+	jsr	COUT
 	pla
+	sta	CV
+	pla
+	sta	CH
+	
+*-----------------------------------
+
+	mx	%11
+	
+TABV	rep	#$30
+	lda	CV
+	and	#$ff
+	asl
+	tax
+	lda	text2shr,x
 	sta	textY
-	pla
+
+	lda	CH	; 8 pixels de large par caractere
+	and	#$ff
+	asl
+	asl
+	asl
 	sta	textX
 	sep	#$30
 	rts
-	
+
 *-----------------------------------
 
 	mx	%11
@@ -174,6 +217,18 @@ GOTOXY	stx	textX
 	PushWord	textX
 	PushWord	textY
 	_MoveTo
+	sep	#$30
+	rts
+
+*-----------------------------------
+
+	mx	%11
+	
+COUTXY	pea	^COUTXY
+	phx
+	phy
+	rep	#$30
+	_DrawCString
 	sep	#$30
 	rts
 
@@ -196,9 +251,13 @@ COUT	phx
 
 *----------- next X position
 
+	sep	#$20
+	inc	CH
+	rep	#$20
+	
 	lda	textX
 	clc
-	adc	#charWIDTH
+	adc	#8
 	sta	textX
 	cmp	#maxX
 	bcs	COUT1
@@ -213,20 +272,21 @@ COUT99	sep	#$30
 	mx	%00
 
 COUT1	stz	textX	; a new line
+	sep	#$20
+	stz	CH
 
+	lda	CV	; où est-on ?
+	cmp	#maxTROW
+	bcs	COUT2	; on est deja sur la derniere ligne
+
+	inc	CV	; non, encore de la place
+	rep	#$20
 	lda	textY
 	clc
-	adc	#charHEIGHT
+	adc	#10
 	sta	textY
-	cmp	#maxY
-	bcs	COUT2
-	bcc	COUT99	; on sort
+	bra	COUT99	; on sort
 
-*----------- Etape 0 : on attend une touche
-
-COUT2	lda	#row19	; on se remet sur la dernière ligne
-	sta	textY
-	
 *----------- on doit bouger les écrans
 *
 * 1 - ptrTEXTE est décalé de 8 lignes vers le haut
@@ -235,6 +295,8 @@ COUT2	lda	#row19	; on se remet sur la dernière ligne
 * 4 - on met un bloc noir
 
 	mx	%00
+
+COUT2	rep	#$20
 
 *----------- Etape 1
 
@@ -289,33 +351,38 @@ COUT2	lda	#row19	; on se remet sur la dernière ligne
 
 	lda	#lastlineRECT
 	jsr	eraseLINES	; en 8-bits à la sortie
-	brl	COUT99
+
+	mx	%11
+	
+	ply
+	plx
+	rts
 
 *----------- Exit
 *
 * De 160 à 199, ce sont les lignes de texte
-*
-*text2shr	dw	9	; 0
-*	dw	19	; 1
-*	dw	29	; 2
-*	dw	39	; 3
-*	dw	49	; 4
-*	dw	59	; 5
-*	dw	69	; 6
-*	dw	79	; 7
-*	dw	89	; 8
-*	dw	99	; 9
-*	dw	109	; 10
-*	dw	119	; 11
-*	dw	129	; 12
-*	dw	139	; 13
-*	dw	149	; 14
-*	dw	159	; 15
-*	dw	169	; 16
-*	dw	179	; 17
-*	dw	189	; 18
-*	dw	199	; 19
-*	
+
+text2shr	dw	9	; 0
+	dw	19	; 1
+	dw	29	; 2
+	dw	39	; 3
+	dw	49	; 4
+	dw	59	; 5
+	dw	69	; 6
+	dw	79	; 7
+	dw	89	; 8
+	dw	99	; 9
+	dw	109	; 10
+	dw	119	; 11
+	dw	129	; 12
+	dw	139	; 13
+	dw	149	; 14
+	dw	159	; 15
+	dw	169	; 16
+	dw	179	; 17
+	dw	189	; 18
+	dw	199	; 19
+	
 *-----------------------------------
 
 	mx	%11
@@ -544,6 +611,7 @@ BFF0	ds	16
 	
 showPIC	rep	#$30
 	and	#$00ff
+	stal	$300	; LOGO - LA SALLE
 	asl
 	tax
 	lda	tblIMAGES,x
@@ -897,6 +965,17 @@ INK	ldx	theINK
 	lda	palette320,x
 	pha
 	_SetColorEntry
+	
+*	PushWord	#^blackPATTERN
+*	asl
+*	asl
+*	asl
+*	asl
+*	asl
+*	clc
+*	adc	#blackPATTERN
+*	pha
+*	_SetPenPat
 	rts
 
 *-----------------------------------
@@ -914,6 +993,10 @@ PAPER	ldx	thePAPER
 	lda	palette320,x
 	pha
 	_SetColorEntry
+	
+	ldal	$c034
+	inc
+	stal	$c034
 	rts
 
 *-----------------------------------

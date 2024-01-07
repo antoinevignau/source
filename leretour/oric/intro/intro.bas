@@ -3,14 +3,14 @@
 ##
  10 REM   COPYRIGHT LORICIELS NOV. 84
  11 REM 
- 90 TEXT:CALL #2400:DOKE998,10000
- 95 FOR N=1 TO 10:PING:WAIT 5:NEXT 
- 99 POKE 48036,0
- 100 POKE #26A,10:CLS:PAPER 0:INK 7
+ 90 TEXT:CALL #2400:DOKE998,10000						; #2400 image Loriciels ?
+ 95 FOR N=1 TO 10:PING:WAIT 5:NEXT 						; image en $2500
+ 99 POKE 48036,0							; desti at $B538
+ 100 POKE #26A,10:CLS:PAPER 0:INK 7						; 3 lignes de $E0 bytes
  105 Z=PEEK(#D000)
  107 IF Z=169 THEN GOSUB 11000
- 110 IF Z=169 THEN A$=CHR$(27)+"Q"+CHR$(27)+"J":PRINT CHR$(4):GOTO 125
- 120 A$=CHR$(27)+"Q"+CHR$(27)+"@"+CHR$(27)+"J":PRINT CHR$(4):GOTO 130
+ 110 IF Z=169 THEN A$=CHR$(27)+"Q"+CHR$(27)+"J":PRINT CHR$(4):GOTO 125			; Fond rouge, texte blanc
+ 120 A$=CHR$(27)+"Q"+CHR$(27)+"@"+CHR$(27)+"J":PRINT CHR$(4):GOTO 130			; Police double hauteur
  125 PRINT A$;"Une heure du matin (heure francaise)";:GOTO 140
  130 PRINT A$;" Une heure du matin (heure francaise)";
  135 PRINT:PRINT A$;"sur tous les telex du monde apparait":GOTO 150
@@ -29,11 +29,11 @@
  280 A$(8)="en orbite autour de la terre afin de"
  290 A$(9)="tenter de desamorcer mes armes. Mais,"
  300 A$(10)="jamais plus d'un homme a la fois...."
- 310 FOR N=1 TO 10:FOR I=1 TO LEN(A$(N)):CALL #2440:PRINT MID$(A$(N),I,1);
+ 310 FOR N=1 TO 10:FOR I=1 TO LEN(A$(N)):CALL #2440:PRINT MID$(A$(N),I,1);		; #2440 bip, send 14 bytes to the sound chip
  315 WAIT 5:NEXT I
  320 IF LEN(A$(N))<38 THEN PRINT 
  330 PRINT:NEXT N:WAIT 100
- 400 CLS:PAPER 0:INK 3:POKE #30E,64:A=254:S=420
+ 400 CLS:PAPER 0:INK 3:POKE #30E,64:A=254:S=420					; Affiche un serpent à la Tron
  405 PLAY 1,0,0,0:FOR K=0 TO 7 STEP 2
  410 FOR N=1+K TO 38-K:PLOT N,K,A:SOUND 1,S,10:S=S-1:NEXT N
  420 FOR N=1+K TO 26-K:PLOT 38-K,N,A:SOUND 1,S,10:S=S-1:NEXT N
@@ -41,17 +41,17 @@
  440 FOR N=25-K TO 2+K STEP -1:PLOT 1+K,N,A:SOUND 1,S,10:S=S-1:NEXT N
  450 IF K<>6 THEN PLOT K+2,2+K,254
  460 NEXT K:POKE #30E,192:PING 
- 470 PLOT 24,9,8:PLOT 24,10,8:PLOT 25,9,3:PLOT 25,10,3:PLOT 13,9,14:PLOT 13,10,14
+ 470 PLOT 24,9,8:PLOT 24,10,8:PLOT 25,9,3:PLOT 25,10,3:PLOT 13,9,14:PLOT 13,10,14		; LORICIELS en rouge
  480 PLOT 14,9,1:PLOT 14,10,1:PLOT 15,9,"LORICIELS":PLOT 15,10,"LORICIELS"
- 490 PLOT 11,13,"Vous propose ce que":PLOT 13,15,"vous redoutiez"
+ 490 PLOT 11,13,"Vous propose ce que":PLOT 13,15,"vous redoutiez"			; le reste en blanc
  500 PLOT 12,17,"depuis longtemps"
  510 WAIT 700
- 600 CLS:INK 0:PAPER 3:HIRES:POKE #26A,10:PAPER 3:INK 0:CURSET 12,100,0:FILL 25,1,0
- 605 DOKE998,40000
- 610 FILL 25,1,5:FILL 25,1,4:FILL 25,1,1:CALL #51BB:CALL #5200:CALL #528A
- 630 POKE #21A,145:FOR N=35 TO 210 STEP 5:POKE #219,N:CIRCLE 4,1:NEXT 
- 640 FOR N=145 TO 195 STEP 5:POKE #21A,N:CIRCLE 4,1:NEXT 
- 650 FOR N=210 TO 35 STEP -5:POKE #219,N:CIRCLE 4,1:NEXT 
+ 600 CLS:INK 0:PAPER 3:HIRES:POKE #26A,10:PAPER 3:INK 0:CURSET 12,100,0:FILL 25,1,0		; Ecran jaune de titre
+ 605 DOKE998,40000							; Le retour du Docteur GENIUS
+ 610 FILL 25,1,5:FILL 25,1,4:FILL 25,1,1:CALL #51BB:CALL #5200:CALL #528A		; $51BB : affiche Dracula en petit
+ 630 POKE #21A,145:FOR N=35 TO 210 STEP 5:POKE #219,N:CIRCLE 4,1:NEXT 			; $5200 : 
+ 640 FOR N=145 TO 195 STEP 5:POKE #21A,N:CIRCLE 4,1:NEXT 				; $528A : installe l'interruption
+ 650 FOR N=210 TO 35 STEP -5:POKE #219,N:CIRCLE 4,1:NEXT 				; $529C : enlève l'interruption
  660 FOR N=195 TO 145 STEP -5:POKE #21A,N:CIRCLE 4,1:NEXT 
  670 A$="Ecrit par Laurent Benes"
  680 B$="Assiste de Karine Le Pors"
@@ -60,14 +60,14 @@
  710 CURSET 108,155,0:FILL 20,1,12:CURSET 198,155,0:FILL 20,1,8
  720 A$="`: LORICIELS    AOUT 1984"
  730 FOR N=1 TO LEN(A$):CURSET 42+N*6,179,0:CHAR ASC(MID$(A$,N,1)),0,1:NEXT 
- 740 WAIT 20:GOSUB 10000
- 750 CALL #529C:PRINT:PRINT CHR$(4)CHR$(27)"T"CHR$(27)"F"CHR$(27)"J";
- 760 PRINT "3 jours plus tard dans les journaux";
- 770 DOKE998,10000:WAIT 300:CLS:CALL #3000
- 780 PRINT CHR$(4):WAIT 1000:A=0:X$=KEY$
+ 740 WAIT 20:GOSUB 10000						; joue la musique (Toccata & fugue de J.-S. Bach)
+ 750 CALL #529C:PRINT:PRINT CHR$(4)CHR$(27)"T"CHR$(27)"F"CHR$(27)"J";			; Restore interrupt / Blue paper, Cyan ink
+ 760 PRINT "3 jours plus tard dans les journaux";				; en double hauteur, en bas de l'écran
+ 770 DOKE998,10000:WAIT 300:CLS:CALL #3000					; #3000 La une du Monde
+ 780 PRINT CHR$(4):WAIT 1000:A=0:X$=KEY$					; data en $3026 sur $2000 octets
  790 A=A+1:IF A=1000 THEN 810
  800 IF KEY$<>"" THEN 810 ELSE 790
- 810 TEXT:PAPER 0:INK 3:POKE #26A,10:PRINT:PRINT:POKE 48036,0
+ 810 TEXT:PAPER 0:INK 3:POKE #26A,10:PRINT:PRINT:POKE 48036,0			; Fond noir, texte jaune
  820 PRINT "  C'est ainsi que vous decidez de"
  830 PRINT "vous rendre aux autorites pour combat-";
  840 PRINT "tre a nouveau le Dr Genius."
@@ -78,7 +78,7 @@
  890 PRINT:PRINT:PRINT SPC(10)"BON COURAGE..."
  900 PRINT:PRINT:PRINT "Vous en aurez besoin !"
  910 GOSUB 8000
- 920 CLS:PRINT:PRINT "Voici quelques explications";
+ 920 CLS:PRINT:PRINT "Voici quelques explications";				; Fond noir, texte jaune
  930 PRINT:PRINT "Le jeu est en temps reel,un chronome-"
  940 PRINT "tre sera affiche en permanence."
  950 PRINT "D'autre part, vous devrez prendre"
@@ -95,7 +95,7 @@
  1060 PRINT "en compte que les 4 premieres lettres"
  1070 PRINT "de chaque mot, ainsi: PRENDS CARTON"
  1080 PRINT "sera compris comme:   PREN CART"
- 1090 GOSUB 8000:CLS:INK 6
+ 1090 GOSUB 8000:CLS:INK 6						; Fond noir, texte cyan
  1100 PRINT:PRINT "L'ordinateur ne prend en compte en"
  1110 PRINT "general que deux mots, exemple:"
  1120 PRINT "- ALLUME SALLE":PRINT "- EST  ou  E  ou  AVANCE EST"
@@ -112,7 +112,7 @@
  1240 PRINT "mettre le crayon dans la boite."
  1250 PRINT "a condition que vous possediez crayon"
  1260 PRINT "et boite, evidemment."
- 1270 GOSUB 8000:CLS:INK 1
+ 1270 GOSUB 8000:CLS:INK 1						; Fond noir, texte rouge
  1280 PRINT:PRINT "Une derniere chose, il est possible de";
  1290 PRINT "sauver une partie en cours, et de la"
  1300 PRINT "recharger, mais a vous de trouver le"
@@ -121,9 +121,9 @@
  1330 PRINT:PRINT "et prenez garde a vous !"
  1340 PRINT:PRINT:PRINT "Tapez une touche pour charger le"
  1350 PRINT "programme de jeu."
- 1380 X$="":GET A$:HIRES:PAPER 1:INK 0:CALL #5100
- 1390 PRINT:PRINT " voulez-vous revoir la presentation                  (O/N)"
- 1400 GET F$
+ 1380 X$="":GET A$:HIRES:PAPER 1:INK 0:CALL #5100				; #5100 affiche Dracula (le Dr Genius)
+ 1390 PRINT:PRINT " voulez-vous revoir la presentation                  (O/N)"		; source $2A60
+ 1400 GET F$							; destination $A004
  1500 IF F$="O" THEN RUN 
  1600 CLS:NEW
  8000 X$=KEY$:PLOT 7,24,"Appuyez sur une touche.":GET A$:RETURN 

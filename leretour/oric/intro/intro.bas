@@ -120,7 +120,7 @@
  1320 PRINT:PRINT:PRINT:PRINT "Et maintenant, tres bonne aventure..."
  1330 PRINT:PRINT "et prenez garde a vous !"
  1340 PRINT:PRINT:PRINT "Tapez une touche pour charger le"
- 1350 PRINT "programme de jeu."
+ 1350 PRINT "programme de jeu."						; Fond rouge, encre noire
  1380 X$="":GET A$:HIRES:PAPER 1:INK 0:CALL #5100				; #5100 affiche Dracula (le Dr Genius)
  1390 PRINT:PRINT " voulez-vous revoir la presentation                  (O/N)"		; source $2A60
  1400 GET F$							; destination $A004

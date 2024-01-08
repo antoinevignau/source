@@ -18,7 +18,7 @@
 
 * Assemble files
 
-         ASM   ../common/sons.s
+         ASM   data.s
          KND   $0000
          SNA   DrGenius
 

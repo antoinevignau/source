@@ -43,6 +43,12 @@ GSOS	=	$e100a8
 dpFROM	=	$80
 dpTO	=	dpFROM+4
 dpTHREE	=	dpTO+4
+dpFOUR	=	dpTHREE+4
+
+dpCOL1	=	$90
+dpCOL2	=	dpCOL1+1
+dpPX	=	dpCOL2+1
+dpBK	=	dpPX+1
 
 *-----------------------
 
@@ -232,8 +238,12 @@ okTOOL	_HideMenuBar
 	sta	ptrSCREEN+2
 	
 okSHADOW
-	jsr	initMIDI
-	jsr	doSOUNDON
+
+*-----------------------------------
+* C'EST L'HEURE DE L'INTRODUCTION
+*-----------------------------------
+
+	jsr	intro
 
 *-----------------------------------
 * IL FAUT JOUER MAINTENANT
@@ -652,9 +662,10 @@ loadPATH1	ds	129	; 23 fullPathname (128 normally)
 
 	put	leretour.s
 	put	engine.s
+	put	introcode.s
 	put	fr.s
-	put	../common/midi.s
-	put	../common/images.s
+	put	midi.s
+	put	images.s
 	
 *--- It's the end
 

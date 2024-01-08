@@ -160,8 +160,8 @@ RDKEY	jsr	CURSOR	; shows the cursor
 
 	jsr	checkREPLAY
 	jsr	printTEMPS
-	jsr	testENERGIE
-	bcs	RDKEY99
+*	jsr	testENERGIE
+*	bcs	RDKEY99
 
 	pha
 	PushWord #%00000000_00001000

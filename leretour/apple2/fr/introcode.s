@@ -15,6 +15,24 @@
 	ext	picGENIUS
 	ext	picMONDE
 
+	ext	txtTELEX
+	ext	txtGENIUSTEXTE
+	ext	txtSERPENT1
+	ext	txtSERPENT2
+	ext	txtSERPENT3
+	ext	txtSERPENT4
+	ext	txtECRITPAR1
+	ext	txtECRITPAR2
+	ext	txtECRITPAR3
+	ext	txtECRITPAR4
+	ext	txtECRITPAR5
+	ext	txtECRITPAR6
+	ext	txtMONDE
+	ext	txtEXPLICATIONS1
+	ext	txtEXPLICATIONS2
+	ext	txtEXPLICATIONS3
+	ext	txtEXPLICATIONS4
+
 *-----------------------------------
 * CODE
 *-----------------------------------
@@ -24,6 +42,8 @@ intro	jsr	intro_telex
 	jsr	intro_genius_texte
 	bcs	intro_end
 	jsr	intro_serpent
+	bcs	intro_end
+	jsr	intro_ecritpar
 	bcs	intro_end
 	jsr	intro_genius_image
 	bcs	intro_end
@@ -60,6 +80,140 @@ intro_serpent
 	rts
 
 *-----------------------------------
+* DE QUI EST CE LOGICIEL ?
+*-----------------------------------
+
+	mx	%00
+
+intro_ecritpar
+	PushWord	#$9999
+	_ClearScreen
+	
+	jsr	petit_genius
+	rts
+
+*----------- Affiche le petit Genius
+
+petit_genius
+	lda	#picGENIUS
+	sta	dpFROM
+	lda	#^picGENIUS
+	sta	dpFROM+2
+
+	lda	ptrSCREEN
+	clc
+	adc	#56	; pour center
+	sta	dpTO
+	lda	ptrSCREEN+2
+	sta	dpTO+2
+	
+	ldx	#0
+pgLOOP	ldy	#0
+	sep	#$20
+]lp	lda	[dpFROM],y
+	jsr	outputPG
+	iny
+	cpy	#17
+	bcc	]lp
+
+	rep	#$20
+	
+	lda	dpFROM
+	clc
+	adc	#17
+	sta	dpFROM
+	
+	txa
+	clc
+	adc	#160-51	; 17x3 (6 bits = 3 pixels)
+	tax
+	cpx	#84*160	; 84 lignes
+	bcc	pgLOOP
+
+*-----------
+
+	sep	#$20
+pgK2	ldal	KBD
+	bpl	pgK2
+	stal	KBDSTROBE
+	rep	#$20
+	clc
+	rts
+
+*-----------
+
+	mx	%10
+
+outputPG	phy
+	pha
+	txy
+	
+	lda	#$99
+	sta	dpPX
+	lda	1,s
+	and	#%0010_0000
+	beq	outputPG1
+	lda	dpPX
+	and	#$0f
+	ora	dpCOL1
+	sta	dpPX
+outputPG1	lda	1,s
+	and	#%0001_0000
+	beq	outputPG2
+	lda	dpPX
+	and	#$f0
+	ora	dpCOL2
+	sta	dpPX
+outputPG2	lda	dpPX
+	sta	[dpTO],y
+	iny
+	
+	lda	#$99
+	sta	dpPX
+	lda	1,s
+	and	#%0000_1000
+	beq	outputPG3
+	lda	dpPX
+	and	#$0f
+	ora	dpCOL1
+	sta	dpPX
+outputPG3	lda	1,s
+	and	#%0000_0100
+	beq	outputPG4
+	lda	dpPX
+	and	#$f0
+	ora	dpCOL2
+	sta	dpPX
+outputPG4	lda	dpPX
+	sta	[dpTO],y
+	iny
+
+	lda	#$99
+	sta	dpPX
+	lda	1,s
+	and	#%0000_0010
+	beq	outputPG5
+	lda	dpPX
+	and	#$0f
+	ora	dpCOL1
+	sta	dpPX
+outputPG5	lda	1,s
+	and	#%0000_0001
+	beq	outputPG6
+	lda	dpPX
+	and	#$f0
+	ora	dpCOL2
+	sta	dpPX
+outputPG6	lda	dpPX
+	sta	[dpTO],y
+	iny
+	tyx
+
+	pla
+	ply
+	rts
+
+*-----------------------------------
 * GENIUS
 *-----------------------------------
 
@@ -76,7 +230,7 @@ intro_genius_image
 
 	lda	ptrSCREEN
 	clc
-	adc	#56	; pour center
+	adc	#34	; pour center
 	sta	dpTO
 	lda	ptrSCREEN+2
 	sta	dpTO+2
@@ -99,9 +253,9 @@ igLOOP	ldy	#0
 	
 	txa
 	clc
-	adc	#160-51	; 17x3 (6 bits = 3 pixels)
+	adc	#320-102	; 17x6 (6 bits = 3 pixels)
 	tax
-	cpx	#84*160	; 84 lignes
+	cpx	#168*160	; 84x2 lignes
 	bcc	igLOOP
 
 *-----------
@@ -116,70 +270,132 @@ igK2	ldal	KBD
 
 *-----------
 
+colIGBK	=	$77
+
 	mx	%10
 
 outputIG	phy
 	pha
 	txy
 	
-	lda	#$77
-	sta	dpPX
 	lda	1,s
 	and	#%0010_0000
 	beq	outputIG1
-	lda	dpPX
-	and	#$0f
-	ora	dpCOL1
-	sta	dpPX
-outputIG1	lda	1,s
-	and	#%0001_0000
-	beq	outputIG2
-	lda	dpPX
-	and	#$f0
-	ora	dpCOL2
-	sta	dpPX
-outputIG2	lda	dpPX
+	lda	#$00
+	beq	outputIG1B
+outputIG1	lda	#colIGBK
+outputIG1B	phy
+	pha
 	sta	[dpTO],y
+	rep	#$20
+	tya
+	clc
+	adc	#160
+	tay
+	sep	#$20
+	pla
+	sta	[dpTO],y
+	ply
 	iny
 
-	lda	#$77
-	sta	dpPX
+	lda	1,s
+	and	#%0001_0000
+	beq	outputIG2
+	lda	#$00
+	beq	outputIG2B
+outputIG2	lda	#colIGBK
+outputIG2B	phy
+	pha
+	sta	[dpTO],y
+	rep	#$20
+	tya
+	clc
+	adc	#160
+	tay
+	sep	#$20
+	pla
+	sta	[dpTO],y
+	ply
+	iny
+
 	lda	1,s
 	and	#%0000_1000
 	beq	outputIG3
-	lda	dpPX
-	and	#$0f
-	ora	dpCOL1
-	sta	dpPX
-outputIG3	lda	1,s
-	and	#%0000_0100
-	beq	outputIG4
-	lda	dpPX
-	and	#$f0
-	ora	dpCOL2
-	sta	dpPX
-outputIG4	lda	dpPX
+	lda	#$00
+	beq	outputIG3B
+outputIG3	lda	#colIGBK
+outputIG3B	phy
+	pha
 	sta	[dpTO],y
+	rep	#$20
+	tya
+	clc
+	adc	#160
+	tay
+	sep	#$20
+	pla
+	sta	[dpTO],y
+	ply
 	iny
 
-	lda	#$77
-	sta	dpPX
+	lda	1,s
+	and	#%0000_0100
+	beq	outputIG4
+	lda	#$00
+	beq	outputIG4B
+outputIG4	lda	#colIGBK
+outputIG4B	phy
+	pha
+	sta	[dpTO],y
+	rep	#$20
+	tya
+	clc
+	adc	#160
+	tay
+	sep	#$20
+	pla
+	sta	[dpTO],y
+	ply
+	iny
+
 	lda	1,s
 	and	#%0000_0010
 	beq	outputIG5
-	lda	dpPX
-	and	#$0f
-	ora	dpCOL1
-	sta	dpPX
-outputIG5	lda	1,s
+	lda	#$00
+	beq	outputIG5B
+outputIG5	lda	#colIGBK
+outputIG5B	phy
+	pha
+	sta	[dpTO],y
+	rep	#$20
+	tya
+	clc
+	adc	#160
+	tay
+	sep	#$20
+	pla
+	sta	[dpTO],y
+	ply
+	iny
+
+	lda	1,s
 	and	#%0000_0001
 	beq	outputIG6
-	lda	dpPX
-	and	#$f0
-	ora	dpCOL2
-	sta	dpPX
-outputIG6	lda	dpPX
+	lda	#$00
+	beq	outputIG6B
+outputIG6	lda	#colIGBK
+outputIG6B	phy
+	pha
 	sta	[dpTO],y
+	rep	#$20
+	tya
+	clc
+	adc	#160
+	tay
+	sep	#$20
+	pla
+	sta	[dpTO],y
+	ply
 	iny
 	tyx
 

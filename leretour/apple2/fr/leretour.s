@@ -1081,21 +1081,46 @@ MDP$	asc	'MANOIR'
 *----------- SAVE - LOGO
 
 :4590	stz	fgTIME
-	rep	#$30
+	jsr	:4595
+	bcs	:4591
+*	rep	#$30
 	jsr	doSAVE
-	sep	#$30
-	inc	fgTIME
+*	sep	#$30
+:4591	inc	fgTIME
 	rts
 	
 *----------- LOAD - LOGO
 
 :4600	stz	fgTIME
-	rep	#$30
+	jsr	:4595
+	bcs	:4601
+*	rep	#$30
 	jsr	doLOAD
-	sep	#$30
+*	sep	#$30
 	inc	fgTIME
 	jmp	REPLAY
+:4601	inc	fgTIME
+	rts
 
+*----------- Slot for load/save
+
+:4595	@print	#str4595
+	jsr	GETLN1
+	cpx	#1
+	bne	:4595
+	lda	TEXTBUFFER
+	cmp	#'0'
+	bcc	:4595
+	beq	:4597
+	cmp	#'9'+1
+	bcs	:4595
+	clc
+	rts
+:4597	sec
+	rts
+
+str4595	asc	'Slot 1-9 (0=sortir) ? '00
+	
 *----------- LE MOT DE PASSE FINAL
 
 :4610	@print	#str4610

@@ -348,7 +348,17 @@ loadBACK	_HideCursor
 
 *----------------------------------- Open
 
-doLOAD	jsr	doSOUNDOFF
+	mx	%11
+	
+doLOAD	sta	pGAME+10
+	rep	#$30
+	jsr	loadALL
+	sep	#$30
+	rts
+
+	mx	%00
+
+	jsr	doSOUNDOFF
 	jsr	saveBACK
 	
 	PushWord #30
@@ -370,11 +380,19 @@ doLOAD1	jsr	copyPATH
 	jsr	loadALL
 	rts
 
-	mx	%00
-	
 *----------------------------------- Save
 
-doSAVE	jsr	doSOUNDOFF
+	mx	%11
+	
+doSAVE	sta	pGAME+10
+	rep	#$30
+	jsr	saveALL
+	sep	#$30
+	rts
+	
+	mx	%00
+
+	jsr	doSOUNDOFF
 	jsr	saveBACK
 	
 	PushWord #25
@@ -521,7 +539,7 @@ proWRITEGAME
 	ds	4	; C - transfer_count
 	dw	1	; cache_priority
 
-pGAME	strl	'0/               '
+pGAME	strl	'1/Partie0'	; +10 pour la partie
 
 *-----------------------------------
 * DES DONNES 16-BITS

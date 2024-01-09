@@ -296,6 +296,7 @@ playMUSIC66	adc	#$bdbd	; patched
 	_Locate
 	PullLong	seqPlayRec
 
+	stz	fgMIDI	; we are good!!!
 	cli		; end of the long init!
 	rts
 	
@@ -471,7 +472,7 @@ ptrBNK	ds	4
 
 *--- Flags
 
-fgMIDI	ds	2	; can play MIDI if 0
+fgMIDI	dw	1	; can play MIDI if 0
 
 *--- Instruments
 

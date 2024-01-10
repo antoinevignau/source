@@ -239,8 +239,6 @@ okTOOL	_HideMenuBar
 	sta	ptrSCREEN+2
 	
 okSHADOW
-	jsr	initMIDI
-	
 *-----------------------------------
 * C'EST L'HEURE DE L'INTRODUCTION
 *-----------------------------------
@@ -251,6 +249,7 @@ okSHADOW
 * IL FAUT JOUER MAINTENANT
 *-----------------------------------
 
+	jsr	initMIDI
 	jsr	doSOUNDON
 	
 	sei

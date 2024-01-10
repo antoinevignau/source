@@ -1829,8 +1829,8 @@ waitMS	lda	#0	; skip if not zero
 doW1	ldy	LINNUM
 doW2	ldal	RDVBLBAR
 	bpl	doW2
-*doW3	ldal	RDVBLBAR
-*	bmi	doW3
+doW3	ldal	RDVBLBAR
+	bmi	doW3
 	dey
 	bne	doW2
 	dex

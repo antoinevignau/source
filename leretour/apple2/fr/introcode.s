@@ -15,9 +15,13 @@
 	ext	picGENIUS
 	ext	picMONDE
 
+	ext	telexRECT
 	ext	txtTELEX1
 	ext	txtTELEX2
 	ext	txtTELEX3
+	ext	txtTELEX4
+	ext	txtTELEX5
+	
 	ext	txtGENIUSTEXTE
 	ext	txtSERPENT1
 	ext	txtSERPENT2
@@ -60,16 +64,19 @@ intro_end	rts
 
 	mx	%00
 
+it1STLINE	=	18
+it1stROW	=	10
+
 intro_telex
 	PushLong	#telexRECT
 	PushWord	#$7777
 	PushWord	#$7777
 	_SpecialRect
 
-*	PushWord #$1000
-*	PushWord #$fffe		; Shaston 16
-*	PushWord #0
-*	_InstallFont
+	PushWord #$1000
+	PushWord #$fffe		; Shaston 16
+	PushWord #0
+	_InstallFont
 
 	PushWord	#0
 	_GetTextMode
@@ -77,37 +84,63 @@ intro_telex
 	PushWord	#modeForeCopy
 	_SetTextMode
 	
-	PushWord	#10
-	PushWord	#166
+	PushWord	#it1stROW
+	PushWord	#it1STLINE
 	_MoveTo
 	PushLong	#txtTELEX1
 	_DrawCString
 	
-	PushWord	#10
-	PushWord	#182
+	PushWord	#it1stROW
+	PushWord	#it1STLINE+20
 	_MoveTo
 	PushLong	#txtTELEX2
 	_DrawCString
 
-	PushWord	#10
-	PushWord	#198
+	PushWord	#it1stROW
+	PushWord	#it1STLINE+40
 	_MoveTo
 	PushLong	#txtTELEX3
 	_DrawCString
 
+	PushWord	#it1stROW
+	PushWord	#it1STLINE+60
+	_MoveTo
+	PushLong	#txtTELEX4
+	_DrawCString
+
+	PushWord	#it1stROW
+	PushWord	#it1STLINE+80
+	_MoveTo
+	PushLong	#txtTELEX5
+	_DrawCString
+
 	_SetTextMode
+
+	ldy	#60*3
 
 *-----------
 
-	sep	#$20
-]lp	ldal	KBD
+waitMS16	ldal	KBD-1
+	bmi	waitMS169
+	
+]lp	ldal	RDVBLBAR-1
 	bpl	]lp
-	stal	KBDSTROBE
-	rep	#$20
-	clc
+]lp	ldal	RDVBLBAR-1
+	bmi	]lp
+	dey
+	bne	waitMS16
+waitMS168	clc
 	rts
-
-telexRECT	dw	150,0,200,320
+	
+waitMSBIS	ldal	KBD-1
+	bpl	waitMS168
+	
+waitMS169	stal	KBDSTROBE-1
+	and	#$ff00
+	cmp	#$9b00
+	bne	waitMS168
+	sec
+	rts
 
 *-----------------------------------
 * GENIUS TEXTE
@@ -116,8 +149,62 @@ telexRECT	dw	150,0,200,320
 	mx	%00
 
 intro_genius_texte
-	rts
+	PushWord	#0
+	_ClearScreen
 
+	PushWord #$0800
+	PushWord #$fffe		; Shaston 8
+	PushWord #0
+	_InstallFont
+
+	lda	#txtGENIUSTEXTE
+	sta	dpFROM
+	lda	#^txtGENIUSTEXTE
+	sta	dpFROM+2
+
+	stz	textX
+	lda	#charHEIGHT
+	sta	textY
+
+]lp	PushWord	textX
+	PushWord	textY
+	_MoveTo
+
+	jsr	KEY	; retour en 8-bit
+	rep	#$30
+	
+	jsr	waitMSBIS	; keypress?
+	bcc	igt_ok
+igt_end	rts
+	
+igt_ok	lda	[dpFROM]	; get char
+	and	#$ff
+	beq	igt_end
+	cmp	#chrRET
+	beq	igt_ret
+	
+	pha
+	_DrawChar
+	
+	lda	textX	; next x
+	clc
+	adc	#charWIDTH
+	sta	textX
+	cmp	#maxX
+	bcc	igt_next
+
+igt_ret	stz	textX	; next line
+	lda	textY
+	clc
+	adc	#16
+	sta	textY
+	
+igt_next	ldy	#4	; wait 4/60eme
+	jsr	waitMS16
+
+	inc	dpFROM
+	bra	]lp
+	
 *-----------------------------------
 * ANIMATION DU SERPENT
 *-----------------------------------
@@ -125,7 +212,60 @@ intro_genius_texte
 	mx	%00
 
 intro_serpent
-	rts
+	PushWord	#0
+	_ClearScreen
+
+	PushLong	#curPATTERN
+	_GetPenPat
+
+	PushLong	#redPATTERN
+	_SetPenPat
+
+	PushWord #$1000
+	PushWord #$fffe		; Shaston 16
+	PushWord #0
+	_InstallFont
+
+	PushWord	#100
+	PushWord	#80
+	_MoveTo
+
+	PushLong	#txtSERPENT1
+	_DrawCString
+
+	PushLong	#curPATTERN
+	_SetPenPat
+	
+	PushWord #$0800
+	PushWord #$fffe		; Shaston 8
+	PushWord #0
+	_InstallFont
+
+	PushWord	#70
+	PushWord	#100
+	_MoveTo
+
+	PushLong	#txtSERPENT2
+	_DrawCString
+
+	PushWord	#90
+	PushWord	#110
+	_MoveTo
+
+	PushLong	#txtSERPENT3
+	_DrawCString
+
+	PushWord	#80
+	PushWord	#120
+	_MoveTo
+
+	PushLong	#txtSERPENT4
+	_DrawCString
+
+*-----------
+
+	ldy	#60*30
+	jmp	waitMS16
 
 *-----------------------------------
 * DE QUI EST CE LOGICIEL ?
@@ -180,13 +320,8 @@ pgLOOP	ldy	#0
 
 *-----------
 
-	sep	#$20
-pgK2	ldal	KBD
-	bpl	pgK2
-	stal	KBDSTROBE
-	rep	#$20
-	clc
-	rts
+	ldy	#60*5
+	jmp	waitMS16
 
 *-----------
 
@@ -308,13 +443,8 @@ igLOOP	ldy	#0
 
 *-----------
 
-	sep	#$20
-igK2	ldal	KBD
-	bpl	igK2
-	stal	KBDSTROBE
-	rep	#$20
-	clc
-	rts
+	ldy	#60*5
+	jmp	waitMS16
 
 *-----------
 
@@ -508,13 +638,8 @@ imLOOP	lda	#0
 
 *-----------
 
-	sep	#$20
-imK2	ldal	KBD
-	bpl	imK2
-	stal	KBDSTROBE
-	rep	#$20
-	clc
-	rts
+	ldy	#60*5
+	jmp	waitMS16
 
 *--- Attribut d'un pixel
 *

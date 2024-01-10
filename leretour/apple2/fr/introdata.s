@@ -11,17 +11,25 @@
 * LES TEXTES DE L'INTRO
 *-----------------------------------
 
-txtTELEX1	ENT
-	asc	'Une heure du matin (heure francaise)'00
-txtTELEX2	ENT
-	asc	'sur tous les telex du monde apparait'00
-txtTELEX3	ENT
-	asc	'ce message angoissant...'00
+telexRECT	ENT
+	dw	0,0,102,320
 
+txtTELEX1	ENT
+	asc	'Une heure du matin'00
+txtTELEX2	ENT
+	asc	'(heure francaise)'00
+txtTELEX3	ENT
+	asc	'sur tous les telex'00
+txtTELEX4	ENT
+	asc	'du monde apparait ce'00
+txtTELEX5	ENT
+	asc	'message angoissant...'00
+	
 *-----------------------------------
 
 txtGENIUSTEXTE	ENT
-	asc	'Moi, GENIUS, je defie le monde. J'27'ai'0d
+*	asc	'1234567890123456789012345678901234567890'
+	asc	'  Moi, GENIUS, je defie le monde. J'27'ai'0d
 	asc	'invente une nouvelle arme capable de'0d
 	asc	'raser la terre, ce que je ferai dans'0d
 	asc	'deux semaines... Mais, comme je ne suis'0d

@@ -438,7 +438,8 @@ VBLCounter0	ds	2
 	
 	ext	sndEXPLODE
 	ext	sndZAP
-	
+	ext	sndKEY
+
 EXPLODE	rep	#$30
 	ldx	#^sndEXPLODE
 	ldy	#sndEXPLODE
@@ -449,6 +450,12 @@ ZAP	rep	#$30
 	ldx	#^sndZAP
 	ldy	#sndZAP
 	lda	#22
+	bra	playSOUND
+
+KEY	rep	#$30
+	ldx	#^sndKEY
+	ldy	#sndKEY
+	lda	#5
 
 playSOUND	sty	waveSTART
 	stx	waveSTART+2

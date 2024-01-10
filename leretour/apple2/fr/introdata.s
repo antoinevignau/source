@@ -11,9 +11,11 @@
 * LES TEXTES DE L'INTRO
 *-----------------------------------
 
-txtTELEX	ENT
-	asc	'Une heure du matin (heure francaise)'0d
-	asc	'sur tous les telex du monde apparait'0d
+txtTELEX1	ENT
+	asc	'Une heure du matin (heure francaise)'00
+txtTELEX2	ENT
+	asc	'sur tous les telex du monde apparait'00
+txtTELEX3	ENT
 	asc	'ce message angoissant...'00
 
 *-----------------------------------

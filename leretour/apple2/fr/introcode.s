@@ -15,7 +15,9 @@
 	ext	picGENIUS
 	ext	picMONDE
 
-	ext	txtTELEX
+	ext	txtTELEX1
+	ext	txtTELEX2
+	ext	txtTELEX3
 	ext	txtGENIUSTEXTE
 	ext	txtSERPENT1
 	ext	txtSERPENT2
@@ -59,7 +61,53 @@ intro_end	rts
 	mx	%00
 
 intro_telex
+	PushLong	#telexRECT
+	PushWord	#$7777
+	PushWord	#$7777
+	_SpecialRect
+
+*	PushWord #$1000
+*	PushWord #$fffe		; Shaston 16
+*	PushWord #0
+*	_InstallFont
+
+	PushWord	#0
+	_GetTextMode
+	
+	PushWord	#modeForeCopy
+	_SetTextMode
+	
+	PushWord	#10
+	PushWord	#166
+	_MoveTo
+	PushLong	#txtTELEX1
+	_DrawCString
+	
+	PushWord	#10
+	PushWord	#182
+	_MoveTo
+	PushLong	#txtTELEX2
+	_DrawCString
+
+	PushWord	#10
+	PushWord	#198
+	_MoveTo
+	PushLong	#txtTELEX3
+	_DrawCString
+
+	_SetTextMode
+
+*-----------
+
+	sep	#$20
+]lp	ldal	KBD
+	bpl	]lp
+	stal	KBDSTROBE
+	rep	#$20
+	clc
 	rts
+
+telexRECT	dw	150,0,200,320
 
 *-----------------------------------
 * GENIUS TEXTE

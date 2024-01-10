@@ -18,6 +18,7 @@
 *-----------------------------------
 
 	use	4/Event.Macs
+	use	4/Font.Macs
 	use	4/Locator.Macs
 	use	4/Mem.Macs
 	use	4/Menu.Macs
@@ -573,7 +574,7 @@ blackPATTERN ds	32,$00
 	ds	32,$44
 	ds	32,$55
 	ds	32,$66
-	ds	32,$77
+redPATTERN	ds	32,$77
 	ds	32,$88
 	ds	32,$99
 	ds	32,$aa

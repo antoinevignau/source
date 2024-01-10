@@ -5288,8 +5288,8 @@
  6078 |  4 introcode.s    227 | Code        | 00 |         |    3 | 00/2212 : A2 1B 0E    |                     LDX       #$E1B                ; load tool call #
  6079 |  4 introcode.s    227 | Code        | 00 |         |    4 | 00/2215 : 22 00 00 E1 |                     JSL       $E10000              ; go to dispatcher
  6080 |  4 introcode.s    228 | Empty       | 00 |         |    0 | 00/2219               |                                                    
- 6081 |  4 introcode.s    229 | Macro       | 00 |         |    0 | 00/2219               |                     PushWord  #100                 
- 6083 |  4 introcode.s    229 | Code        | 00 |         |    3 | 00/2219 : F4 64 00    |                     PEA       #100                 
+ 6081 |  4 introcode.s    229 | Macro       | 00 |         |    0 | 00/2219               |                     PushWord  #90                  
+ 6083 |  4 introcode.s    229 | Code        | 00 |         |    3 | 00/2219 : F4 5A 00    |                     PEA       #90                  
  6086 |  4 introcode.s    230 | Macro       | 00 |         |    0 | 00/221C               |                     PushWord  #80                  
  6088 |  4 introcode.s    230 | Code        | 00 |         |    3 | 00/221C : F4 50 00    |                     PEA       #80                  
  6091 |  4 introcode.s    231 | Macro       | 00 |         |    0 | 00/221F               |                     _MoveTo                        
@@ -5320,8 +5320,8 @@
  6151 |  4 introcode.s    242 | Code        | 00 |         |    3 | 00/2249 : A2 1B 0E    |                     LDX       #$E1B                ; load tool call #
  6152 |  4 introcode.s    242 | Code        | 00 |         |    4 | 00/224C : 22 00 00 E1 |                     JSL       $E10000              ; go to dispatcher
  6153 |  4 introcode.s    243 | Empty       | 00 |         |    0 | 00/2250               |                                                    
- 6154 |  4 introcode.s    244 | Macro       | 00 |         |    0 | 00/2250               |                     PushWord  #70                  
- 6156 |  4 introcode.s    244 | Code        | 00 |         |    3 | 00/2250 : F4 46 00    |                     PEA       #70                  
+ 6154 |  4 introcode.s    244 | Macro       | 00 |         |    0 | 00/2250               |                     PushWord  #92                  
+ 6156 |  4 introcode.s    244 | Code        | 00 |         |    3 | 00/2250 : F4 5C 00    |                     PEA       #92                  
  6159 |  4 introcode.s    245 | Macro       | 00 |         |    0 | 00/2253               |                     PushWord  #100                 
  6161 |  4 introcode.s    245 | Code        | 00 |         |    3 | 00/2253 : F4 64 00    |                     PEA       #100                 
  6164 |  4 introcode.s    246 | Macro       | 00 |         |    0 | 00/2256               |                     _MoveTo                        
@@ -5335,8 +5335,8 @@
  6185 |  4 introcode.s    249 | Code        | 00 |         |    3 | 00/2263 : A2 04 A6    |                     LDX       #$A604               ; load tool call #
  6186 |  4 introcode.s    249 | Code        | 00 |         |    4 | 00/2266 : 22 00 00 E1 |                     JSL       $E10000              ; go to dispatcher
  6187 |  4 introcode.s    250 | Empty       | 00 |         |    0 | 00/226A               |                                                    
- 6188 |  4 introcode.s    251 | Macro       | 00 |         |    0 | 00/226A               |                     PushWord  #90                  
- 6190 |  4 introcode.s    251 | Code        | 00 |         |    3 | 00/226A : F4 5A 00    |                     PEA       #90                  
+ 6188 |  4 introcode.s    251 | Macro       | 00 |         |    0 | 00/226A               |                     PushWord  #110                 
+ 6190 |  4 introcode.s    251 | Code        | 00 |         |    3 | 00/226A : F4 6E 00    |                     PEA       #110                 
  6193 |  4 introcode.s    252 | Macro       | 00 |         |    0 | 00/226D               |                     PushWord  #110                 
  6195 |  4 introcode.s    252 | Code        | 00 |         |    3 | 00/226D : F4 6E 00    |                     PEA       #110                 
  6198 |  4 introcode.s    253 | Macro       | 00 |         |    0 | 00/2270               |                     _MoveTo                        
@@ -5350,8 +5350,8 @@
  6219 |  4 introcode.s    256 | Code        | 00 |         |    3 | 00/227D : A2 04 A6    |                     LDX       #$A604               ; load tool call #
  6220 |  4 introcode.s    256 | Code        | 00 |         |    4 | 00/2280 : 22 00 00 E1 |                     JSL       $E10000              ; go to dispatcher
  6221 |  4 introcode.s    257 | Empty       | 00 |         |    0 | 00/2284               |                                                    
- 6222 |  4 introcode.s    258 | Macro       | 00 |         |    0 | 00/2284               |                     PushWord  #80                  
- 6224 |  4 introcode.s    258 | Code        | 00 |         |    3 | 00/2284 : F4 50 00    |                     PEA       #80                  
+ 6222 |  4 introcode.s    258 | Macro       | 00 |         |    0 | 00/2284               |                     PushWord  #102                 
+ 6224 |  4 introcode.s    258 | Code        | 00 |         |    3 | 00/2284 : F4 66 00    |                     PEA       #102                 
  6227 |  4 introcode.s    259 | Macro       | 00 |         |    0 | 00/2287               |                     PushWord  #120                 
  6229 |  4 introcode.s    259 | Code        | 00 |         |    3 | 00/2287 : F4 78 00    |                     PEA       #120                 
  6232 |  4 introcode.s    260 | Macro       | 00 |         |    0 | 00/228A               |                     _MoveTo                        

@@ -226,7 +226,7 @@ intro_serpent
 	PushWord #0
 	_InstallFont
 
-	PushWord	#100
+	PushWord	#90
 	PushWord	#80
 	_MoveTo
 
@@ -241,21 +241,21 @@ intro_serpent
 	PushWord #0
 	_InstallFont
 
-	PushWord	#70
+	PushWord	#92
 	PushWord	#100
 	_MoveTo
 
 	PushLong	#txtSERPENT2
 	_DrawCString
 
-	PushWord	#90
+	PushWord	#110
 	PushWord	#110
 	_MoveTo
 
 	PushLong	#txtSERPENT3
 	_DrawCString
 
-	PushWord	#80
+	PushWord	#102
 	PushWord	#120
 	_MoveTo
 

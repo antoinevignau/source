@@ -575,9 +575,9 @@ blackPATTERN ds	32,$00
 	ds	32,$66
 redPATTERN	ds	32,$77
 	ds	32,$88
-	ds	32,$99
+yellowPATTERN ds	32,$99
 	ds	32,$aa
-	ds	32,$bb
+cyanPATTERN	ds	32,$bb
 	ds	32,$cc
 	ds	32,$dd
 	ds	32,$ee

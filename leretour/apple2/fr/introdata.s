@@ -28,7 +28,6 @@ txtTELEX5	ENT
 *-----------------------------------
 
 txtGENIUSTEXTE	ENT
-*	asc	'1234567890123456789012345678901234567890'
 	asc	'  Moi, GENIUS, je defie le monde. J'27'ai'0d
 	asc	'invente une nouvelle arme capable de'0d
 	asc	'raser la terre, ce que je ferai dans'0d
@@ -64,7 +63,12 @@ txtECRITPAR4	ENT
 txtECRITPAR5	ENT
 	asc	'Merci XavSnap'00
 txtECRITPAR6	ENT
-	asc	'3 jours plus tard dans les journaux'00
+	asc	'3 jours plus tard'00
+txtECRITPAR7	ENT
+	asc	'dans les journaux'00
+
+ecritparRECT	ENT
+	dw	160,0,200,320
 
 *-----------------------------------
 
@@ -82,7 +86,7 @@ txtMONDE	ENT
 *-----------------------------------
 
 txtEXPLICATIONS1	ENT
-	asc	0d'Voici quelques explications'0d0d
+	asc	'Voici quelques explications'0d0d
 	asc	'Le jeu est en temps reel, un chronome-'0d
 	asc	'tre sera affiche en permanence.'0d
 	asc	'D'27'autre part, vous devrez prendre'0d
@@ -101,7 +105,7 @@ txtEXPLICATIONS1	ENT
 	asc	'sera compris comme :   PREN CART'00
 
 txtEXPLICATIONS2	ENT
-	asc	0d'L'27'ordinateur ne prend en compte en'0d
+	asc	'L'27'ordinateur ne prend en compte en'0d
 	asc	'general que deux mots, exemple :'0d
 	asc	'- ALLUME SALLE'0d
 	asc	'- EST  ou  E  ou  AVANCE EST'0d0d
@@ -120,14 +124,15 @@ txtEXPLICATIONS2	ENT
 	asc	'et boite, evidemment.'00
 
 txtEXPLICATIONS3	ENT
-	asc	0d'Une derniere chose, il est possible de'0d
+	asc	'Une derniere chose, il est possible de'0d
 	asc	'sauver une partie en cours, et de la'0d
 	asc	'recharger, mais a vous de trouver le'0d
 	asc	'vocabulaire adequat...'0d0d0d0d
 	asc	'Et maintenant, tres bonne aventure...'0d0d
 	asc	'et prenez garde a vous !'0d0d0d
-	asc	'Tapez une touche pour charger le'0d
-	asc	'programme de jeu.'00						; Fond rouge, encre 
+*	asc	'Tapez une touche pour charger le'0d
+*	asc	'programme de jeu.'00			; Fond rouge, encre 
+	asc	'Tapez une touche pour jouer.'00
 
 txtEXPLICATIONS4	ENT
 	asc	'Voulez-vous revoir la presentation (O/N) '00

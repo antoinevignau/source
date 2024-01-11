@@ -12,21 +12,32 @@
 * SOFTSWITCHES AND FRIENDS
 *-----------------------------------
 
+	ext	picLORICIELS
+
+	ext	txtINTRO1
+	ext	txtINTRO2
+	ext	txtINTRO3
+	ext	txtINTRO4
+	ext	txtINTRO5
+	ext	txtINTRO6
+	ext	txtINTRO7
+	
 	ext	picGENIUS
 	ext	picMONDE
-
 	ext	telexRECT
 	ext	txtTELEX1
 	ext	txtTELEX2
 	ext	txtTELEX3
 	ext	txtTELEX4
 	ext	txtTELEX5
-	
 	ext	txtGENIUSTEXTE
 	ext	txtSERPENT1
 	ext	txtSERPENT2
 	ext	txtSERPENT3
 	ext	txtSERPENT4
+	ext	txtTITRE1
+	ext	txtTITRE2
+	ext	txtTITRE3
 	ext	ecritparRECT
 	ext	txtECRITPAR1
 	ext	txtECRITPAR2
@@ -46,20 +57,115 @@
 *-----------------------------------
 
 intro
-*	jsr	intro_telex
-*	bcs	intro_end
-*	jsr	intro_genius_texte
-*	bcs	intro_end
-*	jsr	intro_serpent
-*	bcs	intro_end
-	jsr	intro_ecritpar
+	jsr	intro_intro		; faut soigner son ego
 	bcs	intro_end
-*	jsr	intro_monde
-*	bcs	intro_end
-*	jsr	intro_explications
-*	bcs	intro_end
-*	jsr	intro_genius_image
+	jsr	intro_logo		; ok
+	bcs	intro_end
+	jsr	intro_telex		; ok
+	bcs	intro_end
+	jsr	intro_genius_texte	; ok
+	bcs	intro_end
+	jsr	intro_serpent	; ok
+	bcs	intro_end
+	jsr	intro_ecritpar	; ok (sauf les couleurs)
+	bcs	intro_end
+	jsr	intro_monde		; ok
+	bcs	intro_end
+	jsr	intro_explications	; ok
+	bcs	intro_end
+	jsr	intro_genius_image	; ok
 intro_end	rts
+
+*-----------------------------------
+* INTRO
+*-----------------------------------
+
+	mx	%00
+
+iiY	=	85
+
+intro_intro
+	PushWord	#0
+	_ClearScreen
+	
+	ldy	#198
+	lda	#txtINTRO4
+	jsr	centerME
+
+	ldy	#iiY
+	lda	#txtINTRO1
+	jsr	centerME
+
+	ldy	#iiY+20
+	lda	#txtINTRO2
+	jsr	centerME
+
+	ldy	#iiY+40
+	lda	#txtINTRO3
+	jsr	centerME
+
+	ldy	#60*1
+	jsr	waitMS16
+
+*----------- La suite du copyright
+
+	PushWord	#0
+	_ClearScreen
+	
+	ldy	#iiY
+	lda	#txtINTRO5
+	jsr	centerME
+
+	ldy	#iiY+20
+	lda	#txtINTRO6
+	jsr	centerME
+
+	ldy	#iiY+40
+	lda	#txtINTRO7
+	jsr	centerME
+
+	ldy	#60*1
+	jmp	waitMS16
+
+*----------- Merci La Belle Zohra
+
+centerME	sty	theY
+
+	PushWord	#^txtINTRO1	; pointer to string
+	pha
+	
+	PushWord	#0	; get string length
+	PushWord	#^txtINTRO1
+	pha
+	_StringWidth	; return left on stack
+	
+	lda	#320	; why 160?
+	sec
+	sbc	1,s
+	bpl	cm1
+	lda	#0
+cm1	lsr
+	sta	1,s	; X
+	
+	PushWord	theY	; pour MoveTo
+	_MoveTo
+	_DrawString
+	
+	ldy	#60*1
+	jmp	waitMS16
+
+*-----------------------------------
+* LE LOGO LORICIELS
+*-----------------------------------
+
+intro_logo
+	PushLong	#picLORICIELS
+	PushLong	ptrSCREEN
+	PushLong	#32768
+	_BlockMove
+	
+	ldy	#60*5
+	jmp	waitMS16
 
 *-----------------------------------
 * TELEX
@@ -71,15 +177,19 @@ it1STLINE	=	18
 it1stROW	=	10
 
 intro_telex
+	PushWord	#0
+	_ClearScreen
+
+	PushWord	#0
+	PushLong	#palette320
+	_SetColorTable
+	
 	PushLong	#telexRECT
 	PushWord	#$7777
 	PushWord	#$7777
 	_SpecialRect
 
-	PushWord #$1000
-	PushWord #$fffe		; Shaston 16
-	PushWord #0
-	_InstallFont
+	jsr	fontSHASTON16
 
 	PushWord	#0
 	_GetTextMode
@@ -155,10 +265,7 @@ intro_genius_texte
 	PushWord	#0
 	_ClearScreen
 
-	PushWord #$0800
-	PushWord #$fffe		; Shaston 8
-	PushWord #0
-	_InstallFont
+	jsr	fontSHASTON8
 
 	lda	#txtGENIUSTEXTE
 	sta	dpFROM
@@ -217,57 +324,275 @@ igt_next	ldy	#4	; wait 4/60eme
 intro_serpent
 	PushWord	#0
 	_ClearScreen
-
+	
 	PushLong	#curPATTERN
 	_GetPenPat
-
-	PushLong	#redPATTERN
-	_SetPenPat
-
-	PushWord #$1000
-	PushWord #$fffe		; Shaston 16
-	PushWord #0
-	_InstallFont
-
-	PushWord	#90
-	PushWord	#80
-	_MoveTo
-
-	PushLong	#txtSERPENT1
-	_DrawCString
+	
+	jsr	snake_1
+	jsr	snake_2
 
 	PushLong	#curPATTERN
 	_SetPenPat
-	
-	PushWord #$0800
-	PushWord #$fffe		; Shaston 8
-	PushWord #0
-	_InstallFont
-
-	PushWord	#92
-	PushWord	#100
-	_MoveTo
-
-	PushLong	#txtSERPENT2
-	_DrawCString
-
-	PushWord	#110
-	PushWord	#110
-	_MoveTo
-
-	PushLong	#txtSERPENT3
-	_DrawCString
-
-	PushWord	#102
-	PushWord	#120
-	_MoveTo
-
-	PushLong	#txtSERPENT4
-	_DrawCString
+	rts
 
 *-----------
 
-	ldy	#60*10
+snake_1	PushLong	#curPENSIZE
+	_GetPenSize
+
+	PushLong	#checkeredPATTERN
+	_SetPenPat
+	
+	PushWord	#8
+	PushWord	#8
+	_SetPenSize
+	
+	jsr	snake_draw
+
+	PushWord	curPENSIZE
+	PushWord	curPENSIZE+2
+	_SetPenSize
+	rts
+
+*-----------
+
+snake_draw	stz	theK
+
+*--- For K=0 TO 7 STEP 2
+
+sd_k	lda	theK
+	sta	theN
+	lda	#39
+	sec
+	sbc	theK
+	sta	maxN
+
+]lp	lda	theN
+	asl
+	asl
+	asl
+	sta	theX
+	
+	lda	theK
+	asl
+	asl
+	asl
+	sta	theY
+
+	PushWord	theX
+	PushWord	theY
+	_MoveTo
+
+	PushWord	#1
+	PushWord	#1
+	_Line
+
+	jsr	KEY	; retour en 8-bit
+	rep	#$30
+
+	ldy	#1	; wait 4/60eme
+	jsr	waitMS16
+
+	inc	theN
+	lda	maxN
+	cmp	theN
+	bcs	]lp
+
+*--- Loop 2 (line 420)
+
+	lda	theK
+	sta	theN
+	lda	#25
+	sec
+	sbc	theK
+	sta	maxN
+	
+]lp	lda	#39
+	sec
+	sbc	theK
+	asl
+	asl
+	asl
+	pha		; X
+	
+	lda	theN
+	asl
+	asl
+	asl
+	pha		; Y
+	_MoveTo
+
+	PushWord	#1
+	PushWord	#1
+	_Line
+
+	jsr	KEY	; retour en 8-bit
+	rep	#$30
+
+	ldy	#1	; wait 4/60eme
+	jsr	waitMS16
+
+	inc	theN
+	lda	theN
+	cmp	maxN
+	bcc	]lp
+
+*--- Loop 3 (line 430)
+
+	lda	#38
+	sec
+	sbc	theK
+	sta	theN
+	
+	lda	theK
+	sta	maxN
+	
+]lp	lda	theN
+	asl
+	asl
+	asl
+	pha		; X
+	
+	lda	#24
+	sec
+	sbc	theK
+	asl
+	asl
+	asl
+	pha		; Y
+	_MoveTo
+
+	PushWord	#1
+	PushWord	#1
+	_Line
+
+	jsr	KEY	; retour en 8-bit
+	rep	#$30
+
+	ldy	#1	; wait 4/60eme
+	jsr	waitMS16
+
+	dec	theN
+	lda	maxN
+	cmp	theN
+	bne	]lp
+
+*--- Loop 4 (line 440)
+
+	lda	#24
+	sec
+	sbc	theK
+	sta	theN
+	
+	lda	theK
+	inc
+	sta	maxN
+	
+]lp	lda	theK
+	asl
+	asl
+	asl
+	pha		; X
+	
+	lda	theN
+	asl
+	asl
+	asl
+	pha		; Y
+	_MoveTo
+
+	PushWord	#1
+	PushWord	#1
+	_Line
+
+	jsr	KEY	; retour en 8-bit
+	rep	#$30
+
+	ldy	#1	; wait 4/60eme
+	jsr	waitMS16
+
+	dec	theN
+	lda	maxN
+	cmp	theN
+	bcc	]lp
+
+*--- Line 450
+
+	lda	theK
+	cmp	#6
+	beq	sd_nextk
+
+	lda	theK
+	inc
+	asl
+	asl
+	asl
+	pha
+	
+	lda	theK
+	inc
+	inc
+	asl
+	asl
+	asl
+	pha
+	_MoveTo
+
+	PushWord	#1
+	PushWord	#1
+	_Line
+
+*----------- NEXT K
+
+sd_nextk	lda	theK
+	clc
+	adc	#2
+	sta	theK
+	cmp	#8
+	bcs	sd_end
+	jmp	sd_k
+
+sd_end	rts
+
+*-----------
+
+theK	ds	2
+theN	ds	2
+maxN	ds	2
+
+*-----------
+
+snake_2	PushWord	#0
+	_GetForeColor
+	
+	PushWord	#7
+	_SetForeColor
+
+	jsr	fontSHASTON16
+
+	ldy	#80
+	lda	#txtSERPENT1
+	jsr	centerME
+	
+	_SetForeColor
+	
+	jsr	fontSHASTON8
+
+	ldy	#105
+	lda	#txtSERPENT2
+	jsr	centerME
+	
+	ldy	#118
+	lda	#txtSERPENT3
+	jsr	centerME
+	
+	ldy	#131
+	lda	#txtSERPENT4
+	jsr	centerME
+	
+*-----------
+
+	ldy	#60*2
 	jmp	waitMS16
 
 *-----------------------------------
@@ -318,21 +643,182 @@ pgLOOP	ldy	#0
 	cpx	#84*160	; 84 lignes
 	bcc	pgLOOP
 
+*----------- Affiche le titre
+
+	PushWord	#0
+	_GetForeColor
+	
+	PushWord	#0
+	_SetForeColor
+	
+	PushWord	#0
+	_GetTextMode
+	
+	PushWord	#modeForeCopy
+	_SetTextMode
+	
+	PushWord	#70
+	PushWord	#110
+	_MoveTo
+	PushLong	#txtTITRE1
+	_DrawCString
+
+	PushWord	#70
+	PushWord	#120
+	_MoveTo
+	PushLong	#txtTITRE2
+	_DrawCString
+
+	jsr	fontSHASTON16
+
+	PushWord	#160
+	PushWord	#118
+	_MoveTo
+	PushLong	#txtTITRE3
+	_DrawCString
+
+*----------- Affiche les anneaux
+
+	PushLong	#curPATTERN
+	_GetPenPat
+
+	PushLong	#blackPATTERN
+	_SetPenPat
+
+*--- Boucle 1
+
+ovalHEIGHT	=	8
+ovalX1	=	30
+ovalX2	=	290
+ovalY1	=	130
+ovalY2	=	180
+
+	lda	#ovalY1
+	sta	ovalRECT
+	clc
+	adc	#ovalHEIGHT
+	sta	ovalRECT+4
+
+	lda	#ovalX1
+]lp	sta	ovalRECT+2
+	clc
+	adc	#ovalHEIGHT
+	sta	ovalRECT+6
+	
+	jsr	outputOVAL
+
+	lda	ovalRECT+2
+	clc
+	adc	#5
+	cmp	#ovalX2
+	bcc	]lp
+	
+*--- Boucle 2
+
+	lda	#ovalX2
+	sta	ovalRECT+2
+	clc
+	adc	#ovalHEIGHT
+	sta	ovalRECT+6
+
+	lda	#ovalY1
+]lp	sta	ovalRECT
+	clc
+	adc	#ovalHEIGHT
+	sta	ovalRECT+4
+	
+	jsr	outputOVAL
+
+	lda	ovalRECT
+	clc
+	adc	#5
+	cmp	#ovalY2
+	bcc	]lp
+
+*--- Boucle 3
+
+	lda	#ovalY2
+	sta	ovalRECT
+	clc
+	adc	#ovalHEIGHT
+	sta	ovalRECT+4
+
+	lda	#ovalX2
+]lp	sta	ovalRECT+2
+	clc
+	adc	#ovalHEIGHT
+	sta	ovalRECT+6
+	
+	jsr	outputOVAL
+
+	lda	ovalRECT+2
+	sec
+	sbc	#5
+	cmp	#ovalX1
+	bcs	]lp
+
+*--- Boucle 4
+
+	lda	#ovalX1
+	sta	ovalRECT+2
+	clc
+	adc	#ovalHEIGHT
+	sta	ovalRECT+6
+
+	lda	#ovalY2
+]lp	sta	ovalRECT
+	clc
+	adc	#ovalHEIGHT
+	sta	ovalRECT+4
+	
+	jsr	outputOVAL
+
+	lda	ovalRECT
+	sec
+	sbc	#5
+	cmp	#ovalY1
+	bcs	]lp
+
+*--- La suite...
+
+	PushLong	#curPATTERN
+	_SetPenPat
+
 *----------- Affiche les noms
 
-* TO DO
+	jsr	fontSHASTON8
+	
+	ldy	#150
+	lda	#txtECRITPAR1
+	jsr	centerME
+	ldy	#162
+	lda	#txtECRITPAR2
+	jsr	centerME
+	ldy	#174
+	lda	#txtECRITPAR3
+	jsr	centerME
 
-*----------- Affiche le cadre
+*---
+
+	_SetTextMode
+	_SetForeColor
+
+	jsr	initMIDI
+	jsr	doSOUNDON
+	
+	ldy	#60*60*2
+	jsr	waitMS16
+	
+*----------- Boucle sur les couleurs (ou pas)
+
+*----------- Affiche la suite
 
 	PushLong	#ecritparRECT
 	PushWord	#$4444
 	PushWord	#$4444
 	_SpecialRect
 
-	PushWord #$1000
-	PushWord #$fffe		; Shaston 16
-	PushWord #0
-	_InstallFont
+	jsr	fontSHASTON16
 
 	PushWord	#0
 	_GetForeColor
@@ -346,27 +832,20 @@ pgLOOP	ldy	#0
 	PushWord	#11
 	_SetForeColor
 
-	PushWord	#40
-	PushWord	#179
-	_MoveTo
-	PushLong	#txtECRITPAR6
-	_DrawCString
+	ldy	#179
+	lda	#txtECRITPAR6
+	jsr	centerME
 	
-	PushWord	#34
-	PushWord	#199
-	_MoveTo
-	PushLong	#txtECRITPAR7
-	_DrawCString
+	ldy	#199
+	lda	#txtECRITPAR7
+	jsr	centerME
 
 	_SetTextMode
 	_SetForeColor
 	
-	PushWord #$0800
-	PushWord #$fffe		; Shaston 8
-	PushWord #0
-	_InstallFont
+	jsr	fontSHASTON8
 
-	ldy	#60*3
+	ldy	#60*1
 	jmp	waitMS16
 
 *-----------
@@ -441,6 +920,19 @@ outputPG6	lda	dpPX
 	pla
 	ply
 	rts
+
+*---
+
+outputOVAL
+	PushLong	#ovalRECT
+	_FrameOval
+	
+	ldy	#1	; wait 2/60eme
+	jmp	waitMS16
+
+*---
+	
+ovalRECT	ds	8
 
 *-----------------------------------
 * LA UNE DU MONDE
@@ -918,6 +1410,21 @@ outputIG6B	phy
 	rts
 
 	mx	%00
+
+*-----------------------------------
+* QUELQUES ROUTINES
+*-----------------------------------
+
+fontSHASTON8
+	PushWord #$0800
+	bra	fontSHASTON
+fontSHASTON16
+	PushWord #$1000
+fontSHASTON
+	PushWord #$fffe		; Shaston 16
+	PushWord #0
+	_InstallFont
+	rts
 
 *-----------------------------------
 * DATA INTRO 

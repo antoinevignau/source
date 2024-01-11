@@ -5,13 +5,26 @@
 * (c) 2023, Brutal Deluxe Software (Apple II)
 *
 
-	lst	off
-	rel
-	dsk	iigs.l
-	
+* Les accents (encore et toujours)
+*
+* à	88
+* â	89
+* ç	8d
+* é	8e
+* è	8f
+* ê	90
+* ë	91
+* î	94
+* ï	95
+* ô	99
+* ù	9d
+* û	9e
+* (c) 	a9 (only c)
+* oe	cf
+
 	mx	%00
-	xc
-	xc
+	rel
+	lst	off
 
 *-----------------------------------
 * MACROS
@@ -171,10 +184,10 @@ okMEM1	sty	ptrTEXT
 	pha
 	pha
 	PushWord	myID
-	PushWord	#refIsPointer
-	PushLong	#toolTBL
+	PushWord	#refIsResource
+	PushLong	#1
 	_StartUpTools
-	PullLong ssREC
+	PullLong	ssREC
 	bcc	okTOOL
 
 	pha
@@ -249,8 +262,8 @@ okSHADOW
 * IL FAUT JOUER MAINTENANT
 *-----------------------------------
 
-	jsr	initMIDI
-	jsr	doSOUNDON
+*	jsr	initMIDI
+*	jsr	doSOUNDON
 	
 	sei
 	PushLong	#intTIME
@@ -270,8 +283,8 @@ QUIT	rep	#$30
 	_DelHeartBeat
 	cli
 	
-meQUIT	PushWord #refIsPointer
-	PushLong ssREC
+meQUIT	PushWord	#refIsHandle
+	PushLong	ssREC
 	_ShutDownTools
 
 meQUIT1	PushWord myID
@@ -324,7 +337,7 @@ make64KB	pha
 *-----------------------------------
 
 saveBACK	_HideCursor
-	PushLong	#ptrE12000
+	PushLong	ptrSCREEN
 	PushLong	ptrBACKGND
 	PushLong	#32768
 	_BlockMove
@@ -337,7 +350,7 @@ saveBACK	_HideCursor
 
 loadBACK	_HideCursor
 	PushLong	ptrBACKGND
-	PushLong	#ptrE12000
+	PushLong	ptrSCREEN
 	PushLong	#32768
 	_BlockMove
 	rts
@@ -583,7 +596,19 @@ cyanPATTERN	ds	32,$bb
 	ds	32,$ee
 whitePATTERN ds	32,$ff
 
+checkeredPATTERN
+	hex	0F0F0F0F
+	hex	F0F0F0F0
+	hex	0F0F0F0F
+	hex	F0F0F0F0
+	hex	0F0F0F0F
+	hex	F0F0F0F0
+	hex	0F0F0F0F
+	hex	F0F0F0F0
+
 curPATTERN	ds	32
+
+curPENSIZE	ds	4
 
 *----------------------------------- Error messages
 
@@ -597,45 +622,45 @@ errSTR2	str	''
 
 ssREC	ds	4
 
-toolTBL	dw	$0000	; flags
-	dw	$C000	; videoMode (shadowing + fast port)
-	dw	$0000	; resFileID
-	ADRL	$00000000	; dPageHandle
-	dw	$0011
-	dw	$0003	; Miscellaneous Tool
-	dw	$0300
-	dw	$0004	; QuickDraw II
-	dw	$0301
-	dw	$0005	; Desk Manager
-	dw	$0302
-	dw	$0006	; Event Manager
-	dw	$0300
-	dw	$0008	; Sound Tool Set
-	dw	$0100
-	dw	$000B	; Integer Math Tool Set
-	dw	$0200
-	dw	$000E	; Window Manager
-	dw	$0301
-	dw	$000F	; Menu Manager
-	dw	$0301
-	dw	$0010	; Control Manager
-	dw	$0301
-	dw	$0012	; QuickDraw II Auxiliary
-	dw	$0301
-	dw	$0014	; LineEdit Tool Set
-	dw	$0301
-	dw	$0015	; Dialog Manager
-	dw	$0301
-	dw	$0016	; Scrap Manager
-	dw	$0300
-	dw	$0017	; Standard File Tool Set
-	dw	$0301
-	dw	$001B	; Font Manager
-	dw	$0301
-	dw	$001C	; List Manager
-	dw	$0301
-	dw	$001E	; Resource Manager
-	dw	$0100
+*toolTBL	dw	$0000	; flags
+*	dw	$C000	; videoMode (shadowing + fast port)
+*	dw	$0000	; resFileID
+*	ADRL	$00000000	; dPageHandle
+*	dw	$0011
+*	dw	$0003	; Miscellaneous Tool
+*	dw	$0300
+*	dw	$0004	; QuickDraw II
+*	dw	$0301
+*	dw	$0005	; Desk Manager
+*	dw	$0302
+*	dw	$0006	; Event Manager
+*	dw	$0300
+*	dw	$0008	; Sound Tool Set
+*	dw	$0100
+*	dw	$000B	; Integer Math Tool Set
+*	dw	$0200
+*	dw	$000E	; Window Manager
+*	dw	$0301
+*	dw	$000F	; Menu Manager
+*	dw	$0301
+*	dw	$0010	; Control Manager
+*	dw	$0301
+*	dw	$0012	; QuickDraw II Auxiliary
+*	dw	$0301
+*	dw	$0014	; LineEdit Tool Set
+*	dw	$0301
+*	dw	$0015	; Dialog Manager
+*	dw	$0301
+*	dw	$0016	; Scrap Manager
+*	dw	$0300
+*	dw	$0017	; Standard File Tool Set
+*	dw	$0301
+*	dw	$001B	; Font Manager
+*	dw	$0301
+*	dw	$001C	; List Manager
+*	dw	$0301
+*	dw	$001E	; Resource Manager
+*	dw	$0100
 
 *----------------------------------- GS/OS
 

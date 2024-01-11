@@ -11,6 +11,23 @@
 * LES TEXTES DE L'INTRO
 *-----------------------------------
 
+txtINTRO1	ENT
+	str	'Brutal Deluxe Software'
+txtINTRO2	ENT
+	str	'Antoine Vignau & Olivier Zardini'
+txtINTRO3	ENT
+	str	'pr'8e'sentent'
+txtINTRO4	ENT
+	str	'Merci XavSnap'
+txtINTRO5	ENT
+	str	'LE RETOUR DU DR GENIUS'
+txtINTRO6	ENT
+	str	'(c) 1984 - 2024'
+txtINTRO7	ENT
+	str	'Laurent Benes & Loriciels'
+	
+*-----------------------------------
+
 telexRECT	ENT
 	dw	0,0,102,320
 
@@ -19,53 +36,57 @@ txtTELEX1	ENT
 txtTELEX2	ENT
 	asc	'(heure francaise)'00
 txtTELEX3	ENT
-	asc	'sur tous les telex'00
+	asc	'sur tous les t'8e'lex'00
 txtTELEX4	ENT
-	asc	'du monde apparait ce'00
+	asc	'du monde appara'94't ce'00
 txtTELEX5	ENT
 	asc	'message angoissant...'00
 	
 *-----------------------------------
 
 txtGENIUSTEXTE	ENT
-	asc	'  Moi, GENIUS, je defie le monde. J'27'ai'0d
-	asc	'invente une nouvelle arme capable de'0d
+	asc	'  Moi, GENIUS, je d'8e'fie le monde. J'27'ai'0d
+	asc	'invent'8e' une nouvelle arme capable de'0d
 	asc	'raser la terre, ce que je ferai dans'0d
 	asc	'deux semaines... Mais, comme je ne suis'0d
 	asc	'pas un monstre, je vous laisse une'0d
 	asc	'chance. J'27'accepte que des hommes de'0d
 	asc	'tout pays se rendent sur mon vaisseau'0d
-	asc	'en orbite autour de la terre afin de'0d
-	asc	'tenter de desamorcer mes armes. Mais,'0d
-	asc	'jamais plus d'27'un homme a la fois....'00
+	asc	'en orbite autour de la Terre afin de'0d
+	asc	'tenter de d'8e'samorcer mes armes. Mais,'0d
+	asc	'jamais plus d'27'un homme '88' la fois....'00
 
 *-----------------------------------
 
 txtSERPENT1	ENT
-	asc	'LORICIELS'00
+	str	'LORICIELS'
 txtSERPENT2	ENT
-	asc	'vous propose ce que'00
+	str	'vous propose ce que'
 txtSERPENT3	ENT
-	asc	'vous redoutiez'00
+	str	'vous redoutiez'
 txtSERPENT4	ENT
-	asc	'depuis longtemps'00
+	str	'depuis longtemps'
 
 *-----------------------------------
 
+txtTITRE1	ENT
+	asc	'Le retour'00
+txtTITRE2	ENT
+	asc	'du Docteur'00
+txtTITRE3	ENT
+	asc	'Genius'00
+
 txtECRITPAR1	ENT
-	asc	'Ecrit par Laurent Benes'00
+	str	'Ecrit par Laurent Benes'
 txtECRITPAR2	ENT
-	asc	'Assiste de Karine Le Pors'00
+	str	'Assist'8e' de Karine Le Pors'
 txtECRITPAR3	ENT
-	asc	'Version Apple IIgs'00
-txtECRITPAR4	ENT
-	asc	'Brutal Deluxe Software'00
-txtECRITPAR5	ENT
-	asc	'Merci XavSnap'00
+	str	'('A9') LORICIELS   ao'9e't 1984'
+
 txtECRITPAR6	ENT
-	asc	'3 jours plus tard'00
+	str	'3 jours plus tard'
 txtECRITPAR7	ENT
-	asc	'dans les journaux'00
+	str	'dans les journaux'
 
 ecritparRECT	ENT
 	dw	160,0,200,320
@@ -73,45 +94,45 @@ ecritparRECT	ENT
 *-----------------------------------
 
 txtMONDE	ENT
-	asc	'C'27'est ainsi que vous decidez de'0d
-	asc	'vous rendre aux autorites pour combat-'0d
-	asc	'tre a nouveau le Dr Genius.'
-	asc	'Le lendemain, on vous emmene au vais-'0d
-	asc	'seau ou vous allez maintenant tenter'0d
+	asc	'C'27'est ainsi que vous d'8e'cidez de'0d
+	asc	'vous rendre aux autorit'8e's pour combat-'0d
+	asc	'tre de nouveau le Dr Genius.'0d
+	asc	'Le lendemain, on vous emm'8f'ne au vais-'0d
+	asc	'seau o'9e' vous allez maintenant tenter'0d
 	asc	'de vaincre le Dr Genius afin de sauver'0d
-	asc	'la terre.'0d0d0d
+	asc	'la Terre.'0d0d0d
 	asc	'          BON COURAGE...'0d0d0d
 	asc	'Vous en aurez besoin !'00
 
 *-----------------------------------
 
 txtEXPLICATIONS1	ENT
-	asc	'Voici quelques explications'0d0d
-	asc	'Le jeu est en temps reel, un chronome-'0d
-	asc	'tre sera affiche en permanence.'0d
+	asc	'Voici quelques explications'0d
+	asc	'Le jeu est en temps r'8e'el, un chronom'8f'-'0d
+	asc	'tre sera affich'8e' en permanence.'0d
 	asc	'D'27'autre part, vous devrez prendre'0d
-	asc	'garde a votre energie qui diminuera au'0d
+	asc	'garde '88' votre '8e'nergie qui diminuera au'0d
 	asc	'fil de la partie.'0d
 	asc	'Attention, plus vous transportez'0d
-	asc	'd'27'objets, plus votre force decroit.'0d0d
+	asc	'd'27'objets, plus votre force d'8e'croit.'0d0d
 	asc	'Pour converser avec l'27'ordinateur, vous'0d
 	asc	'pouvez utiliser un vocabulaire choisi'0d
-	asc	'parmi pres de 150 mots que vous allez'0d
-	asc	'donc decouvrir au fur et a mesure...'0d
-	asc	'et oui, c'27'est ca l'27'aventure.'0d0d
+	asc	'parmi pr'8f's de 150 mots que vous allez'0d
+	asc	'donc d'8e'couvrir au fur et '88' mesure...'0d
+	asc	'et oui, c'27'est '8d'a l'27'aventure.'0d0d
 	asc	'D'27'autre part, l'27'ordinateur ne prendra'0d
-	asc	'en compte que les 4 premieres lettres'0d
+	asc	'en compte que les 4 premi'8f'res lettres'0d
 	asc	'de chaque mot, ainsi : PRENDS CARTON'0d
 	asc	'sera compris comme :   PREN CART'00
 
 txtEXPLICATIONS2	ENT
 	asc	'L'27'ordinateur ne prend en compte en'0d
-	asc	'general que deux mots, exemple :'0d
+	asc	'g'8e'n'8e'ral que deux mots, exemple :'0d
 	asc	'- ALLUME SALLE'0d
 	asc	'- EST  ou  E  ou  AVANCE EST'0d0d
 	asc	'Dans certains cas,l'27'ordinateur prendra'0d
 	asc	'en compte trois mots. Il s'27'agit de cas'0d
-	asc	'ou un qualificatif est necessaire, ou'0d
+	asc	'ou un qualificatif est n'8e'cessaire, ou'0d
 	asc	'lorsque l'27'on veut mettre une chose'0d
 	asc	'dans une autre. Exemple :'0d0d
 	asc	'PRENDS LIVRE VERT'0d
@@ -119,23 +140,23 @@ txtEXPLICATIONS2	ENT
 	asc	'  ou'0d
 	asc	'CRAYON DANS BOITE'0d0d
 	asc	'Ce dernier cas indiquera qu'27'il faut'0d
-	asc	'mettre le crayon dans la boite.'0d
-	asc	'a condition que vous possediez crayon'0d
-	asc	'et boite, evidemment.'00
+	asc	'mettre le crayon dans la bo'94'te.'0d
+	asc	88' condition que vous poss'8e'diez crayon'0d
+	asc	'et bo'94'te, '8e'videmment.'00
 
 txtEXPLICATIONS3	ENT
-	asc	'Une derniere chose, il est possible de'0d
+	asc	'Une derni'8f're chose, il est possible de'0d
 	asc	'sauver une partie en cours, et de la'0d
-	asc	'recharger, mais a vous de trouver le'0d
-	asc	'vocabulaire adequat...'0d0d0d0d
-	asc	'Et maintenant, tres bonne aventure...'0d0d
-	asc	'et prenez garde a vous !'0d0d0d
+	asc	'recharger, mais '88' vous de trouver le'0d
+	asc	'vocabulaire ad'8e'quat...'0d0d0d0d
+	asc	'Et maintenant, tr'8f's bonne aventure...'0d0d
+	asc	'et prenez garde '88' vous !'0d0d0d
 *	asc	'Tapez une touche pour charger le'0d
 *	asc	'programme de jeu.'00			; Fond rouge, encre 
 	asc	'Tapez une touche pour jouer.'00
 
 txtEXPLICATIONS4	ENT
-	asc	'Voulez-vous revoir la presentation (O/N) '00
+	asc	'Voulez-vous revoir la pr'8e'sentation (O/N) '00
 
 *-----------------------------------
 * IMAGE DU DR GENIUS (DRACULA)

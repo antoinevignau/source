@@ -7,7 +7,7 @@
 
 * Expansion linker file
 
-         DSK   iigs
+         DSK   RetourDrGenius
          TYP   $B3
 
 * Assemble files
@@ -16,9 +16,11 @@
          KND   $0000
          SNA   LeRetour
 
-* Assemble files
-
          ASM   data.s
+         KND   $0000
+         SNA   Du
+
+         ASM   loriciels.s
          KND   $0000
          SNA   DrGenius
 

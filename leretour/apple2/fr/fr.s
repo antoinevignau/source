@@ -657,35 +657,35 @@ str4530	asc	'Vous respirez un grand coup.'00
 str4540	asc	'Que voulez-vous respirer ? Il n'27'y a plus'
 	asc	'd'27'oxyg'8f'ne.'00
 
-str4550	asc	'Vous avez deux essais pour'00
-str4552	asc	'entrer le mot de passe.'00
+str4550	asc	'Vous avez 2 essais'00
+str4552	asc	'pour entrer le mot'00
 str4553	asc	'FAUX!'00
-str4554	asc	'Encore rat'8e'. L'27'ordinateur vous explose '88
-	asc	'la figure.'00
-str4556	asc	'Mot de passe '00
+str4554	asc	'Encore rat'8e'.'0d
+	asc	'L'27'ordinateur vous explose '88' la figure.'00
+str4556	asc	'de passe '00
 str4558	asc	'Exact, vous '90'tes perspicace !'00
+str4559	asc	0d'Le mot de passe du retour est '00
 str4559_1	asc	'UIN LOI QRU ILD ESP ECU TAS'00
 str4559_2	asc	'ASU VIE RAL HOU MEA NOI THE'00
-str4559_3	asc	'Le mot de passe pour le'00
-str4559_4	asc	'retour est : '00
 
 str4560	asc	'C'27'est d'27'accord.'00
 str4570	asc	'Il '8e'tait temps, vous alliez mourir.'00
 str4580	asc	'Vous mourrez d'8e'shydrat'8e'.'00
 str4590	asc	''00
+str4595	asc	'Slot 1-9 (0=sortir) ? '00
 str4600	asc	''00
-str4610	asc	'Le sas se referme d'8f'rriere vous,'0d
+str4610	asc	'Le sas se referme derri'8f're vous,'0d
 	asc	'le tableau de contr'99'le s'27'allume et'0d
 	asc	'l'27'ordinateur de bord vous demande le'0d
-	asc	'mot de passe pour le retour'00
-str4615	asc	'Le vaisseau de secours s'278e'loigne,'0d
+	asc	'mot de passe pour le retour '00
+str4615	asc	0d'Le vaisseau de secours s'278e'loigne,'0d
 	asc	'au loin vous voyez Genius qui pleure'0d
 	asc	'derri'8f're un hublot'00
-str4616	asc	'          VOUS AVEZ GAGNE'00
-str4618_1	asc	'Mais, que se passe-t-il, vous avez d'9e0d
+str4616	asc	0d'          VOUS AVEZ GAGNE'00
+str4618_1	asc	0d'Mais, que se passe-t-il, vous avez d'9e0d
 	asc	'vous tromper de mot de passe, votre'0d
 	asc	'vaisseau de poche fonce sur le soleil.'00
-str4618_2	asc	'Vous venez de r'8e'aliser que Genius'0d
+str4618_2	asc	0d'Vous venez de r'8e'aliser que Genius'0d
 	asc	'pleurait de JOIE...!'00
 
 str4620	asc	'La soucoupe a explos'8e' au d'8e'collage.'00

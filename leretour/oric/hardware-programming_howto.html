@@ -1,0 +1,1828 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns:m="http://schemas.microsoft.com/office/2004/12/omml"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 12">
+<meta name=Originator content="Microsoft Word 12">
+<link rel=File-List href="programming_fichiers/filelist.xml">
+<title>hardware-programming_howto</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Fabrice Frances</o:Author>
+  <o:LastAuthor>Fabrice Frances</o:LastAuthor>
+  <o:Revision>2</o:Revision>
+  <o:TotalTime>1</o:TotalTime>
+  <o:Created>2010-09-07T16:05:00Z</o:Created>
+  <o:LastSaved>2010-09-07T16:06:00Z</o:LastSaved>
+  <o:Pages>5</o:Pages>
+  <o:Words>3377</o:Words>
+  <o:Characters>18575</o:Characters>
+  <o:Company>TOSHIBA</o:Company>
+  <o:Lines>154</o:Lines>
+  <o:Paragraphs>43</o:Paragraphs>
+  <o:CharactersWithSpaces>21909</o:CharactersWithSpaces>
+  <o:Version>12.00</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]-->
+<link rel=themeData href="programming_fichiers/themedata.thmx">
+<link rel=colorSchemeMapping href="programming_fichiers/colorschememapping.xml">
+<!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:TrackMoves>false</w:TrackMoves>
+  <w:TrackFormatting/>
+  <w:HyphenationZone>21</w:HyphenationZone>
+  <w:ValidateAgainstSchemas/>
+  <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+  <w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+  <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+  <w:DoNotPromoteQF/>
+  <w:LidThemeOther>FR</w:LidThemeOther>
+  <w:LidThemeAsian>X-NONE</w:LidThemeAsian>
+  <w:LidThemeComplexScript>X-NONE</w:LidThemeComplexScript>
+  <w:Compatibility>
+   <w:BreakWrappedTables/>
+   <w:SnapToGridInCell/>
+   <w:WrapTextWithPunct/>
+   <w:UseAsianBreakRules/>
+   <w:DontGrowAutofit/>
+   <w:SplitPgBreakAndParaMark/>
+   <w:DontVertAlignCellWithSp/>
+   <w:DontBreakConstrainedForcedTables/>
+   <w:DontVertAlignInTxbx/>
+   <w:Word11KerningPairs/>
+   <w:CachedColBalance/>
+  </w:Compatibility>
+  <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+  <m:mathPr>
+   <m:mathFont m:val="Cambria Math"/>
+   <m:brkBin m:val="before"/>
+   <m:brkBinSub m:val="&#45;-"/>
+   <m:smallFrac m:val="off"/>
+   <m:dispDef/>
+   <m:lMargin m:val="0"/>
+   <m:rMargin m:val="0"/>
+   <m:defJc m:val="centerGroup"/>
+   <m:wrapIndent m:val="1440"/>
+   <m:intLim m:val="subSup"/>
+   <m:naryLim m:val="undOvr"/>
+  </m:mathPr></w:WordDocument>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:LatentStyles DefLockedState="false" DefUnhideWhenUsed="true"
+  DefSemiHidden="true" DefQFormat="false" DefPriority="99"
+  LatentStyleCount="267">
+  <w:LsdException Locked="false" Priority="0" SemiHidden="false"
+   UnhideWhenUsed="false" QFormat="true" Name="Normal"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="false"
+   UnhideWhenUsed="false" QFormat="true" Name="heading 1"/>
+  <w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 2"/>
+  <w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 3"/>
+  <w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 4"/>
+  <w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 5"/>
+  <w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 6"/>
+  <w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 7"/>
+  <w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 8"/>
+  <w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 9"/>
+  <w:LsdException Locked="false" Priority="39" Name="toc 1"/>
+  <w:LsdException Locked="false" Priority="39" Name="toc 2"/>
+  <w:LsdException Locked="false" Priority="39" Name="toc 3"/>
+  <w:LsdException Locked="false" Priority="39" Name="toc 4"/>
+  <w:LsdException Locked="false" Priority="39" Name="toc 5"/>
+  <w:LsdException Locked="false" Priority="39" Name="toc 6"/>
+  <w:LsdException Locked="false" Priority="39" Name="toc 7"/>
+  <w:LsdException Locked="false" Priority="39" Name="toc 8"/>
+  <w:LsdException Locked="false" Priority="39" Name="toc 9"/>
+  <w:LsdException Locked="false" Priority="35" QFormat="true" Name="caption"/>
+  <w:LsdException Locked="false" Priority="10" SemiHidden="false"
+   UnhideWhenUsed="false" QFormat="true" Name="Title"/>
+  <w:LsdException Locked="false" Priority="1" Name="Default Paragraph Font"/>
+  <w:LsdException Locked="false" Priority="11" SemiHidden="false"
+   UnhideWhenUsed="false" QFormat="true" Name="Subtitle"/>
+  <w:LsdException Locked="false" Priority="22" SemiHidden="false"
+   UnhideWhenUsed="false" QFormat="true" Name="Strong"/>
+  <w:LsdException Locked="false" Priority="20" SemiHidden="false"
+   UnhideWhenUsed="false" QFormat="true" Name="Emphasis"/>
+  <w:LsdException Locked="false" Priority="59" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Table Grid"/>
+  <w:LsdException Locked="false" UnhideWhenUsed="false" Name="Placeholder Text"/>
+  <w:LsdException Locked="false" Priority="1" SemiHidden="false"
+   UnhideWhenUsed="false" QFormat="true" Name="No Spacing"/>
+  <w:LsdException Locked="false" Priority="60" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light Shading"/>
+  <w:LsdException Locked="false" Priority="61" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light List"/>
+  <w:LsdException Locked="false" Priority="62" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light Grid"/>
+  <w:LsdException Locked="false" Priority="63" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Shading 1"/>
+  <w:LsdException Locked="false" Priority="64" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Shading 2"/>
+  <w:LsdException Locked="false" Priority="65" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium List 1"/>
+  <w:LsdException Locked="false" Priority="66" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium List 2"/>
+  <w:LsdException Locked="false" Priority="67" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 1"/>
+  <w:LsdException Locked="false" Priority="68" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 2"/>
+  <w:LsdException Locked="false" Priority="69" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 3"/>
+  <w:LsdException Locked="false" Priority="70" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Dark List"/>
+  <w:LsdException Locked="false" Priority="71" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful Shading"/>
+  <w:LsdException Locked="false" Priority="72" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful List"/>
+  <w:LsdException Locked="false" Priority="73" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful Grid"/>
+  <w:LsdException Locked="false" Priority="60" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light Shading Accent 1"/>
+  <w:LsdException Locked="false" Priority="61" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light List Accent 1"/>
+  <w:LsdException Locked="false" Priority="62" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light Grid Accent 1"/>
+  <w:LsdException Locked="false" Priority="63" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 1"/>
+  <w:LsdException Locked="false" Priority="64" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="65" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 1"/>
+  <w:LsdException Locked="false" UnhideWhenUsed="false" Name="Revision"/>
+  <w:LsdException Locked="false" Priority="34" SemiHidden="false"
+   UnhideWhenUsed="false" QFormat="true" Name="List Paragraph"/>
+  <w:LsdException Locked="false" Priority="29" SemiHidden="false"
+   UnhideWhenUsed="false" QFormat="true" Name="Quote"/>
+  <w:LsdException Locked="false" Priority="30" SemiHidden="false"
+   UnhideWhenUsed="false" QFormat="true" Name="Intense Quote"/>
+  <w:LsdException Locked="false" Priority="66" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="67" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 1"/>
+  <w:LsdException Locked="false" Priority="68" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="69" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 1"/>
+  <w:LsdException Locked="false" Priority="70" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Dark List Accent 1"/>
+  <w:LsdException Locked="false" Priority="71" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 1"/>
+  <w:LsdException Locked="false" Priority="72" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful List Accent 1"/>
+  <w:LsdException Locked="false" Priority="73" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 1"/>
+  <w:LsdException Locked="false" Priority="60" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light Shading Accent 2"/>
+  <w:LsdException Locked="false" Priority="61" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light List Accent 2"/>
+  <w:LsdException Locked="false" Priority="62" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light Grid Accent 2"/>
+  <w:LsdException Locked="false" Priority="63" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 2"/>
+  <w:LsdException Locked="false" Priority="64" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="65" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 2"/>
+  <w:LsdException Locked="false" Priority="66" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="67" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 2"/>
+  <w:LsdException Locked="false" Priority="68" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="69" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 2"/>
+  <w:LsdException Locked="false" Priority="70" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Dark List Accent 2"/>
+  <w:LsdException Locked="false" Priority="71" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 2"/>
+  <w:LsdException Locked="false" Priority="72" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful List Accent 2"/>
+  <w:LsdException Locked="false" Priority="73" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 2"/>
+  <w:LsdException Locked="false" Priority="60" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light Shading Accent 3"/>
+  <w:LsdException Locked="false" Priority="61" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light List Accent 3"/>
+  <w:LsdException Locked="false" Priority="62" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light Grid Accent 3"/>
+  <w:LsdException Locked="false" Priority="63" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 3"/>
+  <w:LsdException Locked="false" Priority="64" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="65" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 3"/>
+  <w:LsdException Locked="false" Priority="66" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="67" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 3"/>
+  <w:LsdException Locked="false" Priority="68" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="69" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 3"/>
+  <w:LsdException Locked="false" Priority="70" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Dark List Accent 3"/>
+  <w:LsdException Locked="false" Priority="71" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 3"/>
+  <w:LsdException Locked="false" Priority="72" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful List Accent 3"/>
+  <w:LsdException Locked="false" Priority="73" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 3"/>
+  <w:LsdException Locked="false" Priority="60" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light Shading Accent 4"/>
+  <w:LsdException Locked="false" Priority="61" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light List Accent 4"/>
+  <w:LsdException Locked="false" Priority="62" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light Grid Accent 4"/>
+  <w:LsdException Locked="false" Priority="63" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 4"/>
+  <w:LsdException Locked="false" Priority="64" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="65" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 4"/>
+  <w:LsdException Locked="false" Priority="66" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="67" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 4"/>
+  <w:LsdException Locked="false" Priority="68" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="69" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 4"/>
+  <w:LsdException Locked="false" Priority="70" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Dark List Accent 4"/>
+  <w:LsdException Locked="false" Priority="71" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 4"/>
+  <w:LsdException Locked="false" Priority="72" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful List Accent 4"/>
+  <w:LsdException Locked="false" Priority="73" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 4"/>
+  <w:LsdException Locked="false" Priority="60" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light Shading Accent 5"/>
+  <w:LsdException Locked="false" Priority="61" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light List Accent 5"/>
+  <w:LsdException Locked="false" Priority="62" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light Grid Accent 5"/>
+  <w:LsdException Locked="false" Priority="63" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 5"/>
+  <w:LsdException Locked="false" Priority="64" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="65" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 5"/>
+  <w:LsdException Locked="false" Priority="66" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="67" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 5"/>
+  <w:LsdException Locked="false" Priority="68" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="69" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 5"/>
+  <w:LsdException Locked="false" Priority="70" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Dark List Accent 5"/>
+  <w:LsdException Locked="false" Priority="71" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 5"/>
+  <w:LsdException Locked="false" Priority="72" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful List Accent 5"/>
+  <w:LsdException Locked="false" Priority="73" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 5"/>
+  <w:LsdException Locked="false" Priority="60" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light Shading Accent 6"/>
+  <w:LsdException Locked="false" Priority="61" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light List Accent 6"/>
+  <w:LsdException Locked="false" Priority="62" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Light Grid Accent 6"/>
+  <w:LsdException Locked="false" Priority="63" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 6"/>
+  <w:LsdException Locked="false" Priority="64" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="65" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 6"/>
+  <w:LsdException Locked="false" Priority="66" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="67" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 6"/>
+  <w:LsdException Locked="false" Priority="68" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="69" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 6"/>
+  <w:LsdException Locked="false" Priority="70" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Dark List Accent 6"/>
+  <w:LsdException Locked="false" Priority="71" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 6"/>
+  <w:LsdException Locked="false" Priority="72" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful List Accent 6"/>
+  <w:LsdException Locked="false" Priority="73" SemiHidden="false"
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 6"/>
+  <w:LsdException Locked="false" Priority="19" SemiHidden="false"
+   UnhideWhenUsed="false" QFormat="true" Name="Subtle Emphasis"/>
+  <w:LsdException Locked="false" Priority="21" SemiHidden="false"
+   UnhideWhenUsed="false" QFormat="true" Name="Intense Emphasis"/>
+  <w:LsdException Locked="false" Priority="31" SemiHidden="false"
+   UnhideWhenUsed="false" QFormat="true" Name="Subtle Reference"/>
+  <w:LsdException Locked="false" Priority="32" SemiHidden="false"
+   UnhideWhenUsed="false" QFormat="true" Name="Intense Reference"/>
+  <w:LsdException Locked="false" Priority="33" SemiHidden="false"
+   UnhideWhenUsed="false" QFormat="true" Name="Book Title"/>
+  <w:LsdException Locked="false" Priority="37" Name="Bibliography"/>
+  <w:LsdException Locked="false" Priority="39" QFormat="true" Name="TOC Heading"/>
+ </w:LatentStyles>
+</xml><![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;
+	mso-font-charset:1;
+	mso-generic-font-family:roman;
+	mso-font-format:other;
+	mso-font-pitch:variable;
+	mso-font-signature:0 0 0 0 0 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-unhide:no;
+	mso-style-qformat:yes;
+	mso-style-parent:"";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	mso-fareast-font-family:"Times New Roman";
+	mso-fareast-theme-font:minor-fareast;}
+a:link, span.MsoHyperlink
+	{mso-style-noshow:yes;
+	mso-style-priority:99;
+	color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{mso-style-noshow:yes;
+	mso-style-priority:99;
+	color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+p
+	{mso-style-noshow:yes;
+	mso-style-priority:99;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	mso-fareast-font-family:"Times New Roman";
+	mso-fareast-theme-font:minor-fareast;}
+span.Titre1Car
+	{mso-style-name:"Titre 1 Car";
+	mso-style-priority:9;
+	mso-style-unhide:no;
+	mso-style-locked:yes;
+	mso-style-link:"Titre 1";
+	mso-ansi-font-size:14.0pt;
+	mso-bidi-font-size:14.0pt;
+	font-family:"Cambria","serif";
+	mso-ascii-font-family:Cambria;
+	mso-ascii-theme-font:major-latin;
+	mso-fareast-font-family:"Times New Roman";
+	mso-fareast-theme-font:major-fareast;
+	mso-hansi-font-family:Cambria;
+	mso-hansi-theme-font:major-latin;
+	mso-bidi-font-family:"Times New Roman";
+	mso-bidi-theme-font:major-bidi;
+	color:#365F91;
+	mso-themecolor:accent1;
+	mso-themeshade:191;
+	font-weight:bold;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	mso-default-props:yes;
+	font-size:10.0pt;
+	mso-ansi-font-size:10.0pt;
+	mso-bidi-font-size:10.0pt;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:70.85pt 70.85pt 70.85pt 70.85pt;
+	mso-header-margin:35.4pt;
+	mso-footer-margin:35.4pt;
+	mso-paper-source:0;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ @list l0
+	{mso-list-id:1548058108;
+	mso-list-template-ids:-1022224854;}
+ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+<!--[if gte mso 10]>
+<style>
+ /* Style Definitions */
+ table.MsoNormalTable
+	{mso-style-name:"Tableau Normal";
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-qformat:yes;
+	mso-style-parent:"";
+	mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
+	mso-para-margin:0cm;
+	mso-para-margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman","serif";}
+</style>
+<![endif]-->
+<meta name=Template content="C:\PROGRAM FILES\MICROSOFT OFFICE\OFFICE\html.dot">
+<!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext="edit" spidmax="2050"/>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext="edit">
+  <o:idmap v:ext="edit" data="1"/>
+ </o:shapelayout></xml><![endif]-->
+</head>
+
+<body bgcolor="#00CCFF" lang=FR link=blue vlink=purple style='tab-interval:
+35.4pt'>
+
+<div class=WordSection1>
+
+<h1 align=center style='text-align:center'><span lang=EN-US style='mso-fareast-font-family:
+"Times New Roman";mso-ansi-language:EN-US'>Hardware Programming on the Oric<o:p></o:p></span></h1>
+
+<p class=MsoNormal align=center style='text-align:center'><span lang=EN-US
+style='mso-fareast-font-family:"Times New Roman";mso-ansi-language:EN-US'>Fifth
+edition: a few fixes (keyboard table, microdisc in single-density)<br>
+Fourth edition: quick and dirty HTML version <br>
+Third edition: updated Second VIA (Telestrat) chapter <br>
+Second edition: updated PSG and Disk interface chapters<o:p></o:p></span></p>
+
+<p style='margin-bottom:12.0pt'><span lang=EN-US style='mso-ansi-language:EN-US'><br
+style='mso-special-character:line-break'>
+<![if !supportLineBreakNewLine]><br style='mso-special-character:line-break'>
+<![endif]><o:p></o:p></span></p>
+
+<p><b><i><span style='font-family:"Arial","sans-serif"'>Contents</span></i></b>
+</p>
+
+<ol start=1 type=1>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo1;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'><a href="#intro">Introduction: Oric Hardware</a><o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo1;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'><a href="#ula">Universal Array Logic</a><o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo1;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'><a href="#via">Versatile Interface Adapter</a><o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo1;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'><a href="#psg">Programmable Sound Generator</a><o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo1;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'><a href="#keyboard">Keyboard</a><o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo1;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'><a href="#parallel">Printer and joysticks</a><o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo1;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'><a href="#screen">Screen</a><o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo1;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'><a href="#disc">Floppy Drive interfaces: Microdisc,
+     Jasmin</a><o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo1;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'><a href="#tape">Tape</a><o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo1;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'><a href="#serial">Serial</a><o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo1;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'><a href="#rtc">Real Time Clock</a><o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo1;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'><a href="#via2">Second VIA (Telestrat)</a><o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo1;tab-stops:list 36.0pt'><span lang=EN-US
+     style='mso-fareast-font-family:"Times New Roman";mso-ansi-language:EN-US'>Appendix:
+     </span><span style='mso-fareast-font-family:"Times New Roman"'><a
+     href="HARDWARE/c64doc.txt"><span lang=EN-US style='mso-ansi-language:EN-US'>6502
+     instruction set for real programmers</span></a></span><span lang=EN-US
+     style='mso-fareast-font-family:"Times New Roman";mso-ansi-language:EN-US'><o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo1;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>Appendix: <a href="HARDWARE/Via.txt">6522 VIA data
+     sheet</a><o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo1;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>Appendix: <a href="HARDWARE/Psg.txt">AY-3-8912 PSG data
+     sheet</a><o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo1;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>Appendix: <a href="HARDWARE/Fdc.txt">WD 1793 FDC data
+     sheet</a><o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo1;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>Appendix: <a href="HARDWARE/Acia.txt">6551 ACIA data
+     sheet</a><o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo1;tab-stops:list 36.0pt'><span lang=EN-US
+     style='mso-fareast-font-family:"Times New Roman";mso-ansi-language:EN-US'>Appendix:
+     </span><span style='mso-fareast-font-family:"Times New Roman"'><a
+     href="HARDWARE/Rtc.txt"><span lang=EN-US style='mso-ansi-language:EN-US'>Intersil
+     ICM 7170 RTC brief reference</span></a></span><span lang=EN-US
+     style='mso-fareast-font-family:"Times New Roman";mso-ansi-language:EN-US'><o:p></o:p></span></li>
+</ol>
+
+<p class=MsoNormal><a name=intro></a><b><i><span lang=EN-US style='font-family:
+"Arial","sans-serif";mso-fareast-font-family:"Times New Roman";mso-ansi-language:
+EN-US'>Introduction: Oric Hardware</span></i></b><span lang=EN-US
+style='mso-fareast-font-family:"Times New Roman";mso-ansi-language:EN-US'> <o:p></o:p></span></p>
+
+<p><span lang=EN-US style='mso-ansi-language:EN-US'>The Oric computers are
+powered by a 6502 processor running at 1 Mhz. All computers share a central
+architecture ensuring strong compatibility : this is the Oric-1/Atmos
+architecture consisting of the cpu, the system bus, a VIA (Versatile Interface
+Adapter), an UAL (Universal Array Logic) and a PSG (Programmable Sound
+Generator). I guess many of you know the 65xx processor series, so I won't describe
+the cpu here. I would just like to point out the processor's NMI line is not
+connected to anything on the Telestrat (the reset button is really connected to
+the Reset line) and peripheral request lines may be wire-ANDed on the IRQ line
+(the versatile interface adapter is the only one connected in the basic
+configuration) . The UAL is responsible for clocking the cpu and the
+peripherals as well as managing memory select signals and displaying the
+screen. The memory select signals allow to disable the internal 16K rom, to
+enable external IOs or overlay ram, etc. These signals are presented to the
+system bus only with the basic configuration, so only extensions are able to
+use them. The VIA is a 6522 one and it is central to the basic peripherals of
+the Oric: its input-output lines are connected to the keyboard, to the PSG, to
+the tape, to the printer port (connections are described in next sub-chapter).
+It also provides 7 sources of interrupts, timers... The PSG is a General
+Instruments AY-3-8912 (identical to Yamaha's 2910). The CMOS technology of the
+PSG has obliged the Oric designers to a weird interfacing of the select lines
+and data lines to the VIA. <o:p></o:p></span></p>
+
+<p><a name=ula></a><b><i><span lang=EN-US style='font-family:"Arial","sans-serif";
+mso-ansi-language:EN-US'>Universal Array Logic</span></i></b><span lang=EN-US
+style='mso-ansi-language:EN-US'> <o:p></o:p></span></p>
+
+<p><span lang=EN-US style='mso-ansi-language:EN-US'>The UAL (labelled HSC
+10017) saves a lot of components : it builds clock signals, memory signals (so
+it is a simple memory management unit), and last but not least: video signals.
+Memory signals are generated when addresses are detected on the bus : the IO is
+made active when page 3 is addressed and the internal Oric ROM is selected when
+an address in the C000-FFFF range is accessed. So, all IOs in the basic
+configuration are done through addresses in page 3. The VIA is always selected
+with a page 3 address, so the 16 registers of the VIA are viewed 16 times in
+page 3. For compatibility sake with more complete configurations (drives,
+joystick, serial interfaces...), it is recommended to access VIA at 0300-030F.
+Video is programmed by inserting control bytes in-line with screen data. As the
+UAL refreshes the screen by reading the screen image in memory, internal
+registers (background and foreground colors, blinking, charsets location...)
+are updated when those control bytes are encountered (bits 5 and 6 are both 0).
+See the Screen chapter for a detailed reference. <br>
+&nbsp; <br>
+&nbsp; <o:p></o:p></span></p>
+
+<p><a name=via></a><b><i><span lang=EN-US style='font-family:"Arial","sans-serif";
+mso-ansi-language:EN-US'>Versatile Interface Adapter</span></i></b><span
+lang=EN-US style='mso-ansi-language:EN-US'> <o:p></o:p></span></p>
+
+<p><span lang=EN-US style='mso-ansi-language:EN-US'>The 6522 has provision for
+two eight-bits IO ports (A and B) plus control lines (CA1, CA2, CB1, CB2),
+interfacing with the other components. Port A is used as a secondary bus :
+PA0..PA7 lines connect both to the PSG data bus and to the printer port. PSG
+selection is done thanks to CA2 and CB2 lines. Port B provides many connections
+to the keyboard, tape, and printer port. <br>
+&nbsp; <o:p></o:p></span></p>
+
+<table class=MsoNormalTable border=1 cellspacing=3 cellpadding=0 width=359
+ style='width:215.4pt;mso-cellspacing:1.5pt;mso-yfti-tbllook:1184;mso-padding-alt:
+ 2.4pt 2.4pt 2.4pt 2.4pt'>
+ <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes'>
+  <td width="32%" valign=top style='width:32.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><b><span style='mso-fareast-font-family:"Times New Roman"'>VIA
+  Lines</span></b><span style='mso-fareast-font-family:"Times New Roman"'><o:p></o:p></span></p>
+  </td>
+  <td width="68%" valign=top style='width:68.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><b><span style='mso-fareast-font-family:"Times New Roman"'>Oric
+  usage</span></b><span style='mso-fareast-font-family:"Times New Roman"'><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:1'>
+  <td width="32%" valign=top style='width:32.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>PA0..PA7<o:p></o:p></span></p>
+  </td>
+  <td width="68%" valign=top style='width:68.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span lang=EN-US style='mso-fareast-font-family:"Times New Roman";
+  mso-ansi-language:EN-US'>PSG data bus, printer data lines<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:2'>
+  <td width="32%" valign=top style='width:32.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>CA1<o:p></o:p></span></p>
+  </td>
+  <td width="68%" valign=top style='width:68.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>printer
+  acknowledge line<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:3'>
+  <td width="32%" valign=top style='width:32.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>CA2<o:p></o:p></span></p>
+  </td>
+  <td width="68%" valign=top style='width:68.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>PSG
+  BC1 line<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:4'>
+  <td width="32%" valign=top style='width:32.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>PB0..PB2<o:p></o:p></span></p>
+  </td>
+  <td width="68%" valign=top style='width:68.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>keyboard
+  lines-demultiplexer<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:5'>
+  <td width="32%" valign=top style='width:32.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>PB3<o:p></o:p></span></p>
+  </td>
+  <td width="68%" valign=top style='width:68.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>keyboard
+  sense line<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:6'>
+  <td width="32%" valign=top style='width:32.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>PB4<o:p></o:p></span></p>
+  </td>
+  <td width="68%" valign=top style='width:68.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>printer
+  strobe line<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:7'>
+  <td width="32%" valign=top style='width:32.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>PB5<o:p></o:p></span></p>
+  </td>
+  <td width="68%" valign=top style='width:68.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>(not
+  connected)<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:8'>
+  <td width="32%" valign=top style='width:32.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>PB6<o:p></o:p></span></p>
+  </td>
+  <td width="68%" valign=top style='width:68.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>tape
+  connector motor control<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:9'>
+  <td width="32%" valign=top style='width:32.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>PB7<o:p></o:p></span></p>
+  </td>
+  <td width="68%" valign=top style='width:68.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>tape
+  connector output<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:10'>
+  <td width="32%" valign=top style='width:32.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>CB1<o:p></o:p></span></p>
+  </td>
+  <td width="68%" valign=top style='width:68.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>tape
+  connector input<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:11;mso-yfti-lastrow:yes'>
+  <td width="32%" valign=top style='width:32.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>CB2<o:p></o:p></span></p>
+  </td>
+  <td width="68%" valign=top style='width:68.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>PSG
+  BDIR line<o:p></o:p></span></p>
+  </td>
+ </tr>
+</table>
+
+<p><span lang=EN-US style='mso-ansi-language:EN-US'>Moreover, the 6522 also
+features programmable timers, interrupt control and synchronous communication
+capabilities (synchronous communication is not available in the Oric due to the
+way the VIA is connected). See the 6522 brief reference in appendix. E.g timer
+1 is used by the rom to provide an interrupt every 1/100th a second,
+decrementing some system variables to allow for the WAIT command, to poll the
+keyboard or wait a screen refresh. Programs may use both timers, and control
+interrupts accordingly with the peripheral connections described above (e.g
+tape reading requires detecting a edge transition on CB1). <br>
+&nbsp; <br>
+&nbsp; <o:p></o:p></span></p>
+
+<p><a name=psg></a><b><i><span lang=EN-US style='font-family:"Arial","sans-serif";
+mso-ansi-language:EN-US'>Programmable Sound Generator</span></i></b><span
+lang=EN-US style='mso-ansi-language:EN-US'> <o:p></o:p></span></p>
+
+<p><span lang=EN-US style='mso-ansi-language:EN-US'>The AY-3-8912 is a three
+chanels sound generator allowing simple tones (square waves) and more complex
+sound using an envelope generator. Moreover, each chanel may be mixed with a
+noise generator output. On the Oric, the three outputs are wired together and
+to the loudspeaker. Programming the PSG is rather slow and cumbersome on the
+oric due to its interfacing to the VIA. As two select lines of the PSG (BC1 and
+BDIR) are connected to the CA2 and CB2 lines of the VIA, you have to ensure the
+PCR (Peripheral Control Register) of the 6522 is correctly set in order to
+communicate with the PSG. As explained before, data to/from the PSG flows
+through a secondary bus connected to port A of the VIA. Selecting the PSG means
+asking it to read a register number (selecting one of its register), or
+reading/writing the previously selected register. </span>Here are the four
+combinations: <br>
+&nbsp; </p>
+
+<table class=MsoNormalTable border=1 cellspacing=3 cellpadding=0 width=344
+ style='width:206.4pt;mso-cellspacing:1.5pt;mso-yfti-tbllook:1184;mso-padding-alt:
+ 2.4pt 2.4pt 2.4pt 2.4pt'>
+ <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes'>
+  <td width="18%" valign=top style='width:18.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>BDIR<o:p></o:p></span></p>
+  </td>
+  <td width="16%" valign=top style='width:16.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>BC1<o:p></o:p></span></p>
+  </td>
+  <td width="66%" valign=top style='width:66.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>&nbsp;<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:1'>
+  <td width="18%" valign=top style='width:18.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>0<o:p></o:p></span></p>
+  </td>
+  <td width="16%" valign=top style='width:16.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>0<o:p></o:p></span></p>
+  </td>
+  <td width="66%" valign=top style='width:66.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>PSG
+  not selected<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:2'>
+  <td width="18%" valign=top style='width:18.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>0<o:p></o:p></span></p>
+  </td>
+  <td width="16%" valign=top style='width:16.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>1<o:p></o:p></span></p>
+  </td>
+  <td width="66%" valign=top style='width:66.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Read
+  PSG register<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:3'>
+  <td width="18%" valign=top style='width:18.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>1<o:p></o:p></span></p>
+  </td>
+  <td width="16%" valign=top style='width:16.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>0<o:p></o:p></span></p>
+  </td>
+  <td width="66%" valign=top style='width:66.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Write
+  PSG register<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:4;mso-yfti-lastrow:yes'>
+  <td width="18%" valign=top style='width:18.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>1<o:p></o:p></span></p>
+  </td>
+  <td width="16%" valign=top style='width:16.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>1<o:p></o:p></span></p>
+  </td>
+  <td width="66%" valign=top style='width:66.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span lang=EN-US style='mso-fareast-font-family:"Times New Roman";
+  mso-ansi-language:EN-US'>Index register of PSG selected<o:p></o:p></span></p>
+  </td>
+ </tr>
+</table>
+
+<p><span lang=EN-US style='mso-ansi-language:EN-US'>Last but not least, note
+that register 14 (0Eh) of the PSG is an IO port (other flavors of the PSG, 8910
+and 8913, have 0 or 2 IO ports). On the Oric, this IO port is used to select a
+column in the keyboard matrix, see the Keyboard chapter. <o:p></o:p></span></p>
+
+<p><a name=keyboard></a><b><i><span lang=EN-US style='font-family:"Arial","sans-serif";
+mso-ansi-language:EN-US'>Keyboard</span></i></b><span lang=EN-US
+style='mso-ansi-language:EN-US'> <o:p></o:p></span></p>
+
+<p><span lang=EN-US style='mso-ansi-language:EN-US'>The keyboard of the Oric
+computers is just a passive matrix. It is up to the cpu to poll the keyboard by
+sensing each key in the matrix (so, 64 tests). This is a rather lenghty process
+due to the way the columns are selected (through the IO port of the PSG). Sensing
+a key means programming a line (0 to 7) in PB0..PB2 of the VIA, and selecting a
+column in PSG's IO port (each line of the IO port is connected to a keyboard's
+column with negative logic, so 11110111 will select column 3), then reading the
+result in PB3 input (a 1 means the key is pressed). Here is the keyboard matrix
+(note that the Oric-1 do not have a FCT key): <br>
+&nbsp; <o:p></o:p></span></p>
+
+<table class=MsoNormalTable border=1 cellspacing=3 cellpadding=0 width=540
+ style='width:324.0pt;mso-cellspacing:1.5pt;mso-yfti-tbllook:1184;mso-padding-alt:
+ 2.4pt 2.4pt 2.4pt 2.4pt'>
+ <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes'>
+  <td width=50 valign=top style='width:30.0pt;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><b><span style='mso-fareast-font-family:"Times New Roman"'>PB210</span></b><span
+  style='mso-fareast-font-family:"Times New Roman"'><o:p></o:p></span></p>
+  </td>
+  <td width=45 valign=top style='width:27.0pt;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><b><span style='mso-fareast-font-family:"Times New Roman"'>PA7</span></b><span
+  style='mso-fareast-font-family:"Times New Roman"'><o:p></o:p></span></p>
+  </td>
+  <td width=55 valign=top style='width:33.0pt;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><b><span style='mso-fareast-font-family:"Times New Roman"'>PA6</span></b><span
+  style='mso-fareast-font-family:"Times New Roman"'><o:p></o:p></span></p>
+  </td>
+  <td width=45 valign=top style='width:27.0pt;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><b><span style='mso-fareast-font-family:"Times New Roman"'>PA5</span></b><span
+  style='mso-fareast-font-family:"Times New Roman"'><o:p></o:p></span></p>
+  </td>
+  <td width=68 valign=top style='width:40.8pt;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><b><span style='mso-fareast-font-family:"Times New Roman"'>PA4</span></b><span
+  style='mso-fareast-font-family:"Times New Roman"'><o:p></o:p></span></p>
+  </td>
+  <td width=38 valign=top style='width:22.8pt;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><b><span style='mso-fareast-font-family:"Times New Roman"'>PA3</span></b><span
+  style='mso-fareast-font-family:"Times New Roman"'><o:p></o:p></span></p>
+  </td>
+  <td width=46 valign=top style='width:27.6pt;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><b><span style='mso-fareast-font-family:"Times New Roman"'>PA2</span></b><span
+  style='mso-fareast-font-family:"Times New Roman"'><o:p></o:p></span></p>
+  </td>
+  <td width=46 valign=top style='width:27.6pt;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><b><span style='mso-fareast-font-family:"Times New Roman"'>PA1</span></b><span
+  style='mso-fareast-font-family:"Times New Roman"'><o:p></o:p></span></p>
+  </td>
+  <td width=35 valign=top style='width:21.0pt;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><b><span style='mso-fareast-font-family:"Times New Roman"'>PA0</span></b><span
+  style='mso-fareast-font-family:"Times New Roman"'><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:1'>
+  <td width=50 valign=top style='width:30.0pt;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><b><span style='mso-fareast-font-family:"Times New Roman"'>000</span></b><span
+  style='mso-fareast-font-family:"Times New Roman"'><o:p></o:p></span></p>
+  </td>
+  <td width=45 valign=top style='width:27.0pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>3<o:p></o:p></span></p>
+  </td>
+  <td width=55 valign=top style='width:33.0pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>X<o:p></o:p></span></p>
+  </td>
+  <td width=45 valign=top style='width:27.0pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>1<o:p></o:p></span></p>
+  </td>
+  <td width=68 valign=top style='width:40.8pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman";
+  color:#00CCFF'>(right Ctrl)</span><span style='mso-fareast-font-family:"Times New Roman"'><o:p></o:p></span></p>
+  </td>
+  <td width=38 valign=top style='width:22.8pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>V<o:p></o:p></span></p>
+  </td>
+  <td width=46 valign=top style='width:27.6pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>5<o:p></o:p></span></p>
+  </td>
+  <td width=46 valign=top style='width:27.6pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>N<o:p></o:p></span></p>
+  </td>
+  <td width=35 valign=top style='width:21.0pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>7<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:2'>
+  <td width=50 valign=top style='width:30.0pt;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><b><span style='mso-fareast-font-family:"Times New Roman"'>001</span></b><span
+  style='mso-fareast-font-family:"Times New Roman"'><o:p></o:p></span></p>
+  </td>
+  <td width=45 valign=top style='width:27.0pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>D<o:p></o:p></span></p>
+  </td>
+  <td width=55 valign=top style='width:33.0pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Q<o:p></o:p></span></p>
+  </td>
+  <td width=45 valign=top style='width:27.0pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>ESC<o:p></o:p></span></p>
+  </td>
+  <td width=68 valign=top style='width:40.8pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>&nbsp;<o:p></o:p></span></p>
+  </td>
+  <td width=38 valign=top style='width:22.8pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>F<o:p></o:p></span></p>
+  </td>
+  <td width=46 valign=top style='width:27.6pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>R<o:p></o:p></span></p>
+  </td>
+  <td width=46 valign=top style='width:27.6pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>T<o:p></o:p></span></p>
+  </td>
+  <td width=35 valign=top style='width:21.0pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>J<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:3'>
+  <td width=50 valign=top style='width:30.0pt;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><b><span style='mso-fareast-font-family:"Times New Roman"'>010</span></b><span
+  style='mso-fareast-font-family:"Times New Roman"'><o:p></o:p></span></p>
+  </td>
+  <td width=45 valign=top style='width:27.0pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>C<o:p></o:p></span></p>
+  </td>
+  <td width=55 valign=top style='width:33.0pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>2<o:p></o:p></span></p>
+  </td>
+  <td width=45 valign=top style='width:27.0pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Z<o:p></o:p></span></p>
+  </td>
+  <td width=68 valign=top style='width:40.8pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>CTL<o:p></o:p></span></p>
+  </td>
+  <td width=38 valign=top style='width:22.8pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>4<o:p></o:p></span></p>
+  </td>
+  <td width=46 valign=top style='width:27.6pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>B<o:p></o:p></span></p>
+  </td>
+  <td width=46 valign=top style='width:27.6pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>6<o:p></o:p></span></p>
+  </td>
+  <td width=35 valign=top style='width:21.0pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>M<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:4'>
+  <td width=50 valign=top style='width:30.0pt;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><b><span style='mso-fareast-font-family:"Times New Roman"'>011</span></b><span
+  style='mso-fareast-font-family:"Times New Roman"'><o:p></o:p></span></p>
+  </td>
+  <td width=45 valign=top style='width:27.0pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>'<o:p></o:p></span></p>
+  </td>
+  <td width=55 valign=top style='width:33.0pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>\<o:p></o:p></span></p>
+  </td>
+  <td width=45 valign=top style='width:27.0pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman";
+  color:#00CCFF'>(&lt;)</span><span style='mso-fareast-font-family:"Times New Roman"'><o:p></o:p></span></p>
+  </td>
+  <td width=68 valign=top style='width:40.8pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>&nbsp;<o:p></o:p></span></p>
+  </td>
+  <td width=38 valign=top style='width:22.8pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>-<o:p></o:p></span></p>
+  </td>
+  <td width=46 valign=top style='width:27.6pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>;<o:p></o:p></span></p>
+  </td>
+  <td width=46 valign=top style='width:27.6pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>9<o:p></o:p></span></p>
+  </td>
+  <td width=35 valign=top style='width:21.0pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>K<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:5'>
+  <td width=50 valign=top style='width:30.0pt;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><b><span style='mso-fareast-font-family:"Times New Roman"'>100</span></b><span
+  style='mso-fareast-font-family:"Times New Roman"'><o:p></o:p></span></p>
+  </td>
+  <td width=45 valign=top style='width:27.0pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Right<o:p></o:p></span></p>
+  </td>
+  <td width=55 valign=top style='width:33.0pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Down<o:p></o:p></span></p>
+  </td>
+  <td width=45 valign=top style='width:27.0pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Left<o:p></o:p></span></p>
+  </td>
+  <td width=68 valign=top style='width:40.8pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Left
+  Shift<o:p></o:p></span></p>
+  </td>
+  <td width=38 valign=top style='width:22.8pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Up<o:p></o:p></span></p>
+  </td>
+  <td width=46 valign=top style='width:27.6pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>.<o:p></o:p></span></p>
+  </td>
+  <td width=46 valign=top style='width:27.6pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>,<o:p></o:p></span></p>
+  </td>
+  <td width=35 valign=top style='width:21.0pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>SPC<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:6'>
+  <td width=50 valign=top style='width:30.0pt;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><b><span style='mso-fareast-font-family:"Times New Roman"'>101</span></b><span
+  style='mso-fareast-font-family:"Times New Roman"'><o:p></o:p></span></p>
+  </td>
+  <td width=45 valign=top style='width:27.0pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>[<o:p></o:p></span></p>
+  </td>
+  <td width=55 valign=top style='width:33.0pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>]<o:p></o:p></span></p>
+  </td>
+  <td width=45 valign=top style='width:27.0pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>DEL<o:p></o:p></span></p>
+  </td>
+  <td width=68 valign=top style='width:40.8pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>FCT
+  <span style='color:#00CCFF'>(Alt)</span><o:p></o:p></span></p>
+  </td>
+  <td width=38 valign=top style='width:22.8pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>P<o:p></o:p></span></p>
+  </td>
+  <td width=46 valign=top style='width:27.6pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>O<o:p></o:p></span></p>
+  </td>
+  <td width=46 valign=top style='width:27.6pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>I<o:p></o:p></span></p>
+  </td>
+  <td width=35 valign=top style='width:21.0pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>U<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:7'>
+  <td width=50 valign=top style='width:30.0pt;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><b><span style='mso-fareast-font-family:"Times New Roman"'>110</span></b><span
+  style='mso-fareast-font-family:"Times New Roman"'><o:p></o:p></span></p>
+  </td>
+  <td width=45 valign=top style='width:27.0pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>W<o:p></o:p></span></p>
+  </td>
+  <td width=55 valign=top style='width:33.0pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>S<o:p></o:p></span></p>
+  </td>
+  <td width=45 valign=top style='width:27.0pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>A<o:p></o:p></span></p>
+  </td>
+  <td width=68 valign=top style='width:40.8pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman";
+  color:#00CCFF'>(AltGr)</span><span style='mso-fareast-font-family:"Times New Roman"'><o:p></o:p></span></p>
+  </td>
+  <td width=38 valign=top style='width:22.8pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>E<o:p></o:p></span></p>
+  </td>
+  <td width=46 valign=top style='width:27.6pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>G<o:p></o:p></span></p>
+  </td>
+  <td width=46 valign=top style='width:27.6pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>H<o:p></o:p></span></p>
+  </td>
+  <td width=35 valign=top style='width:21.0pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Y<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:8;mso-yfti-lastrow:yes'>
+  <td width=50 valign=top style='width:30.0pt;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><b><span style='mso-fareast-font-family:"Times New Roman"'>111</span></b><span
+  style='mso-fareast-font-family:"Times New Roman"'><o:p></o:p></span></p>
+  </td>
+  <td width=45 valign=top style='width:27.0pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>=<o:p></o:p></span></p>
+  </td>
+  <td width=55 valign=top style='width:33.0pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman";
+  color:#00CCFF'>(CAPS)</span><span style='mso-fareast-font-family:"Times New Roman"'><o:p></o:p></span></p>
+  </td>
+  <td width=45 valign=top style='width:27.0pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>RET<o:p></o:p></span></p>
+  </td>
+  <td width=68 valign=top style='width:40.8pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Right
+  Shift<o:p></o:p></span></p>
+  </td>
+  <td width=38 valign=top style='width:22.8pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>/<o:p></o:p></span></p>
+  </td>
+  <td width=46 valign=top style='width:27.6pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>0<o:p></o:p></span></p>
+  </td>
+  <td width=46 valign=top style='width:27.6pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>L<o:p></o:p></span></p>
+  </td>
+  <td width=35 valign=top style='width:21.0pt;background:yellow;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>8<o:p></o:p></span></p>
+  </td>
+ </tr>
+</table>
+
+<p><span lang=EN-US style='mso-ansi-language:EN-US'><br>
+&nbsp; Please note that the Oric-1 keyboard only has 57 keys, and the Atmos
+keyboard has 58. This means that eight locations in this matrix were not wired.
+Euphoric implements additional keys in this matrix in order to better support
+International keyboards (so, again, those keys in blue in the above table do
+not exist on the real Oric keyboards). <o:p></o:p></span></p>
+
+<p><a name=parallel></a><b><i><span lang=EN-US style='font-family:"Arial","sans-serif";
+mso-ansi-language:EN-US'>Printer and joysticks</span></i></b><span lang=EN-US
+style='mso-ansi-language:EN-US'> <o:p></o:p></span></p>
+
+<p><span lang=EN-US style='mso-ansi-language:EN-US'>The Centronics port on the
+back of the Oric has only 20 pins (10 of them being ground). So there are only
+2 control lines : Strobe and Acknowledge. Sending a byte to the printer
+requires outputting the value through the VIA's port A, then emitting a Strobe
+pulse (negative edge out to PB4, normal level of PB4 should be 1), and finally
+waiting for the printer's acknowledge (negative edge received into CA1). As the
+printer port is bidirectional, it may be used for inputting values too, this is
+the case when connecting joysticks to a PASE interface on the parallel port.
+Programming bits 6 and 7 as outputs and bits 0..5 as inputs allows to read the
+joystick (note that if the PSG has to be written to, then whole port A has to
+be programmed as output again): bit 7 allows to select left joystick, and bit 6
+to select right joystick. Then bits 0, 1, 3, 4 and 5 are used to sense the
+joysticks switches (respectively left, right, down, up and fire): a 0 means the
+corresponding switch is activated. <br>
+&nbsp; <br>
+&nbsp; <o:p></o:p></span></p>
+
+<p><a name=screen></a><b><i><span lang=EN-US style='font-family:"Arial","sans-serif";
+mso-ansi-language:EN-US'>Screen</span></i></b><span lang=EN-US
+style='mso-ansi-language:EN-US'> <o:p></o:p></span></p>
+
+<p><span lang=EN-US style='mso-ansi-language:EN-US'>The ULA displays 224 lines
+of 240 pixels (pixels are not square, they have a 5/4 horizontal/vertical
+ratio) in 8 colors (1 bit each for red, green, blue). However, specifying
+background or foreground colors is achieved through in-line control bytes. They
+are usually called serial attributes because their effect may persist until the
+end of the line, or even after a complete screen refresh. Serial attributes
+have both bits 5 and 6 resetted to 0, and allow to set the ULA functionning:
+hardware blinking, character set selection, double height characters, foreground/background
+color selection, text/hires mode. The screen image in memory starts either in
+location A000 or BB80 depending of the current character/bitmap mode. The ULA
+always starts displaying a line with foreground color being white, background color
+being black, no blinking, normal height characters and normal character set. It
+reads 40 bytes in memory to display a 240 pixels line, and serial attributes
+are processed on the fly. As a byte cannot contains both pixel values and a
+serial attribute, 6 pixels in the background color will be displayed when
+encountering a serial attribute (serial attributes take effect immediately, so
+a background color change will produce 6 pixels of the corresponding color).
+When in hires mode, the 6 least significant bits in a byte provide 6 successive
+pixels on screen (a 1 value means foreground color, a 0 means background
+color). If both bits 6 and 5 in a byte are 0, then the 5 low-order bits are
+taken as a serial attribute. Bit 7 (most significant bit) is an inversed video
+flag, meaning that the pixels colors of the byte will be inversed (each
+reg/green/blue bit is inversed), this does not affect successive bytes. When in
+text mode, the same 40 bytes are repeatedly read to display 8 lines on screen.
+The 7 low order bits give an ascii value in the 32..127 range (0..31 values are
+serial attributes). This value and the current repetition (0 to 7) is used to
+select a byte in one of the two character set definition tables, whose 6 low-
+order bits will be interpreted as pixels. Once again, bit 7 is an inversed
+video flag for the current byte. <br>
+&nbsp; <o:p></o:p></span></p>
+
+<table class=MsoNormalTable border=1 cellspacing=3 cellpadding=0 width=694
+ style='width:416.4pt;mso-cellspacing:1.5pt;mso-yfti-tbllook:1184;mso-padding-alt:
+ 2.4pt 2.4pt 2.4pt 2.4pt'>
+ <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes'>
+  <td width="18%" valign=top style='width:18.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><b><u><span style='mso-fareast-font-family:"Times New Roman"'>Attributes</span></u></b><span
+  style='mso-fareast-font-family:"Times New Roman"'><o:p></o:p></span></p>
+  </td>
+  <td width="18%" valign=top style='width:18.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>X0000XXX:
+  foreground color<o:p></o:p></span></p>
+  </td>
+  <td width="25%" valign=top style='width:25.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>X0001XXX:
+  text attributes<o:p></o:p></span></p>
+  </td>
+  <td width="19%" valign=top style='width:19.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>X0010XXX:
+  background color<o:p></o:p></span></p>
+  </td>
+  <td width="19%" valign=top style='width:19.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>X0011XXX:
+  video mode<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:1'>
+  <td width="18%" valign=top style='width:18.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>000<o:p></o:p></span></p>
+  </td>
+  <td width="18%" valign=top style='width:18.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Black<o:p></o:p></span></p>
+  </td>
+  <td width="25%" valign=top style='width:25.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Standard<o:p></o:p></span></p>
+  </td>
+  <td width="19%" valign=top style='width:19.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Black<o:p></o:p></span></p>
+  </td>
+  <td width="19%" valign=top style='width:19.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Text
+  60 Hz<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:2'>
+  <td width="18%" valign=top style='width:18.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>001<o:p></o:p></span></p>
+  </td>
+  <td width="18%" valign=top style='width:18.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Red<o:p></o:p></span></p>
+  </td>
+  <td width="25%" valign=top style='width:25.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Alternate
+  charset<o:p></o:p></span></p>
+  </td>
+  <td width="19%" valign=top style='width:19.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Red<o:p></o:p></span></p>
+  </td>
+  <td width="19%" valign=top style='width:19.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Text
+  60 Hz<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:3'>
+  <td width="18%" valign=top style='width:18.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>010<o:p></o:p></span></p>
+  </td>
+  <td width="18%" valign=top style='width:18.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Green<o:p></o:p></span></p>
+  </td>
+  <td width="25%" valign=top style='width:25.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Double
+  height<o:p></o:p></span></p>
+  </td>
+  <td width="19%" valign=top style='width:19.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Green<o:p></o:p></span></p>
+  </td>
+  <td width="19%" valign=top style='width:19.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Text
+  50 Hz<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:4'>
+  <td width="18%" valign=top style='width:18.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>011<o:p></o:p></span></p>
+  </td>
+  <td width="18%" valign=top style='width:18.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Yellow<o:p></o:p></span></p>
+  </td>
+  <td width="25%" valign=top style='width:25.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Double
+  height, alt charset<o:p></o:p></span></p>
+  </td>
+  <td width="19%" valign=top style='width:19.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Yellow<o:p></o:p></span></p>
+  </td>
+  <td width="19%" valign=top style='width:19.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Text
+  50 Hz<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:5'>
+  <td width="18%" valign=top style='width:18.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>100<o:p></o:p></span></p>
+  </td>
+  <td width="18%" valign=top style='width:18.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Blue<o:p></o:p></span></p>
+  </td>
+  <td width="25%" valign=top style='width:25.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Blinking<o:p></o:p></span></p>
+  </td>
+  <td width="19%" valign=top style='width:19.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Blue<o:p></o:p></span></p>
+  </td>
+  <td width="19%" valign=top style='width:19.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Hires
+  60 Hz<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:6'>
+  <td width="18%" valign=top style='width:18.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>101<o:p></o:p></span></p>
+  </td>
+  <td width="18%" valign=top style='width:18.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Magenta<o:p></o:p></span></p>
+  </td>
+  <td width="25%" valign=top style='width:25.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Blinking,
+  alt charset<o:p></o:p></span></p>
+  </td>
+  <td width="19%" valign=top style='width:19.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Magenta<o:p></o:p></span></p>
+  </td>
+  <td width="19%" valign=top style='width:19.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Hires
+  60 Hz<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:7'>
+  <td width="18%" valign=top style='width:18.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>110<o:p></o:p></span></p>
+  </td>
+  <td width="18%" valign=top style='width:18.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Cyan<o:p></o:p></span></p>
+  </td>
+  <td width="25%" valign=top style='width:25.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Blinking,
+  dble height<o:p></o:p></span></p>
+  </td>
+  <td width="19%" valign=top style='width:19.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Cyan<o:p></o:p></span></p>
+  </td>
+  <td width="19%" valign=top style='width:19.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Hires
+  50 Hz<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:8;mso-yfti-lastrow:yes'>
+  <td width="18%" valign=top style='width:18.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>111<o:p></o:p></span></p>
+  </td>
+  <td width="18%" valign=top style='width:18.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>White<o:p></o:p></span></p>
+  </td>
+  <td width="25%" valign=top style='width:25.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span lang=EN-US style='mso-fareast-font-family:"Times New Roman";
+  mso-ansi-language:EN-US'>Blink, dble height, alt char<o:p></o:p></span></p>
+  </td>
+  <td width="19%" valign=top style='width:19.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>White<o:p></o:p></span></p>
+  </td>
+  <td width="19%" valign=top style='width:19.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Hires
+  50 Hz<o:p></o:p></span></p>
+  </td>
+ </tr>
+</table>
+
+<p><span lang=EN-US style='mso-ansi-language:EN-US'>Whatever the current mode
+is (text or hires), after 200 lines are displayed, the ULA starts reading from
+memory location BF68 (so there's a 32 bytes hole in hires mode's memory image),
+and repeats reading 8 times each of the 3 following 40 bytes sequences (so
+serial attributes switching to text or hires mode, in this area, will only
+affect the location of character sets (B400-BBFF in text mode, and 9800-9FFF in
+hires mode) and determine the next starting address of the screen image).
+Mixing lines of text and lines of hires in the same screen is possible. The ULA
+adjusts its memory read pointer, and its character sets pointers. <o:p></o:p></span></p>
+
+<p><a name=disc></a><b><i><span lang=EN-US style='font-family:"Arial","sans-serif";
+mso-ansi-language:EN-US'>Floppy Drive Interfaces</span></i></b><span
+lang=EN-US style='mso-ansi-language:EN-US'> <o:p></o:p></span></p>
+
+<p><span lang=EN-US style='mso-ansi-language:EN-US'>Drive interfaces for the
+oric are all driven by the same family of FDC (floppy disc controllers):
+Western Digital 177x for the Jasmin and new 179x generation for the Microdisc
+(and Telestrat). Differences in this family exist to connect negative or
+positive drives, and to allow double-density formats (MFM mode). The FDC 1773
+of the Jasmin and the 1793 of the Microdisc are compatible, but the additional
+circuitry is quite different so the programming routines have to be deeply
+adapted from one to the other (the telestrat has a second ULA integrating the
+Microdisc electronics, so it is largely compatible with it). The FDC 1793 (or
+1773) is accessible through locations 0310-0313 in Microdisc's electronics, and
+03F4-03F7 in Jasmin's electronics. This requires the interface to disable the
+internal VIA, with the use of the I/O CONTROL line on the system bus. See
+appendix for FDC programming commands. Microdisc's electronics features an
+output buffer at location 0314 to select drive number, side number, and memory
+signals. Also, two signals of the FDC are readable when reading locations 0314
+and 0318. The big picture is that the DRQ line (Data Request) has to be polled
+through bit 7 of location 0318 (a 0 means the FDC is ready to read/write a byte
+of data), and the end of the command is signaled to the processor as the INTRQ
+line (interrupt request) of the FDC is connected to the system IRQ line through
+a NAND gate enabled by bit 0 of location 0314 (a 1 enables interrupts).
+Alternatively, cpu interrupts may be disabled: in this case, the end of the
+command can be polled from bit 7 of location 0314 which reflects the INTRQ
+line, provided that the previous NAND gate is enabled. This is a more bug-proof
+approach than polling the FDC status register, because reading the FDC status
+resets the IRQ condition (reading location $0314 doesn't). Microdisc also
+allows access to the overlay ram (internal ram of the Oric in locations
+C000-FFFF usually masked by the rom), and to the 8 KB eprom of the interface.
+This is achieved through bits 7 and 1 of location 0314. This is not implemented
+in the Telestrat's second ULA as ram overlay has been generalized to 8 memory
+banks (rom or ram), selected through bits 0..2 of its second VIA. <o:p></o:p></span></p>
+
+<p>Write to location 0314 : <br>
+&nbsp; </p>
+
+<table class=MsoNormalTable border=1 cellspacing=3 cellpadding=0 width=439
+ style='width:263.4pt;mso-cellspacing:1.5pt;mso-yfti-tbllook:1184;mso-padding-alt:
+ 2.4pt 2.4pt 2.4pt 2.4pt'>
+ <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes'>
+  <td valign=top style='padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span lang=EN-US style='mso-fareast-font-family:"Times New Roman";
+  mso-ansi-language:EN-US'>bit 7: Eprom select (active low)&nbsp;<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:1'>
+  <td valign=top style='padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>bit
+  65: drive select (0 to 3)&nbsp;<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:2'>
+  <td valign=top style='padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>bit
+  4: side select&nbsp;<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:3'>
+  <td valign=top style='padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span lang=EN-US style='mso-fareast-font-family:"Times New Roman";
+  mso-ansi-language:EN-US'>bit 3: double density enable (0: double density, 1:
+  single density)&nbsp;<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:4'>
+  <td valign=top style='padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span lang=EN-US style='mso-fareast-font-family:"Times New Roman";
+  mso-ansi-language:EN-US'>bit 2: along with bit 3, selects the data separator
+  clock
+  divisor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (1:
+  double density, 0: single-density)&nbsp;<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:5'>
+  <td valign=top style='padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span lang=EN-US style='mso-fareast-font-family:"Times New Roman";
+  mso-ansi-language:EN-US'>bit 1: ROMDIS (active low). When 0, internal Basic
+  rom is disabled.&nbsp;<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:6;mso-yfti-lastrow:yes'>
+  <td valign=top style='padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span lang=EN-US style='mso-fareast-font-family:"Times New Roman";
+  mso-ansi-language:EN-US'>bit 0: enable FDC INTRQ to appear on read location
+  $0314 and to drive cpu IRQ<o:p></o:p></span></p>
+  </td>
+ </tr>
+</table>
+
+<p><span lang=EN-US style='mso-ansi-language:EN-US'><br>
+&nbsp; <o:p></o:p></span></p>
+
+<p><span lang=EN-US style='mso-ansi-language:EN-US'>Read of location 0314 (only
+bit 7 connected) : <br>
+&nbsp; <o:p></o:p></span></p>
+
+<table class=MsoNormalTable border=1 cellspacing=3 cellpadding=0 width=439
+ style='width:263.4pt;mso-cellspacing:1.5pt;mso-yfti-tbllook:1184;mso-padding-alt:
+ 2.4pt 2.4pt 2.4pt 2.4pt'>
+ <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes;mso-yfti-lastrow:yes'>
+  <td valign=top style='padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span lang=EN-US style='mso-fareast-font-family:"Times New Roman";
+  mso-ansi-language:EN-US'>bit 7: INTRQ state&nbsp;(only if bit 0 above has
+  been set to 1) in negative logic so it's 0 if FDC requests an Interrupt.<o:p></o:p></span></p>
+  </td>
+ </tr>
+</table>
+
+<p><span lang=EN-US style='mso-ansi-language:EN-US'><br>
+&nbsp; <o:p></o:p></span></p>
+
+<p><span lang=EN-US style='mso-ansi-language:EN-US'>Read of location 0318 (only
+bit 7 connected) <br>
+&nbsp; <o:p></o:p></span></p>
+
+<table class=MsoNormalTable border=1 cellspacing=3 cellpadding=0 width=439
+ style='width:263.4pt;mso-cellspacing:1.5pt;mso-yfti-tbllook:1184;mso-padding-alt:
+ 2.4pt 2.4pt 2.4pt 2.4pt'>
+ <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes;mso-yfti-lastrow:yes'>
+  <td valign=top style='padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span lang=EN-US style='mso-fareast-font-family:"Times New Roman";
+  mso-ansi-language:EN-US'>bit 7: DRQ state (active low)&nbsp;<o:p></o:p></span></p>
+  </td>
+ </tr>
+</table>
+
+<p><span lang=EN-US style='mso-ansi-language:EN-US'><br>
+&nbsp; <o:p></o:p></span></p>
+
+<p><span lang=EN-US style='mso-ansi-language:EN-US'>Jasmin's electronics also
+features buffers for side/drive selecting, and memory signals, but the DRQ line
+is connected to the system IRQ line so it allows for interrupt-driven transfers
+(however, two consecutives bytes are separated by 31.25 micro-seconds, so the
+interrupt routine has to be fast ! As an example, FT-DOS uses a dedicated
+interrupt routine, and does not even have time to save registers: the interrupt
+routine lasts 28 cycles) The end of a command has to be detected by reading the
+busy bit of the Status Register of the FDC. <o:p></o:p></span></p>
+
+<p>location 03F8 <br>
+&nbsp; </p>
+
+<table class=MsoNormalTable border=1 cellspacing=3 cellpadding=0 width=392
+ style='width:235.2pt;mso-cellspacing:1.5pt;mso-yfti-tbllook:1184;mso-padding-alt:
+ 2.4pt 2.4pt 2.4pt 2.4pt'>
+ <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes;mso-yfti-lastrow:yes'>
+  <td valign=top style='padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>bit
+  0: side select&nbsp;<o:p></o:p></span></p>
+  </td>
+ </tr>
+</table>
+
+<p><br>
+&nbsp; </p>
+
+<p><span lang=EN-US style='mso-ansi-language:EN-US'>location 03F9 : disk
+controller reset (writing any value will reset the FDC) <br>
+&nbsp; <br>
+&nbsp; <o:p></o:p></span></p>
+
+<p>location 03FA <br>
+&nbsp; </p>
+
+<table class=MsoNormalTable border=1 cellspacing=3 cellpadding=0 width=392
+ style='width:235.2pt;mso-cellspacing:1.5pt;mso-yfti-tbllook:1184;mso-padding-alt:
+ 2.4pt 2.4pt 2.4pt 2.4pt'>
+ <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes;mso-yfti-lastrow:yes'>
+  <td valign=top style='padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span lang=EN-US style='mso-fareast-font-family:"Times New Roman";
+  mso-ansi-language:EN-US'>bit 0: overlay ram access (1 means overlay ram
+  enabled)&nbsp;<o:p></o:p></span></p>
+  </td>
+ </tr>
+</table>
+
+<p><span lang=EN-US style='mso-ansi-language:EN-US'><br>
+&nbsp; <o:p></o:p></span></p>
+
+<p>location 03FB <br>
+&nbsp; </p>
+
+<table class=MsoNormalTable border=1 cellspacing=3 cellpadding=0 width=392
+ style='width:235.2pt;mso-cellspacing:1.5pt;mso-yfti-tbllook:1184;mso-padding-alt:
+ 2.4pt 2.4pt 2.4pt 2.4pt'>
+ <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes;mso-yfti-lastrow:yes'>
+  <td valign=top style='padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span lang=EN-US style='mso-fareast-font-family:"Times New Roman";
+  mso-ansi-language:EN-US'>bit 0: ROMDIS (1 means internal Basic rom
+  disabled)&nbsp;<o:p></o:p></span></p>
+  </td>
+ </tr>
+</table>
+
+<p><span lang=EN-US style='mso-ansi-language:EN-US'><br>
+&nbsp; <o:p></o:p></span></p>
+
+<p><span lang=EN-US style='mso-ansi-language:EN-US'>locations 03FC, 03FD, 03FE,
+03FF : writing to one of these locations will select the corresponding drive <br>
+&nbsp; <br>
+&nbsp; <o:p></o:p></span></p>
+
+<p><a name=tape></a><b><i><span lang=EN-US style='font-family:"Arial","sans-serif";
+mso-ansi-language:EN-US'>Tape</span></i></b><span lang=EN-US style='mso-ansi-language:
+EN-US'> <o:p></o:p></span></p>
+
+<p><span lang=EN-US style='mso-ansi-language:EN-US'>Writing to the tape is
+simply a question of outputting a square waveform to bit 7 of VIA's B port. So,
+timing is the essence... The standard system software of the Oric-1/Atmos (no
+tape software in Telestrat) uses a mix of two frequencies : 2400 Hz and 1200
+Hz. For example, in SLOW mode, to write a bit to the tape, the rom routines
+output either 4 periods at 1200 Hz for a 0 or 8 periods at 2400 Hz for a 1 (so
+the baud rate is 300). In FAST mode, the difference is much thinner : either a
+2400 Hz period for a 1, or half a 2400 Hz period and half a 1200 Hz period for
+a 0 (so the baud rate lies between 1600 and 2400 depending on the proportion of
+1's and 0's). Whatever the mode is (SLOW or FAST), the rom writes one byte as
+13 bits on tape: a starting 0, eight bits of data, a parity bit, and three 1
+bits. Reading the tape requires measuring the time interval between edges on
+the CB1 pin (with a VIA's timer of course). In theory, this operation could be
+interrupt-driven, but I have never seen programs using this feature. <br>
+&nbsp; <br>
+&nbsp; <o:p></o:p></span></p>
+
+<p><a name=serial></a><b><i><span lang=EN-US style='font-family:"Arial","sans-serif";
+mso-ansi-language:EN-US'>Serial</span></i></b><span lang=EN-US
+style='mso-ansi-language:EN-US'> <o:p></o:p></span></p>
+
+<p><span lang=EN-US style='mso-ansi-language:EN-US'>There's no standard serial
+port on the Oric-1/Atmos but one is standard with the Telestrat and many
+extensions exist for the Oric-1/Atmos. I have only heard about serial
+interfaces driven by the 6551 ACIA (Asynchronous Communication Interface
+Adapter). Four IO addresses allow to program the ACIA, they are located at 031C
+on the Telestrat. As the Microdisc's electronics does not use these addresses,
+it would be a good idea if all the serial extensions for Oric-1 or Atmos were
+located there. See the ACIA brief reference in appendix for a summary of
+commands (am I tired of writing this or what ?). Note that you need a IRQ
+handler aware of the ACIA if you enable the ACIA interrupts, otherwise the
+interrupt condition will not be resetted and the cpu will indefinitely service
+an interrupt request. <o:p></o:p></span></p>
+
+<p><a name=rtc></a><b><i><span lang=EN-US style='font-family:"Arial","sans-serif";
+mso-ansi-language:EN-US'>Real Time Clock</span></i></b><span lang=EN-US
+style='mso-ansi-language:EN-US'> <o:p></o:p></span></p>
+
+<p><span lang=EN-US style='mso-ansi-language:EN-US'>Very few Oric owners have
+this extension. It is most useful for people using their oric as a BBS, since
+no Oric operating system stores time/date information of files. Moreover, the
+alarm feature of the main chip is near useless as the extension's designers
+didn't connect the interrupt request line (so you need to poll the alarm in
+order to see if time has expired, it is not harder to check if the clock has
+reached some given time/date). See appendix for reference. <br>
+&nbsp; <br>
+&nbsp; <o:p></o:p></span></p>
+
+<p><a name=via2></a><b><i><span lang=EN-US style='font-family:"Arial","sans-serif";
+mso-ansi-language:EN-US'>Second VIA (Telestrat)</span></i></b><span lang=EN-US
+style='mso-ansi-language:EN-US'> <o:p></o:p></span></p>
+
+<p><span lang=EN-US style='mso-ansi-language:EN-US'>The Telestrat has a second
+VIA interfacing new hardware, and allowing the selection of the memory banks.
+This VIA is located at address 0320. Pin assignment changed from the original
+Stratos when crossing the chanel (from England to France): as some pins were
+not connected, the french company decided that a Midi connector could be a nice
+marketing argument, even with random VIA pins connected behind... Fortunately
+better additions were done too: capability to use a mouse in right joystick
+port, phone ring detection (a rather complex circuitry has been added for
+it...). <br>
+So, here is the input/output ports assignment of the final Telestrat board,
+with its small daughterboards add-ons: <br>
+&nbsp; <o:p></o:p></span></p>
+
+<table class=MsoNormalTable border=1 cellspacing=3 cellpadding=0 width=448
+ style='width:268.8pt;mso-cellspacing:1.5pt;mso-yfti-tbllook:1184;mso-padding-alt:
+ 2.4pt 2.4pt 2.4pt 2.4pt'>
+ <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes'>
+  <td width="28%" valign=top style='width:28.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><b><span style='mso-fareast-font-family:"Times New Roman"'>VIA
+  lines</span></b><span style='mso-fareast-font-family:"Times New Roman"'><o:p></o:p></span></p>
+  </td>
+  <td width="72%" valign=top style='width:72.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><b><span style='mso-fareast-font-family:"Times New Roman"'>Telestrat
+  usage</span></b><span style='mso-fareast-font-family:"Times New Roman"'><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:1'>
+  <td width="28%" valign=top style='width:28.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>PA0..PA2<o:p></o:p></span></p>
+  </td>
+  <td width="72%" valign=top style='width:72.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Memory
+  bank selection<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:2'>
+  <td width="28%" valign=top style='width:28.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>PA3<o:p></o:p></span></p>
+  </td>
+  <td width="72%" valign=top style='width:72.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Minitel
+  port pin 6 / &quot;Midi&quot; port pin 3<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:3'>
+  <td width="28%" valign=top style='width:28.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>PA4<o:p></o:p></span></p>
+  </td>
+  <td width="72%" valign=top style='width:72.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>RS232/Minitel
+  selection<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:4'>
+  <td width="28%" valign=top style='width:28.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>PA5<o:p></o:p></span></p>
+  </td>
+  <td width="72%" valign=top style='width:72.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span lang=EN-US style='mso-fareast-font-family:"Times New Roman";
+  mso-ansi-language:EN-US'>Third mouse button (right joystick port pin 5)<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:5'>
+  <td width="28%" valign=top style='width:28.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>PA6<o:p></o:p></span></p>
+  </td>
+  <td width="72%" valign=top style='width:72.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span lang=EN-US style='mso-fareast-font-family:"Times New Roman";
+  mso-ansi-language:EN-US'>(Phone ring detection of the Stratos on modem port
+  pin 4 ?) / &quot;Midi&quot; port pin 5<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:6'>
+  <td width="28%" valign=top style='width:28.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>PA7<o:p></o:p></span></p>
+  </td>
+  <td width="72%" valign=top style='width:72.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span lang=EN-US style='mso-fareast-font-family:"Times New Roman";
+  mso-ansi-language:EN-US'>Second mouse button (right joystick port pin 9)<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:7'>
+  <td width="28%" valign=top style='width:28.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>CA1<o:p></o:p></span></p>
+  </td>
+  <td width="72%" valign=top style='width:72.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>&quot;Midi&quot;
+  port pin 1<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:8'>
+  <td width="28%" valign=top style='width:28.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>CA2<o:p></o:p></span></p>
+  </td>
+  <td width="72%" valign=top style='width:72.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>not
+  used ?<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:9'>
+  <td width="28%" valign=top style='width:28.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>PB0..PB4<o:p></o:p></span></p>
+  </td>
+  <td width="72%" valign=top style='width:72.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Joystick
+  ports<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:10'>
+  <td width="28%" valign=top style='width:28.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>PB5<o:p></o:p></span></p>
+  </td>
+  <td width="72%" valign=top style='width:72.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Select
+  dipswitch (missing)<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:11'>
+  <td width="28%" valign=top style='width:28.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>PB6<o:p></o:p></span></p>
+  </td>
+  <td width="72%" valign=top style='width:72.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Select
+  Left Joystick port<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:12'>
+  <td width="28%" valign=top style='width:28.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>PB7<o:p></o:p></span></p>
+  </td>
+  <td width="72%" valign=top style='width:72.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Select
+  Right Joystick port<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:13'>
+  <td width="28%" valign=top style='width:28.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>CB1<o:p></o:p></span></p>
+  </td>
+  <td width="72%" valign=top style='width:72.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>Phone
+  Ring detection<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:14;mso-yfti-lastrow:yes'>
+  <td width="28%" valign=top style='width:28.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>CB2<o:p></o:p></span></p>
+  </td>
+  <td width="72%" valign=top style='width:72.0%;padding:2.4pt 2.4pt 2.4pt 2.4pt'>
+  <p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>&quot;Midi&quot;
+  port pin 4<o:p></o:p></span></p>
+  </td>
+ </tr>
+</table>
+
+<p><br>
+&nbsp; </p>
+
+<p><span lang=EN-US style='mso-ansi-language:EN-US'>Selecting a memory bank
+(memory addresses in the C000-FFFF range) is easy, just write the bank number
+you wish in the three low-order bits of port A. Bank 0 is the overlay ram,
+banks 1 to 7 may be present due to cartridges inserted in one of the two
+cartridge slots. Usually, bank 7 contains the TeleMon software, the Telestrat
+boots on Bank 7 when powered on. Bank 0 is loaded with the StratSed operating
+system when booting (the system is loaded from the disk in drive). Other banks
+may contain either ram or rom, from the cartridges inserted. <o:p></o:p></span></p>
+
+<p><span lang=EN-US style='mso-ansi-language:EN-US'>PB5, PB6 and PB7 allow to
+select one of three ports to read through PB0..PB4, two of which are joystick
+ports (PB5 is connected to a missing IC, which was intended to interface to
+dipswitches (these are absent too)). The switches of the joystick are readable
+through PB0, PB1, PB2, PB3, PB4 (respectively right, left, fire, down, up).
+When a switch is closed, a 0 is sensed in the corresponding bit (the pin is
+connected to ground), otherwise the pin remains not connected in high-impedance
+input, and a 1 is sensed. Alternatively, a mouse may be connected to the right
+joystick port : right, left, fire (first mouse button), down, up work as with a
+joystick (middle and right button are connected to PA7 and PA5). <o:p></o:p></span></p>
+
+<p><span lang=EN-US style='mso-ansi-language:EN-US'>PA3, PA6, CA1, CB2 are
+connected to the &quot;Midi&quot; port. I prefer to call it &quot;the fake
+DIN&quot; since there's no way to use it as a midi connector (IMHO).&nbsp;<Ad>see
+my proof in CEOmag&nbsp;</Ad>8-) However, how about using this DIN connector to
+connect a coffee machine or something else ? You've got 4 IO lines, two of them
+may be used as interrupt lines, this is really nice ! I will soon try to connect
+a standard PC/AT keyboard there... <o:p></o:p></span></p>
+
+<p><span lang=EN-US style='mso-ansi-language:EN-US'>PA4 selects which port
+(RS232 or Minitel) is connected to the ACIA. A 0 selects the Minitel port (TTL
+levels) and a 1 selects the RS232 port (standard EIA levels, but only the Tx,
+Rx, -RTS, -CTS, -DCD and -DTR are connected (plus ground pin 7 of course): -DSR
+is connected to +5V, as the MC1489 can only convert 3 inputs, but I would
+prefer it grounded. Note also that the original Stratos had -Rx connected to
+modem port pin 5, and this is converted to Rx with a NAND gate on a Telestrat
+daughterboard. <o:p></o:p></span></p>
+
+</div>
+
+</body>
+
+</html>

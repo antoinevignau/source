@@ -91,18 +91,22 @@ intro_intro
 	ldy	#198
 	lda	#txtINTRO4
 	jsr	centerME
+	bcs	ii_end
 
 	ldy	#iiY
 	lda	#txtINTRO1
 	jsr	centerME
+	bcs	ii_end
 
 	ldy	#iiY+20
 	lda	#txtINTRO2
 	jsr	centerME
+	bcs	ii_end
 
 	ldy	#iiY+40
 	lda	#txtINTRO3
 	jsr	centerME
+	bcs	ii_end
 
 	ldy	#60*1
 	jsr	waitMS16
@@ -115,17 +119,20 @@ intro_intro
 	ldy	#iiY
 	lda	#txtINTRO5
 	jsr	centerME
+	bcs	ii_end
 
 	ldy	#iiY+20
 	lda	#txtINTRO6
 	jsr	centerME
+	bcs	ii_end
 
 	ldy	#iiY+40
 	lda	#txtINTRO7
 	jsr	centerME
 
 	ldy	#60*1
-	jmp	waitMS16
+	jsr	waitMS16
+ii_end	rts
 
 *----------- Merci La Belle Zohra
 
@@ -311,7 +318,8 @@ igt_ret	stz	textX	; next line
 	
 igt_next	ldy	#4	; wait 4/60eme
 	jsr	waitMS16
-
+	bcs	igt_end
+	
 	inc	dpFROM
 	bra	]lp
 	
@@ -329,9 +337,10 @@ intro_serpent
 	_GetPenPat
 	
 	jsr	snake_1
+	bcs	is_end
 	jsr	snake_2
 
-	PushLong	#curPATTERN
+is_end	PushLong	#curPATTERN
 	_SetPenPat
 	rts
 
@@ -348,10 +357,13 @@ snake_1	PushLong	#curPENSIZE
 	_SetPenSize
 	
 	jsr	snake_draw
-
+	php
+	
 	PushWord	curPENSIZE
 	PushWord	curPENSIZE+2
 	_SetPenSize
+	
+	plp
 	rts
 
 *-----------
@@ -392,7 +404,9 @@ sd_k	lda	theK
 
 	ldy	#1	; wait 4/60eme
 	jsr	waitMS16
-
+	bcc	sd_1
+	rts
+sd_1
 	inc	theN
 	lda	maxN
 	cmp	theN
@@ -431,6 +445,9 @@ sd_k	lda	theK
 
 	ldy	#1	; wait 4/60eme
 	jsr	waitMS16
+	bcc	sd_2
+	rts
+sd_2
 
 	inc	theN
 	lda	theN
@@ -471,7 +488,9 @@ sd_k	lda	theK
 
 	ldy	#1	; wait 4/60eme
 	jsr	waitMS16
-
+	bcc	sd_3
+	rts
+sd_3
 	dec	theN
 	lda	maxN
 	cmp	theN
@@ -510,7 +529,9 @@ sd_k	lda	theK
 
 	ldy	#1	; wait 4/60eme
 	jsr	waitMS16
-
+	bcc	sd_4
+	rts
+sd_4
 	dec	theN
 	lda	maxN
 	cmp	theN
@@ -552,7 +573,9 @@ sd_nextk	lda	theK
 	bcs	sd_end
 	jmp	sd_k
 
-sd_end	rts
+sd_end	PushWord #%1111_1111_1111_1111	; on arrête tout pour MIDI Synth
+	_FFStopSound
+	rts
 
 *-----------
 
@@ -573,18 +596,22 @@ snake_2	PushWord	#0
 	ldy	#80
 	lda	#txtSERPENT1
 	jsr	centerME
-	
+
+	php
 	_SetForeColor
-	
 	jsr	fontSHASTON8
+	plp
+	bcs	s2_end
 
 	ldy	#105
 	lda	#txtSERPENT2
 	jsr	centerME
+	bcs	s2_end
 	
 	ldy	#118
 	lda	#txtSERPENT3
 	jsr	centerME
+	bcs	s2_end
 	
 	ldy	#131
 	lda	#txtSERPENT4
@@ -593,7 +620,8 @@ snake_2	PushWord	#0
 *-----------
 
 	ldy	#60*2
-	jmp	waitMS16
+	jsr	waitMS16
+s2_end	rts
 
 *-----------------------------------
 * DE QUI EST CE LOGICIEL ?
@@ -993,6 +1021,7 @@ imLOOP	lda	#0
 
 	ldy	#60*10
 	jsr	waitMS16
+	bcs	im_end
 
 *----------- 2ème partie : le texte
 
@@ -1004,7 +1033,7 @@ imLOOP	lda	#0
 	jsr	showTEXTE
 
 	_SetForeColor
-	rts
+im_end	rts
 
 *--- Attribut d'un pixel
 *
@@ -1170,6 +1199,7 @@ showTEXTE	sta	dpFROM
 
 	jsr	waitMSBIS	; keypress?
 	bcc	st_ok
+	rts
 
 st_end	ldy	#60*10	; wait before exiting
 	jmp	waitMS16
@@ -1212,16 +1242,20 @@ intro_explications
 	lda	#txtEXPLICATIONS1	; Texte 1
 	ldx	#9
 	jsr	showTEXTE
+	bcs	ie_end
 
 *	lda	#txtEXPLICATIONS2	; Texte 2 non affiché
 *	ldx	#11
 *	jsr	showTEXTE
+*	bcs	ie_end
 
 	lda	#txtEXPLICATIONS3	; Texte 3
 	ldx	#7
 	jsr	showTEXTE
 
+ie_end	php
 	_SetForeColor
+	plp
 	rts
 
 *-----------------------------------
@@ -1241,7 +1275,7 @@ intro_genius_image
 
 	lda	ptrSCREEN
 	clc
-	adc	#34	; pour center
+	adc	#2594	; pour center : 160x16+34
 	sta	dpTO
 	lda	ptrSCREEN+2
 	sta	dpTO+2
@@ -1271,7 +1305,7 @@ igLOOP	ldy	#0
 
 *-----------
 
-	ldy	#60*5
+	ldy	#60*3
 	jmp	waitMS16
 
 *-----------

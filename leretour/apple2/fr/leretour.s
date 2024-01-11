@@ -294,7 +294,7 @@ REPLAY	sep	#$30
 :900	cmp	#idxTIMER
 	bne	:905
 	
-	jsr	switchENERGIE
+	jsr	switchTEMPS
 	jmp	:100
 
 :905	cmp	#idxMUSIC
@@ -1010,38 +1010,61 @@ tbl4000	da	$bdbd,:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
 	lda	#21
 	sta	SALLE
 
-	@gotoxy	#43;#21	; Vous avez deux essais pour
+	@gotoxy	#43;#28	; Vous avez deux essais pour
 	@print	#str4550	; xy
-	@gotoxy	#43;#29	; entrer le mot de passe
+	@gotoxy	#43;#37	; entrer le mot de passe
 	@print	#str4552	; xy
 	
-	@gotoxy	#43;#37	; entrer le mot de passe
+	@gotoxy	#43;#45	; entrer le mot de passe
 	jsr	:4556_input	; saisie 1
 	bcc	:4554	; ok
-	@gotoxy	#43;#45	; entrer le mot de passe
+	@gotoxy	#43;#53	; entrer le mot de passe
 	@print	#str4553	; FAUX!
 
-	@gotoxy	#43;#37	; entrer le mot de passe
+	@gotoxy	#43;#45	; entrer le mot de passe
 	jsr	:4556_input	; saisie 2
 	bcc	:4554	; ok
-	@gotoxy	#43;#45	; entrer le mot de passe
+*	@gotoxy	#43;#53	; entrer le mot de passe
+	rep	#$30	; init 16-bits, c'est mieux
+	stz	textX
+	lda	#row16
+	sta	textY
+	sep	#$30
 	@print	#str4554	; encore faux
 	jmp	:perdu	; ciao
 
-:4554	@gotoxy	#43;#56	; 42
-	@print	#str4558	; xy
-	@gotoxy	#43;#64	; 56
-	@print	#str4559_1	; xy
-	@gotoxy	#43;#72	; 67
-	@print	#str4559_2	; xy
-	@gotoxy	#43;#80
-	@print	#str4559_3	; xy
-	@gotoxy	#43;#88
-	@print	#str4559_4	; xy
-	
+:4554
+*	@gotoxy	#43;#62	; 42
+	rep	#$30	; init 16-bits, c'est mieux
+	stz	textX
+	lda	#row16
+	sta	textY
+	sep	#$30
+	@print	#str4558
+	@print	#str4559
 	ldx	#>MP$
 	ldy	#<MP$
 	jsr	printCSTRING	; COUTXY
+
+	@gotoxy	#43;#70	; 56
+	@print	#str4559_1	; xy
+	@gotoxy	#43;#78	; 67
+	@print	#str4559_2	; xy
+	@wait	#200
+	
+	rep	#$30	; init 16-bits, c'est mieux
+	stz	textX
+	lda	#row18
+	sta	textY
+	sep	#$30
+	
+*	@gotoxy	#43;#86
+*	@print	#str4559_3	; xy
+*	@gotoxy	#43;#94
+
+*	ldx	#>MP$
+*	ldy	#<MP$
+*	jsr	printCSTRING	; COUTXY
 	rts
 
 *--- saisie du mot de passe
@@ -1119,8 +1142,6 @@ MDP$	asc	'MANOIR'
 :4597	sec
 	rts
 
-str4595	asc	'Slot 1-9 (0=sortir) ? '00
-	
 *----------- LE MOT DE PASSE FINAL
 
 :4610	@print	#str4610
@@ -1139,7 +1160,8 @@ str4595	asc	'Slot 1-9 (0=sortir) ? '00
 	bpl	]lp
 	jmp	:gagne
 
-:4615	@print	#str4615
+:4615	jsr	setTEXTFULL
+	@print	#str4615
 	@zap
 	@wait	#100
 	@print	#str4616
@@ -1658,6 +1680,11 @@ GETLN2	stx	lenSTRING
 	ldx	lenSTRING
 	cmp	#chrRET
 	beq	doRET
+	
+	ldy	fgTEXT	; on n'autorise que RET
+	cpy	#1
+	beq	]lp	; en mode texte
+
 	cmp	#chrDEL
 	beq	doBACK
 	cmp	#chrLA
@@ -1697,6 +1724,10 @@ doBACK	cpx	#0
 doRET	cpx	#0
 	bne	doEXIT
 
+	lda	fgTEXT
+	eor	#1
+	sta	fgTEXT
+	
 	jsr	switchVIDEO
 	jmp	]lp
 
@@ -1726,14 +1757,14 @@ smoff	rep	#$30
 
 	mx	%11
 	
-switchENERGIE
+switchTEMPS
 	lda	#0
 	eor	#1
-	sta	switchENERGIE+1
+	sta	switchTEMPS+1
 	rts
 
-testENERGIE	sep	#$30
-	lda	switchENERGIE+1	; switch is off
+testTEMPS	sep	#$30
+	lda	switchTEMPS+1	; switch is off
 	bne	te_ok
 
 	lda	fgTIME
@@ -1911,6 +1942,7 @@ SALLE	ds	1
 T	ds	1
 lenSTRING	ds	1
 
+fgTEXT	ds	2	; 0: off, 1: on
 fgTIME	ds	2	; 0: off, 1: on
 fgPERDU	ds	2	; 1: perdu
 

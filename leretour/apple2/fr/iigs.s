@@ -135,11 +135,6 @@ ICI	phk
 	tdc
 	sta	myDP
 
-	lda	#screenRECT
-	stal	$300
-	lda	#^screenRECT
-	stal	$302
-
 	_TLStartUp
 	pha
 	_MMStartUp

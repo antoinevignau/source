@@ -28,7 +28,7 @@ intTIME	ds	4
 	ldal	fgTIME
 	beq	intTIME1
 
-	lda	switchENERGIE+1	; switch is off
+	lda	switchTEMPS+1	; switch is off
 	bne	intTIME1
 	
 	sed
@@ -78,11 +78,14 @@ printNIVEAU	ora	#'0'
 
 	mx	%00
 	
-printTEMPS	lda	fgTIME
-	bne	pt1
+printTEMPS	lda	fgTEXT
+	beq	pt1
+	rts
+pt1	lda	fgTIME
+	bne	pt2
 	rts
 
-pt1	sep	#$30
+pt2	sep	#$30
 	lda	MINUTES
 	and	#%1111_0000
 	lsr
@@ -160,7 +163,7 @@ RDKEY	jsr	CURSOR	; shows the cursor
 
 	jsr	checkREPLAY
 	jsr	printTEMPS
-	jsr	testENERGIE
+	jsr	testTEMPS
 	bcs	RDKEY99
 
 	pha
@@ -307,8 +310,7 @@ GOTOXY	stx	textX
 
 	mx	%11
 	
-COUT
-	rep	#$30
+COUT	rep	#$30
 	and	#$ff
 	cmp	#chrRET	; next line, please
 	beq	COUT1

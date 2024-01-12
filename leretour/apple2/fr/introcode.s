@@ -311,7 +311,7 @@ intro_genius_texte
 	bcc	igt_ok
 	rts
 
-igt_end	ldy	#2
+igt_end	ldy	#60*2
 	jmp	waitMS16
 
 igt_ok	lda	[dpFROM]	; get char
@@ -361,7 +361,7 @@ intro_serpent
 	jsr	snake_2
 	bcs	is_end
 
-	ldy	#2
+	ldy	#60*2
 	jsr	waitMS16
 
 is_end	PushLong	#curPATTERN

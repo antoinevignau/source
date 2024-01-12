@@ -361,6 +361,8 @@ MP$3	asc	'GENIS'
 MP$4	asc	'ECHEC'
 MP$5	asc	'ARGON'
 
+MDP$	asc	'MANOIR'	; LOGO - Shorten it for the English version
+
 *
 * Le vocabulaire
 * on fera index-1 b/c 8-bits
@@ -559,7 +561,7 @@ V$137	str	'TOUT'
 V$138	str	'TOTA'
 V$139	str	'RANG'	; RANGER (TUBE DANS GLACE => RANG TUBE)
 
-V$200	str	'STOP'
+V$200	str	'STOP'	; STOP coupe toutes les interruptions
 V$201	str	'MUSI'
 
 *

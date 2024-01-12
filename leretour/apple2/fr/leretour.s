@@ -1064,7 +1064,7 @@ tbl4000	da	$bdbd,:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
 
 :4556_input	@print	#str4556
 	jsr	GETLN1	; chaîne de 6 caractères, SVP
-	cpx	#6
+	cpx	#6	; LOGO
 	bcc	:4556_ko
 	cpx	#7
 	bcs	:4556_ko
@@ -1080,8 +1080,6 @@ tbl4000	da	$bdbd,:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
 	rts
 :4556_ko	sec		; c'est le mauvais mot de passe
 	rts
-
-MDP$	asc	'MANOIR'
 
 *-----------
 

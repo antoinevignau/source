@@ -422,6 +422,8 @@ doSAVE	sta	pGAME+10
 saveKO99	sep	#$30
 	rts
 
+	mx	%00
+	
 *--- For the game party
 
 proCREATEGAME
@@ -458,7 +460,7 @@ proWRITEGAME
 	ds	4	; C - transfer_count
 	dw	1	; cache_priority
 
-pGAME	strl	'1/Partie0'	; +10 pour la partie
+pGAME	strl	'1/Partie0'
 
 *-----------------------------------
 * DES DONNES 16-BITS

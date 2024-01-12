@@ -559,7 +559,7 @@ V$137	str	'TOUT'
 V$138	str	'TOTA'
 V$139	str	'RANG'	; RANGER (TUBE DANS GLACE => RANG TUBE)
 
-V$200	str	'TIME'
+V$200	str	'STOP'
 V$201	str	'MUSI'
 
 *
@@ -689,7 +689,8 @@ str4618_2	asc	0d'Vous venez de r'8e'aliser que Genius'0d
 	asc	'pleurait de JOIE...!'00
 
 str4620	asc	'La soucoupe a explos'8e' au d'8e'collage.'00
-str4630	asc	'Energie restante :'00
+str4630	asc	'Energie restante : '00
+strFORCE	asc	'20000'00
 str4640	asc	'Petit dr'99'le... Le chronom'8f'tre est'0d
 	asc	'affich'8e' en permanence'00
 str4650	asc	0d'Le temps que vous aviez pour votre'0d

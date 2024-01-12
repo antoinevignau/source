@@ -163,6 +163,8 @@ RDKEY	jsr	CURSOR	; shows the cursor
 
 	jsr	checkREPLAY
 	jsr	printTEMPS
+	jsr	testENERGIE
+	bcs	RDKEY99
 	jsr	testTEMPS
 	bcs	RDKEY99
 

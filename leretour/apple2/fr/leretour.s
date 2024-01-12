@@ -18,10 +18,11 @@ textY	=	textX+2	; caracteres QuickDraw II
 LINNUM	=	$50	; result from GETADR
 
 chrLA	=	$08
-chrRA	=	$15
-chrDEL	=	$7f
 chrRET	=	$0d
+chrRA	=	$15
+chrESC	=	$1b
 chrSPC	=	$20
+chrDEL	=	$7f
 maxLEN	=	40
 
 chrOUI	=	'O'
@@ -79,7 +80,7 @@ PLAY	sep	#$30
 	jsr	initALL
 REPLAY	sep	#$30
 	jsr	FULLHGR
-	
+
 	rep	#$30	; init 16-bits, c'est mieux
 	stz	textX
 	lda	#row16
@@ -294,7 +295,7 @@ REPLAY	sep	#$30
 :900	cmp	#idxTIMER
 	bne	:905
 	
-	jsr	switchTEMPS
+	jsr	switchTEMPS	; temps et énergie
 	jmp	:100
 
 :905	cmp	#idxMUSIC
@@ -309,6 +310,8 @@ REPLAY	sep	#$30
 
 :915	ldy	#0
 
+	jsr	gereFORCE	; FORCE--
+	
 :920	lda	SALLE	; T$=MID(M$(SALLE),Z,2)
 	asl
 	tax
@@ -1024,7 +1027,6 @@ tbl4000	da	$bdbd,:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
 	@gotoxy	#43;#45	; entrer le mot de passe
 	jsr	:4556_input	; saisie 2
 	bcc	:4554	; ok
-*	@gotoxy	#43;#53	; entrer le mot de passe
 	rep	#$30	; init 16-bits, c'est mieux
 	stz	textX
 	lda	#row16
@@ -1034,7 +1036,6 @@ tbl4000	da	$bdbd,:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
 	jmp	:perdu	; ciao
 
 :4554
-*	@gotoxy	#43;#62	; 42
 	rep	#$30	; init 16-bits, c'est mieux
 	stz	textX
 	lda	#row16
@@ -1057,16 +1058,8 @@ tbl4000	da	$bdbd,:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
 	lda	#row18
 	sta	textY
 	sep	#$30
-	
-*	@gotoxy	#43;#86
-*	@print	#str4559_3	; xy
-*	@gotoxy	#43;#94
-
-*	ldx	#>MP$
-*	ldy	#<MP$
-*	jsr	printCSTRING	; COUTXY
 	rts
-
+	
 *--- saisie du mot de passe
 
 :4556_input	@print	#str4556
@@ -1106,40 +1099,34 @@ MDP$	asc	'MANOIR'
 :4590	stz	fgTIME
 	jsr	:4595
 	bcs	:4591
-*	rep	#$30
 	jsr	doSAVE
-*	sep	#$30
 :4591	inc	fgTIME
-	rts
+	jmp	:100
 	
 *----------- LOAD - LOGO
 
 :4600	stz	fgTIME
 	jsr	:4595
 	bcs	:4601
-*	rep	#$30
 	jsr	doLOAD
-*	sep	#$30
+	bcs	:4601
 	inc	fgTIME
 	jmp	REPLAY
 :4601	inc	fgTIME
-	rts
+	jmp	:100
 
 *----------- Slot for load/save
 
 :4595	@print	#str4595
-	jsr	GETLN1
-	cpx	#1
-	bne	:4595
-	lda	TEXTBUFFER
+	jsr	translateKEY
 	cmp	#'0'
+	beq	:4599
 	bcc	:4595
-	beq	:4597
 	cmp	#'9'+1
 	bcs	:4595
 	clc
 	rts
-:4597	sec
+:4599	sec
 	rts
 
 *----------- LE MOT DE PASSE FINAL
@@ -1176,11 +1163,21 @@ MDP$	asc	'MANOIR'
 	@print	#str4620
 	rts
 	
-:4630	@print	#str4630
+:4630	@print	#str4630	; affiche la force restante
+
+	rep	#$30	; convertit la force
+	PushWord	FORCE
+	PushLong	#strFORCE
+	PushWord	#5
+	PushWord	#FALSE
+	_Int2Dec
+	sep	#$30
+	
+	@print	#strFORCE	; et l'affiche
 	rts
 	
-:4640	@print	#str4640
-	rts
+:4640	@print	#str4640	; le TEMPs est ici
+	jmp	switchTEMPS
 
 :4650	@print	#str4650
 	jmp	:perdu
@@ -1319,12 +1316,12 @@ MDP$	asc	'MANOIR'
 	rts
 
 :4920	@print	#str4920
-	@wait	#200
 	rts
 
 *-----------
 
-:5500	stz	fgTIME
+:5500	lda	#0
+	sta	fgTIME
 	@print	#str5500
 	jsr	GETLN1
 	cpx	#1
@@ -1566,10 +1563,18 @@ initALL	ldx	#FIN_DATA-DEBUT_DATA
 	lda	#11
 	sta	SALLE
 
-	lda	#<4000
-	sta	FORCE
-	lda	#>4000
+	lda	#<20000	; ici, on multiplie par 5
+	sta	FORCE	; et toc
+	lda	#>20000
 	sta	FORCE+1
+
+	lda	#'2'
+	sta	strFORCE
+	lda	#'0'
+	sta	strFORCE+1
+	sta	strFORCE+2
+	sta	strFORCE+3
+	sta	strFORCE+4
 
 	lda	#$20
 	sta	MINUTES
@@ -1594,8 +1599,8 @@ initALL	ldx	#FIN_DATA-DEBUT_DATA
 * 30000 - LES MOTS DE PASSE
 *-----------------------------------
 
-:30000	rts
-
+:30000	rts		; on n'affiche rien
+			; parce que c'est visible !
 	rep	#$30
 	PushWord	#12
 	PushWord	#190
@@ -1610,7 +1615,8 @@ initALL	ldx	#FIN_DATA-DEBUT_DATA
 * 20000 - PERDU
 *-----------------------------------
 
-:perdu	stz	fgTIME
+:perdu	lda	#0
+	sta	fgTIME
 	@wait	#200
 	@explode
 	jsr	setTEXTFULL
@@ -1634,7 +1640,8 @@ initALL	ldx	#FIN_DATA-DEBUT_DATA
 * 32000 - GAGNE
 *-----------------------------------
 
-:gagne	stz	fgTIME
+:gagne	lda	#0
+	sta	fgTIME
 	@wait	#200
 	@explode
 	jsr	setTEXTFULL
@@ -1752,19 +1759,47 @@ smoff	rep	#$30
 	rts
 
 *----------------------
-* ENERGIE
+* TEMPS & ENERGIE
 *----------------------
 
 	mx	%11
-	
+
 switchTEMPS
 	lda	#0
 	eor	#1
 	sta	switchTEMPS+1
 	rts
 
-testTEMPS	sep	#$30
-	lda	switchTEMPS+1	; switch is off
+*-----------
+
+	mx	%11
+	
+gereFORCE	lda	FORCE	; on n'a plus de force
+	ora	FORCE+1
+	bne	gf_1
+	rts
+gf_1	rep	#$30
+	lda	FORCE
+	sec
+	sbc	S
+	bpl	gf_2
+	lda	#0
+gf_2	sta	FORCE
+	sep	#$30
+	rts
+
+*-----------
+
+testENERGIE	sep	#$30	; switch is off
+	lda	switchTEMPS+1
+	bne	te_ok
+	rep	#$30
+	lda	FORCE	; reste-t-il de la force ?
+	beq	te_ko
+	bne	te_ok
+
+testTEMPS	sep	#$30	; switch is off
+	lda	switchTEMPS+1
 	bne	te_ok
 
 	lda	fgTIME
@@ -1777,14 +1812,14 @@ testTEMPS	sep	#$30
 	ora	SECONDES	; ou des secondes ?
 	bne	te_ok
 	
-	lda	#1
+te_ko	lda	#1	; non, on a perdu
 	sta	fgPERDU
 	
 	rep	#$30
-	sec		; non, on a perdu
+	sec
 	rts
 
-te_ok	rep	#$30
+te_ok	rep	#$30	; oui, pas de problème
 	clc
 	rts
 
@@ -1927,7 +1962,7 @@ A1	ds	1
 A2	ds	1	; $400
 BREAK	ds	1
 E	ds	1
-FORCE	ds	2	; 400 unités en entrée
+FORCE	ds	2	; 20000 unités en entrée
 G	ds	1
 H	ds	1
 HH	ds	1
@@ -1937,7 +1972,7 @@ N	ds	1
 NL	ds	1
 OK	ds	1
 PP	ds	1
-S	ds	1
+S	ds	2	; parce qu'on l'utilise en 16-bits aussi
 SALLE	ds	1
 T	ds	1
 lenSTRING	ds	1

@@ -47,7 +47,7 @@ txtTELEX5	ENT
 txtGENIUSTEXTE	ENT
 	asc	'  Moi, GENIUS, je d'8e'fie le monde. J'27'ai'0d
 	asc	'invent'8e' une nouvelle arme capable de'0d
-	asc	'raser la terre, ce que je ferai dans'0d
+	asc	'raser la Terre, ce que je ferai dans'0d
 	asc	'deux semaines... Mais, comme je ne suis'0d
 	asc	'pas un monstre, je vous laisse une'0d
 	asc	'chance. J'27'accepte que des hommes de'0d
@@ -98,7 +98,7 @@ txtMONDE	ENT
 	asc	'vous rendre aux autorit'8e's pour combat-'0d
 	asc	'tre de nouveau le Dr Genius.'0d
 	asc	'Le lendemain, on vous emm'8f'ne au vais-'0d
-	asc	'seau o'9e' vous allez maintenant tenter'0d
+	asc	'seau o'9d' vous allez maintenant tenter'0d
 	asc	'de vaincre le Dr Genius afin de sauver'0d
 	asc	'la Terre.'0d0d0d
 	asc	'          BON COURAGE...'0d0d0d

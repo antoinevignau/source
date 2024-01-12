@@ -74,7 +74,14 @@ intro
 	jsr	intro_explications	; ok
 	bcs	intro_end
 	jsr	intro_genius_image	; ok
-intro_end	rts
+
+intro_end	PushWord	#0
+	_ClearScreen
+	
+	PushWord	#0
+	PushLong	#palette320
+	_SetColorTable
+	rts
 
 *-----------------------------------
 * INTRO
@@ -88,11 +95,6 @@ intro_intro
 	PushWord	#0
 	_ClearScreen
 	
-	ldy	#198
-	lda	#txtINTRO4
-	jsr	centerME
-	bcs	ii_end
-
 	ldy	#iiY
 	lda	#txtINTRO1
 	jsr	centerME
@@ -110,6 +112,7 @@ intro_intro
 
 	ldy	#60*1
 	jsr	waitMS16
+	bcs	ii_end
 
 *----------- La suite du copyright
 
@@ -128,6 +131,20 @@ intro_intro
 
 	ldy	#iiY+40
 	lda	#txtINTRO7
+	jsr	centerME
+	bcs	ii_end
+
+	ldy	#60*1
+	jsr	waitMS16
+	bcs	ii_end
+
+*----------- Le merci du copyright
+
+	PushWord	#0
+	_ClearScreen
+	
+	ldy	#iiY+20
+	lda	#txtINTRO4
 	jsr	centerME
 
 	ldy	#60*1
@@ -292,8 +309,11 @@ intro_genius_texte
 	
 	jsr	waitMSBIS	; keypress?
 	bcc	igt_ok
-igt_end	rts
-	
+	rts
+
+igt_end	ldy	#2
+	jmp	waitMS16
+
 igt_ok	lda	[dpFROM]	; get char
 	and	#$ff
 	beq	igt_end
@@ -339,6 +359,10 @@ intro_serpent
 	jsr	snake_1
 	bcs	is_end
 	jsr	snake_2
+	bcs	is_end
+
+	ldy	#2
+	jsr	waitMS16
 
 is_end	PushLong	#curPATTERN
 	_SetPenPat
@@ -597,11 +621,8 @@ snake_2	PushWord	#0
 	lda	#txtSERPENT1
 	jsr	centerME
 
-	php
 	_SetForeColor
 	jsr	fontSHASTON8
-	plp
-	bcs	s2_end
 
 	ldy	#105
 	lda	#txtSERPENT2
@@ -833,8 +854,10 @@ ovalY2	=	180
 
 	jsr	initMIDI
 	jsr	doSOUNDON
+
+	inc	fgINTRO	; même si KO, on aura démarré la musique
 	
-	ldy	#60*60*2
+	ldy	#60*10
 	jsr	waitMS16
 	
 *----------- Boucle sur les couleurs (ou pas)
@@ -1253,9 +1276,7 @@ intro_explications
 	ldx	#7
 	jsr	showTEXTE
 
-ie_end	php
-	_SetForeColor
-	plp
+ie_end	_SetForeColor
 	rts
 
 *-----------------------------------
@@ -1463,6 +1484,9 @@ fontSHASTON
 *-----------------------------------
 * DATA INTRO 
 *-----------------------------------
+
+fgINTRO	ds	2	; 0 : on n'a pas démarré la musique dans l'intro
+			; 1 : on a démarré la musique dans l'intro
 
 o2gsCOLP	hex	00,70,A0,90,40,C0,B0,F0	; index pour les pixels pairs
 o2gsCOLI	hex	00,07,0A,09,04,0C,0B,0F	; index pour les pixels impairs

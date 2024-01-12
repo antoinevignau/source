@@ -198,29 +198,35 @@ loadSEQUENCE
 
 initMUSIC
 	lda	ptrSEQ
-	sta	playMUSIC5+1	; save pointers
-	sta	playMUSIC55+1
+	sta	dpSEQ
 	lda	ptrSEQ+2
-	sta	playMUSIC6+1
-	sta	playMUSIC66+1
+	sta	dpSEQ+2
+	
+*	sta	playMUSIC5+1	; save pointers
+*	sta	playMUSIC55+1
+*	lda	ptrSEQ+2
+*	sta	playMUSIC6+1
+*	sta	playMUSIC66+1
 	
 	_KillAllNotes
 
-	lda	myDP
-	tcd
+*	lda	myDP
+*	tcd
 
-playMUSIC5	lda	#$bdbd	; patched
-	sta	dpSEQ
-playMUSIC6	lda	#$bdbd	; patched
-	sta	dpSEQ+2
+*playMUSIC5	lda	#$bdbd	; patched
+*	sta	dpSEQ
+*playMUSIC6	lda	#$bdbd	; patched
+*	sta	dpSEQ+2
 
 	ldy	#seqOFFSET
 	lda	[dpSEQ],y
 	clc
-playMUSIC55	adc	#$bdbd	; patched
+*playMUSIC55	adc	#$bdbd	; patched
+	adc	dpSEQ
 	sta	seqPlayRec
 	lda	#0
-playMUSIC66	adc	#$bdbd	; patched
+*playMUSIC66	adc	#$bdbd	; patched
+	adc	dpSEQ+2
 	sta	seqPlayRec+2
 
 	ldy	#seqTEMPO
@@ -320,6 +326,8 @@ fgMIDIPLAY	ds	2
 doSOUNDON	lda	fgMIDI		; can we play?
 	bne	playMUSIC99
 
+	jsr	initMUSIC
+	
 	lda	#$0100		; no, let's start playing!
 	sta	seqPlay
 	PushLong	#seqPlayRec

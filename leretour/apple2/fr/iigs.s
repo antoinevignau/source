@@ -32,6 +32,7 @@
 
 	use	4/Event.Macs
 	use	4/Font.Macs
+	use	4/Int.Macs
 	use	4/Locator.Macs
 	use	4/Mem.Macs
 	use	4/Menu.Macs
@@ -247,6 +248,7 @@ okTOOL	_HideMenuBar
 	sta	ptrSCREEN+2
 	
 okSHADOW
+
 *-----------------------------------
 * C'EST L'HEURE DE L'INTRODUCTION
 *-----------------------------------
@@ -257,10 +259,13 @@ okSHADOW
 * IL FAUT JOUER MAINTENANT
 *-----------------------------------
 
-*	jsr	initMIDI
-*	jsr	doSOUNDON
+	lda	fgINTRO
+	bne	okZIKMU
 	
-	sei
+	jsr	initMIDI
+	jsr	doSOUNDON
+	
+okZIKMU	sei
 	PushLong	#intTIME
 	_SetHeartBeat
 	cli
@@ -356,93 +361,12 @@ loadBACK	_HideCursor
 
 *----------------------------------- Open
 
-	mx	%11
+	mx	%00
 	
 doLOAD	sta	pGAME+10
 	rep	#$30
-	jsr	loadALL
-	sep	#$30
-	rts
 
-	mx	%00
-
-	jsr	doSOUNDOFF
-	jsr	saveBACK
-	
-	PushWord #30
-	PushWord #43
-	PushLong #strLOADFILE
-	PushLong #0
-	PushLong #typeLIST
-	PushLong #replyPTR
-	_SFGetFile
-
-	jsr	loadBACK
-	jsr	doSOUNDON
-	
-	lda	replyPTR
-	bne	doLOAD1
-	rts
-
-doLOAD1	jsr	copyPATH
-	jsr	loadALL
-	rts
-
-*----------------------------------- Save
-
-	mx	%11
-	
-doSAVE	sta	pGAME+10
-	rep	#$30
-	jsr	saveALL
-	sep	#$30
-	rts
-	
-	mx	%00
-
-	jsr	doSOUNDOFF
-	jsr	saveBACK
-	
-	PushWord #25
-	PushWord #36
-	PushLong #strSAVEFILE
-	PushLong #namePATH
-	PushWord #15
-	PushLong #replyPTR
-	_SFPutFile
-
-	jsr	loadBACK
-	jsr	doSOUNDON
-	
-	lda	replyPTR
-	bne	doSAVE1
-	rts
-
-doSAVE1	jsr	copyPATH
-	jsr	saveALL
-	rts
-
-*--- Recopie le filename du fichier de sauvegarde
-
-	mx	%00
-	
-copyPATH	sep	#$20
-	ldx	#16-1
-]lp	lda	namePATH1,x
-	sta	pGAME+4,x
-	dex
-	bpl	]lp
-	
-	lda	namePATH
-	inc
-	inc
-	sta	pGAME
-	rep	#$20
-	rts
-
-*--- Charge le fichier de sauvegarde en mémoire
-
-loadALL	jsl	GSOS
+	jsl	GSOS
 	dw	$2010
 	adrl	proOPENGAME
 	bcs	loadKO99
@@ -451,29 +375,25 @@ loadALL	jsl	GSOS
 	sta	proREADGAME+2
 	sta	proCLOSE+2
 	
-	jsr	loadPART
+	jsl	GSOS
+	dw	$2012
+	adrl	proREADGAME
 	
 	jsl	GSOS
 	dw	$2014
 	adrl	proCLOSE
 
-loadKO99	rts
-
-*---
-
-loadPART	ldx	#FIN_DATA-DEBUT_DATA
-	ldy	#A1
-	
-loadIT	stx	proREADGAME+8
-	sty	proREADGAME+4
-	jsl	GSOS
-	dw	$2012
-	adrl	proREADGAME
+loadKO99	sep	#$30
 	rts
 
-*--- Enregistre le fichier de sauvegarde
+*----------------------------------- Save
 
-saveALL	jsl	GSOS
+	mx	%00
+
+doSAVE	sta	pGAME+10
+	rep	#$30
+
+	jsl	GSOS
 	dw	$2002
 	adrl	proDESTROYGAME
 	
@@ -491,24 +411,15 @@ saveALL	jsl	GSOS
 	sta	proWRITEGAME+2
 	sta	proCLOSE+2
 	
-	jsr	savePART
+	jsl	GSOS
+	dw	$2013
+	adrl	proWRITEGAME
 	
 	jsl	GSOS
 	dw	$2014
 	adrl	proCLOSE
 
-saveKO99	rts
-
-*---
-
-savePART	ldx	#FIN_DATA-DEBUT_DATA
-	ldy	#A1
-	
-saveIT	stx	proWRITEGAME+8
-	sty	proWRITEGAME+4
-	jsl	GSOS
-	dw	$2013
-	adrl	proWRITEGAME
+saveKO99	sep	#$30
 	rts
 
 *--- For the game party
@@ -535,15 +446,15 @@ proOPENGAME
 proREADGAME
 	dw	4	; 0 - pcount
 	ds	2	; 2 - ref_num
-	adrl	pGAME	; 4 - data_buffer
-	ds	4	; 8 - request_count
+	adrl	A1	; 4 - data_buffer
+	adrl	FIN_DATA-DEBUT_DATA	; 8 - request_count
 	ds	4	; C - transfer_count
 
 proWRITEGAME
 	dw	5	; 0 - pcount
 	ds	2	; 2 - ref_num
-	adrl	pGAME	; 4 - data_buffer (we are in same bank)
-	ds	4	; 8 - request_count
+	adrl	A1	; 4 - data_buffer (we are in same bank)
+	adrl	FIN_DATA-DEBUT_DATA	; 8 - request_count
 	ds	4	; C - transfer_count
 	dw	1	; cache_priority
 
@@ -617,46 +528,6 @@ errSTR2	str	''
 
 ssREC	ds	4
 
-*toolTBL	dw	$0000	; flags
-*	dw	$C000	; videoMode (shadowing + fast port)
-*	dw	$0000	; resFileID
-*	ADRL	$00000000	; dPageHandle
-*	dw	$0011
-*	dw	$0003	; Miscellaneous Tool
-*	dw	$0300
-*	dw	$0004	; QuickDraw II
-*	dw	$0301
-*	dw	$0005	; Desk Manager
-*	dw	$0302
-*	dw	$0006	; Event Manager
-*	dw	$0300
-*	dw	$0008	; Sound Tool Set
-*	dw	$0100
-*	dw	$000B	; Integer Math Tool Set
-*	dw	$0200
-*	dw	$000E	; Window Manager
-*	dw	$0301
-*	dw	$000F	; Menu Manager
-*	dw	$0301
-*	dw	$0010	; Control Manager
-*	dw	$0301
-*	dw	$0012	; QuickDraw II Auxiliary
-*	dw	$0301
-*	dw	$0014	; LineEdit Tool Set
-*	dw	$0301
-*	dw	$0015	; Dialog Manager
-*	dw	$0301
-*	dw	$0016	; Scrap Manager
-*	dw	$0300
-*	dw	$0017	; Standard File Tool Set
-*	dw	$0301
-*	dw	$001B	; Font Manager
-*	dw	$0301
-*	dw	$001C	; List Manager
-*	dw	$0301
-*	dw	$001E	; Resource Manager
-*	dw	$0100
-
 *----------------------------------- GS/OS
 
 proERR	ds	2	; GS/OS error code
@@ -678,24 +549,6 @@ taskWHEN	ds	4	; wmWhen           +6
 taskWHERE	ds	4	; wmWhere          +10
 taskMODIFIERS ds	2	; wmModifiers      +14
 taskDATA	ds	4	; wmTaskData       +16
-
-*----------------------------------- Standard File Tool Set
-
-strLOADFILE	str	'Charger quelle partie ?'
-strSAVEFILE	str	'Enregistrer sous...'
-
-typeLIST	hex	01
-	hex	5d	; Game/Edu files
-
-replyPTR	ds	2	; 0 good
-	ds	2	; 2 fileType
-	ds	2	; 4 auxFileType
-namePATH	hex	06	; 6 fileName
-namePATH1	asc	'Partie'	; 7 fileName (16 normally)
-	ds	9
-
-loadPATH	ds	1	; 22 fullPathname (string length)
-loadPATH1	ds	129	; 23 fullPathname (128 normally)
 
 *-----------------------------------
 * CODE BASIC EN ASM :-)

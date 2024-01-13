@@ -61,7 +61,7 @@ strPERDU	asc	0d'Comme je le pensais, vous vous '90'tes'0d
 	asc	'(ou ce qu'27'il en reste) reposera '88' jamais'
 	asc	'dans l'27'espace...'0d00
 
-strGAGNE	asc	'D'27'accord,'0d
+strGAGNE	asc	0d'D'27'accord,'0d
 	asc	'vous m'27'avez battu, mais c'27'est un coup'0d
 	asc	'de chance, et la prochaine fois ma'0d
 	asc	'vengeance sera terrible.'0d
@@ -273,9 +273,9 @@ O$9	asc	'Un magn'8e'tophone'00
 O$10	asc	'Un compteur Geiger'00
 O$11	asc	'Un ventilateur'00
 O$12	asc	'Un casque'00
-O$13	asc	'Un casque enfi'8e00
+O$13	asc	'Un casque enfil'8e00
 O$14	asc	'Des '8e'chasses'00
-O$15	asc	'Des containers'00
+O$15	asc	'Des conteneurs'00
 O$16	asc	'Une radiocommande'00
 O$17	asc	'Des lunettes de soleil'00
 O$18	asc	'Une tron'8d'onneuse'00

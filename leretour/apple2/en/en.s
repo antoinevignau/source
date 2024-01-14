@@ -61,11 +61,13 @@ strPERDU
 	asc	'will lie in space forever...'00
 	
 strGAGNE	asc	0d'All right,'0d
-	asc	'You beat me, but it was a stroke of luck,'0d
-	asc	'and next time my revenge will be terrible.'
-	asc	'Be afraid, because I will be back and my'0d
-	asc	'power will have no limits, then the hour'0d
-	asc	'of suffering will have come...'0d
+	asc	'You beat me, but it was a stroke of'0d
+	asc	'luck, and next time my revenge will be'0d
+	asc	'terrible.'0d
+	asc	'Be afraid, because I will be back and'0d
+	asc	'my power will have no limits,'0d
+	asc	'then the hour of suffering'0d
+	asc	'will have come...'0d
 	asc	'                     Dr GENIUS.'0d00
 
 strINTRO	asc	'     THE RETURN OF Dr GENIUS'0d
@@ -452,7 +454,7 @@ V$31	str	'GUN'
 V$32	str	'PUSH'
 V$33	str	'PRES'
 V$34	str	'RED'
-V$35	str	'BLEU'
+V$35	str	'BLUE'
 V$36	str	'YELL'
 V$37	str	'BUTT'
 V$38	str	'LEAR'
@@ -648,13 +650,14 @@ str4520	asc	'The automatic system is out of adjust-'0d
 str4530	asc	'You take a deep breath.'00
 str4540	asc	'What do you want to breathe?'0d
 	asc	'There is no more oxygen.'00
+
 str4550	asc	'You have 2 tries'00
 str4552	asc	'to enter the pass-'00
 str4553	asc	'WRONG!'00
-str4554	asc	'Missed twice!'0d
+str4554	asc	0d'Missed twice!'0d
 	asc	'The computer explodes in your face.'00
 str4556	asc	'-word '00
-str4558	asc	'Correct, you are insightful!'00
+str4558	asc	0d'Correct, you are insightful!'00
 str4559	asc	0d'The return password is '00
 str4559_1	asc	'UIN LOI QRU ILD ESP ECU TAS'00
 str4559_2	asc	'ASU VIE RAL HOU MEA NOI THE'00

@@ -662,10 +662,10 @@ str4540	asc	'Que voulez-vous respirer ? Il n'27'y a plus'
 str4550	asc	'Vous avez 2 essais'00
 str4552	asc	'pour entrer le mot'00
 str4553	asc	'FAUX!'00
-str4554	asc	'Encore rat'8e'.'0d
+str4554	asc	0d'Encore rat'8e'.'0d
 	asc	'L'27'ordinateur vous explose '88' la figure.'00
 str4556	asc	'de passe '00
-str4558	asc	'Exact, vous '90'tes perspicace !'00
+str4558	asc	0d'Exact, vous '90'tes perspicace !'00
 str4559	asc	0d'Le mot de passe du retour est '00
 str4559_1	asc	'UIN LOI QRU ILD ESP ECU TAS'00
 str4559_2	asc	'ASU VIE RAL HOU MEA NOI THE'00

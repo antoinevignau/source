@@ -86,7 +86,7 @@ REPLAY	sep	#$30
 	lda	#row16
 	sta	textY
 	sep	#$30
-	
+
 *-----------------------------------
 * DU BASIC A L'ASSEMBLEUR (BEURK)
 *-----------------------------------
@@ -1029,7 +1029,7 @@ tbl4000	da	$bdbd,:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
 	bcc	:4554	; ok
 	rep	#$30	; init 16-bits, c'est mieux
 	stz	textX
-	lda	#row16
+	lda	#row19
 	sta	textY
 	sep	#$30
 	@print	#str4554	; encore faux
@@ -1038,7 +1038,7 @@ tbl4000	da	$bdbd,:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
 :4554
 	rep	#$30	; init 16-bits, c'est mieux
 	stz	textX
-	lda	#row16
+	lda	#row19
 	sta	textY
 	sep	#$30
 	@print	#str4558
@@ -1055,7 +1055,7 @@ tbl4000	da	$bdbd,:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
 	
 	rep	#$30	; init 16-bits, c'est mieux
 	stz	textX
-	lda	#row18
+	lda	#row19	; WAS 18
 	sta	textY
 	sep	#$30
 	rts

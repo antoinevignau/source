@@ -5150,7 +5150,7 @@ L5A21       DB    $41
             DB    $0C
             DB    $00
             ASC   'M'
-            dfb   8	; $18
+            dfb   0	; $18
             dfb   149	; $AC (172)
 *            ASC   'IL Y A UN ROBINET TOUJOURS OUVERT'00
 	asc   'THERE IS A TAP ALWAYS OPEN'00

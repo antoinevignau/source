@@ -607,7 +607,7 @@ str4200	asc	'Ca coupe une tron'8d'onneuse, comme le'0d
 	asc	'prouve votre t'90'te au sol.'00
 str4210	asc	'Vous glissez et tombez dans la flaque.'0d
 	asc	'L'27'acide cr'8e'pite.'00
-str4220	asc	'Il n'27'y a pas ici de porte verrouill'8e'e'
+str4220	asc	'Il n'27'y a pas ici de porte verrouill'8e'e'00
 str4230	asc	'En secouant le tube pour l'27'ouvrir,'0d
 	asc	'la nitroglyc'8e'rine a explos'8e'.'00
 str4240	asc	'Pourquoi ouvrir un robinet qui ne ferme '
@@ -703,7 +703,7 @@ str4670	asc	'Le mur au nord coulisse, vous avancez'0d
 	asc	'dans cette salle.'00
 str4680	asc	'Quel livre ?'00
 str4690	asc	'Au dos du bo'94'tier est marqu'8e' :'00
-str4692	asc	'        '27'PROTEGEZ MOI'A700
+str4692	asc	'        '27'PROTEGEZ MOI'2700
 str4700	asc	'Vous remarquez un bo'94'tier de radio-'0d
 	asc	'commande.'00
 str4710	asc	''00
@@ -737,7 +737,7 @@ str4845	asc	'Vous avez d'9e' le laisser allum'8e'.'00
 str4850	asc	'Comment !!! Vous '90'tes aveugle.'00
 str4860	asc	'Vous n'27'aviez pas pris la radiocommande'0d
 	asc	'qui a explos'8e' quand le vaisseau a percu-'
-	asc	'-te le soleil, son explosion a d'8e'clench'8e
+	asc	'-t'8e' le soleil, son explosion a d'8e'clench'8e
 	asc	'la fin du monde.'00
 str4870	asc	'Non ! pas de strip-tease.'00
 str4874	asc	'Vous avez pos'8e' tout ce que vous'

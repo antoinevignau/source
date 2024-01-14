@@ -568,93 +568,86 @@ V$201	str	'MUSI'
 *		'0123456789012345678901234567890123456789'
 *		'----------------------------------------'
 
-str4010	asc	'Une boule d'27'acier tomb'8e'e du plafond'0d
-	asc	'vient de s'278e'craser sur votre casque.'00
-str4020	asc	'Une boule d'27'acier vient de tomber du'0d
-	asc	'plafond, vous avez le cr'89'ne d'8e'fonc'8e'...'00
-str4030	asc	'Vous venez de tomber dans une flaque d'270d
-	asc	'acide, '8d'a cr'8e'pite...'00
-str4040	asc	'Vous venez de rentrer dans le r'8e'acteur'0d
-	asc	'atomique du vaisseau..!'00
-str4050	asc	'La porte ne veut pas s'27'ouvrir'00
-str4060	asc	'Un peu de m'8e'moire... Comment '90'tes-vous'0d
-	asc	'entr'8e' ?'00
-str4070	asc	'Je ne vous savais pas assez muscl'8e' pour '
-	asc	'soulever une tonne.'00
-str4080	asc	'Vous avez raison, la vue c'27'est la vie !'00
-str4090	asc	'Les gants '8e'taient radioactifs, vous'0d
-	asc	'perdez la vue.'00
-str4100	asc	'Vous l'27'avez d'8e'j'88' sur vous.'00
-str4110	asc	'Impossible, je ne vois pas ceci ici.'00
-str4120	asc	'Vous vous arrachez la t'90'te en tombant'0d
-	asc	'des '8e'chasses.'00
-str4130	asc	'Des monstres sortis des containers vous '
-	asc	'd'8e'vorent tout cru !'00
-str4140	asc	'L'27'air frais vous fait du bien. Dommage'0d
-	asc	'que l'27'h'8e'lice vous ait coup'8e' la t'90'te.'00
-str4150	asc	'Qu'27'est-ce que vous voulez boire ???'00
-str4160	asc	'Ah oui...l'27'eau est bonne.'00
-str4170	asc	'Il n'27'y a pas d'27'eau ici.'00
-str4180	asc	'L'27'eau '8e'tait contamin'8e'e par les bo'94'tes'0d
-	asc	'radioactives.'00
-str4190	asc	'Vous r'8e'trecissez..petit..petit..et une'0d
-	asc	'araign'8e'e vous mange !'00
-str4200	asc	'Ca coupe une tron'8d'onneuse, comme le'0d
-	asc	'prouve votre t'90'te au sol.'00
-str4210	asc	'Vous glissez et tombez dans la flaque.'0d
-	asc	'L'27'acide cr'8e'pite.'00
-str4220	asc	'Il n'27'y a pas ici de porte verrouill'8e'e'
-str4230	asc	'En secouant le tube pour l'27'ouvrir,'0d
-	asc	'la nitroglyc'8e'rine a explos'8e'.'00
-str4240	asc	'Pourquoi ouvrir un robinet qui ne ferme '
-	asc	'pas !'00
-str4250	asc	'Le robinet ne se ferme pas.'00
+str4010	asc	'A steel ball fell from the ceiling and'0d
+	asc	'crashed into your helmet.'00
+str4020	asc	'A steel ball has just fallen from the'0d
+	asc	'ceiling, your head is smashed...'00
+str4030	asc	'You just fell in a puddle of acid,'0d
+	asc	'it crackles...'00
+str4040	asc	'You have just entered the ship'27's atomic'0d
+	asc	'reactor...!'00
+str4050	asc	'The door won'27't open'00
+str4060	asc	'A little memory... How did you get in?'00
+str4070	asc	'I didn'27't know you were muscular enough'0d
+	asc	'to lift a ton.'00
+str4080	asc	'You are right, sight is life!'00
+str4090	asc	'The gloves were radioactive, you lose'0d
+	asc	'your sight.'00
+str4100	asc	'You already have it on you.'00
+str4110	asc	'Impossible, I don'27't see this here.'00
+str4120	asc	'You tear your head off when you fall off'
+	asc	'the stilts.'00
+str4130	asc	'Monsters coming out of containers devour'
+	asc	'you alive!'00
+str4140	asc	'Fresh air does you good. Too bad the'0d
+	asc	'propeller cut your head off.'00
+str4150	asc	'What do you want to drink???'00
+str4160	asc	'Ah yes...the water is good.'00
+str4170	asc	'There is no water here.'00
+str4180	asc	'The water was contaminated by radio-'0d
+	asc	'-active boxes.'00
+str4190	asc	'You shrink..small..small..'0d
+	asc	'and a spider eats you!'00
+str4200	asc	'A chainsaw cuts, as evidenced by your'0d
+	asc	'head on the ground.'00
+str4210	asc	'You slip and fall into the puddle.'0d
+	asc	'Acid crackles.'00
+str4220	asc	'There are no locked doors here'00
+str4230	asc	'Shaking the tube open caused the nitro-'0d
+	asc	'-glycerin to explode.'00
+str4240	asc	'Why open a tap that won'27't close!'00
+str4250	asc	'The tap does not close.'00
 str4260	asc	''00
-str4270	asc	'La biblioth'8f'que n'27'a pas de porte...'00
-str4280	asc	'Il n'27'y a rien de mieux sur les autres'0d
+str4270	asc	'The library has no door...'00
+str4280	asc	'There is nothing better on the other'0d
 	asc	'pages.'00
-str4290	asc	'...c'27'est toi J.R qui a pris ma femme et '
-	asc	'mon p'8e'trole, tu es inf'89'me.'00
-str4300	asc	'Collection Arlepin, tout un r'90've'0d
-	asc	'd'278e'vasion.'00
-str4310	asc	'...et c'27'est moi Genius le grand qui cr'8e'a'
-	asc	'un superbe manoir...'00
+str4290	asc	'...it was you J.R who took my wife and'0d
+	asc	'my oil, you are infamous.'00
+str4300	asc	'Arlepin collection, a dream of escape.'00
+str4310	asc	'...and it was me Genius the great who'0d
+	asc	'created a superb mansion...'00
 str4320	asc	'1031141221242713182310291430271214232927102110272718311427103023141427142324303114212114'00
 str4321	asc	' <press a key> '00
-str4330	asc	'Vous l'27'avez d'8e'j'88' fait.'00
-str4340	asc	'Le laser vient d'27'exploser.'00
-str4350	asc	'Il ne se passe rien.'00
-str4360	asc	'Le sas s'27'ouvre, vous passez dans la'0d
-	asc	'salle '88' c'99't'8e'.'00
-str4370	asc	'Cela agit sur un contacteur '88' infrarouge'
-	asc	'qui commande l'278e'clairage.'00
-str4380	asc	'Allons enfants de la patrie...'00
-str4390	asc	'Vous entendez : '27'Le laser ouvrira la'0d
-	asc	'porte'2700
-str4400	asc	'Les lunettes sont trop fortes, vous'0d
-	asc	'voyez trouble.'00
-str4410	asc	'La salle est radioactive.'00
-str4420	asc	'Vous avez quelque chose pour ?'00
-str4430	asc	'C'27'est votre probl'8f'me, mais le temps'0d
-	asc	'passe.'00
-str4440	asc	'Avez-vous si sommeil que ca ?'00
-str4450	asc	'Et puis quoi encore !'00
-str4460	asc	'Faites un plan...'00
-str4470	asc	'Vous entendez le ronronnement des'0d
-	asc	'moteurs.'00
+str4330	asc	'You already did it.'00
+str4340	asc	'The laser just exploded.'00
+str4350	asc	'Nothing happens.'00
+str4360	asc	'The airlock opens, you pass into the'0d
+	asc	'next room.'00
+str4370	asc	'This acts on an infrared contactor'0d
+	asc	'which controls the lighting.'00
+str4380	asc	'Let'27's go, children of the homeland...'00
+str4390	asc	'You hear: '27'The laser will open the door'2700
+str4400	asc	'The glasses are too strong, your vision'0d
+	asc	'is blurry.'00
+str4410	asc	'The room is radioactive.'00
+str4420	asc	'Do you have anything for?'00
+str4430	asc	'It'27's your problem, but time passes.'00
+str4440	asc	'Are you that sleepy?'00
+str4450	asc	'And then what else!'00
+str4460	asc	'Make a plan...'00
+str4470	asc	'You hear the purring of the engines.'00
 str4480	asc	'I knew you were a coward.'00
-str4490	asc	'Vous passez la t'90'te '88' travers un sas,'00
-str4491	asc	'et appuyez sur le bouton de fermeture'00
-str4500	asc	'Quel bouton ?'00
-str4510	asc	'Les boutons ne fonctionnent pas car'0d
-	asc	'l'27'ordinateur central les contr'99'le.'00
-str4520	asc	'Le syst'8f'me automatique est d'8e'r'8e'gl'8e', il'0d
-	asc	'met du gaz carbonique '88' la place de'0d
-	asc	'l'27'oxyg'8f'ne.'00
-str4530	asc	'Vous respirez un grand coup.'00
-str4540	asc	'Que voulez-vous respirer ? Il n'27'y a plus'
-	asc	'd'27'oxyg'8f'ne.'00
-
+str4490	asc	'You stick your head through an airlock,'00
+str4491	asc	'and press the close button'00
+str4500	asc	'Which button?'00
+str4510	asc	'The buttons don'27't work because the'0d
+	asc	'central computer controls them.'00
+str4520	asc	'The automatic system is out of adjust-'0d
+	asc	'-ment, it uses carbon dioxide instead'0d
+	asc	'of oxygen.'00
+str4530	asc	'You take a deep breath.'00
+str4540	asc	'What do you want to breathe?'0d
+	asc	'There is no more oxygen.'00
 str4550	asc	'You have 2 tries'00
 str4552	asc	'to enter the pass-'00
 str4553	asc	'WRONG!'00
@@ -665,93 +658,86 @@ str4558	asc	'Correct, you are insightful!'00
 str4559	asc	0d'The return password is '00
 str4559_1	asc	'UIN LOI QRU ILD ESP ECU TAS'00
 str4559_2	asc	'ASU VIE RAL HOU MEA NOI THE'00
-
-str4560	asc	'C'27'est d'27'accord.'00
-str4570	asc	'Il '8e'tait temps, vous alliez mourir.'00
-str4580	asc	'Vous mourrez d'8e'shydrat'8e'.'00
+str4560	asc	'It'27's okay.'00
+str4570	asc	'It'27's about time, you were going to die.'00
+str4580	asc	'You will die dehydrated.'00
 str4590	asc	''00
-str4595	asc	'Slot 1-9 (0=sortir) ? '00
+str4595	asc	'Slot 1-9 (0=exit)? '00
 str4600	asc	''00
-str4610	asc	'Le sas se referme derri'8f're vous,'0d
-	asc	'le tableau de contr'99'le s'27'allume et'0d
-	asc	'l'27'ordinateur de bord vous demande le'0d
-	asc	'mot de passe pour le retour '00
-str4615	asc	0d'Le vaisseau de secours s'278e'loigne,'0d
-	asc	'au loin vous voyez Genius qui pleure'0d
-	asc	'derri'8f're un hublot'00
-str4616	asc	0d'          VOUS AVEZ GAGNE'00
-str4618_1	asc	0d'Mais, que se passe-t-il, vous avez d'9e0d
-	asc	'vous tromper de mot de passe, votre'0d
-	asc	'vaisseau de poche fonce sur le soleil.'00
-str4618_2	asc	0d'Vous venez de r'8e'aliser que Genius'0d
-	asc	'pleurait de JOIE...!'00
 
-str4620	asc	'La soucoupe a explos'8e' au d'8e'collage.'00
-str4630	asc	'Energie restante : '00
+str4610	asc	'The airlock closes behind you, the'0d
+	asc	'control panel lights up and the on-board'
+	asc	'computer asks you for the password for'0d
+	asc	'return '00
+str4615	asc	0d'The rescue ship is moving away, in the'0d
+	asc	'distance you see Genius crying behind a'0d
+	asc	'porthole'00
+str4616	asc	0d'          YOU HAVE WON'00
+str4618_1	asc	0d'But what'27's happening, you must have'0d
+	asc	'entered a wrong password, your pocket'0d
+	asc	'ship is heading towards the sun.'00
+str4618_2	asc	0d'You just realized that Genius was crying'
+	asc	'with JOY...!'00
+str4620	asc	'The saucer exploded on takeoff.'00
+str4630	asc	'Remaining energy: '00
 strFORCE	asc	'20000'00
-str4640	asc	'Petit dr'99'le... Le chronom'8f'tre est'0d
-	asc	'affich'8e' en permanence'00
-str4650	asc	0d'Le temps que vous aviez pour votre'0d
-	asc	'mission est '8e'coul'8e', vous avez '8e'chou'8e'.'00
-str4660	asc	'Votre trajectoire est bonne, pourquoi la'
-	asc	'corriger ?'00
-str4670	asc	'Le mur au nord coulisse, vous avancez'0d
-	asc	'dans cette salle.'00
-str4680	asc	'Quel livre ?'00
-str4690	asc	'Au dos du bo'94'tier est marqu'8e' :'00
-str4692	asc	'        '27'PROTEGEZ MOI'A700
-str4700	asc	'Vous remarquez un bo'94'tier de radio-'0d
-	asc	'commande.'00
+str4640	asc	'You funny... The time is permanently'0d
+	asc	'displayed'00
+str4650	asc	0d'The time you had for your mission is'0d
+	asc	'over, you have failed.'00
+str4660	asc	'Your trajectory is good, why correct it?'00
+str4670	asc	'The wall to the north slides, you move'0d
+	asc	'forward in this room.'00
+str4680	asc	'What book?'00
+str4690	asc	'On the back of the case is marked: '00
+str4692	asc	'         '27'PROTECT ME'2700
+str4700	asc	'You notice a radio control box.'00
 str4710	asc	''00
 str4720	asc	''00
-str4730	asc	'Que regardez vous ?'00
-str4740	asc	0d'Le tube de nitroglyc'8e'rine vient d'270d
-	asc	'exploser, vous '90'tes pulv'8e'ris'8e'.'00
-str4750	asc	'La bombe '88' retardement vient d'270d
-	asc	'exploser, vous '90'tes pulv'8e'ris'8e'.'00
-str4760	asc	'La bombe '88' retardement a explos'8e', elle a'
-	asc	'endommag'8e' le syst'8f'me de chauffage,'0d
-	asc	'vous '90'tes carbonis'8e00
-str4770	asc	'La bombe a explos'8e', vous '8e'tiez trop pr'8f's'
-	asc	'et '90'tes devenu fou...'00
-str4780	asc	'La bombe '88' retardement n'278e'tait pas assez'
-	asc	'forte, l'27'ordinateur central n'27'est qu'270d
-	asc	'endommag'8e', il vous fait exploser...'00
-str4790	asc	'Bravo! L'27'ordinateur central est d'8e'truit,'
-	asc	'mais le syst'8f'me d'27'oxyg'8e'nation ne fonc-'0d
-	asc	'-tionne plus, de plus la trajectoire du'0d
-	asc	'vaisseau a chang'8e'.'00
-str4800	asc	'Vous n'27'avez plus de souffle,'0d
-	asc	'vous '90'tes mort asphyxi'8e'.'00
-str4810	asc	'Vous auriez d'9e' corriger la trajectoire,'0d
-	asc	'vous avez percut'8e' le soleil.'00
-str4820	asc	'A force de traverser les salles radio-'0d
-	asc	'-actives, vous '90'tes mort contamin'8e'.'00
-str4830	asc	0d'Il fait de plus en plus chaud...'00
-str4840	asc	'L'27'ordinateur vient d'27'exploser !'00
-str4845	asc	'Vous avez d'9e' le laisser allum'8e'.'00
-str4850	asc	'Comment !!! Vous '90'tes aveugle.'00
-str4860	asc	'Vous n'27'aviez pas pris la radiocommande'0d
-	asc	'qui a explos'8e' quand le vaisseau a percu-'
-	asc	'-te le soleil, son explosion a d'8e'clench'8e
-	asc	'la fin du monde.'00
-str4870	asc	'Non ! pas de strip-tease.'00
-str4874	asc	'Vous avez pos'8e' tout ce que vous'
-	asc	'transportiez.'00
-str4880	asc	'Ca ne se demande pas.'00
-str4890	asc	'Il y a effectivement un ordinateur parmi'
-	asc	'le tableau de contr'99'le.'00
-str4891	asc	'L'27'ordinateur n'27'est pas en fonction.'00
-str4900	asc	'Sur le laser, vous voyez trois boutons :'
-	asc	'jaune, rouge et bleu.'00
-str4910	asc	'Vous '90'tes entre dans le d'8e'sint'8e'grateur'0d
-	asc	'de particules...'00
-str4920	asc	'Vous '90'tes entr'8e' dans le vaisseau par le '
-	asc	'sas '88' l'27'ouest qui ne s'27'ouvre pas de'0d
-	asc	'l'27'int'8e'rieur.'00
+str4730	asc	'What are you looking at?'00
+str4740	asc	0d'The nitroglycerin tube has just'0d
+	asc	'exploded, you are pulverized.'00
+str4750	asc	'The time bomb has just exploded,'0d
+	asc	'you are pulverized.'00
+str4760	asc	'The time bomb exploded, it damaged the'0d
+	asc	'heating system, you are charred'00
+str4770	asc	'The bomb exploded, you were too close'0d
+	asc	'and went crazy...'00
+str4780	asc	'The time bomb wasn'27't strong enough, the'0d
+	asc	'central computer is only damaged,'0d
+	asc	'it blows you up...'00
+str4790	asc	'Well done! The central computer is'0d
+	asc	'destroyed, but the oxygenation system no'
+	asc	'longer works, and the trajectory of the'0d
+	asc	'ship has changed.'00
+str4800	asc	'You no longer have any breath, you died'0d
+	asc	'of asphyxiation.'00
+str4810	asc	'You should have corrected your'0d
+	asc	'trajectory, you hit the sun.'00
+str4820	asc	'By dint of crossing the radioactive'0d
+	asc	'rooms, you died contaminated.'00
+str4830	asc	0d'It'27's getting hotter and hotter...'00
+str4840	asc	'The computer just exploded!'00
+str4845	asc	'You must have left it on.'00
+str4850	asc	'How !!! You are blind.'00
+str4860	asc	'You hadn'27't taken the radio control which'
+	asc	'exploded when the ship hit the sun, its'0d
+	asc	'explosion triggered the world end.'00
+str4870	asc	'No ! no striptease.'00
+str4874	asc	'You dropped all you were carrying.'00
+str4880	asc	'No wonder.'00
+str4890	asc	'There is indeed a computer among the'0d
+	asc	'control panel.'00
+str4891	asc	'The computer is not working.'00
+str4900	asc	'On the laser you see three buttons:'0d
+	asc	'yellow, red and blue.'00
+str4910	asc	'You have entered the particle'0d
+	asc	'disintegrator...'00
+str4920	asc	'You entered the ship through the west'0d
+	asc	'airlock which does not open from the'0d
+	asc	'inside.'00
 
 str5500	asc	0d'Are you sure (Y/N) ? '00
 
 str19050	asc	'   Thanks for trying...!'00
 str19060	asc	'  Wake up, it is over!'00
-

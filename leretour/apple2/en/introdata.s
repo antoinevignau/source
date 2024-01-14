@@ -36,9 +36,9 @@ txtTELEX1	ENT
 txtTELEX3	ENT
 	asc	'on all the telexes in'00
 txtTELEX4	ENT
-	asc	'the world this distres-'00
+	asc	'the world this'00
 txtTELEX5	ENT
-	asc	'sing message appears...'00
+	asc	'message appears...'00
 	
 *-----------------------------------
 

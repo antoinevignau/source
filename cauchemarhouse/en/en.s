@@ -51,9 +51,9 @@ str7030	asc	"The ray returns to you and disintegrates"
 str7040	asc	"It was just a projection. It disappears"00
 str7050	asc	"A troll appears"00
 str7060	asc	"You electrocuted yourself"00
-str7070	asc	"Vous explode"00
+str7070	asc	"You explode"00
 str7080	asc	"The train started moving"00
-str7090	asc	"You faill into the void. You crash"00
+str7090	asc	"You fall into the void. You crash"00
 str7100	asc	"There is emptiness around the track. You"
 	asc	"see and learn a keyboard code"00
 str7110	asc	"The engine explodes. You too."00
@@ -65,10 +65,10 @@ str7153	asc	8D"You find yourself outside."8D
 	asc	"You have won."00
 str7160	asc	"You catch the plague. You die."00
 str7170	asc	"Two giant razor blades close on you."00
-str7180	asc	"The bootle was leaking. Your hands are"8D
+str7180	asc	"The bottle was leaking. Your hands are"8D
 	asc	"eaten away. You immediately catch"8D
 	asc	"leprosy. The illness takes you away"00
-str7190	asc	"The door opended."00
+str7190	asc	"The door opened."00
 str7200	asc	"You slip. You crash."00
 str7210	asc	"Water invades the room. You drown."00
 str7220	asc	""00
@@ -84,7 +84,7 @@ str7300	asc	"The mummy turns to you and devours you."00
 str7310	asc	"A voice says "A7"always take the second."A700
 str7320	asc	"-O-"00
 str7330	asc	"-O-"00
-str7340	asc	"There is a speaker pluggin in."00
+str7340	asc	"There is a speaker plugged in."00
 str7350	asc	"There is an unplugged speaker."00
 str7360	asc	"   "00
 str7370	asc	"   "00

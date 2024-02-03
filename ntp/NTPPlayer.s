@@ -22,6 +22,9 @@
 *   Some bugs fixed
 *   Better lisibility of the source code
 *
+* v1.1 - 20240203
+*   Removed code for srqGoAway
+*
 
             mx        %00
             rel
@@ -76,20 +79,20 @@ dataOut	=	$06
             rtl
 
 *----------------------------
-
-doSRQGOAWAY	ldy	#2
-	lda	#0	; do not remove me from memory
-	sta	[dataOut],y
-	bra	myREQUEST3
-
+*
+*doSRQGOAWAY	ldy	#2
+*	lda	#0	; do not remove me from memory
+*	sta	[dataOut],y
+*	bra	myREQUEST3
+*
 *----------------------------
 
 myREQUEST   phd
             tsc
             tcd
             lda	reqCode
-	cmp	#3	; srqGoAway
-	beq	doSRQGOAWAY	; nah, I want to stay in memory...
+*	cmp	#3	; srqGoAway
+*	beq	doSRQGOAWAY	; nah, I want to stay in memory...
             cmp	#$0101	; finderSaysGoodbye
             beq	doBYE
 myREQUEST2  cmp	#$0104	; finderSaysBeforeOpen
@@ -217,7 +220,7 @@ pathSONG2   ds        768          ; STR to the NTP tool
 
 myBRUTAL    str       'BrutalDeluxe~NTPPlayer~'
 
-mySTRING asc 'NTPPlayer             v01.00  by Brutal Deluxe'00
+mySTRING asc 'NTPPlayer             v01.01  by Brutal Deluxe'00
 
 *myICON	dw	$0080 ; Icon type
 *	dw	$00C8 ; Icon size

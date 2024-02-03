@@ -385,7 +385,7 @@ affiche_objet	; X is object
 	jsr	set_objet
 
 	_HideCursor
-	PushLong #fondParamPtr
+	PushLong	#fondParamPtr
 	_PaintPixels
 	_ShowCursor	
 ao1	rts
@@ -401,12 +401,12 @@ set_objet	txa
 	lda	objet_y,x
 	sta	iconToSourceRect
 	sta	iconToDestPoint
-	lda	icon_x,x
+	lda	objet_x,x
 	sta	iconToSourceRect+2
 	sta	iconToDestPoint+2
-	lda	icon_yy,x
+	lda	objet_yy,x
 	sta	iconToSourceRect+4
-	lda	icon_xx,x
+	lda	objet_xx,x
 	sta	iconToSourceRect+6
 	rts
 
@@ -415,8 +415,8 @@ set_objet	txa
 *-----------------------
 
 set_language
-	PushWord #0
-	PushWord #$29
+	PushWord	#0
+	PushWord	#$29
 	_ReadBParam
 	pla
 	cmp	#20
@@ -666,11 +666,38 @@ verif
 	rts
 
 *-----------------------
+* CHOIX D'ENTREE
+*-----------------------
+
+antoine
+	@t	#strMENU1;#11
+	@t	#strMENU2;#14
+
+]lp	pha
+	PushWord #%00000000_00001010
+	PushLong #taskREC
+	_GetNextEvent
+	pla
+	beq	]lp
+
+	lda	taskREC	; une touche ?
+	cmp	#keyDownEvt
+	bne	]lp
+
+	lda	taskMESSAGE	; entre 0 et 9 ?
+	cmp	#'1'
+	beq	laZIK
+	cmp	#'2'
+	bne	]lp
+	rts
+laZIK	jmp	musique
+	
+*-----------------------
 * INIT - OK
 *-----------------------
 * init
 
-init	PushWord	#0
+init	PushWord	#$ffff
 	_ClearScreen
 	
 	jsr	init_resolution
@@ -1197,11 +1224,11 @@ mu_1	jsr	init_musique
 	sta	i
 	
 ]lp	lda	i
-	jsr	rythme
+	jsr	rythme	; charge le rythme
 	jsr	rythme_joue	; joue le rythme
 	lda	i
-	jsr	charge_son
-	jsr	clavier_sonore
+	jsr	charge_son	; charge les sons
+	jsr	clavier_sonore ; joue les sons
 	bcs	mu_exit	; si *, on quitte le clavier sonore
 	jsr	nettoie_musique
 	inc	i
@@ -1257,6 +1284,68 @@ init_musique
 	_ClearScreen	
 	rts
 
+*-----------------------
+* THE SOUND INTERRUPT
+*-----------------------
+
+	mx	%00
+	
+sndINTERRUPT	
+*	phb
+	phd
+*	phk
+*	plb
+
+	clc
+	xce
+	rep	#$30
+
+	lda	#$c000
+	tcd
+
+	sep	#$20
+
+]lp	lda	soundctl
+	bmi	]lp
+
+	ldal	$e100ca
+	and	#%0000_1111
+	sta	soundctl
+
+	lda	#$e0	; which oscillo
+	sta	soundadrl	; has generated
+	lda	sounddata	; the interrupt?
+	lda	sounddata
+	and	#%0011_1110
+	lsr
+	cmp	#1	; oscillo 1 (lié à 0)
+	beq	sndINTERRUPT1
+	cmp	#3	; oscillo 3 (lié à 2)
+	bne	sndINTERRUPT99
+	
+	lda	#-1
+	stal	fgCLEAR
+	bra	sndINTERRUPT99
+
+sndINTERRUPT1
+	lda	#$a0	; oscillos 0 & 1
+	sta	soundadrl
+	lda	#%0000_0000
+	sta	sounddata
+	lda	#$a1
+	sta	soundadrl
+	lda	#%0001_1000	; with interrupt
+	sta	sounddata
+	
+sndINTERRUPT99
+	sep	#$30
+	pld
+*	plb
+	clc
+	rtl
+
+	mx	%00
+	
 *-----------------------
 * RYTHME - OK
 *-----------------------
@@ -1417,15 +1506,15 @@ ensoniq_beat
 	lda	#$ff
 	sta	sounddata
 
-	tya		; address pointer (at $4000)
+	tya		; address pointer (at $0000 and not $4000)
 	ora	#$80
 	sta	soundadrl
-	lda	#$40
+	lda	#$00
 	sta	sounddata
 	tya
 	ora	#$81
 	sta	soundadrl
-	lda	#$40
+	lda	#$00
 	sta	sounddata
 
 	tya		; waveform table size (32K)
@@ -1452,7 +1541,121 @@ ensoniq_beat
 	rts
 	
 	mx	%00
+
+*-----------------------
+* SON_JOUE - OK
+*-----------------------
+* son_joue
+
+son_joue
 	
+* 1. on met en RAM son
+
+	sei
+	phd
+	lda	#$c000
+	tcd
+	sep	#$20
+
+	ldal	$e100ca
+	and	#%0000_1111
+	ora	#%0110_0000
+	sta	soundctl
+
+	lda	#$00
+	sta	soundadrl
+	lda	#$80
+	sta	soundadrh
+
+	ldx	#0
+sj_from	ldal	$aabbcc,x
+	sta	sounddata
+	inx
+sj_eof	cpx	#$ffff
+	bne	sj_from
+
+* 2. on démarre
+
+	ldy	#2	; oscillos 2 & 3
+
+	ldal	$e100ca	; volume
+	and	#%0000_1111
+	sta	soundctl
+
+	tya		; fréquence basse
+	sta	soundadrl
+	lda	waveFREQ
+	sta	sounddata
+	tya
+	ora	#$01
+	sta	soundadrl
+	lda	waveFREQ
+	sta	sounddata
+
+	tya		; fréquence haute
+	ora	#$20
+	sta	soundadrl
+	lda	waveFREQ+1
+	sta	sounddata
+	tya
+	ora	#$21
+	sta	soundadrl
+	lda	waveFREQ+1
+	sta	sounddata
+
+	tya		; volume
+	ora	#$40
+	sta	soundadrl
+	lda	#$ff
+	sta	sounddata
+	tya
+	ora	#$41
+	sta	soundadrl
+	lda	#$ff
+	sta	sounddata
+
+	tya		; address pointer (at $8000)
+	ora	#$80
+	sta	soundadrl
+	lda	#$80
+	sta	sounddata
+	tya
+	ora	#$81
+	sta	soundadrl
+	lda	#$80
+	sta	sounddata
+
+	tya		; waveform table size (32K)
+	ora	#$c0
+	sta	soundadrl
+	lda	#%00111111
+	sta	sounddata
+	tya
+	ora	#$c1
+	sta	soundadrl
+	lda	#%00111111
+	sta	sounddata
+
+	tya		; control register
+	ora	#$a0
+	sta	soundadrl
+	lda	#%0000_0010	; one-shot
+	sta	sounddata
+	tya
+	ora	#$a1
+	sta	soundadrl
+	lda	#%0001_1010	; with interrupt
+	sta	sounddata
+		
+* 3. on sort et ça joue
+
+	rep	#$20
+	pld
+	cli
+	rts
+
+	mx	%00
+		
 *-----------------------
 * CHARGE_SON - OK
 *-----------------------
@@ -1546,7 +1749,7 @@ charge_un_son
 	tay
 	asl
 	tax
-	lda	proEOF+1	; nombre de pages
+	lda	proEOF	; nombre d'octets
 	sta	tblSIZE,y
 
 	lda	[3]
@@ -1578,16 +1781,6 @@ cus_err2	rts
 *-----------------------
 
 clavier_sonore
-	pha
-	_GetForeColor
-	pha
-	_GetBackColor
-	
-	PushWord	#0
-	_SetForeColor
-	PushWord	#15
-	_SetBackColor
-
 	ldx	#0	; init keyboard
 	lda	#FALSE
 ]lp	sta	sndKEY,x
@@ -1596,7 +1789,14 @@ clavier_sonore
 	cpx	#10*2
 	bcc	]lp
 
-cl_loop	pha
+	dec	j	; correct j
+
+cl_loop	lda	fgCLEAR
+	beq	cl_noclear
+	jsr	paintZIK
+	stz	fgCLEAR
+
+cl_noclear	pha
 	PushWord #%00000000_00001010
 	PushLong #taskREC
 	_GetNextEvent
@@ -1613,13 +1813,11 @@ cl_loop	pha
 	cmp	#'0'
 	bne	cl_1
 
-cl_0	_SetBackColor
-	_SetForeColor
+cl_0	jsr	paintZIK	; 0 pour sortir
 	clc
-	rts		; on sort
+	rts		; * pour quitter
 
-cl_exit	_SetBackColor
-	_SetForeColor
+cl_exit	jsr	paintZIK
 	sec		; définitivement
 	rts
 
@@ -1635,26 +1833,33 @@ cl_1	cmp	#'1'
 
 	asl		; affiche les chaînes
 	tax
-	phx
+	asl
+	tay
 	lda	tblSIZE,x
-	sta	waveSIZE
+	bpl	cl_size
+	lda	#$8000	; on ne dépasse pas 32K
+cl_size	sta	sj_eof+1
 	lda	tblFREQ,x
 	sta	waveFREQ
 
-	txa
-	asl
-	tay
 	lda	ptrSND1,y
-	sta	waveSTART
-	lda	ptrSND1+2,y
-	sta	waveSTART+2
+	sta	sj_from+1
+	lda	ptrSND1+1,y
+	sta	sj_from+2
 
-	lda	sndKEY,x	; did we press the key?
-	cmp	#TRUE
-	beq	cl_2
-	lda	#TRUE
+*	lda	sndKEY,x	; did we press the key?
+*	cmp	#TRUE
+*	bne	cl_2	; no, we can play
+*	brl	cl_loop
+	
+cl_2	lda	#TRUE
 	sta	sndKEY,x
 	
+	phx
+	jsr	paintZIK
+	plx
+	phx
+
 	lda	tblSTR1,x
 	ldy	#22
 	jsr	t
@@ -1664,19 +1869,26 @@ cl_1	cmp	#'1'
 	ldy	#23
 	jsr	t
 
-	brl	cl_loop	; LOGO
-
-cl_2	plx
+	jsr	son_joue	; met le son en RAM son et le joue
 	brl	cl_loop
 
-	PushWord #%0000_0000_1000_0000	; play the sound
-	_FFStopSound
+*---------- The rectangle
 
-	PushWord #$0701
-	PushLong #waveSTART
-	_FFStartSound
+paintZIK	PushLong	#curPATTERN
+	_GetPenPat
+
+	PushLong	#whitePATTERN
+	_SetPenPat
 	
-	brl	cl_loop
+	PushLong	#zikRECT
+	_PaintRect
+
+	PushLong	#curPATTERN
+	_SetPenPat
+	rts
+
+zikRECT	dw	150,0,200,320
+fgCLEAR	ds	2	; -1 set by interrupt
 
 *-----------------------
 * MIX - OK
@@ -1731,243 +1943,6 @@ fm_1	ldy	#$1f
 	pld
 	cli
 	rts
-
-*-----------------------
-* ENSONIQ ROUTINES
-*-----------------------
-
-initMUSIC	lda	#$373
-	sta	zikPAGE
-	lda	ptrMUSIC
-	sta	zikMUSIC
-	lda	ptrMUSIC+2
-	sta	zikMUSIC+2
-
-	sep	#$20
-	ldal	$e100ca
-	and	#$0f
-	stal	$e0c03c
-
-	ldy	#$04
-	tya
-	ora	#$00
-	stal	$e0c03e
-	lda	#$d1
-	stal	$e0c03d
-	tya
-	ora	#$01
-	stal	$e0c03e
-	lda	#$d1
-	stal	$e0c03d
-	tya
-	ora	#$20
-	stal	$e0c03e
-	lda	#$00
-	stal	$e0c03d
-	tya
-	ora	#$21
-	stal	$e0c03e
-	lda	#0
-	stal	$e0c03d
-	tya
-	ora	#$40
-	stal	$e0c03e
-	lda	#$f0
-	stal	$e0c03d
-	tya
-	ora	#$41
-	stal	$e0c03e
-	lda	#$f0
-	stal	$e0c03d
-	tya
-	ora	#$80
-	stal	$e0c03e
-	lda	#$3e
-	stal	$e0c03d
-	tya
-	ora	#$81
-	stal	$e0c03e
-	lda	#$3f
-	stal	$e0c03d
-	tya
-	ora	#$c0
-	stal	$e0c03e
-	lda	#0
-	stal	$e0c03d
-	tya
-	ora	#$c1
-	stal	$e0c03e
-	lda	#0
-	stal	$e0c03d
-	rep	#$20
-	lda	#1
-	sta	zikPLAY
-	rts
-
-*---
-
-	mx	%00
-	
-sndINTERRUPT	
-	phb
-	phd
-	phk
-	plb
-
-	clc
-	xce
-	rep	#$30
-
-	lda	#$c000
-	tcd
-
-	sep	#$20
-
-]lp	lda	soundctl
-	bmi	]lp
-
-	ldal	$e100ca
-	and	#%0000_1111
-	sta	soundctl
-
-	lda	#$e0	; which oscillo
-	sta	soundadrl	; has generated
-	lda	sounddata	; the interrupt?
-	lda	sounddata
-	and	#%0011_1110
-	lsr
-	cmp	#1	; oscillo 1 (lié à 0)
-	beq	sndINTERRUPT1
-	cmp	#5	; oscillo 5 (lié à 4)
-	beq	sndINTERRUPT2
-	bne	sndINTERRUPT99
-
-sndINTERRUPT1
-	lda	#$a0	; oscillos 0 & 1
-	sta	soundadrl
-	lda	#%0000_0000
-	sta	sounddata
-	lda	#$a1
-	sta	soundadrl
-	lda	#%0001_1000	; with interrupt
-	sta	sounddata
-	
-sndINTERRUPT99
-	sep	#$30
-	pld
-	plb
-	clc
-	rtl
-
-*---
-
-	mx	%10
-
-sndINTERRUPT2
-	ldal	$e100ca
-	and	#%0000_1111
-	ora	#%0110_0000
-	sta	soundctl
-
-	stz	soundadrl
-	lda	soundadrl
-	ora	fgPAGE
-	eor	#1
-	sta	soundadrh
-
-	ldy	zikMUSIC
-	lda	zikMUSIC+2
-	pha
-	plb
-	
-]move	=	$00
-	lup	256
-	lda	]move,y
-	sta	sounddata
-]move	=	]move+1
-	--^
-
-	phk
-	plb
-
-	rep	#$20
-
-	inc	zikMUSIC+1
-	dec	zikPAGE
-	bne	sndINTERRUPT3
-
-*	lda	whichSND
-*	beq	sndINTERRUPT21
-*
-*	sep	#$20
-*
-*	ldal	$e100ca
-*	and	#$0f
-*	sta	soundctl
-*
-*	lda	#$a4
-*	sta	soundadrl
-*	lda	#%0000_0011
-*	sta	sounddata
-*	inc	soundadrh
-*	lda	#%0001_0011
-*	sta	sounddata
-*	bra	sndINTERRUPT5
-*
-*	mx	%00
-
-sndINTERRUPT21
-	lda	waveSIZE
-	sta	zikPAGE
-	lda	waveSTART
-	sta	zikMUSIC
-	lda	waveSTART+2
-	sta	zikMUSIC+2
-
-sndINTERRUPT3
-	sep	#$20
-
-	ldal	$e100ca
-	and	#%0000_1111
-	sta	soundctl
-
-	ldy	#$04
-
-	ldx	fgPAGE
-	bne	sndINTERRUPT4
-
-	tya
-	ora	#$a0
-	sta	soundadrl
-	lda	#%0000_1110
-	sta	sounddata
-	inc	soundadrl
-	lda	#%0001_1111
-	sta	sounddata
-	bra	sndINTERRUPT5
-
-sndINTERRUPT4
-	tya
-	ora	#$a0
-	sta	soundadrl
-	lda	#%0000_1111
-	sta	sounddata
-	inc	soundadrl
-	lda	#%0001_1110
-	sta	sounddata
-
-sndINTERRUPT5
-	lda	fgPAGE
-	eor	#1
-	sta	fgPAGE
-	
-	sep	#$30
-	pld
-	plb
-	clc
-	rtl
-
-	mx	%00
 
 *-----------------------
 * DATA_FICHIERS_MUSIQUE - OK

@@ -18,6 +18,7 @@
 	use   4/Locator.Macs
 	use   4/Mem.Macs
 	use   4/Menu.Macs
+	use   4/MIDISyn.Macs
 	use   4/Misc.Macs
 	use   4/Print.Macs
 	use   4/Qd.Macs
@@ -59,6 +60,7 @@ GSOS	=	$e100a8
 
 *-------------- GUI
 
+wMAIN	=	1
 alertQUIT	=	$0100
 alertRESTART =	$0200
 
@@ -96,7 +98,7 @@ ptrE12000	=	$e12000
 
 *---
 
-TRUE	=	1
+TRUE	=	255
 FALSE	=	0
 
 fgLOAD	=	1	; flags for choix_aventure
@@ -121,7 +123,6 @@ fgRESTART	=	2
 
 	tdc
 	sta	myDP
-
 
 *--- Version du systeme
 
@@ -170,10 +171,7 @@ koMEM	pha
 
 okMEM1	sty	ptrIMAGE
 	stx	ptrIMAGE+2
-	sep	#$10	; save pointer+2
-	stx	saveBACK1+3	; for interactions
-	stx	loadBACK1+3	; with the toolbox
-	rep	#$10
+	stx	ptrBACKGND+2
 	
 *--- 64K pour les images du jeu
 
@@ -214,9 +212,19 @@ okMEM1	sty	ptrIMAGE
 	pla
 	brl	meQUIT0
 
+*---
+
+okTOOL	PushWord	#0
+	_GetMasterSCB
+	pla
+	bmi	okSHADOW	; shadowing is on if bit 15 is set
+
+	lda	#^ptrE12000	; shadowing is off, use slow RAM
+	sta	ptrSCREEN+2
+
 *--- Et la musique...
 
-okTOOL	pha
+okSHADOW	pha
 	_SoundToolStatus
 	pla
 	bne	noSOUND
@@ -234,20 +242,32 @@ noSOUND	_HideMenuBar
 
 	_InitCursor
 
-	PushLong #0
-	PushWord #5	; SetDeskPat
-	PushWord #$4000
-	PushWord #$0000
+	PushLong	#0
+	PushWord	#5	; SetDeskPat
+	PushWord	#$4000
+	PushWord	#$0000
 	_Desktop
 	pla
 	pla
 
-	PushLong	#0
-	_GetPort
-	PullLong	mainPORT
+*	PushLong	#0
+*	_GetPort
+*	PullLong	mainPORT
+*
+*	PushLong	mainPORT
+*	_SetPort
 
-	PushLong	mainPORT
-	_SetPort
+	pha
+	pha
+	PushLong	#0
+	PushLong	#wMAIN
+	PushLong	#PAINTMAIN
+	PushLong	#0
+	PushWord	#refIsResource
+	PushLong	#wMAIN
+	PushWord	#$800e
+	_NewWindow2
+	PullLong	wiMAIN
 	
 *----------------------------------------
 * INITIALISATIONS
@@ -257,7 +277,7 @@ entryPOINT
 	jsr	TWILIGHToff
 	jsr	set_language
 	jsr	init
-	jsr	musique
+	jsr	antoine	; on change !
 	jsr	init2
 	
 *-----------------------
@@ -277,22 +297,23 @@ mainLOOP	jsr	teste_fin
 
 taskLOOP	inc	VBLCounter0
 
-	PushWord #0
-	PushWord #0
-	PushWord #$c000
-	PushWord #0
+	PushWord	#0
+	PushWord	#0
+	PushWord	#$c000
+	PushWord	#0
 	_HandleDiskInsert
 	pla
 	pla
 
-	pha
-	PushWord #%00000000_00001010
-	PushLong #taskREC
-	_GetNextEvent
+*	jsr	checkREPLAY
+
+	PushWord	#0
+	PushWord	#%11111111_11111111
+	PushLong	#taskREC
+	_TaskMaster
 	pla
 	beq	taskLOOP
-
-	lda	taskREC
+	 
 	asl
 	tax
 	jsr	(taskTBL,x)
@@ -374,7 +395,24 @@ doMOUSEUP
 *	rts
 *mup2	jsr	aiguille	; on aiguille le joueur (1 ou 2 clics)
 	rts
-	
+
+*----------------------------------- Gestion des controles
+
+doCONTROL
+	lda	taskREC+38
+	asl
+	tax
+	jmp	(ctrlTBL,x)
+
+*----------------------------------------
+* FENETRES
+*----------------------------------------
+
+PAINTMAIN
+	PushLong	wiMAIN
+	_DrawControls
+	rtl
+
 *-----------------------------------
 * AUTRES ROUTINES
 *-----------------------------------
@@ -812,7 +850,7 @@ fadeIN	pha
          
 	ldy	#$2000
 	sty	Arrivee
-	ldx	#$00e1
+	ldx	ptrSCREEN+2
 	stx	Arrivee+2
 
 	ldy	#$7e00
@@ -899,7 +937,7 @@ fadeIN6  dey
 
 fadeOUT	lda	#$9e00
 	sta	Debut
-	lda	#$00e1
+	lda	ptrSCREEN+2
 	sta	Debut+2
 
 	_HideCursor
@@ -1065,34 +1103,24 @@ lenDATA	ds	4
 * SAVE THE SHR SCREEN
 *-----------------------------------
 
-saveBACK
-	_HideCursor
-
-	ldx	#$8000-2
-]lp	ldal	$e12000,x
-saveBACK1	stal	$000000,x
-	dex
-	dex
-	bpl	]lp
-	
-exitBACK	_ShowCursor
+saveBACK	_HideCursor
+	PushLong	ptrSCREEN
+	PushLong	ptrBACKGND
+	PushLong	#32768
+	_BlockMove
+	_ShowCursor
 	rts
 
 *-----------------------------------
 * RESTORE THE SHR SCREEN
 *-----------------------------------
 
-loadBACK
-	_HideCursor
-
-	ldx	#$8000-2
-loadBACK1	ldal	$000000,x
-	stal	$012000,x
-	stal	$e12000,x
-	dex
-	dex
-	bpl	loadBACK1
-	bmi	exitBACK
+loadBACK	_HideCursor
+	PushLong	ptrBACKGND
+	PushLong	ptrSCREEN
+	PushLong	#32768
+	_BlockMove
+	rts
 
 *--- Genere un nombre aleatoire
 
@@ -1146,16 +1174,21 @@ nowWAIT1	pha
 * DATA
 *----------------------------------------
 
+*----------------------- Fenetres
+
+wiMAIN	ds	4
+
 *----------------------- Memory manager
 
 mainID	ds	2	; app ID
 myID	ds	2	; user ID
 myDP	ds	2
-mainPORT	ds	4	; default grafport
 
 SStopREC	ds	4
 
+ptrSCREEN	adrl	ptr012000	; l'écran actif
 ptrIMAGE	ds	4	; $0000: where a scene image is loaded
+ptrBACKGND	adrl	$8000	; $8000: where the screen is saved
 ptrFOND	ds	4	; $0000: fond de jeu
 ptrICONES	adrl	$8000	; $0000: fond d'icônes du jeu
 ptrUNPACK	ds	4	; $0000: where the background picture is laoded
@@ -1203,6 +1236,45 @@ temp	ds	2
 
 saveLANGUAGE	ds	2
 
+*----------------------------------- Quickdraw II
+
+palette320	dw	$0000,$0777,$0841,$072C,$000F,$0080,$0F70,$0D00
+	dw	$0FA9,$0FF0,$00E0,$04DF,$0DAF,$078F,$0CCC,$0FFF
+
+palette640	dw	$0000,$000F,$00F0,$0FFF,$0000,$000F,$0FF0,$0FFF
+	dw	$0000,$0F00,$00F0,$0FFF,$0000,$000F,$0FF0,$0FFF
+	
+blackPATTERN ds	32,$00
+	ds	32,$11
+	ds	32,$22
+	ds	32,$33
+	ds	32,$44
+	ds	32,$55
+	ds	32,$66
+	ds	32,$77
+	ds	32,$88
+	ds	32,$99
+	ds	32,$aa
+	ds	32,$bb
+	ds	32,$cc
+	ds	32,$dd
+	ds	32,$ee
+whitePATTERN ds	32,$ff
+
+checkeredPATTERN
+	hex	0F0F0F0F
+	hex	F0F0F0F0
+	hex	0F0F0F0F
+	hex	F0F0F0F0
+	hex	0F0F0F0F
+	hex	F0F0F0F0
+	hex	0F0F0F0F
+	hex	F0F0F0F0
+
+curPATTERN	ds	32
+
+curPENSIZE	ds	4
+
 *----------------------- Tool locator
 
 verSTR1	str	'System 6.0.1 Required!'
@@ -1226,6 +1298,13 @@ taskWHEN	ds	4	; wmWhen           +6
 taskWHERE	ds	4	; wmWhere          +10
 taskMODIFIERS ds	2	; wmModifiers      +14
 taskDATA	ds	4	; wmTaskData       +16
+	adrl	$001fffff	; wmTaskMask       +20
+	ds	4	; wmLastClickTick  +24
+	ds	2	; wmClickCount     +28
+	ds	4	; wmTaskData2      +30
+	ds	4	; wmTaskData3      +34
+	ds	4	; wmTaskData4      +38
+	ds	4	; wmLastClickPt    +42
 
 taskTBL	da	doNOT	; 0 Null
 	da	doMOUSEDOWN	; 1 mouseDownEvt
@@ -1243,6 +1322,57 @@ taskTBL	da	doNOT	; 0 Null
 	da	doNOT	; D app2Evt
 	da	doNOT	; E app3Evt
 	da	doNOT	; F app4Evt
+	da	doNOT	; wInDesk
+	da	doNOT	; wInMenuBar
+	da	doNOT	; wCLickCalled
+	da	doNOT	; wInContent - was doCONTENT
+	da	doNOT	; wInDrag
+	da	doNOT	; wInGrow
+	da	doNOT	; wInGoAway
+	da	doNOT	; wInZoom
+	da	doNOT	; wInInfo
+	da	doNOT	; wInSpecial
+	da	doNOT	; wInDeskItem
+	da	doNOT	; wInFrame
+	da	doNOT	; wInactMenu
+	da	doNOT	; wInClosedNDA
+	da	doNOT	; wInCalledSysEdit
+	da	doNOT	; wInTrackZoom
+	da	doNOT	; wInHitFrame
+	da	doNOT	; wInControl
+	da	doNOT	; wInControlMenu
+
+ctrlTBL	da	doNOT
+	da	doNOT
+	da	doNOT
+	da	doNOT
+	da	doNOT
+	da	doNOT
+	da	doNOT
+	da	doNOT
+	da	doNOT
+	da	doNOT
+	da	doNOT
+	da	doNOT
+	da	doNOT
+	da	doNOT
+	da	doNOT
+	da	doNOT
+	da	doNOT
+	da	doNOT
+	da	doNOT
+	da	doNOT
+	da	doNOT
+	da	doNOT
+	da	doNOT
+	da	doNOT
+	da	doNOT
+	da	doNOT
+	da	doNOT
+	da	doNOT
+	da	doNOT
+	da	doNOT
+	da	doNOT
 
 *----------------------------------------
 * STD FILE

@@ -8,6 +8,13 @@
 	mx    %00
 
 *-----------------------
+* MENU
+*-----------------------
+
+strMENU1	str	'1- Musique'
+strMENU2	str	'2- La Belle Zohra'
+
+*-----------------------
 * ATARI
 *-----------------------
 
@@ -444,13 +451,9 @@ snd58	asc	'58'
 
 *--- Donnees Sound Tool Set
 
-waveSTART	ds	4	; waveStart
-waveSIZE	ds	2	; waveSize
+waveSTART	ds	4	; waveStart (long)
+waveSIZE	ds	2	; waveSize en octets
 waveFREQ	dw	214	; freqOffset
-	dw	$0000	; docBuffer
-	dw	$0000	; bufferSize
-	ds	4	; nextWavePtr
-	dw	255	; volSetting
 
 tblSTR1	ds	10*2	; pointeur sur la première phrase
 tblSTR2	ds	10*2	; pointeur sur la seconde phrase

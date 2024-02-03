@@ -59,20 +59,6 @@ data_error	pha
 * load_texte
 
 load_texte
-	cmp	#nombre_objets+1
-	bcc	lt_1
-	rts
-lt_1	cmp	#0
-	bne	lt_2
-	brl	data_error
-
-lt_2	sep	#$20
-	ora	#'0'
-	sta	pTXT+22
-	rep	#$20
-
-*---
-
 	lda	#pTXT
 	sta	proOPEN+4  ; filename
 
@@ -101,18 +87,15 @@ lt_2	sep	#$20
 	phd
 	tsc
 	tcd
-	lda	index
-	dec
-	asl
-	asl
-	tax
 	lda	[3]
-	sta	ptrTXT1,x
+	sta	ptrTEXTES
 	sta	proREAD+4
+	stal	$300
 	ldy	#2
 	lda	[3],y
-	sta	ptrTXT1+2,x
+	sta	ptrTEXTES+2
 	sta	proREAD+6
+	stal	$302
 	pld
 	pla
 	pla
@@ -127,81 +110,6 @@ lt_err1	jsl	GSOS
 	adrl	proCLOSE
 	clc
 lt_err2	rts
-
-*-----------------------
-* LOAD_REFERENCE - OK
-*-----------------------
-* load_reference
-
-load_reference
-	cmp	#nombre_objets+1
-	bcc	lr_1
-	rts
-lr_1	cmp	#0
-	bne	lr_2
-	brl	data_error
-
-lr_2	sep	#$20
-	ora	#'0'
-	sta	pREF+22
-	rep	#$20
-	
-*---
-
-	lda	#pREF
-	sta	proOPEN+4  ; filename
-
-	jsl	GSOS
-	dw	$2010
-	adrl	proOPEN
-	bcs	lr_err2
-	
-	lda	proOPEN+2
-	sta	proREAD+2
-	sta	proCLOSE+2
-	
-	ldy	proEOF
-	sty	proREAD+8
-	ldx	proEOF+2
-	stx	proREAD+10
-
-	pha
-	pha
-	phx
-	phy
-	PushWord	myID
-	PushWord	#%11000000_00001100
-	PushLong	#0
-	_NewHandle
-	phd
-	tsc
-	tcd
-	lda	index
-	dec
-	asl
-	asl
-	tax
-	lda	[3]
-	sta	ptrREF1,x
-	sta	proREAD+4
-	ldy	#2
-	lda	[3],y
-	sta	ptrREF1+2,x
-	sta	proREAD+6
-	pld
-	pla
-	pla
-	bcs	lr_err1
-	
-	jsl	GSOS
-	dw	$2012
-	adrl	proREAD
-
-lr_err1	jsl	GSOS
-	dw	$2014
-	adrl	proCLOSE
-	clc
-lr_err2	rts
 
 *-----------------------
 * GESTION DES ICONES
@@ -443,10 +351,9 @@ st_setit	sta	saveLANGUAGE
 	asl
 	tax
 	lda	tblLANG,x
-	sta	pREF+16
 	sta	pTXT+16
 
-	lda	#pREF	; check file exists
+	lda	#pTXT	; check file exists
 	sta	proOPEN+4
 
 	jsl	GSOS
@@ -652,26 +559,27 @@ pre_scrolling
 	rts
 
 *-----------------------
-* 
+* SCROLLING - OK
 *-----------------------
 
 scrolling
 	rts
 
 *-----------------------
-* 
+* VERIF - OK
 *-----------------------
 
 verif
 	rts
 
 *-----------------------
-* CHOIX D'ENTREE
+* CHOIX D'ENTREE - OK
 *-----------------------
 
 antoine
-	@t	#strMENU1;#11
-	@t	#strMENU2;#14
+	@t	#strMENU1;#10
+	@t	#strMENU2;#12
+	@t	#strMENU3;#14
 
 ]lp	pha
 	PushWord #%00000000_00001010
@@ -688,10 +596,13 @@ antoine
 	cmp	#'1'
 	beq	laZIK
 	cmp	#'2'
+	beq	laPREZ
+	cmp	#'3'
 	bne	]lp
 	rts
-laZIK	jmp	musique
-	
+laZIK	jsr	musique
+laPREZ	jmp	presentation
+
 *-----------------------
 * INIT - OK
 *-----------------------
@@ -714,7 +625,7 @@ init2	jsr	init_objets
 	jsr	init_indicateurs
 	jsr	init_fenetres
 	jsr	init_souris
-	jsr	init_texte
+	jsr	load_texte	; au lieu d'init_texte
 	jsr	chargement
 	jmp	mouse_on
 
@@ -825,23 +736,6 @@ datas_init
 * init_texte
 
 init_texte
-	lda	#1
-]lp	sta	index
-
-	lda	index	; fait patienter
-	jsr	presentation
-	lda	index	; charge le texte
-	jsr	load_texte
-	lda	index	; charge la référence
-	jsr	load_reference
-
-	lda	#2
-	jsr	nowWAIT
-	
-	lda	index
-	inc
-	cmp	#nombre_objets+1
-	bcc	]lp
 	rts
 
 *-----------------------
@@ -878,25 +772,28 @@ lookindex
 * PRESENTATION - OK
 *-----------------------
 * presentation
-*  A: numéro du texte
 
 presentation
-	cmp	#nombre_objets+1
-	bcc	pr_1
-	rts
-pr_1	cmp	#0
-	beq	pr_2
-	pha
-	
+	lda	#1
+]lp	sta	index
+
 	PushWord	#0
 	_ClearScreen
 	
-	pla
+	lda	index
 	dec
 	asl
 	tax
 	jsr	(tbl_pres,x)
-pr_2	rts
+
+	lda	#2
+	jsr	nowWAIT
+
+	lda	index
+	inc
+	cmp	#nombre_objets+1
+	bcc	]lp
+	rts
 
 *---
 
@@ -1164,28 +1061,28 @@ palette
 	rts
 
 *-----------------------
-* 
+* HIDE_SCREEN - OK
 *-----------------------
 
 hide_screen
 	rts
 
 *-----------------------
-* 
+* SHOW_SCREEN - OK
 *-----------------------
 
 show_screen
 	rts
 
 *-----------------------
-* 
+* HIDE_SCREEN2 - OK
 *-----------------------
 
 hide_screen2
 	rts
 
 *-----------------------
-* 
+* SHOW_SCREEN2 - OK
 *-----------------------
 
 show_screen2
@@ -1291,10 +1188,7 @@ init_musique
 	mx	%00
 	
 sndINTERRUPT	
-*	phb
 	phd
-*	phk
-*	plb
 
 	clc
 	xce
@@ -1323,8 +1217,8 @@ sndINTERRUPT
 	cmp	#3	; oscillo 3 (lié à 2)
 	bne	sndINTERRUPT99
 	
-	lda	#-1
-	stal	fgCLEAR
+	lda	#-1	; dis au programme
+	stal	fgCLEAR	; d'effacer le cadre
 	bra	sndINTERRUPT99
 
 sndINTERRUPT1
@@ -1340,7 +1234,6 @@ sndINTERRUPT1
 sndINTERRUPT99
 	sep	#$30
 	pld
-*	plb
 	clc
 	rtl
 
@@ -1460,13 +1353,13 @@ rj_eof	cpx	#$ffff
 	cli
 	rts
 
+	mx	%10
+	
 *-----------------------
 * ENSONIQ_BEAT - OK
 *-----------------------
 * ensoniq_beat
 
-	mx	%10
-	
 ensoniq_beat
 	ldy	#0	; oscillos 0 & 1
 
@@ -1684,6 +1577,7 @@ ch_1	sta	dpFROM	; pointe sur sndPARTx
 	lda	(dpFROM),y
 	cmp	#-1	; fin d'une structure
 	bne	ch_2
+	dec	j	; corrige l'index j
 	clc
 	rts
 ch_2	sta	dpTO	; pointe sur l'entrée de la structure d'un son
@@ -1789,8 +1683,6 @@ clavier_sonore
 	cpx	#10*2
 	bcc	]lp
 
-	dec	j	; correct j
-
 cl_loop	lda	fgCLEAR
 	beq	cl_noclear
 	jsr	paintZIK
@@ -1808,7 +1700,7 @@ cl_noclear	pha
 	bne	cl_loop
 
 	lda	taskMESSAGE	; entre 0 et 9 ?
-	cmp	#'*'
+	cmp	#chrESC
 	beq	cl_exit
 	cmp	#'0'
 	bne	cl_1
@@ -1847,19 +1739,22 @@ cl_size	sta	sj_eof+1
 	lda	ptrSND1+1,y
 	sta	sj_from+2
 
+* Une petite différence avec la version ST
+
 *	lda	sndKEY,x	; did we press the key?
 *	cmp	#TRUE
 *	bne	cl_2	; no, we can play
 *	brl	cl_loop
-	
-cl_2	lda	#TRUE
-	sta	sndKEY,x
+*	
+*cl_2	lda	#TRUE
+*	sta	sndKEY,x
 	
 	phx
 	jsr	paintZIK
+
 	plx
 	phx
-
+	
 	lda	tblSTR1,x
 	ldy	#22
 	jsr	t
@@ -1886,6 +1781,8 @@ paintZIK	PushLong	#curPATTERN
 	PushLong	#curPATTERN
 	_SetPenPat
 	rts
+
+*---
 
 zikRECT	dw	150,0,200,320
 fgCLEAR	ds	2	; -1 set by interrupt

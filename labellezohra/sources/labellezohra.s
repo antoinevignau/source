@@ -73,15 +73,15 @@ mouseDownEvt =	$0001
 mouseUpEvt	=	$0002
 keyDownEvt	=	$0003
 
+chrRET	=	$0d
+chrESC	=	$1b
+
 *--------------
 
 dpFROM	=	$80
 dpTO	=	dpFROM+4
-
-dpREF	= 	dpFROM+$10	; pointeur vers les INDEX
-dpTEXTES	=	dpREF+4	; pointeur vers les TEXTES
-
-Debut	=	dpREF+$10
+dpTEXTES	=	dpTO+4	; pointeur vers les TEXTES
+Debut	=	dpTEXTES+4
 Arrivee	=	Debut+4
 Second	=	Arrivee+4
 
@@ -250,13 +250,6 @@ noSOUND	_HideMenuBar
 	pla
 	pla
 
-*	PushLong	#0
-*	_GetPort
-*	PullLong	mainPORT
-*
-*	PushLong	mainPORT
-*	_SetPort
-
 	pha
 	pha
 	PushLong	#0
@@ -292,7 +285,7 @@ mainLOOP	jsr	teste_fin
 	jsr	demande_objet
 	
 *----------------------------------------
-* TASK MASTER (no more)
+* TASK MASTER
 *----------------------------------------
 
 taskLOOP	inc	VBLCounter0
@@ -1193,22 +1186,7 @@ ptrFOND	ds	4	; $0000: fond de jeu
 ptrICONES	adrl	$8000	; $0000: fond d'icônes du jeu
 ptrUNPACK	ds	4	; $0000: where the background picture is laoded
 
-ptrREF1	ds	4	; les pointeurs des references
-ptrREF2	ds	4
-ptrREF3	ds	4
-ptrREF4	ds	4
-ptrREF5	ds	4
-ptrREF6	ds	4
-ptrREF7	ds	4
-ptrREF8	ds	4
-ptrTXT1	ds	4	; les pointeurs des textes
-ptrTXT2	ds	4
-ptrTXT3	ds	4
-ptrTXT4	ds	4
-ptrTXT5	ds	4
-ptrTXT6	ds	4
-ptrTXT7	ds	4
-ptrTXT8	ds	4
+ptrTEXTES	ds	4	; les pointeurs des textes
 
 haBEAT	ds	4
 ptrBEAT	ds	4
@@ -1527,8 +1505,7 @@ proVERS	dw	1	; pcount
 pIMAGE	strl	'1/data/images/PIC1.PIC'
 pFOND	strl	'1/data/images/PIC10.PIC'
 pICONES	strl	'1/data/images/PIC11.PIC'
-pREF	strl	'1/data/textes/fr/REF1.TXT'
-pTXT	strl	'1/data/textes/fr/TXT1.TXT'
+pTXT	strl	'1/data/textes/fr/TEXTES'
 pBEAT	strl	'1/data/musiques/BEAT1.SPL'
 pSND	strl	'1/data/musiques/SND10.SND'
 

@@ -12,7 +12,8 @@
 *-----------------------
 
 strMENU1	str	'1- Musique'
-strMENU2	str	'2- La Belle Zohra'
+strMENU2	str	'2- Pr'8e'sentation'
+strMENU3	str	'3- La Belle Zohra'
 
 *-----------------------
 * ATARI

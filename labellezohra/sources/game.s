@@ -110,14 +110,20 @@ lt_err1	jsl	GSOS
 lt_err2	rts
 
 *-----------------------
-* GESTION DES ICONES
+* TEST LA FIN DU JEU
 *-----------------------
 
-test_icone
-	lda	#0			; from 1
+test_fin
+	rts
+
+*-----------------------
+* GESTION DES ICONES DES PECHES
+*-----------------------
+
+test_peche	stz	peche_selectionne
+
+	lda	#1		; from 1
 ]lp	pha
-	asl
-	asl
 	asl
 	tax
 	lda	taskWHERE+2		; compare le X
@@ -135,52 +141,50 @@ test_icone
 	bcc	icone_ko
 	
 	pla				; on a notre icône
-	inc
-*	sta	instruction2
+	sta	peche_selectionne
+	clc
 	rts
 
-icone_ko
-	pla
+icone_ko	pla
 	inc
-	cmp	#nombre_objets-1		; et non plus nombre_icones
+	cmp	#nombre_peches		; et non plus nombre_icones
 	bcc	]lp
+	beq	]lp
+	sec
 	rts
 
 *---
 
-efface_icone	; X is object
+efface_peche	; X is object
 	cpx	#0
 	beq	ei1
-	jsr	set_icone
+	jsr	set_peche
 
 	_HideCursor
-	PushLong #iconParamPtr
+	PushLong #fondParamPtr
 	_PaintPixels
 	_ShowCursor	
 ei1	rts
 	
 *---
 
-affiche_icone	; X is object
+affiche_peche	; X is object
 	cpx	#0
 	beq	ai1
-	jsr	set_icone
+	jsr	set_peche
 
 	_HideCursor
-	PushLong #fondParamPtr
+	PushLong #iconParamPtr
 	_PaintPixels
 	_ShowCursor	
 ai1	rts
 
 *---
 
-set_icone	txa
-	dec
+set_peche	txa
 	asl
-	asl
-	asl		; because we are 16-bit
 	tax
-	lda	peche_y,x
+	lda	peche_y,x		; x is 2..4..6..8
 	sta	iconToSourceRect
 	sta	iconToDestPoint
 	lda	peche_x,x
@@ -214,19 +218,19 @@ fondToSourceLocInfo
 	dw	mode_320	; mode 320
 	ds	4	; ptrFOND - $0000 on entry, high set after _NewHandle
 	dw	160
-	dw	0,0,199,319
+	dw	0,0,200,320
 	
 iconToSourceLocInfo
 	dw	mode_320	; mode 320
 	adrl	$8000	; ptrICON - $8000 on entry, high set after _NewHandle
 	dw	160
-	dw	0,0,199,319
+	dw	0,0,200,320
 	
 iconToDestLocInfo
-	dw	mode_320	; mode 320
-	adrl	ptrE12000
+	dw	mode_320	; +0 mode 320
+	adrl	ptr012000	; +2
 	dw	160
-	dw	0,0,199,319
+	dw	0,0,200,320
 	
 iconToSourceRect
 	dw	3,0,109,272
@@ -237,11 +241,10 @@ iconToDestPoint
 * GESTION DES OBJETS
 *-----------------------
 
-test_objet
-	lda	#0			; from 1
+test_objet	stz	objet_selectionne
+
+	lda	#1		; from 1
 ]lp	pha
-	asl
-	asl
 	asl
 	tax
 	lda	taskWHERE+2		; compare le X
@@ -259,15 +262,15 @@ test_objet
 	bcc	objet_ko
 	
 	pla			; on a notre icône
-	inc
-*	sta	instruction2
+	sta	objet_selectionne
+	clc
 	rts
 
-objet_ko
-	pla
-	inc
+objet_ko	pla
 	cmp	#nombre_objets	; et non plus nombre_objets
 	bcc	]lp
+	beq	]lp
+	sec
 	rts
 
 *---
@@ -278,7 +281,7 @@ efface_objet	; X is object
 	jsr	set_objet
 
 	_HideCursor
-	PushLong #iconParamPtr
+	PushLong #fondParamPtr
 	_PaintPixels
 	_ShowCursor	
 eo1	rts
@@ -291,7 +294,7 @@ affiche_objet	; X is object
 	jsr	set_objet
 
 	_HideCursor
-	PushLong	#fondParamPtr
+	PushLong	#iconParamPtr
 	_PaintPixels
 	_ShowCursor	
 ao1	rts
@@ -299,12 +302,9 @@ ao1	rts
 *---
 
 set_objet	txa
-	dec
 	asl
-	asl
-	asl		; because we are 16-bit
 	tax
-	lda	objet_y,x
+	lda	objet_y,x		; x is 2..4..6..8
 	sta	iconToSourceRect
 	sta	iconToDestPoint
 	lda	objet_x,x
@@ -392,122 +392,6 @@ tblLANG	asc	'us'	; 0
 	asc	'us'	; 19
 
 *-----------------------
-* XX - OK
-*-----------------------
-
-xx
-	rts
-
-*-----------------------
-* MAIN - OK
-*-----------------------
-
-main
-	rts
-
-*-----------------------
-* VIGIL - OK
-*-----------------------
-* vigil(max_x%,max_y%,max_xx%,max_yy%,sauvegarde!)
-
-vigil
-	rts
-	
-*-----------------------
-* TEST_FIN - OK
-*-----------------------
-
-teste_fin
-*	lda	paragraphes_lus
-*	sec
-*	sbc	pointeur_paragraphes
-*	cmp	#1
-*	bne	tf_99
-*	
-*	jmp	the_end
-*	
-tf_99	rts
-
-*-----------------------
-* DEMANDE_OBJET
-*-----------------------
-
-demande_objet
-*	ldx	#1
-*]lp	lda	reference_peche-1,x
-*	and	#$ff
-*	cmp	#8
-*	beq	do_1
-*
-*	lda	deja_lu,x
-*	and	#$ff
-*	cmp	#FALSE
-*	bne	do_1
-*
-*	lda	indicateur_paragraphes_prealables-1,x
-*	and	#$ff
-*	tay
-*	lda	indicateur-1,y
-*	and	#$ff
-*	cmp	#TRUE
-*	bne	do_1
-*	
-*	lda	reference_objet-1,x
-*	and	#$ff
-*	tay
-*	sep	#$20
-*	lda	#TRUE
-*	sta	icone_objets-1,y
-*
-*do_1	inx
-*	cpx	pointeur_paragraphes
-*	bcc	]lp
-*	beq	]lp
-
-*-------- Affichage des objets
-
-	ldx	#1
-]lp	phx
-	lda	icone_objets-1,x
-	and	#$ff
-	cmp	#TRUE
-	bne	do_2
-
-	jsr	affiche_objet
-	
-do_2	plx
-	inx
-	cpx	#nombre_objets
-	bcc	]lp
-	beq	]lp
-
-*-------- Attend un clic
-
-
-	rts
-
-*-----------------------
-* 
-*-----------------------
-
-demande_peche
-	rts
-
-*-----------------------
-* 
-*-----------------------
-
-recherche_references
-	rts
-
-*-----------------------
-* 
-*-----------------------
-
-affiche_image
-	rts
-
-*-----------------------
 * THE_END - OK
 *-----------------------
 * the_end
@@ -521,28 +405,6 @@ the_end
 	
 	lda	#TRUE
 	sta	fgTHEEND
-	rts
-
-*-----------------------
-* PRE_SCROLLING
-*-----------------------
-* pre_scrolling
-
-pre_scrolling
-	rts
-
-*-----------------------
-* SCROLLING - OK
-*-----------------------
-
-scrolling
-	rts
-
-*-----------------------
-* VERIF - OK
-*-----------------------
-
-verif
 	rts
 
 *-----------------------
@@ -590,10 +452,10 @@ init	PushWord	#$ffff
 *-----------------------
 
 init2
-	ldx	#FIN_DATA-DEBUT_DATA
-]lp	stz	fgTHEEND,x
-	dex
-	bne	]lp
+*	ldx	#FIN_DATA-DEBUT_DATA
+*]lp	stz	fgTHEEND,x
+*	dex
+*	bne	]lp
 
 	ldx	#0	; l'indicateur 0 est toujours vrai
 	sep	#$20
@@ -754,7 +616,6 @@ test_objets	stz	textes_encore_presents
 	sep	#$30
 	ldx	#1
 ]lp	stz	icone_objets,x
-	stz	visibilite,x
 	inx
 	cpx	#nombre_objets
 	bcc	]lp
@@ -770,7 +631,7 @@ test_objets	stz	textes_encore_presents
 	bne	to_1
 	ldy	objet,x
 	lda	#TRUE
-	sta	visibilite,y
+	sta	icone_objets,y
 	sta	textes_encore_presents
 
 to_1	inx
@@ -780,8 +641,22 @@ to_1	inx
 	
 	rep	#$30
 
-* LoGo - Voir comment on traite la fin
+*-------- Affichage des objets
 
+	ldx	#1
+]lp	phx
+	lda	icone_objets,x
+	and	#$ff
+	cmp	#TRUE
+	bne	to_2
+
+	jsr	affiche_objet
+	
+to_2	plx
+	inx
+	cpx	#nombre_objets
+	bcc	]lp
+	beq	]lp
 	rts
 
 *-----------------------
@@ -811,13 +686,32 @@ test_peches	sep	#$30
 	bne	tp_1
 	ldy	peche,x
 	lda	#TRUE
-	sta	icone_peches-1,y
+	sta	icone_peches,y
 tp_1	inx
 	cpx	#nombre_paragraphes
 	bcc	]lp
 	beq	]lp
 
 	rep	#$30
+
+*-------- Affichage des peches
+
+	ldx	#1
+]lp	phx
+	lda	icone_peches,x
+	and	#$ff
+	cmp	#TRUE
+	bne	do_2
+
+	jsr	affiche_peche
+	
+do_2	plx
+	inx
+	cpx	#nombre_peches
+	bcc	]lp
+	beq	]lp
+	rts
+
 	rts
 
 *-----------------------
@@ -861,7 +755,7 @@ aiguillage	stz	texte_selectionne
 	bne	ai_next
 	lda	texte_selectionne
 	bne	ai_next
-	stx	texte_selectionne
+	stx	texte_selectionne	; on a trouvé un texte
 ai_next	inx
 	cpx	#nombre_paragraphes
 	bcc	]lp

@@ -96,40 +96,48 @@ nombre_paragraphes	=	65	; NOMBRE MAXI DE TEXTES
 nombre_objets	=	8	; NOMBRE D'OBJETS
 nombre_peches	=	7	; NOMBRE DE PECHES
 
-MES_DONNEES	=	*	; on démarre l'index à 1...
-
 indicateur	ds	nombre_indicateurs+1
 objet	ds	nombre_paragraphes+1
 peche	ds	nombre_paragraphes+1
 condition	ds	nombre_paragraphes+1
 consequence	ds	nombre_paragraphes+1
 deja_lu	ds	nombre_paragraphes+1
-visibilite	ds	nombre_objets+1
 texteDEBUT	ds	4
 	ds	nombre_paragraphes*4	; un long
 
+MES_DONNEES	=	*	; on démarre l'index à 1...
+
+	asc	"ICONE_OBJETS"
+icone_objets	ds	nombre_objets+1	; ICONES ALLUMêES OU ETEINTES
+	asc	"ICONE_PECHES"
+icone_peches	ds	nombre_peches+1
+
+	asc	"OBJET_SELECTIONNE"
 objet_selectionne	ds	2	; l'objet selectionne
+	asc	"PECHE_SELECTIONNE"
 peche_selectionne	ds	2	; le peche selectionne
+	asc	"TEXTE_SELECTIONNE"
 texte_selectionne	ds	2	; le texte à afficher
+	asc	"TEXTES_ENCORE_PRESENTS"
 textes_encore_presents	ds	2	; false or true
 
 FIN_DATA	=	*
 
-*---
+*--- The Text Edit control
 
-icone_objets	ds	nombre_objets+1	; ICONES ALLUMêES OU ETEINTES
-icone_peches	ds	nombre_peches+1	; (+1 POUR L'INDICATEUR DE SUITE...)
-
-*---
-
-fenetre_x	dw	10,10,10,120,10,10,10,10,10
-fenetre_y	dw	100,100,100,10,100,100,100,10,100
-fenetre_xx	dw	310,310,310,310,310,310,310,200,310
-fenetre_yy	dw	190,190,190,190,190,190,190,190,190
+teCONTROL	dw	9
 
 *---
 
-objetTEXT	da	objetSTR1	; !NOM DE CHAQUE OBJET
+fenetre_x	dw	0,10,10,10,120,10,10,10,10,10
+fenetre_y	dw	0,100,100,100,10,100,100,100,10,100
+fenetre_xx	dw	0,310,310,310,310,310,310,310,200,310
+fenetre_yy	dw	0,190,190,190,190,190,190,190,190,190
+
+*---
+
+objetTEXT	da	$bdbd	; !NOM DE CHAQUE OBJET
+	da	objetSTR1
 	da	objetSTR2
 	da	objetSTR3
 	da	objetSTR4
@@ -147,14 +155,15 @@ objetSTR6	asc	"BIJOUX"
 objetSTR7	asc	"CLES"
 objetSTR8	asc	"ARGENT"
 
-objet_x	dw	238,222,195,0,27,131,276,133
-objet_y	dw	51,110,0,17,55,32,19,69
-objet_xx	dw	283,268,266,57,106,178,319,188
-objet_yy	dw	88,151,39,54,103,64,50,101
+objet_x	dw	0,238,222,195,0,27,131,276,133
+objet_y	dw	0,51,110,0,17,55,32,19,69
+objet_xx	dw	0,283,268,266,57,106,178,319,188
+objet_yy	dw	0,88,151,39,54,103,64,50,101
 
 *---
 
-pecheTEXT	da	pecheSTR1	; NOM DE CHAQUE PECHE (+1 POUR L'INDIC SUITE...)
+pecheTEXT	da	$bdbd	; NOM DE CHAQUE PECHE (+1 POUR L'INDIC SUITE...)
+	da	pecheSTR1
 	da	pecheSTR2
 	da	pecheSTR3
 	da	pecheSTR4
@@ -170,10 +179,10 @@ pecheSTR5	asc	"LUXURE"
 pecheSTR6	asc	"COLERE"
 pecheSTR7	asc	"PARESSE"
 
-peche_x	dw	184,0,46,276,92,138,230
-peche_y	dw	162,162,162,162,162,162,162
-peche_xx	dw	227,43,89,319,135,181,273
-peche_yy	dw	199,199,199,199,199,199,199
+peche_x	dw	0,184,0,46,276,92,138,230
+peche_y	dw	0,162,162,162,162,162,162,162
+peche_xx	dw	0,227,43,89,319,135,181,273
+peche_yy	dw	0,199,199,199,199,199,199,199
 
 *--- Sound files
 * SNDxy.SND where x is the scene, y the file index (0..9)

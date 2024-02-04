@@ -217,7 +217,7 @@ okMEM1	sty	ptrIMAGE
 	pla
 	brl	meQUIT0
 
-*---
+*--- Test default shadowing...
 
 okTOOL	PushWord	#0
 	_GetMasterSCB
@@ -226,6 +226,7 @@ okTOOL	PushWord	#0
 
 	lda	#^ptrE12000	; shadowing is off, use slow RAM
 	sta	ptrSCREEN+2
+	sta	iconToDestLocInfo+4
 
 *--- Et la musique...
 
@@ -283,11 +284,9 @@ entryPOINT
 *-----------------------
 
 	@fadein	ptrFOND;#TRUE
-	jsr	waitEVENT
-	@fadein	ptrICONES;#TRUE
 	
-mainLOOP	jsr	teste_fin
-	jsr	demande_objet
+mainLOOP	jsr	test_fin
+	jsr	test_objets
 	
 *----------------------------------------
 * TASK MASTER
@@ -380,24 +379,31 @@ doMUSIK	rts
 * on compare les coordonnées avec celles du incontent
 * si dans le même rectangle, on traite
 
-doMOUSEDOWN
+doMOUSEUP	lda	objet_selectionne	; on a déjà un objet, saute
+	bne	domu_2
 
-doMOUSEUP
-*	lda	fgSUITEFORCEE
-*	cmp	#FALSE
-*	beq	mup1
-*	rts		; non, on sort
-*
-*mup1	jsr	clic_mot	; oui, on vérifie si on a cliqué sur un mot => mot$
-*	bcc	mup2	; oui
-*	rts
-*mup2	jsr	aiguille	; on aiguille le joueur (1 ou 2 clics)
+* 1. vérifie si on a cliqué dans un objet
+	
+	jsr	test_objet		; on teste
+	bcc	domu_1		; on a clique dans un objet
 	rts
+domu_1	jmp	test_peches		; on a clique dans un objet, affiche les peches qui correspondent
+
+* 2. on a déjà un objet, a-t-on cliqué dans un péché ?
+
+domu_2	lda	peche_selectionne	; on a aussi déjà un péché, saute
+	bne	domu_4
+
+	jsr	test_peche		; on teste
+	bcc	domu_3
+	rts
+domu_3	jmp	aiguillage		; choisit le texte correspondant
+
+domu_4	rts
 
 *----------------------------------- Gestion des controles
 
-doCONTROL
-	lda	taskREC+38
+doCONTROL	lda	taskREC+38
 	asl
 	tax
 	jmp	(ctrlTBL,x)
@@ -406,8 +412,7 @@ doCONTROL
 * FENETRES
 *----------------------------------------
 
-PAINTMAIN
-	PushLong	wiMAIN
+PAINTMAIN	PushLong	wiMAIN
 	_DrawControls
 	rtl
 
@@ -1246,8 +1251,8 @@ taskDATA	ds	4	; wmTaskData       +16
 	ds	4	; wmLastClickPt    +42
 
 taskTBL	da	doNOT	; 0 Null
-	da	doMOUSEDOWN	; 1 mouseDownEvt
-	da	doNOT	; 2 mouseUpEvt
+	da	doNOT	; 1 mouseDownEvt
+	da	doMOUSEUP	; 2 mouseUpEvt
 	da	doKEYDOWN	; 3 keyDownEvt
 	da	doNOT
 	da	doNOT	; 5 autoKeyEvt

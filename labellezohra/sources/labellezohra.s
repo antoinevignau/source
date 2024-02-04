@@ -124,6 +124,11 @@ fgRESTART	=	2
 	tdc
 	sta	myDP
 
+	lda	#MES_DONNEES
+	stal	$300
+	lda	#^MES_DONNEES
+	stal	$302
+	
 *--- Version du systeme
 
 	jsl	GSOS
@@ -261,7 +266,7 @@ noSOUND	_HideMenuBar
 	PushWord	#$800e
 	_NewWindow2
 	PullLong	wiMAIN
-	
+
 *----------------------------------------
 * INITIALISATIONS
 *----------------------------------------
@@ -488,37 +493,15 @@ loadALL	jsl	GSOS
 	sta	proREADGAME+2
 	sta	proCLOSE+2
 	
-	jsr	loadPART
-	
+	jsl	GSOS
+	dw	$2012
+	adrl	proREADGAME
+
 	jsl	GSOS
 	dw	$2014
 	adrl	proCLOSE
 
 loadKO99	rts
-
-*---
-
-loadPART	ldx	#2
-	ldy	#pointeur_indicateurs
-	jsr	loadIT
-
-	ldx	#2
-	ldy	#pointeur_paragraphes
-	jsr	loadIT
-
-	ldx	#nombre_indicateurs
-	ldy	#indicateur
-	jsr	loadIT
-
-	ldx	#nombre_paragraphes
-	ldy	#paragraphe_lu
-	
-loadIT	stx	proREADGAME+8
-	sty	proREADGAME+4
-	jsl	GSOS
-	dw	$2012
-	adrl	proREADGAME
-	rts
 
 *--- Enregistre le fichier de sauvegarde
 
@@ -540,37 +523,15 @@ saveALL	jsl	GSOS
 	sta	proWRITEGAME+2
 	sta	proCLOSE+2
 	
-	jsr	savePART
+	jsl	GSOS
+	dw	$2013
+	adrl	proWRITEGAME
 	
 	jsl	GSOS
 	dw	$2014
 	adrl	proCLOSE
 
 saveKO99	rts
-
-*---
-
-savePART	ldx	#2
-	ldy	#pointeur_indicateurs
-	jsr	saveIT
-
-	ldx	#2
-	ldy	#pointeur_paragraphes
-	jsr	saveIT
-
-	ldx	#nombre_indicateurs
-	ldy	#indicateur
-	jsr	saveIT
-
-	ldx	#nombre_paragraphes
-	ldy	#paragraphe_lu
-	
-saveIT	stx	proWRITEGAME+8
-	sty	proWRITEGAME+4
-	jsl	GSOS
-	dw	$2013
-	adrl	proWRITEGAME
-	rts
 
 *----------------------------------- Restart
 
@@ -1449,15 +1410,15 @@ proOPENGAME
 proREADGAME
 	dw	4	; 0 - pcount
 	ds	2	; 2 - ref_num
-	adrl	pGAME	; 4 - data_buffer
-	ds	4	; 8 - request_count
+	adrl	DEBUT_DATA	; 4 - data_buffer
+	adrl	FIN_DATA-DEBUT_DATA	; 8 - request_count
 	ds	4	; C - transfer_count
 
 proWRITEGAME
 	dw	5	; 0 - pcount
 	ds	2	; 2 - ref_num
-	adrl	pGAME	; 4 - data_buffer (we are in same bank)
-	ds	4	; 8 - request_count
+	adrl	DEBUT_DATA	; 4 - data_buffer (we are in same bank)
+	adrl	FIN_DATA-DEBUT_DATA	; 8 - request_count
 	ds	4	; C - transfer_count
 	dw	1	; cache_priority
 

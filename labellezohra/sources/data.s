@@ -85,24 +85,39 @@ fgTHEEND	ds	2	; LOGO
 i	ds	2
 j	ds	2
 index	ds	2
+theA	ds	2
 theX	ds	2
 theY	ds	2
 
 *--- Variables du jeu
 
-nombre_indicateurs	=	30	; NOMBRE MAXI D'INDICATEURS
-nombre_paragraphes	=	110	; NOMBRE MAXI DE TEXTES
+nombre_indicateurs	=	18	; NOMBRE MAXI D'INDICATEURS
+nombre_paragraphes	=	65	; NOMBRE MAXI DE TEXTES
+nombre_objets	=	8	; NOMBRE D'OBJETS
+nombre_peches	=	7	; NOMBRE DE PECHES
 
-pointeur_indicateurs	ds	2
-indicateurTEXT	ds	nombre_indicateurs	; NOM DES INDICATEURS UTILISES PAR MOI
-indicateur		ds	nombre_indicateurs	; INDICATEUR EN LUI-MEME
-paragraphe_lu	ds	nombre_paragraphes
-indicateur_paragraphes	ds	nombre_paragraphes	; NUMERO DE L'INDIC CRêE A CHAQUE TEXTE
-indicateur_paragraphes_prealables	ds	nombre_paragraphes ; NUMERO DE L'INDIC NECESSAIRE POUR LIRE CE TEXTE
+MES_DONNEES	=	*	; on démarre l'index à 1...
+
+indicateur	ds	nombre_indicateurs+1
+objet	ds	nombre_paragraphes+1
+peche	ds	nombre_paragraphes+1
+condition	ds	nombre_paragraphes+1
+consequence	ds	nombre_paragraphes+1
+deja_lu	ds	nombre_paragraphes+1
+visibilite	ds	nombre_objets+1
+texteDEBUT	ds	4
+	ds	nombre_paragraphes*4	; un long
+
+objet_selectionne	ds	2	; l'objet selectionne
+peche_selectionne	ds	2	; le peche selectionne
+texte_selectionne	ds	2	; le texte à afficher
+textes_encore_presents	ds	2	; false or true
+
+FIN_DATA	=	*
 
 *---
 
-icone_objets	ds	nombre_objets	; ICONES ALLUMêES OU ETEINTES
+icone_objets	ds	nombre_objets+1	; ICONES ALLUMêES OU ETEINTES
 icone_peches	ds	nombre_peches+1	; (+1 POUR L'INDICATEUR DE SUITE...)
 
 *---
@@ -114,8 +129,6 @@ fenetre_yy	dw	190,190,190,190,190,190,190,190,190
 
 *---
 
-nombre_objets =	8	; NOMBRE D'OBJETS
-
 objetTEXT	da	objetSTR1	; !NOM DE CHAQUE OBJET
 	da	objetSTR2
 	da	objetSTR3
@@ -124,7 +137,6 @@ objetTEXT	da	objetSTR1	; !NOM DE CHAQUE OBJET
 	da	objetSTR6
 	da	objetSTR7
 	da	objetSTR8
-	da	objetSTR9
 
 objetSTR1	asc	"LUNETTES"
 objetSTR2	asc	"CUILLERE"
@@ -134,9 +146,6 @@ objetSTR5	asc	"DICO"
 objetSTR6	asc	"BIJOUX"
 objetSTR7	asc	"CLES"
 objetSTR8	asc	"ARGENT"
-objetSTR9	asc	"FIN"
-
-ancien_objet ds	2
 
 objet_x	dw	238,222,195,0,27,131,276,133
 objet_y	dw	51,110,0,17,55,32,19,69
@@ -144,8 +153,6 @@ objet_xx	dw	283,268,266,57,106,178,319,188
 objet_yy	dw	88,151,39,54,103,64,50,101
 
 *---
-	
-nombre_peches =	7	; NOMBRE DE PECHES
 
 pecheTEXT	da	pecheSTR1	; NOM DE CHAQUE PECHE (+1 POUR L'INDIC SUITE...)
 	da	pecheSTR2
@@ -154,7 +161,6 @@ pecheTEXT	da	pecheSTR1	; NOM DE CHAQUE PECHE (+1 POUR L'INDIC SUITE...)
 	da	pecheSTR5
 	da	pecheSTR6
 	da	pecheSTR7
-	da	pecheSTR8
 
 pecheSTR1	asc	"ORGUEIL"
 pecheSTR2	asc	"AVARICE"
@@ -163,27 +169,11 @@ pecheSTR4	asc	"ENVIE"
 pecheSTR5	asc	"LUXURE"
 pecheSTR6	asc	"COLERE"
 pecheSTR7	asc	"PARESSE"
-pecheSTR8	asc	"suite"
 
 peche_x	dw	184,0,46,276,92,138,230
 peche_y	dw	162,162,162,162,162,162,162
 peche_xx	dw	227,43,89,319,135,181,273
 peche_yy	dw	199,199,199,199,199,199,199
-
-*---
-
-bloc_texte ds	2000
-mot	ds	128
-
-*---
-
-paragraphe	ds	nombre_paragraphes	; INDEX DE DES DEBUTS DES PARAGRAPHES
-pointeur_paragraphes ds	2
-paragraphes_lus	ds	2
-reference_objet	ds	nombre_paragraphes	; NUMERO DE L'OBJET ASSOCIE A CHAQUE PARAGRAPHE
-reference_peche	ds	nombre_paragraphes	; NUMERO DU PECHE ASSOCIE A CHAQUE PARAGRAPHE
-
-FIN_DATA	=	*
 
 *--- Sound files
 * SNDxy.SND where x is the scene, y the file index (0..9)

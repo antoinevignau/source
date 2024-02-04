@@ -1,0 +1,442 @@
+
+on startMovie
+  
+  global affiche,indicateur,objet,peche,condition
+  global consequence,deja_lu,objet_selectionne
+  global codage_original,visibilite,volume_original
+  
+  set the switchColorDepth to false
+  set the exitLock to true
+  
+  set codage_original=the colorDepth
+  set the colorDepth to 8
+  set volume_original=the soundLevel
+  set the soundLevel to 4
+  set the volume of sound 1 to 255
+  set the volume of sound 2 to 127
+  
+  set the textSize of field "sous titre" to 10
+  set the textFont of field "sous titre" to "Geneva"
+  set the textStyle of field "sous titre" to "Bold"
+  set the text of cast "sous titre" to " "
+  
+  put tableau(mNew) into affiche               -- sous-titre déjà affiché? (pendant la musique)
+  
+  put tableau(mNew) into indicateur            -- tableau des 18 indicateurs
+  indicateur(mPut,0,true)                      -- le numéro 0 est vrai (pour lire le 1er texte)
+  
+  put tableau(mNew) into objet                 -- objet des 65 textes
+  put tableau(mNew) into peche                 -- péché des 65 textes
+  put tableau(mNew) into condition             -- condition des 65 textes (avec "&")
+  put tableau(mNew) into consequence           -- consequence des 65 textes (avec "=")  
+  put tableau(mNew) into deja_lu               -- flag lu/non lu des 65 textes
+  put tableau(mNew) into visibilite            -- 8 objets visibles ou non
+  
+  set hasard=random(7)
+  if hasard=1 then set texte= "Militaires"
+  if hasard=2 then set texte= "Fachos"
+  if hasard=3 then set texte= "Chasseurs"
+  if hasard=4 then set texte= "Ivrognes"
+  if hasard=5 then set texte= "Beaufs"
+  if hasard=6 then set texte= "Exploitateurs"
+  if hasard=7 then set texte= "Réacs" 
+  
+  set the text of cast "texte militaires" to texte&": "&random(1000000)+100000&"FF"
+  
+  set hasard=random(7)
+  
+  if hasard=1 then set texte= "Fauchés, mais généreux quand même: 50FF"
+  if hasard=2 then set texte= "Objecteurs de conscience: 50FF"
+  if hasard=3 then set texte= "Contribution anormale: 150FF"
+  if hasard=4 then set texte= "Avares: 50FF"
+  if hasard=5 then set texte= "Pingres: 50FF"
+  if hasard=6 then set texte= "Pauvres (sur justificatif): 50FF"
+  if hasard=7 then set texte= "Bienfaiteurs: 150FF"
+  set the text of cast "texte sympas" to texte
+  
+  OpenResFile "Curseur"
+  
+  -- go to "shareware"
+end startMovie
+
+on FIN
+  global codage_original,volume_original
+  global deja_lu,indicateur
+  if the CommandDown=true and the key="q" then
+    set the soundlevel to volume_original
+    set the colorDepth=codage_original
+    
+    put  FILEIO(mNew,"write","Zohra (Marque-page)") into fichier
+    if objectP(fichier) then
+      set sauvegarde=EMPTY
+      repeat with numero=1 to 65
+        set sauvegarde=sauvegarde&&deja_lu(mGet,numero)
+      end repeat    
+      repeat with numero=1 to 18
+        set sauvegarde=sauvegarde&&indicateur(mGet,numero)
+      end repeat
+      
+      fichier(mWriteString,sauvegarde)
+      fichier(mWriteString,RETURN&RETURN&"Mettez ce fichier à la poubelle ¬
+pour recommencer la lecture au début."&RETURN)
+      fichier(mDispose)
+    else
+      updatestage
+      alert "Fichier non sauvegardé."
+    end if
+    
+    set the soundEnabled=false    
+    QUIT    
+  end if
+end FIN
+
+on stopMovie
+  repeat with piste=1 to 24
+    set the visibility of sprite piste to true
+  end repeat
+  closeResFile
+end stopMovie
+
+on GESTION_COUPLET1
+  if the key="1" then EFFET "ce monsieur!","1 ce monsieur",1
+  if the key="2" then EFFET "sa femme!","1 sa femme",2
+  if the key="3" then EFFET "le chameau!","1 le chameau",3
+  if the key="4" then EFFET "et toute la smala!","1 et toute la smala",4
+  if the key="5" then EFFET " ","1 batterie",5
+  if the key="6" then EFFET " ","1 flûte",6
+  if the key="7" then EFFET " ","1 synthé",7
+  if the key="8" then EFFET " ","1 trompette",8
+  if the key="9" then EFFET " ","1 trompette2",9
+  
+  if the key="0" then
+    RAZ_ST
+    go to "couplet2"
+  end if
+end GESTION_COUPLET1
+
+on GESTION_COUPLET2
+  if the key="1" then EFFET "des coins où les flics ne vont plus",¬
+"2 des coins où les flics",1
+  
+  if the key="2" then EFFET "y'a des quartiers arab'",¬
+"2 y'a des quartiers arabes",2
+  
+  if the key="3" then EFFET "si c'était des quartiers bretons...",¬
+"2 si c'était des quartiers",3
+  
+  if the key="4" then EFFET "some people from Nanterre, some people from Belleville!",¬
+"2 des gens de nanterre",4
+  
+  if the key="5" then EFFET " ", "2 boing",5
+  if the key="6" then EFFET " ", "2 couic",6
+  if the key="7" then EFFET " ", "2 sirènes",7
+  if the key="8" then EFFET " ", "2 guitare",8
+  if the key="9" then EFFET " ", "2 guitare2",9
+  
+  if the key="0" then
+    RAZ_ST
+    go to "couplet3"
+  end if
+end GESTION_COUPLET2
+
+on GESTION_COUPLET3
+  if the key="1" then EFFET "ces beaux-parleurs de la télévision?",¬
+"3 ces beaux parleurs",1
+  
+  if the key="2" then EFFET "qu'est-ce qu'ils ont fait pour la france?",¬
+"3 qu'est-ce qu'ils ont fait",2
+  
+  if the key="3" then EFFET "les trois quarts du temps, ¬
+ils n'ont pas fait leur service miliaire","3 les trois quarts du temps",3
+  
+  if the key="4" then EFFET "y sont même un peu pédés sur les bords!",¬
+"3 ils sont même un peu pédés",4
+  
+  if the key="5" then EFFET "hey hey hey!","3 hey hey hey",5
+  if the key="6" then EFFET " ", "3 cuivres",6
+  if the key="7" then EFFET " ", "3 dzoin",7
+  if the key="8" then EFFET " ", "3 déhème",8
+  if the key="9" then EFFET " ", "3 déhème2",9
+  
+  if the key="0" then
+    RAZ_ST
+    go to "couplet4"
+  end if
+end GESTION_COUPLET3
+
+on GESTION_COUPLET4
+  if the key="1" then EFFET "nous n'étions pas pour l'algérie française (??)",¬
+"4 nous n'étions pas pour",1
+  
+  if the key="2" then EFFET "nous étions pour l'algérie et le sahara français!",¬
+"4 nous étions pour l'algérie",2
+  
+  if the key="3" then EFFET "les sous-off' de la coloniale dont j'étais!",¬
+"4 les sous-off",3
+  
+  if the key="0" then
+    RAZ_ST
+    go to "couplet5"
+  end if
+end GESTION_COUPLET4
+
+on GESTION_COUPLET5
+  if the key="1" then EFFET "qui a la haine de l'étranger?",¬
+"5 qui a la haine de l'étranger?",1
+  
+  if the key="2" then EFFET "la terre de france, elle est d'abord aux français",¬
+"5 la terre de france",2
+  
+  if the key="3" then EFFET "on nous parle des collabos, y z'en ont fait moins",¬
+"5 on nous parle des collabos",3
+  
+  if the key="4" then EFFET "c'est le pen (de ch'val)","5 c'est le pen",4
+  if the key="5" then EFFET "est anti-français","5 est anti-français",5
+  if the key="6" then EFFET "nous sommes des a.....s",¬
+"5 nous sommes des abrutis",6
+  if the key="7" then EFFET " ", "5 beat",7
+  if the key="8" then EFFET " ", "5 gling",8
+  if the key="9" then EFFET " ", "5 gling2",9
+  
+  if the key="0" then PRESENTATION
+  
+end GESTION_COUPLET5
+
+on PRESENTATION
+  RAZ_ST
+  when keydown then FIN
+  repeat while the mouseDown=true
+  end repeat
+  go to "présentation"
+end PRESENTATION
+
+on EFFET message,son,numero
+  global affiche
+  if affiche(mget,numero)=0 then
+    set the text of cast "sous titre" to message
+    affiche(mPut,numero,1)
+    starttimer
+  else
+    set the text of cast "sous titre" to " "
+  end if
+  puppetSound son
+end EFFET    
+
+on RAZ_ST
+  global affiche
+  affiche(mDispose)
+  put tableau(mNew) into affiche
+  set the text of cast "sous titre" to " "
+  sound Stop 1
+  sound Stop 2
+end RAZ_ST
+
+factory TABLEAU
+end TABLEAU
+
+on ATTENTE temps
+  starttimer
+  repeat while the timer<(60*temps)
+    if the mouseDown=true then go to "shareware"
+  end repeat
+end ATTENTE
+
+on INITIALISATION_TEXTES
+  global objet,peche,condition,consequence
+  repeat with numero_texte=1 to 65
+    
+    set texte=the text of cast (the number of cast "texte"+numero_texte-1)
+    
+    set numero_objet=value(char 2 of texte)
+    objet(mPut,numero_texte,numero_objet)
+    
+    set numero_peche=char 3 of texte
+    peche(mPut,numero_texte,numero_peche)
+    
+    set numero_condition=value(char 2 to 3 of line 2 of texte)
+    condition(mPut,numero_texte,numero_condition)
+    
+    set numero_consequence=value(char 2 to 3 of line 3 of texte)
+    consequence(mPut,numero_texte,numero_consequence)
+    
+    --    put line 5 of texte
+    --   put "texte :"&numero_texte
+    --   put "objet :"&objet(mGet,numero_texte)
+    --   put "peche :"&peche(mGet,numero_texte)
+    --   put "condit:"&condition(mGet,numero_texte)
+    --   put "conseq:"&consequence(mGet,numero_texte)
+    --   put " "
+    
+  end repeat
+end INITIALISATION_TEXTES
+
+on CHARGEMENT
+  global deja_lu,indicateur
+  put  FILEIO(mNew,"read","Zohra (Marque-page)") into fichier
+  if objectP(fichier) then
+    repeat with numero=1 to 65   
+      put fichier(mReadWord) into charge 
+      deja_lu(mPut,numero,charge)
+    end repeat     
+    repeat with numero=1 to 18
+      put fichier(mReadWord) into charge
+      indicateur(mPut,numero,charge)
+    end repeat
+    fichier(mDispose)
+  end if
+end CHARGEMENT
+
+
+on GARDE argument
+  global objet_selectionne
+  set objet_selectionne=argument
+  repeat with numero_objet=1 to 8
+    if numero_objet<>objet_selectionne then
+      set the visibility of sprite (1+numero_objet) to false
+    end if
+  end repeat
+end GARDE
+
+on TEST_OBJETS
+  global deja_lu,objet,indicateur,condition,visibilite
+  
+  cursor 200 
+  set textes_encore_presents=false
+  repeat with numero_objet=1 to 8
+    set the visibility of sprite (1+numero_objet) to false
+    visibilite(mPut,numero_objet,false)
+  end repeat
+  
+  repeat with numero_texte =1 to 65
+    if deja_lu(mGet,numero_texte)=false then
+      if indicateur(Mget,condition(mGet,numero_texte))=true then
+        visibilite(mPut,objet(mGet,numero_texte),true)
+        set textes_encore_presents=true
+      end if
+    end if
+  end repeat
+  cursor 128 
+  
+  if textes_encore_presents=false then
+    repeat with piste=1 to 24
+      set the visibility of sprite piste to true              
+    end repeat
+    go to "texte fin"  
+  end if
+end TEST_OBJETS
+
+on TEST_PECHES
+  global deja_lu,objet,indicateur,condition,peche,objet_selectionne
+  cursor 200  
+  repeat with numero_peche=1 to 8
+    set the visibility of sprite (9+numero_peche) to false
+  end repeat
+  
+  repeat with numero_texte=1 to 65
+    if objet(mGet,numero_texte)=objet_selectionne then
+      if deja_lu(mGet,numero_texte)=false then
+        if indicateur(mGet,condition(mGet,numero_texte))=true then
+          set the visibility of sprite (9+peche(mGet,numero_texte)) to true
+          --       put "texte peche "&numero_texte 
+        end if
+      end if
+    end if
+  end repeat
+  cursor 128  
+end TEST_PECHES
+
+on AIGUILLAGE
+  global peche_selectionne,objet_selectionne,objet,peche
+  global deja_lu,condition,indicateur,consequence,texte_selectionne
+  
+  set texte_selectionne=0
+  repeat with texte=1 to 65
+    if objet(mGet,texte)=objet_selectionne then
+      if peche(mGet,texte)=peche_selectionne then
+        if deja_lu(mGet,texte)=false then
+          if indicateur(mGet,condition(mGet,texte))=true then
+            if texte_selectionne=0 then
+              set texte_selectionne=texte
+            end if
+          end if
+        end if
+      end if
+    end if
+  end repeat
+  
+  
+  repeat with piste=1 to 24
+    set the visibility of sprite piste to true              
+  end repeat
+  go to (marker ("textes"))+(texte_selectionne-1)*2
+  
+end AIGUILLAGE
+
+on PRE_SCROLL
+  global position_texte,haut_maxi,objet_selectionne
+  puppetsprite 2,true 
+  starttimer
+  
+  set the locV of sprite 2 to 68
+  set the locH of sprite 2 to 19
+
+  if objet_selectionne=4 or objet_selectionne=6 ¬
+or objet_selectionne=7 then
+    set the locV of sprite 2 to -36
+    set the locH of sprite 2 to 144
+  end if
+  if objet_selectionne=8 then
+    set the locV of sprite 2 to -25
+    set the locH of sprite 2 to 14
+  end if
+  
+  set position_texte=the locV of sprite 2
+  set haut_maxi=position_texte
+  
+  delay 60-the timer 
+end PRE_SCROLL
+
+on SCROLL
+  global position_texte,haut_maxi
+  
+  if the mousecast=the number of cast "contour blanc" then
+    set position_souris=the mouseV-(the top of sprite 7)-(the height of sprite 7)/2
+    
+    set vitesse=(30.0/the height of sprite 7)*position_souris
+    
+    cursor 200
+    repeat while the mouseDown=true
+      
+      if the bottom of sprite 2 - vitesse < (the bottom of sprite 7)-20 then 
+        set position_texte=(-the height of sprite 2)-19+the bottom of sprite 7
+        set vitesse=0      
+      end if
+      
+      if the top of sprite 2 - vitesse > haut_maxi then
+        set position_texte=haut_maxi
+        set vitesse=0
+      end if
+      
+      set position_texte=position_texte-vitesse
+      set the locV of sprite 2 = position_texte
+      updatestage
+    end repeat
+    cursor 128
+  end if
+end SCROLL
+
+on RETOUR
+  global texte_selectionne,deja_lu,indicateur,consequence 
+  if the doubleClick=true then
+    puppetsprite 2,false
+    repeat with piste=1 to 24
+      set the visibility of sprite piste to true
+    end repeat
+    deja_lu(mPut,texte_selectionne,true)
+    indicateur(mPut,consequence(mGet,texte_selectionne),true)
+    go to "bureau objets"
+  end if
+end RETOUR
+
+
+

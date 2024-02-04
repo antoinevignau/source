@@ -90,12 +90,10 @@ load_texte
 	lda	[3]
 	sta	ptrTEXTES
 	sta	proREAD+4
-	stal	$300
 	ldy	#2
 	lda	[3],y
 	sta	ptrTEXTES+2
 	sta	proREAD+6
-	stal	$302
 	pld
 	pla
 	pla
@@ -419,14 +417,15 @@ vigil
 * TEST_FIN - OK
 *-----------------------
 
-teste_fin	lda	paragraphes_lus
-	sec
-	sbc	pointeur_paragraphes
-	cmp	#1
-	bne	tf_99
-	
-	jmp	the_end
-	
+teste_fin
+*	lda	paragraphes_lus
+*	sec
+*	sbc	pointeur_paragraphes
+*	cmp	#1
+*	bne	tf_99
+*	
+*	jmp	the_end
+*	
 tf_99	rts
 
 *-----------------------
@@ -434,36 +433,36 @@ tf_99	rts
 *-----------------------
 
 demande_objet
-	ldx	#1
-]lp	lda	reference_peche-1,x
-	and	#$ff
-	cmp	#8
-	beq	do_1
-
-	lda	paragraphe_lu-1,x
-	and	#$ff
-	cmp	#FALSE
-	bne	do_1
-
-	lda	indicateur_paragraphes_prealables-1,x
-	and	#$ff
-	tay
-	lda	indicateur-1,y
-	and	#$ff
-	cmp	#TRUE
-	bne	do_1
-	
-	lda	reference_objet-1,x
-	and	#$ff
-	tay
-	sep	#$20
-	lda	#TRUE
-	sta	icone_objets-1,y
-
-do_1	inx
-	cpx	pointeur_paragraphes
-	bcc	]lp
-	beq	]lp
+*	ldx	#1
+*]lp	lda	reference_peche-1,x
+*	and	#$ff
+*	cmp	#8
+*	beq	do_1
+*
+*	lda	deja_lu,x
+*	and	#$ff
+*	cmp	#FALSE
+*	bne	do_1
+*
+*	lda	indicateur_paragraphes_prealables-1,x
+*	and	#$ff
+*	tay
+*	lda	indicateur-1,y
+*	and	#$ff
+*	cmp	#TRUE
+*	bne	do_1
+*	
+*	lda	reference_objet-1,x
+*	and	#$ff
+*	tay
+*	sep	#$20
+*	lda	#TRUE
+*	sta	icone_objets-1,y
+*
+*do_1	inx
+*	cpx	pointeur_paragraphes
+*	bcc	]lp
+*	beq	]lp
 
 *-------- Affichage des objets
 
@@ -509,29 +508,13 @@ affiche_image
 	rts
 
 *-----------------------
-* SAUVEGARDE - OK
-*-----------------------
-* sauvegarde -> doSAVE
-
-sauvegarde
-	rts
-
-*-----------------------
-* CHARGEMENT - OK
-*-----------------------
-* chargement -> doLOAD
-
-chargement
-	rts
-
-*-----------------------
 * THE_END - OK
 *-----------------------
 * the_end
 
 the_end
-	@cree_fenetre	#9;pointeur_paragraphes
-	jsr	pre_scrolling
+*	@cree_fenetre #9;pointeur_paragraphes
+*	jsr	pre_scrolling
 	
 	PushWord	#0
 	_ClearScreen
@@ -546,16 +529,6 @@ the_end
 * pre_scrolling
 
 pre_scrolling
-	sep	#$20
-	ldx	paragraphe
-	lda	#TRUE
-	sta	paragraphe_lu,x
-	rep	#$20
-
-	inc	paragraphes_lus
-
-* LOGO
-
 	rts
 
 *-----------------------
@@ -610,78 +583,29 @@ laPREZ	jmp	presentation
 
 init	PushWord	#$ffff
 	_ClearScreen
-	
-	jsr	init_resolution
-	jsr	mouse_off
-	jmp	init_routines
+	rts
 
 *-----------------------
 * INIT2 - OK
 *-----------------------
 
-init2	jsr	init_objets
-	jsr	init_peches
-	jsr	init_icones
-	jsr	init_indicateurs
-	jsr	init_fenetres
-	jsr	init_souris
-	jsr	load_texte	; au lieu d'init_texte
-	jsr	chargement
-	jmp	mouse_on
+init2
+	ldx	#FIN_DATA-DEBUT_DATA
+]lp	stz	fgTHEEND,x
+	dex
+	bne	]lp
 
-*-----------------------
-* INIT_RESOLUTION - OK
-*-----------------------
-
-init_resolution
-	rts
-
-*-----------------------
-* INIT_INDICATEURS - OK
-*-----------------------
-* init_indicateurs
-
-init_indicateurs
+	ldx	#0	; l'indicateur 0 est toujours vrai
 	sep	#$20
-	ldx	#0
-]lp	stz	indicateurTEXT,x
-	stz	indicateur,x
-	inx
-	cpx	#nombre_indicateurs
-	bcc	]lp
-
-	stz	pointeur_indicateurs
-
-	ldx	#0
-]lp	stz	paragraphe_lu,x
-	stz	indicateur_paragraphes,x
-	stz	indicateur_paragraphes_prealables,x
-	inx
-	cpx	#nombre_paragraphes
-	bcc	]lp
-
-	ldx	#0
 	lda	#TRUE
 	sta	indicateur,x
 	rep	#$20
-	rts
 
-*-----------------------
-* INIT_OBJETS - OK
-*-----------------------
-* init_objets
-
-init_objets
-	stz	ancien_objet
-	rts
-
-*-----------------------
-* INIT_PECHES - OK
-*-----------------------
-* init_peches
-
-init_peches
-	rts
+	jsr	init_icones
+	jsr	init_souris
+	jsr	load_texte
+	jsr	init_texte
+	jmp	mouse_on
 
 *-----------------------
 * INIT_ICONES - OK
@@ -689,27 +613,8 @@ init_peches
 * init_icones
 
 init_icones
-	PushWord	#0
-	_ClearScreen
-
 	@loadfile	#pFOND;ptrFOND
 	@loadfile	#pICONES;ptrICONES
-	rts
-
-*-----------------------
-* INIT_ROUTINES - OK
-*-----------------------
-* init_routines
-
-init_routines
-	rts
-
-*-----------------------
-* INIT_FENETRES - OK
-*-----------------------
-* init_fenetres
-
-init_fenetres
 	rts
 
 *-----------------------
@@ -723,49 +628,246 @@ init_souris
 	rts
 
 *-----------------------
-* DATAS_INIT - OK
-*-----------------------
-* datas_init
-
-datas_init
-	rts
-
-*-----------------------
-* INIT_TEXTE - OK
+* INIT_TEXTE
 *-----------------------
 * init_texte
 
 init_texte
-	rts
+	lda	ptrTEXTES
+	sta	Debut
+	lda	ptrTEXTES+2
+	sta	Debut+2
 
-*-----------------------
-* INIT_INDICATEURS_TEXTE
-*-----------------------
-* init_indicateurs_texte
-
-init_indicateurs_texte
+	ldx	#1
 	sep	#$20
-	ldx	#0
-]lp	stz	paragraphe,x
+
+]lp	lda	[Debut]	; un paragraphe débute toujours par *
+it_1	cmp	#'*'
+	beq	it_ok
+	jsr	it_next
+	bra	it_1
+it_ok	jsr	it_objpec	; enregistre le *
+	jsr	it_condit	; le &, condition
+	jsr	it_conseq	; le =, consequence
+	jsr	it_texte	; le pointeur du texte
+
 	inx
 	cpx	#nombre_paragraphes
 	bcc	]lp
+	beq	]lp
+
 	rep	#$20
+	rts
 
-* paragraphe%(1)=0
+	mx	%10
+
+*--- * - objet + peche (tjs 2)
+
+it_objpec	jsr	it_next
+	sec
+	sbc	#'0'
+	sta	objet,x
+	jsr	it_next
+	sec
+	sbc	#'0'
+	sta	peche,x
+	jmp	it_return
+
+*--- & - condition
+
+it_condit	jsr	it_next
+	sec
+	sbc	#'0'
+	sta	condition,x
+	jsr	it_next
+	cmp	#' '
+	beq	it_condit1	; c'était bien une unité
+	cmp	#chrRET
+	beq	it_condit1
+	sec		; c'était une dizaine
+	sbc	#'0'
+	clc
+	adc	#10
+	sta	condition,x
+it_condit1	jmp	it_return
+
+*--- =
+
+it_conseq	jsr	it_next
+	sec
+	sbc	#'0'
+	sta	consequence,x
+	jsr	it_next
+	cmp	#' '
+	beq	it_conseq1	; c'était bien une unité
+	cmp	#chrRET
+	beq	it_conseq1
+	sec		; c'était une dizaine
+	sbc	#'0'
+	clc
+	adc	#10
+	sta	consequence,x
+it_conseq1		; fall into it_return
+
+*--- positionnne juste après un return
+
+it_return	lda	[Debut]
+]lp	cmp	#chrRET
+	beq	it_return1
+	jsr	it_next
+	bra	]lp
+it_return1		; fall into it_next
+
+*--- next value
+
+it_next	inc	Debut
+	bne	it_next1
+	inc	Debut+1
+	bne	it_next1
+	inc	Debut+2
+it_next1	lda	[Debut]
+	rts
+
+*--- adresse du texte
+
+it_texte	rep	#$20
+	txa
+	asl
+	asl
+	tay
+	lda	Debut
+	sta	texteDEBUT,y
+	lda	Debut+2
+	sta	texteDEBUT+2,y
+	sep	#$20
+	rts
+
+	mx	%00
+
+*-----------------------
+* TEST_OBJETS
+*-----------------------
+* test_objets = affiche les objets possibles
+
+test_objets	stz	textes_encore_presents
+
+	sep	#$30
+	ldx	#1
+]lp	stz	icone_objets,x
+	stz	visibilite,x
+	inx
+	cpx	#nombre_objets
+	bcc	]lp
+	beq	]lp
+
+	ldx	#1
+]lp	lda	deja_lu,x
+	cmp	#FALSE
+	bne	to_1
+	ldy	condition,x
+	lda	indicateur,y
+	cmp	#TRUE
+	bne	to_1
+	ldy	objet,x
+	lda	#TRUE
+	sta	visibilite,y
+	sta	textes_encore_presents
+
+to_1	inx
+	cpx	#nombre_paragraphes
+	bcc	]lp
+	beq	]lp
 	
-	stz	pointeur_paragraphes
-	stz	paragraphes_lus
+	rep	#$30
 
-* LOGO
+* LoGo - Voir comment on traite la fin
 
 	rts
 
 *-----------------------
-* 
+* TEST_PECHES
 *-----------------------
+* test_peches = affiche les peches possibles
 
-lookindex
+test_peches	sep	#$30
+
+	ldx	#1
+]lp	stz	icone_peches,x
+	inx
+	cpx	#nombre_peches
+	bcc	]lp
+	beq	]lp
+
+	ldx	#1
+]lp	lda	objet,x
+	cmp	objet_selectionne
+	bne	tp_1
+	lda	deja_lu,x
+	cmp	#FALSE
+	bne	tp_1
+	ldy	condition,x
+	lda	indicateur,y
+	cmp	#TRUE
+	bne	tp_1
+	ldy	peche,x
+	lda	#TRUE
+	sta	icone_peches-1,y
+tp_1	inx
+	cpx	#nombre_paragraphes
+	bcc	]lp
+	beq	]lp
+
+	rep	#$30
+	rts
+
+*-----------------------
+* RETOUR
+*-----------------------
+* retour = le texte est lu
+
+retour	sep	#$30
+
+	ldx	texte_selectionne
+	lda	#TRUE
+	sta	deja_lu,x
+	
+	ldy	consequence,x
+	sta	indicateur,y
+	
+	rep	#$30
+	rts
+
+*-----------------------
+* AIGUILLAGE
+*-----------------------
+* aiguillage = le texte à afficher
+
+aiguillage	stz	texte_selectionne
+
+	sep	#$30
+	ldx	#1
+]lp	lda	objet,x
+	cmp	objet_selectionne
+	bne	ai_next
+	lda	peche,x
+	cmp	peche_selectionne
+	bne	ai_next
+	lda	deja_lu,x
+	cmp	#FALSE
+	bne	ai_next
+	ldy	condition,x
+	lda	indicateur,y
+	cmp	#TRUE
+	bne	ai_next
+	lda	texte_selectionne
+	bne	ai_next
+	stx	texte_selectionne
+ai_next	inx
+	cpx	#nombre_paragraphes
+	bcc	]lp
+	beq	]lp
+
+	rep	#$30
 	rts
 
 *-----------------------
@@ -791,8 +893,9 @@ presentation
 
 	lda	index
 	inc
-	cmp	#nombre_objets+1
+	cmp	#nombre_objets
 	bcc	]lp
+	beq	]lp
 	rts
 
 *---
@@ -1093,8 +1196,7 @@ show_screen2
 *-----------------------
 * mouse_on
 
-mouse_on
-	_ShowCursor
+mouse_on	_ShowCursor
 	rts
 
 *-----------------------
@@ -1102,8 +1204,7 @@ mouse_on
 *-----------------------
 * mouse_off
 
-mouse_off
-	_HideCursor
+mouse_off	_HideCursor
 	rts
 
 *-----------------------

@@ -508,7 +508,8 @@ it_1	cmp	#'*'
 	beq	it_ok
 	jsr	it_next
 	bra	it_1
-it_ok	jsr	it_objpec	; enregistre le *
+it_ok	jsr	it_fin	; le pointeur de fin
+	jsr	it_objpec	; enregistre le *
 	jsr	it_condit	; le &, condition
 	jsr	it_conseq	; le =, consequence
 	jsr	it_texte	; le pointeur du texte
@@ -590,6 +591,26 @@ it_next	inc	Debut
 it_next1	lda	[Debut]
 	rts
 
+*--- fin du texte (adresse d'*)
+
+it_fin	cpx	#1
+	bne	it_fin1
+	rts
+it_fin1	rep	#$20
+	txa
+	asl
+	asl
+	tay
+	lda	Debut
+	sec
+	sbc	texteDEBUT-4,y
+	dec
+	sta	texteLEN-4,y
+	sep	#$20
+	rts
+	
+	mx	%00
+
 *--- adresse du texte
 
 it_texte	rep	#$20
@@ -657,7 +678,9 @@ to_2	plx
 	cpx	#nombre_objets
 	bcc	]lp
 	beq	]lp
-	rts
+	
+	jmp	setDESKTOP
+*	rts
 
 *-----------------------
 * TEST_PECHES
@@ -710,9 +733,9 @@ do_2	plx
 	cpx	#nombre_peches
 	bcc	]lp
 	beq	]lp
-	rts
 
-	rts
+	jmp	setDESKTOP
+*	rts
 
 *-----------------------
 * RETOUR
@@ -998,7 +1021,7 @@ carreRECT	ds	2	; y0
 	ds	2	; y0+12
 
 *-----------------------
-* CREE_FENETRE
+* CREE_FENETRE - OK
 *-----------------------
 * cree_fenetre(objet%,paragraphe%)
 *  A : objet
@@ -1008,27 +1031,34 @@ cree_fenetre
 	lda	#$0fff
 	stal	$019e1e
 	stal	$e19e1e
+
+* 1. les coordonnees de la fenetre
 	
 	lda	objet_selectionne
 	asl
 	tax
 	lda	fenetre_y,x
-	sta	fenetreRECT
-	sta	teRECT
+	sta	winRECT
 	lda	fenetre_x,x
-	sta	fenetreRECT+2
-	sta	teRECT+2
+	sta	winRECT+2
 	lda	fenetre_yy,x
-	sta	fenetreRECT+4
-	sta	teRECT+4
+	sta	winRECT+4
 	lda	fenetre_xx,x
-	sta	fenetreRECT+6
-	sta	teRECT+6
+	sta	winRECT+6
+
+* 2. on en deduit les dimensions du controle
+
+	lda	fenetre_yy,x
+	sec
+	sbc	fenetre_y,x
+	sta	teRECT+4
 	
-	PushLong	#fenetreRECT
-	PushWord	#$0000
-	PushWord	#$0000
-	_SpecialRect
+	lda	fenetre_xx,x
+	sec
+	sbc	fenetre_x,x
+	sta	teRECT+6
+
+* 3. on ajoute le texte et sa longueur
 	
 	lda	texte_selectionne
 	asl
@@ -1039,21 +1069,21 @@ cree_fenetre
 	lda	texteDEBUT+2,x
 	sta	teTEXT+2
 	
-	lda	texteDEBUT+4,x
-	sec
-	sbc	teTEXT
+	lda	texteLEN,x
 	sta	teLEN
-	lda	texteDEBUT+6,x
-	sbc	teTEXT+2
-	sta	teLEN+2
+
+* 4. on affiche le tout
 	
 	PushLong	#0
-	PushLong	wiMAIN
-	PushWord	#0
-	PushLong	#teCONTROL
-	_NewControl2
-	PullLong	haCONTROL
-	
+	PushLong	#0
+	PushLong	#wMAIN
+	PushLong	#PAINTMAIN
+	PushLong	#0
+	PushWord	#refIsPointer
+	PushLong	#theWINDOW
+	PushWord	#$800e
+	_NewWindow2
+	PullLong	wiMAIN
 	rts
 
 *-----------------------

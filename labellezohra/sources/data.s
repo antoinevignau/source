@@ -103,7 +103,9 @@ condition	ds	nombre_paragraphes+1
 consequence	ds	nombre_paragraphes+1
 deja_lu	ds	nombre_paragraphes+1
 texteDEBUT	ds	4
-	ds	nombre_paragraphes*4	; un long
+	ds	nombre_paragraphes*4	; long
+texteLEN	ds	4
+	ds	nombre_paragraphes*4	; long
 
 MES_DONNEES	=	*	; on démarre l'index à 1...
 
@@ -122,6 +124,37 @@ texte_selectionne	ds	2	; le texte à afficher
 textes_encore_presents	ds	2	; false or true
 
 FIN_DATA	=	*
+
+*--- The Window
+
+theWINDOW	dw	$0050
+	dw	%00000000_00100000	; visible only
+	ds	4
+	ds	4
+	ds	2
+	ds	2
+	ds	2
+	ds	2
+	ds	4
+	ds	2
+	ds	2
+	ds	2
+	ds	2
+	ds	2
+	ds	2
+	ds	2
+	ds	2
+	ds	2
+	ds	2
+	ds	4
+	ds	2
+	ds	4
+	ds	4
+	ds	4
+winRECT	ds	8	; content rect
+	adrl	$ffffffff
+	adrl	teCONTROL
+	dw	%00000000_00000000
 
 *--- The Text Edit control
 

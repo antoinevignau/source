@@ -196,7 +196,18 @@ okMEM1	sty	ptrIMAGE
 
 	sty	ptrUNPACK
 	stx	ptrUNPACK+2
-	
+
+*--- 32KB pour le pseudo desktop
+
+	pha
+	pha
+	PushLong	#$7d08
+	PushWord	myID
+	PushWord	#%11000000_00000000
+	PushLong	#0
+	_NewHandle
+	PullLong	haDESKTOP
+
 *--- Chargement des outils
 
 	pha
@@ -248,25 +259,17 @@ noSOUND	_HideMenuBar
 
 	_InitCursor
 
-	PushLong	#0
-	PushWord	#5	; SetDeskPat
-	PushWord	#$4000
-	PushWord	#$0000
-	_Desktop
-	pla
-	pla
-
-	pha
-	pha
-	PushLong	#0
-	PushLong	#wMAIN
-	PushLong	#PAINTMAIN
-	PushLong	#0
-	PushWord	#refIsResource
-	PushLong	#wMAIN
-	PushWord	#$800e
-	_NewWindow2
-	PullLong	wiMAIN
+*	pha
+*	pha
+*	PushLong	#0
+*	PushLong	#wMAIN
+*	PushLong	#PAINTMAIN
+*	PushLong	#0
+*	PushWord	#refIsResource
+*	PushLong	#wMAIN
+*	PushWord	#$800e
+*	_NewWindow2
+*	PullLong	wiMAIN
 
 *----------------------------------------
 * INITIALISATIONS
@@ -1059,6 +1062,31 @@ LZ4_End	sty	lenDATA		; Y = length of unpacked data
 lenDATA	ds	4
 
 *-----------------------------------
+* SET THE DESKTOP
+*-----------------------------------
+
+setDESKTOP	_HideCursor
+	PushLong	ptrSCREEN
+	PushLong	haDESKTOP
+	PushLong	#$7d08
+	_PtrToHand
+	_ShowCursor
+
+*	PushWord	#1	; add message of desktop type
+*	PushWord	#2
+*	PushLong	haDESKTOP
+*	_MessageCenter
+	
+*	pha
+*	pha
+*	PushWord	#3	; SetDesktop
+*	PushLong	haDESKTOP
+*	_Desktop
+*	pla
+*	pla
+	rts
+
+*-----------------------------------
 * SAVE THE SHR SCREEN
 *-----------------------------------
 
@@ -1153,6 +1181,8 @@ ptrICONES	adrl	$8000	; $0000: fond d'icônes du jeu
 ptrUNPACK	ds	4	; $0000: where the background picture is laoded
 
 ptrTEXTES	ds	4	; les pointeurs des textes
+
+haDESKTOP	ds	4	; handle du desktop
 
 haBEAT	ds	4
 ptrBEAT	ds	4

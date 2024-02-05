@@ -127,9 +127,9 @@ fgRESTART	=	2
 	tdc
 	sta	myDP
 
-	lda	#ai_affiche
+	lda	#MES_DONNEES
 	stal	$300
-	lda	#^ai_affiche
+	lda	#^MES_DONNEES
 	stal	$302
 	
 *--- Version du systeme
@@ -253,18 +253,6 @@ noSOUND	_HideMenuBar
 	_FlushEvents
 	pla
 
-*	pha
-*	pha
-*	PushLong	#0
-*	PushLong	#wMAIN
-*	PushLong	#PAINTMAIN
-*	PushLong	#0
-*	PushWord	#refIsResource
-*	PushLong	#wMAIN
-*	PushWord	#$800e
-*	_NewWindow2
-*	PullLong	wiMAIN
-
 *----------------------------------------
 * INITIALISATIONS
 *----------------------------------------
@@ -272,12 +260,12 @@ noSOUND	_HideMenuBar
 entryPOINT
 	jsr	TWILIGHToff
 	jsr	set_language
+	jsr	antoine	; le menu principal
 	jsr	init
-	jsr	antoine	; on change !
+
+restartPOINT
 	jsr	init2
 	
-*	@fadein	ptrFOND;#TRUE
-
 *-----------------------
 * MAIN
 *-----------------------
@@ -287,9 +275,9 @@ mainLOOP	PushLong	ptrFOND
 	PushLong	#32768
 	_BlockMove
 
-	jsr	test_fin
 	jsr	test_objets
-	
+	jsr	test_fin
+
 refreshLOOP
 	jsr	refreshME
 
@@ -315,25 +303,18 @@ taskLOOP	inc	VBLCounter0
 	_TaskMaster
 	pla
 	beq	taskLOOP
-	 
+	
 	asl
 	tax
 	jsr	(taskTBL,x)
 	
+	cmp	#$bcbc	; on recommence
+	beq	restartPOINT
 	cmp	#$bdbd	; on a fini de consulter un texte
 	beq	mainLOOP
 	cmp	#$bebe	; on voudrait consulter un texte
 	beq	refreshLOOP
-	bne	taskLOOP	; sinon, on boucle standard
-
-*----------------------------------- Le code habituel	
-
-DEBUG	sep	#$20
-	ldal	$c034
-	inc
-	stal	$c034
-	rep	#$20
-	rts
+	bra	taskLOOP	; sinon, on boucle standard
 
 *----------------------------------- Gestion du keyDown
 * on gère les open-apple-qqch
@@ -377,7 +358,7 @@ tblKEYVALUE
 	asc	'Zz'
 	asc	'*'
 	hex	ff
-	
+
 tblKEYADDRESS
 	da	doQUIT,doQUIT,doLOAD,doLOAD,doSAVE,doSAVE
 	da	doRESTART,doRESTART
@@ -390,7 +371,12 @@ doMUSIK	rts
 * on compare les coordonnées avec celles du incontent
 * si dans le même rectangle, on traite
 
-doMOUSEUP	lda	objet_selectionne	; on a déjà un objet, saute
+doMOUSEUP	lda	textes_encore_presents	; on a fini le jeu
+	bne	domu_0
+	lda	#$bcbc
+	rts
+	 	
+domu_0	lda	objet_selectionne	; on a déjà un objet, saute
 	bne	domu_2
 
 * 1. vérifie si on a cliqué dans un objet
@@ -399,7 +385,7 @@ doMOUSEUP	lda	objet_selectionne	; on a déjà un objet, saute
 	bcc	domu_1		; on a clique dans un objet
 	lda	#0
 	rts
-domu_1	jsr	test_peches		; on a clique dans un objet, affiche les peches qui correspondent
+domu_1	jsr	test_peches		; on a clique dans un objet, affiche les peches correspondants
 	lda	#$bebe		; il faudra rafraîchir l'écran
 	rts
 
@@ -416,18 +402,32 @@ domu_3	jsr	aiguillage		; choisit le texte correspondant
 	lda	#$bebe		; il faudra rafraîchir l'écran
 domu_4	rts
 
+*----------------------------------- Gestion des controles
+
+doCONTROL	lda	taskREC+38
+	asl
+	tax
+	jmp	(ctrlTBL,x)
+
 *----------------------------------- Clic dans le contenu de la fenêtre
 
-doCONTENT	lda	texte_selectionne
+doCONTENT	lda	textes_encore_presents
 	bne	doco_1
+	
+	jsr	doco_3	; detruit le controle
+	lda	#$bcbc	; et force l'init
 	rts
 
-doco_1	jsr	retour	; on marque le texte comme lu
+doco_1	lda	texte_selectionne
+	bne	doco_2
+	rts
+
+doco_2	jsr	retour	; on marque le texte comme lu
 	stz	peche_selectionne
 	stz	objet_selectionne
 	stz	texte_selectionne
 
-	PushLong	haCONTROL	; on enlève le contrôle
+doco_3	PushLong	haCONTROL	; on enlève le contrôle
 	_DisposeControl
 	
 	stz	haCONTROL
@@ -438,13 +438,6 @@ doco_1	jsr	retour	; on marque le texte comme lu
 
 	lda	#$bdbd	; il faut rafraîchir les objets !
 	rts		; et on revient
-
-*----------------------------------- Gestion des controles
-
-doCONTROL	lda	taskREC+38
-	asl
-	tax
-	jmp	(ctrlTBL,x)
 
 *----------------------------------------
 * RAFRAICHIT LES PALETTES ET LA FENETRE
@@ -568,10 +561,25 @@ doLOAD
 	rts
 
 doLOAD1	jsr	copyPATH
-	jsr	loadALL
-	bcc	doLOAD2
-	rts
-doLOAD2	rts
+
+	jsl	GSOS
+	dw	$2010
+	adrl	proOPENGAME
+	bcs	loadKO99
+
+	lda	proOPENGAME+2
+	sta	proREADGAME+2
+	sta	proCLOSE+2
+	
+	jsl	GSOS
+	dw	$2012
+	adrl	proREADGAME
+
+	jsl	GSOS
+	dw	$2014
+	adrl	proCLOSE
+
+loadKO99	rts
 
 *----------------------------------- Save
 
@@ -595,48 +603,8 @@ doSAVE
 	rts
 
 doSAVE1	jsr	copyPATH
-	jmp	saveALL
-	
-*--- Recopie le filename du fichier de sauvegarde
-
-copyPATH	sep	#$20
-	ldx	#16-1
-]lp	lda	namePATH1,x
-	sta	pGAME+4,x
-	dex
-	bpl	]lp
-	
-	lda	namePATH
-	inc
-	inc
-	sta	pGAME
-	rep	#$20
-	rts
-
-*--- Charge le fichier de sauvegarde en mémoire
-
-loadALL	jsl	GSOS
-	dw	$2010
-	adrl	proOPENGAME
-	bcs	loadKO99
-
-	lda	proOPENGAME+2
-	sta	proREADGAME+2
-	sta	proCLOSE+2
-	
-	jsl	GSOS
-	dw	$2012
-	adrl	proREADGAME
 
 	jsl	GSOS
-	dw	$2014
-	adrl	proCLOSE
-
-loadKO99	rts
-
-*--- Enregistre le fichier de sauvegarde
-
-saveALL	jsl	GSOS
 	dw	$2002
 	adrl	proDESTROYGAME
 	
@@ -663,6 +631,22 @@ saveALL	jsl	GSOS
 	adrl	proCLOSE
 
 saveKO99	rts
+	
+*--- Recopie le filename du fichier de sauvegarde
+
+copyPATH	sep	#$20
+	ldx	#16-1
+]lp	lda	namePATH1,x
+	sta	pGAME+4,x
+	dex
+	bpl	]lp
+	
+	lda	namePATH
+	inc
+	inc
+	sta	pGAME
+	rep	#$20
+	rts
 
 *----------------------------------- Restart
 
@@ -685,11 +669,7 @@ doRESTART
 	beq	re1
 *	jmp	resumeMUSIC	; NTP on
 	
-re1
-*	jsr	fin_aventure
-*	jsr	initialisation_absolue
-*	lda	#fgRESTART
-*	sta	escape
+re1	lda	#$bcbc
 	rts
 
 *----------------------------------- Quit
@@ -1413,41 +1393,12 @@ taskTBL	da	doNOT	; 0 Null
 	da	doNOT	; wInCalledSysEdit
 	da	doNOT	; wInTrackZoom
 	da	doNOT	; wInHitFrame
-	da	doNOT	; wInControl
+	da	doCONTROL	; wInControl
 	da	doNOT	; wInControlMenu
 
-ctrlTBL	da	doNOT
-	da	doNOT
-	da	doNOT
-	da	doNOT
-	da	doNOT
-	da	doNOT
-	da	doNOT
-	da	doNOT
-	da	doNOT
-	da	doNOT
-	da	doNOT
-	da	doNOT
-	da	doNOT
-	da	doNOT
-	da	doNOT
-	da	doNOT
-	da	doNOT
-	da	doNOT
-	da	doNOT
-	da	doNOT
-	da	doNOT
-	da	doNOT
-	da	doNOT
-	da	doNOT
-	da	doNOT
-	da	doNOT
-	da	doNOT
-	da	doNOT
-	da	doNOT
-	da	doNOT
-	da	doNOT
-
+ctrlTBL	da	doNOT	; 0
+	da	doNOT	; 1 - textedit
+	
 *----------------------------------------
 * STD FILE
 *----------------------------------------
@@ -1528,7 +1479,7 @@ proCREATEGAME
 	adrl	pGAME	; pathname
 	dw	$c3	; access_code
 	dw	$5d	; file_type
-	adrl	$8020	; aux_type
+	adrl	$8021	; aux_type
 	ds	2	; storage_type
 	ds	4	; eof
 	ds	4	; resource_eof

@@ -39,21 +39,6 @@ soundadrh	=	$3f	; $c03f
 	eom
 
 *-----------------------
-* DATA_ERROR - OK
-*-----------------------
-* data_error
-
-data_error	pha
-	PushLong #pgmSTR1
-	PushLong #pgmSTR2
-	PushLong #errSTR3
-	PushLong #errSTR2
-	_TLTextMountVolume
-	pla
-	sec
-	rts
-
-*-----------------------
 * LOAD_TEXTE - OK
 *-----------------------
 * load_texte
@@ -110,11 +95,19 @@ lt_err1	jsl	GSOS
 lt_err2	rts
 
 *-----------------------
-* TEST LA FIN DU JEU
+* TEST_FIN - OK
 *-----------------------
+* test_fin = a-t-on parcouru tous les textes ?
 
-test_fin
+test_fin	lda	textes_encore_presents
+	beq	tf_gagne
 	rts
+
+tf_gagne	lda	#nombre_objets+1
+	sta	objet_selectionne
+	lda	#nombre_paragraphes+1
+	sta	texte_selectionne
+	jmp	cree_fenetre
 
 *-----------------------
 * TEST_OBJETS
@@ -487,26 +480,12 @@ tblLANG	asc	'us'	; 0
 	asc	'us'	; 19
 
 *-----------------------
-* THE_END - OK
-*-----------------------
-* the_end
-
-the_end
-*	@cree_fenetre #9;pointeur_paragraphes
-*	jsr	pre_scrolling
-	
-	PushWord	#0
-	_ClearScreen
-	
-	lda	#TRUE
-	sta	fgTHEEND
-	rts
-
-*-----------------------
 * CHOIX D'ENTREE - OK
 *-----------------------
 
-antoine
+antoine	PushWord	#$ffff
+	_ClearScreen
+	
 	@t	#strMENU1;#10
 	@t	#strMENU2;#12
 	@t	#strMENU3;#14
@@ -560,31 +539,27 @@ theTICK	ds	4	; le tick ˆ atteindre (tick + 5x60)
 *-----------------------
 * init
 
-init	PushWord	#$ffff
-	_ClearScreen
-	rts
+init	jsr	init_icones
+	jsr	init_souris
+	jsr	load_texte
+	jsr	init_texte
+	jmp	mouse_on
 
 *-----------------------
 * INIT2 - OK
 *-----------------------
 
-init2
-*	ldx	#FIN_DATA-DEBUT_DATA
-*]lp	stz	fgTHEEND,x
-*	dex
-*	bne	]lp
+init2	sep	#$20
 
-	ldx	#0	; l'indicateur 0 est toujours vrai
-	sep	#$20
-	lda	#TRUE
+	ldx	#FIN_DATA-DEBUT_DATA
+]lp	stz	DEBUT_DATA,x
+	dex
+	bne	]lp
+
+	lda	#TRUE	; l'indicateur 0 est toujours vrai
 	sta	indicateur,x
 	rep	#$20
-
-	jsr	init_icones
-	jsr	init_souris
-	jsr	load_texte
-	jsr	init_texte
-	jmp	mouse_on
+	rts
 
 *-----------------------
 * INIT_ICONES - OK
@@ -648,7 +623,7 @@ it_ok	jsr	it_fin	; le pointeur de fin
 	jsr	it_texte	; le pointeur du texte
 
 	inx
-	cpx	#nombre_paragraphes
+	cpx	#nombre_paragraphes+2	; pour traiter la fin
 	bcc	]lp
 	beq	]lp
 
@@ -1104,19 +1079,7 @@ cree_fenetre
 	sbc	#delta_ctl
 	sta	teRECT+6
 
-* 2. on en deduit les dimensions du controle
-
-*	lda	fenetre_yy,x
-*	sec
-*	sbc	fenetre_y,x
-*	sta	teRECT+4
-*	
-*	lda	fenetre_xx,x
-*	sec
-*	sbc	fenetre_x,x
-*	sta	teRECT+6
-
-* 3. on ajoute le texte et sa longueur
+* 2. on ajoute le texte et sa longueur
 	
 	lda	texte_selectionne
 	asl
@@ -1130,30 +1093,14 @@ cree_fenetre
 	lda	texteLEN,x
 	sta	teLEN
 
-* 4. on affiche le tout
+* 3. on affiche le tout
 
-*	PushLong	#fenetreRECT
-*	PushWord	#$ffff
-*	PushWord	#$ffff
-*	_SpecialRect
-	
 	PushLong	#0
 	PushLong	wiMAIN
 	PushWord	#refIsPointer
 	PushLong	#teCONTROL
 	_NewControl2
 	PullLong	haCONTROL
-
-*	PushLong	#0
-*	PushLong	#0
-*	PushLong	#wMAIN
-*	PushLong	#PAINTMAIN
-*	PushLong	#0
-*	PushWord	#refIsPointer
-*	PushLong	#theWINDOW
-*	PushWord	#$800e
-*	_NewWindow2
-*	PullLong	wiMAIN
 	rts
 
 *-----------------------

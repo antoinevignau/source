@@ -77,50 +77,58 @@ tblUPPER	hex	000102030405060708090A0B0C0D0E0F
 * DATA
 *-----------------------
 
-DEBUT_DATA	=	*
-
-*--- Mes variables
-
-fgTHEEND	ds	2	; LOGO
-i	ds	2
-j	ds	2
-index	ds	2
-theA	ds	2
-theX	ds	2
-theY	ds	2
-
-*--- Variables du jeu
-
 nombre_indicateurs	=	18	; NOMBRE MAXI D'INDICATEURS
 nombre_paragraphes	=	65	; NOMBRE MAXI DE TEXTES
 nombre_objets	=	8	; NOMBRE D'OBJETS
 nombre_peches	=	7	; NOMBRE DE PECHES
 
-indicateur	ds	nombre_indicateurs+1
-objet	ds	nombre_paragraphes+1
-peche	ds	nombre_paragraphes+1
-condition	ds	nombre_paragraphes+1
-consequence	ds	nombre_paragraphes+1
-deja_lu	ds	nombre_paragraphes+1
+*--- Les variables globales
+
+MES_DONNEES	=	*
+
+	asc	"OBJET"
+objet	ds	nombre_paragraphes+3	; +2 pour couvrir le texte de fin
+	asc	"PECHE"
+peche	ds	nombre_paragraphes+3
+	asc	"CONDITION"
+condition	ds	nombre_paragraphes+3
+	asc	"CONSEQUENCE"
+consequence	ds	nombre_paragraphes+3
+
+	asc	"TEXTEDEBUT"
 texteDEBUT	ds	4
 	ds	nombre_paragraphes*4	; long
+	ds	4		; la fin
+	ds	4		; fin de fichier
+	asc	"TEXTELEN"
 texteLEN	ds	4
 	ds	nombre_paragraphes*4	; long
+	ds	4		; la fin
+	ds	4		; toujours 0
 
-MES_DONNEES	=	*	; on démarre l'index à 1...
+*--- Les variables qui s'effacent
+
+DEBUT_DATA	=	*
+
+i	ds	2
+j	ds	2
+index	ds	2
+theY	ds	2
+
+*--- Variables du jeu
+
+	asc	"INDICATEUR"
+indicateur	ds	nombre_indicateurs+1
+	asc	"DEJA_LU"
+deja_lu	ds	nombre_paragraphes+3
 
 	asc	"ICONE_OBJETS"
 icone_objets	ds	nombre_objets+1	; ICONES ALLUMêES OU ETEINTES
 	asc	"ICONE_PECHES"
 icone_peches	ds	nombre_peches+1
-
-	asc	"OBJET_SELECTIONNE"
 objet_selectionne	ds	2	; l'objet selectionne
-	asc	"PECHE_SELECTIONNE"
 peche_selectionne	ds	2	; le peche selectionne
-	asc	"TEXTE_SELECTIONNE"
 texte_selectionne	ds	2	; le texte à afficher
-	asc	"TEXTES_ENCORE_PRESENTS"
 textes_encore_presents	ds	2	; false or true
 
 FIN_DATA	=	*

@@ -151,12 +151,11 @@ theWINDOW	dw	$0050
 	ds	4
 	ds	4
 	ds	4
-winRECT	dw	0	; content rect
+	dw	0	; content rect
 	dw	0
 	dw	200
 	dw	320
 	adrl	$ffffffff
-*	adrl	teCONTROL
 	ds	4
 	dw	%00000000_00000000
 
@@ -181,10 +180,11 @@ teRECT	ds	8	; rect
 	dw	%00000000_00000101	; textDescriptor
 teTEXT	ds	4	; textRef
 teLEN	ds	4	; textLength
-	
+
 *---
 
-fenetreRECT	ds	8
+fenetreRECT	ds	8	; le round rectangle autour du controle
+frameRECT	ds	8	; la ligne autour du controle
 
 fenetre_x	dw	0,10,10,10,120,10,10,10,10,10
 fenetre_y	dw	0,100,100,100,10,100,100,100,10,100

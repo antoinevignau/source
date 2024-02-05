@@ -127,9 +127,9 @@ fgRESTART	=	2
 	tdc
 	sta	myDP
 
-	lda	#MES_DONNEES
+	lda	#ai_affiche
 	stal	$300
-	lda	#^MES_DONNEES
+	lda	#^ai_affiche
 	stal	$302
 	
 *--- Version du systeme
@@ -200,6 +200,7 @@ okMEM1	sty	ptrIMAGE
 	sty	ptrUNPACK
 	stx	ptrUNPACK+2
 	stx	ptrCONTENT+2	; le fond de la fenêtre
+	stx	contentToSourceLocInfo+4
 	
 *--- Chargement des outils
 
@@ -243,14 +244,14 @@ okSHADOW	pha
 	sta	fgSND
 
 noSOUND	_HideMenuBar
+	_InitCursor
+	_HideCursor
 
 	PushWord	#0
 	PushWord	#%11111111_11111111
 	PushWord	#0
 	_FlushEvents
 	pla
-
-	_InitCursor
 
 *	pha
 *	pha
@@ -275,15 +276,23 @@ entryPOINT
 	jsr	antoine	; on change !
 	jsr	init2
 	
+*	@fadein	ptrFOND;#TRUE
+
 *-----------------------
 * MAIN
 *-----------------------
 
-	@fadein	ptrFOND;#TRUE
-	
-mainLOOP	jsr	test_fin
+mainLOOP	PushLong	ptrFOND
+	PushLong	ptrCONTENT
+	PushLong	#32768
+	_BlockMove
+
+	jsr	test_fin
 	jsr	test_objets
 	
+refreshLOOP
+	jsr	refreshME
+
 *----------------------------------------
 * TASK MASTER
 *----------------------------------------
@@ -310,17 +319,21 @@ taskLOOP	inc	VBLCounter0
 	asl
 	tax
 	jsr	(taskTBL,x)
-	bra	taskLOOP
 	
-*	lda	escape	; on a une condition de sortie
-*	cmp	#FALSE
-*	bne	main
-*	
-*	lda	deplacement	; si on doit bouger, on fait un...
-*	ora	fgSUITEFORCEE
-*	cmp	#TRUE
-*	beq	mainLOOP	; ...grand saut
-*	bne	taskLOOP	; ...sinon on attend
+	cmp	#$bdbd	; on a fini de consulter un texte
+	beq	mainLOOP
+	cmp	#$bebe	; on voudrait consulter un texte
+	beq	refreshLOOP
+	bne	taskLOOP	; sinon, on boucle standard
+
+*----------------------------------- Le code habituel	
+
+DEBUG	sep	#$20
+	ldal	$c034
+	inc
+	stal	$c034
+	rep	#$20
+	rts
 
 *----------------------------------- Gestion du keyDown
 * on gère les open-apple-qqch
@@ -382,21 +395,25 @@ doMOUSEUP	lda	objet_selectionne	; on a déjà un objet, saute
 
 * 1. vérifie si on a cliqué dans un objet
 	
-	jsr	test_objet		; on teste
+	jsr	test_objet		; on teste si on a cliqué sur un objet
 	bcc	domu_1		; on a clique dans un objet
+	lda	#0
 	rts
-domu_1	jmp	test_peches		; on a clique dans un objet, affiche les peches qui correspondent
+domu_1	jsr	test_peches		; on a clique dans un objet, affiche les peches qui correspondent
+	lda	#$bebe		; il faudra rafraîchir l'écran
+	rts
 
 * 2. on a déjà un objet, a-t-on cliqué dans un péché ?
 
 domu_2	lda	peche_selectionne	; on a aussi déjà un péché, saute
 	bne	domu_4
 
-	jsr	test_peche		; on teste
-	bcc	domu_3
+	jsr	test_peche		; on teste si on a cliqué sur un péché
+	bcc	domu_3		; on a cliqué dans un péché
+	lda	#0
 	rts
-domu_3	jmp	aiguillage		; choisit le texte correspondant
-
+domu_3	jsr	aiguillage		; choisit le texte correspondant
+	lda	#$bebe		; il faudra rafraîchir l'écran
 domu_4	rts
 
 *----------------------------------- Clic dans le contenu de la fenêtre
@@ -405,16 +422,22 @@ doCONTENT	lda	texte_selectionne
 	bne	doco_1
 	rts
 
-doco_1	stz	texte_selectionne
-*	stz	peche_selectionne
-*	stz	objet_selectionne
+doco_1	jsr	retour	; on marque le texte comme lu
+	stz	peche_selectionne
+	stz	objet_selectionne
+	stz	texte_selectionne
 
-	PushLong	haCONTROL
+	PushLong	haCONTROL	; on enlève le contrôle
 	_DisposeControl
 	
-	PushLong	#0
-	_RefreshDesktop
-	rts
+	stz	haCONTROL
+	stz	haCONTROL+2
+
+	stz	taskWHERE
+	stz	taskWHERE+2
+
+	lda	#$bdbd	; il faut rafraîchir les objets !
+	rts		; et on revient
 
 *----------------------------------- Gestion des controles
 
@@ -422,6 +445,34 @@ doCONTROL	lda	taskREC+38
 	asl
 	tax
 	jmp	(ctrlTBL,x)
+
+*----------------------------------------
+* RAFRAICHIT LES PALETTES ET LA FENETRE
+*----------------------------------------
+
+refreshME	pea	$0000	; la palette
+	lda	ptrCONTENT+2
+	pha
+	lda	ptrCONTENT
+	clc
+	adc	#32256
+	pha
+	_SetColorTable
+
+	lda	#$0fff	; LOGO - force les couleurs en attendant !
+	stal	$019e1e
+	stal	$e19e1e
+
+	PushLong	#0
+	_RefreshDesktop
+
+	PushWord	#0
+	PushWord	#%11111111_11111111
+	PushWord	#0
+	_FlushEvents
+	pla
+
+	rts
 
 *----------------------------------------
 * FENETRES
@@ -438,17 +489,55 @@ PAINTMAIN	phb
 	PushLong	wiMAIN
 	_SetPort
 
-	PushLong	#fondToSourceLocInfo
-	PushLong	#fondRect
+	PushLong	#contentToSourceLocInfo
+	PushLong	#contentRect
 	PushWord	#0
 	PushWord	#0
 	PushWord	#modeCopy
 	_PPToPort
 
+	lda	haCONTROL
+	ora	haCONTROL+2
+	bne	pm_ok
+	brl	pm_none
+
+pm_ok	PushLong	#curPATTERN
+	_GetPenPat
+
+	PushLong	#curPENSIZE
+	_GetPenSize
+
+	PushLong	#whitePATTERN
+	_SetPenPat
+	
+	PushLong	#fenetreRECT
+	PushWord	#16
+	PushWord	#16
+	_PaintRRect
+
+	PushLong	#blackPATTERN
+	_SetPenPat
+
+	PushWord	#2
+	PushWord	#2
+	_SetPenSize
+
+	PushLong	#frameRECT
+	PushWord	#16
+	PushWord	#16
+	_FrameRRect
+
+	PushWord	curPENSIZE
+	PushWord	curPENSIZE+2
+	_SetPenSize
+	
+	PushLong	#curPATTERN
+	_SetPenPat
+	
 	PushLong	wiMAIN
 	_DrawControls
 	
-	_SetPort
+pm_none	_SetPort
 	
 	plb
 	rtl
@@ -1116,6 +1205,7 @@ loadBACK	_HideCursor
 	PushLong	ptrSCREEN
 	PushLong	#32768
 	_BlockMove
+	_ShowCursor
 	rts
 
 *--- Genere un nombre aleatoire

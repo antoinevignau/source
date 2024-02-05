@@ -117,37 +117,87 @@ test_fin
 	rts
 
 *-----------------------
-* GESTION DES ICONES DES PECHES
+* TEST_OBJETS
+*-----------------------
+* test_objets = affiche les objets possibles
+
+test_objets	stz	textes_encore_presents
+
+	sep	#$30
+	ldx	#1
+]lp	stz	icone_objets,x
+	inx
+	cpx	#nombre_objets
+	bcc	]lp
+	beq	]lp
+
+	ldx	#1
+]lp	lda	deja_lu,x
+	cmp	#FALSE
+	bne	to_1
+	ldy	condition,x
+	lda	indicateur,y
+	cmp	#TRUE
+	bne	to_1
+	ldy	objet,x
+	lda	#TRUE
+	sta	icone_objets,y
+	sta	textes_encore_presents
+
+to_1	inx
+	cpx	#nombre_paragraphes
+	bcc	]lp
+	beq	]lp
+	
+	rep	#$30
+
+*-------- Affichage des objets
+
+	ldx	#1
+]lp	phx
+	jsr	affiche_objet
+	plx
+	inx
+	cpx	#nombre_objets
+	bcc	]lp
+	beq	]lp
+	rts
+
+*-----------------------
+* GESTION DES OBJETS
 *-----------------------
 
-test_peche	stz	peche_selectionne
+test_objet	stz	objet_selectionne
 
-	lda	#1		; from 1
-]lp	pha
+	ldx	#1		; from 1
+]lp	lda	icone_objets,x
+	and	#$ff
+	cmp	#TRUE
+	bne	objet_ko
+	
+	txa
 	asl
-	tax
+	tay
 	lda	taskWHERE+2		; compare le X
-	cmp	peche_x,x
-	bcc	icone_ko
-	lda	peche_xx,x
+	cmp	objet_x,y
+	bcc	objet_ko
+	lda	objet_xx,y
 	cmp	taskWHERE+2
-	bcc	icone_ko
+	bcc	objet_ko
 	
 	lda	taskWHERE		; et le Y
-	cmp	peche_y,x
-	bcc	icone_ko
-	lda	peche_yy,x
+	cmp	objet_y,y
+	bcc	objet_ko
+	lda	objet_yy,y
 	cmp	taskWHERE
-	bcc	icone_ko
-	
-	pla				; on a notre icône
-	sta	peche_selectionne
+	bcc	objet_ko
+
+	stx	objet_selectionne	; on a notre objet
 	clc
 	rts
 
-icone_ko	pla
-	inc
-	cmp	#nombre_peches		; et non plus nombre_icones
+objet_ko	inx
+	cpx	#nombre_objets
 	bcc	]lp
 	beq	]lp
 	sec
@@ -155,52 +205,163 @@ icone_ko	pla
 
 *---
 
-efface_peche	; X is object
-	cpx	#0
-	beq	ei1
-	jsr	set_peche
+affiche_objet	; X is object
+	txa
+	asl
+	tay
+	lda	objet_y,y		; x is 2..4..6..8
+	sta	iconToSourceRect
+	sta	iconToDestPoint
+	lda	objet_x,y
+	sta	iconToSourceRect+2
+	sta	iconToDestPoint+2
+	lda	objet_yy,y
+	sta	iconToSourceRect+4
+	lda	objet_xx,y
+	sta	iconToSourceRect+6
 
-	_HideCursor
+	lda	icone_objets,x
+	and	#$ff
+	cmp	#TRUE
+	bne	efface_objet
+
+	PushLong	#iconParamPtr
+	_PaintPixels
+	rts
+
+efface_objet
 	PushLong #fondParamPtr
 	_PaintPixels
-	_ShowCursor	
-ei1	rts
+	rts
+
+*-----------------------
+* TEST_PECHES
+*-----------------------
+* test_peches = affiche les peches possibles
+
+test_peches	sep	#$30
+
+	ldx	#1
+]lp	stz	icone_peches,x
+	inx
+	cpx	#nombre_peches
+	bcc	]lp
+	beq	]lp
+
+	ldx	#1
+]lp	lda	objet,x
+	cmp	objet_selectionne
+	bne	tp_1
+	lda	deja_lu,x
+	cmp	#FALSE
+	bne	tp_1
+	ldy	condition,x
+	lda	indicateur,y
+	cmp	#TRUE
+	bne	tp_1
+	ldy	peche,x
+	lda	#TRUE
+	sta	icone_peches,y
+tp_1	inx
+	cpx	#nombre_paragraphes
+	bcc	]lp
+	beq	]lp
+
+	rep	#$30
+
+*-------- Affichage des peches
+
+	ldx	#1
+]lp	phx
+	jsr	affiche_peche
+	plx
+	inx
+	cpx	#nombre_peches
+	bcc	]lp
+	beq	]lp
+	rts
+
+*-----------------------
+* GESTION DES ICONES DES PECHES
+*-----------------------
+
+test_peche	stz	peche_selectionne
+
+	ldx	#1		; from 1
+]lp	lda	icone_peches,x
+	and	#$ff
+	cmp	#TRUE
+	bne	peche_ko
+
+	txa
+	asl
+	tay
+	lda	taskWHERE+2		; compare le X
+	cmp	peche_x,y
+	bcc	peche_ko
+	lda	peche_xx,y
+	cmp	taskWHERE+2
+	bcc	peche_ko
 	
+	lda	taskWHERE		; et le Y
+	cmp	peche_y,y
+	bcc	peche_ko
+	lda	peche_yy,y
+	cmp	taskWHERE
+	bcc	peche_ko
+	
+	stx	peche_selectionne	; on a notre peche
+	clc
+	rts
+
+peche_ko	inx
+	cpx	#nombre_peches
+	bcc	]lp
+	beq	]lp
+	sec
+	rts
+
 *---
 
 affiche_peche	; X is object
-	cpx	#0
-	beq	ai1
-	jsr	set_peche
-
-	_HideCursor
-	PushLong #iconParamPtr
-	_PaintPixels
-	_ShowCursor	
-ai1	rts
-
-*---
-
-set_peche	txa
+	txa
 	asl
-	tax
-	lda	peche_y,x		; x is 2..4..6..8
+	tay
+	lda	peche_y,y		; x is 2..4..6..8
 	sta	iconToSourceRect
 	sta	iconToDestPoint
-	lda	peche_x,x
+	lda	peche_x,y
 	sta	iconToSourceRect+2
 	sta	iconToDestPoint+2
-	lda	peche_yy,x
+	lda	peche_yy,y
 	sta	iconToSourceRect+4
-	lda	peche_xx,x
+	lda	peche_xx,y
 	sta	iconToSourceRect+6
+
+	lda	icone_peches,x
+	and	#$ff
+	cmp	#TRUE
+	bne	efface_peche
+
+	PushLong #iconParamPtr
+	_PaintPixels
 	rts
+
+efface_peche
+	PushLong #fondParamPtr
+	_PaintPixels
+	rts
+
+*-----------------------
+* LES DONNEES
+*-----------------------
 
 *---
 
 fondParamPtr
 	adrl	fondToSourceLocInfo
-	adrl	iconToDestLocInfo
+*	adrl	iconToDestLocInfo
+	adrl	contentToSourceLocInfo
 	adrl	iconToSourceRect
 	adrl	iconToDestPoint
 	dw	$0000	; mode copy
@@ -208,7 +369,8 @@ fondParamPtr
 
 iconParamPtr
 	adrl	iconToSourceLocInfo
-	adrl	iconToDestLocInfo
+*	adrl	iconToDestLocInfo
+	adrl	contentToSourceLocInfo
 	adrl	iconToSourceRect
 	adrl	iconToDestPoint
 	dw	$0000	; mode copy
@@ -219,16 +381,17 @@ fondToSourceLocInfo
 	ds	4	; ptrFOND - $0000 on entry, high set after _NewHandle
 	dw	160
 	dw	0,0,200,320
-	
 fondRect
 	dw	0,0,200,320
 
 iconToSourceLocInfo
 	dw	mode_320	; mode 320
-	adrl	$8000	; ptrICON - $8000 on entry, high set after _NewHandle
+	adrl	$8000	; ptrICON - $8000 on entry, high set after ptrFOND
 	dw	160
 	dw	0,0,200,320
-	
+iconRect
+	dw	0,0,200,320
+
 iconToDestLocInfo
 	dw	mode_320	; +0 mode 320
 	adrl	ptr012000	; +2
@@ -240,84 +403,13 @@ iconToSourceRect
 iconToDestPoint
 	dw	3,0
 
-*-----------------------
-* GESTION DES OBJETS
-*-----------------------
-
-test_objet	stz	objet_selectionne
-
-	lda	#1		; from 1
-]lp	pha
-	asl
-	tax
-	lda	taskWHERE+2		; compare le X
-	cmp	objet_x,x
-	bcc	objet_ko
-	lda	objet_xx,x
-	cmp	taskWHERE+2
-	bcc	objet_ko
-	
-	lda	taskWHERE		; et le Y
-	cmp	objet_y,x
-	bcc	objet_ko
-	lda	objet_yy,x
-	cmp	taskWHERE
-	bcc	objet_ko
-	
-	pla			; on a notre icône
-	sta	objet_selectionne
-	clc
-	rts
-
-objet_ko	pla
-	cmp	#nombre_objets	; et non plus nombre_objets
-	bcc	]lp
-	beq	]lp
-	sec
-	rts
-
-*---
-
-efface_objet	; X is object
-	cpx	#0
-	beq	eo1
-	jsr	set_objet
-
-	_HideCursor
-	PushLong #fondParamPtr
-	_PaintPixels
-	_ShowCursor	
-eo1	rts
-	
-*---
-
-affiche_objet	; X is object
-	cpx	#0
-	beq	ao1
-	jsr	set_objet
-
-	_HideCursor
-	PushLong	#iconParamPtr
-	_PaintPixels
-	_ShowCursor	
-ao1	rts
-
-*---
-
-set_objet	txa
-	asl
-	tax
-	lda	objet_y,x		; x is 2..4..6..8
-	sta	iconToSourceRect
-	sta	iconToDestPoint
-	lda	objet_x,x
-	sta	iconToSourceRect+2
-	sta	iconToDestPoint+2
-	lda	objet_yy,x
-	sta	iconToSourceRect+4
-	lda	objet_xx,x
-	sta	iconToSourceRect+6
-	rts
+contentToSourceLocInfo
+	dw	mode_320	; mode 320
+	adrl	$8000	; ptrCONTENT - $8000 on entry, high set after ptrUNPACK
+	dw	160
+	dw	0,0,200,320
+contentRect
+	dw	0,0,200,320
 
 *-----------------------
 * set_language
@@ -419,7 +511,25 @@ antoine
 	@t	#strMENU2;#12
 	@t	#strMENU3;#14
 
-]lp	pha
+	pha
+	pha
+	_TickCount
+	pla
+	clc
+	adc	#5*60	; 5 secondes
+	sta	theTICK
+	pla
+	adc	#0
+	sta	theTICK+2
+
+]lp	lda	taskWHEN+2	; sort au bout de 5 secondes
+	cmp	theTICK+2
+	bcc	toinet
+	lda	taskWHEN
+	cmp	theTICK
+	bcs	leJEU
+	
+toinet	pha
 	PushWord #%00000000_00001010
 	PushLong #taskREC
 	_GetNextEvent
@@ -437,9 +547,13 @@ antoine
 	beq	laPREZ
 	cmp	#'3'
 	bne	]lp
-	rts
+leJEU	rts
 laZIK	jsr	musique
 laPREZ	jmp	presentation
+
+*-----------
+
+theTICK	ds	4	; le tick à atteindre (tick + 5x60)
 
 *-----------------------
 * INIT - OK
@@ -481,11 +595,11 @@ init_icones
 	@loadfile	#pFOND;ptrFOND
 	@loadfile	#pICONES;ptrICONES
 
-	PushLong	ptrFOND	; sauvegarde le fond de la fenêtre
+	PushLong	ptrFOND
 	PushLong	ptrCONTENT
 	PushLong	#32768
 	_BlockMove
-
+	
 	PushLong	#0
 	PushLong	#0
 	PushLong	#wMAIN
@@ -623,7 +737,7 @@ it_fin1	rep	#$20
 	lda	Debut
 	sec
 	sbc	texteDEBUT-4,y
-	dec
+	dec		; on enlève 1 à la fin
 	sta	texteLEN-4,y
 	sep	#$20
 	rts
@@ -645,112 +759,6 @@ it_texte	rep	#$20
 	rts
 
 	mx	%00
-
-*-----------------------
-* TEST_OBJETS
-*-----------------------
-* test_objets = affiche les objets possibles
-
-test_objets	stz	textes_encore_presents
-
-	sep	#$30
-	ldx	#1
-]lp	stz	icone_objets,x
-	inx
-	cpx	#nombre_objets
-	bcc	]lp
-	beq	]lp
-
-	ldx	#1
-]lp	lda	deja_lu,x
-	cmp	#FALSE
-	bne	to_1
-	ldy	condition,x
-	lda	indicateur,y
-	cmp	#TRUE
-	bne	to_1
-	ldy	objet,x
-	lda	#TRUE
-	sta	icone_objets,y
-	sta	textes_encore_presents
-
-to_1	inx
-	cpx	#nombre_paragraphes
-	bcc	]lp
-	beq	]lp
-	
-	rep	#$30
-
-*-------- Affichage des objets
-
-	ldx	#1
-]lp	phx
-	lda	icone_objets,x
-	and	#$ff
-	cmp	#TRUE
-	bne	to_2
-
-	jsr	affiche_objet
-	
-to_2	plx
-	inx
-	cpx	#nombre_objets
-	bcc	]lp
-	beq	]lp
-	rts
-
-*-----------------------
-* TEST_PECHES
-*-----------------------
-* test_peches = affiche les peches possibles
-
-test_peches	sep	#$30
-
-	ldx	#1
-]lp	stz	icone_peches,x
-	inx
-	cpx	#nombre_peches
-	bcc	]lp
-	beq	]lp
-
-	ldx	#1
-]lp	lda	objet,x
-	cmp	objet_selectionne
-	bne	tp_1
-	lda	deja_lu,x
-	cmp	#FALSE
-	bne	tp_1
-	ldy	condition,x
-	lda	indicateur,y
-	cmp	#TRUE
-	bne	tp_1
-	ldy	peche,x
-	lda	#TRUE
-	sta	icone_peches,y
-tp_1	inx
-	cpx	#nombre_paragraphes
-	bcc	]lp
-	beq	]lp
-
-	rep	#$30
-
-*-------- Affichage des peches
-
-	ldx	#1
-]lp	phx
-	lda	icone_peches,x
-	and	#$ff
-	cmp	#TRUE
-	bne	do_2
-
-	jsr	affiche_peche
-	
-do_2	plx
-	inx
-	cpx	#nombre_peches
-	bcc	]lp
-	beq	]lp
-	rts
 
 *-----------------------
 * RETOUR
@@ -803,7 +811,22 @@ ai_next	inx
 	lda	texte_selectionne
 	bne	ai_affiche
 	rts
-ai_affiche	jmp	cree_fenetre
+
+ai_affiche	sep	#$20
+	lda	objet_selectionne
+	ora	#'0'
+	sta	pIMAGE+19
+	rep	#$20
+
+	@loadfile	#pIMAGE;ptrCONTENT
+
+*	@fadein	ptrCONTENT;#TRUE
+*	PushLong	ptrCONTENT
+*	PushLong	ptrSCREEN
+*	PushLong	#32768
+*	_BlockMove
+	
+	jmp	cree_fenetre
 
 *-----------------------
 * PRESENTATION - OK
@@ -1042,27 +1065,43 @@ carreRECT	ds	2	; y0
 *  A : objet
 *  X : paragraphe
 
-cree_fenetre
-	lda	#$0fff
-	stal	$019e1e
-	stal	$e19e1e
+delta_line	=	2
+delta_ctl	=	6
 
-* 1. les coordonnees de la fenetre
+cree_fenetre
+
+* 1. les coordonnees de la fenetre et du controle
 	
 	lda	objet_selectionne
 	asl
 	tax
 	lda	fenetre_y,x
-*	sta	winRECT
+	sta	fenetreRECT
+	clc
+	adc	#delta_line
+	sta	frameRECT
+	adc	#delta_ctl
 	sta	teRECT
 	lda	fenetre_x,x
-*	sta	winRECT+2
+	sta	fenetreRECT+2
+	clc
+	adc	#delta_line
+	sta	frameRECT+2
+	adc	#delta_ctl
 	sta	teRECT+2
 	lda	fenetre_yy,x
-*	sta	winRECT+4
+	sta	fenetreRECT+4
+	sec
+	sbc	#delta_line
+	sta	frameRECT+4
+	sbc	#delta_ctl
 	sta	teRECT+4
 	lda	fenetre_xx,x
-*	sta	winRECT+6
+	sta	fenetreRECT+6
+	sec
+	sbc	#delta_line
+	sta	frameRECT+6
+	sbc	#delta_ctl
 	sta	teRECT+6
 
 * 2. on en deduit les dimensions du controle
@@ -1093,6 +1132,11 @@ cree_fenetre
 
 * 4. on affiche le tout
 
+*	PushLong	#fenetreRECT
+*	PushWord	#$ffff
+*	PushWord	#$ffff
+*	_SpecialRect
+	
 	PushLong	#0
 	PushLong	wiMAIN
 	PushWord	#refIsPointer

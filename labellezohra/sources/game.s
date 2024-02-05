@@ -762,7 +762,10 @@ ai_next	inx
 	beq	]lp
 
 	rep	#$30
+	lda	texte_selectionne
+	bne	ai_affiche
 	rts
+ai_affiche	jmp	cree_fenetre
 
 *-----------------------
 * PRESENTATION - OK
@@ -995,27 +998,6 @@ carreRECT	ds	2	; y0
 	ds	2	; y0+12
 
 *-----------------------
-* RAMDISK - OK
-*-----------------------
-
-ramdisk
-	rts
-
-*-----------------------
-* 
-*-----------------------
-
-shoot_text
-	rts
-
-*-----------------------
-* 
-*-----------------------
-
-shoot_ligne
-	rts
-
-*-----------------------
 * CREE_FENETRE
 *-----------------------
 * cree_fenetre(objet%,paragraphe%)
@@ -1023,66 +1005,55 @@ shoot_ligne
 *  X : paragraphe
 
 cree_fenetre
-	rts
-
-*-----------------------
-* 
-*-----------------------
-* display_text(ligne%,niveau%)
-
-display_text
-	rts
-
-*-----------------------
-* ICE_LOAD - OK
-*-----------------------
-* ice_load(fichier$)
-
-ice_load
-	rts
-
-*-----------------------
-* ICE_DISP - OK
-*-----------------------
-* ice_disp(adresse_image%)
-
-ice_disp
-	rts
-
-*-----------------------
-* PALETTE - OK
-*-----------------------
-* palette(palette$)
-
-palette
-	rts
-
-*-----------------------
-* HIDE_SCREEN - OK
-*-----------------------
-
-hide_screen
-	rts
-
-*-----------------------
-* SHOW_SCREEN - OK
-*-----------------------
-
-show_screen
-	rts
-
-*-----------------------
-* HIDE_SCREEN2 - OK
-*-----------------------
-
-hide_screen2
-	rts
-
-*-----------------------
-* SHOW_SCREEN2 - OK
-*-----------------------
-
-show_screen2
+	lda	#$0fff
+	stal	$019e1e
+	stal	$e19e1e
+	
+	lda	objet_selectionne
+	asl
+	tax
+	lda	fenetre_y,x
+	sta	fenetreRECT
+	sta	teRECT
+	lda	fenetre_x,x
+	sta	fenetreRECT+2
+	sta	teRECT+2
+	lda	fenetre_yy,x
+	sta	fenetreRECT+4
+	sta	teRECT+4
+	lda	fenetre_xx,x
+	sta	fenetreRECT+6
+	sta	teRECT+6
+	
+	PushLong	#fenetreRECT
+	PushWord	#$0000
+	PushWord	#$0000
+	_SpecialRect
+	
+	lda	texte_selectionne
+	asl
+	asl
+	tax
+	lda	texteDEBUT,x
+	sta	teTEXT
+	lda	texteDEBUT+2,x
+	sta	teTEXT+2
+	
+	lda	texteDEBUT+4,x
+	sec
+	sbc	teTEXT
+	sta	teLEN
+	lda	texteDEBUT+6,x
+	sbc	teTEXT+2
+	sta	teLEN+2
+	
+	PushLong	#0
+	PushLong	wiMAIN
+	PushWord	#0
+	PushLong	#teCONTROL
+	_NewControl2
+	PullLong	haCONTROL
+	
 	rts
 
 *-----------------------
@@ -1783,22 +1754,6 @@ zikRECT	dw	150,0,200,320
 fgCLEAR	ds	2	; -1 set by interrupt
 
 *-----------------------
-* MIX - OK
-*-----------------------
-* mix(numero_son%)
-
-mix
-	rts
-
-*-----------------------
-* STOP_SAMPLE - OK
-*-----------------------
-* stop_sample
-
-stop_sample
-	rts
-
-*-----------------------
 * FIN_MUSIQUE - OK
 *-----------------------
 * fin_musique
@@ -1837,14 +1792,6 @@ fm_1	ldy	#$1f
 	rts
 
 *-----------------------
-* DATA_FICHIERS_MUSIQUE - OK
-*-----------------------
-* data_fichiers_musique
-
-data_fichiers_musique
-	rts
-
-*-----------------------
 * T - OK
 *-----------------------
 * t(ligne%,texte$)
@@ -1876,13 +1823,6 @@ t1	lsr
 	pha		; Y	
 	_MoveTo
 	_DrawString
-	rts
-
-*-----------------------
-* FIN - OK
-*-----------------------
-
-fin
 	rts
 
 *-----------------------

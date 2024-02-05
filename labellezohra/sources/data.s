@@ -125,9 +125,29 @@ FIN_DATA	=	*
 
 *--- The Text Edit control
 
-teCONTROL	dw	9
+haCONTROL	ds	4	; handle to the control
 
+teCONTROL	dw	16	; pCount
+	adrl	1	; ID
+teRECT	ds	8	; rect
+	adrl	$85000000	; editTextControl
+	dw	%00000000_00000000	; flags
+	dw	%01110100_00000000	; moreFlags
+	ds	4	; refCon
+	adrl	%01100100_00010000_00000000_00000000	; textFlags
+	ds	8	; indentRect
+	adrl	$ffffffff	; vertBar
+	ds	2	; vertAmount
+	ds	4	; horzBar
+	ds	2	; horzAmount
+	ds	4	; styleRef
+	dw	%00000000_00000101	; textDescriptor
+teTEXT	ds	4	; textRef
+teLEN	ds	4	; textLength
+	
 *---
+
+fenetreRECT	ds	8
 
 fenetre_x	dw	0,10,10,10,120,10,10,10,10,10
 fenetre_y	dw	0,100,100,100,10,100,100,100,10,100

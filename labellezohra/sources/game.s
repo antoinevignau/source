@@ -220,6 +220,9 @@ fondToSourceLocInfo
 	dw	160
 	dw	0,0,200,320
 	
+fondRect
+	dw	0,0,200,320
+
 iconToSourceLocInfo
 	dw	mode_320	; mode 320
 	adrl	$8000	; ptrICON - $8000 on entry, high set after _NewHandle
@@ -477,6 +480,22 @@ init2
 init_icones
 	@loadfile	#pFOND;ptrFOND
 	@loadfile	#pICONES;ptrICONES
+
+	PushLong	ptrFOND	; sauvegarde le fond de la fenêtre
+	PushLong	ptrCONTENT
+	PushLong	#32768
+	_BlockMove
+
+	PushLong	#0
+	PushLong	#0
+	PushLong	#wMAIN
+	PushLong	#PAINTMAIN
+	PushLong	#0
+	PushWord	#refIsPointer
+	PushLong	#theWINDOW
+	PushWord	#$800e
+	_NewWindow2
+	PullLong	wiMAIN
 	rts
 
 *-----------------------
@@ -678,9 +697,7 @@ to_2	plx
 	cpx	#nombre_objets
 	bcc	]lp
 	beq	]lp
-	
-	jmp	setDESKTOP
-*	rts
+	rts
 
 *-----------------------
 * TEST_PECHES
@@ -733,9 +750,7 @@ do_2	plx
 	cpx	#nombre_peches
 	bcc	]lp
 	beq	]lp
-
-	jmp	setDESKTOP
-*	rts
+	rts
 
 *-----------------------
 * RETOUR
@@ -1038,25 +1053,29 @@ cree_fenetre
 	asl
 	tax
 	lda	fenetre_y,x
-	sta	winRECT
+*	sta	winRECT
+	sta	teRECT
 	lda	fenetre_x,x
-	sta	winRECT+2
+*	sta	winRECT+2
+	sta	teRECT+2
 	lda	fenetre_yy,x
-	sta	winRECT+4
+*	sta	winRECT+4
+	sta	teRECT+4
 	lda	fenetre_xx,x
-	sta	winRECT+6
+*	sta	winRECT+6
+	sta	teRECT+6
 
 * 2. on en deduit les dimensions du controle
 
-	lda	fenetre_yy,x
-	sec
-	sbc	fenetre_y,x
-	sta	teRECT+4
-	
-	lda	fenetre_xx,x
-	sec
-	sbc	fenetre_x,x
-	sta	teRECT+6
+*	lda	fenetre_yy,x
+*	sec
+*	sbc	fenetre_y,x
+*	sta	teRECT+4
+*	
+*	lda	fenetre_xx,x
+*	sec
+*	sbc	fenetre_x,x
+*	sta	teRECT+6
 
 * 3. on ajoute le texte et sa longueur
 	
@@ -1073,17 +1092,24 @@ cree_fenetre
 	sta	teLEN
 
 * 4. on affiche le tout
-	
+
 	PushLong	#0
-	PushLong	#0
-	PushLong	#wMAIN
-	PushLong	#PAINTMAIN
-	PushLong	#0
+	PushLong	wiMAIN
 	PushWord	#refIsPointer
-	PushLong	#theWINDOW
-	PushWord	#$800e
-	_NewWindow2
-	PullLong	wiMAIN
+	PushLong	#teCONTROL
+	_NewControl2
+	PullLong	haCONTROL
+
+*	PushLong	#0
+*	PushLong	#0
+*	PushLong	#wMAIN
+*	PushLong	#PAINTMAIN
+*	PushLong	#0
+*	PushWord	#refIsPointer
+*	PushLong	#theWINDOW
+*	PushWord	#$800e
+*	_NewWindow2
+*	PullLong	wiMAIN
 	rts
 
 *-----------------------

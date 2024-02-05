@@ -151,9 +151,13 @@ theWINDOW	dw	$0050
 	ds	4
 	ds	4
 	ds	4
-winRECT	ds	8	; content rect
+winRECT	dw	0	; content rect
+	dw	0
+	dw	200
+	dw	320
 	adrl	$ffffffff
-	adrl	teCONTROL
+*	adrl	teCONTROL
+	ds	4
 	dw	%00000000_00000000
 
 *--- The Text Edit control

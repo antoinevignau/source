@@ -87,6 +87,9 @@ Second	=	Arrivee+4
 
 *---
 
+modeCopy	=	$0000
+modeForeCopy =	$0004	; QDII Table 16-10
+
 mode_320	=	$00
 mode_640	=	$80
 
@@ -196,18 +199,8 @@ okMEM1	sty	ptrIMAGE
 
 	sty	ptrUNPACK
 	stx	ptrUNPACK+2
-
-*--- 32KB pour le pseudo desktop
-
-	pha
-	pha
-	PushLong	#$7d08
-	PushWord	myID
-	PushWord	#%11000000_00000000
-	PushLong	#0
-	_NewHandle
-	PullLong	haDESKTOP
-
+	stx	ptrCONTENT+2	; le fond de la fenêtre
+	
 *--- Chargement des outils
 
 	pha
@@ -361,6 +354,8 @@ doNOT
 	rep	#$20
 	rts
 
+	mx	%00
+	
 *---
 
 tblKEYVALUE
@@ -404,6 +399,23 @@ domu_3	jmp	aiguillage		; choisit le texte correspondant
 
 domu_4	rts
 
+*----------------------------------- Clic dans le contenu de la fenêtre
+
+doCONTENT	lda	texte_selectionne
+	bne	doco_1
+	rts
+
+doco_1	stz	texte_selectionne
+*	stz	peche_selectionne
+*	stz	objet_selectionne
+
+	PushLong	haCONTROL
+	_DisposeControl
+	
+	PushLong	#0
+	_RefreshDesktop
+	rts
+
 *----------------------------------- Gestion des controles
 
 doCONTROL	lda	taskREC+38
@@ -415,8 +427,30 @@ doCONTROL	lda	taskREC+38
 * FENETRES
 *----------------------------------------
 
-PAINTMAIN	PushLong	wiMAIN
+PAINTMAIN	phb
+	phk
+	plb
+
+	pha
+	pha
+	_GetPort
+	
+	PushLong	wiMAIN
+	_SetPort
+
+	PushLong	#fondToSourceLocInfo
+	PushLong	#fondRect
+	PushWord	#0
+	PushWord	#0
+	PushWord	#modeCopy
+	_PPToPort
+
+	PushLong	wiMAIN
 	_DrawControls
+	
+	_SetPort
+	
+	plb
 	rtl
 
 *-----------------------------------
@@ -1062,31 +1096,6 @@ LZ4_End	sty	lenDATA		; Y = length of unpacked data
 lenDATA	ds	4
 
 *-----------------------------------
-* SET THE DESKTOP
-*-----------------------------------
-
-setDESKTOP	_HideCursor
-	PushLong	ptrSCREEN
-	PushLong	haDESKTOP
-	PushLong	#$7d08
-	_PtrToHand
-	_ShowCursor
-
-*	PushWord	#1	; add message of desktop type
-*	PushWord	#2
-*	PushLong	haDESKTOP
-*	_MessageCenter
-	
-*	pha
-*	pha
-*	PushWord	#3	; SetDesktop
-*	PushLong	haDESKTOP
-*	_Desktop
-*	pla
-*	pla
-	rts
-
-*-----------------------------------
 * SAVE THE SHR SCREEN
 *-----------------------------------
 
@@ -1179,6 +1188,7 @@ ptrBACKGND	adrl	$8000	; $8000: where the screen is saved
 ptrFOND	ds	4	; $0000: fond de jeu
 ptrICONES	adrl	$8000	; $0000: fond d'icônes du jeu
 ptrUNPACK	ds	4	; $0000: where the background picture is laoded
+ptrCONTENT	adrl	$8000	; $8000: the window content
 
 ptrTEXTES	ds	4	; les pointeurs des textes
 
@@ -1299,7 +1309,7 @@ taskTBL	da	doNOT	; 0 Null
 	da	doNOT	; wInDesk
 	da	doNOT	; wInMenuBar
 	da	doNOT	; wCLickCalled
-	da	doNOT	; wInContent - was doCONTENT
+	da	doCONTENT	; wInContent - was doCONTENT
 	da	doNOT	; wInDrag
 	da	doNOT	; wInGrow
 	da	doNOT	; wInGoAway

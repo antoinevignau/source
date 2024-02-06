@@ -146,6 +146,8 @@ to_1	inx
 
 *-------- Affichage des objets
 
+affiche_objets
+
 	ldx	#1
 ]lp	phx
 	jsr	affiche_objet
@@ -264,6 +266,8 @@ tp_1	inx
 
 *-------- Affichage des peches
 
+affiche_peches
+
 	ldx	#1
 ]lp	phx
 	jsr	affiche_peche
@@ -353,7 +357,6 @@ efface_peche
 
 fondParamPtr
 	adrl	fondToSourceLocInfo
-*	adrl	iconToDestLocInfo
 	adrl	contentToSourceLocInfo
 	adrl	iconToSourceRect
 	adrl	iconToDestPoint
@@ -362,7 +365,6 @@ fondParamPtr
 
 iconParamPtr
 	adrl	iconToSourceLocInfo
-*	adrl	iconToDestLocInfo
 	adrl	contentToSourceLocInfo
 	adrl	iconToSourceRect
 	adrl	iconToDestPoint
@@ -374,23 +376,13 @@ fondToSourceLocInfo
 	ds	4	; ptrFOND - $0000 on entry, high set after _NewHandle
 	dw	160
 	dw	0,0,200,320
-fondRect
-	dw	0,0,200,320
 
 iconToSourceLocInfo
 	dw	mode_320	; mode 320
 	adrl	$8000	; ptrICON - $8000 on entry, high set after ptrFOND
 	dw	160
 	dw	0,0,200,320
-iconRect
-	dw	0,0,200,320
 
-iconToDestLocInfo
-	dw	mode_320	; +0 mode 320
-	adrl	ptr012000	; +2
-	dw	160
-	dw	0,0,200,320
-	
 iconToSourceRect
 	dw	3,0,109,272
 iconToDestPoint
@@ -794,13 +786,6 @@ ai_affiche	sep	#$20
 	rep	#$20
 
 	@loadfile	#pIMAGE;ptrCONTENT
-
-*	@fadein	ptrCONTENT;#TRUE
-*	PushLong	ptrCONTENT
-*	PushLong	ptrSCREEN
-*	PushLong	#32768
-*	_BlockMove
-	
 	jmp	cree_fenetre
 
 *-----------------------
@@ -1128,7 +1113,8 @@ musique	lda	fgSND	; can we play?
 	bne	mu_1	; yes
 	rts		; no
 
-mu_1	jsr	init_musique
+mu_1	jsr	ensoniq_stopall
+	jsr	init_musique
 
 	lda	#1
 	sta	i
@@ -1139,6 +1125,9 @@ mu_1	jsr	init_musique
 	lda	i
 	jsr	charge_son	; charge les sons
 	jsr	clavier_sonore ; joue les sons
+	php
+	jsr	ensoniq_stopall
+	plp
 	bcs	mu_exit	; si *, on quitte le clavier sonore
 	jsr	nettoie_musique
 	inc	i
@@ -1318,6 +1307,46 @@ ry_err1	jsl	GSOS
 	clc
 ry_err2	rts
 
+*-----------------------
+* ENSONIQ_STOPALL - OK
+*-----------------------
+* ensoniq_stopall = stoppe tous les oscillateurs
+
+ensoniq_stopall
+	sei
+
+	phd
+	lda	#$c000
+	tcd
+	sep	#$20
+
+]lp	lda	soundctl
+	bmi	]lp
+
+	ldal	$e100ca
+	and	#%0000_1111
+	sta	soundctl
+
+	ldx	#2	; boucle 2 fois
+esa_1	ldy	#$0
+]lp	tya
+	ora	#$a0
+	sta	soundadrl
+	lda	#$01
+	sta	sounddata
+	iny
+	cpy	#32
+	bcc	]lp
+	dex
+	bne	esa_1
+
+	rep	#$20
+	pld
+	cli
+	rts
+	
+	mx	%00
+	
 *-----------------------
 * RYTHME_JOUE - OK
 *-----------------------

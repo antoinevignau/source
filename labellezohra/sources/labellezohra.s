@@ -42,13 +42,6 @@
 	jsr	loadFILE
 	eom
 
-@fadein	mac
-	lda	]2
-	ldx	]1+2
-	ldy	]1
-	jsr	fadeIN
-	eom
-	
 *----------------------------------- Constantes
 
 *-------------- Softswitches
@@ -127,11 +120,6 @@ fgRESTART	=	2
 	tdc
 	sta	myDP
 
-	lda	#MES_DONNEES
-	stal	$300
-	lda	#^MES_DONNEES
-	stal	$302
-	
 *--- Version du systeme
 
 	jsl	GSOS
@@ -231,7 +219,6 @@ okTOOL	PushWord	#0
 
 	lda	#^ptrE12000	; shadowing is off, use slow RAM
 	sta	ptrSCREEN+2
-	sta	iconToDestLocInfo+4
 
 *--- Et la musique...
 
@@ -253,16 +240,26 @@ noSOUND	_HideMenuBar
 	_FlushEvents
 	pla
 
+	PushLong	#0
+	PushWord	#5	; SetDeskPat
+	PushWord	#$4000
+	PushWord	#$0000
+	_Desktop
+	pla
+	pla
+
 *----------------------------------------
 * INITIALISATIONS
 *----------------------------------------
 
 entryPOINT
-	jsr	TWILIGHToff
 	jsr	set_language
 	jsr	antoine	; le menu principal
 	jsr	init
 
+	jsr	initMIDI
+	jsr	doSOUNDON
+	
 restartPOINT
 	jsr	init2
 	
@@ -285,9 +282,7 @@ refreshLOOP
 * TASK MASTER
 *----------------------------------------
 
-taskLOOP	inc	VBLCounter0
-
-	PushWord	#0
+taskLOOP	PushWord	#0
 	PushWord	#0
 	PushWord	#$c000
 	PushWord	#0
@@ -295,7 +290,7 @@ taskLOOP	inc	VBLCounter0
 	pla
 	pla
 
-*	jsr	checkREPLAY
+	jsr	checkREPLAY
 
 	PushWord	#0
 	PushWord	#%11111111_11111111
@@ -329,24 +324,21 @@ doKEYDOWN	lda	taskMODIFIERS
 
 doOPENAPPLE
 	ldx	#-1
-	sep	#$20
 ]lp	inx
 	lda	tblKEYVALUE,x	; get key
+	and	#$ff
 	cmp	#$ff		; end of table
 	beq	doOPENAPPLE99	; so exit
 	cmp	taskMESSAGE	; same as pressed key?
 	bne	]lp		; no, loop
 	
-	rep	#$20
 	txa
 	asl
 	tax
 	jmp	(tblKEYADDRESS,x)
 
 doOPENAPPLE99
-doNOT
-	rep	#$20
-	rts
+doNOT	rts
 
 	mx	%00
 	
@@ -365,8 +357,6 @@ tblKEYADDRESS
 	da	doMUSIK,doMUSIK
 	da	monitor
 	
-doMUSIK	rts
-
 *----------------------------------- Gestion du mouseUp
 * on compare les coordonnées avec celles du incontent
 * si dans le même rectangle, on traite
@@ -402,13 +392,6 @@ domu_3	jsr	aiguillage		; choisit le texte correspondant
 	lda	#$bebe		; il faudra rafraîchir l'écran
 domu_4	rts
 
-*----------------------------------- Gestion des controles
-
-doCONTROL	lda	taskREC+38
-	asl
-	tax
-	jmp	(ctrlTBL,x)
-
 *----------------------------------- Clic dans le contenu de la fenêtre
 
 doCONTENT	lda	textes_encore_presents
@@ -443,7 +426,8 @@ doco_3	PushLong	haCONTROL	; on enlève le contrôle
 * RAFRAICHIT LES PALETTES ET LA FENETRE
 *----------------------------------------
 
-refreshME	pea	$0000	; la palette
+refreshME
+	pea	$0000	; la palette
 	lda	ptrCONTENT+2
 	pha
 	lda	ptrCONTENT
@@ -452,18 +436,18 @@ refreshME	pea	$0000	; la palette
 	pha
 	_SetColorTable
 
-	lda	#$0fff	; LOGO - force les couleurs en attendant !
-	stal	$019e1e
-	stal	$e19e1e
+*	lda	#$0fff	; LOGO - force les couleurs en attendant !
+*	stal	$019e1e
+*	stal	$e19e1e
 
 	PushLong	#0
 	_RefreshDesktop
 
-	PushWord	#0
-	PushWord	#%11111111_11111111
-	PushWord	#0
-	_FlushEvents
-	pla
+*	PushWord	#0
+*	PushWord	#%11111111_11111111
+*	PushWord	#0
+*	_FlushEvents
+*	pla
 
 	rts
 
@@ -541,24 +525,29 @@ pm_none	_SetPort
 
 *----------------------------------- Open
 
-doLOAD
+doLOAD	lda	texte_selectionne
+	ora	objet_selectionne
+	ora	peche_selectionne
+	beq	doLOAD0
+	rts
+
+doLOAD0
 *	jsr	suspendMUSIC	; NTP off
-	jsr	saveBACK
 	
-	PushWord #30
-	PushWord #43
-	PushLong #strLOADFILE
-	PushLong #0
-	PushLong #typeLIST
-	PushLong #replyPTR
+	PushWord	#30
+	PushWord	#43
+	PushLong	#strLOADFILE
+	PushLong	#0
+	PushLong	#typeLIST
+	PushLong	#replyPTR
 	_SFGetFile
 
-	jsr	loadBACK
-
+	jsr	init_souris
+	
 	lda	replyPTR
 	bne	doLOAD1
-*	jsr	resumeMUSIC	; NTP on
-	rts
+loadKO99	rts
+*	jmp	resumeMUSIC	; NTP on
 
 doLOAD1	jsr	copyPATH
 
@@ -579,28 +568,61 @@ doLOAD1	jsr	copyPATH
 	dw	$2014
 	adrl	proCLOSE
 
-loadKO99	rts
+	lda	#$bcbc
+	rts
+
+*---
+
+	lda	texte_selectionne
+	beq	load_notxt
+	jsr	ai_affiche	; texte selectionne = image 1..8 et c'est tout
+	bra	load_exit
+	
+load_notxt	jsr	init_souris
+
+	PushLong	ptrFOND	; 1. on met le fond
+	PushLong	ptrCONTENT
+	PushLong	#32768
+	_BlockMove
+
+	lda	peche_selectionne
+	beq	load_nosin
+	jsr	affiche_peches
+	
+load_nosin	lda	objet_selectionne
+	beq	load_exit
+	jsr	affiche_objets
+
+load_exit	jsr	resumeMUSIC
+	lda	#$bcbc	; force le refresh
+	rts
 
 *----------------------------------- Save
 
-doSAVE
-*	jsr	suspendMUSIC	; NTP off
-	jsr	saveBACK
+doSAVE	lda	texte_selectionne
+	ora	objet_selectionne
+	ora	peche_selectionne
+	beq	doSAVE0
+	rts
 	
-	PushWord #25
-	PushWord #36
-	PushLong #strSAVEFILE
-	PushLong #namePATH
-	PushWord #15
-	PushLong #replyPTR
+doSAVE0
+*	jsr	suspendMUSIC	; NTP off
+	
+	PushWord	#25
+	PushWord	#36
+	PushLong	#strSAVEFILE
+	PushLong	#namePATH
+	PushWord	#15
+	PushLong	#replyPTR
 	_SFPutFile
 
-	jsr	loadBACK
-*	jsr	resumeMUSIC	; NTP on
-	
+	jsr	init_souris
+
 	lda	replyPTR
 	bne	doSAVE1
+saveKO99
 	rts
+*	jmp	resumeMUSIC
 
 doSAVE1	jsr	copyPATH
 
@@ -629,8 +651,7 @@ doSAVE1	jsr	copyPATH
 	jsl	GSOS
 	dw	$2014
 	adrl	proCLOSE
-
-saveKO99	rts
+	rts
 	
 *--- Recopie le filename du fichier de sauvegarde
 
@@ -652,23 +673,22 @@ copyPATH	sep	#$20
 
 doRESTART
 *	jsr	suspendMUSIC	; NTP off
-	jsr	saveBACK
 
-	PushWord #0
-	PushWord #5
-	PushLong #0
+	PushWord	#0
+	PushWord	#5
+	PushLong	#0
 	pea	$0000
 	lda	#alertRESTART
 	ora	saveLANGUAGE
 	pha
 	_AlertWindow
 	
-	jsr	loadBACK
+*	jsr	resumeMUSIC
 	
 	pla
 	beq	re1
-*	jmp	resumeMUSIC	; NTP on
-	
+	lda	#0
+	rts
 re1	lda	#$bcbc
 	rts
 
@@ -676,7 +696,6 @@ re1	lda	#$bcbc
 
 doQUIT
 *	jsr	suspendMUSIC	; NTP off
-	jsr	saveBACK
 	
 	PushWord #0
 	PushWord #5
@@ -687,18 +706,14 @@ doQUIT
 	pha
 	_AlertWindow
 	
-	jsr	loadBACK
-*	jsr	resumeMUSIC	; NTP on
-	
 	pla
 	beq	meQUIT
 	rts
+*	jmp	resumeMUSIC
 
 *----------------------------------- Quit
 
-meQUIT
-*	jsr	stopNTP
-	jsr	TWILIGHTon
+meQUIT	jsr	stopMIDI
 	
 meQUIT0	PushWord #refIsHandle
 	PushLong SStopREC
@@ -720,113 +735,6 @@ meQUIT1	PushWord myID
 	adrl	proQUIT
 
 monitor	brk	$bd
-
-*----------------------------------------
-* TWILIGHT
-*----------------------------------------
-
-*----------------------------
-* TWILIGHToff
-*  Turns Twilight II off
-*
-* Entry:
-*  n/a
-*
-* Exit:
-*  n/a
-*
-*----------------------------
-
-lenV1	=	$49bf
-lenV2	=	$539a
-
-offV1	=	$117a
-offV2	=	$154c
-
-TWILIGHToff
-	ldal	$e11600
-	sta	Debut
-	ldal	$e11602
-	sta	Debut+2
-
-TWILIGHToff1
-	ldy	#8
-	lda	[Debut],y
-	ldx	#offV1
-	cmp	#lenV1
-	beq	TWILIGHToff2
-	ldx	#offV2
-	cmp	#lenV2
-	bne	TWILIGHToff3
-	
-TWILIGHToff2
-	stx	offTWILIGHT
-         
-	lda	[Debut]
-	sta	Arrivee
-	sta	ptrTWILIGHT
-	ldy	#2
-	lda	[Debut],y
-	sta	Arrivee+2
-	sta	ptrTWILIGHT+2
-	
-	txy
-	lda	[Arrivee],y
-	cmp	#$0ef0
-	bne	TWILIGHToff3
-	lda	#$0e80
-	sta	[Arrivee],y
-	inc	fgTWILIGHT
-	rts
-
-TWILIGHToff3
-	ldy	#16
-	lda	[Debut],y
-	tax
-	iny
-	iny
-	lda	[Debut],y
-	sta	Debut+2
-	txa
-	sta	Debut
-	
-	lda	Debut
-	ora	Debut+2
-	bne	TWILIGHToff1
-	rts
-
-*----------------------------
-* TWILIGHTon
-*  Turns Twilight II on
-*
-* Entry:
-*  n/a
-*
-* Exit:
-*  n/a
-*
-*----------------------------
-
-TWILIGHTon
-	lda	fgTWILIGHT
-	bne	TWILIGHTon1
-	rts
-
-TWILIGHTon1
-	lda	ptrTWILIGHT
-	sta	Arrivee
-	lda	ptrTWILIGHT+2
-	sta	Arrivee+2
-	ldy	offTWILIGHT
-	lda	#$0ef0
-	sta	[Arrivee],y
-	rts
-
-*--- Twilight II
-
-ptrTWILIGHT	ds	4
-fgTWILIGHT	ds	2
-offTWILIGHT	ds	2
 
 *----------------------------------------
 * MEMOIRE
@@ -857,191 +765,6 @@ make64KB	pha
 * GFX
 *----------------------------------------
 
-*--------------------------------------
-
-nextVBL	lda	#75
-	pha
-]lp	ldal	$e0c02e
-	and	#$7f
-	cmp	1,s
-	blt	]lp
-	cmp	#100
-	bge	]lp
-	pla
-
-waitVBL	ldal	RDVBLBAR-1
-	bpl	waitVBL
-	rts
-
-waitKEY	ldal	KBD-1
-	bpl	waitKEY
-	stal	KBDSTROBE-1
-	rts
-
-*--- On attend un clic ou une combinaison de touches
-
-waitEVENT	inc	VBLCounter0
-
-	PushWord #0
-	PushWord #%00000000_00001010
-	PushLong #taskREC
-	_GetNextEvent
-	pla
-	beq	waitEVENT
-	
-	lda	taskREC
-	cmp	#mouseDownEvt
-	beq	we_1
-	rts
-	
-we_1	inc	VBLCounter0
-
-	PushWord	#0
-	PushWord	#0
-	_StillDown
-	pla
-	bne	we_1
-	
-	lda	#mouseDownEvt
-	rts
-
-*--------------------------------------
-
-fadeIN	pha
-	sty	Debut
-	stx	Debut+2
-
-	_HideCursor
-         
-	ldy	#$2000
-	sty	Arrivee
-	ldx	ptrSCREEN+2
-	stx	Arrivee+2
-
-	ldy	#$7e00
-	lda	#0
-]lp	sta	[Arrivee],y
-	iny
-	iny
-	bpl	]lp
-
-	pla		; ne copie pas les données
-	cmp	#FALSE	; si à FALSE
-	beq	fadeIN1
-	
-	ldy	#$7dfe
-]lp	lda	[Debut],y
-	sta	[Arrivee],y
-	dey
-	dey
-	bpl	]lp
-
-fadeIN1  lda   Debut
-         clc
-         adc   #$7e00
-         sta   Debut
-         lda   Debut+2
-         adc   #0
-         sta   Debut+2
-
-         lda   Arrivee
-         clc
-         adc   #$7e00
-         sta   Arrivee
-         lda   Arrivee+2
-         adc   #0
-         sta   Arrivee+2
-
-         ldx   #$000f
-fadeIN2  ldy   #$01fe
-fadeIN3  lda   [Arrivee],y
-         and   #$000f
-         sta   temp
-         lda   [Debut],y
-         and   #$000f
-         cmp   temp
-         beq   fadeIN4
-         lda   [Arrivee],y
-         clc
-         adc   #$0001
-         sta   [Arrivee],y
-fadeIN4  lda   [Arrivee],y
-         and   #$00f0
-         sta   temp
-         lda   [Debut],y
-         and   #$00f0
-         cmp   temp
-         beq   fadeIN5
-         lda   [Arrivee],y
-         clc
-         adc   #$0010
-         sta   [Arrivee],y
-fadeIN5  lda   [Arrivee],y
-         and   #$0f00
-         sta   temp
-         lda   [Debut],y
-         and   #$0f00
-         cmp   temp
-         beq   fadeIN6
-         lda   [Arrivee],y
-         clc
-         adc   #$0100
-         sta   [Arrivee],y
-
-fadeIN6  dey
-         dey
-         bpl   fadeIN3
-         jsr   nextVBL
-         dex
-         bpl   fadeIN2
-         
-	_ShowCursor
-	rts
-
-*---
-
-fadeOUT	lda	#$9e00
-	sta	Debut
-	lda	ptrSCREEN+2
-	sta	Debut+2
-
-	_HideCursor
-         
-         ldx   #$000f
-fadeOUT1 ldy   #$01fe
-fadeOUT2 lda   [Debut],y
-         and   #$000f
-         beq   fadeOUT3
-         lda   [Debut],y
-         sec
-         sbc   #$0001
-         sta   [Debut],y
-fadeOUT3 lda   [Debut],y
-         and   #$00f0
-         beq   fadeOUT4
-         lda   [Debut],y
-         sec
-         sbc   #$0010
-         sta   [Debut],y
-fadeOUT4 lda   [Debut],y
-         and   #$0f00
-         beq   fadeOUT5
-         lda   [Debut],y
-         sec
-         sbc   #$0100
-         sta   [Debut],y
-
-fadeOUT5 dey
-         dey
-         bpl   fadeOUT2
-         jsr   nextVBL
-         dex
-         bpl   fadeOUT1
-         
-	_ShowCursor
-*	jmp	noircit_ecran
-	rts
-	
 *----------------------------
 * unpackLZ4
 *  Unpacks a LZ4 file
@@ -1057,149 +780,114 @@ fadeOUT5 dey
 *
 *----------------------------
 
-unpackLZ4	sta	LZ4_Limit+1
+	mx	%00
 	
-*	jsr	suspendMUSIC
+unpackLZ4	sta	LZ4_Limit+1
 	sep	#$20
 
-*--- Source
+	lda	ptrUNPACK+2		; Source
+	sta	LZ4_Literal_3+2
+	sta	LZ4_ReadToken+3
+	sta	LZ4_Match_1+3
+	sta	LZ4_GetLength_1+3
 
-         lda   ptrUNPACK+2
-         sta   LZ4_Literal_3+2
-         sta   LZ4_ReadToken+3
-         sta   LZ4_Match_1+3
-         sta   LZ4_GetLength_1+3
+	lda	ptrIMAGE+2		; Destination
+	sta	LZ4_Literal_3+1
+	sta	LZ4_Match_5+1
+	sta	LZ4_Match_5+2
 
-*--- Destination
-
-         lda   ptrIMAGE+2
-         sta   LZ4_Literal_3+1
-         sta   LZ4_Match_5+1
-         sta   LZ4_Match_5+2
-
-         rep   #$20
-
-* REP #$30
-* STY LZ4_Limit+1
+	rep	#$20
 
 *--
 
-         ldy   #0         ; Init Target unpacked Data offset
-         ldx   #16        ; Offset after header
+	ldy	#0	; Init Target unpacked Data offset
+	ldx	#16	; Offset after header
 
-LZ4_ReadToken LDAL $AA0000,X ; Read Token Byte
-         INX
-         STA   LZ4_Match_2+1
+LZ4_ReadToken
+	LDAL	$AA0000,X	; Read Token Byte
+	INX
+	STA	LZ4_Match_2+1
+	
+*----------------
+
+LZ4_Literal
+	AND	#$00F0	; >>> Process Literal Bytes <<<
+	BEQ	LZ4_Limit	; No Literal
+	CMP	#$00F0
+	BNE	LZ4_Literal_1
+	JSR	LZ4_GetLengthLit	; Compute Literal Length with next bytes
+	BRA	LZ4_Literal_2
+LZ4_Literal_1
+	LSR		; Literal Length use the 4 bit
+	LSR
+	LSR
+	LSR
+
+LZ4_Literal_2
+	DEC		; Copy A+1 Bytes
+LZ4_Literal_3
+	MVN	$AA,$BB	; Copy Literal Bytes from packed data buffer
+	PHK		; X and Y are auto incremented
+	PLB
 
 *----------------
 
-LZ4_Literal AND #$00F0    ; >>> Process Literal Bytes <<<
-         BEQ   LZ4_Limit  ; No Literal
-         CMP   #$00F0
-         BNE   LZ4_Literal_1
-         JSR   LZ4_GetLengthLit ; Compute Literal Length with next bytes
-         BRA   LZ4_Literal_2
-LZ4_Literal_1 LSR         ; Literal Length use the 4 bit
-         LSR
-         LSR
-         LSR
-
-LZ4_Literal_2 DEC         ; Copy A+1 Bytes
-LZ4_Literal_3 MVN $AA,$BB ; Copy Literal Bytes from packed data buffer
-         PHK              ; X and Y are auto incremented
-         PLB
+LZ4_Limit	CPX	#$AAAA	; End Of Packed Data buffer ?
+	BEQ	LZ4_End
 
 *----------------
 
-LZ4_Limit CPX  #$AAAA     ; End Of Packed Data buffer ?
-         BEQ   LZ4_End
+LZ4_Match	TYA		; >>> Process Match Bytes <<<
+	SEC
+LZ4_Match_1	SBCL	$AA0000,X	; Match Offset
+	INX
+	INX
+	STA	LZ4_Match_4+1
+
+LZ4_Match_2	LDA	#$0000	; Current Token Value
+	AND	#$000F
+	CMP	#$000F
+	BNE	LZ4_Match_3
+	JSR	LZ4_GetLengthMat	; Compute Match Length with next bytes
+LZ4_Match_3	CLC
+	ADC	#$0003	; Minimum Match Length is 4 (-1 for the MVN)
+	PHX
+LZ4_Match_4	LDX	#$AAAA	; Match Byte Offset
+LZ4_Match_5	MVN	$BB,$BB	; Copy Match Bytes from unpacked data buffer
+	PHK		; X and Y are auto incremented
+	PLB
+	PLX
+	BRA	LZ4_ReadToken
 
 *----------------
 
-LZ4_Match TYA             ; >>> Process Match Bytes <<<
-         SEC
-LZ4_Match_1 SBCL $AA0000,X ; Match Offset
-         INX
-         INX
-         STA   LZ4_Match_4+1
-
-LZ4_Match_2 LDA #$0000    ; Current Token Value
-         AND   #$000F
-         CMP   #$000F
-         BNE   LZ4_Match_3
-         JSR   LZ4_GetLengthMat ; Compute Match Length with next bytes
-LZ4_Match_3 CLC
-         ADC   #$0003     ; Minimum Match Length is 4 (-1 for the MVN)
-
-         PHX
-LZ4_Match_4 LDX #$AAAA    ; Match Byte Offset
-LZ4_Match_5 MVN $BB,$BB   ; Copy Match Bytes from unpacked data buffer
-         PHK              ; X and Y are auto incremented
-         PLB
-         PLX
-         BRA   LZ4_ReadToken
-
-*----------------
-
-LZ4_GetLengthLit LDA #$000F ; Compute Variable Length (Literal or Match)
-LZ4_GetLengthMat STA LZ4_GetLength_2+1
-LZ4_GetLength_1 LDAL $AA0000,X ; Read Length Byte
-         INX
-         AND   #$00FF
-         CMP   #$00FF
-         BNE   LZ4_GetLength_3
-         CLC
-LZ4_GetLength_2 ADC #$000F
-         STA   LZ4_GetLength_2+1
-         BRA   LZ4_GetLength_1
-LZ4_GetLength_3 ADC LZ4_GetLength_2+1
-         RTS
+LZ4_GetLengthLit
+	LDA	#$000F	; Compute Variable Length (Literal or Match)
+LZ4_GetLengthMat
+	STA	LZ4_GetLength_2+1
+LZ4_GetLength_1
+	LDAL	$AA0000,X	; Read Length Byte
+	INX
+	AND	#$00FF
+	CMP	#$00FF
+	BNE	LZ4_GetLength_3
+	CLC
+LZ4_GetLength_2
+	ADC	#$000F
+	STA	LZ4_GetLength_2+1
+	BRA	LZ4_GetLength_1
+LZ4_GetLength_3
+	ADC	LZ4_GetLength_2+1
+	RTS
 
 *----------------
 
 LZ4_End	sty	lenDATA		; Y = length of unpacked data
-*	jmp	resumeMUSIC
+	rts
 
 *---
 
 lenDATA	ds	4
-
-*-----------------------------------
-* SAVE THE SHR SCREEN
-*-----------------------------------
-
-saveBACK	_HideCursor
-	PushLong	ptrSCREEN
-	PushLong	ptrBACKGND
-	PushLong	#32768
-	_BlockMove
-	_ShowCursor
-	rts
-
-*-----------------------------------
-* RESTORE THE SHR SCREEN
-*-----------------------------------
-
-loadBACK	_HideCursor
-	PushLong	ptrBACKGND
-	PushLong	ptrSCREEN
-	PushLong	#32768
-	_BlockMove
-	_ShowCursor
-	rts
-
-*--- Genere un nombre aleatoire
-
-Random
-	ldal  $e0c02e
-	xba
-	clc
-	adc   VBLCounter0
-	sta   VBLCounter0
-	and   #$ff
-	rts
-
-VBLCounter0	ds	2
 
 *----------------------------
 * nowWAIT
@@ -1393,7 +1081,7 @@ taskTBL	da	doNOT	; 0 Null
 	da	doNOT	; wInCalledSysEdit
 	da	doNOT	; wInTrackZoom
 	da	doNOT	; wInHitFrame
-	da	doCONTROL	; wInControl
+	da	doNOT	; wInControl
 	da	doNOT	; wInControlMenu
 
 ctrlTBL	da	doNOT	; 0
@@ -1427,13 +1115,17 @@ loadPATH1
 * GS/OS
 *----------------------------------------
 
-loadFILE	sta	proOPEN+4  ; filename
-	sty	proREAD+4  ; RAM pointer low
-	stx	proREAD+6  ; RAM pointer high
+loadFILE	sta	proOPEN+4	; filename
 
-loadFILE1	stz	proERR
+	sty	proDEST	; where to put at the end
+	stx	proDEST+2
 
-	jsl	GSOS
+	ldy	ptrUNPACK	; where to load
+	sty	proREAD+4	; the packed image
+	ldx	ptrUNPACK+2
+	stx	proREAD+6
+
+loadFILE1	jsl	GSOS
 	dw	$2010
 	adrl	proOPEN
 	bcs	loadERR
@@ -1455,14 +1147,21 @@ loadFILE1	stz	proERR
 loadFILE2	jsl	GSOS
 	dw	$2014
 	adrl	proCLOSE
-
-	ldy	proREAD+12 ; length read
-	ldx	proREAD+14
+	
+	lda	proREAD+12 ; length read
+	jsr	unpackLZ4
+	
+	PushLong	ptrIMAGE
+	PushLong	proDEST
+	PushLong	#32768
+	_BlockMove
 	clc
 	rts
 
-loadERR	sta	proERR
-	jsr	loadFILE2
+loadERR	jsl	GSOS
+	dw	$2014
+	adrl	proCLOSE
+
 	ldy	#0
 	tyx
 	sec
@@ -1470,7 +1169,7 @@ loadERR	sta	proERR
 
 *--- GS/OS data
 
-proERR	ds	2
+proDEST	ds	4	; where to put the image at the end
 
 *--- For the game party
 
@@ -1549,9 +1248,9 @@ proVERS	dw	1	; pcount
 *                                1         2         3
 *                        23456789012345678901234567890123456789
 
-pIMAGE	strl	'1/data/images/PIC1.PIC'
-pFOND	strl	'1/data/images/PIC10.PIC'
-pICONES	strl	'1/data/images/PIC11.PIC'
+pIMAGE	strl	'1/data/images/PIC1.LZ4'
+pFOND	strl	'1/data/images/PIC10.LZ4'
+pICONES	strl	'1/data/images/PIC11.LZ4'
 pTXT	strl	'1/data/textes/fr/TEXTES'
 pBEAT	strl	'1/data/musiques/BEAT1.SPL'
 pSND	strl	'1/data/musiques/SND10.SND'
@@ -1564,6 +1263,7 @@ pGAME	strl	'0/               '
 
 	put	data.s
 	put	game.s
+	put	midi.s
 	
 *---
 

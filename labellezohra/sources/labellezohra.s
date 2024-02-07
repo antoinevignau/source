@@ -426,29 +426,17 @@ doco_3	PushLong	haCONTROL	; on enlève le contrôle
 * RAFRAICHIT LES PALETTES ET LA FENETRE
 *----------------------------------------
 
-refreshME
-	pea	$0000	; la palette
+refreshME	pea	$0000	; la palette
 	lda	ptrCONTENT+2
 	pha
 	lda	ptrCONTENT
 	clc
-	adc	#32256
+	adc	#32256	; after data + SCBs
 	pha
 	_SetColorTable
 
-*	lda	#$0fff	; LOGO - force les couleurs en attendant !
-*	stal	$019e1e
-*	stal	$e19e1e
-
 	PushLong	#0
 	_RefreshDesktop
-
-*	PushWord	#0
-*	PushWord	#%11111111_11111111
-*	PushWord	#0
-*	_FlushEvents
-*	pla
-
 	rts
 
 *----------------------------------------
@@ -531,10 +519,7 @@ doLOAD	lda	texte_selectionne
 	beq	doLOAD0
 	rts
 
-doLOAD0
-*	jsr	suspendMUSIC	; NTP off
-	
-	PushWord	#30
+doLOAD0	PushWord	#30
 	PushWord	#43
 	PushLong	#strLOADFILE
 	PushLong	#0
@@ -547,7 +532,6 @@ doLOAD0
 	lda	replyPTR
 	bne	doLOAD1
 loadKO99	rts
-*	jmp	resumeMUSIC	; NTP on
 
 doLOAD1	jsr	copyPATH
 
@@ -568,33 +552,7 @@ doLOAD1	jsr	copyPATH
 	dw	$2014
 	adrl	proCLOSE
 
-	lda	#$bcbc
-	rts
-
-*---
-
-	lda	texte_selectionne
-	beq	load_notxt
-	jsr	ai_affiche	; texte selectionne = image 1..8 et c'est tout
-	bra	load_exit
-	
-load_notxt	jsr	init_souris
-
-	PushLong	ptrFOND	; 1. on met le fond
-	PushLong	ptrCONTENT
-	PushLong	#32768
-	_BlockMove
-
-	lda	peche_selectionne
-	beq	load_nosin
-	jsr	affiche_peches
-	
-load_nosin	lda	objet_selectionne
-	beq	load_exit
-	jsr	affiche_objets
-
-load_exit	jsr	resumeMUSIC
-	lda	#$bcbc	; force le refresh
+	lda	#$bdbd	; on rafraîchit
 	rts
 
 *----------------------------------- Save
@@ -605,10 +563,7 @@ doSAVE	lda	texte_selectionne
 	beq	doSAVE0
 	rts
 	
-doSAVE0
-*	jsr	suspendMUSIC	; NTP off
-	
-	PushWord	#25
+doSAVE0	PushWord	#25
 	PushWord	#36
 	PushLong	#strSAVEFILE
 	PushLong	#namePATH
@@ -620,9 +575,7 @@ doSAVE0
 
 	lda	replyPTR
 	bne	doSAVE1
-saveKO99
-	rts
-*	jmp	resumeMUSIC
+saveKO99	rts
 
 doSAVE1	jsr	copyPATH
 
@@ -671,10 +624,7 @@ copyPATH	sep	#$20
 
 *----------------------------------- Restart
 
-doRESTART
-*	jsr	suspendMUSIC	; NTP off
-
-	PushWord	#0
+doRESTART	PushWord	#0
 	PushWord	#5
 	PushLong	#0
 	pea	$0000
@@ -682,34 +632,26 @@ doRESTART
 	ora	saveLANGUAGE
 	pha
 	_AlertWindow
-	
-*	jsr	resumeMUSIC
-	
 	pla
 	beq	re1
 	lda	#0
 	rts
-re1	lda	#$bcbc
+re1	lda	#$bcbc	; on relance le jeu
 	rts
 
 *----------------------------------- Quit
 
-doQUIT
-*	jsr	suspendMUSIC	; NTP off
-	
-	PushWord #0
+doQUIT	PushWord #0
 	PushWord #5
 	PushLong #0
 	pea	$0000
 	lda	#alertQUIT
 	ora	saveLANGUAGE
 	pha
-	_AlertWindow
-	
+	_AlertWindow	
 	pla
 	beq	meQUIT
 	rts
-*	jmp	resumeMUSIC
 
 *----------------------------------- Quit
 

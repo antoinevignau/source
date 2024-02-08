@@ -5,37 +5,140 @@
 *
 
 	mx	%11
-	org	$6000
+	org	$0
 	lst	off
 
-*---------------------------------------
+	ds	$800
 
-	use	LR.Equates
-	use	LR.Monitor
+* 0 vide
+* 1 mur
+* 2 mur dur
+* 3 échelle visible
+* 4 liane
+* 5 trappe
+* 6 échelle invisible
+* 7 trésor
+* 8 ennemi
+* 9 héros
+	
+*-----------------------------------
+* EQUATES
+*-----------------------------------
 
-*---------------------------------------
+lvlWIDTH	=	28
+lvlHEIGHT	=	16
 
-L6000	JSR	L87A2
+nbLIVES	=	5
+maxLEVEL	=	150
+maxHEIGHT	=	192	; lines
+maxFOE	=	5	; no more than 5 ennemies
+
+sprEMPTY	=	0
+sprWALL	=	1
+sprWALLI	=	2	; mur indestructible
+sprLADDER	=	3
+sprCORD	=	4
+sprTRAP	=	5
+sprLADDERI	=	6
+sprCHEST	=	7
+sprFOE	=	8
+sprHERO	=	9
+
+theA	=	$1e
+hgrPAGE	=	$1f
+theX	=	$85
+theY	=	$86
+activePAGE	=	$87
+theCENTAINE	=	$89
+theDIZAINE	=	theCENTAINE+1 ; 8a
+theUNITE	=	theDIZAINE+1 ; 8b
+nbFOE	=	$8d	; 8d
+theSCORE	=	$8e	; 8e..8f.90..91
+nbCHEST	=	$93	; 93
+intLEVEL	=	$96	; theLEVEL-1
+theLEVEL	=	$A6
+
+zpJOY	=	$95
+theMEN	=	$98
+
+chrLA	=	$88
+chrRET	=	$8d
+chrRA	=	$95
+chrESC	=	$9b
+chrSPC	=	" "
+chrZERO	=	"0"
+chrNINE	=	"9"
+chrDOT	=	"."
+chrA	=	"A"
+chrI	=	"I"
+chrJ	=	"J"
+chrK	=	"K"
+chrL	=	"L"
+chrN	=	"N"
+chrO	=	"O"
+chrU	=	"U"
+chrY	=	"Y"
+chrZ	=	"Z"
+
+*-----------------------------------
+* SOFTSWITCHES
+*-----------------------------------
+
+KBD	EQU	$C000
+KBDSTROBE	EQU	$C010
+SPKR	EQU	$C030
+TXTCLR	EQU	$C050
+MIXCLR	EQU	$C052
+TXTPAGE1	EQU	$C054
+TXTPAGE2	EQU	$C055
+HIRES	EQU	$C057
+BUTN0	EQU	$C061
+BUTN1	EQU	$C062
+PADDL0	EQU	$C064
+PADDL1	EQU	$C065
+PTRIG	EQU	$C070
+SETKBD	EQU	$FE89
+
+*-----------------------------------
+* DONNEES
+*-----------------------------------
+
+	put	LR.Data
+	
+*-----------------------------------
+* PAGES GRAPHIQUES
+*-----------------------------------
+
+HGR1	ds	8192,$20
+HGR2	ds	8192,$40
+
+*-----------------------------------
+* 
+*-----------------------------------
+
+
+L6000	JSR	checkJOYSTICK
 
 	LDA	#$01	; read score table
-	JSR	L6359
+	JSR	readSCORE
 
 *--- Show title page
-* Data if from $0F00 to $1A84
+* Data from $0F00 to $1A84
 
-L6008	JSR	L7A51	; display the compressed title page
-	LDA	#<L0F00-1
+showTITLEPAGE
+	JSR	clearHGR1	; display the compressed title page
+	LDA	#<logo-1
 	STA	L6030+1
-	LDA	#>L0F00-1
+	LDA	#>logo-1
 	STA	L6030+2
 	LDY	#$00
-	STY	$86
+	STY	theY
 	STY	$A7
-	STY	$96
-	LDA	#$20
-	STA	$1F
-	STA	$87
-L6023	JSR	L7A31
+	STY	intLEVEL
+	LDA	#>HGR1
+	STA	hgrPAGE
+	STA	activePAGE
+L6023	JSR	setHGRPOINTER
 	LDY	#$00
 L6028	INC	L6030+1
 	BNE	L6030
@@ -48,9 +151,9 @@ L6030	LDA	L6028
 	BPL	L6028
 L603C	TAY
 	BPL	L6028
-L603F	INC	$86
-	LDY	$86
-	CPY	#$C0	; until line 192
+L603F	INC	theY
+	LDY	theY
+	CPY	#maxHEIGHT	; until line 192
 	BCC	L6023
 	STA	TXTPAGE1
 	STA	HIRES
@@ -61,30 +164,30 @@ L603F	INC	$86
 *---
 
 L6056	LDA	#$00
-	STA	$8E
-	STA	$8F
-	STA	$90
-	STA	$91
+	STA	theSCORE
+	STA	theSCORE+1
+	STA	theSCORE+2
+	STA	theSCORE+3
 	STA	$97
 	STA	$A5
 	STA	$53
 	STA	$AB
 	STA	$A8
 	LDA	#>L9B00
-	STA	$A9
-	LDA	#$05	; 5 men to start with
-	STA	$98
+	STA	$A8+1
+	LDA	#nbLIVES	; 5 men to start with
+	STA	theMEN
 	LDA	$A7
 	LSR
 	BEQ	L6099
 	LDA	#$01
-	JSR	L6359
+	JSR	readSCORE	; load score
 	CMP	#$00
 	BNE	L6086
-	JSR	L8106
-	JMP	L6008	; start again
+	JSR	tellNODATADISK
+	JMP	showTITLEPAGE	; start again
 
-L6086	LDA	L1F00+$FF
+L6086	LDA	scorebuf+$FF
 	BNE	L6091
 	LDA	$36
 	LDX	$37
@@ -105,9 +208,9 @@ L609F	LDX	#$01
 	BEQ	L60BF
 	JSR	L869F
 	LDA	$00
-	STA	$85
+	STA	theX
 	LDA	$01
-	STA	$86
+	STA	theY
 	LDA	#$09
 	JSR	L8700
 L60BF	LDX	#$00
@@ -115,7 +218,7 @@ L60BF	LDX	#$00
 	STX	$54
 	LDA	$97
 	CLC
-	ADC	$8D
+	ADC	nbFOE
 	TAY
 	LDX	L6214,Y
 	LDA	L6CA7,X
@@ -131,7 +234,7 @@ L60E4	JSR	L64BD
 	LDA	$9A
 	BEQ	L613F
 	JSR	L8811
-	LDA	$93
+	LDA	nbCHEST
 	BNE	L60F5
 	JSR	L8631
 L60F5	LDA	$01
@@ -139,7 +242,7 @@ L60F5	LDA	$01
 	LDA	$03
 	CMP	#$02
 	BNE	L6107
-	LDA	$93
+	LDA	nbCHEST
 	BEQ	L611A
 	CMP	#$FF
 	BEQ	L611A
@@ -151,16 +254,16 @@ L6107	JSR	L75F4
 	LDA	$9A
 	BEQ	L613F
 	BNE	L60E4
-L611A	INC	$A6
-	INC	$96
-	INC	$98	; man++
+L611A	INC	theLEVEL
+	INC	intLEVEL
+	INC	theMEN	; man++
 	BNE	L6124
-	DEC	$98	: man--
+	DEC	theMEN	; man--
 L6124	LDX	#$0F
 	STX	$5C
 L6128	LDY	#$01
 	LDA	#$00
-	JSR	L7A92
+	JSR	printSCORE
 	JSR	L622A
 	JSR	L622A
 	JSR	L622A
@@ -168,8 +271,8 @@ L6128	LDY	#$01
 	BNE	L6128
 L613C	JMP	L609F
 
-L613F	DEC	$98	; man--
-	JSR	L7A70
+L613F	DEC	theMEN	; man--
+	JSR	printMEN
 	JSR	L87E1
 	HEX	02400240035003500460046005700570
 	HEX	068006800790079008A008A009B009B0
@@ -181,7 +284,7 @@ L6178	JSR	L8811
 	LDA	$A7
 	LSR
 	BEQ	L61D0
-	LDA	$98	: man
+	LDA	theMEN	; man
 	BNE	L613C
 	JSR	L84C8
 	JSR	L8B1A	; we are dead, anim GAME OVER
@@ -191,9 +294,9 @@ L618E	JSR	L869F
 	LDX	#$FF
 	LDY	#$FF
 	LDA	#$03
-	STA	$86
-L6199	LDA	$95
-	CMP	#"K"
+	STA	theY
+L6199	LDA	zpJOY
+	CMP	#chrK
 	BEQ	L61A9
 	LDA	BUTN1
 	BMI	L6201
@@ -205,13 +308,13 @@ L61A9	LDA	KBD
 	BNE	L6199
 	DEY
 	BNE	L6199
-	DEC	$86
+	DEC	theY
 	BNE	L6199
 	LDA	$A7
 	BNE	L61DE
 	LDX	#$01
 	STX	$A7
-	STX	$A6
+	STX	theLEVEL
 	STX	$AC
 	STX	$9D
 	LDX	$99
@@ -230,23 +333,23 @@ L61DE	CMP	#$01
 	BNE	L61F3
 	BEQ	L61E9
 L61E4	LDA	#$01
-	JSR	L6359
+	JSR	readSCORE
 L61E9	JSR	L786B
 	LDA	#$02
 	STA	$A7
 	JMP	L618E
-L61F3	JMP	L6008
+L61F3	JMP	showTITLEPAGE
 
 L61F6	STA	KBDSTROBE
 	CMP	#$85	; Ctrl-E
 	BEQ	L6211
-	CMP	#$8D	; Return
+	CMP	#chrRET	; Return
 	BEQ	L61E4
 
 L6201	LDX	#$00
-	STX	$96
+	STX	intLEVEL
 	INX
-	STX	$A6
+	STX	theLEVEL
 	STX	$9D
 	LDA	#$02
 	STA	$A7
@@ -271,13 +374,13 @@ L6238	STX	$A2
 	STX	$00
 	INX
 	STX	$A3
-	STX	$93
-	STX	$8D
+	STX	nbCHEST
+	STX	nbFOE
 	STX	$19
 	STX	$A0
 	STX	$92
 	STX	$1A
-	STX	$86
+	STX	theY
 	TXA
 	LDX	#$1E
 L6252	STA	L0CE0,X
@@ -287,10 +390,12 @@ L6252	STA	L0CE0,X
 L625A	STA	L0C98,X
 	DEX
 	BPL	L625A
+
 	LDA	#$01
 	STA	$9A
-	JSR	L630E
-	LDY	$86
+	JSR	diskLEVEL
+
+	LDY	theY
 L6269	LDA	L1C05,Y
 	STA	$06
 	STA	$08
@@ -299,7 +404,7 @@ L6269	LDA	L1C05,Y
 	LDA	L1C25,Y
 	STA	$09
 	LDA	#$00
-	STA	$85
+	STA	theX
 L627E	LDA	$1A
 	LSR
 	LDY	$92
@@ -313,84 +418,95 @@ L628C	LSR
 	LSR
 	INC	$92
 L6292	INC	$1A
-	LDY	$85
+	LDY	theX
 	CMP	#$0A
 	BCC	L629C
 	LDA	#$00
 L629C	STA	($06),Y
 	STA	($08),Y
-	INC	$85
-	LDA	$85
-	CMP	#$1C
+	INC	theX
+	LDA	theX
+	CMP	#lvlWIDTH
 	BCC	L627E
-	INC	$86
-	LDY	$86
-	CPY	#$10
+	INC	theY
+	LDY	theY
+	CPY	#lvlHEIGHT
 	BCC	L6269
-	JSR	L63B3
+	JSR	decodeLEVEL
 	BCC	L62C3
-	LDA	$96
+	LDA	intLEVEL
 	BEQ	L62C4
 	LDX	#$00
-	STX	$96
+	STX	intLEVEL
 	INC	$97
 	DEX
 	JMP	L6238
 L62C3	RTS
-L62C4	JMP	L6008
 
-L62C7	LDA	#$00
+L62C4	JMP	showTITLEPAGE
+
+*-----------------------------------
+* ENCODE A LEVEL BEFORE SAVING IT
+*-----------------------------------
+
+encodeLEVEL
+	LDA	#$00
 	STA	$92
 	STA	$1A
-	STA	$86
-L62CF	LDY	$86
+	STA	theY
+L62CF	LDY	theY
 	LDA	L1C05,Y
 	STA	$06
 	LDA	L1C15,Y
-	STA	$07
+	STA	$06+1
 	LDY	#$00
-	STY	$85
+	STY	theX
 L62DF	LDA	$1A
 	LSR
 	LDA	($06),Y
 	BCS	L62EA
-	STA	$1E
+	STA	theA
 	BPL	L62F7
 L62EA	ASL
 	ASL
 	ASL
 	ASL
-	ORA	$1E
+	ORA	theA
 	LDY	$92
 	STA	L0D00,Y
 	INC	$92
 L62F7	INC	$1A
-	INC	$85
-	LDY	$85
-	CPY	#$1C
+	INC	theX
+	LDY	theX
+	CPY	#lvlWIDTH
 	BCC	L62DF
-	INC	$86
-	LDA	$86
-	CMP	#$10
+	INC	theY
+	LDA	theY
+	CMP	#lvlHEIGHT
 	BCC	L62CF
-	LDA	#$02
-	JMP	L630E
+	LDA	#$02	; write level
+	JMP	diskLEVEL
 
-L630E	STA	LB7F4
+*-----------------------------------
+* LOAD/SAVE LEVEL FROM/TO DISK
+*-----------------------------------
+
+diskLEVEL	STA	LB7F4
 	LDA	$A7
 	LSR
 	BEQ	L6345
-	LDA	$96
+	LDA	intLEVEL	; level
 	LSR
 	LSR
 	LSR
 	LSR
 	CLC
 	ADC	#$03
-	STA	LB7EC
-	LDA	$96
+	STA	LB7EC	; track
+	LDA	intLEVEL
 	AND	#$0F
-	STA	LB7ED
+	STA	LB7ED	; sector
+
 	LDA	#<L0D00
 	STA	LB7F0
 	LDA	#>L0D00
@@ -399,17 +515,16 @@ L630E	STA	LB7F4
 	STA	LB7EB
 L6338	LDY	#<LB7E8
 	LDA	#>LB7E8
-*	JSR	$0023	; LoGo - Souvenir from protection
-	jsr     L63A5
+	jsr	callRWTS	; LoGo - JSR $0023 - Souvenir from protection
 	BCC	L6344
-	JMP	L6008
+	JMP	showTITLEPAGE
 L6344	RTS
 
-L6345	LDA	$A6
+L6345	LDA	theLEVEL
 	CLC
-	ADC	#$9E
-	STA	$0D
-	LDY	#$00
+	ADC	#>L9E00
+	STA	$0C+1
+	LDY	#<L9E00
 	STY	$0C
 L6350	LDA	($0C),Y
 	STA	L0D00,Y
@@ -417,27 +532,34 @@ L6350	LDA	($0C),Y
 	BNE	L6350
 	RTS
 
-L6359	STA	LB7F4
+*-------------------------------
+* CALL RWTS
+*-------------------------------
+
+readSCORE	STA	LB7F4	; command
 	LDA	#$0C
-	STA	LB7EC
+	STA	LB7EC	; track
 	LDA	#$0F
-	STA	LB7ED
-	LDA	#<L1F00
+	STA	LB7ED	; sector
+
+	LDA	#<scorebuf	; where to load
 	STA	LB7F0
-	LDA	#>L1F00
+	LDA	#>scorebuf
 	STA	LB7F0+1
 	LDA	#$00
 	STA	LB7EB
-	LDY	#<LB7E8
+	LDY	#<LB7E8	; IOB table
 	LDA	#>LB7E8
-	JSR	L63A5
+	JSR	callRWTS
 	BCC	L6381
-	JMP	L6008
+	JMP	showTITLEPAGE
 
-L6381	LDY	#$0A
+*--- Check disk (not a LR disk, data disk, master disk)
+
+L6381	LDY	#$0A	; check magic number
 	LDA	#$00
 	STA	$50
-L6387	LDA	L1F00+$F4,Y	; magic key
+L6387	LDA	scorebuf+$F4,Y	; magic key
 	EOR	L63A8,Y
 	ORA	$50
 	STA	$50
@@ -448,58 +570,65 @@ L6387	LDA	L1F00+$F4,Y	; magic key
 	LDA	#$00
 	RTS
 
-L639B	LDA	#$01
-	LDX	L1F00+$FF
+L639B	LDA	#$01	; master disk
+	LDX	scorebuf+$FF
 	BNE	L63A4
 	LDA	#$FF
 L63A4	RTS
-L63A5	JMP	($0036)	; LoGo - to be replaced with JMP $BD00
+
+callRWTS	JMP	$bd00	; LoGo - ($0036) to be replaced with JMP $BD00
 
 L63A8	ASC	"LODE RUNNER"
 
-L63B3	LDY	#$0F
-	STY	$86
+*-----------------------------------
+* DECODE A LEVEL
+*-----------------------------------
+
+decodeLEVEL
+	LDY	#lvlHEIGHT-1	
+	STY	theY
 L63B7	LDA	L1C05,Y
 	STA	$06
 	STA	$08
 	LDA	L1C15,Y
-	STA	$07
+	STA	$06+1
 	LDA	L1C25,Y
-	STA	$09
-	LDY	#$1B
-	STY	$85
+	STA	$08+1
+	LDY	#lvlWIDTH-1
+	STY	theX
 L63CC	LDA	($06),Y
 	LDX	$A2
 	BEQ	L63EE
-	CMP	#$06
+	CMP	#sprLADDERI
 	BNE	L63F0
 	LDX	$A3
 	CPX	#$2D
 	BCS	L63E8
 	INC	$A3
 	INX
-	LDA	$86
+	LDA	theY
 	STA	L0C30,X
 	TYA
 	STA	L0C00,X
-L63E8	LDA	#$00
+L63E8	LDA	#sprEMPTY	; hide it
 	STA	($06),Y
 	STA	($08),Y
 L63EE	BEQ	L6450
-L63F0	CMP	#$07
+
+L63F0	CMP	#sprCHEST
 	BNE	L63F8
-	INC	$93
+	INC	nbCHEST
 	BNE	L6450
-L63F8	CMP	#$08
+L63F8	CMP	#sprFOE
 	BNE	L642A
-	LDX	$8D
-	CPX	#$05
+	LDX	nbFOE	; nbFOE
+	CPX	#maxFOE	; max
 	BCS	L63E8
-	INC	$8D
+	INC	nbFOE
 	INX
 	TYA
 	STA	L0C60,X
-	LDA	$86
+	LDA	theY
 	STA	L0C68,X
 	LDA	#$00
 	STA	L0C70,X
@@ -507,37 +636,38 @@ L63F8	CMP	#$08
 	LDA	#$02
 	STA	L0C78,X
 	STA	L0C80,X
-	LDA	#$00
+	LDA	#sprEMPTY
 	STA	($08),Y
-	LDA	#$08
+	LDA	#sprFOE
 	BNE	L6450
 L6426	BPL	L63B7
 L6428	BPL	L63CC
-L642A	CMP	#$09
+
+L642A	CMP	#sprHERO
 	BNE	L644A
 	LDX	$00
 	BPL	L63E8
 	STY	$00
-	LDX	$86
+	LDX	theY
 	STX	$01
 	LDX	#$02
 	STX	$02
 	STX	$03
 	LDX	#$08
 	STX	$04
-	LDA	#$00
+	LDA	#sprEMPTY
 	STA	($08),Y
-	LDA	#$09
+	LDA	#sprHERO
 	BNE	L6450
-L644A	CMP	#$05
+L644A	CMP	#sprTRAP	; if a trap
 	BNE	L6450
-	LDA	#$01
-L6450	JSR	L82B0
-	DEC	$85
-	LDY	$85
+	LDA	#sprWALL	; output a wall
+L6450	JSR	coutHGR2
+	DEC	theX
+	LDY	theX
 	BPL	L6428
-	DEC	$86
-	LDY	$86
+	DEC	theY
+	LDY	theY
 	BPL	L6426
 	LDA	$A2
 	BEQ	L6469
@@ -546,9 +676,9 @@ L6450	JSR	L82B0
 	SEC
 	RTS
 
-L6469	LDA	#$20
+L6469	LDA	#>HGR1	; clear both HGR pages
 	STA	$0E+1
-	LDA	#$40
+	LDA	#>HGR2
 	STA	$0C+1
 	LDA	#$00
 	STA	$0E
@@ -561,32 +691,36 @@ L6478	LDA	($0C),Y
 	INC	$0E+1
 	INC	$0C+1
 	LDX	$0C+1
-	CPX	#$60
+	CPX	#>HGR2+$20
 	BCC	L6478
 	CLC
 	RTS
 
-L648B	JSR	L88A2
-	LDY	#$0F
-	STY	$86
+*-----------------------------------
+* 
+*-----------------------------------
+
+L648B	JSR	circleANIMATION
+	LDY	#lvlHEIGHT-1
+	STY	theY
 L6492	LDA	L1C05,Y
 	STA	$06
 	LDA	L1C15,Y
-	STA	$07
-	LDY	#$1B
-	STY	$85
+	STA	$06+1
+	LDY	#lvlWIDTH-1
+	STY	theX
 L64A0	LDA	($06),Y
-	CMP	#$09
+	CMP	#sprHERO
 	BEQ	L64AA
-	CMP	#$08
+	CMP	#sprFOE
 	BNE	L64AF
-L64AA	LDA	#$00
-	JSR	L82B0
-L64AF	DEC	$85
-	LDY	$85
+L64AA	LDA	#sprEMPTY
+	JSR	coutHGR2
+L64AF	DEC	theX
+	LDY	theX
 	BPL	L64A0
-	DEC	$86
-	LDY	$86
+	DEC	theY
+	LDY	theY
 	BPL	L6492
 	CLC
 	RTS
@@ -603,41 +737,41 @@ L64CD	LDY	$01
 	LDA	L1C05,Y
 	STA	$08
 	LDA	L1C25,Y
-	STA	$09
+	STA	$08+1
 	LDY	$00
 	LDA	($08),Y
-	CMP	#$03
+	CMP	#sprLADDER
 	BEQ	L6522
-	CMP	#$04
+	CMP	#sprCORD
 	BNE	L64EB
 	LDA	$03
-	CMP	#$02
+	CMP	#sprWALLI
 	BEQ	L6522
 L64EB	LDA	$03
-	CMP	#$02
+	CMP	#sprWALLI
 	BCC	L6525
 	LDY	$01
-	CPY	#$0F
+	CPY	#lvlHEIGHT-1
 	BEQ	L6522
 	LDA	L1C05+1,Y
 	STA	$06
 	STA	$08
 	LDA	L1C15+1,Y
-	STA	$07
+	STA	$06+1
 	LDA	L1C25+1,Y
-	STA	$09
+	STA	$08+1
 	LDY	$00
 	LDA	($06),Y
-	CMP	#$00
+	CMP	#sprEMPTY
 	BEQ	L6525
-	CMP	#$08
+	CMP	#sprFOE
 	BEQ	L6522
 	LDA	($08),Y
-	CMP	#$01
+	CMP	#sprWALL
 	BEQ	L6522
-	CMP	#$02
+	CMP	#sprWALLI
 	BEQ	L6522
-	CMP	#$03
+	CMP	#sprLADDER
 	BNE	L6525
 L6522	JMP	L6584
 
@@ -665,12 +799,12 @@ L654A	LDA	#$00
 	STA	$06
 	STA	$08
 	LDA	L1C15,Y
-	STA	$07
+	STA	$06+1
 	LDA	L1C25,Y
-	STA	$09
+	STA	$08+1
 	LDY	$00
 	LDA	($08),Y
-	CMP	#$01
+	CMP	#sprWALL
 	BNE	L656B
 	LDA	#$00
 L656B	STA	($06),Y
@@ -679,9 +813,9 @@ L656B	STA	($06),Y
 	LDA	L1C05,Y
 	STA	$06
 	LDA	L1C15,Y
-	STA	$07
+	STA	$06+1
 	LDY	$00
-	LDA	#$09
+	LDA	#sprHERO
 	STA	($06),Y
 	JMP	L6C02
 
@@ -702,7 +836,7 @@ L658F	LDA	#$20
 	BCS	L65C2
 	RTS
 
-L65A4	CMP	#"K"	; move down
+L65A4	CMP	#chrK	; move down
 	BNE	L65AE
 	JSR	L6766
 	BCS	L65C2
@@ -721,7 +855,7 @@ L65B8	CMP	#"O"	; dig right
 	RTS
 
 L65C2	LDA	$9F
-	CMP	#"J"	; move left
+	CMP	#chrJ	; move left
 	BNE	L65CB
 	JMP	L65D3
 
@@ -1029,7 +1163,7 @@ L682B	STA	$04
 	LDX	$00
 	DEX
 	LDY	$01
-	JSR	L885D
+	JSR	getXY
 	PLA
 	JSR	L8336
 	LDX	$A0
@@ -1037,28 +1171,28 @@ L684C	LDA	L697A,X
 	PHA
 	LDX	$00
 	DEX
-	STX	$85
+	STX	theX
 	LDY	$01
-	STY	$86
-	JSR	L885D
+	STY	theY
+	JSR	getXY
 	PLA
 	JSR	L83A7
 	LDX	$A0
 	LDA	L6992,X
-	INC	$86
-	JSR	L82AA
+	INC	theY
+	JSR	coutHGR1
 	INC	$A0
 	CLC
 	RTS
 
 L686E	LDY	$01
 	INY
-	STY	$86
+	STY	theY
 	LDY	$00
 	DEY
-	STY	$85
+	STY	theX
 	LDA	#$01
-	JSR	L82AA
+	JSR	coutHGR1
 	LDX	$A0
 	BEQ	L6892
 	DEX
@@ -1067,7 +1201,7 @@ L686E	LDY	$01
 	LDY	$01
 	LDX	$00
 	DEX
-	JSR	L885D
+	JSR	getXY
 	PLA
 	JSR	L8336
 L6892	LDA	#$00
@@ -1130,7 +1264,7 @@ L68F3	STA	$04
 	LDX	$00
 	INX
 	LDY	$01
-	JSR	L885D
+	JSR	getXY
 	PLA
 	JSR	L8336
 	LDX	$A0
@@ -1138,28 +1272,28 @@ L6914	LDA	L697A,X
 	PHA
 	LDX	$00
 	INX
-	STX	$85
+	STX	theX
 	LDY	$01
-	STY	$86
-	JSR	L885D
+	STY	theY
+	JSR	getXY
 	PLA
 	JSR	L83A7
-	INC	$86
+	INC	theY
 	LDX	$A0
 	LDA	L6986,X
-	JSR	L82AA
+	JSR	coutHGR1
 	INC	$A0
 	CLC
 	RTS
 
 L6936	LDY	$01
 	INY
-	STY	$86
+	STY	theY
 	LDY	$00
 	INY
-	STY	$85
+	STY	theX
 	LDA	#$01
-	JSR	L82AA
+	JSR	coutHGR1
 	LDX	$A0
 	CPX	#$0C
 	BEQ	L695C
@@ -1169,7 +1303,7 @@ L6936	LDY	$01
 	LDX	$00
 	INX
 	LDY	$01
-	JSR	L885D
+	JSR	getXY
 	PLA
 	JSR	L8336
 L695C	LDA	#$00
@@ -1264,8 +1398,8 @@ L69AB	DB	$04
 
 L69B8	LDA	KBD
 	BMI	L69CD
-	LDA	$95
-	CMP	#"K"
+	LDA	zpJOY
+	CMP	#chrK
 	BEQ	L69D6
 	LDA	BUTN1
 	BMI	L69CD
@@ -1274,7 +1408,7 @@ L69B8	LDA	KBD
 L69CD	LSR	$AC
 	LSR	$9A
 	LDA	#$01
-	STA	$98	; one man
+	STA	theMEN	; one man
 	RTS
 
 L69D6	LDA	$AB
@@ -1289,9 +1423,9 @@ L69D6	LDA	$AB
 	CLC
 	ADC	#$02
 	STA	$A8
-	LDA	$A9
+	LDA	$A8+1
 	ADC	#$00
-	STA	$A9
+	STA	$A8+1
 L69F2	LDA	$AA
 	AND	#$0F
 	TAX
@@ -1315,21 +1449,21 @@ L6A12	LDA	$A7
 	BEQ	L69B8
 	LDX	KBD
 	STX	KBDSTROBE
-	STX	$1E
+	STX	theA
 	BMI	L6A2B
-	LDA	$95
-	CMP	#"K"
+	LDA	zpJOY
+	CMP	#chrK
 	BEQ	L6A55
 L6A28	JMP	L6AD0
 
 L6A2B	CPX	#$A0
 	BCS	L6A49
-	STX	$1E
+	STX	theA
 	LDY	#$FF
 L6A33	INY
 	LDA	L6B59,Y
 	BEQ	L6A49
-	CMP	$1E
+	CMP	theA
 	BNE	L6A33
 	TYA
 	ASL
@@ -1340,30 +1474,30 @@ L6A33	INY
 	PHA
 	RTS
 
-L6A49	LDA	$95
-	CMP	#"J"
+L6A49	LDA	zpJOY
+	CMP	#chrJ
 	BEQ	L6A28
-	LDX	$1E
+	LDX	theA
 	STX	$9E
 	STX	$9F
 L6A55	RTS
 
-L6A56	INC	$98	; man++
-	INC	$A6
-	INC	$96
+L6A56	INC	theMEN	; man++
+	INC	theLEVEL
+	INC	intLEVEL
 	LSR	$9A
 	LSR	$9D
 	RTS
 
-L6A61	INC	$98	; man++
+L6A61	INC	theMEN	; man++
 	BNE	L6A67
-	DEC	$98	; man--
-L6A67	JSR	L7A70
+	DEC	theMEN	; man--
+L6A67	JSR	printMEN
 	LSR	$9D
 	JMP	L6A12
 
 	INC	$97
-	INC	$98	; man++
+	INC	theMEN	; man++
 	LSR	$9A
 	RTS
 
@@ -1373,7 +1507,7 @@ L6A76	JSR	L86A8
 	JMP	L6A12
 
 L6A80	LDA	#$01
-	STA	$98	; man
+	STA	theMEN	; man
 L6A84	LSR	$9A
 	RTS
 
@@ -1382,12 +1516,12 @@ L6A87	LDA	$99
 	STA	$99
 	JMP	L6A12
 
-L6A90	LDA	#"J"
-	STA	$95
+L6A90	LDA	#chrJ
+	STA	zpJOY
 	JMP	L6A12
 
-L6A97	LDA	#"K"
-	STA	$95
+L6A97	LDA	#chrK
+	STA	zpJOY
 	JMP	L6A12
 
 L6A9E	LDA	L6B81
@@ -1415,11 +1549,11 @@ L6ACD	JMP	L6A12
 
 L6AD0	LDA	BUTN1
 	BPL	L6AD9
-	LDA	#$D5
+	LDA	#chrU
 	BNE	L6AE0
 L6AD9	LDA	BUTN0
 	BPL	L6AE5
-	LDA	#$CF
+	LDA	#chrO
 L6AE0	STA	$9E
 	STA	$9F
 	RTS
@@ -1431,22 +1565,22 @@ L6AE5	JSR	L8746
 	BEQ	L6AFA
 	CPY	L6B82
 	BCS	L6B03
-	LDA	#$CC
+	LDA	#chrL
 	BNE	L6B1E
 L6AFA	CPY	L6B82
 	BCC	L6B03
-	LDA	#$CC
+	LDA	#chrL
 	BNE	L6B1E
 L6B03	LDA	L6B81
 	CMP	#$2E
 	BEQ	L6B13
 	CPY	L6B81
 	BCS	L6B1C
-	LDA	#$CA
+	LDA	#chrJ
 	BNE	L6B1E
 L6B13	CPY	L6B81
 	BCC	L6B1C
-	LDA	#$CA
+	LDA	#chrJ
 	BNE	L6B1E
 L6B1C	LDA	#$C0
 L6B1E	STA	$9F
@@ -1456,24 +1590,24 @@ L6B1E	STA	$9F
 	BEQ	L6B32
 	CPY	L6B83
 	BCS	L6B3B
-	LDA	#$C9
+	LDA	#chrI
 	BNE	L6B56
 L6B32	CPY	L6B83
 	BCC	L6B3B
-	LDA	#$C9
+	LDA	#chrI
 	BNE	L6B56
 L6B3B	LDA	L6B84
 	CMP	#$2E
 	BEQ	L6B4B
 	CPY	L6B84
 	BCS	L6B54
-	LDA	#$CB
+	LDA	#chrK
 	BNE	L6B56
 L6B4B	CPY	L6B84
 	BCC	L6B54
-	LDA	#$CB
+	LDA	#chrK
 	BNE	L6B56
-L6B54	LDA	#$C0
+L6B54	LDA	#chrA-1
 L6B56	STA	$9E
 	RTS
 
@@ -1501,13 +1635,13 @@ L6B84	DB	$2E
 L6B85	LDX	$00
 	LDY	$02
 	JSR	L888F
-	STX	$1E
+	STX	theA
 	LDY	$01
 	LDX	$03
 	JSR	L887C
 	LDX	$04
 	LDA	L6968,X
-	LDX	$1E
+	LDX	theA
 	RTS
 
 L6B9D	LDA	$02
@@ -1526,22 +1660,22 @@ L6B9D	LDA	$02
 	CMP	#$07
 	BNE	L6BF3
 	LSR	$94
-	DEC	$93
+	DEC	nbCHEST
 	LDY	$01
-	STY	$86
+	STY	theY
 	LDY	$00
-	STY	$85
+	STY	theX
 	LDA	#$00
 	STA	($08),Y
-	JSR	L82B0
-	LDY	$86
-	LDX	$85
-	JSR	L885D
+	JSR	coutHGR2
+	LDY	theY
+	LDX	theX
+	JSR	getXY
 	LDA	#$07
 	JSR	L8336
 	LDY	#$02
 	LDA	#$50
-	JSR	L7A92
+	JSR	printSCORE
 	JSR	L87E1
 	HEX	07450655054404540343025300
 L6BF3	RTS
@@ -1591,38 +1725,38 @@ L6C39	LDA	#$00
 	STA	$9C
 	LDY	$01
 	INY
-	STX	$85
-	STY	$86
+	STX	theX
+	STY	theY
 	LDA	L1C05,Y
 	STA	$06
 	LDA	L1C15,Y
 	STA	$07
 	LDA	#$00
-	LDY	$85
+	LDY	theX
 	STA	($06),Y
-	JSR	L82AA
+	JSR	coutHGR1
 	LDA	#$00
-	JSR	L82B0
-	DEC	$86
+	JSR	coutHGR2
+	DEC	theY
 	LDA	#$00
-	JSR	L82AA
-	INC	$86
+	JSR	coutHGR1
+	INC	theY
 	LDX	#$FF
 L6C67	INX
 	CPX	#$1E
 	BEQ	L6C81
 	LDA	L0CE0,X
 	BNE	L6C67
-	LDA	$86
+	LDA	theY
 	STA	L0CC0,X
-	LDA	$85
+	LDA	theX
 	STA	L0CA0,X
 	LDA	#$B4
 	STA	L0CE0,X
 	SEC
 L6C81	RTS
 
-L6C82	LDX	$8D
+L6C82	LDX	nbFOE
 	BEQ	L6CA6
 	INC	$64
 	LDY	$64
@@ -1654,8 +1788,9 @@ L6CA7	HEX	000000
 	HEX	070F0F
 	HEX	0F0F0F
 L6CCB	HEX	082B2C3031323628292A2D2E2F353334
+
 L6CDB	INC	$19
-	LDX	$8D
+	LDX	nbFOE
 	CPX	$19
 	BCS	L6CE7
 	LDX	#$01
@@ -1747,12 +1882,12 @@ L6D75	STA	$14
 	BNE	L6DB7
 	LDA	$16
 	BPL	L6DA2
-	DEC	$93
+	DEC	nbCHEST
 L6DA2	LDA	$5F
 	STA	$16
 	LDY	#$00
 	LDA	#$75
-	JSR	L7A92
+	JSR	printSCORE
 	JSR	L87E1
 	HEX	06200430024000
 L6DB7	JSR	L74DF
@@ -1796,7 +1931,7 @@ L6E02	LDA	($08),Y
 	BPL	L6E58
 	LDY	$13
 	DEY
-	STY	$86
+	STY	theY
 	LDA	L1C05,Y
 	STA	$06
 	STA	$08
@@ -1805,20 +1940,20 @@ L6E02	LDA	($08),Y
 	LDA	L1C25,Y
 	STA	$09
 	LDY	$12
-	STY	$85
+	STY	theX
 	LDA	($08),Y
 	CMP	#$00
 	BEQ	L6E31
-	DEC	$93
+	DEC	nbCHEST
 	JMP	L6E46
 
 L6E31	LDA	#$07
 	STA	($06),Y
 	STA	($08),Y
-	JSR	L82B0
-	LDY	$86
-	LDX	$85
-	JSR	L885D
+	JSR	coutHGR2
+	LDY	theY
+	LDX	theX
+	JSR	getXY
 	LDA	#$07
 	JSR	L83A7
 L6E46	LDY	$13
@@ -2358,7 +2493,7 @@ L72A7	LDY	$56
 	LDA	L1C05,Y
 	STA	$08
 	LDA	L1C25,Y
-	STA	$09
+	STA	$08+1
 	LDY	$55
 	LDA	($08),Y
 	CMP	#$03
@@ -2655,13 +2790,13 @@ L74DE	RTS
 L74DF	LDX	$12
 	LDY	$17
 	JSR	L888F
-	STX	$1E
+	STX	theA
 	LDY	$13
 	LDX	$18
 	JSR	L887C
 	LDX	$14
 	LDA	L6CCB,X
-	LDX	$1E
+	LDX	theA
 	RTS
 
 L74F7	LDA	$17
@@ -2688,13 +2823,13 @@ L74F7	LDA	$17
 	LDA	#$00
 	STA	($08),Y
 	LDY	$13
-	STY	$86
+	STY	theY
 	LDY	$12
-	STY	$85
-	JSR	L82B0
-	LDY	$86
-	LDX	$85
-	JSR	L885D
+	STY	theX
+	JSR	coutHGR2
+	LDY	theY
+	LDX	theX
+	JSR	getXY
 	LDA	#$07
 	JMP	L8336
 L753D	RTS
@@ -2704,22 +2839,22 @@ L753E	LDA	$16
 	INC	$16
 	BNE	L7573
 	LDY	$13
-	STY	$86
+	STY	theY
 	LDA	L1C05,Y
 	STA	$08
 	LDA	L1C25,Y
 	STA	$09
 	LDY	$12
-	STY	$85
+	STY	theX
 	LDA	($08),Y
 	CMP	#$00
 	BNE	L7571
 	LDA	#$07
 	STA	($08),Y
-	JSR	L82B0
-	LDY	$86
-	LDX	$85
-	JSR	L885D
+	JSR	coutHGR2
+	LDY	theY
+	LDX	theX
+	JSR	getXY
 	LDA	#$07
 	JMP	L83A7
 
@@ -2808,17 +2943,17 @@ L7605	LDA	L0CE0,X
 L760F	DEC	L0CE0,X
 	BEQ	L7641
 	LDA	L0CA0,X
-	STA	$85
+	STA	theX
 	LDA	L0CC0,X
-	STA	$86
+	STA	theY
 	LDA	L0CE0,X
 	CMP	#$14
 	BNE	L7639
 	LDA	#$37
-L7627	JSR	L82B0
-	LDX	$85
-	LDY	$86
-	JSR	L885D
+L7627	JSR	coutHGR2
+	LDX	theX
+	LDY	theY
+	JSR	getXY
 	LDA	#$00
 	JSR	L8336
 L7636	JMP	L770D
@@ -2829,7 +2964,7 @@ L7639	CMP	#$0A
 	BNE	L7627
 L7641	LDX	$88
 	LDY	L0CC0,X
-	STY	$86
+	STY	theY
 	LDA	L1C05,Y
 	STA	$06
 	STA	$08
@@ -2838,7 +2973,7 @@ L7641	LDX	$88
 	LDA	L1C25,Y
 	STA	$09
 	LDY	L0CA0,X
-	STY	$85
+	STY	theX
 	LDA	($06),Y
 	CMP	#$00
 	BNE	L7667
@@ -2851,25 +2986,25 @@ L766D	CMP	#$08
 	BEQ	L767A
 	CMP	#$07
 	BNE	L7677
-	DEC	$93
+	DEC	nbCHEST
 L7677	JMP	L7701
 
 L767A	LDA	#$01
 	STA	($06),Y
 	STA	($08),Y
-	JSR	L82AA
+	JSR	coutHGR1
 	LDA	#$01
-	JSR	L82B0
-	LDX	$8D
+	JSR	coutHGR2
+	LDX	nbFOE
 L768A	LDA	L0C60,X
-	CMP	$85
+	CMP	theX
 	BNE	L76FE
 	LDA	L0C68,X
-	CMP	$86
+	CMP	theY
 	BNE	L76FE
 	LDA	L0C70,X
 	BPL	L769F
-	DEC	$93
+	DEC	nbCHEST
 L769F	LDA	#$7F
 	STA	L0C70,X
 	STX	$19
@@ -2878,8 +3013,8 @@ L769F	LDA	#$7F
 	JSR	L8336
 	LDX	$19
 	LDY	#$01
-	STY	$86
-L76B5	LDY	$86
+	STY	theY
+L76B5	LDY	theY
 	LDA	L1C05,Y
 	STA	$08
 	LDA	L1C25,Y
@@ -2892,13 +3027,13 @@ L76C3	LDA	($08),Y
 	LDY	$53
 	CPY	#$1C
 	BCC	L76C3
-	INC	$86
+	INC	theY
 	LDA	#$00
 	STA	$53
 	BEQ	L76B5
 L76D9	TYA
 	STA	L0C60,X
-	LDA	$86
+	LDA	theY
 	STA	L0C68,X
 	LDA	#$14
 	STA	L0C98,X
@@ -2909,23 +3044,23 @@ L76D9	TYA
 	STA	L0C88,X
 	LDY	#$00
 	LDA	#$75
-	JSR	L7A92
+	JSR	printSCORE
 	JMP	L770D
 
 L76FE	DEX
 	BNE	L768A
 L7701	LDA	#$01
 	STA	($06),Y
-	JSR	L82AA
+	JSR	coutHGR1
 	LDA	#$01
-	JSR	L82B0
+	JSR	coutHGR2
 L770D	LDX	$88
 	DEX
 	BMI	L7715
 	JMP	L7605
 L7715	RTS
 
-L7716	LDX	$8D
+L7716	LDX	nbFOE
 	BEQ	L7715
 	LDA	$19
 	PHA
@@ -2936,16 +3071,16 @@ L771D	LDA	L0C98,X
 	LDA	#$7F
 	STA	L0C70,X
 	LDA	L0C60,X
-	STA	$85
+	STA	theX
 	LDA	L0C68,X
-	STA	$86
+	STA	theY
 	DEC	L0C98,X
 	BEQ	L776C
 	LDA	L0C98,X
 	CMP	#$13
 	BNE	L7752
 	LDA	#$39
-	JSR	L82B0
+	JSR	coutHGR2
 	JSR	L74DF
 	LDA	#$39
 	JSR	L83A7
@@ -2954,7 +3089,7 @@ L771D	LDA	L0C98,X
 L7752	CMP	#$0A
 	BNE	L7765
 	LDA	#$3A
-	JSR	L82B0
+	JSR	coutHGR2
 	JSR	L74DF
 	LDA	#$3A
 	JSR	L83A7
@@ -2965,26 +3100,26 @@ L7765	DEX
 	STA	$19
 	RTS
 
-L776C	LDY	$86
+L776C	LDY	theY
 	LDA	L1C05,Y
 	STA	$06
 	LDA	L1C15,Y
 	STA	$07
 	LDX	$19
 	INC	L0C98,X
-	LDY	$85
+	LDY	theX
 	LDA	($06),Y
 	BNE	L7765
 	LDA	#$08
 	STA	($06),Y
 	LDA	#$00
-	JSR	L82B0
+	JSR	coutHGR2
 	LDA	#$00
 	LDX	$19
 	STA	L0C70,X
 	STA	L0C98,X
 	LDA	#$08
-	JSR	L82AA
+	JSR	coutHGR1
 	JSR	L87E1
 	HEX	027C03780474057000
 	LDX	$19
@@ -2995,8 +3130,8 @@ L77AC	JSR	L786B
 	LDY	#$FF
 	LDA	#$04
 	STA	$A1
-L77B7	LDA	$95
-	CMP	#"K"
+L77B7	LDA	zpJOY
+	CMP	#chrK
 	BEQ	L77C7
 	LDA	BUTN1
 	BMI	L77D6
@@ -3012,60 +3147,60 @@ L77C7	LDA	KBD
 	BNE	L77B7
 L77D6	STA	KBDSTROBE
 	STA	TXTPAGE1
-	JSR	L7A57
+	JSR	clearHGR2
 	LDY	#$0F
-	STY	$86
+	STY	theY
 L77E3	LDA	L1C05,Y
 	STA	$08
 	LDA	L1C25,Y
 	STA	$09
 	LDY	#$1B
-	STY	$85
+	STY	theX
 L77F1	LDA	($08),Y
 	CMP	#$05
 	BNE	L77F9
 	LDA	#$01
-L77F9	JSR	L82B0
-	DEC	$85
-	LDY	$85
+L77F9	JSR	coutHGR2
+	DEC	theX
+	LDY	theX
 	BPL	L77F1
-	DEC	$86
-	LDY	$86
+	DEC	theY
+	LDY	theY
 	BPL	L77E3
 	LDX	#$1E
 L780A	STX	$88
 	LDA	L0CE0,X
 	BEQ	L7838
 	LDY	L0CC0,X
-	STY	$86
+	STY	theY
 	LDY	L0CA0,X
-	STY	$85
+	STY	theX
 	CMP	#$15
 	BCC	L7827
 	LDA	#$00
-	JSR	L82B0
+	JSR	coutHGR2
 	JMP	L7838
 
 L7827	CMP	#$0B
 	BCC	L7833
 	LDA	#$37
-	JSR	L82B0
+	JSR	coutHGR2
 	JMP	L7838
 
 L7833	LDA	#$38
-	JSR	L82B0
+	JSR	coutHGR2
 L7838	LDX	$88
 	DEX
 	BPL	L780A
-	LDX	$8D
+	LDX	nbFOE
 	BEQ	L7868
 L7841	LDA	L0C98,X
 	STX	$88
 	BEQ	L7863
 	LDY	L0C60,X
-	STY	$85
+	STY	theX
 	LDY	L0C68,X
-	STY	$86
+	STY	theY
 	CMP	#$14
 	BCS	L7863
 	CMP	#$0B
@@ -3073,95 +3208,100 @@ L7841	LDA	L0C98,X
 	LDA	#$39
 	BNE	L7860
 L785E	LDA	#$3A
-L7860	JSR	L82B0
+L7860	JSR	coutHGR2
 L7863	LDX	$88
 	DEX
 	BNE	L7841
 L7868	JMP	L6A12
 
-L786B	JSR	L7A57
-	LDA	#$40
-	STA	$87
+L786B	JSR	clearHGR2
+	LDA	#>HGR2
+	STA	activePAGE
 	LDA	#$00
-	STA	$85
-	STA	$86
-	JSR	L86E0
+	STA	theX
+	STA	theY
+	JSR	printSTRING
 	ASC	"    LODE RUNNER HIGH SCORES"8D8D8D
 	ASC	"    INITIALS LEVEL  SCORE"8D
 	ASC	"    -------- ----- --------"8D00
-	LDA	#$01
+
+	LDA	#$01	; for x=1 to...10
 	STA	$55
 L78D4	CMP	#$0A
 	BNE	L78E5
 	LDA	#$01
-	JSR	L7B15
+	JSR	outputCHAR
 	LDA	#$00
-	JSR	L7B15
+	JSR	outputCHAR
 	JMP	L78EF
 
-L78E5	LDA	#$A0
-	JSR	L7B64
+L78E5	LDA	#chrSPC
+	JSR	printCHAR
 	LDA	$55
-	JSR	L7B15
-L78EF	JSR	L86E0
+	JSR	outputCHAR
+L78EF	JSR	printSTRING
 	ASC	".    "00
 	LDX	$55
-	LDY	L79A2,X
+	LDY	scoreoffset,X
 	STY	$56
-	LDA	L1F03,Y
+	LDA	scorebuf+$03,Y
 	BNE	L7907
 	JMP	L798C
 
+* +0..+2 INITIALS
+* +3     LEVEL
+* +4..+7 SCORE
+
 L7907	LDY	$56
-	LDA	L1F00,Y
-	JSR	L7B64
+	LDA	scorebuf,Y
+	JSR	printCHAR
 	LDY	$56
-	LDA	L1F01,Y
-	JSR	L7B64
+	LDA	scorebuf+$01,Y
+	JSR	printCHAR
 	LDY	$56
-	LDA	L1F02,Y
-	JSR	L7B64
-	JSR	L86E0
+	LDA	scorebuf+$02,Y
+	JSR	printCHAR
+	JSR	printSTRING
 	ASC	"    "00
 	LDY	$56
-	LDA	L1F03,Y
-	JSR	L7AF8
-	LDA	$89
-	JSR	L7B15
-	LDA	$8A
-	JSR	L7B15
-	LDA	$8B
-	JSR	L7B15
-	JSR	L86E0
+	LDA	scorebuf+$03,Y
+	JSR	hex2dec
+	LDA	theCENTAINE
+	JSR	outputCHAR
+	LDA	theDIZAINE
+	JSR	outputCHAR
+	LDA	theUNITE
+	JSR	outputCHAR
+	JSR	printSTRING
 	ASC	"  "00
 	LDY	$56
-	LDA	L1F04,Y
-	JSR	L7AE9
-	LDA	$8A
-	JSR	L7B15
-	LDA	$8B
-	JSR	L7B15
+	LDA	scorebuf+$04,Y
+	JSR	bcd2dec
+	LDA	theDIZAINE
+	JSR	outputCHAR
+	LDA	theUNITE
+	JSR	outputCHAR
 	LDY	$56
-	LDA	L1F05,Y
-	JSR	L7AE9
-	LDA	$8A
-	JSR	L7B15
-	LDA	$8B
-	JSR	L7B15
+	LDA	scorebuf+$05,Y
+	JSR	bcd2dec
+	LDA	theDIZAINE
+	JSR	outputCHAR
+	LDA	theUNITE
+	JSR	outputCHAR
 	LDY	$56
-	LDA	L1F06,Y
-	JSR	L7AE9
-	LDA	$8A
-	JSR	L7B15
-	LDA	$8B
-	JSR	L7B15
+	LDA	scorebuf+$06,Y
+	JSR	bcd2dec
+	LDA	theDIZAINE
+	JSR	outputCHAR
+	LDA	theUNITE
+	JSR	outputCHAR
 	LDY	$56
-	LDA	L1F07,Y
-	JSR	L7AE9
-	LDA	$8A
-	JSR	L7B15
-	LDA	$8B
-	JSR	L7B15
+	LDA	scorebuf+$07,Y
+	JSR	bcd2dec
+	LDA	theDIZAINE
+	JSR	outputCHAR
+	LDA	theUNITE
+	JSR	outputCHAR
 L798C	JSR	L7B7D
 	INC	$55
 	LDA	$55
@@ -3170,22 +3310,22 @@ L798C	JSR	L7B7D
 	JMP	L78D4
 
 L799A	STA	TXTPAGE2
-	LDA	#$20
-	STA	$87
+	LDA	#>HGR1
+	STA	activePAGE
 	RTS
 
-L79A2	HEX	0000081018202830384048	;	LOGO	POINTER
+scoreoffset	HEX	0000081018202830384048	; offset of each score
 
-L79AD	JSR	L7A51
-	JSR	L7A57
+L79AD	JSR	clearHGR1
+	JSR	clearHGR2
 
 *-------------------------------
 * DRAW GAME FRAME
 *-------------------------------
 
 L79B3	LDY	#$27
-	LDA	$87
-	CMP	#$40
+	LDA	activePAGE
+	CMP	#>HGR2
 	BEQ	L79DD
 L79BB	LDA	#$AA
 	STA	$2350,Y
@@ -3201,6 +3341,7 @@ L79BB	LDA	#$AA
 	DEY
 	BPL	L79BB
 	BMI	L79FD
+
 L79DD	LDA	#$AA
 	STA	$4350,Y
 	STA	$4750,Y
@@ -3214,29 +3355,40 @@ L79DD	LDA	#$AA
 	STA	$4F50,Y
 	DEY
 	BPL	L79DD
+
 L79FD	LDA	#$10
-	STA	$86
+	STA	theY
 	LDA	#$00
-	STA	$85
-	JSR	L86E0
+	STA	theX
+	JSR	printSTRING
 	ASC	"SCORE        MEN    LEVEL   "00
-	JSR	L7A70
-	JSR	L7A8C
+	JSR	printMEN
+	JSR	printLEVEL
 	LDA	#$00
 	TAY
-	JMP	L7A92
+	JMP	printSCORE
 
-L7A31	LDA	L1A85,Y
+*-------------------------------
+* SET HGR POINTER
+*-------------------------------
+
+setHGRPOINTER
+	LDA	xhgr,Y
 	STA	$0C
-	LDA	L1B45,Y
-	ORA	$1F
+	LDA	yhgr,Y
+	ORA	hgrPAGE
 	STA	$0C+1
 	RTS
 
-L7A3E	LDA	L1A85,Y
+*-------------------------------
+* SET HGR POINTERS
+*-------------------------------
+
+setHGRPOINTERS
+	LDA	xhgr,Y
 	STA	$0C
 	STA	$0E
-	LDA	L1B45,Y
+	LDA	yhgr,Y
 	ORA	#$20
 	STA	$0C+1
 	EOR	#$60
@@ -3247,16 +3399,18 @@ L7A3E	LDA	L1A85,Y
 * CLEAR HGR1 
 *-------------------------------
 
-L7A51	LDA	#$20
-	LDX	#$40
+clearHGR1	LDA	#>HGR1
+	LDX	#>HGR1+$20
 	BNE	L7A5B
 
 *-------------------------------
 * CLEAR HGR2
 *-------------------------------
 
-L7A57	LDA	#$40
-	LDX	#$60
+clearHGR2	LDA	#>HGR2
+	LDX	#>HGR2+$20
+
+*--- clear now
 
 L7A5B	STA	$0A+1
 	LDA	#$00
@@ -3271,102 +3425,119 @@ L7A64	STA	($0A),Y
 	BNE	L7A64
 	RTS
 
-L7A70	LDA	$98	; print number of men
-	LDX	#$10
-L7A74	STX	$85
-	JSR	L7AF8
-	LDA	#$10	; print three values (0-255)
-	STA	$86
-	LDA	$89
-	JSR	L7B15
-	LDA	$8A
-	JSR	L7B15
-	LDA	$8B
-	JMP	L7B15
+*-------------------------------
+* PRINT MEN
+*-------------------------------
 
-L7A8C	LDA	$A6	; print level
+printMEN	LDA	theMEN	; print number of men
+	LDX	#$10
+	
+L7A74	STX	theX	; show byte2dec
+	JSR	hex2dec
+	LDA	#$10	; print three values (0-255)
+	STA	theY
+	LDA	theCENTAINE
+	JSR	outputCHAR
+	LDA	theDIZAINE
+	JSR	outputCHAR
+	LDA	theUNITE
+	JMP	outputCHAR
+
+*-------------------------------
+* PRINT LEVEL
+*-------------------------------
+
+printLEVEL
+	LDA	theLEVEL	; print level
 	LDX	#$19
 	BNE	L7A74
 
-L7A92	CLC
-	SED
-	ADC	$8E
-	STA	$8E
-	TYA
-	ADC	$8F
-	STA	$8F
-	LDA	#$00
-	ADC	$90
-	STA	$90
-	LDA	#$00
-	ADC	$91
-	STA	$91
-	CLD
-	LDA	#$05
-	STA	$85
-	LDA	#$10
-	STA	$86
-	LDA	$91
-	JSR	L7AE9
-	LDA	$8B
-	JSR	L7B15
-	LDA	$90
-	JSR	L7AE9
-	LDA	$8A
-	JSR	L7B15
-	LDA	$8B
-	JSR	L7B15
-	LDA	$8F
-	JSR	L7AE9
-	LDA	$8A
-	JSR	L7B15
-	LDA	$8B
-	JSR	L7B15
-	LDA	$8E
-	JSR	L7AE9
-	LDA	$8A
-	JSR	L7B15
-	LDA	$8B
-	JMP	L7B15
+*-------------------------------
+* ADD & PRINT SCORE
+*-------------------------------
 
-L7AE9	STA	$8A
+printSCORE
+	CLC
+	SED
+	ADC	theSCORE
+	STA	theSCORE
+	TYA
+	ADC	theSCORE+1
+	STA	theSCORE+1
+	LDA	#$00
+	ADC	theSCORE+2
+	STA	theSCORE+2
+	LDA	#$00
+	ADC	theSCORE+3
+	STA	theSCORE+3
+	CLD
+
+	LDA	#$05
+	STA	theX
+	LDA	#$10
+	STA	theY
+
+	LDA	theSCORE+3
+	JSR	bcd2dec
+	LDA	theUNITE
+	JSR	outputCHAR
+	LDA	theSCORE+2
+	JSR	bcd2dec
+	LDA	theDIZAINE
+	JSR	outputCHAR
+	LDA	theUNITE
+	JSR	outputCHAR
+	LDA	theSCORE+1
+	JSR	bcd2dec
+	LDA	theDIZAINE
+	JSR	outputCHAR
+	LDA	theUNITE
+	JSR	outputCHAR
+	LDA	theSCORE
+	JSR	bcd2dec
+	LDA	theDIZAINE
+	JSR	outputCHAR
+	LDA	theUNITE
+	JMP	outputCHAR
+
+bcd2dec	STA	theDIZAINE
 	AND	#$0F
-	STA	$8B
-	LDA	$8A
+	STA	theUNITE	; unité
+	LDA	theDIZAINE
 	LSR
 	LSR
 	LSR
 	LSR
-	STA	$8A
+	STA	theDIZAINE	; dizaine
 	RTS
 
-L7AF8	LDX	#$00
-	STX	$8A
-	STX	$89
+hex2dec	LDX	#$00
+	STX	theDIZAINE
+	STX	theCENTAINE	; centaine
 L7AFE	CMP	#100
 	BCC	L7B08
-	INC	$89
+	INC	theCENTAINE
 	SBC	#100
 	BNE	L7AFE
 L7B08	CMP	#10
 	BCC	L7B12
-	INC	$8A
+	INC	theDIZAINE
 	SBC	#10
 	BNE	L7B08
-L7B12	STA	$8B
+L7B12	STA	theUNITE
 	RTS
 
-L7B15	CLC		; print a char
+outputCHAR	CLC		; print a char
 	ADC	#$3B
-	LDX	$87
-	CPX	#$40
+	LDX	activePAGE
+	CPX	#>HGR2
 	BEQ	L7B24
-	JSR	L82AA	; print HGR1
-	INC	$85
+	JSR	coutHGR1	; print HGR1
+	INC	theX
 	RTS
 
-L7B24	JSR	L82B0	; print HGR2
-	INC	$85
+L7B24	JSR	coutHGR2	; print HGR2
+	INC	theX
 	RTS
 
 L7B2A	CMP	#"A"
@@ -3405,68 +3576,71 @@ L7B60	SEC
 	SBC	#$7C
 	RTS
 
-L7B64	CMP	#$8D
+*-----------------------------------
+* OUTPUT A CHARACTER
+*-----------------------------------
+
+printCHAR	CMP	#chrRET
 	BEQ	L7B7D
 	JSR	L7B2A
-	LDX	$87
-	CPX	#$40
+	LDX	activePAGE
+	CPX	#>HGR2
 	BEQ	L7B77
-	JSR	L82AA
-	INC	$85
+	JSR	coutHGR1	; output in HGR1
+	INC	theX
+	RTS
+L7B77	JSR	coutHGR2	; output in HGR2
+	INC	theX
 	RTS
 
-L7B77	JSR	L82B0
-	INC	$85
-	RTS
-
-L7B7D	INC	$86
+L7B7D	INC	theY	; next line
 	LDA	#$00
-	STA	$85
+	STA	theX
 	RTS
 
-*-------------------------------
+*-----------------------------------
 * CTRL-E - LEVEL EDITOR
-*-------------------------------
+*-----------------------------------
 
 L7B84	LDA	#$00
-	STA	$8E
-	STA	$8F
-	STA	$90
-	STA	$91
+	STA	theSCORE
+	STA	theSCORE+1
+	STA	theSCORE+2
+	STA	theSCORE+3
 	LDA	$36
 	STA	$24
 	LDA	$37
 	STA	$25
 	LDA	#$05
-	STA	$98
+	STA	theMEN
 	STA	$A7
-	LDA	$95	; save interface mode
+	LDA	zpJOY	; save interface mode
 	STA	L7C76+1
-	LDA	#"K"	; force keyboard in editor
-	STA	$95
+	LDA	#chrK	; force keyboard in editor
+	STA	zpJOY
 	STA	TXTPAGE1
-	LDA	$96	; check level
+	LDA	intLEVEL	; check level
 	CMP	#maxLEVEL
 	BCC	L7BB2
 	LDA	#$00	; start at 0 if > 149
-	STA	$96
+	STA	intLEVEL
 
-L7BB2	JSR	L7A51	; clear HGR1
-	LDA	#$20
-	STA	$87
+L7BB2	JSR	clearHGR1	; clear HGR1
+	LDA	#>HGR1
+	STA	activePAGE
 	LDA	#$00
-	STA	$85
-	STA	$86
-	JSR	L86E0
+	STA	theX
+	STA	theY
+	JSR	printSTRING
 	ASC	"  LODE RUNNER BOARD EDITOR"8D
 	ASC	"----------------------------"8D
 	ASC	"  <ESC> ABORTS ANY COMMAND"8D00
 
-L7C16	LDA	$86	; are we at the
+L7C16	LDA	theY	; are we at the
 	CMP	#$09	; end of the screen?
 	BCS	L7BB2	; yes, bottom line
 
-	JSR	L86E0	; no, show command
+	JSR	printSTRING	; no, show command
 	ASC	8D
 	ASC	"COMMAND>"00
 
@@ -3503,18 +3677,18 @@ L7C54	DA	L7C60-1	; Play level
 * P - PLAY LEVEL 
 *-------------------------------
 
-L7C60	JSR	L86E0
+L7C60	JSR	printSTRING
 	ASC	8D
 	ASC	">>PLAY LEVEL"00
 	JSR	L817B
 	BCS	L7C8B
 L7C76	LDA	#$00
-	STA	$95
+	STA	zpJOY
 	LDA	#$03
 	STA	$A7
 	LDA	#$01
 	STA	$9D
-	LDA	$96
+	LDA	intLEVEL
 	BEQ	L7C88
 	LSR	$9D
 L7C88	JMP	L6056
@@ -3524,7 +3698,7 @@ L7C8B	JMP	L7C3B
 * C - CLEAR LEVEL 
 *-------------------------------
 
-L7C8E	JSR	L86E0
+L7C8E	JSR	printSTRING
 	ASC	8D
 	ASC	">>CLEAR LEVEL"00
 	JSR	L817B
@@ -3536,7 +3710,7 @@ L7CAB	STA	L0D00,Y
 	INY
 	BNE	L7CAB
 	LDA	#$02
-	JSR	L630E
+	JSR	diskLEVEL
 	JMP	L7C16
 L7CB9	JMP	L7C3B
 
@@ -3544,7 +3718,7 @@ L7CB9	JMP	L7C3B
 * E - EDIT LEVEL 
 *-------------------------------
 
-L7CBC	JSR	L86E0
+L7CBC	JSR	printSTRING
 	ASC	8D
 	ASC	">>EDIT LEVEL"00
 	JSR	L817B	; is level valid?
@@ -3556,35 +3730,35 @@ L7CD5	JMP	L7C3B
 * M - MOVE LEVEL 
 *-------------------------------
 
-L7CD8	JSR	L86E0
+L7CD8	JSR	printSTRING
 	ASC	8D
 	ASC	">>MOVE LEVEL"00
 	JSR	L817B
 	BCS	L7D5A
 	STY	L824F
-	JSR	L86E0
+	JSR	printSTRING
 	ASC	" TO LEVEL"00
 	JSR	L817B
 	BCS	L7D5A
 	STY	L8250
-	JSR	L86E0
+	JSR	printSTRING
 	ASC	8D
 	ASC	"  SOURCE DISKETTE"00
 	JSR	L823D
 	JSR	L807F
 	LDA	L824F
-	STA	$96
+	STA	intLEVEL
 	LDA	#$01
-	JSR	L630E
-	JSR	L86E0
+	JSR	diskLEVEL
+	JSR	printSTRING
 	ASC	8D
 	ASC	"  DESTINATION DISKETTE"00
 	JSR	L823D
 	JSR	L807F
 	LDA	L8250
-	STA	$96
+	STA	intLEVEL
 	LDA	#$02
-	JSR	L630E
+	JSR	diskLEVEL
 	JMP	L7C16
 L7D5A	JMP	L7C3B
 
@@ -3592,7 +3766,7 @@ L7D5A	JMP	L7C3B
 * I - INITIALIZE DISKETTE
 *-------------------------------
 
-L7D5D	JSR	L86E0
+L7D5D	JSR	printSTRING
 	ASC	8D
 	ASC	">>INITIALIZE"8D
 	ASC	"  THIS FORMATS THE DISKETTE"8D
@@ -3618,14 +3792,14 @@ L7D5D	JSR	L86E0
 	NOP
 	NOP
 	NOP
-	LDA	$96
+	LDA	intLEVEL
 	PHA
 	LDA	#$04	; Init command
-	JSR	L630E
+	JSR	diskLEVEL
 
-	LDA	#<L1DB2	; Save T0/S0
+	LDA	#<boot	; Save T0/S0
 	STA	LB7F0
-	LDA	#>L1DB2
+	LDA	#>boot
 	STA	LB7F0+1
 	LDA	#$00
 	STA	LB7ED
@@ -3634,45 +3808,45 @@ L7D5D	JSR	L86E0
 	STA	LB7F4
 	JSR	L6338
 	LDA	#$E0
-	STA	$96
+	STA	intLEVEL
 	LDA	#$01
-	JSR	L630E
+	JSR	diskLEVEL
 	LDY	#$37
 L7E33	LDA	L8251,Y
 	STA	L0D00,Y
 	DEY
 	BPL	L7E33
 	LDA	#$02
-	JSR	L630E
+	JSR	diskLEVEL
 	LDA	#$EF
-	STA	$96
+	STA	intLEVEL
 	LDA	#$01
-	JSR	L630E
+	JSR	diskLEVEL
 	LDY	#$20
 L7E4C	LDA	L8289,Y
-	STA	L0D0B,Y
+	STA	L0D00+$B,Y
 	DEY
 	BPL	L7E4C
 	LDA	#$02
-	JSR	L630E
+	JSR	diskLEVEL
 	LDA	#$01
-	JSR	L6359
+	JSR	readSCORE
 	LDY	#$0A
 L7E61	LDA	L63A8,Y
-	STA	$1FF4,Y
+	STA	scorebuf+$F4,Y
 	DEY
 	BPL	L7E61
 	LDA	#$02
-	JSR	L6359
+	JSR	readSCORE
 	PLA
-	STA	$96
+	STA	intLEVEL
 L7E72	JMP	L7C16
 
 *-------------------------------
 * C - CLEAR SCORE FILE 
 *-------------------------------
 
-L7E75	JSR	L86E0
+L7E75	JSR	printSTRING
 	ASC	8D
 	ASC	">>CLEAR SCORE FILE"8D
 	ASC	"  THIS CLEARS THE HIGH"8D
@@ -3680,34 +3854,34 @@ L7E75	JSR	L86E0
 	ASC	"  ENTRIES."8D8D
 	ASC	"  ARE YOU SURE (Y/N) "00
 	JSR	L823D
-	CMP	#"Y"
+	CMP	#chrY
 	BNE	L7EFE
 	LDA	#$01
-	JSR	L6359
+	JSR	readSCORE
 	CMP	#$00
 	BNE	L7EEF
-	JSR	L8106
+	JSR	tellNODATADISK
 	JMP	L7BB2
 
 L7EEF	LDY	#$4F	; clear score file
 	LDA	#$00
-L7EF3	STA	L1F00,Y
+L7EF3	STA	scorebuf,Y
 	DEY
 	BPL	L7EF3
 	LDA	#$02
-	JSR	L6359
+	JSR	readSCORE	; write score file
 L7EFE	JMP	L7C16
 
 *-------------------------------
 * EDIT THE LEVEL 
 *-------------------------------
 
-L7F01	JSR	L7A57	; clear HGR2
-	LDA	#$40
-	STA	$87
+L7F01	JSR	clearHGR2	; clear HGR2
+	LDA	#>HGR2
+	STA	activePAGE
 	JSR	L79B3	; show frame
-	LDA	#$20
-	STA	$87
+	LDA	#>HGR1
+	STA	activePAGE
 	JSR	L807F	; check diskette (master or data disk)
 	LDX	#$01
 	STX	$AD
@@ -3717,36 +3891,36 @@ L7F01	JSR	L7A57	; clear HGR2
 	JMP	L7C3B
 
 L7F1F	LDA	#$00	; cursor is at 0,0
-	STA	$85
-	STA	$86
+	STA	theX
+	STA	theY
 L7F25	JSR	L814B	; wait for key
 	CMP	#"9"+1
 	BCS	L7F54	; no sprite
 	CMP	#"0"	; means check commands
 	BCC	L7F54
 	AND	#$0F
-	STA	$1E	; save key
-	LDY	$86	; get Y
+	STA	theA	; save key
+	LDY	theY	; get Y
 	LDA	L1C05,Y	; get line address
 	STA	$06
 	LDA	L1C15,Y
 	STA	$06+1
-	LDY	$85	; get X
-	LDA	$1E	; get sprite
+	LDY	theX	; get X
+	LDA	theA	; get sprite
 	EOR	($06),Y	; same as before?
 	BEQ	L7F4A	; yes
 	LSR	$AD	; no
-L7F4A	LDA	$1E	; get sprite
+L7F4A	LDA	theA	; get sprite
 	STA	($06),Y	; save it
-	JSR	L82AA	; print sprite
+	JSR	coutHGR1	; print sprite
 	JMP	L7F25	; loop
 
-L7F54	STA	$1E	; same key
+L7F54	STA	theA	; same key
 	LDY	#$FF
 L7F58	INY
 	LDA	L8162,Y	; is that a command?
 	BEQ	L7F6E
-	CMP	$1E	; same as our key?
+	CMP	theA	; same as our key?
 	BNE	L7F58
 	TYA		; yes, jump
 	ASL
@@ -3764,98 +3938,104 @@ L7F6E	JSR	L86CE	; beep
 * I - MOVE CURSOR UP 
 *-------------------------------
 
-L7F74	LDA	$86
+L7F74	LDA	theY
 	BEQ	L7F6E
-	DEC	$86
+	DEC	theY
 	BPL	L7F25
 
 *-------------------------------
 * J - MOVE CURSOR LEFT
 *-------------------------------
 
-L7F7C	LDA	$85
+L7F7C	LDA	theX
 	BEQ	L7F6E
-	DEC	$85
+	DEC	theX
 	BPL	L7F25
 
 *-------------------------------
 * K - MOVE CURSOR RIGHT
 *-------------------------------
 
-L7F84	LDA	$85
-	CMP	#$1B
+L7F84	LDA	theX
+	CMP	#lvlWIDTH-1
 	BCS	L7F6E
-	INC	$85
+	INC	theX
 	BNE	L7F25
 
 *-------------------------------
 * M - MOVE CURSOR DOWN 
 *-------------------------------
 
-L7F8E	LDA	$86
-	CMP	#$0F
+L7F8E	LDA	theY
+	CMP	#lvlHEIGHT-1
 	BCS	L7F6E
-	INC	$86
+	INC	theY
 	BNE	L7F25
 
-L7F98	LDA	$86
+*-------------------------------
+* SAVE THE LEVEL
+*-------------------------------
+
+saveLEVEL
+	LDA	theY	; save parms
 	PHA
-	LDA	$85
+	LDA	theX
 	PHA
-	LDA	#$01
-	JSR	L6359
+
+	LDA	#$01	; check disk
+	JSR	readSCORE
 	CMP	#$00
 	BNE	L7FAD
-	JSR	L8106
+	JSR	tellNODATADISK
 	JMP	L7FC5
 
 L7FAD	CMP	#$01
 	BNE	L7FB7
-	JSR	L8098
+	JSR	tellMASTERDISK
 	JMP	L7FC5
 
-L7FB7	JSR	L62C7
+L7FB7	JSR	encodeLEVEL	; prepare the level & save it
 	PLA
-	STA	$85
+	STA	theX
 	PLA
-	STA	$86
+	STA	theY
 	LDA	#$01
 	STA	$AD
-	RTS
+	RTS		; and return
 
 L7FC5	LDA	#$00
-	STA	$85
-	STA	$86
+	STA	theX
+	STA	theY
 	JMP	L7F25
 
 *-------------------------------
 * CTRL-S - SAVE YOUR GAME 
 *-------------------------------
 
-L7FCE	JSR	L7F98
+L7FCE	JSR	saveLEVEL
 	JMP	L7F25
 
 *-------------------------------
 * CTRL-U - NEXT LEVEL 
 *-------------------------------
 
-L7FD4	LDA	$96
+L7FD4	LDA	intLEVEL
 	CMP	#maxLEVEL-1	; 150-1
 L7FD8	BEQ	L7F6E
 	JSR	L7FF8
-	INC	$96
-	INC	$A6
+	INC	intLEVEL
+	INC	theLEVEL
 	JMP	L7F01
 
 *-------------------------------
 * CTRL-H - PREVIOUS LEVEL
 *-------------------------------
 
-L7FE4	LDA	$96
+L7FE4	LDA	intLEVEL
 	BEQ	L7FD8
 	JSR	L7FF8
-	DEC	$A6
-	DEC	$96
+	DEC	theLEVEL
+	DEC	intLEVEL
 	JMP	L7F01
 
 *-------------------------------
@@ -3867,13 +4047,13 @@ L7FF2	JSR	L7FF8
 
 L7FF8	LDA	$AD
 	BNE	L8075
-	JSR	L7A57
-	LDA	#$40
-	STA	$87
+	JSR	clearHGR2
+	LDA	#>HGR2
+	STA	activePAGE
 	LDA	#$00
-	STA	$85
-	STA	$86
-	JSR	L86E0
+	STA	theX
+	STA	theY
+	JSR	printSTRING
 	ASC	"LEVEL HAS BEEN CHANGED BUT"8D
 	ASC	"NOT SAVED. DO YOU WISH TO"8D
 	ASC	"SAVE MODIFIED LEVEL (Y/N) "00
@@ -3882,39 +4062,49 @@ L7FF8	LDA	$AD
 L8062	LDA	#$00
 	JSR	L85F3
 	STA	KBDSTROBE
-	CMP	#$CE
+	CMP	#chrN
 	BEQ	L8075
-	CMP	#$D9
+	CMP	#chrY
 	BNE	L8062
-	JSR	L7F98
+	JSR	saveLEVEL
 L8075	STA	TXTPAGE1
 	LDA	#$00
-	STA	$85
-	STA	$86
+	STA	theX
+	STA	theY
 	RTS
 
-L807F	LDA	#$01
-	JSR	L6359
-	CMP	#$00
+L807F	LDA	#$01	; load score
+	JSR	readSCORE
+	CMP	#$00	; 00 means disk not identified
 	BNE	L808E
-	JSR	L8106
+	JSR	tellNODATADISK
 	JMP	L7BB2
 
-L808E	CMP	#$01
+L808E	CMP	#$01	; 01 means master disk
 	BNE	L8105
-	JSR	L8098
+	JSR	tellMASTERDISK
 	JMP	L7BB2
 
-L8098	JSR	L7A57
-	LDA	#$40
-	STA	$87
+*-----------------------------------
+* MASTER DISK FOUND
+*-----------------------------------
+
+tellMASTERDISK
+	JSR	clearHGR2
+	LDA	#>HGR2
+	STA	activePAGE
 	LDA	#$00
-	STA	$85
-	STA	$86
-	JSR	L86E0
+	STA	theX
+	STA	theY
+	JSR	printSTRING
 	ASC	"USER NOT ALLOWED TO"8D
 	ASC	"MANIPULATE MASTER DISKETTE."00
-L80D8	JSR	L86E0
+
+*-----------------------------------
+* WAIT FOR A KEYPRESS
+*-----------------------------------
+
+L80D8	JSR	printSTRING
 	ASC	8D8D
 	ASC	"HIT A KEY TO CONTINUE "00
 	JSR	L86CE
@@ -3923,25 +4113,31 @@ L80D8	JSR	L86E0
 	JSR	L85F3
 	STA	KBDSTROBE
 	STA	TXTPAGE1
+
 L8105	RTS
 
-L8106	JSR	L7A57
-	LDA	#$40
-	STA	$87
+*-----------------------------------
+* LR DATA DISK NOT IDENTIFIED
+*-----------------------------------
+
+tellNODATADISK
+	JSR	clearHGR2
+	LDA	#>HGR2
+	STA	activePAGE
 	LDA	#$00
-	STA	$85
-	STA	$86
-	JSR	L86E0
+	STA	theX
+	STA	theY
+	JSR	printSTRING
 	ASC	"DISKETTE IN DRIVE IS NOT A"8D
 	ASC	"LODE RUNNER DATA DISK."00
 	JMP	L80D8
 
-L814B	LDY	$86
+L814B	LDY	theY
 	LDA	L1C05,Y
 	STA	$06
 	LDA	L1C15,Y
 	STA	$07
-	LDY	$85
+	LDY	theX
 	LDA	($06),Y
 	JSR	L8700
 	STA	KBDSTROBE
@@ -3963,69 +4159,69 @@ L816B	DA	L7F7C-1	; J move left
 * CHECK REQUIRED LEVEL NUMBER
 *-------------------------------
 
-L817B	LDY	$96
+L817B	LDY	intLEVEL
 	INY
 	TYA
-	JSR	L7AF8
-	LDA	$85
+	JSR	hex2dec
+	LDA	theX
 	STA	L824E
 	LDY	#$00
 L8189	LDA	|$0089,Y
 	STY	L824D
-	JSR	L7B15
+	JSR	outputCHAR
 	LDY	L824D
 	INY
 	CPY	#$03
 	BCC	L8189
 	LDA	L824E
-	STA	$85
+	STA	theX
 	LDY	#$00
 	STY	L824D
 L81A4	LDX	L824D
-	LDA	$89,X
+	LDA	theCENTAINE,X
 	CLC
 	ADC	#$3B
 	JSR	L8700
 	STA	KBDSTROBE
-	CMP	#$8D	; return
+	CMP	#chrRET	; return
 	BEQ	L820D
-	CMP	#$88	; left arrow
+	CMP	#chrLA	; left arrow
 	BNE	L81C7
 	LDX	L824D
 	BEQ	L8207
 	DEC	L824D
-	DEC	$85
+	DEC	theX
 	JMP	L81A4
 
-L81C7	CMP	#$95	; right arrow
+L81C7	CMP	#chrRA	; right arrow
 	BNE	L81DA
 	LDX	L824D
 	CPX	#$02
 	BEQ	L8207
-	INC	$85
+	INC	theX
 	INC	L824D
 	JMP	L81A4
 
-L81DA	CMP	#$9B	; esc
+L81DA	CMP	#chrESC	; esc
 	BNE	L81E1
 	JMP	L7C16
 
-L81E1	CMP	#"0"	; 0
+L81E1	CMP	#chrZERO	; 0
 	BCC	L8207
-	CMP	#"9"+1	; 9+1
+	CMP	#chrNINE+1	; 9+1
 	BCS	L8207
 	SEC
-	SBC	#"0"
+	SBC	#chrZERO
 	LDY	L824D
 	STA	|$0089,Y
-	JSR	L7B15
+	JSR	outputCHAR
 
 	INC	L824D
 	LDA	L824D
 	CMP	#$03
 	BCC	L81A4
 	DEC	L824D
-	DEC	$85
+	DEC	theX
 	JMP	L81A4
 
 L8207	JSR	L86CE
@@ -4038,16 +4234,16 @@ L8207	JSR	L86CE
 L820D	LDA	L824E
 	CLC
 	ADC	#$03
-	STA	$85
+	STA	theX
 	LDA	#$00
-	LDX	$89
+	LDX	theCENTAINE
 	BEQ	L8223
 	CLC
 L821C	ADC	#100
 	BCS	L823C
 	DEX
 	BNE	L821C
-L8223	LDX	$8A
+L8223	LDX	theDIZAINE
 	BEQ	L822F
 	CLC
 L8228	ADC	#10
@@ -4055,12 +4251,12 @@ L8228	ADC	#10
 	DEX
 	BNE	L8228
 L822F	CLC
-	ADC	$8B
+	ADC	theUNITE
 	BCS	L823C
-	STA	$A6
+	STA	theLEVEL
 	TAY
 	DEY
-	STY	$96	; and make it our level
+	STY	intLEVEL	; and make it our level
 	CPY	#maxLEVEL
 L823C	RTS
 
@@ -4089,19 +4285,19 @@ L8289	HEX	220F8888888888888888CCCFC4C5A0D2
 * PRINT CHAR
 *---------------------------------------
 
-L82AA	STA	$1E	; char in $1E
-	LDA	#$20	; print HGR1
+coutHGR1	STA	theA	; char in $1E
+	LDA	#>HGR1	; print HGR1
 	BNE	L82B4
 
-L82B0	STA	$1E	; char in $1E
-	LDA	#$40	; print HGR2
+coutHGR2	STA	theA	; char in $1E
+	LDA	#>HGR2	; print HGR2
 
-L82B4	STA	$1F	; page in $1F
-	LDY	$86	; take Y
-	JSR	L885D
+L82B4	STA	hgrPAGE	; page in $1F
+	LDY	theY	; take Y
+	JSR	getXY
 	STY	$1B	; make it Y screen
-	LDX	$85	; take X
-	JSR	L8868
+	LDX	theX	; take X
+	JSR	getBYBI
 	STA	$1C	; make it X screen
 	STX	$71
 	LDA	L8328,X
@@ -4116,7 +4312,7 @@ L82B4	STA	$1F	; page in $1F
 	CMP	#$05
 	BCS	L8301
 L82DF	LDY	$1B
-	JSR	L7A31
+	JSR	setHGRPOINTER
 	LDY	$1C
 	LDA	($0C),Y
 	AND	$50
@@ -4136,7 +4332,7 @@ L82DF	LDY	$1B
 	RTS
 
 L8301	LDY	$1B
-	JSR	L7A31
+	JSR	setHGRPOINTER
 	LDY	$1C
 	LDA	($0C),Y
 	AND	$50
@@ -4162,8 +4358,8 @@ L8328	HEX	000103070F1F3F
 L832F	HEX	F8F0E0C080FEFC
 
 L8336	STY	$1B
-	STA	$1E
-	JSR	L8872
+	STA	theA
+	JSR	getXBYBI
 	STA	$1C
 	STX	$71
 	JSR	L8438
@@ -4174,7 +4370,7 @@ L8336	STY	$1B
 	CMP	#$05
 	BCS	L8376
 L8350	LDY	$1B
-	JSR	L7A3E
+	JSR	setHGRPOINTERS
 	LDY	$1C
 	LDA	$DF,X
 	EOR	#$7F
@@ -4196,7 +4392,7 @@ L8350	LDY	$1B
 	RTS
 
 L8376	LDY	$1B
-	JSR	L7A3E
+	JSR	setHGRPOINTERS
 	LDY	$1C
 	LDA	$DF,X
 	EOR	#$7F
@@ -4224,8 +4420,8 @@ L8376	LDY	$1B
 	RTS
 
 L83A7	STY	$1B
-	STA	$1E
-	JSR	L8872
+	STA	theA
+	JSR	getXBYBI
 	STA	$1C
 	STX	$71
 	JSR	L8438
@@ -4237,7 +4433,7 @@ L83A7	STY	$1B
 	CMP	#$05
 	BCS	L83F5
 L83C3	LDY	$1B
-	JSR	L7A3E
+	JSR	setHGRPOINTERS
 	LDY	$1C
 	LDA	($0C),Y
 	EOR	($0E),Y
@@ -4265,7 +4461,7 @@ L83C3	LDY	$1B
 	RTS
 
 L83F5	LDY	$1B
-	JSR	L7A3E
+	JSR	setHGRPOINTERS
 	LDY	$1C
 	LDA	($0C),Y
 	EOR	($0E),Y
@@ -4313,7 +4509,7 @@ L8438	LDA	#$0B
 	STA	L848B+2
 	STA	L8497+2
 	LDX	#$00
-L8455	LDY	$1E
+L8455	LDY	theA
 	LDA	($0A),Y
 	TAY
 L845A	LDA	LA000,Y
@@ -4335,7 +4531,7 @@ L8474	LDA	LA000
 	LDA	$0B
 	ADC	#$00
 	STA	$0B
-	LDY	$1E
+	LDY	theA
 	LDA	($0A),Y
 	TAY
 L848B	LDA	LA000,Y
@@ -4375,34 +4571,34 @@ L84C1	DB	>LA200	; LOGO POINTER
 
 L84C8	LDA	$9D
 	BEQ	L8514
-	LDA	$8E
-	ORA	$8F
-	ORA	$90
-	ORA	$91
+	LDA	theSCORE
+	ORA	theSCORE+1
+	ORA	theSCORE+2
+	ORA	theSCORE+3
 	BEQ	L8514
 	LDA	#$01
-	JSR	L6359
+	JSR	readSCORE
 	BEQ	L8514
 	LDY	#$01
-L84DF	LDX	L79A2,Y
-	LDA	$A6
-	CMP	L1F03,X
+L84DF	LDX	scoreoffset,Y
+	LDA	theLEVEL
+	CMP	scorebuf+$03,X
 	BCC	L850F
 	BNE	L8515
-	LDA	$91
-	CMP	L1F04,X
+	LDA	theSCORE+3
+	CMP	scorebuf+$04,X
 	BCC	L850F
 	BNE	L8515
-	LDA	$90
-	CMP	L1F05,X
+	LDA	theSCORE+2
+	CMP	scorebuf+$05,X
 	BCC	L850F
 	BNE	L8515
-	LDA	$8F
-	CMP	L1F06,X
+	LDA	theSCORE+1
+	CMP	scorebuf+$06,X
 	BCC	L850F
 	BNE	L8515
-	LDA	$8E
-	CMP	L1F07,X
+	LDA	theSCORE
+	CMP	scorebuf+$07,X
 	BCC	L850F
 	BNE	L8515
 L850F	INY
@@ -4414,11 +4610,11 @@ L8515	CPY	#$0A
 	BEQ	L8536
 	STY	$56
 	LDY	#$09
-L851D	LDX	L79A2,Y
+L851D	LDX	scoreoffset,Y
 	LDA	#$08
 	STA	$1D
-L8524	LDA	L1F00,X
-	STA	L1F08,X
+L8524	LDA	scorebuf,X
+	STA	scorebuf+$08,X
 	INX
 	DEC	$1D
 	BNE	L8524
@@ -4426,86 +4622,86 @@ L8524	LDA	L1F00,X
 	BEQ	L8536
 	DEY
 	BNE	L851D
-L8536	LDX	L79A2,Y
+L8536	LDX	scoreoffset,Y
 	LDA	#$A0
-	STA	L1F00,X
-	STA	L1F01,X
-	STA	L1F02,X
-	LDA	$A6
-	STA	L1F03,X
-	LDA	$91
-	STA	L1F04,X
-	LDA	$90
-	STA	L1F05,X
-	LDA	$8F
-	STA	L1F06,X
-	LDA	$8E
-	STA	L1F07,X
+	STA	scorebuf,X
+	STA	scorebuf+$01,X
+	STA	scorebuf+$02,X
+	LDA	theLEVEL
+	STA	scorebuf+$03,X
+	LDA	theSCORE+3
+	STA	scorebuf+$04,X
+	LDA	theSCORE+2
+	STA	scorebuf+$05,X
+	LDA	theSCORE+1
+	STA	scorebuf+$06,X
+	LDA	theSCORE
+	STA	scorebuf+$07,X
 	STY	$69
-	LDA	L79A2,Y
+	LDA	scoreoffset,Y
 	STA	L8582+1
 	STA	L85C9+1
 	JSR	L786B
-	LDA	#$40
-	STA	$87
+	LDA	#>HGR2
+	STA	activePAGE
 	LDA	$69
 	CLC
 	ADC	#$04
-	STA	$86
+	STA	theY
 	LDA	#$07
-	STA	$85
+	STA	theX
 	LDX	#$00
 	STX	L824D
 L857F	LDX	L824D
-L8582	LDA	L1F00,X
+L8582	LDA	scorebuf,X
 	JSR	L7B2A
 	JSR	L85F3
 	STA	KBDSTROBE
-	CMP	#$8D
+	CMP	#chrRET
 	BEQ	L85E7
-	CMP	#$88
+	CMP	#chrLA
 	BNE	L85A3
 	LDX	L824D
 	BEQ	L85E1
 	DEC	L824D
-	DEC	$85
+	DEC	theX
 	JMP	L857F
 
-L85A3	CMP	#$95
+L85A3	CMP	#chrRA
 	BNE	L85B6
 	LDX	L824D
 	CPX	#$02
 	BEQ	L85E1
-	INC	$85
+	INC	theX
 	INC	L824D
 	JMP	L857F
 
-L85B6	CMP	#$AE
+L85B6	CMP	#chrDOT
 	BEQ	L85C6
-	CMP	#$A0
+	CMP	#chrSPC
 	BEQ	L85C6
-	CMP	#$C1
+	CMP	#chrA
 	BCC	L85E1
-	CMP	#$DB
+	CMP	#chrZ+1
 	BCS	L85E1
 L85C6	LDY	L824D
-L85C9	STA	L1F00,Y
-	JSR	L7B64
+L85C9	STA	scorebuf,Y
+	JSR	printCHAR
 	INC	L824D
 	LDA	L824D
 	CMP	#$03
 	BCC	L857F
 	DEC	L824D
-	DEC	$85
+	DEC	theX
 	JMP	L857F
 
 L85E1	JSR	L86CE
 	JMP	L857F
 
-L85E7	LDA	#$20
-	STA	$87
+L85E7	LDA	#>HGR1
+	STA	activePAGE
 	LDA	#$02
-	JSR	L6359
+	JSR	readSCORE
 	JMP	L618E
 
 L85F3	STA	L8745
@@ -4514,14 +4710,14 @@ L85F6	LDA	#$68
 	LDA	L8745
 	BNE	L8601
 	LDA	#$0A
-L8601	JSR	L82B0
+L8601	JSR	coutHGR2
 L8604	LDA	KBD
 	BMI	L8628
 	JSR	L876D
 	DEC	$A1
 	BNE	L8604
 	LDA	#$00
-	JSR	L82B0
+	JSR	coutHGR2
 	LDA	#$68
 	STA	$A1
 L8619	LDA	KBD
@@ -4533,7 +4729,7 @@ L8619	LDA	KBD
 
 L8628	PHA
 	LDA	L8745
-	JSR	L82B0
+	JSR	coutHGR2
 	PLA
 	RTS
 
@@ -4545,9 +4741,9 @@ L863B	LDX	L869E
 	BEQ	L8696
 	LDA	L0C00,X
 	BMI	L8690
-	STA	$85
+	STA	theX
 	LDA	L0C30,X
-	STA	$86
+	STA	theY
 	TAY
 	LDA	L1C05,Y
 	STA	$06
@@ -4556,7 +4752,7 @@ L863B	LDX	L869E
 	STA	$07
 	LDA	L1C25,Y
 	STA	$09
-	LDY	$85
+	LDY	theX
 	LDA	($08),Y
 	BNE	L868B
 	LDA	#$03
@@ -4566,10 +4762,10 @@ L863B	LDX	L869E
 	LDA	#$03
 	STA	($06),Y
 L8670	LDA	#$03
-	JSR	L82B0
-	LDX	$85
-	LDY	$86
-	JSR	L885D
+	JSR	coutHGR2
+	LDX	theX
+	LDY	theY
+	JSR	getXY
 	LDA	#$03
 	JSR	L83A7
 	LDX	L869E
@@ -4583,7 +4779,7 @@ L8690	DEC	L869E
 
 L8696	LDA	L0C00
 	BNE	L869D
-	DEC	$93
+	DEC	nbCHEST
 L869D	RTS
 
 L869E	DB	$00
@@ -4619,24 +4815,33 @@ L86DC	DEY
 	BNE	L86D0
 	RTS
 
-L86E0	PLA
+*-----------------------------------
+* PRINT STRING
+*-----------------------------------
+
+printSTRING
+	PLA
 	STA	$10
 	PLA
-	STA	$11
+	STA	$10+1
 	BNE	L86F1
 L86E8	LDY	#$00
 	LDA	($10),Y
 	BEQ	L86F9
-	JSR	L7B64
+	JSR	printCHAR
 L86F1	INC	$10
 	BNE	L86E8
-	INC	$11
+	INC	$10+1
 	BNE	L86E8
-L86F9	LDA	$11
+L86F9	LDA	$10+1
 	PHA
 	LDA	$10
 	PHA
 	RTS
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 L8700	STA	L8745
 L8703	LDA	#$68
@@ -4645,7 +4850,7 @@ L8703	LDA	#$68
 	LDX	L8745
 	BNE	L8710
 	LDA	#$0A
-L8710	JSR	L82AA
+L8710	JSR	coutHGR1
 L8713	LDA	KBD
 	BMI	L873C
 	JSR	L876D
@@ -4653,7 +4858,7 @@ L8713	LDA	KBD
 	DEC	$A1
 	BNE	L8713
 	LDA	L8745
-	JSR	L82AA
+	JSR	coutHGR1
 	LDA	#$68
 	STA	$A1
 L872B	LDA	KBD
@@ -4666,7 +4871,7 @@ L872B	LDA	KBD
 
 L873C	PHA
 	LDA	L8745
-	JSR	L82AA
+	JSR	coutHGR1
 	PLA
 	RTS
 
@@ -4692,8 +4897,8 @@ L8769	NOP
 	BPL	L8758
 L876C	RTS
 
-L876D	LDA	$95
-	CMP	#"K"
+L876D	LDA	zpJOY
+	CMP	#chrK
 	BEQ	L8798
 	JSR	L8746
 	LDA	$65
@@ -4724,7 +4929,12 @@ L879A	DEY
 	CLC
 	RTS
 
-L87A2	LDA	PTRIG
+*-----------------------------------
+* CHECK JOYSTICK
+*-----------------------------------
+
+checkJOYSTICK
+	LDA	PTRIG
 	LDX	#$10
 L87A7	LDA	PADDL0
 	ORA	PADDL1
@@ -4733,9 +4943,13 @@ L87A7	LDA	PADDL0
 	BNE	L87A7
 	DEX
 	BNE	L87A7
-	LDA	#"K"
-	STA	$95
+	LDA	#chrK
+	STA	zpJOY
 L87B9	RTS
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 L87BA	STA	$0A
 	STX	$0B
@@ -4752,12 +4966,20 @@ L87CC	DEX
 	JMP	L87BE
 L87D4	RTS
 
+*-----------------------------------
+* 
+*-----------------------------------
+
 L87D5	INC	$54
 	LDY	$54
 	STA	L0E80,Y
 	TXA
 	STA	L0E00,Y
 	RTS
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 L87E1	PLA
 	STA	$10
@@ -4833,31 +5055,32 @@ L884B	LDA	L1C05,Y
 * FROM A Y IN TEXT TO A Y IN HGR
 *-------------------------------
 
-L885D	LDA	L1C51,Y
+getXY
+	LDA	ytable,Y
 	PHA
-	LDA	L1C35,X
+	LDA	xtable,X
 	TAX
 	PLA
 	TAY
 	RTS
 
-L8868	LDA	L1C62,X
+getBYBI	LDA	bytable,X
 	PHA
-	LDA	L1C7E,X
+	LDA	bitable,X
 	TAX
 	PLA
 	RTS
 
-L8872	LDA	L1C9A,X
+getXBYBI	LDA	xbytable,X
 	PHA
-	LDA	L1D26,X
+	LDA	xbitable,X
 	TAX
 	PLA
 	RTS
 
 L887C	TXA
 	PHA
-	JSR	L885D
+	JSR	getXY
 	PLA
 	TAX
 	TYA
@@ -4870,7 +5093,7 @@ L888A	HEX	FBFD000204
 
 L888F	TYA
 	PHA
-	JSR	L885D
+	JSR	getXY
 	PLA
 	TAY
 	TXA
@@ -4885,7 +5108,8 @@ L889D	HEX	FEFF000102
 * CIRCLE ANIMATION
 *-------------------------------
 
-L88A2	LDA	#$58	; 88
+circleANIMATION
+	LDA	#$58	; 88
 	STA	$73
 	LDA	#$8C	; 140
 	STA	$74
@@ -4904,8 +5128,8 @@ L88BD	LDA	#$01
 	STA	$6D
 	STA	$A5
 	STA	$72
-	JSR	L7A70
-	JSR	L7A8C
+	JSR	printMEN
+	JSR	printLEVEL
 L88CB	JSR	L88D7
 	INC	$6D
 	LDA	$6D
@@ -5136,7 +5360,7 @@ L8A69	LDY	$7C
 	LDY	$78
 	CPY	#$B0
 	BCS	L8A8C
-	JSR	L7A3E
+	JSR	setHGRPOINTERS
 	LDY	$7F
 	CPY	#$28
 	BCS	L8A81
@@ -5152,7 +5376,7 @@ L8A8C	LDY	$79
 	LDY	$75
 	CPY	#$B0
 	BCS	L8AAF
-	JSR	L7A3E
+	JSR	setHGRPOINTERS
 	LDY	$7F
 	CPY	#$28
 	BCS	L8AA4
@@ -5168,7 +5392,7 @@ L8AAF	LDY	$7B
 	LDY	$77
 	CPY	#$B0
 	BCS	L8AD2
-	JSR	L7A3E
+	JSR	setHGRPOINTERS
 	LDY	$80
 	CPY	#$28
 	BCS	L8AC7
@@ -5184,7 +5408,7 @@ L8AD2	LDY	$7A
 	LDY	$76
 	CPY	#$B0
 	BCS	L8AF5
-	JSR	L7A3E
+	JSR	setHGRPOINTERS
 	LDY	$80
 	CPY	#$28
 	BCS	L8AEA
@@ -5219,8 +5443,8 @@ L8B13	HEX	8F8F8F8FF0F0F0
 
 L8B1A	LDA	#$01
 	STA	L8D4B
-	LDA	#$20
-	STA	$1F
+	LDA	#>HGR1
+	STA	hgrPAGE
 
 L8B23	JSR	L8BCF
 	JSR	L8BBE
@@ -5306,9 +5530,9 @@ L8CE5	PLA
 	PLA
 	STA	$0A+1
 	LDY	#$50
-	STY	$86
+	STY	theY
 	BNE	L8D12
-L8CF1	JSR	L7A31
+L8CF1	JSR	setHGRPOINTER
 	LDY	#$00
 	LDA	($0A),Y
 	ASL
@@ -5324,8 +5548,8 @@ L8D08	LDA	L8D08,Y
 	CPY	#$1B
 	BCC	L8D08
 L8D12	JSR	L8D4C
-	INC	$86
-	LDY	$86
+	INC	theY
+	LDY	theY
 	CPY	#$5F
 	BCC	L8CF1
 	LDX	L8D4B
@@ -5335,8 +5559,8 @@ L8D22	DEY
 	DEX
 	BNE	L8D22
 	INC	L8D4B
-	LDA	$95
-	CMP	#"K"
+	LDA	zpJOY
+	CMP	#chrK
 	BEQ	L8D3B
 	LDA	BUTN1
 	BMI	L8D41
@@ -5401,7 +5625,7 @@ L8E34	LDA	$C08C,X
 	CMP	#$D6
 	BNE	L8E2F
 	LDA	$C088,X
-	JSR	L8098
+	JSR	tellMASTERDISK
 	JMP	L7BB2
 
 	DB	$00

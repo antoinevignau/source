@@ -7,11 +7,22 @@
 	mx	%11
 	lst	off
 
+* sprEMPTY	=	0
+* sprWALL	=	1
+* sprWALLI	=	2	; mur indestructible
+* sprLADDER	=	3
+* sprBAR	=	4
+* sprTRAP	=	5
+* sprLADDERI	=	6
+* sprCHEST	=	7
+* sprFOE	=	8
+* sprHERO	=	9
+
 *---------------------------------------
 
 *--- Decoded level (28 x 16)
 
-L0800	DS	$1C
+L0800	DS	$1C	; le plateau avec les personnages
 L081C	DS	$1C
 L0838	DS	$1C
 L0854	DS	$1C
@@ -29,7 +40,7 @@ L0988	DS	$1C
 L09A4	DS	$1C
 	ds	\
 	
-L0A00	DS	$1C
+L0A00	DS	$1C	; le plateau sans les personnages
 L0A1C	DS	$1C
 L0A38	DS	$1C
 L0A54	DS	$1C
@@ -49,25 +60,30 @@ L0BA4	DS	$1C
 
 *--- $0C00
 
-L0C00	ds	$30
-L0C30	ds	$30
-L0C60	ds	8
-L0C68	ds	8
-L0C70	ds	8
-L0C78	ds	8
-L0C80	ds	8
-L0C88	ds	8
+sizeLI	=	48	; on pourrait avoir 48 Žchelles invisibles
+tblLADDERIX	ds	sizeLI	; mais le jeu n'en autorise
+tblLADDERIY	ds	sizeLI	; que 45
+
+sizeFOE	=	8	; on pourrait avoir 8 ennemis
+tblFOEX	ds	sizeFOE	; mais le jeu n'en autorise
+tblFOEY	ds	sizeFOE	; que 5
+L0C70	ds	sizeFOE
+L0C78	ds	sizeFOE
+L0C80	ds	sizeFOE
+L0C88	ds	sizeFOE
+
 L0C90	ds	8
 L0C98	ds	8
+
 L0CA0	ds	$20
 L0CC0	ds	$20
 L0CE0	ds	$20
 
-*--- $0D00
+*--- $0D00 - Level buffer from/to disk
 
-L0D00	ds	256
+levelDISK	ds	256
 
-*--- $0E00
+*--- $0E00 - buffer pour le son
 
 L0E00	ds	128
 L0E80	ds	128
@@ -289,11 +305,14 @@ yhgr	HEX	0004080C1014181C0004080C1014181C
 
 *--- Level line numbers
 
-L1C05	DFB	<L0800,<L081C,<L0838,<L0854,<L0870,<L088C,<L08A8,<L08C4
+tblBOARDALLL
+	DFB	<L0800,<L081C,<L0838,<L0854,<L0870,<L088C,<L08A8,<L08C4
 	DFB	<L08E0,<L08FC,<L0918,<L0934,<L0950,<L096C,<L0988,<L09A4
-L1C15	DFB	>L0800,>L081C,>L0838,>L0854,>L0870,>L088C,>L08A8,>L08C4
+tblBOARDALLH
+	DFB	>L0800,>L081C,>L0838,>L0854,>L0870,>L088C,>L08A8,>L08C4
 	DFB	>L08E0,>L08FC,>L0918,>L0934,>L0950,>L096C,>L0988,>L09A4
-L1C25	DFB	>L0A00,>L0A1C,>L0A38,>L0A54,>L0A70,>L0A8C,>L0AA8,>L0AC4
+tblBOARDBACKH
+	DFB	>L0A00,>L0A1C,>L0A38,>L0A54,>L0A70,>L0A8C,>L0AA8,>L0AC4
 	DFB	>L0AE0,>L0AFC,>L0B18,>L0B34,>L0B50,>L0B6C,>L0B88,>L0BA4
 
 *--- From a X in text to a X in HGR
@@ -329,7 +348,7 @@ xtable	DB	$00
 
 *--- From a Y in text to a Y in HGR
 
-ytable	DB	$00
+ytable	DB	$00	; char height
 	DB	$0B
 	DB	$16
 	DB	$21
@@ -376,7 +395,7 @@ bytable	DB	$00
 	DB	$25
 	DB	$26
 
-bitable	DB	$00
+bitable	DB	$00	; in which sprite table shall I get the sprite?
 	DB	$03
 	DB	$06
 	DB	$02
@@ -405,7 +424,7 @@ bitable	DB	$00
 	DB	$01
 	DB	$04
 
-xbytable	DB	$00
+xbytable	DB	$00	; and the index within the table
 	DB	$00
 	DB	$00
 	DB	$00

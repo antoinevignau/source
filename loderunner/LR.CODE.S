@@ -63,6 +63,7 @@ maxJOY	=	$3b
 boardX	=	$00
 boardY	=	$01
 idxFOE	=	$19	; current foe index
+fgODDEVEN	=	1a
 theYSCREEN	=	$1b
 theXSCREEN	=	$1c
 nbLINES	=	$1d
@@ -84,12 +85,17 @@ theUNITE	=	theDIZAINE+1 ; 8b
 theSPEED	=	$8c	; 8c
 nbFOE	=	$8d	; 8d
 theSCORE	=	$8e	; 8e..8f.90..91
+idxLVLDISK	=	$92	; index in level buffer from disk
 nbCHEST	=	$93	; 93
 intLEVEL	=	$96	; theLEVEL-1
 fgSOUND	=	$99	; 99
+fgPLAY	=	$9a	; 1: alive, 0: dead
 fgLVLMODE	=	$a2	; 0: edit, <>0: game
 idxLADDERI	=	$a3
 theLEVEL	=	$a6
+fgDEMO	=	$a7
+fgKEYBTN0	=	$ac	; 1: no key/btn0 pressed, 0: key/btn0 pressed
+fgCHANGE	=	$ad	; 1: no change, 0: change
 sprDATA	=	$df	; $df..$ff
 
 fgINPUT	=	$95	; "J"oystick, "K"eyboard
@@ -147,9 +153,8 @@ HGR1	ds	8192,$20
 HGR2	ds	8192,$40
 
 *-----------------------------------
-* 
+* ENTRY POINT 
 *-----------------------------------
-
 
 L6000	JSR	checkJOYSTICK
 
@@ -167,7 +172,7 @@ showTITLEPAGE
 	STA	L6030+2
 	LDY	#$00
 	STY	theY
-	STY	$A7
+	STY	fgDEMO
 	STY	intLEVEL
 	LDA	#>HGR1
 	STA	hgrPAGE
@@ -211,7 +216,7 @@ L6056	LDA	#$00
 	STA	$A8+1
 	LDA	#nbLIVES	; 5 men to start with
 	STA	theMEN
-	LDA	$A7
+	LDA	fgDEMO
 	LSR
 	BEQ	L6099
 	LDA	#$01
@@ -233,11 +238,11 @@ L6095	STA	$24
 L6099	JSR	L79AD
 	STA	TXTPAGE1
 L609F	LDX	#modeGAME
-	JSR	L6238
+	JSR	prepareLEVEL
 	LDA	#$00
 	STA	$9E
 	STA	$9F
-	LDA	$A7
+	LDA	fgDEMO
 	LSR
 	BEQ	L60BF
 	JSR	waitKEYUP
@@ -265,7 +270,7 @@ L60BF	LDX	#$00
 	LDA	L621D,Y
 	STA	$5F
 L60E4	JSR	L64BD
-	LDA	$9A
+	LDA	fgPLAY
 	BEQ	L613F
 	JSR	playMELODY
 	LDA	nbCHEST	; remaining chests?
@@ -281,11 +286,11 @@ L60F5	LDA	boardY
 	CMP	#$FF
 	BEQ	L611A
 L6107	JSR	L75F4
-	LDA	$9A
+	LDA	fgPLAY
 	BEQ	L613F
 	JSR	playMELODY
 	JSR	L6C82
-	LDA	$9A
+	LDA	fgPLAY
 	BEQ	L613F
 	BNE	L60E4
 L611A	INC	theLEVEL
@@ -315,7 +320,7 @@ L613F	DEC	theMEN	; man--
 
 L6178	JSR	playMELODY
 	BCS	L6178
-	LDA	$A7
+	LDA	fgDEMO
 	LSR
 	BEQ	L61D0
 	LDA	theMEN	; man
@@ -344,12 +349,12 @@ L61A9	LDA	KBD
 	BNE	L6199
 	DEC	theY
 	BNE	L6199
-	LDA	$A7
+	LDA	fgDEMO
 	BNE	L61DE
 	LDX	#$01
-	STX	$A7
+	STX	fgDEMO
 	STX	theLEVEL
-	STX	$AC
+	STX	fgKEYBTN0
 	STX	$9D
 	LDX	fgSOUND
 	STX	L61D0+1
@@ -359,7 +364,7 @@ L61A9	LDA	KBD
 L61D0	LDA	#$00
 	STA	fgSOUND
 	LDA	KBD
-	LDX	$AC
+	LDX	fgKEYBTN0
 	BEQ	L61F6
 	JMP	L618E
 
@@ -370,7 +375,7 @@ L61E4	LDA	#$01
 	JSR	readSCORE
 L61E9	JSR	L786B
 	LDA	#$02
-	STA	$A7
+	STA	fgDEMO
 	JMP	L618E
 L61F3	JMP	showTITLEPAGE
 
@@ -386,7 +391,7 @@ L6201	LDX	#$00
 	STX	theLEVEL
 	STX	$9D
 	LDA	#$02
-	STA	$A7
+	STA	fgDEMO
 	JMP	L6056
 
 L6211	JMP	enterEDITOR	; Jump to the Editor
@@ -400,10 +405,15 @@ L622A	LDA	$5C
 	ASL
 	ASL
 	LDX	#$06
-	JSR	L87D5
+	JSR	getNOTE
 	JMP	playMELODY
 
-L6238	STX	fgLVLMODE	; 0: edit, <>0: game
+*-----------------------------------
+* PREPARE LEVEL
+*-----------------------------------
+
+prepareLEVEL
+	STX	fgLVLMODE	; 0: edit, <>0: game
 	LDX	#$FF
 	STX	boardX
 	INX
@@ -412,8 +422,8 @@ L6238	STX	fgLVLMODE	; 0: edit, <>0: game
 	STX	nbFOE
 	STX	idxFOE
 	STX	$A0
-	STX	$92
-	STX	$1A
+	STX	idxLVLDISK
+	STX	fgODDEVEN
 	STX	theY
 	TXA
 
@@ -427,7 +437,7 @@ L625A	STA	L0C98,X
 	BPL	L625A
 
 	LDA	#$01
-	STA	$9A
+	STA	fgPLAY
 	JSR	diskLEVEL
 
 	LDY	theY
@@ -441,9 +451,9 @@ L6269	LDA	tblBOARDALLL,Y
 
 	LDA	#$00	; vŽrifie le contenu
 	STA	theX	; du niveau
-L627E	LDA	$1A	; que des valeurs 0-9
+L627E	LDA	fgODDEVEN	; que des valeurs 0-9
 	LSR
-	LDY	$92
+	LDY	idxLVLDISK
 	LDA	levelDISK,Y
 	BCS	L628C
 	AND	#$0F
@@ -452,8 +462,8 @@ L628C	LSR
 	LSR
 	LSR
 	LSR
-	INC	$92
-L6292	INC	$1A
+	INC	idxLVLDISK
+L6292	INC	fgODDEVEN
 	LDY	theX
 	CMP	#sprHERO+1
 	BCC	L629C
@@ -477,7 +487,7 @@ L629C	STA	($06),Y
 	STX	intLEVEL
 	INC	$97
 	DEX		; mode game
-	JMP	L6238
+	JMP	prepareLEVEL
 L62C3	RTS
 
 L62C4	JMP	showTITLEPAGE
@@ -488,8 +498,8 @@ L62C4	JMP	showTITLEPAGE
 
 encodeLEVEL
 	LDA	#$00
-	STA	$92
-	STA	$1A
+	STA	idxLVLDISK
+	STA	fgODDEVEN
 	STA	theY
 L62CF	LDY	theY
 	LDA	tblBOARDALLL,Y
@@ -498,7 +508,7 @@ L62CF	LDY	theY
 	STA	$06+1
 	LDY	#$00
 	STY	theX
-L62DF	LDA	$1A
+L62DF	LDA	fgODDEVEN
 	LSR
 	LDA	($06),Y
 	BCS	L62EA
@@ -509,10 +519,10 @@ L62EA	ASL
 	ASL
 	ASL
 	ORA	theA
-	LDY	$92
+	LDY	idxLVLDISK
 	STA	levelDISK,Y
-	INC	$92
-L62F7	INC	$1A
+	INC	idxLVLDISK
+L62F7	INC	fgODDEVEN
 	INC	theX
 	LDY	theX
 	CPY	#lvlWIDTH
@@ -529,7 +539,7 @@ L62F7	INC	$1A
 *-----------------------------------
 
 diskLEVEL	STA	LB7F4
-	LDA	$A7
+	LDA	fgDEMO
 	LSR
 	BEQ	L6345
 	LDA	intLEVEL	; level
@@ -1209,7 +1219,7 @@ L67E7	LDY	boardY	; are we on last line?
 	LDY	$A0
 	LDA	L699E,Y
 	LDX	L69AB,Y
-	JSR	L87D5
+	JSR	getNOTE
 	LDX	$A0
 	LDA	#$00
 	CPX	#$06
@@ -1315,7 +1325,7 @@ L68AD	LDY	boardY	; are we on last line?
 	LDY	$A0
 	LDA	L6992,Y
 	LDX	L699F,Y
-	JSR	L87D5
+	JSR	getNOTE
 	LDX	$A0
 	LDA	#$08
 	CPX	#$12
@@ -1477,8 +1487,8 @@ L69B8	LDA	KBD
 	BMI	L69CD
 	LDA	BUTN0
 	BPL	L69D6
-L69CD	LSR	$AC
-	LSR	$9A
+L69CD	LSR	fgKEYBTN0
+	LSR	fgPLAY
 	LDA	#$01
 	STA	theMEN	; one man
 	RTS
@@ -1517,7 +1527,7 @@ L69F2	LDA	$AA	; first entry is the fisrt key
 *                        0123456
 L6A0B	ASC	"IJKLOU "
 
-L6A12	LDA	$A7
+L6A12	LDA	fgDEMO
 	CMP	#$01
 	BEQ	L69B8
 	LDX	KBD
@@ -1563,7 +1573,7 @@ doNEXTLEVEL
 	INC	theMEN	; man++
 	INC	theLEVEL
 	INC	intLEVEL
-	LSR	$9A
+	LSR	fgPLAY
 	LSR	$9D
 	RTS
 
@@ -1581,7 +1591,7 @@ L6A67	JSR	printMEN
 
 	INC	$97
 	INC	theMEN	; man++
-	LSR	$9A
+	LSR	fgPLAY
 	RTS
 
 *-------------------------------
@@ -1604,7 +1614,7 @@ doTERMINATE	LDA	#$01
 * 81 - CTRL-A - ABORTS MAN
 *-------------------------------
 
-doABORTMAN	LSR	$9A
+doABORTMAN	LSR	fgPLAY
 	RTS
 
 *-------------------------------
@@ -1826,7 +1836,7 @@ L6C02	JSR	L6B85
 	BEQ	L6C12
 	LDA	$94
 	BEQ	L6C12
-	LSR	$9A
+	LSR	fgPLAY
 L6C12	RTS
 
 L6C13	LDA	$02
@@ -1899,7 +1909,7 @@ L6C92	LDA	|$0060,Y
 L6C97	LSR	$63
 	BCC	L6CA2
 	JSR	L6CDB
-	LDA	$9A
+	LDA	fgPLAY
 	BEQ	L6CA6
 L6CA2	LDA	$63
 	BNE	L6C97
@@ -2054,7 +2064,7 @@ L6DE1	STA	($06),Y
 	LDA	($06),Y
 	CMP	#sprHERO
 	BNE	L6E02
-	LSR	$9A
+	LSR	fgPLAY
 L6E02	LDA	($08),Y
 	CMP	#sprWALL
 	BNE	L6E58
@@ -2186,7 +2196,7 @@ L6F02	STA	($06),Y
 	LDA	($06),Y
 	CMP	#sprHERO
 	BNE	L6F1C
-	LSR	$9A
+	LSR	fgPLAY
 L6F1C	LDA	#$08
 	STA	($06),Y
 	LDA	#$04
@@ -2253,7 +2263,7 @@ L6F94	STA	($06),Y
 	LDA	($06),Y
 	CMP	#sprHERO
 	BNE	L6FAE
-	LSR	$9A
+	LSR	fgPLAY
 L6FAE	LDA	#$08
 	STA	($06),Y
 	LDA	#$00
@@ -2306,7 +2316,7 @@ L700F	STA	($06),Y
 	LDA	($06),Y
 	CMP	#sprHERO
 	BNE	L701C
-	LSR	$9A
+	LSR	fgPLAY
 L701C	LDA	#$08
 	STA	($06),Y
 	LDA	#$04
@@ -2375,7 +2385,7 @@ L70A0	STA	($06),Y
 	LDA	($06),Y
 	CMP	#sprHERO
 	BNE	L70AD
-	LSR	$9A
+	LSR	fgPLAY
 L70AD	LDA	#$08
 	STA	($06),Y
 	LDA	#$00
@@ -2641,7 +2651,7 @@ L72A7	LDY	$56
 	STA	$58
 L72D3	RTS
 
-L72D4	STA	$1A
+L72D4	STA	fgODDEVEN
 	CMP	boardY
 	BNE	L72EB
 	CPX	$12
@@ -2651,10 +2661,10 @@ L72D4	STA	$1A
 	SBC	$12
 	RTS
 
-L72E3	STX	$1A
+L72E3	STX	fgODDEVEN
 	LDA	$12
 	SEC
-	SBC	$1A
+	SBC	fgODDEVEN
 	RTS
 
 L72EB	BCC	L72F4
@@ -2666,7 +2676,7 @@ L72EB	BCC	L72F4
 
 L72F4	LDA	boardY
 	SEC
-	SBC	$1A
+	SBC	fgODDEVEN
 	CLC
 	ADC	#$64
 	RTS
@@ -3112,7 +3122,7 @@ L7641	LDX	tempINDEX
 
 L7667	CMP	#sprHERO
 	BNE	L766D
-	LSR	$9A
+	LSR	fgPLAY
 L766D	CMP	#sprFOE
 	BEQ	L767A
 	CMP	#sprCHEST
@@ -3526,7 +3536,7 @@ setHGRPOINTERS
 	STA	$0C
 	STA	$0E
 	LDA	yhgr,Y
-	ORA	#$20
+	ORA	#>HGR1
 	STA	$0C+1
 	EOR	#$60
 	STA	$0E+1
@@ -3750,7 +3760,7 @@ enterEDITOR	LDA	#$00
 	STA	$25
 	LDA	#$05
 	STA	theMEN
-	STA	$A7
+	STA	fgDEMO
 	LDA	fgINPUT	; save interface mode
 	STA	L7C76+1
 	LDA	#chrK	; force keyboard in editor
@@ -3803,26 +3813,26 @@ L7C41	TXA		; yes, we know the key
 
 L7C4D	ASC	"PCEMIS"00
 
-L7C54	DA	L7C60-1	; Play level
-	DA	L7C8E-1	; Clear level
-	DA	L7CBC-1	; Edit level
-	DA	L7CD8-1	; Move level
-	DA	L7D5D-1	; Initialize
-	DA	L7E75-1	; Clear Score file
+L7C54	DA	editPLAY-1	; Play level
+	DA	editCLEAR-1	; Clear level
+	DA	editEDIT-1	; Edit level
+	DA	editMOVE-1	; Move level
+	DA	editINIT-1	; Initialize
+	DA	editCLEARSCORE-1	; Clear Score file
 
 *-------------------------------
 * P - PLAY LEVEL 
 *-------------------------------
 
-L7C60	JSR	printSTRING
+editPLAY	JSR	printSTRING
 	ASC	8D
 	ASC	">>PLAY LEVEL"00
-	JSR	L817B
+	JSR	inputLEVEL
 	BCS	L7C8B
 L7C76	LDA	#$00
 	STA	fgINPUT
 	LDA	#$03
-	STA	$A7
+	STA	fgDEMO
 	LDA	#$01
 	STA	$9D
 	LDA	intLEVEL
@@ -3835,10 +3845,10 @@ L7C8B	JMP	L7C3B
 * C - CLEAR LEVEL 
 *-------------------------------
 
-L7C8E	JSR	printSTRING
+editCLEAR	JSR	printSTRING
 	ASC	8D
 	ASC	">>CLEAR LEVEL"00
-	JSR	L817B
+	JSR	inputLEVEL
 	BCS	L7CB9
 	JSR	L807F
 	LDY	#$00
@@ -3855,27 +3865,27 @@ L7CB9	JMP	L7C3B
 * E - EDIT LEVEL 
 *-------------------------------
 
-L7CBC	JSR	printSTRING
+editEDIT	JSR	printSTRING
 	ASC	8D
 	ASC	">>EDIT LEVEL"00
-	JSR	L817B	; is level valid?
+	JSR	inputLEVEL	; is level valid?
 	BCS	L7CD5	; no
-	JMP	L7F01	; yes, handle edit
+	JMP	editEDITLEVEL	; yes, handle edit
 L7CD5	JMP	L7C3B
 
 *-------------------------------
 * M - MOVE LEVEL 
 *-------------------------------
 
-L7CD8	JSR	printSTRING
+editMOVE	JSR	printSTRING
 	ASC	8D
 	ASC	">>MOVE LEVEL"00
-	JSR	L817B
+	JSR	inputLEVEL
 	BCS	L7D5A
 	STY	L824F
 	JSR	printSTRING
 	ASC	" TO LEVEL"00
-	JSR	L817B
+	JSR	inputLEVEL
 	BCS	L7D5A
 	STY	L8250
 	JSR	printSTRING
@@ -3903,7 +3913,7 @@ L7D5A	JMP	L7C3B
 * I - INITIALIZE DISKETTE
 *-------------------------------
 
-L7D5D	JSR	printSTRING
+editINIT	JSR	printSTRING
 	ASC	8D
 	ASC	">>INITIALIZE"8D
 	ASC	"  THIS FORMATS THE DISKETTE"8D
@@ -3912,7 +3922,7 @@ L7D5D	JSR	printSTRING
 	ASC	"   ENTIRE DISKETTE FIRST)"8D8D
 	ASC	"  ARE YOU SURE (Y/N) "00
 	JSR	L823D
-	CMP	#"Y"
+	CMP	#chrY
 	BNE	L7E72
 	NOP		; NOP
 	NOP
@@ -3983,7 +3993,8 @@ L7E72	JMP	L7C16
 * C - CLEAR SCORE FILE 
 *-------------------------------
 
-L7E75	JSR	printSTRING
+editCLEARSCORE
+	JSR	printSTRING
 	ASC	8D
 	ASC	">>CLEAR SCORE FILE"8D
 	ASC	"  THIS CLEARS THE HIGH"8D
@@ -4013,7 +4024,8 @@ L7EFE	JMP	L7C16
 * EDIT THE LEVEL 
 *-------------------------------
 
-L7F01	JSR	clearHGR2	; clear HGR2
+editEDITLEVEL
+	JSR	clearHGR2	; clear HGR2
 	LDA	#>HGR2
 	STA	activePAGE
 	JSR	drawINFOBAR	; show frame
@@ -4021,16 +4033,16 @@ L7F01	JSR	clearHGR2	; clear HGR2
 	STA	activePAGE
 	JSR	L807F	; check diskette (master or data disk)
 	LDX	#$01
-	STX	$AD
+	STX	fgCHANGE
 	DEX		; mode edit
-	JSR	L6238
+	JSR	prepareLEVEL
 	BCC	L7F1F
 	JMP	L7C3B
 
 L7F1F	LDA	#$00	; cursor is at 0,0
 	STA	theX
 	STA	theY
-L7F25	JSR	L814B	; wait for key
+L7F25	JSR	blinkATXY	; wait for key
 	CMP	#"9"+1
 	BCS	L7F54	; no sprite
 	CMP	#"0"	; means check commands
@@ -4046,7 +4058,7 @@ L7F25	JSR	L814B	; wait for key
 	LDA	theA	; get sprite
 	EOR	($06),Y	; same as before?
 	BEQ	L7F4A	; yes
-	LSR	$AD	; no
+	LSR	fgCHANGE	; no, tell there's a change
 L7F4A	LDA	theA	; get sprite
 	STA	($06),Y	; save it
 	JSR	coutHGR1	; print sprite
@@ -4055,16 +4067,16 @@ L7F4A	LDA	theA	; get sprite
 L7F54	STA	theA	; same key
 	LDY	#$FF
 L7F58	INY
-	LDA	L8162,Y	; is that a command?
+	LDA	tblEDITKEYS,Y	; is that a command?
 	BEQ	L7F6E
 	CMP	theA	; same as our key?
 	BNE	L7F58
 	TYA		; yes, jump
 	ASL
 	TAY
-	LDA	L816B+1,Y
+	LDA	tblEDITCODE+1,Y
 	PHA
-	LDA	L816B,Y
+	LDA	tblEDITCODE,Y
 	PHA
 	RTS
 
@@ -4075,7 +4087,7 @@ L7F6E	JSR	doBEEP	; beep
 * I - MOVE CURSOR UP 
 *-------------------------------
 
-L7F74	LDA	theY
+editUP	LDA	theY
 	BEQ	L7F6E
 	DEC	theY
 	BPL	L7F25
@@ -4084,7 +4096,7 @@ L7F74	LDA	theY
 * J - MOVE CURSOR LEFT
 *-------------------------------
 
-L7F7C	LDA	theX
+editLEFT	LDA	theX
 	BEQ	L7F6E
 	DEC	theX
 	BPL	L7F25
@@ -4093,7 +4105,7 @@ L7F7C	LDA	theX
 * K - MOVE CURSOR RIGHT
 *-------------------------------
 
-L7F84	LDA	theX
+editRIGHT	LDA	theX
 	CMP	#lvlWIDTH-1
 	BCS	L7F6E
 	INC	theX
@@ -4103,7 +4115,7 @@ L7F84	LDA	theX
 * M - MOVE CURSOR DOWN 
 *-------------------------------
 
-L7F8E	LDA	theY
+editDOWN	LDA	theY
 	CMP	#lvlHEIGHT-1
 	BCS	L7F6E
 	INC	theY
@@ -4137,7 +4149,7 @@ L7FB7	JSR	encodeLEVEL	; prepare the level & save it
 	PLA
 	STA	theY
 	LDA	#$01
-	STA	$AD
+	STA	fgCHANGE
 	RTS		; and return
 
 L7FC5	LDA	#$00
@@ -4149,40 +4161,46 @@ L7FC5	LDA	#$00
 * CTRL-S - SAVE YOUR GAME 
 *-------------------------------
 
-L7FCE	JSR	saveLEVEL
+editSAVE	JSR	saveLEVEL
 	JMP	L7F25
 
 *-------------------------------
 * CTRL-U - NEXT LEVEL 
 *-------------------------------
 
-L7FD4	LDA	intLEVEL
+editLOAD	LDA	intLEVEL
 	CMP	#maxLEVEL-1	; 150-1
 L7FD8	BEQ	L7F6E
-	JSR	L7FF8
+	JSR	editSAVECHANGES
 	INC	intLEVEL
 	INC	theLEVEL
-	JMP	L7F01
+	JMP	editEDITLEVEL
 
 *-------------------------------
 * CTRL-H - PREVIOUS LEVEL
 *-------------------------------
 
-L7FE4	LDA	intLEVEL
+editPREVIOUS
+	LDA	intLEVEL
 	BEQ	L7FD8
-	JSR	L7FF8
+	JSR	editSAVECHANGES
 	DEC	theLEVEL
 	DEC	intLEVEL
-	JMP	L7F01
+	JMP	editEDITLEVEL
 
 *-------------------------------
 * CTRL-Q - QUIT GAME GENERATOR 
 *-------------------------------
 
-L7FF2	JSR	L7FF8
+editQUIT	JSR	editSAVECHANGES
 	JMP	L7BB2
 
-L7FF8	LDA	$AD
+*-------------------------------
+* WANT TO SAVE CHANGES
+*-------------------------------
+
+editSAVECHANGES
+	LDA	fgCHANGE
 	BNE	L8075
 	JSR	clearHGR2
 	LDA	#>HGR2
@@ -4269,7 +4287,12 @@ tellNODATADISK
 	ASC	"LODE RUNNER DATA DISK."00
 	JMP	L80D8
 
-L814B	LDY	theY
+*-----------------------------------
+* BLINK AT XY
+*-----------------------------------
+
+blinkATXY
+	LDY	theY
 	LDA	tblBOARDALLL,Y
 	STA	$06
 	LDA	tblBOARDALLH,Y
@@ -4280,23 +4303,24 @@ L814B	LDY	theY
 	STA	KBDSTROBE
 	RTS
 
-L8162	ASC	"JIKM"
+tblEDITKEYS	ASC	"JIKM"
 	HEX	9395889100
 
-L816B	DA	L7F7C-1	; J move left
-	DA	L7F74-1	; I move up
-	DA	L7F84-1	; K move right
-	DA	L7F8E-1	; M move down
-	DA	L7FCE-1	; CTRL-S to save your game
-	DA	L7FD4-1	; CTRL-U to load next level
-	DA	L7FE4-1	; CTRL-H to load previous level
-	DA	L7FF2-1	; CTRL-Q to quit game generator
+tblEDITCODE	DA	editLEFT-1	; J move left
+	DA	editUP-1	; I move up
+	DA	editRIGHT-1	; K move right
+	DA	editDOWN-1	; M move down
+	DA	editSAVE-1	; CTRL-S to save your game
+	DA	editLOAD-1	; CTRL-U to load next level
+	DA	editPREVIOUS-1	; CTRL-H to load previous level
+	DA	editQUIT-1	; CTRL-Q to quit game generator
 
 *-------------------------------
-* CHECK REQUIRED LEVEL NUMBER
+* INPUT LEVEL NUMBER
 *-------------------------------
 
-L817B	LDY	intLEVEL
+inputLEVEL
+	LDY	intLEVEL
 	INY
 	TYA
 	JSR	hex2dec
@@ -4888,16 +4912,16 @@ L85E7	LDA	#>HGR1
 	JSR	readSCORE
 	JMP	L618E
 
-L85F3	STA	L8745
+L85F3	STA	bsDATA
 L85F6	LDA	#$68
 	STA	$A1
-	LDA	L8745
+	LDA	bsDATA
 	BNE	L8601
 	LDA	#$0A
 L8601	JSR	coutHGR2
 L8604	LDA	KBD
 	BMI	L8628
-	JSR	L876D
+	JSR	checkMOVEMENT
 	DEC	$A1
 	BNE	L8604
 	LDA	#$00
@@ -4906,13 +4930,13 @@ L8604	LDA	KBD
 	STA	$A1
 L8619	LDA	KBD
 	BMI	L8628
-	JSR	L876D
+	JSR	checkMOVEMENT
 	DEC	$A1
 	BNE	L8619
 	JMP	L85F6
 
 L8628	PHA
-	LDA	L8745
+	LDA	bsDATA
 	JSR	coutHGR2
 	PLA
 	RTS
@@ -5063,7 +5087,7 @@ L8703	LDA	#$68
 L8710	JSR	coutHGR1	; output empty
 L8713	LDA	KBD	; key pressed?
 	BMI	L873C	; yes
-	JSR	L876D	; buttons pressed?
+	JSR	checkMOVEMENT	; buttons pressed?
 	BCS	L873C	; yes
 	DEC	$A1
 	BNE	L8713
@@ -5073,14 +5097,14 @@ L8713	LDA	KBD	; key pressed?
 	STA	$A1
 L872B	LDA	KBD
 	BMI	L873C
-	JSR	L876D
+	JSR	checkMOVEMENT
 	BCS	L873C
 	DEC	$A1
 	BNE	L872B
 	JMP	L8703
 
 L873C	PHA		; exit with
-	LDA	L8745	; sprite
+	LDA	bsDATA	; sprite
 	JSR	coutHGR1
 	PLA
 	RTS
@@ -5112,7 +5136,12 @@ L8769	NOP
 	BPL	L8758
 L876C	RTS
 
-L876D	LDA	fgINPUT
+*-----------------------------------
+* CHECK MOVEMENT
+*-----------------------------------
+
+checkMOVEMENT
+	LDA	fgINPUT
 	CMP	#chrK
 	BEQ	L8798
 	JSR	readJOYSTICK
@@ -5135,9 +5164,9 @@ L876D	LDA	fgINPUT
 L8796	SEC
 	RTS
 
-L8798	LDX	#$02
-L879A	DEY
-	BNE	L879A
+L8798	LDX	#$02	; wait routine
+L879A	DEY		; to compensate
+	BNE	L879A	; the skipped code above
 	DEX
 	BNE	L879A
 	CLC
@@ -5162,7 +5191,7 @@ L87A7	LDA	PADDL0
 L87B9	RTS
 
 *-----------------------------------
-* 
+* PLAY A SOUND
 *-----------------------------------
 
 playSOUND	STA	$0A
@@ -5181,10 +5210,10 @@ L87CC	DEX
 L87D4	RTS
 
 *-----------------------------------
-* 
+* GET NOTE
 *-----------------------------------
 
-L87D5	INC	$54
+getNOTE	INC	$54
 	LDY	$54
 	STA	L0E80,Y
 	TXA
@@ -5276,7 +5305,7 @@ L884B	LDA	tblBOARDALLL,Y
 *-------------------------------
 
 getXY	LDA	ytable,Y	;  in: board X/Y
-	PHA		: out: hgr X/Y
+	PHA		; out: hgr X/Y
 	LDA	xtable,X
 	TAX
 	PLA

@@ -97,8 +97,8 @@ levelDISK	ds	256
 
 *--- $0E00 - buffer pour le son
 
-L0E00	ds	128
-L0E80	ds	128
+sndDURATION	ds	128
+sndNOTE	ds	128
 
 *--- $0F00 - Title page until $1A84
 
@@ -327,7 +327,7 @@ tblBOARDBACKH
 	DFB	>L0A00,>L0A1C,>L0A38,>L0A54,>L0A70,>L0A8C,>L0AA8,>L0AC4
 	DFB	>L0AE0,>L0AFC,>L0B18,>L0B34,>L0B50,>L0B6C,>L0B88,>L0BA4
 
-*--- From a X in text to a X in HGR
+*--- From a X in board to a X in HGR
 
 xtable	DB	$00	; HGR column index
 	DB	$05	; 0..5..10..15
@@ -358,7 +358,7 @@ xtable	DB	$00	; HGR column index
 	DB	$82
 	DB	$87
 
-*--- From a Y in text to a Y in HGR
+*--- From a Y in board to a Y in HGR
 
 ytable	DB	$00	; HGR line index
 	DB	$0B	;   0.11.22.33
@@ -377,6 +377,8 @@ ytable	DB	$00	; HGR line index
 	DB	$9A	; 154
 	DB	$A5	; 165
 	DB	$B5	; 181	; ligne de texte
+
+*--- From a X in board to a Y column in HGR (0..39)
 
 bytable	DB	$00
 	DB	$01
@@ -407,8 +409,10 @@ bytable	DB	$00
 	DB	$25
 	DB	$26
 
-bitable	DB	$00	; in which sprite table shall I get the sprite?
-	DB	$03
+*--- From a X in board to a sprite table (0..6)
+
+bitable	DB	$00	; 0..4: sprite is 2-col wide
+	DB	$03	; 5..6: sprite is 3-col wide
 	DB	$06
 	DB	$02
 	DB	$05
@@ -435,6 +439,8 @@ bitable	DB	$00	; in which sprite table shall I get the sprite?
 	DB	$05
 	DB	$01
 	DB	$04
+
+*--- From a X in HGR (0..139) coordinate to a Y column in HGR (0..39)
 
 xbytable	DB	$00	; and the index within the table
 	DB	$00
@@ -577,8 +583,10 @@ xbytable	DB	$00	; and the index within the table
 	DB	$27
 	DB	$27
 
-xbitable	DB	$00
-	DB	$02
+*--- From a X in HGR to a sprite table (0..6)
+
+xbitable	DB	$00	; 0..4: sprite is 2-col wide
+	DB	$02	; 5..6: sprite is 3-col wide
 	DB	$04
 	DB	$06
 	DB	$01

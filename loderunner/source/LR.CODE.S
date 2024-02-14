@@ -54,21 +54,46 @@ sprFOE	=	8
 sprHERO	=	9
 sprCURSOR	=	10
 spr0	=	$3b	; until $44
-sprA	=	$45	; until $5e >.()/-< (latest sprite is theJOYX)
+sprA	=	$45	; until $5e >.()/-< (latest sprite is $65)
 
 minJOY	=	$12	; joystick min/center/max values
 ctrJOY	=	$25
 maxJOY	=	$3b
 
+*--- The big zero page usage
+
 boardX	=	$00
 boardY	=	$01
+heroSTEPX	=	$02
+heroSTEPY	=	$03
+heroSPRITE	=	$04
+fgLEFTRIGHT	=	$05
+ptrBOARD	=	$06	; $06..$07: pointer to board
+ptrBBACK	=	$08	; $08..$09: pointer to back board
+ptrDATA	=	$0a	; $0a..$0b: pointer to data (HGR or other)
+ptrHGR1	=	$0c	; $0c..$0d
+ptrHGR2	=	$0e	; $0e..$0f
+ptrSTRSND	=	$10	; $10..$11: pointer to some table (string, sound)
+foeX	=	$12
+foeY	=	$13
+foeC88	=	$14
+foeC90	=	$15
+foeC70	=	$16
+foeC78	=	$17	; coordinate
+foeC80	=	$18	; coordinate
 idxFOE	=	$19	; current foe index
-fgODDEVEN	=	1a
+fgODDEVEN	=	$1a
 theYSCREEN	=	$1b
 theXSCREEN	=	$1c
 nbLINES	=	$1d
 theA	=	$1e
 hgrPAGE	=	$1f
+CH	=	$24	; **
+CV	=	$25	; **
+CSWL	=	$36	; **
+CSWH	=	$37	; **
+KSWL	=	$38	; **
+KSWH	=	$39	; **
 theMASK1	=	$50
 theMASK2	=	$51
 fgCOLLISION	=	$52
@@ -87,13 +112,17 @@ nbFOE	=	$8d	; 8d
 theSCORE	=	$8e	; 8e..8f.90..91
 idxLVLDISK	=	$92	; index in level buffer from disk
 nbCHEST	=	$93	; 93
-intLEVEL	=	$96	; theLEVEL-1
+fgCHEST	=	$94	; 94 1: not a chest, 0: a chest
+intLEVEL	=	$96	; 96 theLEVEL-1
 fgSOUND	=	$99	; 99
 fgPLAY	=	$9a	; 1: alive, 0: dead
 fgLVLMODE	=	$a2	; 0: edit, <>0: game
 idxLADDERI	=	$a3
 theLEVEL	=	$a6
 fgDEMO	=	$a7
+ptrDEMO	=	$a8	; $a8..$a9 - pointer to demo data
+demoKEY	=	$aa	; the demo key actions
+demoREPEAT	=	$ab	; the demo repeat factor
 fgKEYBTN0	=	$ac	; 1: no key/btn0 pressed, 0: key/btn0 pressed
 fgCHANGE	=	$ad	; 1: no change, 0: change
 sprDATA	=	$df	; $df..$ff
@@ -185,7 +214,7 @@ L6028	INC	L6030+1
 L6030	LDA	L6028
 	BEQ	L603F
 	BPL	L603C
-	STA	($0C),Y
+	STA	(ptrHGR1),Y
 	INY
 	BPL	L6028
 L603C	TAY
@@ -210,10 +239,10 @@ L6056	LDA	#$00
 	STA	$97
 	STA	$A5
 	STA	$53
-	STA	$AB
-	STA	$A8	; demo actions
-	LDA	#>L9B00
-	STA	$A8+1
+	STA	demoREPEAT
+	STA	ptrDEMO	; demo actions
+	LDA	#>demoDATA
+	STA	ptrDEMO+1
 	LDA	#nbLIVES	; 5 men to start with
 	STA	theMEN
 	LDA	fgDEMO
@@ -228,23 +257,23 @@ L6056	LDA	#$00
 
 L6086	LDA	scorebuf+$FF
 	BNE	L6091
-	LDA	$36
-	LDX	$37
+	LDA	CSWL	; this code is useless
+	LDX	CSWH	; if no copy protection remains
 	BNE	L6095
-L6091	LDA	$38
-	LDX	$39
-L6095	STA	$24
-	STX	$25
-L6099	JSR	L79AD
+L6091	LDA	KSWL
+	LDX	KSWH
+L6095	STA	CH
+	STX	CV
+L6099	JSR	clearHGRPAGES	; clear HGR pages and draw board
 	STA	TXTPAGE1
 L609F	LDX	#modeGAME
 	JSR	prepareLEVEL
 	LDA	#$00
 	STA	$9E
 	STA	$9F
-	LDA	fgDEMO
+	LDA	fgDEMO	; are we in demo mode?
 	LSR
-	BEQ	L60BF
+	BEQ	L60BF	; yes
 	JSR	waitKEYUP
 	LDA	boardX
 	STA	theX
@@ -269,30 +298,34 @@ L60BF	LDX	#$00
 	LDY	$97
 	LDA	L621D,Y
 	STA	$5F
+
 L60E4	JSR	L64BD
-	LDA	fgPLAY
-	BEQ	L613F
+	LDA	fgPLAY	; are we dead?
+	BEQ	L613F	; yes
 	JSR	playMELODY
 	LDA	nbCHEST	; remaining chests?
 	BNE	L60F5	; yes
 	JSR	showINVISIBLELADDERS
-L60F5	LDA	boardY
+
+L60F5	LDA	boardY	; are we on top row
 	BNE	L6107
-	LDA	$03
+	LDA	heroSTEPY	; are we going up?
 	CMP	#$02
 	BNE	L6107
-	LDA	nbCHEST
+	LDA	nbCHEST	; are there chests left?
 	BEQ	L611A
 	CMP	#$FF
-	BEQ	L611A
+	BEQ	L611A	; we won
+	
 L6107	JSR	L75F4
-	LDA	fgPLAY
-	BEQ	L613F
+	LDA	fgPLAY	; are we dead?
+	BEQ	L613F	; yes
 	JSR	playMELODY
 	JSR	L6C82
 	LDA	fgPLAY
 	BEQ	L613F
-	BNE	L60E4
+	BNE	L60E4	; loop
+	
 L611A	INC	theLEVEL
 	INC	intLEVEL
 	INC	theMEN	; man++
@@ -396,7 +429,7 @@ L6201	LDX	#$00
 
 L6211	JMP	enterEDITOR	; Jump to the Editor
 
-L6214	HEX	000306090C0F121518
+L6214	HEX	000306090C0F121518	; 0..3..6..9..12..15..18..21..24
 L621D	HEX	26262E4447494A4B4C4D4E4F50
 
 L622A	LDA	$5C
@@ -442,12 +475,12 @@ L625A	STA	L0C98,X
 
 	LDY	theY
 L6269	LDA	tblBOARDALLL,Y
-	STA	$06
-	STA	$08
+	STA	ptrBOARD
+	STA	ptrBBACK
 	LDA	tblBOARDALLH,Y
-	STA	$06+1
+	STA	ptrBOARD+1
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 
 	LDA	#$00	; vŽrifie le contenu
 	STA	theX	; du niveau
@@ -468,8 +501,8 @@ L6292	INC	fgODDEVEN
 	CMP	#sprHERO+1
 	BCC	L629C
 	LDA	#sprEMPTY
-L629C	STA	($06),Y
-	STA	($08),Y
+L629C	STA	(ptrBOARD),Y
+	STA	(ptrBBACK),Y
 	INC	theX
 	LDA	theX
 	CMP	#lvlWIDTH
@@ -503,14 +536,14 @@ encodeLEVEL
 	STA	theY
 L62CF	LDY	theY
 	LDA	tblBOARDALLL,Y
-	STA	$06
+	STA	ptrBOARD
 	LDA	tblBOARDALLH,Y
-	STA	$06+1
+	STA	ptrBOARD+1
 	LDY	#$00
 	STY	theX
 L62DF	LDA	fgODDEVEN
 	LSR
-	LDA	($06),Y
+	LDA	(ptrBOARD),Y
 	BCS	L62EA
 	STA	theA
 	BPL	L62F7
@@ -570,10 +603,10 @@ L6344	RTS
 L6345	LDA	theLEVEL
 	CLC
 	ADC	#>L9E00
-	STA	$0C+1
+	STA	ptrHGR1+1
 	LDY	#<L9E00
-	STY	$0C
-L6350	LDA	($0C),Y
+	STY	ptrHGR1
+L6350	LDA	(ptrHGR1),Y
 	STA	levelDISK,Y
 	INY
 	BNE	L6350
@@ -631,21 +664,20 @@ L63A8	ASC	"LODE RUNNER"
 * DECODE A LEVEL
 *-----------------------------------
 
-decodeLEVEL
-	LDY	#lvlHEIGHT-1	
+decodeLEVEL	LDY	#lvlHEIGHT-1	
 	STY	theY
 L63B7	LDA	tblBOARDALLL,Y	; $0800
-	STA	$06
-	STA	$08
+	STA	ptrBOARD
+	STA	ptrBBACK
 	LDA	tblBOARDALLH,Y
-	STA	$06+1
+	STA	ptrBOARD+1
 	LDA	tblBOARDBACKH,Y	; $0a00
-	STA	$08+1
+	STA	ptrBBACK+1
 	LDY	#lvlWIDTH-1
 	STY	theX
-L63CC	LDA	($06),Y
-	LDX	fgLVLMODE
-	BEQ	L63EE
+L63CC	LDA	(ptrBOARD),Y
+	LDX	fgLVLMODE	; mode edit?
+	BEQ	L63EE	; yes
 	CMP	#sprLADDERI
 	BNE	L63F0
 	LDX	idxLADDERI
@@ -658,9 +690,10 @@ L63CC	LDA	($06),Y
 	TYA
 	STA	tblLADDERIX,X
 L63E8	LDA	#sprEMPTY	; hide it
-	STA	($06),Y
-	STA	($08),Y
-L63EE	BEQ	L6450
+	STA	(ptrBOARD),Y
+	STA	(ptrBBACK),Y
+
+L63EE	BEQ	L6450	; mode edit
 
 L63F0	CMP	#sprCHEST
 	BNE	L63F8
@@ -668,6 +701,7 @@ L63F0	CMP	#sprCHEST
 	BNE	L6450
 L63F8	CMP	#sprFOE
 	BNE	L642A
+
 	LDX	nbFOE	; nbFOE
 	CPX	#sizeFOE-3	; max
 	BCS	L63E8
@@ -684,80 +718,85 @@ L63F8	CMP	#sprFOE
 	STA	L0C78,X
 	STA	L0C80,X
 	LDA	#sprEMPTY
-	STA	($08),Y
-	LDA	#sprFOE
+	STA	(ptrBBACK),Y
+	LDA	#sprFOE	; output a foe
 	BNE	L6450
+
 L6426	BPL	L63B7
 L6428	BPL	L63CC
 
-L642A	CMP	#sprHERO
+L642A	CMP	#sprHERO	; if the hero
 	BNE	L644A
-	LDX	boardX
-	BPL	L63E8
-	STY	boardX
+
+	LDX	boardX	; -1 on entry
+	BPL	L63E8	; we'll never return
+	STY	boardX	; save a positive value
 	LDX	theY
 	STX	boardY
 	LDX	#$02
-	STX	$02
-	STX	$03
+	STX	heroSTEPX	; x-step movement
+	STX	heroSTEPY	; y-step movement
 	LDX	#$08
-	STX	$04
-	LDA	#sprEMPTY
-	STA	($08),Y
+	STX	heroINDEX	; index in sprite table
+	LDA	#sprEMPTY	; blank in background
+	STA	(ptrBBACK),Y
 	LDA	#sprHERO
 	BNE	L6450
+
 L644A	CMP	#sprTRAP	; if a trap
 	BNE	L6450
 	LDA	#sprWALL	; output a wall
 
-L6450	JSR	coutHGR2
-	DEC	theX
+L6450	JSR	coutHGR2	; put the char in background
+
+	DEC	theX	; x--
 	LDY	theX
 	BPL	L6428
-	DEC	theY
+	DEC	theY	; y--
 	LDY	theY
 	BPL	L6426
-	LDA	fgLVLMODE
-	BEQ	L6469
-	LDA	boardX
-	BPL	L648B
-	SEC
+	LDA	fgLVLMODE	; mode edit?
+	BEQ	L6469	; yes
+	LDA	boardX	; we met the hero
+	BPL	L648B	; continue to the animation
+	SEC		; not ok
 	RTS
 
-L6469	LDA	#>HGR1	; clear both HGR pages
-	STA	$0E+1
+*--- Level is decode for the edit mode
+
+L6469	LDA	#>HGR1	; copy HGR1 > HGR2
+	STA	ptrHGR2+1
 	LDA	#>HGR2
-	STA	$0C+1
+	STA	ptrHGR1+1
 	LDA	#$00
-	STA	$0E
-	STA	$0C
+	STA	ptrHGR2
+	STA	ptrHGR1
 	TAY
-L6478	LDA	($0C),Y
-	STA	($0E),Y
+L6478	LDA	(ptrHGR1),Y
+	STA	(ptrHGR2),Y
 	INY
 	BNE	L6478
-	INC	$0E+1
-	INC	$0C+1
-	LDX	$0C+1
+	INC	ptrHGR2+1
+	INC	ptrHGR1+1
+	LDX	ptrHGR1+1
 	CPX	#>HGR2+$20
 	BCC	L6478
-	CLC
+	CLC		; oookkkkk
 	RTS
 
-*-----------------------------------
-* 
-*-----------------------------------
+*--- Level is decoded for the game mode
 
 L648B	JSR	circleANIMATION
-	LDY	#lvlHEIGHT-1
-	STY	theY
-L6492	LDA	tblBOARDALLL,Y
-	STA	$06
+
+	LDY	#lvlHEIGHT-1	; clear HGR2 background
+	STY	theY		; for hero and foes
+L6492	LDA	tblBOARDALLL,Y	; the background contains all other sprites
+	STA	ptrBOARD
 	LDA	tblBOARDALLH,Y
-	STA	$06+1
+	STA	ptrBOARD+1
 	LDY	#lvlWIDTH-1
 	STY	theX
-L64A0	LDA	($06),Y
+L64A0	LDA	(ptrBOARD),Y
 	CMP	#sprHERO
 	BEQ	L64AA
 	CMP	#sprFOE
@@ -770,11 +809,15 @@ L64AF	DEC	theX
 	DEC	theY
 	LDY	theY
 	BPL	L6492
-	CLC
+	CLC			; and say OOOKKKKKK
 	RTS
 
+*-----------------------------------
+* 
+*-----------------------------------
+
 L64BD	LDA	#$01
-	STA	$94
+	STA	fgCHEST
 	LDA	$9C
 	BEQ	L64CD
 	BPL	L64CA
@@ -783,38 +826,38 @@ L64CA	JMP	L68AD
 
 L64CD	LDY	boardY
 	LDA	tblBOARDALLL,Y
-	STA	$08
+	STA	ptrBBACK
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	LDY	boardX
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#sprLADDER
 	BEQ	L6522
 	CMP	#sprBAR
 	BNE	L64EB
-	LDA	$03
-	CMP	#sprWALLI
+	LDA	heroSTEPY
+	CMP	#$02
 	BEQ	L6522
-L64EB	LDA	$03
-	CMP	#sprWALLI
+L64EB	LDA	heroSTEPY
+	CMP	#$02
 	BCC	L6525
 	LDY	boardY
 	CPY	#lvlHEIGHT-1
 	BEQ	L6522
 	LDA	tblBOARDALLL+1,Y
-	STA	$06
-	STA	$08
+	STA	ptrBOARD
+	STA	ptrBBACK
 	LDA	tblBOARDALLH+1,Y
-	STA	$06+1
+	STA	ptrBOARD+1
 	LDA	tblBOARDBACKH+1,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	LDY	boardX
-	LDA	($06),Y
+	LDA	(ptrBOARD),Y
 	CMP	#sprEMPTY
 	BEQ	L6525
 	CMP	#sprFOE
 	BEQ	L6522
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#sprWALL
 	BEQ	L6522
 	CMP	#sprWALLI
@@ -825,46 +868,46 @@ L6522	JMP	L6584
 
 L6525	LDA	#$00
 	STA	$9B
-	JSR	L6B85
+	JSR	calcSPRITEXY
 	JSR	drawSPRITEXY
-	LDA	#$07
-	LDX	$05
+	LDA	#$07	; index in sprite table: fall in a left hole
+	LDX	fgLEFTRIGHT
 	BMI	L6537
-	LDA	#$0F
-L6537	STA	$04
+	LDA	#$0F	; fall in a right hole
+L6537	STA	heroINDEX
 	JSR	L6C13
-	INC	$03
-	LDA	$03
+	INC	heroSTEPY
+	LDA	heroSTEPY
 	CMP	#$05
 	BCS	L654A
-	JSR	L6B9D
+	JSR	checkCHEST
 	JMP	L6C02
 
 L654A	LDA	#$00
-	STA	$03
+	STA	heroSTEPY
 	LDY	boardY
 	LDA	tblBOARDALLL,Y
-	STA	$06
-	STA	$08
+	STA	ptrBOARD
+	STA	ptrBBACK
 	LDA	tblBOARDALLH,Y
-	STA	$06+1
+	STA	ptrBOARD+1
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	LDY	boardX
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#sprWALL
 	BNE	L656B
 	LDA	#$00
-L656B	STA	($06),Y
+L656B	STA	(ptrBOARD),Y
 	INC	boardY
 	LDY	boardY
 	LDA	tblBOARDALLL,Y
-	STA	$06
+	STA	ptrBOARD
 	LDA	tblBOARDALLH,Y
-	STA	$06+1
+	STA	ptrBOARD+1
 	LDY	boardX
 	LDA	#sprHERO
-	STA	($06),Y
+	STA	(ptrBOARD),Y
 	JMP	L6C02
 
 L6584	LDA	$9B
@@ -919,50 +962,51 @@ L65D2	RTS
 checkMOVELEFT
 	LDY	boardY
 	LDA	tblBOARDALLL,Y
-	STA	$06
-	STA	$08
+	STA	ptrBOARD
+	STA	ptrBBACK
 	LDA	tblBOARDALLH,Y
-	STA	$06+1
+	STA	ptrBOARD+1
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
-	LDX	$02
+	STA	ptrBBACK+1
+
+	LDX	heroSTEPX
 	CPX	#$03
 	BCS	L6600
-	LDY	boardX
+	LDY	boardX	; already at column 0
 	BEQ	L65FF
-	DEY
-	LDA	($06),Y
-	CMP	#$02
+	DEY		; what do we have to the left?
+	LDA	(ptrBOARD),Y
+	CMP	#sprWALLI
 	BEQ	L65FF
-	CMP	#$01
+	CMP	#sprWALL
 	BEQ	L65FF
-	CMP	#$05
+	CMP	#sprTRAP
 	BNE	L6600
-L65FF	RTS
+L65FF	RTS		; we cannot move
 
-L6600	JSR	L6B85
+L6600	JSR	calcSPRITEXY
 	JSR	drawSPRITEXY
 	LDA	#$FF
-	STA	$05
+	STA	fgLEFTRIGHT
 	JSR	L6C26
-	DEC	$02
+	DEC	heroSTEPX
 	BPL	L662A
 	LDY	boardX
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#sprWALL
 	BNE	L661B
 	LDA	#sprEMPTY
-L661B	STA	($06),Y
+L661B	STA	(ptrBOARD),Y
 	DEC	boardX
 	DEY
 	LDA	#sprHERO
-	STA	($06),Y
+	STA	(ptrBOARD),Y
 	LDA	#$04
-	STA	$02
+	STA	heroSTEPX
 	BNE	L662D
-L662A	JSR	L6B9D
+L662A	JSR	checkCHEST
 L662D	LDY	boardX	; define sprites
-	LDA	($08),Y	; if we are on a bar
+	LDA	(ptrBBACK),Y	; if we are on a bar
 	CMP	#sprBAR
 	BEQ	L663B
 	LDA	#$00
@@ -980,20 +1024,20 @@ L663F	JSR	L6BF4
 checkMOVERIGHT
 	LDY	boardY
 	LDA	tblBOARDALLL,Y
-	STA	$06
-	STA	$08
+	STA	ptrBOARD
+	STA	ptrBBACK
 	LDA	tblBOARDALLH,Y
-	STA	$06+1
+	STA	ptrBOARD+1
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
-	LDX	$02
+	STA	ptrBBACK+1
+	LDX	heroSTEPX
 	CPX	#$02
 	BCC	L6674
 	LDY	boardX
 	CPY	#lvlWIDTH-1
 	BEQ	L6673
 	INY
-	LDA	($06),Y
+	LDA	(ptrBOARD),Y
 	CMP	#sprWALLI
 	BEQ	L6673
 	CMP	#sprWALL
@@ -1002,31 +1046,31 @@ checkMOVERIGHT
 	BNE	L6674
 L6673	RTS
 
-L6674	JSR	L6B85
+L6674	JSR	calcSPRITEXY
 	JSR	drawSPRITEXY
 	LDA	#$01
-	STA	$05
+	STA	fgLEFTRIGHT
 	JSR	L6C26
-	INC	$02
-	LDA	$02
+	INC	heroSTEPX
+	LDA	heroSTEPX
 	CMP	#$05
 	BCC	L66A2
 	LDY	boardX
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#sprWALL
 	BNE	L6693
 	LDA	#sprEMPTY
-L6693	STA	($06),Y
+L6693	STA	(ptrBOARD),Y
 	INC	boardX
 	INY
 	LDA	#sprHERO
-	STA	($06),Y
+	STA	(ptrBOARD),Y
 	LDA	#$00
-	STA	$02
+	STA	heroSTEPX
 	BEQ	L66A5
-L66A2	JSR	L6B9D
+L66A2	JSR	checkCHEST
 L66A5	LDY	boardX
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#sprBAR
 	BEQ	L66B3
 	LDA	#$08
@@ -1044,77 +1088,77 @@ L66B7	JSR	L6BF4
 checkMOVEUP
 	LDY	boardY
 	LDA	tblBOARDALLL,Y
-	STA	$08
+	STA	ptrBBACK
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	LDY	boardX
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#sprLADDER
 	BEQ	L66ED
-	LDY	$03
+	LDY	heroSTEPY
 	CPY	#$03
 	BCC	L66EB
 	LDY	boardY
 	LDA	tblBOARDALLL+1,Y
-	STA	$08
+	STA	ptrBBACK
 	LDA	tblBOARDBACKH+1,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	LDY	boardX
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#sprLADDER
 	BEQ	L6711
 L66EB	SEC
 	RTS
 
-L66ED	LDY	$03
+L66ED	LDY	heroSTEPY
 	CPY	#$03
 	BCS	L6711
 	LDY	boardY
 	BEQ	L66EB
 	LDA	tblBOARDALLL-1,Y
-	STA	$06
+	STA	ptrBOARD
 	LDA	tblBOARDALLH-1,Y
-	STA	$06+1
+	STA	ptrBOARD+1
 	LDY	boardX
-	LDA	($06),Y
+	LDA	(ptrBOARD),Y
 	CMP	#sprWALL
 	BEQ	L66EB
 	CMP	#sprWALLI
 	BEQ	L66EB
 	CMP	#sprTRAP
 	BEQ	L66EB
-L6711	JSR	L6B85
+L6711	JSR	calcSPRITEXY
 	JSR	drawSPRITEXY
 	LDY	boardY
 	LDA	tblBOARDALLL,Y
-	STA	$06
-	STA	$08
+	STA	ptrBOARD
+	STA	ptrBBACK
 	LDA	tblBOARDALLH,Y
-	STA	$06+1
+	STA	ptrBOARD+1
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	JSR	L6C13
-	DEC	$03
+	DEC	heroSTEPY
 	BPL	L6757
 	LDY	boardX
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#sprWALL
 	BNE	L673B
 	LDA	#$00
-L673B	STA	($06),Y
+L673B	STA	(ptrBOARD),Y
 	DEC	boardY
 	LDY	boardY
 	LDA	tblBOARDALLL,Y
-	STA	$06
+	STA	ptrBOARD
 	LDA	tblBOARDALLH,Y
-	STA	$06+1
+	STA	ptrBOARD+1
 	LDY	boardX
 	LDA	#sprHERO
-	STA	($06),Y
+	STA	(ptrBOARD),Y
 	LDA	#$04
-	STA	$03
+	STA	heroSTEPY
 	BNE	L675A
-L6757	JSR	L6B9D
+L6757	JSR	checkCHEST
 L675A	LDA	#$10
 	LDX	#$11
 	JSR	L6BF4
@@ -1127,18 +1171,18 @@ L675A	LDA	#$10
 *-----------------------------------
 
 checkMOVEDOWN
-	LDY	$03
+	LDY	heroSTEPY
 	CPY	#$02
 	BCC	L678A
 	LDY	boardY
 	CPY	#lvlHEIGHT-1
 	BCS	L6788
 	LDA	tblBOARDALLL+1,Y
-	STA	$06
+	STA	ptrBOARD
 	LDA	tblBOARDALLH+1,Y
-	STA	$06+1
+	STA	ptrBOARD+1
 	LDY	boardX
-	LDA	($06),Y
+	LDA	(ptrBOARD),Y
 	CMP	#sprWALLI
 	BEQ	L6788
 	CMP	#sprWALL
@@ -1146,38 +1190,38 @@ checkMOVEDOWN
 L6788	SEC
 	RTS
 
-L678A	JSR	L6B85
+L678A	JSR	calcSPRITEXY
 	JSR	drawSPRITEXY
 	LDY	boardY
 	LDA	tblBOARDALLL,Y
-	STA	$06
-	STA	$08
+	STA	ptrBOARD
+	STA	ptrBBACK
 	LDA	tblBOARDALLH,Y
-	STA	$06+1
+	STA	ptrBOARD+1
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	JSR	L6C13
-	INC	$03
-	LDA	$03
+	INC	heroSTEPY
+	LDA	heroSTEPY
 	CMP	#$05
 	BCC	L67D5
 	LDY	boardX
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#sprWALL
 	BNE	L67B8
 	LDA	#$00
-L67B8	STA	($06),Y
+L67B8	STA	(ptrBOARD),Y
 	INC	boardY
 	LDY	boardY
 	LDA	tblBOARDALLL,Y
-	STA	$06
+	STA	ptrBOARD
 	LDA	tblBOARDALLH,Y
-	STA	$06+1
+	STA	ptrBOARD+1
 	LDY	boardX
 	LDA	#sprHERO
-	STA	($06),Y
+	STA	(ptrBOARD),Y
 	LDA	#$00
-	STA	$03
+	STA	heroSTEPY
 	JMP	L675A
 L67D5	JMP	L6757
 
@@ -1202,17 +1246,17 @@ L67E7	LDY	boardY	; are we on last line?
 	LDY	boardX	; are we on first column?
 	BEQ	L67D8
 	DEY
-	LDA	($06),Y	; what do we have on our left?
+	LDA	(ptrBOARD),Y	; what do we have on our left?
 	CMP	#sprWALL	; a wall?
 	BNE	L67D8
 	LDY	boardY	; yes
 	JSR	L884B
 	LDY	boardX
 	DEY
-	LDA	($06),Y
+	LDA	(ptrBOARD),Y
 	CMP	#sprEMPTY
 	BNE	L686E
-	JSR	L6B85
+	JSR	calcSPRITEXY
 	JSR	drawSPRITEXY
 	JSR	L6C13
 	JSR	L6C26
@@ -1225,7 +1269,7 @@ L67E7	LDY	boardY	; are we on last line?
 	CPX	#$06
 	BCS	L682B
 	LDA	#$06
-L682B	STA	$04
+L682B	STA	heroINDEX
 	JSR	L6C02
 	LDX	$A0
 	CPX	#$0C
@@ -1308,17 +1352,17 @@ L68AD	LDY	boardY	; are we on last line?
 	CPY	#lvlWIDTH-1
 	BCS	L689E
 	INY
-	LDA	($06),Y
+	LDA	(ptrBOARD),Y
 	CMP	#sprWALL	; do we have a wall?
 	BNE	L689E
 	LDY	boardY
 	JSR	L884B
 	LDY	boardX
 	INY
-	LDA	($06),Y
+	LDA	(ptrBOARD),Y
 	CMP	#sprEMPTY
 	BNE	L6936
-	JSR	L6B85
+	JSR	calcSPRITEXY
 	JSR	drawSPRITEXY
 	JSR	L6C13
 	JSR	L6C26
@@ -1331,7 +1375,7 @@ L68AD	LDY	boardY	; are we on last line?
 	CPX	#$12
 	BCS	L68F3
 	LDA	#$0E
-L68F3	STA	$04
+L68F3	STA	heroINDEX
 	JSR	L6C02
 	LDX	$A0
 	CPX	#$18
@@ -1397,86 +1441,91 @@ L6962	LDX	boardX
 
 * Encha”nement des sprites
 
-L6968	DB	$0B	; court ˆ gauche
-	DB	$0C
-	DB	$0D
-	DB	$18	; barre ˆ gauche
-	DB	$19
-	DB	$1A
-	DB	$0F	; creuse ˆ gauche
-	DB	$13	; tombe dans un trou ˆ gauche
-	DB	$09	; court ˆ droite
-	DB	$10	
-	DB	$11
-	DB	$15	; barre ˆ droite
-	DB	$16	
-	DB	$17
-	DB	$25	; creuse ˆ droite
-	DB	$14	; tombe dans un trou ˆ droite
-	DB	$0E	; monte Žchelle
-L6979	DB	$12
-L697A	DB	$1B
-	DB	$1B
-	DB	$1C
-	DB	$1C
-	DB	$1D
-	DB	$1D
-	DB	$1E
-	DB	$1E
-	DB	$00
-	DB	$00
-	DB	$00
-	DB	$00
-L6986	DB	$26
-	DB	$26
-	DB	$27
-	DB	$27
-	DB	$1D
-	DB	$1D
-	DB	$1E
-	DB	$1E
-	DB	$00
-	DB	$00
-	DB	$00
-	DB	$00
-L6992	DB	$1F	; dig left sprites
-	DB	$1F
-	DB	$20
-	DB	$20
-	DB	$21
-	DB	$21
-	DB	$22
-	DB	$22
-	DB	$23
-	DB	$23
-	DB	$24
-	DB	$24
-L699E	DB	$20
-L699F	DB	$20
-	DB	$20
-	DB	$20
-	DB	$20
-	DB	$20
-	DB	$20
-	DB	$20
-	DB	$24
-	DB	$24
-	DB	$24
-	DB	$24
-	DB	$24
-L69AB	DB	$04
-	DB	$04
-	DB	$04
-	DB	$04
-	DB	$04
-	DB	$04
-	DB	$04
-	DB	$04
-	DB	$03
-	DB	$03
-	DB	$02
-	DB	$02
-	DB	$01
+L6968
+	DB	$0B	;  0 court ˆ gauche
+	DB	$0C	;  1 
+	DB	$0D	;  2 
+	DB	$18	;  3 barre ˆ gauche
+	DB	$19	;  4 
+	DB	$1A	;  5 
+	DB	$0F	;  6 creuse ˆ gauche
+	DB	$13	;  7 tombe dans un trou ˆ gauche
+	DB	$09	;  8 court ˆ droite
+	DB	$10	;  9 LR court vers la droite step 1
+	DB	$11	;  A LR court vers la droite step 2
+	DB	$15	;  B LR est sur la barre vers la droite step 1
+	DB	$16	;  C LR est sur la barre vers la droite step 2
+	DB	$17	;  D LR est sur la barre vers la droite step 3
+	DB	$25	;  E creuse ˆ droite
+	DB	$14	;  F tombe dans un trou ˆ droite
+	DB	$0E	; 10 monte Žchelle step 1
+L6979	DB	$12	; 11 monte Žchelle step 2
+L697A	DB	$1B	; 12 creuse 1
+	DB	$1B	; 13 creuse 1
+	DB	$1C	; 14 creuse 2
+	DB	$1C	; 15 creuse 2
+	DB	$1D	; 16 creuse 3
+	DB	$1D	; 17 creuse 3
+	DB	$1E	; 18 creuse 4
+	DB	$1E	; 19 creuse 4
+	DB	$00	; 1A 
+	DB	$00	; 1B 
+	DB	$00	; 1C 
+	DB	$00	; 1D 
+L6986	DB	$26	; 1E creuse droite step 1
+	DB	$26	; 1F creuse droite step 1
+	DB	$27	; 20 creuse droite step 2
+	DB	$27	; 21 creuse droite step 2
+	DB	$1D	; 22 creuse droite step 3
+	DB	$1D	; 23 creuse droite step 3
+	DB	$1E	; 24 creuse droite step 4
+	DB	$1E	; 25 creuse droite step 4
+	DB	$00	; 26 
+	DB	$00	; 27 
+	DB	$00	; 28 
+	DB	$00	; 29 
+L6992	DB	$1F	; 2A dig left sprites
+	DB	$1F	; 2B 
+	DB	$20	; 2C 
+	DB	$20	; 2D 
+	DB	$21	; 2E 
+	DB	$21	; 2F 
+	DB	$22	; 
+	DB	$22	; 
+	DB	$23	; 
+	DB	$23	; 
+	DB	$24	; 
+	DB	$24	; 
+L699E	DB	$20	; 
+L699F	DB	$20	; 
+	DB	$20	; 
+	DB	$20	; 
+	DB	$20	; 
+	DB	$20	; 
+	DB	$20	; 
+	DB	$20	; 
+	DB	$24	; 
+	DB	$24	; 
+	DB	$24	; 
+	DB	$24	; 
+	DB	$24	; 
+L69AB	DB	$04	; 
+	DB	$04	; 
+	DB	$04	; 
+	DB	$04	; 
+	DB	$04	; 
+	DB	$04	; 
+	DB	$04	; 
+	DB	$04	; 
+	DB	$03	; 
+	DB	$03	; 
+	DB	$02	; 
+	DB	$02	; 
+	DB	$01	; 
+
+*-----------------------------------
+* DEMO MODE ENGINE ENTRY POINT
+*-----------------------------------
 
 L69B8	LDA	KBD
 	BMI	L69CD
@@ -1493,39 +1542,39 @@ L69CD	LSR	fgKEYBTN0
 	STA	theMEN	; one man
 	RTS
 
-L69D6	LDA	$AB	; are we currently handling a movement?
+L69D6	LDA	demoREPEAT	; are we currently handling a movement?
 	BNE	L69F2	; yes
 	LDY	#$00	; no, get values
-	LDA	($A8),Y	; the keys
-	STA	$AA
+	LDA	(ptrDEMO),Y	; the keys
+	STA	demoKEY
 	INY
-	LDA	($A8),Y
-	STA	$AB	; the repeat
-	LDA	$A8	; next entry
+	LDA	(ptrDEMO),Y
+	STA	demoREPEAT	; the repeat
+	LDA	ptrDEMO	; next entry
 	CLC
 	ADC	#$02
-	STA	$A8
-	LDA	$A8+1
+	STA	ptrDEMO
+	LDA	ptrDEMO+1
 	ADC	#$00
-	STA	$A8+1
-L69F2	LDA	$AA	; first entry is the fisrt key
+	STA	ptrDEMO+1
+L69F2	LDA	demoKEY	; first entry is the fisrt key
 	AND	#$0F
 	TAX
-	LDA	L6A0B,X
+	LDA	tblDEMO2KEY,X
 	STA	$9E
-	LDA	$AA
+	LDA	demoKEY
 	LSR
 	LSR
 	LSR
 	LSR
 	TAX
-	LDA	L6A0B,X
+	LDA	tblDEMO2KEY,X
 	STA	$9F	; second key
-	DEC	$AB
+	DEC	demoREPEAT
 	RTS
 
 *                        0123456
-L6A0B	ASC	"IJKLOU "
+tblDEMO2KEY	ASC	"IJKLOU "
 
 L6A12	LDA	fgDEMO
 	CMP	#$01
@@ -1771,95 +1820,129 @@ joyXMAX	DB	ctrJOY	; x-high
 joyYMIN	DB	minJOY	; y-low
 joyYMAX	DB	ctrJOY	; y-high
 
+*-----------------------------------
+* CALC SPRITE X/Y
+*-----------------------------------
 
-L6B85	LDX	boardX
-	LDY	$02
-	JSR	getNEWXY
-	STX	theA
-	LDY	boardY
-	LDX	$03
-	JSR	getXNEWY
-	LDX	$04
+calcSPRITEXY
+	LDX	boardX	; calc next HGR X position
+	LDY	heroSTEPX
+	JSR	calcHGRX
+	STX	theA	; save it
+
+	LDY	boardY	; calc next HGR Y position
+	LDX	heroSTEPY
+	JSR	calcHGRY	; we keep it in Y
+
+	LDX	heroINDEX	; get sprite index
 	LDA	L6968,X
 	LDX	theA
 	RTS
 
-L6B9D	LDA	$02
+*-----------------------------------
+* CHECK CHEST
+*-----------------------------------
+* Check if we are on a chest
+* If so, add 250 to the score
+
+checkCHEST	LDA	heroSTEPX	; is sprite still in X
 	CMP	#$02
 	BNE	L6BF3
-	LDA	$03
+	LDA	heroSTEPY	; is sprite still in Y
 	CMP	#$02
 	BNE	L6BF3
-	LDY	boardY
+
+	LDY	boardY	; yes
 	LDA	tblBOARDALLL,Y
-	STA	$08
+	STA	ptrBBACK
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
-	LDY	boardX
-	LDA	($08),Y
+	STA	ptrBBACK+1
+
+	LDY	boardX	; are we on a chest?
+	LDA	(ptrBBACK),Y
 	CMP	#sprCHEST
 	BNE	L6BF3
-	LSR	$94
-	DEC	nbCHEST
-	LDY	boardY
+
+	LSR	fgCHEST	; collision avec un coffre
+	DEC	nbCHEST	; chest--
+
+	LDY	boardY	; remove it from background
 	STY	theY
 	LDY	boardX
 	STY	theX
 	LDA	#sprEMPTY
-	STA	($08),Y
+	STA	(ptrBBACK),Y
 	JSR	coutHGR2
-	LDY	theY
+
+	LDY	theY	; draw it on screen
 	LDX	theX
 	JSR	getXY
-	LDA	#$07
+	LDA	#sprCHEST
 	JSR	drawSPRITEXY
-	LDY	#$02
+	LDY	#$02	; add 250 to score
 	LDA	#$50
 	JSR	printSCORE
-	JSR	prepareMELODY
+	JSR	prepareMELODY	; and beep it
 	HEX	07450655054404540343025300
 L6BF3	RTS
 
-L6BF4	INC	$04
-	CMP	$04
-	BCC	L6BFD
-L6BFA	STA	$04
-	RTS
+*-----------------------------------
+* 
+*-----------------------------------
 
-L6BFD	CPX	$04
+L6BF4	INC	heroINDEX
+	CMP	heroINDEX
+	BCC	L6BFD
+L6BFA	STA	heroINDEX
+	RTS
+L6BFD	CPX	heroINDEX
 	BCC	L6BFA
 	RTS
 
-L6C02	JSR	L6B85
+*-----------------------------------
+* 
+*-----------------------------------
+
+L6C02	JSR	calcSPRITEXY
 	JSR	drawSPRXYCOLLISION
-	LDA	fgCOLLISION
-	BEQ	L6C12
-	LDA	$94
-	BEQ	L6C12
-	LSR	fgPLAY
+	LDA	fgCOLLISION	; les sprites sont-ils entrŽs en collision ?
+	BEQ	L6C12	; non
+	LDA	fgCHEST	; en collision avec un coffre ?
+	BEQ	L6C12	; oui, on ne perd pas
+	LSR	fgPLAY	; non, perdu
 L6C12	RTS
 
-L6C13	LDA	$02
+*-----------------------------------
+* 
+*-----------------------------------
+
+L6C13	LDA	heroSTEPX
 	CMP	#$02
 	BCC	L6C20
 	BEQ	L6C25
-	DEC	$02
-	JMP	L6B9D
-
-L6C20	INC	$02
-	JMP	L6B9D
+	DEC	heroSTEPX
+	JMP	checkCHEST
+L6C20	INC	heroSTEPX
+	JMP	checkCHEST
 L6C25	RTS
 
-L6C26	LDA	$03
+*-----------------------------------
+* 
+*-----------------------------------
+
+L6C26	LDA	heroSTEPY
 	CMP	#$02
 	BCC	L6C33
 	BEQ	L6C38
-	DEC	$03
-	JMP	L6B9D
-
-L6C33	INC	$03
-	JMP	L6B9D
+	DEC	heroSTEPY
+	JMP	checkCHEST
+L6C33	INC	heroSTEPY
+	JMP	checkCHEST
 L6C38	RTS
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 L6C39	LDA	#$00
 	STA	$9C
@@ -1868,12 +1951,12 @@ L6C39	LDA	#$00
 	STX	theX
 	STY	theY
 	LDA	tblBOARDALLL,Y
-	STA	$06
+	STA	ptrBOARD
 	LDA	tblBOARDALLH,Y
-	STA	$06+1
+	STA	ptrBOARD+1
 	LDA	#sprEMPTY
 	LDY	theX
-	STA	($06),Y
+	STA	(ptrBOARD),Y
 	JSR	coutHGR1
 	LDA	#sprEMPTY
 	JSR	coutHGR2
@@ -1896,6 +1979,10 @@ L6C67	INX
 	SEC
 L6C81	RTS
 
+*-----------------------------------
+* 
+*-----------------------------------
+
 L6C82	LDX	nbFOE
 	BEQ	L6CA6
 	INC	$64
@@ -1914,6 +2001,10 @@ L6C97	LSR	$63
 L6CA2	LDA	$63
 	BNE	L6C97
 L6CA6	RTS
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 L6CA7	HEX	000000
 	HEX	000101
@@ -1937,11 +2028,11 @@ L6CDB	INC	idxFOE
 	LDX	#$01
 	STX	idxFOE
 L6CE7	JSR	L75CE
-	LDA	$16
+	LDA	foeC70
 	BMI	L6D08
 	BEQ	L6D08
-	DEC	$16
-	LDY	$16
+	DEC	foeC70
+	LDY	foeC70
 	CPY	#$0D
 	BCS	L6CFB
 	JMP	L6E65
@@ -1952,42 +2043,42 @@ L6CFB	LDX	idxFOE
 	JMP	L75A8
 L6D05	JMP	L6DB7
 
-L6D08	LDY	$13
+L6D08	LDY	foeY
 	LDA	tblBOARDALLL,Y
-	STA	$08
+	STA	ptrBBACK
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
-	LDY	$12
-	LDA	($08),Y
+	STA	ptrBBACK+1
+	LDY	foeX
+	LDA	(ptrBBACK),Y
 	CMP	#sprLADDER
 	BEQ	L6D61
 	CMP	#sprBAR
 	BNE	L6D26
-	LDA	$18
+	LDA	foeC80
 	CMP	#$02
 	BEQ	L6D61
-L6D26	LDA	$18
+L6D26	LDA	foeC80
 	CMP	#$02
 	BCC	L6D64
-	LDY	$13
+	LDY	foeY
 	CPY	#$0F
 	BEQ	L6D61
 	LDA	tblBOARDALLL+1,Y
-	STA	$06
-	STA	$08
+	STA	ptrBOARD
+	STA	ptrBBACK
 	LDA	tblBOARDBACKH+1,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	LDA	tblBOARDALLH+1,Y
-	STA	$06+1
-	LDY	$12
-	LDA	($06),Y
+	STA	ptrBOARD+1
+	LDY	foeX
+	LDA	(ptrBOARD),Y
 	CMP	#sprEMPTY
 	BEQ	L6D64
 	CMP	#sprHERO
 	BEQ	L6D64
 	CMP	#sprFOE
 	BEQ	L6D61
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#sprWALL
 	BEQ	L6D61
 	CMP	#sprWALLI
@@ -2000,32 +2091,32 @@ L6D64	JSR	L74DF
 	JSR	drawSPRITEXY
 	JSR	L7582
 	LDA	#$06
-	LDY	$15
+	LDY	foeC90
 	BMI	L6D75
 	LDA	#$0D
-L6D75	STA	$14
-	INC	$18
-	LDA	$18
+L6D75	STA	foeC88
+	INC	foeC80
+	LDA	foeC80
 	CMP	#$05
 	BCS	L6DC0
-	LDA	$18
+	LDA	foeC80
 	CMP	#$02
 	BNE	L6DB7
 	JSR	L74F7
-	LDY	$13
+	LDY	foeY
 	LDA	tblBOARDALLL,Y
-	STA	$08
+	STA	ptrBBACK
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
-	LDY	$12
-	LDA	($08),Y
+	STA	ptrBBACK+1
+	LDY	foeX
+	LDA	(ptrBBACK),Y
 	CMP	#$01
 	BNE	L6DB7
-	LDA	$16
+	LDA	foeC70
 	BPL	L6DA2
 	DEC	nbCHEST
 L6DA2	LDA	$5F
-	STA	$16
+	STA	foeC70
 	LDY	#$00
 	LDA	#$75
 	JSR	printSCORE
@@ -2036,77 +2127,77 @@ L6DB7	JSR	L74DF
 	JMP	L75A8
 
 L6DC0	LDA	#$00
-	STA	$18
-	LDY	$13
+	STA	foeC80
+	LDY	foeY
 	LDA	tblBOARDALLL,Y
-	STA	$06
-	STA	$08
+	STA	ptrBOARD
+	STA	ptrBBACK
 	LDA	tblBOARDALLH,Y
-	STA	$06+1
+	STA	ptrBOARD+1
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
-	LDY	$12
-	LDA	($08),Y
+	STA	ptrBBACK+1
+	LDY	foeX
+	LDA	(ptrBBACK),Y
 	CMP	#$01
 	BNE	L6DE1
 	LDA	#$00
-L6DE1	STA	($06),Y
-	INC	$13
-	LDY	$13
+L6DE1	STA	(ptrBOARD),Y
+	INC	foeY
+	LDY	foeY
 	LDA	tblBOARDALLL,Y
-	STA	$06
-	STA	$08
+	STA	ptrBOARD
+	STA	ptrBBACK
 	LDA	tblBOARDALLH,Y
-	STA	$06+1
+	STA	ptrBOARD+1
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
-	LDY	$12
-	LDA	($06),Y
+	STA	ptrBBACK+1
+	LDY	foeX
+	LDA	(ptrBOARD),Y
 	CMP	#sprHERO
 	BNE	L6E02
 	LSR	fgPLAY
-L6E02	LDA	($08),Y
+L6E02	LDA	(ptrBBACK),Y
 	CMP	#sprWALL
 	BNE	L6E58
-	LDA	$16
+	LDA	foeC70
 	BPL	L6E58
-	LDY	$13
+	LDY	foeY
 	DEY
 	STY	theY
 	LDA	tblBOARDALLL,Y
-	STA	$06
-	STA	$08
+	STA	ptrBOARD
+	STA	ptrBBACK
 	LDA	tblBOARDALLH,Y
-	STA	$06+1
+	STA	ptrBOARD+1
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
-	LDY	$12
+	STA	ptrBBACK+1
+	LDY	foeX
 	STY	theX
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#$00
 	BEQ	L6E31
 	DEC	nbCHEST
 	JMP	L6E46
 
 L6E31	LDA	#$07
-	STA	($06),Y
-	STA	($08),Y
+	STA	(ptrBOARD),Y
+	STA	(ptrBBACK),Y
 	JSR	coutHGR2
 	LDY	theY
 	LDX	theX
 	JSR	getXY
 	LDA	#$07
 	JSR	drawSPRXYCOLLISION
-L6E46	LDY	$13
+L6E46	LDY	foeY
 	LDA	tblBOARDALLL,Y
-	STA	$06
+	STA	ptrBOARD
 	LDA	tblBOARDALLH,Y
-	STA	$06+1
+	STA	ptrBOARD+1
 	LDA	#$00
-	STA	$16
-	LDY	$12
+	STA	foeC70
+	LDY	foeX
 L6E58	LDA	#$08
-	STA	($06),Y
+	STA	(ptrBOARD),Y
 	JSR	L74DF
 	JSR	drawSPRXYCOLLISION
 	JMP	L75A8
@@ -2115,16 +2206,17 @@ L6E65	CPY	#$07
 	BCC	L6E85
 	JSR	L74DF
 	JSR	drawSPRITEXY
-	LDY	$16
+	LDY	foeC70
 	LDA	L6E76+2,Y
-	STA	$17
+	STA	foeC78
 L6E76	JSR	L74DF
 	JSR	drawSPRXYCOLLISION
 	JMP	L75A8
 
-L6E7F	HEX	020102030201
-L6E85	LDX	$12
-	LDY	$13
+L6E7F	HEX	020102030201	; TOTO
+
+L6E85	LDX	foeX
+	LDY	foeY
 	JSR	L70D8
 	ASL
 	TAY
@@ -2140,24 +2232,24 @@ L6E97	DA	L75A8-1
 	DA	L6EAC-1
 	DA	L6F39-1
 
-L6EA1	LDA	$16
+L6EA1	LDA	foeC70
 	BEQ	L6EA9
 	BMI	L6EA9
-	INC	$16
+	INC	foeC70
 L6EA9	JMP	L75A8
 
-L6EAC	LDY	$18
+L6EAC	LDY	foeC80
 	CPY	#$03
 	BCS	L6ED5
-	LDY	$13
+	LDY	foeY
 	BEQ	L6EA1
 	DEY
 	LDA	tblBOARDALLL,Y
-	STA	$06
+	STA	ptrBOARD
 	LDA	tblBOARDALLH,Y
-	STA	$06+1
-	LDY	$12
-	LDA	($06),Y
+	STA	ptrBOARD+1
+	LDY	foeX
+	LDA	(ptrBOARD),Y
 	CMP	#$01
 	BEQ	L6EA1
 	CMP	#$02
@@ -2169,38 +2261,38 @@ L6EAC	LDY	$18
 L6ED5	JSR	L74DF
 	JSR	drawSPRITEXY
 	JSR	L7582
-	LDY	$13
+	LDY	foeY
 	LDA	tblBOARDALLL,Y
-	STA	$06
-	STA	$08
+	STA	ptrBOARD
+	STA	ptrBBACK
 	LDA	tblBOARDALLH,Y
-	STA	$06+1
+	STA	ptrBOARD+1
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
-	DEC	$18
+	STA	ptrBBACK+1
+	DEC	foeC80
 	BPL	L6F26
 	JSR	L753E
-	LDY	$12
-	LDA	($08),Y
+	LDY	foeX
+	LDA	(ptrBBACK),Y
 	CMP	#$01
 	BNE	L6F02
 	LDA	#$00
-L6F02	STA	($06),Y
-	DEC	$13
-	LDY	$13
+L6F02	STA	(ptrBOARD),Y
+	DEC	foeY
+	LDY	foeY
 	LDA	tblBOARDALLL,Y
-	STA	$06
+	STA	ptrBOARD
 	LDA	tblBOARDALLH,Y
-	STA	$06+1
-	LDY	$12
-	LDA	($06),Y
+	STA	ptrBOARD+1
+	LDY	foeX
+	LDA	(ptrBOARD),Y
 	CMP	#sprHERO
 	BNE	L6F1C
 	LSR	fgPLAY
 L6F1C	LDA	#$08
-	STA	($06),Y
+	STA	(ptrBOARD),Y
 	LDA	#$04
-	STA	$18
+	STA	foeC80
 	BNE	L6F29
 L6F26	JSR	L74F7
 L6F29	LDA	#$0E
@@ -2210,19 +2302,19 @@ L6F29	LDA	#$0E
 	JSR	drawSPRXYCOLLISION
 	JMP	L75A8
 
-L6F39	LDY	$18
+L6F39	LDY	foeC80
 	CPY	#$02
 	BCC	L6F63
-	LDY	$13
+	LDY	foeY
 	CPY	#$0F
 	BCS	L6F60
 	INY
 	LDA	tblBOARDALLL,Y
-	STA	$06
+	STA	ptrBOARD
 	LDA	tblBOARDALLH,Y
-	STA	$06+1
-	LDY	$12
-	LDA	($06),Y
+	STA	ptrBOARD+1
+	LDY	foeX
+	LDA	(ptrBOARD),Y
 	CMP	#$02
 	BEQ	L6F60
 	CMP	#$08
@@ -2234,65 +2326,65 @@ L6F60	JMP	L75A8
 L6F63	JSR	L74DF
 	JSR	drawSPRITEXY
 	JSR	L7582
-	LDY	$13
+	LDY	foeY
 	LDA	tblBOARDALLL,Y
-	STA	$06
-	STA	$08
+	STA	ptrBOARD
+	STA	ptrBBACK
 	LDA	tblBOARDALLH,Y
-	STA	$06+1
+	STA	ptrBOARD+1
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
-	INC	$18
-	LDA	$18
+	STA	ptrBBACK+1
+	INC	foeC80
+	LDA	foeC80
 	CMP	#$05
 	BCC	L6FB9
 	JSR	L753E
-	LDY	$12
-	LDA	($08),Y
+	LDY	foeX
+	LDA	(ptrBBACK),Y
 	CMP	#$01
 	BNE	L6F94
 	LDA	#$00
-L6F94	STA	($06),Y
-	INC	$13
-	LDY	$13
+L6F94	STA	(ptrBOARD),Y
+	INC	foeY
+	LDY	foeY
 	LDA	tblBOARDALLL,Y
-	STA	$06
+	STA	ptrBOARD
 	LDA	tblBOARDALLH,Y
-	STA	$06+1
-	LDY	$12
-	LDA	($06),Y
+	STA	ptrBOARD+1
+	LDY	foeX
+	LDA	(ptrBOARD),Y
 	CMP	#sprHERO
 	BNE	L6FAE
 	LSR	fgPLAY
 L6FAE	LDA	#$08
-	STA	($06),Y
+	STA	(ptrBOARD),Y
 	LDA	#$00
-	STA	$18
+	STA	foeC80
 	JMP	L6F29
 L6FB9	JMP	L6F26
 
-L6FBC	LDY	$13
+L6FBC	LDY	foeY
 	LDA	tblBOARDALLL,Y
-	STA	$06
-	STA	$08
+	STA	ptrBOARD
+	STA	ptrBBACK
 	LDA	tblBOARDALLH,Y
-	STA	$06+1
+	STA	ptrBOARD+1
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
-	LDX	$17
+	STA	ptrBBACK+1
+	LDX	foeC78
 	CPX	#$03
 	BCS	L6FF1
-	LDY	$12
+	LDY	foeX
 	BEQ	L6FEE
 	DEY
-	LDA	($06),Y
+	LDA	(ptrBOARD),Y
 	CMP	#$08
 	BEQ	L6FEE
 	CMP	#$02
 	BEQ	L6FEE
 	CMP	#$01
 	BEQ	L6FEE
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#$05
 	BNE	L6FF1
 L6FEE	JMP	L75A8
@@ -2301,30 +2393,30 @@ L6FF1	JSR	L74DF
 	JSR	drawSPRITEXY
 	JSR	L7595
 	LDA	#$FF
-	STA	$15
-	DEC	$17
+	STA	foeC90
+	DEC	foeC78
 	BPL	L7026
 	JSR	L753E
-	LDY	$12
-	LDA	($08),Y
+	LDY	foeX
+	LDA	(ptrBBACK),Y
 	CMP	#$01
 	BNE	L700F
 	LDA	#$00
-L700F	STA	($06),Y
-	DEC	$12
+L700F	STA	(ptrBOARD),Y
+	DEC	foeX
 	DEY
-	LDA	($06),Y
+	LDA	(ptrBOARD),Y
 	CMP	#sprHERO
 	BNE	L701C
 	LSR	fgPLAY
 L701C	LDA	#$08
-	STA	($06),Y
+	STA	(ptrBOARD),Y
 	LDA	#$04
-	STA	$17
+	STA	foeC78
 	BNE	L7029
 L7026	JSR	L74F7
-L7029	LDY	$12
-	LDA	($08),Y
+L7029	LDY	foeX
+	LDA	(ptrBBACK),Y
 	CMP	#$04
 	BEQ	L7037
 	LDA	#$00
@@ -2337,29 +2429,29 @@ L703B	JSR	L7574
 	JSR	drawSPRXYCOLLISION
 	JMP	L75A8
 
-L7047	LDY	$13
+L7047	LDY	foeY
 	LDA	tblBOARDALLL,Y
-	STA	$06
-	STA	$08
+	STA	ptrBOARD
+	STA	ptrBBACK
 	LDA	tblBOARDALLH,Y
-	STA	$06+1
+	STA	ptrBOARD+1
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
-	LDX	$17
+	STA	ptrBBACK+1
+	LDX	foeC78
 	CPX	#$02
 	BCC	L707E
-	LDY	$12
+	LDY	foeX
 	CPY	#$1B
 	BEQ	L707B
 	INY
-	LDA	($06),Y
+	LDA	(ptrBOARD),Y
 	CMP	#$08
 	BEQ	L707B
 	CMP	#$02
 	BEQ	L707B
 	CMP	#$01
 	BEQ	L707B
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#$05
 	BNE	L707E
 L707B	JMP	L75A8
@@ -2368,32 +2460,32 @@ L707E	JSR	L74DF
 	JSR	drawSPRITEXY
 	JSR	L7595
 	LDA	#$01
-	STA	$15
-	INC	$17
-	LDA	$17
+	STA	foeC90
+	INC	foeC78
+	LDA	foeC78
 	CMP	#$05
 	BCC	L70B7
 	JSR	L753E
-	LDY	$12
-	LDA	($08),Y
+	LDY	foeX
+	LDA	(ptrBBACK),Y
 	CMP	#$01
 	BNE	L70A0
 	LDA	#$00
-L70A0	STA	($06),Y
-	INC	$12
+L70A0	STA	(ptrBOARD),Y
+	INC	foeX
 	INY
-	LDA	($06),Y
+	LDA	(ptrBOARD),Y
 	CMP	#sprHERO
 	BNE	L70AD
 	LSR	fgPLAY
 L70AD	LDA	#$08
-	STA	($06),Y
+	STA	(ptrBOARD),Y
 	LDA	#$00
-	STA	$17
+	STA	foeC78
 	BEQ	L70BA
 L70B7	JSR	L74F7
-L70BA	LDY	$12
-	LDA	($08),Y
+L70BA	LDY	foeX
+	LDA	(ptrBBACK),Y
 	CMP	#$04
 	BEQ	L70C8
 	LDA	#$07
@@ -2409,14 +2501,14 @@ L70CC	JSR	L7574
 L70D8	STX	$55
 	STY	$56
 	LDA	tblBOARDALLL,Y
-	STA	$08
+	STA	ptrBBACK
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	LDY	$55
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#$01
 	BNE	L70F7
-	LDA	$16
+	LDA	foeC70
 	BEQ	L70F7
 	BMI	L70F7
 	LDA	#$03
@@ -2434,11 +2526,11 @@ L7100	LDY	$55
 L7108	INC	$57
 	LDY	$56
 	LDA	tblBOARDALLL,Y
-	STA	$08
+	STA	ptrBBACK
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	LDY	$57
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#$03
 	BEQ	L713E
 	CMP	#$04
@@ -2447,11 +2539,11 @@ L7108	INC	$57
 	CPY	#$0F
 	BEQ	L713E
 	LDA	tblBOARDALLL+1,Y
-	STA	$08
+	STA	ptrBBACK
 	LDA	tblBOARDBACKH+1,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	LDY	$57
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#$00
 	BEQ	L7186
 	CMP	#$05
@@ -2465,11 +2557,11 @@ L713E	LDY	$57
 L7147	DEC	$57
 	LDY	$56
 	LDA	tblBOARDALLL,Y
-	STA	$08
+	STA	ptrBBACK
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	LDY	$57
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#$03
 	BEQ	L717D
 	CMP	#$04
@@ -2478,11 +2570,11 @@ L7147	DEC	$57
 	CPY	#$0F
 	BEQ	L717D
 	LDA	tblBOARDALLL+1,Y
-	STA	$08
+	STA	ptrBBACK
 	LDA	tblBOARDBACKH+1,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	LDY	$57
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#$00
 	BEQ	L7186
 	CMP	#$05
@@ -2514,11 +2606,11 @@ L71A2	LDY	$5A
 	CPY	#$0F
 	BEQ	L71DA
 	LDA	tblBOARDALLL+1,Y
-	STA	$08
+	STA	ptrBBACK
 	LDA	tblBOARDBACKH+1,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	LDY	$5A
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#$01
 	BEQ	L71DA
 	CMP	#$02
@@ -2536,11 +2628,11 @@ L71A2	LDY	$5A
 L71DA	LDY	$56
 	BEQ	L7206
 	LDA	tblBOARDALLL,Y
-	STA	$08
+	STA	ptrBBACK
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	LDY	$5A
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#$03
 	BNE	L7206
 	LDY	$56
@@ -2564,11 +2656,11 @@ L720C	LDY	$5B
 	CPY	#$0F
 	BEQ	L7244
 	LDA	tblBOARDALLL+1,Y
-	STA	$08
+	STA	ptrBBACK
 	LDA	tblBOARDBACKH+1,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	LDY	$5B
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#$01
 	BEQ	L7244
 	CMP	#$02
@@ -2586,11 +2678,11 @@ L720C	LDY	$5B
 L7244	LDY	$56
 	BEQ	L7270
 	LDA	tblBOARDALLL,Y
-	STA	$08
+	STA	ptrBBACK
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	LDY	$5B
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#$03
 	BNE	L7270
 	LDY	$56
@@ -2610,11 +2702,11 @@ L7275	LDY	$56
 	CPY	#$0F
 	BEQ	L72A7
 	LDA	tblBOARDALLL+1,Y
-	STA	$08
+	STA	ptrBBACK
 	LDA	tblBOARDBACKH+1,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	LDY	$55
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#$01
 	BEQ	L72A7
 	CMP	#$02
@@ -2632,11 +2724,11 @@ L7275	LDY	$56
 L72A7	LDY	$56
 	BEQ	L72D3
 	LDA	tblBOARDALLL,Y
-	STA	$08
+	STA	ptrBBACK
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	LDY	$55
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#$03
 	BNE	L72D3
 	LDX	$55
@@ -2654,15 +2746,15 @@ L72D3	RTS
 L72D4	STA	fgODDEVEN
 	CMP	boardY
 	BNE	L72EB
-	CPX	$12
+	CPX	foeX
 	BCC	L72E3
 	TXA
 	SEC
-	SBC	$12
+	SBC	foeX
 	RTS
 
 L72E3	STX	fgODDEVEN
-	LDA	$12
+	LDA	foeX
 	SEC
 	SBC	fgODDEVEN
 	RTS
@@ -2687,18 +2779,18 @@ L72FD	LDA	$5E
 L7300	STY	$5E
 	STX	$5D
 L7304	LDA	tblBOARDALLL,Y
-	STA	$08
+	STA	ptrBBACK
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	LDY	$5D
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#$03
 	BNE	L72FD
 	DEC	$5E
 	LDY	$5D
 	BEQ	L734A
 	DEY
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#$01
 	BEQ	L7340
 	CMP	#$02
@@ -2707,12 +2799,12 @@ L7304	LDA	tblBOARDALLL,Y
 	BEQ	L7340
 	LDY	$5E
 	LDA	tblBOARDALLL,Y
-	STA	$08
+	STA	ptrBBACK
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	LDY	$5D
 	DEY
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#$04
 	BNE	L734A
 L7340	LDY	$5E
@@ -2725,12 +2817,12 @@ L734A	LDY	$5D
 	BEQ	L738C
 	LDY	$5E
 	LDA	tblBOARDALLL+1,Y
-	STA	$08
+	STA	ptrBBACK
 	LDA	tblBOARDBACKH+1,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	LDY	$5D
 	INY
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#$01
 	BEQ	L7382
 	CMP	#$02
@@ -2739,12 +2831,12 @@ L734A	LDY	$5D
 	BEQ	L7382
 	LDY	$5E
 	LDA	tblBOARDALLL,Y
-	STA	$08
+	STA	ptrBBACK
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	LDY	$5D
 	INY
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#$04
 	BNE	L738C
 L7382	LDY	$5E
@@ -2769,38 +2861,38 @@ L739A	LDA	$5E
 L739D	STY	$5E
 	STX	$5D
 L73A1	LDA	tblBOARDALLL+1,Y
-	STA	$08
+	STA	ptrBBACK
 	LDA	tblBOARDBACKH+1,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	LDY	$5D
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#$01
 	BEQ	L739A
 	CMP	#$02
 	BEQ	L739A
 	LDY	$5E
 	LDA	tblBOARDALLL,Y
-	STA	$08
+	STA	ptrBBACK
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	LDY	$5D
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#$00
 	BEQ	L742D
 	CPY	#$00
 	BEQ	L73FB
 	DEY
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#$04
 	BEQ	L73F3
 	LDY	$5E
 	LDA	tblBOARDALLL+1,Y
-	STA	$08
+	STA	ptrBBACK
 	LDA	tblBOARDBACKH+1,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	LDY	$5D
 	DEY
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#$01
 	BEQ	L73F3
 	CMP	#$02
@@ -2815,17 +2907,17 @@ L73FB	LDY	$5D
 	CPY	#$1B
 	BCS	L742D
 	INY
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#$04
 	BEQ	L7425
 	LDY	$5E
 	LDA	tblBOARDALLL+1,Y
-	STA	$08
+	STA	ptrBBACK
 	LDA	tblBOARDBACKH+1,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	LDY	$5D
 	INY
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#$01
 	BEQ	L7425
 	CMP	#$03
@@ -2855,12 +2947,12 @@ L7444	LDA	$5A
 	BEQ	L7490
 	LDY	theYSCREEN
 	LDA	tblBOARDALLL,Y
-	STA	$06
+	STA	ptrBOARD
 	LDA	tblBOARDALLH,Y
-	STA	$06+1
+	STA	ptrBOARD+1
 	LDY	$5A
 	DEY
-	LDA	($06),Y
+	LDA	(ptrBOARD),Y
 	CMP	#$01
 	BEQ	L7490
 	CMP	#$02
@@ -2873,12 +2965,12 @@ L7444	LDA	$5A
 	CPY	#$0F
 	BEQ	L748A
 	LDA	tblBOARDALLL+1,Y
-	STA	$08
+	STA	ptrBBACK
 	LDA	tblBOARDBACKH+1,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	LDY	$5A
 	DEY
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#$01
 	BEQ	L748A
 	CMP	#$02
@@ -2893,12 +2985,12 @@ L7490	LDA	$5B
 	BEQ	L74DE
 	LDY	theYSCREEN
 	LDA	tblBOARDALLL,Y
-	STA	$06
+	STA	ptrBOARD
 	LDA	tblBOARDALLH,Y
-	STA	$06+1
+	STA	ptrBOARD+1
 	LDY	$5B
 	INY
-	LDA	($06),Y
+	LDA	(ptrBOARD),Y
 	CMP	#$01
 	BEQ	L74DE
 	CMP	#$02
@@ -2911,12 +3003,12 @@ L7490	LDA	$5B
 	CPY	#$0F
 	BEQ	L74D8
 	LDA	tblBOARDALLL+1,Y
-	STA	$08
+	STA	ptrBBACK
 	LDA	tblBOARDBACKH+1,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	LDY	$5B
 	INY
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#$01
 	BEQ	L74D8
 	CMP	#$02
@@ -2928,44 +3020,44 @@ L74D8	INC	$5B
 L74DC	INC	$5B
 L74DE	RTS
 
-L74DF	LDX	$12
-	LDY	$17
-	JSR	getNEWXY
+L74DF	LDX	foeX
+	LDY	foeC78
+	JSR	calcHGRX
 	STX	theA
-	LDY	$13
-	LDX	$18
-	JSR	getXNEWY
-	LDX	$14
+	LDY	foeY
+	LDX	foeC80
+	JSR	calcHGRY
+	LDX	foeC88
 	LDA	L6CCB,X
 	LDX	theA
 	RTS
 
-L74F7	LDA	$17
+L74F7	LDA	foeC78
 	CMP	#$02
 	BNE	L753D
-	LDA	$18
+	LDA	foeC80
 	CMP	#$02
 	BNE	L753D
-	LDY	$13
+	LDY	foeY
 	LDA	tblBOARDALLL,Y
-	STA	$08
+	STA	ptrBBACK
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
-	LDY	$12
-	LDA	($08),Y
+	STA	ptrBBACK+1
+	LDY	foeX
+	LDA	(ptrBBACK),Y
 	CMP	#$07
 	BNE	L753D
-	LDA	$16
+	LDA	foeC70
 	BMI	L753D
 	LDA	#$FF
 	SEC
 	SBC	$53
-	STA	$16
+	STA	foeC70
 	LDA	#$00
-	STA	($08),Y
-	LDY	$13
+	STA	(ptrBBACK),Y
+	LDY	foeY
 	STY	theY
-	LDY	$12
+	LDY	foeX
 	STY	theX
 	JSR	coutHGR2
 	LDY	theY
@@ -2975,23 +3067,23 @@ L74F7	LDA	$17
 	JMP	drawSPRITEXY
 L753D	RTS
 
-L753E	LDA	$16
+L753E	LDA	foeC70
 	BPL	L7573
-	INC	$16
+	INC	foeC70
 	BNE	L7573
-	LDY	$13
+	LDY	foeY
 	STY	theY
 	LDA	tblBOARDALLL,Y
-	STA	$08
+	STA	ptrBBACK
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
-	LDY	$12
+	STA	ptrBBACK+1
+	LDY	foeX
 	STY	theX
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	CMP	#$00
 	BNE	L7571
 	LDA	#$07
-	STA	($08),Y
+	STA	(ptrBBACK),Y
 	JSR	coutHGR2
 	LDY	theY
 	LDX	theX
@@ -2999,73 +3091,73 @@ L753E	LDA	$16
 	LDA	#$07
 	JMP	drawSPRXYCOLLISION
 
-L7571	DEC	$16
+L7571	DEC	foeC70
 L7573	RTS
 
-L7574	INC	$14
-	CMP	$14
+L7574	INC	foeC88
+	CMP	foeC88
 	BCC	L757D
-L757A	STA	$14
+L757A	STA	foeC88
 	RTS
 
-L757D	CPX	$14
+L757D	CPX	foeC88
 	BCC	L757A
 	RTS
 
-L7582	LDA	$17
+L7582	LDA	foeC78
 	CMP	#$02
 	BCC	L758F
 	BEQ	L7594
-	DEC	$17
+	DEC	foeC78
 	JMP	L74F7
 
-L758F	INC	$17
+L758F	INC	foeC78
 	JMP	L74F7
 L7594	RTS
 
-L7595	LDA	$18
+L7595	LDA	foeC80
 	CMP	#$02
 	BCC	L75A2
 	BEQ	L75A7
-	DEC	$18
+	DEC	foeC80
 	JMP	L74F7
 
-L75A2	INC	$18
+L75A2	INC	foeC80
 	JMP	L74F7
 L75A7	RTS
 
 L75A8	LDX	idxFOE
-	LDA	$12
+	LDA	foeX
 	STA	tblFOEX,X
-	LDA	$13
+	LDA	foeY
 	STA	tblFOEY,X
-	LDA	$17
+	LDA	foeC78
 	STA	L0C78,X
-	LDA	$18
+	LDA	foeC80
 	STA	L0C80,X
-	LDA	$16
+	LDA	foeC70
 	STA	L0C70,X
-	LDA	$15
+	LDA	foeC90
 	STA	L0C90,X
-	LDA	$14
+	LDA	foeC88
 	STA	L0C88,X
 	RTS
 
 L75CE	LDX	idxFOE
 	LDA	tblFOEX,X
-	STA	$12
+	STA	foeX
 	LDA	tblFOEY,X
-	STA	$13
+	STA	foeY
 	LDA	L0C78,X
-	STA	$17
+	STA	foeC78
 	LDA	L0C80,X
-	STA	$18
+	STA	foeC80
 	LDA	L0C88,X
-	STA	$14
+	STA	foeC88
 	LDA	L0C90,X
-	STA	$15
+	STA	foeC90
 	LDA	L0C70,X
-	STA	$16
+	STA	foeC70
 	RTS
 
 L75F4	JSR	L7716
@@ -3107,15 +3199,15 @@ L7641	LDX	tempINDEX
 	LDY	tblHOLEY,X
 	STY	theY
 	LDA	tblBOARDALLL,Y
-	STA	$06
-	STA	$08
+	STA	ptrBOARD
+	STA	ptrBBACK
 	LDA	tblBOARDALLH,Y
-	STA	$06+1
+	STA	ptrBOARD+1
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	LDY	tblHOLEX,X
 	STY	theX
-	LDA	($06),Y
+	LDA	(ptrBOARD),Y
 	CMP	#sprEMPTY
 	BNE	L7667
 	JMP	L7701
@@ -3131,8 +3223,8 @@ L766D	CMP	#sprFOE
 L7677	JMP	L7701
 
 L767A	LDA	#sprWALL
-	STA	($06),Y
-	STA	($08),Y
+	STA	(ptrBOARD),Y
+	STA	(ptrBBACK),Y
 	JSR	coutHGR1
 	LDA	#sprWALL
 	JSR	coutHGR2
@@ -3157,11 +3249,11 @@ L769F	LDA	#$7F
 	STY	theY
 L76B5	LDY	theY
 	LDA	tblBOARDALLL,Y
-	STA	$08
+	STA	ptrBBACK
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	LDY	$53
-L76C3	LDA	($08),Y
+L76C3	LDA	(ptrBBACK),Y
 	CMP	#$00
 	BEQ	L76D9
 	INC	$53
@@ -3191,7 +3283,7 @@ L76D9	TYA
 L76FE	DEX
 	BNE	L768A
 L7701	LDA	#sprWALL
-	STA	($06),Y
+	STA	(ptrBOARD),Y
 	JSR	coutHGR1
 	LDA	#$01
 	JSR	coutHGR2
@@ -3227,7 +3319,7 @@ L771D	LDA	L0C98,X
 	JSR	drawSPRXYCOLLISION
 	JMP	L7763
 
-L7752	CMP	#$0A
+L7752	CMP	#$0A	; tutu
 	BNE	L7765
 	LDA	#$3A
 	JSR	coutHGR2
@@ -3243,16 +3335,16 @@ L7765	DEX
 
 L776C	LDY	theY
 	LDA	tblBOARDALLL,Y
-	STA	$06
+	STA	ptrBOARD
 	LDA	tblBOARDALLH,Y
-	STA	$06+1
+	STA	ptrBOARD+1
 	LDX	idxFOE
 	INC	L0C98,X
 	LDY	theX
-	LDA	($06),Y
+	LDA	(ptrBOARD),Y
 	BNE	L7765
 	LDA	#sprFOE
-	STA	($06),Y
+	STA	(ptrBOARD),Y
 	LDA	#sprEMPTY
 	JSR	coutHGR2
 	LDA	#$00
@@ -3297,12 +3389,12 @@ L77D6	STA	KBDSTROBE
 	LDY	#$0F
 	STY	theY
 L77E3	LDA	tblBOARDALLL,Y
-	STA	$08
+	STA	ptrBBACK
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	LDY	#$1B
 	STY	theX
-L77F1	LDA	($08),Y
+L77F1	LDA	(ptrBBACK),Y
 	CMP	#$05
 	BNE	L77F9
 	LDA	#sprWALL
@@ -3462,7 +3554,12 @@ L799A	STA	TXTPAGE2
 
 scoreoffset	HEX	0000081018202830384048	; offset of each score
 
-L79AD	JSR	clearHGR1
+*-------------------------------
+* CLEAR PAGES
+*-------------------------------
+
+clearHGRPAGES
+	JSR	clearHGR1
 	JSR	clearHGR2
 
 *-------------------------------
@@ -3521,10 +3618,10 @@ L79FD	LDA	#$10
 
 setHGRPOINTER
 	LDA	xhgr,Y
-	STA	$0C
+	STA	ptrHGR1
 	LDA	yhgr,Y
 	ORA	hgrPAGE
-	STA	$0C+1
+	STA	ptrHGR1+1
 	RTS
 
 *-------------------------------
@@ -3533,13 +3630,13 @@ setHGRPOINTER
 
 setHGRPOINTERS
 	LDA	xhgr,Y
-	STA	$0C
-	STA	$0E
+	STA	ptrHGR1
+	STA	ptrHGR2
 	LDA	yhgr,Y
 	ORA	#>HGR1
-	STA	$0C+1
+	STA	ptrHGR1+1
 	EOR	#$60
-	STA	$0E+1
+	STA	ptrHGR2+1
 	RTS
 
 *-------------------------------
@@ -3559,16 +3656,16 @@ clearHGR2	LDA	#>HGR2
 
 *--- clear now
 
-L7A5B	STA	$0A+1
+L7A5B	STA	ptrDATA+1
 	LDA	#$00
-	STA	$0A
+	STA	ptrDATA
 	TAY
 	LDA	#$80
-L7A64	STA	($0A),Y
+L7A64	STA	(ptrDATA),Y
 	INY
 	BNE	L7A64
-	INC	$0A+1
-	CPX	$0A+1
+	INC	ptrDATA+1
+	CPX	ptrDATA+1
 	BNE	L7A64
 	RTS
 
@@ -3594,17 +3691,15 @@ L7A74	STX	theX	; show byte2dec
 * PRINT LEVEL
 *-------------------------------
 
-printLEVEL
-	LDA	theLEVEL	; print level
-	LDX	#$19
+printLEVEL	LDA	theLEVEL	; print level
+	LDX	#$19	; column offset
 	BNE	L7A74
 
 *-------------------------------
 * ADD & PRINT SCORE
 *-------------------------------
 
-printSCORE
-	CLC
+printSCORE	CLC
 	SED
 	ADC	theSCORE
 	STA	theSCORE
@@ -3647,6 +3742,10 @@ printSCORE
 	LDA	theUNITE
 	JMP	outputCHAR
 
+*-------------------------------
+* BCD TO DECIMAL CONVERSION
+*-------------------------------
+
 bcd2dec	STA	theDIZAINE
 	AND	#$0F
 	STA	theUNITE	; unitŽ
@@ -3657,6 +3756,10 @@ bcd2dec	STA	theDIZAINE
 	LSR
 	STA	theDIZAINE	; dizaine
 	RTS
+
+*-------------------------------
+* HEX TO DECIMAL CONVERSION
+*-------------------------------
 
 hex2dec	LDX	#$00
 	STX	theDIZAINE
@@ -3674,48 +3777,55 @@ L7B08	CMP	#10
 L7B12	STA	theUNITE
 	RTS
 
+*-------------------------------
+* PRINT A CHARACTER
+*-------------------------------
+
 outputCHAR	CLC		; print a char
-	ADC	#$3B
+	ADC	#spr0
 	LDX	activePAGE
 	CPX	#>HGR2
 	BEQ	L7B24
 	JSR	coutHGR1	; print HGR1
 	INC	theX
 	RTS
-
 L7B24	JSR	coutHGR2	; print HGR2
 	INC	theX
 	RTS
 
-L7B2A	CMP	#"A"
+*-------------------------------
+* FILTER CHARACTER
+*-------------------------------
+
+filterCHAR	CMP	#"A"
 	BCC	L7B32
 	CMP	#"Z"+1
 	BCC	L7B60
 L7B32	LDX	#$7C
-	CMP	#" "
+	CMP	#" "	; 7C = 00
 	BEQ	L7B5F
 	LDX	#$DB
-	CMP	#">"	; DB
+	CMP	#">"	; DB = 5F
 	BEQ	L7B5F
 	INX
-	CMP	#"."	; DC
+	CMP	#"."	; DC = 60
 	BEQ	L7B5F
 	INX
-	CMP	#"("	; DE
+	CMP	#"("	; DD = 61
 	BEQ	L7B5F
 	INX
-	CMP	#")"	; DF
+	CMP	#")"	; DE = 62
 	BEQ	L7B5F
 	INX
-	CMP	#"/"	; E0
+	CMP	#"/"	; DF = 63
 	BEQ	L7B5F
 	INX
-	CMP	#"-"	; E1
+	CMP	#"-"	; E0 = 64
 	BEQ	L7B5F
 	INX
-	CMP	#">"	; E2
+	CMP	#"<"	; E1 = 65
 	BEQ	L7B5F
-	LDA	#$10
+	LDA	#$10	; The still Lode Runner
 	RTS
 
 L7B5F	TXA		; calculate offset
@@ -3729,7 +3839,7 @@ L7B60	SEC
 
 printCHAR	CMP	#chrRET
 	BEQ	L7B7D
-	JSR	L7B2A
+	JSR	filterCHAR
 	LDX	activePAGE
 	CPX	#>HGR2
 	BEQ	L7B77
@@ -3754,10 +3864,10 @@ enterEDITOR	LDA	#$00
 	STA	theSCORE+1
 	STA	theSCORE+2
 	STA	theSCORE+3
-	LDA	$36
-	STA	$24
-	LDA	$37
-	STA	$25
+	LDA	CSWL
+	STA	CH
+	LDA	CSWH
+	STA	CV
 	LDA	#$05
 	STA	theMEN
 	STA	fgDEMO
@@ -3768,11 +3878,11 @@ enterEDITOR	LDA	#$00
 	STA	TXTPAGE1
 	LDA	intLEVEL	; check level
 	CMP	#maxLEVEL
-	BCC	L7BB2
+	BCC	editMAIN
 	LDA	#$00	; start at 0 if > 149
 	STA	intLEVEL
 
-L7BB2	JSR	clearHGR1	; clear HGR1
+editMAIN	JSR	clearHGR1	; clear HGR1
 	LDA	#>HGR1
 	STA	activePAGE
 	LDA	#$00
@@ -3783,37 +3893,38 @@ L7BB2	JSR	clearHGR1	; clear HGR1
 	ASC	"----------------------------"8D
 	ASC	"  <ESC> ABORTS ANY COMMAND"8D00
 
-L7C16	LDA	theY	; are we at the
+editLOOP	LDA	theY	; are we at the
 	CMP	#$09	; end of the screen?
-	BCS	L7BB2	; yes, bottom line
+	BCS	editMAIN	; yes, bottom line
 
 	JSR	printSTRING	; no, show command
 	ASC	8D
 	ASC	"COMMAND>"00
 
-	JSR	L823D	; wait for key
+	JSR	editWAITKEY	; wait for key
 	LDX	#$00
-L7C2E	LDY	L7C4D,X	; authorized key?
-	BEQ	L7C3B
-	CMP	L7C4D,X
+L7C2E	LDY	tblEDITKEY,X	; authorized key?
+	BEQ	editNEXT
+	CMP	tblEDITKEY,X
 	BEQ	L7C41
 	INX
 	BNE	L7C2E
-L7C3B	JSR	doBEEP	; beep
-	JMP	L7C16	; loop
+	
+editNEXT	JSR	doBEEP	; beep
+	JMP	editLOOP	; loop
 
 L7C41	TXA		; yes, we know the key
 	ASL		; jump to the feature
 	TAX		; and handle it
-	LDA	L7C54+1,X
+	LDA	tblEDITADD+1,X
 	PHA
-	LDA	L7C54,X
+	LDA	tblEDITADD,X
 	PHA
 	RTS
 
-L7C4D	ASC	"PCEMIS"00
+tblEDITKEY	ASC	"PCEMIS"00
 
-L7C54	DA	editPLAY-1	; Play level
+tblEDITADD	DA	editPLAY-1	; Play level
 	DA	editCLEAR-1	; Clear level
 	DA	editEDIT-1	; Edit level
 	DA	editMOVE-1	; Move level
@@ -3839,7 +3950,7 @@ L7C76	LDA	#$00
 	BEQ	L7C88
 	LSR	$9D
 L7C88	JMP	L6056
-L7C8B	JMP	L7C3B
+L7C8B	JMP	editNEXT
 
 *-------------------------------
 * C - CLEAR LEVEL 
@@ -3858,8 +3969,8 @@ L7CAB	STA	levelDISK,Y
 	BNE	L7CAB
 	LDA	#$02	; write
 	JSR	diskLEVEL
-	JMP	L7C16
-L7CB9	JMP	L7C3B
+	JMP	editLOOP
+L7CB9	JMP	editNEXT
 
 *-------------------------------
 * E - EDIT LEVEL 
@@ -3871,7 +3982,7 @@ editEDIT	JSR	printSTRING
 	JSR	inputLEVEL	; is level valid?
 	BCS	L7CD5	; no
 	JMP	editEDITLEVEL	; yes, handle edit
-L7CD5	JMP	L7C3B
+L7CD5	JMP	editNEXT
 
 *-------------------------------
 * M - MOVE LEVEL 
@@ -3891,7 +4002,7 @@ editMOVE	JSR	printSTRING
 	JSR	printSTRING
 	ASC	8D
 	ASC	"  SOURCE DISKETTE"00
-	JSR	L823D
+	JSR	editWAITKEY
 	JSR	L807F
 	LDA	L824F
 	STA	intLEVEL
@@ -3900,14 +4011,14 @@ editMOVE	JSR	printSTRING
 	JSR	printSTRING
 	ASC	8D
 	ASC	"  DESTINATION DISKETTE"00
-	JSR	L823D
+	JSR	editWAITKEY
 	JSR	L807F
 	LDA	L8250
 	STA	intLEVEL
 	LDA	#$02	; write
 	JSR	diskLEVEL
-	JMP	L7C16
-L7D5A	JMP	L7C3B
+	JMP	editLOOP
+L7D5A	JMP	editNEXT
 
 *-------------------------------
 * I - INITIALIZE DISKETTE
@@ -3921,7 +4032,7 @@ editINIT	JSR	printSTRING
 	ASC	"  (CAUTION. IT ERASES THE"8D
 	ASC	"   ENTIRE DISKETTE FIRST)"8D8D
 	ASC	"  ARE YOU SURE (Y/N) "00
-	JSR	L823D
+	JSR	editWAITKEY
 	CMP	#chrY
 	BNE	L7E72
 	NOP		; NOP
@@ -3987,7 +4098,7 @@ L7E61	LDA	L63A8,Y
 	JSR	readSCORE
 	PLA
 	STA	intLEVEL
-L7E72	JMP	L7C16
+L7E72	JMP	editLOOP
 
 *-------------------------------
 * C - CLEAR SCORE FILE 
@@ -4001,7 +4112,7 @@ editCLEARSCORE
 	ASC	"  SCORE FILE OF ALL"8D
 	ASC	"  ENTRIES."8D8D
 	ASC	"  ARE YOU SURE (Y/N) "00
-	JSR	L823D
+	JSR	editWAITKEY
 	CMP	#chrY
 	BNE	L7EFE
 	LDA	#$01
@@ -4009,7 +4120,7 @@ editCLEARSCORE
 	CMP	#$00
 	BNE	L7EEF
 	JSR	tellNODATADISK
-	JMP	L7BB2
+	JMP	editMAIN
 
 L7EEF	LDY	#$4F	; clear score file
 	LDA	#$00
@@ -4018,7 +4129,7 @@ L7EF3	STA	scorebuf,Y
 	BPL	L7EF3
 	LDA	#$02
 	JSR	readSCORE	; write score file
-L7EFE	JMP	L7C16
+L7EFE	JMP	editLOOP
 
 *-------------------------------
 * EDIT THE LEVEL 
@@ -4037,7 +4148,7 @@ editEDITLEVEL
 	DEX		; mode edit
 	JSR	prepareLEVEL
 	BCC	L7F1F
-	JMP	L7C3B
+	JMP	editNEXT
 
 L7F1F	LDA	#$00	; cursor is at 0,0
 	STA	theX
@@ -4051,16 +4162,16 @@ L7F25	JSR	blinkATXY	; wait for key
 	STA	theA	; save key
 	LDY	theY	; get Y
 	LDA	tblBOARDALLL,Y	; get line address
-	STA	$06
+	STA	ptrBOARD
 	LDA	tblBOARDALLH,Y
-	STA	$06+1
+	STA	ptrBOARD+1
 	LDY	theX	; get X
 	LDA	theA	; get sprite
-	EOR	($06),Y	; same as before?
+	EOR	(ptrBOARD),Y	; same as before?
 	BEQ	L7F4A	; yes
 	LSR	fgCHANGE	; no, tell there's a change
 L7F4A	LDA	theA	; get sprite
-	STA	($06),Y	; save it
+	STA	(ptrBOARD),Y	; save it
 	JSR	coutHGR1	; print sprite
 	JMP	L7F25	; loop
 
@@ -4193,7 +4304,7 @@ editPREVIOUS
 *-------------------------------
 
 editQUIT	JSR	editSAVECHANGES
-	JMP	L7BB2
+	JMP	editMAIN
 
 *-------------------------------
 * WANT TO SAVE CHANGES
@@ -4233,12 +4344,12 @@ L807F	LDA	#$01	; load score
 	CMP	#$00	; 00 means disk not identified
 	BNE	L808E
 	JSR	tellNODATADISK
-	JMP	L7BB2
+	JMP	editMAIN
 
 L808E	CMP	#$01	; 01 means master disk
 	BNE	L8105
 	JSR	tellMASTERDISK
-	JMP	L7BB2
+	JMP	editMAIN
 
 *-----------------------------------
 * MASTER DISK FOUND
@@ -4294,11 +4405,11 @@ tellNODATADISK
 blinkATXY
 	LDY	theY
 	LDA	tblBOARDALLL,Y
-	STA	$06
+	STA	ptrBOARD
 	LDA	tblBOARDALLH,Y
-	STA	$06+1
+	STA	ptrBOARD+1
 	LDY	theX
-	LDA	($06),Y
+	LDA	(ptrBOARD),Y
 	JSR	blinkSPRITE
 	STA	KBDSTROBE
 	RTS
@@ -4365,7 +4476,7 @@ L81C7	CMP	#chrRA	; right arrow
 
 L81DA	CMP	#chrESC	; esc
 	BNE	L81E1
-	JMP	L7C16
+	JMP	editLOOP
 
 L81E1	CMP	#chrZERO	; 0
 	BCC	L8207
@@ -4421,12 +4532,12 @@ L822F	CLC
 	CPY	#maxLEVEL
 L823C	RTS
 
-L823D	LDA	#sprEMPTY
+editWAITKEY	LDA	#sprEMPTY
 	JSR	blinkSPRITE
 	STA	KBDSTROBE
 	CMP	#$9B	; escape
 	BNE	L824C
-	JMP	L7C16
+	JMP	editLOOP
 L824C	RTS
 L824D	RTS
 
@@ -4479,16 +4590,16 @@ L82B4	STA	hgrPAGE	; page in $1F
 L82DF	LDY	theYSCREEN
 	JSR	setHGRPOINTER
 	LDY	theXSCREEN
-	LDA	($0C),Y	; 1
+	LDA	(ptrHGR1),Y	; 1
 	AND	theMASK1
 	ORA	sprDATA,X
-	STA	($0C),Y
+	STA	(ptrHGR1),Y
 	INX
 	INY
-	LDA	($0C),Y	; 2
+	LDA	(ptrHGR1),Y	; 2
 	AND	theMASK2
 	ORA	sprDATA,X
-	STA	($0C),Y
+	STA	(ptrHGR1),Y
 	INX
 	INX
 	INC	theYSCREEN
@@ -4501,20 +4612,20 @@ L82DF	LDY	theYSCREEN
 L8301	LDY	theYSCREEN
 	JSR	setHGRPOINTER
 	LDY	theXSCREEN
-	LDA	($0C),Y	; 1
+	LDA	(ptrHGR1),Y	; 1
 	AND	theMASK1
 	ORA	sprDATA,X
-	STA	($0C),Y
+	STA	(ptrHGR1),Y
 	INX
 	INY
 	LDA	sprDATA,X	; 2
-	STA	($0C),Y
+	STA	(ptrHGR1),Y
 	INX
 	INY
-	LDA	($0C),Y	; 3
+	LDA	(ptrHGR1),Y	; 3
 	AND	theMASK2
 	ORA	sprDATA,X
-	STA	($0C),Y
+	STA	(ptrHGR1),Y
 	INX
 	INC	theYSCREEN
 	DEC	nbLINES
@@ -4550,16 +4661,16 @@ L8350	LDY	theYSCREEN
 	LDY	theXSCREEN
 	LDA	sprDATA,X
 	EOR	#$7F
-	AND	($0C),Y
-	ORA	($0E),Y
-	STA	($0C),Y
+	AND	(ptrHGR1),Y
+	ORA	(ptrHGR2),Y
+	STA	(ptrHGR1),Y
 	INX
 	INY
 	LDA	sprDATA,X
 	EOR	#$7F
-	AND	($0C),Y
-	ORA	($0E),Y
-	STA	($0C),Y
+	AND	(ptrHGR1),Y
+	ORA	(ptrHGR2),Y
+	STA	(ptrHGR1),Y
 	INX
 	INX
 	INC	theYSCREEN
@@ -4574,23 +4685,23 @@ L8376	LDY	theYSCREEN
 	LDY	theXSCREEN
 	LDA	sprDATA,X
 	EOR	#$7F
-	AND	($0C),Y
-	ORA	($0E),Y
-	STA	($0C),Y
+	AND	(ptrHGR1),Y
+	ORA	(ptrHGR2),Y
+	STA	(ptrHGR1),Y
 	INX
 	INY
 	LDA	sprDATA,X
 	EOR	#$7F
-	AND	($0C),Y
-	ORA	($0E),Y
-	STA	($0C),Y
+	AND	(ptrHGR1),Y
+	ORA	(ptrHGR2),Y
+	STA	(ptrHGR1),Y
 	INX
 	INY
 	LDA	sprDATA,X
 	EOR	#$7F
-	AND	($0C),Y
-	ORA	($0E),Y
-	STA	($0C),Y
+	AND	(ptrHGR1),Y
+	ORA	(ptrHGR2),Y
+	STA	(ptrHGR1),Y
 	INX
 	INC	theYSCREEN
 	DEC	nbLINES
@@ -4623,24 +4734,24 @@ drawSPRXYCOLLISION
 L83C3	LDY	theYSCREEN
 	JSR	setHGRPOINTERS
 	LDY	theXSCREEN
-	LDA	($0C),Y
-	EOR	($0E),Y
+	LDA	(ptrHGR1),Y
+	EOR	(ptrHGR2),Y
 	AND	sprDATA,X
 	ORA	fgCOLLISION
 	STA	fgCOLLISION
 	LDA	sprDATA,X
-	ORA	($0C),Y
-	STA	($0C),Y
+	ORA	(ptrHGR1),Y
+	STA	(ptrHGR1),Y
 	INX
 	INY
-	LDA	($0C),Y
-	EOR	($0E),Y
+	LDA	(ptrHGR1),Y
+	EOR	(ptrHGR2),Y
 	AND	sprDATA,X
 	ORA	fgCOLLISION
 	STA	fgCOLLISION
 	LDA	sprDATA,X
-	ORA	($0C),Y
-	STA	($0C),Y
+	ORA	(ptrHGR1),Y
+	STA	(ptrHGR1),Y
 	INX
 	INX
 	INC	theYSCREEN
@@ -4653,34 +4764,34 @@ L83C3	LDY	theYSCREEN
 L83F5	LDY	theYSCREEN
 	JSR	setHGRPOINTERS
 	LDY	theXSCREEN
-	LDA	($0C),Y	; 1
-	EOR	($0E),Y
+	LDA	(ptrHGR1),Y
+	EOR	(ptrHGR2),Y
 	AND	sprDATA,X
 	ORA	fgCOLLISION
 	STA	fgCOLLISION
 	LDA	sprDATA,X
-	ORA	($0C),Y
-	STA	($0C),Y
+	ORA	(ptrHGR1),Y
+	STA	(ptrHGR1),Y
 	INX
 	INY
-	LDA	($0C),Y
-	EOR	($0E),Y
+	LDA	(ptrHGR1),Y
+	EOR	(ptrHGR2),Y
 	AND	sprDATA,X
 	ORA	fgCOLLISION
 	STA	fgCOLLISION
 	LDA	sprDATA,X
-	ORA	($0C),Y
-	STA	($0C),Y
+	ORA	(ptrHGR1),Y
+	STA	(ptrHGR1),Y
 	INX
 	INY
-	LDA	($0C),Y
-	EOR	($0E),Y
+	LDA	(ptrHGR1),Y
+	EOR	(ptrHGR2),Y
 	AND	sprDATA,X
 	ORA	fgCOLLISION
 	STA	fgCOLLISION
 	LDA	sprDATA,X
-	ORA	($0C),Y
-	STA	($0C),Y
+	ORA	(ptrHGR1),Y
+	STA	(ptrHGR1),Y
 	INX
 	INC	theYSCREEN
 	DEC	nbLINES
@@ -4696,12 +4807,12 @@ getSPRITEDATA
 	LDA	#sprHEIGHT	; char height
 	STA	nbLINES
 
-	LDA	#<LAD00	; pointer table
-	STA	$0A
-	LDA	#>LAD00
-	STA	$0A+1
+	LDA	#<tblOFFSPR	; pointer to index of sprite in each table
+	STA	ptrDATA
+	LDA	#>tblOFFSPR
+	STA	ptrDATA+1
 
-	LDA	L84C1,X	; one of the six tables
+	LDA	tblPTRSPR,X	; one of the six tables
 	STA	L845A+2
 	STA	L8466+2
 	STA	L848B+2
@@ -4709,53 +4820,53 @@ getSPRITEDATA
 
 	LDX	#$00
 L8455	LDY	theA
-	LDA	($0A),Y
+	LDA	(ptrDATA),Y
 	TAY
-L845A	LDA	LA000,Y	; a
+L845A	LDA	LA200,Y	; a
 	STA	L846F+1
 	CLC
 	ADC	#$01
 	STA	L8474+1
-L8466	LDA	LA080,Y	; a+1
+L8466	LDA	LA280,Y	; a+1
 	STA	L846F+2
 	STA	L8474+2
-L846F	LDA	LA000	; b
+L846F	LDA	LA200	; b
 	STA	sprDATA,X
-L8474	LDA	LA000	; b+1
+L8474	LDA	LA200	; b+1
 	STA	$E0,X
 
-	LDA	$0A	; next line
+	LDA	ptrDATA	; next line
 	CLC
 	ADC	#$68
-	STA	$0A
-	LDA	$0A+1
+	STA	ptrDATA
+	LDA	ptrDATA+1
 	ADC	#$00
-	STA	$0A+1
+	STA	ptrDATA+1
 
 	LDY	theA
-	LDA	($0A),Y
+	LDA	(ptrDATA),Y
 	TAY
-L848B	LDA	LA000,Y	; c
+L848B	LDA	LA200,Y	; c
 	STA	L84A0+1
 	CLC
 	ADC	#$01
 	STA	L84A7+1
-L8497	LDA	LA080,Y	; c+1
+L8497	LDA	LA280,Y	; c+1
 	STA	L84A0+2
 	STA	L84A7+2
-L84A0	LDA	LA000	; d
+L84A0	LDA	LA200	; d
 	ORA	$E0,X
 	STA	$E0,X
-L84A7	LDA	LA000	; d+1
+L84A7	LDA	LA200	; d+1
 	STA	$E1,X
 
-	LDA	$0A
+	LDA	ptrDATA
 	CLC
 	ADC	#$68
-	STA	$0A
-	LDA	$0A+1
+	STA	ptrDATA
+	LDA	ptrDATA+1
 	ADC	#$00
-	STA	$0A+1
+	STA	ptrDATA+1
 	INX
 	INX
 	INX
@@ -4763,7 +4874,7 @@ L84A7	LDA	LA000	; d+1
 	BNE	L8455
 	RTS
 
-L84C1	DB	>LA200	; LOGO POINTER
+tblPTRSPR	DB	>LA200	; The six tables of sprites
 	DB	>LA300
 	DB	>LA400
 	DB	>LA500
@@ -4862,7 +4973,7 @@ L8536	LDX	scoreoffset,Y	; permet la saisie des initiales
 	STX	L824D
 L857F	LDX	L824D
 L8582	LDA	scorebuf,X
-	JSR	L7B2A
+	JSR	filterCHAR
 	JSR	L85F3
 	STA	KBDSTROBE
 	CMP	#chrRET
@@ -4959,21 +5070,21 @@ L863B	LDX	L869E
 	STA	theY
 	TAY
 	LDA	tblBOARDALLL,Y
-	STA	$06
-	STA	$08
+	STA	ptrBOARD
+	STA	ptrBBACK
 	LDA	tblBOARDALLH,Y
-	STA	$06+1
+	STA	ptrBOARD+1
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	LDY	theX
-	LDA	($08),Y
+	LDA	(ptrBBACK),Y
 	BNE	L868B
 	LDA	#sprLADDER
-	STA	($08),Y
-	LDA	($06),Y
+	STA	(ptrBBACK),Y
+	LDA	(ptrBOARD),Y
 	BNE	L8670
 	LDA	#sprLADDER
-	STA	($06),Y
+	STA	(ptrBOARD),Y
 L8670	LDA	#sprLADDER
 	JSR	coutHGR2
 	LDX	theX
@@ -5053,21 +5164,21 @@ L86DC	DEY
 
 printSTRING
 	PLA
-	STA	$10
+	STA	ptrSTRSND
 	PLA
-	STA	$10+1
+	STA	ptrSTRSND+1
 	BNE	L86F1
 L86E8	LDY	#$00
-	LDA	($10),Y
+	LDA	(ptrSTRSND),Y
 	BEQ	L86F9
 	JSR	printCHAR
-L86F1	INC	$10
+L86F1	INC	ptrSTRSND
 	BNE	L86E8
-	INC	$10+1
+	INC	ptrSTRSND+1
 	BNE	L86E8
-L86F9	LDA	$10+1
+L86F9	LDA	ptrSTRSND+1
 	PHA
-	LDA	$10
+	LDA	ptrSTRSND
 	PHA
 	RTS
 
@@ -5109,7 +5220,7 @@ L873C	PHA		; exit with
 	PLA
 	RTS
 
-bsDATA	DB	$06
+bsDATA	DB	ptrBOARD
 
 *-----------------------------------
 * READ JOYSTICK
@@ -5194,7 +5305,7 @@ L87B9	RTS
 * PLAY A SOUND
 *-----------------------------------
 
-playSOUND	STA	$0A
+playSOUND	STA	ptrDATA
 	STX	$0B
 L87BE	LDA	fgSOUND
 	BEQ	L87C5
@@ -5205,7 +5316,7 @@ L87C5	DEY
 	BEQ	L87D4
 L87CC	DEX
 	BNE	L87C5
-	LDX	$0A
+	LDX	ptrDATA
 	JMP	L87BE
 L87D4	RTS
 
@@ -5215,9 +5326,9 @@ L87D4	RTS
 
 getNOTE	INC	$54
 	LDY	$54
-	STA	L0E80,Y
+	STA	sndNOTE,Y
 	TXA
-	STA	L0E00,Y
+	STA	sndDURATION,Y
 	RTS
 
 *-----------------------------------
@@ -5226,29 +5337,29 @@ getNOTE	INC	$54
 
 prepareMELODY
 	PLA
-	STA	$10
+	STA	ptrSTRSND
 	PLA
-	STA	$10+1
+	STA	ptrSTRSND+1
 	BNE	L8802
 L87E9	LDY	#$00	; move sound
-	LDA	($10),Y	; to the two
+	LDA	(ptrSTRSND),Y	; to the two
 	BEQ	L880A	; buffers
 	INC	$54
 	LDX	$54
-	STA	L0E00,X
+	STA	sndDURATION,X
 	INY
-	LDA	($10),Y
-	STA	L0E80,X
-	INC	$10
+	LDA	(ptrSTRSND),Y
+	STA	sndNOTE,X
+	INC	ptrSTRSND
 	BNE	L8802
-	INC	$10+1
-L8802	INC	$10
+	INC	ptrSTRSND+1
+L8802	INC	ptrSTRSND
 	BNE	L87E9
-	INC	$10+1
+	INC	ptrSTRSND+1
 	BNE	L87E9
-L880A	LDA	$10+1
+L880A	LDA	ptrSTRSND+1
 	PHA
-	LDA	$10
+	LDA	ptrSTRSND
 	PHA
 	RTS
 
@@ -5259,14 +5370,14 @@ L880A	LDA	$10+1
 playMELODY
 	LDY	$54
 	BEQ	L8832
-	LDA	L0E80,Y
-	LDX	L0E00,Y
+	LDA	sndNOTE,Y
+	LDX	sndDURATION,Y
 	JSR	playSOUND	; play note
 	LDY	$54
 	DEC	$54
 	LDA	theSPEED
 	SEC
-	SBC	L0E00,Y
+	SBC	sndDURATION,Y
 	BEQ	L8830
 	BCC	L8830
 	TAX
@@ -5292,12 +5403,12 @@ L8844	LDX	theSPEED
 	RTS
 
 L884B	LDA	tblBOARDALLL,Y
-	STA	$06
-	STA	$08
+	STA	ptrBOARD
+	STA	ptrBBACK
 	LDA	tblBOARDALLH,Y
-	STA	$06+1
+	STA	ptrBOARD+1
 	LDA	tblBOARDBACKH,Y
-	STA	$08+1
+	STA	ptrBBACK+1
 	RTS
 
 *-------------------------------
@@ -5326,7 +5437,17 @@ getXBYBI	LDA	xbytable,X
 	PLA
 	RTS
 
-getXNEWY	TXA		;  in: board X/Y
+*-------------------------------
+* CALCULATE HGR Y-COORD
+*-------------------------------
+* on entry:
+*  X is a sprite step
+*  Y is a board index
+* on exit:
+*  X is garbage
+*  Y is the HGR coordinate
+
+calcHGRY	TXA		;  in: board X/Y
 	PHA		; out: hgr X / diff Y
 	JSR	getXY
 	PLA
@@ -5339,12 +5460,22 @@ getXNEWY	TXA		;  in: board X/Y
 
 tblDELTAY	HEX	FBFD000204	; -5, -3, 0, 2, 4
 
-getNEWXY	TYA		;  in: board X/Y
-	PHA		; out: hgr diff X / Y
+*-------------------------------
+* CALCULATE HGR X-COORD
+*-------------------------------
+* on entry:
+*  X is a board index
+*  Y is a sprite step
+* on exit:
+*  X is the HGR coordinate
+*  Y is garbage
+
+calcHGRX	TYA
+	PHA
 	JSR	getXY
 	PLA
 	TAY
-	TXA
+	TXA		; X in HGR + Y step
 	CLC
 	ADC	tblDELTAX,Y
 	TAX
@@ -5671,15 +5802,15 @@ L8AF5	RTS
 
 L8AF6	LDA	$72
 	BNE	L8B02
-	LDA	($0C),Y
+	LDA	(ptrHGR1),Y
 	AND	L8B0C,X
-	STA	($0C),Y
+	STA	(ptrHGR1),Y
 	RTS
 
-L8B02	LDA	($0E),Y
+L8B02	LDA	(ptrHGR2),Y
 	AND	L8B13,X
-	ORA	($0C),Y
-	STA	($0C),Y
+	ORA	(ptrHGR1),Y
+	STA	(ptrHGR1),Y
 	RTS
 
 L8B0C	HEX	F0F0F0F08F8F8F
@@ -5775,15 +5906,15 @@ L8CCF	DA	L8C35-$D
 	DA	L8CC1-$D
 
 L8CE5	PLA
-	STA	$0A
+	STA	ptrDATA
 	PLA
-	STA	$0A+1
+	STA	ptrDATA+1
 	LDY	#$50
 	STY	theY
 	BNE	L8D12
 L8CF1	JSR	setHGRPOINTER
 	LDY	#$00
-	LDA	($0A),Y
+	LDA	(ptrDATA),Y
 	ASL
 	TAX
 	LDA	L8CCF,X
@@ -5792,7 +5923,7 @@ L8CF1	JSR	setHGRPOINTER
 	STA	L8D08+2
 	LDY	#$0D
 L8D08	LDA	L8D08,Y
-	STA	($0C),Y
+	STA	(ptrHGR1),Y
 	INY
 	CPY	#$1B
 	BCC	L8D08
@@ -5828,9 +5959,9 @@ L8D41	PLA
 
 L8D4B	DB	$9D
 
-L8D4C	INC	$0A
+L8D4C	INC	ptrDATA
 	BNE	L8D52
-	INC	$0A+1
+	INC	ptrDATA+1
 L8D52	RTS
 
 	ds	\
@@ -5875,7 +6006,7 @@ L8E34	LDA	$C08C,X
 	BNE	L8E2F
 	LDA	$C088,X
 	JSR	tellMASTERDISK
-	JMP	L7BB2
+	JMP	editMAIN
 
 	DB	$00
 	DB	$00

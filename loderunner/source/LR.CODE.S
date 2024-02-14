@@ -116,6 +116,11 @@ fgCHEST	=	$94	; 94 1: not a chest, 0: a chest
 intLEVEL	=	$96	; 96 theLEVEL-1
 fgSOUND	=	$99	; 99
 fgPLAY	=	$9a	; 1: alive, 0: dead
+fgHOLE	=	$9c	; -1: left hole, 0: none, 1: right hole
+theKEY1	=	$9e
+theKEY2	=	$9f
+idxDIG	=	$a0	; dig index in sprite list
+counter	=	$a1	; a simple counter
 fgLVLMODE	=	$a2	; 0: edit, <>0: game
 idxLADDERI	=	$a3
 theLEVEL	=	$a6
@@ -269,8 +274,8 @@ L6099	JSR	clearHGRPAGES	; clear HGR pages and draw board
 L609F	LDX	#modeGAME
 	JSR	prepareLEVEL
 	LDA	#$00
-	STA	$9E
-	STA	$9F
+	STA	theKEY1
+	STA	theKEY2
 	LDA	fgDEMO	; are we in demo mode?
 	LSR
 	BEQ	L60BF	; yes
@@ -282,7 +287,7 @@ L609F	LDX	#modeGAME
 	LDA	#sprHERO
 	JSR	blinkSPRITE
 L60BF	LDX	#$00
-	STX	$9C
+	STX	fgHOLE
 	STX	$54
 	LDA	$97
 	CLC
@@ -454,7 +459,7 @@ prepareLEVEL
 	STX	nbCHEST
 	STX	nbFOE
 	STX	idxFOE
-	STX	$A0
+	STX	idxDIG
 	STX	idxLVLDISK
 	STX	fgODDEVEN
 	STX	theY
@@ -818,7 +823,7 @@ L64AF	DEC	theX
 
 L64BD	LDA	#$01
 	STA	fgCHEST
-	LDA	$9C
+	LDA	fgHOLE
 	BEQ	L64CD
 	BPL	L64CA
 	JMP	L67E7
@@ -875,13 +880,13 @@ L6525	LDA	#$00
 	BMI	L6537
 	LDA	#$0F	; fall in a right hole
 L6537	STA	heroINDEX
-	JSR	L6C13
+	JSR	heroNEXTSTEPX
 	INC	heroSTEPY
 	LDA	heroSTEPY
 	CMP	#$05
 	BCS	L654A
 	JSR	checkCHEST
-	JMP	L6C02
+	JMP	checkCOLLISION
 
 L654A	LDA	#$00
 	STA	heroSTEPY
@@ -897,7 +902,7 @@ L654A	LDA	#$00
 	LDA	(ptrBBACK),Y
 	CMP	#sprWALL
 	BNE	L656B
-	LDA	#$00
+	LDA	#sprEMPTY
 L656B	STA	(ptrBOARD),Y
 	INC	boardY
 	LDY	boardY
@@ -908,7 +913,7 @@ L656B	STA	(ptrBOARD),Y
 	LDY	boardX
 	LDA	#sprHERO
 	STA	(ptrBOARD),Y
-	JMP	L6C02
+	JMP	checkCOLLISION
 
 L6584	LDA	$9B
 	BNE	L658F
@@ -920,7 +925,7 @@ L658F	LDA	#$20
 	STA	$9B
 	JSR	L6A12
 
-	LDA	$9E
+	LDA	theKEY1
 	CMP	#chrI	; move up
 	BNE	L65A4
 	JSR	checkMOVEUP
@@ -945,7 +950,7 @@ L65B8	CMP	#chrO	; dig right
 	BCS	L65C2
 	RTS
 
-L65C2	LDA	$9F
+L65C2	LDA	theKEY2
 	CMP	#chrJ	; move left
 	BNE	L65CB
 	JMP	checkMOVELEFT
@@ -988,7 +993,7 @@ L6600	JSR	calcSPRITEXY
 	JSR	drawSPRITEXY
 	LDA	#$FF
 	STA	fgLEFTRIGHT
-	JSR	L6C26
+	JSR	heroNEXTSTEPY
 	DEC	heroSTEPX
 	BPL	L662A
 	LDY	boardX
@@ -1009,13 +1014,13 @@ L662D	LDY	boardX	; define sprites
 	LDA	(ptrBBACK),Y	; if we are on a bar
 	CMP	#sprBAR
 	BEQ	L663B
-	LDA	#$00
-	LDX	#$02
+	LDA	#$00	; run left first step
+	LDX	#$02	; last step
 	BNE	L663F
-L663B	LDA	#$03
-	LDX	#$05
-L663F	JSR	L6BF4
-	JMP	L6C02
+L663B	LDA	#$03	; bar left first step
+	LDX	#$05	; last step
+L663F	JSR	setHEROSTEP
+	JMP	checkCOLLISION
 
 *-----------------------------------
 * CHECK IF WE CAN MOVE RIGHT 
@@ -1050,7 +1055,7 @@ L6674	JSR	calcSPRITEXY
 	JSR	drawSPRITEXY
 	LDA	#$01
 	STA	fgLEFTRIGHT
-	JSR	L6C26
+	JSR	heroNEXTSTEPY
 	INC	heroSTEPX
 	LDA	heroSTEPX
 	CMP	#$05
@@ -1073,13 +1078,13 @@ L66A5	LDY	boardX
 	LDA	(ptrBBACK),Y
 	CMP	#sprBAR
 	BEQ	L66B3
-	LDA	#$08
-	LDX	#$0A
+	LDA	#$08	; run right step 1
+	LDX	#$0A	; run right step 3
 	BNE	L66B7
-L66B3	LDA	#$0B
-	LDX	#$0D
-L66B7	JSR	L6BF4
-	JMP	L6C02
+L66B3	LDA	#$0B	; bar right step 1
+	LDX	#$0D	; bar right step 3
+L66B7	JSR	setHEROSTEP
+	JMP	checkCOLLISION
 
 *-----------------------------------
 * CAN WE MOVE UP 
@@ -1137,7 +1142,7 @@ L6711	JSR	calcSPRITEXY
 	STA	ptrBOARD+1
 	LDA	tblBOARDBACKH,Y
 	STA	ptrBBACK+1
-	JSR	L6C13
+	JSR	heroNEXTSTEPX
 	DEC	heroSTEPY
 	BPL	L6757
 	LDY	boardX
@@ -1159,10 +1164,10 @@ L673B	STA	(ptrBOARD),Y
 	STA	heroSTEPY
 	BNE	L675A
 L6757	JSR	checkCHEST
-L675A	LDA	#$10
-	LDX	#$11
-	JSR	L6BF4
-	JSR	L6C02
+L675A	LDA	#$10	; climb ladder step 1
+	LDX	#$11	; climb ladder step 2
+	JSR	setHEROSTEP
+	JSR	checkCOLLISION
 	CLC
 	RTS
 
@@ -1200,7 +1205,7 @@ L678A	JSR	calcSPRITEXY
 	STA	ptrBOARD+1
 	LDA	tblBOARDBACKH,Y
 	STA	ptrBBACK+1
-	JSR	L6C13
+	JSR	heroNEXTSTEPX
 	INC	heroSTEPY
 	LDA	heroSTEPY
 	CMP	#$05
@@ -1233,11 +1238,12 @@ L67D8	JMP	L6892
 
 checkDIGLEFT
 	LDA	#$FF
-	STA	$9C
-	STA	$9E
-	STA	$9F
+	STA	fgHOLE
+	STA	theKEY1
+	STA	theKEY2
 	LDA	#$00
-	STA	$A0
+	STA	idxDIG
+
 L67E7	LDY	boardY	; are we on last line?
 	CPY	#lvlHEIGHT-1
 	BCS	L67D8
@@ -1258,25 +1264,25 @@ L67E7	LDY	boardY	; are we on last line?
 	BNE	L686E
 	JSR	calcSPRITEXY
 	JSR	drawSPRITEXY
-	JSR	L6C13
-	JSR	L6C26
-	LDY	$A0
+	JSR	heroNEXTSTEPX
+	JSR	heroNEXTSTEPY
+	LDY	idxDIG
 	LDA	L699E,Y
 	LDX	L69AB,Y
 	JSR	getNOTE
-	LDX	$A0
+	LDX	idxDIG
 	LDA	#$00
 	CPX	#$06
 	BCS	L682B
 	LDA	#$06
 L682B	STA	heroINDEX
-	JSR	L6C02
-	LDX	$A0
+	JSR	checkCOLLISION
+	LDX	idxDIG
 	CPX	#$0C
 	BEQ	L6898
 	CPX	#$00
 	BEQ	L684C
-	LDA	L6979,X
+	LDA	L6979,X	; dig left - 1
 	PHA
 	LDX	boardX
 	DEX
@@ -1284,8 +1290,8 @@ L682B	STA	heroINDEX
 	JSR	getXY
 	PLA
 	JSR	drawSPRITEXY
-	LDX	$A0
-L684C	LDA	L697A,X
+	LDX	idxDIG
+L684C	LDA	L697A,X	; dig left
 	PHA
 	LDX	boardX
 	DEX
@@ -1295,11 +1301,11 @@ L684C	LDA	L697A,X
 	JSR	getXY
 	PLA
 	JSR	drawSPRXYCOLLISION
-	LDX	$A0
-	LDA	L6992,X
+	LDX	idxDIG
+	LDA	L6992,X	; dig left
 	INC	theY
 	JSR	coutHGR1
-	INC	$A0
+	INC	idxDIG
 	CLC
 	RTS
 
@@ -1311,7 +1317,7 @@ L686E	LDY	boardY
 	STY	theX
 	LDA	#sprWALL
 	JSR	coutHGR1
-	LDX	$A0
+	LDX	idxDIG
 	BEQ	L6892
 	DEX
 	LDA	L697A,X
@@ -1323,13 +1329,13 @@ L686E	LDY	boardY
 	PLA
 	JSR	drawSPRITEXY
 L6892	LDA	#$00
-	STA	$9C
+	STA	fgHOLE
 	SEC
 	RTS
 
 L6898	LDX	boardX
 	DEX
-	JMP	L6C39
+	JMP	addNEWHOLE
 L689E	JMP	L695C
 
 *-----------------------------------
@@ -1338,11 +1344,11 @@ L689E	JMP	L695C
 
 checkDIGRIGHT
 	LDA	#$01
-	STA	$9C
-	STA	$9E
-	STA	$9F
+	STA	fgHOLE
+	STA	theKEY1
+	STA	theKEY2
 	LDA	#$0C
-	STA	$A0
+	STA	idxDIG
 L68AD	LDY	boardY	; are we on last line?
 	CPY	#lvlHEIGHT-1
 	BCS	L689E
@@ -1364,20 +1370,20 @@ L68AD	LDY	boardY	; are we on last line?
 	BNE	L6936
 	JSR	calcSPRITEXY
 	JSR	drawSPRITEXY
-	JSR	L6C13
-	JSR	L6C26
-	LDY	$A0
+	JSR	heroNEXTSTEPX
+	JSR	heroNEXTSTEPY
+	LDY	idxDIG
 	LDA	L6992,Y
 	LDX	L699F,Y
 	JSR	getNOTE
-	LDX	$A0
+	LDX	idxDIG
 	LDA	#$08
 	CPX	#$12
 	BCS	L68F3
 	LDA	#$0E
 L68F3	STA	heroINDEX
-	JSR	L6C02
-	LDX	$A0
+	JSR	checkCOLLISION
+	LDX	idxDIG
 	CPX	#$18
 	BEQ	L6962
 	CPX	#$0C
@@ -1390,7 +1396,7 @@ L68F3	STA	heroINDEX
 	JSR	getXY
 	PLA
 	JSR	drawSPRITEXY
-	LDX	$A0
+	LDX	idxDIG
 L6914	LDA	L697A,X
 	PHA
 	LDX	boardX
@@ -1402,10 +1408,10 @@ L6914	LDA	L697A,X
 	PLA
 	JSR	drawSPRXYCOLLISION
 	INC	theY
-	LDX	$A0
+	LDX	idxDIG
 	LDA	L6986,X
 	JSR	coutHGR1
-	INC	$A0
+	INC	idxDIG
 	CLC
 	RTS
 
@@ -1417,7 +1423,7 @@ L6936	LDY	boardY
 	STY	theX
 	LDA	#$01
 	JSR	coutHGR1
-	LDX	$A0
+	LDX	idxDIG
 	CPX	#$0C
 	BEQ	L695C
 	DEX
@@ -1431,13 +1437,13 @@ L6936	LDY	boardY
 	JSR	drawSPRITEXY
 
 L695C	LDA	#$00
-	STA	$9C
+	STA	fgHOLE
 	SEC
 	RTS
 
-L6962	LDX	boardX
+L6962	LDX	boardX	; we're digging
 	INX
-	JMP	L6C39
+	JMP	addNEWHOLE
 
 * Encha”nement des sprites
 
@@ -1561,7 +1567,7 @@ L69F2	LDA	demoKEY	; first entry is the fisrt key
 	AND	#$0F
 	TAX
 	LDA	tblDEMO2KEY,X
-	STA	$9E
+	STA	theKEY1
 	LDA	demoKEY
 	LSR
 	LSR
@@ -1569,12 +1575,16 @@ L69F2	LDA	demoKEY	; first entry is the fisrt key
 	LSR
 	TAX
 	LDA	tblDEMO2KEY,X
-	STA	$9F	; second key
+	STA	theKEY2	; second key
 	DEC	demoREPEAT
 	RTS
 
 *                        0123456
 tblDEMO2KEY	ASC	"IJKLOU "
+
+*-----------------------------------
+* DEMO MODE ENGINE ENTRY POINT
+*-----------------------------------
 
 L6A12	LDA	fgDEMO
 	CMP	#$01
@@ -1586,7 +1596,7 @@ L6A12	LDA	fgDEMO
 	LDA	fgINPUT
 	CMP	#chrK
 	BEQ	L6A55
-L6A28	JMP	L6AD0
+L6A28	JMP	getJOYSTICKKEY
 
 L6A2B	CPX	#chrSPC
 	BCS	L6A49
@@ -1610,8 +1620,8 @@ L6A49	LDA	fgINPUT
 	CMP	#chrJ
 	BEQ	L6A28
 	LDX	theA
-	STX	$9E
-	STX	$9F
+	STX	theKEY1
+	STX	theKEY2
 L6A55	RTS
 
 *-------------------------------
@@ -1637,6 +1647,8 @@ doEXTRAMAN
 L6A67	JSR	printMEN
 	LSR	$9D
 	JMP	L6A12
+
+*--- dead code
 
 	INC	$97
 	INC	theMEN	; man++
@@ -1732,24 +1744,25 @@ doSPEEDUP	LDA	theSPEED
 L6ACD	JMP	L6A12
 
 *-------------------------------
-* 
+* GET JOYSTICK KEY
 *-------------------------------
 
-L6AD0	LDA	BUTN1
+getJOYSTICKKEY
+	LDA	BUTN1
 	BPL	L6AD9
-	LDA	#chrU
+	LDA	#chrU	; dig
 	BNE	L6AE0
 L6AD9	LDA	BUTN0
 	BPL	L6AE5
-	LDA	#chrO
-L6AE0	STA	$9E
-	STA	$9F
+	LDA	#chrO	; dig
+L6AE0	STA	theKEY1
+	STA	theKEY2
 	RTS
 
-L6AE5	JSR	readJOYSTICK
-	LDY	theJOYX
-	LDA	joyXMAX
-	CMP	#$2E
+L6AE5	JSR	readJOYSTICK ; no keys pressed
+	LDY	theJOYX	; read joystick
+	LDA	joyXMAX	; clamp
+	CMP	#$2E	; return key
 	BEQ	L6AFA
 	CPY	joyXMAX
 	BCS	L6B03
@@ -1770,8 +1783,8 @@ L6B13	CPY	joyXMIN
 	BCC	L6B1C
 	LDA	#chrJ
 	BNE	L6B1E
-L6B1C	LDA	#$C0
-L6B1E	STA	$9F
+L6B1C	LDA	#chrA-1
+L6B1E	STA	theKEY2
 	LDY	theJOYY
 	LDA	joyYMIN
 	CMP	#$2E
@@ -1796,8 +1809,12 @@ L6B4B	CPY	joyYMAX
 	LDA	#chrK
 	BNE	L6B56
 L6B54	LDA	#chrA-1
-L6B56	STA	$9E
+L6B56	STA	theKEY1
 	RTS
+
+*----------------------------------
+* KEYS AND ASSOCIATED JUMPS
+*----------------------------------
 
 tblKEY	HEX	9E809B9281938A8B889598998D00
 
@@ -1887,12 +1904,12 @@ checkCHEST	LDA	heroSTEPX	; is sprite still in X
 L6BF3	RTS
 
 *-----------------------------------
-* 
+* STEP HERO STEP
 *-----------------------------------
 
-L6BF4	INC	heroINDEX
-	CMP	heroINDEX
-	BCC	L6BFD
+setHEROSTEP	INC	heroINDEX	; A is the first step
+	CMP	heroINDEX	; X the last
+	BCC	L6BFD	; sets the step accordingly
 L6BFA	STA	heroINDEX
 	RTS
 L6BFD	CPX	heroINDEX
@@ -1900,10 +1917,11 @@ L6BFD	CPX	heroINDEX
 	RTS
 
 *-----------------------------------
-* 
+* CHECK COLLISION
 *-----------------------------------
 
-L6C02	JSR	calcSPRITEXY
+checkCOLLISION
+	JSR	calcSPRITEXY
 	JSR	drawSPRXYCOLLISION
 	LDA	fgCOLLISION	; les sprites sont-ils entrŽs en collision ?
 	BEQ	L6C12	; non
@@ -1913,10 +1931,11 @@ L6C02	JSR	calcSPRITEXY
 L6C12	RTS
 
 *-----------------------------------
-* 
+* SET HERO NEXT STEP X
 *-----------------------------------
 
-L6C13	LDA	heroSTEPX
+heroNEXTSTEPX
+	LDA	heroSTEPX
 	CMP	#$02
 	BCC	L6C20
 	BEQ	L6C25
@@ -1927,10 +1946,11 @@ L6C20	INC	heroSTEPX
 L6C25	RTS
 
 *-----------------------------------
-* 
+* SET HERO NEXT STEP Y
 *-----------------------------------
 
-L6C26	LDA	heroSTEPY
+heroNEXTSTEPY
+	LDA	heroSTEPY
 	CMP	#$02
 	BCC	L6C33
 	BEQ	L6C38
@@ -1941,11 +1961,11 @@ L6C33	INC	heroSTEPY
 L6C38	RTS
 
 *-----------------------------------
-* 
+* ADD A NEW HOLE
 *-----------------------------------
 
-L6C39	LDA	#$00
-	STA	$9C
+addNEWHOLE	LDA	#$00	; tell we're digging
+	STA	fgHOLE
 	LDY	boardY
 	INY
 	STX	theX
@@ -1954,7 +1974,7 @@ L6C39	LDA	#$00
 	STA	ptrBOARD
 	LDA	tblBOARDALLH,Y
 	STA	ptrBOARD+1
-	LDA	#sprEMPTY
+	LDA	#sprEMPTY	; make the hole visible
 	LDY	theX
 	STA	(ptrBOARD),Y
 	JSR	coutHGR1
@@ -1964,7 +1984,7 @@ L6C39	LDA	#$00
 	LDA	#sprEMPTY
 	JSR	coutHGR1
 	INC	theY
-	LDX	#$FF
+	LDX	#$FF	; add the hole to the list
 L6C67	INX
 	CPX	#sizeHOLE-2
 	BEQ	L6C81
@@ -1974,7 +1994,7 @@ L6C67	INX
 	STA	tblHOLEY,X
 	LDA	theX
 	STA	tblHOLEX,X
-	LDA	#$B4
+	LDA	#$B4	; its tempo
 	STA	tblHOLET,X
 	SEC
 L6C81	RTS
@@ -3367,7 +3387,7 @@ displayHIGHSCORES
 	LDX	#$FF
 	LDY	#$FF
 	LDA	#$04
-	STA	$A1
+	STA	counter
 L77B7	LDA	fgINPUT
 	CMP	#chrK
 	BEQ	L77C7
@@ -3381,7 +3401,7 @@ L77C7	LDA	KBD
 	BNE	L77B7
 	DEY
 	BNE	L77B7
-	DEC	$A1
+	DEC	counter
 	BNE	L77B7
 L77D6	STA	KBDSTROBE
 	STA	TXTPAGE1
@@ -5025,7 +5045,7 @@ L85E7	LDA	#>HGR1
 
 L85F3	STA	bsDATA
 L85F6	LDA	#$68
-	STA	$A1
+	STA	counter
 	LDA	bsDATA
 	BNE	L8601
 	LDA	#$0A
@@ -5033,16 +5053,16 @@ L8601	JSR	coutHGR2
 L8604	LDA	KBD
 	BMI	L8628
 	JSR	checkMOVEMENT
-	DEC	$A1
+	DEC	counter
 	BNE	L8604
 	LDA	#$00
 	JSR	coutHGR2
 	LDA	#$68
-	STA	$A1
+	STA	counter
 L8619	LDA	KBD
 	BMI	L8628
 	JSR	checkMOVEMENT
-	DEC	$A1
+	DEC	counter
 	BNE	L8619
 	JMP	L85F6
 
@@ -5190,7 +5210,7 @@ L86F9	LDA	ptrSTRSND+1
 blinkSPRITE
 	STA	bsDATA
 L8703	LDA	#$68
-	STA	$A1
+	STA	counter
 	LDA	#sprEMPTY
 	LDX	bsDATA
 	BNE	L8710
@@ -5200,17 +5220,17 @@ L8713	LDA	KBD	; key pressed?
 	BMI	L873C	; yes
 	JSR	checkMOVEMENT	; buttons pressed?
 	BCS	L873C	; yes
-	DEC	$A1
+	DEC	counter
 	BNE	L8713
 	LDA	bsDATA	; output sprite
 	JSR	coutHGR1
 	LDA	#$68	; redo the wait
-	STA	$A1
+	STA	counter
 L872B	LDA	KBD
 	BMI	L873C
 	JSR	checkMOVEMENT
 	BCS	L873C
-	DEC	$A1
+	DEC	counter
 	BNE	L872B
 	JMP	L8703
 

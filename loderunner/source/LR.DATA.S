@@ -78,7 +78,7 @@ tblLADDERIY	ds	sizeLI	; que 45
 sizeFOE	=	8	; on pourrait avoir 8 ennemis
 tblFOEX	ds	sizeFOE	; $0C60 mais le jeu n'en autorise
 tblFOEY	ds	sizeFOE	; que 5
-L0C70	ds	sizeFOE
+tblFOEACTION ds	sizeFOE
 tblFOESTEPX	ds	sizeFOE	; animation step in x-coord
 tblFOESTEPY	ds	sizeFOE	; animation step in y-coord
 tblFOEINDEX	ds	sizeFOE	; animation index

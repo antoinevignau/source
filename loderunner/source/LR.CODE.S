@@ -78,7 +78,7 @@ foeX	=	$12
 foeY	=	$13
 foeINDEX	=	$14
 foeLEFTRIGHT	=	$15
-foeC70	=	$16
+foeACTION	=	$16
 foeSTEPX	=	$17	; coordinate
 foeSTEPY	=	$18	; coordinate
 idxFOE	=	$19	; current foe index
@@ -333,20 +333,20 @@ L60F5	LDA	boardY	; are we on top row
 	CMP	#$02
 	BNE	L6107
 	LDA	nbCHEST	; are there chests left?
-	BEQ	L611A
+	BEQ	L611A	; no
 	CMP	#$FF
-	BEQ	L611A	; we won
+	BEQ	L611A	; no, we won
 	
-L6107	JSR	L75F4
+L6107	JSR	checkHOLE	; are there holes active?
 	LDA	fgPLAY	; are we dead?
 	BEQ	L613F	; yes
 	JSR	playMELODY
-	JSR	L6C82
-	LDA	fgPLAY
-	BEQ	L613F
-	BNE	L60E4	; loop
+	JSR	handleFOE	; handle the foes
+	LDA	fgPLAY	; am I dead?
+	BEQ	L613F	; yes...
+	BNE	L60E4	; no, loop
 	
-L611A	INC	theLEVEL
+L611A	INC	theLEVEL	; next level, no chests left
 	INC	intLEVEL
 	INC	theMEN	; man++
 	BNE	L6124
@@ -732,7 +732,7 @@ L63F8	CMP	#sprFOE
 	LDA	theY
 	STA	tblFOEY,X
 	LDA	#$00
-	STA	L0C70,X
+	STA	tblFOEACTION,X
 	STA	tblFOEINDEX,X
 	LDA	#$02
 	STA	tblFOESTEPX,X	; x-step movement
@@ -1263,7 +1263,7 @@ L67E7	LDY	boardY	; are we on last line?
 	CPY	#lvlHEIGHT-1
 	BCS	L67D8
 	INY
-	JSR	L884B
+	JSR	setBOARDLINEPOINTERS
 	LDY	boardX	; are we on first column?
 	BEQ	L67D8
 	DEY
@@ -1271,7 +1271,7 @@ L67E7	LDY	boardY	; are we on last line?
 	CMP	#sprWALL	; a wall?
 	BNE	L67D8
 	LDY	boardY	; yes
-	JSR	L884B
+	JSR	setBOARDLINEPOINTERS
 	LDY	boardX
 	DEY
 	LDA	(ptrBOARD),Y
@@ -1368,7 +1368,7 @@ L68AD	LDY	boardY	; are we on last line?
 	CPY	#lvlHEIGHT-1
 	BCS	L689E
 	INY
-	JSR	L884B
+	JSR	setBOARDLINEPOINTERS
 	LDY	boardX	; are we on lat column?
 	CPY	#lvlWIDTH-1
 	BCS	L689E
@@ -1377,7 +1377,7 @@ L68AD	LDY	boardY	; are we on last line?
 	CMP	#sprWALL	; do we have a wall?
 	BNE	L689E
 	LDY	boardY
-	JSR	L884B
+	JSR	setBOARDLINEPOINTERS
 	LDY	boardX
 	INY
 	LDA	(ptrBOARD),Y
@@ -2021,7 +2021,7 @@ L6C81	RTS
 * 
 *-----------------------------------
 
-L6C82	LDX	nbFOE
+handleFOE	LDX	nbFOE	; no foe, skip
 	BEQ	L6CA6
 	INC	$64
 	LDY	$64
@@ -2033,7 +2033,7 @@ L6C92	LDA	|$0060,Y
 	STA	$63
 L6C97	LSR	$63
 	BCC	L6CA2
-	JSR	L6CDB
+	JSR	doFOEACTION
 	LDA	fgPLAY
 	BEQ	L6CA6
 L6CA2	LDA	$63
@@ -2078,18 +2078,18 @@ seqFOE	DB	$08	; 0 - foe runs left 1
 * 
 *-----------------------------------
 
-L6CDB	INC	idxFOE
+doFOEACTION	INC	idxFOE
 	LDX	nbFOE
 	CPX	idxFOE
 	BCS	L6CE7
 	LDX	#$01
 	STX	idxFOE
 L6CE7	JSR	loadFOEDATA
-	LDA	foeC70
+	LDA	foeACTION
 	BMI	L6D08
 	BEQ	L6D08
-	DEC	foeC70
-	LDY	foeC70
+	DEC	foeACTION
+	LDY	foeACTION
 	CPY	#$0D
 	BCS	L6CFB
 	JMP	L6E65
@@ -2146,7 +2146,7 @@ L6D61	JMP	L6E85
 
 L6D64	JSR	calcFOESPRITEXY
 	JSR	drawSPRITEXY
-	JSR	L7582
+	JSR	foeNEXTSTEPX
 	LDA	#$06	; foe falls left
 	LDY	foeLEFTRIGHT
 	BMI	L6D75
@@ -2169,11 +2169,11 @@ L6D75	STA	foeINDEX
 	LDA	(ptrBBACK),Y
 	CMP	#sprWALL
 	BNE	L6DB7
-	LDA	foeC70
+	LDA	foeACTION
 	BPL	L6DA2
 	DEC	nbCHEST
 L6DA2	LDA	$5F
-	STA	foeC70
+	STA	foeACTION
 	LDY	#$00	; we trapped a foe
 	LDA	#$75
 	JSR	printSCORE
@@ -2217,7 +2217,7 @@ L6DE1	STA	(ptrBOARD),Y
 L6E02	LDA	(ptrBBACK),Y
 	CMP	#sprWALL
 	BNE	L6E58
-	LDA	foeC70
+	LDA	foeACTION
 	BPL	L6E58
 	LDY	foeY
 	DEY
@@ -2252,7 +2252,7 @@ L6E46	LDY	foeY
 	LDA	tblBOARDALLH,Y
 	STA	ptrBOARD+1
 	LDA	#$00
-	STA	foeC70
+	STA	foeACTION
 	LDY	foeX
 L6E58	LDA	#sprFOE
 	STA	(ptrBOARD),Y
@@ -2264,7 +2264,7 @@ L6E65	CPY	#$07
 	BCC	L6E85
 	JSR	calcFOESPRITEXY
 	JSR	drawSPRITEXY
-	LDY	foeC70
+	LDY	foeACTION
 	LDA	L6E7F-7,Y
 	STA	foeSTEPX
 L6E76	JSR	calcFOESPRITEXY
@@ -2290,10 +2290,10 @@ L6E97	DA	saveFOEDATA-1	; 0
 	DA	L6EAC-1	; 3
 	DA	L6F39-1	; 4
 
-L6EA1	LDA	foeC70
+L6EA1	LDA	foeACTION
 	BEQ	L6EA9
 	BMI	L6EA9
-	INC	foeC70
+	INC	foeACTION
 L6EA9	JMP	saveFOEDATA
 
 *--- 3
@@ -2320,7 +2320,7 @@ L6EAC	LDY	foeSTEPY
 	BEQ	L6EA1
 L6ED5	JSR	calcFOESPRITEXY
 	JSR	drawSPRITEXY
-	JSR	L7582
+	JSR	foeNEXTSTEPX
 	LDY	foeY
 	LDA	tblBOARDALLL,Y
 	STA	ptrBOARD
@@ -2331,7 +2331,7 @@ L6ED5	JSR	calcFOESPRITEXY
 	STA	ptrBBACK+1
 	DEC	foeSTEPY
 	BPL	L6F26
-	JSR	L753E
+	JSR	checkDROPCHEST
 	LDY	foeX
 	LDA	(ptrBBACK),Y
 	CMP	#$01
@@ -2385,7 +2385,7 @@ L6F60	JMP	saveFOEDATA
 
 L6F63	JSR	calcFOESPRITEXY
 	JSR	drawSPRITEXY
-	JSR	L7582
+	JSR	foeNEXTSTEPX
 	LDY	foeY
 	LDA	tblBOARDALLL,Y
 	STA	ptrBOARD
@@ -2398,7 +2398,7 @@ L6F63	JSR	calcFOESPRITEXY
 	LDA	foeSTEPY
 	CMP	#$05
 	BCC	L6FB9
-	JSR	L753E
+	JSR	checkDROPCHEST
 	LDY	foeX
 	LDA	(ptrBBACK),Y
 	CMP	#sprWALL
@@ -2451,12 +2451,12 @@ L6FEE	JMP	saveFOEDATA
 
 L6FF1	JSR	calcFOESPRITEXY
 	JSR	drawSPRITEXY
-	JSR	L7595
+	JSR	foeNEXTSTEPY
 	LDA	#$FF
 	STA	foeLEFTRIGHT
 	DEC	foeSTEPX
 	BPL	L7026
-	JSR	L753E
+	JSR	checkDROPCHEST
 	LDY	foeX
 	LDA	(ptrBBACK),Y
 	CMP	#sprWALL
@@ -2518,14 +2518,14 @@ L707B	JMP	saveFOEDATA
 
 L707E	JSR	calcFOESPRITEXY
 	JSR	drawSPRITEXY
-	JSR	L7595
+	JSR	foeNEXTSTEPY
 	LDA	#$01
 	STA	foeLEFTRIGHT
 	INC	foeSTEPX
 	LDA	foeSTEPX
 	CMP	#$05
 	BCC	L70B7
-	JSR	L753E
+	JSR	checkDROPCHEST
 	LDY	foeX
 	LDA	(ptrBBACK),Y
 	CMP	#sprWALL
@@ -2568,7 +2568,7 @@ L70D8	STX	tempX4
 	LDA	(ptrBBACK),Y
 	CMP	#sprWALL
 	BNE	L70F7
-	LDA	foeC70
+	LDA	foeACTION
 	BEQ	L70F7
 	BMI	L70F7
 	LDA	#$03	; action 3
@@ -3115,12 +3115,12 @@ L74F7	LDA	foeSTEPX
 	LDA	(ptrBBACK),Y
 	CMP	#$07
 	BNE	L753D
-	LDA	foeC70
+	LDA	foeACTION
 	BMI	L753D
 	LDA	#$FF
 	SEC
 	SBC	tempX6
-	STA	foeC70
+	STA	foeACTION
 	LDA	#sprEMPTY
 	STA	(ptrBBACK),Y
 	LDY	foeY
@@ -3135,11 +3135,17 @@ L74F7	LDA	foeSTEPX
 	JMP	drawSPRITEXY
 L753D	RTS
 
-L753E	LDA	foeC70
-	BPL	L7573
-	INC	foeC70
+*-----------------------------------
+* FOE DROPS CHEST
+*-----------------------------------
+
+checkDROPCHEST
+	LDA	foeACTION
+	BPL	L7573	; skip if positive
+	INC	foeACTION	; here is negative
 	BNE	L7573
-	LDY	foeY
+
+	LDY	foeY	; here if 0
 	STY	theY
 	LDA	tblBOARDALLL,Y
 	STA	ptrBBACK
@@ -3148,18 +3154,18 @@ L753E	LDA	foeC70
 	LDY	foeX
 	STY	theX
 	LDA	(ptrBBACK),Y
-	CMP	#$00
+	CMP	#sprEMPTY
 	BNE	L7571
-	LDA	#$07
+	LDA	#sprCHEST
 	STA	(ptrBBACK),Y
 	JSR	coutHGR2
 	LDY	theY
 	LDX	theX
 	JSR	getXY
-	LDA	#$07
+	LDA	#sprCHEST
 	JMP	drawSPRXYCOLLISION
 
-L7571	DEC	foeC70
+L7571	DEC	foeACTION
 L7573	RTS
 
 *-----------------------------------
@@ -3179,7 +3185,8 @@ L757D	CPX	foeINDEX
 * SET FOE NEXT STEP X
 *-----------------------------------
 
-L7582	LDA	foeSTEPX
+foeNEXTSTEPX
+	LDA	foeSTEPX
 	CMP	#$02
 	BCC	L758F
 	BEQ	L7594
@@ -3193,7 +3200,8 @@ L7594	RTS
 * SET FOE NEXT STEP Y
 *-----------------------------------
 
-L7595	LDA	foeSTEPY
+foeNEXTSTEPY
+	LDA	foeSTEPY
 	CMP	#$02
 	BCC	L75A2
 	BEQ	L75A7
@@ -3216,8 +3224,8 @@ saveFOEDATA	LDX	idxFOE
 	STA	tblFOESTEPX,X
 	LDA	foeSTEPY
 	STA	tblFOESTEPY,X
-	LDA	foeC70
-	STA	L0C70,X
+	LDA	foeACTION
+	STA	tblFOEACTION,X
 	LDA	foeLEFTRIGHT
 	STA	tblFOELEFTRIGHT,X
 	LDA	foeINDEX
@@ -3241,21 +3249,22 @@ loadFOEDATA	LDX	idxFOE
 	STA	foeINDEX
 	LDA	tblFOELEFTRIGHT,X
 	STA	foeLEFTRIGHT
-	LDA	L0C70,X
-	STA	foeC70
+	LDA	tblFOEACTION,X
+	STA	foeACTION
 	RTS
 
 *-----------------------------------
-* 
+* CHECK HOLE - Who/What is in the hole?
 *-----------------------------------
 
-L75F4	JSR	L7716
-	INC	tempX6
+checkHOLE	JSR	checkRESURRECT
+	INC	tempX6	; next one
 	LDA	tempX6
-	CMP	#lvlWIDTH
+	CMP	#lvlWIDTH	; ok, we browsed the line
 	BCC	L7603
-	LDA	#$00
+	LDA	#$00	; start again at column 0
 	STA	tempX6
+
 L7603	LDX	#sizeHOLE-2
 L7605	LDA	tblHOLET,X
 	STX	tempINDEX
@@ -3269,21 +3278,22 @@ L760F	DEC	tblHOLET,X
 	LDA	tblHOLEY,X
 	STA	theY
 	LDA	tblHOLET,X
-	CMP	#$14
+	CMP	#$14	; 20
 	BNE	L7639
-	LDA	#$37
+	LDA	#$37	; 1er sprite
 L7627	JSR	coutHGR2
 	LDX	theX
 	LDY	theY
 	JSR	getXY
-	LDA	#$00
+	LDA	#sprEMPTY
 	JSR	drawSPRITEXY
 L7636	JMP	L770D
 
-L7639	CMP	#$0A
+L7639	CMP	#$0A	; 10
 	BNE	L7636
-	LDA	#$38
+	LDA	#$38	; 2nd sprite
 	BNE	L7627
+
 L7641	LDX	tempINDEX
 	LDY	tblHOLEY,X
 	STY	theY
@@ -3303,38 +3313,41 @@ L7641	LDX	tempINDEX
 
 L7667	CMP	#sprHERO
 	BNE	L766D
-	LSR	fgPLAY
-L766D	CMP	#sprFOE
-	BEQ	L767A
+	LSR	fgPLAY	; the hero was in the hole... he's dead
+L766D	CMP	#sprFOE	
+	BEQ	L767A	; it was a foe
 	CMP	#sprCHEST
 	BNE	L7677
-	DEC	nbCHEST
+	DEC	nbCHEST	; a chest, remove one
 L7677	JMP	L7701
 
-L767A	LDA	#sprWALL
+*--- kill the foe
+
+L767A	LDA	#sprWALL	; put a wall
 	STA	(ptrBOARD),Y
 	STA	(ptrBBACK),Y
 	JSR	coutHGR1
 	LDA	#sprWALL
 	JSR	coutHGR2
-	LDX	nbFOE
+
+	LDX	nbFOE	; find the foe
 L768A	LDA	tblFOEX,X
 	CMP	theX
 	BNE	L76FE
 	LDA	tblFOEY,X
 	CMP	theY
 	BNE	L76FE
-	LDA	L0C70,X
+	LDA	tblFOEACTION,X	; was he holding a chest?
 	BPL	L769F
-	DEC	nbCHEST
-L769F	LDA	#$7F
-	STA	L0C70,X
+	DEC	nbCHEST	; yes, remove it
+L769F	LDA	#$7F	; no chest
+	STA	tblFOEACTION,X
 	STX	idxFOE
 	JSR	loadFOEDATA
 	JSR	calcFOESPRITEXY
 	JSR	drawSPRITEXY
 	LDX	idxFOE
-	LDY	#$01
+	LDY	#$01	; we resurrect him on line 1
 	STY	theY
 L76B5	LDY	theY
 	LDA	tblBOARDALLL,Y
@@ -3343,7 +3356,7 @@ L76B5	LDY	theY
 	STA	ptrBBACK+1
 	LDY	tempX6
 L76C3	LDA	(ptrBBACK),Y
-	CMP	#sprEMPTY
+	CMP	#sprEMPTY	; only if there is a space
 	BEQ	L76D9
 	INC	tempX6
 	LDY	tempX6
@@ -3382,7 +3395,12 @@ L770D	LDX	tempINDEX
 	JMP	L7605
 L7715	RTS
 
-L7716	LDX	nbFOE	; ennemi 0 n'existe pas
+*-----------------------------------
+* CHECK RESURRECT - Can/Do we resurrect a foe?
+*-----------------------------------
+
+checkRESURRECT
+	LDX	nbFOE	; ennemi 0 n'existe pas
 	BEQ	L7715
 	LDA	idxFOE
 	PHA
@@ -3391,7 +3409,7 @@ L771D	LDA	tblFOETEMPO,X
 	STX	idxFOE
 	JSR	loadFOEDATA
 	LDA	#$7F
-	STA	L0C70,X
+	STA	tblFOEACTION,X
 	LDA	tblFOEX,X
 	STA	theX
 	LDA	tblFOEY,X
@@ -3444,7 +3462,7 @@ resurrectFOE
 	JSR	coutHGR2
 	LDA	#$00
 	LDX	idxFOE
-	STA	L0C70,X
+	STA	tblFOEACTION,X
 	STA	tblFOETEMPO,X
 	LDA	#sprFOE
 	JSR	coutHGR1
@@ -5462,8 +5480,7 @@ L880A	LDA	ptrSTRSND+1
 * PLAY MELODY
 *-----------------------------------
 
-playMELODY
-	LDY	idxNOTE
+playMELODY	LDY	idxNOTE
 	BEQ	L8832
 	LDA	sndNOTE,Y
 	LDX	sndDURATION,Y
@@ -5480,8 +5497,8 @@ playMELODY
 L8830	SEC
 	RTS
 
-L8832	LDA	fgHEROFELL
-	BNE	L8844
+L8832	LDA	fgHEROFELL	; is the hero in a hole?
+	BNE	L8844	; yes
 	LDA	fgSPEED
 	LSR
 	INC	fgSPEED
@@ -5492,12 +5509,17 @@ L8832	LDA	fgHEROFELL
 	CLC
 	RTS
 
-L8844	LDX	theSPEED
+L8844	LDX	theSPEED	; wait....
 	JSR	doWAIT
 	CLC
 	RTS
 
-L884B	LDA	tblBOARDALLL,Y
+*-------------------------------
+* SET BOARD LINE POINTERS
+*-------------------------------
+
+setBOARDLINEPOINTERS
+	LDA	tblBOARDALLL,Y
 	STA	ptrBOARD
 	STA	ptrBBACK
 	LDA	tblBOARDALLH,Y

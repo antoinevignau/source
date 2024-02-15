@@ -79,12 +79,11 @@ sizeFOE	=	8	; on pourrait avoir 8 ennemis
 tblFOEX	ds	sizeFOE	; $0C60 mais le jeu n'en autorise
 tblFOEY	ds	sizeFOE	; que 5
 L0C70	ds	sizeFOE
-L0C78	ds	sizeFOE
-L0C80	ds	sizeFOE
-L0C88	ds	sizeFOE
-
-L0C90	ds	8
-L0C98	ds	8
+tblFOESTEPX	ds	sizeFOE	; animation step in x-coord
+tblFOESTEPY	ds	sizeFOE	; animation step in y-coord
+tblFOEINDEX	ds	sizeFOE	; animation index
+tblFOELEFTRIGHT ds	sizeFOE	; does foe runs to the left or to the right?
+tblFOETEMPO	ds	sizeFOE	; performs actions based on value
 
 sizeHOLE	=	32	; nombre de trous possibles
 tblHOLEX	ds	sizeHOLE	; $0CA0 X des trous

@@ -319,7 +319,7 @@ L60BF	LDX	#$00
 	LDA	L621D,Y
 	STA	$5F
 
-L60E4	JSR	L64BD
+L60E4	JSR	handleHERO
 	LDA	fgPLAY	; are we dead?
 	BEQ	L613F	; yes
 	JSR	playMELODY
@@ -426,7 +426,7 @@ L61DE	CMP	#$01
 	BEQ	L61E9
 L61E4	LDA	#$01
 	JSR	readSCORE
-L61E9	JSR	L786B
+L61E9	JSR	showALLSCORES
 	LDA	#$02
 	STA	fgDEMO
 	JMP	L618E
@@ -592,10 +592,11 @@ L62F7	INC	fgODDEVEN
 *-----------------------------------
 
 diskLEVEL	STA	LB7F4
-	LDA	fgDEMO
+	LDA	fgDEMO	; are we in demo mode?
 	LSR
-	BEQ	L6345
-	LDA	intLEVEL	; level
+	BEQ	diskDEMO	; yes
+	
+	LDA	intLEVEL	; no, use internal level
 	LSR
 	LSR
 	LSR
@@ -607,20 +608,21 @@ diskLEVEL	STA	LB7F4
 	AND	#$0F
 	STA	LB7ED	; sector
 
-	LDA	#<levelDISK
+	LDA	#<levelDISK	; buffer
 	STA	LB7F0
 	LDA	#>levelDISK
 	STA	LB7F0+1
 	LDA	#$00
 	STA	LB7EB
-L6338	LDY	#<LB7E8
+
+diskRWTS	LDY	#<LB7E8
 	LDA	#>LB7E8
 	jsr	callRWTS	; LoGo - JSR $0023 - Souvenir from protection
 	BCC	L6344
 	JMP	showTITLEPAGE
 L6344	RTS
 
-L6345	LDA	theLEVEL
+diskDEMO	LDA	theLEVEL	; demo mode uses levels in RAM
 	CLC
 	ADC	#>L9E00
 	STA	ptrHGR1+1
@@ -836,7 +838,7 @@ L64AF	DEC	theX
 * 
 *-----------------------------------
 
-L64BD	LDA	#$01
+handleHERO	LDA	#$01
 	STA	fgCHEST
 	LDA	fgHOLE
 	BEQ	L64CD
@@ -938,7 +940,7 @@ L6584	LDA	fgHEROFELL
 L658F	LDA	#$20
 	STA	fgSPEED
 	STA	fgHEROFELL
-	JSR	L6A12
+	JSR	getPLAYERINPUT
 
 	LDA	theKEY1
 	CMP	#chrI	; move up
@@ -1601,10 +1603,11 @@ L69F2	LDA	demoKEY	; first entry is the fisrt key
 tblDEMO2KEY	ASC	"IJKLOU "
 
 *-----------------------------------
-* DEMO MODE ENGINE ENTRY POINT
+* GAME ENGINE ENTRY POINT
 *-----------------------------------
 
-L6A12	LDA	fgDEMO
+getPLAYERINPUT
+	LDA	fgDEMO
 	CMP	#$01
 	BEQ	L69B8
 	LDX	KBD
@@ -1664,7 +1667,7 @@ doEXTRAMAN
 	DEC	theMEN	; man--
 L6A67	JSR	printMEN
 	LSR	fgGOODSTART
-	JMP	L6A12
+	JMP	getPLAYERINPUT
 
 *--- dead code
 
@@ -1680,7 +1683,7 @@ L6A67	JSR	printMEN
 doPAUSE	JSR	waitKEYDOWN
 	CMP	#$9B
 	BNE	doPAUSE
-	JMP	L6A12
+	JMP	getPLAYERINPUT
 
 *-------------------------------
 * 92 - CTRL-R - TERMINATES CURRENT GAME
@@ -1704,7 +1707,7 @@ doTOGGLESOUND
 	LDA	fgSOUND
 	EOR	#$FF
 	STA	fgSOUND
-	JMP	L6A12
+	JMP	getPLAYERINPUT
 
 *-------------------------------
 * 8A - DOWN ARROW - MOVE LEFT
@@ -1712,7 +1715,7 @@ doTOGGLESOUND
 
 doDOWNARROW	LDA	#chrJ
 	STA	fgINPUT
-	JMP	L6A12
+	JMP	getPLAYERINPUT
 
 *-------------------------------
 * 8B - UP ARROW - MOVE DOWN
@@ -1720,7 +1723,7 @@ doDOWNARROW	LDA	#chrJ
 
 doUPARROW	LDA	#chrK
 	STA	fgINPUT
-	JMP	L6A12
+	JMP	getPLAYERINPUT
 
 *-------------------------------
 * 98 - CTRL-X - FLIPS X-AXIS
@@ -1730,7 +1733,7 @@ doFLIPX	LDA	joyXMIN
 	LDX	joyXMAX
 	STA	joyXMAX
 	STX	joyXMIN
-	JMP	L6A12
+	JMP	getPLAYERINPUT
 
 *-------------------------------
 * 99 - CTRL-Y - FLIPS Y-AXIS
@@ -1740,7 +1743,7 @@ doFLIPY	LDA	joyYMIN
 	LDX	joyYMAX
 	STA	joyYMAX
 	STX	joyYMIN
-	JMP	L6A12
+	JMP	getPLAYERINPUT
 
 *-------------------------------
 * 88 - LEFT ARROW - SLOWS DOWN
@@ -1749,7 +1752,7 @@ doFLIPY	LDA	joyYMIN
 doSLOWDOWN	LDA	theSPEED
 	BEQ	L6ACD
 	DEC	theSPEED
-	JMP	L6A12
+	JMP	getPLAYERINPUT
 
 *-------------------------------
 * 95 - RIGHT ARROW - SPEEDS UP
@@ -1759,7 +1762,7 @@ doSPEEDUP	LDA	theSPEED
 	CMP	#$0F
 	BEQ	L6ACD
 	INC	theSPEED
-L6ACD	JMP	L6A12
+L6ACD	JMP	getPLAYERINPUT
 
 *-------------------------------
 * GET JOYSTICK KEY
@@ -2159,7 +2162,7 @@ L6D75	STA	foeINDEX
 	LDA	foeSTEPY
 	CMP	#$02
 	BNE	L6DB7
-	JSR	L74F7
+	JSR	foeTAKECHEST
 	LDY	foeY
 	LDA	tblBOARDALLL,Y
 	STA	ptrBBACK
@@ -2354,7 +2357,7 @@ L6F1C	LDA	#$08
 	LDA	#$04
 	STA	foeSTEPY
 	BNE	L6F29
-L6F26	JSR	L74F7
+L6F26	JSR	foeTAKECHEST
 L6F29	LDA	#$0E
 	LDX	#$0F
 	JSR	setFOESTEP
@@ -2474,7 +2477,7 @@ L701C	LDA	#sprFOE
 	LDA	#$04
 	STA	foeSTEPX
 	BNE	L7029
-L7026	JSR	L74F7
+L7026	JSR	foeTAKECHEST
 L7029	LDY	foeX
 	LDA	(ptrBBACK),Y
 	CMP	#sprBAR
@@ -2543,7 +2546,7 @@ L70AD	LDA	#sprFOE
 	LDA	#$00
 	STA	foeSTEPX
 	BEQ	L70BA
-L70B7	JSR	L74F7
+L70B7	JSR	foeTAKECHEST
 L70BA	LDY	foeX
 	LDA	(ptrBBACK),Y
 	CMP	#sprBAR
@@ -2938,8 +2941,8 @@ L73A1	LDA	tblBOARDALLL+1,Y
 	LDA	(ptrBBACK),Y
 	CMP	#sprEMPTY
 	BEQ	L742D
-	CPY	#$00
-	BEQ	L73FB
+	CPY	#$00	; first column?
+	BEQ	L73FB	; yes
 	DEY
 	LDA	(ptrBBACK),Y
 	CMP	#sprBAR
@@ -3097,10 +3100,11 @@ calcFOESPRITEXY
 	RTS
 
 *-----------------------------------
-* 
+* FOE TAKES A CHEST
 *-----------------------------------
 
-L74F7	LDA	foeSTEPX
+foeTAKECHEST
+	LDA	foeSTEPX
 	CMP	#$02
 	BNE	L753D
 	LDA	foeSTEPY
@@ -3113,11 +3117,11 @@ L74F7	LDA	foeSTEPX
 	STA	ptrBBACK+1
 	LDY	foeX
 	LDA	(ptrBBACK),Y
-	CMP	#$07
+	CMP	#sprCHEST
 	BNE	L753D
-	LDA	foeACTION
-	BMI	L753D
-	LDA	#$FF
+	LDA	foeACTION	; deja un tresor ?
+	BMI	L753D	; oui
+	LDA	#$FF	; prends-le
 	SEC
 	SBC	tempX6
 	STA	foeACTION
@@ -3131,7 +3135,7 @@ L74F7	LDA	foeSTEPX
 	LDY	theY
 	LDX	theX
 	JSR	getXY
-	LDA	#$07
+	LDA	#sprCHEST
 	JMP	drawSPRITEXY
 L753D	RTS
 
@@ -3191,9 +3195,9 @@ foeNEXTSTEPX
 	BCC	L758F
 	BEQ	L7594
 	DEC	foeSTEPX
-	JMP	L74F7
+	JMP	foeTAKECHEST
 L758F	INC	foeSTEPX
-	JMP	L74F7
+	JMP	foeTAKECHEST
 L7594	RTS
 
 *-----------------------------------
@@ -3206,9 +3210,9 @@ foeNEXTSTEPY
 	BCC	L75A2
 	BEQ	L75A7
 	DEC	foeSTEPY
-	JMP	L74F7
+	JMP	foeTAKECHEST
 L75A2	INC	foeSTEPY
-	JMP	L74F7
+	JMP	foeTAKECHEST
 L75A7	RTS
 
 *-----------------------------------
@@ -3476,7 +3480,7 @@ resurrectFOE
 *-------------------------------
 
 displayHIGHSCORES
-	JSR	L786B
+	JSR	showALLSCORES
 	LDX	#$FF
 	LDY	#$FF
 	LDA	#$04
@@ -3499,7 +3503,8 @@ L77C7	LDA	KBD
 L77D6	STA	KBDSTROBE
 	STA	TXTPAGE1
 	JSR	clearHGR2
-	LDY	#$0F
+	
+	LDY	#lvlHEIGHT-1
 	STY	theY
 L77E3	LDA	tblBOARDALLL,Y
 	STA	ptrBBACK
@@ -3508,7 +3513,7 @@ L77E3	LDA	tblBOARDALLL,Y
 	LDY	#lvlWIDTH-1
 	STY	theX
 L77F1	LDA	(ptrBBACK),Y
-	CMP	#$05
+	CMP	#sprTRAP
 	BNE	L77F9
 	LDA	#sprWALL
 L77F9	JSR	coutHGR2
@@ -3534,17 +3539,18 @@ L780A	STX	tempINDEX
 
 L7827	CMP	#$0B
 	BCC	L7833
-	LDA	#$37
+	LDA	#$37	; rebuild wall step 1
 	JSR	coutHGR2
 	JMP	L7838
 
-L7833	LDA	#$38
+L7833	LDA	#$38	; rebuild wall step 2
 	JSR	coutHGR2
+
 L7838	LDX	tempINDEX
 	DEX
 	BPL	L780A
 	LDX	nbFOE
-	BEQ	L7868
+	BEQ	L7868	; skip foe n¡0
 L7841	LDA	tblFOETEMPO,X
 	STX	tempINDEX
 	BEQ	L7863
@@ -3556,16 +3562,21 @@ L7841	LDA	tblFOETEMPO,X
 	BCS	L7863
 	CMP	#$0B
 	BCC	L785E
-	LDA	#$39
+	LDA	#$39	; foe revives step 1
 	BNE	L7860
-L785E	LDA	#$3A
+L785E	LDA	#$3A	; foe revives step 2
 L7860	JSR	coutHGR2
 L7863	LDX	tempINDEX
 	DEX
 	BNE	L7841
-L7868	JMP	L6A12
+L7868	JMP	getPLAYERINPUT
 
-L786B	JSR	clearHGR2
+*-------------------------------
+* SHOW ALL SCORES
+*-------------------------------
+
+showALLSCORES
+	JSR	clearHGR2
 	LDA	#>HGR2
 	STA	activePAGE
 	LDA	#$00
@@ -4074,7 +4085,7 @@ editCLEAR	JSR	printSTRING
 	ASC	">>CLEAR LEVEL"00
 	JSR	inputLEVEL
 	BCS	L7CB9
-	JSR	L807F
+	JSR	checkDISK
 	LDY	#$00
 	TYA
 L7CAB	STA	levelDISK,Y
@@ -4116,7 +4127,7 @@ editMOVE	JSR	printSTRING
 	ASC	8D
 	ASC	"  SOURCE DISKETTE"00
 	JSR	editWAITKEY
-	JSR	L807F
+	JSR	checkDISK
 	LDA	L824F
 	STA	intLEVEL
 	LDA	#$01	; read
@@ -4125,7 +4136,7 @@ editMOVE	JSR	printSTRING
 	ASC	8D
 	ASC	"  DESTINATION DISKETTE"00
 	JSR	editWAITKEY
-	JSR	L807F
+	JSR	checkDISK
 	LDA	L8250
 	STA	intLEVEL
 	LDA	#$02	; write
@@ -4177,7 +4188,7 @@ editINIT	JSR	printSTRING
 	STA	LB7EC
 	LDA	#$02
 	STA	LB7F4
-	JSR	L6338
+	JSR	diskRWTS
 	LDA	#$E0
 	STA	intLEVEL
 	LDA	#$01
@@ -4255,7 +4266,7 @@ editEDITLEVEL
 	JSR	drawINFOBAR	; show frame
 	LDA	#>HGR1
 	STA	activePAGE
-	JSR	L807F	; check diskette (master or data disk)
+	JSR	checkDISK	; check diskette (master or data disk)
 	LDX	#$01
 	STX	fgCHANGE
 	DEX		; mode edit
@@ -4452,13 +4463,16 @@ L8075	STA	TXTPAGE1
 	STA	theY
 	RTS
 
-L807F	LDA	#$01	; load score
+*-----------------------------------
+* CHECK DISK
+*-----------------------------------
+
+checkDISK	LDA	#$01	; load score
 	JSR	readSCORE
 	CMP	#$00	; 00 means disk not identified
 	BNE	L808E
 	JSR	tellNODATADISK
 	JMP	editMAIN
-
 L808E	CMP	#$01	; 01 means master disk
 	BNE	L8105
 	JSR	tellMASTERDISK
@@ -5073,7 +5087,7 @@ L8536	LDX	scoreoffset,Y	; permet la saisie des initiales
 	LDA	scoreoffset,Y
 	STA	L8582+1
 	STA	L85C9+1
-	JSR	L786B
+	JSR	showALLSCORES
 	LDA	#>HGR2
 	STA	activePAGE
 	LDA	$69
@@ -5141,14 +5155,14 @@ L85F6	LDA	#$68
 	STA	counter
 	LDA	bsDATA
 	BNE	L8601
-	LDA	#$0A
+	LDA	#sprCURSOR
 L8601	JSR	coutHGR2
 L8604	LDA	KBD
 	BMI	L8628
 	JSR	checkMOVEMENT
 	DEC	counter
 	BNE	L8604
-	LDA	#$00
+	LDA	#sprEMPTY
 	JSR	coutHGR2
 	LDA	#$68
 	STA	counter
@@ -5979,27 +5993,27 @@ L8B23	JSR	L8BCF
 	CLC
 	RTS
 
-L8B7A	JSR	L8CE5
+L8B7A	JSR	drawGOLINE
 	HEX	000102030405060708090A020100
-L8B8B	JSR	L8CE5
+L8B8B	JSR	drawGOLINE
 	HEX	0000010203040507090A02010000
-L8B9C	JSR	L8CE5
+L8B9C	JSR	drawGOLINE
 	HEX	00000001020304090A0201000000
-L8BAD	JSR	L8CE5
+L8BAD	JSR	drawGOLINE
 	HEX	000000000102030A020100000000
-L8BBE	JSR	L8CE5
+L8BBE	JSR	drawGOLINE
 	HEX	000000000001030A010000000000
-L8BCF	JSR	L8CE5
+L8BCF	JSR	drawGOLINE
 	HEX	0000000000000101000000000000
-L8BE0	JSR	L8CE5
+L8BE0	JSR	drawGOLINE
 	HEX	0001020A09080706050403020100
-L8BF1	JSR	L8CE5
+L8BF1	JSR	drawGOLINE
 	HEX	000001020A090705040302010000
-L8C02	JSR	L8CE5
+L8C02	JSR	drawGOLINE
 	HEX	00000001020A0904030201000000
-L8C13	JSR	L8CE5
+L8C13	JSR	drawGOLINE
 	HEX	0000000001020A03020100000000
-L8C24	JSR	L8CE5
+L8C24	JSR	drawGOLINE
 	HEX	0000000000010A03010000000000
 
 L8C35	HEX	8080808080808080808080808080
@@ -6026,7 +6040,7 @@ L8CCF	DA	L8C35-$D
 	DA	L8CB3-$D
 	DA	L8CC1-$D
 
-L8CE5	PLA		; pour afficher game over
+drawGOLINE	PLA		; pour afficher game over
 	STA	ptrDATA
 	PLA
 	STA	ptrDATA+1

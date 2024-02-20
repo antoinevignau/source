@@ -400,36 +400,59 @@ L62F7	INC	fgODDEVEN
 * LOAD/SAVE LEVEL FROM/TO DISK
 *-----------------------------------
 
-diskLEVEL	STA	LB7F4
+diskLEVEL	tax
+	
 	LDA	fgDEMO	; are we in demo mode?
 	LSR
 	BEQ	diskDEMO	; yes
 	
-	LDA	intLEVEL	; no, use internal level
-	LSR
-	LSR
-	LSR
-	LSR
-	CLC
-	ADC	#$03
-	STA	LB7EC	; track
-	LDA	intLEVEL
-	AND	#$0F
-	STA	LB7ED	; sector
+	cpx	#1
+	beq	dlLOAD
+	cpx	#2
+	bne	dlERR
 
-	LDA	#<levelDISK	; buffer
-	STA	LB7F0
-	LDA	#>levelDISK
-	STA	LB7F0+1
-	LDA	#$00
-	STA	LB7EB
+	jmp	saveLEVELS	; save all levels
 
-diskRWTS	LDY	#<LB7E8
-	LDA	#>LB7E8
-	jsr	callRWTS	; LoGo - JSR $0023 - Souvenir from protection
-	BCC	L6344
-	JMP	showTITLEPAGE
-L6344	RTS
+dlLOAD	rep	#$30	; load a level
+	pea	^ptrLEVELS
+	lda	intLEVEL
+	and	#$ff
+	xba
+	pha
+	PushLong	#levelDISK
+	PushLong	#256
+	_BlockMove
+	sep	#$30
+	rts
+
+dlERR	jmp	showTITLEPAGE
+
+*	STA	LB7F4
+*	LDA	intLEVEL	; no, use internal level
+*	LSR
+*	LSR
+*	LSR
+*	LSR
+*	CLC
+*	ADC	#$03
+*	STA	LB7EC	; track
+*	LDA	intLEVEL
+*	AND	#$0F
+*	STA	LB7ED	; sector
+*
+*	LDA	#<levelDISK	; buffer
+*	STA	LB7F0
+*	LDA	#>levelDISK
+*	STA	LB7F0+1
+*	LDA	#$00
+*	STA	LB7EB
+*
+*diskRWTS	LDY	#<LB7E8
+*	LDA	#>LB7E8
+*	jsr	callRWTS	; LoGo - JSR $0023 - Souvenir from protection
+*	BCC	L6344
+*	JMP	showTITLEPAGE
+*L6344	RTS
 
 diskDEMO	LDA	theLEVEL	; demo mode uses levels in RAM
 	CLC
@@ -444,33 +467,38 @@ L6350	LDA	(ptrHGR1),Y
 	RTS
 
 *-------------------------------
-* CALL RWTS
+* READ/WRITE SCORE FILE
 *-------------------------------
 
-readSCORE	STA	LB7F4	; command
-	LDA	#$0C
-	STA	LB7EC	; track
-	LDA	#$0F
-	STA	LB7ED	; sector
-
-	ldx	#0	; **logo**
-]lp	lda	scoreREF,x
-	sta	scorebuf,x
-	inx
-	bne	]lp
-	beq	L6381
+readSCORE	cmp	#1	; load scores file from disk
+	beq	rsLOAD
+	cmp	#2	; save scores file to disk
+	bne	rsERR
 	
-	LDA	#<scorebuf	; where to load
-	STA	LB7F0
-	LDA	#>scorebuf
-	STA	LB7F0+1
-	LDA	#$00
-	STA	LB7EB
-	LDY	#<LB7E8	; IOB table
-	LDA	#>LB7E8
-	JSR	callRWTS
-	BCC	L6381
-	JMP	showTITLEPAGE
+	jsr	saveSCORES
+	bra	L6381
+
+rsLOAD	jsr	loadSCORES
+	bra	L6381
+
+*	STA	LB7F4	; command
+*	LDA	#$0C
+*	STA	LB7EC	; track
+*	LDA	#$0F
+*	STA	LB7ED	; sector
+*	
+*	LDA	#<scorebuf	; where to load
+*	STA	LB7F0
+*	LDA	#>scorebuf
+*	STA	LB7F0+1
+*	LDA	#$00
+*	STA	LB7EB
+*	LDY	#<LB7E8	; IOB table
+*	LDA	#>LB7E8
+*	JSR	callRWTS
+*	BCC	L6381
+
+rsERR	JMP	showTITLEPAGE
 
 *--- Check disk (not a LR disk, data disk, master disk)
 
@@ -485,18 +513,20 @@ L6387	LDA	scorebuf+$F4,Y	; magic key
 	BPL	L6387
 	LDA	theMASK1
 	BEQ	L639B
-	LDA	#$00	; 0 means not a LR disk
+	LDA	#$00	; 00 means not a LR disk
 	RTS
 
-L639B	LDA	#$01	; master disk
+L639B	LDA	#$01	; 01 master disk
 	LDX	scorebuf+$FF
 	BNE	L63A4
-	LDA	#$FF	; FF means master disk
+	LDA	#$FF	; FF means data disk
 L63A4	RTS
 
-callRWTS	clc
-	rts
-	JMP	$bd00	; LoGo - ($0036) to be replaced with JMP $BD00
+*-----------------------------------
+
+*callRWTS	JMP	$bd00	; LoGo - ($0036) to be replaced with JMP $BD00
+
+LB7F4	ds	1	; The RWTS command
 
 L63A8	ASC	"LODE RUNNER"
 
@@ -3990,9 +4020,7 @@ L7CD5	JMP	editNEXT
 * M - MOVE LEVEL 
 *-------------------------------
 
-editMOVE	jmp	editLOOP	; **logo**
-
-	JSR	printSTRING
+editMOVE	JSR	printSTRING
 	ASC	8D
 	ASC	">>MOVE LEVEL"00
 	JSR	inputLEVEL
@@ -4003,108 +4031,137 @@ editMOVE	jmp	editLOOP	; **logo**
 	JSR	inputLEVEL
 	BCS	L7D5A
 	STY	L8250
-	JSR	printSTRING
-	ASC	8D
-	ASC	"  SOURCE DISKETTE"00
-	JSR	editWAITKEY
-	JSR	checkDISK
-	LDA	L824F
-	STA	intLEVEL
-	LDA	#$01	; read
-	JSR	diskLEVEL
-	JSR	printSTRING
-	ASC	8D
-	ASC	"  DESTINATION DISKETTE"00
-	JSR	editWAITKEY
-	JSR	checkDISK
-	LDA	L8250
-	STA	intLEVEL
-	LDA	#$02	; write
-	JSR	diskLEVEL
+
+*	JSR	printSTRING
+*	ASC	8D
+*	ASC	"  SOURCE DISKETTE"00
+*	JSR	editWAITKEY
+*	JSR	checkDISK
+*	LDA	L824F
+*	STA	intLEVEL
+*	LDA	#$01	; read
+*	JSR	diskLEVEL
+*	JSR	printSTRING
+*	ASC	8D
+*	ASC	"  DESTINATION DISKETTE"00
+*	JSR	editWAITKEY
+*	JSR	checkDISK
+*	LDA	L8250
+*	STA	intLEVEL
+*	LDA	#$02	; write
+*	JSR	diskLEVEL
+
+	jsr	iigsMOVELEVEL
+	
 	JMP	editLOOP
 L7D5A	JMP	editNEXT
 
 *-------------------------------
-* I - INITIALIZE DISKETTE
+
+	mx	%00
+	
+iigsMOVELEVEL
+	rep	#$30
+
+	pea	^ptrLEVELS	; set source level
+	lda	L824F
+	and	#$ff
+	xba
+	pha
+
+	pea	^ptrLEVELS	; set destination level
+	lda	L8250
+	and	#$ff
+	xba
+	pha
+	
+	PushLong	#256	; set length
+	_BlockMove
+
+	jmp	saveLEVELS	; save levels and return 8-bit
+
+	mx	%11
+	
+*-------------------------------
+* I - INITIALIZE DISKETTE => CLEAR LEVELS
 *-------------------------------
 
-editINIT	jmp	editLOOP	; **logo**
-
-	JSR	printSTRING
-	ASC	8D
-	ASC	">>INITIALIZE"8D
-	ASC	"  THIS FORMATS THE DISKETTE"8D
-	ASC	"  FOR USER CREATED LEVELS."8D
-	ASC	"  (CAUTION. IT ERASES THE"8D
-	ASC	"   ENTIRE DISKETTE FIRST)"8D8D
-	ASC	"  ARE YOU SURE (Y/N) "00
-	JSR	editWAITKEY
-	CMP	#chrY
-	BNE	L7E72
-	NOP		; NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	LDA	intLEVEL
-	PHA
-	LDA	#$04	; Init command
-	JSR	diskLEVEL
-
-	LDA	#<boot	; Save T0/S0
-	STA	LB7F0
-	LDA	#>boot
-	STA	LB7F0+1
-	LDA	#$00
-	STA	LB7ED
-	STA	LB7EC
-	LDA	#$02
-	STA	LB7F4
-	JSR	diskRWTS
-	LDA	#$E0
-	STA	intLEVEL
-	LDA	#$01
-	JSR	diskLEVEL
-	LDY	#$37
-L7E33	LDA	L8251,Y
-	STA	levelDISK,Y
-	DEY
-	BPL	L7E33
-	LDA	#$02
-	JSR	diskLEVEL
-	LDA	#$EF
-	STA	intLEVEL
-	LDA	#$01
-	JSR	diskLEVEL
-	LDY	#$20
-L7E4C	LDA	L8289,Y
-	STA	levelDISK+$B,Y
-	DEY
-	BPL	L7E4C
-	LDA	#$02
-	JSR	diskLEVEL
-	LDA	#$01
-	JSR	readSCORE
-	LDY	#$0A
-L7E61	LDA	L63A8,Y
-	STA	scorebuf+$F4,Y
-	DEY
-	BPL	L7E61
-	LDA	#$02
-	JSR	readSCORE
-	PLA
-	STA	intLEVEL
-L7E72	JMP	editLOOP
+editINIT	jmp	editLOOP
+*	JSR	printSTRING
+*	ASC	8D
+*	ASC	">>INITIALIZE"8D
+*	ASC	"  THIS FORMATS THE DISKETTE"8D
+*	ASC	"  FOR USER CREATED LEVELS."8D
+*	ASC	"  (CAUTION. IT ERASES THE"8D
+*	ASC	"   ENTIRE DISKETTE FIRST)"8D8D
+*	ASC	"  ARE YOU SURE (Y/N) "00
+*	JSR	editWAITKEY
+*	CMP	#chrY
+*	BNE	L7E72
+*	NOP		; NOP
+*	NOP
+*	NOP
+*	NOP
+*	NOP
+*	NOP
+*	NOP
+*	NOP
+*	NOP
+*	NOP
+*	NOP
+*	NOP
+*	NOP
+*	NOP
+*	NOP
+*	LDA	intLEVEL
+*	PHA
+*	LDA	#$04	; Init command
+*	JSR	diskLEVEL
+*
+*	LDA	#<boot	; Save T0/S0
+*	STA	LB7F0
+*	LDA	#>boot
+*	STA	LB7F0+1
+*	LDA	#$00
+*	STA	LB7ED
+*	STA	LB7EC
+*	LDA	#$02
+*	STA	LB7F4
+*	JSR	diskRWTS
+*	LDA	#$E0
+*	STA	intLEVEL
+*	LDA	#$01
+*	JSR	diskLEVEL
+*	LDY	#$37
+*L7E33	LDA	L8251,Y
+*	STA	levelDISK,Y
+*	DEY
+*	BPL	L7E33
+*	LDA	#$02
+*	JSR	diskLEVEL
+*	LDA	#$EF
+*	STA	intLEVEL
+*	LDA	#$01
+*	JSR	diskLEVEL
+*	LDY	#$20
+*L7E4C	LDA	L8289,Y
+*	STA	levelDISK+$B,Y
+*	DEY
+*	BPL	L7E4C
+*	LDA	#$02
+*	JSR	diskLEVEL
+*	LDA	#$01
+*	JSR	readSCORE
+*	LDY	#$0A
+*L7E61	LDA	L63A8,Y
+*	STA	scorebuf+$F4,Y
+*	DEY
+*	BPL	L7E61
+*	LDA	#$02
+*	JSR	readSCORE
+*	PLA
+*	STA	intLEVEL
+*L7E72	JMP	editLOOP
 
 *-------------------------------
 * C - CLEAR SCORE FILE 
@@ -4551,8 +4608,8 @@ L824C	RTS
 L824D	RTS
 
 L824E	DB	$85
-L824F	DB	$0F
-L8250	DB	$60
+L824F	DB	$0F	; level from
+L8250	DB	$60	; level to
 
 L8251	HEX	02110F040000FE000000000000000000
 	HEX	00000000000000000000000000000000
@@ -5438,16 +5495,16 @@ getXY	LDA	ytable,Y	;  in: board X/Y
 	TAY
 	RTS
 
-getBYBI	LDA	bytable,X
-	PHA
-	LDA	bitable,X
+getBYBI	LDA	bytable,X	;  in: board X
+	PHA		; out: A: HGR column (0..39)
+	LDA	bitable,X	;      X: sprite table (0..6)
 	TAX
 	PLA
 	RTS
 
-getXBYBI	LDA	xbytable,X
-	PHA
-	LDA	xbitable,X
+getXBYBI	LDA	xbytable,X	;  in: X: HGR x-coord
+	PHA		; out: A: HGR column (0..39)
+	LDA	xbitable,X	;      X: sprite table (0..6)
 	TAX
 	PLA
 	RTS

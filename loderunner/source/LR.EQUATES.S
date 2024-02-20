@@ -149,6 +149,9 @@ fgKEYBTN0	=	$ac	; 1: no key/btn0 pressed, 0: key/btn0 pressed
 fgCHANGE	=	$ad	; 1: no change, 0: change
 sprDATA	=	$df	; $df..$ff
 
+Debut	=	$e0	; the good old DP variables
+Arrivee	=	Debut+4
+
 chrLA	=	$88
 chrRET	=	$8d
 chrRA	=	$95

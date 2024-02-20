@@ -1,8 +1,7 @@
 *
-* La Belle Zohra
-*
-* (c) 1992, François Coulon
-* (c) 2023, Antoine Vignau & Olivier Zardini
+* Lode Runner
+* (c) 1983, Broderbund Software
+* (s) 2014, Brutal Deluxe Software
 *
 
 	mx    %00
@@ -35,8 +34,15 @@
 	
 *----------------------------------- Constantes
 
+	ext	ptrUNPACK
+	ext	ptrBACKGND
+	ext	ptrIMAGE
+	ext	ptrTITLE
+	ext	ptrLEVELS
+
 *-------------- Softswitches
 
+RDVBLBAR	=	$e0c019
 GSOS	=	$e100a8
 
 *-------------- GUI
@@ -49,12 +55,14 @@ refIsPointer =	0
 refIsHandle	=	1
 refIsResource =	2
 
-appleKey	=	$0100
-mouseDownEvt =	$0001
-mouseUpEvt	=	$0002
-keyDownEvt	=	$0003
-
+ptr012000	=	$012000
+ptrE12000	=	$e12000
 ptrSCREENE1	=	$e02000
+
+*---
+
+TRUE	=	255
+FALSE	=	0
 
 *----------------------------------- Entry point
 
@@ -76,6 +84,95 @@ ptrSCREENE1	=	$e02000
 	tdc
 	sta	myDP
 
+*--- Version du systeme
+
+	jsl	GSOS
+	dw	$202a
+	adrl	proVERS
+	
+	lda	proVERS+2
+	and	#%01111111_11111111
+	cmp	#$0402
+	bcs	okVERS
+	
+	pha
+	PushLong #verSTR1
+	PushLong #verSTR2
+	PushLong #errSTR1
+	PushLong #errSTR2
+	_TLTextMountVolume
+	pla
+	brl	meQUIT1
+
+*--- Compacte la mémoire
+
+okVERS	PushLong	#0
+	PushLong	#$8fffff
+	PushWord	myID
+	PushWord	#%11000000_00000000
+	PushLong	#0
+	_NewHandle
+	_DisposeHandle
+	_CompactMem
+
+*--- Chargement des outils
+
+	pha
+	pha
+	PushWord	mainID
+	PushWord	#refIsResource
+	PushLong	#1
+	_StartUpTools
+	PullLong	SStopREC
+	bcc	okTOOL
+	
+	pha
+	PushLong	#tolSTR1
+	PushLong	#errSTR2
+	PushLong	#errSTR1
+	PushLong	#errSTR2
+	_TLTextMountVolume
+	pla
+	brl	meQUIT1
+
+*--- Test default shadowing...
+
+okTOOL	PushWord	#0
+	_GetMasterSCB
+	pla
+	bmi	okSHADOW	; shadowing is on if bit 15 is set
+
+	lda	#^ptrE12000	; shadowing is off, use slow RAM
+	sta	ptrSCREEN+2
+
+*--- Et la musique...
+
+okSHADOW	pha
+	_SoundToolStatus
+	pla
+	bne	noSOUND
+
+	lda	#1
+	sta	fgSND
+
+noSOUND	_HideMenuBar
+	_InitCursor
+	_HideCursor
+
+	PushWord	#0
+	PushWord	#%11111111_11111111
+	PushWord	#0
+	_FlushEvents
+	pla
+
+	PushLong	#0
+	PushWord	#5	; SetDeskPat
+	PushWord	#$4000
+	PushWord	#$0000
+	_Desktop
+	pla
+	pla
+
 *----------------------------------- Exit point
 
 	lda	#theGAME
@@ -83,20 +180,247 @@ ptrSCREENE1	=	$e02000
 	lda	#^theGAME
 	stal	$302
 	
-	sep	#$30
+	ldx	#256-2	; efface la page directe
+]lp	stz	$00,x
+	dex
+	dex
+	bpl	]lp
 	
-	lda	#^ptrSCREENE1
+	sep	#$30	; MAJ le banc des pages
+	lda	ptrSCREEN+2
 	sta	ptrDATA+2
 	sta	ptrHGR1+2
 	sta	ptrHGR2+2
 	
 	brl	theGAME
 	
-*----------------------------------- Exit point
+*-----------------------------------
+* AUTRES ROUTINES
+*-----------------------------------
 
-	rep	#$30
+*----------------------------------- Open LEVELS
+
+doLOAD	jsr	saveBACK
+
+	PushWord	#30
+	PushWord	#43
+	PushLong	#strLOADFILE
+	PushLong	#0
+	PushLong	#typeLIST
+	PushLong	#replyPTR
+	_SFGetFile
+
+	jsr	loadBACK
 	
-	PushWord myID
+	lda	replyPTR
+	bne	doLOAD1
+	rts
+
+doLOAD1	jsr	copyPATH
+	jsr	loadLEVELS
+	jmp	loadSCORES
+
+*----------------------------------- Save
+
+doSAVE	jsr	saveBACK
+
+	PushWord	#25
+	PushWord	#36
+	PushLong	#strSAVEFILE
+	PushLong	#namePATH
+	PushWord	#15
+	PushLong	#replyPTR
+	_SFPutFile
+
+	jsr	loadBACK
+
+	lda	replyPTR
+	bne	doSAVE1
+	rts
+
+doSAVE1	jsr	copyPATH
+	jsr	saveLEVELS
+	jmp	saveSCORES
+
+*--- Recopie le filename du fichier de sauvegarde
+
+copyPATH	sep	#$20
+	ldx	#16-1
+]lp	lda	namePATH1,x
+	sta	pLEVELS+4,x
+	sta	pSCORES+4,x
+	dex
+	bpl	]lp
+	
+	lda	namePATH
+	inc		; add 2 chars
+	inc		; for '1/'
+	sta	pLEVELS
+	rep	#$20
+	rts
+
+*----------------------------------- Load/Save LEVELS/SCORES
+
+	mx	%00
+
+*---------------------- Load LEVELS
+
+loadLEVELS	rep	#$30
+
+	jsl	GSOS
+	dw	$2010
+	adrl	proOPEN
+	bcs	loadLEVELS9
+
+	lda	proOPEN+2
+	sta	proREAD+2
+	sta	proCLOSE+2
+	
+	jsl	GSOS
+	dw	$2012
+	adrl	proREAD
+	php
+
+	jsl	GSOS
+	dw	$2014
+	adrl	proCLOSE
+
+	plp
+	bcs	loadLEVELS9
+	sep	#$30
+	rts
+	
+	mx	%00
+
+loadLEVELS9	ldx	#0	; clear all levels
+	txa
+]lp	stal	ptrLEVELS,x
+	inx
+	inx
+	cpx	#38400
+	bcc	]lp
+	sep	#$30
+	rts
+
+	mx	%00
+
+*---------------------- Save LEVELS
+
+saveLEVELS	rep	#$30
+
+	jsl	GSOS
+	dw	$2002
+	adrl	proDESTROY
+	
+	jsl	GSOS
+	dw	$2001
+	adrl	proCREATE
+	bcs	saveLEVELS9
+
+	jsl	GSOS
+	dw	$2010
+	adrl	proOPEN
+	bcs	saveLEVELS9
+
+	lda	proOPEN+2
+	sta	proWRITE+2
+	sta	proCLOSE+2
+	
+	jsl	GSOS
+	dw	$2013
+	adrl	proWRITE
+	
+	jsl	GSOS
+	dw	$2014
+	adrl	proCLOSE
+
+saveLEVELS9	sep	#$30
+	rts
+	
+	mx	%00
+
+*---------------------- Load SCORES
+
+loadSCORES	rep	#$30
+
+	jsl	GSOS
+	dw	$2010
+	adrl	proOPENSCORES
+	bcs	loadSCORES9
+
+	lda	proOPENSCORES+2
+	sta	proREADSCORES+2
+	sta	proCLOSE+2
+	
+	jsl	GSOS
+	dw	$2012
+	adrl	proREADSCORES
+	php
+
+	jsl	GSOS
+	dw	$2014
+	adrl	proCLOSE
+
+	plp
+	bcs	loadSCORES9
+	sep	#$30
+	rts
+	
+	mx	%00
+
+loadSCORES9	ldx	#256-2
+]lp	lda	scoreEMPTY,x
+	sta	scorebuf,x
+	dex
+	dex
+	bpl	]lp
+	sep	#$30
+	rts
+	
+	mx	%00
+
+*---------------------- Save SCORES
+
+saveSCORES	rep	#$30
+
+	jsl	GSOS
+	dw	$2002
+	adrl	proDESTROYSCORES
+	
+	jsl	GSOS
+	dw	$2001
+	adrl	proCREATESCORES
+	bcs	saveSCORES9
+
+	jsl	GSOS
+	dw	$2010
+	adrl	proOPENSCORES
+	bcs	saveSCORES9
+
+	lda	proOPENSCORES+2
+	sta	proWRITESCORES+2
+	sta	proCLOSE+2
+	
+	jsl	GSOS
+	dw	$2013
+	adrl	proWRITESCORES
+	
+	jsl	GSOS
+	dw	$2014
+	adrl	proCLOSE
+
+saveSCORES9	sep	#$30
+	rts
+
+	mx	%00
+
+*----------------------------------- Quit
+
+meQUIT	PushWord #refIsHandle
+	PushLong SStopREC
+	_ShutDownTools
+
+meQUIT1	PushWord myID
 	_DisposeAll
 
 	PushWord mainID
@@ -111,34 +435,180 @@ ptrSCREENE1	=	$e02000
 	dw	$2029
 	adrl	proQUIT
 
+	brk	$bd
+
 *----------------------------------------
-* MEMOIRE
+* GFX
 *----------------------------------------
 
-make64KB	pha
-	pha
-	PushLong #$010000
-	PushWord myID
-	PushWord #%11000000_00011100
-	PushLong #0
-	_NewHandle
-	phd
-	tsc
-	tcd
-	lda   [3]
-	tax		; low in X
-	ldy   #2
-	lda   [3],y
-	txy		; low in Y
-	tax		; high in X
-	pld
-	pla		; we do not keep track of the handle
-	pla
+*----------------------------
+* unpackLZ4
+*  Unpacks a LZ4 file
+*  Uses the two pointers:
+*   - ptrUNPACK: packed img (MUST BE AT $0000)
+*   - ptrIMAGE: temp unpack zone
+*
+* Entry:
+*  A: packed data size
+*
+* Exit:
+*  lenDATA: unpacked data size
+*
+*----------------------------
+
+	mx	%00
+	
+unpackLZ4	sta	LZ4_Limit+1
+	sep	#$20
+
+	lda	ptrUNPACK+2		; Source
+	sta	LZ4_Literal_3+2
+	sta	LZ4_ReadToken+3
+	sta	LZ4_Match_1+3
+	sta	LZ4_GetLength_1+3
+
+	lda	ptrIMAGE+2		; Destination
+	sta	LZ4_Literal_3+1
+	sta	LZ4_Match_5+1
+	sta	LZ4_Match_5+2
+
+	rep	#$20
+
+*--
+
+	ldy	#0	; Init Target unpacked Data offset
+	ldx	#16	; Offset after header
+
+LZ4_ReadToken
+	LDAL	$AA0000,X	; Read Token Byte
+	INX
+	STA	LZ4_Match_2+1
+	
+*----------------
+
+LZ4_Literal
+	AND	#$00F0	; >>> Process Literal Bytes <<<
+	BEQ	LZ4_Limit	; No Literal
+	CMP	#$00F0
+	BNE	LZ4_Literal_1
+	JSR	LZ4_GetLengthLit	; Compute Literal Length with next bytes
+	BRA	LZ4_Literal_2
+LZ4_Literal_1
+	LSR		; Literal Length use the 4 bit
+	LSR
+	LSR
+	LSR
+
+LZ4_Literal_2
+	DEC		; Copy A+1 Bytes
+LZ4_Literal_3
+	MVN	$AA,$BB	; Copy Literal Bytes from packed data buffer
+	PHK		; X and Y are auto incremented
+	PLB
+
+*----------------
+
+LZ4_Limit	CPX	#$AAAA	; End Of Packed Data buffer ?
+	BEQ	LZ4_End
+
+*----------------
+
+LZ4_Match	TYA		; >>> Process Match Bytes <<<
+	SEC
+LZ4_Match_1	SBCL	$AA0000,X	; Match Offset
+	INX
+	INX
+	STA	LZ4_Match_4+1
+
+LZ4_Match_2	LDA	#$0000	; Current Token Value
+	AND	#$000F
+	CMP	#$000F
+	BNE	LZ4_Match_3
+	JSR	LZ4_GetLengthMat	; Compute Match Length with next bytes
+LZ4_Match_3	CLC
+	ADC	#$0003	; Minimum Match Length is 4 (-1 for the MVN)
+	PHX
+LZ4_Match_4	LDX	#$AAAA	; Match Byte Offset
+LZ4_Match_5	MVN	$BB,$BB	; Copy Match Bytes from unpacked data buffer
+	PHK		; X and Y are auto incremented
+	PLB
+	PLX
+	BRA	LZ4_ReadToken
+
+*----------------
+
+LZ4_GetLengthLit
+	LDA	#$000F	; Compute Variable Length (Literal or Match)
+LZ4_GetLengthMat
+	STA	LZ4_GetLength_2+1
+LZ4_GetLength_1
+	LDAL	$AA0000,X	; Read Length Byte
+	INX
+	AND	#$00FF
+	CMP	#$00FF
+	BNE	LZ4_GetLength_3
+	CLC
+LZ4_GetLength_2
+	ADC	#$000F
+	STA	LZ4_GetLength_2+1
+	BRA	LZ4_GetLength_1
+LZ4_GetLength_3
+	ADC	LZ4_GetLength_2+1
+	RTS
+
+*----------------
+
+LZ4_End	sty	lenDATA		; Y = length of unpacked data
+	rts
+
+*---
+
+lenDATA	ds	4
+
+*-----------------------------------
+* SAVE THE SHR SCREEN
+*-----------------------------------
+
+saveBACK	_HideCursor
+
+	PushLong	ptrSCREEN
+	PushLong	#ptrBACKGND
+	PushLong	#32768
+	_BlockMove
+	
+exitBACK	_ShowCursor
+	rts
+
+*-----------------------------------
+* RESTORE THE SHR SCREEN
+*-----------------------------------
+
+loadBACK	_HideCursor
+
+	PushLong	#ptrBACKGND
+	PushLong	ptrSCREEN
+	PushLong	#32768
+	_BlockMove
+
+	_ShowCursor
 	rts
 
 *----------------------------------------
 * DATA
 *----------------------------------------
+
+fgSND	ds	2
+
+*----------------------- Tool locator
+
+verSTR1	str	'System 6.0.1 Required!'
+verSTR2	str	'Press a key to quit'
+tolSTR1	str	'Error while loading tools'
+memSTR1	str	'Cannot allocate memory'
+filSTR1	str	'Cannot load file'
+errSTR1	str	'Quit'
+errSTR2	str	''
+errSTR3	str	'Continue'
 
 *----------------------- Memory manager
 
@@ -146,7 +616,83 @@ mainID	ds	2	; app ID
 myID	ds	2	; user ID
 myDP	ds	2
 
+SStopREC	ds	4
+
+ptrSCREEN	adrl	ptr012000
+
 *----------------------- GS/OS
+
+*--- LEVELS
+
+proCREATE	dw	7	; pcount
+	adrl	pLEVELS	; pathname
+	dw	$c3	; access_code
+	dw	$5d	; file_type
+	adrl	$8022	; aux_type
+	ds	2	; storage_type
+	adrl	38400	; eof
+	ds	4	; resource_eof
+
+proDESTROY	dw	1	; pcount
+	adrl	pLEVELS	; pathname
+
+proOPEN	dw	2
+	ds	2
+	adrl	pLEVELS
+
+proREAD	dw	4	; 0 - nb parms
+	ds	2	; 2 - file id
+	adrl	ptrLEVELS	; 4 - pointer
+	adrl	38400	; 8 - length
+	ds	4	; C - length read
+
+proWRITE	dw	5	; 0 - pcount
+	ds	2	; 2 - ref_num
+	adrl	ptrLEVELS	; 4 - data_buffer
+	adrl	38400	; 8 - request_count
+	ds	4	; C - transfer_count
+	dw	1	; cache_priority
+
+*--- SCORES
+
+proCREATESCORES
+	dw	7	; pcount
+	adrl	pSCORES	; pathname
+	dw	$c3	; access_code
+	dw	$5d	; file_type
+	adrl	$8023	; aux_type
+	ds	2	; storage_type
+	adrl	256	; eof
+	ds	4	; resource_eof
+
+proDESTROYSCORES
+	dw	1	; pcount
+	adrl	pLEVELS	; pathname
+
+proOPENSCORES
+	dw	2
+	ds	2
+	adrl	pSCORES
+	
+proREADSCORES
+	dw	4	; 0 - nb parms
+	ds	2	; 2 - file id
+	adrl	scorebuf	; 4 - pointer
+	adrl	256	; 8 - length
+	ds	4	; C - length read
+
+proWRITESCORES
+	dw	5	; 0 - pcount
+	ds	2	; 2 - ref_num
+	adrl	scorebuf	; 4 - data_buffer
+	adrl	256	; 8 - request_count
+	ds	4	; C - transfer_count
+	dw	1	; cache_priority
+
+*--- Global
+
+proCLOSE	dw	1
+	ds	2
 
 proQUIT	dw	2	; pcount
 	ds	4	; pathname
@@ -155,14 +701,37 @@ proQUIT	dw	2	; pcount
 proVERS	dw	1	; pcount
 	ds	2	; version
 
+*---------- Files
+
+pLEVELS	strl	'1/levels/loderunner'
+pSCORES	strl	'1/levels/loderunner.sc'
+
+*----------------------- Standard File Toolset
+
+strLOADFILE	str	'Load which file?'
+strSAVEFILE	str	'Save as...'
+
+typeLIST	hex	01
+	hex	5d	; Game/Edu files
+replyPTR	ds	2	; 0 good
+	ds	2	; 2 fileType
+	ds	2	; 4 auxFileType
+namePATH
+	hex	06	; 6 fileName
+namePATH1
+	asc	'Levels'	; 7 fileName (16 normally)
+	ds	9
+loadPATH
+	ds	1	; 22 fullPathname (string length)
+loadPATH1
+	ds	129	; 23 fullPathname (128 normally)
+
 *----------------------------------------
 * LES AUTRES FICHIERS
 *----------------------------------------
 
-	ds	\
-
 	put	LR.Code.s
-	put	LR.RWTS.s
+*	put	LR.RWTS.s
 	put	LR.Data.s
 	put	LR.Tables.s
 	put	LR.Sprites.s
@@ -177,7 +746,7 @@ proVERS	dw	1	; pcount
 	asc	" Antoine Vignau "0d
 	asc	"Olivier  Zardini"0d
 	asc	"                "0d
-	asc	"   Noel  2023   "0d
+	asc	"  Paques  2024  "0d
 	asc	"                "0d
 	asc	"----------------"0d
 	

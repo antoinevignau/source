@@ -39,7 +39,9 @@
 	ext	ptrIMAGE
 	ext	ptrTITLE
 	ext	ptrLEVELS
-
+	ext	ptrSCORES
+	ext	HGR2
+	
 *-------------- Softswitches
 
 RDVBLBAR	=	$e0c019
@@ -57,7 +59,6 @@ refIsResource =	2
 
 ptr012000	=	$012000
 ptrE12000	=	$e12000
-ptrSCREENE1	=	$e02000
 
 *---
 
@@ -185,15 +186,14 @@ noSOUND	_HideMenuBar
 	dex
 	dex
 	bpl	]lp
-	
+
 	sep	#$30	; MAJ le banc des pages
 	lda	ptrSCREEN+2
-	sta	ptrDATA+2
 	sta	ptrHGR1+2
-	sta	ptrHGR2+2
-	
 	brl	theGAME
-	
+
+	mx	%00	; The 16-bit world
+
 *-----------------------------------
 * AUTRES ROUTINES
 *-----------------------------------
@@ -217,8 +217,7 @@ doLOAD	jsr	saveBACK
 	rts
 
 doLOAD1	jsr	copyPATH
-	jsr	loadLEVELS
-	jmp	loadSCORES
+	jmp	loadLEVELS
 
 *----------------------------------- Save
 
@@ -239,8 +238,7 @@ doSAVE	jsr	saveBACK
 	rts
 
 doSAVE1	jsr	copyPATH
-	jsr	saveLEVELS
-	jmp	saveSCORES
+	jmp	saveLEVELS
 
 *--- Recopie le filename du fichier de sauvegarde
 
@@ -248,7 +246,6 @@ copyPATH	sep	#$20
 	ldx	#16-1
 ]lp	lda	namePATH1,x
 	sta	pLEVELS+4,x
-	sta	pSCORES+4,x
 	dex
 	bpl	]lp
 	
@@ -297,8 +294,17 @@ loadLEVELS9	ldx	#0	; clear all levels
 ]lp	stal	ptrLEVELS,x
 	inx
 	inx
-	cpx	#38400
+	cpx	#38400+256
 	bcc	]lp
+	
+	ldx	#256-2
+]lp	lda	scoreEMPTY,x
+	sta	scorebuf,x
+	stal	ptrSCORES,x
+	dex
+	dex
+	bpl	]lp
+
 	sep	#$30
 	rts
 
@@ -337,81 +343,6 @@ saveLEVELS	rep	#$30
 saveLEVELS9	sep	#$30
 	rts
 	
-	mx	%00
-
-*---------------------- Load SCORES
-
-loadSCORES	rep	#$30
-
-	jsl	GSOS
-	dw	$2010
-	adrl	proOPENSCORES
-	bcs	loadSCORES9
-
-	lda	proOPENSCORES+2
-	sta	proREADSCORES+2
-	sta	proCLOSE+2
-	
-	jsl	GSOS
-	dw	$2012
-	adrl	proREADSCORES
-	php
-
-	jsl	GSOS
-	dw	$2014
-	adrl	proCLOSE
-
-	plp
-	bcs	loadSCORES9
-	sep	#$30
-	rts
-	
-	mx	%00
-
-loadSCORES9	ldx	#256-2
-]lp	lda	scoreEMPTY,x
-	sta	scorebuf,x
-	dex
-	dex
-	bpl	]lp
-	sep	#$30
-	rts
-	
-	mx	%00
-
-*---------------------- Save SCORES
-
-saveSCORES	rep	#$30
-
-	jsl	GSOS
-	dw	$2002
-	adrl	proDESTROYSCORES
-	
-	jsl	GSOS
-	dw	$2001
-	adrl	proCREATESCORES
-	bcs	saveSCORES9
-
-	jsl	GSOS
-	dw	$2010
-	adrl	proOPENSCORES
-	bcs	saveSCORES9
-
-	lda	proOPENSCORES+2
-	sta	proWRITESCORES+2
-	sta	proCLOSE+2
-	
-	jsl	GSOS
-	dw	$2013
-	adrl	proWRITESCORES
-	
-	jsl	GSOS
-	dw	$2014
-	adrl	proCLOSE
-
-saveSCORES9	sep	#$30
-	rts
-
 	mx	%00
 
 *----------------------------------- Quit
@@ -643,49 +574,13 @@ proOPEN	dw	2
 proREAD	dw	4	; 0 - nb parms
 	ds	2	; 2 - file id
 	adrl	ptrLEVELS	; 4 - pointer
-	adrl	38400	; 8 - length
+	adrl	38400+256	; 8 - length
 	ds	4	; C - length read
 
 proWRITE	dw	5	; 0 - pcount
 	ds	2	; 2 - ref_num
 	adrl	ptrLEVELS	; 4 - data_buffer
-	adrl	38400	; 8 - request_count
-	ds	4	; C - transfer_count
-	dw	1	; cache_priority
-
-*--- SCORES
-
-proCREATESCORES
-	dw	7	; pcount
-	adrl	pSCORES	; pathname
-	dw	$c3	; access_code
-	dw	$5d	; file_type
-	adrl	$8023	; aux_type
-	ds	2	; storage_type
-	adrl	256	; eof
-	ds	4	; resource_eof
-
-proDESTROYSCORES
-	dw	1	; pcount
-	adrl	pLEVELS	; pathname
-
-proOPENSCORES
-	dw	2
-	ds	2
-	adrl	pSCORES
-	
-proREADSCORES
-	dw	4	; 0 - nb parms
-	ds	2	; 2 - file id
-	adrl	scorebuf	; 4 - pointer
-	adrl	256	; 8 - length
-	ds	4	; C - length read
-
-proWRITESCORES
-	dw	5	; 0 - pcount
-	ds	2	; 2 - ref_num
-	adrl	scorebuf	; 4 - data_buffer
-	adrl	256	; 8 - request_count
+	adrl	38400+256	; 8 - request_count
 	ds	4	; C - transfer_count
 	dw	1	; cache_priority
 
@@ -704,7 +599,6 @@ proVERS	dw	1	; pcount
 *---------- Files
 
 pLEVELS	strl	'1/levels/loderunner'
-pSCORES	strl	'1/levels/loderunner.sc'
 
 *----------------------- Standard File Toolset
 
@@ -731,7 +625,6 @@ loadPATH1
 *----------------------------------------
 
 	put	LR.Code.s
-*	put	LR.RWTS.s
 	put	LR.Data.s
 	put	LR.Tables.s
 	put	LR.Sprites.s

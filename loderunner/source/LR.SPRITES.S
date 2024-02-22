@@ -10,7 +10,122 @@
 * 6 - orange
 * F - blanc
 
+*--- Table of mask
+
+tblMASK  hex   fff0f0f0f0f0f0f0f0f0f0f0f0f0f0f00f000000000000000000000000000000
+         hex   0f0000000000000000000000000000000f000000000000000000000000000000
+         hex   0f0000000000000000000000000000000f000000000000000000000000000000
+         hex   0f0000000000000000000000000000000f000000000000000000000000000000
+         hex   0f0000000000000000000000000000000f000000000000000000000000000000
+         hex   0f0000000000000000000000000000000f000000000000000000000000000000
+         hex   0f0000000000000000000000000000000f000000000000000000000000000000
+         hex   0f0000000000000000000000000000000f000000000000000000000000000000
+
 *--- Table of sprites
+
+tblSPRITES
+	da	spr00
+	da	spr01
+	da	spr02
+	da	spr03
+	da	spr04
+	da	spr05
+	da	spr06
+	da	spr07
+	da	spr08
+	da	spr09
+	da	spr0A
+	da	spr0B
+	da	spr0C
+	da	spr0D
+	da	spr0E
+	da	spr0F
+	da	spr10
+	da	spr11
+	da	spr12
+	da	spr13
+	da	spr14
+	da	spr15
+	da	spr16
+	da	spr17
+	da	spr18
+	da	spr19
+	da	spr1A
+	da	spr1B
+	da	spr1C
+	da	spr1D
+	da	spr1E
+	da	spr1F
+	da	spr20
+	da	spr21
+	da	spr22
+	da	spr23
+	da	spr24
+	da	spr25
+	da	spr26
+	da	spr27
+	da	spr28
+	da	spr29
+	da	spr2A
+	da	spr2B
+	da	spr2C
+	da	spr2D
+	da	spr2E
+	da	spr2F
+	da	spr30
+	da	spr31
+	da	spr32
+	da	spr33
+	da	spr34
+	da	spr35
+	da	spr36
+	da	spr37
+	da	spr38
+	da	spr39
+	da	spr3A
+	da	spr3B
+	da	spr3C
+	da	spr3D
+	da	spr3E
+	da	spr3F
+	da	spr40
+	da	spr41
+	da	spr42
+	da	spr43
+	da	spr44
+	da	spr45
+	da	spr46
+	da	spr47
+	da	spr48
+	da	spr49
+	da	spr4A
+	da	spr4B
+	da	spr4C
+	da	spr4D
+	da	spr4E
+	da	spr4F
+	da	spr50
+	da	spr51
+	da	spr52
+	da	spr53
+	da	spr54
+	da	spr55
+	da	spr56
+	da	spr57
+	da	spr58
+	da	spr59
+	da	spr5A
+	da	spr5B
+	da	spr5C
+	da	spr5D
+	da	spr5E
+	da	spr5F
+	da	spr60
+	da	spr61
+	da	spr62
+	da	spr63
+	da	spr64
+	da	spr65
 
 tblSPRITESlow
 	db	<spr00

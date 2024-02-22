@@ -13,13 +13,17 @@
 
          ASM   LR.BANK1.S
          KND   $0000
-         SNA   Brutal
+         SNA   Broderbund
 
          ASM   LR.BANK2.S
          KND   $0000
-         SNA   Deluxe
+         SNA   Brutal
 
          ASM   LR.BANK3.S
+         KND   $0000
+         SNA   Deluxe
+
+         ASM   LR.BANK4.S
          KND   $0000
          SNA   Software
 

@@ -21,6 +21,7 @@ theGAME	JSR	checkJOYSTICK
 
 showTITLEPAGE
 	JSR	clearHGR1	; display the compressed title page
+
 	LDA	#<logo-1
 	STA	L6030+1
 	LDA	#>logo-1
@@ -29,7 +30,7 @@ showTITLEPAGE
 	STY	theY
 	STY	fgDEMO
 	STY	intLEVEL
-	LDA	#>HGR1
+	LDA	#>oldHGR1
 	STA	hgrPAGE
 	STA	activePAGE
 L6023	JSR	setHGRPOINTER
@@ -49,10 +50,10 @@ L603F	INC	theY
 	LDY	theY
 	CPY	#maxHEIGHT	; until line 192
 	BCC	L6023
-	STAl	TXTPAGE1
-	STAl	HIRES
-	STAl	MIXCLR
-	STAl	TXTCLR
+*	STA	TXTPAGE1
+*	STA	HIRES
+*	STA	MIXCLR
+*	STA	TXTCLR
 	JMP	L618E
 
 *---
@@ -93,7 +94,7 @@ L6086
 *	STX	CV
 
 L6099	JSR	clearHGRPAGES	; clear HGR pages and draw board
-	STAl	TXTPAGE1
+*	STA	TXTPAGE1
 L609F	LDX	#modeGAME
 	JSR	prepareLEVEL
 	LDA	#$00
@@ -418,6 +419,8 @@ dlLOAD	rep	#$30	; load a level
 	lda	intLEVEL
 	and	#$ff
 	xba
+	clc
+	adc	#ptrLEVELS
 	pha
 	PushLong	#levelDISK
 	PushLong	#256
@@ -475,10 +478,20 @@ readSCORE	cmp	#1	; load scores file from disk
 	cmp	#2	; save scores file to disk
 	bne	rsERR
 	
-	jsr	saveSCORES
+	ldx	#0	; copy score file
+]lp	lda	scorebuf,x
+	stal	ptrSCORES,x
+	inx
+	bne	]lp
+
+	jsr	saveLEVELS	; and save
 	bra	L6381
 
-rsLOAD	jsr	loadSCORES
+rsLOAD	ldx	#0	; copy score file
+]lp	ldal	ptrSCORES,x	; from levels in RAM
+	sta	scorebuf,x
+	inx
+	bne	]lp
 	bra	L6381
 
 *	STA	LB7F4	; command
@@ -633,25 +646,34 @@ L6450	JSR	coutHGR2	; put the char in background
 	SEC		; not ok
 	RTS
 
-*--- Level is decode for the edit mode
+*--- Level is decoded for the edit mode
 
-L6469	LDA	#>HGR1	; copy HGR1 > HGR2
-	STA	ptrHGR2+1
-	LDA	#>HGR2
-	STA	ptrHGR1+1
-	LDA	#$00
-	STA	ptrHGR2
-	STA	ptrHGR1
-	TAY
-L6478	LDA	[ptrHGR1],Y
-	STA	[ptrHGR2],Y
-	INY
-	BNE	L6478
-	INC	ptrHGR2+1
-	INC	ptrHGR1+1
-	LDX	ptrHGR1+1
-	CPX	#>HGR3	; >HGR2+$20 BUG
-	BCC	L6478
+L6469
+*	LDA	#>oldHGR1	; copy HGR1 > HGR2
+*	STA	ptrHGR2+1
+*	LDA	#>oldHGR2
+*	STA	ptrHGR1+1
+*	LDA	#$00
+*	STA	ptrHGR2
+*	STA	ptrHGR1
+*	TAY
+*L6478	LDA	(ptrHGR1),Y
+*	STA	(ptrHGR2),Y
+*	INY
+*	BNE	L6478
+*	INC	ptrHGR2+1
+*	INC	ptrHGR1+1
+*	LDX	ptrHGR1+1
+*	CPX	#>oldHGR3	; >HGR2+$20 BUG
+*	BCC	L6478
+
+	rep	#$30
+	PushLong	ptrSCREEN
+	PushLong	#HGR2
+	PushLong	#32768
+	_BlockMove
+	sep	#$30
+
 	CLC		; oookkkkk
 	RTS
 
@@ -3397,7 +3419,7 @@ L77C7	LDAl	KBD
 	DEC	counter
 	BNE	L77B7
 L77D6	STAl	KBDSTROBE
-	STAl	TXTPAGE1
+*	STA	TXTPAGE1
 	JSR	clearHGR2
 	
 	LDY	#lvlHEIGHT-1
@@ -3475,7 +3497,7 @@ L7868	JMP	getPLAYERINPUT
 
 showALLSCORES
 	JSR	clearHGR2
-	LDA	#>HGR2
+	LDA	#>oldHGR2
 	STA	activePAGE
 	LDA	#$00
 	STA	theX
@@ -3569,8 +3591,9 @@ L798C	JSR	L7B7D
 	BCS	L799A
 	JMP	L78D4
 
-L799A	STAl	TXTPAGE2
-	LDA	#>HGR1
+L799A
+*	STA	TXTPAGE2
+	LDA	#>oldHGR1
 	STA	activePAGE
 	RTS
 
@@ -3589,42 +3612,65 @@ clearHGRPAGES
 *-------------------------------
 
 drawINFOBAR
-	jmp	dibSKIP
-	
-	LDY	#$27	; met la barre bleue
+*	LDY	#$27	; met la barre bleue
 	LDA	activePAGE
-	CMP	#>HGR2
+	CMP	#>oldHGR2
 	BEQ	L79DD
-L79BB	LDA	#$AA
-	STA	$2350,Y
-	STA	$2750,Y
-	STA	$2B50,Y
-	STA	$2F50,Y
-	DEY
-	LDA	#$D5
-	STA	$2350,Y
-	STA	$2750,Y
-	STA	$2B50,Y
-	STA	$2F50,Y
-	DEY
-	BPL	L79BB
-	BMI	L79FD
 
-L79DD	LDA	#$AA	; pareil mais sur HGR2
-	STA	$4350,Y
-	STA	$4750,Y
-	STA	$4B50,Y
-	STA	$4F50,Y
-	DEY
-	LDA	#$D5
-	STA	$4350,Y
-	STA	$4750,Y
-	STA	$4B50,Y
-	STA	$4F50,Y
-	DEY
-	BPL	L79DD
+	lda	ptrSCREEN+2
+	ldx	ptrSCREEN+1
+	ldy	ptrSCREEN
+	bra	dib2
 
-dibSKIP
+L79DD	lda	#^HGR2
+	ldx	#>HGR2
+	ldy	#<HGR2
+
+dib2	sta	ptrDATA+2
+	stx	ptrDATA+1
+	sty	ptrDATA
+	
+	rep	#$30
+	ldx	#160*4	; 4 lines
+	ldy	#$6e00	; ligne 179
+	lda	#$4444	; bleu
+]lp	sta	[ptrDATA],y
+	iny
+	iny
+	dex
+	dex
+	bpl	]lp
+	sep	#$30
+
+*L79BB	LDA	#$AA	; ligne 176
+*	STA	$2350,Y
+*	STA	$2750,Y
+*	STA	$2B50,Y
+*	STA	$2F50,Y
+*	DEY
+*	LDA	#$D5
+*	STA	$2350,Y
+*	STA	$2750,Y
+*	STA	$2B50,Y
+*	STA	$2F50,Y
+*	DEY
+*	BPL	L79BB
+*	BMI	L79FD
+*
+*L79DD	LDA	#$AA	; pareil mais sur HGR2
+*	STA	$4350,Y
+*	STA	$4750,Y
+*	STA	$4B50,Y
+*	STA	$4F50,Y
+*	DEY
+*	LDA	#$D5
+*	STA	$4350,Y
+*	STA	$4750,Y
+*	STA	$4B50,Y
+*	STA	$4F50,Y
+*	DEY
+*	BPL	L79DD
+
 L79FD	LDA	#$10
 	STA	theY
 	LDA	#$00
@@ -3645,9 +3691,16 @@ setHGRPOINTER
 	LDA	xhgr,Y
 	STA	ptrHGR1
 	LDA	yhgr,Y
-	ORA	hgrPAGE
+*	ORA	hgrPAGE
 	STA	ptrHGR1+1
-	lda	#^ptrSCREENE1
+	
+	lda	hgrPAGE	; logo
+	cmp	#>oldHGR2	; set bank
+	beq	shp2
+	lda	ptrSCREEN+2	; HGR1 = ptrSCREEN+2
+	sta	ptrHGR1+2
+	rts
+shp2	lda	#^HGR2	; HGR2 = ^HGR2
 	sta	ptrHGR1+2
 	RTS
 
@@ -3656,16 +3709,18 @@ setHGRPOINTER
 *-------------------------------
 
 setHGRPOINTERS
-	LDA	xhgr,Y
+	LDA	xhgr,Y	; low
 	STA	ptrHGR1
 	STA	ptrHGR2
-	LDA	yhgr,Y
-	ORA	#>HGR1
+	LDA	yhgr,Y	; high
+*	ORA	#>oldHGR1
 	STA	ptrHGR1+1
-	EOR	#$60
+*	EOR	#$60
 	STA	ptrHGR2+1
-	lda	#^ptrSCREENE1
+
+	lda	ptrSCREEN+2	; bank
 	sta	ptrHGR1+2
+	lda	#^HGR2
 	sta	ptrHGR2+2
 	RTS
 
@@ -3673,32 +3728,52 @@ setHGRPOINTERS
 * CLEAR HGR1 
 *-------------------------------
 
-clearHGR1	LDA	#>HGR1
-	LDX	#>HGR2	; >HGR1+$20
-	BNE	L7A5B
+clearHGR1
+*	LDA	#>oldHGR1
+*	LDX	#>oldHGR2	; >HGR1+$20
+*	BNE	L7A5B
+	lda	ptrSCREEN+2
+	ldx	ptrSCREEN+1
+	ldy	ptrSCREEN
+	bra	L7A5B
 
 *-------------------------------
 * CLEAR HGR2
 *-------------------------------
 
-clearHGR2	LDA	#>HGR2
-	LDX	#>HGR3	; >HGR2+$20
+clearHGR2
+*	LDA	#>oldHGR2
+*	LDX	#>oldHGR3	; >HGR2+$20
+	lda	#^HGR2
+	ldx	#>HGR2
+	ldy	#<HGR2
 
 *--- clear now
 
-L7A5B	ldy	#^ptrSCREENE1
-	sty	ptrDATA+2
-	STA	ptrDATA+1
-	LDA	#$00
-	STA	ptrDATA
-	TAY
-	LDA	#$80
-]lp	STA	[ptrDATA],Y
-	INY
-	BNE	]lp
-	INC	ptrDATA+1
-	CPX	ptrDATA+1
-	BNE	]lp
+L7A5B
+*	STA	ptrDATA+1
+*	LDA	#$00
+*	STA	ptrDATA
+*	TAY
+*	LDA	#$80
+*]lp	STA	[ptrDATA],Y
+*	INY
+*	BNE	]lp
+*	INC	ptrDATA+1
+*	CPX	ptrDATA+1
+*	BNE	]lp
+
+	sta	ptrDATA+2	; save address
+	stx	ptrDATA+1
+	sty	ptrDATA
+	rep	#$30
+	ldy	#$7cfe	; everything but SCB and Palette
+	lda	#0
+]lp	sta	[ptrDATA],y
+	dey
+	dey
+	bpl	]lp
+	sep	#$30
 	RTS
 
 *-------------------------------
@@ -3816,7 +3891,7 @@ L7B12	STA	theUNITE
 outputCHAR	CLC		; print a char
 	ADC	#spr0
 	LDX	activePAGE
-	CPX	#>HGR2
+	CPX	#>oldHGR2
 	BEQ	L7B24
 	JSR	coutHGR1	; print HGR1
 	INC	theX
@@ -3873,7 +3948,7 @@ printCHAR	CMP	#chrRET
 	BEQ	L7B7D
 	JSR	filterCHAR
 	LDX	activePAGE
-	CPX	#>HGR2
+	CPX	#>oldHGR2
 	BEQ	L7B77
 	JSR	coutHGR1	; output in HGR1
 	INC	theX
@@ -3907,7 +3982,7 @@ enterEDITOR	LDA	#$00
 	STA	L7C76+1
 	LDA	#chrK	; force keyboard in editor
 	STA	fgINPUT
-	STAl	TXTPAGE1
+*	STA	TXTPAGE1
 	LDA	intLEVEL	; check level
 	CMP	#maxLEVEL
 	BCC	editMAIN
@@ -3915,7 +3990,7 @@ enterEDITOR	LDA	#$00
 	STA	intLEVEL
 
 editMAIN	JSR	clearHGR1	; clear HGR1
-	LDA	#>HGR1
+	LDA	#>oldHGR1
 	STA	activePAGE
 	LDA	#$00
 	STA	theX
@@ -4067,12 +4142,16 @@ iigsMOVELEVEL
 	lda	L824F
 	and	#$ff
 	xba
+	clc
+	adc	#ptrLEVELS
 	pha
 
 	pea	^ptrLEVELS	; set destination level
 	lda	L8250
 	and	#$ff
 	xba
+	clc
+	adc	#ptrLEVELS
 	pha
 	
 	PushLong	#256	; set length
@@ -4200,10 +4279,10 @@ L7EFE	JMP	editLOOP
 
 editEDITLEVEL
 	JSR	clearHGR2	; clear HGR2
-	LDA	#>HGR2
+	LDA	#>oldHGR2
 	STA	activePAGE
 	JSR	drawINFOBAR	; show frame
-	LDA	#>HGR1
+	LDA	#>oldHGR1
 	STA	activePAGE
 	JSR	checkDISK	; check diskette (master or data disk)
 	LDX	#$01
@@ -4377,7 +4456,7 @@ editSAVECHANGES
 	LDA	fgCHANGE
 	BNE	L8075
 	JSR	clearHGR2
-	LDA	#>HGR2
+	LDA	#>oldHGR2
 	STA	activePAGE
 	LDA	#$00
 	STA	theX
@@ -4387,7 +4466,7 @@ editSAVECHANGES
 	ASC	"NOT SAVED. DO YOU WISH TO"8D
 	ASC	"SAVE MODIFIED LEVEL (Y/N) "00
 	JSR	doBEEP
-	STAl	TXTPAGE2
+*	STA	TXTPAGE2
 L8062	LDA	#$00
 	JSR	L85F3
 	STAl	KBDSTROBE
@@ -4396,7 +4475,8 @@ L8062	LDA	#$00
 	CMP	#chrY
 	BNE	L8062
 	JSR	saveLEVEL
-L8075	STAl	TXTPAGE1
+L8075
+*	STA	TXTPAGE1
 	LDA	#$00
 	STA	theX
 	STA	theY
@@ -4423,7 +4503,7 @@ L808E	CMP	#$01	; 01 means master disk
 
 tellMASTERDISK
 	JSR	clearHGR2
-	LDA	#>HGR2
+	LDA	#>oldHGR2
 	STA	activePAGE
 	LDA	#$00
 	STA	theX
@@ -4440,11 +4520,11 @@ L80D8	JSR	printSTRING
 	ASC	8D8D
 	ASC	"HIT A KEY TO CONTINUE "00
 	JSR	doBEEP
-	STAl	TXTPAGE2
+*	STA	TXTPAGE2
 	LDA	#$00
 	JSR	L85F3
 	STAl	KBDSTROBE
-	STAl	TXTPAGE1
+*	STA	TXTPAGE1
 
 L8105	RTS
 
@@ -4454,7 +4534,7 @@ L8105	RTS
 
 tellNODATADISK
 	JSR	clearHGR2
-	LDA	#>HGR2
+	LDA	#>oldHGR2
 	STA	activePAGE
 	LDA	#$00
 	STA	theX
@@ -4620,37 +4700,96 @@ L8289	HEX	220F8888888888888888CCCFC4C5A0D2
 	HEX	A0
 
 *---------------------------------------
-* PRINT CHAR
+* PRINT CHAR - TOTO
 *---------------------------------------
 
 coutHGR1	STA	theA	; char in $1E
-	LDA	#>HGR1	; print HGR1
+	LDA	#>oldHGR1	; print HGR1
 	BNE	L82B4
 
 coutHGR2	STA	theA	; char in $1E
-	LDA	#>HGR2	; print HGR2
+	LDA	#>oldHGR2	; print HGR2
 
 L82B4	STA	hgrPAGE	; page in $1F
-	LDY	theY	; take Y
-	JSR	getXY
-	STY	theYSCREEN	; make it Y screen
-	LDX	theX	; take X
-	JSR	getBYBI
-	STA	theXSCREEN	; make it X screen
-	STX	sprTABLE
-	LDA	tblMASK1,X
-	STA	theMASK1
-	LDA	tblMASK2,X
-	STA	theMASK2
-	JSR	getSPRITEDATA
-	LDA	#sprHEIGHT
-	STA	nbLINES
 
-	LDX	#$00
-	LDA	sprTABLE	; derniere table de sprite?
-	CMP	#$05
-	BCS	L8301
+	rep	#$30
+	lda	#0
+	tax
+	tay
+	sep	#$30
 
+*	LDY	theY	; take Y
+*	JSR	getXY
+*	STY	theYSCREEN	; make it Y screen
+*	LDX	theX	; take X
+*	JSR	getBYBI
+*	STA	theXSCREEN	; make it X screen
+*	STX	sprTABLE
+*	LDA	tblMASK1,X
+*	STA	theMASK1
+*	LDA	tblMASK2,X
+*	STA	theMASK2
+*	JSR	getSPRITEDATA
+*	LDA	#sprHEIGHT
+*	STA	nbLINES
+*	LDX	#$00
+*	LDA	sprTABLE	; derniere table de sprite?
+*	CMP	#$05
+*	BCS	L8301
+
+	ldy	theY	; board Y
+	ldx	theX	; board X
+	jsr	getXY	; retourne Y HGR
+	jsr	setHGRPOINTER ; met le pointeur
+	txy		; colonne
+
+	rep	#$30
+	lda	#sprHEIGHT
+	sta	nbLINES2
+
+	lda	theA
+	and	#$ff
+	asl
+	tax
+	lda	tblSPRITES,x
+	tax
+	
+]lp	lda	[ptrHGR1],y	; fond - 0123
+	ora	|$0000,x	; sprite
+	sta	[ptrHGR1],y	; fond
+
+	iny
+	iny
+	inx
+	inx
+	lda	[ptrHGR1],y	; fond - 4567
+	ora	|$0000,x	; sprite
+	sta	[ptrHGR1],y	; fond
+
+	iny
+	iny
+	inx
+	inx
+	sep	#$20
+	lda	[ptrHGR1],y	; fond - 89
+	ora	|$0000,x	; sprite
+	sta	[ptrHGR1],y	; fond
+	rep	#$20
+
+	iny
+	tya
+	clc
+	adc	#160-5	; 5 = 10 pixels
+	tay
+	inx
+
+	dec	nbLINES2
+	bne	]lp
+	sep	#$30
+	rts
+
+	mx	%11
+		
 *--- sprite de 2 de large
 
 L82DF	LDY	theYSCREEN
@@ -5027,7 +5166,7 @@ L8536	LDX	scoreoffset,Y	; permet la saisie des initiales
 	STA	L8582+1
 	STA	L85C9+1
 	JSR	showALLSCORES
-	LDA	#>HGR2
+	LDA	#>oldHGR2
 	STA	activePAGE
 	LDA	$69
 	CLC
@@ -5083,7 +5222,7 @@ L85C9	STA	scorebuf,Y
 L85E1	JSR	doBEEP
 	JMP	L857F
 
-L85E7	LDA	#>HGR1
+L85E7	LDA	#>oldHGR1
 	STA	activePAGE
 	LDA	#$02
 	JSR	readSCORE
@@ -5487,12 +5626,17 @@ setBOARDLINEPOINTERS
 * FROM A Y IN TEXT TO A Y IN HGR
 *-------------------------------
 
-getXY	LDA	ytable,Y	;  in: board X/Y
-	PHA		; out: hgr X/Y
-	LDA	xtable,X
-	TAX
-	PLA
-	TAY
+getXY
+*	LDA	ytable,Y	;  in: board X/Y
+*	PHA		; out: hgr X/Y
+*	LDA	xtable,X
+*	TAX
+*	PLA
+*	TAY
+	lda	xtable,x
+	tax
+	lda	ytable,y
+	tay
 	RTS
 
 getBYBI	LDA	bytable,X	;  in: board X
@@ -5817,12 +5961,12 @@ L8A69	LDY	$7C
 	BCS	L8A8C
 	JSR	setHGRPOINTERS
 	LDY	$7F
-	CPY	#$28
+	CPY	#hgrWIDTH
 	BCS	L8A81
 	LDX	$83
 	JSR	L8AF6
 L8A81	LDY	$7E
-	CPY	#$28
+	CPY	#hgrWIDTH
 	BCS	L8A8C
 	LDX	$82
 	JSR	L8AF6
@@ -5833,12 +5977,12 @@ L8A8C	LDY	$79
 	BCS	L8AAF
 	JSR	setHGRPOINTERS
 	LDY	$7F
-	CPY	#$28
+	CPY	#hgrWIDTH
 	BCS	L8AA4
 	LDX	$83
 	JSR	L8AF6
 L8AA4	LDY	$7E
-	CPY	#$28
+	CPY	#hgrWIDTH
 	BCS	L8AAF
 	LDX	$82
 	JSR	L8AF6
@@ -5849,12 +5993,12 @@ L8AAF	LDY	$7B
 	BCS	L8AD2
 	JSR	setHGRPOINTERS
 	LDY	$80
-	CPY	#$28
+	CPY	#hgrWIDTH
 	BCS	L8AC7
 	LDX	$84
 	JSR	L8AF6
 L8AC7	LDY	$7D
-	CPY	#$28
+	CPY	#hgrWIDTH
 	BCS	L8AD2
 	LDX	$81
 	JSR	L8AF6
@@ -5865,12 +6009,12 @@ L8AD2	LDY	$7A
 	BCS	L8AF5
 	JSR	setHGRPOINTERS
 	LDY	$80
-	CPY	#$28
+	CPY	#hgrWIDTH
 	BCS	L8AEA
 	LDX	$84
 	JSR	L8AF6
 L8AEA	LDY	$7D
-	CPY	#$28
+	CPY	#hgrWIDTH
 	BCS	L8AF5
 	LDX	$81
 	JMP	L8AF6
@@ -5878,12 +6022,12 @@ L8AF5	RTS
 
 L8AF6	LDA	$72
 	BNE	L8B02
-	LDA	[ptrHGR1],Y
+	LDA	[ptrHGR1],Y	; hide
 	AND	L8B0C,X
 	STA	[ptrHGR1],Y
 	RTS
 
-L8B02	LDA	[ptrHGR2],Y
+L8B02	LDA	[ptrHGR2],Y	; show
 	AND	L8B13,X
 	ORA	[ptrHGR1],Y
 	STA	[ptrHGR1],Y
@@ -5899,7 +6043,7 @@ L8B13	HEX	8F8F8F8FF0F0F0
 animGAMEOVER
 	LDA	#$01
 	STA	L8D4B
-	LDA	#>HGR1
+	LDA	#>oldHGR1
 	STA	hgrPAGE
 
 L8B23	JSR	L8BCF

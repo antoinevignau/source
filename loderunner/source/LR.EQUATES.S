@@ -33,6 +33,9 @@ nbLIVES	=	5
 maxLEVEL	=	150
 maxHEIGHT	=	192	; lines
 
+hgrHEIGHT	=	176
+hgrWIDTH	=	160	; 40
+
 modeEDIT	=	0	; to decode level
 modeGAME	=	1
 
@@ -87,6 +90,7 @@ hgrPAGE	=	$1f
 
 ptrHGR1	=	$24	; **new** long
 ptrHGR2	=	$28	; **new** long
+nbLINES2	=	$2c
 
 *CH	=	$24	; **
 *CV	=	$25	; **
@@ -193,7 +197,6 @@ PTRIG	=	$C070
 * PAGES GRAPHIQUES
 *-----------------------------------
 
-HGR1	=	$2000
-HGR2	=	$4000
-HGR3	=	$6000
-
+oldHGR1	=	$2000
+oldHGR2	=	$4000
+oldHGR3	=	$6000

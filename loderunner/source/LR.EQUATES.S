@@ -91,7 +91,8 @@ hgrPAGE	=	$1f
 
 ptrHGR1	=	$24	; **new** long
 ptrHGR2	=	$28	; **new** long
-nbLINES2	=	$2c
+ptrSPR	=	$2c	; **new** word
+nbLINES2	=	$2e	; **new** word
 
 *CH	=	$24	; **
 *CV	=	$25	; **

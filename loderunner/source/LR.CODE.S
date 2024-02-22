@@ -4851,6 +4851,7 @@ drawSPRITEXY
 	jsr	setHGRPOINTERS
 	JSR	getXBYBI
 	STA	theXSCREEN
+	
 *	STX	sprTABLE
 *	JSR	getSPRITEDATA
 *	LDX	#sprHEIGHT	; nb lignes
@@ -4861,119 +4862,112 @@ drawSPRITEXY
 *	BCS	L8376
 
 	rep	#$30
-	lda	#0
-	tax
-	tay
-
-	lda	#sprHEIGHT
-	sta	nbLINES2
 
 	lda	theXSCREEN	; Y for column
 	and	#$ff
-	tay
+	clc
+	adc	ptrHGR1
+	sta	ptrHGR1
+	sta	ptrHGR2
 	
 	lda	theA	; X for sprite
 	and	#$ff
 	asl
 	tax
 	lda	tblSPRITES,x
+	sta	ptrSPR
+
+	lda	#sprHEIGHT
+	sta	nbLINES2
+
+outerDSXY	lda	#0
 	tax
-
-]lp	lda	|$0000,x	; sprite
-*	eor	#-1
-	and	[ptrHGR1],y	; fond
-	ora	[ptrHGR2],y	; fond	
-	sta	[ptrHGR1],y	; fond
-	iny
-	iny
-	inx
-	inx
-	
-	lda	|$0000,x	; sprite
-*	eor	#-1
-	and	[ptrHGR1],y	; fond
-	ora	[ptrHGR2],y	; fond	
-	sta	[ptrHGR1],y	; fond
-	iny
-	iny
-	inx
-	inx
-
-	sep	#$20
-	lda	|$0000,x	; sprite
-*	eor	#-1
-	and	[ptrHGR1],y	; fond
-	ora	[ptrHGR2],y	; fond	
-	sta	[ptrHGR1],y	; fond	
-	rep	#$20
-
-	iny
-	tya
-	clc
-	adc	#160-5	; 5 = 10 pixels
 	tay
-	inx
 
+	sep	#$30
+
+]lp	lda	[ptrHGR2],y	; 0..1
+	tax
+	and	tblMASK,x
+	ora	(ptrSPR),y
+	sta	[ptrHGR1],y
+	iny
+	cpy	#5
+	bcc	]lp
+	
+	rep	#$30
+
+	lda	ptrHGR2
+	clc
+	adc	#160
+	sta	ptrHGR2
+	sta	ptrHGR1
+	
+	lda	ptrSPR
+	clc
+	adc	#5
+	sta	ptrSPR
+	
 	dec	nbLINES2
-	bne	]lp
+	bne	outerDSXY
 	sep	#$30
 	rts
 
 	mx	%11
 
 *--- sprite de 2 de large
-
-L8350	LDY	theYSCREEN
-	JSR	setHGRPOINTERS
-	LDY	theXSCREEN
-	LDA	sprDATA,X
-	EOR	#$7F
-	AND	[ptrHGR1],Y
-	ORA	[ptrHGR2],Y
-	STA	[ptrHGR1],Y
-	INX
-	INY
-	LDA	sprDATA,X
-	EOR	#$7F
-	AND	[ptrHGR1],Y
-	ORA	[ptrHGR2],Y
-	STA	[ptrHGR1],Y
-	INX
-	INX
-	INC	theYSCREEN
-	DEC	nbLINES
-	BNE	L8350
-	RTS
-
+*
+*L8350	LDY	theYSCREEN
+*	JSR	setHGRPOINTERS
+*	LDY	theXSCREEN
+*	LDA	sprDATA,X
+*	EOR	#$7F
+*	AND	[ptrHGR1],Y
+*	ORA	[ptrHGR2],Y
+*	STA	[ptrHGR1],Y
+*	INX
+*	INY
+*	LDA	sprDATA,X
+*	EOR	#$7F
+*	AND	[ptrHGR1],Y
+*	ORA	[ptrHGR2],Y
+*	STA	[ptrHGR1],Y
+*	INX
+*	INX
+*	INC	theYSCREEN
+*	DEC	nbLINES
+*	BNE	L8350
+*	RTS
+*
 *--- sprite de 3 de large
-
-L8376	LDY	theYSCREEN
-	JSR	setHGRPOINTERS
-	LDY	theXSCREEN
-	LDA	sprDATA,X
-	EOR	#$7F
-	AND	[ptrHGR1],Y
-	ORA	[ptrHGR2],Y
-	STA	[ptrHGR1],Y
-	INX
-	INY
-	LDA	sprDATA,X
-	EOR	#$7F
-	AND	[ptrHGR1],Y
-	ORA	[ptrHGR2],Y
-	STA	[ptrHGR1],Y
-	INX
-	INY
-	LDA	sprDATA,X
-	EOR	#$7F
-	AND	[ptrHGR1],Y
-	ORA	[ptrHGR2],Y
-	STA	[ptrHGR1],Y
-	INX
-	INC	theYSCREEN
-	DEC	nbLINES
-	BNE	L8376
-	RTS
+*
+*L8376	LDY	theYSCREEN
+*	JSR	setHGRPOINTERS
+*	LDY	theXSCREEN
+*	LDA	sprDATA,X
+*	EOR	#$7F
+*	AND	[ptrHGR1],Y
+*	ORA	[ptrHGR2],Y
+*	STA	[ptrHGR1],Y
+*	INX
+*	INY
+*	LDA	sprDATA,X
+*	EOR	#$7F
+*	AND	[ptrHGR1],Y
+*	ORA	[ptrHGR2],Y
+*	STA	[ptrHGR1],Y
+*	INX
+*	INY
+*	LDA	sprDATA,X
+*	EOR	#$7F
+*	AND	[ptrHGR1],Y
+*	ORA	[ptrHGR2],Y
+*	STA	[ptrHGR1],Y
+*	INX
+*	INC	theYSCREEN
+*	DEC	nbLINES
+*	BNE	L8376
+*	RTS
 
 *---------------------------------------
 * DRAW SPRITE AT X,Y WITH COLLISION
@@ -4984,17 +4978,79 @@ L8376	LDY	theYSCREEN
 drawSPRXYCOLLISION
 	STY	theYSCREEN
 	STA	theA
+	jsr	setHGRPOINTERS
 	JSR	getXBYBI
 	STA	theXSCREEN
-	STX	sprTABLE
-	JSR	getSPRITEDATA
-	LDA	#sprHEIGHT
-	STA	nbLINES
+*	STX	sprTABLE
+*	JSR	getSPRITEDATA
+*	LDA	#sprHEIGHT
+*	STA	nbLINES
 	LDX	#$00
 	STX	fgCOLLISION
-	LDA	sprTABLE
-	CMP	#$05
-	BCS	L83F5
+*	LDA	sprTABLE
+*	CMP	#$05
+*	BCS	L83F5
+
+	rep	#$30
+
+	lda	theXSCREEN	; Y for column
+	and	#$ff
+	clc
+	adc	ptrHGR1
+	sta	ptrHGR1
+	sta	ptrHGR2
+	
+	lda	theA	; X for sprite
+	and	#$ff
+	asl
+	tax
+	lda	tblSPRITES,x
+	sta	ptrSPR
+
+	lda	#sprHEIGHT
+	sta	nbLINES2
+
+outerXYCOL	lda	#0
+	tax
+	tay
+	
+	sep	#$30
+	
+]lp	LDA	[ptrHGR1],Y	; 0..1
+	EOR	[ptrHGR2],Y	; si HGR1=HGR2 => 0
+	and	(sprDATA),y
+	ORA	fgCOLLISION
+	STA	fgCOLLISION
+
+	lda	[ptrHGR2],y
+	tax
+	and	tblMASK,x
+	ora	(sprDATA),y
+	STA	[ptrHGR1],y
+	iny
+	cpy	#5
+	bcc	]lp
+	
+	rep	#$30
+
+	lda	ptrHGR2
+	clc
+	adc	#160
+	sta	ptrHGR2
+	sta	ptrHGR1
+	
+	lda	ptrSPR
+	clc
+	adc	#5
+	sta	ptrSPR
+	
+	dec	nbLINES2
+	bne	outerXYCOL
+	sep	#$30
+	stz	fgCOLLISION	; LoGo
+	rts
+
+	mx	%11
 
 *--- sprite de 2 de large
 
@@ -5024,7 +5080,6 @@ L83C3	LDY	theYSCREEN
 	INC	theYSCREEN
 	DEC	nbLINES
 	BNE	L83C3
-	stz	fgCOLLISION
 	RTS
 
 *--- sprite de 3 de large
@@ -5064,7 +5119,6 @@ L83F5	LDY	theYSCREEN
 	INC	theYSCREEN
 	DEC	nbLINES
 	BNE	L83F5
-	stz	fgCOLLISION
 	RTS
 
 *---------------------------------------
@@ -5490,7 +5544,7 @@ L873C	PHA		; exit with
 	PLA
 	RTS
 
-bsDATA	DB	ptrBOARD
+bsDATA	DB	$06
 
 *-----------------------------------
 * READ JOYSTICK

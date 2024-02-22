@@ -187,7 +187,10 @@ noSOUND	_HideMenuBar
 	dex
 	bpl	]lp
 
-	sep	#$30	; MAJ le banc des pages
+	jsr	loadLEVELS	; exit 8-bit
+
+	mx	%11
+	
 	lda	ptrSCREEN+2
 	sta	ptrHGR1+2
 	brl	theGAME
@@ -294,7 +297,7 @@ loadLEVELS9	ldx	#0	; clear all levels
 ]lp	stal	ptrLEVELS,x
 	inx
 	inx
-	cpx	#38400+256
+	cpx	#38400	; 150 x 256
 	bcc	]lp
 	
 	ldx	#256-2

@@ -670,7 +670,7 @@ L6469
 	rep	#$30
 	PushLong	ptrSCREEN
 	PushLong	#HGR2
-	PushLong	#32768
+	PushLong	#hgrTOMOVE
 	_BlockMove
 	sep	#$30
 
@@ -4700,7 +4700,7 @@ L8289	HEX	220F8888888888888888CCCFC4C5A0D2
 	HEX	A0
 
 *---------------------------------------
-* PRINT CHAR - TOTO
+* PRINT CHAR
 *---------------------------------------
 
 coutHGR1	STA	theA	; char in $1E
@@ -4791,73 +4791,135 @@ L82B4	STA	hgrPAGE	; page in $1F
 	mx	%11
 		
 *--- sprite de 2 de large
-
-L82DF	LDY	theYSCREEN
-	JSR	setHGRPOINTER
-	LDY	theXSCREEN
-	LDA	[ptrHGR1],Y	; 1
-	AND	theMASK1
-	ORA	sprDATA,X
-	STA	[ptrHGR1],Y
-	INX
-	INY
-	LDA	[ptrHGR1],Y	; 2
-	AND	theMASK2
-	ORA	sprDATA,X
-	STA	[ptrHGR1],Y
-	INX
-	INX
-	INC	theYSCREEN
-	DEC	nbLINES
-	BNE	L82DF
-	RTS
-
+*
+*L82DF	LDY	theYSCREEN
+*	JSR	setHGRPOINTER
+*	LDY	theXSCREEN
+*	LDA	[ptrHGR1],Y	; 1
+*	AND	theMASK1
+*	ORA	sprDATA,X
+*	STA	[ptrHGR1],Y
+*	INX
+*	INY
+*	LDA	[ptrHGR1],Y	; 2
+*	AND	theMASK2
+*	ORA	sprDATA,X
+*	STA	[ptrHGR1],Y
+*	INX
+*	INX
+*	INC	theYSCREEN
+*	DEC	nbLINES
+*	BNE	L82DF
+*	RTS
+*
 *--- sprite de 3 de large
-
-L8301	LDY	theYSCREEN
-	JSR	setHGRPOINTER
-	LDY	theXSCREEN
-	LDA	[ptrHGR1],Y	; 1
-	AND	theMASK1
-	ORA	sprDATA,X
-	STA	[ptrHGR1],Y
-	INX
-	INY
-	LDA	sprDATA,X	; 2
-	STA	[ptrHGR1],Y
-	INX
-	INY
-	LDA	[ptrHGR1],Y	; 3
-	AND	theMASK2
-	ORA	sprDATA,X
-	STA	[ptrHGR1],Y
-	INX
-	INC	theYSCREEN
-	DEC	nbLINES
-	BNE	L8301
-	RTS
-
-tblMASK1	HEX	000103070F1F3F	; mask1
-tblMASK2	HEX	F8F0E0C080FEFC	; mask2
+*
+*L8301	LDY	theYSCREEN
+*	JSR	setHGRPOINTER
+*	LDY	theXSCREEN
+*	LDA	[ptrHGR1],Y	; 1
+*	AND	theMASK1
+*	ORA	sprDATA,X
+*	STA	[ptrHGR1],Y
+*	INX
+*	INY
+*	LDA	sprDATA,X	; 2
+*	STA	[ptrHGR1],Y
+*	INX
+*	INY
+*	LDA	[ptrHGR1],Y	; 3
+*	AND	theMASK2
+*	ORA	sprDATA,X
+*	STA	[ptrHGR1],Y
+*	INX
+*	INC	theYSCREEN
+*	DEC	nbLINES
+*	BNE	L8301
+*	RTS
+*
+*tblMASK1	HEX	000103070F1F3F	; mask1
+*tblMASK2	HEX	F8F0E0C080FEFC	; mask2
 
 *---------------------------------------
-* DRAW SPRITE AT X,Y
+* DRAW SPRITE AT X,Y - TOTO
 *---------------------------------------
 * draw a sprite at real HGR X,Y (eg. 175,111)
 
 drawSPRITEXY
 	STY	theYSCREEN
 	STA	theA
+	jsr	setHGRPOINTERS
 	JSR	getXBYBI
 	STA	theXSCREEN
-	STX	sprTABLE
-	JSR	getSPRITEDATA
-	LDX	#sprHEIGHT	; nb lignes
-	STX	nbLINES
-	LDX	#$00
-	LDA	sprTABLE
-	CMP	#$05
-	BCS	L8376
+*	STX	sprTABLE
+*	JSR	getSPRITEDATA
+*	LDX	#sprHEIGHT	; nb lignes
+*	STX	nbLINES
+*	LDX	#$00
+*	LDA	sprTABLE
+*	CMP	#$05
+*	BCS	L8376
+
+	rep	#$30
+	lda	#0
+	tax
+	tay
+
+	lda	#sprHEIGHT
+	sta	nbLINES2
+
+	lda	theXSCREEN	; Y for column
+	and	#$ff
+	tay
+	
+	lda	theA	; X for sprite
+	and	#$ff
+	asl
+	tax
+	lda	tblSPRITES,x
+	tax
+
+]lp	lda	|$0000,x	; sprite
+*	eor	#-1
+	and	[ptrHGR1],y	; fond
+	ora	[ptrHGR2],y	; fond	
+	sta	[ptrHGR1],y	; fond
+	iny
+	iny
+	inx
+	inx
+	
+	lda	|$0000,x	; sprite
+*	eor	#-1
+	and	[ptrHGR1],y	; fond
+	ora	[ptrHGR2],y	; fond	
+	sta	[ptrHGR1],y	; fond
+	iny
+	iny
+	inx
+	inx
+
+	sep	#$20
+	lda	|$0000,x	; sprite
+*	eor	#-1
+	and	[ptrHGR1],y	; fond
+	ora	[ptrHGR2],y	; fond	
+	sta	[ptrHGR1],y	; fond	
+	rep	#$20
+
+	iny
+	tya
+	clc
+	adc	#160-5	; 5 = 10 pixels
+	tay
+	inx
+
+	dec	nbLINES2
+	bne	]lp
+	sep	#$30
+	rts
+
+	mx	%11
 
 *--- sprite de 2 de large
 
@@ -4962,6 +5024,7 @@ L83C3	LDY	theYSCREEN
 	INC	theYSCREEN
 	DEC	nbLINES
 	BNE	L83C3
+	stz	fgCOLLISION
 	RTS
 
 *--- sprite de 3 de large
@@ -5001,6 +5064,7 @@ L83F5	LDY	theYSCREEN
 	INC	theYSCREEN
 	DEC	nbLINES
 	BNE	L83F5
+	stz	fgCOLLISION
 	RTS
 
 *---------------------------------------
@@ -5700,7 +5764,7 @@ calcHGRX	TYA
 tblDELTAX	HEX	FEFF000102	; -2, -1, 0, 1, 2
 
 *-------------------------------
-* CIRCLE ANIMATION
+* CIRCLE ANIMATION - LOGO
 *-------------------------------
 
 circleANIMATION
@@ -5712,6 +5776,12 @@ circleANIMATION
 	BEQ	L88BD	; show the level
 
 *--- hide the level
+
+	rep	#$30
+	PushWord	#0
+	_ClearScreen
+	sep	#$30
+	rts
 
 	LDX	#$AA	; 170
 	STX	$6D
@@ -5729,6 +5799,15 @@ L88BD	LDA	#$01	; 1
 	STA	$72	; 1
 	JSR	printMEN
 	JSR	printLEVEL
+	
+	rep	#$30
+	PushLong	#HGR2
+	PushLong	ptrSCREEN
+	PushLong	#hgrTOMOVE
+	_BlockMove
+	sep	#$30
+	rts
+
 L88CB	JSR	L88D7
 	INC	$6D
 	LDA	$6D

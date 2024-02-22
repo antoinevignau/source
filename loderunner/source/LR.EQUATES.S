@@ -35,6 +35,7 @@ maxHEIGHT	=	192	; lines
 
 hgrHEIGHT	=	176
 hgrWIDTH	=	160	; 40
+hgrTOMOVE	=	28160	; 176*160
 
 modeEDIT	=	0	; to decode level
 modeGAME	=	1

@@ -433,7 +433,14 @@ bitable	DB	$00	; 0..4: sprite is 2-col wide
 
 *--- From a X in HGR (0..139) coordinate to a Y column in HGR (0..39)
 
-xbytable	DB	$00	; and the index within the table
+xbytable
+]debut	=	$0
+	lup	140
+	dfb	<]debut
+]debut	=	]debut+2
+	--^
+
+	DB	$00	; and the index within the table
 	DB	$00
 	DB	$00
 	DB	$00

@@ -176,11 +176,6 @@ noSOUND	_HideMenuBar
 
 *----------------------------------- Exit point
 
-	lda	#theGAME
-	stal	$300
-	lda	#^theGAME
-	stal	$302
-	
 	ldx	#256-2	; efface la page directe
 ]lp	stz	$00,x
 	dex
@@ -564,7 +559,7 @@ proCREATE	dw	7	; pcount
 	dw	$5d	; file_type
 	adrl	$8022	; aux_type
 	ds	2	; storage_type
-	adrl	38400	; eof
+	adrl	38400+256	; eof
 	ds	4	; resource_eof
 
 proDESTROY	dw	1	; pcount

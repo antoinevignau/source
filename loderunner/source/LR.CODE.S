@@ -44,11 +44,15 @@ L6028	INC	L6030+1
 L6030	LDA	L6028
 	BEQ	L603F	; 00: end of line
 	BPL	L603C	; <128: skip A bytes
+	and	#%0111_1111
 	STA	[ptrHGR1],Y	; >127: output char
+	iny
+	sta	[ptrHGR1],y	; >127: output char
 	INY
-	BPL	L6028
-L603C	TAY
-	BPL	L6028
+	bra	L6028	; from BPL
+L603C	asl
+	TAY
+	bra	L6028	; from BPL
 L603F	INC	theY
 	LDY	theY
 	CPY	#maxHEIGHT	; until line 192
@@ -1562,13 +1566,6 @@ L6A67	JSR	printMEN
 	LSR	fgGOODSTART
 	JMP	getPLAYERINPUT
 
-*--- dead code
-*
-*	INC	$97
-*	INC	theMEN	; man++
-*	LSR	fgPLAY
-*	RTS
-*
 *-------------------------------
 * 9B - ESC - PAUSE GAME
 *-------------------------------
@@ -3513,12 +3510,9 @@ L7868	JMP	getPLAYERINPUT
 *-------------------------------
 
 showALLSCORES
-*	JSR	clearHGR2
-*	LDA	#>oldHGR2
-*	STA	activePAGE
-	jsr	clearHGR1
-	lda	#>oldHGR1
-	sta	activePAGE
+	JSR	clearHGR1	; was 2
+	LDA	#>oldHGR1	; was 2
+	STA	activePAGE
 	LDA	#$00
 	STA	theX
 	STA	theY
@@ -4749,21 +4743,6 @@ L82B4	STA	hgrPAGE	; page in $1F
 	STY	theYSCREEN	; make it Y screen
 	stx	theXSCREEN
 	jsr	setHGRPOINTER
-*	LDX	theX	; take X
-*	JSR	getBYBI
-*	STA	theXSCREEN	; make it X screen
-*	STX	sprTABLE
-*	LDA	tblMASK1,X
-*	STA	theMASK1
-*	LDA	tblMASK2,X
-*	STA	theMASK2
-*	JSR	getSPRITEDATA
-*	LDA	#sprHEIGHT
-*	STA	nbLINES
-*	LDX	#$00
-*	LDA	sprTABLE	; derniere table de sprite?
-*	CMP	#$05
-*	BCS	L8301
 
 	rep	#$30
 
@@ -4814,56 +4793,6 @@ outerCOUT	lda	#0
 
 	mx	%11
 
-*--- sprite de 2 de large
-*
-*L82DF	LDY	theYSCREEN
-*	JSR	setHGRPOINTER
-*	LDY	theXSCREEN
-*	LDA	[ptrHGR1],Y	; 1
-*	AND	theMASK1
-*	ORA	sprDATA,X
-*	STA	[ptrHGR1],Y
-*	INX
-*	INY
-*	LDA	[ptrHGR1],Y	; 2
-*	AND	theMASK2
-*	ORA	sprDATA,X
-*	STA	[ptrHGR1],Y
-*	INX
-*	INX
-*	INC	theYSCREEN
-*	DEC	nbLINES
-*	BNE	L82DF
-*	RTS
-*
-*--- sprite de 3 de large
-*
-*L8301	LDY	theYSCREEN
-*	JSR	setHGRPOINTER
-*	LDY	theXSCREEN
-*	LDA	[ptrHGR1],Y	; 1
-*	AND	theMASK1
-*	ORA	sprDATA,X
-*	STA	[ptrHGR1],Y
-*	INX
-*	INY
-*	LDA	sprDATA,X	; 2
-*	STA	[ptrHGR1],Y
-*	INX
-*	INY
-*	LDA	[ptrHGR1],Y	; 3
-*	AND	theMASK2
-*	ORA	sprDATA,X
-*	STA	[ptrHGR1],Y
-*	INX
-*	INC	theYSCREEN
-*	DEC	nbLINES
-*	BNE	L8301
-*	RTS
-*
-*tblMASK1	HEX	000103070F1F3F	; mask1
-*tblMASK2	HEX	F8F0E0C080FEFC	; mask2
-
 *---------------------------------------
 * DRAW SPRITE AT X,Y - TOTO
 *---------------------------------------
@@ -4873,18 +4802,10 @@ drawSPRITEXY
 	STY	theYSCREEN
 	STA	theA
 	jsr	setHGRPOINTERS
-	JSR	getXBYBI
-	STA	theXSCREEN
+*	JSR	getXBYBI
+	lda	xbytable,X
+	sta	theXSCREEN
 	
-*	STX	sprTABLE
-*	JSR	getSPRITEDATA
-*	LDX	#sprHEIGHT	; nb lignes
-*	STX	nbLINES
-*	LDX	#$00
-*	LDA	sprTABLE
-*	CMP	#$05
-*	BCS	L8376
-
 	rep	#$30
 
 	lda	theXSCREEN	; Y for column
@@ -4910,23 +4831,9 @@ outerDSXY	lda	#0
 
 	sep	#$30
 
-*	LDA	sprDATA,X
-*	EOR	#$7F
-*	AND	[ptrHGR1],Y
-*	ORA	[ptrHGR2],Y
-*	STA	[ptrHGR1],Y
-
-*]lp	lda	[ptrHGR2],y	; 0..1
-*	tax
-*	and	tblMASK,x
-*	ora	(ptrSPR),y
-*	sta	[ptrHGR1],y
-
 ]lp	lda	(ptrSPR),y
-*	eor	#$ff
 	tax
 	and	tblMASK,x
-*	and	[ptrHGR1],y
 	ora	[ptrHGR2],y
 	sta	[ptrHGR1],y
 
@@ -4954,60 +4861,6 @@ outerDSXY	lda	#0
 
 	mx	%11
 
-*--- sprite de 2 de large
-*
-*L8350	LDY	theYSCREEN
-*	JSR	setHGRPOINTERS
-*	LDY	theXSCREEN
-*	LDA	sprDATA,X
-*	EOR	#$7F
-*	AND	[ptrHGR1],Y
-*	ORA	[ptrHGR2],Y
-*	STA	[ptrHGR1],Y
-*	INX
-*	INY
-*	LDA	sprDATA,X
-*	EOR	#$7F
-*	AND	[ptrHGR1],Y
-*	ORA	[ptrHGR2],Y
-*	STA	[ptrHGR1],Y
-*	INX
-*	INX
-*	INC	theYSCREEN
-*	DEC	nbLINES
-*	BNE	L8350
-*	RTS
-*
-*--- sprite de 3 de large
-*
-*L8376	LDY	theYSCREEN
-*	JSR	setHGRPOINTERS
-*	LDY	theXSCREEN
-*	LDA	sprDATA,X
-*	EOR	#$7F
-*	AND	[ptrHGR1],Y
-*	ORA	[ptrHGR2],Y
-*	STA	[ptrHGR1],Y
-*	INX
-*	INY
-*	LDA	sprDATA,X
-*	EOR	#$7F
-*	AND	[ptrHGR1],Y
-*	ORA	[ptrHGR2],Y
-*	STA	[ptrHGR1],Y
-*	INX
-*	INY
-*	LDA	sprDATA,X
-*	EOR	#$7F
-*	AND	[ptrHGR1],Y
-*	ORA	[ptrHGR2],Y
-*	STA	[ptrHGR1],Y
-*	INX
-*	INC	theYSCREEN
-*	DEC	nbLINES
-*	BNE	L8376
-*	RTS
-
 *---------------------------------------
 * DRAW SPRITE AT X,Y WITH COLLISION - TUTU
 *---------------------------------------
@@ -5018,17 +4871,11 @@ drawSPRXYCOLLISION
 	STY	theYSCREEN
 	STA	theA
 	jsr	setHGRPOINTERS
-	JSR	getXBYBI
-	STA	theXSCREEN
-*	STX	sprTABLE
-*	JSR	getSPRITEDATA
-*	LDA	#sprHEIGHT
-*	STA	nbLINES
+*	JSR	getXBYBI
+	lda	xbytable,X
+	sta	theXSCREEN
 	LDX	#$00
 	STX	fgCOLLISION
-*	LDA	sprTABLE
-*	CMP	#$05
-*	BCS	L83F5
 
 	rep	#$30
 
@@ -5055,35 +4902,17 @@ outerXYCOL	lda	#0
 	
 	sep	#$30
 
-*	LDY	theXSCREEN
-*	LDA	[ptrHGR1],Y
-*	EOR	[ptrHGR2],Y
-*	AND	sprDATA,X
-*	ORA	fgCOLLISION
-*	STA	fgCOLLISION
-*	LDA	sprDATA,X
-*	ORA	[ptrHGR1],Y
-*	STA	[ptrHGR1],Y
-
 ]lp	lda	[ptrHGR1],Y	; 0..1
 	eor	[ptrHGR2],Y	; si HGR1=HGR2 => 0
 	and	(sprDATA),y
 	ora	fgCOLLISION
 	sta	fgCOLLISION
 
-*	lda	(sprDATA),y
-*	ora	[ptrHGR1],y
 	lda	[ptrHGR2],y	; 0..1
 	tax
 	and	tblMASK,x
 	ora	(ptrSPR),y
 	sta	[ptrHGR1],y
-
-*]lp	lda	[ptrHGR2],y	; 0..1
-*	tax
-*	and	tblMASK,x
-*	ora	(ptrSPR),y
-*	sta	[ptrHGR1],y
 
 	iny
 	cpy	#sprBYTES
@@ -5105,163 +4934,9 @@ outerXYCOL	lda	#0
 	dec	nbLINES2
 	bne	outerXYCOL
 	sep	#$30
-	stz	fgCOLLISION
 	rts
 
 	mx	%11
-
-*--- sprite de 2 de large
-
-L83C3	LDY	theYSCREEN
-	JSR	setHGRPOINTERS
-	LDY	theXSCREEN
-	LDA	[ptrHGR1],Y
-	EOR	[ptrHGR2],Y
-	AND	sprDATA,X
-	ORA	fgCOLLISION
-	STA	fgCOLLISION
-	LDA	sprDATA,X
-	ORA	[ptrHGR1],Y
-	STA	[ptrHGR1],Y
-	INX
-	INY
-	LDA	[ptrHGR1],Y
-	EOR	[ptrHGR2],Y
-	AND	sprDATA,X
-	ORA	fgCOLLISION
-	STA	fgCOLLISION
-	LDA	sprDATA,X
-	ORA	[ptrHGR1],Y
-	STA	[ptrHGR1],Y
-	INX
-	INX
-	INC	theYSCREEN
-	DEC	nbLINES
-	BNE	L83C3
-	RTS
-
-*--- sprite de 3 de large
-
-L83F5	LDY	theYSCREEN
-	JSR	setHGRPOINTERS
-	LDY	theXSCREEN
-	LDA	[ptrHGR1],Y
-	EOR	[ptrHGR2],Y
-	AND	sprDATA,X
-	ORA	fgCOLLISION
-	STA	fgCOLLISION
-	LDA	sprDATA,X
-	ORA	[ptrHGR1],Y
-	STA	[ptrHGR1],Y
-	INX
-	INY
-	LDA	[ptrHGR1],Y
-	EOR	[ptrHGR2],Y
-	AND	sprDATA,X
-	ORA	fgCOLLISION
-	STA	fgCOLLISION
-	LDA	sprDATA,X
-	ORA	[ptrHGR1],Y
-	STA	[ptrHGR1],Y
-	INX
-	INY
-	LDA	[ptrHGR1],Y
-	EOR	[ptrHGR2],Y
-	AND	sprDATA,X
-	ORA	fgCOLLISION
-	STA	fgCOLLISION
-	LDA	sprDATA,X
-	ORA	[ptrHGR1],Y
-	STA	[ptrHGR1],Y
-	INX
-	INC	theYSCREEN
-	DEC	nbLINES
-	BNE	L83F5
-	RTS
-
-*---------------------------------------
-* GET SPRITE DATA
-*---------------------------------------
-* Move sprite data at $df..$ff
-
-getSPRITEDATA
-	LDA	#sprHEIGHT	; char height
-	STA	nbLINES
-
-	LDA	#<tblOFFSPR	; pointer to index of sprite in each table
-	STA	ptrDATA
-	LDA	#>tblOFFSPR
-	STA	ptrDATA+1
-
-	LDA	tblPTRSPR,X	; one of the six tables
-	STA	L845A+2
-	STA	L8466+2
-	STA	L848B+2
-	STA	L8497+2
-
-	LDX	#$00
-L8455	LDY	theA
-	LDA	(ptrDATA),Y
-	TAY
-L845A	LDA	LA000,Y	; a
-	STA	L846F+1
-	CLC
-	ADC	#$01
-	STA	L8474+1
-L8466	LDA	LA080,Y	; a+1
-	STA	L846F+2
-	STA	L8474+2
-L846F	LDA	LA000	; b
-	STA	sprDATA,X
-L8474	LDA	LA000	; b+1
-	STA	$E0,X
-
-	LDA	ptrDATA	; next line
-	CLC
-	ADC	#$68
-	STA	ptrDATA
-	LDA	ptrDATA+1
-	ADC	#$00
-	STA	ptrDATA+1
-
-	LDY	theA
-	LDA	(ptrDATA),Y
-	TAY
-L848B	LDA	LA000,Y	; c
-	STA	L84A0+1
-	CLC
-	ADC	#$01
-	STA	L84A7+1
-L8497	LDA	LA080,Y	; c+1
-	STA	L84A0+2
-	STA	L84A7+2
-L84A0	LDA	LA000	; d
-	ORA	$E0,X
-	STA	$E0,X
-L84A7	LDA	LA000	; d+1
-	STA	$E1,X
-
-	LDA	ptrDATA	; next data
-	CLC
-	ADC	#$68	; b/c we have 68 sprites
-	STA	ptrDATA
-	LDA	ptrDATA+1
-	ADC	#$00
-	STA	ptrDATA+1
-	INX
-	INX
-	INX
-	DEC	nbLINES
-	BNE	L8455
-	RTS
-
-tblPTRSPR	DB	>LA200	; The six tables of sprites
-	DB	>LA300
-	DB	>LA400
-	DB	>LA500
-	DB	>LA600
-	DB	>LA700
-	DB	>LA800
 
 *---------------------------------------
 * CHECK HIGH SCORE
@@ -5339,10 +5014,13 @@ L8536	LDX	scoreoffset,Y	; permet la saisie des initiales
 	STA	scorebuf+$07,X
 	STY	$69
 	LDA	scoreoffset,Y
+	clc
+	adc	#<scorebuf
 	STA	L8582+1
 	STA	L85C9+1
 	JSR	showALLSCORES
-	LDA	#>oldHGR2
+*	LDA	#>oldHGR2
+	lda	#>oldHGR1
 	STA	activePAGE
 	LDA	$69
 	CLC
@@ -5410,14 +5088,14 @@ L85F6	LDA	#$68
 	LDA	bsDATA
 	BNE	L8601
 	LDA	#sprCURSOR
-L8601	JSR	coutHGR2
+L8601	JSR	coutHGR1	; not 2
 L8604	LDAl	KBD
 	BMI	L8628
 	JSR	checkMOVEMENT
 	DEC	counter
 	BNE	L8604
 	LDA	#sprEMPTY
-	JSR	coutHGR2
+	JSR	coutHGR1	; not 2
 	LDA	#$68
 	STA	counter
 L8619	LDAl	KBD
@@ -5429,7 +5107,7 @@ L8619	LDAl	KBD
 
 L8628	PHA
 	LDA	bsDATA
-	JSR	coutHGR2
+	JSR	coutHGR1	; not 2
 	PLA
 	RTS
 
@@ -5815,19 +5493,19 @@ getXY
 	tay
 	RTS
 
-getBYBI	LDA	bytable,X	;  in: board X
-	PHA		; out: A: HGR column (0..39)
-	LDA	bitable,X	;      X: sprite table (0..6)
-	TAX
-	PLA
-	RTS
+*getBYBI	LDA	bytable,X	;  in: board X
+*	PHA		; out: A: HGR column (0..39)
+*	LDA	bitable,X	;      X: sprite table (0..6)
+*	TAX
+*	PLA
+*	RTS
 
-getXBYBI	LDA	xbytable,X	;  in: X: HGR x-coord
-	PHA		; out: A: HGR column (0..39)
-	LDA	xbitable,X	;      X: sprite table (0..6)
-	TAX
-	PLA
-	RTS
+*getXBYBI	LDA	xbytable,X	;  in: X: HGR x-coord
+*	PHA		; out: A: HGR column (0..39)
+*	LDA	xbitable,X	;      X: sprite table (0..6)
+*	TAX
+*	PLA
+*	RTS
 
 *-------------------------------
 * CALCULATE HGR Y-COORD

@@ -28,6 +28,7 @@ lvlHEIGHT	=	16	; $10
 
 sprWIDTH	=	10
 sprHEIGHT	=	11
+sprBYTES	=	5
 
 nbLIVES	=	5
 maxLEVEL	=	150

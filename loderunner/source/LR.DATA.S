@@ -436,8 +436,8 @@ bitable	DB	$00	; 0..4: sprite is 2-col wide
 xbytable
 ]debut	=	$0
 	lup	140
-	dfb	<]debut
-]debut	=	]debut+2
+	dfb	]debut
+]debut	=	]debut+1
 	--^
 
 	DB	$00	; and the index within the table

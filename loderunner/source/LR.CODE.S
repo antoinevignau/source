@@ -13,6 +13,9 @@
 
 theGAME	JSR	checkJOYSTICK
 
+	LDA	#chrK	; force keyboard **logo**
+	STA	fgINPUT
+
 	LDA	#$01	; read score table
 	JSR	readSCORE
 
@@ -39,9 +42,9 @@ L6028	INC	L6030+1
 	BNE	L6030
 	INC	L6030+2
 L6030	LDA	L6028
-	BEQ	L603F
-	BPL	L603C
-	STA	[ptrHGR1],Y
+	BEQ	L603F	; 00: end of line
+	BPL	L603C	; <128: skip A bytes
+	STA	[ptrHGR1],Y	; >127: output char
 	INY
 	BPL	L6028
 L603C	TAY
@@ -51,6 +54,10 @@ L603F	INC	theY
 	CPY	#maxHEIGHT	; until line 192
 	BCC	L6023
 *	STA	TXTPAGE1
+	lda	ptrSCREEN+2
+	sta	ptrHGR1+2
+	lda	#>oldHGR1
+	sta	hgrPAGE
 *	STA	HIRES
 *	STA	MIXCLR
 *	STA	TXTCLR
@@ -67,6 +74,7 @@ L6056	LDA	#$00
 	STA	fgCIRCLE
 	STA	tempX6
 	STA	demoREPEAT
+	lda	#<demoDATA
 	STA	ptrDEMO	; demo actions
 	LDA	#>demoDATA
 	STA	ptrDEMO+1
@@ -95,6 +103,10 @@ L6086
 
 L6099	JSR	clearHGRPAGES	; clear HGR pages and draw board
 *	STA	TXTPAGE1
+	lda	ptrSCREEN+2
+	sta	ptrHGR1+2
+	lda	#>oldHGR1
+	sta	hgrPAGE
 L609F	LDX	#modeGAME
 	JSR	prepareLEVEL
 	LDA	#$00
@@ -463,6 +475,7 @@ diskDEMO	LDA	theLEVEL	; demo mode uses levels in RAM
 	STA	ptrHGR1+1
 	LDY	#<L9E00
 	STY	ptrHGR1
+	ldy	#0
 L6350	LDA	(ptrHGR1),Y
 	STA	levelDISK,Y
 	INY
@@ -3420,6 +3433,10 @@ L77C7	LDAl	KBD
 	BNE	L77B7
 L77D6	STAl	KBDSTROBE
 *	STA	TXTPAGE1
+	lda	ptrSCREEN+2
+	sta	ptrHGR1+2
+	lda	#>oldHGR1
+	sta	hgrPAGE
 	JSR	clearHGR2
 	
 	LDY	#lvlHEIGHT-1
@@ -3496,15 +3513,18 @@ L7868	JMP	getPLAYERINPUT
 *-------------------------------
 
 showALLSCORES
-	JSR	clearHGR2
-	LDA	#>oldHGR2
-	STA	activePAGE
+*	JSR	clearHGR2
+*	LDA	#>oldHGR2
+*	STA	activePAGE
+	jsr	clearHGR1
+	lda	#>oldHGR1
+	sta	activePAGE
 	LDA	#$00
 	STA	theX
 	STA	theY
 	JSR	printSTRING
 	ASC	"    LODE RUNNER HIGH SCORES"8D8D8D
-	ASC	"    INITIALS LEVEL  SCORE"8D
+	ASC	"    INITIALS LEVEL SCORE"8D
 	ASC	"    -------- ----- --------"8D00
 
 	LDA	#$01	; for x=1 to...10
@@ -3983,6 +4003,10 @@ enterEDITOR	LDA	#$00
 	LDA	#chrK	; force keyboard in editor
 	STA	fgINPUT
 *	STA	TXTPAGE1
+	lda	ptrSCREEN+2
+	sta	ptrHGR1+2
+	lda	#>oldHGR1
+	sta	hgrPAGE
 	LDA	intLEVEL	; check level
 	CMP	#maxLEVEL
 	BCC	editMAIN
@@ -4477,6 +4501,10 @@ L8062	LDA	#$00
 	JSR	saveLEVEL
 L8075
 *	STA	TXTPAGE1
+	lda	ptrSCREEN+2
+	sta	ptrHGR1+2
+	lda	#>oldHGR1
+	sta	hgrPAGE
 	LDA	#$00
 	STA	theX
 	STA	theY
@@ -4525,7 +4553,10 @@ L80D8	JSR	printSTRING
 	JSR	L85F3
 	STAl	KBDSTROBE
 *	STA	TXTPAGE1
-
+	lda	ptrSCREEN+2
+	sta	ptrHGR1+2
+	lda	#>oldHGR1
+	sta	hgrPAGE
 L8105	RTS
 
 *-----------------------------------
@@ -4700,7 +4731,7 @@ L8289	HEX	220F8888888888888888CCCFC4C5A0D2
 	HEX	A0
 
 *---------------------------------------
-* PRINT CHAR
+* PRINT CHAR - TATA
 *---------------------------------------
 
 coutHGR1	STA	theA	; char in $1E
@@ -4712,15 +4743,12 @@ coutHGR2	STA	theA	; char in $1E
 
 L82B4	STA	hgrPAGE	; page in $1F
 
-	rep	#$30
-	lda	#0
-	tax
-	tay
-	sep	#$30
-
-*	LDY	theY	; take Y
-*	JSR	getXY
-*	STY	theYSCREEN	; make it Y screen
+	LDY	theY	; take Y
+	ldx	theX
+	JSR	getXY
+	STY	theYSCREEN	; make it Y screen
+	stx	theXSCREEN
+	jsr	setHGRPOINTER
 *	LDX	theX	; take X
 *	JSR	getBYBI
 *	STA	theXSCREEN	; make it X screen
@@ -4737,59 +4765,55 @@ L82B4	STA	hgrPAGE	; page in $1F
 *	CMP	#$05
 *	BCS	L8301
 
-	ldy	theY	; board Y
-	ldx	theX	; board X
-	jsr	getXY	; retourne Y HGR
-	jsr	setHGRPOINTER ; met le pointeur
-	txy		; colonne
-
 	rep	#$30
-	lda	#sprHEIGHT
-	sta	nbLINES2
 
-	lda	theA
+	lda	theXSCREEN	; Y for column
+	and	#$ff
+	clc
+	adc	ptrHGR1
+	sta	ptrHGR1
+	
+	lda	theA	; X for sprite
 	and	#$ff
 	asl
 	tax
 	lda	tblSPRITES,x
+	sta	ptrSPR
+
+	lda	#sprHEIGHT
+	sta	nbLINES2
+
+outerCOUT	lda	#0
 	tax
-	
-]lp	lda	[ptrHGR1],y	; fond - 0123
-	ora	|$0000,x	; sprite
-	sta	[ptrHGR1],y	; fond
-
-	iny
-	iny
-	inx
-	inx
-	lda	[ptrHGR1],y	; fond - 4567
-	ora	|$0000,x	; sprite
-	sta	[ptrHGR1],y	; fond
-
-	iny
-	iny
-	inx
-	inx
-	sep	#$20
-	lda	[ptrHGR1],y	; fond - 89
-	ora	|$0000,x	; sprite
-	sta	[ptrHGR1],y	; fond
-	rep	#$20
-
-	iny
-	tya
-	clc
-	adc	#160-5	; 5 = 10 pixels
 	tay
-	inx
 
+	sep	#$30
+
+]lp	lda	(ptrSPR),y
+	sta	[ptrHGR1],y
+	iny
+	cpy	#sprBYTES
+	bcc	]lp
+	
+	rep	#$30
+
+	lda	ptrHGR1
+	clc
+	adc	#160
+	sta	ptrHGR1
+	
+	lda	ptrSPR
+	clc
+	adc	#sprBYTES
+	sta	ptrSPR
+	
 	dec	nbLINES2
-	bne	]lp
+	bne	outerCOUT
 	sep	#$30
 	rts
 
 	mx	%11
-		
+
 *--- sprite de 2 de large
 *
 *L82DF	LDY	theYSCREEN
@@ -4886,13 +4910,28 @@ outerDSXY	lda	#0
 
 	sep	#$30
 
-]lp	lda	[ptrHGR2],y	; 0..1
+*	LDA	sprDATA,X
+*	EOR	#$7F
+*	AND	[ptrHGR1],Y
+*	ORA	[ptrHGR2],Y
+*	STA	[ptrHGR1],Y
+
+*]lp	lda	[ptrHGR2],y	; 0..1
+*	tax
+*	and	tblMASK,x
+*	ora	(ptrSPR),y
+*	sta	[ptrHGR1],y
+
+]lp	lda	(ptrSPR),y
+*	eor	#$ff
 	tax
 	and	tblMASK,x
-	ora	(ptrSPR),y
+*	and	[ptrHGR1],y
+	ora	[ptrHGR2],y
 	sta	[ptrHGR1],y
+
 	iny
-	cpy	#5
+	cpy	#sprBYTES
 	bcc	]lp
 	
 	rep	#$30
@@ -4905,7 +4944,7 @@ outerDSXY	lda	#0
 	
 	lda	ptrSPR
 	clc
-	adc	#5
+	adc	#sprBYTES
 	sta	ptrSPR
 	
 	dec	nbLINES2
@@ -4970,7 +5009,7 @@ outerDSXY	lda	#0
 *	RTS
 
 *---------------------------------------
-* DRAW SPRITE AT X,Y WITH COLLISION
+* DRAW SPRITE AT X,Y WITH COLLISION - TUTU
 *---------------------------------------
 * $52: 00 if no collision (empty background)
 *    <>00 if collision
@@ -5015,20 +5054,39 @@ outerXYCOL	lda	#0
 	tay
 	
 	sep	#$30
-	
-]lp	LDA	[ptrHGR1],Y	; 0..1
-	EOR	[ptrHGR2],Y	; si HGR1=HGR2 => 0
-	and	(sprDATA),y
-	ORA	fgCOLLISION
-	STA	fgCOLLISION
 
-	lda	[ptrHGR2],y
+*	LDY	theXSCREEN
+*	LDA	[ptrHGR1],Y
+*	EOR	[ptrHGR2],Y
+*	AND	sprDATA,X
+*	ORA	fgCOLLISION
+*	STA	fgCOLLISION
+*	LDA	sprDATA,X
+*	ORA	[ptrHGR1],Y
+*	STA	[ptrHGR1],Y
+
+]lp	lda	[ptrHGR1],Y	; 0..1
+	eor	[ptrHGR2],Y	; si HGR1=HGR2 => 0
+	and	(sprDATA),y
+	ora	fgCOLLISION
+	sta	fgCOLLISION
+
+*	lda	(sprDATA),y
+*	ora	[ptrHGR1],y
+	lda	[ptrHGR2],y	; 0..1
 	tax
 	and	tblMASK,x
-	ora	(sprDATA),y
-	STA	[ptrHGR1],y
+	ora	(ptrSPR),y
+	sta	[ptrHGR1],y
+
+*]lp	lda	[ptrHGR2],y	; 0..1
+*	tax
+*	and	tblMASK,x
+*	ora	(ptrSPR),y
+*	sta	[ptrHGR1],y
+
 	iny
-	cpy	#5
+	cpy	#sprBYTES
 	bcc	]lp
 	
 	rep	#$30
@@ -5041,13 +5099,13 @@ outerXYCOL	lda	#0
 	
 	lda	ptrSPR
 	clc
-	adc	#5
+	adc	#sprBYTES
 	sta	ptrSPR
 	
 	dec	nbLINES2
 	bne	outerXYCOL
 	sep	#$30
-	stz	fgCOLLISION	; LoGo
+	stz	fgCOLLISION
 	rts
 
 	mx	%11
@@ -5835,15 +5893,14 @@ circleANIMATION
 	PushWord	#0
 	_ClearScreen
 	sep	#$30
-	rts
 
-	LDX	#$AA	; 170
-	STX	$6D
-	LDX	#$00	; 0
-	STX	$72
-L88B6	JSR	L88D7
-	DEC	$6D
-	BNE	L88B6
+*	LDX	#$AA	; 170
+*	STX	$6D
+*	LDX	#$00	; 0
+*	STX	$72
+*L88B6	JSR	L88D7
+*	DEC	$6D
+*	BNE	L88B6
 
 *--- show the level
 
@@ -5868,6 +5925,8 @@ L88CB	JSR	L88D7
 	CMP	#$AA	; 170
 	BNE	L88CB
 	RTS
+
+*---
 
 L88D7	LDA	$6D
 	STA	$69

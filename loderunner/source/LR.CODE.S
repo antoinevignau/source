@@ -3518,7 +3518,7 @@ showALLSCORES
 	STA	theY
 	JSR	printSTRING
 	ASC	"    LODE RUNNER HIGH SCORES"8D8D8D
-	ASC	"    INITIALS LEVEL SCORE"8D
+	ASC	"    INITIALS LEVEL  SCORE"8D
 	ASC	"    -------- ----- --------"8D00
 
 	LDA	#$01	; for x=1 to...10
@@ -3653,7 +3653,7 @@ dib2	sta	ptrDATA+2
 	iny
 	dex
 	dex
-	bpl	]lp
+	bne	]lp
 	sep	#$30
 
 *L79BB	LDA	#$AA	; ligne 176

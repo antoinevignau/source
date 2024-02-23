@@ -320,7 +320,13 @@ tblBOARDBACKH
 
 *--- From a X in board to a X in HGR
 
-xtable	DB	$00	; HGR column index
+xtable
+]debut	=	10
+	lup	lvlWIDTH
+	dfb	]debut
+]debut	=	]debut+5
+	--^
+	DB	$00	; HGR column index
 	DB	$05	; 0..5..10..15
 	DB	$0A
 	DB	$0F

@@ -23,6 +23,8 @@
 * EQUATES
 *-----------------------------------
 
+refSPEED	=	18
+
 lvlWIDTH	=	28	; $1c
 lvlHEIGHT	=	16	; $10
 
@@ -159,42 +161,44 @@ sprDATA	=	$df	; $df..$ff
 Debut	=	$e0	; the good old DP variables
 Arrivee	=	Debut+4
 
-chrLA	=	$88
-chrRET	=	$8d
-chrRA	=	$95
-chrESC	=	$9b
-chrSPC	=	" "
-chrZERO	=	"0"
-chrNINE	=	"9"
-chrDOT	=	"."
-chrA	=	"A"
-chrI	=	"I"
-chrJ	=	"J"
-chrK	=	"K"
-chrL	=	"L"
-chrN	=	"N"
-chrO	=	"O"
-chrU	=	"U"
-chrY	=	"Y"
-chrZ	=	"Z"
+chrLA	=	$88	; left arrow
+chrDA	=	$8a	; down arrow
+chrUA	=	$8b	; up arrow
+chrRET	=	$8d	; 
+chrCTRLQ	=	$91	; CTRL-Q: quit
+chrRA	=	$95	; right arrow
+chrESC	=	$9b	; 
+chrSPC	=	" "	; 
+chrZERO	=	"0"	; 0
+chrONE	=	"1"	; 1
+chrTWO	=	"2"	; 2
+chrTHREE	=	"3"	; 3
+chrNINE	=	"9"	; 
+chrDOT	=	"."	; 
+chrA	=	"A"	; first character
+chrI	=	"I"	; move up
+chrJ	=	"J"	; move left
+chrK	=	"K"	; move down
+chrL	=	"L"	; move right
+chrN	=	"N"	; NO
+chrO	=	"O"	; dig right
+chrP	=	"P"	; 
+chrU	=	"U"	; dig left
+chrY	=	"Y"	; YES
+chrZ	=	"Z"	; last character
 
 *-----------------------------------
 * SOFTSWITCHES
 *-----------------------------------
 
-KBD	=	$C000
-KBDSTROBE	=	$C010
-SPKR	=	$C030
-TXTCLR	=	$C050
-MIXCLR	=	$C052
-TXTPAGE1	=	$C054
-TXTPAGE2	=	$C055
-HIRES	=	$C057
-BUTN0	=	$C061
-BUTN1	=	$C062
-PADDL0	=	$C064
-PADDL1	=	$C065
-PTRIG	=	$C070
+KBD	=	$e0c000
+KBDSTROBE	=	$e0c010
+SPKR	=	$e0c030
+BUTN0	=	$e0c061
+BUTN1	=	$e0c062
+PADDL0	=	$e0c064
+PADDL1	=	$e0c065
+PTRIG	=	$e0c070
 
 *-----------------------------------
 * PAGES GRAPHIQUES
@@ -202,4 +206,3 @@ PTRIG	=	$C070
 
 oldHGR1	=	$2000
 oldHGR2	=	$4000
-oldHGR3	=	$6000

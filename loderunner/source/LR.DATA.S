@@ -326,34 +326,6 @@ xtable
 	dfb	]debut
 ]debut	=	]debut+5
 	--^
-	DB	$00	; HGR column index
-	DB	$05	; 0..5..10..15
-	DB	$0A
-	DB	$0F
-	DB	$14
-	DB	$19
-	DB	$1E
-	DB	$23
-	DB	$28
-	DB	$2D
-	DB	$32
-	DB	$37
-	DB	$3C
-	DB	$41
-	DB	$46
-	DB	$4B
-	DB	$50
-	DB	$55
-	DB	$5A
-	DB	$5F
-	DB	$64
-	DB	$69
-	DB	$6E
-	DB	$73
-	DB	$78
-	DB	$7D
-	DB	$82
-	DB	$87
 
 *--- From a Y in board to a Y in HGR
 
@@ -374,15 +346,6 @@ ytable	DB	$00	; HGR line index
 	DB	$9A	; 154
 	DB	$A5	; 165
 	DB	$B5	; 181	; ligne de texte
-
-*--- From a X in HGR (0..139) coordinate to a Y column in HGR (0..39)
-
-xbytable
-]debut	=	$0
-	lup	140
-	dfb	]debut
-]debut	=	]debut+1
-	--^
 
 *--- $1F00 - Score buffer
 

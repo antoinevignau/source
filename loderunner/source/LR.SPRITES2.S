@@ -5,197 +5,181 @@
 * (c) 2024, Brutal Deluxe Software
 *
 
-* 0 - noir
-* 4 - blue
-* 6 - orange
-* F - blanc
+*--- Table of spr2ites
 
-*--- Table of mask
-
-tblMASK  hex   fff0f0f0f0f0f0f0f0f0f0f0f0f0f0f00f000000000000000000000000000000
-         hex   0f0000000000000000000000000000000f000000000000000000000000000000
-         hex   0f0000000000000000000000000000000f000000000000000000000000000000
-         hex   0f0000000000000000000000000000000f000000000000000000000000000000
-         hex   0f0000000000000000000000000000000f000000000000000000000000000000
-         hex   0f0000000000000000000000000000000f000000000000000000000000000000
-         hex   0f0000000000000000000000000000000f000000000000000000000000000000
-         hex   0f0000000000000000000000000000000f000000000000000000000000000000
-
-*--- Table of sprites
-
-tblSPRITES
-	da	spr00
-	da	spr01
-	da	spr02
-	da	spr03
-	da	spr04
-	da	spr05
-	da	spr06
-	da	spr07
-	da	spr08
-	da	spr09
-	da	spr0A
-	da	spr0B
-	da	spr0C
-	da	spr0D
-	da	spr0E
-	da	spr0F
-	da	spr10
-	da	spr11
-	da	spr12
-	da	spr13
-	da	spr14
-	da	spr15
-	da	spr16
-	da	spr17
-	da	spr18
-	da	spr19
-	da	spr1A
-	da	spr1B
-	da	spr1C
-	da	spr1D
-	da	spr1E
-	da	spr1F
-	da	spr20
-	da	spr21
-	da	spr22
-	da	spr23
-	da	spr24
-	da	spr25
-	da	spr26
-	da	spr27
-	da	spr28
-	da	spr29
-	da	spr2A
-	da	spr2B
-	da	spr2C
-	da	spr2D
-	da	spr2E
-	da	spr2F
-	da	spr30
-	da	spr31
-	da	spr32
-	da	spr33
-	da	spr34
-	da	spr35
-	da	spr36
-	da	spr37
-	da	spr38
-	da	spr39
-	da	spr3A
-	da	spr3B
-	da	spr3C
-	da	spr3D
-	da	spr3E
-	da	spr3F
-	da	spr40
-	da	spr41
-	da	spr42
-	da	spr43
-	da	spr44
-	da	spr45
-	da	spr46
-	da	spr47
-	da	spr48
-	da	spr49
-	da	spr4A
-	da	spr4B
-	da	spr4C
-	da	spr4D
-	da	spr4E
-	da	spr4F
-	da	spr50
-	da	spr51
-	da	spr52
-	da	spr53
-	da	spr54
-	da	spr55
-	da	spr56
-	da	spr57
-	da	spr58
-	da	spr59
-	da	spr5A
-	da	spr5B
-	da	spr5C
-	da	spr5D
-	da	spr5E
-	da	spr5F
-	da	spr60
-	da	spr61
-	da	spr62
-	da	spr63
-	da	spr64
-	da	spr65
-
+tblSPRITES2
+	da	spr200
+	da	spr201
+	da	spr202
+	da	spr203
+	da	spr204
+	da	spr205
+	da	spr206
+	da	spr207
+	da	spr208
+	da	spr209
+	da	spr20A
+	da	spr20B
+	da	spr20C
+	da	spr20D
+	da	spr20E
+	da	spr20F
+	da	spr210
+	da	spr211
+	da	spr212
+	da	spr213
+	da	spr214
+	da	spr215
+	da	spr216
+	da	spr217
+	da	spr218
+	da	spr219
+	da	spr21A
+	da	spr21B
+	da	spr21C
+	da	spr21D
+	da	spr21E
+	da	spr21F
+	da	spr220
+	da	spr221
+	da	spr222
+	da	spr223
+	da	spr224
+	da	spr225
+	da	spr226
+	da	spr227
+	da	spr228
+	da	spr229
+	da	spr22A
+	da	spr22B
+	da	spr22C
+	da	spr22D
+	da	spr22E
+	da	spr22F
+	da	spr230
+	da	spr231
+	da	spr232
+	da	spr233
+	da	spr234
+	da	spr235
+	da	spr236
+	da	spr237
+	da	spr238
+	da	spr239
+	da	spr23A
+	da	spr23B
+	da	spr23C
+	da	spr23D
+	da	spr23E
+	da	spr23F
+	da	spr240
+	da	spr241
+	da	spr242
+	da	spr243
+	da	spr244
+	da	spr245
+	da	spr246
+	da	spr247
+	da	spr248
+	da	spr249
+	da	spr24A
+	da	spr24B
+	da	spr24C
+	da	spr24D
+	da	spr24E
+	da	spr24F
+	da	spr250
+	da	spr251
+	da	spr252
+	da	spr253
+	da	spr254
+	da	spr255
+	da	spr256
+	da	spr257
+	da	spr258
+	da	spr259
+	da	spr25A
+	da	spr25B
+	da	spr25C
+	da	spr25D
+	da	spr25E
+	da	spr25F
+	da	spr260
+	da	spr261
+	da	spr262
+	da	spr263
+	da	spr264
+	da	spr265
+	
 *--- 00..0F
 
-spr00	hex	0000000000	; empty
-	hex	0000000000
-	hex	0000000000
-	hex	0000000000
-	hex	0000000000
-	hex	0000000000
-	hex	0000000000
-	hex	0000000000
-	hex	0000000000
-	hex	0000000000
-	hex	0000000000
-spr01	hex	4444400044	; diggable floor
-	hex	4444400044
-	hex	4444400044
-	hex	4444400044
-	hex	0000000000
-	hex	4000444444
-	hex	4000444444
-	hex	4000444444
-	hex	4000444444
-	hex	4000444444
-	hex	0000000000
-spr02	hex	4444444440	; solid floor
-	hex	4444444440
-	hex	4444444440
-	hex	4444444440
-	hex	4444444440
-	hex	4444444440
-	hex	4444444440
-	hex	4444444440
-	hex	4444444440
-	hex	4444444440
-	hex	0000000000
-spr03	hex	0FF0000FF0	; ladder
-	hex	0FF0000FF0
-	hex	0FFFFFFFF0
-	hex	0FF0000FF0
-	hex	0FF0000FF0
-	hex	0FF0000FF0
-	hex	0FF0000FF0
-	hex	0FFFFFFFF0
-	hex	0FF0000FF0
-	hex	0FF0000FF0
-	hex	0FF0000FF0
-spr04	hex	0000000000	; bar
-	hex	FFFFFFFFFF
-	hex	0000000000
-	hex	0000000000
-	hex	0000000000
-	hex	0000000000
-	hex	0000000000
-	hex	0000000000
-	hex	0000000000
-	hex	0000000000
-	hex	0000000000
-spr05	hex	4444444440	; trap
-	hex	4444444440
-	hex	0000000000
-	hex	00FFFFFF00
-	hex	0000FF0000
-	hex	0000FF0000
-	hex	0000FF0000
-	hex	0000FF0000
-	hex	4444444440
-	hex	4444444440
-	hex	0000000000
-spr06	hex	0FF0000000	; invisible ladder
+spr200      hex	0000000000	; empty
+            hex	0000000000
+            hex	0000000000
+            hex	0000000000
+            hex	0000000000
+            hex	0000000000
+            hex	0000000000
+            hex	0000000000
+            hex	0000000000
+            hex	0000000000
+            hex	0000000000
+spr201      hex	CCCCCCB1CC	; diggable floor
+            hex	BBBBBBA1CB
+            hex	BBBBBBA1CB
+            hex	AAAAAAA1CB
+            hex	1111111111
+            hex	CCB1CCCCCC
+            hex	BBA1CBBBBB
+            hex	BBA1CBBBBB
+            hex	BBA1CBBBBB
+            hex	AAA1BAAAAA
+            hex	1111111111
+spr202      hex	CCCCCCCCCC	; solid floor
+            hex	BBBBBBBBBB
+            hex	BBBBBBBBBB
+            hex	BBBBBBBBBB
+            hex	BBBBBBBBBB
+            hex	BBBBBBBBBB
+            hex	BBBBBBBBBB
+            hex	BBBBBBBBBB
+            hex	BBBBBBBBBB
+            hex	AAAAAAAAAA
+            hex	1111111111
+spr203      hex	ED10000ED1	; ladder
+            hex	ED10000ED1
+            hex	EDEEEEEFD1
+            hex	ED11111ED1
+            hex	ED10000ED1
+            hex	ED10000ED1
+            hex	ED10000ED1
+            hex	EDEEEEEFD1
+            hex	ED11111ED1
+            hex	ED10000ED1
+            hex	ED10000ED1
+spr204      hex	0000000000	; bar
+            hex	EEEEEEEEEE
+            hex	1111111111
+            hex	0000000000
+            hex	0000000000
+            hex	0000000000
+            hex	0000000000
+            hex	0000000000
+            hex	0000000000
+            hex	0000000000
+            hex	0000000000
+spr205      hex	CCCCCCB1CC	; trap
+            hex	BBBBBBA1CB
+            hex	BBBBBBA1CB
+            hex	AAAAAAA1CB
+            hex	1111111111
+            hex	CCB1CCCCCC
+            hex	BBA1CBBBBB
+            hex	BBA1CBBBBB
+            hex	BBA1CBBBBB
+            hex	AAA1BAAAAA
+            hex	1111111111
+spr206	hex	0FF0000000	; invisible ladder
 	hex	0FF0000000
 	hex	0FFFFFFFF0
 	hex	0FF0000FF0
@@ -206,40 +190,40 @@ spr06	hex	0FF0000000	; invisible ladder
 	hex	0FFFFFFFF0
 	hex	0FF0000000
 	hex	0FF0000000
-spr07	hex	0000000000	; chest
-	hex	0000000000
-	hex	0000000000
-	hex	0000000000
-	hex	0000000000
-	hex	000FFFFF00
-	hex	0006666600
-	hex	000FFFFF00
-	hex	0006666600
-	hex	000FFFFF00
-	hex	0000000000
-spr08	hex	0000400000	; foe
-	hex	0006660000
-	hex	0006660000
-	hex	0000060000
-	hex	0006666600
-	hex	0600060006
-	hex	00000FF000
-	hex	0000FFF000
-	hex	000FF4FFFF
-	hex	000FF00000
-	hex	000FF00000
-spr09	hex	0000004000	; hero runs right 1
-	hex	00000FFF00
-	hex	00000FFF00
-	hex	0000FFF000
-	hex	00FF6FFF00
-	hex	0FF4FF00FF
-	hex	0000FF0000
-	hex	0000FFF000
-	hex	0FFFF4FF00
-	hex	000000FF00
-	hex	000000FF00
-spr0A	hex	FFFFFFFFFF	; cursor
+spr207      hex	0000000000	; chest
+            hex	0000000000
+            hex	0000000000
+            hex	0000000000
+            hex	0000000000
+            hex	00FFFFFD00
+            hex	00FF166100
+            hex	00F1116100
+            hex	00F6166100
+            hex	00F666F100
+            hex	0011111100
+spr208      hex	0011000000	; foe
+            hex	0061E00000
+            hex	00B1100000
+            hex	0008770000
+            hex	0088878800
+            hex	1870880810
+            hex	0000880000
+            hex	0008887000
+            hex	0088778810
+            hex	0088000010
+            hex	0118000000
+spr209      hex	0000001100	; hero
+            hex	0000011900
+            hex	0000019900
+            hex	0000554000
+            hex	0055455500
+            hex	0950550459
+            hex	0000550000
+            hex	0004555000
+            hex	0155445500
+            hex	0100005500
+            hex	0000005110
+spr20A	hex	FFFFFFFFFF	; cursor
 	hex	FFFFFFFFFF
 	hex	FFFFFFFFFF
 	hex	FFFFFFFFFF
@@ -250,7 +234,7 @@ spr0A	hex	FFFFFFFFFF	; cursor
 	hex	FFFFFFFFFF
 	hex	FFFFFFFFFF
 	hex	FFFFFFFFFF
-spr0B	hex	0006000000	; hero runs left 1
+spr20B	hex	0006000000	; hero runs left 1
 	hex	00FFF00000
 	hex	00FFF00000
 	hex	000FFF0000
@@ -261,7 +245,7 @@ spr0B	hex	0006000000	; hero runs left 1
 	hex	00FF6FFFF0
 	hex	00FF000000
 	hex	00FF000000
-spr0C	hex	0006000000	; hero runs left 2
+spr20C	hex	0006000000	; hero runs left 2
 	hex	00FFF00000
 	hex	00FFF00000
 	hex	000FF00000
@@ -272,7 +256,7 @@ spr0C	hex	0006000000	; hero runs left 2
 	hex	00FFFF0000
 	hex	0000FFF000
 	hex	0000FF0000
-spr0D	hex	0006000000	; hero runs left 3
+spr20D	hex	0006000000	; hero runs left 3
 	hex	00FFF00000
 	hex	00FFF00000
 	hex	000FF00000
@@ -283,7 +267,7 @@ spr0D	hex	0006000000	; hero runs left 3
 	hex	0FF00FF000
 	hex	0FF000FF00
 	hex	000000FF00
-spr0E	hex	0000FF0000	; hero ladder 1
+spr20E	hex	0000FF0000	; hero ladder 1
 	hex	0000FF0006
 	hex	0000FFFFFF
 	hex	0600FFF000
@@ -294,7 +278,7 @@ spr0E	hex	0000FF0000	; hero ladder 1
 	hex	000FF4FFF0
 	hex	000FF00000
 	hex	00FFF00000
-spr0F	hex	0000004000	; hero digs left 1
+spr20F	hex	0000004000	; hero digs left 1
 	hex	00000FFF00
 	hex	00000FFF00
 	hex	000000FF00
@@ -308,7 +292,7 @@ spr0F	hex	0000004000	; hero digs left 1
 	
 *--- 10..1F
 
-spr10	hex	0000004000	; hero runs right 2
+spr210	hex	0000004000	; hero runs right 2
 	hex	00000FFF00
 	hex	00000FFF00
 	hex	00000FF000
@@ -319,7 +303,7 @@ spr10	hex	0000004000	; hero runs right 2
 	hex	0000FFFF00
 	hex	000FFF0000
 	hex	0000FF0000
-spr11	hex	0000004000	; hero runs right 3
+spr211	hex	0000004000	; hero runs right 3
 	hex	00000FFF00
 	hex	00000FFF00
 	hex	00000FF000
@@ -330,7 +314,7 @@ spr11	hex	0000004000	; hero runs right 3
 	hex	000FF00FF0
 	hex	00FF000FF0
 	hex	00FF000000
-spr12	hex	0000FF0000	; hero ladder 2
+spr212	hex	0000FF0000	; hero ladder 2
 	hex	4000FF0000
 	hex	FFFFFF0000
 	hex	000FFF0040
@@ -341,7 +325,7 @@ spr12	hex	0000FF0000	; hero ladder 2
 	hex	0FFF6FF000
 	hex	00000FF000
 	hex	00000FFF00
-spr13	hex	0FF00600FF	; hero hole left
+spr213	hex	0FF00600FF	; hero hole left
 	hex	0FF4FFF4FF
 	hex	0FF4FFF4FF
 	hex	00FFFFFFF0
@@ -352,7 +336,7 @@ spr13	hex	0FF00600FF	; hero hole left
 	hex	00FF6FF000
 	hex	00FF6FF000
 	hex	00000FF000
-spr14	hex	FF00400FF0	; hero hole right
+spr214	hex	FF00400FF0	; hero hole right
 	hex	FF6FFF6FF0
 	hex	FF6FFF6FF0
 	hex	0FFFFFFF00
@@ -363,7 +347,7 @@ spr14	hex	FF00400FF0	; hero hole right
 	hex	000FF4FF00
 	hex	000FF4FF00
 	hex	000FF00000
-spr15	hex	0FF0000FF0	; hero bar right 1
+spr215	hex	0FF0000FF0	; hero bar right 1
 	hex	0FF0000FF0
 	hex	0FF4FF6FF0
 	hex	0FF4FFFF00
@@ -374,7 +358,7 @@ spr15	hex	0FF0000FF0	; hero bar right 1
 	hex	FF00400000
 	hex	FF6FF00000
 	hex	44FF000000
-spr16	hex	00000FF000	; hero bar right 2
+spr216	hex	00000FF000	; hero bar right 2
 	hex	00000FF000
 	hex	000FFFF000
 	hex	000FFF0000
@@ -385,7 +369,7 @@ spr16	hex	00000FF000	; hero bar right 2
 	hex	0FF4FF0000
 	hex	0FF4FF0000
 	hex	0FF4FF0000
-spr17	hex	000FF00000	; hero bar right 3
+spr217	hex	000FF00000	; hero bar right 3
 	hex	000FF00000
 	hex	000FFFF000
 	hex	0000FFF4FF
@@ -396,7 +380,7 @@ spr17	hex	000FF00000	; hero bar right 3
 	hex	000FF4FF00
 	hex	000FF4FF00
 	hex	000FF4FF00
-spr18	hex	0FF0000FF0	; hero bar left 1
+spr218	hex	0FF0000FF0	; hero bar left 1
 	hex	0FF0000FF0
 	hex	0FF4FF6FF0
 	hex	00FFFF6FF0
@@ -407,7 +391,7 @@ spr18	hex	0FF0000FF0	; hero bar left 1
 	hex	00000600FF
 	hex	00000FF4FF
 	hex	000000FF66
-spr19	hex	000FF00000	; hero bar left 2
+spr219	hex	000FF00000	; hero bar left 2
 	hex	000FF00000
 	hex	000FFFF000
 	hex	0000FFF000
@@ -418,7 +402,7 @@ spr19	hex	000FF00000	; hero bar left 2
 	hex	0000FF6FF0
 	hex	0000FF6FF0
 	hex	0000FF6FF0
-spr1A	hex	00000FF000	; hero bar left 3
+spr21A	hex	00000FF000	; hero bar left 3
 	hex	00000FF000
 	hex	000FFFF000
 	hex	FF6FFF0000
@@ -429,7 +413,7 @@ spr1A	hex	00000FF000	; hero bar left 3
 	hex	00FF6FF000
 	hex	00FF6FF000
 	hex	00FF6FF000
-spr1B	hex	0000000000	; dig 1
+spr21B	hex	0000000000	; dig 1
 	hex	0000000000
 	hex	0000000000
 	hex	0000000000
@@ -440,7 +424,7 @@ spr1B	hex	0000000000	; dig 1
 	hex	0040000006
 	hex	0000400600
 	hex	0000000600
-spr1C	hex	0000000000	; dig 2
+spr21C	hex	0000000000	; dig 2
 	hex	0000000000
 	hex	0000000000
 	hex	0000400000
@@ -451,7 +435,7 @@ spr1C	hex	0000000000	; dig 2
 	hex	0000444006
 	hex	0040000666
 	hex	0000400600
-spr1D	hex	0000400000	; dig 3
+spr21D	hex	0000400000	; dig 3
 	hex	0000000000
 	hex	0000000000
 	hex	0000000000
@@ -462,7 +446,7 @@ spr1D	hex	0000400000	; dig 3
 	hex	0040000000
 	hex	0000004000
 	hex	0000000000
-spr1E	hex	0000000000	; dig 4
+spr21E	hex	0000000000	; dig 4
 	hex	0000000000
 	hex	0000000000
 	hex	0000400000
@@ -473,7 +457,7 @@ spr1E	hex	0000000000	; dig 4
 	hex	0000000000
 	hex	0000000000
 	hex	0000000000
-spr1F	hex	4440060040	; stone 1
+spr21F	hex	4440060040	; stone 1
 	hex	4444400040
 	hex	4444400040
 	hex	4444400040
@@ -487,7 +471,7 @@ spr1F	hex	4440060040	; stone 1
 	
 *--- 20..2F
 
-spr20	hex	0000060000	; stone 2
+spr220	hex	0000060000	; stone 2
 	hex	0006660000
 	hex	4000000040
 	hex	4444400040
@@ -498,7 +482,7 @@ spr20	hex	0000060000	; stone 2
 	hex	4000444440
 	hex	4000444440
 	hex	0000000000
-spr21	hex	0000000000	; stone 3
+spr221	hex	0000000000	; stone 3
 	hex	0000060000
 	hex	0006660000
 	hex	4006660040
@@ -509,7 +493,7 @@ spr21	hex	0000000000	; stone 3
 	hex	4000444440
 	hex	4000444440
 	hex	0000000000
-spr22	hex	0000000000	; stone 4
+spr222	hex	0000000000	; stone 4
 	hex	0000000000
 	hex	0000000000
 	hex	0000060000
@@ -520,7 +504,7 @@ spr22	hex	0000000000	; stone 4
 	hex	4000444440
 	hex	4000444440
 	hex	0000000000
-spr23	hex	0000000000	; stone 5
+spr223	hex	0000000000	; stone 5
 	hex	0000000000
 	hex	0000000000
 	hex	0000000000
@@ -531,7 +515,7 @@ spr23	hex	0000000000	; stone 5
 	hex	4000000000
 	hex	4000444440
 	hex	0000000000
-spr24	hex	0000000000	; stone 6
+spr224	hex	0000000000	; stone 6
 	hex	0000000000
 	hex	0000000000
 	hex	0000000000
@@ -542,7 +526,7 @@ spr24	hex	0000000000	; stone 6
 	hex	0006660000
 	hex	0006666600
 	hex	0000000000
-spr25	hex	0000400000	; hero dig right
+spr225	hex	0000400000	; hero dig right
 	hex	000FFF0000
 	hex	000FFF0000
 	hex	000FF00000
@@ -553,7 +537,7 @@ spr25	hex	0000400000	; hero dig right
 	hex	00FF6FF000
 	hex	00FF6FF000
 	hex	00FF6FF000
-spr26	hex	0000000000	; dig 1
+spr226	hex	0000000000	; dig 1
 	hex	0000000000
 	hex	0000000000
 	hex	0000000000
@@ -564,7 +548,7 @@ spr26	hex	0000000000	; dig 1
 	hex	0600400000
 	hex	0666000040
 	hex	0006000000
-spr27	hex	0000000000	; dig 2
+spr227	hex	0000000000	; dig 2
 	hex	0000000000
 	hex	0000000000
 	hex	0000400000
@@ -575,7 +559,7 @@ spr27	hex	0000000000	; dig 2
 	hex	0600444000
 	hex	0006000600
 	hex	0006000600
-spr28	hex	0000004000	; foe runs right 1
+spr228	hex	0000004000	; foe runs right 1
 	hex	0000066600
 	hex	0000066600
 	hex	0000060000
@@ -586,7 +570,7 @@ spr28	hex	0000004000	; foe runs right 1
 	hex	0FFFF4FF00
 	hex	000000FF00
 	hex	000000FF00
-spr29	hex	0000004000	; foe runs right 2
+spr229	hex	0000004000	; foe runs right 2
 	hex	0000066600
 	hex	0000066600
 	hex	0000060000
@@ -597,7 +581,7 @@ spr29	hex	0000004000	; foe runs right 2
 	hex	0000FFFF00
 	hex	000FFF0000
 	hex	0000FF0000
-spr2A	hex	0000004000	; foe runs right 3
+spr22A	hex	0000004000	; foe runs right 3
 	hex	0000066600
 	hex	0000066600
 	hex	0000060000
@@ -608,7 +592,7 @@ spr2A	hex	0000004000	; foe runs right 3
 	hex	000FF00FF0
 	hex	00FF000FF0
 	hex	00FF000000
-spr2B	hex	0000400000	; foe runs left 2
+spr22B	hex	0000400000	; foe runs left 2
 	hex	0006660000
 	hex	0006660000
 	hex	0000060000
@@ -619,7 +603,7 @@ spr2B	hex	0000400000	; foe runs left 2
 	hex	000FFFF000
 	hex	00000FFF00
 	hex	00000FF000
-spr2C	hex	0000400000	; foe runs left 3
+spr22C	hex	0000400000	; foe runs left 3
 	hex	0006660000
 	hex	0006660000
 	hex	0000060000
@@ -630,7 +614,7 @@ spr2C	hex	0000400000	; foe runs left 3
 	hex	00FF00FF00
 	hex	00FF000FF0
 	hex	0000000FF0
-spr2D	hex	0600000600	; foe bar right 2
+spr22D	hex	0600000600	; foe bar right 2
 	hex	0600000600
 	hex	0600066600
 	hex	0600066600
@@ -641,7 +625,7 @@ spr2D	hex	0600000600	; foe bar right 2
 	hex	FF00400000
 	hex	FF6FF00000
 	hex	44FF000000
-spr2E	hex	0000060000	; foe bar right 3
+spr22E	hex	0000060000	; foe bar right 3
 	hex	0000060000
 	hex	0006660000
 	hex	0006660000
@@ -652,7 +636,7 @@ spr2E	hex	0000060000	; foe bar right 3
 	hex	0FF4FF0000
 	hex	0FF4FF0000
 	hex	0000FF0000
-spr2F	hex	0006000000	; foe bar left 1
+spr22F	hex	0006000000	; foe bar left 1
 	hex	0006000000
 	hex	0006660000
 	hex	0000060006
@@ -666,7 +650,7 @@ spr2F	hex	0006000000	; foe bar left 1
 	
 *--- 30..3F
 
-spr30	hex	0600000600	; foe bar left 2
+spr230	hex	0600000600	; foe bar left 2
 	hex	0600000600
 	hex	0666000600
 	hex	0666000600
@@ -677,7 +661,7 @@ spr30	hex	0600000600	; foe bar left 2
 	hex	0000400FF0
 	hex	0000FF6FF0
 	hex	00000FF440
-spr31	hex	0006000000	; foe bar left 3
+spr231	hex	0006000000	; foe bar left 3
 	hex	0006000000
 	hex	0006660000
 	hex	0006660000
@@ -688,7 +672,7 @@ spr31	hex	0006000000	; foe bar left 3
 	hex	000FF4FF00
 	hex	000FF4FF00
 	hex	000FF4FF00
-spr32	hex	0000060000	; foe bar right 1
+spr232	hex	0000060000	; foe bar right 1
 	hex	0000060000
 	hex	0006660000
 	hex	0006000000
@@ -699,7 +683,7 @@ spr32	hex	0000060000	; foe bar right 1
 	hex	0FF4FF0000
 	hex	0FF4FF0000
 	hex	0FF4FF0000
-spr33	hex	0000060000	; foe bar right 2
+spr233	hex	0000060000	; foe bar right 2
 	hex	0000060006
 	hex	0000066666
 	hex	0600060000
@@ -710,7 +694,7 @@ spr33	hex	0000060000	; foe bar right 2
 	hex	000FF4FFF0
 	hex	000FF00000
 	hex	00FFF00000
-spr34	hex	0000060000	; fole bar right 3
+spr234	hex	0000060000	; fole bar right 3
 	hex	4000060000
 	hex	FF66660000
 	hex	0006660040
@@ -721,7 +705,7 @@ spr34	hex	0000060000	; fole bar right 3
 	hex	0FFF6FF000
 	hex	00000FF000
 	hex	00000FFF00
-spr35	hex	0600060006	; fole hole left
+spr235	hex	0600060006	; fole hole left
 	hex	0600060006
 	hex	0600060006
 	hex	0006666600
@@ -732,7 +716,7 @@ spr35	hex	0600060006	; fole hole left
 	hex	0000FF6FF0
 	hex	0000FF6FF0
 	hex	0000FF0000
-spr36	hex	0600060006	; foe hole right
+spr236	hex	0600060006	; foe hole right
 	hex	0600060006
 	hex	0600060006
 	hex	0006666600
@@ -743,7 +727,7 @@ spr36	hex	0600060006	; foe hole right
 	hex	00FF6FF000
 	hex	00FF6FF000
 	hex	00000FF000
-spr37	hex	0000000000	; floor 2 bars
+spr237	hex	0000000000	; floor 2 bars
 	hex	0000000000
 	hex	0000000000
 	hex	0000000000
@@ -754,7 +738,7 @@ spr37	hex	0000000000	; floor 2 bars
 	hex	0400000040
 	hex	0400000040
 	hex	0000000000
-spr38	hex	0000000000	; floor 4 bars
+spr238	hex	0000000000	; floor 4 bars
 	hex	0000000000
 	hex	0000000000
 	hex	0000000000
@@ -765,7 +749,7 @@ spr38	hex	0000000000	; floor 4 bars
 	hex	4000000040
 	hex	4000000040
 	hex	0000000000
-spr39	hex	0000000000	; foe resurrects 1
+spr239	hex	0000000000	; foe resurrects 1
 	hex	0000000000
 	hex	0000000000
 	hex	0000000000
@@ -776,7 +760,7 @@ spr39	hex	0000000000	; foe resurrects 1
 	hex	0000000000
 	hex	0006660000
 	hex	0666666600
-spr3A	hex	0000000000	; foe resurrects 2
+spr23A	hex	0000000000	; foe resurrects 2
 	hex	0000000000
 	hex	0000000000
 	hex	0000000000
@@ -787,7 +771,7 @@ spr3A	hex	0000000000	; foe resurrects 2
 	hex	0006660000
 	hex	0666666600
 	hex	0666666600
-spr3B	hex	0000000000	; 0
+spr23B	hex	0000000000	; 0
 	hex	0000000000
 	hex	0000000000
 	hex	0666666600
@@ -798,7 +782,7 @@ spr3B	hex	0000000000	; 0
 	hex	0600066600
 	hex	0600066600
 	hex	0666666600
-spr3C	hex	0000000000	; 1
+spr23C	hex	0000000000	; 1
 	hex	0000000000
 	hex	0000000000
 	hex	0006660000
@@ -809,7 +793,7 @@ spr3C	hex	0000000000	; 1
 	hex	0000060000
 	hex	0006666600
 	hex	0006666600
-spr3D	hex	0000000000	; 2
+spr23D	hex	0000000000	; 2
 	hex	0000000000
 	hex	0000000000
 	hex	0666666600
@@ -820,7 +804,7 @@ spr3D	hex	0000000000	; 2
 	hex	0600000000
 	hex	0600066600
 	hex	0666666600
-spr3E	hex	0000000000	; 3
+spr23E	hex	0000000000	; 3
 	hex	0000000000
 	hex	0000000000
 	hex	0666666600
@@ -831,7 +815,7 @@ spr3E	hex	0000000000	; 3
 	hex	0000000600
 	hex	0600000600
 	hex	0666666600
-spr3F	hex	0000000000	; 4
+spr23F	hex	0000000000	; 4
 	hex	0000000000
 	hex	0000000000
 	hex	0666000600
@@ -845,7 +829,7 @@ spr3F	hex	0000000000	; 4
 	
 *--- 40..4F
 
-spr40	hex	0000000000	; 5
+spr240	hex	0000000000	; 5
 	hex	0000000000
 	hex	0000000000
 	hex	0666666600
@@ -856,7 +840,7 @@ spr40	hex	0000000000	; 5
 	hex	0000066600
 	hex	0000066600
 	hex	0666666600
-spr41	hex	0000000000	; 6
+spr241	hex	0000000000	; 6
 	hex	0000000000
 	hex	0000000000
 	hex	0666666600
@@ -867,7 +851,7 @@ spr41	hex	0000000000	; 6
 	hex	0600066600
 	hex	0600066600
 	hex	0666666600
-spr42	hex	0000000000	; 7
+spr242	hex	0000000000	; 7
 	hex	0000000000
 	hex	0000000000
 	hex	0666666600
@@ -878,7 +862,7 @@ spr42	hex	0000000000	; 7
 	hex	0006000000
 	hex	0006000000
 	hex	0006000000
-spr43	hex	0000000000	; 8
+spr243	hex	0000000000	; 8
 	hex	0000000000
 	hex	0000000000
 	hex	0006666600
@@ -889,7 +873,7 @@ spr43	hex	0000000000	; 8
 	hex	0600000600
 	hex	0600000600
 	hex	0666666600
-spr44	hex	0000000000	; 9
+spr244	hex	0000000000	; 9
 	hex	0000000000
 	hex	0000000000
 	hex	0666666600
@@ -900,7 +884,7 @@ spr44	hex	0000000000	; 9
 	hex	0000066600
 	hex	0000066600
 	hex	0000066600
-spr45	hex	0000000000	; A
+spr245	hex	0000000000	; A
 	hex	0000000000
 	hex	0000000000
 	hex	0044444000
@@ -911,7 +895,7 @@ spr45	hex	0000000000	; A
 	hex	4000004000
 	hex	4000444000
 	hex	4000444000
-spr46	hex	0000000000	; B
+spr246	hex	0000000000	; B
 	hex	0000000000
 	hex	0000000000
 	hex	4444400000
@@ -922,7 +906,7 @@ spr46	hex	0000000000	; B
 	hex	4000004000
 	hex	4000004000
 	hex	4444444000
-spr47	hex	0000000000	; C
+spr247	hex	0000000000	; C
 	hex	0000000000
 	hex	0000000000
 	hex	4444444000
@@ -933,7 +917,7 @@ spr47	hex	0000000000	; C
 	hex	4440000000
 	hex	4440004000
 	hex	4444444000
-spr48	hex	0000000000	; D
+spr248	hex	0000000000	; D
 	hex	0000000000
 	hex	0000000000
 	hex	4444400000
@@ -944,7 +928,7 @@ spr48	hex	0000000000	; D
 	hex	4440004000
 	hex	4440004000
 	hex	4444400000
-spr49	hex	0000000000	; E
+spr249	hex	0000000000	; E
 	hex	0000000000
 	hex	0000000000
 	hex	4444444000
@@ -955,7 +939,7 @@ spr49	hex	0000000000	; E
 	hex	4000000000
 	hex	4000000000
 	hex	4444444000
-spr4A	hex	0000000000	; F
+spr24A	hex	0000000000	; F
 	hex	0000000000
 	hex	0000000000
 	hex	4444444000
@@ -966,7 +950,7 @@ spr4A	hex	0000000000	; F
 	hex	4000000000
 	hex	4000000000
 	hex	4000000000
-spr4B	hex	0000000000	; G
+spr24B	hex	0000000000	; G
 	hex	0000000000
 	hex	0000000000
 	hex	4444444000
@@ -977,7 +961,7 @@ spr4B	hex	0000000000	; G
 	hex	4000444000
 	hex	4000004000
 	hex	4444444000
-spr4C	hex	0000000000	; H
+spr24C	hex	0000000000	; H
 	hex	0000000000
 	hex	0000000000
 	hex	4000004000
@@ -988,7 +972,7 @@ spr4C	hex	0000000000	; H
 	hex	4440004000
 	hex	4440004000
 	hex	4440004000
-spr4D	hex	0000000000	; I
+spr24D	hex	0000000000	; I
 	hex	0000000000
 	hex	0000000000
 	hex	0040000000
@@ -999,7 +983,7 @@ spr4D	hex	0000000000	; I
 	hex	0044400000
 	hex	0044400000
 	hex	0044400000
-spr4E	hex	0000000000	; J
+spr24E	hex	0000000000	; J
 	hex	0000000000
 	hex	0000000000
 	hex	0000400000
@@ -1010,7 +994,7 @@ spr4E	hex	0000000000	; J
 	hex	0000444000
 	hex	4000444000
 	hex	4444444000
-spr4F	hex	0000000000	; K
+spr24F	hex	0000000000	; K
 	hex	0000000000
 	hex	0000000000
 	hex	4000004000
@@ -1024,7 +1008,7 @@ spr4F	hex	0000000000	; K
 	
 *--- 50..5F
 
-spr50	hex	0000000000	; L
+spr250	hex	0000000000	; L
 	hex	0000000000
 	hex	0000000000
 	hex	4000000000
@@ -1035,7 +1019,7 @@ spr50	hex	0000000000	; L
 	hex	4440000000
 	hex	4440000000
 	hex	4444444000
-spr51	hex	0000000000	; M
+spr251	hex	0000000000	; M
 	hex	0000000000
 	hex	0000000000
 	hex	4000004000
@@ -1046,7 +1030,7 @@ spr51	hex	0000000000	; M
 	hex	4000004000
 	hex	4000004000
 	hex	4000004000
-spr52	hex	0000000000	; N
+spr252	hex	0000000000	; N
 	hex	0000000000
 	hex	0000000000
 	hex	4000004000
@@ -1057,7 +1041,7 @@ spr52	hex	0000000000	; N
 	hex	4000444000
 	hex	4000004000
 	hex	4000004000
-spr53	hex	0000000000	; O
+spr253	hex	0000000000	; O
 	hex	0000000000
 	hex	0000000000
 	hex	4444444000
@@ -1068,7 +1052,7 @@ spr53	hex	0000000000	; O
 	hex	4000004000
 	hex	4000004000
 	hex	4444444000
-spr54	hex	0000000000	; P
+spr254	hex	0000000000	; P
 	hex	0000000000
 	hex	0000000000
 	hex	4444444000
@@ -1079,7 +1063,7 @@ spr54	hex	0000000000	; P
 	hex	4440000000
 	hex	4440000000
 	hex	4440000000
-spr55	hex	0000000000	; Q
+spr255	hex	0000000000	; Q
 	hex	0000000000
 	hex	0000000000
 	hex	4444444000
@@ -1090,7 +1074,7 @@ spr55	hex	0000000000	; Q
 	hex	4000004000
 	hex	4000400000
 	hex	4440004000
-spr56	hex	0000000000	; R
+spr256	hex	0000000000	; R
 	hex	0000000000
 	hex	0000000000
 	hex	4444444000
@@ -1101,7 +1085,7 @@ spr56	hex	0000000000	; R
 	hex	4444400000
 	hex	4440004000
 	hex	4440004000
-spr57	hex	0000000000	; S
+spr257	hex	0000000000	; S
 	hex	0000000000
 	hex	0000000000
 	hex	4444444000
@@ -1112,7 +1096,7 @@ spr57	hex	0000000000	; S
 	hex	0000444000
 	hex	4000444000
 	hex	4444444000
-spr58	hex	0000000000	; T
+spr258	hex	0000000000	; T
 	hex	0000000000
 	hex	0000000000
 	hex	4444444000
@@ -1123,7 +1107,7 @@ spr58	hex	0000000000	; T
 	hex	0044400000
 	hex	0044400000
 	hex	0044000000
-spr59	hex	0000000000	; U
+spr259	hex	0000000000	; U
 	hex	0000000000
 	hex	0000000000
 	hex	4000004000
@@ -1134,7 +1118,7 @@ spr59	hex	0000000000	; U
 	hex	4440004000
 	hex	4440004000
 	hex	4444444000
-spr5A	hex	0000000000	; V
+spr25A	hex	0000000000	; V
 	hex	0000000000
 	hex	0000000000
 	hex	4440004000
@@ -1145,7 +1129,7 @@ spr5A	hex	0000000000	; V
 	hex	4444444000
 	hex	0004440000
 	hex	0004000000
-spr5B	hex	0000000000	; W
+spr25B	hex	0000000000	; W
 	hex	0000000000
 	hex	0000000000
 	hex	4000004000
@@ -1156,7 +1140,7 @@ spr5B	hex	0000000000	; W
 	hex	4444444000
 	hex	4440004000
 	hex	4000004000
-spr5C	hex	0000000000	; X
+spr25C	hex	0000000000	; X
 	hex	0000000000
 	hex	0000000000
 	hex	4000004000
@@ -1167,7 +1151,7 @@ spr5C	hex	0000000000	; X
 	hex	4000004000
 	hex	4000004000
 	hex	4000004000
-spr5D	hex	0000000000	; Y
+spr25D	hex	0000000000	; Y
 	hex	0000000000
 	hex	0000000000
 	hex	4000444000
@@ -1178,7 +1162,7 @@ spr5D	hex	0000000000	; Y
 	hex	0044400000
 	hex	0044400000
 	hex	0044400000
-spr5E	hex	0000000000	; Z
+spr25E	hex	0000000000	; Z
 	hex	0000000000
 	hex	0000000000
 	hex	4444444000
@@ -1189,7 +1173,7 @@ spr5E	hex	0000000000	; Z
 	hex	4000000000
 	hex	4000444000
 	hex	4444444000
-spr5F	hex	0000000000	; >
+spr25F	hex	0000000000	; >
 	hex	0000000000
 	hex	0000000000
 	hex	4000000000
@@ -1203,7 +1187,7 @@ spr5F	hex	0000000000	; >
 	
 *--- 60.65
 
-spr60	hex	0000000000	; .
+spr260	hex	0000000000	; .
 	hex	0000000000
 	hex	0000000000
 	hex	0000000000
@@ -1214,7 +1198,7 @@ spr60	hex	0000000000	; .
 	hex	0044400000
 	hex	0044400000
 	hex	0044400000
-spr61	hex	0000000000	; (
+spr261	hex	0000000000	; (
 	hex	0000000000
 	hex	0000000000
 	hex	0044400000
@@ -1225,7 +1209,7 @@ spr61	hex	0000000000	; (
 	hex	4440000000
 	hex	0044400000
 	hex	0044400000
-spr62	hex	0000000000	; )
+spr262	hex	0000000000	; )
 	hex	0000000000
 	hex	0000000000
 	hex	0044400000
@@ -1236,7 +1220,7 @@ spr62	hex	0000000000	; )
 	hex	0000444000
 	hex	0044400000
 	hex	0044400000
-spr63	hex	0000000000	; /
+spr263	hex	0000000000	; /
 	hex	0000000000
 	hex	0000000000
 	hex	0000004000
@@ -1247,7 +1231,7 @@ spr63	hex	0000000000	; /
 	hex	0040000000
 	hex	4000000000
 	hex	4000000000
-spr64	hex	0000000000	; -
+spr264	hex	0000000000	; -
 	hex	0000000000
 	hex	0000000000
 	hex	0000000000
@@ -1258,7 +1242,7 @@ spr64	hex	0000000000	; -
 	hex	4444444444
 	hex	0000000000
 	hex	0000000000
-spr65	hex	0000000000	; <
+spr265	hex	0000000000	; <
 	hex	0000000000
 	hex	0000000000
 	hex	0000004000

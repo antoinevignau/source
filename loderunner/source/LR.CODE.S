@@ -79,7 +79,7 @@ L6056	LDA	#$00
 	STA	tempX6
 	STA	demoREPEAT
 	lda	#<demoDATA
-	STA	ptrDEMO	; demo actions
+	sta	ptrDEMO	; demo actions
 	LDA	#>demoDATA
 	STA	ptrDEMO+1
 	LDA	#nbLIVES	; 5 men to start with
@@ -262,7 +262,9 @@ L61F6	STAl	KBDSTROBE
 	BEQ	L6211
 	CMP	#chrRET	; Return
 	BEQ	L61E4
-
+	cmp	#chrCTRLQ	; ctrl-Q - quit
+	beq	L6212
+	
 L6201	LDX	#$00
 	STX	intLEVEL
 	INX
@@ -273,9 +275,14 @@ L6201	LDX	#$00
 	JMP	L6056
 
 L6211	JMP	enterEDITOR	; Jump to the Editor
+L6212	jmp	meQUIT	; bye for now
+
+*----------
 
 L6214	HEX	000306090C0F121518	; 0..3..6..9..12..15..18..21..24 (index in 6CA7)
 L621D	HEX	26262E4447494A4B4C4D4E4F50
+
+*----------
 
 scoreSOUND	LDA	temp1	; son pour le score
 	ASL
@@ -1507,18 +1514,18 @@ getPLAYERINPUT
 	LDA	fgDEMO
 	CMP	#$01
 	BEQ	L69B8
-	LDal	KBD
-	STal	KBDSTROBE
-	STa	theA
+	ldal	KBD
+	stal	KBDSTROBE
+	STA	theA
 	BMI	L6A2B
 	LDA	fgINPUT
 	CMP	#chrK
 	BEQ	L6A55
 L6A28	JMP	getJOYSTICKKEY
 
-L6A2B	Cmp	#chrSPC
+L6A2B	CMP	#chrSPC	; skip if game key
 	BCS	L6A49
-	STa	theA
+	STA	theA
 	LDY	#$FF
 L6A33	INY
 	LDA	tblKEY,Y
@@ -1534,14 +1541,28 @@ L6A33	INY
 	PHA
 	RTS
 
-L6A49	LDA	fgINPUT
+* C1..DA 1100_0001 1101_1010
+* E1..FA 1110_0001 1111_1010
+
+L6A49	LDA	fgINPUT	; joystick?
 	CMP	#chrJ
-	BEQ	L6A28
-	LDX	theA
-	STX	theKEY1
-	STX	theKEY2
+	BEQ	L6A28	; yes
+
+	ldal	$c034
+	inc
+	stal	$c034
+	
+*	LDX	theA	; no
+*	STX	theKEY1
+*	STX	theKEY2
+	lda	theA	; support des minuscules
+	and	#%1101_1111
+	sta	theA
+	sta	theKEY1
+	sta	theKEY2
 L6A55	RTS
 
+	
 *-------------------------------
 * 9E - CTRL-^ - NEXT LEVEL
 *-------------------------------
@@ -1600,18 +1621,29 @@ doTOGGLESOUND
 	JMP	getPLAYERINPUT
 
 *-------------------------------
-* 8A - DOWN ARROW - MOVE LEFT
+* 8A - CTRL-J - SET JOYSTICK MODE
 *-------------------------------
 
-doDOWNARROW	LDA	#chrJ
+doSETJOYSTICK
+	LDA	#chrJ
 	STA	fgINPUT
 	JMP	getPLAYERINPUT
 
 *-------------------------------
-* 8B - UP ARROW - MOVE DOWN
+* 8B - CTRL-K - SET KEYBOARD MODE
 *-------------------------------
 
-doUPARROW	LDA	#chrK
+doSETKEYBOARD
+	LDA	#chrK
+	STA	fgINPUT
+	JMP	getPLAYERINPUT
+
+*-------------------------------
+* 90 - CTRL-P - SET JOYPAD MODE
+*-------------------------------
+
+doSETJOYPAD
+	LDA	#chrP
 	STA	fgINPUT
 	JMP	getPLAYERINPUT
 
@@ -1649,7 +1681,7 @@ doSLOWDOWN	LDA	theSPEED
 *-------------------------------
 
 doSPEEDUP	LDA	theSPEED
-	CMP	#$0F
+	CMP	#$1f	; on ajoute 16 valeurs de tempo
 	BEQ	L6ACD
 	INC	theSPEED
 L6ACD	JMP	getPLAYERINPUT
@@ -1724,23 +1756,24 @@ L6B56	STA	theKEY1
 	RTS
 
 *----------------------------------
-* KEYS AND ASSOCIATED JUMPS
+* KEYS AND ASSOCIATED JUMPS + -
 *----------------------------------
 
-tblKEY	HEX	9E809B9281938A8B889598998D00
+tblKEY	HEX	9E,80,9B,92,81,93,8A,8B,90,88,95,98,99,8D,00
 
 tblKEYADR	DA	doNEXTLEVEL-1	; 9E - CTRL-^
 	DA	doEXTRAMAN-1	; 80 - CTRL-@
-	DA	doPAUSE-1	; 9B - ESCAPE
+	DA	doPAUSE-1		; 9B - ESCAPE
 	DA	doTERMINATE-1	; 92 - CTRL-R
 	DA	doABORTMAN-1	; 81 - CTRL-A
 	DA	doTOGGLESOUND-1	; 93 - CTRL-S
-	DA	doDOWNARROW-1	; 8A - DOWN ARROW
-	DA	doUPARROW-1	; 8B - UP ARROW
-	DA	doSPEEDUP-1	; 88 - LEFT ARROW
-	DA	doSLOWDOWN-1	; 95 - RIGHT ARROW
-	DA	doFLIPX-1	; 98 - CTRL-X
-	DA	doFLIPY-1	; 99 - CTRL-Y
+	DA	doSETJOYSTICK-1	; 8A - CTRL-J
+	DA	doSETKEYBOARD-1	; 8B - CTRL-K
+	DA	doSETJOYPAD-1	; 90 - CTRL-P
+	DA	doSPEEDUP-1		; 88 - SPEED UP
+	DA	doSLOWDOWN-1	; 95 - SLOW DOWN
+	DA	doFLIPX-1		; 98 - CTRL-X
+	DA	doFLIPY-1		; 99 - CTRL-Y
 	DA	displayHIGHSCORES-1	; 8D - RETURN
 
 joyXMIN	DB	minJOY	; x-low
@@ -3743,9 +3776,6 @@ setHGRPOINTERS
 *-------------------------------
 
 clearHGR1
-*	LDA	#>oldHGR1
-*	LDX	#>oldHGR2	; >HGR1+$20
-*	BNE	L7A5B
 	lda	ptrSCREEN+2
 	ldx	ptrSCREEN+1
 	ldy	ptrSCREEN
@@ -3756,30 +3786,16 @@ clearHGR1
 *-------------------------------
 
 clearHGR2
-*	LDA	#>oldHGR2
-*	LDX	#>oldHGR3	; >HGR2+$20
 	lda	#^HGR2
 	ldx	#>HGR2
 	ldy	#<HGR2
 
 *--- clear now
 
-L7A5B
-*	STA	ptrDATA+1
-*	LDA	#$00
-*	STA	ptrDATA
-*	TAY
-*	LDA	#$80
-*]lp	STA	[ptrDATA],Y
-*	INY
-*	BNE	]lp
-*	INC	ptrDATA+1
-*	CPX	ptrDATA+1
-*	BNE	]lp
-
-	sta	ptrDATA+2	; save address
+L7A5B	sta	ptrDATA+2	; save address
 	stx	ptrDATA+1
 	sty	ptrDATA
+
 	rep	#$30
 	ldy	#$7cfe	; everything but SCB and Palette
 	lda	#0
@@ -3985,10 +4001,6 @@ enterEDITOR	LDA	#$00
 	STA	theSCORE+1
 	STA	theSCORE+2
 	STA	theSCORE+3
-*	LDA	CSWL
-*	STA	CH
-*	LDA	CSWH
-*	STA	CV
 	LDA	#$05
 	STA	theMEN
 	STA	fgDEMO
@@ -4756,7 +4768,7 @@ L82B4	STA	hgrPAGE	; page in $1F
 	and	#$ff
 	asl
 	tax
-	lda	tblSPRITES,x
+patchSPR1	lda	tblSPRITES,x
 	sta	ptrSPR
 
 	lda	#sprHEIGHT
@@ -4799,12 +4811,10 @@ outerCOUT	lda	#0
 * draw a sprite at real HGR X,Y (eg. 175,111)
 
 drawSPRITEXY
+	stx	theXSCREEN
 	STY	theYSCREEN
 	STA	theA
 	jsr	setHGRPOINTERS
-*	JSR	getXBYBI
-	lda	xbytable,X
-	sta	theXSCREEN
 	
 	rep	#$30
 
@@ -4819,7 +4829,7 @@ drawSPRITEXY
 	and	#$ff
 	asl
 	tax
-	lda	tblSPRITES,x
+patchSPR2	lda	tblSPRITES,x
 	sta	ptrSPR
 
 	lda	#sprHEIGHT
@@ -4868,12 +4878,10 @@ outerDSXY	lda	#0
 *    <>00 if collision
 
 drawSPRXYCOLLISION
+	stx	theXSCREEN
 	STY	theYSCREEN
 	STA	theA
 	jsr	setHGRPOINTERS
-*	JSR	getXBYBI
-	lda	xbytable,X
-	sta	theXSCREEN
 	LDX	#$00
 	STX	fgCOLLISION
 
@@ -4890,7 +4898,7 @@ drawSPRXYCOLLISION
 	and	#$ff
 	asl
 	tax
-	lda	tblSPRITES,x
+patchSPR3	lda	tblSPRITES,x
 	sta	ptrSPR
 
 	lda	#sprHEIGHT
@@ -5058,6 +5066,7 @@ L85B6	CMP	#chrDOT
 	BEQ	L85C6
 	CMP	#chrSPC
 	BEQ	L85C6
+	and	#%1101_1111	; for lowercase
 	CMP	#chrA
 	BCC	L85E1
 	CMP	#chrZ+1
@@ -5201,7 +5210,10 @@ doWAIT1	LDY	#$B4
 	BNE	doWAIT1
 	RTS
 
+* index                 000102030405060708090A0B0C0D0E0F
+*                       --------------------------------
 L86BE	HEX	020406080A0C0E10121416181A1C1E20
+	hex	222426282a2c2e30323436383a3c3e40
 
 *-----------------------------------
 * The CTRL-G of Lode Runner
@@ -5480,17 +5492,12 @@ setBOARDLINEPOINTERS
 * FROM A Y IN TEXT TO A Y IN HGR
 *-------------------------------
 
-getXY
-*	LDA	ytable,Y	;  in: board X/Y
-*	PHA		; out: hgr X/Y
-*	LDA	xtable,X
-*	TAX
-*	PLA
-*	TAY
-	lda	xtable,x
-	tax
-	lda	ytable,y
-	tay
+getXY	LDA	ytable,Y	;  in: board X/Y
+	PHA		; out: hgr X/Y
+	LDA	xtable,X
+	TAX
+	PLA
+	TAY
 	RTS
 
 *getBYBI	LDA	bytable,X	;  in: board X

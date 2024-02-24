@@ -182,10 +182,22 @@ noSOUND	_HideMenuBar
 	dex
 	bpl	]lp
 
+	lda	#0
+	beq	noPATCH
+	jsr	setLRPALETTE ; set the LR palette
+	lda	#tblSPRITES2
+	sta	patchSPR1+1
+	sta	patchSPR2+1
+	sta	patchSPR3+1
+noPATCH
+	
 	jsr	loadLEVELS	; exit 8-bit
 
 	mx	%11
 	
+	lda	#refSPEED	; try to slow it down a bit
+	sta	theSPEED
+
 	lda	ptrSCREEN+2
 	sta	ptrHGR1+2
 	brl	theGAME
@@ -345,7 +357,9 @@ saveLEVELS9	sep	#$30
 
 *----------------------------------- Quit
 
-meQUIT	PushWord #refIsHandle
+meQUIT	rep	#$30
+
+	PushWord #refIsHandle
 	PushLong SStopREC
 	_ShutDownTools
 
@@ -523,6 +537,26 @@ loadBACK	_HideCursor
 	rts
 
 *----------------------------------------
+* SET STANDARD 320 PALETTE
+*----------------------------------------
+
+setSTDPALETTE
+	PushWord	#0
+	PushLong	#palette320
+	_SetColorTable
+	rts
+
+*----------------------------------------
+* SET LODE RUNNER 320 PALETTE
+*----------------------------------------
+
+setLRPALETTE
+	PushWord	#0
+	PushLong	#paletteLR
+	_SetColorTable
+	rts
+
+*----------------------------------------
 * DATA
 *----------------------------------------
 
@@ -548,6 +582,14 @@ myDP	ds	2
 SStopREC	ds	4
 
 ptrSCREEN	adrl	ptr012000
+
+*----------------------- QuickDraw II
+
+palette320	dw	$0000,$0777,$0841,$072C,$000F,$0080,$0F70,$0D00
+	dw	$0FA9,$0FF0,$00E0,$04DF,$0DAF,$078F,$0CCC,$0FFF
+
+paletteLR	dw	$0445,$0000,$0FFF,$0952,$00BB,$01DD,$0FF0,$0A1A
+	dw	$0C0C,$0FCB,$0A10,$0C30,$0E50,$0666,$0AAA,$0FFF
 
 *----------------------- GS/OS
 
@@ -625,7 +667,8 @@ loadPATH1
 	put	LR.Code.s
 	put	LR.Data.s
 	put	LR.Tables.s
-	put	LR.Sprites.s
+	put	LR.Sprites.s	; 8-bits sprites
+	put	LR.Sprites2.s	; 16-col sprites
 		
 *---
 

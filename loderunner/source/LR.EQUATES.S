@@ -117,6 +117,12 @@ tempX2	=	$5b
 temp1	=	$5c
 tempX	=	$5d
 tempY	=	$5e
+hfoeACTION	=	$5f
+hfoePATH1	=	$60
+hfoePATH2	=	$61
+hfoePATH3	=	$62
+hfoePATH	=	$63
+hfoeIDX	=	$64	; foe currently being handled
 theJOYX	=	$65
 theJOYY	=	$66
 sprTABLE	=	$71
@@ -187,12 +193,15 @@ chrU	=	"U"	; dig left
 chrY	=	"Y"	; YES
 chrZ	=	"Z"	; last character
 
+maskUPPER	=	%1101_1111
+
 *-----------------------------------
 * SOFTSWITCHES
 *-----------------------------------
 
 KBD	=	$e0c000
 KBDSTROBE	=	$e0c010
+NEWVIDEO	=	$e0c029
 SPKR	=	$e0c030
 BUTN0	=	$e0c061
 BUTN1	=	$e0c062

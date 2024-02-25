@@ -119,7 +119,7 @@ L609F	LDX	#modeGAME
 	LDA	fgDEMO	; are we in demo mode?
 	LSR
 	BEQ	L60BF	; yes
-	JSR	waitKEYUP
+*	JSR	waitKEYUP
 	LDA	boardX
 	STA	theX
 	LDA	boardY
@@ -135,14 +135,14 @@ L60BF	LDX	#$00
 	TAY
 	LDX	L6214,Y
 	LDA	L6CA7,X
-	STA	$60
+	STA	hfoePATH1
 	LDA	L6CA7+1,X
-	STA	$61
+	STA	hfoePATH2
 	LDA	L6CA7+2,X
-	STA	$62
+	STA	hfoePATH3
 	LDY	$97
 	LDA	L621D,Y
-	STA	$5F
+	STA	hfoeACTION
 
 L60E4	JSR	handleHERO
 	LDA	fgPLAY	; are we dead?
@@ -207,7 +207,8 @@ L6178	JSR	playMELODY
 	JSR	animGAMEOVER	; we are dead, anim GAME OVER
 	BCS	L61F6
 
-L618E	JSR	waitKEYUP
+L618E
+*	JSR	waitKEYUP
 	LDX	#$FF
 	LDY	#$FF
 	LDA	#$03
@@ -449,6 +450,7 @@ dlLOAD	rep	#$30	; load a level
 	PushLong	#256
 	_BlockMove
 	sep	#$30
+	clc
 	rts
 
 dlERR	jmp	showTITLEPAGE
@@ -692,8 +694,8 @@ L6469
 *	BCC	L6478
 
 	rep	#$30
-	PushLong	ptrSCREEN
 	PushLong	#HGR2
+	PushLong	ptrSCREEN
 	PushLong	#hgrTOMOVE
 	_BlockMove
 	sep	#$30
@@ -1457,7 +1459,8 @@ digDURATION	DB	$04	; duration
 * DEMO MODE ENGINE ENTRY POINT
 *-----------------------------------
 
-L69B8	LDAl	KBD
+L69B8	jsr	checkKEY
+*	LDAl	KBD
 	BMI	L69CD
 	LDA	fgINPUT
 	CMP	#chrK
@@ -1466,7 +1469,9 @@ L69B8	LDAl	KBD
 	BMI	L69CD
 	LDAl	BUTN0
 	BPL	L69D6
-L69CD	LSR	fgKEYBTN0
+L69CD
+*	stal	KBDSTROBE
+	LSR	fgKEYBTN0
 	LSR	fgPLAY
 	LDA	#$01
 	STA	theMEN	; one man
@@ -1514,8 +1519,9 @@ getPLAYERINPUT
 	LDA	fgDEMO
 	CMP	#$01
 	BEQ	L69B8
-	ldal	KBD
-	stal	KBDSTROBE
+	jsr	checkKEY
+*	ldal	KBD
+*	stal	KBDSTROBE
 	STA	theA
 	BMI	L6A2B
 	LDA	fgINPUT
@@ -1548,15 +1554,11 @@ L6A49	LDA	fgINPUT	; joystick?
 	CMP	#chrJ
 	BEQ	L6A28	; yes
 
-	ldal	$c034
-	inc
-	stal	$c034
-	
 *	LDX	theA	; no
 *	STX	theKEY1
 *	STX	theKEY2
 	lda	theA	; support des minuscules
-	and	#%1101_1111
+	and	#maskUPPER
 	sta	theA
 	sta	theKEY1
 	sta	theKEY2
@@ -1591,7 +1593,7 @@ L6A67	JSR	printMEN
 * 9B - ESC - PAUSE GAME
 *-------------------------------
 
-doPAUSE	JSR	waitKEYDOWN
+doPAUSE	JSR	checkKEY	; waitKEYDOWN
 	CMP	#$9B
 	BNE	doPAUSE
 	JMP	getPLAYERINPUT
@@ -1945,30 +1947,30 @@ L6C67	INX
 L6C81	RTS
 
 *-----------------------------------
-* 
+* HANDLE EACH FOE ACTION
 *-----------------------------------
 
 handleFOE	LDX	nbFOE	; no foe, skip
 	BEQ	L6CA6
-	INC	$64
-	LDY	$64
-	CPY	#$03
+	INC	hfoeIDX
+	ldx	hfoeIDX	; was Y, is now X
+	cpx	#$03
 	BCC	L6C92
-	LDY	#$00
-	STY	$64
-L6C92	LDA	|$0060,Y
-	STA	$63
-L6C97	LSR	$63
+	ldx	#$00
+	stx	hfoeIDX
+L6C92	lda	hfoePATH1,x
+	STA	hfoePATH
+L6C97	LSR	hfoePATH
 	BCC	L6CA2
 	JSR	doFOEACTION
 	LDA	fgPLAY
 	BEQ	L6CA6
-L6CA2	LDA	$63
+L6CA2	LDA	hfoePATH
 	BNE	L6C97
 L6CA6	RTS
 
 *-----------------------------------
-* 
+* THE PATHS TO TAKE
 *-----------------------------------
 
 L6CA7	HEX	000000
@@ -2102,7 +2104,7 @@ L6D75	STA	foeINDEX
 	LDA	foeACTION
 	BPL	L6DA2
 	DEC	nbCHEST
-L6DA2	LDA	$5F
+L6DA2	LDA	hfoeACTION
 	STA	foeACTION
 	LDY	#$00	; we trapped a foe
 	LDA	#$75
@@ -3453,7 +3455,8 @@ L77B7	LDA	fgINPUT
 	BMI	L77D6
 	LDAl	BUTN0
 	BMI	L77D6
-L77C7	LDAl	KBD
+L77C7	jsr	checkKEY
+*	LDAl	KBD
 	BMI	L77D6
 	DEX
 	BNE	L77B7
@@ -3461,7 +3464,8 @@ L77C7	LDAl	KBD
 	BNE	L77B7
 	DEC	counter
 	BNE	L77B7
-L77D6	STAl	KBDSTROBE
+L77D6
+*	STAl	KBDSTROBE
 *	STA	TXTPAGE1
 	lda	ptrSCREEN+2
 	sta	ptrHGR1+2
@@ -4308,12 +4312,12 @@ L7EFE	JMP	editLOOP
 *-------------------------------
 
 editEDITLEVEL
-	JSR	clearHGR2	; clear HGR2
-	LDA	#>oldHGR2
+	JSR	clearHGR1	; was 2
+	LDA	#>oldHGR1	; was 2
 	STA	activePAGE
 	JSR	drawINFOBAR	; show frame
-	LDA	#>oldHGR1
-	STA	activePAGE
+*	LDA	#>oldHGR1
+*	STA	activePAGE
 	JSR	checkDISK	; check diskette (master or data disk)
 	LDX	#$01
 	STX	fgCHANGE
@@ -4347,7 +4351,8 @@ L7F4A	LDA	theA	; get sprite
 	JSR	coutHGR1	; print sprite
 	JMP	L7F25	; loop
 
-L7F54	STA	theA	; same key
+L7F54	and	#maskUPPER	; for lowercase support
+	STA	theA	; same key
 	LDY	#$FF
 L7F58	INY
 	LDA	tblEDITKEYS,Y	; is that a command?
@@ -4485,8 +4490,8 @@ editQUIT	JSR	editSAVECHANGES
 editSAVECHANGES
 	LDA	fgCHANGE
 	BNE	L8075
-	JSR	clearHGR2
-	LDA	#>oldHGR2
+	JSR	clearHGR1	; was 2
+	LDA	#>oldHGR1	; was 2
 	STA	activePAGE
 	LDA	#$00
 	STA	theX
@@ -4499,7 +4504,7 @@ editSAVECHANGES
 *	STA	TXTPAGE2
 L8062	LDA	#$00
 	JSR	L85F3
-	STAl	KBDSTROBE
+*	STAl	KBDSTROBE
 	CMP	#chrN
 	BEQ	L8075
 	CMP	#chrY
@@ -4536,8 +4541,8 @@ L808E	CMP	#$01	; 01 means master disk
 *-----------------------------------
 
 tellMASTERDISK
-	JSR	clearHGR2
-	LDA	#>oldHGR2
+	JSR	clearHGR1	; was 2
+	LDA	#>oldHGR1	; was 2
 	STA	activePAGE
 	LDA	#$00
 	STA	theX
@@ -4557,7 +4562,7 @@ L80D8	JSR	printSTRING
 *	STA	TXTPAGE2
 	LDA	#$00
 	JSR	L85F3
-	STAl	KBDSTROBE
+*	STAl	KBDSTROBE
 *	STA	TXTPAGE1
 	lda	ptrSCREEN+2
 	sta	ptrHGR1+2
@@ -4570,8 +4575,8 @@ L8105	RTS
 *-----------------------------------
 
 tellNODATADISK
-	JSR	clearHGR2
-	LDA	#>oldHGR2
+	JSR	clearHGR1	; was 2
+	LDA	#>oldHGR1	; was 2
 	STA	activePAGE
 	LDA	#$00
 	STA	theX
@@ -4594,10 +4599,12 @@ blinkATXY
 	LDY	theX
 	LDA	(ptrBOARD),Y
 	JSR	blinkSPRITE
-	STAl	KBDSTROBE
+*	STAl	KBDSTROBE
 	RTS
 
-tblEDITKEYS	ASC	"JIKM"
+tblEDITKEYS
+*	ASC	"JIKM"
+	asc	"JILK"	; like the game!!
 	HEX	9395889100
 
 tblEDITCODE	DA	editLEFT-1	; J move left
@@ -4620,14 +4627,15 @@ inputLEVEL
 	JSR	hex2dec
 	LDA	theX
 	STA	L824E
-	LDY	#$00
-L8189	LDA	|$0089,Y
-	STY	L824D
+	ldx	#0	; was Y
+L8189	lda	theCENTAINE,x
+	stx	L824D
 	JSR	outputCHAR
-	LDY	L824D
-	INY
-	CPY	#$03
+	ldx	L824D
+	inx
+	cpx	#$03
 	BCC	L8189
+
 	LDA	L824E
 	STA	theX
 	LDY	#$00
@@ -4637,7 +4645,7 @@ L81A4	LDX	L824D
 	CLC
 	ADC	#spr0	; spr0
 	JSR	blinkSPRITE
-	STAl	KBDSTROBE
+*	STAl	KBDSTROBE
 	CMP	#chrRET	; return
 	BEQ	L820D
 	CMP	#chrLA	; left arrow
@@ -4667,8 +4675,10 @@ L81E1	CMP	#chrZERO	; 0
 	BCS	L8207
 	SEC
 	SBC	#chrZERO
-	LDY	L824D
-	STA	|$0089,Y
+*	LDY	L824D
+*	STA	|$0089,Y
+	ldx	L824D
+	sta	theCENTAINE,x
 	JSR	outputCHAR
 
 	INC	L824D
@@ -4712,18 +4722,22 @@ L822F	CLC
 	TAY
 	DEY
 	STY	intLEVEL	; and make it our level
+	tya
+	stal	$300
 	CPY	#maxLEVEL
 L823C	RTS
 
 editWAITKEY	LDA	#sprEMPTY
 	JSR	blinkSPRITE
-	STAl	KBDSTROBE
+*	STAl	KBDSTROBE
+	and	#maskUPPER	; lowercase support
 	CMP	#$9B	; escape
 	BNE	L824C
 	JMP	editLOOP
-L824C	RTS
-L824D	RTS
 
+L824C	RTS
+
+L824D	DB	$60
 L824E	DB	$85
 L824F	DB	$0F	; level from
 L8250	DB	$60	; level to
@@ -4912,7 +4926,9 @@ outerXYCOL	lda	#0
 
 ]lp	lda	[ptrHGR1],Y	; 0..1
 	eor	[ptrHGR2],Y	; si HGR1=HGR2 => 0
-	and	(sprDATA),y
+	tax
+	and	tblMASK,x
+*	and	(sprDATA),y
 	ora	fgCOLLISION
 	sta	fgCOLLISION
 
@@ -4942,6 +4958,8 @@ outerXYCOL	lda	#0
 	dec	nbLINES2
 	bne	outerXYCOL
 	sep	#$30
+	
+	stz	fgCOLLISION	; **logo**
 	rts
 
 	mx	%11
@@ -5042,7 +5060,7 @@ L857F	LDX	L824D
 L8582	LDA	scorebuf,X
 	JSR	filterCHAR
 	JSR	L85F3
-	STAl	KBDSTROBE
+*	STAl	KBDSTROBE
 	CMP	#chrRET
 	BEQ	L85E7
 	CMP	#chrLA
@@ -5066,7 +5084,7 @@ L85B6	CMP	#chrDOT
 	BEQ	L85C6
 	CMP	#chrSPC
 	BEQ	L85C6
-	and	#%1101_1111	; for lowercase
+	and	#maskUPPER	; for lowercase
 	CMP	#chrA
 	BCC	L85E1
 	CMP	#chrZ+1
@@ -5098,7 +5116,8 @@ L85F6	LDA	#$68
 	BNE	L8601
 	LDA	#sprCURSOR
 L8601	JSR	coutHGR1	; not 2
-L8604	LDAl	KBD
+L8604	jsr	checkKEY
+*	LDAl	KBD
 	BMI	L8628
 	JSR	checkMOVEMENT
 	DEC	counter
@@ -5107,7 +5126,8 @@ L8604	LDAl	KBD
 	JSR	coutHGR1	; not 2
 	LDA	#$68
 	STA	counter
-L8619	LDAl	KBD
+L8619	jsr	checkKEY
+*	LDAl	KBD
 	BMI	L8628
 	JSR	checkMOVEMENT
 	DEC	counter
@@ -5180,23 +5200,21 @@ L869E	DB	$00
 *-----------------------------------
 * WAIT KEY UP
 *-----------------------------------
-
-waitKEYUP
-	STAl	KBDSTROBE
-	LDAl	KBD
-	BMI	waitKEYUP
-	RTS
-
+*
+*waitKEYUP	STA	KBDSTROBE
+*	LDA	KBD
+*	BMI	waitKEYUP
+*	RTS
+*
 *-----------------------------------
 * WAIT KEY DOWN
 *-----------------------------------
-
-waitKEYDOWN
-	LDAl	KBD
-	BPL	waitKEYDOWN
-	STAl	KBDSTROBE
-	RTS
-
+*
+*waitKEYDOWN	LDA	KBD
+*	BPL	waitKEYDOWN
+*	STA	KBDSTROBE
+*	RTS
+*
 *-----------------------------------
 * WAIT
 *-----------------------------------
@@ -5268,7 +5286,8 @@ L8703	LDA	#$68
 	BNE	L8710
 	LDA	#sprCURSOR	; cursor sprite
 L8710	JSR	coutHGR1	; output empty
-L8713	LDAl	KBD	; key pressed?
+L8713	jsr	checkKEY
+*	LDAl	KBD	; key pressed?
 	BMI	L873C	; yes
 	JSR	checkMOVEMENT	; buttons pressed?
 	BCS	L873C	; yes
@@ -5278,7 +5297,8 @@ L8713	LDAl	KBD	; key pressed?
 	JSR	coutHGR1
 	LDA	#$68	; redo the wait
 	STA	counter
-L872B	LDAl	KBD
+L872B	jsr	checkKEY
+*	LDAl	KBD
 	BMI	L873C
 	JSR	checkMOVEMENT
 	BCS	L873C
@@ -5593,8 +5613,13 @@ L88BD	LDA	#$01	; 1
 	STA	$6D
 	STA	fgCIRCLE
 	STA	$72	; 1
-	JSR	printMEN
-	JSR	printLEVEL
+	
+	lda	#>oldHGR1	; was 2 **logo**
+	sta	activePAGE
+	jsr	drawINFOBAR
+
+*	JSR	printMEN
+*	JSR	printLEVEL
 	
 	rep	#$30
 	PushLong	#HGR2
@@ -6027,7 +6052,7 @@ L8D08	LDA	L8D08,Y
 L8D12	JSR	L8D4C
 	INC	theY
 	LDY	theY
-	CPY	#$5F
+	CPY	#hfoeACTION
 	BCC	L8CF1
 	LDX	L8D4B
 	LDY	#$FF
@@ -6043,15 +6068,16 @@ L8D22	DEY
 	BMI	L8D41
 	LDAl	BUTN0
 	BMI	L8D41
-L8D3B	LDAl	KBD
+L8D3B	jsr	checkKEY
+*	LDAl	KBD
 	BMI	L8D41
 	RTS
 
 L8D41	PLA
 	PLA
 	SEC
-	LDAl	KBD
-	STAl	KBDSTROBE
+*	LDAl	KBD
+*	STAl	KBDSTROBE
 	RTS
 
 L8D4B	DB	$9D

@@ -49,13 +49,17 @@ GSOS	=	$e100a8
 
 *-------------- GUI
 
-wMAIN	=	1
 alertQUIT	=	$0100
 alertRESTART =	$0200
 
 refIsPointer =	0
 refIsHandle	=	1
 refIsResource =	2
+
+appleKey	=	$0100
+mouseDownEvt =	$0001
+mouseUpEvt	=	$0002
+keyDownEvt	=	$0003
 
 ptr012000	=	$012000
 ptrE12000	=	$e12000
@@ -85,6 +89,11 @@ FALSE	=	0
 	tdc
 	sta	myDP
 
+	lda	#diskLEVEL
+	stal	$310
+	lda	#^diskLEVEL
+	stal	$312
+	
 *--- Version du systeme
 
 	jsl	GSOS
@@ -190,11 +199,10 @@ noSOUND	_HideMenuBar
 	sta	patchSPR2+1
 	sta	patchSPR3+1
 noPATCH
-	
 	jsr	loadLEVELS	; exit 8-bit
 
 	mx	%11
-	
+
 	lda	#refSPEED	; try to slow it down a bit
 	sta	theSPEED
 
@@ -508,6 +516,8 @@ LZ4_End	sty	lenDATA		; Y = length of unpacked data
 
 lenDATA	ds	4
 
+	mx	%00
+
 *-----------------------------------
 * SAVE THE SHR SCREEN
 *-----------------------------------
@@ -557,6 +567,42 @@ setLRPALETTE
 	rts
 
 *----------------------------------------
+* CHECK KEY PRESSED
+*----------------------------------------
+
+checkKEY	phx
+	phy
+	rep	#$30
+
+	pha
+	PushWord #%00000000_00001010
+	PushLong #taskREC
+	_GetNextEvent
+	pla
+	beq	checkNOKEY
+
+	lda	taskREC	; une touche ?
+	cmp	#keyDownEvt
+	bne	checkNOKEY
+
+	sep	#$30
+	ply
+	plx
+	lda	taskMESSAGE
+	ora	#%1000_0000	; set bit 7
+	rts
+
+	mx	%00
+	
+checkNOKEY	sep	#$30
+	ply
+	plx
+	lda	#0
+	rts
+
+	mx	%00
+	
+*----------------------------------------
 * DATA
 *----------------------------------------
 
@@ -590,6 +636,22 @@ palette320	dw	$0000,$0777,$0841,$072C,$000F,$0080,$0F70,$0D00
 
 paletteLR	dw	$0445,$0000,$0FFF,$0952,$00BB,$01DD,$0FF0,$0A1A
 	dw	$0C0C,$0FCB,$0A10,$0C30,$0E50,$0666,$0AAA,$0FFF
+
+*----------------------- Event / Window Manager
+
+taskREC	ds	2	; wmWhat           +0
+taskMESSAGE	ds	4	; wmMessage        +2
+taskWHEN	ds	4	; wmWhen           +6
+taskWHERE	ds	4	; wmWhere          +10
+taskMODIFIERS ds	2	; wmModifiers      +14
+taskDATA	ds	4	; wmTaskData       +16
+	adrl	$001fffff	; wmTaskMask       +20
+	ds	4	; wmLastClickTick  +24
+	ds	2	; wmClickCount     +28
+	ds	4	; wmTaskData2      +30
+	ds	4	; wmTaskData3      +34
+	ds	4	; wmTaskData4      +38
+	ds	4	; wmLastClickPt    +42
 
 *----------------------- GS/OS
 

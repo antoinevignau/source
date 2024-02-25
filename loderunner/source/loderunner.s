@@ -218,8 +218,13 @@ noPATCH
 
 *----------------------------------- Open LEVELS
 
-doLOAD	jsr	saveBACK
+doLOAD	clc
+	xce
+	rep	#$30
+*	jsr	saveBACK
 
+	_ShowCursor
+	
 	PushWord	#30
 	PushWord	#43
 	PushLong	#strLOADFILE
@@ -228,60 +233,24 @@ doLOAD	jsr	saveBACK
 	PushLong	#replyPTR
 	_SFGetFile
 
-	jsr	loadBACK
-	
+*	jsr	loadBACK
+
+	_HideCursor
+
 	lda	replyPTR
 	bne	doLOAD1
+	sep	#$30
+	sec
 	rts
-
-doLOAD1	jsr	copyPATH
-	jmp	loadLEVELS
-
-*----------------------------------- Save
-
-doSAVE	jsr	saveBACK
-
-	PushWord	#25
-	PushWord	#36
-	PushLong	#strSAVEFILE
-	PushLong	#namePATH
-	PushWord	#15
-	PushLong	#replyPTR
-	_SFPutFile
-
-	jsr	loadBACK
-
-	lda	replyPTR
-	bne	doSAVE1
-	rts
-
-doSAVE1	jsr	copyPATH
-	jmp	saveLEVELS
-
-*--- Recopie le filename du fichier de sauvegarde
-
-copyPATH	sep	#$20
-	ldx	#16-1
-]lp	lda	namePATH1,x
-	sta	pLEVELS+4,x
-	dex
-	bpl	]lp
-	
-	lda	namePATH
-	inc		; add 2 chars
-	inc		; for '1/'
-	sta	pLEVELS
-	rep	#$20
-	rts
-
-*----------------------------------- Load/Save LEVELS/SCORES
 
 	mx	%00
 
-*---------------------- Load LEVELS
+doLOAD1	jsr	copyPATH
 
-loadLEVELS	rep	#$30
-
+loadLEVELS	clc
+	xce
+	rep	#$30
+	
 	jsl	GSOS
 	dw	$2010
 	adrl	proOPEN
@@ -303,11 +272,14 @@ loadLEVELS	rep	#$30
 	plp
 	bcs	loadLEVELS9
 	sep	#$30
+	clc
 	rts
 	
 	mx	%00
 
-loadLEVELS9	ldx	#0	; clear all levels
+loadLEVELS9	rep	#$30
+
+	ldx	#0	; clear all levels
 	txa
 ]lp	stal	ptrLEVELS,x
 	inx
@@ -324,14 +296,46 @@ loadLEVELS9	ldx	#0	; clear all levels
 	bpl	]lp
 
 	sep	#$30
+	sec
 	rts
 
 	mx	%00
 
-*---------------------- Save LEVELS
+*----------------------------------- Save
 
-saveLEVELS	rep	#$30
+doSAVE	clc
+	xce
+	rep	#$30
+*	jsr	saveBACK
 
+	_ShowCursor
+	
+	PushWord	#25
+	PushWord	#36
+	PushLong	#strSAVEFILE
+	PushLong	#namePATH
+	PushWord	#15
+	PushLong	#replyPTR
+	_SFPutFile
+
+	_HideCursor
+	
+*	jsr	loadBACK
+
+	lda	replyPTR
+	bne	doSAVE1
+	sep	#$30
+	sec
+	rts
+
+	mx	%00
+	
+doSAVE1	jsr	copyPATH
+
+saveLEVELS	clc
+	xce
+	rep	#$30
+	
 	jsl	GSOS
 	dw	$2002
 	adrl	proDESTROY
@@ -339,12 +343,12 @@ saveLEVELS	rep	#$30
 	jsl	GSOS
 	dw	$2001
 	adrl	proCREATE
-	bcs	saveLEVELS9
+	bcs	doSAVE99
 
 	jsl	GSOS
 	dw	$2010
 	adrl	proOPEN
-	bcs	saveLEVELS9
+	bcs	doSAVE99
 
 	lda	proOPEN+2
 	sta	proWRITE+2
@@ -358,9 +362,31 @@ saveLEVELS	rep	#$30
 	dw	$2014
 	adrl	proCLOSE
 
-saveLEVELS9	sep	#$30
+	sep	#$30
+	clc
 	rts
+doSAVE99	sep	#$30
+	sec
+	rts
+
+	mx	%00
+
+*--- Recopie le filename du fichier de sauvegarde
+
+copyPATH	sep	#$20
+	ldx	#16-1
+]lp	lda	namePATH1,x
+	sta	pLEVELS+4,x
+	dex
+	bpl	]lp
 	
+	lda	namePATH
+	inc		; add 2 chars
+	inc		; for '0/'
+	sta	pLEVELS
+	rep	#$20
+	rts
+
 	mx	%00
 
 *----------------------------------- Quit
@@ -529,7 +555,7 @@ saveBACK	_HideCursor
 	PushLong	#32768
 	_BlockMove
 	
-exitBACK	_ShowCursor
+	_ShowCursor
 	rts
 
 *-----------------------------------
@@ -543,7 +569,7 @@ loadBACK	_HideCursor
 	PushLong	#32768
 	_BlockMove
 
-	_ShowCursor
+*	_ShowCursor
 	rts
 
 *----------------------------------------
@@ -700,7 +726,7 @@ proVERS	dw	1	; pcount
 
 *---------- Files
 
-pLEVELS	strl	'1/levels/loderunner'
+pLEVELS	strl	'0/levels/loderunner'
 
 *----------------------- Standard File Toolset
 

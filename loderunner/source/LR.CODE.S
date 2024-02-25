@@ -44,15 +44,11 @@ L6028	INC	L6030+1
 L6030	LDA	L6028
 	BEQ	L603F	; 00: end of line
 	BPL	L603C	; <128: skip A bytes
-	and	#%0111_1111
 	STA	[ptrHGR1],Y	; >127: output char
-	iny
-	sta	[ptrHGR1],y	; >127: output char
 	INY
-	bra	L6028	; from BPL
-L603C	asl
-	TAY
-	bra	L6028	; from BPL
+	BPL	L6028	; from BPL
+L603C	TAY
+	BPL	L6028	; from BPL
 L603F	INC	theY
 	LDY	theY
 	CPY	#maxHEIGHT	; until line 192
@@ -74,7 +70,7 @@ L6056	LDA	#$00
 	STA	theSCORE+1
 	STA	theSCORE+2
 	STA	theSCORE+3
-	STA	$97	; l'intelligence des ennemis peut-tre ?
+	STA	foeINTIDX	; l'intelligence des ennemis peut-tre ?
 	STA	fgCIRCLE
 	STA	tempX6
 	STA	demoREPEAT
@@ -129,7 +125,7 @@ L609F	LDX	#modeGAME
 L60BF	LDX	#$00
 	STX	fgHOLE
 	STX	idxNOTE
-	LDA	$97
+	LDA	foeINTIDX
 	CLC
 	ADC	nbFOE
 	TAY
@@ -140,7 +136,7 @@ L60BF	LDX	#$00
 	STA	hfoePATH2
 	LDA	L6CA7+2,X
 	STA	hfoePATH3
-	LDY	$97
+	LDY	foeINTIDX
 	LDA	L621D,Y
 	STA	hfoeACTION
 
@@ -259,12 +255,14 @@ L61E9	JSR	showALLSCORES
 L61F3	JMP	showTITLEPAGE
 
 L61F6	STAl	KBDSTROBE
-	CMP	#$85	; Ctrl-E - Editor
+	CMP	#chrCTRLE	; Ctrl-E - Editor
 	BEQ	L6211
 	CMP	#chrRET	; Return
 	BEQ	L61E4
 	cmp	#chrCTRLQ	; ctrl-Q - quit
 	beq	L6212
+	cmp	#chrCTRLO	; ctrl-O - open data file
+	beq	L6213
 	
 L6201	LDX	#$00
 	STX	intLEVEL
@@ -277,7 +275,9 @@ L6201	LDX	#$00
 
 L6211	JMP	enterEDITOR	; Jump to the Editor
 L6212	jmp	meQUIT	; bye for now
-
+L6213	jsr	doLOAD	; load a game file
+	bra	L6201
+	
 *----------
 
 L6214	HEX	000306090C0F121518	; 0..3..6..9..12..15..18..21..24 (index in 6CA7)
@@ -372,7 +372,7 @@ L629C	STA	(ptrBOARD),Y
 	BEQ	L62C4
 	LDX	#$00
 	STX	intLEVEL
-	INC	$97
+	INC	foeINTIDX
 	DEX		; mode game
 	JMP	prepareLEVEL
 L62C3	RTS
@@ -435,6 +435,19 @@ diskLEVEL	tax
 	beq	dlLOAD
 	cpx	#2
 	bne	dlERR
+
+	rep	#$30	; load a level
+	PushLong	#levelDISK
+	pea	^ptrLEVELS
+	lda	intLEVEL
+	and	#$ff
+	xba
+	clc
+	adc	#ptrLEVELS
+	pha
+	PushLong	#256
+	_BlockMove
+	sep	#$30
 
 	jmp	saveLEVELS	; save all levels
 
@@ -4063,15 +4076,16 @@ L7C41	TXA		; yes, we know the key
 	PHA
 	RTS
 
-tblEDITKEY	ASC	"PCEMIS"00
+tblEDITKEY	ASC	"PCEMISO"00
 
 tblEDITADD	DA	editPLAY-1	; Play level
 	DA	editCLEAR-1	; Clear level
 	DA	editEDIT-1	; Edit level
 	DA	editMOVE-1	; Move level
 	DA	editINIT-1	; Initialize
-	DA	editCLEARSCORE-1	; Clear Score file
-
+	DA	editCLEARSCORE-1 ; Clear Score file
+	da	editOPEN-1	; Open levels
+ 
 *-------------------------------
 * P - PLAY LEVEL 
 *-------------------------------
@@ -4199,18 +4213,23 @@ iigsMOVELEVEL
 * I - INITIALIZE DISKETTE => CLEAR LEVELS
 *-------------------------------
 
-editINIT	jmp	editLOOP
-*	JSR	printSTRING
-*	ASC	8D
-*	ASC	">>INITIALIZE"8D
+editINIT	JSR	printSTRING
+	ASC	8D
+	ASC	">>INITIALIZE"8D
 *	ASC	"  THIS FORMATS THE DISKETTE"8D
-*	ASC	"  FOR USER CREATED LEVELS."8D
+	asc         "  THIS CREATES A NEW FILE"8d
+	ASC	"  FOR USER CREATED LEVELS."8D8d
 *	ASC	"  (CAUTION. IT ERASES THE"8D
 *	ASC	"   ENTIRE DISKETTE FIRST)"8D8D
-*	ASC	"  ARE YOU SURE (Y/N) "00
-*	JSR	editWAITKEY
-*	CMP	#chrY
-*	BNE	L7E72
+	ASC	"  ARE YOU SURE (Y/N) "00
+	JSR	editWAITKEY
+	CMP	#chrY
+	BNE	L7E72
+
+	jsr	loadLEVELS9	; clear all
+	jsr	doSAVE	; save the file
+	bcs	L7E72
+	
 *	NOP		; NOP
 *	NOP
 *	NOP
@@ -4274,7 +4293,8 @@ editINIT	jmp	editLOOP
 *	JSR	readSCORE
 *	PLA
 *	STA	intLEVEL
-*L7E72	JMP	editLOOP
+
+L7E72	JMP	editMAIN	; was editLOOP
 
 *-------------------------------
 * C - CLEAR SCORE FILE 
@@ -4306,6 +4326,19 @@ L7EF3	STA	scorebuf,Y
 	LDA	#$02
 	JSR	readSCORE	; write score file
 L7EFE	JMP	editLOOP
+
+*-------------------------------
+* O - OPEN A LEVELS FILE
+*-------------------------------
+
+editOPEN	jsr	editSAVECHANGES
+	JSR	printSTRING
+	ASC	8D
+	ASC	">>LOAD LEVEL FILE"00
+	JSR	doLOAD	; load a levels file?
+	BCS	editOPEN99
+	JMP	editMAIN	; yes
+editOPEN99	JMP	editNEXT	; no
 
 *-------------------------------
 * EDIT THE LEVEL 
@@ -4928,7 +4961,6 @@ outerXYCOL	lda	#0
 	eor	[ptrHGR2],Y	; si HGR1=HGR2 => 0
 	tax
 	and	tblMASK,x
-*	and	(sprDATA),y
 	ora	fgCOLLISION
 	sta	fgCOLLISION
 
@@ -4958,8 +4990,6 @@ outerXYCOL	lda	#0
 	dec	nbLINES2
 	bne	outerXYCOL
 	sep	#$30
-	
-	stz	fgCOLLISION	; **logo**
 	rts
 
 	mx	%11

@@ -13,11 +13,8 @@
 
 theGAME	JSR	checkJOYSTICK
 
-	LDA	#chrK	; force keyboard **logo**
-	STA	fgINPUT
-
-	LDA	#$01	; read score table
-	JSR	readSCORE
+*	LDA	#$01	; read score table
+*	JSR	readSCORE
 
 *--- Show title page
 * Data from $0F00 to $1A84
@@ -203,27 +200,42 @@ L6178	JSR	playMELODY
 	JSR	animGAMEOVER	; we are dead, anim GAME OVER
 	BCS	L61F6
 
-L618E
+*-----------------------------------
+* ATTENTE SUR UNE PAGE
+*-----------------------------------
+
 *	JSR	waitKEYUP
-	LDX	#$FF
-	LDY	#$FF
-	LDA	#$03
-	STA	theY
+L618E
+	LDX	#32	; valeurs d'attente / 255 avant
+	LDY	#32
+*	LDA	#$03	; 3
+*	STA	theY
+
 L6199	LDA	fgINPUT
 	CMP	#chrK
-	BEQ	L61A9
-	LDAl	BUTN1
+	BEQ	L61A9	; check keyboard
+	cmp	#chrP
+	beq	L619A
+	LDAL	BUTN1	; check joystick
 	BMI	L6201
-	LDAl	BUTN0
+	LDAL	BUTN0
 	BMI	L6201
-L61A9	LDAl	KBD
+	bpl	L61A9
+
+L619A	jsr	read4PLAY	; check joypad
+	bmi	L6201	; button 1 pressed?
+	bvs	L6201	; button 2 pressed?
+
+*	LDA	KBD
+L61A9	jsr	checkKEY
 	BMI	L61F6
 	DEX
 	BNE	L6199
 	DEY
 	BNE	L6199
-	DEC	theY
-	BNE	L6199
+*	DEC	theY
+*	BNE	L6199
+
 	LDA	fgDEMO
 	BNE	L61DE
 	LDX	#$01
@@ -234,11 +246,11 @@ L61A9	LDAl	KBD
 	LDX	fgSOUND
 	STX	L61D0+1
 	STA	fgSOUND
-	JMP	L6056
+	JMP	L6056	; et boucle
 
 L61D0	LDA	#$00
 	STA	fgSOUND
-	LDAl	KBD
+*	LDA	KBD
 	LDX	fgKEYBTN0
 	BEQ	L61F6
 	JMP	L618E
@@ -254,7 +266,12 @@ L61E9	JSR	showALLSCORES
 	JMP	L618E
 L61F3	JMP	showTITLEPAGE
 
-L61F6	STAl	KBDSTROBE
+*-----------------------------------
+* GESTION TOUCHE MENU ATTENTE
+*-----------------------------------
+
+L61F6
+*	STA	KBDSTROBE
 	CMP	#chrCTRLE	; Ctrl-E - Editor
 	BEQ	L6211
 	CMP	#chrRET	; Return
@@ -269,9 +286,9 @@ L6201	LDX	#$00
 	INX
 	STX	theLEVEL
 	STX	fgGOODSTART
-	LDA	#$02
+	LDA	#$02	; mode jeu
 	STA	fgDEMO
-	JMP	L6056
+	JMP	L6056	; loop
 
 L6211	JMP	enterEDITOR	; Jump to the Editor
 L6212	jmp	meQUIT	; bye for now
@@ -418,6 +435,7 @@ L62F7	INC	fgODDEVEN
 	LDA	theY
 	CMP	#lvlHEIGHT
 	BCC	L62CF
+	
 	LDA	#$02	; write level
 	JMP	diskLEVEL
 
@@ -449,7 +467,9 @@ diskLEVEL	tax
 	_BlockMove
 	sep	#$30
 
-	jmp	saveLEVELS	; save all levels
+	jsr	saveLEVELS	; save all levels
+	clc
+	rts
 
 dlLOAD	rep	#$30	; load a level
 	pea	^ptrLEVELS
@@ -1472,19 +1492,26 @@ digDURATION	DB	$04	; duration
 * DEMO MODE ENGINE ENTRY POINT
 *-----------------------------------
 
+L69B7	jsr	read4PLAY
+	bmi	L69CD	; button 1 pressed?
+	bvs	L69CD	; button 2 pressed?
+
 L69B8	jsr	checkKEY
-*	LDAl	KBD
+*	LDA	KBD
 	BMI	L69CD
 	LDA	fgINPUT
-	CMP	#chrK
+	CMP	#chrK	; keyboard?
 	BEQ	L69D6
-	LDAl	BUTN1
+	cmp	#chrP	; joypad?
+	beq	L69B7
+	LDAL	BUTN1	; then joystick
 	BMI	L69CD
-	LDAl	BUTN0
+	LDAL	BUTN0
 	BPL	L69D6
-L69CD
-*	stal	KBDSTROBE
-	LSR	fgKEYBTN0
+
+*	STA	KBDSTROBE
+
+L69CD	LSR	fgKEYBTN0	; key/button pressed
 	LSR	fgPLAY
 	LDA	#$01
 	STA	theMEN	; one man
@@ -1533,19 +1560,22 @@ getPLAYERINPUT
 	CMP	#$01
 	BEQ	L69B8
 	jsr	checkKEY
-*	ldal	KBD
+*	LDAL	KBD
 *	stal	KBDSTROBE
 	STA	theA
 	BMI	L6A2B
 	LDA	fgINPUT
 	CMP	#chrK
 	BEQ	L6A55
+	cmp	#chrP
+	beq	L6A29
 L6A28	JMP	getJOYSTICKKEY
+L6A29	jmp	getJOYPADKEY
 
-L6A2B	CMP	#chrSPC	; skip if game key
-	BCS	L6A49
-	STA	theA
-	LDY	#$FF
+L6A2B	CMP	#chrSPC	; check control keys
+	BCS	L6A49	; that is a game key
+*	STA	theA
+	LDY	#$FF	; that's a control key
 L6A33	INY
 	LDA	tblKEY,Y
 	BEQ	L6A49
@@ -1565,8 +1595,10 @@ L6A33	INY
 
 L6A49	LDA	fgINPUT	; joystick?
 	CMP	#chrJ
-	BEQ	L6A28	; yes
-
+	BEQ	L6A28
+	cmp	#chrP	; joypad?
+	beq	L6A29
+	
 *	LDX	theA	; no
 *	STX	theKEY1
 *	STX	theKEY2
@@ -1658,9 +1690,11 @@ doSETKEYBOARD
 *-------------------------------
 
 doSETJOYPAD
+	lda	slot4PLAY
+	beq	nojoypad
 	LDA	#chrP
 	STA	fgINPUT
-	JMP	getPLAYERINPUT
+nojoypad	JMP	getPLAYERINPUT
 
 *-------------------------------
 * 98 - CTRL-X - FLIPS X-AXIS
@@ -1702,25 +1736,43 @@ doSPEEDUP	LDA	theSPEED
 L6ACD	JMP	getPLAYERINPUT
 
 *-------------------------------
+* GET JOYPAD KEY
+*-------------------------------
+
+getJOYPADKEY
+	jsr	read4PLAY	; button 0: dig left
+	bpl	getJOYK1	; button 1: dig right
+	ldx	#chrU
+	bne	getJOYK2
+getJOYK1	bvc	getJOYK3
+	ldx	#chrO
+getJOYK2	stx	theKEY1
+	stx	theKEY2
+	rts
+getJOYK3	jsr	readJOYPAD	; set X/Y
+	bra	L6AE8	; and move on
+
+*-------------------------------
 * GET JOYSTICK KEY
 *-------------------------------
 
 getJOYSTICKKEY
-	LDAl	BUTN1
+	LDAL	BUTN1
 	BPL	L6AD9
-	LDA	#chrU	; dig
+	LDA	#chrU	; dig left
 	BNE	L6AE0
-L6AD9	LDAl	BUTN0
+L6AD9	LDAL	BUTN0
 	BPL	L6AE5
-	LDA	#chrO	; dig
+	LDA	#chrO	; dig right
 L6AE0	STA	theKEY1
 	STA	theKEY2
 	RTS
 
 L6AE5	JSR	readJOYSTICK ; no keys pressed
-	LDY	theJOYX	; read joystick
+
+L6AE8	LDY	theJOYX	; read joystick
 	LDA	joyXMAX	; clamp
-	CMP	#$2E	; return key
+	CMP	#ctrJOY	; return key
 	BEQ	L6AFA
 	CPY	joyXMAX
 	BCS	L6B03
@@ -1731,7 +1783,7 @@ L6AFA	CPY	joyXMAX
 	LDA	#chrL
 	BNE	L6B1E
 L6B03	LDA	joyXMIN
-	CMP	#$2E
+	CMP	#ctrJOY
 	BEQ	L6B13
 	CPY	joyXMIN
 	BCS	L6B1C
@@ -1745,7 +1797,7 @@ L6B1C	LDA	#chrA-1
 L6B1E	STA	theKEY2
 	LDY	theJOYY
 	LDA	joyYMIN
-	CMP	#$2E
+	CMP	#ctrJOY
 	BEQ	L6B32
 	CPY	joyYMIN
 	BCS	L6B3B
@@ -1756,7 +1808,7 @@ L6B32	CPY	joyYMIN
 	LDA	#chrI
 	BNE	L6B56
 L6B3B	LDA	joyYMAX
-	CMP	#$2E
+	CMP	#ctrJOY
 	BEQ	L6B4B
 	CPY	joyYMAX
 	BCS	L6B54
@@ -3461,15 +3513,26 @@ displayHIGHSCORES
 	LDY	#$FF
 	LDA	#$04
 	STA	counter
+
 L77B7	LDA	fgINPUT
 	CMP	#chrK
 	BEQ	L77C7
-	LDAl	BUTN1
+	cmp	#chrJ
+	beq	L77B9
+	cmp	#chrP
+	bne	L77C7
+	jsr	read4PLAY
+	bmi	L77D6
+	bvs	L77D6
+	bvc	L77C7
+
+L77B9	LDAL	BUTN1
 	BMI	L77D6
-	LDAl	BUTN0
+	LDAL	BUTN0
 	BMI	L77D6
+
+*	LDA	KBD
 L77C7	jsr	checkKEY
-*	LDAl	KBD
 	BMI	L77D6
 	DEX
 	BNE	L77B7
@@ -3477,10 +3540,9 @@ L77C7	jsr	checkKEY
 	BNE	L77B7
 	DEC	counter
 	BNE	L77B7
-L77D6
-*	STAl	KBDSTROBE
+*	STA	KBDSTROBE
 *	STA	TXTPAGE1
-	lda	ptrSCREEN+2
+L77D6	lda	ptrSCREEN+2
 	sta	ptrHGR1+2
 	lda	#>oldHGR1
 	sta	hgrPAGE
@@ -4076,7 +4138,7 @@ L7C41	TXA		; yes, we know the key
 	PHA
 	RTS
 
-tblEDITKEY	ASC	"PCEMISO"00
+tblEDITKEY	ASC	"PCEMISORQ"00
 
 tblEDITADD	DA	editPLAY-1	; Play level
 	DA	editCLEAR-1	; Clear level
@@ -4085,7 +4147,9 @@ tblEDITADD	DA	editPLAY-1	; Play level
 	DA	editINIT-1	; Initialize
 	DA	editCLEARSCORE-1 ; Clear Score file
 	da	editOPEN-1	; Open levels
- 
+	da	editRESTART-1 ; Restart gale
+	da	editBYE-1	; Quit game
+
 *-------------------------------
 * P - PLAY LEVEL 
 *-------------------------------
@@ -4174,16 +4238,6 @@ editMOVE	JSR	printSTRING
 *	LDA	#$02	; write
 *	JSR	diskLEVEL
 
-	jsr	iigsMOVELEVEL
-	
-	JMP	editLOOP
-L7D5A	JMP	editNEXT
-
-*-------------------------------
-
-	mx	%00
-	
-iigsMOVELEVEL
 	rep	#$30
 
 	pea	^ptrLEVELS	; set source level
@@ -4205,10 +4259,13 @@ iigsMOVELEVEL
 	PushLong	#256	; set length
 	_BlockMove
 
-	jmp	saveLEVELS	; save levels and return 8-bit
+	jsr	saveLEVELS	; save levels and return 8-bit
 
 	mx	%11
-	
+
+	JMP	editLOOP
+L7D5A	JMP	editNEXT
+
 *-------------------------------
 * I - INITIALIZE DISKETTE => CLEAR LEVELS
 *-------------------------------
@@ -4332,13 +4389,43 @@ L7EFE	JMP	editLOOP
 *-------------------------------
 
 editOPEN	jsr	editSAVECHANGES
-	JSR	printSTRING
-	ASC	8D
-	ASC	">>LOAD LEVEL FILE"00
-	JSR	doLOAD	; load a levels file?
-	BCS	editOPEN99
-	JMP	editMAIN	; yes
-editOPEN99	JMP	editNEXT	; no
+	jsr	printSTRING
+	asc	8D
+	asc	">>LOAD LEVEL FILE"00
+	jsr	doLOAD	; load a levels file?
+	bcs	editOPEN99
+	jmp	editMAIN	; yes
+editOPEN99	jmp	editLOOP	; no
+
+*-------------------------------
+* R - RESTART THE GAME
+*-------------------------------
+
+editRESTART	jsr	editSAVECHANGES
+	jsr	printSTRING
+	asc	">>RESTART GAME"8D
+	ASC	"  THIS RESTARTS THE GAME"8D8D
+	ASC	"  ARE YOU SURE (Y/N) "00
+	JSR	editWAITKEY
+	CMP	#chrY
+	BNE	editRES99
+	jmp	showTITLEPAGE
+editRES99	jmp	editLOOP
+
+*-------------------------------
+* Q - QUIT THE GAME
+*-------------------------------
+
+editBYE	jsr	editSAVECHANGES
+	jsr	printSTRING
+	asc	">>QUIT GAME"8D
+	ASC	"  THIS QUITS THE GAME"8D8D
+	ASC	"  ARE YOU SURE (Y/N) "00
+	JSR	editWAITKEY
+	CMP	#chrY
+	BNE	editBYE99
+	jmp	meQUIT
+editBYE99	jmp	editLOOP
 
 *-------------------------------
 * EDIT THE LEVEL 
@@ -4537,7 +4624,7 @@ editSAVECHANGES
 *	STA	TXTPAGE2
 L8062	LDA	#$00
 	JSR	L85F3
-*	STAl	KBDSTROBE
+*	STA	KBDSTROBE
 	CMP	#chrN
 	BEQ	L8075
 	CMP	#chrY
@@ -4595,7 +4682,7 @@ L80D8	JSR	printSTRING
 *	STA	TXTPAGE2
 	LDA	#$00
 	JSR	L85F3
-*	STAl	KBDSTROBE
+*	STA	KBDSTROBE
 *	STA	TXTPAGE1
 	lda	ptrSCREEN+2
 	sta	ptrHGR1+2
@@ -4632,7 +4719,7 @@ blinkATXY
 	LDY	theX
 	LDA	(ptrBOARD),Y
 	JSR	blinkSPRITE
-*	STAl	KBDSTROBE
+*	STA	KBDSTROBE
 	RTS
 
 tblEDITKEYS
@@ -4678,7 +4765,7 @@ L81A4	LDX	L824D
 	CLC
 	ADC	#spr0	; spr0
 	JSR	blinkSPRITE
-*	STAl	KBDSTROBE
+*	STA	KBDSTROBE
 	CMP	#chrRET	; return
 	BEQ	L820D
 	CMP	#chrLA	; left arrow
@@ -4755,14 +4842,12 @@ L822F	CLC
 	TAY
 	DEY
 	STY	intLEVEL	; and make it our level
-	tya
-	stal	$300
 	CPY	#maxLEVEL
 L823C	RTS
 
 editWAITKEY	LDA	#sprEMPTY
 	JSR	blinkSPRITE
-*	STAl	KBDSTROBE
+*	STA	KBDSTROBE
 	and	#maskUPPER	; lowercase support
 	CMP	#$9B	; escape
 	BNE	L824C
@@ -5090,7 +5175,7 @@ L857F	LDX	L824D
 L8582	LDA	scorebuf,X
 	JSR	filterCHAR
 	JSR	L85F3
-*	STAl	KBDSTROBE
+*	STA	KBDSTROBE
 	CMP	#chrRET
 	BEQ	L85E7
 	CMP	#chrLA
@@ -5147,7 +5232,7 @@ L85F6	LDA	#$68
 	LDA	#sprCURSOR
 L8601	JSR	coutHGR1	; not 2
 L8604	jsr	checkKEY
-*	LDAl	KBD
+*	LDA	KBD
 	BMI	L8628
 	JSR	checkMOVEMENT
 	DEC	counter
@@ -5157,7 +5242,7 @@ L8604	jsr	checkKEY
 	LDA	#$68
 	STA	counter
 L8619	jsr	checkKEY
-*	LDAl	KBD
+*	LDA	KBD
 	BMI	L8628
 	JSR	checkMOVEMENT
 	DEC	counter
@@ -5273,7 +5358,7 @@ L86D2	DEX
 	BNE	L86D2
 	LDA	fgSOUND
 	BEQ	L86DC
-	LDAl	SPKR
+	LDAL	SPKR
 L86DC	DEY
 	BNE	L86D0
 	RTS
@@ -5317,7 +5402,7 @@ L8703	LDA	#$68
 	LDA	#sprCURSOR	; cursor sprite
 L8710	JSR	coutHGR1	; output empty
 L8713	jsr	checkKEY
-*	LDAl	KBD	; key pressed?
+*	LDA	KBD	; key pressed?
 	BMI	L873C	; yes
 	JSR	checkMOVEMENT	; buttons pressed?
 	BCS	L873C	; yes
@@ -5328,7 +5413,7 @@ L8713	jsr	checkKEY
 	LDA	#$68	; redo the wait
 	STA	counter
 L872B	jsr	checkKEY
-*	LDAl	KBD
+*	LDA	KBD
 	BMI	L873C
 	JSR	checkMOVEMENT
 	BCS	L873C
@@ -5345,6 +5430,32 @@ L873C	PHA		; exit with
 bsDATA	DB	$06
 
 *-----------------------------------
+* READ JOYPAD
+*-----------------------------------
+
+readJOYPAD	jsr	read4PLAY
+
+	ldx	#ctrJOY	; default values
+	ldy	#ctrJOY
+
+	ror		; test up
+	bcc	readJOYP1	;  no
+	ldy	#0	;  yes
+readJOYP1	ror		; test down
+	bcc	readJOYP2	;  no
+	ldy	#255	;  yes
+readJOYP2	ror		; test left
+	bcc	readJOYP3	;  no
+	ldx	#0	;  yes
+readJOYP3	ror		; test right
+	bcc	readJOYP4	;  no
+	ldx	#255	;  yes
+	
+readJOYP4	stx	theX	; store values
+	sty	theY
+	rts
+
+*-----------------------------------
 * READ JOYSTICK
 *-----------------------------------
 
@@ -5352,15 +5463,15 @@ readJOYSTICK
 	LDA	#$00
 	STA	theJOYX
 	STA	theJOYY
-	LDAl	PTRIG
+	LDAL	PTRIG
 L874F	LDX	#$01
-L8751	LDAl	PADDL0,X
+L8751	LDAL	PADDL0,X
 	BPL	L8769
 	INC	theJOYX,X
 L8758	DEX
 	BPL	L8751
-	LDAl	PADDL0
-	ORAl	PADDL1
+	LDAL	PADDL0
+	ORAL	PADDL1
 	BPL	L876C
 	LDA	theJOYX
 	ORA	theJOYY
@@ -5377,8 +5488,24 @@ checkMOVEMENT
 	LDA	fgINPUT
 	CMP	#chrK
 	BEQ	L8798
-	JSR	readJOYSTICK
-	LDA	theJOYX
+	cmp	#chrJ
+	beq	checkMOV1
+	cmp	#chrP
+	bne	L8798
+
+	jsr	readJOYPAD
+	lda	the4PLAY	; check buttons state now
+	bmi	L8796
+	bvs	L8796
+	bra	checkMOV2	; now check movement
+
+checkMOV1	JSR	readJOYSTICK
+	LDAL	BUTN1
+	BMI	L8796
+	LDAL	BUTN0
+	BMI	L8796
+
+checkMOV2	LDA	theJOYX
 	CMP	#minJOY
 	BCC	L8796
 	CMP	#maxJOY
@@ -5388,10 +5515,6 @@ checkMOVEMENT
 	BCC	L8796
 	CMP	#maxJOY
 	BCS	L8796
-	LDAl	BUTN1
-	BMI	L8796
-	LDAl	BUTN0
-	BMI	L8796
 	CLC
 	RTS
 L8796	SEC
@@ -5410,9 +5533,9 @@ L879A	DEY		; to compensate
 *-----------------------------------
 
 checkJOYSTICK
-	LDAl	PTRIG
+	LDAL	PTRIG
 	LDX	#$10
-L87A7	LDAl	PADDL0
+L87A7	LDAL	PADDL0
 	ORAl	PADDL1
 	BPL	L87B9
 	DEY
@@ -5431,7 +5554,7 @@ playSOUND	STA	ptrDATA
 	STX	$0B
 L87BE	LDA	fgSOUND
 	BEQ	L87C5
-	LDAl	SPKR
+	LDAL	SPKR
 L87C5	DEY
 	BNE	L87CC
 	DEC	$0B
@@ -5614,35 +5737,34 @@ tblDELTAX	HEX	FEFF000102	; -2, -1, 0, 1, 2
 * CIRCLE ANIMATION - LOGO
 *-------------------------------
 
+caMAXSTEP	=	190	; 170
+caDFTCENY	=	88
+caDFTCENX	=	160	; 140
+
 circleANIMATION
-	LDA	#$58	; 88
+	LDA	#caDFTCENY	; 88
 	STA	$73
-	LDA	#$8C	; 140
+	LDA	#caDFTCENX	; 140
 	STA	$74
 	LDA	fgCIRCLE	; inner or outer animation?
 	BEQ	L88BD	; show the level
 
 *--- hide the level
 
-	rep	#$30
-	PushWord	#0
-	_ClearScreen
-	sep	#$30
-
-*	LDX	#$AA	; 170
-*	STX	$6D
-*	LDX	#$00	; 0
-*	STX	$72
-*L88B6	JSR	L88D7
-*	DEC	$6D
-*	BNE	L88B6
+	LDX	#caMAXSTEP	; 170
+	STX	$6D
+	LDX	#0	; 0
+	STX	caFGMODE
+L88B6	JSR	L88D7
+	DEC	$6D
+	BNE	L88B6
 
 *--- show the level
 
 L88BD	LDA	#$01	; 1
 	STA	$6D
 	STA	fgCIRCLE
-	STA	$72	; 1
+	STA	caFGMODE	; 1
 	
 	lda	#>oldHGR1	; was 2 **logo**
 	sta	activePAGE
@@ -5651,22 +5773,16 @@ L88BD	LDA	#$01	; 1
 *	JSR	printMEN
 *	JSR	printLEVEL
 	
-	rep	#$30
-	PushLong	#HGR2
-	PushLong	ptrSCREEN
-	PushLong	#hgrTOMOVE
-	_BlockMove
-	sep	#$30
-	rts
-
 L88CB	JSR	L88D7
 	INC	$6D
 	LDA	$6D
-	CMP	#$AA	; 170
+	CMP	#caMAXSTEP	; 170
 	BNE	L88CB
 	RTS
 
 *---
+
+caMAXMASK	=	1	; HGR: 6, SHR: 1
 
 L88D7	LDA	$6D
 	STA	$69
@@ -5713,12 +5829,12 @@ L88D7	LDA	$6D
 	TAX
 	LDA	#$00
 	SBC	#$00
-	JSR	L8A45
+	JSR	caCALCX
 	STY	$7D
 	STA	$81
 	LDX	$74
 	LDA	#$00
-	JSR	L8A45
+	JSR	caCALCX
 	STY	$7E
 	STY	$7F
 	STA	$82
@@ -5729,7 +5845,7 @@ L88D7	LDA	$6D
 	TAX
 	LDA	#$00
 	ADC	#$00
-	JSR	L8A45
+	JSR	caCALCX
 	STY	$80
 	STA	$84
 L8951	LDA	$68
@@ -5742,13 +5858,13 @@ L8959	LDA	$67
 	LDA	$68
 	CMP	$6A
 	BNE	L8968
-	JMP	L8A69
+	JMP	caDRAWPOINTS
 L8968	RTS
 
 L8969	LDA	$67
 	CMP	$69
 	BCS	L8959
-L896F	JSR	L8A69
+L896F	JSR	caDRAWPOINTS
 	LDA	$6C
 	BPL	L89A7
 	LDA	$67
@@ -5812,6 +5928,7 @@ L89A7	LDA	$67
 	LDA	$70
 	ADC	$6C
 	STA	$6C
+
 	LDA	$69
 	PHP
 	DEC	$69
@@ -5821,18 +5938,20 @@ L89A7	LDA	$67
 L89EC	INC	$75
 	BNE	L89F2
 	INC	$79
+
 L89F2	DEC	$84
 	BPL	L89FC
-	LDA	#$06
+	LDA	#caMAXMASK
 	STA	$84
 	DEC	$80
 L89FC	INC	$81
 	LDA	$81
-	CMP	#$07
+	CMP	#caMAXMASK+1
 	BNE	L8A0A
 	LDA	#$00
 	STA	$81
 	INC	$7D
+
 L8A0A	DEC	$78
 	LDA	$78
 	CMP	#$FF
@@ -5843,11 +5962,12 @@ L8A14	INC	$67
 	INC	$68
 L8A1A	INC	$83
 	LDA	$83
-	CMP	#$07
+	CMP	#caMAXMASK+1
 	BNE	L8A28
 	LDA	#$00
 	STA	$83
 	INC	$7F
+
 L8A28	DEC	$76
 	LDA	$76
 	CMP	#$FF
@@ -5858,35 +5978,49 @@ L8A32	INC	$77
 	INC	$7B
 L8A38	DEC	$82
 	BPL	L8A42
-	LDA	#$06
+	LDA	#caMAXMASK
 	STA	$82
 	DEC	$7E
 L8A42	JMP	L8951
 
-L8A45	STX	$6F
+*-----------------------------------
+* CALCULE LA COLONNE (X/A)
+*-----------------------------------
+*  in: X/A
+* out: A: bit index
+*      Y: column
+
+caBI2BY	=	2	; HGR: 7, SHR: 2
+
+caCALCX	STX	$6F
 	LDY	#$08
 	SEC
-	SBC	#$07
+	SBC	#caBI2BY
 L8A4C	PHP
 	ROL	$70
 	ASL	$6F
 	ROL
 	PLP
 	BCC	L8A5A
-	SBC	#$07
+	SBC	#caBI2BY
 	JMP	L8A5C
 
-L8A5A	ADC	#$07
+L8A5A	ADC	#caBI2BY
 L8A5C	DEY
 	BNE	L8A4C
 	BCS	L8A64
-	ADC	#$07
+	ADC	#caBI2BY
 	CLC
 L8A64	ROL	$70
 	LDY	$70
 	RTS
 
-L8A69	LDY	$7C
+*-----------------------------------
+* DRAW ALL POSSIBLE POINTS
+*-----------------------------------
+
+caDRAWPOINTS
+	LDY	$7C
 	BNE	L8A8C
 	LDY	$78
 	CPY	#$B0
@@ -5896,12 +6030,12 @@ L8A69	LDY	$7C
 	CPY	#hgrWIDTH
 	BCS	L8A81
 	LDX	$83
-	JSR	L8AF6
+	JSR	caDRAW
 L8A81	LDY	$7E
 	CPY	#hgrWIDTH
 	BCS	L8A8C
 	LDX	$82
-	JSR	L8AF6
+	JSR	caDRAW
 L8A8C	LDY	$79
 	BNE	L8AAF
 	LDY	$75
@@ -5912,12 +6046,12 @@ L8A8C	LDY	$79
 	CPY	#hgrWIDTH
 	BCS	L8AA4
 	LDX	$83
-	JSR	L8AF6
+	JSR	caDRAW
 L8AA4	LDY	$7E
 	CPY	#hgrWIDTH
 	BCS	L8AAF
 	LDX	$82
-	JSR	L8AF6
+	JSR	caDRAW
 L8AAF	LDY	$7B
 	BNE	L8AD2
 	LDY	$77
@@ -5928,12 +6062,12 @@ L8AAF	LDY	$7B
 	CPY	#hgrWIDTH
 	BCS	L8AC7
 	LDX	$84
-	JSR	L8AF6
+	JSR	caDRAW
 L8AC7	LDY	$7D
 	CPY	#hgrWIDTH
 	BCS	L8AD2
 	LDX	$81
-	JSR	L8AF6
+	JSR	caDRAW
 L8AD2	LDY	$7A
 	BNE	L8AF5
 	LDY	$76
@@ -5944,15 +6078,19 @@ L8AD2	LDY	$7A
 	CPY	#hgrWIDTH
 	BCS	L8AEA
 	LDX	$84
-	JSR	L8AF6
+	JSR	caDRAW
 L8AEA	LDY	$7D
 	CPY	#hgrWIDTH
 	BCS	L8AF5
 	LDX	$81
-	JMP	L8AF6
+	JMP	caDRAW
 L8AF5	RTS
 
-L8AF6	LDA	$72
+*-----------------------------------
+* DRAW OR HIDE BYTE
+*-----------------------------------
+
+caDRAW	LDA	caFGMODE
 	BNE	L8B02
 	LDA	[ptrHGR1],Y	; hide
 	AND	L8B0C,X
@@ -5965,8 +6103,9 @@ L8B02	LDA	[ptrHGR2],Y	; show
 	STA	[ptrHGR1],Y
 	RTS
 
-L8B0C	HEX	F0F0F0F08F8F8F
-L8B13	HEX	8F8F8F8FF0F0F0
+*                       00 01         00 01 02 03 04 05 06
+L8B0C	HEX	00,00	; F0,F0,F0,F0,8F,8F,8F
+L8B13	HEX	FF,FF	; 8F,8F,8F,8F,F0,F0,F0
 
 *-------------------------------
 * SHOW GAME OVER
@@ -6094,20 +6233,20 @@ L8D22	DEY
 	LDA	fgINPUT
 	CMP	#chrK
 	BEQ	L8D3B
-	LDAl	BUTN1
+	LDAL	BUTN1
 	BMI	L8D41
-	LDAl	BUTN0
+	LDAL	BUTN0
 	BMI	L8D41
 L8D3B	jsr	checkKEY
-*	LDAl	KBD
+*	LDA	KBD
 	BMI	L8D41
 	RTS
 
 L8D41	PLA
 	PLA
 	SEC
-*	LDAl	KBD
-*	STAl	KBDSTROBE
+*	LDA	KBD
+*	STA	KBDSTROBE
 	RTS
 
 L8D4B	DB	$9D

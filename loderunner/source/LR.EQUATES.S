@@ -125,7 +125,32 @@ hfoePATH	=	$63
 hfoeIDX	=	$64	; foe currently being handled
 theJOYX	=	$65
 theJOYY	=	$66
+
+caFROM	=	$67
+caY16	=	$69
+caTO	=	$6b
+caLINE	=	$6d
+caTEMP16	=	$6f
 sprTABLE	=	$71
+caFGMODE	=	$72	; 0: hide, 1: draw
+caCENTERY	=	$73
+caCENTERX	=	$74
+caY1	=	$75
+caY4	=	$76
+caY3	=	$77
+caY2	=	$78
+caY1high	=	$79	; <>0, cannot draw point
+caY4high	=	$7a	; coz we have 192 lines
+caY3high	=	$7b	; not 256+
+caY2high	=	$7c
+caX1	=	$7d
+caX2	=	$7e
+caX3	=	$7f
+caX4	=	$80	; x4 index 
+caX1mask	=	$81	; x1 mask index
+caX2mask	=	$82	; x2 mask index
+caX3mask	=	$83	; x3 mask index
+caX4mask	=	$84	; x4 mask index
 theX	=	$85
 theY	=	$86
 activePAGE	=	$87
@@ -197,6 +222,35 @@ chrY	=	"Y"	; YES
 chrZ	=	"Z"	; last character
 
 maskUPPER	=	%1101_1111
+
+*-----------------------------------
+* 4PLAY
+*-----------------------------------
+
+*--- Mask bits
+
+fpUP                    =     %00000001                          ; active high
+fpDOWN                  =     %00000010                          ; active high
+fpLEFT                  =     %00000100                          ; active high
+fpRIGHT                 =     %00001000                          ; active high
+fpNOTUSED               =     %00010000
+fpTRIGGER3              =     %00100000                          ; active low
+fpTRIGGER2              =     %01000000                          ; active high
+fpTRIGGER1              =     %10000000                          ; active high
+
+maskBIT0                =     %11111110                          ; #$FE masks bit 0
+maskBIT1                =     %11111101                          ; #$FD masks bit 1
+maskBIT2                =     %11111011                          ; #$FB masks bit 2
+maskBIT3                =     %11110111                          ; #$F7 masks bit 3
+maskBIT4                =     %11101111                          ; #$EF masks bit 4
+maskBIT5                =     %11011111                          ; #$DF masks bit 5
+maskBIT6                =     %10111111                          ; #$BF masks bit 6
+maskBIT7                =     %01111111                          ; #$7F masks bit 7
+
+fpDFTVALUE              =     $20                                ; dft value for Rev. B
+
+slot4PLAY	=	$f0	; 0 if none, slot otherwise
+the4PLAY	=	slot4PLAY+2	; value read from the 4play
 
 *-----------------------------------
 * SOFTSWITCHES

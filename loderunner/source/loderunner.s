@@ -88,11 +88,6 @@ FALSE	=	0
 
 	tdc
 	sta	myDP
-
-	lda	#diskLEVEL
-	stal	$310
-	lda	#^diskLEVEL
-	stal	$312
 	
 *--- Version du systeme
 
@@ -191,6 +186,8 @@ noSOUND	_HideMenuBar
 	dex
 	bpl	]lp
 
+	jsr	find4PLAY	; do we have a 4play?
+	
 	lda	#0
 	beq	noPATCH
 	jsr	setLRPALETTE ; set the LR palette
@@ -601,7 +598,7 @@ checkKEY	phx
 	rep	#$30
 
 	pha
-	PushWord #%00000000_00001010
+	PushWord #%00000000_00001000
 	PushLong #taskREC
 	_GetNextEvent
 	pla
@@ -615,6 +612,7 @@ checkKEY	phx
 	ply
 	plx
 	lda	taskMESSAGE
+	stal	$300
 	ora	#%1000_0000	; set bit 7
 	rts
 
@@ -627,7 +625,58 @@ checkNOKEY	sep	#$30
 	rts
 
 	mx	%00
+
+*----------------------------------------
+* 4PLAY
+*----------------------------------------
+
+find4PLAY	sep	#$30
+	stz	slot4PLAY
+
+	ldx	#$10
+]lp	ldal	$e0c080,x
+	cmp	#fpDFTVALUE
+	bne	next4PLAY
+	ldal	$e0c081,x
+	cmp	#fpDFTVALUE
+	bne	next4PLAY
+	ldal	$e0c082,x
+	cmp	#fpDFTVALUE
+	bne	next4PLAY
+	ldal	$e0c083,x
+	cmp	#fpDFTVALUE
+	beq	found4PLAY
+
+next4PLAY	txa
+	clc
+	adc	#$10
+	tax
+	cpx	#$80	; until slot 8
+	bcc	]lp
+	rep	#$30
+	rts
+
+	mx	%11
 	
+found4PLAY	txa		; set 4PLAY slot
+	ora	#$80	; 10=>90, 20=>A0, 30=>B0...
+	sta	read4PLAY+1
+	rep	#$30
+	rts
+
+*----------------------------------------
+
+	mx	%11
+	
+read4PLAY	ldal	$e0C080	; direct "fast" read
+	sta	the4PLAY
+	rts
+
+	mx	%00
+
+*---------- Data
+
+
 *----------------------------------------
 * DATA
 *----------------------------------------

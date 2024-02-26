@@ -6305,6 +6305,7 @@ L8D22	DEY
 	beq	L8D23
 	cmp	#chrP
 	bne	L8D3B
+
 	jsr	read4PLAY
 	bmi	L8D41	; button 1 pressed?
 	bvs	L8D41	; button 2 pressed?
@@ -6314,8 +6315,9 @@ L8D23	LDAL	BUTN1
 	BMI	L8D41
 	LDAL	BUTN0
 	BMI	L8D41
-L8D3B	jsr	checkKEY
+
 *	LDA	KBD
+L8D3B	jsr	checkKEY
 	BMI	L8D41
 	RTS
 

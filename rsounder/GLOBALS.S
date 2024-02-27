@@ -1,0 +1,134 @@
+*
+* rSounder
+* (c) 1995, Paul Benson
+* (s) 2024, Brutal Deluxe Software
+*
+
+	mx    %00
+	rel
+	
+*-----------------------------------
+
+L030000     ENT
+            DB    $00
+L030001     ENT
+            DB    $00
+            DB    $00
+L030003     ENT
+            DB    $00
+            DB    $00
+L030005     ENT
+            DB    $00
+            DB    $00
+L030007     ENT
+            DB    $00
+            DB    $00
+L030009     ENT
+            DB    $00
+            DB    $00
+L03000B     ENT
+            DB    $00
+            DB    $00
+L03000D     ENT
+            DB    $00
+            DB    $00
+L03000F     ENT
+            DB    $00
+            DB    $00
+L030011     ENT
+            DB    $00
+            DB    $00
+L030013     ENT
+            DB    $00
+            DB    $00
+L030015     ENT
+            DB    $00
+            DB    $00
+L030017     ENT
+            DB    $00
+            DB    $00
+L030019     ENT
+            DB    $00
+            DB    $00
+L03001B     ENT
+            DB    $00
+            DB    $00
+L03001D     ENT
+            DB    $00
+            DB    $00
+L03001F     ENT
+            DB    $00
+            DB    $00
+L030021     ENT
+            DB    $00
+            DB    $00
+L030023     ENT
+            DB    $00
+            DB    $00
+L030025     ENT
+            DB    $00
+            DB    $00
+L030027     ENT
+            DB    $00
+            DB    $00
+L030029     ENT
+            DB    $00
+            DB    $00
+L03002B     ENT
+            DB    $00
+            DB    $00
+L03002D     ENT
+            DB    $00
+            DB    $00
+L03002F     ENT
+            DB    $00
+            DB    $00
+L030031     ENT
+            DB    $00
+            DB    $00
+L030033     ENT
+            DB    $00
+            DB    $00
+L030035     ENT
+            DB    $00
+            DB    $00
+L030037     ENT
+            DB    $00
+            DB    $00
+L030039     ENT
+            DB    $00
+            DB    $00
+L03003B     ENT
+            DB    $00
+            DB    $00
+L03003D     ENT
+            DB    $00
+L03003E     ENT
+            DB    $03
+            DB    $00
+L030040     ENT
+            DB    $00
+            DB    $00
+L030042     ENT
+            DB    $00
+            DB    $00
+L030044     ENT
+            DB    $00
+            DB    $00
+L030046     ENT
+            DB    $00
+            DB    $00
+L030048     ENT
+            DB    $00
+            DB    $00
+L03004A     ENT
+            DB    $00
+            DB    $00
+L03004C     ENT
+            DB    $00
+            DB    $00
+L03004E     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+

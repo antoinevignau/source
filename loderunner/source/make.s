@@ -27,4 +27,12 @@
          KND   $0000
          SNA   Software
 
+         ASM   LR.BKSND1.S
+         KND   $0000
+         SNA   Antoine
+
+         ASM   LR.BKSND2.S
+         KND   $0000
+         SNA   Olivier
+
 * END

@@ -253,6 +253,21 @@ slot4PLAY	=	$f0	; 0 if none, slot otherwise
 the4PLAY	=	slot4PLAY+2	; value read from the 4play
 
 *-----------------------------------
+* IIGS SOUND FX
+*-----------------------------------
+
+isndINTRO	=	1	; ok
+isndBARRE	=	2	; ok
+isndCREUSE	=	3	; ok
+isndESCALIER =	4	; ok
+isndMARCHE	=	5	; ok
+isndNOMORECHEST =	6	; ok
+isndTOMBE	=	7	; ok - ˆ refaire
+isndTRESOR	=	8	; ok
+isndTROU	=	9	; ok
+isndYOUWIN	=	10	; ok
+
+*-----------------------------------
 * SOFTSWITCHES
 *-----------------------------------
 

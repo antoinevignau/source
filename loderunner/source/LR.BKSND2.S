@@ -5,12 +5,8 @@
 *
 
 *-----------------------------------
-* KEEP IT AT $64K
+* SOUND BANK 2
 *-----------------------------------
 
-	ds	8192	; $0000
-	
-HGR2	ent
-	ds	32768	; $2000
-
-	ds	24576	; $a000
+sndINTRO	ent
+	putbin	snd/intro.snd

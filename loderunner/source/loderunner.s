@@ -41,6 +41,17 @@
 	ext	ptrLEVELS
 	ext	ptrSCORES
 	ext	HGR2
+
+	ext	sndINTRO
+	ext	sndBARRE
+	ext	sndCREUSE
+	ext	sndESCALIER
+	ext	sndMARCHE
+	ext	sndNOMORECHEST
+	ext	sndTOMBE
+	ext	sndTRESOR
+	ext	sndTROU
+	ext	sndYOUWIN
 	
 *-------------- Softswitches
 
@@ -155,7 +166,7 @@ okTOOL	PushWord	#0
 okSHADOW	pha
 	_SoundToolStatus
 	pla
-	bne	noSOUND
+	beq	noSOUND
 
 	lda	#1
 	sta	fgSND
@@ -187,7 +198,9 @@ noSOUND	_HideMenuBar
 	bpl	]lp
 
 	jsr	find4PLAY	; do we have a 4play?
-	
+	jsr	initSOUND
+
+*---
 	lda	#0
 	beq	noPATCH
 	jsr	setLRPALETTE ; set the LR palette
@@ -196,6 +209,9 @@ noSOUND	_HideMenuBar
 	sta	patchSPR2+1
 	sta	patchSPR3+1
 noPATCH
+
+*---
+
 	jsr	loadLEVELS	; exit 8-bit
 
 	mx	%11
@@ -389,6 +405,8 @@ copyPATH	sep	#$20
 *----------------------------------- Quit
 
 meQUIT	rep	#$30
+
+	jsr	stopSOUND
 
 	PushWord #refIsHandle
 	PushLong SStopREC
@@ -678,17 +696,138 @@ read4PLAY	ldal	$e0C080	; direct "fast" read
 * SOUND EFFECTS
 *----------------------------------------
 
-barre	047d
-creuse	119B	
-escalier	02B7	
-intro	D833	
-marche	06A3	
-nomorechest	274B	
-tombe	2513	
-tresor	0FD3	
-trou	08CF	
-youwin	4303	
+*---------- Load & Start the Sound Tool Set
 
+initSOUND	lda	fgSND
+	beq	initSOUND1
+	rts
+
+initSOUND1	PushWord	#8	; Sound Tool Set
+	PushWord	#0
+	_LoadOneTool
+	bcs	initSOUND9
+	
+	lda	myDP
+	clc
+	adc	#256
+	pha
+	_SoundStartUp
+	bcs	initSOUND9
+	rts
+	
+initSOUND9	inc	fgSND
+	rts
+
+*---------- Stop the Sound Tool Set
+
+stopSOUND	lda	fgSND
+	beq	stopSOUND1
+	rts
+
+stopSOUND1	PushWord	#%1111_1111_1111_1111	; on arrête tous les sons
+	_FFStopSound
+	_SoundShutDown
+
+	PushWord	#8
+	_UnloadOneTool
+
+	stz	fgSND
+	rts
+
+*---------- 
+
+	mx	%11
+	
+playSOUND	sta	saveA
+	stx	saveX
+	sty	saveY
+
+	rep	#$30
+	lda	fgSND
+	bne	playSOUND9
+
+	lda	saveA	; reprend l'instrument
+	asl
+	tay		; *2 Y
+	asl
+	tax		; *5 X
+	
+	lda	tblSOUND,x
+	sta	pBlockPtr
+	lda	tblSOUND+2,x
+	sta	pBlockPtr+2
+	lda	tblFREQ,y
+	sta	pBlockPtr+4
+
+	lda	tblGENNUM,y
+	pha
+
+	PushWord	#%01111111_11111111
+	_FFStopSound
+
+	PushLong	#pBlockPtr	; play the sound & exit
+	_FFStartSound
+
+playSOUND9	sep	#$30
+	ldy	saveY
+	ldx	saveX
+	lda	saveA
+	rts
+
+	mx	%00
+
+*--- Sound data
+
+pBlockPtr	ds	4	;  0 - waveStart
+	dw	$0000	;  4 - waveSize in pages
+	dw	214	;  6 - freqOffset
+	dw	$0000	;  8 - docBuffer
+	dw	$0001	; 10 - bufferSize
+	ds	4	; 12 - SoundPBPtr
+	dw	$ff	; 16 - volSetting
+
+tblSOUND	ds	4
+	adrl	sndINTRO
+	adrl	sndBARRE
+	adrl	sndCREUSE
+	adrl	sndESCALIER
+	adrl	sndMARCHE
+	adrl	sndNOMORECHEST
+	adrl	sndTOMBE
+	adrl	sndTRESOR
+	adrl	sndTROU
+	adrl	sndYOUWIN
+
+tblFREQ	ds	2
+	dw	$00D9
+	dw	$0005
+	dw	$0012
+	dw	$0003
+	dw	$0007
+	dw	$0028
+	dw	$0025
+	dw	$0010
+	dw	$0009
+	dw	$0043
+
+tblGENNUM	ds	2
+	dw	$0101
+	dw	$0201
+	dw	$0301
+	dw	$0401
+	dw	$0501
+	dw	$0601
+	dw	$0701
+	dw	$0801
+	dw	$0901
+	dw	$0A01
+
+*---
+
+saveA	ds	2
+saveX	ds	2
+saveY	ds	2
+	
 *----------------------------------------
 * DATA
 *----------------------------------------
@@ -800,10 +939,10 @@ replyPTR	ds	2	; 0 good
 	ds	2	; 2 fileType
 	ds	2	; 4 auxFileType
 namePATH
-	hex	06	; 6 fileName
+	hex	07	; 6 fileName
 namePATH1
-	asc	'Levels'	; 7 fileName (16 normally)
-	ds	9
+	asc	'Niveaux'	; 7 fileName (16 normally)
+	ds	8
 loadPATH
 	ds	1	; 22 fullPathname (string length)
 loadPATH1

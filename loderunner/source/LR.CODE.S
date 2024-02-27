@@ -8,6 +8,15 @@
 	lst	off
 
 *-----------------------------------
+* MACRO
+*-----------------------------------
+
+@playsound	mac
+	lda	#]1
+	jsr	playSOUND
+	eom
+
+*-----------------------------------
 * ENTRY POINT 
 *-----------------------------------
 
@@ -22,6 +31,8 @@ theGAME	JSR	checkJOYSTICK
 showTITLEPAGE
 	JSR	clearHGR1	; display the compressed title page
 
+	@playsound	#isndINTRO
+	
 	LDA	#<logo-1
 	STA	L6030+1
 	LDA	#>logo-1
@@ -143,6 +154,9 @@ L60E4	JSR	handleHERO
 	JSR	playMELODY
 	LDA	nbCHEST	; remaining chests?
 	BNE	L60F5	; yes
+	
+	@playsound	#isndNOMORECHEST
+
 	JSR	showINVISIBLELADDERS
 
 L60F5	LDA	boardY	; are we on top row
@@ -164,11 +178,14 @@ L6107	JSR	checkHOLE	; are there holes active?
 	BEQ	L613F	; yes...
 	BNE	L60E4	; no, loop
 	
-L611A	INC	theLEVEL	; next level, no chests left
+L611A	@playsound	#isndYOUWIN
+
+	INC	theLEVEL	; next level, no chests left
 	INC	intLEVEL
 	INC	theMEN	; man++
 	BNE	L6124
 	DEC	theMEN	; man--
+
 L6124	LDX	#$0F
 	STX	temp1
 L6128	LDY	#$01	; ajoute 15 x 100 points
@@ -679,7 +696,7 @@ L642A	CMP	#sprHERO	; if the hero
 	LDX	#$02
 	STX	heroSTEPX	; x-step movement
 	STX	heroSTEPY	; y-step movement
-	LDX	#$08
+	LDX	#$08	; run right
 	STX	heroINDEX	; index in sprite table
 	LDA	#sprEMPTY	; blank in background
 	STA	(ptrBBACK),Y
@@ -770,11 +787,11 @@ L64AF	DEC	theX
 
 handleHERO	LDA	#$01
 	STA	fgCHEST
-	LDA	fgHOLE
-	BEQ	L64CD
+	LDA	fgHOLE	; creuse-t-il un trou ?
+	BEQ	L64CD	; non
 	BPL	L64CA
-	JMP	L67E7
-L64CA	JMP	L68AD
+	JMP	L67E7	; ˆ gauche
+L64CA	JMP	L68AD	; ˆ droite
 
 L64CD	LDY	boardY
 *	LDA	tblBOARDALLL,Y
@@ -824,6 +841,9 @@ L6525	LDA	#$00	; hero fell in a hole, tell the program
 	STA	fgHEROFELL	; to change speed
 	JSR	calcSPRITEXY
 	JSR	drawSPRITEXY
+	
+*	@playsound	#isndTOMBE
+
 	LDA	#$07	; index in sprite table: fall in a left hole
 	LDX	fgLEFTRIGHT
 	BMI	L6537
@@ -869,7 +889,7 @@ L6584	LDA	fgHEROFELL
 	BNE	L658F
 	LDA	#$64
 	LDX	#$08
-	JSR	playSOUND
+	JSR	playNOTE
 L658F	LDA	#$20
 	STA	fgSPEED
 	STA	fgHEROFELL
@@ -1223,14 +1243,16 @@ L67E7	LDY	boardY	; are we on last line?
 	JSR	heroNEXTSTEPX
 	JSR	heroNEXTSTEPY
 	LDY	idxDIG
-	LDA	digNOTE,Y
+	bne	nosnddig1
+	@playsound	#isndCREUSE
+nosnddig1	LDA	digNOTE,Y
 	LDX	digDURATION,Y
 	JSR	getNOTE
 	LDX	idxDIG
-	LDA	#$00
+	LDA	#$00	; run left
 	CPX	#$06
 	BCS	L682B
-	LDA	#$06
+	LDA	#$06	; dig left
 L682B	STA	heroINDEX
 	JSR	checkCOLLISION
 	LDX	idxDIG
@@ -1305,6 +1327,7 @@ checkDIGRIGHT
 	STA	theKEY2
 	LDA	#$0C
 	STA	idxDIG
+
 L68AD	LDY	boardY	; are we on last line?
 	CPY	#lvlHEIGHT-1
 	BCS	L689E
@@ -1329,14 +1352,17 @@ L68AD	LDY	boardY	; are we on last line?
 	JSR	heroNEXTSTEPX
 	JSR	heroNEXTSTEPY
 	LDY	idxDIG
-	LDA	seqDIGSTONE,Y	; dig stone
+	cpy	#$0C
+	bne	nosnddig2
+	@playsound	#isndCREUSE
+nosnddig2	LDA	seqDIGSTONE,Y	; dig stone
 	LDX	digNOTE2,Y
 	JSR	getNOTE
 	LDX	idxDIG
-	LDA	#$08
+	LDA	#$08	; run right
 	CPX	#$12
 	BCS	L68F3
-	LDA	#$0E
+	LDA	#$0E	; dig right
 L68F3	STA	heroINDEX
 	JSR	checkCOLLISION
 	LDX	idxDIG
@@ -1403,6 +1429,26 @@ L6962	LDX	boardX	; we're digging
 
 * Encha”nement des sprites
 
+sndLODERUNNER
+	db	5	;  0 5
+	db	0	;  1
+	db	0	;  2
+	db	5	;  3 2
+	db	0	;  4
+	db	0	;  5
+	db	3	;  6 3
+	db	0	;  7 7
+	db	5	;  8 5
+	db	0	;  9
+	db	0	;  A
+	db	5	;  B 2
+	db	0	;  C
+	db	0	;  D
+	db	3	;  E 3
+	db	0	;  F 7
+	db	5	; 10 4
+	db	0	; 11
+	
 seqLODERUNNER
 	DB	$0B	;  0 court ˆ gauche
 	DB	$0C	;  1 
@@ -1863,7 +1909,14 @@ calcSPRITEXY
 	JSR	calcHGRY	; we keep it in Y
 
 	LDX	heroINDEX	; get sprite index
-	LDA	seqLODERUNNER,X
+
+*	cpx	#$12	; joue un son dans quelques cas
+*	bcs	calcSPRITE1
+*	lda	sndLODERUNNER,x
+*	beq	calcSPRITE1
+*	jsr	playSOUND
+
+calcSPRITE1	LDA	seqLODERUNNER,X
 	LDX	theA
 	RTS
 
@@ -1894,6 +1947,8 @@ checkCHEST	LDA	heroSTEPX	; is sprite still in X
 
 	LSR	fgCHEST	; collision avec un coffre
 	DEC	nbCHEST	; chest--
+
+	@playsound	#isndTRESOR
 
 	LDY	boardY	; remove it from background
 	STY	theY
@@ -2143,6 +2198,9 @@ L6D61	JMP	L6E85
 L6D64	JSR	calcFOESPRITEXY
 	JSR	drawSPRITEXY
 	JSR	foeNEXTSTEPX
+	
+*	@playsound	#isndTOMBE
+
 	LDA	#$06	; foe falls left
 	LDY	foeLEFTRIGHT
 	BMI	L6D75
@@ -2310,13 +2368,13 @@ L6EAC	LDY	foeSTEPY
 	STA	ptrBOARD+1
 	LDY	foeX
 	LDA	(ptrBOARD),Y
-	CMP	#$01
+	CMP	#sprWALL
 	BEQ	L6EA1
-	CMP	#$02
+	CMP	#sprWALLI
 	BEQ	L6EA1
-	CMP	#$05
+	CMP	#sprTRAP
 	BEQ	L6EA1
-	CMP	#$08
+	CMP	#sprFOE
 	BEQ	L6EA1
 L6ED5	JSR	calcFOESPRITEXY
 	JSR	drawSPRITEXY
@@ -2335,9 +2393,9 @@ L6ED5	JSR	calcFOESPRITEXY
 	JSR	checkDROPCHEST
 	LDY	foeX
 	LDA	(ptrBBACK),Y
-	CMP	#$01
+	CMP	#sprWALL
 	BNE	L6F02
-	LDA	#$00
+	LDA	#sprEMPTY
 L6F02	STA	(ptrBOARD),Y
 	DEC	foeY
 	LDY	foeY
@@ -2350,7 +2408,7 @@ L6F02	STA	(ptrBOARD),Y
 	CMP	#sprHERO
 	BNE	L6F1C
 	LSR	fgPLAY
-L6F1C	LDA	#$08
+L6F1C	LDA	#sprFOE
 	STA	(ptrBOARD),Y
 	LDA	#$04
 	STA	foeSTEPY
@@ -2509,14 +2567,14 @@ L7047	LDY	foeY
 	BEQ	L707B
 	INY
 	LDA	(ptrBOARD),Y
-	CMP	#$08
+	CMP	#sprFOE
 	BEQ	L707B
-	CMP	#$02
+	CMP	#sprWALLI
 	BEQ	L707B
-	CMP	#$01
+	CMP	#sprWALL
 	BEQ	L707B
 	LDA	(ptrBBACK),Y
-	CMP	#$05
+	CMP	#sprTRAP
 	BNE	L707E
 L707B	JMP	saveFOEDATA
 
@@ -3056,11 +3114,11 @@ L7444	LDA	tempX3
 	LDY	tempX3
 	DEY
 	LDA	(ptrBBACK),Y
-	CMP	#$01
+	CMP	#sprWALL
 	BEQ	L748A
-	CMP	#$02
+	CMP	#sprWALLI
 	BEQ	L748A
-	CMP	#$03
+	CMP	#sprLADDER
 	BNE	L748E
 L748A	DEC	tempX3
 	BPL	L7444
@@ -3095,11 +3153,11 @@ L7490	LDA	tempX2
 	LDY	tempX2
 	INY
 	LDA	(ptrBBACK),Y
-	CMP	#$01
+	CMP	#sprWALL
 	BEQ	L74D8
-	CMP	#$02
+	CMP	#sprWALLI
 	BEQ	L74D8
-	CMP	#$03
+	CMP	#sprLADDER
 	BNE	L74DC
 L74D8	INC	tempX2
 	BPL	L7490
@@ -5550,14 +5608,14 @@ L87B9	RTS
 * PLAY A SOUND
 *-----------------------------------
 
-playSOUND	STA	ptrDATA
-	STX	$0B
+playNOTE	STA	ptrDATA
+	STX	ptrDATA+1
 L87BE	LDA	fgSOUND
 	BEQ	L87C5
 	LDAL	SPKR
 L87C5	DEY
 	BNE	L87CC
-	DEC	$0B
+	DEC	ptrDATA+1
 	BEQ	L87D4
 L87CC	DEX
 	BNE	L87C5
@@ -5616,7 +5674,7 @@ playMELODY	LDY	idxNOTE
 	BEQ	L8832
 	LDA	sndNOTE,Y
 	LDX	sndDURATION,Y
-	JSR	playSOUND	; play note
+	JSR	playNOTE	; play note
 	LDY	idxNOTE
 	DEC	idxNOTE
 	LDA	theSPEED
@@ -5637,7 +5695,7 @@ L8832	LDA	fgHEROFELL	; is the hero in a hole?
 	LDX	theSPEED
 	INX
 	INX
-	JSR	playSOUND
+	JSR	playNOTE
 	CLC
 	RTS
 

@@ -674,8 +674,20 @@ read4PLAY	ldal	$e0C080	; direct "fast" read
 
 	mx	%00
 
-*---------- Data
+*----------------------------------------
+* SOUND EFFECTS
+*----------------------------------------
 
+barre	047d
+creuse	119B	
+escalier	02B7	
+intro	D833	
+marche	06A3	
+nomorechest	274B	
+tombe	2513	
+tresor	0FD3	
+trou	08CF	
+youwin	4303	
 
 *----------------------------------------
 * DATA

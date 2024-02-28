@@ -22,8 +22,8 @@
 
 theGAME	JSR	checkJOYSTICK
 
-*	LDA	#$01	; read score table
-*	JSR	readSCORE
+	LDA	#$01	; read score table
+	JSR	readSCORE
 
 *--- Show title page
 * Data from $0F00 to $1A84
@@ -3600,6 +3600,7 @@ L77C7	jsr	checkKEY
 	BNE	L77B7
 	DEC	counter
 	BNE	L77B7
+
 *	STA	KBDSTROBE
 *	STA	TXTPAGE1
 L77D6	lda	ptrSCREEN+2

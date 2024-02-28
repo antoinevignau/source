@@ -160,7 +160,7 @@ okTOOL	PushWord	#0
 
 	lda	#^ptrE12000	; shadowing is off, use slow RAM
 	sta	ptrSCREEN+2
-
+	
 *--- Et la musique...
 
 okSHADOW	pha
@@ -693,9 +693,43 @@ read4PLAY	ldal	$e0C080	; direct "fast" read
 	mx	%00
 
 *----------------------------------------
+* UNPACK LOGO
+*----------------------------------------
+
+	mx	%11
+	
+unpackLOGO	rep	#$30
+
+	lda	ptrSCREEN
+	sta	startHandle
+	lda	ptrSCREEN+2
+	sta	startHandle+2
+	
+	lda	#32000
+	sta	sizePtr
+
+	PushWord	#0
+	PushLong	#logo
+	lda	#logo_fin-logo
+	pha
+	PushLong	#startHandle
+	PushLong	#sizePtr
+	_UnPackBytes
+	pla
+	sep	#$30
+	rts
+
+*---
+
+startHandle	adrl	ptr012000
+sizePtr	dw	32000
+
+*----------------------------------------
 * SOUND EFFECTS
 *----------------------------------------
 
+	mx	%00
+	
 *---------- Load & Start the Sound Tool Set
 
 initSOUND	lda	fgSND
@@ -750,21 +784,21 @@ playSOUND	sta	saveA
 	asl
 	tay		; *2 Y
 	asl
-	tax		; *5 X
+	tax		; *4 X
 	
 	lda	tblSOUND,x
 	sta	pBlockPtr
 	lda	tblSOUND+2,x
 	sta	pBlockPtr+2
-	lda	tblFREQ,y
+	lda	tblPAGE,y	; size in pages
 	sta	pBlockPtr+4
-
-	lda	tblGENNUM,y
-	pha
+	lda	tblVOL,y
+	sta	pBlockPtr+16
 
 	PushWord	#%01111111_11111111
 	_FFStopSound
 
+	PushWord	#$0201
 	PushLong	#pBlockPtr	; play the sound & exit
 	_FFStartSound
 
@@ -776,29 +810,31 @@ playSOUND9	sep	#$30
 
 	mx	%00
 
+mytoto	ds	2
+
 *--- Sound data
 
 pBlockPtr	ds	4	;  0 - waveStart
 	dw	$0000	;  4 - waveSize in pages
 	dw	214	;  6 - freqOffset
 	dw	$0000	;  8 - docBuffer
-	dw	$0001	; 10 - bufferSize
+	dw	$0000	; 10 - bufferSize
 	ds	4	; 12 - SoundPBPtr
 	dw	$ff	; 16 - volSetting
 
 tblSOUND	ds	4
-	adrl	sndINTRO
-	adrl	sndBARRE
-	adrl	sndCREUSE
-	adrl	sndESCALIER
-	adrl	sndMARCHE
-	adrl	sndNOMORECHEST
-	adrl	sndTOMBE
-	adrl	sndTRESOR
-	adrl	sndTROU
-	adrl	sndYOUWIN
+	adrl	sndINTRO	; 1
+	adrl	sndBARRE	; 2
+	adrl	sndCREUSE	; 3
+	adrl	sndESCALIER	; 4
+	adrl	sndMARCHE	; 5
+	adrl	sndNOMORECHEST ; 6
+	adrl	sndTOMBE	; 7
+	adrl	sndTRESOR	; 8
+	adrl	sndTROU	; 9
+	adrl	sndYOUWIN	; 10
 
-tblFREQ	ds	2
+tblPAGE	ds	2
 	dw	$00D9
 	dw	$0005
 	dw	$0012
@@ -810,17 +846,17 @@ tblFREQ	ds	2
 	dw	$0009
 	dw	$0043
 
-tblGENNUM	ds	2
-	dw	$0101
-	dw	$0201
-	dw	$0301
-	dw	$0401
-	dw	$0501
-	dw	$0601
-	dw	$0701
-	dw	$0801
-	dw	$0901
-	dw	$0A01
+tblVOL	ds	2
+	dw	255
+	dw	64
+	dw	64
+	dw	64
+	dw	64
+	dw	255
+	dw	64
+	dw	64
+	dw	64
+	dw	255
 
 *---
 
@@ -955,6 +991,7 @@ loadPATH1
 	put	LR.Code.s
 	put	LR.Data.s
 	put	LR.Tables.s
+	put	LR.Title.s
 	put	LR.Sprites.s	; 8-bits sprites
 	put	LR.Sprites2.s	; 16-col sprites
 		

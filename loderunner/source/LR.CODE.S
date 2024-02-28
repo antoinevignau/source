@@ -33,42 +33,44 @@ showTITLEPAGE
 
 	@playsound	#isndINTRO
 	
-	LDA	#<logo-1
-	STA	L6030+1
-	LDA	#>logo-1
-	STA	L6030+2
+*	LDA	#<logo-1
+*	STA	L6030+1
+*	LDA	#>logo-1
+*	STA	L6030+2
+
 	LDY	#$00
 	STY	theY
 	STY	fgDEMO
 	STY	intLEVEL
+	lda	ptrSCREEN+2
+	sta	ptrHGR1+2
 	LDA	#>oldHGR1
 	STA	hgrPAGE
 	STA	activePAGE
-L6023	JSR	setHGRPOINTER
-	LDY	#$00
-L6028	INC	L6030+1
-	BNE	L6030
-	INC	L6030+2
-L6030	LDA	L6028
-	BEQ	L603F	; 00: end of line
-	BPL	L603C	; <128: skip A bytes
-	STA	[ptrHGR1],Y	; >127: output char
-	INY
-	BPL	L6028	; from BPL
-L603C	TAY
-	BPL	L6028	; from BPL
-L603F	INC	theY
-	LDY	theY
-	CPY	#maxHEIGHT	; until line 192
-	BCC	L6023
+
+*L6023	JSR	setHGRPOINTER
+*	LDY	#$00
+*L6028	INC	L6030+1
+*	BNE	L6030
+*	INC	L6030+2
+*L6030	LDA	L6028
+*	BEQ	L603F	; 00: end of line
+*	BPL	L603C	; <128: skip A bytes
+*	STA	(ptrHGR1),Y	; >127: output char
+*	INY
+*	BPL	L6028	; from BPL
+*L603C	TAY
+*	BPL	L6028	; from BPL
+*L603F	INC	theY
+*	LDY	theY
+*	CPY	#maxHEIGHT	; until line 192
+*	BCC	L6023
 *	STA	TXTPAGE1
-	lda	ptrSCREEN+2
-	sta	ptrHGR1+2
-	lda	#>oldHGR1
-	sta	hgrPAGE
 *	STA	HIRES
 *	STA	MIXCLR
 *	STA	TXTCLR
+
+	jsr	unpackLOGO
 	JMP	L618E
 
 *---
@@ -1430,23 +1432,23 @@ L6962	LDX	boardX	; we're digging
 * Encha”nement des sprites
 
 sndLODERUNNER
-	db	5	;  0 5
+	db	5	;  0 5 5
 	db	0	;  1
 	db	0	;  2
-	db	5	;  3 2
+	db	2	;  3 5 2
 	db	0	;  4
 	db	0	;  5
-	db	3	;  6 3
-	db	0	;  7 7
-	db	5	;  8 5
+	db	3	;  6 3 3
+	db	0	;  7 0 7
+	db	5	;  8 5 5
 	db	0	;  9
 	db	0	;  A
-	db	5	;  B 2
+	db	2	;  B 5 2
 	db	0	;  C
 	db	0	;  D
-	db	3	;  E 3
-	db	0	;  F 7
-	db	5	; 10 4
+	db	3	;  E 3 3
+	db	0	;  F 0 7
+	db	4	; 10 5 4
 	db	0	; 11
 	
 seqLODERUNNER
@@ -1910,11 +1912,11 @@ calcSPRITEXY
 
 	LDX	heroINDEX	; get sprite index
 
-*	cpx	#$12	; joue un son dans quelques cas
-*	bcs	calcSPRITE1
-*	lda	sndLODERUNNER,x
-*	beq	calcSPRITE1
-*	jsr	playSOUND
+	cpx	#$12	; joue un son dans quelques cas
+	bcs	calcSPRITE1
+	lda	sndLODERUNNER,x
+	beq	calcSPRITE1
+	jsr	playSOUND
 
 calcSPRITE1	LDA	seqLODERUNNER,X
 	LDX	theA

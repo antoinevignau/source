@@ -697,16 +697,17 @@ tblSOUND	ds	4
 	adrl	sndYOUWIN	; 10
 
 tblPAGE	ds	2
-	dw	$00D9
-	dw	$0005
-	dw	$0012
-	dw	$0003
-	dw	$0007
-	dw	$0028
-	dw	$0025
-	dw	$0010
-	dw	$0009
-	dw	$0043
+	dw	$00D9	; out of scope
+
+	dw	$0005	;  2K $6800..$6cff
+	dw	$0012	;  8K $5000..$61ff
+	dw	$0003	;  1K $4400..$46ff
+	dw	$0007	;  2K $4800..$4eff
+	dw	$0028	; 16K $8000..$afff
+	dw	$0025	; 16K $c000..$ffff
+	dw	$0010	;  4K $b000..$bfff
+	dw	$0009	;  4K $7000..$78ff
+	dw	$0043	; 32K $0000..$42ff out of scope
 
 tblVOL	ds	2
 	dw	255

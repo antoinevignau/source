@@ -11,28 +11,20 @@
          KND   $0000
          SNA   DougESmith
 
-         ASM   LR.BANK1.S
+         ASM   LR.BANK3.S
          KND   $0000
          SNA   Broderbund
 
-         ASM   LR.BANK2.S
+         ASM   LR.BANK4.S
          KND   $0000
          SNA   Brutal
 
-         ASM   LR.BANK3.S
+         ASM   LR.BKSND1.S
          KND   $0000
          SNA   Deluxe
 
-         ASM   LR.BANK4.S
-         KND   $0000
-         SNA   Software
-
-         ASM   LR.BKSND1.S
-         KND   $0000
-         SNA   Antoine
-
          ASM   LR.BKSND2.S
          KND   $0000
-         SNA   Olivier
+         SNA   Software
 
 * END

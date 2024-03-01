@@ -3820,7 +3820,7 @@ dib2	sta	ptrDATA+2
 	rep	#$30
 	ldx	#160*4	; 4 lines
 	ldy	#$6e00	; ligne 179
-	lda	#$4444	; bleu
+	lda	fondFRAME	; bleu
 ]lp	sta	[ptrDATA],y
 	iny
 	iny
@@ -4464,6 +4464,7 @@ editOPEN99	jmp	editLOOP	; no
 
 editRESTART	jsr	editSAVECHANGES
 	jsr	printSTRING
+	asc	8D
 	asc	">>RESTART GAME"8D
 	ASC	"  THIS RESTARTS THE GAME"8D8D
 	ASC	"  ARE YOU SURE (Y/N) "00
@@ -4479,6 +4480,7 @@ editRES99	jmp	editLOOP
 
 editBYE	jsr	editSAVECHANGES
 	jsr	printSTRING
+	asc	8D
 	asc	">>QUIT GAME"8D
 	ASC	"  THIS QUITS THE GAME"8D8D
 	ASC	"  ARE YOU SURE (Y/N) "00
@@ -4634,7 +4636,7 @@ editSAVE	JSR	saveLEVEL
 	JMP	L7F25
 
 *-------------------------------
-* CTRL-U - NEXT LEVEL 
+* RIGHT ARROW - NEXT LEVEL 
 *-------------------------------
 
 editLOAD	LDA	intLEVEL
@@ -4646,7 +4648,7 @@ L7FD8	BEQ	L7F6E
 	JMP	editEDITLEVEL
 
 *-------------------------------
-* CTRL-H - PREVIOUS LEVEL
+* LEFT ARROW - PREVIOUS LEVEL
 *-------------------------------
 
 editPREVIOUS
@@ -4697,9 +4699,9 @@ L8075
 	sta	ptrHGR1+2
 	lda	#>oldHGR1
 	sta	hgrPAGE
-	LDA	#$00
-	STA	theX
-	STA	theY
+*	LDA	#$00
+*	STA	theX
+*	STA	theY
 	RTS
 
 *-----------------------------------

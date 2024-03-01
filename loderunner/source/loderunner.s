@@ -34,10 +34,6 @@
 	
 *----------------------------------- Constantes
 
-	ext	ptrUNPACK
-	ext	ptrBACKGND
-	ext	ptrIMAGE
-	ext	ptrTITLE
 	ext	ptrLEVELS
 	ext	ptrSCORES
 	ext	HGR2
@@ -199,17 +195,8 @@ noSOUND	_HideMenuBar
 
 	jsr	find4PLAY	; do we have a 4play?
 	jsr	initSOUND
-
-*---
-	lda	#0
-	beq	noPATCH
-	jsr	setLRPALETTE ; set the LR palette
-	lda	#tblSPRITES2
-	sta	patchSPR1+1
-	sta	patchSPR2+1
-	sta	patchSPR3+1
-noPATCH
-
+	jsr	setNATIVE	; set native mode
+	
 *---
 
 	jsr	loadLEVELS	; exit 8-bit
@@ -430,162 +417,36 @@ meQUIT1	PushWord myID
 	brk	$bd
 
 *----------------------------------------
-* GFX
+* SET VINTAGE/NATIVE MODE
 *----------------------------------------
 
-*----------------------------
-* unpackLZ4
-*  Unpacks a LZ4 file
-*  Uses the two pointers:
-*   - ptrUNPACK: packed img (MUST BE AT $0000)
-*   - ptrIMAGE: temp unpack zone
-*
-* Entry:
-*  A: packed data size
-*
-* Exit:
-*  lenDATA: unpacked data size
-*
-*----------------------------
-
 	mx	%00
+
+setVINTAGE
+	jsr	setSTDPALETTE ; set the LR palette
+	lda	#1	; no speaker sound
+	ldx	#tblSPRITES
+	ldy	#$4444
+	bra	setMODE
 	
-unpackLZ4	sta	LZ4_Limit+1
+setNATIVE
+	jsr	setLRPALETTE ; set the LR palette
+	lda	#0	; no speaker sound
+	ldx	#tblSPRITES2
+	ldy	#$bbbb
+	
+setMODE	stx	patchSPR1+1	; the sprites table
+	stx	patchSPR2+1
+	stx	patchSPR3+1
+	sty	fondFRAME	; the border color
 	sep	#$20
-
-	lda	ptrUNPACK+2		; Source
-	sta	LZ4_Literal_3+2
-	sta	LZ4_ReadToken+3
-	sta	LZ4_Match_1+3
-	sta	LZ4_GetLength_1+3
-
-	lda	ptrIMAGE+2		; Destination
-	sta	LZ4_Literal_3+1
-	sta	LZ4_Match_5+1
-	sta	LZ4_Match_5+2
-
+	sta	fgSOUND	; the sound mode
 	rep	#$20
-
-*--
-
-	ldy	#0	; Init Target unpacked Data offset
-	ldx	#16	; Offset after header
-
-LZ4_ReadToken
-	LDAL	$AA0000,X	; Read Token Byte
-	INX
-	STA	LZ4_Match_2+1
-	
-*----------------
-
-LZ4_Literal
-	AND	#$00F0	; >>> Process Literal Bytes <<<
-	BEQ	LZ4_Limit	; No Literal
-	CMP	#$00F0
-	BNE	LZ4_Literal_1
-	JSR	LZ4_GetLengthLit	; Compute Literal Length with next bytes
-	BRA	LZ4_Literal_2
-LZ4_Literal_1
-	LSR		; Literal Length use the 4 bit
-	LSR
-	LSR
-	LSR
-
-LZ4_Literal_2
-	DEC		; Copy A+1 Bytes
-LZ4_Literal_3
-	MVN	$AA,$BB	; Copy Literal Bytes from packed data buffer
-	PHK		; X and Y are auto incremented
-	PLB
-
-*----------------
-
-LZ4_Limit	CPX	#$AAAA	; End Of Packed Data buffer ?
-	BEQ	LZ4_End
-
-*----------------
-
-LZ4_Match	TYA		; >>> Process Match Bytes <<<
-	SEC
-LZ4_Match_1	SBCL	$AA0000,X	; Match Offset
-	INX
-	INX
-	STA	LZ4_Match_4+1
-
-LZ4_Match_2	LDA	#$0000	; Current Token Value
-	AND	#$000F
-	CMP	#$000F
-	BNE	LZ4_Match_3
-	JSR	LZ4_GetLengthMat	; Compute Match Length with next bytes
-LZ4_Match_3	CLC
-	ADC	#$0003	; Minimum Match Length is 4 (-1 for the MVN)
-	PHX
-LZ4_Match_4	LDX	#$AAAA	; Match Byte Offset
-LZ4_Match_5	MVN	$BB,$BB	; Copy Match Bytes from unpacked data buffer
-	PHK		; X and Y are auto incremented
-	PLB
-	PLX
-	BRA	LZ4_ReadToken
-
-*----------------
-
-LZ4_GetLengthLit
-	LDA	#$000F	; Compute Variable Length (Literal or Match)
-LZ4_GetLengthMat
-	STA	LZ4_GetLength_2+1
-LZ4_GetLength_1
-	LDAL	$AA0000,X	; Read Length Byte
-	INX
-	AND	#$00FF
-	CMP	#$00FF
-	BNE	LZ4_GetLength_3
-	CLC
-LZ4_GetLength_2
-	ADC	#$000F
-	STA	LZ4_GetLength_2+1
-	BRA	LZ4_GetLength_1
-LZ4_GetLength_3
-	ADC	LZ4_GetLength_2+1
-	RTS
-
-*----------------
-
-LZ4_End	sty	lenDATA		; Y = length of unpacked data
 	rts
 
 *---
-
-lenDATA	ds	4
-
-	mx	%00
-
-*-----------------------------------
-* SAVE THE SHR SCREEN
-*-----------------------------------
-
-saveBACK	_HideCursor
-
-	PushLong	ptrSCREEN
-	PushLong	#ptrBACKGND
-	PushLong	#32768
-	_BlockMove
 	
-	_ShowCursor
-	rts
-
-*-----------------------------------
-* RESTORE THE SHR SCREEN
-*-----------------------------------
-
-loadBACK	_HideCursor
-
-	PushLong	#ptrBACKGND
-	PushLong	ptrSCREEN
-	PushLong	#32768
-	_BlockMove
-
-*	_ShowCursor
-	rts
+fondFRAME	dw	$4444	; HGR: $4444, SHR: $BBBB
 
 *----------------------------------------
 * SET STANDARD 320 PALETTE
@@ -630,7 +491,6 @@ checkKEY	phx
 	ply
 	plx
 	lda	taskMESSAGE
-	stal	$300
 	ora	#%1000_0000	; set bit 7
 	rts
 
@@ -777,7 +637,9 @@ playSOUND	sta	saveA
 	sty	saveY
 
 	rep	#$30
-	lda	fgSND
+	lda	fgSOUND	; 8-bit sound?
+	and	#$ff
+	ora	fgSND
 	bne	playSOUND9
 
 	lda	saveA	; reprend l'instrument
@@ -991,7 +853,9 @@ loadPATH1
 	put	LR.Code.s
 	put	LR.Data.s
 	put	LR.Tables.s
-	put	LR.Title.s
+logo
+	putbin	pic/title
+logo_fin
 	put	LR.Sprites.s	; 8-bits sprites
 	put	LR.Sprites2.s	; 16-col sprites
 		

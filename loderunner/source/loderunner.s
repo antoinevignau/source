@@ -126,14 +126,6 @@ noSOUND	_HideMenuBar
 	_FlushEvents
 	pla
 
-*	PushLong	#0
-*	PushWord	#5	; SetDeskPat
-*	PushWord	#$4000
-*	PushWord	#$0000
-*	_Desktop
-*	pla
-*	pla
-
 *----------------------------------- Exit point
 
 	ldx	#256-2	; efface la page directe
@@ -337,14 +329,14 @@ meQUIT	rep	#$30
 
 	jsr	stopSOUND
 
-	PushWord #refIsHandle
-	PushLong SStopREC
+	PushWord	#refIsHandle
+	PushLong	SStopREC
 	_ShutDownTools
 
-meQUIT1	PushWord myID
+meQUIT1	PushWord	myID
 	_DisposeAll
 
-	PushWord mainID
+	PushWord	myID
 	_MMShutDown
 
 	_TLShutDown

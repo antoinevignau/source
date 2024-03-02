@@ -4,31 +4,31 @@
 * (s) 2014, Brutal Deluxe Software
 *
 
-	mx    %00
+	mx	%00
 
 *----------------------------------- Macros
 
-	use   4/Ctl.Macs
-	use   4/Desk.Macs
-	use   4/Event.Macs
-	use   4/Font.Macs
-	use   4/Int.Macs
-	use   4/Line.Macs
-	use   4/Locator.Macs
-	use   4/Mem.Macs
-	use   4/Menu.Macs
-	use   4/MIDISyn.Macs
-	use   4/Misc.Macs
-	use   4/Print.Macs
-	use   4/Qd.Macs
-	use   4/QdAux.Macs
-	use   4/Resource.Macs
-	use   4/Scrap.Macs
-	use   4/Sound.Macs
-	use   4/Std.Macs
-	use   4/TextEdit.Macs
-	use   4/Util.Macs
-	use   4/Window.Macs
+	use	4/Ctl.Macs
+	use	4/Desk.Macs
+	use	4/Event.Macs
+	use	4/Font.Macs
+	use	4/Int.Macs
+	use	4/Line.Macs
+	use	4/Locator.Macs
+	use	4/Mem.Macs
+	use	4/Menu.Macs
+	use	4/MIDISyn.Macs
+	use	4/Misc.Macs
+	use	4/Print.Macs
+	use	4/Qd.Macs
+	use	4/QdAux.Macs
+	use	4/Resource.Macs
+	use	4/Scrap.Macs
+	use	4/Sound.Macs
+	use	4/Std.Macs
+	use	4/TextEdit.Macs
+	use	4/Util.Macs
+	use	4/Window.Macs
 
 	use	LR.EQUATES
 	
@@ -43,21 +43,14 @@
 
 *-------------- Softswitches
 
-RDVBLBAR	=	$e0c019
 GSOS	=	$e100a8
 
 *-------------- GUI
-
-alertQUIT	=	$0100
-alertRESTART =	$0200
 
 refIsPointer =	0
 refIsHandle	=	1
 refIsResource =	2
 
-appleKey	=	$0100
-mouseDownEvt =	$0001
-mouseUpEvt	=	$0002
 keyDownEvt	=	$0003
 
 ptr012000	=	$012000
@@ -81,46 +74,13 @@ FALSE	=	0
 	pha
 	_MMStartUp
 	pla
-	sta	mainID
-	ora	#$0100
 	sta	myID
-
-*--- Version du systeme
-
-	jsl	GSOS
-	dw	$202a
-	adrl	proVERS
-	
-	lda	proVERS+2
-	and	#%01111111_11111111
-	cmp	#$0402
-	bcs	okVERS
-	
-	pha
-	PushLong #verSTR1
-	PushLong #verSTR2
-	PushLong #errSTR1
-	PushLong #errSTR2
-	_TLTextMountVolume
-	pla
-	brl	meQUIT1
-
-*--- Compacte la mémoire
-
-okVERS	PushLong	#0
-	PushLong	#$8fffff
-	PushWord	myID
-	PushWord	#%11000000_00000000
-	PushLong	#0
-	_NewHandle
-	_DisposeHandle
-	_CompactMem
 
 *--- Chargement des outils
 
 	pha
 	pha
-	PushWord	mainID
+	PushWord	myID
 	PushWord	#refIsResource
 	PushLong	#1
 	_StartUpTools
@@ -166,13 +126,13 @@ noSOUND	_HideMenuBar
 	_FlushEvents
 	pla
 
-	PushLong	#0
-	PushWord	#5	; SetDeskPat
-	PushWord	#$4000
-	PushWord	#$0000
-	_Desktop
-	pla
-	pla
+*	PushLong	#0
+*	PushWord	#5	; SetDeskPat
+*	PushWord	#$4000
+*	PushWord	#$0000
+*	_Desktop
+*	pla
+*	pla
 
 *----------------------------------- Exit point
 
@@ -382,9 +342,6 @@ meQUIT	rep	#$30
 	_ShutDownTools
 
 meQUIT1	PushWord myID
-	_DisposeAll
-
-	PushWord mainID
 	_DisposeAll
 
 	PushWord mainID
@@ -927,20 +884,14 @@ fgSND	ds	2
 
 *----------------------- Tool locator
 
-verSTR1	str	'System 6.0.1 Required!'
-verSTR2	str	'Press a key to quit'
 tolSTR1	str	'Error while loading tools'
-memSTR1	str	'Cannot allocate memory'
-filSTR1	str	'Cannot load file'
 errSTR1	str	'Quit'
 errSTR2	str	''
 errSTR3	str	'Continue'
 
 *----------------------- Memory manager
 
-mainID	ds	2	; app ID
-myID	ds	2	; user ID
-
+myID	ds	2	; app ID
 SStopREC	ds	4
 
 ptrSCREEN	adrl	ptr012000
@@ -953,21 +904,13 @@ palette320	dw	$0000,$0777,$0841,$072C,$000F,$0080,$0F70,$0D00
 paletteLR	dw	$0445,$0000,$0FFF,$0952,$00BB,$01DD,$0FF0,$0A1A
 	dw	$0C0C,$0FCB,$0A10,$0C30,$0E50,$0666,$0AAA,$0FFF
 
-*----------------------- Event / Window Manager
+*----------------------- Event Manager
 
-taskREC	ds	2	; wmWhat           +0
-taskMESSAGE	ds	4	; wmMessage        +2
-taskWHEN	ds	4	; wmWhen           +6
+taskREC	ds	2	; wmWhat           + 0
+taskMESSAGE	ds	4	; wmMessage        + 2
+taskWHEN	ds	4	; wmWhen           + 6
 taskWHERE	ds	4	; wmWhere          +10
 taskMODIFIERS ds	2	; wmModifiers      +14
-taskDATA	ds	4	; wmTaskData       +16
-	adrl	$001fffff	; wmTaskMask       +20
-	ds	4	; wmLastClickTick  +24
-	ds	2	; wmClickCount     +28
-	ds	4	; wmTaskData2      +30
-	ds	4	; wmTaskData3      +34
-	ds	4	; wmTaskData4      +38
-	ds	4	; wmLastClickPt    +42
 
 *----------------------- GS/OS
 

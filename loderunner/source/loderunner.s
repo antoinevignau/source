@@ -85,9 +85,6 @@ FALSE	=	0
 	ora	#$0100
 	sta	myID
 
-	tdc
-	sta	myDP
-	
 *--- Version du systeme
 
 	jsl	GSOS
@@ -187,8 +184,9 @@ noSOUND	_HideMenuBar
 
 	jsr	find4PLAY	; do we have a 4play?
 	jsr	initSOUND	; init sound tool set & friends
-	jsr	setNATIVE	; set native mode
-	
+	jsr	setNATIVE	; exit 8-bit
+	rep	#$30
+
 *---
 
 	jsr	loadLEVELS	; exit 8-bit
@@ -398,22 +396,20 @@ meQUIT1	PushWord myID
 	dw	$2029
 	adrl	proQUIT
 
-	brk	$bd
-
 *----------------------------------------
 * SET VINTAGE/NATIVE MODE
 *----------------------------------------
 
 	mx	%00
 
-setVINTAGE
+setVINTAGE	rep	#$30
 	jsr	setSTDPALETTE ; set the LR palette
 	lda	#1	; no speaker sound
 	ldx	#tblSPRITES
 	ldy	#$4444
 	bra	setMODE
 	
-setNATIVE
+setNATIVE	rep	#$30
 	jsr	setLRPALETTE ; set the LR palette
 	lda	#0	; no speaker sound
 	ldx	#tblSPRITES2
@@ -423,18 +419,19 @@ setMODE	stx	patchSPR1+1	; the sprites table
 	stx	patchSPR2+1
 	stx	patchSPR3+1
 	sty	fondFRAME	; the border color
-	sep	#$20
+	sep	#$30
 	sta	fgSOUND	; the sound mode
-	rep	#$20
 	rts
 
 *---
-	
+
 fondFRAME	dw	$4444	; HGR: $4444, SHR: $BBBB
 
 *----------------------------------------
 * SET STANDARD 320 PALETTE
 *----------------------------------------
+
+	mx	%00
 
 setSTDPALETTE
 	PushWord	#0
@@ -446,6 +443,8 @@ setSTDPALETTE
 * SET LODE RUNNER 320 PALETTE
 *----------------------------------------
 
+	mx	%00
+
 setLRPALETTE
 	PushWord	#0
 	PushLong	#paletteLR
@@ -455,6 +454,8 @@ setLRPALETTE
 *----------------------------------------
 * CHECK KEY PRESSED
 *----------------------------------------
+
+	mx	%00
 
 checkKEY	phx
 	phy
@@ -572,42 +573,162 @@ sizePtr	dw	32000
 * SOUND EFFECTS
 *----------------------------------------
 
+	mx	%00
+	
+initSOUND	sei
+	PushLong	#0
+	PushWord	#11
+	_GetVector
+	PullLong	sndVECTOR
+
+	PushWord	#11
+	PushLong	#sndINTERRUPT
+	_SetVector
+	cli
+	rts
+
+*--------- Remove the vector
+
+stopSOUND	sei
+	PushWord	#11
+	PushLong	sndVECTOR
+	_SetVector
+	cli
+	rts
+
+*---------
+
+sndVECTOR	ds	4
+
+*---------- Sound interrupt
+
 	mx	%11
+	
+sndINTERRUPT
+	ldal	fgSND
+	oral	noINTERRUPT
+	beq	sndINTERRUPT1
+	clc
+	rtl
+
+sndINTERRUPT1
+]lp	ldal	SOUNDCTL
+	bmi	]lp
+	and	#%1001_1111
+	stal	SOUNDCTL
+
+	lda	#1	; oscillo 2 w/interrupt
+	stal	noINTERRUPT
+	clc
+	rtl
+	
+*--- Data
+
+noINTERRUPT	dw	1
 
 *---------- Load & Prepare the sound intro effect
 
-playINTRO	rts
-	lda	fgSND
+	mx	%11
+
+playINTRO	lda	fgSND
 	beq	playINTRO1
 	rts
 
-playINTRO1	rep	#$30
+playINTRO1	rep	#$10
+	sei
+	
+	ldal	IRQ_VOLUME
+	ora	#%0110_0000
+	stal	SOUNDCTL
 
-	PushWord	#%01111111_11111111
-	_FFStopSound
+	lda	#0
+	stal	SOUNDADRL
+	stal	SOUNDADRH
 
-	PushWord	#$0e01
-	PushLong	#waveSTART
-	_FFStartSound
+	ldx	#0
+]lp	ldal	sndINTRO,x
+	stal	SOUNDDATA
+	inx
+	bpl	]lp
 
-]lp	PushWord	#0
-	PushWord	#$0e
-	_FFSoundDoneStatus
-	pla
-	bne	]lp
+*--- Config oscillos now
 
+	ldal	IRQ_VOLUME
+	and	#%0000_1111
+	stal	SOUNDCTL
+
+	ldy	#0	; frequency low
+	stal	SOUNDADRL
+	lda	#$d6
+	stal	SOUNDDATA
+	tya
+	ora	#$01
+	stal	SOUNDADRL
+	lda	#$d6
+	stal	SOUNDDATA
+
+	tya		; frequency high
+	ora	#$20
+	stal	SOUNDADRL
+	lda	#$00
+	stal	SOUNDDATA
+	tya
+	ora	#$21
+	stal	SOUNDADRL
+	lda	#00
+	stal	SOUNDDATA
+	
+	tya		; volume
+	ora	#$40
+	stal	SOUNDADRL
+	lda	#255
+	stal	SOUNDDATA
+	tya
+	ora	#$41
+	stal	SOUNDADRL
+	lda	#255
+	stal	SOUNDDATA
+
+	tya		; address
+	ora	#$80
+	stal	SOUNDADRL
+	lda	#0
+	stal	SOUNDDATA
+	tya
+	ora	#$81
+	stal	SOUNDADRL
+	lda	#0
+	stal	SOUNDDATA
+
+	tya		; size
+	ora	#$c0
+	stal	SOUNDADRL
+	lda	#%00111111
+	stal	SOUNDDATA
+	tya
+	ora	#$c1
+	stal	SOUNDADRL
+	lda	#%00111111
+	stal	SOUNDDATA
+
+	tya		; start the first two oscillos
+	ora	#$a0
+	stal	SOUNDADRL
+	lda	#%0000_1010	; interrupt here
+	stal	SOUNDDATA
+	tya
+	ora	#$a1
+	stal	SOUNDADRL
+	lda	#%0001_1010
+	stal	SOUNDDATA
+
+	stz	noINTERRUPT	; play please
+	cli
+	
+]lp	lda	noINTERRUPT	; wait for the end of the sound
+	beq	]lp
 	sep	#$30
 	rts
-
-*---
-
-waveSTART	adrl	sndINTRO	; waveStart
-	dw	217	; waveSize (in pages)
-	dw	209	; freqOffset
-	dw	$f000	; docBuffer
-	dw	$0004	; bufferSize (4096 octets)
-	ds	4	; nextWavePtr
-	dw	255	; volSetting
 
 *---------- Load & Prepare the sound effects
 
@@ -706,59 +827,17 @@ moveSOUND2	cli
 	sep	#$10
 	rts
 
-*---------- Start the sound tool set
-
-	mx	%00
-	
-initSOUND	lda	fgSND
-	beq	initSOUND1
-	rts
-
-initSOUND1	PushWord	#8
-	PushWord	#0
-	_LoadOneTool
-	bcc	initSOUND2
-	
-initSOUND9	inc	fgSND
-	rts
-
-initSOUND2	tdc
-	clc
-	adc	#256
-	pha
-	_SoundStartUp
-	bcs	initSOUND9
-	rts
-
-*---------- Stop the Sound Tool Set
-
-	mx	%00
-
-stopSOUND	lda	fgSND
-	beq	stopSOUND1
-	rts
-
-stopSOUND1	PushWord	#%01111111_11111111
-	_FFStopSound
-	_SoundShutDown
-	
-	PushWord	#8
-	_UnloadOneTool
-
-	stz	fgSND
-	rts
-
 *---------- 
 
 	mx	%11
 
 playSOUND	sta	saveA
+	stx	saveX
+	sty	saveY
 
 	lda	fgSOUND	; 8-bit sound?
 	ora	fgSND
 	bne	playSOUND9
-	
-	sty	saveY
 
 	ldal	IRQ_VOLUME
 	and	#%0000_1111
@@ -767,6 +846,13 @@ playSOUND	sta	saveA
 	lda	saveA	; reprend l'instrument
 	cmp	#2
 	bcc	playSOUND9
+	cmp	#7	; tombe ?
+	bne	playSOUND1
+	cmp	oldA	; déjà tombe ?
+	beq	playSOUND9	; oui, saute
+	
+playSOUND1	sta	oldA
+
 	asl
 	tay		; frequency low
 	ora	#$a0
@@ -779,15 +865,27 @@ playSOUND	sta	saveA
 	lda	#%0001_0010
 	stal	SOUNDDATA
 
-	ldy	saveY
-
-playSOUND9	lda	saveA
+playSOUND9	ldy	saveY
+	ldx	saveX
+	lda	saveA
 	rts
 
 	mx	%00
 
 *--- Data
 
+* isndINTRO	=	1	; ok
+* isndBARRE	=	2	; ok
+* isndCREUSE	=	3	; ok
+* isndESCALIER =	4	; ok
+* isndMARCHE	=	5	; ok
+* isndNOMORECHEST =	6	; ok
+* isndTOMBE	=	7	; ok - à refaire
+* isndTRESOR	=	8	; ok
+* isndTROU	=	9	; ok
+* isndYOUWIN	=	10	; ok
+
+*                        0  1  2  3  4  5  6  7  8  9 10
 sndADDRESS	hex	00,00,68,50,44,48,80,c0,b0,70,00
 
 sndSIZE	dfb	%00000000
@@ -797,7 +895,7 @@ sndSIZE	dfb	%00000000
 	dfb	%00010010	; 4
 	dfb	%00011011	; 5
 	dfb	%00110110	; 6
-	dfb	%00110110	; 7
+	dfb	%00011011	; 7 was 110110 now 2K
 	dfb	%00100100	; 8
 	dfb	%00100100	; 9
 	dfb	%00111111	; 10
@@ -816,6 +914,7 @@ sndVOLUME	dfb	0
 
 *---
 
+oldA	dw	2
 saveA	ds	2
 saveX	ds	2
 saveY	ds	2
@@ -841,7 +940,6 @@ errSTR3	str	'Continue'
 
 mainID	ds	2	; app ID
 myID	ds	2	; user ID
-myDP	ds	2
 
 SStopREC	ds	4
 
@@ -952,19 +1050,5 @@ logo
 logo_fin
 	put	LR.Sprites.s	; 8-bits sprites
 	put	LR.Sprites2.s	; 16-col sprites
-		
-*---
 
-	asc	0d
-	asc	"----------------"0d
-	asc	"                "0d
-	asc	"  LODE  RUNNER  "0d
-	asc	"                "0d
-	asc	" Antoine Vignau "0d
-	asc	"Olivier  Zardini"0d
-	asc	"                "0d
-	asc	"  Paques  2024  "0d
-	asc	"                "0d
-	asc	"----------------"0d
-	
-	
+*---

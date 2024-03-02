@@ -299,7 +299,11 @@ L61F6
 	beq	L6212
 	cmp	#chrCTRLO	; ctrl-O - open data file
 	beq	L6213
-	
+	cmp	#chrCTRLV	; ctrl-V - vintage mode
+	beq	L2VINTAGE
+	cmp	#chrCTRLN	; ctrl-N - native mode
+	beq	L2NATIVE
+
 L6201	LDX	#$00
 	STX	intLEVEL
 	INX
@@ -313,7 +317,11 @@ L6211	JMP	enterEDITOR	; Jump to the Editor
 L6212	jmp	meQUIT	; bye for now
 L6213	jsr	doLOAD	; load a game file
 	bra	L6201
-	
+L2VINTAGE	jsr	setVINTAGE
+	bra	L6201
+L2NATIVE	jsr	setNATIVE
+	bra	L6201
+
 *----------
 
 L6214	HEX	000306090C0F121518	; 0..3..6..9..12..15..18..21..24 (index in 6CA7)
@@ -910,13 +918,13 @@ L65A4	CMP	#chrK	; move down
 	BCS	L65C2
 	RTS
 
-L65AE	CMP	#chrU	; dig left
+L65AE	CMP	theDIGLEFT	; dig left
 	BNE	L65B8
 	JSR	checkDIGLEFT
 	BCS	L65C2
 	RTS
 
-L65B8	CMP	#chrO	; dig right
+L65B8	CMP	theDIGRIGHT	; dig right
 	BNE	L65C2
 	JSR	checkDIGRIGHT
 	BCS	L65C2
@@ -1745,6 +1753,16 @@ doSETJOYPAD
 nojoypad	JMP	getPLAYERINPUT
 
 *-------------------------------
+* 82 - CTRL-B - FLIPS BUTTONS
+*-------------------------------
+
+doFLIPB	LDA	theDIGLEFT
+	LDX	theDIGRIGHT
+	STA	theDIGRIGHT
+	STX	theDIGLEFT
+	JMP	getPLAYERINPUT
+
+*-------------------------------
 * 98 - CTRL-X - FLIPS X-AXIS
 *-------------------------------
 
@@ -1790,10 +1808,10 @@ L6ACD	JMP	getPLAYERINPUT
 getJOYPADKEY
 	jsr	read4PLAY	; button 0: dig left
 	bpl	getJOYK1	; button 1: dig right
-	ldx	#chrU
+	ldx	theDIGLEFT
 	bne	getJOYK2
 getJOYK1	bvc	getJOYK3
-	ldx	#chrO
+	ldx	theDIGRIGHT
 getJOYK2	stx	theKEY1
 	stx	theKEY2
 	rts
@@ -1807,11 +1825,11 @@ getJOYK3	jsr	readJOYPAD	; set X/Y
 getJOYSTICKKEY
 	LDAL	BUTN1
 	BPL	L6AD9
-	LDA	#chrU	; dig left
+	LDA	theDIGLEFT	; dig left
 	BNE	L6AE0
 L6AD9	LDAL	BUTN0
 	BPL	L6AE5
-	LDA	#chrO	; dig right
+	LDA	theDIGRIGHT	; dig right
 L6AE0	STA	theKEY1
 	STA	theKEY2
 	RTS
@@ -1871,10 +1889,10 @@ L6B56	STA	theKEY1
 	RTS
 
 *----------------------------------
-* KEYS AND ASSOCIATED JUMPS + -
+* KEYS AND ASSOCIATED JUMPS
 *----------------------------------
 
-tblKEY	HEX	9E,80,9B,92,81,93,8A,8B,90,88,95,98,99,8D,00
+tblKEY	HEX	9E,80,9B,92,81,93,8A,8B,90,88,95,98,99,82,8D,00
 
 tblKEYADR	DA	doNEXTLEVEL-1	; 9E - CTRL-^
 	DA	doEXTRAMAN-1	; 80 - CTRL-@
@@ -1889,12 +1907,16 @@ tblKEYADR	DA	doNEXTLEVEL-1	; 9E - CTRL-^
 	DA	doSLOWDOWN-1	; 95 - SLOW DOWN
 	DA	doFLIPX-1		; 98 - CTRL-X
 	DA	doFLIPY-1		; 99 - CTRL-Y
+	da	doFLIPB-1		; 82 - CTRL-B
 	DA	displayHIGHSCORES-1	; 8D - RETURN
 
 joyXMIN	DB	minJOY	; x-low
 joyXMAX	DB	ctrJOY	; x-high
 joyYMIN	DB	minJOY	; y-low
 joyYMAX	DB	ctrJOY	; y-high
+
+theDIGLEFT	dfb	chrU
+theDIGRIGHT	dfb	chrO
 
 *-----------------------------------
 * CALC SPRITE X/Y

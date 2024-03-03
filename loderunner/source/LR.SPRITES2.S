@@ -9,16 +9,16 @@
 *--- Table of NEW sprites
 
 tblSPRITES2
-	da	spr200
-	da	spr201
-	da	spr202
-	da	spr203
-	da	spr204
-	da	spr205
-	da	spr206
-	da	spr207
-	da	spr208
-	da	spr209
+	da	spr200	; 0
+	da	spr201	; 1
+	da	spr202	; 2
+	da	spr203	; 3
+	da	spr204	; 4
+	da	spr205	; 5
+	da	spr206	; 6
+	da	spr207	; 7
+	da	spr208	; 8
+	da	spr209	; 9
 	da	spr20A
 	da	spr20B
 	da	spr20C

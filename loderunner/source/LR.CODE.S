@@ -4230,7 +4230,7 @@ tblEDITADD	DA	editPLAY-1	; Play level
 	DA	editINIT-1	; Initialize
 	DA	editCLEARSCORE-1 ; Clear Score file
 	da	editOPEN-1	; Open levels
-	da	editRESTART-1 ; Restart gale
+	da	editRESTART-1 ; Restart game
 	da	editBYE-1	; Quit game
 
 *-------------------------------

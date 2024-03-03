@@ -3,7 +3,7 @@
 * (c) 1983, Broderbund Software
 * (s) 2014, Brutal Deluxe Software
 *
-
+* A2 MSX
 * 0 vide
 * 1 mur
 * 2 mur dur
@@ -14,6 +14,18 @@
 * 7 trésor
 * 8 ennemi
 * 9 héros
+
+* MSX
+* 0 vide
+* 1 trappe
+* 2 mur
+* 3 mur dur
+* 4 liane
+* 5 echelle
+* 6 echelle invisible
+* 7 tresor
+* 8 ennemi
+* 9 heros
 
 * Sprite quand      heros ennemi tombe dans un trou :
 * - venant de gauche : 20 53 (35h)

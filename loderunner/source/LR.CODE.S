@@ -411,14 +411,18 @@ L629C	STA	(ptrBOARD),Y
 	BCC	L6269
 
 	JSR	decodeLEVEL
-	BCC	L62C3
-	LDA	intLEVEL
+	BCC	L62C3	; no error found
+	LDA	intLEVEL	; error found
 	BEQ	L62C4
-	LDX	#$00
-	STX	intLEVEL
+	
+	dec	theLEVEL	; niveau - 1 parce qu'il est déjà augmenté
+	jsr	checkHIGHSCORE	; allow the player to save his high score
+
+	LDX	#$00	; say error found
+	STX	intLEVEL	; retry
 	INC	foeINTIDX
 	DEX		; mode game
-	JMP	prepareLEVEL
+	JMP	prepareLEVEL ; loop
 L62C3	RTS
 
 L62C4	JMP	showTITLEPAGE
@@ -621,11 +625,7 @@ L639B	LDA	#$01	; 01 master disk
 	LDA	#$FF	; FF means data disk
 L63A4	RTS
 
-*-----------------------------------
-
-*callRWTS	JMP	$bd00	; LoGo - ($0036) to be replaced with JMP $BD00
-
-LB7F4	ds	1	; The RWTS command
+*-----------
 
 L63A8	ASC	"LODE RUNNER"
 
@@ -646,8 +646,10 @@ L63B7	LDA	tblBOARDALLL,Y	; $0800
 	LDY	#lvlWIDTH-1
 	STY	theX
 L63CC	LDA	(ptrBOARD),Y
+
 	LDX	fgLVLMODE	; mode edit?
 	BEQ	L63EE	; yes
+
 	CMP	#sprLADDERI
 	BNE	L63F0
 	LDX	idxLADDERI
@@ -692,8 +694,8 @@ L63F8	CMP	#sprFOE
 	LDA	#sprFOE	; output a foe
 	BNE	L6450
 
-L6426	BPL	L63B7
-L6428	BPL	L63CC
+L6426	BPL	L63B7	; move up
+L6428	BPL	L63CC	; move up
 
 L642A	CMP	#sprHERO	; if the hero
 	BNE	L644A
@@ -729,7 +731,7 @@ L6450	JSR	coutHGR2	; put the char in background
 	BEQ	L6469	; yes
 	LDA	boardX	; we met the hero
 	BPL	L648B	; continue to the animation
-	SEC		; not ok
+	SEC		; not ok, no hero met, exit!!
 	RTS
 
 *--- Level is decoded for the edit mode
@@ -1695,7 +1697,7 @@ L6A67	JSR	printMEN
 *-------------------------------
 
 doPAUSE	JSR	checkKEY	; waitKEYDOWN
-	CMP	#$9B
+	CMP	#chrESC
 	BNE	doPAUSE
 	JMP	getPLAYERINPUT
 
@@ -4370,70 +4372,6 @@ editINIT	JSR	printSTRING
 	jsr	doSAVE	; save the file
 	bcs	L7E72
 	
-*	NOP		; NOP
-*	NOP
-*	NOP
-*	NOP
-*	NOP
-*	NOP
-*	NOP
-*	NOP
-*	NOP
-*	NOP
-*	NOP
-*	NOP
-*	NOP
-*	NOP
-*	NOP
-*	LDA	intLEVEL
-*	PHA
-*	LDA	#$04	; Init command
-*	JSR	diskLEVEL
-*
-*	LDA	#<boot	; Save T0/S0
-*	STA	LB7F0
-*	LDA	#>boot
-*	STA	LB7F0+1
-*	LDA	#$00
-*	STA	LB7ED
-*	STA	LB7EC
-*	LDA	#$02
-*	STA	LB7F4
-*	JSR	diskRWTS
-*	LDA	#$E0
-*	STA	intLEVEL
-*	LDA	#$01
-*	JSR	diskLEVEL
-*	LDY	#$37
-*L7E33	LDA	L8251,Y
-*	STA	levelDISK,Y
-*	DEY
-*	BPL	L7E33
-*	LDA	#$02
-*	JSR	diskLEVEL
-*	LDA	#$EF
-*	STA	intLEVEL
-*	LDA	#$01
-*	JSR	diskLEVEL
-*	LDY	#$20
-*L7E4C	LDA	L8289,Y
-*	STA	levelDISK+$B,Y
-*	DEY
-*	BPL	L7E4C
-*	LDA	#$02
-*	JSR	diskLEVEL
-*	LDA	#$01
-*	JSR	readSCORE
-*	LDY	#$0A
-*L7E61	LDA	L63A8,Y
-*	STA	scorebuf+$F4,Y
-*	DEY
-*	BPL	L7E61
-*	LDA	#$02
-*	JSR	readSCORE
-*	PLA
-*	STA	intLEVEL
-
 L7E72	JMP	editMAIN	; was editLOOP
 
 *-------------------------------
@@ -4708,7 +4646,7 @@ editSAVECHANGES
 	JSR	doBEEP
 *	STA	TXTPAGE2
 L8062	LDA	#$00
-	JSR	L85F3
+	JSR	blinkCURSOR
 *	STA	KBDSTROBE
 	CMP	#chrN
 	BEQ	L8075
@@ -4766,7 +4704,7 @@ L80D8	JSR	printSTRING
 	JSR	doBEEP
 *	STA	TXTPAGE2
 	LDA	#$00
-	JSR	L85F3
+	JSR	blinkCURSOR
 *	STA	KBDSTROBE
 *	STA	TXTPAGE1
 	lda	ptrSCREEN+2
@@ -4934,7 +4872,7 @@ editWAITKEY	LDA	#sprEMPTY
 	JSR	blinkSPRITE
 *	STA	KBDSTROBE
 	and	#maskUPPER	; lowercase support
-	CMP	#$9B	; escape
+	CMP	#chrESC	; escape
 	BNE	L824C
 	JMP	editLOOP
 
@@ -5259,7 +5197,7 @@ L8536	LDX	scoreoffset,Y	; permet la saisie des initiales
 L857F	LDX	L824D
 L8582	LDA	scorebuf,X
 	JSR	filterCHAR
-	JSR	L85F3
+	JSR	blinkCURSOR
 *	STA	KBDSTROBE
 	CMP	#chrRET
 	BEQ	L85E7
@@ -5309,7 +5247,12 @@ L85E7	LDA	#>oldHGR1
 	JSR	readSCORE
 	JMP	L618E
 
-L85F3	STA	bsDATA
+*-----------------------------------
+* BLINK CURSOR
+*-----------------------------------
+
+blinkCURSOR
+	STA	bsDATA
 L85F6	LDA	#$68
 	STA	counter
 	LDA	bsDATA
@@ -5338,6 +5281,7 @@ L8628	PHA
 	LDA	bsDATA
 	JSR	coutHGR1	; not 2
 	PLA
+	and	#maskUPPER	; lowercase support
 	RTS
 
 *-----------------------------------

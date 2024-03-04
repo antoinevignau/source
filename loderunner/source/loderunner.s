@@ -473,6 +473,10 @@ next4PLAY	txa
 found4PLAY	txa		; set 4PLAY slot
 	ora	#$80	; 10=>90, 20=>A0, 30=>B0...
 	sta	read4PLAY+1
+	
+	lda	#chrP
+	sta	fgINPUT
+	
 	rep	#$30
 	rts
 

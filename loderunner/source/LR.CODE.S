@@ -5562,6 +5562,9 @@ L879A	DEY		; to compensate
 *-----------------------------------
 
 checkJOYSTICK
+	lda	fgINPUT	; do we already have a device?
+	bne	L87B9	; ie. a 4play joypad
+	
 	LDAL	PTRIG
 	LDX	#$10
 L87A7	LDAL	PADDL0
@@ -5571,7 +5574,7 @@ L87A7	LDAL	PADDL0
 	BNE	L87A7
 	DEX
 	BNE	L87A7
-	LDA	#chrK
+	LDA	#chrK	; no joystick means keyboard
 	STA	fgINPUT
 L87B9	RTS
 

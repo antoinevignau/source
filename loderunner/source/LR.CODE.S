@@ -225,8 +225,8 @@ L6178	JSR	playMELODY
 
 *	JSR	waitKEYUP
 L618E
-	LDX	#32	; valeurs d'attente / 255 avant
-	LDY	#32
+	LDX	#16	; valeurs d'attente / 255 avant
+	LDY	#16
 *	LDA	#$03	; 3
 *	STA	theY
 
@@ -487,12 +487,15 @@ diskLEVEL	tax
 
 	rep	#$30	; load a level
 	PushLong	#levelDISK
-	pea	^ptrLEVELS
+*	pea	^ptrLEVELS
+	lda	bankLEVELS+2
+	pha
 	lda	intLEVEL
 	and	#$ff
 	xba
 	clc
-	adc	#ptrLEVELS
+*	adc	#ptrLEVELS
+	adc	bankLEVELS
 	pha
 	PushLong	#256
 	_BlockMove
@@ -503,12 +506,15 @@ diskLEVEL	tax
 	rts
 
 dlLOAD	rep	#$30	; load a level
-	pea	^ptrLEVELS
+*	pea	^ptrLEVELS
+	lda	bankLEVELS+2
+	pha
 	lda	intLEVEL
 	and	#$ff
 	xba
 	clc
-	adc	#ptrLEVELS
+*	adc	#ptrLEVELS
+	adc	bankLEVELS
 	pha
 	PushLong	#levelDISK
 	PushLong	#256
@@ -570,7 +576,7 @@ readSCORE	cmp	#1	; load scores file from disk
 	
 	ldx	#0	; copy score file
 ]lp	lda	scorebuf,x
-	stal	ptrSCORES,x
+scorePATCH1	stal	$bdbd,x
 	inx
 	bne	]lp
 
@@ -578,10 +584,10 @@ readSCORE	cmp	#1	; load scores file from disk
 	bra	L6381
 
 rsLOAD	ldx	#0	; copy score file
-]lp	ldal	ptrSCORES,x	; from levels in RAM
+scorePATCH2	ldal	$bdbd,x	; from levels in RAM
 	sta	scorebuf,x
 	inx
-	bne	]lp
+	bne	scorePATCH2
 	bra	L6381
 
 *	STA	LB7F4	; command
@@ -756,7 +762,11 @@ L6469
 *	BCC	L6478
 
 	rep	#$30
-	PushLong	#HGR2
+*	PushLong	#HGR2
+	lda	bankHGR2+2
+	pha
+	lda	#oldHGR2
+	pha
 	PushLong	ptrSCREEN
 	PushLong	#hgrTOMOVE
 	_BlockMove
@@ -3833,9 +3843,13 @@ drawINFOBAR
 	ldy	ptrSCREEN
 	bra	dib2
 
-L79DD	lda	#^HGR2
-	ldx	#>HGR2
-	ldy	#<HGR2
+L79DD
+*	lda	#^HGR2
+*	ldx	#>HGR2
+*	ldy	#<HGR2
+	lda	bankHGR2+2
+	ldx	#>oldHGR2
+	ldy	#<oldHGR2
 
 dib2	sta	ptrDATA+2
 	stx	ptrDATA+1
@@ -3911,7 +3925,9 @@ setHGRPOINTER
 	lda	ptrSCREEN+2	; HGR1 = ptrSCREEN+2
 	sta	ptrHGR1+2
 	rts
-shp2	lda	#^HGR2	; HGR2 = ^HGR2
+shp2
+*	lda	#^HGR2	; HGR2 = ^HGR2
+	lda	bankHGR2+2
 	sta	ptrHGR1+2
 	RTS
 
@@ -3931,7 +3947,8 @@ setHGRPOINTERS
 
 	lda	ptrSCREEN+2	; bank
 	sta	ptrHGR1+2
-	lda	#^HGR2
+*	lda	#^HGR2
+	lda	bankHGR2+2
 	sta	ptrHGR2+2
 	RTS
 
@@ -3950,9 +3967,10 @@ clearHGR1
 *-------------------------------
 
 clearHGR2
-	lda	#^HGR2
-	ldx	#>HGR2
-	ldy	#<HGR2
+*	lda	#^HGR2
+	lda	bankHGR2+2
+	ldx	#>oldHGR2
+	ldy	#<oldHGR2
 
 *--- clear now
 
@@ -4325,20 +4343,26 @@ editMOVE	JSR	printSTRING
 
 	rep	#$30
 
-	pea	^ptrLEVELS	; set source level
+*	pea	^ptrLEVELS	; set source level
+	lda	bankLEVELS+2
+	pha
 	lda	L824F
 	and	#$ff
 	xba
 	clc
-	adc	#ptrLEVELS
+*	adc	#ptrLEVELS
+	adc	bankLEVELS
 	pha
 
-	pea	^ptrLEVELS	; set destination level
+*	pea	^ptrLEVELS	; set destination level
+	lda	bankLEVELS+2
+	pha
 	lda	L8250
 	and	#$ff
 	xba
 	clc
-	adc	#ptrLEVELS
+*	adc	#ptrLEVELS
+	adc	bankLEVELS
 	pha
 	
 	PushLong	#256	; set length

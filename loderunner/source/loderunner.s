@@ -34,13 +34,6 @@
 	
 *----------------------------------- Constantes
 
-	ext	ptrLEVELS
-	ext	ptrSCORES
-	ext	HGR2
-
-	ext	sndBANK1
-	ext	sndINTRO
-
 *-------------- Softswitches
 
 GSOS	=	$e100a8
@@ -117,7 +110,6 @@ okSHADOW	pha
 	sta	fgSND
 
 noSOUND	_HideMenuBar
-	_InitCursor
 	_HideCursor
 
 	PushWord	#0
@@ -125,6 +117,129 @@ noSOUND	_HideMenuBar
 	PushWord	#0
 	_FlushEvents
 	pla
+
+	PushLong	#0
+	PushWord	#5	; SetDeskPat
+	PushWord	#$4000
+	PushWord	#$0000
+	_Desktop
+	pla
+	pla
+
+*----------------------------------- Show Tozai logo
+
+	jsr	fadeOUT
+	jsr	unpackTOZAI
+
+*-----------------------------------
+
+	PushLong	#0
+	PushLong	#$8fffff
+	PushWord	myID
+	PushWord	#%11000000_00000000
+	PushLong	#0
+	_NewHandle
+	_DisposeHandle
+	_CompactMem
+
+*--- 64K pour le fond
+
+	jsr	make64KB
+	bcc	okMEM1
+
+koMEM	pha
+	PushLong #memSTR1
+	PushLong #errSTR2
+	PushLong #errSTR1
+	PushLong #errSTR2
+	_TLTextMountVolume
+	pla
+	brl   meQUIT1
+
+okMEM1	sty	bankHGR2
+	stx	bankHGR2+2
+
+*--- 64K pour les niveaux
+
+	jsr	make64KB
+	bcs	koMEM
+	sty	bankLEVELS
+	stx	bankLEVELS+2
+
+*--- 2x64K pour les sons
+
+	jsr	make64KB
+	bcs	koMEM
+	sty	bankINTRO
+	stx	bankINTRO+2
+
+	jsr	make64KB
+	bcs	koMEM
+	sty	bankSOUND
+	stx	bankSOUND+2	
+
+*----------------------------------- The patch area
+
+	lda	bankLEVELS
+	sta	lvlPATCH1+1
+	sta	lvlPATCH2+1
+	lda	bankLEVELS+1
+	sta	lvlPATCH1+2
+	sta	lvlPATCH2+2
+
+	sta	scorePATCH1+2
+	sta	scorePATCH2+2
+	lda	bankLEVELS
+	clc
+	adc	#38400
+	sta	scorePATCH1+1
+	sta	scorePATCH2+1
+
+*---
+
+	lda	bankINTRO
+	sta	playINTRO2+1
+	lda	bankINTRO+1
+	sta	playINTRO2+2
+	
+	lda	bankSOUND
+	sta	moveSOUND2+1
+	lda	bankSOUND+1
+	sta	moveSOUND2+2
+
+*---
+
+	lda	bankHGR2
+	sta	Debut
+	lda	bankHGR2+2
+	sta	Debut+2
+
+	ldy	#0	; on efface HGR2
+	tya
+]lp	sta	[Debut],y
+	iny
+	iny
+	bne	]lp
+
+*----------------------------------- Load file now
+
+	lda	#pINTRO
+	ldx	bankINTRO+2
+	ldy	bankINTRO
+	jsr	loadFILE
+	bcc	okLOAD1
+	lda	#1
+	sta	fgSND
+
+okLOAD1	lda	#pSOUNDS
+	ldx	bankSOUND+2
+	ldy	bankSOUND
+	jsr	loadFILE
+	bcc	okLOAD2
+	lda	#1
+	sta	fgSND
+
+okLOAD2
 
 *----------------------------------- Exit point
 
@@ -136,12 +251,29 @@ noSOUND	_HideMenuBar
 
 	jsr	find4PLAY	; do we have a 4play?
 	jsr	initSOUND	; init sound tool set & friends
+
+*--- Set LEVELS info
+
+	lda	#pLEVELS	; all files are linked to levels now
+	sta	proOPEN+4
+	ldy	bankLEVELS
+	sty	proREAD+4	; where to put at the end
+	sty	proWRITE+4
+	ldx	bankLEVELS+2
+	stx	proREAD+6
+	stx	proWRITE+6
+
+	lda	#38400+256	; length
+	sta	proREAD+8
+	stz	proREAD+10
+	sta	proWRITE+8
+	stz	proWRITE+10
+
+	jsr	fadeOUT
 	jsr	setNATIVE	; exit 8-bit
-	rep	#$30
+	jsr	loadLEVELS	; load it & exit 8-bit
 
-*---
-
-	jsr	loadLEVELS	; exit 8-bit
+*--- Enter the game world
 
 	mx	%11
 
@@ -188,7 +320,7 @@ doLOAD1	jsr	copyPATH
 loadLEVELS	clc
 	xce
 	rep	#$30
-	
+
 	jsl	GSOS
 	dw	$2010
 	adrl	proOPEN
@@ -219,16 +351,16 @@ loadLEVELS9	rep	#$30
 
 	ldx	#0	; clear all levels
 	txa
-]lp	stal	ptrLEVELS,x
+lvlPATCH1	stal	$bdbd,x	; **patched**
 	inx
 	inx
 	cpx	#38400	; 150 x 256
-	bcc	]lp
+	bcc	lvlPATCH1
 	
 	ldx	#256-2
 ]lp	lda	scoreEMPTY,x
 	sta	scorebuf,x
-	stal	ptrSCORES,x
+lvlPATCH2	stal	$bdbd,x	; **patched**
 	dex
 	dex
 	bpl	]lp
@@ -377,7 +509,7 @@ setMODE	stx	patchSPR1+1	; the sprites table
 fondFRAME	dw	$4444	; HGR: $4444, SHR: $BBBB
 
 *----------------------------------------
-* SET STANDARD 320 PALETTE
+* SET LODE RUNNER / STANDARD 320 PALETTE
 *----------------------------------------
 
 	mx	%00
@@ -385,19 +517,15 @@ fondFRAME	dw	$4444	; HGR: $4444, SHR: $BBBB
 setSTDPALETTE
 	PushWord	#0
 	PushLong	#palette320
-	_SetColorTable
-	rts
-
-*----------------------------------------
-* SET LODE RUNNER 320 PALETTE
-*----------------------------------------
-
-	mx	%00
+	bra	setPALETTE
 
 setLRPALETTE
 	PushWord	#0
 	PushLong	#paletteLR
-	_SetColorTable
+
+setPALETTE	_SetColorTable
+	PushWord	#0
+	_SetAllSCBs
 	rts
 
 *----------------------------------------
@@ -491,6 +619,28 @@ read4PLAY	ldal	$e0C080	; direct "fast" read
 	mx	%00
 
 *----------------------------------------
+* UNPACK TOZAI
+*----------------------------------------
+
+unpackTOZAI	lda	ptrSCREEN
+	sta	startHandle
+	lda	ptrSCREEN+2
+	sta	startHandle+2
+	
+	lda	#32768
+	sta	sizePtr
+
+	PushWord	#0
+	PushLong	#tozai
+	lda	#tozai_fin-tozai
+	pha
+	PushLong	#startHandle
+	PushLong	#sizePtr
+	_UnPackBytes
+	pla
+	rts
+
+*----------------------------------------
 * UNPACK LOGO
 *----------------------------------------
 
@@ -522,13 +672,100 @@ unpackLOGO	rep	#$30
 startHandle	adrl	ptr012000
 sizePtr	dw	32000
 
+	mx	%00
+
+*----------------------------------------
+* FADEOUT
+*----------------------------------------
+
+fadeOUT	lda	#$9e00
+	sta	Debut
+	lda	#$00e1
+	sta	Debut+2
+
+	ldx	#15
+]lp	ldy	#512-2
+fadeOUT2	lda	[Debut],y
+	and	#$000f
+	beq	fadeOUT3
+	lda	[Debut],y
+	sec
+	sbc	#$0001
+	sta	[Debut],y
+fadeOUT3	lda	[Debut],y
+	and	#$00f0
+	beq	fadeOUT4
+	lda	[Debut],y
+	sec
+	sbc	#$0010
+	sta	[Debut],y
+fadeOUT4	lda	[Debut],y
+	and	#$0f00
+	beq	fadeOUT5
+	lda	[Debut],y
+	sec
+	sbc	#$0100
+	sta	[Debut],y
+
+fadeOUT5	dey
+	dey
+	bpl	fadeOUT2
+	jsr	nextVBL
+	dex
+	bpl	]lp
+	
+	PushWord	#0
+	_ClearScreen
+	rts
+
+*--------------------------------------
+
+nextVBL	ldal	VERTCNT
+	and	#$7f
+	cmp	#75
+	blt	nextVBL
+	cmp	#100
+	bge	nextVBL
+waitVBL	ldal	RDVBLBAR-1
+	bpl	waitVBL
+	rts
+
+*----------------------------------------
+* MEMOIRE
+*----------------------------------------
+
+make64KB	pha
+	pha
+	PushLong #$010000
+	PushWord myID
+	PushWord #%11000000_00011100
+	PushLong #0
+	_NewHandle
+	phd
+	tsc
+	tcd
+	lda   [3]
+	tax		; low in X
+	ldy   #2
+	lda   [3],y
+	txy		; low in Y
+	tax		; high in X
+	pld
+	pla		; we do not keep track of the handle
+	pla
+	rts
+
 *----------------------------------------
 * SOUND EFFECTS
 *----------------------------------------
 
 	mx	%00
 	
-initSOUND	sei
+initSOUND	lda	fgSND
+	beq	initSOUND1
+	rts
+
+initSOUND1	sei
 	PushLong	#0
 	PushWord	#11
 	_GetVector
@@ -542,7 +779,11 @@ initSOUND	sei
 
 *--------- Remove the vector
 
-stopSOUND	sei
+stopSOUND	lda	fgSND
+	beq	stopSOUND1
+	rts
+
+stopSOUND1	sei
 	PushWord	#11
 	PushLong	sndVECTOR
 	_SetVector
@@ -599,10 +840,10 @@ playINTRO1	rep	#$10
 	stal	SOUNDADRH
 
 	ldx	#0
-]lp	ldal	sndINTRO,x
+playINTRO2	ldal	$bdbd,x
 	stal	SOUNDDATA
 	inx
-	bpl	]lp
+	bpl	playINTRO2
 
 *--- Config oscillos now
 
@@ -611,6 +852,7 @@ playINTRO1	rep	#$10
 	stal	SOUNDCTL
 
 	ldy	#0	; frequency low
+	tya
 	stal	SOUNDADRL
 	lda	#$d6
 	stal	SOUNDDATA
@@ -703,10 +945,10 @@ moveSOUND1	rep	#$10
 	stal	SOUNDADRH
 
 	ldx	#0
-]lp	ldal	sndBANK1,x
+moveSOUND2	ldal	$bdbd,x	; **patched**
 	stal	SOUNDDATA
 	inx
-	bne	]lp
+	bne	moveSOUND2
 
 *--- Config oscillos now
 
@@ -773,10 +1015,10 @@ moveSOUND1	rep	#$10
 
 	inx
 	cpx	#10+1
-	bcs	moveSOUND2
+	bcs	moveSOUND3
 	brl	]lp
 
-moveSOUND2	cli
+moveSOUND3	cli
 	sep	#$10
 	rts
 
@@ -829,14 +1071,14 @@ playSOUND9	ldy	saveY
 
 * isndINTRO	=	1	; ok
 * isndBARRE	=	2	; ok
-* isndCREUSE	=	3	; ok
+* isndCREUSE =	3	; ok
 * isndESCALIER =	4	; ok
-* isndMARCHE	=	5	; ok
+* isndMARCHE =	5	; ok
 * isndNOMORECHEST =	6	; ok
 * isndTOMBE	=	7	; ok - à refaire
-* isndTRESOR	=	8	; ok
+* isndTRESOR =	8	; ok
 * isndTROU	=	9	; ok
-* isndYOUWIN	=	10	; ok
+* isndYOUWIN =	10	; ok
 
 *                        0  1  2  3  4  5  6  7  8  9 10
 sndADDRESS	hex	00,00,68,50,44,48,80,c0,b0,70,00
@@ -871,7 +1113,45 @@ oldA	dw	2
 saveA	ds	2
 saveX	ds	2
 saveY	ds	2
+
+*----------------------------------------
+* GS/OS
+*----------------------------------------
+
+loadFILE	sta	proOPEN+4	; filename
+	sty	proREAD+4	; where to put at the end
+	stx	proREAD+6
+
+loadFILE1	jsl	GSOS
+	dw	$2010
+	adrl	proOPEN
+	bcs	loadERR
 	
+	lda	proOPEN+2
+	sta	proREAD+2
+	sta	proCLOSE+2
+	
+	lda	proEOF
+	sta	proREAD+8
+	lda	proEOF+2
+	sta	proREAD+10
+	
+	jsl	GSOS
+	dw	$2012
+	adrl	proREAD
+
+	jsl	GSOS
+	dw	$2014
+	adrl	proCLOSE
+	clc
+	rts
+	
+loadERR	jsl	GSOS
+	dw	$2014
+	adrl	proCLOSE
+	sec
+	rts
+
 *----------------------------------------
 * DATA
 *----------------------------------------
@@ -881,6 +1161,8 @@ fgSND	ds	2
 *----------------------- Tool locator
 
 tolSTR1	str	'Error while loading tools'
+memSTR1	str	'Cannot allocate memory'
+filSTR1	str	'Cannot load file'
 errSTR1	str	'Quit'
 errSTR2	str	''
 errSTR3	str	'Continue'
@@ -891,6 +1173,11 @@ myID	ds	2	; app ID
 SStopREC	ds	4
 
 ptrSCREEN	adrl	ptr012000
+
+bankHGR2	ds	4
+bankLEVELS	ds	4
+bankINTRO	ds	4
+bankSOUND	ds	4
 
 *----------------------- QuickDraw II
 
@@ -924,20 +1211,30 @@ proCREATE	dw	7	; pcount
 proDESTROY	dw	1	; pcount
 	adrl	pLEVELS	; pathname
 
-proOPEN	dw	2
+proOPEN	dw	12
 	ds	2
 	adrl	pLEVELS
+	ds	2
+	ds	2
+	ds	2
+	ds	2
+	ds	4
+	ds	2
+	ds	8
+	ds	8
+	ds	4
+proEOF	ds	4
 
 proREAD	dw	4	; 0 - nb parms
 	ds	2	; 2 - file id
-	adrl	ptrLEVELS	; 4 - pointer
-	adrl	38400+256	; 8 - length
+	ds	4	; 4 - pointer
+	ds	4	; 8 - length
 	ds	4	; C - length read
 
 proWRITE	dw	5	; 0 - pcount
 	ds	2	; 2 - ref_num
-	adrl	ptrLEVELS	; 4 - data_buffer
-	adrl	38400+256	; 8 - request_count
+	ds	4	; 4 - data_buffer
+	ds	4	; 8 - request_count
 	ds	4	; C - transfer_count
 	dw	1	; cache_priority
 
@@ -955,6 +1252,8 @@ proVERS	dw	1	; pcount
 
 *---------- Files
 
+pINTRO	strl	'1/data/intro'
+pSOUNDS	strl	'1/data/sounds'
 pLEVELS	strl	'0/levels/loderunner'
 
 *----------------------- Standard File Toolset
@@ -984,10 +1283,15 @@ loadPATH1
 	put	LR.Code.s
 	put	LR.Data.s
 	put	LR.Tables.s
-logo
-	putbin	pic/title
-logo_fin
 	put	LR.Sprites.s	; 8-bits sprites
 	put	LR.Sprites2.s	; 16-col sprites
+
+*----------
+
+logo	putbin	pic/title
+logo_fin
+
+tozai	putbin	pic/tozai
+tozai_fin
 
 *---

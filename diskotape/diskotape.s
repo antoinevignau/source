@@ -14,88 +14,95 @@ CSWH	=	$37
 A1L	=	$3C
 A1H	=	$3D
 
-KBD         EQU   $C000
-KBDSTROBE   EQU   $C010
-PRBL2       EQU   $F94A
-HOME        EQU   $FC58
-WAIT        EQU   $FCA8
-RDCHAR      EQU   $FD35
-GETLN       EQU   $FD6A
-CROUT       EQU   $FD8E
-PRBYTE      EQU   $FDDA
-COUT        EQU   $FDED
-WRITE       EQU   $FECD
-READ        EQU   $FEFD
-BELL        EQU   $FF3A
+KBD         =	$C000
+KBDSTROBE   =	$C010
+PRBL2       =	$F94A
+HOME        =	$FC58
+WAIT        =	$FCA8
+RDCHAR      =	$FD35
+GETLN       =	$FD6A
+CROUT       =	$FD8E
+PRBYTE      =	$FDDA
+COUT        =	$FDED
+COUT1	=	$FDF0
+WRITE       =	$FECD
+READ        =	$FEFD
+BELL        =	$FF3A
 
 L1000	=	$1000
 L5000	=	$5000	; Where the VTOC is loaded
 
 *-----------------------------------
 
-L5100       JMP   L510A
+L5100       JMP   L510A	; read entry point
 
-            LDY   $8034
+            LDY   $8034	; write entry point
             LDA   #$02
             BNE   L510C
 
 L510A       LDA   #$01	; Read command
 L510C       PHA
-            LDX   #$14
+            LDX   #$14	; copy default IOB table
 L510F       LDA   IOB_DFT,X
             STA   IOB,X
             DEX
             BNE   L510F
             PLA
             STA   IOB_COMMAND
-            JSR   L5259
+
+            JSR   resetCOUT
             JSR   HOME
             LDA   IOB_COMMAND
             LSR
-            BNE   L5131
-            JSR   L54E1
+            BNE   L5131	; go write
+            JSR   L54E1	; go read
             JSR   CROUT
             JMP   L514D
 
-L5131       LDY   #$0A
+L5131       LDY   #$0A	; COPY TAPE -> DISK
             JSR   PRINTSTRING
             JSR   CROUT
-            LDY   #$25
+            LDY   #$25	; wait
 L513B       LDA   #$FF
             JSR   WAIT
             DEY
             BNE   L513B
-            LDY   #$1A
+	
+            LDY   #$1A	; DISK NAME
             JSR   PRINTSTRING
-            LDY   #$1E
+            LDY   #$1E	; :
             JSR   PRINTSTRING
-L514D       LDY   #$1C
+
+L514D       LDY   #$1C	; The disk name
             JSR   PRINTSTRING
-            JSR   L52AA
+
+            JSR   L52AA	; handle VTOC
             LDA   #$01
             STA   L55FB
             JSR   CROUT
-            LDY   #$0C
+            LDY   #$0C	; TK/SC
             JSR   PRINTSTRING
-L5162       JSR   L51D8
-            JSR   L51A5
-            LDA   IOB_TRACK
+L5162       JSR   L51D8	; read/write buffer
+            JSR   L51A5	; write/read it
+
+            LDA   IOB_TRACK	; are we done?
             BMI   L5175
             CLC
             ADC   IOB_SECTOR
             CMP   #$00
             BNE   L5162
+
 L5175       LDA   IOB_COMMAND
             LSR
-            BNE   L517E
-            JMP   L554E
+            BNE   L517E	; go write
+            JMP   L554E	; go verify/read
 
 L517E       JSR   CROUT
-            LDY   #$08
+            LDY   #$08	; COPY DONE
 L5183       JSR   CROUT
             JSR   PRINTSTRING
-            JSR   L518F
-            JMP   $03D0
+            JSR   L518F	; wait for key
+            JMP   $03D0	; return to DOS
 
 L518F       BIT   KBDSTROBE
 L5192       LDY   #$07
@@ -108,66 +115,85 @@ L5194       LDA   #$FF
             BPL   L5192
             RTS
 
+*----------
+
 L51A5       LDA   IOB_COMMAND
             LSR
-            BNE   L51DE
+            BNE   L51DE	; go write
+
 L51AB       LDY   #$00
-L51AD       LDX   #$03
+
+*-----------------------------------
+
+doTAPECMD   LDX   #$03	; move tape parms to A1/A2
 L51AF       LDA   L52FC,Y
             STA   A1L,X
             INY
             DEX
             BPL   L51AF
-            LDA   IOB_COMMAND
+
+            LDA   IOB_COMMAND ; either read from or write to tape
             AND   #$01
             BNE   L51D5
-            JSR   L5250
-            JSR   READ
+            JSR   setCOUT	; modify COUT
+            JSR   READ	; read from tape
             PHP
-            JSR   L5259
+            JSR   resetCOUT	; reset COUT
             PLP
             BEQ   L51D4
             JSR   CROUT
-            LDY   #$18
+            LDY   #$18	; TAPE READ ERROR
             JMP   L52A2
 L51D4       RTS
-L51D5       JMP   WRITE
+L51D5       JMP   WRITE	; write to tape
+
+*-----------------------------------
 
 L51D8       LDA   IOB_COMMAND
             LSR
-            BNE   L51AB
-L51DE       LDA   #>L1000
+            BNE   L51AB	; go write
+
+L51DE       LDA   #>L1000	; set buffer at $1000
             STA   IOB_BUFFER+1
             STA   A1H
             LDA   #<L1000
             STA   IOB_BUFFER
             STA   A1L
-            LDA   IOB_COMMAND
+
+            LDA   IOB_COMMAND	; command?
             LSR
             BNE   L5206
-            LDA   #$20
-            STA   L55F7
+
+*-- Read
+
+            LDA   #$20	; read means clear $1000..$2FFF
+            STA   nbPAGES
             LDY   #$00
             TYA
-L51FA       STA   ($3C),Y
+L51FA       STA   (A1L),Y
             INY
             BNE   L51FA
             INC   A1H
-            DEC   L55F7
+            DEC   nbPAGES	; page--
             BNE   L51FA
+
+*-- Write means do not erase buffer
+
 L5206       LDA   #$20
-            STA   L55F7
-            LDA   L55FB
+            STA   nbPAGES
+            LDA   L55FB	; check pass
             BEQ   L5215
-            DEC   L55FB
-            BEQ   L522F
-L5215       JSR   L52D5
+            DEC   L55FB	; tell we've been there
+            BEQ   L522F	; handle first case
+
+L5215       JSR   L52D5	; get sector usage
             LDA   IOB_TRACK
             SEC
             SBC   #$00
             BPL   L522F
             STA   IOB_TRACK
-            LDY   L55F7
+
+            LDY   nbPAGES	; wait again
 L5226       LDA   #$D7
             JSR   WAIT
             DEY
@@ -175,30 +201,36 @@ L5226       LDA   #$D7
             RTS
 
 L522F       JSR   GO_RWTS
-            LDA   IOB_TRACK
+            LDA   IOB_TRACK	; show T
             JSR   PRBYTE
             LDX   #$01
             JSR   PRBL2
-            LDA   IOB_SECTOR
+            LDA   IOB_SECTOR	; show S
             JSR   PRBYTE
             LDA   #$00
             STA   $24
             INC   IOB_BUFFER+1
-            DEC   L55F7
+            DEC   nbPAGES	; nb pages
             BNE   L5215
             RTS
 
-L5250       LDA   #<L5262
+*---------- Redirect COUT vector
+
+setCOUT     LDA   #<L5262
             STA   CSWL
             LDA   #>L5262
             STA   CSWH
             RTS
 
-L5259       LDA   #$F0
+*---------- Reset COUT vector
+
+resetCOUT   LDA   #<COUT1
             STA   CSWL
-            LDA   #$FD
+            LDA   #>COUT1
             STA   CSWH
             RTS
+
+*---------- My COUT routine
 
 L5262       CMP   #$87
             BEQ   L526A
@@ -224,52 +256,66 @@ L5277       INY
 
 *-----------------------------------
 
-GO_RWTS     LDA   #>IOB
+GO_RWTS     LDA   #>IOB	; execute a RWTS call
             LDY   #<IOB
             JSR   $03D9
             BCC   L5290
             JSR   L5291
 L5290       RTS
 
+*---------- Handle error
+
 L5291       LDA   IOB_ERRCODE
-            LDY   #$0E
-            CMP   #$10
+            LDY   #$0E	; DISK WRITE PROTECTED
+            CMP   #$10	;
             BEQ   L52A2
-            LDY   #$10
-            CMP   #$80
+            LDY   #$10	; DISK READ ERROR
+            CMP   #$80	;
             BEQ   L52A2
-            LDY   #$12
+            LDY   #$12	; DISK DRIVE ERROR
 L52A2       JSR   PRINTSTRING
-            LDY   #$16
+            LDY   #$16	; COPY ABORT
             JMP   L5183
 
 *-----------------------------------
+* See the DOS 3.3 manual, page 132
 
-L52AA       LDA   #$23
+L52AA       LDA   #$23	; last track
             NOP
             STA   IOB_TRACK
-            ASL
-            ASL
+            ASL	; *2
+            ASL	; *4
             CLC
-            ADC   #$38
+            ADC   #$38	; C4
             STA   L55F9
 L52B8       LDA   #$00
             STA   L55F8
-            LDA   L55F9
+            LDA   L55F9	; C4 - 4 = C0 => T22 bitmap
             SEC
             SBC   #$04
             TAX
             STX   L55F9
             STX   L55FA
+
             DEC   IOB_TRACK
             BMI   L52FB
-            LDA   #$10
+	
+            LDA   #$10	; last sector
             NOP
             STA   IOB_SECTOR
-L52D5       LDX   L55FA
+
+*---------- The VTOC is at $5000
+* Bitmap starts at $5038
+* Each bit set means a used sector
+*        Byte 1   Byte 2
+*    Bit 76543210 76543210
+* Sector FEDCBA98 76543210
+
+L52D5       LDX   L55FA	; index within T22..
             DEC   IOB_SECTOR
-            BMI   L52B8
-L52DD       CLC
+            BMI   L52B8	; next track please
+
+L52DD       CLC	; return bit sector usage within bitmap
             LDA   L55F8
             BNE   L52E4
             SEC
@@ -280,37 +326,37 @@ L52E4       ROR
 L52EB       STA   L55F8
             LDA   L55F8
             BEQ   L52DD
-            AND   $5000,X
+            AND   $5000,X	; The VTOC  lies at $5000
             NOP
             NOP
             STX   L55FA
 L52FB       RTS
 
 *---------- Read/Write Tape commands
-* Put at A1/A2 ($3C..$3F)
+* Put at A1/A2 ($3C..$3F): FROM..TO
 * Code puts it inverted
 
-L52FC       DB    $2F         ;  0 1000/3000
+L52FC       DB    $2F         ;  0 1000..2FFF
             DB    $FF
             DB    $10
             DB    $00
-            DB    $4F         ;  4 3000/5000
+            DB    $4F         ;  4 3000..4FFF
             DB    $FF
             DB    $30
             DB    $00
-            DB    $54         ;  8 5000/5461
+            DB    $54         ;  8 5000..5460
             DB    $60
             DB    $50
             DB    $00
-            DB    $34         ;  C 3000/3461
+            DB    $34         ;  C 3000..3460
             DB    $60
             DB    $30
             DB    $00
-            DB    $54         ; 10 53FE/543F
+            DB    $54         ; 10 53FE..543E
             DB    $3E
             DB    $53
             DB    $FE
-            DB    $30         ; 14 3000/3041
+            DB    $30         ; 14 3000..3040
             DB    $40
             DB    $30
             DB    $00
@@ -339,43 +385,43 @@ IOB_DFT     DB    $01
 
 *---------- Pointers to strings (all inverted...)
 
-L5329       DB    >L53C3	; 0 DISK-O-TAPE/PASCAL
+L5329       DB    >L53C3	;  0 DISK-O-TAPE/PASCAL
 L532A       DB    <L53C3
-            DB    >L543C	; 1 PLEASE INSERT DISK TO BE COPIED
+            DB    >L543C	;  2 PLEASE INSERT DISK TO BE COPIED
             DB    <L543C
-            DB    >L5418	; 2 COPYRIGHT
+            DB    >L5418	;  4 COPYRIGHT
             DB    <L5418
-            DB    >L5498	; 3 PLEASE REWIND TAPE...
+            DB    >L5498	;  6 PLEASE REWIND TAPE...
             DB    <L5498
-            DB    >L536A	; 4 COPY DONE
+            DB    >L536A	;  8 COPY DONE
             DB    <L536A
-            DB    >L5374	; 5 COPY TAPE -> DISK
+            DB    >L5374	;  A COPY TAPE -> DISK
             DB    <L5374
-            DB    >L5386	; 6 TK/SC
+            DB    >L5386	;  C TK/SC
             DB    <L5386
-            DB    >L538C	; 7 DISK WRITE PROTECTED
+            DB    >L538C	;  E DISK WRITE PROTECTED
             DB    <L538C
-            DB    >L53A1	; 8 DISK READ ERROR
+            DB    >L53A1	; 10 DISK READ ERROR
             DB    <L53A1
-            DB    >L53B1	; 9 DISK DRIVE ERROR
+            DB    >L53B1	; 12 DISK DRIVE ERROR
             DB    <L53B1
-            DB    >L545C	; A COPY DISK -> TAPE
+            DB    >L545C	; 14 COPY DISK -> TAPE
             DB    <L545C
-            DB    >L534F	; B COPY ABORT
+            DB    >L534F	; 16 COPY ABORT
             DB    <L534F
-            DB    >L535A	; C TAPE READ ERROR
+            DB    >L535A	; 18 TAPE READ ERROR
             DB    <L535A
-            DB    >L53D6	; D DISK NAME
+            DB    >L53D6	; 1A DISK NAME
             DB    <L53D6
-            DB    >L53DF	; E " "
+            DB    >L53DF	; 1C " "
             DB    <L53DF
-            DB    >L53C2	; F :
+            DB    >L53C2	; 1E :
             DB    <L53C2
-            DB    >L546E	; 10 ERROR DURING
+            DB    >L546E	; 20 ERROR DURING
             DB    <L546E
-            DB    >L547B	; 11 TAPE VERIFY
+            DB    >L547B	; 22 TAPE VERIFY
             DB    <L547B
-            DB    >L5488	; 12 VERIFY COMPLETE
+            DB    >L5488	; 24 VERIFY COMPLETE
             DB    >L5488
 
 L534F       ASC   "COPY ABORT"0D
@@ -428,40 +474,40 @@ L54DD       DB    $00	; DCT
 
             MX    %11
 
-L54E1       LDY   #$00
+L54E1       LDY   #$00	; DISK-O-TAPE PASCAL
             JSR   PRINTSTRING
-            LDY   #$04
-            JSR   PRINTSTRING
-            JSR   CROUT
-            LDY   #$02
+            LDY   #$04	; COPYRIGHT
             JSR   PRINTSTRING
             JSR   CROUT
-            LDY   #$1A
+            LDY   #$02	; PLEASE INSERT DISK TO BE COPIED
             JSR   PRINTSTRING
-            LDA   #$BF
+            JSR   CROUT
+            LDY   #$1A	; DISK NAME
+            JSR   PRINTSTRING
+            LDA   #$BF	; cursor
             STA   |$0033
             JSR   GETLN
-            CPX   #$1D
+            CPX   #$1D	; length of string
             BCC   L5509
-            LDX   #$1D
+            LDX   #$1D	; put a final CR
 L5509       LDA   #$0D
             STA   L53E0,X
-L550E       LDA   $0200,X
+L550E       LDA   $0200,X ; copy disk name
             STA   L53DF,X
             DEX
             BPL   L550E
             JSR   CROUT
-            LDY   #$06
+            LDY   #$06	; PLEASE REWIND TAPE
             JSR   PRINTSTRING
             JSR   RDCHAR
             JSR   CROUT
-            LDY   #$14
+            LDY   #$14	; COPY DISK -> TAPE
             JSR   PRINTSTRING
-            LDY   #$10
-            JSR   L51AD
+            LDY   #$10	; 53FE..543E -> 200.240R 5000.5460R 5103G + COPYRIGHT (C) 1980 BY DANN MCCREARY
+            JSR   doTAPECMD
             JSR   L5537	; read VTOC
-            LDY   #$08
-            JMP   L51AD
+            LDY   #$08	; 
+            JMP   doTAPECMD
 
 *---------- Read (write?) VTOC
 
@@ -478,30 +524,30 @@ L5537       LDA   #$00
 *----------
 
 L554E       JSR   HOME
-            LDY   #$22
+            LDY   #$22	; TAPE VERIFY
             JSR   PRINTSTRING
-            LDY   #$06
+            LDY   #$06	; PLEASE REWIND TAPE...
             JSR   PRINTSTRING
             JSR   L518F
-            LDA   #$01
+            LDA   #$01	; read
             STA   IOB_COMMAND
             JSR   L5537
-            LDY   #$14
+            LDY   #$14	; 3000..3040
             JSR   L55B9
-            LDY   #$0C
+            LDY   #$0C	; 3000..3460
             JSR   L55B9
             JSR   L52AA
             LDA   #$01
             STA   L55FB
             JSR   CROUT
-            LDY   #$1C
+            LDY   #$1C	; " "
             JSR   PRINTSTRING
-            LDY   #$0C
+            LDY   #$0C	; TK/SC
             JSR   PRINTSTRING
-L5585       LDA   #$01
+L5585       LDA   #$01	; read
             STA   IOB_COMMAND
             JSR   L51DE
-            LDY   #$04
+            LDY   #$04	; 3000..4FFF
             JSR   L55B9
             LDA   IOB_TRACK
             BMI   L559F
@@ -510,7 +556,7 @@ L5585       LDA   #$01
             CMP   #$00
             BNE   L5585
 L559F       JSR   CROUT
-            LDY   #$24
+            LDY   #$24	; VERIFY COMPLETE
             JMP   L5183
 
 L55A7       LDX   #$07
@@ -526,18 +572,18 @@ L55AF       LDA   L52FC,Y
             RTS
 
 L55B9       STY   L55FE
-            LDA   #$02
+            LDA   #$02	; write
             STA   IOB_COMMAND
-            JSR   L51AD
+            JSR   doTAPECMD
             LDY   L55FE
             DEY
             DEY
             JSR   L55A7
             JSR   L55E4
             LDY   #$00
-            JSR   $FE36
+            JSR   $FE36	; ROM entry point VFY for verify
             PHP
-            JSR   L5259
+            JSR   resetCOUT
             PLP
             BCS   L55E3
             JSR   CROUT
@@ -545,11 +591,15 @@ L55B9       STY   L55FE
             JMP   L52A2
 L55E3       RTS
 
+*---------- Set my COUT vector
+
 L55E4       LDA   #<L55ED
             STA   CSWL
             LDA   #>L55ED
             STA   CSWH
             RTS
+
+*---------- My second COUT routine
 
 L55ED       CMP   #$87
             BEQ   L55F5
@@ -560,7 +610,9 @@ L55ED       CMP   #$87
 L55F5       CLC
             RTS
 
-L55F7       DB    $00
+*---------- 
+
+nbPAGES     DB    $00
 L55F8       DB    $00
 L55F9       DB    $00
 L55FA       DB    $00

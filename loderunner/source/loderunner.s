@@ -765,7 +765,8 @@ initSOUND	lda	fgSND
 	beq	initSOUND1
 	rts
 
-initSOUND1	sei
+initSOUND1	php
+	sei
 	PushLong	#0
 	PushWord	#11
 	_GetVector
@@ -774,7 +775,7 @@ initSOUND1	sei
 	PushWord	#11
 	PushLong	#sndINTERRUPT
 	_SetVector
-	cli
+	plp
 	rts
 
 *--------- Remove the vector
@@ -783,11 +784,12 @@ stopSOUND	lda	fgSND
 	beq	stopSOUND1
 	rts
 
-stopSOUND1	sei
+stopSOUND1	php
+	sei
 	PushWord	#11
 	PushLong	sndVECTOR
 	_SetVector
-	cli
+	plp
 	rts
 
 *---------
@@ -829,6 +831,7 @@ playINTRO	lda	fgSND
 	rts
 
 playINTRO1	rep	#$10
+	php
 	sei
 	
 	ldal	IRQ_VOLUME
@@ -918,7 +921,7 @@ playINTRO2	ldal	$bdbd,x
 	stal	SOUNDDATA
 
 	stz	noINTERRUPT	; play please
-	cli
+	plp
 	
 ]lp	lda	noINTERRUPT	; wait for the end of the sound
 	beq	]lp
@@ -934,6 +937,7 @@ moveSOUND	lda	fgSND
 	rts
 
 moveSOUND1	rep	#$10
+	php
 	sei
 	
 	ldal	IRQ_VOLUME
@@ -1018,7 +1022,7 @@ moveSOUND2	ldal	$bdbd,x	; **patched**
 	bcs	moveSOUND3
 	brl	]lp
 
-moveSOUND3	cli
+moveSOUND3	plp
 	sep	#$10
 	rts
 

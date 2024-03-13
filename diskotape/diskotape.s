@@ -306,7 +306,7 @@ L52B8       LDA   #$00
 
 *---------- The VTOC is at $5000
 * Bitmap starts at $5038
-* Each bit set means a used sector
+* Each bit set means a free sector
 *        Byte 1   Byte 2
 *    Bit 76543210 76543210
 * Sector FEDCBA98 76543210

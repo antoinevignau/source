@@ -1,0 +1,26 @@
+*
+* Lode Runner
+* (c) 1983, Broderbund Software
+* (s) 2014, Brutal Deluxe Software
+*
+
+	mx	%11
+	org	$6000
+	lst	off
+
+*---------------------------------------
+
+KBD	EQU	$C000
+KBDSTROBE	EQU	$C010
+SPKR	EQU	$C030
+TXTCLR	EQU	$C050
+MIXCLR	EQU	$C052
+TXTPAGE1	EQU	$C054
+TXTPAGE2	EQU	$C055
+HIRES	EQU	$C057
+BUTN0	EQU	$C061
+BUTN1	EQU	$C062
+PADDL0	EQU	$C064
+PADDL1	EQU	$C065
+PTRIG	EQU	$C070
+SETKBD	EQU	$FE89

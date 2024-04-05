@@ -1,0 +1,334 @@
+------+--------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File        Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+--------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1 gsport.s      1 | Comment     | 11 |         |    0 | 00/8000               | *         XC
+    2 |  1 gsport.s      2 | Comment     | 11 |         |    0 | 00/8000               | *         TR
+    3 |  1 gsport.s      3 | Comment     | 11 |         |    0 | 00/8000               | *         TR    ADR
+    4 |  1 gsport.s      4 | Comment     | 11 |         |    0 | 00/8000               | *
+    5 |  1 gsport.s      5 | Empty       | 11 |         |    0 | 00/8000               |                                       
+    6 |  1 gsport.s      6 | Directive   | 11 |         |    0 | 00/8000               |                mx    %11              
+    7 |  1 gsport.s      7 | Directive   | 11 |         |    0 | 00/8000               |                org   $2000            
+    8 |  1 gsport.s      8 | Directive   | 11 |         |    0 | 00/2000               |                lst   off              
+    9 |  1 gsport.s      9 | Empty       | 11 |         |    0 | 00/2000               |                                       
+   10 |  1 gsport.s     10 | Equivalence | 11 |         |    0 | 00/2000               | COUT           =     $fded            
+   11 |  1 gsport.s     11 | Empty       | 11 |         |    0 | 00/2000               |                                       
+   12 |  1 gsport.s     12 | Comment     | 11 |         |    0 | 00/2000               | * GS Port Driver Bios
+   13 |  1 gsport.s     13 | Comment     | 11 |         |    0 | 00/2000               | * written by Andy Nicholas on July 26, 1987
+   14 |  1 gsport.s     14 | Comment     | 11 |         |    0 | 00/2000               | *
+   15 |  1 gsport.s     15 | Comment     | 11 |         |    0 | 00/2000               | * History:
+   16 |  1 gsport.s     16 | Comment     | 11 |         |    0 | 00/2000               | *
+   17 |  1 gsport.s     17 | Comment     | 11 |         |    0 | 00/2000               | * 11/07/89 AMW
+   18 |  1 gsport.s     18 | Comment     | 11 |         |    0 | 00/2000               | * 1. History section added
+   19 |  1 gsport.s     19 | Comment     | 11 |         |    0 | 00/2000               | * 2. Checked and or modified for LLUCE
+   20 |  1 gsport.s     20 | Comment     | 11 |         |    0 | 00/2000               | * 3. Section titles added
+   21 |  1 gsport.s     21 | Comment     | 11 |         |    0 | 00/2000               | *
+   22 |  1 gsport.s     22 | Comment     | 11 |         |    0 | 00/2000               | * 11/10/89 AMW
+   23 |  1 gsport.s     23 | Comment     | 11 |         |    0 | 00/2000               | * Added interrupt buffers
+   24 |  1 gsport.s     24 | Comment     | 11 |         |    0 | 00/2000               | *--------------------------
+   25 |  1 gsport.s     25 | Comment     | 11 |         |    0 | 00/2000               | *         rel
+   26 |  1 gsport.s     26 | Comment     | 11 |         |    0 | 00/2000               | *SLOT     KBD   'Slot to assemble for (1/2)'
+   27 |  1 gsport.s     27 | Equivalence | 11 |         |    0 | 00/2000               | SLOT           =     2                
+   28 |  1 gsport.s     28 | Equivalence | 11 |         |    0 | 00/2000               | N0             =     {2}*16           
+   29 |  1 gsport.s     29 | Equivalence | 11 |         |    0 | 00/2000               | CN             =     {2}!$C0          
+   30 |  1 gsport.s     30 | Equivalence | 11 |         |    0 | 00/2000               | SLTADR         =     {2}!$C0*256      
+   31 |  1 gsport.s     31 | Equivalence | 11 |         |    0 | 00/2000               | FLAG           =     {2}-1            
+   32 |  1 gsport.s     32 | Empty       | 11 |         |    0 | 00/2000               |                                       
+   33 |  1 gsport.s     33 | Equivalence | 11 |         |    0 | 00/2000               | CR             =     $0d              
+   34 |  1 gsport.s     34 | Equivalence | 11 |         |    0 | 00/2000               | LF             =     $0a              
+   35 |  1 gsport.s     35 | Empty       | 11 |         |    0 | 00/2000               |                                       
+   36 |  1 gsport.s     36 | Code        | 11 |         |    3 | 00/2000 : 20 60 20    |                jsr   INIT             
+   37 |  1 gsport.s     37 | Code        | 11 |         |    3 | 00/2003 : 20 C0 20    |                jsr   SETSPEED         
+   38 |  1 gsport.s     38 | Code        | 11 |         |    2 | 00/2006 : A2 20       |                ldx   #>strSA          
+   39 |  1 gsport.s     39 | Code        | 11 |         |    2 | 00/2008 : A0 45       |                ldy   #<strSA          
+   40 |  1 gsport.s     40 | Code        | 11 |         |    3 | 00/200A : 20 2C 20    |                jsr   sendSTRING       
+   41 |  1 gsport.s     41 | Code        | 11 |         |    3 | 00/200D : 20 1B 20    |                jsr   receiveSTRING    
+   42 |  1 gsport.s     42 | Empty       | 11 |         |    0 | 00/2010               |                                       
+   43 |  1 gsport.s     43 | Code        | 11 |         |    2 | 00/2010 : A2 20       |                ldx   #>strPL          
+   44 |  1 gsport.s     44 | Code        | 11 |         |    2 | 00/2012 : A0 48       |                ldy   #<strPL          
+   45 |  1 gsport.s     45 | Code        | 11 |         |    3 | 00/2014 : 20 2C 20    |                jsr   sendSTRING       
+   46 |  1 gsport.s     46 | Code        | 11 |         |    3 | 00/2017 : 20 1B 20    |                jsr   receiveSTRING    
+   47 |  1 gsport.s     47 | Code        | 11 |         |    1 | 00/201A : 60          |                rts                    
+   48 |  1 gsport.s     48 | Empty       | 11 |         |    0 | 00/201B               |                                       
+   49 |  1 gsport.s     49 | Empty       | 11 |         |    0 | 00/201B               | receiveSTRING                         
+   50 |  1 gsport.s     50 | Code        | 11 |         |    3 | 00/201B : 20 7F 20    | ozunid_1       jsr   INP              
+   51 |  1 gsport.s     51 | Code        | 11 |         |    2 | 00/201E : F0 0B       |                beq   receive9         
+   52 |  1 gsport.s     52 | Code        | 11 |         |    2 | 00/2020 : C9 0D       |                cmp   #{$0d}           
+   53 |  1 gsport.s     53 | Code        | 11 |         |    2 | 00/2022 : F0 07       |                beq   receive9         
+   54 |  1 gsport.s     54 | Code        | 11 |         |    2 | 00/2024 : 09 80       |                ora   #$80             
+   55 |  1 gsport.s     55 | Code        | 11 |         |    3 | 00/2026 : 20 ED FD    |                jsr   {$fded}          
+   56 |  1 gsport.s     56 | Code        | 11 |         |    2 | 00/2029 : 80 F0       |                bra   ozunid_1         
+   57 |  1 gsport.s     57 | Code        | 11 |         |    1 | 00/202B : 60          | receive9       rts                    
+   58 |  1 gsport.s     58 | Empty       | 11 |         |    0 | 00/202C               |                                       
+   59 |  1 gsport.s     59 | Code        | 11 |         |    3 | 00/202C : 8C 35 20    | sendSTRING     sty   sendstr1+1       
+   60 |  1 gsport.s     60 | Code        | 11 |         |    3 | 00/202F : 8E 36 20    |                stx   sendstr1+2       
+   61 |  1 gsport.s     61 | Empty       | 11 |         |    0 | 00/2032               |                                       
+   62 |  1 gsport.s     62 | Code        | 11 |         |    2 | 00/2032 : A2 00       |                ldx   #0               
+   63 |  1 gsport.s     63 | Code        | 11 |         |    3 | 00/2034 : BD BD BD    | sendstr1       lda   $bdbd,x          
+   64 |  1 gsport.s     64 | Code        | 11 |         |    2 | 00/2037 : F0 06       |                beq   sendstr2         
+   65 |  1 gsport.s     65 | Code        | 11 |         |    3 | 00/2039 : 20 9B 20    |                jsr   OUT              
+   66 |  1 gsport.s     66 | Code        | 11 |         |    1 | 00/203C : E8          |                inx                    
+   67 |  1 gsport.s     67 | Code        | 11 |         |    2 | 00/203D : D0 F5       |                bne   sendstr1         
+   68 |  1 gsport.s     68 | Empty       | 11 |         |    0 | 00/203F               |                                       
+   69 |  1 gsport.s     69 | Code        | 11 |         |    2 | 00/203F : A9 0D       | sendstr2       lda   #{$0d}           
+   70 |  1 gsport.s     70 | Code        | 11 |         |    3 | 00/2041 : 20 9B 20    |                jsr   OUT              
+   71 |  1 gsport.s     71 | Code        | 11 |         |    1 | 00/2044 : 60          |                rts                    
+   72 |  1 gsport.s     72 | Empty       | 11 |         |    0 | 00/2045               |                                       
+   73 |  1 gsport.s     73 | Data        | 11 |         |    3 | 00/2045 : 53 41 00    | strSA          asc   'SA'00           
+   74 |  1 gsport.s     74 | Data        | 11 |         |    3 | 00/2048 : 50 4C 00    | strPL          asc   'PL'00           
+   75 |  1 gsport.s     75 | Empty       | 11 |         |    0 | 00/204B               |                                       
+   76 |  1 gsport.s     76 | Comment     | 11 |         |    0 | 00/204B               | *-------------------------------
+   77 |  1 gsport.s     77 | Comment     | 11 |         |    0 | 00/204B               | *-------------------------------
+   78 |  1 gsport.s     78 | Empty       | 11 |         |    0 | 00/204B               |                                       
+   79 |  1 gsport.s     79 | Data        | 11 |         |    1 | 00/204B : 20          | MODEM          DB    {{2}*16}         ;serial card slot * 16
+   80 |  1 gsport.s     80 | Data        | 11 |         |    1 | 00/204C : 00          | INITSPD        DB    0                ;init speed for modem
+   81 |  1 gsport.s     81 | Data        | 11 |         |    1 | 00/204D : 00          | CALLSPD        DB    0                ;Speed of current call
+   82 |  1 gsport.s     82 | Empty       | 11 |         |    0 | 00/204E               |                                       
+   83 |  1 gsport.s     83 | Data        | 11 |         |    3 | 00/204E : 00 00 00    | BYTCNT         DB    0,0,0            
+   84 |  1 gsport.s     84 | Empty       | 11 |         |    0 | 00/2051               |                                       
+   85 |  1 gsport.s     85 | Code        | 11 |         |    3 | 00/2051 : 4C 00 C2    | DOINIT         JMP   {{2}!$C0*256}    
+   86 |  1 gsport.s     86 | Code        | 11 |         |    3 | 00/2054 : 4C 00 C2    | DOREAD         JMP   {{2}!$C0*256}    
+   87 |  1 gsport.s     87 | Code        | 11 |         |    3 | 00/2057 : 4C 00 C2    | DOWRITE        JMP   {{2}!$C0*256}    
+   88 |  1 gsport.s     88 | Code        | 11 |         |    3 | 00/205A : 4C 00 C2    | DOSTATUS       JMP   {{2}!$C0*256}    
+   89 |  1 gsport.s     89 | Code        | 11 |         |    3 | 00/205D : 4C 00 C2    | DOEXT          JMP   {{2}!$C0*256}    
+   90 |  1 gsport.s     90 | Empty       | 11 |         |    0 | 00/2060               |                                       
+   91 |  1 gsport.s     91 | Comment     | 11 |         |    0 | 00/2060               | * init the serial port pascal locations
+   92 |  1 gsport.s     92 | Comment     | 11 |         |    0 | 00/2060               | *-------------------------------
+   93 |  1 gsport.s     93 | Empty       | 11 |         |    0 | 00/2060               |                                       
+   94 |  1 gsport.s     94 | Code        | 11 |         |    3 | 00/2060 : AD 0D C2    | INIT           LDA   {{2}!$C0*256}+$D ;get init address
+   95 |  1 gsport.s     95 | Code        | 11 |         |    3 | 00/2063 : 8D 52 20    |                STA   DOINIT+1         
+   96 |  1 gsport.s     96 | Code        | 11 |         |    3 | 00/2066 : AD 0E C2    |                LDA   {{2}!$C0*256}+$E ;get read address
+   97 |  1 gsport.s     97 | Code        | 11 |         |    3 | 00/2069 : 8D 55 20    |                STA   DOREAD+1         
+   98 |  1 gsport.s     98 | Code        | 11 |         |    3 | 00/206C : AD 0F C2    |                LDA   {{2}!$C0*256}+$F ;get write address
+   99 |  1 gsport.s     99 | Code        | 11 |         |    3 | 00/206F : 8D 58 20    |                STA   DOWRITE+1        
+  100 |  1 gsport.s    100 | Code        | 11 |         |    3 | 00/2072 : AD 10 C2    |                LDA   {{2}!$C0*256}+$10;get status address
+  101 |  1 gsport.s    101 | Code        | 11 |         |    3 | 00/2075 : 8D 5B 20    |                STA   DOSTATUS+1       
+  102 |  1 gsport.s    102 | Code        | 11 |         |    3 | 00/2078 : AD 12 C2    |                LDA   {{2}!$C0*256}+$12
+  103 |  1 gsport.s    103 | Code        | 11 |         |    3 | 00/207B : 8D 5E 20    |                STA   DOEXT+1          
+  104 |  1 gsport.s    104 | Empty       | 11 |         |    0 | 00/207E               |                                       
+  105 |  1 gsport.s    105 | Code        | 11 |         |    1 | 00/207E : 60          |                RTS                    
+  106 |  1 gsport.s    106 | Empty       | 11 |         |    0 | 00/207F               |                                       
+  107 |  1 gsport.s    107 | Comment     | 11 |         |    0 | 00/207F               | * input data
+  108 |  1 gsport.s    108 | Comment     | 11 |         |    0 | 00/207F               | *-------------------------------
+  109 |  1 gsport.s    109 | Empty       | 11 |         |    0 | 00/207F               |                                       
+  110 |  1 gsport.s    110 | Code        | 11 |         |    1 | 00/207F : DA          | INP            PHX                    ;Save x
+  111 |  1 gsport.s    111 | Code        | 11 |         |    1 | 00/2080 : 5A          |                PHY                    
+  112 |  1 gsport.s    112 | Code        | 11 |         |    2 | 00/2081 : A2 C2       |                LDX   #{{2}!$C0}       ;are we ready?
+  113 |  1 gsport.s    113 | Code        | 11 |         |    2 | 00/2083 : A0 20       |                LDY   #{{2}*16}        
+  114 |  1 gsport.s    114 | Code        | 11 |         |    2 | 00/2085 : A9 01       |                LDA   #1               
+  115 |  1 gsport.s    115 | Code        | 11 |         |    3 | 00/2087 : 20 5A 20    |                JSR   DOSTATUS         
+  116 |  1 gsport.s    116 | Code        | 11 |         |    2 | 00/208A : 90 0B       |                BCC   _INP2            ;nope, exit
+  117 |  1 gsport.s    117 | Empty       | 11 |         |    0 | 00/208C               |                                       
+  118 |  1 gsport.s    118 | Code        | 11 |         |    2 | 00/208C : A2 C2       |                LDX   #{{2}!$C0}       ;yes, read
+  119 |  1 gsport.s    119 | Code        | 11 |         |    2 | 00/208E : A0 20       |                LDY   #{{2}*16}        
+  120 |  1 gsport.s    120 | Code        | 11 |         |    3 | 00/2090 : 20 54 20    |                JSR   DOREAD           
+  121 |  1 gsport.s    121 | Empty       | 11 |         |    0 | 00/2093               |                                       
+  122 |  1 gsport.s    122 | Code        | 11 |         |    1 | 00/2093 : 38          |                SEC                    
+  123 |  1 gsport.s    123 | Code        | 11 |         |    1 | 00/2094 : 7A          | _INP1          PLY                    
+  124 |  1 gsport.s    124 | Code        | 11 |         |    1 | 00/2095 : FA          |                PLX                    ;Restore & return
+  125 |  1 gsport.s    125 | Code        | 11 |         |    1 | 00/2096 : 60          |                RTS                    
+  126 |  1 gsport.s    126 | Empty       | 11 |         |    0 | 00/2097               |                                       
+  127 |  1 gsport.s    127 | Code        | 11 |         |    2 | 00/2097 : A9 00       | _INP2          LDA   #0               
+  128 |  1 gsport.s    128 | Code        | 11 |         |    2 | 00/2099 : 80 F9       |                BRA   _INP1            
+  129 |  1 gsport.s    129 | Empty       | 11 |         |    0 | 00/209B               |                                       
+  130 |  1 gsport.s    130 | Comment     | 11 |         |    0 | 00/209B               | * output data
+  131 |  1 gsport.s    131 | Comment     | 11 |         |    0 | 00/209B               | *-------------------------------
+  132 |  1 gsport.s    132 | Empty       | 11 |         |    0 | 00/209B               |                                       
+  133 |  1 gsport.s    133 | Code        | 11 |         |    1 | 00/209B : DA          | OUT            PHX                    ;Save x
+  134 |  1 gsport.s    134 | Code        | 11 |         |    1 | 00/209C : 5A          |                PHY                    ;Save y
+  135 |  1 gsport.s    135 | Code        | 11 |         |    1 | 00/209D : 48          |                PHA                    ;Save a
+  136 |  1 gsport.s    136 | Empty       | 11 |         |    0 | 00/209E               |                                       
+  137 |  1 gsport.s    137 | Code        | 11 |         |    2 | 00/209E : A2 C2       | _OUT1          LDX   #{{2}!$C0}       ;ready for send?
+  138 |  1 gsport.s    138 | Code        | 11 |         |    2 | 00/20A0 : A0 20       |                LDY   #{{2}*16}        
+  139 |  1 gsport.s    139 | Code        | 11 |         |    2 | 00/20A2 : A9 00       |                LDA   #0               
+  140 |  1 gsport.s    140 | Code        | 11 |         |    3 | 00/20A4 : 20 5A 20    |                JSR   DOSTATUS         
+  141 |  1 gsport.s    141 | Code        | 11 |         |    2 | 00/20A7 : 90 F5       |                BCC   _OUT1            ;nope
+  142 |  1 gsport.s    142 | Empty       | 11 |         |    0 | 00/20A9               |                                       
+  143 |  1 gsport.s    143 | Code        | 11 |         |    1 | 00/20A9 : 68          |                PLA                    ;Get a
+  144 |  1 gsport.s    144 | Code        | 11 |         |    2 | 00/20AA : A2 C2       |                LDX   #{{2}!$C0}       
+  145 |  1 gsport.s    145 | Code        | 11 |         |    2 | 00/20AC : A0 20       |                LDY   #{{2}*16}        
+  146 |  1 gsport.s    146 | Code        | 11 |         |    3 | 00/20AE : 20 57 20    |                JSR   DOWRITE          ;send it
+  147 |  1 gsport.s    147 | Empty       | 11 |         |    0 | 00/20B1               |                                       
+  148 |  1 gsport.s    148 | Code        | 11 |         |    1 | 00/20B1 : 7A          |                PLY                    ;Get y
+  149 |  1 gsport.s    149 | Code        | 11 |         |    1 | 00/20B2 : FA          |                PLX                    ;Get x
+  150 |  1 gsport.s    150 | Code        | 11 |         |    1 | 00/20B3 : 60          |                RTS                    
+  151 |  1 gsport.s    151 | Empty       | 11 |         |    0 | 00/20B4               |                                       
+  152 |  1 gsport.s    152 | Comment     | 11 |         |    0 | 00/20B4               | * wait routine
+  153 |  1 gsport.s    153 | Comment     | 11 |         |    0 | 00/20B4               | *-------------------------------
+  154 |  1 gsport.s    154 | Empty       | 11 |         |    0 | 00/20B4               |                                       
+  155 |  1 gsport.s    155 | Code        | 11 |         |    1 | 00/20B4 : 38          | WAIT           SEC                    ;from apple ][+ ref man - pg 147
+  156 |  1 gsport.s    156 | Code        | 11 |         |    1 | 00/20B5 : 48          | _WAIT2         PHA                    
+  157 |  1 gsport.s    157 | Code        | 11 |         |    2 | 00/20B6 : E9 01       | _WAIT3         SBC   #1               
+  158 |  1 gsport.s    158 | Code        | 11 |         |    2 | 00/20B8 : D0 FC       |                BNE   _WAIT3           
+  159 |  1 gsport.s    159 | Code        | 11 |         |    1 | 00/20BA : 68          |                PLA                    
+  160 |  1 gsport.s    160 | Code        | 11 |         |    2 | 00/20BB : E9 01       |                SBC   #1               
+  161 |  1 gsport.s    161 | Code        | 11 |         |    2 | 00/20BD : D0 F6       |                BNE   _WAIT2           
+  162 |  1 gsport.s    162 | Code        | 11 |         |    1 | 00/20BF : 60          |                RTS                    
+  163 |  1 gsport.s    163 | Empty       | 11 |         |    0 | 00/20C0               |                                       
+  164 |  1 gsport.s    164 | Comment     | 11 |         |    0 | 00/20C0               | * set the rs-232 speed [speed offset in Y]
+  165 |  1 gsport.s    165 | Comment     | 11 |         |    0 | 00/20C0               | *
+  166 |  1 gsport.s    166 | Comment     | 11 |         |    0 | 00/20C0               | * 0 =   300 baud
+  167 |  1 gsport.s    167 | Comment     | 11 |         |    0 | 00/20C0               | * 1 =  1200 baud
+  168 |  1 gsport.s    168 | Comment     | 11 |         |    0 | 00/20C0               | * 2 =  2400 baud
+  169 |  1 gsport.s    169 | Comment     | 11 |         |    0 | 00/20C0               | * 3 =  4800 baud
+  170 |  1 gsport.s    170 | Comment     | 11 |         |    0 | 00/20C0               | * 4 =  9600 baud
+  171 |  1 gsport.s    171 | Comment     | 11 |         |    0 | 00/20C0               | * 5 = 19200 baud
+  172 |  1 gsport.s    172 | Comment     | 11 |         |    0 | 00/20C0               | *-------------------------------
+  173 |  1 gsport.s    173 | Empty       | 11 |         |    0 | 00/20C0               |                                       
+  174 |  1 gsport.s    174 | Code        | 11 |         |    2 | 00/20C0 : A2 15       | SETSPEED       LDX   #<B4800          
+  175 |  1 gsport.s    175 | Code        | 11 |         |    2 | 00/20C2 : A9 21       |                LDA   #>B4800          
+  176 |  1 gsport.s    176 | Empty       | 11 |         |    0 | 00/20C4               |                                       
+  177 |  1 gsport.s    177 | Code        | 11 |         |    3 | 00/20C4 : 8E D4 20    | _SETBAUD       STX   _BAUDRD+1        
+  178 |  1 gsport.s    178 | Code        | 11 |         |    3 | 00/20C7 : 8D D5 20    |                STA   _BAUDRD+2        
+  179 |  1 gsport.s    179 | Empty       | 11 |         |    0 | 00/20CA               |                                       
+  180 |  1 gsport.s    180 | Code        | 11 |         |    2 | 00/20CA : A2 C2       |                LDX   #{{2}!$C0}       
+  181 |  1 gsport.s    181 | Code        | 11 |         |    2 | 00/20CC : A0 20       |                LDY   #{{2}*16}        
+  182 |  1 gsport.s    182 | Code        | 11 |         |    3 | 00/20CE : 20 51 20    |                JSR   DOINIT           
+  183 |  1 gsport.s    183 | Empty       | 11 |         |    0 | 00/20D1               |                                       
+  184 |  1 gsport.s    184 | Code        | 11 |         |    2 | 00/20D1 : A2 00       |                LDX   #0               
+  185 |  1 gsport.s    185 | Code        | 11 |         |    2 | 00/20D3 : B5 FF       | _BAUDRD        LDA   -1,X             
+  186 |  1 gsport.s    186 | Code        | 11 |         |    2 | 00/20D5 : F0 06       |                BEQ   _FINISH          
+  187 |  1 gsport.s    187 | Code        | 11 |         |    3 | 00/20D7 : 20 9B 20    |                JSR   OUT              
+  188 |  1 gsport.s    188 | Code        | 11 |         |    1 | 00/20DA : E8          |                INX                    
+  189 |  1 gsport.s    189 | Code        | 11 |         |    2 | 00/20DB : 80 F6       |                BRA   _BAUDRD          
+  190 |  1 gsport.s    190 | Empty       | 11 |         |    0 | 00/20DD               |                                       
+  191 |  1 gsport.s    191 | Code        | 11 |         |    2 | 00/20DD : A2 00       | _FINISH        LDX   #0               
+  192 |  1 gsport.s    192 | Code        | 11 |         |    3 | 00/20DF : BD F4 20    | _LOOP          LDA   PORTINIT,X       
+  193 |  1 gsport.s    193 | Code        | 11 |         |    2 | 00/20E2 : F0 06       |                BEQ   _DONE            
+  194 |  1 gsport.s    194 | Code        | 11 |         |    3 | 00/20E4 : 20 9B 20    |                JSR   OUT              
+  195 |  1 gsport.s    195 | Code        | 11 |         |    1 | 00/20E7 : E8          |                INX                    
+  196 |  1 gsport.s    196 | Code        | 11 |         |    2 | 00/20E8 : 80 F5       |                BRA   _LOOP            
+  197 |  1 gsport.s    197 | Empty       | 11 |         |    0 | 00/20EA               |                                       
+  198 |  1 gsport.s    198 | Code        | 11 |         |    2 | 00/20EA : A9 1A       | _DONE          LDA   #<OUT_BUF        
+  199 |  1 gsport.s    199 | Code        | 11 |         |    2 | 00/20EC : A2 21       |                LDX   #>OUT_BUF        
+  200 |  1 gsport.s    200 | Code        | 11 |         |    2 | 00/20EE : A0 00       |                LDY   #0               
+  201 |  1 gsport.s    201 | Code        | 11 |         |    3 | 00/20F0 : 20 5D 20    |                JSR   DOEXT            
+  202 |  1 gsport.s    202 | Empty       | 11 |         |    0 | 00/20F3               |                                       
+  203 |  1 gsport.s    203 | Code        | 11 |         |    1 | 00/20F3 : 60          |                RTS                    
+  204 |  1 gsport.s    204 | Empty       | 11 |         |    0 | 00/20F4               |                                       
+  205 |  1 gsport.s    205 | Data        | 11 |         |    1 | 00/20F4 : 01          | PORTINIT       DB    1                
+  206 |  1 gsport.s    206 | Data        | 11 |         |    2 | 00/20F5 : 30 44       |                ASC   '0D'             ;8 bits
+  207 |  1 gsport.s    207 | Data        | 11 |         |    1 | 00/20F7 : 01          |                DB    1                
+  208 |  1 gsport.s    208 | Data        | 11 |         |    2 | 00/20F8 : 30 50       |                ASC   '0P'             ;no parity
+  209 |  1 gsport.s    209 | Comment     | 11 |         |    0 | 00/20FA               | *         db    1
+  210 |  1 gsport.s    210 | Comment     | 11 |         |    0 | 00/20FA               | *         asc   '0N'
+  211 |  1 gsport.s    211 | Data        | 11 |         |    1 | 00/20FA : 01          |                db    1                
+  212 |  1 gsport.s    212 | Data        | 11 |         |    2 | 00/20FB : 4C 44       |                asc   'LD'             
+  213 |  1 gsport.s    213 | Data        | 11 |         |    1 | 00/20FD : 01          |                db    1                
+  214 |  1 gsport.s    214 | Data        | 11 |         |    2 | 00/20FE : 4D 45       |                asc   'ME'             
+  215 |  1 gsport.s    215 | Data        | 11 |         |    1 | 00/2100 : 01          |                DB    1                
+  216 |  1 gsport.s    216 | Data        | 11 |         |    2 | 00/2101 : 41 44       |                ASC   'AD'             ;auto-tabbing
+  217 |  1 gsport.s    217 | Data        | 11 |         |    1 | 00/2103 : 01          |                DB    1                
+  218 |  1 gsport.s    218 | Data        | 11 |         |    2 | 00/2104 : 58 44       |                ASC   'XD'             ;no xoff recognition
+  219 |  1 gsport.s    219 | Data        | 11 |         |    1 | 00/2106 : 01          |                DB    1                
+  220 |  1 gsport.s    220 | Data        | 11 |         |    2 | 00/2107 : 46 44       |                ASC   'FD'             ;no find keyboard
+  221 |  1 gsport.s    221 | Data        | 11 |         |    1 | 00/2109 : 01          |                DB    1                
+  222 |  1 gsport.s    222 | Data        | 11 |         |    2 | 00/210A : 43 44       |                ASC   'CD'             ;no column overflow
+  223 |  1 gsport.s    223 | Data        | 11 |         |    1 | 00/210C : 01          |                DB    1                
+  224 |  1 gsport.s    224 | Data        | 11 |         |    2 | 00/210D : 45 44       |                ASC   'ED'             ;echo disabled
+  225 |  1 gsport.s    225 | Comment     | 11 |         |    0 | 00/210F               | *         DB    1
+  226 |  1 gsport.s    226 | Comment     | 11 |         |    0 | 00/210F               | *         ASC   'MD'       ;no lf masking
+  227 |  1 gsport.s    227 | Data        | 11 |         |    1 | 00/210F : 01          |                DB    1                
+  228 |  1 gsport.s    228 | Data        | 11 |         |    2 | 00/2110 : 42 45       |                ASC   'BE'             ;buffering enabled
+  229 |  1 gsport.s    229 | Data        | 11 |         |    1 | 00/2112 : 01          |                DB    1                
+  230 |  1 gsport.s    230 | Data        | 11 |         |    1 | 00/2113 : 5A          |                ASC   'Z'              
+  231 |  1 gsport.s    231 | Data        | 11 |         |    1 | 00/2114 : 00          |                DB    0                ;no more control characters
+  232 |  1 gsport.s    232 | Empty       | 11 |         |    0 | 00/2115               |                                       
+  233 |  1 gsport.s    233 | Data        | 11 |         |    1 | 00/2115 : 01          | B4800          DB    1                
+  234 |  1 gsport.s    234 | Data        | 11 |         |    4 | 00/2116 : 31 32 42 00 |                ASC   '12B'00          ;accept 4800 Baud
+  235 |  1 gsport.s    235 | Empty       | 11 |         |    0 | 00/211A               |                                       
+  236 |  1 gsport.s    236 | Comment     | 11 |         |    0 | 00/211A               | *-------------------------------
+  237 |  1 gsport.s    237 | Empty       | 11 |         |    0 | 00/211A               |                                       
+  238 |  1 gsport.s    238 | Data        | 11 |         |    1 | 00/211A : 04          | OUT_BUF        DB    4                ;Parameters to set the
+  239 |  1 gsport.s    239 | Data        | 11 |         |    1 | 00/211B : 13          |                DB    $13              ;Output buffer
+  240 |  1 gsport.s    240 | Data        | 11 |         |    2 | 00/211C : 00 00       |                DA    0                
+  241 |  1 gsport.s    241 | Data        | 11 |         |    4 | 00/211E : 34 21 00 00 |                ADRL  BUFFER           ;Buffer it where
+  242 |  1 gsport.s    242 | Data        | 11 |         |    2 | 00/2122 : 02 00       |                DA    2                ;Buffer 2 bytes
+  243 |  1 gsport.s    243 | Empty       | 11 |         |    0 | 00/2124               |                                       
+  244 |  1 gsport.s    244 | Comment     | 11 |         |    0 | 00/2124               | *-------------------------------
+  245 |  1 gsport.s    245 | Empty       | 11 |         |    0 | 00/2124               |                                       
+  246 |  1 gsport.s    246 | Data        | 11 |         |    1 | 00/2124 : 03          | CARRLIST       DB    3                ;Parameter list for
+  247 |  1 gsport.s    247 | Data        | 11 |         |    1 | 00/2125 : 06          |                DB    6                ;detecting carrier drop
+  248 |  1 gsport.s    248 | Data        | 11 |         |    2 | 00/2126 : 00 00       |                DA    0                
+  249 |  1 gsport.s    249 | Data        | 11 |         |    2 | 00/2128 : 00 00       | CARRBITS       DA    0                ;Carrier status here
+  250 |  1 gsport.s    250 | Empty       | 11 |         |    0 | 00/212A               |                                       
+  251 |  1 gsport.s    251 | Comment     | 11 |         |    0 | 00/212A               | *-------------------------------
+  252 |  1 gsport.s    252 | Empty       | 11 |         |    0 | 00/212A               |                                       
+  253 |  1 gsport.s    253 | Data        | 11 |         |    1 | 00/212A : 03          | DTRLST         DB    3                ;Parameter list for
+  254 |  1 gsport.s    254 | Data        | 11 |         |    1 | 00/212B : 0B          |                DB    $B               ;setting DTR
+  255 |  1 gsport.s    255 | Data        | 11 |         |    2 | 00/212C : 00 00       |                DA    0                
+  256 |  1 gsport.s    256 | Data        | 11 |         |    2 | 00/212E : 00 00       | DTRSTATE       DA    0                ;Bit 7 affects DTR
+  257 |  1 gsport.s    257 | Empty       | 11 |         |    0 | 00/2130               |                                       
+  258 |  1 gsport.s    258 | Comment     | 11 |         |    0 | 00/2130               | *-------------------------------
+  259 |  1 gsport.s    259 | Empty       | 11 |         |    0 | 00/2130               |                                       
+  260 |  1 gsport.s    260 | Data        | 11 |         |    1 | 00/2130 : 02          | FLUSHLST       DB    2                ;parameter list for flushing input queue
+  261 |  1 gsport.s    261 | Data        | 11 |         |    1 | 00/2131 : 14          |                DB    $14              
+  262 |  1 gsport.s    262 | Data        | 11 |         |    2 | 00/2132 : 00 00       |                DA    0                
+  263 |  1 gsport.s    263 | Empty       | 11 |         |    0 | 00/2134               |                                       
+  264 |  1 gsport.s    264 | Comment     | 11 |         |    0 | 00/2134               | *-------------------------------
+  265 |  1 gsport.s    265 | Empty       | 11 |         |    0 | 00/2134               |                                       
+  266 |  1 gsport.s    266 | Data        | 11 |         |  256 | 00/2134 : 00 00 00 00 | BUFFER         ds    256              
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+  267 |  1 gsport.s    267 | Empty       | 11 |         |    0 | 00/2234               |                                       
+------+--------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

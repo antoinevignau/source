@@ -6,112 +6,231 @@
 * (c) 2024, Brutal Deluxe Software
 *
 
-*--- Table of NEW sprites
+* Table of NEW sprites
+* +$66 for odd sprites >$A and <$3B
 
-tblSPRITES2
-	da	spr200	; 0
-	da	spr201	; 1
-	da	spr202	; 2
-	da	spr203	; 3
-	da	spr204	; 4
-	da	spr205	; 5
-	da	spr206	; 6
-	da	spr207	; 7
-	da	spr208	; 8
-	da	spr209	; 9
-	da	spr20A
-	da	spr20B
-	da	spr20C
-	da	spr20D
-	da	spr20E
-	da	spr20F
-	da	spr210
-	da	spr211
-	da	spr212
-	da	spr213
-	da	spr214
-	da	spr215
-	da	spr216
-	da	spr217
-	da	spr218
-	da	spr219
-	da	spr21A
-	da	spr21B
-	da	spr21C
-	da	spr21D
-	da	spr21E
-	da	spr21F
-	da	spr220
-	da	spr221
-	da	spr222
-	da	spr223
-	da	spr224
-	da	spr225
-	da	spr226
-	da	spr227
-	da	spr228
-	da	spr229
-	da	spr22A
-	da	spr22B
-	da	spr22C
-	da	spr22D
-	da	spr22E
-	da	spr22F
-	da	spr230
-	da	spr231
-	da	spr232
-	da	spr233
-	da	spr234
-	da	spr235
-	da	spr236
-	da	spr237
-	da	spr238
-	da	spr239
-	da	spr23A
-	da	spr23B
-	da	spr23C
-	da	spr23D
-	da	spr23E
-	da	spr23F
-	da	spr240
-	da	spr241
-	da	spr242
-	da	spr243
-	da	spr244
-	da	spr245
-	da	spr246
-	da	spr247
-	da	spr248
-	da	spr249
-	da	spr24A
-	da	spr24B
-	da	spr24C
-	da	spr24D
-	da	spr24E
-	da	spr24F
-	da	spr250
-	da	spr251
-	da	spr252
-	da	spr253
-	da	spr254
-	da	spr255
-	da	spr256
-	da	spr257
-	da	spr258
-	da	spr259
-	da	spr25A
-	da	spr25B
-	da	spr25C
-	da	spr25D
-	da	spr25E
-	da	spr25F
-	da	spr260
-	da	spr261
-	da	spr262
-	da	spr263
-	da	spr264
-	da	spr265
+tblEVENODD
+*                       0 1 2 3 4 5 6 7 8 9 A B C D E F
+*                       -------------------------------
+	hex	00,00,00,00,00,00,00,00,00,00,00,01,01,01,01,01	; 0..
+	hex	01,01,01,01,01,01,01,01,01,01,01,01,01,01,01,01	; 1..
+	hex	01,01,01,01,01,01,01,01,01,01,01,01,01,01,01,01	; 2..
+	hex	01,01,01,01,01,01,01,01,01,01,01,00,00,00,00,00	; 3..
+	hex	00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00	; 4..
+	hex	00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00	; 5..
+	hex	00,00,00,00,00,00		; 6..
 	
+tblSPRITES2
+	da	spr200	; empty
+	da	spr201	; diggable floor
+	da	spr202	; solid floor
+	da	spr203	; ladder
+	da	spr204	; bar
+	da	spr205	; trap
+	da	spr206	; invisible ladder
+	da	spr207	; chest
+	da	spr208	; foe
+	da	spr209	; hero
+	da	spr20A	; cursor
+
+	da	spr20B	; 
+	da	spr20C	; 
+	da	spr20D	; 
+	da	spr20E	; 
+	da	spr20F	; 
+	da	spr210	; 
+	da	spr211	; 
+	da	spr212	; 
+	da	spr213	; 
+	da	spr214	; 
+	da	spr215	; 
+	da	spr216	; 
+	da	spr217	; 
+	da	spr218	; 
+	da	spr219	; 
+	da	spr21A	; 
+	da	spr21B	; 
+	da	spr21C	; 
+	da	spr21D	; 
+	da	spr21E	; 
+	da	spr21F	; 
+	da	spr220	; 
+	da	spr221	; 
+	da	spr222	; 
+	da	spr223	; 
+	da	spr224	; 
+	da	spr225	; 
+	da	spr226	; 
+	da	spr227	; 
+	da	spr228	; 
+	da	spr229	; 
+	da	spr22A	; 
+	da	spr22B	; 
+	da	spr22C	; 
+	da	spr22D	; 
+	da	spr22E	; 
+	da	spr22F	; 
+	da	spr230	; 
+	da	spr231	; 
+	da	spr232	; 
+	da	spr233	; 
+	da	spr234	; 
+	da	spr235	; 
+	da	spr236	; 
+	da	spr237	; 
+	da	spr238	; 
+	da	spr239	; 
+	da	spr23A	; 
+
+	da	spr23B	; 0
+	da	spr23C	; 1
+	da	spr23D	; 2
+	da	spr23E	; 3
+	da	spr23F	; 4
+	da	spr240	; 5
+	da	spr241	; 6
+	da	spr242	; 7
+	da	spr243	; 8
+	da	spr244	; 9
+	da	spr245	; A
+	da	spr246	; B
+	da	spr247	; C
+	da	spr248	; D
+	da	spr249	; E
+	da	spr24A	; F
+	da	spr24B	; G
+	da	spr24C	; H
+	da	spr24D	; I
+	da	spr24E	; J
+	da	spr24F	; K
+	da	spr250	; L
+	da	spr251	; M
+	da	spr252	; N
+	da	spr253	; O
+	da	spr254	; P
+	da	spr255	; Q
+	da	spr256	; R
+	da	spr257	; S
+	da	spr258	; T
+	da	spr259	; U
+	da	spr25A	; V
+	da	spr25B	; W
+	da	spr25C	; X
+	da	spr25D	; Y
+	da	spr25E	; Z
+	da	spr25F	; >
+	da	spr260	; .
+	da	spr261	; (
+	da	spr262	; )
+	da	spr263	; /
+	da	spr264	; -
+	da	spr265	; <
+
+	da	spr200	; empty
+	da	spr201	; diggable floor
+	da	spr202	; solid floor
+	da	spr203	; ladder
+	da	spr204	; bar
+	da	spr205	; trap
+	da	spr206	; invisible ladder
+	da	spr207	; chest
+	da	spr208	; foe
+	da	spr209	; hero
+	da	spr20A	; cursor
+
+	da	spr30B	; 
+	da	spr30C	; 
+	da	spr30D	; 
+	da	spr30E	; 
+	da	spr30F	; 
+	da	spr310	; 
+	da	spr311	; 
+	da	spr312	; 
+	da	spr313	; 
+	da	spr314	; 
+	da	spr315	; 
+	da	spr316	; 
+	da	spr317	; 
+	da	spr318	; 
+	da	spr319	; 
+	da	spr31A	; 
+	da	spr31B	; 
+	da	spr31C	; 
+	da	spr31D	; 
+	da	spr31E	; 
+	da	spr31F	; 
+	da	spr320	; 
+	da	spr321	; 
+	da	spr322	; 
+	da	spr323	; 
+	da	spr324	; 
+	da	spr325	; 
+	da	spr326	; 
+	da	spr327	; 
+	da	spr328	; 
+	da	spr329	; 
+	da	spr32A	; 
+	da	spr32B	; 
+	da	spr32C	; 
+	da	spr32D	; 
+	da	spr32E	; 
+	da	spr32F	; 
+	da	spr330	; 
+	da	spr331	; 
+	da	spr332	; 
+	da	spr333	; 
+	da	spr334	; 
+	da	spr335	; 
+	da	spr336	; 
+	da	spr337	; 
+	da	spr338	; 
+	da	spr339	; 
+	da	spr33A	; 
+
+	da	spr23B	; 0
+	da	spr23C	; 1
+	da	spr23D	; 2
+	da	spr23E	; 3
+	da	spr23F	; 4
+	da	spr240	; 5
+	da	spr241	; 6
+	da	spr242	; 7
+	da	spr243	; 8
+	da	spr244	; 9
+	da	spr245	; A
+	da	spr246	; B
+	da	spr247	; C
+	da	spr248	; D
+	da	spr249	; E
+	da	spr24A	; F
+	da	spr24B	; G
+	da	spr24C	; H
+	da	spr24D	; I
+	da	spr24E	; J
+	da	spr24F	; K
+	da	spr250	; L
+	da	spr251	; M
+	da	spr252	; N
+	da	spr253	; O
+	da	spr254	; P
+	da	spr255	; Q
+	da	spr256	; R
+	da	spr257	; S
+	da	spr258	; T
+	da	spr259	; U
+	da	spr25A	; V
+	da	spr25B	; W
+	da	spr25C	; X
+	da	spr25D	; Y
+	da	spr25E	; Z
+	da	spr25F	; >
+	da	spr260	; .
+	da	spr261	; (
+	da	spr262	; )
+	da	spr263	; /
+	da	spr264	; -
+	da	spr265	; <
+
 *--- 00..0F
 
 spr200      hex	0000000000	; empty*
@@ -1254,3 +1373,536 @@ spr265	hex	0000000000	; <
 	hex	0044400000
 	hex	0000444000
 	hex	0000004000
+
+*----------------------------------
+* FOR ODD POSITIONS
+*----------------------------------
+
+spr30B	hex	000110000000	; hero run left 1*
+	hex	000911000000
+	hex	000991000000
+	hex	000054400000
+	hex	000555455000
+	hex	095405505900
+	hex	000005500000
+	hex	000055540000
+	hex	000554455100
+	hex	000550000100
+	hex	001150000000
+spr30C	hex	000110000000	; hero run left 2*
+	hex	000911000000
+	hex	009910000000
+	hex	000054000000
+	hex	000055400000
+	hex	000545550000
+	hex	095455090000
+	hex	000555000000
+	hex	000545400000
+	hex	001105540000
+	hex	000000010000
+spr30D	hex	000110000000	; hero run left 3*
+	hex	000911000000
+	hex	000991000000
+	hex	000054400000
+	hex	009055540000
+	hex	005445059000
+	hex	000054000000
+	hex	000555400000
+	hex	005504550000
+	hex	011400054000
+	hex	000000001000
+spr30E	hex	000001100000	; hero ladder 1*
+	hex	000001100090
+	hex	000005445540
+	hex	090055554000
+	hex	055554540000
+	hex	000005550000
+	hex	000005454000
+	hex	000054055000
+	hex	000054041100
+	hex	000054000000
+	hex	000014000000
+spr30F	hex	000000110000	; hero dig left 1*
+	hex	000000911000
+	hex	000000991000
+	hex	000000054000
+	hex	00F000554400
+	hex	000F09544500
+	hex	000010045500
+	hex	000600055400
+	hex	000000055000
+	hex	000000055000
+	hex	000000115000
+spr310	hex	000000011000	; hero run right 2*
+	hex	000000119000
+	hex	000000199000
+	hex	000000540000
+	hex	000005550000
+	hex	000055545000
+	hex	000090554590
+	hex	000000545000
+	hex	000005545000
+	hex	000055401100
+	hex	000014000000
+spr311	hex	000000011000	; hero run right 3*
+	hex	000000119000
+	hex	000000199000
+	hex	000004540000
+	hex	000055450900
+	hex	000950555400
+	hex	000000540000
+	hex	000005555000
+	hex	000055405500
+	hex	000450004110
+	hex	000100000000
+spr312	hex	000001100000	; hero ladder 2*
+	hex	090001100000
+	hex	055554400000
+	hex	000455540090
+	hex	000055455540
+	hex	000055500000
+	hex	000054500000
+	hex	000550540000
+	hex	001140540000
+	hex	000000540000
+	hex	000000410000
+spr313	hex	009900100990	; hero hole left*
+	hex	005401910540
+	hex	00540D9D0540
+	hex	000555555400
+	hex	000004544000
+	hex	000000540000
+	hex	000004540000
+	hex	000055540000
+	hex	000540054000
+	hex	000540540000
+	hex	000110110000
+spr314	hex	099001009900	; hero hole right*
+	hex	054019105400
+	hex	0540D9D05400
+	hex	005455554000
+	hex	000455400000
+	hex	000055000000
+	hex	000055400000
+	hex	000055540000
+	hex	000054054000
+	hex	000054054000
+	hex	000011011000
+spr315	hex	000990000990	; hero bar right 1*
+	hex	000540110540
+	hex	000650990540
+	hex	000440944400
+	hex	000055554000
+	hex	000004540000
+	hex	000055500000
+	hex	000544500000
+	hex	005400500000
+	hex	001140540000
+	hex	001011000000
+spr316	hex	000990000000	; hero bar right 2*
+	hex	000541100000
+	hex	000549900000
+	hex	000549000000
+	hex	000005444000
+	hex	000005405900
+	hex	000005500000
+	hex	000045440000
+	hex	000054054000
+	hex	000054054000
+	hex	000011011000
+spr317	hex	000000099000	; hero bar right 3*
+	hex	000001154000
+	hex	000009954000
+	hex	000009540000
+	hex	000455500000
+	hex	009504500000
+	hex	000005500000
+	hex	000054540000
+	hex	000450540000
+	hex	000550550000
+	hex	000110110000
+spr318	hex	099000099000	; hero bar left 1*
+	hex	054011054000
+	hex	054099054000
+	hex	005549054000
+	hex	000455450000
+	hex	000045500000
+	hex	000005540000
+	hex	000005445000
+	hex	000005005500
+	hex	000005505100
+	hex	000000110100
+spr319	hex	000000099000	; hero bar left 2*
+	hex	000001154000
+	hex	000009954000
+	hex	000009540000
+	hex	000455500000
+	hex	009504500000
+	hex	000005500000
+	hex	000054540000
+	hex	000450540000
+	hex	000550550000
+	hex	000110110000
+spr31A	hex	000990000000	; hero bar left 3*
+	hex	000541100000
+	hex	000549900000
+	hex	000549000000
+	hex	000005444000
+	hex	000005405900
+	hex	000005500000
+	hex	000045440000
+	hex	000054054000
+	hex	000054054000
+	hex	000011011000
+spr31B	hex	000000000000	;hero dig left 2*
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	00000B000000
+	hex	0000000B0060
+	hex	000B00000060
+	hex	00000B006000
+	hex	000000006000
+spr31C	hex	000000000000	; hero dig left 3*
+	hex	000000000000
+	hex	000000000000
+	hex	00000B000000
+	hex	000000000000
+	hex	000000000B00
+	hex	0B0000000000
+	hex	000B00000000
+	hex	00000BBB0060
+	hex	000B00006660
+	hex	00000B006000
+spr31D	hex	00000B000000	; dig 3*
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	0B000B000000
+	hex	000000000B00
+	hex	0B0000000000
+	hex	000B00000000
+	hex	0000000B0000
+	hex	000000000000
+spr31E	hex	000000000000	; dig 4*
+	hex	000000000000
+	hex	000000000000
+	hex	00000B000000
+	hex	000000000000
+	hex	0B0000000000
+	hex	000000000000
+	hex	000000000B00
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+spr31F	hex	000000000000	; stone 1*
+	hex	0B00000000B0
+	hex	0BBB000B0CB0
+	hex	0AAAA0AA10B0
+	hex	011111111110
+	hex	0CCB1CCCCCC0
+	hex	0BBA1CBBBBB0
+	hex	0BBA1CBBBBB0
+	hex	0BBA1CBBBBB0
+	hex	0AAA1BAAAAA0
+	hex	111111111111
+spr320	hex	000000000000	; stone 2*
+	hex	000000000000
+	hex	000000000000
+	hex	0000000000B0
+	hex	010000000010
+	hex	0CCB00000CC0
+	hex	0BBA1C0B00B0
+	hex	0BBA1CBBB0B0
+	hex	0BBA1CBBBBB0
+	hex	0AAA1BAAAAA0
+	hex	111111111111
+spr321	hex	000000000000	; stone 3*
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	0C00000000C0
+	hex	0BB0000000B0
+	hex	0B0A0000B0B0
+	hex	0BBA100BBBB0
+	hex	0AAA1BAAAAA0
+	hex	111111111111
+spr322	hex	000000000000	; stone 4*
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	00B000000000
+	hex	0B00A0000000
+	hex	0BBBA10B0000
+	hex	0AAAA1BAA0A0
+	hex	111111111111
+spr323	hex	000000000000	; stone 5*
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	0B0000000000
+	hex	0A00100A00A0
+	hex	111111111111
+spr324	hex	000000000000	; stone 6*
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+spr325	hex	000011000000	; hero dig right 1*
+	hex	000119000000
+	hex	000199000000
+	hex	000540000000
+	hex	005455000F00
+	hex	00544590F000
+	hex	005540010000
+	hex	004550006000
+	hex	000550000000
+	hex	000550000000
+	hex	000511000000
+spr326	hex	000000000000	; hero dig right 2*
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	00000B000000
+	hex	000B000B0000
+	hex	00600B000000
+	hex	006660000B00
+	hex	000060000000
+spr327	hex	000000000000	; hero dig right 3*
+	hex	000000000000
+	hex	000000000000
+	hex	00000B000000
+	hex	000000000000
+	hex	000000000B00
+	hex	0BBB00000000
+	hex	006000000000
+	hex	00600BBB0000
+	hex	00006000B000
+	hex	00006000B000
+spr328	hex	000000011000	; foe run right 1*
+	hex	000000E16000
+	hex	00000011B000
+	hex	000008870000
+	hex	000887888000
+	hex	001808807810
+	hex	000008800000
+	hex	000078880000
+	hex	001887788000
+	hex	001000088000
+	hex	000000081100
+spr329	hex	000000011000	; foe run right 2*
+	hex	000000E16000
+	hex	00000011B000
+	hex	000000870000
+	hex	000008880000
+	hex	000088878000
+	hex	000010887810
+	hex	000000878000
+	hex	000008878000
+	hex	000887011000
+	hex	000017000000
+spr32A	hex	000000011000	; foe run right 3*
+	hex	000000E16000
+	hex	00000011B000
+	hex	000007870000
+	hex	000088780100
+	hex	000180888700
+	hex	000000870000
+	hex	000008888000
+	hex	000088708800
+	hex	000780007110
+	hex	000100000000
+spr32B	hex	000110000000	; foe run left 2*
+	hex	00061E000000
+	hex	000B11000000
+	hex	000087000000
+	hex	000088700000
+	hex	000878880000
+	hex	018788010000
+	hex	000888000000
+	hex	000878700000
+	hex	001108870000
+	hex	000000810000
+spr32C	hex	000110000000	; foe run left 3*
+	hex	00061E000000
+	hex	000B11000000
+	hex	000087700000
+	hex	001088870000
+	hex	007887081000
+	hex	000078000000
+	hex	000888700000
+	hex	008807880000
+	hex	011700087000
+	hex	000000001000
+spr32D	hex	000110000110	; foe bar right 1*
+	hex	000870110870
+	hex	00087E060870
+	hex	000770B77700
+	hex	000088887000
+	hex	000007870000
+	hex	000088800000
+	hex	000877800000
+	hex	008700800000
+	hex	001708700000
+	hex	001011000000
+spr32E	hex	000110000000	; foe bar right 2*
+	hex	000871100000
+	hex	0008761E0000
+	hex	000087B00000
+	hex	000008777000
+	hex	000008708100
+	hex	000008800000
+	hex	000078770000
+	hex	000087087000
+	hex	000087087000
+	hex	000011011000
+spr32F	hex	000000011000	; foe bar right 3*
+	hex	000001187000
+	hex	0000E1687000
+	hex	00000B870000
+	hex	000788800000
+	hex	001807800000
+	hex	000008800000
+	hex	000087870000
+	hex	000780870000
+	hex	000880880000
+	hex	000110110000
+spr330	hex	011000011000	; foe bar left 1*
+	hex	087011087000
+	hex	087061E87000
+	hex	00887B087000
+	hex	000788780000
+	hex	000078800000
+	hex	000008870000
+	hex	000008778000
+	hex	000008008800
+	hex	000008808100
+	hex	000000110100
+spr331	hex	000000011000	; foe bar left 2*
+	hex	000001187000
+	hex	0000E1687000
+	hex	00000B870000
+	hex	000788800000
+	hex	001807800000
+	hex	000008800000
+	hex	000087870000
+	hex	000780870000
+	hex	000880880000
+	hex	000110110000
+spr332	hex	000110000000	; foe bar left 3*
+	hex	000871100000
+	hex	0008761E0000
+	hex	000087B00000
+	hex	000008777000
+	hex	000008708100
+	hex	000008800000
+	hex	000078770000
+	hex	000087087000
+	hex	000087087000
+	hex	000011011000
+spr333	hex	000011000000	; foe ladder 1*
+	hex	000E11E00100
+	hex	000008778870
+	hex	010088887000
+	hex	088887870000
+	hex	000008880000
+	hex	000008787000
+	hex	000087088000
+	hex	000087071100
+	hex	000087000000
+	hex	000017000000
+spr334	hex	000001100000	; foe ladder 2*
+	hex	0100E11E0000
+	hex	088887700000
+	hex	000788870010
+	hex	000088788870
+	hex	000088800000
+	hex	000087800000
+	hex	000880870000
+	hex	001170870000
+	hex	000000870000
+	hex	000000710000
+spr335	hex	011001001100	; foe hole right*
+	hex	087E161E8700
+	hex	08701B108700
+	hex	008788887000
+	hex	000788700000
+	hex	000088000000
+	hex	000088700000
+	hex	000088870000
+	hex	000087087000
+	hex	000087087000
+	hex	000011011000
+spr336	hex	001100100110	; foe hole left*
+	hex	0087E161E870
+	hex	008701B10870
+	hex	000888888700
+	hex	000007877000
+	hex	000000870000
+	hex	000007870000
+	hex	000088870000
+	hex	000870870000
+	hex	000870870000
+	hex	000110110000
+spr337	hex	000000000000	; floor 2 bars*
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	0B0000000000
+	hex	0A00100A00A0
+	hex	111111111111
+spr338	hex	000000000000	; floor 4 bars*
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	00B000000000
+	hex	0B00A0000000
+	hex	0BBBA10B0000
+	hex	0AAAA1BAA0A0
+	hex	111111111111
+spr339	hex	000000000000	; foe resurrects 1*
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000016100000
+	hex	008888888000
+spr33A	hex	000000000000	; foe resurrects 2*
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000000000000
+	hex	000001000000
+	hex	008701610800
+	hex	008888888800

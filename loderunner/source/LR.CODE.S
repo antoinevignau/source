@@ -4988,6 +4988,7 @@ outerCOUT	lda	#0
 * DRAW SPRITE AT X,Y - TOTO
 *---------------------------------------
 * draw a sprite at real HGR X,Y (eg. 175,111)
+* +$66 for odd sprites >$A and <$3B
 
 drawSPRITEXY
 	stx	theXSCREEN
@@ -5003,8 +5004,19 @@ drawSPRITEXY
 	adc	ptrHGR1
 	sta	ptrHGR1
 	sta	ptrHGR2
+
+	lda	theA
+	and	#$ff
+	tax
+	lda	tblEVENODD,x
+	and	#$ff
+	beq	noEVENODD
 	
-	lda	theA	; X for sprite
+	lda	theXSCREEN
+	lsr
+	bcs	drawSPRODD
+
+noEVENODD	lda	theA	; X for sprite
 	and	#$ff
 	asl
 	tax
@@ -5048,13 +5060,64 @@ outerDSXY	lda	#0
 	sep	#$30
 	rts
 
-	mx	%11
+	mx	%00
 
+*---------- Draw IMPAIR
+
+drawSPRODD	lda	theA	; X for sprite
+	and	#$ff
+	clc
+	adc	#$66	; le dŽbut des sprites impairs
+	asl
+	tax
+	lda	tblSPRITES,x
+	sta	ptrSPR
+
+	lda	#sprHEIGHT
+	sta	nbLINES2
+
+outerDSXY2	lda	#0
+	tax
+	tay
+
+	sep	#$30
+
+]lp	lda	(ptrSPR),y
+	tax
+	and	tblMASK,x
+	ora	[ptrHGR2],y
+	sta	[ptrHGR1],y
+
+	iny
+	cpy	#sprBYTES+1
+	bcc	]lp
+	
+	rep	#$30
+
+	lda	ptrHGR2
+	clc
+	adc	#160
+	sta	ptrHGR2
+	sta	ptrHGR1
+	
+	lda	ptrSPR
+	clc
+	adc	#sprBYTES+1
+	sta	ptrSPR
+	
+	dec	nbLINES2
+	bne	outerDSXY2
+	sep	#$30
+	rts
+
+	mx	%11
+	
 *---------------------------------------
 * DRAW SPRITE AT X,Y WITH COLLISION - TUTU
 *---------------------------------------
 * $52: 00 if no collision (empty background)
 *    <>00 if collision
+* +$66 for odd sprites >$A and <$3B
 
 drawSPRXYCOLLISION
 	stx	theXSCREEN
@@ -5072,8 +5135,19 @@ drawSPRXYCOLLISION
 	adc	ptrHGR1
 	sta	ptrHGR1
 	sta	ptrHGR2
+
+	lda	theA
+	and	#$ff
+	tax
+	lda	tblEVENODD,x
+	and	#$ff
+	beq	noCEVENODD
 	
-	lda	theA	; X for sprite
+	lda	theXSCREEN
+	lsr
+	bcs	drawSPRCODD
+
+noCEVENODD	lda	theA	; X for sprite
 	and	#$ff
 	asl
 	tax
@@ -5121,6 +5195,63 @@ outerXYCOL	lda	#0
 	
 	dec	nbLINES2
 	bne	outerXYCOL
+	sep	#$30
+	rts
+
+	mx	%00
+
+*---------- Draw IMPAIR
+
+drawSPRCODD	lda	theA	; X for sprite
+	and	#$ff
+	clc
+	adc	#$66
+	asl
+	tax
+	lda	tblSPRITES,x
+	sta	ptrSPR
+
+	lda	#sprHEIGHT
+	sta	nbLINES2
+
+outerXYCOL2	lda	#0
+	tax
+	tay
+	
+	sep	#$30
+
+]lp	lda	[ptrHGR1],Y	; 0..1
+	eor	[ptrHGR2],Y	; si HGR1=HGR2 => 0
+	tax
+	and	tblMASK,x
+	ora	fgCOLLISION
+	sta	fgCOLLISION
+
+	lda	[ptrHGR2],y	; 0..1
+	tax
+	and	tblMASK,x
+	ora	(ptrSPR),y
+	sta	[ptrHGR1],y
+
+	iny
+	cpy	#sprBYTES+1
+	bcc	]lp
+	
+	rep	#$30
+
+	lda	ptrHGR2
+	clc
+	adc	#160
+	sta	ptrHGR2
+	sta	ptrHGR1
+	
+	lda	ptrSPR
+	clc
+	adc	#sprBYTES+1
+	sta	ptrSPR
+	
+	dec	nbLINES2
+	bne	outerXYCOL2
 	sep	#$30
 	rts
 

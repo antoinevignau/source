@@ -1,0 +1,616 @@
+------+------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File      Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1 dlld.s      1 | Comment     | 11 |         |    0 | 00/8000               | *
+    2 |  1 dlld.s      2 | Comment     | 11 |         |    0 | 00/8000               | * DLLD
+    3 |  1 dlld.s      3 | Comment     | 11 |         |    0 | 00/8000               | * Let's play Dragon's Lair :-)
+    4 |  1 dlld.s      4 | Comment     | 11 |         |    0 | 00/8000               | *
+    5 |  1 dlld.s      5 | Comment     | 11 |         |    0 | 00/8000               | * (c) 2024, Brutal Deluxe Software
+    6 |  1 dlld.s      6 | Comment     | 11 |         |    0 | 00/8000               | *
+    7 |  1 dlld.s      7 | Empty       | 11 |         |    0 | 00/8000               |                                                       
+    8 |  1 dlld.s      8 | Directive   | 11 |         |    0 | 00/8000               |                        mx              %11            
+    9 |  1 dlld.s      9 | Directive   | 11 |         |    0 | 00/8000               |                        org             $2000          
+   10 |  1 dlld.s     10 | Directive   | 11 |         |    0 | 00/2000               |                        lst             off            
+   11 |  1 dlld.s     11 | Empty       | 11 |         |    0 | 00/2000               |                                                       
+   12 |  1 dlld.s     12 | Comment     | 11 |         |    0 | 00/2000               | *-----------------------------------
+   13 |  1 dlld.s     13 | Comment     | 11 |         |    0 | 00/2000               | * MACROS
+   14 |  1 dlld.s     14 | Comment     | 11 |         |    0 | 00/2000               | *-----------------------------------
+   15 |  1 dlld.s     15 | Empty       | 11 |         |    0 | 00/2000               |                                                       
+   16 |  1 dlld.s     16 | Directive   | 11 |         |    0 | 00/2000               | _sendLD                mac                            
+   17 |  1 dlld.s     17 | Directive   | 11 |         |    0 | 00/2000               |                        ldx             #>]1           
+   18 |  1 dlld.s     18 | Directive   | 11 |         |    0 | 00/2000               |                        ldy             #<]1           
+   19 |  1 dlld.s     19 | Directive   | 11 |         |    0 | 00/2000               |                        jsr             sendSERIAL     
+   20 |  1 dlld.s     20 | Directive   | 11 |         |    0 | 00/2000               |                        eom                            
+   21 |  1 dlld.s     21 | Empty       | 11 |         |    0 | 00/2000               |                                                       
+   22 |  1 dlld.s     22 | Directive   | 11 |         |    0 | 00/2000               | _receiveLD             mac                            
+   23 |  1 dlld.s     23 | Directive   | 11 |         |    0 | 00/2000               |                        ldx             #>]1           
+   24 |  1 dlld.s     24 | Directive   | 11 |         |    0 | 00/2000               |                        ldy             #<]1           
+   25 |  1 dlld.s     25 | Directive   | 11 |         |    0 | 00/2000               |                        jsr             receiveSERIAL  
+   26 |  1 dlld.s     26 | Directive   | 11 |         |    0 | 00/2000               |                        eom                            
+   27 |  1 dlld.s     27 | Empty       | 11 |         |    0 | 00/2000               |                                                       
+   28 |  1 dlld.s     28 | Directive   | 11 |         |    0 | 00/2000               | _sendLDCommand         mac                            
+   29 |  1 dlld.s     29 | Directive   | 11 |         |    0 | 00/2000               |                        ldx             #>]1           
+   30 |  1 dlld.s     30 | Directive   | 11 |         |    0 | 00/2000               |                        ldy             #<]1           
+   31 |  1 dlld.s     31 | Directive   | 11 |         |    0 | 00/2000               |                        jsr             sendLDCommand  
+   32 |  1 dlld.s     32 | Directive   | 11 |         |    0 | 00/2000               |                        eom                            
+   33 |  1 dlld.s     33 | Empty       | 11 |         |    0 | 00/2000               |                                                       
+   34 |  1 dlld.s     34 | Directive   | 11 |         |    0 | 00/2000               | _sendreceiveLD         mac                            
+   35 |  1 dlld.s     35 | Directive   | 11 |         |    0 | 00/2000               |                        ldx             #>]1           
+   36 |  1 dlld.s     36 | Directive   | 11 |         |    0 | 00/2000               |                        ldy             #<]1           
+   37 |  1 dlld.s     37 | Directive   | 11 |         |    0 | 00/2000               |                        jsr             sendreceiveLD  
+   38 |  1 dlld.s     38 | Directive   | 11 |         |    0 | 00/2000               |                        eom                            
+   39 |  1 dlld.s     39 | Empty       | 11 |         |    0 | 00/2000               |                                                       
+   40 |  1 dlld.s     40 | Directive   | 11 |         |    0 | 00/2000               | _readSTRING            mac                            
+   41 |  1 dlld.s     41 | Directive   | 11 |         |    0 | 00/2000               |                        ldx             #>]1           
+   42 |  1 dlld.s     42 | Directive   | 11 |         |    0 | 00/2000               |                        ldy             #<]1           
+   43 |  1 dlld.s     43 | Directive   | 11 |         |    0 | 00/2000               |                        jsr             receiveSERIAL  
+   44 |  1 dlld.s     44 | Directive   | 11 |         |    0 | 00/2000               |                        eom                            
+   45 |  1 dlld.s     45 | Empty       | 11 |         |    0 | 00/2000               |                                                       
+   46 |  1 dlld.s     46 | Directive   | 11 |         |    0 | 00/2000               | _sendSTRING            mac                            
+   47 |  1 dlld.s     47 | Directive   | 11 |         |    0 | 00/2000               |                        ldx             #>]1           
+   48 |  1 dlld.s     48 | Directive   | 11 |         |    0 | 00/2000               |                        ldy             #<]1           
+   49 |  1 dlld.s     49 | Directive   | 11 |         |    0 | 00/2000               |                        jsr             sendSerialString
+   50 |  1 dlld.s     50 | Directive   | 11 |         |    0 | 00/2000               |                        eom                            
+   51 |  1 dlld.s     51 | Empty       | 11 |         |    0 | 00/2000               |                                                       
+   52 |  1 dlld.s     52 | Comment     | 11 |         |    0 | 00/2000               | *-----------------------------------
+   53 |  1 dlld.s     53 | Comment     | 11 |         |    0 | 00/2000               | * EQUATES
+   54 |  1 dlld.s     54 | Comment     | 11 |         |    0 | 00/2000               | *-----------------------------------
+   55 |  1 dlld.s     55 | Empty       | 11 |         |    0 | 00/2000               |                                                       
+   56 |  1 dlld.s     56 | Equivalence | 11 |         |    0 | 00/2000               | dpFROM                 =               $fc            
+   57 |  1 dlld.s     57 | Equivalence | 11 |         |    0 | 00/2000               | dpTO                   =               {$fc}+2        
+   58 |  1 dlld.s     58 | Empty       | 11 |         |    0 | 00/2000               |                                                       
+   59 |  1 dlld.s     59 | Equivalence | 11 |         |    0 | 00/2000               | KBD                    =               $c000          
+   60 |  1 dlld.s     60 | Equivalence | 11 |         |    0 | 00/2000               | KBDSTROBE              =               $c010          
+   61 |  1 dlld.s     61 | Equivalence | 11 |         |    0 | 00/2000               | RDVBLBAR               =               $c019          
+   62 |  1 dlld.s     62 | Empty       | 11 |         |    0 | 00/2000               |                                                       
+   63 |  1 dlld.s     63 | Equivalence | 11 |         |    0 | 00/2000               | HOME                   =               $fc58          
+   64 |  1 dlld.s     64 | Equivalence | 11 |         |    0 | 00/2000               | WAIT                   =               $fca8          
+   65 |  1 dlld.s     65 | Equivalence | 11 |         |    0 | 00/2000               | COUT                   =               $fded          
+   66 |  1 dlld.s     66 | Empty       | 11 |         |    0 | 00/2000               |                                                       
+   67 |  1 dlld.s     67 | Equivalence | 11 |         |    0 | 00/2000               | chrCTRLA               =               $01            
+   68 |  1 dlld.s     68 | Equivalence | 11 |         |    0 | 00/2000               | chrLINEFEED            =               $0a            
+   69 |  1 dlld.s     69 | Equivalence | 11 |         |    0 | 00/2000               | chrRETURN              =               $0d            
+   70 |  1 dlld.s     70 | Equivalence | 11 |         |    0 | 00/2000               | chrSPACE               =               $20            
+   71 |  1 dlld.s     71 | Empty       | 11 |         |    0 | 00/2000               |                                                       
+   72 |  1 dlld.s     72 | Comment     | 11 |         |    0 | 00/2000               | *-----------------------------------
+   73 |  1 dlld.s     73 | Comment     | 11 |         |    0 | 00/2000               | * CODE
+   74 |  1 dlld.s     74 | Comment     | 11 |         |    0 | 00/2000               | *-----------------------------------
+   75 |  1 dlld.s     75 | Empty       | 11 |         |    0 | 00/2000               |                                                       
+   76 |  1 dlld.s     76 | Code        | 11 |         |    3 | 00/2000 : 20 EF 20    |                        jsr             initSERIAL     ; set the serial addresses
+   77 |  1 dlld.s     77 | Code        | 11 |         |    3 | 00/2003 : 20 59 20    |                        jsr             initPORT       ; init the serial port for LD support
+   78 |  1 dlld.s     78 | Code        | 11 |         |    3 | 00/2006 : 20 18 20    |                        jsr             initLDDS       ; show text
+   79 |  1 dlld.s     79 | Code        | 11 |         |    3 | 00/2009 : 20 27 20    |                        jsr             initLDCO       ; close the door
+   80 |  1 dlld.s     80 | Code        | 11 |         |    3 | 00/200C : 20 2F 20    |                        jsr             initLDSA       ; spin the disc
+   81 |  1 dlld.s     81 | Code        | 11 |         |    3 | 00/200F : 4C 37 20    |                        jmp             initLDPL       ; start playing
+   82 |  1 dlld.s     82 | Code        | 11 |         |    3 | 00/2012 : 4C 3F 20    |                        jmp             initLDC        ; get register C
+   83 |  1 dlld.s     83 | Empty       | 11 |         |    0 | 00/2015               |                                                       
+   84 |  1 dlld.s     84 | Code        | 11 |         |    3 | 00/2015 : 4C 08 21    |                        jmp             resetSERIAL    ; do not activate it when code is light
+   85 |  1 dlld.s     85 | Comment     | 11 |         |    0 | 00/2018               | 			; or all commands will not be handled
+   86 |  1 dlld.s     86 | Empty       | 11 |         |    0 | 00/2018               |                                                       
+   87 |  1 dlld.s     87 | Comment     | 11 |         |    0 | 00/2018               | *-----------------------------------
+   88 |  1 dlld.s     88 | Comment     | 11 |         |    0 | 00/2018               | * LASERDISC
+   89 |  1 dlld.s     89 | Comment     | 11 |         |    0 | 00/2018               | *-----------------------------------
+   90 |  1 dlld.s     90 | Empty       | 11 |         |    0 | 00/2018               |                                                       
+   91 |  1 dlld.s     91 | Macro       | 11 |         |    0 | 00/2018               | initLDDS               _sendLDCommand  #strDS         ; 4-28 DISPLAY TEXT
+   92 |  1 dlld.s     91 | Code        | 11 |         |    2 | 00/2018 : A2 22       |                        ldx             #>#strDS       
+   93 |  1 dlld.s     91 | Code        | 11 |         |    2 | 00/201A : A0 41       |                        ldy             #<#strDS       
+   94 |  1 dlld.s     91 | Code        | 11 |         |    3 | 00/201C : 20 2D 21    |                        jsr             sendLDCommand  
+   95 |  1 dlld.s     92 | Macro       | 11 |         |    0 | 00/201F               |                        _sendLDCommand  #strAV         ; 4-28 DISPLAY TEXT
+   96 |  1 dlld.s     92 | Code        | 11 |         |    2 | 00/201F : A2 22       |                        ldx             #>#strAV       
+   97 |  1 dlld.s     92 | Code        | 11 |         |    2 | 00/2021 : A0 48       |                        ldy             #<#strAV       
+   98 |  1 dlld.s     92 | Code        | 11 |         |    3 | 00/2023 : 20 2D 21    |                        jsr             sendLDCommand  
+   99 |  1 dlld.s     93 | Code        | 11 |         |    1 | 00/2026 : 60          |                        rts                            
+  100 |  1 dlld.s     94 | Macro       | 11 |         |    0 | 00/2027               | initLDCO               _sendLDCommand  #strCO         ; 4-11 CLOSE
+  101 |  1 dlld.s     94 | Code        | 11 |         |    2 | 00/2027 : A2 22       |                        ldx             #>#strCO       
+  102 |  1 dlld.s     94 | Code        | 11 |         |    2 | 00/2029 : A0 50       |                        ldy             #<#strCO       
+  103 |  1 dlld.s     94 | Code        | 11 |         |    3 | 00/202B : 20 2D 21    |                        jsr             sendLDCommand  
+  104 |  1 dlld.s     95 | Code        | 11 |         |    1 | 00/202E : 60          |                        rts                            
+  105 |  1 dlld.s     96 | Macro       | 11 |         |    0 | 00/202F               | initLDSA               _sendLDCommand  #strSA         ; 4-12 START
+  106 |  1 dlld.s     96 | Code        | 11 |         |    2 | 00/202F : A2 22       |                        ldx             #>#strSA       
+  107 |  1 dlld.s     96 | Code        | 11 |         |    2 | 00/2031 : A0 53       |                        ldy             #<#strSA       
+  108 |  1 dlld.s     96 | Code        | 11 |         |    3 | 00/2033 : 20 2D 21    |                        jsr             sendLDCommand  
+  109 |  1 dlld.s     97 | Code        | 11 |         |    1 | 00/2036 : 60          |                        rts                            
+  110 |  1 dlld.s     98 | Macro       | 11 |         |    0 | 00/2037               | initLDPL               _sendLDCommand  #strPL         ; 4-13 PLAY
+  111 |  1 dlld.s     98 | Code        | 11 |         |    2 | 00/2037 : A2 22       |                        ldx             #>#strPL       
+  112 |  1 dlld.s     98 | Code        | 11 |         |    2 | 00/2039 : A0 56       |                        ldy             #<#strPL       
+  113 |  1 dlld.s     98 | Code        | 11 |         |    3 | 00/203B : 20 2D 21    |                        jsr             sendLDCommand  
+  114 |  1 dlld.s     99 | Code        | 11 |         |    1 | 00/203E : 60          |                        rts                            
+  115 |  1 dlld.s    100 | Macro       | 11 |         |    0 | 00/203F               | initLDC                _sendLDCommand  #strC          ; 4-45 $C
+  116 |  1 dlld.s    100 | Code        | 11 |         |    2 | 00/203F : A2 22       |                        ldx             #>#strC        
+  117 |  1 dlld.s    100 | Code        | 11 |         |    2 | 00/2041 : A0 59       |                        ldy             #<#strC        
+  118 |  1 dlld.s    100 | Code        | 11 |         |    3 | 00/2043 : 20 2D 21    |                        jsr             sendLDCommand  
+  119 |  1 dlld.s    101 | Code        | 11 |         |    1 | 00/2046 : 60          |                        rts                            
+  120 |  1 dlld.s    102 | Empty       | 11 |         |    0 | 00/2047               |                                                       
+  121 |  1 dlld.s    103 | Comment     | 11 |         |    0 | 00/2047               | *---------- Send LD command and Receive answer
+  122 |  1 dlld.s    104 | Empty       | 11 |         |    0 | 00/2047               |                                                       
+  123 |  1 dlld.s    105 | Empty       | 11 |         |    0 | 00/2047               | sendreceiveLD                                         
+  124 |  1 dlld.s    106 | Code        | 11 |         |    3 | 00/2047 : 20 FE 21    |                        jsr             sendSERIAL     
+  125 |  1 dlld.s    107 | Empty       | 11 |         |    0 | 00/204A               |                                                       
+  126 |  1 dlld.s    108 | Code        | 11 |         |    1 | 00/204A : EA          |                        nop                            
+  127 |  1 dlld.s    109 | Code        | 11 |         |    2 | 00/204B : A9 96       |                        lda             #150           
+  128 |  1 dlld.s    110 | Code        | 11 |         |    3 | 00/204D : 20 A8 FC    |                        jsr             {$fca8}        
+  129 |  1 dlld.s    111 | Code        | 11 |         |    1 | 00/2050 : EA          |                        nop                            
+  130 |  1 dlld.s    112 | Empty       | 11 |         |    0 | 00/2051               |                                                       
+  131 |  1 dlld.s    113 | Macro       | 11 |         |    0 | 00/2051               |                        _readSTRING     #responseBUF   
+  132 |  1 dlld.s    113 | Code        | 11 |         |    2 | 00/2051 : A2 23       |                        ldx             #>#responseBUF 
+  133 |  1 dlld.s    113 | Code        | 11 |         |    2 | 00/2053 : A0 00       |                        ldy             #<#responseBUF 
+  134 |  1 dlld.s    113 | Code        | 11 |         |    3 | 00/2055 : 20 C2 21    |                        jsr             receiveSERIAL  
+  135 |  1 dlld.s    114 | Code        | 11 |         |    1 | 00/2058 : 60          |                        rts                            
+  136 |  1 dlld.s    115 | Empty       | 11 |         |    0 | 00/2059               |                                                       
+  137 |  1 dlld.s    116 | Comment     | 11 |         |    0 | 00/2059               | *-----------------------------------
+  138 |  1 dlld.s    117 | Comment     | 11 |         |    0 | 00/2059               | * SERIAL PORT (MODEM)
+  139 |  1 dlld.s    118 | Comment     | 11 |         |    0 | 00/2059               | *-----------------------------------
+  140 |  1 dlld.s    119 | Empty       | 11 |         |    0 | 00/2059               |                                                       
+  141 |  1 dlld.s    120 | Comment     | 11 |         |    0 | 00/2059               | *---------- Init modem port for LD support
+  142 |  1 dlld.s    121 | Empty       | 11 |         |    0 | 00/2059               |                                                       
+  143 |  1 dlld.s    122 | Code        | 11 |         |    3 | 00/2059 : 20 08 21    | initPORT               jsr             resetSERIAL    
+  144 |  1 dlld.s    123 | Macro       | 11 |         |    0 | 00/205C               |                        _sendSTRING     #strED         ; Don't echo output
+  145 |  1 dlld.s    123 | Code        | 11 |         |    2 | 00/205C : A2 22       |                        ldx             #>#strED       
+  146 |  1 dlld.s    123 | Code        | 11 |         |    2 | 00/205E : A0 1A       |                        ldy             #<#strED       
+  147 |  1 dlld.s    123 | Code        | 11 |         |    3 | 00/2060 : 20 3F 21    |                        jsr             sendSerialString
+  148 |  1 dlld.s    124 | Macro       | 11 |         |    0 | 00/2063               |                        _sendSTRING     #strBE         ; Input buffering: on
+  149 |  1 dlld.s    124 | Code        | 11 |         |    2 | 00/2063 : A2 22       |                        ldx             #>#strBE       
+  150 |  1 dlld.s    124 | Code        | 11 |         |    2 | 00/2065 : A0 1D       |                        ldy             #<#strBE       
+  151 |  1 dlld.s    124 | Code        | 11 |         |    3 | 00/2067 : 20 3F 21    |                        jsr             sendSerialString
+  152 |  1 dlld.s    125 | Macro       | 11 |         |    0 | 00/206A               |                        _sendSTRING     #str12B        ; Baud rate: 4800 BPS
+  153 |  1 dlld.s    125 | Code        | 11 |         |    2 | 00/206A : A2 22       |                        ldx             #>#str12B      
+  154 |  1 dlld.s    125 | Code        | 11 |         |    2 | 00/206C : A0 20       |                        ldy             #<#str12B      
+  155 |  1 dlld.s    125 | Code        | 11 |         |    3 | 00/206E : 20 3F 21    |                        jsr             sendSerialString
+  156 |  1 dlld.s    126 | Macro       | 11 |         |    0 | 00/2071               |                        _sendSTRING     #str0D         ; Data/Stop bits: 8/1
+  157 |  1 dlld.s    126 | Code        | 11 |         |    2 | 00/2071 : A2 22       |                        ldx             #>#str0D       
+  158 |  1 dlld.s    126 | Code        | 11 |         |    2 | 00/2073 : A0 24       |                        ldy             #<#str0D       
+  159 |  1 dlld.s    126 | Code        | 11 |         |    3 | 00/2075 : 20 3F 21    |                        jsr             sendSerialString
+  160 |  1 dlld.s    127 | Macro       | 11 |         |    0 | 00/2078               |                        _sendSTRING     #str0P         ; Parity: none
+  161 |  1 dlld.s    127 | Code        | 11 |         |    2 | 00/2078 : A2 22       |                        ldx             #>#str0P       
+  162 |  1 dlld.s    127 | Code        | 11 |         |    2 | 00/207A : A0 27       |                        ldy             #<#str0P       
+  163 |  1 dlld.s    127 | Code        | 11 |         |    3 | 00/207C : 20 3F 21    |                        jsr             sendSerialString
+  164 |  1 dlld.s    128 | Macro       | 11 |         |    0 | 00/207F               |                        _sendSTRING     #str0N         ; Line length: 0
+  165 |  1 dlld.s    128 | Code        | 11 |         |    2 | 00/207F : A2 22       |                        ldx             #>#str0N       
+  166 |  1 dlld.s    128 | Code        | 11 |         |    2 | 00/2081 : A0 2A       |                        ldy             #<#str0N       
+  167 |  1 dlld.s    128 | Code        | 11 |         |    3 | 00/2083 : 20 3F 21    |                        jsr             sendSerialString
+  168 |  1 dlld.s    129 | Macro       | 11 |         |    0 | 00/2086               |                        _sendSTRING     #strAD         ; Do not implement basic tabs
+  169 |  1 dlld.s    129 | Code        | 11 |         |    2 | 00/2086 : A2 22       |                        ldx             #>#strAD       
+  170 |  1 dlld.s    129 | Code        | 11 |         |    2 | 00/2088 : A0 2D       |                        ldy             #<#strAD       
+  171 |  1 dlld.s    129 | Code        | 11 |         |    3 | 00/208A : 20 3F 21    |                        jsr             sendSerialString
+  172 |  1 dlld.s    130 | Macro       | 11 |         |    0 | 00/208D               |                        _sendSTRING     #strCD         ; Disable line formatting
+  173 |  1 dlld.s    130 | Code        | 11 |         |    2 | 00/208D : A2 22       |                        ldx             #>#strCD       
+  174 |  1 dlld.s    130 | Code        | 11 |         |    2 | 00/208F : A0 30       |                        ldy             #<#strCD       
+  175 |  1 dlld.s    130 | Code        | 11 |         |    3 | 00/2091 : 20 3F 21    |                        jsr             sendSerialString
+  176 |  1 dlld.s    131 | Macro       | 11 |         |    0 | 00/2094               |                        _sendSTRING     #strXD         ; Ignore XOFF
+  177 |  1 dlld.s    131 | Code        | 11 |         |    2 | 00/2094 : A2 22       |                        ldx             #>#strXD       
+  178 |  1 dlld.s    131 | Code        | 11 |         |    2 | 00/2096 : A0 33       |                        ldy             #<#strXD       
+  179 |  1 dlld.s    131 | Code        | 11 |         |    3 | 00/2098 : 20 3F 21    |                        jsr             sendSerialString
+  180 |  1 dlld.s    132 | Macro       | 11 |         |    0 | 00/209B               |                        _sendSTRING     #strFD         ; Disable keyboard input
+  181 |  1 dlld.s    132 | Code        | 11 |         |    2 | 00/209B : A2 22       |                        ldx             #>#strFD       
+  182 |  1 dlld.s    132 | Code        | 11 |         |    2 | 00/209D : A0 36       |                        ldy             #<#strFD       
+  183 |  1 dlld.s    132 | Code        | 11 |         |    3 | 00/209F : 20 3F 21    |                        jsr             sendSerialString
+  184 |  1 dlld.s    133 | Macro       | 11 |         |    0 | 00/20A2               |                        _sendSTRING     #strLD         ; Do not add line feeds after CR
+  185 |  1 dlld.s    133 | Code        | 11 |         |    2 | 00/20A2 : A2 22       |                        ldx             #>#strLD       
+  186 |  1 dlld.s    133 | Code        | 11 |         |    2 | 00/20A4 : A0 39       |                        ldy             #<#strLD       
+  187 |  1 dlld.s    133 | Code        | 11 |         |    3 | 00/20A6 : 20 3F 21    |                        jsr             sendSerialString
+  188 |  1 dlld.s    134 | Macro       | 11 |         |    0 | 00/20A9               |                        _sendSTRING     #strME         ; Mask line feed in
+  189 |  1 dlld.s    134 | Code        | 11 |         |    2 | 00/20A9 : A2 22       |                        ldx             #>#strME       
+  190 |  1 dlld.s    134 | Code        | 11 |         |    2 | 00/20AB : A0 3C       |                        ldy             #<#strME       
+  191 |  1 dlld.s    134 | Code        | 11 |         |    3 | 00/20AD : 20 3F 21    |                        jsr             sendSerialString
+  192 |  1 dlld.s    135 | Macro       | 11 |         |    0 | 00/20B0               |                        _sendSTRING     #strZ          ; Suppress control characters
+  193 |  1 dlld.s    135 | Code        | 11 |         |    2 | 00/20B0 : A2 22       |                        ldx             #>#strZ        
+  194 |  1 dlld.s    135 | Code        | 11 |         |    2 | 00/20B2 : A0 3F       |                        ldy             #<#strZ        
+  195 |  1 dlld.s    135 | Code        | 11 |         |    3 | 00/20B4 : 20 3F 21    |                        jsr             sendSerialString
+  196 |  1 dlld.s    136 | Code        | 11 |         |    3 | 00/20B7 : 20 BB 20    |                        jsr             checkSerialInputReady
+  197 |  1 dlld.s    137 | Code        | 11 |         |    1 | 00/20BA : 60          |                        rts                            
+  198 |  1 dlld.s    138 | Empty       | 11 |         |    0 | 00/20BB               |                                                       
+  199 |  1 dlld.s    139 | Comment     | 11 |         |    0 | 00/20BB               | *---------- Check serial input is ready
+  200 |  1 dlld.s    140 | Empty       | 11 |         |    0 | 00/20BB               |                                                       
+  201 |  1 dlld.s    141 | Empty       | 11 |         |    0 | 00/20BB               | checkSerialInputReady                                 
+  202 |  1 dlld.s    142 | Code        | 11 |         |    2 | 00/20BB : A9 01       | ozunid_1               lda             #1             ; is input ready?
+  203 |  1 dlld.s    143 | Code        | 11 |         |    3 | 00/20BD : 20 7E 21    |                        jsr             statusSERIAL   
+  204 |  1 dlld.s    144 | Code        | 11 |         |    2 | 00/20C0 : F0 05       |                        beq             checkSIR9      
+  205 |  1 dlld.s    145 | Empty       | 11 |         |    0 | 00/20C2               |                                                       
+  206 |  1 dlld.s    146 | Code        | 11 |         |    3 | 00/20C2 : 20 1E 21    |                        jsr             readSERIAL     ; exit when nothing to read
+  207 |  1 dlld.s    147 | Code        | 11 |         |    2 | 00/20C5 : B0 F4       |                        bcs             ozunid_1       
+  208 |  1 dlld.s    148 | Empty       | 11 |         |    0 | 00/20C7               |                                                       
+  209 |  1 dlld.s    149 | Code        | 11 |         |    1 | 00/20C7 : 60          | checkSIR9              rts                            
+  210 |  1 dlld.s    150 | Empty       | 11 |         |    0 | 00/20C8               |                                                       
+  211 |  1 dlld.s    151 | Comment     | 11 |         |    0 | 00/20C8               | *---------- Check the input is ready
+  212 |  1 dlld.s    152 | Empty       | 11 |         |    0 | 00/20C8               |                                                       
+  213 |  1 dlld.s    153 | Empty       | 11 |         |    0 | 00/20C8               | checkInputReady                                       
+  214 |  1 dlld.s    154 | Code        | 11 |         |    3 | 00/20C8 : 20 E9 20    | ozunid_2               jsr             getSerialInputStatus
+  215 |  1 dlld.s    155 | Code        | 11 |         |    2 | 00/20CB : D0 13       |                        bne             checkIR1       
+  216 |  1 dlld.s    156 | Empty       | 11 |         |    0 | 00/20CD               |                                                       
+  217 |  1 dlld.s    157 | Code        | 11 |         |    2 | 00/20CD : A9 00       |                        lda             #0             
+  218 |  1 dlld.s    158 | Code        | 11 |         |    3 | 00/20CF : 20 A8 FC    |                        jsr             {$fca8}        
+  219 |  1 dlld.s    159 | Code        | 11 |         |    3 | 00/20D2 : 20 A8 FC    |                        jsr             {$fca8}        
+  220 |  1 dlld.s    160 | Empty       | 11 |         |    0 | 00/20D5               |                                                       
+  221 |  1 dlld.s    161 | Code        | 11 |         |    3 | 00/20D5 : AD 00 C0    |                        lda             {$c000}        
+  222 |  1 dlld.s    162 | Code        | 11 |         |    2 | 00/20D8 : 10 EE       |                        bpl             ozunid_2       
+  223 |  1 dlld.s    163 | Code        | 11 |         |    3 | 00/20DA : 2C 10 C0    |                        bit             {$c010}        
+  224 |  1 dlld.s    164 | Code        | 11 |         |    2 | 00/20DD : A9 01       |                        lda             #1             
+  225 |  1 dlld.s    165 | Code        | 11 |         |    1 | 00/20DF : 60          |                        rts                            
+  226 |  1 dlld.s    166 | Code        | 11 |         |    2 | 00/20E0 : A9 00       | checkIR1               lda             #0             
+  227 |  1 dlld.s    167 | Code        | 11 |         |    1 | 00/20E2 : 60          |                        rts                            
+  228 |  1 dlld.s    168 | Empty       | 11 |         |    0 | 00/20E3               |                                                       
+  229 |  1 dlld.s    169 | Comment     | 11 |         |    0 | 00/20E3               | *---------- Get serial output status
+  230 |  1 dlld.s    170 | Empty       | 11 |         |    0 | 00/20E3               |                                                       
+  231 |  1 dlld.s    171 | Empty       | 11 |         |    0 | 00/20E3               | getSerialOutputStatus                                 
+  232 |  1 dlld.s    172 | Code        | 11 |         |    2 | 00/20E3 : A9 00       |                        lda             #0             
+  233 |  1 dlld.s    173 | Code        | 11 |         |    3 | 00/20E5 : 20 7E 21    |                        jsr             statusSERIAL   
+  234 |  1 dlld.s    174 | Code        | 11 |         |    1 | 00/20E8 : 60          |                        rts                            
+  235 |  1 dlld.s    175 | Empty       | 11 |         |    0 | 00/20E9               |                                                       
+  236 |  1 dlld.s    176 | Comment     | 11 |         |    0 | 00/20E9               | *---------- Get serial input status
+  237 |  1 dlld.s    177 | Empty       | 11 |         |    0 | 00/20E9               |                                                       
+  238 |  1 dlld.s    178 | Empty       | 11 |         |    0 | 00/20E9               | getSerialInputStatus                                  
+  239 |  1 dlld.s    179 | Code        | 11 |         |    2 | 00/20E9 : A9 01       |                        lda             #1             
+  240 |  1 dlld.s    180 | Code        | 11 |         |    3 | 00/20EB : 20 7E 21    |                        jsr             statusSERIAL   
+  241 |  1 dlld.s    181 | Code        | 11 |         |    1 | 00/20EE : 60          |                        rts                            
+  242 |  1 dlld.s    182 | Empty       | 11 |         |    0 | 00/20EF               |                                                       
+  243 |  1 dlld.s    183 | Comment     | 11 |         |    0 | 00/20EF               | *---------- Set all addressses
+  244 |  1 dlld.s    184 | Empty       | 11 |         |    0 | 00/20EF               |                                                       
+  245 |  1 dlld.s    185 | Empty       | 11 |         |    0 | 00/20EF               | initSERIAL                                            
+  246 |  1 dlld.s    186 | Code        | 11 |         |    3 | 00/20EF : AD 0D C1    |                        lda             $c10d          
+  247 |  1 dlld.s    187 | Code        | 11 |         |    3 | 00/20F2 : 8D 0D 21    |                        sta             resetSERIAL+5  
+  248 |  1 dlld.s    188 | Code        | 11 |         |    3 | 00/20F5 : AD 0E C1    |                        lda             $c10e          
+  249 |  1 dlld.s    189 | Code        | 11 |         |    3 | 00/20F8 : 8D 23 21    |                        sta             readSERIAL+5   
+  250 |  1 dlld.s    190 | Code        | 11 |         |    3 | 00/20FB : AD 0F C1    |                        lda             $c10f          
+  251 |  1 dlld.s    191 | Code        | 11 |         |    3 | 00/20FE : 8D 74 21    |                        sta             writeSERIAL+5  
+  252 |  1 dlld.s    192 | Code        | 11 |         |    3 | 00/2101 : AD 10 C1    |                        lda             $c110          
+  253 |  1 dlld.s    193 | Code        | 11 |         |    3 | 00/2104 : 8D 83 21    |                        sta             statusSERIAL+5 
+  254 |  1 dlld.s    194 | Code        | 11 |         |    1 | 00/2107 : 60          |                        rts                            
+  255 |  1 dlld.s    195 | Empty       | 11 |         |    0 | 00/2108               |                                                       
+  256 |  1 dlld.s    196 | Comment     | 11 |         |    0 | 00/2108               | *---------- Reset port, restore control panel defaults
+  257 |  1 dlld.s    197 | Empty       | 11 |         |    0 | 00/2108               |                                                       
+  258 |  1 dlld.s    198 | Empty       | 11 |         |    0 | 00/2108               | resetSERIAL                                           
+  259 |  1 dlld.s    199 | Code        | 11 |         |    2 | 00/2108 : A2 C2       |                        ldx             #$c2           
+  260 |  1 dlld.s    200 | Code        | 11 |         |    2 | 00/210A : A0 20       |                        ldy             #$20           
+  261 |  1 dlld.s    201 | Code        | 11 |         |    3 | 00/210C : 20 0D C1    |                        jsr             $c10d          
+  262 |  1 dlld.s    202 | Code        | 11 |         |    2 | 00/210F : B0 04       |                        bcs             resetSER1      
+  263 |  1 dlld.s    203 | Code        | 11 |         |    2 | 00/2111 : A9 00       |                        lda             #0             ; carry clear, not ready
+  264 |  1 dlld.s    204 | Code        | 11 |         |    2 | 00/2113 : F0 02       |                        beq             resetSER2      
+  265 |  1 dlld.s    205 | Code        | 11 |         |    2 | 00/2115 : A9 01       | resetSER1              lda             #1             ; carry set, ready
+  266 |  1 dlld.s    206 | Empty       | 11 |         |    0 | 00/2117               |                                                       
+  267 |  1 dlld.s    207 | Code        | 11 |         |    2 | 00/2117 : E0 00       | resetSER2              cpx             #0             ; check error code
+  268 |  1 dlld.s    208 | Code        | 11 |         |    2 | 00/2119 : F0 02       |                        beq             resetSER3      
+  269 |  1 dlld.s    209 | Code        | 11 |         |    2 | 00/211B : A9 02       |                        lda             #2             ; reset error!
+  270 |  1 dlld.s    210 | Code        | 11 |         |    1 | 00/211D : 60          | resetSER3              rts                            
+  271 |  1 dlld.s    211 | Empty       | 11 |         |    0 | 00/211E               |                                                       
+  272 |  1 dlld.s    212 | Comment     | 11 |         |    0 | 00/211E               | *---------- Wait for and get next character
+  273 |  1 dlld.s    213 | Empty       | 11 |         |    0 | 00/211E               |                                                       
+  274 |  1 dlld.s    214 | Empty       | 11 |         |    0 | 00/211E               | readSERIAL                                            
+  275 |  1 dlld.s    215 | Code        | 11 |         |    2 | 00/211E : A2 C2       |                        ldx             #$c2           ; yes
+  276 |  1 dlld.s    216 | Code        | 11 |         |    2 | 00/2120 : A0 20       |                        ldy             #$20           
+  277 |  1 dlld.s    217 | Code        | 11 |         |    3 | 00/2122 : 20 0E C1    |                        jsr             $c10e          
+  278 |  1 dlld.s    218 | Code        | 11 |         |    2 | 00/2125 : E0 00       |                        cpx             #0             ; carry holds the error
+  279 |  1 dlld.s    219 | Code        | 11 |         |    2 | 00/2127 : F0 02       |                        beq             readSER1       ; and A the character
+  280 |  1 dlld.s    220 | Code        | 11 |         |    1 | 00/2129 : 38          |                        sec                            
+  281 |  1 dlld.s    221 | Data        | 11 |         |    1 | 00/212A : 24          |                        hex             24             
+  282 |  1 dlld.s    222 | Code        | 11 |         |    1 | 00/212B : 18          | readSER1               clc                            
+  283 |  1 dlld.s    223 | Code        | 11 |         |    1 | 00/212C : 60          |                        rts                            
+  284 |  1 dlld.s    224 | Empty       | 11 |         |    0 | 00/212D               |                                                       
+  285 |  1 dlld.s    225 | Comment     | 11 |         |    0 | 00/212D               | *---------- Send a LD command
+  286 |  1 dlld.s    226 | Empty       | 11 |         |    0 | 00/212D               |                                                       
+  287 |  1 dlld.s    227 | Empty       | 11 |         |    0 | 00/212D               | sendLDCommand                                         
+  288 |  1 dlld.s    228 | Code        | 11 |         |    2 | 00/212D : 84 FC       |                        sty             {$fc}          
+  289 |  1 dlld.s    229 | Code        | 11 |         |    2 | 00/212F : 86 FD       |                        stx             {$fc}+1        
+  290 |  1 dlld.s    230 | Empty       | 11 |         |    0 | 00/2131               |                                                       
+  291 |  1 dlld.s    231 | Code        | 11 |         |    3 | 00/2131 : 20 BB 20    |                        jsr             checkSerialInputReady
+  292 |  1 dlld.s    232 | Code        | 11 |         |    2 | 00/2134 : D0 08       |                        bne             sendLDC9       
+  293 |  1 dlld.s    233 | Empty       | 11 |         |    0 | 00/2136               |                                                       
+  294 |  1 dlld.s    234 | Code        | 11 |         |    3 | 00/2136 : 20 4A 21    |                        jsr             sendCRString   
+  295 |  1 dlld.s    235 | Code        | 11 |         |    2 | 00/2139 : D0 03       |                        bne             sendLDC9       
+  296 |  1 dlld.s    236 | Empty       | 11 |         |    0 | 00/213B               |                                                       
+  297 |  1 dlld.s    237 | Code        | 11 |         |    3 | 00/213B : 20 8D 21    |                        jsr             receiveLDAnswer
+  298 |  1 dlld.s    238 | Empty       | 11 |         |    0 | 00/213E               |                                                       
+  299 |  1 dlld.s    239 | Code        | 11 |         |    1 | 00/213E : 60          | sendLDC9               rts                            
+  300 |  1 dlld.s    240 | Empty       | 11 |         |    0 | 00/213F               |                                                       
+  301 |  1 dlld.s    241 | Comment     | 11 |         |    0 | 00/213F               | *---------- Send a serial string (it begins with a 1)
+  302 |  1 dlld.s    242 | Empty       | 11 |         |    0 | 00/213F               |                                                       
+  303 |  1 dlld.s    243 | Empty       | 11 |         |    0 | 00/213F               | sendSerialString                                      
+  304 |  1 dlld.s    244 | Code        | 11 |         |    2 | 00/213F : 84 FC       |                        sty             {$fc}          
+  305 |  1 dlld.s    245 | Code        | 11 |         |    2 | 00/2141 : 86 FD       |                        stx             {$fc}+1        
+  306 |  1 dlld.s    246 | Empty       | 11 |         |    0 | 00/2143               |                                                       
+  307 |  1 dlld.s    247 | Code        | 11 |         |    2 | 00/2143 : A9 01       |                        lda             #{$01}         
+  308 |  1 dlld.s    248 | Code        | 11 |         |    3 | 00/2145 : 20 61 21    |                        jsr             sendSerialCharacter
+  309 |  1 dlld.s    249 | Code        | 11 |         |    2 | 00/2148 : D0 16       |                        bne             sendCRS9       ; on error, jump to the end
+  310 |  1 dlld.s    250 | Comment     | 11 |         |    0 | 00/214A               | 			; or goes below to sendCRString
+  311 |  1 dlld.s    251 | Empty       | 11 |         |    0 | 00/214A               |                                                       
+  312 |  1 dlld.s    252 | Comment     | 11 |         |    0 | 00/214A               | *---------- Send CR string
+  313 |  1 dlld.s    253 | Empty       | 11 |         |    0 | 00/214A               |                                                       
+  314 |  1 dlld.s    254 | Empty       | 11 |         |    0 | 00/214A               | sendCRString                                          
+  315 |  1 dlld.s    255 | Code        | 11 |         |    2 | 00/214A : B2 FC       | ozunid_3               lda             ({$fc})        
+  316 |  1 dlld.s    256 | Code        | 11 |         |    2 | 00/214C : F0 0D       |                        beq             sendCRS1       ; end of string?
+  317 |  1 dlld.s    257 | Code        | 11 |         |    3 | 00/214E : 20 61 21    |                        jsr             sendSerialCharacter
+  318 |  1 dlld.s    258 | Code        | 11 |         |    2 | 00/2151 : D0 0D       |                        bne             sendCRS9       ; error!
+  319 |  1 dlld.s    259 | Empty       | 11 |         |    0 | 00/2153               |                                                       
+  320 |  1 dlld.s    260 | Code        | 11 |         |    2 | 00/2153 : E6 FC       |                        inc             {$fc}          
+  321 |  1 dlld.s    261 | Code        | 11 |         |    2 | 00/2155 : D0 F3       |                        bne             ozunid_3       
+  322 |  1 dlld.s    262 | Code        | 11 |         |    2 | 00/2157 : E6 FD       |                        inc             {$fc}+1        
+  323 |  1 dlld.s    263 | Code        | 11 |         |    2 | 00/2159 : D0 EF       |                        bne             ozunid_3       
+  324 |  1 dlld.s    264 | Empty       | 11 |         |    0 | 00/215B               |                                                       
+  325 |  1 dlld.s    265 | Code        | 11 |         |    2 | 00/215B : A9 0D       | sendCRS1               lda             #{$0d}         ; yes, add a final CR
+  326 |  1 dlld.s    266 | Code        | 11 |         |    3 | 00/215D : 20 61 21    |                        jsr             sendSerialCharacter
+  327 |  1 dlld.s    267 | Code        | 11 |         |    1 | 00/2160 : 60          | sendCRS9               rts                            
+  328 |  1 dlld.s    268 | Empty       | 11 |         |    0 | 00/2161               |                                                       
+  329 |  1 dlld.s    269 | Comment     | 11 |         |    0 | 00/2161               | *---------- Send serial character
+  330 |  1 dlld.s    270 | Empty       | 11 |         |    0 | 00/2161               |                                                       
+  331 |  1 dlld.s    271 | Empty       | 11 |         |    0 | 00/2161               | sendSerialCharacter                                   
+  332 |  1 dlld.s    272 | Code        | 11 |         |    1 | 00/2161 : 48          |                        pha                            
+  333 |  1 dlld.s    273 | Empty       | 11 |         |    0 | 00/2162               |                                                       
+  334 |  1 dlld.s    274 | Code        | 11 |         |    3 | 00/2162 : 20 E3 20    | ozunid_4               jsr             getSerialOutputStatus
+  335 |  1 dlld.s    275 | Code        | 11 |         |    2 | 00/2165 : D0 04       |                        bne             sensSC1        
+  336 |  1 dlld.s    276 | Empty       | 11 |         |    0 | 00/2167               |                                                       
+  337 |  1 dlld.s    277 | Code        | 11 |         |    1 | 00/2167 : 68          |                        pla                            
+  338 |  1 dlld.s    278 | Code        | 11 |         |    2 | 00/2168 : A9 01       |                        lda             #1             ; return busy
+  339 |  1 dlld.s    279 | Code        | 11 |         |    1 | 00/216A : 60          |                        rts                            
+  340 |  1 dlld.s    280 | Empty       | 11 |         |    0 | 00/216B               |                                                       
+  341 |  1 dlld.s    281 | Code        | 11 |         |    1 | 00/216B : 68          | sensSC1                pla                            
+  342 |  1 dlld.s    282 | Code        | 11 |         |    3 | 00/216C : 20 6F 21    |                        jsr             writeSERIAL    
+  343 |  1 dlld.s    283 | Empty       | 11 |         |    0 | 00/216F               |                                                       
+  344 |  1 dlld.s    284 | Comment     | 11 |         |    0 | 00/216F               | *---------- Send character
+  345 |  1 dlld.s    285 | Empty       | 11 |         |    0 | 00/216F               |                                                       
+  346 |  1 dlld.s    286 | Empty       | 11 |         |    0 | 00/216F               | writeSERIAL                                           
+  347 |  1 dlld.s    287 | Code        | 11 |         |    2 | 00/216F : A2 C2       |                        ldx             #$c2           
+  348 |  1 dlld.s    288 | Code        | 11 |         |    2 | 00/2171 : A0 20       |                        ldy             #$20           
+  349 |  1 dlld.s    289 | Code        | 11 |         |    3 | 00/2173 : 20 0F C1    |                        jsr             $c10f          
+  350 |  1 dlld.s    290 | Code        | 11 |         |    2 | 00/2176 : E0 00       |                        cpx             #0             
+  351 |  1 dlld.s    291 | Code        | 11 |         |    2 | 00/2178 : F0 02       |                        beq             writeSER1      
+  352 |  1 dlld.s    292 | Code        | 11 |         |    2 | 00/217A : A2 02       |                        ldx             #2             
+  353 |  1 dlld.s    293 | Code        | 11 |         |    1 | 00/217C : 8A          | writeSER1              txa                            
+  354 |  1 dlld.s    294 | Code        | 11 |         |    1 | 00/217D : 60          |                        rts                            
+  355 |  1 dlld.s    295 | Empty       | 11 |         |    0 | 00/217E               |                                                       
+  356 |  1 dlld.s    296 | Comment     | 11 |         |    0 | 00/217E               | *---------- Inquire if character has been received
+  357 |  1 dlld.s    297 | Empty       | 11 |         |    0 | 00/217E               |                                                       
+  358 |  1 dlld.s    298 | Empty       | 11 |         |    0 | 00/217E               | statusSERIAL                                          
+  359 |  1 dlld.s    299 | Code        | 11 |         |    2 | 00/217E : A2 C2       |                        ldx             #$c2           
+  360 |  1 dlld.s    300 | Code        | 11 |         |    2 | 00/2180 : A0 20       |                        ldy             #$20           
+  361 |  1 dlld.s    301 | Code        | 11 |         |    3 | 00/2182 : 20 10 C1    |                        jsr             $c110          
+  362 |  1 dlld.s    302 | Code        | 11 |         |    2 | 00/2185 : E0 00       |                        cpx             #0             
+  363 |  1 dlld.s    303 | Code        | 11 |         |    2 | 00/2187 : F0 02       |                        beq             statusSER1     
+  364 |  1 dlld.s    304 | Code        | 11 |         |    2 | 00/2189 : A2 02       |                        ldx             #2             
+  365 |  1 dlld.s    305 | Code        | 11 |         |    1 | 00/218B : 8A          | statusSER1             txa                            
+  366 |  1 dlld.s    306 | Code        | 11 |         |    1 | 00/218C : 60          |                        rts                            
+  367 |  1 dlld.s    307 | Empty       | 11 |         |    0 | 00/218D               |                                                       
+  368 |  1 dlld.s    308 | Comment     | 11 |         |    0 | 00/218D               | *---------- Receive a LD answer
+  369 |  1 dlld.s    309 | Empty       | 11 |         |    0 | 00/218D               |                                                       
+  370 |  1 dlld.s    310 | Empty       | 11 |         |    0 | 00/218D               | receiveLDAnswer                                       
+  371 |  1 dlld.s    311 | Code        | 11 |         |    2 | 00/218D : A2 23       |                        ldx             #>responseBUF  
+  372 |  1 dlld.s    312 | Code        | 11 |         |    2 | 00/218F : A0 00       |                        ldy             #<responseBUF  
+  373 |  1 dlld.s    313 | Code        | 11 |         |    3 | 00/2191 : 20 9D 21    |                        jsr             receiveSTRING  
+  374 |  1 dlld.s    314 | Empty       | 11 |         |    0 | 00/2194               |                                                       
+  375 |  1 dlld.s    315 | Code        | 11 |         |    3 | 00/2194 : AD 00 23    |                        lda             responseBUF    
+  376 |  1 dlld.s    316 | Code        | 11 |         |    2 | 00/2197 : 09 80       |                        ora             #$80           
+  377 |  1 dlld.s    317 | Code        | 11 |         |    3 | 00/2199 : 20 ED FD    |                        jsr             {$fded}        
+  378 |  1 dlld.s    318 | Code        | 11 |         |    1 | 00/219C : 60          |                        rts                            
+  379 |  1 dlld.s    319 | Empty       | 11 |         |    0 | 00/219D               |                                                       
+  380 |  1 dlld.s    320 | Comment     | 11 |         |    0 | 00/219D               | *---------- Receive String
+  381 |  1 dlld.s    321 | Empty       | 11 |         |    0 | 00/219D               |                                                       
+  382 |  1 dlld.s    322 | Empty       | 11 |         |    0 | 00/219D               | receiveSTRING                                         
+  383 |  1 dlld.s    323 | Code        | 11 |         |    2 | 00/219D : 84 FE       |                        sty             {{$fc}+2}      
+  384 |  1 dlld.s    324 | Code        | 11 |         |    2 | 00/219F : 86 FF       |                        stx             {{$fc}+2}+1    
+  385 |  1 dlld.s    325 | Empty       | 11 |         |    0 | 00/21A1               |                                                       
+  386 |  1 dlld.s    326 | Code        | 11 |         |    3 | 00/21A1 : 20 C8 20    | ozunid_5               jsr             checkInputReady
+  387 |  1 dlld.s    327 | Code        | 11 |         |    2 | 00/21A4 : C9 01       |                        cmp             #1             
+  388 |  1 dlld.s    328 | Code        | 11 |         |    2 | 00/21A6 : D0 01       |                        bne             receiveSTR1    
+  389 |  1 dlld.s    329 | Code        | 11 |         |    1 | 00/21A8 : 60          |                        rts                            
+  390 |  1 dlld.s    330 | Empty       | 11 |         |    0 | 00/21A9               |                                                       
+  391 |  1 dlld.s    331 | Code        | 11 |         |    3 | 00/21A9 : 20 1E 21    | receiveSTR1            jsr             readSERIAL     
+  392 |  1 dlld.s    332 | Code        | 11 |         |    2 | 00/21AC : 90 03       |                        bcc             receiveSTR2    
+  393 |  1 dlld.s    333 | Code        | 11 |         |    2 | 00/21AE : A9 02       |                        lda             #2             
+  394 |  1 dlld.s    334 | Code        | 11 |         |    1 | 00/21B0 : 60          |                        rts                            
+  395 |  1 dlld.s    335 | Empty       | 11 |         |    0 | 00/21B1               |                                                       
+  396 |  1 dlld.s    336 | Code        | 11 |         |    2 | 00/21B1 : 92 FE       | receiveSTR2            sta             ({{$fc}+2})    
+  397 |  1 dlld.s    337 | Code        | 11 |         |    2 | 00/21B3 : C9 0D       |                        cmp             #{$0d}         
+  398 |  1 dlld.s    338 | Code        | 11 |         |    2 | 00/21B5 : F0 08       |                        beq             receiveSTR3    
+  399 |  1 dlld.s    339 | Empty       | 11 |         |    0 | 00/21B7               |                                                       
+  400 |  1 dlld.s    340 | Code        | 11 |         |    2 | 00/21B7 : E6 FE       |                        inc             {{$fc}+2}      
+  401 |  1 dlld.s    341 | Code        | 11 |         |    2 | 00/21B9 : D0 E6       |                        bne             ozunid_5       
+  402 |  1 dlld.s    342 | Code        | 11 |         |    2 | 00/21BB : E6 FF       |                        inc             {{$fc}+2}+1    
+  403 |  1 dlld.s    343 | Code        | 11 |         |    2 | 00/21BD : D0 E2       |                        bne             ozunid_5       
+  404 |  1 dlld.s    344 | Empty       | 11 |         |    0 | 00/21BF               |                                                       
+  405 |  1 dlld.s    345 | Code        | 11 |         |    2 | 00/21BF : A9 00       | receiveSTR3            lda             #0             
+  406 |  1 dlld.s    346 | Code        | 11 |         |    1 | 00/21C1 : 60          |                        rts                            
+  407 |  1 dlld.s    347 | Empty       | 11 |         |    0 | 00/21C2               |                                                       
+  408 |  1 dlld.s    348 | Comment     | 11 |         |    0 | 00/21C2               | *---------- Receive string
+  409 |  1 dlld.s    349 | Empty       | 11 |         |    0 | 00/21C2               |                                                       
+  410 |  1 dlld.s    350 | Empty       | 11 |         |    0 | 00/21C2               | receiveSERIAL                                         
+  411 |  1 dlld.s    351 | Code        | 11 |         |    2 | 00/21C2 : 84 FE       |                        sty             {{$fc}+2}      
+  412 |  1 dlld.s    352 | Code        | 11 |         |    2 | 00/21C4 : 86 FF       |                        stx             {{$fc}+2}+1    
+  413 |  1 dlld.s    353 | Empty       | 11 |         |    0 | 00/21C6               |                                                       
+  414 |  1 dlld.s    354 | Code        | 11 |         |    1 | 00/21C6 : EA          | ozunid_6               nop                            
+  415 |  1 dlld.s    355 | Code        | 11 |         |    1 | 00/21C7 : EA          |                        nop                            
+  416 |  1 dlld.s    356 | Code        | 11 |         |    2 | 00/21C8 : A9 01       |                        lda             #1             
+  417 |  1 dlld.s    357 | Code        | 11 |         |    3 | 00/21CA : 20 7E 21    |                        jsr             statusSERIAL   
+  418 |  1 dlld.s    358 | Code        | 11 |         |    2 | 00/21CD : 90 F7       |                        bcc             ozunid_6       
+  419 |  1 dlld.s    359 | Empty       | 11 |         |    0 | 00/21CF               |                                                       
+  420 |  1 dlld.s    360 | Code        | 11 |         |    1 | 00/21CF : EA          |                        nop                            
+  421 |  1 dlld.s    361 | Code        | 11 |         |    1 | 00/21D0 : 18          |                        clc                            
+  422 |  1 dlld.s    362 | Code        | 11 |         |    3 | 00/21D1 : 20 1E 21    |                        jsr             readSERIAL     
+  423 |  1 dlld.s    363 | Code        | 11 |         |    2 | 00/21D4 : 29 7F       |                        and             #$7f           
+  424 |  1 dlld.s    364 | Code        | 11 |         |    1 | 00/21D6 : 48          |                        pha                            
+  425 |  1 dlld.s    365 | Code        | 11 |         |    2 | 00/21D7 : 09 80       |                        ora             #$80           
+  426 |  1 dlld.s    366 | Code        | 11 |         |    3 | 00/21D9 : 20 ED FD    |                        jsr             {$fded}        
+  427 |  1 dlld.s    367 | Code        | 11 |         |    1 | 00/21DC : 68          |                        pla                            
+  428 |  1 dlld.s    368 | Code        | 11 |         |    2 | 00/21DD : C9 20       |                        cmp             #{$20}         
+  429 |  1 dlld.s    369 | Code        | 11 |         |    2 | 00/21DF : B0 E5       |                        bcs             ozunid_6       
+  430 |  1 dlld.s    370 | Code        | 11 |         |    1 | 00/21E1 : 60          |                        rts                            
+  431 |  1 dlld.s    371 | Empty       | 11 |         |    0 | 00/21E2               |                                                       
+  432 |  1 dlld.s    372 | Code        | 11 |         |    2 | 00/21E2 : A0 00       |                        ldy             #0             
+  433 |  1 dlld.s    373 | Code        | 11 |         |    1 | 00/21E4 : 5A          | receiveSER1            phy                            
+  434 |  1 dlld.s    374 | Code        | 11 |         |    2 | 00/21E5 : A9 01       | ozunid_7               lda             #1             ; Do you have input ready?
+  435 |  1 dlld.s    375 | Code        | 11 |         |    3 | 00/21E7 : 20 7E 21    |                        jsr             statusSERIAL   
+  436 |  1 dlld.s    376 | Code        | 11 |         |    2 | 00/21EA : 90 F9       |                        bcc             ozunid_7       ; no
+  437 |  1 dlld.s    377 | Code        | 11 |         |    3 | 00/21EC : 20 1E 21    |                        jsr             readSERIAL     ; yes, jump below
+  438 |  1 dlld.s    378 | Code        | 11 |         |    1 | 00/21EF : 7A          |                        ply                            
+  439 |  1 dlld.s    379 | Code        | 11 |         |    2 | 00/21F0 : 91 FE       |                        sta             ({{$fc}+2}),y  
+  440 |  1 dlld.s    380 | Code        | 11 |         |    2 | 00/21F2 : C9 0D       |                        cmp             #{$0d}         
+  441 |  1 dlld.s    381 | Code        | 11 |         |    2 | 00/21F4 : F0 07       |                        beq             receiveSER9    
+  442 |  1 dlld.s    382 | Code        | 11 |         |    2 | 00/21F6 : C9 0A       |                        cmp             #{$0a}         
+  443 |  1 dlld.s    383 | Code        | 11 |         |    2 | 00/21F8 : F0 03       |                        beq             receiveSER9    
+  444 |  1 dlld.s    384 | Code        | 11 |         |    1 | 00/21FA : C8          |                        iny                            
+  445 |  1 dlld.s    385 | Code        | 11 |         |    2 | 00/21FB : D0 E7       |                        bne             receiveSER1    
+  446 |  1 dlld.s    386 | Code        | 11 |         |    1 | 00/21FD : 60          | receiveSER9            rts                            
+  447 |  1 dlld.s    387 | Empty       | 11 |         |    0 | 00/21FE               |                                                       
+  448 |  1 dlld.s    388 | Comment     | 11 |         |    0 | 00/21FE               | *---------- Send string
+  449 |  1 dlld.s    389 | Empty       | 11 |         |    0 | 00/21FE               |                                                       
+  450 |  1 dlld.s    390 | Code        | 11 |         |    2 | 00/21FE : 84 FC       | sendSERIAL             sty             {$fc}          
+  451 |  1 dlld.s    391 | Code        | 11 |         |    2 | 00/2200 : 86 FD       |                        stx             {$fc}+1        
+  452 |  1 dlld.s    392 | Empty       | 11 |         |    0 | 00/2202               |                                                       
+  453 |  1 dlld.s    393 | Code        | 11 |         |    2 | 00/2202 : A0 00       |                        ldy             #0             
+  454 |  1 dlld.s    394 | Code        | 11 |         |    2 | 00/2204 : B1 FC       | sendSERIAL1            lda             ({$fc}),y      
+  455 |  1 dlld.s    395 | Code        | 11 |         |    2 | 00/2206 : F0 11       |                        beq             sendSERIAL9    
+  456 |  1 dlld.s    396 | Code        | 11 |         |    1 | 00/2208 : 5A          |                        phy                            
+  457 |  1 dlld.s    397 | Code        | 11 |         |    1 | 00/2209 : 48          |                        pha                            
+  458 |  1 dlld.s    398 | Empty       | 11 |         |    0 | 00/220A               |                                                       
+  459 |  1 dlld.s    399 | Code        | 11 |         |    2 | 00/220A : A9 00       | ozunid_8               lda             #0             ; Are you ready to accept output?
+  460 |  1 dlld.s    400 | Code        | 11 |         |    3 | 00/220C : 20 7E 21    |                        jsr             statusSERIAL   
+  461 |  1 dlld.s    401 | Code        | 11 |         |    2 | 00/220F : 90 F9       |                        bcc             ozunid_8       ; no
+  462 |  1 dlld.s    402 | Empty       | 11 |         |    0 | 00/2211               |                                                       
+  463 |  1 dlld.s    403 | Code        | 11 |         |    1 | 00/2211 : 68          |                        pla                            
+  464 |  1 dlld.s    404 | Code        | 11 |         |    3 | 00/2212 : 20 6F 21    |                        jsr             writeSERIAL    
+  465 |  1 dlld.s    405 | Code        | 11 |         |    1 | 00/2215 : 7A          |                        ply                            
+  466 |  1 dlld.s    406 | Code        | 11 |         |    1 | 00/2216 : C8          |                        iny                            
+  467 |  1 dlld.s    407 | Code        | 11 |         |    2 | 00/2217 : D0 EB       |                        bne             sendSERIAL1    ; limit to 256 characters
+  468 |  1 dlld.s    408 | Code        | 11 |         |    1 | 00/2219 : 60          | sendSERIAL9            rts                            
+  469 |  1 dlld.s    409 | Empty       | 11 |         |    0 | 00/221A               |                                                       
+  470 |  1 dlld.s    410 | Comment     | 11 |         |    0 | 00/221A               | *-----------------------------------
+  471 |  1 dlld.s    411 | Comment     | 11 |         |    0 | 00/221A               | * DATA
+  472 |  1 dlld.s    412 | Comment     | 11 |         |    0 | 00/221A               | *-----------------------------------
+  473 |  1 dlld.s    413 | Empty       | 11 |         |    0 | 00/221A               |                                                       
+  474 |  1 dlld.s    414 | Comment     | 11 |         |    0 | 00/221A               | *---------- Serial data
+  475 |  1 dlld.s    415 | Empty       | 11 |         |    0 | 00/221A               |                                                       
+  476 |  1 dlld.s    416 | Data        | 11 |         |    3 | 00/221A : 45 44 00    | strED                  asc             'ED'00         ; *Don't echo output
+  477 |  1 dlld.s    417 | Data        | 11 |         |    3 | 00/221D : 42 45 00    | strBE                  asc             'BE'00         ; *Input buffering: on
+  478 |  1 dlld.s    418 | Data        | 11 |         |    4 | 00/2220 : 31 32 42 00 | str12B                 asc             '12B'00        ; *Baud rate: 4800 BPS
+  479 |  1 dlld.s    419 | Data        | 11 |         |    3 | 00/2224 : 30 44 00    | str0D                  asc             '0D'00         ; *Data/Stop bits: 8/1
+  480 |  1 dlld.s    420 | Data        | 11 |         |    3 | 00/2227 : 30 50 00    | str0P                  asc             '0P'00         ; *Parity: none
+  481 |  1 dlld.s    421 | Data        | 11 |         |    3 | 00/222A : 30 4E 00    | str0N                  asc             '0N'00         ; Line length: 0
+  482 |  1 dlld.s    422 | Data        | 11 |         |    3 | 00/222D : 41 44 00    | strAD                  asc             'AD'00         ; *Do not implement basic tabs
+  483 |  1 dlld.s    423 | Data        | 11 |         |    3 | 00/2230 : 43 44 00    | strCD                  asc             'CD'00         ; *Disable line formatting
+  484 |  1 dlld.s    424 | Data        | 11 |         |    3 | 00/2233 : 58 44 00    | strXD                  asc             'XD'00         ; *Ignore XOFF
+  485 |  1 dlld.s    425 | Data        | 11 |         |    3 | 00/2236 : 46 44 00    | strFD                  asc             'FD'00         ; *Disable keyboard input
+  486 |  1 dlld.s    426 | Data        | 11 |         |    3 | 00/2239 : 4C 44 00    | strLD                  asc             'LD'00         ; Do not add line feeds after CR
+  487 |  1 dlld.s    427 | Data        | 11 |         |    3 | 00/223C : 4D 45 00    | strME                  asc             'ME'00         ; Mask line feed in
+  488 |  1 dlld.s    428 | Data        | 11 |         |    2 | 00/223F : 5A 00       | strZ                   asc             'Z'00          ; *Suppress control characters
+  489 |  1 dlld.s    429 | Empty       | 11 |         |    0 | 00/2241               |                                                       
+  490 |  1 dlld.s    430 | Comment     | 11 |         |    0 | 00/2241               | *---------- Laserdisc
+  491 |  1 dlld.s    431 | Empty       | 11 |         |    0 | 00/2241               |                                                       
+  492 |  1 dlld.s    432 | Data        | 11 |         |    7 | 00/2241 : 31 44 53 20 | strDS                  asc             '1DS CS'00     
+      |                  |             |    |         |      |           43 53 00    |
+  493 |  1 dlld.s    433 | Data        | 11 |         |    8 | 00/2248 : 41 4E 54 4F | strAV                  asc             'ANTOINE'00    
+      |                  |             |    |         |      |           49 4E 45 00 |
+  494 |  1 dlld.s    434 | Data        | 11 |         |    3 | 00/2250 : 43 4F 00    | strCO                  asc             'CO'00         
+  495 |  1 dlld.s    435 | Data        | 11 |         |    3 | 00/2253 : 53 41 00    | strSA                  asc             'SA'00         
+  496 |  1 dlld.s    436 | Data        | 11 |         |    3 | 00/2256 : 50 4C 00    | strPL                  asc             'PL'00         
+  497 |  1 dlld.s    437 | Data        | 11 |         |    3 | 00/2259 : 24 43 00    | strC                   asc             '$C'00         
+  498 |  1 dlld.s    438 | Empty       | 11 |         |    0 | 00/225C               |                                                       
+  499 |  1 dlld.s    439 | Data        | 11 |         |  164 | 00/225C : 00 00 00 00 |                        ds              \              
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+  500 |  1 dlld.s    440 | Empty       | 11 |         |    0 | 00/2300               |                                                       
+  501 |  1 dlld.s    441 | Data        | 11 |         |  256 | 00/2300 : 00 00 00 00 | responseBUF            ds              256            ; LD player response
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+      |                  |             |    |         |      |           00 00 00 00 |
+  502 |  1 dlld.s    442 | Empty       | 11 |         |    0 | 00/2400               |                                                       
+  503 |  1 dlld.s    443 | Comment     | 11 |         |    0 | 00/2400               | *-----------------------------------
+  504 |  1 dlld.s    444 | Comment     | 11 |         |    0 | 00/2400               | * END OF CODE
+  505 |  1 dlld.s    445 | Comment     | 11 |         |    0 | 00/2400               | *-----------------------------------
+  506 |  1 dlld.s    446 | Empty       | 11 |         |    0 | 00/2400               |                                                       
+  507 |  1 dlld.s    447 | Empty       | 11 |         |    0 | 00/2400               |                                                       
+------+------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

@@ -45,7 +45,7 @@ COUT	=	$fded
 * CODE
 *-----------------------------------
 
-	jsr	HOME
+	jsr	showME
 	jsr	initSERIAL	; set the serial addresses
 	jsr	initPORT	; init the serial port for LD support
 
@@ -67,7 +67,7 @@ mainLOOP
 ]lp	cmp	tblKEY,x
 	beq	foundIT
 	inx
-	cpx	#13
+	cpx	#20
 	bcc	]lp
 	bra	mainLOOP
 foundIT	txa
@@ -93,20 +93,37 @@ doIT	ldx	#>strFR	; Set frame and search
 
 *---
 
-doQ	sec
+doESC	sec
 	rts
 
-*---
+*--- Move backwards
 
-doA	lda	#8*30
+doQ	ldx	#>1800	; 1 minute
+	lda	#<1800
 	bne	doREVERSE
-doZ	lda	#5*30
+doW	ldx	#>900	; 30 secondes
+	lda	#<900
 	bne	doREVERSE
-doE	lda	#2*30
+doE	ldx	#>300	; 10 secondes
+	lda	#<300
 	bne	doREVERSE
-doR	lda	#1*30
+doR	ldx	#>150	; 5 secondes
+	lda	#<150
 	bne	doREVERSE
-doT	lda	#1
+doT	ldx	#>90	; 3 secondes
+	lda	#<90
+	bne	doREVERSE
+doA	ldx	#>30	; 30 frames = 1 seconde
+	lda	#<30
+	bne	doREVERSE
+doS	ldx	#>15	; 15 frames
+	lda	#<15
+	bne	doREVERSE
+doD	ldx	#>3	; 3 frames
+	lda	#<3
+	bne	doREVERSE
+doF	ldx	#>1	; 1 frame
+	lda	#<1
 
 doREVERSE	sta	theINDEX
 
@@ -138,19 +155,37 @@ revOK	sta	theFRAME
 	clc
 	rts
 
-*---
+*--- Move forwards
 
-doY	lda	#1
+doY	ldx	#>90	; 3 secondes
+	lda	#<90
 	bne	doFORWARD
-doU	lda	#1*30
+doU	ldx	#>150	; 5 secondes
+	lda	#<150
 	bne	doFORWARD
-doI	lda	#2*30
+doI	ldx	#>300	; 10 secondes
+	lda	#<300
 	bne	doFORWARD
-doO	lda	#5*30
+doO	ldx	#>900	; 30 secondes
+	lda	#<900
 	bne	doFORWARD
-doP	lda	#8*30
+doP	ldx	#>1800	; 1 minute
+	lda	#<1800
+	bne	doFORWARD
+doH	ldx	#>1	; 1 frame
+	lda	#<1
+	bne	doFORWARD
+doJ	ldx	#>3	; 3 frames
+	lda	#<3
+	bne	doFORWARD
+doK	ldx	#>15	; 15 frames
+	lda	#<15
+	bne	doFORWARD
+doL	ldx	#>30	; 30 frames
+	lda	#<30
 
 doFORWARD	sta	theINDEX
+	stx	theINDEX+1
 
 	clc
 	xce
@@ -181,24 +216,6 @@ ffOK	sta	theFRAME
 
 *---
 
-doSPACE	lda	#0
-	eor	#1
-	sta	doSPACE+1
-	bne	doST
-
-	ldx	#>strPL	; play the disc
-	ldy	#<strPL
-	bne	doSPACE2
-
-doST	ldx	#>strST	; still me
-	ldy	#<strST
-
-doSPACE2	jsr	sendLDCommand
-	clc
-	rts
-
-*---
-
 showFRAME	ldx	#>strDS	; on veut la frame number
 	ldy	#<strDS
 	jsr	sendLDCommand
@@ -215,21 +232,20 @@ strRJ	asc	'RJ'00	; stop the player
 strFR	asc	'FR'	; set frame...
 strFRAME	asc	'00001'
 	asc	'SE'00	; ...and search
-strPL	asc	'PL'00	; play laserdisc
-strST	asc	'ST'00	; still
 
 *---
 
 theINDEX	dw	0	; variation en nombre de frames
 theFRAME	dw	1	; the frame number (1.65535)
 
-tblKEY	asc	"X "
-	asc	"QWERTYUIOPF"
+tblKEY	asc	9B"V"
+	asc	"QWERTYUIOP"	; 
+	asc	"ASDFHJKL"
 	
-tblADR	da	doQ	; 0
-	da	doSPACE	; 1
-	da	doA	; 2
-	da	doZ	; 3
+tblADR	da	doESC	; 0
+	da	showFRAME	; 1
+	da	doQ	; 2
+	da	doW	; 3
 	da	doE	; 4
 	da	doR	; 5
 	da	doT	; 6
@@ -238,7 +254,56 @@ tblADR	da	doQ	; 0
 	da	doI	; 9
 	da	doO	; 10
 	da	doP	; 11
-	da	showFRAME	; 12
+	da	doA	; 12
+	da	doS	; 13
+	da	doD	; 14
+	da	doF	; 15
+	da	doH	; 16
+	da	doJ	; 17
+	da	doK	; 18
+	da	doL	; 19
+
+*-----------------------------------
+* TEXT
+*-----------------------------------
+
+showME	jsr	HOME
+	ldx	#>myTEXT
+	stx	dpFROM+1
+	ldy	#<myTEXT
+	sty	dpFROM
+	
+]lp	lda	(dpFROM)
+	beq	showDONE
+	jsr	COUT
+	inc	dpFROM
+	bne	]lp
+	inc	dpFROM+1
+	bne	]lp
+showDONE	rts
+
+*----------
+
+*	asc	"0123456789012345678901234567890123456789"
+
+myTEXT	asc	"DLLD Browser  (c) 2024, Brutal Deluxe > "
+	asc	"----------------------------------------"
+	asc	8d
+	asc	8d
+	asc	"<<              Seconds               >>"
+	asc	"----------------------------------------"
+	asc	"60  30  10  5  3  -  +  3  5  10  30  60"
+	asc	" Q   W   E  R  T        Y  U   I   O   P"
+	asc	8d
+	asc	8d
+	asc	"<<               Frames               >>"
+	asc	"----------------------------------------"
+	asc	"    30  15  3  1  -  +  1  3  15  30    "
+	asc	"     A   S  D  F        H  J   K   L    "
+	asc	8d
+	asc	8d
+	asc	"V to show the frame number"8d
+	asc	"Press ESC to quit"00
 	
 *-----------------------------------
 * SERIAL PORT (MODEM)

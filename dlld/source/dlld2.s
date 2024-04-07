@@ -67,7 +67,7 @@ mainLOOP
 ]lp	cmp	tblKEY,x
 	beq	foundIT
 	inx
-	cpx	#20
+	cpx	#19+1
 	bcc	]lp
 	bra	mainLOOP
 foundIT	txa
@@ -81,7 +81,7 @@ foundIT	txa
 gotoIT	jsr	$bdbd
 	bcc	doIT
 
-	ldx	#>strRJ	; Set frame and search
+	ldx	#>strRJ	; It's the end!
 	ldy	#<strRJ
 	jsr	sendLDCommand
 	rts
@@ -100,28 +100,28 @@ doESC	sec
 
 doQ	ldx	#>1800	; 1 minute
 	lda	#<1800
-	bne	doREVERSE
+	bra	doREVERSE
 doW	ldx	#>900	; 30 secondes
 	lda	#<900
-	bne	doREVERSE
+	bra	doREVERSE
 doE	ldx	#>300	; 10 secondes
 	lda	#<300
-	bne	doREVERSE
+	bra	doREVERSE
 doR	ldx	#>150	; 5 secondes
 	lda	#<150
-	bne	doREVERSE
+	bra	doREVERSE
 doT	ldx	#>90	; 3 secondes
 	lda	#<90
-	bne	doREVERSE
+	bra	doREVERSE
 doA	ldx	#>30	; 30 frames = 1 seconde
 	lda	#<30
-	bne	doREVERSE
+	bra	doREVERSE
 doS	ldx	#>15	; 15 frames
 	lda	#<15
-	bne	doREVERSE
+	bra	doREVERSE
 doD	ldx	#>3	; 3 frames
 	lda	#<3
-	bne	doREVERSE
+	bra	doREVERSE
 doF	ldx	#>1	; 1 frame
 	lda	#<1
 
@@ -159,28 +159,28 @@ revOK	sta	theFRAME
 
 doY	ldx	#>90	; 3 secondes
 	lda	#<90
-	bne	doFORWARD
+	bra	doFORWARD
 doU	ldx	#>150	; 5 secondes
 	lda	#<150
-	bne	doFORWARD
+	bra	doFORWARD
 doI	ldx	#>300	; 10 secondes
 	lda	#<300
-	bne	doFORWARD
+	bra	doFORWARD
 doO	ldx	#>900	; 30 secondes
 	lda	#<900
-	bne	doFORWARD
+	bra	doFORWARD
 doP	ldx	#>1800	; 1 minute
 	lda	#<1800
-	bne	doFORWARD
+	bra	doFORWARD
 doH	ldx	#>1	; 1 frame
 	lda	#<1
-	bne	doFORWARD
+	bra	doFORWARD
 doJ	ldx	#>3	; 3 frames
 	lda	#<3
-	bne	doFORWARD
+	bra	doFORWARD
 doK	ldx	#>15	; 15 frames
 	lda	#<15
-	bne	doFORWARD
+	bra	doFORWARD
 doL	ldx	#>30	; 30 frames
 	lda	#<30
 

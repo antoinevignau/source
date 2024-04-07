@@ -70,7 +70,7 @@
    67 |  1 dlld2.s     67 | Code        | 11 |         |    3 | 00/2020 : DD 5C 21    | ozunid_2          cmp          tblKEY,x       
    68 |  1 dlld2.s     68 | Code        | 11 |         |    2 | 00/2023 : F0 07       |                   beq          foundIT        
    69 |  1 dlld2.s     69 | Code        | 11 |         |    1 | 00/2025 : E8          |                   inx                         
-   70 |  1 dlld2.s     70 | Code        | 11 |         |    2 | 00/2026 : E0 13       |                   cpx          #19            
+   70 |  1 dlld2.s     70 | Code        | 11 |         |    2 | 00/2026 : E0 14       |                   cpx          #19+1          
    71 |  1 dlld2.s     71 | Code        | 11 |         |    2 | 00/2028 : 90 F6       |                   bcc          ozunid_2       
    72 |  1 dlld2.s     72 | Code        | 11 |         |    2 | 00/202A : 80 E7       |                   bra          mainLOOP       
    73 |  1 dlld2.s     73 | Code        | 11 |         |    1 | 00/202C : 8A          | foundIT           txa                         
@@ -84,7 +84,7 @@
    81 |  1 dlld2.s     81 | Code        | 11 |         |    3 | 00/203B : 20 BD BD    | gotoIT            jsr          $bdbd          
    82 |  1 dlld2.s     82 | Code        | 11 |         |    2 | 00/203E : 90 08       |                   bcc          doIT           
    83 |  1 dlld2.s     83 | Empty       | 11 |         |    0 | 00/2040               |                                               
-   84 |  1 dlld2.s     84 | Code        | 11 |         |    2 | 00/2040 : A2 21       |                   ldx          #>strRJ        ; Set frame and search
+   84 |  1 dlld2.s     84 | Code        | 11 |         |    2 | 00/2040 : A2 21       |                   ldx          #>strRJ        ; It's the end!
    85 |  1 dlld2.s     85 | Code        | 11 |         |    2 | 00/2042 : A0 4B       |                   ldy          #<strRJ        
    86 |  1 dlld2.s     86 | Code        | 11 |         |    3 | 00/2044 : 20 3F 24    |                   jsr          sendLDCommand  
    87 |  1 dlld2.s     87 | Code        | 11 |         |    1 | 00/2047 : 60          |                   rts                         
@@ -103,28 +103,28 @@
   100 |  1 dlld2.s    100 | Empty       | 11 |         |    0 | 00/2053               |                                               
   101 |  1 dlld2.s    101 | Code        | 11 |         |    2 | 00/2053 : A2 07       | doQ               ldx          #>1800         ; 1 minute
   102 |  1 dlld2.s    102 | Code        | 11 |         |    2 | 00/2055 : A9 08       |                   lda          #<1800         
-  103 |  1 dlld2.s    103 | Code        | 11 |         |    2 | 00/2057 : D0 2E       |                   bne          doREVERSE      
+  103 |  1 dlld2.s    103 | Code        | 11 |         |    2 | 00/2057 : 80 2E       |                   bra          doREVERSE      
   104 |  1 dlld2.s    104 | Code        | 11 |         |    2 | 00/2059 : A2 03       | doW               ldx          #>900          ; 30 secondes
   105 |  1 dlld2.s    105 | Code        | 11 |         |    2 | 00/205B : A9 84       |                   lda          #<900          
-  106 |  1 dlld2.s    106 | Code        | 11 |         |    2 | 00/205D : D0 28       |                   bne          doREVERSE      
+  106 |  1 dlld2.s    106 | Code        | 11 |         |    2 | 00/205D : 80 28       |                   bra          doREVERSE      
   107 |  1 dlld2.s    107 | Code        | 11 |         |    2 | 00/205F : A2 01       | doE               ldx          #>300          ; 10 secondes
   108 |  1 dlld2.s    108 | Code        | 11 |         |    2 | 00/2061 : A9 2C       |                   lda          #<300          
-  109 |  1 dlld2.s    109 | Code        | 11 |         |    2 | 00/2063 : D0 22       |                   bne          doREVERSE      
+  109 |  1 dlld2.s    109 | Code        | 11 |         |    2 | 00/2063 : 80 22       |                   bra          doREVERSE      
   110 |  1 dlld2.s    110 | Code        | 11 |         |    2 | 00/2065 : A2 00       | doR               ldx          #>150          ; 5 secondes
   111 |  1 dlld2.s    111 | Code        | 11 |         |    2 | 00/2067 : A9 96       |                   lda          #<150          
-  112 |  1 dlld2.s    112 | Code        | 11 |         |    2 | 00/2069 : D0 1C       |                   bne          doREVERSE      
+  112 |  1 dlld2.s    112 | Code        | 11 |         |    2 | 00/2069 : 80 1C       |                   bra          doREVERSE      
   113 |  1 dlld2.s    113 | Code        | 11 |         |    2 | 00/206B : A2 00       | doT               ldx          #>90           ; 3 secondes
   114 |  1 dlld2.s    114 | Code        | 11 |         |    2 | 00/206D : A9 5A       |                   lda          #<90           
-  115 |  1 dlld2.s    115 | Code        | 11 |         |    2 | 00/206F : D0 16       |                   bne          doREVERSE      
+  115 |  1 dlld2.s    115 | Code        | 11 |         |    2 | 00/206F : 80 16       |                   bra          doREVERSE      
   116 |  1 dlld2.s    116 | Code        | 11 |         |    2 | 00/2071 : A2 00       | doA               ldx          #>30           ; 30 frames = 1 seconde
   117 |  1 dlld2.s    117 | Code        | 11 |         |    2 | 00/2073 : A9 1E       |                   lda          #<30           
-  118 |  1 dlld2.s    118 | Code        | 11 |         |    2 | 00/2075 : D0 10       |                   bne          doREVERSE      
+  118 |  1 dlld2.s    118 | Code        | 11 |         |    2 | 00/2075 : 80 10       |                   bra          doREVERSE      
   119 |  1 dlld2.s    119 | Code        | 11 |         |    2 | 00/2077 : A2 00       | doS               ldx          #>15           ; 15 frames
   120 |  1 dlld2.s    120 | Code        | 11 |         |    2 | 00/2079 : A9 0F       |                   lda          #<15           
-  121 |  1 dlld2.s    121 | Code        | 11 |         |    2 | 00/207B : D0 0A       |                   bne          doREVERSE      
+  121 |  1 dlld2.s    121 | Code        | 11 |         |    2 | 00/207B : 80 0A       |                   bra          doREVERSE      
   122 |  1 dlld2.s    122 | Code        | 11 |         |    2 | 00/207D : A2 00       | doD               ldx          #>3            ; 3 frames
   123 |  1 dlld2.s    123 | Code        | 11 |         |    2 | 00/207F : A9 03       |                   lda          #<3            
-  124 |  1 dlld2.s    124 | Code        | 11 |         |    2 | 00/2081 : D0 04       |                   bne          doREVERSE      
+  124 |  1 dlld2.s    124 | Code        | 11 |         |    2 | 00/2081 : 80 04       |                   bra          doREVERSE      
   125 |  1 dlld2.s    125 | Code        | 11 |         |    2 | 00/2083 : A2 00       | doF               ldx          #>1            ; 1 frame
   126 |  1 dlld2.s    126 | Code        | 11 |         |    2 | 00/2085 : A9 01       |                   lda          #<1            
   127 |  1 dlld2.s    127 | Empty       | 11 |         |    0 | 00/2087               |                                               
@@ -168,28 +168,28 @@
   183 |  1 dlld2.s    159 | Empty       | 11 |         |    0 | 00/20C5               |                                               
   184 |  1 dlld2.s    160 | Code        | 11 |         |    2 | 00/20C5 : A2 00       | doY               ldx          #>90           ; 3 secondes
   185 |  1 dlld2.s    161 | Code        | 11 |         |    2 | 00/20C7 : A9 5A       |                   lda          #<90           
-  186 |  1 dlld2.s    162 | Code        | 11 |         |    2 | 00/20C9 : D0 2E       |                   bne          doFORWARD      
+  186 |  1 dlld2.s    162 | Code        | 11 |         |    2 | 00/20C9 : 80 2E       |                   bra          doFORWARD      
   187 |  1 dlld2.s    163 | Code        | 11 |         |    2 | 00/20CB : A2 00       | doU               ldx          #>150          ; 5 secondes
   188 |  1 dlld2.s    164 | Code        | 11 |         |    2 | 00/20CD : A9 96       |                   lda          #<150          
-  189 |  1 dlld2.s    165 | Code        | 11 |         |    2 | 00/20CF : D0 28       |                   bne          doFORWARD      
+  189 |  1 dlld2.s    165 | Code        | 11 |         |    2 | 00/20CF : 80 28       |                   bra          doFORWARD      
   190 |  1 dlld2.s    166 | Code        | 11 |         |    2 | 00/20D1 : A2 01       | doI               ldx          #>300          ; 10 secondes
   191 |  1 dlld2.s    167 | Code        | 11 |         |    2 | 00/20D3 : A9 2C       |                   lda          #<300          
-  192 |  1 dlld2.s    168 | Code        | 11 |         |    2 | 00/20D5 : D0 22       |                   bne          doFORWARD      
+  192 |  1 dlld2.s    168 | Code        | 11 |         |    2 | 00/20D5 : 80 22       |                   bra          doFORWARD      
   193 |  1 dlld2.s    169 | Code        | 11 |         |    2 | 00/20D7 : A2 03       | doO               ldx          #>900          ; 30 secondes
   194 |  1 dlld2.s    170 | Code        | 11 |         |    2 | 00/20D9 : A9 84       |                   lda          #<900          
-  195 |  1 dlld2.s    171 | Code        | 11 |         |    2 | 00/20DB : D0 1C       |                   bne          doFORWARD      
+  195 |  1 dlld2.s    171 | Code        | 11 |         |    2 | 00/20DB : 80 1C       |                   bra          doFORWARD      
   196 |  1 dlld2.s    172 | Code        | 11 |         |    2 | 00/20DD : A2 07       | doP               ldx          #>1800         ; 1 minute
   197 |  1 dlld2.s    173 | Code        | 11 |         |    2 | 00/20DF : A9 08       |                   lda          #<1800         
-  198 |  1 dlld2.s    174 | Code        | 11 |         |    2 | 00/20E1 : D0 16       |                   bne          doFORWARD      
+  198 |  1 dlld2.s    174 | Code        | 11 |         |    2 | 00/20E1 : 80 16       |                   bra          doFORWARD      
   199 |  1 dlld2.s    175 | Code        | 11 |         |    2 | 00/20E3 : A2 00       | doH               ldx          #>1            ; 1 frame
   200 |  1 dlld2.s    176 | Code        | 11 |         |    2 | 00/20E5 : A9 01       |                   lda          #<1            
-  201 |  1 dlld2.s    177 | Code        | 11 |         |    2 | 00/20E7 : D0 10       |                   bne          doFORWARD      
+  201 |  1 dlld2.s    177 | Code        | 11 |         |    2 | 00/20E7 : 80 10       |                   bra          doFORWARD      
   202 |  1 dlld2.s    178 | Code        | 11 |         |    2 | 00/20E9 : A2 00       | doJ               ldx          #>3            ; 3 frames
   203 |  1 dlld2.s    179 | Code        | 11 |         |    2 | 00/20EB : A9 03       |                   lda          #<3            
-  204 |  1 dlld2.s    180 | Code        | 11 |         |    2 | 00/20ED : D0 0A       |                   bne          doFORWARD      
+  204 |  1 dlld2.s    180 | Code        | 11 |         |    2 | 00/20ED : 80 0A       |                   bra          doFORWARD      
   205 |  1 dlld2.s    181 | Code        | 11 |         |    2 | 00/20EF : A2 00       | doK               ldx          #>15           ; 15 frames
   206 |  1 dlld2.s    182 | Code        | 11 |         |    2 | 00/20F1 : A9 0F       |                   lda          #<15           
-  207 |  1 dlld2.s    183 | Code        | 11 |         |    2 | 00/20F3 : D0 04       |                   bne          doFORWARD      
+  207 |  1 dlld2.s    183 | Code        | 11 |         |    2 | 00/20F3 : 80 04       |                   bra          doFORWARD      
   208 |  1 dlld2.s    184 | Code        | 11 |         |    2 | 00/20F5 : A2 00       | doL               ldx          #>30           ; 30 frames
   209 |  1 dlld2.s    185 | Code        | 11 |         |    2 | 00/20F7 : A9 1E       |                   lda          #<30           
   210 |  1 dlld2.s    186 | Empty       | 11 |         |    0 | 00/20F9               |                                               

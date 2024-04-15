@@ -44,8 +44,8 @@ s013	cmp	#4
 	
 s0199	rts
 
-s1_str1	str	'Bill r'8e'cup'8f're une laitue pas tr'8f's fra'94'che'
-s1_str2	str	'Tiens, le journal du jour est arriv'8e
+s1_str1	str	'Bill collects a not very fresh lettuce'
+s1_str2	str	'Here, the newspaper of the day has arrived'
 
 *---
 
@@ -70,8 +70,8 @@ s022	cmp	#2
 	
 s0299	rts
 
-s2_str3	str	'Bill remarque un ancien manuel'
-s2_str2	str	'Saperlipopette ! La carte de cr'8e'dit que Bill pensait avoir perdue '88' tout jamais'
+s2_str3	str	'Bill notices an old manual'
+s2_str2	str	'By crikey! The credit card Bill thought he lost forever'
 
 *---
 
@@ -108,7 +108,7 @@ s032	cmp	#2
 		
 s0399	rts
 
-s3_str2	str	'Fichtre ! Le passeport que Bill dans son inorganisation toute h'8e'ro'95'que avait '8e'gar'8e' apr'8f's un s'8e'jour en Afrique du sud...'
+s3_str2	str	'Damn! The passport that Bill in his heroic disorganization had lost after a stay in South Africa ...'
 
 *---
 
@@ -140,7 +140,7 @@ s05
 	
 s0599	rts
 
-s5_str1	str	'Explorant d'8e'licatement les recoins du moteur du v'8e'hicule, Bill remarque un curieux engin visiblement plac'8e' l'88' '88' des fins hostiles'
+s5_str1	str	'Gently exploring the recesses of the vehicle'27's engine, Bill notices a curious device visibly placed there for hostile purposes.'
 
 *---
 
@@ -176,9 +176,9 @@ s063	cmp	#3
 
 s0699	rts
 
-s6_str1	str	'Baaaaooooouuuuummmmm ! ! ! ! ! ! Sans que Bill ait eu le temps de r'8e'agir, la voiture explose en mille morceaux. Echouer si pr'8f's du but...'
-s6_str2	str	'La voiture d'8e'marre...'
-s6_str3	str	'Un briquet tra'94'nait par l'88'...'
+s6_str1	str	'Baaaaooooouuuuummmmm!!!!!! Without Bill having had time to react, the car explodes into a thousand pieces. Fail so close to the goal...'
+s6_str2	str	'The car starts...'
+s6_str3	str	'A brick was lying around there...'
 *---
 
 s07
@@ -211,7 +211,7 @@ s0901	cmp	#billet_davion
 	
 s0999	rts
 
-s9_str1	str	'L'27'h'99'tesse donne '88' Bill son billet pour le N'27'Gwanal'8e'l'8e
+s9_str1	str	'The hostess gives Bill his ticket to N'27'Gwanal'8e'l'8e
 
 *---
 
@@ -236,8 +236,8 @@ s1001	cmp	#main
 	
 s1099	rts
 
-s10_str1	str	'On ne passe pas !'
-s10_str2	str	'C'27'est en r'8f'gle, vous pouvez passer !'
+s10_str1	str	'We do not pass!'
+s10_str2	str	'It is in order, you can pass!'
 
 *---
 
@@ -264,7 +264,7 @@ s13
 	
 s1399	rts
 
-s13_str3	str	'Les pierres peuvent cacher beaucoup d'27'animaux. Et les serpents sont souvent tr'8f's dangereux...'
+s13_str3	str	'Stones can hide a lot of animals. And snakes are often very dangerous...'
 
 *---
 
@@ -318,10 +318,10 @@ s1503
 
 s1599	rts
 
-s15_str1	str	'Qu'27'ice que c'27'est qu'278d'a ? T'27'y payes pas comme '8d'a...'
-s15_str2	str	'T'27'y es un vrai z'27'aventurier alors ! ! J'27'y t'27'y garde le livre et t'27'y pars avec le dromadaire !'
-s15_str3	str	'Le dromadaire avale la laitue et se baisse pour que Bill parte sur son dos'
-s15_str4	str	'L'27'homme refuse que Bill nourrisse les dromadaires'
+s15_str1	str	'What is that? You don'27't pay it like that...'
+s15_str2	str	'You'27're a real adventurer then !! I keep the book there for you and you go with the dromedary!'
+s15_str3	str	'The dromedary swallows the lettuce and bends down so that Bill goes on his back.'
+s15_str4	str	'The man refuses to let Bill feed the dromaderies'
 
 *---
 
@@ -343,7 +343,7 @@ s1601	rep	#$20
 	jmp	fin
 s1699	rts
 
-s16_str1	str	'Sans moyen de transport s'9e'r et rapide, Bill meurt bient'99't '8e'puis'8e
+s16_str1	str	'Without safe and fast transportation, Bill soon dies exhausted'
 
 *--- Was protection check
 
@@ -376,8 +376,8 @@ s1902	cmp	#machette
 	
 s1999	rts
 
-s19_str1	str	'Les cartes de cr'8e'dit ne sont pas accept'8e'es. Bill va devoir prendre le train sans billet'
-s19_str2	str	'On ne joue pas les fiers-'88'-bras dans ma gare. L'27'homme se rendort...'
+s19_str1	str	'Credit cards are not accepted. Bill'27's gonna have to take the train without a ticket.'
+s19_str2	str	'We do not play proudly in my station. The man goes back to sleep...'
 
 *---
 
@@ -432,8 +432,8 @@ s2004	rep	#$20
 	
 s2099	rts
 
-s20_str4	str	'Le train est arr'90't'8e
-s20_str3	str	'Le contr'99'leur vient et arr'90'te Bill qui n'27'a pas de billet'
+s20_str4	str	'The train is stopped'
+s20_str3	str	'The controller comes and stops Bill, who has no ticket.'
 
 *---
 
@@ -460,7 +460,7 @@ s23
 	
 s2399	rts
 
-s23_str1	str	'La pierre cachait un scorpion. Et les scorpions d'8e'testent '90'tre d'8e'rang'8e's... Mauvais plan'
+s23_str1	str	'
 
 *---
 
@@ -507,8 +507,8 @@ s2501	lda	instruction1
 	
 s2599	rts
 
-s25_str1	str	'Bill est lamin'8e', '8e'crabouill'8e' et atomis'8e' par le mammif'8f're en d'8e'lire'
-s25_str2	str	'Effray'8e' par l'27'engin, l'27'animal prend ses jambes '88' son cou et s'27'enfuit'
+s25_str1	str	'
+s25_str2	str	'
 
 *---
 
@@ -526,7 +526,7 @@ s26
 	
 s2699	rts
 
-s26_str1	str	'Bill arrive '88' couper quelques brindilles'
+s26_str1	str	'
 
 *---
 
@@ -550,7 +550,7 @@ s2701	cmp	#3
 	
 s2799	rts
 
-s27_str3	str	'En le fouillant, Bill d'8e'couvre une photographie'
+s27_str3	str	'
 
 *---
 
@@ -570,7 +570,7 @@ s28
 
 s2899	rts
 
-s28_str1	str	'Bill commence '88' grimper la colline'
+s28_str1	str	'
 
 *---
 
@@ -592,7 +592,7 @@ s2901	rep	#$20
 	jmp	fin
 s2999	rts
 
-s29_str1	str	'L'27'ignoble individu '8e'trangle Bill avec son couteau'
+s29_str1	str	'
 
 *---
 
@@ -609,7 +609,7 @@ s30
 	
 s3099	rts
 
-s30_str2	str	'Manque de chance, la touffe d'27'herbe se d'8e'tache de la roche et Bill tombe dans le vide'
+s30_str2	str	'
 
 *---
 
@@ -655,8 +655,8 @@ s3201	lda	instruction1
 	sta	salle
 s3299	rts
 
-s32_str8	str	'L'27'homme du Professeur rattrape Bill. C'27'en est fini...'
-s32_str1	str	'Bill renverse la pierre dans le vide. Elle assomme le sc'8e'l'8e'rat qui le suivait'
+s32_str8	str	'
+s32_str1	str	'
 
 *---
 
@@ -700,8 +700,8 @@ s3301	lda	instruction1
 	
 s3399	rts
 
-s33_str1	str	'Soudain, un rayon pulv'8e'rise Bill (gniark gniark !)'
-s33_str2	str	'Bill montre la photo '88' la cam'8e'ra qui semble r'8e'agir'
+s33_str1	str	'
+s33_str2	str	'
 
 *---
 
@@ -745,9 +745,9 @@ s3402	cmp	#brindilles
 	
 s3499	rts
 
-s34_str1	str	'Bill allume un feu avec les brindilles...'
-s34_str2	str	'Il n'27'y a rien '88' br'9e'ler dans la pi'8f'ce'
-s34_str3	str	'Et pourquoi ne pas les faire br'9e'ler ?'
+s34_str1	str	'
+s34_str2	str	'
+s34_str3	str	'
 *---
 
 s35
@@ -779,8 +779,8 @@ s3601	lda	#38
 	
 s3699	rts
 
-s36_str1	str	'Avant que Bill ait pu p'8e'n'8e'trer dans le laboratoire du Professeur X., celui-ci saisit une mitraillette et le transforme en passoire'
-s36_str2	str	'Ouf... La porte s'27'ouvre !'
+s36_str1	str	'
+s36_str2	str	'
 
 *---
 
@@ -826,10 +826,10 @@ s3803	lda	instruction1
 	
 s3899	rts
 
-s38_str1	str	'Bill trouve un appeau...'
-s38_str2	str	'Ca alors ! Une mitraillette !'
-s38_str3	str	'Bill aurait d'9e' savoir qu'27'il vaut mieux manipuler des produits toxiques avec des gants...'
-s38_str4	str	'Bon sang ! C'278e'tait du poison ! Bill s'278e'trangle et agonise en quelques minutes'
+s38_str1	str	'
+s38_str2	str	'
+s38_str3	str	'
+s38_str4	str	'
 
 *---
 
@@ -859,7 +859,7 @@ s3901	rep	#$20
 	
 s3999	rts
 
-s39_str1	str	'Le Professeur reste pour inspecter ses hommes !'
+s39_str1	str	'
 
 *---
 
@@ -896,9 +896,9 @@ s4002	lda	#s40_str3
 	
 s4099	rts
 
-s40_str1	str	'Attir'8e' par l'27'appeau, l'27'oiseau vient se poser...'
-s40_str2	str	'De la fum'8e'e chaude s'27'en '8e'chappe'
-s40_str3	str	'On dirait le conduit d'27'une chemin'8e'e'
+s40_str1	str	'
+s40_str2	str	'
+s40_str3	str	'
 
 *---
 
@@ -920,8 +920,8 @@ s4101	lda	#42
 	
 s4199	rts
 
-s41_str1	str	'L'27'oiseau repart aussit'99't'
-s41_str2	str	'L'27'oiseau bouche le conduit de la chemin'8e'e, aussit'99't les hommes du Professeur sortent asphyxi'8e's...'
+s41_str1	str	'
+s41_str2	str	'
 
 *---
 
@@ -972,10 +972,10 @@ s4202	cmp	#machette
 	
 s4299	rts
 
-s42_str1	str	'Les hommes du Professeur '8e'tripent Bill'
-s42_str2	str	'Bill d'8e'gaine sa mitraillette...'
-s42_str3	str	'Et massacre ses agresseurs...'
-s42_str4	str	'Bill engage le combat '88' la machette mais il succombe sous le nombre'
+s42_str1	str	'
+s42_str2	str	'
+s42_str3	str	'
+s42_str4	str	'
 
 *--- Check protection
 
@@ -1022,8 +1022,8 @@ s45
 	
 s4599	rts
 
-s45_str2	str	'Bill tire sur le drapeau. Soudain...'
-s45_str3	str	'Une trappe s'27'ouvre sous ses pieds. Bill est captur'8e' par les hommes du Professeur X.'
+s45_str2	str	'
+s45_str3	str	'
 
 *---
 
@@ -1069,8 +1069,8 @@ s4801	lda	instruction1
 	
 s4899	rts
 
-s48_str6	str	'Le canon r'8e'duit Bill en miettes. Le Professeur X. devient ma'94'tre du monde'
-s48_str1	str	'Bill arrive '88' se lib'8e'rer discr'8f'tement et '88' '8e'teindre la m'8f'che'
+s48_str6	str	'
+s48_str1	str	'
 
 *---
 
@@ -1097,8 +1097,8 @@ s4902	cmp	#1
 	
 s4999	rts
 
-s49_str2	str	'Bill commet une maladresse et se fait mortellement rep'8e'rer par le lieutenant du Professeur...'
-s49_str1	str	'Bill baisse l'27'interrupteur, plongeant la pi'8f'ce enti'8f're dans l'27'obscurit'8e
+s49_str2	str	'
+s49_str1	str	'
 
 *---
 
@@ -1114,7 +1114,7 @@ s50
 	
 s5099	rts
 
-s50_str1	str	'Plut'99't que de s'278e'clipser discr'8f'tement, Bill a cru bon de manifester sa pr'8e'sence...'
+s50_str1	str	'
 
 *---
 
@@ -1190,9 +1190,9 @@ s5105	lda	instruction1
 
 s5199	rts
 
-s51_str2	str	'La base et tout ce qu'27'elle contenait explose. Trop exp'8e'ditif...'
-s51_str4	str	'Bill s'278e'jecte...'
-s51_str6	str	'Voil'88' qui pourra '90'tre utile...'
+s51_str2	str	'
+s51_str4	str	'
+s51_str6	str	'
 
 *---
 
@@ -1288,11 +1288,11 @@ s5206	cmp	#6
 	
 s5299	rts
 
-s52_str1	str	'Bill d'8e'gaine rapidement et tient en respect les deux hommes. Le Professeur doit l'89'cher le F'8e'tiche'
-s52_str2	str	'L'27'homme de main du Professeur supprime froidement Bill'
-s52_str3	str	'La base et tout ce qu'27'elle contenait explose. Trop exp'8e'ditif...'
-s52_str4	str	'Bill s'278e'jecte...'
-s52_str6	str	'Voil'88' qui pourra '90'tre utile...'
+s52_str1	str	'
+s52_str2	str	'
+s52_str3	str	'
+s52_str4	str	'
+s52_str6	str	'
 
 *---
 
@@ -1350,8 +1350,8 @@ s5303	lda	instruction1
 	sta	salle
 s5399	rts
 
-s53_str2	str	'La base et tout ce qu'27'elle contenait explose. Trop exp'8E'ditif...'
-s53_str4	str	'Bill s'278e'jecte...'
+s53_str2	str	'
+s53_str4	str	'
 
 *---
 
@@ -1392,9 +1392,9 @@ s5402	lda	#56
 	
 s5499	rts
 
-s54_str1	str	'A sa chute, Bill est de nouveau captur'8e'. Il ne peut plus contrecarrer les plans du Professeur...'
-s54_str2	str	'La base du Professeur X. est r'8e'duite en miettes. H'8e'las, Bill n'27'a pas r'8e'ussi '88' r'8e'cup'8e'rer le F'8e'tiche'
-s54_str3	str	'FELICITATIONS ! ! Bill a r'8e'cup'8e'r'8e' le F'8e'tiche et d'8e'truit la base du Professeur X. Gageons que celui-ci prendra sa revanche...'
+s54_str1	str	'
+s54_str2	str	'
+s54_str3	str	'
 
 *---
 

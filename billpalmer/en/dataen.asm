@@ -143,26 +143,26 @@ description_objet
 	da	descr_objet19
 	da	descr_objet20
 
-descr_objet1	str	'Une photo du Professeur X. !'
-descr_objet2	str	'Un billet d'27'avion pour le N'27'Gwanal'8e'l'8e
-descr_objet3	str	'Une carte de cr'8e'dit. Il doit bien rester un peu d'27'argent sur le compte'
-descr_objet4	str	'Le passeport. Ins'8e'parable compagnon de l'27'Aventurier'
-descr_objet5	str	'Des brindilles. Ca doit pouvoir br'9e'ler facilement'
-descr_objet6	str	'Une machette (du calme !)'
-descr_objet7	str	'Le fameux f'8e'tiche tant convoit'8e' ! !'
-descr_objet8	str	'Click click, un briquet'
-descr_objet9	str	'La carte d'27'identit'8e' de Bill, quand il prend le m'8e'tro.'
-descr_objet10	str	'Une vieille salade. Inavalable pour un '90'tre un civilis'8e'...'
-descr_objet11	str	'Une souris m'8e'canique. Elle s'27'agite quelques secondes apr'8f's avoir '8e't'8e' remont'8e'e'
-descr_objet12	str	'Une bo'94'te de pa'91'lla. Pas le moment de manger...'
-descr_objet13	str	'Un ouvre-bo'94'te'
-descr_objet14	str	'Le Guide du Parfait Aventurier. Bill n'27'en a plus besoin depuis longtemps !'
-descr_objet15	str	'La bombe semble '90'tre d'8e'sarmorc'8e'e'
-descr_objet16	str	'La Gazette des Aventuriers. Un pigiste r'8e'v'8f'le qu'27'un f'8e'tiche a '8e't'8e' d'8e'rob'8e' au N'27'Gwanal'8e'l'8e' par le Professeur X., ce savant de triste renomm'8e'e'
-descr_objet17	str	'Gardons notre calme : cette mitraillette est charg'8e'e...'
-descr_objet18	str	'Un appeau. Il '8e'met un bruit bizarre quand on souffle dedans'
-descr_objet19	str	'Ce pistolet doit '90'tre utilis'8e' uniquement pour la bonne cause !'
-descr_objet20	str	''
+descr_objet1	str	'A photo of Professor X.!'
+descr_objet2	str	'A plane ticket to N'27'Gwanal'8e'l'8e
+descr_objet3	str	'A credit card. There must be some money left in the account.'
+descr_objet4	str	'Passport. Inseparable companion of the Adventurer'
+descr_objet5	str	'Twigs. It must be able to burn easily'
+descr_objet6	str	'A machete (calm down!)'
+descr_objet7	str	'The famous fetish so coveted!!'
+descr_objet8	str	'Click click, a lighter'
+descr_objet9	str	'Bill'27's ID card when he takes the subway.'
+descr_objet10	str	'An old salad. Not edible for a civilized being...'
+descr_objet11	str	'A mechanical mouse. It shakes a few seconds after being raised'
+descr_objet12	str	'A box of paella. No time to eat...'
+descr_objet13	str	'A can opener'
+descr_objet14	str	'The Perfect Adventurer'27's Guide. Bill hasn'27't needed it for a long time!'
+descr_objet15	str	'The bomb seems to be disarmed'
+descr_objet16	str	'The Adventurer'27's Gazette. A freelance writer reveals that a fetish was stolen from N'27'Gwanal'8e'l'8e' by Professor X., this scholar of sad renown'
+descr_objet17	str	'Let'27's keep calm: this submachine gun is loaded ...'
+descr_objet18	str	'A call. It makes a weird noise when you blow in it'
+descr_objet19	str	'This gun should only be used for a good cause!'
+descr_objet20	str	'
 
 * COORDONNEES DES ZONES, COMMENTAIRES ET DIRECTIONS
 
@@ -229,25 +229,25 @@ salle1
 	da	salle1_zone7_oeil
 	da	salle1_zone7_bouche
 salle1_zone1_main	str	''
-salle1_zone1_oeil	str	'Une vieille caisse d'27'emballage'
+salle1_zone1_oeil	str	'An old packing box'
 salle1_zone1_bouche	str	''
 salle1_zone2_main	str	''
-salle1_zone2_oeil	str	'La bo'94'te aux lettres'
+salle1_zone2_oeil	str	'The mailbox'
 salle1_zone2_bouche	str	''
-salle1_zone3_main	str	'D'8e'go'9e'tant...'
-salle1_zone3_oeil	str	'Un clochard'
-salle1_zone3_bouche	str	d2'Un peu de politesse! J'27'ai '8e't'8e' d'8e'veloppeur de jeux d'27'aventures, moi Monsieur !'d3
+salle1_zone3_main	str	'Disgusting...'
+salle1_zone3_oeil	str	'A tramp'
+salle1_zone3_bouche	str	d2'A little politeness! I was an adventurer game developer, me Sir!'d3
 salle1_zone4_main	str	''
-salle1_zone4_oeil	str	'Et si Bill regardait par la fen'90'tre ?'
+salle1_zone4_oeil	str	'What if Bill was looking out the window?'
 salle1_zone4_bouche	str	''
-salle1_zone5_main	str	'Et si vous entriez par la porte ?'
-salle1_zone5_oeil	str	'C'27'est bien l'27'int'8e'rieur de Bill'
+salle1_zone5_main	str	'How about you walk in through the door?'
+salle1_zone5_oeil	str	'It is inside Bill'27's apartment'
 salle1_zone5_bouche	str	''
-salle1_zone6_main	str	'Pas touche !'
-salle1_zone6_oeil	str	'C'27'est Bill Palmer, h'8e'ros des h'8e'ros en route vers une nouvelle aventure'
+salle1_zone6_main	str	'Don'27't touch!'
+salle1_zone6_oeil	str	'He is Bill Palmer, hero of heroes on the way to a new adventure'
 salle1_zone6_bouche	str	''
-salle1_zone7_main	str	'Bill ne va tout de m'90'me pas arracher la plaque !'
-salle1_zone7_oeil	str	d2'Bill Palmer. Aventurier. Sur rendez-vous.'d3
+salle1_zone7_main	str	'Bill is not going to tear the plate off!'
+salle1_zone7_oeil	str	d2'Bill Palmer. Adventurer. On appointment.'d3
 salle1_zone7_bouche	str	''
 
 salle2
@@ -281,26 +281,26 @@ salle2
 	da	salle2_zone7_main
 	da	salle2_zone7_oeil
 	da	salle2_zone7_bouche
-salle2_zone1_main	str	'Bill arbore d'8e'j'88' son cuir'
+salle2_zone1_main	str	'Bill is already sporting his leather jacket'
 salle2_zone1_oeil	str	''
 salle2_zone1_bouche	str	''
 salle2_zone2_main	str	''
-salle2_zone2_oeil	str	'La poche'
+salle2_zone2_oeil	str	'The pocket'
 salle2_zone2_bouche	str	''
 salle2_zone3_main	str	''
-salle2_zone3_oeil	str	'Une '8e'tag'8f're pleine de vieux bouquins et de magazines d'27'informatique'
+salle2_zone3_oeil	str	'A shelf full of old books and computer magazines'
 salle2_zone3_bouche	str	''
-salle2_zone4_main	str	'Un peu ramoli'
-salle2_zone4_oeil	str	'Le canap'8e
+salle2_zone4_main	str	'A little soggy'
+salle2_zone4_oeil	str	'The couch'
 salle2_zone4_bouche	str	''
-salle2_zone5_main	str	'Attention, c'27'est fragile !'
-salle2_zone5_oeil	str	'Une vieux vase Ming sans aucune valeur'
+salle2_zone5_main	str	'Be careful, it is fragile!'
+salle2_zone5_oeil	str	'A worthless old Ming vase'
 salle2_zone5_bouche	str	''
-salle2_zone6_main	str	'Le trou est d'8e'j'88' assez grand'
-salle2_zone6_oeil	str	'H'8e' Bill ! Faudrait voir '88' refaire les platres !'
+salle2_zone6_main	str	'The hole is already big enough'
+salle2_zone6_oeil	str	'Hey Bill! Should see to redo the plasters!'
 salle2_zone6_bouche	str	''
-salle2_zone7_main	str	'Zut ! Le store est coinc'8e'. Faudra trouver une autre combine pour regarder la voisine se d'8e'shabiller'
-salle2_zone7_oeil	str	'La tirette du store'
+salle2_zone7_main	str	'Damn! The blind is stuck. We will have to find another trick to watch the neighbor get dressed'
+salle2_zone7_oeil	str	'The blind zipper'
 salle2_zone7_bouche	str	''
 
 salle3
@@ -319,13 +319,13 @@ salle3
 	da	salle3_zone3_oeil
 	da	salle3_zone3_bouche
 salle3_zone1_main	str	''
-salle3_zone1_oeil	str	'Le cadenas. Pr'8e'sentement ouvert'
+salle3_zone1_oeil	str	'The lock. Currently open.'
 salle3_zone1_bouche	str	''
 salle3_zone2_main	str	''
 salle3_zone2_oeil	str	''
 salle3_zone2_bouche	str	''
-salle3_zone3_main	str	'Pas encore l'27'heure de tirer les rideaux'
-salle3_zone3_oeil	str	'Pas tr'8f's propre. Faudrait voir '88' laver tout '8d'a Bill !'
+salle3_zone3_main	str	'Not yet the time to draw the curtains'
+salle3_zone3_oeil	str	'Not very clean. Should see to wash it all, Bill!'
 salle3_zone3_bouche	str	''
 
 salle4
@@ -344,13 +344,13 @@ salle4
 	da	salle4_zone3_oeil
 	da	salle4_zone3_bouche
 salle4_zone1_main	str	''
-salle4_zone1_oeil	str	'Ce fut une belle voiture...'
-salle4_zone1_bouche	str	'Vous parlez le langage voiture ?'
-salle4_zone2_main	str	'Ca laisserait des traces de doigts !'
-salle4_zone2_oeil	str	'Non, non. Pas celle l'88'. L'27'autre ! !'
-salle4_zone2_bouche	str	'On en mangerait...'
+salle4_zone1_oeil	str	'It was a nice car...'
+salle4_zone1_bouche	str	'Do you speak car language?'
+salle4_zone2_main	str	'It would leave fingerprints!'
+salle4_zone2_oeil	str	'No, no. Not this one. The other one!!!'
+salle4_zone2_bouche	str	'We would eat...'
 salle4_zone3_main	str	''
-salle4_zone3_oeil	str	'Le capot s'27'ouvre par l'88
+salle4_zone3_oeil	str	'The hood open there'
 salle4_zone3_bouche	str	''
 
 salle5
@@ -364,11 +364,11 @@ salle5
 	da	salle5_zone2_main
 	da	salle5_zone2_oeil
 	da	salle5_zone2_bouche
-salle5_zone1_main	str	'La r'8e'parer ? Pour quoi faire...'
+salle5_zone1_main	str	'Fix it? To do what?'
 salle5_zone1_oeil	str	''
 salle5_zone1_bouche	str	''
 salle5_zone2_main	str	''
-salle5_zone2_oeil	str	'Juste pour quelques pi'8f'ces en trop'
+salle5_zone2_oeil	str	'Just for a few extra parts...'
 salle5_zone2_bouche	str	''
 
 salle6
@@ -391,16 +391,16 @@ salle6
 	da	salle6_zone4_oeil
 	da	salle6_zone4_bouche
 salle6_zone1_main	str	''
-salle6_zone1_oeil	str	'La cl'8e' de contact'
+salle6_zone1_oeil	str	'The ignition key'
 salle6_zone1_bouche	str	''
 salle6_zone2_main	str	''
-salle6_zone2_oeil	str	'L'27'altim'8f'tre'
+salle6_zone2_oeil	str	'The altimeter'
 salle6_zone2_bouche	str	''
 salle6_zone3_main	str	''
-salle6_zone3_oeil	str	'La bo'94'te '88' gants'
+salle6_zone3_oeil	str	'The glove box'
 salle6_zone3_bouche	str	''
-salle6_zone4_main	str	'Ca va, c'27'est au point mort'
-salle6_zone4_oeil	str	'Le levier de vitesse'
+salle6_zone4_main	str	'It is okay, it is stalled'
+salle6_zone4_oeil	str	'The gear lever'
 salle6_zone4_bouche	str	''
 
 salle7
@@ -418,14 +418,14 @@ salle7
 	da	salle7_zone3_main
 	da	salle7_zone3_oeil
 	da	salle7_zone3_bouche
-salle7_zone1_main	str	'Ca ne se prend pas comme '8d'a..'
-salle7_zone1_oeil	str	'Vite, il part pour le N'27'Gwanal'8e'l'8e'!'
+salle7_zone1_main	str	'It cannot be taken like that'
+salle7_zone1_oeil	str	'Quickly, he leaves to N'27'Gwanal'8e'l'8e'!'
 salle7_zone1_bouche	str	''
-salle7_zone2_main	str	'Faudrait prendre beaucoup d'27''8e'lan'
-salle7_zone2_oeil	str	'Trop tard pour celui l'88''
+salle7_zone2_main	str	'Would take a lot of moment to jump'
+salle7_zone2_oeil	str	'Too late for that one'
 salle7_zone2_bouche	str	''
 salle7_zone3_main	str	''
-salle7_zone3_oeil	str	'Elle s'27'arrange pas avec l'2789'ge'
+salle7_zone3_oeil	str	'She does not get better with age'
 salle7_zone3_bouche	str	''
 
 salle8
@@ -458,17 +458,17 @@ salle9
 	da	salle9_zone4_main
 	da	salle9_zone4_oeil
 	da	salle9_zone4_bouche
-salle9_zone1_main	str	'Voyons, un peu de discr'8e'tion ! !'
-salle9_zone1_oeil	str	'Glup ! !'
-salle9_zone1_bouche	str	'Schmack !'
-salle9_zone2_main	str	'Gardez plut'99't la main sur la souris'
-salle9_zone2_oeil	str	'Bill devrait d'27'abord penser '88' sa mission...'
-salle9_zone2_bouche	str	d2'Nous avons des promotions sp'8e'ciales pour les billets vers l'27'Afrique du Sud !'d3
-salle9_zone3_main	str	'Vous g'90'nez pas surtout...'
-salle9_zone3_oeil	str	'Un t'8e'l'8e'phone'
+salle9_zone1_main	str	'Let'27's see, a little discretion!!!'
+salle9_zone1_oeil	str	'Glup!!'
+salle9_zone1_bouche	str	'Schmack!'
+salle9_zone2_main	str	'Instead, keep your hand on the mouse'
+salle9_zone2_oeil	str	'Bill should first think about his mission...'
+salle9_zone2_bouche	str	d2'We have special promotions for tickets to South Africa!'d3
+salle9_zone3_main	str	'Above all, you are not embarrassed...'
+salle9_zone3_oeil	str	'A telephone'
 salle9_zone3_bouche	str	''
 salle9_zone4_main	str	''
-salle9_zone4_oeil	str	'Les cartes de cr'8e'dit sont accept'8e'es'
+salle9_zone4_oeil	str	'Credit cards are accepted'
 salle9_zone4_bouche	str	''
 
 salle10
@@ -494,19 +494,19 @@ salle10
 	da	salle10_zone5_main
 	da	salle10_zone5_oeil
 	da	salle10_zone5_bouche
-salle10_zone1_main	str	d2'C'27'est bien gentil de m'27'aider mon brave Monsieur !'d3
-salle10_zone1_oeil	str	'Dommage qu'27'il soit blanc. On aurait cru Stevie Wonder'
-salle10_zone1_bouche	str	d2'Pardon, c'27'est bien ici le match de football ?'d3
-salle10_zone2_main	str	'Voyons ! ! ! A son '89'ge ! !'
-salle10_zone2_oeil	str	'Si vous regardez d'8e'j'88' les petites filles...'
-salle10_zone2_bouche	str	d2'Tu veux ma photo ?'d3
+salle10_zone1_main	str	d2'It is very nice to help me my good sir!'d3
+salle10_zone1_oeil	str	'Too bad he is White. He looked like Stevie Wonder'
+salle10_zone1_bouche	str	d2'Sorry, is this the soccer game here?'d3
+salle10_zone2_main	str	'Come on!!! At her age!!!'
+salle10_zone2_oeil	str	'If you are already looking at little girls...'
+salle10_zone2_bouche	str	d2'You want my photo?'d3
 salle10_zone3_main	str	''
-salle10_zone3_oeil	str	'Attention, c'27'est le douanier !'
-salle10_zone3_bouche	str	'Pr'8e'sentez votre passeport s'27'il vous plait !'
+salle10_zone3_oeil	str	'Be careful, it is the customs officer!'
+salle10_zone3_bouche	str	'Show your passport, please!'
 salle10_zone4_main	str	''
-salle10_zone4_oeil	str	'Ca doit '90'tre un diplomate qui rentre au pays'
-salle10_zone4_bouche	str	d2'Encow'27' un qui se pwend pou'27' Ha'27'isson Fowd...'d3
-salle10_zone5_main	str	'Stop !'
+salle10_zone4_oeil	str	'It must be a diplomat coming home'
+salle10_zone4_bouche	str	d2'Anothe'27' one who thinks he is Ha'27'ison Fowd...'d3
+salle10_zone5_main	str	'Stop!'
 salle10_zone5_oeil	str	d2'Stop'd3
 salle10_zone5_bouche	str	'Re-stop'
 
@@ -529,18 +529,18 @@ salle11
 	da	salle11_zone4_main
 	da	salle11_zone4_oeil
 	da	salle11_zone4_bouche
-salle11_zone1_main	str	'Bill a d'8e'j'88' son billet'
-salle11_zone1_oeil	str	'C'27'est un billet d'27'avion pour Auckland. Un aller simple, '8d'a suffit'
+salle11_zone1_main	str	'Bill already has his ticket'
+salle11_zone1_oeil	str	'It is a plane ticket to Auckland. A one-way ticket is enough!'
 salle11_zone1_bouche	str	''
 salle11_zone2_main	str	''
-salle11_zone2_oeil	str	'C'27'est '8d'a le pilote ? ! ? !'
-salle11_zone2_bouche	str	d2'Et dire qu'27'il n'27'y a qu'27'un parachute pour tout l'27'avion...'d3
-salle11_zone3_main	str	'Pour le pousser ? ?'
-salle11_zone3_oeil	str	'Et si Bill en faisait autant avant de rencontrer le pire ?'
-salle11_zone3_bouche	str	d2'Argh ! !'d3
-salle11_zone4_main	str	'Z'27'avez pas peur...'
-salle11_zone4_oeil	str	d2'Poids total hors charge: 213 Kg'd3
-salle11_zone4_bouche	str	d2'Tu vas pas te tirer pour notre lune de miel ! ?'d3
+salle11_zone2_oeil	str	'Is he the pilot?!?!'
+salle11_zone2_bouche	str	d2'Think that there is only one parachute for the whole plane...'d3
+salle11_zone3_main	str	'To push him??'
+salle11_zone3_oeil	str	'What if Bill did the same before he encountered the worst?'
+salle11_zone3_bouche	str	d2'Argh!!'d3
+salle11_zone4_main	str	'Don'27't be afraid...'
+salle11_zone4_oeil	str	d2'Weight without load: 213 Kg'd3
+salle11_zone4_bouche	str	d2'Aren't you gonna get off on our honeymoon!?'d3
 
 salle12
 	dw	4
@@ -562,16 +562,16 @@ salle12
 	da	salle12_zone4_oeil
 	da	salle12_zone4_bouche
 salle12_zone1_main	str	''
-salle12_zone1_oeil	str	'La Mecque'
+salle12_zone1_oeil	str	'Mecca'
 salle12_zone1_bouche	str	''
 salle12_zone2_main	str	''
 salle12_zone2_oeil	str	'Alaska 13583 km'
 salle12_zone2_bouche	str	''
 salle12_zone3_main	str	''
-salle12_zone3_oeil	str	'Maubeuge (centre ville) : premi'8f're '88' gauche'
+salle12_zone3_oeil	str	'Maubeuge (city center) : first left'
 salle12_zone3_bouche	str	''
-salle12_zone4_main	str	'Attention '8d'a coupe ! !'
-salle12_zone4_oeil	str	'Une h'8e'lice'
+salle12_zone4_main	str	'Be careful, it cuts!!!'
+salle12_zone4_oeil	str	'A helix'
 salle12_zone4_bouche	str	''
 
 salle13
@@ -590,13 +590,13 @@ salle13
 	da	salle13_zone3_oeil
 	da	salle13_zone3_bouche
 salle13_zone1_main	str	''
-salle13_zone1_oeil	str	d2'Concessionnaire Dromacar'd3
+salle13_zone1_oeil	str	d2'Dromacar dealer'd3
 salle13_zone1_bouche	str	''
 salle13_zone2_main	str	''
-salle13_zone2_oeil	str	d2'Walk this way! ! ! !'d3
+salle13_zone2_oeil	str	d2'Walk this way!!!!'d3
 salle13_zone2_bouche	str	''
 salle13_zone3_main	str	''
-salle13_zone3_oeil	str	'Tiens ! Il semble y avoir quelque chose sous ces pierres !'
+salle13_zone3_oeil	str	'Hum! There seems to be something under these stones!'
 salle13_zone3_bouche	str	''
 
 salle14
@@ -615,14 +615,14 @@ salle14
 	da	salle14_zone3_oeil
 	da	salle14_zone3_bouche
 salle14_zone1_main	str	''
-salle14_zone1_oeil	str	'C'27'est le conservateur du mus'8e'e'
-salle14_zone1_bouche	str	d2'Si vous nous rapportez le F'8e'tiche vol'8e', vous aurez droit '88' une forte r'8e'compense, pr'8e'sentement!'d3
-salle14_zone2_main	str	'Ca serait bien trop facile si c'27''8e'tait celui-l'88' qu'27'il fallait retrouver !'
-salle14_zone2_oeil	str	'Un f'8e'tiche'
+salle14_zone1_oeil	str	'He is the curator of the museum'
+salle14_zone1_bouche	str	d2'If you bring the Stolen Fetish back to us, you will get a big reward right now!'d3
+salle14_zone2_main	str	'It would be too easy if that was the one to find!'
+salle14_zone2_oeil	str	'A fetish'
 salle14_zone2_bouche	str	''
 salle14_zone3_main	str	''
-salle14_zone3_oeil	str	'C'27''8e'tait '8d'a ou finir en aliment pour chats'
-salle14_zone3_bouche	str	'De toutes les fa'8d'ons, ce n'27'est pas maintenant qu'27'il va se mettre '88' parler'
+salle14_zone3_oeil	str	'It was either that or end up in cat food'
+salle14_zone3_bouche	str	'Either way, it is not now that he is gonna start talking'
 
 salle15
 	dw	3
@@ -640,13 +640,13 @@ salle15
 	da	salle15_zone3_oeil
 	da	salle15_zone3_bouche
 salle15_zone1_main	str	''
-salle15_zone1_oeil	str	'Un vendeur de dromadaires'
-salle15_zone1_bouche	str	d2'J'27'y traite qu'27'avec li vrais aventuriers moi !'d3
-salle15_zone2_main	str	'Vous esp'8e'riez qu'27'il allait ronronner ?'
-salle15_zone2_oeil	str	'Un cham... Non un dromadaire'
-salle15_zone2_bouche	str	'Les dromadaires ne parlent pas, m'90'me dans les jeux d'27'aventure'
-salle15_zone3_main	str	'Brave b'90'te..'
-salle15_zone3_oeil	str	'Il doit '90'tre mal nourri...'
+salle15_zone1_oeil	str	'A seller of dromedaries'
+salle15_zone1_bouche	str	d2'I only deal with real adventurers there!'d3
+salle15_zone2_main	str	'Did you hope he was going to purr?'
+salle15_zone2_oeil	str	'Un cam... No, a dromadary'
+salle15_zone2_bouche	str	'Dromedaries do not speak, even in adventure games'
+salle15_zone3_main	str	'Good boy...'
+salle15_zone3_oeil	str	'He must be malnourished...'
 salle15_zone3_bouche	str	''
 
 salle16
@@ -691,17 +691,17 @@ salle18
 	da	salle18_zone4_oeil
 	da	salle18_zone4_bouche
 salle18_zone1_main	str	''
-salle18_zone1_oeil	str	'Ca doit '90'tre le wagon quatri'8f'me classe'
+salle18_zone1_oeil	str	'It must be the fourth class wagon'
 salle18_zone1_bouche	str	''
 salle18_zone2_main	str	''
-salle18_zone2_oeil	str	'Le wagon classe aventuriers'
+salle18_zone2_oeil	str	'The adventurer class wagon'
 salle18_zone2_bouche	str	''
 salle18_zone3_main	str	''
-salle18_zone3_oeil	str	'La locomotive mod'8f'le 1865 reform'8e' 1917 n'27'attend plus que Bill pour partir'
+salle18_zone3_oeil	str	'The reformed model 1865 locomotive 1917 is just waiting for Bill to leave'
 salle18_zone3_bouche	str	''
 salle18_zone4_main	str	''
-salle18_zone4_oeil	str	'Un auto-stoppeur sans doute'
-salle18_zone4_bouche	str	d2'Tchou tchou ! ! T'27'wain va pa'27'tiw'27d3
+salle18_zone4_oeil	str	'A hitchhiker no doubt'
+salle18_zone4_bouche	str	d2'Tchou tchou!! T'27'wain is going to leav'27d3
 
 salle19
 	dw	2
@@ -714,11 +714,11 @@ salle19
 	da	salle19_zone2_main
 	da	salle19_zone2_oeil
 	da	salle19_zone2_bouche
-salle19_zone1_main	str	'Doucement, '8d'a pourrait le r'8e'veiller !'
-salle19_zone1_oeil	str	'Il vend des billets. Mais la pause a l'27'air longue...'
-salle19_zone1_bouche	str	d2'Plus tard coco, plus tard...'d3
-salle19_zone2_main	str	'Pouah ! Des os humains...'
-salle19_zone2_oeil	str	'Certains mangent bien du lapin'
+salle19_zone1_main	str	'Slowly, it might wake him up!'
+salle19_zone1_oeil	str	'He sells tickets. But the break seems long...'
+salle19_zone1_bouche	str	d2'Later, coco, later...'d3
+salle19_zone2_main	str	'Ugh! Human bones...'
+salle19_zone2_oeil	str	'Well, some people eat rabbit'
 salle19_zone2_bouche	str	''
 
 salle20
@@ -745,16 +745,16 @@ salle20
 	da	salle20_zone5_oeil
 	da	salle20_zone5_bouche
 salle20_zone1_main	str	''
-salle20_zone1_oeil	str	'Mille sabords ! Serions-nous au Congo ?'
-salle20_zone1_bouche	str	d2'Saperlipopette !'d3
+salle20_zone1_oeil	str	'Blistering barnacles! Would we be in the Congo?'
+salle20_zone1_bouche	str	d2'By crikey!'d3
 salle20_zone2_main	str	''
-salle20_zone2_oeil	str	'Et alors ? La premi'8f're classe est aussi autoris'8e'e aux Noirs...'
+salle20_zone2_oeil	str	'So what? The first class is also allowed to Black people.'
 salle20_zone2_bouche	str	''
 salle20_zone3_main	str	''
-salle20_zone3_oeil	str	d2'Eat at Joe'27's. Au menu: missionnaire, homme d'27'affaire, pigiste. Ketchup en suppl'8e'ment'd3
+salle20_zone3_oeil	str	d2'Eat at Joe's. On the menu: missionnary, businessman, freelance writer. Ketchup extra'd3
 salle20_zone3_bouche	str	''
 salle20_zone4_main	str	''
-salle20_zone4_oeil	str	'Le signal d'27'alarme'
+salle20_zone4_oeil	str	'The alarm signal'
 salle20_zone4_bouche	str	''
 salle20_zone5_main	str	''
 salle20_zone5_oeil	str	''
@@ -790,7 +790,7 @@ salle23
 	da	salle23_zone1_oeil
 	da	salle23_zone1_bouche
 salle23_zone1_main	str	''
-salle23_zone1_oeil	str	'Et si cette pierre cachait quelque chose ?'
+salle23_zone1_oeil	str	'What if this stone was hiding something?'
 salle23_zone1_bouche	str	''
 
 salle24
@@ -805,10 +805,10 @@ salle24
 	da	salle24_zone2_oeil
 	da	salle24_zone2_bouche
 salle24_zone1_main	str	''
-salle24_zone1_oeil	str	d2'Danger: '8e'l'8e'phants'd3
+salle24_zone1_oeil	str	d2'Warning: elephants'd3
 salle24_zone1_bouche	str	''
 salle24_zone2_main	str	''
-salle24_zone2_oeil	str	'Le sommet de cette montagne cache quelque chose...'
+salle24_zone2_oeil	str	'The top of this mountain is hiding something...'
 salle24_zone2_bouche	str	''
 
 salle25
@@ -818,9 +818,9 @@ salle25
 	da	salle25_zone1_main
 	da	salle25_zone1_oeil
 	da	salle25_zone1_bouche
-salle25_zone1_main	str	'Est-ce bien raisonnable ?'
-salle25_zone1_oeil	str	'A mon avis, le self control de ce pachyderme semble s'8e'rieusement entam'8e
-salle25_zone1_bouche	str	d2'Tout doux petit !'d3
+salle25_zone1_main	str	'Is that reasonable?'
+salle25_zone1_oeil	str	'In my opinion, the self control of this pachyderm seems to be seriously damaged'
+salle25_zone1_bouche	str	d2'Slow down, buddy!'d3
 
 salle26
 	dw	1
@@ -829,8 +829,8 @@ salle26
 	da	salle26_zone1_main
 	da	salle26_zone1_oeil
 	da	salle26_zone1_bouche
-salle26_zone1_main	str	'Impossible d'27'arracher des brindilles '88' la main'
-salle26_zone1_oeil	str	'Une vari'8e't'8e' rare d'27'une herbe africaine r'8e'put'8e'e pour sa facilit'8e' de combustion'
+salle26_zone1_main	str	'Cannot pull twigs by hand'
+salle26_zone1_oeil	str	'A rare variety of an African herb renowned for its ease of combustion'
 salle26_zone1_bouche	str	''
 
 salle27
@@ -851,12 +851,12 @@ salle27
 salle27_zone1_main	str	''
 salle27_zone1_oeil	str	''
 salle27_zone1_bouche	str	''
-salle27_zone2_main	str	'Pas la peine, personne n'27'est en vue'
-salle27_zone2_oeil	str	'La pierre qui vient d'27'assommer ce mis'8e'rable'
+salle27_zone2_main	str	'No need, no one is in sight'
+salle27_zone2_oeil	str	'The stone that comes to knock this wretch down'
 salle27_zone2_bouche	str	''
 salle27_zone3_main	str	''
-salle27_zone3_oeil	str	'Il a son compte !'
-salle27_zone3_bouche	str	'Et vous imaginiez qu'27'il allait r'8e'pondre ?'
+salle27_zone3_oeil	str	'He is dead!'
+salle27_zone3_bouche	str	'And you imagined he was going to answer?'
 
 salle28
 	dw	1
@@ -866,8 +866,8 @@ salle28
 	da	salle28_zone1_oeil
 	da	salle28_zone1_bouche
 salle28_zone1_main	str	''
-salle28_zone1_oeil	str	'Et dire qu'27'il va falloir grimper tout '8d'a'
-salle28_zone1_bouche	str	'C'27'est pas un sol sacr'8e' !'
+salle28_zone1_oeil	str	'We will have to climb all that'
+salle28_zone1_bouche	str	'It is not a sacred mountain!'
 
 salle29
 	dw	3
@@ -884,15 +884,15 @@ salle29
 	da	salle29_zone3_main
 	da	salle29_zone3_oeil
 	da	salle29_zone3_bouche
-salle29_zone1_main	str	'Et la SPA alors ?'
-salle29_zone1_oeil	str	'On ne sait jamais, des fois que Bill meure...'
+salle29_zone1_main	str	'What about the SPCA?'
+salle29_zone1_oeil	str	'You never know, sometimes Bill dies...'
 salle29_zone1_bouche	str	''
 salle29_zone2_main	str	''
-salle29_zone2_oeil	str	'Ca ferait sans doute une bonne prise'
+salle29_zone2_oeil	str	'It would probably make a nice catch'
 salle29_zone2_bouche	str	''
 salle29_zone3_main	str	''
-salle29_zone3_oeil	str	'Attention ! Il poursuit Bill !'
-salle29_zone3_bouche	str	d2'Urk Urk !'d3
+salle29_zone3_oeil	str	'Warning! It is chasing Bill!'
+salle29_zone3_bouche	str	d2'Urk Urk!'d3
 
 salle30
 	dw	2
@@ -905,11 +905,11 @@ salle30
 	da	salle30_zone2_main
 	da	salle30_zone2_oeil
 	da	salle30_zone2_bouche
-salle30_zone1_main	str	'Et la SPA alors ?'
-salle30_zone1_oeil	str	'On ne sait jamais, des fois que Bill meure...'
+salle30_zone1_main	str	'What about the SPCA?'
+salle30_zone1_oeil	str	'You never know, sometimes Bill dies...'
 salle30_zone1_bouche	str	''
 salle30_zone2_main	str	''
-salle30_zone2_oeil	str	'Ca ferait sans doute une bonne prise'
+salle30_zone2_oeil	str	'It would probably make a nice catch'
 salle30_zone2_bouche	str	''
 
 salle31
@@ -931,7 +931,7 @@ salle32
 	da	salle32_zone1_oeil
 	da	salle32_zone1_bouche
 salle32_zone1_main	str	''
-salle32_zone1_oeil	str	'Elle semble pouvoir '90'tre d'8e'plac'8e'e facilement'
+salle32_zone1_oeil	str	't seems to be able to be moved easily'
 salle32_zone1_bouche	str	''
 
 salle33
@@ -945,11 +945,11 @@ salle33
 	da	salle33_zone2_main
 	da	salle33_zone2_oeil
 	da	salle33_zone2_bouche
-salle33_zone1_main	str	'Impossible d'27'arracher cette cam'8e'ra !'
-salle33_zone1_oeil	str	'Une cam'8e'ra de surveillance'
-salle33_zone1_bouche	str	'Pour faire de la bu'8e'e sur l'27'objectif ?'
-salle33_zone2_main	str	'Ouille ! C'27'est chaud !'
-salle33_zone2_oeil	str	'Eblouissant'
+salle33_zone1_main	str	'Cannot tear off this camera!'
+salle33_zone1_oeil	str	'A surveillance camera'
+salle33_zone1_bouche	str	'To mist the lens?'
+salle33_zone2_main	str	'Ouch! It is hot!'
+salle33_zone2_oeil	str	'Dazzling'
 salle33_zone2_bouche	str	''
 
 salle34
@@ -968,13 +968,13 @@ salle34
 	da	salle34_zone3_oeil
 	da	salle34_zone3_bouche
 salle34_zone1_main	str	''
-salle34_zone1_oeil	str	'Quelques braises encore chaudes'
+salle34_zone1_oeil	str	'Some embers still hot'
 salle34_zone1_bouche	str	''
-salle34_zone2_main	str	'Faut bien que certaines commodes ne contiennent rien. Ca ne serait pas rigolo...'
+salle34_zone2_main	str	'Some dressers must not contain anything. It would not be fun!'
 salle34_zone2_oeil	str	''
 salle34_zone2_bouche	str	''
-salle34_zone3_main	str	'Pas le moment de faire des cr'90'pes !'
-salle34_zone3_oeil	str	'Des po'90'les (faut vraiment tout lui dire celui l'88'...)'
+salle34_zone3_main	str	'No time to make pancakes!'
+salle34_zone3_oeil	str	'Stoves (you really have to tell him everything...)'
 salle34_zone3_bouche	str	''
 
 salle35
@@ -993,13 +993,13 @@ salle35
 	da	salle35_zone3_oeil
 	da	salle35_zone3_bouche
 salle35_zone1_main	str	''
-salle35_zone1_oeil	str	'Le feu d'8e'gage de la fum'8e'e qui s'27''8e'chappe par le conduit'
+salle35_zone1_oeil	str	'The fire gives off smoke which escapes through the flue'
 salle35_zone1_bouche	str	''
-salle35_zone2_main	str	'Faut bien que certaines commodes ne contiennent rien. Ca ne serait pas rigolo...'
+salle35_zone2_main	str	'Some dressers must not contain anything. It would not be fun!'
 salle35_zone2_oeil	str	''
 salle35_zone2_bouche	str	''
-salle35_zone3_main	str	'Pas le moment de faire des cr'90'pes !'
-salle35_zone3_oeil	str	'Des po'90'les (faut vraiment tout lui dire celui l'88'...)'
+salle35_zone3_main	str	'No time to make pancakes!'
+salle35_zone3_oeil	str	'Stoves (you really have to tell him everything...)'
 salle35_zone3_bouche	str	''
 
 salle36
@@ -1014,10 +1014,10 @@ salle36
 	da	salle36_zone2_oeil
 	da	salle36_zone2_bouche
 salle36_zone1_main	str	''
-salle36_zone1_oeil	str	'On se l'27'ouvre ?'
-salle36_zone1_bouche	str	d2'Y'27'a quelqu'27'un ?'d3
-salle36_zone2_main	str	'Trop solide pour '90'tre d'8e'plac'8e'e'
-salle36_zone2_oeil	str	d2'Fernand aime Georgette'd3' y est grav'8e' au canif'
+salle36_zone1_oeil	str	'Shall we open it?'
+salle36_zone1_bouche	str	d2'Someone there?'d3
+salle36_zone2_main	str	'Too heavy to be moved'
+salle36_zone2_oeil	str	d2'Fernand loves GeorgetteS is engraved with a pocket knife"
 salle36_zone2_bouche	str	''
 
 salle37
@@ -1055,19 +1055,19 @@ salle38
 	da	salle38_zone5_oeil
 	da	salle38_zone5_bouche
 salle38_zone1_main	str	''
-salle38_zone1_oeil	str	'Et si je vous dis que c'27'est un tiroir ?'
+salle38_zone1_oeil	str	'What if I tell you it iss a drawer?'
 salle38_zone1_bouche	str	''
 salle38_zone2_main	str	''
-salle38_zone2_oeil	str	'C'27'est pourtant pas compliqu'8e' de l'27'ouvrir...'
+salle38_zone2_oeil	str	'However, it is not complicated to open it...'
 salle38_zone2_bouche	str	''
 salle38_zone3_main	str	''
-salle38_zone3_oeil	str	'On en boirait bien...'
+salle38_zone3_oeil	str	'We could drink it well...'
 salle38_zone3_bouche	str	''
-salle38_zone4_main	str	'C'27'est le F'8e'tiche qu'27'il faut rapporter !'
-salle38_zone4_oeil	str	'Peut-'90'tre un pr'8e'd'8e'cesseur...'
-salle38_zone4_bouche	str	'Pas tr'8f's causant...'
-salle38_zone5_main	str	'Mieux vaut ne pas trop y toucher'
-salle38_zone5_oeil	str	'A peine plus complexe qu'27'un Atari...'
+salle38_zone4_main	str	'It is the fetish that must be brought back!'
+salle38_zone4_oeil	str	'Maybe a predecessor...'
+salle38_zone4_bouche	str	'Not very talkative...'
+salle38_zone5_main	str	'Better not to touch it'
+salle38_zone5_oeil	str	'Barely more complex than an Atari..'
 salle38_zone5_bouche	str	''
 
 salle39
@@ -1085,11 +1085,11 @@ salle39
 	da	salle39_zone1_main
 	da	salle39_zone1_oeil
 	da	salle39_zone1_bouche
-salle39_zone1_main	str	'Rien '88' faire, elle reste ferm'8e'e'
-salle39_zone1_oeil	str	'On se l'27'ouvre ?'
+salle39_zone1_main	str	'Nothing to do, it remains closed'
+salle39_zone1_oeil	str	'We open it up?'
 salle39_zone1_bouche	str	''
 salle39_zone2_main	str	''
-salle39_zone2_oeil	str	'Bill aper'8d'oit par le trou de la serrure des dizaines de personnes s'27'activant autour du F'8e'tiche branch'8e' sur des '8e'lectrodes !'
+salle39_zone2_oeil	str	'Bill sees through the keyhole dozens of people bustling around the fetish plugged into electrodes!'
 salle39_zone2_bouche	str	''
 
 salle40
@@ -1104,8 +1104,8 @@ salle40
 	da	salle40_zone2_oeil
 	da	salle40_zone2_bouche
 salle40_zone1_main	str	''
-salle40_zone1_oeil	str	'Il semble se d'8e'sint'8e'resser de Bill'
-salle40_zone1_bouche	str	'Cui cui ?'
+salle40_zone1_oeil	str	'It seems to lose interest in Bill'
+salle40_zone1_bouche	str	'Chip chip?'
 salle40_zone2_main	str	''
 salle40_zone2_oeil	str	''
 salle40_zone2_bouche	str	''
@@ -1140,18 +1140,18 @@ salle42
 	da	salle42_zone4_main
 	da	salle42_zone4_oeil
 	da	salle42_zone4_bouche
-salle42_zone1_main	str	'Bill ne devrait pas tenter le combat '88' mains nues'
-salle42_zone1_oeil	str	'Il a l'27'air agressif...'
-salle42_zone1_bouche	str	d2'Fais tes pri'8f'res, rascal !'d3
+salle42_zone1_main	str	'Bill should not attempt hand-to-hand combat'
+salle42_zone1_oeil	str	'He looks very aggressive...'
+salle42_zone1_bouche	str	d2'Say your prayers, rascal!'d3
 salle42_zone2_main	str	''
-salle42_zone2_oeil	str	'Si vous voulez mon avis...'
-salle42_zone2_bouche	str	d2'Tu vis ta derni'8f're heure'd3
+salle42_zone2_oeil	str	'If you want my opinion...'
+salle42_zone2_bouche	str	d2'You are living your last hour'd3
 salle42_zone3_main	str	''
 salle42_zone3_oeil	str	''
-salle42_zone3_bouche	str	d2'Le Professeur nous a charg'8e's de venir t'27'offrir des fleurs !'d3
+salle42_zone3_bouche	str	d2'The Professor instructed us to come and give you flowers!'d3
 salle42_zone4_main	str	''
 salle42_zone4_oeil	str	''
-salle42_zone4_bouche	str	d2'Hurk Hurk !'d3
+salle42_zone4_bouche	str	d2'Hurk Hurk!'d3
 
 salle43
 	dw	1
@@ -1180,14 +1180,14 @@ salle44
 	da	salle44_zone3_oeil
 	da	salle44_zone3_bouche
 salle44_zone1_main	str	''
-salle44_zone1_oeil	str	'Compl'8f'tement bugg'8e', le mec...'
-salle44_zone1_bouche	str	d2'Poussez pas !'d3
+salle44_zone1_oeil	str	'That guy is completely bugged'
+salle44_zone1_bouche	str	d2'Do not push!'d3
 salle44_zone2_main	str	''
-salle44_zone2_oeil	str	'L'27''8e'quipe d'27'intervention de SOS Aventuriers ! Il '8e'tait temps !'
-salle44_zone2_bouche	str	d2'Va au nord si tu veux nous suivre vers la suite de l'27'aventure et rejoindre le Professeur X. !'d3
+salle44_zone2_oeil	str	'The SOS Adventurers team! It was time!'
+salle44_zone2_bouche	str	d2'Go north if you want to follow us to the rest of the adventure and meet the Professeur!'d3
 salle44_zone3_main	str	''
 salle44_zone3_oeil	str	''
-salle44_zone3_bouche	str	d2'Nous sommes les membres de SOS Aventuriers. Nous sommes l'88' pour t'27'aider '88' continuer le jeu !'d3
+salle44_zone3_bouche	str	d2'We are the members of SOS Adventurers. We are here to help keep the game going!'d3
 
 salle45
 	dw	3
@@ -1204,14 +1204,14 @@ salle45
 	da	salle45_zone3_main
 	da	salle45_zone3_oeil
 	da	salle45_zone3_bouche
-salle45_zone1_main	str	'Il se d'8e'brouille tr'8f's bien tout seul'
-salle45_zone1_oeil	str	'Mais qu'27'est-ce qu'27'il vient foutre ici celui-l'88' ?'
-salle45_zone1_bouche	str	d2'C'27'est par Leader Board ici ! !'d3
+salle45_zone1_main	str	'He does very well on his own'
+salle45_zone1_oeil	str	'What the hell is he doing here?'
+salle45_zone1_bouche	str	d2'It is not Leader Board here!!'d3
 salle45_zone2_main	str	''
-salle45_zone2_oeil	str	'Le drapeau indiquant le trou'
+salle45_zone2_oeil	str	'The flag indicating the golf hole'
 salle45_zone2_bouche	str	''
-salle45_zone3_main	str	d2'Passez-moi le fer de 5 pendant que vous y '90'tes !'d3
-salle45_zone3_oeil	str	d2'Pas tr'8f's m'8e'diterrann'8e'en tout '8d'a'd3
+salle45_zone3_main	str	d2'Pass me the Iron 5 while you are at it!'d3
+salle45_zone3_oeil	str	d2'Not very Mediterranean all that'd3
 salle45_zone3_bouche	str	d2'Put put put'd3
 
 salle46
@@ -1260,19 +1260,19 @@ salle48
 	da	salle48_zone5_oeil
 	da	salle48_zone5_bouche
 salle48_zone1_main	str	''
-salle48_zone1_oeil	str	'Bill est d'8e'j'88' parvenu '88' lib'8e'rer sa main'
+salle48_zone1_oeil	str	'Bill has already managed to free his hand'
 salle48_zone1_bouche	str	''
 salle48_zone2_main	str	''
-salle48_zone2_oeil	str	'Le Professeur utilise visiblement l'27''8e'nergie du F'8e'tiche'
-salle48_zone2_bouche	str	d2'Vous '90'tes perdu Palmer ! ! Ce F'8e'tiche contient une mati'8f're inconnue qui va me permettre de devenir le ma'94'tre du Monde ! !'d3
+salle48_zone2_oeil	str	'The Professor visibly uses the energy of the fetish'
+salle48_zone2_bouche	str	d2'You are lost, Palmer!! This fetish contains an unkonwn material which will allow me to become the master of the world!!'d3
 salle48_zone3_main	str	''
-salle48_zone3_oeil	str	'Grouillez-vous ! !'
+salle48_zone3_oeil	str	'Hurry up!!'
 salle48_zone3_bouche	str	''
 salle48_zone4_main	str	''
-salle48_zone4_oeil	str	'Un lieutenant du Professeur'
-salle48_zone4_bouche	str	d2'La ferme!'d3
-salle48_zone5_main	str	'Impossible de l'27'atteindre attach'8e' !'
-salle48_zone5_oeil	str	'L'27'interrupteur'
+salle48_zone4_oeil	str	'A lieutenant of the Professor'
+salle48_zone4_bouche	str	d2'Shut up!'d3
+salle48_zone5_main	str	'Cannot reach it while being tied up!'
+salle48_zone5_oeil	str	'The electric switch'
 salle48_zone5_bouche	str	''
 
 salle49
@@ -1291,13 +1291,13 @@ salle49
 	da	salle49_zone3_oeil
 	da	salle49_zone3_bouche
 salle49_zone1_main	str	''
-salle49_zone1_oeil	str	'L'27'interrupteur'
+salle49_zone1_oeil	str	'The electric switch'
 salle49_zone1_bouche	str	''
 salle49_zone2_main	str	''
-salle49_zone2_oeil	str	'Une chance! Il n'27'a pas rep'8e'r'8e' Bill !'
-salle49_zone2_bouche	str	d2'Le Mal va enfin triompher ! Gniark gniark !'d3
+salle49_zone2_oeil	str	'Luckily je did not spot Bill'
+salle49_zone2_bouche	str	d2'Evil will finally triumph! Gniark gniark!'d3
 salle49_zone3_main	str	''
-salle49_zone3_oeil	str	'Heureusement que les m'8e'chants ne font pas attention...'
+salle49_zone3_oeil	str	'Luckily the bad guys do not care...'
 salle49_zone3_bouche	str	''
 
 salle50
@@ -1316,13 +1316,13 @@ salle50
 	da	salle50_zone3_oeil
 	da	salle50_zone3_bouche
 salle50_zone1_main	str	''
-salle50_zone1_oeil	str	'Les beautiful eyes de Bill'
+salle50_zone1_oeil	str	'Bill'27's beautiful eyes'
 salle50_zone1_bouche	str	''
 salle50_zone2_main	str	''
-salle50_zone2_oeil	str	'L'27'homme de main du Professeur'
+salle50_zone2_oeil	str	'The Professor'27's henchman'
 salle50_zone2_bouche	str	''
 salle50_zone3_main	str	''
-salle50_zone3_oeil	str	'Le Professeur'
+salle50_zone3_oeil	str	'Professor X.'
 salle50_zone3_bouche	str	''
 
 salle51
@@ -1364,32 +1364,32 @@ salle51
 	da	salle51_zone9_main
 	da	salle51_zone9_oeil
 	da	salle51_zone9_bouche
-salle51_zone1_main	str	'Rien ne se passe'
-salle51_zone1_oeil	str	d2'Caf'8e', (en panne)'d3
+salle51_zone1_main	str	'Nothing happens'
+salle51_zone1_oeil	str	d2'Coffee, (out of service)'d3
 salle51_zone1_bouche	str	''
 salle51_zone2_main	str	''
-salle51_zone2_oeil	str	d2'Auto-destruction imm'8e'diate'd3
+salle51_zone2_oeil	str	d2'Immediate self-destruction'd3
 salle51_zone2_bouche	str	''
-salle51_zone3_main	str	d2'Auto destruction enclench'8e'e'd3' annonce une voix synth'8e'tique'
-salle51_zone3_oeil	str	d2'Auto-destruction diff'8e'r'8e'e'd3
+salle51_zone3_main	str	d2'Self-destruction engagedS says a synthetic voice"
+salle51_zone3_oeil	str	d2'Deferred self-destruction'd3
 salle51_zone3_bouche	str	''
 salle51_zone4_main	str	''
-salle51_zone4_oeil	str	d2'Ejection'd3
+salle51_zone4_oeil	str	d2'Ejecting'd3
 salle51_zone4_bouche	str	''
 salle51_zone5_main	str	''
-salle51_zone5_oeil	str	'Un micro'
-salle51_zone5_bouche	str	d2'Un, deux, un, deux, trois !'d3
+salle51_zone5_oeil	str	'A microphone'
+salle51_zone5_bouche	str	d2'One, two, one, two, three, four!'d3
 salle51_zone6_main	str	''
-salle51_zone6_oeil	str	'Juste de quoi ranger ses petits effets personnels'
+salle51_zone6_oeil	str	'Just enough to store your small personal effects'
 salle51_zone6_bouche	str	''
 salle51_zone7_main	str	''
-salle51_zone7_oeil	str	'Et dire que le Professeur X. veut devenir ma'94'tre de tout '8d'a..'
+salle51_zone7_oeil	str	'And says that Professor X. wants to become the master of all this...'
 salle51_zone7_bouche	str	''
-salle51_zone8_main	str	'Pfff... Ca connait le GFA '8d'a ?'
-salle51_zone8_oeil	str	'M'90'me pas de l'27'Atari'd3
+salle51_zone8_main	str	'Pfff... Does one know GFA BASIC?'
+salle51_zone8_oeil	str	'Not even from RAtariS'
 salle51_zone8_bouche	str	''
 salle51_zone9_main	str	''
-salle51_zone9_oeil	str	'Le prochain streamer Atari ?'
+salle51_zone9_oeil	str	'The next Atari streamer?'
 salle51_zone9_bouche	str	''
 
 salle52
@@ -1435,35 +1435,35 @@ salle52
 	da	salle52_zone10_main
 	da	salle52_zone10_oeil
 	da	salle52_zone10_bouche
-salle52_zone1_main	str	'Rien ne se passe'
-salle52_zone1_oeil	str	d2'Caf'8e', (en panne)'d3
+salle52_zone1_main	str	'Nothing happens'
+salle52_zone1_oeil	str	d2'Coffee, (out of service)'d3
 salle52_zone1_bouche	str	''
 salle52_zone2_main	str	''
-salle52_zone2_oeil	str	d2'Auto-destruction imm'8e'diate'd3
+salle52_zone2_oeil	str	d2'Immediate self-destruction'd3
 salle52_zone2_bouche	str	''
-salle52_zone3_main	str	d2'Auto destruction enclench'8e'e'd3' annonce une voix synth'8e'tique'
-salle52_zone3_oeil	str	d2'Auto-destruction diff'8e'r'8e'e'd3
+salle52_zone3_main	str	d2'Self-destruction engagedS says a synthetic voice"
+salle52_zone3_oeil	str	d2'Deferred self-destruction'd3
 salle52_zone3_bouche	str	''
 salle52_zone4_main	str	''
-salle52_zone4_oeil	str	d2'Ejection'd3
+salle52_zone4_oeil	str	d2'Ejecting'd3
 salle52_zone4_bouche	str	''
 salle52_zone5_main	str	''
-salle52_zone5_oeil	str	'Un micro'
-salle52_zone5_bouche	str	d2'Un, deux, un, deux, trois!'d3
+salle52_zone5_oeil	str	'A microphone'
+salle52_zone5_bouche	str	d2'One, two, one, two, three, four!'d3
 salle52_zone6_main	str	''
-salle52_zone6_oeil	str	'Juste de quoi ranger ses petits effets personnels'
+salle52_zone6_oeil	str	'Just enough to store your small personal effects'
 salle52_zone6_bouche	str	''
 salle52_zone7_main	str	''
-salle52_zone7_oeil	str	'Et dire que le Professeur X. veut devenir ma'94'tre de tout '8d'a...'
+salle52_zone7_oeil	str	'And says that Professor X. wants to become the master of all this...'
 salle52_zone7_bouche	str	''
 salle52_zone8_main	str	''
-salle52_zone8_oeil	str	'Vite ! Bill doit faire quelque chose ! !'
-salle52_zone8_bouche	str	d2'Vous ne m'27''8e'chapperez plus cette fois-ci Palmer !'d3
-salle52_zone9_main	str	'Pfff... Ca connait le GFA '8d'a ?'
-salle52_zone9_oeil	str	'M'90'me pas de l'27'Atari'd3
+salle52_zone8_oeil	str	'Quick! Bill has to do something!!'
+salle52_zone8_bouche	str	d2'You will not espace me this time around, Palmer!'d3
+salle52_zone9_main	str	'Pfff... Does one know GFA BASIC?'
+salle52_zone9_oeil	str	'Not even from RAtariS'
 salle52_zone9_bouche	str	''
 salle52_zone10_main	str	''
-salle52_zone10_oeil	str	'Le prochain streamer Atari ?'
+salle52_zone10_oeil	str	'The next Atari streamer?'
 salle52_zone10_bouche	str	''
 
 salle53
@@ -1509,35 +1509,35 @@ salle53
 	da	salle53_zone10_main
 	da	salle53_zone10_oeil
 	da	salle53_zone10_bouche
-salle53_zone1_main	str	'Rien ne se passe'
-salle53_zone1_oeil	str	d2'Caf'8e', (en panne)'d3
+salle53_zone1_main	str	'Nothing happens'
+salle53_zone1_oeil	str	d2'Coffee, (out of service)'d3
 salle53_zone1_bouche	str	''
 salle53_zone2_main	str	''
-salle53_zone2_oeil	str	d2'Auto-destruction imm'8e'diate'd3
+salle53_zone2_oeil	str	d2'Immediate self-destruction'd3
 salle53_zone2_bouche	str	''
-salle53_zone3_main	str	d2'Auto destruction enclench'8e'e'd3' annonce une voix synth'8e'tique'
-salle53_zone3_oeil	str	d2'Auto-destruction diff'8e'r'8e'e'd3
+salle53_zone3_main	str	d2'Self-destruction engagedS says a synthetic voice"
+salle53_zone3_oeil	str	d2'Deferred self-destruction'd3
 salle53_zone3_bouche	str	''
 salle53_zone4_main	str	''
-salle53_zone4_oeil	str	d2'Ejection'd3
+salle53_zone4_oeil	str	d2'Ejecting'd3
 salle53_zone4_bouche	str	''
 salle53_zone5_main	str	''
-salle53_zone5_oeil	str	'Un micro'
-salle53_zone5_bouche	str	d2'Un, deux, un, deux, trois !'d3
+salle53_zone5_oeil	str	'A microphone'
+salle53_zone5_bouche	str	d2'One, two, one, two, three, four!'d3
 salle53_zone6_main	str	''
-salle53_zone6_oeil	str	'Juste de quoi ranger ses petits effets personnels'
+salle53_zone6_oeil	str	'Just enough to store your small personal effects'
 salle53_zone6_bouche	str	''
 salle53_zone7_main	str	''
-salle53_zone7_oeil	str	'Et dire que le Professeur X. veut devenir ma'94'tre de tout '8d'a...'
+salle53_zone7_oeil	str	'And says that Professor X. wants to become the master of all this...'
 salle53_zone7_bouche	str	''
 salle53_zone8_main	str	''
-salle53_zone8_oeil	str	'Bill a la situation bien en main !'
-salle53_zone8_bouche	str	d2'Vous ne vous en tirerez pas comme '8d'a, Palmer ! !'d3
-salle53_zone9_main	str	'Pfff... Ca connait le GFA '8d'a ?'
-salle53_zone9_oeil	str	'M'90'me pas de l'27'Atari'd3
+salle53_zone8_oeil	str	'Bill has the situation well in hand!'
+salle53_zone8_bouche	str	d2'You will not get away with this, Palmer!!'d3
+salle53_zone9_main	str	'Pfff... Does one know GFA BASIC?'
+salle53_zone9_oeil	str	'Not even from RAtariS'
 salle53_zone9_bouche	str	''
 salle53_zone10_main	str	''
-salle53_zone10_oeil	str	'Le prochain streamer Atari ?'
+salle53_zone10_oeil	str	'The next Atari streamer?'
 salle53_zone10_bouche	str	''
 
 salle54
@@ -1588,17 +1588,17 @@ message
 	da	message9
 	da	message10
 	da	message11
-
+	
 message1	str	0d'BILL PALMER. Copyright 1987. ARCAN'
-message2	str	0d'Un jeu de FRANCOIS COULON'
-message3	str	0d'Dessins de DOMINIQUE PETTER'
-message4	str	0d'Musique d'27' Alain Krausz'
-message5	str	0d'Coproduit par Emmanuel Lasmezas'
-message6	str	0d'Programmes et outils utilis'8e's...'
-message7	str	0d'Basic GFA et Compilateur GFA (GfA Systemtechnik/Franck Ostrowski)'
-message8	str	0d'Degas Elite (Batteries Included/Tom Hudson), Tablette graphique CRP'
-message9	str	'Mat'8e'riel musical Yamaha et Akai, digitaliseur ST Replay (2 bits System/A. Racine)'
-message10	str	'Version Apple IIgs '8e'crite en 2021'0d'par Brutal Deluxe Software'0d'Antoine Vignau & Olivier Zardini'
+message2	str	0d'A game by FRANCOIS COULON'
+message3	str	0d'Graphics by DOMINIQUE PETTER'
+message4	str	0d'Music by Alain Krausz'
+message5	str	0d'Coproduced by Emmanuel Lasmezas'
+message6	str	0d'Used programs and tools..'
+message7	str	0d'GFA Basic and GFA Compiler (GfA Systemtechnik/Franck Ostrowski)'
+message8	str	0d'Degas Elite (Batteries Included/Tom Hudson), CRP graphic tablet'
+message9	str	'Yamaha and Akai musical hardware, ST Replay digitizer (2 bits System/A. Racine)'
+message10	str	'Apple IIgs version written in 2021'0D'by Brutal Deluxe Software'0D'Antoine Vignau & Olivier Zardini'
 message11	str	' '
 
 * DIVERSES CHAINES

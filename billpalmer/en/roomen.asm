@@ -460,7 +460,7 @@ s23
 	
 s2399	rts
 
-s23_str1	str	'
+s23_str1	str	'The stone hid a scorpion. And scorpions hate to be disturbed... Bad plan.'
 
 *---
 
@@ -507,8 +507,8 @@ s2501	lda	instruction1
 	
 s2599	rts
 
-s25_str1	str	'
-s25_str2	str	'
+s25_str1	str	'Bill is rolled, squashed and atomized by the raving mammal'
+s25_str2	str	'Frightened by the machine, the animal takes its legs to its neck and flees'
 
 *---
 
@@ -526,7 +526,7 @@ s26
 	
 s2699	rts
 
-s26_str1	str	'
+s26_str1	str	'Bill manages to cut some twigs'
 
 *---
 
@@ -550,7 +550,7 @@ s2701	cmp	#3
 	
 s2799	rts
 
-s27_str3	str	'
+s27_str3	str	'While searching it, Bill discovers a photograph'
 
 *---
 
@@ -570,7 +570,7 @@ s28
 
 s2899	rts
 
-s28_str1	str	'
+s28_str1	str	'Bill starts to climb the hill'
 
 *---
 
@@ -592,7 +592,7 @@ s2901	rep	#$20
 	jmp	fin
 s2999	rts
 
-s29_str1	str	'
+s29_str1	str	'The dastardly fellow strangles Bill with his knife'
 
 *---
 
@@ -609,7 +609,7 @@ s30
 	
 s3099	rts
 
-s30_str2	str	'
+s30_str2	str	'Bad luck, the tuft of grass breaks off the rock and Bill falls into the void'
 
 *---
 
@@ -655,8 +655,8 @@ s3201	lda	instruction1
 	sta	salle
 s3299	rts
 
-s32_str8	str	'
-s32_str1	str	'
+s32_str8	str	'The Professor'27's henchman catches up with Bill. It'27's over...'
+s32_str1	str	'Bill knocks the stone back into the void. She knocks out the villain who followed him'
 
 *---
 
@@ -700,8 +700,8 @@ s3301	lda	instruction1
 	
 s3399	rts
 
-s33_str1	str	'
-s33_str2	str	'
+s33_str1	str	'Suddenly a ray pulverizes Bill (gniark gniark!)'
+s33_str2	str	'Bill shows the photo to the camera which seems to react'
 
 *---
 
@@ -745,9 +745,10 @@ s3402	cmp	#brindilles
 	
 s3499	rts
 
-s34_str1	str	'
-s34_str2	str	'
-s34_str3	str	'
+s34_str1	str	'Bill lights a fire with the twigs...'
+s34_str2	str	'There is nothing to burn in the room'
+s34_str3	str	'And why not burn them?'
+
 *---
 
 s35
@@ -779,8 +780,8 @@ s3601	lda	#38
 	
 s3699	rts
 
-s36_str1	str	'
-s36_str2	str	'
+s36_str1	str	'Before Bill can enter Professor X'27's lab, Professor X grabs a submachine gun and turns it into a strainer.'
+s36_str2	str	'Phew... The door opens!'
 
 *---
 
@@ -826,10 +827,10 @@ s3803	lda	instruction1
 	
 s3899	rts
 
-s38_str1	str	'
-s38_str2	str	'
-s38_str3	str	'
-s38_str4	str	'
+s38_str1	str	'Bill find a call...'
+s38_str2	str	'Wow! A submachine gun'
+s38_str3	str	'Bill should have known that it is better to handle toxic products with gloves...'
+s38_str4	str	'Damn it! It was poison! Bill chokes and dies in minutes'
 
 *---
 
@@ -859,7 +860,7 @@ s3901	rep	#$20
 	
 s3999	rts
 
-s39_str1	str	'
+s39_str1	str	'The Professor stays to inspect his men!'
 
 *---
 
@@ -896,9 +897,9 @@ s4002	lda	#s40_str3
 	
 s4099	rts
 
-s40_str1	str	'
-s40_str2	str	'
-s40_str3	str	'
+s40_str1	str	'Attracted by the call, the bird comes to rest...'
+s40_str2	str	'Hot smoke rises from it'
+s40_str3	str	'It looks like the flue of a fireplace'
 
 *---
 
@@ -920,8 +921,8 @@ s4101	lda	#42
 	
 s4199	rts
 
-s41_str1	str	'
-s41_str2	str	'
+s41_str1	str	'The bird leaves immediatly'
+s41_str2	str	'The bird clogs the flue of the chimney, immediately the professor'27's men come out suffocated...'
 
 *---
 
@@ -972,10 +973,10 @@ s4202	cmp	#machette
 	
 s4299	rts
 
-s42_str1	str	'
-s42_str2	str	'
-s42_str3	str	'
-s42_str4	str	'
+s42_str1	str	'Professor'27's men gut Bill'
+s42_str2	str	'Bill draws his submachine gun...'
+s42_str3	str	'And massacres his attackers...'
+s42_str4	str	'Bill engages in the fight with a machete but he falls under the number'
 
 *--- Check protection
 
@@ -1022,8 +1023,8 @@ s45
 	
 s4599	rts
 
-s45_str2	str	'
-s45_str3	str	'
+s45_str2	str	'Bill pulls the flag. Suddenly...'
+s45_str3	str	'A trap door opens under his feet. Bill is captured by Professor X'27's men'
 
 *---
 
@@ -1069,8 +1070,8 @@ s4801	lda	instruction1
 	
 s4899	rts
 
-s48_str6	str	'
-s48_str1	str	'
+s48_str6	str	'The cannon cuts Bill to pieces. Professor X. becomes master of the world'
+s48_str1	str	'Bill manages to free himself discreetly and extinguish the fuse'
 
 *---
 
@@ -1097,8 +1098,8 @@ s4902	cmp	#1
 	
 s4999	rts
 
-s49_str2	str	'
-s49_str1	str	'
+s49_str2	str	'Bill makes a mistake and is fatally spotted by the Professor'27's lieutenant...'
+s49_str1	str	'Bill switches off the light, plunging the entire room into darkness'
 
 *---
 
@@ -1114,7 +1115,7 @@ s50
 	
 s5099	rts
 
-s50_str1	str	'
+s50_str1	str	'Rather than quietly slipping away, Bill saw fit to show his presence...'
 
 *---
 
@@ -1190,9 +1191,9 @@ s5105	lda	instruction1
 
 s5199	rts
 
-s51_str2	str	'
-s51_str4	str	'
-s51_str6	str	'
+s51_str2	str	'The base and everything in it explodes. Too expeditious...'
+s51_str4	str	'Bill ejects...'
+s51_str6	str	'This could be useful...'
 
 *---
 
@@ -1288,11 +1289,11 @@ s5206	cmp	#6
 	
 s5299	rts
 
-s52_str1	str	'
-s52_str2	str	'
-s52_str3	str	'
-s52_str4	str	'
-s52_str6	str	'
+s52_str1	str	'Bill draws quickly and takes aim at the two men. The Professor must let go of the fetish'
+s52_str2	str	'Professor'27's henchman coldly kills Bill'
+s52_str3	str	'The base and everything in it explodes. Too expeditious...'
+s52_str4	str	'Bill ejects...'
+s52_str6	str	'This could be useful...'
 
 *---
 
@@ -1350,8 +1351,8 @@ s5303	lda	instruction1
 	sta	salle
 s5399	rts
 
-s53_str2	str	'
-s53_str4	str	'
+s53_str2	str	'The base and everything in it explodes. Too expeditious...'
+s53_str4	str	'Bill ejects...'
 
 *---
 
@@ -1392,9 +1393,9 @@ s5402	lda	#56
 	
 s5499	rts
 
-s54_str1	str	'
-s54_str2	str	'
-s54_str3	str	'
+s54_str1	str	'When he falls, Bill is captured again. He can no longer thwart the professor'27's plans...'
+s54_str2	str	'Professor X.'27's base is reduced to rubble. Alas, Bill failed to retrieve the Fetish'
+s54_str3	str	'CONGRATULATIONS!! Bill has recovered the fetish and destroyed Professor X'27's base. We can bet that he will take his revenge...'
 
 *---
 

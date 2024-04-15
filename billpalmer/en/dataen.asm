@@ -162,7 +162,7 @@ descr_objet16	str	'The Adventurer'27's Gazette. A freelance writer reveals that 
 descr_objet17	str	'Let'27's keep calm: this submachine gun is loaded ...'
 descr_objet18	str	'A call. It makes a weird noise when you blow in it'
 descr_objet19	str	'This gun should only be used for a good cause!'
-descr_objet20	str	'
+descr_objet20	str	''
 
 * COORDONNEES DES ZONES, COMMENTAIRES ET DIRECTIONS
 
@@ -540,7 +540,7 @@ salle11_zone3_oeil	str	'What if Bill did the same before he encountered the wors
 salle11_zone3_bouche	str	d2'Argh!!'d3
 salle11_zone4_main	str	'Don'27't be afraid...'
 salle11_zone4_oeil	str	d2'Weight without load: 213 Kg'd3
-salle11_zone4_bouche	str	d2'Aren't you gonna get off on our honeymoon!?'d3
+salle11_zone4_bouche	str	d2'Aren'27't you gonna get off on our honeymoon!?'d3
 
 salle12
 	dw	4
@@ -751,7 +751,7 @@ salle20_zone2_main	str	''
 salle20_zone2_oeil	str	'So what? The first class is also allowed to Black people.'
 salle20_zone2_bouche	str	''
 salle20_zone3_main	str	''
-salle20_zone3_oeil	str	d2'Eat at Joe's. On the menu: missionnary, businessman, freelance writer. Ketchup extra'd3
+salle20_zone3_oeil	str	d2'Eat at Joe'27's. On the menu: missionnary, businessman, freelance writer. Ketchup extra'd3
 salle20_zone3_bouche	str	''
 salle20_zone4_main	str	''
 salle20_zone4_oeil	str	'The alarm signal'
@@ -1017,7 +1017,7 @@ salle36_zone1_main	str	''
 salle36_zone1_oeil	str	'Shall we open it?'
 salle36_zone1_bouche	str	d2'Someone there?'d3
 salle36_zone2_main	str	'Too heavy to be moved'
-salle36_zone2_oeil	str	d2'Fernand loves GeorgetteS is engraved with a pocket knife"
+salle36_zone2_oeil	str	d2'Fernand loves Georgette'd3' is engraved with a pocket knife'
 salle36_zone2_bouche	str	''
 
 salle37
@@ -1370,7 +1370,7 @@ salle51_zone1_bouche	str	''
 salle51_zone2_main	str	''
 salle51_zone2_oeil	str	d2'Immediate self-destruction'd3
 salle51_zone2_bouche	str	''
-salle51_zone3_main	str	d2'Self-destruction engagedS says a synthetic voice"
+salle51_zone3_main	str	d2'Self-destruction engaged'd3' says a synthetic voice'
 salle51_zone3_oeil	str	d2'Deferred self-destruction'd3
 salle51_zone3_bouche	str	''
 salle51_zone4_main	str	''
@@ -1441,7 +1441,7 @@ salle52_zone1_bouche	str	''
 salle52_zone2_main	str	''
 salle52_zone2_oeil	str	d2'Immediate self-destruction'd3
 salle52_zone2_bouche	str	''
-salle52_zone3_main	str	d2'Self-destruction engagedS says a synthetic voice"
+salle52_zone3_main	str	d2'Self-destruction engaged'd3' says a synthetic voice'
 salle52_zone3_oeil	str	d2'Deferred self-destruction'd3
 salle52_zone3_bouche	str	''
 salle52_zone4_main	str	''
@@ -1460,7 +1460,7 @@ salle52_zone8_main	str	''
 salle52_zone8_oeil	str	'Quick! Bill has to do something!!'
 salle52_zone8_bouche	str	d2'You will not espace me this time around, Palmer!'d3
 salle52_zone9_main	str	'Pfff... Does one know GFA BASIC?'
-salle52_zone9_oeil	str	'Not even from RAtariS'
+salle52_zone9_oeil	str	'Not even from 'd2'Atari'd3
 salle52_zone9_bouche	str	''
 salle52_zone10_main	str	''
 salle52_zone10_oeil	str	'The next Atari streamer?'
@@ -1515,7 +1515,7 @@ salle53_zone1_bouche	str	''
 salle53_zone2_main	str	''
 salle53_zone2_oeil	str	d2'Immediate self-destruction'd3
 salle53_zone2_bouche	str	''
-salle53_zone3_main	str	d2'Self-destruction engagedS says a synthetic voice"
+salle53_zone3_main	str	d2'Self-destruction engaged'd3' says a synthetic voice'
 salle53_zone3_oeil	str	d2'Deferred self-destruction'd3
 salle53_zone3_bouche	str	''
 salle53_zone4_main	str	''
@@ -1534,7 +1534,7 @@ salle53_zone8_main	str	''
 salle53_zone8_oeil	str	'Bill has the situation well in hand!'
 salle53_zone8_bouche	str	d2'You will not get away with this, Palmer!!'d3
 salle53_zone9_main	str	'Pfff... Does one know GFA BASIC?'
-salle53_zone9_oeil	str	'Not even from RAtariS'
+salle53_zone9_oeil	str	'Not even from 'd2'Atari'd3
 salle53_zone9_bouche	str	''
 salle53_zone10_main	str	''
 salle53_zone10_oeil	str	'The next Atari streamer?'

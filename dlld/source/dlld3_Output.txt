@@ -1,0 +1,626 @@
+------+-------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File       Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+-------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1 dlld3.s      1 | Comment     | 11 |         |    0 | 00/8000               | *
+    2 |  1 dlld3.s      2 | Comment     | 11 |         |    0 | 00/8000               | * DLLD
+    3 |  1 dlld3.s      3 | Comment     | 11 |         |    0 | 00/8000               | * Let's play Dragon's Lair :-)
+    4 |  1 dlld3.s      4 | Comment     | 11 |         |    0 | 00/8000               | *
+    5 |  1 dlld3.s      5 | Comment     | 11 |         |    0 | 00/8000               | * (c) 2024, Brutal Deluxe Software
+    6 |  1 dlld3.s      6 | Comment     | 11 |         |    0 | 00/8000               | *
+    7 |  1 dlld3.s      7 | Empty       | 11 |         |    0 | 00/8000               |                                               
+    8 |  1 dlld3.s      8 | Directive   | 11 |         |    0 | 00/8000               |                   mx           %11            
+    9 |  1 dlld3.s      9 | Directive   | 11 |         |    0 | 00/8000               |                   org          $2000          
+   10 |  1 dlld3.s     10 | Directive   | 11 |         |    0 | 00/2000               |                   lst          off            
+   11 |  1 dlld3.s     11 | Empty       | 11 |         |    0 | 00/2000               |                                               
+   12 |  1 dlld3.s     12 | Directive   | 11 |         |    0 | 00/2000               |                   use          4/Int.Macs     
+   13 |  1 dlld3.s     13 | Directive   | 11 |         |    0 | 00/2000               |                   use          4/Misc.Macs    
+   14 |  1 dlld3.s     14 | Directive   | 11 |         |    0 | 00/2000               |                   use          4/Util.Macs    
+   15 |  1 dlld3.s     15 | Empty       | 11 |         |    0 | 00/2000               |                                               
+   16 |  1 dlld3.s     16 | Comment     | 11 |         |    0 | 00/2000               | *-----------------------------------
+   17 |  1 dlld3.s     17 | Comment     | 11 |         |    0 | 00/2000               | * MACROS
+   18 |  1 dlld3.s     18 | Comment     | 11 |         |    0 | 00/2000               | *-----------------------------------
+   19 |  1 dlld3.s     19 | Empty       | 11 |         |    0 | 00/2000               |                                               
+   20 |  1 dlld3.s     20 | Directive   | 11 |         |    0 | 00/2000               | _sendSTRING       mac                         
+   21 |  1 dlld3.s     21 | Directive   | 11 |         |    0 | 00/2000               |                   ldx          #>]1           
+   22 |  1 dlld3.s     22 | Directive   | 11 |         |    0 | 00/2000               |                   ldy          #<]1           
+   23 |  1 dlld3.s     23 | Directive   | 11 |         |    0 | 00/2000               |                   jsr          sendString     
+   24 |  1 dlld3.s     24 | Directive   | 11 |         |    0 | 00/2000               |                   eom                         
+   25 |  1 dlld3.s     25 | Empty       | 11 |         |    0 | 00/2000               |                                               
+   26 |  1 dlld3.s     26 | Comment     | 11 |         |    0 | 00/2000               | *-----------------------------------
+   27 |  1 dlld3.s     27 | Comment     | 11 |         |    0 | 00/2000               | * EQUATES
+   28 |  1 dlld3.s     28 | Comment     | 11 |         |    0 | 00/2000               | *-----------------------------------
+   29 |  1 dlld3.s     29 | Empty       | 11 |         |    0 | 00/2000               |                                               
+   30 |  1 dlld3.s     30 | Equivalence | 11 |         |    0 | 00/2000               | frameIN           =            323            
+   31 |  1 dlld3.s     31 | Equivalence | 11 |         |    0 | 00/2000               | frameOUT          =            1359           
+   32 |  1 dlld3.s     32 | Empty       | 11 |         |    0 | 00/2000               |                                               
+   33 |  1 dlld3.s     33 | Equivalence | 11 |         |    0 | 00/2000               | SLOT              =            2              
+   34 |  1 dlld3.s     34 | Equivalence | 11 |         |    0 | 00/2000               | N0                =            {2}*16         
+   35 |  1 dlld3.s     35 | Equivalence | 11 |         |    0 | 00/2000               | CN                =            {2}!$C0        
+   36 |  1 dlld3.s     36 | Empty       | 11 |         |    0 | 00/2000               |                                               
+   37 |  1 dlld3.s     37 | Equivalence | 11 |         |    0 | 00/2000               | chrRETURN         =            $0d            
+   38 |  1 dlld3.s     38 | Empty       | 11 |         |    0 | 00/2000               |                                               
+   39 |  1 dlld3.s     39 | Equivalence | 11 |         |    0 | 00/2000               | dpFROM            =            $fc            
+   40 |  1 dlld3.s     40 | Equivalence | 11 |         |    0 | 00/2000               | dpTO              =            {$fc}+2        
+   41 |  1 dlld3.s     41 | Empty       | 11 |         |    0 | 00/2000               |                                               
+   42 |  1 dlld3.s     42 | Comment     | 11 |         |    0 | 00/2000               | *----------
+   43 |  1 dlld3.s     43 | Empty       | 11 |         |    0 | 00/2000               |                                               
+   44 |  1 dlld3.s     44 | Equivalence | 11 |         |    0 | 00/2000               | CH                =            $24            
+   45 |  1 dlld3.s     45 | Empty       | 11 |         |    0 | 00/2000               |                                               
+   46 |  1 dlld3.s     46 | Equivalence | 11 |         |    0 | 00/2000               | KBD               =            $c000          
+   47 |  1 dlld3.s     47 | Equivalence | 11 |         |    0 | 00/2000               | CLR80VID          =            $c00c          
+   48 |  1 dlld3.s     48 | Equivalence | 11 |         |    0 | 00/2000               | KBDSTROBE         =            $c010          
+   49 |  1 dlld3.s     49 | Empty       | 11 |         |    0 | 00/2000               |                                               
+   50 |  1 dlld3.s     50 | Equivalence | 11 |         |    0 | 00/2000               | INIT              =            $FB2F          
+   51 |  1 dlld3.s     51 | Equivalence | 11 |         |    0 | 00/2000               | TABV              =            $FB5B          
+   52 |  1 dlld3.s     52 | Equivalence | 11 |         |    0 | 00/2000               | HOME              =            $FC58          
+   53 |  1 dlld3.s     53 | Equivalence | 11 |         |    0 | 00/2000               | WAIT              =            $FCA8          
+   54 |  1 dlld3.s     54 | Equivalence | 11 |         |    0 | 00/2000               | PRBYTE            =            $FDDA          
+   55 |  1 dlld3.s     55 | Equivalence | 11 |         |    0 | 00/2000               | COUT              =            $FDED          
+   56 |  1 dlld3.s     56 | Equivalence | 11 |         |    0 | 00/2000               | SETNORM           =            $FE84          
+   57 |  1 dlld3.s     57 | Equivalence | 11 |         |    0 | 00/2000               | SETKBD            =            $FE89          
+   58 |  1 dlld3.s     58 | Empty       | 11 |         |    0 | 00/2000               |                                               
+   59 |  1 dlld3.s     59 | Comment     | 11 |         |    0 | 00/2000               | *-----------------------------------
+   60 |  1 dlld3.s     60 | Comment     | 11 |         |    0 | 00/2000               | * CODE
+   61 |  1 dlld3.s     61 | Comment     | 11 |         |    0 | 00/2000               | *-----------------------------------
+   62 |  1 dlld3.s     62 | Empty       | 11 |         |    0 | 00/2000               |                                               
+   63 |  1 dlld3.s     63 | Code        | 11 |         |    2 | 00/2000 : 80 02       |                   bra          jumpME         
+   64 |  1 dlld3.s     64 | Empty       | 11 |         |    0 | 00/2002               |                                               
+   65 |  1 dlld3.s     65 | Data        | 11 |         |    2 | 00/2002 : 00 00       | theFRAME          ds           2              
+   66 |  1 dlld3.s     66 | Empty       | 11 |         |    0 | 00/2004               |                                               
+   67 |  1 dlld3.s     67 | Code        | 11 |         |    3 | 00/2004 : 8D 0C C0    | jumpME            sta          {$c00c}        
+   68 |  1 dlld3.s     68 | Code        | 11 |         |    3 | 00/2007 : 20 2F FB    |                   jsr          {$FB2F}        ; text screen
+   69 |  1 dlld3.s     69 | Code        | 11 |         |    3 | 00/200A : 20 84 FE    |                   jsr          {$FE84}        ; set normal text mode
+   70 |  1 dlld3.s     70 | Code        | 11 |         |    3 | 00/200D : 20 89 FE    |                   jsr          {$FE89}        ; reset input to keyboard
+   71 |  1 dlld3.s     71 | Code        | 11 |         |    3 | 00/2010 : 20 58 FC    |                   jsr          {$FC58}        ; home cursor and clear to end of page
+   72 |  1 dlld3.s     72 | Empty       | 11 |         |    0 | 00/2013               |                                               
+   73 |  1 dlld3.s     73 | Code        | 11 |         |    1 | 00/2013 : 18          |                   clc                         
+   74 |  1 dlld3.s     74 | Code        | 11 |         |    1 | 00/2014 : FB          |                   xce                         
+   75 |  1 dlld3.s     75 | Code        | 00 |         |    2 | 00/2015 : C2 30       |                   rep          #$30           
+   76 |  1 dlld3.s     76 | Code        | 00 |         |    3 | 00/2017 : A9 43 01    |                   lda          #{323}         
+   77 |  1 dlld3.s     77 | Code        | 00 |         |    3 | 00/201A : 8D 02 20    |                   sta          theFRAME       
+   78 |  1 dlld3.s     78 | Empty       | 00 |         |    0 | 00/201D               |                                               
+   79 |  1 dlld3.s     79 | Code        | 00 |         |    1 | 00/201D : 38          |                   sec                         
+   80 |  1 dlld3.s     80 | Code        | 11 |         |    1 | 00/201E : FB          |                   xce                         
+   81 |  1 dlld3.s     81 | Code        | 11 |         |    2 | 00/201F : E2 30       |                   sep          #$30           
+   82 |  1 dlld3.s     82 | Empty       | 11 |         |    0 | 00/2021               |                                               
+   83 |  1 dlld3.s     83 | Code        | 11 |         |    3 | 00/2021 : 20 37 21    |                   jsr          initSERIAL     ; set the serial addresses
+   84 |  1 dlld3.s     84 | Code        | 11 |         |    3 | 00/2024 : 20 5C 21    |                   jsr          initPORT       ; init the serial port for LD support
+   85 |  1 dlld3.s     85 | Empty       | 11 |         |    0 | 00/2027               |                                               
+   86 |  1 dlld3.s     86 | Comment     | 11 |         |    0 | 00/2027               | *----------
+   87 |  1 dlld3.s     87 | Code        | 11 |         |    2 | 00/2027 : A2 20       |                   ldx          #>strDS        ; on veut la frame number
+   88 |  1 dlld3.s     88 | Code        | 11 |         |    2 | 00/2029 : A0 97       |                   ldy          #<strDS        
+   89 |  1 dlld3.s     89 | Code        | 11 |         |    3 | 00/202B : 20 00 22    |                   jsr          sendLDCommand  
+   90 |  1 dlld3.s     90 | Empty       | 11 |         |    0 | 00/202E               |                                               
+   91 |  1 dlld3.s     91 | Code        | 11 |         |    2 | 00/202E : A2 20       |                   ldx          #>strSA        ; start the player
+   92 |  1 dlld3.s     92 | Code        | 11 |         |    2 | 00/2030 : A0 9E       |                   ldy          #<strSA        
+   93 |  1 dlld3.s     93 | Code        | 11 |         |    3 | 00/2032 : 20 00 22    |                   jsr          sendLDCommand  
+   94 |  1 dlld3.s     94 | Empty       | 11 |         |    0 | 00/2035               |                                               
+   95 |  1 dlld3.s     95 | Code        | 11 |         |    3 | 00/2035 : 20 C4 20    |                   jsr          setINT         
+   96 |  1 dlld3.s     96 | Empty       | 11 |         |    0 | 00/2038               |                                               
+   97 |  1 dlld3.s     97 | Code        | 11 |         |    3 | 00/2038 : AD 00 C0    | ozunid_1          lda          {$c000}        ; wait for a key
+   98 |  1 dlld3.s     98 | Code        | 11 |         |    2 | 00/203B : 10 FB       |                   bpl          ozunid_1       
+   99 |  1 dlld3.s     99 | Code        | 11 |         |    3 | 00/203D : 2C 10 C0    |                   bit          {$c010}        
+  100 |  1 dlld3.s    100 | Empty       | 11 |         |    0 | 00/2040               |                                               
+  101 |  1 dlld3.s    101 | Comment     | 11 |         |    0 | 00/2040               | *----------
+  102 |  1 dlld3.s    102 | Empty       | 11 |         |    0 | 00/2040               |                                               
+  103 |  1 dlld3.s    103 | Code        | 11 |         |    2 | 00/2040 : A2 20       | mainLOOP          ldx          #>strSE        ; Move to frame and wait for R
+  104 |  1 dlld3.s    104 | Code        | 11 |         |    2 | 00/2042 : A0 AD       |                   ldy          #<strSE        
+  105 |  1 dlld3.s    105 | Code        | 11 |         |    3 | 00/2044 : 20 09 22    |                   jsr          sendLDCommand2 
+  106 |  1 dlld3.s    106 | Empty       | 11 |         |    0 | 00/2047               |                                               
+  107 |  1 dlld3.s    107 | Code        | 11 |         |    2 | 00/2047 : A2 20       |                   ldx          #>strPL        ; Play and wait for R
+  108 |  1 dlld3.s    108 | Code        | 11 |         |    2 | 00/2049 : A0 B7       |                   ldy          #<strPL        
+  109 |  1 dlld3.s    109 | Code        | 11 |         |    3 | 00/204B : 20 09 22    |                   jsr          sendLDCommand2 
+  110 |  1 dlld3.s    110 | Empty       | 11 |         |    0 | 00/204E               |                                               
+  111 |  1 dlld3.s    111 | Code        | 11 |         |    3 | 00/204E : 20 11 21    |                   jsr          startINT       
+  112 |  1 dlld3.s    112 | Empty       | 11 |         |    0 | 00/2051               |                                               
+  113 |  1 dlld3.s    113 | Comment     | 11 |         |    0 | 00/2051               | *----------
+  114 |  1 dlld3.s    114 | Empty       | 11 |         |    0 | 00/2051               |                                               
+  115 |  1 dlld3.s    115 | Code        | 11 |         |    1 | 00/2051 : 38          | ozunid_2          sec                         
+  116 |  1 dlld3.s    116 | Code        | 11 |         |    1 | 00/2052 : FB          |                   xce                         
+  117 |  1 dlld3.s    117 | Code        | 11 |         |    2 | 00/2053 : E2 30       |                   sep          #$30           
+  118 |  1 dlld3.s    118 | Empty       | 11 |         |    0 | 00/2055               |                                               
+  119 |  1 dlld3.s    119 | Code        | 11 |         |    2 | 00/2055 : A9 00       |                   lda          #0             
+  120 |  1 dlld3.s    120 | Code        | 11 |         |    2 | 00/2057 : 85 24       |                   sta          {$24}          
+  121 |  1 dlld3.s    121 | Code        | 11 |         |    3 | 00/2059 : 20 5B FB    |                   jsr          {$FB5B}        
+  122 |  1 dlld3.s    122 | Empty       | 11 |         |    0 | 00/205C               |                                               
+  123 |  1 dlld3.s    123 | Code        | 11 |         |    3 | 00/205C : AD 03 20    |                   lda          theFRAME+1     
+  124 |  1 dlld3.s    124 | Code        | 11 |         |    3 | 00/205F : 20 DA FD    |                   jsr          {$FDDA}        
+  125 |  1 dlld3.s    125 | Code        | 11 |         |    3 | 00/2062 : AD 02 20    |                   lda          theFRAME       
+  126 |  1 dlld3.s    126 | Code        | 11 |         |    3 | 00/2065 : 20 DA FD    |                   jsr          {$FDDA}        
+  127 |  1 dlld3.s    127 | Empty       | 11 |         |    0 | 00/2068               |                                               
+  128 |  1 dlld3.s    128 | Code        | 11 |         |    3 | 00/2068 : AD 00 C0    |                   lda          {$c000}        ; wait for a key
+  129 |  1 dlld3.s    129 | Code        | 11 |         |    2 | 00/206B : 30 19       |                   bmi          theEND         
+  130 |  1 dlld3.s    130 | Empty       | 11 |         |    0 | 00/206D               |                                               
+  131 |  1 dlld3.s    131 | Code        | 11 |         |    1 | 00/206D : 18          |                   clc                         
+  132 |  1 dlld3.s    132 | Code        | 11 |         |    1 | 00/206E : FB          |                   xce                         
+  133 |  1 dlld3.s    133 | Code        | 00 |         |    2 | 00/206F : C2 30       |                   rep          #$30           
+  134 |  1 dlld3.s    134 | Code        | 00 |         |    3 | 00/2071 : AD 02 20    |                   lda          theFRAME       
+  135 |  1 dlld3.s    135 | Code        | 00 |         |    3 | 00/2074 : C9 4F 05    |                   cmp          #{1359}        
+  136 |  1 dlld3.s    136 | Code        | 00 |         |    2 | 00/2077 : 90 D8       |                   bcc          ozunid_2       
+  137 |  1 dlld3.s    137 | Empty       | 00 |         |    0 | 00/2079               |                                               
+  138 |  1 dlld3.s    138 | Code        | 00 |         |    1 | 00/2079 : 38          |                   sec                         
+  139 |  1 dlld3.s    139 | Code        | 11 |         |    1 | 00/207A : FB          |                   xce                         
+  140 |  1 dlld3.s    140 | Code        | 11 |         |    2 | 00/207B : E2 30       |                   sep          #$30           
+  141 |  1 dlld3.s    141 | Code        | 11 |         |    2 | 00/207D : A2 20       |                   ldx          #>strPA        ; Pause and return
+  142 |  1 dlld3.s    142 | Code        | 11 |         |    2 | 00/207F : A0 A4       |                   ldy          #<strPA        
+  143 |  1 dlld3.s    143 | Code        | 11 |         |    3 | 00/2081 : 20 00 22    |                   jsr          sendLDCommand  
+  144 |  1 dlld3.s    144 | Code        | 11 |         |    2 | 00/2084 : 80 BA       |                   bra          mainLOOP       
+  145 |  1 dlld3.s    145 | Empty       | 11 |         |    0 | 00/2086               |                                               
+  146 |  1 dlld3.s    146 | Code        | 11 |         |    3 | 00/2086 : 2C 10 C0    | theEND            bit          {$c010}        
+  147 |  1 dlld3.s    147 | Empty       | 11 |         |    0 | 00/2089               |                                               
+  148 |  1 dlld3.s    148 | Code        | 11 |         |    3 | 00/2089 : 20 24 21    |                   jsr          stopINT        
+  149 |  1 dlld3.s    149 | Code        | 11 |         |    3 | 00/208C : 20 DD 20    |                   jsr          unsetINT       
+  150 |  1 dlld3.s    150 | Empty       | 11 |         |    0 | 00/208F               |                                               
+  151 |  1 dlld3.s    151 | Comment     | 11 |         |    0 | 00/208F               | *----------
+  152 |  1 dlld3.s    152 | Empty       | 11 |         |    0 | 00/208F               |                                               
+  153 |  1 dlld3.s    153 | Code        | 11 |         |    2 | 00/208F : A2 20       |                   ldx          #>strRJ        ; It's the end!
+  154 |  1 dlld3.s    154 | Code        | 11 |         |    2 | 00/2091 : A0 A1       |                   ldy          #<strRJ        
+  155 |  1 dlld3.s    155 | Code        | 11 |         |    3 | 00/2093 : 20 00 22    |                   jsr          sendLDCommand  
+  156 |  1 dlld3.s    156 | Code        | 11 |         |    1 | 00/2096 : 60          |                   rts                         
+  157 |  1 dlld3.s    157 | Empty       | 11 |         |    0 | 00/2097               |                                               
+  158 |  1 dlld3.s    158 | Comment     | 11 |         |    0 | 00/2097               | *--- Data
+  159 |  1 dlld3.s    159 | Empty       | 11 |         |    0 | 00/2097               |                                               
+  160 |  1 dlld3.s    160 | Data        | 11 |         |    4 | 00/2097 : 31 44 53 00 | strDS             asc          '1DS'00        ; display frame number
+  161 |  1 dlld3.s    161 | Data        | 11 |         |    3 | 00/209B : 43 4F 00    | strCO             asc          'CO'00         ; close the door
+  162 |  1 dlld3.s    162 | Data        | 11 |         |    3 | 00/209E : 53 41 00    | strSA             asc          'SA'00         ; start player
+  163 |  1 dlld3.s    163 | Data        | 11 |         |    3 | 00/20A1 : 52 4A 00    | strRJ             asc          'RJ'00         ; stop the player
+  164 |  1 dlld3.s    164 | Data        | 11 |         |    3 | 00/20A4 : 50 41 00    | strPA             asc          'PA'00         ; pause the player (blue screen)
+  165 |  1 dlld3.s    165 | Data        | 11 |         |    3 | 00/20A7 : 53 54 00    | strST             asc          'ST'00         ; pause the player (still image)
+  166 |  1 dlld3.s    166 | Data        | 11 |         |    3 | 00/20AA : 3F 46 00    | strQF             asc          '?F'00         ; which frame are we on?
+  167 |  1 dlld3.s    167 | Empty       | 11 |         |    0 | 00/20AD               |                                               
+  168 |  1 dlld3.s    168 | Data        | 11 |         |   10 | 00/20AD : 46 52 30 30 | strSE             asc          'FR00323SE'00  ; set frame...
+      |                   |             |    |         |      |           33 32 33 53 |
+      |                   |             |    |         |      |           45 00       |
+  169 |  1 dlld3.s    169 | Data        | 11 |         |    3 | 00/20B7 : 50 4C 00    | strPL             asc          'PL'00         ; play only
+  170 |  1 dlld3.s    170 | Data        | 11 |         |   10 | 00/20BA : 46 52 30 31 | strPL2            asc          'FR01359PL'00  ; play to frame...
+      |                   |             |    |         |      |           33 35 39 50 |
+      |                   |             |    |         |      |           4C 00       |
+  171 |  1 dlld3.s    171 | Empty       | 11 |         |    0 | 00/20C4               |                                               
+  172 |  1 dlld3.s    172 | Comment     | 11 |         |    0 | 00/20C4               | *-----------------------------------
+  173 |  1 dlld3.s    173 | Comment     | 11 |         |    0 | 00/20C4               | * INTERRUPT
+  174 |  1 dlld3.s    174 | Comment     | 11 |         |    0 | 00/20C4               | *-----------------------------------
+  175 |  1 dlld3.s    175 | Empty       | 11 |         |    0 | 00/20C4               |                                               
+  176 |  1 dlld3.s    176 | Code        | 11 |         |    1 | 00/20C4 : 18          | setINT            clc                         
+  177 |  1 dlld3.s    177 | Code        | 11 |         |    1 | 00/20C5 : FB          |                   xce                         
+  178 |  1 dlld3.s    178 | Code        | 00 |         |    2 | 00/20C6 : C2 30       |                   rep          #$30           
+  179 |  1 dlld3.s    179 | Empty       | 00 |         |    0 | 00/20C8               |                                               
+  180 |  1 dlld3.s    180 | Code        | 00 |         |    1 | 00/20C8 : 08          |                   php                         
+  181 |  1 dlld3.s    181 | Code        | 00 |         |    1 | 00/20C9 : 78          |                   sei                         
+  182 |  1 dlld3.s    182 | Macro       | 00 |         |    0 | 00/20CA               |                   PushLong     #theINT        
+  186 |  1 dlld3.s    182 | Code        | 00 |         |    3 | 00/20CA : F4 00 00    |                   PEA          #^#theINT      
+  193 |  1 dlld3.s    182 | Code        | 00 |         |    3 | 00/20CD : F4 F6 20    |                   PEA          #theINT        
+  196 |  1 dlld3.s    183 | Macro       | 00 |         |    0 | 00/20D0               |                   _SetHeartBeat                 
+  198 |  1 dlld3.s    183 | Code        | 00 |         |    3 | 00/20D0 : A2 03 12    |                   LDX          #$1203         ; load tool call #
+  199 |  1 dlld3.s    183 | Code        | 00 |         |    4 | 00/20D3 : 22 00 00 E1 |                   JSL          $E10000        ; go to dispatcher
+  200 |  1 dlld3.s    184 | Code        | 00 |         |    1 | 00/20D7 : 28          |                   plp                         
+  201 |  1 dlld3.s    185 | Empty       | 00 |         |    0 | 00/20D8               |                                               
+  202 |  1 dlld3.s    186 | Code        | 00 |         |    1 | 00/20D8 : 38          |                   sec                         
+  203 |  1 dlld3.s    187 | Code        | 11 |         |    1 | 00/20D9 : FB          |                   xce                         
+  204 |  1 dlld3.s    188 | Code        | 11 |         |    2 | 00/20DA : E2 30       |                   sep          #$30           
+  205 |  1 dlld3.s    189 | Code        | 11 |         |    1 | 00/20DC : 60          |                   rts                         
+  206 |  1 dlld3.s    190 | Empty       | 11 |         |    0 | 00/20DD               |                                               
+  207 |  1 dlld3.s    191 | Comment     | 11 |         |    0 | 00/20DD               | *----------
+  208 |  1 dlld3.s    192 | Empty       | 11 |         |    0 | 00/20DD               |                                               
+  209 |  1 dlld3.s    193 | Code        | 11 |         |    1 | 00/20DD : 18          | unsetINT          clc                         
+  210 |  1 dlld3.s    194 | Code        | 11 |         |    1 | 00/20DE : FB          |                   xce                         
+  211 |  1 dlld3.s    195 | Code        | 00 |         |    2 | 00/20DF : C2 30       |                   rep          #$30           
+  212 |  1 dlld3.s    196 | Empty       | 00 |         |    0 | 00/20E1               |                                               
+  213 |  1 dlld3.s    197 | Code        | 00 |         |    1 | 00/20E1 : 08          |                   php                         
+  214 |  1 dlld3.s    198 | Code        | 00 |         |    1 | 00/20E2 : 78          |                   sei                         
+  215 |  1 dlld3.s    199 | Macro       | 00 |         |    0 | 00/20E3               |                   PushLong     #theINT        
+  219 |  1 dlld3.s    199 | Code        | 00 |         |    3 | 00/20E3 : F4 00 00    |                   PEA          #^#theINT      
+  226 |  1 dlld3.s    199 | Code        | 00 |         |    3 | 00/20E6 : F4 F6 20    |                   PEA          #theINT        
+  229 |  1 dlld3.s    200 | Macro       | 00 |         |    0 | 00/20E9               |                   _DelHeartBeat                 
+  231 |  1 dlld3.s    200 | Code        | 00 |         |    3 | 00/20E9 : A2 03 13    |                   LDX          #$1303         ; load tool call #
+  232 |  1 dlld3.s    200 | Code        | 00 |         |    4 | 00/20EC : 22 00 00 E1 |                   JSL          $E10000        ; go to dispatcher
+  233 |  1 dlld3.s    201 | Code        | 00 |         |    1 | 00/20F0 : 28          |                   plp                         
+  234 |  1 dlld3.s    202 | Empty       | 00 |         |    0 | 00/20F1               |                                               
+  235 |  1 dlld3.s    203 | Code        | 00 |         |    1 | 00/20F1 : 38          |                   sec                         
+  236 |  1 dlld3.s    204 | Code        | 11 |         |    1 | 00/20F2 : FB          |                   xce                         
+  237 |  1 dlld3.s    205 | Code        | 11 |         |    2 | 00/20F3 : E2 30       |                   sep          #$30           
+  238 |  1 dlld3.s    206 | Code        | 11 |         |    1 | 00/20F5 : 60          |                   rts                         
+  239 |  1 dlld3.s    207 | Empty       | 11 |         |    0 | 00/20F6               |                                               
+  240 |  1 dlld3.s    208 | Comment     | 11 |         |    0 | 00/20F6               | *----------
+  241 |  1 dlld3.s    209 | Empty       | 11 |         |    0 | 00/20F6               |                                               
+  242 |  1 dlld3.s    210 | Data        | 11 |         |    4 | 00/20F6 : 00 00 00 00 | theINT            ds           4              
+  243 |  1 dlld3.s    211 | Data        | 11 |         |    2 | 00/20FA : 02 00       |                   dw           2              
+  244 |  1 dlld3.s    212 | Data        | 11 |         |    2 | 00/20FC : 5A A5       |                   dw           $a55A          
+  245 |  1 dlld3.s    213 | Empty       | 11 |         |    0 | 00/20FE               |                                               
+  246 |  1 dlld3.s    214 | Code        | 11 |         |    1 | 00/20FE : 8B          |                   phb                         
+  247 |  1 dlld3.s    215 | Code        | 11 |         |    1 | 00/20FF : 4B          |                   phk                         
+  248 |  1 dlld3.s    216 | Code        | 11 |         |    1 | 00/2100 : AB          |                   plb                         
+  249 |  1 dlld3.s    217 | Code        | 00 |         |    2 | 00/2101 : C2 30       |                   rep          #$30           
+  250 |  1 dlld3.s    218 | Empty       | 00 |         |    0 | 00/2103               |                                               
+  251 |  1 dlld3.s    219 | Code        | 00 |         |    3 | 00/2103 : A9 02 00    |                   lda          #2             
+  252 |  1 dlld3.s    220 | Code        | 00 |         |    3 | 00/2106 : 8D FA 20    |                   sta          theINT+4       
+  253 |  1 dlld3.s    221 | Empty       | 00 |         |    0 | 00/2109               |                                               
+  254 |  1 dlld3.s    222 | Code        | 00 |         |    3 | 00/2109 : EE 02 20    |                   inc          theFRAME       
+  255 |  1 dlld3.s    223 | Empty       | 00 |         |    0 | 00/210C               |                                               
+  256 |  1 dlld3.s    224 | Code        | 11 |         |    2 | 00/210C : E2 30       |                   sep          #$30           
+  257 |  1 dlld3.s    225 | Code        | 11 |         |    1 | 00/210E : AB          |                   plb                         
+  258 |  1 dlld3.s    226 | Code        | 11 |         |    1 | 00/210F : 18          |                   clc                         
+  259 |  1 dlld3.s    227 | Code        | 11 |         |    1 | 00/2110 : 6B          |                   rtl                         
+  260 |  1 dlld3.s    228 | Empty       | 11 |         |    0 | 00/2111               |                                               
+  261 |  1 dlld3.s    229 | Comment     | 11 |         |    0 | 00/2111               | *----------
+  262 |  1 dlld3.s    230 | Empty       | 11 |         |    0 | 00/2111               |                                               
+  263 |  1 dlld3.s    231 | Code        | 11 |         |    1 | 00/2111 : 18          | startINT          clc                         
+  264 |  1 dlld3.s    232 | Code        | 11 |         |    1 | 00/2112 : FB          |                   xce                         
+  265 |  1 dlld3.s    233 | Code        | 00 |         |    2 | 00/2113 : C2 30       |                   rep          #$30           
+  266 |  1 dlld3.s    234 | Empty       | 00 |         |    0 | 00/2115               |                                               
+  267 |  1 dlld3.s    235 | Macro       | 00 |         |    0 | 00/2115               |                   PushWord     #2             
+  269 |  1 dlld3.s    235 | Code        | 00 |         |    3 | 00/2115 : F4 02 00    |                   PEA          #2             
+  272 |  1 dlld3.s    236 | Macro       | 00 |         |    0 | 00/2118               |                   _IntSource                  
+  274 |  1 dlld3.s    236 | Code        | 00 |         |    3 | 00/2118 : A2 03 23    |                   LDX          #$2303         ; load tool call #
+  275 |  1 dlld3.s    236 | Code        | 00 |         |    4 | 00/211B : 22 00 00 E1 |                   JSL          $E10000        ; go to dispatcher
+  276 |  1 dlld3.s    237 | Empty       | 00 |         |    0 | 00/211F               |                                               
+  277 |  1 dlld3.s    238 | Code        | 00 |         |    1 | 00/211F : 38          |                   sec                         
+  278 |  1 dlld3.s    239 | Code        | 11 |         |    1 | 00/2120 : FB          |                   xce                         
+  279 |  1 dlld3.s    240 | Code        | 11 |         |    2 | 00/2121 : E2 30       |                   sep          #$30           
+  280 |  1 dlld3.s    241 | Code        | 11 |         |    1 | 00/2123 : 60          |                   rts                         
+  281 |  1 dlld3.s    242 | Empty       | 11 |         |    0 | 00/2124               |                                               
+  282 |  1 dlld3.s    243 | Comment     | 11 |         |    0 | 00/2124               | *----------
+  283 |  1 dlld3.s    244 | Empty       | 11 |         |    0 | 00/2124               |                                               
+  284 |  1 dlld3.s    245 | Code        | 11 |         |    1 | 00/2124 : 18          | stopINT           clc                         
+  285 |  1 dlld3.s    246 | Code        | 11 |         |    1 | 00/2125 : FB          |                   xce                         
+  286 |  1 dlld3.s    247 | Code        | 00 |         |    2 | 00/2126 : C2 30       |                   rep          #$30           
+  287 |  1 dlld3.s    248 | Empty       | 00 |         |    0 | 00/2128               |                                               
+  288 |  1 dlld3.s    249 | Macro       | 00 |         |    0 | 00/2128               |                   PushWord     #3             
+  290 |  1 dlld3.s    249 | Code        | 00 |         |    3 | 00/2128 : F4 03 00    |                   PEA          #3             
+  293 |  1 dlld3.s    250 | Macro       | 00 |         |    0 | 00/212B               |                   _IntSource                  
+  295 |  1 dlld3.s    250 | Code        | 00 |         |    3 | 00/212B : A2 03 23    |                   LDX          #$2303         ; load tool call #
+  296 |  1 dlld3.s    250 | Code        | 00 |         |    4 | 00/212E : 22 00 00 E1 |                   JSL          $E10000        ; go to dispatcher
+  297 |  1 dlld3.s    251 | Empty       | 00 |         |    0 | 00/2132               |                                               
+  298 |  1 dlld3.s    252 | Code        | 00 |         |    1 | 00/2132 : 38          |                   sec                         
+  299 |  1 dlld3.s    253 | Code        | 11 |         |    1 | 00/2133 : FB          |                   xce                         
+  300 |  1 dlld3.s    254 | Code        | 11 |         |    2 | 00/2134 : E2 30       |                   sep          #$30           
+  301 |  1 dlld3.s    255 | Code        | 11 |         |    1 | 00/2136 : 60          |                   rts                         
+  302 |  1 dlld3.s    256 | Empty       | 11 |         |    0 | 00/2137               |                                               
+  303 |  1 dlld3.s    257 | Comment     | 11 |         |    0 | 00/2137               | *-----------------------------------
+  304 |  1 dlld3.s    258 | Comment     | 11 |         |    0 | 00/2137               | * SERIAL PORT (MODEM)
+  305 |  1 dlld3.s    259 | Comment     | 11 |         |    0 | 00/2137               | *-----------------------------------
+  306 |  1 dlld3.s    260 | Empty       | 11 |         |    0 | 00/2137               |                                               
+  307 |  1 dlld3.s    261 | Comment     | 11 |         |    0 | 00/2137               | *---------- Set all addressses
+  308 |  1 dlld3.s    262 | Empty       | 11 |         |    0 | 00/2137               |                                               
+  309 |  1 dlld3.s    263 | Empty       | 11 |         |    0 | 00/2137               | initSERIAL                                    
+  310 |  1 dlld3.s    264 | Code        | 11 |         |    3 | 00/2137 : AD 0D C2    |                   lda          $c20d          
+  311 |  1 dlld3.s    265 | Code        | 11 |         |    3 | 00/213A : 8D 51 21    |                   sta          doinit+1       
+  312 |  1 dlld3.s    266 | Code        | 11 |         |    3 | 00/213D : AD 0E C2    |                   lda          $c20e          
+  313 |  1 dlld3.s    267 | Code        | 11 |         |    3 | 00/2140 : 8D 54 21    |                   sta          doread+1       
+  314 |  1 dlld3.s    268 | Code        | 11 |         |    3 | 00/2143 : AD 0F C2    |                   lda          $c20f          
+  315 |  1 dlld3.s    269 | Code        | 11 |         |    3 | 00/2146 : 8D 57 21    |                   sta          dowrite+1      
+  316 |  1 dlld3.s    270 | Code        | 11 |         |    3 | 00/2149 : AD 10 C2    |                   lda          $c210          
+  317 |  1 dlld3.s    271 | Code        | 11 |         |    3 | 00/214C : 8D 5A 21    |                   sta          dostatus+1     
+  318 |  1 dlld3.s    272 | Code        | 11 |         |    1 | 00/214F : 60          |                   rts                         
+  319 |  1 dlld3.s    273 | Empty       | 11 |         |    0 | 00/2150               |                                               
+  320 |  1 dlld3.s    274 | Code        | 11 |         |    3 | 00/2150 : 4C 0D C2    | doinit            jmp          $c20d          
+  321 |  1 dlld3.s    275 | Code        | 11 |         |    3 | 00/2153 : 4C 0E C2    | doread            jmp          $c20e          
+  322 |  1 dlld3.s    276 | Code        | 11 |         |    3 | 00/2156 : 4C 0F C2    | dowrite           jmp          $c20f          
+  323 |  1 dlld3.s    277 | Code        | 11 |         |    3 | 00/2159 : 4C 10 C2    | dostatus          jmp          $c210          
+  324 |  1 dlld3.s    278 | Empty       | 11 |         |    0 | 00/215C               |                                               
+  325 |  1 dlld3.s    279 | Comment     | 11 |         |    0 | 00/215C               | *---------- Init modem port for LD support
+  326 |  1 dlld3.s    280 | Empty       | 11 |         |    0 | 00/215C               |                                               
+  327 |  1 dlld3.s    281 | Code        | 11 |         |    2 | 00/215C : A2 C2       | initPORT          ldx          #{{2}!$C0}     
+  328 |  1 dlld3.s    282 | Code        | 11 |         |    2 | 00/215E : A0 20       |                   ldy          #{{2}*16}      
+  329 |  1 dlld3.s    283 | Code        | 11 |         |    3 | 00/2160 : 20 50 21    |                   jsr          doinit         
+  330 |  1 dlld3.s    284 | Empty       | 11 |         |    0 | 00/2163               |                                               
+  331 |  1 dlld3.s    285 | Macro       | 11 |         |    0 | 00/2163               |                   _sendSTRING  #strED         ; Don't echo output
+  332 |  1 dlld3.s    285 | Code        | 11 |         |    2 | 00/2163 : A2 22       |                   ldx          #>#strED       
+  333 |  1 dlld3.s    285 | Code        | 11 |         |    2 | 00/2165 : A0 72       |                   ldy          #<#strED       
+  334 |  1 dlld3.s    285 | Code        | 11 |         |    3 | 00/2167 : 20 1A 22    |                   jsr          sendString     
+  335 |  1 dlld3.s    286 | Macro       | 11 |         |    0 | 00/216A               |                   _sendSTRING  #strBE         ; Input buffering: on
+  336 |  1 dlld3.s    286 | Code        | 11 |         |    2 | 00/216A : A2 22       |                   ldx          #>#strBE       
+  337 |  1 dlld3.s    286 | Code        | 11 |         |    2 | 00/216C : A0 76       |                   ldy          #<#strBE       
+  338 |  1 dlld3.s    286 | Code        | 11 |         |    3 | 00/216E : 20 1A 22    |                   jsr          sendString     
+  339 |  1 dlld3.s    287 | Macro       | 11 |         |    0 | 00/2171               |                   _sendSTRING  #str12B        ; Baud rate: 4800 BPS
+  340 |  1 dlld3.s    287 | Code        | 11 |         |    2 | 00/2171 : A2 22       |                   ldx          #>#str12B      
+  341 |  1 dlld3.s    287 | Code        | 11 |         |    2 | 00/2173 : A0 7A       |                   ldy          #<#str12B      
+  342 |  1 dlld3.s    287 | Code        | 11 |         |    3 | 00/2175 : 20 1A 22    |                   jsr          sendString     
+  343 |  1 dlld3.s    288 | Macro       | 11 |         |    0 | 00/2178               |                   _sendSTRING  #str0D         ; Data/Stop bits: 8/1
+  344 |  1 dlld3.s    288 | Code        | 11 |         |    2 | 00/2178 : A2 22       |                   ldx          #>#str0D       
+  345 |  1 dlld3.s    288 | Code        | 11 |         |    2 | 00/217A : A0 7F       |                   ldy          #<#str0D       
+  346 |  1 dlld3.s    288 | Code        | 11 |         |    3 | 00/217C : 20 1A 22    |                   jsr          sendString     
+  347 |  1 dlld3.s    289 | Macro       | 11 |         |    0 | 00/217F               |                   _sendSTRING  #str0P         ; Parity: none
+  348 |  1 dlld3.s    289 | Code        | 11 |         |    2 | 00/217F : A2 22       |                   ldx          #>#str0P       
+  349 |  1 dlld3.s    289 | Code        | 11 |         |    2 | 00/2181 : A0 83       |                   ldy          #<#str0P       
+  350 |  1 dlld3.s    289 | Code        | 11 |         |    3 | 00/2183 : 20 1A 22    |                   jsr          sendString     
+  351 |  1 dlld3.s    290 | Macro       | 11 |         |    0 | 00/2186               |                   _sendSTRING  #str0N         ; Line length: 0
+  352 |  1 dlld3.s    290 | Code        | 11 |         |    2 | 00/2186 : A2 22       |                   ldx          #>#str0N       
+  353 |  1 dlld3.s    290 | Code        | 11 |         |    2 | 00/2188 : A0 87       |                   ldy          #<#str0N       
+  354 |  1 dlld3.s    290 | Code        | 11 |         |    3 | 00/218A : 20 1A 22    |                   jsr          sendString     
+  355 |  1 dlld3.s    291 | Macro       | 11 |         |    0 | 00/218D               |                   _sendSTRING  #strAD         ; Do not implement basic tabs
+  356 |  1 dlld3.s    291 | Code        | 11 |         |    2 | 00/218D : A2 22       |                   ldx          #>#strAD       
+  357 |  1 dlld3.s    291 | Code        | 11 |         |    2 | 00/218F : A0 8B       |                   ldy          #<#strAD       
+  358 |  1 dlld3.s    291 | Code        | 11 |         |    3 | 00/2191 : 20 1A 22    |                   jsr          sendString     
+  359 |  1 dlld3.s    292 | Macro       | 11 |         |    0 | 00/2194               |                   _sendSTRING  #strCD         ; Disable line formatting
+  360 |  1 dlld3.s    292 | Code        | 11 |         |    2 | 00/2194 : A2 22       |                   ldx          #>#strCD       
+  361 |  1 dlld3.s    292 | Code        | 11 |         |    2 | 00/2196 : A0 8F       |                   ldy          #<#strCD       
+  362 |  1 dlld3.s    292 | Code        | 11 |         |    3 | 00/2198 : 20 1A 22    |                   jsr          sendString     
+  363 |  1 dlld3.s    293 | Macro       | 11 |         |    0 | 00/219B               |                   _sendSTRING  #strXD         ; Ignore XOFF
+  364 |  1 dlld3.s    293 | Code        | 11 |         |    2 | 00/219B : A2 22       |                   ldx          #>#strXD       
+  365 |  1 dlld3.s    293 | Code        | 11 |         |    2 | 00/219D : A0 93       |                   ldy          #<#strXD       
+  366 |  1 dlld3.s    293 | Code        | 11 |         |    3 | 00/219F : 20 1A 22    |                   jsr          sendString     
+  367 |  1 dlld3.s    294 | Macro       | 11 |         |    0 | 00/21A2               |                   _sendSTRING  #strFD         ; Disable keyboard input
+  368 |  1 dlld3.s    294 | Code        | 11 |         |    2 | 00/21A2 : A2 22       |                   ldx          #>#strFD       
+  369 |  1 dlld3.s    294 | Code        | 11 |         |    2 | 00/21A4 : A0 97       |                   ldy          #<#strFD       
+  370 |  1 dlld3.s    294 | Code        | 11 |         |    3 | 00/21A6 : 20 1A 22    |                   jsr          sendString     
+  371 |  1 dlld3.s    295 | Macro       | 11 |         |    0 | 00/21A9               |                   _sendSTRING  #strLD         ; Do not add line feeds after CR
+  372 |  1 dlld3.s    295 | Code        | 11 |         |    2 | 00/21A9 : A2 22       |                   ldx          #>#strLD       
+  373 |  1 dlld3.s    295 | Code        | 11 |         |    2 | 00/21AB : A0 9B       |                   ldy          #<#strLD       
+  374 |  1 dlld3.s    295 | Code        | 11 |         |    3 | 00/21AD : 20 1A 22    |                   jsr          sendString     
+  375 |  1 dlld3.s    296 | Macro       | 11 |         |    0 | 00/21B0               |                   _sendSTRING  #strME         ; Mask line feed in
+  376 |  1 dlld3.s    296 | Code        | 11 |         |    2 | 00/21B0 : A2 22       |                   ldx          #>#strME       
+  377 |  1 dlld3.s    296 | Code        | 11 |         |    2 | 00/21B2 : A0 9F       |                   ldy          #<#strME       
+  378 |  1 dlld3.s    296 | Code        | 11 |         |    3 | 00/21B4 : 20 1A 22    |                   jsr          sendString     
+  379 |  1 dlld3.s    297 | Macro       | 11 |         |    0 | 00/21B7               |                   _sendSTRING  #strZ          ; Suppress control characters
+  380 |  1 dlld3.s    297 | Code        | 11 |         |    2 | 00/21B7 : A2 22       |                   ldx          #>#strZ        
+  381 |  1 dlld3.s    297 | Code        | 11 |         |    2 | 00/21B9 : A0 A3       |                   ldy          #<#strZ        
+  382 |  1 dlld3.s    297 | Code        | 11 |         |    3 | 00/21BB : 20 1A 22    |                   jsr          sendString     
+  383 |  1 dlld3.s    298 | Code        | 11 |         |    3 | 00/21BE : 20 C2 21    |                   jsr          checkInputReady
+  384 |  1 dlld3.s    299 | Code        | 11 |         |    1 | 00/21C1 : 60          |                   rts                         
+  385 |  1 dlld3.s    300 | Empty       | 11 |         |    0 | 00/21C2               |                                               
+  386 |  1 dlld3.s    301 | Comment     | 11 |         |    0 | 00/21C2               | *---------- Check the input is ready
+  387 |  1 dlld3.s    302 | Empty       | 11 |         |    0 | 00/21C2               |                                               
+  388 |  1 dlld3.s    303 | Empty       | 11 |         |    0 | 00/21C2               | checkInputReady                               
+  389 |  1 dlld3.s    304 | Code        | 11 |         |    2 | 00/21C2 : A2 08       |                   ldx          #8             
+  390 |  1 dlld3.s    305 | Code        | 11 |         |    2 | 00/21C4 : A0 00       |                   ldy          #0             
+  391 |  1 dlld3.s    306 | Empty       | 11 |         |    0 | 00/21C6               |                                               
+  392 |  1 dlld3.s    307 | Code        | 11 |         |    1 | 00/21C6 : DA          | ozunid_3          phx                         
+  393 |  1 dlld3.s    308 | Code        | 11 |         |    1 | 00/21C7 : 5A          |                   phy                         
+  394 |  1 dlld3.s    309 | Empty       | 11 |         |    0 | 00/21C8               |                                               
+  395 |  1 dlld3.s    310 | Code        | 11 |         |    2 | 00/21C8 : A2 C2       |                   ldx          #{{2}!$C0}     
+  396 |  1 dlld3.s    311 | Code        | 11 |         |    2 | 00/21CA : A0 20       |                   ldy          #{{2}*16}      
+  397 |  1 dlld3.s    312 | Code        | 11 |         |    2 | 00/21CC : A9 01       |                   lda          #1             
+  398 |  1 dlld3.s    313 | Code        | 11 |         |    3 | 00/21CE : 20 59 21    |                   jsr          dostatus       
+  399 |  1 dlld3.s    314 | Code        | 11 |         |    2 | 00/21D1 : B0 0A       |                   bcs          checkIR1       
+  400 |  1 dlld3.s    315 | Empty       | 11 |         |    0 | 00/21D3               |                                               
+  401 |  1 dlld3.s    316 | Code        | 11 |         |    1 | 00/21D3 : 7A          |                   ply                         
+  402 |  1 dlld3.s    317 | Code        | 11 |         |    1 | 00/21D4 : FA          |                   plx                         
+  403 |  1 dlld3.s    318 | Code        | 11 |         |    1 | 00/21D5 : 88          |                   dey                         
+  404 |  1 dlld3.s    319 | Code        | 11 |         |    2 | 00/21D6 : D0 EE       |                   bne          ozunid_3       
+  405 |  1 dlld3.s    320 | Code        | 11 |         |    1 | 00/21D8 : CA          |                   dex                         
+  406 |  1 dlld3.s    321 | Code        | 11 |         |    2 | 00/21D9 : D0 EB       |                   bne          ozunid_3       
+  407 |  1 dlld3.s    322 | Empty       | 11 |         |    0 | 00/21DB               |                                               
+  408 |  1 dlld3.s    323 | Code        | 11 |         |    1 | 00/21DB : 38          |                   sec                         
+  409 |  1 dlld3.s    324 | Code        | 11 |         |    1 | 00/21DC : 60          |                   rts                         
+  410 |  1 dlld3.s    325 | Code        | 11 |         |    1 | 00/21DD : 7A          | checkIR1          ply                         
+  411 |  1 dlld3.s    326 | Code        | 11 |         |    1 | 00/21DE : FA          |                   plx                         
+  412 |  1 dlld3.s    327 | Code        | 11 |         |    1 | 00/21DF : 18          |                   clc                         
+  413 |  1 dlld3.s    328 | Code        | 11 |         |    1 | 00/21E0 : 60          |                   rts                         
+  414 |  1 dlld3.s    329 | Empty       | 11 |         |    0 | 00/21E1               |                                               
+  415 |  1 dlld3.s    330 | Comment     | 11 |         |    0 | 00/21E1               | *---------- Check the output is ready
+  416 |  1 dlld3.s    331 | Empty       | 11 |         |    0 | 00/21E1               |                                               
+  417 |  1 dlld3.s    332 | Empty       | 11 |         |    0 | 00/21E1               | checkOutputReady                              
+  418 |  1 dlld3.s    333 | Code        | 11 |         |    2 | 00/21E1 : A2 08       |                   ldx          #8             
+  419 |  1 dlld3.s    334 | Code        | 11 |         |    2 | 00/21E3 : A0 00       |                   ldy          #0             
+  420 |  1 dlld3.s    335 | Empty       | 11 |         |    0 | 00/21E5               |                                               
+  421 |  1 dlld3.s    336 | Code        | 11 |         |    1 | 00/21E5 : DA          | ozunid_4          phx                         
+  422 |  1 dlld3.s    337 | Code        | 11 |         |    1 | 00/21E6 : 5A          |                   phy                         
+  423 |  1 dlld3.s    338 | Empty       | 11 |         |    0 | 00/21E7               |                                               
+  424 |  1 dlld3.s    339 | Code        | 11 |         |    2 | 00/21E7 : A2 C2       |                   ldx          #{{2}!$C0}     
+  425 |  1 dlld3.s    340 | Code        | 11 |         |    2 | 00/21E9 : A0 20       |                   ldy          #{{2}*16}      
+  426 |  1 dlld3.s    341 | Code        | 11 |         |    2 | 00/21EB : A9 00       |                   lda          #0             
+  427 |  1 dlld3.s    342 | Code        | 11 |         |    3 | 00/21ED : 20 59 21    |                   jsr          dostatus       
+  428 |  1 dlld3.s    343 | Code        | 11 |         |    2 | 00/21F0 : B0 0A       |                   bcs          checkOR1       
+  429 |  1 dlld3.s    344 | Empty       | 11 |         |    0 | 00/21F2               |                                               
+  430 |  1 dlld3.s    345 | Code        | 11 |         |    1 | 00/21F2 : 7A          |                   ply                         
+  431 |  1 dlld3.s    346 | Code        | 11 |         |    1 | 00/21F3 : FA          |                   plx                         
+  432 |  1 dlld3.s    347 | Code        | 11 |         |    1 | 00/21F4 : 88          |                   dey                         
+  433 |  1 dlld3.s    348 | Code        | 11 |         |    2 | 00/21F5 : D0 EE       |                   bne          ozunid_4       
+  434 |  1 dlld3.s    349 | Code        | 11 |         |    1 | 00/21F7 : CA          |                   dex                         
+  435 |  1 dlld3.s    350 | Code        | 11 |         |    2 | 00/21F8 : D0 EB       |                   bne          ozunid_4       
+  436 |  1 dlld3.s    351 | Empty       | 11 |         |    0 | 00/21FA               |                                               
+  437 |  1 dlld3.s    352 | Code        | 11 |         |    1 | 00/21FA : 38          |                   sec                         
+  438 |  1 dlld3.s    353 | Code        | 11 |         |    1 | 00/21FB : 60          |                   rts                         
+  439 |  1 dlld3.s    354 | Code        | 11 |         |    1 | 00/21FC : 7A          | checkOR1          ply                         
+  440 |  1 dlld3.s    355 | Code        | 11 |         |    1 | 00/21FD : FA          |                   plx                         
+  441 |  1 dlld3.s    356 | Code        | 11 |         |    1 | 00/21FE : 18          |                   clc                         
+  442 |  1 dlld3.s    357 | Code        | 11 |         |    1 | 00/21FF : 60          |                   rts                         
+  443 |  1 dlld3.s    358 | Empty       | 11 |         |    0 | 00/2200               |                                               
+  444 |  1 dlld3.s    359 | Comment     | 11 |         |    0 | 00/2200               | *---------- Send a LD command
+  445 |  1 dlld3.s    360 | Empty       | 11 |         |    0 | 00/2200               |                                               
+  446 |  1 dlld3.s    361 | Empty       | 11 |         |    0 | 00/2200               | sendLDCommand                                 
+  447 |  1 dlld3.s    362 | Code        | 11 |         |    3 | 00/2200 : 20 1A 22    |                   jsr          sendString     
+  448 |  1 dlld3.s    363 | Code        | 11 |         |    2 | 00/2203 : B0 03       |                   bcs          sendLDError    
+  449 |  1 dlld3.s    364 | Code        | 11 |         |    3 | 00/2205 : 4C 48 22    |                   jmp          receiveString  
+  450 |  1 dlld3.s    365 | Code        | 11 |         |    1 | 00/2208 : 60          | sendLDError       rts                         
+  451 |  1 dlld3.s    366 | Empty       | 11 |         |    0 | 00/2209               |                                               
+  452 |  1 dlld3.s    367 | Comment     | 11 |         |    0 | 00/2209               | *---------- Send a LD command & wait for an answer
+  453 |  1 dlld3.s    368 | Empty       | 11 |         |    0 | 00/2209               |                                               
+  454 |  1 dlld3.s    369 | Empty       | 11 |         |    0 | 00/2209               | sendLDCommand2                                
+  455 |  1 dlld3.s    370 | Code        | 11 |         |    3 | 00/2209 : 9C 00 23    |                   stz          responseBUF    
+  456 |  1 dlld3.s    371 | Code        | 11 |         |    3 | 00/220C : 20 1A 22    |                   jsr          sendString     
+  457 |  1 dlld3.s    372 | Comment     | 11 |         |    0 | 00/220F               | *	bcs	sendLDError2
+  458 |  1 dlld3.s    373 | Code        | 11 |         |    3 | 00/220F : 20 48 22    | ozunid_5          jsr          receiveString  
+  459 |  1 dlld3.s    374 | Code        | 11 |         |    3 | 00/2212 : AD 00 23    |                   lda          responseBUF    
+  460 |  1 dlld3.s    375 | Code        | 11 |         |    2 | 00/2215 : C9 52       |                   cmp          #'R'           
+  461 |  1 dlld3.s    376 | Code        | 11 |         |    2 | 00/2217 : D0 F6       |                   bne          ozunid_5       
+  462 |  1 dlld3.s    377 | Code        | 11 |         |    1 | 00/2219 : 60          |                   rts                         
+  463 |  1 dlld3.s    378 | Empty       | 11 |         |    0 | 00/221A               |                                               
+  464 |  1 dlld3.s    379 | Comment     | 11 |         |    0 | 00/221A               | *---------- Send a string
+  465 |  1 dlld3.s    380 | Empty       | 11 |         |    0 | 00/221A               |                                               
+  466 |  1 dlld3.s    381 | Empty       | 11 |         |    0 | 00/221A               | sendString                                    
+  467 |  1 dlld3.s    382 | Code        | 11 |         |    2 | 00/221A : 84 FC       |                   sty          {$fc}          
+  468 |  1 dlld3.s    383 | Code        | 11 |         |    2 | 00/221C : 86 FD       |                   stx          {$fc}+1        
+  469 |  1 dlld3.s    384 | Empty       | 11 |         |    0 | 00/221E               |                                               
+  470 |  1 dlld3.s    385 | Code        | 11 |         |    2 | 00/221E : B2 FC       | ozunid_6          lda          ({$fc})        
+  471 |  1 dlld3.s    386 | Code        | 11 |         |    2 | 00/2220 : F0 0D       |                   beq          sendCRS1       ; end of string?
+  472 |  1 dlld3.s    387 | Code        | 11 |         |    3 | 00/2222 : 20 35 22    |                   jsr          sendCharacter  
+  473 |  1 dlld3.s    388 | Code        | 11 |         |    2 | 00/2225 : B0 0D       |                   bcs          sendError      ; error!
+  474 |  1 dlld3.s    389 | Empty       | 11 |         |    0 | 00/2227               |                                               
+  475 |  1 dlld3.s    390 | Code        | 11 |         |    2 | 00/2227 : E6 FC       |                   inc          {$fc}          
+  476 |  1 dlld3.s    391 | Code        | 11 |         |    2 | 00/2229 : D0 F3       |                   bne          ozunid_6       
+  477 |  1 dlld3.s    392 | Code        | 11 |         |    2 | 00/222B : E6 FD       |                   inc          {$fc}+1        
+  478 |  1 dlld3.s    393 | Code        | 11 |         |    2 | 00/222D : D0 EF       |                   bne          ozunid_6       
+  479 |  1 dlld3.s    394 | Empty       | 11 |         |    0 | 00/222F               |                                               
+  480 |  1 dlld3.s    395 | Code        | 11 |         |    2 | 00/222F : A9 0D       | sendCRS1          lda          #{$0d}         ; yes, add a final CR
+  481 |  1 dlld3.s    396 | Code        | 11 |         |    3 | 00/2231 : 20 35 22    |                   jsr          sendCharacter  
+  482 |  1 dlld3.s    397 | Empty       | 11 |         |    0 | 00/2234               |                                               
+  483 |  1 dlld3.s    398 | Code        | 11 |         |    1 | 00/2234 : 60          | sendError         rts                         
+  484 |  1 dlld3.s    399 | Empty       | 11 |         |    0 | 00/2235               |                                               
+  485 |  1 dlld3.s    400 | Comment     | 11 |         |    0 | 00/2235               | *---------- Send serial character
+  486 |  1 dlld3.s    401 | Empty       | 11 |         |    0 | 00/2235               |                                               
+  487 |  1 dlld3.s    402 | Empty       | 11 |         |    0 | 00/2235               | sendCharacter                                 
+  488 |  1 dlld3.s    403 | Code        | 11 |         |    1 | 00/2235 : 48          |                   pha                         
+  489 |  1 dlld3.s    404 | Empty       | 11 |         |    0 | 00/2236               |                                               
+  490 |  1 dlld3.s    405 | Code        | 11 |         |    3 | 00/2236 : 20 E1 21    | ozunid_7          jsr          checkOutputReady
+  491 |  1 dlld3.s    406 | Code        | 11 |         |    2 | 00/2239 : 90 03       |                   bcc          sensSC1        
+  492 |  1 dlld3.s    407 | Code        | 11 |         |    1 | 00/223B : 68          |                   pla                         
+  493 |  1 dlld3.s    408 | Code        | 11 |         |    1 | 00/223C : 38          |                   sec                         
+  494 |  1 dlld3.s    409 | Code        | 11 |         |    1 | 00/223D : 60          |                   rts                         
+  495 |  1 dlld3.s    410 | Empty       | 11 |         |    0 | 00/223E               |                                               
+  496 |  1 dlld3.s    411 | Code        | 11 |         |    1 | 00/223E : 68          | sensSC1           pla                         
+  497 |  1 dlld3.s    412 | Code        | 11 |         |    2 | 00/223F : A2 C2       |                   ldx          #{{2}!$C0}     
+  498 |  1 dlld3.s    413 | Code        | 11 |         |    2 | 00/2241 : A0 20       |                   ldy          #{{2}*16}      
+  499 |  1 dlld3.s    414 | Code        | 11 |         |    3 | 00/2243 : 20 56 21    |                   jsr          dowrite        
+  500 |  1 dlld3.s    415 | Code        | 11 |         |    1 | 00/2246 : 18          |                   clc                         
+  501 |  1 dlld3.s    416 | Code        | 11 |         |    1 | 00/2247 : 60          |                   rts                         
+  502 |  1 dlld3.s    417 | Empty       | 11 |         |    0 | 00/2248               |                                               
+  503 |  1 dlld3.s    418 | Comment     | 11 |         |    0 | 00/2248               | *---------- Receive string
+  504 |  1 dlld3.s    419 | Empty       | 11 |         |    0 | 00/2248               |                                               
+  505 |  1 dlld3.s    420 | Empty       | 11 |         |    0 | 00/2248               | receiveString                                 
+  506 |  1 dlld3.s    421 | Code        | 11 |         |    2 | 00/2248 : A0 00       |                   ldy          #<responseBUF  
+  507 |  1 dlld3.s    422 | Code        | 11 |         |    2 | 00/224A : 84 FE       |                   sty          {{$fc}+2}      
+  508 |  1 dlld3.s    423 | Code        | 11 |         |    2 | 00/224C : A2 23       |                   ldx          #>responseBUF  
+  509 |  1 dlld3.s    424 | Code        | 11 |         |    2 | 00/224E : 86 FF       |                   stx          {{$fc}+2}+1    
+  510 |  1 dlld3.s    425 | Empty       | 11 |         |    0 | 00/2250               |                                               
+  511 |  1 dlld3.s    426 | Code        | 11 |         |    2 | 00/2250 : A0 00       |                   ldy          #0             
+  512 |  1 dlld3.s    427 | Code        | 11 |         |    1 | 00/2252 : 5A          | receiveSTR1       phy                         
+  513 |  1 dlld3.s    428 | Code        | 11 |         |    3 | 00/2253 : 20 C2 21    | ozunid_8          jsr          checkInputReady
+  514 |  1 dlld3.s    429 | Code        | 11 |         |    2 | 00/2256 : B0 17       |                   bcs          receiveSTR9    
+  515 |  1 dlld3.s    430 | Empty       | 11 |         |    0 | 00/2258               |                                               
+  516 |  1 dlld3.s    431 | Code        | 11 |         |    2 | 00/2258 : A2 C2       |                   ldx          #{{2}!$C0}     
+  517 |  1 dlld3.s    432 | Code        | 11 |         |    2 | 00/225A : A0 20       |                   ldy          #{{2}*16}      
+  518 |  1 dlld3.s    433 | Code        | 11 |         |    3 | 00/225C : 20 53 21    |                   jsr          doread         
+  519 |  1 dlld3.s    434 | Code        | 11 |         |    2 | 00/225F : E0 00       |                   cpx          #0             
+  520 |  1 dlld3.s    435 | Code        | 11 |         |    2 | 00/2261 : D0 0C       |                   bne          receiveSTR9    
+  521 |  1 dlld3.s    436 | Empty       | 11 |         |    0 | 00/2263               |                                               
+  522 |  1 dlld3.s    437 | Code        | 11 |         |    1 | 00/2263 : 7A          |                   ply                         
+  523 |  1 dlld3.s    438 | Code        | 11 |         |    2 | 00/2264 : 91 FE       |                   sta          ({{$fc}+2}),y  
+  524 |  1 dlld3.s    439 | Code        | 11 |         |    2 | 00/2266 : C9 0D       |                   cmp          #{$0d}         
+  525 |  1 dlld3.s    440 | Code        | 11 |         |    2 | 00/2268 : F0 03       |                   beq          receiveSTR8    
+  526 |  1 dlld3.s    441 | Code        | 11 |         |    1 | 00/226A : C8          |                   iny                         
+  527 |  1 dlld3.s    442 | Code        | 11 |         |    2 | 00/226B : D0 E5       |                   bne          receiveSTR1    
+  528 |  1 dlld3.s    443 | Code        | 11 |         |    1 | 00/226D : 18          | receiveSTR8       clc                         
+  529 |  1 dlld3.s    444 | Code        | 11 |         |    1 | 00/226E : 60          |                   rts                         
+  530 |  1 dlld3.s    445 | Code        | 11 |         |    1 | 00/226F : 7A          | receiveSTR9       ply                         
+  531 |  1 dlld3.s    446 | Code        | 11 |         |    1 | 00/2270 : 38          |                   sec                         
+  532 |  1 dlld3.s    447 | Code        | 11 |         |    1 | 00/2271 : 60          |                   rts                         
+  533 |  1 dlld3.s    448 | Empty       | 11 |         |    0 | 00/2272               |                                               
+  534 |  1 dlld3.s    449 | Comment     | 11 |         |    0 | 00/2272               | *-----------------------------------
+  535 |  1 dlld3.s    450 | Comment     | 11 |         |    0 | 00/2272               | * DATA
+  536 |  1 dlld3.s    451 | Comment     | 11 |         |    0 | 00/2272               | *-----------------------------------
+  537 |  1 dlld3.s    452 | Empty       | 11 |         |    0 | 00/2272               |                                               
+  538 |  1 dlld3.s    453 | Comment     | 11 |         |    0 | 00/2272               | *---------- Serial data
+  539 |  1 dlld3.s    454 | Empty       | 11 |         |    0 | 00/2272               |                                               
+  540 |  1 dlld3.s    455 | Data        | 11 |         |    4 | 00/2272 : 01 45 44 00 | strED             asc          01'ED'00       ; *Don't echo output
+  541 |  1 dlld3.s    456 | Data        | 11 |         |    4 | 00/2276 : 01 42 45 00 | strBE             asc          01'BE'00       ; *Input buffering: on
+  542 |  1 dlld3.s    457 | Data        | 11 |         |    5 | 00/227A : 01 31 32 42 | str12B            asc          01'12B'00      ; *Baud rate: 4800 BPS
+      |                   |             |    |         |      |           00          |
+  543 |  1 dlld3.s    458 | Data        | 11 |         |    4 | 00/227F : 01 30 44 00 | str0D             asc          01'0D'00       ; *Data/Stop bits: 8/1
+  544 |  1 dlld3.s    459 | Data        | 11 |         |    4 | 00/2283 : 01 30 50 00 | str0P             asc          01'0P'00       ; *Parity: none
+  545 |  1 dlld3.s    460 | Data        | 11 |         |    4 | 00/2287 : 01 30 4E 00 | str0N             asc          01'0N'00       ; Line length: 0
+  546 |  1 dlld3.s    461 | Data        | 11 |         |    4 | 00/228B : 01 41 44 00 | strAD             asc          01'AD'00       ; *Do not implement basic tabs
+  547 |  1 dlld3.s    462 | Data        | 11 |         |    4 | 00/228F : 01 43 44 00 | strCD             asc          01'CD'00       ; *Disable line formatting
+  548 |  1 dlld3.s    463 | Data        | 11 |         |    4 | 00/2293 : 01 58 44 00 | strXD             asc          01'XD'00       ; *Ignore XOFF
+  549 |  1 dlld3.s    464 | Data        | 11 |         |    4 | 00/2297 : 01 46 44 00 | strFD             asc          01'FD'00       ; *Disable keyboard input
+  550 |  1 dlld3.s    465 | Data        | 11 |         |    4 | 00/229B : 01 4C 44 00 | strLD             asc          01'LD'00       ; Do not add line feeds after CR
+  551 |  1 dlld3.s    466 | Data        | 11 |         |    4 | 00/229F : 01 4D 45 00 | strME             asc          01'ME'00       ; Mask line feed in
+  552 |  1 dlld3.s    467 | Data        | 11 |         |    3 | 00/22A3 : 01 5A 00    | strZ              asc          01'Z'00        ; *Suppress control characters
+  553 |  1 dlld3.s    468 | Empty       | 11 |         |    0 | 00/22A6               |                                               
+  554 |  1 dlld3.s    469 | Comment     | 11 |         |    0 | 00/22A6               | *---------- Laserdisc
+  555 |  1 dlld3.s    470 | Empty       | 11 |         |    0 | 00/22A6               |                                               
+  556 |  1 dlld3.s    471 | Data        | 11 |         |   90 | 00/22A6 : 00 00 00 00 |                   ds           \              
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00       |
+  557 |  1 dlld3.s    472 | Empty       | 11 |         |    0 | 00/2300               |                                               
+  558 |  1 dlld3.s    473 | Data        | 11 |         |  256 | 00/2300 : 00 00 00 00 | responseBUF       ds           256            ; LD player response
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+  559 |  1 dlld3.s    474 | Empty       | 11 |         |    0 | 00/2400               |                                               
+  560 |  1 dlld3.s    475 | Comment     | 11 |         |    0 | 00/2400               | *-----------------------------------
+  561 |  1 dlld3.s    476 | Comment     | 11 |         |    0 | 00/2400               | * END OF CODE
+  562 |  1 dlld3.s    477 | Comment     | 11 |         |    0 | 00/2400               | *-----------------------------------
+  563 |  1 dlld3.s    478 | Empty       | 11 |         |    0 | 00/2400               |                                               
+  564 |  1 dlld3.s    479 | Empty       | 11 |         |    0 | 00/2400               |                                               
+------+-------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

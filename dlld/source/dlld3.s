@@ -36,7 +36,8 @@ CN	=	SLOT!$C0
 
 chrRETURN	=	$0d
 
-dpFROM	=	$fc
+dpWAIT	=	$fb
+dpFROM	=	dpWAIT+1
 dpTO	=	dpFROM+2
 
 *----------
@@ -70,21 +71,15 @@ jumpME	sta	CLR80VID
 	jsr	SETKBD	; reset input to keyboard
 	jsr	HOME	; home cursor and clear to end of page
 
-	clc
-	xce
-	rep	#$30
-	lda	#frameIN
-	sta	theFRAME
-
-	sec
-	xce
-	sep	#$30
-
 	jsr	initSERIAL	; set the serial addresses
 	jsr	initPORT	; init the serial port for LD support
 
+	lda	#80
+	sta	dpWAIT
+
 *----------
-	ldx	#>strDS	; on veut la frame number
+
+	ldx	#>strDS	; on veut afficher le frame number
 	ldy	#<strDS
 	jsr	sendLDCommand
 
@@ -100,13 +95,36 @@ jumpME	sta	CLR80VID
 
 *----------
 
-mainLOOP	ldx	#>strSE	; Move to frame and wait for R
+mainLOOP	clc
+	xce
+	rep	#$30
+	lda	#frameIN
+	sta	theFRAME
+
+	sec
+	xce
+	sep	#$30
+
+*---
+
+	ldx	#>strSE	; Move to frame and wait for R
 	ldy	#<strSE
 	jsr	sendLDCommand2
 
-	ldx	#>strPL	; Play and wait for R
+	ldx	#>strPL	; Play the frame and wait for R
 	ldy	#<strPL
 	jsr	sendLDCommand2
+
+	ldx	#>strDS	; on veut afficher le frame number
+	ldy	#<strDS
+	jsr	sendLDCommand2
+
+	lda	dpWAIT
+	jsr	WAIT
+	
+	ldx	#>strPLEND	; Play the frame until the end now
+	ldy	#<strPLEND
+	jsr	sendLDCommand
 
 	jsr	startINT
 
@@ -166,7 +184,8 @@ strST	asc	'ST'00	; pause the player (still image)
 strQF	asc	'?F'00	; which frame are we on?
 
 strSE	asc	'FR00323SE'00	; set frame...
-strPL	asc	'PL'00	; play only
+strPL	asc	'FR00323PL'00	; play one frame...
+strPLEND	asc	'FR65535PL'00	; play only to the end of the disc
 strPL2	asc	'FR01359PL'00	; play to frame...
 
 *-----------------------------------
@@ -231,6 +250,9 @@ theINT	ds	4
 startINT	clc
 	xce
 	rep	#$30
+	
+	lda	#2
+	sta	theINT+4
 	
 	PushWord	#2
 	_IntSource
@@ -372,8 +394,9 @@ sendLDCommand2
 *	bcs	sendLDError2
 ]lp	jsr	receiveString
 	lda	responseBUF
-	cmp	#'R'
-	bne	]lp
+*	cmp	#'R'
+*	bne	]lp
+	beq	]lp
 	rts
 
 *---------- Send a string

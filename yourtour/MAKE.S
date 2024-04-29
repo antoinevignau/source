@@ -2,7 +2,7 @@
 * Expansion linker file
 
          DSK   YOURTOUR
-         TYP   S16
+         TYP   $B3
 
 * Assemble files
 
@@ -35,15 +35,15 @@
          SNA   SIX
 
          ASM   CTRICKS.S
-         KND   $8000
+         KND   $0000	; $8000
          SNA   CTRICKS
 
          ASM   LTRICKS.S
-         KND   $8000
+         KND   $0000	; $8000
          SNA   LTRICKS
 
          ASM   INIT.S
-         KND   $8000
+         KND   $0000	; $8000
          SNA   INIT
 
          ASM   GLOBALS.S
@@ -58,9 +58,9 @@
          KND   $0012
          SNA   DIRECT
 
-         ASM   JUMPTABLE.S
-         KND   $0002
-         SNA   JUMPTABLE
+*         ASM   JUMPTABLE.S
+*         KND   $0002
+*         SNA   JUMPTABLE
 
 
 * END

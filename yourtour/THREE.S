@@ -333,36 +333,38 @@ L040292  STAL  L0B0002
          RTL
 
 L0402A6  ENT
-         PHD
-         TSC
-         SEC
-         SBC   #$00F7
-         TCD
-         ADC   #$00EE
-         TCS
-         PHA
-         PHA
-         PHA
-         LDA   $FF
-         PHA
-         LDA   $FD
-         PHA
-         _UnloadSeg
-         BCC   L0402C6
-         STA   L0B0002
-L0402C6  PLA
-         PLA
-         PLA
-         STA   $F0
-         PEA   $000A
-         JSL   L021DFD
-         PLY
-         TSC
-         CLC
-         ADC   #$0008
-         TCS
-         PLD
-         RTL
+         rtl	; 202404 - LoGo - Segments remain in memory
+
+*         PHD
+*         TSC
+*         SEC
+*         SBC   #$00F7
+*         TCD
+*         ADC   #$00EE
+*         TCS
+*         PHA
+*         PHA
+*         PHA
+*         LDA   $FF
+*         PHA
+*         LDA   $FD
+*         PHA
+*         _UnloadSeg
+*         BCC   L0402C6
+*         STA   L0B0002
+*L0402C6  PLA
+*         PLA
+*         PLA
+*         STA   $F0
+*         PEA   $000A
+*         JSL   L021DFD
+*         PLY
+*         TSC
+*         CLC
+*         ADC   #$0008
+*         TCS
+*         PLD
+*         RTL
 
 L0402DB  ENT
          PHD
@@ -510,7 +512,7 @@ L040390  ENT
          REP   #$20
          PEI   $FB
          PEI   $F9
-         JSL   $040961
+         JSL   L040961
          PLY
          PLY
          STA   $EC
@@ -553,7 +555,7 @@ L040390  ENT
          REP   #$20
          PEI   $FB
          PEI   $F9
-         JSL   $040961
+         JSL   L040961
          PLY
          PLY
          STA   $EC
@@ -1169,7 +1171,7 @@ L04094B  STAL  L0B0002
          PLD
          RTL
 
-         PHD
+L040961  PHD
          TSC
          SEC
          SBC   #$00F7
@@ -1293,7 +1295,7 @@ L040A51  TAY
          PLD
          RTL
 
-         PHD
+L040A5B  PHD
          TSC
          SEC
          SBC   #$00F3
@@ -1427,7 +1429,7 @@ L040ADF  ENT
          PHA
          PEI   $F9
          PEI   $F7
-         JSL   $040C05
+         JSL   L040C05
          PLY
          PLY
          PLY
@@ -1491,7 +1493,7 @@ L040B76  BMI   L040BE0
          PHA
          PEI   $F9
          PEI   $F7
-         JSL   $040C05
+         JSL   L040C05
          PLY
          PLY
          PLY
@@ -1524,7 +1526,7 @@ L040BF9  LDA   $A4
          PLD
          RTL
 
-         PHD
+L040C05  PHD
          TSC
          SEC
          SBC   #$00F1
@@ -1766,7 +1768,7 @@ L040D88  PEI   $FD
          CLC
          ADC   #$00EA
          PHA
-         JSL   $040A5B
+         JSL   L040A5B
          PLY
          PLY
          PLY
@@ -1787,7 +1789,7 @@ L040DF4  PEA   $0000
          CLC
          ADC   #$00EA
          PHA
-         JSL   $040F12
+         JSL   L040F12
          PLY
          PLY
          PLY
@@ -1862,7 +1864,7 @@ L040E53  ENT
          STA   $BA
          PEA   $0000
          PEI   $BA
-         JSL   $041131
+         JSL   L041131
          PLY
          PLY
          BRL   L040F06
@@ -1882,13 +1884,13 @@ L040E91  PEA   $0001
          PLY
          TAY
          BEQ   L040F01
-         JSL   $04100F
+         JSL   L04100F
          STA   $BE
          PEI   $FF
          PEI   $FD
          PEI   $BC
          PEI   $BE
-         JSL   $0412BB
+         JSL   L0412BB
          PLY
          PLY
          PLY
@@ -1912,13 +1914,13 @@ L040E91  PEA   $0001
          LDA   #$0000
          STA   [$F2]
          PEI   $BE
-         JSL   $04175D
+         JSL   L04175D
          PLY
          LDA   $BE
          STA   $BA
          PEA   $0001
          PEI   $BA
-         JSL   $041131
+         JSL   L041131
          PLY
          PLY
          BRA   L040F06
@@ -1934,7 +1936,7 @@ L040F06  LDA   $BA
          PLD
          RTL
 
-         PHD
+L040F12  PHD
          TSC
          SEC
          SBC   #$00F3
@@ -2068,7 +2070,7 @@ L041003  LDA   $EC
          PLD
          RTL
 
-         PHD
+L04100F  PHD
          TSC
          SEC
          SBC   #$00FB
@@ -2216,7 +2218,7 @@ L041125  LDA   $F2
          PLD
          RTL
 
-         PHD
+L041131  PHD
          TSC
          SEC
          SBC   #$00F7
@@ -2410,7 +2412,7 @@ L04128D  LDA   $FD
          PLD
          RTL
 
-         PHD
+L0412BB  PHD
          TSC
          SEC
          SBC   #$00F3
@@ -2477,7 +2479,7 @@ L0412F6  PHX
          ADC   #$00EA
          PHA
          PEI   $FB
-         JSL   $04134A
+         JSL   L04134A
          PLY
          PLY
          PLY
@@ -2490,7 +2492,7 @@ L0412F6  PHX
          PLD
          RTL
 
-         PHD
+L04134A  PHD
          TSC
          SEC
          SBC   #$00F1
@@ -2985,7 +2987,7 @@ L041753  TAY
          PLD
          RTL
 
-         PHD
+L04175D  PHD
          TSC
          SEC
          SBC   #$00F9
@@ -3311,7 +3313,7 @@ L0419DE  STAL  L0B0002
          LDA   [$F4],Y
          PHX
          PHA
-         JSL   $041BEE
+         JSL   L041BEE
          TAY
          TSC
          CLC
@@ -3453,7 +3455,7 @@ L041B4C  TSC
          PLD
          RTL
 
-         PHD
+L041B54  PHD
          TSC
          SEC
          SBC   #$00F9
@@ -3495,7 +3497,7 @@ L041B74  STA   L0B00F5
          PLD
          RTL
 
-         PHD
+L041BA3  PHD
          TSC
          SEC
          SBC   #$00FB
@@ -3536,7 +3538,7 @@ L041BC3  STA   L0B00F9
          PLD
          RTL
 
-         PHD
+L041BEE  PHD
          TSC
          SEC
          SBC   #$00EF
@@ -3605,8 +3607,8 @@ L041C52  STAL  L0B0002
          BCS   L041C8A
          LDA   #$0000
 L041C8A  STAL  L0B0002
-         JSL   $041BA3
-         JSL   $041BA3
+         JSL   L041BA3
+         JSL   L041BA3
          STZ   L0B00FB
          STZ   L0B00FD
          LDA   L0B0101
@@ -3616,7 +3618,7 @@ L041C8A  STAL  L0B0002
          JSL   L010CA2
          PLA
          STA   L0B0105
-         JSL   $041BA3
+         JSL   L041BA3
          AND   #$00FF
          STA   L0B0101
          LDA   L0B0101
@@ -3710,7 +3712,7 @@ L041D60  BRL   L041E7A
 L041D73  LDA   $E4
          AND   #$00FF
          PHA
-         JSL   $041B54
+         JSL   L041B54
          PLY
          LDA   $F9
          CLC

@@ -30,6 +30,7 @@
 *-------------------------------
 
 L0A0000  ENT
+L0E003C  ENT
          PHD
          TSC
          SEC
@@ -1331,6 +1332,7 @@ L0A0CD0  PEA   ^L0C29B9
          RTL
 
 L0A0CE4  ENT
+L0E0020  ENT
          PHD
          TSC
          SEC
@@ -1360,6 +1362,7 @@ L0A0CE4  ENT
          RTL
 
 L0A0D1F  ENT
+L0E0012  ENT
          PHD
          TSC
          SEC
@@ -1501,6 +1504,7 @@ L0A0EC4  BPL   L0A0E85
          RTL
 
 L0A0ED6  ENT
+L0E002E  ENT
          PHD
          TSC
          SEC

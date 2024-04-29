@@ -1400,6 +1400,7 @@ L090D83  STAL  L0B0002
          RTL
 
 L090D8F  ENT
+L0E004A  ENT
          PHD
          TSC
          SEC
@@ -1822,6 +1823,7 @@ L091154  TSC
          RTL
 
 L09115C  ENT
+L0E0058  ENT
          PHD
          TSC
          SEC
@@ -3484,6 +3486,7 @@ L091E64  PHD
          RTL
 
 L091E8B  ENT
+L0E0066  ENT
          PHD
          TSC
          SEC
@@ -6650,6 +6653,7 @@ L093988  TAY
          RTL
 
 L093992  ENT
+L0E0082  ENT
          PHD
          TSC
          SEC

@@ -8,9 +8,9 @@
 	mx	%11
 	lst	off
 
-* Les caractres en standard : @ { } ] ! (pipe)
-* Les caractres en franais : ˆ    
-* Les quivalents en ASCII   : C0 FB FD DC FC
+* Les caractÂres en standard : @ { } ] ! (pipe)
+* Les caractÂres en franÂais : Ë† Å½ Â Â Â
+* Les Å½quivalents en ASCII   : C0 FB FD DC FC
 
 *-----------------------------------
 * LES CHAINES

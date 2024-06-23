@@ -9,6 +9,8 @@
             ORG   $4000
             MX    %11
 
+	USE   PACMAN.E
+	
 *-----------------------------------
 * 
 *-----------------------------------
@@ -77,8 +79,8 @@ L4027       LDA   #$01
             STA   $02
             STA   $58
             LDA   #$01
-            STA   $1D
-            STA   $E8
+            STA   zpMONITOR
+            STA   $E8		; ZP - demo if 1?
             LDA   #<L43D2
             STA   SOFTEV
             STA   NMILOC+1
@@ -91,8 +93,8 @@ L4027       LDA   #$01
             STA   PWREDUP
             LDA   #$4C
             STA   NMILOC
-            JSR   L4821
-            JMP   L43D2
+            JSR   selectMONITOR
+            JMP   L43D2		; show LOGO
 
             ASC   "(C) 1983 ATARI, INC.ALL RIGHTS RESERVED."
             ASC   "UNAUTHORIZED REPRODUCTION, ADAPTATION, D"
@@ -111,37 +113,38 @@ L4027       LDA   #$01
             DB    $17
 
 *-----------------------------------
-* DEAD CODE
+* MAIN ENTRY POINT
 *-----------------------------------
 
-L4144       bit   L4217		; LoGo
+selectRANKCARTOON
+            bit   selecNBPLAYERS		; LoGo
 
-L4147       JSR   L6F3C		; set text mode
-            JSR   L4868		; clear text screen
+L4147       JSR   setTEXT2	; set text mode
+            JSR   clearTEXT2	; clear text screen
             LDA   #$00
             STA   $24
             LDA   #$05
-            JSR   L485C
+            JSR   gotoXY
             LDX   #$00
 L4158       LDA   L41DC,X	; RANK OR CARTOON?
-            JSR   L4A6A
+            JSR   printCHAR
             INX
             CPX   #$11
             BCC   L4158
             JSR   GETLN1
             LDA   #$07
-            JSR   L485C
+            JSR   gotoXY
             LDA   #$00
             STA   $24
             LDA   $0200
-            CMP   #$C3		; "C"
+            CMP   #"C"
             BNE   L419F
 
 *--- Choose cartoon
 
             LDX   #$00
 L4178       LDA   L4201,X	; CARTOON NUMBER (1-3)
-            JSR   L4A6A
+            JSR   printCHAR
             INX
             CPX   #$16
             BCC   L4178
@@ -156,13 +159,13 @@ L4178       LDA   L4201,X	; CARTOON NUMBER (1-3)
             LDA   #$09
 L4197       STA   $55		; ZP
             JSR   L8155
-            JMP   L4144
+            JMP   selectRANKCARTOON
 
 *--- Choose rank
 
 L419F       LDX   #$00
 L41A1       LDA   L41ED,X	; RANK NUMBER (1-21)
-            JSR   L4A6A
+            JSR   printCHAR
             INX
             CPX   #$14
             BCC   L41A1
@@ -183,12 +186,12 @@ L41C2       CLC
 L41C8       CMP   #$16
             BCS   L41D9
 L41CC       STA   L54E0+1
-            JMP   L4217
+            JMP   selecNBPLAYERS
 
 L41D2       LDA   $0200
             AND   #$0F
             BNE   L41CC
-L41D9       JMP   L4144
+L41D9       JMP   selectRANKCARTOON
 
 L41DC       ASC   "RANK OR CARTOON? "
 L41ED       ASC   "RANK NUMBER? (1-21) "
@@ -198,43 +201,45 @@ L4201       ASC   "CARTOON NUMBER? (1-3) "
 * SELECT NUMBER OF PLAYERS
 *-----------------------------------
 
-L4217       JSR   L6F3C
-            JSR   L4868
+selecNBPLAYERS
+            JSR   setTEXT2
+            JSR   clearTEXT2
             LDA   #$00
             STA   $24
             LDA   #$06
-            JSR   L485C
+            JSR   gotoXY
             LDX   #$00
 L4228       LDA   L427C,X	; HOW MANY PLAYERS?
-            JSR   L4A6A
+            JSR   printCHAR
             INX
             CPX   #$1D
             BNE   L4228
 L4233       JSR   RDKEY
             CMP   #$96		; ctrl-v
             BEQ   L4272
-            CMP   #$B1
+            CMP   #"1"
             BCC   L4233
-            CMP   #$B6
+            CMP   #"6"
             BCS   L4233
-            JSR   L4A6A
+            JSR   printCHAR
             AND   #$07
             STA   $51		; ZP
+
             LDA   #$00
             STA   $24
             LDA   #$0B
             STA   $25
-            JSR   L485C
+            JSR   gotoXY
             LDX   #$00
 L4256       LDA   L4299,X	; SPACE OR RETURN
-            JSR   L4A6A
+            JSR   printCHAR
             INX
             CPX   #$37
             BNE   L4256
 L4261       JSR   RDKEY
-            CMP   #$A0
+            CMP   #" "
             BNE   L426B
-            JMP   L43D2		; SPACE MEANS DEMO
+            JMP   L43D2		; space means the end
 
 L426B       CMP   #$8D
             BNE   L4261
@@ -312,9 +317,9 @@ L4338       LDA   #$01
             LDA   #$00
             STA   $03
             JSR   L55A6
-            JSR   L6F5E
+            JSR   getINPUT
             LDX   #$50
-            JMP   L6CE8
+            JMP   doWAIT2
 
 L434F       DB    $0D
             DB    $0B
@@ -454,8 +459,8 @@ L434F       DB    $0D
 
 L43D2       LDA   #$01
             STA   $E8
-            JSR   L52BB
-            JSR   L6F46
+            JSR   showTITLESCREEN
+            JSR   clearHGR
             LDA   #$01
             STA   $81
             LDA   #$00
@@ -464,7 +469,7 @@ L43D2       LDA   #$01
             LDA   #<L434F
             STA   $14
             LDA   #>L434F
-            STA   $15
+            STA   $14+1
             LDY   #$00
             JSR   L42D0
             JSR   L44E8
@@ -1013,7 +1018,7 @@ L46B5       JSR   L8712
             STA   $C0
 L46CC       DEC   $59
             BNE   L46EC
-            JSR   L6F5E
+            JSR   getINPUT
             LDA   #$20
             STA   $59
             JSR   L7D80
@@ -1081,7 +1086,7 @@ L474B       LDA   #$01
             STA   $62
 L475F       DEC   $59
             BNE   L477F
-            JSR   L6F5E
+            JSR   getINPUT
             LDA   #$20
             STA   $59
             JSR   L7D80
@@ -1212,24 +1217,25 @@ L47DA       DB    $03
 * SELECT MONITOR TYPE
 *-----------------------------------
 
-L4821       bit   L48A6		; LoGo
-            JSR   L6F3C		; set text mode
-            JSR   L4868		; clear text screen
+selectMONITOR
+            bit   L48A6		; LoGo
+            JSR   setTEXT2	; set text mode
+            JSR   clearTEXT2	; clear text screen
             LDA   #$0A
             STA   $25
-            JSR   L485C
+            JSR   gotoXY
             LDA   #$00
             STA   $24
             LDX   #$00
 L4837       LDA   L4886,X	; B&W OR COLOR MONITOR?
-            JSR   L4A6A
+            JSR   printCHAR
             INX
             CPX   #$20
             BNE   L4837
 L4842       JSR   RDKEY
-            CMP   #$C2		; BLACK
+            CMP   #"B"		; BLACK
             BCC   L4842
-            CMP   #$C4		; COLOR
+            CMP   #"C"+1	; COLOR
             BCS   L4842
             AND   #$01
             STA   $1D		; ZP MONITOR
@@ -1243,26 +1249,34 @@ L4842       JSR   RDKEY
             JSR   VTABZ
             JMP   L485F
 
-L485C       JSR   VTAB
+*-----------------------------------
+* GOTO X/Y
+*-----------------------------------
+
+gotoXY      JSR   VTAB
 L485F       LDA   $29
             AND   #$03
             ORA   #$08
             STA   $29
             RTS
 
-L4868       LDA   #$00
+*-----------------------------------
+* CLER TEXT PAGE 2
+*-----------------------------------
+
+clearTEXT2  LDA   #$00
             STA   $25
             STA   $24
             LDX   #$04
             LDY   #$00
-L4872       LDA   #$A0
-L4874       STA   $0800,Y
+L4872       LDA   #" "
+L4874       STA   TEXT2,Y
             INY
             BNE   L4874
             INC   L4874+2
             DEX
             BNE   L4872
-            LDA   #$08
+            LDA   #>TEXT2
             STA   L4874+2
             RTS
 
@@ -1272,16 +1286,16 @@ L4886       ASC   "BLACK & WHITE OR COLOR? (B / C) "
 * SELECT INPUT DEVICE
 *-----------------------------------
 
-L48A6       JSR   L6F3C
-            JSR   L4868
+L48A6       JSR   setTEXT2
+            JSR   clearTEXT2
             LDA   #$00
             STA   $24
             STA   $25
-            JSR   L485C
+            JSR   gotoXY
             LDX   #$00
 L48B7       LDA   L48D9,X	; KEYBOARD OR JOYSTICK
             BEQ   L48C2
-            JSR   L4A6A
+            JSR   printCHAR
             INX
             BNE   L48B7
 L48C2       JSR   RDKEY
@@ -1305,15 +1319,15 @@ L48D9       ASC   " PACMAN CAN BE PLAYED WITH"8D8D
 * 
 *-----------------------------------
 
-L492F       JSR   L4868
-            JSR   L6F3C
+L492F       JSR   clearTEXT2
+            JSR   setTEXT2
             LDA   #$00
             STA   $24
             STA   $25
-            JSR   L485C
+            JSR   gotoXY
             LDX   #$00
 L4940       LDA   L4A01,X
-            JSR   L4A6A
+            JSR   printCHAR
             INX
             CPX   #$26
             BCC   L4940
@@ -1322,15 +1336,15 @@ L4940       LDA   L4A01,X
             BEQ   L4955
             JMP   L4A00
 
-L4955       JSR   L4A6A
+L4955       JSR   printCHAR
             LDA   #$04
             STA   $25
             LDA   #$00
             STA   $24
-            JSR   L485C
+            JSR   gotoXY
             LDX   #$00
 L4965       LDA   L4A26,X
-            JSR   L4A6A
+            JSR   printCHAR
             INX
             CPX   #$14
             BCC   L4965
@@ -1338,10 +1352,10 @@ L4965       LDA   L4A26,X
             STA   $24
             LDA   #$06
             STA   $25
-            JSR   L485C
+            JSR   gotoXY
             LDX   #$00
 L497D       LDA   L4A3A,X
-            JSR   L4A6A
+            JSR   printCHAR
             INX
             CPX   #$0C
             BCC   L497D
@@ -1350,10 +1364,10 @@ L497D       LDA   L4A3A,X
             INC   $25
             LDA   #$16
             STA   $24
-            JSR   L485C
+            JSR   gotoXY
             LDX   #$00
 L4999       LDA   L4A46,X
-            JSR   L4A6A
+            JSR   printCHAR
             INX
             CPX   #$0C
             BCC   L4999
@@ -1364,10 +1378,10 @@ L49A4       JSR   RDKEY
             INC   $25
             LDA   #$16
             STA   $24
-            JSR   L485C
+            JSR   gotoXY
             LDX   #$00
 L49BA       LDA   L4A52,X
-            JSR   L4A6A
+            JSR   printCHAR
             INX
             CPX   #$0C
             BCC   L49BA
@@ -1380,10 +1394,10 @@ L49C5       JSR   RDKEY
             INC   $25
             LDA   #$16
             STA   $24
-            JSR   L485C
+            JSR   gotoXY
             LDX   #$00
 L49E0       LDA   L4A5E,X
-            JSR   L4A6A
+            JSR   printCHAR
             INX
             CPX   #$0C
             BCC   L49E0
@@ -1404,2049 +1418,166 @@ L4A46       ASC   "MOVE RIGHT  "
 L4A52       ASC   "MOVE UP     "
 L4A5E       ASC   "MOVE DOWN   "
 
-L4A6A       CMP   #$8D
+*-----------------------------------
+* OUTPUT CHARACTER
+*-----------------------------------
+
+printCHAR   CMP   #$8D
             BNE   L4A77
             INC   $25
             LDA   #$00
             STA   $24
-            JMP   L485C
+            JMP   gotoXY
 L4A77       JMP   COUT1
 
-L4A7A       DB    $FF
-            DB    $FF
-            DB    $FE
-            DB    $01
-            DB    $41
-            DB    $01
-            DB    $01
-            DB    $45
-            DB    $03
-            DB    $01
-            DB    $45
-            DB    $05
-            DB    $01
-            DB    $47
-            DB    $07
-            DB    $01
-            DB    $49
-            DB    $09
-            DB    $01
-            DB    $4B
-            DB    $0B
-            DB    $01
-            DB    $4D
-            DB    $0D
-            DB    $01
-            DB    $4F
-            DB    $0F
-            DB    $01
-            DB    $4F
-            DB    $11
-            DB    $01
-            DB    $51
-            DB    $13
-            DB    $01
-            DB    $51
-            DB    $15
-            DB    $01
-            DB    $53
-            DB    $17
-            DB    $01
-            DB    $24
-            DB    $19
-            DB    $01
-            DB    $2B
-            DB    $11
-            DB    $29
-            DB    $53
-            DB    $19
-            DB    $01
-            DB    $21
-            DB    $1B
-            DB    $2B
-            DB    $53
-            DB    $1B
-            DB    $01
-            DB    $20
-            DB    $1F
-            DB    $01
-            DB    $1F
-            DB    $1D
-            DB    $2D
-            DB    $53
-            DB    $1D
-            DB    $2D
-            DB    $53
-            DB    $1F
-            DB    $01
-            DB    $21
-            DB    $21
-            DB    $2B
-            DB    $53
-            DB    $21
-            DB    $01
-            DB    $23
-            DB    $23
-            DB    $29
-            DB    $53
-            DB    $23
-            DB    $FF
-            DB    $FF
-            DB    $FE
-            DB    $01
-            DB    $53
-            DB    $25
-            DB    $01
-            DB    $53
-            DB    $27
-            DB    $01
-            DB    $53
-            DB    $29
-            DB    $01
-            DB    $51
-            DB    $2B
-            DB    $01
-            DB    $51
-            DB    $2D
-            DB    $01
-            DB    $4F
-            DB    $2F
-            DB    $01
-            DB    $4F
-            DB    $31
-            DB    $01
-            DB    $4D
-            DB    $33
-            DB    $01
-            DB    $49
-            DB    $35
-            DB    $01
-            DB    $45
-            DB    $37
-            DB    $01
-            DB    $43
-            DB    $39
-            DB    $01
-            DB    $2B
-            DB    $3B
-            DB    $01
-            DB    $2B
-            DB    $3D
-            DB    $01
-            DB    $2B
-            DB    $3F
-            DB    $01
-            DB    $2B
-            DB    $41
-            DB    $01
-            DB    $2B
-            DB    $43
-            DB    $01
-            DB    $2B
-            DB    $45
-            DB    $01
-            DB    $2B
-            DB    $47
-            DB    $01
-            DB    $2B
-            DB    $49
-            DB    $01
-            DB    $2B
-            DB    $49
-            DB    $01
-            DB    $2B
-            DB    $4B
-            DB    $01
-            DB    $2B
-            DB    $4D
-            DB    $01
-            DB    $2B
-            DB    $4F
-            DB    $01
-            DB    $2B
-            DB    $51
-            DB    $01
-            DB    $2B
-            DB    $53
-            DB    $01
-            DB    $2B
-            DB    $55
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $01
-            DB    $43
-            DB    $02
-            DB    $01
-            DB    $45
-            DB    $04
-            DB    $01
-            DB    $47
-            DB    $06
-            DB    $01
-            DB    $49
-            DB    $08
-            DB    $01
-            DB    $4B
-            DB    $0A
-            DB    $01
-            DB    $4B
-            DB    $0C
-            DB    $01
-            DB    $4D
-            DB    $0E
-            DB    $01
-            DB    $4F
-            DB    $10
-            DB    $01
-            DB    $4F
-            DB    $12
-            DB    $01
-            DB    $51
-            DB    $14
-            DB    $01
-            DB    $51
-            DB    $16
-            DB    $01
-            DB    $51
-            DB    $18
-            DB    $01
-            DB    $22
-            DB    $1A
-            DB    $2B
-            DB    $53
-            DB    $1A
-            DB    $01
-            DB    $1F
-            DB    $1C
-            DB    $2D
-            DB    $53
-            DB    $1C
-            DB    $01
-            DB    $20
-            DB    $1E
-            DB    $2D
-            DB    $53
-            DB    $20
-            DB    $2D
-            DB    $53
-            DB    $1E
-            DB    $01
-            DB    $20
-            DB    $20
-            DB    $01
-            DB    $21
-            DB    $22
-            DB    $2B
-            DB    $53
-            DB    $22
-            DB    $01
-            DB    $24
-            DB    $24
-            DB    $25
-            DB    $53
-            DB    $24
-            DB    $01
-            DB    $53
-            DB    $26
-            DB    $01
-            DB    $53
-            DB    $28
-            DB    $01
-            DB    $51
-            DB    $2C
-            DB    $01
-            DB    $51
-            DB    $2A
-            DB    $01
-            DB    $4F
-            DB    $30
-            DB    $01
-            DB    $4F
-            DB    $2E
-            DB    $01
-            DB    $4D
-            DB    $32
-            DB    $01
-            DB    $49
-            DB    $34
-            DB    $01
-            DB    $45
-            DB    $36
-            DB    $01
-            DB    $43
-            DB    $38
-            DB    $01
-            DB    $43
-            DB    $38
-            DB    $01
-            DB    $2B
-            DB    $3A
-            DB    $01
-            DB    $2B
-            DB    $3C
-            DB    $01
-            DB    $2B
-            DB    $3E
-            DB    $01
-            DB    $2B
-            DB    $3E
-            DB    $01
-            DB    $2B
-            DB    $40
-            DB    $01
-            DB    $2B
-            DB    $42
-            DB    $01
-            DB    $2B
-            DB    $44
-            DB    $01
-            DB    $2B
-            DB    $46
-            DB    $01
-            DB    $2B
-            DB    $48
-            DB    $01
-            DB    $2B
-            DB    $4A
-            DB    $01
-            DB    $2B
-            DB    $4E
-            DB    $01
-            DB    $2B
-            DB    $4C
-            DB    $01
-            DB    $2B
-            DB    $50
-            DB    $01
-            DB    $2B
-            DB    $52
-            DB    $01
-            DB    $2B
-            DB    $54
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FE
-            DB    $73
-            DB    $73
-            DB    $01
-            DB    $73
-            DB    $73
-            DB    $03
-            DB    $73
-            DB    $73
-            DB    $05
-            DB    $71
-            DB    $75
-            DB    $07
-            DB    $71
-            DB    $75
-            DB    $09
-            DB    $6F
-            DB    $77
-            DB    $0B
-            DB    $6F
-            DB    $77
-            DB    $0D
-            DB    $6D
-            DB    $79
-            DB    $0F
-            DB    $6D
-            DB    $79
-            DB    $11
-            DB    $69
-            DB    $7D
-            DB    $17
-            DB    $6B
-            DB    $7B
-            DB    $13
-            DB    $6B
-            DB    $7B
-            DB    $15
-            DB    $67
-            DB    $7F
-            DB    $1B
-            DB    $69
-            DB    $7D
-            DB    $19
-            DB    $67
-            DB    $7F
-            DB    $1F
-            DB    $67
-            DB    $7F
-            DB    $1D
-            DB    $65
-            DB    $81
-            DB    $23
-            DB    $65
-            DB    $81
-            DB    $21
-            DB    $63
-            DB    $83
-            DB    $25
-            DB    $63
-            DB    $71
-            DB    $27
-            DB    $71
-            DB    $83
-            DB    $27
-            DB    $61
-            DB    $6F
-            DB    $29
-            DB    $77
-            DB    $85
-            DB    $29
-            DB    $61
-            DB    $6D
-            DB    $2B
-            DB    $79
-            DB    $85
-            DB    $2B
-            DB    $5F
-            DB    $6B
-            DB    $2D
-            DB    $7B
-            DB    $87
-            DB    $2D
-            DB    $5F
-            DB    $6B
-            DB    $2F
-            DB    $7B
-            DB    $87
-            DB    $2F
-            DB    $5D
-            DB    $6D
-            DB    $31
-            DB    $79
-            DB    $89
-            DB    $31
-            DB    $77
-            DB    $89
-            DB    $33
-            DB    $5D
-            DB    $6F
-            DB    $33
-            DB    $5B
-            DB    $8B
-            DB    $35
-            DB    $5B
-            DB    $8B
-            DB    $37
-            DB    $59
-            DB    $8D
-            DB    $39
-            DB    $59
-            DB    $8D
-            DB    $3B
-            DB    $59
-            DB    $8D
-            DB    $3D
-            DB    $57
-            DB    $8F
-            DB    $3F
-            DB    $57
-            DB    $8F
-            DB    $41
-            DB    $55
-            DB    $91
-            DB    $43
-            DB    $55
-            DB    $91
-            DB    $45
-            DB    $53
-            DB    $93
-            DB    $47
-            DB    $53
-            DB    $93
-            DB    $49
-            DB    $51
-            DB    $95
-            DB    $4B
-            DB    $51
-            DB    $95
-            DB    $4D
-            DB    $4F
-            DB    $97
-            DB    $4F
-            DB    $4F
-            DB    $97
-            DB    $51
-            DB    $4D
-            DB    $99
-            DB    $53
-            DB    $4D
-            DB    $99
-            DB    $55
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $73
-            DB    $73
-            DB    $02
-            DB    $73
-            DB    $73
-            DB    $04
-            DB    $73
-            DB    $73
-            DB    $06
-            DB    $71
-            DB    $75
-            DB    $08
-            DB    $71
-            DB    $75
-            DB    $0A
-            DB    $71
-            DB    $75
-            DB    $0A
-            DB    $6F
-            DB    $77
-            DB    $0C
-            DB    $6F
-            DB    $77
-            DB    $0E
-            DB    $6F
-            DB    $77
-            DB    $0E
-            DB    $6D
-            DB    $79
-            DB    $10
-            DB    $6D
-            DB    $79
-            DB    $12
-            DB    $6B
-            DB    $7B
-            DB    $14
-            DB    $6B
-            DB    $7B
-            DB    $14
-            DB    $6B
-            DB    $7B
-            DB    $16
-            DB    $69
-            DB    $7D
-            DB    $18
-            DB    $69
-            DB    $7D
-            DB    $1A
-            DB    $67
-            DB    $7F
-            DB    $1C
-            DB    $67
-            DB    $7F
-            DB    $1E
-            DB    $65
-            DB    $81
-            DB    $20
-            DB    $65
-            DB    $81
-            DB    $22
-            DB    $63
-            DB    $83
-            DB    $24
-            DB    $63
-            DB    $83
-            DB    $26
-            DB    $61
-            DB    $6F
-            DB    $28
-            DB    $75
-            DB    $85
-            DB    $28
-            DB    $61
-            DB    $6D
-            DB    $2A
-            DB    $77
-            DB    $85
-            DB    $2A
-            DB    $5F
-            DB    $6B
-            DB    $2C
-            DB    $79
-            DB    $87
-            DB    $2C
-            DB    $5F
-            DB    $6B
-            DB    $2E
-            DB    $7B
-            DB    $87
-            DB    $2E
-            DB    $5F
-            DB    $6B
-            DB    $30
-            DB    $7B
-            DB    $87
-            DB    $30
-            DB    $5D
-            DB    $6D
-            DB    $32
-            DB    $5D
-            DB    $71
-            DB    $34
-            DB    $5B
-            DB    $8B
-            DB    $36
-            DB    $5B
-            DB    $8B
-            DB    $36
-            DB    $59
-            DB    $8D
-            DB    $3A
-            DB    $5B
-            DB    $8B
-            DB    $38
-            DB    $59
-            DB    $8D
-            DB    $3C
-            DB    $59
-            DB    $8D
-            DB    $3E
-            DB    $57
-            DB    $8F
-            DB    $40
-            DB    $75
-            DB    $89
-            DB    $34
-            DB    $79
-            DB    $89
-            DB    $32
-            DB    $57
-            DB    $8F
-            DB    $42
-            DB    $55
-            DB    $91
-            DB    $44
-            DB    $55
-            DB    $91
-            DB    $46
-            DB    $53
-            DB    $93
-            DB    $48
-            DB    $53
-            DB    $93
-            DB    $4A
-            DB    $51
-            DB    $95
-            DB    $4C
-            DB    $51
-            DB    $95
-            DB    $4E
-            DB    $4F
-            DB    $97
-            DB    $50
-            DB    $4F
-            DB    $97
-            DB    $52
-            DB    $4D
-            DB    $99
-            DB    $54
-            DB    $FF
-            DB    $FF
-            DB    $FE
-            DB    $C1
-            DB    $D5
-            DB    $01
-            DB    $BB
-            DB    $DB
-            DB    $03
-            DB    $B7
-            DB    $DF
-            DB    $05
-            DB    $B5
-            DB    $E1
-            DB    $07
-            DB    $B1
-            DB    $E5
-            DB    $09
-            DB    $AF
-            DB    $E7
-            DB    $0B
-            DB    $AD
-            DB    $E9
-            DB    $0D
-            DB    $AB
-            DB    $EB
-            DB    $11
-            DB    $AB
-            DB    $EB
-            DB    $0F
-            DB    $A9
-            DB    $ED
-            DB    $13
-            DB    $A7
-            DB    $EF
-            DB    $17
-            DB    $A7
-            DB    $EF
-            DB    $15
-            DB    $A5
-            DB    $EB
-            DB    $19
-            DB    $A3
-            DB    $E7
-            DB    $1B
-            DB    $A3
-            DB    $E3
-            DB    $1D
-            DB    $A3
-            DB    $DF
-            DB    $1F
-            DB    $A1
-            DB    $DB
-            DB    $21
-            DB    $A1
-            DB    $D7
-            DB    $23
-            DB    $A1
-            DB    $CF
-            DB    $27
-            DB    $A1
-            DB    $CF
-            DB    $27
-            DB    $A1
-            DB    $D3
-            DB    $25
-            DB    $A1
-            DB    $CB
-            DB    $29
-            DB    $A1
-            DB    $C9
-            DB    $2B
-            DB    $A1
-            DB    $CD
-            DB    $2D
-            DB    $A1
-            DB    $D1
-            DB    $2F
-            DB    $A1
-            DB    $D5
-            DB    $31
-            DB    $A1
-            DB    $D9
-            DB    $33
-            DB    $A1
-            DB    $DB
-            DB    $35
-            DB    $A3
-            DB    $E1
-            DB    $37
-            DB    $A3
-            DB    $E7
-            DB    $3B
-            DB    $A3
-            DB    $E3
-            DB    $39
-            DB    $A7
-            DB    $EF
-            DB    $3F
-            DB    $A7
-            DB    $EB
-            DB    $3D
-            DB    $A9
-            DB    $ED
-            DB    $43
-            DB    $A7
-            DB    $EF
-            DB    $41
-            DB    $AD
-            DB    $EB
-            DB    $49
-            DB    $AB
-            DB    $EB
-            DB    $47
-            DB    $AB
-            DB    $EB
-            DB    $45
-            DB    $AF
-            DB    $E7
-            DB    $4B
-            DB    $B1
-            DB    $E5
-            DB    $4D
-            DB    $B5
-            DB    $E1
-            DB    $4F
-            DB    $C1
-            DB    $D5
-            DB    $55
-            DB    $BB
-            DB    $DB
-            DB    $53
-            DB    $B7
-            DB    $DF
-            DB    $51
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $BD
-            DB    $D9
-            DB    $02
-            DB    $B9
-            DB    $DD
-            DB    $04
-            DB    $B5
-            DB    $E1
-            DB    $06
-            DB    $B3
-            DB    $E3
-            DB    $08
-            DB    $B1
-            DB    $E5
-            DB    $0A
-            DB    $AF
-            DB    $E7
-            DB    $0C
-            DB    $0D
-            DB    $49
-            DB    $0E
-            DB    $A7
-            DB    $EF
-            DB    $16
-            DB    $AD
-            DB    $E9
-            DB    $0E
-            DB    $AB
-            DB    $EB
-            DB    $10
-            DB    $A9
-            DB    $ED
-            DB    $12
-            DB    $A9
-            DB    $ED
-            DB    $14
-            DB    $BD
-            DB    $D9
-            DB    $54
-            DB    $B9
-            DB    $DD
-            DB    $52
-            DB    $B5
-            DB    $E1
-            DB    $50
-            DB    $B3
-            DB    $E3
-            DB    $4E
-            DB    $B1
-            DB    $E5
-            DB    $4C
-            DB    $AF
-            DB    $E7
-            DB    $4A
-            DB    $AD
-            DB    $E9
-            DB    $48
-            DB    $AB
-            DB    $EB
-            DB    $46
-            DB    $A9
-            DB    $ED
-            DB    $44
-            DB    $A9
-            DB    $ED
-            DB    $42
-            DB    $A7
-            DB    $EF
-            DB    $40
-            DB    $A7
-            DB    $EF
-            DB    $40
-            DB    $A5
-            DB    $ED
-            DB    $3E
-            DB    $A5
-            DB    $E9
-            DB    $3C
-            DB    $A3
-            DB    $E5
-            DB    $3A
-            DB    $A3
-            DB    $E1
-            DB    $38
-            DB    $A1
-            DB    $DD
-            DB    $36
-            DB    $A1
-            DB    $D9
-            DB    $34
-            DB    $A1
-            DB    $CF
-            DB    $2E
-            DB    $A1
-            DB    $D3
-            DB    $30
-            DB    $A1
-            DB    $D7
-            DB    $32
-            DB    $A1
-            DB    $C9
-            DB    $2A
-            DB    $A1
-            DB    $CB
-            DB    $2C
-            DB    $A1
-            DB    $D9
-            DB    $22
-            DB    $A1
-            DB    $D1
-            DB    $26
-            DB    $A1
-            DB    $CD
-            DB    $28
-            DB    $A1
-            DB    $DD
-            DB    $20
-            DB    $A1
-            DB    $D5
-            DB    $24
-            DB    $A3
-            DB    $E5
-            DB    $1C
-            DB    $A3
-            DB    $E1
-            DB    $1E
-            DB    $A5
-            DB    $E9
-            DB    $1A
-            DB    $A5
-            DB    $ED
-            DB    $18
-            DB    $FF
-            DB    $FF
-            DB    $FE
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $6A
-            DB    $01
-            DB    $03
-            DB    $6C
-            DB    $01
-            DB    $05
-            DB    $6E
-            DB    $01
-            DB    $07
-            DB    $70
-            DB    $01
-            DB    $09
-            DB    $72
-            DB    $01
-            DB    $0B
-            DB    $74
-            DB    $01
-            DB    $0D
-            DB    $76
-            DB    $01
-            DB    $0F
-            DB    $78
-            DB    $01
-            DB    $11
-            DB    $7A
-            DB    $01
-            DB    $13
-            DB    $7C
-            DB    $01
-            DB    $15
-            DB    $7E
-            DB    $01
-            DB    $17
-            DB    $80
-            DB    $01
-            DB    $19
-            DB    $82
-            DB    $01
-            DB    $1B
-            DB    $84
-            DB    $01
-            DB    $1D
-            DB    $86
-            DB    $01
-            DB    $1F
-            DB    $88
-            DB    $01
-            DB    $21
-            DB    $8A
-            DB    $01
-            DB    $23
-            DB    $8C
-            DB    $01
-            DB    $25
-            DB    $8E
-            DB    $01
-            DB    $27
-            DB    $90
-            DB    $01
-            DB    $29
-            DB    $92
-            DB    $01
-            DB    $55
-            DB    $94
-            DB    $01
-            DB    $55
-            DB    $96
-            DB    $01
-            DB    $55
-            DB    $98
-            DB    $01
-            DB    $55
-            DB    $9A
-            DB    $01
-            DB    $55
-            DB    $9C
-            DB    $01
-            DB    $55
-            DB    $A0
-            DB    $01
-            DB    $55
-            DB    $A2
-            DB    $01
-            DB    $55
-            DB    $A4
-            DB    $01
-            DB    $55
-            DB    $A6
-            DB    $01
-            DB    $55
-            DB    $A8
-            DB    $01
-            DB    $55
-            DB    $AA
-            DB    $01
-            DB    $55
-            DB    $A0
-            DB    $01
-            DB    $55
-            DB    $A2
-            DB    $01
-            DB    $55
-            DB    $A4
-            DB    $01
-            DB    $55
-            DB    $9E
-            DB    $2D
-            DB    $55
-            DB    $92
-            DB    $2F
-            DB    $55
-            DB    $90
-            DB    $31
-            DB    $55
-            DB    $8E
-            DB    $33
-            DB    $55
-            DB    $8C
-            DB    $35
-            DB    $55
-            DB    $8A
-            DB    $37
-            DB    $55
-            DB    $88
-            DB    $39
-            DB    $55
-            DB    $86
-            DB    $3B
-            DB    $55
-            DB    $84
-            DB    $3D
-            DB    $55
-            DB    $82
-            DB    $3F
-            DB    $55
-            DB    $80
-            DB    $41
-            DB    $56
-            DB    $7E
-            DB    $43
-            DB    $55
-            DB    $7C
-            DB    $45
-            DB    $55
-            DB    $7A
-            DB    $47
-            DB    $55
-            DB    $78
-            DB    $49
-            DB    $55
-            DB    $76
-            DB    $4B
-            DB    $55
-            DB    $74
-            DB    $4D
-            DB    $55
-            DB    $72
-            DB    $4F
-            DB    $55
-            DB    $70
-            DB    $51
-            DB    $55
-            DB    $6E
-            DB    $53
-            DB    $55
-            DB    $6C
-            DB    $55
-            DB    $55
-            DB    $6A
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $01
-            DB    $01
-            DB    $6B
-            DB    $01
-            DB    $03
-            DB    $6D
-            DB    $01
-            DB    $05
-            DB    $6F
-            DB    $01
-            DB    $07
-            DB    $71
-            DB    $01
-            DB    $09
-            DB    $73
-            DB    $01
-            DB    $0B
-            DB    $75
-            DB    $01
-            DB    $0D
-            DB    $77
-            DB    $01
-            DB    $0F
-            DB    $79
-            DB    $01
-            DB    $11
-            DB    $7B
-            DB    $01
-            DB    $13
-            DB    $7D
-            DB    $01
-            DB    $15
-            DB    $7F
-            DB    $01
-            DB    $17
-            DB    $81
-            DB    $01
-            DB    $19
-            DB    $83
-            DB    $01
-            DB    $1B
-            DB    $85
-            DB    $01
-            DB    $21
-            DB    $8B
-            DB    $01
-            DB    $1F
-            DB    $89
-            DB    $01
-            DB    $1D
-            DB    $87
-            DB    $01
-            DB    $23
-            DB    $8D
-            DB    $01
-            DB    $25
-            DB    $8F
-            DB    $01
-            DB    $27
-            DB    $91
-            DB    $01
-            DB    $55
-            DB    $93
-            DB    $01
-            DB    $55
-            DB    $95
-            DB    $01
-            DB    $55
-            DB    $97
-            DB    $01
-            DB    $55
-            DB    $99
-            DB    $01
-            DB    $55
-            DB    $9B
-            DB    $01
-            DB    $55
-            DB    $9D
-            DB    $01
-            DB    $55
-            DB    $9F
-            DB    $01
-            DB    $55
-            DB    $A1
-            DB    $01
-            DB    $55
-            DB    $A3
-            DB    $01
-            DB    $55
-            DB    $A5
-            DB    $01
-            DB    $55
-            DB    $A7
-            DB    $01
-            DB    $55
-            DB    $A9
-            DB    $2F
-            DB    $55
-            DB    $8F
-            DB    $2D
-            DB    $55
-            DB    $91
-            DB    $31
-            DB    $55
-            DB    $8D
-            DB    $33
-            DB    $55
-            DB    $8B
-            DB    $35
-            DB    $55
-            DB    $89
-            DB    $37
-            DB    $55
-            DB    $87
-            DB    $39
-            DB    $55
-            DB    $85
-            DB    $3B
-            DB    $55
-            DB    $83
-            DB    $3D
-            DB    $55
-            DB    $81
-            DB    $3F
-            DB    $55
-            DB    $7F
-            DB    $41
-            DB    $55
-            DB    $7D
-            DB    $43
-            DB    $55
-            DB    $7B
-            DB    $45
-            DB    $55
-            DB    $79
-            DB    $47
-            DB    $55
-            DB    $77
-            DB    $49
-            DB    $55
-            DB    $75
-            DB    $4B
-            DB    $55
-            DB    $73
-            DB    $4D
-            DB    $55
-            DB    $71
-            DB    $4F
-            DB    $55
-            DB    $6F
-            DB    $51
-            DB    $55
-            DB    $6D
-            DB    $53
-            DB    $55
-            DB    $6B
-            DB    $01
-            DB    $55
-            DB    $BD
-            DB    $01
-            DB    $55
-            DB    $BB
-            DB    $01
-            DB    $55
-            DB    $B9
-            DB    $01
-            DB    $55
-            DB    $B7
-            DB    $01
-            DB    $55
-            DB    $B5
-            DB    $01
-            DB    $55
-            DB    $B3
-            DB    $01
-            DB    $55
-            DB    $B1
-            DB    $01
-            DB    $55
-            DB    $AF
-            DB    $01
-            DB    $55
-            DB    $AD
-            DB    $01
-            DB    $55
-            DB    $AB
-            DB    $FF
-            DB    $FF
-            DB    $FE
-            DB    $01
-            DB    $55
-            DB    $BE
-            DB    $01
-            DB    $55
-            DB    $BC
-            DB    $01
-            DB    $55
-            DB    $BA
-            DB    $01
-            DB    $55
-            DB    $B8
-            DB    $01
-            DB    $55
-            DB    $B6
-            DB    $01
-            DB    $55
-            DB    $B4
-            DB    $01
-            DB    $55
-            DB    $B2
-            DB    $01
-            DB    $55
-            DB    $B0
-            DB    $01
-            DB    $55
-            DB    $AE
-            DB    $01
-            DB    $55
-            DB    $AC
-            DB    $FF
-            DB    $FF
-            DB    $FE
-            DB    $81
-            DB    $81
-            DB    $6A
-            DB    $81
-            DB    $81
-            DB    $6C
-            DB    $81
-            DB    $81
-            DB    $6E
-            DB    $7F
-            DB    $83
-            DB    $70
-            DB    $7F
-            DB    $83
-            DB    $72
-            DB    $7D
-            DB    $85
-            DB    $76
-            DB    $7D
-            DB    $85
-            DB    $74
-            DB    $7B
-            DB    $87
-            DB    $78
-            DB    $7B
-            DB    $87
-            DB    $7A
-            DB    $79
-            DB    $89
-            DB    $7C
-            DB    $79
-            DB    $89
-            DB    $7E
-            DB    $77
-            DB    $8B
-            DB    $80
-            DB    $77
-            DB    $8B
-            DB    $82
-            DB    $75
-            DB    $8D
-            DB    $84
-            DB    $75
-            DB    $8D
-            DB    $86
-            DB    $75
-            DB    $8D
-            DB    $88
-            DB    $75
-            DB    $8D
-            DB    $86
-            DB    $73
-            DB    $8F
-            DB    $8A
-            DB    $73
-            DB    $8F
-            DB    $8C
-            DB    $71
-            DB    $91
-            DB    $8E
-            DB    $71
-            DB    $7F
-            DB    $90
-            DB    $83
-            DB    $91
-            DB    $90
-            DB    $6F
-            DB    $7D
-            DB    $92
-            DB    $85
-            DB    $93
-            DB    $92
-            DB    $6F
-            DB    $7B
-            DB    $94
-            DB    $87
-            DB    $93
-            DB    $94
-            DB    $6D
-            DB    $79
-            DB    $96
-            DB    $89
-            DB    $95
-            DB    $96
-            DB    $6D
-            DB    $79
-            DB    $98
-            DB    $89
-            DB    $95
-            DB    $98
-            DB    $6B
-            DB    $7B
-            DB    $9A
-            DB    $87
-            DB    $97
-            DB    $9A
-            DB    $6B
-            DB    $7D
-            DB    $9C
-            DB    $85
-            DB    $97
-            DB    $9C
-            DB    $81
-            DB    $81
-            DB    $90
-            DB    $69
-            DB    $99
-            DB    $9E
-            DB    $69
-            DB    $99
-            DB    $A0
-            DB    $67
-            DB    $9B
-            DB    $A6
-            DB    $67
-            DB    $9B
-            DB    $A4
-            DB    $67
-            DB    $9B
-            DB    $A2
-            DB    $65
-            DB    $9D
-            DB    $A8
-            DB    $65
-            DB    $9D
-            DB    $AA
-            DB    $63
-            DB    $9F
-            DB    $AC
-            DB    $63
-            DB    $9F
-            DB    $AE
-            DB    $61
-            DB    $A1
-            DB    $B0
-            DB    $61
-            DB    $A1
-            DB    $B2
-            DB    $5F
-            DB    $A3
-            DB    $B6
-            DB    $5F
-            DB    $A3
-            DB    $B4
-            DB    $5D
-            DB    $A5
-            DB    $B8
-            DB    $5D
-            DB    $A5
-            DB    $BA
-            DB    $5B
-            DB    $A7
-            DB    $BE
-            DB    $5D
-            DB    $A7
-            DB    $BC
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $81
-            DB    $81
-            DB    $6B
-            DB    $81
-            DB    $81
-            DB    $6D
-            DB    $81
-            DB    $81
-            DB    $6F
-            DB    $7F
-            DB    $83
-            DB    $71
-            DB    $7F
-            DB    $83
-            DB    $73
-            DB    $7D
-            DB    $85
-            DB    $75
-            DB    $7D
-            DB    $85
-            DB    $77
-            DB    $7B
-            DB    $87
-            DB    $79
-            DB    $7B
-            DB    $87
-            DB    $7B
-            DB    $79
-            DB    $89
-            DB    $7D
-            DB    $79
-            DB    $89
-            DB    $7F
-            DB    $77
-            DB    $8B
-            DB    $81
-            DB    $77
-            DB    $8B
-            DB    $83
-            DB    $75
-            DB    $8D
-            DB    $85
-            DB    $75
-            DB    $8D
-            DB    $87
-            DB    $73
-            DB    $8F
-            DB    $89
-            DB    $73
-            DB    $8F
-            DB    $8B
-            DB    $71
-            DB    $91
-            DB    $8D
-            DB    $71
-            DB    $91
-            DB    $8F
-            DB    $6F
-            DB    $7D
-            DB    $91
-            DB    $83
-            DB    $91
-            DB    $91
-            DB    $6F
-            DB    $7B
-            DB    $93
-            DB    $85
-            DB    $91
-            DB    $93
-            DB    $6D
-            DB    $79
-            DB    $95
-            DB    $87
-            DB    $93
-            DB    $95
-            DB    $6D
-            DB    $79
-            DB    $97
-            DB    $89
-            DB    $95
-            DB    $97
-            DB    $6B
-            DB    $7B
-            DB    $9B
-            DB    $6D
-            DB    $79
-            DB    $99
-            DB    $89
-            DB    $95
-            DB    $99
-            DB    $87
-            DB    $97
-            DB    $9B
-            DB    $6B
-            DB    $7F
-            DB    $9D
-            DB    $83
-            DB    $97
-            DB    $9D
-            DB    $69
-            DB    $99
-            DB    $9F
-            DB    $7F
-            DB    $7F
-            DB    $91
-            DB    $5B
-            DB    $A7
-            DB    $BD
-            DB    $5D
-            DB    $A5
-            DB    $BB
-            DB    $5D
-            DB    $A5
-            DB    $B9
-            DB    $5F
-            DB    $A3
-            DB    $B5
-            DB    $5F
-            DB    $A3
-            DB    $B7
-            DB    $63
-            DB    $9F
-            DB    $AD
-            DB    $63
-            DB    $9F
-            DB    $AF
-            DB    $61
-            DB    $A1
-            DB    $B3
-            DB    $61
-            DB    $A1
-            DB    $B1
-            DB    $65
-            DB    $9D
-            DB    $AB
-            DB    $65
-            DB    $9D
-            DB    $A9
-            DB    $67
-            DB    $9B
-            DB    $A7
-            DB    $67
-            DB    $9B
-            DB    $A3
-            DB    $69
-            DB    $99
-            DB    $A1
-            DB    $67
-            DB    $9B
-            DB    $A5
-            DB    $FF
-            DB    $FF
-            DB    $FE
-            DB    $AB
-            DB    $AB
-            DB    $69
-            DB    $AB
-            DB    $AF
-            DB    $6B
-            DB    $AB
-            DB    $B1
-            DB    $6D
-            DB    $AB
-            DB    $B3
-            DB    $6F
-            DB    $AB
-            DB    $B7
-            DB    $71
-            DB    $AB
-            DB    $B9
-            DB    $73
-            DB    $AB
-            DB    $BB
-            DB    $75
-            DB    $AB
-            DB    $BD
-            DB    $77
-            DB    $AB
-            DB    $C1
-            DB    $79
-            DB    $AB
-            DB    $C3
-            DB    $7B
-            DB    $AB
-            DB    $C5
-            DB    $7D
-            DB    $AB
-            DB    $C9
-            DB    $7F
-            DB    $AB
-            DB    $CB
-            DB    $81
-            DB    $AB
-            DB    $CD
-            DB    $83
-            DB    $AB
-            DB    $D1
-            DB    $85
-            DB    $AB
-            DB    $D3
-            DB    $87
-            DB    $AB
-            DB    $D5
-            DB    $89
-            DB    $AB
-            DB    $D9
-            DB    $8B
-            DB    $AB
-            DB    $DB
-            DB    $8D
-            DB    $AB
-            DB    $DD
-            DB    $8F
-            DB    $AB
-            DB    $E1
-            DB    $91
-            DB    $AB
-            DB    $FF
-            DB    $93
-            DB    $AB
-            DB    $FF
-            DB    $95
-            DB    $AB
-            DB    $FF
-            DB    $97
-            DB    $AB
-            DB    $FF
-            DB    $99
-            DB    $AB
-            DB    $FF
-            DB    $9D
-            DB    $AB
-            DB    $FF
-            DB    $9B
-            DB    $AB
-            DB    $FF
-            DB    $9F
-            DB    $AB
-            DB    $FF
-            DB    $A1
-            DB    $AB
-            DB    $FF
-            DB    $A3
-            DB    $AB
-            DB    $FF
-            DB    $A5
-            DB    $AB
-            DB    $FF
-            DB    $A9
-            DB    $AB
-            DB    $FF
-            DB    $A7
-            DB    $AB
-            DB    $FF
-            DB    $AB
-            DB    $AB
-            DB    $FF
-            DB    $AD
-            DB    $AB
-            DB    $FF
-            DB    $AF
-            DB    $AB
-            DB    $FF
-            DB    $B1
-            DB    $AB
-            DB    $FF
-            DB    $B3
-            DB    $AB
-            DB    $FF
-            DB    $B5
-            DB    $AB
-            DB    $FF
-            DB    $B7
-            DB    $AB
-            DB    $FF
-            DB    $B9
-            DB    $AB
-            DB    $FF
-            DB    $BB
-            DB    $AB
-            DB    $FF
-            DB    $BD
-            DB    $E3
-            DB    $FF
-            DB    $69
-            DB    $E3
-            DB    $FF
-            DB    $6B
-            DB    $E3
-            DB    $FF
-            DB    $6D
-            DB    $E3
-            DB    $FF
-            DB    $6F
-            DB    $E3
-            DB    $FF
-            DB    $71
-            DB    $E3
-            DB    $FF
-            DB    $73
-            DB    $E3
-            DB    $FF
-            DB    $77
-            DB    $E3
-            DB    $FF
-            DB    $75
-            DB    $E3
-            DB    $FF
-            DB    $79
-            DB    $E3
-            DB    $FF
-            DB    $7B
-            DB    $E3
-            DB    $FF
-            DB    $7D
-            DB    $E3
-            DB    $FF
-            DB    $7F
-            DB    $E3
-            DB    $FF
-            DB    $81
-            DB    $E3
-            DB    $FF
-            DB    $83
-            DB    $E3
-            DB    $FF
-            DB    $85
-            DB    $E3
-            DB    $FF
-            DB    $89
-            DB    $E3
-            DB    $FF
-            DB    $87
-            DB    $E3
-            DB    $FF
-            DB    $8B
-            DB    $E3
-            DB    $FF
-            DB    $8D
-            DB    $E3
-            DB    $FF
-            DB    $8F
-            DB    $E3
-            DB    $FF
-            DB    $91
-            DB    $FF
-            DB    $FF
-            DB    $FE
-            DB    $FF
-            DB    $FF
-            DB    $FE
-            DB    $0B
-            DB    $01
-            DB    $01
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $AB
-            DB    $AD
-            DB    $6A
-            DB    $AB
-            DB    $AF
-            DB    $6C
-            DB    $AB
-            DB    $B3
-            DB    $6E
-            DB    $AB
-            DB    $B5
-            DB    $70
-            DB    $AB
-            DB    $B7
-            DB    $72
-            DB    $AB
-            DB    $B9
-            DB    $74
-            DB    $AB
-            DB    $BD
-            DB    $76
-            DB    $AB
-            DB    $BF
-            DB    $78
-            DB    $AB
-            DB    $C1
-            DB    $7A
-            DB    $AB
-            DB    $C5
-            DB    $7C
-            DB    $AB
-            DB    $C7
-            DB    $7E
-            DB    $AB
-            DB    $C9
-            DB    $80
-            DB    $AB
-            DB    $CD
-            DB    $82
-            DB    $AB
-            DB    $CF
-            DB    $84
-            DB    $AB
-            DB    $D1
-            DB    $86
-            DB    $AB
-            DB    $D5
-            DB    $88
-            DB    $AB
-            DB    $D7
-            DB    $8A
-            DB    $AB
-            DB    $D9
-            DB    $8C
-            DB    $AB
-            DB    $DD
-            DB    $8E
-            DB    $AB
-            DB    $DF
-            DB    $90
-            DB    $AB
-            DB    $E1
-            DB    $92
-            DB    $AB
-            DB    $FF
-            DB    $94
-            DB    $AB
-            DB    $FF
-            DB    $96
-            DB    $AB
-            DB    $FF
-            DB    $98
-            DB    $AB
-            DB    $FF
-            DB    $9A
-            DB    $AB
-            DB    $FF
-            DB    $9C
-            DB    $AB
-            DB    $FF
-            DB    $9E
-            DB    $AB
-            DB    $FF
-            DB    $A0
-            DB    $AB
-            DB    $FF
-            DB    $A2
-            DB    $AB
-            DB    $FF
-            DB    $A4
-            DB    $AB
-            DB    $FF
-            DB    $A6
-            DB    $AB
-            DB    $FF
-            DB    $A8
-            DB    $AB
-            DB    $FF
-            DB    $AA
-            DB    $AB
-            DB    $FF
-            DB    $AC
-            DB    $AB
-            DB    $FF
-            DB    $AE
-            DB    $AB
-            DB    $FF
-            DB    $B0
-            DB    $AB
-            DB    $FF
-            DB    $B2
-            DB    $AB
-            DB    $FF
-            DB    $B4
-            DB    $AB
-            DB    $FF
-            DB    $B6
-            DB    $AB
-            DB    $FF
-            DB    $B8
-            DB    $AB
-            DB    $FF
-            DB    $BA
-            DB    $AB
-            DB    $FF
-            DB    $BC
-            DB    $AB
-            DB    $FF
-            DB    $BE
-            DB    $E3
-            DB    $FF
-            DB    $6A
-            DB    $E3
-            DB    $FF
-            DB    $6C
-            DB    $E3
-            DB    $FF
-            DB    $6E
-            DB    $E3
-            DB    $FF
-            DB    $70
-            DB    $E3
-            DB    $FF
-            DB    $72
-            DB    $E3
-            DB    $FF
-            DB    $74
-            DB    $E3
-            DB    $FF
-            DB    $76
-            DB    $E3
-            DB    $FF
-            DB    $78
-            DB    $E3
-            DB    $FF
-            DB    $7A
-            DB    $E3
-            DB    $FF
-            DB    $7C
-            DB    $E3
-            DB    $FF
-            DB    $7E
-            DB    $E3
-            DB    $FF
-            DB    $80
-            DB    $E3
-            DB    $FF
-            DB    $82
-            DB    $E3
-            DB    $FF
-            DB    $84
-            DB    $E3
-            DB    $FF
-            DB    $86
-            DB    $E3
-            DB    $FF
-            DB    $88
-            DB    $E3
-            DB    $FF
-            DB    $8A
-            DB    $E3
-            DB    $FF
-            DB    $8C
-            DB    $E3
-            DB    $FF
-            DB    $8E
-            DB    $E3
-            DB    $FF
-            DB    $92
-            DB    $E3
-            DB    $FF
-            DB    $90
-            DB    $FD
-            DB    $FD
-            DB    $FD
-            DB    $54
-            DB    $48
-            DB    $49
-            DB    $53
-            DB    $20
-            DB    $57
-
 *-----------------------------------
-* 
+* PACMAN LOGO
 *-----------------------------------
 
-L5260       STA   $16
-            STY   $17
-            LDA   $1D
+* +0 goes to $0C: X start
+* +1 goes to $0E: X end
+* +2 goes to $10: Y
+
+theLOGO     HEX   FFFFFE01410101450301450501470701
+            HEX   4909014B0B014D0D014F0F014F110151
+            HEX   13015115015317012419012B11295319
+            HEX   01211B2B531B01201F011F1D2D531D2D
+            HEX   531F0121212B5321012323295323FFFF
+            HEX   FE01532501532701532901512B01512D
+            HEX   014F2F014F31014D3301493501453701
+            HEX   4339012B3B012B3D012B3F012B41012B
+            HEX   43012B45012B47012B49012B49012B4B
+            HEX   012B4D012B4F012B51012B53012B55FF
+            HEX   FFFF014302014504014706014908014B
+            HEX   0A014B0C014D0E014F10014F12015114
+            HEX   01511601511801221A2B531A011F1C2D
+            HEX   531C01201E2D53202D531E0120200121
+            HEX   222B5322012424255324015326015328
+            HEX   01512C01512A014F30014F2E014D3201
+            HEX   4934014536014338014338012B3A012B
+            HEX   3C012B3E012B3E012B40012B42012B44
+            HEX   012B46012B48012B4A012B4E012B4C01
+            HEX   2B50012B52012B54FFFFFFFFFFFFFFFF
+            HEX   FE737301737303737305717507717509
+            HEX   6F770B6F770D6D790F6D7911697D176B
+            HEX   7B136B7B15677F1B697D19677F1F677F
+            HEX   1D658123658121638325637127718327
+            HEX   616F29778529616D2B79852B5F6B2D7B
+            HEX   872D5F6B2F7B872F5D6D317989317789
+            HEX   335D6F335B8B355B8B37598D39598D3B
+            HEX   598D3D578F3F578F4155914355914553
+            HEX   934753934951954B51954D4F974F4F97
+            HEX   514D99534D9955FFFFFF737302737304
+            HEX   73730671750871750A71750A6F770C6F
+            HEX   770E6F770E6D79106D79126B7B146B7B
+            HEX   146B7B16697D18697D1A677F1C677F1E
+            HEX   658120658122638324638326616F2875
+            HEX   8528616D2A77852A5F6B2C79872C5F6B
+            HEX   2E7B872E5F6B307B87305D6D325D7134
+            HEX   5B8B365B8B36598D3A5B8B38598D3C59
+            HEX   8D3E578F40758934798932578F425591
+            HEX   4455914653934853934A51954C51954E
+            HEX   4F97504F97524D9954FFFFFEC1D501BB
+            HEX   DB03B7DF05B5E107B1E509AFE70BADE9
+            HEX   0DABEB11ABEB0FA9ED13A7EF17A7EF15
+            HEX   A5EB19A3E71BA3E31DA3DF1FA1DB21A1
+            HEX   D723A1CF27A1CF27A1D325A1CB29A1C9
+            HEX   2BA1CD2DA1D12FA1D531A1D933A1DB35
+            HEX   A3E137A3E73BA3E339A7EF3FA7EB3DA9
+            HEX   ED43A7EF41ADEB49ABEB47ABEB45AFE7
+            HEX   4BB1E54DB5E14FC1D555BBDB53B7DF51
+            HEX   FFFFFFBDD902B9DD04B5E106B3E308B1
+            HEX   E50AAFE70C0D490EA7EF16ADE90EABEB
+            HEX   10A9ED12A9ED14BDD954B9DD52B5E150
+            HEX   B3E34EB1E54CAFE74AADE948ABEB46A9
+            HEX   ED44A9ED42A7EF40A7EF40A5ED3EA5E9
+            HEX   3CA3E53AA3E138A1DD36A1D934A1CF2E
+            HEX   A1D330A1D732A1C92AA1CB2CA1D922A1
+            HEX   D126A1CD28A1DD20A1D524A3E51CA3E1
+            HEX   1EA5E91AA5ED18FFFFFE01010101016A
+            HEX   01036C01056E010770010972010B7401
+            HEX   0D76010F7801117A01137C01157E0117
+            HEX   80011982011B84011D86011F8801218A
+            HEX   01238C01258E01279001299201559401
+            HEX   559601559801559A01559C0155A00155
+            HEX   A20155A40155A60155A80155AA0155A0
+            HEX   0155A20155A401559E2D55922F559031
+            HEX   558E33558C35558A3755883955863B55
+            HEX   843D55823F558041567E43557C45557A
+            HEX   4755784955764B55744D55724F557051
+            HEX   556E53556C55556AFFFFFF01016B0103
+            HEX   6D01056F010771010973010B75010D77
+            HEX   010F7901117B01137D01157F01178101
+            HEX   1983011B8501218B011F89011D870123
+            HEX   8D01258F012791015593015595015597
+            HEX   01559901559B01559D01559F0155A101
+            HEX   55A30155A50155A70155A92F558F2D55
+            HEX   9131558D33558B355589375587395585
+            HEX   3B55833D55813F557F41557D43557B45
+            HEX   55794755774955754B55734D55714F55
+            HEX   6F51556D53556B0155BD0155BB0155B9
+            HEX   0155B70155B50155B30155B10155AF01
+            HEX   55AD0155ABFFFFFE0155BE0155BC0155
+            HEX   BA0155B80155B60155B40155B20155B0
+            HEX   0155AE0155ACFFFFFE81816A81816C81
+            HEX   816E7F83707F83727D85767D85747B87
+            HEX   787B877A79897C79897E778B80778B82
+            HEX   758D84758D86758D88758D86738F8A73
+            HEX   8F8C71918E717F908391906F7D928593
+            HEX   926F7B948793946D79968995966D7998
+            HEX   8995986B7B9A87979A6B7D9C85979C81
+            HEX   819069999E6999A0679BA6679BA4679B
+            HEX   A2659DA8659DAA639FAC639FAE61A1B0
+            HEX   61A1B25FA3B65FA3B45DA5B85DA5BA5B
+            HEX   A7BE5DA7BCFFFFFF81816B81816D8181
+            HEX   6F7F83717F83737D85757D85777B8779
+            HEX   7B877B79897D79897F778B81778B8375
+            HEX   8D85758D87738F89738F8B71918D7191
+            HEX   8F6F7D918391916F7B938591936D7995
+            HEX   8793956D79978995976B7B9B6D799989
+            HEX   959987979B6B7F9D83979D69999F7F7F
+            HEX   915BA7BD5DA5BB5DA5B95FA3B55FA3B7
+            HEX   639FAD639FAF61A1B361A1B1659DAB65
+            HEX   9DA9679BA7679BA36999A1679BA5FFFF
+            HEX   FEABAB69ABAF6BABB16DABB36FABB771
+            HEX   ABB973ABBB75ABBD77ABC179ABC37BAB
+            HEX   C57DABC97FABCB81ABCD83ABD185ABD3
+            HEX   87ABD589ABD98BABDB8DABDD8FABE191
+            HEX   ABFF93ABFF95ABFF97ABFF99ABFF9DAB
+            HEX   FF9BABFF9FABFFA1ABFFA3ABFFA5ABFF
+            HEX   A9ABFFA7ABFFABABFFADABFFAFABFFB1
+            HEX   ABFFB3ABFFB5ABFFB7ABFFB9ABFFBBAB
+            HEX   FFBDE3FF69E3FF6BE3FF6DE3FF6FE3FF
+            HEX   71E3FF73E3FF77E3FF75E3FF79E3FF7B
+            HEX   E3FF7DE3FF7FE3FF81E3FF83E3FF85E3
+            HEX   FF89E3FF87E3FF8BE3FF8DE3FF8FE3FF
+            HEX   91FFFFFEFFFFFE0B0101FFFFFFABAD6A
+            HEX   ABAF6CABB36EABB570ABB772ABB974AB
+            HEX   BD76ABBF78ABC17AABC57CABC77EABC9
+            HEX   80ABCD82ABCF84ABD186ABD588ABD78A
+            HEX   ABD98CABDD8EABDF90ABE192ABFF94AB
+            HEX   FF96ABFF98ABFF9AABFF9CABFF9EABFF
+            HEX   A0ABFFA2ABFFA4ABFFA6ABFFA8ABFFAA
+            HEX   ABFFACABFFAEABFFB0ABFFB2ABFFB4AB
+            HEX   FFB6ABFFB8ABFFBAABFFBCABFFBEE3FF
+            HEX   6AE3FF6CE3FF6EE3FF70E3FF72E3FF74
+            HEX   E3FF76E3FF78E3FF7AE3FF7CE3FF7EE3
+            HEX   FF80E3FF82E3FF84E3FF86E3FF88E3FF
+            HEX   8AE3FF8CE3FF8EE3FF92E3FF90FDFDFD
+            ASC   'THIS W'
+
+*-----------------------------------
+* DECODE LOGO
+*-----------------------------------
+
+decodeLOGO  STA   $16
+            STY   $16+1
+            LDA   zpMONITOR	; save monitor type
             PHA
-            LDA   #$01
-            STA   $1D
+            LDA   #$01		; force color
+            STA   zpMONITOR
             LDA   #$00
-            STA   $1E
+            STA   $1E		; no high-bit
             STA   $0D
             STA   $0F
 L5273       LDY   #$00
@@ -3456,65 +1587,75 @@ L5273       LDY   #$00
             LDA   ($16),Y
             STA   $0E
             INY
-            LDA   ($16),Y
+            LDA   ($16),Y	; line
             STA   $10
-            CMP   #$FD
+            CMP   #$FD		; exit
             BEQ   L52A7
-            CMP   #$FE
+            CMP   #$FE		; reset high-bit
             BEQ   L52AD
-            CMP   #$FF
+            CMP   #$FF		; set high-bit
             BEQ   L52B4
-            JSR   L5CF0
+            JSR   drawLINE
             LDA   KBD
-            CMP   #$A0
+            CMP   #" "
             BEQ   L52A7
-L5299       CLC
+L5299       CLC		; ptr +=3
             LDA   $16
             ADC   #$03
             STA   $16
             BCC   L52A4
-            INC   $17
+            INC   $16+1
 L52A4       JMP   L5273
 
-L52A7       PLA
-            STA   $1D
-            JMP   L6F5E
+L52A7       PLA		; restore monitor type
+            STA   zpMONITOR
+            JMP   getINPUT	; exit
 
-L52AD       LDA   #$00
+L52AD       LDA   #$00		; reset high-bit
             STA   $1E
             JMP   L5299
 
-L52B4       LDA   #$80
+L52B4       LDA   #$80		; set high-bit
             STA   $1E
             JMP   L5299
 
-L52BB       LDA   TXTCLR
+*-----------------------------------
+* SHOW TITLE SCREEN
+*-----------------------------------
+
+showTITLESCREEN
+            LDA   TXTCLR	; set GR MODE PAGE 2
             LDA   LORES
             LDA   MIXCLR
             LDA   TXTPAGE2
-            LDA   #$DD
+            LDA   #$DD		; make it yellow
             LDY   #$00
-L52CB       STA   $0800,Y
-            STA   $0900,Y
-            STA   $0A00,Y
-            STA   $0B00,Y
+L52CB       STA   TEXT2,Y
+            STA   TEXT2+$100,Y
+            STA   TEXT2+$200,Y
+            STA   TEXT2+$300,Y
             INY
             BNE   L52CB
-            JSR   L6F46
-            LDA   #<L4A7A
-            LDY   #>L4A7A
-            JSR   L5260
-            JSR   L6F2F
+            JSR   clearHGR
+
+            LDA   #<theLOGO
+            LDY   #>theLOGO
+            JSR   decodeLOGO
+            JSR   setHGR
             LDY   #$0A
 L52E9       LDX   #$FA
-            JSR   L6CE8
+            JSR   doWAIT2
             LDA   KBD
-            CMP   #$A0
+            CMP   #" "
             BEQ   L52F9
             DEY
             BPL   L52E9
             RTS
-L52F9       JMP   L6F5E
+L52F9       JMP   getINPUT
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 L52FC       JSR   L54D4
             LDA   #$00
@@ -3539,13 +1680,13 @@ L531E       LDA   #$01
             JSR   L53BE
             RTS
 
-L5331       LDA   #$BA
+L5331       LDA   #<L65BA
             STA   $14
-            LDA   #$65
+            LDA   #>L65BA
             STA   $15
-            LDA   #$3A
+            LDA   #<L623A
             STA   $16
-            LDA   #$62
+            LDA   #>L623A
             STA   $17
             LDY   #$00
 L5343       LDA   ($14),Y
@@ -3691,10 +1832,10 @@ L5402       STA   |$0059,Y
             STA   |$00C0,Y
             LDY   #$03
 L543A       LDX   #$FF
-            JSR   L6CE8
+            JSR   doWAIT2
             DEY
             BPL   L543A
-            JSR   L6F5E
+            JSR   getINPUT
             RTS
 
 L5446       DB    $8B
@@ -3903,9 +2044,9 @@ L553E       JSR   L70CC
             BEQ   L554A
             JMP   L550E
 
-L554A       LDA   #$28
+L554A       LDA   #<L5628
             STA   L5591+1
-            LDA   #$56
+            LDA   #>L5628
             STA   L5596+1
             LDA   $00
             STA   $52
@@ -3946,14 +2087,14 @@ L5596       LDA   #>L55F7
             JSR   L7159
 L55A5       RTS
 
-L55A6       JSR   L5B58
+L55A6       JSR   setHGRADDRESS
             LDX   $03
             LDY   $04
             LDA   $1A
             STA   $09
 L55B1       LDA   $0666,X
-            ORA   ($12),Y
-            STA   ($12),Y
+            ORA   (zpHGR),Y
+            STA   (zpHGR),Y
             INX
             INY
             DEC   $09
@@ -4061,7 +2202,7 @@ L55F7       DB    $70
             DB    $5F
             DB    $08
             DB    $0A
-            DB    $30
+L5628       DB    $30
             DB    $7B
             DB    $79
             DB    $78
@@ -4115,10 +2256,10 @@ L55F7       DB    $70
 * 
 *-----------------------------------
 
-L5659       JSR   L6F46
+L5659       JSR   clearHGR
             STA   KBDSTROBE
-            JSR   L6F2F
-            JSR   L5D53
+            JSR   setHGR
+            JSR   drawGAMEBOARD
             JSR   L8A7D
             LDA   $50
             STA   $F1
@@ -4412,7 +2553,7 @@ L585A       LDA   #$68
             JSR   L55A6
             LDY   #$08
 L587D       LDX   #$FF
-            JSR   L6CE8
+            JSR   doWAIT2
             DEY
             BNE   L587D
             LDA   #$10
@@ -4518,15 +2659,20 @@ L5903       DB    $08
             DB    $08
             DB    $08
             DB    $08
+
+*-----------------------------------
+* 
+*-----------------------------------
+
 L5913       LDA   L5925,X
-            ORA   ($12),Y
-            STA   ($12),Y
+            ORA   (zpHGR),Y
+            STA   (zpHGR),Y
             RTS
 
             LDA   L592C,X
-            AND   ($12),Y
+            AND   (zpHGR),Y
             ORA   $1E
-            STA   ($12),Y
+            STA   (zpHGR),Y
             RTS
 
 L5925       DB    $01
@@ -4543,6 +2689,11 @@ L592C       DB    $FE
             DB    $EF
             DB    $DF
             DB    $BF
+
+*-----------------------------------
+* 
+*-----------------------------------
+
 L5933       LDA   $0D
             BEQ   L594B
             CLC
@@ -4596,13 +2747,21 @@ L5A58       HEX   00000000000000010101010101010202
             HEX   1D1D1E1E1E1E1E1E1E1F1F1F1F1F1F1F
             HEX   20202020202020212121212121212222
             HEX   22222222222323232323232324242424
-L5B58       LDX   $10
+
+*-----------------------------------
+* SET HGR ADDRESS
+*-----------------------------------
+
+setHGRADDRESS
+            LDX   $10
             LDA   L5B67,X
-            STA   $12
+            STA   zpHGR
             LDA   L5C27,X
-            ORA   #$20
-            STA   $13
+            ORA   #>HGR
+            STA   zpHGR+1
             RTS
+
+*--- The HGR tables
 
 L5B67       HEX   00000000000000008080808080808080
             HEX   00000000000000008080808080808080
@@ -4628,6 +2787,11 @@ L5C27       HEX   0004080C1014181C0004080C1014181C
             HEX   0105090D1115191D0105090D1115191D
             HEX   02060A0E12161A1E02060A0E12161A1E
             HEX   03070B0F13171B1F03070B0F13171B1F
+
+*-----------------------------------
+* 
+*-----------------------------------
+
 L5CE7       INX
             CPX   #$07
             BCC   L5CEF
@@ -4635,19 +2799,23 @@ L5CE7       INX
             INY
 L5CEF       RTS
 
-L5CF0       LDA   #$00
+*-----------------------------------
+* DRAW LINE
+*-----------------------------------
+
+drawLINE    LDA   #$00
             STA   $0D
             STA   $0F
-L5CF6       JSR   L5B58
+L5CF6       JSR   setHGRADDRESS
             JSR   L5933
             LDX   $03
             LDY   $04
 L5D00       JSR   L5913
-            LDA   ($12),Y
+            LDA   (zpHGR),Y
             AND   #$7F
             ORA   $1E
-            STA   ($12),Y
-            LDA   $1D
+            STA   (zpHGR),Y
+            LDA   zpMONITOR
             BEQ   L5D31
             JSR   L5CE7
             JSR   L5CE7
@@ -4662,9 +2830,9 @@ L5D20       LDA   $0D
             BCC   L5D00
             BEQ   L5D2A
             BCS   L5D30
-L5D2A       LDA   $0E
+L5D2A       LDA   $0E	; end of X?
             CMP   $0C
-            BCS   L5D00
+            BCS   L5D00	; no, loop
 L5D30       RTS
 
 L5D31       JSR   L5CE7
@@ -4674,7 +2842,7 @@ L5D31       JSR   L5CE7
             JMP   L5D20
 
 L5D3D       JSR   L5933
-L5D40       JSR   L5B58
+L5D40       JSR   setHGRADDRESS
             LDX   $03
             LDY   $04
             JSR   L5913
@@ -4684,34 +2852,39 @@ L5D40       JSR   L5B58
             BCS   L5D40
             RTS
 
-L5D53       LDA   #$80
+*-----------------------------------
+* DRAW GAME BOARD
+*-----------------------------------
+
+drawGAMEBOARD
+            LDA   #$80
             STA   $1E
-            LDA   $1D
+            LDA   zpMONITOR
             BEQ   L5D66
-            LDA   #$69
+            LDA   #<boardBW
             STA   $16
-            LDA   #$5F
+            LDA   #>boardBW
             STA   $17
             JMP   L5D6E
 
-L5D66       LDA   #$BF
+L5D66       LDA   #<boardCOLOR
             STA   $16
-            LDA   #$5D
-            STA   $17
+            LDA   #>boardCOLOR
+            STA   $16+1
 L5D6E       LDA   #$00
             STA   $0D
-            LDA   #$48
+            LDA   #$48		; $48 entries to handle
             STA   $08
 L5D76       LDY   #$00
             LDA   ($16),Y
-            STA   $0C
+            STA   $0C		; x from
             INY
             LDA   ($16),Y
-            STA   $0E
+            STA   $0E		; x to
             INY
             LDA   ($16),Y
-            STA   $10
-            JSR   L5CF0
+            STA   $10		; y
+            JSR   drawLINE
             CLC
             LDA   #$03
             ADC   $16
@@ -4742,859 +2915,65 @@ L5DBA       DEC   $08
             BNE   L5D9C
             RTS
 
-            DB    $3C
-            DB    $89
-            DB    $05
-            DB    $8B
-            DB    $8E
-            DB    $1D
-            DB    $90
-            DB    $DD
-            DB    $05
-            DB    $C1
-            DB    $DD
-            DB    $3C
-            DB    $C1
-            DB    $E1
-            DB    $53
-            DB    $C1
-            DB    $E1
-            DB    $60
-            DB    $C1
-            DB    $DD
-            DB    $77
-            DB    $D3
-            DB    $DD
-            DB    $96
-            DB    $D3
-            DB    $DD
-            DB    $9B
-            DB    $3C
-            DB    $DD
-            DB    $BA
-            DB    $3C
-            DB    $46
-            DB    $9B
-            DB    $3C
-            DB    $46
-            DB    $96
-            DB    $3C
-            DB    $58
-            DB    $77
-            DB    $39
-            DB    $58
-            DB    $60
-            DB    $39
-            DB    $58
-            DB    $53
-            DB    $3C
-            DB    $58
-            DB    $3C
-            DB    $49
-            DB    $58
-            DB    $12
-            DB    $49
-            DB    $58
-            DB    $1D
-            DB    $67
-            DB    $7C
-            DB    $12
-            DB    $67
-            DB    $7C
-            DB    $1D
-            DB    $9D
-            DB    $B2
-            DB    $12
-            DB    $9D
-            DB    $B2
-            DB    $1D
-            DB    $C1
-            DB    $D0
-            DB    $12
-            DB    $C1
-            DB    $D0
-            DB    $1D
-            DB    $49
-            DB    $58
-            DB    $2A
-            DB    $49
-            DB    $58
-            DB    $2F
-            DB    $C1
-            DB    $D0
-            DB    $2A
-            DB    $C1
-            DB    $D0
-            DB    $2F
-            DB    $79
-            DB    $A0
-            DB    $4E
-            DB    $79
-            DB    $A0
-            DB    $65
-            DB    $67
-            DB    $6A
-            DB    $60
-            DB    $68
-            DB    $6A
-            DB    $77
-            DB    $AF
-            DB    $B2
-            DB    $60
-            DB    $AF
-            DB    $B2
-            DB    $77
-            DB    $67
-            DB    $7C
-            DB    $84
-            DB    $67
-            DB    $7C
-            DB    $89
-            DB    $9D
-            DB    $B2
-            DB    $84
-            DB    $9D
-            DB    $B2
-            DB    $89
-            DB    $49
-            DB    $58
-            DB    $84
-            DB    $55
-            DB    $58
-            DB    $9B
-            DB    $49
-            DB    $53
-            DB    $89
-            DB    $C1
-            DB    $D0
-            DB    $84
-            DB    $C6
-            DB    $D0
-            DB    $89
-            DB    $C1
-            DB    $C4
-            DB    $9B
-            DB    $67
-            DB    $6A
-            DB    $2A
-            DB    $6C
-            DB    $7C
-            DB    $3C
-            DB    $6C
-            DB    $7C
-            DB    $41
-            DB    $67
-            DB    $6A
-            DB    $53
-            DB    $79
-            DB    $A0
-            DB    $2A
-            DB    $90
-            DB    $A0
-            DB    $2F
-            DB    $8B
-            DB    $8E
-            DB    $41
-            DB    $79
-            DB    $89
-            DB    $2F
-            DB    $AF
-            DB    $B2
-            DB    $2A
-            DB    $AF
-            DB    $B2
-            DB    $53
-            DB    $9D
-            DB    $AD
-            DB    $41
-            DB    $9D
-            DB    $AD
-            DB    $3C
-            DB    $79
-            DB    $A0
-            DB    $72
-            DB    $90
-            DB    $A0
-            DB    $77
-            DB    $8B
-            DB    $8E
-            DB    $89
-            DB    $79
-            DB    $89
-            DB    $77
-            DB    $67
-            DB    $6A
-            DB    $96
-            DB    $6C
-            DB    $7C
-            DB    $A8
-            DB    $49
-            DB    $7C
-            DB    $AD
-            DB    $49
-            DB    $65
-            DB    $A8
-            DB    $79
-            DB    $A0
-            DB    $96
-            DB    $90
-            DB    $A0
-            DB    $9B
-            DB    $8B
-            DB    $8E
-            DB    $AD
-            DB    $79
-            DB    $89
-            DB    $9B
-            DB    $AF
-            DB    $B2
-            DB    $96
-            DB    $B4
-            DB    $D0
-            DB    $A8
-            DB    $9D
-            DB    $D0
-            DB    $AD
-            DB    $9D
-            DB    $AD
-            DB    $A8
-            DB    $8A
-            DB    $06
-            DB    $1C
-            DB    $8F
-            DB    $06
-            DB    $1C
-            DB    $DE
-            DB    $06
-            DB    $3B
-            DB    $C0
-            DB    $3D
-            DB    $52
-            DB    $C0
-            DB    $61
-            DB    $76
-            DB    $DE
-            DB    $78
-            DB    $95
-            DB    $D2
-            DB    $97
-            DB    $9A
-            DB    $DE
-            DB    $9C
-            DB    $B9
-            DB    $3B
-            DB    $9C
-            DB    $B9
-            DB    $47
-            DB    $97
-            DB    $9A
-            DB    $3B
-            DB    $78
-            DB    $95
-            DB    $59
-            DB    $61
-            DB    $76
-            DB    $59
-            DB    $3D
-            DB    $52
-            DB    $3B
-            DB    $06
-            DB    $3B
-            DB    $59
-            DB    $13
-            DB    $1C
-            DB    $48
-            DB    $13
-            DB    $1C
-            DB    $7D
-            DB    $13
-            DB    $1C
-            DB    $66
-            DB    $13
-            DB    $1C
-            DB    $B3
-            DB    $13
-            DB    $1C
-            DB    $9C
-            DB    $13
-            DB    $1C
-            DB    $D1
-            DB    $13
-            DB    $1C
-            DB    $C0
-            DB    $13
-            DB    $1C
-            DB    $59
-            DB    $2B
-            DB    $2E
-            DB    $48
-            DB    $2B
-            DB    $2E
-            DB    $D1
-            DB    $2B
-            DB    $2E
-            DB    $C0
-            DB    $2B
-            DB    $2E
-            DB    $A1
-            DB    $4F
-            DB    $64
-            DB    $78
-            DB    $4F
-            DB    $64
-            DB    $6B
-            DB    $61
-            DB    $76
-            DB    $66
-            DB    $61
-            DB    $76
-            DB    $B3
-            DB    $61
-            DB    $76
-            DB    $AE
-            DB    $61
-            DB    $76
-            DB    $7D
-            DB    $85
-            DB    $88
-            DB    $66
-            DB    $85
-            DB    $88
-            DB    $B3
-            DB    $85
-            DB    $88
-            DB    $9C
-            DB    $85
-            DB    $88
-            DB    $59
-            DB    $85
-            DB    $9A
-            DB    $54
-            DB    $8A
-            DB    $9A
-            DB    $48
-            DB    $85
-            DB    $88
-            DB    $D1
-            DB    $85
-            DB    $88
-            DB    $C5
-            DB    $8A
-            DB    $9A
-            DB    $C0
-            DB    $85
-            DB    $9A
-            DB    $6B
-            DB    $2B
-            DB    $3B
-            DB    $7D
-            DB    $3D
-            DB    $40
-            DB    $6B
-            DB    $42
-            DB    $52
-            DB    $66
-            DB    $2B
-            DB    $52
-            DB    $A1
-            DB    $2B
-            DB    $2E
-            DB    $8F
-            DB    $30
-            DB    $40
-            DB    $8A
-            DB    $30
-            DB    $40
-            DB    $78
-            DB    $2B
-            DB    $2E
-            DB    $B3
-            DB    $2B
-            DB    $52
-            DB    $AE
-            DB    $42
-            DB    $52
-            DB    $9C
-            DB    $3D
-            DB    $40
-            DB    $AE
-            DB    $2B
-            DB    $3B
-            DB    $A1
-            DB    $73
-            DB    $76
-            DB    $8F
-            DB    $78
-            DB    $88
-            DB    $8A
-            DB    $78
-            DB    $88
-            DB    $78
-            DB    $73
-            DB    $76
-            DB    $6B
-            DB    $97
-            DB    $A7
-            DB    $7D
-            DB    $A9
-            DB    $AC
-            DB    $48
-            DB    $A9
-            DB    $AC
-            DB    $66
-            DB    $97
-            DB    $A7
-            DB    $A1
-            DB    $97
-            DB    $9A
-            DB    $8F
-            DB    $9C
-            DB    $AC
-            DB    $8A
-            DB    $9C
-            DB    $AC
-            DB    $78
-            DB    $97
-            DB    $9A
-            DB    $B3
-            DB    $97
-            DB    $A7
-            DB    $D1
-            DB    $A9
-            DB    $AC
-            DB    $9C
-            DB    $A9
-            DB    $AC
-            DB    $AE
-            DB    $97
-            DB    $A7
-            DB    $3C
-            DB    $88
-            DB    $05
-            DB    $8C
-            DB    $8E
-            DB    $1D
-            DB    $90
-            DB    $DC
-            DB    $05
-            DB    $C2
-            DB    $DC
-            DB    $3C
-            DB    $C2
-            DB    $E2
-            DB    $53
-            DB    $C2
-            DB    $E2
-            DB    $60
-            DB    $C2
-            DB    $DC
-            DB    $77
-            DB    $D4
-            DB    $DC
-            DB    $96
-            DB    $D4
-            DB    $DC
-            DB    $9B
-            DB    $3C
-            DB    $DC
-            DB    $BA
-            DB    $3C
-            DB    $44
-            DB    $9B
-            DB    $3C
-            DB    $44
-            DB    $96
-            DB    $3C
-            DB    $56
-            DB    $77
-            DB    $38
-            DB    $56
-            DB    $60
-            DB    $38
-            DB    $56
-            DB    $53
-            DB    $3C
-            DB    $56
-            DB    $3C
-            DB    $4A
-            DB    $56
-            DB    $12
-            DB    $4A
-            DB    $56
-            DB    $1D
-            DB    $68
-            DB    $7A
-            DB    $12
-            DB    $68
-            DB    $7A
-            DB    $1D
-            DB    $9E
-            DB    $B0
-            DB    $12
-            DB    $9E
-            DB    $B0
-            DB    $1D
-            DB    $C2
-            DB    $CE
-            DB    $12
-            DB    $C2
-            DB    $CE
-            DB    $1D
-            DB    $4A
-            DB    $56
-            DB    $2A
-            DB    $4A
-            DB    $56
-            DB    $2F
-            DB    $C2
-            DB    $CE
-            DB    $2A
-            DB    $C2
-            DB    $CE
-            DB    $2F
-            DB    $7A
-            DB    $9E
-            DB    $4E
-            DB    $7A
-            DB    $9E
-            DB    $65
-            DB    $68
-            DB    $6A
-            DB    $60
-            DB    $68
-            DB    $6A
-            DB    $77
-            DB    $B0
-            DB    $B2
-            DB    $60
-            DB    $B0
-            DB    $B2
-            DB    $77
-            DB    $68
-            DB    $7A
-            DB    $84
-            DB    $68
-            DB    $7A
-            DB    $89
-            DB    $9E
-            DB    $B0
-            DB    $84
-            DB    $9E
-            DB    $B0
-            DB    $89
-            DB    $4A
-            DB    $56
-            DB    $84
-            DB    $56
-            DB    $58
-            DB    $9B
-            DB    $4A
-            DB    $52
-            DB    $89
-            DB    $C2
-            DB    $CE
-            DB    $84
-            DB    $C8
-            DB    $CE
-            DB    $89
-            DB    $C2
-            DB    $C4
-            DB    $9B
-            DB    $68
-            DB    $6A
-            DB    $2A
-            DB    $6C
-            DB    $7A
-            DB    $3C
-            DB    $6C
-            DB    $7A
-            DB    $41
-            DB    $68
-            DB    $6A
-            DB    $53
-            DB    $7A
-            DB    $9E
-            DB    $2A
-            DB    $90
-            DB    $9E
-            DB    $2F
-            DB    $8C
-            MX    %11
-            DB    $8E
-            DB    $41
-            DB    $7A
-            DB    $88
-            DB    $2F
-            DB    $B0
-            DB    $B2
-            DB    $2A
-            DB    $B0
-            DB    $B2
-            DB    $53
-            DB    $9E
-            DB    $AC
-            DB    $41
-            DB    $9E
-            DB    $AC
-            DB    $3C
-            DB    $7A
-            DB    $9E
-            DB    $72
-            DB    $90
-            DB    $9E
-            DB    $77
-            DB    $8C
-            DB    $8E
-            DB    $89
-            DB    $7A
-            DB    $88
-            DB    $77
-            DB    $68
-            DB    $6A
-            DB    $96
-            DB    $6C
-            DB    $7A
-            DB    $A8
-            DB    $4A
-            DB    $7A
-            DB    $AD
-            DB    $4A
-            DB    $64
-            DB    $A8
-            DB    $7A
-            DB    $9E
-            DB    $96
-            DB    $90
-            DB    $9E
-            DB    $9B
-            DB    $8C
-            DB    $8E
-            DB    $AD
-            DB    $7A
-            DB    $88
-            DB    $9B
-            DB    $B0
-            DB    $B2
-            DB    $96
-            DB    $B4
-            DB    $CE
-            DB    $A8
-            DB    $9E
-            DB    $CE
-            DB    $AD
-            DB    $9E
-            DB    $AC
-            DB    $A8
-            DB    $8A
-            DB    $06
-            DB    $1C
-            DB    $8E
-            DB    $06
-            DB    $1C
-            DB    $DE
-            DB    $06
-            DB    $3B
-            DB    $C0
-            DB    $3D
-            DB    $52
-            DB    $C0
-            DB    $61
-            DB    $76
-            DB    $DE
-            DB    $78
-            DB    $95
-            DB    $D2
-            DB    $97
-            DB    $9A
-            DB    $DE
-            DB    $9C
-            DB    $B9
-            DB    $3A
-            DB    $9C
-            DB    $B9
-            DB    $46
-            DB    $97
-            DB    $9A
-            DB    $3A
-            DB    $78
-            DB    $95
-            DB    $58
-            DB    $61
-            DB    $76
-            DB    $58
-            DB    $3D
-            DB    $52
-            DB    $3A
-            DB    $06
-            DB    $3B
-            DB    $58
-            DB    $13
-            DB    $1C
-            DB    $48
-            DB    $13
-            DB    $1C
-            DB    $7C
-            DB    $13
-            DB    $1C
-            DB    $66
-            DB    $13
-            DB    $1C
-            DB    $B2
-            DB    $13
-            DB    $1C
-            DB    $9C
-            DB    $13
-            DB    $1C
-            DB    $D0
-            DB    $13
-            DB    $1C
-            DB    $C0
-            DB    $13
-            DB    $1C
-            DB    $58
-            DB    $2B
-            DB    $2E
-            DB    $48
-            DB    $2B
-            DB    $2E
-            DB    $D0
-            DB    $2B
-            DB    $2E
-            DB    $C0
-            DB    $2B
-            DB    $2E
-            DB    $A0
-            DB    $4F
-            DB    $64
-            DB    $78
-            DB    $4F
-            DB    $64
-            DB    $6A
-            DB    $61
-            DB    $76
-            DB    $66
-            DB    $61
-            DB    $76
-            DB    $B2
-            DB    $61
-            DB    $76
-            DB    $AE
-            DB    $61
-            DB    $76
-            DB    $7C
-            DB    $85
-            DB    $88
-            DB    $66
-            DB    $85
-            DB    $88
-            DB    $B2
-            DB    $85
-            DB    $88
-            DB    $9C
-            DB    $85
-            DB    $88
-            DB    $58
-            DB    $85
-            DB    $9A
-            DB    $54
-            DB    $8A
-            DB    $9A
-            DB    $48
-            DB    $85
-            DB    $88
-            DB    $D0
-            DB    $85
-            DB    $88
-            DB    $C4
-            DB    $8A
-            DB    $9A
-            DB    $C0
-            DB    $85
-            DB    $9A
-            DB    $6A
-            DB    $2B
-            DB    $3B
-            DB    $7C
-            DB    $3D
-            DB    $40
-            DB    $6A
-            DB    $42
-            DB    $52
-            DB    $66
-            DB    $2B
-            DB    $52
-            DB    $A0
-            DB    $2B
-            DB    $2E
-            DB    $8E
-            DB    $30
-            DB    $40
-            DB    $8A
-            DB    $30
-            DB    $40
-            DB    $78
-            DB    $2B
-            DB    $2E
-            DB    $B2
-            DB    $2B
-            DB    $52
-            DB    $AE
-            DB    $42
-            DB    $52
-            DB    $9C
-            DB    $3D
-            DB    $40
-            DB    $AE
-            DB    $2B
-            DB    $3B
-            DB    $A0
-            DB    $73
-            DB    $76
-            DB    $8E
-            DB    $78
-            DB    $88
-            DB    $8A
-            DB    $78
-            DB    $88
-            DB    $78
-            DB    $73
-            DB    $76
-            DB    $6A
-            DB    $97
-            DB    $A7
-            DB    $7C
-            DB    $A9
-            DB    $AC
-            DB    $48
-            DB    $A9
-            DB    $AC
-            DB    $66
-            DB    $97
-            DB    $A7
-            DB    $A0
-            DB    $97
-            DB    $9A
-            DB    $8E
-            DB    $9C
-            DB    $AC
-            DB    $8A
-            DB    $9C
-            DB    $AC
-            DB    $78
-            DB    $97
-            DB    $9A
-            DB    $B2
-            DB    $97
-            DB    $A7
-            DB    $D0
-            DB    $A9
-            DB    $AC
-            DB    $9C
-            DB    $A9
-            DB    $AC
-            DB    $AE
-            DB    $97
-            DB    $A7
+*--- The board in color
+
+boardCOLOR  HEX   3C89058B8E1D90DD05C1DD3CC1E153C1
+            HEX   E160C1DD77D3DD96D3DD9B3CDDBA3C46
+            HEX   9B3C46963C58773958603958533C583C
+            HEX   49581249581D677C12677C1D9DB2129D
+            HEX   B21DC1D012C1D01D49582A49582FC1D0
+            HEX   2AC1D02F79A04E79A065676A60686A77
+            HEX   AFB260AFB277677C84677C899DB2849D
+            HEX   B28949588455589B495389C1D084C6D0
+            HEX   89C1C49B676A2A6C7C3C6C7C41676A53
+            HEX   79A02A90A02F8B8E4179892FAFB22AAF
+            HEX   B2539DAD419DAD3C79A07290A0778B8E
+            HEX   89798977676A966C7CA8497CAD4965A8
+            HEX   79A09690A09B8B8EAD79899BAFB296B4
+            HEX   D0A89DD0AD9DADA88A061C8F061CDE06
+            HEX   3BC03D52C06176DE7895D2979ADE9CB9
+            HEX   3B9CB947979A3B7895596176593D523B
+            HEX   063B59131C48131C7D131C66131CB313
+            HEX   1C9C131CD1131CC0131C592B2E482B2E
+            HEX   D12B2EC02B2EA14F64784F646B617666
+            HEX   6176B36176AE61767D8588668588B385
+            HEX   889C858859859A548A9A488588D18588
+            HEX   C58A9AC0859A6B2B3B7D3D406B425266
+            HEX   2B52A12B2E8F30408A3040782B2EB32B
+            HEX   52AE42529C3D40AE2B3BA173768F7888
+            HEX   8A78887873766B97A77DA9AC48A9AC66
+            HEX   97A7A1979A8F9CAC8A9CAC78979AB397
+            HEX   A7D1A9AC9CA9ACAE97A7
+
+*--- The board in black & white
+
+boardBW     HEX   3C88058C8E1D90DC05C2DC3CC2E253C2
+            HEX   E260C2DC77D4DC96D4DC9B3CDCBA3C44
+            HEX   9B3C44963C56773856603856533C563C
+            HEX   4A56124A561D687A12687A1D9EB0129E
+            HEX   B01DC2CE12C2CE1D4A562A4A562FC2CE
+            HEX   2AC2CE2F7A9E4E7A9E65686A60686A77
+            HEX   B0B260B0B277687A84687A899EB0849E
+            HEX   B0894A568456589B4A5289C2CE84C8CE
+            HEX   89C2C49B686A2A6C7A3C6C7A41686A53
+            HEX   7A9E2A909E2F8C8E417A882FB0B22AB0
+            HEX   B2539EAC419EAC3C7A9E72909E778C8E
+            HEX   897A8877686A966C7AA84A7AAD4A64A8
+            HEX   7A9E96909E9B8C8EAD7A889BB0B296B4
+            HEX   CEA89ECEAD9EACA88A061C8E061CDE06
+            HEX   3BC03D52C06176DE7895D2979ADE9CB9
+            HEX   3A9CB946979A3A7895586176583D523A
+            HEX   063B58131C48131C7C131C66131CB213
+            HEX   1C9C131CD0131CC0131C582B2E482B2E
+            HEX   D02B2EC02B2EA04F64784F646A617666
+            HEX   6176B26176AE61767C8588668588B285
+            HEX   889C858858859A548A9A488588D08588
+            HEX   C48A9AC0859A6A2B3B7C3D406A425266
+            HEX   2B52A02B2E8E30408A3040782B2EB22B
+            HEX   52AE42529C3D40AE2B3BA073768E7888
+            HEX   8A78887873766A97A77CA9AC48A9AC66
+            HEX   97A7A0979A8E9CAC8A9CAC78979AB297
+            HEX   A7D0A9AC9CA9ACAE97A7
 
 *-----------------------------------
 * 
@@ -5603,7 +2982,7 @@ L5DBA       DEC   $08
 L6113       LDA   #<L623A
             STA   $16
             LDA   #>L623A
-            STA   $17
+            STA   $16+1
             LDA   #$3B
             STA   $0E
 L611F       LDA   #$01
@@ -5652,29 +3031,29 @@ L6166       CLC
 
 L6172       JSR   L5933
             ASL   $03
-            JSR   L5B58
+            JSR   setHGRADDRESS
             LDX   $03
             LDY   $04
             LDA   L61A8,X
-            ORA   ($12),Y
-            STA   ($12),Y
+            ORA   (zpHGR),Y
+            STA   (zpHGR),Y
             INX
             INY
             LDA   L61A8,X
-            ORA   ($12),Y
-            STA   ($12),Y
+            ORA   (zpHGR),Y
+            STA   (zpHGR),Y
             INC   $10
-            JSR   L5B58
+            JSR   setHGRADDRESS
             LDX   $03
             LDY   $04
             LDA   L61A8,X
-            ORA   ($12),Y
-            STA   ($12),Y
+            ORA   (zpHGR),Y
+            STA   (zpHGR),Y
             INX
             INY
             LDA   L61A8,X
-            ORA   ($12),Y
-            STA   ($12),Y
+            ORA   (zpHGR),Y
+            STA   (zpHGR),Y
             RTS
 
 L61A8       DB    $03
@@ -6709,7 +4088,7 @@ L623A       DB    $10
             DB    $10
             DB    $BF
             DB    $BF
-            DB    $00
+L65BA       DB    $00
             DB    $00
             DB    $00
             DB    $00
@@ -7605,7 +4984,7 @@ L623A       DB    $10
             DB    $00
             DB    $00
             DB    $00
-            MX    %11
+
 L693A       LDA   #$F8
             STA   $18
             JSR   L5933
@@ -7615,17 +4994,17 @@ L693A       LDA   #$F8
             ASL
             ASL
             STA   $03
-L6949       JSR   L5B58
+L6949       JSR   setHGRADDRESS
             LDX   $03
             LDY   $04
 L6950       LDA   $0666,X
-            ORA   ($12),Y
-            STA   ($12),Y
+            ORA   (zpHGR),Y
+            STA   (zpHGR),Y
             INY
             INX
 L6959       LDA   $0666,X
-            ORA   ($12),Y
-            STA   ($12),Y
+            ORA   (zpHGR),Y
+            STA   (zpHGR),Y
             INX
             STX   $03
             INC   $10
@@ -7642,11 +5021,11 @@ L696A       LDA   $50
             STA   $10
 L6978       LDA   #$0C
             STA   $18
-L697C       JSR   L5B58
+L697C       JSR   setHGRADDRESS
             LDY   $04
             LDX   #$08
             LDA   #$80
-L6985       STA   ($12),Y
+L6985       STA   (zpHGR),Y
             INY
             DEX
             BNE   L6985
@@ -7667,21 +5046,22 @@ L6993       DB    $5E
             DB    $33
             DB    $20
             DB    $5E
+
 L699E       JSR   L7D9A
 L69A1       LDA   #$F6
             STA   $18
             JSR   L5933
             ASL   $03
             ASL   $03
-L69AC       JSR   L5B58
+L69AC       JSR   setHGRADDRESS
             LDA   #$03
             STA   $09
             LDX   $03
             LDY   $04
 L69B7       LDA   L69CD,X
-            AND   ($12),Y
+            AND   (zpHGR),Y
             ORA   #$80
-            STA   ($12),Y
+            STA   (zpHGR),Y
             INY
             INX
             DEC   $09
@@ -7719,19 +5099,20 @@ L69CD       DB    $00
             DB    $00
             DB    $7C
             DB    $00
+
 L69E9       JSR   L7DA9
-            LDA   #$04
-            LDY   #$6A
+            LDA   #<L6A04
+            LDY   #>L6A04
             STA   L69B7+1
             STY   L69B7+2
             JSR   L69A1
-            LDA   #$CD
-            LDY   #$69
+            LDA   #<L69CD
+            LDY   #>L69CD
             STA   L69B7+1
             STY   L69B7+2
             RTS
 
-            DB    $00
+L6A04       DB    $00
             DB    $60
             DB    $7F
             DB    $00
@@ -7764,7 +5145,7 @@ L69E9       JSR   L7DA9
 * 
 *-----------------------------------
 
-L6A20       LDX   $1D
+L6A20       LDX   zpMONITOR
             BEQ   L6A28
             LDX   $1E
             BNE   L6A62
@@ -7777,15 +5158,15 @@ L6A28       STA   L6A4A+1
             STA   $1A
             JSR   L5933
             JSR   L780A
-L6A3F       JSR   L5B58
+L6A3F       JSR   setHGRADDRESS
             LDX   $03
             LDY   $04
             LDA   $1A
             STA   $09
 L6A4A       LDA   $0666,X
-            ORA   ($12),Y
+            ORA   (zpHGR),Y
             AND   #$7F
-            STA   ($12),Y
+            STA   (zpHGR),Y
             INX
             INY
             DEC   $09
@@ -8309,6 +5690,11 @@ L6B01       DB    $00
             DB    $00
             DB    $00
             DB    $00
+
+*-----------------------------------
+* 
+*-----------------------------------
+
 L6CB2       LDX   $E8
             BNE   L6CD3
             JSR   L6D1E
@@ -8345,15 +5731,24 @@ L6CD4       DB    $00
             DB    $50
             DB    $50
             DB    $50
-L6CE6       LDX   #$01
-L6CE8       LDA   #$8F
+
+*-----------------------------------
+* PATIENTLY WAIT
+*-----------------------------------
+
+doWAIT      LDX   #$01
+doWAIT2     LDA   #$8F
 L6CEA       SEC
             SBC   #$01
             BCS   L6CEA
             DEX
-            BNE   L6CE8
+            BNE   doWAIT2
             RTS
 L6CF3       RTS
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 L6CF4       JSR   L58FA
             JSR   L7D80
@@ -8362,7 +5757,7 @@ L6CF4       JSR   L58FA
             JSR   L79A4
             LDY   #$0B
 L6D05       LDX   #$FF
-            JSR   L6CE8
+            JSR   doWAIT2
             DEY
             BNE   L6D05
             JSR   L8155
@@ -8403,6 +5798,11 @@ L6D40       DB    $00
             DB    $55
             DB    $99
             DB    $5D
+
+*-----------------------------------
+* 
+*-----------------------------------
+
 L6D49       LDA   #$00
             LDX   #$08
             STA   $84,X
@@ -8494,9 +5894,9 @@ L6DDE       LDA   #$00
             BEQ   L6DC8
             RTS
 
-L6DEF       BRK   $00
-            RTS
-
+L6DEF       DB    $00
+            DB    $00
+            DB    $60
             DB    $01
             DB    $00
             DB    $01
@@ -8632,6 +6032,7 @@ L6E1A       DB    $00
             DB    $01
             DB    $01
             DB    $03
+
 L6E79       LDY   #$0E
 L6E7B       LDA   L8A44,Y
             STA   $0800,Y
@@ -8676,7 +6077,7 @@ L6EC3       JSR   L6AFB
             STA   $E8
             LDY   #$30
 L6ECF       LDX   #$64
-            JSR   L6CE8
+            JSR   doWAIT2
             DEY
             BNE   L6ECF
             JMP   L43D2
@@ -8691,15 +6092,15 @@ L6EE2       STA   L6EFF+1
             STA   $18
             LDA   #$00
             STA   $03
-L6EF0       JSR   L5B58
+L6EF0       JSR   setHGRADDRESS
             LDX   $03
             LDY   $04
             LDA   #$03
             STA   $09
-L6EFB       LDA   ($12),Y
+L6EFB       LDA   (zpHGR),Y
             AND   #$7F
 L6EFF       ORA   $0666,X
-            STA   ($12),Y
+            STA   (zpHGR),Y
             INX
             INY
             DEC   $09
@@ -8725,48 +6126,68 @@ L6F1B       ASL
             LDY   L6AFF,X
             JMP   L6EE2
 
-L6F2F       LDA   TXTCLR
+*-----------------------------------
+* SET THE HGR SCREEN
+*-----------------------------------
+
+setHGR      LDA   TXTCLR
             LDA   MIXCLR
             LDA   HIRES
             LDA   TXTPAGE1
             RTS
 
-L6F3C       LDA   TXTSET
+*-----------------------------------
+* SET THE TEXT SCREEN
+*-----------------------------------
+
+setTEXT2    LDA   TXTSET
             LDA   TXTPAGE2
             LDA   MIXCLR
             RTS
 
-L6F46       LDA   #$20
+*-----------------------------------
+* CLEAR THE HGR SCREEN
+*-----------------------------------
+
+clearHGR    LDA   #>HGR
             STA   $17
-            LDY   #$00
+            LDY   #<HGR
             STY   $16
 L6F4E       LDA   #$80
 L6F50       STA   ($16),Y
             INY
             BNE   L6F50
-            INC   $17
-            LDA   $17
-            CMP   #$40
+            INC   $16+1
+            LDA   $16+1
+            CMP   #>HGR2
             BNE   L6F4E
             RTS
 
-L6F5E       JSR   L6F77
+*-----------------------------------
+* GET INPUT FROM SELECTED DEVICE
+*-----------------------------------
+
+getINPUT    JSR   readKEYBOARD	; read keyboard
             BCS   L6F65
             STA   $63
-L6F65       LDA   $F5
+L6F65       LDA   zpDEVICE	; which device?
             BNE   L6F6F
-            JSR   L6FD0
+            JSR   readJOYPAD	; read joypad
             JMP   L6F72
-
-L6F6F       JSR   L7041
+L6F6F       JSR   readJOYSTICK	; read joystick
 L6F72       BCS   L6F76
-            STA   $63
+            STA   $63		; save movement
 L6F76       RTS
 
-L6F77       LDA   KBD
+*-----------------------------------
+* READ KEYBOARD
+*-----------------------------------
+
+readKEYBOARD
+            LDA   KBD
             BPL   L6FCE
             STA   KBDSTROBE
-            CMP   #$93
+            CMP   #$93		; ctrl-v
             BNE   L6F96
             LDA   L7BB5+1
             EOR   #$10
@@ -8776,41 +6197,52 @@ L6F77       LDA   KBD
             STA   L7D06+1
             JMP   L6FCE
 
-L6F96       CMP   #$9B
+L6F96       CMP   #$9B		; ESC
             BNE   L6FA2
+
 L6F9A       LDA   KBD
             BPL   L6F9A
             STA   KBDSTROBE
+
 L6FA2       LDX   $E8
             BEQ   L6FB1
             CMP   #$A0
             BEQ   L6FAE
             CMP   #$A0
             BNE   L6FCE
-L6FAE       JMP   L4144
+L6FAE       JMP   selectRANKCARTOON		; space resets the game
 
-L6FB1       CMP   #$C1
+*  0: down
+*  1: up
+*  2: right
+*  3: left
+
+L6FB1       CMP   #$C1		; A
             BEQ   L6FCA
-L6FB5       CMP   #$95
+L6FB5       CMP   #$95		; right-arrow
             BEQ   L6FC7
-L6FB9       CMP   #$88
+L6FB9       CMP   #$88		; left-arrow
             BEQ   L6FC4
-L6FBD       CMP   #$DA
+L6FBD       CMP   #$DA		; Z
             BNE   L6FCE
-            LDA   #$00
+            LDA   #$00		; down
             HEX   2C
-L6FC4       LDA   #$03
+L6FC4       LDA   #$03		; up
             HEX   2C
-L6FC7       LDA   #$02
+L6FC7       LDA   #$02		; right
             HEX   2C
-L6FCA       LDA   #$01
+L6FCA       LDA   #$01		; left
             CLC
             RTS
-
 L6FCE       SEC
             RTS
 
-L6FD0       LDA   $E8
+*-----------------------------------
+* READ JOYPAD
+*-----------------------------------
+
+readJOYPAD
+            LDA   $E8
             BNE   L700A
             LDA   #$00
             BIT   SETAN0
@@ -8836,19 +6268,18 @@ L7004       TAX
             BPL   L700C
 L700A       SEC
             RTS
-
 L700C       CLC
             RTS
 
 L700E       DB    $FF
-            DB    $00
-            DB    $01
+            DB    $00	; down
+            DB    $01	; up
             DB    $FF
-            DB    $02
+            DB    $02	; right
             DB    $FF
             DB    $FF
             DB    $FF
-            DB    $03
+            DB    $03	; left
             DB    $FF
             DB    $FF
             DB    $FF
@@ -8857,7 +6288,12 @@ L700E       DB    $FF
             DB    $FF
             DB    $FF
 
-L701E       LDA   PTRIG
+*-----------------------------------
+* GET JOYSTICK VALUES
+*-----------------------------------
+
+getLLJOYSTICK
+            LDA   PTRIG
             SEC
             LDA   #$63
             LDX   #$00
@@ -8878,9 +6314,14 @@ L703C       SBC   #$01
             BNE   L7028
             RTS
 
-L7041       LDA   $E8
+*-----------------------------------
+* READ JOYSTICK
+*-----------------------------------
+
+readJOYSTICK
+            LDA   $E8
             BNE   L708D
-            JSR   L701E
+            JSR   getLLJOYSTICK		; read joystick
             LDA   $62
             LSR
             BNE   L7065
@@ -8912,25 +6353,31 @@ L7076       CPX   #$44
             BCS   L7085
             JMP   L706B
 
+*  0: down
+*  1: up
+*  2: right
+*  3: left
+* 80: none
+
 L707D       CLC
             LDA   #$00
             RTS
-
 L7081       CLC
             LDA   #$01
             RTS
-
 L7085       CLC
             LDA   #$02
             RTS
-
 L7089       CLC
             LDA   #$03
             RTS
-
 L708D       CLC
             LDA   #$80
             RTS
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 L7091       LDA   $54
             CMP   $02
@@ -9691,18 +7138,18 @@ L7819       LDA   #$F8
             STA   $18
             JSR   L5933
             ASL   $03
-L7822       JSR   L5B58
+L7822       JSR   setHGRADDRESS
             LDX   $03
             LDY   $04
             LDA   L7843,X
-            AND   ($12),Y
+            AND   (zpHGR),Y
             ORA   #$80
-            STA   ($12),Y
+            STA   (zpHGR),Y
             INY
             LDA   L7844,X
-            AND   ($12),Y
+            AND   (zpHGR),Y
             ORA   #$80
-            STA   ($12),Y
+            STA   (zpHGR),Y
             INC   $10
             INC   $18
             BNE   L7822
@@ -9737,16 +7184,16 @@ L7851       DB    $09
             DB    $04
             DB    $04
             DB    $04
-L7861       LDA   $F5
+L7861       LDA   zpDEVICE
             BNE   L7868
-            JSR   L6F5E
+            JSR   getINPUT
 L7868       DEC   $59
             BEQ   L786D
             RTS
 
-L786D       LDA   $F5
+L786D       LDA   zpDEVICE
             BEQ   L7874
-            JSR   L6F5E
+            JSR   getINPUT
 L7874       JSR   L808C
             JSR   L6D1E
             TAX
@@ -10502,7 +7949,7 @@ L7D15       LDY   $06
             LDA   ($14),Y
             STA   L7CF7+1
             JSR   L7CF7
-            JSR   L6F5E
+            JSR   getINPUT
             JSR   L7D7B
             INC   $06
             INC   $06
@@ -10577,7 +8024,7 @@ L7D3F       DB    $41
             DB    $00
 
 L7D7B       LDX   #$1E
-            JMP   L6CE8
+            JMP   doWAIT2
 
 L7D80       LDA   $60
             STA   $0C
@@ -10653,7 +8100,7 @@ L7DDC       STA   $16
             JMP   L7E13
 
 L7E0E       LDX   #$FF
-            JSR   L6CE8
+            JSR   doWAIT2
 L7E13       JSR   L7D8D
             JSR   L69E9
             JSR   L7D80
@@ -10793,7 +8240,7 @@ L7EC0       JSR   L7D80
             JSR   L6A20
             LDY   #$03
 L7ECC       LDX   #$FF
-            JSR   L6CE8
+            JSR   doWAIT2
             DEY
             BNE   L7ECC
             JSR   L7D80
@@ -10811,7 +8258,7 @@ L7EDE       LDA   $0A
             JSR   L7E1F
             JSR   L7C82
             LDX   #$80
-            JSR   L6CE8
+            JSR   doWAIT2
             JSR   L7D80
             JSR   L69E9
             DEC   $0A
@@ -11333,7 +8780,7 @@ L8173       STA   $0C
             STX   $10
             LDA   #$80
             STA   $1E
-            JMP   L5CF0
+            JMP   drawLINE
 
 L8180       STA   $0C
             STY   $10
@@ -11360,8 +8807,8 @@ L8189       LDA   #$C1
             STA   $62
             RTS
 
-L81AE       JSR   L6F46
-            JSR   L6F2F
+L81AE       JSR   clearHGR
+            JSR   setHGR
             JSR   L8189
 L81B7       DEC   $59
             BNE   L81DB
@@ -11380,7 +8827,7 @@ L81B7       DEC   $59
             STA   $10
             INC   $66
             JSR   L79A4
-L81DB       JSR   L6CE6
+L81DB       JSR   doWAIT
             DEC   $80
             BNE   L81F9
             LDA   #$1D
@@ -11401,7 +8848,7 @@ L81FC       JSR   L7D80
             JSR   L699E
             LDY   #$08
 L820A       LDX   #$64
-            JSR   L6CE8
+            JSR   doWAIT2
             DEY
             BNE   L820A
             LDA   #$00
@@ -11423,7 +8870,7 @@ L8221       DEC   $59
             CMP   #$A0
             BCS   L8258
             JSR   L8259
-L8237       JSR   L6CE6
+L8237       JSR   doWAIT
             DEC   $80
             BNE   L8255
             LDA   #$07
@@ -11465,13 +8912,13 @@ L827A       LDA   $0666,Y
 L828B       JSR   L82B1
             DEC   $03
             BNE   L828B
-L8292       JSR   L5B58
+L8292       JSR   setHGRADDRESS
             LDX   $03
             LDY   $04
             LDA   #$04
             STA   $09
 L829D       LDA   L7E70,X
-            STA   ($12),Y
+            STA   (zpHGR),Y
             INX
             INY
             DEC   $09
@@ -11748,8 +9195,8 @@ L82D9       DB    $82
             DB    $7E
             DB    $01
             DB    $00
-L83D0       JSR   L6F46
-            JSR   L6F2F
+L83D0       JSR   clearHGR
+            JSR   setHGR
             JSR   L8189
 L83D9       DEC   $59
             BNE   L840C
@@ -11774,7 +9221,7 @@ L83D9       DEC   $59
             JSR   L7D80
             INC   $66
             JSR   L79A4
-L840C       JSR   L6CE6
+L840C       JSR   doWAIT
             DEC   $80
             BNE   L83D9
             LDA   #$21
@@ -11834,8 +9281,8 @@ L847F       DB    $7B
             DB    $7D
             DB    $7F
             DB    $7E
-L8486       JSR   L6F46
-            JSR   L6F2F
+L8486       JSR   clearHGR
+            JSR   setHGR
             JSR   L8189
 L848F       DEC   $59
             BNE   L84B0
@@ -11852,7 +9299,7 @@ L848F       DEC   $59
             JSR   L7D80
             INC   $66
             JSR   L79A4
-L84B0       JSR   L6CE6
+L84B0       JSR   doWAIT
             DEC   $80
             BNE   L848F
             LDA   #$21
@@ -11877,7 +9324,7 @@ L84DD       JSR   L7D8D
             JSR   L699E
             LDY   #$08
 L84E5       LDX   #$64
-            JSR   L6CE8
+            JSR   doWAIT2
             DEY
             BNE   L84E5
             LDA   #$37
@@ -11900,7 +9347,7 @@ L84F9       DEC   $59
             JSR   L7D80
             INC   $66
             JSR   L79A4
-L8519       JSR   L6CE6
+L8519       JSR   doWAIT
             DEC   $80
             BNE   L8546
             LDA   #$27
@@ -11988,8 +9435,8 @@ L854B       DB    $85
             DB    $00
             DB    $60
             DB    $60
-            JSR   L6F46
-            JSR   L6F2F
+            JSR   clearHGR
+            JSR   setHGR
             LDA   #$80
             STA   $1E
             LDA   #$00
@@ -12101,7 +9548,7 @@ L8662       JSR   L8712
             LDX   #$57
             JSR   L8173
             LDX   #$50
-            JSR   L6CE8
+            JSR   doWAIT2
             JSR   L7D80
             JSR   L699E
             LDA   #$01
@@ -12114,7 +9561,7 @@ L8662       JSR   L8712
             LDX   #$4C
             JSR   L8180
             LDX   #$50
-            JSR   L6CE8
+            JSR   doWAIT2
             JSR   L7D80
             JSR   L699E
             LDA   #$03
@@ -12127,7 +9574,7 @@ L8662       JSR   L8712
             LDX   #$57
             JSR   L8173
             LDX   #$50
-            JSR   L6CE8
+            JSR   doWAIT2
             LDA   #$00
             STA   $62
             JSR   L7D80
@@ -12142,7 +9589,7 @@ L8662       JSR   L8712
             LDY   #$19
 L86E0       NOP
             LDX   #$64
-            JSR   L6CE8
+            JSR   doWAIT2
             DEY
             BNE   L86E0
             RTS
@@ -12432,7 +9879,7 @@ L88BA       LDX   #$00
 L88BC       LDA   $79
             BEQ   L88C2
             LDX   #$0A
-L88C2       LDA   $1D
+L88C2       LDA   zpMONITOR
             BEQ   L88D3
             CLC
             TXA
@@ -12706,20 +10153,21 @@ L8A44       DB    $03
             DB    $00
             DB    $03
             DB    $FF
+	
 L8A7D       LDA   #$87
             STA   $0C
             LDA   #$93
             STA   $0E
             LDA   #$4D
             STA   $10
-            JSR   L5CF0
+            JSR   drawLINE
             LDA   #$87
             STA   $0C
             LDA   #$93
             STA   $0E
             LDA   #$4E
             STA   $10
-            JSR   L5CF0
+            JSR   drawLINE
             RTS
 
 L8A9C       JSR   L7D8D
@@ -12901,7 +10349,7 @@ L8BDD       JSR   L8712
             JSR   L58FA
             LDY   #$03
 L8BE5       LDX   #$FA
-            JSR   L6CE8
+            JSR   doWAIT2
             DEY
             BNE   L8BE5
             LDA   #$04

@@ -2092,7 +2092,7 @@ L554A       LDA   #<L5628	; HISCORE sprite
             STA   $54
             JMP   L550E
 
-L5563       LDA   #<L55F7	; PLAYER# sprite
+L5563       LDA   #<L55F7	; reset to PLAYER# sprite
             STA   L5591+1
             LDA   #>L55F7
             STA   L5596+1
@@ -4621,12 +4621,14 @@ L70AB       LDA   $52
             JSR   L70D8
             LDA   $F0
             STA   $50
+
 L70CC       LDA   $52
             STA   $05
             LDA   $53
             STA   $06
             LDA   $54
             STA   $07
+
 L70D8       JSR   erasePLAYERNAME
             LDA   $50
             ASL

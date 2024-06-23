@@ -6187,8 +6187,9 @@ readKEYBOARD
             LDA   KBD
             BPL   L6FCE
             STA   KBDSTROBE
-            CMP   #$93		; ctrl-v
-            BNE   L6F96
+
+            CMP   #$93		; ctrl-s
+            BNE   L6F96		; speaker or tape out
             LDA   L7BB5+1
             EOR   #$10
             STA   L7BB5+1
@@ -6206,9 +6207,9 @@ L6F9A       LDA   KBD
 
 L6FA2       LDX   $E8
             BEQ   L6FB1
-            CMP   #$A0
+            CMP   #" "
             BEQ   L6FAE
-            CMP   #$A0
+            CMP   #" "
             BNE   L6FCE
 L6FAE       JMP   selectRANKCARTOON		; space resets the game
 
@@ -7507,6 +7508,11 @@ L7A9C       DB    $02
             DB    $01
             DB    $01
             DB    $00
+
+*-----------------------------------
+* 
+*-----------------------------------
+
 L7AAC       CLC
             JSR   L6D1E
             TAX
@@ -7670,15 +7676,16 @@ L7BCD       LDA   $0666,Y
             BNE   L7BCB
 L7BDB       RTS
 
-L7BDC       LDA   #$E3
-            LDY   #$7B
+L7BDC       LDA   #<L7BE3
+            LDY   #>L7BE3
             JMP   L7BBC
 
 L7BE3       DB    $30
             DB    $1C
             DB    $00
-L7BE6       LDA   #$ED
-            LDY   #$7B
+
+L7BE6       LDA   #<L7BED
+            LDY   #>L7BED
             JMP   L7BBC
 
 L7BED       DB    $50
@@ -7769,14 +7776,17 @@ L7BED       DB    $50
             DB    $10
             DB    $10
             DB    $00
-L7C45       LDA   #$4C
-            LDY   #$7C
+
+L7C45       LDA   #<L7C4C
+            LDY   #>L7C4C
             JMP   L7BBC
+
 L7C4C       DB    $40
             DB    $40
             DB    $40
             DB    $30
             DB    $00
+
 L7C51       LDY   #$50
             STY   $06
 L7C55       LDA   #$20
@@ -7786,8 +7796,8 @@ L7C55       LDA   #$20
             BNE   L7C55
             RTS
 
-L7C61       LDA   #$68
-            LDY   #$7C
+L7C61       LDA   #<L7C68
+            LDY   #>L7C68
             JMP   L7BBC
 
 L7C68       DB    $70
@@ -7916,6 +7926,10 @@ L7CE4       DB    $10
             DB    $03
             DB    $00
 
+*-----------------------------------
+* 
+*-----------------------------------
+
 L7CF0       LDA   #<L7C9D
             LDY   #>L7C9D
             JMP   L7BBC
@@ -7938,16 +7952,16 @@ L7D06       BIT   SPKR
             RTS
 
 L7D0D       STA   $14
-            STY   $15
+            STY   $14+1
             LDA   #$00
             STA   $06
 L7D15       LDY   $06
             LDA   ($14),Y
             BEQ   L7D32
-            STA   $05
+            STA   $05		; height
             INY
             LDA   ($14),Y
-            STA   L7CF7+1
+            STA   L7CF7+1	; duration
             JSR   L7CF7
             JSR   getINPUT
             JSR   L7D7B
@@ -8022,6 +8036,10 @@ L7D3F       DB    $41
             DB    $82
             DB    $00
             DB    $00
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 L7D7B       LDX   #$1E
             JMP   doWAIT2
@@ -8892,7 +8910,7 @@ L8259       INC   $66
             ASL
             TAX
             LDA   L82D8,X
-            LDY   L82D9,X
+            LDY   L82D8+1,X
             STA   L827A+1
             STY   L827A+2
             LDA   $61
@@ -8947,254 +8965,31 @@ L82B3       ASL   L7E70,X
             BPL   L82B3
             RTS
 
-L82D8       DB    $E0
-L82D9       DB    $82
-            DB    $30
-            DB    $83
-            DB    $80
-            DB    $83
-            DB    $30
-            DB    $83
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $7E
-            DB    $01
-            DB    $00
-            DB    $40
-            DB    $7F
-            DB    $07
-            DB    $00
-            DB    $60
-            DB    $7F
-            DB    $0F
-            DB    $00
-            DB    $70
-            DB    $7F
-            DB    $1F
-            DB    $00
-            DB    $78
-            DB    $7F
-            DB    $3F
-            DB    $00
-            DB    $78
-            DB    $7F
-            DB    $3F
-            DB    $00
-            DB    $7C
-            DB    $7F
-            DB    $7F
-            DB    $00
-            DB    $7C
-            DB    $7F
-            DB    $7F
-            DB    $00
-            DB    $7C
-            DB    $7F
-            DB    $7F
-            DB    $00
-            DB    $7C
-            DB    $7F
-            DB    $7F
-            DB    $00
-            DB    $7C
-            DB    $7F
-            DB    $7F
-            DB    $00
-            DB    $7C
-            DB    $7F
-            DB    $7F
-            DB    $00
-            DB    $7C
-            DB    $7F
-            DB    $7F
-            DB    $00
-            DB    $78
-            DB    $7F
-            DB    $3F
-            DB    $00
-            DB    $78
-            DB    $7F
-            DB    $3F
-            DB    $00
-            DB    $70
-            DB    $7F
-            DB    $1F
-            DB    $00
-            DB    $60
-            DB    $7F
-            DB    $0F
-            DB    $00
-            DB    $40
-            DB    $7F
-            DB    $07
-            DB    $00
-            DB    $00
-            DB    $7E
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $7E
-            DB    $01
-            DB    $00
-            DB    $40
-            DB    $7F
-            DB    $07
-            DB    $00
-            DB    $60
-            DB    $7F
-            DB    $0F
-            DB    $00
-            DB    $70
-            DB    $7F
-            DB    $1F
-            DB    $00
-            DB    $78
-            DB    $7F
-            DB    $3F
-            DB    $00
-            DB    $78
-            DB    $7F
-            DB    $3F
-            DB    $00
-            DB    $7C
-            DB    $7F
-            DB    $1F
-            DB    $00
-            DB    $7C
-            DB    $7F
-            DB    $03
-            DB    $00
-            DB    $7C
-            DB    $3F
-            DB    $00
-            DB    $00
-            DB    $7C
-            DB    $0F
-            DB    $00
-            DB    $00
-            DB    $7C
-            DB    $3F
-            DB    $00
-            DB    $00
-            DB    $7C
-            DB    $7F
-            DB    $03
-            DB    $00
-            DB    $7C
-            DB    $7F
-            DB    $1F
-            DB    $00
-            DB    $78
-            DB    $7F
-            DB    $3F
-            DB    $00
-            DB    $78
-            DB    $7F
-            DB    $3F
-            DB    $00
-            DB    $70
-            DB    $7F
-            DB    $1F
-            DB    $00
-            DB    $60
-            DB    $7F
-            DB    $0F
-            DB    $00
-            DB    $40
-            DB    $7F
-            DB    $07
-            DB    $00
-            DB    $00
-            DB    $7E
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $7E
-            DB    $01
-            DB    $00
-            DB    $40
-            DB    $7F
-            DB    $07
-            DB    $00
-            DB    $60
-            DB    $7F
-            DB    $03
-            DB    $00
-            DB    $70
-            DB    $7F
-            DB    $01
-            DB    $00
-            DB    $78
-            DB    $7F
-            DB    $00
-            DB    $00
-            DB    $78
-            DB    $3F
-            DB    $00
-            DB    $00
-            DB    $7C
-            DB    $1F
-            DB    $00
-            DB    $00
-            DB    $7C
-            DB    $0F
-            DB    $00
-            DB    $00
-            DB    $7C
-            DB    $07
-            DB    $00
-            DB    $00
-            DB    $7C
-            DB    $03
-            DB    $00
-            DB    $00
-            DB    $7C
-            DB    $07
-            DB    $00
-            DB    $00
-            DB    $7C
-            DB    $0F
-            DB    $00
-            DB    $00
-            DB    $7C
-            DB    $1F
-            DB    $00
-            DB    $00
-            DB    $78
-            DB    $3F
-            DB    $00
-            DB    $00
-            DB    $78
-            DB    $7F
-            DB    $00
-            DB    $00
-            DB    $70
-            DB    $7F
-            DB    $01
-            DB    $00
-            DB    $60
-            DB    $7F
-            DB    $03
-            DB    $00
-            DB    $40
-            DB    $7F
-            DB    $07
-            DB    $00
-            DB    $00
-            DB    $7E
-            DB    $01
-            DB    $00
+L82D8       DA    L82E0
+            DA    L8330
+            DA    L8380
+            DA    L8330
+
+L82E0       HEX   00000000007E0100407F0700607F0F00
+            HEX   707F1F00787F3F00787F3F007C7F7F00
+            HEX   7C7F7F007C7F7F007C7F7F007C7F7F00
+            HEX   7C7F7F007C7F7F00787F3F00787F3F00
+            HEX   707F1F00607F0F00407F0700007E0100
+L8330       HEX   00000000007E0100407F0700607F0F00
+            HEX   707F1F00787F3F00787F3F007C7F1F00
+            HEX   7C7F03007C3F00007C0F00007C3F0000
+            HEX   7C7F03007C7F1F00787F3F00787F3F00
+            HEX   707F1F00607F0F00407F0700007E0100
+L8380       HEX   00000000007E0100407F0700607F0300
+            HEX   707F0100787F0000783F00007C1F0000
+            HEX   7C0F00007C0700007C0300007C070000
+            HEX   7C0F00007C1F0000783F0000787F0000
+            HEX   707F0100607F0300407F0700007E0100
+
+*-----------------------------------
+* 
+*-----------------------------------
+
 L83D0       JSR   clearHGR
             JSR   setHGR
             JSR   L8189
@@ -9281,6 +9076,11 @@ L847F       DB    $7B
             DB    $7D
             DB    $7F
             DB    $7E
+
+*-----------------------------------
+* 
+*-----------------------------------
+
 L8486       JSR   clearHGR
             JSR   setHGR
             JSR   L8189
@@ -9319,6 +9119,10 @@ L84B0       JSR   doWAIT
             LDX   #$7F
             JSR   L8180
             JMP   L848F
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 L84DD       JSR   L7D8D
             JSR   L699E
@@ -9363,17 +9167,17 @@ L8519       JSR   doWAIT
             AND   #$02
             TAX
             LDA   L854A,X
-            LDY   L854B,X
+            LDY   L854A+1,X
             STA   $16
-            STY   $17
+            STY   $16+1
             JSR   L7E1F
 L8546       JMP   L84F9
 L8549       RTS
-L854A       DB    $6C
-L854B       DB    $85
-            DB    $4E
-            DB    $85
-            DB    $00
+
+L854A       DA    L856C
+            DA    L854E
+
+L854E       DB    $00
             DB    $00
             DB    $00
             DB    $00
@@ -9403,7 +9207,7 @@ L854B       DB    $85
             DB    $0C
             DB    $00
             DB    $00
-            DB    $00
+L856C       DB    $00
             DB    $00
             DB    $00
             DB    $00
@@ -9435,7 +9239,12 @@ L854B       DB    $85
             DB    $00
             DB    $60
             DB    $60
-            JSR   clearHGR
+
+*-----------------------------------
+* 
+*-----------------------------------
+
+L858C       JSR   clearHGR
             JSR   setHGR
             LDA   #$80
             STA   $1E
@@ -9618,23 +9427,17 @@ L870D       DB    $00
             DB    $27
             DB    $3B
             DB    $4F
-L8712       DB    $A4
-            DB    $E0
-            DB    $BE
-            DB    $0D
-            DB    $87
-            DB    $A0
-            DB    $13
-            DB    $B9
-            DB    $70
-            DB    $00
-            DB    $95
-            DB    $84
-            DB    $CA
-            DB    $88
-            DB    $10
-            DB    $F7
-            DB    $60
+
+L8712       LDY   $E0
+            LDX   L870D,Y
+            LDY   #$13
+L8719       LDA   |$0070,Y
+            STA   $84,X
+            DEX
+            DEY
+            BPL   L8719
+            RTS
+	
 L8723       DB    $0A
             DB    $0A
             DB    $09

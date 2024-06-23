@@ -5,6 +5,10 @@
 * (s) 2024, Antoine Vignau
 *
 
+sprEMPTY	=	0	; three tile possibilities
+sprDOT	=	1
+sprENERGY	=	2
+
 L0300	=	$0300	; buffer area to save scores
 
 L0C00	=	$0C00	; board buffers per player ($380 bytes)
@@ -26,6 +30,8 @@ zpX2	=	$0e	; end X for draw line
 zpY1	=	$10	; start Y
 zpY2	=	$11	; end Y
 zpHGR	=	$12
+zpBYLINES	=	$18	; number of lines to draw
+zpBYWIDTH	=	$1a	; width of a sprite per line
 zpMONITOR	=	$1d	; 0: b&w, 1: color
 zpCURPLAYER	=	$50	; current player index
 zpNBPLAYERS	=	$51	; number of players (1..5)

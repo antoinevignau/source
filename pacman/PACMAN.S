@@ -12,7 +12,7 @@
 	USE   PACMAN.E
 	
 *-----------------------------------
-* 
+* FIRMWARE EQUATES
 *-----------------------------------
 
 SOFTEV      EQU   $03F2
@@ -151,14 +151,14 @@ L4178       LDA   L4201,X	; CARTOON NUMBER (1-3)
             JSR   GETLN1
             LDX   $0200
             LDA   #$02
-            CPX   #$B1
+            CPX   #"1"
             BEQ   L4197
             LDA   #$05
-            CPX   #$B2
+            CPX   #"2"
             BEQ   L4197
             LDA   #$09
 L4197       STA   $55		; ZP
-            JSR   L8155
+            JSR   playCARTOON
             JMP   selectRANKCARTOON
 
 *--- Choose rank
@@ -259,7 +259,7 @@ L4299       ASC   "PRESS <RETURN> TO PLAY"8D
 *-----------------------------------
 
 L42D0       LDA   ($14),Y
-            STA   $04
+            STA   zpXCOL
             INY
             LDA   ($14),Y
             STA   $10
@@ -315,7 +315,7 @@ L4338       LDA   #$01
             LDA   #$09
             STA   $18
             LDA   #$00
-            STA   $03
+            STA   zpXBIT
             JSR   L55A6
             JSR   getINPUT
             LDX   #$50
@@ -532,7 +532,7 @@ L43D2       LDA   #$01
             LDA   #$00
             JSR   L7159
             LDA   #$14
-            STA   $04
+            STA   zpXCOL
             LDA   #$75
             STA   $10
             JSR   L44F1
@@ -554,16 +554,16 @@ L43D2       LDA   #$01
             LDA   #$00
             JSR   L7159
             LDA   #$14
-            STA   $04
+            STA   zpXCOL
             LDA   #$80
             STA   $10
             JSR   L44F1
             LDA   #$0C
-            STA   $04
+            STA   zpXCOL
             LDA   #$9A
             STA   $10
             LDA   #$00
-            STA   $03
+            STA   zpXBIT
             LDA   #$05
             STA   $1A
             LDA   #$09
@@ -596,7 +596,7 @@ L44F1       LDA   #$04
             LDA   #>L450A
             STA   L55B1+2
             LDA   #$00
-            STA   $03
+            STA   zpXBIT
             JMP   L55A6
 
 L450A       DB    $0F
@@ -1595,7 +1595,7 @@ L5273       LDY   #$00
             BEQ   L52AD
             CMP   #$FF		; set high-bit
             BEQ   L52B4
-            JSR   drawLINE
+            JSR   drawHLINE
             LDA   KBD
             CMP   #" "
             BEQ   L52A7
@@ -1661,7 +1661,7 @@ L52FC       JSR   L54D4
             LDA   #$00
             STA   $F4
 L5303       JSR   L531E
-L5306       JSR   L5659
+L5306       JSR   prepareLEVEL
             JSR   L5850
             JSR   L53E6
 L530F       JSR   L7861
@@ -1677,51 +1677,65 @@ L531E       LDA   #$01
             STA   $56
             LDA   #$40
             STA   $57
-            JSR   L53BE
+            JSR   savePLAYERDATA
             RTS
 
-L5331       LDA   #<L65BA
+*-----------------------------------
+* SET DEFAULT BOARD
+*-----------------------------------
+
+L5331       LDA   #<dftBOARD
             STA   $14
-            LDA   #>L65BA
-            STA   $15
-            LDA   #<L623A
+            LDA   #>dftBOARD
+            STA   $14+1
+            LDA   #<theBOARD
             STA   $16
-            LDA   #>L623A
-            STA   $17
+            LDA   #>theBOARD
+            STA   $16+1
             LDY   #$00
 L5343       LDA   ($14),Y
             STA   ($16),Y
             INC   $16
             BNE   L534D
-            INC   $17
+            INC   $16+1
 L534D       INC   $14
             BNE   L5353
-            INC   $15
-L5353       LDA   $17
-            CMP   #$65
+            INC   $14+1
+L5353       LDA   $16+1
+            CMP   #>dftBOARD
             BNE   L5343
             LDA   $16
-            CMP   #$BA
+            CMP   #<dftBOARD
             BNE   L5343
             RTS
 
-L5360       LDA   $50
+*-----------------------------------
+* LOAD PLAYER BOARD
+*-----------------------------------
+
+loadPLAYERBOARD
+            LDA   $50
             ASL
             TAX
             LDA   L53B2,X
             STA   $14
-            LDA   L53B3,X
+            LDA   L53B2+1,X
             CLC
             ADC   #$03
             STA   $15
-            LDA   #$3A
+            LDA   #<theBOARD
             STA   $16
-            LDA   #$62
+            LDA   #>theBOARD
             CLC
             ADC   #$03
             STA   $17
-L537C       LDX   #$03
-            LDY   #$7F
+
+*-----------------------------------
+* COPY FROM/TO BOARD BUFFER
+*-----------------------------------
+
+L537C       LDX   #$03	; $copy $380 bytes of buffer data
+            LDY   #$7F	; this is a player's board
 L5380       LDA   ($14),Y
             STA   ($16),Y
             DEY
@@ -1729,61 +1743,72 @@ L5380       LDA   ($14),Y
             LDA   ($14),Y
             STA   ($16),Y
             DEY
-            DEC   $17
-            DEC   $15
+            DEC   $16+1
+            DEC   $14+1
             DEX
             BPL   L5380
             RTS
 
-L5394       LDA   $50
+*-----------------------------------
+* SAVE PLAYER BOARD
+*-----------------------------------
+
+savePLAYERBOARD
+            LDA   $50
             ASL
             TAX
             LDA   L53B2,X
             STA   $16
-            LDA   L53B3,X
+            LDA   L53B2+1,X
             CLC
             ADC   #$03
-            STA   $17
-            LDA   #$3A
+            STA   $16+1
+            LDA   #<theBOARD
             STA   $14
-            LDA   #$62
+            LDA   #>theBOARD
             CLC
             ADC   #$03
-            STA   $15
+            STA   $14+1
             BNE   L537C
-L53B2       DB    $66
-L53B3       DB    $06
-            DB    $00
-            DB    $0C
-            DB    $00
-            DB    $10
-            DB    $80
-            DB    $13
-            DB    $00
-            DB    $17
-            DB    $80
-            DB    $1A
-L53BE       LDX   $50
+
+L53B2       DA    $0666		; board buffers ($380) per player
+            DA    L0C00
+            DA    L1000
+            DA    L1380
+            DA    L1700
+            DA    L1A80
+
+*-----------------------------------
+* SAVE PLAYER DATA
+*-----------------------------------
+
+savePLAYERDATA
+            LDX   $50
             LDY   L53E0,X
             LDX   #$07
 L53C5       LDA   $52,X
-            STA   $0300,Y
+            STA   L0300,Y
             DEY
             DEX
             BPL   L53C5
             RTS
 
-L53CF       LDX   $50
+*-----------------------------------
+* LOAD PLAYER DATA
+*-----------------------------------
+
+loadPLAYERDATA
+            LDX   $50
             LDY   L53E0,X
             LDX   #$07
-L53D6       LDA   $0300,Y
+L53D6       LDA   L0300,Y
             STA   $52,X
             DEY
             DEX
             BPL   L53D6
             RTS
 
-L53E0       DB    $00
+L53E0       DB    $00	; offset of player data
             DB    $07
             DB    $0F
             DB    $17
@@ -1811,7 +1836,7 @@ L5402       STA   |$0059,Y
             DEY
             BPL   L5402
             JSR   L6E79
-            JSR   L53CF
+            JSR   loadPLAYERDATA
             LDA   #$01
             STA   $E9
             LDA   #$A0
@@ -2004,8 +2029,8 @@ L54E0       LDA   #$01
             LDA   $51
             STA   $50
             JSR   L5331
-L54FB       JSR   L53BE
-            JSR   L5394
+L54FB       JSR   savePLAYERDATA
+            JSR   savePLAYERBOARD
             DEC   $50
             BNE   L54FB
             LDA   #$01
@@ -2037,7 +2062,7 @@ L550E       LDA   $50
 L5534       JSR   L5CF6
             LDA   $50
             BEQ   L553E
-            JSR   L53CF
+            JSR   loadPLAYERDATA
 L553E       JSR   L70CC
             DEC   $50
             BMI   L5563
@@ -2063,7 +2088,7 @@ L5563       LDA   #<L55F7
             RTS
 
 L556E       LDA   L55C7,X
-            STA   $04
+            STA   zpXCOL
             LDA   L55C8,X
             STA   $10
             LDA   L55C9,X
@@ -2073,7 +2098,7 @@ L556E       LDA   L55C7,X
             LDA   L55CB,X
             STA   $11
             LDA   #$00
-            STA   $03
+            STA   zpXBIT
             LDA   #$07
             STA   $18
             STA   $1A
@@ -2088,8 +2113,8 @@ L5596       LDA   #>L55F7
 L55A5       RTS
 
 L55A6       JSR   setHGRADDRESS
-            LDX   $03
-            LDY   $04
+            LDX   zpXBIT
+            LDY   zpXCOL
             LDA   $1A
             STA   $09
 L55B1       LDA   $0666,X
@@ -2099,9 +2124,9 @@ L55B1       LDA   $0666,X
             INY
             DEC   $09
             BNE   L55B1
-            STX   $03
-            INC   $10
-            DEC   $18
+            STX   $03	; next X
+            INC   $10	; next Y
+            DEC   $18	; data--
             BNE   L55A6
             RTS
 
@@ -2253,29 +2278,30 @@ L5628       DB    $30
             DB    $38
 
 *-----------------------------------
-* 
+* PREPARE THE COMPLETE LEVEL
 *-----------------------------------
 
-L5659       JSR   clearHGR
+prepareLEVEL
+            JSR   clearHGR
             STA   KBDSTROBE
             JSR   setHGR
             JSR   drawGAMEBOARD
-            JSR   L8A7D
-            LDA   $50
+            JSR   drawGHOSTDOOR
+            LDA   $50	; save current player index
             STA   $F1
-            JSR   L53CF
-            JSR   L6113
+            JSR   loadPLAYERDATA
+            JSR   drawDOTS
             JSR   L550A
-            LDA   $F1
+            LDA   $F1	; restore current player index
             STA   $50
-            JSR   L53CF
+            JSR   loadPLAYERDATA
             JSR   L5692
             JSR   L56CF
             LDA   $E8
             BNE   L5691
-            LDA   $F4
+            LDA   $F4	; did we already play the intro music? 
             BNE   L5691
-            JSR   L7D38
+            JSR   playINTROMUSIC
             LDA   #$01
             STA   $F4
 L5691       RTS
@@ -2426,12 +2452,12 @@ L5772       LDY   #$00
             STA   $10
             JSR   L7819
 L5783       CLC
-            LDA   #<L623A
+            LDA   #<theBOARD
             ADC   #$43
             STA   $16
-            LDA   #>L623A
+            LDA   #>theBOARD
             ADC   #$03
-            STA   $17
+            STA   $16+1
             LDY   #$00
             LDA   ($16),Y
             BEQ   L57A1
@@ -2458,10 +2484,10 @@ L57BD       RTS
 
 L57BE       LDA   #$00
             STA   $0D
-            LDA   #>L623A
-            STA   $17
+            LDA   #>theBOARD
+            STA   $16+1
             CLC
-            LDA   #<L623A
+            LDA   #<theBOARD
             ADC   #$23
             STA   $16
             BCC   L57D1
@@ -2489,10 +2515,10 @@ L57ED       LDY   #$00
             STA   $10
             JSR   L61B6
 L57FE       CLC
-            LDA   #<L623A
+            LDA   #<theBOARD
             ADC   #$43
             STA   $16
-            LDA   #>L623A
+            LDA   #>theBOARD
             ADC   #$03
             STA   $17
             LDY   #$00
@@ -2539,13 +2565,13 @@ L5850       JSR   L5839
 L585A       LDA   #$68
             STA   $10
             LDA   #$00
-            STA   $03
+            STA   zpXBIT
             LDA   #$05
             STA   $1A
             LDA   #$07
             STA   $18
             LDA   #$11
-            STA   $04
+            STA   zpXCOL
             LDA   #$90
             STA   L55B1+1
             LDA   #$58
@@ -2557,7 +2583,7 @@ L587D       LDX   #$FF
             DEY
             BNE   L587D
             LDA   #$10
-            STA   $04
+            STA   zpXCOL
             LDA   #$66
             STA   $10
             JMP   L6978
@@ -2597,6 +2623,11 @@ L587D       LDX   #$FF
             DB    $74
             DB    $21
             DB    $04
+
+*-----------------------------------
+* 
+*-----------------------------------
+
 L58B3       LDA   $59
             CMP   #$01
             BNE   L58C6
@@ -2630,7 +2661,7 @@ L58E7       LDA   $50
             ASL
             TAX
             LDA   L6992,X
-            STA   $04
+            STA   zpXCOL
             LDA   L6993,X
             SBC   #$0E
             STA   $10
@@ -2661,10 +2692,10 @@ L5903       DB    $08
             DB    $08
 
 *-----------------------------------
-* 
+* DRAW A DOT ON SCREEN
 *-----------------------------------
 
-L5913       LDA   L5925,X
+drawDOT     LDA   L5925,X
             ORA   (zpHGR),Y
             STA   (zpHGR),Y
             RTS
@@ -2691,29 +2722,31 @@ L592C       DB    $FE
             DB    $BF
 
 *-----------------------------------
-* 
+* CALCULATE HGR X-COORDS
 *-----------------------------------
 
-L5933       LDA   $0D
-            BEQ   L594B
-            CLC
+calcXYHGR   LDA   $0D	; address in board?
+            BEQ   L594B	; yup
+            CLC	; no, after
             LDA   $0C
             ADC   #$04
             TAX
             CLC
             LDA   L5A58,X
             ADC   #$24
-            STA   $04
+            STA   zpXCOL	; to the right of the board
             LDA   L5958,X
-            STA   $03
+            STA   zpXBIT	; the x-sprite offset
             RTS
 
-L594B       LDX   $0C
+L594B       LDX   $0C	; from x-coord
             LDA   L5A58,X
-            STA   $04
+            STA   zpXCOL	; to x-screen
             LDA   L5958,X
-            STA   $03
+            STA   zpXBIT	; and x-sprite offset
             RTS
+
+*--- X-coord to Y-byte
 
 L5958       HEX   00010203040506000102030405060001
             HEX   02030405060001020304050600010203
@@ -2731,6 +2764,9 @@ L5958       HEX   00010203040506000102030405060001
             HEX   05060001020304050600010203040506
             HEX   00010203040506000102030405060001
             HEX   02030405060001020304050600010203
+
+*--- X-coord to Y-col
+
 L5A58       HEX   00000000000000010101010101010202
             HEX   02020202020303030303030304040404
             HEX   04040405050505050505060606060606
@@ -2789,36 +2825,36 @@ L5C27       HEX   0004080C1014181C0004080C1014181C
             HEX   03070B0F13171B1F03070B0F13171B1F
 
 *-----------------------------------
-* 
+* GET NEXT X BIT (0..7)
 *-----------------------------------
 
-L5CE7       INX
+getNEXTXBIT INX	; next X-bit
             CPX   #$07
             BCC   L5CEF
-            LDX   #$00
-            INY
+            LDX   #$00	; loop done
+            INY	; next Y-coord
 L5CEF       RTS
 
 *-----------------------------------
 * DRAW LINE
 *-----------------------------------
 
-drawLINE    LDA   #$00
+drawHLINE   LDA   #$00
             STA   $0D
             STA   $0F
 L5CF6       JSR   setHGRADDRESS
-            JSR   L5933
-            LDX   $03
-            LDY   $04
-L5D00       JSR   L5913
+            JSR   calcXYHGR
+            LDX   zpXBIT
+            LDY   zpXCOL
+L5D00       JSR   drawDOT
             LDA   (zpHGR),Y
             AND   #$7F
             ORA   $1E
             STA   (zpHGR),Y
             LDA   zpMONITOR
             BEQ   L5D31
-            JSR   L5CE7
-            JSR   L5CE7
+            JSR   getNEXTXBIT
+            JSR   getNEXTXBIT
             CLC
             LDA   $0C
             ADC   #$02
@@ -2835,22 +2871,26 @@ L5D2A       LDA   $0E	; end of X?
             BCS   L5D00	; no, loop
 L5D30       RTS
 
-L5D31       JSR   L5CE7
+L5D31       JSR   getNEXTXBIT
             INC   $0C
             BNE   L5D20
             INC   $0D
             JMP   L5D20
 
-L5D3D       JSR   L5933
+*-----------------------------------
+* DRAW A VERTICAL LINE
+*-----------------------------------
+
+drawVLINE   JSR   calcXYHGR
 L5D40       JSR   setHGRADDRESS
-            LDX   $03
-            LDY   $04
-            JSR   L5913
-            INC   $10
-            LDA   $11
+            LDX   zpXBIT
+            LDY   zpXCOL
+            JSR   drawDOT
+            INC   $10	; next Y
+            LDA   $11	; Y-end reached?
             CMP   $10
-            BCS   L5D40
-            RTS
+            BCS   L5D40	; no, loop
+            RTS	; yes, exit
 
 *-----------------------------------
 * DRAW GAME BOARD
@@ -2873,7 +2913,7 @@ L5D66       LDA   #<boardCOLOR
             STA   $16+1
 L5D6E       LDA   #$00
             STA   $0D
-            LDA   #$48		; $48 entries to handle
+            LDA   #$48		; $48 entries for horizontal line
             STA   $08
 L5D76       LDY   #$00
             LDA   ($16),Y
@@ -2884,7 +2924,7 @@ L5D76       LDY   #$00
             INY
             LDA   ($16),Y
             STA   $10		; y
-            JSR   drawLINE
+            JSR   drawHLINE
             CLC
             LDA   #$03
             ADC   $16
@@ -2893,7 +2933,8 @@ L5D76       LDY   #$00
             INC   $17
 L5D94       DEC   $08
             BNE   L5D76
-            LDA   #$46
+
+            LDA   #$46		; $46 entries for vertical line
             STA   $08
 L5D9C       LDY   #$00
             LDA   ($16),Y
@@ -2904,7 +2945,7 @@ L5D9C       LDY   #$00
             INY
             LDA   ($16),Y
             STA   $11
-            JSR   L5D3D
+            JSR   drawVLINE
             CLC
             LDA   $16
             ADC   #$03
@@ -2976,64 +3017,71 @@ boardBW     HEX   3C88058C8E1D90DC05C2DC3CC2E253C2
             HEX   A7D0A9AC9CA9ACAE97A7
 
 *-----------------------------------
-* 
+* DRAW ALL REMAINING DOTS
 *-----------------------------------
+* 0: empty
+* 1: normal dot
+* 2: energy dot
+*
+* The board is stored per column!!
 
-L6113       LDA   #<L623A
+drawDOTS    LDA   #<theBOARD
             STA   $16
-            LDA   #>L623A
+            LDA   #>theBOARD
             STA   $16+1
-            LDA   #$3B
+            LDA   #$3B	; draw at X=$3B
             STA   $0E
-L611F       LDA   #$01
+L611F       LDA   #$01	; index in board
             STA   $19
-            LDA   #$0B
+            LDA   #$0B	; draw at Y=$B
             STA   $11
 L6127       LDY   $19
             LDA   ($16),Y
-            BEQ   L614D
+            BEQ   L614D	; empty
             ROR
             BCS   L6142
-            LDA   $0E
-            STA   $0C
+            LDA   $0E	; move X/Y coord
+            STA   $0C	; by -1
             DEC   $0C
             LDA   $11
             STA   $10
             DEC   $10
-            JSR   L61B6
+            JSR   L61B6	; draw big dot
             CLC
             BCC   L614D
 L6142       LDA   $0E
             STA   $0C
             LDA   $11
             STA   $10
-            JSR   L6172
-L614D       CLC
+            JSR   L6172	; draw standard energy dot
+	
+L614D       CLC	; next Y on board
             LDA   $11
             ADC   #$06
             STA   $11
-            INC   $19
-            LDA   $19
+
+            INC   $19	; next X-board
+            LDA   $19	; end of line?
             CMP   #$1F
             BCC   L6127
-            LDA   $16
+            LDA   $16	; yes, next board line
             ADC   #$1F
             STA   $16
             BCC   L6166
-            INC   $17
-L6166       CLC
+            INC   $16+1
+L6166       CLC	; next X
             LDA   $0E
             ADC   #$06
             STA   $0E
-            CMP   #$DD
+            CMP   #$DD	; until last line
             BCC   L611F
             RTS
 
-L6172       JSR   L5933
+L6172       JSR   calcXYHGR
             ASL   $03
             JSR   setHGRADDRESS
-            LDX   $03
-            LDY   $04
+            LDX   zpXBIT
+            LDY   zpXCOL
             LDA   L61A8,X
             ORA   (zpHGR),Y
             STA   (zpHGR),Y
@@ -3044,8 +3092,8 @@ L6172       JSR   L5933
             STA   (zpHGR),Y
             INC   $10
             JSR   setHGRADDRESS
-            LDX   $03
-            LDY   $04
+            LDX   zpXBIT
+            LDY   zpXCOL
             LDA   L61A8,X
             ORA   (zpHGR),Y
             STA   (zpHGR),Y
@@ -3192,1811 +3240,91 @@ L61CA       DB    $86
             DB    $80
             DB    $80
             DB    $80
-L623A       DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $FF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $AF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $AF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $AF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $AF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $AF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-            DB    $10
-            DB    $10
-            DB    $BF
-            DB    $BF
-L65BA       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $01
-            DB    $02
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $02
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $01
-            DB    $02
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $02
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
+
+*-----------------------------------
+* CURRENT BOARD (32-Y x 28-X)
+*-----------------------------------
+
+theBOARD    HEX   1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF
+            HEX   1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF
+            HEX   1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF
+            HEX   1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF
+            HEX   1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF
+            HEX   1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF
+            HEX   1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF
+            HEX   1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF
+            HEX   1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF
+            HEX   1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF
+            HEX   1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010FFBF1010BFBF1010BFBF
+            HEX   1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF
+            HEX   1010BFBF1010AFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF
+            HEX   1010BFBF1010AFBF1010BFBF1010BFBF1010BFBF1010AFBF1010BFBF1010BFBF
+            HEX   1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF
+            HEX   1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF
+            HEX   1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF
+            HEX   1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF
+            HEX   1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF
+            HEX   1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF
+            HEX   1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF
+            HEX   1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF
+            HEX   1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF
+            HEX   1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF
+            HEX   1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF
+            HEX   1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF
+            HEX   1010BFBF1010AFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF
+            HEX   1010BFBF1010AFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF1010BFBF
+
+*-----------------------------------
+* DEFAULT BOARD (STORED PER COLUMN)
+*-----------------------------------
+* The first byte is not used to make 32b wide
+* Turn your head 90¡ to the left to see where the dots are
+
+dftBOARD    HEX   0000000000000000000000000000000000000000000000000000000000000000
+            HEX   0001010201010101010000000000000000000000010101020000010101010000
+            HEX   0001000000010000010000000000000000000000010000010000010000010000
+            HEX   0001000000010000010000000000000000000000010000010101010000010000
+            HEX   0001000000010000010000000000000000000000010000000000010000010000
+            HEX   0001000000010000010000000000000000000000010000000000010000010000
+            HEX   0001010101010101010101010101010101010101010101010101010000010000
+            HEX   0001000000010000000000000000000000000000010000010000000000010000
+            HEX   0001000000010000000000000000000000000000010000010000000000010000
+            HEX   0001000000010101010000000000000000000000010000010101010000010000
+            HEX   0001000000010000010000000000000000000000010000010000010000010000
+            HEX   0001000000010000010000000000000000000000010000010000010000010000
+            HEX   0001010101010000010101000000000000000000010101010000010101010000
+            HEX   0000000000010000000000000000000000000000000000000000000000010000
+            HEX   0000000000010000000000000000000000000000000000000000000000010000
+            HEX   0001010101010000010101000000000000000000010101010000010101010000
+            HEX   0001000000010000010000000000000000000000010000010000010000010000
+            HEX   0001000000010000010000000000000000000000010000010000010000010000
+            HEX   0001000000010101010000000000000000000000010000010101010000010000
+            HEX   0001000000010000000000000000000000000000010000010000000000010000
+            HEX   0001000000010000000000000000000000000000010000010000000000010000
+            HEX   0001010101010101010101010101010101010101010101010101010000010000
+            HEX   0001000000010000010000000000000000000000010000000000010000010000
+            HEX   0001000000010000010000000000000000000000010000000000010000010000
+            HEX   0001000000010000010000000000000000000000010000010101010000010000
+            HEX   0001000000010000010000000000000000000000010000010000010000010000
+            HEX   0001010201010101010000000000000000000000010101020000010101010000
+            HEX   0000000000000000000000000000000000000000000000000000000000000000
+
+*-----------------------------------
+* DRAW BIG SPRITE
+*-----------------------------------
 
 L693A       LDA   #$F8
             STA   $18
-            JSR   L5933
+            JSR   calcXYHGR
             LDA   $03
             ASL
             ASL
             ASL
             ASL
-            STA   $03
+            STA   zpXBIT
 L6949       JSR   setHGRADDRESS
-            LDX   $03
-            LDY   $04
+            LDX   zpXBIT
+            LDY   zpXCOL
 L6950       LDA   $0666,X
             ORA   (zpHGR),Y
             STA   (zpHGR),Y
@@ -5016,13 +3344,13 @@ L696A       LDA   $50
             ASL
             TAX
             LDA   L6992,X
-            STA   $04
+            STA   zpXCOL
             LDA   L6993,X
             STA   $10
 L6978       LDA   #$0C
             STA   $18
 L697C       JSR   setHGRADDRESS
-            LDY   $04
+            LDY   zpXCOL
             LDX   #$08
             LDA   #$80
 L6985       STA   (zpHGR),Y
@@ -5047,17 +3375,21 @@ L6993       DB    $5E
             DB    $20
             DB    $5E
 
+*-----------------------------------
+* 
+*-----------------------------------
+
 L699E       JSR   L7D9A
 L69A1       LDA   #$F6
             STA   $18
-            JSR   L5933
+            JSR   calcXYHGR
             ASL   $03
             ASL   $03
 L69AC       JSR   setHGRADDRESS
-            LDA   #$03
+            LDA   #$03	; width
             STA   $09
-            LDX   $03
-            LDY   $04
+            LDX   zpXBIT
+            LDY   zpXCOL
 L69B7       LDA   L69CD,X
             AND   (zpHGR),Y
             ORA   #$80
@@ -5066,8 +3398,8 @@ L69B7       LDA   L69CD,X
             INX
             DEC   $09
             BNE   L69B7
-            INC   $10
-            INC   $18
+            INC   $10	; Y+=1
+            INC   $18	; data++
             BNE   L69AC
             RTS
 
@@ -5156,11 +3488,11 @@ L6A28       STA   L6A4A+1
             STA   $18
             LDA   #$03
             STA   $1A
-            JSR   L5933
+            JSR   calcXYHGR
             JSR   L780A
 L6A3F       JSR   setHGRADDRESS
-            LDX   $03
-            LDY   $04
+            LDX   zpXBIT
+            LDY   zpXCOL
             LDA   $1A
             STA   $09
 L6A4A       LDA   $0666,X
@@ -5182,7 +3514,7 @@ L6A62       STA   L55B1+1
             JSR   L7D9A
             LDA   #$0A
             STA   $18
-            JSR   L5933
+            JSR   calcXYHGR
             JSR   L780A
             LDA   #$03
             STA   $1A
@@ -5245,7 +3577,7 @@ L6AE4       LDA   $5C
             JMP   L6EDA
 
 L6AEB       LDA   #$10
-            STA   $04
+            STA   zpXCOL
             LDA   #$66
             STA   $10
             LDA   #$00
@@ -5760,10 +4092,10 @@ L6D05       LDX   #$FF
             JSR   doWAIT2
             DEY
             BNE   L6D05
-            JSR   L8155
-            INC   $55
+            JSR   playCARTOON
+            INC   $55	; ZP next level?
             JSR   L531E
-            JSR   L5659
+            JSR   prepareLEVEL
             JSR   L53E6
             JMP   L530F
 
@@ -6091,10 +4423,10 @@ L6EE2       STA   L6EFF+1
             LDA   #$0C
             STA   $18
             LDA   #$00
-            STA   $03
+            STA   zpXBIT
 L6EF0       JSR   setHGRADDRESS
-            LDX   $03
-            LDY   $04
+            LDX   zpXBIT
+            LDY   zpXCOL
             LDA   #$03
             STA   $09
 L6EFB       LDA   (zpHGR),Y
@@ -6121,7 +4453,7 @@ L6F1B       ASL
             LDA   #$B0
             STA   $10
             LDA   #$21
-            STA   $04
+            STA   zpXCOL
             LDA   L6AFE,X
             LDY   L6AFF,X
             JMP   L6EE2
@@ -7123,9 +5455,9 @@ L7609       RTS
             DB    $3E
             DB    $33
             DB    $33
-L780A       LDX   $03
+L780A       LDX   zpXBIT
             LDA   L7812,X
-            STA   $03
+            STA   zpXBIT
             RTS
 
 L7812       DB    $00
@@ -7137,11 +5469,11 @@ L7812       DB    $00
             DB    $B4
 L7819       LDA   #$F8
             STA   $18
-            JSR   L5933
+            JSR   calcXYHGR
             ASL   $03
 L7822       JSR   setHGRADDRESS
-            LDX   $03
-            LDY   $04
+            LDX   zpXBIT
+            LDY   zpXCOL
             LDA   L7843,X
             AND   (zpHGR),Y
             ORA   #$80
@@ -7392,7 +5724,7 @@ L79CD       LDA   $61
             LDA   #$02
             STA   $E7
             LDA   #$10
-            STA   $04
+            STA   zpXCOL
             LDA   #$66
             STA   $10
             JSR   L6978
@@ -7827,6 +6159,10 @@ L7C68       DB    $70
             DB    $50
             DB    $00
 
+*-----------------------------------
+* PLAY HIGHER BEEPS
+*-----------------------------------
+
 L7C82       LDA   $0A
             ASL
             TAX
@@ -7972,7 +6308,12 @@ L7D32       LDA   #$04
             STA   L7CF7+1
             RTS
 
-L7D38       LDA   #<L7D3F
+*-----------------------------------
+* PLAY INTRO MUSIC
+*-----------------------------------
+
+playINTROMUSIC
+            LDA   #<L7D3F
             LDY   #>L7D3F
             JMP   L7D0D
 
@@ -8125,7 +6466,7 @@ L7E13       JSR   L7D8D
             JMP   L79A4
 
 L7E1F       JSR   L7DA9
-            JSR   L5933
+            JSR   calcXYHGR
             LDY   #$1D
 L7E27       LDA   ($16),Y
             STA   L7E70,Y
@@ -8706,7 +7047,7 @@ L8107       STA   $10
             STX   $1A
             STY   $04
             LDA   #$00
-            STA   $03
+            STA   zpXBIT
             RTS
 
 L8112       STX   $18
@@ -8772,42 +7113,57 @@ L8139       DB    $4E
             DB    $02
 
 *-----------------------------------
-* 
+* WHICH CARTOON TO PLAY?
 *-----------------------------------
 
-L8155       LDA   $55
+playCARTOON LDA   $55
 L8157       CMP   #$02
             BNE   L815E
-            JMP   L81AE
+            JMP   playCARTOON1
 
 L815E       CMP   #$05
             BNE   L8165
-            JMP   L83D0
+            JMP   playCARTOON2
 
 L8165       CMP   #$09
             BNE   L816C
-            JMP   L8486
+            JMP   playCARTOON3
 
 L816C       BCC   L8172
             SBC   #$0D
             BCS   L8157
 L8172       RTS
 
-L8173       STA   $0C
-            STY   $0E
-            STX   $10
-            LDA   #$80
+*-----------------------------------
+* DRAW AN HORIZONTAL LINE
+*-----------------------------------
+
+cartoonHLINE
+            STA   $0C	; X
+            STY   $0E	; Y from
+            STX   $10	; Y to
+            LDA   #$80	; mode
             STA   $1E
-            JMP   drawLINE
+            JMP   drawHLINE
 
-L8180       STA   $0C
-            STY   $10
-            STX   $11
-            JMP   L5D3D
+*-----------------------------------
+* DRAW A VERTICAL LINE
+*-----------------------------------
 
-L8189       LDA   #$C1
+cartoonVLINE
+            STA   $0C	; X
+            STY   $10	; Y-from
+            STX   $11	; Y-to
+            JMP   drawVLINE
+
+*-----------------------------------
+* CARTOON INIT
+*-----------------------------------
+
+initCARTOON
+            LDA   #$C1	; start X
             STA   $60
-            LDA   #$7A
+            LDA   #$7A	; Y
             STA   $61
             STA   $71
             LDA   #$E5
@@ -8825,9 +7181,14 @@ L8189       LDA   #$C1
             STA   $62
             RTS
 
-L81AE       JSR   clearHGR
+*-----------------------------------
+* PLAY CARTOON 1
+*-----------------------------------
+
+playCARTOON1
+            JSR   clearHGR
             JSR   setHGR
-            JSR   L8189
+            JSR   initCARTOON
 L81B7       DEC   $59
             BNE   L81DB
             LDA   #$20
@@ -8835,7 +7196,7 @@ L81B7       DEC   $59
             JSR   L7D80
             JSR   L699E
             SEC
-            LDA   $60
+            LDA   $60	; x -= 2
             SBC   #$02
             STA   $60
             STA   $0C
@@ -8917,7 +7278,7 @@ L8259       INC   $66
             STA   $10
             LDA   $60
             STA   $0C
-            JSR   L5933
+            JSR   calcXYHGR
             LDY   #$4F
 L827A       LDA   $0666,Y
             STA   L7E70,Y
@@ -8931,8 +7292,8 @@ L828B       JSR   L82B1
             DEC   $03
             BNE   L828B
 L8292       JSR   setHGRADDRESS
-            LDX   $03
-            LDY   $04
+            LDX   zpXBIT
+            LDY   zpXCOL
             LDA   #$04
             STA   $09
 L829D       LDA   L7E70,X
@@ -8987,12 +7348,13 @@ L8380       HEX   00000000007E0100407F0700607F0300
             HEX   707F0100607F0300407F0700007E0100
 
 *-----------------------------------
-* 
+* PLAY CARTOON 2
 *-----------------------------------
 
-L83D0       JSR   clearHGR
+playCARTOON2
+            JSR   clearHGR
             JSR   setHGR
-            JSR   L8189
+            JSR   initCARTOON
 L83D9       DEC   $59
             BNE   L840C
             LDA   #$28
@@ -9000,11 +7362,11 @@ L83D9       DEC   $59
             LDA   #$80
             LDY   #$7C
             LDX   #$81
-            JSR   L8180
+            JSR   cartoonVLINE
             LDA   #$81
             LDY   #$7C
             LDX   #$81
-            JSR   L8180
+            JSR   cartoonVLINE
             JSR   L7D80
             JSR   L699E
             SEC
@@ -9044,7 +7406,7 @@ L840C       JSR   doWAIT
             LDA   L847E,X
             LDY   L847F,X
             LDX   #$7F
-            JSR   L8180
+            JSR   cartoonVLINE
             JMP   L83D9
 
 L844F       JSR   L7D8D
@@ -9060,11 +7422,11 @@ L844F       JSR   L7D8D
             LDA   #$74
             LDY   #$7D
             LDX   #$7F
-            JSR   L8180
+            JSR   cartoonVLINE
             LDA   #$76
             LDY   #$7E
             LDX   #$7F
-            JSR   L8180
+            JSR   cartoonVLINE
             JMP   L83D9
 L847D       RTS
 
@@ -9078,12 +7440,13 @@ L847F       DB    $7B
             DB    $7E
 
 *-----------------------------------
-* 
+* PLAY CARTOON 3
 *-----------------------------------
 
-L8486       JSR   clearHGR
+playCARTOON3
+            JSR   clearHGR
             JSR   setHGR
-            JSR   L8189
+            JSR   initCARTOON
 L848F       DEC   $59
             BNE   L84B0
             LDA   #$26
@@ -9102,6 +7465,7 @@ L848F       DEC   $59
 L84B0       JSR   doWAIT
             DEC   $80
             BNE   L848F
+
             LDA   #$21
             STA   $80
             JSR   L7D8D
@@ -9117,12 +7481,10 @@ L84B0       JSR   doWAIT
             ADC   #$03
             LDY   #$7D
             LDX   #$7F
-            JSR   L8180
+            JSR   cartoonVLINE
             JMP   L848F
 
-*-----------------------------------
-* 
-*-----------------------------------
+*--- Play 2nd part of the cartoon
 
 L84DD       JSR   L7D8D
             JSR   L699E
@@ -9241,7 +7603,7 @@ L856C       DB    $00
             DB    $60
 
 *-----------------------------------
-* 
+* PACMAN IS TRAPPED (DEAD CODE)
 *-----------------------------------
 
 L858C       JSR   clearHGR
@@ -9251,36 +7613,36 @@ L858C       JSR   clearHGR
             LDA   #$00
             LDY   #$7A
             LDX   #$51
-            JSR   L8173
+            JSR   cartoonHLINE
             LDA   #$00
             LDY   #$7A
             LDX   #$5E
-            JSR   L8173
+            JSR   cartoonHLINE
             LDA   #$88
             LDY   #$FC
             LDX   #$51
-            JSR   L8173
+            JSR   cartoonHLINE
             LDA   #$88
             LDY   #$FC
             LDX   #$5E
-            JSR   L8173
+            JSR   cartoonHLINE
             LDA   #$7A
             LDY   #$00
             LDX   #$51
-            JSR   L8180
+            JSR   cartoonVLINE
             LDA   #$88
             LDY   #$00
             LDX   #$51
-            JSR   L8180
+            JSR   cartoonVLINE
             LDA   #$7A
             LDY   #$5E
             LDX   #$BE
-            JSR   L8180
+            JSR   cartoonVLINE
             LDA   #$88
             LDY   #$5E
             LDX   #$BE
-            JSR   L8180
-            JSR   L8189
+            JSR   cartoonVLINE
+            JSR   initCARTOON
             LDA   #$02
             STA   $66
             LDA   #$04
@@ -9355,7 +7717,7 @@ L8662       JSR   L8712
             LDA   #$8D
             LDY   #$8F
             LDX   #$57
-            JSR   L8173
+            JSR   cartoonHLINE
             LDX   #$50
             JSR   doWAIT2
             JSR   L7D80
@@ -9368,7 +7730,7 @@ L8662       JSR   L8712
             LDA   #$81
             LDY   #$49
             LDX   #$4C
-            JSR   L8180
+            JSR   cartoonVLINE
             LDX   #$50
             JSR   doWAIT2
             JSR   L7D80
@@ -9381,7 +7743,7 @@ L8662       JSR   L8712
             LDA   #$73
             LDY   #$75
             LDX   #$57
-            JSR   L8173
+            JSR   cartoonHLINE
             LDX   #$50
             JSR   doWAIT2
             LDA   #$00
@@ -9394,7 +7756,7 @@ L8662       JSR   L8712
             LDA   #$81
             LDY   #$63
             LDX   #$66
-            JSR   L8180
+            JSR   cartoonVLINE
             LDY   #$19
 L86E0       NOP
             LDX   #$64
@@ -9502,6 +7864,11 @@ L8753       DB    $04
             DB    $02
             DB    $01
             DB    $01
+
+*-----------------------------------
+* 
+*-----------------------------------
+
 L8763       DEC   $80
             BEQ   L8768
             RTS
@@ -9873,7 +8240,7 @@ L8A05       LDA   $70
             BEQ   L89F4
             CMP   #$47
             BNE   L89FC
-            JSR   L8A7D
+            JSR   drawGHOSTDOOR
             LDA   #$17
             STA   $73
             LDA   #$18
@@ -9956,22 +8323,30 @@ L8A44       DB    $03
             DB    $00
             DB    $03
             DB    $FF
-	
-L8A7D       LDA   #$87
+
+*-----------------------------------
+* DRAW GHOST DOOR
+*-----------------------------------
+
+drawGHOSTDOOR       LDA   #$87
             STA   $0C
             LDA   #$93
             STA   $0E
             LDA   #$4D
             STA   $10
-            JSR   drawLINE
+            JSR   drawHLINE
             LDA   #$87
             STA   $0C
             LDA   #$93
             STA   $0E
             LDA   #$4E
             STA   $10
-            JSR   drawLINE
+            JSR   drawHLINE
             RTS
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 L8A9C       JSR   L7D8D
             JSR   L699E
@@ -10175,13 +8550,13 @@ L8C0E       DEC   $58
             BNE   L8C1A
             LDA   #$00
             STA   $58
-L8C1A       JSR   L5394
-            JSR   L53BE
+L8C1A       JSR   savePLAYERBOARD
+            JSR   savePLAYERDATA
             LDA   $50
             STA   $0B
             JMP   L8C2E
 
-L8C27       JSR   L53CF
+L8C27       JSR   loadPLAYERDATA
             LDA   $58
             BNE   L8C4A
 L8C2E       INC   $50
@@ -10193,12 +8568,12 @@ L8C2E       INC   $50
 L8C3A       LDA   $50
             CMP   $0B
             BNE   L8C27
-            JSR   L53CF
+            JSR   loadPLAYERDATA
             LDA   $58
             BNE   L8C4A
             JMP   L6EC3
 
-L8C4A       JSR   L5360
+L8C4A       JSR   loadPLAYERBOARD
             JMP   L5306
 
 L8C50       LDA   $79
@@ -10231,7 +8606,7 @@ L8C6C       LDA   $73
             TAX
             LDA   L8DBE,X
             STA   L8CA6+1
-            LDA   L8DBF,X
+            LDA   L8DBE+1,X
             STA   L8CA6+2
             LDA   $78
             BNE   L8C8F
@@ -10525,103 +8900,57 @@ L8CBE       DB    $00
             DB    $03
             DB    $03
             DB    $03
-L8DBE       DB    $1E
-L8DBF       DB    $8E
-            DB    $28
-            DB    $8E
-            DB    $32
-            DB    $8E
-            DB    $3C
-            DB    $8E
-            DB    $46
-            DB    $8E
-            DB    $6B
-            DB    $8E
-            DB    $90
-            DB    $8E
-            DB    $B3
-            DB    $8E
-            DB    $D6
-            DB    $8E
-            DB    $20
-            DB    $8F
-            DB    $6C
-            DB    $8F
-            DB    $95
-            DB    $8F
-            DB    $BE
-            DB    $8F
-            DB    $ED
-            DB    $8F
-            DB    $1A
-            DB    $90
-            DB    $3B
-            DB    $90
-            DB    $5E
-            DB    $90
-            DB    $5F
-            DB    $90
-            DB    $73
-            DB    $90
-            DB    $B7
-            DB    $90
-            DB    $CF
-            DB    $90
-            DB    $F0
-            DB    $90
-            DB    $11
-            DB    $91
-            DB    $36
-            DB    $91
-            DB    $5D
-            DB    $91
-            DB    $C3
-            DB    $91
-            DB    $2B
-            DB    $92
-            DB    $66
-            DB    $92
-            DB    $A3
-            DB    $92
-            DB    $F2
-            DB    $92
-            DB    $3D
-            DB    $93
-            DB    $6A
-            DB    $93
-            DB    $99
-            DB    $93
-            DB    $DE
-            DB    $93
-            DB    $1D
-            DB    $94
-            DB    $58
-            DB    $94
-            DB    $93
-            DB    $94
-            DB    $C6
-            DB    $94
-            DB    $F7
-            DB    $94
-            DB    $EA
-            DB    $95
-            DB    $C0
-            DB    $96
-            DB    $9D
-            DB    $96
-            DB    $6C
-            DB    $96
-            DB    $27
-            DB    $96
-            DB    $90
-            DB    $95
-            DB    $1F
-            DB    $95
-            DB    $4A
-            DB    $95
-            DB    $6B
-            DB    $95
-            CMP   #$01
+
+L8DBE       DA    L8E1E
+            DA    L8E28
+            DA    L8E32
+            DA    L8E3C
+            DA    L8E46
+            DA    L8E6B
+            DA    L8E90
+            DA    L8EB3
+            DA    L8ED6
+            DA    L8F20
+            DA    L8F6C
+            DA    L8F95
+            DA    L8FBE
+            DA    L8FED
+            DA    L901A
+            DA    L903B
+            DA    L905E
+            DA    L905F
+            DA    L9073
+            DA    L90B7
+            DA    L90CF
+            DA    L90F0
+            DA    L9111
+            DA    L9136
+            DA    L915D
+            DA    L91C3
+            DA    L922B
+            DA    L9266
+            DA    L92A3
+            DA    L92F2
+            DA    L933D
+            DA    L936A
+            DA    L9399
+            DA    L93DE
+            DA    L941D
+            DA    L9458
+            DA    L9493
+            DA    L94C6
+            DA    L94F7
+            DA    L95EA
+            DA    L96C0
+            DA    L969D
+            DA    L966C
+            DA    L9627
+            DA    L9590
+            DA    L951F
+            DA    L954A
+            DA    L956B
+
+L8E1E       CMP   #$01
             BEQ   L8E25
             LDA   #$00
             RTS
@@ -10629,7 +8958,7 @@ L8DBF       DB    $8E
 L8E25       LDA   #$02
             RTS
 
-            CMP   #$01
+L8E28       CMP   #$01
             BEQ   L8E2F
             LDA   #$00
             RTS
@@ -10637,7 +8966,7 @@ L8E25       LDA   #$02
 L8E2F       LDA   #$03
             RTS
 
-            CMP   #$00
+L8E32       CMP   #$00
             BEQ   L8E39
             LDA   #$01
             RTS
@@ -10645,7 +8974,7 @@ L8E2F       LDA   #$03
 L8E39       LDA   #$02
             RTS
 
-            CMP   #$00
+L8E3C       CMP   #$00
             BEQ   L8E43
             LDA   #$01
             RTS
@@ -10653,7 +8982,7 @@ L8E39       LDA   #$02
 L8E43       LDA   #$03
             RTS
 
-            CMP   #$01
+L8E46       CMP   #$01
             BEQ   L8E62
             CPY   #$22
             BCS   L8E5F
@@ -10676,7 +9005,7 @@ L8E62       CPX   $70
 L8E68       LDA   #$02
             RTS
 
-            CMP   #$01
+L8E6B       CMP   #$01
             BEQ   L8E89
             CPY   #$22
             BCS   L8E86
@@ -10699,7 +9028,7 @@ L8E89       CPX   $70
 L8E8D       LDA   #$03
             RTS
 
-            CMP   #$03
+L8E90       CMP   #$03
             BEQ   L8EAC
             CPX   #$5F
             BCS   L8EA2
@@ -10721,7 +9050,7 @@ L8EAC       CPY   $71
 L8EB0       LDA   #$00
             RTS
 
-            CMP   #$02
+L8EB3       CMP   #$02
             BEQ   L8ECF
             CPX   #$BB
             BCC   L8EC5
@@ -10743,7 +9072,7 @@ L8ECF       CPY   $71
 L8ED3       LDA   #$00
             RTS
 
-            CMP   #$01
+L8ED6       CMP   #$01
             BEQ   L8EEF
             CPY   #$58
             BCS   L8F15
@@ -10830,7 +9159,8 @@ L8F64       CPY   $71
             BEQ   L8F36
             BCC   L8F4C
             BCS   L8F61
-            CMP   #$01
+
+L8F6C       CMP   #$01
             BEQ   L8F8A
             CMP   #$02
             BEQ   L8F81
@@ -10855,7 +9185,7 @@ L8F8A       CPY   #$37
 L8F92       LDA   #$03
             RTS
 
-            CMP   #$01
+L8F95       CMP   #$01
             BEQ   L8FB3
             CMP   #$03
             BEQ   L8FAA
@@ -10880,7 +9210,7 @@ L8FB3       CPY   #$37
 L8FBB       LDA   #$02
             RTS
 
-            CMP   #$00
+L8FBE       CMP   #$00
             BEQ   L8FE5
             CMP   #$02
             BEQ   L8FD8
@@ -10908,7 +9238,8 @@ L8FE5       CPX   $70
             BCC   L8FCA
             BEQ   L8FCA
             BCS   L8FDC
-            CMP   #$00
+
+L8FED       CMP   #$00
             BEQ   L9014
             CMP   #$03
             BEQ   L9007
@@ -10935,7 +9266,8 @@ L900E       CPY   #$37
 L9014       CPX   $70
             BCS   L8FF9
             BCC   L900B
-            CMP   #$02
+
+L901A       CMP   #$02
             BEQ   L9032
             CMP   #$00
             BEQ   L9029
@@ -10956,7 +9288,7 @@ L9032       CPY   $71
 L9038       LDA   #$00
             RTS
 
-            CMP   #$03
+L903B       CMP   #$03
             BEQ   L9055
             CMP   #$00
             BEQ   L904C
@@ -10978,8 +9310,8 @@ L9055       CPY   $71
 L905B       LDA   #$00
             RTS
 
-            NOP
-            CMP   #$00
+L905E       NOP
+L905F       CMP   #$00
             BEQ   L906D
             CMP   #$02
             BEQ   L906A
@@ -11032,7 +9364,8 @@ L90A3       CPX   $70
 L90B1       CPY   $71
             BCC   L90A0
             BCS   L9095
-            PHA
+
+L90B7       PHA
             CMP   #$02
             BCC   L90BE
             EOR   #$01
@@ -11047,7 +9380,7 @@ L90C9       TAX
             TXA
             RTS
 
-            CMP   #$02
+L90CF       CMP   #$02
             BEQ   L90E9
             CPX   #$60
             BCC   L90E6
@@ -11068,7 +9401,7 @@ L90E9       CPY   $71
 L90ED       LDA   #$01
             RTS
 
-            CMP   #$03
+L90F0       CMP   #$03
             BEQ   L910A
             CPX   #$B9
             BCS   L9107
@@ -11089,7 +9422,7 @@ L910A       CPY   $71
 L910E       LDA   #$01
             RTS
 
-            CMP   #$03
+L9111       CMP   #$03
             BEQ   L9130
             CMP   #$01
             BEQ   L9129
@@ -11112,7 +9445,8 @@ L912D       LDA   #$01
 L9130       CPY   $71
             BCC   L912D
             BCS   L911D
-            CMP   #$02
+
+L9136       CMP   #$02
             BEQ   L9157
             CMP   #$01
             BEQ   L9150
@@ -11136,7 +9470,8 @@ L9154       LDA   #$01
 L9157       CPY   $71
             BCC   L9154
             BCS   L9144
-            CMP   #$00
+
+L915D       CMP   #$00
             BEQ   L91A3
             CPY   #$36
             BCS   L9168
@@ -11193,7 +9528,8 @@ L91BB       LDA   $62
             CMP   #$03
             BEQ   L9178
             BNE   L9188
-            CMP   #$00
+
+L91C3       CMP   #$00
             BEQ   L920B
             CPY   #$36
             BCS   L91CE
@@ -11251,7 +9587,8 @@ L9223       LDA   $62
             CMP   #$02
             BEQ   L91E0
             BNE   L91F0
-            CMP   #$00
+
+L922B       CMP   #$00
             BEQ   L9258
             CMP   #$02
             BEQ   L924D
@@ -11285,7 +9622,8 @@ L9258       CPY   $71
 L9260       CPX   $70
             BCC   L9237
             BCS   L9255
-            CMP   #$00
+
+L9266       CMP   #$00
             BEQ   L9295
             CMP   #$03
             BEQ   L928A
@@ -11320,7 +9658,8 @@ L9295       CPY   $71
 L929D       CPX   $70
             BCS   L9272
             BCC   L9292
-            CMP   #$03
+
+L92A3       CMP   #$03
             BEQ   L92EC
             CMP   #$01
             BEQ   L92CB
@@ -11364,7 +9703,8 @@ L92D2       CPX   #$83
 L92EC       CPY   $71
             BCC   L92CF
             BCS   L92B5
-            CMP   #$02
+
+L92F2       CMP   #$02
             BEQ   L9337
             CMP   #$01
             BEQ   L9318
@@ -11406,7 +9746,8 @@ L931F       CPX   #$96
 L9337       CPY   $71
             BCC   L931C
             BCS   L9302
-            CMP   #$01
+
+L933D       CMP   #$01
             BEQ   L9364
             CMP   #$02
             BEQ   L9355
@@ -11433,7 +9774,8 @@ L935E       CPX   #$84
 L9364       CPX   $70
             BCC   L9352
             BCS   L935B
-            CMP   #$01
+
+L936A       CMP   #$01
             BEQ   L9393
             CMP   #$03
             BEQ   L9384
@@ -11461,7 +9803,8 @@ L938D       CPX   #$94
 L9393       CPX   $70
             BCS   L9381
             BCC   L938A
-            CMP   #$00
+
+L9399       CMP   #$00
             BEQ   L93CA
             CMP   #$02
             BEQ   L93B1
@@ -11500,7 +9843,8 @@ L93D6       CPX   $70
             BCC   L93AB
             BEQ   L93AB
             BCS   L93BF
-            CMP   #$00
+
+L93DE       CMP   #$00
             BEQ   L940B
             CMP   #$03
             BEQ   L93F4
@@ -11536,7 +9880,8 @@ L940B       CPY   #$B3
 L9417       CPX   $70
             BCS   L93EE
             BCC   L9400
-            CMP   #$00
+
+L941D       CMP   #$00
             BEQ   L943E
             CMP   #$02
             BEQ   L942C
@@ -11570,7 +9915,8 @@ L944E       CPX   $70
             CPY   $71
             BCS   L9429
             BCC   L943B
-            CMP   #$00
+
+L9458       CMP   #$00
             BEQ   L9479
             CMP   #$03
             BEQ   L9467
@@ -11604,7 +9950,8 @@ L9489       CPX   $70
             CPY   $71
             BCS   L9464
             BCC   L9476
-            CMP   #$00
+
+L9493       CMP   #$00
             BEQ   L94BC
             CMP   #$02
             BEQ   L94AF
@@ -11634,7 +9981,8 @@ L94BC       CPY   #$7D
             CPX   $70
             BCC   L94A9
             BCS   L94B9
-            CMP   #$00
+
+L94C6       CMP   #$00
             BEQ   L94ED
             CMP   #$03
             BEQ   L94E2
@@ -11663,7 +10011,8 @@ L94ED       CPY   #$7D
             CPX   $70
             BCS   L94DC
             BCC   L94EA
-            PHA
+
+L94F7       PHA
             TXA
             SEC
             SBC   $70
@@ -11690,7 +10039,7 @@ L9518       LDA   #$01
 L951B       PLA
             JMP   L8F20
 
-            CMP   #$00
+L951F       CMP   #$00
             BEQ   L9544
             CMP   #$03
             BEQ   L9539
@@ -11716,7 +10065,8 @@ L9541       LDA   #$03
 L9544       CPX   $70
             BCS   L9541
             BCC   L9536
-            CMP   #$03
+
+L954A       CMP   #$03
             BEQ   L9564
             CMP   #$00
             BEQ   L955B
@@ -11737,7 +10087,7 @@ L9564       CPY   $71
 L9568       LDA   #$00
             RTS
 
-            CMP   #$03
+L956B       CMP   #$03
             BEQ   L958A
             CMP   #$01
             BEQ   L9583
@@ -11760,7 +10110,8 @@ L9587       LDA   #$01
 L958A       CPY   $71
             BCC   L9580
             BCS   L9587
-            CMP   #$00
+
+L9590       CMP   #$00
             BEQ   L95CA
             CPY   #$36
             BCS   L959B
@@ -11811,7 +10162,8 @@ L95E2       LDA   $62
             CMP   #$03
             BEQ   L95A7
             BNE   L95C1
-            CMP   #$00
+
+L95EA       CMP   #$00
             BEQ   L9619
             CMP   #$03
             BEQ   L960E
@@ -11846,7 +10198,8 @@ L9619       CPY   $71
 L9621       CPX   $70
             BCS   L9616
             BCC   L9603
-            CMP   #$00
+
+L9627       CMP   #$00
             BEQ   L9658
             CMP   #$02
             BEQ   L963F
@@ -11885,7 +10238,8 @@ L9664       CPX   $70
             BCC   L964D
             BEQ   L964D
             BCS   L9639
-            CMP   #$00
+
+L966C       CMP   #$00
             BEQ   L9693
             CMP   #$03
             BEQ   L9688
@@ -11914,7 +10268,8 @@ L9693       CPY   #$7D
             CPX   $70
             BCS   L9690
             BCC   L9685
-            CMP   #$01
+
+L969D       CMP   #$01
             BEQ   L96B5
             CMP   #$02
             BEQ   L96B2
@@ -11936,7 +10291,7 @@ L96B5       CPY   #$37
 L96BD       LDA   #$03
             RTS
 
-            PHA
+L96C0       PHA
             TXA
             SEC
             SBC   $70

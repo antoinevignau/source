@@ -262,7 +262,7 @@ L42D0       LDA   ($14),Y
             STA   zpXCOL
             INY
             LDA   ($14),Y
-            STA   $10
+            STA   zpY1
             STA   $0A
             INY
             STY   $0B
@@ -276,11 +276,11 @@ L42DE       LDY   $0B
             BEQ   L4306
             CMP   #$03
             BCS   L42F6
-            INC   $10
-            INC   $10
+            INC   zpY1
+            INC   zpY1
 L42F6       JSR   L4316
 L42F9       LDA   $0A
-            STA   $10
+            STA   zpY1
             INC   $0B
             INC   $04
             BNE   L42DE
@@ -474,7 +474,7 @@ L43D2       LDA   #$01
             JSR   L42D0
             JSR   L44E8
             LDA   #$22
-            STA   $10
+            STA   zpY1
             LDA   #$01
             STA   $E0
             JSR   L88A2
@@ -484,7 +484,7 @@ L43D2       LDA   #$01
             JSR   L42D0
             JSR   L44E8
             LDA   #$31
-            STA   $10
+            STA   zpY1
             LDA   #$03
             STA   $E0
             JSR   L88A2
@@ -494,7 +494,7 @@ L43D2       LDA   #$01
             JSR   L42D0
             JSR   L44E8
             LDA   #$40
-            STA   $10
+            STA   zpY1
             LDA   #$02
             STA   $E0
             JSR   L88A2
@@ -504,7 +504,7 @@ L43D2       LDA   #$01
             JSR   L42D0
             JSR   L44E8
             LDA   #$4F
-            STA   $10
+            STA   zpY1
             LDA   #$04
             STA   $E0
             JSR   L88A2
@@ -515,7 +515,7 @@ L43D2       LDA   #$01
             LDA   #$74
             STA   $0C
             LDA   #$78
-            STA   $10
+            STA   zpY1
             JSR   L6172
             LDA   #$7C
             STA   $0E
@@ -534,12 +534,12 @@ L43D2       LDA   #$01
             LDA   #$14
             STA   zpXCOL
             LDA   #$75
-            STA   $10
+            STA   zpY1
             JSR   L44F1
             LDA   #$73
             STA   $0C
             LDA   #$81
-            STA   $10
+            STA   zpY1
             JSR   L61B6
             LDA   #$7C
             STA   $0E
@@ -556,12 +556,12 @@ L43D2       LDA   #$01
             LDA   #$14
             STA   zpXCOL
             LDA   #$80
-            STA   $10
+            STA   zpY1
             JSR   L44F1
             LDA   #$0C
             STA   zpXCOL
             LDA   #$9A
-            STA   $10
+            STA   zpY1
             LDA   #$00
             STA   zpXBIT
             LDA   #$05
@@ -1056,14 +1056,14 @@ L4711       JSR   L8712
             LDA   $5F
             BEQ   L4733
             LDA   #$67
-            STA   $10
+            STA   zpY1
             LDA   #$4B
             STA   $0C
             JSR   L61B6
             LDA   #$00
             BEQ   L4740
 L4733       LDA   #$66
-            STA   $10
+            STA   zpY1
             LDA   #$4A
             STA   $0C
             JSR   L7819
@@ -1588,7 +1588,7 @@ L5273       LDY   #$00
             STA   $0E
             INY
             LDA   ($16),Y	; line
-            STA   $10
+            STA   zpY1
             CMP   #$FD		; exit
             BEQ   L52A7
             CMP   #$FE		; reset high-bit
@@ -2037,16 +2037,21 @@ L54FB       JSR   savePLAYERDATA
             STA   $50
             RTS
 
-L550A       LDA   $51
-            STA   $50
+*-----------------------------------
+* DRAW ALL SCORES
+*-----------------------------------
+
+drawSCORES  LDA   $51	; get nb players
+            STA   $50	; make it current
+
 L550E       LDA   $50
             ASL
             ASL
-            ASL
+            ASL	; *8
             TAX
-            LDA   L55CC,X
+            LDA   L55C7+5,X
             STA   $0B
-            LDA   L55CD,X
+            LDA   L55C7+6,X
             STA   $0A
             JSR   L556E
             LDA   #$00
@@ -2064,7 +2069,7 @@ L5534       JSR   L5CF6
             BEQ   L553E
             JSR   loadPLAYERDATA
 L553E       JSR   L70CC
-            DEC   $50
+            DEC   $50	; next player
             BMI   L5563
             BEQ   L554A
             JMP   L550E
@@ -2087,15 +2092,15 @@ L5563       LDA   #<L55F7
             STA   L5596+1
             RTS
 
-L556E       LDA   L55C7,X
+L556E       LDA   L55C7,X	; X on screen
             STA   zpXCOL
-            LDA   L55C8,X
-            STA   $10
-            LDA   L55C9,X
+            LDA   L55C7+1,X	; Y on screen
+            STA   zpY1
+            LDA   L55C7+2,X	; X2
             STA   $0E
-            LDA   L55CA,X
+            LDA   L55C7+3,X
             STA   $0F
-            LDA   L55CB,X
+            LDA   L55C7+4,X	; Y2
             STA   $11
             LDA   #$00
             STA   zpXBIT
@@ -2107,7 +2112,7 @@ L5591       LDA   #<L55F7
 L5596       LDA   #>L55F7
             STA   L55B1+2
             JSR   L55A6
-            LDA   $50
+            LDA   $50		; skip if player 0
             BEQ   L55A5
             JSR   L7159
 L55A5       RTS
@@ -2124,60 +2129,21 @@ L55B1       LDA   $0666,X
             INY
             DEC   $09
             BNE   L55B1
-            STX   $03	; next X
-            INC   $10	; next Y
+            STX   zpXBIT	; next X bit
+            INC   zpY1	; next Y
             DEC   $18	; data--
             BNE   L55A6
             RTS
 
-L55C7       DB    $00
-L55C8       DB    $54
-L55C9       DB    $2F
-L55CA       DB    $00
-L55CB       DB    $54
-L55CC       DB    $04
-L55CD       DB    $5C
-            DB    $00
-            DB    $00
-            DB    $06
-            DB    $2F
-            DB    $00
-            DB    $06
-            DB    $04
-            DB    $0E
-            DB    $00
-            DB    $20
-            DB    $06
-            DB    $0F
-            DB    $01
-            DB    $06
-            DB    $E4
-            DB    $0E
-            DB    $00
-            DB    $00
-            DB    $29
-            DB    $2F
-            DB    $00
-            DB    $29
-            DB    $04
-            DB    $31
-            DB    $00
-            DB    $20
-            DB    $29
-            DB    $0F
-            DB    $01
-            DB    $29
-            DB    $E4
-            DB    $31
-            DB    $00
-            DB    $20
-            DB    $54
-            DB    $0F
-            DB    $01
-            DB    $54
-            DB    $E4
-            DB    $5C
-            DB    $00
+*--- Structure (7-bytes) to display PLAYER X data
+
+L55C7       HEX   00,54,2F,00,54,04,5C,00	; High score
+            HEX   00,06,2F,00,06,04,0E,00	; P1
+            HEX   20,06,0F,01,06,E4,0E,00	; P2
+            HEX   00,29,2F,00,29,04,31,00	; P3
+            HEX   20,29,0F,01,29,E4,31,00	; P4
+            HEX   20,54,0F,01,54,E4,5C,00	; P5
+
 L55F7       DB    $70
             DB    $09
             DB    $10
@@ -2227,6 +2193,7 @@ L55F7       DB    $70
             DB    $5F
             DB    $08
             DB    $0A
+
 L5628       DB    $30
             DB    $7B
             DB    $79
@@ -2291,7 +2258,7 @@ prepareLEVEL
             STA   $F1
             JSR   loadPLAYERDATA
             JSR   drawDOTS
-            JSR   L550A
+            JSR   drawSCORES
             LDA   $F1	; restore current player index
             STA   $50
             JSR   loadPLAYERDATA
@@ -2371,7 +2338,7 @@ L56FC       RTS
 L56FD       LDA   $0E
             STA   $0C
             LDA   $11
-            STA   $10
+            STA   zpY1
             LDA   #<L9CB8
             LDY   #>L9CB8
             JMP   L6A20
@@ -2435,7 +2402,7 @@ L5756       LDY   #$00
             LDA   #$3F
             STA   $0C
             LDA   #$15
-            STA   $10
+            STA   zpY1
             JSR   L7819
 L5767       CLC
             LDA   $16
@@ -2449,7 +2416,7 @@ L5772       LDY   #$00
             LDA   #$3F
             STA   $0C
             LDA   #$8D
-            STA   $10
+            STA   zpY1
             JSR   L7819
 L5783       CLC
             LDA   #<theBOARD
@@ -2464,7 +2431,7 @@ L5783       CLC
             LDA   #$D6
             STA   $0C
             LDA   #$15
-            STA   $10
+            STA   zpY1
             JSR   L7819
 L57A1       CLC
             LDA   $16
@@ -2478,7 +2445,7 @@ L57AC       LDY   #$00
             LDA   #$D6
             STA   $0C
             LDA   #$8D
-            STA   $10
+            STA   zpY1
             JSR   L7819
 L57BD       RTS
 
@@ -2498,7 +2465,7 @@ L57D1       LDY   #$00
             LDA   #$40
             STA   $0C
             LDA   #$16
-            STA   $10
+            STA   zpY1
             JSR   L61B6
 L57E2       CLC
             LDA   $16
@@ -2512,7 +2479,7 @@ L57ED       LDY   #$00
             LDA   #$40
             STA   $0C
             LDA   #$8E
-            STA   $10
+            STA   zpY1
             JSR   L61B6
 L57FE       CLC
             LDA   #<theBOARD
@@ -2527,7 +2494,7 @@ L57FE       CLC
             LDA   #$D6
             STA   $0C
             LDA   #$16
-            STA   $10
+            STA   zpY1
             JSR   L61B6
 L581C       CLC
             LDA   $16
@@ -2541,14 +2508,14 @@ L5827       LDY   #$00
             LDA   #$D6
             STA   $0C
             LDA   #$8E
-            STA   $10
+            STA   zpY1
             JSR   L61B6
 L5838       RTS
 
 L5839       LDA   #$8B
             STA   $0C
             LDA   #$8F
-            STA   $10
+            STA   zpY1
             LDA   #$00
             STA   $0D
             LDA   #$00
@@ -2563,7 +2530,7 @@ L5850       JSR   L5839
             JMP   L80E3
 
 L585A       LDA   #$68
-            STA   $10
+            STA   zpY1
             LDA   #$00
             STA   zpXBIT
             LDA   #$05
@@ -2585,7 +2552,7 @@ L587D       LDX   #$FF
             LDA   #$10
             STA   zpXCOL
             LDA   #$66
-            STA   $10
+            STA   zpY1
             JMP   L6978
 
             DB    $78
@@ -2664,7 +2631,7 @@ L58E7       LDA   $50
             STA   zpXCOL
             LDA   L6993,X
             SBC   #$0E
-            STA   $10
+            STA   zpY1
             JMP   L6978
 
 L58FA       LDA   $50
@@ -2789,7 +2756,7 @@ L5A58       HEX   00000000000000010101010101010202
 *-----------------------------------
 
 setHGRADDRESS
-            LDX   $10
+            LDX   zpY1
             LDA   L5B67,X
             STA   zpHGR
             LDA   L5C27,X
@@ -2886,9 +2853,9 @@ L5D40       JSR   setHGRADDRESS
             LDX   zpXBIT
             LDY   zpXCOL
             JSR   drawDOT
-            INC   $10	; next Y
+            INC   zpY1	; next Y
             LDA   $11	; Y-end reached?
-            CMP   $10
+            CMP   zpY1
             BCS   L5D40	; no, loop
             RTS	; yes, exit
 
@@ -2923,7 +2890,7 @@ L5D76       LDY   #$00
             STA   $0E		; x to
             INY
             LDA   ($16),Y
-            STA   $10		; y
+            STA   zpY1		; y
             JSR   drawHLINE
             CLC
             LDA   #$03
@@ -2941,7 +2908,7 @@ L5D9C       LDY   #$00
             STA   $0C
             INY
             LDA   ($16),Y
-            STA   $10
+            STA   zpY1
             INY
             LDA   ($16),Y
             STA   $11
@@ -3044,15 +3011,15 @@ L6127       LDY   $19
             STA   $0C	; by -1
             DEC   $0C
             LDA   $11
-            STA   $10
-            DEC   $10
+            STA   zpY1
+            DEC   zpY1
             JSR   L61B6	; draw big dot
             CLC
             BCC   L614D
 L6142       LDA   $0E
             STA   $0C
             LDA   $11
-            STA   $10
+            STA   zpY1
             JSR   L6172	; draw standard energy dot
 	
 L614D       CLC	; next Y on board
@@ -3078,7 +3045,7 @@ L6166       CLC	; next X
             RTS
 
 L6172       JSR   calcXYHGR
-            ASL   $03
+            ASL   zpXBIT
             JSR   setHGRADDRESS
             LDX   zpXBIT
             LDY   zpXCOL
@@ -3090,7 +3057,7 @@ L6172       JSR   calcXYHGR
             LDA   L61A8,X
             ORA   (zpHGR),Y
             STA   (zpHGR),Y
-            INC   $10
+            INC   zpY1
             JSR   setHGRADDRESS
             LDX   zpXBIT
             LDY   zpXCOL
@@ -3310,17 +3277,17 @@ dftBOARD    HEX   00000000000000000000000000000000000000000000000000000000000000
             HEX   0000000000000000000000000000000000000000000000000000000000000000
 
 *-----------------------------------
-* DRAW BIG SPRITE
+* DRAW BIG SPRITE (8 LINES)
 *-----------------------------------
 
 L693A       LDA   #$F8
             STA   $18
             JSR   calcXYHGR
-            LDA   $03
+            LDA   zpXBIT
             ASL
             ASL
             ASL
-            ASL
+            ASL	; *16
             STA   zpXBIT
 L6949       JSR   setHGRADDRESS
             LDX   zpXBIT
@@ -3334,11 +3301,15 @@ L6959       LDA   $0666,X
             ORA   (zpHGR),Y
             STA   (zpHGR),Y
             INX
-            STX   $03
-            INC   $10
+            STX   zpXBIT
+            INC   zpY1
             INC   $18
             BNE   L6949
             RTS
+
+*-----------------------------------
+*
+*-----------------------------------
 
 L696A       LDA   $50
             ASL
@@ -3346,18 +3317,18 @@ L696A       LDA   $50
             LDA   L6992,X
             STA   zpXCOL
             LDA   L6993,X
-            STA   $10
-L6978       LDA   #$0C
+            STA   zpY1
+L6978       LDA   #$0C		; 12 lines
             STA   $18
 L697C       JSR   setHGRADDRESS
             LDY   zpXCOL
-            LDX   #$08
+            LDX   #$08		; clear 8 bytes
             LDA   #$80
 L6985       STA   (zpHGR),Y
             INY
             DEX
             BNE   L6985
-            INC   $10
+            INC   zpY1
             DEC   $18
             BNE   L697C
             RTS
@@ -3383,8 +3354,8 @@ L699E       JSR   L7D9A
 L69A1       LDA   #$F6
             STA   $18
             JSR   calcXYHGR
-            ASL   $03
-            ASL   $03
+            ASL   zpXBIT
+            ASL   zpXBIT
 L69AC       JSR   setHGRADDRESS
             LDA   #$03	; width
             STA   $09
@@ -3398,7 +3369,7 @@ L69B7       LDA   L69CD,X
             INX
             DEC   $09
             BNE   L69B7
-            INC   $10	; Y+=1
+            INC   zpY1	; Y+=1
             INC   $18	; data++
             BNE   L69AC
             RTS
@@ -3503,8 +3474,8 @@ L6A4A       LDA   $0666,X
             INY
             DEC   $09
             BNE   L6A4A
-            STX   $03
-            INC   $10
+            STX   zpXBIT
+            INC   zpY1
             DEC   $18
             BNE   L6A3F
             RTS
@@ -3579,7 +3550,7 @@ L6AE4       LDA   $5C
 L6AEB       LDA   #$10
             STA   zpXCOL
             LDA   #$66
-            STA   $10
+            STA   zpY1
             LDA   #$00
             STA   $E7
             JSR   L6978
@@ -4415,7 +4386,7 @@ L6ECF       LDX   #$64
             JMP   L43D2
 
 L6EDA       LDX   #$66
-            STX   $10
+            STX   zpY1
             LDX   #$13
             STX   $04
 L6EE2       STA   L6EFF+1
@@ -4437,8 +4408,8 @@ L6EFF       ORA   $0666,X
             INY
             DEC   $09
             BNE   L6EFB
-            STX   $03
-            INC   $10
+            STX   zpXBIT
+            INC   zpY1
             DEC   $18
             BNE   L6EF0
             RTS
@@ -4451,7 +4422,7 @@ L6F1B       ASL
             ASL
             TAX
             LDA   #$B0
-            STA   $10
+            STA   zpY1
             LDA   #$21
             STA   zpXCOL
             LDA   L6AFE,X
@@ -4843,7 +4814,7 @@ L7159       ASL
             LDA   $0F
             STA   $0D
             LDA   $11
-            STA   $10
+            STA   zpY1
             JSR   L693A
             RTS
 
@@ -5455,6 +5426,11 @@ L7609       RTS
             DB    $3E
             DB    $33
             DB    $33
+
+*-----------------------------------
+* 
+*-----------------------------------
+
 L780A       LDX   zpXBIT
             LDA   L7812,X
             STA   zpXBIT
@@ -5467,10 +5443,15 @@ L7812       DB    $00
             DB    $78
             DB    $96
             DB    $B4
+
+*-----------------------------------
+* 
+*-----------------------------------
+
 L7819       LDA   #$F8
             STA   $18
             JSR   calcXYHGR
-            ASL   $03
+            ASL   zpXBIT
 L7822       JSR   setHGRADDRESS
             LDX   zpXBIT
             LDY   zpXCOL
@@ -5483,10 +5464,11 @@ L7822       JSR   setHGRADDRESS
             AND   (zpHGR),Y
             ORA   #$80
             STA   (zpHGR),Y
-            INC   $10
+            INC   zpY1
             INC   $18
             BNE   L7822
             RTS
+
 L7843       DB    $40
 L7844       DB    $7F
             DB    $01
@@ -5501,6 +5483,7 @@ L7844       DB    $7F
             DB    $70
             DB    $3F
             DB    $60
+
 L7851       DB    $09
             DB    $09
             DB    $08
@@ -5671,7 +5654,7 @@ L7982       SBC   #$02
 L7984       STA   $60
             LDA   $61
 L7988       STA   $61
-            STA   $10
+            STA   zpY1
             LDA   $60
             STA   $0C
             INC   $66
@@ -5726,7 +5709,7 @@ L79CD       LDA   $61
             LDA   #$10
             STA   zpXCOL
             LDA   #$66
-            STA   $10
+            STA   zpY1
             JSR   L6978
             JSR   L6CB2
 L79FD       CLC
@@ -5930,7 +5913,7 @@ L7B2F       JSR   L7D80
             STA   $60
             STA   $0C
 L7B48       LDA   $61
-            STA   $10
+            STA   zpY1
             INC   $66
             JSR   L79A4
             JMP   L79FD
@@ -6388,7 +6371,7 @@ L7D7B       LDX   #$1E
 L7D80       LDA   $60
             STA   $0C
             LDA   $61
-            STA   $10
+            STA   zpY1
             LDA   #$00
             STA   $0D
             RTS
@@ -6396,7 +6379,7 @@ L7D80       LDA   $60
 L7D8D       LDA   $70
             STA   $0C
             LDA   $71
-            STA   $10
+            STA   zpY1
             LDA   #$00
             STA   $0D
             RTS
@@ -6406,9 +6389,9 @@ L7D9A       SEC
             SBC   #$04
             STA   $0C
             SEC
-            LDA   $10
+            LDA   zpY1
             SBC   #$04
-            STA   $10
+            STA   zpY1
             RTS
 
 L7DA9       SEC
@@ -6416,9 +6399,9 @@ L7DA9       SEC
             SBC   #$05
             STA   $0C
             SEC
-            LDA   $10
+            LDA   zpY1
             SBC   #$04
-            STA   $10
+            STA   zpY1
             RTS
 
 L7DB8       LDA   $68
@@ -6472,7 +6455,7 @@ L7E27       LDA   ($16),Y
             STA   L7E70,Y
             DEY
             BPL   L7E27
-            LDA   $03
+            LDA   zpXBIT
             BEQ   L7E3C
             STA   $0B
 L7E35       JSR   L7E4F
@@ -6942,9 +6925,9 @@ L8020       DB    $00
             ADC   #$05
             STA   $0C
             CLC
-            LDA   $10
+            LDA   zpY1
             ADC   #$04
-            STA   $10
+            STA   zpY1
             RTS
 
 L804E       CLC
@@ -6952,9 +6935,9 @@ L804E       CLC
             ADC   #$04
             STA   $0C
             CLC
-            LDA   $10
+            LDA   zpY1
             ADC   #$04
-            STA   $10
+            STA   zpY1
             RTS
 
 L805D       LDA   $E0
@@ -7043,7 +7026,7 @@ L80E3       LDA   #$69
             LDY   #>L8139
             JMP   L8112
 
-L8107       STA   $10
+L8107       STA   zpY1
             STX   $1A
             STY   $04
             LDA   #$00
@@ -7141,7 +7124,7 @@ L8172       RTS
 cartoonHLINE
             STA   $0C	; X
             STY   $0E	; Y from
-            STX   $10	; Y to
+            STX   zpY1	; Y to
             LDA   #$80	; mode
             STA   $1E
             JMP   drawHLINE
@@ -7152,7 +7135,7 @@ cartoonHLINE
 
 cartoonVLINE
             STA   $0C	; X
-            STY   $10	; Y-from
+            STY   zpY1	; Y-from
             STX   $11	; Y-to
             JMP   drawVLINE
 
@@ -7203,7 +7186,7 @@ L81B7       DEC   $59
             CMP   #$21
             BCC   L81FC
             LDA   $61
-            STA   $10
+            STA   zpY1
             INC   $66
             JSR   L79A4
 L81DB       JSR   doWAIT
@@ -7275,7 +7258,7 @@ L8259       INC   $66
             STA   L827A+1
             STY   L827A+2
             LDA   $61
-            STA   $10
+            STA   zpY1
             LDA   $60
             STA   $0C
             JSR   calcXYHGR
@@ -7286,7 +7269,7 @@ L827A       LDA   $0666,Y
             BPL   L827A
             LDA   #$14
             STA   $18
-            LDA   $03
+            LDA   zpXBIT
             BEQ   L8292
 L828B       JSR   L82B1
             DEC   $03
@@ -7302,8 +7285,8 @@ L829D       LDA   L7E70,X
             INY
             DEC   $09
             BNE   L829D
-            STX   $03
-            INC   $10
+            STX   zpXBIT
+            INC   zpY1
             DEC   $18
             BNE   L8292
             RTS
@@ -8029,7 +8012,7 @@ L8894       SBC   #$02
 L8896       STA   $70
             LDA   $71
 L889A       STA   $71
-            STA   $10
+            STA   zpY1
             LDA   $70
             STA   $0C
 L88A2       LDA   $E0
@@ -8151,7 +8134,7 @@ L895F       JSR   L8B13
             JSR   L8981
             CLC
             ADC   #$05
-            STA   $10
+            STA   zpY1
             JSR   L6172
 L8980       RTS
 
@@ -8333,14 +8316,14 @@ drawGHOSTDOOR       LDA   #$87
             LDA   #$93
             STA   $0E
             LDA   #$4D
-            STA   $10
+            STA   zpY1
             JSR   drawHLINE
             LDA   #$87
             STA   $0C
             LDA   #$93
             STA   $0E
             LDA   #$4E
-            STA   $10
+            STA   zpY1
             JSR   drawHLINE
             RTS
 
@@ -8361,7 +8344,7 @@ L8A9C       JSR   L7D8D
             STA   $70
             STA   $0C
 L8AB5       LDA   $71
-            STA   $10
+            STA   zpY1
             JMP   L88A2
 
 L8ABC       LDA   $70

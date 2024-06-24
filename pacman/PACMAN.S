@@ -51,19 +51,19 @@ SETVID      EQU   $FE93
 *-----------------------------------
 
             LDA   #$AF	; relocate from $1000 to $4000
-            STA   $17
+            STA   zpPTR2+1
             LDA   #$7F
-            STA   $15
+            STA   zpPTR1+1
             LDY   #$00
-            STY   $16
-            STY   $14
+            STY   zpPTR2
+            STY   zpPTR1
             LDX   #$70
-L4010       LDA   ($14),Y
-            STA   ($16),Y
+L4010       LDA   (zpPTR1),Y
+            STA   (zpPTR2),Y
             INY
             BNE   L4010
-            DEC   $17
-            DEC   $15
+            DEC   zpPTR2+1
+            DEC   zpPTR1+1
             DEX
             BPL   L4010
             JSR   SETKBD
@@ -71,16 +71,16 @@ L4010       LDA   ($14),Y
             JMP   L4027
 
 L4027       LDA   #$01
-            STA   $51
+            STA   zpNBPLAYERS
             JSR   L54D4
             LDA   #$00
             STA   $00
             STA   $01
             STA   $02
-            STA   $58
+            STA   zpNBLIVES
             LDA   #$01
-            STA   zpMONITOR
-            STA   $E8		; ZP - demo if 1?
+            STA   zpMONITOR	; ZP - color monitor
+            STA   zpDEMO	; ZP - demo if 1
             LDA   #<L43D2
             STA   SOFTEV
             STA   NMILOC+1
@@ -122,7 +122,7 @@ selectRANKCARTOON
 L4147       JSR   setTEXT2	; set text mode
             JSR   clearTEXT2	; clear text screen
             LDA   #$00
-            STA   $24
+            STA   CH
             LDA   #$05
             JSR   gotoXY
             LDX   #$00
@@ -135,7 +135,7 @@ L4158       LDA   L41DC,X	; RANK OR CARTOON?
             LDA   #$07
             JSR   gotoXY
             LDA   #$00
-            STA   $24
+            STA   CH
             LDA   $0200
             CMP   #"C"
             BNE   L419F
@@ -157,7 +157,7 @@ L4178       LDA   L4201,X	; CARTOON NUMBER (1-3)
             CPX   #"2"
             BEQ   L4197
             LDA   #$09
-L4197       STA   $55		; ZP
+L4197       STA   zpRANK		; ZP
             JSR   playCARTOON
             JMP   selectRANKCARTOON
 
@@ -205,7 +205,7 @@ selecNBPLAYERS
             JSR   setTEXT2
             JSR   clearTEXT2
             LDA   #$00
-            STA   $24
+            STA   CH
             LDA   #$06
             JSR   gotoXY
             LDX   #$00
@@ -223,12 +223,12 @@ L4233       JSR   RDKEY
             BCS   L4233
             JSR   printCHAR
             AND   #$07
-            STA   $51		; ZP
+            STA   zpNBPLAYERS		; ZP
 
             LDA   #$00
-            STA   $24
+            STA   CH
             LDA   #$0B
-            STA   $25
+            STA   CV
             JSR   gotoXY
             LDX   #$00
 L4256       LDA   L4299,X	; SPACE OR RETURN
@@ -258,16 +258,16 @@ L4299       ASC   "PRESS <RETURN> TO PLAY"8D
 * 
 *-----------------------------------
 
-L42D0       LDA   ($14),Y
+L42D0       LDA   (zpPTR1),Y
             STA   zpXCOL
             INY
-            LDA   ($14),Y
+            LDA   (zpPTR1),Y
             STA   zpY1
             STA   $0A
             INY
             STY   $0B
 L42DE       LDY   $0B
-            LDA   ($14),Y
+            LDA   (zpPTR1),Y
             BMI   L4303
             BEQ   L42F6
             CMP   #$20
@@ -310,13 +310,13 @@ L432A       CLC
             STA   L55B1+1
             BCC   L4338
             INC   L55B1+2
-L4338       LDA   #$01	; width in bytes
-            STA   $1A
-            LDA   #$09	; height in lines
-            STA   $18
+L4338       LDA   #$01		; width in bytes
+            STA   zpSPRWIDTH
+            LDA   #$09		; height in lines
+            STA   zpSPRHEIGHT
             LDA   #$00
             STA   zpXBIT
-            JSR   L55A6
+            JSR   drawCOLORSPRITE
             JSR   getINPUT
             LDX   #$50
             JMP   doWAIT2
@@ -460,7 +460,7 @@ L434F       DB    $0D
 *-----------------------------------
 
 L43D2       LDA   #$01
-            STA   $E8
+            STA   zpDEMO
             JSR   showTITLESCREEN
             JSR   clearHGR
             LDA   #$01
@@ -469,9 +469,9 @@ L43D2       LDA   #$01
             STA   $78
             STA   $79
             LDA   #<L434F
-            STA   $14
+            STA   zpPTR1
             LDA   #>L434F
-            STA   $14+1
+            STA   zpPTR1+1
             LDY   #$00
             JSR   L42D0
             JSR   L44E8
@@ -515,51 +515,51 @@ L43D2       LDA   #$01
             LDY   $0B
             JSR   L42D0
             LDA   #$74
-            STA   $0C
+            STA   zpX1
             LDA   #$78
             STA   zpY1
             JSR   drawNORMALDOT
             LDA   #$7C
-            STA   $0E
+            STA   zpX2
             LDA   #$00
-            STA   $0F
+            STA   zpX2+1
             LDA   #$75
-            STA   $11
+            STA   zpY2
             LDA   #$01
-            JSR   L7159
+            JSR   printDIGIT
             CLC
-            LDA   $0E
+            LDA   zpX2
             ADC   #$06
-            STA   $0E
+            STA   zpX2
             LDA   #$00
-            JSR   L7159
+            JSR   printDIGIT
             LDA   #$14
             STA   zpXCOL
             LDA   #$75
             STA   zpY1
-            JSR   L44F1
+            JSR   drawPOINTS
             LDA   #$73
-            STA   $0C
+            STA   zpX1
             LDA   #$81
             STA   zpY1
             JSR   drawENERGIZERDOT
             LDA   #$7C
-            STA   $0E
+            STA   zpX2
             LDA   #$80
-            STA   $11
+            STA   zpY2
             LDA   #$05
-            JSR   L7159
+            JSR   printDIGIT
             CLC
-            LDA   $0E
+            LDA   zpX2
             ADC   #$06
-            STA   $0E
+            STA   zpX2
             LDA   #$00
-            JSR   L7159
+            JSR   printDIGIT
             LDA   #$14
             STA   zpXCOL
             LDA   #$80
             STA   zpY1
-            JSR   L44F1
+            JSR   drawPOINTS
             LDA   #$0C
             STA   zpXCOL
             LDA   #$9A
@@ -567,14 +567,14 @@ L43D2       LDA   #$01
             LDA   #$00
             STA   zpXBIT
             LDA   #$05
-            STA   $1A
+            STA   zpSPRWIDTH
             LDA   #$09
-            STA   $18
+            STA   zpSPRHEIGHT
             LDA   #<L4526
             STA   L55B1+1
             LDA   #>L4526
             STA   L55B1+2
-            JSR   L55A6
+            JSR   drawCOLORSPRITE
             LDY   $0B
             JSR   L42D0
             LDY   $0B
@@ -584,51 +584,33 @@ L43D2       LDA   #$01
             JMP   L4689
 
 L44E8       LDA   #$49
-            STA   $0C
+            STA   zpX1
             LDA   #$00
-            STA   $0D
+            STA   zpX1+1
             RTS
 
-L44F1       LDA   #$04
-            STA   $1A
+drawPOINTS  LDA   #$04
+            STA   zpSPRWIDTH
             LDA   #$07
-            STA   $18
-            LDA   #<L450A
+            STA   zpSPRHEIGHT
+            LDA   #<sprPOINTS
             STA   L55B1+1
-            LDA   #>L450A
+            LDA   #>sprPOINTS
             STA   L55B1+2
             LDA   #$00
             STA   zpXBIT
-            JMP   L55A6
+            JMP   drawCOLORSPRITE
 
-L450A       DB    $0F
-            DB    $00
-            DB    $20
-            DB    $00
-            DB    $11
-            DB    $10
-            DB    $20
-            DB    $00
-            DB    $11
-            DB    $00
-            DB    $70
-            DB    $1C
-            DB    $0F
-            DB    $53
-            DB    $23
-            DB    $02
-            DB    $41
-            DB    $54
-            DB    $24
-            DB    $1C
-            DB    $41
-            DB    $54
-            DB    $24
-            DB    $20
-            DB    $01
-            DB    $53
-            DB    $44
-            DB    $1C
+*--- Sprite for POINTS
+
+sprPOINTS   HEX   0F002000
+            HEX   11102000
+            HEX   1100701C
+            HEX   0F532302
+            HEX   4154241C
+            HEX   41542420
+            HEX   0153441C
+
 L4526       DB    $7C
             DB    $40
             DB    $70
@@ -990,7 +972,7 @@ L467C       JSR   L7DB8
 *-----------------------------------
 
 L4689       LDA   #$70
-            STA   $5E
+            STA   zpDOTTEMPO
             LDA   #$20
             STA   $59
             LDA   #$18
@@ -1003,7 +985,7 @@ L4689       LDA   #$70
             STA   $79
             LDA   #$01
             STA   $81
-            STA   $5F
+            STA   zpDOTFLAG
             LDA   #$8D
             STA   $60
             LDA   #$68
@@ -1058,23 +1040,23 @@ L4711       JSR   L8712
             DEC   $5E
             BNE   L4742
             LDA   #$60
-            STA   $5E
-            LDA   $5F
+            STA   zpDOTTEMPO
+            LDA   zpDOTFLAG
             BEQ   L4733
             LDA   #$67
             STA   zpY1
             LDA   #$4B
-            STA   $0C
+            STA   zpX1
             JSR   drawENERGIZERDOT
             LDA   #$00
             BEQ   L4740
 L4733       LDA   #$66
             STA   zpY1
             LDA   #$4A
-            STA   $0C
+            STA   zpX1
             JSR   L7819
             LDA   #$01
-L4740       STA   $5F
+L4740       STA   zpDOTFLAG
 L4742       LDA   $60
             CMP   #$4F
             BCC   L474B
@@ -1140,11 +1122,11 @@ L47C0       JSR   L8712
             BEQ   L475F
 L47C9       LDA   #<L47DA
             LDY   #>L47DA
-            STA   $1B
-            STY   $1C
+            STA   zpPTR3
+            STY   zpPTR3+1
             LDA   #$01
-            STA   $E8
-            STA   $55
+            STA   zpDEMO
+            STA   zpRANK
             JMP   L5303
 
 L47DA       DB    $03
@@ -1228,10 +1210,10 @@ selectMONITOR
             JSR   setTEXT2	; set text mode
             JSR   clearTEXT2	; clear text screen
             LDA   #$0A
-            STA   $25
+            STA   CV
             JSR   gotoXY
             LDA   #$00
-            STA   $24
+            STA   CH
             LDX   #$00
 L4837       LDA   L4886,X	; B&W OR COLOR MONITOR?
             JSR   printCHAR
@@ -1251,7 +1233,7 @@ L4842       JSR   RDKEY
 * 
 *-----------------------------------
 
-            LDA   $25
+            LDA   CV
             JSR   VTABZ
             JMP   L485F
 
@@ -1271,8 +1253,8 @@ L485F       LDA   $29
 *-----------------------------------
 
 clearTEXT2  LDA   #$00
-            STA   $25
-            STA   $24
+            STA   CV
+            STA   CH
             LDX   #$04
             LDY   #$00
 L4872       LDA   #" "
@@ -1295,8 +1277,8 @@ L4886       ASC   "BLACK & WHITE OR COLOR? (B / C) "
 L48A6       JSR   setTEXT2
             JSR   clearTEXT2
             LDA   #$00
-            STA   $24
-            STA   $25
+            STA   CH
+            STA   CV
             JSR   gotoXY
             LDX   #$00
 L48B7       LDA   L48D9,X	; KEYBOARD OR JOYSTICK
@@ -1310,10 +1292,10 @@ L48C2       JSR   RDKEY
             CMP   #$B2
             BNE   L48C2
             LDA   #$01		; ZP joystick
-            STA   $F5
+            STA   zpDEVICE
             RTS
 L48D2       LDA   #$00		; ZP keyboard
-            STA   $F5
+            STA   zpDEVICE
             JMP   L492F
 
 L48D9       ASC   " PACMAN CAN BE PLAYED WITH"8D8D
@@ -1328,8 +1310,8 @@ L48D9       ASC   " PACMAN CAN BE PLAYED WITH"8D8D
 L492F       JSR   clearTEXT2
             JSR   setTEXT2
             LDA   #$00
-            STA   $24
-            STA   $25
+            STA   CH
+            STA   CV
             JSR   gotoXY
             LDX   #$00
 L4940       LDA   L4A01,X
@@ -1344,9 +1326,9 @@ L4940       LDA   L4A01,X
 
 L4955       JSR   printCHAR
             LDA   #$04
-            STA   $25
+            STA   CV
             LDA   #$00
-            STA   $24
+            STA   CH
             JSR   gotoXY
             LDX   #$00
 L4965       LDA   L4A26,X
@@ -1355,9 +1337,9 @@ L4965       LDA   L4A26,X
             CPX   #$14
             BCC   L4965
             LDA   #$16
-            STA   $24
+            STA   CH
             LDA   #$06
-            STA   $25
+            STA   CV
             JSR   gotoXY
             LDX   #$00
 L497D       LDA   L4A3A,X
@@ -1367,9 +1349,9 @@ L497D       LDA   L4A3A,X
             BCC   L497D
             JSR   RDKEY
             STA   L6FB9+1
-            INC   $25
+            INC   CV
             LDA   #$16
-            STA   $24
+            STA   CH
             JSR   gotoXY
             LDX   #$00
 L4999       LDA   L4A46,X
@@ -1381,9 +1363,9 @@ L49A4       JSR   RDKEY
             CMP   L6FB9+1
             BEQ   L49A4
             STA   L6FB5+1
-            INC   $25
+            INC   CV
             LDA   #$16
-            STA   $24
+            STA   CH
             JSR   gotoXY
             LDX   #$00
 L49BA       LDA   L4A52,X
@@ -1397,9 +1379,9 @@ L49C5       JSR   RDKEY
             CMP   L6FB5+1
             BEQ   L49C5
             STA   L6FB1+1
-            INC   $25
+            INC   CV
             LDA   #$16
-            STA   $24
+            STA   CH
             JSR   gotoXY
             LDX   #$00
 L49E0       LDA   L4A5E,X
@@ -1430,9 +1412,9 @@ L4A5E       ASC   "MOVE DOWN   "
 
 printCHAR   CMP   #$8D
             BNE   L4A77
-            INC   $25
+            INC   CV
             LDA   #$00
-            STA   $24
+            STA   CH
             JMP   gotoXY
 L4A77       JMP   COUT1
 
@@ -1576,24 +1558,24 @@ theLOGO     HEX   FFFFFE01410101450301450501470701
 * DECODE LOGO
 *-----------------------------------
 
-decodeLOGO  STA   $16
-            STY   $16+1
+decodeLOGO  STA   zpPTR2
+            STY   zpPTR2+1
             LDA   zpMONITOR	; save monitor type
             PHA
             LDA   #$01		; force color
             STA   zpMONITOR
             LDA   #$00
             STA   $1E		; no high-bit
-            STA   $0D
-            STA   $0F
+            STA   zpX1+1
+            STA   zpX2+1
 L5273       LDY   #$00
-            LDA   ($16),Y
-            STA   $0C
+            LDA   (zpPTR2),Y
+            STA   zpX1
             INY
-            LDA   ($16),Y
-            STA   $0E
+            LDA   (zpPTR2),Y
+            STA   zpX2
             INY
-            LDA   ($16),Y	; line
+            LDA   (zpPTR2),Y	; line
             STA   zpY1
             CMP   #$FD		; exit
             BEQ   L52A7
@@ -1606,11 +1588,11 @@ L5273       LDY   #$00
             CMP   #" "
             BEQ   L52A7
 L5299       CLC		; ptr +=3
-            LDA   $16
+            LDA   zpPTR2
             ADC   #$03
-            STA   $16
+            STA   zpPTR2
             BCC   L52A4
-            INC   $16+1
+            INC   zpPTR2+1
 L52A4       JMP   L5273
 
 L52A7       PLA		; restore monitor type
@@ -1665,20 +1647,20 @@ L52F9       JMP   getINPUT
 
 L52FC       JSR   L54D4
             LDA   #$00
-            STA   $F4
+            STA   zpFGMUSIC
 L5303       JSR   L531E
 L5306       JSR   prepareLEVEL
-            JSR   L5850
+            JSR   getREADY
             JSR   L53E6
 L530F       JSR   L7861
             JSR   L86EA
             JSR   L6A7C
-            JSR   L570C
+            JSR   blinkTHINGS
             JMP   L530F
 
 L531E       LDA   #$01
             STA   $59
-            JSR   L5331
+            JSR   setDEFAULTBOARD
             LDA   #$F8
             STA   $56
             LDA   #$40
@@ -1690,27 +1672,28 @@ L531E       LDA   #$01
 * SET DEFAULT BOARD
 *-----------------------------------
 
-L5331       LDA   #<dftBOARD
-            STA   $14
+setDEFAULTBOARD
+            LDA   #<dftBOARD
+            STA   zpPTR1
             LDA   #>dftBOARD
-            STA   $14+1
+            STA   zpPTR1+1
             LDA   #<theBOARD
-            STA   $16
+            STA   zpPTR2
             LDA   #>theBOARD
-            STA   $16+1
+            STA   zpPTR2+1
             LDY   #$00
-L5343       LDA   ($14),Y
-            STA   ($16),Y
-            INC   $16
+L5343       LDA   (zpPTR1),Y
+            STA   (zpPTR2),Y
+            INC   zpPTR2
             BNE   L534D
-            INC   $16+1
-L534D       INC   $14
+            INC   zpPTR2+1
+L534D       INC   zpPTR1
             BNE   L5353
-            INC   $14+1
-L5353       LDA   $16+1
+            INC   zpPTR1+1
+L5353       LDA   zpPTR2+1
             CMP   #>dftBOARD
             BNE   L5343
-            LDA   $16
+            LDA   zpPTR2
             CMP   #<dftBOARD
             BNE   L5343
             RTS
@@ -1720,21 +1703,21 @@ L5353       LDA   $16+1
 *-----------------------------------
 
 loadPLAYERBOARD
-            LDA   $50
+            LDA   zpCURPLAYER
             ASL
             TAX
             LDA   L53B2,X
-            STA   $14
+            STA   zpPTR1
             LDA   L53B2+1,X
             CLC
             ADC   #$03
-            STA   $15
+            STA   zpPTR1+1
             LDA   #<theBOARD
-            STA   $16
+            STA   zpPTR2
             LDA   #>theBOARD
             CLC
             ADC   #$03
-            STA   $17
+            STA   zpPTR2+1
 
 *-----------------------------------
 * COPY FROM/TO BOARD BUFFER
@@ -1742,15 +1725,15 @@ loadPLAYERBOARD
 
 L537C       LDX   #$03	; $copy $380 bytes of buffer data
             LDY   #$7F	; this is a player's board
-L5380       LDA   ($14),Y
-            STA   ($16),Y
+L5380       LDA   (zpPTR1),Y
+            STA   (zpPTR2),Y
             DEY
             BNE   L5380
-            LDA   ($14),Y
-            STA   ($16),Y
+            LDA   (zpPTR1),Y
+            STA   (zpPTR2),Y
             DEY
-            DEC   $16+1
-            DEC   $14+1
+            DEC   zpPTR2+1
+            DEC   zpPTR1+1
             DEX
             BPL   L5380
             RTS
@@ -1760,21 +1743,21 @@ L5380       LDA   ($14),Y
 *-----------------------------------
 
 savePLAYERBOARD
-            LDA   $50
+            LDA   zpCURPLAYER
             ASL
             TAX
             LDA   L53B2,X
-            STA   $16
+            STA   zpPTR2
             LDA   L53B2+1,X
             CLC
             ADC   #$03
-            STA   $16+1
+            STA   zpPTR2+1
             LDA   #<theBOARD
-            STA   $14
+            STA   zpPTR1
             LDA   #>theBOARD
             CLC
             ADC   #$03
-            STA   $14+1
+            STA   zpPTR1+1
             BNE   L537C
 
 L53B2       DA    $0666		; board buffers ($380) per player
@@ -1789,7 +1772,7 @@ L53B2       DA    $0666		; board buffers ($380) per player
 *-----------------------------------
 
 savePLAYERDATA
-            LDX   $50
+            LDX   zpCURPLAYER
             LDY   L53E0,X
             LDX   #$07
 L53C5       LDA   $52,X
@@ -1804,7 +1787,7 @@ L53C5       LDA   $52,X
 *-----------------------------------
 
 loadPLAYERDATA
-            LDX   $50
+            LDX   zpCURPLAYER
             LDY   L53E0,X
             LDX   #$07
 L53D6       LDA   L0300,Y
@@ -1825,7 +1808,7 @@ L53E0       DB    $00	; offset of player data
 * 
 *-----------------------------------
 
-L53E6       JSR   L5839
+L53E6       JSR   showPACMAN
             LDX   #$0D
 L53EB       LDA   L5446,X
             STA   $60,X
@@ -1852,7 +1835,7 @@ L5402       STA   |$0059,Y
             STA   $E4
             STA   $E7
             STA   $1F
-            JSR   L6D1E
+            JSR   getMAXRANK15
             TAX
             LDY   #$12
             LDA   L54A4,X
@@ -2020,37 +2003,37 @@ L54D4       LDA   #$00
             STA   $52
             STA   $53
             STA   $54
-            STA   $E8
+            STA   zpDEMO
             STA   $F3
-L54E0       LDA   #$01
-            STA   $55
+L54E0       LDA   #$01		; ZP - RANK
+            STA   zpRANK
             LDA   #$01
             STA   $59
             LDA   #$83
-            STA   $58
+            STA   zpNBLIVES
             LDA   #$F8
             STA   $56
             LDA   #$40
             STA   $57
-            LDA   $51
-            STA   $50
-            JSR   L5331
+            LDA   zpNBPLAYERS
+            STA   zpCURPLAYER
+            JSR   setDEFAULTBOARD
 L54FB       JSR   savePLAYERDATA
             JSR   savePLAYERBOARD
-            DEC   $50
+            DEC   zpCURPLAYER
             BNE   L54FB
             LDA   #$01
-            STA   $50
+            STA   zpCURPLAYER
             RTS
 
 *-----------------------------------
 * DRAW ALL SCORES
 *-----------------------------------
 
-drawSCORES  LDA   $51	; get nb players
-            STA   $50	; make it current
+drawSCORES  LDA   zpNBPLAYERS	; get nb players
+            STA   zpCURPLAYER	; make it current
 
-L550E       LDA   $50
+L550E       LDA   zpCURPLAYER
             ASL
             ASL
             ASL	; *8
@@ -2061,28 +2044,28 @@ L550E       LDA   $50
             STA   $0A
             JSR   L556E
             LDA   #$00
-            STA   $0D
-            STA   $0F
+            STA   zpX1+1
+            STA   zpX2+1
             LDA   $0B
-            STA   $0C
+            STA   zpX1
             CLC
             ADC   #$31
-            STA   $0E
+            STA   zpX2
             BCC   L5534
-            INC   $0F
+            INC   zpX2+1
 L5534       JSR   L5CF6
-            LDA   $50
+            LDA   zpCURPLAYER
             BEQ   L553E
             JSR   loadPLAYERDATA
 L553E       JSR   L70CC
-            DEC   $50	; next player
+            DEC   zpCURPLAYER	; next player
             BMI   L5563
             BEQ   L554A
             JMP   L550E
 
-L554A       LDA   #<L5628	; HISCORE sprite
+L554A       LDA   #<sprHISCORE	; HISCORE sprite
             STA   L5591+1
-            LDA   #>L5628
+            LDA   #>sprHISCORE
             STA   L5596+1
             LDA   $00
             STA   $52
@@ -2092,9 +2075,9 @@ L554A       LDA   #<L5628	; HISCORE sprite
             STA   $54
             JMP   L550E
 
-L5563       LDA   #<L55F7	; reset to PLAYER# sprite
+L5563       LDA   #<sprPLAYER	; reset to PLAYER# sprite
             STA   L5591+1
-            LDA   #>L55F7
+            LDA   #>sprPLAYER
             STA   L5596+1
             RTS
 
@@ -2103,34 +2086,35 @@ L556E       LDA   L55C7,X	; X on screen
             LDA   L55C7+1,X	; Y on screen
             STA   zpY1
             LDA   L55C7+2,X	; X2
-            STA   $0E
+            STA   zpX2
             LDA   L55C7+3,X
-            STA   $0F
+            STA   zpX2+1
             LDA   L55C7+4,X	; Y2
-            STA   $11
+            STA   zpY2
             LDA   #$00
             STA   zpXBIT
             LDA   #$07		; 7w and 7h
-            STA   $18
-            STA   $1A
-L5591       LDA   #<L55F7	; PLAYER sprite
+            STA   zpSPRHEIGHT
+            STA   zpSPRWIDTH
+L5591       LDA   #<sprPLAYER	; PLAYER sprite
             STA   L55B1+1
-L5596       LDA   #>L55F7
+L5596       LDA   #>sprPLAYER
             STA   L55B1+2
-            JSR   L55A6
-            LDA   $50		; skip if player 0
+            JSR   drawCOLORSPRITE
+            LDA   zpCURPLAYER		; skip if player 0
             BEQ   L55A5
-            JSR   L7159
+            JSR   printDIGIT
 L55A5       RTS
 
 *-----------------------------------
-* 
+* DRAW A SPRITE IN COLOR
 *-----------------------------------
 
-L55A6       JSR   setHGRADDRESS
+drawCOLORSPRITE
+            JSR   setHGRADDRESS
             LDX   zpXBIT
             LDY   zpXCOL
-            LDA   $1A		; number of bytes per line to output
+            LDA   zpSPRWIDTH		; number of bytes per line to output
             STA   $09
 L55B1       LDA   $0666,X
             ORA   (zpHGR),Y
@@ -2141,8 +2125,8 @@ L55B1       LDA   $0666,X
             BNE   L55B1
             STX   zpXBIT	; next X bit
             INC   zpY1	; next Y
-            DEC   $18	; data--
-            BNE   L55A6
+            DEC   zpSPRHEIGHT	; data--
+            BNE   drawCOLORSPRITE
             RTS
 
 *--- Structure (7-bytes) to display PLAYER X data
@@ -2156,7 +2140,7 @@ L55C7       HEX   00,54,2F,00,54,04,5C,00	; High score
 
 * PLAYER sprite (7*7)
 
-L55F7       HEX   700910225F070A
+sprPLAYER   HEX   700910225F070A
             HEX   100A282241080A
             HEX   100A441441081F
             HEX   70097C085F070A
@@ -2166,7 +2150,7 @@ L55F7       HEX   700910225F070A
 
 * HISCORE sprite (7*7)
 
-L5628       HEX   307B7978383E38
+sprHISCORE  HEX   307B7978383E38
             HEX   102A8D44444422
             HEX   10220402044502
             HEX   70227802043D1E
@@ -2184,33 +2168,38 @@ prepareLEVEL
             JSR   setHGR
             JSR   drawGAMEBOARD
             JSR   drawGHOSTDOOR
-            LDA   $50	; save current player index
+            LDA   zpCURPLAYER	; save current player index
             STA   $F1
             JSR   loadPLAYERDATA
             JSR   drawDOTS
             JSR   drawSCORES
-            LDA   $F1	; restore current player index
-            STA   $50
+            LDA   $F1		; restore current player index
+            STA   zpCURPLAYER
             JSR   loadPLAYERDATA
-            JSR   L5692
-            JSR   L56CF
-            LDA   $E8
+            JSR   printRANK
+            JSR   printNBLIVES
+            LDA   zpDEMO
             BNE   L5691
-            LDA   $F4	; did we already play the intro music? 
+            LDA   zpFGMUSIC	; did we already play the intro music? 
             BNE   L5691
             JSR   playINTROMUSIC
             LDA   #$01
-            STA   $F4
+            STA   zpFGMUSIC
 L5691       RTS
 
-L5692       bit   L6F13		; LoGo
-            LDA   #$E1
-            STA   $0E
-            LDA   #$00
-            STA   $0F
+*-----------------------------------
+* PRINT RANK (LEVEL)
+*-----------------------------------
+
+printRANK   JMP   L6F13		; LoGo
+
+            LDA   #$E1		; display the rank number, aka the level
+            STA   zpX2		; it was replaced on the released game
+            LDA   #$00		; by the Žquivalent fruit!
+            STA   zpX2+1
             LDA   #$B0
-            STA   $11
-            LDA   $55
+            STA   zpY2
+            LDA   zpRANK
             JSR   L56C3
             STA   $19
             AND   #$F0
@@ -2219,17 +2208,17 @@ L5692       bit   L6F13		; LoGo
             ROR
             ROR
             ROR
-            JSR   L7159
+            JSR   printDIGIT
 L56B3       LDA   #$E7
-            STA   $0E
+            STA   zpX2
             LDA   #$B0
-            STA   $11
+            STA   zpY2
             LDA   $19
             AND   #$0F
-            JSR   L7159
+            JSR   printDIGIT
             RTS
 
-L56C3       TAX
+L56C3       TAX		; from hex to dec
             LDA   #$00
             SED
             CLC
@@ -2239,63 +2228,75 @@ L56C8       ADC   #$01
             CLD
             RTS
 
-L56CF       LDA   $58
-            AND   #$7F
-            STA   $19
-            LDA   $E8
-            BNE   L56FC
-            LDA   #$09
-            STA   $0E
-            LDA   #$00
-            STA   $0D
-            LDA   #$B2
-            STA   $11
-            LDA   $19
-            BNE   L56EA
-            RTS
+*-----------------------------------
+* PRINT NB LIVES
+*-----------------------------------
 
-L56EA       DEC   $19
+printNBLIVES
+            LDA   zpNBLIVES	; Show 2 Pacman if we have 3 lives
+            AND   #$7F
+            STA   $19		; save nb lives
+            LDA   zpDEMO
+            BNE   L56FC		; if demo, skip
+
+            LDA   #$09	; set coordinates
+            STA   zpX2
+            LDA   #$00
+            STA   zpX1+1
+            LDA   #$B2
+            STA   zpY2
+            LDA   $19	; do we have lives?
+            BNE   L56EA
+            RTS	; no
+
+L56EA       DEC   $19	; yes
             BEQ   L56FC
-L56EE       JSR   L56FD
-            CLC
-            LDA   $0E
+L56EE       JSR   L56FD	; print Pacman
+            CLC	; next one
+            LDA   zpX2
             ADC   #$0C
-            STA   $0E
+            STA   zpX2
             DEC   $19
             BNE   L56EE
 L56FC       RTS
 
-L56FD       LDA   $0E
-            STA   $0C
-            LDA   $11
+L56FD       LDA   zpX2	; draw Pacman sprite
+            STA   zpX1
+            LDA   zpY2
             STA   zpY1
             LDA   #<L9CB8
             LDY   #>L9CB8
             JMP   L6A20
 
-L570C       JSR   L58B3
-            LDA   $5E
+*-----------------------------------
+* BLINK THINGS!
+*-----------------------------------
+
+blinkTHINGS JSR   blinkPLAYERNAME
+
+            LDA   zpDOTTEMPO	; blink dots
             BEQ   L5716
-            DEC   $5E
+            DEC   zpDOTTEMPO
             RTS
 
-L5716       JSR   L6D1E
+L5716       JSR   getMAXRANK15
             TAX
             LDA   L5733,X
-            STA   $5E
-            LDA   $5F
+            STA   zpDOTTEMPO
+
+            LDA   zpDOTFLAG
             BEQ   L572B
-            JSR   L5743
+            JSR   hideENERGIZERS
             LDA   #$00
-            STA   $5F
+            STA   zpDOTFLAG
             RTS
 
-L572B       JSR   L57BE
+L572B       JSR   showENERGIZERS
             LDA   #$01
-            STA   $5F
+            STA   zpDOTFLAG
             RTS
 
-L5733       DB    $50
+L5733       DB    $50	; Tempo table
             DB    $50
             DB    $50
             DB    $50
@@ -2313,39 +2314,40 @@ L5733       DB    $50
             DB    $50
 
 *-----------------------------------
-* ERASE ENERGIZERS
+* HIDE ENERGIZERS
 *-----------------------------------
 
-L5743       LDA   #$00		; fixed address
-            STA   $0D
+hideENERGIZERS
+            LDA   #$00		; fixed address
+            STA   zpX1+1
             LDA   #>theBOARD	; go to dot 1
-            STA   $16+1
+            STA   zpPTR2+1
             CLC
             LDA   #<theBOARD
             ADC   #$23
-            STA   $16
+            STA   zpPTR2
             BCC   L5756
-            INC   $17
+            INC   zpPTR2+1
 L5756       LDY   #$00		; was it already eaten?
-            LDA   ($16),Y
+            LDA   (zpPTR2),Y
             BEQ   L5767		; yes
             LDA   #$3F		; no, erase it
-            STA   $0C
+            STA   zpX1
             LDA   #$15
             STA   zpY1
             JSR   L7819
 
 L5767       CLC		; go to dot 2
-            LDA   $16
+            LDA   zpPTR2
             ADC   #$14
-            STA   $16
+            STA   zpPTR2
             BCC   L5772
-            INC   $17
+            INC   zpPTR2+1
 L5772       LDY   #$00		; was it already eaten?
-            LDA   ($16),Y
+            LDA   (zpPTR2),Y
             BEQ   L5783		; yes
             LDA   #$3F		; no, erae it
-            STA   $0C
+            STA   zpX1
             LDA   #$8D
             STA   zpY1
             JSR   L7819
@@ -2353,30 +2355,30 @@ L5772       LDY   #$00		; was it already eaten?
 L5783       CLC		; go to dot 3
             LDA   #<theBOARD
             ADC   #$43
-            STA   $16
+            STA   zpPTR2
             LDA   #>theBOARD
             ADC   #$03
-            STA   $16+1
+            STA   zpPTR2+1
             LDY   #$00
-            LDA   ($16),Y
+            LDA   (zpPTR2),Y
             BEQ   L57A1
             LDA   #$D6
-            STA   $0C
+            STA   zpX1
             LDA   #$15
             STA   zpY1
             JSR   L7819
 
 L57A1       CLC		; go to dot 4
-            LDA   $16
+            LDA   zpPTR2
             ADC   #$14
-            STA   $16
+            STA   zpPTR2
             BCC   L57AC
-            INC   $17
+            INC   zpPTR2+1
 L57AC       LDY   #$00
-            LDA   ($16),Y
+            LDA   (zpPTR2),Y
             BEQ   L57BD
             LDA   #$D6
-            STA   $0C
+            STA   zpX1
             LDA   #$8D
             STA   zpY1
             JSR   L7819
@@ -2386,156 +2388,142 @@ L57BD       RTS
 * DRAW ENERGIZERS
 *-----------------------------------
 
-L57BE       LDA   #$00		; same process as above
-            STA   $0D		; but routine draws an energizer dot
+showENERGIZERS       LDA   #$00		; same process as above
+            STA   zpX1+1	; but routine draws an energizer dot
             LDA   #>theBOARD
-            STA   $16+1
+            STA   zpPTR2+1
             CLC
             LDA   #<theBOARD
             ADC   #$23
-            STA   $16
+            STA   zpPTR2
             BCC   L57D1
-            INC   $16+1
+            INC   zpPTR2+1
 L57D1       LDY   #$00
-            LDA   ($16),Y
+            LDA   (zpPTR2),Y
             BEQ   L57E2
             LDA   #$40
-            STA   $0C
+            STA   zpX1
             LDA   #$16
             STA   zpY1
             JSR   drawENERGIZERDOT
+
 L57E2       CLC
-            LDA   $16
+            LDA   zpPTR2
             ADC   #$14
-            STA   $16
+            STA   zpPTR2
             BCC   L57ED
-            INC   $16+1
+            INC   zpPTR2+1
 L57ED       LDY   #$00
-            LDA   ($16),Y
+            LDA   (zpPTR2),Y
             BEQ   L57FE
             LDA   #$40
-            STA   $0C
+            STA   zpX1
             LDA   #$8E
             STA   zpY1
             JSR   drawENERGIZERDOT
+
 L57FE       CLC
             LDA   #<theBOARD
             ADC   #$43
-            STA   $16
+            STA   zpPTR2
             LDA   #>theBOARD
             ADC   #$03
-            STA   $16+1
+            STA   zpPTR2+1
             LDY   #$00
-            LDA   ($16),Y
+            LDA   (zpPTR2),Y
             BEQ   L581C
             LDA   #$D6
-            STA   $0C
+            STA   zpX1
             LDA   #$16
             STA   zpY1
             JSR   drawENERGIZERDOT
+
 L581C       CLC
-            LDA   $16
+            LDA   zpPTR2
             ADC   #$14
-            STA   $16
+            STA   zpPTR2
             BCC   L5827
-            INC   $16+1
+            INC   zpPTR2+1
 L5827       LDY   #$00
-            LDA   ($16),Y
+            LDA   (zpPTR2),Y
             BEQ   L5838
             LDA   #$D6
-            STA   $0C
+            STA   zpX1
             LDA   #$8E
             STA   zpY1
             JSR   drawENERGIZERDOT
 L5838       RTS
 
-L5839       LDA   #$8B
-            STA   $0C
+*-----------------------------------
+* SHOW PACMAN (at its initial pos)
+*-----------------------------------
+
+showPACMAN  LDA   #$8B	; draw Pacman at its initial position
+            STA   zpX1
             LDA   #$8F
             STA   zpY1
             LDA   #$00
-            STA   $0D
+            STA   zpX1+1
             LDA   #$00
             STA   $1E
-            LDA   #<L96FA
-            LDY   #>L96FA
+            LDA   #<sprPACMAN0	; fully closed
+            LDY   #>sprPACMAN0	; fully closed
             JMP   L6A20
 
-L5850       JSR   L5839
-            LDA   $E8
-            BEQ   L585A
-            JMP   L80E3
+*-----------------------------------
+* GET READY!!
+*-----------------------------------
 
-L585A       LDA   #$68
+getREADY    JSR   showPACMAN
+            LDA   zpDEMO	; are we playing?
+            BEQ   L585A
+            JMP   L80E3		; no, demo
+
+L585A       LDA   #$68		; yes...
             STA   zpY1
             LDA   #$00
             STA   zpXBIT
             LDA   #$05
-            STA   $1A
+            STA   zpSPRWIDTH
             LDA   #$07
-            STA   $18
+            STA   zpSPRHEIGHT
             LDA   #$11
             STA   zpXCOL
-            LDA   #<L5890
+            LDA   #<sprREADY	; show the READY sprite
             STA   L55B1+1
-            LDA   #>L5890
+            LDA   #>sprREADY
             STA   L55B1+2
-            JSR   L55A6
+            JSR   drawCOLORSPRITE
             LDY   #$08
 L587D       LDX   #$FF
             JSR   doWAIT2
             DEY
             BNE   L587D
-            LDA   #$10
+            LDA   #$10		; and now, erase the sprite
             STA   zpXCOL
             LDA   #$66
             STA   zpY1
-            JMP   L6978
+            JMP   eraseSPRITE
 
-L5890       DB    $78
-            DB    $7C
-            DB    $0C
-            DB    $0F
-            DB    $49
-            DB    $08
-            DB    $05
-            DB    $12
-            DB    $51
-            DB    $48
-            DB    $44
-            DB    $02
-            DB    $52
-            DB    $48
-            DB    $24
-            DB    $3C
-            DB    $1E
-            DB    $4F
-            DB    $08
-            DB    $23
-            DB    $06
-            DB    $41
-            DB    $28
-            DB    $04
-            DB    $11
-            DB    $4A
-            DB    $40
-            DB    $14
-            DB    $42
-            DB    $00
-            DB    $31
-            DB    $2F
-            DB    $74
-            DB    $21
-            DB    $04
+* Ready! sprite
+
+sprREADY    HEX   787C0C0F49
+            HEX   0805125148
+            HEX   4402524824
+            HEX   3C1E4F0823
+            HEX   0641280411
+            HEX   4A40144200
+            HEX   312F742104
 
 *-----------------------------------
-* 
+* BLINK PLAYER NAME
 *-----------------------------------
 
-L58B3       LDA   $59
+blinkPLAYERNAME
+            LDA   $59
             CMP   #$01
             BNE   L58C6
-            LDA   $E8
+            LDA   zpDEMO
             BEQ   L58C0
             JSR   L80E3
 L58C0       LDA   $E5
@@ -2543,13 +2531,17 @@ L58C0       LDA   $E5
             DEC   $E5
 L58C6       RTS
 
-L58C7       JSR   L6D1E
+*-----------------------------------
+* 
+*-----------------------------------
+
+L58C7       JSR   getMAXRANK15
             TAX
             LDA   L5903,X
             STA   $E5
             LDA   $E6
             BEQ   L58DF
-            JSR   L58E7
+            JSR   erasePLAYER
             LDA   #$00
             STA   $E6
             CLC
@@ -2565,7 +2557,8 @@ L58DF       JSR   L58FA
 * DRAW PLAYER# ON SCREEN (BLINK)
 *-----------------------------------
 
-L58E7       LDA   $50		; get player index
+erasePLAYER
+            LDA   zpCURPLAYER		; get player index
             ASL
             TAX
             LDA   L6992,X	; get X
@@ -2573,13 +2566,13 @@ L58E7       LDA   $50		; get player index
             LDA   L6992+1,X	; and Y
             SBC   #$0E		; - 14
             STA   zpY1
-            JMP   L6978		; draw PLAYER# sprite
+            JMP   eraseSPRITE		; erase PLAYER# sprite
 
 *-----------------------------------
 * 
 *-----------------------------------
 
-L58FA       LDA   $50
+L58FA       LDA   zpCURPLAYER
             ASL
             ASL
             ASL		; *8
@@ -2637,10 +2630,10 @@ L592C       DB    $FE
 * CALCULATE HGR X-COORDS
 *-----------------------------------
 
-calcXYHGR   LDA   $0D	; address in board?
+calcXYHGR   LDA   zpX1+1	; address in board?
             BEQ   L594B	; yup
             CLC	; no, after
-            LDA   $0C
+            LDA   zpX1
             ADC   #$04
             TAX
             CLC
@@ -2651,7 +2644,7 @@ calcXYHGR   LDA   $0D	; address in board?
             STA   zpXBIT	; the x-sprite offset
             RTS
 
-L594B       LDX   $0C	; from x-coord
+L594B       LDX   zpX1	; from x-coord
             LDA   L5A58,X
             STA   zpXCOL	; to x-screen
             LDA   L5958,X
@@ -2752,8 +2745,8 @@ L5CEF       RTS
 *-----------------------------------
 
 drawHLINE   LDA   #$00
-            STA   $0D
-            STA   $0F
+            STA   zpX1+1
+            STA   zpX2+1
 L5CF6       JSR   setHGRADDRESS
             JSR   calcXYHGR
             LDX   zpXBIT
@@ -2768,25 +2761,25 @@ L5D00       JSR   drawDOT
             JSR   getNEXTXBIT
             JSR   getNEXTXBIT
             CLC
-            LDA   $0C
+            LDA   zpX1
             ADC   #$02
-            STA   $0C
+            STA   zpX1
             BCC   L5D20
-            INC   $0D
-L5D20       LDA   $0D
-            CMP   $0F
+            INC   zpX1+1
+L5D20       LDA   zpX1+1	; end of X?
+            CMP   zpX2+1
             BCC   L5D00
             BEQ   L5D2A
             BCS   L5D30
-L5D2A       LDA   $0E	; end of X?
-            CMP   $0C
-            BCS   L5D00	; no, loop
-L5D30       RTS
+L5D2A       LDA   zpX2
+            CMP   zpX1
+            BCS   L5D00
+L5D30       RTS		; yes!
 
 L5D31       JSR   getNEXTXBIT
-            INC   $0C
+            INC   zpX1
             BNE   L5D20
-            INC   $0D
+            INC   zpX1+1
             JMP   L5D20
 
 *-----------------------------------
@@ -2799,7 +2792,7 @@ L5D40       JSR   setHGRADDRESS
             LDY   zpXCOL
             JSR   drawDOT
             INC   zpY1	; next Y
-            LDA   $11	; Y-end reached?
+            LDA   zpY2	; Y-end reached?
             CMP   zpY1
             BCS   L5D40	; no, loop
             RTS	; yes, exit
@@ -2814,56 +2807,56 @@ drawGAMEBOARD
             LDA   zpMONITOR
             BEQ   L5D66
             LDA   #<boardBW
-            STA   $16
+            STA   zpPTR2
             LDA   #>boardBW
-            STA   $17
+            STA   zpPTR2+1
             JMP   L5D6E
 
 L5D66       LDA   #<boardCOLOR
-            STA   $16
+            STA   zpPTR2
             LDA   #>boardCOLOR
-            STA   $16+1
+            STA   zpPTR2+1
 L5D6E       LDA   #$00
-            STA   $0D
+            STA   zpX1+1
             LDA   #$48		; $48 entries for horizontal line
             STA   $08
 L5D76       LDY   #$00
-            LDA   ($16),Y
-            STA   $0C		; x from
+            LDA   (zpPTR2),Y
+            STA   zpX1		; x from
             INY
-            LDA   ($16),Y
-            STA   $0E		; x to
+            LDA   (zpPTR2),Y
+            STA   zpX2		; x to
             INY
-            LDA   ($16),Y
+            LDA   (zpPTR2),Y
             STA   zpY1		; y
             JSR   drawHLINE
             CLC
             LDA   #$03
-            ADC   $16
-            STA   $16
+            ADC   zpPTR2
+            STA   zpPTR2
             BCC   L5D94
-            INC   $17
+            INC   zpPTR2+1
 L5D94       DEC   $08
             BNE   L5D76
 
             LDA   #$46		; $46 entries for vertical line
             STA   $08
 L5D9C       LDY   #$00
-            LDA   ($16),Y
-            STA   $0C
+            LDA   (zpPTR2),Y
+            STA   zpX1
             INY
-            LDA   ($16),Y
+            LDA   (zpPTR2),Y
             STA   zpY1
             INY
-            LDA   ($16),Y
-            STA   $11
+            LDA   (zpPTR2),Y
+            STA   zpY2
             JSR   drawVLINE
             CLC
-            LDA   $16
+            LDA   zpPTR2
             ADC   #$03
-            STA   $16
+            STA   zpPTR2
             BCC   L5DBA
-            INC   $17
+            INC   zpPTR2+1
 L5DBA       DEC   $08
             BNE   L5D9C
             RTS
@@ -2938,53 +2931,53 @@ boardBW     HEX   3C88058C8E1D90DC05C2DC3CC2E253C2
 * The board is stored per column!!
 
 drawDOTS    LDA   #<theBOARD
-            STA   $16
+            STA   zpPTR2
             LDA   #>theBOARD
-            STA   $16+1
+            STA   zpPTR2+1
             LDA   #$3B	; draw at X=$3B
-            STA   $0E
+            STA   zpX2
 L611F       LDA   #$01	; index in board
             STA   $19
             LDA   #$0B	; draw at Y=$B
-            STA   $11
+            STA   zpY2
 L6127       LDY   $19
-            LDA   ($16),Y
+            LDA   (zpPTR2),Y
             BEQ   L614D	; empty
             ROR
             BCS   L6142
-            LDA   $0E	; move X/Y coord
-            STA   $0C	; by -1
-            DEC   $0C
-            LDA   $11
+            LDA   zpX2	; move X/Y coord
+            STA   zpX1	; by -1
+            DEC   zpX1
+            LDA   zpY2
             STA   zpY1
             DEC   zpY1
             JSR   drawENERGIZERDOT	; draw energizer dot
             CLC
             BCC   L614D
-L6142       LDA   $0E
-            STA   $0C
-            LDA   $11
+L6142       LDA   zpX2
+            STA   zpX1
+            LDA   zpY2
             STA   zpY1
             JSR   drawNORMALDOT	; draw standard dot
 	
 L614D       CLC	; next Y on board
-            LDA   $11
+            LDA   zpY2
             ADC   #$06
-            STA   $11
+            STA   zpY2
 
             INC   $19	; next X-board
             LDA   $19	; end of line?
             CMP   #$1F
             BCC   L6127
-            LDA   $16	; yes, next board line
+            LDA   zpPTR2	; yes, next board line
             ADC   #$1F
-            STA   $16
+            STA   zpPTR2
             BCC   L6166
-            INC   $16+1
+            INC   zpPTR2+1
 L6166       CLC	; next X
-            LDA   $0E
+            LDA   zpX2
             ADC   #$06
-            STA   $0E
+            STA   zpX2
             CMP   #$DD	; until last line
             BCC   L611F
             RTS
@@ -3183,7 +3176,7 @@ dftBOARD    HEX   00000000000000000000000000000000000000000000000000000000000000
 *-----------------------------------
 
 L693A       LDA   #$F8
-            STA   $18
+            STA   zpSPRHEIGHT
             JSR   calcXYHGR
             LDA   zpXBIT
             ASL
@@ -3205,16 +3198,15 @@ L6959       LDA   $0666,X
             INX
             STX   zpXBIT
             INC   zpY1
-            INC   $18
+            INC   zpSPRHEIGHT
             BNE   L6949
             RTS
 
 *-----------------------------------
-* ERASE PLAYER# ON SCREEN (BLINK)
+* ERASE SCORE
 *-----------------------------------
 
-erasePLAYERNAME
-            LDA   $50		; get current player
+eraseSCORE  LDA   zpCURPLAYER		; get current player
             ASL
             TAX
             LDA   L6992,X
@@ -3222,8 +3214,12 @@ erasePLAYERNAME
             LDA   L6992+1,X
             STA   zpY1
 
-L6978       LDA   #$0C		; 12 lines to erase
-            STA   $18
+*-----------------------------------
+* ERASE SPRITE
+*-----------------------------------
+
+eraseSPRITE LDA   #$0C		; 12 lines to erase
+            STA   zpSPRHEIGHT
 L697C       JSR   setHGRADDRESS
             LDY   zpXCOL
             LDX   #$08		; clear 8 bytes
@@ -3233,7 +3229,7 @@ L6985       STA   (zpHGR),Y
             DEX
             BNE   L6985
             INC   zpY1		; screen line++
-            DEC   $18		; nb lines--
+            DEC   zpSPRHEIGHT		; nb lines--
             BNE   L697C
             RTS
 
@@ -3253,7 +3249,7 @@ L6992       HEX   00,5E	; High score
 L699E       JSR   L7D9A
 
 L69A1       LDA   #$F6	; 10 lines to erase
-            STA   $18
+            STA   zpSPRHEIGHT
             JSR   calcXYHGR
             ASL   zpXBIT
             ASL   zpXBIT
@@ -3271,7 +3267,7 @@ L69B7       LDA   L69CD,X
             DEC   $09
             BNE   L69B7
             INC   zpY1	; Y+=1
-            INC   $18	; data++
+            INC   zpSPRHEIGHT	; data++
             BNE   L69AC
             RTS
 
@@ -3357,19 +3353,19 @@ L6A20       LDX   zpMONITOR
             BEQ   L6A28
             LDX   $1E
             BNE   L6A62
-L6A28       STA   L6A4A+1
+L6A28       STA   L6A4A+1	; b&w
             STY   L6A4A+2
             JSR   L7D9A
             LDA   #$0A
-            STA   $18
+            STA   zpSPRHEIGHT
             LDA   #$03
-            STA   $1A
+            STA   zpSPRWIDTH
             JSR   calcXYHGR
             JSR   calcSPROFFSET
 L6A3F       JSR   setHGRADDRESS
             LDX   zpXBIT
             LDY   zpXCOL
-            LDA   $1A
+            LDA   zpSPRWIDTH
             STA   $09
 L6A4A       LDA   $0666,X
             ORA   (zpHGR),Y
@@ -3381,24 +3377,28 @@ L6A4A       LDA   $0666,X
             BNE   L6A4A
             STX   zpXBIT
             INC   zpY1
-            DEC   $18
+            DEC   zpSPRHEIGHT
             BNE   L6A3F
             RTS
 
-L6A62       STA   L55B1+1
+L6A62       STA   L55B1+1	; color
             STY   L55B1+2
             JSR   L7D9A
             LDA   #$0A
-            STA   $18
+            STA   zpSPRHEIGHT
             JSR   calcXYHGR
             JSR   calcSPROFFSET
             LDA   #$03
-            STA   $1A
-            JMP   L55A6
+            STA   zpSPRWIDTH
+            JMP   drawCOLORSPRITE
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 L6A7C       LDA   $57
             BNE   L6AA7
-            LDA   $55
+            LDA   zpRANK
             CMP   #$1A
             BCC   L6A88
             LDA   #$1A
@@ -3435,14 +3435,14 @@ L6AC2       LDA   $E7
             CMP   #$01
             BEQ   L6AE4
             LDA   #$91
-            STA   $0E
+            STA   zpX2
             LDA   #$00
-            STA   $0F
+            STA   zpX2+1
             STA   $05
             STA   $07
             LDA   #$68
-            STA   $11
-            JSR   L6D1E
+            STA   zpY2
+            JSR   getMAXRANK15
             TAX
             LDA   L6CD4,X
             STA   $06
@@ -3458,7 +3458,7 @@ L6AEB       LDA   #$10
             STA   zpY1
             LDA   #$00
             STA   $E7
-            JSR   L6978
+            JSR   eraseSPRITE
 L6AFA       RTS
 L6AFB       JMP   L6AEB
 
@@ -3903,9 +3903,9 @@ L6B01       DB    $00
 * 
 *-----------------------------------
 
-L6CB2       LDX   $E8
+L6CB2       LDX   zpDEMO
             BNE   L6CD3
-            JSR   L6D1E
+            JSR   getMAXRANK15
             TAX
             CLC
             SED
@@ -3916,7 +3916,7 @@ L6CB2       LDX   $E8
             ADC   #$00
             STA   $54
             CLD
-            JSR   erasePLAYERNAME
+            JSR   eraseSCORE
             JSR   L7091
             JSR   L7C61
 L6CD3       RTS
@@ -3969,23 +3969,37 @@ L6D05       LDX   #$FF
             DEY
             BNE   L6D05
             JSR   playCARTOON
-            INC   $55	; ZP next level?
+            INC   zpRANK	; ZP next level?
             JSR   L531E
             JSR   prepareLEVEL
             JSR   L53E6
             JMP   L530F
 
-L6D1E       LDA   $55
+*-----------------------------------
+* GET MAX RANK MOD 15
+*-----------------------------------
+
+getMAXRANK15
+            LDA   zpRANK
             CMP   #$0F
             BCC   L6D26
             LDA   #$0F
 L6D26       RTS
 
-L6D27       LDA   $55
+*-----------------------------------
+* GET MAX RANK MOD 21
+*-----------------------------------
+
+getMAXRANK21
+            LDA   zpRANK
             CMP   #$15
             BCC   L6D2F
             LDA   #$15
 L6D2F       RTS
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 L6D30       LDA   $E0
             ASL
@@ -4024,7 +4038,7 @@ L6D49       LDA   #$00
             STA   $68
             RTS
 
-L6D60       LDX   $55
+L6D60       LDX   zpRANK
             CPX   #$15
             BCS   L6DA0
             LDA   #$04
@@ -4041,7 +4055,7 @@ L6D75       JSR   L8712
             STA   $68
             LDA   #$01
             STA   $E4
-            JSR   L6D27
+            JSR   getMAXRANK21
             ASL
             TAX
             LDA   L6DEF,X
@@ -4144,6 +4158,7 @@ L6DEF       DB    $00
             DB    $00
             DB    $B0
             DB    $00
+
 L6E19       DB    $40
 L6E1A       DB    $00
             DB    $30
@@ -4247,21 +4262,21 @@ L6E1A       DB    $00
 
 L6E79       LDY   #$0E
 L6E7B       LDA   L8A44,Y
-            STA   $0800,Y
+            STA   L0800,Y
             DEY
             BPL   L6E7B
             LDY   #$00
             LDX   #$01
 L6E88       LDA   #$00
-            STA   $0A00,Y
-            STA   $0900,X
-            STA   $0B00,X
+            STA   L0800+$200,Y
+            STA   L0800+$100,X
+            STA   L0800+$300,X
             INX
             INY
             LDA   #$01
-            STA   $0A00,Y
-            STA   $0900,X
-            STA   $0B00,X
+            STA   $0800+$200,Y
+            STA   $0800+$100,X
+            STA   $0800+$300,X
             INX
             INY
             BNE   L6E88
@@ -4286,7 +4301,7 @@ L6EB7       LDA   $0666,X
 L6EC3       JSR   L6AFB
             JSR   L80E3
             LDA   #$01
-            STA   $E8
+            STA   zpDEMO
             LDY   #$30
 L6ECF       LDX   #$64
             JSR   doWAIT2
@@ -4301,7 +4316,7 @@ L6EDA       LDX   #$66
 L6EE2       STA   L6EFF+1
             STY   L6EFF+2
             LDA   #$0C
-            STA   $18
+            STA   zpSPRHEIGHT
             LDA   #$00
             STA   zpXBIT
 L6EF0       JSR   setHGRADDRESS
@@ -4319,12 +4334,12 @@ L6EFF       ORA   $0666,X
             BNE   L6EFB
             STX   zpXBIT
             INC   zpY1
-            DEC   $18
+            DEC   zpSPRHEIGHT
             BNE   L6EF0
             RTS
 
-L6F13       LDA   $55
-            CMP   #$1A
+L6F13       LDA   zpRANK
+            CMP   #$1A	; 26
             BCC   L6F1B
             LDA   #$1A
 L6F1B       ASL
@@ -4362,15 +4377,15 @@ setTEXT2    LDA   TXTSET
 *-----------------------------------
 
 clearHGR    LDA   #>HGR
-            STA   $17
+            STA   zpPTR2+1
             LDY   #<HGR
-            STY   $16
+            STY   zpPTR2
 L6F4E       LDA   #$80
-L6F50       STA   ($16),Y
+L6F50       STA   (zpPTR2),Y
             INY
             BNE   L6F50
-            INC   $16+1
-            LDA   $16+1
+            INC   zpPTR2+1
+            LDA   zpPTR2+1
             CMP   #>HGR2
             BNE   L6F4E
             RTS
@@ -4417,7 +4432,7 @@ L6F9A       LDA   KBD
             BPL   L6F9A
             STA   KBDSTROBE
 
-L6FA2       LDX   $E8
+L6FA2       LDX   zpDEMO
             BEQ   L6FB1
             CMP   #" "
             BEQ   L6FAE
@@ -4455,7 +4470,7 @@ L6FCE       SEC
 *-----------------------------------
 
 readJOYPAD
-            LDA   $E8
+            LDA   zpDEMO
             BNE   L700A
             LDA   #$00
             BIT   SETAN0
@@ -4532,7 +4547,7 @@ L703C       SBC   #$01
 *-----------------------------------
 
 readJOYSTICK
-            LDA   $E8
+            LDA   zpDEMO
             BNE   L708D
             JSR   getLLJOYSTICK		; read joystick
             LDA   $62
@@ -4614,13 +4629,13 @@ L70AB       LDA   $52
             LDA   $54
             STA   $02
             STA   $07
-            LDA   $50
+            LDA   zpCURPLAYER
             STA   $F0
             LDA   #$00
-            STA   $50
+            STA   zpCURPLAYER
             JSR   L70D8
             LDA   $F0
-            STA   $50
+            STA   zpCURPLAYER
 
 L70CC       LDA   $52
             STA   $05
@@ -4629,17 +4644,17 @@ L70CC       LDA   $52
             LDA   $54
             STA   $07
 
-L70D8       JSR   erasePLAYERNAME
-            LDA   $50
+L70D8       JSR   eraseSCORE
+            LDA   zpCURPLAYER
             ASL
             ASL
             TAX
             LDA   L7141,X
-            STA   $0E
+            STA   zpX2
             LDA   L7142,X
-            STA   $0F
+            STA   zpX2+1
             LDA   L7143,X
-            STA   $11
+            STA   zpY2
             JSR   L70F5
             JMP   L7124
 
@@ -4657,13 +4672,13 @@ L70F9       CLC
             ROR
             ROR
             ROR
-            JSR   L7159
+            JSR   printDIGIT
             SEC
-            LDA   $0E
+            LDA   zpX2
             SBC   #$06
-            STA   $0E
+            STA   zpX2
             BCS   L7117
-            DEC   $0F
+            DEC   zpX2+1
 L7117       LDA   $07
             BNE   L70F5
             LDA   $06
@@ -4672,19 +4687,19 @@ L7117       LDA   $07
             BNE   L70F5
             RTS
 
-L7124       LDA   $50
+L7124       LDA   zpCURPLAYER
             BEQ   L7140
-            BIT   $58
+            BIT   zpNBLIVES
             BPL   L7140
             LDA   $54
             CMP   #$01
             BCC   L7140
             JSR   L7C51
-            INC   $58
-            LDA   $58
+            INC   zpNBLIVES
+            LDA   zpNBLIVES
             AND   #$7F
-            STA   $58
-            JSR   L56CF
+            STA   zpNBLIVES
+            JSR   printNBLIVES
 L7140       RTS
 
 L7141       DB    $28
@@ -4713,36 +4728,36 @@ L7143       DB    $5E
             DB    $00
 
 *-----------------------------------
-* 
+* PRINT DIGIT (0 TO 9)
 *-----------------------------------
 
-L7159       ASL
+printDIGIT  ASL
             TAX
-            LDA   L717D,X
+            LDA   L717D,X	; get the pointer to the digit
             STA   L6950+1
             STA   L6959+1
             LDA   L717D+1,X
             STA   L6950+2
             STA   L6959+2
-            LDA   $0E
-            STA   $0C
-            LDA   $0F
-            STA   $0D
-            LDA   $11
+            LDA   zpX2		; where to output it
+            STA   zpX1
+            LDA   zpX2+1
+            STA   zpX1+1
+            LDA   zpY2
             STA   zpY1
-            JSR   L693A
+            JSR   L693A		; print "sprite"
             RTS
 
-L717D       DA    L7191
-            DA    L7201
-            DA    L7271
-            DA    L72E1
-            DA    L7351
-            DA    L73C1
-            DA    L7431
-            DA    L74A1
-            DA    L7511
-            DA    L7581
+L717D       DA    L7191	; 0
+            DA    L7201	; 1
+            DA    L7271	; 2
+            DA    L72E1	; 3
+            DA    L7351	; 4
+            DA    L73C1	; 5
+            DA    L7431	; 6
+            DA    L74A1	; 7
+            DA    L7511	; 8
+            DA    L7581	; 9
 
 L7191       HEX   8E80918091809180918091808E808080
             HEX   9C80A280A280A280A280A2809C808080
@@ -4819,20 +4834,20 @@ L7581       HEX   8E80918091809E809080888087808080
 * 
 *-----------------------------------
 
-L75F1       STA   $16
+L75F1       STA   zpPTR2
             LDA   #>L760A
-            STA   $16+1
-            LDA   $16
+            STA   zpPTR2+1
+            LDA   zpPTR2
             ASL
             ASL
             ASL
             BCC   L7600
-            INC   $16+1
+            INC   zpPTR2+1
 L7600       CLC
             ADC   #<L760A
-            STA   $16
+            STA   zpPTR2
             BCC   L7609
-            INC   $16+1
+            INC   zpPTR2+1
 L7609       RTS
 
 L760A       DB    $41
@@ -5367,7 +5382,7 @@ L7812       HEX   00,1E,3C,5A,78,96,B4
 *-----------------------------------
 
 L7819       LDA   #$F8
-            STA   $18
+            STA   zpSPRHEIGHT
             JSR   calcXYHGR
             ASL   zpXBIT	; *2
 L7822       JSR   setHGRADDRESS
@@ -5383,7 +5398,7 @@ L7822       JSR   setHGRADDRESS
             ORA   #$80
             STA   (zpHGR),Y
             INC   zpY1
-            INC   $18
+            INC   zpSPRHEIGHT
             BNE   L7822
             RTS
 
@@ -5416,9 +5431,9 @@ L7851       DB    $09
 * 
 *-----------------------------------
 
-L7861       LDA   zpDEVICE
-            BNE   L7868
-            JSR   getINPUT
+L7861       LDA   zpDEVICE	; which device?
+            BNE   L7868		; joystick?
+            JSR   getINPUT	; no, keyboard or joypad
 L7868       DEC   $59
             BEQ   L786D
             RTS
@@ -5427,7 +5442,7 @@ L786D       LDA   zpDEVICE
             BEQ   L7874
             JSR   getINPUT
 L7874       JSR   L808C
-            JSR   L6D1E
+            JSR   getMAXRANK15
             TAX
             LDA   L7851,X
             CLC
@@ -5455,11 +5470,11 @@ L78A5       LDA   $64
             TAX
             JSR   L75F1
             LDY   #$00
-            LDA   ($16),Y
+            LDA   (zpPTR2),Y
             CMP   $60
             BNE   L78BA
             INY
-            LDA   ($16),Y
+            LDA   (zpPTR2),Y
             CMP   $61
             BEQ   L78D1
 L78BA       LDA   $65
@@ -5467,41 +5482,41 @@ L78BA       LDA   $65
             TAX
             JSR   L75F1
             LDY   #$00
-            LDA   ($16),Y
+            LDA   (zpPTR2),Y
             CMP   $60
             BNE   L78CF
             INY
-            LDA   ($16),Y
+            LDA   (zpPTR2),Y
             CMP   $61
 L78CF       BNE   L794B
 L78D1       STX   $64
             LDA   #$FF
             STA   $65
-L78D7       LDA   $E8
+L78D7       LDA   zpDEMO
             BEQ   L78E7
-            INC   $1B
+            INC   zpPTR3
             BNE   L78E1
-            INC   $1C
+            INC   zpPTR3+1
 L78E1       LDY   #$00
-            LDA   ($1B),Y
+            LDA   (zpPTR3),Y
             STA   $63
 L78E7       LDY   $63
             BMI   L78FD
             INY
             INY
-            LDA   ($16),Y
+            LDA   (zpPTR2),Y
             BPL   L78F9
             LDY   $62
             INY
             INY
-            LDA   ($16),Y
+            LDA   (zpPTR2),Y
             BPL   L7915
 L78F9       LDA   $63
             STA   $62
 L78FD       LDY   $62
             INY
             INY
-            LDA   ($16),Y
+            LDA   (zpPTR2),Y
             BPL   L7915
             JSR   L7D80
             JSR   L699E
@@ -5572,7 +5587,7 @@ L7984       STA   $60
 L7988       STA   $61
             STA   zpY1
             LDA   $60
-            STA   $0C
+            STA   zpX1
             INC   $66
             INC   $1F
             LDA   $1F
@@ -5601,8 +5616,8 @@ L79BE       ASL
             TAX
             LDA   #$80
             STA   $1E
-            LDA   L96E8,X
-            LDY   L96E8+1,X
+            LDA   sprPACMAN,X
+            LDY   sprPACMAN+1,X
             JMP   L6A20
 
 L79CD       LDA   $61
@@ -5626,7 +5641,7 @@ L79CD       LDA   $61
             STA   zpXCOL
             LDA   #$66
             STA   zpY1
-            JSR   L6978
+            JSR   eraseSPRITE
             JSR   L6CB2
 L79FD       CLC
             LDA   $62
@@ -5682,29 +5697,29 @@ L7A57       STA   $6D
             BEQ   L7A5F
 L7A5F       JSR   L7A6B
             LDY   #$00
-            LDA   ($16),Y
+            LDA   (zpPTR2),Y
             BEQ   L7A1E
             JMP   L7AAC
 
 L7A6B       LDA   #$62
-            STA   $17
+            STA   zpPTR2+1
             LDA   $6A
             ASL
             ASL
             ASL
             ASL
             BCC   L7A7B
-            INC   $17
-            INC   $17
+            INC   zpPTR2+1
+            INC   zpPTR2+1
 L7A7B       ASL
             BCC   L7A80
-            INC   $17
+            INC   zpPTR2+1
 L7A80       CLC
             ADC   $6B
             ADC   #$3A
             BCC   L7A89
-            INC   $17
-L7A89       STA   $16
+            INC   zpPTR2+1
+L7A89       STA   zpPTR2
             RTS
 
 L7A8C       DB    $02
@@ -5745,29 +5760,29 @@ L7A9C       DB    $02
 *-----------------------------------
 
 L7AAC       CLC
-            JSR   L6D1E
+            JSR   getMAXRANK15
             TAX
             LDA   L7A8C,X
             ADC   $59
             STA   $59
             LDA   L7A9C,X
             STA   $F3
-            LDA   ($16),Y
-            LDX   $E8
+            LDA   (zpPTR2),Y
+            LDX   zpDEMO
             BNE   L7B1F
             CLC
             ROR
             BEQ   L7AF4
             JSR   L7C45
-            LDA   $16
+            LDA   zpPTR2
             PHA
-            LDA   $17
+            LDA   zpPTR2+1
             PHA
-            JSR   L5743
+            JSR   hideENERGIZERS
             PLA
-            STA   $17
+            STA   zpPTR2+1
             PLA
-            STA   $16
+            STA   zpPTR2
             CLC
             SED
             LDA   $52
@@ -5798,7 +5813,7 @@ L7AF4       CLC
             JSR   L7BDC
 L7B0C       LDA   #$00
             LDY   #$00
-            STA   ($16),Y
+            STA   (zpPTR2),Y
             JSR   L7091
             DEC   $57
             DEC   $56
@@ -5812,7 +5827,7 @@ L7B1F       CLC
             JSR   L6D60
 L7B26       LDA   #$00
             LDY   #$00
-            STA   ($16),Y
+            STA   (zpPTR2),Y
             DEC   $56
             RTS
 
@@ -5827,7 +5842,7 @@ L7B2F       JSR   L7D80
             LDA   $60
             SBC   #$02
             STA   $60
-            STA   $0C
+            STA   zpX1
 L7B48       LDA   $61
             STA   zpY1
             INC   $66
@@ -5838,7 +5853,7 @@ L7B54       CLC
             LDA   $60
             ADC   #$02
             STA   $60
-            STA   $0C
+            STA   zpX1
             CMP   #$DD
             BNE   L7B48
             LDA   $65
@@ -5847,7 +5862,7 @@ L7B54       CLC
             STA   $65
             LDA   #$3D
             STA   $60
-            STA   $0C
+            STA   zpX1
             LDA   #$00
             STA   $6A
             LDA   #$00
@@ -5859,12 +5874,12 @@ L7B79       LDA   $62
             LDA   $60
             ADC   #$02
             STA   $60
-            STA   $0C
+            STA   zpX1
             BNE   L7B48
 L7B88       LDA   $60
             SBC   #$02
             STA   $60
-            STA   $0C
+            STA   zpX1
             CMP   #$3B
             BNE   L7B48
             LDA   $65
@@ -5873,7 +5888,7 @@ L7B88       LDA   $60
             STA   $65
             LDA   #$DB
             STA   $60
-            STA   $0C
+            STA   zpX1
             LDA   #$1C
             STA   $6A
             LDA   #$00
@@ -5892,7 +5907,7 @@ L7BB5       BIT   SPKR
 
 L7BBC       STA   L7BCD+1
             STY   L7BCD+2
-            LDA   $E8
+            LDA   zpDEMO
             BEQ   L7BC7
             RTS
 
@@ -6186,16 +6201,16 @@ L7D06       BIT   SPKR
             BNE   L7CF9
             RTS
 
-L7D0D       STA   $14
+L7D0D       STA   zpPTR1
             STY   $14+1
             LDA   #$00
             STA   $06
 L7D15       LDY   $06
-            LDA   ($14),Y
+            LDA   (zpPTR1),Y
             BEQ   L7D32
             STA   $05		; height
             INY
-            LDA   ($14),Y
+            LDA   (zpPTR1),Y
             STA   L7CF7+1	; duration
             JSR   L7CF7
             JSR   getINPUT
@@ -6285,19 +6300,19 @@ L7D7B       LDX   #$1E
             JMP   doWAIT2
 
 L7D80       LDA   $60
-            STA   $0C
+            STA   zpX1
             LDA   $61
             STA   zpY1
             LDA   #$00
-            STA   $0D
+            STA   zpX1+1
             RTS
 
 L7D8D       LDA   $70
-            STA   $0C
+            STA   zpX1
             LDA   $71
             STA   zpY1
             LDA   #$00
-            STA   $0D
+            STA   zpX1+1
             RTS
 
 *-----------------------------------
@@ -6305,9 +6320,9 @@ L7D8D       LDA   $70
 *-----------------------------------
 
 L7D9A       SEC	; X1 - 4
-            LDA   $0C
+            LDA   zpX1
             SBC   #$04
-            STA   $0C
+            STA   zpX1
             SEC	; Y1 - 4
             LDA   zpY1
             SBC   #$04
@@ -6319,9 +6334,9 @@ L7D9A       SEC	; X1 - 4
 *-----------------------------------
 
 L7DA9       SEC	; X1 - 5
-            LDA   $0C
+            LDA   zpX1
             SBC   #$05
-            STA   $0C
+            STA   zpX1
             SEC	; Y1 - 4
             LDA   zpY1
             SBC   #$04
@@ -6346,15 +6361,15 @@ L7DD2       LDA   #<L7FE5
             BNE   L7DDC
 L7DD8       LDA   #<L8003
             LDY   #>L8003
-L7DDC       STA   $16
-            STY   $17
+L7DDC       STA   zpPTR2
+            STY   zpPTR2+1
             JSR   L7D80
             JSR   L699E
             JSR   L7D8D
             JSR   L699E
             JSR   L7D8D
             JSR   L7E1F
-            LDA   $E8
+            LDA   zpDEMO
             BNE   L7E0E
             JSR   L805D
             JSR   L805D
@@ -6375,7 +6390,7 @@ L7E13       JSR   L7D8D
 L7E1F       JSR   L7DA9
             JSR   calcXYHGR
             LDY   #$1D
-L7E27       LDA   ($16),Y
+L7E27       LDA   (zpPTR2),Y
             STA   L7E70,Y
             DEY
             BPL   L7E27
@@ -6519,8 +6534,8 @@ L7EDE       LDA   $0A
             JSR   L7D80
             LDA   L7F05,X
             LDY   L7F05+1,X
-            STA   $16
-            STY   $17
+            STA   zpPTR2
+            STY   zpPTR2+1
             JSR   L7E1F
             JSR   L7C82
             LDX   #$80
@@ -6845,9 +6860,9 @@ L8020       DB    $00
 * 
 *-----------------------------------
 
-            LDA   $0C
+            LDA   zpX1
             ADC   #$05
-            STA   $0C
+            STA   zpX1
             CLC
             LDA   zpY1
             ADC   #$04
@@ -6855,9 +6870,9 @@ L8020       DB    $00
             RTS
 
 L804E       CLC
-            LDA   $0C
+            LDA   zpX1
             ADC   #$04
-            STA   $0C
+            STA   zpX1
             CLC
             LDA   zpY1
             ADC   #$04
@@ -6960,7 +6975,7 @@ L8107       STA   zpY1
 L8112       STX   $18
             STA   L55B1+1
             STY   L55B1+2
-            JMP   L55A6
+            JMP   drawCOLORSPRITE
 
 L811D       DB    $60
             DB    $23
@@ -7023,7 +7038,7 @@ L8139       DB    $4E
 * WHICH CARTOON TO PLAY?
 *-----------------------------------
 
-playCARTOON LDA   $55
+playCARTOON LDA   zpRANK
 L8157       CMP   #$02
             BNE   L815E
             JMP   playCARTOON1
@@ -7046,8 +7061,8 @@ L8172       RTS
 *-----------------------------------
 
 cartoonHLINE
-            STA   $0C	; X
-            STY   $0E	; Y from
+            STA   zpX1	; X
+            STY   zpX2	; Y from
             STX   zpY1	; Y to
             LDA   #$80	; mode
             STA   $1E
@@ -7058,9 +7073,9 @@ cartoonHLINE
 *-----------------------------------
 
 cartoonVLINE
-            STA   $0C	; X
+            STA   zpX1	; X
             STY   zpY1	; Y-from
-            STX   $11	; Y-to
+            STX   zpY2	; Y-to
             JMP   drawVLINE
 
 *-----------------------------------
@@ -7106,7 +7121,7 @@ L81B7       DEC   $59
             LDA   $60	; x -= 2
             SBC   #$02
             STA   $60
-            STA   $0C
+            STA   zpX1
             CMP   #$21
             BCC   L81FC
             LDA   $61
@@ -7184,7 +7199,7 @@ L8259       INC   $66
             LDA   $61
             STA   zpY1
             LDA   $60
-            STA   $0C
+            STA   zpX1
             JSR   calcXYHGR
             LDY   #$4F
 L827A       LDA   $0666,Y
@@ -7192,7 +7207,7 @@ L827A       LDA   $0666,Y
             DEY
             BPL   L827A
             LDA   #$14
-            STA   $18
+            STA   zpSPRHEIGHT
             LDA   zpXBIT
             BEQ   L8292
 L828B       JSR   L82B1
@@ -7211,7 +7226,7 @@ L829D       LDA   L7E70,X
             BNE   L829D
             STX   zpXBIT
             INC   zpY1
-            DEC   $18
+            DEC   zpSPRHEIGHT
             BNE   L8292
             RTS
 
@@ -7320,9 +7335,9 @@ L844F       JSR   L7D8D
             JSR   L699E
             JSR   L7D8D
             CLC
-            LDA   $0C
+            LDA   zpX1
             ADC   #$0A
-            STA   $0C
+            STA   zpX1
             JSR   L699E
             JSR   L7D8D
             JSR   L88A2
@@ -7437,8 +7452,8 @@ L8519       JSR   doWAIT
             TAX
             LDA   L854A,X
             LDY   L854A+1,X
-            STA   $16
-            STY   $16+1
+            STA   zpPTR2
+            STY   zpPTR2+1
             JSR   L7E1F
 L8546       JMP   L84F9
 L8549       RTS
@@ -7792,7 +7807,7 @@ L8772       DEC   $E1
             BNE   L8780
             BCS   L8780
             JSR   L6D49
-L8780       JSR   L6D1E
+L8780       JSR   getMAXRANK15
             TAX
             LDA   $78
             BNE   L8793
@@ -7829,22 +7844,22 @@ L87C0       LDA   $73
             TAX
             JSR   L75F1
             LDY   #$00
-            LDA   ($16),Y
+            LDA   (zpPTR2),Y
             CMP   $70
             BNE   L87D5
             INY
-            LDA   ($16),Y
+            LDA   (zpPTR2),Y
             CMP   $71
             BEQ   L87ED
 L87D5       LDA   $74
             TAX
             JSR   L75F1
             LDY   #$00
-            LDA   ($16),Y
+            LDA   (zpPTR2),Y
             CMP   $70
             BNE   L87EA
             INY
-            LDA   ($16),Y
+            LDA   (zpPTR2),Y
             CMP   $71
             BEQ   L87ED
 L87EA       JMP   L8866
@@ -7859,14 +7874,14 @@ L87ED       STX   $73
             BEQ   L880B
             LDA   $79
             BNE   L880B
-            JSR   L6D1E
+            JSR   getMAXRANK15
             TAX
             LDA   L8733,X
             STA   $80
 L880B       LDY   $72
             INY
             INY
-            LDA   ($16),Y
+            LDA   (zpPTR2),Y
             STA   $74
             LDA   $73
             CMP   #$17
@@ -7938,7 +7953,7 @@ L8896       STA   $70
 L889A       STA   $71
             STA   zpY1
             LDA   $70
-            STA   $0C
+            STA   zpX1
 L88A2       LDA   $E0
             ASL
             TAX
@@ -8046,14 +8061,14 @@ L8951       STA   $7E
 
 L895F       JSR   L8B13
             LDY   #$00
-            LDA   ($16),Y
+            LDA   (zpPTR2),Y
             ROR
             BCC   L8980
             LDA   $7B
             JSR   L8981
             CLC
             ADC   #$3B
-            STA   $0C
+            STA   zpX1
             LDA   $7C
             JSR   L8981
             CLC
@@ -8242,16 +8257,16 @@ L8A44       DB    $03
 
 drawGHOSTDOOR
             LDA   #$87
-            STA   $0C
+            STA   zpX1
             LDA   #$93
-            STA   $0E
+            STA   zpX2
             LDA   #$4D
             STA   zpY1
             JSR   drawHLINE
             LDA   #$87
-            STA   $0C
+            STA   zpX1
             LDA   #$93
-            STA   $0E
+            STA   zpX2
             LDA   #$4E
             STA   zpY1
             JSR   drawHLINE
@@ -8272,7 +8287,7 @@ L8A9C       JSR   L7D8D
             LDA   $70
             SBC   #$02
             STA   $70
-            STA   $0C
+            STA   zpX1
 L8AB5       LDA   $71
             STA   zpY1
             JMP   L88A2
@@ -8280,7 +8295,7 @@ L8AB5       LDA   $71
 L8ABC       LDA   $70
             ADC   #$02
             STA   $70
-            STA   $0C
+            STA   zpX1
             CMP   #$DD
             BNE   L8AB5
             LDA   $74
@@ -8289,7 +8304,7 @@ L8ABC       LDA   $70
             STA   $74
             LDA   #$3D
             STA   $70
-            STA   $0C
+            STA   zpX1
             LDA   #$00
             STA   $7B
             LDA   #$00
@@ -8301,12 +8316,12 @@ L8AE0       LDA   $72
             LDA   $70
             ADC   #$02
             STA   $70
-            STA   $0C
+            STA   zpX1
             BNE   L8AB5
 L8AEF       LDA   $70
             SBC   #$02
             STA   $70
-            STA   $0C
+            STA   zpX1
             CMP   #$3B
             BNE   L8AB5
             LDA   $74
@@ -8315,31 +8330,31 @@ L8AEF       LDA   $70
             STA   $74
             LDA   #$DB
             STA   $70
-            STA   $0C
+            STA   zpX1
             LDA   #$1C
             STA   $7B
             LDA   #$00
             STA   $7D
             BEQ   L8AB5
 L8B13       LDA   #$62
-            STA   $17
+            STA   zpPTR2+1
             LDA   $7B
             ASL
             ASL
             ASL
             ASL
             BCC   L8B23
-            INC   $17
-            INC   $17
+            INC   zpPTR2+1
+            INC   zpPTR2+1
 L8B23       ASL
             BCC   L8B28
-            INC   $17
+            INC   zpPTR2+1
 L8B28       CLC
             ADC   $7C
             ADC   #$3A
             BCC   L8B31
-            INC   $17
-L8B31       STA   $16
+            INC   zpPTR2+1
+L8B31       STA   zpPTR2
             RTS
 
 L8B34       LDA   $60
@@ -8354,7 +8369,7 @@ L8B3F       BCS   L8B45
 L8B45       CMP   #$0A
             BCS   L8B7D
             TAX
-            LDA   $55
+            LDA   zpRANK
             CMP   #$05
             BCC   L8B67
             LDA   $72
@@ -8405,7 +8420,7 @@ L8B92       CMP   #$00
 L8B9D       LDA   $78
             BEQ   L8BDD
             JSR   L7DB8
-            JSR   L6D1E
+            JSR   getMAXRANK15
             ASL
             TAX
             LDA   $E1
@@ -8418,7 +8433,7 @@ L8B9D       LDA   $78
             STA   $79
             LDA   #$00
             STA   $78
-            LDX   $E8
+            LDX   zpDEMO
             BNE   L8BDC
             CLC
             SED
@@ -8453,36 +8468,36 @@ L8BF1       JSR   L86FC
             JSR   L7D80
             JSR   L699E
             JSR   L7EC0
-            LDA   $E8
+            LDA   zpDEMO
             BEQ   L8C0E
             JMP   L43D2
 
-L8C0E       DEC   $58
-            LDA   $58
+L8C0E       DEC   zpNBLIVES
+            LDA   zpNBLIVES
             AND   #$7F
             BNE   L8C1A
             LDA   #$00
-            STA   $58
+            STA   zpNBLIVES
 L8C1A       JSR   savePLAYERBOARD
             JSR   savePLAYERDATA
-            LDA   $50
+            LDA   zpCURPLAYER
             STA   $0B
             JMP   L8C2E
 
 L8C27       JSR   loadPLAYERDATA
-            LDA   $58
+            LDA   zpNBLIVES
             BNE   L8C4A
-L8C2E       INC   $50
-            LDA   $51
-            CMP   $50
+L8C2E       INC   zpCURPLAYER
+            LDA   zpNBPLAYERS
+            CMP   zpCURPLAYER
             BCS   L8C3A
             LDA   #$01
-            STA   $50
-L8C3A       LDA   $50
+            STA   zpCURPLAYER
+L8C3A       LDA   zpCURPLAYER
             CMP   $0B
             BNE   L8C27
             JSR   loadPLAYERDATA
-            LDA   $58
+            LDA   zpNBLIVES
             BNE   L8C4A
             JMP   L6EC3
 
@@ -9997,20 +10012,20 @@ L96E4       PLA
             JMP   L9073
 
 *-----------------------------------
-* SPRITES?
+* PAC-MAN SPRITES
 *-----------------------------------
 
-L96E8       DA    L96FA
-            DA    L97CC
-            DA    L989E
-            DA    L9970
-            DA    L9A42
-            DA    L9B14
-            DA    L9BE6
-            DA    L9CB8
-            DA    L9D8A
+sprPACMAN   DA    sprPACMAN0	; Fully closed
+            DA    L97CC	; Open goes down
+            DA    L989E	; Open goes up
+            DA    L9970	; Open goes right
+            DA    L9A42	; Open goes left
+            DA    L9B14	; Open goes down 2
+            DA    L9BE6	; Open goes up 2
+            DA    L9CB8	; Open goes right 2
+            DA    L9D8A	; Open goes left 2
 
-L96FA       HEX   7800007C01007E03007F07007F07007F
+sprPACMAN0       HEX   7800007C01007E03007F07007F07007F
             HEX   07007F07007E03007C01007800007001
             HEX   007803007C07007E0F007E0F007E0F00
             HEX   7E0F007C070078030070010060030070

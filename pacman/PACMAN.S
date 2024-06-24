@@ -74,18 +74,18 @@ L4027       LDA   #$01
             STA   zpNBPLAYERS
             JSR   L54D4
             LDA   #$00
-            STA   $00
-            STA   $01
-            STA   $02
+            STA   zpHISCORE
+            STA   zpHISCORE+1
+            STA   zpHISCORE+2
             STA   zpNBLIVES
             LDA   #$01
-            STA   zpMONITOR	; ZP - color monitor
+            STA   zpMONITOR	; ZP - color monitor if 1
             STA   zpDEMO	; ZP - demo if 1
-            LDA   #<L43D2
+            LDA   #<welcomePAGE
             STA   SOFTEV
             STA   NMILOC+1
             STA   IRQLOC
-            LDA   #>L43D2
+            LDA   #>welcomePAGE
             STA   SOFTEV+1
             STA   NMILOC+2
             STA   IRQLOC+1
@@ -94,7 +94,7 @@ L4027       LDA   #$01
             LDA   #$4C
             STA   NMILOC
             JSR   selectMONITOR
-            JMP   L43D2		; show LOGO
+            JMP   welcomePAGE		; show LOGO
 
             ASC   "(C) 1983 ATARI, INC.ALL RIGHTS RESERVED."
             ASC   "UNAUTHORIZED REPRODUCTION, ADAPTATION, D"
@@ -239,7 +239,7 @@ L4256       LDA   L4299,X	; SPACE OR RETURN
 L4261       JSR   RDKEY
             CMP   #" "
             BNE   L426B
-            JMP   L43D2		; space means the end
+            JMP   welcomePAGE		; space means the end
 
 L426B       CMP   #$8D
             BNE   L4261
@@ -255,61 +255,65 @@ L4299       ASC   "PRESS <RETURN> TO PLAY"8D
             ASC   "OR <SPACE> TO GO BACK TO DEMO.  "
 
 *-----------------------------------
-* 
+* DECODE WELCOME SCRIPT
 *-----------------------------------
 
-L42D0       LDA   (zpPTR1),Y
+decodeSCRIPT
+            LDA   (zpPTR1),Y	; get X
             STA   zpXCOL
             INY
-            LDA   (zpPTR1),Y
+            LDA   (zpPTR1),Y	; get Y
             STA   zpY1
-            STA   $0A
+            STA   zpTEMP3	; save Y
             INY
-            STY   $0B
-L42DE       LDY   $0B
-            LDA   (zpPTR1),Y
+            STY   zpTEMP4	; save index
+L42DE       LDY   zpTEMP4	; get index
+            LDA   (zpPTR1),Y	; get value
             BMI   L4303
-            BEQ   L42F6
+            BEQ   L42F6		; 0, 3..1F
             CMP   #$20
             BEQ   L42F9
-            CMP   #$21
-            BEQ   L4306
+            CMP   #$21		; b comes from another font
+            BEQ   L4306		; b/c we exceed 256!
             CMP   #$03
             BCS   L42F6
+            INC   zpY1		; +=2
             INC   zpY1
-            INC   zpY1
-L42F6       JSR   L4316
-L42F9       LDA   $0A
-            STA   zpY1
-            INC   $0B
-            INC   $04
-            BNE   L42DE
-L4303       INC   $0B
+L42F6       JSR   L4316		; draw sprite
+
+L42F9       LDA   zpTEMP3	; #$20: space character
+            STA   zpY1		; restore Y
+            INC   zpTEMP4	; next index
+            INC   zpXCOL	; next X
+            BNE   L42DE		; loop
+
+L4303       INC   zpTEMP4	; exit
             RTS
 
-L4306       LDA   #<L4673
-            STA   L55B1+1
-            LDA   #>L4673
+L4306       LDA   #<sprFONT2	; #$21: print the b character
+            STA   L55B1+1	; b/c we are over the index of 256
+            LDA   #>sprFONT2
             STA   L55B1+2
             JSR   L4338
             JMP   L42F9
 
-L4316       STA   $09
+L4316       STA   zpTEMP2
             ASL
             ASL
-            ASL
-            ADC   $09
+            ASL		; *8
+            ADC   zpTEMP2	; +1 = *9
             STA   L55B1+1
-            LDA   #>L4553
+            LDA   #>sprFONT
             STA   L55B1+2
             BCC   L432A
             INC   L55B1+2
 L432A       CLC
             LDA   L55B1+1
-            ADC   #<L4553
+            ADC   #<sprFONT
             STA   L55B1+1
             BCC   L4338
             INC   L55B1+2
+
 L4338       LDA   #$01		; width in bytes
             STA   zpSPRWIDTH
             LDA   #$09		; height in lines
@@ -323,202 +327,241 @@ L4338       LDA   #$01		; width in bytes
 
 *---
 
-L434F       DB    $0D
-            DB    $0B
-            DB    $04
-            DB    $12
-            DB    $0D
-            DB    $19
-            DB    $0D
-            DB    $0E
-            DB    $1B
-            DB    $10
-            DB    $19
-            DB    $20
-            DB    $1E
-            DB    $20
-            DB    $09
-            DB    $13
-            DB    $0E
-            DB    $14
-            DB    $17
-            DB    $0D
-            DB    $16
-            DB    $10
+welcomeSCRIPT
+            DB    $0D	; 
+            DB    $0B	; 
+            DB    $04	; C
+            DB    $12	; h
+            DB    $0D	; a
+            DB    $19	; r
+            DB    $0D	; a
+            DB    $0E	; c
+            DB    $1B	; t
+            DB    $10	; e
+            DB    $19	; r
+            DB    $20	; _
+            DB    $1E	; /
+            DB    $20	; _
+            DB    $09	; N
+            DB    $13	; i
+            DB    $0E	; c
+            DB    $14	; k
+            DB    $17	; n
+            DB    $0D	; a
+            DB    $16	; m
+            DB    $10	; e
             DB    $FF
-            DB    $0E
-            DB    $1E
-            DB    $0C
-            DB    $12
-            DB    $0D
-            DB    $0F
-            DB    $18
-            DB    $00
+	
+            DB    $0E	; 
+            DB    $1E	; 
+            DB    $0C	; S
+            DB    $12	; h
+            DB    $0D	; a
+            DB    $0F	; d
+            DB    $18	; o
+            DB    $00	; w
             DB    $FF
-            DB    $1A
-            DB    $1E
-            DB    $06
-            DB    $17
-            DB    $14
-            DB    $01
+	
+            DB    $1A	; 
+            DB    $1E	; 
+            DB    $06	; I
+            DB    $17	; n
+            DB    $14	; k
+            DB    $01	; y
             DB    $FF
-            DB    $0E
-            DB    $2D
-            DB    $0B
-            DB    $0D
-            DB    $1A
-            DB    $12
-            DB    $11
-            DB    $1C
-            DB    $15
+	
+            DB    $0E	; 
+            DB    $2D	; 
+            DB    $0B	; B
+            DB    $0D	; a
+            DB    $1A	; s
+            DB    $12	; h
+            DB    $11	; f
+            DB    $1C	; u
+            DB    $15	; l
             DB    $FF
-            DB    $1A
-            DB    $2D
-            DB    $0B
-            DB    $15
-            DB    $13
-            DB    $17
-            DB    $14
-            DB    $01
+	
+            DB    $1A	; 
+            DB    $2D	; 
+            DB    $0B	; B
+            DB    $15	; l
+            DB    $13	; i
+            DB    $17	; n
+            DB    $14	; k
+            DB    $01	; y
             DB    $FF
-            DB    $0E
-            DB    $3C
-            DB    $0C
-            DB    $02
-            DB    $10
-            DB    $10
-            DB    $0F
-            DB    $01
+
+            DB    $0E	; 
+            DB    $3C	; 
+            DB    $0C	; S
+            DB    $02	; p
+            DB    $10	; e
+            DB    $10	; e
+            DB    $0F	; d
+            DB    $01	; y
             DB    $FF
-            DB    $1A
-            DB    $3C
-            DB    $0A
-            DB    $13
-            DB    $17
-            DB    $14
-            DB    $01
+
+            DB    $1A	; 
+            DB    $3C	; 
+            DB    $0A	; P
+            DB    $13	; i
+            DB    $17	; n
+            DB    $14	; k
+            DB    $01	; y
             DB    $FF
-            DB    $0E
-            DB    $4B
-            DB    $0A
-            DB    $18
-            DB    $14
-            DB    $10
-            DB    $01
+
+            DB    $0E	; 
+            DB    $4B	; 
+            DB    $0A	; P
+            DB    $18	; o
+            DB    $14	; k
+            DB    $10	; e
+            DB    $01	; y
             DB    $FF
-            DB    $1A
-            DB    $4B
-            DB    $04
-            DB    $15
-            DB    $01
-            DB    $0F
-            DB    $10
+
+            DB    $1A	; 
+            DB    $4B	; 
+            DB    $04	; C
+            DB    $15	; l
+            DB    $01	; y
+            DB    $0F	; d
+            DB    $10	; e
             DB    $FF
-            DB    $11
-            DB    $8A
-            DB    $0A
-            DB    $0D
-            DB    $0E
-            DB    $16
-            DB    $0D
-            DB    $17
+
+            DB    $11	; 
+            DB    $8A	; 
+            DB    $0A	; P
+            DB    $0D	; a
+            DB    $0E	; c
+            DB    $16	; m
+            DB    $0D	; a
+            DB    $17	; n
             DB    $FF
-            DB    $12
-            DB    $9A
-            DB    $03
-            DB    $1B
-            DB    $0D
-            DB    $19
-            DB    $13
-            DB    $20
-            DB    $06
-            DB    $17
-            DB    $0E
-            DB    $1F
+
+            DB    $12	; 
+            DB    $9A	; 
+            DB    $03	; A
+            DB    $1B	; t
+            DB    $0D	; a
+            DB    $19	; r
+            DB    $13	; i
+            DB    $20	; _
+            DB    $06	; I
+            DB    $17	; n
+            DB    $0E	; c
+            DB    $1F	; .
             DB    $FF
-            DB    $0E
-            DB    $AF
-            DB    $0A
-            DB    $19
-            DB    $10
-            DB    $1A
-            DB    $1A
-            DB    $20
-            DB    $0C
-            DB    $02
-            DB    $0D
-            DB    $0E
-            DB    $10
-            DB    $20
-            DB    $21
-            DB    $0D
-            DB    $19
+
+            DB    $0E	; 
+            DB    $AF	; 
+            DB    $0A	; P
+            DB    $19	; r
+            DB    $10	; e
+            DB    $1A	; s
+            DB    $1A	; s
+            DB    $20	; _
+            DB    $0C	; S
+            DB    $02	; p
+            DB    $0D	; a
+            DB    $0E	; c
+            DB    $10	; e
+            DB    $20	; _
+            DB    $21	; b
+            DB    $0D	; a
+            DB    $19	; r
             DB    $FF
 
 *-----------------------------------
-* GAME ENTRY POINT
+* WELCOME PAGE
 *-----------------------------------
 
-L43D2       LDA   #$01
+welcomePAGE
+            LDA   #$01
             STA   zpDEMO
             JSR   showTITLESCREEN
             JSR   clearHGR
+
+*--- Init
+
             LDA   #$01
             STA   $81
             LDA   #$00
             STA   $78
             STA   $79
-            LDA   #<L434F
+            LDA   #<welcomeSCRIPT
             STA   zpPTR1
-            LDA   #>L434F
+            LDA   #>welcomeSCRIPT
             STA   zpPTR1+1
+
+* 1. Character / Nickname
+
             LDY   #$00
-            JSR   L42D0
-            JSR   L44E8
-            LDA   #$22
+            JSR   decodeSCRIPT
+            JSR   welcomeTAB
+
+* 2. Draw Shadow / Inky sprite
+
+            LDA   #$22	
             STA   zpY1
             LDA   #$01
             STA   $E0
             JSR   L88A2
-            LDY   $0B
-            JSR   L42D0
-            LDY   $0B
-            JSR   L42D0
-            JSR   L44E8
+
+            LDY   zpTEMP4	; Shadow
+            JSR   decodeSCRIPT
+            LDY   zpTEMP4	; Inky
+            JSR   decodeSCRIPT
+            JSR   welcomeTAB
+
+* 3. Draw Bashful / Blinky
+
             LDA   #$31
             STA   zpY1
             LDA   #$03
             STA   $E0
             JSR   L88A2
-            LDY   $0B
-            JSR   L42D0
-            LDY   $0B
-            JSR   L42D0
-            JSR   L44E8
+
+            LDY   zpTEMP4	; Bashful
+            JSR   decodeSCRIPT
+            LDY   zpTEMP4	; Blinky
+            JSR   decodeSCRIPT
+            JSR   welcomeTAB
+
+* 4. Draw Speedy / Pinky
+
             LDA   #$40
             STA   zpY1
             LDA   #$02
             STA   $E0
             JSR   L88A2
-            LDY   $0B
-            JSR   L42D0
-            LDY   $0B
-            JSR   L42D0
-            JSR   L44E8
+
+            LDY   zpTEMP4	; Speedy
+            JSR   decodeSCRIPT
+            LDY   zpTEMP4	; Pinky
+            JSR   decodeSCRIPT
+            JSR   welcomeTAB
+
+* 5. Pokey / Clyde
+
             LDA   #$4F
             STA   zpY1
             LDA   #$04
             STA   $E0
             JSR   L88A2
-            LDY   $0B
-            JSR   L42D0
-            LDY   $0B
-            JSR   L42D0
+
+            LDY   zpTEMP4	; Pokey
+            JSR   decodeSCRIPT
+            LDY   zpTEMP4	; Clyde
+            JSR   decodeSCRIPT
+
+* 6. Draw normal dot and its associated 10 points
+
             LDA   #$74
             STA   zpX1
             LDA   #$78
             STA   zpY1
             JSR   drawNORMALDOT
+
             LDA   #$7C
             STA   zpX2
             LDA   #$00
@@ -533,16 +576,21 @@ L43D2       LDA   #$01
             STA   zpX2
             LDA   #$00
             JSR   printDIGIT
-            LDA   #$14
+
+            LDA   #$14		; draw the Points sprite
             STA   zpXCOL
             LDA   #$75
             STA   zpY1
-            JSR   drawPOINTS
+            JSR   welcomePOINTS
+
+* 7. Draw energizer dot and its associated 50 points
+
             LDA   #$73
             STA   zpX1
             LDA   #$81
             STA   zpY1
             JSR   drawENERGIZERDOT
+
             LDA   #$7C
             STA   zpX2
             LDA   #$80
@@ -555,11 +603,15 @@ L43D2       LDA   #$01
             STA   zpX2
             LDA   #$00
             JSR   printDIGIT
-            LDA   #$14
+
+            LDA   #$14		; draw the Points sprite
             STA   zpXCOL
             LDA   #$80
             STA   zpY1
-            JSR   drawPOINTS
+            JSR   welcomePOINTS
+
+* 8. Draw the (c) 1983 sprite
+
             LDA   #$0C
             STA   zpXCOL
             LDA   #$9A
@@ -570,26 +622,40 @@ L43D2       LDA   #$01
             STA   zpSPRWIDTH
             LDA   #$09
             STA   zpSPRHEIGHT
-            LDA   #<L4526
+            LDA   #<sprC1983
             STA   L55B1+1
-            LDA   #>L4526
+            LDA   #>sprC1983
             STA   L55B1+2
             JSR   drawCOLORSPRITE
-            LDY   $0B
-            JSR   L42D0
-            LDY   $0B
-            JSR   L42D0
-            LDY   $0B
-            JSR   L42D0
+
+* 9. Print Pacman
+
+            LDY   zpTEMP4
+            JSR   decodeSCRIPT
+
+* 10. Print Atari Inc.
+
+            LDY   zpTEMP4
+            JSR   decodeSCRIPT
+
+* 11. Print Press Space bar
+
+            LDY   zpTEMP4
+            JSR   decodeSCRIPT
             JMP   L4689
 
-L44E8       LDA   #$49
+*---
+
+welcomeTAB  LDA   #$49		; set X
             STA   zpX1
             LDA   #$00
             STA   zpX1+1
             RTS
 
-drawPOINTS  LDA   #$04
+*---
+
+welcomePOINTS
+            LDA   #$04		; Draw the Points sprite
             STA   zpSPRWIDTH
             LDA   #$07
             STA   zpSPRHEIGHT
@@ -611,348 +677,52 @@ sprPOINTS   HEX   0F002000
             HEX   41542420
             HEX   0153441C
 
-L4526       DB    $7C
-            DB    $40
-            DB    $70
-            DB    $71
-            DB    $38
-            DB    $02
-            DB    $61
-            DB    $08
-            DB    $0A
-            DB    $45
-            DB    $39
-            DB    $42
-            DB    $08
-            DB    $0A
-            DB    $41
-            DB    $05
-            DB    $42
-            DB    $08
-            DB    $0A
-            DB    $41
-            DB    $05
-            DB    $42
-            DB    $70
-            DB    $71
-            DB    $38
-            DB    $05
-            DB    $42
-            DB    $00
-            DB    $09
-            DB    $41
-            DB    $39
-            DB    $42
-            DB    $40
-            DB    $08
-            DB    $41
-            DB    $02
-            DB    $41
-            DB    $20
-            DB    $08
-            DB    $45
-            DB    $7C
-            DB    $70
-            DB    $13
-            DB    $70
-            DB    $38
-L4553       DB    $00
-            DB    $00
-            DB    $00
-            DB    $11
-            DB    $11
-            DB    $15
-            DB    $15
-            DB    $15
-            DB    $0A
-            DB    $00
-            DB    $11
-            DB    $11
-            DB    $11
-            DB    $11
-            DB    $1E
-            DB    $10
-            DB    $11
-            DB    $0E
-            DB    $00
-            DB    $1D
-            DB    $22
-            DB    $22
-            DB    $22
-            DB    $1E
-            DB    $02
-            DB    $02
-            DB    $02
-            DB    $0C
-            DB    $12
-            DB    $21
-            DB    $21
-            DB    $3F
-            DB    $21
-            DB    $21
-            DB    $21
-            DB    $21
-            DB    $1E
-            DB    $21
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $21
-            DB    $1E
-            DB    $3F
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $0F
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $3F
-            DB    $0C
-            DB    $0C
-            DB    $0C
-            DB    $0C
-            DB    $0C
-            DB    $0C
-            DB    $0C
-            DB    $3F
-            DB    $21
-            DB    $21
-            DB    $21
-            DB    $21
-            DB    $3F
-            DB    $21
-            DB    $21
-            DB    $21
-            DB    $21
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $3F
-            DB    $23
-            DB    $23
-            DB    $25
-            DB    $25
-            DB    $29
-            DB    $29
-            DB    $29
-            DB    $31
-            DB    $31
-            DB    $1F
-            DB    $21
-            DB    $21
-            DB    $21
-            DB    $1F
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $1F
-            DB    $21
-            DB    $21
-            DB    $21
-            DB    $1F
-            DB    $21
-            DB    $21
-            DB    $21
-            DB    $1F
-            DB    $1E
-            DB    $21
-            DB    $01
-            DB    $01
-            DB    $1E
-            DB    $20
-            DB    $20
-            DB    $21
-            DB    $1E
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $0E
-            DB    $11
-            DB    $10
-            DB    $1E
-            DB    $11
-            DB    $2E
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $1E
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $1E
-            DB    $10
-            DB    $10
-            DB    $10
-            DB    $10
-            DB    $1E
-            DB    $11
-            DB    $11
-            DB    $11
-            DB    $3E
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $1E
-            DB    $21
-            DB    $1F
-            DB    $01
-            DB    $21
-            DB    $1E
-            DB    $18
-            DB    $24
-            DB    $04
-            DB    $04
-            DB    $1F
-            DB    $04
-            DB    $04
-            DB    $04
-            DB    $04
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $1D
-            DB    $23
-            DB    $21
-            DB    $21
-            DB    $21
-            DB    $21
-            DB    $00
-            DB    $04
-            DB    $00
-            DB    $04
-            DB    $04
-            DB    $04
-            DB    $04
-            DB    $04
-            DB    $08
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $09
-            DB    $05
-            DB    $03
-            DB    $05
-            DB    $09
-            DB    $11
-            DB    $02
-            DB    $04
-            DB    $04
-            DB    $04
-            DB    $04
-            DB    $04
-            DB    $04
-            DB    $04
-            DB    $08
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $15
-            DB    $2A
-            DB    $2A
-            DB    $2A
-            DB    $2A
-            DB    $2A
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $1D
-            DB    $22
-            DB    $22
-            DB    $22
-            DB    $22
-            DB    $22
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $1E
-            DB    $21
-            DB    $21
-            DB    $21
-            DB    $21
-            DB    $1E
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $1D
-            DB    $22
-            DB    $02
-            DB    $02
-            DB    $02
-            DB    $02
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $1E
-            DB    $01
-            DB    $1E
-            DB    $20
-            DB    $21
-            DB    $1E
-            DB    $04
-            DB    $04
-            DB    $04
-            DB    $1E
-            DB    $04
-            DB    $04
-            DB    $04
-            DB    $04
-            DB    $18
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $11
-            DB    $12
-            DB    $12
-            DB    $12
-            DB    $12
-            DB    $2C
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $3F
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $40
-            DB    $20
-            DB    $10
-            DB    $08
-            DB    $04
-            DB    $02
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $06
-            DB    $06
-L4673       DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $1F
-            DB    $21
-            DB    $21
-            DB    $1F
+*--- Sprites for the Welcome page
+
+sprC1983    HEX   7C40707138
+            HEX   0261080A45
+            HEX   3942080A41
+            HEX   0542080A41
+            HEX   0542707138
+            HEX   0542000941
+            HEX   3942400841
+            HEX   0241200845
+            HEX   7C70137038
+
+sprFONT     HEX   00000011111515150A	; 00 w
+            HEX   00111111111E10110E	; 01 y
+            HEX   001D2222221E020202	; 02 p
+            HEX   0C1221213F21212121	; 03 A
+            HEX   1E210101010101211E	; 04 C
+            HEX   3F0101010F01010101	; 05 F
+            HEX   3F0C0C0C0C0C0C0C3F	; 06 I
+            HEX   212121213F21212121	; 07 H
+            HEX   01010101010101013F	; 08 L
+            HEX   232325252929293131	; 09 N
+            HEX   1F2121211F01010101	; 0A P
+            HEX   1F2121211F2121211F	; 0B B
+            HEX   1E2101011E2020211E	; 0C S
+            HEX   0000000E11101E112E	; 0D a
+            HEX   0000001E010101011E	; 0E c
+            HEX   101010101E1111113E	; 0F d
+            HEX   0000001E211F01211E	; 10 e
+            HEX   182404041F04040404	; 11 f
+            HEX   0101011D2321212121	; 12 h
+            HEX   000400040404040408	; 13 i
+            HEX   010101090503050911	; 14 k
+            HEX   020404040404040408	; 15 l
+            HEX   000000152A2A2A2A2A	; 16 m
+            HEX   0000001D2222222222	; 17 n
+            HEX   0000001E212121211E	; 18 o
+            HEX   0000001D2202020202	; 19 r
+            HEX   0000001E011E20211E	; 1A s
+            HEX   0404041E0404040418	; 1B t
+            HEX   00000011121212122C	; 1C u
+            HEX   000000003F00000000	; 1D -
+            HEX   004020100804020100	; 1E /
+            HEX   000000000000000606	; 1F .
+				; 20 space character
+sprFONT2    HEX   01010101011F21211F	; 21 b
 
 *-----------------------------------
 * 
@@ -968,7 +738,7 @@ L467C       JSR   L7DB8
             RTS
 
 *-----------------------------------
-* 
+* ANIMATION ON THE WELCOME PAGE
 *-----------------------------------
 
 L4689       LDA   #$70
@@ -1010,7 +780,7 @@ L46CC       DEC   $59
             LDA   #$20
             STA   $59
             JSR   L7D80
-            JSR   L699E
+            JSR   eraseSPRITE44
             SEC
             LDA   $60
             SBC   #$02
@@ -1027,7 +797,7 @@ L46F3       JSR   L86FC
             LDA   #$18
             STA   $80
             JSR   L7D8D
-            JSR   L699E
+            JSR   eraseSPRITE44
             SEC
             LDA   $70
             SBC   #$02
@@ -1078,7 +848,7 @@ L475F       DEC   $59
             LDA   #$20
             STA   $59
             JSR   L7D80
-            JSR   L699E
+            JSR   eraseSPRITE44
             CLC
             LDA   $60
             ADC   #$02
@@ -1109,7 +879,7 @@ L4786       JSR   L86FC
             STA   $79
             BNE   L47C0
 L47AD       JSR   L7D8D
-            JSR   L699E
+            JSR   eraseSPRITE44
             CLC
             LDA   $70
             ADC   #$02
@@ -1661,8 +1431,8 @@ L530F       JSR   L7861
 L531E       LDA   #$01
             STA   $59
             JSR   setDEFAULTBOARD
-            LDA   #$F8
-            STA   $56
+            LDA   #nbDOTS
+            STA   zpNBDOTS
             LDA   #$40
             STA   $57
             JSR   savePLAYERDATA
@@ -1775,7 +1545,7 @@ savePLAYERDATA
             LDX   zpCURPLAYER
             LDY   L53E0,X
             LDX   #$07
-L53C5       LDA   $52,X
+L53C5       LDA   zpCURSCORE,X
             STA   L0300,Y
             DEY
             DEX
@@ -1791,7 +1561,7 @@ loadPLAYERDATA
             LDY   L53E0,X
             LDX   #$07
 L53D6       LDA   L0300,Y
-            STA   $52,X
+            STA   zpCURSCORE,X
             DEY
             DEX
             BPL   L53D6
@@ -2000,19 +1770,19 @@ L54C4       DB    $00
 *-----------------------------------
 
 L54D4       LDA   #$00
-            STA   $52
-            STA   $53
-            STA   $54
+            STA   zpCURSCORE
+            STA   zpCURSCORE+1
+            STA   zpCURSCORE+2
             STA   zpDEMO
             STA   $F3
 L54E0       LDA   #$01		; ZP - RANK
             STA   zpRANK
             LDA   #$01
             STA   $59
-            LDA   #$83
+            LDA   #$83		; 3 lives!
             STA   zpNBLIVES
-            LDA   #$F8
-            STA   $56
+            LDA   #nbDOTS
+            STA   zpNBDOTS
             LDA   #$40
             STA   $57
             LDA   zpNBPLAYERS
@@ -2036,17 +1806,17 @@ drawSCORES  LDA   zpNBPLAYERS	; get nb players
 L550E       LDA   zpCURPLAYER
             ASL
             ASL
-            ASL	; *8
+            ASL		; *8
             TAX
             LDA   L55C7+5,X
-            STA   $0B
+            STA   zpTEMP4
             LDA   L55C7+6,X
-            STA   $0A
+            STA   zpTEMP3
             JSR   L556E
             LDA   #$00
             STA   zpX1+1
             STA   zpX2+1
-            LDA   $0B
+            LDA   zpTEMP4
             STA   zpX1
             CLC
             ADC   #$31
@@ -2067,12 +1837,12 @@ L554A       LDA   #<sprHISCORE	; HISCORE sprite
             STA   L5591+1
             LDA   #>sprHISCORE
             STA   L5596+1
-            LDA   $00
-            STA   $52
-            LDA   $01
-            STA   $53
-            LDA   $02
-            STA   $54
+            LDA   zpHISCORE
+            STA   zpCURSCORE
+            LDA   zpHISCORE+1
+            STA   zpCURSCORE+1
+            LDA   zpHISCORE+2
+            STA   zpCURSCORE+2
             JMP   L550E
 
 L5563       LDA   #<sprPLAYER	; reset to PLAYER# sprite
@@ -2115,13 +1885,13 @@ drawCOLORSPRITE
             LDX   zpXBIT
             LDY   zpXCOL
             LDA   zpSPRWIDTH		; number of bytes per line to output
-            STA   $09
+            STA   zpTEMP2
 L55B1       LDA   $0666,X
             ORA   (zpHGR),Y
             STA   (zpHGR),Y
             INX
             INY
-            DEC   $09
+            DEC   zpTEMP2
             BNE   L55B1
             STX   zpXBIT	; next X bit
             INC   zpY1	; next Y
@@ -2191,11 +1961,11 @@ L5691       RTS
 * PRINT RANK (LEVEL)
 *-----------------------------------
 
-printRANK   JMP   L6F13		; LoGo
+printRANK   JMP   showFRUITEDRANK		; LoGo
 
             LDA   #$E1		; display the rank number, aka the level
             STA   zpX2		; it was replaced on the released game
-            LDA   #$00		; by the Žquivalent fruit!
+            LDA   #$00		; by the equivalent fruit!
             STA   zpX2+1
             LDA   #$B0
             STA   zpY2
@@ -2388,7 +2158,8 @@ L57BD       RTS
 * DRAW ENERGIZERS
 *-----------------------------------
 
-showENERGIZERS       LDA   #$00		; same process as above
+showENERGIZERS
+            LDA   #$00		; same process as above
             STA   zpX1+1	; but routine draws an energizer dot
             LDA   #>theBOARD
             STA   zpPTR2+1
@@ -2477,7 +2248,7 @@ showPACMAN  LDA   #$8B	; draw Pacman at its initial position
 getREADY    JSR   showPACMAN
             LDA   zpDEMO	; are we playing?
             BEQ   L585A
-            JMP   L80E3		; no, demo
+            JMP   showGAMEOVER		; no, demo
 
 L585A       LDA   #$68		; yes...
             STA   zpY1
@@ -2503,7 +2274,7 @@ L587D       LDX   #$FF
             STA   zpXCOL
             LDA   #$66
             STA   zpY1
-            JMP   eraseSPRITE
+            JMP   eraseBLOCK
 
 * Ready! sprite
 
@@ -2525,7 +2296,7 @@ blinkPLAYERNAME
             BNE   L58C6
             LDA   zpDEMO
             BEQ   L58C0
-            JSR   L80E3
+            JSR   showGAMEOVER
 L58C0       LDA   $E5
             BEQ   L58C7
             DEC   $E5
@@ -2554,7 +2325,7 @@ L58DF       JSR   L58FA
             RTS
 
 *-----------------------------------
-* DRAW PLAYER# ON SCREEN (BLINK)
+* ERASE PLAYER# ON SCREEN (BLINK)
 *-----------------------------------
 
 erasePLAYER
@@ -2566,7 +2337,7 @@ erasePLAYER
             LDA   L6992+1,X	; and Y
             SBC   #$0E		; - 14
             STA   zpY1
-            JMP   eraseSPRITE		; erase PLAYER# sprite
+            JMP   eraseBLOCK		; erase PLAYER# sprite
 
 *-----------------------------------
 * 
@@ -2819,7 +2590,7 @@ L5D66       LDA   #<boardCOLOR
 L5D6E       LDA   #$00
             STA   zpX1+1
             LDA   #$48		; $48 entries for horizontal line
-            STA   $08
+            STA   zpTEMP1
 L5D76       LDY   #$00
             LDA   (zpPTR2),Y
             STA   zpX1		; x from
@@ -2836,11 +2607,11 @@ L5D76       LDY   #$00
             STA   zpPTR2
             BCC   L5D94
             INC   zpPTR2+1
-L5D94       DEC   $08
+L5D94       DEC   zpTEMP1
             BNE   L5D76
 
             LDA   #$46		; $46 entries for vertical line
-            STA   $08
+            STA   zpTEMP1
 L5D9C       LDY   #$00
             LDA   (zpPTR2),Y
             STA   zpX1
@@ -2857,7 +2628,7 @@ L5D9C       LDY   #$00
             STA   zpPTR2
             BCC   L5DBA
             INC   zpPTR2+1
-L5DBA       DEC   $08
+L5DBA       DEC   zpTEMP1
             BNE   L5D9C
             RTS
 
@@ -3207,7 +2978,7 @@ L6959       LDA   $0666,X
 *-----------------------------------
 
 eraseSCORE  LDA   zpCURPLAYER		; get current player
-            ASL
+            ASL			; and set the coordinates
             TAX
             LDA   L6992,X
             STA   zpXCOL
@@ -3215,10 +2986,10 @@ eraseSCORE  LDA   zpCURPLAYER		; get current player
             STA   zpY1
 
 *-----------------------------------
-* ERASE SPRITE
+* ERASE BLOCK
 *-----------------------------------
 
-eraseSPRITE LDA   #$0C		; 12 lines to erase
+eraseBLOCK  LDA   #$0C		; 12 lines to erase
             STA   zpSPRHEIGHT
 L697C       JSR   setHGRADDRESS
             LDY   zpXCOL
@@ -3243,19 +3014,20 @@ L6992       HEX   00,5E	; High score
             HEX   20,5E	; P5
 
 *-----------------------------------
-* 
+* ERASE A SPRITE
 *-----------------------------------
 
-L699E       JSR   L7D9A
+eraseSPRITE44
+            JSR   moveCURSOR44
 
-L69A1       LDA   #$F6	; 10 lines to erase
+L69A1       LDA   #$F6		; 10 lines to erase
             STA   zpSPRHEIGHT
             JSR   calcXYHGR
             ASL   zpXBIT
             ASL   zpXBIT
 L69AC       JSR   setHGRADDRESS
-            LDA   #$03	; width
-            STA   $09
+            LDA   #$03		; width
+            STA   zpTEMP2
             LDX   zpXBIT
             LDY   zpXCOL
 L69B7       LDA   L69CD,X
@@ -3264,86 +3036,47 @@ L69B7       LDA   L69CD,X
             STA   (zpHGR),Y
             INY
             INX
-            DEC   $09
+            DEC   zpTEMP2
             BNE   L69B7
-            INC   zpY1	; Y+=1
+            INC   zpY1		; Y+=1
             INC   zpSPRHEIGHT	; data++
             BNE   L69AC
             RTS
 
-L69CD       DB    $00
-            DB    $78
-            DB    $7F
-            DB    $00
-            DB    $01
-            DB    $70
-            DB    $7F
-            DB    $00
-            DB    $03
-            DB    $60
-            DB    $7F
-            DB    $00
-            DB    $07
-            DB    $40
-            DB    $7F
-            DB    $00
-            DB    $0F
-            DB    $00
-            DB    $7F
-            DB    $00
-            DB    $1F
-            DB    $00
-            DB    $7E
-            DB    $00
-            DB    $3F
-            DB    $00
-            DB    $7C
-            DB    $00	; are 2 zeros missing?
+L69CD       HEX   00787F00
+            HEX   01707F00
+            HEX   03607F00
+            HEX   07407F00
+            HEX   0F007F00
+            HEX   1F007E00
+            HEX   3F007C00
 
 *-----------------------------------
-* 
+* ERASE A SPRITE
 *-----------------------------------
 
-L69E9       JSR   L7DA9
-            LDA   #<L6A04
+eraseSPRITE54
+            JSR   moveCURSOR54
+
+            LDA   #<L6A04	; set erase table
             LDY   #>L6A04
             STA   L69B7+1
             STY   L69B7+2
-            JSR   L69A1
-            LDA   #<L69CD
+            JSR   L69A1		; erase it
+
+            LDA   #<L69CD	; restore the standard 4*4 table
             LDY   #>L69CD
             STA   L69B7+1
             STY   L69B7+2
             RTS
 
-L6A04       DB    $00
-            DB    $60
-            DB    $7F
-            DB    $00
-            DB    $01
-            DB    $40
-            DB    $7F
-            DB    $00
-            DB    $03
-            DB    $00
-            DB    $7F
-            DB    $00
-            DB    $07
-            DB    $00
-            DB    $7E
-            DB    $00
-            DB    $0F
-            DB    $00
-            DB    $7C
-            DB    $00
-            DB    $1F
-            DB    $00
-            DB    $78
-            DB    $00
-            DB    $3F
-            DB    $00
-            DB    $70
-            DB    $00
+L6A04       HEX   00607F00
+            HEX   01407F00
+            HEX   03007F00
+            HEX   07007E00
+            HEX   0F007C00
+            HEX   1F007800
+            HEX   3F007000
 
 *-----------------------------------
 * 
@@ -3353,9 +3086,10 @@ L6A20       LDX   zpMONITOR
             BEQ   L6A28
             LDX   $1E
             BNE   L6A62
+
 L6A28       STA   L6A4A+1	; b&w
             STY   L6A4A+2
-            JSR   L7D9A
+            JSR   moveCURSOR44
             LDA   #$0A
             STA   zpSPRHEIGHT
             LDA   #$03
@@ -3366,14 +3100,14 @@ L6A3F       JSR   setHGRADDRESS
             LDX   zpXBIT
             LDY   zpXCOL
             LDA   zpSPRWIDTH
-            STA   $09
+            STA   zpTEMP2
 L6A4A       LDA   $0666,X
             ORA   (zpHGR),Y
             AND   #$7F
             STA   (zpHGR),Y
             INX
             INY
-            DEC   $09
+            DEC   zpTEMP2
             BNE   L6A4A
             STX   zpXBIT
             INC   zpY1
@@ -3383,7 +3117,7 @@ L6A4A       LDA   $0666,X
 
 L6A62       STA   L55B1+1	; color
             STY   L55B1+2
-            JSR   L7D9A
+            JSR   moveCURSOR44
             LDA   #$0A
             STA   zpSPRHEIGHT
             JSR   calcXYHGR
@@ -3417,6 +3151,7 @@ L6A88       ASL
             STA   $57
             LDA   #$01
             STA   $E7
+
 L6AA7       LDA   $59
             CMP   #$01
             BNE   L6AFA
@@ -3438,19 +3173,19 @@ L6AC2       LDA   $E7
             STA   zpX2
             LDA   #$00
             STA   zpX2+1
-            STA   $05
-            STA   $07
+            STA   zpDECSCORE
+            STA   zpDECSCORE+2
             LDA   #$68
             STA   zpY2
             JSR   getMAXRANK15
             TAX
-            LDA   L6CD4,X
-            STA   $06
+            LDA   tblSCORE,X
+            STA   zpDECSCORE+1
             JMP   L70F5
 
 L6AE4       LDA   $5C
             LDY   $5D
-            JMP   L6EDA
+            JMP   showFRUIT
 
 L6AEB       LDA   #$10
             STA   zpXCOL
@@ -3458,9 +3193,15 @@ L6AEB       LDA   #$10
             STA   zpY1
             LDA   #$00
             STA   $E7
-            JSR   eraseSPRITE
+            JSR   eraseBLOCK
 L6AFA       RTS
 L6AFB       JMP   L6AEB
+
+*-----------------------------------
+* FRUIT SPRITES
+*-----------------------------------
+
+* TOTO
 
 L6AFE       DB    $00
 L6AFF       DB    $00
@@ -3574,6 +3315,7 @@ L6B01       DB    $00
             DB    $6C
             DB    $00
             DB    $02
+
             DB    $55
             DB    $00
             DB    $00
@@ -3900,45 +3642,28 @@ L6B01       DB    $00
             DB    $00
 
 *-----------------------------------
-* 
+* ADD TO SCORE
 *-----------------------------------
 
-L6CB2       LDX   zpDEMO
+addTOSCORE  LDX   zpDEMO
             BNE   L6CD3
             JSR   getMAXRANK15
             TAX
             CLC
             SED
-            LDA   $53
-            ADC   L6CD4,X
-            STA   $53
-            LDA   $54
+            LDA   zpCURSCORE+1
+            ADC   tblSCORE,X
+            STA   zpCURSCORE+1
+            LDA   zpCURSCORE+2
             ADC   #$00
-            STA   $54
+            STA   zpCURSCORE+2
             CLD
             JSR   eraseSCORE
-            JSR   L7091
+            JSR   displayPLAYERSCORE
             JSR   L7C61
 L6CD3       RTS
 
-L6CD4       DB    $00
-            DB    $01
-            DB    $03
-            DB    $05
-            DB    $05
-            DB    $07
-            DB    $07
-            DB    $10
-            DB    $10
-            DB    $20
-            DB    $20
-            DB    $30
-            DB    $30
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
+tblSCORE    HEX   00,01,03,05,05,07,07,10,10,20,20,30,30,50,50,50,50,50
 
 *-----------------------------------
 * PATIENTLY WAIT
@@ -3955,19 +3680,22 @@ L6CEA       SEC
 L6CF3       RTS
 
 *-----------------------------------
-* 
+* WE WON! GO TO NEXT LEVEL
 *-----------------------------------
 
-L6CF4       JSR   L58FA
+gotoNEXTLEVEL
+            JSR   L58FA
             JSR   L7D80
-            JSR   L699E
+            JSR   eraseSPRITE44
             JSR   L7D80
             JSR   L79A4
+
             LDY   #$0B
 L6D05       LDX   #$FF
             JSR   doWAIT2
             DEY
             BNE   L6D05
+
             JSR   playCARTOON
             INC   zpRANK	; ZP next level?
             JSR   L531E
@@ -4262,21 +3990,21 @@ L6E1A       DB    $00
 
 L6E79       LDY   #$0E
 L6E7B       LDA   L8A44,Y
-            STA   L0800,Y
+            STA   TEXT2,Y
             DEY
             BPL   L6E7B
             LDY   #$00
             LDX   #$01
 L6E88       LDA   #$00
-            STA   L0800+$200,Y
-            STA   L0800+$100,X
-            STA   L0800+$300,X
+            STA   TEXT2+$200,Y
+            STA   TEXT2+$100,X
+            STA   TEXT2+$300,X
             INX
             INY
             LDA   #$01
-            STA   $0800+$200,Y
-            STA   $0800+$100,X
-            STA   $0800+$300,X
+            STA   TEXT2+$200,Y
+            STA   TEXT2+$100,X
+            STA   TEXT2+$300,X
             INX
             INY
             BNE   L6E88
@@ -4287,7 +4015,7 @@ L6EA5       LDA   $E0
             TAX
             LDA   L8A3A,X
             STA   L6EB7+1
-            LDA   L8A3B,X
+            LDA   L8A3A+1,X
             STA   L6EB7+2
             LDX   #$00
 L6EB7       LDA   $0666,X
@@ -4299,7 +4027,7 @@ L6EB7       LDA   $0666,X
             RTS
 
 L6EC3       JSR   L6AFB
-            JSR   L80E3
+            JSR   showGAMEOVER
             LDA   #$01
             STA   zpDEMO
             LDY   #$30
@@ -4307,12 +4035,21 @@ L6ECF       LDX   #$64
             JSR   doWAIT2
             DEY
             BNE   L6ECF
-            JMP   L43D2
+            JMP   welcomePAGE
 
-L6EDA       LDX   #$66
+*-----------------------------------
+* SHOW FRUIT
+*-----------------------------------
+
+showFRUIT   LDX   #$66
             STX   zpY1
             LDX   #$13
-            STX   $04
+            STX   zpXCOL
+
+*-----------------------------------
+* DISPLAY FRUIT SPRITE
+*-----------------------------------
+
 L6EE2       STA   L6EFF+1
             STY   L6EFF+2
             LDA   #$0C
@@ -4323,14 +4060,14 @@ L6EF0       JSR   setHGRADDRESS
             LDX   zpXBIT
             LDY   zpXCOL
             LDA   #$03
-            STA   $09
+            STA   zpTEMP2
 L6EFB       LDA   (zpHGR),Y
             AND   #$7F
 L6EFF       ORA   $0666,X
             STA   (zpHGR),Y
             INX
             INY
-            DEC   $09
+            DEC   zpTEMP2
             BNE   L6EFB
             STX   zpXBIT
             INC   zpY1
@@ -4338,11 +4075,16 @@ L6EFF       ORA   $0666,X
             BNE   L6EF0
             RTS
 
-L6F13       LDA   zpRANK
-            CMP   #$1A	; 26
+*-----------------------------------
+* SHOW FRUITED RANK
+*-----------------------------------
+
+showFRUITEDRANK
+            LDA   zpRANK
+            CMP   #$1A		; 26
             BCC   L6F1B
             LDA   #$1A
-L6F1B       ASL
+L6F1B       ASL		; show the rank as a fruit
             ASL
             TAX
             LDA   #$B0
@@ -4604,48 +4346,50 @@ L708D       CLC
             RTS
 
 *-----------------------------------
-* 
+* DISPLAY CURRENT PLAYER'S SCORE
 *-----------------------------------
 
-L7091       LDA   $54
-            CMP   $02
+displayPLAYERSCORE
+            LDA   zpCURSCORE+2	; compare current score with high score
+            CMP   zpHISCORE+2
             BEQ   L709B
             BCC   L70CC
             BCS   L70AB
-L709B       LDA   $53
-            CMP   $01
+L709B       LDA   zpCURSCORE+1
+            CMP   zpHISCORE+1
             BEQ   L70A5
             BCC   L70CC
             BCS   L70AB
-L70A5       LDA   $52
-            CMP   $00
+L70A5       LDA   zpCURSCORE
+            CMP   zpHISCORE
             BCC   L70CC
-L70AB       LDA   $52
-            STA   $00
-            STA   $05
-            LDA   $53
-            STA   $01
-            STA   $06
-            LDA   $54
-            STA   $02
-            STA   $07
-            LDA   zpCURPLAYER
+
+L70AB       LDA   zpCURSCORE	; save score as high score
+            STA   zpHISCORE
+            STA   zpDECSCORE
+            LDA   zpCURSCORE+1
+            STA   zpHISCORE+1
+            STA   zpDECSCORE+1
+            LDA   zpCURSCORE+2
+            STA   zpHISCORE+2
+            STA   zpDECSCORE+2
+            LDA   zpCURPLAYER	; save current player
             STA   $F0
-            LDA   #$00
+            LDA   #$00		; force high score player
             STA   zpCURPLAYER
-            JSR   L70D8
-            LDA   $F0
+            JSR   L70D8		; output score
+            LDA   $F0		; restore current player
             STA   zpCURPLAYER
 
-L70CC       LDA   $52
-            STA   $05
-            LDA   $53
-            STA   $06
-            LDA   $54
-            STA   $07
+L70CC       LDA   zpCURSCORE	; current player score
+            STA   zpDECSCORE
+            LDA   zpCURSCORE+1
+            STA   zpDECSCORE+1
+            LDA   zpCURSCORE+2
+            STA   zpDECSCORE+2
 
-L70D8       JSR   eraseSCORE
-            LDA   zpCURPLAYER
+L70D8       JSR   eraseSCORE	; erase the area
+            LDA   zpCURPLAYER	; set the coordinates
             ASL
             ASL
             TAX
@@ -4658,12 +4402,12 @@ L70D8       JSR   eraseSCORE
             JSR   L70F5
             JMP   L7124
 
-L70F5       LDA   #$00
+L70F5       LDA   #$00		; calculate the score
             LDY   #$04
 L70F9       CLC
-            ROR   $07
-            ROR   $06
-            ROR   $05
+            ROR   zpDECSCORE+2
+            ROR   zpDECSCORE+1
+            ROR   zpDECSCORE
             ROR
             DEY
             BNE   L70F9
@@ -4679,27 +4423,33 @@ L70F9       CLC
             STA   zpX2
             BCS   L7117
             DEC   zpX2+1
-L7117       LDA   $07
+L7117       LDA   zpDECSCORE+2
             BNE   L70F5
-            LDA   $06
+            LDA   zpDECSCORE+1
             BNE   L70F5
-            LDA   $05
+            LDA   zpDECSCORE
             BNE   L70F5
             RTS
 
-L7124       LDA   zpCURPLAYER
+*-----------------------------------
+* 
+*-----------------------------------
+
+L7124       LDA   zpCURPLAYER	; high score player?
             BEQ   L7140
-            BIT   zpNBLIVES
+            BIT   zpNBLIVES	; no life already?
             BPL   L7140
-            LDA   $54
+            LDA   zpCURSCORE+2	; 10000?
             CMP   #$01
-            BCC   L7140
-            JSR   L7C51
-            INC   zpNBLIVES
+            BCC   L7140		; no
+
+            JSR   sndEXTRALIFE		; play a happy sound
+            INC   zpNBLIVES	; life++
             LDA   zpNBLIVES
             AND   #$7F
             STA   zpNBLIVES
             JSR   printNBLIVES
+
 L7140       RTS
 
 L7141       DB    $28
@@ -5519,7 +5269,7 @@ L78FD       LDY   $62
             LDA   (zpPTR2),Y
             BPL   L7915
             JSR   L7D80
-            JSR   L699E
+            JSR   eraseSPRITE44
             LDA   #$02
             STA   $66
             JSR   L7D80
@@ -5566,7 +5316,7 @@ L795B       LDA   $69
             JMP   L7B2F
 
 L7962       JSR   L7D80
-            JSR   L699E
+            JSR   eraseSPRITE44
             CLC
             LDA   $62
             ROR
@@ -5641,8 +5391,8 @@ L79CD       LDA   $61
             STA   zpXCOL
             LDA   #$66
             STA   zpY1
-            JSR   eraseSPRITE
-            JSR   L6CB2
+            JSR   eraseBLOCK
+            JSR   addTOSCORE	; add score
 L79FD       CLC
             LDA   $62
             ROR
@@ -5696,12 +5446,12 @@ L7A57       STA   $6D
             BNE   L7A1E
             BEQ   L7A5F
 L7A5F       JSR   L7A6B
-            LDY   #$00
+            LDY   #$00		; what's on the board?
             LDA   (zpPTR2),Y
-            BEQ   L7A1E
-            JMP   L7AAC
+            BEQ   L7A1E		; nothing
+            JMP   eatMYDOT	; a dot!!!
 
-L7A6B       LDA   #$62
+L7A6B       LDA   #>theBOARD
             STA   zpPTR2+1
             LDA   $6A
             ASL
@@ -5716,7 +5466,7 @@ L7A7B       ASL
             INC   zpPTR2+1
 L7A80       CLC
             ADC   $6B
-            ADC   #$3A
+            ADC   #<theBOARD
             BCC   L7A89
             INC   zpPTR2+1
 L7A89       STA   zpPTR2
@@ -5756,10 +5506,10 @@ L7A9C       DB    $02
             DB    $00
 
 *-----------------------------------
-* 
+* WE'RE OVER A DOT, EAT IT
 *-----------------------------------
 
-L7AAC       CLC
+eatMYDOT    CLC
             JSR   getMAXRANK15
             TAX
             LDA   L7A8C,X
@@ -5767,13 +5517,19 @@ L7AAC       CLC
             STA   $59
             LDA   L7A9C,X
             STA   $F3
-            LDA   (zpPTR2),Y
-            LDX   zpDEMO
-            BNE   L7B1F
-            CLC
+
+            LDA   (zpPTR2),Y	; get the board value
+
+            LDX   zpDEMO	; game or demo?
+            BNE   L7B1F		; skip if demo
+
+            CLC		; check the dot
             ROR
-            BEQ   L7AF4
-            JSR   L7C45
+            BEQ   L7AF4		; carry set means normal dot
+
+* We have an energizer dot
+
+            JSR   sndENERGIZERDOT	; play sound
             LDA   zpPTR2
             PHA
             LDA   zpPTR2+1
@@ -5783,7 +5539,8 @@ L7AAC       CLC
             STA   zpPTR2+1
             PLA
             STA   zpPTR2
-            CLC
+
+            CLC		; score +50
             SED
             LDA   $52
             ADC   #$50
@@ -5798,7 +5555,10 @@ L7AAC       CLC
             JSR   L6D60
             CLC
             BCC   L7B0C
-L7AF4       CLC
+
+* We ate a normal dot
+
+L7AF4       CLC		; score +10
             SED
             LDA   $52
             ADC   #$10
@@ -5810,15 +5570,16 @@ L7AF4       CLC
             ADC   #$00
             STA   $54
             CLD
-            JSR   L7BDC
-L7B0C       LDA   #$00
+            JSR   sndNORMALDOT	; play sound
+
+L7B0C       LDA   #$00		; remove the dot from the board
             LDY   #$00
             STA   (zpPTR2),Y
-            JSR   L7091
-            DEC   $57
-            DEC   $56
-            BNE   L7B1E
-            JMP   L6CF4
+            JSR   displayPLAYERSCORE
+            DEC   $57		; nbdots--
+            DEC   zpNBDOTS
+            BNE   L7B1E		; dots remain
+            JMP   gotoNEXTLEVEL		; no more dots
 L7B1E       RTS
 
 L7B1F       CLC
@@ -5828,11 +5589,11 @@ L7B1F       CLC
 L7B26       LDA   #$00
             LDY   #$00
             STA   (zpPTR2),Y
-            DEC   $56
+            DEC   zpNBDOTS
             RTS
 
 L7B2F       JSR   L7D80
-            JSR   L699E
+            JSR   eraseSPRITE44
             LDA   $64
             CMP   #$1A
             BEQ   L7B79
@@ -5848,6 +5609,10 @@ L7B48       LDA   $61
             INC   $66
             JSR   L79A4
             JMP   L79FD
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 L7B54       CLC
             LDA   $60
@@ -5894,7 +5659,12 @@ L7B88       LDA   $60
             LDA   #$00
             STA   $6C
             BEQ   L7B48
-L7BAC       LDX   #$04
+
+*-----------------------------------
+* PLAY A NOTE
+*-----------------------------------
+
+playNOTE    LDX   #$04
 L7BAE       LDY   $05
 L7BB0       DEY
             INY
@@ -5905,34 +5675,48 @@ L7BB5       BIT   SPKR
             BNE   L7BAE
             RTS
 
-L7BBC       STA   L7BCD+1
+*-----------------------------------
+* PLAY SOUND EFFECT
+*-----------------------------------
+
+playSOUNDFX
+            STA   L7BCD+1
             STY   L7BCD+2
-            LDA   zpDEMO
-            BEQ   L7BC7
-            RTS
+            LDA   zpDEMO	; game or demo?
+            BEQ   L7BC7		; game
+            RTS		; demo
 
 L7BC7       LDY   #$00
             STY   $06
 L7BCB       LDY   $06
 L7BCD       LDA   $0666,Y
-            BEQ   L7BDB
+            BEQ   L7BDB		; end of song
             STA   $05
-            JSR   L7BAC
+            JSR   playNOTE
             INC   $06
             BNE   L7BCB
 L7BDB       RTS
 
-L7BDC       LDA   #<L7BE3
+*-----------------------------------
+* WE ATE A NORMAL DOT
+*-----------------------------------
+
+sndNORMALDOT
+	LDA   #<L7BE3
             LDY   #>L7BE3
-            JMP   L7BBC
+            JMP   playSOUNDFX
 
 L7BE3       DB    $30
             DB    $1C
             DB    $00
 
+*-----------------------------------
+* 
+*-----------------------------------
+
 L7BE6       LDA   #<L7BED
             LDY   #>L7BED
-            JMP   L7BBC
+            JMP   playSOUNDFX
 
 L7BED       DB    $50
             DB    $50
@@ -6023,9 +5807,14 @@ L7BED       DB    $50
             DB    $10
             DB    $00
 
-L7C45       LDA   #<L7C4C
+*-----------------------------------
+* WE ATE AN ENERGIZER DOT
+*-----------------------------------
+
+sndENERGIZERDOT
+            LDA   #<L7C4C
             LDY   #>L7C4C
-            JMP   L7BBC
+            JMP   playSOUNDFX
 
 L7C4C       DB    $40
             DB    $40
@@ -6033,18 +5822,27 @@ L7C4C       DB    $40
             DB    $30
             DB    $00
 
-L7C51       LDY   #$50
+*-----------------------------------
+* WE HAVE AN EXTRA LIFE
+*-----------------------------------
+
+sndEXTRALIFE
+            LDY   #$50
             STY   $06
 L7C55       LDA   #$20
             STA   $05
-            JSR   L7BAC
+            JSR   playNOTE
             DEC   $06
             BNE   L7C55
             RTS
 
+*-----------------------------------
+* 
+*-----------------------------------
+
 L7C61       LDA   #<L7C68
             LDY   #>L7C68
-            JMP   L7BBC
+            JMP   playSOUNDFX
 
 L7C68       DB    $70
             DB    $70
@@ -6077,12 +5875,12 @@ L7C68       DB    $70
 * PLAY HIGHER BEEPS
 *-----------------------------------
 
-L7C82       LDA   $0A
+L7C82       LDA   zpTEMP3
             ASL
             TAX
             LDA   L7C8F,X
             LDY   L7C8F+1,X
-            JMP   L7BBC
+            JMP   playSOUNDFX
 
 L7C8F       DA    $0000
             DA    L7CE4
@@ -6182,9 +5980,13 @@ L7CE4       DB    $10
 
 L7CF0       LDA   #<L7C9D
             LDY   #>L7C9D
-            JMP   L7BBC
+            JMP   playSOUNDFX
 
-L7CF7       LDX   #$04
+*-----------------------------------
+* PLAY LONGER NOTE
+*-----------------------------------
+
+playNOTE2   LDX   #$04
 L7CF9       LDY   $05
 L7CFB       DEY
             INY
@@ -6201,8 +6003,12 @@ L7D06       BIT   SPKR
             BNE   L7CF9
             RTS
 
-L7D0D       STA   zpPTR1
-            STY   $14+1
+*-----------------------------------
+* PLAY SONG
+*-----------------------------------
+
+playSONG    STA   zpPTR1
+            STY   zpPTR1+1
             LDA   #$00
             STA   $06
 L7D15       LDY   $06
@@ -6211,15 +6017,15 @@ L7D15       LDY   $06
             STA   $05		; height
             INY
             LDA   (zpPTR1),Y
-            STA   L7CF7+1	; duration
-            JSR   L7CF7
+            STA   playNOTE2+1	; duration
+            JSR   playNOTE2
             JSR   getINPUT
-            JSR   L7D7B
+            JSR   sndWAIT
             INC   $06
             INC   $06
             BNE   L7D15
 L7D32       LDA   #$04
-            STA   L7CF7+1
+            STA   playNOTE2+1
             RTS
 
 *-----------------------------------
@@ -6229,7 +6035,7 @@ L7D32       LDA   #$04
 playINTROMUSIC
             LDA   #<L7D3F
             LDY   #>L7D3F
-            JMP   L7D0D
+            JMP   playSONG
 
 L7D3F       DB    $41
             DB    $60
@@ -6293,11 +6099,15 @@ L7D3F       DB    $41
             DB    $00
 
 *-----------------------------------
-* 
+* WAIT FOR THE SONG ROUTINE
 *-----------------------------------
 
-L7D7B       LDX   #$1E
+sndWAIT     LDX   #$1E
             JMP   doWAIT2
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 L7D80       LDA   $60
             STA   zpX1
@@ -6316,10 +6126,11 @@ L7D8D       LDA   $70
             RTS
 
 *-----------------------------------
-* 
+* MOVE CURSOR -4,-4
 *-----------------------------------
 
-L7D9A       SEC	; X1 - 4
+moveCURSOR44
+            SEC	; X1 - 4
             LDA   zpX1
             SBC   #$04
             STA   zpX1
@@ -6330,10 +6141,11 @@ L7D9A       SEC	; X1 - 4
             RTS
 
 *-----------------------------------
-* 
+* MOVE CURSOR -5,-4
 *-----------------------------------
 
-L7DA9       SEC	; X1 - 5
+moveCURSOR54
+            SEC	; X1 - 5
             LDA   zpX1
             SBC   #$05
             STA   zpX1
@@ -6342,6 +6154,10 @@ L7DA9       SEC	; X1 - 5
             SBC   #$04
             STA   zpY1
             RTS
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 L7DB8       LDA   $68
             CMP   #$02
@@ -6364,9 +6180,9 @@ L7DD8       LDA   #<L8003
 L7DDC       STA   zpPTR2
             STY   zpPTR2+1
             JSR   L7D80
-            JSR   L699E
+            JSR   eraseSPRITE44
             JSR   L7D8D
-            JSR   L699E
+            JSR   eraseSPRITE44
             JSR   L7D8D
             JSR   L7E1F
             LDA   zpDEMO
@@ -6383,11 +6199,11 @@ L7DDC       STA   zpPTR2
 L7E0E       LDX   #$FF
             JSR   doWAIT2
 L7E13       JSR   L7D8D
-            JSR   L69E9
+            JSR   eraseSPRITE54
             JSR   L7D80
             JMP   L79A4
 
-L7E1F       JSR   L7DA9
+L7E1F       JSR   moveCURSOR54
             JSR   calcXYHGR
             LDY   #$1D
 L7E27       LDA   (zpPTR2),Y
@@ -6396,16 +6212,16 @@ L7E27       LDA   (zpPTR2),Y
             BPL   L7E27
             LDA   zpXBIT
             BEQ   L7E3C
-            STA   $0B
+            STA   zpTEMP4
 L7E35       JSR   L7E4F
-            DEC   $0B
+            DEC   zpTEMP4
             BNE   L7E35
 L7E3C       JSR   calcSPROFFSET
             JSR   L804E
             LDA   #<L7E70
             LDY   #>L7E70
             SEC
-            SBC   $03
+            SBC   zpXBIT
             BCS   L7E4C
             DEY
 L7E4C       JMP   L6A20
@@ -6525,10 +6341,10 @@ L7ECC       LDX   #$FF
             DEY
             BNE   L7ECC
             JSR   L7D80
-            JSR   L699E
+            JSR   eraseSPRITE44
             LDA   #$06
-            STA   $0A
-L7EDE       LDA   $0A
+            STA   zpTEMP3
+L7EDE       LDA   zpTEMP3
             ASL
             TAX
             JSR   L7D80
@@ -6541,8 +6357,8 @@ L7EDE       LDA   $0A
             LDX   #$80
             JSR   doWAIT2
             JSR   L7D80
-            JSR   L69E9
-            DEC   $0A
+            JSR   eraseSPRITE54
+            DEC   zpTEMP3
             BNE   L7EDE
             RTS
 
@@ -6948,91 +6764,59 @@ L80DB       JSR   L8712
             BNE   L80C5
             RTS
 
-L80E3       LDA   #$69
-            LDX   #$04
-            LDY   #$0F
-            JSR   L8107
-            LDX   #$07
-            LDA   #<L811D
-            LDY   #>L811D
-            JSR   L8112
+*-----------------------------------
+* SHOW GAME OVER
+*-----------------------------------
+
+showGAMEOVER
+            LDA   #$69	; Y
+            LDX   #$04	; width in bytes
+            LDY   #$0F	; X
+            JSR   prepareGO
+            LDX   #$07	; nb lines
+            LDA   #<sprGAME
+            LDY   #>sprGAME
+            JSR   drawGO
             LDA   #$69
             LDX   #$04
             LDY   #$15
-            JSR   L8107
+            JSR   prepareGO
             LDX   #$07
-            LDA   #<L8139
-            LDY   #>L8139
-            JMP   L8112
+            LDA   #<sprOVER
+            LDY   #>sprOVER
+            JMP   drawGO
 
-L8107       STA   zpY1
-            STX   $1A
-            STY   $04
+prepareGO   STA   zpY1
+            STX   zpSPRWIDTH
+            STY   zpXCOL
             LDA   #$00
             STA   zpXBIT
             RTS
 
-L8112       STX   $18
+drawGO      STX   zpSPRHEIGHT
             STA   L55B1+1
             STY   L55B1+2
             JMP   drawCOLORSPRITE
 
-L811D       DB    $60
-            DB    $23
-            DB    $44
-            DB    $3E
-            DB    $10
-            DB    $50
-            DB    $6C
-            DB    $02
-            DB    $10
-            DB    $08
-            DB    $55
-            DB    $02
-            DB    $50
-            DB    $7B
-            DB    $55
-            DB    $0E
-            DB    $10
-            DB    $0A
-            DB    $45
-            DB    $02
-            DB    $10
-            DB    $0A
-            DB    $45
-            DB    $02
-            DB    $60
-            DB    $0B
-            DB    $45
-            DB    $3E
-L8139       DB    $4E
-            DB    $68
-            DB    $77
-            DB    $01
-            DB    $51
-            DB    $28
-            DB    $10
-            DB    $02
-            DB    $51
-            DB    $28
-            DB    $10
-            DB    $02
-            DB    $51
-            DB    $68
-            DB    $71
-            DB    $01
-            DB    $51
-            DB    $28
-            DB    $50
-            DB    $00
-            DB    $11
-            DB    $25
-            DB    $10
-            DB    $01
-            DB    $0E
-            DB    $62
-            DB    $17
-            DB    $02
+*--- Sprite for GAME
+
+sprGAME     HEX   6023443E
+            HEX   10506C02
+            HEX   10085502
+            HEX   507B550E
+            HEX   100A4502
+            HEX   100A4502
+            HEX   600B453E
+
+*--- Sprite for OVER
+
+sprOVER     HEX   4E687701
+            HEX   51281002
+            HEX   51281002
+            HEX   51687101
+            HEX   51285000
+            HEX   11251001
+            HEX   0E621702
 
 *-----------------------------------
 * WHICH CARTOON TO PLAY?
@@ -7116,7 +6900,7 @@ L81B7       DEC   $59
             LDA   #$20
             STA   $59
             JSR   L7D80
-            JSR   L699E
+            JSR   eraseSPRITE44
             SEC
             LDA   $60	; x -= 2
             SBC   #$02
@@ -7134,7 +6918,7 @@ L81DB       JSR   doWAIT
             LDA   #$1D
             STA   $80
             JSR   L7D8D
-            JSR   L699E
+            JSR   eraseSPRITE44
             SEC
             LDA   $70
             SBC   #$02
@@ -7144,9 +6928,9 @@ L81DB       JSR   doWAIT
 L81F9       JMP   L81B7
 
 L81FC       JSR   L7D80
-            JSR   L699E
+            JSR   eraseSPRITE44
             JSR   L7D8D
-            JSR   L699E
+            JSR   eraseSPRITE44
             LDY   #$08
 L820A       LDX   #$64
             JSR   doWAIT2
@@ -7177,7 +6961,7 @@ L8237       JSR   doWAIT
             LDA   #$07
             STA   $80
             JSR   L7D8D
-            JSR   L699E
+            JSR   eraseSPRITE44
             CLC
             LDA   $70
             ADC   #$02
@@ -7211,18 +6995,18 @@ L827A       LDA   $0666,Y
             LDA   zpXBIT
             BEQ   L8292
 L828B       JSR   L82B1
-            DEC   $03
+            DEC   zpXBIT
             BNE   L828B
 L8292       JSR   setHGRADDRESS
             LDX   zpXBIT
             LDY   zpXCOL
             LDA   #$04
-            STA   $09
+            STA   zpTEMP2
 L829D       LDA   L7E70,X
             STA   (zpHGR),Y
             INX
             INY
-            DEC   $09
+            DEC   zpTEMP2
             BNE   L829D
             STX   zpXBIT
             INC   zpY1
@@ -7290,7 +7074,7 @@ L83D9       DEC   $59
             LDX   #$81
             JSR   cartoonVLINE
             JSR   L7D80
-            JSR   L699E
+            JSR   eraseSPRITE44
             SEC
             LDA   $60
             SBC   #$02
@@ -7309,7 +7093,7 @@ L840C       JSR   doWAIT
             CMP   #$71
             BEQ   L83D9
             JSR   L7D8D
-            JSR   L699E
+            JSR   eraseSPRITE44
             SEC
             LDA   $70
             SBC   #$02
@@ -7332,13 +7116,13 @@ L840C       JSR   doWAIT
             JMP   L83D9
 
 L844F       JSR   L7D8D
-            JSR   L699E
+            JSR   eraseSPRITE44
             JSR   L7D8D
             CLC
             LDA   zpX1
             ADC   #$0A
             STA   zpX1
-            JSR   L699E
+            JSR   eraseSPRITE44
             JSR   L7D8D
             JSR   L88A2
             LDA   #$74
@@ -7374,7 +7158,7 @@ L848F       DEC   $59
             LDA   #$26
             STA   $59
             JSR   L7D80
-            JSR   L699E
+            JSR   eraseSPRITE44
             SEC
             LDA   $60
             SBC   #$02
@@ -7391,7 +7175,7 @@ L84B0       JSR   doWAIT
             LDA   #$21
             STA   $80
             JSR   L7D8D
-            JSR   L699E
+            JSR   eraseSPRITE44
             SEC
             LDA   $70
             SBC   #$02
@@ -7409,7 +7193,7 @@ L84B0       JSR   doWAIT
 *--- Play 2nd part of the cartoon
 
 L84DD       JSR   L7D8D
-            JSR   L699E
+            JSR   eraseSPRITE44
             LDY   #$08
 L84E5       LDX   #$64
             JSR   doWAIT2
@@ -7426,7 +7210,7 @@ L84F9       DEC   $59
             LDA   #$22
             STA   $59
             JSR   L7D80
-            JSR   L699E
+            JSR   eraseSPRITE44
             LDA   $60
             CMP   #$B0
             BCS   L8549
@@ -7441,7 +7225,7 @@ L8519       JSR   doWAIT
             LDA   #$27
             STA   $80
             JSR   L7D8D
-            JSR   L69E9
+            JSR   eraseSPRITE54
             CLC
             LDA   $70
             ADC   #$02
@@ -7598,7 +7382,7 @@ L861A       JSR   L86FC
             LDA   #$12
             STA   $80
             JSR   L7D8D
-            JSR   L699E
+            JSR   eraseSPRITE44
             LDA   $E0
             CMP   #$03
             BCS   L8649
@@ -7643,7 +7427,7 @@ L8662       JSR   L8712
             LDX   #$50
             JSR   doWAIT2
             JSR   L7D80
-            JSR   L699E
+            JSR   eraseSPRITE44
             LDA   #$01
             STA   $62
             JSR   L7D80
@@ -7656,7 +7440,7 @@ L8662       JSR   L8712
             LDX   #$50
             JSR   doWAIT2
             JSR   L7D80
-            JSR   L699E
+            JSR   eraseSPRITE44
             LDA   #$03
             STA   $62
             JSR   L7D80
@@ -7671,7 +7455,7 @@ L8662       JSR   L8712
             LDA   #$00
             STA   $62
             JSR   L7D80
-            JSR   L699E
+            JSR   eraseSPRITE44
             JSR   L7D80
             JSR   L79A4
             JSR   L7CF0
@@ -7909,7 +7693,7 @@ L8839       LDA   $79
             LDA   #$01
             STA   $81
             JSR   L7D8D
-            JSR   L699E
+            JSR   eraseSPRITE44
             JSR   L6D30
             JSR   L6DA1
             JMP   L8866
@@ -7932,7 +7716,7 @@ L886D       LDA   $81
             JMP   L8988
 
 L8874       JSR   L7D8D
-            JSR   L699E
+            JSR   eraseSPRITE44
             CLC
             LDA   $72
             ROR
@@ -7954,6 +7738,7 @@ L889A       STA   $71
             STA   zpY1
             LDA   $70
             STA   zpX1
+
 L88A2       LDA   $E0
             ASL
             TAX
@@ -7971,6 +7756,7 @@ L88BA       LDX   #$00
 L88BC       LDA   $79
             BEQ   L88C2
             LDX   #$0A
+
 L88C2       LDA   zpMONITOR
             BEQ   L88D3
             CLC
@@ -7982,8 +7768,9 @@ L88C2       LDA   zpMONITOR
             TXA
             ADC   #$0C
             TAX
-L88D3       LDA   L9E5C,X
-            LDY   L9E5C+1,X
+
+L88D3       LDA   sprGHOSTS,X
+            LDY   sprGHOSTS+1,X
             JSR   L6A20
             LDA   $81
             BEQ   L88E6
@@ -7994,6 +7781,7 @@ L88E1       DB    $01
             DB    $00
             DB    $00
             DB    $00
+
 L88E6       LDA   $79
             BNE   L88ED
             JSR   L8B34
@@ -8077,10 +7865,10 @@ L895F       JSR   L8B13
             JSR   drawNORMALDOT
 L8980       RTS
 
-L8981       ASL	; *2
-            STA   $0B
-            ASL	; *4
-            ADC   $0B	; +6
+L8981       ASL		; *2
+            STA   zpTEMP4
+            ASL		; *4
+            ADC   zpTEMP4	; +6
             RTS
 
 L8988       DEC   $82
@@ -8183,73 +7971,16 @@ L8A05       LDA   $70
 * 
 *-----------------------------------
 
-L8A3A       DB    $00
-L8A3B       DB    $00
-            DB    $44
-            DB    $8A
-            DB    $53
-            DB    $8A
-            DB    $61
-            DB    $8A
-            DB    $6F
-            DB    $8A
-L8A44       DB    $03
-            DB    $00
-            DB    $03
-            DB    $01
-            DB    $01
-            DB    $02
-            DB    $02
-            DB    $02
-            DB    $02
-            DB    $02
-            DB    $01
-            DB    $02
-            DB    $00
-            DB    $03
-            DB    $FF
-            DB    $03
-            DB    $03
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $03
-            DB    $00
-            DB    $00
-            DB    $03
-            DB    $03
-            DB    $00
-            DB    $02
-            DB    $01
-            DB    $FF
-            DB    $03
-            DB    $03
-            DB    $00
-            DB    $03
-            DB    $01
-            DB    $01
-            DB    $03
-            DB    $00
-            DB    $02
-            DB    $00
-            DB    $03
-            DB    $00
-            DB    $02
-            DB    $FF
-            DB    $03
-            DB    $03
-            DB    $00
-            DB    $00
-            DB    $02
-            DB    $00
-            DB    $02
-            DB    $00
-            DB    $00
-            DB    $02
-            DB    $02
-            DB    $00
-            DB    $03
-            DB    $FF
+L8A3A       DA    $0000
+            DA    L8A44
+            DA    L8A53
+            DA    L8A61
+            DA    L8A6F
+
+L8A44       HEX   0300030101020202020201020003FF
+L8A53       HEX   03030000000300000303000201FF
+L8A61       HEX   03030003010103000200030002FF
+L8A6F       HEX   03030000020002000002020003FF
 
 *-----------------------------------
 * DRAW GHOST DOOR
@@ -8277,7 +8008,7 @@ drawGHOSTDOOR
 *-----------------------------------
 
 L8A9C       JSR   L7D8D
-            JSR   L699E
+            JSR   eraseSPRITE44
             LDA   $70
             CMP   #$60
             BCC   L8AE0
@@ -8336,7 +8067,7 @@ L8AEF       LDA   $70
             LDA   #$00
             STA   $7D
             BEQ   L8AB5
-L8B13       LDA   #$62
+L8B13       LDA   #>theBOARD
             STA   zpPTR2+1
             LDA   $7B
             ASL
@@ -8351,7 +8082,7 @@ L8B23       ASL
             INC   zpPTR2+1
 L8B28       CLC
             ADC   $7C
-            ADC   #$3A
+            ADC   #<theBOARD
             BCC   L8B31
             INC   zpPTR2+1
 L8B31       STA   zpPTR2
@@ -8448,7 +8179,7 @@ L8B9D       LDA   $78
             ADC   $68
             STA   $68
             CLD
-            JSR   L7091
+            JSR   displayPLAYERSCORE
 L8BDC       RTS
 
 L8BDD       JSR   L8712
@@ -8462,15 +8193,15 @@ L8BE5       LDX   #$FA
             STA   $E0
 L8BF1       JSR   L86FC
             JSR   L7D8D
-            JSR   L699E
+            JSR   eraseSPRITE44
             DEC   $E0
             BNE   L8BF1
             JSR   L7D80
-            JSR   L699E
+            JSR   eraseSPRITE44
             JSR   L7EC0
             LDA   zpDEMO
             BEQ   L8C0E
-            JMP   L43D2
+            JMP   welcomePAGE
 
 L8C0E       DEC   zpNBLIVES
             LDA   zpNBLIVES
@@ -8481,7 +8212,7 @@ L8C0E       DEC   zpNBLIVES
 L8C1A       JSR   savePLAYERBOARD
             JSR   savePLAYERDATA
             LDA   zpCURPLAYER
-            STA   $0B
+            STA   zpTEMP4
             JMP   L8C2E
 
 L8C27       JSR   loadPLAYERDATA
@@ -8494,7 +8225,7 @@ L8C2E       INC   zpCURPLAYER
             LDA   #$01
             STA   zpCURPLAYER
 L8C3A       LDA   zpCURPLAYER
-            CMP   $0B
+            CMP   zpTEMP4
             BNE   L8C27
             JSR   loadPLAYERDATA
             LDA   zpNBLIVES
@@ -10016,16 +9747,16 @@ L96E4       PLA
 *-----------------------------------
 
 sprPACMAN   DA    sprPACMAN0	; Fully closed
-            DA    L97CC	; Open goes down
-            DA    L989E	; Open goes up
-            DA    L9970	; Open goes right
-            DA    L9A42	; Open goes left
-            DA    L9B14	; Open goes down 2
-            DA    L9BE6	; Open goes up 2
-            DA    L9CB8	; Open goes right 2
-            DA    L9D8A	; Open goes left 2
+            DA    L97CC		; Open goes down
+            DA    L989E		; Open goes up
+            DA    L9970		; Open goes right
+            DA    L9A42		; Open goes left
+            DA    L9B14		; Open goes down 2
+            DA    L9BE6		; Open goes up 2
+            DA    L9CB8		; Open goes right 2
+            DA    L9D8A		; Open goes left 2
 
-sprPACMAN0       HEX   7800007C01007E03007F07007F07007F
+sprPACMAN0  HEX   7800007C01007E03007F07007F07007F
             HEX   07007F07007E03007C01007800007001
             HEX   007803007C07007E0F007E0F007E0F00
             HEX   7E0F007C070078030070010060030070
@@ -10152,18 +9883,22 @@ L9D8A       HEX   7800007C010078030070070060070060
             HEX   007003007003007803007C01007E0000
             HEX   3C00
 
-L9E5C       DA    LA1BC
-            DA    LA0EA
-            DA    L9F46
-            DA    LA018
-            DA    L9E74
-            DA    LA28E
-            DA    LA3A0
-            DA    LA472
-            DA    LA544
-            DA    LA616
-            DA    LA472
-            DA    LA28E
+*-----------------------------------
+* GHOSTS SPRITES POINTERS TABLE
+*-----------------------------------
+
+sprGHOSTS   DA    LA1BC		; 0 Transparent
+            DA    LA0EA		; 1 White happy
+            DA    L9F46		; 2 White mean
+            DA    LA018		; 3 Narrow
+            DA    L9E74		; 4 Round
+            DA    LA28E		; 5 Eyes (when a ghost is killed)
+            DA    LA3A0		; 6 Blue (when energizer is active)
+            DA    LA472		; 7 Green
+            DA    LA544		; 8 Pink
+            DA    LA616		; 9 White rounded happy
+            DA    LA472		; A Green (again)
+            DA    LA28E		; C Eyes (again)
 
 L9E74       HEX   3000007C01007E030036030033060033
             HEX   06007F07000707007F07003603006000
@@ -10311,6 +10046,8 @@ LA616       HEX   7C01007C01003306003306007F07007F
             HEX   01604C01007E00007E00401903401903
             HEX   407F03407F03400103407F03407F0340
             HEX   1903
+
+*--- What is that?
 
             DB    $60
             DB    $01
@@ -10686,7 +10423,6 @@ LA616       HEX   7C01007C01003306003306007F07007F
             DB    $00
             DB    $00
             DB    $00
-            MX    %11
             DB    $A6
             DB    $E8
             DB    $D0

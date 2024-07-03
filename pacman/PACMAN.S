@@ -219,7 +219,7 @@ L4233       JSR   RDKEY
             BEQ   L4272
             CMP   #"1"
             BCC   L4233
-            CMP   #"6"
+            CMP   #"5"+1
             BCS   L4233
             JSR   printCHAR
             AND   #$07
@@ -3201,445 +3201,146 @@ L6AFB       JMP   L6AEB
 * FRUIT SPRITES
 *-----------------------------------
 
-* TOTO
-
 L6AFE       DB    $00
 L6AFF       DB    $00
 L6B00       DB    $00
 L6B01       DB    $00
             DB    $6E
-            DB    $6B
+            DA    L6B6E
             DB    $00
             DB    $01
             DB    $92
-            DB    $6B
+            DA    L6B92
             DB    $00
             DB    $01
             DB    $B6
-            DB    $6B
+            DA    L6BB6
             DB    $00
             DB    $01
             DB    $B6
-            DB    $6B
+            DA    L6BB6
             DB    $00
             DB    $01
             DB    $DA
-            DB    $6B
+            DA    L6BDA
             DB    $20
             DB    $01
             DB    $DA
-            DB    $6B
+            DA    L6BDA
             DB    $20
             DB    $01
             DB    $FE
-            DB    $6B
+            DA    L6BFE
             DB    $30
             DB    $01
             DB    $FE
-            DB    $6B
+            DA    L6BFE
             DB    $30
             DB    $01
             DB    $22
-            DB    $6C
+            DA    L6C22
             DB    $40
             DB    $01
             DB    $22
-            DB    $6C
+            DA    L6C22
             DB    $40
             DB    $01
             DB    $46
-            DB    $6C
+            DA    L6C46
             DB    $60
             DB    $01
             DB    $46
-            DB    $6C
+            DA    L6C46
             DB    $60
             DB    $01
             DB    $6A
-            DB    $6C
+            DA    L6C6A
             DB    $60
             DB    $01
             DB    $6A
-            DB    $6C
+            DA    L6C6A
             DB    $60
             DB    $01
             DB    $6A
-            DB    $6C
+            DA    L6C6A
             DB    $60
             DB    $01
             DB    $6A
-            DB    $6C
+            DA    L6C6A
             DB    $60
             DB    $01
             DB    $6A
-            DB    $6C
+            DA    L6C6A
             DB    $60
             DB    $01
             DB    $6A
-            DB    $6C
+            DA    L6C6A
             DB    $60
             DB    $01
             DB    $6A
-            DB    $6C
+            DA    L6C6A
             DB    $60
             DB    $01
             DB    $6A
-            DB    $6C
+            DA    L6C6A
             DB    $60
             DB    $01
             DB    $6A
-            DB    $6C
+            DA    L6C6A
             DB    $60
             DB    $01
             DB    $6A
-            DB    $6C
+            DA    L6C6A
             DB    $60
             DB    $01
             DB    $8E
-            DB    $6C
+            DA    L6C8E
             DB    $00
             DB    $02
             DB    $6A
-            DB    $6C
+            DA    L6C6A
             DB    $00
             DB    $02
             DB    $6A
-            DB    $6C
+            DA    L6C6A
             DB    $00
             DB    $02
             DB    $6A
-            DB    $6C
+            DA    L6C6A
             DB    $00
             DB    $02
             DB    $6A
-            DB    $6C
+            DA    L6C6A
             DB    $00
             DB    $02
 
-            DB    $55
-            DB    $00
-            DB    $00
-            DB    $04
-            DB    $02
-            DB    $00
-            DB    $04
-            DB    $08
-            DB    $00
-            DB    $10
-            DB    $20
-            DB    $00
-            DB    $90
-            DB    $20
-            DB    $85
-            DB    $D4
-            DB    $00
-            DB    $95
-            DB    $DC
-            DB    $00
-            DB    $97
-            DB    $DD
-            DB    $A2
-            DB    $D7
-            DB    $D5
-            DB    $A2
-            DB    $D5
-            DB    $D4
-            DB    $00
-            DB    $95
-            DB    $D4
-            DB    $00
-            DB    $95
-            DB    $90
-            DB    $00
-            DB    $94
-            DB    $00
-            DB    $2A
-            DB    $05
-            DB    $10
-            DB    $2A
-            DB    $15
-            DB    $40
-            DB    $A4
-            DB    $11
-            DB    $40
-            DB    $A2
-            DB    $86
-            DB    $50
-            DB    $9A
-            DB    $85
-            DB    $00
-            DB    $AE
-            DB    $87
-            DB    $00
-            DB    $B2
-            DB    $85
-            DB    $00
-            DB    $8A
-            DB    $86
-            DB    $00
-            DB    $EC
-            DB    $85
-            DB    $00
-            DB    $A8
-            DB    $84
-            DB    $00
-            DB    $88
-            DB    $81
-            DB    $00
-            DB    $A0
-            DB    $81
-            DB    $00
-            DB    $2A
-            DB    $00
-            DB    $40
-            DB    $20
-            DB    $00
-            DB    $C0
-            DB    $82
-            DB    $00
-            DB    $50
-            DB    $0A
-            DB    $00
-            DB    $D4
-            DB    $AE
-            DB    $00
-            DB    $54
-            DB    $E3
-            DB    $00
-            DB    $D4
-            DB    $AA
-            DB    $00
-            DB    $54
-            DB    $2A
-            DB    $00
-            DB    $D4
-            DB    $AA
-            DB    $00
-            DB    $50
-            DB    $0A
-            DB    $00
-            DB    $C0
-            DB    $82
-            DB    $00
-            DB    $40
-            DB    $02
-            DB    $00
-            DB    $00
-            DB    $0A
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $B8
-            DB    $9D
-            DB    $00
-            DB    $D4
-            DB    $AB
-            DB    $00
-            DB    $D4
-            DB    $AA
-            DB    $00
-            DB    $D4
-            DB    $AA
-            DB    $00
-            DB    $D4
-            DB    $AA
-            DB    $00
-            DB    $D4
-            DB    $AA
-            DB    $00
-            DB    $C8
-            DB    $92
-            DB    $00
-            DB    $D0
-            DB    $8A
-            DB    $00
-            DB    $90
-            DB    $89
-            DB    $00
-            DB    $E0
-            DB    $86
-            DB    $00
-            DB    $00
-            DB    $0A
-            DB    $00
-            DB    $40
-            DB    $00
-            DB    $00
-            DB    $40
-            DB    $00
-            DB    $00
-            DB    $50
-            DB    $02
-            DB    $00
-            DB    $50
-            DB    $02
-            DB    $00
-            DB    $54
-            DB    $0B
-            DB    $00
-            DB    $54
-            DB    $0E
-            DB    $00
-            DB    $5C
-            DB    $0A
-            DB    $00
-            DB    $54
-            DB    $0A
-            DB    $00
-            DB    $50
-            DB    $02
-            DB    $00
-            DB    $40
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $90
-            DB    $00
-            DB    $00
-            DB    $B4
-            DB    $00
-            DB    $00
-            DB    $92
-            DB    $81
-            DB    $00
-            DB    $B2
-            DB    $81
-            DB    $00
-            DB    $BA
-            DB    $81
-            DB    $00
-            DB    $BA
-            DB    $81
-            DB    $00
-            DB    $BA
-            DB    $81
-            DB    $00
-            DB    $92
-            DB    $81
-            DB    $00
-            DB    $B8
-            DB    $00
-            DB    $00
-            DB    $B8
-            DB    $00
-            DB    $00
-            DB    $90
-            DB    $00
-            DB    $00
-            DB    $90
-            DB    $00
-            DB    $00
-            DB    $90
-            DB    $00
-            DB    $00
-            DB    $E0
-            DB    $81
-            DB    $00
-            DB    $E0
-            DB    $81
-            DB    $00
-            DB    $F0
-            DB    $82
-            DB    $00
-            DB    $F0
-            DB    $82
-            DB    $00
-            DB    $F8
-            DB    $86
-            DB    $00
-            DB    $E8
-            DB    $87
-            DB    $00
-            DB    $EC
-            DB    $8F
-            DB    $00
-            DB    $EE
-            DB    $9F
-            DB    $00
-            DB    $C0
-            DB    $00
-            DB    $00
-            DB    $C0
-            DB    $00
-            DB    $00
-            DB    $B8
-            DB    $81
-            DB    $00
-            DB    $88
-            DB    $81
-            DB    $00
-            DB    $88
-            DB    $81
-            DB    $00
-            DB    $B0
-            DB    $00
-            DB    $00
-            DB    $F0
-            DB    $81
-            DB    $00
-            DB    $B0
-            DB    $00
-            DB    $00
-            DB    $F0
-            DB    $80
-            DB    $00
-            DB    $B0
-            DB    $00
-            DB    $00
-            DB    $F0
-            DB    $81
-            DB    $00
-            DB    $F0
-            DB    $00
-            DB    $00
-            DB    $B0
-            DB    $00
-            DB    $00
-            DB    $F0
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $4A
-            DB    $04
-            DB    $00
-            DB    $2A
-            DB    $05
-            DB    $00
-            DB    $6E
-            DB    $05
-            DB    $00
-            DB    $2A
-            DB    $1D
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $5B
-            DB    $3B
-            DB    $00
-            DB    $55
-            DB    $2A
-            DB    $00
-            DB    $55
-            DB    $2A
-            DB    $00
-            DB    $5B
-            DB    $3B
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
+L6B6E       HEX   550000040200040800102000902085D4
+            HEX   0095DC0097DDA2D7D5A2D5D40095D400
+            HEX   95900094
+L6B92       HEX   002A05102A1540A41140A286509A8500
+            HEX   AE8700B285008A8600EC8500A8840088
+            HEX   8100A081
+L6BB6       HEX   002A00402000C08200500A00D4AE0054
+            HEX   E300D4AA00542A00D4AA00500A00C082
+            HEX   00400200
+L6BDA       HEX   000A00000100B89D00D4AB00D4AA00D4
+            HEX   AA00D4AA00D4AA00C89200D08A009089
+            HEX   00E08600
+L6BFE       HEX   000A0040000040000050020050020054
+            HEX   0B00540E005C0A00540A005002004000
+            HEX   00000000
+L6C22       HEX   000000900000B40000928100B28100BA
+            HEX   8100BA8100BA8100928100B80000B800
+            HEX   00900000
+L6C46       HEX   900000900000E08100E08100F08200F0
+            HEX   8200F88600E88700EC8F00EE9F00C000
+            HEX   00C00000
+L6C6A       HEX   B88100888100888100B00000F08100B0
+            HEX   0000F08000B00000F08100F00000B000
+            HEX   00F00000
+L6C8E       HEX   0000004A04002A05006E05002A1D0000
+            HEX   00005B3B00552A00552A005B3B000000
+            HEX   00000000
 
 *-----------------------------------
 * ADD TO SCORE

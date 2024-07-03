@@ -1,0 +1,2149 @@
+;...............................................................
+;
+; FILE : ShowShape.s                    - FIGURES GEOMETRIQUES -
+;        -----------
+;...............................................................
+;...............................................................
+;
+;        DoShape : MODE DESSIN DES SHAPES
+;
+;...............................................................
+DoShape        START
+               Using GlobalData
+;--
+DoLine         ENTRY
+
+               lda #Fonct_Line
+               sta Fonction
+               rts
+;--
+DoRect         ENTRY
+
+               lda #Fonct_Rect
+               sta Fonction
+               rts
+;--
+DoRectF        ENTRY
+
+               lda #Fonct_RectF
+               sta Fonction
+               rts
+;--
+DoRectO        ENTRY
+
+               lda #Fonct_RectO
+               sta Fonction
+               rts
+;--
+DoRectOF       ENTRY
+
+               lda #Fonct_RectOF
+               sta Fonction
+               rts
+;--
+DoOVal         ENTRY
+
+               lda #Fonct_Oval
+               sta Fonction
+               rts
+;--
+DoOvalF        ENTRY
+
+               lda #Fonct_OvalF
+               sta Fonction
+               rts
+
+               END
+;...............................................................
+;
+;        DrawShape : Dessine une Forme sur FRAME
+;
+;...............................................................
+DrawShape      START
+               Using GlobalData
+               Using WindowData
+
+               jsr Un_Select            |DESELECT ALL
+
+               stz Shape_Type           |Peut etre une LIGNE
+
+               lda Fonction             |Type :0 line,1 Rect,2 RectF
+               sec                      |      3 RectO,4 RectOF
+               sbc #7                   |      5 Oval,6 OvalF
+               bmi suite                |
+               sta Shape_Type
+;--
+suite          lda MouseY               |Debut au Click
+               sta Shape_DebutY
+               sta Shape_RectY0
+               sta Anc_Y                |Sauve Y
+               sta Y_Org
+               lda MouseX
+               sta Shape_DebutX
+               sta Shape_RectX0
+               sta Anc_X                |Sauve X
+               sta X_Org
+
+               lda Couleur_Text         |en Couleur
+               sta Shape_ColorI
+
+               lda #0                   |No Shadow
+               sta Shape_Shadow
+
+               lda OutLine_Color        |Bordure en Couleur
+               sta Shape_ColorB
+;--
+               jsr test_epaisseur       |si mince alors 1 par option
+               bcc ok
+               lda #1
+               bra ko
+;--
+ok             lda OutLine              |Taille Bordure 0 No BORDER
+ko             sta Shape_TailleB
+;--
+               lda Shape_Type
+               beq ko0
+               jsr Test_Shape           |si forme fine alors couleur text
+               bcc ok0
+ko0            lda Couleur_Text         |en Couleur
+               sta Shape_ColorB
+;--
+ok0            lda Shape_Type           |une Ligne ?
+               bne noLigne
+;-
+               lda Arrows_On            |Arrow_on fleche sur les Lignes
+               xba
+               ora Shape_TailleB
+               sta Shape_TailleB
+;--
+noligne        stz Shape_FinY
+               stz Shape_FinX
+               stz Mode_Draw            |New Shape
+;--
+DrawShape1     ENTRY                    |Pour SIZING
+
+               stz Top_Draw             |Efface ou Non
+;--
+Loop           PushLong #0
+               _StillDown
+               pla
+               beq Relache
+
+               PushLong #EventWhere     |Quel Position ?
+               _GetMouse
+
+               jsr TRT_SHIFT_KEY        |TAILLE HARMONIEUSE
+
+               lda Mousey               |BOUGER ?
+               cmp Anc_Y
+               bne Bouge
+               lda Mousex
+               cmp Anc_X
+               beq Loop
+;--
+Bouge          jsr XOR_Shape            |EffACE en XOR
+
+               lda MouseX
+               sta Anc_X
+               lda MouseY
+               sta Anc_Y
+
+               jsr XOR_Shape1           |AFFICHE en XOR
+
+               bra Loop
+;--
+Relache        lda Top_draw             |a t'on BOUGE ?
+               bne SRLC
+               brl fin1
+
+SRLC           lda #1
+               sta Top_Action
+
+               jsr Xor_Shape            |Efface Forme
+
+               jsr Taille_Minimum       |au moins 1/1
+
+               jsr Calcul_Shape         |Calcul RECORD SHAPE
+
+               lda Mode_Draw            |RESIZING ?
+               bne OLDShape
+
+               jsr Add_Shape            |ADD THE OBJECT si possible
+               bcc OkAddShape
+               rts
+
+OkAddShape     lda Frame_Shape
+               sta Shape_Select
+
+               ora #$0100               |METTRE DANS LA LISTE
+               jsr Put_In_list
+               jsr Copy_rectS           |maj rectangle selection
+               lda #1                   |SIZING OK
+               sta Top_Size
+
+               bra NEWSHAPE
+;--
+OLDSHAPE       ANOP
+
+               lda Which_Select
+               cmp #5
+               bne OLDSHAPES
+;--
+               jsr MAJ_SizeGraph        |maj de la taille du camenbert
+               jsr Copy_rectG           |the new rect
+               jsr Cop_Rgn1_Shape       |2 eme clip
+               jsr Aff_ShapeS           |Refresh
+               rts
+;--
+OLDSHAPES      jsr Test_Ligne_Size      |Si Size Ligne swap si Fin<->Debut
+               lda Shape_Select         |MAJ POSITION  +++ Frame_Shape +++
+               jsr Copie_Shape
+               jsr Copy_rectS
+OLDSHAPES1     jsr Cop_Rgn1_shape       |2 eme Rectangle ClIP REGION
+               jsr Aff_ShapeS           |Refresh
+               rts
+;--
+NEWSHAPE       ANOP
+               PushLong Ptr_FrameW      |Redessine les phrases 1er PLAN
+               _SetPort
+
+               jsr Copy_rectS           |dans Rect_selectF pour clip
+               jsr Cop_Rgn0_shape       |2 eme Rectangle ClIP REGION
+               jsr Aff_shapeS           |Refresh
+
+fin            lda #0                   |mode MOVE
+               sta Choix_Option
+               jsr In_Option1
+               jsr Menu_On_Off          |Menu item si object
+               jsr Del_Undo
+               rts
+;--
+fin1           ANOP
+
+               lda Mode_Draw
+               beq fin
+               bra OLDSHAPES1
+
+               END
+;...............................................................
+;
+;        Test_Ligne_Size : si Ligne et Top_Ligne_Size Swap debut et Fin
+;
+;...............................................................
+Test_Ligne_Size START
+               Using GlobalData
+
+               lda Shape_Type           |une Ligne ?
+               bne ko
+               lda Top_ligne_Size
+               bne ok
+ko             rts
+;--
+ok             lda Shape_DebutX         |permet de garder le sens a la
+               ldx Shape_FinX           |ligne flechee
+               sta Shape_FinX
+               stx Shape_DebutX
+
+               lda Shape_DebutY
+               ldx Shape_FinY
+               sta Shape_FinY
+               stx Shape_DebutY
+
+               lda #0                   |Raz
+               sta Top_Ligne_Size
+
+               rts
+
+               END
+;...............................................................
+;
+;        XOR_Shape : Affiche la shape en XOR
+;
+;...............................................................
+Xor_Shape      START
+               Using GlobalData
+
+               lda Top_Draw             |Efface ?
+               bne Xor_Shape1
+               inc Top_Draw
+               rts
+;--
+Xor_Shape1     ENTRY
+
+               lda Anc_Y
+               sta PositionY
+               lda Anc_X
+               sta PositionX
+
+               PushWord #15             |Couleur Blanche
+               _SetSolidPenPat
+
+               PushWord #2              |en Xor
+               _SetPenMode
+
+               jsr Draw_Fantome         |Dessine la FORME en POURTOUR
+
+               rts
+;--
+Xor_Shape11    ENTRY
+
+               PushWord #15             |Blanc
+               _SetSolidPenPat
+
+               PushWord #2              |XOR
+               _SetPenMode
+
+               jsr Draw_Fantome1
+
+               rts
+
+               END
+;...............................................................
+;
+;        Draw_Fantome : Dessine que le BORD
+;
+;...............................................................
+Draw_Fantome   START
+               Using GlobalData
+
+               lda Shape_RectY0         |Rectangle
+               sta RectShapeY0
+               lda Shape_RectX0
+               sta RectShapeX0
+
+               lda PositionY
+               sta RectShapeY1
+               lda PositionX
+               sta RectShapeX1
+
+               jsr Cadre_rect
+;--
+Draw_Fantome1  ENTRY
+
+               lda Shape_Type
+               asl a
+               tax
+               jsr (Table_GHOST,x)
+
+               rts
+;--
+Gost_Line      ANOP
+
+               PushLong Shape_Debut     |ORIGINE
+               _MoveTo
+
+               PushLong Shape_Fin       |Affiche ICI
+               _LineTo
+
+               rts
+;--
+Gost_Rect      ANOP
+
+Gost_RectF     ANOP
+               PushLong #RectShape
+               _FrameRect
+               rts
+;--
+Gost_RRect     ANOP
+
+Gost_RRectF    ANOP
+               PushLong #RectShape
+               lda #17
+               pha
+               lda #17
+               pha
+
+               _FrameRRect
+               rts
+;--
+Gost_Oval      ANOP
+
+Gost_OvalF     ANOP
+               PushLong #RectShape
+               _FrameOval
+               rts
+;--------------------------------------
+;-------- TABLE ROUTINES DESSIN -------
+;--------------------------------------
+Table_GHOST    ANOP
+
+               dc i2'Gost_Line'
+               dc i2'Gost_Rect'
+               dc i2'Gost_RectF'
+               dc i2'Gost_RRect'
+               dc i2'Gost_RRectF'
+               dc i2'Gost_Oval'
+               dc i2'Gost_OvalF'
+
+               END
+;...............................................................
+;
+;        Calcul_Shape : Calcul PARAMETRE ShapeRECORD
+;
+;...............................................................
+CalCul_Shape   START
+               Using GlobalData
+;--
+               ldy #6
+Loop           lda RectShape,y
+               sta Shape_Rect,y
+               dey
+               dey
+               bpl Loop
+;--
+               lda Shape_Type
+               beq PAD_EPAISSEUR
+               rts
+;--
+PAD_EPAISSEUR  ENTRY
+
+               lda Shape_TailleB        |varie avec l'epaisseur
+               and #$00FF
+               tax
+
+               lda #13                  |Tab_DRect,x
+               sta Plus_Borne
+
+               lda Shape_RectY0         |ELARGIR LE RECTANGLE LIGNE
+               sec
+               sbc Plus_Borne
+               sta Shape_RectY0
+
+               lda Shape_RectX0
+               sec
+               sbc Plus_Borne
+               sta Shape_RectX0
+
+               lda Shape_RectY1
+               clc
+               adc Plus_Borne
+               sta Shape_RectY1
+
+               lda Shape_RectX1
+               clc
+               adc Plus_Borne
+               sta Shape_RectX1
+;--
+Fin            rts
+
+Plus_borne     ds 2                     |Variable OFFSET EPAISSEUR LIGNE
+
+               END
+;...............................................................
+;
+;        Draw_Reel : Dessine TOUT
+;
+;...............................................................
+Draw_Reel      START
+               Using GlobalData
+
+               PushWord #0              |MODE COPIE
+               _SetPenMode
+;--
+               lda Shape_DebutY         |Calcul Rect
+               sta RectShapeY0
+
+               lda Shape_FinY
+               sta RectShapeY1
+
+               lda Shape_DebutX
+               sta RectShapeX0
+
+               lda Shape_FinX
+               sta RectShapeX1
+;--
+               lda Shape_Type
+               asl a
+               tax
+               jsr (Table_REEL,x)
+
+               rts
+;--
+Reel_Line      ANOP
+               lda Shape_TailleB
+               and #$00FF               |mask les fleches
+               beq NoBorder
+
+Border         PushWord Shape_ColorB    |Couleur
+               _SetSolidPenPat
+
+               jsr Taille_Pinceau       |Taille du pinceau
+
+               jsr Compute_Lenght       |si Fleche PLUS PETITE
+
+               PushLong ZShape_Debut
+               _MoveTo
+
+               PushLong ZShape_Fin
+               _LineTo
+
+               jsr Draw_Arrows          |dessine les Fleches
+
+               jsr Taille_Normal        |Retabli taille du pinceau
+
+               rts
+;--
+NoBorder       PushWord Shape_ColorI    |Couleur
+               _SetSolidPenPat
+
+               PushLong Shape_Debut
+               _MoveTo
+
+               PushLong Shape_Fin
+               _LineTo
+
+               jsr Draw_Arrows          |Dessine les Fleches
+
+               rts
+;--
+Reel_Rect      ANOP
+
+               jsr Taille_Pinceau
+
+               jsr Color_Border
+
+               PushLong #RectShape
+               _FrameRect
+
+               jsr Taille_Normal
+
+               rts
+
+Reel_RectF     ANOP
+
+               lda Shape_Shadow
+               beq RectFNoSh
+;-
+               PushWord #0
+               _SetSolidPenPat
+
+               Pushlong #RectShape
+               PushWord #2
+               PushWord #2
+               _OffSetRect
+
+               PushLong #RectShape
+               _PaintRect
+
+               Pushlong #RectShape
+               PushWord #-2
+               PushWord #-2
+               _OffSetRect
+;-
+RectFNoSh      jsr Color_Paint
+
+               PushLong #RectShape
+               _PaintRect
+
+               lda Shape_TailleB
+               bne Reel_Rect
+
+               rts
+;--
+Reel_RRect     ANOP
+               jsr Taille_Pinceau
+
+               jsr Color_Border
+
+               PushLong #RectShape
+               lda #17
+               pha
+               lda #17
+               pha
+               _FrameRRect
+
+               jsr Taille_Normal
+
+               rts
+
+Reel_RRectF    ANOP
+               lda Shape_Shadow
+               beq RRectFNoSh
+;-
+               PushWord #0
+               _SetSolidPenPat
+
+               Pushlong #RectShape
+               PushWord #2
+               PushWord #2
+               _OffSetRect
+
+               PushLong #RectShape
+               lda #17
+               pha
+               pha
+               _PaintRRect
+
+               Pushlong #RectShape
+               PushWord #-2
+               PushWord #-2
+               _OffSetRect
+;-
+RRectFNoSh     jsr Color_Paint
+
+               PushLong #RectShape
+               lda #17
+               pha
+               pha
+               _PaintRRect
+
+               lda Shape_TailleB
+               bne Reel_RRect
+
+               rts
+;--
+Reel_Oval      ANOP
+               jsr Taille_Pinceau
+
+               jsr Color_Border
+
+               PushLong #RectShape
+               _FrameOval
+
+               jsr Taille_Normal
+
+               rts
+
+Reel_OvalF     ANOP
+               lda Shape_Shadow
+               beq OvalFNoSh
+;-
+               PushWord #0
+               _SetSolidPenPat
+
+               Pushlong #RectShape
+               PushWord #2
+               PushWord #2
+               _OffSetRect
+
+               PushLong #RectShape
+               _PaintOval
+
+               Pushlong #RectShape
+               PushWord #-2
+               PushWord #-2
+               _OffSetRect
+;-
+OvalFNoSh      jsr Color_Paint
+
+               PushLong #RectShape
+               _PaintOval
+
+               lda Shape_TailleB
+               bne Reel_Oval
+
+               rts
+;--------------------------------------
+;-------- TABLE ROUTINES DESSIN -------
+;--------------------------------------
+Table_Reel     ANOP
+
+               dc i2'Reel_Line'
+               dc i2'Reel_Rect'
+               dc i2'Reel_RectF'
+               dc i2'Reel_RRect'
+               dc i2'Reel_RRectF'
+               dc i2'Reel_Oval'
+               dc i2'Reel_OvalF'
+
+               END
+;...............................................................
+;
+;        Taille_Pinceau : Largeur BORDER
+;
+;...............................................................
+Taille_Pinceau START
+               Using GlobalData
+
+               lda Shape_TailleB        |Taille du pinceau
+               and #$00FF               |mask les Fleches
+               pha
+               pha
+               _SetPenSize
+
+               rts
+;--
+Taille_Normal  ENTRY                    |Retour en 1,1
+
+               lda #1
+               pha
+               pha
+               _SetPenSize
+
+               rts
+
+               END
+;...............................................................
+;
+;        Color_Paint : Couleur de l'INTERIEUR
+;
+;...............................................................
+Color_Paint    START
+               Using GlobalData
+
+               PushWord Shape_ColorI
+               _SetSolidPenPat
+
+               rts
+;--
+Color_Border   ENTRY
+
+               PushWord Shape_ColorB
+               _SetSolidPenPat
+
+               rts
+;--
+               END
+;...............................................................
+;
+;        Cadre_Rect : MANIPULE RECT POUR COORDONNEES
+;
+;...............................................................
+Cadre_Rect     START
+               Using GlobalData
+;--
+               jsr ReCadrage            |COORDONNEES DANS L'ORDRE
+;--
+               lda Shape_type           |SI LIGNE ATTENTION
+               bne Suite
+
+               lda PositionY
+               sta Shape_FinY
+
+               lda PositionX
+               sta Shape_FinX
+
+               rts
+;--
+Suite          lda RectShapeY0
+               sta Shape_DebutY
+               lda RectShapeX0
+               sta Shape_DebutX
+
+               lda RectShapeY1          |dV
+               sta Shape_FinY
+
+               lda RectShapeX1          |dH
+               sta Shape_FinX
+;--
+               rts
+;--
+Recadrage      ENTRY
+               lda RectShapeY0          |si Y0 negatif attention
+               bmi ok
+
+               lda RectShapeY1          |inverse position Y si Y1<Y0
+               cmp RectShapeY0
+               bcs ok
+
+               ldx RectShapeY0
+               stx RectShapeY1
+               sta RectShapeY0
+
+ok             lda RectShapeX0          |si X0 negatif attention
+               bmi ok0
+
+               lda RectShapeX1
+               cmp RectShapeX0
+               bcs ok0
+
+               ldx RectShapeX0
+               stx RectShapeX1
+               sta RectShapeX0
+
+ok0            rts
+
+               END
+;...............................................................
+;
+;        Add_Shape : AJOUTE UN OBJECT AU BUFFER
+;
+;...............................................................
+Add_Shape      START
+               Using GlobalData
+
+               inc Frame_Shape          |Une Shape de Plus
+               jsr Resize_Shape         |elargie le buffer
+               bcc OkAS
+
+               dec Frame_Shape          |plus de place refuser
+               jsr Alert_CCP
+               sec
+               rts
+
+OkAS           lda Frame_Shape          |copie en Frame_Shape -1
+               jsr Copie_Shape
+
+               rts
+
+               END
+;...............................................................
+;
+;        Resize_Shape : Ajuste La Taille Du Buffer des SHAPES
+;
+;...............................................................
+Resize_Shape   START
+               Using GlobalData
+
+               lda Frame_Shape          |des SHAPES
+               bpl oui
+
+               stz Frame_Shape          |alors zero
+
+oui            PushLong #0
+               PushWord Frame_Shape     |nb de Shape
+               PushWord lg_ShapeRecord  |taille d'1 Shape
+               _Multiply
+               pla
+               plx
+               cmp #0
+               bne Size
+
+               lda #1                   |au moins 1 octet
+;--
+Size           Pea $0000
+               pha
+               PushLong Hdl_Shape
+               _SetHandleSize
+;--
+EndAs          rts
+
+               END
+;...............................................................
+;
+;        Copie_Shape : Copie Shape_Record -> Buffer SHAPE
+;                      ACC=N% de shape
+;...............................................................
+Copie_Shape    START
+               Using GlobalData
+
+               pha
+               jsr D_Hdl_Shape          |Deref
+               pla
+
+               PushLong #0
+               Pha                      |n% de Shape
+               PushWord lg_ShapeRecord  |taille d'1 Shape
+               _Multiply
+               pla
+               plx
+               dec a
+               dec a
+               tay
+
+               ldx lg_ShapeRecord
+               dex
+               dex
+
+LOOP           lda ShapeRecord,x
+               sta [Ptr_Shape],y
+               dey
+               dey
+               dex
+               dex
+               bpl LOOP
+;--
+               jsr U_Hdl_Shape          |UnLock
+
+               rts
+
+               END
+;...............................................................
+;
+;        Rest_Shape : Copie Buffer Shape -> Shape_Record
+;                     ACC=N% de shape
+;...............................................................
+Rest_Shape     START
+               Using GlobalData
+
+               pha
+               jsr D_Hdl_Shape          |Deref
+               pla
+
+               PushLong #0
+               Pha                      |n% de Shape
+               PushWord lg_ShapeRecord  |taille d'1 Shape
+               _Multiply
+               pla
+               plx
+               dec a
+               dec a
+               tay
+
+               ldx lg_ShapeRecord
+               dex
+               dex
+
+LOOP           lda [Ptr_Shape],y
+               sta ShapeRecord,x
+               dey
+               dey
+               dex
+               dex
+               bpl LOOP
+;--
+               jsr U_Hdl_Shape          |UnLock
+
+               rts
+
+               END
+;...............................................................
+;
+;        ReDraw_Shape : REDESSIN DES SHAPES
+;
+;...............................................................
+ReDraw_Shape   START
+               Using globalData
+
+               lda Frame_Shape          |DES SHAPES ?
+               bne oui
+               rts
+
+oui            lda #1                   |LA 1ere SHAPE GEO
+
+LOOP           pha                      |Met la Shape dans RECORD
+               jsr Rest_Shape
+
+               jsr Draw_Reel            |Dessine la Shape
+
+               pla                      |SUIVANT
+               inc a
+               cmp Frame_Shape
+               bcc LOOP
+               beq LOOP
+
+               rts
+
+               END
+;...............................................................
+;
+;        Select_Shape : Shape Selectionnee
+;
+;...............................................................
+Select_shape   START
+               Using GlobalData
+
+               lda Shape_Select         |une Selection ??
+               bpl Eor_Poignees
+               rts
+;--
+Eor_Poignees   ENTRY
+
+               jsr Rest_Shape           |Charge dans ShapeRecord
+;--
+               lda Shape_Type           |ATTENTION LIGNE 2 POIGNEES !!!
+               bne Eor_PoigneesR
+
+               lda Shape_DebutY
+               ldx Shape_DebutX
+               jsr Eor_poigne
+
+               lda Shape_FinY
+               ldx Shape_FinX
+               jsr eor_poigne
+
+               rts
+;--
+Eor_PoigneesR  ENTRY
+
+               lda Shape_RectY0
+               ldx Shape_RectX0
+               jsr Eor_Poigne
+
+               lda Shape_RectY0
+               ldx Shape_RectX1
+               dex
+               jsr Eor_Poigne
+
+               lda Shape_RectY1
+               dec a
+               ldx Shape_RectX0
+               jsr Eor_Poigne
+
+               lda Shape_RectY1
+               dec a
+               ldx Shape_RectX1
+               dex
+               jsr Eor_Poigne
+
+               rts
+;--
+Eor_Poigne     dec a
+               sta RectPoigneY0
+               dex
+               stx RectPoigneX0
+               clc
+               adc #3
+               sta RectPoigneY1
+               inx
+               inx
+               inx
+               stx RectPoigneX1
+
+               PushWord #15             |Couleur blanche
+               _SetSolidPenPat
+
+               PushWord #2              |Xor
+               _SetPenMode
+
+               PushLong #RectPoigne
+               _PaintRect
+
+               PushWord #0              |Copie
+               _SetPenMode
+
+               rts
+
+               END
+;...............................................................
+;
+;        Test_In_Shape : Test si Selection d'un OBJET
+;
+;...............................................................
+Test_In_shape  START
+               Using globalData
+
+               lda Frame_Shape          |DES SHAPES ?
+               bne oui
+               clc
+               rts
+
+oui            lda Frame_Shape          |LA Neme SHAPE GEO
+
+LOOP           pha                      |Met la Shape dans RECORD
+               jsr Rest_Shape
+;----------
+               jsr Test_In_Shape1
+               bcs Inside
+;----------
+               pla                      |SUIVANT
+               dec a
+               bne LOOP
+               clc                      |not INSIDE SHAPE
+               rts
+;--
+Inside         pla                      |Objet Selectionne
+               sec
+               rts
+;--------------------------------------
+;        Test_In_shape1
+;--------------------------------------
+Test_In_shape1 ENTRY
+               lda Shape_Type           |une LIGNE ?
+               bne SLOOP
+;--
+               jsr PtInLigne            |ALORS Avec Region
+               pha
+               jsr Compute_rect
+               bra SLOOP1
+;--
+SLOOP          jsr Compute_rect         |calcul le rect
+               PushWord #0              |Inside
+               PushLong #EventWhere
+               PushLong #RectShape
+               _PtInRect
+;--
+SLOOP1         ldy #6                   |BON RECTANGLE
+Loop1          lda Shape_Rect,y
+               sta RectShape,y
+               dey
+               dey
+               bpl Loop1
+;--
+               pla
+               bne InSide1
+               clc
+               rts
+inside1        sec
+               rts
+;--------------------------------------
+;        Compute Rect
+;--------------------------------------
+Compute_Rect   ANOP
+               lda Shape_RectY0         |COMPUTE RECT
+               dec a
+               sta RectShapeY0
+
+               lda Shape_RectX0
+               dec a
+               sta RectShapeX0
+
+               lda Shape_RectY1
+               inc a
+               sta RectShapeY1
+
+               lda Shape_RectX1
+               inc a
+               sta RectShapeX1
+
+               rts
+;--------------------------------------
+;        PtInLigne
+;--------------------------------------
+PtInLigne      ANOP
+;              brk $FF
+;--
+               PushLong #Shape_Rect
+               PushWord #9
+               PushWord #9
+               _InSetRect
+;--
+               PushWord #0              |Pre TEST RAPIDE
+               PushLong #EventWhere
+               PushLong #Shape_Rect
+               _PtInRect
+               pla
+               bne PtInLigne0
+               rts
+;--
+PtInLigne0     PushLong #Shape_Rect
+               PushWord #-9
+               PushWord #-9
+               _InSetRect
+;--
+               PushLong #0              |une region SVP
+               _NewRgn
+               pla
+               sta Rgn0
+               pla
+               sta Rgn0+2
+
+               PushLong #0
+               _NewRgn
+               pla
+               sta Rgn1
+               pla
+               sta Rgn1+2
+;----------
+               _OpenRgn                 |LE COPRS DE LA LIGNE
+
+               jsr Cal_dxdy             |Calcule les Deltas
+               jsr Pos_dxdy             |positif
+
+               lda Dx                   |pente ?
+               cmp Dy
+               bcs DxSupDy
+
+DxInfDy        jsr RectDxInfDy
+               bra Next
+
+DxSupDy        jsr RectDxSupDy
+
+Next           PushLong Rgn0
+               _CloseRgn
+;-----------
+               _OpenRgn                 |LES 2 POIGNEES
+
+               lda Shape_DebutY
+               ldx Shape_DebutX
+               jsr Rgn_Poigne
+
+               lda Shape_FinY
+               ldx Shape_FinX
+               jsr Rgn_Poigne
+
+               PushLong Rgn1
+               _CloseRgn
+;-----------
+               PushLong Rgn0            |Unissons les regions pour le Meilleur
+               PushLong Rgn1
+               PushLong Rgn0
+               _UnionRgn
+;--
+;              PushLong Rgn0            |For Debug
+;              _InvertRgn
+;--
+               PushWord #0              |Inside
+               PushLong #EventWhere
+               PushLong Rgn0
+               _PtInRgn
+;--
+               PushLong Rgn0            |delete les regions
+               _DisposeRgn
+               PushLong Rgn1
+               _DisposeRgn
+;--
+               pla
+               rts
+;--------------------------------------
+;        Rgn_Poigne
+;--------------------------------------
+Rgn_Poigne     ANOP
+               dec a
+               dec a
+               sta RectPoigneY0
+               dex
+               dex
+               stx RectPoigneX0
+               clc
+               adc #4
+               sta RectPoigneY1
+               inx
+               inx
+               inx
+               inx
+               stx RectPoigneX1
+
+               PushLong #RectPoigne
+               _FrameRect
+
+               rts
+;--------------------------------------
+;        RectDxInfDy
+;--------------------------------------
+RectDxInfDy    ANOP
+               lda Shape_DebutX
+               sec
+               sbc #5
+               pha
+               lda Shape_DebutY
+               pha
+               _MoveTo
+
+               lda Shape_DebutX
+               clc
+               adc #5
+               pha
+               lda Shape_DebutY
+               pha
+               _LineTo
+
+               lda Shape_FinX
+               clc
+               adc #5
+               pha
+               lda Shape_FinY
+               pha
+               _LineTo
+
+               lda Shape_FinX
+               sec
+               sbc #5
+               pha
+               lda Shape_FinY
+               pha
+               _LineTo
+
+               lda Shape_DebutX
+               sec
+               sbc #5
+               pha
+               lda Shape_DebutY
+               pha
+               _LineTo
+
+               rts
+;--------------------------------------
+;        RectDxSupDy
+;--------------------------------------
+RectDxSupDy    ANOP
+               lda Shape_DebutX
+               pha
+               lda Shape_DebutY
+               sec
+               sbc #5
+               pha
+               _MoveTo
+
+               lda Shape_FinX
+               pha
+               lda Shape_FinY
+               sec
+               sbc #5
+               pha
+               _LineTo
+
+               lda Shape_FinX
+               pha
+               lda Shape_FinY
+               clc
+               adc #5
+               pha
+               _LineTo
+
+               lda Shape_DebutX
+               pha
+               lda Shape_DebutY
+               clc
+               adc #5
+               pha
+               _LineTo
+
+               lda Shape_DebutX
+               pha
+               lda Shape_DebutY
+               sec
+               sbc #5
+               pha
+               _LineTo
+
+               rts
+
+               END
+;...............................................................
+;
+;        MoveSize_Shape : DEPLACE ET SIZE OBJECT SHAPE
+;
+;...............................................................
+MoveSize_Shape START
+               Using GlobalData
+
+               stz Num_Poigne           |Quelle POIGNEE ?
+
+               lda #1
+               sta Top_Action
+
+               lda Top_size
+               bne ok
+               brl NotFound
+;--
+ok             lda Shape_Type
+               bne Suite
+;--
+               lda Shape_DebutY         |Ligne 2 POIGNEES
+               ldx Shape_DebutX
+               jsr Test_Poigne
+               bcs Find_PoigneL
+;--
+               inc Num_Poigne
+               inc Num_Poigne
+
+               lda Shape_FinY
+               ldx Shape_FinX
+               jsr Test_Poigne
+               bcs Find_PoigneL
+               bra NotFound
+;--
+Suite          lda Shape_RectY0
+               ldx Shape_RectX0
+               jsr Test_Poigne
+               bcs Find_Poigne
+
+               lda Shape_RectY0
+               ldx Shape_RectX1
+               dex
+               jsr Test_Poigne
+               bcs Find_Poigne
+
+               lda Shape_RectY1
+               dec a
+               ldx Shape_RectX0
+               jsr Test_Poigne
+               bcs Find_Poigne
+
+               lda Shape_RectY1
+               dec a
+               ldx Shape_RectX1
+               dex
+               jsr Test_Poigne
+               bcs Find_Poigne
+;--
+NotFound       jsr Move_Object          |DEPLACE OBJECT
+               rts
+;--
+Find_Poigne    jsr Size_Shape           |SIZE OBJECT
+
+               rts
+;--
+Find_PoigneL   jsr Size_ShapeL          |Size d'une Ligne
+               rts
+;--------------------------------------
+;-------- INSIDE POIGNEE ? ------------
+;--------------------------------------
+Test_Poigne    ENTRY
+
+               inc Num_Poigne
+
+               dec a
+               sta RectPoigneY0
+               dex
+               stx RectPoigneX0
+               clc
+               adc #3
+               sta RectPoigneY1
+               inx
+               inx
+               inx
+               stx RectPoigneX1
+
+               PushWord #0
+               PushLong #EventWhere
+               PushLong #RectPoigne
+               _PtInRect
+               pla
+               bne Inside
+
+               clc
+               rts
+
+Inside         sec
+               rts
+
+               END
+;...............................................................
+;
+;        Size_Shape : RETAILLE UNE SHAPE
+;
+;...............................................................
+Size_ShapeL    START
+               Using GlobalData
+
+               jsr Cop_Rgn0_Shape       |1 er Rectangle
+;--
+               lda Num_poigne           |CAS D'UNE LIGNE
+               cmp #4
+               beq PoigneLfin
+;--
+PoigneLDebut   ANOP
+
+               lda Shape_FinY
+               sta Shape_DebutY
+               sta Shape_RectY0
+               lda Shape_FinX
+               sta Shape_DebutX
+               sta Shape_RectX0
+
+               lda #1
+               sta Top_Ligne_Size       |Swap Shape_Fin et Shape_Debut
+               bra SSize_shape
+;--
+PoigneLFin     lda Shape_DebutY
+               sta Shape_RectY0
+               lda Shape_DebutX
+               sta Shape_RectX0
+               bra SSize_Shape
+;---------------------------------------------------------
+Size_Shape     ENTRY
+;--
+               jsr Cop_Rgn0_Shape       |1 er Rectangle
+;--
+               lda Num_poigne
+               cmp #1
+               beq Poigne1
+               cmp #2
+               beq Poigne2
+               cmp #3
+               beq Poigne3
+               cmp #4
+               beq Poigne4
+               rts
+;--
+Poigne1        lda Shape_RectY1
+               sta Shape_RectY0
+               sta shape_DebutY
+               lda Shape_RectX1
+               sta Shape_RectX0
+               sta Shape_DebutX
+               brl SSize_Shape
+;--
+Poigne2        lda Shape_RectY1
+               sta Shape_RectY0
+               sta shape_DebutY
+               lda Shape_RectX0
+               sta Shape_DebutX
+               brl SSize_Shape
+;--
+Poigne3        lda Shape_RectY0
+               sta shape_DebutY
+               lda Shape_RectX1
+               sta Shape_RectX0
+               sta Shape_DebutX
+               brl SSize_Shape
+;--
+Poigne4        lda Shape_RectY0
+               sta shape_DebutY
+               lda Shape_RectX0
+               sta Shape_DebutX
+               brl SSize_Shape
+;--
+SSize_Shape    lda #1                   |OLD SHAPE
+               sta Mode_Draw
+
+               lda MouseY
+               sta Anc_Y
+               lda MouseX
+               sta Anc_X
+
+               lda Shape_debutY
+               sta Y_Org
+               lda Shape_DebutX
+               sta X_Org
+
+               jsr Save_Undo1
+
+               jsr DrawShape1
+
+               rts
+
+               END
+;...............................................................
+;
+;        Shape_Last : la Shape Select passe en dernier
+;
+;...............................................................
+Shape_Last     START
+               Using GlobalData
+;--
+               sta tempmove
+               lda Frame_Shape
+               cmp tempmove             |pas la derniere
+               bne oui
+               brl fini
+;--
+oui            lda tempmove
+               jsr Rest_Shape           |sauve la ligne
+
+               lda tempmove
+               dec a
+               PushLong #0
+               pha
+               PushWord lg_ShapeRecord
+               _Multiply
+               ply
+               plx
+               sty offsetmove
+
+               lda tempmove             |calcul du move
+               PushLong #0
+               pha
+               PushWord lg_ShapeRecord
+               _Multiply
+               pla
+               plx
+               sta source_adr
+
+               lda Frame_Shape
+               sec
+               sbc tempmove
+               PushLong #0
+               pha
+               PushWord lg_ShapeRecord
+               _Multiply
+               pla
+               plx
+               sta nbre_byte
+
+               jsr D_Hdl_Shape          |Deref
+
+loop           ldy source_adr           |move de droite a gauche
+               ldx offsetmove
+rloop          lda [Ptr_Shape],y
+               phy
+               txy
+               sta [Ptr_Shape],y
+               ply
+               inx
+               inx
+               iny
+               iny
+               dec nbre_byte
+               dec nbre_byte
+               bne rloop
+
+               lda Frame_Shape
+               jsr Copie_Shape
+
+               jsr U_Hdl_Shape          |Unlock
+
+fini           lda Frame_Shape            |la select = la derniere
+               sta Shape_Select
+
+               rts
+
+tempmove       ds 2
+offsetmove     ds 2
+source_adr     ds 2
+nbre_byte      ds 2
+
+               END
+;...............................................................
+;
+;        Test_Epaisseur : si outline mince Refus Forme Vide
+;
+;...............................................................
+Test_Epaisseur START
+               Using GlobalData
+
+               lda Outline              |si pas d'epaisseur
+               bne ok                   |et Forme Vide
+;--
+Test_Shape     ENTRY
+
+               lda Shape_Type           |ALORS REFUS
+               cmp #1
+               beq nonon
+               cmp #3
+               beq nonon
+               cmp #5
+               beq nonon
+               bra ok
+;--
+nonon          sec
+               rts
+;--
+ok             clc
+               rts
+
+               END
+;...............................................................
+;
+;        Draw_Arrows : dessine les fleches
+;
+;...............................................................
+Draw_Arrows    START
+               Using GlobalData
+
+               lda Shape_TailleB        |Des Fleches ??
+               xba
+               and #$00FF
+               bne ok
+               rts
+;--
+ok             jsr Cal_DXDY             |Calcule Delta
+;--
+               jsr Pos_dxdy             |positif les DELTAS
+;--
+               jsr Test_si_Fleche
+               bcs Dxzero
+               rts
+;--
+Dxzero         lda Dx                   |Cas Particulier
+               bne Dyzero
+               lda #0
+               sta Angle
+               bra Cal_Arc
+Dyzero         lda Dy
+               bne Cal_angle
+               lda #270
+               sta Angle
+               bra Cal_Arc
+;--
+Cal_angle      jsr Pad_DxDy             |sens de -45 ou +45
+;--
+SCal_Angle     PushLong #0              |Calcul [(45*dy)/dx] -90
+               PushWord #45
+               PushWord Dy
+               _Multiply
+               pla
+               plx
+
+               PushLong #0
+               pha
+               PushWord Dx
+               _UDivide
+               pla
+               plx
+               sta DAngle
+;--------------------------------------
+               lda Sens                 |0-> -90 + DAngle |1-> -90 - DAngle
+               beq plus
+;--
+moins          lda #360
+               sec
+               sbc Dangle
+               sta Angle
+               bra Cal_Arc
+;--
+plus           lda #270
+               clc
+               adc DAngle
+               sta Angle
+;--
+Cal_Arc        ANOP
+               jsr Cal_RectPointe       |taille de la pointe
+;--
+               jsr Cal_PosAngle
+;--
+               jsr Draw_Fleche
+;--
+               rts
+;--------------------------------------
+;        Test_Si_Fleche
+;--------------------------------------
+Test_Si_Fleche ENTRY
+;              BRK $EE
+               lda Shape_TailleB        |si trop petit pas de fleche
+               and #$00FF
+               asl a
+               tax
+               lda dx
+               clc
+               adc dy
+               cmp Tab_test_Fle,x       |sec ok clc non
+               rts
+;--
+Tab_test_fle   dc i'22,22,30,40,55'     |taille minimum si fleche
+;--------------------------------------
+;        Draw_Fleche
+;--------------------------------------
+Draw_Fleche    ANOP
+
+               lda #1
+               pha
+               pha
+               _SetPenSize
+
+               lda Angle                |ArcAngle
+               sec
+               sbc #25
+               ldx #50                  |StartAngle
+               PushLong #RectShape
+               pha
+               phx
+               _PaintArc
+;--
+               lda Shape_TailleB
+               xba
+               and #$0002
+               beq FDraw_Fleche
+;--
+               jsr Cal_RectPointe2      |sur Debut
+               jsr PlusX                |Applique la SYMETRIE
+               jsr PlusY
+               jsr FCal_PosAngle
+;--
+               lda Angle                |ArcAngle
+               sec
+               sbc #25
+               ldx #50                  |StartAngle
+               PushLong #RectShape
+               pha
+               phx
+               _PaintArc
+
+FDraw_Fleche   rts
+;--------------------------------------
+;        Cal dx dy
+;--------------------------------------
+Cal_DXDY       ENTRY
+               lda Shape_FinX           |Calcul Dx
+               sec
+               sbc Shape_DebutX
+               sta DX
+
+               lda Shape_FinY           |Calcul Dy
+               sec
+               sbc Shape_DebutY
+               sta DY
+               rts
+;--------------------------------------
+;        Pos dx dy
+;--------------------------------------
+Pos_dxdy       ENTRY
+;--
+Pos_dx         ANOP
+
+               lda Dx
+               bpl Pos_dy
+               eor #$FFFF
+               inc a
+               sta Dx
+;--
+Pos_dy         ANOP
+
+               lda Dy
+               bpl Fpos_dxdy
+               eor #$FFFF
+               inc a
+               sta Dy
+;--
+Fpos_dxdy      rts
+;--------------------------------------
+;        Pad Dx Dy si Dx < Dy SWAP
+;--------------------------------------
+Pad_DxDy       ANOP
+
+               stz Sens
+
+               lda Dx
+               cmp Dy
+               bcs FPad_DxDy
+               lda Dx
+               ldx Dy
+               sta Dy
+               stx Dx
+
+               inc Sens
+
+FPad_DxDy      rts
+;--------------------------------------
+;        Cal_RectPointe rect suivant epaisseur
+;--------------------------------------
+Cal_RectPointe ANOP
+
+               lda Shape_TailleB        |taille avec TABLE 10,10,20,30
+               and #$00FF
+               asl a
+               tax
+               lda Tab_Drect,x
+               sta DrectM
+               asl a
+               sta DrectP
+;
+               lda shape_FinX
+               sec
+               sbc DrectM
+               sta RectShapeX0
+               clc
+               adc DrectP
+               sta RectShapeX1
+;
+               lda shape_FinY
+               sec
+               sbc DrectM
+               sta RectShapeY0
+               clc
+               adc DrectP
+               sta RectShapeY1
+
+               jsr Plus_epaisseur
+
+               rts
+;--
+Cal_RectPointe2 ANOP
+               lda shape_DebutX
+               sec
+               sbc DrectM
+               sta RectShapeX0
+               clc
+               adc DrectP
+               sta RectShapeX1
+;
+               lda shape_DebutY
+               sec
+               sbc DrectM
+               sta RectShapeY0
+               clc
+               adc DrectP
+               sta RectShapeY1
+
+               jsr Plus_epaisseur
+
+               rts
+;--------------------------------------
+;        plus_epaisseur
+;--------------------------------------
+Plus_Epaisseur ANOP
+
+               lda Shape_TailleB
+               and #$00FF
+;              lsr a
+               tax
+
+               clc
+               adc RectShapeX1
+               sta RectShapeX1
+
+               txa
+               clc
+               adc RectShapeY1
+               sta RectShapeY1
+
+               rts
+;--------------------------------------
+;        Cal_PosAngle suivant orientation
+;--------------------------------------
+Cal_PosAngle   ANOP
+;--
+Cal_PosAngleX  ANOP
+               lda Shape_FinX
+               cmp Shape_DebutX
+               bcs Cal_PosAngleY
+
+               jsr PlusX
+;--
+Cal_PosAngleY  ANOP
+               lda Shape_FinY
+               cmp Shape_DebutY
+               bcs FCal_PosAngle
+
+               jsr PlusY
+;--
+FCal_PosAngle  ANOP
+
+               lda Angle
+               cmp #360
+               bcc F1Cal_PosAngle
+
+               sec
+               sbc #360
+               sta Angle
+               bra FCal_PosAngle
+
+F1Cal_PosAngle rts
+;--------------------------------------
+;        PLUS POUR ROTATION
+;--------------------------------------
+PlusX          lda #360
+               sec
+               sbc Angle
+               sta Angle
+               rts
+;--
+PlusY          lda #360
+               sec
+               sbc Angle
+               clc
+               adc #180
+               sta Angle
+               rts
+;--------------------------------------
+;        DATA
+;--------------------------------------
+Angle          ds 2
+DAngle         ds 2
+sens           ds 2
+DrectM         ds 2
+DrectP         ds 2
+
+               END
+;...............................................................
+;
+;        Compute_Lenght reduction ligne si ARROWS
+;
+;...............................................................
+Compute_Lenght START
+               Using GlobalData
+;--
+               ldy #6
+
+LOOP           lda Shape_Debut,y
+               sta ZShape_Debut,y
+               dey
+               dey
+               bpl LOOP
+;--
+               lda Shape_TailleB
+               tax
+               and #$FF00
+               beq ko                   |pas de fleche
+               txa
+               and #$00FF               |epaisseur
+               cmp #2
+               bcs ok
+ko             rts
+;--
+ok             jsr Cal_DXDY
+               jsr Pos_DXDY
+;--
+               jsr Test_Si_Fleche       |si taille trop petite no fleche
+               bcc ko
+;--
+Cal_DelX       lda Dx
+               bne SCal_DelX
+
+               lda #7
+               sta Del_X
+               lda #0
+               sta Del_Y
+               bra FCal_Del
+;-
+SCal_DelX      ANOP
+               PushLong #0              |Calcul del_x = 4 * dy/dx
+               PushWord #7
+               PushWord Dy
+               _Multiply
+               pla
+               plx
+
+               PushLong #0
+               pha
+               PushWord Dx
+               _UDivide
+               pla
+               plx
+
+               cmp #8
+               bcc S0Cal_DelX
+               lda #7
+S0Cal_DelX     sta Del_X
+;--
+Cal_DelY       lda Dy
+               bne SCal_DelY
+
+               lda #7
+               sta Del_Y
+               lda #0
+               sta Del_X
+               bra FCal_Del
+;--
+SCal_DelY      ANOP
+               PushLong #0              |Calcul del_x = 4 * dy/dx
+               PushWord #7
+               PushWord DX
+               _Multiply
+               pla
+               plx
+
+               PushLong #0
+               pha
+               PushWord DY
+               _UDivide
+               pla
+               plx
+
+               cmp #8
+               bcc S0Cal_DelY
+               lda #7
+S0Cal_DelY     sta Del_Y
+;--
+FCal_Del       ANOP
+;====
+Change_Y       lda Shape_DebutY
+               cmp Shape_FinY
+               bcc DYINFFY
+;-
+DYSUPFY        lda Shape_TailleB
+               and #$0200
+               beq DYSUPFY1
+
+               lda Shape_DebutY
+               sec
+               sbc Del_X                **
+               sta ZShape_DebutY
+
+DYSUPFY1       lda Shape_FinY
+               clc
+               adc Del_X                **
+               sta ZShape_Finy
+               bra Change_X
+;-
+DYINFFY        lda Shape_TailleB
+               and #$0200
+               beq DYINFFY1
+
+               lda Shape_DebutY
+               clc
+               adc Del_X                **
+               sta ZShape_DebutY
+
+DYINFFY1       lda Shape_FinY
+               sec
+               sbc Del_X                **
+               sta ZShape_Finy
+;====
+Change_X       lda Shape_DebutX
+               cmp Shape_FinX
+               bcc DXINFFX
+;-
+DXSUPFX        lda Shape_TailleB
+               and #$0200
+               beq DXSUPFX1
+
+               lda Shape_DebutX
+               sec
+               sbc Del_Y                **
+               sta ZShape_DebutX
+
+DXSUPFX1       lda Shape_FinX
+               clc
+               adc Del_Y                **
+               sta ZShape_FinX
+               bra F1Cal_Del
+
+DXINFFX        lda Shape_TailleB
+               and #$0200
+               beq DXINFFX1
+
+               lda Shape_DebutX
+               clc
+               adc Del_Y                **
+               sta ZShape_DebutX
+
+DXINFFX1       lda Shape_FinX
+               sec
+               sbc Del_Y                **
+               sta ZShape_FinX
+;--
+F1CAL_DEL      ANOP
+
+               rts
+
+Del_X          ds 2
+Del_Y          ds 2
+
+               END
+;...............................................................
+;
+;        DoShadow : faire de belles ombres noires
+;
+;...............................................................
+DoShadow       START
+               Using GlobalData
+
+               lda #9
+               sta Ch_group
+               jsr change_groupe
+               rts
+
+               END
+;...............................................................
+;
+;        Taille_Minimum : au moins 2/2
+;
+;...............................................................
+Taille_Minimum START
+               Using GlobalData
+
+               stz Top_Size_Min
+
+Taille_X       lda RectShapeX1
+               sec
+               sbc RectShapeX0
+               cmp #3
+               bcs Taille_Y
+
+               inc Top_Size_Min
+
+Taille_Y       lda RectShapeY1
+               sec
+               sbc RectShapeY0
+               cmp #3
+               bcs Ftaille
+
+               inc Top_Size_Min
+               inc Top_Size_Min
+;--
+Ftaille        lda Top_Size_Min
+               beq FinTaille
+
+               lda Shape_Type
+               bne F0TailleX
+
+               lda Top_Size_Min
+               cmp #3
+               bne FinTaille
+;--
+F0TailleX      lda Top_Size_Min
+               and #$0001
+               beq F0TailleY
+
+               lda RectShapeX0
+               clc
+               adc #2
+               sta RectShapeX1
+
+               lda Shape_DebutX
+               clc
+               adc #2
+               sta Shape_FinX
+;-
+F0TailleY      lda Top_Size_Min
+               and #$0002
+               beq FinTaille
+
+               lda RectShapeY0
+               clc
+               adc #2
+               sta RectShapeY1
+
+               lda Shape_DebutY
+               clc
+               adc #2
+               sta Shape_FinY
+
+FinTaille      rts
+
+Top_Size_Min   ds 2
+
+               END

@@ -1,0 +1,247 @@
+ MACRO
+&lab _IMStartUp
+&lab ldx #$020B
+ jsl $E10000
+ MEND
+ MACRO
+&lab _IMShutDown
+&lab ldx #$030B
+ jsl $E10000
+ MEND
+ MACRO
+&lab _HexIt
+&lab ldx #$2A0B
+ jsl $E10000
+ MEND
+ MACRO
+&lab _TLStartUp
+&lab ldx #$0201
+ jsl $E10000
+ MEND
+ MACRO
+&lab _TLShutDown
+&lab ldx #$0301
+ jsl $E10000
+ MEND
+ MACRO
+&lab _MMStartUp
+&lab ldx #$0202
+ jsl $E10000
+ MEND
+ MACRO
+&lab _MMShutDown
+&lab ldx #$0302
+ jsl $E10000
+ MEND
+ MACRO
+&lab _MTStartUp
+&lab ldx #$0203
+ jsl $E10000
+ MEND
+ MACRO
+&lab _MTShutDown
+&lab ldx #$0303
+ jsl $E10000
+ MEND
+ MACRO
+&lab _ReadBParam
+&lab ldx #$0C03
+ jsl $E10000
+ MEND
+ MACRO
+&lab _FWEntry
+&lab ldx #$2403
+ jsl $E10000
+ MEND
+ MACRO
+&lab _QUIT &params
+&lab jsl $E100A8
+ dc i2"$29"
+ dc i4"&params"
+ MEND
+ MACRO
+&lab _TextStartUp
+&lab ldx #$020C
+ jsl $E10000
+ MEND
+ MACRO
+&lab _TextShutDown
+&lab ldx #$030C
+ jsl $E10000
+ MEND
+ MACRO
+&lab _WriteCString
+&lab ldx #$200C
+ jsl $E10000
+ MEND
+ MACRO
+&lab _ReadChar
+&lab ldx #$220C
+ jsl $E10000
+ MEND
+ MACRO
+&lab pushlong &addr,&offset
+&lab ANOP
+ LCLC &C
+ LCLC &REST
+&C AMID &addr,1,1
+ AIF "&C"="#",.immediate
+ AIF "&C"="[",.zeropage
+ AIF C:&offset=0,.nooffset
+ AIF "&offset"="s",.stack
+ pushword &addr+2,&offset
+ pushword &addr,&offset
+ MEXIT
+.nooffset
+ pushword &addr+2
+ pushword &addr
+ MEXIT
+.immediate
+&REST AMID &addr,2,L:&addr-1
+ dc I1'$F4',I2'(&REST)|-16'
+ dc I1'$F4',I2'&REST'
+ MEXIT
+.stack
+ pushword &addr+2,s
+ pushword &addr+2,s
+ MEXIT
+.zeropage
+ ldy #&offset+2
+ pushword &addr,y
+ ldy #&offset
+ pushword &addr,y
+ MEND
+ MACRO
+&lab pushword &sysopr
+&lab ANOP
+ AIF c:&sysopr=0,.b
+ LCLC &C
+ LCLC &REST
+ LCLA &BL
+&C AMID "&sysopr",1,1
+&BL ASEARCH "&sysopr"," ",1
+ AIF &BL>0,.a
+&BL SETA L:&sysopr+1
+.a
+&REST AMID "&sysopr",2,&BL-2
+ AIF ("&C"="#").AND.(S:LONGA),.immediate
+ lda &sysopr
+ pha
+ MEXIT
+.b
+ pha
+ MEXIT
+.immediate
+ dc I1'$F4',I2'&REST'
+ MEND
+ MACRO
+&lab long
+&lab ANOP
+ rep #%00110000
+ longa on
+ longi on
+ MEND
+ MACRO
+&lab if4<> &op1,&op2,&bra
+&lab ANOP
+ AIF C:&op2,.a
+ LCLC &OP2
+&OP2 SETC #0
+.a
+ AIF C:&op1,.b
+ test4= ,&op2
+ AGO .c
+.b
+ test4= &op1,&op2
+.c
+ AIF C:&bra=0,.e
+ bne &bra
+.e
+ MEND
+ MACRO
+&lab test4= &adr1,&adr2
+&lab ANOP
+ AIF C:&adr1=0,.b
+ lda &adr1
+.b
+ AIF C:&adr2=0,.zero
+ AIF "&adr2"="#0",.zero
+ LCLC &C2
+&C2 AMID &adr2,1,1
+ cmp &adr2
+ bne ~x&syscnt
+ AIF C:&adr1,.c
+ lda #0
+ AGO .d
+.c
+ lda^ &adr1
+.d
+ AIF "&C2"="#",.e
+ cmp &adr2+2
+ AGO .f
+.e
+ cmp &adr2|-16
+.f
+~x&syscnt anop
+ MEXIT
+.zero
+ ora &adr1+2
+ MEND
+ MACRO
+&lab lda^ &addr,&offset
+&lab ANOP
+ LCLC &C
+&C AMID &addr,1,1
+ AIF "&C"="#",.immediate
+ AIF "&C"="[",.zeropage
+ AIF C:&offset,.offset
+ lda &addr+2
+ MEXIT
+.offset
+ lda &addr+2,&offset
+ MEXIT
+.immediate
+ lda &addr|-16
+ MEXIT
+.zeropage
+ AIF C:&offset=0,.sans_offset
+ ldy #&offset+2
+ lda &addr,y
+ MEXIT
+.sans_offset
+ ldy #2
+ lda &addr,y
+ MEND
+ MACRO
+&lab Println &text
+&lab pea x&syscnt|-16
+ pea x&syscnt
+ ldx #$200C
+ jsl $E10000
+ bra end&syscnt
+x&syscnt dc c"&text"
+ dc i1'13,10,0'
+end&syscnt anop
+ mend
+ MACRO
+&lab if4= &op1,&op2,&bra
+&lab ANOP
+ AIF C:&op2,.a
+ LCLC &OP2
+&OP2 SETC #0
+.a
+ AIF C:&op1,.b
+ test4= ,&op2
+ AGO .c
+.b
+ test4= &op1,&op2
+.c
+ AIF C:&bra=0,.e
+ beq &bra
+.e
+ MEND
+ MACRO
+&lab _ReadLine
+&lab ldx #$240C
+ jsl $E10000
+ MEND

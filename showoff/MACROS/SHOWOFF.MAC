@@ -1,0 +1,1092 @@
+ MACRO
+&lab _CtlStartUp
+&lab ldx #$0210
+ jsl $E10000
+ MEND
+ MACRO
+&lab _CtlShutDown
+&lab ldx #$0310
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SetCtlTitle
+&lab ldx #$0C10
+ jsl $E10000
+ MEND
+ MACRO
+&lab _HiliteControl
+&lab ldx #$1110
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SetCtlParams
+&lab ldx #$1B10
+ jsl $E10000
+ MEND
+ MACRO
+&lab _DeskStartUp
+&lab ldx #$0205
+ jsl $E10000
+ MEND
+ MACRO
+&lab _DeskShutDown
+&lab ldx #$0305
+ jsl $E10000
+ MEND
+ MACRO
+&lab _FixAppleMenu
+&lab ldx #$1E05
+ jsl $E10000
+ MEND
+ MACRO
+&lab _DialogStartUp
+&lab ldx #$0215
+ jsl $E10000
+ MEND
+ MACRO
+&lab _DialogShutDown
+&lab ldx #$0315
+ jsl $E10000
+ MEND
+ MACRO
+&lab _NewModelessDialog
+&lab ldx #$0B15
+ jsl $E10000
+ MEND
+ MACRO
+&lab _CloseDialog
+&lab ldx #$0C15
+ jsl $E10000
+ MEND
+ MACRO
+&lab _ModalDialog
+&lab ldx #$0F15
+ jsl $E10000
+ MEND
+ MACRO
+&lab _DialogSelect
+&lab ldx #$1115
+ jsl $E10000
+ MEND
+ MACRO
+&lab _StopAlert
+&lab ldx #$1815
+ jsl $E10000
+ MEND
+ MACRO
+&lab _NoteAlert
+&lab ldx #$1915
+ jsl $E10000
+ MEND
+ MACRO
+&lab _GetControlDItem
+&lab ldx #$1E15
+ jsl $E10000
+ MEND
+ MACRO
+&lab _GetIText
+&lab ldx #$1F15
+ jsl $E10000
+ MEND
+ MACRO
+&lab _GetDItemValue
+&lab ldx #$2E15
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SetDItemValue
+&lab ldx #$2F15
+ jsl $E10000
+ MEND
+ MACRO
+&lab _GetNewModalDialog
+&lab ldx #$3215
+ jsl $E10000
+ MEND
+ MACRO
+&lab _GetNewDItem
+&lab ldx #$3315
+ jsl $E10000
+ MEND
+ MACRO
+&lab _EMStartUp
+&lab ldx #$0206
+ jsl $E10000
+ MEND
+ MACRO
+&lab _EMShutDown
+&lab ldx #$0306
+ jsl $E10000
+ MEND
+ MACRO
+&lab _GetNextEvent
+&lab ldx #$0A06
+ jsl $E10000
+ MEND
+ MACRO
+&lab _GetMouse
+&lab ldx #$0C06
+ jsl $E10000
+ MEND
+ MACRO
+&lab _Button
+&lab ldx #$0D06
+ jsl $E10000
+ MEND
+ MACRO
+&lab _StillDown
+&lab ldx #$0E06
+ jsl $E10000
+ MEND
+ MACRO
+&lab _TickCount
+&lab ldx #$1006
+ jsl $E10000
+ MEND
+ MACRO
+&lab _FMStartUp
+&lab ldx #$021B
+ jsl $E10000
+ MEND
+ MACRO
+&lab _FMShutDown
+&lab ldx #$031B
+ jsl $E10000
+ MEND
+ MACRO
+&lab _InstallFont
+&lab ldx #$0E1B
+ jsl $E10000
+ MEND
+ MACRO
+&lab _ChooseFont
+&lab ldx #$161B
+ jsl $E10000
+ MEND
+ MACRO
+&lab _IMStartUp
+&lab ldx #$020B
+ jsl $E10000
+ MEND
+ MACRO
+&lab _IMShutDown
+&lab ldx #$030B
+ jsl $E10000
+ MEND
+ MACRO
+&lab _Multiply
+&lab ldx #$090B
+ jsl $E10000
+ MEND
+ MACRO
+&lab _UDivide
+&lab ldx #$0B0B
+ jsl $E10000
+ MEND
+ MACRO
+&lab _Int2Dec
+&lab ldx #$260B
+ jsl $E10000
+ MEND
+ MACRO
+&lab _Dec2Int
+&lab ldx #$280B
+ jsl $E10000
+ MEND
+ MACRO
+&lab _HexIt
+&lab ldx #$2A0B
+ jsl $E10000
+ MEND
+ MACRO
+&lab _LEStartUp
+&lab ldx #$0214
+ jsl $E10000
+ MEND
+ MACRO
+&lab _LEShutDown
+&lab ldx #$0314
+ jsl $E10000
+ MEND
+ MACRO
+&lab _UnloadSegNum
+&lab ldx #$0C11
+ jsl $E10000
+ MEND
+ MACRO
+&lab _TLStartUp
+&lab ldx #$0201
+ jsl $E10000
+ MEND
+ MACRO
+&lab _TLShutDown
+&lab ldx #$0301
+ jsl $E10000
+ MEND
+ MACRO
+&lab _LoadTools
+&lab ldx #$0E01
+ jsl $E10000
+ MEND
+ MACRO
+&lab _TLMountVolume
+&lab ldx #$1101
+ jsl $E10000
+ MEND
+ MACRO
+&lab _MMStartUp
+&lab ldx #$0202
+ jsl $E10000
+ MEND
+ MACRO
+&lab _MMShutDown
+&lab ldx #$0302
+ jsl $E10000
+ MEND
+ MACRO
+&lab _NewHandle
+&lab ldx #$0902
+ jsl $E10000
+ MEND
+ MACRO
+&lab _DisposeHandle
+&lab ldx #$1002
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SetHandleSize
+&lab ldx #$1902
+ jsl $E10000
+ MEND
+ MACRO
+&lab _MenuStartUp
+&lab ldx #$020F
+ jsl $E10000
+ MEND
+ MACRO
+&lab _MenuShutDown
+&lab ldx #$030F
+ jsl $E10000
+ MEND
+ MACRO
+&lab _InsertMenu
+&lab ldx #$0D0F
+ jsl $E10000
+ MEND
+ MACRO
+&lab _FixMenuBar
+&lab ldx #$130F
+ jsl $E10000
+ MEND
+ MACRO
+&lab _GetMenuMgrPort
+&lab ldx #$1B0F
+ jsl $E10000
+ MEND
+ MACRO
+&lab _CalcMenuSize
+&lab ldx #$1C0F
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SetMenuFlag
+&lab ldx #$1F0F
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SetMItem
+&lab ldx #$240F
+ jsl $E10000
+ MEND
+ MACRO
+&lab _DrawMenuBar
+&lab ldx #$2A0F
+ jsl $E10000
+ MEND
+ MACRO
+&lab _HiliteMenu
+&lab ldx #$2C0F
+ jsl $E10000
+ MEND
+ MACRO
+&lab _NewMenu
+&lab ldx #$2D0F
+ jsl $E10000
+ MEND
+ MACRO
+&lab _EnableMItem
+&lab ldx #$300F
+ jsl $E10000
+ MEND
+ MACRO
+&lab _DisableMItem
+&lab ldx #$310F
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SetMItemMark
+&lab ldx #$330F
+ jsl $E10000
+ MEND
+ MACRO
+&lab _MTStartUp
+&lab ldx #$0203
+ jsl $E10000
+ MEND
+ MACRO
+&lab _MTShutDown
+&lab ldx #$0303
+ jsl $E10000
+ MEND
+ MACRO
+&lab _WriteBParam
+&lab ldx #$0B03
+ jsl $E10000
+ MEND
+ MACRO
+&lab _ReadBParam
+&lab ldx #$0C03
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SysDeathMgr
+&lab ldx #$1503
+ jsl $E10000
+ MEND
+ MACRO
+&lab _FWEntry
+&lab ldx #$2403
+ jsl $E10000
+ MEND
+ MACRO
+&lab _PackBytes
+&lab ldx #$2603
+ jsl $E10000
+ MEND
+ MACRO
+&lab _UnPackBytes
+&lab ldx #$2703
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SysBeep
+&lab ldx #$2C03
+ jsl $E10000
+ MEND
+ MACRO
+&lab _CREATE &params
+&lab jsl $E100A8
+ dc i2"1"
+ dc i4"&params"
+ MEND
+ MACRO
+&lab _DESTROY &params
+&lab jsl $E100A8
+ dc i2"2"
+ dc i4"&params"
+ MEND
+ MACRO
+&lab _CHANGEPATH &params
+&lab jsl $E100A8
+ dc i2"4"
+ dc i4"&params"
+ MEND
+ MACRO
+&lab _SETPREFIX &params
+&lab jsl $E100A8
+ dc i2"9"
+ dc i4"&params"
+ MEND
+ MACRO
+&lab _GETPREFIX &params
+&lab jsl $E100A8
+ dc i2"$0A"
+ dc i4"&params"
+ MEND
+ MACRO
+&lab _OPEN &params
+&lab jsl $E100A8
+ dc i2"$10"
+ dc i4"&params"
+ MEND
+ MACRO
+&lab _READ &params
+&lab jsl $E100A8
+ dc i2"$12"
+ dc i4"&params"
+ MEND
+ MACRO
+&lab _WRITE &params
+&lab jsl $E100A8
+ dc i2"$13"
+ dc i4"&params"
+ MEND
+ MACRO
+&lab _CLOSE &params
+&lab jsl $E100A8
+ dc i2"$14"
+ dc i4"&params"
+ MEND
+ MACRO
+&lab _SETMARK &params
+&lab jsl $E100A8
+ dc i2"$16"
+ dc i4"&params"
+ MEND
+ MACRO
+&lab _QUIT &params
+&lab jsl $E100A8
+ dc i2"$29"
+ dc i4"&params"
+ MEND
+ MACRO
+&lab _QDStartUp
+&lab ldx #$0204
+ jsl $E10000
+ MEND
+ MACRO
+&lab _QDShutDown
+&lab ldx #$0304
+ jsl $E10000
+ MEND
+ MACRO
+&lab _InitColorTable
+&lab ldx #$0D04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SetColorTable
+&lab ldx #$0E04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _GetColorTable
+&lab ldx #$0F04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _OpenPort
+&lab ldx #$1804
+ jsl $E10000
+ MEND
+ MACRO
+&lab _ClosePort
+&lab ldx #$1A04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SetPort
+&lab ldx #$1B04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _GetPort
+&lab ldx #$1C04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SetPortLoc
+&lab ldx #$1D04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _MovePortTo
+&lab ldx #$2204
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SetClip
+&lab ldx #$2404
+ jsl $E10000
+ MEND
+ MACRO
+&lab _GetClip
+&lab ldx #$2504
+ jsl $E10000
+ MEND
+ MACRO
+&lab _ClipRect
+&lab ldx #$2604
+ jsl $E10000
+ MEND
+ MACRO
+&lab _GetPen
+&lab ldx #$2904
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SetPenSize
+&lab ldx #$2C04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SetPenMode
+&lab ldx #$2E04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _GetPenMode
+&lab ldx #$2F04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SetPenPat
+&lab ldx #$3004
+ jsl $E10000
+ MEND
+ MACRO
+&lab _PenNormal
+&lab ldx #$3604
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SetSolidPenPat
+&lab ldx #$3704
+ jsl $E10000
+ MEND
+ MACRO
+&lab _MoveTo
+&lab ldx #$3A04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _Move
+&lab ldx #$3B04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _LineTo
+&lab ldx #$3C04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _Line
+&lab ldx #$3D04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _OffsetRect
+&lab ldx #$4B04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SectRect
+&lab ldx #$4D04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _UnionRect
+&lab ldx #$4E04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _PtInRect
+&lab ldx #$4F04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _EqualRect
+&lab ldx #$5104
+ jsl $E10000
+ MEND
+ MACRO
+&lab _FrameRect
+&lab ldx #$5304
+ jsl $E10000
+ MEND
+ MACRO
+&lab _PaintRect
+&lab ldx #$5404
+ jsl $E10000
+ MEND
+ MACRO
+&lab _EraseRect
+&lab ldx #$5504
+ jsl $E10000
+ MEND
+ MACRO
+&lab _InvertRect
+&lab ldx #$5604
+ jsl $E10000
+ MEND
+ MACRO
+&lab _FrameOval
+&lab ldx #$5804
+ jsl $E10000
+ MEND
+ MACRO
+&lab _PaintOval
+&lab ldx #$5904
+ jsl $E10000
+ MEND
+ MACRO
+&lab _FrameRRect
+&lab ldx #$5D04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _PaintRRect
+&lab ldx #$5E04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _PaintArc
+&lab ldx #$6304
+ jsl $E10000
+ MEND
+ MACRO
+&lab _NewRgn
+&lab ldx #$6704
+ jsl $E10000
+ MEND
+ MACRO
+&lab _DisposeRgn
+&lab ldx #$6804
+ jsl $E10000
+ MEND
+ MACRO
+&lab _CopyRgn
+&lab ldx #$6904
+ jsl $E10000
+ MEND
+ MACRO
+&lab _RectRgn
+&lab ldx #$6C04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _OpenRgn
+&lab ldx #$6D04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _CloseRgn
+&lab ldx #$6E04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _UnionRgn
+&lab ldx #$7204
+ jsl $E10000
+ MEND
+ MACRO
+&lab _DiffRgn
+&lab ldx #$7304
+ jsl $E10000
+ MEND
+ MACRO
+&lab _PtInRgn
+&lab ldx #$7504
+ jsl $E10000
+ MEND
+ MACRO
+&lab _ScrollRect
+&lab ldx #$7E04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _LocalToGlobal
+&lab ldx #$8404
+ jsl $E10000
+ MEND
+ MACRO
+&lab _GlobalToLocal
+&lab ldx #$8504
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SetCursor
+&lab ldx #$8E04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _HideCursor
+&lab ldx #$9004
+ jsl $E10000
+ MEND
+ MACRO
+&lab _ShowCursor
+&lab ldx #$9104
+ jsl $E10000
+ MEND
+ MACRO
+&lab _GetFontInfo
+&lab ldx #$9604
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SetTextMode
+&lab ldx #$9C04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SetForeColor
+&lab ldx #$A004
+ jsl $E10000
+ MEND
+ MACRO
+&lab _DrawChar
+&lab ldx #$A404
+ jsl $E10000
+ MEND
+ MACRO
+&lab _DrawString
+&lab ldx #$A504
+ jsl $E10000
+ MEND
+ MACRO
+&lab _CharWidth
+&lab ldx #$A804
+ jsl $E10000
+ MEND
+ MACRO
+&lab _StringWidth
+&lab ldx #$A904
+ jsl $E10000
+ MEND
+ MACRO
+&lab _CharBounds
+&lab ldx #$AC04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _StringBounds
+&lab ldx #$AD04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _InitCursor
+&lab ldx #$CA04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _PPToPort
+&lab ldx #$D604
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SFStartUp
+&lab ldx #$0217
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SFShutDown
+&lab ldx #$0317
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SFGetFile
+&lab ldx #$0917
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SFPutFile
+&lab ldx #$0A17
+ jsl $E10000
+ MEND
+ MACRO
+&lab _TextStartUp
+&lab ldx #$020C
+ jsl $E10000
+ MEND
+ MACRO
+&lab _WriteCString
+&lab ldx #$200C
+ jsl $E10000
+ MEND
+ MACRO
+&lab _ReadChar
+&lab ldx #$220C
+ jsl $E10000
+ MEND
+ MACRO
+&lab _WindStartUp
+&lab ldx #$020E
+ jsl $E10000
+ MEND
+ MACRO
+&lab _WindShutDown
+&lab ldx #$030E
+ jsl $E10000
+ MEND
+ MACRO
+&lab _NewWindow
+&lab ldx #$090E
+ jsl $E10000
+ MEND
+ MACRO
+&lab _CloseWindow
+&lab ldx #$0B0E
+ jsl $E10000
+ MEND
+ MACRO
+&lab _Desktop
+&lab ldx #$0C0E
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SetFrameColor
+&lab ldx #$0F0E
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SelectWindow
+&lab ldx #$110E
+ jsl $E10000
+ MEND
+ MACRO
+&lab _HideWindow
+&lab ldx #$120E
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SendBehind
+&lab ldx #$140E
+ jsl $E10000
+ MEND
+ MACRO
+&lab _FindWindow
+&lab ldx #$170E
+ jsl $E10000
+ MEND
+ MACRO
+&lab _TaskMaster
+&lab ldx #$1D0E
+ jsl $E10000
+ MEND
+ MACRO
+&lab _BringToFront
+&lab ldx #$240E
+ jsl $E10000
+ MEND
+ MACRO
+&lab _GetWRefCon
+&lab ldx #$290E
+ jsl $E10000
+ MEND
+ MACRO
+&lab _RefreshDesktop
+&lab ldx #$390E
+ jsl $E10000
+ MEND
+ MACRO
+&lab _InvalRect
+&lab ldx #$3A0E
+ jsl $E10000
+ MEND
+ MACRO
+&lab pushlong &addr,&offset
+&lab ANOP
+ LCLC &C
+ LCLC &REST
+&C AMID &addr,1,1
+ AIF "&C"="#",.immediate
+ AIF "&C"="[",.zeropage
+ AIF C:&offset=0,.nooffset
+ AIF "&offset"="s",.stack
+ pushword &addr+2,&offset
+ pushword &addr,&offset
+ MEXIT
+.nooffset
+ pushword &addr+2
+ pushword &addr
+ MEXIT
+.immediate
+&REST AMID &addr,2,L:&addr-1
+ dc I1'$F4',I2'(&REST)|-16'
+ dc I1'$F4',I2'&REST'
+ MEXIT
+.stack
+ pushword &addr+2,s
+ pushword &addr+2,s
+ MEXIT
+.zeropage
+ ldy #&offset+2
+ pushword &addr,y
+ ldy #&offset
+ pushword &addr,y
+ MEND
+ MACRO
+&lab pushword &sysopr
+&lab ANOP
+ AIF c:&sysopr=0,.b
+ LCLC &C
+ LCLC &REST
+ LCLA &BL
+&C AMID "&sysopr",1,1
+&BL ASEARCH "&sysopr"," ",1
+ AIF &BL>0,.a
+&BL SETA L:&sysopr+1
+.a
+&REST AMID "&sysopr",2,&BL-2
+ AIF ("&C"="#").AND.(S:LONGA),.immediate
+ lda &sysopr
+ pha
+ MEXIT
+.b
+ pha
+ MEXIT
+.immediate
+ dc I1'$F4',I2'&REST'
+ MEND
+ MACRO
+&lab str &string
+&lab dc i1'l:&string',c'&string'
+ MEND
+ MACRO
+&lab long
+&lab ANOP
+ rep #%00110000
+ longa on
+ longi on
+ MEND
+ MACRO
+&lab _PMShutDown
+&lab ldx #$0313
+ jsl $E10000
+ MEND
+ MACRO
+&lab _QDAuxStartUp
+&lab ldx #$0212
+ jsl $E10000
+ MEND
+ MACRO
+&lab _QDAuxShutDown
+&lab ldx #$0312
+ jsl $E10000
+ MEND
+ MACRO
+&lab _CopyPixels
+&lab ldx #$0912
+ jsl $E10000
+ MEND
+ MACRO
+&lab _WaitCursor
+&lab ldx #$0A12
+ jsl $E10000
+ MEND
+ MACRO
+&lab _DrawIcon
+&lab ldx #$0B12
+ jsl $E10000
+ MEND
+ MACRO
+&lab if4<> &op1,&op2,&bra
+&lab ANOP
+ AIF C:&op2,.a
+ LCLC &OP2
+&OP2 SETC #0
+.a
+ AIF C:&op1,.b
+ test4= ,&op2
+ AGO .c
+.b
+ test4= &op1,&op2
+.c
+ AIF C:&bra=0,.e
+ bne &bra
+.e
+ MEND
+ MACRO
+&lab test4= &adr1,&adr2
+&lab ANOP
+ AIF C:&adr1=0,.b
+ lda &adr1
+.b
+ AIF C:&adr2=0,.zero
+ AIF "&adr2"="#0",.zero
+ LCLC &C2
+&C2 AMID &adr2,1,1
+ cmp &adr2
+ bne ~x&syscnt
+ AIF C:&adr1,.c
+ lda #0
+ AGO .d
+.c
+ lda^ &adr1
+.d
+ AIF "&C2"="#",.e
+ cmp &adr2+2
+ AGO .f
+.e
+ cmp &adr2|-16
+.f
+~x&syscnt anop
+ MEXIT
+.zero
+ ora &adr1+2
+ MEND
+ MACRO
+&lab lda^ &addr,&offset
+&lab ANOP
+ LCLC &C
+&C AMID &addr,1,1
+ AIF "&C"="#",.immediate
+ AIF "&C"="[",.zeropage
+ AIF C:&offset,.offset
+ lda &addr+2
+ MEXIT
+.offset
+ lda &addr+2,&offset
+ MEXIT
+.immediate
+ lda &addr|-16
+ MEXIT
+.zeropage
+ AIF C:&offset=0,.sans_offset
+ ldy #&offset+2
+ lda &addr,y
+ MEXIT
+.sans_offset
+ ldy #2
+ lda &addr,y
+ MEND
+ MACRO
+&lab if4= &op1,&op2,&bra
+&lab ANOP
+ AIF C:&op2,.a
+ LCLC &OP2
+&OP2 SETC #0
+.a
+ AIF C:&op1,.b
+ test4= ,&op2
+ AGO .c
+.b
+ test4= &op1,&op2
+.c
+ AIF C:&bra=0,.e
+ beq &bra
+.e
+ MEND
+ MACRO
+&lab _InsetRect
+&lab ldx #$4C04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _GetLoadSegInfo
+&lab ldx #$0F11
+ jsl $E10000
+ MEND
+ MACRO
+&lab _GETFILEINFO &params
+&lab jsl $E100A8
+ dc i2"6"
+ dc i4"&params"
+ MEND
+ MACRO
+&lab _GETEOF &params
+&lab jsl $E100A8
+ dc i2"$19"
+ dc i4"&params"
+ MEND
+ MACRO
+&lab _DrawDialog
+&lab ldx #$1615
+ jsl $E10000
+ MEND
+ MACRO
+&lab _GetPixel
+&lab ldx #$8804
+ jsl $E10000
+ MEND

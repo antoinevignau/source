@@ -1,0 +1,2582 @@
+*************************************************
+*                                               *
+*              Editeur de sequences             *
+*                                               *
+*              ShowSeqEdit.s                    *
+*                                               *
+*************************************************
+
+DoSeqEdit      START
+               USING    SeqEditData
+               USING    GlobalData
+               USING    ProdosData
+               USING    WindowData
+
+DoSeqStart     lda      #$FFFF
+               sta      SequenceOn
+
+               lda #0
+               sta NePasDessiner
+
+               jsr      SetNewNumToOld
+
+               jsr      AloueSmScreen
+               lda      #$F1
+               sta      FrameType
+
+               lda      Top_action
+               beq      DoSeqDebut
+
+               jsr      SaveCurFrame
+               bcc      DoSeqDebut
+               jsr      DisposeSmSc
+               brl      DoSeqExit
+
+DoSeqDebut     anop
+               jsr      SetNBFSeq
+               jsr      CalcCurValue
+
+               lda      #$FFFF
+               sta      SESelVisible
+               lda      #SETimePause
+               sta      SEPauseFlip
+               lda      Sequ_NbFrame
+               sta      SELastValue
+
+               stz      SEFatalError
+               stz      QuitSeqEd
+               stz      SECurretOn
+               stz      SENumPattern
+
+               jsl      Pleine_Page
+
+               Pushlong #0
+               _GetPort
+
+               pla
+               sta      SELePort
+               pla
+               sta      SELePort+2
+
+               PushLong #0              ; dialogPtr
+               PushLong #SEDialFull     ; content rectangle
+               PushLong #0              ; no title
+               PushLong #$FFFFFFFF      ; bring to front
+               PushWord #$0020          ; frame
+               PushLong #RefConSeqEd
+               PushLong #SEDialFull     ; full size
+               _NewModelessDialog
+
+               pla
+               sta      DlgSeqEdPtr
+               pla
+               sta      DlgSeqEdPtr+2
+
+               PushLong DlgSeqEdPtr
+               _SetPort
+
+               PushLong DlgSeqEdPtr
+               PushLong #SEEdit
+               _GetNewDItem
+
+               PushLong DlgSeqEdPtr
+               PushLong #SECut
+               _GetNewDItem
+
+               PushLong DlgSeqEdPtr
+               PushLong #SECopy
+               _GetNewDItem
+
+               PushLong DlgSeqEdPtr
+               PushLong #SEPaste
+               _GetNewDItem
+
+               PushLong DlgSeqEdPtr
+               PushLong #SERenum
+               _GetNewDItem
+
+               PushLong DlgSeqEdPtr
+               PushLong #SEOpen
+               _GetNewDItem
+
+               PushLong DlgSeqEdPtr
+               PushLong #SESave
+               _GetNewDItem
+
+               PushLong DlgSeqEdPtr
+               PushLong #SESaveAs
+               _GetNewDItem
+
+               PushLong DlgSeqEdPtr
+               PushLong #SERevert
+               _GetNewDItem
+
+               PushLong DlgSeqEdPtr
+               PushLong #SENew
+               _GetNewDItem
+
+               PushLong DlgSeqEdPtr
+               PushLong #SEPrint
+               _GetNewDItem
+
+               PushLong DlgSeqEdPtr
+               PushLong #SEShow
+               _GetNewDItem
+
+               PushLong DlgSeqEdPtr
+               PushLong #SEScrollBar
+               _GetNewDItem
+
+               PushLong DlgSeqEdPtr
+               PushLong #SEAffichage
+               _GetNewDItem
+
+               jsr      TestMaxFrame
+
+               lda      SEScrapOn
+               bne      ResetRevert
+
+               PushWord #SEInActif
+               PushLong #0              ; Output handle
+               PushLong DlgSeqEdPtr
+               PushWord SEPaste
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+ResetRevert    lda      SERevertOn
+               bne      StartSeq
+
+               PushWord #SEInActif
+               PushLong #0              ; Output handle
+               PushLong DlgSeqEdPtr
+               PushWord SERevert
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+*
+*              Boucle de programme
+*
+
+StartSeq       anop
+
+NextEvent      PushWord #0
+               PushWord #$1FFF
+               PushLong #EventRecord
+               _GetNextEvent
+
+               pla
+               bne      HdlEvent
+
+*                       WithNoEvent
+;--
+               dec      SEPauseFlip
+               bne      HdlEvent
+
+               lda      #SETimePause
+               sta      SEPauseFlip
+               lda      SENumPattern
+               inc      a
+               inc      a
+               sta      SENumPattern
+               cmp      #8
+               bcc      EgalN
+
+               stz      SENumPattern
+
+EgalN          jsr      EqualNumLast
+               lda      #$FFFF
+               sta      SELastValue
+
+               lda      SECurretOn
+               bne      NormFlip
+
+               lda      #$FFFF
+               sta      SECurretOn
+               sta      SESelVisible
+
+NormFlip       jsr      SeSelFrame
+
+HdlEvent       anop
+
+TDialSel       PushWord #0
+               PushLong #EventRecord
+               PushLong #DlgSeqEdPtr
+               PushLong #SEItemHit
+               _DialogSelect
+;--------------------------------------
+               PushWord #0
+               PushWord #254
+               PushWord #63
+               _GetPixel
+               pla
+               and #$000F
+               beq Swxyz
+;--
+               lda #1
+               sta NePasDessiner
+
+               PushLong DlgSeqEdPtr
+               _DrawDialog
+
+               lda #0
+               sta NePasDessiner
+
+Swxyz          ANOP
+;--------------------------------------
+
+               pla
+               bne      glloq
+               brl      NextEvent
+;--
+glloq          lda      SEItemHit
+               asl      a
+               tax
+
+               jsr      (LesSEIndir,x)
+
+               lda      QuitSeqEd
+               bne      CloseDial
+               brl      NextEvent
+
+CloseDial      PushLong DlgSeqEdPtr
+               _CloseDialog
+
+               jsr      DisposeSmSc
+
+*
+*              Exit
+*
+
+               Pushlong SELeport
+               _SetPort
+
+               jsl      Demi_Page
+
+DoSeqExit      jsr      Raz_Select
+               jsr      Recal_Menu
+               stz      SequenceOn
+               lda      SEFatalError
+               beq      DoSeqRts
+               jsr      Reset_Frame
+DoSeqRts       rts
+
+*
+*              Table d'indirection
+*
+LesSEIndir     anop
+
+               dc i'SEIgnore'
+
+               dc i'SEEditAct'
+               dc i'SECutAct'
+               dc i'SECopyAct'
+               dc i'SEPasteAct'
+IndirRenum     dc i'DoRenumAct'
+               dc i'DoOpenAct'
+               dc i'DoSaveAct'
+               dc i'DoSaveAsAct'
+               dc i'SERevertAct'
+               dc i'SENewAct'
+               dc i'SEPrintAct'
+               dc i'DoShow'
+               dc i'SEIgnore'
+IndirSelFrame  dc i'DoSelFrame'
+
+*
+*              Ignore
+*
+SEIgnore       anop
+
+               rts
+
+*
+*              Edition d'une frame
+*
+SeEditAct      anop
+
+               _WaitCursor
+
+               jsr      LoadCurFrame
+               bcs      SeEditExit
+               lda      #$FFFF
+               sta      QuitSeqEd
+SEEditExit     _InitCursor
+               rts
+
+*
+*              Renumerote les frames
+*
+DoRenumAct     anop
+
+               lda      #1
+               sta      Top_ActionG
+
+               jsr      SEDisableBut
+               jsr      InitFrameNums
+               lda      #DoDoneRenum
+               sta      IndirRenum
+               lda      #DoRenumFrame
+               sta      IndirSelFrame
+
+               lda      #1
+               sta      SERenumPtr
+
+               PushLong #SEDoneTxt
+               PushLong #0              ; Output handle
+               PushLong DlgSeqEdPtr
+               PushWord SERenum
+               _GetControlDItem
+               _SetCtlTitle             ; les parametres arrivent de _Get...
+
+               jsr      InvalSeq
+
+               rts
+
+DoDoneRenum    anop
+
+               jsr      SEEnableBut
+               jsr      EndFrameNums
+               lda      #DoRenumAct
+               sta      IndirRenum
+               lda      #DoSelFrame
+               sta      IndirSelFrame
+
+               jsr      SetNewNumToOld
+
+               jsr      InvalSeq
+
+               PushLong #SERenumTxt
+               PushLong #0              ; Output handle
+               PushLong DlgSeqEdPtr
+               PushWord SERenum
+               _GetControlDItem
+               _SetCtlTitle             ; les parametres arrivent de _Get...
+
+               rts
+
+*
+*              Open sequence
+*
+DoOpenAct      anop
+
+               jsr      Save_Before
+               bcs      DoOpenActRts
+
+               jsr      DoOpenSequ
+               bcs      DoOpenActRts
+
+               PushWord #SEActif
+               PushLong #0              ; Output handle
+               PushLong DlgSeqEdPtr
+               PushWord SERevert
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+               jsr      TestMaxFrame
+               jsr      ResetScrollB
+
+DoOpenActRts   stz      SECurretOn
+               jsr      InvalSeq
+
+               rts
+
+
+*
+*              Save sequence
+*
+DoSaveAct      anop
+
+               jsr      DoSaveSequ
+               bcs      DosaveActExit
+
+               PushWord #SEActif
+               PushLong #0              ; Output handle
+               PushLong DlgSeqEdPtr
+               PushWord SERevert
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+               stz      SECurretOn
+               jsr      InvalSeq
+
+DoSaveActExit  rts
+
+*
+*              Save as... sequence
+*
+DoSaveAsAct    anop
+
+               jsr      DoSaveAsSequ
+               bcs      DoSaveAsActEx
+
+               PushWord #SEActif
+               PushLong #0              ; Output handle
+               PushLong DlgSeqEdPtr
+               PushWord SERevert
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+               stz      SECurretOn
+               jsr      InvalSeq
+
+DoSaveAsActEx  rts
+
+*
+*              Revient a l'ordre original
+*
+SERevertAct    anop
+
+               jsr      DoRevertSequ
+               bcs      SeRevertExit
+
+               jsr      TestMaxFrame
+               jsr      ResetScrollB
+
+               stz      SECurretOn
+               jsr      InvalSeq
+
+SeRevertExit   rts
+
+
+*
+*              Cree une nouvelle frame
+*
+
+SENewAct       anop
+
+               lda      #1
+               sta      Top_ActionG
+
+               jsr      SENewAct1
+               bcs      SENewActExit
+
+               jsr      Scroll1Line
+               jsr      TestMaxFrame
+
+SENewActExit   rts
+
+*
+*              Imprime les frames
+*
+
+SEPrintAct     anop
+
+               jsr      DoPrint
+
+               rts
+
+****************************************
+*
+*       Verifie le nombre de frame
+*
+****************************************
+
+TestMaxFrame   lda      Sequ_HMFrame
+               cmp      #99
+               bcc      TestMaxsuite0
+
+               PushWord #SEInActif
+               PushLong #0              ; Output handle
+               PushLong DlgSeqEdPtr
+               PushWord SENew
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+               PushWord #SEInActif
+               PushLong #0              ; Output handle
+               PushLong DlgSeqEdPtr
+               PushWord SEPaste
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+               brl      TestMaxRts
+
+TestmaxSuite0  cmp      #98
+               bne      TestMaxSuite1
+
+               PushWord #SEActif
+               PushLong #0              ; Output handle
+               PushLong DlgSeqEdPtr
+               PushWord SENew
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+               lda      SEScrapOn
+               beq      TestMaxRts
+
+               PushWord #SEActif
+               PushLong #0              ; Output handle
+               PushLong DlgSeqEdPtr
+               PushWord SEPaste
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+               bra      TestMaxRts
+
+TestMaxSuite1  cmp      #2
+               bcc      TestMaxSuite2
+
+               PushWord #SEActif
+               PushLong #0              ; Output handle
+               PushLong DlgSeqEdPtr
+               PushWord SECut
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+               bra      TestMaxRts
+
+TestMaxSuite2  anop
+
+               PushWord #SEInActif
+               PushLong #0              ; Output handle
+               PushLong DlgSeqEdPtr
+               PushWord SECut
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+TestMaxRts     rts
+
+*
+*              Selectionne une frame
+*
+
+DoSelFrame     anop
+
+               lda      SECurretOn
+               beq      DoSelExit
+
+               jsr      FindRectNum
+               bcs      DoSelExit
+
+               jsr      SESelFrame
+
+DoSelExit      rts
+
+
+*************************************************************************
+*                                                                       *
+*                       Sous-programmes                                 *
+*                                                                       *
+*************************************************************************
+
+******************************************************
+*
+*              Load une Sequence
+*
+*              Nom dans FrameFullName
+*
+******************************************************
+LoadSequence   ENTRY
+
+               lda      #FrameFullName
+               sta      nameptr
+               lda      #^FrameFullName
+               sta      nameptr+2
+
+               jsr      OpenFile
+               bcc      LoadOkOpen
+               brl      LoadSeqError
+
+LoadOkOpen     anop
+               lda      OpenID
+               sta      ReadID
+               sta      CloseID
+
+               lda      #SequRecord
+               sta      ReadDest
+               lda      #^SequRecord
+               sta      ReadDest+2
+
+               lda      Lg_SequRecord
+               sta      readlg
+               stz      ReadLg+2
+               jsr      ReadFile
+
+               bcs      LoadSeqError
+
+               _Close CloseParams
+
+               clc
+               rts
+
+LoadSeqError   _Close CloseParams
+
+               sec
+               rts
+
+******************************************************
+*
+*              Save une Sequence
+*
+*              Nom dans FrameFullName
+*
+******************************************************
+SaveSequence   ENTRY
+
+               lda      #FrameFullName
+               sta      nameptr
+               lda      #^FrameFullName
+               sta      nameptr+2
+
+               lda      #$F2
+               sta      Createfiletype
+
+               jsr      CreateFile
+               bcc      SaveSeqOpen
+               bra      SaveSeqError
+
+SaveSeqOpen    jsr      OpenFile
+               bcc      SaveOkOpen
+               brl      SaveSeqError
+
+SaveOkOpen     anop
+               lda      OpenID
+               sta      WriteID
+               sta      CloseID
+
+               lda      #SequRecord
+               sta      WriteDest
+               lda      #^SequRecord
+               sta      WriteDest+2
+
+               lda      Lg_SequRecord
+               sta      Writelg
+               stz      WriteLg+2
+               jsr      WriteFile
+               bcs      SaveSeqError
+
+               _Close CloseParams
+
+               clc
+               rts
+
+SaveSeqError   _Close CloseParams
+
+               lda      #FrameFName
+               sta      DestroyNamePtr
+               lda      #^FrameFName
+               sta      DestroyNamePtr+2
+
+               _Destroy DestroyParams
+
+               sec
+               rts
+
+****************************************
+*
+*              Copy ScrapBuf
+*
+****************************************
+CopyScrapBuf   ENTRY
+
+               lda      #$F1
+               sta      FrameType
+               jsr      LoadCCPFrame
+               ldx      #999
+               jsr      KillThisWork    ; detruit le fichier scrap
+               jsr      SaveReplyPath
+
+               rts
+
+*******************************************************
+*
+*              copmare Sequ_FullName et Reply_Full...
+*
+******************************************************
+CompareOldNew  ENTRY
+
+               sep      #$30
+               lda      Reply_FullName
+               cmp      Sequ_FullName
+               bne      CompareOldDiff
+
+               rep      #$30
+
+               and      #$00FF
+               dec      a
+               tax
+CompareOld0    lda      Reply_FullName,x
+               cmp      Sequ_FullName,x
+               bne      CompareOldDiff
+               dex
+               bpl      CompareOld0
+
+               sec                      ; egaux
+               rts
+
+CompareOldDiff rep      #$30            ; differents
+               clc
+               rts
+
+**********************************************************
+*
+*              Change File name As specified in pointers
+*
+**********************************************************
+ChangeAName    ENTRY
+
+               sep      #$30
+               longa    off
+               longi    off
+
+               lda      [Ptr_PZero]
+               tay
+
+ChangeF0       lda      [Ptr_PZero],y
+               cmp      #'/'
+               beq      ChangeFFnd
+               dey
+               bra      ChangeF0
+
+ChangeFFnd     tya
+               sta      [Ptr_PZero]
+
+               ldx      #0
+
+ChangeF1       inx
+               iny
+               phy
+               txy
+               lda      [Ptr_PUn],y
+               ply
+               sta      [Ptr_PZero],y
+               txa
+               cmp      [Ptr_PUn]
+               bcc      ChangeF1
+
+               lda      [Ptr_PUn]
+               clc
+               adc      [Ptr_PZero]
+               sta      [Ptr_PZero]
+
+               rep      #$30
+               longa    on
+               longi    on
+
+               rts
+
+****************************************************
+*
+*              Change File names for workfile
+*
+****************************************************
+ChangeFNames   ENTRY
+
+               lda      #FrameFName
+               sta      Ptr_PZero
+               lda      #^FrameFName
+               sta      Ptr_PZero+2
+               lda      #SEWorkTxt
+               sta      Ptr_PUn
+               lda      #^SEWorkTxt
+               sta      Ptr_PUn+2
+               jsr      ChangeAName
+
+               lda      #FrameFullName
+               sta      Ptr_PZero
+               lda      #^FrameFullName
+               sta      Ptr_PZero+2
+               lda      #SEWorkTxt
+               sta      Ptr_PUn
+               lda      #^SEWorkTxt
+               sta      Ptr_PUn+2
+               jsr      ChangeAName
+
+               jsr      PutThe000
+
+               rts
+
+****************************************************
+*
+*              Make file work
+*
+*              En Entree : FullPathName dans FrameFname
+*
+****************************************************
+MakeFileWork   ENTRY
+
+               lda      SequenceOn
+               bne      MakeFileStart
+               jsr      AloueSmScreen
+
+MakeFileStart  jsr      Eff_Template
+               jsr      SeqInFrameF
+               jsr      LoadSequence
+               bcs      MakeFileError
+
+               jsr      ChangeFNames
+
+               lda      Sequ_Template   ; a jour grace a load sequence
+               beq      MakeFileExit
+
+               jsr      New_Template    ; load le template
+               bcs      MakeFileError
+               jsr      LoadATemplate
+               bcs      MakeFileError
+
+MakeFileExit   lda      SequenceOn
+               bne      MakeFileOk0
+               jsr      DisposeSmSc
+MakeFileOk0    clc
+               rts
+
+MakeFileError  lda      SequenceOn
+               bne      MakeFileKo0
+               jsr      DisposeSmSc
+MakeFileKo0    sec
+               rts
+
+****************************************************
+*
+*              Copy file work
+*
+****************************************************
+CopyFileWork   ENTRY
+
+               lda      SequenceOn
+               bne      CopyFileStart
+               jsr      AloueSmScreen
+
+CopyFileStart  lda      #$F1
+               sta      FrameType
+               lda      Top_Action
+               beq      CopyFileS1
+;--------------------------------------
+               lda Top_debug_Sas
+               beq STDSAS0
+               jsr CopyRFToFrame        |sauve sur le frame fullname
+               jsr PutThe000
+               jsr CopyTheSave
+               php
+               jsr CopyFFToFrame
+               plp
+               bcs CopyFileError0
+               bcc CopyFileS1
+;--
+STDSAS0        jsr      SaveCurFrame
+               bcs      CopyFileError0
+;--------------------------------------
+CopyFileS1     jsr      CopyFFtoRfSave
+               bcs      CopyFileError
+;--------------------------------------
+               lda Top_Debug_SAS
+               beq STDSAS1
+               jsr SetFlagFrameF        |force a 1 le beenmodified
+STDSAS1        ANOP
+;--------------------------------------
+               lda      SequenceOn
+               bne      CopyFileOk
+               jsr      DisposeSmSc
+CopyFileOk     clc
+               rts
+;--------------------------------------
+CopyFileError0 lda      SequenceOn      |si error pas de loadcurframe
+               bne      CopyFileKo
+               jsr      DisposeSmSc
+               bra CopyFileKo
+;--------------------------------------
+CopyFileError  lda      SequenceOn
+               bne      CopyFileKo
+               jsr      LoadCurFrame
+               jsr      DisposeSmSc
+CopyFileKo     sec
+               rts
+
+****************************************************
+*
+*              Fill original work
+*
+****************************************************
+FillOriginal   ENTRY
+
+               lda      SequenceOn
+               bne      FillOrigStart
+               jsr      AloueSmScreen
+
+FillOrigStart  lda      #$F1
+               sta      FrameType
+               lda      Top_Action
+               beq      FillOrigS1
+               jsr      SaveCurFrame
+               bcs      FillOrigError
+
+FillOrigS1     _WaitCursor
+
+               jsr      SeqInFrameF
+               jsr      SaveSequence
+               bcs      FillorigError
+
+               sep      #$30
+               longa    off
+               longi    off
+
+               ldx      #0
+
+FillTryNext    lda      BeenModified,x
+               cmp      #1
+               bne      FillComp2
+               jsr      FillThisOne
+               bcs      FillOrigError
+               bra      FillNext
+
+FillComp2      cmp      #2
+               bne      FillNext
+               jsr      KillThisOrig
+
+FillNext       stz      BeenModified,x  ; !!!! Attention !!!!!
+               inx
+               cpx      #100
+               bcc      FillTryNext
+
+               rep      #$30
+               longa    on
+               longi    on
+
+               lda      SequenceOn
+               bne      FillOrigOk
+               jsr      DisposeSmSc
+FillOrigOk     clc
+               rts
+
+FillOrigError  lda      SequenceOn
+               bne      FillOrigKo
+               jsr      DisposeSmSc
+FillOrigKo     sec
+               rts
+
+***************************************************************
+*
+*         Initialise la liste des fichiers modifies
+*
+***************************************************************
+InitBeenMod    ENTRY
+
+               ldx      #0
+
+InitBeenMod0   stz      BeenModified,x
+               inx
+               inx
+               cpx      #99
+               bcc      initbeenmod0
+
+               stz      TmpBeenMod
+
+               jsr      CopyFFtoFrame
+               jsr      PutThe000
+
+               rts
+
+***************************************************************
+*
+*              Initialise la liste des fichiers de travail
+*
+***************************************************************
+InitWorkMod    ENTRY
+
+               ldx      #0
+
+InitWorkMod0   stz      WorkModified,x
+               inx
+               inx
+               cpx      #98
+               bcc      initWorkmod0
+
+               rts
+
+*******************************************************
+*
+*              Met a jour WorkModified
+*
+*******************************************************
+CopyBeenToWMod ENTRY
+
+               sep      #$20
+               longa    off
+
+               ldx      #0
+
+CopyBeenToW0   lda      BeenModified,x
+               cmp      #1
+               beq      CopyBeenToWSt
+               cmp      #2
+               bne      CopyBeenToW1
+CopyBeenToWSt  lda      #1
+               sta      WorkModified,x
+
+CopyBeenToW1   inx
+               cpx      #99
+               bcc      CopyBeenToW0
+
+               rep      #$20
+               longa    on
+
+               rts
+
+*******************************************
+*
+*              Save Modified
+*
+*******************************************
+FillThisOne    anop
+
+               php
+
+               rep      #$30
+               phx
+               plx                      ; pour positionner Z
+
+               phx
+               beq      FillUnTemplate
+               jsr      CopyFFToFrame
+               jsr      PutThe000
+               plx
+
+               phx
+               jsr      SetTxtNumber
+               jsr      FFullToRename
+
+               lda      #RenameFullName
+               sta      RenamePtr
+               lda      #^RenameFullName
+               sta      RenamePtr+2
+
+               jsr      SeqInFrameF
+               jsr      PutThe000
+               plx
+
+               phx
+               jsr      SetTxtNumber
+
+               lda      #FrameFullName
+               sta      DestroyNamePtr
+               sta      New_RenamePtr
+               lda      #^FrameFullName
+               sta      DestroyNamePtr+2
+               sta      New_RenamePtr+2
+
+               _Destroy DestroyParams
+
+               jsr      RenameFile
+
+               bcs      FillThisError
+               bra      FillThisOk
+
+FillUnTemplate anop
+               jsr      CopyFFToFrame
+               jsr      PutTheTmp
+               jsr      FFullToRename
+               lda      #RenameFullName
+               sta      RenamePtr
+               lda      #^RenameFullName
+               sta      RenamePtr+2
+
+               jsr      SeqInFrameF
+               jsr      PutTheTmp
+               lda      #FrameFullName
+               sta      DestroyNamePtr
+               sta      New_RenamePtr
+               lda      #^FrameFullName
+               sta      DestroyNamePtr+2
+               sta      New_RenamePtr+2
+
+               _Destroy DestroyParams
+
+               jsr      RenameFile
+               bcs      FillThisError
+
+FillThisOk     plx
+               plp
+               clc
+               rts
+
+FillThisError  plx
+               plp
+               sec
+               rts
+
+*******************************************
+*
+*              Kill Mofified
+*
+*******************************************
+KillThisOrig   anop
+               php
+               rep      #$30
+               phx
+
+               jsr      SeqInFrameF
+               bra      KillThisOne
+
+KillThisWork   ENTRY
+
+               php
+
+               rep      #$30
+               phx
+
+               jsr      CopyFFToFrame
+
+KillThisOne    plx
+               phx
+               beq      KillTemplate
+               cpx      #999
+               bne      KillFrame
+
+KillCCP        jsr      PutTheCCP
+               bra      KillIt
+
+KillTemplate   jsr      PutTheTmp
+               bra      KillIt
+
+KillFrame      jsr      PutThe000
+               plx
+
+               phx
+               jsr      SetTxtNumber
+
+KillIt         lda      #FrameFullName
+               sta      DestroyNamePtr
+               lda      #^FrameFullName
+               sta      DestroyNamePtr+2
+
+               _Destroy DestroyParams
+
+               plx
+               plp
+               clc
+               rts
+
+****************************************************
+*
+*              Inserer une frame
+*
+****************************************************
+SEFInsert      ENTRY
+
+               sep      #$30
+               longa    off
+               longi    off
+
+               ldx      #0
+
+SEFNext0       lda      Sequ_FileNum,x
+               cmp      #$80
+               bcs      SEFNext1
+               cmp      Sequ_NBFrame
+               bcc      SEFNext1
+               inc      Sequ_FileNum,x
+               inc      FrameNewNum,x
+SEFNext1       inx
+               cpx      #100
+               bcc      SEFNext0
+
+               rep      #$30
+               longa    on
+               longi    on
+
+               rts
+
+****************************************************
+*
+*              Enlever une frame
+*
+****************************************************
+SEFDelete      ENTRY
+
+               sep      #$30
+               longa    off
+               longi    off
+
+               ldx      #0
+
+SEFDNext0      lda      Sequ_FileNum,x
+               cmp      #$80
+               bcs      SEFDNext1
+               cmp      Sequ_NBFrame
+               bcc      SEFDNext1
+               dec      Sequ_FileNum,x
+               dec      FrameNewNum,x
+SEFDNext1      inx
+               cpx      #100
+               bcc      SEFDNext0
+
+               rep      #$30
+               longa    on
+               longi    on
+
+               rts
+*****************************************************
+*
+*              Simule un click dans SELastValue
+*
+*****************************************************
+EqualNumLast   ENTRY
+
+               PushLong #0
+               PushWord SECurrentVal
+               PushWord #3
+               _Multiply
+               pla
+               sta      ValidValStart
+               pla      0               ; non utilise
+               lda      Sequ_NbFrame
+               dec      a
+               sec
+               sbc      ValidValStart
+               sta      SERectNum
+
+               rts
+
+*****************************************************
+*
+*              Inverse le rectangle selectionne
+*
+*****************************************************
+SESelFrame     ENTRY
+
+               PushLong DlgSeqEdPtr
+               _SetPort
+
+               PushWord #0
+               _SetSolidPenPat
+
+               PushLong #0
+               PushWord SECurrentVal
+               PushWord #3
+               _Multiply
+               pla
+               inc      a
+               sta      ValidValStart
+               clc
+               adc      #12
+               sta      ValidValEnd
+               pla                      ; non utilise
+
+               lda      SELastValue
+               cmp      ValidValStart
+               bcc      SESelCompute
+               cmp      ValidValEnd
+               bcs      SESelCompute
+
+               lda      SESelVisible
+               beq      SESelCompute
+
+               lda      #^SEFrameRect
+               pha
+               lda      SELastValue
+               sec
+               sbc      ValidValStart
+               asl      a
+               asl      a
+               asl      a
+               clc
+               adc      #SEFrameRect
+               pha
+               _FrameRect
+
+SESelCompute   lda      #$FFFF
+               sta      SESelVisible
+
+               lda      #^SESelectPat
+               pha
+               lda      SENumPattern
+               asl      a
+               asl      a
+               clc
+               adc      #SESelectPat
+               pha
+               _SetPenPat
+
+               lda      SERectNum
+               bmi      SESelExit
+               cmp      #12
+               bcs      SESelExit
+
+               lda      ValidValStart
+               clc
+               adc      SERectNum
+               sta      SELastValue
+               sta      Sequ_NbFrame
+
+               lda      #^SEFrameRect
+               pha
+               lda      SERectNum
+               asl      a
+               asl      a
+               asl      a
+               clc
+               adc      #SEFrameRect
+               pha
+               _FrameRect
+
+               bra      SESelQuit
+
+SESelExit      stz      SESelVisible
+
+SESelQuit      rts
+
+
+******************************************************
+*
+*              Calcule valeur courrante du scroll bar
+*
+******************************************************
+CalcCurValue   anop
+
+               lda      Sequ_NbFrame
+               cmp      #13
+               bcs      CalCurV0
+
+               stz      SECurrentVal
+               bra      CalcCurExit
+
+CalCurV0       PushLong #0
+               lda      Sequ_NbFrame
+               dec      a
+               pha
+               PushWord #3
+               _UDivide
+               pla
+               sec
+               sbc      #3
+               sta      SECurrentVal
+               pla
+
+CalcCurExit    rts
+
+******************************************************
+*
+*              Dessine les ecrans
+*
+*              dans A : le numero de la ligne
+*
+******************************************************
+DrawSmScreens  ENTRY
+               pha
+;--
+               lda NePasDessiner
+               beq Xwxyz
+               pla
+               rts
+Xwxyz          ANOP
+;--
+               _WaitCursor
+
+               PushWord #15             ; blanc
+               _SetSolidPenPat
+
+               PushLong #SeAffRect
+               _PaintRect
+
+               pla
+
+               pea 0
+               pea 0
+               pha
+               PushWord #3
+               _Multiply
+               pla
+               inc      a               ; premier dessin = No 1
+               sta      SmStartBoucle
+               tax
+               clc
+               adc      #12
+               sta      SmEndBoucle
+               pla
+
+DrawSmScNext   phx
+               jsr      FindFileNum
+               jsr      FindRightName
+               jsr      SetTxtNumber
+               plx
+
+*              x est utilise par DrawASmallSc
+
+               jsr      DrawASmallSc
+
+               cpx      Sequ_HMFrame
+               bcs      DrawSmSExit
+               inx
+               cpx      SmEndBoucle
+               bcc      DrawSmScNext
+
+DrawSmSExit    anop
+
+               _InitCursor
+               rts
+
+******************************************************
+*
+*              dessine un petit ecran
+*
+*              dans X : numero de la frame
+*
+******************************************************
+DrawASmallSc   anop
+
+               phx
+               txa
+               sec
+               sbc      SmStartBoucle
+               asl      a
+               asl      a
+               asl      a
+               tax
+
+               lda      SEFrameRect,x
+               sta      SmRectY
+               inc      a
+               inc      a
+               sta      SEAffNRect
+               clc
+               adc      #11
+               sta      SEAffNRect+4
+
+               lda      SEFrameRect+2,x
+               sta      SmRectX
+               inc      a
+               inc      a
+               sta      SEAffNRect+2
+               clc
+               adc      #20
+               sta      SEAffNRect+6
+
+               lda      SEFrameRect+4,x
+               sta      SmSelRect+4
+               lda      SEFrameRect+6,x
+               sta      SmSelRect+6
+
+               jsr      D_SmallSc
+
+               lda      #FrameFullName
+               sta      nameptr
+               lda      #^FrameFullName
+               sta      nameptr+2
+
+ENCORE_ENCORE  jsr      OpenFile        |Modif du 18 DECEMBRE 1987
+               bcc      DrawASmOk
+               bcs ENCORE_ENCORE
+;--
+;              brl      DrawADehors
+;--
+DrawASmOk      anop
+               lda      OpenID
+               sta      ReadID
+               sta      CloseID
+
+               lda      SmScreenPtr
+               sta      ReadDest
+               lda      SmScreenPtr+2
+               sta      ReadDest+2
+
+               lda      #2000
+               sta      Readlg
+               stz      Readlg+2
+               jsr      ReadFile
+               bcc      DrawThisSmSc
+               brl      DrawAClose
+
+DrawThisSmSc   PushLong DlgSeqEdPtr
+               _SetPort
+
+               Pushlong #SmScreenBlock
+               PushLong #SmScreenRect
+               PushWord SmRectX
+               PushWord SmRectY
+               PushWord #0
+               _PPToPort
+
+               PushWord #15
+               _SetSolidPenPat
+
+               PushLong #SEAffNRect
+               _PaintRect
+
+               PushWord #0
+               _SetSolidPenPat
+
+               PushLong #SEAffNRect
+               _FrameRect
+
+               PushLong #SmSelRect
+               _FrameRect
+
+               plx
+               phx
+
+               jsr      FindFileNum
+               lda      FrameNewNum,x
+               and      #$00FF
+               tax
+
+               cpx      #100
+               bcs      DrawAClose
+
+               jsr      DrawNumFrame
+
+DrawAClose     _Close CloseParams
+
+DrawADehors    jsr      U_SmallSc
+
+               plx
+               rts
+
+****************************************************************
+*
+*              Scroll one line si necessaire
+*
+****************************************************************
+Scroll1Line    anop
+
+               jsr      SetNBFSeq
+               jsr      CalcCurValue
+
+               lda      Nb_FileSeq
+               cmp      #4
+               bne      Scroll1Start
+
+               lda      #0
+               bra      Scroll1Exit
+
+Scroll1Start   jsr      ResizeScroll
+
+               lda      SECurrentVal
+               pha
+
+               pha
+               PushLong DlgSeqEdPtr
+               PushWord SEScrollBar
+               _SetDItemValue
+
+               pla
+
+Scroll1Exit    jsr      DrawSmScreens
+
+               PushWord #0
+               _SetSolidPenPat
+               lda      SmFrameRectNb
+               asl      a
+               asl      a
+               asl      a
+               tax
+               lda      SEFrameRect,x
+               sta      SmSelRect
+               lda      SEFrameRect+2,x
+               sta      SmSelRect+2
+               lda      SEFrameRect+4,x
+               sta      SmSelRect+4
+               lda      SEFrameRect+6,x
+               sta      SmSelRect+6
+
+               PushLong #SmSelRect
+               _FrameRect
+
+               lda      #SETimePause
+               sta      SEPauseFlip
+               lda      Sequ_NbFrame
+               sta      SELastValue
+               stz      SECurretOn
+
+               rts
+
+*****************************************************************
+*
+*              Scroll down de une ligne
+*              dans A : numero de la ligne
+*
+*****************************************************************
+ScrollDown     ENTRY
+
+               pha
+
+               PushLong #SEAffRect
+               PushWord #0
+               PushWord #-50
+               PushLong #0
+               _ScrollRect
+
+               pla
+
+               pea 0
+               pea 0
+               pha
+               PushWord #3
+               _Multiply
+               pla
+               inc      a
+               sta      SmStartBoucle
+               clc
+               adc      #9              ; on affiche les 3 derniers : 10,11,12
+               tax
+               clc
+               adc      #3
+               sta      SmEndBoucle
+               pla
+
+ScrollDNext    phx
+               jsr      FindFileNum
+               jsr      FindRightName
+               jsr      SetTxtNumber
+               plx
+
+*              x est utilise par DrawASmallSc
+
+               jsr      DrawASmallSc
+
+               cpx      Sequ_HMFrame
+               bcs      ScrollDExit
+               inx
+               cpx      SmEndBoucle
+               bcc      ScrollDNext
+
+ScrollDExit    rts
+
+
+*****************************************************************
+*
+*              Scroll up de une ligne
+*
+*****************************************************************
+ScrollUp       ENTRY
+
+               pha
+
+               PushLong #SEAffRect
+               PushWord #0
+               PushWord #50
+               PushLong #0
+               _ScrollRect
+
+               pla
+
+               pea 0
+               pea 0
+               pha
+               PushWord #3
+               _Multiply
+               pla
+               inc      a               ; on affiche les 3 premiers : 1,2,3
+               sta      SmStartBoucle
+               tax
+               clc
+               adc      #3
+               sta      SmEndBoucle
+               pla
+
+ScrollUNext    phx
+               jsr      FindFileNum
+               jsr      FindRightName
+               jsr      SetTxtNumber
+               plx
+
+*              x est utilise par DrawASmallSc
+
+               jsr      DrawASmallSc
+
+               cpx      Sequ_HMFrame
+               bcs      ScrollUExit
+               inx
+               cpx      SmEndBoucle
+               bcc      ScrollUNext
+
+ScrollUExit    rts
+
+*****************************************************************
+*
+*              Trouve premier numero libre et le met dans A
+*                       0 si non trouve
+*
+*****************************************************************
+FindNumber     ENTRY
+
+               sep      #$20
+               longa    off
+
+               ldx      #1
+
+FindNumberN    lda      Sequ_FileNum,x
+               cmp      #$FF
+               beq      FindFound
+               inx
+               cpx      #100
+               bcc      FindNumberN
+               ldx      #0
+
+FindFound      rep      #$20
+               longa    on
+
+               txa
+
+               rts
+
+****************************************************************
+*
+*              Ajoute des 000 a frameFullName apres un copy
+*
+***************************************************************
+PutThe000      ENTRY
+
+               lda      FrameFullName
+               and      #$00FF
+               inc      a
+               tax
+               lda      #$3030
+               sta      FrameFullName,x ; ajoute 000 au nom du fichier
+               inx
+               sta      FrameFullName,x
+               lda      FrameFullName
+               clc
+               adc      #3
+               sta      FrameFullName
+
+               rts
+
+****************************************************************
+*
+*              Ajoute .T a frameFullName
+*
+***************************************************************
+PutTheTmp      ENTRY
+
+               lda      FrameFullName
+               and      #$00FF
+               inc      a
+               tax
+               lda      #'T.'
+               sta      FrameFullName,x ; ajoute .T au nom du fichier
+               lda      FrameFullName
+               clc
+               adc      #2
+               sta      FrameFullName
+
+               rts
+
+****************************************************************
+*
+*              Ajoute .S a frameFullName
+*
+***************************************************************
+PutTheCCP      ENTRY
+
+               lda      FrameFullName
+               and      #$00FF
+               inc      a
+               tax
+               lda      #'CC'
+               sta      FrameFullName,x ; ajoute CCP au nom du fichier
+               inx
+               lda      #'PC'
+               sta      FrameFullName,x
+               lda      FrameFullName
+               clc
+               adc      #3
+               sta      FrameFullName
+
+               rts
+
+*****************************************************************
+*
+*              Copie texte FrameFName dans FrameFullname
+*
+*****************************************************************
+CopyFFToFrame  ENTRY
+
+               lda      FrameFName
+               and      #$00FF
+               dec      a
+;--
+               bpl sCopyFFTof
+               rts
+sCopyFFTof     ANOP
+;--
+               tax
+CopyFFNextF    lda      FrameFName,x
+               sta      FrameFullName,x
+               dex
+               bpl      CopyFFNextF
+
+               rts
+
+FFullToRename  ENTRY
+
+               lda      FrameFullName
+               and      #$00FF
+               dec      a
+               tax
+CopyFFNextRe   lda      FrameFullName,x
+               sta      RenameFullName,x
+               dex
+               bpl      CopyFFNextRe
+
+               rts
+
+*****************************************************************
+*
+*              Copie texte Reply_FullName dans FrameFullname
+*
+*****************************************************************
+CopyRFToFrame  ENTRY
+
+               lda      Reply_FullName
+               and      #$00FF
+               dec      a
+               tax
+CopyRFNextF    lda      Reply_FullName,x
+               sta      FrameFullName,x
+               dex
+               bpl      CopyRFNextF
+
+               rts
+
+*****************************************************************
+*
+*              Copie texte Reply dans Frame Full et File name
+*
+*****************************************************************
+CopyRepToFNam  ENTRY
+
+               lda      Reply_FullName
+               and      #$00FF
+               dec      a
+               tax
+CopyNextFNam   lda      reply_fullName,x
+               sta      FrameFName,x
+               sta      FrameFullName,x
+               sta      Sequ_FullName,x
+               sta      SpoolName,x
+               dex
+               bpl      CopyNextFNam
+
+               lda      #SpoolName
+               sta      Ptr_PZero
+               lda      #^SpoolName
+               sta      Ptr_PZero+2
+               lda      #SpoolTxt
+               sta      Ptr_PUn
+               lda      #^SpoolTxt
+               sta      Ptr_PUn+2
+               jsr      ChangeAName
+
+CopyRepFileToF lda      Reply_FileName
+               and      #$00FF
+               dec      a
+               tax
+CopyNextFileN  lda      Reply_fileName,x
+               sta      FrameFileName,x
+               dex
+               bpl      CopyNextFileN
+
+CopyRepExit    rts
+
+*****************************************************************
+*
+*              Copie texte Sequ_FullName dans FrameFullName
+*
+*****************************************************************
+SeqInFrameF    ENTRY
+
+               lda      Sequ_FullName
+               and      #$00FF
+               dec      a
+               tax
+SeqinFraNext   lda      Sequ_FullName,x
+               sta      FrameFullName,x
+               dex
+               bpl      SeqInFraNext
+
+               rts
+
+****************************************************************
+*
+*              Recopie les fichiers pour save as
+*
+****************************************************************
+
+CopyFFToRFSave ENTRY
+;--------------------------------------
+               lda Top_debug_Sas
+               beq STDSAS20
+               jsr ResetFlagFrame       |enleve le top pour save sans elle
+STDSAS20       ANOP
+;--------------------------------------
+               lda      Sequ_NbFrame
+               pha
+
+               jsr      Eff_Template    ; desaloue avant de loader la sequence
+               jsr      CopyRfToFrame
+               jsr      SaveSequence
+               bcc      CopyFF01
+               jsr      New_Template    ; load le template
+               bcs      CopyFFKo0
+               jsr      LoadATemplate
+               bcs      CopyFFKo0
+CopyFFKo0      brl      CopyFFKo
+
+CopyFF01       lda      Sequ_Template   ; a jour grace a load sequence
+               beq      DoCopy00
+
+               jsr      New_Template    ; load le template
+               bcs      CopyFFKo0
+               jsr      LoadATemplate
+               bcs      CopyFFKo0
+
+               jsr      CopyRFToFrame
+               jsr      PutThe000
+               jsr      Save2Template   ; save le template
+               bcs      CopyFFKo0
+
+
+               lda      #$F1
+               sta      FrameType
+
+DoCopy00       lda      #0
+
+DoCopyF0       inc      a
+               sta      Sequ_NbFrame
+;--------------------------------------
+               ldx Top_debug_Sas
+               beq STDSAS30
+
+               cmp Top_debug_Nbf        |si frame save as alors suite
+               beq STDSAS31
+
+STDSAS30       ANOP
+;--------------------------------------
+               jsr      CopyTheLoad
+               bcs      CopyFFKo
+
+               jsr      CopyRFToFrame
+               jsr      PutThe000
+               jsr      CopyTheSave
+               bcs      CopyFFKo
+;--------------------------------------
+STDSAS31       ANOP
+;--------------------------------------
+               lda      Sequ_NbFrame
+               cmp      Sequ_HMFrame
+               bcc      DoCopyF0
+
+
+CopyFFOk       anop
+
+               pla
+               sta      Sequ_NbFrame
+               clc
+               rts
+
+CopyFFKo       anop
+
+               pla
+               sta      Sequ_NbFrame
+               sec
+               rts
+
+****************************************************************
+*
+*              Met a jour la variable Nb_FileSeq
+*
+****************************************************************
+SetNBFSeq      ENTRY
+
+               lda      Sequ_HMFrame
+               cmp      #13
+               bcs      NormalNBF
+
+               dec      a               ; entre 0 et 11
+               sta      SmRectNumber
+               sta      SmFrameRectNb
+               lda      #4
+               sta      Nb_FileSeq
+               bra      SetNBFExit
+
+NormalNBF      pea      0
+               pea      0
+               dec      a
+               pha
+               PushWord #12
+               _UDivide
+               pla
+               asl      a
+               asl      a
+               sta      Nb_FileSeq      ; de 4 a ...
+               pla
+               sta      SmRectNumber    ; de 0 a 11
+
+               pea      0
+               pea      0
+               pha
+               PushWord #3
+               _UDivide
+               pla
+               inc      a
+               clc
+               adc      Nb_FileSeq
+               sta      Nb_FileSeq
+               pla
+               clc
+               adc      #9
+               sta      SmFrameRectNb
+
+SetNBFExit     lda      Nb_FileSeq
+               sec
+               sbc      #3
+               sta      SEPageEnd
+               rts
+
+
+****************************************
+*
+*         Desactive les boutons
+*
+****************************************
+SEDisableBut   anop
+
+               lda      #SEInactif
+               jsr      SEModTheButton
+
+               rts
+
+****************************************
+*
+*          Active les boutons
+*
+****************************************
+SEEnableBut    anop
+
+               lda      #SEActif
+               jsr      SEModTheButton
+
+               rts
+
+SEModTheButton anop
+
+               pha
+               pha
+               pha
+               pha
+               pha
+               pha
+               pha
+               pha
+               pha
+               pha
+               pha
+
+               PushLong #0              ; Output handle
+               PushLong DlgSeqEdPtr
+               PushWord SEEdit
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+               PushLong #0              ; Output handle
+               PushLong DlgSeqEdPtr
+               PushWord SECut
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+               PushLong #0              ; Output handle
+               PushLong DlgSeqEdPtr
+               PushWord SECopy
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+               lda      SEScrapOn
+               bne      SetPasteBut
+               pla                      ; recupere le pha
+               bra      SetOpenBut
+
+SetPasteBut    PushLong #0              ; Output handle
+               PushLong DlgSeqEdPtr
+               PushWord SEPaste
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+SetOpenBut     PushLong #0              ; Output handle
+               PushLong DlgSeqEdPtr
+               PushWord SEOpen
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+               PushLong #0              ; Output handle
+               PushLong DlgSeqEdPtr
+               PushWord SESave
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+               PushLong #0              ; Output handle
+               PushLong DlgSeqEdPtr
+               PushWord SESaveAs
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+               lda      SERevertOn
+               bne      SetRevertBut
+               pla                      ; recupere le pha
+               bra      SetNewBut
+
+SetRevertBut   PushLong #0              ; Output handle
+               PushLong DlgSeqEdPtr
+               PushWord SERevert
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+SetNewBut      PushLong #0              ; Output handle
+               PushLong DlgSeqEdPtr
+               PushWord SENew
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+               PushLong #0              ; Output handle
+               PushLong DlgSeqEdPtr
+               PushWord SEPrint
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+               PushLong #0              ; Output handle
+               PushLong DlgSeqEdPtr
+               PushWord SEShow
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+               rts
+
+****************************************
+*
+*         Renumerote une frame
+*
+****************************************
+DoRenumFrame   anop
+
+               jsr      FindRectNum
+               bcs      DoRenExit
+
+               tax
+               inx
+               sep      #$30
+               longa    off
+               longi    off
+               jsr      FindFileNum
+               lda      FrameNewNum,x
+               cmp      #$80
+               bcs      continuRenum
+
+               rep      #$30
+               brl      DoRenExit
+
+ContinuRenum   lda      SERenumPtr
+               sta      FrameNewNum,x
+               rep      #$30
+               longa    on
+               longi    on
+
+               lda      SERectNum
+               asl      a
+               asl      a
+               asl      a
+               tax
+               lda      SEFrameRect,x
+               inc      a
+               inc      a
+               sta      SEAffNRect
+               clc
+               adc      #11
+               sta      SEAffNRect+4
+               lda      SEFrameRect+2,x
+               inc      a
+               inc      a
+               sta      SEAffNRect+2
+               clc
+               adc      #20
+               sta      SEAffNRect+6
+
+               PushWord #15
+               _SetSolidPenPat
+
+               PushLong #SEAffNRect
+               _PaintRect
+
+               PushWord #0
+               _SetSolidPenPat
+
+               PushLong #SEAffNRect
+               _FrameRect
+
+               ldx      SERenumPtr
+               jsr      DrawNumFrame
+               inc      SERenumPtr
+
+DoRenExit      rts
+
+****************************************
+*
+*         Initialise les numero
+*
+****************************************
+InitFrameNums  anop
+
+               sep      #$30
+               longa    off
+               longi    off
+
+               ldx      #99
+
+InitFrameN0    lda      FrameNewNum,x
+               ora      #$80
+               sta      FrameNewNum,x
+               dex
+               cpx      #1
+               bcs      InitFrameN0
+
+               rep      #$30
+               longa    on
+               longi    on
+
+               rts
+
+****************************************
+*
+*         Met a jour les numeros
+*
+****************************************
+EndFrameNums   anop
+
+               sep      #$30
+               longa    off
+               longi    off
+
+               ldx      #0
+EndFTest1      inx
+               phx
+               jsr      FindFileNum
+               lda      FrameNewNum,x
+               cmp      #$80
+               bcc      EndFTest0
+               lda      SERenumPtr
+               sta      FrameNewNum,x
+               inc      SERenumPtr
+EndFTest0      plx
+               cpx      Sequ_HMFrame
+               bcc      EndFTest1
+
+               ldx      #99
+
+SetOldNum0     lda      FrameNewNum,x
+               sta      Sequ_FileNum,x
+               dex
+               bpl      SetOldnum0
+
+               rep      #$30
+               longa    on
+               longi    on
+
+               rts
+
+
+SetNewNumToOld ENTRY
+
+               ldx      #98
+
+SetNewNum0     lda      Sequ_FileNum,x
+               sta      FrameNewNum,x
+               dex
+               dex
+               bpl      SetNewnum0
+
+               rts
+
+****************************************
+*
+*   Trouve le rectangle selectionne
+*
+****************************************
+FindRectNum    stz      SERectNum
+
+TryFindRect    PushWord #0
+               PushLong #EventWhere
+               lda      #^SEFrameRect
+               pha
+               lda      SERectNum
+               asl      a
+               asl      a
+               asl      a
+               clc
+               adc      #SEFrameRect
+               pha
+               _PtInRect
+               pla
+               bne      FindRFound
+
+               lda      SERectNum
+               cmp      #12
+               bcs      FindRExit
+
+               inc      a
+               sta      SERectNum
+               bra      TryFindRect
+
+FindRFound     anop
+               PushLong #0
+               PushWord SECurrentVal
+               PushWord #3
+               _Multiply
+               pla
+               clc
+               adc      SERectNum
+               cmp      Sequ_HMFrame
+               plx                      ; dans A numero de la frame selectionnee
+
+               anop                     ; carry positionne si pas dans un rect
+
+FindRExit      rts
+
+***************************************
+*
+* Ecrit le numero de la frame : dans X
+*
+***************************************
+DrawNumFrame   anop
+
+               phx
+               PushLong #SEAffNTxt+1
+               PushWord #2
+               PushWord #0
+               _Int2Dec
+
+               lda      SEAffNTxt+1
+               ora      #$1010
+               sta      SEAffNTxt+1
+
+               lda      SEAffNRect+2
+               inc      a
+               inc      a
+               pha
+               lda      SEAffNRect+4
+               dec      a
+               dec      a
+               pha
+               _MoveTo
+
+               PushWord #0
+               _SetForeColor
+
+               PushLong #SEAffNTxt
+               _DrawString
+
+               rts
+
+
+****************************************
+*
+*              Cut Frame
+*
+****************************************
+SECutAct       anop
+
+               _WaitCursor
+
+               lda      #1
+               sta      Top_ActionG
+
+               lda      #1
+               sta      SEScrapOn
+
+               ldx      Sequ_NBFrame
+               jsr      FindFileNum
+               phx
+               jsr      LoadOneFrame
+               stz      Frame_Template  ; pas de template
+               jsr      SaveCCPFrame
+               plx
+
+               sep      #$20
+               longa    off
+
+               lda      #$FF
+               sta      Sequ_FileNum,x
+               sta      FrameNewNum,x
+
+               lda      #2
+               sta      BeenModified,x
+
+               rep      #$20
+               longa    on
+
+               jsr      SEFDelete
+
+               lda      Sequ_HMFrame
+               cmp      Sequ_NBFrame
+               bne      SECutRts
+
+               dec      Sequ_NBFrame
+
+SECutRts       dec      Sequ_HMFrame
+
+               jsr      Scroll1Line
+
+               PushWord #SEActif
+               PushLong #0              ; Output handle
+               PushLong DlgSeqEdPtr
+               PushWord SEPaste
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+               jsr      ResetScrollB
+
+               jsr      TestMaxFrame
+
+               _InitCursor
+
+               rts
+
+****************************************
+*
+*              Copy Frame
+*
+****************************************
+SECopyAct      anop
+
+               lda      #1
+               sta      SEScrapOn
+
+               ldx      Sequ_NBFrame
+               jsr      FindFileNum
+               jsr      LoadOneFrame
+;--
+;              stz      Frame_Template  ; pas de template +++ BUG 10/05/88 +++
+;--
+               jsr      SaveCCPFrame
+
+               PushWord #SEActif
+               PushLong #0              ; Output handle
+               PushLong DlgSeqEdPtr
+               PushWord SEPaste
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+               jsr      TestMaxFrame
+
+               rts
+
+****************************************
+*
+*              Paste Frame
+*
+****************************************
+SEPasteAct     anop
+
+               _WaitCursor
+
+               lda      SEScrapOn
+               bne      SEPasteStart
+               brl      SEPasteExit
+
+SEPasteStart   anop
+
+               lda      #1
+               sta      Top_ActionG
+
+               jsr      FindNumber
+               tax
+
+               phx
+               jsr      LoadCCPFrame
+               plx
+               bcs      SEPasteExit
+               phx
+;--
+               lda Frame_Template       |bug du 10/05/88
+               beq sBug100588
+
+               lda Sequ_Template        |si 1 template dans la sequence
+               sta Frame_Template       |et TEMP dans frame alors 1 sinon 0
+
+sBug100588     ANOP
+;--
+               jsr      SaveOneFrame
+               plx
+               bcs      SEPasteExit
+
+               lda      BeenModified,x
+               and      #$FF00
+               ora      #$0001
+               sta      BeenModified,x
+
+               lda      Sequ_HMFrame
+               cmp      #99
+               bcs      SEPasteExit
+               inc      a
+               sta      Sequ_HMFrame
+
+               phx
+
+               inc      Sequ_NbFrame    ; on insere apres la selection
+               jsr      SEFInsert
+
+               sep      #$20
+               longa    off
+               plx
+               lda      Sequ_NbFrame
+               sta      Sequ_FileNum,x
+               sta      FrameNewNum,x   ; pour affichage du numero et renum
+               rep      #$20
+               longa    on
+
+               jsr      Scroll1Line
+
+               jsr      TestMaxFrame
+
+SEPasteExit    _InitCursor
+               rts
+
+*
+*              remet la scrollbar
+*
+
+ResetScrollB   anop
+
+               jsr      SetNBFSeq
+               jsr      CalcCurValue
+
+               lda      #$FFFF
+               sta      SESelVisible
+               lda      #SETimePause
+               sta      SEPauseFlip
+               lda      Sequ_NbFrame
+               sta      SELastValue
+
+               jsr      ResizeScroll
+
+               PushWord SECurrentVal
+               PushLong DlgSeqEdPtr
+               PushWord SEScrollBar
+               _SetDItemValue
+
+               rts
+
+*
+*              re-affiche la sequence
+*
+InvalSeq       PushLong DlgSeqEdPtr
+               _SetPort
+
+               PushLong #SEAffRect
+               _InvalRect
+
+               rts
+
+*
+*              ReTaille la scroll bar
+*
+ResizeScroll   PushWord Nb_FileSeq
+               PushWord #-1
+
+               PushLong #0              ; Output handle
+               PushLong DlgSeqEdPtr
+               PushWord SEScrollBar
+               _GetControlDItem
+
+               _SetCtlParams            ; les parametres arrivent de _Get...
+
+               rts
+
+               END

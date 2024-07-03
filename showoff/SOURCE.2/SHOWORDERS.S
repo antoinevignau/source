@@ -1,0 +1,1969 @@
+***************************************
+*
+*      Serial orders
+*
+*      ShowOrders.s  -- relogeable --
+*
+***************************************
+
+               65816    on
+               list     Off
+               Mcopy    Showorders.Mac
+
+               keep     DoOrders
+
+OrderDyna      START
+
+               brl DoSerialSetup
+
+               END
+
+***************************************
+*
+*           Serial Dialog
+*
+***************************************
+DoSerialSetup  START
+               Using    OrderData
+               Using    GlobalData
+
+               phb
+               phk
+               plb
+
+               jsl      Pleine_Page
+
+               Pushlong #0
+               _GetPort
+               pla
+               sta      OrLePort
+               pla
+               sta      OrLePort+2
+
+               lda      #1
+               sta      OrPortVal
+               stz      OrStopWaitVal
+               stz      OrWaitVal
+               stz      OrQuitVal
+               stz      OrEditActif
+               stz      OrOrderOn       ; pas de texte dans one order
+               stz      OrSelectOn      ; aucune ligne selectionnee
+               stz      OrNbElement     ; re-initialise plus loin
+               stz Visu_Poste
+               stz Voir_Ce_Poste
+               stz Mode_AddInsRep
+               stz Invert_Poste
+               dec Invert_Poste
+;--
+               jsr Init_Values
+;--
+;              affiche le numero de la frame
+
+               PushWord >Sequ_NbFrame
+               PushLong #OrFnbTxt+9
+               PushWord #2
+               PushWord #0
+               _Int2Dec
+               lda      OrFnbTxt+9
+               ora      #$1010
+               sta      OrFnbTxt+9
+
+
+;              ???? Init les item en fonction du record ??????
+
+
+               PushLong #0              ; dialogPtr
+               PushLong #OrDialFull     ; content rectangle
+               PushLong #0              ; no title
+               PushLong #$FFFFFFFF      ; bring to front
+               PushWord #$2020          ; frame
+               PushLong #83             ; refcon
+               PushLong #OrDialFull     ; full size
+               _NewModelessDialog
+
+               pla
+               sta      DlgOrderPtr
+               pla
+               sta      DlgOrderPtr+2
+
+               PushLong DlgOrderPtr
+               _SetPort
+
+               PushLong DlgOrderPtr
+               PushLong #OrOk
+               _GetNewDItem
+
+               PushLong DlgOrderPtr
+               PushLong #OrCancel
+               _GetNewDItem
+
+               PushLong DlgOrderPtr
+               PushLong #OrPrinter
+               _GetNewDItem
+
+               PushLong DlgOrderPtr
+               PushLong #OrModem
+               _GetNewDItem
+
+               PushLong DlgOrderPtr
+               PushLong #OrPort
+               _GetNewDItem
+
+               PushLong DlgOrderPtr
+               PushLong #OrTimeSec
+               _GetNewDItem
+
+               PushLong DlgOrderPtr
+               PushLong #OrTime
+               _GetNewDItem
+
+               PushLong DlgOrderPtr
+               PushLong #OrClickMouse
+               _GetNewDItem
+
+               PushLong DlgOrderPtr
+               PushLong #OrWait
+               _GetNewDItem
+
+               PushLong DlgOrderPtr
+               PushLong #OrOneOrder
+               _GetNewDItem
+
+               PushLong DlgOrderPtr
+               PushLong #OrInsert
+               _GetNewDItem
+
+               PushLong DlgOrderPtr
+               PushLong #OrAdd
+               _GetNewDItem
+
+               PushLong DlgOrderPtr
+               PushLong #OrReplace
+               _GetNewDItem
+
+               PushLong DlgOrderPtr
+               PushLong #OrClear
+               _GetNewDItem
+
+               PushLong DlgOrderPtr
+               PushLong #OrEdit
+               _GetNewDItem
+
+               PushLong DlgOrderPtr
+               PushLong #OrFrameNb
+               _GetNewDItem
+
+;--------------------------------------
+;        Simule list Manager
+;--------------------------------------
+               PushLong DlgOrderPtr
+               PushLong #OrListSBar
+               _GetNewDItem
+
+               PushLong DlgOrderPtr
+               PushLong #OrLigne1
+               _GetNewDItem
+
+               PushLong DlgOrderPtr
+               PushLong #OrLigne2
+               _GetNewDItem
+
+               PushLong DlgOrderPtr
+               PushLong #OrLigne3
+               _GetNewDItem
+
+               PushLong DlgOrderPtr
+               PushLong #OrLigne4
+               _GetNewDItem
+
+               PushLong DlgOrderPtr
+               PushLong #OrLigne5
+               _GetNewDItem
+;--------------------------------------
+;              !!! affiche le titre !!!
+;--------------------------------------
+               PushWord #0
+               _GetTextMode
+
+               PushWord #0
+               _GetForeColor
+
+               PushWord #0              ; couleur 0 = noir
+               _SetSolidPenPat
+
+               PushLong #OrTitleOmbRect
+               _PaintRect
+
+               PushWord #1              ; couleur 1 = gris
+               _SetSolidPenPat
+
+               PushLong #OrTitleRect
+               _PaintRect
+
+               PushWord #0              ; couleur 0 = noir
+               _SetSolidPenPat
+
+               PushLong #OrTitleRect
+               _FrameRect
+
+               PushWord #4              ; mode transparent
+               _SetTextMode
+
+               PushWord #OrTitleOmbX
+               PushWord #OrTitleOmbY
+               _MoveTo
+
+               PushWord #0             ; couleur 0 = noir
+               _SetForeColor
+
+               PushLong #OrderTitle
+               _DrawString
+
+               PushWord #OrTitleX
+               PushWord #OrTitleY
+               _MoveTo
+
+               PushWord #9              ; couleur 9 = jaune
+               _SetForeColor
+
+               PushLong #OrderTitle
+               _DrawString
+
+               PushLong #RectList       |rect list manager
+               _FrameRect
+
+               _SetForeColor
+               _SetTextMode
+
+;--
+;
+
+NextSetDEvt    anop
+
+               PushWord #0
+               PushWord #$1FFF
+               PushLong #EventRecord
+               _GetNextEvent
+               pla
+               bne      HdlEvent
+
+*                       WithNoEvent
+
+               bra      TDialSel
+
+HdlEvent       anop
+
+               lda      >EventWhat
+               cmp      #3
+               beq      itsaKeyDown
+               cmp      #5
+               beq      itsaKeyDown
+
+               bra      TDialSel
+
+ItsAKeyDown    lda      OrEditActif
+               bne      IsItACarExit
+
+               lda      >EventMessage
+               ldx      #0
+
+TestNextChar   cmp      OrValidCar,x
+               beq      IsItACarExit    ; caractere accepte
+
+               inx
+               inx
+               cpx      #NbrOrValidCar
+               bcc      TestNextChar
+
+               bra      NextSetDEvt
+
+IsItACarExit   lda      >EventMessage
+               cmp      #9              ;tab key
+               bne      TDialSel
+
+               lda      OrEditActif
+               inc      a
+               cmp      #2
+               bcc      ReStorEdAct
+               lda      #0
+ReStorEdAct    sta      OrEditActif
+;--------------------------------------
+;--------------------------------------
+TDialSel       ANOP
+               PushWord #0
+               PushLong #EventRecord
+               PushLong #DlgOrderPtr
+               PushLong #OrItemHit
+               _DialogSelect
+
+               pla
+               lda      OrItemHit
+               asl      a
+               tax
+               jsr      (OrActions,x)
+
+               jsr      OrTestSelOrd
+
+SGere_List     lda      OrQuitval
+               bne      SetupDlgExit
+               brl      NextSetDEvt
+
+SetupDlgExit   anop
+
+               PushLong DlgOrderPtr
+               _CloseDialog
+
+               PushLong OrLePort
+               _SetPort
+
+               jsl      Demi_Page
+
+               lda      OrQuitVal
+               cmp      #2              ; positionne carry
+;--
+               lda #DoSerialSetup
+               sta <Ptr_PZero
+               lda #^DoSerialSetup
+               sta <Ptr_PZero+2
+               plb
+               rtl
+;--------------------------------------
+;        List Action
+;--------------------------------------
+OrActions      anop
+
+               dc i'OrIgnore'
+
+               dc i'OrOkAct'
+               dc i'OrCancelAct'
+               dc i'OrPortAct'
+               dc i'OrPortAct'
+               dc i'OrIgnore'
+               dc i'OrTSecAct'
+               dc i'OrStopWaitAct'
+               dc i'OrStopWaitAct'
+               dc i'OrWaitAct'
+               dc i'OrOneOrdAct'
+               dc i'OrInsAct'
+               dc i'OrAddAct'
+               dc i'OrRepAct'
+               dc i'OrDelAct'
+               dc i'OrEdiAct'
+               dc i'OrIgnore'
+
+               dc i'OrIgnore'           scroll bar
+               dc i'OrLigne1Act'
+               dc i'OrLigne2Act'
+               dc i'OrLigne3Act'
+               dc i'OrLigne4Act'
+               dc i'OrLigne5Act'
+
+OrIgnore       anop
+
+               rts
+
+
+OrOkAct        anop
+
+               lda      #1
+               sta      OrQuitVal
+;--
+               jsr Copy_In_Orders
+
+               rts
+
+OrCancelAct    anop
+
+               lda      #2
+               sta      OrQuitVal
+               rts
+
+******************************************
+*
+*       Select Wait Check Item
+*
+******************************************
+OrWaitAct      anop
+
+               lda      OrWaitVal
+               eor      #$0001
+               sta      OrWaitVal
+;--
+SOrWaitAct     sta      OrParamVal
+               lda      OrItemHit
+               sta      OrParamCheck
+               jsr      InvCheckItem
+
+               lda      OrWaitVal
+               beq      SWInactif
+
+               PushLong #0
+               bra      OrWaitAct1
+
+SWInactif      PushWord #255
+               PushWord #255
+
+OrWaitAct1     anop
+               PushLong #0              ; Output handle
+               PushLong DlgOrderPtr
+               PushWord OrTime
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+               PushLong #0              ; Output handle
+               PushLong DlgOrderPtr
+               PushWord OrClickMouse
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+               rts
+
+******************************************
+*
+*       Select Stop Wait Radio button
+*
+******************************************
+OrStopWaitAct  anop
+
+               lda      OrClickMouse
+               sec
+               sbc      OrItemHit
+               sta      OrStopWaitVal
+               lda      OrItemHit
+               sta      OrParamRadio
+               jsr      OrSetRadioItem
+
+               rts
+
+******************************************
+*
+*       Select Port Radio button
+*
+******************************************
+OrPortAct      anop
+
+               lda      OrModem
+               sec
+               sbc      OrItemHit
+               sta      OrPortVal
+               lda      OrItemHit
+               sta      OrParamRadio
+               jsr      OrSetRadioItem
+
+               rts
+
+******************************************
+*
+*         Select EditLine
+*
+******************************************
+OrTSecAct      anop
+
+               stz      OrEditActif
+
+               rts
+
+******************************************
+*
+*         Select EditLine
+*
+******************************************
+OrOneOrdAct    anop
+
+               lda      #1
+               sta      OrEditActif
+
+               rts
+;...............................................................
+;
+;        OrDelAct
+;
+;...............................................................
+OrDelAct       ANOP
+;--
+               lda #1
+               sta >Top_Action
+;--
+               jsr Decalage_Del
+
+               dec OrNbElement
+               bpl soda0
+               stz OrNbElement
+;--
+soda0          ANOP
+               lda Voir_Ce_Poste
+               clc
+               adc #5
+               cmp OrNbElement
+               bcc soda1
+               dec Voir_Ce_Poste
+               bpl soda1
+               stz Voir_Ce_poste
+;--
+soda1          ANOP
+               lda Invert_Poste
+               cmp OrNbElement
+               bcc soda2
+               dec Invert_Poste
+               bpl soda2
+               stz Invert_Poste
+;--------------------------------------
+soda2          ANOP
+;--
+               lda Voir_Ce_Poste
+               sec
+               sbc #4
+               bpl Soda3
+               lda #0
+;--
+soda3          sta visu_poste
+               pha
+               PushLong DlgOrderPtr
+               PushWord OrListSBar
+               _SetDItemValue
+;--
+               PushWord OrNbElement     |+1 sur l'ascenseur
+               PushWord #-1
+
+               PushLong #0
+               PushLong DlgOrderPtr
+               PushWord OrListSBar
+               _GetControlDItem
+
+               _SetCtlParams
+;--------------------------------------
+               jsr Draw_List
+;--------------------------------------
+               jsr Trt_Sl
+               stz OrSelectOn
+;--
+               lda OrNbElement
+               beq OrDelAct1
+               brl FOrDelAct
+;--
+OrDelAct1      PushWord #255
+               PushLong #0
+               PushLong DlgOrderPtr
+               PushWord OrEdit
+               _GetControlDItem
+               _HiliteControl
+;--
+               PushWord #255
+               PushLong #0
+               PushLong DlgOrderPtr
+               PushWord OrClear
+               _GetControlDItem
+               _HiliteControl
+;--
+               PushWord #255
+               PushLong #0
+               PushLong DlgOrderPtr
+               PushWord OrReplace
+               _GetControlDItem
+               _HiliteControl
+;--
+               PushWord #255
+               PushLong #0
+               PushLong DlgOrderPtr
+               PushWord OrInsert
+               _GetControlDItem
+               _HiliteControl
+;--
+               dec Invert_Poste
+               stz Visu_Poste
+               stz Voir_Ce_Poste
+
+FOrDelAct      rts
+;...............................................................
+;
+;        OrEdiAct
+;
+;...............................................................
+OrEdiAct       ANOP
+;--
+               lda Invert_Poste
+               asl      a               |Acc poste a remplir
+               asl      a
+               asl      a
+               sta      OrTemp1
+               asl      a
+               asl      a
+               clc
+               adc      OrTemp1         ; multiplie par 40
+               sta      OrTemp1
+;--
+               PushLong DlgOrderPtr     |positione le text
+               PushWord OrOneOrder
+               lda      #^TheMembers
+               pha
+               lda      #TheMembers
+               clc
+               adc      OrTemp1
+               pha
+               _SetIText
+;--------------------------------------
+               lda      OrTemp1
+               clc
+               adc      #32             ; longueur d'un ordre : 31+1
+               tax
+;--
+               lda      TheMembers,x
+               sta      OrWaitVal
+;--
+               inx
+               inx
+               lda      TheMembers,x
+               sta      OrStopWaitVal
+;--
+               inx
+               inx
+               lda      TheMembers,x
+               sta      OrPortVal
+;--
+               inx
+               inx
+               lda      TheMembers,x
+               pha
+               PushLong #OrTimeSecTxt+1
+               PushWord #2
+               PushWord #0
+               _Int2Dec
+;--
+               lda OrTimeSecTxt
+               and #$FF00
+               cmp #$2000               |blanc ?
+               bne sst0
+               lda #$3002               |2 caracteres dont un zero
+               sta OrTimeSecTxt
+;--
+sst0           PushLong DlgOrderPtr
+               PushWord OrtimeSec
+               PushLong #OrTimeSecTxt
+               _SetIText
+;--
+               lda #8
+               sec
+               sbc OrStopWaitVal
+               tay
+               PushWord #1
+               PushLong DlgOrderPtr
+               phy
+               _SetDItemValue
+;-
+               lda #4
+               sec
+               sbc OrPortVal
+               tay
+               PushWord #1
+               PushLong DlgOrderPtr
+               phy
+               _SetDItemValue
+;-
+               lda OrWait
+               sta OrItemHit
+               lda OrWaitVal
+               jsr SOrWaitAct           |position check box
+
+               rts
+******************************************
+*
+* Add or Insert or Replace an element in List
+*
+******************************************
+;--------------------------------------
+OrRepAct       ANOP
+;--------------------------------------
+               lda #1
+               sta >Top_Action
+               lda #Mode_Replace
+               sta Mode_AddInsRep
+               lda Invert_Poste
+               pha
+               bra s1OrAddAct
+;--------------------------------------
+OrInsAct       ANOP
+;--------------------------------------
+               lda #1
+               sta >Top_Action
+               lda #Mode_Insert
+               sta Mode_AddInsRep
+               lda Invert_Poste
+               bra s0OrAddAct
+;--------------------------------------
+OrAddAct       ANOP
+;--------------------------------------
+               lda #1
+               sta >Top_Action
+               lda #Mode_Add
+               sta Mode_AddInsRep
+               lda Invert_Poste         |poste hiliter ou 0 par option
+               bpl sOrAddAct
+               lda #0
+               bra s0OrAddAct
+sOrAddAct      inc a
+s0OrAddAct     pha
+;--------------------------------------
+               jsr decalage_Add
+;--------------------------------------
+s1OrAddAct     pla
+               asl      a               |Acc poste a remplir
+               asl      a
+               asl      a
+               sta      OrTemp1
+               asl      a
+               asl      a
+               clc
+               adc      OrTemp1         ; multiplie par 40
+               sta      OrTemp1
+;--------------------------------------
+               PushLong DlgOrderPtr
+               PushWord OrOneOrder
+               lda      #^TheMembers
+               pha
+               lda      #TheMembers
+               clc
+               adc      OrTemp1
+               pha
+               _GetIText
+;--------------------------------------
+               lda      OrTemp1
+               clc
+               adc      #32             ; longueur d'un ordre : 31+1
+               tax
+
+               lda      OrWaitVal
+               sta      TheMembers,x
+               inx
+               inx
+               lda      OrStopWaitVal
+               sta      TheMembers,x
+               inx
+               inx
+               lda      OrPortVal
+               sta      TheMembers,x
+               inx
+               inx
+               phx
+
+               PushLong DlgOrderPtr
+               PushWord OrtimeSec
+               PushLong #TimeTxt
+               _GetIText
+
+;--
+               PushWord #0
+               PushLong #TimeTxt+1
+               lda      TimeTxt
+               and      #$00FF
+               pha
+               PushWord #0
+               _Dec2Int
+               pla
+
+               plx
+               sta      TheMembers,x
+;--------------------------------------
+               lda Mode_AddInsRep       |si replace pas de plus
+               cmp #Mode_Replace
+               beq suite0
+               inc      OrNbElement
+;--------------------------------------
+               PushWord OrNbElement     |+1 sur l'ascenseur
+               PushWord #-1
+
+               PushLong #0
+               PushLong DlgOrderPtr
+               PushWord OrListSBar
+               _GetControlDItem
+
+               _SetCtlParams
+;--------------------------------------
+suite0         ENTRY
+               stz Mode_Replace
+               lda Voir_Ce_Poste
+               sec
+               sbc #4
+               bpl SS0
+               lda #0
+;--
+SS0            sta visu_poste
+               pha
+               PushLong DlgOrderPtr
+               PushWord OrListSBar
+               _SetDItemValue
+
+               jsr Draw_List
+
+               rts
+;...............................................................
+;
+;        Draw_List
+;
+;...............................................................
+Draw_List      ENTRY
+;--
+               phd
+               lda >MyZp
+               tcd
+;--
+               lda Visu_Poste
+;--
+SDraw_List     asl      a
+               asl      a
+               asl      a
+               sta      OrTemp1
+               asl      a
+               asl      a
+               clc
+               adc      OrTemp1         ; multiplie par 40
+               sta      OrTemp1
+;--------------------------------------
+               lda #^TheMembers
+               sta Ptr_List+2
+               lda #TheMembers
+               clc
+               adc OrTemp1
+               sta Ptr_List
+;--
+               lda #1
+               sta Nb_Element
+;--
+Loop           ANOP
+
+               lda Nb_Element
+               cmp OrNbElement
+               beq OkLoopStr
+               bcs blank_String
+;--
+OkLoopStr      PushLong DlgOrderPtr
+               lda Nb_Element
+               clc
+               adc #17
+               pha
+               PushLong Ptr_List
+               _SetIText
+               bra SLoop
+;--
+blank_String   PushLong DlgOrderPtr
+               lda Nb_Element
+               clc
+               adc #17
+               pha
+               PushLong #Str_Blanc
+               _SetIText
+;--
+SLoop          lda Ptr_List             |poste Suivant
+               clc
+               adc #40
+               sta Ptr_List
+;--
+               inc Nb_Element
+               lda Nb_Element
+               cmp #6
+               bcc Loop
+;--------------------------------------
+               lda OrNbElement
+               bne SS01
+               pld
+               rts
+;--------------------------------------
+SS01           lda Visu_poste
+               clc
+               adc #4
+               cmp OrNbElement
+               bcc SS1
+               lda OrNbElement
+               dec a
+;--
+SS1            sta EndVisu_Poste
+;--
+               lda Invert_poste
+               cmp Visu_Poste
+               bcc FDraw_List
+               cmp EndVisu_Poste
+               bcc OkSDraw_List
+               bne FDraw_List
+;--
+OkSDraw_List   lda Invert_Poste
+               sec
+               sbc Visu_poste
+               bmi FDraw_List
+;--
+               asl a
+               tax
+               jsr (Tab_Invert,x)
+               jsr Trt_Select_List
+;--
+FDraw_List     pld
+               rts
+;--------------------------------------
+Invert_P1      PushLong #RectL1
+               bra InvertPoste
+;--
+Invert_P2      PushLong #RectL2
+               bra InvertPoste
+;--
+Invert_P3      PushLong #RectL3
+               bra InvertPoste
+;--
+Invert_P4      PushLong #RectL4
+               bra InvertPoste
+;--
+Invert_P5      PushLong #RectL5
+;--
+Invertposte    ANOP
+               _InvertRect
+               rts
+;--------------------------------------
+Tab_Invert     ANOP
+               dc i'Invert_P1'
+               dc i'Invert_P2'
+               dc i'Invert_P3'
+               dc i'Invert_P4'
+               dc i'Invert_P5'
+;...............................................................
+;
+;        Is_ScrollBar : traite la Scroll Bar
+;
+;...............................................................
+Or_ScrollBar   ENTRY
+;--
+               phb                      | sauve registres
+               phd
+
+               phk
+               plb                      | met Data Bank
+;--
+               lda 13,s                 |Command
+               asl a
+               tax
+               jsr (TabScrollCmd,x)
+;--
+               pld                      | remet a jour direct bank
+               plb                      | data bank
+
+               lda 0,s
+               sta 8,s
+               lda 2,s
+               sta 10,s
+
+               tsc
+               clc
+               adc #8
+               tcs
+
+               rtl
+;--------------------------------------
+TabScrollCmd   ANOP
+               dc i'0'
+               dc i'InitView'
+               dc i'initTotal'
+               dc i'InitValue'
+               dc i'LineUp'
+               dc i'LineDown'
+               dc i'PageUp'
+               dc i'PageDown'
+               dc i'Thumb'
+;--
+InitView       ANOP
+               lda #5
+               sta 17,s
+               rts
+;--
+InitTotal      ANOP
+               lda OrNbElement
+               sta 17,s
+               rts
+;--
+InitValue      ANOP
+               lda MyListTop
+               dec a
+               sta 17,s
+               rts
+;--
+LineUp         ANOP
+               PushWord #0
+               PushLong DlgOrderPtr
+               PushWord OrListSBar
+               _GetDItemValue
+               pla
+               beq SlineUp
+               bne SPageUp
+
+PageUP         ANOP
+               PushWord #0
+               PushLong DlgOrderPtr
+               PushWord OrListSBar
+               _GetDItemValue
+               pla
+               beq SlineUp
+               sec
+               sbc #4
+               bpl S0PageUp
+               lda #0
+               bra S0PageUp
+;--
+SPageUp        dec a
+S0PageUp       sta 17,s
+               sta Visu_poste
+               jsr Draw_List
+               rts
+SLineUp        sta 17,s
+               rts
+;--
+LineDown       ANOP
+               PushWord #0
+               PushLong DlgOrderPtr
+               PushWord OrListSBar
+               _GetDItemValue
+               pla
+               tax
+;--
+               clc
+               adc #5
+               cmp OrNbElement
+               txa
+               bcs SlineDown
+               inc a
+               bra SpageDown
+;-----
+PageDown       ANOP
+               PushWord #0
+               PushLong DlgOrderPtr
+               PushWord OrListSBar
+               _GetDItemValue
+               pla
+;--
+               clc
+               adc #4
+               cmp OrNbElement
+               bcs S0lineDown
+;--
+               tax
+               clc
+               adc #4
+               cmp OrNbElement
+               bcs S0LineDown
+               txa
+               bra SPageDown
+;-
+S0LineDown     lda OrNbElement
+               sec
+               sbc #5
+               bpl SPageDown
+               lda #0
+;--
+SpageDown      sta 17,s
+               sta Visu_Poste
+               jsr Draw_List
+               rts
+;-
+               dec a
+SlineDown      sta 17,s
+               rts
+;--
+Thumb          ANOP
+               PushWord #0
+               PushLong DlgOrderPtr
+               PushWord OrListSBar
+               _GetDItemValue           |reste dans la pile
+               pla
+               sta 17,s
+               sta Visu_Poste
+               jsr Draw_List
+               rts
+;--------------------------------------
+;        OrLigne1Act
+;--------------------------------------
+OrLigne1Act    ENTRY
+
+               lda OrNbElement
+               beq FOrLigne1Act
+
+               lda Visu_poste
+               sta Invert_poste
+
+               jsr Draw_List
+
+FOrLigne1Act   rts
+;--------------------------------------
+;        OrLigne2Act
+;--------------------------------------
+OrLigne2Act    ENTRY
+
+               lda EndVisu_Poste
+               sec
+               sbc Visu_poste
+               cmp #1
+               bcc FOrLigne2Act
+
+               lda Visu_Poste
+               inc a
+               sta Invert_Poste
+
+               jsr Draw_List
+
+ForLigne2Act   rts
+;--------------------------------------
+;        OrLigne3Act
+;--------------------------------------
+OrLigne3Act    ENTRY
+
+               lda EndVisu_Poste
+               sec
+               sbc Visu_poste
+               cmp #2
+               bcc FOrLigne3Act
+
+               lda Visu_Poste
+               inc a
+               inc a
+               sta Invert_Poste
+
+               jsr Draw_List
+
+FOrLigne3Act   rts
+;--------------------------------------
+;        OrLigne4Act
+;--------------------------------------
+OrLigne4Act    ENTRY
+               lda EndVisu_Poste
+               sec
+               sbc Visu_poste
+               cmp #3
+               bcc FOrLigne4Act
+
+               lda Visu_Poste
+               clc
+               adc #3
+               sta Invert_Poste
+
+               jsr Draw_List
+
+FOrLigne4Act   rts
+;--------------------------------------
+;        OrLigne5Act
+;--------------------------------------
+OrLigne5Act    ENTRY
+
+               lda EndVisu_Poste
+               sec
+               sbc Visu_poste
+               cmp #4
+               bcc FOrLigne5Act
+
+               lda Visu_Poste
+               clc
+               adc #4
+               sta Invert_Poste
+
+               jsr Draw_List
+FOrLigne5Act   rts
+;--------------------------------------
+;        Trt_Select_List
+;--------------------------------------
+Trt_Select_List ENTRY
+;--
+               jsr Trt_SL
+;--
+               sep #$20
+               longa off
+
+               lda Invert_Poste         |poste * 5
+               asl a                    |astuce de jcl
+               asl a                    |a verifier
+               clc                      |because les mouches ...
+               adc Invert_Poste
+               adc #4
+               tay
+               lda #$80
+               sta MyList,y
+;--
+               rep #$20
+               longa on
+               rts
+;--
+Trt_SL         ENTRY
+               ldy #4                   |Position in MyList
+               lda #0                   |no Select
+               ldx #20                  |20 Lignes
+               sep #$20
+               longa off
+TSL_Loop       sta MyList,y
+               iny
+               iny
+               iny
+               iny
+               iny
+
+               dex
+               bne TSL_Loop
+;--
+               rep #$20
+               longa on
+               rts
+;--------------------------------------
+;        Decalage_Add
+;--------------------------------------
+Decalage_Add   ENTRY
+               cmp OrNbElement
+               bne decalage
+;--
+Dernier_Poste  lda OrNbElement
+               sta Invert_Poste
+               sta Voir_Ce_Poste
+;--
+               lda Mode_AddInsRep
+               beq FDerPos
+               dec Invert_Poste
+               dec Voir_Ce_Poste
+FDerPos        rts
+;--------------------------------------
+Decalage_Inser ENTRY
+;--------------------------------------
+Decalage       ANOP
+
+               sta Poste1_Dec
+;--
+               lda OrNbElement
+               asl      a               |Acc poste a remplir
+               asl      a
+               asl      a
+               sta      OrTemp1
+               asl      a
+               asl      a
+               clc
+               adc      OrTemp1         ; multiplie par 40
+               dec a
+               dec a
+               tax
+;--
+               clc
+               adc #40
+               tay
+;--
+               lda OrNbElement
+               sec
+               sbc Poste1_dec
+               asl      a               |Acc poste a remplir
+               asl      a
+               asl      a
+               sta      OrTemp1
+               asl      a
+               asl      a
+               clc
+               adc      OrTemp1         ; multiplie par 40
+               sta NbByte
+;----
+RDecal         lda TheMembers,x
+               sta TheMembers,y
+               dex
+               dex
+               dey
+               dey
+
+               dec NbByte
+               dec NbByte
+               bpl RDecal
+;--
+               lda Mode_AddInsRep
+               bne InsMode
+;--
+AddMode        lda Invert_Poste
+               inc a
+               sta Invert_Poste
+               sta Voir_Ce_Poste
+;--
+InsMode        lda Invert_Poste
+               sta Invert_Poste
+               sta Voir_Ce_Poste
+               rts
+;--------------------------------------
+;        Decalage Delete
+;--------------------------------------
+Decalage_Del   ENTRY
+               lda Invert_Poste
+               inc a
+               cmp OrNbElement
+               beq RazB
+;--
+               lda Invert_Poste
+               asl      a               |Acc poste a remplir
+               asl      a
+               asl      a
+               sta      OrTemp1
+               asl      a
+               asl      a
+               clc
+               adc      OrTemp1         ; multiplie par 40
+               tax
+;--
+               clc
+               adc #40
+               tay
+;--
+               lda OrNbElement
+               sec
+               sbc Invert_Poste
+               asl      a               |Acc poste a remplir
+               asl      a
+               asl      a
+               sta      OrTemp1
+               asl      a
+               asl      a
+               clc
+               adc      OrTemp1         ; multiplie par 40
+               sta NbByte
+;----
+RDecal1        lda TheMembers,y
+               sta TheMembers,x
+               inx
+               inx
+               iny
+               iny
+
+               dec NbByte
+               dec NbByte
+               bpl RDecal1
+;--
+RazB           ANOP
+               lda OrNbElement
+               dec a
+               asl      a               |Acc poste a remplir
+               asl      a
+               asl      a
+               sta      OrTemp1
+               asl      a
+               asl      a
+               clc
+               adc      OrTemp1         ; multiplie par 40
+               sta OrTemp1
+               tax
+;--
+               ldy #$40
+               lda #0
+R_RazB         sta TheMembers,x
+               inx
+               inx
+               dey
+               dey
+               bpl R_RazB
+;--
+               rts
+;--------------------------------------
+;        DEREF AND UNLOCK
+;--------------------------------------
+Deref_Order    ENTRY
+
+               lda >Hdl_Orders+2
+               tax
+               lda >Hdl_Orders
+               sta 0
+               stx 2
+               ldy #4
+               lda [0],y
+               ora #$8000
+               sta [0],y
+               dey
+               dey
+               lda [0],y
+               tax
+               lda [0]
+;--
+               sta <Ptr_Orders
+               stx <Ptr_Orders+2
+               rts
+;--
+Unlock_Order   ENTRY
+
+               lda >Hdl_Orders+2
+               tax
+               lda >Hdl_Orders
+               sta 0
+               stx 2
+               ldy #4
+               lda [0],y
+               and #$7FFF
+               sta [0],y
+               rts
+;--------------------------------------
+;        Copy in TheMembers
+;--------------------------------------
+Copy_In_Member ENTRY
+;--
+               jsr Deref_Order
+
+               ldy #800
+               ldx #798
+;--
+RCIM           lda [<Ptr_Orders],y
+               sta TheMembers,x
+               dey
+               dey
+               dex
+               dex
+               bpl RCIM
+;--
+               lda [<Ptr_Orders]
+               sta OrNbElement
+;--
+               jsr Unlock_Order
+
+               rts
+;--------------------------------------
+;        Copy in Orders
+;--------------------------------------
+Copy_In_Orders ENTRY
+;--
+               jsr Deref_Order
+
+               ldy #800
+               ldx #798
+;--
+RCIO           lda TheMembers,x
+               sta [<Ptr_Orders],y
+               dey
+               dey
+               dex
+               dex
+               bpl RCIO
+;--
+               lda OrNbElement
+               sta [<Ptr_Orders]
+;--
+               jsr Unlock_Order
+;--
+               lda #1
+               sta >Frame_Serie
+
+               rts
+;--------------------------------------
+;        init value
+;--------------------------------------
+Init_Values    ENTRY
+
+               jsr Trt_SL
+
+               lda >Frame_Serie
+               bne SIV
+;--
+No_IV          lda #0
+               sta OrNbElement
+
+               ldy #798
+               lda #0
+SNo_Iv         sta TheMembers,y
+               dey
+               dey
+               bpl SNo_Iv
+
+               rts
+;--
+SIV            jsr Copy_In_Member
+;--
+               rts
+
+               END
+****************************************
+*
+*              Order Data
+*
+****************************************
+OrderData      DATA
+
+
+SerialRecord   anop
+OrWaitVal      ds 2                     ; 0 = no wait , 1 = wait
+OrStopWaitVal  ds 2                     ; 0 = click mouse , 1 = time
+OrPortVal      ds 2                     ; 0 = modem ; 1 = Printer
+
+DlgOrderPtr    ds 4
+ListCtlHdl     ds 4
+OrLePort       ds 4
+;--
+Invert_Poste   dc i'0'
+Voir_Ce_Poste  dc i'0'
+Visu_Poste     dc i'0'
+EndVisu_Poste  dc i'0'
+Ptr_List       ds 4
+Nb_Element     ds 2
+NbByte         ds 2
+Poste1_Dec     ds 2
+Mode_AddInsRep ds 2
+Mode_Add       equ 0
+Mode_Insert    equ 1
+Mode_Replace   equ 2
+EditDel_On     ds 2
+str_Blanc      str ' '
+;--
+OrQuitVal      ds 2
+OrEditActif    ds 2
+OrParamVal     ds 2
+OrParamCheck   ds 2
+OrParamRadio   ds 2
+OrItemHit      ds 2
+OrTemp1        ds 2
+
+OrOrderOn      ds 2
+OrSelectOn     ds 2
+OrSelectNum    ds 2
+
+OrDialFull     dc i'4,5,196,315'
+
+NbrOrValidCar  gequ 32
+OrValidCar     dc i'$30,$31,$32,$33,$34,$35,$36,$37,$38,$39'
+               dc i'$18,$7F,$8,$15,$D,$9'
+
+OrOk           anop
+               dc i'1'
+               dc i'175,91,187,150'
+               dc i'ButtonItem'
+               dc i4'OrOkTxt'
+               dc i'0'
+               dc i'0'
+               dc i4'0'
+
+OrCancel       anop
+               dc i'2'
+               dc i'175,169,187,233'
+               dc i'ButtonItem'
+               dc i4'OrCancelTxt'
+               dc i'0'
+               dc i'0'
+               dc i4'0'
+
+OrPrinter      anop
+               dc i'3'
+               dc i'153,223,165,309'
+               dc i'RadioItem'
+               dc i4'OrPrinterTxt'
+               dc i'1'
+               dc i'1'
+               dc i4'0'
+
+OrModem        anop
+               dc i'4'
+               dc i'137,223,149,283'
+               dc i'RadioItem'
+               dc i4'OrModemTxt'
+               dc i'0'
+               dc i'1'                  ; famille 1
+               dc i4'0'
+
+OrPort         anop
+               dc i'5'
+               dc i'146,177,154,217'
+               dc i'StatText+ItemDisable'
+               dc i4'OrPortTxt'
+               dc i'0'
+               dc i'0'
+               dc i4'0'
+
+OrTimeSec      anop
+               dc i'6'
+               dc i'152,122,165,150'
+               dc i'EditLine'
+               dc i4'OrTimeSecTxt'
+               dc i'2'
+               dc i'0'
+               dc i4'0'
+
+OrTime         anop
+               dc i'7'
+               dc i'152,62,164,116'
+               dc i'RadioItem'
+               dc i4'OrTimeTxt'
+               dc i'0'
+               dc i'$FF02'
+               dc i4'0'
+
+OrClickMouse   anop
+               dc i'8'
+               dc i'135,62,147,160'
+               dc i'RadioItem'
+               dc i4'OrCMouseTxt'
+               dc i'1'
+               dc i'$FF02'
+               dc i4'0'
+
+OrWait         anop
+               dc i'9'
+               dc i'143,11,155,59'
+               dc i'CheckItem'
+               dc i4'OrWaitTxt'
+               dc i'0'
+               dc i'0'
+               dc i4'0'
+
+OrOneOrder     anop
+               dc i'10'
+               dc i'112,15,125,295'
+               dc i'EditLine'
+               dc i4'0'
+               dc i'30'
+               dc i'0'
+               dc i4'0'
+
+OrInsert       anop
+               dc i'11'
+               dc i'99,225,111,295'
+               dc i'ButtonItem'
+               dc i4'OrInsertTxt'
+               dc i'0'
+               dc i'$FF00'
+               dc i4'0'
+
+OrAdd          anop
+               dc i'12'
+               dc i'85,225,97,295'
+               dc i'ButtonItem'
+               dc i4'OrAddTxt'
+               dc i'0'
+               dc i'$FF00'
+               dc i4'0'
+
+OrReplace      anop
+               dc i'13'
+               dc i'71,225,83,295'
+               dc i'ButtonItem'
+               dc i4'OrReplaceTxt'
+               dc i'0'
+               dc i'$FF00'
+               dc i4'0'
+
+OrClear        anop
+               dc i'14'
+               dc i'57,225,69,295'
+               dc i'ButtonItem'
+               dc i4'OrClearTxt'
+               dc i'0'
+               dc i'$FF00'
+               dc i4'0'
+
+OrEdit         anop
+               dc i'15'
+               dc i'43,225,55,295'
+               dc i'ButtonItem'
+               dc i4'OrEditTxt'
+               dc i'0'
+               dc i'$FF00'
+               dc i4'0'
+
+OrFrameNb      anop
+               dc i'16'
+               dc i'37,15,45,83'
+               dc i'StatText+ItemDisable'
+               dc i4'OrFNbTxt'
+               dc i'0'
+               dc i'0'
+               dc i4'0'
+;--------------------------------------
+;        Simule le list manager
+;--------------------------------------
+RectList       dc i'51,15,103,180'
+
+OrListSBar     anop
+               dc i'17'
+               dc i'51,179,103,199'
+               dc i'ScrollBarItem'
+               dc i4'Or_ScrollBar'
+               dc i'0'
+               dc i'3'
+               dc i4'0'
+;--
+OrLigne1       anop
+               dc i'18'
+RectL1         dc i'52,16,62,179'
+               dc i'StatText'
+               dc i4'Member1'
+               dc i'0'
+               dc i'0'
+               dc i4'0'
+;--
+OrLigne2       anop
+               dc i'19'
+RectL2         dc i'62,16,72,179'
+               dc i'StatText'
+               dc i4'Member2'
+               dc i'0'
+               dc i'0'
+               dc i4'0'
+;--
+OrLigne3       anop
+               dc i'20'
+RectL3         dc i'72,16,82,179'
+               dc i'StatText'
+               dc i4'Member3'
+               dc i'0'
+               dc i'0'
+               dc i4'0'
+;--
+OrLigne4       anop
+               dc i'21'
+RectL4         dc i'82,16,92,179'
+               dc i'StatText'
+               dc i4'Member4'
+               dc i'0'
+               dc i'0'
+               dc i4'0'
+;--
+OrLigne5       anop
+               dc i'22'
+RectL5         dc i'92,16,102,179'
+               dc i'StatText'
+               dc i4'Member5'
+               dc i'0'
+               dc i'0'
+               dc i4'0'
+;--
+OrTitleRect    dc i'7,100,28,221'
+OrTitleOmbRect dc i'9,102,30,223'
+OrTitleX       equ      113
+OrTitleY       equ      20
+OrTitleOmbX    equ      OrTitleX+1
+OrTitleOmbY    equ      OrTitleY+1
+OrderTitle     str      'Serial orders'
+
+OrOkTxt        str      'Ok'
+OrCancelTxt    str      'Cancel'
+OrPrinterTxt   str      'Printer'
+OrModemTxt     str      'Modem'
+OrPortTxt      str      'Port :'
+OrTimeSecTxt   str      '05'
+OrTimeTxt      str      'Time :'
+OrCMouseTxt    str      'Click mouse'
+OrWaitTxt      str      'Wait'
+OrClearTxt     str      'Delete'
+OrInsertTxt    str      'Insert'
+OrAddTxt       str      'Add'
+OrReplaceTxt   str      'Replace'
+OrEditTxt      str      'Edit'
+OrFNbTxt       str      'Frame : 00'
+
+OneOrderTxt    dc 40i1'0'
+TimeTxt        dc i5'0'
+
+MyListRec      anop
+               dc i'51,15,103,179'
+OrNbElement    dc i'0'                  ; nombre d'elements
+MyListView     dc i'5'                  ; cinq lignes a la fois
+               dc i'2'                  ; only one selection
+MyListTop      dc i'1'                  ; on commence par le un
+               dc i4'0'                 ; list control handle
+               dc i4'0'
+               dc i'10'                 ; 10 de haut
+               dc i'5'
+               dc i4'MyList'
+               dc i4'0'
+               dc i4'0'
+
+MyList         anop
+               dc i4'Member1',i1'0'
+               dc i4'Member2',i1'0'
+               dc i4'Member3',i1'0'
+               dc i4'Member4',i1'0'
+               dc i4'Member5',i1'0'
+               dc i4'Member6',i1'0'
+               dc i4'Member7',i1'0'
+               dc i4'Member8',i1'0'
+               dc i4'Member9',i1'0'
+               dc i4'Member10',i1'0'
+               dc i4'Member11',i1'0'
+               dc i4'Member12',i1'0'
+               dc i4'Member13',i1'0'
+               dc i4'Member14',i1'0'
+               dc i4'Member15',i1'0'
+               dc i4'Member16',i1'0'
+               dc i4'Member17',i1'0'
+               dc i4'Member18',i1'0'
+               dc i4'Member19',i1'0'
+               dc i4'Member20',i1'0'
+
+TheMembers     anop
+Member1        dc 32i1'0',4i'0'         ; texte puis 4 parametres
+Member2        dc 32i1'0',4i'0'
+Member3        dc 32i1'0',4i'0'
+Member4        dc 32i1'0',4i'0'
+Member5        dc 32i1'0',4i'0'
+Member6        dc 32i1'0',4i'0'
+Member7        dc 32i1'0',4i'0'
+Member8        dc 32i1'0',4i'0'
+Member9        dc 32i1'0',4i'0'
+Member10       dc 32i1'0',4i'0'
+Member11       dc 32i1'0',4i'0'
+Member12       dc 32i1'0',4i'0'
+Member13       dc 32i1'0',4i'0'
+Member14       dc 32i1'0',4i'0'
+Member15       dc 32i1'0',4i'0'
+Member16       dc 32i1'0',4i'0'
+Member17       dc 32i1'0',4i'0'
+Member18       dc 32i1'0',4i'0'
+Member19       dc 32i1'0',4i'0'
+Member20       dc 32i1'0',4i'0'
+
+               END
+
+******************************************
+*
+*       Select radio button
+*
+******************************************
+OrSetRadioItem START
+               Using    OrderData
+               Using    GlobalData
+
+               PushWord #1
+               PushLong DlgOrderPtr
+               PushWord OrParamRadio
+               _SetDItemValue
+
+               rts
+
+               END
+
+******************************************
+*
+*           Invert check Item
+*
+******************************************
+InvCheckItem   START
+               Using    OrderData
+               Using    GlobalData
+
+               PushWord OrParamVal
+               PushLong DlgOrderPtr
+               PushWord OrParamCheck
+               _SetDItemValue
+
+               rts
+
+               END
+
+***************************************
+*
+*       Test Selection et one order
+*
+***************************************
+OrTestSelOrd   START
+               Using    OrderData
+               Using    GlobalData
+;--
+               stz      OrTemp1
+
+               lda      OrTemp1
+OrTestSel1     asl      a
+               asl      a
+               clc
+               adc      OrTemp1
+               adc      #4
+               tax
+               lda      MyList,x
+               and      #$0080
+               bne      OneSelected
+               lda      OrTemp1
+               inc      a
+               sta      OrTemp1
+               cmp      OrNbElement
+               bcc      OrTestSel1
+               bra      OrTestOrd1
+
+OneSelected    anop
+
+               lda      OrTemp1
+               sta      OrSelectNum     ; de 0 a 19
+
+               lda      OrSelectOn
+               bne      OrTestOrd1
+
+               lda      #1
+               sta      OrSelectOn
+
+               PushWord #0              ; actif
+               PushLong #0              ; Output handle
+               PushLong DlgOrderPtr
+               PushWord OrEdit
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+               PushWord #0              ; actif
+               PushLong #0              ; Output handle
+               PushLong DlgOrderPtr
+               PushWord OrClear
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+OrTestOrd1     anop
+
+               PushLong DlgOrderPtr
+               PushWord OrOneOrder
+               PushLong #OneOrderTxt
+               _GetIText
+
+               lda      OneOrderTxt
+               and      #$00FF
+               bne      SomeText
+
+               lda      OrOrderOn
+               bne      OrTestOrd2
+               brl      OrSelOrdExit
+
+OrTestOrd2     stz      OrOrderOn
+
+               PushWord #255            ; inactif
+               PushLong #0              ; Output handle
+               PushLong DlgOrderPtr
+               PushWord OrAdd
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+               PushWord #255            ; inactif
+               PushLong #0              ; Output handle
+               PushLong DlgOrderPtr
+               PushWord OrInsert
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+               PushWord #255            ; inactif
+               PushLong #0              ; Output handle
+               PushLong DlgOrderPtr
+               PushWord OrReplace
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+               bra      OrSelOrdExit
+
+SomeText       anop
+
+               lda      OrOrderOn
+               bne      sometextbis
+
+               lda      #1
+               sta      OrOrderOn
+
+               PushWord #0              ; actif
+               PushLong #0              ; Output handle
+               PushLong DlgOrderPtr
+               PushWord OrAdd
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+SomeTextBis    lda      OrSelectOn
+               beq      OrSelOrdExit
+
+               PushWord #0              ; actif
+               PushLong #0              ; Output handle
+               PushLong DlgOrderPtr
+               PushWord OrInsert
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+               PushWord #0              ; actif
+               PushLong #0              ; Output handle
+               PushLong DlgOrderPtr
+               PushWord OrReplace
+               _GetControlDItem
+               _HiliteControl           ; les parametres arrivent de _Get...
+
+OrSelOrdExit   rts
+
+               END

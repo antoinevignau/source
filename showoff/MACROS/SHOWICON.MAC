@@ -1,0 +1,294 @@
+ MACRO
+&lab _SetPort
+&lab ldx #$1B04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _GetPort
+&lab ldx #$1C04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SetPenMode
+&lab ldx #$2E04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _GetPenMode
+&lab ldx #$2F04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SetSolidPenPat
+&lab ldx #$3704
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SetRect
+&lab ldx #$4A04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _PtInRect
+&lab ldx #$4F04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _FrameRect
+&lab ldx #$5304
+ jsl $E10000
+ MEND
+ MACRO
+&lab _InvertRect
+&lab ldx #$5604
+ jsl $E10000
+ MEND
+ MACRO
+&lab _PPToPort
+&lab ldx #$D604
+ jsl $E10000
+ MEND
+ MACRO
+&lab _HiliteControl
+&lab ldx #$1110
+ jsl $E10000
+ MEND
+ MACRO
+&lab _CloseDialog
+&lab ldx #$0C15
+ jsl $E10000
+ MEND
+ MACRO
+&lab _GetControlDItem
+&lab ldx #$1E15
+ jsl $E10000
+ MEND
+ MACRO
+&lab _GetMouse
+&lab ldx #$0C06
+ jsl $E10000
+ MEND
+ MACRO
+&lab _NewHandle
+&lab ldx #$0902
+ jsl $E10000
+ MEND
+ MACRO
+&lab _DisposeHandle
+&lab ldx #$1002
+ jsl $E10000
+ MEND
+ MACRO
+&lab pushlong &addr,&offset
+&lab ANOP
+ LCLC &C
+ LCLC &REST
+&C AMID &addr,1,1
+ AIF "&C"="#",.immediate
+ AIF "&C"="[",.zeropage
+ AIF C:&offset=0,.nooffset
+ AIF "&offset"="s",.stack
+ pushword &addr+2,&offset
+ pushword &addr,&offset
+ MEXIT
+.nooffset
+ pushword &addr+2
+ pushword &addr
+ MEXIT
+.immediate
+&REST AMID &addr,2,L:&addr-1
+ dc I1'$F4',I2'(&REST)|-16'
+ dc I1'$F4',I2'&REST'
+ MEXIT
+.stack
+ pushword &addr+2,s
+ pushword &addr+2,s
+ MEXIT
+.zeropage
+ ldy #&offset+2
+ pushword &addr,y
+ ldy #&offset
+ pushword &addr,y
+ MEND
+ MACRO
+&lab pushword &sysopr
+&lab ANOP
+ AIF c:&sysopr=0,.b
+ LCLC &C
+ LCLC &REST
+ LCLA &BL
+&C AMID "&sysopr",1,1
+&BL ASEARCH "&sysopr"," ",1
+ AIF &BL>0,.a
+&BL SETA L:&sysopr+1
+.a
+&REST AMID "&sysopr",2,&BL-2
+ AIF ("&C"="#").AND.(S:LONGA),.immediate
+ lda &sysopr
+ pha
+ MEXIT
+.b
+ pha
+ MEXIT
+.immediate
+ dc I1'$F4',I2'&REST'
+ MEND
+ MACRO
+&lab str &string
+&lab dc i1'l:&string',c'&string'
+ MEND
+ MACRO
+&lab _SetClip
+&lab ldx #$2404
+ jsl $E10000
+ MEND
+ MACRO
+&lab _GetClip
+&lab ldx #$2504
+ jsl $E10000
+ MEND
+ MACRO
+&lab _ClipRect
+&lab ldx #$2604
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SetPenPat
+&lab ldx #$3004
+ jsl $E10000
+ MEND
+ MACRO
+&lab _MoveTo
+&lab ldx #$3A04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _LineTo
+&lab ldx #$3C04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _Line
+&lab ldx #$3D04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _OffsetRect
+&lab ldx #$4B04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _EmptyRect
+&lab ldx #$5204
+ jsl $E10000
+ MEND
+ MACRO
+&lab _PaintRect
+&lab ldx #$5404
+ jsl $E10000
+ MEND
+ MACRO
+&lab _FillRect
+&lab ldx #$5704
+ jsl $E10000
+ MEND
+ MACRO
+&lab _FrameOval
+&lab ldx #$5804
+ jsl $E10000
+ MEND
+ MACRO
+&lab _PaintOval
+&lab ldx #$5904
+ jsl $E10000
+ MEND
+ MACRO
+&lab _FrameRRect
+&lab ldx #$5D04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _PaintRRect
+&lab ldx #$5E04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _NewRgn
+&lab ldx #$6704
+ jsl $E10000
+ MEND
+ MACRO
+&lab _DisposeRgn
+&lab ldx #$6804
+ jsl $E10000
+ MEND
+ MACRO
+&lab _HideCursor
+&lab ldx #$9004
+ jsl $E10000
+ MEND
+ MACRO
+&lab _ShowCursor
+&lab ldx #$9104
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SetTextMode
+&lab ldx #$9C04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _GetTextMode
+&lab ldx #$9D04
+ jsl $E10000
+ MEND
+ MACRO
+&lab _SetForeColor
+&lab ldx #$A004
+ jsl $E10000
+ MEND
+ MACRO
+&lab _DrawChar
+&lab ldx #$A404
+ jsl $E10000
+ MEND
+ MACRO
+&lab _DrawString
+&lab ldx #$A504
+ jsl $E10000
+ MEND
+ MACRO
+&lab _NewModelessDialog
+&lab ldx #$0B15
+ jsl $E10000
+ MEND
+ MACRO
+&lab _DialogSelect
+&lab ldx #$1115
+ jsl $E10000
+ MEND
+ MACRO
+&lab _CautionAlert
+&lab ldx #$1A15
+ jsl $E10000
+ MEND
+ MACRO
+&lab _GetNewDItem
+&lab ldx #$3315
+ jsl $E10000
+ MEND
+ MACRO
+&lab _GetNextEvent
+&lab ldx #$0A06
+ jsl $E10000
+ MEND
+ MACRO
+&lab _StillDown
+&lab ldx #$0E06
+ jsl $E10000
+ MEND
+ MACRO
+&lab _InstallFont
+&lab ldx #$0E1B
+ jsl $E10000
+ MEND

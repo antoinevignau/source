@@ -1,0 +1,1859 @@
+***************************************
+*
+*      Appels d'impression
+*
+*      Showprint.s   -- relogeable --
+*
+***************************************
+
+               65816    on
+               list     Off
+               Mcopy    ShowPrint.mac
+
+               keep     DoPrinter
+
+PrintDyna      START
+
+               brl PrintSetup
+
+               END
+
+****************************************
+*
+*              Print Data
+*
+****************************************
+PrintData      DATA
+
+PrLePort       ds 4
+DlgPrintPtr    ds 4
+PrTemp0        ds 4
+PrTemp1        ds 4
+PrintPort      ds 4
+PrImpRectPtr   ds 4
+
+DraftOn        ds 2
+Plantage_print ds 2
+CompteLesPages ds 2
+PrScaleVal     ds 2
+PrDisplayVal   ds 2
+PrItemHit      ds 2
+PrParamRadio   ds 2
+PrQuitVal      ds 2
+PrPageNum      ds 2
+PrMaxImage     ds 2
+PrPageRel      ds 2
+PrSPageNum     ds 2
+PrEPageNum     ds 2
+
+PrDialFull     dc i'25,10,190,310'
+
+PrScreenBlock  dc i1'0'
+               dc i1'0'
+PrScreenPtr    ds 4
+               dc i'160'
+               dc i'0,0,378,320'
+;--------------------------------------
+;        DATA
+;--------------------------------------
+Erreur_Du_Print ds 2
+Top_DB_SBR     ds 2
+GetInfoPrint   dc i4'VolPrint'
+               ds 22
+VolPrint       str '1'
+;--------------------------------------
+;        ALERT Showoff Non Present
+;--------------------------------------
+OKOKOK         str 'OK'
+TxInsDiskS     str 'Insert ShowOff Disk'
+TxOnlyDraft    str 'Print in draft mode only'
+;--
+List_Error_Print dc i'$1301,$1302,$1304,$1305,$1306,$1307'
+
+Tab_ME00       dc i4'MesErr_P00'
+               dc i4'MesErr_P01'
+               dc i4'MesErr_P02'
+               dc i4'MesErr_P03'
+               dc i4'MesErr_P04'
+               dc i4'MesErr_P05'
+
+Tab_ME10       dc i4'MesErr_P10'
+               dc i4'MesErr_P11'
+               dc i4'MesErr_P12'
+               dc i4'MesErr_P13'
+               dc i4'MesErr_P14'
+               dc i4'MesErr_P15'
+
+MesErr_P00     str 'Specified driver not in the'
+MesErr_P01     str 'Specified port not selected'
+MesErr_P02     str 'Bad version of the LaserPrep'
+MesErr_P03     str 'Bad version of the LaserPrep'
+MesErr_P04     dc i1'31',c'Connection can',h'27',c't be established'
+MesErr_P05     str 'Read-write error on the'
+
+MesErr_P10     str ' SYSTEM subdirectory'
+MesErr_P11     str ' in the control panel'
+MesErr_P12     str ' file in the LaserWriter'
+MesErr_P13     str ' file in the LaserWriter'
+MesErr_P14     str ' with the LaserWriter'
+MesErr_P15     str ' LaserWriter'
+;--
+StopErrPrint   anop
+               dc i'80,10,160,310'
+               dc i'$1234'
+               dc i1'$81'
+               dc i1'$81'
+               dc i1'$81'
+               dc i1'$81'
+               dc i4'ItemSEP1'          |ok
+               dc i4'ItemSEP2'          |texte
+               dc i4'ItemSEP3'          |texte
+               dc i4'0'
+;--
+ItemSEP1       anop                     |Ok
+               dc i'1'
+               dc i'60,125,75,185'
+               dc i'ButtonItem'
+               dc i4'OKOKOK'
+               dc i'0'
+               dc i'0'
+               dc i4'0'
+;--
+ItemSEP2       anop                     |texte erreur
+               dc i'3'
+               dc i'10,50,30,310'
+               dc i'StatText+ItemDisable'
+ItemSEP2_str   dc i4'OKOKOK'
+               dc i'0'
+               dc i'0'
+               dc i4'0'
+;--
+ItemSEP3       anop                     |texte erreur
+               dc i'4'
+               dc i'35,50,55,310'
+               dc i'StatText+ItemDisable'
+ItemSEP3_str   dc i4'OKOKOK'
+               dc i'0'
+               dc i'0'
+               dc i4'0'
+;--
+StopLoadTool   anop
+               dc i'50,45,110,275'
+               dc i'1'
+               dc i1'$81'
+               dc i1'$81'
+               dc i1'$81'
+               dc i1'$81'
+               dc i4'ItemSLT1'          |ok
+               dc i4'ItemSLT2'          |texte
+               dc i4'0'
+;--
+StopOnlyDraft  anop
+               dc i'50,45,110,275'
+               dc i'1'
+               dc i1'$81'
+               dc i1'$81'
+               dc i1'$81'
+               dc i1'$81'
+               dc i4'ItemSLT1'          |ok
+               dc i4'ItemSOD2'          |texte
+               dc i4'0'
+;--
+ItemSLT1       anop                     |Ok
+               dc i'1'
+               dc i'40,92,55,137'
+               dc i'ButtonItem'
+               dc i4'OKOKOK'
+               dc i'0'
+               dc i'0'
+               dc i4'0'
+;--
+ItemSLT2       anop                     |Insert Showoff
+               dc i'3'
+               dc i'15,50,27,225'
+               dc i'StatText+ItemDisable'
+               dc i4'TxInsDiskS'
+               dc i'0'
+               dc i'0'
+               dc i4'0'
+;--
+ItemSOD2       anop                     |Insert Showoff
+               dc i'3'
+               dc i'15,50,27,225'
+               dc i'StatText+ItemDisable'
+               dc i4'TxOnlyDraft'
+               dc i'0'
+               dc i'0'
+               dc i4'0'
+;--------------------------------------
+LI_Print_378   dc i1'0'                 |LocInfo Du Hdl_Print_378
+               dc i1'0'
+LI_Ptr_378     ds 4
+               dc i'160'
+Rect_378       dc i'0,0,378,320'
+;--
+Port_Sauve     ds 4                     |sauve Port
+Mode_378       ds 2                     |Mode_378 si Laser     ++++++
+Hdl_Print_378  ds 4                     |HANDLE DE 378 LIGNES  ++++++
+Port_378       ds 170                   |Port 378 de TRAVAIL   ++++++
+Rgn_378        ds 4
+Laser_on       ds 2
+;--------------------------------------
+;        End Of New Data
+;--------------------------------------
+PrSourceRect   dc i'0,0,200,320'
+
+PrOk           anop
+               dc i'1'
+               dc i'145,229,160,293'
+               dc i'ButtonItem'
+               dc i4'PrOkTxt'
+               dc i'0'
+               dc i'0'
+               dc i4'0'
+
+PrCancel       anop
+               dc i'2'
+               dc i'145,150,160,214'
+               dc i'ButtonItem'
+               dc i4'PrCancelTxt'
+               dc i'0'
+               dc i'0'
+               dc i4'0'
+
+PrDispTexte    anop
+               dc i'3'
+               dc i'90,187,105,260'
+               dc i'StatText+ItemDisable'
+               dc i4'PrDispTxt'
+               dc i'0'
+               dc i'0'
+               dc i4'0'
+
+PrDispRect     dc i'85,150,140,295'
+
+PrTwoCol       anop
+               dc i'4'
+               dc i'119,171,132,295'
+               dc i'RadioItem'
+               dc i4'PrTwoColTxt'
+               dc i'0'
+               dc i'1'                  ; famille No 1
+               dc i4'0'
+
+PrOneCol       anop
+               dc i'5'
+               dc i'104,171,117,295'
+               dc i'RadioItem'
+               dc i4'PrOneColTxt'
+               dc i'1'
+               dc i'1'
+               dc i4'0'
+
+PrScaleTexte   anop
+               dc i'6'
+               dc i'10,192,25,255'
+               dc i'StatText+ItemDisable'
+               dc i4'PrScaleTxt'
+               dc i'0'
+               dc i'0'
+               dc i4'0'
+
+PrScaleRect    dc i'5,150,80,295'
+
+PrUnSeize      anop
+               dc i'7'
+               dc i'55,200,69,295'
+               dc i'RadioItem'
+               dc i4'PrUnSeizeTxt'
+               dc i'0'
+               dc i'2'                  ; famille No 2
+               dc i4'0'
+
+PrUnQuart      anop
+               dc i'8'
+               dc i'41,200,54,295'
+               dc i'RadioItem'
+               dc i4'PrUnQuartTxt'
+               dc i'0'
+               dc i'2'
+               dc i4'0'
+
+PrEntier       anop
+               dc i'9'
+               dc i'26,200,39,295'
+               dc i'RadioItem'
+               dc i4'PrEntierTxt'
+               dc i'1'
+               dc i'2'
+               dc i4'0'
+
+PrAffichage    anop
+               dc i'10'
+PrAffRect      dc i'5,5,160,145'
+               dc i'UserItem+ItemDisable'
+               dc i4'PrAffProc'
+               dc i'0'
+               dc i'0'
+               dc i4'0'
+
+****************************************
+*        rectangles presentation
+****************************************
+PrAffRect11    dc i'42,9,125,141'
+
+PrAffRect14    dc i'13,11,54,74'
+               dc i'13,76,54,139'
+               dc i'62,11,103,74'
+               dc i'62,76,103,139'
+               dc i'111,11,152,74'
+               dc i'111,76,152,139'
+
+PrAffRect116   dc i'10,31,30,64'
+               dc i'10,86,30,119'
+               dc i'35,31,55,64'
+               dc i'35,86,55,119'
+               dc i'60,31,80,64'
+               dc i'60,86,80,119'
+               dc i'85,31,105,64'
+               dc i'85,86,105,119'
+               dc i'110,31,130,64'
+               dc i'110,86,130,119'
+               dc i'135,31,155,64'
+               dc i'135,86,155,119'
+                              
+****************************************
+*        rectangles impression
+****************************************
+PrImpRect11    dc i'89,0,289,320'
+
+PrImpRect14    anop
+               dc i'19,0,119,158'
+               dc i'19,162,119,320'
+               dc i'138,0,238,158'
+               dc i'138,162,238,320'
+               dc i'257,0,357,158'
+               dc i'257,162,357,320'
+
+PrImpRect116   anop
+               dc i'11,53,61,133'
+               dc i'11,186,61,266'
+               dc i'72,53,122,133'
+               dc i'72,186,122,266'
+               dc i'133,53,183,133'
+               dc i'133,186,183,266'
+               dc i'194,53,244,133'
+               dc i'194,186,244,266'
+               dc i'255,53,305,133'
+               dc i'255,186,305,266'
+               dc i'316,53,366,133'
+               dc i'316,186,366,266'
+
+RectEtiquette  dc i'5,0,71,107'
+
+****************************************
+
+
+PrintAlert     anop
+               dc i'50,10,110,310'
+               dc i'1'
+               dc i1'$80'
+               dc i1'$80'
+               dc i1'$80'
+               dc i1'$80'
+               dc i4'Item1'             |ok
+               dc i4'Item2'             |cancel
+               dc i4'Item3'             |texte
+               dc i4'0'
+
+Item1          anop                     |Ok (ok-cancel)
+               dc i'1'
+               dc i'40,65,55,120'
+               dc i'ButtonItem'
+               dc i4'AltPrintOk'
+               dc i'0'
+               dc i'0'
+               dc i4'0'
+
+Item2          anop                     |Cancel (ok_cancel)
+               dc i'2'
+               dc i'40,180,55,235'
+               dc i'ButtonItem'
+               dc i4'AltPrintCancel'
+               dc i'0'
+               dc i'0'
+               dc i4'0'
+
+Item3          anop                     |non
+               dc i'3'
+               dc i'5,50,17,235'
+               dc i'StatText+ItemDisable'
+               dc i4'AltPrintTxt'       |texte 2
+               dc i'0'
+               dc i'0'
+               dc i4'0'
+
+PrOkTxt        str      'Ok'
+PrCancelTxt    str      'Cancel'
+PrTwoColTxt    str      'Two columns'
+PrOneColTxt    str      'One column'
+PrDispTxt      str      ' Display '
+PrUnSeizeTxt   str      '1/16'
+PrUnQuartTxt   str      '1/4'
+PrEntierTxt    str      '1'
+PrScaleTxt     str      ' Scale '
+
+AltPrintOk     str      'Ok'
+AltPrintCancel str      'Cancel'
+AltPrintTxt    str      'Insert disk system'
+
+PrTextNum      dc       i1'2',5c' '
+
+               END
+
+***********************************************************
+*
+*        Procedure de definition de l'item Affichage
+*
+***********************************************************
+
+PrAffProc      START
+               Using    PrintData
+               Using    GlobalData
+
+               phb                      ; sauve registres
+               phd
+
+               phk
+               plb                      ; met Data Bank
+
+               PushWord #15
+               _SetSolidPenPat
+
+               PushLong #PrAffRect
+               _PaintRect
+
+               PushWord #0
+               _SetSolidPenPat
+
+               PushLong #PrAffRect
+               _FrameRect
+
+               lda      PrScaleVal
+               beq      PrAffProc1
+               cmp      #1
+               beq      PrAffProc4
+
+PrAffProc16    stz      PrTemp0
+
+PrAff16Suiv    lda      #^PrAffRect116
+               pha
+               lda      PrTemp0
+               asl      a
+               asl      a
+               asl      a
+               clc
+               adc      #PrAffRect116
+               pha
+               _FrameRect
+
+               inc      PrTemp0
+               lda      PrDisplayVal
+               bne      PrAffNext16
+               inc      PrTemp0
+PrAffNext16    lda      PrTemp0
+               cmp      #12
+               bcc      PrAff16Suiv
+               brl      PrAffProcExit
+
+PrAffProc4     stz      PrTemp0
+
+PrAff4Suiv     lda      #^PrAffRect14
+               pha
+               lda      PrTemp0
+               asl      a
+               asl      a
+               asl      a
+               clc
+               adc      #PrAffRect14
+               pha
+               _FrameRect
+
+               inc      PrTemp0
+               lda      PrDisplayVal
+               bne      PrAffNext4
+               inc      PrTemp0
+PrAffNext4     lda      PrTemp0
+               cmp      #6
+               bcc      PrAff4Suiv
+               bra      PrAffProcExit
+
+PrAffProc1     PushLong #PrAffRect11
+               _FrameRect
+
+PrAffProcExit  pld                      ; remet a jour direct bank
+               plb                      ; data bank
+
+               lda      0,s
+               sta      6,s
+               lda      2,s
+               sta      8,s
+
+               tsc
+               clc
+               adc      #6
+               tcs
+
+               rtl
+
+               END
+
+******************************************
+*
+*       Select display radio button
+*
+******************************************
+PrDispAct      START
+               Using    PrintData
+               Using    GlobalData
+
+               lda      PrOneCol
+               sec
+               sbc      PrItemHit
+               sta      PrDisplayVal
+               lda      PrItemHit
+               sta      PrParamRadio
+               jsr      SetRadioItem
+
+               PushLong #PrAffRect
+               _InvalRect
+
+               rts
+
+               END
+
+******************************************
+*
+*       Select scale radio button
+*
+******************************************
+PrScaleAct     START
+               Using    PrintData
+               Using    GlobalData
+
+               lda      PrEntier
+               sec
+               sbc      PrItemHit
+               sta      PrScaleVal
+               lda      PrItemHit
+               sta      PrParamRadio
+               jsr      SetRadioItem
+
+               PushLong #PrAffRect
+               _InvalRect
+
+               rts
+
+               END
+
+******************************************
+*
+*       Select radio button
+*
+******************************************
+SetRadioItem   START
+               Using    PrintData
+               Using    GlobalData
+
+               PushWord #1
+               PushLong DlgPrintPtr
+               PushWord PrParamRadio
+               _SetDItemValue
+
+               rts
+
+               END
+
+***************************************
+*
+*         Print Manager Setup
+*
+***************************************
+PrintSetup     START
+               Using    PrintData
+               Using    GlobalData
+
+               _WaitCursor
+
+               lda      >PrintOn
+               bne      PrintIsActif
+
+TryLoadAgain   PushWord #19
+               PushWord #0000
+               _LoadOneTool
+               bcc      PrintLoadOk
+
+               _InitCursor
+               PushWord #0
+               PushLong #PrintAlert
+               PushLong #0
+               _StopAlert
+               _WaitCursor
+               pla
+               cmp      #1
+               beq      TryLoadAgain
+               bra      PrintLoadKo
+
+PrintLoadOk    anop
+;--------------------------------------
+               jsr Put_ShowOff          |inserer le disk SHOWOFF
+;--------------------------------------
+               PushWord >MyId
+               lda      4
+               clc
+               adc      #$900
+               pha
+               _PMStartup
+               bcs      PrintLoadKo
+
+               lda      #1
+               sta      >PrintOn
+
+PrintIsActif   _InitCursor
+
+               clc
+               rts
+
+PrintLoadKo    _InitCursor
+               sec
+               rts
+
+               END
+
+***************************************
+*
+*         Print Manager Shutdown
+*
+***************************************
+PrintShutDown  START
+               Using    PrintData
+               Using    GlobalData
+
+               lda      >PrintOn
+               beq      PrintIsInactif
+
+               _PMShutDown
+
+               PushWord #19
+               _UnloadOneTool
+
+               lda      #0
+               sta      >PrintOn
+
+PrintLoadExit  anop
+PrintIsInactif rts
+
+               END
+
+***************************************
+*
+*     Print Manager Default Setup
+*
+***************************************
+DefaultSetup   START
+               Using    PrintData
+               Using    GlobalData
+
+               PushLong #0
+               PushLong #140
+               PushWord >MyId
+               PushWord #$0000          |Avant 8010 now no lock page cross
+               PushLong #0
+               _NewHandle
+               pla
+               sta      >PrintRecord
+               pla
+               sta      >PrintRecord+2
+
+               PushLong >PrintRecord
+               _PrDefault
+
+               rts
+
+               END
+
+***************************************
+*
+*       Display Setup Dialog
+*
+***************************************
+SetupDisplay   START
+               Using    PrintData
+               Using    GlobalData
+
+               Pushlong #0
+               _GetPort
+               pla
+               sta      PrLePort
+               pla
+               sta      PrLePort+2
+
+               stz      PrQuitVal
+               stz      PrScaleVal
+               stz      PrDisplayVal
+
+               PushLong #0              ; dialogPtr
+               PushLong #PrDialFull     ; content rectangle
+               PushWord #1              ; Visible
+               PushLong #99             ; Refcon
+               _NewModalDialog
+
+               pla
+               sta      DlgPrintPtr
+               pla
+               sta      DlgPrintPtr+2
+
+               PushLong DlgPrintPtr
+               _SetPort
+
+               PushLong DlgPrintPtr
+               PushLong #PrOk
+               _GetNewDItem
+
+               PushLong DlgPrintPtr
+               PushLong #PrCancel
+               _GetNewDItem
+
+               PushLong DlgPrintPtr
+               PushLong #PrDispTexte
+               _GetNewDItem
+
+               PushLong DlgPrintPtr
+               PushLong #PrTwoCol
+               _GetNewDItem
+
+               PushLong DlgPrintPtr
+               PushLong #PrOneCol
+               _GetNewDItem
+
+               PushLong DlgPrintPtr
+               PushLong #PrScaleTexte
+               _GetNewDItem
+
+               PushLong DlgPrintPtr
+               PushLong #PrUnSeize
+               _GetNewDItem
+
+               PushLong DlgPrintPtr
+               PushLong #PrUnQuart
+               _GetNewDItem
+
+               PushLong DlgPrintPtr
+               PushLong #PrEntier
+               _GetNewDItem
+
+               PushLong DlgPrintPtr
+               PushLong #PrAffichage
+               _GetNewDItem
+
+               PushWord #0
+               _SetSolidPenPat
+
+               PushLong #PrScaleRect
+               _FrameRect
+
+               PushLong #PrDispRect
+               _FrameRect
+
+NextSetDEvt    PushWord #0
+               PushLong #0
+               _ModalDialog
+               pla
+               sta      PrItemHit
+               asl      a
+               tax
+               jsr      (PrActions,x)
+
+               lda      PrQuitval
+               beq      NextSetDEvt
+
+SetupDlgExit   anop
+
+               PushLong DlgPrintPtr
+               _CloseDialog
+
+               PushLong PrLePort
+               _SetPort
+
+               lda      PrQuitVal
+               cmp      #2              ; positionne carry
+
+               rts
+
+PrActions      anop
+
+               dc i'PrIgnore'
+
+               dc i'PrOkAct'
+               dc i'PrCancelAct'
+               dc i'PrIgnore'
+               dc i'PrDispAct'
+               dc i'PrDispAct'
+               dc i'PrIgnore'
+               dc i'PrScaleAct'
+               dc i'PrScaleAct'
+               dc i'PrScaleAct'
+               dc i'PrIgnore'
+
+PrIgnore       anop
+
+               rts
+
+
+PrOkAct        anop
+
+               lda      #1
+               sta      PrQuitVal
+               rts
+
+PrCancelAct    anop
+
+               lda      #2
+               sta      PrQuitVal
+               rts
+
+               END
+
+***************************************
+*
+*     init avant impression
+*
+***************************************
+PageToBePr     START
+               Using    PrintData
+               Using    GlobalData
+               Using    SeqEditData
+
+               lda      >PrintRecord
+               sta      0
+               lda      >PrintRecord+2
+               sta      2
+               ldy      #2
+               lda      [0],y
+               sta      <Ptr_PZero+2
+               lda      [0]
+               sta      <Ptr_PZero
+
+               ldy      #$50            ; start page
+               lda      [<Ptr_PZero],y
+               and      #$00FF
+               sta      PrSPageNum
+               lda      #1
+               sta      [<Ptr_PZero],y
+
+               ldy      #$52            ; end page
+               lda      [<Ptr_PZero],y
+               and      #$00FF
+               cmp      >Sequ_HMFrame
+               bcc      PageToBePr0
+               lda      >Sequ_HMFrame
+PageToBePr0    sta      PrEPageNum
+               lda      #999
+               sta      [<Ptr_PZero],y
+
+               rts
+
+               END
+
+***************************************
+*
+*              Imprime
+*
+***************************************
+PrImprime      START
+               Using    PrintData
+               Using    GlobalData
+               Using    SeqEditData
+
+               lda      #1
+               sta      PrPageRel
+               lda      PrPageNum
+               sta      >Sequ_NbFrame
+
+               lda      PrScaleVal
+               beq      Imp1page
+               cmp      #1
+               beq      Imp4page
+
+Imp16page      lda      #PrImpRect116
+               sta      PrImpRectPtr
+               lda      #^PrImpRect116
+               sta      PrImpRectPtr+2
+               lda      #6
+               sta      PrMaxImage
+               bra      TestdblCol
+
+Imp4page       lda      #PrImpRect14
+               sta      PrImpRectPtr
+               lda      #^PrImpRect14
+               sta      PrImpRectPtr+2
+               lda      #3
+               sta      PrMaxImage
+               bra      TestdblCol
+
+Imp1page       lda      #PrImpRect11
+               sta      PrImpRectPtr
+               lda      #^PrImpRect11
+               sta      PrImpRectPtr+2
+               lda      #1
+               sta      PrMaxImage
+               bra      StartImp
+
+TestdblCol     lda      PrDisplayVal
+               beq      StartImp
+               asl      PrMaxImage
+
+StartImp       anop
+
+FirstPage      anop
+
+               _WaitCursor
+
+               PushLong #0
+               _GetPort
+               pla
+               sta      PrLePort
+               pla
+               sta      PrLePort+2
+
+               lda      >Mode_Showoff
+               cmp      #Mode_Frame
+               bne      PrLoadNoFrame
+
+               lda      PrPageNum
+               sta      >Sequ_NbFrame
+
+               jsl      LoadDynFrame
+               bcc      PrLoadNoFrame
+               brl      ImprimeKo
+
+PrLoadNoFrame  lda      #1
+               sta      >Top_BitMap
+               sta      >Force_Bitmap
+               jsl      Maj_FrameW
+
+               PushLong PrLePort
+               _SetPort
+
+               PushLong #PrScreenBlock
+               _GetPortLoc
+
+               lda      >Mode_Showoff
+               cmp      #Mode_Label
+               beq swxyz
+               brl      Copynormal
+
+swxyz          ANOP
+;--------------------------------------
+               lda Laser_On             |si laser on
+               bne Laser_label
+;--------------------------------------
+               lda      DraftOn
+               beq      NormalLabel
+;--
+Laser_Label    ANOP
+;--------------------------------------
+               PushLong #FondLocInfo
+               PushLong #FondLocInfo
+               PushLong #RectLabel
+               PushLong #RectEtiquette
+               PushWord #0              ; copy mode
+               PushLong #0              ; no clip region
+               _CopyPixels
+
+               PushLong #FondLocInfo
+               PushLong #RectEtiquette
+               lda RectEtiquette+2
+               pha
+               lda RectEtiquette
+               pha
+               PushWord #0              ; copy mode
+               _PPToPort
+               brl      NextImage
+;--------------------------------------
+NormalLabel    PushLong #FondLocInfo
+               PushLong #PrScreenBlock
+               PushLong #RectLabel
+               PushLong #RectEtiquette
+               PushWord #0              ; copy mode
+               PushLong #0              ; no clip region
+               _CopyPixels
+               bcc      NoErr1
+               brl      ImprimeKo
+NoErr1         brl      NextImage
+
+CopyNormal     ANOP
+;--
+               lda Mode_378             |++++++++++
+               beq SCN_378
+;--
+               PushLong #FondLocInfo
+               PushLong #Li_Print_378
+               PushLong #PrSourceRect
+               lda      PrImpRectPtr+2
+               pha
+               lda      PrImpRectPtr
+               pha
+               PushWord #0              ; copy mode
+               PushLong #0              ; no clip region
+               _CopyPixels
+               bcc      CopyInLaser
+               brl      ImprimeKo
+;--
+CopyInLaser    ANOP
+               lda      PrImpRectPtr+2
+               sta      <Ptr_PZero+2
+               lda      PrImpRectPtr
+               sta      <Ptr_PZero
+;-
+               PushLong #Li_Print_378
+               PushLong PrImpRectPtr
+               ldy #2
+               lda [<Ptr_Pzero],y
+               pha
+               lda [<Ptr_Pzero]
+               pha
+               PushWord #0
+               _PPToPort
+               bcc DessContour
+               brl ImprimeKo
+;--
+SCN_378        ANOP
+;--
+               PushLong #FondLocInfo
+               PushLong #PrScreenBlock
+               PushLong #PrSourceRect
+               lda      PrImpRectPtr+2
+               pha
+               lda      PrImpRectPtr
+               pha
+               PushWord #0              ; copy mode
+               PushLong #0              ; no clip region
+               _CopyPixels
+               bcc      DessContour
+               brl      ImprimeKo
+;--
+DessContour    ANOP
+;--------------------------------------
+;              jsr SetPort_378          |++++++++
+;--------------------------------------
+               PushWord #15             ; blanc
+               _SetSolidPenPat
+;--
+SDessContour   lda      PrImpRectPtr+2
+               sta      <Ptr_PZero+2
+               pha
+               lda      PrImpRectPtr
+               sta      <Ptr_PZero
+               pha
+               _FrameRect
+;--------------------------------------
+;              jsr ReSetPort_378        |++++++++
+;--------------------------------------
+               bcc      NoErr2
+               brl      ImprimeKo
+      
+NoErr2         lda      >Mode_Showoff
+               cmp      #Mode_Frame
+               beq      PrintText
+
+               brl      NextImage
+
+PrintText      ANOP
+;--------------------------------------
+;              jsr SetPort_378
+;--------------------------------------
+               ldy      #2
+               lda      [<Ptr_PZero],y
+               pha
+               ldy      #4
+               lda      [<Ptr_PZero],y
+               clc
+               adc      #8
+               pha
+               _MoveTo
+
+               PushWord PrPageNum
+               PushLong #PrTextNum+1
+               PushWord #2
+               PushWord #0
+               _Int2Dec
+
+               lda      PrTextNum+1
+               ora      #$1010
+               sta      PrTextNum+1
+;--
+               PushLong #PrTextNum
+               _DrawString
+;--------------------------------------
+;              jsr ReSetPort_378
+;--------------------------------------
+NextRect2      lda      PrDisplayVal
+               beq      NextRect1
+               lda      PrImpRectptr
+               clc
+               adc      #8
+               sta      PrImpRectPtr
+               bra      Nextimage
+
+NextRect1      lda      PrImpRectptr
+               clc
+               adc      #16
+               sta      PrImpRectPtr
+
+NextImage      lda      PrPageNum
+               cmp      PrEPageNum
+               inc      PrPageNum
+               bcs      PrImprimExit
+
+               lda      PrPageRel
+               cmp      PrMaxImage
+               bcs      PrImprimExit
+
+               inc      PrPageRel
+
+               brl      FirstPage
+
+PrImprimExit   clc
+               rts
+
+ImprimeKo      sec
+               rts
+
+               END
+
+***************************************
+*
+*         Print Manager Chooser
+*
+***************************************
+DoChooser      START
+               Using    PrintData
+               Using    GlobalData
+
+               phb
+               phk
+               plb
+
+               jsr      PrintSetup
+               bcs      ChooserKo
+;--------------------------------------
+               jsr Put_ShowOff          |inserer le disk SHOWOFF
+;--------------------------------------
+SPChooser      ANOP
+;--
+               PushWord #0
+               _PrChooser
+               pla
+;--
+               jsr      PrintShutDown
+
+ChooserKo      anop
+               lda #DoChooser
+               sta <Ptr_PZero
+               lda #^DoChooser
+               sta <Ptr_PZero+2
+
+               plb
+
+               rtl
+
+               END
+
+***************************************
+*
+*      Print Manager Dialog Setup
+*
+***************************************
+DoDlgSetup     START
+               Using    PrintData
+               Using    GlobalData
+
+               phb
+               phk
+               plb
+
+               jsr      PrintSetup
+               bcs      DoDlgKo
+
+               lda      >PrintRecord
+               ora      >PrintRecord+2
+               bne      okHandle
+
+               jsr      DefaultSetup
+
+OkHandle       PushWord #0
+               PushLong >PrintRecord
+               _PrStlDialog
+               pla
+
+               jsr      PrintShutDown
+
+DoDlgKo        anop
+               lda #DoDlgSetup
+               sta <Ptr_PZero
+               lda #^DoDlgSetup
+               sta <Ptr_PZero+2
+
+               plb
+
+               rtl
+
+               END
+
+***************************************
+*
+*      Print Manager Print
+*
+***************************************
+DoPrintAction  START
+               Using    PrintData
+               Using    GlobalData
+
+               phb
+               phk
+               plb
+;--
+               lda #0
+               sta Plantage_Print
+               sta Top_DB_Sbr
+               sta Erreur_Du_Print
+;--
+               jsr      PrintSetup
+               bcc      PrintOkS0
+               brl      QuitPrint
+;--
+PrintOkS0      ANOP
+               stz DraftOn
+               jsr Test_Memory
+               bcc PrintOkS
+               lda #1
+               sta DraftOn
+;--
+PrintOkS       lda      >PrintRecord
+               ora      >PrintRecord+2
+               bne      okHandle
+
+               jsr      DefaultSetup
+
+OkHandle       anop
+;--
+               PushWord #0
+               PushLong >PrintRecord
+               _PrJobDialog
+               pla
+               bne      OkSetupDisp
+               brl      QuitPrint
+
+OkSetupDisp    anop
+
+               lda      >PrintRecord
+               sta      0
+               lda      >PrintRecord+2
+               sta      2
+               ldy      #2
+               lda      [0],y
+               sta      <Ptr_PZero+2
+               lda      [0]
+               sta      <Ptr_PZero
+;--------------------------------------
+;        Test Mode Laser
+;--------------------------------------
+               jsr SetMode_378          |+++++++++++++++++++++
+
+               stz Laser_On
+
+               ldy #$2                  |Est_ce une LaserWriter
+               lda [<Ptr_Pzero],y
+               cmp #3
+               bne SABCD
+
+               lda #1                   |C'est une Laser
+               sta Laser_On
+
+SABCD          ldy      #$56            ; spool ?
+               lda      [<Ptr_PZero],y
+               and      #$00FF
+               beq      SetDraftParam
+
+               lda      >Mode_Showoff
+               cmp      #Mode_Frame
+               bne      DemarePrint
+               lda      DraftOn
+               bne      DemarePrint2
+
+               jsr      SetupDisplay
+               bcc      DemareSuite
+               brl      QuitPrint
+
+DemarePrint    anop
+
+               lda Laser_on
+               bne DemareSuite
+
+               lda      DraftOn
+               beq      DemareSuite
+
+DemarePrint2   lda      >PrintRecord
+               sta      0
+               lda      >PrintRecord+2
+               sta      2
+               ldy      #2
+               lda      [0],y
+               sta      <Ptr_PZero+2
+               lda      [0]
+               sta      <Ptr_PZero
+
+               ldy      #$56            ; met draft mode
+               lda      [<Ptr_PZero],y
+               and      #$FF00
+               sta      [<Ptr_PZero],y
+
+SetDraftParam  stz      PrScaleVal
+               stz      PrDisplayVal
+                              
+DemareSuite    lda      >Sequ_NbFrame
+               sta      PrTemp1
+
+               _WaitCursor
+
+ValidateRec    anop
+
+               PushWord #0
+               PushLong >PrintRecord
+               _PrValidate
+               pla
+;--------------------------------------
+;        FAIRE DE LA PLACE
+;--------------------------------------
+               jsr Delete_Tools
+;--
+               lda      >Mode_Showoff
+               cmp      #Mode_Frame
+               beq      FrameMode1
+
+               stz      PrScaleVal
+               stz      PrDisplayVal
+               lda      #1
+               sta      PrSPageNum
+               sta      PrPageNum
+               sta      PrEPageNum
+
+               bra      NotFrameMode1
+
+FrameMode1     jsr      PageToBePr
+
+               lda      PrSPageNum
+               sta      PrPageNum
+
+NotFrameMode1  anop
+
+               stz      CompteLesPages
+
+Recommence     anop
+;--
+               PushLong #0
+               PushLong >PrintRecord
+               PushLong #0
+               _PrOpenDoc
+               pla
+               sta      PrintPort
+               pla
+               sta      PrintPort+2
+
+               PushWord #0
+               _PrError
+               pla
+               jsr Sbr_PrintErr
+               beq ImpNExtPage
+               brl      QuitDocPrint
+;--
+ImpNextPage    PushLong PrintPort
+               PushLong #0
+               _PrOpenPage
+
+               PushWord #0
+               _PrError
+               pla
+               jsr Sbr_PrintErr
+               beq      ImprimIt
+
+               PushLong PrintPort
+               _PrClosePage
+               bra      QuitDocPrint
+;--------------------------------------
+ImprimIt       jsr      PrImprime
+               bcc      ClosePage
+;--
+               jsr Sbr_PrintErr
+;--
+               lda #1
+               sta Plantage_print
+;--
+               PushLong PrintPort
+               _PrClosePage
+               lda      #$0000
+               sta      CompteLesPages
+               bra      QuitDocPrint
+;--------------------------------------
+ClosePage      anop
+;--
+;-------------------------------------- |++++++++
+;        Fabrique la page LaserWriter
+;--------------------------------------
+               jsr Make_378             |++++++++
+;--
+               PushLong PrintPort
+               _PrClosePage
+
+               lda      #$FFFF
+               sta      CompteLesPages
+               lda      PrPageNum
+               cmp      PrEPageNum
+               bcc      QuitDocPrint
+               beq      QuitDocPrint
+               lda      #$0000
+               sta      CompteLesPages
+
+QuitDocPrint   ANOP
+;--
+               PushLong PrintPort
+               _PrCloseDoc
+;--
+               lda Plantage_Print
+               beq SuiteMarche
+               jsl Call_Alert_Mem
+               bra SuitePlantage
+;--
+SuiteMarche    lda      >PrintRecord
+               sta      0
+               lda      >PrintRecord+2
+               sta      2
+               ldy      #2
+               lda      [0],y
+               sta      <Ptr_PZero+2
+               lda      [0]
+               sta      <Ptr_PZero
+
+               lda Laser_On             |si laser prpicfile
+               bne SuiteImpr
+
+               ldy      #$56            ; spool ?
+               lda      [<Ptr_PZero],y
+               and      #$00FF
+               beq      SuiteImpr
+
+               PushLong >PrintRecord
+               PushLong #0
+               PushLong #0
+               _PrPicFile
+;--
+SuiteImpr      anop
+SuitePlantage  anop
+               lda      CompteLesPages
+               cmp      #$FFFF          ; il y en a encore
+               bne      QuitPrinted
+               brl      Recommence
+
+QuitPrinted    anop
+
+               lda      PrTemp1
+               sta      >Sequ_NbFrame
+
+QuitPrint      anop
+
+               jsr      PrintShutDown
+               
+               _InitCursor
+;--------------------------------------
+;        ReCharge les Outils
+;--------------------------------------
+               jsr ReLoad_Tools
+;-------------------------------------- |+++++++++++++++++++
+;        Delete Init Laser
+;--------------------------------------
+               jsr Out_378              |+++++++++++++++++++
+;--
+               jsr PrintErr_SBR
+;--
+               lda #DoPrintAction
+               sta <Ptr_PZero
+               lda #^DoPrintAction
+               sta <Ptr_PZero+2
+
+               plb
+
+               rtl
+
+               END
+;...............................................................
+;
+;        Gere_Tools and memory
+;
+;...............................................................
+Gere_Tools     START
+               Using GlobalData
+               Using PrintData
+;--------------------------------------
+;        Test_Memory
+;--------------------------------------
+Test_Memory    ENTRY
+;--
+               _CompactMem
+;--
+               PushLong #0              |GS 512 k ?
+               _TotalMem
+               pla
+               pla
+               cmp #8
+               beq NotEnough
+;--
+               PushLong #0
+               _MaxBlock
+               pla
+               pla
+               cmp #6                   |au moins 384k de MAXBLOCK
+               bcs FTMemory
+;--
+NotEnough      ANOP                     |jsl Call_Alert_Mem
+;--
+               PushWord #0
+               PushLong #StopOnlyDraft
+               PushLong #0
+               _StopAlert
+               pla
+               sec
+               rts
+;--
+FTMemory       clc
+               rts
+;--------------------------------------
+;        Delete_Tools
+;--------------------------------------
+Delete_Tools   ENTRY                    |Faire de la place
+;--
+               rts
+;--------------------------------------
+;        ReLoad_Tools
+;--------------------------------------
+ReLoad_Tools   ENTRY
+;--
+               rts
+;-------------------------------------- |++++++++++++++++++++++++
+;        SetMode_378
+;--------------------------------------
+SetMode_378    ENTRY
+;--
+               lda #0
+               sta Mode_378
+;--
+               lda DraftOn              |si Draft Pas la Peine
+               bne No_Mode378
+;--
+               lda >Mode_ShowOff        |Mode Frame
+               cmp #Mode_Frame
+               bne No_Mode378
+;--
+SSM_378        ldy #$2                  |Est_ce une LaserWriter
+               lda [<Ptr_Pzero],y
+               cmp #3
+               bne No_Mode378
+;--
+               PushLong #0              |RESERVATION D'UN BUFFER
+               PushLong #$EC40          |POUR ECRIRE ET PREPARER
+               PushWord >MyId           |L'IMPRESSION LASER OU IMAGEWRITER
+               PushWord #$0010
+               PushLong #0
+               _NewHandle
+               pla
+               sta Hdl_Print_378
+               pla
+               sta Hdl_Print_378+2
+               bcs No_Mode378
+;--
+               lda #1                   |Mode_378 Actif
+               sta Mode_378
+               jsr Setup_378            |init Port
+;--
+No_Mode378     rts
+;--------------------------------------
+;        Setup_378
+;--------------------------------------
+SetUp_378      ENTRY
+;--
+               lda Mode_378             |Si pas Bon Mode Rien
+               bne SSetup_378
+               brl FSetUp_378
+;--
+SSetup_378     lda Hdl_Print_378        |bloc le handle et position
+               ldx Hdl_Print_378+2      |le locinfo
+               jsr Deref_378
+               sta Li_Ptr_378
+               stx Li_Ptr_378+2
+               sta <Ptr_Pun
+               stx <Ptr_Pun+2
+;--
+               jsr RAB_Port378
+;--
+               PushLong #0
+               _GetPort
+
+               PushLong #Port_378       |Creation du Port et Assigne
+               _OpenPort                |Le Hdl_378
+
+               PushLong #Port_378
+               _SetPort
+
+               PushLong #Li_Print_378
+               _SetPortLoc
+
+               PushLong #Rect_378
+               _ClipRect
+
+               PushLong #Rect_378
+               _SetPortRect
+;--
+               PushLong #0
+               _NewRgn
+               pla
+               sta Rgn_378
+               pla
+               sta Rgn_378+2
+
+               _OpenRgn
+
+               PushLong #Rect_378
+               _FrameRect
+
+               PushLong Rgn_378
+               _CloseRgn
+
+               PushLong Rgn_378
+               _SetVisRgn
+
+               PushLong Rgn_378
+               _DisposeRgn
+;--
+               _SetPort
+;--
+FSetUp_378     rts
+;--------------------------------------
+;        Rab_Port378
+;--------------------------------------
+Rab_Port378    ENTRY
+;--
+               ldy #$EC3E               |mise a blanc du port
+               lda #$FFFF
+RSU378         sta [<Ptr_Pun],y
+               dey
+               dey
+               bne RSU378
+               sta [<Ptr_Pun]
+;--
+               rts
+;--------------------------------------
+;        Make_378  fait la page PPtoPort
+;--------------------------------------
+Make_378       ENTRY
+;--
+               lda Mode_378
+               bne SMake_378
+               rts
+;--
+SMake_378      ANOP
+               jsr Rab_Port378          |remise a blanc du port 378
+;--
+               rts
+;--------------------------------------
+;        Out_378
+;--------------------------------------
+Out_378        ENTRY
+
+               lda Mode_378
+               bne Sout_378
+               rts
+;--
+Sout_378       PushLong #Port_378       |ferme le port
+               _ClosePort
+;--
+               lda Hdl_Print_378
+               ldx Hdl_Print_378+2
+               jsr Unlock_378           |unlock
+;--
+               PushLong Hdl_Print_378   |destroy buffer
+               _DisposeHandle
+;--
+               rts
+;--------------------------------------
+;        Deref_378
+;--------------------------------------
+Deref_378      ENTRY
+
+               sta 0
+               stx 2
+               ldy #4
+               lda [0],y
+               ora #$8000
+               sta [0],y
+               dey
+               dey
+               lda [0],y
+               tax
+               lda [0]
+               rts
+;--------------------------------------
+;        Unlock_378
+;--------------------------------------
+Unlock_378     ENTRY
+
+               sta 0
+               stx 2
+               ldy #4
+               lda [0],y
+               and #$7FFF
+               sta [0],y
+               rts                      |++++++++++++++++++++++
+;--------------------------------------
+;        SetPort_378
+;--------------------------------------
+SetPort_378    ENTRY
+
+               lda Mode_378
+               bne SSP_378
+               rts
+;--
+SSP_378        ANOP
+               PushLong #0
+               _GetPort
+               pla
+               sta Port_Sauve
+               pla
+               sta Port_Sauve+2
+
+               PushLong #Port_378
+               _SetPort
+
+               rts
+;--------------------------------------
+;        ReSetPort_378
+;--------------------------------------
+ReSetPort_378  ENTRY
+               lda Mode_378
+               bne SRSP_378
+               rts
+;--
+SRSP_378       ANOP
+               php
+
+               PushLong Port_Sauve
+               _SetPort
+
+               plp
+               rts
+;--------------------------------------
+;        Put_ShowOff
+;--------------------------------------
+Put_ShowOff    ENTRY
+;--
+               _GetFileInfo GetInfoPrint
+               bcc FPut_S
+;--
+               PushWord #0
+               PushLong #StopLoadTool
+               PushLong #0
+               _StopAlert
+               pla
+               bra Put_ShowOff
+;--
+FPut_S         rts
+;--------------------------------------
+;        BeepBeep
+;--------------------------------------
+BeepBeep       ENTRY
+
+               _SysBeep
+
+               sta >$00c010
+
+RBB            lda >$00c000
+               bpl RBB
+
+               sta >$00c010
+
+               rts
+;--------------------------------------
+;        Sbr_PrintErr
+;--------------------------------------
+Sbr_PrintErr   ENTRY
+;--
+               pha
+;--
+               cmp #0
+               bne SSE
+FSE            pla
+               rts
+;--
+SSE            ldx Top_DB_SBR
+               bne FSE
+;--
+               sta Erreur_Du_Print
+;--
+               PushWord #$80            |PrAbort
+               _PrSetError
+;--
+               inc Top_DB_SBR
+               bra FSE
+;--------------------------------------
+PrintErr_SBR   ENTRY
+;--
+               lda Erreur_Du_Print
+               bne SPE
+FPE0           rts
+;--
+SPE            ANOP
+               ldx #$0A
+RPE            cmp List_Error_Print,x
+               beq Find_Error
+               dex
+               dex
+               bpl RPE
+               bra FPE1
+;--
+Find_Error     txa
+               asl a
+               tax
+
+               lda Tab_ME00,x
+               sta ItemSEP2_Str
+               lda Tab_ME00+2,x
+               sta ItemSEP2_Str+2
+
+               lda Tab_ME10,x
+               sta ItemSEP3_Str
+               lda Tab_ME10+2,x
+               sta ItemSEP3_Str+2
+
+               PushLong #0
+               _GetPort
+
+               PushWord #0
+               PushLong #StopErrPrint
+               PushLong #0
+               _StopAlert
+               pla
+
+               _SetPort
+;--
+FPE1           rts
+
+               END

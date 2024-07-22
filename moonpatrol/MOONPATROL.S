@@ -81,6 +81,9 @@ L0300	=	$300
 ptrSCREEN	=	00	; word - pointer to the HGR screen
 ptrSTRING	=	$05	; word - pointer to a character string
 theACCEL	=	$10	; byte - the car acceleration
+fgJUMP	=	$13	; byte - 0 = not jumping, 1 = jumping
+fwdSHOOTX	= 	$1a	; byte - x-coord of the front shoot
+fwdSHOOTY	=	$1b	; byte - y-coord of the front shoot
 fgSOUND	=	$35	; byte - 0 = $C030, 1 = $C020
 mountX1	=	$41	; byte - x-index within mountain
 mountX2	=	$42	; byte - data to determine where to
@@ -310,7 +313,7 @@ L0996       LDX   #$00
             LDA   frameCNT
             AND   #$07
             BNE   L09A5
-            JSR   L32DF
+            JSR   blinkPLAYER
 L09A5       INC   frameCNT
             LDA   frameCNT
             AND   #$01
@@ -429,8 +432,8 @@ L0A33       LDA   #$22
             STA   $07
             LDA   #$00
             STA   theACCEL
-            STA   $13
-            STA   $1A
+            STA   fgJUMP
+            STA   fwdSHOOTX
             JSR   L0AAC
             RTS
 
@@ -581,7 +584,7 @@ L0B78       LDA   $57
             BMI   L0BB2
             JMP   L238D
 
-L0BB2       LDA   $13
+L0BB2       LDA   fgJUMP
             BEQ   L0BB9
             JMP   L0F7D
 
@@ -715,7 +718,7 @@ L0CA6       LDA   $00
             JSR   doPAUSE
             JMP   L0CDA
 
-L0CB2       CMP   #"R"
+L0CB2       CMP   #"R"		; R stands for Replay or what?
             BNE   L0CC6
             LDA   #$01
             STA   fgDEMO
@@ -735,27 +738,27 @@ L0CD3       CMP   #$91	; ctrl-q
             JMP   RESET
 
 L0CDA       PHA
-            LDA   fgINPUT
-            BEQ   L0CE4
+            LDA   fgINPUT	; which device?
+            BEQ   L0CE4		; do keyboard
             PLA
-            JMP   L0DC1
+            JMP   doJOYSTICK	; do joystick
 
 L0CE4       PLA
             CMP   #" "	; space to fire
             BNE   L0CEC
-            JMP   L0E26
+            JMP   doFIRE
 
 L0CEC       CMP   #"A"	; A to jump
             BNE   L0CF3
-            JMP   L0D3F
+            JMP   doJUMP
 
 L0CF3       CMP   #$88	; left arrow
             BNE   L0CFA
-            JMP   L0D1D
+            JMP   goSLOWER
 
 L0CFA       CMP   #$95	; right arrow
             BNE   L0D01
-            JMP   L0D2E
+            JMP   goFASTER
 
 L0D01       CMP   #$FF	; delete
             BEQ   L0D09
@@ -765,7 +768,7 @@ L0D01       CMP   #$FF	; delete
 
 L0D09       CMP   #$91	; ctrl-q
             BNE   L0D10
-            JMP   $C600
+            JMP   $C600	; argh!
 
 L0D10       RTS
 
@@ -780,10 +783,10 @@ L0D10       RTS
             RTS
 
 *-----------------------------------
-* Hand
+* SLOW DOWN BUDDY
 *-----------------------------------
 
-L0D1D       LDA   $13
+goSLOWER    LDA   fgJUMP
             BNE   L0D2D
             LDA   #$FC
             STA   theACCEL
@@ -793,7 +796,11 @@ L0D1D       LDA   $13
             STA   $07
 L0D2D       RTS
 
-L0D2E       LDA   $13
+*-----------------------------------
+* DRIVE FASTER
+*-----------------------------------
+
+goFASTER    LDA   fgJUMP
             BNE   L0D3E
             LDA   #$04
             STA   theACCEL
@@ -803,17 +810,21 @@ L0D2E       LDA   $13
             STA   $07
 L0D3E       RTS
 
-L0D3F       LDA   $13
+*-----------------------------------
+* HANDLE JUMP
+*-----------------------------------
+
+doJUMP      LDA   fgJUMP	; are we already jumping?
             BNE   L0D55
-            LDA   #$00
+            LDA   #$00		; no
             STA   theACCEL
             STA   $15
             LDA   #$04
             STA   $14
             LDA   #$02
             STA   $07
-            LDA   #$01
-            STA   $13
+            LDA   #$01		; we're jumping now!
+            STA   fgJUMP
 L0D55       RTS
 
 *-----------------------------------
@@ -884,12 +895,12 @@ L0DC0       RTS
 * READ JOYSTICK
 *-----------------------------------
 
-L0DC1       LDX   #$01		; read Y
+doJOYSTICK  LDX   #$01		; read Y
             JSR   PREAD
             TYA
             CMP   #$76
             BCS   L0DCE
-            JSR   L0D3F
+            JSR   doJUMP
 L0DCE       LDA   BUTN0
             STA   $00
             EOR   $9E
@@ -897,7 +908,7 @@ L0DCE       LDA   BUTN0
             LDA   $00
             BPL   L0DE3
             STA   $9E
-            JSR   L0E26
+            JSR   doFIRE
             JMP   L0DE7
 
 L0DE3       LDA   $00
@@ -907,7 +918,7 @@ L0DE7       LDX   #$00
             TYA
             CMP   #$76
             BCS   L0DF5
-            JSR   L0D1D
+            JSR   goSLOWER
             RTS
 
 L0DF5       LDX   #$00		; read X
@@ -915,19 +926,19 @@ L0DF5       LDX   #$00		; read X
             TYA
             CMP   #$8A
             BCC   L0E03
-            JSR   L0D2E
+            JSR   goFASTER
             RTS
 
 L0E03       LDA   $0F
             CMP   #$4A
             BEQ   L0E1D
             BCC   L0E14
-            LDA   $13
+            LDA   fgJUMP
             BNE   L0E1D
             LDA   #$FE
             STA   theACCEL
             RTS
-L0E14       LDA   $13
+L0E14       LDA   fgJUMP
             BNE   L0E1D
             LDA   #$02
             STA   theACCEL
@@ -944,31 +955,33 @@ doBEEP      STA   SPKR
             RTS
 
 *-----------------------------------
-* 
+* HANDLE FIRE
 *-----------------------------------
 
-L0E26       LDA   $1A
-            BNE   L0E4B
-            LDA   #$00
+doFIRE      LDA   fwdSHOOTX	; do we already have a front shoot?
+            BNE   L0E4B	; yes
+
+            LDA   #$00	; no, shoot in front of the vehicle
             STA   $9D
-            LDA   $57
+            LDA   $57	; x-coord to which we add the right
             CLC
             ADC   #$2E
             BCS   L0E4B
-            STA   $1A
+            STA   fwdSHOOTX
             LDA   $58
             CLC
             ADC   #$09
-            STA   $1B
+            STA   fwdSHOOTY
             LDA   #$04
             STA   $1C
             LDA   #$03
-            LDX   $1A
-            LDY   $1B
+            LDX   fwdSHOOTX
+            LDY   fwdSHOOTY
             JSR   drawSPRITE
-L0E4B       LDX   #$00
-L0E4D       LDA   LB049,X
-            BEQ   L0E58
+
+L0E4B       LDX   #$00	; is there room for another shoot?
+L0E4D       LDA   tblFIREX,X
+            BEQ   L0E58	; yes
             INX
             CPX   #$04
             BNE   L0E4D
@@ -979,7 +992,7 @@ L0E58       LDA   #$00
             LDA   $57
             CLC
             ADC   #$05
-            STA   LB049,X
+            STA   tblFIREX,X
             STA   LB051,X
             LDA   $58
             SEC
@@ -987,10 +1000,11 @@ L0E58       LDA   #$00
             STA   LB04D,X
             STA   LB055,X
             TAY
-            LDA   LB049,X
+            LDA   tblFIREX,X
             TAX
             LDA   #$02
             JSR   drawSPRITE
+
             LDY   #$00
             LDA   #$1A
             STA   $00
@@ -1007,65 +1021,69 @@ L0E91       DEX
             JMP   L0E83
 L0E99       RTS
 
-L0E9A       LDA   $1A
+*-----------------------------------
+*
+*-----------------------------------
+
+L0E9A       LDA   fwdSHOOTX
             BEQ   L0F19
             LDA   $1C
             BPL   L0EF5
             CMP   #$FF
             BNE   L0ECF
             LDA   #$03
-            LDX   $1A
-            LDY   $1B
+            LDX   fwdSHOOTX
+            LDY   fwdSHOOTY
             JSR   undrawSPRITE
             LDA   #$04
             STA   $11
-            LDA   $1B
+            LDA   fwdSHOOTY
             SEC
             SBC   #$05
-            STA   $1B
-            LDA   $1A
+            STA   fwdSHOOTY
+            LDA   fwdSHOOTX
             SEC
             SBC   #$04
-            STA   $1A
+            STA   fwdSHOOTX
             LDA   $11
-            LDX   $1A
-            LDY   $1B
+            LDX   fwdSHOOTX
+            LDY   fwdSHOOTY
             JSR   drawSPRITE
             DEC   $1C
             JMP   L0F19
 
-L0ECF       LDX   $1A
-            LDY   $1B
+L0ECF       LDX   fwdSHOOTX
+            LDY   fwdSHOOTY
             LDA   $11
             JSR   undrawSPRITE
             LDA   $11
             CMP   #$07
             BNE   L0EE5
             LDA   #$00
-            STA   $1A
+            STA   fwdSHOOTX
             JMP   L0F19
 
 L0EE5       STA   $11
             INC   $11
-            LDX   $1A
-            LDY   $1B
+            LDX   fwdSHOOTX
+            LDY   fwdSHOOTY
             JSR   drawSPRITE
             DEC   $1C
             JMP   L0F19
 
 L0EF5       LDA   #$03
-            LDX   $1A
-            LDY   $1B
+            LDX   fwdSHOOTX
+            LDY   fwdSHOOTY
             JSR   undrawSPRITE
-            LDA   $1A
+            LDA   fwdSHOOTX
             CLC
             ADC   #$0C
-            STA   $1A
+            STA   fwdSHOOTX
             TAX
-            LDY   $1B
+            LDY   fwdSHOOTY
             LDA   #$03
             JSR   drawSPRITE
-            LDA   $1A
+            LDA   fwdSHOOTX
             CMP   #$F5
             BCC   L0F17
             LDA   #$00
@@ -1092,7 +1110,7 @@ L0F28       STX   $16
             BNE   L0F4F
             LDA   LB04D,X
             TAY
-            LDA   LB049,X
+            LDA   tblFIREX,X
             TAX
             LDA   #$02
             JSR   drawSPRITE
@@ -1100,12 +1118,12 @@ L0F28       STX   $16
             JMP   L0F20
 
 L0F4F       LDA   #$00
-            STA   LB049,X
+            STA   tblFIREX,X
             STA   LB051,X
             JMP   L0F20
 
 L0F5A       LDX   #$00
-L0F5C       LDA   LB049,X
+L0F5C       LDA   tblFIREX,X
             STA   LB051,X
             LDA   LB04D,X
             STA   LB055,X
@@ -1142,7 +1160,7 @@ L0F99       STA   $15
             CMP   #$86
             BCC   L0FB1
             LDA   #$00
-            STA   $13
+            STA   fgJUMP
             LDA   #$86
             STA   $58
             LDA   #$8F
@@ -1216,12 +1234,12 @@ L1009       LDA   #$AA
             BNE   L0FFB
 
             LDA   #$00
-            STA   $1A
+            STA   fwdSHOOTX
             LDX   #$03
 L1025       STA   LB34B,X
             STA   LB3DE,X
             STA   LB413,X
-            STA   LB049,X
+            STA   tblFIREX,X
             STA   LB051,X
             STA   LB42A,X
             STA   LB387,X
@@ -1604,7 +1622,7 @@ L12E5       DEX
             JMP   L1330
 
 L12EB       STX   $50
-            LDA   $1B
+            LDA   fwdSHOOTY
             CMP   #$88
             BCC   L12E5
             CMP   #$98
@@ -1612,12 +1630,12 @@ L12EB       STX   $50
             LDA   LB42A,X
             SEC
             SBC   #$06
-            CMP   $1A
+            CMP   fwdSHOOTX
             BCS   L12E5
             LDA   LB42A,X
             CLC
             ADC   #$19
-            CMP   $1A
+            CMP   fwdSHOOTX
             BCC   L12E5
             LDA   $9D
             BNE   L12E5
@@ -1752,9 +1770,9 @@ L13F4       DEY
 L13FA       LDA   LB343,Y
             CLC
             ADC   LB3BF,Y
-            CMP   LB049,X
+            CMP   tblFIREX,X
             BCC   L146E
-            LDA   LB049,X
+            LDA   tblFIREX,X
             CLC
             ADC   #$01
             ADC   LB3BB,Y
@@ -2586,7 +2604,7 @@ L1A52       LDA   #$00
             STA   $15
             STA   $16
             LDA   #$02
-            STA   $13
+            STA   fgJUMP
             LDA   #<sprSTRUCTURE	; sprite definition pointer
             STA   $08
             LDA   #>sprSTRUCTURE
@@ -2597,7 +2615,7 @@ L1A52       LDA   #$00
             INY
             LDA   ($08),Y
             STA   $0B		; height
-L1A71       LDY   $13
+L1A71       LDY   fgJUMP
             LDA   ($08),Y
             STA   $0D		; get address
             INY
@@ -2617,7 +2635,7 @@ L1A88       STA   $0F
             JSR   L2F2D
             STX   $0C
             CLC
-            LDY   $13
+            LDY   fgJUMP
             INY
             INY
             LDA   $0A
@@ -2634,9 +2652,9 @@ L1A88       STA   $0F
             BCC   L1AB2
             INC   $0B
 L1AB2       STA   $0A
-            INC   $13
-            INC   $13
-            LDA   $13
+            INC   fgJUMP
+            INC   fgJUMP
+            LDA   fgJUMP
             CMP   #$0E
             BNE   L1A71
             LDA   #$10
@@ -2647,7 +2665,7 @@ L1AB2       STA   $0A
             ADC   $09
             STA   $09
             LDA   #$02
-            STA   $13
+            STA   fgJUMP
             INC   $14
             LDA   $14
             CMP   #$13
@@ -2992,7 +3010,7 @@ L1CED       PHA	; save range
             PLA
             RTS
 
-L1CF6       JSR   L32BE
+L1CF6       JSR   resetBLINKING
             PLA
             STA   curRANGE
             CMP   #$08	; did we reach the end of the game? Ie. the letter Z
@@ -3906,7 +3924,7 @@ L247F       STX   $50
             BEQ   L247B
             LDA   LB40F,X
             BMI   L247B
-            LDA   $1A
+            LDA   fwdSHOOTX
             BEQ   L247E
             LDA   LB407,X
             SEC
@@ -3923,7 +3941,7 @@ L247F       STX   $50
             STA   $01
             LDA   LB41C,Y
             STA   $06
-            LDA   $1B
+            LDA   fwdSHOOTY
             BIT   $1C
             BPL   L24BB
             CLC
@@ -3932,7 +3950,7 @@ L24BB       CLC
             ADC   $06
             CMP   LB403,X
             BCC   L247B
-            LDA   $1A
+            LDA   fwdSHOOTX
             CLC
             ADC   #$05
             CMP   $00
@@ -4679,7 +4697,7 @@ L2B72       LDA   #$FF
             STA   $07
             LDA   #$00
             STA   theACCEL
-            STA   $13
+            STA   fgJUMP
             LDA   $83
             STA   $44
             LDA   $83+1
@@ -5009,7 +5027,7 @@ L2E3F       PHA
             STA   $E0
             STA   $DF
             STA   $9D
-            JSR   L32BE
+            JSR   resetBLINKING
             LDA   #$FF
             JSR   WAIT
             LDA   #$FF
@@ -5066,7 +5084,7 @@ L2ECE       INC   frameCNT
 L2EDD       LDA   frameCNT
             AND   #$0F
             BNE   L2EE6
-            JSR   L32DF
+            JSR   blinkPLAYER
 L2EE6       JSR   L0E9A
             DEC   $F3
             BPL   L2EF4
@@ -5598,65 +5616,69 @@ L3296       LDA   curPLAYER
             RTS
 
 *-----------------------------------
-* 
+* SHOW 1UP/2UP
 *-----------------------------------
 
-L32BE       LDA   curPLAYER
+resetBLINKING
+            LDA   curPLAYER
             PHA
             LDA   #$01
             STA   fgBLINK
             LDA   #$00
             STA   curPLAYER
-            JSR   L32DF
+            JSR   blinkPLAYER	; show 1UP
             LDA   #$01
             STA   fgBLINK
             STA   curPLAYER
-            JSR   L32DF
+            JSR   blinkPLAYER	; show 1UP or 2UP
             PLA
             STA   curPLAYER
             RTS
 
 *-----------------------------------
-*
+* BLINK PLAYER'S NAME
 *-----------------------------------
 
-L32DF       LDA   #$01
+blinkPLAYER LDA   #$01		; speed
             STA   charWAIT
-            LDA   fgBLINK
-            BEQ   L330E
-            LDA   fgBLINK
+            LDA   fgBLINK	; erase?
+            BEQ   L330E		; yes, erase
+
+            LDA   fgBLINK	; exchange for next call
             EOR   #$01
             STA   fgBLINK
-            LDA   curPLAYER
-            BEQ   L3302
-            LDY   #$18
+            LDA   curPLAYER	; which player?
+            BEQ   L3302		; show 1UP
+            LDY   #$18		; show 2UP
             LDX   #$02
             JSR   printSTRING
             ASC   "2UP@"
             RTS
-
 L3302       LDY   #$0F
             LDX   #$02
             JSR   printSTRING
             ASC   "1UP@"
             RTS
 
-L330E       LDA   fgBLINK
+L330E       LDA   fgBLINK	; erase blinking
             EOR   #$01
             STA   fgBLINK
-            LDA   curPLAYER
-            BEQ   L3327
-            LDY   #$18
+            LDA   curPLAYER	; which player?
+            BEQ   L3327		; hide 1UP
+            LDY   #$18		; hide 2UP
             LDX   #$02
             JSR   printSTRING
             ASC   "   @"
             RTS
-
 L3327       LDY   #$0F
             LDX   #$02
             JSR   printSTRING
             ASC   "   @"
             RTS
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 L3333       LDX   #$03
 L3335       LDA   LB3DE,X
@@ -5671,7 +5693,7 @@ L333E       STX   $50
             BNE   L333A
             LDA   $D1,X
             BMI   L333A
-            LDA   $1A
+            LDA   fwdSHOOTX
             BEQ   L333D
             LDA   $C7,X
             CLC
@@ -5683,12 +5705,12 @@ L333E       STX   $50
             CLC
             ADC   #$1E
             STA   $01
-            LDA   $1B
+            LDA   fwdSHOOTY
             SEC
             SBC   #$02
             CMP   #$7A
             BCC   L333A
-            LDA   $1A
+            LDA   fwdSHOOTX
             CLC
             ADC   #$05
             CMP   $00
@@ -5992,9 +6014,9 @@ L35F5       STY   $18
             LDA   LB38B,Y
             CLC
             ADC   #$03
-            CMP   LB049,X
+            CMP   tblFIREX,X
             BCC   L35EF
-            LDA   LB049,X
+            LDA   tblFIREX,X
             CLC
             ADC   #$02
             CMP   LB38B,Y
@@ -6303,7 +6325,7 @@ L3846       LDA   $B8
             CLC
             ADC   #$2D
             STA   $01
-            LDA   $1A
+            LDA   fwdSHOOTX
             BEQ   L386B
             CLC
             ADC   #$05
@@ -6313,7 +6335,7 @@ L3846       LDA   $B8
             SBC   #$0C
             CMP   $01
             BCS   L386B
-            LDA   $1B
+            LDA   fwdSHOOTY
             CLC
             ADC   #$05
             CMP   $BA

@@ -7109,10 +7109,7 @@ courseDEMO	HEX   344A42424D494B423B4A4A022B3B4352
 * 
 *-----------------------------------
 
-LB049       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
+tblFIREX    DS    4	; X-coord of each vertical shoot
 LB04D       DB    $00
             DB    $00
             DB    $00

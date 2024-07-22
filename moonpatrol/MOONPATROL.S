@@ -29,6 +29,36 @@ PREAD       EQU   $FB1E
 WAIT        EQU   $FCA8
 
 *-----------------------------------
+* SPRITES
+* Where is the vertical explosion sprite?
+
+* 0	wheel
+* 1	car
+* 2	vertical shoot
+* 3	horizontal shoot
+* 4	horizontal explosion animation step #1
+* 5	horizontal explosion #2
+* 6	horizontal explosion #3
+* 7	horizontal explosion #4
+* 8	enemy 1 #1
+* 9	enemy 1 #2
+* 10	enemy 1 #3
+* 11	enemy 1 #4
+* 12	enemy 2
+* 13	enemy 3
+* 14	small rock
+* 15	big rock
+* 16	tank
+* 17	mine #1
+* 18	mine #2
+* 19	small hole
+* 20	big hole
+* 21	very big hole
+* 22	mushroom #1
+* 23	mushroom #2
+* 24	enemy vehicle
+
+*-----------------------------------
 * GAME VARIABLES
 *-----------------------------------
 
@@ -91,6 +121,20 @@ mountX3	=	$43	; byte - start drawing, that makes the move
 frameCNT	=	$49	; byte - frame counter
 vehicleX	=	$57	; byte - x-coord of the vehicle
 vehicleY	=	$58	; byte - y-coord of the vehicle
+wheel1X	=	$5b	; byte - x-coord of wheel 1
+wheel1Y	=	$5c	; byte - y-coord of wheel 1
+wheel2X	=	$5d	; byte - x-coord of wheel 2
+wheel2Y	=	$5e	; byte - y-coord of wheel 2
+wheel3X	=	$5f	; byte - x-coord of wheel 3
+wheel3Y	=	$60	; byte - y-coord of wheel 3
+oldVEHICLEX	=	$59	; byte - old x-coord of the vehicle
+oldVEHICLEY	=	$5a	; byte - old y-coord of the vehicle
+oldWHEEL1X	=	$61	; byte - old x-coord of wheel 1
+oldWHEEL1Y	=	$62	; byte - old y-coord of wheel 1
+oldWHEEL2X	=	$63	; byte - old x-coord of wheel 2
+oldWHEEL2Y	=	$64	; byte - old y-coord of wheel 2
+oldWHEEL3X	=	$65	; byte - old x-coord of wheel 3
+oldWHEEL3Y	=	$66	; byte - old y-coord of wheel 3
 groundSTARTX = 	$6e	; byte - x-col where to start drawing ground (0 or 34 if moon base)
 plrPOINT	=	$78	; byte - point reached by the current player
 plrSCORE	=	$7a	; adr  - score of player
@@ -420,20 +464,20 @@ L0A33       LDA   #$22
             STA   $23
             STA   $48
             LDA   #$70
-            STA   $5B
+            STA   wheel1X
             SEC
             SBC   #$04
             STA   vehicleX
             LDA   #$7A
-            STA   $5D
+            STA   wheel2X
             LDA   #$8A
-            STA   $5F
+            STA   wheel3X
             LDA   #$85
             STA   vehicleY
             LDA   #$8E
-            STA   $5C
-            STA   $5E
-            STA   $60
+            STA   wheel1Y
+            STA   wheel2Y
+            STA   wheel3Y
             LDA   #$70
             STA   $0F
             LDA   #$02
@@ -472,54 +516,62 @@ showHGRPAGE2
 * 
 *-----------------------------------
 
-animVEHICLE       LDA   $59
+animVEHICLE LDA   oldVEHICLEX	; the vehicle
             ORA   courseTYPE
             TAX
             LDA   #$01
-            LDY   $5A
+            LDY   oldVEHICLEY
             JSR   undrawSPRITE
-            LDA   $61
+
+            LDA   oldWHEEL1X	; wheel 1
             ORA   courseTYPE
             TAX
             LDA   #$00
-            LDY   $62
+            LDY   oldWHEEL1Y
             JSR   undrawSPRITE
-            LDA   $63
+
+            LDA   oldWHEEL2X	; wheel 2
             ORA   courseTYPE
             TAX
             LDA   #$00
-            LDY   $64
+            LDY   oldWHEEL2Y
             JSR   undrawSPRITE
-            LDA   $65
+
+            LDA   oldWHEEL3X	; wheel 3
             ORA   courseTYPE
             TAX
             LDA   #$00
-            LDY   $66
+            LDY   oldWHEEL3Y
             JSR   undrawSPRITE
-L0AF9       LDA   vehicleX
+	
+L0AF9       LDA   vehicleX	; draw the car
             ORA   courseTYPE
             TAX
             LDY   vehicleY
             LDA   #$01
             JSR   drawSPRITE
-            LDA   $5B
+
+            LDA   wheel1X	; draw wheel 1
             ORA   courseTYPE
             TAX
             LDA   #$00
-            LDY   $5C
+            LDY   wheel1Y
             JSR   drawSPRITE
-            LDA   $5D
+
+            LDA   wheel2X	; draw wheel 2
             ORA   courseTYPE
             TAX
             LDA   #$00
-            LDY   $5E
+            LDY   wheel2Y
             JSR   drawSPRITE
-            LDA   $5F
+
+            LDA   wheel3X	; draw wheel 3
             ORA   courseTYPE
             TAX
             LDA   #$00
-            LDY   $60
+            LDY   wheel3Y
             JSR   drawSPRITE
+
             LDA   $67
             BNE   L0B78
             LDA   $0F
@@ -562,32 +614,32 @@ L0B74       LDA   #$06
             STA   $AF
 
 L0B78       LDA   vehicleX
-            STA   $59
+            STA   oldVEHICLEX
             LDA   vehicleY
-            STA   $5A
-            LDA   $5B
-            STA   $61
-            LDA   $5D
-            STA   $63
-            LDA   $5F
-            STA   $65
-            LDA   $5C
-            STA   $62
-            LDA   $5E
-            STA   $64
-            LDA   $60
-            STA   $66
+            STA   oldVEHICLEY
+            LDA   wheel1X
+            STA   oldWHEEL1X
+            LDA   wheel2X
+            STA   oldWHEEL2X
+            LDA   wheel3X
+            STA   oldWHEEL3X
+            LDA   wheel1Y
+            STA   oldWHEEL1Y
+            LDA   wheel2Y
+            STA   oldWHEEL2Y
+            LDA   wheel3Y
+            STA   oldWHEEL3Y
             LDA   $0F
-            STA   $5B
+            STA   wheel1X
             SEC
             SBC   #$04
             STA   vehicleX
             CLC
             ADC   #$0E
-            STA   $5D
+            STA   wheel2X
             CLC
             ADC   #$10
-            STA   $5F
+            STA   wheel3X
             LDA   $6D
             BMI   L0BB2
             JMP   L238D
@@ -600,53 +652,53 @@ L0BB9       LDA   #$02
             JSR   L26EC
             SEC
             SBC   #$01
-            ADC   $5C
-            STA   $5C
+            ADC   wheel1Y
+            STA   wheel1Y
             LDA   #$02
             JSR   L26EC
             SEC
             SBC   #$01
-            ADC   $60
-            STA   $60
+            ADC   wheel3Y
+            STA   wheel3Y
             LDA   #$02
             JSR   L26EC
             SEC
             SBC   #$01
-            ADC   $5E
-            STA   $5E
-            LDA   $5C
+            ADC   wheel2Y
+            STA   wheel2Y
+            LDA   wheel1Y
             CMP   #$8D
             BNE   L0BE7
             LDA   #$8F
-            STA   $5C
-L0BE7       LDA   $5C
+            STA   wheel1Y
+L0BE7       LDA   wheel1Y
             CMP   #$92
             BNE   L0BF1
             LDA   #$8F
-            STA   $5C
-L0BF1       LDA   $5E
+            STA   wheel1Y
+L0BF1       LDA   wheel2Y
             CMP   #$8D
             BNE   L0BFB
             LDA   #$8F
-            STA   $5E
-L0BFB       LDA   $5E
+            STA   wheel2Y
+L0BFB       LDA   wheel2Y
             CMP   #$92
             BNE   L0C05
             LDA   #$8F
-            STA   $5E
-L0C05       LDA   $60
+            STA   wheel2Y
+L0C05       LDA   wheel3Y
             CMP   #$8D
             BNE   L0C0F
             LDA   #$8F
-            STA   $60
-L0C0F       LDA   $60
+            STA   wheel3Y
+L0C0F       LDA   wheel3Y
             CMP   #$92
             BNE   L0C19
             LDA   #$8F
-            STA   $60
-L0C19       LDA   $5E
+            STA   wheel3Y
+L0C19       LDA   wheel2Y
             SEC
-            SBC   $5C
+            SBC   wheel1Y
             CLC
             ADC   #$86
             STA   vehicleY
@@ -1001,12 +1053,12 @@ L0E58       LDA   #$00
             CLC
             ADC   #$05
             STA   tblFIREX,X
-            STA   LB051,X
+            STA   tblFIREX2,X
             LDA   vehicleY
             SEC
             SBC   #$0B
-            STA   LB04D,X
-            STA   LB055,X
+            STA   tblFIREY,X
+            STA   tblFIREY2,X
             TAY
             LDA   tblFIREX,X
             TAX
@@ -1098,7 +1150,7 @@ L0EF5       LDA   #$03
             STA   $1C
 L0F17       DEC   $1C
 L0F19       LDX   #$00
-L0F1B       LDA   LB051,X
+L0F1B       LDA   tblFIREX2,X
             BNE   L0F28
 L0F20       INX
             CPX   #$04
@@ -1107,7 +1159,7 @@ L0F20       INX
 
 L0F28       STX   $16
             PHA
-            LDA   LB055,X
+            LDA   tblFIREY2,X
             TAY
             PLA
             TAX
@@ -1116,7 +1168,7 @@ L0F28       STX   $16
             LDX   $16
             LDA   LB059,X
             BNE   L0F4F
-            LDA   LB04D,X
+            LDA   tblFIREY,X
             TAY
             LDA   tblFIREX,X
             TAX
@@ -1127,21 +1179,21 @@ L0F28       STX   $16
 
 L0F4F       LDA   #$00
             STA   tblFIREX,X
-            STA   LB051,X
+            STA   tblFIREX2,X
             JMP   L0F20
 
 L0F5A       LDX   #$00
 L0F5C       LDA   tblFIREX,X
-            STA   LB051,X
-            LDA   LB04D,X
-            STA   LB055,X
+            STA   tblFIREX2,X
+            LDA   tblFIREY,X
+            STA   tblFIREY2,X
             SEC
             SBC   #$09
             CMP   #$25
             BCS   L0F74
             LDA   #$01
             STA   LB059,X
-L0F74       STA   LB04D,X
+L0F74       STA   tblFIREY,X
             INX
             CPX   #$04
             BNE   L0F5C
@@ -1153,9 +1205,9 @@ L0F7D       LDA   vehicleY
             STA   vehicleY
             CLC
             ADC   #$08
-            STA   $5C
-            STA   $5E
-            STA   $60
+            STA   wheel1Y
+            STA   wheel2Y
+            STA   wheel3Y
             LDA   $15
             SEC
             SBC   #$04
@@ -1172,9 +1224,9 @@ L0F99       STA   $15
             LDA   #$86
             STA   vehicleY
             LDA   #$8F
-            STA   $5C
-            STA   $5E
-            STA   $60
+            STA   wheel1Y
+            STA   wheel2Y
+            STA   wheel3Y
 L0FB1       RTS
 
 L0FB2       LDA   $96
@@ -1248,7 +1300,7 @@ L1025       STA   LB34B,X
             STA   LB3DE,X
             STA   LB413,X
             STA   tblFIREX,X
-            STA   LB051,X
+            STA   tblFIREX2,X
             STA   LB42A,X
             STA   LB387,X
             DEX
@@ -1753,7 +1805,7 @@ L13AF       LDA   LB34B,X
 L13D6       DEX
             BPL   L13AF
             LDX   #$03
-L13DB       LDA   LB051,X
+L13DB       LDA   tblFIREX2,X
             BNE   L13E4
 L13E0       DEX
             BPL   L13DB
@@ -1791,9 +1843,9 @@ L13FA       LDA   LB343,Y
             ADC   LB3B7,Y
             SEC
             SBC   #$04
-            CMP   LB04D,X
+            CMP   tblFIREY,X
             BCC   L146E
-            LDA   LB04D,X
+            LDA   tblFIREY,X
             CLC
             ADC   #$06
             ADC   LB3B3,Y
@@ -3902,7 +3954,7 @@ L244B       LDA   $00
             BEQ   L245B
             JMP   L23FD
 
-L245B       JSR   animVEHICLE		; draw the vehicle
+L245B       JSR   animVEHICLE	; draw the vehicle
             DEC   $67
             BEQ   L2465
             JMP   L23DE		; loop
@@ -4687,19 +4739,19 @@ L2B72       LDA   #$FF
             LDA   #$01
             STA   $97
             LDA   #$4A
-            STA   $5B
+            STA   wheel1X
             LDA   #$46
             STA   vehicleX
             LDA   #$54
-            STA   $5D
+            STA   wheel2X
             LDA   #$64
-            STA   $5F
+            STA   wheel3X
             LDA   #$85
             STA   vehicleY
             LDA   #$8E
-            STA   $5C
-            STA   $5E
-            STA   $60
+            STA   wheel1Y
+            STA   wheel2Y
+            STA   wheel3Y
             LDA   #$4A
             STA   $0F
             LDA   #$02
@@ -4747,33 +4799,33 @@ L2BF9       LDA   #$19	; no
             STA   plrPOINT
             RTS
 
-L2C10       LDA   $5C
+L2C10       LDA   wheel1Y
             SEC
             SBC   $A3
             CMP   #$8E
             BCC   L2C24
             LDA   #$8E
-            STA   $5C
-            STA   $5E
-            STA   $60
+            STA   wheel1Y
+            STA   wheel2Y
+            STA   wheel3Y
             JMP   L2C32
 
-L2C24       STA   $5C
-            STA   $5E
-            STA   $60
-            DEC   $5F
-            DEC   $5F
-            DEC   $5D
-            INC   $5B
-L2C32       LDA   $5C
+L2C24       STA   wheel1Y
+            STA   wheel2Y
+            STA   wheel3Y
+            DEC   wheel3X
+            DEC   wheel3X
+            DEC   wheel2X
+            INC   wheel1X
+L2C32       LDA   wheel1Y
             SEC
             SBC   $A3
             CMP   #$8E
             BCC   L2C3D
             LDA   #$8E
-L2C3D       STA   $5C
-            STA   $5E
-            STA   $60
+L2C3D       STA   wheel1Y
+            STA   wheel2Y
+            STA   wheel3Y
             LDA   $A4
             SEC
             SBC   #$02
@@ -4782,7 +4834,7 @@ L2C3D       STA   $5C
             ADC   #$0A
             DEC   $A3
 L2C4F       STA   $A4
-            LDA   $5C
+            LDA   wheel1Y
             CMP   #$89
             BCC   L2C6D
             LDA   $A2
@@ -4799,22 +4851,22 @@ L2C63       STA   $A2
             STA   $A3
 L2C6D       LDA   $A5
             BNE   L2C7A
-            LDX   $65
-            LDY   $66
+            LDX   oldWHEEL3X
+            LDY   oldWHEEL3Y
             LDA   #$00
             JSR   undrawSPRITE
 L2C7A       LDA   $A5
             CMP   #$02
             BEQ   L2C89
             LDA   #$00
-            LDX   $63
-            LDY   $64
+            LDX   oldWHEEL2X
+            LDY   oldWHEEL2Y
             JSR   undrawSPRITE
 L2C89       LDA   #$00
-            LDX   $61
-            LDY   $62
+            LDX   oldWHEEL1X
+            LDY   oldWHEEL1Y
             JSR   undrawSPRITE
-            LDA   $5F
+            LDA   wheel3X
             BEQ   L2C9D
             CMP   #$FF
             BEQ   L2C9D
@@ -4822,39 +4874,39 @@ L2C89       LDA   #$00
 
 L2C9D       LDA   #$01
             STA   $A5
-L2CA1       LDA   $5D
+L2CA1       LDA   wheel2X
             BNE   L2CA9
             LDA   #$02
             STA   $A5
 L2CA9       LDA   $A5
             BNE   L2CB6
             LDA   #$00
-            LDX   $5F
-            LDY   $60
+            LDX   wheel3X
+            LDY   wheel3Y
             JSR   drawSPRITE
 L2CB6       LDA   $A5
             CMP   #$02
             BEQ   L2CC5
             LDA   #$00
-            LDX   $5D
-            LDY   $5E
+            LDX   wheel2X
+            LDY   wheel2Y
             JSR   drawSPRITE
 L2CC5       LDA   #$00
-            LDX   $5B
-            LDY   $5C
+            LDX   wheel1X
+            LDY   wheel1Y
             JSR   drawSPRITE
-            LDA   $5B
-            STA   $61
-            LDA   $5D
-            STA   $63
-            LDA   $5F
-            STA   $65
-            LDA   $5C
-            STA   $62
-            LDA   $5E
-            STA   $64
-            LDA   $60
-            STA   $66
+            LDA   wheel1X
+            STA   oldWHEEL1X
+            LDA   wheel2X
+            STA   oldWHEEL2X
+            LDA   wheel3X
+            STA   oldWHEEL3X
+            LDA   wheel1Y
+            STA   oldWHEEL1Y
+            LDA   wheel2Y
+            STA   oldWHEEL2Y
+            LDA   wheel3Y
+            STA   oldWHEEL3Y
             DEC   mountX3
             LDA   mountX3
             CMP   #$FF
@@ -4897,29 +4949,29 @@ L2D26       LDA   $C7,X
             BPL   L2D0F
             LDA   #$00
             STA   $AF
-            LDA   $65
+            LDA   oldWHEEL3X
             ORA   courseTYPE
             TAX
             LDA   #$00
-            LDY   $66
+            LDY   oldWHEEL3Y
             JSR   undrawSPRITE
-            LDA   $63
+            LDA   oldWHEEL2X
             ORA   courseTYPE
             TAX
             LDA   #$00
-            LDY   $64
+            LDY   oldWHEEL2Y
             JSR   undrawSPRITE
-            LDA   $61
+            LDA   oldWHEEL1X
             ORA   courseTYPE
             TAX
-            LDY   $62
+            LDY   oldWHEEL1Y
             LDA   #$00
             JSR   undrawSPRITE
-            LDA   $59
+            LDA   oldVEHICLEX
             ORA   courseTYPE
             TAX
             LDA   #$01
-            LDY   $5A
+            LDY   oldVEHICLEY
             JSR   undrawSPRITE
             LDA   #$03
             STA   $A1
@@ -4935,10 +4987,10 @@ L2D26       LDA   $C7,X
             LDA   #$04
             STA   $B6
 L2D90       LDA   $71
-            LDX   $59
+            LDX   oldVEHICLEX
             INX
             INX
-            LDY   $5A
+            LDY   oldVEHICLEY
             INY
             JSR   drawSPRITE2
             LDA   #$07
@@ -4957,10 +5009,10 @@ L2D90       LDA   $71
             LDA   $B6
             BEQ   L2DE4
             LDA   $71
-            LDX   $59
+            LDX   oldVEHICLEX
             INX
             INX
-            LDY   $5A
+            LDY   oldVEHICLEY
             INY
             JSR   drawSPRITE3
             LDA   $71
@@ -4984,10 +5036,10 @@ L2DE4       LDA   #$07
             LDA   #$06
             STA   $71
 L2DF6       LDA   $71
-            LDX   $59
+            LDX   oldVEHICLEX
             INX
             INX
-            LDY   $5A
+            LDY   oldVEHICLEY
             INY
             JSR   drawSPRITE2
             LDA   $71
@@ -5001,10 +5053,10 @@ L2E0C       JSR   L2ECE
             DEC   $72
             BPL   L2E0C
             LDA   $71
-            LDX   $59
+            LDX   oldVEHICLEX
             INX
             INX
-            LDY   $5A
+            LDY   oldVEHICLEY
             INY
             JSR   drawSPRITE3
             INC   $71
@@ -5012,10 +5064,10 @@ L2E0C       JSR   L2ECE
 
 L2E2A       JSR   L2ECE
             LDA   $71
-            LDX   $59
+            LDX   oldVEHICLEX
             INX
             INX
-            LDY   $5A
+            LDY   oldVEHICLEY
             INY
             JSR   drawSPRITE3
             LDA   #$00
@@ -6012,7 +6064,7 @@ L35E4       DEY
             RTS
 
 L35E8       LDX   #$03
-L35EA       LDA   LB051,X
+L35EA       LDA   tblFIREX2,X
             BNE   L35F5
 L35EF       DEX
             BPL   L35EA
@@ -6033,9 +6085,9 @@ L35F5       STY   $18
             LDA   LB38F,Y
             CLC
             ADC   #$04
-            CMP   LB04D,X
+            CMP   tblFIREY,X
             BCC   L35EF
-            LDA   LB04D,X
+            LDA   tblFIREY,X
             CLC
             ADC   #$06
             CMP   LB38F,Y
@@ -6351,7 +6403,7 @@ L3846       LDA   $B8
             BCC   L386B
             JMP   L37EC
 
-L386B       LDA   $59
+L386B       LDA   oldVEHICLEX
             CLC
             ADC   #$1E
             CMP   $B8
@@ -6359,9 +6411,9 @@ L386B       LDA   $59
             LDA   $B8
             CLC
             ADC   #$0F
-            CMP   $59
+            CMP   oldVEHICLEX
             BCC   L3897
-            LDA   $5A
+            LDA   oldVEHICLEY
             CLC
             ADC   #$0E
             CMP   $BA

@@ -55,31 +55,34 @@ tblXBYTE
 *-----------------------------------
 
 tblSPRITEPTR
-            DA    $6C00
-            DA    $6C10
-            DA    $6C20
-            DA    $6C30
-            DA    $6C40
-            DA    $6C50
-            DA    $6C60
-            DA    $6C70
-            DA    $6C80
-            DA    $6C90
-            DA    $6CA0
-            DA    $6CB0
-            DA    $6CC0
-            DA    $6CD0
-            DA    $6CE0
-            DA    $6CF0
-            DA    $6D00
-            DA    $6D10
-            DA    $6D20
-            DA    $6D30
-            DA    $6D40
-            DA    $6D50
-            DA    $6D60
-            DA    $6D70
-            DA    $6D80
+            DA    sprSTRUCTURE
+            DA    sprSTRUCTURE+$10
+            DA    sprSTRUCTURE+$20
+            DA    sprSTRUCTURE+$30
+            DA    sprSTRUCTURE+$40
+            DA    sprSTRUCTURE+$50
+            DA    sprSTRUCTURE+$60
+            DA    sprSTRUCTURE+$70
+            DA    sprSTRUCTURE+$80
+            DA    sprSTRUCTURE+$90
+            DA    sprSTRUCTURE+$A0
+            DA    sprSTRUCTURE+$B0
+            DA    sprSTRUCTURE+$C0
+            DA    sprSTRUCTURE+$D0
+            DA    sprSTRUCTURE+$E0
+            DA    sprSTRUCTURE+$F0
+            DA    sprSTRUCTURE+$100
+            DA    sprSTRUCTURE+$110
+            DA    sprSTRUCTURE+$120
+            DA    sprSTRUCTURE+$130
+            DA    sprSTRUCTURE+$140
+            DA    sprSTRUCTURE+$150
+            DA    sprSTRUCTURE+$160
+            DA    sprSTRUCTURE+$170
+            DA    sprSTRUCTURE+$180
+
+*--- No more sprites... alas...
+
             DA    $6D90
             DA    $6DA0
             DA    $6DB0
@@ -188,8 +191,7 @@ tblSPRITEPTR
 * HGR HIGH
 *-----------------------------------
 
-tblHGRH
-            HEX   4044484C5054585C4044484C5054585C
+tblHGRH     HEX   4044484C5054585C4044484C5054585C
             HEX   4145494D5155595D4145494D5155595D
             HEX   42464A4E52565A5E42464A4E52565A5E
             HEX   43474B4F53575B5F43474B4F53575B5F
@@ -210,8 +212,7 @@ tblHGRH
 * HGR LOW
 *-----------------------------------
 
-tblHGRL
-            HEX   00000000000000008080808080808080
+tblHGRL     HEX   00000000000000008080808080808080
             HEX   00000000000000008080808080808080
             HEX   00000000000000008080808080808080
             HEX   00000000000000008080808080808080
@@ -529,116 +530,119 @@ L6B00       HEX   F4EE8180
             HEX   AA8180A08580A0D5AAD5AA8180A08580
 
 *-----------------------------------
-* SPRITE STRUCTURE
+* SPRITE STRUCTURE ($6C00)
 *-----------------------------------
 
 sprSTRUCTURE
-            DB    $03
+            DB    $03		; Sprite 0: wheel
             DB    $0A
             DA    L6D91
             HEX   FD77F0F0FFFFF0F0FFFFF0F0
-            DB    $08
+            DB    $08		; Sprite 1: vehicle
             DB    $0F
             DA    L6E00
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $03
+            DB    $03		; Sprite 2: vertical shoot
             DB    $06
             DA    L6E78
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $02
+            DB    $02		; Sprite 3: horizontal shoot
             DB    $03
             DA    L6E8A
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $05
+            DB    $05		; Sprite 4: 
             DB    $0E
             DA    L6E90
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $05
+            DB    $05		; Sprite 5: 
             DB    $0E
             DA    L6F00
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $05
+            DB    $05		; Sprite 6: 
             DB    $0E
             DA    L6F46
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $05
+            DB    $05		; Sprite 7: 
             DB    $0E
             DA    L6F8C
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $05
+            DB    $05		; Sprite 8: 
             DB    $0E
             DA    L7000
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $05
+            DB    $05		; Sprite 9: 
             DB    $0E
             DA    L7046
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $05
+            DB    $05		; Sprite 10: 
             DB    $0E
             DA    L708C
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $05
+            DB    $05		; Sprite 11: 
             DB    $0E
             DA    L7100
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $05
+            DB    $05		; Sprite 12: 
             DB    $0A
             DA    L7146
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $05
+            DB    $05		; Sprite 13: 
             DB    $09
             DA    L7178
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $04
+            DB    $04		; Sprite 14: 
             DB    $0C
             DA    L71A5
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $05
+            DB    $05		; Sprite 15: 
             DB    $0F
             DA    L7200
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $07
+            DB    $07		; Sprite 16: 
             DB    $0E
             DA    L724B
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $04
+            DB    $04		; Sprite 17: 
             DB    $04
             DA    L72AD
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $04
+            DB    $04		; Sprite 18: 
             DB    $04
             DA    L72BD
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $06
+            DB    $06		; Sprite 19: 
             DB    $08
             DA    L72CD
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $08
+            DB    $08		; Sprite 20: 
             DB    $0D
             DA    L7300
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $0A
+            DB    $0A		; Sprite 21: 
             DB    $13
             DA    L7400
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $0A
+            DB    $0A		; Sprite 22: 
             DB    $24
             DA    L7500
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $0A
+            DB    $0A		; Sprite 23: 
             DB    $24
             DA    L7668
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $05
+            DB    $05		; Sprite 24: 
             DB    $09
             DA    L77D0
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $FF
+            DB    $FF		; ...end of sprite structure
 
 *-----------------------------------
 * SPRITE DATA 
 *-----------------------------------
 
+*
+* 0: Wheel
+*
 L6D91       HEX   F88080
 	HEX   FE8380
 	HEX   CE8380
@@ -654,6 +658,9 @@ L6D91       HEX   F88080
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0FFFFF0F0
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0FFFFF0F0
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0FFFFF0F0
+*
+* 1: Vehicle
+*
 L6E00       HEX   D4AAD5AAD5AA8080
 	HEX   D5AAD5AAD5AA8180
             HEX   D5AAD5AAD5AA8580
@@ -669,15 +676,24 @@ L6E00       HEX   D4AAD5AAD5AA8080
             HEX   809C80A8D5828080
 	HEX   809C80A0D5808080
             HEX   809C808080808080
+*
+* 2: Vertical shoot
+*
 L6E78	HEX   988080
 	HEX   988080
 	HEX   988080
 	HEX   988080
 	HEX   988080
 	HEX   988080
+*
+* 3: Horizontal shoot
+*
 L6E8A	HEX   9E80
 	HEX   BF80
 	HEX   9E80
+*
+* : 
+*
 L6E90       HEX   8080808080
 	HEX   8080808080
 	HEX   8080808080
@@ -695,6 +711,9 @@ L6E90       HEX   8080808080
 	HEX   F0F0FFFFF0F0FFFFF0F0
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0FFFFF0F0
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0FFFFF0F0
+*
+* : 
+*
 L6F00       HEX   8080808080
 	HEX   8080808080
 	HEX   8080808080
@@ -709,6 +728,9 @@ L6F00       HEX   8080808080
 	HEX   8080808080
 	HEX   8080808080
 	HEX   8080808080
+*
+* : 
+*
 L6F46	HEX   8080808080
 	HEX   80D4828080
             HEX   80D4828080
@@ -723,6 +745,9 @@ L6F46	HEX   8080808080
 	HEX   80D4828080
 	HEX   80D4828080
 	HEX   8080808080
+*
+* : 
+*
 L6F8C	HEX   8080808080
 	HEX   80D4828080
 	HEX   80D4828080
@@ -740,6 +765,9 @@ L6F8C	HEX   8080808080
 	HEX   F0F0FFFFF0F0FFFFF0F0FFFFF0F0
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0FFFFF0F0
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0FFFFF0F0
+*
+* : 
+*
 L7000       HEX   8080808080
 	HEX   808F808080
 	HEX   C09F808080
@@ -754,6 +782,9 @@ L7000       HEX   8080808080
 	HEX   FCF9838080
 	HEX   FCF9838080
 	HEX   F8F0818080
+*
+* : 
+*
 L7046	HEX   F880808080
 	HEX   FC81808080
             HEX   FC81808080
@@ -768,6 +799,9 @@ L7046	HEX   F880808080
 	HEX   FC81808080
 	HEX   FC81808080
 	HEX   F880808080
+*
+* : 
+*
 L708C	HEX   8080808080
 	HEX   F8F0818080
 	HEX   FCF9838080
@@ -785,6 +819,9 @@ L708C	HEX   8080808080
 	HEX   80808F8F80808F8F80808F8F8080
 	HEX   8F8F80808F8F80808F8F80808F8F8080
             HEX   8F8F80808F8F80808F8F80808F8F8080
+*
+* : 
+*
 L7100       HEX   80F0818080
 	HEX   80F8838080
 	HEX   80F8838080
@@ -799,6 +836,9 @@ L7100       HEX   80F0818080
 	HEX   80FC818080
 	HEX   80FC818080
 	HEX   80F8808080
+*
+* : 
+*
 L7146	HEX   80F6868080
 	HEX   C0DD9B8080
             HEX   B0F7EE8080
@@ -809,6 +849,9 @@ L7146	HEX   80F6868080
 	HEX   8080808080
 	HEX   8080808080
 	HEX   8080808080
+*
+* : 
+*
 L7178	HEX   A881A88180
 	HEX   A881A88180
 	HEX   EC8DBB8380
@@ -818,6 +861,9 @@ L7178	HEX   A881A88180
 	HEX   80AA858080
 	HEX   80AA858080
             HEX   80A8818080
+*
+* : 
+*
 L71A5	HEX   88918280
 	HEX   A0C48880
 	HEX   88918280
@@ -833,6 +879,9 @@ L71A5	HEX   88918280
 	HEX   8F80808F8F80808F8F8080
             HEX   8F8F80808F8F80808F8F80808F8F8080
             HEX   8F8F80808F8F80808F8F80808F8F8080
+*
+* : 
+*
 L7200       HEX   8891A28480
 	HEX   A0C4888180
 	HEX   8891A28480
@@ -848,6 +897,9 @@ L7200       HEX   8891A28480
 	HEX   8091828080
 	HEX   8084808080
 	HEX   8080808080
+*
+* : 
+*
 L724B	HEX   80D0AAD5AA8180
 	HEX   8094878E9C8580
 	HEX   8094878E9C8580
@@ -862,14 +914,23 @@ L724B	HEX   80D0AAD5AA8180
 	HEX   8080BAF7AE8080
 	HEX   8080EADDAB8080
 	HEX   8080A8D58A8080
+*
+* : 
+*
 L72AD	HEX   FCFF8180
 	HEX   DCEA8180
 	HEX   DCEA8180
 	HEX   FCFF8180
+*
+* : 
+*
 L72BD	HEX   FCFF8180
 	HEX   ACD58180
 	HEX   ACD58180
 	HEX   FCFF8180
+*
+* : 
+*
 L72CD	HEX   AAD5A0D5AAD5
 	HEX   AA8580D5AAD5
 	HEX   AA8180D5AAD5
@@ -879,6 +940,9 @@ L72CD	HEX   AAD5A0D5AAD5
 	HEX   8A8080C0AAD5
 	HEX   828080C0AAD5
 	HEX   8F8080
+*
+* : 
+*
 L7300       HEX   AAD582D0AAD5AAD5
 	HEX   AAD580C0AAD5AAD5
             HEX   AAD58080AAD5AAD5
@@ -902,6 +966,9 @@ L7300       HEX   AAD582D0AAD5AAD5
             HEX   8F8F80808F8F80808F8F80808F8F8080
             HEX   8F8F80808F8F80808F8F80808F8F8080
             HEX   8F8F80808F8F80808F8F80808F8F8080
+*
+* : 
+*
 L7400       HEX   AAD5AA8080D0AAD5AAD5
 	HEX   AAD5828080C0AAD5AAD5
 	HEX   AAD582808080AAD5AAD5
@@ -926,6 +993,9 @@ L7400       HEX   AAD5AA8080D0AAD5AAD5
             HEX   8F8F80808F8F80808F8F80808F8F8080
             HEX   8F8F80808F8F80808F8F80808F8F8080
             HEX   8F8F80808F8F80808F8F80808F8F8080
+*
+* : 
+*
 L7500       HEX   AAD5858AD0A0A9D5AAD5
 	HEX   AA95D4A2C4AAA8D5AAD5
 	HEX   AA85D0A2C48AA8D5AAD5
@@ -962,6 +1032,9 @@ L7500       HEX   AAD5858AD0A0A9D5AAD5
 	HEX   808082C4889080808080
 	HEX   80C08091A2C080808080
 	HEX   8080A084888180808080
+*
+* : 
+*
 L7668	HEX   AAD5D4A2C4AAAAD5AAD5
 	HEX   AA95D0A2C48AA8D5AAD5
 	HEX   AA85808AD580A8D5AAD5
@@ -998,6 +1071,9 @@ L7668	HEX   AAD5D4A2C4AAAAD5AAD5
 	HEX   80808080808080808080
 	HEX   80808080808080808080
 	HEX   80808080808080808080
+*
+* : 
+*
 L77D0       HEX   8095A88180
 	HEX   8095A88180
 	HEX   EAFFFF8380
@@ -7109,19 +7185,11 @@ courseDEMO	HEX   344A42424D494B423B4A4A022B3B4352
 * 
 *-----------------------------------
 
-tblFIREX    DS    4	; X-coord of each vertical shoot
-LB04D       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-LB051       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-LB055       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
+tblFIREX    DS    4	; x-coord of each vertical shoot
+tblFIREY	DS    4     ; y-coord of each vertical shoot
+tblFIREX2	DS    4     ; old x-coord of each vertical shoot
+tblFIREY2	DS    4     ; old y-coord of each vertical shoot
+
 LB059       DB    $00
             DB    $00
             DB    $00

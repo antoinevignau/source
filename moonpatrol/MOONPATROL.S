@@ -462,49 +462,49 @@ L0AC5       LDA   $59
             TAX
             LDA   #$01
             LDY   $5A
-            JSR   L3D09
+            JSR   undrawSPRITE
             LDA   $61
             ORA   courseTYPE
             TAX
             LDA   #$00
             LDY   $62
-            JSR   L3D09
+            JSR   undrawSPRITE
             LDA   $63
             ORA   courseTYPE
             TAX
             LDA   #$00
             LDY   $64
-            JSR   L3D09
+            JSR   undrawSPRITE
             LDA   $65
             ORA   courseTYPE
             TAX
             LDA   #$00
             LDY   $66
-            JSR   L3D09
+            JSR   undrawSPRITE
 L0AF9       LDA   $57
             ORA   courseTYPE
             TAX
             LDY   $58
             LDA   #$01
-            JSR   L3C96
+            JSR   drawSPRITE
             LDA   $5B
             ORA   courseTYPE
             TAX
             LDA   #$00
             LDY   $5C
-            JSR   L3C96
+            JSR   drawSPRITE
             LDA   $5D
             ORA   courseTYPE
             TAX
             LDA   #$00
             LDY   $5E
-            JSR   L3C96
+            JSR   drawSPRITE
             LDA   $5F
             ORA   courseTYPE
             TAX
             LDA   #$00
             LDY   $60
-            JSR   L3C96
+            JSR   drawSPRITE
             LDA   $67
             BNE   L0B78
             LDA   $0F
@@ -926,7 +926,7 @@ L0E26       LDA   $1A
             LDA   #$03
             LDX   $1A
             LDY   $1B
-            JSR   L3C96
+            JSR   drawSPRITE
 L0E4B       LDX   #$00
 L0E4D       LDA   LB049,X
             BEQ   L0E58
@@ -951,7 +951,7 @@ L0E58       LDA   #$00
             LDA   LB049,X
             TAX
             LDA   #$02
-            JSR   L3C96
+            JSR   drawSPRITE
             LDY   #$00
             LDA   #$1A
             STA   $00
@@ -977,7 +977,7 @@ L0E9A       LDA   $1A
             LDA   #$03
             LDX   $1A
             LDY   $1B
-            JSR   L3D09
+            JSR   undrawSPRITE
             LDA   #$04
             STA   $11
             LDA   $1B
@@ -991,14 +991,14 @@ L0E9A       LDA   $1A
             LDA   $11
             LDX   $1A
             LDY   $1B
-            JSR   L3C96
+            JSR   drawSPRITE
             DEC   $1C
             JMP   L0F19
 
 L0ECF       LDX   $1A
             LDY   $1B
             LDA   $11
-            JSR   L3D09
+            JSR   undrawSPRITE
             LDA   $11
             CMP   #$07
             BNE   L0EE5
@@ -1010,14 +1010,14 @@ L0EE5       STA   $11
             INC   $11
             LDX   $1A
             LDY   $1B
-            JSR   L3C96
+            JSR   drawSPRITE
             DEC   $1C
             JMP   L0F19
 
 L0EF5       LDA   #$03
             LDX   $1A
             LDY   $1B
-            JSR   L3D09
+            JSR   undrawSPRITE
             LDA   $1A
             CLC
             ADC   #$0C
@@ -1025,7 +1025,7 @@ L0EF5       LDA   #$03
             TAX
             LDY   $1B
             LDA   #$03
-            JSR   L3C96
+            JSR   drawSPRITE
             LDA   $1A
             CMP   #$F5
             BCC   L0F17
@@ -1047,7 +1047,7 @@ L0F28       STX   $16
             PLA
             TAX
             LDA   #$02
-            JSR   L3D09
+            JSR   undrawSPRITE
             LDX   $16
             LDA   LB059,X
             BNE   L0F4F
@@ -1056,7 +1056,7 @@ L0F28       STX   $16
             LDA   LB049,X
             TAX
             LDA   #$02
-            JSR   L3C96
+            JSR   drawSPRITE
             LDX   $16
             JMP   L0F20
 
@@ -1405,10 +1405,10 @@ L11B1       LDA   $44
             ASL
             ROL   $01
             CLC
-            ADC   #<LB49D
+            ADC   #<fontDATA
             STA   $D5
             LDA   $01
-            ADC   #>LB49D
+            ADC   #>fontDATA
             STA   $D5+1
             LDA   #$28
             STA   $D7
@@ -1443,12 +1443,16 @@ L1207       JSR   L0E22
             INC   plrPOINT
             LDA   #$D5
             STA   $04
-            JSR   L1277
+            JSR   drawXPOINT
             JSR   L21B6
             JSR   L1CBD
 L1225       RTS
 
-L1226       STX   L1260+1
+*-----------------------------------
+* PRINT CHAR
+*-----------------------------------
+
+printCHAR   STX   L1260+1
             STY   $3B
             PHA
             LDA   #$00
@@ -1459,10 +1463,10 @@ L1226       STX   L1260+1
             ASL
             ROL   $01
             CLC
-            ADC   #$9D
+            ADC   #<fontDATA
             STA   L1262+1
             LDA   $01
-            ADC   #$B4
+            ADC   #>fontDATA
             STA   L1262+2
             LDA   $3B
             CLC
@@ -1489,13 +1493,17 @@ L1272       CMP   #$FF
             BNE   L1252
             RTS
 
-L1277       STX   $16
-            LDX   plrPOINT
+*-----------------------------------
+* DRAW ADVANCEMENT LINE
+*-----------------------------------
+
+drawXPOINT  STX   $16		; draws the horizontal line
+            LDX   plrPOINT	; where the player is
             LDA   #$13
             STA   $00
             LDA   #$01
             STA   $01
-            LDY   LB8DD,X
+            LDY   tblXPOINT,X
             LDA   tblXBYTE,Y
             STA   $02
             LDA   tblXINDEX,Y
@@ -1540,6 +1548,10 @@ L12D3       CPX   $03
             LDX   $16
             RTS
 
+*-----------------------------------
+* 
+*-----------------------------------
+
 L12DE       LDX   #$03
 L12E0       LDA   LB42A,X
             BNE   L12EB
@@ -1580,6 +1592,7 @@ L12EB       STX   $50
 L1329       STA   $1C
             LDA   #$00
             STA   LB42A,X
+
 L1330       LDX   #$03
 L1332       LDA   LB42A,X
             BNE   L133B
@@ -1614,6 +1627,10 @@ L133B       STX   $50
             LDA   #$00
             STA   LB42A,X
             RTS
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 L1371       LDX   #$03
 L1373       LDA   LB42A,X
@@ -1671,6 +1688,10 @@ L13DB       LDA   LB051,X
 L13E0       DEX
             BPL   L13DB
             RTS
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 L13E4       LDY   #$03
 L13E6       LDA   LB34B,Y
@@ -1739,7 +1760,7 @@ L1454       JSR   addTOSCORE
 L146E       JMP   L13F4
 
 *-----------------------------------
-* 
+* GET COURSE DATA
 *-----------------------------------
 
 L1471       LDA   $AF
@@ -1995,7 +2016,7 @@ L1613       LDA   $47
             LDA   LB343,X
             TAX
             LDA   $47
-            JSR   L3C96
+            JSR   drawSPRITE
             LDA   #$0A
             JSR   L26EC
             LDX   $50
@@ -2089,7 +2110,7 @@ L16E6       LDA   $B3
             JSR   L3E04
             JMP   L1700
 
-L16FD       JSR   L3D09
+L16FD       JSR   undrawSPRITE
 L1700       LDX   $50
             LDA   LB373,X
             STA   $39
@@ -2110,7 +2131,7 @@ L1700       LDX   $50
             JSR   L3D7E
             JMP   L1736
 
-L1729       JSR   L3C96
+L1729       JSR   drawSPRITE
             JMP   L1736
 
 L172F       LDX   $50
@@ -2188,7 +2209,7 @@ L17A2       STX   $50
 
 L17C1       LDY   #$87
 L17C3       STY   $B0
-            JSR   L3E8C
+            JSR   putSPRITE	; put big rock on ground
             LDX   $50
             LDA   LB3E2,X
             STA   $C7,X
@@ -2334,7 +2355,7 @@ L18D6       STX   $16
             TAX
             PLA
             AND   #$7F
-            JSR   L3D09
+            JSR   undrawSPRITE
             LDX   $16
             LDA   frameCNT
             AND   #$03
@@ -2367,7 +2388,7 @@ L1911       LDA   LB407,X
             BPL   L1936
             JMP   L19BF
 
-L1936       JSR   L3C96
+L1936       JSR   drawSPRITE
             LDX   $16
             LDA   LB407,X
             CMP   #$10
@@ -2522,9 +2543,9 @@ L1A52       LDA   #$00
             STA   $16
             LDA   #$02
             STA   $13
-            LDA   #<L6C00	; sprite definition pointer
+            LDA   #<sprSTRUCTURE	; sprite definition pointer
             STA   $08
-            LDA   #>L6C00
+            LDA   #>sprSTRUCTURE
             STA   $08+1
             LDY   #$04		; get next sprite info
             LDA   ($08),Y
@@ -2847,7 +2868,7 @@ L1C6D       CMP   #$40
             BCC   L1C74
             SEC
             SBC   #$41
-L1C74       JSR   L1226
+L1C74       JSR   printCHAR
             INC   $03
             JMP   L1C46
 
@@ -2885,7 +2906,7 @@ printDIGIT  LDX   charX
             LDY   charY
             CLC
             ADC   #$2F
-            JSR   L1226
+            JSR   printCHAR
             INC   charX
             RTS
 
@@ -2962,7 +2983,7 @@ L1D0D       JSR   L0FC9
             LDA   plrPOINT
             LDX   #$1D
             LDY   #$2D
-            JSR   L1226
+            JSR   printCHAR
             LDX   #$1E
             LDY   #$2D
             JSR   printSTRING
@@ -3444,7 +3465,7 @@ L21B3       JMP   L2184
 L21B6       LDA   plrPOINT
             LDX   #$19
             LDY   #$06
-            JSR   L1226
+            JSR   printCHAR
             RTS
 
 L21C0       LDX   #$03
@@ -3655,7 +3676,7 @@ L2326       LDA   #$00
             TAX
             LDA   $B0
             AND   #$7F
-            JSR   L3D09
+            JSR   undrawSPRITE
             LDA   #$00
             STA   $39
             RTS
@@ -4628,12 +4649,12 @@ L2B72       LDA   #$FF
             STA   plrPOINT
             LDA   #$00
             STA   $04
-            JSR   L1277
+            JSR   drawXPOINT
             PLA
             STA   plrPOINT
             LDA   #$D5
             STA   $04
-            JSR   L1277
+            JSR   drawXPOINT
             JSR   L21B6
             RTS
 
@@ -4641,7 +4662,7 @@ L2BF9       LDA   #$19	; no
             STA   plrPOINT
             LDA   #$00
             STA   $04
-            JSR   L1277
+            JSR   drawXPOINT
             LDA   #$1F
             STA   plrPOINT
             JSR   L21B6
@@ -4704,18 +4725,18 @@ L2C6D       LDA   $A5
             LDX   $65
             LDY   $66
             LDA   #$00
-            JSR   L3D09
+            JSR   undrawSPRITE
 L2C7A       LDA   $A5
             CMP   #$02
             BEQ   L2C89
             LDA   #$00
             LDX   $63
             LDY   $64
-            JSR   L3D09
+            JSR   undrawSPRITE
 L2C89       LDA   #$00
             LDX   $61
             LDY   $62
-            JSR   L3D09
+            JSR   undrawSPRITE
             LDA   $5F
             BEQ   L2C9D
             CMP   #$FF
@@ -4733,18 +4754,18 @@ L2CA9       LDA   $A5
             LDA   #$00
             LDX   $5F
             LDY   $60
-            JSR   L3C96
+            JSR   drawSPRITE
 L2CB6       LDA   $A5
             CMP   #$02
             BEQ   L2CC5
             LDA   #$00
             LDX   $5D
             LDY   $5E
-            JSR   L3C96
+            JSR   drawSPRITE
 L2CC5       LDA   #$00
             LDX   $5B
             LDY   $5C
-            JSR   L3C96
+            JSR   drawSPRITE
             LDA   $5B
             STA   $61
             LDA   $5D
@@ -4804,25 +4825,25 @@ L2D26       LDA   $C7,X
             TAX
             LDA   #$00
             LDY   $66
-            JSR   L3D09
+            JSR   undrawSPRITE
             LDA   $63
             ORA   courseTYPE
             TAX
             LDA   #$00
             LDY   $64
-            JSR   L3D09
+            JSR   undrawSPRITE
             LDA   $61
             ORA   courseTYPE
             TAX
             LDY   $62
             LDA   #$00
-            JSR   L3D09
+            JSR   undrawSPRITE
             LDA   $59
             ORA   courseTYPE
             TAX
             LDA   #$01
             LDY   $5A
-            JSR   L3D09
+            JSR   undrawSPRITE
             LDA   #$03
             STA   $A1
             STA   $A3
@@ -5435,8 +5456,8 @@ L31F2       STA   $D8
 *-----------------------------------
 
 playMUSIC_ENDSTAGE
-            LDX   #<LB695
-            LDA   #>LB695
+            LDX   #<musicENDSTAGE
+            LDA   #>musicENDSTAGE
             JMP   playMUSIC
 
 *-----------------------------------
@@ -5444,8 +5465,8 @@ playMUSIC_ENDSTAGE
 *-----------------------------------
 
 playMUSIC_ENDGAME
-            LDX   #<LB6DC
-            LDA   #>LB6DC
+            LDX   #<musicENDGAME
+            LDA   #>musicENDGAME
             JMP   playMUSIC
 
 *-----------------------------------
@@ -6210,7 +6231,7 @@ L3819       LDA   #$01
             LDA   #$18
             LDX   $B7
             LDY   $B9
-            JSR   L3C96
+            JSR   drawSPRITE
 L383A       RTS
 
 L383B       LDA   $BB
@@ -6258,7 +6279,7 @@ L386B       LDA   $59
             LDA   #$18
             LDX   $B8
             LDY   $BA
-            JSR   L3D09
+            JSR   undrawSPRITE
             LDA   #$00
             STA   $BB
             LDA   #$01
@@ -6272,14 +6293,14 @@ L3898       LDA   $BB
 L389D       LDA   #$18
             LDX   $B8
             LDY   $BA
-            JSR   L3D09
+            JSR   undrawSPRITE
             LDA   $BB
             CMP   #$05
             BEQ   L38B8
             LDA   #$18
             LDX   $B7
             LDY   $B9
-            JSR   L3C96
+            JSR   drawSPRITE
             JMP   L38BD
 
 L38B8       LDA   #$00
@@ -6510,7 +6531,7 @@ L3B32       LDX   $28
 L3B56       LDA   ($00),Y
             EOR   #$7F
             AND   L45D0,X
-            STA   LBB00,X
+            STA   LBB00,X	; offline buffer
             LDA   ($02),Y
             EOR   #$7F
             AND   L49D0,X
@@ -6594,7 +6615,7 @@ L3BF9       LDA   LB3DE,X
 L3BFE       DEX
             BPL   L3BF9
 
-            LDX   #$27
+            LDX   #$27		; restore the ground lines
 L3C03       LDA   LBB00,X
             STA   L45D0,X
             LDA   LBB28,X
@@ -6665,7 +6686,11 @@ L3C89       CPX   $03
             LDX   $16
             JMP   L3BFE
 
-L3C96       STY   $3B
+*-----------------------------------
+* SPRITE - DRAW SPRITE
+*-----------------------------------
+
+drawSPRITE  STY   $3B
             STY   L3D04+1
             ASL
             TAY
@@ -6703,13 +6728,13 @@ L3CD5       LDA   tblHGRH,Y
             STA   L3CF7+1
             STA   L3CF4+1
 L3CE7       LDY   #$FF
-L3CE9       LDA   $FFFF,X
+L3CE9       LDA   $FFFF,X	; source
             CPY   #$00
             BMI   L3CFA
             CPY   #$28
             BCS   L3CFA
-L3CF4       ORA   $FFFF,Y
-L3CF7       STA   $FFFF,Y
+L3CF4       ORA   $FFFF,Y	; destination
+L3CF7       STA   $FFFF,Y	; destination
 L3CFA       INX
             INY
             CPY   $3E
@@ -6720,7 +6745,12 @@ L3D04       CPY   #$FF
             BNE   L3CD5
             RTS
 
-L3D09       STY   $3B
+*-----------------------------------
+* SPRITE - UNDRAW SPRITE
+*-----------------------------------
+
+undrawSPRITE		; undraws a sprite
+            STY   $3B		; like the moon patrol vehicle
             STY   L3D79+1
             ASL
             TAY
@@ -6758,14 +6788,14 @@ L3D48       LDA   tblHGRH,Y
             STA   L3D6C+1
             STA   L3D61+1
 L3D5A       LDY   #$FF
-L3D5C       LDA   $FFFF,X
+L3D5C       LDA   $FFFF,X	; source
             EOR   #$7F
-L3D61       AND   $FFFF,Y
+L3D61       AND   $FFFF,Y	; destination mask
             CPY   #$00
             BMI   L3D6F
             CPY   #$28
             BCS   L3D6F
-L3D6C       STA   $FFFF,Y
+L3D6C       STA   $FFFF,Y	; destination write
 L3D6F       INX
             INY
             CPY   $3E
@@ -6775,6 +6805,10 @@ L3D6F       INX
 L3D79       CPY   #$FF
             BNE   L3D48
             RTS
+
+*-----------------------------------
+* SPRITE -
+*-----------------------------------
 
 L3D7E       STY   $3B
             STY   L3DFF+1
@@ -6811,7 +6845,7 @@ L3DB7       LDA   tblHGRH,Y
             STA   $04
             STA   $05
 L3DC7       LDY   #$FF
-L3DC9       LDA   $FFFF,X
+L3DC9       LDA   $FFFF,X	; sprite source
             CPY   #$00
             BMI   L3DF5
             CPY   #$28
@@ -6828,8 +6862,8 @@ L3DD9       DEX
 L3DE2       LSR
             ORA   $04
             ORA   #$80
-            ORA   ($00),Y
-            STA   ($00),Y
+            ORA   ($00),Y	; destination
+            STA   ($00),Y	; destination
             LDA   $05
             STA   $04
             LDA   #$00
@@ -6845,8 +6879,12 @@ L3DFF       CPY   #$FF
             BNE   L3DB7
             RTS
 
-L3E04       STY   $3B
-            STY   L3E87+1
+*-----------------------------------
+* SPRITE - BULLETS AND EXPLOSIONS
+*-----------------------------------
+
+L3E04       STY   $3B		; routine used to un/draw bullets
+            STY   L3E87+1	; and explosions
             ASL
             ASL
             TAY
@@ -6895,11 +6933,11 @@ L3E5F       DEX
             JMP   L3E5F
 
 L3E68       LSR
-            ORA   $04
-            ORA   #$80
-            EOR   #$7F
-            AND   ($00),Y
-            STA   ($00),Y
+            ORA   $04	
+            ORA   #$80		; force bit 7
+            EOR   #$7F		; invert all
+            AND   ($00),Y	; screen mask
+            STA   ($00),Y	; screen destination
             LDA   $05
             STA   $04
             LDA   #$00
@@ -6915,7 +6953,12 @@ L3E87       CPY   #$FF
             BNE   L3E3D
             RTS
 
-L3E8C       STY   $3B
+*-----------------------------------
+* SPRITE - DRAW LDA/STA A SPRITE
+*-----------------------------------
+
+putSPRITE			; draws big rock and big hole
+            STY   $3B
             STY   L3EF6+1
             ASL
             TAY
@@ -6951,12 +6994,12 @@ L3ECB       LDA   tblHGRH,Y
             LDA   tblHGRL,Y
             STA   L3EE4+1
 L3ED7       LDY   #$FF
-L3ED9       LDA   $FFFF,X
+L3ED9       LDA   $FFFF,X	; sprite source
             CPY   #$00
             BMI   L3EE7
             CPY   #$28
             BCS   L3EE7
-L3EE4       STA   $FFFF,Y
+L3EE4       STA   $FFFF,Y	; screen destination
 L3EE7       INX
             BNE   L3EED
             INC   L3ED9+2

@@ -32,7 +32,7 @@ WAIT        EQU   $FCA8
 * GAME VARIABLES
 *-----------------------------------
 
-NB_LIVES	=	4
+NB_LIVES	=	4	; which are 3+1 as the programmer uses BNE and not BPL for the end
 
 P1_courseTYPE =	$200	; byte - beginner or champion course for P1
 P2_courseTYPE =	$201	; byte - beginner or champion course for P2
@@ -78,7 +78,9 @@ L0300	=	$300
 * GAME ZERO PAGE
 *-----------------------------------
 
+ptrSCREEN	=	00	; word - pointer to the HGR screen
 ptrSTRING	=	$05	; word - pointer to a character string
+theACCEL	=	$10	; byte - the car acceleration
 fgSOUND	=	$35	; byte - 0 = $C030, 1 = $C020
 mountX1	=	$41	; byte - x-index within mountain
 mountX2	=	$42	; byte - data to determine where to
@@ -253,38 +255,38 @@ L0919       LDA   #$2A
 
             STA   $00	; move $8000..$83ff to $bc00..$bfff
             LDA   #$80
-            STA   $01
+            STA   $00+1
             LDA   #$00
             STA   $02
             LDA   #$BC
-            STA   $03
+            STA   $02+1
             LDY   #$00
 L0939       LDA   ($00),Y
             STA   ($02),Y
             INY
             BNE   L0939
-            INC   $01
-            INC   $03
-            LDA   $03
+            INC   $00+1
+            INC   $02+1
+            LDA   $02+1
             CMP   #$C0
             BNE   L0939
 
             LDA   #$00	; move $8500..$90ff to $b000..$bbff
             STA   $00
             LDA   #$85
-            STA   $01
+            STA   $00+1
             LDA   #$00
             STA   $02
             LDA   #$B0
-            STA   $03
+            STA   $02+1
             LDY   #$00
 L095C       LDA   ($00),Y
             STA   ($02),Y
             INY
             BNE   L095C
-            INC   $01
-            INC   $03
-            LDA   $03
+            INC   $00+1
+            INC   $02+1
+            LDA   $02+1
             CMP   #$BC
             BNE   L095C
             JSR   L1A52
@@ -295,10 +297,12 @@ L095C       LDA   ($00),Y
 * COURSE ENTRY POINT
 *-----------------------------------
 
-L0976       LDX   #$08		; erase "xxx COURSE GO"
+goCOURSE    LDX   #$08		; erase "xxx COURSE GO"
             LDY   #$4E
             JSR   printSTRING
             ASC   "                        @"
+
+*--- This is the main game loop
 
 L0996       LDX   #$00
             TXS
@@ -424,7 +428,7 @@ L0A33       LDA   #$22
             LDA   #$02
             STA   $07
             LDA   #$00
-            STA   $10
+            STA   theACCEL
             STA   $13
             STA   $1A
             JSR   L0AAC
@@ -436,8 +440,8 @@ L0A33       LDA   #$22
 
 L0AAC       LDX   #$02
             LDA   #$00
-L0AB0       STA   $E8,X
-            STA   $EB,X
+L0AB0       STA   $E8,X		; $E8..$E9..$EA
+            STA   $EB,X		; $EB..$EC..$ED
             DEX
             BPL   L0AB0
             RTS
@@ -509,13 +513,13 @@ L0AF9       LDA   $57
             BNE   L0B78
             LDA   $0F
             CLC
-            ADC   $10
+            ADC   theACCEL
             CMP   #$2C
             BCS   L0B49
             LDA   #$2C
             STA   $0F
             LDA   #$00
-            STA   $10
+            STA   theACCEL
             LDA   #$02
             STA   $07
             JMP   L0B78
@@ -527,7 +531,7 @@ L0B49       CMP   #$6D
             LDA   #$02
             STA   $07
             LDA   #$00
-            STA   $10
+            STA   theACCEL
             JMP   L0B78
 
 L0B5C       STA   $0F
@@ -545,6 +549,7 @@ L0B69       CMP   #$56
 
 L0B74       LDA   #$06
             STA   $AF
+
 L0B78       LDA   $57
             STA   $59
             LDA   $58
@@ -678,32 +683,36 @@ L0C6D       RTS
 * 
 *-----------------------------------
 
-L0C6E       LDA   KBD
-            BMI   L0C80
+L0C6E       LDA   KBD		; is key pressed?
+            BMI   L0C80		; yes
+
             LDA   fgDEMO
             BEQ   L0C7B
             INC   demoINDEX
 L0C7B       LDA   #$FF
             JMP   L0CDA
 
-L0C80       BIT   KBDSTROBE
+L0C80       BIT   KBDSTROBE	; yes, handle keypress
             STA   $00	; save key
-            LDA   fgDEMO
-            BEQ   L0CA6
-            LDA   demoINDEX
+
+            LDA   fgDEMO	; are we in demo mode?
+            BEQ   L0CA6		; no
+
+            LDA   demoINDEX	; yes, grab the data
             LDX   demoCNT
-            STA   L0300,X
+            STA   L0300,X	; save value
             INC   demoCNT
             LDX   demoCNT
             LDA   $00
-            STA   L0300,X
+            STA   L0300,X	; save key
             INC   demoCNT
             LDA   #$00
             STA   demoINDEX
+
 L0CA6       LDA   $00
             CMP   #$9B	; esc
             BNE   L0CB2
-            JSR   L0D56
+            JSR   doPAUSE
             JMP   L0CDA
 
 L0CB2       CMP   #"R"
@@ -751,12 +760,16 @@ L0CFA       CMP   #$95	; right arrow
 L0D01       CMP   #$FF	; delete
             BEQ   L0D09
 
-            LDA   #$00
-            STA   $10
+            LDA   #$00	; all other keys stop the vehicle
+            STA   theACCEL
+
 L0D09       CMP   #$91	; ctrl-q
             BNE   L0D10
             JMP   $C600
+
 L0D10       RTS
+
+*--- Dead code
 
             LDA   #$00
             STA   fgINPUT
@@ -766,10 +779,14 @@ L0D10       RTS
             STA   fgINPUT
             RTS
 
+*-----------------------------------
+* Hand
+*-----------------------------------
+
 L0D1D       LDA   $13
             BNE   L0D2D
             LDA   #$FC
-            STA   $10
+            STA   theACCEL
             LDA   #$00
             STA   $9C
             LDA   #$01
@@ -779,7 +796,7 @@ L0D2D       RTS
 L0D2E       LDA   $13
             BNE   L0D3E
             LDA   #$04
-            STA   $10
+            STA   theACCEL
             LDA   #$00
             STA   $9C
             LDA   #$03
@@ -789,7 +806,7 @@ L0D3E       RTS
 L0D3F       LDA   $13
             BNE   L0D55
             LDA   #$00
-            STA   $10
+            STA   theACCEL
             STA   $15
             LDA   #$04
             STA   $14
@@ -799,45 +816,55 @@ L0D3F       LDA   $13
             STA   $13
 L0D55       RTS
 
-L0D56       BIT   KBDSTROBE
-            LDA   #$DB
+*-----------------------------------
+* PAUSE MODE
+*-----------------------------------
+
+doPAUSE     BIT   KBDSTROBE	; reset keyboard
+            LDA   #$DB		; set counters
             STA   $00
             LDA   #$98
             STA   $01
             LDA   #$EA
             STA   $02
-L0D65       LDA   KBD
+L0D65       LDA   KBD		; exit if keypress
             BMI   L0D99
-            DEC   $00
+            DEC   $00		; or decrease counters
             BNE   L0D70
             DEC   $01
 L0D70       BNE   L0D74
             DEC   $02
 L0D74       BNE   L0D65
-L0D76       JSR   L0DA5
-            LDA   #$E4
+L0D76       JSR   invertSCREEN	; invert screen at 0
+
+            LDA   #$E4		; set counters
             STA   $00
             LDA   #$C4
             STA   $01
             LDA   #$08
             STA   $02
-L0D85       LDA   KBD
+L0D85       LDA   KBD		; exit if keypress
             BMI   L0D99
-            DEC   $00
+            DEC   $00		; or decrease counters
             BNE   L0D90
             DEC   $01
 L0D90       BNE   L0D94
             DEC   $02
 L0D94       BNE   L0D85
-            JMP   L0D76
+            JMP   L0D76		; and loop
 
-L0D99       LDA   L4000
-            BPL   L0DA1
-            JSR   L0DA5
+L0D99       LDA   L4000		; on exit, check if
+            BPL   L0DA1		; the screen was inverted
+            JSR   invertSCREEN	; restore to normal
 L0DA1       BIT   KBDSTROBE
             RTS
 
-L0DA5       LDA   #<L4000
+*-----------------------------------
+* INVERT THE SCREEN
+*-----------------------------------
+
+invertSCREEN
+            LDA   #<L4000
             STA   $00
             LDA   #>L4000
             STA   $00+1
@@ -853,7 +880,11 @@ L0DAF       LDA   ($00),Y
             BNE   L0DAF
 L0DC0       RTS
 
-L0DC1       LDX   #$01
+*-----------------------------------
+* READ JOYSTICK
+*-----------------------------------
+
+L0DC1       LDX   #$01		; read Y
             JSR   PREAD
             TYA
             CMP   #$76
@@ -879,7 +910,7 @@ L0DE7       LDX   #$00
             JSR   L0D1D
             RTS
 
-L0DF5       LDX   #$00
+L0DF5       LDX   #$00		; read X
             JSR   PREAD
             TYA
             CMP   #$8A
@@ -894,19 +925,27 @@ L0E03       LDA   $0F
             LDA   $13
             BNE   L0E1D
             LDA   #$FE
-            STA   $10
+            STA   theACCEL
             RTS
 L0E14       LDA   $13
             BNE   L0E1D
             LDA   #$02
-            STA   $10
+            STA   theACCEL
             RTS
-L0E1D       LDA   #$00
-            STA   $10
+L0E1D       LDA   #$00		; no decrease/increase in speed
+            STA   theACCEL
             RTS
 
-L0E22       STA   SPKR
+*-----------------------------------
+* BEEPS THE SPEAKER OR THE TAPE
+*-----------------------------------
+
+doBEEP      STA   SPKR
             RTS
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 L0E26       LDA   $1A
             BNE   L0E4B
@@ -955,7 +994,7 @@ L0E58       LDA   #$00
             LDY   #$00
             LDA   #$1A
             STA   $00
-L0E83       JSR   L0E22
+L0E83       JSR   doBEEP
 L0E86       DEY
             BNE   L0E91
             DEC   $00
@@ -1208,7 +1247,7 @@ L1048       STX   $DE
             LDA   $E2,X
             TAX
             PLA
-            JSR   L3E04
+            JSR   drawSPRITE3
             LDX   $DE
             DEC   $EB,X
             BEQ   L106D
@@ -1218,7 +1257,7 @@ L1048       STX   $DE
             LDA   $E2,X
             TAX
             PLA
-            JSR   L3D7E
+            JSR   drawSPRITE2
             LDX   $DE
             JMP   L1044
 
@@ -1313,10 +1352,11 @@ showCONGRATULATIONS
             RTS
 
 *-----------------------------------
-* 
+* PLAY A MUSIC WHILE DOING OTHER THINGS
 *-----------------------------------
 
-L1130       LDX   #$00
+playASYNCMUSIC		; used for the intro and game parts
+            LDX   #$00
             LDA   ($75,X)
             STA   $54
             LDA   #$E0
@@ -1365,7 +1405,7 @@ L1181       DEX
             SEC
             SBC   #$01
             BCS   L117D
-            JSR   L0E22
+            JSR   doBEEP
             DEX
             BNE   L1192
             DEY
@@ -1382,8 +1422,12 @@ L1192       BNE   L117B
 L11A7       INC   $73
             BNE   L11AD
             INC   $73+1
-L11AD       JMP   L1130
+L11AD       JMP   playASYNCMUSIC
 L11B0       RTS
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 L11B1       LDA   $44
             STA   plrCOURSE
@@ -1433,7 +1477,7 @@ L11F7       LDA   $57
             LDA   plrCOURSE+1
             STA   $83+1
             LDX   #$7F
-L1207       JSR   L0E22
+L1207       JSR   doBEEP
             LDA   #$06
             JSR   WAIT
             DEX
@@ -1583,7 +1627,7 @@ L12EB       STX   $50
             TAX
             LDA   #$0B
             LDY   #$8F
-            JSR   L3E04
+            JSR   drawSPRITE3
             JSR   L2FCE
             LDX   $50
             LDA   $1C
@@ -1622,7 +1666,7 @@ L133B       STX   $50
             TAX
             LDA   #$0B
             LDY   #$8F
-            JSR   L3E04
+            JSR   drawSPRITE3
             LDX   $50
             LDA   #$00
             STA   LB42A,X
@@ -1644,7 +1688,7 @@ L137C       STX   $50
             TAX
             LDA   #$0B
             LDY   #$8F
-            JSR   L3E04
+            JSR   drawSPRITE3
             LDX   $50
             LDA   LB42A,X
             SEC
@@ -1655,7 +1699,7 @@ L137C       STX   $50
             TAX
             LDA   #$0B
             LDY   #$8F
-            JSR   L3D7E
+            JSR   drawSPRITE2
             LDX   $50
             JMP   L1378
 
@@ -2107,7 +2151,7 @@ L16E6       LDA   $B3
             BCC   L16FD
             SEC
             SBC   #$0E
-            JSR   L3E04
+            JSR   drawSPRITE3
             JMP   L1700
 
 L16FD       JSR   undrawSPRITE
@@ -2128,7 +2172,7 @@ L1700       LDX   $50
             BCC   L1729
             SEC
             SBC   #$0E
-            JSR   L3D7E
+            JSR   drawSPRITE2
             JMP   L1736
 
 L1729       JSR   drawSPRITE
@@ -2423,7 +2467,7 @@ L196E       LDA   LB3FF,X
             STA   $39
             LDY   #$8F
             LDA   #$0B
-            JSR   L3D7E
+            JSR   drawSPRITE2
             LDX   $16
 L1985       LDA   #$00
             STA   $00
@@ -2955,7 +2999,7 @@ L1CF6       JSR   L32BE
             BNE   L1D0A
 
             JSR   showCONGRATULATIONS	; yes, we did
-            JSR   playMUSIC_ENDGAME		; play music for game end
+            JSR   playMUSIC_GAMEWON		; play music for game end
             JMP   L1D0D
 L1D0A       JSR   playMUSIC_ENDSTAGE	; play music for stage end
 L1D0D       JSR   L0FC9
@@ -3196,7 +3240,7 @@ L1F98       LDA   #$A0
             DEX
             BPL   L1F98
             LDY   #$50
-L1FA2       JSR   L0E22
+L1FA2       JSR   doBEEP
             LDA   #$11
             JSR   WAIT
             DEY
@@ -3304,7 +3348,7 @@ L2064       STX   $50
             LDA   LB38B,X
             TAX
             PLA
-            JSR   L3E04
+            JSR   drawSPRITE3
             LDX   $50
             LDA   LB387,X
             CMP   #$09
@@ -3404,7 +3448,7 @@ L2134       LDA   LB387,X
             LDA   LB38B,X
             TAX
             PLA
-            JSR   L3D7E
+            JSR   drawSPRITE2
             LDX   $50
             JMP   L2060
 
@@ -3734,30 +3778,32 @@ L238D       LDA   #$02
 L239D       RTS
 
 *-----------------------------------
-* 
+* MOON BASE SCROLLING
 *-----------------------------------
 
-L239E       JSR   drawMOUNTAINS
+animMOONBASE
+            JSR   drawMOUNTAINS	; 19C9
             LDA   #$01
             STA   $48
             LDA   #$FF
             JSR   WAIT
-            LDA   #>LB48A
+            LDA   #>musicINTRO_repeat	; music for game intro
             STA   $75+1
-            LDA   #<LB48A
+            LDA   #<musicINTRO_repeat
             STA   $75
-            LDA   #>LB476
+            LDA   #>musicINTRO_notes
             STA   $73+1
-            LDA   #<LB476
+            LDA   #<musicINTRO_notes
             STA   $73
-            JSR   L1130
-            LDA   #<LB766
+            JSR   playASYNCMUSIC
+
+            LDA   #<musicGAME_notes	; music while playing
             STA   $73
-            LDA   #>LB766
+            LDA   #>musicGAME_notes
             STA   $73+1
-            LDA   #<LB7B3
+            LDA   #<musicGAME_repeat
             STA   $75
-            LDA   #>LB7B3
+            LDA   #>musicGAME_repeat
             STA   $75+1
             LDA   #$00
             STA   $A0
@@ -3829,17 +3875,21 @@ L244B       LDA   $00
             BEQ   L245B
             JMP   L23FD
 
-L245B       JSR   L0AC5
+L245B       JSR   L0AC5		; draw the vehicle
             DEC   $67
             BEQ   L2465
-            JMP   L23DE
+            JMP   L23DE		; loop
 
 L2465       LDA   #$00
             STA   $6F
             STA   $48
             JSR   L3B32
             JSR   L0AAC
-            JMP   L0976
+            JMP   goCOURSE	; play game now
+
+*-----------------------------------
+*
+*-----------------------------------
 
 L2474       LDX   #$03
 L2476       LDA   LB413,X
@@ -4227,7 +4277,7 @@ L2740       BIT   TXTPAGE1	; load the moon base picture
             STA   nbPLAYERS
             STA   fgSOUND
             LDA   #SPKR
-            STA   L0E22+1
+            STA   doBEEP+1
 L2773       LDA   #$01
             STA   fgDEMO2
             JSR   selectOPTIONS
@@ -4312,10 +4362,10 @@ L282D       LDA   courseTYPE
             LDA   fgSOUND
             BEQ   L2848
             LDA   #TAPEOUT
-            STA   L0E22+1
+            STA   doBEEP+1
             JMP   L284D
 L2848       LDA   #SPKR
-            STA   L0E22+1
+            STA   doBEEP+1
 
 L284D       JSR   L0AF9
             JSR   drawMOUNTAINS
@@ -4323,7 +4373,7 @@ L284D       JSR   L0AF9
             JSR   showCOURSETYPE
             LDA   #$16
             STA   $F3
-            JMP   L239E
+            JMP   animMOONBASE
 
 L2860       LDA   #$01
             STA   charWAIT
@@ -4584,7 +4634,7 @@ L2B02       BIT   KBDSTROBE
             STA   $83+1
             STA   $44+1
             LDA   #KBD
-            STA   L0E22+1
+            STA   doBEEP+1
             JSR   showHGRPAGE2
             LDA   #$00
             STA   demoINDEX
@@ -4628,7 +4678,7 @@ L2B72       LDA   #$FF
             LDA   #$02
             STA   $07
             LDA   #$00
-            STA   $10
+            STA   theACCEL
             STA   $13
             LDA   $83
             STA   $44
@@ -4863,7 +4913,7 @@ L2D90       LDA   $71
             INX
             LDY   $5A
             INY
-            JSR   L3D7E
+            JSR   drawSPRITE2
             LDA   #$07
             STA   $06
             LDX   #$32
@@ -4885,7 +4935,7 @@ L2D90       LDA   $71
             INX
             LDY   $5A
             INY
-            JSR   L3E04
+            JSR   drawSPRITE3
             LDA   $71
             CMP   #$06
             BEQ   L2DDB
@@ -4912,7 +4962,7 @@ L2DF6       LDA   $71
             INX
             LDY   $5A
             INY
-            JSR   L3D7E
+            JSR   drawSPRITE2
             LDA   $71
             CMP   #$08
             BEQ   L2E2A
@@ -4929,7 +4979,7 @@ L2E0C       JSR   L2ECE
             INX
             LDY   $5A
             INY
-            JSR   L3E04
+            JSR   drawSPRITE3
             INC   $71
             JMP   L2DF6
 
@@ -4940,7 +4990,7 @@ L2E2A       JSR   L2ECE
             INX
             LDY   $5A
             INY
-            JSR   L3E04
+            JSR   drawSPRITE3
             LDA   #$00
             STA   $70
             LDA   #$1E
@@ -4988,13 +5038,13 @@ L2E8E       LDA   nbPLAYERS
             STA   curPLAYER
 L2E9F       BIT   TXTPAGE1
             BIT   TXTSET
-            LDA   #<LB766
+            LDA   #<musicGAME_notes
             STA   $73
-            LDA   #>LB766
+            LDA   #>musicGAME_notes
             STA   $73+1
-            LDA   #<LB7B3
+            LDA   #<musicGAME_repeat
             STA   $75
-            LDA   #>LB7B3
+            LDA   #>musicGAME_repeat
             STA   $75+1
             LDA   #$00
             STA   $A0
@@ -5043,7 +5093,7 @@ L2F1E       LDA   L1FFF+1,X
 L2F21       CLC
             ADC   $06
             BCC   L2F21
-            JSR   L0E22
+            JSR   doBEEP		; beep
             INX
             BNE   L2F1E
             RTS
@@ -5128,7 +5178,7 @@ L2FA7       LDA   L1FFF+1,X
 L2FAA       CLC
             ADC   $06
             BCC   L2FAA
-            JSR   L0E22
+            JSR   doBEEP
             DEX
             BEQ   L2FBA
             LDA   $00
@@ -5142,7 +5192,7 @@ L2FBE       STA   $03
             LDX   #$1E
 L2FC2       LDA   $03
             JSR   WAIT
-            JSR   L0E22
+            JSR   doBEEP
             DEX
             BPL   L2FC2
             RTS
@@ -5153,21 +5203,22 @@ L2FCE       LDA   #$01
             JSR   L2F1E
             RTS
 
-L2FD8       LDA   $A0
+L2FD8       LDA   $A0	; music flag
             BNE   L2FFE
             LDX   #$00
             LDA   ($75,X)
             ASL
             STA   $54
             LDA   ($73,X)
-            BNE   L2FFC
-            LDA   #<LB766
+            BNE   L2FFC	; end of data, reset the pointers
+
+            LDA   #<musicGAME_notes
             STA   $73
-            LDA   #>LB766
+            LDA   #>musicGAME_notes
             STA   $73+1
-            LDA   #<LB7B3
+            LDA   #<musicGAME_repeat
             STA   $75
-            LDA   #>LB7B3
+            LDA   #>musicGAME_repeat
             STA   $75+1
             LDA   #$00
             STA   $A0
@@ -5188,7 +5239,7 @@ L300C       DEY
 L300F       SEC
             SBC   #$01
             BCS   L3004
-            JSR   L0E22
+            JSR   doBEEP
             DEX
             BEQ   L301E
             NOP
@@ -5243,7 +5294,7 @@ setNEXTCOURSE
             JSR   savePLAYERDATA
             JSR   L3296
             JSR   showHGRPAGE2
-            JMP   L239E
+            JMP   animMOONBASE
 
 *-----------------------------------
 * PLAY MUSAK
@@ -5452,7 +5503,7 @@ L31F2       STA   $D8
             RTS
 
 *-----------------------------------
-* 
+* MUSIC - PLAYER REACHED A MILESTONE
 *-----------------------------------
 
 playMUSIC_ENDSTAGE
@@ -5461,12 +5512,12 @@ playMUSIC_ENDSTAGE
             JMP   playMUSIC
 
 *-----------------------------------
-* 
+* MUSIC - PLAYER FINISHED THE GAME
 *-----------------------------------
 
-playMUSIC_ENDGAME
-            LDX   #<musicENDGAME
-            LDA   #>musicENDGAME
+playMUSIC_GAMEWON
+            LDX   #<musicGAMEWON
+            LDA   #>musicGAMEWON
             JMP   playMUSIC
 
 *-----------------------------------
@@ -5523,7 +5574,11 @@ L325A       LDA   $EE
             PLA
             PLA
             JSR   showNBLIVES
-            JMP   L239E
+            JMP   animMOONBASE
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 L3296       LDA   curPLAYER
             PHA
@@ -5541,6 +5596,10 @@ L3296       LDA   curPLAYER
             JSR   setPLAYERDATA
             JSR   showNBLIVES
             RTS
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 L32BE       LDA   curPLAYER
             PHA
@@ -5880,7 +5939,7 @@ L3590       STX   $50
             TAX
             LDA   #$0B
             LDY   #$8F
-            JSR   L3E04
+            JSR   drawSPRITE3
             LDX   $50
             JMP   L358A
 
@@ -5910,7 +5969,7 @@ L35C7       STX   $50
             LDA   LB38B,X
             TAX
             PLA
-            JSR   L3E04
+            JSR   drawSPRITE3
             LDX   $50
             JMP   L35B6
 
@@ -5961,21 +6020,21 @@ L35F5       STY   $18
             LDA   LB38F,Y
             TAY
             LDA   $B0
-            JSR   L3E04
+            JSR   drawSPRITE3
             LDY   $18
             LDA   LB38B,Y
             TAX
             LDA   LB38F,Y
             TAY
             LDA   #$0E
-            JSR   L3D7E
+            JSR   drawSPRITE2
             LDY   $18
             LDA   LB38B,Y
             TAX
             LDA   LB38F,Y
             TAY
             LDA   #$0E
-            JSR   L3E04
+            JSR   drawSPRITE3
             LDX   $16
             LDY   $18
             JMP   L35E4
@@ -6156,14 +6215,14 @@ L37A2       LDA   $BD
 L37A7       LDA   $D9
             LDX   $BE
             LDY   $BF
-            JSR   L3E04
+            JSR   drawSPRITE3
             LDA   $BD
             CMP   #$01
             BEQ   L37C2
             LDA   $D9
             LDX   $BE
             LDY   $BF
-            JSR   L3D7E
+            JSR   drawSPRITE2
             DEC   $BD
             RTS
 
@@ -6178,14 +6237,14 @@ L37C7       LDA   $C0
 L37CC       LDA   $DA
             LDX   $C1
             LDY   $C2
-            JSR   L3E04
+            JSR   drawSPRITE3
             LDA   $C0
             CMP   #$01
             BEQ   L37E7
             LDA   $DA
             LDX   $C1
             LDY   $C2
-            JSR   L3D7E
+            JSR   drawSPRITE2
             DEC   $C0
             RTS
 
@@ -6355,15 +6414,19 @@ L38F3       LDA   $B7
             STA   $BB
 L3910       RTS
 
+*-----------------------------------
+*
+*-----------------------------------
+
 L3911       LDA   #$01
             STA   charWAIT
-            LDA   nbPLAYERS
-            BNE   L391E
-            JMP   L39E9
+            LDA   nbPLAYERS	; how many players?
+            BNE   L391E		; wto
+            JMP   L39E9		; only one
 
-L391E       LDA   curPLAYER
+L391E       LDA   curPLAYER	; which one died?
             BEQ   L3986
-            LDX   #$07
+            LDX   #$07		; ..player 2
             LDY   #$4E
             JSR   printSTRING
             ASC   "                        @"
@@ -6377,7 +6440,7 @@ L391E       LDA   curPLAYER
             ASC   "                        @"
             JMP   L3A28
 
-L3986       LDX   #$07
+L3986       LDX   #$07		; ..player 1
             LDY   #$4E
             JSR   $1C3C
             ASC   "                        @"
@@ -6403,20 +6466,24 @@ L39E9       LDX   #$0D
             LDY   #$5C
             JSR   printSTRING
             ASC   "             @"
-L3A28       LDX   #<LB8B4
-            LDA   #>LB8B4
+
+*--- The player may continue playing
+
+L3A28       LDX   #<musicENDGAME
+            LDA   #>musicENDGAME
             JSR   playMUSIC
             LDX   #$32
 L3A31       LDA   #$A0
             JSR   WAIT
             DEX
             BPL   L3A31
-            LDA   nbPLAYERS
+            LDA   nbPLAYERS	; how many players?
             BEQ   L3A56
-            LDA   P1_nbLIVES
+            LDA   P1_nbLIVES	; how many remaining lives?
             CLC
             ADC   P2_nbLIVES
             BEQ   L3A56
+
             LDA   #$01
             STA   $2E
             LDA   curPLAYER
@@ -6451,7 +6518,8 @@ L3A70       STA   ($26),Y
             JSR   printSTRING
             ASC   "PRESS SPACE BAR TO CONTINUE GAME @"
             BIT   KBDSTROBE
-            LDA   #$10
+
+            LDA   #$10		; 10 seconds
 L3AB0       STA   $B0
             CLD
             LDA   #$23
@@ -6466,7 +6534,7 @@ L3AC2       LDA   #$A0
             DEX
             BPL   L3AC2
             LDA   KBD
-            CMP   #$A0
+            CMP   #" "
             BEQ   L3AF6
             LDA   BUTN0
             STA   $00
@@ -6488,8 +6556,8 @@ L3AE3       LDA   $00
             JSR   L3666
             JMP   L2B02
 
-L3AF6       LDA   #NB_LIVES
-            STA   P1_nbLIVES
+L3AF6       LDA   #NB_LIVES	; player wants to continue...
+            STA   P1_nbLIVES	; ...there are constraints!
             STA   P2_nbLIVES
             JSR   showNBLIVES
             LDA   #$00
@@ -6512,7 +6580,11 @@ L3AF6       LDA   #NB_LIVES
             JSR   printPLAYERSCORE
             JMP   L2E9F
 
-L3B32       LDX   $28
+*-----------------------------------
+* 
+*-----------------------------------
+
+L3B32       LDX   $28		; set ground data
             LDA   LB000,X
             STA   $00
             LDA   LB007,X
@@ -6526,7 +6598,7 @@ L3B32       LDX   $28
             LDA   LB023,X
             STA   $04+1
 
-            LDX   $29
+            LDX   $29		; and prepare offline
             LDY   #$00
 L3B56       LDA   ($00),Y
             EOR   #$7F
@@ -6552,13 +6624,14 @@ L3B7B       INY
             LDA   $67
             BEQ   L3B92
 
-            LDY   #$00
+            LDY   #$00		; get first byte (b/c there are constraints)
             LDA   ($00),Y
             STA   $69
             LDA   ($02),Y
             STA   $6A
             LDA   ($04),Y
             STA   $6B
+
 L3B92       LDA   $28
             SEC
             SBC   $AF
@@ -6576,7 +6649,7 @@ L3BA6       STA   $28
             BEQ   L3BAF
             JMP   drawGROUNDLINES
 
-L3BAF       LDX   $28
+L3BAF       LDX   $28		; set parms again
             LDA   LB000,X
             STA   $00
             LDA   LB007,X
@@ -6590,7 +6663,7 @@ L3BAF       LDX   $28
             LDA   LB023,X
             STA   $04+1
 
-            LDX   $29
+            LDX   $29		; and now draw the offline buffer
             LDY   #$00
 L3BD3       LDA   ($00),Y
             ORA   LBB00,X
@@ -6807,10 +6880,11 @@ L3D79       CPY   #$FF
             RTS
 
 *-----------------------------------
-* SPRITE -
+* SPRITE - DRAW SPRITE OVER PICTURE
 *-----------------------------------
 
-L3D7E       STY   $3B
+drawSPRITE2			; draws a sprite taking care of what is behind
+            STY   $3B
             STY   L3DFF+1
             ASL
             ASL
@@ -6838,7 +6912,7 @@ L3D7E       STY   $3B
             LDX   #$00
             LDY   $3B
 L3DB7       LDA   tblHGRH,Y
-            STA   $01
+            STA   $00+1
             LDA   tblHGRL,Y
             STA   $00
             LDA   #$00
@@ -6860,8 +6934,8 @@ L3DD9       DEX
             JMP   L3DD9
 
 L3DE2       LSR
-            ORA   $04
-            ORA   #$80
+            ORA   $04		; bit to keep
+            ORA   #$80		; force bit 7
             ORA   ($00),Y	; destination
             STA   ($00),Y	; destination
             LDA   $05
@@ -6883,8 +6957,9 @@ L3DFF       CPY   #$FF
 * SPRITE - BULLETS AND EXPLOSIONS
 *-----------------------------------
 
-L3E04       STY   $3B		; routine used to un/draw bullets
-            STY   L3E87+1	; and explosions
+drawSPRITE3			; draws/undraws small moving objects
+            STY   $3B		; like bullets and explosions
+            STY   L3E87+1
             ASL
             ASL
             TAY
@@ -6911,7 +6986,7 @@ L3E04       STY   $3B		; routine used to un/draw bullets
             LDX   #$00
             LDY   $3B
 L3E3D       LDA   tblHGRH,Y
-            STA   $01
+            STA   $00+1
             LDA   tblHGRL,Y
             STA   $00
             LDA   #$00

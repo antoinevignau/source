@@ -7528,45 +7528,15 @@ tblPX2LIT   DB    $01	; 00000001
             DB    $20	; 00100000
             DB    $40	; 01000000
 
-LB476       DB    $48
-            DB    $29
-            DB    $30
-            DB    $50
-            DB    $29
-            DB    $4D
-            DB    $26
-            DB    $4A
-            DB    $23
-            DB    $48
-            DB    $29
-            DB    $30
-            DB    $50
-            DB    $29
-            DB    $4D
-            DB    $26
-            DB    $4A
-            DB    $23
-            DB    $48
-            DB    $00
-LB48A       DB    $04
-            DB    $03
-            DB    $03
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $04
-            DB    $03
-            DB    $03
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
+*-----------------------------------
+* INTRO MUSIC TABLES
+*-----------------------------------
+
+musicINTRO_notes
+            HEX   48293050294D264A2348293050294D264A234800
+
+musicINTRO_repeat
+            HEX   04030301010101010104030301010101010101
 
 *-----------------------------------
 * FONT DATA
@@ -7652,7 +7622,7 @@ musicENDSTAGE
 * MUSIC - END GAME
 *-----------------------------------
 
-musicENDGAME
+musicGAMEWON
 	HEX   08783C08502808781E085018083C1E08
 	HEX   3028085016083C1E082D280850140836
 	HEX   1B08302808783C08502808781E085018
@@ -7664,164 +7634,27 @@ musicENDGAME
 	HEX   4808804008F03C000000
 
 *-----------------------------------
+* GAME MUSIC TABLES
+*-----------------------------------
+
+musicGAME_notes
+	HEX   D76A758B756AD76A758B9C958BD76A75
+	HEX   8B756AD76A758B9C958B9C4E586A584E
+	HEX   9C4E586A75706AD76A758B756AD76A75
+	HEX   8B9C958B8B454D5B4D459C4E586A7570
+	HEX   6AD76A758B756AD7AAA0958B00
+
+musicGAME_repeat
+	HEX   04030302020204030302010102040303
+	HEX   02020204030302010102040303020202
+	HEX   04030302010102040303020202040303
+	HEX   02010102040303020202040303020101
+	HEX   0204030302020204040303020102
+
+*-----------------------------------
 * 
 *-----------------------------------
 
-LB766       DB    $D7
-            DB    $6A
-            DB    $75
-            DB    $8B
-            DB    $75
-            DB    $6A
-            DB    $D7
-            DB    $6A
-            DB    $75
-            DB    $8B
-            DB    $9C
-            DB    $95
-            DB    $8B
-            DB    $D7
-            DB    $6A
-            DB    $75
-            DB    $8B
-            DB    $75
-            DB    $6A
-            DB    $D7
-            DB    $6A
-            DB    $75
-            DB    $8B
-            DB    $9C
-            DB    $95
-            DB    $8B
-            DB    $9C
-            DB    $4E
-            DB    $58
-            DB    $6A
-            DB    $58
-            DB    $4E
-            DB    $9C
-            DB    $4E
-            DB    $58
-            DB    $6A
-            DB    $75
-            DB    $70
-            DB    $6A
-            DB    $D7
-            DB    $6A
-            DB    $75
-            DB    $8B
-            DB    $75
-            DB    $6A
-            DB    $D7
-            DB    $6A
-            DB    $75
-            DB    $8B
-            DB    $9C
-            DB    $95
-            DB    $8B
-            DB    $8B
-            DB    $45
-            DB    $4D
-            DB    $5B
-            DB    $4D
-            DB    $45
-            DB    $9C
-            DB    $4E
-            DB    $58
-            DB    $6A
-            DB    $75
-            DB    $70
-            DB    $6A
-            DB    $D7
-            DB    $6A
-            DB    $75
-            DB    $8B
-            DB    $75
-            DB    $6A
-            DB    $D7
-            DB    $AA
-            DB    $A0
-            DB    $95
-            DB    $8B
-            DB    $00
-LB7B3       DB    $04
-            DB    $03
-            DB    $03
-            DB    $02
-            DB    $02
-            DB    $02
-            DB    $04
-            DB    $03
-            DB    $03
-            DB    $02
-            DB    $01
-            DB    $01
-            DB    $02
-            DB    $04
-            DB    $03
-            DB    $03
-            DB    $02
-            DB    $02
-            DB    $02
-            DB    $04
-            DB    $03
-            DB    $03
-            DB    $02
-            DB    $01
-            DB    $01
-            DB    $02
-            DB    $04
-            DB    $03
-            DB    $03
-            DB    $02
-            DB    $02
-            DB    $02
-            DB    $04
-            DB    $03
-            DB    $03
-            DB    $02
-            DB    $01
-            DB    $01
-            DB    $02
-            DB    $04
-            DB    $03
-            DB    $03
-            DB    $02
-            DB    $02
-            DB    $02
-            DB    $04
-            DB    $03
-            DB    $03
-            DB    $02
-            DB    $01
-            DB    $01
-            DB    $02
-            DB    $04
-            DB    $03
-            DB    $03
-            DB    $02
-            DB    $02
-            DB    $02
-            DB    $04
-            DB    $03
-            DB    $03
-            DB    $02
-            DB    $01
-            DB    $01
-            DB    $02
-            DB    $04
-            DB    $03
-            DB    $03
-            DB    $02
-            DB    $02
-            DB    $02
-            DB    $04
-            DB    $04
-            DB    $03
-            DB    $03
-            DB    $02
-            DB    $01
-            DB    $02
 LB801       DB    $00
             DB    $00
             DB    $00
@@ -7887,6 +7720,7 @@ LB801       DB    $00
             DB    $06
             DB    $06
             DB    $06
+
 LB842       DB    $00
             DB    $00
             DB    $00
@@ -7965,50 +7799,13 @@ demoDATA	HEX   32C10CC110C116A020C113A01BC10FA0
 	HEX   FFFFFFFF
 
 *-----------------------------------
-* MUSIC DATA
+* MUSIC DATA : PLAYER DIED
 *-----------------------------------
 
-LB8B4       DB    $0A
-            DB    $48
-            DB    $36
-            DB    $0A
-            DB    $36
-            DB    $2B
-            DB    $0A
-            DB    $30
-            DB    $24
-            DB    $0A
-            DB    $24
-            DB    $1E
-            DB    $0A
-            DB    $00
-            DB    $00
-            DB    $0A
-            DB    $24
-            DB    $1E
-            DB    $0A
-            DB    $28
-            DB    $20
-            DB    $0A
-            DB    $30
-            DB    $24
-            DB    $0A
-            DB    $48
-            DB    $3C
-            DB    $0A
-            DB    $24
-            DB    $1E
-            DB    $0A
-            DB    $44
-            DB    $39
-            DB    $0A
-            DB    $22
-            DB    $1C
-            DB    $0A
-            DB    $48
-            DB    $36
-            DB    $00
-            DB    $00
+musicENDGAME
+	HEX   0A48360A362B0A30240A241E0A00000A
+	HEX   241E0A28200A30240A483C0A241E0A44
+	HEX   390A221C0A48360000
 
 *-----------------------------------
 * X-COORD OF POINT LINE

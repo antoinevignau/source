@@ -89,6 +89,8 @@ mountX1	=	$41	; byte - x-index within mountain
 mountX2	=	$42	; byte - data to determine where to
 mountX3	=	$43	; byte - start drawing, that makes the move
 frameCNT	=	$49	; byte - frame counter
+vehicleX	=	$57	; byte - x-coord of the vehicle
+vehicleY	=	$58	; byte - y-coord of the vehicle
 groundSTARTX = 	$6e	; byte - x-col where to start drawing ground (0 or 34 if moon base)
 plrPOINT	=	$78	; byte - point reached by the current player
 plrSCORE	=	$7a	; adr  - score of player
@@ -102,6 +104,8 @@ slot16	=	$d0
 fgINPUT2	=	$ef
 courseTYPE2	=	$f0
 nbPLAYERS2	=	$f1
+fgSPECIALBONUS = 	$f2	; byte - 0 = no special bonus, 1 = special bonus
+timeCNT	=	$f3	; byte - counter for time display
 
 *-----------------------------------
 * DISK ROUTINES
@@ -307,31 +311,35 @@ goCOURSE    LDX   #$08		; erase "xxx COURSE GO"
 
 *--- This is the main game loop
 
-L0996       LDX   #$00
+L0996       LDX   #$00		; part of the loop!
             TXS
-            JSR   L0C27
+            JSR   L0C27		; check demo key
+
             LDA   frameCNT
             AND   #$07
             BNE   L09A5
             JSR   blinkPLAYER
+
 L09A5       INC   frameCNT
             LDA   frameCNT
             AND   #$01
             BNE   L09B0
             JSR   drawMOUNTAINS
-L09B0       DEC   $F3
+
+L09B0       DEC   timeCNT
             BPL   L09BB
             LDA   #$16
-            STA   $F3
+            STA   timeCNT
             JSR   printTIME
+
 L09BB       LDA   $DD
             BNE   L09C6
             LDA   $96
             BNE   L09C6
             JMP   L09CC
-
 L09C6       JSR   L3158
             JSR   L0FB2
+
 L09CC       JSR   L1471
             JSR   L0E9A
             JSR   L164F
@@ -349,7 +357,7 @@ L09CC       JSR   L1471
             BEQ   L09FA
             JMP   L2D02
 
-L09FA       JSR   L0AC5
+L09FA       JSR   animVEHICLE
             JSR   L11E7
             JSR   L18C5
             JSR   L2148
@@ -415,13 +423,13 @@ L0A33       LDA   #$22
             STA   $5B
             SEC
             SBC   #$04
-            STA   $57
+            STA   vehicleX
             LDA   #$7A
             STA   $5D
             LDA   #$8A
             STA   $5F
             LDA   #$85
-            STA   $58
+            STA   vehicleY
             LDA   #$8E
             STA   $5C
             STA   $5E
@@ -464,7 +472,7 @@ showHGRPAGE2
 * 
 *-----------------------------------
 
-L0AC5       LDA   $59
+animVEHICLE       LDA   $59
             ORA   courseTYPE
             TAX
             LDA   #$01
@@ -488,10 +496,10 @@ L0AC5       LDA   $59
             LDA   #$00
             LDY   $66
             JSR   undrawSPRITE
-L0AF9       LDA   $57
+L0AF9       LDA   vehicleX
             ORA   courseTYPE
             TAX
-            LDY   $58
+            LDY   vehicleY
             LDA   #$01
             JSR   drawSPRITE
             LDA   $5B
@@ -553,9 +561,9 @@ L0B69       CMP   #$56
 L0B74       LDA   #$06
             STA   $AF
 
-L0B78       LDA   $57
+L0B78       LDA   vehicleX
             STA   $59
-            LDA   $58
+            LDA   vehicleY
             STA   $5A
             LDA   $5B
             STA   $61
@@ -573,7 +581,7 @@ L0B78       LDA   $57
             STA   $5B
             SEC
             SBC   #$04
-            STA   $57
+            STA   vehicleX
             CLC
             ADC   #$0E
             STA   $5D
@@ -641,7 +649,7 @@ L0C19       LDA   $5E
             SBC   $5C
             CLC
             ADC   #$86
-            STA   $58
+            STA   vehicleY
             RTS
 L0C24       JMP   L2773
 
@@ -963,12 +971,12 @@ doFIRE      LDA   fwdSHOOTX	; do we already have a front shoot?
 
             LDA   #$00	; no, shoot in front of the vehicle
             STA   $9D
-            LDA   $57	; x-coord to which we add the right
+            LDA   vehicleX	; x-coord to which we add the right
             CLC
             ADC   #$2E
             BCS   L0E4B
             STA   fwdSHOOTX
-            LDA   $58
+            LDA   vehicleY
             CLC
             ADC   #$09
             STA   fwdSHOOTY
@@ -989,12 +997,12 @@ L0E4D       LDA   tblFIREX,X
 
 L0E58       LDA   #$00
             STA   LB059,X
-            LDA   $57
+            LDA   vehicleX
             CLC
             ADC   #$05
             STA   tblFIREX,X
             STA   LB051,X
-            LDA   $58
+            LDA   vehicleY
             SEC
             SBC   #$0B
             STA   LB04D,X
@@ -1139,10 +1147,10 @@ L0F74       STA   LB04D,X
             BNE   L0F5C
             RTS
 
-L0F7D       LDA   $58
+L0F7D       LDA   vehicleY
             SEC
             SBC   $14
-            STA   $58
+            STA   vehicleY
             CLC
             ADC   #$08
             STA   $5C
@@ -1156,13 +1164,13 @@ L0F7D       LDA   $58
             CLC
             ADC   #$0A
 L0F99       STA   $15
-            LDA   $58
+            LDA   vehicleY
             CMP   #$86
             BCC   L0FB1
             LDA   #$00
             STA   fgJUMP
             LDA   #$86
-            STA   $58
+            STA   vehicleY
             LDA   #$8F
             STA   $5C
             STA   $5E
@@ -1487,7 +1495,7 @@ L11EE       LDA   $DD
             BEQ   L11F7
             JMP   L1225
 
-L11F7       LDA   $57
+L11F7       LDA   vehicleX
             CMP   $96
             BCC   L1225
             LDA   plrCOURSE
@@ -1666,14 +1674,14 @@ L133B       STX   $50
             LDA   LB42A,X
             CLC
             ADC   #$08
-            CMP   $57
+            CMP   vehicleX
             BCC   L1337
-            LDA   $57
+            LDA   vehicleX
             CLC
             ADC   #$24
             CMP   LB42A,X
             BCC   L1337
-            LDA   $58
+            LDA   vehicleY
             CLC
             ADC   #$12
             CMP   #$90
@@ -3037,7 +3045,7 @@ L1D0D       JSR   L0FC9
             LDA   #$D0
             STA   charWAIT
             LDA   #$00
-            STA   $F2
+            STA   fgSPECIALBONUS
             LDX   #$08
             LDY   #$2D
             JSR   printSTRING
@@ -3139,9 +3147,9 @@ L1E4A       LDA   #$01		; no high score, no bonus
 L1E4F       LDA   #$01
             STA   charWAIT
 
-            LDA   fgBONUS
-            BEQ   L1E7F
-            LDA   curRANGE	; no bonus at Z
+            LDA   fgBONUS	; are we eligible for a bonus?
+            BEQ   L1E7F		; yes
+            LDA   curRANGE	; no, but are we at Z?
             CMP   #$08
             BEQ   L1E7B
             LDX   #$0B
@@ -3150,8 +3158,9 @@ L1E4F       LDA   #$01
             ASC   "SORRY NO BONUS !@"
             JMP   L1C8F
 
-L1E7B       LDA   #$01
-            STA   $F2
+L1E7B       LDA   #$01		; yes, we are at Z,
+            STA   fgSPECIALBONUS	; activate SPECIAL BONUS
+
 L1E7F       LDA   fgBESTTIME
             BEQ   L1ED3
             LDA   plrTIME+1
@@ -3176,14 +3185,13 @@ L1EC7       LDA   timePLAYER		; beginner course record
             LDA   timePLAYER+1
             STA   tblBRECORD+1,X
 
-L1ED3       LDA   $F2
-            BEQ   L1EF8
-            LDX   #$04
+L1ED3       LDA   fgSPECIALBONUS	; did we activate special bonus?
+            BEQ   L1EF8		; no
+            LDX   #$04		; YYEESSSSss
             LDY   #$73
             JSR   printSTRING
             ASC   "SPECIAL BONUS POINTS  @"
             JMP   L1F13
-
 L1EF8       LDX   #$07
             LDY   #$73
             JSR   printSTRING
@@ -3228,9 +3236,10 @@ L1F56       JSR   printBONUS
             JSR   printDIGIT
             LDA   plrTIME
             JSR   printNUMBER
-            LDA   $F2
-            BNE   L1F7B
-            LDA   plrTIME+1
+            LDA   fgSPECIALBONUS	; did we active special bonus?
+            BNE   L1F7B		; yes, skip time comparisons
+
+            LDA   plrTIME+1	; no, compare times
             CMP   avgTIME+1
             BNE   L1F7E
             LDA   plrTIME
@@ -3442,14 +3451,14 @@ L20FE       LDA   LB387,X
 L210C       LDA   LB38F,X
             CLC
             ADC   #$05
-            CMP   $58
+            CMP   vehicleY
             BCC   L2134
             LDA   LB38B,X
             CLC
             ADC   #$04
-            CMP   $57
+            CMP   vehicleX
             BCC   L2134
-            LDA   $57
+            LDA   vehicleX
             CLC
             ADC   #$24
             CMP   LB38B,X
@@ -3504,9 +3513,9 @@ L2184       DEY
 L2188       LDA   LB343,Y
             CLC
             ADC   LB3BF,Y
-            CMP   $57
+            CMP   vehicleX
             BCC   L21B3
-            LDA   $57
+            LDA   vehicleX
             CLC
             ADC   #$26
             ADC   LB3BB,Y
@@ -3517,7 +3526,7 @@ L2188       LDA   LB343,Y
             ADC   LB3B7,Y
             SEC
             SBC   #$03
-            CMP   $58
+            CMP   vehicleY
             BCC   L21B3
             LDA   #$01
             STA   $70
@@ -3573,17 +3582,17 @@ L21E6       LDA   $D1,X
             SEC
             SBC   #$07
             STA   $01
-            LDA   $57
+            LDA   vehicleX
             CLC
             ADC   #$24
             CMP   $00
             BCC   L21C7
-            LDA   $57
+            LDA   vehicleX
             CLC
             ADC   #$03
             CMP   $01
             BCS   L21C7
-            LDA   $58
+            LDA   vehicleY
             CMP   $05
             BCC   L21C7
             LDA   #$01
@@ -3614,19 +3623,19 @@ L223F       CLC
 L2255       STA   $01
             LDA   $03
             BNE   L2267
-            LDA   $57
+            LDA   vehicleX
             CLC
             ADC   #$24
             CMP   $00
             BCS   L2267
             JMP   L21C7
 
-L2267       LDA   $57
+L2267       LDA   vehicleX
             CMP   $01
             BCC   L2270
             JMP   L21C7
 
-L2270       LDA   $58
+L2270       LDA   vehicleY
             CMP   $05
             BCS   L2279
             JMP   L21C7
@@ -3666,15 +3675,15 @@ L2289       LDA   LB407,X
             SEC
             SBC   #$02
             STA   $01
-            LDA   $57
+            LDA   vehicleX
             CLC
             ADC   #$2A
             CMP   $00
             BCC   L2285
-            LDA   $57
+            LDA   vehicleX
             CMP   $01
             BCS   L2285
-            LDA   $58
+            LDA   vehicleY
             CLC
             ADC   #$10
             CLC
@@ -3705,19 +3714,19 @@ L22EC       CLC
             STA   $01
             LDA   $03
             BNE   L230C
-            LDA   $57
+            LDA   vehicleX
             CLC
             ADC   #$26
             CMP   $00
             BCS   L230C
             JMP   L2285
 
-L230C       LDA   $57
+L230C       LDA   vehicleX
             CMP   $01
             BCC   L2315
             JMP   L2285
 
-L2315       LDA   $58
+L2315       LDA   vehicleY
             CLC
             ADC   #$10
             CMP   LB403,X
@@ -3789,7 +3798,7 @@ L238D       LDA   #$02
             JSR   L26EC
             CLC
             ADC   #$84
-            STA   $58
+            STA   vehicleY
             LDA   $6D
             BMI   L239D
             DEC   $6D
@@ -3893,7 +3902,7 @@ L244B       LDA   $00
             BEQ   L245B
             JMP   L23FD
 
-L245B       JSR   L0AC5		; draw the vehicle
+L245B       JSR   animVEHICLE		; draw the vehicle
             DEC   $67
             BEQ   L2465
             JMP   L23DE		; loop
@@ -4390,7 +4399,7 @@ L284D       JSR   L0AF9
             JSR   showHGRPAGE2
             JSR   showCOURSETYPE
             LDA   #$16
-            STA   $F3
+            STA   timeCNT
             JMP   animMOONBASE
 
 L2860       LDA   #$01
@@ -4680,13 +4689,13 @@ L2B72       LDA   #$FF
             LDA   #$4A
             STA   $5B
             LDA   #$46
-            STA   $57
+            STA   vehicleX
             LDA   #$54
             STA   $5D
             LDA   #$64
             STA   $5F
             LDA   #$85
-            STA   $58
+            STA   vehicleY
             LDA   #$8E
             STA   $5C
             STA   $5E
@@ -5086,10 +5095,10 @@ L2EDD       LDA   frameCNT
             BNE   L2EE6
             JSR   blinkPLAYER
 L2EE6       JSR   L0E9A
-            DEC   $F3
+            DEC   timeCNT
             BPL   L2EF4
             LDA   #$16
-            STA   $F3
+            STA   timeCNT
             JSR   printTIME
 L2EF4       JSR   L164F
             JSR   L13AD
@@ -6114,7 +6123,7 @@ L369E       STX   $50
             ADC   LB421,Y
             BCS   L369A
             STA   $01
-            LDA   $57
+            LDA   vehicleX
             CMP   $01
             BCC   L369A
             JMP   L36E0
@@ -6128,7 +6137,7 @@ L36C5       LDA   #$00
             ADC   LB421,Y
             BMI   L36E0
             STA   $00
-            LDA   $57
+            LDA   vehicleX
             CMP   $00
             BCS   L36E0
             JMP   L369A
@@ -6183,7 +6192,7 @@ L371E       STX   $50
             ADC   LB3DA,X
             BCS   L371A
             STA   $01
-            LDA   $57
+            LDA   vehicleX
             CMP   $01
             BCC   L371A
             JMP   L3773
@@ -6202,7 +6211,7 @@ L374D       LDA   #$00
             ADC   LB3DA,X
             BMI   L3773
             STA   $00
-            LDA   $57
+            LDA   vehicleX
             CMP   $00
             BCS   L3773
             JMP   L371A
@@ -6404,7 +6413,7 @@ L38BD       LDA   $BB
             RTS
 
 L38D7       STA   $B7
-            LDA   $57
+            LDA   vehicleX
             CLC
             ADC   #$2C
             CMP   $B7

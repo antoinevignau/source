@@ -34,21 +34,36 @@ WAIT        EQU   $FCA8
 
 NB_LIVES	=	4
 
-P1_courseTYPE =	$200
-P2_courseTYPE =	$201
-P1_score	=	$204	; and $206 and $208
-P2_score	=	$205	; and $207 and $209
-* 
+P1_courseTYPE =	$200	; byte - beginner or champion course for P1
+P2_courseTYPE =	$201	; byte - beginner or champion course for P2
+P1_point	=	$202	; byte - point reached by P1
+P2_point	=	$203	; byte - point reached by P2
+P1_score	=	$204	; adr  - $204 and $206 and $208
+P2_score	=	$205	; adr  - $205 and $207 and $209
+coursePTR1	=	$20a	; word - $20a and $20c
+coursePTR2	=	$20b	; word - $20b and $20d
+P1_basePOINT =	$20e	; byte - current base point of P1
+P2_basePOINT =	$20f	; byte - current base point of P2
+P1_plrCOURSE =	$210	; word - $210 and $212
+P2_plrCOURSE =	$211	; word - $211 and $213
 P1_nbLIVES	=	$214	; byte
 P2_nbLIVES	=	$215	; byte
 courseTYPE	=	$216	; byte - 0 = beginner, 1 = champion
 nbPLAYERS	=	$217	; byte - 0 = 1 player, 1 = 2 players
 nbLIVES	=	$218	; byte - nb lives + 1
 fgINPUT	=	$219	; byte - 0 = keyboard, 1 = joystick
-theBONUS	=	$21a	; adr  - bonus to add to score
+theBONUS	=	$21a	; adr  - $21a and $21b and $21c - bonus to add to score
 charWAIT	=	$21d	; byte - time to wait between drawing two chars
 curRANGE	=	$21e	; byte - 0/2/4/6/8 mean A/E/J/O/T
-* 
+fgBONUS	=	$21f	; byte - 0 = bonus, 1 = no bonus
+fgBESTTIME	=	$220	; byte - 0 = no best time, 1 = best time
+* $221 is not used
+fgDEMO	=	$222	; byte - 0 = game mode, 1 = demo mode (replay?)
+demoINDEX	=	$223	; byte - index for demo data
+demoCNT	=	$224	; byte - demo frame counter * $224
+fgDEMO2	=	$225	; byte - 0 = game mode, 1 = demo mode
+coursePTR3	=	$226	; word - pointer to course data
+coursePTR4	=	$228	; word - pointer to course data 
 curPLAYER	=	$22a	; byte - 0 = player 1, 1 = player 2
 P1_time	=	$22b	; word - and $22d
 P2_time	=	$22c	; word - and $22e
@@ -63,16 +78,19 @@ L0300	=	$300
 * GAME ZERO PAGE
 *-----------------------------------
 
-ptrSTRING	=	$05	; pointer to a character string
-fgSOUND	=	$35	; 0 = $C030, 1 = $C020
-mountX1	=	$41	; x-index within mountain
-mountX2	=	$42	; data to determine where to
-mountX3	=	$43	; start drawing, that makes the move
-frameCNT	=	$49	; frame counter
-groundSTARTX = 	$6e	; x-col where to start drawing ground (0 or 34 if moon base)
+ptrSTRING	=	$05	; word - pointer to a character string
+fgSOUND	=	$35	; byte - 0 = $C030, 1 = $C020
+mountX1	=	$41	; byte - x-index within mountain
+mountX2	=	$42	; byte - data to determine where to
+mountX3	=	$43	; byte - start drawing, that makes the move
+frameCNT	=	$49	; byte - frame counter
+groundSTARTX = 	$6e	; byte - x-col where to start drawing ground (0 or 34 if moon base)
+plrPOINT	=	$78	; byte - point reached by the current player
 plrSCORE	=	$7a	; adr  - score of player
 plrTIME	=	$7d	; word - time of player
 avgTIME	=	$7f	; word - average time
+basePOINT	=	$98	; byte - start point (0 for A, 4 for E...)
+plrCOURSE	=	$99	; word - player's pointer within the course
 charX	=	$a6
 charY	=	$a7
 slot16	=	$d0
@@ -346,7 +364,7 @@ L0A26       JMP   L0996
 *-----------------------------------
 
 L0A29       LDA   #$00
-            STA   $0222
+            STA   fgDEMO
             LDA   #$00
             STA   curPLAYER
 
@@ -373,11 +391,11 @@ L0A33       LDA   #$22
             LDA   #$04
             STA   $AF
             LDA   #$FF
-            STA   $78
+            STA   plrPOINT
             LDA   #$FF
             STA   $4A
             LDA   #$00
-            STA   $98
+            STA   basePOINT
             STA   $DD
             STA   $96
             STA   $70
@@ -623,7 +641,7 @@ L0C24       JMP   L2773
 * 
 *-----------------------------------
 
-L0C27       LDA   $0225
+L0C27       LDA   fgDEMO2
             BEQ   L0C6E
             LDA   KBD
             BPL   L0C47
@@ -638,20 +656,20 @@ L0C27       LDA   $0225
             STA   nbPLAYERS
             JMP   L2773
 
-L0C47       DEC   $0224
+L0C47       DEC   demoCNT
             BNE   L0C6D
-            INC   $0223
-            LDX   $0223
-            LDA   LB883,X
+            INC   demoINDEX
+            LDX   demoINDEX
+            LDA   demoDATA,X
             CMP   #$FF
             BEQ   L0C24
             PHA
-            INC   $0223
-            LDX   $0223
-            LDA   LB883,X
+            INC   demoINDEX
+            LDX   demoINDEX
+            LDA   demoDATA,X
             CLC
             ADC   #$01
-            STA   $0224
+            STA   demoCNT
             PLA
             JMP   L0C80
 L0C6D       RTS
@@ -662,26 +680,26 @@ L0C6D       RTS
 
 L0C6E       LDA   KBD
             BMI   L0C80
-            LDA   $0222
+            LDA   fgDEMO
             BEQ   L0C7B
-            INC   $0223
+            INC   demoINDEX
 L0C7B       LDA   #$FF
             JMP   L0CDA
 
 L0C80       BIT   KBDSTROBE
             STA   $00	; save key
-            LDA   $0222
+            LDA   fgDEMO
             BEQ   L0CA6
-            LDA   $0223
-            LDX   $0224
+            LDA   demoINDEX
+            LDX   demoCNT
             STA   L0300,X
-            INC   $0224
-            LDX   $0224
+            INC   demoCNT
+            LDX   demoCNT
             LDA   $00
             STA   L0300,X
-            INC   $0224
+            INC   demoCNT
             LDA   #$00
-            STA   $0223
+            STA   demoINDEX
 L0CA6       LDA   $00
             CMP   #$9B	; esc
             BNE   L0CB2
@@ -691,10 +709,10 @@ L0CA6       LDA   $00
 L0CB2       CMP   #"R"
             BNE   L0CC6
             LDA   #$01
-            STA   $0222
+            STA   fgDEMO
             LDA   #$00
-            STA   $0223
-            STA   $0224
+            STA   demoINDEX
+            STA   demoCNT
             JMP   L0CDA
 
 L0CC6       CMP   #$8F	; ctrl-o
@@ -1368,9 +1386,9 @@ L11AD       JMP   L1130
 L11B0       RTS
 
 L11B1       LDA   $44
-            STA   $99
+            STA   plrCOURSE
             LDA   $44+1
-            STA   $99+1
+            STA   plrCOURSE+1
             LDA   #$00
             STA   $97
             LDA   #$18
@@ -1379,7 +1397,7 @@ L11B1       LDA   $44
             STA   $DD
             LDA   #$00
             STA   $01
-            LDA   $78
+            LDA   plrPOINT
             CLC
             ADC   #$01
             ASL
@@ -1410,9 +1428,9 @@ L11EE       LDA   $DD
 L11F7       LDA   $57
             CMP   $96
             BCC   L1225
-            LDA   $99
+            LDA   plrCOURSE
             STA   $83
-            LDA   $99+1
+            LDA   plrCOURSE+1
             STA   $83+1
             LDX   #$7F
 L1207       JSR   L0E22
@@ -1422,7 +1440,7 @@ L1207       JSR   L0E22
             BPL   L1207
             LDA   #$01
             STA   $97
-            INC   $78
+            INC   plrPOINT
             LDA   #$D5
             STA   $04
             JSR   L1277
@@ -1472,7 +1490,7 @@ L1272       CMP   #$FF
             RTS
 
 L1277       STX   $16
-            LDX   $78
+            LDX   plrPOINT
             LDA   #$13
             STA   $00
             LDA   #$01
@@ -2851,8 +2869,8 @@ L1C91       LDA   #$FF
             LDA   #$00
             STA   plrTIME
             STA   plrTIME+1
-            LDA   $78
-            STA   $98
+            LDA   plrPOINT
+            STA   basePOINT
             CMP   #$19		; 25 = Z
             BNE   L1CAA
             JMP   setNEXTCOURSE
@@ -2875,7 +2893,7 @@ printDIGIT  LDX   charX
 * 
 *-----------------------------------
 
-L1CBD       LDA   $78
+L1CBD       LDA   plrPOINT
             CMP   #$04
             BNE   L1CC8
             LDA   #$00	; start at A
@@ -2903,8 +2921,8 @@ L1CE3       CMP   #$19
 L1CEC       RTS
 
 L1CED       PHA	; save range
-            LDA   $98
-            CMP   $78
+            LDA   basePOINT
+            CMP   plrPOINT
             BNE   L1CF6
             PLA
             RTS
@@ -2941,7 +2959,7 @@ L1D0D       JSR   L0FC9
             LDY   #$2D
             JSR   printSTRING
             ASC   "TIME TO REACH POINT "A2" "A2"@"
-            LDA   $78
+            LDA   plrPOINT
             LDX   #$1D
             LDY   #$2D
             JSR   L1226
@@ -3000,7 +3018,7 @@ L1DFD       LDA   timePLAYER	; print player time
             LDA   timePLAYER+1
             JSR   printNUMBER
 
-            LDA   plrTIME+1	; check for bonus
+            LDA   plrTIME+1	; check for time
             CMP   timePLAYER
             BEQ   L1E15
             BCS   L1E1F
@@ -3011,11 +3029,11 @@ L1E15       LDA   plrTIME
             BCS   L1E1F
             JMP   L1E27
 
-L1E1F       LDA   #$00
-            STA   $0220
+L1E1F       LDA   #$00		; no best time
+            STA   fgBESTTIME
             JMP   L1E2C
-L1E27       LDA   #$01
-            STA   $0220
+L1E27       LDA   #$01		; best time
+            STA   fgBESTTIME
 
 L1E2C       LDA   plrTIME+1	; check record time
             CMP   avgTIME+1
@@ -3030,15 +3048,15 @@ L1E37       LDA   plrTIME
             JMP   L1E4A
 
 L1E42       LDA   #$00		; we have a high score, we want a bonus
-            STA   $021F
+            STA   fgBONUS
             JMP   L1E4F
 L1E4A       LDA   #$01		; no high score, no bonus
-            STA   $021F
+            STA   fgBONUS
 
 L1E4F       LDA   #$01
             STA   charWAIT
 
-            LDA   $021F
+            LDA   fgBONUS
             BEQ   L1E7F
             LDA   curRANGE	; no bonus at Z
             CMP   #$08
@@ -3051,7 +3069,7 @@ L1E4F       LDA   #$01
 
 L1E7B       LDA   #$01
             STA   $F2
-L1E7F       LDA   $0220
+L1E7F       LDA   fgBESTTIME
             BEQ   L1ED3
             LDA   plrTIME+1
             STA   timePLAYER
@@ -3423,7 +3441,7 @@ L2188       LDA   LB343,Y
             RTS
 L21B3       JMP   L2184
 
-L21B6       LDA   $78
+L21B6       LDA   plrPOINT
             LDX   #$19
             LDY   #$06
             JSR   L1226
@@ -4190,11 +4208,15 @@ L2740       BIT   TXTPAGE1	; load the moon base picture
             LDA   #SPKR
             STA   L0E22+1
 L2773       LDA   #$01
-            STA   $0225
-            JSR   L28DF
-            BCC   L2780
-            JMP   L2783
+            STA   fgDEMO2
+            JSR   selectOPTIONS
+            BCC   L2780		; start demo mode
+            JMP   L2783		; start game mode
 L2780       JMP   L2B02
+
+*-----------------------------------
+* START GAME MODE
+*-----------------------------------
 
 L2783       BIT   KBDSTROBE
             BIT   TXTPAGE1
@@ -4207,26 +4229,26 @@ L2783       BIT   KBDSTROBE
             LDA   courseTYPE	; Set pointer to course data
             BNE   L27BB
             LDA   #<courseBEGINNER	; beginner
-            STA   $0226
-            STA   $0228
-            STA   $020A
-            STA   $020B
+            STA   coursePTR3
+            STA   coursePTR4
+            STA   coursePTR1
+            STA   coursePTR2
             LDA   #>courseBEGINNER
-            STA   $0226+1
-            STA   $0228+1
-            STA   $020A+2
-            STA   $020B+2
+            STA   coursePTR3+1
+            STA   coursePTR4+1
+            STA   coursePTR1+2
+            STA   coursePTR2+2
             JMP   L27D7
 L27BB       LDA   #<courseCHAMPION	; champion
-            STA   $0226
-            STA   $0228
-            STA   $020A
-            STA   $020B
+            STA   coursePTR3
+            STA   coursePTR4
+            STA   coursePTR1
+            STA   coursePTR2
             LDA   #>courseCHAMPION
-            STA   $0226+1
-            STA   $0228+1
-            STA   $020A+2
-            STA   $020B+2
+            STA   coursePTR3+1
+            STA   coursePTR4+1
+            STA   coursePTR1+2
+            STA   coursePTR2+2
 
 L27D7       LDX   slot16
             STA   $C089,X
@@ -4235,14 +4257,14 @@ L27D7       LDX   slot16
             JSR   loadMOONBASEPIC
             LDA   #$00
             STA   $2E
-            STA   $0225
+            STA   fgDEMO2
             STA   curPLAYER
             LDA   #NB_LIVES
             STA   P1_nbLIVES
             STA   P2_nbLIVES
             LDA   #$00
-            STA   $020E
-            STA   $020F
+            STA   P1_basePOINT
+            STA   P2_basePOINT
             STA   P1_score+4
             STA   P2_score+4
             STA   P1_score+2
@@ -4254,8 +4276,8 @@ L27D7       LDX   slot16
             STA   P1_time
             STA   P2_time
             LDA   #$FF
-            STA   $0202
-            STA   $0203
+            STA   P1_point
+            STA   P2_point
             LDA   nbPLAYERS
             BEQ   L282D
             LDA   #$01
@@ -4335,10 +4357,11 @@ L28D3       LDX   #$20
 L28DE       RTS
 
 *-----------------------------------
-* 
+* SELECT OPTIONS MENU
 *-----------------------------------
 
-L28DF       BIT   TXTPAGE1
+selectOPTIONS
+            BIT   TXTPAGE1
             BIT   TXTSET
             BIT   KBDSTROBE
             JSR   L0FC9
@@ -4432,7 +4455,7 @@ L2A6C       LDA   KBD
             LDA   $00
             BPL   L2A82
             STA   $9E
-            SEC
+            SEC	; start game mode
             RTS
 
 L2A82       LDA   $00
@@ -4443,7 +4466,7 @@ L2A82       LDA   $00
             BNE   L2A6C
             DEC   $B6
             BNE   L2A6C
-            CLC
+            CLC	; start demo mode
             RTS
 
 L2A95       BIT   KBDSTROBE
@@ -4495,12 +4518,15 @@ L2AE6       CMP   #"S"
 L2AF3       CMP   #" "
             BEQ   L2AFA
             JMP   L2A6C
-
-L2AFA       SEC
+L2AFA       SEC	; start game mode
             RTS
 
 L2AFC       JSR   L2860
             JMP   L2A64
+
+*-----------------------------------
+* START DEMO MODE
+*-----------------------------------
 
 L2B02       BIT   KBDSTROBE
             BIT   TXTPAGE1
@@ -4521,29 +4547,29 @@ L2B02       BIT   KBDSTROBE
             STA   curPLAYER
             STA   P1_time
             STA   P1_time+2
-            STA   $020E
+            STA   P1_basePOINT
             LDA   #$FF
-            STA   $0202
+            STA   P1_point
             LDA   #NB_LIVES
             STA   P1_nbLIVES
             JSR   setPLAYERDATA
             JSR   L2B72
-            LDA   #$01
-            STA   $0225
-            LDA   #<LB02A
+            LDA   #$01		; another demo flag
+            STA   fgDEMO2
+            LDA   #<courseDEMO
             STA   $83
             STA   $44
-            LDA   #>LB02A
+            LDA   #>courseDEMO
             STA   $83+1
             STA   $44+1
             LDA   #KBD
             STA   L0E22+1
             JSR   showHGRPAGE2
             LDA   #$00
-            STA   $0223
+            STA   demoINDEX
             TAX
-            LDA   LB883,X
-            STA   $0224
+            LDA   demoDATA,X
+            STA   demoCNT
             JMP   L0996
 
 L2B72       LDA   #$FF
@@ -4594,33 +4620,33 @@ L2B72       LDA   #$FF
             JSR   printTIME
             JSR   printPLAYERSCORE
             JSR   printHIGHSCORE
-            LDA   $78
+            LDA   plrPOINT	; did we start?
             BMI   L2BF9
-            LDA   $78
+            LDA   plrPOINT	; yes
             PHA
             LDA   #$19
-            STA   $78
+            STA   plrPOINT
             LDA   #$00
             STA   $04
             JSR   L1277
             PLA
-            STA   $78
+            STA   plrPOINT
             LDA   #$D5
             STA   $04
             JSR   L1277
             JSR   L21B6
             RTS
 
-L2BF9       LDA   #$19
-            STA   $78
+L2BF9       LDA   #$19	; no
+            STA   plrPOINT
             LDA   #$00
             STA   $04
             JSR   L1277
             LDA   #$1F
-            STA   $78
+            STA   plrPOINT
             JSR   L21B6
             LDA   #$FF
-            STA   $78
+            STA   plrPOINT
             RTS
 
 L2C10       LDA   $5C
@@ -4917,7 +4943,7 @@ L2E3F       PHA
             JSR   WAIT
             LDA   #$FF
             JSR   WAIT
-            LDA   $0225
+            LDA   fgDEMO2
             BEQ   L2E83
             LDA   fgINPUT2
             STA   fgINPUT
@@ -5688,8 +5714,8 @@ setPLAYERDATA
             BNE   L3494
             LDA   P1_courseTYPE		; set data for player 1
             STA   courseTYPE
-            LDA   $0202
-            STA   $78
+            LDA   P1_point
+            STA   plrPOINT
             LDA   P1_score
             STA   plrSCORE
             LDA   P1_score+2
@@ -5702,26 +5728,26 @@ setPLAYERDATA
             STA   plrTIME
             LDA   P1_nbLIVES
             STA   nbLIVES
-            LDA   $020E
-            STA   $98
-            LDA   $0210
-            STA   $99
-            LDA   $0212
-            STA   $9A
-            LDA   $0226
+            LDA   P1_basePOINT
+            STA   basePOINT
+            LDA   P1_plrCOURSE
+            STA   plrCOURSE
+            LDA   P1_plrCOURSE+2
+            STA   plrCOURSE+1
+            LDA   coursePTR3
             STA   $44
-            LDA   $0227
+            LDA   coursePTR3+1
             STA   $44+1
-            LDA   $020A
+            LDA   coursePTR1
             STA   $83
-            LDA   $020C
+            LDA   coursePTR1+2
             STA   $83+1
             RTS
 
 L3494       LDA   P2_courseTYPE		; set data for player 2
             STA   courseTYPE
-            LDA   $0203
-            STA   $78
+            LDA   P2_point
+            STA   plrPOINT
             LDA   P2_score
             STA   plrSCORE
             LDA   P2_score+2
@@ -5734,19 +5760,19 @@ L3494       LDA   P2_courseTYPE		; set data for player 2
             STA   plrTIME
             LDA   P2_nbLIVES
             STA   nbLIVES
-            LDA   $020F
-            STA   $98
-            LDA   $0211
-            STA   $99
-            LDA   $0213
-            STA   $9A
-            LDA   $0228
+            LDA   P2_basePOINT
+            STA   basePOINT
+            LDA   P2_plrCOURSE
+            STA   plrCOURSE
+            LDA   P2_plrCOURSE+2
+            STA   plrCOURSE+1
+            LDA   coursePTR4
             STA   $44
-            LDA   $0228+1
+            LDA   coursePTR4+1
             STA   $44+1
-            LDA   $020B
+            LDA   coursePTR2
             STA   $83
-            LDA   $020D
+            LDA   coursePTR2+2
             STA   $83+1
             RTS
 
@@ -5757,8 +5783,8 @@ L3494       LDA   P2_courseTYPE		; set data for player 2
 savePLAYERDATA
             LDA   curPLAYER
             BEQ   L3535
-            LDA   $78		; save data for player 2
-            STA   $0203
+            LDA   plrPOINT		; save data for player 2
+            STA   P2_point
             LDA   plrSCORE
             STA   P2_score
             LDA   plrSCORE+1
@@ -5771,26 +5797,26 @@ savePLAYERDATA
             STA   P2_time
             LDA   nbLIVES
             STA   P2_nbLIVES
-            LDA   $98
-            STA   $020F
+            LDA   basePOINT
+            STA   P2_basePOINT
             LDA   courseTYPE
             STA   P2_courseTYPE
-            LDA   $99
-            STA   $0211
-            LDA   $9A
-            STA   $0213
+            LDA   plrCOURSE
+            STA   P2_plrCOURSE
+            LDA   plrCOURSE+1
+            STA   P2_plrCOURSE+2
             LDA   $44
-            STA   $0228
+            STA   coursePTR4
             LDA   $44+1
-            STA   $0228+1
+            STA   coursePTR4+1
             LDA   $83
-            STA   $020B
+            STA   coursePTR2
             LDA   $83+1
-            STA   $020D
+            STA   coursePTR2+2
             RTS
 
-L3535       LDA   $78		; save data for player 1
-            STA   $0202
+L3535       LDA   plrPOINT		; save data for player 1
+            STA   P1_point
             LDA   plrSCORE
             STA   P1_score
             LDA   plrSCORE+1
@@ -5803,22 +5829,22 @@ L3535       LDA   $78		; save data for player 1
             STA   P1_time
             LDA   nbLIVES
             STA   P1_nbLIVES
-            LDA   $98
-            STA   $020E
+            LDA   basePOINT
+            STA   P1_basePOINT
             LDA   courseTYPE
             STA   P1_courseTYPE
-            LDA   $99
-            STA   $0210
-            LDA   $9A
-            STA   $0212
+            LDA   plrCOURSE
+            STA   P1_plrCOURSE
+            LDA   plrCOURSE+1
+            STA   P1_plrCOURSE+2
             LDA   $44
-            STA   $0226
+            STA   coursePTR3
             LDA   $44+1
-            STA   $0226+1
+            STA   coursePTR3+1
             LDA   $83
-            STA   $020A
+            STA   coursePTR1
             LDA   $83+1
-            STA   $020C
+            STA   coursePTR1+2
             RTS
 
 L3583       LDX   #$03

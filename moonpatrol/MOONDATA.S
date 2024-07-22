@@ -7098,40 +7098,16 @@ LB023       DB    >LBF20
             DB    >LBC50
 
 *-----------------------------------
-*
+* DEMO COURSE DATA
 *-----------------------------------
 
-LB02A       DB    $34
-            DB    $4A
-            DB    $42
-            DB    $42
-            DB    $4D
-            DB    $49
-            DB    $4B
-            DB    $42
-            DB    $3B
-            DB    $4A
-            DB    $4A
-            DB    $02
-            DB    $2B
-            DB    $3B
-            DB    $43
-            DB    $52
-            DB    $4A
-            DB    $4B
-            DB    $49
-            DB    $4B
-            DB    $34
-            DB    $89
-            DB    $8B
-            DB    $8B
-            DB    $89
-            DB    $8C
-            DB    $8A
-            DB    $32
-            DB    $C3
-            DB    $3C
-            DB    $C2
+courseDEMO	HEX   344A42424D494B423B4A4A022B3B4352
+	HEX   4A4B494B34898B8B898C8A32C33CC2
+
+*-----------------------------------
+* 
+*-----------------------------------
+
 LB049       DB    $00
             DB    $00
             DB    $00
@@ -7592,7 +7568,7 @@ LB48A       DB    $04
             DB    $01
 
 *-----------------------------------
-* DATA
+* FONT DATA
 *-----------------------------------
 
 LB49D       DB    $B3
@@ -8595,55 +8571,20 @@ LB842       DB    $00
             DB    $12
             DB    $12
 
-LB883       DB    $32
-            DB    $C1
-            DB    $0C
-            DB    $C1
-            DB    $10
-            DB    $C1
-            DB    $16
-            DB    $A0
-            DB    $20
-            DB    $C1
-            DB    $13
-            DB    $A0
-            DB    $1B
-            DB    $C1
-            DB    $0F
-            DB    $A0
-            DB    $1A
-            DB    $C1
-            DB    $08
-            DB    $C1
-            DB    $25
-            DB    $A0
-            DB    $19
-            DB    $A0
-            DB    $19
-            DB    $C1
-            DB    $18
-            DB    $C1
-            DB    $1B
-            DB    $C1
-            DB    $17
-            DB    $C1
-            DB    $0A
-            DB    $A0
-            DB    $1A
-            DB    $A0
-            DB    $24
-            DB    $A0
-            DB    $1B
-            DB    $A0
-            DB    $1A
-            DB    $A0
-            DB    $22
-            DB    $A0
-            DB    $02
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+*-----------------------------------
+* DEMO DATA
+*-----------------------------------
+* +0: repeat
+* +1: key (A, space)
+
+demoDATA	HEX   32C10CC110C116A020C113A01BC10FA0
+	HEX   1AC108C125A019A019C118C11BC117C1
+	HEX   0AA01AA024A01BA01AA022A002
+	HEX   FFFFFFFF
+
+*-----------------------------------
+* MUSIC DATA
+*-----------------------------------
 
 LB8B4       DB    $0A
             DB    $48
@@ -8686,6 +8627,10 @@ LB8B4       DB    $0A
             DB    $36
             DB    $00
             DB    $00
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 LB8DD       DB    $89
             DB    $8D

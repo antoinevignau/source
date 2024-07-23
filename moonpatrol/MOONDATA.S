@@ -231,67 +231,75 @@ tblHGRL     HEX   00000000000000008080808080808080
 
 *-----------------------------------
 * STRUCTURE OF SPRITE INFORMATION
+* (SO MANY EXPLOSIONS)
 *-----------------------------------
+* +0: width in bytes
+* +1: height in lines
+* +2: pointer to sprite data
 
-L6500       DB    $05	; width in bytes
-L6501       DB    $0E	; height in lines
-L6502       DA    L6600	; pointer to sprite data
-            DB    $05
+spr2STRUCTURE
+            DB    $05	; Sprite 0: Enemy explosion #1
+            DB    $0E
+            DA    L6600
+            DB    $05	; Sprite 1: Enemy explosion #2
             DB    $0E
             DA    L6646
-            DB    $07
+            DB    $07	; Sprite 2: Bomb explosion #1
             DB    $10
             DA    L668C
-            DB    $07
+            DB    $07	; Sprite 3: Bomb explosion #2
             DB    $10
             DA    L6700
-            DB    $07
+            DB    $07	; Sprite 4: Bomb explosion #3
             DB    $10
             DA    L6770
-            DB    $07
+            DB    $07	; Sprite 5: Bomb explosion #4
             DB    $10
             DA    L6800
-            DB    $07
+            DB    $07	; Sprite 6: Car explosion #1
             DB    $10
             DA    L6870
-            DB    $07
+            DB    $07	; Sprite 7: Car explosion #2
             DB    $10
             DA    L6900
-            DB    $07
+            DB    $07	; Sprite 8: Car explosion #3
             DB    $10
             DA    L6970
-            DB    $03
+            DB    $03	; Sprite 9: Enemy 3 bomb
             DB    $08
             DA    L69E0
-            DB    $03
+            DB    $03	; Sprite 10: Enemy 1 bomb
             DB    $08
             DA    L6A00
-            DB    $03
+            DB    $03	; Sprite 11: Horizontal bar
             DB    $02
             DA    L6A18
-            DB    $07
+            DB    $07	; Sprite 12: Rainbow explosion #1
             DB    $0A
             DA    L6A1E
-            DB    $07
+            DB    $07	; Sprite 13: Rainbow explosion #2
             DB    $0A
             DA    L6A64
-            DB    $03
+            DB    $03	; Sprite 14: Small explosion
             DB    $07
             DA    L6AAA
-            DB    $03
+            DB    $03	; Sprite 15: Score 100
             DB    $07
             DA    L6ABF
-            DB    $03
+            DB    $03	; Sprite 16: Score 500
             DB    $07
             DA    L6AD4
-            DB    $03
+            DB    $03	; Sprite 17: Score 800
             DB    $07
             DA    L6AE9
-            DB    $04
+            DB    $04	; Sprite 18: Score 1000
             DB    $07
             DA    L6B00
             DS    \
 
+*
+* Sprite 0: Enemy explosion #1
+*
 L6600       HEX   8088808080
             HEX   8088C08080
 	HEX   9088948080
@@ -306,6 +314,9 @@ L6600       HEX   8088808080
 	HEX   8488858080
 	HEX   8088848080
 	HEX   8080848080
+*
+* Sprite 1: Enemy explosion #2
+*
 L6646       HEX   8082808080
             HEX   80A2848080
 	HEX   80AA848080
@@ -320,6 +331,9 @@ L6646       HEX   8082808080
 	HEX   8088818080
 	HEX   8088808080
 	HEX   8080808080
+*
+* Sprite 2: Bomb explosion #1
+*
 L668C       HEX   80D4AADD8A8080
 	HEX   80F0EAF5828080
 	HEX   80C0AED7808080
@@ -337,6 +351,9 @@ L668C       HEX   80D4AADD8A8080
 	HEX   80E0EFFD808080
 	HEX   80C0FB9F808080
             HEX   FFFFF0F0
+*
+* Sprite 3: Bomb explosion #2
+*
 L6700       HEX   80D4AADD8A8080
 	HEX   80F0EAF5828080
 	HEX   80C0AEF7808080
@@ -353,6 +370,9 @@ L6700       HEX   80D4AADD8A8080
 	HEX   80DCEBDD8F8080
 	HEX   80DCEFFD8E8080
 	HEX   80F0FBDF828080
+*
+* Sprite 4: Bomb explosion #3
+*
 L6770       HEX   80808080808080
 	HEX   80808080808080
 	HEX   80808080808080
@@ -370,6 +390,9 @@ L6770       HEX   80808080808080
 	HEX   8098CFBF808080
 	HEX   80809A9F808080
             HEX   8080808080808480808E80808E80809B80809F80808E8080FFFFF0F0FFFFF0F0
+*
+* Sprite 5: Bomb explosion #4
+*
 L6800       HEX   80808080808080
 	HEX   80808080808080
 	HEX   80808080808080
@@ -386,6 +409,9 @@ L6800       HEX   80808080808080
 	HEX   80808D88808080
 	HEX   80808081808080
 	HEX   8080808A808080
+*
+* Sprite 6: Car explosion #1
+*
 L6870       HEX   80C0ABD7808080
 	HEX   80F5EFDF8F8080
 	HEX   C0F7EFDFAF8080
@@ -403,6 +429,9 @@ L6870       HEX   80C0ABD7808080
 	HEX   80D4ABD78E8080
 	HEX   80C0AAD5808080
             HEX   8080808080808480808E80808E80809B80809F80808E8080FFFFF0F0FFFFF0F0
+*
+* Sprite 7: Car explosion #2
+*
 L6900       HEX   80808080808080
 	HEX   80D0AAD5828080
 	HEX   80D5AAD5AA8080
@@ -419,6 +448,9 @@ L6900       HEX   80808080808080
 	HEX   80808080808080
 	HEX   80808080808080
 	HEX   80808080808080
+*
+* Sprite 8: Car explosion #3 (used?)
+*
 L6970       HEX   80808080808080
 	HEX   80808080808080
 	HEX   80808080808080
@@ -435,6 +467,9 @@ L6970       HEX   80808080808080
 	HEX   80808080808080
 	HEX   80808080808080
 	HEX   80808080808080
+*
+* Sprite 9: Vertical explosion
+*
 L69E0       HEX   808080
 	HEX   808080
 	HEX   848080
@@ -444,6 +479,9 @@ L69E0       HEX   808080
 	HEX   9F8080
 	HEX   8E8080
 	HEX   FFFFF0F0FFFFF0F0
+*
+* Sprite 10: Enemy bomb
+*
 L6A00       HEX   808080
 	HEX   848080
 	HEX   848080
@@ -452,8 +490,14 @@ L6A00       HEX   808080
 	HEX   848080
 	HEX   808080
 	HEX   808080
+*
+* Sprite 11: Horizontal bar
+*
 L6A18       HEX   FC8380
             HEX   FC8380
+*
+* Sprite 12: Rainbow explosion #1 (used?)
+*
 L6A1E       HEX   F8828080F48180
 	HEX   E8838080BC8180
 	HEX   E88B8080BD8180
@@ -464,6 +508,9 @@ L6A1E       HEX   F8828080F48180
 	HEX   80D4FFDF828080
 	HEX   80D0AAD5808080
 	HEX   80C0AA95808080
+*
+* Sprite 13: Rainbow explosion #2 (used?)
+*
 L6A64       HEX   D8858080DA8180
 	HEX   C8858080D28380
 	HEX   F89680C0F68180
@@ -474,6 +521,9 @@ L6A64       HEX   D8858080DA8180
 	HEX   98FCDDFBF28080
 	HEX   80FCFEF5818080
 	HEX   8098B8E0818080
+*
+* Sprite 14: Small explosion
+*
 L6AAA       HEX   A08080
 	HEX   888180
 	HEX   A08080
@@ -481,6 +531,9 @@ L6AAA       HEX   A08080
 	HEX   A08080
 	HEX   888180
 	HEX   A08080
+*
+* Sprite 15: Score 100
+*
 L6ABF       HEX   F48E80
 	HEX   D48A80
 	HEX   D48A80
@@ -488,6 +541,9 @@ L6ABF       HEX   F48E80
 	HEX   D48A80
 	HEX   D48A80
 	HEX   F48E80
+*
+* Sprite 16: Score 500
+*
 L6AD4       HEX   DCBB80
 	HEX   D0AA80
 	HEX   D0AA80
@@ -495,6 +551,9 @@ L6AD4       HEX   DCBB80
 	HEX   C4AA80
 	HEX   C4AA80
 	HEX   DCBB80
+*
+* Sprite 17: Score 800
+*
 L6AE9       HEX   DCBB80
 	HEX   D4AA80
 	HEX   D4AA80
@@ -503,6 +562,9 @@ L6AE9       HEX   DCBB80
 	HEX   D4AA80
 	HEX   DCBB80
 	HEX   F0F0
+*
+* Sprite 18: Score 1000
+*
 L6B00       HEX   F4EE8180
             HEX   D4AA8180
 	HEX   D4AA8180
@@ -550,87 +612,87 @@ sprSTRUCTURE
             DB    $03
             DA    L6E8A
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $05		; Sprite 4: 
+            DB    $05		; Sprite 4: horizontal explosion #1
             DB    $0E
             DA    L6E90
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $05		; Sprite 5: 
+            DB    $05		; Sprite 5: horizontal explosion #2
             DB    $0E
             DA    L6F00
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $05		; Sprite 6: 
+            DB    $05		; Sprite 6: horizontal explosion #3
             DB    $0E
             DA    L6F46
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $05		; Sprite 7: 
+            DB    $05		; Sprite 7: horizontal explosion #4
             DB    $0E
             DA    L6F8C
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $05		; Sprite 8: 
+            DB    $05		; Sprite 8: enemy 1 #1
             DB    $0E
             DA    L7000
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $05		; Sprite 9: 
+            DB    $05		; Sprite 9: enemy 1 #2
             DB    $0E
             DA    L7046
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $05		; Sprite 10: 
+            DB    $05		; Sprite 10: enemy 1 #3
             DB    $0E
             DA    L708C
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $05		; Sprite 11: 
+            DB    $05		; Sprite 11: enemy 1 #4
             DB    $0E
             DA    L7100
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $05		; Sprite 12: 
+            DB    $05		; Sprite 12: enemy 2
             DB    $0A
             DA    L7146
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $05		; Sprite 13: 
+            DB    $05		; Sprite 13: enemy 3
             DB    $09
             DA    L7178
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $04		; Sprite 14: 
+            DB    $04		; Sprite 14: small rock
             DB    $0C
             DA    L71A5
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $05		; Sprite 15: 
+            DB    $05		; Sprite 15: big rock
             DB    $0F
             DA    L7200
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $07		; Sprite 16: 
+            DB    $07		; Sprite 16: tank
             DB    $0E
             DA    L724B
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $04		; Sprite 17: 
+            DB    $04		; Sprite 17: mine #1
             DB    $04
             DA    L72AD
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $04		; Sprite 18: 
+            DB    $04		; Sprite 18: mine #2
             DB    $04
             DA    L72BD
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $06		; Sprite 19: 
+            DB    $06		; Sprite 19: small hole
             DB    $08
             DA    L72CD
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $08		; Sprite 20: 
+            DB    $08		; Sprite 20: big hole
             DB    $0D
             DA    L7300
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $0A		; Sprite 21: 
+            DB    $0A		; Sprite 21: biggest hole
             DB    $13
             DA    L7400
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $0A		; Sprite 22: 
+            DB    $0A		; Sprite 22: mushroom #1
             DB    $24
             DA    L7500
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $0A		; Sprite 23: 
+            DB    $0A		; Sprite 23: mushroom #2
             DB    $24
             DA    L7668
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
-            DB    $05		; Sprite 24: 
+            DB    $05		; Sprite 24: enemy vehicle
             DB    $09
             DA    L77D0
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0
@@ -692,7 +754,7 @@ L6E8A	HEX   9E80
 	HEX   BF80
 	HEX   9E80
 *
-* : 
+* 4: Horizontal explosion #1
 *
 L6E90       HEX   8080808080
 	HEX   8080808080
@@ -712,7 +774,7 @@ L6E90       HEX   8080808080
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0FFFFF0F0
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0FFFFF0F0
 *
-* : 
+* 5: Horizontal explosion #2
 *
 L6F00       HEX   8080808080
 	HEX   8080808080
@@ -729,7 +791,7 @@ L6F00       HEX   8080808080
 	HEX   8080808080
 	HEX   8080808080
 *
-* : 
+* 6: Horizontal explosion #3
 *
 L6F46	HEX   8080808080
 	HEX   80D4828080
@@ -746,7 +808,7 @@ L6F46	HEX   8080808080
 	HEX   80D4828080
 	HEX   8080808080
 *
-* : 
+* 7: Horizontal explosion #4
 *
 L6F8C	HEX   8080808080
 	HEX   80D4828080
@@ -766,7 +828,7 @@ L6F8C	HEX   8080808080
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0FFFFF0F0
             HEX   FFFFF0F0FFFFF0F0FFFFF0F0FFFFF0F0
 *
-* : 
+* 8: Enemy #1
 *
 L7000       HEX   8080808080
 	HEX   808F808080
@@ -783,7 +845,7 @@ L7000       HEX   8080808080
 	HEX   FCF9838080
 	HEX   F8F0818080
 *
-* : 
+* 9: Enemy #2
 *
 L7046	HEX   F880808080
 	HEX   FC81808080
@@ -800,7 +862,7 @@ L7046	HEX   F880808080
 	HEX   FC81808080
 	HEX   F880808080
 *
-* : 
+* 10: Enemy #3
 *
 L708C	HEX   8080808080
 	HEX   F8F0818080
@@ -820,7 +882,7 @@ L708C	HEX   8080808080
 	HEX   8F8F80808F8F80808F8F80808F8F8080
             HEX   8F8F80808F8F80808F8F80808F8F8080
 *
-* : 
+* 11: Enemy #4
 *
 L7100       HEX   80F0818080
 	HEX   80F8838080
@@ -837,7 +899,7 @@ L7100       HEX   80F0818080
 	HEX   80FC818080
 	HEX   80F8808080
 *
-* : 
+* 12: Enemy 2
 *
 L7146	HEX   80F6868080
 	HEX   C0DD9B8080
@@ -850,7 +912,7 @@ L7146	HEX   80F6868080
 	HEX   8080808080
 	HEX   8080808080
 *
-* : 
+* 13: Enemy 3
 *
 L7178	HEX   A881A88180
 	HEX   A881A88180
@@ -862,7 +924,7 @@ L7178	HEX   A881A88180
 	HEX   80AA858080
             HEX   80A8818080
 *
-* : 
+* 14: Small rock
 *
 L71A5	HEX   88918280
 	HEX   A0C48880
@@ -880,7 +942,7 @@ L71A5	HEX   88918280
             HEX   8F8F80808F8F80808F8F80808F8F8080
             HEX   8F8F80808F8F80808F8F80808F8F8080
 *
-* : 
+* 15: Big rock
 *
 L7200       HEX   8891A28480
 	HEX   A0C4888180
@@ -898,7 +960,7 @@ L7200       HEX   8891A28480
 	HEX   8084808080
 	HEX   8080808080
 *
-* : 
+* 16: Tank
 *
 L724B	HEX   80D0AAD5AA8180
 	HEX   8094878E9C8580
@@ -915,21 +977,21 @@ L724B	HEX   80D0AAD5AA8180
 	HEX   8080EADDAB8080
 	HEX   8080A8D58A8080
 *
-* : 
+* 17: Mine #1
 *
 L72AD	HEX   FCFF8180
 	HEX   DCEA8180
 	HEX   DCEA8180
 	HEX   FCFF8180
 *
-* : 
+* 18: Mine #2
 *
 L72BD	HEX   FCFF8180
 	HEX   ACD58180
 	HEX   ACD58180
 	HEX   FCFF8180
 *
-* : 
+* 19: Small hole
 *
 L72CD	HEX   AAD5A0D5AAD5
 	HEX   AA8580D5AAD5
@@ -941,7 +1003,7 @@ L72CD	HEX   AAD5A0D5AAD5
 	HEX   828080C0AAD5
 	HEX   8F8080
 *
-* : 
+* 20: Big hole
 *
 L7300       HEX   AAD582D0AAD5AAD5
 	HEX   AAD580C0AAD5AAD5
@@ -967,7 +1029,7 @@ L7300       HEX   AAD582D0AAD5AAD5
             HEX   8F8F80808F8F80808F8F80808F8F8080
             HEX   8F8F80808F8F80808F8F80808F8F8080
 *
-* : 
+* 21: Very big hole
 *
 L7400       HEX   AAD5AA8080D0AAD5AAD5
 	HEX   AAD5828080C0AAD5AAD5
@@ -994,7 +1056,7 @@ L7400       HEX   AAD5AA8080D0AAD5AAD5
             HEX   8F8F80808F8F80808F8F80808F8F8080
             HEX   8F8F80808F8F80808F8F80808F8F8080
 *
-* : 
+* 22: Mushroom #1
 *
 L7500       HEX   AAD5858AD0A0A9D5AAD5
 	HEX   AA95D4A2C4AAA8D5AAD5
@@ -1033,7 +1095,7 @@ L7500       HEX   AAD5858AD0A0A9D5AAD5
 	HEX   80C08091A2C080808080
 	HEX   8080A084888180808080
 *
-* : 
+* 23: Mushroom #2
 *
 L7668	HEX   AAD5D4A2C4AAAAD5AAD5
 	HEX   AA95D0A2C48AA8D5AAD5
@@ -1072,7 +1134,7 @@ L7668	HEX   AAD5D4A2C4AAAAD5AAD5
 	HEX   80808080808080808080
 	HEX   80808080808080808080
 *
-* : 
+* 24: Enemy vehicle
 *
 L77D0       HEX   8095A88180
 	HEX   8095A88180
@@ -7269,86 +7331,32 @@ courseCHAMPION
 * 
 *-----------------------------------
 
-LB343       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-LB347       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-LB34B       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-LB34F       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-LB353       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-LB357       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-LB35B       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-LB35F       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-LB363       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-LB367       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-LB36B       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-LB36F       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-LB373       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-LB377       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-LB37B       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-LB37F       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-LB383       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-LB387       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-LB38B       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-LB38F       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
+LB343       DS    4	; X
+LB347       DS    4	; Y
+LB34B       DS    4	; INDEX
+LB34F       DS    4
+LB353       DS    4
+LB357       DS    4
+LB35B       DS    4
+LB35F       DS    4
+LB363       DS    4
+LB367       DS    4
+LB36B       DS    4
+LB36F       DS    4
+LB373       DS    4
+LB377       DS    4
+LB37B       DS    4
+LB37F       DS    4
+LB383       DS    4
+
+*-----------------------------------
+* FLYING ENEMIES SPRITE TABLE (L6501 TABLE)
+*-----------------------------------
+
+tblFLYINGENEMIES_INDEX	DS    4
+tblFLYINGENEMIES_X	DS    4
+tblFLYINGENEMIES_Y	DS    4
+
 LB393       DB    $01
             DB    $01
             DB    $01
@@ -7428,10 +7436,7 @@ LB3DE       DB    $00
             DB    $00
             DB    $00
             DB    $00
-LB3E2       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
+LB3E2       DS    4	; X-coord
 LB3E6       DB    $00
             DB    $00
             DB    $00
@@ -7445,10 +7450,7 @@ LB3EF       DB    $00
             DB    $00
             DB    $00
             DB    $00
-LB3F3       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
+LB3F3       DS    4	; sprite index
 LB3F7       DB    $00
             DB    $00
             DB    $00
@@ -7853,7 +7855,7 @@ LB842       DB    $00
             DB    $12
 
 *-----------------------------------
-* DEMO DATA
+* DEMO/REPLAY? DATA
 *-----------------------------------
 * +0: repeat
 * +1: key (A, space)

@@ -9,115 +9,29 @@
             ORG   $0800
             MX    %11
 
-*-----------------------------------
-* FIRMWARE EQUATES
-*-----------------------------------
-
-KBD         EQU   $C000
-KBDSTROBE   EQU   $C010
-TAPEOUT     EQU   $C020
-SPKR        EQU   $C030
-TXTCLR      EQU   $C050
-TXTSET      EQU   $C051
-MIXCLR      EQU   $C052
-TXTPAGE1    EQU   $C054
-TXTPAGE2    EQU   $C055
-HIRES       EQU   $C057
-BUTN0       EQU   $C061
-RESET       EQU   $FA62
-PREAD       EQU   $FB1E
-WAIT        EQU   $FCA8
-
-*-----------------------------------
-* SPRITES
-* Where is the vertical explosion sprite?
-
-* 0	wheel
-* 1	car
-* 2	vertical shoot
-* 3	horizontal shoot
-* 4	horizontal explosion animation step #1
-* 5	horizontal explosion #2
-* 6	horizontal explosion #3
-* 7	horizontal explosion #4
-* 8	enemy 1 #1
-* 9	enemy 1 #2
-* 10	enemy 1 #3
-* 11	enemy 1 #4
-* 12	enemy 2
-* 13	enemy 3
-* 14	small rock
-* 15	big rock
-* 16	tank
-* 17	mine #1
-* 18	mine #2
-* 19	small hole
-* 20	big hole
-* 21	very big hole
-* 22	mushroom #1
-* 23	mushroom #2
-* 24	enemy vehicle
-
-*-----------------------------------
-* GAME VARIABLES
-*-----------------------------------
-
-NB_LIVES	=	4	; which are 3+1 as the programmer uses BNE and not BPL for the end
-
-P1_courseTYPE =	$200	; byte - beginner or champion course for P1
-P2_courseTYPE =	$201	; byte - beginner or champion course for P2
-P1_point	=	$202	; byte - point reached by P1
-P2_point	=	$203	; byte - point reached by P2
-P1_score	=	$204	; adr  - $204 and $206 and $208
-P2_score	=	$205	; adr  - $205 and $207 and $209
-coursePTR1	=	$20a	; word - $20a and $20c
-coursePTR2	=	$20b	; word - $20b and $20d
-P1_basePOINT =	$20e	; byte - current base point of P1
-P2_basePOINT =	$20f	; byte - current base point of P2
-P1_plrCOURSE =	$210	; word - $210 and $212
-P2_plrCOURSE =	$211	; word - $211 and $213
-P1_nbLIVES	=	$214	; byte
-P2_nbLIVES	=	$215	; byte
-courseTYPE	=	$216	; byte - 0 = beginner, 1 = champion
-nbPLAYERS	=	$217	; byte - 0 = 1 player, 1 = 2 players
-nbLIVES	=	$218	; byte - nb lives + 1
-fgINPUT	=	$219	; byte - 0 = keyboard, 1 = joystick
-theBONUS	=	$21a	; adr  - $21a and $21b and $21c - bonus to add to score
-charWAIT	=	$21d	; byte - time to wait between drawing two chars
-curRANGE	=	$21e	; byte - 0/2/4/6/8 mean A/E/J/O/T
-fgBONUS	=	$21f	; byte - 0 = bonus, 1 = no bonus
-fgBESTTIME	=	$220	; byte - 0 = no best time, 1 = best time
-* $221 is not used
-fgDEMO	=	$222	; byte - 0 = game mode, 1 = demo mode (replay?)
-demoINDEX	=	$223	; byte - index for demo data
-demoCNT	=	$224	; byte - demo frame counter * $224
-fgDEMO2	=	$225	; byte - 0 = game mode, 1 = demo mode
-coursePTR3	=	$226	; word - pointer to course data
-coursePTR4	=	$228	; word - pointer to course data 
-curPLAYER	=	$22a	; byte - 0 = player 1, 1 = player 2
-P1_time	=	$22b	; word - and $22d
-P2_time	=	$22c	; word - and $22e
-highSCORE	=	$22f	; adr  - the high score
-timePLAYER	=	$232	; word - player time on course range (A to E, E to J...)
-courseTYPE_unused =	$234	; byte - copy of courseTYPE (unused)
-fgBLINK	=	$235	; byte -0/1 = blinks 1UP/2UP
-
-L0300	=	$300
+	PUT   MOONEQUATES.S
 
 *-----------------------------------
 * GAME ZERO PAGE
 *-----------------------------------
 
 ptrSCREEN	=	00	; word - pointer to the HGR screen
+ptrSCREEN2	=	02	; word - pointer to the HGR screen
+ptrSCREEN3	=	04	; word - pointer to the HGR screen
+
 ptrSTRING	=	$05	; word - pointer to a character string
 theACCEL	=	$10	; byte - the car acceleration
+explosionINDEX =	$11	; byte - explosion sprite index
 fgJUMP	=	$13	; byte - 0 = not jumping, 1 = jumping
+xCNT	=	$16	; byte - X counter
 fwdSHOOTX	= 	$1a	; byte - x-coord of the front shoot
 fwdSHOOTY	=	$1b	; byte - y-coord of the front shoot
+explosionCNT =	$1c	; byte - shoot (minus)/explosion (positive) counter
 fgSOUND	=	$35	; byte - 0 = $C030, 1 = $C020
 mountX1	=	$41	; byte - x-index within mountain
 mountX2	=	$42	; byte - data to determine where to
 mountX3	=	$43	; byte - start drawing, that makes the move
+ptrCOURSE	=	$44	; word - pointer to the course data
 frameCNT	=	$49	; byte - frame counter
 vehicleX	=	$57	; byte - x-coord of the vehicle
 vehicleY	=	$58	; byte - y-coord of the vehicle
@@ -136,6 +50,7 @@ oldWHEEL2Y	=	$64	; byte - old y-coord of wheel 2
 oldWHEEL3X	=	$65	; byte - old x-coord of wheel 3
 oldWHEEL3Y	=	$66	; byte - old y-coord of wheel 3
 groundSTARTX = 	$6e	; byte - x-col where to start drawing ground (0 or 34 if moon base)
+fgHIT	=	$70	; byte - 0 = player is alive, 1 = player was hit
 plrPOINT	=	$78	; byte - point reached by the current player
 plrSCORE	=	$7a	; adr  - score of player
 plrTIME	=	$7d	; word - time of player
@@ -341,7 +256,7 @@ L095C       LDA   ($00),Y
             CMP   #$BC
             BNE   L095C
             JSR   L1A52
-            JSR   L0A29
+            JSR   initALL
             JMP   entryPOINT	; go to the game
 
 *-----------------------------------
@@ -384,8 +299,8 @@ L09BB       LDA   $DD
 L09C6       JSR   L3158
             JSR   L0FB2
 
-L09CC       JSR   L1471
-            JSR   L0E9A
+L09CC       JSR   getCOURSEDATA
+            JSR   animSHOOTS
             JSR   L164F
             JSR   L1FB0
             JSR   L2FD8
@@ -397,9 +312,9 @@ L09CC       JSR   L1471
             JSR   L2474
             JSR   L227E
             JSR   L21C0
-            LDA   $70
-            BEQ   L09FA
-            JMP   L2D02
+            LDA   fgHIT		; were we hit?
+            BEQ   L09FA		; no
+            JMP   animDEATH	; yes
 
 L09FA       JSR   animVEHICLE
             JSR   L11E7
@@ -416,18 +331,22 @@ L09FA       JSR   animVEHICLE
             JSR   L37A2
             JSR   L12DE
             JSR   L383B
-L0A26       JMP   L0996
+L0A26       JMP   L0996		; and loop
 
 *-----------------------------------
-* 
+* INIT ALL VARIABLES
 *-----------------------------------
 
-L0A29       LDA   #$00
+initALL     LDA   #$00
             STA   fgDEMO
             LDA   #$00
             STA   curPLAYER
 
-L0A33       LDA   #$22
+*-----------------------------------
+* INIT GAME VARIABLES
+*-----------------------------------
+
+clearALL    LDA   #$22
             STA   groundSTARTX
             LDA   #$15
             STA   mountX1
@@ -457,7 +376,7 @@ L0A33       LDA   #$22
             STA   basePOINT
             STA   $DD
             STA   $96
-            STA   $70
+            STA   fgHIT
             STA   frameCNT
             STA   $39
             STA   $31
@@ -519,56 +438,56 @@ showHGRPAGE2
 animVEHICLE LDA   oldVEHICLEX	; the vehicle
             ORA   courseTYPE
             TAX
-            LDA   #$01
+            LDA   #sprVEHICLE
             LDY   oldVEHICLEY
-            JSR   undrawSPRITE
+            JSR   eraseSPRITE
 
             LDA   oldWHEEL1X	; wheel 1
             ORA   courseTYPE
             TAX
-            LDA   #$00
+            LDA   #sprWHEEL
             LDY   oldWHEEL1Y
-            JSR   undrawSPRITE
+            JSR   eraseSPRITE
 
             LDA   oldWHEEL2X	; wheel 2
             ORA   courseTYPE
             TAX
-            LDA   #$00
+            LDA   #sprWHEEL
             LDY   oldWHEEL2Y
-            JSR   undrawSPRITE
+            JSR   eraseSPRITE
 
             LDA   oldWHEEL3X	; wheel 3
             ORA   courseTYPE
             TAX
-            LDA   #$00
+            LDA   #sprWHEEL
             LDY   oldWHEEL3Y
-            JSR   undrawSPRITE
+            JSR   eraseSPRITE
 	
 L0AF9       LDA   vehicleX	; draw the car
             ORA   courseTYPE
             TAX
             LDY   vehicleY
-            LDA   #$01
+            LDA   #sprVEHICLE
             JSR   drawSPRITE
 
             LDA   wheel1X	; draw wheel 1
             ORA   courseTYPE
             TAX
-            LDA   #$00
+            LDA   #sprWHEEL
             LDY   wheel1Y
             JSR   drawSPRITE
 
             LDA   wheel2X	; draw wheel 2
             ORA   courseTYPE
             TAX
-            LDA   #$00
+            LDA   #sprWHEEL
             LDY   wheel2Y
             JSR   drawSPRITE
 
             LDA   wheel3X	; draw wheel 3
             ORA   courseTYPE
             TAX
-            LDA   #$00
+            LDA   #sprWHEEL
             LDY   wheel3Y
             JSR   drawSPRITE
 
@@ -613,7 +532,7 @@ L0B69       CMP   #$56
 L0B74       LDA   #$06
             STA   $AF
 
-L0B78       LDA   vehicleX
+L0B78       LDA   vehicleX	; save X pos of the wheels
             STA   oldVEHICLEX
             LDA   vehicleY
             STA   oldVEHICLEY
@@ -629,7 +548,7 @@ L0B78       LDA   vehicleX
             STA   oldWHEEL2Y
             LDA   wheel3Y
             STA   oldWHEEL3Y
-            LDA   $0F
+            LDA   $0F		; and calculate the new ones
             STA   wheel1X
             SEC
             SBC   #$04
@@ -644,11 +563,11 @@ L0B78       LDA   vehicleX
             BMI   L0BB2
             JMP   L238D
 
-L0BB2       LDA   fgJUMP
-            BEQ   L0BB9
-            JMP   L0F7D
+L0BB2       LDA   fgJUMP	; are we jumping?
+            BEQ   L0BB9		; no
+            JMP   stillJUMPING		; yes
 
-L0BB9       LDA   #$02
+L0BB9       LDA   #$02		; calculate wheels Y-coord
             JSR   L26EC
             SEC
             SBC   #$01
@@ -671,6 +590,7 @@ L0BB9       LDA   #$02
             BNE   L0BE7
             LDA   #$8F
             STA   wheel1Y
+
 L0BE7       LDA   wheel1Y
             CMP   #$92
             BNE   L0BF1
@@ -789,7 +709,7 @@ L0CB2       CMP   #"R"		; R stands for Replay or what?
 
 L0CC6       CMP   #$8F	; ctrl-o
             BNE   L0CD3
-            JSR   L3666
+            JSR   doLOADMOONBASE
             JSR   showHGRPAGE2
             JMP   L2773
 
@@ -1033,8 +953,8 @@ doFIRE      LDA   fwdSHOOTX	; do we already have a front shoot?
             ADC   #$09
             STA   fwdSHOOTY
             LDA   #$04
-            STA   $1C
-            LDA   #$03
+            STA   explosionCNT
+            LDA   #sprHORIZONTALSHOOT
             LDX   fwdSHOOTX
             LDY   fwdSHOOTY
             JSR   drawSPRITE
@@ -1062,7 +982,7 @@ L0E58       LDA   #$00
             TAY
             LDA   tblFIREX,X
             TAX
-            LDA   #$02
+            LDA   #sprVERTICALSHOOT
             JSR   drawSPRITE
 
             LDY   #$00
@@ -1082,99 +1002,110 @@ L0E91       DEX
 L0E99       RTS
 
 *-----------------------------------
-*
+* ANIMATE H&V SHOOTS
 *-----------------------------------
 
-L0E9A       LDA   fwdSHOOTX
-            BEQ   L0F19
-            LDA   $1C
+animSHOOTS  LDA   fwdSHOOTX	; do we have a forward shoot?
+            BEQ   animVERTICALSHOOTS	; no
+
+            LDA   explosionCNT		; shooting counter
             BPL   L0EF5
-            CMP   #$FF
-            BNE   L0ECF
-            LDA   #$03
+            CMP   #$FF		; did we transform from shoot to explosion yet?
+            BNE   L0ECF		; yes
+
+            LDA   #sprHORIZONTALSHOOT ; no, prepare the explosion loop
             LDX   fwdSHOOTX
             LDY   fwdSHOOTY
-            JSR   undrawSPRITE
-            LDA   #$04
-            STA   $11
-            LDA   fwdSHOOTY
-            SEC
+            JSR   eraseSPRITE	; erase the shoot
+            LDA   #sprHEXPLOSION1	; draw the explosion
+            STA   explosionINDEX
+            LDA   fwdSHOOTY	; change coords
+            SEC		; for explosion sprite
             SBC   #$05
             STA   fwdSHOOTY
             LDA   fwdSHOOTX
             SEC
             SBC   #$04
             STA   fwdSHOOTX
-            LDA   $11
+            LDA   explosionINDEX	; explosion counter
             LDX   fwdSHOOTX
             LDY   fwdSHOOTY
             JSR   drawSPRITE
-            DEC   $1C
-            JMP   L0F19
+            DEC   explosionCNT		; decrease counter
+            JMP   animVERTICALSHOOTS ; handle vertical counter
 
-L0ECF       LDX   fwdSHOOTX
-            LDY   fwdSHOOTY
-            LDA   $11
-            JSR   undrawSPRITE
-            LDA   $11
-            CMP   #$07
-            BNE   L0EE5
-            LDA   #$00
+L0ECF       LDX   fwdSHOOTX	; go through the 4 animation
+            LDY   fwdSHOOTY	; steps of the explosion
+            LDA   explosionINDEX
+            JSR   eraseSPRITE
+            LDA   explosionINDEX
+            CMP   #sprHEXPLOSION4	; did we reach the end?
+            BNE   L0EE5		; no
+            LDA   #$00		; yes, end of the explosion
             STA   fwdSHOOTX
-            JMP   L0F19
+            JMP   animVERTICALSHOOTS	; handle vertical shoot
 
-L0EE5       STA   $11
-            INC   $11
+L0EE5       STA   explosionINDEX
+            INC   explosionINDEX	; next explosion sprite
             LDX   fwdSHOOTX
             LDY   fwdSHOOTY
             JSR   drawSPRITE
-            DEC   $1C
-            JMP   L0F19
+            DEC   explosionCNT		; next counter
+            JMP   animVERTICALSHOOTS	; handle vertical shoot
 
-L0EF5       LDA   #$03
+*--- No enemy/object, continue the shooting
+
+L0EF5       LDA   #sprHORIZONTALSHOOT
             LDX   fwdSHOOTX
             LDY   fwdSHOOTY
-            JSR   undrawSPRITE
-            LDA   fwdSHOOTX
+            JSR   eraseSPRITE
+            LDA   fwdSHOOTX	; next X
             CLC
             ADC   #$0C
             STA   fwdSHOOTX
-            TAX
+            TAX		; and draw sprite
             LDY   fwdSHOOTY
-            LDA   #$03
+            LDA   #sprHORIZONTALSHOOT
             JSR   drawSPRITE
-            LDA   fwdSHOOTX
-            CMP   #$F5
+
+            LDA   fwdSHOOTX	; until right part of the screen
+            CMP   #$F5		
             BCC   L0F17
-            LDA   #$00
-            STA   $1C
-L0F17       DEC   $1C
-L0F19       LDX   #$00
-L0F1B       LDA   tblFIREX2,X
-            BNE   L0F28
+            LDA   #$00		; tell to start the explosion
+            STA   explosionCNT
+L0F17       DEC   explosionCNT
+
+*-----------------------------------
+* ANIM VERTICAL SHOOTS
+*-----------------------------------
+
+animVERTICALSHOOTS
+            LDX   #$00
+L0F1B       LDA   tblFIREX2,X	; do have a shoot active?
+            BNE   L0F28		; yes
 L0F20       INX
             CPX   #$04
             BNE   L0F1B
             JMP   L0F5A
 
-L0F28       STX   $16
+L0F28       STX   xCNT
             PHA
             LDA   tblFIREY2,X
             TAY
             PLA
             TAX
-            LDA   #$02
-            JSR   undrawSPRITE
-            LDX   $16
+            LDA   #sprVERTICALSHOOT
+            JSR   eraseSPRITE
+            LDX   xCNT
             LDA   LB059,X
             BNE   L0F4F
             LDA   tblFIREY,X
             TAY
             LDA   tblFIREX,X
             TAX
-            LDA   #$02
+            LDA   #sprVERTICALSHOOT
             JSR   drawSPRITE
-            LDX   $16
+            LDX   xCNT
             JMP   L0F20
 
 L0F4F       LDA   #$00
@@ -1191,6 +1122,7 @@ L0F5C       LDA   tblFIREX,X
             SBC   #$09
             CMP   #$25
             BCS   L0F74
+
             LDA   #$01
             STA   LB059,X
 L0F74       STA   tblFIREY,X
@@ -1199,13 +1131,18 @@ L0F74       STA   tblFIREY,X
             BNE   L0F5C
             RTS
 
-L0F7D       LDA   vehicleY
+*-----------------------------------
+* THE VEHICLE IS JUMPING
+*-----------------------------------
+
+stillJUMPING
+            LDA   vehicleY	; move vehicle
             SEC
             SBC   $14
             STA   vehicleY
             CLC
             ADC   #$08
-            STA   wheel1Y
+            STA   wheel1Y	; and its wheels
             STA   wheel2Y
             STA   wheel3Y
             LDA   $15
@@ -1216,18 +1153,23 @@ L0F7D       LDA   vehicleY
             CLC
             ADC   #$0A
 L0F99       STA   $15
-            LDA   vehicleY
+
+            LDA   vehicleY	; has vehicle y-coord moved up to 134?
             CMP   #$86
-            BCC   L0FB1
-            LDA   #$00
+            BCC   L0FB1		; no, still jumping
+            LDA   #$00		; yes, end of jump
             STA   fgJUMP
-            LDA   #$86
+            LDA   #$86		; and position the vehicle and its wheels
             STA   vehicleY
             LDA   #$8F
             STA   wheel1Y
             STA   wheel2Y
             STA   wheel3Y
 L0FB1       RTS
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 L0FB2       LDA   $96
             SEC
@@ -1293,6 +1235,8 @@ L1009       LDA   #$AA
             CMP   #$9B
             BNE   L0FFB
 
+*--- Clear sprite tables
+
             LDA   #$00
             STA   fwdSHOOTX
             LDX   #$03
@@ -1302,7 +1246,7 @@ L1025       STA   LB34B,X
             STA   tblFIREX,X
             STA   tblFIREX2,X
             STA   LB42A,X
-            STA   LB387,X
+            STA   tblFLYINGENEMIES_INDEX,X
             DEX
             BPL   L1025
             RTS
@@ -1325,7 +1269,7 @@ L1048       STX   $DE
             LDA   $E2,X
             TAX
             PLA
-            JSR   drawSPRITE3
+            JSR   eraseSPRITE2
             LDX   $DE
             DEC   $EB,X
             BEQ   L106D
@@ -1507,9 +1451,9 @@ L11B0       RTS
 * 
 *-----------------------------------
 
-L11B1       LDA   $44
+L11B1       LDA   ptrCOURSE
             STA   plrCOURSE
-            LDA   $44+1
+            LDA   ptrCOURSE+1
             STA   plrCOURSE+1
             LDA   #$00
             STA   $97
@@ -1619,7 +1563,7 @@ L1272       CMP   #$FF
 * DRAW ADVANCEMENT LINE
 *-----------------------------------
 
-drawXPOINT  STX   $16		; draws the horizontal line
+drawXPOINT  STX   xCNT		; draws the horizontal line
             LDX   plrPOINT	; where the player is
             LDA   #$13
             STA   $00
@@ -1667,7 +1611,7 @@ L12D3       CPX   $03
             BNE   L12A0
             CPY   $02
             BNE   L12A0
-            LDX   $16
+            LDX   xCNT
             RTS
 
 *-----------------------------------
@@ -1703,15 +1647,15 @@ L12EB       STX   $50
             STA   $9D
             LDA   LB42A,X
             TAX
-            LDA   #$0B
+            LDA   #sprHORIZONTALBAR
             LDY   #$8F
-            JSR   drawSPRITE3
+            JSR   eraseSPRITE2
             JSR   L2FCE
             LDX   $50
-            LDA   $1C
+            LDA   explosionCNT
             BMI   L1329
             LDA   #$FF
-L1329       STA   $1C
+L1329       STA   explosionCNT
             LDA   #$00
             STA   LB42A,X
 
@@ -1739,12 +1683,12 @@ L133B       STX   $50
             CMP   #$90
             BCC   L1337
             LDA   #$01
-            STA   $70
+            STA   fgHIT
             LDA   LB42A,X
             TAX
-            LDA   #$0B
+            LDA   #sprHORIZONTALBAR
             LDY   #$8F
-            JSR   drawSPRITE3
+            JSR   eraseSPRITE2
             LDX   $50
             LDA   #$00
             STA   LB42A,X
@@ -1764,9 +1708,9 @@ L1378       DEX
 L137C       STX   $50
             LDA   LB42A,X
             TAX
-            LDA   #$0B
+            LDA   #sprHORIZONTALBAR
             LDY   #$8F
-            JSR   drawSPRITE3
+            JSR   eraseSPRITE2
             LDX   $50
             LDA   LB42A,X
             SEC
@@ -1775,7 +1719,7 @@ L137C       STX   $50
             BCC   L13A5
             STA   LB42A,X
             TAX
-            LDA   #$0B
+            LDA   #sprHORIZONTALBAR
             LDY   #$8F
             JSR   drawSPRITE2
             LDX   $50
@@ -1885,9 +1829,10 @@ L146E       JMP   L13F4
 * GET COURSE DATA
 *-----------------------------------
 
-L1471       LDA   $AF
-            LSR
-            SEC
+getCOURSEDATA
+            LDA   $AF	; those define the 
+            LSR	; steps before getting
+            SEC	; course data
             SBC   #$01
             STA   $00
             LDA   $46
@@ -1897,47 +1842,47 @@ L1471       LDA   $AF
             STA   $46
             RTS
 
-L1483       INC   $44
+L1483       INC   ptrCOURSE
             BNE   L1489
-            INC   $44+1
+            INC   ptrCOURSE+1
 
 L1489       LDX   #$00
-            LDA   ($44,X)
+            LDA   (ptrCOURSE,X)
             LSR
             LSR
             LSR
             TAY
-            LDA   ($44,X)
+            LDA   (ptrCOURSE,X)
             AND   #$F8	; 11111000
             CMP   #$00
             BNE   L14A8
-            LDA   ($44,X)
+            LDA   (ptrCOURSE,X)
             AND   #$07
-            LDX   #$0B
-            JSR   L2F2D
+            LDX   #$0B	; x11
+            JSR   MUL16
             TXA
             LDX   #$00
             STA   $46
             RTS
 
-L14A8       LDA   ($44,X)
+L14A8       LDA   (ptrCOURSE,X)
             AND   #$07
-            LDX   #$0B
-            JSR   L2F2D
+            LDX   #$0B	; x11
+            JSR   MUL16
             TXA
             LDX   #$00
             STA   $46
             CMP   #$0B
             BNE   L14C6
 
-            LDA   ($44,X)
+            LDA   (ptrCOURSE,X)
             AND   #$F8
             CMP   #$88
             BNE   L14C6
             LDA   #$05
             STA   $46
 
-L14C6       LDA   ($44,X)
+L14C6       LDA   (ptrCOURSE,X)
             AND   #$F8	; 11111000
             CMP   #$10
             BNE   L14D1
@@ -2085,10 +2030,10 @@ L15BD       CMP   #$C8
 L15C4       CMP   #$E0
             BNE   L15D4
             LDA   #<courseCHAMPION
-            STA   $44
+            STA   ptrCOURSE
             STA   $83
             LDA   #>courseCHAMPION
-            STA   $44+1
+            STA   ptrCOURSE+1
             STA   $83+1
 L15D4       RTS
 
@@ -2114,15 +2059,14 @@ L15E6       STX   $50
             BEQ   L1605
             CMP   #$18
             BEQ   L160C
-            LDA   #$08
+
+            LDA   #sprENEMY11
             STA   $47
             JMP   L1613
-
-L1605       LDA   #$0D
+L1605       LDA   #sprENEMY3
             STA   $47
             JMP   L1613
-
-L160C       LDA   #$0C
+L160C       LDA   #sprENEMY2
             STA   $47
             JMP   L1613
 
@@ -2153,6 +2097,10 @@ L1613       LDA   $47
             STA   LB37B,X
             CLC
             RTS
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 L164F       LDX   #$03
 L1651       LDA   LB34B,X
@@ -2225,31 +2173,31 @@ L16E6       LDA   $B3
             LDY   $B2
             LDX   $B1
             LDA   $B0
-            CMP   #$0E
+            CMP   #sprSMALLEXPLOSION
             BCC   L16FD
             SEC
-            SBC   #$0E
-            JSR   drawSPRITE3
+            SBC   #sprSMALLEXPLOSION
+            JSR   eraseSPRITE2	; and use second sprite table
             JMP   L1700
+L16FD       JSR   eraseSPRITE
 
-L16FD       JSR   undrawSPRITE
 L1700       LDX   $50
             LDA   LB373,X
             STA   $39
             LDA   LB347,X
             TAY
-            LDA   LB34B,X
+            LDA   LB34B,X	; index
             STA   $B0
-            LDA   LB347,X
+            LDA   LB347,X	; Y
             TAY
-            LDA   LB343,X
+            LDA   LB343,X	; X
             TAX
             LDA   $B0
             BMI   L172F
-            CMP   #$0E
+            CMP   #sprSMALLEXPLOSION
             BCC   L1729
             SEC
-            SBC   #$0E
+            SBC   #sprSMALLEXPLOSION
             JSR   drawSPRITE2
             JMP   L1736
 
@@ -2276,8 +2224,8 @@ L174C       STX   $50
             LDA   $85
             BNE   L175E
             LDY   #$03
-L1754       LDA   LB387,Y
-            CMP   #$0A
+L1754       LDA   tblFLYINGENEMIES_INDEX,Y
+            CMP   #sprENEMY1BOMB
             BEQ   L1796
             DEY
             BPL   L1754
@@ -2322,16 +2270,17 @@ L17A2       STX   $50
             LDA   LB3E2,X
             TAX
             LDA   $B1
-            CMP   #$16
+            CMP   #sprMUSHROOM1
             BEQ   L17C1
-            CMP   #$17
+            CMP   #sprMUSHROOM2
             BEQ   L17C1
             LDY   #$9B
             JMP   L17C3
 
 L17C1       LDY   #$87
 L17C3       STY   $B0
-            JSR   putSPRITE	; put big rock on ground
+            JSR   putSPRITE	; blits the mushroom sprite
+
             LDX   $50
             LDA   LB3E2,X
             STA   $C7,X
@@ -2386,12 +2335,11 @@ L1836       JMP   L179E
 
 L1839       PHA
             LDX   #$03
-L183C       LDA   LB387,X
+L183C       LDA   tblFLYINGENEMIES_INDEX,X
             BNE   L1847
             DEX
             BNE   L183C
             JMP   L1849
-
 L1847       PLA
             RTS
 
@@ -2466,19 +2414,19 @@ L18CC       INX
             STA   $39
             RTS
 
-L18D6       STX   $16
+L18D6       STX   xCNT
             LDA   LB40F,X
             STA   $39
-            LDA   LB407,X
+            LDA   LB407,X	; sprite index
             PHA
-            LDA   LB403,X
+            LDA   LB403,X	; sprite Y
             TAY
-            LDA   LB3FF,X
+            LDA   LB3FF,X	; sprite X
             TAX
             PLA
             AND   #$7F
-            JSR   undrawSPRITE
-            LDX   $16
+            JSR   eraseSPRITE
+            LDX   xCNT
             LDA   frameCNT
             AND   #$03
             CMP   #$03
@@ -2511,7 +2459,7 @@ L1911       LDA   LB407,X
             JMP   L19BF
 
 L1936       JSR   drawSPRITE
-            LDX   $16
+            LDX   xCNT
             LDA   LB407,X
             CMP   #$10
             BNE   L1985
@@ -2544,9 +2492,9 @@ L196E       LDA   LB3FF,X
             LDA   #$00
             STA   $39
             LDY   #$8F
-            LDA   #$0B
+            LDA   #sprHORIZONTALBAR
             JSR   drawSPRITE2
-            LDX   $16
+            LDX   xCNT
 L1985       LDA   #$00
             STA   $00
             LDA   LB3F7,X
@@ -2575,7 +2523,7 @@ L19AE       LDA   LB3F7,X
             JMP   L18CC
 
 L19BF       LDA   #$00
-            LDX   $16
+            LDX   xCNT
             STA   LB413,X
             JMP   L18CC
 
@@ -2692,7 +2640,7 @@ L1A88       STA   $0F
             INY
             LDA   ($08),Y
             STA   $18
-            JSR   L2F2D
+            JSR   MUL16
             STX   $0C
             CLC
             LDY   fgJUMP
@@ -3330,11 +3278,11 @@ L1FA2       JSR   doBEEP
 * 
 *-----------------------------------
 
-L1FB0       LDX   #$03
+L1FB0       LDX   #$03		; do we have a flying enemy?
 L1FB2       LDA   LB34B,X
             BEQ   L1FBB
-            CMP   #$0E
-            BCC   L1FC1
+            CMP   #sprSMALLROCK
+            BCC   L1FC1		; yes, handle it
 L1FBB       DEX
             BPL   L1FB2
             JMP   L2059
@@ -3348,12 +3296,13 @@ L1FC1       STX   $50
             ADC   #$0F
             LDX   $50
             STA   LB37B,X
-            LDA   LB387,X
+            LDA   tblFLYINGENEMIES_INDEX,X
             BNE   L1FBB
+
             LDA   #$01
             STA   $06
             LDA   LB34B,X
-            CMP   #$0C
+            CMP   #sprENEMY2
             BCS   L2020
             LDA   #$78
             STA   $06
@@ -3379,12 +3328,14 @@ L200C       LDA   LB3DE,Y
             BNE   L1FBB
             DEY
             BPL   L200C
+
             LDY   #$03
-L2016       LDA   LB387,Y
-            CMP   #$0A
+L2016       LDA   tblFLYINGENEMIES_INDEX,Y
+            CMP   #sprENEMY1BOMB
             BEQ   L1FBB
             DEY
             BPL   L2016
+
 L2020       LDA   LB343,X
             CMP   $06
             BCC   L1FBB
@@ -3392,63 +3343,66 @@ L2020       LDA   LB343,X
             ADC   #$0A
             CMP   #$DC
             BCS   L1FBB
-            STA   LB38B,X
+            STA   tblFLYINGENEMIES_X,X
             LDA   LB347,X
             CLC
             ADC   #$08
-            STA   LB38F,X
+            STA   tblFLYINGENEMIES_Y,X
+
             LDA   LB34B,X
-            CMP   #$0E
+            CMP   #sprENEMY3+1
             BCC   L2044
             JMP   L1FBB
-
-L2044       CMP   #$0C
+L2044       CMP   #sprENEMY2
             BEQ   L2051
-            CMP   #$0D
+            CMP   #sprENEMY3
             BEQ   L2051
-            LDA   #$0A
+            LDA   #sprENEMY1BOMB
             JMP   L2053
-
-L2051       LDA   #$09
-L2053       STA   LB387,X
+L2051       LDA   #sprENEMY3BOMB
+L2053       STA   tblFLYINGENEMIES_INDEX,X	; table des sprites
             JMP   L1FBB
 
+*-----------------------------------
+*
+*-----------------------------------
+
 L2059       LDX   #$03
-L205B       LDA   LB387,X
+L205B       LDA   tblFLYINGENEMIES_INDEX,X
             BNE   L2064
 L2060       DEX
             BPL   L205B
             RTS
 
 L2064       STX   $50
-            LDA   LB387,X
+            LDA   tblFLYINGENEMIES_INDEX,X
             PHA
-            LDY   LB38F,X
-            LDA   LB38B,X
+            LDY   tblFLYINGENEMIES_Y,X	; table des Y
+            LDA   tblFLYINGENEMIES_X,X	; table des X
             TAX
             PLA
-            JSR   drawSPRITE3
+            JSR   eraseSPRITE2
             LDX   $50
-            LDA   LB387,X
+            LDA   tblFLYINGENEMIES_INDEX,X
             CMP   #$09
             BEQ   L2086
             CMP   #$0A
             BEQ   L2086
             CMP   #$02
             BCS   L20E0
-L2086       INC   LB38B,X
-            INC   LB38B,X
-            LDA   LB38B,X
+L2086       INC   tblFLYINGENEMIES_X,X
+            INC   tblFLYINGENEMIES_X,X
+            LDA   tblFLYINGENEMIES_X,X
             AND   #$FE
-            STA   LB38B,X
-            LDA   LB38F,X
+            STA   tblFLYINGENEMIES_X,X
+            LDA   tblFLYINGENEMIES_Y,X
             CLC
             ADC   #$04
-            STA   LB38F,X
+            STA   tblFLYINGENEMIES_Y,X
             CMP   #$8C
             BCC   L20FE
-            LDA   LB387,X
-            CMP   #$0A
+            LDA   tblFLYINGENEMIES_INDEX,X
+            CMP   #sprENEMY1BOMB
             BNE   L20D2
             TXA
             PHA
@@ -3464,48 +3418,48 @@ L2086       INC   LB38B,X
             TAY
             PLA
             TAX
-            LDA   LB38B,X
+            LDA   tblFLYINGENEMIES_X,X
             SEC
             SBC   #$22
             AND   #$FC
             STA   LB3E2,Y
-            LDA   #$0B
-            STA   LB387,X
+            LDA   #sprHORIZONTALBAR
+            STA   tblFLYINGENEMIES_INDEX,X
             JMP   L20D7
 
-L20D2       LDA   #$01
-            STA   LB387,X
-L20D7       LDA   LB38B,X
+L20D2       LDA   #sprBOMBEXPLOSION1 - 1
+            STA   tblFLYINGENEMIES_INDEX,X
+L20D7       LDA   tblFLYINGENEMIES_X,X
             SEC
             SBC   #$0E
-            STA   LB38B,X
-L20E0       INC   LB387,X
+            STA   tblFLYINGENEMIES_X,X
+L20E0       INC   tblFLYINGENEMIES_INDEX,X
             LDA   #$89
-            STA   LB38F,X
-            LDA   LB387,X
-            CMP   #$06
+            STA   tblFLYINGENEMIES_Y,X
+            LDA   tblFLYINGENEMIES_INDEX,X
+            CMP   #sprBOMBEXPLOSION4+1
             BEQ   L20F6
-            CMP   #$0E
+            CMP   #sprRAINBOWEXPLOSION2+1
             BEQ   L20F6
             JMP   L20FE
 
-L20F6       LDA   #$00
-            STA   LB387,X
+L20F6       LDA   #$00		; enemy sprite cell is now empty
+            STA   tblFLYINGENEMIES_INDEX,X
             JMP   L2060
 
-L20FE       LDA   LB387,X
-            CMP   #$0A
+L20FE       LDA   tblFLYINGENEMIES_INDEX,X
+            CMP   #sprENEMY1BOMB
             BEQ   L210C
-            CMP   #$09
+            CMP   #sprENEMY3BOMB
             BEQ   L210C
             JMP   L2134
 
-L210C       LDA   LB38F,X
+L210C       LDA   tblFLYINGENEMIES_Y,X	; check if vehicle hit
             CLC
             ADC   #$05
             CMP   vehicleY
             BCC   L2134
-            LDA   LB38B,X
+            LDA   tblFLYINGENEMIES_X,X
             CLC
             ADC   #$04
             CMP   vehicleX
@@ -3513,18 +3467,18 @@ L210C       LDA   LB38F,X
             LDA   vehicleX
             CLC
             ADC   #$24
-            CMP   LB38B,X
+            CMP   tblFLYINGENEMIES_X,X
             BCC   L2134
-            LDA   #$01
-            STA   $70
+            LDA   #$01		; yes, we did
+            STA   fgHIT
             LDA   #$00
-            STA   LB387,X
+            STA   tblFLYINGENEMIES_INDEX,X
             RTS
 
-L2134       LDA   LB387,X
+L2134       LDA   tblFLYINGENEMIES_INDEX,X
             PHA
-            LDY   LB38F,X
-            LDA   LB38B,X
+            LDY   tblFLYINGENEMIES_Y,X
+            LDA   tblFLYINGENEMIES_X,X
             TAX
             PLA
             JSR   drawSPRITE2
@@ -3581,7 +3535,7 @@ L2188       LDA   LB343,Y
             CMP   vehicleY
             BCC   L21B3
             LDA   #$01
-            STA   $70
+            STA   fgHIT
             RTS
 L21B3       JMP   L2184
 
@@ -3648,7 +3602,7 @@ L21E6       LDA   $D1,X
             CMP   $05
             BCC   L21C7
             LDA   #$01
-            STA   $70
+            STA   fgHIT
             RTS
 
 L222E       LDA   #$00
@@ -3693,7 +3647,7 @@ L2270       LDA   vehicleY
             JMP   L21C7
 
 L2279       LDA   #$01
-            STA   $70
+            STA   fgHIT
             RTS
 
 L227E       LDX   #$03
@@ -3744,7 +3698,7 @@ L2289       LDA   LB407,X
             BEQ   L2285
             BCC   L2285
             LDA   #$01
-            STA   $70
+            STA   fgHIT
             JMP   L2326
 
 L22DC       LDA   #$00
@@ -3786,20 +3740,20 @@ L2315       LDA   vehicleY
             JMP   L2285
 
 L2322       LDA   #$01
-            STA   $70
+            STA   fgHIT
 L2326       LDA   #$00
             STA   LB413,X
             LDA   LB40F,X
             STA   $39
-            LDA   LB407,X
+            LDA   LB407,X	; sprite index
             STA   $B0
-            LDA   LB403,X
+            LDA   LB403,X	; sprite Y
             TAY
-            LDA   LB3FF,X
+            LDA   LB3FF,X	; sprite X
             TAX
             LDA   $B0
             AND   #$7F
-            JSR   undrawSPRITE
+            JSR   eraseSPRITE
             LDA   #$00
             STA   $39
             RTS
@@ -4003,7 +3957,7 @@ L247F       STX   $50
             LDA   LB41C,Y
             STA   $06
             LDA   fwdSHOOTY
-            BIT   $1C
+            BIT   explosionCNT
             BPL   L24BB
             CLC
             ADC   #$05
@@ -4024,10 +3978,10 @@ L24BB       CLC
             BNE   L247B
             LDA   #$01
             STA   $9D
-            LDA   $1C
+            LDA   explosionCNT
             BMI   L24E3
             LDA   #$FF
-            STA   $1C
+            STA   explosionCNT
 L24E3       LDA   LB407,X
             ORA   #$80
             STA   LB407,X
@@ -4056,9 +4010,9 @@ L2507       LDA   #$1E
             LDA   #$23
             STA   LB347,X
             LDA   #$73
-            STX   $16
+            STX   xCNT
             JSR   L26EC
-            LDX   $16
+            LDX   xCNT
             CLC
             ADC   #$8C
             STA   LB343,X
@@ -4372,7 +4326,7 @@ L2783       BIT   KBDSTROBE
             BIT   TXTPAGE1
             BIT   TXTSET
             JSR   L0FC9
-            JSR   L0A29
+            JSR   initALL
             LDA   #$00
             STA   fgBLINK
 
@@ -4708,10 +4662,10 @@ L2B02       BIT   KBDSTROBE
             STA   fgDEMO2
             LDA   #<courseDEMO
             STA   $83
-            STA   $44
+            STA   ptrCOURSE
             LDA   #>courseDEMO
             STA   $83+1
-            STA   $44+1
+            STA   ptrCOURSE+1
             LDA   #KBD
             STA   doBEEP+1
             JSR   showHGRPAGE2
@@ -4735,7 +4689,7 @@ L2B72       LDA   #$FF
             LDA   #$00
             STA   $96
             STA   $DD
-            STA   $70
+            STA   fgHIT
             LDA   #$01
             STA   $97
             LDA   #$4A
@@ -4760,9 +4714,9 @@ L2B72       LDA   #$FF
             STA   theACCEL
             STA   fgJUMP
             LDA   $83
-            STA   $44
+            STA   ptrCOURSE
             LDA   $83+1
-            STA   $44+1
+            STA   ptrCOURSE+1
             JSR   L0AAC
             JSR   showNBLIVES
             JSR   L0AF9
@@ -4787,7 +4741,7 @@ L2B72       LDA   #$FF
             JSR   L21B6
             RTS
 
-L2BF9       LDA   #$19	; no
+L2BF9       LDA   #$19		; no
             STA   plrPOINT
             LDA   #$00
             STA   $04
@@ -4853,19 +4807,19 @@ L2C6D       LDA   $A5
             BNE   L2C7A
             LDX   oldWHEEL3X
             LDY   oldWHEEL3Y
-            LDA   #$00
-            JSR   undrawSPRITE
+            LDA   #sprWHEEL
+            JSR   eraseSPRITE
 L2C7A       LDA   $A5
             CMP   #$02
             BEQ   L2C89
-            LDA   #$00
+            LDA   #sprWHEEL
             LDX   oldWHEEL2X
             LDY   oldWHEEL2Y
-            JSR   undrawSPRITE
-L2C89       LDA   #$00
+            JSR   eraseSPRITE
+L2C89       LDA   #sprWHEEL
             LDX   oldWHEEL1X
             LDY   oldWHEEL1Y
-            JSR   undrawSPRITE
+            JSR   eraseSPRITE
             LDA   wheel3X
             BEQ   L2C9D
             CMP   #$FF
@@ -4922,11 +4876,15 @@ L2CF2       DEC   mountX1
 L2CFE       JSR   drawMOUNTAINS
             RTS
 
-L2D02       LDA   $70
-            BNE   L2D07
-            RTS
+*-----------------------------------
+* animDEATH
+*-----------------------------------
 
-L2D07       DEC   nbLIVES
+animDEATH   LDA   fgHIT		; was player hit?
+            BNE   L2D07		; yes, alas
+            RTS		; no
+L2D07       DEC   nbLIVES	; lives--
+
             JSR   L3583
             LDX   #$03
 L2D0F       LDA   LB407,X
@@ -4947,32 +4905,33 @@ L2D26       LDA   $C7,X
             STA   LB3EF,X
             DEX
             BPL   L2D0F
-            LDA   #$00
+
+            LDA   #sprWHEEL
             STA   $AF
             LDA   oldWHEEL3X
             ORA   courseTYPE
             TAX
-            LDA   #$00
+            LDA   #sprWHEEL
             LDY   oldWHEEL3Y
-            JSR   undrawSPRITE
+            JSR   eraseSPRITE
             LDA   oldWHEEL2X
             ORA   courseTYPE
             TAX
-            LDA   #$00
+            LDA   #sprWHEEL
             LDY   oldWHEEL2Y
-            JSR   undrawSPRITE
+            JSR   eraseSPRITE
             LDA   oldWHEEL1X
             ORA   courseTYPE
             TAX
             LDY   oldWHEEL1Y
-            LDA   #$00
-            JSR   undrawSPRITE
+            LDA   #sprWHEEL
+            JSR   eraseSPRITE
             LDA   oldVEHICLEX
             ORA   courseTYPE
             TAX
-            LDA   #$01
+            LDA   #sprVEHICLE
             LDY   oldVEHICLEY
-            JSR   undrawSPRITE
+            JSR   eraseSPRITE
             LDA   #$03
             STA   $A1
             STA   $A3
@@ -4982,10 +4941,11 @@ L2D26       LDA   $C7,X
             STA   $A2
             STA   $A4
             JSR   L2C10
-            LDA   #$06
+            LDA   #sprCAREXPLOSION1
             STA   $71
             LDA   #$04
             STA   $B6
+
 L2D90       LDA   $71
             LDX   oldVEHICLEX
             INX
@@ -5014,15 +4974,15 @@ L2D90       LDA   $71
             INX
             LDY   oldVEHICLEY
             INY
-            JSR   drawSPRITE3
+            JSR   eraseSPRITE2
             LDA   $71
-            CMP   #$06
+            CMP   #sprCAREXPLOSION1
             BEQ   L2DDB
-            LDA   #$06
+            LDA   #sprCAREXPLOSION1
             STA   $71
             JMP   L2DDF
 
-L2DDB       LDA   #$07
+L2DDB       LDA   #sprCAREXPLOSION2
             STA   $71
 L2DDF       DEC   $B6
             JMP   L2D90
@@ -5033,8 +4993,9 @@ L2DE4       LDA   #$07
             LDY   #$07
             JSR   L2FA5
             JSR   L2C10
-            LDA   #$06
+            LDA   #sprCAREXPLOSION1
             STA   $71
+
 L2DF6       LDA   $71
             LDX   oldVEHICLEX
             INX
@@ -5043,7 +5004,7 @@ L2DF6       LDA   $71
             INY
             JSR   drawSPRITE2
             LDA   $71
-            CMP   #$08
+            CMP   #sprCAREXPLOSION3
             BEQ   L2E2A
             LDA   #$03
             STA   $72
@@ -5058,8 +5019,8 @@ L2E0C       JSR   L2ECE
             INX
             LDY   oldVEHICLEY
             INY
-            JSR   drawSPRITE3
-            INC   $71
+            JSR   eraseSPRITE2
+            INC   $71	; explosion 2 then 3
             JMP   L2DF6
 
 L2E2A       JSR   L2ECE
@@ -5069,9 +5030,9 @@ L2E2A       JSR   L2ECE
             INX
             LDY   oldVEHICLEY
             INY
-            JSR   drawSPRITE3
-            LDA   #$00
-            STA   $70
+            JSR   eraseSPRITE2
+            LDA   #$00		; say we're not hit anymonre
+            STA   fgHIT
             LDA   #$1E
 L2E3F       PHA
             JSR   L2ECE
@@ -5083,6 +5044,7 @@ L2E3F       PHA
             SEC
             SBC   #$01
             BCS   L2E3F
+
             JSR   L0AAC
             LDA   #$00
             STA   $E0
@@ -5101,15 +5063,15 @@ L2E3F       PHA
             STA   courseTYPE
             LDA   nbPLAYERS2
             STA   nbPLAYERS
-            JMP   L2773
+            JMP   L2773		; let's make another round
 
 L2E83       JSR   savePLAYERDATA
             LDA   nbLIVES
             BNE   L2E8E
-            JMP   L3911		; we're dead!
+            JMP   L3911		; we're really dead!
 
-L2E8E       LDA   nbPLAYERS
-            BEQ   L2E9F
+L2E8E       LDA   nbPLAYERS	; 1 or 2 players?
+            BEQ   L2E9F		; one
             LDA   $2E
             BNE   L2E9F
             LDA   curPLAYER
@@ -5133,7 +5095,11 @@ L2E9F       BIT   TXTPAGE1
 L2EC2       JSR   L2B72
             JSR   showHGRPAGE2
             JSR   L33E0
-            JMP   L0996
+            JMP   L0996		; loop again
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 L2ECE       INC   frameCNT
             LDA   frameCNT
@@ -5146,7 +5112,7 @@ L2EDD       LDA   frameCNT
             AND   #$0F
             BNE   L2EE6
             JSR   blinkPLAYER
-L2EE6       JSR   L0E9A
+L2EE6       JSR   animSHOOTS
             DEC   timeCNT
             BPL   L2EF4
             LDA   #$16
@@ -5172,12 +5138,16 @@ L2F1E       LDA   L1FFF+1,X
 L2F21       CLC
             ADC   $06
             BCC   L2F21
-            JSR   doBEEP		; beep
+            JSR   doBEEP	; beep
             INX
             BNE   L2F1E
             RTS
 
-L2F2D       STA   $00
+*-----------------------------------
+* MUL16
+*-----------------------------------
+
+MUL16       STA   $00
             STX   $01
             LDA   #$00
             LDX   #$08
@@ -5194,6 +5164,10 @@ L2F43       DEX
             TAX
             LDA   $02
             RTS
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 L2F4A       LDA   $15
             PHA
@@ -5353,9 +5327,9 @@ setNEXTCOURSE
             BIT   TXTSET	; so, let's start a...
             JSR   L0FC9
             LDA   $83
-            STA   $44
+            STA   ptrCOURSE
             LDA   $83+1
-            STA   $44+1
+            STA   ptrCOURSE+1
             LDX   slot16
             STA   $C089,X
             LDA   #$FF
@@ -5363,7 +5337,7 @@ setNEXTCOURSE
             JSR   loadMOONBASEPIC
             LDA   #$01		; ...champion course
             STA   courseTYPE
-            JSR   L0A33
+            JSR   clearALL
             JSR   L0AF9
             JSR   drawMOUNTAINS
             JSR   showCOURSETYPE
@@ -5634,7 +5608,7 @@ L325A       LDA   $EE
             BEQ   L3259
             LDA   #$00
             STA   $EE
-            JSR   L0A33
+            JSR   clearALL
             LDX   slot16
             LDA   $C089,X
             LDA   #$FF
@@ -5784,10 +5758,10 @@ L333E       STX   $50
             BNE   L333A
             LDA   #$01
             STA   $9D
-            LDA   $1C
+            LDA   explosionCNT
             BMI   L3388
             LDA   #$FF
-            STA   $1C
+            STA   explosionCNT
 L3388       LDA   #$15
             STA   LB3F3,X
             LDY   $C7,X
@@ -5898,9 +5872,9 @@ setPLAYERDATA
             LDA   P1_plrCOURSE+2
             STA   plrCOURSE+1
             LDA   coursePTR3
-            STA   $44
+            STA   ptrCOURSE
             LDA   coursePTR3+1
-            STA   $44+1
+            STA   ptrCOURSE+1
             LDA   coursePTR1
             STA   $83
             LDA   coursePTR1+2
@@ -5930,9 +5904,9 @@ L3494       LDA   P2_courseTYPE		; set data for player 2
             LDA   P2_plrCOURSE+2
             STA   plrCOURSE+1
             LDA   coursePTR4
-            STA   $44
+            STA   ptrCOURSE
             LDA   coursePTR4+1
-            STA   $44+1
+            STA   ptrCOURSE+1
             LDA   coursePTR2
             STA   $83
             LDA   coursePTR2+2
@@ -5968,9 +5942,9 @@ savePLAYERDATA
             STA   P2_plrCOURSE
             LDA   plrCOURSE+1
             STA   P2_plrCOURSE+2
-            LDA   $44
+            LDA   ptrCOURSE
             STA   coursePTR4
-            LDA   $44+1
+            LDA   ptrCOURSE+1
             STA   coursePTR4+1
             LDA   $83
             STA   coursePTR2
@@ -6000,9 +5974,9 @@ L3535       LDA   plrPOINT		; save data for player 1
             STA   P1_plrCOURSE
             LDA   plrCOURSE+1
             STA   P1_plrCOURSE+2
-            LDA   $44
+            LDA   ptrCOURSE
             STA   coursePTR3
-            LDA   $44+1
+            LDA   ptrCOURSE+1
             STA   coursePTR3+1
             LDA   $83
             STA   coursePTR1
@@ -6022,7 +5996,7 @@ L3590       STX   $50
             TAX
             LDA   #$0B
             LDY   #$8F
-            JSR   drawSPRITE3
+            JSR   eraseSPRITE2
             LDX   $50
             JMP   L358A
 
@@ -6032,32 +6006,34 @@ L35A4       LDA   #$FF
             STA   LB426,X
             DEX
             BPL   L35A4
+
             LDX   #$03
-L35B1       LDA   LB387,X
+L35B1       LDA   tblFLYINGENEMIES_INDEX,X
             BNE   L35C7
 L35B6       DEX
             BPL   L35B1
+	
             LDX   #$03
 L35BB       LDA   #$00
             STA   LB42A,X
-            STA   LB387,X
+            STA   tblFLYINGENEMIES_INDEX,X
             DEX
             BPL   L35BB
             RTS
 
 L35C7       STX   $50
-            LDA   LB387,X
+            LDA   tblFLYINGENEMIES_INDEX,X
             PHA
-            LDY   LB38F,X
-            LDA   LB38B,X
+            LDY   tblFLYINGENEMIES_Y,X
+            LDA   tblFLYINGENEMIES_X,X
             TAX
             PLA
-            JSR   drawSPRITE3
+            JSR   eraseSPRITE2
             LDX   $50
             JMP   L35B6
 
 L35DD       LDY   #$03
-L35DF       LDA   LB387,Y
+L35DF       LDA   tblFLYINGENEMIES_INDEX,Y
             BNE   L35E8
 L35E4       DEY
             BPL   L35DF
@@ -6071,8 +6047,8 @@ L35EF       DEX
             JMP   L35E4
 
 L35F5       STY   $18
-            STX   $16
-            LDA   LB38B,Y
+            STX   xCNT
+            LDA   tblFLYINGENEMIES_X,Y
             CLC
             ADC   #$03
             CMP   tblFIREX,X
@@ -6080,9 +6056,9 @@ L35F5       STY   $18
             LDA   tblFIREX,X
             CLC
             ADC   #$02
-            CMP   LB38B,Y
+            CMP   tblFLYINGENEMIES_X,Y
             BCC   L35EF
-            LDA   LB38F,Y
+            LDA   tblFLYINGENEMIES_Y,Y
             CLC
             ADC   #$04
             CMP   tblFIREY,X
@@ -6090,39 +6066,44 @@ L35F5       STY   $18
             LDA   tblFIREY,X
             CLC
             ADC   #$06
-            CMP   LB38F,Y
+            CMP   tblFLYINGENEMIES_Y,Y
             BCC   L35EF
             LDA   #$01
             STA   LB059,X
-            LDA   LB387,Y
+            LDA   tblFLYINGENEMIES_INDEX,Y
             STA   $B0
             LDA   #$00
-            STA   LB387,Y
-            LDA   LB38B,Y
+            STA   tblFLYINGENEMIES_INDEX,Y
+            LDA   tblFLYINGENEMIES_X,Y
             TAX
-            LDA   LB38F,Y
+            LDA   tblFLYINGENEMIES_Y,Y
             TAY
             LDA   $B0
-            JSR   drawSPRITE3
+            JSR   eraseSPRITE2
             LDY   $18
-            LDA   LB38B,Y
+            LDA   tblFLYINGENEMIES_X,Y
             TAX
-            LDA   LB38F,Y
+            LDA   tblFLYINGENEMIES_Y,Y
             TAY
-            LDA   #$0E
+            LDA   #sprSMALLEXPLOSION
             JSR   drawSPRITE2
             LDY   $18
-            LDA   LB38B,Y
+            LDA   tblFLYINGENEMIES_X,Y
             TAX
-            LDA   LB38F,Y
+            LDA   tblFLYINGENEMIES_Y,Y
             TAY
-            LDA   #$0E
-            JSR   drawSPRITE3
-            LDX   $16
+            LDA   #sprSMALLEXPLOSION
+            JSR   eraseSPRITE2
+            LDX   xCNT
             LDY   $18
             JMP   L35E4
 
-L3666       BIT   TXTPAGE1
+*-----------------------------------
+* JUST LOAD THE MOON BASE
+*-----------------------------------
+
+doLOADMOONBASE
+            BIT   TXTPAGE1
             BIT   TXTSET
             LDX   slot16
             STA   $C089,X
@@ -6298,7 +6279,7 @@ L37A2       LDA   $BD
 L37A7       LDA   $D9
             LDX   $BE
             LDY   $BF
-            JSR   drawSPRITE3
+            JSR   eraseSPRITE2
             LDA   $BD
             CMP   #$01
             BEQ   L37C2
@@ -6320,7 +6301,7 @@ L37C7       LDA   $C0
 L37CC       LDA   $DA
             LDX   $C1
             LDY   $C2
-            JSR   drawSPRITE3
+            JSR   eraseSPRITE2
             LDA   $C0
             CMP   #$01
             BEQ   L37E7
@@ -6337,10 +6318,10 @@ L37E7       LDA   #$00
 
 L37EC       LDA   #$05
             STA   $BB
-            LDA   $1C
+            LDA   explosionCNT
             BMI   L37F8
             LDA   #$FF
-            STA   $1C
+            STA   explosionCNT
 L37F8       JSR   L2FCE
             LDA   #$03
             JSR   L26EC
@@ -6370,11 +6351,15 @@ L3819       LDA   #$01
             LDA   #$8A
             STA   $B9
             STA   $BA
-            LDA   #$18
+            LDA   #sprENEMYVEHICLE
             LDX   $B7
             LDY   $B9
             JSR   drawSPRITE
 L383A       RTS
+
+*-----------------------------------
+*
+*-----------------------------------
 
 L383B       LDA   $BB
             BEQ   L383A
@@ -6418,33 +6403,31 @@ L386B       LDA   oldVEHICLEX
             ADC   #$0E
             CMP   $BA
             BCC   L3897
-            LDA   #$18
+            LDA   #sprENEMYVEHICLE
             LDX   $B8
             LDY   $BA
-            JSR   undrawSPRITE
+            JSR   eraseSPRITE
             LDA   #$00
             STA   $BB
             LDA   #$01
-            STA   $70
+            STA   fgHIT
 L3897       RTS
 
 L3898       LDA   $BB
             BNE   L389D
             RTS
-
-L389D       LDA   #$18
+L389D       LDA   #sprENEMYVEHICLE
             LDX   $B8
             LDY   $BA
-            JSR   undrawSPRITE
+            JSR   eraseSPRITE
             LDA   $BB
             CMP   #$05
             BEQ   L38B8
-            LDA   #$18
+            LDA   #sprENEMYVEHICLE
             LDX   $B7
             LDY   $B9
             JSR   drawSPRITE
             JMP   L38BD
-
 L38B8       LDA   #$00
             STA   $BB
             RTS
@@ -6525,7 +6508,7 @@ L391E       LDA   curPLAYER	; which one died?
 
 L3986       LDX   #$07		; ..player 1
             LDY   #$4E
-            JSR   $1C3C
+            JSR   printSTRING
             ASC   "                        @"
             LDX   #$07
             LDY   #$55
@@ -6636,7 +6619,7 @@ L3AE3       LDA   $00
             SBC   #$01
             BNE   L3AB0
             CLD
-            JSR   L3666
+            JSR   doLOADMOONBASE
             JMP   L2B02
 
 L3AF6       LDA   #NB_LIVES	; player wants to continue...
@@ -6782,7 +6765,7 @@ L3C03       LDA   LBB00,X
             BPL   L3C03
             RTS
 
-L3C19       STX   $16
+L3C19       STX   xCNT
             LDA   LB3EF,X
             LDY   LB3E2,X
             CLC
@@ -6839,7 +6822,7 @@ L3C89       CPX   $03
             BNE   L3C62
             CPY   $02
             BNE   L3C62
-            LDX   $16
+            LDX   xCNT
             JMP   L3BFE
 
 *-----------------------------------
@@ -6902,12 +6885,11 @@ L3D04       CPY   #$FF
             RTS
 
 *-----------------------------------
-* SPRITE - UNDRAW SPRITE
+* SPRITE - ERASE SPRITE
 *-----------------------------------
 
-undrawSPRITE		; undraws a sprite
-            STY   $3B		; like the moon patrol vehicle
-            STY   L3D79+1
+eraseSPRITE STY   $3B		; A: sprite index
+            STY   L3D79+1	; X/Y: coords
             ASL
             TAY
             LDA   tblSPRITEPTR,Y
@@ -6963,7 +6945,7 @@ L3D79       CPY   #$FF
             RTS
 
 *-----------------------------------
-* SPRITE - DRAW SPRITE OVER PICTURE
+* SPRITE - DRAW SPRITE (EXPLOSIONS)
 *-----------------------------------
 
 drawSPRITE2			; draws a sprite taking care of what is behind
@@ -6972,9 +6954,9 @@ drawSPRITE2			; draws a sprite taking care of what is behind
             ASL
             ASL
             TAY
-            LDA   L6500,Y
+            LDA   spr2STRUCTURE,Y
             STA   $3E
-            LDA   L6501,Y
+            LDA   spr2STRUCTURE+1,Y
             CLC
             ADC   $3B
             STA   $3B
@@ -6988,9 +6970,9 @@ drawSPRITE2			; draws a sprite taking care of what is behind
             CLC
             ADC   $3E
             STA   $3E
-            LDA   L6502,Y
+            LDA   spr2STRUCTURE+2,Y
             STA   L3DC9+1
-            LDA   L6502+1,Y
+            LDA   spr2STRUCTURE+3,Y
             STA   L3DC9+2
             LDX   #$00
             LDY   $3B
@@ -7037,18 +7019,18 @@ L3DFF       CPY   #$FF
             RTS
 
 *-----------------------------------
-* SPRITE - BULLETS AND EXPLOSIONS
+* SPRITE - ERASE SPRITE (EXPLOSIONS)
 *-----------------------------------
 
-drawSPRITE3			; draws/undraws small moving objects
+eraseSPRITE2		; erases small moving objects
             STY   $3B		; like bullets and explosions
             STY   L3E87+1
             ASL
             ASL
             TAY
-            LDA   L6500,Y
+            LDA   spr2STRUCTURE,Y
             STA   $3E
-            LDA   L6501,Y
+            LDA   spr2STRUCTURE+1,Y
             CLC
             ADC   $3B
             STA   $3B
@@ -7062,9 +7044,9 @@ drawSPRITE3			; draws/undraws small moving objects
             CLC
             ADC   $3E
             STA   $3E
-            LDA   L6502,Y
+            LDA   spr2STRUCTURE+2,Y
             STA   L3E4F+1
-            LDA   L6502+1,Y
+            LDA   spr2STRUCTURE+3,Y
             STA   L3E4F+2
             LDX   #$00
             LDY   $3B
@@ -7112,7 +7094,7 @@ L3E87       CPY   #$FF
             RTS
 
 *-----------------------------------
-* SPRITE - DRAW LDA/STA A SPRITE
+* SPRITE - BLIT A SPRITE
 *-----------------------------------
 
 putSPRITE			; draws big rock and big hole

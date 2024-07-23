@@ -301,7 +301,7 @@ L09C6       JSR   L3158
 
 L09CC       JSR   getCOURSEDATA
             JSR   animSHOOTS
-            JSR   L164F
+            JSR   animSAUCERS
             JSR   L1FB0
             JSR   L2FD8
             JSR   L3693
@@ -1240,7 +1240,7 @@ L1009       LDA   #$AA
             LDA   #$00
             STA   fwdSHOOTX
             LDX   #$03
-L1025       STA   LB34B,X
+L1025       STA   tblSAUCER_INDEX,X
             STA   LB3DE,X
             STA   LB413,X
             STA   tblFIREX,X
@@ -1327,9 +1327,9 @@ L109F       LDA   $E8,X
 L10A6       LDX   $50
             RTS
 
-L10A9       LDA   LB343,Y
+L10A9       LDA   tblSAUCER_X,Y
             STA   $E2,X
-            LDA   LB347,Y
+            LDA   tblSAUCER_Y,Y
             STA   $E5,X
             LDA   #$10
             SEC
@@ -1730,7 +1730,7 @@ L13A5       LDA   #$00
             JMP   L1378
 
 L13AD       LDX   #$03
-L13AF       LDA   LB34B,X
+L13AF       LDA   tblSAUCER_INDEX,X
             BEQ   L13D6
             BMI   L13D6
             CMP   #$0E
@@ -1760,7 +1760,7 @@ L13E0       DEX
 *-----------------------------------
 
 L13E4       LDY   #$03
-L13E6       LDA   LB34B,Y
+L13E6       LDA   tblSAUCER_INDEX,Y
             BEQ   L13F4
             BMI   L13F4
             CMP   #$0E
@@ -1771,7 +1771,7 @@ L13F4       DEY
             BPL   L13E6
             JMP   L13E0
 
-L13FA       LDA   LB343,Y
+L13FA       LDA   tblSAUCER_X,Y
             CLC
             ADC   LB3BF,Y
             CMP   tblFIREX,X
@@ -1780,9 +1780,9 @@ L13FA       LDA   LB343,Y
             CLC
             ADC   #$01
             ADC   LB3BB,Y
-            CMP   LB343,Y
+            CMP   tblSAUCER_X,Y
             BCC   L146E
-            LDA   LB347,Y
+            LDA   tblSAUCER_Y,Y
             CLC
             ADC   LB3B7,Y
             SEC
@@ -1793,12 +1793,12 @@ L13FA       LDA   LB343,Y
             CLC
             ADC   #$06
             ADC   LB3B3,Y
-            CMP   LB347,Y
+            CMP   tblSAUCER_Y,Y
             BCC   L146E
             LDA   #$01
             STA   LB37F,Y
             STA   LB059,X
-            LDA   LB34B,Y
+            LDA   tblSAUCER_INDEX,Y
             PHA
             JSR   L108F
             PLA
@@ -2039,7 +2039,7 @@ L15D4       RTS
 
 L15D5       STA   $47
             LDX   #$03
-L15D9       LDA   LB34B,X
+L15D9       LDA   tblSAUCER_INDEX,X
             BEQ   L15E6
             DEX
             BPL   L15D9
@@ -2071,15 +2071,15 @@ L160C       LDA   #sprENEMY2
             JMP   L1613
 
 L1613       LDA   $47
-            STA   LB34B,X
+            STA   tblSAUCER_INDEX,X
             LDA   #$00
             STA   LB36F,X
             STA   LB373,X
             JSR   L2507
             JSR   L2548
-            LDA   LB347,X
+            LDA   tblSAUCER_Y,X
             TAY
-            LDA   LB343,X
+            LDA   tblSAUCER_X,X
             TAX
             LDA   $47
             JSR   drawSPRITE
@@ -2099,22 +2099,23 @@ L1613       LDA   $47
             RTS
 
 *-----------------------------------
-* 
+* ANIM SAUCERS
 *-----------------------------------
 
-L164F       LDX   #$03
-L1651       LDA   LB34B,X
+animSAUCERS
+            LDX   #$03
+L1651       LDA   tblSAUCER_INDEX,X
             BNE   L165A
 L1656       DEX
             BPL   L1651
             RTS
 
 L165A       STX   $50
-            LDA   LB34B,X
+            LDA   tblSAUCER_INDEX,X	; saucer index
             STA   $B0
-            LDA   LB343,X
+            LDA   tblSAUCER_X,X	; X
             STA   $B1
-            LDA   LB347,X
+            LDA   tblSAUCER_Y,X	; Y
             STA   $B2
             LDA   LB373,X
             STA   $B3
@@ -2123,49 +2124,50 @@ L165A       STX   $50
             BNE   L167D
             LDA   #$01
             STA   LB36F,X
-L167D       LDA   LB34B,X
-            CMP   #$0C
+L167D       LDA   tblSAUCER_INDEX,X
+            CMP   #sprENEMY2
             BCS   L1693
-            INC   LB34B,X
-            LDA   LB34B,X
-            CMP   #$0C
+            INC   tblSAUCER_INDEX,X
+            LDA   tblSAUCER_INDEX,X
+            CMP   #sprENEMY14+1
             BNE   L1693
-            LDA   #$08
-            STA   LB34B,X
+            LDA   #sprENEMY11
+            STA   tblSAUCER_INDEX,X
 L1693       CMP   #$0F
             BNE   L169F
             LDA   #$FF
-            STA   LB34B,X
+            STA   tblSAUCER_INDEX,X
             JMP   L16BF
 
 L169F       CMP   #$0E
             BNE   L16A8
             LDA   #$0F
-            STA   LB34B,X
+            STA   tblSAUCER_INDEX,X
 L16A8       CMP   #$10
             BCC   L16BF
             CMP   #$14
             BCS   L16BF
-            INC   LB34B,X
-            LDA   LB34B,X
+            INC   tblSAUCER_INDEX,X
+            LDA   tblSAUCER_INDEX,X
             CMP   #$14
             BNE   L16BF
             LDA   #$FF
-            STA   LB34B,X
+            STA   tblSAUCER_INDEX,X
+	
 L16BF       LDA   LB37F,X
             BEQ   L16CE
             LDA   #$0E
-            STA   LB34B,X
+            STA   tblSAUCER_INDEX,X
             LDA   #$00
             STA   LB37F,X
 L16CE       LDA   LB383,X
             BEQ   L16E6
             LDA   #$10
-            STA   LB34B,X
-            LDA   LB347,X
+            STA   tblSAUCER_INDEX,X
+            LDA   tblSAUCER_Y,X
             SEC
             SBC   #$05
-            STA   LB347,X
+            STA   tblSAUCER_Y,X
             LDA   #$00
             STA   LB383,X
 L16E6       LDA   $B3
@@ -2184,13 +2186,13 @@ L16FD       JSR   eraseSPRITE
 L1700       LDX   $50
             LDA   LB373,X
             STA   $39
-            LDA   LB347,X
+            LDA   tblSAUCER_Y,X
             TAY
-            LDA   LB34B,X	; index
+            LDA   tblSAUCER_INDEX,X	; index
             STA   $B0
-            LDA   LB347,X	; Y
+            LDA   tblSAUCER_Y,X	; Y
             TAY
-            LDA   LB343,X	; X
+            LDA   tblSAUCER_X,X	; X
             TAX
             LDA   $B0
             BMI   L172F
@@ -2206,7 +2208,7 @@ L1729       JSR   drawSPRITE
 
 L172F       LDX   $50
             LDA   #$00
-            STA   LB34B,X
+            STA   tblSAUCER_INDEX,X
 L1736       LDX   $50
             LDA   #$00
             STA   $39
@@ -3279,7 +3281,7 @@ L1FA2       JSR   doBEEP
 *-----------------------------------
 
 L1FB0       LDX   #$03		; do we have a flying enemy?
-L1FB2       LDA   LB34B,X
+L1FB2       LDA   tblSAUCER_INDEX,X
             BEQ   L1FBB
             CMP   #sprSMALLROCK
             BCC   L1FC1		; yes, handle it
@@ -3301,7 +3303,7 @@ L1FC1       STX   $50
 
             LDA   #$01
             STA   $06
-            LDA   LB34B,X
+            LDA   tblSAUCER_INDEX,X
             CMP   #sprENEMY2
             BCS   L2020
             LDA   #$78
@@ -3336,7 +3338,7 @@ L2016       LDA   tblFLYINGENEMIES_INDEX,Y
             DEY
             BPL   L2016
 
-L2020       LDA   LB343,X
+L2020       LDA   tblSAUCER_X,X
             CMP   $06
             BCC   L1FBB
             CLC
@@ -3344,12 +3346,12 @@ L2020       LDA   LB343,X
             CMP   #$DC
             BCS   L1FBB
             STA   tblFLYINGENEMIES_X,X
-            LDA   LB347,X
+            LDA   tblSAUCER_Y,X
             CLC
             ADC   #$08
             STA   tblFLYINGENEMIES_Y,X
 
-            LDA   LB34B,X
+            LDA   tblSAUCER_INDEX,X
             CMP   #sprENEMY3+1
             BCC   L2044
             JMP   L1FBB
@@ -3486,7 +3488,7 @@ L2134       LDA   tblFLYINGENEMIES_INDEX,X
             JMP   L2060
 
 L2148       LDX   #$03
-L214A       LDA   LB34B,X
+L214A       LDA   tblSAUCER_INDEX,X
             BEQ   L2171
             BMI   L2171
             CMP   #$0E
@@ -3505,7 +3507,7 @@ L214A       LDA   LB34B,X
 L2171       DEX
             BPL   L214A
             LDY   #$03
-L2176       LDA   LB34B,Y
+L2176       LDA   tblSAUCER_INDEX,Y
             BEQ   L2184
             BMI   L2184
             CMP   #$0E
@@ -3516,7 +3518,7 @@ L2184       DEY
             BPL   L2176
             RTS
 
-L2188       LDA   LB343,Y
+L2188       LDA   tblSAUCER_X,Y
             CLC
             ADC   LB3BF,Y
             CMP   vehicleX
@@ -3525,9 +3527,9 @@ L2188       LDA   LB343,Y
             CLC
             ADC   #$26
             ADC   LB3BB,Y
-            CMP   LB343,Y
+            CMP   tblSAUCER_X,Y
             BCC   L21B3
-            LDA   LB347,Y
+            LDA   tblSAUCER_Y,Y
             CLC
             ADC   LB3B7,Y
             SEC
@@ -4008,14 +4010,14 @@ L2507       LDA   #$1E
             LDA   #$14
             STA   LB357,X
             LDA   #$23
-            STA   LB347,X
+            STA   tblSAUCER_Y,X
             LDA   #$73
             STX   xCNT
             JSR   L26EC
             LDX   xCNT
             CLC
             ADC   #$8C
-            STA   LB343,X
+            STA   tblSAUCER_X,X
             LDA   #$00
             STA   LB34F,X
             STA   LB353,X
@@ -4032,7 +4034,7 @@ L2507       LDA   #$1E
 
 L2548       LDA   LB36F,X
             BEQ   L257D
-            LDA   LB343,X
+            LDA   tblSAUCER_X,X
             CMP   #$8C
             BCS   L257D
             STA   $00
@@ -4047,12 +4049,12 @@ L2548       LDA   LB36F,X
             LDA   LB373,X
             BEQ   L2572
             LDA   #$FF
-            STA   LB34B,X
+            STA   tblSAUCER_INDEX,X
             RTS
 
 L2572       CLC
             ADC   #$2A
-            STA   LB343,X
+            STA   tblSAUCER_X,X
             LDA   #$FA
             STA   LB373,X
 L257D       LDA   LB35B,X
@@ -4070,12 +4072,12 @@ L2588       TAY
             CLC
             ADC   #$01
 L2595       CLC
-            ADC   LB343,X
+            ADC   tblSAUCER_X,X
             AND   #$FE
-L259B       STA   LB343,X
+L259B       STA   tblSAUCER_X,X
             LDA   LB36F,X
             BEQ   L25D3
-            LDA   LB34B,X
+            LDA   tblSAUCER_INDEX,X
             CMP   #$0D
             BEQ   L25B9
             CMP   #$0C
@@ -4086,14 +4088,14 @@ L259B       STA   LB343,X
             BCS   L25D3
             JMP   L25D0
 
-L25B9       LDA   LB347,X
+L25B9       LDA   tblSAUCER_Y,X
             CLC
             ADC   #$02
-            STA   LB347,X
+            STA   tblSAUCER_Y,X
             CMP   #$86
             BCC   L25D0
             LDA   #$89
-            STA   LB347,X
+            STA   tblSAUCER_Y,X
             LDA   #$01
             STA   LB383,X
 L25D0       JMP   L25F1
@@ -4112,8 +4114,8 @@ L25DE       TAY
             CLC
             ADC   #$01
 L25EA       CLC
-            ADC   LB347,X
-            STA   LB347,X
+            ADC   tblSAUCER_Y,X
+            STA   tblSAUCER_Y,X
 L25F1       LDA   LB35B,X
             SEC
             SBC   LB363,X
@@ -4202,14 +4204,14 @@ L2691       LDA   #$0A
             CLC
             ADC   #$01
             STA   LB367,X
-L26AB       LDA   LB347,X
+L26AB       LDA   tblSAUCER_Y,X
             CMP   #$41
             BCS   L26BC
             LDA   LB357,X
             BPL   L26BC
             LDA   #$FB
             STA   LB35F,X
-L26BC       LDA   LB347,X
+L26BC       LDA   tblSAUCER_Y,X
             CMP   #$43
             BCC   L26D1
             BEQ   L26D1
@@ -4218,12 +4220,12 @@ L26BC       LDA   LB347,X
             BEQ   L26D1
             LDA   #$05
             STA   LB35F,X
-L26D1       LDA   LB343,X
+L26D1       LDA   tblSAUCER_X,X
             CMP   #$28
             BCS   L26DD
             LDA   #$F0
             STA   LB363,X
-L26DD       LDA   LB343,X
+L26DD       LDA   tblSAUCER_X,X
             CMP   #$BE
             BCC   L26EB
             BEQ   L26EB
@@ -5118,7 +5120,7 @@ L2EE6       JSR   animSHOOTS
             LDA   #$16
             STA   timeCNT
             JSR   printTIME
-L2EF4       JSR   L164F
+L2EF4       JSR   animSAUCERS
             JSR   L13AD
             JSR   L1FB0
             JSR   L1797

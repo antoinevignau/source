@@ -7328,12 +7328,12 @@ courseCHAMPION
 	HEX   C23A4B3CD64AC2C23CC24BD5DCE7
 
 *-----------------------------------
-* 
+* FLYING SAUCERS SPRITES TABLES
 *-----------------------------------
 
-LB343       DS    4	; X
-LB347       DS    4	; Y
-LB34B       DS    4	; INDEX
+tblSAUCER_X       DS    4	; X
+tblSAUCER_Y       DS    4	; Y
+tblSAUCER_INDEX       DS    4	; INDEX
 LB34F       DS    4
 LB353       DS    4
 LB357       DS    4

@@ -1,0 +1,220 @@
+------+---------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File               Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+---------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1 picnic.system.s      1 | Comment     | 11 |         |    0 | 00/8000               | *
+    2 |  1 picnic.system.s      2 | Comment     | 11 |         |    0 | 00/8000               | * Picnic Paranoia
+    3 |  1 picnic.system.s      3 | Comment     | 11 |         |    0 | 00/8000               | * The ProDOS version
+    4 |  1 picnic.system.s      4 | Comment     | 11 |         |    0 | 00/8000               | *
+    5 |  1 picnic.system.s      5 | Empty       | 11 |         |    0 | 00/8000               |                                  
+    6 |  1 picnic.system.s      6 | Directive   | 11 |         |    0 | 00/8000               |             mx    %11            
+    7 |  1 picnic.system.s      7 | Directive   | 11 |         |    0 | 00/8000               |             org   $b400          
+    8 |  1 picnic.system.s      8 | Directive   | 11 |         |    0 | 00/B400               |             lst   off            
+    9 |  1 picnic.system.s      9 | Directive   | 11 |         |    0 | 00/B400               |             dsk   picnic.system  
+   10 |  1 picnic.system.s     10 | Empty       | 11 |         |    0 | 00/B400               |                                  
+   11 |  1 picnic.system.s     11 | Comment     | 11 |         |    0 | 00/B400               | *------------------------------------------------------------------------------
+   12 |  1 picnic.system.s     12 | Comment     | 11 |         |    0 | 00/B400               | * Equates & friends
+   13 |  1 picnic.system.s     13 | Comment     | 11 |         |    0 | 00/B400               | *------------------------------------------------------------------------------
+   14 |  1 picnic.system.s     14 | Empty       | 11 |         |    0 | 00/B400               |                                  
+   15 |  1 picnic.system.s     15 | Comment     | 11 |         |    0 | 00/B400               | *--- Memory usage / ProDOS equates
+   16 |  1 picnic.system.s     16 | Empty       | 11 |         |    0 | 00/B400               |                                  
+   17 |  1 picnic.system.s     17 | Equivalence | 11 |         |    0 | 00/B400               | ptrPREFIX   =     $0280          ; address of the ProDOS prefix
+   18 |  1 picnic.system.s     18 | Equivalence | 11 |         |    0 | 00/B400               | proBUFFER   =     $b800          ; ProDOS open buffer
+   19 |  1 picnic.system.s     19 | Equivalence | 11 |         |    0 | 00/B400               | PRODOS      =     $bf00          ; The MLI entry point
+   20 |  1 picnic.system.s     20 | Empty       | 11 |         |    0 | 00/B400               |                                  
+   21 |  1 picnic.system.s     21 | Empty       | 11 |         |    0 | 00/B400               |                                  
+   22 |  1 picnic.system.s     22 | Comment     | 11 |         |    0 | 00/B400               | *--- Game pointers
+   23 |  1 picnic.system.s     23 | Empty       | 11 |         |    0 | 00/B400               |                                  
+   24 |  1 picnic.system.s     24 | Equivalence | 11 |         |    0 | 00/B400               | ptrJEU      =     $0800          ; where to load
+   25 |  1 picnic.system.s     25 | Equivalence | 11 |         |    0 | 00/B400               | leJEU       =     $a000          ; where to execute
+   26 |  1 picnic.system.s     26 | Empty       | 11 |         |    0 | 00/B400               |                                  
+   27 |  1 picnic.system.s     27 | Comment     | 11 |         |    0 | 00/B400               | *--- The softswitches
+   28 |  1 picnic.system.s     28 | Empty       | 11 |         |    0 | 00/B400               |                                  
+   29 |  1 picnic.system.s     29 | Equivalence | 11 |         |    0 | 00/B400               | TXTCLR      =     $c050          
+   30 |  1 picnic.system.s     30 | Equivalence | 11 |         |    0 | 00/B400               | MIXCLR      =     $c052          
+   31 |  1 picnic.system.s     31 | Equivalence | 11 |         |    0 | 00/B400               | TXTPAGE1    =     $c054          
+   32 |  1 picnic.system.s     32 | Equivalence | 11 |         |    0 | 00/B400               | HIRES       =     $c057          
+   33 |  1 picnic.system.s     33 | Empty       | 11 |         |    0 | 00/B400               |                                  
+   34 |  1 picnic.system.s     34 | Comment     | 11 |         |    0 | 00/B400               | *------------------------------------------------------------------------------
+   35 |  1 picnic.system.s     35 | Comment     | 11 |         |    0 | 00/B400               | *
+   36 |  1 picnic.system.s     36 | Comment     | 11 |         |    0 | 00/B400               | * LES POINTS D'ENTREE
+   37 |  1 picnic.system.s     37 | Comment     | 11 |         |    0 | 00/B400               | *
+   38 |  1 picnic.system.s     38 | Comment     | 11 |         |    0 | 00/B400               | *------------------------------------------------------------------------------
+   39 |  1 picnic.system.s     39 | Empty       | 11 |         |    0 | 00/B400               |                                  
+   40 |  1 picnic.system.s     40 | Code        | 11 |         |    2 | 00/B400 : A2 00       |             ldx   #0             ; relocate the loader
+   41 |  1 picnic.system.s     41 | Code        | 11 |         |    3 | 00/B402 : BD 00 20    | ozunid_1    lda   $2000,x        
+   42 |  1 picnic.system.s     42 | Code        | 11 |         |    3 | 00/B405 : 9D 00 B4    |             sta   $b400,x        
+   43 |  1 picnic.system.s     43 | Code        | 11 |         |    1 | 00/B408 : E8          |             inx                  
+   44 |  1 picnic.system.s     44 | Code        | 11 |         |    2 | 00/B409 : D0 F7       |             bne   ozunid_1       
+   45 |  1 picnic.system.s     45 | Empty       | 11 |         |    0 | 00/B40B               |                                  
+   46 |  1 picnic.system.s     46 | Code        | 11 |         |    3 | 00/B40B : 4C 0E B4    |             jmp   leLOADER       
+   47 |  1 picnic.system.s     47 | Empty       | 11 |         |    0 | 00/B40E               |                                  
+   48 |  1 picnic.system.s     48 | Comment     | 11 |         |    0 | 00/B40E               | *------------------------------------------------------------------------------
+   49 |  1 picnic.system.s     49 | Comment     | 11 |         |    0 | 00/B40E               | * LE CODE PRINCIPAL
+   50 |  1 picnic.system.s     50 | Comment     | 11 |         |    0 | 00/B40E               | *------------------------------------------------------------------------------
+   51 |  1 picnic.system.s     51 | Empty       | 11 |         |    0 | 00/B40E               |                                  
+   52 |  1 picnic.system.s     52 | Empty       | 11 |         |    0 | 00/B40E               | leLOADER                         
+   53 |  1 picnic.system.s     53 | Code        | 11 |         |    3 | 00/B40E : 20 00 BF    |             jsr   {$bf00}        ; get the prefix
+   54 |  1 picnic.system.s     54 | Data        | 11 |         |    1 | 00/B411 : C7          |             dfb   $c7            
+   55 |  1 picnic.system.s     55 | Data        | 11 |         |    2 | 00/B412 : CF B4       |             da    proGETPFX      
+   56 |  1 picnic.system.s     56 | Empty       | 11 |         |    0 | 00/B414               |                                  
+   57 |  1 picnic.system.s     57 | Code        | 11 |         |    3 | 00/B414 : 20 00 BF    |             jsr   {$bf00}        ; set it
+   58 |  1 picnic.system.s     58 | Data        | 11 |         |    1 | 00/B417 : C6          |             dfb   $c6            
+   59 |  1 picnic.system.s     59 | Data        | 11 |         |    2 | 00/B418 : CF B4       |             da    proGETPFX      
+   60 |  1 picnic.system.s     60 | Empty       | 11 |         |    0 | 00/B41A               |                                  
+   61 |  1 picnic.system.s     61 | Code        | 11 |         |    2 | 00/B41A : A2 00       |             ldx   #$0            ; clear the HGR screen
+   62 |  1 picnic.system.s     62 | Code        | 11 |         |    2 | 00/B41C : A0 20       |             ldy   #$20           
+   63 |  1 picnic.system.s     63 | Code        | 11 |         |    1 | 00/B41E : 8A          |             txa                  
+   64 |  1 picnic.system.s     64 | Code        | 11 |         |    3 | 00/B41F : 9D 00 20    | loop        sta   $2000,x        
+   65 |  1 picnic.system.s     65 | Code        | 11 |         |    1 | 00/B422 : E8          |             inx                  
+   66 |  1 picnic.system.s     66 | Code        | 11 |         |    2 | 00/B423 : D0 FA       |             bne   loop           
+   67 |  1 picnic.system.s     67 | Code        | 11 |         |    3 | 00/B425 : EE 21 B4    |             inc   loop+2         
+   68 |  1 picnic.system.s     68 | Code        | 11 |         |    1 | 00/B428 : 88          |             dey                  
+   69 |  1 picnic.system.s     69 | Code        | 11 |         |    2 | 00/B429 : D0 F4       |             bne   loop           
+   70 |  1 picnic.system.s     70 | Empty       | 11 |         |    0 | 00/B42B               |                                  
+   71 |  1 picnic.system.s     71 | Code        | 11 |         |    3 | 00/B42B : 8D 50 C0    |             sta   {$c050}        
+   72 |  1 picnic.system.s     72 | Code        | 11 |         |    3 | 00/B42E : 8D 52 C0    |             sta   {$c052}        
+   73 |  1 picnic.system.s     73 | Code        | 11 |         |    3 | 00/B431 : 8D 54 C0    |             sta   {$c054}        
+   74 |  1 picnic.system.s     74 | Code        | 11 |         |    3 | 00/B434 : 8D 57 C0    |             sta   {$c057}        
+   75 |  1 picnic.system.s     75 | Empty       | 11 |         |    0 | 00/B437               |                                  
+   76 |  1 picnic.system.s     76 | Code        | 11 |         |    3 | 00/B437 : 20 47 B4    |             jsr   loadALL        ; on charge tout
+   77 |  1 picnic.system.s     77 | Code        | 11 |         |    2 | 00/B43A : B0 03       |             bcs   leQUITTER      ; mais on quitte sur erreur
+   78 |  1 picnic.system.s     78 | Empty       | 11 |         |    0 | 00/B43C               |                                  
+   79 |  1 picnic.system.s     79 | Code        | 11 |         |    3 | 00/B43C : 4C 00 A0    |             jmp   {$a000}        ; on saute en $800
+   80 |  1 picnic.system.s     80 | Empty       | 11 |         |    0 | 00/B43F               |                                  
+   81 |  1 picnic.system.s     81 | Empty       | 11 |         |    0 | 00/B43F               | leQUITTER                        
+   82 |  1 picnic.system.s     82 | Code        | 11 |         |    3 | 00/B43F : 20 00 BF    |             jsr   {$bf00}        ; exit
+   83 |  1 picnic.system.s     83 | Data        | 11 |         |    1 | 00/B442 : 65          |             dfb   $65            
+   84 |  1 picnic.system.s     84 | Data        | 11 |         |    2 | 00/B443 : C8 B4       |             da    proQUIT        
+   85 |  1 picnic.system.s     85 | Code        | 11 |         |    2 | 00/B445 : 00 BD       |             brk   $bd            ; on ne se refait pas ;-)
+   86 |  1 picnic.system.s     86 | Empty       | 11 |         |    0 | 00/B447               |                                  
+   87 |  1 picnic.system.s     87 | Empty       | 11 |         |    0 | 00/B447               |                                  
+   88 |  1 picnic.system.s     88 | Comment     | 11 |         |    0 | 00/B447               | *------------------------------------------------------------------------------
+   89 |  1 picnic.system.s     89 | Comment     | 11 |         |    0 | 00/B447               | *
+   90 |  1 picnic.system.s     90 | Comment     | 11 |         |    0 | 00/B447               | * LES ROUTINES DU LOADER
+   91 |  1 picnic.system.s     91 | Comment     | 11 |         |    0 | 00/B447               | *
+   92 |  1 picnic.system.s     92 | Comment     | 11 |         |    0 | 00/B447               | *------------------------------------------------------------------------------
+   93 |  1 picnic.system.s     93 | Empty       | 11 |         |    0 | 00/B447               |                                  
+   94 |  1 picnic.system.s     94 | Comment     | 11 |         |    0 | 00/B447               | *
+   95 |  1 picnic.system.s     95 | Comment     | 11 |         |    0 | 00/B447               | *--- Le fichier ENGINE
+   96 |  1 picnic.system.s     96 | Comment     | 11 |         |    0 | 00/B447               | *
+   97 |  1 picnic.system.s     97 | Empty       | 11 |         |    0 | 00/B447               |                                  
+   98 |  1 picnic.system.s     98 | Code        | 11 |         |    3 | 00/B447 : 20 75 B4    | loadALL     jsr   openFILE       ; on ouvre le fichier engine
+   99 |  1 picnic.system.s     99 | Code        | 11 |         |    2 | 00/B44A : 90 02       |             bcc   loadALL1       
+  100 |  1 picnic.system.s    100 | Code        | 11 |         |    1 | 00/B44C : 38          | loadALLERR  sec                  
+  101 |  1 picnic.system.s    101 | Code        | 11 |         |    1 | 00/B44D : 60          |             rts                  
+  102 |  1 picnic.system.s    102 | Empty       | 11 |         |    0 | 00/B44E               | loadALL1                         
+  103 |  1 picnic.system.s    103 | Code        | 11 |         |    3 | 00/B44E : AD E6 B4    |             lda   proGETEOF+4    ; le fichier Engine
+  104 |  1 picnic.system.s    104 | Code        | 11 |         |    2 | 00/B451 : D0 F9       |             bne   loadALLERR     ; ne doit pas dépasser $9800 bytes
+  105 |  1 picnic.system.s    105 | Code        | 11 |         |    3 | 00/B453 : AD E5 B4    |             lda   proGETEOF+3    
+  106 |  1 picnic.system.s    106 | Code        | 11 |         |    2 | 00/B456 : C9 AC       |             cmp   #$ac           
+  107 |  1 picnic.system.s    107 | Code        | 11 |         |    2 | 00/B458 : 90 07       |             bcc   loadALL2       
+  108 |  1 picnic.system.s    108 | Code        | 11 |         |    2 | 00/B45A : F0 05       |             beq   loadALL2       
+  109 |  1 picnic.system.s    109 | Code        | 11 |         |    3 | 00/B45C : AD E4 B4    |             lda   proGETEOF+2    ; $18xx ou pas ?
+  110 |  1 picnic.system.s    110 | Code        | 11 |         |    2 | 00/B45F : D0 EB       |             bne   loadALLERR     
+  111 |  1 picnic.system.s    111 | Empty       | 11 |         |    0 | 00/B461               | loadALL2                         
+  112 |  1 picnic.system.s    112 | Code        | 11 |         |    3 | 00/B461 : 20 97 B4    |             jsr   readFILE       ; on lit le fichier engine
+  113 |  1 picnic.system.s    113 | Code        | 11 |         |    2 | 00/B464 : B0 E6       |             bcs   loadALLERR     
+  114 |  1 picnic.system.s    114 | Empty       | 11 |         |    0 | 00/B466               | loadALL3                         
+  115 |  1 picnic.system.s    115 | Code        | 11 |         |    3 | 00/B466 : 4C A1 B4    |             jmp   closeFILE      ; on ferme le fichier
+  116 |  1 picnic.system.s    116 | Empty       | 11 |         |    0 | 00/B469               |                                  
+  117 |  1 picnic.system.s    117 | Comment     | 11 |         |    0 | 00/B469               | *--- Data
+  118 |  1 picnic.system.s    118 | Empty       | 11 |         |    0 | 00/B469               |                                  
+  119 |  1 picnic.system.s    119 | Data        | 11 |         |   12 | 00/B469 : 0B 50 49 43 | pGAME       str   'PICNIC.GAME'  
+      |                           |             |    |         |      |           4E 49 43 2E |
+      |                           |             |    |         |      |           47 41 4D 45 |
+  120 |  1 picnic.system.s    120 | Empty       | 11 |         |    0 | 00/B475               |                                  
+  121 |  1 picnic.system.s    121 | Comment     | 11 |         |    0 | 00/B475               | *--------------------------------------
+  122 |  1 picnic.system.s    122 | Comment     | 11 |         |    0 | 00/B475               | * Tout ce qui est ProDOS
+  123 |  1 picnic.system.s    123 | Comment     | 11 |         |    0 | 00/B475               | *--------------------------------------
+  124 |  1 picnic.system.s    124 | Empty       | 11 |         |    0 | 00/B475               |                                  
+  125 |  1 picnic.system.s    125 | Empty       | 11 |         |    0 | 00/B475               | openFILE                         
+  126 |  1 picnic.system.s    126 | Code        | 11 |         |    3 | 00/B475 : 20 00 BF    |             jsr   {$bf00}        
+  127 |  1 picnic.system.s    127 | Data        | 11 |         |    1 | 00/B478 : C8          |             dfb   $c8            
+  128 |  1 picnic.system.s    128 | Data        | 11 |         |    2 | 00/B479 : D2 B4       |             da    proOPEN        
+  129 |  1 picnic.system.s    129 | Code        | 11 |         |    2 | 00/B47B : 90 04       |             bcc   openFILE1      
+  130 |  1 picnic.system.s    130 | Code        | 11 |         |    3 | 00/B47D : 8D C7 B4    |             sta   proERR         
+  131 |  1 picnic.system.s    131 | Code        | 11 |         |    1 | 00/B480 : 60          |             rts                  
+  132 |  1 picnic.system.s    132 | Empty       | 11 |         |    0 | 00/B481               |                                  
+  133 |  1 picnic.system.s    133 | Empty       | 11 |         |    0 | 00/B481               | openFILE1                        
+  134 |  1 picnic.system.s    134 | Code        | 11 |         |    3 | 00/B481 : AD D7 B4    |             lda   proOPEN+5      ; zou, on prend l'ID
+  135 |  1 picnic.system.s    135 | Code        | 11 |         |    3 | 00/B484 : 8D E3 B4    |             sta   proGETEOF+1    
+  136 |  1 picnic.system.s    136 | Code        | 11 |         |    3 | 00/B487 : 8D D9 B4    |             sta   proREAD+1      
+  137 |  1 picnic.system.s    137 | Code        | 11 |         |    3 | 00/B48A : 8D E1 B4    |             sta   proCLOSE+1     
+  138 |  1 picnic.system.s    138 | Empty       | 11 |         |    0 | 00/B48D               |                                  
+  139 |  1 picnic.system.s    139 | Code        | 11 |         |    3 | 00/B48D : 20 00 BF    |             jsr   {$bf00}        ; longueur du fichier
+  140 |  1 picnic.system.s    140 | Data        | 11 |         |    1 | 00/B490 : D1          |             dfb   $d1            
+  141 |  1 picnic.system.s    141 | Data        | 11 |         |    2 | 00/B491 : E2 B4       |             da    proGETEOF      
+  142 |  1 picnic.system.s    142 | Code        | 11 |         |    3 | 00/B493 : 8D C7 B4    |             sta   proERR         
+  143 |  1 picnic.system.s    143 | Code        | 11 |         |    1 | 00/B496 : 60          |             rts                  
+  144 |  1 picnic.system.s    144 | Empty       | 11 |         |    0 | 00/B497               |                                  
+  145 |  1 picnic.system.s    145 | Comment     | 11 |         |    0 | 00/B497               | *
+  146 |  1 picnic.system.s    146 | Comment     | 11 |         |    0 | 00/B497               | *---
+  147 |  1 picnic.system.s    147 | Comment     | 11 |         |    0 | 00/B497               | *
+  148 |  1 picnic.system.s    148 | Empty       | 11 |         |    0 | 00/B497               |                                  
+  149 |  1 picnic.system.s    149 | Empty       | 11 |         |    0 | 00/B497               | readFILE                         
+  150 |  1 picnic.system.s    150 | Code        | 11 |         |    3 | 00/B497 : 20 00 BF    |             jsr   {$bf00}        ; lecture du fichier
+  151 |  1 picnic.system.s    151 | Data        | 11 |         |    1 | 00/B49A : CA          |             dfb   $ca            
+  152 |  1 picnic.system.s    152 | Data        | 11 |         |    2 | 00/B49B : D8 B4       |             da    proREAD        
+  153 |  1 picnic.system.s    153 | Code        | 11 |         |    3 | 00/B49D : 8D C7 B4    |             sta   proERR         
+  154 |  1 picnic.system.s    154 | Code        | 11 |         |    1 | 00/B4A0 : 60          |             rts                  
+  155 |  1 picnic.system.s    155 | Empty       | 11 |         |    0 | 00/B4A1               |                                  
+  156 |  1 picnic.system.s    156 | Comment     | 11 |         |    0 | 00/B4A1               | *
+  157 |  1 picnic.system.s    157 | Comment     | 11 |         |    0 | 00/B4A1               | *---
+  158 |  1 picnic.system.s    158 | Comment     | 11 |         |    0 | 00/B4A1               | *
+  159 |  1 picnic.system.s    159 | Empty       | 11 |         |    0 | 00/B4A1               |                                  
+  160 |  1 picnic.system.s    160 | Empty       | 11 |         |    0 | 00/B4A1               | closeFILE                        
+  161 |  1 picnic.system.s    161 | Code        | 11 |         |    3 | 00/B4A1 : 20 00 BF    |             jsr   {$bf00}        ; fermeture du fichier
+  162 |  1 picnic.system.s    162 | Data        | 11 |         |    1 | 00/B4A4 : CC          |             dfb   $cc            
+  163 |  1 picnic.system.s    163 | Data        | 11 |         |    2 | 00/B4A5 : E0 B4       |             da    proCLOSE       
+  164 |  1 picnic.system.s    164 | Code        | 11 |         |    3 | 00/B4A7 : 8D C7 B4    |             sta   proERR         
+  165 |  1 picnic.system.s    165 | Code        | 11 |         |    1 | 00/B4AA : 60          |             rts                  
+  166 |  1 picnic.system.s    166 | Empty       | 11 |         |    0 | 00/B4AB               |                                  
+  167 |  1 picnic.system.s    167 | Comment     | 11 |         |    0 | 00/B4AB               | *--- (c)opyright
+  168 |  1 picnic.system.s    168 | Empty       | 11 |         |    0 | 00/B4AB               |                                  
+  169 |  1 picnic.system.s    169 | Data        | 11 |         |   28 | 00/B4AB : 0D 28 63 29 |             asc   0d'(c) Antoine Vignau, 7/2020'0d
+      |                           |             |    |         |      |           20 41 6E 74 |
+      |                           |             |    |         |      |           6F 69 6E 65 |
+      |                           |             |    |         |      |           20 56 69 67 |
+      |                           |             |    |         |      |           6E 61 75 2C |
+      |                           |             |    |         |      |           20 37 2F 32 |
+      |                           |             |    |         |      |           30 32 30 0D |
+  170 |  1 picnic.system.s    170 | Empty       | 11 |         |    0 | 00/B4C7               |                                  
+  171 |  1 picnic.system.s    171 | Comment     | 11 |         |    0 | 00/B4C7               | *--- Data
+  172 |  1 picnic.system.s    172 | Empty       | 11 |         |    0 | 00/B4C7               |                                  
+  173 |  1 picnic.system.s    173 | Data        | 11 |         |    1 | 00/B4C7 : 00          | proERR      ds    1              ; erreur ProDOS rencontrée
+  174 |  1 picnic.system.s    174 | Empty       | 11 |         |    0 | 00/B4C8               |                                  
+  175 |  1 picnic.system.s    175 | Data        | 11 |         |    1 | 00/B4C8 : 04          | proQUIT     dfb   $4             
+  176 |  1 picnic.system.s    176 | Data        | 11 |         |    1 | 00/B4C9 : 00          |             ds    1              
+  177 |  1 picnic.system.s    177 | Data        | 11 |         |    2 | 00/B4CA : 00 00       |             ds    2              
+  178 |  1 picnic.system.s    178 | Data        | 11 |         |    1 | 00/B4CC : 00          |             ds    1              
+  179 |  1 picnic.system.s    179 | Data        | 11 |         |    2 | 00/B4CD : 00 00       |             ds    2              
+  180 |  1 picnic.system.s    180 | Empty       | 11 |         |    0 | 00/B4CF               |                                  
+  181 |  1 picnic.system.s    181 | Data        | 11 |         |    1 | 00/B4CF : 01          | proGETPFX   dfb   $1             
+  182 |  1 picnic.system.s    182 | Data        | 11 |         |    2 | 00/B4D0 : 80 02       |             da    {$0280}        
+  183 |  1 picnic.system.s    183 | Empty       | 11 |         |    0 | 00/B4D2               |                                  
+  184 |  1 picnic.system.s    184 | Data        | 11 |         |    1 | 00/B4D2 : 03          | proOPEN     dfb   $3             
+  185 |  1 picnic.system.s    185 | Data        | 11 |         |    2 | 00/B4D3 : 69 B4       |             da    pGAME          ; pathname (par défaut, le moteur)
+  186 |  1 picnic.system.s    186 | Data        | 11 |         |    2 | 00/B4D5 : 00 B8       |             da    {$b800}        ; io_buffer
+  187 |  1 picnic.system.s    187 | Data        | 11 |         |    1 | 00/B4D7 : 00          |             ds    1              ; ref_num
+  188 |  1 picnic.system.s    188 | Empty       | 11 |         |    0 | 00/B4D8               |                                  
+  189 |  1 picnic.system.s    189 | Data        | 11 |         |    1 | 00/B4D8 : 04          | proREAD     dfb   $4             
+  190 |  1 picnic.system.s    190 | Data        | 11 |         |    1 | 00/B4D9 : 00          |             ds    1              ; ref_num
+  191 |  1 picnic.system.s    191 | Data        | 11 |         |    2 | 00/B4DA : 00 08       |             da    {$0800}        ; data_buffer
+  192 |  1 picnic.system.s    192 | Data        | 11 |         |    2 | 00/B4DC : 00 AC       |             dw    $ac00          ; request_count
+  193 |  1 picnic.system.s    193 | Data        | 11 |         |    2 | 00/B4DE : 00 00       |             ds    2              ; transfer_count
+  194 |  1 picnic.system.s    194 | Empty       | 11 |         |    0 | 00/B4E0               |                                  
+  195 |  1 picnic.system.s    195 | Data        | 11 |         |    1 | 00/B4E0 : 01          | proCLOSE    dfb   $1             
+  196 |  1 picnic.system.s    196 | Data        | 11 |         |    1 | 00/B4E1 : 00          |             ds    1              ; ref_num
+  197 |  1 picnic.system.s    197 | Empty       | 11 |         |    0 | 00/B4E2               |                                  
+  198 |  1 picnic.system.s    198 | Data        | 11 |         |    1 | 00/B4E2 : 02          | proGETEOF   dfb   $2             
+  199 |  1 picnic.system.s    199 | Data        | 11 |         |    1 | 00/B4E3 : 00          |             ds    1              ; ref_num
+  200 |  1 picnic.system.s    200 | Data        | 11 |         |    3 | 00/B4E4 : 00 00 00    |             ds    3              ; eof
+  201 |  1 picnic.system.s    201 | Empty       | 11 |         |    0 | 00/B4E7               |                                  
+  202 |  1 picnic.system.s    202 | Data        | 11 |         |   25 | 00/B4E7 : 00 00 00 00 |             ds    \              
+      |                           |             |    |         |      |           00 00 00 00 |
+      |                           |             |    |         |      |           00 00 00 00 |
+      |                           |             |    |         |      |           00 00 00 00 |
+      |                           |             |    |         |      |           00 00 00 00 |
+      |                           |             |    |         |      |           00 00 00 00 |
+      |                           |             |    |         |      |           00          |
+------+---------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

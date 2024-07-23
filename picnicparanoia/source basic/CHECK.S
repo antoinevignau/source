@@ -1,0 +1,83 @@
+
+*---------------------------------------------------------*
+*     Disassembled with The Flaming Bird Disassembler     *
+*    (c) Phoenix corp. 1992,93  -  All rights reserved    *
+*---------------------------------------------------------*
+
+         TYP   BIN
+
+         ORG   $0002AF
+         MX    %11
+         DB    $A2
+         DB    $95
+         DB    $BD
+         DB    $5C
+         DB    $0F
+         DB    $0D
+         DB    $5C
+         DB    $0F
+         DB    $19
+         DB    $6D
+         DB    $2D
+         DB    $DB
+         DB    $6F
+         DB    $0D
+         DB    $5B
+         DB    $0F
+         DB    $0D
+         DB    $5B
+         DB    $0F
+         DB    $0D
+         DB    $DB
+         DB    $6F
+         DB    $79
+         DB    $6D
+         DB    $60
+         DB    $90
+         DB    $7D
+         DB    $E3
+         DB    $BF
+         DB    $40
+         DB    $B3
+         DB    $FC
+         DB    $85
+         DB    $D5
+         DB    $0D
+         DB    $5E
+         DB    $0F
+         DB    $0D
+         DB    $5E
+         DB    $0F
+         DB    $5E
+         DB    $14
+         DB    $F1
+         DB    $7E
+         DB    $83
+         DB    $60
+         DB    $1D
+         DB    $14
+         DB    $F1
+         DB    $A8
+         DB    $DD
+         DB    $83
+         DB    $60
+         DB    $40
+         DB    $BB
+         DB    $FC
+         DB    $85
+         DB    $D5
+         DB    $1D
+         DB    $E3
+         DB    $BF
+         DB    $40
+         DB    $B3
+         DB    $FC
+         DB    $85
+         DB    $D5
+         DB    $0D
+         DB    $5D
+         DB    $0F
+         DB    $0D
+         DB    $5D
+         DB    $BF
+         DB    $60

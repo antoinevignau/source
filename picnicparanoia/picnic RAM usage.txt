@@ -1,0 +1,177 @@
+Picnic Paranoia
+
+0200..03FF	CODE (AHEM)
+0400..07FF	GR GAME BACKGROUND
+0800..087F	TABLE
+0880..1A8F	CODE
+1A90..1FFF	TABLE
+2000..3FFF	HGR
+4000..7FFF	CODE
+8000..9FFF	GAME BACKGROUND
+A000..BFFF	GAME TITLE
+
+PICNICPARANOIA SOURCE
+
+Source is built from the following files
+
+ANT@ E
+ANT@@ E whereas ANT@@ F should have been used (it inits TEMP3)
+CAN E
+CARRY E
+HFOOD E
+MAN E
+MASTER E
+MUSIC E
+PROTECT E
+SPIDER E
+SWTR E
+THE.END E
+VFOOD E
+WASP E
+and TABLES C at $1A90 until $1FFF
+the TABLES C file also includes the game background (useless)
+
+The BINARY executable contains the following files (to be disassembled)
+LORES		$0400 which is the LORES background
+			,$0400
+LOSTUFF.	$0220 which is the lores display (but has parts of protection)
+			,$01C1
+SETUP2.		$220F which maps the PROTECT source code (not used)
+			,$009F
+CHECK'		$02AF contains the protected code
+			,$0049
+ALL!!!P		$07FD the game (does not need to be disassembled)
+			,$7803 ends of $8000 then
+
+PICNICPARANOIA SOURCE
+
+		OR	TA	
+ANT@@ F		1700		
+		1080		
+		10A0		
+		10C0		
+		10E0		
+		5E8A		
+CAN E		0C10		
+CARRY C		7500		
+HELLO		BASIC		
+HFOOD C		6950		
+		6F00		
+MASTER E	7900		
+		15BC		
+		1A14		
+		4E4A		
+		5EB0		
+		0F54		
+		45BA		
+		41FF		
+SPIDER C	6000				
+SWTR E		4F00				
+TABLES C	1A90 (BIN FILE ONLY)		
+VFOOD E		6EC0
+		7060		
+		5F40		
+WASP C		5803				
+
+PICNICPARANOISAPPLEII
+it uses MASTER from disk PICNIC E
+as ALL!!!P has the entry point of $78FB
+which is located in the MASTER E file
+
+LORES		0400		
+LOSTUFF.	0220		
+SETUP2.		220F		
+CHECK'		02AF		
+ALL!!!P		07FD		
+
+PICNIC E
+
+ANT@ E		10FD		
+ANT@@ E		1700		
+		1080		
+		10A0		
+		10C0		
+		10E0		
+		5E8A		
+CARRY E		7340	1340	
+HFOOD E		6950	1950	
+		6EC0		
+MAN E		10C0
+		10E0
+		4600	2600
+MASTER E	78FB	28FB	
+		15BC		
+		1A14		
+		4E4A		
+		5EB0		
+		0F54		
+		45BA		
+MUSIC E		08E6	18E6	
+		0880		
+		41A5		
+		4202		
+		0310		
+		0950		
+PROTECT E	020F	220F	
+		421E		
+		6535		
+		02AF		
+SPIDER E	6000	2000	
+START UP	BASIC		
+VFOOD E		6EC0	1EC0	
+		7060	2060
+		5F40	2F40
+		02F8	02F8
+WASP E		5800	3800	
+
+PICNIC PP (A SCRATCH DISK SAYS THE HELLO PROGRAM)
+
+CAN E		0C00	0C00	
+THE END E	0A48	1A48	
+
+------------------------------------
+This is where everything should be
+------------------------------------
+
+		OR	
+ANT@ E		10FD	x
+ANT@@ F		1700	x
+		1080	x
+		10A0	x
+		10C0	x
+		10E0	x
+		5E8A	x
+CAN E		0C00	x
+CARRY E		7340	x
+HFOOD E		6950	x
+		6EC0	x
+MAN E		10C0	x can be removed
+		10E0	x can be removed
+		4600	x
+MASTER E	78FB	x
+		15BC	x
+		1A14	x
+		4E4A	x
+		5EB0	x
+		0F54	x
+		45BA	x
+MUSIC E		08E6	x
+		0880	x
+		41A5	x
+		4202	x
+		0310	x
+		0950	x
+PROTECT E	020F	x
+		421E	x
+		6535	x
+		02AF	x
+SPIDER E	6000	x		
+SWTR E		4F00	x	
+TABLES C	1A90	x	
+THE END E	0A48	x
+VFOOD E		6EC0	x can be removed
+		7060	x
+		5F40	x
+		02F8	x
+WASP E		5800	x
+

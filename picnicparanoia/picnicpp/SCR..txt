@@ -1,0 +1,15 @@
+421E-   A0 02       LDY   #$02
+4220-   84 FE       STY   $FE
+4222-   A9 B0       LDA   #$B0
+4224-   85 FD       STA   $FD
+4226-   51 FD       EOR   ($FD),Y
+4228-   91 FD       STA   ($FD),Y
+422A-   C8          INY
+422B-   C0 46       CPY   #$46
+422D-   D0 F3       BNE   $4222
+422F-   60          RTS
+4230-   20 36 42    JSR   $4236
+4233-   20 39 42    JSR   $4239
+4236-   6C 20 00    JMP   ($0020)
+4239-   6C 22 00    JMP   ($0022)
+423C-   FD FD 00    SBC   $00FD,X

@@ -1,0 +1,77 @@
+220F-   A9 1E       LDA   #$1E
+2211-   85 20       STA   $20
+2213-   A9 42       LDA   #$42
+2215-   85 21       STA   $21
+2217-   A9 AF       LDA   #$AF
+2219-   85 22       STA   $22
+221B-   A9 02       LDA   #$02
+221D-   85 23       STA   $23
+221F-   A0 00       LDY   #$00
+2221-   99 C3 45    STA   $45C3,Y
+2224-   C8          INY
+2225-   C0 3D       CPY   #$3D
+2227-   D0 F8       BNE   $2221
+2229-   A9 FF       LDA   #$FF
+222B-   8D FD 07    STA   $07FD
+222E-   8D FE 07    STA   $07FE
+2231-   8D FF 07    STA   $07FF
+2234-   A9 84       LDA   #$84
+2236-   8D 07 79    STA   $7907
+2239-   A9 F5       LDA   #$F5
+223B-   8D 08 79    STA   $7908
+223E-   A9 EA       LDA   #$EA
+2240-   8D 09 79    STA   $7909
+2243-   A9 F0       LDA   #$F0
+2245-   85 F9       STA   $F9
+2247-   85 FB       STA   $FB
+2249-   A0 91       LDY   #$91
+224B-   98          TYA
+224C-   18          CLC
+224D-   69 2E       ADC   #$2E
+224F-   85 FA       STA   $FA
+2251-   B1 F9       LDA   ($F9),Y
+2253-   6A          ROR
+2254-   85 F0       STA   $F0
+2256-   B1 F9       LDA   ($F9),Y
+2258-   85 F1       STA   $F1
+225A-   A2 DF       LDX   #$DF
+225C-   86 FC       STX   $FC
+225E-   A0 10       LDY   #$10
+2260-   CA          DEX
+2261-   CA          DEX
+2262-   8A          TXA
+2263-   91 FB       STA   ($FB),Y
+2265-   A0 90       LDY   #$90
+2267-   B1 F9       LDA   ($F9),Y
+2269-   B1 F9       LDA   ($F9),Y
+226B-   A0 10       LDY   #$10
+226D-   B1 FB       LDA   ($FB),Y
+226F-   C9 DD       CMP   #$DD
+2271-   D0 03       BNE   $2276
+2273-   8D 53 0F    STA   $0F53
+2276-   A0 92       LDY   #$92
+2278-   B1 F9       LDA   ($F9),Y
+227A-   6A          ROR
+227B-   85 FF       STA   $FF
+227D-   B1 F9       LDA   ($F9),Y
+227F-   2A          ROL
+2280-   85 94       STA   $94
+2282-   A2 95       LDX   #$95
+2284-   AD 53 0F    LDA   $0F53
+2287-   F0 12       BEQ   $229B
+2289-   BD EC BF    LDA   $BFEC,X
+228C-   BD EC BF    LDA   $BFEC,X
+228F-   A9 53       LDA   #$53
+2291-   8D A4 41    STA   $41A4
+2294-   A9 AD       LDA   #$AD
+2296-   8D 33 D0    STA   $D033
+2299-   85 F0       STA   $F0
+229B-   BD ED BF    LDA   $BFED,X
+229E-   BD ED BF    LDA   $BFED,X
+22A1-   A0 00       LDY   #$00
+22A3-   A9 FF       LDA   #$FF
+22A5-   99 0F 02    STA   $020F,Y
+22A8-   C8          INY
+22A9-   C0 93       CPY   #$93
+22AB-   D0 F8       BNE   $22A5
+22AD-   60          RTS

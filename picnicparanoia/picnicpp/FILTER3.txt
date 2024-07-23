@@ -1,0 +1,72 @@
+ 1  REM  START
+ 5 XINIT = 0
+ 10  REM   LOW PASS FILTER CALCULATIONS
+ 12  HOME 
+ 13  PRINT "START PLOT AT 1KHZ? (Y/N)"
+ 14  GET A$: IF A$ = "Y" THEN XINIT = 100
+ 15  PRINT : PRINT "FIRST SECTION...": PRINT 
+ 16  FOR Z = 1 TO 500: NEXT Z
+ 20  INPUT "R1 (IN KOHMS)? ";RA
+ 25 R1 = RA * 1000
+ 30  INPUT "R2 (IN KOHMS)? ";RB
+ 35 R2 = RB * 1000
+ 40  INPUT "C1 (IN PF)? ";CA
+ 50 C1 = CA * (10 ^ ( - 12))
+ 60  INPUT "C2 (IN PF)? ";CB
+ 62 C2 = CB * 10 ^ ( - 12)
+ 64  GOSUB 300
+ 69 A = (R1 + R2) / (C1 * R1 * R2)
+ 70 B = 1 / (R1 * R2 * C1 * C2)
+ 72 C = (A * A - 2 * B)
+ 74 D = B * B
+ 76  VTAB 21
+ 78  PRINT "R1=";RA;"K  R2=";RB;"K  C1=";CA;"PF  C2=";CB;"PF
+ 80  HGR 
+ 82  HCOLOR= 2
+ 84  FOR Y = 0 TO 191 STEP 4
+ 86  HPLOT 100,Y: HPLOT 200,Y: HPLOT 0,Y
+ 88  NEXT Y
+ 90  FOR X = 0 TO 279 STEP 3
+ 92  FOR Y = 30 TO 190 STEP 30
+ 94  HPLOT X,Y
+ 96  NEXT Y
+ 98  NEXT X
+ 99  HCOLOR= 1
+ 100  FOR X = XINIT TO 279
+ 110 W = 6.28 * 10 ^ (X / 100 + 2)
+ 120 V = B / ((W ^ 4 + C * W * W + D) ^ .5)
+ 125 V2 = B2 / ((W ^ 4 + CZ * W * W + D2) ^ .5)
+ 130 DB = 8.686 *  LOG (V)
+ 133  IF V2 = 0 THEN Y = (30 - 3 * DB): GOTO 145
+ 135 DC = 8.686 *  LOG (V2)
+ 140 Y = (30 - 3 * DB) + (30 - 3 * DC) - 30
+ 145  IF Y -  INT (Y) > .5 THEN Y =  INT (Y) + 1
+ 147  IF Y < 0 OR Y > 191 THEN  GOTO 160
+ 150  HPLOT X,Y
+ 160  NEXT X
+ 165  PRINT : PRINT "AGAIN?"
+ 167  GET A$
+ 168  HOME : TEXT 
+ 170  GOTO 1
+ 300  PRINT 
+ 302  PRINT "DO YOU WANT A SECOND SECTION?"
+ 305  GET A$
+ 307  IF A$ = "N" THEN  RETURN 
+ 308  PRINT 
+ 310  INPUT "R3 (IN KOHMS)? ";RC
+ 315 R3 = RC * 1000
+ 320  INPUT "R4 (IN KOHMS)? ";RD
+ 325 R4 = RD * 1000
+ 330  INPUT "C3 (IN PF)? ";CC
+ 335 C3 = CC * (10 ^ ( - 12))
+ 340  INPUT "C4 (IN PF)? ";CD
+ 345 C4 = CD * (10 ^ ( - 12))
+ 350 A2 = (R3 + R4) / (C3 * R3 * R4)
+ 360 B2 = 1 / (R3 * R4 * C3 * C4)
+ 370 CZ = (A2 * A2 - 2 * B2)
+ 380 D2 = B2 * B2
+ 385  HOME 
+ 390  VTAB 22
+ 396  PRINT "R3=";RC;"K  R4=";RD;"K  C3="CC;"PF  C4=";CD;"PF
+ 398  VTAB 23
+ 400  RETURN 

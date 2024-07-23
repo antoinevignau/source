@@ -1,0 +1,111 @@
+Boulder Dash
+
+T2 at $B000
+T1 at $A800
+moves head to T0
+jumps to $A806
+
+0800.1FFF	program code
+2000.3FFF	hgr 1
+4000.5FFF	hgr 2
+empty but buffers
+6800.74FF	data
+7500.99FF	program code
+empty
+A000.BFFF	loader & mode interpreter
+
+Addresses to rewrite in BD.0800.S
+
+7500
+8D10
+8D45
+8D6E
+8D93
+8E48
+8E8A
+8E94
+9022
+9110
+plus a couple of addresses in table at $1D05
+BD00
+BD03
+
+T12..T15: 4 tracks of HGR pictures
+
+---
+
+1=m   1=x   0=d   1=LCbank (0/1)        
+                                        
+00/0800: 20 FE 09     JSR 09FE          
+00/0803: 8D 50 C0     STA C050          
+00/0806: 8D 55 C0     STA C055          
+00/0809: 8D E9 C0     STA C0E9          
+00/080C: A9 20        LDA #20           
+00/080E: 85 3E        STA 3E            
+00/0810: A9 12        LDA #12           
+00/0812: 85 F8        STA F8            
+00/0814: A5 F8        LDA F8            
+00/0816: 20 03 BC     JSR BC03          
+00/0819: D0 F9        BNE 0814 {-07}    
+00/081B: A5 3E        LDA 3E            
+00/081D: 18           CLC               
+00/081E: 69 10        ADC #10           
+00/0820: 85 3E        STA 3E            
+00/0822: C9 60        CMP #60           
+00/0824: F0 04        BEQ 082A {+04}    
+00/0826: E6 F8        INC F8            
+00/0828: D0 EA        BNE 0814 {-16}    
+00/082A: A9 05        LDA #05           
+                                        
+*                                       
+
+1=m   1=x   0=d   1=LCbank (0/1)        
+                                        
+00/7500: A5 19        LDA 19            
+00/7502: 18           CLC               
+00/7503: 69 01        ADC #01           
+00/7505: 85 19        STA 19            
+00/7507: 18           CLC               
+00/7508: 29 01        AND #01           
+00/750A: F0 03        BEQ 750F {+03}    
+00/750C: 4C 8E 7F     JMP 7F8E          
+00/750F: A5 05        LDA 05            
+00/7511: A2 64        LDX #64           
+00/7513: A4 06        LDY 06            
+00/7515: 88           DEY               
+00/7516: 30 08        BMI 7520 {+08}    
+00/7518: 69 28        ADC #28           
+00/751A: 90 F9        BCC 7515 {-07}    
+00/751C: E8           INX               
+00/751D: 18           CLC               
+00/751E: D0 F5        BNE 7515 {-0B}    
+00/7520: 8D 19 76     STA 7619          
+00/7523: 8E 1A 76     STX 761A          
+                                        
+*                                       
+
+1=m   1=x   0=d   1=LCbank (0/1)        
+                                        
+00/A000: 18           CLC               
+00/A001: 60           RTS               
+00/A002: DD A0 20     CMP 20A0,X        
+00/A005: 88           DEY               
+00/A006: F0 58        BEQ A060 {+58}    
+00/A008: AD EC C0     LDA C0EC          
+00/A00B: 10 FB        BPL A008 {-05}    
+00/A00D: 49 D5        EOR #D5           
+00/A00F: D0 F4        BNE A005 {-0C}    
+00/A011: AD EC C0     LDA C0EC          
+00/A014: 10 FB        BPL A011 {-05}    
+00/A016: C9 AA        CMP #AA           
+00/A018: D0 F3        BNE A00D {-0D}    
+00/A01A: AD EC C0     LDA C0EC          
+00/A01D: 10 FB        BPL A01A {-05}    
+00/A01F: C9 AD        CMP #AD           
+00/A021: D0 EA        BNE A00D {-16}    
+00/A023: 48           PHA               
+00/A024: 68           PLA               
+00/A025: A0 56        LDY #56           
+                                        
+*                                       
+

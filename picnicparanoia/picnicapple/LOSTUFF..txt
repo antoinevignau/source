@@ -1,0 +1,250 @@
+0220-   A9 1E       LDA   #$1E
+0222-   85 20       STA   $20
+0224-   A9 42       LDA   #$42
+0226-   85 21       STA   $21
+0228-   A9 B0       LDA   #$B0
+022A-   85 22       STA   $22
+022C-   A9 02       LDA   #$02
+022E-   85 23       STA   $23
+0230-   20 1E 42    JSR   $421E
+0233-   A0 00       LDY   #$00
+0235-   99 C3 45    STA   $45C3,Y
+0238-   C8          INY
+0239-   C0 3A       CPY   #$3A
+023B-   D0 F8       BNE   $0235
+023D-   A9 F0       LDA   #$F0
+023F-   85 F9       STA   $F9
+0241-   85 FB       STA   $FB
+0243-   A0 91       LDY   #$91
+0245-   98          TYA
+0246-   18          CLC
+0247-   69 2E       ADC   #$2E
+0249-   85 FA       STA   $FA
+024B-   B1 F9       LDA   ($F9),Y
+024D-   6A          ROR
+024E-   85 F0       STA   $F0
+0250-   B1 F9       LDA   ($F9),Y
+0252-   2A          ROL
+0253-   85 F1       STA   $F1
+0255-   A2 DF       LDX   #$DF
+0257-   86 FC       STX   $FC
+0259-   A0 10       LDY   #$10
+025B-   CA          DEX
+025C-   CA          DEX
+025D-   8A          TXA
+025E-   91 FB       STA   ($FB),Y
+0260-   A0 90       LDY   #$90
+0262-   B1 F9       LDA   ($F9),Y
+0264-   85 F2       STA   $F2
+0266-   A0 10       LDY   #$10
+0268-   B1 FB       LDA   ($FB),Y
+026A-   C9 DD       CMP   #$DD
+026C-   D0 03       BNE   $0271
+026E-   8D 53 0F    STA   $0F53
+0271-   A0 92       LDY   #$92
+0273-   B1 F9       LDA   ($F9),Y
+0275-   6A          ROR
+0276-   85 FF       STA   $FF
+0278-   B1 F9       LDA   ($F9),Y
+027A-   2A          ROL
+027B-   85 94       STA   $94
+027D-   AD 53 0F    LDA   $0F53
+0280-   F0 23       BEQ   $02A5
+0282-   A9 53       LDA   #$53
+0284-   8D A4 41    STA   $41A4
+0287-   A9 AD       LDA   #$AD
+0289-   8D 33 D0    STA   $D033
+028C-   A0 91       LDY   #$91
+028E-   B1 F9       LDA   ($F9),Y
+0290-   6A          ROR
+0291-   85 F0       STA   $F0
+0293-   B1 F9       LDA   ($F9),Y
+0295-   2A          ROL
+0296-   85 F1       STA   $F1
+0298-   A0 00       LDY   #$00
+029A-   A9 FF       LDA   #$FF
+029C-   99 20 02    STA   $0220,Y
+029F-   C8          INY
+02A0-   C0 9B       CPY   #$9B
+02A2-   D0 F8       BNE   $029C
+02A4-   60          RTS
+02A5-   A0 92       LDY   #$92
+02A7-   D0 E5       BNE   $028E
+02A9-   20 20 20    JSR   $2020
+02AC-   20 20 20    JSR   $2020
+02AF-   20 A9 F0    JSR   $F0A9
+02B2-   85 F9       STA   $F9
+02B4-   A0 93       LDY   #$93
+02B6-   98          TYA
+02B7-   18          CLC
+02B8-   69 9C       ADC   #$9C
+02BA-   85 FA       STA   $FA
+02BC-   AD 53 0F    LDA   $0F53
+02BF-   F0 1C       BEQ   $02DD
+02C1-   B1 F9       LDA   ($F9),Y
+02C3-   6A          ROR
+02C4-   85 F0       STA   $F0
+02C6-   B1 F9       LDA   ($F9),Y
+02C8-   2A          ROL
+02C9-   85 F1       STA   $F1
+02CB-   EE A4 41    INC   $41A4
+02CE-   CE 33 D0    DEC   $D033
+02D1-   AD A4 41    LDA   $41A4
+02D4-   18          CLC
+02D5-   6D 33 D0    ADC   $D033
+02D8-   F0 03       BEQ   $02DD
+02DA-   4C 35 65    JMP   $6535
+02DD-   A0 92       LDY   #$92
+02DF-   B1 F9       LDA   ($F9),Y
+02E1-   6A          ROR
+02E2-   85 F0       STA   $F0
+02E4-   B1 F9       LDA   ($F9),Y
+02E6-   2A          ROL
+02E7-   85 F1       STA   $F1
+02E9-   60          RTS
+02EA-   92 D0       STA   ($D0)
+02EC-   D4          ???
+02ED-   98          TYA
+02EE-   18          CLC
+02EF-   69 2E       ADC   #$2E
+02F1-   85 FA       STA   $FA
+02F3-   60          RTS
+02F4-   FE FE FE    INC   $FEFE,X
+02F7-   FE 00 08    INC   $0800,X
+02FA-   08          PHP
+02FB-   00          BRK
+02FC-   00          BRK
+02FD-   00          BRK
+02FE-   00          BRK
+02FF-   00          BRK
+0300-   00          BRK
+0301-   07          ???
+0302-   06 05       ASL   $05
+0304-   04 03       TSB   $03
+0306-   02          ???
+0307-   01 00       ORA   ($00,X)
+0309-   F9 FA FB    SBC   $FBFA,Y
+030C-   FC          ???
+030D-   FD FE FF    SBC   $FFFE,X
+0310-   1F          ???
+0311-   00          BRK
+0312-   13          ???
+0313-   00          BRK
+0314-   0A          ASL
+0315-   00          BRK
+0316-   0C 00 0D    TSB   $0D00
+0319-   00          BRK
+031A-   0E 00 02    ASL   $0200
+031D-   00          BRK
+031E-   0E 00 07    ASL   $0700
+0321-   00          BRK
+0322-   13          ???
+0323-   00          BRK
+0324-   0A          ASL
+0325-   00          BRK
+0326-   0C 00 0D    TSB   $0D00
+0329-   00          BRK
+032A-   0E 00 02    ASL   $0200
+032D-   00          BRK
+032E-   0E 00 07    ASL   $0700
+0331-   00          BRK
+0332-   13          ???
+0333-   00          BRK
+0334-   0A          ASL
+0335-   00          BRK
+0336-   0C 00 0D    TSB   $0D00
+0339-   00          BRK
+033A-   0E 00 02    ASL   $0200
+033D-   00          BRK
+033E-   0E 00 07    ASL   $0700
+0341-   00          BRK
+0342-   13          ???
+0343-   00          BRK
+0344-   0A          ASL
+0345-   00          BRK
+0346-   0C 00 0D    TSB   $0D00
+0349-   00          BRK
+034A-   0E 00 02    ASL   $0200
+034D-   00          BRK
+034E-   0E 00 1A    ASL   $1A00
+0351-   19 18 17    ORA   $1718,Y
+0354-   16 1B       ASL   $1B,X
+0356-   1A          INC
+0357-   19 1A 19    ORA   $191A,Y
+035A-   18          CLC
+035B-   17          ???
+035C-   16 17       ASL   $17,X
+035E-   18          CLC
+035F-   19 1A 19    ORA   $191A,Y
+0362-   18          CLC
+0363-   17          ???
+0364-   16 1B       ASL   $1B,X
+0366-   1A          INC
+0367-   19 1A 19    ORA   $191A,Y
+036A-   18          CLC
+036B-   17          ???
+036C-   16 17       ASL   $17,X
+036E-   18          CLC
+036F-   19 1A 19    ORA   $191A,Y
+0372-   18          CLC
+0373-   17          ???
+0374-   18          CLC
+0375-   17          ???
+0376-   16 15       ASL   $15,X
+0378-   16 17       ASL   $17,X
+037A-   18          CLC
+037B-   19 1A 1B    ORA   $1B1A,Y
+037E-   1A          INC
+037F-   19 1A 19    ORA   $191A,Y
+0382-   18          CLC
+0383-   17          ???
+0384-   18          CLC
+0385-   17          ???
+0386-   16 15       ASL   $15,X
+0388-   16 17       ASL   $17,X
+038A-   18          CLC
+038B-   19 1A 1B    ORA   $1B1A,Y
+038E-   1D 1E 1F    ORA   $1F1E,X
+0391-   1E 1D 1C    ASL   $1C1D,X
+0394-   1B          ???
+0395-   20 1F 1E    JSR   $1E1F
+0398-   1F          ???
+0399-   1E 1D 1C    ASL   $1C1D,X
+039C-   1B          ???
+039D-   1C 1D 1E    TRB   $1E1D
+03A0-   1F          ???
+03A1-   1E 1D 1C    ASL   $1C1D,X
+03A4-   1B          ???
+03A5-   20 1F 1E    JSR   $1E1F
+03A8-   1F          ???
+03A9-   1E 1D 1C    ASL   $1C1D,X
+03AC-   1B          ???
+03AD-   1C 1D 1E    TRB   $1E1D
+03B0-   1F          ???
+03B1-   1E 1D 1C    ASL   $1C1D,X
+03B4-   1D 1C 1B    ORA   $1B1C,X
+03B7-   1A          INC
+03B8-   1B          ???
+03B9-   1C 1D 1E    TRB   $1E1D
+03BC-   1F          ???
+03BD-   20 1F 1E    JSR   $1E1F
+03C0-   1F          ???
+03C1-   1E 1D 1C    ASL   $1C1D,X
+03C4-   1D 1C 1B    ORA   $1B1C,X
+03C7-   1A          INC
+03C8-   1B          ???
+03C9-   1C 1D 1E    TRB   $1E1D
+03CC-   1F          ???
+03CD-   20 1F 1D    JSR   $1D1F
+03D0-   1A          INC
+03D1-   00          BRK
+03D2-   0E 00 00    ASL   $0000
+03D5-   00          BRK
+03D6-   11 00       ORA   ($00),Y
+03D8-   12 00       ORA   ($00)
+03DA-   15 00       ORA   $00,X
+03DC-   17          ???
+03DD-   00          BRK
+03DE-   1A          INC
+03DF-   00          BRK
+03E0-   FF          ???

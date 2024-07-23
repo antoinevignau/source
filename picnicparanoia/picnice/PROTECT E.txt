@@ -1,0 +1,168 @@
+0010 TEMP4      .EQ $FF
+0020 POINTER3   .EQ $FD
+0030 POINTER2   .EQ $FB
+0040 POINTER1   .EQ $F9
+0050 SCRPNT2    .EQ $F7
+0060 SCRPNT1    .EQ $F5
+0070 RNDBYTE2   .EQ $F4
+0080 RNDBYTE1   .EQ $F3
+0090 TEMP3      .EQ $F2
+0100 TEMP2      .EQ $F1
+0110 TEMP1      .EQ $F0
+0120 RAMCARD    .EQ $F53
+0130 TEMP5      .EQ $94
+0140 MANXX      .EQ $CA
+0150 COUNT0     .EQ $41A4
+0160 COUNT1     .EQ $D033
+0170 SETUP      .EQ $45C3
+0180        .OR $20F
+0190        .TA $220F
+0200 SETUP2
+0210        LDA #$1E
+0220        STA $20
+0230        LDA #$42
+0240        STA $21
+0250        LDA #$AF
+0260        STA $22
+0270        LDA #$02
+0280        STA $23
+0290        LDY #$00
+0300 .1     STA SETUP,Y
+0310        INY
+0320        CPY #$3D
+0330        BNE .1
+0340        LDA #$FF
+0350        STA $7FD
+0360        STA $7FE
+0370        STA $7FF
+0380        LDA #$84
+0390        STA $7907
+0400        LDA #$F5
+0410        STA $7908
+0420        LDA #$EA
+0430        STA $7909
+0440 TESTRAM
+0450        LDA #$F0
+0460        STA POINTER1
+0470        STA POINTER2
+0480        LDY #$91
+0490        TYA
+0500        CLC
+0510        ADC #$2E
+0520        STA POINTER1+1
+0530        LDA (POINTER1),Y
+0540        ROR
+0550        STA TEMP1
+0560        LDA (POINTER1),Y
+0570        STA TEMP2
+0580        LDX #$DF
+0590        STX POINTER2+1
+0600        LDY #$10
+0610        DEX
+0620        DEX
+0630        TXA
+0640        STA (POINTER2),Y
+0650        LDY #$90
+0660        LDA (POINTER1),Y
+0670        LDA (POINTER1),Y
+0680        LDY #$10
+0690        LDA (POINTER2),Y
+0700        CMP #$DD
+0710        BNE .1
+0720        STA RAMCARD
+0730 .1     LDY #$92
+0740        LDA (POINTER1),Y
+0750        ROR
+0760        STA TEMP4
+0770        LDA (POINTER1),Y
+0780        ROL
+0790        STA TEMP5
+0800 CLEAR
+0810        LDX #$95
+0820        LDA RAMCARD
+0830        BEQ SKIP
+0840        LDA $C081-$95,X
+0850        LDA $C081-$95,X
+0860        LDA #$53
+0870        STA COUNT0
+0880        LDA #$AD
+0890        STA COUNT1
+0900        BNE X1
+0910 SKIP
+0920        LDA $C082-$95,X
+0930        LDA $C082-$95,X
+0940 X1
+0950        LDY #$00
+0960        LDA #$FF
+0970 .1     STA SETUP2,Y   
+0980        INY
+0990        CPY #$95
+1000        BNE .1
+1010        RTS
+1020        .OR $421E
+1030        .TA $121E
+1040 SCRAMBLE
+1050        LDY#$02
+1060        STY POINTER3+1
+1070 .1     LDA #$B0
+1080        STA POINTER3
+1090        EOR (POINTER3),Y  
+1100        STA (POINTER3),Y  
+1110        INY
+1120        CPY #$46
+1130        BNE .1
+1140        RTS
+1150 PROTECT
+1160        JSR SCRAMBLE2
+1170        JSR CHECK2
+1180 SCRAMBLE2
+1190        JMP ($20)
+1200 CHECK2
+1210        JMP ($22)
+1220        .OR $6535
+1230        .TA $1535
+1240 DIE
+1250        JSR SCRAMBLE2
+1260        LDX #$00
+1270        STX RNDBYTE1
+1280        STX RNDBYTE2
+1290        INC MANXX
+1300        INC SCRPNT1+1
+1310 .1     STA DIE,X
+1320        INX
+1330        CPX #$0E
+1340        BNE .1
+1350        RTS
+1360        .OR $2AF
+1370        .TA $2AF
+1380 CHECK
+1390        LDX #$95
+1400        LDA $C081-$95,X
+1410        LDA $C081-$95,X
+1420        LDA #$DD
+1430        STA $E000-$95,X
+1440        LDA $C080-$95,X
+1450        LDA $C080-$95,X
+1460        LDA $E000-$95,X
+1470        CMP #$DD
+1480        BNE .1
+1490        CMP RAMCARD
+1500        BEQ .2
+1510        JMP DIE
+1520 .2     LDA $C083-$95,X
+1530        LDA $C083-$95,X
+1540        INC COUNT0
+1550        DEC COUNT1
+1560        LDA COUNT0
+1570        CLC
+1580        ADC COUNT1
+1590        BEQ SKIP2
+1600        JMP DIE
+1610 .1     LDA RAMCARD
+1620        BEQ SKIP2
+1630        JMP DIE
+1640 SKIP2
+1650        LDA $C082-$95,X
+1660        LDA $C082-$95,X
+1670        RTS
+1680        .LI OFF

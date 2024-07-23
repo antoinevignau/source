@@ -1,0 +1,36 @@
+02AF-   A2 95       LDX   #$95
+02B1-   BD 5C 0F    LDA   $0F5C,X
+02B4-   0D 5C 0F    ORA   $0F5C
+02B7-   19 6D 2D    ORA   $2D6D,Y
+02BA-   DB          ???
+02BB-   6F          ???
+02BC-   0D 5B 0F    ORA   $0F5B
+02BF-   0D 5B 0F    ORA   $0F5B
+02C2-   0D DB 6F    ORA   $6FDB
+02C5-   79 6D 60    ADC   $606D,Y
+02C8-   90 7D       BCC   $0347
+02CA-   E3          ???
+02CB-   BF          ???
+02CC-   40          RTI
+02CD-   B3          ???
+02CE-   FC          ???
+02CF-   85 D5       STA   $D5
+02D1-   0D 5E 0F    ORA   $0F5E
+02D4-   0D 5E 0F    ORA   $0F5E
+02D7-   5E 14 F1    LSR   $F114,X
+02DA-   7E 83 60    ROR   $6083,X
+02DD-   1D 14 F1    ORA   $F114,X
+02E0-   A8          TAY
+02E1-   DD 83 60    CMP   $6083,X
+02E4-   40          RTI
+02E5-   BB          ???
+02E6-   FC          ???
+02E7-   85 D5       STA   $D5
+02E9-   1D E3 BF    ORA   $BFE3,X
+02EC-   40          RTI
+02ED-   B3          ???
+02EE-   FC          ???
+02EF-   85 D5       STA   $D5
+02F1-   0D 5D 0F    ORA   $0F5D
+02F4-   0D 5D BF    ORA   $BF5D
+02F7-   60          RTS

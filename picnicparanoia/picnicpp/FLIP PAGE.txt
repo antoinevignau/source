@@ -1,0 +1,21 @@
+0E00-   A0 00       LDY   #$00
+0E02-   84 F9       STY   $F9
+0E04-   84 FB       STY   $FB
+0E06-   A9 20       LDA   #$20
+0E08-   85 FA       STA   $FA
+0E0A-   A9 80       LDA   #$80
+0E0C-   85 FC       STA   $FC
+0E0E-   B1 FB       LDA   ($FB),Y
+0E10-   48          PHA
+0E11-   B1 F9       LDA   ($F9),Y
+0E13-   91 FB       STA   ($FB),Y
+0E15-   68          PLA
+0E16-   91 F9       STA   ($F9),Y
+0E18-   C8          INY
+0E19-   D0 F3       BNE   $0E0E
+0E1B-   E6 FC       INC   $FC
+0E1D-   E6 FA       INC   $FA
+0E1F-   A5 FA       LDA   $FA
+0E21-   C9 40       CMP   #$40
+0E23-   D0 E9       BNE   $0E0E
+0E25-   60          RTS

@@ -14,6 +14,16 @@ gPINKY	=	2
 gBLINKY	=	3
 gCLYDE	=	4
 
+dirDOWN	=	0
+dirUP	=	1
+dirRIGHT	=	2
+dirLEFT	=	3
+
+score1600	=	0
+score200	=	2
+score400	=	4
+score800	=	8
+
 nbDOTS	=	248	; 244 normal dots & 4 energizer dots
 
 L0300	=	$0300	; buffer area to save scores
@@ -68,10 +78,34 @@ zpDOTTEMPO	=	$5e	; (byte) tempo for energizer dot blinking
 zpDOTFLAG	=	$5f	; (byte) 0: show dots, 1: hide dots
 pacmanX	=	$60	; (byte) Pacman X
 pacmanY	=	$61	; (byte) Pacman Y
+pacmanDIR	=	$62	; (byte) Pacman direction (see above)
+*
+bonusINDEX	=	$68	; (byte) 2/4/8/16 for bonus 200/400/800/1600
 boardY	=	$6a	; (byte) y-coord in board
 boardX	=	$6b	; (byte) x-coord in board
-enemyX	=	$70	; (byte) enemy X
-enemyY	=	$71	; (byte) enemy Y
+*
+ghosDATA	=	$70	; (struct) structure of 8/20 bytes for the current ghost
+ghostX	=	$70	; (byte) enemy X
+ghostY	=	$71	; (byte) enemy Y
+ghostFRIGHTENED =	$78	; (byte) 0: ghost is not frightened, 1: ghost is frightened
+ghostISDEAD	=	$79	; (byte) 0: ghost is alive, dead otherwise
+*--- Each ghost data is: 84 / 98 / AC / C0
+ghost1DATA	=	$84
+ghost1X	=	ghost1DATA
+ghost1Y	=	ghost1DATA+1
+ghost1FRIGHTENED = 	ghost1DATA+8
+ghost2DATA	=	$98
+ghost2X	=	ghost2DATA
+ghost2Y	=	ghost2DATA+1
+ghost2FRIGHTENED =	ghost2DATA+8
+ghost3DATA	=	$ac
+ghost3X	=	ghost3DATA
+ghost3Y	=	ghost3DATA+1
+ghost3FRIGHTENED =	ghost3DATA+8
+ghost4DATA	=	$c0
+ghost4X	=	ghost4DATA
+ghost4Y	=	ghost4DATA+1
+ghost4FRIGHTENED =	ghost4DATA+8
 ghostINDEX	=	$e0	; (byte) 1: Inky, 2: Pinky, 3: Blinky, 4: Clyde
 fgDEMO	=	$e8	; (byte) 0: game, 1: demo
 zpSPEED	=	f3	; (byte) ghosts speed

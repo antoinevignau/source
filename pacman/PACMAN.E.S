@@ -9,6 +9,11 @@ sprEMPTY	=	0	; three tile possibilities
 sprDOT	=	1
 sprENERGY	=	2
 
+gINKY	=	1
+gPINKY	=	2
+gBLINKY	=	3
+gCLYDE	=	4
+
 nbDOTS	=	248	; 244 normal dots & 4 energizer dots
 
 L0300	=	$0300	; buffer area to save scores
@@ -47,20 +52,29 @@ zpSPRHEIGHT	=	$18	; (byte) sprite height in lines
 zpSPRWIDTH	=	$1a	; (byte) sprite width in bytes
 zpPTR3	=	$1b	; (word)
 zpMONITOR	=	$1d	; 0: b&w, 1: color
-zp1E	=	$1e
+hgrBIT7	=	$1e	; (byte) defines which palette to use ($00 or $80)
 zp1F	=	$1f
 * $20 to $4F are not used
-zpCURPLAYER	=	$50	; current player index
-zpNBPLAYERS	=	$51	; number of players (1..5)
-zpCURSCORE	=	$52	; (3 bytes) score
-zpRANK	=	$55	; rank number (ie. the level)
-zpNBDOTS	=	$56	; number of dots on the board (248 by default)
-zpNBLIVES	=	$58	; number of lives (bit 7 is set)
+zpCURPLAYER	=	$50	; (byte) current player index
+zpNBPLAYERS	=	$51	; (byte) number of players (1..5)
+curSCORE	=	$52	; (3 bytes) score
+zpRANK	=	$55	; (byte) rank number (ie. the level)
+zpNBDOTS	=	$56	; (byte) number of dots on the board (248 by default)
+fruitFREQ	=	$57	; (byte) appearance frequency of a fruits
+zpNBLIVES	=	$58	; (byte) number of lives (bit 7 is set)
+frameCNT	=	$59	; (byte) frame counter
 zpPTRFRUIT	=	$5c	; (word) pointer to the fruit sprite
-zpDOTTEMPO	=	$5e	; tempo for energizer dot blinking
-zpDOTFLAG	=	$5f	; 0: show dots, 1: hide dots
-zpE0	=	$e0	; 1: Inky, 2: Pinky, 3: Blinky, 4: Clyde
-zpDEMO	=	$e8	; 0: game, 1: demo
-zpFGMUSIC	=	$f4	; 0: music never played, 1: intro music played
-zpDEVICE	=	$f5	; 0: joypad, 1: joystick
+zpDOTTEMPO	=	$5e	; (byte) tempo for energizer dot blinking
+zpDOTFLAG	=	$5f	; (byte) 0: show dots, 1: hide dots
+pacmanX	=	$60	; (byte) Pacman X
+pacmanY	=	$61	; (byte) Pacman Y
+boardY	=	$6a	; (byte) y-coord in board
+boardX	=	$6b	; (byte) x-coord in board
+enemyX	=	$70	; (byte) enemy X
+enemyY	=	$71	; (byte) enemy Y
+ghostINDEX	=	$e0	; (byte) 1: Inky, 2: Pinky, 3: Blinky, 4: Clyde
+fgDEMO	=	$e8	; (byte) 0: game, 1: demo
+zpSPEED	=	f3	; (byte) ghosts speed
+fgMUSIC	=	$f4	; (byte) 0: music never played, 1: intro music played
+theDEVICE	=	$f5	; (byte) 0: joypad, 1: joystick
 

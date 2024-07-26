@@ -79,8 +79,8 @@ L4027       LDA   #$01
             STA   zpHISCORE+2
             STA   zpNBLIVES
             LDA   #$01
-            STA   zpMONITOR	; ZP - color monitor if 1
-            STA   zpDEMO	; ZP - demo if 1
+            STA   fgCOLOR	; ZP - color monitor if 1
+            STA   fgDEMO	; ZP - demo if 1
             LDA   #<welcomePAGE
             STA   SOFTEV
             STA   NMILOC+1
@@ -97,11 +97,10 @@ L4027       LDA   #$01
             JMP   welcomePAGE		; show LOGO
 
             ASC   "(C) 1983 ATARI, INC.ALL RIGHTS RESERVED."
-            ASC   "UNAUTHORIZED REPRODUCTION, ADAPTATION, D"
-            ASC   "ISTRIBUTION, PERFORMANCE, OR DISPLAY OF "
-            ASC   "THIS DOCUMENT, THE ASSOCIATED COMPUTER P"
-            ASC   "ROGRAM, OR THE AUDIOVISUAL WORK IS STRIC"
-            ASC   "TLY PROHIBITED."
+            ASC   "UNAUTHORIZED REPRODUCTION, ADAPTATION, "
+            ASC   "DISTRIBUTION, PERFORMANCE, OR DISPLAY OF "
+            ASC   "THIS DOCUMENT, THE ASSOCIATED COMPUTER PROGRAM, "
+            ASC   "OR THE AUDIOVISUAL WORK IS STRICTLY PROHIBITED."
             DB    $02
             DB    $BB
             DB    $5A
@@ -126,7 +125,7 @@ L4147       JSR   setTEXT2	; set text mode
             LDA   #$05
             JSR   gotoXY
             LDX   #$00
-L4158       LDA   L41DC,X	; RANK OR CARTOON?
+L4158       LDA   strRAORCA,X	; RANK OR CARTOON?
             JSR   printCHAR
             INX
             CPX   #$11
@@ -143,7 +142,7 @@ L4158       LDA   L41DC,X	; RANK OR CARTOON?
 *--- Choose cartoon
 
             LDX   #$00
-L4178       LDA   L4201,X	; CARTOON NUMBER (1-3)
+L4178       LDA   strCARTOON,X	; CARTOON NUMBER (1-3)
             JSR   printCHAR
             INX
             CPX   #$16
@@ -164,7 +163,7 @@ L4197       STA   zpRANK		; ZP
 *--- Choose rank
 
 L419F       LDX   #$00
-L41A1       LDA   L41ED,X	; RANK NUMBER (1-21)
+L41A1       LDA   strRANK,X	; RANK NUMBER (1-21)
             JSR   printCHAR
             INX
             CPX   #$14
@@ -193,9 +192,9 @@ L41D2       LDA   $0200
             BNE   L41CC
 L41D9       JMP   selectRANKCARTOON
 
-L41DC       ASC   "RANK OR CARTOON? "
-L41ED       ASC   "RANK NUMBER? (1-21) "
-L4201       ASC   "CARTOON NUMBER? (1-3) "
+strRAORCA   ASC   "RANK OR CARTOON? "
+strRANK     ASC   "RANK NUMBER? (1-21) "
+strCARTOON  ASC   "CARTOON NUMBER? (1-3) "
 
 *-----------------------------------
 * SELECT NUMBER OF PLAYERS
@@ -209,7 +208,7 @@ selecNBPLAYERS
             LDA   #$06
             JSR   gotoXY
             LDX   #$00
-L4228       LDA   L427C,X	; HOW MANY PLAYERS?
+L4228       LDA   strHOWMANY,X	; HOW MANY PLAYERS?
             JSR   printCHAR
             INX
             CPX   #$1D
@@ -231,7 +230,7 @@ L4233       JSR   RDKEY
             STA   CV
             JSR   gotoXY
             LDX   #$00
-L4256       LDA   L4299,X	; SPACE OR RETURN
+L4256       LDA   strRETURN,X	; SPACE OR RETURN
             JSR   printCHAR
             INX
             CPX   #$37
@@ -250,8 +249,8 @@ L4272       JSR   RDKEY
             BNE   L4233
             JMP   L4147
 
-L427C       ASC   "HOW MANY PLAYERS?  (1 - 5)   "
-L4299       ASC   "PRESS <RETURN> TO PLAY"8D
+strHOWMANY  ASC   "HOW MANY PLAYERS?  (1 - 5)   "
+strRETURN   ASC   "PRESS <RETURN> TO PLAY"8D
             ASC   "OR <SPACE> TO GO BACK TO DEMO.  "
 
 *-----------------------------------
@@ -477,7 +476,7 @@ welcomeSCRIPT
 
 welcomePAGE
             LDA   #$01
-            STA   zpDEMO
+            STA   fgDEMO
             JSR   showTITLESCREEN
             JSR   clearHGR
 
@@ -504,7 +503,7 @@ welcomePAGE
             LDA   #$22	
             STA   zpY1
             LDA   #$01
-            STA   $E0
+            STA   ghostINDEX
             JSR   L88A2
 
             LDY   zpTEMP4	; Shadow
@@ -518,7 +517,7 @@ welcomePAGE
             LDA   #$31
             STA   zpY1
             LDA   #$03
-            STA   $E0
+            STA   ghostINDEX
             JSR   L88A2
 
             LDY   zpTEMP4	; Bashful
@@ -532,7 +531,7 @@ welcomePAGE
             LDA   #$40
             STA   zpY1
             LDA   #$02
-            STA   $E0
+            STA   ghostINDEX
             JSR   L88A2
 
             LDY   zpTEMP4	; Speedy
@@ -546,7 +545,7 @@ welcomePAGE
             LDA   #$4F
             STA   zpY1
             LDA   #$04
-            STA   $E0
+            STA   ghostINDEX
             JSR   L88A2
 
             LDY   zpTEMP4	; Pokey
@@ -744,7 +743,7 @@ L467C       JSR   L7DB8
 L4689       LDA   #$70
             STA   zpDOTTEMPO
             LDA   #$20
-            STA   $59
+            STA   frameCNT
             LDA   #$18
             STA   $80
             LDA   #$03
@@ -757,14 +756,14 @@ L4689       LDA   #$70
             STA   $81
             STA   zpDOTFLAG
             LDA   #$8D
-            STA   $60
+            STA   pacmanX
             LDA   #$68
-            STA   $71
-            STA   $61
+            STA   enemyY
+            STA   pacmanY
             LDA   #$04
-            STA   $E0
-L46B5       JSR   L8712
-            DEC   $E0
+            STA   ghostINDEX
+L46B5       JSR   getGHOSTSDATA
+            DEC   ghostINDEX
             BNE   L46B5
             LDA   #$B1
             STA   $84
@@ -774,38 +773,38 @@ L46B5       JSR   L8712
             STA   $AC
             LDA   #$E1
             STA   $C0
-L46CC       DEC   $59
+L46CC       DEC   frameCNT
             BNE   L46EC
             JSR   getINPUT
             LDA   #$20
-            STA   $59
-            JSR   L7D80
+            STA   frameCNT
+            JSR   setXYPACMAN
             JSR   eraseSPRITE44
             SEC
-            LDA   $60
+            LDA   pacmanX
             SBC   #$02
-            STA   $60
-            JSR   L7D80
+            STA   pacmanX
+            JSR   setXYPACMAN
             INC   $66
             JSR   L79A4
 L46EC       JSR   L6CF3
             LDA   #$04
-            STA   $E0
-L46F3       JSR   L86FC
+            STA   ghostINDEX
+L46F3       JSR   setGHOSTSDATA
             DEC   $80
             BNE   L4711
             LDA   #$18
             STA   $80
-            JSR   L7D8D
+            JSR   setXYENEMY
             JSR   eraseSPRITE44
             SEC
-            LDA   $70
+            LDA   enemyX
             SBC   #$02
-            STA   $70
-            JSR   L7D8D
+            STA   enemyX
+            JSR   setXYENEMY
             JSR   L88A2
-L4711       JSR   L8712
-            DEC   $E0
+L4711       JSR   getGHOSTSDATA
+            DEC   ghostINDEX
             BNE   L46F3
             DEC   $5E
             BNE   L4742
@@ -827,7 +826,7 @@ L4733       LDA   #$66
             JSR   L7819
             LDA   #$01
 L4740       STA   zpDOTFLAG
-L4742       LDA   $60
+L4742       LDA   pacmanX
             CMP   #$4F
             BCC   L474B
             JMP   L46CC
@@ -842,24 +841,24 @@ L474B       LDA   #$01
             LDA   #$02
             STA   $68
             STA   $62
-L475F       DEC   $59
+L475F       DEC   frameCNT
             BNE   L477F
             JSR   getINPUT
             LDA   #$20
-            STA   $59
-            JSR   L7D80
+            STA   frameCNT
+            JSR   setXYPACMAN
             JSR   eraseSPRITE44
             CLC
-            LDA   $60
+            LDA   pacmanX
             ADC   #$02
-            STA   $60
-            JSR   L7D80
+            STA   pacmanX
+            JSR   setXYPACMAN
             INC   $66
             JSR   L79A4
 L477F       JSR   L6CF3
             LDA   #$04
-            STA   $E0
-L4786       JSR   L86FC
+            STA   ghostINDEX
+L4786       JSR   setGHOSTSDATA
             DEC   $80
             BNE   L47C0
             LDA   #$40
@@ -867,8 +866,8 @@ L4786       JSR   L86FC
             LDA   $79
             BNE   L47C0
             SEC
-            LDA   $70
-            SBC   $60
+            LDA   enemyX
+            SBC   pacmanX
             CMP   #$05
             BCS   L47AD
             JSR   L467C
@@ -878,16 +877,16 @@ L4786       JSR   L86FC
             LDA   #$01
             STA   $79
             BNE   L47C0
-L47AD       JSR   L7D8D
+L47AD       JSR   setXYENEMY
             JSR   eraseSPRITE44
             CLC
-            LDA   $70
+            LDA   enemyX
             ADC   #$02
-            STA   $70
-            JSR   L7D8D
+            STA   enemyX
+            JSR   setXYENEMY
             JSR   L88A2
-L47C0       JSR   L8712
-            DEC   $E0
+L47C0       JSR   getGHOSTSDATA
+            DEC   ghostINDEX
             BNE   L4786
             BEQ   L475F
 L47C9       LDA   #<L47DA
@@ -895,7 +894,7 @@ L47C9       LDA   #<L47DA
             STA   zpPTR3
             STY   zpPTR3+1
             LDA   #$01
-            STA   zpDEMO
+            STA   fgDEMO
             STA   zpRANK
             JMP   L5303
 
@@ -976,7 +975,7 @@ L47DA       DB    $03
 *-----------------------------------
 
 selectMONITOR
-            bit   L48A6		; LoGo
+            bit   selectINPUTDEVICE		; LoGo
             JSR   setTEXT2	; set text mode
             JSR   clearTEXT2	; clear text screen
             LDA   #$0A
@@ -997,7 +996,7 @@ L4842       JSR   RDKEY
             BCS   L4842
             AND   #$01
             STA   $1D		; ZP MONITOR
-            JMP   L48A6
+            JMP   selectINPUTDEVICE
 
 *-----------------------------------
 * 
@@ -1044,14 +1043,15 @@ L4886       ASC   "BLACK & WHITE OR COLOR? (B / C) "
 * SELECT INPUT DEVICE
 *-----------------------------------
 
-L48A6       JSR   setTEXT2
+selectINPUTDEVICE
+            JSR   setTEXT2
             JSR   clearTEXT2
             LDA   #$00
             STA   CH
             STA   CV
             JSR   gotoXY
             LDX   #$00
-L48B7       LDA   L48D9,X	; KEYBOARD OR JOYSTICK
+L48B7       LDA   strINPUTDEVICE,X	; KEYBOARD OR JOYSTICK
             BEQ   L48C2
             JSR   printCHAR
             INX
@@ -1062,29 +1062,31 @@ L48C2       JSR   RDKEY
             CMP   #$B2
             BNE   L48C2
             LDA   #$01		; ZP joystick
-            STA   zpDEVICE
+            STA   theDEVICE
             RTS
 L48D2       LDA   #$00		; ZP keyboard
-            STA   zpDEVICE
-            JMP   L492F
+            STA   theDEVICE
+            JMP   selectKEYBOARD
 
-L48D9       ASC   " PACMAN CAN BE PLAYED WITH"8D8D
+strINPUTDEVICE
+            ASC   " PACMAN CAN BE PLAYED WITH"8D8D
             ASC   " 1. KEYBOARD"8D
             ASC   " 2. APPLE JOYSTICK"8D8D8D8D
             ASC   "CHOOSE A MODE (1 - 2) "00
 
 *-----------------------------------
-* 
+* SELECT KEYBOARD / SET KEYS
 *-----------------------------------
 
-L492F       JSR   clearTEXT2
+selectKEYBOARD
+            JSR   clearTEXT2
             JSR   setTEXT2
             LDA   #$00
             STA   CH
             STA   CV
             JSR   gotoXY
             LDX   #$00
-L4940       LDA   L4A01,X
+L4940       LDA   strKEYBOARD,X
             JSR   printCHAR
             INX
             CPX   #$26
@@ -1101,7 +1103,7 @@ L4955       JSR   printCHAR
             STA   CH
             JSR   gotoXY
             LDX   #$00
-L4965       LDA   L4A26,X
+L4965       LDA   strKEYS,X
             JSR   printCHAR
             INX
             CPX   #$14
@@ -1112,7 +1114,7 @@ L4965       LDA   L4A26,X
             STA   CV
             JSR   gotoXY
             LDX   #$00
-L497D       LDA   L4A3A,X
+L497D       LDA   strLEFT,X
             JSR   printCHAR
             INX
             CPX   #$0C
@@ -1124,7 +1126,7 @@ L497D       LDA   L4A3A,X
             STA   CH
             JSR   gotoXY
             LDX   #$00
-L4999       LDA   L4A46,X
+L4999       LDA   strRIGHT,X
             JSR   printCHAR
             INX
             CPX   #$0C
@@ -1138,7 +1140,7 @@ L49A4       JSR   RDKEY
             STA   CH
             JSR   gotoXY
             LDX   #$00
-L49BA       LDA   L4A52,X
+L49BA       LDA   strUP,X
             JSR   printCHAR
             INX
             CPX   #$0C
@@ -1154,7 +1156,7 @@ L49C5       JSR   RDKEY
             STA   CH
             JSR   gotoXY
             LDX   #$00
-L49E0       LDA   L4A5E,X
+L49E0       LDA   strDOWN,X
             JSR   printCHAR
             INX
             CPX   #$0C
@@ -1169,12 +1171,12 @@ L49EB       JSR   RDKEY
             STA   L6FBD+1
 L4A00       RTS
 
-L4A01       ASC   "NORMAL OR CUSTOMIZED KEYBOARD (N/C)? "
-L4A26       ASC   "   PRESS KEY USED TO"
-L4A3A       ASC   "MOVE LEFT   "
-L4A46       ASC   "MOVE RIGHT  "
-L4A52       ASC   "MOVE UP     "
-L4A5E       ASC   "MOVE DOWN   "
+strKEYBOARD ASC   "NORMAL OR CUSTOMIZED KEYBOARD (N/C)? "
+strKEYS     ASC   "   PRESS KEY USED TO"
+strLEFT     ASC   "MOVE LEFT   "
+strRIGHT    ASC   "MOVE RIGHT  "
+strUP       ASC   "MOVE UP     "
+strDOWN     ASC   "MOVE DOWN   "
 
 *-----------------------------------
 * OUTPUT CHARACTER
@@ -1330,12 +1332,12 @@ theLOGO     HEX   FFFFFE01410101450301450501470701
 
 decodeLOGO  STA   zpPTR2
             STY   zpPTR2+1
-            LDA   zpMONITOR	; save monitor type
+            LDA   fgCOLOR	; save monitor type
             PHA
             LDA   #$01		; force color
-            STA   zpMONITOR
+            STA   fgCOLOR
             LDA   #$00
-            STA   $1E		; no high-bit
+            STA   hgrBIT7		; no high-bit
             STA   zpX1+1
             STA   zpX2+1
 L5273       LDY   #$00
@@ -1366,15 +1368,15 @@ L5299       CLC		; ptr +=3
 L52A4       JMP   L5273
 
 L52A7       PLA		; restore monitor type
-            STA   zpMONITOR
+            STA   fgCOLOR
             JMP   getINPUT	; exit
 
 L52AD       LDA   #$00		; reset high-bit
-            STA   $1E
+            STA   hgrBIT7
             JMP   L5299
 
 L52B4       LDA   #$80		; set high-bit
-            STA   $1E
+            STA   hgrBIT7
             JMP   L5299
 
 *-----------------------------------
@@ -1417,7 +1419,7 @@ L52F9       JMP   getINPUT
 
 L52FC       JSR   L54D4
             LDA   #$00
-            STA   zpFGMUSIC
+            STA   fgMUSIC
 L5303       JSR   L531E
 L5306       JSR   prepareLEVEL
             JSR   getREADY
@@ -1429,12 +1431,12 @@ L530F       JSR   L7861
             JMP   L530F
 
 L531E       LDA   #$01
-            STA   $59
+            STA   frameCNT
             JSR   setDEFAULTBOARD
             LDA   #nbDOTS
             STA   zpNBDOTS
             LDA   #$40
-            STA   $57
+            STA   fruitFREQ
             JSR   savePLAYERDATA
             RTS
 
@@ -1543,10 +1545,10 @@ L53B2       DA    $0666		; board buffers ($380) per player
 
 savePLAYERDATA
             LDX   zpCURPLAYER
-            LDY   L53E0,X
+            LDY   tbplPDOFFSET,X
             LDX   #$07
 L53C5       LDA   zpCURSCORE,X
-            STA   L0300,Y
+            STA   playerDATA,Y
             DEY
             DEX
             BPL   L53C5
@@ -1558,21 +1560,17 @@ L53C5       LDA   zpCURSCORE,X
 
 loadPLAYERDATA
             LDX   zpCURPLAYER
-            LDY   L53E0,X
+            LDY   tbplPDOFFSET,X
             LDX   #$07
-L53D6       LDA   L0300,Y
+L53D6       LDA   playerDATA,Y
             STA   zpCURSCORE,X
             DEY
             DEX
             BPL   L53D6
             RTS
 
-L53E0       DB    $00	; offset of player data
-            DB    $07
-            DB    $0F
-            DB    $17
-            DB    $1F
-            DB    $27
+tbplPDOFFSET	; offset to each player data
+            HEX   00070F171F27
 
 *-----------------------------------
 * 
@@ -1581,7 +1579,7 @@ L53E0       DB    $00	; offset of player data
 L53E6       JSR   showPACMAN
             LDX   #$0D
 L53EB       LDA   L5446,X
-            STA   $60,X
+            STA   pacmanX,X
             DEX
             BPL   L53EB
             LDY   #$53
@@ -1773,18 +1771,18 @@ L54D4       LDA   #$00
             STA   zpCURSCORE
             STA   zpCURSCORE+1
             STA   zpCURSCORE+2
-            STA   zpDEMO
+            STA   fgDEMO
             STA   $F3
 L54E0       LDA   #$01		; ZP - RANK
             STA   zpRANK
             LDA   #$01
-            STA   $59
+            STA   frameCNT
             LDA   #$83		; 3 lives!
             STA   zpNBLIVES
             LDA   #nbDOTS
             STA   zpNBDOTS
             LDA   #$40
-            STA   $57
+            STA   fruitFREQ
             LDA   zpNBPLAYERS
             STA   zpCURPLAYER
             JSR   setDEFAULTBOARD
@@ -1948,13 +1946,13 @@ prepareLEVEL
             JSR   loadPLAYERDATA
             JSR   printRANK
             JSR   printNBLIVES
-            LDA   zpDEMO
+            LDA   fgDEMO
             BNE   L5691
-            LDA   zpFGMUSIC	; did we already play the intro music? 
+            LDA   fgMUSIC	; did we already play the intro music? 
             BNE   L5691
             JSR   playINTROMUSIC
             LDA   #$01
-            STA   zpFGMUSIC
+            STA   fgMUSIC
 L5691       RTS
 
 *-----------------------------------
@@ -2006,7 +2004,7 @@ printNBLIVES
             LDA   zpNBLIVES	; Show 2 Pacman if we have 3 lives
             AND   #$7F
             STA   $19		; save nb lives
-            LDA   zpDEMO
+            LDA   fgDEMO
             BNE   L56FC		; if demo, skip
 
             LDA   #$09	; set coordinates
@@ -2034,9 +2032,9 @@ L56FD       LDA   zpX2	; draw Pacman sprite
             STA   zpX1
             LDA   zpY2
             STA   zpY1
-            LDA   #<L9CB8
-            LDY   #>L9CB8
-            JMP   L6A20
+            LDA   #<sprPACMANRIGHT2
+            LDY   #>sprPACMANRIGHT2
+            JMP   drawSPRITE
 
 *-----------------------------------
 * BLINK THINGS!
@@ -2051,7 +2049,7 @@ blinkTHINGS JSR   blinkPLAYERNAME
 
 L5716       JSR   getMAXRANK15
             TAX
-            LDA   L5733,X
+            LDA   tblBLINKTEMPO,X
             STA   zpDOTTEMPO
 
             LDA   zpDOTFLAG
@@ -2066,22 +2064,8 @@ L572B       JSR   showENERGIZERS
             STA   zpDOTFLAG
             RTS
 
-L5733       DB    $50	; Tempo table
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
+tblBLINKTEMPO	; Tempo table
+            HEX   50505050505050505050505050505050
 
 *-----------------------------------
 * HIDE ENERGIZERS
@@ -2236,19 +2220,19 @@ showPACMAN  LDA   #$8B	; draw Pacman at its initial position
             LDA   #$00
             STA   zpX1+1
             LDA   #$00
-            STA   $1E
-            LDA   #<sprPACMAN0	; fully closed
-            LDY   #>sprPACMAN0	; fully closed
-            JMP   L6A20
+            STA   hgrBIT7
+            LDA   #<sprPACMANFULL	; fully closed
+            LDY   #>sprPACMANFULL	; fully closed
+            JMP   drawSPRITE
 
 *-----------------------------------
 * GET READY!!
 *-----------------------------------
 
 getREADY    JSR   showPACMAN
-            LDA   zpDEMO	; are we playing?
+            LDA   fgDEMO	; are we playing?
             BEQ   L585A
-            JMP   showGAMEOVER		; no, demo
+            JMP   showGAMEOVER	; no, demo
 
 L585A       LDA   #$68		; yes...
             STA   zpY1
@@ -2291,10 +2275,10 @@ sprREADY    HEX   787C0C0F49
 *-----------------------------------
 
 blinkPLAYERNAME
-            LDA   $59
+            LDA   frameCNT
             CMP   #$01
             BNE   L58C6
-            LDA   zpDEMO
+            LDA   fgDEMO
             BEQ   L58C0
             JSR   showGAMEOVER
 L58C0       LDA   $E5
@@ -2371,60 +2355,48 @@ L5903       DB    $08
 * DRAW A DOT ON SCREEN
 *-----------------------------------
 
-drawDOT     LDA   L5925,X
+drawDOT     LDA   xBITON,X
             ORA   (zpHGR),Y
             STA   (zpHGR),Y
             RTS
 
-            LDA   L592C,X
+            LDA   xBITOFF,X
             AND   (zpHGR),Y
-            ORA   $1E
+            ORA   hgrBIT7
             STA   (zpHGR),Y
             RTS
 
-L5925       DB    $01
-            DB    $02
-            DB    $04
-            DB    $08
-            DB    $10
-            DB    $20
-            DB    $40
-L592C       DB    $FE
-            DB    $FD
-            DB    $FB
-            DB    $F7
-            DB    $EF
-            DB    $DF
-            DB    $BF
+xBITON      HEX   01020408102040
+xBITOFF     HEX   FEFDFBF7EFDFBF
 
 *-----------------------------------
 * CALCULATE HGR X-COORDS
 *-----------------------------------
 
-calcXYHGR   LDA   zpX1+1	; address in board?
-            BEQ   L594B	; yup
-            CLC	; no, after
+calcXYHGR   LDA   zpX1+1	; address in 0-255?
+            BEQ   L594B		; yup
+            CLC		; no, after
             LDA   zpX1
             ADC   #$04
             TAX
             CLC
-            LDA   L5A58,X
+            LDA   tblXBYT,X
             ADC   #$24
             STA   zpXCOL	; to the right of the board
-            LDA   L5958,X
+            LDA   tblXBIT,X
             STA   zpXBIT	; the x-sprite offset
             RTS
 
-L594B       LDX   zpX1	; from x-coord
-            LDA   L5A58,X
+L594B       LDX   zpX1		; from x-coord
+            LDA   tblXBYT,X
             STA   zpXCOL	; to x-screen
-            LDA   L5958,X
+            LDA   tblXBIT,X
             STA   zpXBIT	; and x-sprite offset
             RTS
 
 *--- X-coord to Y-byte
 
-L5958       HEX   00010203040506000102030405060001
+tblXBIT     HEX   00010203040506000102030405060001
             HEX   02030405060001020304050600010203
             HEX   04050600010203040506000102030405
             HEX   06000102030405060001020304050600
@@ -2443,7 +2415,7 @@ L5958       HEX   00010203040506000102030405060001
 
 *--- X-coord to Y-col
 
-L5A58       HEX   00000000000000010101010101010202
+tblXBYT     HEX   00000000000000010101010101010202
             HEX   02020202020303030303030304040404
             HEX   04040405050505050505060606060606
             HEX   06070707070707070808080808080809
@@ -2466,16 +2438,16 @@ L5A58       HEX   00000000000000010101010101010202
 
 setHGRADDRESS
             LDX   zpY1
-            LDA   L5B67,X
+            LDA   tblHGRL,X
             STA   zpHGR
-            LDA   L5C27,X
+            LDA   tblHGRH,X
             ORA   #>HGR
             STA   zpHGR+1
             RTS
 
 *--- The HGR tables
 
-L5B67       HEX   00000000000000008080808080808080
+tblHGRL     HEX   00000000000000008080808080808080
             HEX   00000000000000008080808080808080
             HEX   00000000000000008080808080808080
             HEX   00000000000000008080808080808080
@@ -2487,7 +2459,7 @@ L5B67       HEX   00000000000000008080808080808080
             HEX   5050505050505050D0D0D0D0D0D0D0D0
             HEX   5050505050505050D0D0D0D0D0D0D0D0
             HEX   5050505050505050D0D0D0D0D0D0D0D0
-L5C27       HEX   0004080C1014181C0004080C1014181C
+tblHGRH     HEX   0004080C1014181C0004080C1014181C
             HEX   0105090D1115191D0105090D1115191D
             HEX   02060A0E12161A1E02060A0E12161A1E
             HEX   03070B0F13171B1F03070B0F13171B1F
@@ -2525,9 +2497,9 @@ L5CF6       JSR   setHGRADDRESS
 L5D00       JSR   drawDOT
             LDA   (zpHGR),Y
             AND   #$7F
-            ORA   $1E
+            ORA   hgrBIT7
             STA   (zpHGR),Y
-            LDA   zpMONITOR
+            LDA   fgCOLOR
             BEQ   L5D31
             JSR   getNEXTXBIT
             JSR   getNEXTXBIT
@@ -2574,8 +2546,8 @@ L5D40       JSR   setHGRADDRESS
 
 drawGAMEBOARD
             LDA   #$80
-            STA   $1E
-            LDA   zpMONITOR
+            STA   hgrBIT7
+            LDA   fgCOLOR
             BEQ   L5D66
             LDA   #<boardBW
             STA   zpPTR2
@@ -3082,9 +3054,9 @@ L6A04       HEX   00607F00
 * 
 *-----------------------------------
 
-L6A20       LDX   zpMONITOR
+drawSPRITE       LDX   fgCOLOR
             BEQ   L6A28
-            LDX   $1E
+            LDX   hgrBIT7
             BNE   L6A62
 
 L6A28       STA   L6A4A+1	; b&w
@@ -3130,7 +3102,7 @@ L6A62       STA   L55B1+1	; color
 * 
 *-----------------------------------
 
-L6A7C       LDA   $57
+L6A7C       LDA   fruitFREQ
             BNE   L6AA7
             LDA   zpRANK
             CMP   #$1A
@@ -3148,11 +3120,11 @@ L6A88       ASL
             LDA   L6B01,X
             STA   $5B
             LDA   #$60
-            STA   $57
+            STA   fruitFREQ
             LDA   #$01
             STA   $E7
 
-L6AA7       LDA   $59
+L6AA7       LDA   frameCNT
             CMP   #$01
             BNE   L6AFA
             LDA   $E7
@@ -3346,7 +3318,7 @@ L6C8E       HEX   0000004A04002A05006E05002A1D0000
 * ADD TO SCORE
 *-----------------------------------
 
-addTOSCORE  LDX   zpDEMO
+addTOSCORE  LDX   fgDEMO
             BNE   L6CD3
             JSR   getMAXRANK15
             TAX
@@ -3386,9 +3358,9 @@ L6CF3       RTS
 
 gotoNEXTLEVEL
             JSR   L58FA
-            JSR   L7D80
+            JSR   setXYPACMAN
             JSR   eraseSPRITE44
-            JSR   L7D80
+            JSR   setXYPACMAN
             JSR   L79A4
 
             LDY   #$0B
@@ -3430,13 +3402,13 @@ L6D2F       RTS
 * 
 *-----------------------------------
 
-L6D30       LDA   $E0
+L6D30       LDA   ghostINDEX
             ASL
             TAX
             LDA   L6D3F,X
-            STA   $70
+            STA   enemyX
             LDA   L6D40,X
-            STA   $71
+            STA   enemyY
             RTS
 
 L6D3F       DB    $00
@@ -3467,18 +3439,25 @@ L6D49       LDA   #$00
             STA   $68
             RTS
 
-L6D60       LDX   zpRANK
-            CPX   #$15
+*-----------------------------------
+* MAKE GHOSTS ETABLE
+*-----------------------------------
+* (b/c we ate a pacgum)
+
+makeGHOSTSETABLE
+            LDX   zpRANK	; ghosts are invincible
+            CPX   #$15		; as from level 21
             BCS   L6DA0
-            LDA   #$04
-            STA   $E0
-L6D6A       JSR   L86FC
+
+            LDA   #$04		; we have 4 ghosts
+            STA   ghostINDEX
+L6D6A       JSR   setGHOSTSDATA
             LDA   $79
             BNE   L6D75
             LDA   #$01
             STA   $78
-L6D75       JSR   L8712
-            DEC   $E0
+L6D75       JSR   getGHOSTSDATA
+            DEC   ghostINDEX
             BNE   L6D6A
             LDA   #$02
             STA   $68
@@ -3501,26 +3480,28 @@ L6DA0       RTS
 
 L6DA1       LDY   $77
             INY
-            LDA   $E0
-            CMP   #$01
+            LDA   ghostINDEX
+            CMP   #gINKY
             BEQ   L6DDE
-            CMP   #$03
+            CMP   #gBLINKY
             BEQ   L6DDE
-            LDA   #$01
+
+            LDA   #$01	; for Pinky / Clyde
             STA   ($75),Y
             INY
             LDA   #$00
             STA   ($75),Y
             INY
-            LDA   $E0
-            CMP   #$02
+            LDA   ghostINDEX
+            CMP   #gPINKY
             BEQ   L6DC4
             LDA   #$03
             STA   ($75),Y
             BNE   L6DC8
 L6DC4       LDA   #$02
             STA   ($75),Y
-L6DC8       INY
+
+L6DC8       INY	; for all ghosts
             LDA   #$01
             STA   ($75),Y
             INY
@@ -3531,10 +3512,10 @@ L6DC8       INY
             INY
             LDA   #$FF
             STA   ($75),Y
-            JSR   L8712
+            JSR   getGHOSTSDATA
             RTS
 
-L6DDE       LDA   #$00
+L6DDE       LDA   #$00	; for Inky/Blinky
             STA   ($75),Y
             INY
             LDA   #$01
@@ -3711,7 +3692,7 @@ L6E88       LDA   #$00
             BNE   L6E88
             RTS
 
-L6EA5       LDA   $E0
+L6EA5       LDA   ghostINDEX
             ASL
             TAX
             LDA   L8A3A,X
@@ -3730,7 +3711,7 @@ L6EB7       LDA   $0666,X
 L6EC3       JSR   L6AFB
             JSR   showGAMEOVER
             LDA   #$01
-            STA   zpDEMO
+            STA   fgDEMO
             LDY   #$30
 L6ECF       LDX   #$64
             JSR   doWAIT2
@@ -3840,7 +3821,7 @@ L6F50       STA   (zpPTR2),Y
 getINPUT    JSR   readKEYBOARD	; read keyboard
             BCS   L6F65
             STA   $63
-L6F65       LDA   zpDEVICE	; which device?
+L6F65       LDA   theDEVICE	; which device?
             BNE   L6F6F
             JSR   readJOYPAD	; read joypad
             JMP   L6F72
@@ -3875,7 +3856,7 @@ L6F9A       LDA   KBD
             BPL   L6F9A
             STA   KBDSTROBE
 
-L6FA2       LDX   zpDEMO
+L6FA2       LDX   fgDEMO
             BEQ   L6FB1
             CMP   #" "
             BEQ   L6FAE
@@ -3913,7 +3894,7 @@ L6FCE       SEC
 *-----------------------------------
 
 readJOYPAD
-            LDA   zpDEMO
+            LDA   fgDEMO
             BNE   L700A
             LDA   #$00
             BIT   SETAN0
@@ -3990,7 +3971,7 @@ L703C       SBC   #$01
 *-----------------------------------
 
 readJOYSTICK
-            LDA   zpDEMO
+            LDA   fgDEMO
             BNE   L708D
             JSR   getLLJOYSTICK		; read joystick
             LDA   $62
@@ -4882,14 +4863,14 @@ L7851       DB    $09
 * 
 *-----------------------------------
 
-L7861       LDA   zpDEVICE	; which device?
+L7861       LDA   theDEVICE	; which device?
             BNE   L7868		; joystick?
             JSR   getINPUT	; no, keyboard or joypad
-L7868       DEC   $59
+L7868       DEC   frameCNT
             BEQ   L786D
             RTS
 
-L786D       LDA   zpDEVICE
+L786D       LDA   theDEVICE
             BEQ   L7874
             JSR   getINPUT
 L7874       JSR   L808C
@@ -4912,21 +4893,21 @@ L788D       SEC
 L7895       LDY   $AC,X
             BEQ   L789B
             SBC   #$01
-L789B       STA   $59
+L789B       STA   frameCNT
             LDA   $F3
             BEQ   L78A5
             DEC   $F3
-            INC   $59
+            INC   frameCNT
 L78A5       LDA   $64
             TAX
             JSR   L75F1
             LDY   #$00
             LDA   (zpPTR2),Y
-            CMP   $60
+            CMP   pacmanX
             BNE   L78BA
             INY
             LDA   (zpPTR2),Y
-            CMP   $61
+            CMP   pacmanY
             BEQ   L78D1
 L78BA       LDA   $65
             BMI   L78D7
@@ -4934,16 +4915,16 @@ L78BA       LDA   $65
             JSR   L75F1
             LDY   #$00
             LDA   (zpPTR2),Y
-            CMP   $60
+            CMP   pacmanX
             BNE   L78CF
             INY
             LDA   (zpPTR2),Y
-            CMP   $61
+            CMP   pacmanY
 L78CF       BNE   L794B
 L78D1       STX   $64
             LDA   #$FF
             STA   $65
-L78D7       LDA   zpDEMO
+L78D7       LDA   fgDEMO
             BEQ   L78E7
             INC   zpPTR3
             BNE   L78E1
@@ -4969,11 +4950,11 @@ L78FD       LDY   $62
             INY
             LDA   (zpPTR2),Y
             BPL   L7915
-            JSR   L7D80
+            JSR   setXYPACMAN
             JSR   eraseSPRITE44
             LDA   #$02
             STA   $66
-            JSR   L7D80
+            JSR   setXYPACMAN
             JMP   L79A4
 
 L7915       STA   $65
@@ -4983,7 +4964,7 @@ L7915       STA   $65
             CMP   #$1D
             BNE   L795B
             LDA   #$15
-            STA   $6A
+            STA   boardY
             LDA   #$00
             STA   $6C
             LDA   $62
@@ -4996,7 +4977,7 @@ L7935       LDA   #$00
             STA   $69
             BEQ   L795B
 L793B       LDA   #$06
-            STA   $6A
+            STA   boardY
             LDA   #$00
             STA   $6C
             LDA   $62
@@ -5016,28 +4997,28 @@ L795B       LDA   $69
             BEQ   L7962
             JMP   L7B2F
 
-L7962       JSR   L7D80
+L7962       JSR   setXYPACMAN
             JSR   eraseSPRITE44
             CLC
             LDA   $62
             ROR
             BNE   L797A
-            LDA   $61
+            LDA   pacmanY
             BCS   L7976
             ADC   #$02
             BCC   L7988
 L7976       SBC   #$02
             BCS   L7988
-L797A       LDA   $60
+L797A       LDA   pacmanX
             BCS   L7982
             ADC   #$02
             BCC   L7984
 L7982       SBC   #$02
-L7984       STA   $60
-            LDA   $61
-L7988       STA   $61
+L7984       STA   pacmanX
+            LDA   pacmanY
+L7988       STA   pacmanY
             STA   zpY1
-            LDA   $60
+            LDA   pacmanX
             STA   zpX1
             INC   $66
             INC   $1F
@@ -5052,11 +5033,11 @@ L799E       JSR   L79A4
 L79A4       LDA   $66
             AND   #$0F
             STA   $66
-            AND   #$03
+            AND   #$03	; 00000011
             BEQ   L79BE
-            CMP   #$03
+            CMP   #$03	; 00000011
             BNE   L79B4
-            LDA   #$01
+            LDA   #$01	; 00000001
 L79B4       ROR
             LDA   $62
             BCS   L79BC
@@ -5066,15 +5047,15 @@ L79BC       ADC   #$00
 L79BE       ASL
             TAX
             LDA   #$80
-            STA   $1E
+            STA   hgrBIT7
             LDA   sprPACMAN,X
             LDY   sprPACMAN+1,X
-            JMP   L6A20
+            JMP   drawSPRITE
 
-L79CD       LDA   $61
+L79CD       LDA   pacmanY
             CMP   #$6B
             BNE   L79FD
-            LDA   $60
+            LDA   pacmanX
             CMP   #$8A
             BCC   L79FD
             CMP   #$8E
@@ -5104,20 +5085,20 @@ L79FD       CLC
             CMP   #$06
             BNE   L7A11
             LDA   #$00
-            INC   $6A
+            INC   boardY
 L7A11       STA   $6C
             CMP   #$02
             BNE   L7A1E
-            INC   $6A
+            INC   boardY
             JSR   L7A5F
-            DEC   $6A
+            DEC   boardY
 L7A1E       RTS
 
 L7A1F       SBC   #$02
             CMP   #$FE
             BNE   L7A29
             LDA   #$04
-            DEC   $6A
+            DEC   boardY
 L7A29       STA   $6C
             CMP   #$04
             BNE   L7A1E
@@ -5128,20 +5109,20 @@ L7A31       LDA   $6D
             CMP   #$06
             BNE   L7A3F
             LDA   #$00
-            INC   $6B
+            INC   boardX
 L7A3F       STA   $6D
             CMP   #$02
             BNE   L7A1E
-            INC   $6B
+            INC   boardX
             JSR   L7A5F
-            DEC   $6B
+            DEC   boardX
             RTS
 
 L7A4D       SBC   #$02
             CMP   #$FE
             BNE   L7A57
             LDA   #$04
-            DEC   $6B
+            DEC   boardX
 L7A57       STA   $6D
             CMP   #$04
             BNE   L7A1E
@@ -5154,11 +5135,11 @@ L7A5F       JSR   L7A6B
 
 L7A6B       LDA   #>theBOARD
             STA   zpPTR2+1
-            LDA   $6A
+            LDA   boardY
             ASL
             ASL
             ASL
-            ASL
+            ASL		; *16
             BCC   L7A7B
             INC   zpPTR2+1
             INC   zpPTR2+1
@@ -5166,45 +5147,19 @@ L7A7B       ASL
             BCC   L7A80
             INC   zpPTR2+1
 L7A80       CLC
-            ADC   $6B
+            ADC   boardX
             ADC   #<theBOARD
             BCC   L7A89
             INC   zpPTR2+1
 L7A89       STA   zpPTR2
             RTS
 
-L7A8C       DB    $02
-            DB    $02
-            DB    $02
-            DB    $02
-            DB    $02
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-L7A9C       DB    $02
-            DB    $02
-            DB    $02
-            DB    $02
-            DB    $02
-            DB    $02
-            DB    $02
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $01
-            DB    $00
+*-----------------------------------
+* FRAME COUNTER & SPEED DATA
+*-----------------------------------
+
+L7A8C       HEX   02020202020101010101010000000000
+L7A9C       HEX   02020202020202010101010101010100
 
 *-----------------------------------
 * WE'RE OVER A DOT, EAT IT
@@ -5214,18 +5169,18 @@ eatMYDOT    CLC
             JSR   getMAXRANK15
             TAX
             LDA   L7A8C,X
-            ADC   $59
-            STA   $59
+            ADC   frameCNT
+            STA   frameCNT
             LDA   L7A9C,X
             STA   $F3
 
             LDA   (zpPTR2),Y	; get the board value
 
-            LDX   zpDEMO	; game or demo?
-            BNE   L7B1F		; skip if demo
+            LDX   fgDEMO	; game or demo?
+            BNE   eatMYDOTDEMO	; simple dot removal
 
             CLC		; check the dot
-            ROR
+            ROR		; 0-0000_0001 becomes 0000_0000-1
             BEQ   L7AF4		; carry set means normal dot
 
 * We have an energizer dot
@@ -5243,17 +5198,17 @@ eatMYDOT    CLC
 
             CLC		; score +50
             SED
-            LDA   $52
+            LDA   curSCORE
             ADC   #$50
-            STA   $52
-            LDA   $53
+            STA   curSCORE
+            LDA   curSCORE+1
             ADC   #$00
-            STA   $53
-            LDA   $54
+            STA   curSCORE+1
+            LDA   curSCORE+2
             ADC   #$00
-            STA   $54
+            STA   curSCORE+2
             CLD
-            JSR   L6D60
+            JSR   makeGHOSTSETABLE	; ghosts can be eaten now
             CLC
             BCC   L7B0C
 
@@ -5261,15 +5216,15 @@ eatMYDOT    CLC
 
 L7AF4       CLC		; score +10
             SED
-            LDA   $52
+            LDA   curSCORE
             ADC   #$10
-            STA   $52
-            LDA   $53
+            STA   curSCORE
+            LDA   curSCORE+1
             ADC   #$00
-            STA   $53
-            LDA   $54
+            STA   curSCORE+1
+            LDA   curSCORE+2
             ADC   #$00
-            STA   $54
+            STA   curSCORE+2
             CLD
             JSR   sndNORMALDOT	; play sound
 
@@ -5277,23 +5232,31 @@ L7B0C       LDA   #$00		; remove the dot from the board
             LDY   #$00
             STA   (zpPTR2),Y
             JSR   displayPLAYERSCORE
-            DEC   $57		; nbdots--
+            DEC   fruitFREQ	; nbdots--
             DEC   zpNBDOTS
             BNE   L7B1E		; dots remain
-            JMP   gotoNEXTLEVEL		; no more dots
+            JMP   gotoNEXTLEVEL	; no more dots
 L7B1E       RTS
 
-L7B1F       CLC
+*--- Eat my dot when in demo mode
+
+eatMYDOTDEMO
+            CLC		; which kind of dot?
             ROR
-            BEQ   L7B26
-            JSR   L6D60
-L7B26       LDA   #$00
+            BEQ   L7B26		; normal dot
+            JSR   makeGHOSTSETABLE	; or energizer
+
+L7B26       LDA   #$00		; remove dot from the board
             LDY   #$00
             STA   (zpPTR2),Y
-            DEC   zpNBDOTS
+            DEC   zpNBDOTS	; decrement number of ghosts
             RTS
 
-L7B2F       JSR   L7D80
+*-----------------------------------
+* 
+*-----------------------------------
+
+L7B2F       JSR   setXYPACMAN
             JSR   eraseSPRITE44
             LDA   $64
             CMP   #$1A
@@ -5301,11 +5264,11 @@ L7B2F       JSR   L7D80
             LDA   $62
             ROR
             BCC   L7B54
-            LDA   $60
+            LDA   pacmanX
             SBC   #$02
-            STA   $60
+            STA   pacmanX
             STA   zpX1
-L7B48       LDA   $61
+L7B48       LDA   pacmanY
             STA   zpY1
             INC   $66
             JSR   L79A4
@@ -5316,9 +5279,9 @@ L7B48       LDA   $61
 *-----------------------------------
 
 L7B54       CLC
-            LDA   $60
+            LDA   pacmanX
             ADC   #$02
-            STA   $60
+            STA   pacmanX
             STA   zpX1
             CMP   #$DD
             BNE   L7B48
@@ -5327,24 +5290,24 @@ L7B54       CLC
             LDA   #$1D
             STA   $65
             LDA   #$3D
-            STA   $60
+            STA   pacmanX
             STA   zpX1
             LDA   #$00
-            STA   $6A
+            STA   boardY
             LDA   #$00
             STA   $6C
             BEQ   L7B48
 L7B79       LDA   $62
             ROR
             BCS   L7B88
-            LDA   $60
+            LDA   pacmanX
             ADC   #$02
-            STA   $60
+            STA   pacmanX
             STA   zpX1
             BNE   L7B48
-L7B88       LDA   $60
+L7B88       LDA   pacmanX
             SBC   #$02
-            STA   $60
+            STA   pacmanX
             STA   zpX1
             CMP   #$3B
             BNE   L7B48
@@ -5353,10 +5316,10 @@ L7B88       LDA   $60
             LDA   #$1A
             STA   $65
             LDA   #$DB
-            STA   $60
+            STA   pacmanX
             STA   zpX1
             LDA   #$1C
-            STA   $6A
+            STA   boardY
             LDA   #$00
             STA   $6C
             BEQ   L7B48
@@ -5383,7 +5346,7 @@ L7BB5       BIT   SPKR
 playSOUNDFX
             STA   L7BCD+1
             STY   L7BCD+2
-            LDA   zpDEMO	; game or demo?
+            LDA   fgDEMO	; game or demo?
             BEQ   L7BC7		; game
             RTS		; demo
 
@@ -5734,70 +5697,17 @@ L7D32       LDA   #$04
 *-----------------------------------
 
 playINTROMUSIC
-            LDA   #<L7D3F
-            LDY   #>L7D3F
+            LDA   #<intromusicDATA
+            LDY   #>intromusicDATA
             JMP   playSONG
 
-L7D3F       DB    $41
-            DB    $60
-            DB    $41
-            DB    $30
-            DB    $41
-            DB    $20
-            DB    $49
-            DB    $24
-            DB    $57
-            DB    $26
-            DB    $41
-            DB    $60
-            DB    $37
-            DB    $A0
-            DB    $41
-            DB    $60
-            DB    $41
-            DB    $30
-            DB    $41
-            DB    $20
-            DB    $49
-            DB    $24
-            DB    $57
-            DB    $26
-            DB    $41
-            DB    $60
-            DB    $49
-            DB    $70
-            DB    $41
-            DB    $60
-            DB    $41
-            DB    $30
-            DB    $41
-            DB    $20
-            DB    $49
-            DB    $24
-            DB    $57
-            DB    $26
-            DB    $41
-            DB    $60
-            DB    $39
-            DB    $80
-            DB    $39
-            DB    $20
-            DB    $31
-            DB    $24
-            DB    $2E
-            DB    $A0
-            DB    $31
-            DB    $90
-            DB    $39
-            DB    $60
-            DB    $41
-            DB    $30
-            DB    $34
-            DB    $80
-            DB    $41
-            DB    $82
-            DB    $00
-            DB    $00
+*--- Song data
+
+intromusicDATA
+	HEX   41604130412049245726416037A04160
+	HEX   41304120492457264160497041604130
+	HEX   41204924572641603980392031242EA0
+	HEX   319039604130348041820000
 
 *-----------------------------------
 * WAIT FOR THE SONG ROUTINE
@@ -5807,20 +5717,20 @@ sndWAIT     LDX   #$1E
             JMP   doWAIT2
 
 *-----------------------------------
-* 
+* SET X/Y COORDS FOR THE ENGINE
 *-----------------------------------
 
-L7D80       LDA   $60
+setXYPACMAN LDA   pacmanX	; coords of Pacman
             STA   zpX1
-            LDA   $61
+            LDA   pacmanY
             STA   zpY1
             LDA   #$00
             STA   zpX1+1
             RTS
 
-L7D8D       LDA   $70
+setXYENEMY  LDA   enemyX	; coords of the current enemy
             STA   zpX1
-            LDA   $71
+            LDA   enemyY
             STA   zpY1
             LDA   #$00
             STA   zpX1+1
@@ -5867,8 +5777,8 @@ L7DB8       LDA   $68
             BEQ   L7DD2
             CMP   #$08
             BEQ   L7DD8
-            LDA   #$21
-            LDY   #$80
+            LDA   #<L8021
+            LDY   #>8021
             BNE   L7DDC
 L7DCC       LDA   #<L7FC7
             LDY   #>L7FC7
@@ -5880,13 +5790,13 @@ L7DD8       LDA   #<L8003
             LDY   #>L8003
 L7DDC       STA   zpPTR2
             STY   zpPTR2+1
-            JSR   L7D80
+            JSR   setXYPACMAN
             JSR   eraseSPRITE44
-            JSR   L7D8D
+            JSR   setXYENEMY
             JSR   eraseSPRITE44
-            JSR   L7D8D
+            JSR   setXYENEMY
             JSR   L7E1F
-            LDA   zpDEMO
+            LDA   fgDEMO
             BNE   L7E0E
             JSR   L805D
             JSR   L805D
@@ -5899,9 +5809,9 @@ L7DDC       STA   zpPTR2
 
 L7E0E       LDX   #$FF
             JSR   doWAIT2
-L7E13       JSR   L7D8D
+L7E13       JSR   setXYENEMY
             JSR   eraseSPRITE54
-            JSR   L7D80
+            JSR   setXYPACMAN
             JMP   L79A4
 
 L7E1F       JSR   moveCURSOR54
@@ -5925,7 +5835,11 @@ L7E3C       JSR   calcSPROFFSET
             SBC   zpXBIT
             BCS   L7E4C
             DEY
-L7E4C       JMP   L6A20
+L7E4C       JMP   drawSPRITE
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 L7E4F       LDX   #$1B
 L7E51       ASL   L7E70,X
@@ -5948,9 +5862,9 @@ L7E51       ASL   L7E70,X
 *--- Array of data is $50 bytes
 
 L7E70       DB    $CB
-L7E71       DB    $A0
-L7E72       DB    $D4
-L7E73       DB    $CF
+            DB    $A0
+            DB    $D4
+            DB    $CF
             DB    $A0
             DB    $C4
             DB    $C5
@@ -5974,7 +5888,8 @@ L7E73       DB    $CF
             DB    $84
             DB    $0B
             DB    $A4
-            DB    $0B
+            DB    $0B	; $1B
+
             DB    $B1
             DB    $14
             DB    $30
@@ -6032,23 +5947,23 @@ L7E73       DB    $CF
 * 
 *-----------------------------------
 
-L7EC0       JSR   L7D80
-            LDA   #<L9BE6
-            LDY   #>L9BE6
-            JSR   L6A20
+L7EC0       JSR   setXYPACMAN
+            LDA   #<sprPACMANUP2
+            LDY   #>sprPACMANUP2
+            JSR   drawSPRITE
             LDY   #$03
 L7ECC       LDX   #$FF
             JSR   doWAIT2
             DEY
             BNE   L7ECC
-            JSR   L7D80
+            JSR   setXYPACMAN
             JSR   eraseSPRITE44
             LDA   #$06
             STA   zpTEMP3
 L7EDE       LDA   zpTEMP3
             ASL
             TAX
-            JSR   L7D80
+            JSR   setXYPACMAN
             LDA   L7F05,X
             LDY   L7F05+1,X
             STA   zpPTR2
@@ -6057,7 +5972,7 @@ L7EDE       LDA   zpTEMP3
             JSR   L7C82
             LDX   #$80
             JSR   doWAIT2
-            JSR   L7D80
+            JSR   setXYPACMAN
             JSR   eraseSPRITE54
             DEC   zpTEMP3
             BNE   L7EDE
@@ -6341,7 +6256,7 @@ L8003       DB    $00
             DB    $00
             DB    $00
 L8020       DB    $00
-            DB    $44
+L8021       DB    $44
             DB    $00
             DB    $00
             DB    $44
@@ -6396,12 +6311,12 @@ L804E       CLC
             STA   zpY1
             RTS
 
-L805D       LDA   $E0
+L805D       LDA   ghostINDEX
             STA   $F1
-            JSR   L8712
+            JSR   getGHOSTSDATA
             LDA   #$04
-            STA   $E0
-L8068       JSR   L86FC
+            STA   ghostINDEX
+L8068       JSR   setGHOSTSDATA
             LDA   $79
             BEQ   L807D
             LDA   #$01
@@ -6410,12 +6325,12 @@ L8068       JSR   L86FC
             LDA   #$01
             STA   $80
             JSR   L8763
-L807D       JSR   L8712
-            DEC   $E0
+L807D       JSR   getGHOSTSDATA
+            DEC   ghostINDEX
             BNE   L8068
             LDA   $F1
-            STA   $E0
-            JSR   L86FC
+            STA   ghostINDEX
+            JSR   setGHOSTSDATA
             RTS
 
 L808C       LDA   $EA
@@ -6448,8 +6363,8 @@ L80B1       JSR   L80C1
 L80C0       RTS
 
 L80C1       LDA   #$04
-            STA   $E0
-L80C5       JSR   L86FC
+            STA   ghostINDEX
+L80C5       JSR   setGHOSTSDATA
             LDA   $81
             BNE   L80DB
             LDA   $72
@@ -6460,8 +6375,8 @@ L80C5       JSR   L86FC
             LDA   #$FF
             INY
             STA   ($75),Y
-L80DB       JSR   L8712
-            DEC   $E0
+L80DB       JSR   getGHOSTSDATA
+            DEC   ghostINDEX
             BNE   L80C5
             RTS
 
@@ -6550,7 +6465,7 @@ cartoonHLINE
             STY   zpX2	; Y from
             STX   zpY1	; Y to
             LDA   #$80	; mode
-            STA   $1E
+            STA   hgrBIT7
             JMP   drawHLINE
 
 *-----------------------------------
@@ -6569,20 +6484,20 @@ cartoonVLINE
 
 initCARTOON
             LDA   #$C1	; start X
-            STA   $60
+            STA   pacmanX
             LDA   #$7A	; Y
-            STA   $61
-            STA   $71
+            STA   pacmanY
+            STA   enemyY
             LDA   #$E5
-            STA   $70
+            STA   enemyX
             LDA   #$00
             STA   $79
             STA   $78
             STA   $66
             LDA   #$01
-            STA   $E0
+            STA   ghostINDEX
             STA   $81
-            STA   $59
+            STA   frameCNT
             STA   $80
             LDA   #$03
             STA   $62
@@ -6596,20 +6511,20 @@ playCARTOON1
             JSR   clearHGR
             JSR   setHGR
             JSR   initCARTOON
-L81B7       DEC   $59
+L81B7       DEC   frameCNT
             BNE   L81DB
             LDA   #$20
-            STA   $59
-            JSR   L7D80
+            STA   frameCNT
+            JSR   setXYPACMAN
             JSR   eraseSPRITE44
             SEC
-            LDA   $60	; x -= 2
+            LDA   pacmanX	; x -= 2
             SBC   #$02
-            STA   $60
+            STA   pacmanX
             STA   zpX1
             CMP   #$21
             BCC   L81FC
-            LDA   $61
+            LDA   pacmanY
             STA   zpY1
             INC   $66
             JSR   L79A4
@@ -6618,19 +6533,19 @@ L81DB       JSR   doWAIT
             BNE   L81F9
             LDA   #$1D
             STA   $80
-            JSR   L7D8D
+            JSR   setXYENEMY
             JSR   eraseSPRITE44
             SEC
-            LDA   $70
+            LDA   enemyX
             SBC   #$02
-            STA   $70
-            JSR   L7D8D
+            STA   enemyX
+            JSR   setXYENEMY
             JSR   L88A2
 L81F9       JMP   L81B7
 
-L81FC       JSR   L7D80
+L81FC       JSR   setXYPACMAN
             JSR   eraseSPRITE44
-            JSR   L7D8D
+            JSR   setXYENEMY
             JSR   eraseSPRITE44
             LDY   #$08
 L820A       LDX   #$64
@@ -6638,21 +6553,21 @@ L820A       LDX   #$64
             DEY
             BNE   L820A
             LDA   #$00
-            STA   $60
+            STA   pacmanX
             SEC
-            LDA   $61
+            LDA   pacmanY
             SBC   #$0E
-            STA   $61
+            STA   pacmanY
             LDA   #$38
-            STA   $70
-L8221       DEC   $59
+            STA   enemyX
+L8221       DEC   frameCNT
             BNE   L8237
             LDA   #$06
-            STA   $59
+            STA   frameCNT
             CLC
-            LDA   $60
+            LDA   pacmanX
             ADC   #$02
-            STA   $60
+            STA   pacmanX
             CMP   #$A0
             BCS   L8258
             JSR   L8259
@@ -6661,13 +6576,13 @@ L8237       JSR   doWAIT
             BNE   L8255
             LDA   #$07
             STA   $80
-            JSR   L7D8D
+            JSR   setXYENEMY
             JSR   eraseSPRITE44
             CLC
-            LDA   $70
+            LDA   enemyX
             ADC   #$02
-            STA   $70
-            JSR   L7D8D
+            STA   enemyX
+            JSR   setXYENEMY
             JSR   L88A2
 L8255       JMP   L8221
 L8258       RTS
@@ -6681,9 +6596,9 @@ L8259       INC   $66
             LDY   L82D8+1,X
             STA   L827A+1
             STY   L827A+2
-            LDA   $61
+            LDA   pacmanY
             STA   zpY1
-            LDA   $60
+            LDA   pacmanX
             STA   zpX1
             JSR   calcXYHGR
             LDY   #$4F
@@ -6715,16 +6630,16 @@ L829D       LDA   L7E70,X
             BNE   L8292
             RTS
 
-L82B1       LDX   #$4C
+L82B1       LDX   #$4C		; prepare the sprite data
 L82B3       ASL   L7E70,X
             ASL   L7E70,X
-            ROL   L7E71,X
-            ASL   L7E71,X
-            ROL   L7E72,X
-            ASL   L7E72,X
-            ROL   L7E73,X
-            ROR   L7E72,X
-            ROR   L7E71,X
+            ROL   L7E70+1,X
+            ASL   L7E70+1,X
+            ROL   L7E70+2,X
+            ASL   L7E70+2,X
+            ROL   L7E70+3,X
+            ROR   L7E70+2,X
+            ROR   L7E70+1,X
             ROR   L7E70,X
             DEX
             DEX
@@ -6762,10 +6677,10 @@ playCARTOON2
             JSR   clearHGR
             JSR   setHGR
             JSR   initCARTOON
-L83D9       DEC   $59
+L83D9       DEC   frameCNT
             BNE   L840C
             LDA   #$28
-            STA   $59
+            STA   frameCNT
             LDA   #$80
             LDY   #$7C
             LDX   #$81
@@ -6774,15 +6689,15 @@ L83D9       DEC   $59
             LDY   #$7C
             LDX   #$81
             JSR   cartoonVLINE
-            JSR   L7D80
+            JSR   setXYPACMAN
             JSR   eraseSPRITE44
             SEC
-            LDA   $60
+            LDA   pacmanX
             SBC   #$02
-            STA   $60
+            STA   pacmanX
             CMP   #$10
             BCC   L847D
-            JSR   L7D80
+            JSR   setXYPACMAN
             INC   $66
             JSR   L79A4
 L840C       JSR   doWAIT
@@ -6790,18 +6705,18 @@ L840C       JSR   doWAIT
             BNE   L83D9
             LDA   #$21
             STA   $80
-            LDA   $70
+            LDA   enemyX
             CMP   #$71
             BEQ   L83D9
-            JSR   L7D8D
+            JSR   setXYENEMY
             JSR   eraseSPRITE44
             SEC
-            LDA   $70
+            LDA   enemyX
             SBC   #$02
-            STA   $70
-            JSR   L7D8D
+            STA   enemyX
+            JSR   setXYENEMY
             JSR   L88A2
-            LDA   $70
+            LDA   enemyX
             CMP   #$7B
             BCS   L83D9
             CMP   #$71
@@ -6816,15 +6731,15 @@ L840C       JSR   doWAIT
             JSR   cartoonVLINE
             JMP   L83D9
 
-L844F       JSR   L7D8D
+L844F       JSR   setXYENEMY
             JSR   eraseSPRITE44
-            JSR   L7D8D
+            JSR   setXYENEMY
             CLC
             LDA   zpX1
             ADC   #$0A
             STA   zpX1
             JSR   eraseSPRITE44
-            JSR   L7D8D
+            JSR   setXYENEMY
             JSR   L88A2
             LDA   #$74
             LDY   #$7D
@@ -6854,19 +6769,19 @@ playCARTOON3
             JSR   clearHGR
             JSR   setHGR
             JSR   initCARTOON
-L848F       DEC   $59
+L848F       DEC   frameCNT
             BNE   L84B0
             LDA   #$26
-            STA   $59
-            JSR   L7D80
+            STA   frameCNT
+            JSR   setXYPACMAN
             JSR   eraseSPRITE44
             SEC
-            LDA   $60
+            LDA   pacmanX
             SBC   #$02
-            STA   $60
+            STA   pacmanX
             CMP   #$20
             BCC   L84DD
-            JSR   L7D80
+            JSR   setXYPACMAN
             INC   $66
             JSR   L79A4
 L84B0       JSR   doWAIT
@@ -6875,16 +6790,16 @@ L84B0       JSR   doWAIT
 
             LDA   #$21
             STA   $80
-            JSR   L7D8D
+            JSR   setXYENEMY
             JSR   eraseSPRITE44
             SEC
-            LDA   $70
+            LDA   enemyX
             SBC   #$02
-            STA   $70
-            JSR   L7D8D
+            STA   enemyX
+            JSR   setXYENEMY
             JSR   L88A2
             CLC
-            LDA   $70
+            LDA   enemyX
             ADC   #$03
             LDY   #$7D
             LDX   #$7F
@@ -6893,7 +6808,7 @@ L84B0       JSR   doWAIT
 
 *--- Play 2nd part of the cartoon
 
-L84DD       JSR   L7D8D
+L84DD       JSR   setXYENEMY
             JSR   eraseSPRITE44
             LDY   #$08
 L84E5       LDX   #$64
@@ -6901,23 +6816,23 @@ L84E5       LDX   #$64
             DEY
             BNE   L84E5
             LDA   #$37
-            STA   $70
+            STA   enemyX
             LDA   #$10
-            STA   $60
+            STA   pacmanX
             LDA   #$02
             STA   $62
-L84F9       DEC   $59
+L84F9       DEC   frameCNT
             BNE   L8519
             LDA   #$22
-            STA   $59
-            JSR   L7D80
+            STA   frameCNT
+            JSR   setXYPACMAN
             JSR   eraseSPRITE44
-            LDA   $60
+            LDA   pacmanX
             CMP   #$B0
             BCS   L8549
             ADC   #$02
-            STA   $60
-            JSR   L7D80
+            STA   pacmanX
+            JSR   setXYPACMAN
             INC   $66
             JSR   L79A4
 L8519       JSR   doWAIT
@@ -6925,13 +6840,13 @@ L8519       JSR   doWAIT
             BNE   L8546
             LDA   #$27
             STA   $80
-            JSR   L7D8D
+            JSR   setXYENEMY
             JSR   eraseSPRITE54
             CLC
-            LDA   $70
+            LDA   enemyX
             ADC   #$02
-            STA   $70
-            JSR   L7D8D
+            STA   enemyX
+            JSR   setXYENEMY
             LDA   $66
             AND   #$02
             TAX
@@ -7016,7 +6931,7 @@ L856C       DB    $00
 L858C       JSR   clearHGR
             JSR   setHGR
             LDA   #$80
-            STA   $1E
+            STA   hgrBIT7
             LDA   #$00
             LDY   #$7A
             LDX   #$51
@@ -7053,12 +6968,12 @@ L858C       JSR   clearHGR
             LDA   #$02
             STA   $66
             LDA   #$04
-            STA   $E0
-L85E9       JSR   L8712
-            DEC   $E0
+            STA   ghostINDEX
+L85E9       JSR   getGHOSTSDATA
+            DEC   ghostINDEX
             BNE   L85E9
             LDA   #$81
-            STA   $60
+            STA   pacmanX
             STA   $84
             STA   $98
             LDA   #$31
@@ -7066,56 +6981,56 @@ L85E9       JSR   L8712
             LDA   #$D1
             STA   $C0
             LDA   #$57
-            STA   $61
+            STA   pacmanY
             STA   $AD
             STA   $C1
             LDA   #$07
             STA   $85
             LDA   #$A7
             STA   $99
-            JSR   L7D80
+            JSR   setXYPACMAN
             JSR   L79A4
 L8616       LDA   #$04
-            STA   $E0
-L861A       JSR   L86FC
+            STA   ghostINDEX
+L861A       JSR   setGHOSTSDATA
             DEC   $80
             BNE   L8662
             LDA   #$12
             STA   $80
-            JSR   L7D8D
+            JSR   setXYENEMY
             JSR   eraseSPRITE44
-            LDA   $E0
+            LDA   ghostINDEX
             CMP   #$03
             BCS   L8649
             CMP   #$02
             BEQ   L863F
             CLC
-            LDA   $71
+            LDA   enemyY
             ADC   #$02
-            STA   $71
+            STA   enemyY
             JMP   L865C
 
-L863F       LDA   $71
+L863F       LDA   enemyY
             SEC
             SBC   #$02
-            STA   $71
+            STA   enemyY
             JMP   L865C
 
 L8649       BEQ   L8655
             SEC
-            LDA   $70
+            LDA   enemyX
             SBC   #$02
-            STA   $70
+            STA   enemyX
             JMP   L865C
 
 L8655       CLC
-            LDA   $70
+            LDA   enemyX
             ADC   #$02
-            STA   $70
-L865C       JSR   L7D8D
+            STA   enemyX
+L865C       JSR   setXYENEMY
             JSR   L88A2
-L8662       JSR   L8712
-            DEC   $E0
+L8662       JSR   getGHOSTSDATA
+            DEC   ghostINDEX
             BNE   L861A
             LDA   $85
             CMP   #$43
@@ -7127,11 +7042,11 @@ L8662       JSR   L8712
             JSR   cartoonHLINE
             LDX   #$50
             JSR   doWAIT2
-            JSR   L7D80
+            JSR   setXYPACMAN
             JSR   eraseSPRITE44
             LDA   #$01
             STA   $62
-            JSR   L7D80
+            JSR   setXYPACMAN
             JSR   L79A4
             JSR   L7CF0
             LDA   #$81
@@ -7140,11 +7055,11 @@ L8662       JSR   L8712
             JSR   cartoonVLINE
             LDX   #$50
             JSR   doWAIT2
-            JSR   L7D80
+            JSR   setXYPACMAN
             JSR   eraseSPRITE44
             LDA   #$03
             STA   $62
-            JSR   L7D80
+            JSR   setXYPACMAN
             JSR   L79A4
             JSR   L7CF0
             LDA   #$73
@@ -7155,9 +7070,9 @@ L8662       JSR   L8712
             JSR   doWAIT2
             LDA   #$00
             STA   $62
-            JSR   L7D80
+            JSR   setXYPACMAN
             JSR   eraseSPRITE44
-            JSR   L7D80
+            JSR   setXYPACMAN
             JSR   L79A4
             JSR   L7CF0
             LDA   #$81
@@ -7173,16 +7088,21 @@ L86E0       NOP
             RTS
 
 L86EA       LDA   #$04
-            STA   $E0
-L86EE       JSR   L86FC
+            STA   ghostINDEX
+L86EE       JSR   setGHOSTSDATA
             JSR   L8763
-            JSR   L8712
-            DEC   $E0
+            JSR   getGHOSTSDATA
+            DEC   ghostINDEX
             BNE   L86EE
             RTS
 
-L86FC       LDY   $E0
-            LDX   L870D,Y
+*--------------------------------------
+* SET GHOSTS DATA (FOR ENGINE)
+*--------------------------------------
+
+setGHOSTSDATA
+            LDY   ghostINDEX
+            LDX   tblGHOSTSDATA,Y
             LDY   #$13
 L8703       LDA   $84,X
             STA   |$0070,Y
@@ -7191,14 +7111,22 @@ L8703       LDA   $84,X
             BPL   L8703
             RTS
 
-L870D       DB    $00
-            DB    $13
+*--- Addresses are: 84 / 97 / AB / BF / D3 / E7
+
+tblGHOSTSDATA
+            DB    $00	; index of ghost data relative to $84
+            DB    $13	; rela
             DB    $27
             DB    $3B
             DB    $4F
 
-L8712       LDY   $E0
-            LDX   L870D,Y
+*--------------------------------------
+* GET GHOSTS DATA (FROM ENGINE)
+*--------------------------------------
+
+getGHOSTSDATA
+            LDY   ghostINDEX
+            LDX   tblGHOSTSDATA,Y
             LDY   #$13
 L8719       LDA   |$0070,Y
             STA   $84,X
@@ -7207,6 +7135,10 @@ L8719       LDA   |$0070,Y
             BPL   L8719
             RTS
 	
+*--------------------------------------
+* 
+*--------------------------------------
+
 L8723       DB    $0A
             DB    $0A
             DB    $09
@@ -7307,16 +7239,16 @@ L8793       LDA   L8743,X
 L879A       LDA   L8753,X
             STA   $80
 L879F       CLC
-            LDA   $E0
+            LDA   ghostINDEX
             ROR
             TAX
             DEX
             LDA   $72
             AND   #$02
             BEQ   L87AF
-            LDA   $71
+            LDA   enemyY
             BNE   L87B1
-L87AF       LDA   $70
+L87AF       LDA   enemyX
 L87B1       AND   #$02
             BNE   L87BA
             TXA
@@ -7330,22 +7262,22 @@ L87C0       LDA   $73
             JSR   L75F1
             LDY   #$00
             LDA   (zpPTR2),Y
-            CMP   $70
+            CMP   enemyX
             BNE   L87D5
             INY
             LDA   (zpPTR2),Y
-            CMP   $71
+            CMP   enemyY
             BEQ   L87ED
 L87D5       LDA   $74
             TAX
             JSR   L75F1
             LDY   #$00
             LDA   (zpPTR2),Y
-            CMP   $70
+            CMP   enemyX
             BNE   L87EA
             INY
             LDA   (zpPTR2),Y
-            CMP   $71
+            CMP   enemyY
             BEQ   L87ED
 L87EA       JMP   L8866
 
@@ -7393,7 +7325,7 @@ L8839       LDA   $79
             STA   $79
             LDA   #$01
             STA   $81
-            JSR   L7D8D
+            JSR   setXYENEMY
             JSR   eraseSPRITE44
             JSR   L6D30
             JSR   L6DA1
@@ -7416,31 +7348,31 @@ L886D       LDA   $81
             BEQ   L8874
             JMP   L8988
 
-L8874       JSR   L7D8D
+L8874       JSR   setXYENEMY
             JSR   eraseSPRITE44
             CLC
             LDA   $72
             ROR
             BNE   L888C
-            LDA   $71
+            LDA   enemyY
             BCS   L8888
             ADC   #$02
             BCC   L889A
 L8888       SBC   #$02
             BCS   L889A
-L888C       LDA   $70
+L888C       LDA   enemyX
             BCS   L8894
             ADC   #$02
             BCC   L8896
 L8894       SBC   #$02
-L8896       STA   $70
-            LDA   $71
-L889A       STA   $71
+L8896       STA   enemyX
+            LDA   enemyY
+L889A       STA   enemyY
             STA   zpY1
-            LDA   $70
+            LDA   enemyX
             STA   zpX1
 
-L88A2       LDA   $E0
+L88A2       LDA   ghostINDEX
             ASL
             TAX
             LDA   $78
@@ -7458,21 +7390,21 @@ L88BC       LDA   $79
             BEQ   L88C2
             LDX   #$0A
 
-L88C2       LDA   zpMONITOR
+L88C2       LDA   fgCOLOR
             BEQ   L88D3
             CLC
             TXA
             ROR
             TAY
             LDA   L88E1,Y
-            STA   $1E
+            STA   hgrBIT7
             TXA
             ADC   #$0C
             TAX
 
 L88D3       LDA   sprGHOSTS,X
             LDY   sprGHOSTS+1,X
-            JSR   L6A20
+            JSR   drawSPRITE
             LDA   $81
             BEQ   L88E6
             RTS
@@ -7575,7 +7507,7 @@ L8981       ASL		; *2
 L8988       DEC   $82
             BNE   L89DA
             LDY   $77
-            LDA   $E0
+            LDA   ghostINDEX
             ROR
             BCC   L89A6
             LDA   $72
@@ -7595,7 +7527,7 @@ L89A6       LDA   $72
             INY
             LDA   #$00
             STA   ($75),Y
-L89B1       LDA   $E0
+L89B1       LDA   ghostINDEX
             CMP   #$02
             BNE   L89BF
             LDA   #$02
@@ -7618,7 +7550,7 @@ L89C7       INY
             STA   ($75),Y
             BNE   L89DA
 L89D7       JSR   L6EA5
-L89DA       LDA   $E0
+L89DA       LDA   ghostINDEX
             ROR
             BCC   L89E1
             BCS   L8A05
@@ -7627,9 +7559,9 @@ L89E1       ROR
             LDA   #$7F
             BNE   L89EA
 L89E8       LDA   #$99
-L89EA       CMP   $70
+L89EA       CMP   enemyX
             BNE   L8A05
-            LDA   $71
+            LDA   enemyY
             CMP   #$55
             BNE   L89FF
 L89F4       INC   $77
@@ -7641,10 +7573,10 @@ L89FC       JMP   L8874
 L89FF       CMP   #$5D
             BEQ   L89F4
             BNE   L89FC
-L8A05       LDA   $70
+L8A05       LDA   enemyX
             CMP   #$8B
             BNE   L89FC
-            LDA   $71
+            LDA   enemyY
             CMP   #$5D
             BEQ   L89F4
             CMP   #$55
@@ -7708,25 +7640,25 @@ drawGHOSTDOOR
 * 
 *-----------------------------------
 
-L8A9C       JSR   L7D8D
+L8A9C       JSR   setXYENEMY
             JSR   eraseSPRITE44
-            LDA   $70
+            LDA   enemyX
             CMP   #$60
             BCC   L8AE0
             LDA   $72
             ROR
             BCC   L8ABC
-            LDA   $70
+            LDA   enemyX
             SBC   #$02
-            STA   $70
+            STA   enemyX
             STA   zpX1
-L8AB5       LDA   $71
+L8AB5       LDA   enemyY
             STA   zpY1
             JMP   L88A2
 
-L8ABC       LDA   $70
+L8ABC       LDA   enemyX
             ADC   #$02
-            STA   $70
+            STA   enemyX
             STA   zpX1
             CMP   #$DD
             BNE   L8AB5
@@ -7735,7 +7667,7 @@ L8ABC       LDA   $70
             LDA   #$1D
             STA   $74
             LDA   #$3D
-            STA   $70
+            STA   enemyX
             STA   zpX1
             LDA   #$00
             STA   $7B
@@ -7745,14 +7677,14 @@ L8ABC       LDA   $70
 L8AE0       LDA   $72
             ROR
             BCS   L8AEF
-            LDA   $70
+            LDA   enemyX
             ADC   #$02
-            STA   $70
+            STA   enemyX
             STA   zpX1
             BNE   L8AB5
-L8AEF       LDA   $70
+L8AEF       LDA   enemyX
             SBC   #$02
-            STA   $70
+            STA   enemyX
             STA   zpX1
             CMP   #$3B
             BNE   L8AB5
@@ -7761,7 +7693,7 @@ L8AEF       LDA   $70
             LDA   #$1A
             STA   $74
             LDA   #$DB
-            STA   $70
+            STA   enemyX
             STA   zpX1
             LDA   #$1C
             STA   $7B
@@ -7789,12 +7721,12 @@ L8B28       CLC
 L8B31       STA   zpPTR2
             RTS
 
-L8B34       LDA   $60
-            CMP   $70
+L8B34       LDA   pacmanX
+            CMP   enemyX
             BNE   L8B6F
             SEC
-            LDA   $61
-            SBC   $71
+            LDA   pacmanY
+            SBC   enemyY
 L8B3F       BCS   L8B45
             EOR   #$FF
             ADC   #$01
@@ -7807,32 +7739,31 @@ L8B45       CMP   #$0A
             LDA   $72
             AND   #$02
             BEQ   L8B5A
-            LDA   $61
+            LDA   pacmanY
             BNE   L8B5C
-L8B5A       LDA   $60
+L8B5A       LDA   pacmanX
 L8B5C       AND   #$02
             BNE   L8B67
             CLC
-            LDA   $59
+            LDA   frameCNT
             ADC   #$01
-            STA   $59
+            STA   frameCNT
 L8B67       TXA
             CMP   #$06
             BCS   L8B7D
             JMP   L8B7E
 
-L8B6F       LDA   $61
-            CMP   $71
+L8B6F       LDA   pacmanY
+            CMP   enemyY
             BNE   L8B7D
             SEC
-            LDA   $60
-            SBC   $70
+            LDA   pacmanX
+            SBC   enemyX
             JMP   L8B3F
 L8B7D       RTS
 
 L8B7E       LDA   $67
-            JMP   L8B9D
-
+            JMP   L8B9D		; PATCH
             BEQ   L8B8A
             DEC   $67
             BEQ   L8B9D
@@ -7865,16 +7796,16 @@ L8B9D       LDA   $78
             STA   $79
             LDA   #$00
             STA   $78
-            LDX   zpDEMO
+            LDX   fgDEMO
             BNE   L8BDC
             CLC
             SED
             LDA   $68
-            ADC   $53
-            STA   $53
-            LDA   $54
+            ADC   curSCORE+1
+            STA   curSCORE+1
+            LDA   curSCORE+2
             ADC   #$00
-            STA   $54
+            STA   curSCORE+2
             CLC
             LDA   $68
             ADC   $68
@@ -7883,7 +7814,7 @@ L8B9D       LDA   $78
             JSR   displayPLAYERSCORE
 L8BDC       RTS
 
-L8BDD       JSR   L8712
+L8BDD       JSR   getGHOSTSDATA
             JSR   L58FA
             LDY   #$03
 L8BE5       LDX   #$FA
@@ -7891,16 +7822,16 @@ L8BE5       LDX   #$FA
             DEY
             BNE   L8BE5
             LDA   #$04
-            STA   $E0
-L8BF1       JSR   L86FC
-            JSR   L7D8D
+            STA   ghostINDEX
+L8BF1       JSR   setGHOSTSDATA
+            JSR   setXYENEMY
             JSR   eraseSPRITE44
-            DEC   $E0
+            DEC   ghostINDEX
             BNE   L8BF1
-            JSR   L7D80
+            JSR   setXYPACMAN
             JSR   eraseSPRITE44
             JSR   L7EC0
-            LDA   zpDEMO
+            LDA   fgDEMO
             BEQ   L8C0E
             JMP   welcomePAGE
 
@@ -7961,7 +7892,7 @@ L8C64       LDY   $77
 L8C6C       LDA   $73
             ASL
             ASL
-            ADC   $E0
+            ADC   ghostINDEX
             SEC
             SBC   #$01
             TAX
@@ -7976,7 +7907,7 @@ L8C6C       LDA   $73
             BNE   L8C8F
             LDA   $E9
             BEQ   L8CA0
-L8C8F       LDA   $E0
+L8C8F       LDA   ghostINDEX
             ASL
             TAX
             LDA   L8CB4,X
@@ -7987,8 +7918,8 @@ L8C8F       LDA   $E0
             JMP   L8CA6
 
 L8CA0       LDA   $72
-            LDX   $60
-            LDY   $61
+            LDX   pacmanX
+            LDY   pacmanY
 L8CA6       JSR   $0666
             LDY   $77
             INY
@@ -8113,18 +8044,18 @@ L8E46       CMP   #$01
             BCS   L8E5F
             CMP   #$02
             BEQ   L8E59
-            CPX   $70
+            CPX   enemyX
             BCS   L8E5F
 L8E56       LDA   #$03
             RTS
 
-L8E59       CPX   $70
+L8E59       CPX   enemyX
             BEQ   L8E5F
             BCS   L8E68
 L8E5F       LDA   #$00
             RTS
 
-L8E62       CPX   $70
+L8E62       CPX   enemyX
             BEQ   L8E56
             BCC   L8E56
 L8E68       LDA   #$02
@@ -8136,19 +8067,19 @@ L8E6B       CMP   #$01
             BCS   L8E86
             CMP   #$03
             BEQ   L8E80
-            CPX   $70
+            CPX   enemyX
             BEQ   L8E86
             BCC   L8E86
 L8E7D       LDA   #$02
             RTS
 
-L8E80       CPX   $70
+L8E80       CPX   enemyX
             BEQ   L8E86
             BCC   L8E8D
 L8E86       LDA   #$00
             RTS
 
-L8E89       CPX   $70
+L8E89       CPX   enemyX
             BCS   L8E7D
 L8E8D       LDA   #$03
             RTS
@@ -8159,18 +8090,18 @@ L8E90       CMP   #$03
             BCS   L8EA2
             CMP   #$01
             BEQ   L8EA5
-            CPY   $71
+            CPY   enemyY
             BEQ   L8EA2
             BCS   L8EB0
 L8EA2       LDA   #$02
             RTS
 
-L8EA5       CPY   $71
+L8EA5       CPY   enemyY
             BCS   L8EA2
 L8EA9       LDA   #$01
             RTS
 
-L8EAC       CPY   $71
+L8EAC       CPY   enemyY
             BCC   L8EA9
 L8EB0       LDA   #$00
             RTS
@@ -8181,18 +8112,18 @@ L8EB3       CMP   #$02
             BCC   L8EC5
             CMP   #$01
             BEQ   L8EC8
-            CPY   $71
+            CPY   enemyY
             BEQ   L8EC5
             BCS   L8ED3
 L8EC5       LDA   #$03
             RTS
 
-L8EC8       CPY   $71
+L8EC8       CPY   enemyY
             BCS   L8EC5
 L8ECC       LDA   #$01
             RTS
 
-L8ECF       CPY   $71
+L8ECF       CPY   enemyY
             BCC   L8ECC
 L8ED3       LDA   #$00
             RTS
@@ -8205,38 +8136,38 @@ L8ED6       CMP   #$01
             BEQ   L8EF8
             CMP   #$03
             BEQ   L8F0B
-            CPX   $70
+            CPX   enemyX
             BEQ   L8F15
             BCS   L8F02
 L8EEC       LDA   #$03
             RTS
 
-L8EEF       CPX   $70
+L8EEF       CPX   enemyX
             BCC   L8EEC
             BNE   L8F02
 L8EF5       LDA   #$01
             RTS
 
-L8EF8       CPX   $70
+L8EF8       CPX   enemyX
             BCC   L8F05
             BEQ   L8F05
-            CPY   $71
+            CPY   enemyY
             BCC   L8EF5
 L8F02       LDA   #$02
             RTS
 
-L8F05       CPY   $71
+L8F05       CPY   enemyY
             BCC   L8EF5
             BCS   L8F15
-L8F0B       CPX   $70
+L8F0B       CPX   enemyX
             BCC   L8F18
-            CPY   $71
+            CPY   enemyY
             BCC   L8EF5
             BEQ   L8EF5
 L8F15       LDA   #$00
             RTS
 
-L8F18       CPY   $71
+L8F18       CPY   enemyY
             BEQ   L8EEC
             BCC   L8EF5
             BCS   L8F15
@@ -8248,39 +8179,39 @@ L8F20       CMP   #$01
             BEQ   L8F42
             CMP   #$02
             BEQ   L8F55
-            CPX   $70
+            CPX   enemyX
             BEQ   L8F61
             BCC   L8F3F
 L8F36       LDA   #$02
             RTS
 
-L8F39       CPX   $70
+L8F39       CPX   enemyX
             BEQ   L8F4C
             BCS   L8F36
 L8F3F       LDA   #$03
             RTS
 
-L8F42       CPX   $70
+L8F42       CPX   enemyX
             BCS   L8F4F
-            CPY   $71
+            CPY   enemyY
             BEQ   L8F3F
             BCC   L8F3F
 L8F4C       LDA   #$01
             RTS
 
-L8F4F       CPY   $71
+L8F4F       CPY   enemyY
             BCC   L8F4C
             BCS   L8F61
-L8F55       CPX   $70
+L8F55       CPX   enemyX
             BEQ   L8F5B
             BCS   L8F64
-L8F5B       CPY   $71
+L8F5B       CPY   enemyY
             BCC   L8F4C
             BEQ   L8F4C
 L8F61       LDA   #$00
             RTS
 
-L8F64       CPY   $71
+L8F64       CPY   enemyY
             BEQ   L8F36
             BCC   L8F4C
             BCS   L8F61
@@ -8291,13 +8222,13 @@ L8F6C       CMP   #$01
             BEQ   L8F81
             CPX   #$60
             BCC   L8F92
-            CPY   $71
+            CPY   enemyY
             BCC   L8F92
             BEQ   L8F92
 L8F7E       LDA   #$00
             RTS
 
-L8F81       CPY   $71
+L8F81       CPY   enemyY
             BEQ   L8F87
             BCS   L8F7E
 L8F87       LDA   #$02
@@ -8305,7 +8236,7 @@ L8F87       LDA   #$02
 
 L8F8A       CPY   #$37
             BCS   L8F92
-            CPX   $70
+            CPX   enemyX
             BCS   L8F87
 L8F92       LDA   #$03
             RTS
@@ -8316,13 +8247,13 @@ L8F95       CMP   #$01
             BEQ   L8FAA
             CPX   #$B9
             BCS   L8FBB
-            CPY   $71
+            CPY   enemyY
             BCC   L8FBB
             BEQ   L8FBB
 L8FA7       LDA   #$00
             RTS
 
-L8FAA       CPY   $71
+L8FAA       CPY   enemyY
             BEQ   L8FB0
             BCS   L8FA7
 L8FB0       LDA   #$03
@@ -8330,7 +8261,7 @@ L8FB0       LDA   #$03
 
 L8FB3       CPY   #$37
             BCS   L8FBB
-            CPX   $70
+            CPX   enemyX
             BCC   L8FB0
 L8FBB       LDA   #$02
             RTS
@@ -8346,7 +8277,7 @@ L8FCA       LDA   #$03
 
 L8FCD       CPX   #$61
             BCC   L8FCA
-            CPY   $71
+            CPY   enemyY
             BCS   L8FCA
 L8FD5       LDA   #$01
             RTS
@@ -8359,7 +8290,7 @@ L8FDC       LDA   #$02
 L8FDF       CPY   #$37
             BCC   L8FD5
             BCS   L8FDC
-L8FE5       CPX   $70
+L8FE5       CPX   enemyX
             BCC   L8FCA
             BEQ   L8FCA
             BCS   L8FDC
@@ -8375,7 +8306,7 @@ L8FF9       LDA   #$02
 
 L8FFC       CPX   #$B9
             BCS   L8FF9
-            CPY   $71
+            CPY   enemyY
             BCS   L8FF9
 L9004       LDA   #$01
             RTS
@@ -8388,7 +8319,7 @@ L900B       LDA   #$03
 L900E       CPY   #$37
             BCC   L9004
             BCS   L900B
-L9014       CPX   $70
+L9014       CPX   enemyX
             BCS   L8FF9
             BCC   L900B
 
@@ -8396,18 +8327,18 @@ L901A       CMP   #$02
             BEQ   L9032
             CMP   #$00
             BEQ   L9029
-            CPX   $70
+            CPX   enemyX
             BCC   L902F
 L9026       LDA   #$01
             RTS
 
-L9029       CPY   $71
+L9029       CPY   enemyY
             BEQ   L902F
             BCS   L9038
 L902F       LDA   #$03
             RTS
 
-L9032       CPY   $71
+L9032       CPY   enemyY
             BCC   L9026
             BEQ   L9026
 L9038       LDA   #$00
@@ -8417,19 +8348,19 @@ L903B       CMP   #$03
             BEQ   L9055
             CMP   #$00
             BEQ   L904C
-            CPX   $70
+            CPX   enemyX
             BEQ   L9049
             BCS   L9052
 L9049       LDA   #$01
             RTS
 
-L904C       CPY   $71
+L904C       CPY   enemyY
             BEQ   L9052
             BCS   L905B
 L9052       LDA   #$02
             RTS
 
-L9055       CPY   $71
+L9055       CPY   enemyY
             BCC   L9049
             BEQ   L9049
 L905B       LDA   #$00
@@ -8446,7 +8377,7 @@ L9067       LDA   #$03
 L906A       LDA   #$02
             RTS
 
-L906D       CPX   $70
+L906D       CPX   enemyX
             BCC   L9067
             BCS   L906A
 L9073       CMP   #$02
@@ -8461,7 +8392,7 @@ L907E       LDA   $72
             BEQ   L90B1
             CMP   #$01
             BEQ   L9098
-            CPY   $71
+            CPY   enemyY
             BEQ   L908E
             BCS   L9091
 L908E       LDA   #$02
@@ -8472,21 +8403,21 @@ L9091       CPY   #$6C
 L9095       LDA   #$00
             RTS
 
-L9098       CPY   $71
+L9098       CPY   enemyY
             BCS   L908E
             CPY   #$46
             BCS   L908E
 L90A0       LDA   #$01
             RTS
 
-L90A3       CPX   $70
+L90A3       CPX   enemyX
             BEQ   L90B1
             CPY   #$46
             BCC   L90A0
             CPY   #$6C
             BCS   L9095
             BCC   L908E
-L90B1       CPY   $71
+L90B1       CPY   enemyY
             BCC   L90A0
             BCS   L9095
 
@@ -8521,7 +8452,7 @@ L90E2       CPY   #$7C
 L90E6       LDA   #$03
             RTS
 
-L90E9       CPY   $71
+L90E9       CPY   enemyY
             BCS   L90DF
 L90ED       LDA   #$01
             RTS
@@ -8542,7 +8473,7 @@ L9103       CPY   #$7C
 L9107       LDA   #$02
             RTS
 
-L910A       CPY   $71
+L910A       CPY   enemyY
             BCS   L9100
 L910E       LDA   #$01
             RTS
@@ -8551,23 +8482,23 @@ L9111       CMP   #$03
             BEQ   L9130
             CMP   #$01
             BEQ   L9129
-            CPX   $70
+            CPX   enemyX
             BCS   L9120
 L911D       LDA   #$00
             RTS
 
-L9120       CPY   $71
+L9120       CPY   enemyY
             BEQ   L9126
             BCS   L911D
 L9126       LDA   #$02
             RTS
 
-L9129       CPY   $71
+L9129       CPY   enemyY
             BEQ   L9126
 L912D       LDA   #$01
             RTS
 
-L9130       CPY   $71
+L9130       CPY   enemyY
             BCC   L912D
             BCS   L911D
 
@@ -8575,24 +8506,24 @@ L9136       CMP   #$02
             BEQ   L9157
             CMP   #$01
             BEQ   L9150
-            CPX   $70
+            CPX   enemyX
             BCC   L9147
             BEQ   L9147
 L9144       LDA   #$00
             RTS
 
-L9147       CPY   $71
+L9147       CPY   enemyY
             BEQ   L914D
             BCS   L9144
 L914D       LDA   #$03
             RTS
 
-L9150       CPY   $71
+L9150       CPY   enemyY
             BEQ   L914D
 L9154       LDA   #$01
             RTS
 
-L9157       CPY   $71
+L9157       CPY   enemyY
             BCC   L9154
             BCS   L9144
 
@@ -8603,13 +8534,13 @@ L915D       CMP   #$00
 L9165       LDA   #$01
             RTS
 
-L9168       CPX   $70
+L9168       CPX   enemyX
             BEQ   L9165
             CMP   #$01
             BEQ   L919D
             CMP   #$02
             BEQ   L917E
-            CPX   $70
+            CPX   enemyX
             BCC   L917B
 L9178       LDA   #$00
             RTS
@@ -8617,7 +8548,7 @@ L9178       LDA   #$00
 L917B       LDA   #$03
             RTS
 
-L917E       CPX   $70
+L917E       CPX   enemyX
             BEQ   L9178
             BCC   L9178
             CPX   #$8D
@@ -8625,7 +8556,7 @@ L917E       CPX   $70
 L9188       LDA   #$02
             RTS
 
-L918B       CPY   $71
+L918B       CPY   enemyY
             BEQ   L9188
             BCS   L9197
             CPY   #$5A
@@ -8634,16 +8565,16 @@ L918B       CPY   $71
 L9197       CPY   #$8F
             BCS   L9178
             BCC   L9188
-L919D       CPX   $70
+L919D       CPX   enemyX
             BCC   L917B
             BCS   L9188
-L91A3       CPY   $71
+L91A3       CPY   enemyY
             BCC   L9188
             BNE   L91AF
-            CPX   $70
+            CPX   enemyX
             BCC   L917B
             BCS   L9188
-L91AF       CPX   $70
+L91AF       CPX   enemyX
             BEQ   L9178
             BCS   L91BB
             CPY   #$A1
@@ -8661,13 +8592,13 @@ L91C3       CMP   #$00
 L91CB       LDA   #$01
             RTS
 
-L91CE       CPX   $70
+L91CE       CPX   enemyX
             BEQ   L91CB
             CMP   #$01
             BEQ   L9205
             CMP   #$03
             BEQ   L91E6
-            CPX   $70
+            CPX   enemyX
             BEQ   L91E0
             BCS   L917B
 L91E0       LDA   #$00
@@ -8676,7 +8607,7 @@ L91E0       LDA   #$00
 L91E3       LDA   #$02
             RTS
 
-L91E6       CPX   $70
+L91E6       CPX   enemyX
             BCS   L91E0
             CPX   #$8D
             BEQ   L91F0
@@ -8684,7 +8615,7 @@ L91E6       CPX   $70
 L91F0       LDA   #$03
             RTS
 
-L91F3       CPY   $71
+L91F3       CPY   enemyY
             BEQ   L91F0
             BCS   L91FF
             CPY   #$5A
@@ -8693,16 +8624,16 @@ L91F3       CPY   $71
 L91FF       CPY   #$8F
             BCS   L91E0
             BCC   L91F0
-L9205       CPX   $70
+L9205       CPX   enemyX
             BCS   L91E3
             BCC   L91F0
-L920B       CPY   $71
+L920B       CPY   enemyY
             BCC   L91F0
             BNE   L9217
-            CPX   $70
+            CPX   enemyX
             BCS   L91E3
             BCC   L91F0
-L9217       CPX   $70
+L9217       CPX   enemyX
             BEQ   L91E0
             BCC   L9223
             CPY   #$A1
@@ -8722,9 +8653,9 @@ L922B       CMP   #$00
 L9237       LDA   #$03
             RTS
 
-L923A       CPY   $71
+L923A       CPY   enemyY
             BCS   L9237
-            CPX   $70
+            CPX   enemyX
             BCC   L9245
 L9242       LDA   #$01
             RTS
@@ -8735,16 +8666,16 @@ L9245       LDA   $62
             BNE   L9237
 L924D       CPY   #$36
             BCC   L9242
-            CPY   $71
+            CPY   enemyY
             BCC   L9242
 L9255       LDA   #$02
             RTS
 
-L9258       CPY   $71
+L9258       CPY   enemyY
             BCC   L9237
             BEQ   L9260
             BCS   L9255
-L9260       CPX   $70
+L9260       CPX   enemyX
             BCC   L9237
             BCS   L9255
 
@@ -8757,9 +8688,9 @@ L9266       CMP   #$00
 L9272       LDA   #$02
             RTS
 
-L9275       CPY   $71
+L9275       CPY   enemyY
             BCS   L9272
-            CPX   $70
+            CPX   enemyX
             BEQ   L927F
             BCS   L9282
 L927F       LDA   #$01
@@ -8771,16 +8702,16 @@ L9282       LDA   $62
             BNE   L9272
 L928A       CPY   #$36
             BCC   L927F
-            CPY   $71
+            CPY   enemyY
             BCC   L927F
 L9292       LDA   #$03
             RTS
 
-L9295       CPY   $71
+L9295       CPY   enemyY
             BCC   L9272
             BEQ   L929D
             BCS   L9292
-L929D       CPX   $70
+L929D       CPX   enemyX
             BCS   L9272
             BCC   L9292
 
@@ -8790,7 +8721,7 @@ L92A3       CMP   #$03
             BEQ   L92CB
             CPY   #$5A
             BCC   L92BC
-            CPX   $70
+            CPX   enemyX
             BEQ   L92B5
             BCS   L92B8
 L92B5       LDA   #$00
@@ -8814,10 +8745,10 @@ L92CF       LDA   #$01
 
 L92D2       CPX   #$83
             BCS   L92BC
-            CPX   $70
+            CPX   enemyX
             BEQ   L92CF
             BCC   L92CF
-            CPY   $71
+            CPY   enemyY
             BCS   L92BC
             LDA   $62
             CMP   #$03
@@ -8825,7 +8756,7 @@ L92D2       CPX   #$83
             CMP   #$01
             BEQ   L92CF
             BNE   L92BC
-L92EC       CPY   $71
+L92EC       CPY   enemyY
             BCC   L92CF
             BCS   L92B5
 
@@ -8835,7 +8766,7 @@ L92F2       CMP   #$02
             BEQ   L9318
             CPY   #$5A
             BCC   L9309
-            CPX   $70
+            CPX   enemyX
             BCC   L9305
 L9302       LDA   #$00
             RTS
@@ -8858,9 +8789,9 @@ L931C       LDA   #$01
 
 L931F       CPX   #$96
             BCC   L9309
-            CPX   $70
+            CPX   enemyX
             BCS   L931C
-            CPY   $71
+            CPY   enemyY
             BCS   L9309
             LDA   $62
             CMP   #$02
@@ -8868,7 +8799,7 @@ L931F       CPX   #$96
             CMP   #$01
             BEQ   L931C
             BNE   L9309
-L9337       CPY   $71
+L9337       CPY   enemyY
             BCC   L931C
             BCS   L9302
 
@@ -8876,9 +8807,9 @@ L933D       CMP   #$01
             BEQ   L9364
             CMP   #$02
             BEQ   L9355
-            CPX   $70
+            CPX   enemyX
             BCC   L9352
-            CPY   $71
+            CPY   enemyY
             BCC   L9352
             BEQ   L9352
 L934F       LDA   #$00
@@ -8887,7 +8818,7 @@ L934F       LDA   #$00
 L9352       LDA   #$03
             RTS
 
-L9355       CPY   $71
+L9355       CPY   enemyY
             BEQ   L935B
             BCS   L935E
 L935B       LDA   #$02
@@ -8896,7 +8827,7 @@ L935B       LDA   #$02
 L935E       CPX   #$84
             BCC   L934F
             BCS   L935B
-L9364       CPX   $70
+L9364       CPX   enemyX
             BCC   L9352
             BCS   L935B
 
@@ -8904,10 +8835,10 @@ L936A       CMP   #$01
             BEQ   L9393
             CMP   #$03
             BEQ   L9384
-            CPX   $70
+            CPX   enemyX
             BEQ   L9378
             BCS   L9381
-L9378       CPY   $71
+L9378       CPY   enemyY
             BCC   L9381
             BEQ   L9381
 L937E       LDA   #$00
@@ -8916,7 +8847,7 @@ L937E       LDA   #$00
 L9381       LDA   #$02
             RTS
 
-L9384       CPY   $71
+L9384       CPY   enemyY
             BEQ   L938A
             BCS   L938D
 L938A       LDA   #$03
@@ -8925,7 +8856,7 @@ L938A       LDA   #$03
 L938D       CPX   #$94
             BCS   L937E
             BCC   L938A
-L9393       CPX   $70
+L9393       CPX   enemyX
             BCS   L9381
             BCC   L938A
 
@@ -8935,7 +8866,7 @@ L9399       CMP   #$00
             BEQ   L93B1
             CPY   #$7D
             BCC   L93AE
-            CPX   $70
+            CPX   enemyX
             BEQ   L93AB
             BCS   L93AE
 L93AB       LDA   #$03
@@ -8948,7 +8879,7 @@ L93B1       CPY   #$B3
             BCS   L93BF
             CPY   #$6B
             BEQ   L93C2
-            CPX   $70
+            CPX   enemyX
             BCC   L93AE
             BEQ   L93AE
 L93BF       LDA   #$02
@@ -8964,7 +8895,7 @@ L93CA       CPY   #$B3
             CMP   #$02
             BEQ   L93BF
             BNE   L93AB
-L93D6       CPX   $70
+L93D6       CPX   enemyX
             BCC   L93AB
             BEQ   L93AB
             BCS   L93BF
@@ -8975,7 +8906,7 @@ L93DE       CMP   #$00
             BEQ   L93F4
             CPY   #$7D
             BCC   L93F1
-            CPX   $70
+            CPX   enemyX
             BCC   L93F1
 L93EE       LDA   #$02
             RTS
@@ -8987,7 +8918,7 @@ L93F4       CPY   #$B3
             BCS   L9400
             CPY   #$6B
             BEQ   L9403
-            CPX   $70
+            CPX   enemyX
             BCS   L93F1
 L9400       LDA   #$03
             RTS
@@ -9002,7 +8933,7 @@ L940B       CPY   #$B3
             CMP   #$03
             BEQ   L9400
             BNE   L93EE
-L9417       CPX   $70
+L9417       CPX   enemyX
             BCS   L93EE
             BCC   L9400
 
@@ -9010,14 +8941,14 @@ L941D       CMP   #$00
             BEQ   L943E
             CMP   #$02
             BEQ   L942C
-            CPY   $71
+            CPY   enemyY
             BCC   L9438
 L9429       LDA   #$03
             RTS
 
 L942C       CPY   #$7D
             BCC   L943B
-            CPY   $71
+            CPY   enemyY
             BCS   L943B
             CPX   #$5F
             BCS   L943B
@@ -9032,12 +8963,12 @@ L943E       CPY   #$B3
             LDA   $62
             CMP   #$02
             BNE   L9429
-            CPX   $70
+            CPX   enemyX
             BCC   L9429
             BCS   L943B
-L944E       CPX   $70
+L944E       CPX   enemyX
             BCS   L943B
-            CPY   $71
+            CPY   enemyY
             BCS   L9429
             BCC   L943B
 
@@ -9045,14 +8976,14 @@ L9458       CMP   #$00
             BEQ   L9479
             CMP   #$03
             BEQ   L9467
-            CPY   $71
+            CPY   enemyY
             BCC   L9473
 L9464       LDA   #$02
             RTS
 
 L9467       CPY   #$7D
             BCC   L9476
-            CPY   $71
+            CPY   enemyY
             BCS   L9476
             CPX   #$BA
             BCC   L9476
@@ -9067,12 +8998,12 @@ L9479       CPY   #$B3
             LDA   $62
             CMP   #$03
             BNE   L9464
-            CPX   $70
+            CPX   enemyX
             BCC   L9476
             BCS   L9464
-L9489       CPX   $70
+L9489       CPX   enemyX
             BCC   L9476
-            CPY   $71
+            CPY   enemyY
             BCS   L9464
             BCC   L9476
 
@@ -9095,7 +9026,7 @@ L94AC       LDA   #$01
 
 L94AF       CPY   #$B3
             BEQ   L94B9
-            CPX   $70
+            CPX   enemyX
             BCC   L94AC
             BEQ   L94AC
 L94B9       LDA   #$02
@@ -9103,7 +9034,7 @@ L94B9       LDA   #$02
 
 L94BC       CPY   #$7D
             BCC   L94B9
-            CPX   $70
+            CPX   enemyX
             BCC   L94A9
             BCS   L94B9
 
@@ -9126,28 +9057,28 @@ L94DF       LDA   #$01
 
 L94E2       CPY   #$B3
             BEQ   L94EA
-            CPX   $70
+            CPX   enemyX
             BCS   L94DF
 L94EA       LDA   #$03
             RTS
 
 L94ED       CPY   #$7D
             BCC   L94EA
-            CPX   $70
+            CPX   enemyX
             BCS   L94DC
             BCC   L94EA
 
 L94F7       PHA
             TXA
             SEC
-            SBC   $70
+            SBC   enemyX
             BCS   L9500
             EOR   #$FF
 L9500       CMP   #$20
             BCS   L951B
             TYA
             SEC
-            SBC   $71
+            SBC   enemyY
             BCS   L950C
             EOR   #$FF
 L950C       CMP   #$20
@@ -9175,7 +9106,7 @@ L952B       LDA   #$01
 
 L952E       CPX   #$B9
             BCS   L952B
-            CPY   $71
+            CPY   enemyY
             BCS   L952B
 L9536       LDA   #$02
             RTS
@@ -9187,7 +9118,7 @@ L9539       CPX   #$93
 L9541       LDA   #$03
             RTS
 
-L9544       CPX   $70
+L9544       CPX   enemyX
             BCS   L9541
             BCC   L9536
 
@@ -9195,19 +9126,19 @@ L954A       CMP   #$03
             BEQ   L9564
             CMP   #$00
             BEQ   L955B
-            CPX   $70
+            CPX   enemyX
             BEQ   L9558
             BCS   L9568
 L9558       LDA   #$02
             RTS
 
-L955B       CPY   $71
+L955B       CPY   enemyY
             BEQ   L9561
             BCS   L9558
 L9561       LDA   #$00
             RTS
 
-L9564       CPY   $71
+L9564       CPY   enemyY
             BCS   L9561
 L9568       LDA   #$00
             RTS
@@ -9216,23 +9147,23 @@ L956B       CMP   #$03
             BEQ   L958A
             CMP   #$01
             BEQ   L9583
-            CPX   $70
+            CPX   enemyX
             BCS   L957A
 L9577       LDA   #$02
             RTS
 
-L957A       CPY   $71
+L957A       CPY   enemyY
             BEQ   L9580
             BCS   L9577
 L9580       LDA   #$00
             RTS
 
-L9583       CPY   $71
+L9583       CPY   enemyY
             BNE   L9577
 L9587       LDA   #$01
             RTS
 
-L958A       CPY   $71
+L958A       CPY   enemyY
             BCC   L9580
             BCS   L9587
 
@@ -9247,7 +9178,7 @@ L959B       CMP   #$01
             BEQ   L95C4
             CMP   #$02
             BEQ   L95AD
-            CPX   $70
+            CPX   enemyX
             BCC   L95AA
 L95A7       LDA   #$00
             RTS
@@ -9255,12 +9186,12 @@ L95A7       LDA   #$00
 L95AA       LDA   #$03
             RTS
 
-L95AD       CPX   $70
+L95AD       CPX   enemyX
             BEQ   L9598
             BCC   L9598
             CPX   #$8D
             BCS   L9598
-            CPY   $71
+            CPY   enemyY
             BCS   L9598
             CPY   #$5A
             BCC   L95A7
@@ -9268,16 +9199,16 @@ L95AD       CPX   $70
 L95C1       LDA   #$02
             RTS
 
-L95C4       CPX   $70
+L95C4       CPX   enemyX
             BCC   L95AA
             BCS   L95C1
-L95CA       CPY   $71
+L95CA       CPY   enemyY
             BCC   L95C1
             BNE   L95D6
-            CPX   $70
+            CPX   enemyX
             BCC   L95AA
             BCS   L95C1
-L95D6       CPX   $70
+L95D6       CPX   enemyX
             BEQ   L95A7
             BCS   L95E2
             CPY   #$A1
@@ -9297,9 +9228,9 @@ L95EA       CMP   #$00
 L95F6       LDA   #$01
             RTS
 
-L95F9       CPY   $71
+L95F9       CPY   enemyY
             BCS   L95F6
-            CPX   $70
+            CPX   enemyX
             BEQ   L9603
             BCS   L9606
 L9603       LDA   #$02
@@ -9311,16 +9242,16 @@ L9606       LDA   $62
             BNE   L95F6
 L960E       CPY   #$36
             BCC   L9616
-            CPY   $71
+            CPY   enemyY
             BCS   L95F6
 L9616       LDA   #$03
             RTS
 
-L9619       CPY   $71
+L9619       CPY   enemyY
             BCC   L9616
             BEQ   L9621
             BCS   L9603
-L9621       CPX   $70
+L9621       CPX   enemyX
             BCS   L9616
             BCC   L9603
 
@@ -9330,7 +9261,7 @@ L9627       CMP   #$00
             BEQ   L963F
             CPY   #$7D
             BCC   L9639
-            CPX   $70
+            CPX   enemyX
             BEQ   L963C
             BCC   L963C
 L9639       LDA   #$03
@@ -9343,7 +9274,7 @@ L963F       CPY   #$B3
             BCS   L963C
             CPY   #$6B
             BEQ   L9650
-            CPX   $70
+            CPX   enemyX
             BEQ   L964D
             BCS   L963C
 L964D       LDA   #$02
@@ -9359,7 +9290,7 @@ L9658       CPY   #$B3
             CMP   #$02
             BEQ   L9639
             BNE   L964D
-L9664       CPX   $70
+L9664       CPX   enemyX
             BCC   L964D
             BEQ   L964D
             BCS   L9639
@@ -9383,14 +9314,14 @@ L9685       LDA   #$02
 
 L9688       CPY   #$B3
             BEQ   L9682
-            CPX   $70
+            CPX   enemyX
             BCC   L9682
 L9690       LDA   #$03
             RTS
 
 L9693       CPY   #$7D
             BCC   L9682
-            CPX   $70
+            CPX   enemyX
             BCS   L9690
             BCC   L9685
 
@@ -9400,7 +9331,7 @@ L969D       CMP   #$01
             BEQ   L96B2
             CPX   #$60
             BCC   L96BD
-            CPY   $71
+            CPY   enemyY
             BCC   L96BD
             BEQ   L96BD
             LDA   #$00
@@ -9411,7 +9342,7 @@ L96B2       LDA   #$02
 
 L96B5       CPY   #$37
             BCS   L96BD
-            CPX   $70
+            CPX   enemyX
             BCS   L96B2
 L96BD       LDA   #$03
             RTS
@@ -9419,14 +9350,14 @@ L96BD       LDA   #$03
 L96C0       PHA
             TXA
             SEC
-            SBC   $70
+            SBC   enemyX
             BCS   L96C9
             EOR   #$FF
 L96C9       CMP   #$20
             BCS   L96E4
             TYA
             SEC
-            SBC   $71
+            SBC   enemyY
             BCS   L96D5
             EOR   #$FF
 L96D5       CMP   #$20
@@ -9447,17 +9378,18 @@ L96E4       PLA
 * PAC-MAN SPRITES
 *-----------------------------------
 
-sprPACMAN   DA    sprPACMAN0	; Fully closed
-            DA    L97CC		; Open goes down
-            DA    L989E		; Open goes up
-            DA    L9970		; Open goes right
-            DA    L9A42		; Open goes left
-            DA    L9B14		; Open goes down 2
-            DA    L9BE6		; Open goes up 2
-            DA    L9CB8		; Open goes right 2
-            DA    L9D8A		; Open goes left 2
+sprPACMAN   DA    sprPACMANFULL		; Fully closed
+            DA    sprPACMANDOWN1		; Open goes down
+            DA    sprPACMANUP1		; Open goes up
+            DA    sprPACMANRIGHT1		; Open goes right
+            DA    sprPACMANLEFT1		; Open goes left
+            DA    sprPACMANDOWN2		; Open goes down 2
+            DA    sprPACMANUP2		; Open goes up 2
+            DA    sprPACMANRIGHT2		; Open goes right 2
+            DA    sprPACMANLEFT2		; Open goes left 2
 
-sprPACMAN0  HEX   7800007C01007E03007F07007F07007F
+sprPACMANFULL
+            HEX   7800007C01007E03007F07007F07007F
             HEX   07007F07007E03007C01007800007001
             HEX   007803007C07007E0F007E0F007E0F00
             HEX   7E0F007C070078030070010060030070
@@ -9471,7 +9403,8 @@ sprPACMAN0  HEX   7800007C01007E03007F07007F07007F
             HEX   00001E00003C00007E00007F01407F03
             HEX   407F03407F03407F03007F01007E0000
             HEX   3C00
-L97CC       HEX   7800007C01007E03007F07007F07004F
+sprPACMANDOWN1
+            HEX   7800007C01007E03007F07007F07004F
             HEX   07004F07000603000401000000007001
             HEX   007803007C07007E0F007E0F001E0F00
             HEX   1E0F000C060008020000000060030070
@@ -9485,7 +9418,8 @@ L97CC       HEX   7800007C01007E03007F07007F07004F
             HEX   00000000003C00007E00007F01407F03
             HEX   407F0340670340670300430100420000
             HEX   0000
-L989E       HEX   0000000401000603004F07004F07007F
+sprPACMANUP1
+            HEX   0000000401000603004F07004F07007F
             HEX   07007F07007E03007C01007800000000
             HEX   000802000C06001E0F001E0F007E0F00
             HEX   7E0F007C070078030070010000000010
@@ -9499,7 +9433,8 @@ L989E       HEX   0000000401000603004F07004F07007F
             HEX   00001E00000000004200004301406703
             HEX   406703407F03407F03007F01007E0000
             HEX   3C00
-L9970       HEX   7800007C01007E03007F00001F00001F
+sprPACMANRIGHT1
+            HEX   7800007C01007E03007F00001F00001F
             HEX   00007F00007E03007C01007800007001
             HEX   007803007C07007E01003E00003E0000
             HEX   7E01007C070078030070010060030070
@@ -9513,7 +9448,8 @@ L9970       HEX   7800007C01007E03007F00001F00001F
             HEX   00001E00003C00007E00007F01403F00
             HEX   400F00400F00403F00007F01007E0000
             HEX   3C00
-L9A42       HEX   7800007C01007E030078070060070060
+sprPACMANLEFT1
+            HEX   7800007C01007E030078070060070060
             HEX   07007807007E03007C01007800007001
             HEX   007803007C0700700F00400F00400F00
             HEX   700F007C070078030070010060030070
@@ -9527,7 +9463,8 @@ L9A42       HEX   7800007C01007E030078070060070060
             HEX   00001E00003C00007E00007F01007C03
             HEX   007003007003007C03007F01007E0000
             HEX   3C00
-L9B14       HEX   7800007C01007E03007F07007F07004F
+sprPACMANDOWN2
+            HEX   7800007C01007E03007F07007F07004F
             HEX   07000707000202000000000000007001
             HEX   007803007C07007E0F007E0F001E0F00
             HEX   0E0E0004040000000000000060030070
@@ -9541,7 +9478,8 @@ L9B14       HEX   7800007C01007E03007F07007F07004F
             HEX   00000000003C00007E00007F01407F03
             HEX   407F0340670340430300010100000000
             HEX   0000
-L9BE6       HEX   0000000000000202000707004F07007F
+sprPACMANUP2
+            HEX   0000000000000202000707004F07007F
             HEX   07007F07007E03007C01007800000000
             HEX   000000000404000E0E001E0F007E0F00
             HEX   7E0F007C070078030070010000000000
@@ -9555,7 +9493,8 @@ L9BE6       HEX   0000000000000202000707004F07007F
             HEX   00001E00000000000000000101404303
             HEX   406703407F03407F03007F01007E0000
             HEX   3C00
-L9CB8       HEX   7800007C01007E00003F00001F00001F
+sprPACMANRIGHT2
+            HEX   7800007C01007E00003F00001F00001F
             HEX   00003F00007E00007C01007800007001
             HEX   007803007C01007E00003E00003E0000
             HEX   7E00007C010078030070010060030070
@@ -9569,7 +9508,8 @@ L9CB8       HEX   7800007C01007E00003F00001F00001F
             HEX   00001E00003C00007E00003F00401F00
             HEX   400F00400F00401F00003F00007E0000
             HEX   3C00
-L9D8A       HEX   7800007C010078030070070060070060
+sprPACMANLEFT2
+            HEX   7800007C010078030070070060070060
             HEX   07007007007803007C01007800007001
             HEX   00780300700700600F00400F00400F00
             HEX   600F0070070078030070010060030070

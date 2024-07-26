@@ -750,7 +750,7 @@ doWELCOME   LDA   #$70
             LDA   #dirLEFT
             STA   pacmanDIR
             LDA   #$00
-            STA   $66
+            STA   pacmanSTEP
             STA   ghostFRIGHTENED	; ghost is not frightened
             STA   ghostISDEAD	; ghost is alive
             LDA   #$01
@@ -788,7 +788,7 @@ L46CC       DEC   frameCNT
             SBC   #$02
             STA   pacmanX
             JSR   setXYPACMAN
-            INC   $66
+            INC   pacmanSTEP
             JSR   L79A4
 L46EC       JSR   L6CF3
             LDA   #gCLYDE
@@ -856,7 +856,7 @@ L475F       DEC   frameCNT
             ADC   #$02
             STA   pacmanX
             JSR   setXYPACMAN
-            INC   $66
+            INC   pacmanSTEP
             JSR   L79A4
 L477F       JSR   L6CF3
             LDA   #gCLYDE
@@ -1484,9 +1484,9 @@ loadPLAYERBOARD
             LDA   zpCURPLAYER
             ASL
             TAX
-            LDA   L53B2,X
+            LDA   tblPLAYERBOARD,X
             STA   zpPTR1
-            LDA   L53B2+1,X
+            LDA   tblPLAYERBOARD+1,X
             CLC
             ADC   #$03
             STA   zpPTR1+1
@@ -1524,9 +1524,9 @@ savePLAYERBOARD
             LDA   zpCURPLAYER
             ASL
             TAX
-            LDA   L53B2,X
+            LDA   tblPLAYERBOARD,X
             STA   zpPTR2
-            LDA   L53B2+1,X
+            LDA   tblPLAYERBOARD+1,X
             CLC
             ADC   #$03
             STA   zpPTR2+1
@@ -1538,7 +1538,8 @@ savePLAYERBOARD
             STA   zpPTR1+1
             BNE   L537C
 
-L53B2       DA    $0666		; board buffers ($380) per player
+tblPLAYERBOARD	; board buffers ($380) per player
+            DA    $0666	
             DA    L0C00
             DA    L1000
             DA    L1380
@@ -1553,8 +1554,8 @@ savePLAYERDATA
             LDX   zpCURPLAYER
             LDY   tbplPDOFFSET,X
             LDX   #$07
-L53C5       LDA   zpCURSCORE,X
-            STA   playerDATA,Y
+L53C5       LDA   curSCORE,X
+            STA   pacmanDATA,Y
             DEY
             DEX
             BPL   L53C5
@@ -1568,8 +1569,8 @@ loadPLAYERDATA
             LDX   zpCURPLAYER
             LDY   tbplPDOFFSET,X
             LDX   #$07
-L53D6       LDA   playerDATA,Y
-            STA   zpCURSCORE,X
+L53D6       LDA   pacmanDATA,Y
+            STA   curSCORE,X
             DEY
             DEX
             BPL   L53D6
@@ -1588,16 +1589,19 @@ L53EB       LDA   L5446,X
             STA   pacmanX,X
             DEX
             BPL   L53EB
+
             LDY   #$53
 L53F5       LDA   L5454,Y
             STA   |$0084,Y
             DEY
             BPL   L53F5
+
             LDA   #$00
             LDY   #$06
 L5402       STA   |$0059,Y
             DEY
             BPL   L5402
+
             JSR   L6E79
             JSR   loadPLAYERDATA
             LDA   #$01
@@ -1774,9 +1778,9 @@ L54C4       DB    $00
 *-----------------------------------
 
 L54D4       LDA   #$00
-            STA   zpCURSCORE
-            STA   zpCURSCORE+1
-            STA   zpCURSCORE+2
+            STA   curSCORE
+            STA   curSCORE+1
+            STA   curSCORE+2
             STA   fgDEMO
             STA   $F3
 L54E0       LDA   #$01		; ZP - RANK
@@ -1842,11 +1846,11 @@ L554A       LDA   #<sprHISCORE	; HISCORE sprite
             LDA   #>sprHISCORE
             STA   L5596+1
             LDA   zpHISCORE
-            STA   zpCURSCORE
+            STA   curSCORE
             LDA   zpHISCORE+1
-            STA   zpCURSCORE+1
+            STA   curSCORE+1
             LDA   zpHISCORE+2
-            STA   zpCURSCORE+2
+            STA   curSCORE+2
             JMP   L550E
 
 L5563       LDA   #<sprPLAYER	; reset to PLAYER# sprite
@@ -1943,11 +1947,11 @@ prepareLEVEL
             JSR   drawGAMEBOARD
             JSR   drawGHOSTDOOR
             LDA   zpCURPLAYER	; save current player index
-            STA   $F1
+            STA   saveVAR
             JSR   loadPLAYERDATA
             JSR   drawDOTS
             JSR   drawSCORES
-            LDA   $F1		; restore current player index
+            LDA   saveVAR		; restore current player index
             STA   zpCURPLAYER
             JSR   loadPLAYERDATA
             JSR   printRANK
@@ -3330,12 +3334,12 @@ addTOSCORE  LDX   fgDEMO
             TAX
             CLC
             SED
-            LDA   zpCURSCORE+1
+            LDA   curSCORE+1
             ADC   tblSCORE,X
-            STA   zpCURSCORE+1
-            LDA   zpCURSCORE+2
+            STA   curSCORE+1
+            LDA   curSCORE+2
             ADC   #$00
-            STA   zpCURSCORE+2
+            STA   curSCORE+2
             CLD
             JSR   eraseSCORE
             JSR   displayPLAYERSCORE
@@ -3428,7 +3432,7 @@ tblGIPOS    HEX   0000
 * 
 *-----------------------------------
 
-L6D49       LDA   #$00
+L6D49       LDA   #$00		; ghosts are not frightened
             LDX   #$08
             STA   ghost1DATA,X
             STA   ghost2DATA,X
@@ -3437,7 +3441,7 @@ L6D49       LDA   #$00
             STA   ghostDATA+8
             STA   $E4
             STA   $E9
-            LDA   #score200
+            LDA   #score200	; and the default
             STA   bonusINDEX
             RTS
 
@@ -3570,6 +3574,10 @@ L6DEF       DB    $00
             DB    $00
             DB    $B0
             DB    $00
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 L6E19       DB    $40
 L6E1A       DB    $00
@@ -3822,14 +3830,14 @@ L6F50       STA   (zpPTR2),Y
 
 getINPUT    JSR   readKEYBOARD	; read keyboard
             BCS   L6F65
-            STA   $63
+            STA   theDIR
 L6F65       LDA   theDEVICE	; which device?
             BNE   L6F6F
             JSR   readJOYPAD	; read joypad
             JMP   L6F72
 L6F6F       JSR   readJOYSTICK	; read joystick
 L6F72       BCS   L6F76
-            STA   $63		; save movement
+            STA   theDIR		; save movement
 L6F76       RTS
 
 *-----------------------------------
@@ -3871,7 +3879,7 @@ L6FAE       JMP   selectRANKCARTOON		; space resets the game
 *  2: right
 *  3: left
 
-L6FB1       CMP   #$C1		; A
+L6FB1       CMP   #"A"		; A
             BEQ   L6FCA
 L6FB5       CMP   #$95		; right-arrow
             BEQ   L6FC7
@@ -3879,13 +3887,13 @@ L6FB9       CMP   #$88		; left-arrow
             BEQ   L6FC4
 L6FBD       CMP   #$DA		; Z
             BNE   L6FCE
-            LDA   #$00		; down
+            LDA   #dirDOWN	; 0 down
             HEX   2C
-L6FC4       LDA   #$03		; up
+L6FC4       LDA   #dirLEFT	; 3 left
             HEX   2C
-L6FC7       LDA   #$02		; right
+L6FC7       LDA   #dirRIGHT	; 2 right
             HEX   2C
-L6FCA       LDA   #$01		; left
+L6FCA       LDA   #dirUP	; 1 up
             CLC
             RTS
 L6FCE       SEC
@@ -3975,12 +3983,12 @@ L703C       SBC   #$01
 readJOYSTICK
             LDA   fgDEMO
             BNE   L708D
-            JSR   getLLJOYSTICK		; read joystick
-            LDA   pacmanDIR
+            JSR   getLLJOYSTICK	; read joystick
+            LDA   pacmanDIR	; 
             LSR
-            BNE   L7065
-            BCS   L705E
-            CPY   #$1C
+            BNE   L7065		; was right/left
+            BCS   L705E		; was up
+            CPY   #$1C		; was down
             BCC   L7081
 L7053       CPX   #$1C
             BCC   L7089
@@ -3993,7 +4001,7 @@ L705E       CPY   #$44
             BCS   L707D
             JMP   L7053
 
-L7065       BCS   L7076
+L7065       BCS   L7076		; was up
             CPX   #$1C
             BCC   L7089
 L706B       CPY   #$1C
@@ -4014,18 +4022,18 @@ L7076       CPX   #$44
 * 80: none
 
 L707D       CLC
-            LDA   #$00
+            LDA   #dirDOWN
             RTS
 L7081       CLC
-            LDA   #$01
+            LDA   #dirUP
             RTS
 L7085       CLC
-            LDA   #$02
+            LDA   #dirRIGHT
             RTS
 L7089       CLC
-            LDA   #$03
+            LDA   #dirLEFT
             RTS
-L708D       CLC
+L708D       CLC		; for the demo mode
             LDA   #$80
             RTS
 
@@ -4034,27 +4042,27 @@ L708D       CLC
 *-----------------------------------
 
 displayPLAYERSCORE
-            LDA   zpCURSCORE+2	; compare current score with high score
+            LDA   curSCORE+2	; compare current score with high score
             CMP   zpHISCORE+2
             BEQ   L709B
             BCC   L70CC
             BCS   L70AB
-L709B       LDA   zpCURSCORE+1
+L709B       LDA   curSCORE+1
             CMP   zpHISCORE+1
             BEQ   L70A5
             BCC   L70CC
             BCS   L70AB
-L70A5       LDA   zpCURSCORE
+L70A5       LDA   curSCORE
             CMP   zpHISCORE
             BCC   L70CC
 
-L70AB       LDA   zpCURSCORE	; save score as high score
+L70AB       LDA   curSCORE	; save score as high score
             STA   zpHISCORE
             STA   zpDECSCORE
-            LDA   zpCURSCORE+1
+            LDA   curSCORE+1
             STA   zpHISCORE+1
             STA   zpDECSCORE+1
-            LDA   zpCURSCORE+2
+            LDA   curSCORE+2
             STA   zpHISCORE+2
             STA   zpDECSCORE+2
             LDA   zpCURPLAYER	; save current player
@@ -4065,11 +4073,11 @@ L70AB       LDA   zpCURSCORE	; save score as high score
             LDA   $F0		; restore current player
             STA   zpCURPLAYER
 
-L70CC       LDA   zpCURSCORE	; current player score
+L70CC       LDA   curSCORE	; current player score
             STA   zpDECSCORE
-            LDA   zpCURSCORE+1
+            LDA   curSCORE+1
             STA   zpDECSCORE+1
-            LDA   zpCURSCORE+2
+            LDA   curSCORE+2
             STA   zpDECSCORE+2
 
 L70D8       JSR   eraseSCORE	; erase the area
@@ -4123,7 +4131,7 @@ L7124       LDA   zpCURPLAYER	; high score player?
             BEQ   L7140
             BIT   zpNBLIVES	; no life already?
             BPL   L7140
-            LDA   zpCURSCORE+2	; 10000?
+            LDA   curSCORE+2	; 10000?
             CMP   #$01
             BCC   L7140		; no
 
@@ -4265,537 +4273,64 @@ L7581       HEX   8E80918091809E809080888087808080
             HEX   8087C088C088808F80888084C0838080
 
 *-----------------------------------
-* 
+* CHECK AUTHORIZED MODE
 *-----------------------------------
 
-L75F1       STA   zpPTR2
-            LDA   #>L760A
-            STA   zpPTR2+1
-            LDA   zpPTR2
+checkMOVE   STA   ptrMOVE
+            LDA   #>boardMOVES
+            STA   ptrMOVE+1
+            LDA   ptrMOVE
             ASL
             ASL
             ASL
             BCC   L7600
-            INC   zpPTR2+1
+            INC   ptrMOVE+1
 L7600       CLC
-            ADC   #<L760A
-            STA   zpPTR2
+            ADC   #<boardMOVES
+            STA   ptrMOVE
             BCC   L7609
-            INC   zpPTR2+1
+            INC   ptrMOVE+1
 L7609       RTS
 
-L760A       DB    $41
-            DB    $0B
-            DB    $06
-            DB    $FF
-            DB    $01
-            DB    $FF
-            DB    $00
-            DB    $00
-            DB    $5F
-            DB    $0B
-            DB    $07
-            DB    $FF
-            DB    $02
-            DB    $00
-            DB    $66
-            DB    $66
-            DB    $83
-            DB    $0B
-            DB    $09
-            DB    $FF
-            DB    $FF
-            DB    $01
-            DB    $11
-            DB    $11
-            DB    $95
-            DB    $0B
-            DB    $0A
-            DB    $FF
-            DB    $04
-            DB    $FF
-            DB    $00
-            DB    $00
-            DB    $B9
-            DB    $0B
-            DB    $0C
-            DB    $FF
-            DB    $05
-            DB    $03
-            DB    $66
-            DB    $66
-            DB    $D7
-            DB    $0B
-            DB    $0D
-            DB    $FF
-            DB    $FF
-            DB    $04
-            DB    $11
-            DB    $11
-            DB    $41
-            DB    $23
-            DB    $0E
-            DB    $00
-            DB    $07
-            DB    $FF
-            DB    $88
-            DB    $88
-            DB    $5F
-            DB    $23
-            DB    $0F
-            DB    $01
-            DB    $08
-            DB    $06
-            DB    $99
-            DB    $99
-            DB    $71
-            DB    $23
-            DB    $10
-            DB    $FF
-            DB    $09
-            DB    $07
-            DB    $66
-            DB    $66
-            DB    $83
-            DB    $23
-            DB    $FF
-            DB    $02
-            DB    $0A
-            DB    $08
-            DB    $55
-            DB    $55
-            DB    $95
-            DB    $23
-            DB    $FF
-            DB    $03
-            DB    $0B
-            DB    $09
-            DB    $55
-            DB    $55
-            DB    $A7
-            DB    $23
-            DB    $13
-            DB    $FF
-            DB    $0C
-            DB    $0A
-            DB    $66
-            DB    $66
-            DB    $B9
-            DB    $23
-            DB    $14
-            DB    $04
-            DB    $0D
-            DB    $0B
-            DB    $99
-            DB    $99
-            DB    $D7
-            DB    $23
-            DB    $15
-            DB    $05
-            DB    $FF
-            DB    $0C
-            DB    $77
-            DB    $77
-            DB    $41
-            DB    $35
-            DB    $FF
-            DB    $06
-            DB    $0F
-            DB    $FF
-            DB    $22
-            DB    $22
-            DB    $5F
-            DB    $35
-            DB    $1A
-            DB    $07
-            DB    $FF
-            DB    $0E
-            DB    $77
-            DB    $77
-            DB    $71
-            DB    $35
-            DB    $FF
-            DB    $08
-            DB    $11
-            DB    $FF
-            DB    $22
-            DB    $22
-            DB    $83
-            DB    $35
-            DB    $17
-            DB    $FF
-            DB    $FF
-            DB    $10
-            DB    $11
-            DB    $11
-            DB    $95
-            DB    $35
-            DB    $18
-            DB    $FF
-            DB    $13
-            DB    $FF
-            DB    $00
-            DB    $00
-            DB    $A7
-            DB    $35
-            DB    $FF
-            DB    $0B
-            DB    $FF
-            DB    $12
-            DB    $33
-            DB    $33
-            DB    $B9
-            DB    $35
-            DB    $1D
-            DB    $0C
-            DB    $15
-            DB    $FF
-            DB    $88
-            DB    $88
-            DB    $D7
-            DB    $35
-            DB    $FF
-            DB    $0D
-            DB    $FF
-            DB    $14
-            DB    $33
-            DB    $33
-            DB    $71
-            DB    $47
-            DB    $1B
-            DB    $FF
-            DB    $17
-            DB    $FF
-            DB    $00
-            DB    $00
-            DB    $83
-            DB    $47
-            DB    $FF
-            DB    $11
-            DB    $18
-            DB    $16
-            DB    $44
-            DB    $44
-            DB    $95
-            DB    $47
-            DB    $FF
-            DB    $12
-            DB    $19
-            DB    $17
-            DB    $44
-            DB    $44
-            DB    $A7
-            DB    $47
-            DB    $1C
-            DB    $FF
-            DB    $FF
-            DB    $18
-            DB    $11
-            DB    $11
-            DB    $5F
-            DB    $59
-            DB    $21
-            DB    $0F
-            DB    $1B
-            DB    $1D
-            DB    $99
-            DB    $99
-            DB    $71
-            DB    $59
-            DB    $1E
-            DB    $16
-            DB    $FF
-            DB    $1A
-            DB    $77
-            DB    $77
-            DB    $A7
-            DB    $59
-            DB    $1F
-            DB    $19
-            DB    $1D
-            DB    $FF
-            DB    $88
-            DB    $88
-            DB    $B9
-            DB    $59
-            DB    $26
-            DB    $14
-            DB    $1A
-            DB    $1C
-            DB    $99
-            DB    $99
-            DB    $71
-            DB    $6B
-            DB    $22
-            DB    $1B
-            DB    $1F
-            DB    $FF
-            DB    $88
-            DB    $88
-            DB    $A7
-            DB    $6B
-            DB    $25
-            DB    $1C
-            DB    $FF
-            DB    $1E
-            DB    $77
-            DB    $77
-            DB    $41
-            DB    $7D
-            DB    $28
-            DB    $FF
-            DB    $21
-            DB    $FF
-            DB    $00
-            DB    $00
-            DB    $5F
-            DB    $7D
-            DB    $2A
-            DB    $1A
-            DB    $22
-            DB    $20
-            DB    $99
-            DB    $99
-            DB    $71
-            DB    $7D
-            DB    $FF
-            DB    $1E
-            DB    $23
-            DB    $21
-            DB    $55
-            DB    $55
-            DB    $83
-            DB    $7D
-            DB    $2C
-            DB    $FF
-            DB    $FF
-            DB    $22
-            DB    $11
-            DB    $11
-            DB    $95
-            DB    $7D
-            DB    $2D
-            DB    $FF
-            DB    $25
-            DB    $FF
-            DB    $00
-            DB    $00
-            DB    $A7
-            DB    $7D
-            DB    $FF
-            DB    $1F
-            DB    $26
-            DB    $24
-            DB    $55
-            DB    $55
-            DB    $B9
-            DB    $7D
-            DB    $2F
-            DB    $1D
-            DB    $27
-            DB    $25
-            DB    $99
-            DB    $99
-            DB    $D7
-            DB    $7D
-            DB    $31
-            DB    $FF
-            DB    $FF
-            DB    $26
-            DB    $11
-            DB    $11
-            DB    $41
-            DB    $8F
-            DB    $FF
-            DB    $20
-            DB    $29
-            DB    $FF
-            DB    $22
-            DB    $22
-            DB    $4D
-            DB    $8F
-            DB    $33
-            DB    $FF
-            DB    $FF
-            DB    $28
-            DB    $11
-            DB    $11
-            DB    $5F
-            DB    $8F
-            DB    $34
-            DB    $21
-            DB    $2B
-            DB    $FF
-            DB    $88
-            DB    $88
-            DB    $71
-            DB    $8F
-            DB    $35
-            DB    $FF
-            DB    $2C
-            DB    $2A
-            DB    $66
-            DB    $66
-            DB    $83
-            DB    $8F
-            DB    $FF
-            DB    $23
-            DB    $2D
-            DB    $2B
-            DB    $55
-            DB    $55
-            DB    $95
-            DB    $8F
-            DB    $FF
-            DB    $24
-            DB    $2E
-            DB    $2C
-            DB    $55
-            DB    $55
-            DB    $A7
-            DB    $8F
-            DB    $38
-            DB    $FF
-            DB    $2F
-            DB    $2D
-            DB    $66
-            DB    $66
-            DB    $B9
-            DB    $8F
-            DB    $39
-            DB    $26
-            DB    $FF
-            DB    $2E
-            DB    $77
-            DB    $77
-            DB    $CB
-            DB    $8F
-            DB    $3A
-            DB    $FF
-            DB    $31
-            DB    $FF
-            DB    $00
-            DB    $00
-            DB    $D7
-            DB    $8F
-            DB    $FF
-            DB    $27
-            DB    $FF
-            DB    $30
-            DB    $33
-            DB    $33
-            DB    $41
-            DB    $A1
-            DB    $3C
-            DB    $FF
-            DB    $33
-            DB    $FF
-            DB    $00
-            DB    $00
-            DB    $4D
-            DB    $A1
-            DB    $FF
-            DB    $29
-            DB    $34
-            DB    $32
-            DB    $55
-            DB    $55
-            DB    $5F
-            DB    $A1
-            DB    $FF
-            DB    $2A
-            DB    $FF
-            DB    $33
-            DB    $33
-            DB    $33
-            DB    $71
-            DB    $A1
-            DB    $FF
-            DB    $2B
-            DB    $36
-            DB    $FF
-            DB    $22
-            DB    $22
-            DB    $83
-            DB    $A1
-            DB    $3D
-            DB    $FF
-            DB    $FF
-            DB    $35
-            DB    $11
-            DB    $11
-            DB    $95
-            DB    $A1
-            DB    $3E
-            DB    $FF
-            DB    $38
-            DB    $FF
-            DB    $00
-            DB    $00
-            DB    $A7
-            DB    $A1
-            DB    $FF
-            DB    $2E
-            DB    $FF
-            DB    $37
-            DB    $33
-            DB    $33
-            DB    $B9
-            DB    $A1
-            DB    $FF
-            DB    $2F
-            DB    $3A
-            DB    $FF
-            DB    $22
-            DB    $22
-            DB    $CB
-            DB    $A1
-            DB    $FF
-            DB    $30
-            DB    $3B
-            DB    $39
-            DB    $55
-            DB    $55
-            DB    $D7
-            DB    $A1
-            DB    $3F
-            DB    $FF
-            DB    $FF
-            DB    $3A
-            DB    $11
-            DB    $11
-            DB    $41
-            DB    $B3
-            DB    $FF
-            DB    $32
-            DB    $3D
-            DB    $FF
-            DB    $22
-            DB    $22
-            DB    $83
-            DB    $B3
-            DB    $FF
-            DB    $36
-            DB    $3E
-            DB    $3C
-            DB    $55
-            DB    $55
-            DB    $95
-            DB    $B3
-            DB    $FF
-            DB    $37
-            DB    $3F
-            DB    $3D
-            DB    $55
-            DB    $55
-            DB    $D7
-            DB    $B3
-            DB    $FF
-            DB    $3B
-            DB    $FF
-            DB    $3E
-            DB    $33
-            DB    $33
+*--- Authorized moves ($200 bytes)
+* Table contains all X/Y positions where a move is available
+* The next four bytes contain the index to jump to for the next check of X/Y position
+* If FF then the move is not authorized in the direction
+* The last two bytes are for padding
+
+*                 X  Y  D  U  R  L
+boardMOVES	HEX   41,0B,06,FF,01,FF,0000,5F0B07FF02006666
+	HEX   830B09FFFF011111950B0AFF04FF0000
+	HEX   B90B0CFF05036666D70B0DFFFF041111
+	HEX   41230E0007FF88885F230F0108069999
+	HEX   712310FF090766668323FF020A085555
+	HEX   9523FF030B095555A72313FF0C0A6666
+	HEX   B92314040D0B9999D7231505FF0C7777
+	HEX   4135FF060FFF22225F351A07FF0E7777
+	HEX   7135FF0811FF2222833517FFFF101111
+	HEX   953518FF13FF0000A735FF0BFF123333
+	HEX   B9351D0C15FF8888D735FF0DFF143333
+	HEX   71471BFF17FF00008347FF1118164444
+	HEX   9547FF1219174444A7471CFFFF181111
+	HEX   5F59210F1B1D999971591E16FF1A7777
+	HEX   A7591F191DFF8888B95926141A1C9999
+	HEX   716B221B1FFF8888A76B251CFF1E7777
+	HEX   417D28FF21FF00005F7D2A1A22209999
+	HEX   717DFF1E23215555837D2CFFFF221111
+	HEX   957D2DFF25FF0000A77DFF1F26245555
+	HEX   B97D2F1D27259999D77D31FFFF261111
+	HEX   418FFF2029FF22224D8F33FFFF281111
+	HEX   5F8F34212BFF8888718F35FF2C2A6666
+	HEX   838FFF232D2B5555958FFF242E2C5555
+	HEX   A78F38FF2F2D6666B98F3926FF2E7777
+	HEX   CB8F3AFF31FF0000D78FFF27FF303333
+	HEX   41A13CFF33FF00004DA1FF2934325555
+	HEX   5FA1FF2AFF33333371A1FF2B36FF2222
+	HEX   83A13DFFFF35111195A13EFF38FF0000
+	HEX   A7A1FF2EFF373333B9A1FF2F3AFF2222
+	HEX   CBA1FF303B395555D7A13FFFFF3A1111
+	HEX   41B3FF323DFF222283B3FF363E3C5555
+	HEX   95B3FF373F3D5555D7B3FF3BFF3E3333
 
 *-----------------------------------
 * CALCULATE SPRITE OFFSET
@@ -4900,67 +4435,70 @@ L789B       STA   frameCNT
             BEQ   L78A5
             DEC   $F3
             INC   frameCNT
-L78A5       LDA   $64
+L78A5       LDA   pacmanBOARD
             TAX
-            JSR   L75F1
+            JSR   checkMOVE
             LDY   #$00
-            LDA   (zpPTR2),Y
+            LDA   (ptrMOVE),Y
             CMP   pacmanX
             BNE   L78BA
             INY
-            LDA   (zpPTR2),Y
+            LDA   (ptrMOVE),Y
             CMP   pacmanY
             BEQ   L78D1
-L78BA       LDA   $65
-            BMI   L78D7
-            TAX
-            JSR   L75F1
+L78BA       LDA   pacmanNEXTBOARD	; is move possible?
+            BMI   L78D7	; no
+            TAX	; perhaps
+            JSR   checkMOVE
             LDY   #$00
-            LDA   (zpPTR2),Y
+            LDA   (ptrMOVE),Y
             CMP   pacmanX
             BNE   L78CF
             INY
-            LDA   (zpPTR2),Y
+            LDA   (ptrMOVE),Y
             CMP   pacmanY
 L78CF       BNE   L794B
-L78D1       STX   $64
-            LDA   #$FF
-            STA   $65
-L78D7       LDA   fgDEMO
-            BEQ   L78E7
-            INC   zpPTR3
+
+L78D1       STX   pacmanBOARD	; save new position
+            LDA   #$FF	; move is not possible
+            STA   pacmanNEXTBOARD
+
+L78D7       LDA   fgDEMO	; are in demo mode?
+            BEQ   L78E7		; no
+            INC   zpPTR3	; yes
             BNE   L78E1
             INC   zpPTR3+1
 L78E1       LDY   #$00
             LDA   (zpPTR3),Y
-            STA   $63
-L78E7       LDY   $63
+            STA   theDIR
+
+L78E7       LDY   theDIR
             BMI   L78FD
             INY
             INY
-            LDA   (zpPTR2),Y
+            LDA   (ptrMOVE),Y
             BPL   L78F9
             LDY   pacmanDIR
             INY
             INY
-            LDA   (zpPTR2),Y
+            LDA   (ptrMOVE),Y
             BPL   L7915
-L78F9       LDA   $63
+L78F9       LDA   theDIR
             STA   pacmanDIR
 L78FD       LDY   pacmanDIR
             INY
             INY
-            LDA   (zpPTR2),Y
+            LDA   (ptrMOVE),Y
             BPL   L7915
             JSR   setXYPACMAN
             JSR   eraseSPRITE44
             LDA   #$02
-            STA   $66
+            STA   pacmanSTEP
             JSR   setXYPACMAN
             JMP   L79A4
 
-L7915       STA   $65
-            LDA   $64
+L7915       STA   pacmanNEXTBOARD
+            LDA   pacmanBOARD
             CMP   #$1A
             BEQ   L793B
             CMP   #$1D
@@ -4986,14 +4524,14 @@ L793B       LDA   #$06
             CMP   #dirLEFT
             BNE   L7935
             BEQ   L792F
-L794B       LDA   $63
+L794B       LDA   theDIR
             BMI   L795B
             EOR   pacmanDIR
             CLC
             ROR
             BNE   L795B
             BCC   L795B
-            LDA   $63
+            LDA   theDIR
             STA   pacmanDIR
 L795B       LDA   $69
             BEQ   L7962
@@ -5022,19 +4560,19 @@ L7988       STA   pacmanY
             STA   zpY1
             LDA   pacmanX
             STA   zpX1
-            INC   $66
+            INC   pacmanSTEP
             INC   $1F
             LDA   $1F
-            CMP   #$FB
+            CMP   #$FB	; 251?
             BNE   L799E
             LDA   #$00
             STA   $1F
 L799E       JSR   L79A4
             JMP   L79CD
 
-L79A4       LDA   $66
+L79A4       LDA   pacmanSTEP
             AND   #$0F
-            STA   $66
+            STA   pacmanSTEP
             AND   #$03	; 00000011
             BEQ   L79BE
             CMP   #$03	; 00000011
@@ -5260,7 +4798,7 @@ L7B26       LDA   #$00		; remove dot from the board
 
 L7B2F       JSR   setXYPACMAN
             JSR   eraseSPRITE44
-            LDA   $64
+            LDA   pacmanBOARD
             CMP   #$1A
             BEQ   L7B79
             LDA   pacmanDIR
@@ -5273,12 +4811,16 @@ L7B2F       JSR   setXYPACMAN
 
 L7B48       LDA   pacmanY
             STA   zpY1
-            INC   $66
+            INC   pacmanSTEP
             JSR   L79A4
             JMP   L79FD
 
+63 = une direction
+64 = case actuelle
+65 = case cible ou FF si dŽplacement pas possible
+
 *-----------------------------------
-* 
+* PACMAN ENTERS TUNNEL TO THE RIGHT
 *-----------------------------------
 
 L7B54       CLC
@@ -5288,10 +4830,10 @@ L7B54       CLC
             STA   zpX1
             CMP   #$DD
             BNE   L7B48
-            LDA   $65
-            STA   $64
+            LDA   pacmanNEXTBOARD
+            STA   pacmanBOARD
             LDA   #$1D
-            STA   $65
+            STA   pacmanNEXTBOARD
             LDA   #$3D
             STA   pacmanX
             STA   zpX1
@@ -5302,7 +4844,7 @@ L7B54       CLC
             BEQ   L7B48
 
 *-----------------------------------
-* 
+* PACMAN ENTERS THE LEFT TUNNEL
 *-----------------------------------
 
 L7B79       LDA   pacmanDIR
@@ -5320,10 +4862,10 @@ L7B88       LDA   pacmanX
             STA   zpX1
             CMP   #$3B
             BNE   L7B48
-            LDA   $65
-            STA   $64
+            LDA   pacmanNEXTBOARD
+            STA   pacmanBOARD
             LDA   #$1A
-            STA   $65
+            STA   pacmanNEXTBOARD
             LDA   #$DB
             STA   pacmanX
             STA   zpX1
@@ -6326,7 +5868,7 @@ L804E       CLC
             RTS
 
 L805D       LDA   ghostINDEX
-            STA   $F1
+            STA   saveVAR
             JSR   getGHOSTSDATA
             LDA   #gCLYDE
             STA   ghostINDEX
@@ -6342,7 +5884,7 @@ L8068       JSR   setGHOSTSDATA
 L807D       JSR   getGHOSTSDATA
             DEC   ghostINDEX
             BNE   L8068
-            LDA   $F1
+            LDA   saveVAR
             STA   ghostINDEX
             JSR   setGHOSTSDATA
             RTS
@@ -6381,9 +5923,9 @@ L80C1       LDA   #gCLYDE
 L80C5       JSR   setGHOSTSDATA
             LDA   $81
             BNE   L80DB
-            LDA   $72
+            LDA   ghostDIR
             EOR   #$01
-            STA   $72
+            STA   ghostDIR
             LDY   $77
             STA   ($75),Y
             LDA   #$FF
@@ -6507,7 +6049,7 @@ initCARTOON
             LDA   #$00
             STA   ghostISDEAD
             STA   ghostFRIGHTENED
-            STA   $66
+            STA   pacmanSTEP
             LDA   #gINKY
             STA   ghostINDEX
             STA   $81
@@ -6540,7 +6082,7 @@ L81B7       DEC   frameCNT
             BCC   L81FC
             LDA   pacmanY
             STA   zpY1
-            INC   $66
+            INC   pacmanSTEP
             JSR   L79A4
 L81DB       JSR   doWAIT
             DEC   $80
@@ -6601,8 +6143,8 @@ L8237       JSR   doWAIT
 L8255       JMP   L8221
 L8258       RTS
 
-L8259       INC   $66
-            LDA   $66
+L8259       INC   pacmanSTEP
+            LDA   pacmanSTEP
             AND   #$03
             ASL
             TAX
@@ -6712,7 +6254,7 @@ L83D9       DEC   frameCNT
             CMP   #$10
             BCC   L847D
             JSR   setXYPACMAN
-            INC   $66
+            INC   pacmanSTEP
             JSR   L79A4
 L840C       JSR   doWAIT
             DEC   $80
@@ -6796,7 +6338,7 @@ L848F       DEC   frameCNT
             CMP   #$20
             BCC   L84DD
             JSR   setXYPACMAN
-            INC   $66
+            INC   pacmanSTEP
             JSR   L79A4
 L84B0       JSR   doWAIT
             DEC   $80
@@ -6847,7 +6389,7 @@ L84F9       DEC   frameCNT
             ADC   #$02
             STA   pacmanX
             JSR   setXYPACMAN
-            INC   $66
+            INC   pacmanSTEP
             JSR   L79A4
 L8519       JSR   doWAIT
             DEC   $80
@@ -6861,7 +6403,7 @@ L8519       JSR   doWAIT
             ADC   #$02
             STA   ghostX
             JSR   setXYGHOST
-            LDA   $66
+            LDA   pacmanSTEP
             AND   #$02
             TAX
             LDA   L854A,X
@@ -6980,7 +6522,7 @@ L858C       JSR   clearHGR
             JSR   cartoonVLINE
             JSR   initCARTOON
             LDA   #$02
-            STA   $66
+            STA   pacmanSTEP
             LDA   #gCLYDE
             STA   ghostINDEX
 L85E9       JSR   getGHOSTSDATA
@@ -7146,25 +6688,25 @@ L8719       LDA   |ghostDATA,Y
             RTS
 
 *--------------------------------------
-* 
+* FRAME COUNTER FOR GHOSTS ANIMATION...
 *--------------------------------------
 
-L8723       HEX   0A0A0908080707070706060606050504
-L8733       HEX   13131110100D0D0C0C09090909070605
-L8743       HEX   131312111110100F0F0D0D0D0D0B0B07
-L8753       HEX   04040404030303030302020202020101
+L8723       HEX   0A0A0908080707070706060606050504	; no frighten / no dead
+L8733       HEX   13131110100D0D0C0C09090909070605	; not dead
+L8743       HEX   131312111110100F0F0D0D0D0D0B0B07	; frightened
+L8753       HEX   04040404030303030302020202020101	; dead
 
 *-----------------------------------
 * 
 *-----------------------------------
 
-L8763       DEC   $80
+L8763       DEC   $80	; timer for ghost refresh
             BEQ   L8768
             RTS
 
-L8768       LDA   $E4
+L8768       LDA   $E4	; are we un frighten mode?
             BEQ   L8780
-            LDA   $E1
+            LDA   $E1	; what about the frighten tempo?
             BNE   L8772
             DEC   $E2
 L8772       DEC   $E1
@@ -7173,7 +6715,8 @@ L8772       DEC   $E1
             ADC   $E2
             BNE   L8780
             BCS   L8780
-            JSR   L6D49
+            JSR   L6D49	; reset frightened parms
+
 L8780       JSR   getMAXRANK15
             TAX
             LDA   ghostFRIGHTENED
@@ -7193,7 +6736,7 @@ L879F       CLC
             ROR
             TAX
             DEX
-            LDA   $72
+            LDA   ghostDIR
             AND   #$02
             BEQ   L87AF
             LDA   ghostY
@@ -7207,37 +6750,37 @@ L87B1       AND   #$02
 L87BA       LDA   $7A
             BEQ   L87C0
             ASL   $80
-L87C0       LDA   $73
+L87C0       LDA   ghostBOARD
             TAX
-            JSR   L75F1
+            JSR   checkMOVE
             LDY   #$00
-            LDA   (zpPTR2),Y
+            LDA   (ptrMOVE),Y
             CMP   ghostX
             BNE   L87D5
             INY
-            LDA   (zpPTR2),Y
+            LDA   (ptrMOVE),Y
             CMP   ghostY
             BEQ   L87ED
-L87D5       LDA   $74
+L87D5       LDA   ghostNEXTBOARD
             TAX
-            JSR   L75F1
+            JSR   checkMOVE
             LDY   #$00
-            LDA   (zpPTR2),Y
+            LDA   (ptrMOVE),Y
             CMP   ghostX
             BNE   L87EA
             INY
-            LDA   (zpPTR2),Y
+            LDA   (ptrMOVE),Y
             CMP   ghostY
             BEQ   L87ED
 L87EA       JMP   L8866
 
-L87ED       STX   $73
+L87ED       STX   ghostBOARD
             JSR   L8C50
             INC   $77
             LDY   $77
             LDA   ($75),Y
-            CMP   $72
-            STA   $72
+            CMP   ghostDIR
+            STA   ghostDIR
             BEQ   L880B
             LDA   ghostISDEAD
             BNE   L880B
@@ -7245,12 +6788,12 @@ L87ED       STX   $73
             TAX
             LDA   L8733,X
             STA   $80
-L880B       LDY   $72
+L880B       LDY   ghostDIR
             INY
             INY
-            LDA   (zpPTR2),Y
-            STA   $74
-            LDA   $73
+            LDA   (ptrMOVE),Y
+            STA   ghostNEXTBOARD
+            LDA   ghostBOARD
             CMP   #$17
             BEQ   L8839
             CMP   #$18
@@ -7263,7 +6806,7 @@ L880B       LDY   $72
             STA   $7B
             LDA   #$00
             STA   $7D
-            LDA   $72
+            LDA   ghostDIR
             CMP   #$02
             BNE   L8862
 L8833       LDA   #$01
@@ -7285,7 +6828,7 @@ L8854       LDA   #$06
             STA   $7B
             LDA   #$00
             STA   $7D
-            LDA   $72
+            LDA   ghostDIR
             CMP   #$03
             BEQ   L8833
 L8862       LDA   #$00
@@ -7301,7 +6844,7 @@ L886D       LDA   $81
 L8874       JSR   setXYGHOST
             JSR   eraseSPRITE44
             CLC
-            LDA   $72
+            LDA   ghostDIR
             ROR
             BNE   L888C
             LDA   ghostY
@@ -7322,23 +6865,23 @@ L889A       STA   ghostY
             LDA   ghostX
             STA   zpX1
 
-L88A2       LDA   ghostINDEX
+L88A2       LDA   ghostINDEX	; current ghost
             ASL
             TAX
-            LDA   ghostFRIGHTENED
-            BEQ   L88BC
+            LDA   ghostFRIGHTENED	; is it frightened?
+            BEQ   L88BC		; nope
             LDA   $E2
             BNE   L88BA
             LDA   $E1
             CMP   #$80
             BCS   L88BA
-            LDX   #$06
+            LDX   #$06		; 0000_0110
             AND   #$10
             BEQ   L88C2
-L88BA       LDX   #$00
+L88BA       LDX   #$00		; 0000_0000
 L88BC       LDA   ghostISDEAD
             BEQ   L88C2
-            LDX   #$0A
+            LDX   #$0A		; 0000_1010
 
 L88C2       LDA   fgCOLOR
             BEQ   L88D3
@@ -7365,11 +6908,15 @@ L88E1       DB    $01
             DB    $00
             DB    $00
 
-L88E6       LDA   ghostISDEAD
-            BNE   L88ED
+*-----------------------------------
+* 
+*-----------------------------------
+
+L88E6       LDA   ghostISDEAD	; is ghost dead?
+            BNE   L88ED		; yes, skip
             JSR   L8B34
 L88ED       CLC
-            LDA   $72
+            LDA   ghostDIR
             ROR
             BEQ   L8929
             BCS   L890F
@@ -7460,7 +7007,7 @@ L8988       DEC   $82
             LDA   ghostINDEX
             ROR
             BCC   L89A6
-            LDA   $72
+            LDA   ghostDIR
             CMP   #$00
             BNE   L899E
 L8999       LDA   #$01
@@ -7471,7 +7018,7 @@ L899E       LDA   #$01
             STA   ($75),Y
             JMP   L89C7
 
-L89A6       LDA   $72
+L89A6       LDA   ghostDIR
             CMP   #$01
             BNE   L89B1
             INY
@@ -7517,7 +7064,7 @@ L89EA       CMP   ghostX
 L89F4       INC   $77
             LDY   $77
             LDA   ($75),Y
-            STA   $72
+            STA   ghostDIR
 L89FC       JMP   L8874
 
 L89FF       CMP   #$5D
@@ -7535,9 +7082,9 @@ L8A05       LDA   ghostX
             BNE   L89FC
             JSR   drawGHOSTDOOR
             LDA   #$17
-            STA   $73
+            STA   ghostBOARD
             LDA   #$18
-            STA   $74
+            STA   ghostNEXTBOARD
             LDA   #$0D
             STA   $7B
             LDA   #$0B
@@ -7595,7 +7142,7 @@ L8A9C       JSR   setXYGHOST
             LDA   ghostX
             CMP   #$60
             BCC   L8AE0
-            LDA   $72
+            LDA   ghostDIR
             ROR
             BCC   L8ABC
             LDA   ghostX
@@ -7612,10 +7159,10 @@ L8ABC       LDA   ghostX
             STA   zpX1
             CMP   #$DD
             BNE   L8AB5
-            LDA   $74
-            STA   $73
+            LDA   ghostNEXTBOARD
+            STA   ghostBOARD
             LDA   #$1D
-            STA   $74
+            STA   ghostNEXTBOARD
             LDA   #$3D
             STA   ghostX
             STA   zpX1
@@ -7624,7 +7171,7 @@ L8ABC       LDA   ghostX
             LDA   #$00
             STA   $7D
             BEQ   L8AB5
-L8AE0       LDA   $72
+L8AE0       LDA   ghostDIR
             ROR
             BCS   L8AEF
             LDA   ghostX
@@ -7638,10 +7185,10 @@ L8AEF       LDA   ghostX
             STA   zpX1
             CMP   #$3B
             BNE   L8AB5
-            LDA   $74
-            STA   $73
+            LDA   ghostNEXTBOARD
+            STA   ghostBOARD
             LDA   #$1A
-            STA   $74
+            STA   ghostNEXTBOARD
             LDA   #$DB
             STA   ghostX
             STA   zpX1
@@ -7686,7 +7233,7 @@ L8B45       CMP   #$0A
             LDA   zpRANK
             CMP   #$05
             BCC   L8B67
-            LDA   $72
+            LDA   ghostDIR
             AND   #$02
             BEQ   L8B5A
             LDA   pacmanY
@@ -7720,18 +7267,18 @@ L8B7E       LDA   $67
             RTS
 
 L8B8A       LDA   $1F
-            LDX   ghostFRIGHTENED
-            BNE   L8B92
-            AND   #$3F
+            LDX   ghostFRIGHTENED	; is ghost frightened?
+            BNE   L8B92		; yes
+            AND   #$3F		; no
 L8B92       CMP   #$00
             BNE   L8B9D
             LDA   #$04
             STA   $67
-            STA   $66
+            STA   pacmanSTEP
             RTS
 
-L8B9D       LDA   ghostFRIGHTENED
-            BEQ   L8BDD
+L8B9D       LDA   ghostFRIGHTENED	; is ghost frightened?
+            BEQ   L8BDD		; no, exit
             JSR   showBONUS
             JSR   getMAXRANK15
             ASL
@@ -7742,13 +7289,13 @@ L8B9D       LDA   ghostFRIGHTENED
             LDA   $E2
             ADC   L6E1A,X
             STA   $E2
-            LDA   #$01
+            LDA   #$01		; the ghost is dead
             STA   ghostISDEAD
-            LDA   #$00
+            LDA   #$00		; and so, no more frightened
             STA   ghostFRIGHTENED
-            LDX   fgDEMO
-            BNE   L8BDC
-            CLC
+            LDX   fgDEMO	; demo mode?
+            BNE   L8BDC		; yes, skip
+            CLC		; add score
             SED
             LDA   bonusINDEX
             ADC   curSCORE+1
@@ -7824,7 +7371,7 @@ L8C4A       JSR   loadPLAYERBOARD
 L8C50       LDA   ghostISDEAD
             BEQ   L8C64
             LDY   $77
-            LDX   $73
+            LDX   ghostBOARD
             LDA   LA360,X
             INY
             STA   ($75),Y
@@ -7839,7 +7386,7 @@ L8C64       LDY   $77
             BMI   L8C6C
             RTS
 
-L8C6C       LDA   $73
+L8C6C       LDA   ghostBOARD
             ASL
             ASL
             ADC   ghostINDEX
@@ -7864,10 +7411,10 @@ L8C8F       LDA   ghostINDEX
             TAY
             LDA   L8CB5,X
             TAX
-            LDA   $72
+            LDA   ghostDIR
             JMP   L8CA6
 
-L8CA0       LDA   $72
+L8CA0       LDA   ghostDIR
             LDX   pacmanX
             LDY   pacmanY
 L8CA6       JSR   $0666
@@ -8337,7 +7884,7 @@ L9073       CMP   #$02
             LDA   #$03
             RTS
 
-L907E       LDA   $72
+L907E       LDA   ghostDIR
             CMP   #$03
             BEQ   L90B1
             CMP   #$01
@@ -8375,14 +7922,14 @@ L90B7       PHA
             CMP   #$02
             BCC   L90BE
             EOR   #$01
-L90BE       STA   $72
+L90BE       STA   ghostDIR
             JSR   L9073
             CMP   #$02
             BCC   L90C9
             EOR   #$01
 L90C9       TAX
             PLA
-            STA   $72
+            STA   ghostDIR
             TXA
             RTS
 

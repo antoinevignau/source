@@ -39,6 +39,7 @@ TEXT	=	$0400
 TEXT2	=	$0800
 HGR	=	$2000
 HGR2	=	$4000
+HGR3	=	$6000	; does not exist but marks the area past HGR2
 
 CH	=	$24	; firmware X-pos
 CV	=	$25	; firmware Y-pos
@@ -58,57 +59,91 @@ zpY2	=	$11	; (byte) end Y
 zpHGR	=	$12	; (word) pointer to HGR world
 zpPTR1	=	$14	; (word) 1st pointer
 zpPTR2	=	$16	; (word) 2nd pointer
+ptrMOVE	=	zpPTR2      ; (word) pointer to the list of authorized moves
 zpSPRHEIGHT	=	$18	; (byte) sprite height in lines
 zpSPRWIDTH	=	$1a	; (byte) sprite width in bytes
 zpPTR3	=	$1b	; (word)
-zpMONITOR	=	$1d	; 0: b&w, 1: color
+fgCOLOR	=	$1d	; 0: b&w, 1: color
 hgrBIT7	=	$1e	; (byte) defines which palette to use ($00 or $80)
 zp1F	=	$1f
 * $20 to $4F are not used
 zpCURPLAYER	=	$50	; (byte) current player index
 zpNBPLAYERS	=	$51	; (byte) number of players (1..5)
-curSCORE	=	$52	; (3 bytes) score
-zpRANK	=	$55	; (byte) rank number (ie. the level)
-zpNBDOTS	=	$56	; (byte) number of dots on the board (248 by default)
-fruitFREQ	=	$57	; (byte) appearance frequency of a fruits
-zpNBLIVES	=	$58	; (byte) number of lives (bit 7 is set)
-frameCNT	=	$59	; (byte) frame counter
+curSCORE	=	$52	; 0 (3 bytes) score
+zpRANK	=	$55	; 3 (byte) rank number (ie. the level)
+zpNBDOTS	=	$56	; 4 (byte) number of dots on the board (248 by default)
+fruitFREQ	=	$57	; 5 (byte) appearance frequency of a fruits
+zpNBLIVES	=	$58	; 6 (byte) number of lives (bit 7 is set)
+frameCNT	=	$59	; 7 (byte) frame counter
 zpPTRFRUIT	=	$5c	; (word) pointer to the fruit sprite
 zpDOTTEMPO	=	$5e	; (byte) tempo for energizer dot blinking
 zpDOTFLAG	=	$5f	; (byte) 0: show dots, 1: hide dots
+*
+* Within board, X/Y coords of Pacman are:
+* UL 41/0B
+* UR D7/0B
+* LL 41/B3
+* LR D7/B3
+*
+pacmanDATA	=	$60	; (struct) structure of  8 bytes
 pacmanX	=	$60	; (byte) Pacman X
 pacmanY	=	$61	; (byte) Pacman Y
 pacmanDIR	=	$62	; (byte) Pacman direction (see above)
+theDIR	=	$63	; (byte) next Pacman direction (given by input device)
+pacmanBOARD	=	$64	; (byte) current index in boardMOVES where Pacman is
+pacmanNEXTBOARD =	$65	; (byte) next index in the same table, $FF if move is invalid
+pacmanSTEP	=	$66	; (byte) Pacman sprite index (that makes the animation step)
+* $67 is no more used, see $8B7E
 *
 bonusINDEX	=	$68	; (byte) 2/4/8/16 for bonus 200/400/800/1600
+*
 boardY	=	$6a	; (byte) y-coord in board
 boardX	=	$6b	; (byte) x-coord in board
 *
-ghosDATA	=	$70	; (struct) structure of 8/20 bytes for the current ghost
-ghostX	=	$70	; (byte) enemy X
-ghostY	=	$71	; (byte) enemy Y
+ghostDATA	=	$70	; (struct) structure of 8/20 bytes for the current ghost
+ghostX	=	$70	; 0 (byte) ghost X
+ghostY	=	$71	; 1 (byte) ghost Y
+ghostDIR	=	$72	; 2
+ghostBOARD	=	$73	; 3 (byte) current index in boardMOVES where the ghost is
+ghostNEXTBOARD = 	$74	; 4 (byte) next index in the same table, $FF if move is invalid
+* $75 is a pointer to something
+* $77 is the index within that table
 ghostFRIGHTENED =	$78	; (byte) 0: ghost is not frightened, 1: ghost is frightened
 ghostISDEAD	=	$79	; (byte) 0: ghost is alive, dead otherwise
-*--- Each ghost data is: 84 / 98 / AC / C0
+ghostTEMPO	=	80	; (byte) tempo to refresh a ghost (aka ghost speed)
+* Each ghost data is: 84 / 98 / AC / C0
 ghost1DATA	=	$84
 ghost1X	=	ghost1DATA
 ghost1Y	=	ghost1DATA+1
+ghost1DIR	=	ghost1DATA+2
+ghost1CASE	=	ghost1DATA+3
+ghost1NEXTCASE = 	ghost1DATA+4
 ghost1FRIGHTENED = 	ghost1DATA+8
+ghost1DEAD	=	ghost1DATA+9
+*
 ghost2DATA	=	$98
 ghost2X	=	ghost2DATA
 ghost2Y	=	ghost2DATA+1
 ghost2FRIGHTENED =	ghost2DATA+8
+ghost2DEAD	=	ghost2DATA+9
+*
 ghost3DATA	=	$ac
 ghost3X	=	ghost3DATA
 ghost3Y	=	ghost3DATA+1
 ghost3FRIGHTENED =	ghost3DATA+8
+ghost3DEAD	=	ghost3DATA+9
+*
 ghost4DATA	=	$c0
 ghost4X	=	ghost4DATA
 ghost4Y	=	ghost4DATA+1
 ghost4FRIGHTENED =	ghost4DATA+8
+ghost4DEAD	=	ghost4DATA+9
+*
 ghostINDEX	=	$e0	; (byte) 1: Inky, 2: Pinky, 3: Blinky, 4: Clyde
 fgDEMO	=	$e8	; (byte) 0: game, 1: demo
-zpSPEED	=	f3	; (byte) ghosts speed
+saveVAR	=	$f1	; (byte) save variable
+* $F2 is not used
+zpSPEED	=	f3	; (byte) ghosts speed?
 fgMUSIC	=	$f4	; (byte) 0: music never played, 1: intro music played
 theDEVICE	=	$f5	; (byte) 0: joypad, 1: joystick
 

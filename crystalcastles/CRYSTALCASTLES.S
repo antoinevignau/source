@@ -7,80 +7,14 @@
 *
 
             TYP   BIN
-            ORG   $000800
+            ORG   $0800
             MX    %11
 	LST   OFF
 
+	USE   EQUATES.S
+	
 *-----------------------------------
-* EQUATES
-*-----------------------------------
-
-SOFTEV      EQU   $03F2
-PWREDUP     EQU   $03F4
-KBD         EQU   $C000
-KBDSTROBE   EQU   $C010
-SPKR        EQU   $C030
-TXTCLR      EQU   $C050
-TXTSET      EQU   $C051
-MIXCLR      EQU   $C052
-TXTPAGE1    EQU   $C054
-HIRES       EQU   $C057
-BUTN0       EQU   $C061
-BUTN1       EQU   $C062
-PADDL0      EQU   $C064
-PADDL1      EQU   $C065
-PTRIG       EQU   $C070
-BASCALC     EQU   $FBC1
-HOME        EQU   $FC58
-WAIT        EQU   $FCA8
-
-L0800       =	$0800
-L0801	=	L0800+$01
-L0808	=	L0800+$08
-L0809	=	L0800+$09
-L0810	=	L0800+$10
-L0811	=	L0800+$11
-L0820	=	L0800+$20
-L0830	=	L0800+$30
-L0838	=	L0800+$38
-L0840	=	L0800+$40
-L0848	=	L0800+$48
-L0849	=	L0800+$49
-L0850	=	L0800+$50
-L0868	=	L0800+$68
-L0869	=	L0800+$69
-L0870	=	L0800+$70
-L0871	=	L0800+$71
-L0878	=	L0800+$78
-L0880	=	L0800+$80
-L08A0	=	L0800+$A0
-
-L6200	=	$6200
-L6300	=	L6200+$100
-L6400	=	L6300+$100
-L6500	=	L6400+$100
-L6600	=	L6500+$100
-L6700	=	L6600+$100
-
-NBLIVES	=	2
-
-*-----------------------------------
-* ZERO PAGE
-*-----------------------------------
-
-nbPLAYER	=	19	; 0: one player, 1: two players
-thePLAYER	=	1A
-theLASTGEM	=	46	; 0: player had the last gem, <>0: enemies had it
-p1SCORE	=	4A
-p2SCORE	=	4D
-p1LIVES	=	54
-p2LIVES	=	55
-joyX	=	60
-joyY	=	61
-theLEVEL	=	79
-
-*-----------------------------------
-* IT RELOCATES CODE AND DATA
+* ENTRY POINT
 *-----------------------------------
 
 	LDY   #$00
@@ -117,7 +51,7 @@ L0828	STA   $A500,Y
 *-----------------------------------
 
 L0900       JSR   moveDATA	; move font + unrle data
-            LDA   #$04
+            LDA   #$04		; clear text page
             STA   $F0+1
             LDY   #$00
             STY   $F0
@@ -129,18 +63,20 @@ L090D       STA   ($F0),Y
             LDX   $F0+1
             CPX   #$08
             BNE   L090D
-            LDA   #<L0927
+
+            LDA   #<L0927	; set reset vector
             STA   SOFTEV
             LDA   #>L0927
             STA   SOFTEV+1
             STA   PWREDUP
-L0927       LDA   #$00
+
+L0927       LDA   #$00		; init variables
             STA   $F6
             STA   $F7
-            STA   $79
-            STA   $EC
-            STA   $19
-            BEQ   L093D
+            STA   theLEVEL
+            STA   thePAGE
+            STA   nbPLAYERS
+            BEQ   startGAME
 
             DB    $02
             DB    $BB
@@ -155,8 +91,9 @@ L0927       LDA   #$00
 * MAIN LOOP
 *-----------------------------------
 
-L093D       JSR   LAE00	; show title
-L0940       LDA   #$19	; start game
+startGAME   JSR   showTITLEPAGE	; show title
+
+startLEVEL  LDA   #$19		; start game
             STA   L8000+$58
             LDA   $F7
             STA   $F6
@@ -164,25 +101,25 @@ L0940       LDA   #$19	; start game
             LDA   #$99
             STA   L8000+$58
 L0950       LDA   #$00
-            STA   $79		; level
-            STA   $4A		; score P1
-            STA   $4B
-            STA   $4C
-            STA   $4D		; score P2
-            STA   $4E
-            STA   $4F
-            STA   $1A
+            STA   theLEVEL	; level
+            STA   p1SCORE	; score P1
+            STA   p1SCORE+1
+            STA   p1SCORE+2
+            STA   p2SCORE	; score P2
+            STA   p2SCORE+1
+            STA   p2SCORE+2
+            STA   curPLAYER
             STA   $F7
             LDA   #NBLIVES
-            STA   $54		; nb lives P1
-            STA   $55		; nb lives P2
+            STA   p1LIVES	; nb lives P1
+            STA   p2LIVES	; nb lives P2
             LDA   #$FF
             STA   $58
 L096E       LDA   #$0F
             STA   $E2
             LDA   #$A8
             STA   $E3
-            LDA   $79
+            LDA   theLEVEL
             BEQ   L0985
             SEC
             SBC   #$01
@@ -194,16 +131,17 @@ L096E       LDA   #$0F
 L0985       LDY   #$00
             STY   L0800
             STY   $D4	; low level pointer
-            STY   $F2
+            STY   $F2	; low level pointer
             STY   $7A
             STY   $7B
             STY   $C4
             STY   $C5
-            STY   $EC
-            STY   $ED
+            STY   thePAGE
+            STY   hgrPAGE
             STY   $EE
             STY   $1F
-            LDX   #$07
+
+            LDX   #$07		; init tables
 L09A0       TYA
             STA   L0808,X
             STA   L0850,X
@@ -216,6 +154,7 @@ L09A0       TYA
             STA   L0848,X
             DEX
             BPL   L09A0
+
             LDA   #$02
             STA   $15
             STY   $14
@@ -238,28 +177,30 @@ L09A0       TYA
             STA   $E1
             LDA   $58
             BNE   L0A13
-            LDA   $19
+
+            LDA   nbPLAYERS
             BEQ   L0A13
-            LDX   $1A
-            LDA   LAD6C,X
+
+            LDX   curPLAYER
+            LDA   tblPLRBUF,X
             STA   $F2+1
             LDY   #$00
-            LDA   LAD6E,X
+            LDA   LAD6E,X	; get index
             TAX
-L09FA       LDA   L08A0,X
+L09FA       LDA   L08A0,X	; get player's data
             STA   |$0070,Y
             INX
             INY
             CPY   #$10
             BNE   L09FA
-            LDY   #$00
+            LDY   #$00		; get player's board
 L0A08       LDA   ($F2),Y
             STA   L6500,Y
             INY
             BNE   L0A08
             JMP   L0A6D
 
-L0A13       LDX   $79
+L0A13       LDX   theLEVEL
             LDA   LAC78,X
             STA   $E6
             LDY   #$07
@@ -275,12 +216,12 @@ L0A29       LDA   ($F0),Y
             STA   |$0070,Y
             DEY
             BPL   L0A29
-            LDX   $79
+            LDX   theLEVEL
             LDA   LAC78,X
             TAX
             LDA   LAC9D,X	; level data
             STA   $D4+1
-            LDA   $79
+            LDA   theLEVEL
             LSR   $00
             ROL
             ASL
@@ -306,7 +247,7 @@ L0A5F       STA   L6500,Y
             INC   $F0
             JMP   L0A51
 
-L0A6D       LDX   $79
+L0A6D       LDX   theLEVEL
             LDA   LAC78,X
             STA   $E6
             TAX
@@ -328,14 +269,18 @@ L0A8F       STA   $C7
             CMP   #$FF
             BNE   L0AD1
             LDA   #$01
-            STA   $1A
+            STA   curPLAYER
             JSR   L0AA5
             LDA   #$00
-            STA   $1A
+            STA   curPLAYER
             JMP   L0AD1
 
-L0AA5       LDX   $1A
-            LDA   LAD6C,X
+*-----------------------------------
+* SAVE PLAYER DATA
+*-----------------------------------
+
+L0AA5       LDX   curPLAYER
+            LDA   tblPLRBUF,X
             STA   $F2+1
             LDY   #$00
             STY   $F2
@@ -347,32 +292,36 @@ L0AB4       LDA   |$0070,Y
             INY
             CPY   #$10
             BNE   L0AB4
-            LDY   #$00
+            LDY   #$00		; save player's board
 L0AC2       LDA   L6500,Y
             STA   ($F2),Y
             INY
             BNE   L0AC2
-            LDA   $1A
+            LDA   curPLAYER	; next player
             EOR   #$01
-            STA   $1A
+            STA   curPLAYER
             RTS
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 L0AD1       LDA   TXTPAGE1
             JSR   clearHGR1
-            LDA   #$00	; FRAME UPPER LEFT
+            LDA   #$00		; FRAME UPPER LEFT
             JSR   printSTRING
-            LDA   #$01	; FRAME UPPER RIGHT
+            LDA   #$01		; FRAME UPPER RIGHT
             JSR   printSTRING
             JSR   L9551
-            LDA   $19	; nb players?
-            BEQ   L0AF7	; only 1
-            LDA   $1A	; exchange player index
+            LDA   nbPLAYERS	; nb players?
+            BEQ   L0AF7		; only 1
+            LDA   curPLAYER	; exchange player index
             EOR   #$01
-            STA   $1A
-            JSR   L9589	; print 
-            LDA   $1A	; exchange again
+            STA   curPLAYER
+            JSR   L9589		; print 
+            LDA   curPLAYER	; exchange again
             EOR   #$01
-            STA   $1A
+            STA   curPLAYER
 L0AF7       LDA   $E6
             BNE   L0B17
             LDX   $F6
@@ -382,23 +331,26 @@ L0AF7       LDA   $E6
             ASL
             CMP   #$1F
             BCC   L0B08
-            LDA   #$1C	; niveau 26
-L0B08       STA   $79
-            LDA   #$12	; BERTHILDAS DUNGEON
+            LDA   #$1C		; niveau 26
+L0B08       STA   theLEVEL
+            LDA   #$12		; BERTHILDAS DUNGEON
             JSR   printSTRING
-            LDA   #$00	; niveau 0
-            STA   $79
+            LDA   #$00		; niveau 0
+            STA   theLEVEL
             STA   $56
             BEQ   L0B1D
+
 L0B17       CLC
             ADC   #$02
             JSR   printSTRING
+
 L0B1D       LDY   L0800
             LDA   #$00
             STA   L6400,Y
             LDA   $E2
             STA   $F4
             STA   L6200,Y
+
             LDA   L6500,Y
             AND   #$3F
             STA   $E4
@@ -708,7 +660,7 @@ L0D9A       LDY   $F5
             LDA   L6000,Y
             STA   $F0
             LDA   L6100,Y
-            EOR   $ED
+            EOR   hgrPAGE
             STA   $F0+1
             LDA   #$03
             STA   $E8
@@ -841,7 +793,7 @@ L0E9F       LDX   $F5
             ADC   $F4
             STA   $F0
             LDA   L6100,X
-            EOR   $ED
+            EOR   hgrPAGE
             STA   $F0+1
             LDA   $DA
             STA   $E8
@@ -951,7 +903,7 @@ L0F27       LDY   $F5
             LDA   L6000,Y
             STA   $F0
             LDA   L6100,Y
-            EOR   $ED
+            EOR   hgrPAGE
             STA   $F0+1
             LDY   $F4
             RTS
@@ -1073,7 +1025,7 @@ L0FE7       JSR   L0E21
             JSR   L0F65
             JSR   L0E55
 L0FF4       JSR   copyHGR1TOHGR2
-            LDY   $79
+            LDY   theLEVEL
             LDA   LACE3,Y
             STA   $6E
             CLC
@@ -1097,15 +1049,15 @@ L0FF4       JSR   copyHGR1TOHGR2
             CLC
             ADC   #$01
             STA   $CF
-            LDA   $79
+            LDA   theLEVEL
             BNE   L102D
-            LDY   $1A
-            LDA   |$0054,Y
+            LDY   curPLAYER
+            LDA   |p1LIVES,Y
             CMP   #$02
             BEQ   L1035
 L102D       LDA   $58
             BEQ   L1046
-            LDA   $79
+            LDA   theLEVEL
             BNE   L1039
 L1035       LDA   #$05
             BNE   L1043
@@ -1125,7 +1077,7 @@ L1051       LDY   $C6
             BMI   L10C5
             LDX   LACD3,Y
             LDA   $82,X
-            LDY   $EC
+            LDY   thePAGE
             CMP   $84,X
             BEQ   L1064
             CMP   $85,X
@@ -1623,24 +1575,24 @@ L1411       DB    $08
 
 readJOYSTICK
             LDX   #$00
-            STX   $60
-            STX   $61
+            STX   joyX
+            STX   joyY
             LDA   PTRIG
 L141E       LDA   PADDL0
             BPL   L1431
-            STX   $60
+            STX   joyX
 L1425       LDA   PADDL1
             BPL   L1433
-            STX   $61
+            STX   joyY
 L142C       INX
             BNE   L141E
             BEQ   L1435
 L1431       BPL   L1425
 L1433       BPL   L142C
 L1435       LDA   #$FF
-            CMP   $60
+            CMP   joyX
             BEQ   L143F
-            CMP   $61
+            CMP   joyY
             BNE   L1446
 L143F       LDA   #$00
             STA   $65
@@ -1648,7 +1600,7 @@ L143F       LDA   #$00
             RTS
 
 L1446       LDX   #$95
-            LDA   $60
+            LDA   joyX
             SEC
             SBC   #$40
             BCS   L1456
@@ -1666,7 +1618,7 @@ L1456       LSR
 L1461       STA   $62
             STX   $65
             LDX   #$8A
-            LDA   $61
+            LDA   joyY
             SEC
             SBC   #$40
             BCS   L1475
@@ -1744,9 +1696,9 @@ L14AC       LDX   $6F
             LDY   $E6
             LDX   L0EEC,Y
             BNE   L1515
-            STA   $DC
+            STA   myVAR_DC
             ASL
-            ADC   $DC
+            ADC   myVAR_DC
             ASL
 L1515       STA   $5E
 L1517       LDY   $45
@@ -1788,7 +1740,7 @@ L155C       STA   $65
             STA   $64
 L1566       LDA   L0808
             BEQ   L15A3
-            LDX   $79
+            LDX   theLEVEL
             BEQ   L1572
             JMP   L1933
 
@@ -1797,24 +1749,24 @@ L1572       LDX   $F6
             JMP   L1933
 
 L1579       LDA   LAD22,X
-            STA   $79
+            STA   theLEVEL
             LDA   #$04
-            LDY   $1A
-            STA   |$0054,Y
+            LDY   curPLAYER
+            STA   |p1LIVES,Y
             LDA   L95FD,Y
             TAY
             LDA   #$00
-            STA   |$004A,Y
-            STA   |$004B,Y
+            STA   |p1SCORE,Y
+            STA   |p1SCORE+1,Y
             LDA   LAD2D,X
-            STA   |$004C,Y
+            STA   |p1SCORE+2,Y
             LDA   #$09
             JSR   playMUSIC
             LDA   #$01
             STA   $58
             JMP   L096E
 
-L15A3       LDX   $79
+L15A3       LDX   theLEVEL
             LDA   L0800
             BNE   L15BA
             CPX   #$00
@@ -1861,7 +1813,7 @@ L15DD       LDA   $25
 L15F3       LDA   KBD
             BMI   L1602
             JSR   readJOYSTICK
-            CMP   #$A0
+            CMP   #" "
             BNE   L1612
             JMP   L1566
 
@@ -1873,6 +1825,7 @@ L1602       STA   KBDSTROBE
 L160C       STA   $69
             STA   $65
             STA   $66
+
 L1612       LDX   $67
             TXA
             EOR   #$01
@@ -1902,30 +1855,36 @@ L163D       LDX   $47
             STY   $D1
             LDY   L0808,X
             STY   $2C
-            CMP   #$88	; LEFT ARROW
+            CMP   #$88		; LEFT ARROW
             BEQ   L1681
-            CMP   #$95	; RIGHT ARROW
+            CMP   #$95		; RIGHT ARROW
             BEQ   L169C
-            CMP   #$8A	; DOWN ARROW
+            CMP   #$8A		; DOWN ARROW
             BEQ   L16B4
-            CMP   #$8B	; UP ARROW
+            CMP   #$8B		; UP ARROW
             BEQ   L16D1
-            CMP   #$DA	; Z
+            CMP   #"Z"		; Z
             BEQ   L16B4
-            CMP   #$C1	; A
+            CMP   #"A"		; A
             BEQ   L16D1
-            CMP   #$91	; CTRL-Q - restart level
+            CMP   #$91		; CTRL-Q - restart level
             BEQ   L167B
-            CMP   #$8F	; CTRL-O - restart game
+            CMP   #$8F		; CTRL-O - restart game
             BEQ   L167E
-            CMP   #$9B	; ESCAPE
+            CMP   #$9B		; ESCAPE
             BNE   L1678
-L1671       JSR   L9703	; handle PAUSE
+
+L1671       JSR   waitFORKEY	; handle PAUSE
             CMP   #$9B
             BNE   L1671
 L1678       JMP   L1933
-L167B       JMP   L0940
-L167E       JMP   L093D
+
+L167B       JMP   startLEVEL		; re/start level
+L167E       JMP   startGAME		; re/start game
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 L1681       LDY   #$02
             STY   $EA
@@ -2272,7 +2231,7 @@ L1933       LDA   $D6
 L193A       LDA   $6F
             ASL
             CLC
-            ADC   $EC
+            ADC   thePAGE
             TAX
             LDY   L0810,X
             LDA   L6200,Y
@@ -2284,7 +2243,7 @@ L193A       LDA   $6F
             LDA   LAD4C,X
             STA   $EE
             LDA   LAD5C,X
-            STA   $EF
+            STA   $EE+1
             LDX   #$17
             STX   $E7
             LDX   #$00
@@ -2292,7 +2251,7 @@ L1963       LDY   $F5
             LDA   L6000,Y
             STA   $F0
             LDA   L6100,Y
-            EOR   $ED
+            EOR   hgrPAGE
             STA   $F0+1
             LDY   $F4
             LDA   ($EE,X)
@@ -2332,7 +2291,7 @@ L19B8       LDX   $6F
             TXA
             ASL
             CLC
-            ADC   $EC
+            ADC   thePAGE
             TAX
             STA   $DA
             TYA
@@ -2389,7 +2348,7 @@ L1A35       DEC   $6F
 L1A3C       JMP   L1B2B
 
 L1A3F       LDA   $6F
-            STA   $46
+            STA   theLASTGEM
             LDA   #$05
             STA   $48
             LDY   $CA
@@ -2401,7 +2360,7 @@ L1A4D       JMP   L1A35
 * WHO HAS THE LAST GEM?
 *-----------------------------------
 
-L1A50       LDA   $46
+L1A50       LDA   theLASTGEM
             BNE   L1A60
             LDA   #$1A	; YOU GOT THE LAST GEM
             JSR   printSTRING
@@ -2414,8 +2373,8 @@ L1A60       LDA   #$19	; THEY GOT THE LAST GEM
             LDA   #$01
 L1A67       JSR   playMUSIC
 
-            INC   $79	; next level
-            LDA   $79
+            INC   theLEVEL	; next level
+            LDA   theLEVEL
             CMP   #$25	; 18x2 + 1 ?
             BEQ   L1A79
             LDA   #$01
@@ -2433,8 +2392,8 @@ L1A79       LDA   TXTPAGE1
             STA   $F0+1
             EOR   #$60
             STA   $F2+1
-            LDY   $1A
-            LDX   $54,Y
+            LDY   curPLAYER
+            LDX   p1LIVES,Y
             LDA   L95F3,X
             JSR   printCHARACTER
             LDX   #$04
@@ -2442,15 +2401,15 @@ L1A9E       LDA   L95F2
             JSR   printCHARACTER
             DEX
             BNE   L1A9E
-            LDY   $1A
+            LDY   curPLAYER
             LDX   L95FD,Y
             SED
-            LDA   |$0054,Y
+            LDA   |p1LIVES,Y
             SEC
-            ADC   $4C,X
-            STA   $4C,X
+            ADC   p1SCORE+2,X
+            STA   p1SCORE+2,X
             LDA   #$FF
-            STA   |$0054,Y
+            STA   |p1LIVES,Y
             JSR   L9589
             LDA   #$08
             JSR   playMUSIC
@@ -2467,12 +2426,12 @@ L1AC5       LDA   L6500,Y
             LDA   L6000,X
             STA   $F0
             LDA   L6100,X
-            EOR   $ED
+            EOR   hgrPAGE
             STA   $F0+1
             LDA   L6000+1,X
             STA   $F2
             LDA   L6100+1,X
-            EOR   $ED
+            EOR   hgrPAGE
             STA   $F2+1
             LDA   L6200,Y
             TAY
@@ -2490,7 +2449,7 @@ L1AC5       LDA   L6500,Y
             STA   ($F0),Y
             STA   ($F2),Y
             INC   $00
-            LDY   $EC
+            LDY   thePAGE
             BEQ   L1B2A
             LDA   $DB
             LDX   $6F
@@ -2521,12 +2480,12 @@ L1B2F       LDA   #$63
 L1B44       LDA   $6F
             ASL
             CLC
-            ADC   $EC
+            ADC   thePAGE
             TAX
             LDA   LAD4C,X
             STA   $EE
             LDA   LAD5C,X
-            STA   $EF
+            STA   $EE+1
             LDY   L0810,X
             LDA   L6200,Y
             STA   $F4
@@ -2535,20 +2494,20 @@ L1B44       LDA   $6F
             SBC   $DA
             LDY   $6F
             SBC   L0848,Y
-            STA   $DC
+            STA   myVAR_DC
             BCS   L1B6F
             LDA   #$00
-            STA   $DC
+            STA   myVAR_DC
 L1B6F       LDY   $6F
             LDA   L0800,Y
             TAY
             LDA   L6500,Y
             CMP   #$3F
             BNE   L1B82
-            INC   $DC
-            INC   $DC
-            INC   $DC
-L1B82       LDA   $DC
+            INC   myVAR_DC
+            INC   myVAR_DC
+            INC   myVAR_DC
+L1B82       LDA   myVAR_DC
             STA   $F5
             STA   L0820,X
             LDX   #$17
@@ -2558,7 +2517,7 @@ L1B8F       LDY   $F5
             LDA   L6000,Y
             STA   $F0
             LDA   L6100,Y
-            EOR   $ED
+            EOR   hgrPAGE
             STA   $F0+1
             LDY   $F4
             LDA   ($F0),Y
@@ -2604,13 +2563,13 @@ L1BF0       LDX   $DF
             LDY   L0870,X
             STY   $6F
             LDA   L0800,Y
-            STA   $DC
+            STA   myVAR_DC
             CMP   $5B
             BCC   L1C07
             LDA   $7C
             BNE   L1C07
             JSR   L0E55
-L1C07       LDA   $DC
+L1C07       LDA   myVAR_DC
             CMP   $5A
             BCC   L1C14
             LDA   $16
@@ -2629,7 +2588,7 @@ L1C14       LDX   $6F
 L1C2C       LDA   $6F
             ASL
             CLC
-            ADC   $EC
+            ADC   thePAGE
             TAY
             LDA   L0820,Y
             STA   $F5
@@ -2644,7 +2603,7 @@ L1C45       LDX   $6F
             LDY   L0800,X
             LDA   L6200,Y
             AND   #$01
-            STA   $DC
+            STA   myVAR_DC
             LDA   $70,X
             ASL
             ASL
@@ -2652,7 +2611,7 @@ L1C45       LDX   $6F
             ADC   L0878,X
             ASL
             CLC
-            ADC   $DC
+            ADC   myVAR_DC
             ASL
             TAY
             LDA   $9C00,Y
@@ -2682,7 +2641,7 @@ L1C8E       LDY   $F5
             LDA   L6000,Y
             STA   $F0
             LDA   L6100,Y
-            EOR   $ED
+            EOR   hgrPAGE
             STA   $F0+1
             LDA   #$02
             STA   $E8
@@ -2737,10 +2696,10 @@ L1CF4       LDY   L0880,X
             LDA   L6000+1,Y
             STA   $F2
             LDA   L6100,Y
-            EOR   $ED
+            EOR   hgrPAGE
             STA   $F0+1
             LDA   L6100+1,Y
-            EOR   $ED
+            EOR   hgrPAGE
             STA   $F2+1
             LDA   $F4
             AND   #$01
@@ -2763,14 +2722,14 @@ L1D32       LDA   $7C
 L1D39       LDA   $16
             BNE   L1D40
             JSR   L0E21
-L1D40       LDX   $EC
+L1D40       LDX   thePAGE
             STA   $C054,X
-            LDA   $ED
+            LDA   hgrPAGE
             EOR   #$60
-            STA   $ED
-            LDA   $EC
+            STA   hgrPAGE
+            LDA   thePAGE
             EOR   #$01
-            STA   $EC
+            STA   thePAGE
             LDA   $67
             EOR   #$01
             STA   $67
@@ -2833,8 +2792,8 @@ L1DC2       LDA   L6600,Y
             STA   L6600,Y
             DEY
             BNE   L1DC2
-            LDX   $1A
-            DEC   $54,X	; NOP to get infinite lives (opcode is D6)
+            LDX   curPLAYER
+            DEC   p1LIVES,X	; NOP to get infinite lives (opcode is D6)
             LDA   #$05
             STA   $CB
 L1DD5       JMP   L1DEF
@@ -2858,26 +2817,26 @@ L1DEF       LDA   $CB
             BEQ   L1E58
             CMP   #$D0
             BCC   L1E3C
-            LDA   $19
+            LDA   nbPLAYERS
             BNE   L1E07
             JMP   L149B
 
-L1E07       LDY   $1A	; player index
-            LDA   |$0054,Y ; is player alive?
+L1E07       LDY   curPLAYER	; player index
+            LDA   |p1LIVES,Y ; is player alive?
             BPL   L1E11	; yes
             JMP   L9635	; no, player is dead
 
 L1E11       TYA
             EOR   #$01
             TAY
-            LDA   |$0054,Y
+            LDA   |p1LIVES,Y
             BPL   L1E1D
             JMP   L149B
 
 L1E1D       JSR   clearHGR1
             LDA   #$1D	; GET READY
             JSR   printSTRING
-            LDA   $1A
+            LDA   curPLAYER
             EOR   #$01
             CLC
             ADC   #$1E	; PLAYER 1/2
@@ -3042,7 +3001,7 @@ showBONUS   LDA   #$40
             STA   $F0+1
             EOR   #$60
             STA   $F2+1
-            LDA   $79
+            LDA   theLEVEL
             CLC
             ADC   #$0A
             STA   $DB
@@ -3077,23 +3036,23 @@ L951C       ASL   $DB
             LDA   $24
             CLC
             JMP   L9562
-L9551       LDY   $1A
+L9551       LDY   curPLAYER
             LDX   L95FD,Y
             SED
             LDA   $23
             CLC
-            ADC   $4A,X
-            STA   $4A,X
+            ADC   p1SCORE,X
+            STA   p1SCORE,X
             BCC   L957E
             LDA   #$00
-L9562       LDY   $1A
+L9562       LDY   curPLAYER
             LDX   L95FD,Y
-            ADC   $4B,X
-            STA   $4B,X
+            ADC   p1SCORE+1,X
+            STA   p1SCORE+1,X
             BCC   L957E
             LDA   #$00
-            ADC   $4C,X
-            STA   $4C,X
+            ADC   p1SCORE+2,X
+            STA   p1SCORE+2,X
             SEC
 L9574       SBC   #$07
             BMI   L957E
@@ -3107,7 +3066,7 @@ L957E       LDA   $23
             ADC   #$01
             STA   $23
 L9589       CLD
-            LDY   $1A
+            LDY   curPLAYER
             LDX   L95FD,Y
             TXA
             CLC
@@ -3123,8 +3082,8 @@ L9589       CLD
             EOR   #$60
             STA   $F2+1
             LDA   #$02
-            STA   $DC
-L95AC       LDA   |$004A,Y
+            STA   myVAR_DC
+L95AC       LDA   |p1SCORE,Y
             LSR
             LSR
             LSR
@@ -3136,7 +3095,7 @@ L95AC       LDA   |$004A,Y
 L95BA       INC   $2B
             LDA   L95F2,X
             JSR   printCHARACTER
-L95C2       LDA   |$004A,Y
+L95C2       LDA   |p1SCORE,Y
             AND   #$0F
             TAX
             BNE   L95CE
@@ -3146,7 +3105,7 @@ L95CE       INC   $2B
             LDA   L95F2,X
             JSR   printCHARACTER
 L95D6       DEY
-            DEC   $DC
+            DEC   myVAR_DC
             BPL   L95AC
             LDA   $5F
             BNE   L95E0
@@ -3154,11 +3113,11 @@ L95D6       DEY
 
 L95E0       LDA   #$00	; nb lives++
             STA   $5F
-            LDX   $1A
-            LDA   $54,X
+            LDX   curPLAYER
+            LDA   p1LIVES,X
             CMP   #$06
             BCS   L95F1
-            INC   $54,X
+            INC   p1LIVES,X
             JSR   L9604
 L95F1       RTS
 
@@ -3188,13 +3147,13 @@ L9604       LDA   #$50
             STA   $F0+1
             EOR   #$60
             STA   $F2+1
-            LDX   $1A
-            LDY   $54,X
+            LDX   curPLAYER
+            LDY   p1LIVES,X
             BMI   L9635	; dead?
             CPY   #$06	; more than 6 lives
             BCC   L9620	; make it 5 max
             LDY   #$05
-            STY   $54,X
+            STY   p1LIVES,X
 L9620       DEY
             BMI   L962F
             LDA   #$23
@@ -3215,9 +3174,9 @@ L9635       PLA
             PLA
             LDA   #$1C	; GAME OVER
             JSR   printSTRING
-            LDA   $19
+            LDA   nbPLAYERS
             BEQ   L9648
-            LDA   $1A
+            LDA   curPLAYER
             CLC
             ADC   #$1E	; PLAYER 1/2
             JSR   printSTRING
@@ -3226,40 +3185,40 @@ L9648       LDA   #$04
             JSR   L96A0
             CMP   #$9B
             BNE   L965B
-L9654       JSR   L9703
+L9654       JSR   waitFORKEY
             CMP   #$9B
             BNE   L9654
 L965B       LDA   KBDSTROBE
-            LDA   $19
+            LDA   nbPLAYERS
             BEQ   L9671
-            LDA   $1A
+            LDA   curPLAYER
             EOR   #$01
             TAY
-            LDA   |$0054,Y
+            LDA   |p1LIVES,Y
             BMI   L9671
-            STY   $1A
+            STY   curPLAYER
             JMP   L096E
 
-L9671       LDA   $79
+L9671       LDA   theLEVEL
             CMP   #$09
             BCC   L969D
             LDA   TXTPAGE1
             JSR   clearHGR1
             LDA   #$15	; ?
             JSR   printSTRING
-            LDA   $79
+            LDA   theLEVEL
             CMP   #$11
             BCC   L9698
             LDA   #$16	; ?
             JSR   printSTRING
-            LDA   $79
+            LDA   theLEVEL
             CMP   #$19
             BCC   L9698
             LDA   #$17	; USE SECRET WARP
             JSR   printSTRING
 L9698       LDX   #$20
             JSR   L96A2
-L969D       JMP   L093D
+L969D       JMP   startGAME
 
 L96A0       LDX   #$08
 L96A2       LDY   #$FF
@@ -3323,36 +3282,44 @@ L96D9       LDA   ($1B),Y
             LDX   $DA
             RTS
 
-L9703       LDA   KBDSTROBE
-            LDA   #$09
+*-----------------------------------
+* WAIT FOR KEY
+*-----------------------------------
+
+waitFORKEY  LDA   KBDSTROBE
+            LDA   #$09		; counters
             STA   $DA
 L970A       LDA   #$60
-            STA   $DC
+            STA   myVAR_DC
 L970E       LDX   #$A5
             LDY   #$E1
 L9712       LDA   KBD
-            BMI   L972E
+            BMI   L972E		; got a key press
             DEX
             BNE   L9712
             DEY
             BNE   L9712
-            DEC   $DC
+            DEC   myVAR_DC
             BNE   L970E
             DEC   $DA
             BNE   L970A
             LDA   TXTPAGE1
             LDA   TXTSET
-            JMP   L9703
+            JMP   waitFORKEY
 
 L972E       STA   KBDSTROBE
-            STA   $DC
-            LDA   $EC
+            STA   myVAR_DC		; save pressed key
+            LDA   thePAGE		; invert HGR page
             EOR   #$01
             TAX
             LDA   TXTCLR
             LDA   $C054,X
-            LDA   $DC
+            LDA   myVAR_DC
             RTS
+
+*-----------------------------------
+*
+*-----------------------------------
 
 L9741       HEX   00000000000000000000000000000000
             HEX   00000000000000000000000000000000
@@ -3366,6 +3333,11 @@ L9741       HEX   00000000000000000000000000000000
             HEX   00000000000000000000000000000000
             HEX   00000000000000000000000000000000
             HEX   000000000000000000000000000000
+
+*-----------------------------------
+*
+*-----------------------------------
+
 L9800       HEX   5AF05AF05BE50FA50FA5A5AF05AF0550
             HEX   FA50FA5AFA5AF05AF00FA50FA5AF0FA5
             HEX   AF05AFFA50FA5AF050FA5AF05AA50FA5
@@ -3382,6 +3354,11 @@ L9800       HEX   5AF05AF05BE50FA50FA5A5AF05AF0550
             HEX   5AF0FA5AF05AF00FA50FA5AFA5AF05AF
             HEX   0550FA50FA5A5AF05AF05BE50FA50FA5
             HEX   5050505050505050D0D0D0D0D0D0D0D0
+
+*-----------------------------------
+*
+*-----------------------------------
+
 L9900       HEX   0072307260729072C072007330736073
             HEX   9073C0739073C0739073C0739073C073
             HEX   00743074007430740074307400743074
@@ -3399,11 +3376,11 @@ L9900       HEX   0072307260729072C072007330736073
             HEX   00000000000000000000000000000000
             HEX   00A69CA69BA69A809A00000000000000
 
-            ORG   $00A500
-
 *-----------------------------------
 * PRINT STRING
 *-----------------------------------
+
+            ORG   $00A500
 
 printSTRING ASL
             TAY
@@ -3502,7 +3479,7 @@ LA5A6       LDA   LA5F7,X
             STA   $F0+1
             EOR   #$60
             STA   $F2+1
-            LDA   $79
+            LDA   theLEVEL
             LSR
             LSR
             STA   $56
@@ -3761,10 +3738,43 @@ LAD22       HEX   0004080C1014181C1C1C1C
 LAD2D       HEX   0007142128354249494949
 LAD38       HEX   09070504040303020202
 LAD42       HEX   07080C0F0F14141E1E1E
-LAD4C       HEX   004080C0004080C0004080C0004080C0
-LAD5C       HEX   A0A0A0A0A1A1A1A1A2A2A2A2A3A3A3A3
-LAD6C       HEX   9D9E
+LAD4C       DFB   <LA000
+	DFB   <LA040
+	DFB   <LA080
+	DFB   <LA0C0
+	DFB   <LA100
+	DFB   <LA140
+	DFB   <LA180
+	DFB   <LA1C0
+	DFB   <LA200
+	DFB   <LA240
+	DFB   <LA280
+	DFB   <LA2C0
+	DFB   <LA300
+	DFB   <LA340
+	DFB   <LA380
+	DFB   <LA3C0
+LAD5C       DFB   >LA000
+	DFB   >LA040
+	DFB   >LA080
+	DFB   >LA0C0
+	DFB   >LA100
+	DFB   >LA140
+	DFB   >LA180
+	DFB   >LA1C0
+	DFB   >LA200
+	DFB   >LA240
+	DFB   >LA280
+	DFB   >LA2C0
+	DFB   >LA300
+	DFB   >LA340
+	DFB   >LA380
+	DFB   >LA3C0
+
+tblPLRBUF   DFB   >L9D00	; This is where a player's
+	DFB   >L9E00	; board is stored
 LAD6E       HEX   0020
+
 LAD70       HEX   000E0B0805
 LAD75       HEX   552A
 
@@ -3782,28 +3792,29 @@ LAD75       HEX   552A
 * SHOW TITLE PAGE AND OPTIONS
 *-----------------------------------
 
-LAE00       JSR   clearHGR1
+showTITLEPAGE
+            JSR   clearHGR1
             LDA   #$1B	; show (c) string
             JSR   printSTRING
-            JSR   LAE53
+            JSR   printSPRITES
             JSR   copyHGR1TOHGR2
 LAE0E       JSR   showNBPLAYERS
-            JSR   L9703
+            JSR   waitFORKEY
             STA   TXTPAGE1
             CMP   #"1"
             BNE   LAE22
             LDA   #$00
-            STA   $19
+            STA   nbPLAYERS
             JMP   LAE0E
 
 LAE22       CMP   #"2"
             BNE   LAE2D
             LDA   #$01
-            STA   $19
+            STA   nbPLAYERS
             JMP   LAE0E
 
 LAE2D       CMP   #$8D	; return to show hints
-            BEQ   LAE36
+            BEQ   printHINTS
             CMP   #" "	; space to play
             BNE   LAE0E
             RTS
@@ -3812,19 +3823,24 @@ LAE2D       CMP   #$8D	; return to show hints
 * SHOW HINTS
 *-----------------------------------
 
-LAE36       JSR   clearHGR1
+printHINTS  JSR   clearHGR1
             LDA   #$13	; HINTS 1
             JSR   printSTRING
             LDA   #$14	; HINTS 2
             JSR   printSTRING
-            JSR   LAE53	; show sprites
+            JSR   printSPRITES	; show sprites
             JSR   copyHGR1TOHGR2
-LAE49       JSR   L9703
+LAE49       JSR   waitFORKEY
             CMP   #$8D
             BNE   LAE49
-            JMP   LAE00
+            JMP   showTITLEPAGE
 
-LAE53       LDA   #$00	; index is 0
+*-----------------------------------
+* ADD SPRITES TO THE PAGE
+*-----------------------------------
+
+printSPRITES
+            LDA   #$00	; index is 0
             STA   $DB
 LAE57       LDY   $DB
             LDA   LAEB7,Y
@@ -3924,7 +3940,7 @@ showNBPLAYERS
             STA   $F0+1
             EOR   #$60
             STA   $F2+1
-            LDY   $19
+            LDY   nbPLAYERS
             LDA   L95F3,Y
             JSR   printCHARACTER
             RTS
@@ -4186,10 +4202,10 @@ L674D       STA   ($28),Y
             BPL   L6733
             BMI   L6728
 L6754       LDA   #$01
-            STA   $54
+            STA   p1LIVES
 L6758       LDA   #$00
-            STA   $55
-L675C       LDA   $55
+            STA   p2LIVES
+L675C       LDA   p2LIVES
             ASL
             ASL
             ASL
@@ -4210,11 +4226,11 @@ L6765       STX   $50
             INC   $56
             DEX
             BPL   L6765
-            LDA   $55
+            LDA   p2LIVES
             JSR   BASCALC
             LDY   #$27
 L6788       LDA   ($28),Y
-            CMP   $54
+            CMP   p1LIVES
             BNE   L67AA
 L678E       LDA   ($70),Y
 L6790       STA   ($60),Y
@@ -4230,18 +4246,18 @@ L6790       STA   ($60),Y
 L67AA       DEY
             BPL   L6788
             JSR   L67E5
-            INC   $55
-            LDY   $55
+            INC   p2LIVES
+            LDY   p2LIVES
             CPY   #$18
             BNE   L675C
-            INC   $54
-            LDA   $54
+            INC   p1LIVES
+            LDA   p1LIVES
             CMP   #$01
             BEQ   L67CA
             CMP   #$04
             BNE   L6758
             LDA   #$00
-            STA   $54
+            STA   p1LIVES
             BEQ   L6758
 
 L67CA       LDX   #$2F

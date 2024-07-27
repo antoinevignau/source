@@ -27,6 +27,7 @@ score800	=	8
 NBDOTS	=	248	; 244 normal dots & 4 energizer dots
 
 L0300	=	$0300	; buffer area to save scores
+
 GHOST1MOVE	=	$0800	; buffer area for ghosts moves
 GHOST2MOVE	=	GHOST1MOVE+256
 GHOST3MOVE	=	GHOST2MOVE+256

@@ -291,13 +291,13 @@ L09B0       DEC   timeCNT
             STA   timeCNT
             JSR   printTIME
 
-L09BB       LDA   $DD
-            BNE   L09C6
+L09BB       LDA   $DD		; move milestone
+            BNE   L09C6		; yes
             LDA   $96
-            BNE   L09C6
-            JMP   L09CC
-L09C6       JSR   L3158
-            JSR   L0FB2
+            BNE   L09C6		; yes (could have been BEQ L09CC)
+            JMP   L09CC		; no
+L09C6       JSR   animMILESTONE	; move screen
+            JSR   nextMILESTONE	; calculate next milestone
 
 L09CC       JSR   getCOURSEDATA
             JSR   animSHOOTS
@@ -374,8 +374,8 @@ clearALL    LDA   #$22
             STA   $4A
             LDA   #$00
             STA   basePOINT
-            STA   $DD
-            STA   $96
+            STA   $DD		; no milestone
+            STA   $96		; no milestone
             STA   fgHIT
             STA   frameCNT
             STA   $39
@@ -1168,10 +1168,11 @@ L0F99       STA   $15
 L0FB1       RTS
 
 *-----------------------------------
-* 
+* CALCULATE NEXT MILESTONE DISPLAY
 *-----------------------------------
 
-L0FB2       LDA   $96
+nextMILESTONE
+            LDA   $96
             SEC
             SBC   $AF
             STA   $96
@@ -1181,7 +1182,7 @@ L0FB2       LDA   $96
             DEC   $DD
 L0FC1       RTS
 
-L0FC2       LDA   #$00
+L0FC2       LDA   #$00		; end of milestone display
             STA   $96
             STA   $DD
             RTS
@@ -1457,9 +1458,9 @@ L11B1       LDA   ptrCOURSE
             STA   plrCOURSE+1
             LDA   #$00
             STA   $97
-            LDA   #$18
+            LDA   #$18		; milestone activated
             STA   $96
-            LDA   #$02
+            LDA   #$02		; milestone activated
             STA   $DD
             LDA   #$00
             STA   $01
@@ -1486,13 +1487,13 @@ L11E7       LDA   $97
             BEQ   L11EE
             JMP   L1225
 
-L11EE       LDA   $DD
+L11EE       LDA   $DD		; shall we announce the milestone?
             CMP   #$01
-            BEQ   L11F7
-            JMP   L1225
+            BEQ   L11F7		; yes
+            JMP   L1225		; no
 
-L11F7       LDA   vehicleX
-            CMP   $96
+L11F7       LDA   vehicleX	; announces the milestone
+            CMP   $96		; by beeping
             BCC   L1225
             LDA   plrCOURSE
             STA   $83
@@ -4689,8 +4690,8 @@ L2B72       LDA   #$FF
             LDA   #$FF
             STA   $4A
             LDA   #$00
-            STA   $96
-            STA   $DD
+            STA   $96		; no milestone
+            STA   $DD		; no milestone
             STA   fgHIT
             LDA   #$01
             STA   $97
@@ -4908,7 +4909,7 @@ L2D26       LDA   $C7,X
             DEX
             BPL   L2D0F
 
-            LDA   #sprWHEEL
+            LDA   #0
             STA   $AF
             LDA   oldWHEEL3X
             ORA   courseTYPE
@@ -5475,10 +5476,11 @@ L3155       LDX   #$A0
 L3157       RTS
 
 *-----------------------------------
-* 
+* ANIMATE MILESTONE (THE LETTERS)
 *-----------------------------------
 
-L3158       LDA   $D5
+animMILESTONE
+            LDA   $D5
             STA   L318E+1
             LDA   $D5+1
             STA   L318E+2

@@ -48,10 +48,10 @@ HGR3	=	$6000	; does not exist but marks the area past HGR2
 CH	=	$24	; firmware X-pos
 CV	=	$25	; firmware Y-pos
 
-zpHISCORE	=	$00	; (3 bytes) high score
+highSCORE	=	$00	; (3 bytes) high score
 zpXBIT	=	$03	; X from X-coord to X-bit offset
 zpXCOL	=	$04	; Y from X-coord to X-col in screen
-zpDECSCORE	=	$05	; (3 bytes) the decimal score
+deciSCORE	=	$05	; (3 bytes) the decimal score
 zpTEMP1	=	$08
 zpTEMP2	=	$09
 zpTEMP3	=	$0a
@@ -64,24 +64,25 @@ zpHGR	=	$12	; (word) pointer to HGR world
 zpPTR1	=	$14	; (word) 1st pointer
 zpPTR2	=	$16	; (word) 2nd pointer
 ptrMOVE	=	zpPTR2      ; (word) pointer to the list of authorized moves
-zpSPRHEIGHT	=	$18	; (byte) sprite height in lines
-zpSPRWIDTH	=	$1a	; (byte) sprite width in bytes
+sprHEIGHT	=	$18	; (byte) sprite height in lines
+sprWIDTH	=	$1a	; (byte) sprite width in bytes
 zpPTR3	=	$1b	; (word)
 fgCOLOR	=	$1d	; 0: b&w, 1: color
 hgrBIT7	=	$1e	; (byte) defines which palette to use ($00 or $80)
 zp1F	=	$1f
 * $20 to $4F are not used
-zpCURPLAYER	=	$50	; (byte) current player index
-zpNBPLAYERS	=	$51	; (byte) number of players (1..5)
+curPLAYER	=	$50	; (byte) current player index
+nbPLAYERS	=	$51	; (byte) number of players (1..5)
 curSCORE	=	$52	; 0 (3 bytes) score
-zpRANK	=	$55	; 3 (byte) rank number (ie. the level)
-zpNBDOTS	=	$56	; 4 (byte) number of dots on the board (248 by default)
+theRANK	=	$55	; 3 (byte) rank number (ie. the level)
+nbDOTS	=	$56	; 4 (byte) number of dots on the board (248 by default)
 fruitFREQ	=	$57	; 5 (byte) appearance frequency of a fruits
-zpNBLIVES	=	$58	; 6 (byte) number of lives (bit 7 is set)
+nbLIVES	=	$58	; 6 (byte) number of lives (bit 7 is set)
 frameCNT	=	$59	; 7 (byte) frame counter
-zpPTRFRUIT	=	$5c	; (word) pointer to the fruit sprite
-zpDOTTEMPO	=	$5e	; (byte) tempo for energizer dot blinking
-zpDOTFLAG	=	$5f	; (byte) 0: show dots, 1: hide dots
+fruitCNT	=	$5a	; (word) fruit counter (how long it is displayed)
+ptrFRUIT	=	$5c	; (word) pointer to the fruit sprite
+dotTEMPO	=	$5e	; (byte) tempo for energizer dot blinking
+fgDOTS	=	$5f	; (byte) 0: show dots, 1: hide dots
 *
 * Within board, X/Y coords of Pacman are:
 * UL 41/0B
@@ -98,9 +99,8 @@ pacmanBOARD	=	$64	; (byte) current index in boardMOVES where Pacman is
 pacmanNEXTBOARD =	$65	; (byte) next index in the same table, $FF if move is invalid
 pacmanSTEP	=	$66	; (byte) Pacman sprite index (that makes the animation step)
 * $67 is no more used, see $8B7E
-*
 bonusINDEX	=	$68	; (byte) 2/4/8/16 for bonus 200/400/800/1600
-*
+pacmanTUNNEL =	$69	; (byte) 0: Pacman not in tunnel, 1: Pacman in tunnel
 boardY	=	$6a	; (byte) y-coord in board
 boardX	=	$6b	; (byte) x-coord in board
 *
@@ -144,6 +144,7 @@ ghost4FRIGHTENED =	ghost4DATA+8
 ghost4DEAD	=	ghost4DATA+9
 *
 ghostINDEX	=	$e0	; (byte) 1: Inky, 2: Pinky, 3: Blinky, 4: Clyde
+frFRUIT	=	$e7	; (byte) 0: fruit counter not activated, 1: fruit counter activated
 fgDEMO	=	$e8	; (byte) 0: game, 1: demo
 saveVAR	=	$f1	; (byte) save variable
 * $F2 is not used

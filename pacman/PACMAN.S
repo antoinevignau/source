@@ -71,13 +71,13 @@ L4010       LDA   (zpPTR1),Y
             JMP   L4027
 
 L4027       LDA   #$01
-            STA   zpNBPLAYERS
+            STA   nbPLAYERS
             JSR   initNEWGAME
             LDA   #$00
-            STA   zpHISCORE
-            STA   zpHISCORE+1
-            STA   zpHISCORE+2
-            STA   zpNBLIVES
+            STA   highSCORE
+            STA   highSCORE+1
+            STA   highSCORE+2
+            STA   nbLIVES
             LDA   #$01
             STA   fgCOLOR	; ZP - color monitor if 1
             STA   fgDEMO	; ZP - demo if 1
@@ -156,7 +156,7 @@ L4178       LDA   strCARTOON,X	; CARTOON NUMBER (1-3)
             CPX   #"2"
             BEQ   L4197
             LDA   #$09
-L4197       STA   zpRANK		; ZP
+L4197       STA   theRANK		; ZP
             JSR   playCARTOON
             JMP   selectRANKCARTOON
 
@@ -222,7 +222,7 @@ L4233       JSR   RDKEY
             BCS   L4233
             JSR   printCHAR
             AND   #$07
-            STA   zpNBPLAYERS		; ZP
+            STA   nbPLAYERS		; ZP
 
             LDA   #$00
             STA   CH
@@ -314,9 +314,9 @@ L432A       CLC
             INC   L55B1+2
 
 L4338       LDA   #$01		; width in bytes
-            STA   zpSPRWIDTH
+            STA   sprWIDTH
             LDA   #$09		; height in lines
-            STA   zpSPRHEIGHT
+            STA   sprHEIGHT
             LDA   #$00
             STA   zpXBIT
             JSR   drawCOLORSPRITE
@@ -618,9 +618,9 @@ welcomePAGE
             LDA   #$00
             STA   zpXBIT
             LDA   #$05
-            STA   zpSPRWIDTH
+            STA   sprWIDTH
             LDA   #$09
-            STA   zpSPRHEIGHT
+            STA   sprHEIGHT
             LDA   #<sprC1983
             STA   L55B1+1
             LDA   #>sprC1983
@@ -655,9 +655,9 @@ welcomeTAB  LDA   #$49		; set X
 
 welcomePOINTS
             LDA   #$04		; Draw the Points sprite
-            STA   zpSPRWIDTH
+            STA   sprWIDTH
             LDA   #$07
-            STA   zpSPRHEIGHT
+            STA   sprHEIGHT
             LDA   #<sprPOINTS
             STA   L55B1+1
             LDA   #>sprPOINTS
@@ -742,7 +742,7 @@ welcomeBONUS
 *-----------------------------------
 
 doWELCOME   LDA   #$70
-            STA   zpDOTTEMPO
+            STA   dotTEMPO
             LDA   #$20
             STA   frameCNT
             LDA   #$18
@@ -755,7 +755,7 @@ doWELCOME   LDA   #$70
             STA   ghostISDEAD	; ghost is alive
             LDA   #$01
             STA   $81
-            STA   zpDOTFLAG
+            STA   fgDOTS
             LDA   #$8D		; coordinate of Pacman
             STA   pacmanX
             LDA   #$68
@@ -812,8 +812,8 @@ L4711       JSR   getGHOSTSDATA
             DEC   $5E
             BNE   L4742
             LDA   #$60
-            STA   zpDOTTEMPO
-            LDA   zpDOTFLAG
+            STA   dotTEMPO
+            LDA   fgDOTS
             BEQ   L4733
             LDA   #$67
             STA   zpY1
@@ -828,7 +828,7 @@ L4733       LDA   #$66
             STA   zpX1
             JSR   L7819
             LDA   #$01
-L4740       STA   zpDOTFLAG
+L4740       STA   fgDOTS
 L4742       LDA   pacmanX
             CMP   #$4F
             BCC   L474B
@@ -901,7 +901,7 @@ L47C9       LDA   #<L47DA
             STY   zpPTR3+1
             LDA   #$01
             STA   fgDEMO
-            STA   zpRANK
+            STA   theRANK
             JMP   L5303
 
 L47DA       DB    $03
@@ -1432,15 +1432,15 @@ L5306       JSR   prepareLEVEL
             JSR   initGAMEDATA
 L530F       JSR   L7861
             JSR   L86EA
-            JSR   L6A7C
-            JSR   blinkTHINGS
+            JSR   doFRUIT	; show/hide fruit
+            JSR   blinkTHINGS	; blink what needs to be blinked
             JMP   L530F
 
 L531E       LDA   #$01
             STA   frameCNT
             JSR   setDEFAULTBOARD
             LDA   #nbDOTS
-            STA   zpNBDOTS
+            STA   nbDOTS
             LDA   #$40
             STA   fruitFREQ
             JSR   savePLAYERDATA
@@ -1481,7 +1481,7 @@ L5353       LDA   zpPTR2+1
 *-----------------------------------
 
 loadPLAYERBOARD
-            LDA   zpCURPLAYER
+            LDA   curPLAYER
             ASL
             TAX
             LDA   tblPLAYERBOARD,X
@@ -1521,7 +1521,7 @@ L5380       LDA   (zpPTR1),Y
 *-----------------------------------
 
 savePLAYERBOARD
-            LDA   zpCURPLAYER
+            LDA   curPLAYER
             ASL
             TAX
             LDA   tblPLAYERBOARD,X
@@ -1551,7 +1551,7 @@ tblPLAYERBOARD	; board buffers ($380) per player
 *-----------------------------------
 
 savePLAYERDATA
-            LDX   zpCURPLAYER
+            LDX   curPLAYER
             LDY   tbplPDOFFSET,X
             LDX   #$07
 L53C5       LDA   curSCORE,X
@@ -1566,7 +1566,7 @@ L53C5       LDA   curSCORE,X
 *-----------------------------------
 
 loadPLAYERDATA
-            LDX   zpCURPLAYER
+            LDX   curPLAYER
             LDY   tbplPDOFFSET,X
             LDX   #$07
 L53D6       LDA   pacmanDATA,Y
@@ -1613,7 +1613,7 @@ L5402       STA   |frameCNT,Y
             LDA   #$00
             STA   $EB
             STA   $E4
-            STA   $E7
+            STA   fgFRUIT
             STA   $1F
             JSR   getMAXRANK15
             TAX
@@ -1747,34 +1747,34 @@ initNEWGAME
             STA   fgDEMO
             STA   $F3
 L54E0       LDA   #$01		; ZP - RANK
-            STA   zpRANK
+            STA   theRANK
             LDA   #$01
             STA   frameCNT
             LDA   #$83		; 3 lives!
-            STA   zpNBLIVES
+            STA   nbLIVES
             LDA   #nbDOTS
-            STA   zpNBDOTS
+            STA   nbDOTS
             LDA   #$40
             STA   fruitFREQ
-            LDA   zpNBPLAYERS
-            STA   zpCURPLAYER
+            LDA   nbPLAYERS
+            STA   curPLAYER
             JSR   setDEFAULTBOARD
 L54FB       JSR   savePLAYERDATA
             JSR   savePLAYERBOARD
-            DEC   zpCURPLAYER
+            DEC   curPLAYER
             BNE   L54FB
             LDA   #$01
-            STA   zpCURPLAYER
+            STA   curPLAYER
             RTS
 
 *-----------------------------------
 * DRAW ALL SCORES
 *-----------------------------------
 
-drawSCORES  LDA   zpNBPLAYERS	; get nb players
-            STA   zpCURPLAYER	; make it current
+drawSCORES  LDA   nbPLAYERS	; get nb players
+            STA   curPLAYER	; make it current
 
-L550E       LDA   zpCURPLAYER
+L550E       LDA   curPLAYER
             ASL
             ASL
             ASL		; *8
@@ -1795,11 +1795,11 @@ L550E       LDA   zpCURPLAYER
             BCC   L5534
             INC   zpX2+1
 L5534       JSR   L5CF6
-            LDA   zpCURPLAYER
+            LDA   curPLAYER
             BEQ   L553E
             JSR   loadPLAYERDATA
 L553E       JSR   L70CC
-            DEC   zpCURPLAYER	; next player
+            DEC   curPLAYER	; next player
             BMI   L5563
             BEQ   L554A
             JMP   L550E
@@ -1808,11 +1808,11 @@ L554A       LDA   #<sprHISCORE	; HISCORE sprite
             STA   L5591+1
             LDA   #>sprHISCORE
             STA   L5596+1
-            LDA   zpHISCORE
+            LDA   highSCORE
             STA   curSCORE
-            LDA   zpHISCORE+1
+            LDA   highSCORE+1
             STA   curSCORE+1
-            LDA   zpHISCORE+2
+            LDA   highSCORE+2
             STA   curSCORE+2
             JMP   L550E
 
@@ -1835,14 +1835,14 @@ L556E       LDA   L55C7,X	; X on screen
             LDA   #$00
             STA   zpXBIT
             LDA   #$07		; 7w and 7h
-            STA   zpSPRHEIGHT
-            STA   zpSPRWIDTH
+            STA   sprHEIGHT
+            STA   sprWIDTH
 L5591       LDA   #<sprPLAYER	; PLAYER sprite
             STA   L55B1+1
 L5596       LDA   #>sprPLAYER
             STA   L55B1+2
             JSR   drawCOLORSPRITE
-            LDA   zpCURPLAYER		; skip if player 0
+            LDA   curPLAYER		; skip if player 0
             BEQ   L55A5
             JSR   printDIGIT
 L55A5       RTS
@@ -1855,7 +1855,7 @@ drawCOLORSPRITE
             JSR   setHGRADDRESS
             LDX   zpXBIT
             LDY   zpXCOL
-            LDA   zpSPRWIDTH		; number of bytes per line to output
+            LDA   sprWIDTH		; number of bytes per line to output
             STA   zpTEMP2
 L55B1       LDA   $0666,X
             ORA   (zpHGR),Y
@@ -1866,7 +1866,7 @@ L55B1       LDA   $0666,X
             BNE   L55B1
             STX   zpXBIT	; next X bit
             INC   zpY1	; next Y
-            DEC   zpSPRHEIGHT	; data--
+            DEC   sprHEIGHT	; data--
             BNE   drawCOLORSPRITE
             RTS
 
@@ -1909,13 +1909,13 @@ prepareLEVEL
             JSR   setHGR
             JSR   drawGAMEBOARD
             JSR   drawGHOSTDOOR
-            LDA   zpCURPLAYER	; save current player index
+            LDA   curPLAYER	; save current player index
             STA   saveVAR
             JSR   loadPLAYERDATA
             JSR   drawDOTS
             JSR   drawSCORES
             LDA   saveVAR		; restore current player index
-            STA   zpCURPLAYER
+            STA   curPLAYER
             JSR   loadPLAYERDATA
             JSR   printRANK
             JSR   printNBLIVES
@@ -1932,7 +1932,7 @@ L5691       RTS
 * PRINT RANK (LEVEL)
 *-----------------------------------
 
-printRANK   JMP   showFRUITEDRANK		; LoGo
+printRANK   JMP   drawFRUITEDRANK		; LoGo
 
             LDA   #$E1		; display the rank number, aka the level
             STA   zpX2		; it was replaced on the released game
@@ -1940,7 +1940,7 @@ printRANK   JMP   showFRUITEDRANK		; LoGo
             STA   zpX2+1
             LDA   #$B0
             STA   zpY2
-            LDA   zpRANK
+            LDA   theRANK
             JSR   L56C3
             STA   $19
             AND   #$F0
@@ -1974,7 +1974,7 @@ L56C8       ADC   #$01
 *-----------------------------------
 
 printNBLIVES
-            LDA   zpNBLIVES	; Show 2 Pacman if we have 3 lives
+            LDA   nbLIVES	; Show 2 Pacman if we have 3 lives
             AND   #$7F
             STA   $19		; save nb lives
             LDA   fgDEMO
@@ -2015,26 +2015,26 @@ L56FD       LDA   zpX2	; draw Pacman sprite
 
 blinkTHINGS JSR   blinkPLAYERNAME
 
-            LDA   zpDOTTEMPO	; blink dots
+            LDA   dotTEMPO	; blink dots
             BEQ   L5716
-            DEC   zpDOTTEMPO
+            DEC   dotTEMPO
             RTS
 
 L5716       JSR   getMAXRANK15
             TAX
             LDA   tblBLINKTEMPO,X
-            STA   zpDOTTEMPO
+            STA   dotTEMPO
 
-            LDA   zpDOTFLAG
+            LDA   fgDOTS
             BEQ   L572B
             JSR   hideENERGIZERS
             LDA   #$00
-            STA   zpDOTFLAG
+            STA   fgDOTS
             RTS
 
 L572B       JSR   showENERGIZERS
             LDA   #$01
-            STA   zpDOTFLAG
+            STA   fgDOTS
             RTS
 
 tblBLINKTEMPO	; Tempo table
@@ -2212,9 +2212,9 @@ L585A       LDA   #$68		; yes...
             LDA   #$00
             STA   zpXBIT
             LDA   #$05
-            STA   zpSPRWIDTH
+            STA   sprWIDTH
             LDA   #$07
-            STA   zpSPRHEIGHT
+            STA   sprHEIGHT
             LDA   #$11
             STA   zpXCOL
             LDA   #<sprREADY	; show the READY sprite
@@ -2286,7 +2286,7 @@ L58DF       JSR   L58FA
 *-----------------------------------
 
 erasePLAYER
-            LDA   zpCURPLAYER		; get player index
+            LDA   curPLAYER		; get player index
             ASL
             TAX
             LDA   L6992,X	; get X
@@ -2300,7 +2300,7 @@ erasePLAYER
 * 
 *-----------------------------------
 
-L58FA       LDA   zpCURPLAYER
+L58FA       LDA   curPLAYER
             ASL
             ASL
             ASL		; *8
@@ -2892,7 +2892,7 @@ dftBOARD    HEX   00000000000000000000000000000000000000000000000000000000000000
 *-----------------------------------
 
 L693A       LDA   #$F8
-            STA   zpSPRHEIGHT
+            STA   sprHEIGHT
             JSR   calcXYHGR
             LDA   zpXBIT
             ASL
@@ -2914,7 +2914,7 @@ L6959       LDA   $0666,X
             INX
             STX   zpXBIT
             INC   zpY1
-            INC   zpSPRHEIGHT
+            INC   sprHEIGHT
             BNE   L6949
             RTS
 
@@ -2922,7 +2922,7 @@ L6959       LDA   $0666,X
 * ERASE SCORE
 *-----------------------------------
 
-eraseSCORE  LDA   zpCURPLAYER		; get current player
+eraseSCORE  LDA   curPLAYER		; get current player
             ASL			; and set the coordinates
             TAX
             LDA   L6992,X
@@ -2935,7 +2935,7 @@ eraseSCORE  LDA   zpCURPLAYER		; get current player
 *-----------------------------------
 
 eraseBLOCK  LDA   #$0C		; 12 lines to erase
-            STA   zpSPRHEIGHT
+            STA   sprHEIGHT
 L697C       JSR   setHGRADDRESS
             LDY   zpXCOL
             LDX   #$08		; clear 8 bytes
@@ -2945,7 +2945,7 @@ L6985       STA   (zpHGR),Y
             DEX
             BNE   L6985
             INC   zpY1		; screen line++
-            DEC   zpSPRHEIGHT		; nb lines--
+            DEC   sprHEIGHT		; nb lines--
             BNE   L697C
             RTS
 
@@ -2966,7 +2966,7 @@ eraseSPRITE44
             JSR   moveCURSOR44
 
 L69A1       LDA   #$F6		; 10 lines to erase
-            STA   zpSPRHEIGHT
+            STA   sprHEIGHT
             JSR   calcXYHGR
             ASL   zpXBIT
             ASL   zpXBIT
@@ -2984,7 +2984,7 @@ L69B7       LDA   L69CD,X
             DEC   zpTEMP2
             BNE   L69B7
             INC   zpY1		; Y+=1
-            INC   zpSPRHEIGHT	; data++
+            INC   sprHEIGHT	; data++
             BNE   L69AC
             RTS
 
@@ -3036,15 +3036,15 @@ L6A28       STA   L6A4A+1	; b&w
             STY   L6A4A+2
             JSR   moveCURSOR44
             LDA   #$0A
-            STA   zpSPRHEIGHT
+            STA   sprHEIGHT
             LDA   #$03
-            STA   zpSPRWIDTH
+            STA   sprWIDTH
             JSR   calcXYHGR
             JSR   calcSPROFFSET
 L6A3F       JSR   setHGRADDRESS
             LDX   zpXBIT
             LDY   zpXCOL
-            LDA   zpSPRWIDTH
+            LDA   sprWIDTH
             STA   zpTEMP2
 L6A4A       LDA   $0666,X
             ORA   (zpHGR),Y
@@ -3056,7 +3056,7 @@ L6A4A       LDA   $0666,X
             BNE   L6A4A
             STX   zpXBIT
             INC   zpY1
-            DEC   zpSPRHEIGHT
+            DEC   sprHEIGHT
             BNE   L6A3F
             RTS
 
@@ -3064,207 +3064,150 @@ L6A62       STA   L55B1+1	; color
             STY   L55B1+2
             JSR   moveCURSOR44
             LDA   #$0A
-            STA   zpSPRHEIGHT
+            STA   sprHEIGHT
             JSR   calcXYHGR
             JSR   calcSPROFFSET
             LDA   #$03
-            STA   zpSPRWIDTH
+            STA   sprWIDTH
             JMP   drawCOLORSPRITE
 
 *-----------------------------------
-* 
+* SHOW/HIDE/HANDLE FRUIT
 *-----------------------------------
 
-L6A7C       LDA   fruitFREQ
-            BNE   L6AA7
-            LDA   zpRANK
+doFRUIT     LDA   fruitFREQ	; are we already in fruit mode?
+            BNE   L6AA7		; yes
+            LDA   theRANK	; no, set data
             CMP   #$1A
             BCC   L6A88
             LDA   #$1A
 L6A88       ASL
             ASL
             TAX
-            LDA   L6AFE,X
-            STA   $5C
-            LDA   L6AFF,X
-            STA   $5D
-            LDA   L6B00,X
-            STA   $5A
-            LDA   L6B01,X
-            STA   $5B
-            LDA   #$60
+            LDA   tblFRUITS,X	; pointer
+            STA   ptrFRUIT
+            LDA   tblFRUITS+1,X
+            STA   ptrFRUIT+1
+            LDA   tblFRUITS+2,X	; counter
+            STA   fruitCNT
+            LDA   tblFRUITS+3,X
+            STA   fruitCNT+1
+            LDA   #$60		; tempo
             STA   fruitFREQ
-            LDA   #$01
-            STA   $E7
+            LDA   #$01		; set fruit mode
+            STA   fgFRUIT
 
-L6AA7       LDA   frameCNT
+L6AA7       LDA   frameCNT	; check frame
             CMP   #$01
-            BNE   L6AFA
-            LDA   $E7
-            BEQ   L6AFA
-            LDA   $5A
+            BNE   L6AFA		; exit
+            LDA   fgFRUIT	; are we in fruit mode?
+            BEQ   L6AFA		; no, exit
+
+            LDA   fruitCNT	; check counter
             BNE   L6AB7
-            DEC   $5B
-L6AB7       DEC   $5A
+            DEC   fruitCNT+1
+L6AB7       DEC   fruitCNT
             CLC
-            LDA   $5A
-            ADC   $5B
+            LDA   fruitCNT
+            ADC   fruitCNT+1
             BNE   L6AC2
-            BCC   eraseBLOCK2
-L6AC2       LDA   $E7
+            BCC   hideFRUIT	; counter = 0, hide
+
+L6AC2       LDA   fgFRUIT	; are we in fruit mode?
             CMP   #$01
-            BEQ   L6AE4
-            LDA   #$91
-            STA   zpX2
+            BEQ   showFRUIT	; yes, show
+
+            LDA   #$91		; set data based
+            STA   zpX2		; on level
             LDA   #$00
             STA   zpX2+1
-            STA   zpDECSCORE
-            STA   zpDECSCORE+2
+            STA   deciSCORE
+            STA   deciSCORE+2
             LDA   #$68
             STA   zpY2
             JSR   getMAXRANK15
             TAX
             LDA   tblSCORE,X
-            STA   zpDECSCORE+1
+            STA   deciSCORE+1
             JMP   L70F5
 
-L6AE4       LDA   $5C
-            LDY   $5D
-            JMP   showFRUIT
+showFRUIT   LDA   ptrFRUIT
+            LDY   ptrFRUIT+1
+            JMP   drawFRUIT
 
-*-----------------------------------
-* ERASE ANOTHER BLOCK
-*-----------------------------------
-
-eraseBLOCK2
-            LDA   #$10
+hideFRUIT   LDA   #$10
             STA   zpXCOL
             LDA   #$66
             STA   zpY1
-            LDA   #$00
-            STA   $E7
+            LDA   #$00		; hide fruit
+            STA   fgFRUIT
             JSR   eraseBLOCK
+
 L6AFA       RTS
 
-eraseJMP2   JMP   eraseBLOCK2	; could have been avoided by
-			; jumping to eraseBLOCK2 directly
+hideFRUIT2   JMP   hideFRUIT	; could have been avoided by
+			; jumping to hideFRUIT directly
 
 *-----------------------------------
-* FRUIT SPRITES
+* FRUITS TABLE
 *-----------------------------------
 
-L6AFE       DB    $00
-L6AFF       DB    $00
-L6B00       DB    $00
-L6B01       DB    $00
-            DB    $6E
+tblFRUITS   DA    $0000		; +0: pointer to sprite
+            DW    $0000		; +2: delay before appearance
             DA    L6B6E
-            DB    $00
-            DB    $01
-            DB    $92
+            DW    $0100
             DA    L6B92
-            DB    $00
-            DB    $01
-            DB    $B6
+            DW    $0100
             DA    L6BB6
-            DB    $00
-            DB    $01
-            DB    $B6
+            DW    $0100
             DA    L6BB6
-            DB    $00
-            DB    $01
-            DB    $DA
+            DW    $0100
             DA    L6BDA
-            DB    $20
-            DB    $01
-            DB    $DA
+            DW    $0120
             DA    L6BDA
-            DB    $20
-            DB    $01
-            DB    $FE
+            DW    $0120
             DA    L6BFE
-            DB    $30
-            DB    $01
-            DB    $FE
+            DW    $0130
             DA    L6BFE
-            DB    $30
-            DB    $01
-            DB    $22
+            DW    $0130
             DA    L6C22
-            DB    $40
-            DB    $01
-            DB    $22
+            DW    $0140
             DA    L6C22
-            DB    $40
-            DB    $01
-            DB    $46
+            DW    $0140
             DA    L6C46
-            DB    $60
-            DB    $01
-            DB    $46
+            DW    $0160
             DA    L6C46
-            DB    $60
-            DB    $01
-            DB    $6A
+            DW    $0160
             DA    L6C6A
-            DB    $60
-            DB    $01
-            DB    $6A
+            DW    $0160
             DA    L6C6A
-            DB    $60
-            DB    $01
-            DB    $6A
+            DW    $0160
             DA    L6C6A
-            DB    $60
-            DB    $01
-            DB    $6A
+            DW    $0160
             DA    L6C6A
-            DB    $60
-            DB    $01
-            DB    $6A
+            DW    $0160
             DA    L6C6A
-            DB    $60
-            DB    $01
-            DB    $6A
+            DW    $0160
             DA    L6C6A
-            DB    $60
-            DB    $01
-            DB    $6A
+            DW    $0160
             DA    L6C6A
-            DB    $60
-            DB    $01
-            DB    $6A
+            DW    $0160
             DA    L6C6A
-            DB    $60
-            DB    $01
-            DB    $6A
+            DW    $0160
             DA    L6C6A
-            DB    $60
-            DB    $01
-            DB    $6A
+            DW    $0160
             DA    L6C6A
-            DB    $60
-            DB    $01
-            DB    $8E
+            DW    $0160
             DA    L6C8E
-            DB    $00
-            DB    $02
-            DB    $6A
+            DW    $0200
             DA    L6C6A
-            DB    $00
-            DB    $02
-            DB    $6A
+            DW    $0200
             DA    L6C6A
-            DB    $00
-            DB    $02
-            DB    $6A
+            DW    $0200
             DA    L6C6A
-            DB    $00
-            DB    $02
-            DB    $6A
+            DW    $0200
             DA    L6C6A
-            DB    $00
-            DB    $02
+            DW    $0200
 
 L6B6E       HEX   550000040200040800102000902085D4
             HEX   0095DC0097DDA2D7D5A2D5D40095D400
@@ -3350,7 +3293,7 @@ L6D05       LDX   #$FF
             BNE   L6D05
 
             JSR   playCARTOON
-            INC   zpRANK	; ZP next level?
+            INC   theRANK	; ZP next level?
             JSR   L531E
             JSR   prepareLEVEL
             JSR   initGAMEDATA
@@ -3361,7 +3304,7 @@ L6D05       LDX   #$FF
 *-----------------------------------
 
 getMAXRANK15
-            LDA   zpRANK
+            LDA   theRANK
             CMP   #$0F
             BCC   L6D26
             LDA   #$0F
@@ -3372,7 +3315,7 @@ L6D26       RTS
 *-----------------------------------
 
 getMAXRANK21
-            LDA   zpRANK
+            LDA   theRANK
             CMP   #$15
             BCC   L6D2F
             LDA   #$15
@@ -3421,7 +3364,7 @@ L6D49       LDA   #$00		; ghosts are not frightened
 * (b/c we ate a pacgum)
 
 makeGHOSTSFRIGTHENED
-            LDX   zpRANK	; ghosts are invincible
+            LDX   theRANK	; ghosts are invincible
             CPX   #$15		; as from level 21
             BCS   L6DA0
 
@@ -3698,7 +3641,7 @@ L6EB7       LDA   $0666,X
 * END OF THE GAME
 *-----------------------------------
 
-endGAME     JSR   eraseJMP2	; erase background
+endGAME     JSR   hideFRUIT2	; erase the fruit
             JSR   showGAMEOVER	; show GAME OVER
             LDA   #$01		; enter demo mode
             STA   fgDEMO
@@ -3710,10 +3653,10 @@ L6ECF       LDX   #$64
             JMP   welcomePAGE	; and return home
 
 *-----------------------------------
-* SHOW FRUIT
+* DRAW FRUIT
 *-----------------------------------
 
-showFRUIT   LDX   #$66
+drawFRUIT   LDX   #$66
             STX   zpY1
             LDX   #$13
             STX   zpXCOL
@@ -3722,28 +3665,28 @@ showFRUIT   LDX   #$66
 * DISPLAY FRUIT SPRITE
 *-----------------------------------
 
-L6EE2       STA   L6EFF+1
+drawFRUIT2  STA   L6EFF+1	; fruit address
             STY   L6EFF+2
-            LDA   #$0C
-            STA   zpSPRHEIGHT
-            LDA   #$00
+            LDA   #$0C		; height in lines
+            STA   sprHEIGHT
+            LDA   #$00		; source x index
             STA   zpXBIT
-L6EF0       JSR   setHGRADDRESS
+L6EF0       JSR   setHGRADDRESS	; calc HGR address
             LDX   zpXBIT
             LDY   zpXCOL
-            LDA   #$03
+            LDA   #$03		; width counter
             STA   zpTEMP2
-L6EFB       LDA   (zpHGR),Y
-            AND   #$7F
-L6EFF       ORA   $0666,X
-            STA   (zpHGR),Y
+L6EFB       LDA   (zpHGR),Y	; load
+            AND   #$7F		; mask bit 7
+L6EFF       ORA   $0666,X	; ora data
+            STA   (zpHGR),Y	; store
             INX
             INY
             DEC   zpTEMP2
             BNE   L6EFB
-            STX   zpXBIT
-            INC   zpY1
-            DEC   zpSPRHEIGHT
+            STX   zpXBIT	; save index
+            INC   zpY1		; next HGR lines
+            DEC   sprHEIGHT	; next sprite line
             BNE   L6EF0
             RTS
 
@@ -3751,8 +3694,8 @@ L6EFF       ORA   $0666,X
 * SHOW FRUITED RANK
 *-----------------------------------
 
-showFRUITEDRANK
-            LDA   zpRANK
+drawFRUITEDRANK
+            LDA   theRANK
             CMP   #$1A		; 26
             BCC   L6F1B
             LDA   #$1A
@@ -3763,9 +3706,9 @@ L6F1B       ASL		; show the rank as a fruit
             STA   zpY1
             LDA   #$21
             STA   zpXCOL
-            LDA   L6AFE,X
-            LDY   L6AFF,X
-            JMP   L6EE2
+            LDA   tblFRUITS,X	; pointer to the fruit table
+            LDY   tblFRUITS+1,X
+            JMP   drawFRUIT2
 
 *-----------------------------------
 * SET THE HGR SCREEN
@@ -4023,45 +3966,45 @@ L708D       CLC		; for the demo mode
 
 displayPLAYERSCORE
             LDA   curSCORE+2	; compare current score with high score
-            CMP   zpHISCORE+2
+            CMP   highSCORE+2
             BEQ   L709B
             BCC   L70CC
             BCS   L70AB
 L709B       LDA   curSCORE+1
-            CMP   zpHISCORE+1
+            CMP   highSCORE+1
             BEQ   L70A5
             BCC   L70CC
             BCS   L70AB
 L70A5       LDA   curSCORE
-            CMP   zpHISCORE
+            CMP   highSCORE
             BCC   L70CC
 
 L70AB       LDA   curSCORE	; save score as high score
-            STA   zpHISCORE
-            STA   zpDECSCORE
+            STA   highSCORE
+            STA   deciSCORE
             LDA   curSCORE+1
-            STA   zpHISCORE+1
-            STA   zpDECSCORE+1
+            STA   highSCORE+1
+            STA   deciSCORE+1
             LDA   curSCORE+2
-            STA   zpHISCORE+2
-            STA   zpDECSCORE+2
-            LDA   zpCURPLAYER	; save current player
+            STA   highSCORE+2
+            STA   deciSCORE+2
+            LDA   curPLAYER	; save current player
             STA   $F0
             LDA   #$00		; force high score player
-            STA   zpCURPLAYER
+            STA   curPLAYER
             JSR   L70D8		; output score
             LDA   $F0		; restore current player
-            STA   zpCURPLAYER
+            STA   curPLAYER
 
 L70CC       LDA   curSCORE	; current player score
-            STA   zpDECSCORE
+            STA   deciSCORE
             LDA   curSCORE+1
-            STA   zpDECSCORE+1
+            STA   deciSCORE+1
             LDA   curSCORE+2
-            STA   zpDECSCORE+2
+            STA   deciSCORE+2
 
 L70D8       JSR   eraseSCORE	; erase the area
-            LDA   zpCURPLAYER	; set the coordinates
+            LDA   curPLAYER	; set the coordinates
             ASL
             ASL
             TAX
@@ -4077,9 +4020,9 @@ L70D8       JSR   eraseSCORE	; erase the area
 L70F5       LDA   #$00		; calculate the score
             LDY   #$04
 L70F9       CLC
-            ROR   zpDECSCORE+2
-            ROR   zpDECSCORE+1
-            ROR   zpDECSCORE
+            ROR   deciSCORE+2
+            ROR   deciSCORE+1
+            ROR   deciSCORE
             ROR
             DEY
             BNE   L70F9
@@ -4095,11 +4038,11 @@ L70F9       CLC
             STA   zpX2
             BCS   L7117
             DEC   zpX2+1
-L7117       LDA   zpDECSCORE+2
+L7117       LDA   deciSCORE+2
             BNE   L70F5
-            LDA   zpDECSCORE+1
+            LDA   deciSCORE+1
             BNE   L70F5
-            LDA   zpDECSCORE
+            LDA   deciSCORE
             BNE   L70F5
             RTS
 
@@ -4107,19 +4050,19 @@ L7117       LDA   zpDECSCORE+2
 * 
 *-----------------------------------
 
-L7124       LDA   zpCURPLAYER	; high score player?
+L7124       LDA   curPLAYER	; high score player?
             BEQ   L7140
-            BIT   zpNBLIVES	; no life already?
+            BIT   nbLIVES	; no life already?
             BPL   L7140
             LDA   curSCORE+2	; 10000?
             CMP   #$01
             BCC   L7140		; no
 
             JSR   sndEXTRALIFE		; play a happy sound
-            INC   zpNBLIVES	; life++
-            LDA   zpNBLIVES
+            INC   nbLIVES	; life++
+            LDA   nbLIVES
             AND   #$7F
-            STA   zpNBLIVES
+            STA   nbLIVES
             JSR   printNBLIVES
 
 L7140       RTS
@@ -4331,7 +4274,7 @@ L7812       HEX   00,1E,3C,5A,78,96,B4
 *-----------------------------------
 
 L7819       LDA   #$F8
-            STA   zpSPRHEIGHT
+            STA   sprHEIGHT
             JSR   calcXYHGR
             ASL   zpXBIT	; *2
 L7822       JSR   setHGRADDRESS
@@ -4347,7 +4290,7 @@ L7822       JSR   setHGRADDRESS
             ORA   #$80
             STA   (zpHGR),Y
             INC   zpY1
-            INC   zpSPRHEIGHT
+            INC   sprHEIGHT
             BNE   L7822
             RTS
 
@@ -4490,12 +4433,14 @@ L7915       STA   pacmanNEXTBOARD
             LDA   pacmanDIR
             CMP   #dirRIGHT
             BNE   L7935
-L792F       LDA   #$01
-            STA   $69
+
+L792F       LDA   #$01		; Pacman enters tunnel
+            STA   pacmanINTUNNEL
             BNE   L795B
-L7935       LDA   #$00
-            STA   $69
+L7935       LDA   #$00		; Pacmal exits tunnel
+            STA   pacmanINTUNNEL
             BEQ   L795B
+
 L793B       LDA   #$06
             STA   boardY
             LDA   #$00
@@ -4513,7 +4458,7 @@ L794B       LDA   theDIR
             BCC   L795B
             LDA   theDIR
             STA   pacmanDIR
-L795B       LDA   $69
+L795B       LDA   pacmanINTUNNEL
             BEQ   L7962
             JMP   L7B2F
 
@@ -4580,15 +4525,15 @@ L79CD       LDA   pacmanY
             BCC   L79FD
             CMP   #$8E
             BCS   L79FD
-            LDA   $E7
+            LDA   fgFRUIT
             CMP   #$01
             BNE   L79FD
             LDA   #$30
-            STA   $5A
+            STA   fruitCNT
             LDA   #$00
-            STA   $5B
+            STA   fruitCNT+1
             LDA   #$02
-            STA   $E7
+            STA   fgFRUIT
             LDA   #$10
             STA   zpXCOL
             LDA   #$66
@@ -4753,7 +4698,7 @@ L7B0C       LDA   #$00		; remove the dot from the board
             STA   (zpPTR2),Y
             JSR   displayPLAYERSCORE
             DEC   fruitFREQ	; nbdots--
-            DEC   zpNBDOTS
+            DEC   nbDOTS
             BNE   L7B1E		; dots remain
             JMP   gotoNEXTLEVEL	; no more dots
 L7B1E       RTS
@@ -4769,7 +4714,7 @@ eatMYDOTDEMO
 L7B26       LDA   #$00		; remove dot from the board
             LDY   #$00
             STA   (zpPTR2),Y
-            DEC   zpNBDOTS	; decrement number of ghosts
+            DEC   nbDOTS	; decrement number of ghosts
             RTS
 
 *-----------------------------------
@@ -5067,15 +5012,16 @@ L7C68       DB    $70
             DB    $00
 
 *-----------------------------------
-* PLAY HIGHER BEEPS
+* PLAY SOUNDS WHEN PACMAN DIES
 *-----------------------------------
 
-L7C82       LDA   zpTEMP3
+playPACMANDIES
+            LDA   zpTEMP3	; get sprite index
             ASL
             TAX
             LDA   L7C8F,X
             LDY   L7C8F+1,X
-            JMP   playSOUNDFX
+            JMP   playSOUNDFX	; and play associated sound
 
 L7C8F       DA    $0000
             DA    L7CE4
@@ -5326,10 +5272,10 @@ L7DDC       STA   zpPTR2
             JSR   setXYGHOST
             JSR   eraseSPRITE44
             JSR   setXYGHOST
-            JSR   L7E1F
+            JSR   prepareSPRITE
 
-            LDA   fgDEMO
-            BNE   L7E0E
+            LDA   fgDEMO	; demo mode?
+            BNE   L7E0E		; yes, skip
             JSR   L805D
             JSR   L805D
             JSR   L7BE6
@@ -5346,38 +5292,44 @@ L7E13       JSR   setXYGHOST
             JSR   setXYPACMAN
             JMP   L79A4
 
-L7E1F       JSR   moveCURSOR54
-            JSR   calcXYHGR
-            LDY   #$1D
+*-----------------------------------
+* PREPARE SPRITE FOR DRAWING
+*-----------------------------------
+
+prepareSPRITE
+            JSR   moveCURSOR54	; move cursor
+            JSR   calcXYHGR	; calcumate HGR postiion
+            LDY   #$1D		; move original sprite data
 L7E27       LDA   (zpPTR2),Y
             STA   sprDATA,Y
             DEY
             BPL   L7E27
-            LDA   zpXBIT
+            LDA   zpXBIT	; which bit in byte
             BEQ   L7E3C
-            STA   zpTEMP4
-L7E35       JSR   L7E4F
+            STA   zpTEMP4	; make it an index
+L7E35       JSR   alignSPRITEHGR		; calculate sprite data
             DEC   zpTEMP4
             BNE   L7E35
-L7E3C       JSR   calcSPROFFSET
-            JSR   moveXY44
+L7E3C       JSR   calcSPROFFSET	; calculate sprite offset on screen
+            JSR   moveXY44	; move coords
             LDA   #<sprDATA
             LDY   #>sprDATA
             SEC
             SBC   zpXBIT
             BCS   L7E4C
             DEY
-L7E4C       JMP   drawSPRITE
+L7E4C       JMP   drawSPRITE	; and draw sprite
 
 *-----------------------------------
-* 
+* ALIGN SPRITE DATA ON HGR COLUMN
 *-----------------------------------
 
-L7E4F       LDX   #$1B
-L7E51       ASL   sprDATA,X
-            ASL   sprDATA,X
-            INX
-            ROL   sprDATA,X
+alignSPRITEHGR
+            LDX   #$1B		; rotate sprite data
+L7E51       ASL   sprDATA,X	; bit by bit
+            ASL   sprDATA,X	; so that it is
+            INX		; aligned with
+            ROL   sprDATA,X	; the HGR screen
             ASL   sprDATA,X
             INX
             ROL   sprDATA,X
@@ -5480,10 +5432,11 @@ sprDATA     DB    $CB
             DB    $4C
 
 *-----------------------------------
-* 
+* ANIMATE PACMAN WHEN IT DIES
 *-----------------------------------
 
-L7EC0       JSR   setXYPACMAN
+animPACMANDIES
+            JSR   setXYPACMAN
             LDA   #<sprPACMANUP2
             LDY   #>sprPACMANUP2
             JSR   drawSPRITE
@@ -5494,185 +5447,86 @@ L7ECC       LDX   #$FF
             BNE   L7ECC
             JSR   setXYPACMAN
             JSR   eraseSPRITE44
-            LDA   #$06
-            STA   zpTEMP3
+            LDA   #$06		; Pacman dies
+            STA   zpTEMP3	; in 6 sprites
 L7EDE       LDA   zpTEMP3
             ASL
             TAX
             JSR   setXYPACMAN
-            LDA   L7F05,X
-            LDY   L7F05+1,X
+            LDA   tblSPRPACMANDIES,X
+            LDY   tblSPRPACMANDIES+1,X
             STA   zpPTR2
             STY   zpPTR2+1
-            JSR   L7E1F
-            JSR   L7C82
+            JSR   prepareSPRITE
+            JSR   playPACMANDIES	; play a sound
             LDX   #$80
             JSR   doWAIT2
             JSR   setXYPACMAN
             JSR   eraseSPRITE54
-            DEC   zpTEMP3
+            DEC   zpTEMP3	; next sprite
             BNE   L7EDE
             RTS
 
-L7F05       DA    $0000
-            DA    L7FA9
-            DA    L7F8B
-            DA    L7F6D
-            DA    L7F4F
-            DA    L7F31
-            DA    L7F13
+tblSPRPACMANDIES
+            DA    $0000
+            DA    sprPACDIES6	; 6th sprite
+            DA    sprPACDIES5
+            DA    sprPACDIES4
+            DA    sprPACDIES3
+            DA    sprPACDIES2
+            DA    sprPACDIES1	; 1st sprite
 
-L7F13       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $06
-            DB    $0C
-            DB    $00
-            DB    $1E
-            DB    $0F
-            DB    $00
-            DB    $7E
-            DB    $0F
-            DB    $00
-            DB    $7E
-            DB    $0F
-            DB    $00
-            DB    $7C
-            DB    $07
-            DB    $00
-            DB    $78
-            DB    $03
-            DB    $00
-            DB    $70
-            DB    $01
-            DB    $00
-L7F31       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $7E
-            DB    $0F
-            DB    $00
-            DB    $7E
-            DB    $0F
-            DB    $00
-            DB    $7C
-            DB    $07
-            DB    $00
-            DB    $78
-            DB    $03
-            DB    $00
-            DB    $70
-            DB    $01
-            DB    $00
-L7F4F       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $78
-            DB    $03
-            DB    $00
-            DB    $7C
-            DB    $07
-            DB    $00
-            DB    $7C
-            DB    $07
-            DB    $00
-            DB    $78
-            DB    $03
-            DB    $00
-            DB    $70
-            DB    $01
-            DB    $00
-L7F6D       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $70
-            DB    $01
-            DB    $00
-            DB    $78
-            DB    $03
-            DB    $00
-            DB    $78
-            DB    $03
-            DB    $00
-            DB    $70
-            DB    $01
-            DB    $00
-            DB    $60
-            DB    $00
-            DB    $00
-L7F8B       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $60
-            DB    $00
-            DB    $00
-            DB    $60
-            DB    $00
-            DB    $00
-            DB    $60
-            DB    $00
-            DB    $00
-            DB    $60
-            DB    $00
-            DB    $00
-            DB    $60
-            DB    $00
-            DB    $00
-L7FA9       HEX   000000
+sprPACDIES1 HEX   000000
+            HEX   000000
+            HEX   000000
+            HEX   060C00
+            HEX   1E0F00
+            HEX   7E0F00
+            HEX   7E0F00
+            HEX   7C0700
+            HEX   780300
+            HEX   700100
+sprPACDIES2 HEX   000000
+            HEX   000000
+            HEX   000000
+            HEX   000000
+            HEX   000000
+            HEX   7E0F00
+            HEX   7E0F00
+            HEX   7C0700
+            HEX   780300
+            HEX   700100
+sprPACDIES3 HEX   000000
+            HEX   000000
+            HEX   000000
+            HEX   000000
+            HEX   000000
+            HEX   780300
+            HEX   7C0700
+            HEX   7C0700
+            HEX   780300
+            HEX   700100
+sprPACDIES4 HEX   000000
+            HEX   000000
+            HEX   000000
+            HEX   000000
+            HEX   000000
+            HEX   700100
+            HEX   780300
+            HEX   780300
+            HEX   700100
+            HEX   600000
+sprPACDIES5 HEX   000000
+            HEX   000000
+            HEX   000000
+            HEX   000000
+            HEX   000000
+            HEX   600000
+            HEX   600000
+            HEX   600000
+            HEX   600000
+            HEX   600000
+sprPACDIES6 HEX   000000
             HEX   240200
             HEX   280100
             HEX   000000
@@ -5682,6 +5536,7 @@ L7FA9       HEX   000000
             HEX   240200
             HEX   000000
             HEX   000000
+
 sprSCORE200
             HEX   000000
             HEX   000000
@@ -5847,13 +5702,13 @@ showGAMEOVER
             JMP   drawGO
 
 prepareGO   STA   zpY1
-            STX   zpSPRWIDTH
+            STX   sprWIDTH
             STY   zpXCOL
             LDA   #$00
             STA   zpXBIT
             RTS
 
-drawGO      STX   zpSPRHEIGHT
+drawGO      STX   sprHEIGHT
             STA   L55B1+1
             STY   L55B1+2
             JMP   drawCOLORSPRITE
@@ -5882,7 +5737,7 @@ sprOVER     HEX   4E687701
 * WHICH CARTOON TO PLAY?
 *-----------------------------------
 
-playCARTOON LDA   zpRANK
+playCARTOON LDA   theRANK
 L8157       CMP   #$02
             BNE   L815E
             JMP   playCARTOON1
@@ -6051,7 +5906,7 @@ L827A       LDA   $0666,Y
             DEY
             BPL   L827A
             LDA   #$14
-            STA   zpSPRHEIGHT
+            STA   sprHEIGHT
             LDA   zpXBIT
             BEQ   L8292
 L828B       JSR   L82B1
@@ -6070,7 +5925,7 @@ L829D       LDA   sprDATA,X
             BNE   L829D
             STX   zpXBIT
             INC   zpY1
-            DEC   zpSPRHEIGHT
+            DEC   sprHEIGHT
             BNE   L8292
             RTS
 
@@ -6298,7 +6153,7 @@ L8519       JSR   doWAIT
             LDY   L854A+1,X
             STA   zpPTR2
             STY   zpPTR2+1
-            JSR   L7E1F
+            JSR   prepareSPRITE
 L8546       JMP   L84F9
 L8549       RTS
 
@@ -7119,7 +6974,7 @@ L8B3F       BCS   L8B45
 L8B45       CMP   #$0A
             BCS   L8B7D
             TAX
-            LDA   zpRANK
+            LDA   theRANK
             CMP   #$05
             BCC   L8B67
             LDA   ghostDIR
@@ -7200,6 +7055,10 @@ L8B9D       LDA   ghostFRIGHTENED	; is ghost frightened?
             JSR   displayPLAYERSCORE
 L8BDC       RTS
 
+*-----------------------------------
+* 
+*-----------------------------------
+
 L8BDD       JSR   getGHOSTSDATA
             JSR   L58FA
             LDY   #$03
@@ -7214,39 +7073,40 @@ L8BF1       JSR   setGHOSTSDATA
             JSR   eraseSPRITE44
             DEC   ghostINDEX
             BNE   L8BF1
-            JSR   setXYPACMAN
-            JSR   eraseSPRITE44
-            JSR   L7EC0
-            LDA   fgDEMO
-            BEQ   L8C0E
-            JMP   welcomePAGE
+            JSR   setXYPACMAN	; set XY coords
+            JSR   eraseSPRITE44	; erase the current Pacman sprite
+            JSR   animPACMANDIES	; and shows the dying animation
+            LDA   fgDEMO	; are we on demo mode?
+            BEQ   L8C0E		; no
+            JMP   welcomePAGE	; yes, return
 
-L8C0E       DEC   zpNBLIVES
-            LDA   zpNBLIVES
+L8C0E       DEC   nbLIVES	; lives--
+            LDA   nbLIVES
             AND   #$7F
             BNE   L8C1A
-            LDA   #$00
-            STA   zpNBLIVES
+            LDA   #$00		; we are dead
+            STA   nbLIVES
+
 L8C1A       JSR   savePLAYERBOARD
             JSR   savePLAYERDATA
-            LDA   zpCURPLAYER
+            LDA   curPLAYER
             STA   zpTEMP4
             JMP   L8C2E
 
 L8C27       JSR   loadPLAYERDATA
-            LDA   zpNBLIVES
+            LDA   nbLIVES
             BNE   L8C4A
-L8C2E       INC   zpCURPLAYER
-            LDA   zpNBPLAYERS
-            CMP   zpCURPLAYER
+L8C2E       INC   curPLAYER	; next player
+            LDA   nbPLAYERS
+            CMP   curPLAYER
             BCS   L8C3A
             LDA   #$01
-            STA   zpCURPLAYER
-L8C3A       LDA   zpCURPLAYER
+            STA   curPLAYER
+L8C3A       LDA   curPLAYER
             CMP   zpTEMP4
             BNE   L8C27
             JSR   loadPLAYERDATA
-            LDA   zpNBLIVES
+            LDA   nbLIVES
             BNE   L8C4A
             JMP   endGAME
 
@@ -7768,7 +7628,7 @@ L906D       CPX   ghostX
             BCS   L906A
 L9073       CMP   #$02
             BEQ   L90A3
-            LDA   $69
+            LDA   pacmanINTUNNEL
             BEQ   L907E
             LDA   #$03
             RTS

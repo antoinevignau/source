@@ -826,7 +826,7 @@ L4733       LDA   #$66
             STA   zpY1
             LDA   #$4A
             STA   zpX1
-            JSR   L7819
+            JSR   hideENERGIZERDOT
             LDA   #$01
 L4740       STA   fgDOTS
 L4742       LDA   pacmanX
@@ -1439,7 +1439,7 @@ L530F       JSR   L7861
 L531E       LDA   #$01
             STA   frameCNT
             JSR   setDEFAULTBOARD
-            LDA   #nbDOTS
+            LDA   #NBDOTS
             STA   nbDOTS
             LDA   #$40
             STA   fruitFREQ
@@ -1555,7 +1555,7 @@ savePLAYERDATA
             LDY   tbplPDOFFSET,X
             LDX   #$07
 L53C5       LDA   curSCORE,X
-            STA   pacmanDATA,Y
+            STA   L0300,Y
             DEY
             DEX
             BPL   L53C5
@@ -1569,7 +1569,7 @@ loadPLAYERDATA
             LDX   curPLAYER
             LDY   tbplPDOFFSET,X
             LDX   #$07
-L53D6       LDA   pacmanDATA,Y
+L53D6       LDA   L0300,Y
             STA   curSCORE,X
             DEY
             DEX
@@ -1614,7 +1614,7 @@ L5402       STA   |frameCNT,Y
             STA   $EB
             STA   $E4
             STA   fgFRUIT
-            STA   $1F
+            STA   zp1F		; no more used
             JSR   getMAXRANK15
             TAX
             LDY   #$12
@@ -1659,7 +1659,7 @@ dftGHOSTS_DATA
             DB    $03	; 72
             DB    $17	; 73
             DB    $18	; 74
-            DA    L0800	; 75
+            DA    GHOST1MOVE	; 75
             DB    $FF	; 77
             DB    $00	; 78
             DB    $00	; 79
@@ -1673,12 +1673,13 @@ dftGHOSTS_DATA
             DB    $00	; 81
             DB    $00	; 82
             DB    $00	; 83
+*
             DB    $7F	; Ghost 2
             DB    $5D
             DB    $01
             DB    $17
             DB    $18
-            DA    L0900
+            DA    GHOST2MOVE
             DB    $FF
             DB    $00
             DB    $00
@@ -1692,12 +1693,13 @@ dftGHOSTS_DATA
             DB    $01
             DB    $80
             DB    $00
+*
             DB    $8B	; Ghost 3
             DB    $55
             DB    $00
             DB    $17
             DB    $18
-            DA    L0A00
+            DA    GHOST3MOVE
             DB    $FF
             DB    $00
             DB    $00
@@ -1711,12 +1713,13 @@ dftGHOSTS_DATA
             DB    $01
             DB    $40
             DB    $00
+*
             DB    $99	; Ghost 4
             DB    $5D
             DB    $01
             DB    $17
             DB    $18
-            DA    L0B00
+            DA    GHOST4MOVE
             DB    $FF
             DB    $00
             DB    $00
@@ -1752,7 +1755,7 @@ L54E0       LDA   #$01		; ZP - RANK
             STA   frameCNT
             LDA   #$83		; 3 lives!
             STA   nbLIVES
-            LDA   #nbDOTS
+            LDA   #NBDOTS
             STA   nbDOTS
             LDA   #$40
             STA   fruitFREQ
@@ -2062,7 +2065,7 @@ L5756       LDY   #$00		; was it already eaten?
             STA   zpX1
             LDA   #$15
             STA   zpY1
-            JSR   L7819
+            JSR   hideENERGIZERDOT
 
 L5767       CLC		; go to dot 2
             LDA   zpPTR2
@@ -2077,7 +2080,7 @@ L5772       LDY   #$00		; was it already eaten?
             STA   zpX1
             LDA   #$8D
             STA   zpY1
-            JSR   L7819
+            JSR   hideENERGIZERDOT
 
 L5783       CLC		; go to dot 3
             LDA   #<theBOARD
@@ -2093,7 +2096,7 @@ L5783       CLC		; go to dot 3
             STA   zpX1
             LDA   #$15
             STA   zpY1
-            JSR   L7819
+            JSR   hideENERGIZERDOT
 
 L57A1       CLC		; go to dot 4
             LDA   zpPTR2
@@ -2108,7 +2111,7 @@ L57AC       LDY   #$00
             STA   zpX1
             LDA   #$8D
             STA   zpY1
-            JSR   L7819
+            JSR   hideENERGIZERDOT
 L57BD       RTS
 
 *-----------------------------------
@@ -2333,8 +2336,8 @@ drawDOT     LDA   xBITON,X
             STA   (zpHGR),Y
             RTS
 
-            LDA   xBITOFF,X
-            AND   (zpHGR),Y
+            LDA   xBITOFF,X	; this erases a dot
+            AND   (zpHGR),Y	; but it is useless
             ORA   hgrBIT7
             STA   (zpHGR),Y
             RTS
@@ -2756,14 +2759,14 @@ drawENERGIZERDOT
 
 *--- Energizer dot sprite (value depends on bit position)
 
-L61CA       HEX   8680	; bit 0
-            HEX   8F80
-            HEX   8F80
-            HEX   8680
-            HEX   8080
-            HEX   8080
-            HEX   8080
-            HEX   8080
+L61CA       HEX   8680	; 1000_0110_1000_0000
+            HEX   8F80	; 1000_1111_1000_0000
+            HEX   8F80	; 1000_1111_1000_0000
+            HEX   8680	; 1000_0110_1000_0000
+            HEX   8080	; 1000_0000_1000_0000
+            HEX   8080	; 1000_0000_1000_0000
+            HEX   8080	; 1000_0000_1000_0000
+            HEX   8080	; 1000_0000_1000_0000
 
             HEX   8C80	; bit 1
             HEX   9E80
@@ -3596,20 +3599,20 @@ L6E1A       DB    $00
 setGHOSTMOVES
             LDY   #$0E
 L6E7B       LDA   L8A44,Y
-            STA   GHOST1MOVE,Y	, TEXT2,Y
+            STA   GHOST1MOVE,Y	; TEXT2,Y
             DEY
             BPL   L6E7B
 
             LDY   #$00
             LDX   #$01
 L6E88       LDA   #$00
-            STA   ghost3MOVE,X	; TEXT2+$200,Y
-            STA   ghost2MOVE,X	; TEXT2+$100,X
-            STA   ghost4MOVE,X	; TEXT2+$300,X
+            STA   GHOST3MOVE,Y	; TEXT2+$200,Y
+            STA   GHOST2MOVE,X	; TEXT2+$100,X
+            STA   GHOST4MOVE,X	; TEXT2+$300,X
             INX
             INY
             LDA   #$01
-            STA   GHOST3MOVE,X	; TEXT2+$200,Y
+            STA   GHOST3MOVE,Y	; TEXT2+$200,Y
             STA   GHOST2MOVE,X	; TEXT2+$100,X
             STA   GHOST4MOVE,X	; TEXT2+$300,X
             INX
@@ -4270,57 +4273,49 @@ calcSPROFFSET
 L7812       HEX   00,1E,3C,5A,78,96,B4
 
 *-----------------------------------
-* 
+* HIDE ENERGIZER DOT
 *-----------------------------------
 
-L7819       LDA   #$F8
+hideENERGIZERDOT
+            LDA   #$F8
             STA   sprHEIGHT
             JSR   calcXYHGR
             ASL   zpXBIT	; *2
 L7822       JSR   setHGRADDRESS
             LDX   zpXBIT
             LDY   zpXCOL
-            LDA   L7843,X
+            LDA   sprEEDOT,X
             AND   (zpHGR),Y
-            ORA   #$80
+            ORA   #$80		; force bit 7
             STA   (zpHGR),Y
             INY
-            LDA   L7843+1,X
+            LDA   sprEEDOT+1,X
             AND   (zpHGR),Y
-            ORA   #$80
+            ORA   #$80		; force bit 7
             STA   (zpHGR),Y
             INC   zpY1
             INC   sprHEIGHT
             BNE   L7822
             RTS
 
-L7843       HEX   407F	; erase value to draw based on bit
-            HEX   017F
-            HEX   037E
-            HEX   077C
-            HEX   0F78
-            HEX   1F70
-            HEX   3F60
+* Sprite Erase Energizer Dot value to draw based on bit position
 
-L7851       DB    $09
-            DB    $09
-            DB    $08
-            DB    $07
-            DB    $07
-            DB    $06
-            DB    $06
-            DB    $06
-            DB    $06
-            DB    $05
-            DB    $05
-            DB    $05
-            DB    $05
-            DB    $04
-            DB    $04
-            DB    $04
+sprEEDOT    HEX   407F	; 0100_0000_0111_1111
+            HEX   017F	; 0000_0001_0111_1111
+            HEX   037E	; 0000_0011_0111_1110
+            HEX   077C	; 0000_0111_0111_1100
+            HEX   0F78	; 0000_1111_0111_1000
+            HEX   1F70	; 0001_1111_0111_0000
+            HEX   3F60	; 0011_1111_0110_0000
 
 *-----------------------------------
 * 
+*-----------------------------------
+
+L7851       HEX   09090807070606060605050505040404
+
+*-----------------------------------
+* TOTO
 *-----------------------------------
 
 L7861       LDA   theDEVICE	; which device?
@@ -4329,16 +4324,16 @@ L7861       LDA   theDEVICE	; which device?
 L7868       DEC   frameCNT
             BEQ   L786D
             RTS
-
 L786D       LDA   theDEVICE
             BEQ   L7874
             JSR   getINPUT
+
 L7874       JSR   L808C
             JSR   getMAXRANK15
             TAX
             LDA   L7851,X
             CLC
-            LDX   #$08
+            LDX   #idxGHOST_FRIGHTENED
             LDY   ghost2DATA,X
             BEQ   L7887
             ADC   #$01
@@ -4354,10 +4349,12 @@ L7895       LDY   ghost3DATA,X
             BEQ   L789B
             SBC   #$01
 L789B       STA   frameCNT
+
             LDA   $F3
             BEQ   L78A5
             DEC   $F3
             INC   frameCNT
+
 L78A5       LDA   pacmanBOARD
             TAX
             JSR   checkMOVE
@@ -4370,8 +4367,8 @@ L78A5       LDA   pacmanBOARD
             CMP   pacmanY
             BEQ   L78D1
 L78BA       LDA   pacmanNEXTBOARD	; is move possible?
-            BMI   L78D7	; no
-            TAX	; perhaps
+            BMI   L78D7		; no
+            TAX		; perhaps
             JSR   checkMOVE
             LDY   #$00
             LDA   (ptrMOVE),Y
@@ -4383,7 +4380,7 @@ L78BA       LDA   pacmanNEXTBOARD	; is move possible?
 L78CF       BNE   L794B
 
 L78D1       STX   pacmanBOARD	; save new position
-            LDA   #$FF	; move is not possible
+            LDA   #$FF		; move is not possible
             STA   pacmanNEXTBOARD
 
 L78D7       LDA   fgDEMO	; are in demo mode?
@@ -4420,6 +4417,8 @@ L78FD       LDY   pacmanDIR
             JSR   setXYPACMAN
             JMP   L79A4
 
+*--- Check tunnel
+
 L7915       STA   pacmanNEXTBOARD
             LDA   pacmanBOARD
             CMP   #$1A
@@ -4433,7 +4432,6 @@ L7915       STA   pacmanNEXTBOARD
             LDA   pacmanDIR
             CMP   #dirRIGHT
             BNE   L7935
-
 L792F       LDA   #$01		; Pacman enters tunnel
             STA   pacmanINTUNNEL
             BNE   L795B
@@ -4486,12 +4484,14 @@ L7988       STA   pacmanY
             LDA   pacmanX
             STA   zpX1
             INC   pacmanSTEP
-            INC   $1F
-            LDA   $1F
-            CMP   #$FB	; 251?
+
+            INC   zp1F		; variable is no more used
+            LDA   zp1F
+            CMP   #$FB
             BNE   L799E
             LDA   #$00
-            STA   $1F
+            STA   zp1F
+
 L799E       JSR   L79A4
             JMP   L79CD
 
@@ -5610,27 +5610,35 @@ moveXY44    CLC
             STA   zpY1
             RTS
 
-L805D       LDA   ghostINDEX
+*-----------------------------------
+* 
+*-----------------------------------
+
+L805D       LDA   ghostINDEX	; save out ghost index
             STA   saveVAR
-            JSR   getGHOSTSDATA
-            LDA   #gCLYDE
+            JSR   getGHOSTSDATA	; save its data
+            LDA   #gCLYDE	; loop 4..1
             STA   ghostINDEX
-L8068       JSR   setGHOSTSDATA
-            LDA   ghostISDEAD
-            BEQ   L807D
+L8068       JSR   setGHOSTSDATA	; get data
+            LDA   ghostISDEAD	; is ghost dead?
+            BEQ   L807D		; no
+            LDA   #$01		; yes
+            STA   $80
+            JSR   L8763		; do something
             LDA   #$01
             STA   $80
-            JSR   L8763
-            LDA   #$01
-            STA   $80
-            JSR   L8763
-L807D       JSR   getGHOSTSDATA
-            DEC   ghostINDEX
+            JSR   L8763		; do something
+L807D       JSR   getGHOSTSDATA	; save data
+            DEC   ghostINDEX	; ghost--
             BNE   L8068
-            LDA   saveVAR
+            LDA   saveVAR	; restore ghost index
             STA   ghostINDEX
-            JSR   setGHOSTSDATA
+            JSR   setGHOSTSDATA	; ...and its data	
             RTS
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 L808C       LDA   $EA
             BNE   L8092
@@ -5661,21 +5669,21 @@ L80B1       JSR   L80C1
             STA   $EA
 L80C0       RTS
 
-L80C1       LDA   #gCLYDE
+L80C1       LDA   #gCLYDE	; loop 4..1
             STA   ghostINDEX
-L80C5       JSR   setGHOSTSDATA
-            LDA   $81
-            BNE   L80DB
-            LDA   ghostDIR
+L80C5       JSR   setGHOSTSDATA	; get data
+            LDA   $81		; can we handle?
+            BNE   L80DB		; nope
+            LDA   ghostDIR	; yes, change direction
             EOR   #$01
             STA   ghostDIR
-            LDY   ghostMOVEINDEX
+            LDY   ghostMOVEINDEX	; update the ghost board/move table
             STA   (ghostMOVE),Y
             LDA   #$FF
             INY
             STA   (ghostMOVE),Y
-L80DB       JSR   getGHOSTSDATA
-            DEC   ghostINDEX
+L80DB       JSR   getGHOSTSDATA	; save data
+            DEC   ghostINDEX	; next ghost
             BNE   L80C5
             RTS
 
@@ -5793,7 +5801,7 @@ initCARTOON
             STA   ghostISDEAD
             STA   ghostFRIGHTENED
             STA   pacmanSTEP
-            LDA   #gINKY
+            LDA   #gINKY	; 1
             STA   ghostINDEX
             STA   $81
             STA   frameCNT
@@ -6447,7 +6455,7 @@ L8763       DEC   $80	; timer for ghost refresh
             BEQ   L8768
             RTS
 
-L8768       LDA   $E4	; are we un frighten mode?
+L8768       LDA   $E4	; are we in frighten mode?
             BEQ   L8780
             LDA   $E1	; what about the frighten tempo?
             BNE   L8772
@@ -6550,7 +6558,7 @@ L880B       LDY   ghostDIR
             LDA   #$00
             STA   $7D
             LDA   ghostDIR
-            CMP   #$02
+            CMP   #dirRIGHT
             BNE   L8862
 L8833       LDA   #$01
             STA   $7A
@@ -6572,7 +6580,7 @@ L8854       LDA   #$06
             LDA   #$00
             STA   $7D
             LDA   ghostDIR
-            CMP   #$03
+            CMP   #dirLEFT
             BEQ   L8833
 L8862       LDA   #$00
             STA   $7A
@@ -6744,6 +6752,10 @@ L8981       ASL		; *2
             ADC   zpTEMP4	; +6
             RTS
 
+*-----------------------------------
+* 
+*-----------------------------------
+
 L8988       DEC   $82
             BNE   L89DA
             LDY   ghostMOVEINDEX
@@ -6751,7 +6763,7 @@ L8988       DEC   $82
             ROR
             BCC   L89A6
             LDA   ghostDIR
-            CMP   #$00
+            CMP   #dirDOWN
             BNE   L899E
 L8999       LDA   #$01
             INY
@@ -6762,11 +6774,12 @@ L899E       LDA   #$01
             JMP   L89C7
 
 L89A6       LDA   ghostDIR
-            CMP   #$01
+            CMP   #dirUP
             BNE   L89B1
             INY
             LDA   #$00
             STA   (ghostMOVE),Y
+
 L89B1       LDA   ghostINDEX
             CMP   #$02
             BNE   L89BF
@@ -6791,6 +6804,8 @@ L89C7       INY
             BNE   L89DA
 L89D7       JSR   L6EA5
 
+*---
+
 L89DA       LDA   ghostINDEX
             ROR
             BCC   L89E1
@@ -6814,6 +6829,7 @@ L89FC       JMP   L8874
 L89FF       CMP   #$5D
             BEQ   L89F4
             BNE   L89FC
+
 L8A05       LDA   ghostX
             CMP   #$8B
             BNE   L89FC
@@ -7003,23 +7019,28 @@ L8B6F       LDA   pacmanY
             JMP   L8B3F
 L8B7D       RTS
 
-L8B7E       LDA   $67
+*--- This code makes $1F and $67 useless
+
+L8B7E       LDA   zp67
             JMP   L8B9D		; PATCH
-            BEQ   L8B8A
-            DEC   $67
+
+            BEQ   L8B8A		; Dead code...
+            DEC   zp67
             BEQ   L8B9D
             RTS
 
-L8B8A       LDA   $1F
+L8B8A       LDA   zp1F
             LDX   ghostFRIGHTENED	; is ghost frightened?
             BNE   L8B92		; yes
             AND   #$3F		; no
 L8B92       CMP   #$00
             BNE   L8B9D
             LDA   #$04
-            STA   $67
+            STA   zp67
             STA   pacmanSTEP
-            RTS
+            RTS		; ...dead code
+
+*--- End of useless code
 
 L8B9D       LDA   ghostFRIGHTENED	; is ghost frightened?
             BEQ   L8BDD		; no, exit
@@ -9469,7 +9490,7 @@ LA616       HEX   7C01007C01003306003306007F07007F
             DB    $95
             DB    $98
             DB    $95
-            DB    $AD
+            DB    $AC
             DB    $95
             DB    $C0
             DB    $85

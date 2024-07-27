@@ -24,7 +24,7 @@ score200	=	2
 score400	=	4
 score800	=	8
 
-nbDOTS	=	248	; 244 normal dots & 4 energizer dots
+NBDOTS	=	248	; 244 normal dots & 4 energizer dots
 
 L0300	=	$0300	; buffer area to save scores
 GHOST1MOVE	=	$0800	; buffer area for ghosts moves
@@ -65,11 +65,12 @@ zpPTR1	=	$14	; (word) 1st pointer
 zpPTR2	=	$16	; (word) 2nd pointer
 ptrMOVE	=	zpPTR2      ; (word) pointer to the list of authorized moves
 sprHEIGHT	=	$18	; (byte) sprite height in lines
+*
 sprWIDTH	=	$1a	; (byte) sprite width in bytes
-zpPTR3	=	$1b	; (word)
+zpPTR3	=	$1b	; (word) pointer to board moves
 fgCOLOR	=	$1d	; 0: b&w, 1: color
 hgrBIT7	=	$1e	; (byte) defines which palette to use ($00 or $80)
-zp1F	=	$1f
+zp1F	=	$1f	; (byte) $1f is no more used, see $8B7E
 * $20 to $4F are not used
 curPLAYER	=	$50	; (byte) current player index
 nbPLAYERS	=	$51	; (byte) number of players (1..5)
@@ -79,7 +80,7 @@ nbDOTS	=	$56	; 4 (byte) number of dots on the board (248 by default)
 fruitFREQ	=	$57	; 5 (byte) appearance frequency of a fruits
 nbLIVES	=	$58	; 6 (byte) number of lives (bit 7 is set)
 frameCNT	=	$59	; 7 (byte) frame counter
-fruitCNT	=	$5a	; (word) fruit counter (how long it is displayed)
+fruitCNT	=	$5a	; (word) fruit display counter
 ptrFRUIT	=	$5c	; (word) pointer to the fruit sprite
 dotTEMPO	=	$5e	; (byte) tempo for energizer dot blinking
 fgDOTS	=	$5f	; (byte) 0: show dots, 1: hide dots
@@ -98,23 +99,43 @@ theDIR	=	$63	; (byte) next Pacman direction (given by input device)
 pacmanBOARD	=	$64	; (byte) current index in boardMOVES where Pacman is
 pacmanNEXTBOARD =	$65	; (byte) next index in the same table, $FF if move is invalid
 pacmanSTEP	=	$66	; (byte) Pacman sprite index (that makes the animation step)
-* $67 is no more used, see $8B7E
+zp67	=	$67	; (byte) $67 is no more used, see $8B7E
 bonusINDEX	=	$68	; (byte) 2/4/8/16 for bonus 200/400/800/1600
-pacmanTUNNEL =	$69	; (byte) 0: Pacman not in tunnel, 1: Pacman in tunnel
+pacmanINTUNNEL =	$69	; (byte) 0: Pacman not in tunnel, 1: Pacman in tunnel
 boardY	=	$6a	; (byte) y-coord in board
 boardX	=	$6b	; (byte) x-coord in board
 *
 ghostDATA	=	$70	; (struct) structure of 8/20 bytes for the current ghost
-ghostX	=	$70	; 0 (byte) ghost X
-ghostY	=	$71	; 1 (byte) ghost Y
-ghostDIR	=	$72	; 2
-ghostBOARD	=	$73	; 3 (byte) current index in boardMOVES where the ghost is
-ghostNEXTBOARD = 	$74	; 4 (byte) next index in the same table, $FF if move is invalid
-ghostMOVE	=	$75	; 5 (word) pointer to the ghost move board of 256 bytes
-ghostMOVEINDEX = 	$77	; 7 (byte) index within that board
-ghostFRIGHTENED =	$78	; (byte) 0: ghost is not frightened, 1: ghost is frightened
-ghostISDEAD	=	$79	; (byte) 0: ghost is alive, dead otherwise
-ghostTEMPO	=	80	; (byte) tempo to refresh a ghost (aka ghost speed)
+ghostX	=	$70	;  0 (byte) ghost X
+ghostY	=	$71	;  1 (byte) ghost Y
+ghostDIR	=	$72	;  2 (byte) ghost direction (see above)
+ghostBOARD	=	$73	;  3 (byte) current index in boardMOVES where the ghost is
+ghostNEXTBOARD = 	$74	;  4 (byte) next index in the same table, $FF if move is invalid
+ghostMOVE	=	$75	;  5 (word) pointer to the ghost move board of 256 bytes
+ghostMOVEINDEX = 	$77	;  7 (byte) index within that board
+ghostFRIGHTENED =	$78	;  8 (byte) 0: ghost is not frightened, 1: ghost is frightened
+ghostISDEAD	=	$79	;  9 (byte) 0: ghost is alive, dead otherwise
+*	=	7a	; 10 (byte) 
+*	=	7b	; 11 (byte) 
+*	=	7c	; 12 (byte) 
+*	=	7d	; 13 (byte) 
+*	=	7e	; 14 (byte) 
+*	=	7f	; 15 (byte) 
+ghostTEMPO	=	80	; 16 (byte) tempo to refresh a ghost (aka ghost speed)
+*		81	; 17 (byte) ghost is dead flag
+*	=	82	; 18 (byte) 
+*	=	83	; 19 (byte) 
+
+idxGHOST_X	=	0
+idxGHOST_Y	=	1
+idxGHOST_DIR =	2
+idxGHOST_BOARD =	3
+idxGHOST_NEXTBOARD =	4
+idxGHOST_MOVE =	5
+idxGHOST_MOVEINDEX =	7
+idxGHOST_FRIGHTENED =	8
+idxGHOST_ISDEAD =	9
+
 * Each ghost data is: 84 / 98 / AC / C0
 ghost1DATA	=	$84
 ghost1X	=	ghost1DATA
@@ -144,7 +165,7 @@ ghost4FRIGHTENED =	ghost4DATA+8
 ghost4DEAD	=	ghost4DATA+9
 *
 ghostINDEX	=	$e0	; (byte) 1: Inky, 2: Pinky, 3: Blinky, 4: Clyde
-frFRUIT	=	$e7	; (byte) 0: fruit counter not activated, 1: fruit counter activated
+fgFRUIT	=	$e7	; (byte) 0: fruit counter not activated, 1: fruit counter activated
 fgDEMO	=	$e8	; (byte) 0: game, 1: demo
 saveVAR	=	$f1	; (byte) save variable
 * $F2 is not used

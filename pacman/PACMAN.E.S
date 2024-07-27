@@ -27,6 +27,10 @@ score800	=	8
 nbDOTS	=	248	; 244 normal dots & 4 energizer dots
 
 L0300	=	$0300	; buffer area to save scores
+GHOST1MOVE	=	$0800	; buffer area for ghosts moves
+GHOST2MOVE	=	GHOST1MOVE+256
+GHOST3MOVE	=	GHOST2MOVE+256
+GHOST4MOVE	=	GHOST3MOVE+256
 
 L0800	=	$0800	; $0800..$0BFF
 L0C00	=	$0C00	; board buffers per player ($380 bytes)
@@ -106,8 +110,8 @@ ghostY	=	$71	; 1 (byte) ghost Y
 ghostDIR	=	$72	; 2
 ghostBOARD	=	$73	; 3 (byte) current index in boardMOVES where the ghost is
 ghostNEXTBOARD = 	$74	; 4 (byte) next index in the same table, $FF if move is invalid
-* $75 is a pointer to something
-* $77 is the index within that table
+ghostMOVE	=	$75	; 5 (word) pointer to the ghost move board of 256 bytes
+ghostMOVEINDEX = 	$77	; 7 (byte) index within that board
 ghostFRIGHTENED =	$78	; (byte) 0: ghost is not frightened, 1: ghost is frightened
 ghostISDEAD	=	$79	; (byte) 0: ghost is alive, dead otherwise
 ghostTEMPO	=	80	; (byte) tempo to refresh a ghost (aka ghost speed)

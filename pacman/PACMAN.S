@@ -72,7 +72,7 @@ L4010       LDA   (zpPTR1),Y
 
 L4027       LDA   #$01
             STA   zpNBPLAYERS
-            JSR   L54D4
+            JSR   initNEWGAME
             LDA   #$00
             STA   zpHISCORE
             STA   zpHISCORE+1
@@ -1423,13 +1423,13 @@ L52F9       JMP   getINPUT
 * 
 *-----------------------------------
 
-L52FC       JSR   L54D4
+L52FC       JSR   initNEWGAME
             LDA   #$00
             STA   fgMUSIC
 L5303       JSR   L531E
 L5306       JSR   prepareLEVEL
             JSR   getREADY
-            JSR   L53E6
+            JSR   initGAMEDATA
 L530F       JSR   L7861
             JSR   L86EA
             JSR   L6A7C
@@ -1580,29 +1580,31 @@ tbplPDOFFSET	; offset to each player data
             HEX   00070F171F27
 
 *-----------------------------------
-* 
+* INIT GAME DATA (AT LEVEL ENTRY)
 *-----------------------------------
 
-L53E6       JSR   showPACMAN
-            LDX   #$0D
-L53EB       LDA   L5446,X
-            STA   pacmanX,X
+initGAMEDATA
+            JSR   showPACMAN
+
+            LDX   #$0D		; set Pacman default data
+L53EB       LDA   dftPACMAN_DATA,X
+            STA   pacmanDATA,X
             DEX
             BPL   L53EB
 
-            LDY   #$53
-L53F5       LDA   L5454,Y
-            STA   |$0084,Y
+            LDY   #$53		; set Ghosts default data
+L53F5       LDA   dftGHOSTS_DATA,Y
+            STA   |ghost1DATA,Y
             DEY
             BPL   L53F5
 
-            LDA   #$00
-            LDY   #$06
-L5402       STA   |$0059,Y
+            LDA   #$00		; set game default data
+            LDY   #$06		; $59..$5F
+L5402       STA   |frameCNT,Y
             DEY
             BPL   L5402
 
-            JSR   L6E79
+            JSR   setGHOSTMOVES
             JSR   loadPLAYERDATA
             LDA   #$01
             STA   $E9
@@ -1617,11 +1619,12 @@ L5402       STA   |$0059,Y
             TAX
             LDY   #$12
             LDA   L54A4,X
-            STA   |$0098,Y
+            STA   |ghost2DATA,Y	; $82
             LDA   L54B4,X
-            STA   |$00AC,Y
+            STA   |ghost3DATA,Y
             LDA   L54C4,X
-            STA   |$00C0,Y
+            STA   |ghost4DATA,Y
+
             LDY   #$03
 L543A       LDX   #$FF
             JSR   doWAIT2
@@ -1630,47 +1633,52 @@ L543A       LDX   #$FF
             JSR   getINPUT
             RTS
 
-L5446       DB    $8B
-            DB    $8F
-            DB    $03
-            DB    $03
-            DB    $2C
-            DB    $2D
-            DB    $00
-            DB    $00
-            DB    $02
-            DB    $00
-            DB    $0D
-            DB    $17
-            DB    $02
-            DB    $00
-L5454       DB    $8B
-            DB    $47
-            DB    $03
-            DB    $17
-            DB    $18
-            DB    $00
-            DB    $08
-            DB    $FF
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $0D
-            DB    $0B
-            DB    $02
-            DB    $00
-            DB    $01
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $7F
+*-----------------------------------
+* DEFAUL PACMAN AND GHOSTS DATA
+*-----------------------------------
+
+dftPACMAN_DATA
+            DB    $8B	; 60
+            DB    $8F	; 61
+            DB    $03	; 62
+            DB    $03	; 63
+            DB    $2C	; 64
+            DB    $2D	; 65
+            DB    $00	; 66
+            DB    $00	; 67
+            DB    $02	; 68
+            DB    $00	; 69
+            DB    $0D	; 6A
+            DB    $17	; 6B
+            DB    $02	; 6C
+            DB    $00	; 6D
+
+dftGHOSTS_DATA
+            DB    $8B	; 70 shown here instead of $84
+            DB    $47	; 71
+            DB    $03	; 72
+            DB    $17	; 73
+            DB    $18	; 74
+            DA    L0800	; 75
+            DB    $FF	; 77
+            DB    $00	; 78
+            DB    $00	; 79
+            DB    $00	; 7A
+            DB    $0D	; 7B
+            DB    $0B	; 7C
+            DB    $02	; 7D
+            DB    $00	; 7E
+            DB    $01	; 7F
+            DB    $01	; 80
+            DB    $00	; 81
+            DB    $00	; 82
+            DB    $00	; 83
+            DB    $7F	; Ghost 2
             DB    $5D
             DB    $01
             DB    $17
             DB    $18
-            DB    $00
-            DB    $09
+            DA    L0900
             DB    $FF
             DB    $00
             DB    $00
@@ -1684,13 +1692,12 @@ L5454       DB    $8B
             DB    $01
             DB    $80
             DB    $00
-            DB    $8B
+            DB    $8B	; Ghost 3
             DB    $55
             DB    $00
             DB    $17
             DB    $18
-            DB    $00
-            DB    $0A
+            DA    L0A00
             DB    $FF
             DB    $00
             DB    $00
@@ -1704,13 +1711,12 @@ L5454       DB    $8B
             DB    $01
             DB    $40
             DB    $00
-            DB    $99
+            DB    $99	; Ghost 4
             DB    $5D
             DB    $01
             DB    $17
             DB    $18
-            DB    $00
-            DB    $0B
+            DA    L0B00
             DB    $FF
             DB    $00
             DB    $00
@@ -1724,60 +1730,17 @@ L5454       DB    $8B
             DB    $01
             DB    $A0
             DB    $00
-L54A4       DB    $00
-            DB    $70
-            DB    $50
-            DB    $30
-            DB    $30
-            DB    $14
-            DB    $14
-            DB    $10
-            DB    $10
-            DB    $0E
-            DB    $0E
-            DB    $10
-            DB    $10
-            DB    $08
-            DB    $08
-            DB    $08
-L54B4       DB    $00
-            DB    $30
-            DB    $28
-            DB    $20
-            DB    $20
-            DB    $10
-            DB    $10
-            DB    $08
-            DB    $08
-            DB    $05
-            DB    $05
-            DB    $08
-            DB    $08
-            DB    $08
-            DB    $04
-            DB    $04
-L54C4       DB    $00
-            DB    $90
-            DB    $70
-            DB    $40
-            DB    $40
-            DB    $18
-            DB    $18
-            DB    $14
-            DB    $14
-            DB    $12
-            DB    $12
-            DB    $10
-            DB    $12
-            DB    $04
-            DB    $0A
-            DB    $09
+	
+L54A4       HEX   0070503030141410100E0E1010080808
+L54B4       HEX   00302820201010080805050808080404
+L54C4       HEX   00907040401818141412121012040A09
 
 *-----------------------------------
-* 
+* INIT NEW GAME DATA
 *-----------------------------------
 
-L54D4       LDA   #$00
+initNEWGAME
+            LDA   #$00
             STA   curSCORE
             STA   curSCORE+1
             STA   curSCORE+2
@@ -3061,10 +3024,10 @@ L6A04       HEX   00607F00
             HEX   3F007000
 
 *-----------------------------------
-* 
+* DRAW SPRITE
 *-----------------------------------
 
-drawSPRITE       LDX   fgCOLOR
+drawSPRITE  LDX   fgCOLOR
             BEQ   L6A28
             LDX   hgrBIT7
             BNE   L6A62
@@ -3147,7 +3110,7 @@ L6AB7       DEC   $5A
             LDA   $5A
             ADC   $5B
             BNE   L6AC2
-            BCC   L6AEB
+            BCC   eraseBLOCK2
 L6AC2       LDA   $E7
             CMP   #$01
             BEQ   L6AE4
@@ -3169,7 +3132,12 @@ L6AE4       LDA   $5C
             LDY   $5D
             JMP   showFRUIT
 
-L6AEB       LDA   #$10
+*-----------------------------------
+* ERASE ANOTHER BLOCK
+*-----------------------------------
+
+eraseBLOCK2
+            LDA   #$10
             STA   zpXCOL
             LDA   #$66
             STA   zpY1
@@ -3177,7 +3145,9 @@ L6AEB       LDA   #$10
             STA   $E7
             JSR   eraseBLOCK
 L6AFA       RTS
-L6AFB       JMP   L6AEB
+
+eraseJMP2   JMP   eraseBLOCK2	; could have been avoided by
+			; jumping to eraseBLOCK2 directly
 
 *-----------------------------------
 * FRUIT SPRITES
@@ -3383,7 +3353,7 @@ L6D05       LDX   #$FF
             INC   zpRANK	; ZP next level?
             JSR   L531E
             JSR   prepareLEVEL
-            JSR   L53E6
+            JSR   initGAMEDATA
             JMP   L530F
 
 *-----------------------------------
@@ -3484,7 +3454,7 @@ L6D75       JSR   getGHOSTSDATA
             JSR   L80C1
 L6DA0       RTS
 
-L6DA1       LDY   $77
+L6DA1       LDY   ghostMOVEINDEX
             INY
             LDA   ghostINDEX
             CMP   #gINKY
@@ -3493,42 +3463,42 @@ L6DA1       LDY   $77
             BEQ   L6DDE
 
             LDA   #$01	; for Pinky / Clyde
-            STA   ($75),Y
+            STA   (ghostMOVE),Y
             INY
             LDA   #$00
-            STA   ($75),Y
+            STA   (ghostMOVE),Y
             INY
             LDA   ghostINDEX
             CMP   #gPINKY
             BEQ   L6DC4
             LDA   #$03
-            STA   ($75),Y
+            STA   (ghostMOVE),Y
             BNE   L6DC8
 L6DC4       LDA   #$02
-            STA   ($75),Y
+            STA   (ghostMOVE),Y
 
 L6DC8       INY	; for all ghosts
             LDA   #$01
-            STA   ($75),Y
+            STA   (ghostMOVE),Y
             INY
-            STA   ($75),Y
+            STA   (ghostMOVE),Y
             INY
             LDA   #$03
-            STA   ($75),Y
+            STA   (ghostMOVE),Y
             INY
             LDA   #$FF
-            STA   ($75),Y
+            STA   (ghostMOVE),Y
             JSR   getGHOSTSDATA
             RTS
 
 L6DDE       LDA   #$00	; for Inky/Blinky
-            STA   ($75),Y
+            STA   (ghostMOVE),Y
             INY
             LDA   #$01
-            STA   ($75),Y
+            STA   (ghostMOVE),Y
             INY
             LDA   #$00
-            STA   ($75),Y
+            STA   (ghostMOVE),Y
             BEQ   L6DC8
             RTS
 
@@ -3677,30 +3647,36 @@ L6E1A       DB    $00
             DB    $03
 
 *-----------------------------------
-* 
+* SET DEFAULT GHOST MOVE IN BOARDS
 *-----------------------------------
 
-L6E79       LDY   #$0E
+setGHOSTMOVES
+            LDY   #$0E
 L6E7B       LDA   L8A44,Y
-            STA   TEXT2,Y
+            STA   GHOST1MOVE,Y	, TEXT2,Y
             DEY
             BPL   L6E7B
+
             LDY   #$00
             LDX   #$01
 L6E88       LDA   #$00
-            STA   TEXT2+$200,Y
-            STA   TEXT2+$100,X
-            STA   TEXT2+$300,X
+            STA   ghost3MOVE,X	; TEXT2+$200,Y
+            STA   ghost2MOVE,X	; TEXT2+$100,X
+            STA   ghost4MOVE,X	; TEXT2+$300,X
             INX
             INY
             LDA   #$01
-            STA   TEXT2+$200,Y
-            STA   TEXT2+$100,X
-            STA   TEXT2+$300,X
+            STA   GHOST3MOVE,X	; TEXT2+$200,Y
+            STA   GHOST2MOVE,X	; TEXT2+$100,X
+            STA   GHOST4MOVE,X	; TEXT2+$300,X
             INX
             INY
             BNE   L6E88
             RTS
+
+*-----------------------------------
+* 
+*-----------------------------------
 
 L6EA5       LDA   ghostINDEX
             ASL
@@ -3711,23 +3687,27 @@ L6EA5       LDA   ghostINDEX
             STA   L6EB7+2
             LDX   #$00
 L6EB7       LDA   $0666,X
-            STA   ($75),Y
+            STA   (ghostMOVE),Y
             INY
             INX
             CPX   #$10
             BNE   L6EB7
             RTS
 
-L6EC3       JSR   L6AFB
-            JSR   showGAMEOVER
-            LDA   #$01
+*-----------------------------------
+* END OF THE GAME
+*-----------------------------------
+
+endGAME     JSR   eraseJMP2	; erase background
+            JSR   showGAMEOVER	; show GAME OVER
+            LDA   #$01		; enter demo mode
             STA   fgDEMO
-            LDY   #$30
+            LDY   #$30		; wait
 L6ECF       LDX   #$64
             JSR   doWAIT2
             DEY
             BNE   L6ECF
-            JMP   welcomePAGE
+            JMP   welcomePAGE	; and return home
 
 *-----------------------------------
 * SHOW FRUIT
@@ -5380,7 +5360,7 @@ L7E35       JSR   L7E4F
             DEC   zpTEMP4
             BNE   L7E35
 L7E3C       JSR   calcSPROFFSET
-            JSR   L804E
+            JSR   moveXY44
             LDA   #<sprDATA
             LDY   #>sprDATA
             SEC
@@ -5692,162 +5672,66 @@ L7F8B       DB    $00
             DB    $60
             DB    $00
             DB    $00
-L7FA9       DB    $00
-            DB    $00
-            DB    $00
-            DB    $24
-            DB    $02
-            DB    $00
-            DB    $28
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $2C
-            DB    $03
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $28
-            DB    $01
-            DB    $00
-            DB    $24
-            DB    $02
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-sprSCORE200       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $77
-            DB    $0E
-            DB    $00
-            DB    $54
-            DB    $0A
-            DB    $00
-            DB    $56
-            DB    $0A
-            DB    $00
-            DB    $51
-            DB    $0A
-            DB    $00
-            DB    $77
-            DB    $0E
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-sprSCORE400       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $75
-            DB    $0E
-            DB    $00
-            DB    $55
-            DB    $0A
-            DB    $00
-            DB    $57
-            DB    $0A
-            DB    $00
-            DB    $54
-            DB    $0A
-            DB    $00
-            DB    $74
-            DB    $0E
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-sprSCORE800       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $77
-            DB    $0E
-            DB    $00
-            DB    $55
-            DB    $0A
-            DB    $00
-            DB    $57
-            DB    $0A
-            DB    $00
-            DB    $55
-            DB    $0A
-            DB    $00
-            DB    $77
-            DB    $0E
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-L8020       DB    $00
-sprSCORE1600       DB    $44
-            DB    $00
-            DB    $00
-            DB    $44
-            DB    $00
-            DB    $00
-            DB    $44
-            DB    $03
-            DB    $00
-            DB    $44
-            DB    $02
-            DB    $00
-            DB    $44
-            DB    $03
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $5C
-            DB    $03
-            DB    $00
-            DB    $54
-            DB    $02
-            DB    $00
-            DB    $54
-            DB    $02
-            DB    $00
-            DB    $5C
-            DB    $03
-            DB    $00
-            DB    $18
+L7FA9       HEX   000000
+            HEX   240200
+            HEX   280100
+            HEX   000000
+            HEX   2C0300
+            HEX   000000
+            HEX   280100
+            HEX   240200
+            HEX   000000
+            HEX   000000
+sprSCORE200
+            HEX   000000
+            HEX   000000
+            HEX   770E00	; 0111011100001110
+            HEX   540A00	; 0101010000001010
+            HEX   560A00	; 0101011000001010
+            HEX   510A00	; 0101000110100000
+            HEX   770E00	; 0111011100001110
+            HEX   000000
+            HEX   000000
+            HEX   000000
+sprSCORE400
+            HEX   000000
+            HEX   000000
+            HEX   750E00
+            HEX   550A00
+            HEX   570A00
+            HEX   540A00
+            HEX   740E00
+            HEX   000000
+            HEX   000000
+            HEX   000000
+sprSCORE800
+            HEX   000000
+            HEX   000000
+            HEX   770E00
+            HEX   550A00
+            HEX   570A00
+            HEX   550A00
+            HEX   770E00
+            HEX   000000
+            HEX   000000
+            HEX   000000
+sprSCORE1600
+            HEX   440000
+            HEX   440000
+            HEX   440300
+            HEX   440200
+            HEX   440300
+            HEX   000000
+            HEX   5C0300
+            HEX   540200
+            HEX   540200
+            HEX   5C0300
 
 *-----------------------------------
-* 
+* MOVE XY BY 5,3 - UNUSED
 *-----------------------------------
 
+L803F       CLC
             LDA   zpX1
             ADC   #$05
             STA   zpX1
@@ -5857,7 +5741,11 @@ sprSCORE1600       DB    $44
             STA   zpY1
             RTS
 
-L804E       CLC
+*-----------------------------------
+* MOVE XY BY 4,4
+*-----------------------------------
+
+moveXY44    CLC
             LDA   zpX1
             ADC   #$04
             STA   zpX1
@@ -5926,11 +5814,11 @@ L80C5       JSR   setGHOSTSDATA
             LDA   ghostDIR
             EOR   #$01
             STA   ghostDIR
-            LDY   $77
-            STA   ($75),Y
+            LDY   ghostMOVEINDEX
+            STA   (ghostMOVE),Y
             LDA   #$FF
             INY
-            STA   ($75),Y
+            STA   (ghostMOVE),Y
 L80DB       JSR   getGHOSTSDATA
             DEC   ghostINDEX
             BNE   L80C5
@@ -6776,9 +6664,9 @@ L87EA       JMP   L8866
 
 L87ED       STX   ghostBOARD
             JSR   L8C50
-            INC   $77
-            LDY   $77
-            LDA   ($75),Y
+            INC   ghostMOVEINDEX
+            LDY   ghostMOVEINDEX
+            LDA   (ghostMOVE),Y
             CMP   ghostDIR
             STA   ghostDIR
             BEQ   L880B
@@ -7003,7 +6891,7 @@ L8981       ASL		; *2
 
 L8988       DEC   $82
             BNE   L89DA
-            LDY   $77
+            LDY   ghostMOVEINDEX
             LDA   ghostINDEX
             ROR
             BCC   L89A6
@@ -7012,10 +6900,10 @@ L8988       DEC   $82
             BNE   L899E
 L8999       LDA   #$01
             INY
-            STA   ($75),Y
+            STA   (ghostMOVE),Y
 L899E       LDA   #$01
             INY
-            STA   ($75),Y
+            STA   (ghostMOVE),Y
             JMP   L89C7
 
 L89A6       LDA   ghostDIR
@@ -7023,30 +6911,31 @@ L89A6       LDA   ghostDIR
             BNE   L89B1
             INY
             LDA   #$00
-            STA   ($75),Y
+            STA   (ghostMOVE),Y
 L89B1       LDA   ghostINDEX
             CMP   #$02
             BNE   L89BF
             LDA   #$02
             INY
-            STA   ($75),Y
+            STA   (ghostMOVE),Y
             JMP   L8999
 
 L89BF       LDA   #$03
             INY
-            STA   ($75),Y
+            STA   (ghostMOVE),Y
             JMP   L8999
 
 L89C7       INY
             LDA   $E9
             BNE   L89D7
             LDA   #$03
-            STA   ($75),Y
+            STA   (ghostMOVE),Y
             INY
             LDA   #$FF
-            STA   ($75),Y
+            STA   (ghostMOVE),Y
             BNE   L89DA
 L89D7       JSR   L6EA5
+
 L89DA       LDA   ghostINDEX
             ROR
             BCC   L89E1
@@ -7061,9 +6950,9 @@ L89EA       CMP   ghostX
             LDA   ghostY
             CMP   #$55
             BNE   L89FF
-L89F4       INC   $77
-            LDY   $77
-            LDA   ($75),Y
+L89F4       INC   ghostMOVEINDEX
+            LDY   ghostMOVEINDEX
+            LDA   (ghostMOVE),Y
             STA   ghostDIR
 L89FC       JMP   L8874
 
@@ -7359,7 +7248,7 @@ L8C3A       LDA   zpCURPLAYER
             JSR   loadPLAYERDATA
             LDA   zpNBLIVES
             BNE   L8C4A
-            JMP   L6EC3
+            JMP   endGAME
 
 L8C4A       JSR   loadPLAYERBOARD
             JMP   L5306
@@ -7370,19 +7259,19 @@ L8C4A       JSR   loadPLAYERBOARD
 
 L8C50       LDA   ghostISDEAD
             BEQ   L8C64
-            LDY   $77
+            LDY   ghostMOVEINDEX
             LDX   ghostBOARD
             LDA   LA360,X
             INY
-            STA   ($75),Y
+            STA   (ghostMOVE),Y
             INY
             LDA   #$FF
-            STA   ($75),Y
+            STA   (ghostMOVE),Y
             RTS
 
-L8C64       LDY   $77
+L8C64       LDY   ghostMOVEINDEX
             INY
-            LDA   ($75),Y
+            LDA   (ghostMOVE),Y
             BMI   L8C6C
             RTS
 
@@ -7418,12 +7307,12 @@ L8CA0       LDA   ghostDIR
             LDX   pacmanX
             LDY   pacmanY
 L8CA6       JSR   $0666
-            LDY   $77
+            LDY   ghostMOVEINDEX
             INY
-            STA   ($75),Y
+            STA   (ghostMOVE),Y
             INY
             LDA   #$FF
-            STA   ($75),Y
+            STA   (ghostMOVE),Y
             RTS
 
 L8CB4       DB    $00

@@ -6,8 +6,67 @@
 * (s) 2024, Antoine Vignau
 *
 
-            ORG   $0800
-            MX    %11
+*-----------------------------------
+* GAME ZERO PAGE
+*-----------------------------------
+
+ptrSCREEN	=	00	; word - pointer to the HGR screen
+ptrSCREEN2	=	02	; word - pointer to the HGR screen
+ptrSCREEN3	=	04	; word - pointer to the HGR screen
+
+ptrSTRING	=	$05	; word - pointer to a character string
+zp07	=	$07	; byte - for vehicle movement - not used
+theACCEL	=	$10	; byte - the car acceleration
+explosionINDEX =	$11	; byte - explosion sprite index
+fgJUMP	=	$13	; byte - 0 = not jumping, 1 = jumping
+xCNT	=	$16	; byte - X counter
+fwdSHOOTX	= 	$1a	; byte - x-coord of the front shoot
+fwdSHOOTY	=	$1b	; byte - y-coord of the front shoot
+explosionCNT =	$1c	; byte - shoot (minus)/explosion (positive) counter
+fgSOUND	=	$35	; byte - 0 = $C030, 1 = $C020
+mountX1	=	$41	; byte - x-index within mountain
+mountX2	=	$42	; byte - data to determine where to
+mountX3	=	$43	; byte - start drawing, that makes the move
+ptrCOURSE	=	$44	; word - pointer to the course data
+frameCNT	=	$49	; byte - frame counter
+vehicleX	=	$57	; byte - x-coord of the vehicle
+vehicleY	=	$58	; byte - y-coord of the vehicle
+wheel1X	=	$5b	; byte - x-coord of wheel 1
+wheel1Y	=	$5c	; byte - y-coord of wheel 1
+wheel2X	=	$5d	; byte - x-coord of wheel 2
+wheel2Y	=	$5e	; byte - y-coord of wheel 2
+wheel3X	=	$5f	; byte - x-coord of wheel 3
+wheel3Y	=	$60	; byte - y-coord of wheel 3
+oldVEHICLEX	=	$59	; byte - old x-coord of the vehicle
+oldVEHICLEY	=	$5a	; byte - old y-coord of the vehicle
+oldWHEEL1X	=	$61	; byte - old x-coord of wheel 1
+oldWHEEL1Y	=	$62	; byte - old y-coord of wheel 1
+oldWHEEL2X	=	$63	; byte - old x-coord of wheel 2
+oldWHEEL2Y	=	$64	; byte - old y-coord of wheel 2
+oldWHEEL3X	=	$65	; byte - old x-coord of wheel 3
+oldWHEEL3Y	=	$66	; byte - old y-coord of wheel 3
+groundSTARTX = 	$6e	; byte - x-col where to start drawing ground (0 or 34 if moon base)
+fgHIT	=	$70	; byte - 0 = player is alive, 1 = player was hit
+plrPOINT	=	$78	; byte - point reached by the current player
+plrSCORE	=	$7a	; adr  - score of player
+plrTIME	=	$7d	; word - time of player
+avgTIME	=	$7f	; word - average time
+saveCOURSE	=	$83	; word - 
+milestoneCNT =	$96	; byte - milestone counter
+basePOINT	=	$98	; byte - start point (0 for A, 4 for E...)
+plrCOURSE	=	$99	; word - player's pointer within the course
+zp9C	=	$9c	; byte - for vehicle movement - not used
+charX	=	$a6	; byte - 
+charY	=	$a7	; byte - 
+slot16	=	$d0	; byte - slot * 16
+milestoneY	=	$d7	; byte - Y-coord of the milestone letter
+milestoneX	=	$d8	; byte - X-bit to draw the letter
+milestoneTEMPO =	$dd	; byte - 0..1..2
+fgINPUT2	=	$ef	; byte - save
+courseTYPE2	=	$f0	; byte - save
+nbPLAYERS2	=	$f1	; byte - save
+fgSPECIALBONUS = 	$f2	; byte - 0 = no special bonus, 1 = special bonus
+timeCNT	=	$f3	; byte - counter for time display
 
 *-----------------------------------
 * FIRMWARE EQUATES

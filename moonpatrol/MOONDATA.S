@@ -7244,7 +7244,7 @@ courseDEMO	HEX   344A42424D494B423B4A4A022B3B4352
 	HEX   4A4B494B34898B8B898C8A32C33CC2
 
 *-----------------------------------
-* 
+* VERTICAL SHOOTS DATA
 *-----------------------------------
 
 tblFIREX    DS    4	; x-coord of each vertical shoot
@@ -7256,18 +7256,14 @@ LB059       DB    $00
             DB    $00
             DB    $00
             DB    $00
-LB05D       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-LB061       DB    $01
-            DB    $05
-            DB    $08
-            DB    $10
-LB065       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
+
+*-----------------------------------
+* SCORE TO ADD (100/500/800/1000)
+*-----------------------------------
+
+tblSCORE    HEX   00000000
+            HEX   01050810
+            HEX   00000000
 
 *-----------------------------------
 * BEGINNER COURSE DATA

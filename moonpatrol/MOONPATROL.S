@@ -2,7 +2,7 @@
 * Moon Patrol
 *
 * (c) 1982, Williams
-* (c) 1983, Atari
+* (c) 1983, Atari (Dan Petrich)
 * (s) 2024, Antoine Vignau
 *
 
@@ -12,65 +12,14 @@
 	PUT   MOONEQUATES.S
 
 *-----------------------------------
-* GAME ZERO PAGE
-*-----------------------------------
-
-ptrSCREEN	=	00	; word - pointer to the HGR screen
-ptrSCREEN2	=	02	; word - pointer to the HGR screen
-ptrSCREEN3	=	04	; word - pointer to the HGR screen
-
-ptrSTRING	=	$05	; word - pointer to a character string
-theACCEL	=	$10	; byte - the car acceleration
-explosionINDEX =	$11	; byte - explosion sprite index
-fgJUMP	=	$13	; byte - 0 = not jumping, 1 = jumping
-xCNT	=	$16	; byte - X counter
-fwdSHOOTX	= 	$1a	; byte - x-coord of the front shoot
-fwdSHOOTY	=	$1b	; byte - y-coord of the front shoot
-explosionCNT =	$1c	; byte - shoot (minus)/explosion (positive) counter
-fgSOUND	=	$35	; byte - 0 = $C030, 1 = $C020
-mountX1	=	$41	; byte - x-index within mountain
-mountX2	=	$42	; byte - data to determine where to
-mountX3	=	$43	; byte - start drawing, that makes the move
-ptrCOURSE	=	$44	; word - pointer to the course data
-frameCNT	=	$49	; byte - frame counter
-vehicleX	=	$57	; byte - x-coord of the vehicle
-vehicleY	=	$58	; byte - y-coord of the vehicle
-wheel1X	=	$5b	; byte - x-coord of wheel 1
-wheel1Y	=	$5c	; byte - y-coord of wheel 1
-wheel2X	=	$5d	; byte - x-coord of wheel 2
-wheel2Y	=	$5e	; byte - y-coord of wheel 2
-wheel3X	=	$5f	; byte - x-coord of wheel 3
-wheel3Y	=	$60	; byte - y-coord of wheel 3
-oldVEHICLEX	=	$59	; byte - old x-coord of the vehicle
-oldVEHICLEY	=	$5a	; byte - old y-coord of the vehicle
-oldWHEEL1X	=	$61	; byte - old x-coord of wheel 1
-oldWHEEL1Y	=	$62	; byte - old y-coord of wheel 1
-oldWHEEL2X	=	$63	; byte - old x-coord of wheel 2
-oldWHEEL2Y	=	$64	; byte - old y-coord of wheel 2
-oldWHEEL3X	=	$65	; byte - old x-coord of wheel 3
-oldWHEEL3Y	=	$66	; byte - old y-coord of wheel 3
-groundSTARTX = 	$6e	; byte - x-col where to start drawing ground (0 or 34 if moon base)
-fgHIT	=	$70	; byte - 0 = player is alive, 1 = player was hit
-plrPOINT	=	$78	; byte - point reached by the current player
-plrSCORE	=	$7a	; adr  - score of player
-plrTIME	=	$7d	; word - time of player
-avgTIME	=	$7f	; word - average time
-basePOINT	=	$98	; byte - start point (0 for A, 4 for E...)
-plrCOURSE	=	$99	; word - player's pointer within the course
-charX	=	$a6
-charY	=	$a7
-slot16	=	$d0
-fgINPUT2	=	$ef
-courseTYPE2	=	$f0
-nbPLAYERS2	=	$f1
-fgSPECIALBONUS = 	$f2	; byte - 0 = no special bonus, 1 = special bonus
-timeCNT	=	$f3	; byte - counter for time display
-
-*-----------------------------------
-* DISK ROUTINES
+* THE ENTRY POINT
 *-----------------------------------
 
 L0800       JMP   L0919
+
+*-----------------------------------
+* DISK ROUTINES (ORIGINAL WERE 4*4)
+*-----------------------------------
 
 L0803       STX   $E0	; move arm
             STA   $E1
@@ -255,8 +204,8 @@ L095C       LDA   ($00),Y
             LDA   $02+1
             CMP   #$BC
             BNE   L095C
-            JSR   L1A52
-            JSR   initALL
+            JSR   makeSPRITES	; prepare sprites
+            JSR   initALL	; init all values
             JMP   entryPOINT	; go to the game
 
 *-----------------------------------
@@ -272,7 +221,7 @@ goCOURSE    LDX   #$08		; erase "xxx COURSE GO"
 
 L0996       LDX   #$00		; part of the loop!
             TXS
-            JSR   L0C27		; check demo key
+            JSR   getDEMODATA	; check demo key
 
             LDA   frameCNT
             AND   #$07
@@ -291,9 +240,9 @@ L09B0       DEC   timeCNT
             STA   timeCNT
             JSR   printTIME
 
-L09BB       LDA   $DD		; move milestone
+L09BB       LDA   milestoneTEMPO	; move milestone
             BNE   L09C6		; yes
-            LDA   $96
+            LDA   milestoneCNT
             BNE   L09C6		; yes (could have been BEQ L09CC)
             JMP   L09CC		; no
 L09C6       JSR   animMILESTONE	; move screen
@@ -374,8 +323,8 @@ clearALL    LDA   #$22
             STA   $4A
             LDA   #$00
             STA   basePOINT
-            STA   $DD		; no milestone
-            STA   $96		; no milestone
+            STA   milestoneTEMPO		; no milestone
+            STA   milestoneCNT		; no milestone
             STA   fgHIT
             STA   frameCNT
             STA   $39
@@ -400,7 +349,7 @@ clearALL    LDA   #$22
             LDA   #$70
             STA   $0F
             LDA   #$02
-            STA   $07
+            STA   zp07
             LDA   #$00
             STA   theACCEL
             STA   fgJUMP
@@ -503,7 +452,7 @@ L0AF9       LDA   vehicleX	; draw the car
             LDA   #$00
             STA   theACCEL
             LDA   #$02
-            STA   $07
+            STA   zp07
             JMP   L0B78
 
 L0B49       CMP   #$6D
@@ -511,7 +460,7 @@ L0B49       CMP   #$6D
             LDA   #$6C
             STA   $0F
             LDA   #$02
-            STA   $07
+            STA   zp07
             LDA   #$00
             STA   theACCEL
             JMP   L0B78
@@ -626,10 +575,10 @@ L0C19       LDA   wheel2Y
 L0C24       JMP   L2773
 
 *-----------------------------------
-* 
+* GET DEMO DATA (IF ACTIVE)
 *-----------------------------------
 
-L0C27       LDA   fgDEMO2
+getDEMODATA LDA   fgDEMO2
             BEQ   L0C6E
             LDA   KBD
             BPL   L0C47
@@ -770,10 +719,10 @@ goSLOWER    LDA   fgJUMP
             BNE   L0D2D
             LDA   #$FC
             STA   theACCEL
-            LDA   #$00
-            STA   $9C
+            LDA   #$00		; unused?
+            STA   zp9C
             LDA   #$01
-            STA   $07
+            STA   zp07
 L0D2D       RTS
 
 *-----------------------------------
@@ -784,10 +733,10 @@ goFASTER    LDA   fgJUMP
             BNE   L0D3E
             LDA   #$04
             STA   theACCEL
-            LDA   #$00
-            STA   $9C
+            LDA   #$00		; unused?
+            STA   zp9C
             LDA   #$03
-            STA   $07
+            STA   zp07
 L0D3E       RTS
 
 *-----------------------------------
@@ -802,7 +751,7 @@ doJUMP      LDA   fgJUMP	; are we already jumping?
             LDA   #$04
             STA   $14
             LDA   #$02
-            STA   $07
+            STA   zp07
             LDA   #$01		; we're jumping now!
             STA   fgJUMP
 L0D55       RTS
@@ -1172,19 +1121,19 @@ L0FB1       RTS
 *-----------------------------------
 
 nextMILESTONE
-            LDA   $96
+            LDA   milestoneCNT
             SEC
             SBC   $AF
-            STA   $96
+            STA   milestoneCNT
             BCS   L0FC1
-            LDA   $DD
+            LDA   milestoneTEMPO
             BEQ   L0FC2
-            DEC   $DD
+            DEC   milestoneTEMPO
 L0FC1       RTS
 
 L0FC2       LDA   #$00		; end of milestone display
-            STA   $96
-            STA   $DD
+            STA   milestoneCNT
+            STA   milestoneTEMPO
             RTS
 
 *-----------------------------------
@@ -1289,24 +1238,25 @@ L106D       LDA   #$00
             JMP   L1044
 
 *-----------------------------------
-* 
+* ADD POINTS TO THE PLAYER'S SCORE
 *-----------------------------------
 
-L1074       STX   $50
-            SEC
+addPOINTSTOSCORE
+            STX   $50		; save X
+            SEC		; correct the table
             SBC   #$0F
             TAX
-            LDA   LB05D,X
+            LDA   tblSCORE,X	; Get the three values A
             PHA
-            LDA   LB061,X
+            LDA   tblSCORE+4,X	; X
             PHA
-            LDA   LB065,X
+            LDA   tblSCORE+8,X	; Y
             TAY
             PLA
             TAX
             PLA
-            JSR   addTOSCORE
-            LDX   $50
+            JSR   addTOSCORE	; add to score
+            LDX   $50		; restore X
             RTS
 
 *-----------------------------------
@@ -1338,7 +1288,7 @@ L10A9       LDA   tblSAUCER_X,Y
             CLC
             ADC   $E1
             STA   $E8,X
-            JSR   L1074
+            JSR   addPOINTSTOSCORE
             LDA   #$0D
             STA   $EB,X
             JMP   L10A6
@@ -1459,9 +1409,9 @@ L11B1       LDA   ptrCOURSE
             LDA   #$00
             STA   $97
             LDA   #$18		; milestone activated
-            STA   $96
+            STA   milestoneCNT
             LDA   #$02		; milestone activated
-            STA   $DD
+            STA   milestoneTEMPO
             LDA   #$00
             STA   $01
             LDA   plrPOINT
@@ -1478,22 +1428,22 @@ L11B1       LDA   ptrCOURSE
             ADC   #>fontDATA
             STA   $D5+1
             LDA   #$28
-            STA   $D7
+            STA   milestoneY
             LDA   #$00
-            STA   $D8
+            STA   milestoneX
             RTS
 
 L11E7       LDA   $97
             BEQ   L11EE
             JMP   L1225
 
-L11EE       LDA   $DD		; shall we announce the milestone?
+L11EE       LDA   milestoneTEMPO	; shall we announce the milestone?
             CMP   #$01
             BEQ   L11F7		; yes
             JMP   L1225		; no
 
 L11F7       LDA   vehicleX	; announces the milestone
-            CMP   $96		; by beeping
+            CMP   milestoneCNT	; by beeping
             BCC   L1225
             LDA   plrCOURSE
             STA   $83
@@ -2607,26 +2557,26 @@ L1A39       INC   mountX2
 L1A51       RTS
 
 *-----------------------------------
-* 
+* MAKE SPRITES
 *-----------------------------------
 
-L1A52       LDA   #$00
+makeSPRITES LDA   #$00
             STA   $14
             STA   $15
             STA   $16
             LDA   #$02
-            STA   fgJUMP
+            STA   $13
             LDA   #<sprSTRUCTURE	; sprite definition pointer
             STA   $08
             LDA   #>sprSTRUCTURE
             STA   $08+1
-            LDY   #$04		; get next sprite info
-            LDA   ($08),Y
-            STA   $0A		; width
+            LDY   #$04
+            LDA   ($08),Y	; get value @ +4
+            STA   $0A
             INY
-            LDA   ($08),Y
-            STA   $0B		; height
-L1A71       LDY   fgJUMP
+            LDA   ($08),Y	; get value @ +5
+            STA   $0B
+L1A71       LDY   $13		; +2
             LDA   ($08),Y
             STA   $0D		; get address
             INY
@@ -2639,44 +2589,46 @@ L1A71       LDY   fgJUMP
             BNE   L1A88
             JMP   L1AFD		; exit if end
 
-L1A88       STA   $0F
+L1A88       STA   $0F		; width in bytes (X)
             INY
-            LDA   ($08),Y
+            LDA   ($08),Y	; height in lines (A)
             STA   $18
-            JSR   MUL16
+            JSR   MUL16		; return X*A
             STX   $0C
             CLC
-            LDY   fgJUMP
+            LDY   $13		; +2
             INY
             INY
-            LDA   $0A
-            STA   ($08),Y
+            LDA   $0A		; got value from +4
+            STA   ($08),Y	; save at +4
             INY
-            LDA   $0B
-            STA   ($08),Y
+            LDA   $0B		; got value from +5
+            STA   ($08),Y	; save at +5
             JSR   L2F4A
             ASL   $15
             ASL   $16
-            LDA   $0C
+            LDA   $0C		; length of line
             CLC
-            ADC   $0A
+            ADC   $0A		; += value @ +4
             BCC   L1AB2
             INC   $0B
 L1AB2       STA   $0A
-            INC   fgJUMP
-            INC   fgJUMP
-            LDA   fgJUMP
+            INC   $13
+            INC   $13
+            LDA   $13
             CMP   #$0E
             BNE   L1A71
-            LDA   #$10
+
+            LDA   #$10		; next sprite
             CLC
             ADC   $08
             STA   $08
             LDA   #$00
-            ADC   $09
-            STA   $09
-            LDA   #$02
-            STA   fgJUMP
+            ADC   $08+1
+            STA   $08+1
+
+            LDA   #$02		; reset values
+            STA   $13
             INC   $14
             LDA   $14
             CMP   #$13
@@ -2689,19 +2641,19 @@ L1AB2       STA   $0A
             BEQ   L1AF0
             CMP   #$17
             BEQ   L1AF0
-            LDA   #$00
+            LDA   #$00		; 0
             STA   $15
             STA   $16
             JMP   L1AFA
 
-L1AF0       LDA   #$D5
+L1AF0       LDA   #$D5		; set new data
             ASL
             STA   $15
             LDA   #$D5
             ASL
             STA   $16
-L1AFA       JMP   L1A71
-L1AFD       RTS
+L1AFA       JMP   L1A71		; loop
+L1AFD       RTS		; exit
 
 *-----------------------------------
 * PRINT PLAYER SCORE
@@ -2839,9 +2791,9 @@ printNUMBER PHA
 * ADD A/X/Y TO SCORE
 *-----------------------------------
 
-addTOSCORE  SED
-            PHA
-            LDA   plrSCORE+2
+addTOSCORE  SED		; A score + 2
+            PHA		; X score + 1
+            LDA   plrSCORE+2	; Y score
             STA   $B0
             PLA
             PHA
@@ -4690,8 +4642,8 @@ L2B72       LDA   #$FF
             LDA   #$FF
             STA   $4A
             LDA   #$00
-            STA   $96		; no milestone
-            STA   $DD		; no milestone
+            STA   milestoneCNT		; no milestone
+            STA   milestoneTEMPO		; no milestone
             STA   fgHIT
             LDA   #$01
             STA   $97
@@ -4712,7 +4664,7 @@ L2B72       LDA   #$FF
             LDA   #$4A
             STA   $0F
             LDA   #$02
-            STA   $07
+            STA   zp07
             LDA   #$00
             STA   theACCEL
             STA   fgJUMP
@@ -5453,7 +5405,7 @@ L312D       LDA   $8D
             ADC   #$03
             STA   $8D
             BCC   L3138
-            INC   $8E
+            INC   $8D+1
 L3138       JMP   L308D
 
 L313B       INY
@@ -5484,11 +5436,11 @@ animMILESTONE
             STA   L318E+1
             LDA   $D5+1
             STA   L318E+2
-            LDA   #$BA
+            LDA   #$BA		; first line
             STA   $68
-            LDX   #$00
+            LDX   #$00		; source index
             STX   $50
-L316A       LDX   $68
+L316A       LDX   $68		; get HGR address
             LDA   tblHGRL,X
             STA   L31B1+1
             STA   L31C1+1
@@ -5497,32 +5449,32 @@ L316A       LDX   $68
             STA   L31B1+2
             STA   L31C1+2
             STA   L31D9+2
-            LDA   #$55
+            LDA   #$55		; set HGR values
             STA   $05
             LDA   #$55
             STA   $06
-            LDX   $50
+            LDX   $50		; get source pixel
 L318E       LDA   $FFFF,X
-            STX   $B4
-            ASL
-            LDX   $D8
-            INX
-L3197       DEX
+            STX   $B4		; save X
+            ASL		; shift left (we're moving to the left)
+            LDX   milestoneX
+            INX		; +1
+L3197       DEX		; loop
             BEQ   L31A2
-            ROL   $05
+            ROL   $05		; shift left data
             ROL
             ROL   $06
             JMP   L3197
 
 L31A2       LSR
-            ORA   #$80
-            LDX   $B4
-            LDY   $D7
+            ORA   #$80		; set bit 7
+            LDX   $B4		; source 
+            LDY   milestoneY		; can we draw?
             CPY   #$00
             BMI   L31B4
             CPY   #$28
-            BCS   L31B4
-L31B1       STA   $FFFF,Y
+            BCS   L31B4		; nope
+L31B1       STA   $FFFF,Y	; yes, write to HGR
 L31B4       LDA   $06
             INY
             CPY   #$00
@@ -5531,32 +5483,34 @@ L31B4       LDA   $06
             BCS   L31C4
             ORA   #$80
 L31C1       STA   $FFFF,Y
-L31C4       INY
+
+L31C4       INY		; even or odd?
             TYA
             AND   #$01
             BEQ   L31CF
             LDA   #$D5
             JMP   L31D1
-
 L31CF       LDA   #$AA
-L31D1       CPY   #$00
+
+L31D1       CPY   #$00		; on screen?
             BMI   L31DC
             CPY   #$28
-            BCS   L31DC
-L31D9       STA   $FFFF,Y
-L31DC       DEC   $68
-            INC   $50
+            BCS   L31DC		; no
+L31D9       STA   $FFFF,Y	; yes
+
+L31DC       DEC   $68		; line--
+            INC   $50		; bit++
             LDA   $68
             CMP   #$B3
-            BNE   L316A
-            LDA   $D8
+            BNE   L316A		; last line
+            LDA   milestoneX		; calc next X
             SEC
             SBC   $AF
             BCS   L31F2
             CLC
             ADC   #$07
-            DEC   $D7
-L31F2       STA   $D8
+            DEC   milestoneY		; and Y
+L31F2       STA   milestoneX
             RTS
 
 *-----------------------------------
@@ -5807,7 +5761,7 @@ L33B0       STA   ($26),Y
             CLC
             ADC   #$10
             STA   $D9
-            JSR   L1074
+            JSR   addPOINTSTOSCORE
             JMP   L2FCE
 
 L33E0       LDA   nbPLAYERS
@@ -6341,7 +6295,7 @@ L37F8       JSR   L2FCE
             LDA   $BA
             STA   $C2
             LDA   $DA
-            JMP   L1074
+            JMP   addPOINTSTOSCORE
 
 L3819       LDA   #$01
             STA   $BB

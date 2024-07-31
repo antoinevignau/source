@@ -23,6 +23,7 @@ xCNT	=	$16	; byte - X counter
 fwdSHOOTX	= 	$1a	; byte - x-coord of the front shoot
 fwdSHOOTY	=	$1b	; byte - y-coord of the front shoot
 explosionCNT =	$1c	; byte - shoot (minus)/explosion (positive) counter
+theRND	=	$20	;  adr - random value
 fgSOUND	=	$35	; byte - 0 = $C030, 1 = $C020
 mountX1	=	$41	; byte - x-index within mountain
 mountX2	=	$42	; byte - data to determine where to
@@ -45,6 +46,7 @@ oldWHEEL2X	=	$63	; byte - old x-coord of wheel 2
 oldWHEEL2Y	=	$64	; byte - old y-coord of wheel 2
 oldWHEEL3X	=	$65	; byte - old x-coord of wheel 3
 oldWHEEL3Y	=	$66	; byte - old y-coord of wheel 3
+bigTRY	=	$6d	; byte - base location to start bouncing wheels
 groundSTARTX = 	$6e	; byte - x-col where to start drawing ground (0 or 34 if moon base)
 fgHIT	=	$70	; byte - 0 = player is alive, 1 = player was hit
 plrPOINT	=	$78	; byte - point reached by the current player

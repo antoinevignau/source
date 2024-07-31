@@ -309,7 +309,7 @@ clearALL    LDA   #$22
             LDA   #$0E
             STA   $46
             LDA   #$10
-            STA   $6D
+            STA   bigTRY
             LDA   #$01
             STA   $6F
             STA   $67
@@ -508,28 +508,28 @@ L0B78       LDA   vehicleX	; save X pos of the wheels
             CLC
             ADC   #$10
             STA   wheel3X
-            LDA   $6D
+            LDA   bigTRY
             BMI   L0BB2
-            JMP   L238D
+            JMP   getBASEY
 
 L0BB2       LDA   fgJUMP	; are we jumping?
             BEQ   L0BB9		; no
             JMP   stillJUMPING		; yes
 
 L0BB9       LDA   #$02		; calculate wheels Y-coord
-            JSR   L26EC
+            JSR   getRANDOM
             SEC
             SBC   #$01
             ADC   wheel1Y
             STA   wheel1Y
             LDA   #$02
-            JSR   L26EC
+            JSR   getRANDOM
             SEC
             SBC   #$01
             ADC   wheel3Y
             STA   wheel3Y
             LDA   #$02
-            JSR   L26EC
+            JSR   getRANDOM
             SEC
             SBC   #$01
             ADC   wheel2Y
@@ -917,7 +917,7 @@ L0E4D       LDA   tblFIREX,X
             RTS
 
 L0E58       LDA   #$00
-            STA   LB059,X
+            STA   tblFIREFL,X
             LDA   vehicleX
             CLC
             ADC   #$05
@@ -1046,7 +1046,7 @@ L0F28       STX   xCNT
             LDA   #sprVERTICALSHOOT
             JSR   eraseSPRITE
             LDX   xCNT
-            LDA   LB059,X
+            LDA   tblFIREFL,X
             BNE   L0F4F
             LDA   tblFIREY,X
             TAY
@@ -1073,7 +1073,7 @@ L0F5C       LDA   tblFIREX,X
             BCS   L0F74
 
             LDA   #$01
-            STA   LB059,X
+            STA   tblFIREFL,X
 L0F74       STA   tblFIREY,X
             INX
             CPX   #$04
@@ -1191,7 +1191,7 @@ L1009       LDA   #$AA
             STA   fwdSHOOTX
             LDX   #$03
 L1025       STA   tblSAUCER_INDEX,X
-            STA   LB3DE,X
+            STA   tblDCHFLAGS,X
             STA   LB413,X
             STA   tblFIREX,X
             STA   tblFIREX2,X
@@ -1747,8 +1747,8 @@ L13FA       LDA   tblSAUCER_X,Y
             CMP   tblSAUCER_Y,Y
             BCC   L146E
             LDA   #$01
-            STA   LB37F,Y
-            STA   LB059,X
+            STA   tblSAUCER_EXFL,Y
+            STA   tblFIREFL,X
             LDA   tblSAUCER_INDEX,Y
             PHA
             JSR   L108F
@@ -2024,10 +2024,10 @@ L160C       LDA   #sprENEMY2
 L1613       LDA   $47
             STA   tblSAUCER_INDEX,X
             LDA   #$00
-            STA   LB36F,X
-            STA   LB373,X
+            STA   tblSAUCER_LEAVING,X
+            STA   tblSAUCER_BTAD,X
             JSR   L2507
-            JSR   L2548
+            JSR   ALGORITHM
             LDA   tblSAUCER_Y,X
             TAY
             LDA   tblSAUCER_X,X
@@ -2035,17 +2035,17 @@ L1613       LDA   $47
             LDA   $47
             JSR   drawSPRITE
             LDA   #$0A
-            JSR   L26EC
+            JSR   getRANDOM
             LDX   $50
             CLC
             ADC   #$82
-            STA   LB377,X
+            STA   tblFLITIME,X
             LDA   #$28
-            JSR   L26EC
+            JSR   getRANDOM
             CLC
             ADC   #$0A
             LDX   $50
-            STA   LB37B,X
+            STA   tblFIRE_COUNT,X
             CLC
             RTS
 
@@ -2068,13 +2068,13 @@ L165A       STX   $50
             STA   $B1
             LDA   tblSAUCER_Y,X	; Y
             STA   $B2
-            LDA   LB373,X
+            LDA   tblSAUCER_BTAD,X
             STA   $B3
-            JSR   L2548
-            DEC   LB377,X
+            JSR   ALGORITHM
+            DEC   tblFLITIME,X
             BNE   L167D
             LDA   #$01
-            STA   LB36F,X
+            STA   tblSAUCER_LEAVING,X
 L167D       LDA   tblSAUCER_INDEX,X
             CMP   #sprENEMY2
             BCS   L1693
@@ -2105,13 +2105,13 @@ L16A8       CMP   #$10
             LDA   #$FF
             STA   tblSAUCER_INDEX,X
 	
-L16BF       LDA   LB37F,X
+L16BF       LDA   tblSAUCER_EXFL,X
             BEQ   L16CE
             LDA   #$0E
             STA   tblSAUCER_INDEX,X
             LDA   #$00
-            STA   LB37F,X
-L16CE       LDA   LB383,X
+            STA   tblSAUCER_EXFL,X
+L16CE       LDA   COMICAZ,X
             BEQ   L16E6
             LDA   #$10
             STA   tblSAUCER_INDEX,X
@@ -2120,7 +2120,7 @@ L16CE       LDA   LB383,X
             SBC   #$05
             STA   tblSAUCER_Y,X
             LDA   #$00
-            STA   LB383,X
+            STA   COMICAZ,X
 L16E6       LDA   $B3
             STA   $39
             LDY   $B2
@@ -2135,7 +2135,7 @@ L16E6       LDA   $B3
 L16FD       JSR   eraseSPRITE
 
 L1700       LDX   $50
-            LDA   LB373,X
+            LDA   tblSAUCER_BTAD,X
             STA   $39
             LDA   tblSAUCER_Y,X
             TAY
@@ -2167,7 +2167,7 @@ L1736       LDX   $50
 
 L173F       STA   $B0
             LDX   #$03
-L1743       LDA   LB3DE,X
+L1743       LDA   tblDCHFLAGS,X
             BEQ   L174C
             DEX
             BPL   L1743
@@ -2187,40 +2187,40 @@ L175E       LDA   $B0
             SBC   #$13
             TAX
             LDY   $50
-            LDA   LB3C3,X
-            STA   LB3D2,Y
-            LDA   LB3C8,X
-            STA   LB3D6,Y
-            LDA   LB3CD,X
-            STA   LB3DA,Y
+            LDA   tblDML,X
+            STA   DCHMSKL,Y
+            LDA   tblDMR1,X
+            STA   DCHMSKR1,Y
+            LDA   tblDMR2,X
+            STA   DCHMSKR2,Y
             LDA   $B0
             LDX   $50
-            STA   LB3DE,X
-            STA   LB3F3,X
+            STA   tblDCHFLAGS,X
+            STA   DCHNUMS,X
             STA   $C3,X
             LDA   #$FC
-            STA   LB3E2,X
+            STA   DCHXS,X
             STA   $C7,X
             LDA   #$04
-            STA   LB3EF,X
+            STA   DCHADD,X
             STA   $D1,X
             LDA   #$00
             STA   $2A,X
 L1796       RTS
 
 L1797       LDX   #$03
-L1799       LDA   LB3DE,X
+L1799       LDA   tblDCHFLAGS,X
             BNE   L17A2
 L179E       DEX
             BPL   L1799
             RTS
 
 L17A2       STX   $50
-            LDA   LB3EF,X
+            LDA   DCHADD,X
             STA   $33
-            LDA   LB3F3,X
+            LDA   DCHNUMS,X
             STA   $B1
-            LDA   LB3E2,X
+            LDA   DCHXS,X
             TAX
             LDA   $B1
             CMP   #sprMUSHROOM1
@@ -2235,55 +2235,55 @@ L17C3       STY   $B0
             JSR   putSPRITE	; blits the mushroom sprite
 
             LDX   $50
-            LDA   LB3E2,X
+            LDA   DCHXS,X
             STA   $C7,X
-            LDA   LB3F3,X
+            LDA   DCHNUMS,X
             STA   $C3,X
-            LDA   LB3EF,X
+            LDA   DCHADD,X
             STA   $D1,X
             LDA   $B0
             STA   $CB,X
-            LDA   LB3F3,X
+            LDA   DCHNUMS,X
             CMP   #$16
             BCC   L17FF
             LDA   frameCNT
             CLC
             AND   #$0F
             BNE   L17FF
-            LDA   LB3F3,X
+            LDA   DCHNUMS,X
             CMP   #$16
             BNE   L17FA
             LDA   #$17
-            STA   LB3F3,X
+            STA   DCHNUMS,X
             JMP   L17FF
 
 L17FA       LDA   #$16
-            STA   LB3F3,X
+            STA   DCHNUMS,X
 L17FF       LDA   #$00
             STA   $00
-            LDA   LB3E2,X
+            LDA   DCHXS,X
             BPL   L180F
             LDA   #$01
             STA   $00
-            LDA   LB3E2,X
+            LDA   DCHXS,X
 L180F       SEC
             SBC   $AF
-            STA   LB3E2,X
+            STA   DCHXS,X
             BPL   L1836
             LDA   $00
             BNE   L1836
-            LDA   LB3EF,X
+            LDA   DCHADD,X
             BMI   L1831
-            LDA   LB3E2,X
+            LDA   DCHXS,X
             CLC
             ADC   #$69
-            STA   LB3E2,X
+            STA   DCHXS,X
             LDA   #$F5
-            STA   LB3EF,X
+            STA   DCHADD,X
             JMP   L1836
 
 L1831       LDA   #$00
-            STA   LB3DE,X
+            STA   tblDCHFLAGS,X
 L1836       JMP   L179E
 
 L1839       PHA
@@ -2330,7 +2330,7 @@ L187B       STX   $50
             LDA   $00
             STA   $B0
             LDA   #$0A
-            JSR   L26EC
+            JSR   getRANDOM
             CLC
             ADC   #$0A
             LDX   $50
@@ -2560,7 +2560,7 @@ L1A51       RTS
 * MAKE SPRITES
 *-----------------------------------
 
-makeSPRITES LDA   #$00
+makeSPRITES LDA   #$00		; create all the sprite shifts
             STA   $14
             STA   $15
             STA   $16
@@ -3243,14 +3243,14 @@ L1FBB       DEX
             JMP   L2059
 
 L1FC1       STX   $50
-            DEC   LB37B,X
+            DEC   tblFIRE_COUNT,X
             BNE   L1FBB
             LDA   #$28
-            JSR   L26EC
+            JSR   getRANDOM
             CLC
             ADC   #$0F
             LDX   $50
-            STA   LB37B,X
+            STA   tblFIRE_COUNT,X
             LDA   tblFLYINGENEMIES_INDEX,X
             BNE   L1FBB
 
@@ -3279,7 +3279,7 @@ L1FFF       ADC   #$1C
 L2007       JMP   L1FBB
 
 L200A       LDY   #$03
-L200C       LDA   LB3DE,Y
+L200C       LDA   tblDCHFLAGS,Y
             BNE   L1FBB
             DEY
             BPL   L200C
@@ -3377,7 +3377,7 @@ L2086       INC   tblFLYINGENEMIES_X,X
             SEC
             SBC   #$22
             AND   #$FC
-            STA   LB3E2,Y
+            STA   DCHXS,Y
             LDA   #sprHORIZONTALBAR
             STA   tblFLYINGENEMIES_INDEX,X
             JMP   L20D7
@@ -3501,7 +3501,7 @@ L21B6       LDA   plrPOINT
             RTS
 
 L21C0       LDX   #$03
-L21C2       LDA   LB3DE,X
+L21C2       LDA   tblDCHFLAGS,X
             BNE   L21CB
 L21C7       DEX
             BPL   L21C2
@@ -3528,17 +3528,17 @@ L21E6       LDA   $D1,X
             ADC   #$1C
             BCS   L21C7
             CLC
-            ADC   LB3D2,X
+            ADC   DCHMSKL,X
             BCS   L21C7
             CMP   #$96
             BCS   L21C7
             STA   $00
-            LDY   LB3D6,X
+            LDY   DCHMSKR1,X
             CLC
             ADC   tblX7HGR,Y
             BCS   L21C7
             CLC
-            ADC   LB3DA,X
+            ADC   DCHMSKR2,X
             BCS   L21C7
             SEC
             SBC   #$07
@@ -3571,13 +3571,13 @@ L222E       LDA   #$00
             STA   $03
             PLA
 L223F       CLC
-            ADC   LB3D2,X
+            ADC   DCHMSKL,X
             STA   $00
-            LDY   LB3D6,X
+            LDY   DCHMSKR1,X
             CLC
             ADC   tblX7HGR,Y
             CLC
-            ADC   LB3DA,X
+            ADC   DCHMSKR2,X
             BPL   L2255
             JMP   L21C7
 
@@ -3752,17 +3752,17 @@ L2387       INY
             RTS
 
 *-----------------------------------
-* 
+* GET BASE Y
 *-----------------------------------
 
-L238D       LDA   #$02
-            JSR   L26EC
+getBASEY    LDA   #$02
+            JSR   getRANDOM
             CLC
             ADC   #$84
             STA   vehicleY
-            LDA   $6D
+            LDA   bigTRY
             BMI   L239D
-            DEC   $6D
+            DEC   bigTRY
 L239D       RTS
 
 *-----------------------------------
@@ -3798,7 +3798,7 @@ animMOONBASE
             LDA   #$FF
             JSR   WAIT
             LDA   #$22
-            STA   $6D
+            STA   bigTRY
             LDA   #$46	; 70 (half of 140)
             STA   $67
 L23DE       LDA   #$79
@@ -3955,51 +3955,55 @@ L24FB       LDA   #$00	; 200
 L2504       JMP   L2FCE
 
 L2507       LDA   #$1E
-            STA   LB36B,X
+            STA   tblSAUCER_X_MAXACC,X
             LDA   #$14
-            STA   LB35B,X
+            STA   tblSAUCER_X_STARTACC,X
             LDA   #$14
-            STA   LB367,X
+            STA   tblSAUCER_Y_MAXACC,X
             LDA   #$14
-            STA   LB357,X
+            STA   tblSAUCER_Y_STARTACC,X
             LDA   #$23
             STA   tblSAUCER_Y,X
             LDA   #$73
             STX   xCNT
-            JSR   L26EC
+            JSR   getRANDOM
             LDX   xCNT
             CLC
             ADC   #$8C
             STA   tblSAUCER_X,X
             LDA   #$00
-            STA   LB34F,X
-            STA   LB353,X
+            STA   tblSAUCER_X_T,X
+            STA   tblSAUCER_Y_T,X
 
             LDA   $4E	; random value?
             ORA   #$01
-            STA   $20
+            STA   theRND
             LDA   $4F
             ORA   #$01
-            STA   $21
-            EOR   $20
-            STA   $22
+            STA   theRND+1
+            EOR   theRND
+            STA   theRND+2
             RTS
 
-L2548       LDA   LB36F,X
+*-----------------------------------
+* THE ALGORITHM
+*-----------------------------------
+
+ALGORITHM   LDA   tblSAUCER_LEAVING,X
             BEQ   L257D
             LDA   tblSAUCER_X,X
             CMP   #$8C
             BCS   L257D
             STA   $00
-            LDA   LB35B,X
+            LDA   tblSAUCER_X_STARTACC,X
             BPL   L257D
             LDA   #$00
-            STA   LB363,X
+            STA   tblSAUCER_X_I,X
             LDA   $00
             SEC
             SBC   #$04
             BCS   L259B
-            LDA   LB373,X
+            LDA   tblSAUCER_BTAD,X
             BEQ   L2572
             LDA   #$FF
             STA   tblSAUCER_INDEX,X
@@ -4009,15 +4013,15 @@ L2572       CLC
             ADC   #$2A
             STA   tblSAUCER_X,X
             LDA   #$FA
-            STA   LB373,X
-L257D       LDA   LB35B,X
+            STA   tblSAUCER_BTAD,X
+L257D       LDA   tblSAUCER_X_STARTACC,X
             PHP
             BPL   L2588
             EOR   #$FF
             CLC
             ADC   #$01
 L2588       TAY
-            LDA   LB842,Y
+            LDA   DIV3TTBL,Y
             CLC
             PLP
             BPL   L2595
@@ -4028,7 +4032,7 @@ L2595       CLC
             ADC   tblSAUCER_X,X
             AND   #$FE
 L259B       STA   tblSAUCER_X,X
-            LDA   LB36F,X
+            LDA   tblSAUCER_LEAVING,X
             BEQ   L25D3
             LDA   tblSAUCER_INDEX,X
             CMP   #$0D
@@ -4050,17 +4054,17 @@ L25B9       LDA   tblSAUCER_Y,X
             LDA   #$89
             STA   tblSAUCER_Y,X
             LDA   #$01
-            STA   LB383,X
+            STA   COMICAZ,X
 L25D0       JMP   L25F1
 
-L25D3       LDA   LB357,X
+L25D3       LDA   tblSAUCER_Y_STARTACC,X
             PHP
             BPL   L25DE
             EOR   #$FF
             CLC
             ADC   #$01
 L25DE       TAY
-            LDA   LB801,Y
+            LDA   DIV10TBL,Y
             PLP
             BPL   L25EA
             EOR   #$FF
@@ -4069,20 +4073,20 @@ L25DE       TAY
 L25EA       CLC
             ADC   tblSAUCER_Y,X
             STA   tblSAUCER_Y,X
-L25F1       LDA   LB35B,X
+L25F1       LDA   tblSAUCER_X_STARTACC,X
             SEC
-            SBC   LB363,X
-            STA   LB35B,X
-            LDA   LB357,X
+            SBC   tblSAUCER_X_I,X
+            STA   tblSAUCER_X_STARTACC,X
+            LDA   tblSAUCER_Y_STARTACC,X
             SEC
-            SBC   LB35F,X
-            STA   LB357,X
-            LDA   LB36B,X
+            SBC   tblSAUCER_Y_I,X
+            STA   tblSAUCER_Y_STARTACC,X
+            LDA   tblSAUCER_X_MAXACC,X
             EOR   #$FF
             CLC
             ADC   #$01
             STA   $17
-            LDA   LB35B,X
+            LDA   tblSAUCER_X_STARTACC,X
             SEC
             SBC   $17
             BEQ   L2620
@@ -4092,12 +4096,12 @@ L261B       JMP   L262A
 
 L261E       BMI   L261B
 L2620       LDA   #$00
-            STA   LB363,X
+            STA   tblSAUCER_X_I,X
             LDA   $17
-            STA   LB35B,X
-L262A       LDA   LB35B,X
+            STA   tblSAUCER_X_STARTACC,X
+L262A       LDA   tblSAUCER_X_STARTACC,X
             SEC
-            SBC   LB36B,X
+            SBC   tblSAUCER_X_MAXACC,X
             BEQ   L2637
             BVS   L263A
             BPL   L263C
@@ -4105,15 +4109,15 @@ L2637       JMP   L2647
 
 L263A       BPL   L2637
 L263C       LDA   #$00
-            STA   LB363,X
-            LDA   LB36B,X
-            STA   LB35B,X
-L2647       LDA   LB367,X
+            STA   tblSAUCER_X_I,X
+            LDA   tblSAUCER_X_MAXACC,X
+            STA   tblSAUCER_X_STARTACC,X
+L2647       LDA   tblSAUCER_Y_MAXACC,X
             EOR   #$FF
             CLC
             ADC   #$01
             STA   $17
-            LDA   LB357,X
+            LDA   tblSAUCER_Y_STARTACC,X
             SEC
             SBC   $17
             BVS   L265E
@@ -4122,23 +4126,23 @@ L265B       JMP   L267F
 
 L265E       BMI   L265B
 L2660       LDA   #$0A
-            JSR   L26EC
+            JSR   getRANDOM
             LDX   $50
             CLC
             ADC   #$01
             EOR   #$FF
             CLC
             ADC   #$01
-            STA   LB35F,X
+            STA   tblSAUCER_Y_I,X
             LDA   #$28
-            JSR   L26EC
+            JSR   getRANDOM
             LDX   $50
             CLC
             ADC   #$01
-            STA   LB367,X
-L267F       LDA   LB357,X
+            STA   tblSAUCER_Y_MAXACC,X
+L267F       LDA   tblSAUCER_Y_STARTACC,X
             SEC
-            SBC   LB367,X
+            SBC   tblSAUCER_Y_MAXACC,X
             BEQ   L268C
             BVS   L268F
             BPL   L2691
@@ -4146,71 +4150,71 @@ L268C       JMP   L26AB
 
 L268F       BPL   L268C
 L2691       LDA   #$0A
-            JSR   L26EC
+            JSR   getRANDOM
             LDX   $50
             CLC
             ADC   #$01
-            STA   LB35F,X
+            STA   tblSAUCER_Y_I,X
             LDA   #$28
-            JSR   L26EC
+            JSR   getRANDOM
             LDX   $50
             CLC
             ADC   #$01
-            STA   LB367,X
+            STA   tblSAUCER_Y_MAXACC,X
 L26AB       LDA   tblSAUCER_Y,X
             CMP   #$41
             BCS   L26BC
-            LDA   LB357,X
+            LDA   tblSAUCER_Y_STARTACC,X
             BPL   L26BC
             LDA   #$FB
-            STA   LB35F,X
+            STA   tblSAUCER_Y_I,X
 L26BC       LDA   tblSAUCER_Y,X
             CMP   #$43
             BCC   L26D1
             BEQ   L26D1
-            LDA   LB357,X
+            LDA   tblSAUCER_Y_STARTACC,X
             BMI   L26D1
             BEQ   L26D1
             LDA   #$05
-            STA   LB35F,X
+            STA   tblSAUCER_Y_I,X
 L26D1       LDA   tblSAUCER_X,X
             CMP   #$28
             BCS   L26DD
             LDA   #$F0
-            STA   LB363,X
+            STA   tblSAUCER_X_I,X
 L26DD       LDA   tblSAUCER_X,X
             CMP   #$BE
             BCC   L26EB
             BEQ   L26EB
             LDA   #$18
-            STA   LB363,X
+            STA   tblSAUCER_X_I,X
 L26EB       RTS
 
 *-----------------------------------
-* 
+* GET RANDOM VALUE
 *-----------------------------------
 
-L26EC       CLC
+getRANDOM   CLC
             TAX
             LDY   #$18	; 24 bits
-L26F0       LDA   $20
+L26F0       LDA   theRND
             ROL
             ROL
             ROL
             ROL
             ROL
-            EOR   $20
+            EOR   theRND
             ROL
-            ROL   $22
-            ROL   $21
-            ROL   $20
+            ROL   theRND+2
+            ROL   theRND+1
+            ROL   theRND
             DEY
             BNE   L26F0
 
-            LDA   $20
+            LDA   theRND
             CLC
-            ADC   $21
-            ADC   $22
+            ADC   theRND+1
+            ADC   theRND+2
             STA   $00
             STX   $01
             LDA   #$00
@@ -4632,7 +4636,7 @@ L2B02       BIT   KBDSTROBE
             JMP   L0996
 
 L2B72       LDA   #$FF
-            STA   $6D
+            STA   bigTRY
             LDA   #$00
             STA   $6F
             STA   $67
@@ -4851,13 +4855,13 @@ L2D0F       LDA   LB407,X
             LDA   LB3FF,X
             STA   LB3F7,X
 L2D26       LDA   $C7,X
-            STA   LB3E2,X
+            STA   DCHXS,X
             LDA   $CB,X
             STA   LB3E6,X
             LDA   $C3,X
-            STA   LB3F3,X
+            STA   DCHNUMS,X
             LDA   $D1,X
-            STA   LB3EF,X
+            STA   DCHADD,X
             DEX
             BPL   L2D0F
 
@@ -5674,7 +5678,7 @@ L3327       LDY   #$0F
 *-----------------------------------
 
 L3333       LDX   #$03
-L3335       LDA   LB3DE,X
+L3335       LDA   tblDCHFLAGS,X
             BNE   L333E
 L333A       DEX
             BPL   L3335
@@ -5721,7 +5725,7 @@ L333E       STX   $50
             LDA   #$FF
             STA   explosionCNT
 L3388       LDA   #$15
-            STA   LB3F3,X
+            STA   DCHNUMS,X
             LDY   $C7,X
             LDA   tblXBYTE,Y
             CLC
@@ -5757,7 +5761,7 @@ L33B0       STA   ($26),Y
             LDA   #$91	; LOGO
             STA   $BF
             LDA   #$02
-            JSR   L26EC
+            JSR   getRANDOM
             CLC
             ADC   #$10
             STA   $D9
@@ -5960,7 +5964,7 @@ L3590       STX   $50
 
 L35A2       LDX   #$03
 L35A4       LDA   #$FF
-            STA   LB37B,X
+            STA   tblFIRE_COUNT,X
             STA   LB426,X
             DEX
             BPL   L35A4
@@ -6027,7 +6031,7 @@ L35F5       STY   $18
             CMP   tblFLYINGENEMIES_Y,Y
             BCC   L35EF
             LDA   #$01
-            STA   LB059,X
+            STA   tblFIREFL,X
             LDA   tblFLYINGENEMIES_INDEX,Y
             STA   $B0
             LDA   #$00
@@ -6159,28 +6163,28 @@ L3701       LDA   #$00	; 50
             JMP   L369A
 
 L3713       LDX   #$03
-L3715       LDA   LB3DE,X
+L3715       LDA   tblDCHFLAGS,X
             BNE   L371E
 L371A       DEX
             BPL   L3715
             RTS
 
 L371E       STX   $50
-            LDA   LB3EF,X
+            LDA   DCHADD,X
             BMI   L374D
-            LDA   LB3E2,X
+            LDA   DCHXS,X
             CLC
             ADC   #$1C
             BCS   L371A
             CLC
-            ADC   LB3D2,X
+            ADC   DCHMSKL,X
             BCS   L371A
-            LDY   LB3D6,X
+            LDY   DCHMSKR1,X
             CLC
             ADC   tblX7HGR,Y
             BCS   L371A
             CLC
-            ADC   LB3DA,X
+            ADC   DCHMSKR2,X
             BCS   L371A
             STA   $01
             LDA   vehicleX
@@ -6190,16 +6194,16 @@ L371E       STX   $50
 
 L374D       LDA   #$00
             STA   $03
-            LDA   LB3E2,X
+            LDA   DCHXS,X
             SEC
             SBC   #$4D
             CLC
-            ADC   LB3D2,X
-            LDY   LB3D6,X
+            ADC   DCHMSKL,X
+            LDY   DCHMSKR1,X
             CLC
             ADC   tblX7HGR,Y
             CLC
-            ADC   LB3DA,X
+            ADC   DCHMSKR2,X
             BMI   L3773
             STA   $00
             LDA   vehicleX
@@ -6209,7 +6213,7 @@ L374D       LDA   #$00
 
 L3773       LDA   $2A,X
             BNE   L3787
-            LDA   LB3F3,X
+            LDA   DCHNUMS,X
             CMP   #$15
             BCS   L3790
             LDA   #$00	; 50
@@ -6282,7 +6286,7 @@ L37EC       LDA   #$05
             STA   explosionCNT
 L37F8       JSR   L2FCE
             LDA   #$03
-            JSR   L26EC
+            JSR   getRANDOM
             CLC
             ADC   #$10
             STA   $DA
@@ -6426,7 +6430,7 @@ L38F3       LDA   $B7
             LDA   $B9
             STA   $BA
             LDA   #$04
-            JSR   L26EC
+            JSR   getRANDOM
             CLC
             ADC   #$8D
             CLC
@@ -6707,7 +6711,7 @@ L3BF2       INY
             BNE   L3BD3
 
             LDX   #$03
-L3BF9       LDA   LB3DE,X
+L3BF9       LDA   tblDCHFLAGS,X
             BNE   L3C19
 L3BFE       DEX
             BPL   L3BF9
@@ -6724,8 +6728,8 @@ L3C03       LDA   LBB00,X
             RTS
 
 L3C19       STX   xCNT
-            LDA   LB3EF,X
-            LDY   LB3E2,X
+            LDA   DCHADD,X
+            LDY   DCHXS,X
             CLC
             ADC   tblXBYTE,Y
             STA   $00
@@ -6734,7 +6738,7 @@ L3C19       STX   xCNT
             SEC
             SBC   #$01
             CLC
-            ADC   LB3D2,X
+            ADC   DCHMSKL,X
             CMP   #$07
             BCC   L3C3B
             INC   $00
@@ -6743,11 +6747,11 @@ L3C19       STX   xCNT
 L3C3B       STA   $01
             LDA   $00
             CLC
-            ADC   LB3D6,X
+            ADC   DCHMSKR1,X
             STA   $02
             LDA   $01
             CLC
-            ADC   LB3DA,X
+            ADC   DCHMSKR2,X
             CMP   #$07
             BCC   L3C54
             INC   $02

@@ -599,7 +599,8 @@ sprSTRUCTURE
             DB    $03		; Sprite 0: wheel
             DB    $0A
             DA    L6D91
-            HEX   FD77F0F0FFFFF0F0FFFFF0F0
+	DA    L77FD		; pointer to where sprites must be put
+            HEX   F0F0FFFFF0F0FFFFF0F0
             DB    $08		; Sprite 1: vehicle
             DB    $0F
             DA    L6E00
@@ -1145,10 +1146,15 @@ L77D0       HEX   8095A88180
 	HEX   A8F5EE8580
 	HEX   AAC5BB8180
 	HEX   AA80BE8080
-	HEX   8F8080
 
 *-----------------------------------
-* $7800
+* SHIFTED-SPRITES AREA (UNTIL $7FFF)
+*-----------------------------------
+
+L77FD	HEX   8F8080
+
+*-----------------------------------
+* $7800 (GARBAGE)
 *-----------------------------------
 
 L7800       HEX   80F081808080F883808080F8838080F8
@@ -1291,6 +1297,8 @@ L7F00       HEX   88808080808080808080808080808080
 *-----------------------------------
 
             DS    $100
+
+*--- Garbage...
 
             DB    $10
             DB    $73
@@ -7251,11 +7259,7 @@ tblFIREX    DS    4	; x-coord of each vertical shoot
 tblFIREY	DS    4     ; y-coord of each vertical shoot
 tblFIREX2	DS    4     ; old x-coord of each vertical shoot
 tblFIREY2	DS    4     ; old y-coord of each vertical shoot
-
-LB059       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
+tblFIREFL	DS    4     ; 
 
 *-----------------------------------
 * SCORE TO ADD (100/500/800/1000)
@@ -7327,23 +7331,23 @@ courseCHAMPION
 * FLYING SAUCERS SPRITES TABLES
 *-----------------------------------
 
-tblSAUCER_X       DS    4	; X
-tblSAUCER_Y       DS    4	; Y
-tblSAUCER_INDEX       DS    4	; INDEX
-LB34F       DS    4
-LB353       DS    4
-LB357       DS    4
-LB35B       DS    4
-LB35F       DS    4
-LB363       DS    4
-LB367       DS    4
-LB36B       DS    4
-LB36F       DS    4
-LB373       DS    4
-LB377       DS    4
-LB37B       DS    4
-LB37F       DS    4
-LB383       DS    4
+tblSAUCER_X		DS    4	; X
+tblSAUCER_Y		DS    4	; Y
+tblSAUCER_INDEX	DS    4	; INDEX
+tblSAUCER_Y_T	DS    4
+tblSAUCER_Y_T	DS    4
+LB357	DS    4
+tblSAUCER_X_STARTACC	DS    4
+tblSAUCER_Y_I       DS    4
+tblSAUCER_X_I       DS    4
+LB367	DS    4
+tblSAUCER_X_MAXACC	DS    4
+tblSAUCER_LEAVING	DS    4
+tblSAUCER_BTAD	DS    4
+tblFLITIME		DS    4
+tblFIRE_COUNT	DS    4
+tblSAUCER_EXFL	DS    4
+COMICAZ	DS    4
 
 *-----------------------------------
 * FLYING ENEMIES SPRITE TABLE (L6501 TABLE)
@@ -7401,38 +7405,38 @@ LB3BF       DB    $00
             DB    $00
             DB    $00
             DB    $00
-LB3C3       DB    $02
+tblDML      DB    $02
             DB    $02
             DB    $02
             DB    $02
             DB    $02
-LB3C8       DB    $03
+tblDMR1     DB    $03
             DB    $04
             DB    $06
             DB    $06
             DB    $06
-LB3CD       DB    $05
+tblDMR2     DB    $05
             DB    $06
             DB    $06
             DB    $06
             DB    $06
-LB3D2       DB    $01
+DCHMSKL     DB    $01
             DB    $00
             DB    $00
             DB    $00
-LB3D6       DB    $07
+DCHMSKR1    DB    $07
             DB    $00
             DB    $00
             DB    $00
-LB3DA       DB    $05
+DCHMSKR2    DB    $05
             DB    $00
             DB    $00
             DB    $00
-LB3DE       DB    $00
+tblDCHFLAGS DB    $00
             DB    $00
             DB    $00
             DB    $00
-LB3E2       DS    4	; X-coord
+DCHXS       DS    4	; X-coord
 LB3E6       DB    $00
             DB    $00
             DB    $00
@@ -7442,11 +7446,11 @@ LB3EA       DB    $00
             DB    $01
             DB    $03
             DB    $03
-LB3EF       DB    $00
+DCHADD      DB    $00
             DB    $00
             DB    $00
             DB    $00
-LB3F3       DS    4	; sprite index
+DCHNUMS     DS    4	; sprite index
 LB3F7       DB    $00
             DB    $00
             DB    $00
@@ -7718,7 +7722,7 @@ musicGAME_repeat
 * 
 *-----------------------------------
 
-LB801       DB    $00
+DIV10TBL    DB    $00
             DB    $00
             DB    $00
             DB    $00
@@ -7784,7 +7788,7 @@ LB801       DB    $00
             DB    $06
             DB    $06
 
-LB842       DB    $00
+DIV3TTBL    DB    $00
             DB    $00
             DB    $00
             DB    $00

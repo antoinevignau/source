@@ -91,7 +91,7 @@ L086B       LDA   #$FF
             BEQ   L0885
             BNE   L084F
 
-L087C       JSR   L1775
+L087C       JSR   doOPTIONS
             CMP   #" "
             BEQ   L0885
             BNE   L084F
@@ -369,7 +369,7 @@ L0AA5       JSR   L0B81
             JSR   L71C6
             JSR   L0B17
             JSR   L4E65
-            JSR   L54C7
+            JSR   blitSCREEN
             JMP   L0A67
 
 L0ACB       LDX   curPLAYER
@@ -397,7 +397,7 @@ L0AEC       JSR   L6DB1
             JSR   L7F7B
             JSR   L69B3
             JSR   L4E65
-            JSR   L54C7
+            JSR   blitSCREEN
             JMP   L0ADB
 
 L0B15       DB    $00
@@ -1906,12 +1906,12 @@ L1759       DB    $0C	; 9
 
 *-----------------------
 
-L1775       LDA   #$00
+doOPTIONS   LDA   #$00
             STA   fgOFFLIMIT
             LDA   KBDSTROBE
-            LDA   #$00
+            LDA   #<TEXT1
             STA   $84
-            LDA   #$04
+            LDA   #>TEXT1
             STA   $84+1
             TAX
 L1785       LDY   #$00
@@ -1921,7 +1921,7 @@ L1789       STA   ($84),Y
             BNE   L1789
             INX
             STX   $84+1
-            CPX   #$08
+            CPX   #>TEXT2
             BEQ   L1798
             JMP   L1785
 
@@ -7417,11 +7417,13 @@ L54A3       STA   X1
             JSR   drawLINE
 L54C3       JMP   L5485
 
+*-----------------------
+
 L54C6       DB    $00
 
-L54C7       LDA   L54C6
+blitSCREEN  LDA   L54C6
             BNE   L550F
-            LDX   #$48
+            LDX   #$48	; start line 72
             INX
 L54CF       CLC
             LDA   tblHGRL,X
@@ -7439,7 +7441,7 @@ L54CF       CLC
             ADC   #$00
             STA   L54F9+2
             STA   L5503+2
-            LDY   #$23
+            LDY   #$23	; cols $2..$25
 L54F9       LDA   $E000,Y
 L54FC       STA   $E000,Y
             BEQ   L5506
@@ -7448,13 +7450,13 @@ L5503       STA   $E000,Y
 L5506       DEY
             BPL   L54F9
             INX
-            CPX   #$AD
+            CPX   #$AD	; until 174
             BNE   L54CF
             RTS
 
 L550F       LDA   #$00
             STA   L54C6
-            LDX   #$38
+            LDX   #$38	; start line 56
 L5516       LDA   tblPAGE2L,X
             STA   $9B
             LDA   tblPAGE2H,X
@@ -7465,10 +7467,10 @@ L5524       STA   ($9B),Y
             DEY
             BPL   L5524
             INX
-            CPX   #$4A
+            CPX   #$4A	; end line 74
             BNE   L5516
-            LDX   #$48
-            INX
+            LDX   #$48	; start line 72
+            INX	; 73
 L5531       CLC
             LDA   tblHGRL,X
             ADC   #$02
@@ -7476,7 +7478,7 @@ L5531       CLC
             LDA   tblHGRH,X
             ADC   #$00
             STA   L555E+2
-            CLC
+            CLC	; get previous line
             LDA   tblPAGE2L-4,X
             ADC   #$02
             STA   L555B+1
@@ -7485,7 +7487,7 @@ L5531       CLC
             ADC   #$00
             STA   L555B+2
             STA   L5565+2
-            LDY   #$23
+            LDY   #$23	; copy cols $2..$25
 L555B       LDA   $E000,Y
 L555E       STA   $E000,Y
             BEQ   L5568
@@ -7493,27 +7495,28 @@ L555E       STA   $E000,Y
 L5565       STA   $E000,Y
 L5568       DEY
             BPL   L555B
-            TXA
+            TXA	; with a beep every 4 lines
             AND   #$03
             BNE   L5577
             LDA   fgSOUND
             BEQ   L5577
             LDA   SPKR
 L5577       INX
-            CPX   #$AD
+            CPX   #$AD	; until line 174
             BNE   L5531
-            LDX   #$A8
+
+            LDX   #$A8	; start line 168
 L557E       LDA   tblPAGE2L,X
             STA   $9B
             LDA   tblPAGE2H,X
-            STA   $9C
+            STA   $9B+1
             LDY   #$25
             LDA   #$00
 L558C       STA   ($9B),Y
             DEY
             BPL   L558C
             INX
-            CPX   #$AD
+            CPX   #$AD	; until line 174
             BNE   L557E
             RTS
 
@@ -7529,7 +7532,6 @@ L5597       LDA   L5673
             BNE   L55B7
             LDA   #$3F
             JMP   L5627
-
 L55B7       BCC   L55F5
             LDA   L5673
             STA   $9D
@@ -12998,10 +13000,10 @@ L7382       JSR   L6DB1
             JSR   L6A18
             JSR   L6B31
             JSR   L4E65
-            JSR   L54C7
+            JSR   blitSCREEN
             LDA   KBD
             BPL   L73AF
-            CMP   L1AFD
+            CMP   L1AFD	; escape?
             BNE   L73AF
             JSR   doPAUSE
 L73AF       LDX   KBDSTROBE
@@ -13974,7 +13976,7 @@ L79C8       STA   ($84),Y
             BNE   L79C8
             INC   $84+1
             LDX   $84+1
-            CPX   #$08
+            CPX   #>TEXT2
             BNE   L79C8
             RTS
 

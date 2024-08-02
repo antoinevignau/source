@@ -1,0 +1,1149 @@
+LOAD MOON PATROL2
+
+BLOAD MOON PATROL2,A$1800
+
+
+:PR#1
+
+PR#1
+
+:L
+   1 *222222222222222222222222222222222222222222222222222222222222222222222 
+   2 ;     
+   3 ;       
+   4          OBJ $800
+   5 ;      
+   6 ;         
+   7 ;
+   8 ;
+   9 NXTNOTE  LDX #0
+  10          LDA (DURT,X)
+  11          STA LSTDURT
+  12          LDA #$E0
+  13          STA OLDVALL
+  14          LDA #$B
+  15          STA OLDVALH
+  16          LDA #$00
+  17          STA REMAIN
+  18          STA REMAINH
+  19          LDA (FREQ,X)
+  20          BNE >1
+  21          JMP >9
+  22 ^1       STA LSTFREQ
+  23          STA SCR0
+  24          LDX #$10
+  25 ^1       ASL OLDVALL
+  26          ROL OLDVALH
+  27          ROL REMAIN          ; GET FALLING BITS
+  28          ROL REMAINH
+  29          LDA REMAIN          ; GET REMAINDER
+  30          SEC 
+  31          SBC SCR0            ; FIND IF REMAINDER IS LESS THAN INITIAL DIV.
+  32          TAY 
+  33          LDA REMAINH
+  34          SBC #$00
+  35          BCC >2
+  36          STY REMAIN          ; KEEP REMAINDER
+  37          STA REMAINH
+  38          INC OLDVALL
+  39 ^2       DEX 
+  40          BNE <1
+  41          LDA OLDVALL
+  42          STA DNOTL
+  43          LDA OLDVALH
+  44          STA DNOTH
+  45 DURB     LDX DNOTL
+  46          LDY DNOTH
+  47          INY 
+  48 NOTDONE  LDA SCR0            ; GET FREQUENCY OF NOTE
+  49 COKE     STX XSAVE
+  50          LDX #$03
+  51 ^1       DEX 
+  52          BNE <1
+  53          LDX XSAVE
+  54          SEC 
+  55          SBC #$01            ; USE AS DELAY BETWEEN CLICKS
+  56          BCS COKE            ; IF NOT DONE CONTINUE DELAY
+  57          JSR TWEEK
+  58          DEX 
+  59          BNE >1
+  60          DEY 
+  61 ^1       BNE NOTDONE
+  62          LDA #10
+  63          STA SCR6
+  64          LDX #0
+  65          JSR WNOISE
+  66          DEC LSTDURT
+  67          BNE DURB
+  68          INC DURT
+  69          BNE >1
+  70          INC DURT+1
+  71 ^1       INC FREQ
+  72          BNE >1
+  73          INC FREQ+1
+  74 ^1       JMP NXTNOTE
+  75 ^9       RTS                 ; RETURN IF FREQUENCY IS ZERO
+  76 ;
+  77 ;
+  78 ; =====  SET GOAL TO SCROLL  =====
+  79 ;
+  80 SETGLSC:
+  81 ;
+  82          LDA COURSEL
+  83          STA NXTCRSL
+  84          LDA COURSEH
+  85          STA NXTCRSH
+  86          LDA #0
+  87          STA FLAG56
+  88 P        LDA #$18
+  89          STA GKWT
+  90          LDA #2
+  91          STA GKWT2
+  92          LDA #0
+  93          STA SCR1
+  94          LDA GOALCNT
+  95          CLC 
+  96          ADC #1
+  97          ASL 
+  98          ASL 
+  99          ASL 
+ 100          ROL SCR1
+ 101          CLC 
+ 102          ADC #ASCSHPS
+ 103          STA ASCONL
+ 104          LDA SCR1
+ 105          ADC /ASCSHPS
+ 106          STA ASCONH
+ 107          LDA #$28
+ 108          STA ASCBT
+ 109          LDA #0
+ 110          STA ASCBI
+ 111          RTS 
+ 112 BONGER   LDA FLAG56
+ 113          BEQ G10T
+ 114          JMP >1
+ 115 G10T     LDA GKWT2
+ 116          CMP #1
+ 117          BEQ G11T
+ 118          JMP >1
+ 119 G11T:
+ 120          LDA CARX
+ 121          CMP GKWT
+ 122          BLT >1
+ 123          LDA NXTCRSL
+ 124          STA OLDCRSL
+ 125          LDA NXTCRSH
+ 126          STA OLDCRSH
+ 127          LDX #$7F
+ 128 ^2       JSR TWEEK
+ 129          LDA #6
+ 130          JSR DELAY
+ 131          DEX 
+ 132          BPL <2
+ 133          LDA #1
+ 134          STA FLAG56
+ 135          INC GOALCNT
+ 136          LDA #$D5
+ 137          STA SCR4
+ 138          JSR REDROUT
+ 139          JSR PRINTGL
+ 140          JSR REACHIT
+ 141 ^1       RTS 
+ 142 ;
+ 143 ;
+ 144 ;
+ 145 ;
+ 146 DRAWASC:
+ 147 ;
+ 148 ;
+ 149          STX NIGIT+1
+ 150          STY LENGT
+ 151          PHA 
+ 152          LDA #0
+ 153          STA SCR1
+ 154          PLA 
+ 155          ASL 
+ 156          ASL 
+ 157          ASL 
+ 158          ROL SCR1
+ 159          CLC 
+ 160          ADC #ASCSHPS
+ 161          STA ASCOUT+1
+ 162          LDA SCR1
+ 163          ADC /ASCSHPS
+ 164          STA ASCOUT+2
+ 165          LDA LENGT
+ 166          CLC 
+ 167          ADC #6
+ 168          STA LENGT
+ 169          SEC 
+ 170          SBC #7
+ 171          STA CHECKSUM+1
+ 172          LDX #$00
+ 173 ASCNL    LDY LENGT
+ 174          LDA HGHADR,Y        ; GET BASL (LOW)
+ 175          STA SIXHOURS+2      ; STORE AT HIRES LINE OUT 2
+ 176          LDA LOWADR,Y        ; GET BASL (HIGH)
+ 177          STA SIXHOURS+1      ; STORE AT HIRES LINE OUT 2
+ 178 NIGIT    LDY #$FF            ; ANYTHING ( SELF MODIFICATION )
+ 179 ASCOUT   LDA $FFFF,X         ; GET BYTE FROM SHAPE
+ 180 SIXHOURS STA $FFFF,Y         ; STORE BYTE ON HIRES SCREEN
+ 181          INX 
+ 182          BNE >1
+ 183          INC ASCOUT+2
+ 184 ^1       DEC LENGT
+ 185          LDA LENGT
+ 186 CHECKSUM CMP #$FF            ; SELF MOD LOCATION
+ 187          BNE ASCNL
+ 188          RTS 
+ 189 ;
+ 190 ;
+ 191 ;
+ 192 ;
+ 193 ; =====  ROUTINE TO CONTROL RED LINE ON SCOREBOARD  =====
+ 194 ;
+ 195 ;
+ 196 REDROUT  STX XNODRAW
+ 197          LDX GOALCNT
+ 198          LDA #19
+ 199          STA SCR0
+ 200          LDA #1
+ 201          STA SCR1
+ 202          LDY REDLINE,X
+ 203          LDA BYTENUM,Y
+ 204          STA SCR2
+ 205          LDA SHIFTNUM,Y
+ 206          LSR 
+ 207          SEC 
+ 208          SBC #$01
+ 209          STA SCR3
+ 210          LDA SCR0
+ 211          STA BYTPOS
+ 212          LDA SCR1
+ 213          STA BITPOS
+ 214          LDY BYTPOS
+ 215          LDX BITPOS
+ 216 ^2       LDA RED1,Y
+ 217          ORA DBITS,X
+ 218          AND SCR4
+ 219          ORA #$80
+ 220          STA RED1,Y
+ 221          LDA RED2,Y
+ 222          ORA DBITS,X
+ 223          AND SCR4
+ 224          ORA #$80
+ 225          STA RED2,Y
+ 226          INX 
+ 227          CPX #07
+ 228          BNE >4
+ 229          LDX #00
+ 230          INY 
+ 231          LDA SCR4
+ 232          BEQ >3
+ 233          CMP #$D5
+ 234          BNE >1
+ 235          LDA #$AA
+ 236          JMP >3
+ 237 ^1       LDA #$D5
+ 238 ^3       STA SCR4
+ 239 ^4       CPX SCR3
+ 240          BNE <2
+ 241          CPY SCR2
+ 242          BNE <2
+ 243          LDX XNODRAW
+ 244          RTS 
+ 245 ;
+ 246 ;
+ 247 ; =====  ROUTINE THAT CHECKS COLLISION ON TANKS BULLET  =====
+ 248 ;
+ 249 TBULCHK:
+ 250 ;
+ 251          LDX #3
+ 252 ^3       LDA TBULX,X
+ 253          BNE >1
+ 254 ^4       DEX 
+ 255          BPL <3
+ 256          JMP CHECK2
+ 257 ^1       STX XSAVE
+ 258          LDA BUL2Y
+ 259          CMP #140
+ 260          BLT <4
+ 261          CMP #147
+ 262          BGE <4
+ 263 TODDSF   LDA TBULX,X
+ 264          SEC 
+ 265          SBC #4
+ 266          CMP BUL2X
+ 267          BGE <4
+ 268          LDA TBULX,X
+ 269          CLC 
+ 270          ADC #25
+ 271          CMP BUL2X
+ 272          BLT <4
+ 273          LDA ITGOTHIT
+ 274          BNE <4
+ 275          LDA #1
+ 276          STA ITGOTHIT
+ 277          LDA TBULX,X
+ 278          TAX 
+ 279          LDA #TNBSS
+ 280          LDY #143
+ 281          JSR ERASE0
+ 282          JSR ROCKBOOM
+ 283          LDX XSAVE
+ 284          LDA BEXTIME
+ 285          BMI >4
+ 286          LDA #$FF
+ 287 ^4       STA BEXTIME
+ 288          LDA #0
+ 289          STA TBULX,X
+ 290 CHECK2:
+ 291 ;
+ 292          LDX #3
+ 293 ^4       LDA TBULX,X
+ 294          BNE >1
+ 295 ^3       DEX 
+ 296          BPL <4
+ 297          RTS 
+ 298 ^1       STX XSAVE
+ 299          LDA TBULX,X
+ 300          CLC 
+ 301          ADC #8
+ 302          CMP CARX
+ 303          BLT <3
+ 304          LDA CARX
+ 305          CLC 
+ 306          ADC #36
+ 307          CMP TBULX,X
+ 308          BLT <3
+ 309          LDA CARY
+ 310          CLC 
+ 311          ADC #18
+ 312          CMP #144
+ 313          BLT <3
+ 314          LDA #1
+ 315          STA CARHROCK
+ 316          LDA TBULX,X
+ 317          TAX 
+ 318          LDA #TNBSS
+ 319          LDY #143
+ 320          JSR ERASE0
+ 321          LDX XSAVE
+ 322          LDA #0
+ 323          STA TBULX,X
+ 324          RTS 
+ 325 ;
+ 326 ;
+ 327 ;
+ 328 ;
+ 329 ; =====  TANK'S BULLET ROUTINE  =====
+ 330 ;
+ 331 TANKBUL:
+ 332 ;
+ 333          LDX #3
+ 334 ^3       LDA TBULX,X
+ 335          BNE >1
+ 336 ^4       DEX 
+ 337          BPL <3
+ 338          RTS 
+ 339 ^1       STX XSAVE
+ 340          LDA TBULX,X
+ 341          TAX 
+ 342          LDA #TNBSS
+ 343          LDY #143
+ 344          JSR ERASE0
+ 345          LDX XSAVE
+ 346          LDA TBULX,X
+ 347          SEC 
+ 348          SBC #8
+ 349          CMP #10
+ 350          BLT >5
+ 351          STA TBULX,X
+ 352          TAX 
+ 353          LDA #TNBSS
+ 354          LDY #143
+ 355          JSR DRAW0
+ 356          LDX XSAVE
+ 357          JMP <4
+ 358 ^5       LDA #0
+ 359          STA TBULX,X
+ 360          JMP <4
+ 361 ;
+ 362 ;
+ 363 ; =====  SHIP COLLISION CHECK ROUTINE  =====
+ 364 ;
+ 365 SHIPCHCK:
+ 366 ;
+ 367          LDX #3
+ 368 ^1       LDA SHIPNUM,X
+ 369          BEQ NOGOGIJO
+ 370          BMI NOGOGIJO
+ 371          CMP #SH1SS+6
+ 372          BGE NOGOGIJO
+ 373          SEC 
+ 374          SBC #SH1SS
+ 375          TAY 
+ 376          LDA STOPS,Y
+ 377          STA TOPS,X
+ 378          LDA SBOTTOM,Y
+ 379          STA BOTTOM,X
+ 380          LDA SLEFT,Y
+ 381          STA LEFT,X
+ 382          LDA SRIGHT,Y
+ 383          STA RIGHT,X
+ 384 NOGOGIJO DEX 
+ 385          BPL <1
+ 386          LDX #3
+ 387 ^1       LDA B1OXS,X
+ 388          BNE >3
+ 389 LBL1     DEX 
+ 390          BPL <1
+ 391          RTS 
+ 392 ^3       LDY #3
+ 393 LBL2     LDA SHIPNUM,Y       ; GET NUMBER OF SHIP
+ 394          BEQ LBL3
+ 395          BMI LBL3
+ 396          CMP #SH1SS+6
+ 397          BGE LBL3
+ 398          JMP >1
+ 399 LBL3     DEY                 ; DECREMENT INDEX INTO SHIP NUMBERS
+ 400          BPL LBL2            ; KEEP GOING UNTIL NEGATIVE
+ 401          JMP LBL1            ; TRY NEXT BULLET
+ 402 ^1       LDA SHIPX,Y
+ 403          CLC 
+ 404          ADC RIGHT,Y         ; ADD WIDTH OF SHIP
+ 405          CMP B1XS,X
+ 406          BLT NOCOLSN
+ 407          LDA B1XS,X
+ 408          CLC 
+ 409          ADC #1
+ 410          ADC LEFT,Y
+ 411          CMP SHIPX,Y
+ 412          BLT NOCOLSN
+ 413          LDA SHIPY,Y
+ 414          CLC 
+ 415          ADC BOTTOM,Y
+ 416          SEC 
+ 417          SBC #4
+ 418          CMP B1YS,X
+ 419          BLT NOCOLSN
+ 420          LDA B1YS,X
+ 421          CLC 
+ 422          ADC #6
+ 423          ADC TOPS,Y
+ 424          CMP SHIPY,Y
+ 425          BLT NOCOLSN
+ 426          LDA #$01
+ 427          STA SHIPEXFL,Y
+ 428          STA BHITFL,X
+ 429          LDA SHIPNUM,Y
+ 430          CMP #SH2SS
+ 431          BLT >1
+ 432          LDA #0
+ 433          LDX #1
+ 434          LDY #0
+ 435          JMP >2
+ 436 ^1       LDA #0
+ 437          LDX #2
+ 438          LDY #0
+ 439 ^2       JSR ADDSCORE
+ 440          LDA #7
+ 441          JSR UPTHEA
+ 442          LDA #6
+ 443          JSR UPTHEA
+ 444          LDA #5
+ 445          JSR UPTHEA
+ 446          LDA #8
+ 447          JSR UPTHEA
+ 448          JMP LBL1
+ 449 NOCOLSN  JMP LBL3            ; CONTINUE WITH LOOP
+ 450 ;
+ 451 ;
+ 452 DELTMR:
+ 453 ;          
+ 454          LDA XSPEED
+ 455          LSR 
+ 456          SEC 
+ 457          SBC #1
+ 458          STA SCR0
+ 459          LDA GAMEWT
+ 460          SEC 
+ 461          SBC SCR0
+ 462          BCC >1
+ 463          STA GAMEWT
+ 464 ^2       RTS 
+ 465 ^1       INC COURSEL
+ 466          BNE >1
+ 467          INC COURSEH
+ 468 ^1       LDX #0
+ 469          LDA (COURSEL,X)
+ 470          LSR 
+ 471          LSR 
+ 472          LSR 
+ 473          TAY                 ; USE FOR WIDTHS INDEX
+ 474          LDA (COURSEL,X)
+ 475          AND #%11111000
+ 476          CMP #NULL
+ 477          BNE >1
+ 478          LDA (COURSEL,X)
+ 479          AND #7
+ 480          LDX #11
+ 481 ^5       JSR MULTIPLY
+ 482          TXA 
+ 483          LDX #0
+ 484          STA GAMEWT
+ 485          RTS 
+ 486 ^1       LDA (COURSEL,X)
+ 487          AND #7
+ 488          LDX #11
+ 489 ^3       JSR MULTIPLY
+ 490          TXA 
+ 491          LDX #0
+ 492          STA GAMEWT
+ 493          LDA (COURSEL,X)
+ 494          AND #%11111000
+ 495 ^1       CMP #ALIEN
+ 496          BNE >1
+ 497          JMP SETSHIP
+ 498 ^1       CMP #SAUCER
+ 499          BNE >1
+ 500          JMP SETSHIP
+ 501 ^1       CMP #TRIPLE
+ 502          BNE >1
+ 503          JMP SETSHIP
+ 504 ^1       CMP #TR3
+ 505          BNE >1
+ 506          JMP SETSHIP
+ 507 ^1       CMP #TR4
+ 508          BNE >1
+ 509          JMP SETSHIP
+ 510 ^1       CMP #TR5
+ 511          BNE >1
+ 512          JMP SETSHIP
+ 513 ^1       CMP #AL3
+ 514          BNE >1
+ 515          JMP SETSHIP
+ 516 ^1       CMP #AL4
+ 517          BNE >1
+ 518          JMP SETSHIP
+ 519 ^1       CMP #AL5
+ 520          BNE >1
+ 521          JMP SETSHIP
+ 522 ^1       CMP #BPIT
+ 523          BNE >1
+ 524          LDA #DC3SS
+ 525          JMP SETDCH
+ 526 ^1       CMP #MPIT
+ 527          BNE >1
+ 528          LDA #DC2SS
+ 529          JMP SETDCH
+ 530 ^1       CMP #LPIT
+ 531          BNE >1
+ 532          LDA #DC1SS
+ 533          JMP SETDCH
+ 534 ^1       CMP #BROCK
+ 535          BNE >1
+ 536          JMP SETRCK
+ 537 ^1       CMP #LROCK
+ 538          BNE >1
+ 539          JMP SETRCK
+ 540 ^1       CMP #TANK
+ 541          BNE >1
+ 542          JMP SETRCK
+ 543 ^1       CMP #LMINE
+ 544          BNE >1
+ 545          JMP SETRCK
+ 546 ^1       CMP #GOAL
+ 547          BNE >1
+ 548          JSR SETGLSC
+ 549          RTS 
+ 550 ^1       CMP #G80
+ 551          BNE >1
+ 552          LDA #0
+ 553          STA AV1
+ 554          LDA #$80
+ 555          STA AV0
+ 556          JMP SETGLSC
+ 557 ^1       CMP #G100
+ 558          BNE >1
+ 559          LDA #1
+ 560          STA AV1
+ 561          LDA #0
+ 562          STA AV0
+ 563          JMP SETGLSC
+ 564 ^1       CMP #G120
+ 565          BNE >1
+ 566          LDA #1
+ 567          STA AV1
+ 568          LDA #0
+ 569          STA AV0
+ 570          JMP SETGLSC
+ 571 ^1       CMP #GOALZ
+ 572          BNE >1
+ 573          LDA #1
+ 574          STA AV1
+ 575          LDA #0
+ 576          STA AV0
+ 577          JMP SETGLSC
+ 578 ^1       CMP #PLANTER
+ 579          BNE >1
+ 580          LDA #DC4SS
+ 581          JMP SETDCH
+ 582 ^1       CMP #BADCAR
+ 583          BNE >1
+ 584          JMP SETJET
+ 585 ^1       RTS 
+ 586 ;
+ 587 ;
+ 588 SETSHIP:
+ 589 ;
+ 590          STA SHPTMP
+ 591          LDX #3
+ 592 ^1       LDA SHIPNUM,X
+ 593          BEQ >1
+ 594          DEX 
+ 595          BPL <1
+ 596          LDA #1
+ 597          STA HOLDUP          ; SET FLAG TO TEMPORARILY HOLD COURSE
+ 598          RTS 
+ 599 ^1       STX XSAVE
+ 600          LDA SHPTMP
+ 601          CMP #ALIEN
+ 602          BEQ SETAL
+ 603          CMP #AL3
+ 604          BEQ SETAL
+ 605          CMP #AL4
+ 606          BEQ SETAL
+ 607          CMP #AL5
+ 608          BEQ SETAL
+ 609          CMP #SAUCER
+ 610          BEQ SETSA
+ 611 SETTR    LDA #SH1SS
+ 612          STA SHPTMP
+ 613          JMP GENSET
+ 614 SETAL    LDA #SH3SS
+ 615          STA SHPTMP
+ 616          JMP GENSET
+ 617 SETSA    LDA #SH2SS
+ 618          STA SHPTMP
+ 619          JMP GENSET
+ 620 ;
+ 621 ;
+ 622 GENSET:
+ 623 ;
+ 624          LDA SHPTMP
+ 625          STA SHIPNUM,X
+ 626          LDA #$00
+ 627          STA SHIPLEAV,X
+ 628          STA SHIPBTAD,X
+ 629          JSR SETSHAL
+ 630          JSR ALGORITM
+ 631          LDA SHIPY,X
+ 632          TAY 
+ 633          LDA SHIPX,X
+ 634          TAX 
+ 635          LDA SHPTMP
+ 636          JSR DRAW1
+ 637          LDA #10
+ 638          JSR RANDOMA
+ 639          LDX XSAVE
+ 640          CLC 
+ 641          ADC #130
+ 642          STA FLITIME,X
+ 643          LDA #40
+ 644          JSR RANDOMA
+ 645          CLC 
+ 646          ADC #10
+ 647          LDX XSAVE
+ 648          STA FIRCOUNT,X
+ 649          CLC                 ; CARRY IS CLEAR IF SHIP WAS SET
+ 650          RTS 
+ 651 ;
+ 652 ;
+ 653 ;
+ 654 DRAWALN:
+ 655 ;
+ 656 ;
+ 657          LDX #3
+ 658 ^3       LDA SHIPNUM,X
+ 659          BNE >1
+ 660 DRAWNXTS DEX 
+ 661          BPL <3
+ 662          RTS 
+ 663 ^1       STX XSAVE
+ 664          LDA SHIPNUM,X
+ 665          STA HOLD1
+ 666          LDA SHIPX,X
+ 667          STA HOLD2
+ 668          LDA SHIPY,X
+ 669          STA HOLD3
+ 670          LDA SHIPBTAD,X
+ 671          STA HOLD4
+ 672          JSR ALGORITM
+ 673          DEC FLITIME,X
+ 674          BNE >1
+ 675          LDA #$01
+ 676          STA SHIPLEAV,X
+ 677 ^1       LDA SHIPNUM,X
+ 678          CMP #SH2SS
+ 679          BGE >1
+ 680          INC SHIPNUM,X
+ 681          LDA SHIPNUM,X
+ 682          CMP #SH2SS
+ 683          BNE >1
+ 684          LDA #SH1SS
+ 685          STA SHIPNUM,X
+ 686 ^1       CMP #SH1SS+7
+ 687          BNE >1
+ 688          LDA #$FF
+ 689          STA SHIPNUM,X
+ 690          JMP >2
+ 691 ^1       CMP #SH1SS+6
+ 692          BNE >1
+ 693          LDA #SH1SS+7
+ 694          STA SHIPNUM,X
+ 695 ^1       CMP #SH1SS+8
+ 696          BLT >2
+ 697          CMP #SH1SS+12
+ 698          BGE >2
+ 699          INC SHIPNUM,X
+ 700          LDA SHIPNUM,X
+ 701          CMP #SH1SS+12
+ 702          BNE >2
+ 703          LDA #$FF
+ 704          STA SHIPNUM,X
+ 705 ^2       LDA SHIPEXFL,X
+ 706          BEQ >1
+ 707          LDA #SH1SS+6        ; LOAD NUMBER OF SHIP EXPLOSION 1
+ 708          STA SHIPNUM,X
+ 709          LDA #0
+ 710          STA SHIPEXFL,X
+ 711 ^1       LDA COMICAZ,X
+ 712          BEQ >1
+ 713          LDA #SH1SS+8
+ 714          STA SHIPNUM,X
+ 715          LDA SHIPY,X
+ 716          SEC 
+ 717          SBC #5
+ 718          STA SHIPY,X
+ 719          LDA #0
+ 720          STA COMICAZ,X
+ 721 ^1       LDA HOLD4
+ 722          STA ROCKADD
+ 723          LDY HOLD3
+ 724          LDX HOLD2
+ 725          LDA HOLD1
+ 726          CMP #SH1SS+6
+ 727          BLT ER1
+ 728          SEC 
+ 729          SBC #14
+ 730          JSR ERASE0
+ 731          JMP ER2
+ 732 ER1      JSR ERASE1
+ 733 ER2:
+ 734          LDX XSAVE
+ 735          LDA SHIPBTAD,X
+ 736          STA ROCKADD
+ 737          LDA SHIPY,X
+ 738          TAY 
+ 739          LDA SHIPNUM,X
+ 740          STA HOLD1
+ 741          LDA SHIPY,X
+ 742          TAY 
+ 743          LDA SHIPX,X
+ 744          TAX 
+ 745          LDA HOLD1
+ 746          BMI >1
+ 747          CMP #SH1SS+6
+ 748          BLT ER3
+ 749          SEC 
+ 750          SBC #14
+ 751          JSR DRAW0
+ 752          JMP >2
+ 753 ER3      JSR DRAW1
+ 754          JMP >2
+ 755 ^1       LDX XSAVE
+ 756          LDA #$00
+ 757          STA SHIPNUM,X
+ 758 ^2       LDX XSAVE
+ 759          LDA #00
+ 760          STA ROCKADD
+ 761          JMP DRAWNXTS
+ 762 ;
+ 763 ;
+ 764 ;
+ 765 ;
+ 766 ; =====  DITCHES ROUTINE  =====
+ 767 ;
+ 768 SETDCH:
+ 769 ;
+ 770          STA HOLD1
+ 771          LDX #3
+ 772 ^2       LDA DCHFLAGS,X
+ 773          BEQ >1
+ 774          DEX 
+ 775          BPL <2
+ 776 PRIST    RTS 
+ 777 ^1       STX XSAVE
+ 778          LDA CANDID
+ 779          BNE KASU
+ 780          LDY #3
+ 781 TITY     LDA SHIPFNUM,Y
+ 782          CMP #SB2SS
+ 783          BEQ >8
+ 784          DEY 
+ 785          BPL TITY
+ 786 KASU     LDA HOLD1
+ 787          SEC 
+ 788          SBC #DC1SS
+ 789          TAX 
+ 790          LDY XSAVE
+ 791          LDA DML,X
+ 792          STA DCHMSKL,Y
+ 793          LDA DMR1,X
+ 794          STA DCHMSKR1,Y
+ 795          LDA DMR2,X
+ 796          STA DCHMSKR2,Y
+ 797          LDA HOLD1
+ 798          LDX XSAVE
+ 799          STA DCHFLAGS,X
+ 800          STA DCHNUMS,X
+ 801          LDA #252
+ 802          STA DCHXS,X
+ 803          LDA #4
+ 804          STA DCHADD,X
+ 805          LDA #0
+ 806          STA DLEAP,X
+ 807 ^8       RTS 
+ 808 PLOTDCH  LDX #3              ; RESET INDEX INTO DITCHES 
+ 809 ^1       LDA DCHFLAGS,X
+ 810          BNE >0              ; CHECK TO SEE IF ACTIVE
+ 811 PEST     DEX 
+ 812          BPL <1
+ 813          RTS 
+ 814 ^0       STX XSAVE
+ 815          LDA DCHADD,X
+ 816          STA HOLE1ADD
+ 817          LDA DCHNUMS,X
+ 818          STA HOLD2
+ 819          LDA DCHXS,X
+ 820          TAX 
+ 821          LDA HOLD2
+ 822          CMP #DC4SS
+ 823          BEQ >3
+ 824          CMP #DC5SS
+ 825          BEQ >3
+ 826          LDY #155
+ 827          JMP >9
+ 828 ^3       LDY #135
+ 829 ^9       STY HOLD1
+ 830          JSR DRAW2
+ 831          LDX XSAVE
+ 832          LDA DCHXS,X
+ 833          STA DICKX,X
+ 834          LDA DCHNUMS,X
+ 835          STA DICKN,X
+ 836          LDA DCHADD,X
+ 837          STA DICKA,X
+ 838          LDA HOLD1
+ 839          STA DICKY,X
+ 840          LDA DCHNUMS,X
+ 841          CMP #DC4SS
+ 842          BLT XBX
+ 843          LDA MOUNCNT
+ 844          CLC 
+ 845          AND #$0F
+ 846          BNE XBX
+ 847          LDA DCHNUMS,X
+ 848          CMP #DC4SS
+ 849          BNE XCX
+ 850          LDA #DC5SS
+ 851          STA DCHNUMS,X
+ 852          JMP XBX
+ 853 XCX      LDA #DC4SS
+ 854          STA DCHNUMS,X
+ 855 XBX:
+ 856          LDA #0              ; DEFAULT NUMBER TO BE POSITIVE
+ 857          STA SCR0
+ 858          LDA DCHXS,X         ; GET DITCH [X]
+ 859          BPL SETPLUS         ; WE ARE LOOKING FOR A CHANGE OF + TO -
+ 860          LDA #1              ; IF - THEN SET MINUS FLAG
+ 861          STA SCR0
+ 862          LDA DCHXS,X         ; GET DITCH [X] AGAIN
+ 863 SETPLUS  SEC                 ; END UP COMING HERE AFTER TEST
+ 864          SBC XSPEED          ; SUBTRACT SPEED FROM DITCH [X]
+ 865          STA DCHXS,X
+ 866          BPL >2              ; IF POSITIVE NOW THEN CONTINUE
+ 867          LDA SCR0            ; OTHERWIASE CHECK CHANGE FLAG
+ 868          BNE >2              ; IF PREVIOUSLY MINUS THEN SKIP NEXT CHECK
+ 869          LDA DCHADD,X        ; GET ADD BYTE OF DITCH
+ 870          BMI >1              ; IF MINUS THEN IT IS DITCH DEATH TIME
+ 871          LDA DCHXS,X
+ 872          CLC 
+ 873          ADC #105            ; OTHERWISE SET MINUS ADD BYTE FOR DITCH
+ 874          STA DCHXS,X
+ 875          LDA #$F5
+ 876          STA DCHADD,X
+ 877          JMP >2
+ 878 ^1       LDA #$00
+ 879          STA DCHFLAGS,X
+ 880 ^2       JMP PEST
+ 881 ;
+ 882 ;
+ 883 ; =====  ROCKS ROUTINE  =====
+ 884 ;
+ 885 SETRCK:
+ 886 ;
+ 887          CMP #LMINE
+ 888          BNE >1
+ 889          LDA #3
+ 890          STA SCR0
+ 891 ^1       CMP #TANK
+ 892          BNE >1
+ 893          LDA #2
+ 894          STA SCR0
+ 895 ^1       CMP #BROCK
+ 896          BNE >1
+ 897          LDA #1
+ 898          STA SCR0
+ 899 ^1       CMP #LROCK
+ 900          BNE >1
+ 901          LDA #0
+ 902          STA SCR0
+ 903 ^1       LDX #$00
+ 904 ^2       LDA RCKFLAGS,X
+ 905          BEQ >3
+ 906          INX 
+ 907          CPX #$04
+ 908          BNE <2
+ 909          LDA #1
+ 910          STA HOLDUP
+ 911          RTS 
+ 912 ^3       STX XSAVE
+ 913          LDA SCR0
+ 914          CMP #2
+ 915          BNE >8
+ 916          LDA SCR0
+ 917          STA HOLD1
+ 918          LDA #10
+ 919          JSR RANDOMA
+ 920          CLC 
+ 921          ADC #10
+ 922          LDX XSAVE
+ 923          STA TFIRECNT,X
+ 924          LDA HOLD1
+ 925          STA SCR0
+ 926 ^8       LDA #$01
+ 927          STA RCKFLAGS,X
+ 928          LDA #RK1SS
+ 929          CLC 
+ 930          ADC SCR0
+ 931          STA RCKNUMS,X
+ 932          LDA #252
+ 933          STA RCKXS,X
+ 934          STA RCKOXS,X
+ 935          LDY SCR0
+ 936          LDA #4
+ 937          STA RCKADD,X
+ 938          LDA RYSTARTS,Y
+ 939          STA RCKYS,X
+ 940          STA RCKOYS,X
+ 941          LDA #0
+ 942          STA RLEAP,X
+ 943          RTS 
+ 944 ROCKS    LDX #$00            ; RESET INDEX INTO ROCKS
+ 945 ^1       LDA RCKFLAGS,X
+ 946          BNE >0
+ 947 PEST2    INX 
+ 948          CPX #$04
+ 949          BNE <1
+ 950          LDA #$00
+ 951          STA ROCKADD
+ 952          RTS 
+ 953 ^0       STX XNODRAW
+ 954          LDA RCKOADD,X
+ 955          STA ROCKADD
+ 956          LDA RCKNUMS,X
+ 957          PHA 
+ 958          LDA RCKOYS,X
+ 959          TAY 
+ 960          LDA RCKOXS,X
+ 961          TAX 
+ 962          PLA 
+ 963          AND #$7F
+ 964          JSR ERASE1
+ 965          LDX XNODRAW
+ 966          LDA MOUNCNT
+ 967          AND #3
+ 968          CMP #3
+ 969          BNE SKMNS
+ 970          LDA RCKNUMS,X
+ 971          CMP #MN1SS
+ 972          BEQ JUTY
+ 973          CMP #MN2SS
+ 974          BNE SKMNS
+ 975          LDA #MN1SS
+ 976          STA RCKNUMS,X
+ 977          JMP SKMNS
+ 978 JUTY     LDA #MN2SS
+ 979          STA RCKNUMS,X
+ 980 SKMNS    LDA RCKNUMS,X
+ 981          LDA RCKADD,X
+ 982          STA RCKOADD,X
+ 983          STA ROCKADD
+ 984          LDA RCKNUMS,X
+ 985          STA HOLD1
+ 986          LDA RCKYS,X
+ 987          STA RCKOYS,X
+ 988          TAY 
+ 989          LDA RCKXS,X
+ 990          STA RCKOXS,X
+ 991          TAX 
+ 992          LDA HOLD1
+ 993          BPL BMW6
+ 994          JMP >4
+ 995 BMW6     JSR DRAW1
+ 996 NODRAWR  LDX XNODRAW
+ 997          LDA RCKNUMS,X
+ 998          CMP #TNKSS
+ 999          BNE >2
+1000          LDA TBULX,X
+1001          BNE >2
+1002          DEC TFIRECNT,X
+1003          BNE >2
+1004          LDY #3
+1005 BMW      LDA RCKFLAGS,Y
+1006          BNE BMW1
+1007 BMW3     DEY 
+1008          BPL BMW
+1009          JMP BMW2
+1010 BMW1     LDA RCKOADD,Y
+1011          BMI BMW3
+1012          LDA RCKOXS,Y
+1013          CLC 
+1014          ADC #28
+1015          BCS BMW3
+1016          CMP RCKOXS,X
+1017          BGE BMW3
+1018          JMP >2
+1019 BMW2     LDA RCKOXS,X
+1020          CLC 
+1021          ADC #28
+1022          SEC 
+1023          SBC #15
+1024          STA TBULX,X
+1025          TAX 
+1026          LDY #143
+1027          LDA #TNBSS
+1028          JSR DRAW0
+1029          LDX XNODRAW
+1030 ^2       LDA #0
+1031          STA SCR0
+1032          LDA RCKXS,X
+1033          BPL SETPLUS2
+1034          LDA #1
+1035          STA SCR0
+1036          LDA RCKXS,X
+1037 SETPLUS2 SEC 
+1038          SBC XSPEED
+1039          STA RCKXS,X
+1040          BPL >2
+1041          LDA SCR0
+1042          BNE >2
+1043          LDA RCKADD,X
+1044          BPL >1
+1045          LDA #$00
+1046          STA RCKFLAGS,X
+1047 ^2       JMP PEST2
+1048 ^1       LDA RCKXS,X
+1049          CLC 
+1050          ADC #105
+1051          STA RCKXS,X
+1052          LDA #$F5
+1053          STA RCKADD,X
+1054          JMP PEST2
+1055 ^4       LDA #0
+1056          LDX XNODRAW
+1057          STA RCKFLAGS,X
+1058          JMP PEST2
+1059 ;
+1060 ;
+1061 ;
+1062 ;
+1063 ;
+1064 NEWROUND LDA #$05            ; SET UP BIT POSITION OF PIXEL
+1065          STA BITPOS          ; STORE IT AT BIT POSITION OF PIXEL
+1066          LDA #$FF            ; SET UP BYTE POSITION OF PIXEL
+1067          STA BYTPOS          ; STORE IT AT BYTE POSITION OF PIXEL
+1068          LDA #$00            ; SET UP COUNTER FOR TOTAL NUMBER OF PIXELS
+1069          STA CUONT1          ; STORE IT AT COUNTER LOCATION
+1070 NEXTPIX  LDX YINDEX          ; LOOKUP ADDRESS OF LINE TO PUT PIXEL ON
+1071          LDA MTDATA,X        ; GET MOUNTAIN DATA FROM DATA BASE
+1072          TAX                 ; USE AS INDEX INTO HIRES LINE ADDRESSES
+1073          LDA LADRL,X         ; GET LOW BYTE OF LINE ADDRESS
+1074          STA BASL            ; STORE AT HIRES BYTE OUT ADDRESS (LOW)
+1075          LDA LADRH,X         ; GET HIGH BYTE OF LINE ADDRESS
+1076          STA BASH            ; STORE AT HIRES BYTE OUT ADDRESS (HIGH)
+1077          LDY BYTPOS          ; GET BYTE POSITION OF PIXEL
+1078          LDX BITPOS          ; GET BIT POSITION OF PIXEL
+1079          LDA DBITS,X         ; GET TRUE PIXEL POSITION FORM BIT TABLE
+1080          CPY #$FF            ; CHECK FOR UNDERFLOW
+1081          BEQ >5
+1082          ORA (BASL),Y        ; ORA WITH SCREEN SO NOT TO DESTROY IT
+1083          STA (BASL),Y        ; DRAW PIXEL ON SCREEN
+1084 ^5       LDA BITPOS          ; SAVE BIT POSITION 
+1085          PHA                 ; SAVE IT ON THE STACK
+1086          LDA BYTPOS          ; SAVE BYTE POSITION
+1087          PHA                 ; SAVE IT ON THE STACK
+1088          INC BITPOS          ; GET NEXT BIT POSITION FOR PIXEL ERASE
+1089          INC BITPOS          ; GET NEXT BIT POSITION FOR PIXEL ERASE
+1090          LDA BITPOS          ; CHECK FOR BIT POSITION OVERFLOW
+1091          CMP #$07
+1092          BMI >1              ; IF OVER FLOW THEN CORRECT BYTE POSITION
+1093          SEC 
+1094          SBC #$07            ; RESET FOR TRUE BIT POSITION
+1095          INC BYTPOS          ; INCREMENT BYTE POSITION
+1096 ^1       STA BITPOS          ; STORE BACK THE BIT POSITION
+1097          LDY BYTPOS          ; GET BYTE POSITION OF PIXEL TO ERASE
+1098          LDX BITPOS          ; GET BIT POSITION OF PIXEL TO ERASE
+1099          LDA MSKTBL1,X       ; GET TRUE PIXEL POSITION WITH COMPLEMENT
+1100          AND (BASL),Y        ; AND WITH SCREEN SO TO ERASE OLD PIXEL
+1101          STA (BASL),Y        ; DRAW BLANK PIXEL ON SCREEN
+1102          PLA                 ; RETRIEVE BYTE POSITION FROM STACK
+1103          STA BYTPOS          ; PUT BACK INTO BYTE MLOCATION
+1104          PLA                 ; RETRIEVE BIT POSITION FROM STACK
+1105          STA BITPOS          ; PUT BACK INTO BIT LOCATION
+1106 ^8       INC BITPOS          ; GET NEXT BIT POSITION FOR PIXEL
+1107          INC BITPOS          ; GET NEXT BIT POSITION FOR PIXEL
+1108          LDA BITPOS          ; CHECK FOR BIT POSITION OVERFLOW
+1109          CMP #$07
+1110          BMI >1              ; IF OVER FLOW THEN CORRECT BYTE POSITION
+1111          SEC 
+1112          SBC #$07            ; RESET FOR TRUE BIT POSITION
+1113          INC BYTPOS          ; INCREMENT BYTE POSITION
+1114 ^1       STA BITPOS          ; STORE BACK THE BIT POSITION
+1115          INC YINDEX          ; INCREMENT Y COORDINATE INDEX INTO DATABASE
+1116          LDA YINDEX          ; CHECK FOR WRAP AROUND
+1117          CMP #$8D
+1118          BNE >1              ; IF NOT THEN CONTINUE WITH PROGRAM
+1119          LDA #$00            ; RESET YINDEX POSITION
+1120          STA YINDEX
+1121 ^1       INC CUONT1          ; INCREMENT PIXEL COUNTER
+1122          LDA CUONT1          ; CHECK FOR OVERFLOW
+1123          CMP #$8D
+1124          BNE NEXTPIX
+1125          LDA CUONT2          ; GET WRAP AROUND COUNTER
+1126          STA YINDEX          ; USE AS ADD ON X-PIXEL FOR WRAP AROUND
+1127          INC CUONT2          ; INCREMENT WRAP AROUND COUNTER
+1128          LDA CUONT2          ; GET WRAP AROUND COUNTER
+1129          CMP #$8D            ; CHECK FOR OVERFLOW
+1130          BNE >1
+1131          LDA #$00            ; RESET WRAP AROUND COUNTER
+1132          STA CUONT2
+1133 ^1       RTS 
+1134 ;
+1135          LST 
+1136          NLS 
+1137          DCM "BSAVE OBJ2,A$800,L$1000,S5,D1"
+1138          ICL "MOON PATROL3,D2,S6"
+:

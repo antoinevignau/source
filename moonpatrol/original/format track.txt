@@ -1,0 +1,196 @@
+
+   1          NLS 
+   2 ;
+   3 ;
+   4 SLOTEMP  EPZ $00             ; TEMPORARY SLOT LOCATION   
+   5 TRKN     EPZ $01             ; CURRENT TRACK LOCATION  
+   6 TRKCNT   EPZ $02             ; COUNTER FOR SEEKABS TRACK MOVE ROUTINE  
+   7 PRIOR    EPZ $03             ; LAST LOCATED TRACK  
+   8 MONTIMEL EPZ $04             ; PHASE DELAY TIMER (LSB)   
+   9 MONTIMEH EPZ $05             ; PHASE DELAY TIMER (MSB)   
+  10 DRV0TRK  EPZ $06             ; DRIVE0 (DRIVE=1) TRACK LOCATION 
+  11 TCNTR    EPZ $07             ; TRACK COUNTER FOR LOADER 
+  12 MAINSL   EPZ $08
+  13 SECTOR   EPZ $09
+  14 SCR0     EPZ $A
+  15 SCR1     EPZ $B
+  16 TRACKNUM EPZ $C
+  17 GRAFCS   EQU $C050           ; TURN ON GRAPHICS MODE
+  18 ROM      EQU $C081           ; PHASE ON FOR STEPPER MOTOR
+  19 PHASEOFF EQU $C080           ; PHASE OFF FOR STEPPER MOTOR
+  20 PREPLOUT EQU $C08F           ; PREPARE DATA LATCH FOR OUTPUT
+  21 PREPLIN  EQU $C08E           ; PREPARE DATA LATCH FOR INPUT
+  22 LOADATL  EQU $C08D           ; LOAD DATA LATCH WITH BYTE TO (READ/WRITE)
+  23 TOGGLE   EQU $C08C           ; TOGGLE DATA LATCH (EXECUTE RE/WR)
+  24 DRV2EN   EQU $C08B           ; ENGAGE DRIVE 2
+  25 DRV1EN   EQU $C08A           ; ENGAGE DRIVE 1
+  26 MOTORON  EQU $C089           ; TURN MOTOR ON
+  27 MOTOROFF EQU $C088           ; TURN MOTOR OFF
+  28 DELAY    EQU $FCA8           ; DELAY ROUTINE IN ROM
+  29 ;
+  30 ;
+  31 ;
+  32 ;
+  33          LDA #0
+  34          STA SCR0
+  35          LDA #$BC
+  36          STA SCR1
+  37          LDY #$55
+  38 ^1       LDA #0
+  39          STA (SCR0),Y
+  40          DEY 
+  41          CPY #$FF
+  42          BNE <1
+  43          DEC SCR1
+  44          LDA SCR1
+  45          CMP #$BA
+  46          BNE <1
+  47          LDA $B7E9
+  48          STA MAINSL          ; STORE MAIN OR 'HOME' SLOT NUMBER  
+  49          JSR ZEROCAL
+  50          JSR INITTRKS
+  51          RTS 
+  52 ;
+  53 ;
+  54 ;
+  55 ;
+  56 ; SEEKABS ROUTINE, MOVES THE
+  57 ; DISK HEAD OVER THE DESIRED
+  58 ; TRACK
+  59 ;
+  60 SEEKABS  STX SLOTEMP
+  61          STA TRKN
+  62          CMP DRV0TRK
+  63          BEQ RTS0
+  64          LDA #0
+  65          STA TRKCNT
+  66 MOVEHEAD LDA DRV0TRK
+  67          STA PRIOR
+  68          SEC 
+  69          SBC TRKN
+  70          BEQ ISTHERE
+  71          BCS >0
+  72          EOR #$FF
+  73          INC DRV0TRK
+  74          BCC >1
+  75 ^0       ADC #$FE
+  76          DEC DRV0TRK
+  77 ^1       CMP TRKCNT
+  78          BCC >2
+  79          LDA TRKCNT
+  80 ^2       CMP #$C
+  81          BCS >3
+  82          TAY 
+  83 ^3       SEC 
+  84 REL1     JSR CHKPOS
+  85 REL2     LDA ONTBL,Y
+  86 REL3     JSR MSWAIT
+  87          LDA PRIOR
+  88          CLC 
+  89 REL4     JSR CHKPOS2
+  90 REL5     LDA OFFTBL,Y
+  91 REL6     JSR MSWAIT
+  92          INC TRKCNT
+  93          BNE MOVEHEAD
+  94 ISTHERE  JSR MSWAIT
+  95          CLC 
+  96 CHKPOS   LDA DRV0TRK
+  97 CHKPOS2  AND #3
+  98          ROL 
+  99          ORA SLOTEMP
+ 100          TAX 
+ 101          LDA PHASEOFF,X
+ 102          LDX SLOTEMP
+ 103 RTS0     RTS 
+ 104          TAX 
+ 105          LDY #$A0
+ 106 ;
+ 107 ;
+ 108 ; HEAD MOVE DELAY SUBROUTINE
+ 109 ; DELAYS ACC*100 USEC
+ 110 ;
+ 111 ;
+ 112 MSWAIT   LDX #$11
+ 113 ^2       DEX                 ;delay 86 usec
+ 114          BNE <2
+ 115          INC MONTIMEL
+ 116          BNE >3
+ 117          INC MONTIMEH
+ 118 ^3       SEC 
+ 119          SBC #1
+ 120          BNE MSWAIT
+ 121          RTS 
+ 122 ;
+ 123 ;
+ 124 ; PHASEON/PHASEOFF tables
+ 125 ;
+ 126 ONTBL    HEX 0130
+ 127          HEX 2824201E1D1C1C1C1C1C
+ 128 OFFTBL   HEX 702C26221F1E1D1C1C1C1C1C
+ 129 ;
+ 130 ;
+ 131 ZEROCAL  LDX MAINSL
+ 132          LDA $C08E,X
+ 133          LDA $C08A,X
+ 134          LDA $C089,X
+ 135          LDA $C08E,X
+ 136          LDA $C08C,X
+ 137          LDA $C08A,X
+ 138          LDA $C089,X
+ 139          LDY #$50
+ 140 ^1       LDA $C080,X
+ 141          TYA 
+ 142          AND #$03
+ 143          ASL 
+ 144          ORA MAINSL
+ 145          TAX 
+ 146          LDA $C081,X
+ 147          LDA #$46
+ 148          JSR DELAY
+ 149          DEY 
+ 150          BPL <1
+ 151          LDA #0
+ 152          STA DRV0TRK
+ 153          RTS 
+ 154 ;
+ 155 ;
+ 156 ;
+ 157 ;
+ 158 INITTRKS LDX MAINSL
+ 159          LDA #0
+ 160          STA TRACKNUM
+ 161 NEXTRACK LDA TRACKNUM
+ 162          JSR SEEKABS
+ 163          LDA #0
+ 164          STA SECTOR
+ 165 ^1       LDA #$AA
+ 166          STA $3E
+ 167          LDA SECTOR
+ 168          STA $3F
+ 169          LDA TRACKNUM
+ 170          LSR 
+ 171          STA $44
+ 172          LDA #0
+ 173          STA $41
+ 174          LDY #10
+ 175 ^2       JSR $BC56
+ 176          BCS <2
+ 177 ^6       JSR $B82A
+ 178          BCS <6
+ 179          INC SECTOR
+ 180          LDA SECTOR
+ 181          CMP #$10
+ 182          BNE <1
+ 183          INC TRACKNUM
+ 184          INC TRACKNUM
+ 185          LDA TRACKNUM
+ 186          CMP #$46
+ 187          BEQ DONE
+ 188          JMP NEXTRACK
+ 189 DONE     STA MOTOROFF,X
+ 190          RTS 
+ 191 ;
+ 192 ;
+ 193 ;
+ 194          END 
+:

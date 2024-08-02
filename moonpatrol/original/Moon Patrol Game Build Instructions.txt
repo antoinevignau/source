@@ -1,0 +1,34 @@
+How to build Moon Patrol
+--------------------
+By the original Author, Daniel Repich
+
+1. Launch the AppleWin Emulator 1.29.16 or greater that supports SLOT 5 drives
+   a. Make a PC batch file (launch.bat)
+   b. echo on
+      Applewin.exe -s5 diskii -s5d1 object.dsk -s5d2 shapes.dsk -d1 msource1.dsk -d2 msource2.dsk
+      pause
+
+2. Boot Lisa Assembler with modified symbol table expansion in DISK 1
+
+3. From Lisa, load "moon"
+
+4. Type 'asm'
+
+5. Game will build and store object code on moon-patrol-object.dsk
+
+6. Load "bug-fixed-moon-patrol-8-13-2021.dsk" game disk into DISK 1
+
+7. Exec combine (this will grab the object code from the object disk and combine it into the full game disk)
+
+8. Boot bug-fixed-moon-patrol-8-13-2021.dsk end enjoy!
+
+Bug Fixes
+----------
+Demo mode never got to the end. There is a MOON PATROL banner that comes up when demo mode reaches the tank. We were in a hurry to release and this bug never got fixed. I finally fixed it.
+
+Full base station is in this version. The CRACKED version doesn't have this.
+
+If you want the memory map for the game to understand where things are at, I'll be glad to send it to you via email.
+Connect with me at dan1repich@gmail.com.
+
+

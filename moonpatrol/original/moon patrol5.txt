@@ -1,0 +1,1450 @@
+
+
+
+:PR#1
+
+PR#1
+
+:L
+   1 *55555555555555555555555555555555555555555555555555555555555555555 
+   2 ;  
+   3 ;   
+   4          OBJ $800
+   5 ;  
+   6 ;   
+   7 MAKESON  LDA PLAYERN
+   8          PHA 
+   9          LDA #1
+  10          STA PULSATOR
+  11          LDA #0
+  12          STA PLAYERN
+  13          JSR PULSATE
+  14          LDA #1
+  15          STA PULSATOR
+  16          STA PLAYERN
+  17          JSR PULSATE
+  18          PLA 
+  19          STA PLAYERN
+  20          RTS 
+  21 ;
+  22 ;
+  23 PULSATE  LDA #1
+  24          STA DOOBIE
+  25          LDA PULSATOR
+  26          BEQ >9
+  27          LDA PULSATOR
+  28          EOR #1
+  29          STA PULSATOR
+  30          LDA PLAYERN
+  31          BEQ >8
+  32          LDY #24
+  33          LDX #2
+  34          JSR PRINTXT
+  35          ASC "2UP@"
+  36          RTS 
+  37 ;
+  38 ^8       LDY #15
+  39          LDX #2
+  40          JSR PRINTXT
+  41          ASC "1UP@"
+  42          RTS 
+  43 ^9       LDA PULSATOR
+  44          EOR #1
+  45          STA PULSATOR
+  46          LDA PLAYERN
+  47          BEQ >6
+  48          LDY #24
+  49          LDX #2
+  50          JSR PRINTXT
+  51          ASC "   @"
+  52          RTS 
+  53 ;
+  54 ^6       LDY #15
+  55          LDX #2
+  56          JSR PRINTXT
+  57          ASC "   @"
+  58          RTS 
+  59 ;      
+  60 ;
+  61 PLANTCOL:
+  62 ;
+  63 ;
+  64          LDX #3
+  65 ^1       LDA DCHFLAGS,X
+  66          BNE >1
+  67 MINCOL   DEX 
+  68          BPL <1
+  69 ^2       RTS 
+  70 ^1       STX XSAVE
+  71          LDA DCHNUMS,X
+  72          CMP #DC4SS
+  73          BNE MINCOL
+  74          LDA DCHADD,X
+  75          BMI MINCOL
+  76          LDA BUL2X
+  77          BEQ <2
+  78          LDA DCHXS,X
+  79          CLC 
+  80          ADC #28
+  81          BCS MINCOL
+  82          CLC 
+  83          ADC #6
+  84          STA SCR0
+  85          LDA BUL2Y
+  86          CLC 
+  87          ADC #2
+  88          CMP #138
+  89          BLT MINCOL
+  90          LDA BUL2X
+  91          CLC 
+  92          ADC #3
+  93          CMP SCR0
+  94          BLT MINCOL
+  95          LDA ITGOTHIT
+  96          BNE MINCOL
+  97          LDA #1
+  98          STA ITGOTHIT
+  99 ^1       LDA BEXTIME
+ 100          BMI >1
+ 101          LDA #$FF
+ 102          STA BEXTIME
+ 103 ^1       LDA #DC3SS
+ 104          STA DCHNUMS,X
+ 105          LDY DCHXS,X
+ 106          LDA BYTENUM,Y
+ 107          CLC 
+ 108          ADC DCHADD,X
+ 109          STA HOLD1
+ 110          CLC 
+ 111          ADC #9
+ 112          STA HOLD2
+ 113          LDA #135
+ 114          STA HOLD3
+ 115 ^2       LDX HOLD3
+ 116          LDA HGHADR,X
+ 117          STA BASH
+ 118          LDA LOWADR,X
+ 119          STA BASL
+ 120          LDY HOLD1
+ 121          LDA #$80
+ 122 ^1       STA (BASL),Y
+ 123          INY 
+ 124          CPY HOLD2
+ 125          BNE <1
+ 126          INC HOLD3
+ 127          LDA HOLD3
+ 128          CMP #153
+ 129          BNE <2
+ 130          LDX XSAVE
+ 131          LDA #10
+ 132          STA PLANTC
+ 133          LDA DCHXS,X
+ 134          CLC 
+ 135          ADC #32
+ 136          STA PLANTCX
+ 137          LDA #145
+ 138          STA PLANTCY
+ 139          LDA #0
+ 140          LDX #5
+ 141          LDY #0
+ 142          JSR ADDSCORE
+ 143          LDA #2
+ 144          JSR RANDOMA
+ 145          CLC 
+ 146          ADC #$10
+ 147          STA PLANTSCN
+ 148          JMP ROCKBOOM        ; MAKE BOOM NOISE WHEN PLANT IS HIT
+ 149 ;
+ 150 ;
+ 151 PRMPT2P  LDA PLAYERS
+ 152          BNE HZ1
+ 153          RTS 
+ 154 HZ1      LDA #5
+ 155          STA HOLD1
+ 156 HZ5      LDA PLAYERN
+ 157          BEQ HZ2
+ 158          LDX #15
+ 159          LDY #65
+ 160          JSR PRINTXT
+ 161          ASC "PLAYER TWO@"
+ 162          JMP HZ3
+ 163 HZ2      LDX #15
+ 164          LDY #65
+ 165          JSR PRINTXT
+ 166          ASC "PLAYER ONE@"
+ 167 HZ3      LDX #1
+ 168 HZ4      LDA #$FF
+ 169          JSR DELAY
+ 170          DEX 
+ 171          BPL HZ4
+ 172          LDX #15
+ 173          LDY #65
+ 174          JSR PRINTXT
+ 175          ASC "          @"
+ 176          LDX #1
+ 177 HZ6      LDA #$FF
+ 178          JSR DELAY
+ 179          DEX 
+ 180          BPL HZ6
+ 181          DEC HOLD1
+ 182          BNE HZ5
+ 183          RTS 
+ 184 ;
+ 185 ;
+ 186 ;
+ 187 ;
+ 188 ;
+ 189 ;
+ 190 SELECTP  LDA PLAYERN
+ 191          BNE NF0
+ 192          LDA ALEVEL
+ 193          STA LEVEL
+ 194          LDA AGOAL
+ 195          STA GOALCNT
+ 196          LDA ASCORE1
+ 197          STA SCORE1
+ 198          LDA ASCORE2
+ 199          STA SCORE2
+ 200          LDA ASCORE3
+ 201          STA SCORE3
+ 202          LDA ATME1
+ 203          STA TME1
+ 204          LDA ATME0
+ 205          STA TME0
+ 206          LDA AMEN
+ 207          STA MEN
+ 208          LDA AGOLD
+ 209          STA GOLD
+ 210          LDA ANXTCRSL
+ 211          STA NXTCRSL
+ 212          LDA ANXTCRSH
+ 213          STA NXTCRSH
+ 214          LDA ACOURSEL
+ 215          STA COURSEL
+ 216          LDA ACOURSEH
+ 217          STA COURSEH
+ 218          LDA AOLDCRSL
+ 219          STA OLDCRSL
+ 220          LDA AOLDCRSH
+ 221          STA OLDCRSH
+ 222          RTS 
+ 223 NF0      LDA BLEVEL
+ 224          STA LEVEL
+ 225          LDA BGOAL
+ 226          STA GOALCNT
+ 227          LDA BSCORE1
+ 228          STA SCORE1
+ 229          LDA BSCORE2
+ 230          STA SCORE2
+ 231          LDA BSCORE3
+ 232          STA SCORE3
+ 233          LDA BTME1
+ 234          STA TME1
+ 235          LDA BTME0
+ 236          STA TME0
+ 237          LDA BMEN
+ 238          STA MEN
+ 239          LDA BGOLD
+ 240          STA GOLD
+ 241          LDA BNXTCRSL
+ 242          STA NXTCRSL
+ 243          LDA BNXTCRSH
+ 244          STA NXTCRSH
+ 245          LDA BCOURSEL
+ 246          STA COURSEL
+ 247          LDA BCOURSEH
+ 248          STA COURSEH
+ 249          LDA BOLDCRSL
+ 250          STA OLDCRSL
+ 251          LDA BOLDCRSH
+ 252          STA OLDCRSH
+ 253          RTS 
+ 254 SAVEPLY  LDA PLAYERN
+ 255          BEQ NF1
+ 256          LDA GOALCNT
+ 257          STA BGOAL
+ 258          LDA SCORE1
+ 259          STA BSCORE1
+ 260          LDA SCORE2
+ 261          STA BSCORE2
+ 262          LDA SCORE3
+ 263          STA BSCORE3
+ 264          LDA TME1
+ 265          STA BTME1
+ 266          LDA TME0
+ 267          STA BTME0
+ 268          LDA MEN
+ 269          STA BMEN
+ 270          LDA GOLD
+ 271          STA BGOLD
+ 272          LDA LEVEL
+ 273          STA BLEVEL
+ 274          LDA NXTCRSL
+ 275          STA BNXTCRSL
+ 276          LDA NXTCRSH
+ 277          STA BNXTCRSH
+ 278          LDA COURSEL
+ 279          STA BCOURSEL
+ 280          LDA COURSEH
+ 281          STA BCOURSEH
+ 282          LDA OLDCRSL
+ 283          STA BOLDCRSL
+ 284          LDA OLDCRSH
+ 285          STA BOLDCRSH
+ 286          RTS 
+ 287 NF1      LDA GOALCNT
+ 288          STA AGOAL
+ 289          LDA SCORE1
+ 290          STA ASCORE1
+ 291          LDA SCORE2
+ 292          STA ASCORE2
+ 293          LDA SCORE3
+ 294          STA ASCORE3
+ 295          LDA TME1
+ 296          STA ATME1
+ 297          LDA TME0
+ 298          STA ATME0
+ 299          LDA MEN
+ 300          STA AMEN
+ 301          LDA GOLD
+ 302          STA AGOLD
+ 303          LDA LEVEL
+ 304          STA ALEVEL
+ 305          LDA NXTCRSL
+ 306          STA ANXTCRSL
+ 307          LDA NXTCRSH
+ 308          STA ANXTCRSH
+ 309          LDA COURSEL
+ 310          STA ACOURSEL
+ 311          LDA COURSEH
+ 312          STA ACOURSEH
+ 313          LDA OLDCRSL
+ 314          STA AOLDCRSL
+ 315          LDA OLDCRSH
+ 316          STA AOLDCRSH
+ 317          RTS 
+ 318 ;
+ 319 ;
+ 320 ;
+ 321 ;
+ 322 ;
+ 323 CLEANIT  LDX #3
+ 324 PV5      LDA TBULX,X
+ 325          BNE PV7
+ 326 PV6      DEX 
+ 327          BPL PV5
+ 328          JMP PV8
+ 329 PV7      STX XSAVE
+ 330          LDA TBULX,X
+ 331          TAX 
+ 332          LDA #TNBSS
+ 333          LDY #143
+ 334          JSR ERASE0
+ 335          LDX XSAVE
+ 336          JMP PV6
+ 337 PV8      LDX #3
+ 338 PV4      LDA #$FF
+ 339          STA FIRCOUNT,X
+ 340          STA TFIRECNT,X
+ 341          DEX 
+ 342          BPL PV4
+ 343          LDX #3
+ 344 PV1      LDA SHIPFNUM,X
+ 345          BNE PV2
+ 346 PV3      DEX 
+ 347          BPL PV1
+ 348          LDX #3
+ 349 GB1      LDA #0
+ 350          STA TBULX,X
+ 351          STA SHIPFNUM,X
+ 352          DEX 
+ 353          BPL GB1
+ 354          RTS 
+ 355 PV2      STX XSAVE
+ 356          LDA SHIPFNUM,X
+ 357          PHA 
+ 358          LDY SHIPPY,X
+ 359          LDA SHIPPX,X
+ 360          TAX 
+ 361          PLA 
+ 362          JSR ERASE0
+ 363          LDX XSAVE
+ 364          JMP PV3
+ 365 ;
+ 366 SBULCHIC:
+ 367          LDY #3
+ 368 QX11     LDA SHIPFNUM,Y
+ 369          BNE QX9
+ 370 QX10     DEY 
+ 371          BPL QX11
+ 372          RTS 
+ 373 QX9      LDX #3
+ 374 QX12     LDA B1OXS,X
+ 375          BNE QX14
+ 376 QX13     DEX 
+ 377          BPL QX12
+ 378          JMP QX10
+ 379 QX14     STY YNODRAW
+ 380          STX XNODRAW
+ 381          LDA SHIPPX,Y
+ 382          CLC 
+ 383          ADC #3
+ 384          CMP B1XS,X
+ 385          BLT QX13
+ 386          LDA B1XS,X
+ 387          CLC 
+ 388          ADC #2
+ 389          CMP SHIPPX,Y
+ 390          BLT QX13
+ 391          LDA SHIPPY,Y
+ 392          CLC 
+ 393          ADC #4
+ 394          CMP B1YS,X
+ 395          BLT QX13
+ 396          LDA B1YS,X
+ 397          CLC 
+ 398          ADC #6
+ 399          CMP SHIPPY,Y
+ 400          BLT QX13
+ 401          LDA #1
+ 402          STA BHITFL,X
+ 403          LDA SHIPFNUM,Y
+ 404          STA HOLD1
+ 405          LDA #0
+ 406          STA SHIPFNUM,Y
+ 407          LDA SHIPPX,Y
+ 408          TAX 
+ 409          LDA SHIPPY,Y
+ 410          TAY 
+ 411          LDA HOLD1
+ 412          JSR ERASE0
+ 413          LDY YNODRAW
+ 414          LDA SHIPPX,Y
+ 415          TAX 
+ 416          LDA SHIPPY,Y
+ 417          TAY 
+ 418          LDA #SBEXSS
+ 419          JSR DRAW0
+ 420          LDY YNODRAW
+ 421          LDA SHIPPX,Y
+ 422          TAX 
+ 423          LDA SHIPPY,Y
+ 424          TAY 
+ 425          LDA #SBEXSS
+ 426          JSR ERASE0
+ 427          LDX XNODRAW
+ 428          LDY YNODRAW
+ 429          JMP QX10
+ 430 ;
+ 431 ;
+ 432 ;
+ 433 FUNCTA   BIT PAGE1
+ 434          BIT $C051
+ 435          LDA #$FF
+ 436          JSR DELAY
+ 437          JSR READOPT
+ 438          RTS 
+ 439 ;
+ 440 ;
+ 441 MENPLOT  LDA MEN
+ 442          SEC 
+ 443          SBC #1
+ 444          PHA 
+ 445          LDA #37
+ 446          STA HTAB
+ 447          LDA #15
+ 448          STA VTAB
+ 449          PLA 
+ 450          JSR PRINT2D
+ 451          RTS 
+ 452 ;
+ 453 ;
+ 454 ELROCK   LDX #3
+ 455 ^2       LDA RCKFLAGS,X
+ 456          BNE >8
+ 457 ^5       DEX 
+ 458          BPL <2
+ 459          RTS 
+ 460 ^8       STX XSAVE
+ 461          LDA RCKNUMS,X
+ 462          SEC 
+ 463          SBC #RK1SS
+ 464          TAY 
+ 465          LDA RCKADD,X
+ 466          BMI >8
+ 467          LDA RCKXS,X
+ 468          CLC 
+ 469          ADC #28
+ 470          BCS <5
+ 471          CLC 
+ 472          ADC ROCKWDTS,Y
+ 473          BCS <5
+ 474          STA SCR1            ; STORE FINAL NUMBER AS REAL RIGHT X:ROCK
+ 475          LDA CARX
+ 476          CMP SCR1
+ 477          BLT <5
+ 478          JMP ROCKJ
+ 479 ^8       LDA #0
+ 480          STA SCR3
+ 481          LDA RCKXS,X
+ 482          SEC 
+ 483          SBC #77
+ 484          CLC 
+ 485          ADC ROCKWDTS,Y
+ 486          BMI ROCKJ
+ 487          STA SCR0
+ 488          LDA CARX
+ 489          CMP SCR0
+ 490          BGE ROCKJ
+ 491          JMP <5
+ 492 ROCKJ    LDA RLEAP,X
+ 493          BNE >8
+ 494          LDA RCKNUMS,X
+ 495          CMP #RK1SS
+ 496          BEQ ADDFIF
+ 497          CMP #MN1SS
+ 498          BGE ADDFIF
+ 499          LDA #0
+ 500          LDX #1
+ 501          LDY #0
+ 502          JSR ADDSCORE
+ 503 ^8       LDX XSAVE
+ 504          LDA #1
+ 505          STA RLEAP,X
+ 506          JMP <5
+ 507 ADDFIF   LDA #0
+ 508          LDX #0
+ 509          LDY #$50
+ 510          JSR ADDSCORE
+ 511          LDX XSAVE
+ 512          LDA #1
+ 513          STA RLEAP,X
+ 514          JMP <5
+ 515 ;
+ 516 ;
+ 517 ;
+ 518 LDITCH   LDX #3
+ 519 ^2       LDA DCHFLAGS,X
+ 520          BNE >8
+ 521 ^5       DEX 
+ 522          BPL <2
+ 523          RTS 
+ 524 ^8       STX XSAVE
+ 525          LDA DCHADD,X
+ 526          BMI >8
+ 527          LDA DCHXS,X
+ 528          CLC 
+ 529          ADC #28
+ 530          BCS <5
+ 531          CLC 
+ 532          ADC DCHMSKL,X
+ 533          BCS <5
+ 534          LDY DCHMSKR1,X      ; GET NUMBER OF BYTES TO ADD IN (Y)
+ 535          CLC 
+ 536          ADC MULT7TBL,Y      ; MULTIPLY BYTES BY 7 USING MULT7TBL
+ 537          BCS <5
+ 538          CLC 
+ 539          ADC DCHMSKR2,X      ; ADD NUMBER OF PIXELS ALSO
+ 540          BCS <5
+ 541          STA SCR1            ; STORE FINAL NUMBER AS REAL RIGHT X:DITCH
+ 542          LDA CARX
+ 543          CMP SCR1
+ 544          BLT <5
+ 545          JMP DITCHJ
+ 546 ^8       LDA #0
+ 547          STA SCR3
+ 548          LDA DCHXS,X
+ 549          SEC 
+ 550          SBC #77
+ 551          CLC 
+ 552          ADC DCHMSKL,X
+ 553          LDY DCHMSKR1,X      ; GET NUMBER OF BYTES TO ADD IN (Y)
+ 554          CLC 
+ 555          ADC MULT7TBL,Y      ; MULTIPLY BYTES BY 7 USING MULT7TBL
+ 556          CLC 
+ 557          ADC DCHMSKR2,X      ; ADD NUMBER OF PIXELS ALSO
+ 558          BMI DITCHJ
+ 559          STA SCR0
+ 560          LDA CARX
+ 561          CMP SCR0
+ 562          BGE DITCHJ
+ 563          JMP <5
+ 564 DITCHJ   LDA DLEAP,X
+ 565          BNE >8
+ 566          LDA DCHNUMS,X
+ 567          CMP #DC3SS
+ 568          BGE >2
+ 569          LDA #0
+ 570          LDX #0
+ 571          LDY #$50
+ 572          JSR ADDSCORE
+ 573 ^8       LDX XSAVE
+ 574          LDA #1
+ 575          STA DLEAP,X
+ 576          JMP <5
+ 577 ^2       LDA #0
+ 578          LDX #1
+ 579          LDY #0
+ 580          JSR ADDSCORE
+ 581          LDX XSAVE
+ 582          LDA #1
+ 583          STA DLEAP,X
+ 584          JMP <5
+ 585 ;
+ 586 ;
+ 587 ;
+ 588 PLANTDS  LDA PLANTC
+ 589          BNE CL1
+ 590          RTS 
+ 591 CL1      LDA PLANTSCN
+ 592          LDX PLANTCX
+ 593          LDY PLANTCY
+ 594          JSR ERASE0
+ 595          LDA PLANTC
+ 596          CMP #1
+ 597          BEQ >5
+ 598          LDA PLANTSCN
+ 599          LDX PLANTCX
+ 600          LDY PLANTCY
+ 601          JSR DRAW0
+ 602          DEC PLANTC
+ 603          RTS 
+ 604 ^5       LDA #0
+ 605          STA PLANTC
+ 606          RTS 
+ 607 ;
+ 608 ;
+ 609 JETDS    LDA JETC
+ 610          BNE CL2
+ 611          RTS 
+ 612 CL2      LDA JETSCN
+ 613          LDX JETCX
+ 614          LDY JETCY
+ 615          JSR ERASE0
+ 616          LDA JETC
+ 617          CMP #1
+ 618          BEQ >5
+ 619          LDA JETSCN
+ 620          LDX JETCX
+ 621          LDY JETCY
+ 622          JSR DRAW0
+ 623          DEC JETC
+ 624          RTS 
+ 625 ^5       LDA #0
+ 626          STA JETC
+ 627          RTS 
+ 628 ;
+ 629 ;
+ 630 ;
+ 631 ;
+ 632 JETSC    LDA #5
+ 633          STA JETFLAG
+ 634          LDA BEXTIME
+ 635          BMI >1
+ 636          LDA #$FF
+ 637          STA BEXTIME
+ 638 ^1       JSR ROCKBOOM
+ 639          LDA #3
+ 640          JSR RANDOMA
+ 641          CLC 
+ 642          ADC #$10
+ 643          STA JETSCN
+ 644          LDA #10
+ 645          STA JETC
+ 646          LDA JETOX
+ 647          CLC 
+ 648          ADC #6
+ 649          STA JETCX
+ 650          LDA JETOY
+ 651          STA JETCY
+ 652          LDA #0
+ 653          LDX #8
+ 654          LDY #0
+ 655          JMP ADDSCORE
+ 656 ;
+ 657 ;
+ 658 ;
+ 659 ;
+ 660 ;
+ 661 SETJET   LDA #1
+ 662          STA JETFLAG
+ 663          LDA #0
+ 664          STA JETFU
+ 665          LDA #60
+ 666          STA JETCNT
+ 667          LDA #2
+ 668          STA JETX
+ 669          STA JETOX
+ 670          LDA #141
+ 671          STA JETY
+ 672          STA JETOY
+ 673          LDA #JETSS
+ 674          LDX JETX
+ 675          LDY JETY
+ 676          JSR DRAW1
+ 677 ^1       RTS 
+ 678 ;
+ 679 ;
+ 680 JETCHK   LDA JETFLAG
+ 681          BEQ <1
+ 682          CMP #2
+ 683          BEQ >1
+ 684          JMP >6
+ 685 ^1       LDA BUL2X
+ 686          BEQ >6
+ 687          CLC 
+ 688          ADC #5
+ 689          CMP JETOX
+ 690          BLT >6
+ 691          LDA JETOX
+ 692          CLC 
+ 693          ADC #20
+ 694          CMP BUL2X
+ 695          BLT >6
+ 696          LDA BUL2Y
+ 697          SEC 
+ 698          SBC #2
+ 699          CMP JETOY
+ 700          BLT >6
+ 701          JMP JETSC
+ 702 ^6       LDA CARXO
+ 703          CLC 
+ 704          ADC #36
+ 705          CMP JETOX
+ 706          BLT >6
+ 707          LDA JETOX
+ 708          CLC 
+ 709          ADC #15
+ 710          CMP CARXO
+ 711          BLT >6
+ 712          LDA CARYO
+ 713          CLC 
+ 714          ADC #18
+ 715          CMP JETOY
+ 716          BLT >6
+ 717          LDA #JETSS
+ 718          LDX JETOX
+ 719          LDY JETOY
+ 720          JSR ERASE1
+ 721          LDA #0
+ 722          STA JETFLAG
+ 723          LDA #1
+ 724          STA CARHROCK
+ 725 ^6       RTS 
+ 726 ;
+ 727 ;
+ 728 ;
+ 729 ;
+ 730 PLOTJET  LDA JETFLAG
+ 731          BNE >1
+ 732          RTS 
+ 733 ^1       LDA #JETSS
+ 734          LDX JETOX
+ 735          LDY JETOY
+ 736          JSR ERASE1
+ 737          LDA JETFLAG
+ 738          CMP #5
+ 739          BEQ >2              ; IF STATE=5 THEN END OF SEQUENCE
+ 740          LDA #JETSS
+ 741          LDX JETX
+ 742          LDY JETY
+ 743          JSR DRAW1
+ 744          JMP >3
+ 745 ^2       LDA #0
+ 746          STA JETFLAG
+ 747          RTS 
+ 748 ^3       LDA JETFLAG
+ 749          CMP #1
+ 750          BEQ PRO1
+ 751          LDA JETX
+ 752          STA JETOX
+ 753          LDA JETY
+ 754          STA JETOY
+ 755          LDA JETX
+ 756          CLC 
+ 757          ADC #4
+ 758          BCC >1
+ 759          LDA #5
+ 760          STA JETFLAG
+ 761          RTS 
+ 762 ^1       STA JETX
+ 763          LDA CARX
+ 764          CLC 
+ 765          ADC #44
+ 766          CMP JETX
+ 767          BGE G5T
+ 768          LDA JETFU
+ 769          BNE G5T
+ 770          LDA #1
+ 771          STA JETFU
+ 772          LDA #1
+ 773          STA JETFLAG
+ 774          LDA #7
+ 775          STA JETCNT
+ 776 G5T      RTS 
+ 777 PRO1     LDA JETX
+ 778          STA JETOX
+ 779          LDA JETY
+ 780          STA JETOY
+ 781          LDA #4
+ 782          JSR RANDOMA
+ 783          CLC 
+ 784          ADC #LOWWH
+ 785          SEC 
+ 786          SBC #1
+ 787          STA JETY
+ 788          DEC JETCNT
+ 789          BNE >1
+ 790          LDA #2
+ 791          STA JETFLAG
+ 792 ^1       RTS 
+ 793 ;
+ 794 ;
+ 795 ;
+ 796 ;
+ 797 ;
+ 798 ;
+ 799 ;
+ 800 ;
+ 801 GAMEOVER LDA #1
+ 802          STA DOOBIE
+ 803          LDA PLAYERS
+ 804          BNE FOS1
+ 805          JMP REGDIS
+ 806 FOS1     LDA PLAYERN
+ 807          BEQ PLAY1DED
+ 808          LDX #7
+ 809          LDY #78
+ 810          JSR PRINTXT
+ 811          ASC "                        @"
+ 812          LDX #7
+ 813          LDY #85
+ 814          JSR PRINTXT
+ 815          ASC " END OF GAME PLAYER TWO @"
+ 816          LDX #7
+ 817          LDY #92
+ 818          JSR PRINTXT
+ 819          ASC "                        @"
+ 820          JMP PEGAJCA
+ 821 PLAY1DED LDX #7
+ 822          LDY #78
+ 823          JSR PRINTXT
+ 824          ASC "                        @"
+ 825          LDX #7
+ 826          LDY #85
+ 827          JSR PRINTXT
+ 828          ASC " END OF GAME PLAYER ONE @"
+ 829          LDX #7
+ 830          LDY #92
+ 831          JSR PRINTXT
+ 832          ASC "                        @"
+ 833          JMP PEGAJCA
+ 834 REGDIS   LDX #13
+ 835          LDY #78
+ 836          JSR PRINTXT
+ 837          ASC "             @"
+ 838          LDX #13
+ 839          LDY #85
+ 840          JSR PRINTXT
+ 841          ASC " END OF GAME @"
+ 842          LDX #13
+ 843          LDY #92
+ 844          JSR PRINTXT
+ 845          ASC "             @"
+ 846 PEGAJCA  LDX #ENDMS
+ 847          LDA /ENDMS
+ 848          JSR PLAYTWOV
+ 849          LDX #$32
+ 850 ^3       LDA #$A0
+ 851          JSR DELAY
+ 852          DEX 
+ 853          BPL <3
+ 854          LDA PLAYERS
+ 855          BEQ BV2
+ 856          LDA AMEN
+ 857          CLC 
+ 858          ADC BMEN
+ 859          BEQ BV2
+ 860          LDA #1
+ 861          STA ONEPGONE
+ 862          LDA PLAYERN
+ 863          EOR #1
+ 864          STA PLAYERN
+ 865 BV4      JMP CONTGME
+ 866 BV2      LDA #191
+ 867          STA SCR0
+ 868 ^5       LDX SCR0
+ 869          LDA HGHADR,X
+ 870          STA BASH
+ 871          LDA LOWADR,X
+ 872          STA BASL
+ 873          LDY #$27
+ 874          LDA #$80
+ 875          CPX #70
+ 876          BGE >4
+ 877          LDA #0
+ 878 ^4       STA (BASL),Y
+ 879          DEY 
+ 880          BPL <4
+ 881          DEC SCR0
+ 882          LDA SCR0
+ 883          CMP #35
+ 884          BNE <5
+ 885          LDA #1
+ 886          STA DOOBIE
+ 887          LDX #2
+ 888          LDY #85
+ 889          JSR PRINTXT
+ 890          ASC "PRESS SPACE BAR TO CONTINUE GAME @"
+ 891          LDA #$10
+ 892 TI7      STA HOLD1
+ 893          CLD 
+ 894          LDA #35
+ 895          STA HTAB
+ 896          LDA #85
+ 897          STA VTAB
+ 898          LDA HOLD1
+ 899          JSR PRINT2D
+ 900          LDX #15
+ 901 ^3       LDA #$A0
+ 902          JSR DELAY
+ 903          DEX 
+ 904          BPL <3
+ 905          LDA KEYSPOT
+ 906          CMP #" "
+ 907          BEQ TODLAST
+ 908          LDA $C061
+ 909          STA SCR0
+ 910          EOR OLDBUTON
+ 911          BPL >7
+ 912          LDA SCR0
+ 913          BPL >7
+ 914          STA OLDBUTON
+ 915          JMP TODLAST
+ 916 ^7       LDA SCR0
+ 917          STA OLDBUTON
+ 918          LDA HOLD1
+ 919          SED 
+ 920          SEC 
+ 921          SBC #1
+ 922          BNE TI7
+ 923          CLD 
+ 924          JSR FUNCTA
+ 925          JMP DEMODO
+ 926 TODLAST  LDA #4
+ 927          STA AMEN
+ 928          STA BMEN
+ 929          JSR MENPLOT
+ 930          LDA #0
+ 931          STA ONEPGONE
+ 932          LDA #1
+ 933          STA PLAYERN
+ 934          LDA #0
+ 935          STA ASCORE1
+ 936          STA ASCORE2
+ 937          STA ASCORE3
+ 938          STA BSCORE1
+ 939          STA BSCORE2
+ 940          STA BSCORE3
+ 941          STA SCORE3
+ 942          STA SCORE2
+ 943          STA SCORE1
+ 944          JSR PRINTSC
+ 945          LDA #0
+ 946          STA PLAYERN
+ 947          JSR PRINTSC
+ 948          JMP CONTGME
+ 949 ;
+ 950 ;
+ 951 SHIFTLND LDX OLBIT
+ 952          LDA OLADR1,X
+ 953          STA SCR0
+ 954          LDA OLADR2,X
+ 955          STA SCR1
+ 956          LDA OLADR3,X
+ 957          STA SCR2
+ 958          LDA OLADR4,X
+ 959          STA SCR3
+ 960          LDA OLADR5,X
+ 961          STA SCR4
+ 962          LDA OLADR6,X
+ 963          STA SCR5
+ 964          LDX OLBYT
+ 965          LDY #0
+ 966 ^2       LDA (SCR0),Y
+ 967          EOR #$7F
+ 968          AND HLINE1,X
+ 969          STA NLINE1,X
+ 970          LDA (SCR2),Y
+ 971          EOR #$7F
+ 972          AND HLINE2,X
+ 973          STA NLINE2,X
+ 974          LDA (SCR4),Y
+ 975          EOR #$7F
+ 976          AND HLINE3,X
+ 977          STA NLINE3,X
+ 978          INX 
+ 979          CPX #$28
+ 980          BNE >1
+ 981          LDX #0
+ 982 ^1       INY 
+ 983          CPY #$28
+ 984          BNE <2
+ 985          LDA BSTIMES
+ 986          BEQ >6
+ 987          LDY #0
+ 988          LDA (SCR0),Y
+ 989          STA INB1
+ 990          LDA (SCR2),Y
+ 991          STA INB2
+ 992          LDA (SCR4),Y
+ 993          STA INB3
+ 994 ;
+ 995 ;
+ 996 ;
+ 997 ^6       LDA OLBIT
+ 998          SEC 
+ 999          SBC XSPEED
+1000          BCS >1
+1001          CLC 
+1002          ADC #7
+1003          DEC OLBYT
+1004          BPL >1
+1005          PHA 
+1006          LDA #$27
+1007          STA OLBYT
+1008          PLA 
+1009 ^1       STA OLBIT
+1010 ; 
+1011 ;
+1012          LDA TSTFLAG
+1013          BEQ >1
+1014          JMP OLNDPLOT
+1015 ^1       LDX OLBIT
+1016          LDA OLADR1,X
+1017          STA SCR0
+1018          LDA OLADR2,X
+1019          STA SCR1
+1020          LDA OLADR3,X
+1021          STA SCR2
+1022          LDA OLADR4,X
+1023          STA SCR3
+1024          LDA OLADR5,X
+1025          STA SCR4
+1026          LDA OLADR6,X
+1027          STA SCR5
+1028          LDX OLBYT
+1029          LDY #0
+1030 ^2       LDA (SCR0),Y
+1031          ORA NLINE1,X
+1032          STA NLINE1,X
+1033          LDA (SCR2),Y
+1034          ORA NLINE2,X
+1035          STA NLINE2,X
+1036          LDA (SCR4),Y
+1037          ORA NLINE3,X
+1038          STA NLINE3,X
+1039          INX 
+1040          CPX #$28
+1041          BNE >1
+1042          LDX #0
+1043 ^1       INY 
+1044          CPY #$28
+1045          BNE <2
+1046          LDX #3
+1047 CLRDCH   LDA DCHFLAGS,X
+1048          BNE >2
+1049 CLRDCH2  DEX 
+1050          BPL CLRDCH
+1051          LDX #39
+1052 ^1       LDA NLINE1,X
+1053          STA HLINE1,X
+1054          LDA NLINE2,X
+1055          STA HLINE2,X
+1056          LDA NLINE3,X
+1057          STA HLINE3,X
+1058          DEX 
+1059          BPL <1
+1060          RTS 
+1061 ^2       STX XNODRAW
+1062          LDA DCHADD,X
+1063          LDY DCHXS,X
+1064          CLC 
+1065          ADC BYTENUM,Y
+1066          STA SCR0
+1067          LDA SHIFTNUM,Y
+1068          LSR 
+1069          SEC 
+1070          SBC #$01
+1071          CLC 
+1072          ADC DCHMSKL,X
+1073          CMP #07
+1074          BLT >1
+1075          INC SCR0
+1076          SEC 
+1077          SBC #$07
+1078 ^1       STA SCR1
+1079          LDA SCR0
+1080          CLC 
+1081          ADC DCHMSKR1,X
+1082          STA SCR2
+1083          LDA SCR1
+1084          CLC 
+1085          ADC DCHMSKR2,X
+1086          CMP #07
+1087          BLT >1
+1088          INC SCR2
+1089          SEC 
+1090          SBC #07
+1091 ^1       STA SCR3
+1092          LDA SCR0
+1093          STA BYTPOS
+1094          LDA SCR1
+1095          STA BITPOS
+1096          LDY BYTPOS
+1097          LDX BITPOS
+1098 ^2       CPY #$28
+1099          BGE >5
+1100 ^1       LDA NLINE1,Y
+1101          AND MSKTBL1,X
+1102          STA NLINE1,Y
+1103          LDA NLINE2,Y
+1104          AND MSKTBL1,X
+1105          STA NLINE2,Y
+1106          LDA NLINE3,Y
+1107          AND MSKTBL1,X
+1108          STA NLINE3,Y
+1109 ^5       INX 
+1110          CPX #07
+1111          BNE >1
+1112          LDX #00
+1113          INY 
+1114 ^1       CPX SCR3
+1115          BNE <2
+1116          CPY SCR2
+1117          BNE <2
+1118          LDX XNODRAW
+1119          JMP CLRDCH2
+1120 ;
+1121 ;
+1122 ;
+1123 DRAW1    STY LENGT
+1124          STY BORON1
+1125          ASL                 ; DOUBLE SHAPE NUMBER
+1126          TAY                 ; USE AS INDEX INTO SHAPE TABLE
+1127          LDA INFADR,Y        ; GET LSB OF SHAPE INFORMATION BLOCK
+1128          STA SHAPEL          ; STORE LSB AT ZPAGE I/O
+1129          LDA INFADR+1,Y      ; GET MSB OF SHAPE INFORMATION BLOCK
+1130          STA SHAPEH          ; STORE MSB AT ZPAGE I/O
+1131          LDY #$00            ; USE AS INDEX TO GET WIDTH,LENGTH
+1132          LDA (SHAPEL),Y      ; GET WIDTH OF SHAPE
+1133          STA WIDT            ; STORE AT WIDTH LOCATION
+1134          INY                 ; INCREMENT INDEX TO GET LENGTH
+1135          LDA (SHAPEL),Y      ; GET LENGTH OF SHAPE
+1136          CLC 
+1137          ADC LENGT
+1138          STA LENGT           ; STORE AT LENGTH LOCATION
+1139          LDY SHIFTNUM,X      ; GET INDEX OF SHIFT NUMBER FROM TABLE
+1140          LDA BYTENUM,X       ; GET SCREEN BYTE NUMBER FROM TABLE
+1141          CLC 
+1142          ADC ROCKADD         ; ADD OFFSET FROM SCROLL ON OBJECTS
+1143          STA STARTBYT        ; STORE IT AS BEGINING BYTE OF SHAPE  
+1144          CLC 
+1145          ADC WIDT
+1146          STA WIDT
+1147          LDA (SHAPEL),Y      ; GET LSB ADDRESS OF SHAPE
+1148          STA PORTIN          ; STORE LSB AT HIRES SHAPE PORT IN
+1149          INY 
+1150          LDA (SHAPEL),Y      ; GET MSB ADDRESS OF SHAPE
+1151          STA PORTINY         ; STORE MSB AT HIRES SHAPE PORT IN 
+1152          LDX #$00
+1153          LDY LENGT
+1154 LABDRAW  LDA HGHADR,Y        ; GET BASL (LOW)
+1155          STA PORTOUT+2       ; STORE AT HIRES LINE OUT
+1156          STA PORT2OUT+2      ; STORE AT HIRES LINE OUT 2
+1157          LDA LOWADR,Y        ; GET BASL (HIGH)
+1158          STA PORTOUT+1       ; STORE AT HIRES LINE OUT
+1159          STA PORT2OUT+1      ; STORE AT HIRES LINE OUT 2
+1160 STARTBYT EQU *+1
+1161          LDY #$FF            ; ANYTHING ( SELF MODIFICATION )  
+1162 PORTIN   EQU *+1
+1163 PORTINY  EQU *+2
+1164 QX7:
+1165          LDA $FFFF,X         ; GET BYTE FROM SHAPE
+1166          CPY #$00
+1167          BMI QX3
+1168          CPY #$28
+1169          BGE QX3
+1170 PORT2OUT ORA $FFFF,Y         ; PREFORM (A) ORA OPERATION    
+1171 PORTOUT  STA $FFFF,Y         ; STORE BYTE ON HIRES SCREEN   
+1172 QX3      INX 
+1173          INY 
+1174          CPY WIDT
+1175          BNE QX7
+1176          DEC LENGT
+1177          LDY LENGT
+1178 BORON1   EQU *+1
+1179          CPY #$FF
+1180          BNE LABDRAW
+1181          RTS 
+1182 ;
+1183 ;
+1184 ;
+1185 ;
+1186 ERASE1   STY LENGT
+1187          STY BORON2+1
+1188          ASL                 ; DOUBLE SHAPE NUMBER
+1189          TAY                 ; USE AS INDEX INTO SHAPE TABLE
+1190          LDA INFADR,Y        ; GET LSB OF SHAPE INFORMATION BLOCK
+1191          STA SHAPEL          ; STORE LSB AT ZPAGE I/O
+1192          LDA INFADR+1,Y      ; GET MSB OF SHAPE INFORMATION BLOCK
+1193          STA SHAPEH          ; STORE MSB AT ZPAGE I/O
+1194          LDY #$00            ; USE AS INDEX TO GET WIDTH,LENGTH
+1195          LDA (SHAPEL),Y      ; GET WIDTH OF SHAPE
+1196          STA WIDT            ; STORE AT WIDTH LOCATION
+1197          INY                 ; INCREMENT INDEX TO GET LENGTH
+1198          LDA (SHAPEL),Y      ; GET LENGTH OF SHAPE
+1199          CLC 
+1200          ADC LENGT
+1201          STA LENGT           ; STORE AT LENGTH LOCATION
+1202          LDY SHIFTNUM,X      ; GET INDEX OF SHIFT NUMBER FROM TABLE
+1203          LDA BYTENUM,X       ; GET SCREEN BYTE NUMBER FROM TABLE
+1204          CLC 
+1205          ADC ROCKADD         ; ADD OFFSET FROM SCROLL ON OBJECTS
+1206          STA STARTBY1+1      ; STORE IT AS BEGINING BYTE OF SHAPE
+1207          CLC 
+1208          ADC WIDT
+1209          STA WIDT
+1210          LDA (SHAPEL),Y      ; GET LSB ADDRESS OF SHAPE
+1211          STA PORTIN1+1       ; STORE LSB AT HIRES SHAPE PORT IN
+1212          INY 
+1213          LDA (SHAPEL),Y      ; GET MSB ADDRESS OF SHAPE
+1214          STA PORTIN1+2       ; STORE MSB AT HIRES SHAPE PORT IN
+1215          LDX #$00
+1216          LDY LENGT
+1217 LABDRAW1 LDA HGHADR,Y        ; GET BASL (LOW)
+1218          STA PORTOUT1+2      ; STORE AT HIRES LINE OUT
+1219          STA PORT3OUT+2      ; STORE AT HIRES LINE OUT 2
+1220          LDA LOWADR,Y        ; GET BASL (HIGH)
+1221          STA PORTOUT1+1
+1222          STA PORT3OUT+1      ; STORE AT HIRES LINE OUT
+1223 STARTBY1 LDY #$FF            ; ANYTHING ( SELF MODIFICATION )
+1224 PORTIN1  LDA $FFFF,X         ; GET BYTE FROM SHAPE
+1225          EOR #$7F
+1226 PORT3OUT AND $FFFF,Y         ; PREFORM (A) AND OPERATION
+1227          CPY #$00
+1228          BMI QX4
+1229          CPY #$28
+1230          BGE QX4
+1231 PORTOUT1 STA $FFFF,Y         ; STORE BYTE ON HIRES SCREEN
+1232 QX4      INX 
+1233          INY 
+1234          CPY WIDT
+1235          BNE PORTIN1
+1236          DEC LENGT
+1237          LDY LENGT
+1238 BORON2   CPY #$FF
+1239          BNE LABDRAW1
+1240          RTS 
+1241 ;
+1242 ;
+1243 DRAW0    STY LENGT
+1244          STY GT7+1
+1245          ASL                 ; DOUBLE SHAPE NUMBER
+1246          ASL 
+1247          TAY                 ; USE AS INDEX INTO SHAPE TABLE
+1248          LDA NOSHIFT,Y       ; GET WIDTH OF SHAPE
+1249          STA WIDT            ; STORE AT WIDTH LOCATION
+1250          LDA NOSHIFT+1,Y     ; GET LENGTH OF SHAPE
+1251          CLC 
+1252          ADC LENGT
+1253          STA LENGT           ; STORE AT LENGTH LOCATION
+1254          LDA SHIFTNUM,X      ; GET INDEX OF SHIFT NUMBER FROM TABLE
+1255          LSR 
+1256          STA SCR6
+1257          LDA BYTENUM,X       ; GET SCREEN BYTE NUMBER FROM TABLE
+1258          CLC 
+1259          ADC ROCKADD         ; ADD OFFSET FROM SCROLL ON OBJECTS 
+1260          STA GT4+1           ; STORE IT AS BEGINING BYTE OF SHAPE 
+1261          CLC 
+1262          ADC WIDT
+1263          STA WIDT
+1264          LDA NOSHIFT+2,Y     ; GET LSB ADDRESS OF SHAPE
+1265          STA GT3+1           ; STORE LSB AT HIRES SHAPE PORT IN
+1266          LDA NOSHIFT+3,Y     ; GET MSB ADDRESS OF SHAPE 
+1267          STA GT3+2           ; STORE MSB AT HIRES SHAPE PORT IN   
+1268          LDX #$00
+1269          LDY LENGT
+1270 ^2       LDA HGHADR,Y        ; GET BASL (LOW)
+1271          STA SCR1            ; STORE AT HIRES LINE OUT
+1272          LDA LOWADR,Y        ; GET BASL (HIGH)
+1273          STA SCR0
+1274          LDA #0
+1275          STA SCR4
+1276          STA SCR5
+1277 GT4      LDY #$FF            ; ANYTHING ( SELF MODIFICATION )  
+1278 GT3      LDA $FFFF,X         ; GET BYTE FROM SHAPE 
+1279          CPY #$00
+1280          BMI QX5
+1281          CPY #$28
+1282          BGE QX5
+1283          STX ZSAVE
+1284          ASL 
+1285          LDX SCR6
+1286 ^8       DEX 
+1287          BEQ >9
+1288          ASL 
+1289          ROL SCR5
+1290          JMP <8
+1291 ^9       LSR 
+1292          ORA SCR4
+1293          ORA #$80
+1294          ORA (SCR0),Y
+1295          STA (SCR0),Y        ; STORE BYTE ON HIRES SCREEN
+1296          LDA SCR5
+1297          STA SCR4
+1298          LDA #0
+1299          STA SCR5
+1300          LDX ZSAVE
+1301 QX5      INX 
+1302          INY 
+1303          CPY WIDT
+1304          BNE GT3
+1305          DEC LENGT
+1306          LDY LENGT
+1307 GT7      CPY #$FF
+1308          BNE <2
+1309          RTS 
+1310 ;
+1311 ;
+1312 ;
+1313 ERASE0   STY LENGT
+1314          STY GP7+1
+1315          ASL                 ; DOUBLE SHAPE NUMBER
+1316          ASL 
+1317          TAY                 ; USE AS INDEX INTO SHAPE TABLE
+1318          LDA NOSHIFT,Y       ; GET WIDTH OF SHAPE
+1319          STA WIDT            ; STORE AT WIDTH LOCATION
+1320          LDA NOSHIFT+1,Y     ; GET LENGTH OF SHAPE
+1321          CLC 
+1322          ADC LENGT
+1323          STA LENGT           ; STORE AT LENGTH LOCATION
+1324          LDA SHIFTNUM,X      ; GET INDEX OF SHIFT NUMBER FROM TABLE
+1325          LSR 
+1326          STA SCR6
+1327          LDA BYTENUM,X       ; GET SCREEN BYTE NUMBER FROM TABLE
+1328          CLC 
+1329          ADC ROCKADD         ; ADD OFFSET FROM SCROLL ON OBJECTS 
+1330          STA GP4+1           ; STORE IT AS BEGINING BYTE OF SHAPE  
+1331          CLC 
+1332          ADC WIDT
+1333          STA WIDT
+1334          LDA NOSHIFT+2,Y     ; GET LSB ADDRESS OF SHAPE
+1335          STA GP3+1           ; STORE LSB AT HIRES SHAPE PORT IN  
+1336          LDA NOSHIFT+3,Y     ; GET MSB ADDRESS OF SHAPE  
+1337          STA GP3+2           ; STORE MSB AT HIRES SHAPE PORT IN  
+1338          LDX #$00
+1339          LDY LENGT
+1340 ^2       LDA HGHADR,Y        ; GET BASL (LOW)
+1341          STA SCR1            ; STORE AT HIRES LINE OUT
+1342          LDA LOWADR,Y        ; GET BASL (HIGH)
+1343          STA SCR0
+1344          LDA #0
+1345          STA SCR4
+1346          STA SCR5
+1347 GP4      LDY #$FF            ; ANYTHING ( SELF MODIFICATION )  
+1348 GP3      LDA $FFFF,X         ; GET BYTE FROM SHAPE  
+1349          CPY #$00
+1350          BMI LEPARD
+1351          CPY #$28
+1352          BGE LEPARD
+1353          STX ZSAVE
+1354          ASL 
+1355          LDX SCR6
+1356 ^8       DEX 
+1357          BEQ >9
+1358          ASL 
+1359          ROL SCR5
+1360          JMP <8
+1361 ^9       LSR 
+1362          ORA SCR4
+1363          ORA #$80
+1364          EOR #$7F
+1365          AND (SCR0),Y
+1366          STA (SCR0),Y        ; STORE BYTE ON HIRES SCREEN
+1367          LDA SCR5
+1368          STA SCR4
+1369          LDA #0
+1370          STA SCR5
+1371          LDX ZSAVE
+1372 LEPARD   INX 
+1373          INY 
+1374          CPY WIDT
+1375          BNE GP3
+1376          DEC LENGT
+1377          LDY LENGT
+1378 GP7      CPY #$FF
+1379          BNE <2
+1380          RTS 
+1381 ;
+1382 ;
+1383 DRAW2    STY LENGT
+1384          STY BORON3+1
+1385          ASL                 ; DOUBLE SHAPE NUMBER
+1386          TAY                 ; USE AS INDEX INTO SHAPE TABLE
+1387          LDA INFADR,Y        ; GET LSB OF SHAPE INFORMATION BLOCK
+1388          STA SHAPEL          ; STORE LSB AT ZPAGE I/O
+1389          LDA INFADR+1,Y      ; GET MSB OF SHAPE INFORMATION BLOCK
+1390          STA SHAPEH          ; STORE MSB AT ZPAGE I/O
+1391          LDY #$00            ; USE AS INDEX TO GET WIDTH,LENGTH
+1392          LDA (SHAPEL),Y      ; GET WIDTH OF SHAPE
+1393          STA WIDT            ; STORE AT WIDTH LOCATION
+1394          INY                 ; INCREMENT INDEX TO GET LENGTH
+1395          LDA (SHAPEL),Y      ; GET LENGTH OF SHAPE
+1396          CLC 
+1397          ADC LENGT
+1398          STA LENGT           ; STORE AT LENGTH LOCATION
+1399          LDY SHIFTNUM,X      ; GET INDEX OF SHIFT NUMBER FROM TABLE
+1400          LDA BYTENUM,X       ; GET SCREEN BYTE NUMBER FROM TABLE
+1401          CLC 
+1402          ADC HOLE1ADD        ; ADD OFFSET FROM SCROLL ON OBJECTS
+1403          STA STARTBY2+1      ; STORE IT AS BEGINING BYTE OF SHAPE
+1404          CLC 
+1405          ADC WIDT
+1406          STA WIDT
+1407          LDA (SHAPEL),Y      ; GET LSB ADDRESS OF SHAPE
+1408          STA PORTIN2+1       ; STORE LSB AT HIRES SHAPE PORT IN
+1409          INY 
+1410          LDA (SHAPEL),Y      ; GET MSB ADDRESS OF SHAPE
+1411          STA PORTIN2+2       ; STORE MSB AT HIRES SHAPE PORT IN
+1412          LDX #$00
+1413          LDY LENGT
+1414 LABDRAW2 LDA HGHADR,Y        ; GET BASL (LOW)
+1415          STA PORTOUT2+2      ; STORE AT HIRES LINE OUT
+1416          LDA LOWADR,Y        ; GET BASL (HIGH)
+1417          STA PORTOUT2+1      ; STORE AT HIRES LINE OUT
+1418 STARTBY2 LDY #$FF            ; ANYTHING ( SELF MODIFICATION )
+1419 PORTIN2  LDA $FFFF,X         ; GET BYTE FROM SHAPE
+1420          CPY #$00
+1421          BMI QX6
+1422          CPY #$28
+1423          BGE QX6
+1424 PORTOUT2 STA $FFFF,Y         ; STORE BYTE ON HIRES SCREEN
+1425 QX6      INX 
+1426          BNE >9
+1427          INC PORTIN2+2
+1428 ^9       INY 
+1429          CPY WIDT
+1430          BNE PORTIN2
+1431          DEC LENGT
+1432          LDY LENGT
+1433 BORON3   CPY #$FF
+1434          BNE LABDRAW2
+1435          RTS 
+1436 ;
+1437          LST 
+1438          NLS 
+1439          DCM "BSAVE OBJ5,A$800,L$1000,S5,D1"
+1440 ;
+1441          ICL "MOON PATROL6,D1,S6"
+:

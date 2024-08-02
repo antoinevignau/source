@@ -1,0 +1,1072 @@
+L MOON PATROL
+BAD #
+:LOAD MOON PATROL
+
+BLOAD MOON PATROL,A$1800
+
+
+:L
+   1 *11111111111111111111111111111111111111111111111111111111111
+   2 ;
+   3 ;
+   4 ;
+   5 ;
+   6          NLS 
+   7 OBJCD    EQU $800
+   8 RAM      EQU $800
+   9 ;
+  10 ;
+  11 BEGIN    LDA #0
+  12          STA HIGH3
+  13          STA HIGH2
+  14          STA HIGH1
+  15          STA SCR0
+  16          LDA #$80
+  17          STA SCR1
+  18          LDA #0
+  19          STA SCR2
+  20          LDA #$BC
+  21          STA SCR3
+  22          LDY #0
+  23 ^1       LDA (SCR0),Y
+  24          STA (SCR2),Y
+  25          INY 
+  26          BNE <1
+  27          INC SCR1
+  28          INC SCR3
+  29          LDA SCR3
+  30          CMP #$C0
+  31          BNE <1
+  32          LDA #0
+  33          STA SCR0
+  34          LDA #$85
+  35          STA SCR1
+  36          LDA #0
+  37          STA SCR2
+  38          LDA #$B0
+  39          STA SCR3
+  40          LDY #0
+  41 ^1       LDA (SCR0),Y
+  42          STA (SCR2),Y
+  43          INY 
+  44          BNE <1
+  45          INC SCR1
+  46          INC SCR3
+  47          LDA SCR3
+  48          CMP #$BC
+  49          BNE <1
+  50          JSR SHIFT
+  51          JSR SETUP           ; SET UP POINTERS,FLAGS AND GRAPHICS MODE   
+  52          JMP CENTRAL
+  53 ENTERUSR LDX #8
+  54          LDY #78
+  55          JSR PRINTXT
+  56          ASC "                        @"
+  57 MAINLOOP LDX #0
+  58          TXS 
+  59          JSR GETKEY          ; GET KEYSTROKE AND PROCESS IT  
+  60          LDA MOUNCNT
+  61          AND #$0F
+  62          BNE >1
+  63          JSR PULSATE
+  64 ^1:
+  65          INC MOUNCNT
+  66          LDA MOUNCNT
+  67          AND #$01
+  68          BNE >1
+  69          JSR NEWROUND
+  70 ^1       LDA MOUNCNT
+  71          AND #$1F
+  72          BNE >1
+  73          JSR PRINTTME
+  74 ^1       LDA GKWT2
+  75          BNE G91T
+  76          LDA GKWT
+  77          BNE G91T
+  78          JMP G98T
+  79 G91T     JSR SCRLGOAL
+  80          DEC GKWT
+  81          BNE G98T
+  82          DEC GKWT2
+  83 G98T     JSR DELTMR
+  84          JSR DRAWBLTS        ; DRAW ANY BULLETS THAT ARE ON THE SCREEN    
+  85          JSR DRAWALN         ; COMPLETE ALIEN ROUTINE
+  86          JSR SHIPFIRN
+  87          JSR PLAYBACK
+  88          JSR JETCHK
+  89          JSR ELROCK
+  90          JSR LDITCH
+  91          JSR SBULCHIC
+  92          JSR SHIPCHCK
+  93          JSR ROCKCOL         ; COLLISON ROUTINE FOR ROCKS
+  94          JSR CARROCK
+  95          JSR DITCHK
+  96          LDA CARHROCK
+  97          BEQ >1
+  98          JMP CAREXPLO
+  99 ^1       JSR DRAWCAR         ; ERASE, DRAW CAR AND PUT LAND ON
+ 100          JSR BONGER
+ 101          JSR ROCKS
+ 102          JSR TANKBUL
+ 103          JSR TBULCHK
+ 104          JSR PLOTJET
+ 105          JSR JETDS
+ 106          JSR PLANTDS
+ 107          JSR SHIPHCAR
+ 108          JSR SHIFTLND
+ 109          JSR PLOTDCH
+ 110          LDA LEVEL
+ 111          BEQ >1
+ 112          JSR PLANTCOL
+ 113 ^1       JMP MAINLOOP        ; JUMP BACK TO MAIN LOOP
+ 114 ;
+ 115 READOPT  NOP 
+ 116          NOP 
+ 117          NOP 
+ 118          RTS 
+ 119 READBASE NOP 
+ 120          NOP 
+ 121          NOP 
+ 122          RTS 
+ 123 ;
+ 124 ;
+ 125 ; =====  SET UP POINTERS AND FLAGS  =====
+ 126 ;
+ 127 SETUP:
+ 128 ;
+ 129          LDA #0
+ 130          STA PANASON
+ 131          LDA #0
+ 132          STA PLAYERN
+ 133 SETUP2   LDA #$22
+ 134          STA TSTSCRL
+ 135          LDA #$15
+ 136          STA YINDEX
+ 137          STA CUONT2
+ 138          LDA #0
+ 139          STA OLBIT
+ 140          STA OLBYT
+ 141          STA JETC
+ 142          STA JETFLAG
+ 143          STA PLANTC
+ 144          LDA #$0E
+ 145          STA GAMEWT
+ 146          LDA #$10
+ 147          STA BIGTRY
+ 148          LDA #$01
+ 149          STA TSTFLAG
+ 150          STA BSTIMES
+ 151          STA LSTDURT
+ 152          STA FLAG56
+ 153          LDA #4
+ 154          STA XSPEED
+ 155          LDA #$FF
+ 156          STA GOALCNT
+ 157          LDA #$FF
+ 158          STA NINDX
+ 159          LDA #$00
+ 160          STA GOLD
+ 161          STA GKWT2
+ 162          STA GKWT
+ 163          STA CARHROCK
+ 164          STA MOUNCNT
+ 165          STA ROCKADD
+ 166          STA COUNTER
+ 167          STA CARDEAD         ; TELL THAT MOON VEHICLE IS ALIVE
+ 168          STA HOLDUP
+ 169          LDA #$70            ; SET UP STARTING X COORDINATE WHEEL1
+ 170          STA WHEEL1X
+ 171          SEC 
+ 172          SBC #$04
+ 173          STA CARX            ; SET UP STARTING X COORDINATE FOR CAR
+ 174          LDA #$7A
+ 175          STA WHEEL2X         ; SET UP STARTING X COORDINATE FOR WHEEL2
+ 176          LDA #$8A
+ 177          STA WHEEL3X         ; SET UP STARTING X COORDINATE FOR WHEEL3
+ 178          LDA #$85            ; SET STARTING Y COORDINATE FOR CAR
+ 179          STA CARY
+ 180          LDA #$8E
+ 181          STA WHEEL1Y
+    
+
+:L
+   1 *11111111111111111111111111111111111111111111111111111111111
+   2 ;
+   3 ;
+   4 ;
+   5 ;
+   6          NLS 
+   7 OBJCD    EQU $800
+   8 RAM      EQU $800
+   9 ;
+  10 ;
+  11 BEGIN    LDA #0
+  12          STA HIGH3
+  13          STA HIGH2
+  14          STA HIGH1
+  15          STA SCR0
+  16          LDA #$80
+  17          STA SCR1
+  18          LDA #0
+  19          STA SCR2
+  20          LDA #$BC
+  21          STA SCR3
+  22          LDY #0
+  23 ^1       LDA (SCR0),Y
+  24          STA (SCR2),Y
+  25          INY 
+  26          BNE <1
+  27          INC SCR1
+  28          INC SCR3
+  29          LDA SCR3
+  30          CMP #$C0
+  31          BNE <1
+  32          LDA #0
+  33          STA SCR0
+  34          LDA #$85
+  35          STA SCR1
+  36          LDA #0
+  37          STA SCR2
+  38          LDA #$B0
+  39          STA SCR3
+  40          LDY #0
+  41 ^1       LDA (SCR0),Y
+  42          STA (SCR2),Y
+  43          INY 
+  44          BNE <1
+  45          INC SCR1
+  46          INC SCR3
+  47          LDA SCR3
+  48          CMP #$BC
+  49          BNE <1
+  50          JSR SHIFT
+  51          JSR SETUP           ; SET UP POINTERS,FLAGS AND GRAPHICS MODE   
+  52          JMP CENTRAL
+  53 ENTERUSR LDX #8
+  54          LDY #78
+  55          JSR PRINTXT
+  56          ASC "                        @"
+  57 MAINLOOP LDX #0
+  58          TXS 
+  59          JSR GETKEY          ; GET KEYSTROKE AND PROCESS IT  
+  60          LDA MOUNCNT
+  61          AND #$0F
+  62          BNE >1
+  63          JSR PULSATE
+  64 ^1:
+  65          INC MOUNCNT
+  66          LDA MOUNCNT
+  67          AND #$01
+  68          BNE >1
+  69          JSR NEWROUND
+  70 ^1       LDA MOUNCNT
+  71          AND #$1F
+  72          BNE >1
+  73          JSR PRINTTME
+  74 ^1       LDA GKWT2
+  75          BNE G91T
+  76          LDA GKWT
+  77          BNE G91T
+  78          JMP G98T
+  79 G91T     JSR SCRLGOAL
+  80          DEC GKWT
+  81          BNE G98T
+  82          DEC GKWT2
+  83 G98T     JSR DELTMR
+  84          JSR DRAWBLTS        ; DRAW ANY BULLETS THAT ARE ON THE SCREEN    
+  85          JSR DRAWALN         ; COMPLETE ALIEN ROUTINE
+  86          JSR SHIPFIRN
+  87          JSR PLAYBACK
+  88          JSR JETCHK
+  89          JSR ELROCK
+  90          JSR LDITCH
+  91          JSR SBULCHIC
+  92          JSR SHIPCHCK
+  93          JSR ROCKCOL         ; COLLISON ROUTINE FOR ROCKS
+  94          JSR CARROCK
+  95          JSR DITCHK
+  96          LDA CARHROCK
+  97          BEQ >1
+  98          JMP CAREXPLO
+  99 ^1       JSR DRAWCAR         ; ERASE, DRAW CAR AND PUT LAND ON
+ 100          JSR BONGER
+ 101          JSR ROCKS
+ 102          JSR TANKBUL
+ 103          JSR TBULCHK
+ 104          JSR PLOTJET
+ 105          JSR JETDS
+ 106          JSR PLANTDS
+ 107          JSR SHIPHCAR
+ 108          JSR SHIFTLND
+ 109          JSR PLOTDCH
+ 110          LDA LEVEL
+ 111          BEQ >1
+ 112          JSR PLANTCOL
+ 113 ^1       JMP MAINLOOP        ; JUMP BACK TO MAIN LOOP
+ 114 ;
+ 115 READOPT  NOP 
+ 116          NOP 
+ 117          NOP 
+ 118          RTS 
+ 119 READBASE NOP 
+ 120          NOP 
+ 121          NOP 
+ 122          RTS 
+ 123 ;
+ 124 ;
+ 125 ; =====  SET UP POINTERS AND FLAGS  =====
+ 126 ;
+ 127 SETUP:
+ 128 ;
+ 129          LDA #0
+ 130          STA PANASON
+ 131          LDA #0
+ 132          STA PLAYERN
+ 133 SETUP2   LDA #$22
+ 134          STA TSTSCRL
+ 135          LDA #$15
+ 136          STA YINDEX
+ 137          STA CUONT2
+ 138          LDA #0
+ 139          STA OLBIT
+ 140          STA OLBYT
+ 141          STA JETC
+ 142          STA JETFLAG
+ 143          STA PLANTC
+ 144          LDA #$0E
+ 145          STA GAMEWT
+ 146          LDA #$10
+ 147          STA BIGTRY
+ 148          LDA #$01
+ 149          STA TSTFLAG
+ 150          STA BSTIMES
+ 151          STA LSTDURT
+ 152          STA FLAG56
+ 153          LDA #4
+ 154          STA XSPEED
+ 155          LDA #$FF
+ 156          STA GOALCNT
+ 157          LDA #$FF
+ 158          STA NINDX
+ 159          LDA #$00
+ 160          STA GOLD
+ 161          STA GKWT2
+ 162          STA GKWT
+ 163          STA CARHROCK
+ 164          STA MOUNCNT
+ 165          STA ROCKADD
+ 166          STA COUNTER
+ 167          STA CARDEAD         ; TELL THAT MOON VEHICLE IS ALIVE
+ 168          STA HOLDUP
+ 169          LDA #$70            ; SET UP STARTING X COORDINATE WHEEL1
+ 170          STA WHEEL1X
+ 171          SEC 
+ 172          SBC #$04
+ 173          STA CARX            ; SET UP STARTING X COORDINATE FOR CAR
+ 174          LDA #$7A
+ 175          STA WHEEL2X         ; SET UP STARTING X COORDINATE FOR WHEEL2
+ 176          LDA #$8A
+ 177          STA WHEEL3X         ; SET UP STARTING X COORDINATE FOR WHEEL3
+ 178          LDA #$85            ; SET STARTING Y COORDINATE FOR CAR
+ 179          STA CARY
+ 180          LDA #$8E
+ 181          STA WHEEL1Y
+ 182          STA WHEEL2Y
+ 183          STA WHEEL3Y
+ 184          LDA #$70            ; SET CARS X POSITION TO 38
+ 185          STA XPOS
+ 186          LDA #$02            ; SET STARTING MOVEMENT TO STANDSTILL
+ 187          STA BUFAD
+ 188          LDA #$00            ; SET DIRECTION TO ZERO
+ 189          STA DIRC
+ 190          STA JUMPFL          ; SET JUMP FLAG TO NOT JUMPING
+ 191          STA BUL2X           ; SET UP HORIZONTAL BULLET TO NONE
+ 192          RTS                 ; RETURN TO MAIN LOOP
+ 193 ;
+ 194 ;
+ 195 GRAPHON  BIT HIRES           ; TURN ON HI-RES MODE
+ 196          BIT NOTEXT          ; TURN OFF BOTTOM TEXT MODE
+ 197          BIT GRAPHICS        ; TURN ON GRAPHICS MODE
+ 198          BIT PAGE2           ; TURN ON GRAPHICS PAGE 2
+ 199          RTS 
+ 200 ;
+ 201 ;
+ 202 ;
+ 203 ; =====  ERASE AND DRAW MOON VEHICLE  =====
+ 204 ; 
+ 205 DRAWCAR:
+ 206 ;
+ 207 ;
+ 208          LDA CARXO
+ 209          ORA LEVEL
+ 210          TAX 
+ 211          LDA #CARSS
+ 212          LDY CARYO
+ 213          JSR ERASE1          ; ERASE CAR  
+ 214          LDA WHEEL1XO
+ 215          ORA LEVEL
+ 216          TAX 
+ 217          LDA #WHLSS
+ 218          LDY WHEEL1YO
+ 219          JSR ERASE1          ; ERASE WHEEL1   
+ 220          LDA WHEEL2XO
+ 221          ORA LEVEL
+ 222          TAX 
+ 223          LDA #WHLSS
+ 224          LDY WHEEL2YO
+ 225          JSR ERASE1          ; ERASE WHEEL2  
+ 226          LDA WHEEL3XO
+ 227          ORA LEVEL
+ 228          TAX 
+ 229          LDA #WHLSS
+ 230          LDY WHEEL3YO
+ 231          JSR ERASE1          ; ERASE WHEEL3  
+ 232 JSTDRAW  LDA CARX
+ 233          ORA LEVEL
+ 234          TAX 
+ 235          LDY CARY
+ 236          LDA #CARSS
+ 237          JSR DRAW1           ; DRAW CAR   
+ 238          LDA WHEEL1X
+ 239          ORA LEVEL
+ 240          TAX 
+ 241          LDA #WHLSS
+ 242          LDY WHEEL1Y
+ 243          JSR DRAW1           ; DRAW WHEEL1  
+ 244          LDA WHEEL2X
+ 245          ORA LEVEL
+ 246          TAX 
+ 247          LDA #WHLSS
+ 248          LDY WHEEL2Y
+ 249          JSR DRAW1           ; DRAW WHEEL2   
+ 250          LDA WHEEL3X
+ 251          ORA LEVEL
+ 252          TAX 
+ 253          LDA #WHLSS
+ 254          LDY WHEEL3Y
+ 255          JSR DRAW1           ; DRAW WHEEL3  
+ 256 ;
+ 257 ;  CHANGE COORDINATES OF CAR AND WHEELS
+ 258 ;  AND PUT OLD COORDINATES IN OLD COORDINATES
+ 259 ;  LOCATIONS.
+ 260 ;
+ 261          LDA BSTIMES
+ 262          BNE INTCHNG
+ 263          LDA XPOS
+ 264          CLC 
+ 265          ADC DIRC            ; ADD DIRECTION OF CAR TO X COORDINATE
+ 266          CMP #44             ; CHECK FOR UTMOST LEFT POSITION
+ 267          BGE >1
+ 268          LDA #44             ; RESET POSITION OF CAR TO LEFTMOST   
+ 269          STA XPOS
+ 270          LDA #0              ; SET MOVEMENT TO NONE     
+ 271          STA DIRC
+ 272          LDA #$02
+ 273          STA BUFAD
+ 274          JMP INTCHNG
+ 275 ^1       CMP #!109           ; CHECK FOR UTMOST RIGHT POSITION
+ 276          BLT >1
+ 277          LDA #!108           ; RESET POSITION OF CAR TO RIGHTMOST
+ 278          STA XPOS
+ 279          LDA #$02
+ 280          STA BUFAD
+ 281          LDA #0              ; SET MOVEMENT TO NONE   
+ 282          STA DIRC
+ 283          JMP INTCHNG
+ 284 ^1       STA XPOS            ; STORE COORDINATE AT NEW X POSITION
+ 285          CMP #55
+ 286          BGE >1
+ 287          LDA #4
+ 288          STA XSPEED
+ 289          JMP INTCHNG
+ 290 ^1       CMP #86
+ 291          BGE >1
+ 292          LDA #6
+ 293          STA XSPEED
+ 294          JMP INTCHNG
+ 295 ^1       LDA #6
+ 296          STA XSPEED
+ 297 INTCHNG  LDA CARX            ; INTERCHANGE NEW AND OLD COORDINATES
+ 298          STA CARXO
+ 299          LDA CARY
+ 300          STA CARYO
+ 301          LDA WHEEL1X
+ 302          STA WHEEL1XO
+ 303          LDA WHEEL2X
+ 304          STA WHEEL2XO
+ 305          LDA WHEEL3X
+ 306          STA WHEEL3XO
+ 307          LDA WHEEL1Y
+ 308          STA WHEEL1YO
+ 309          LDA WHEEL2Y
+ 310          STA WHEEL2YO
+ 311          LDA WHEEL3Y
+ 312          STA WHEEL3YO
+ 313          LDA XPOS            ; SET UP NEW X POSITION FOR WHEEL1
+ 314          STA WHEEL1X
+ 315          SEC 
+ 316          SBC #$04
+ 317          STA CARX            ; SET UP NEW X POSITION FOR CAR
+ 318          CLC 
+ 319          ADC #!14
+ 320          STA WHEEL2X         ; SET UP NEW X POSITION FOR WHEEL2
+ 321          CLC 
+ 322          ADC #!16
+ 323          STA WHEEL3X         ; SET UP NEW X POSITION FOR WHEEL3
+ 324          LDA BIGTRY
+ 325          BMI >1
+ 326          JMP GETBASEY
+ 327 ^1       LDA JUMPFL          ; CHECK TO SEE IF IN THE MIDDLE OF A JUMP
+ 328          BEQ >1
+ 329          JMP CARJUMP         ; IF THEN GET Y COORDINATES FROM JUMP ROUTINE
+ 330 ^1       LDA #$02
+ 331          JSR RANDOMA
+ 332          SEC 
+ 333          SBC #$01
+ 334          ADC WHEEL1Y
+ 335          STA WHEEL1Y
+ 336          LDA #$02
+ 337          JSR RANDOMA
+ 338          SEC 
+ 339          SBC #$01
+ 340          ADC WHEEL3Y
+ 341          STA WHEEL3Y
+ 342          LDA #$02
+ 343          JSR RANDOMA
+ 344          SEC 
+ 345          SBC #$01
+ 346          ADC WHEEL2Y
+ 347          STA WHEEL2Y
+ 348 ;
+ 349 ;
+ 350 ;
+ 351 ;
+ 352          LDA WHEEL1Y
+ 353          CMP #LOWWH
+ 354          BNE >1
+ 355          LDA #LNEW
+ 356          STA WHEEL1Y
+ 357 ^1       LDA WHEEL1Y
+ 358          CMP #HGHWH
+ 359          BNE >1
+ 360          LDA #HNEW
+ 361          STA WHEEL1Y
+ 362 ^1       LDA WHEEL2Y
+ 363          CMP #LOWWH
+ 364          BNE >1
+ 365          LDA #LNEW
+ 366          STA WHEEL2Y
+ 367 ^1       LDA WHEEL2Y
+ 368          CMP #HGHWH
+ 369          BNE >1
+ 370          LDA #HNEW
+ 371          STA WHEEL2Y
+ 372 ^1       LDA WHEEL3Y
+ 373          CMP #LOWWH
+ 374          BNE >1
+ 375          LDA #LNEW
+ 376          STA WHEEL3Y
+ 377 ^1       LDA WHEEL3Y
+ 378          CMP #HGHWH
+ 379          BNE >1
+ 380          LDA #HNEW
+ 381          STA WHEEL3Y
+ 382 ^1       LDA WHEEL2Y         ; NEW Y COORDINATE FOR WHEEL2  
+ 383          SEC 
+ 384          SBC WHEEL1Y
+ 385          CLC 
+ 386          ADC #!134
+ 387          STA CARY            ; NEW Y COORDINATE FOR CAR
+ 388          RTS 
+ 389 ;
+ 390 ;
+ 391 ;
+ 392 ^4       JSR MOONXX
+ 393          JMP INTERP
+ 394 ;
+ 395 ; =====  GET KEY FROM I/O  =====
+ 396 ;
+ 397 GETKEY:
+ 398 ;
+ 399          LDA DEMOMODE
+ 400          BEQ LOADK
+ 401          LDA KEYSPOT
+ 402          BPL >1
+ 403          CMP #" "
+ 404          BNE >1
+ 405          JMP INTERP
+ 406 ^1       DEC KCUNT
+ 407          BNE >2
+ 408          INC KINDEX
+ 409          LDX KINDEX
+ 410          LDA OUTKEY,X
+ 411          CPX #$03
+ 412          BGE <4
+ 413 CONTINL  PHA 
+ 414          INC KINDEX
+ 415          LDX KINDEX
+ 416          LDA OUTKEY,X
+ 417          CLC 
+ 418          ADC #1
+ 419          STA KCUNT
+ 420          PLA 
+ 421          JMP >1
+ 422 ^2       RTS 
+ 423 LOADK    LDA KEYSPOT
+ 424          BMI >1
+ 425          LDA PANASON
+ 426          BEQ >2
+ 427          INC KINDEX
+ 428 ^2       LDA #$FF
+ 429          JMP JOYCHECK
+ 430 ^1       BIT CLRKEY          ; CLEAR KEYSTROBE       
+ 431          STA SCR0
+ 432          LDA PANASON
+ 433          BEQ >1
+ 434          LDA KINDEX
+ 435          LDX KCUNT
+ 436          STA $300,X
+ 437          INC KCUNT
+ 438          LDX KCUNT
+ 439          LDA SCR0
+ 440          STA $300,X
+ 441          INC KCUNT
+ 442          LDA #0
+ 443          STA KINDEX
+ 444 ^1       LDA SCR0
+ 445          CMP #$9B            ; CHECK FOR PAUSE MODE KEY (ESC)
+ 446          BNE >1
+ 447          JSR KEYESC          ; PROCESS ESCAPE KEY
+ 448          JMP JOYCHECK        ; CHECK JOYSTICK NOW
+ 449 ^1       CMP #"R"            ; SPECIAL RECORD MODE
+ 450          BNE >1
+ 451          LDA #1
+ 452          STA PANASON
+ 453          LDA #0
+ 454          STA KINDEX
+ 455          STA KCUNT
+ 456          JMP JOYCHECK
+ 457 ^1       CMP #$8F
+ 458          BNE >1
+ 459          JSR FUNCTA
+ 460          JSR GRAPHON
+ 461          JMP INTERP
+ 462 ^1       CMP #$91
+ 463          BNE JOYCHECK
+ 464          LDA OLEVEL
+ 465          STA LEVEL
+ 466          JMP OPTIONS
+ 467 ;
+ 468 JOYCHECK:
+ 469 ;
+ 470          PHA                 ; SAVE KEY CODE
+ 471          LDA JOYSTICK        ; CHECK TO SEE IF JOYSTICK IS CHOOSEN
+ 472          BEQ >1              ; BRANCH OVER JOY ROUTINE IF KEY IS SET
+ 473          PLA 
+ 474          JMP JOYROUT         ; JUMP TO THE JOYSTICK DIRECTION ROUTINE
+ 475 ^1       PLA                 ; GET KEY CODE THAT WAS SAVED
+ 476          CMP #" "            ; CHECK FOR FIRE KEY   
+ 477          BNE >1
+ 478          JMP MOVFIRE         ; JUMP TO THE FIRING ROUTINE
+ 479 ^1       CMP #"A"            ; CHECK FOR THE JUMP KEY 
+ 480          BNE >1
+ 481          JMP MOVUP           ; JUMP TO THE JUMPING ROUTINE
+ 482 ^1       CMP #$88            ; CHECK FOR THE BACK ARROW KEY
+ 483          BNE >1
+ 484          JMP MOVLEFT         ; JUMP TO THE MOVE LEFT ROUTINE
+ 485 ^1       CMP #$95            ; CHECK FOR THE FORWARD ARROW KEY
+ 486          BNE >1
+ 487          JMP MOVRIGHT        ; JUMP TO MOVE RIGHT ROUTINE
+ 488 ^1       CMP #$FF
+ 489          BEQ >1
+ 490          LDA #0
+ 491          STA DIRC
+ 492 ^1       RTS 
+ 493 ;
+ 494 ;
+ 495 ;
+ 496 ;
+ 497 ;
+ 498 ;
+ 499 SELECTK  LDA #0
+ 500          STA JOYSTICK
+ 501          RTS 
+ 502 SELECTJ  LDA #1
+ 503          STA JOYSTICK
+ 504          RTS 
+ 505 MOVLEFT  LDA JUMPFL
+ 506          BNE >1              ; IF UMPING THEN DON'T LET HIM MOVE
+ 507          LDA #$FC            ; SET DIRECTION TO -4 (BACKWARDS)
+ 508          STA DIRC
+ 509          LDA #0
+ 510          STA ADD1
+ 511          LDA #$01
+ 512          STA BUFAD
+ 513 ^1       RTS 
+ 514 MOVRIGHT LDA JUMPFL
+ 515          BNE >2              ; IF JUMPING THEN DON'T LET HIM MOVE  
+ 516          LDA #$04            ; SET DIRECTION TO +2 (FORWARDS)
+ 517          STA DIRC
+ 518          LDA #0
+ 519          STA ADD1
+ 520          LDA #$03
+ 521          STA BUFAD
+ 522 ^2       RTS 
+ 523 MOVUP    LDA JUMPFL
+ 524          BNE >4              ; IF ALREADY JUMPING THEN SCREW THAT KEYIN  
+ 525          LDA #$00            ; OTHERWISE SET DIRECTION TO ZERO
+ 526          STA DIRC
+ 527          STA GRAVL           ; SET UP GRAVITY VARIABLES
+ 528          LDA #4
+ 529          STA GRAVH
+ 530          LDA #$02
+ 531          STA BUFAD
+ 532          LDA #1              ; SET JUMP FLAG
+ 533          STA JUMPFL
+ 534 ^4       RTS 
+ 535 ;
+ 536 ;
+ 537 ;
+ 538 KEYESC   BIT CLRKEY
+ 539          LDA #$DB
+ 540          STA SCR0
+ 541          LDA #$98
+ 542          STA SCR1
+ 543          LDA #$EA
+ 544          STA SCR2
+ 545 RT3      LDA KEYSPOT
+ 546          BMI RETTRN
+ 547          DEC SCR0
+ 548          BNE RT1
+ 549          DEC SCR1
+ 550 RT1      BNE RT2
+ 551          DEC SCR2
+ 552 RT2      BNE RT3
+ 553 SCRPROT  JSR INVERTS
+ 554          LDA #$E4
+ 555          STA SCR0
+ 556          LDA #$C4
+ 557          STA SCR1
+ 558          LDA #$08
+ 559          STA SCR2
+ 560 RT6      LDA KEYSPOT
+ 561          BMI RETTRN
+ 562          DEC SCR0
+ 563          BNE KT1
+ 564          DEC SCR1
+ 565 KT1      BNE KT2
+ 566          DEC SCR2
+ 567 KT2      BNE RT6
+ 568          JMP SCRPROT
+ 569 RETTRN   LDA PAGETEST
+ 570          BPL RT9
+ 571          JSR INVERTS
+ 572 RT9      BIT CLRKEY
+ 573          RTS 
+ 574 INVERTS  LDA #0
+ 575          STA SCR0
+ 576          LDA #$40
+ 577          STA SCR1
+ 578          LDY #0
+ 579 ^3       LDA (SCR0),Y
+ 580          EOR #$FF
+ 581          STA (SCR0),Y
+ 582          INY 
+ 583          BNE <3
+ 584          INC SCR1
+ 585          LDA SCR1
+ 586          CMP #$60
+ 587          BNE <3
+ 588          RTS 
+ 589 ;
+ 590 ; =====  ROUTINE TO READ JOYSTICK JUMP TO CORRECT ROUTINE  =====
+ 591 ;
+ 592 JOYROUT:
+ 593 ;
+ 594 ;
+ 595 ^1       LDX #1
+ 596          JSR READPDL
+ 597          TYA 
+ 598          CMP #118
+ 599          BGE >1
+ 600          JSR MOVUP           ; PROCESS JOYSTICK FOR JUMPING
+ 601 ^1       LDA $C061
+ 602          STA SCR0
+ 603          EOR OLDBUTON
+ 604          BPL >7
+ 605          LDA SCR0
+ 606          BPL >7
+ 607          STA OLDBUTON
+ 608          JSR MOVFIRE         ; PROCESS JOYSTICK FOR FIRE
+ 609          JMP >1
+ 610 ^7       LDA SCR0
+ 611          STA OLDBUTON
+ 612 ^1       LDX #0
+ 613          JSR READPDL
+ 614          TYA 
+ 615          CMP #118
+ 616          BGE >1
+ 617          JSR MOVLEFT         ; PROCESS JOYSTICK FOR MOVE LEFT
+ 618          RTS 
+ 619 ^1       LDX #0
+ 620          JSR READPDL
+ 621          TYA 
+ 622          CMP #138
+ 623          BLT >2
+ 624          JSR MOVRIGHT        ; PROCESS JOYSTICK FOR MOVE RIGHT
+ 625          RTS 
+ 626 ^2       LDA XPOS
+ 627          CMP #74
+ 628          BEQ >5
+ 629          BLT >2
+ 630          LDA JUMPFL
+ 631          BNE >5
+ 632          LDA #$FE
+ 633          STA DIRC
+ 634          RTS 
+ 635 ^2       LDA JUMPFL
+ 636          BNE >5
+ 637          LDA #2
+ 638          STA DIRC
+ 639          RTS 
+ 640 ^5       LDA #0
+ 641          STA DIRC
+ 642          RTS 
+ 643 ;
+ 644 ;
+ 645 ; =====  TWEEK THE SPEAKER ONCE  =====
+ 646 ;
+ 647 TWEEK    STA $C030
+ 648          RTS 
+ 649 ;
+ 650 ;
+ 651 ; =====  FIRING BULLETS ROUTINE  =====
+ 652 ;
+ 653 MOVFIRE:
+ 654 ;
+ 655          LDA BUL2X           ; CHECK TO SEE IF HORZ BULLET IS ON SCREEN
+ 656          BNE >1              ; IF IT IS THEN GO TO VERTICAL BULLET ROUTINE
+ 657          LDA #0
+ 658          STA ITGOTHIT
+ 659          LDA CARX            ; GET CARS X COORDINATE
+ 660          CLC 
+ 661          ADC #46             ; ADD 42 TO GET BULLETS COORDINATE
+ 662          BCS >1              ; IF OVER 255 THEN WE CAN'T FIRE
+ 663          STA BUL2X           ; STORE IT AT HORIZONTAL BULLET X COORDINATE
+ 664          LDA CARY            ; GET CARS Y COORDINATE
+ 665          CLC 
+ 666          ADC #9
+ 667          STA BUL2Y           ; STORE IT AT HORIZONTAL BULLET Y COORDINATE
+ 668          LDA #6              ; SET UP BULLET EXPLOSION TIME 
+ 669          STA BEXTIME
+ 670          LDA #BL2SS
+ 671          LDX BUL2X
+ 672          LDY BUL2Y
+ 673          JSR DRAW1
+ 674 ^1       LDX #$00            ; CHECK FOR EMPTY BULLET
+ 675 ^1       LDA B1XS,X          ; GET X POSITION OF BULLET
+ 676          BEQ >1
+ 677          INX                 ; INCREMENT INDEX FOR NEXT BULLET
+ 678          CPX #$04            ; CHECK FOR LAST BULLET SPOT
+ 679          BNE <1
+ 680          RTS 
+ 681 ^1       LDA #$00
+ 682          STA BHITFL,X
+ 683          LDA CARX            ; GET CARS CURRENT X POSITION
+ 684          CLC 
+ 685          ADC #5              ; ADD 5 TO GET BULLETS X POSITION  
+ 686          STA B1XS,X          ; STORE AT BULLET1 X COORDINATE
+ 687          STA B1OXS,X
+ 688          LDA CARY
+ 689          SEC 
+ 690          SBC #11
+ 691          STA B1YS,X          ; STORE Y POSITION OF BULLET IN TABLE
+ 692          STA B1OYS,X
+ 693          TAY 
+ 694          LDA B1XS,X
+ 695          TAX 
+ 696          LDA #BL1SS
+ 697          JSR DRAW1
+ 698 ^1       LDY #$00            ; SOUND FOR FIRING
+ 699          LDA #$1A
+ 700          STA SCR0
+ 701 ^1       JSR TWEEK
+ 702 ^2       DEY 
+ 703          BNE >3              ; USE A DWINDILING PAUSE
+ 704          DEC SCR0
+ 705          LDA SCR0
+ 706          CMP #$10
+ 707          BEQ >2              ; IF DONE THEN STOP
+ 708 ^3       DEX 
+ 709          BNE <2
+ 710          LDX SCR0
+ 711          JMP <1              ; KEEP GOING WITH TONE UNTIL DONE
+ 712 ^2       RTS                 ; RETURN TO CALLER
+ 713 ;
+ 714 ;
+ 715 B1XS     HEX 00000000
+ 716 B1YS     HEX 00000000
+ 717 B1OXS    HEX 00000000
+ 718 B1OYS    HEX 00000000
+ 719 BHITFL   HEX 00000000
+ 720 ;
+ 721 ;
+ 722 ;
+ 723 ; =====  DRAW ANY BULLETS THAT ARE PRESENT  ======
+ 724 ;
+ 725 DRAWBLTS:
+ 726 ;
+ 727          LDA BUL2X           ; CHECK TO SEE IF HORZ BULLET IS ON SCREEN
+ 728          BEQ >3              ; IF NOT THEN TRY VERTICAL BULLETS
+ 729          LDA BEXTIME         ; CHECK EXPLOSION TIMER
+ 730          BPL >1              ; IF LESS THAN ZERO THEN EXPLOSION TIME
+ 731          CMP #$FF            ; CHECK TO SEE IF START OF EXPLOSION
+ 732          BNE >8              ; IF NOT THEN JUMP AHEAD
+ 733          LDA #BL2SS          ; LOAD SHAPE NUMBER FOR HORZ BULLET
+ 734          LDX BUL2X           ; GET X COORDINATE OF HORZ BULLET
+ 735          LDY BUL2Y           ; GET Y COORDINATE OF HORZ BULLET
+ 736          JSR ERASE1          ; ERASE IT
+ 737          LDA #FR1SS          ; START WITH FIRST EXPLOSION SHAPE 
+ 738          STA BUL2ESN
+ 739          LDA BUL2Y           ; GET EXPLOSION Y COORDINATE
+ 740          SEC 
+ 741          SBC #5              ; CALCULATE Y COORDINATE OF EXPLOSION SHAPE
+ 742          STA BUL2Y
+ 743          LDA BUL2X           ; GET EXPLOSION X COORDINATE
+ 744          SEC 
+ 745          SBC #4              ; CALCULATE Y COORDINATE OF EXPLOSION SHAPE
+ 746          STA BUL2X
+ 747          LDA BUL2ESN
+ 748          LDX BUL2X
+ 749          LDY BUL2Y           ; DRAW OUT FIRST EXPLOSION SHAPE
+ 750          JSR DRAW1           ; USE DRAW SHIP ROUTINE
+ 751          DEC BEXTIME         ; DON'T FORGET OUR TIMER
+ 752          JMP >3              ; GO TO VERTICAL BULLET ROUTINE
+ 753 ^8       LDX BUL2X
+ 754          LDY BUL2Y
+ 755          LDA BUL2ESN         ; ERASE EXPLOSION
+ 756          JSR ERASE1          ; ERASE IT
+ 757          LDA BUL2ESN
+ 758          CMP #FR4SS
+ 759          BNE >5
+ 760          LDA #$00            ; CLEAR OUT HORIZONTAL BULLET
+ 761          STA BUL2X
+ 762          JMP >3              ; GO TO VERTICAL BULLET ROUTINE
+ 763 ^5       STA BUL2ESN         ; STORE IT AT HORZ BULLET EXPLOSION SHAPE #
+ 764          INC BUL2ESN
+ 765          LDX BUL2X
+ 766          LDY BUL2Y
+ 767          JSR DRAW1           ; DRAW NEXT EXPLOSION OF HORZ BULLET
+ 768          DEC BEXTIME         ; DON7T FORGET OUR TIMER
+ 769          JMP >3              ; GO TO VERTICAL BULLET ROUTINE
+ 770 ^1       LDA #BL2SS          ; LOAD SHAPE NUMBER FOR HORZ BULLET  
+ 771          LDX BUL2X           ; GET X COORDINATE OF HORZ BULLET
+ 772          LDY BUL2Y           ; GET Y COORDINATE OF HORZ BULLET
+ 773          JSR ERASE1          ; ERASE IT USING ERASE WHEEL ROUTINE
+ 774          LDA BUL2X
+ 775          CLC 
+ 776          ADC #10             ; ADD 10 TO X COORDINATE 
+ 777          STA BUL2X           ; GET NEW X COORDINATE OF HORIZONTAL BULLET
+ 778          TAX                 ; PUT IN X REGISTER FOR SHAPE ROUTINE
+ 779          LDY BUL2Y           ; GET Y COORDINATE
+ 780          LDA #BL2SS          ; LOAD SHAPE NUMBER FOR HORIZONTAL BULLET
+ 781          JSR DRAW1           ; USE DRAW WHEEL ROUTINE TO DRAW BULLET
+ 782          LDA BUL2X           ; CHECK TO SEE IF HORZ BULLET IS > 245
+ 783          CMP #245
+ 784          BLT >1
+ 785          LDA #$00            ; SET BULLET EXPLOSION TIMER TO ZERO
+ 786          STA BEXTIME
+ 787 ^1       DEC BEXTIME
+ 788 ^3       LDX #$00            ; START AT BEGINING OF BULLET TABLE
+ 789 ^1       LDA B1OXS,X         ; GET X COORDINATE OF BULLET
+ 790          BNE >1              ; IF NOT ZERO THEN IT IS A LIVE BULLET
+ 791 ^6       INX 
+ 792          CPX #$04            ; CHECK FOR LAST BULLET
+ 793          BNE <1              ; IF NOT DONE THEN CONTINUE CHECKING
+ 794          JMP B1CHG           ; CHANGE BULLET1 COORDINATES
+ 795 ^1       STX XNODRAW         ; SAVE (X) TEMPORARILY
+ 796          PHA                 ; SAVE (A) TEMPORARILY
+ 797          LDA B1OYS,X         ; GET Y POSITION OF BULLET
+ 798          TAY                 ; STICK IT IN THE Y REGISTER
+ 799          PLA                 ; GET THE X COORDINATE FROM STACK
+ 800          TAX 
+ 801          LDA #BL1SS          ; ERASE BULLET
+ 802          JSR ERASE1
+ 803          LDX XNODRAW
+ 804          LDA BHITFL,X        ; CHECK TO SEE IF BULLET IS DONE
+ 805          BNE BULFIN          ; IF SO THEN GOTO BULLET FINISHED ROUTINE
+ 806          LDA B1YS,X
+ 807          TAY 
+ 808          LDA B1XS,X
+ 809          TAX 
+ 810          LDA #BL1SS
+ 811          JSR DRAW1           ; DRAW BULLET
+ 812 ^8       LDX XNODRAW
+ 813          JMP <6
+ 814 BULFIN   LDA #$00
+ 815          STA B1XS,X
+ 816          STA B1OXS,X
+ 817          JMP <6
+ 818 B1CHG    LDX #$00
+ 819 ^2       LDA B1XS,X
+ 820          STA B1OXS,X
+ 821          LDA B1YS,X
+ 822          STA B1OYS,X
+ 823          SEC 
+ 824          SBC #$09
+ 825          CMP #37
+ 826          BGE >1
+ 827          LDA #$01
+ 828          STA BHITFL,X
+ 829 ^1       STA B1YS,X
+ 830          INX 
+ 831          CPX #$04
+ 832          BNE <2
+ 833          RTS 
+ 834 ;
+ 835 ;
+ 836 ; =====  CAR JUMP ROUTINE  =====
+ 837 ;
+ 838 CARJUMP:
+ 839 ;
+ 840          LDA CARY            ; GET NEW Y COORDINATE FOR CAR
+ 841          SEC 
+ 842          SBC GRAVH
+ 843          STA CARY
+ 844          CLC 
+ 845          ADC #$08            ; ADD 8 FOR WHEEL POSITION
+ 846          STA WHEEL1Y         ; NEW Y COORDINATE FOR WHEEL1
+ 847          STA WHEEL2Y         ; NEW Y COORDINATE FOR WHEEL2
+ 848          STA WHEEL3Y         ; NEW Y COORDINATE FOR WHEEL3
+ 849          LDA GRAVL
+ 850          SEC 
+ 851          SBC #4
+ 852          BPL >1
+ 853          DEC GRAVH
+ 854          CLC 
+ 855          ADC #10
+ 856 ^1       STA GRAVL
+ 857 ;
+ 858 ^2       LDA CARY
+ 859          CMP #134
+ 860          BLT >1
+ 861          LDA #0
+ 862          STA JUMPFL
+ 863          LDA #$86
+ 864          STA CARY
+ 865          LDA #$8F
+ 866          STA WHEEL1Y
+ 867          STA WHEEL2Y
+ 868          STA WHEEL3Y
+ 869 ^1       RTS 
+ 870 ;
+ 871 ;
+ 872 ; =====  COLLSION ROUTINE FOR ALL SHAPES  =====
+ 873 ;
+ 874 COLISION RTS                 ; RETURN TO CALLER
+ 875 ;
+ 876          LST 
+ 877          NLS 
+ 878          DCM "BSAVE OBJ1,A$800,L$1000,S5,D1"
+ 879          ICL "MOON PATROL2,D2,S6"
+:

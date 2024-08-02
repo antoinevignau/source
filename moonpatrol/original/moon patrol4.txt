@@ -1,0 +1,1468 @@
+PR#1
+
+PR#1
+
+:L
+   1 *44444444444444444444444444444444444444444444444444444444444444444
+   2 ;
+   3          OBJ $800
+   4 ;
+   5 ;
+   6 CENTRAL:
+   7          JSR GRAPHON
+   8          BIT CLRKEY
+   9          LDX #50
+  10 ^1       LDA #$FF
+  11          JSR DELAY
+  12          LDA KEYSPOT
+  13          BMI PRODGY
+  14          DEX 
+  15          BNE <1
+  16 PRODGY   BIT PAGE1
+  17          BIT $C051
+  18          LDA #$FF
+  19          JSR DELAY
+  20          JSR READOPT
+  21          LDA #0
+  22          STA JOYSTICK
+  23          STA LEVEL
+  24          STA ALEVEL
+  25          STA BLEVEL
+  26          STA PLAYERS
+  27          STA SOUNDTY
+  28          LDA #$30
+  29          STA TWEEK+1
+  30 INTERP   LDA #1
+  31          STA DEMOMODE
+  32          JSR OPINION
+  33          BCC >5
+  34          JMP OPTIONS
+  35 ^5       JMP DEMODO
+  36 ;
+  37 ;
+  38 ;
+  39 ;
+  40 ;
+  41 OPTIONS  BIT CLRKEY
+  42          BIT PAGE1
+  43          BIT $C051
+  44          JSR NEWSCRN
+  45          JSR SETUP
+  46          LDA #0
+  47          STA PULSATOR
+  48          LDA LEVEL
+  49          BNE >1
+  50          LDA #COURSE
+  51          STA ACOURSEL
+  52          STA BCOURSEL
+  53          STA AOLDCRSL
+  54          STA BOLDCRSL
+  55          LDA /COURSE
+  56          STA ACOURSEH
+  57          STA BCOURSEH
+  58          STA AOLDCRSH
+  59          STA BOLDCRSH
+  60          JMP >2
+  61 ^1       LDA #EPNTZ
+  62          STA ACOURSEL
+  63          STA BCOURSEL
+  64          STA AOLDCRSL
+  65          STA BOLDCRSL
+  66          LDA /EPNTZ
+  67          STA ACOURSEH
+  68          STA BCOURSEH
+  69          STA AOLDCRSH
+  70          STA BOLDCRSH
+  71 ^2       LDA #$FF
+  72          JSR DELAY
+  73          JSR READBASE
+  74          LDA #0
+  75          STA ONEPGONE
+  76          STA DEMOMODE
+  77          STA PLAYERN
+  78          LDA #8
+  79          STA AMEN
+  80          STA BMEN
+  81          LDA #0
+  82          STA AGOLD
+  83          STA BGOLD
+  84          STA ASCORE3
+  85          STA BSCORE3
+  86          STA ASCORE2
+  87          STA BSCORE2
+  88          STA ASCORE1
+  89          STA BSCORE1
+  90          STA ATME1
+  91          STA BTME1
+  92          STA ATME0
+  93          STA BTME0
+  94          LDA #$FF
+  95          STA AGOAL
+  96          STA BGOAL
+  97          LDA LEVEL
+  98          STA ALEVEL
+  99          STA BLEVEL
+ 100          JSR SELECTP
+ 101          JSR MENPLOT
+ 102          LDA SOUNDTY
+ 103          BEQ >1
+ 104          LDA #$20
+ 105          STA TWEEK+1
+ 106          JMP >2
+ 107 ^1       LDA #$30
+ 108          STA TWEEK+1
+ 109 ^2       JSR JSTDRAW
+ 110          JSR NEWROUND
+ 111          JSR GRAPHON
+ 112          JSR READYSGN
+ 113          JMP BASEPART
+ 114 ;
+ 115 ;
+ 116 PRINTOPT:
+ 117 ;
+ 118 ;
+ 119          LDA #1
+ 120          STA DOOBIE
+ 121          LDA LEVEL
+ 122          BEQ >1
+ 123          LDX #13
+ 124          LDY #150
+ 125          JSR PRINTXT
+ 126          ASC "C@"
+ 127          JMP >2
+ 128 ^1       LDX #13
+ 129          LDY #150
+ 130          JSR PRINTXT
+ 131          ASC "B@"
+ 132 ^2       LDA JOYSTICK
+ 133          BEQ >1
+ 134          LDX #11
+ 135          LDY #160
+ 136          JSR PRINTXT
+ 137          ASC "JOYSTICK@"
+ 138          JMP >2
+ 139 ^1       LDX #11
+ 140          LDY #160
+ 141          JSR PRINTXT
+ 142          ASC "KEYBOARD@"
+ 143 ^2       LDA PLAYERS
+ 144          BEQ >1
+ 145          LDX #34
+ 146          LDY #150
+ 147          JSR PRINTXT
+ 148          ASC "2@"
+ 149          JMP >2
+ 150 ^1       LDX #34
+ 151          LDY #150
+ 152          JSR PRINTXT
+ 153          ASC "1@"
+ 154 ^2       LDA SOUNDTY
+ 155          BEQ >1
+ 156          LDX #32
+ 157          LDY #160
+ 158          JSR PRINTXT
+ 159          ASC "OFF@"
+ 160          JMP >2
+ 161 ^1       LDX #32
+ 162          LDY #160
+ 163          JSR PRINTXT
+ 164          ASC "ON @"
+ 165 ^2       RTS 
+ 166 ;
+ 167 ;
+ 168 MOONXX:
+ 169 ;
+ 170 ;
+ 171          LDA #MOONX
+ 172          STA SCR2
+ 173          LDA /MOONX
+ 174          STA SCR3
+ 175          LDA #$27
+ 176          STA SCR5
+ 177          LDA #$4E
+ 178          STA SCR6
+ 179          JSR UNCOMPR
+ 180          LDA #PATROLX
+ 181          STA SCR2
+ 182          LDA /PATROLX
+ 183          STA SCR3
+ 184          LDA #$51
+ 185          STA SCR5
+ 186          LDA #$7D
+ 187          STA SCR6
+ 188          JSR UNCOMPR
+ 189          LDX #15
+ 190 ^1       LDA #$FF
+ 191          JSR DELAY
+ 192          DEX 
+ 193          BNE <1
+ 194          RTS 
+ 195 ;
+ 196 ;
+ 197 ;
+ 198 OPINION  BIT PAGE1
+ 199          BIT $C051
+ 200          BIT CLRKEY
+ 201          JSR NEWSCRN
+ 202          LDA #191
+ 203          STA SCR0
+ 204 ^2       LDX SCR0
+ 205          LDA HGHADR,X
+ 206          STA BASH
+ 207          LDA LOWADR,X
+ 208          STA BASL
+ 209          LDY #$27
+ 210          LDA #$80
+ 211          CPX #70
+ 212          BGE >1
+ 213          LDA #0
+ 214 ^1       STA (BASL),Y
+ 215          DEY 
+ 216          BPL <1
+ 217          DEC SCR0
+ 218          LDA SCR0
+ 219          CMP #35
+ 220          BNE <2
+ 221          LDA #1
+ 222          STA DOOBIE
+ 223          LDX #10
+ 224          LDY #45
+ 225          JSR PRINTXT
+ 226          ASC "MOON PATROL OPTIONS@"
+ 227          LDX #11
+ 228          LDY #65
+ 229          JSR PRINTXT
+ 230          ASC "[K] KEYBOARD MODE@"
+ 231          LDX #11
+ 232          LDY #75
+ 233          JSR PRINTXT
+ 234          ASC "[J] JOYSTICK MODE@"
+ 235          LDX #11
+ 236          LDY #85
+ 237          JSR PRINTXT
+ 238          ASC "[1] ONE PLAYER OPTION@"
+ 239          LDX #11
+ 240          LDY #95
+ 241          JSR PRINTXT
+ 242          ASC "[2] TWO PLAYER OPTION@"
+ 243          LDX #11
+ 244          LDY #105
+ 245          JSR PRINTXT
+ 246          ASC "[B] BEGINNER COURSE@"
+ 247          LDX #11
+ 248          LDY #115
+ 249          JSR PRINTXT
+ 250          ASC "[C] CHAMPION COURSE@"
+ 251          LDX #11
+ 252          LDY #125
+ 253          JSR PRINTXT
+ 254          ASC "[S] SOUND ON OR OFF@"
+ 255          LDX #5
+ 256          LDY #150
+ 257          JSR PRINTXT
+ 258          ASC "COURSE ( )@"
+ 259          LDX #25
+ 260          LDY #150
+ 261          JSR PRINTXT
+ 262          ASC "PLAYERS ( )@"
+ 263          LDX #5
+ 264          LDY #160
+ 265          JSR PRINTXT
+ 266          ASC "MODE (        )@"
+ 267          LDX #25
+ 268          LDY #160
+ 269          JSR PRINTXT
+ 270          ASC "SOUND (   )@"
+ 271          LDX #10
+ 272          LDY #177
+ 273          JSR PRINTXT
+ 274          ASC "SPACE BAR STARTS GAME@"
+ 275 ;
+ 276          BIT CLRKEY
+ 277          JSR PRINTOPT
+ 278          JSR GRAPHON
+ 279 RSTMR    LDA #0
+ 280          STA TAME1
+ 281          LDA #$A
+ 282          STA TAME2
+ 283 ^3:
+ 284 ^1       LDA KEYSPOT
+ 285          BMI >1
+ 286          LDA $C061
+ 287          STA SCR0
+ 288          EOR OLDBUTON
+ 289          BPL >7
+ 290          LDA SCR0
+ 291          BPL >7
+ 292          STA OLDBUTON
+ 293          SEC 
+ 294          RTS 
+ 295 ^7       LDA SCR0
+ 296          STA OLDBUTON
+ 297          LDA #$60
+ 298          JSR DELAY
+ 299          DEC TAME1
+ 300          BNE <1
+ 301          DEC TAME2
+ 302          BNE <1
+ 303          CLC 
+ 304          RTS 
+ 305 ^1       BIT CLRKEY
+ 306          CMP #"K"
+ 307          BNE >2
+ 308          LDA #0
+ 309          STA JOYSTICK
+ 310          JMP REFRESH
+ 311 ^2       CMP #"J"
+ 312          BNE >2
+ 313          LDA #1
+ 314          STA JOYSTICK
+ 315          JMP REFRESH
+ 316 ^2       CMP #"1"
+ 317          BNE >2
+ 318          LDA #0
+ 319          STA PLAYERS
+ 320          JMP REFRESH
+ 321 ^2       CMP #"2"
+ 322          BNE >2
+ 323          LDA #1
+ 324          STA PLAYERS
+ 325          JMP REFRESH
+ 326 ^2       CMP #"B"
+ 327          BNE >2
+ 328          LDA #0
+ 329          STA LEVEL
+ 330          STA OLEVEL
+ 331          JMP REFRESH
+ 332 ^2       CMP #"C"
+ 333          BNE >2
+ 334          LDA #1
+ 335          STA LEVEL
+ 336          STA OLEVEL
+ 337          JMP REFRESH
+ 338 ^2       CMP #"S"
+ 339          BNE >2
+ 340          LDA SOUNDTY
+ 341          EOR #1
+ 342          STA SOUNDTY
+ 343          JMP REFRESH
+ 344 ^2       CMP #" "
+ 345          BEQ >1
+ 346          JMP <3
+ 347 ^1       SEC 
+ 348          RTS 
+ 349 REFRESH  JSR PRINTOPT
+ 350          JMP RSTMR
+ 351 ;
+ 352 ;
+ 353 DEMODO:
+ 354          BIT CLRKEY
+ 355 ^1       BIT PAGE1
+ 356          BIT $C051
+ 357          JSR NEWSCRN
+ 358          LDA #0
+ 359          STA PULSATOR
+ 360          STA ASCORE3
+ 361          STA ASCORE2
+ 362          STA ASCORE1
+ 363          STA PLAYERS
+ 364          STA PLAYERN
+ 365          STA ATME0
+ 366          STA ATME1
+ 367          STA AGOLD
+ 368          LDA #$FF
+ 369          STA AGOAL
+ 370          LDA #4
+ 371          STA AMEN
+ 372          JSR SELECTP
+ 373          JSR MIDDLE
+ 374          LDA #1
+ 375          STA DEMOMODE
+ 376          LDA #DEMOC
+ 377          STA OLDCRSL
+ 378          STA COURSEL
+ 379          LDA /DEMOC
+ 380          STA OLDCRSH
+ 381          STA COURSEH
+ 382          LDA #0
+ 383          STA TWEEK+1
+ 384          JSR GRAPHON
+ 385          LDA #0
+ 386          STA KINDEX
+ 387          TAX 
+ 388          LDA OUTKEY,X
+ 389          STA KCUNT
+ 390          INC KINDEX
+ 391          JMP MAINLOOP
+ 392 ;
+ 393 ;
+ 394 ;
+ 395 MIDDLE   LDA #$FF            ; SET 'SKIP RANDOM WHEEL ROUTINE' FLAG
+ 396          STA BIGTRY
+ 397          LDA #$00            ; SET 'STORE LAND DIRECTLY ON SCREEN' FLAG
+ 398          STA TSTFLAG
+ 399          STA BSTIMES         ; SET 'BASE SCROLLING' FLAG
+ 400          STA JETC
+ 401          STA PLANTC
+ 402          STA JETFLAG
+ 403          LDA #$FF
+ 404          STA NINDX           ; SET INDEX FOR 'CAR DIRECTION' FLAG
+ 405          LDA #$00
+ 406          STA GKWT
+ 407          STA GKWT2
+ 408          STA CARHROCK        ; SET 'CAR HIT SOMETHING' FLAG
+ 409          LDA #1
+ 410          STA FLAG56
+ 411          LDA #74             ; SET UP STARTING X:WHEEL1
+ 412          STA WHEEL1X
+ 413          LDA #70             ; SET UP STARTING X:CAR
+ 414          STA CARX
+ 415          LDA #84
+ 416          STA WHEEL2X         ; SET UP STARTING X:WHEEL2  
+ 417          LDA #100
+ 418          STA WHEEL3X         ; SET UP STARTING X COORDINATE FOR WHEEL3  
+ 419          LDA #133            ; SET STARTING Y:CAR 
+ 420          STA CARY
+ 421          LDA #142
+ 422          STA WHEEL1Y         ; SET STARTING Y:WHEEL1 
+ 423          STA WHEEL2Y         ; SET STARTING Y:WHEEL2  
+ 424          STA WHEEL3Y         ; SET STARTING Y:WHEEL3
+ 425          LDA #74             ; SET CARS X POSITION TO 74 
+ 426          STA XPOS
+ 427          LDA #$02            ; SET STARTING MOVEMENT TO STANDSTILL   
+ 428          STA BUFAD
+ 429          LDA #$00            ; SET DIRECTION TO ZERO  
+ 430          STA DIRC
+ 431          STA JUMPFL          ; SET JUMP FLAG TO 'NOT JUMPING'
+ 432          LDA OLDCRSL
+ 433          STA COURSEL
+ 434          LDA OLDCRSH
+ 435          STA COURSEH
+ 436          JSR MENPLOT
+ 437          JSR JSTDRAW         ; THIS ROUTINE 'DRAWS ONLY' THE CAR
+ 438          JSR NEWROUND
+ 439          JSR PRINTTME
+ 440          JSR PRINTSC
+ 441          JSR PRINTHG
+ 442          LDA GOALCNT
+ 443          BMI SPECRIT
+ 444          LDA GOALCNT
+ 445          PHA 
+ 446          LDA #25
+ 447          STA GOALCNT
+ 448          LDA #0
+ 449          STA SCR4
+ 450          JSR REDROUT
+ 451          PLA 
+ 452          STA GOALCNT
+ 453          LDA #$D5
+ 454          STA SCR4
+ 455          JSR REDROUT
+ 456          JSR PRINTGL
+ 457          RTS 
+ 458 SPECRIT  LDA #25
+ 459          STA GOALCNT
+ 460          LDA #0
+ 461          STA SCR4
+ 462          JSR REDROUT
+ 463          LDA #31
+ 464          STA GOALCNT
+ 465          JSR PRINTGL
+ 466          LDA #$FF
+ 467          STA GOALCNT
+ 468          RTS 
+ 469 ;
+ 470 FLYWHEEL LDA WHEEL1Y
+ 471          SEC 
+ 472          SBC SWEL1
+ 473          CMP #142
+ 474          BLT >1
+ 475          LDA #142
+ 476          STA WHEEL1Y
+ 477          STA WHEEL2Y
+ 478          STA WHEEL3Y
+ 479          JMP >4
+ 480 ^1       STA WHEEL1Y
+ 481          STA WHEEL2Y
+ 482          STA WHEEL3Y
+ 483          DEC WHEEL3X
+ 484          DEC WHEEL3X
+ 485          DEC WHEEL2X
+ 486          INC WHEEL1X
+ 487 ^2       LDA WHEEL3X
+ 488          BEQ >2
+ 489          CMP #$FF
+ 490          BEQ >2
+ 491          JMP >4
+ 492 ^2       LDA #1
+ 493          STA WOFFLAG
+ 494 ;
+ 495 ^4       LDA WHEEL1Y
+ 496          SEC 
+ 497          SBC SWEL1
+ 498          CMP #142
+ 499          BLT >1
+ 500          LDA #142
+ 501 ^1       STA WHEEL1Y
+ 502          STA WHEEL2Y
+ 503          STA WHEEL3Y
+ 504 ;
+ 505          LDA SWEL0
+ 506          SEC 
+ 507          SBC #2
+ 508          BCS >1
+ 509          CLC 
+ 510          ADC #10
+ 511          DEC SWEL1
+ 512 ^1       STA SWEL0
+ 513 ;
+ 514          LDA WHEEL1Y
+ 515          CMP #137
+ 516          BLT >2
+ 517          LDA NWEL0
+ 518          SEC 
+ 519          SBC #7
+ 520          BCS >1
+ 521          DEC NWEL1
+ 522          CLC 
+ 523          ADC #10
+ 524 ^1       STA NWEL0
+ 525          LDA NWEL0
+ 526          STA SWEL0
+ 527          LDA NWEL1
+ 528          STA SWEL1
+ 529 ;
+ 530 ^2       RTS 
+ 531 ;
+ 532 DRAWFLY:
+ 533 ;
+ 534 ;
+ 535          LDA WHEEL3XO
+ 536          BMI >1
+ 537          TAX 
+ 538          LDY WHEEL3YO
+ 539          LDA #WHLSS
+ 540          JSR ERASE1
+ 541 ^1       LDA #WHLSS
+ 542          LDX WHEEL2XO
+ 543          LDY WHEEL2YO
+ 544          JSR ERASE1
+ 545          LDA #WHLSS
+ 546          LDX WHEEL1XO
+ 547          LDY WHEEL1YO
+ 548          JSR ERASE1
+ 549          LDA WOFFLAG
+ 550          BNE >1
+ 551          LDA #WHLSS
+ 552          LDX WHEEL3X
+ 553          LDY WHEEL3Y
+ 554          JSR DRAW1
+ 555 ^1       LDA #WHLSS
+ 556          LDX WHEEL2X
+ 557          LDY WHEEL2Y
+ 558          JSR DRAW1
+ 559          LDA #WHLSS
+ 560          LDX WHEEL1X
+ 561          LDY WHEEL1Y
+ 562          JSR DRAW1
+ 563          LDA WHEEL1X
+ 564          STA WHEEL1XO
+ 565          LDA WHEEL2X
+ 566          STA WHEEL2XO
+ 567          LDA WHEEL3X
+ 568          STA WHEEL3XO
+ 569          LDA WHEEL1Y
+ 570          STA WHEEL1YO
+ 571          LDA WHEEL2Y
+ 572          STA WHEEL2YO
+ 573          LDA WHEEL3Y
+ 574          STA WHEEL3YO
+ 575          DEC CUONT2
+ 576          LDA CUONT2
+ 577          CMP #$FF
+ 578          BNE >1
+ 579          LDA #$8C
+ 580          STA CUONT2
+ 581 ^1       DEC YINDEX
+ 582          LDA YINDEX
+ 583          CMP #$FF
+ 584          BNE >1
+ 585          LDA #$8C
+ 586          STA YINDEX
+ 587 ^1       JSR NEWROUND
+ 588          RTS 
+ 589 ;
+ 590 ;
+ 591 ;
+ 592 ; =====  CAR EXPLOSION ROUTINE  =====
+ 593 ;
+ 594 CAREXPLO:
+ 595 ;
+ 596          LDA CARHROCK
+ 597          BNE >1
+ 598          RTS 
+ 599 ^1       DEC MEN
+ 600          JSR CLEANIT
+ 601          LDX #3
+ 602 ^4       LDA RCKOADD,X
+ 603          STA RCKADD,X
+ 604          LDA RCKOYS,X
+ 605          STA RCKYS,X
+ 606          LDA RCKOXS,X
+ 607          STA RCKXS,X
+ 608          LDA DICKX,X
+ 609          STA DCHXS,X
+ 610          LDA DICKY,X
+ 611          STA DCHYS,X
+ 612          LDA DICKN,X
+ 613          STA DCHNUMS,X
+ 614          LDA DICKA,X
+ 615          STA DCHADD,X
+ 616          DEX 
+ 617          BPL <4
+ 618          LDA #0
+ 619          STA XSPEED
+ 620          LDA WHEEL3XO
+ 621          ORA LEVEL
+ 622          TAX 
+ 623          LDA #WHLSS
+ 624          LDY WHEEL3YO
+ 625          JSR ERASE1          ; ERASE WHEEL3   
+ 626          LDA WHEEL2XO
+ 627          ORA LEVEL
+ 628          TAX 
+ 629          LDA #WHLSS
+ 630          LDY WHEEL2YO
+ 631          JSR ERASE1          ; ERASE WHEEL2  
+ 632          LDA WHEEL1XO
+ 633          ORA LEVEL
+ 634          TAX 
+ 635          LDY WHEEL1YO
+ 636          LDA #WHLSS
+ 637          JSR ERASE1          ; ERASE WHEEL1  
+ 638          LDA CARXO
+ 639          ORA LEVEL
+ 640          TAX 
+ 641          LDA #CARSS
+ 642          LDY CARYO
+ 643          JSR ERASE1          ; ERASE CAR   
+ 644          LDA #3              ; SET UP PARABOLA CONSTANT AND VARIABLE 
+ 645 *                            ; ACCELERATION  
+ 646          STA NWEL1           ; THIS IS THE ONES PLACE       
+ 647          STA SWEL1
+ 648          LDA #0
+ 649          STA WOFFLAG         ; SET UP WHEEL OFF SCREEN FLAG
+ 650          LDA #2
+ 651          STA NWEL0           ; THIS IS THE TENTHS PLACE
+ 652          STA SWEL0
+ 653          JSR FLYWHEEL
+ 654          LDA #CEXSS
+ 655          STA EXSHP
+ 656          LDA #4
+ 657          STA TAME2
+ 658 NXTPOW   LDA EXSHP
+ 659          LDX CARXO
+ 660          INX 
+ 661          INX 
+ 662          LDY CARYO
+ 663          INY 
+ 664          JSR DRAW0           ; DRAW CAR EXPLOSION SHAPE
+ 665          LDA #7
+ 666          STA SCR6
+ 667          LDX #50
+ 668          LDY #1
+ 669          JSR WNOISE2
+ 670          JSR FLYWHEEL
+ 671          JSR FLYWHEEL
+ 672          JSR FLYWHEEL
+ 673          JSR FLYWHEEL
+ 674          JSR FLYWHEEL
+ 675          JSR DRAWFLY
+ 676          LDA #10
+ 677          JSR DELAY
+ 678          JSR TEMPORI
+ 679          LDA TAME2
+ 680          BEQ >4
+ 681          LDA EXSHP
+ 682          LDX CARXO
+ 683          INX 
+ 684          INX 
+ 685          LDY CARYO
+ 686          INY 
+ 687          JSR ERASE0          ; ERASE CAR EXPLOSION SHAPE 
+ 688          LDA EXSHP
+ 689          CMP #CEXSS
+ 690          BEQ >9
+ 691          LDA #CEXSS
+ 692          STA EXSHP
+ 693          JMP >8
+ 694 ^9       LDA #CEXSS+1
+ 695          STA EXSHP
+ 696 ^8       DEC TAME2
+ 697          JMP NXTPOW
+ 698 ^4       LDA #7
+ 699          STA SCR6
+ 700          LDX #0
+ 701          LDY #7
+ 702          JSR WNOISE2
+ 703          JSR FLYWHEEL
+ 704          JSR DRAWFLY
+ 705          LDA #CEXSS
+ 706          STA EXSHP
+ 707 ^1       LDA EXSHP
+ 708          LDX CARXO
+ 709          INX 
+ 710          INX 
+ 711          LDY CARYO
+ 712          INY 
+ 713          JSR DRAW0           ; DRAW CAR EXPLOSION SHAPE   
+ 714          LDA EXSHP
+ 715          CMP #CEXSS+2
+ 716          BEQ >1
+ 717          LDA #3
+ 718          STA XCOUNTER
+ 719 ^8       JSR TEMPORI
+ 720          JSR FLYWHEEL
+ 721          JSR FLYWHEEL
+ 722          JSR DRAWFLY
+ 723          DEC XCOUNTER
+ 724          BPL <8
+ 725          LDA EXSHP
+ 726          LDX CARXO
+ 727          INX 
+ 728          INX 
+ 729          LDY CARYO
+ 730          INY 
+ 731          JSR ERASE0          ; ERASE CAR EXPLOSION SHAPE 
+ 732          INC EXSHP
+ 733          JMP <1
+ 734 ^1       JSR TEMPORI
+ 735          LDA EXSHP
+ 736          LDX CARXO
+ 737          INX 
+ 738          INX 
+ 739          LDY CARYO
+ 740          INY 
+ 741          JSR ERASE0          ; ERASE CAR EXPLOSION SHAPE  
+ 742          LDA #0
+ 743          STA CARHROCK
+ 744          LDA #30
+ 745 CJ0      PHA 
+ 746          JSR TEMPORI
+ 747          JSR FLYWHEEL
+ 748          JSR FLYWHEEL
+ 749          JSR DRAWFLY
+ 750          LDA #20
+ 751          JSR DELAY
+ 752          PLA 
+ 753          SEC 
+ 754          SBC #1
+ 755          BCS CJ0
+ 756          JSR MAKESON
+ 757          LDA #$FF
+ 758          JSR DELAY
+ 759          LDA #$FF
+ 760          JSR DELAY
+ 761          JSR SAVEPLY
+ 762          LDA MEN
+ 763          BNE >6
+ 764          JMP GAMEOVER
+ 765 ^6       LDA PLAYERS
+ 766          BEQ CONTGME
+ 767          LDA ONEPGONE
+ 768          BNE CONTGME
+ 769          LDA PLAYERN
+ 770          EOR #1
+ 771          STA PLAYERN
+ 772 CONTGME:
+ 773 ^6       BIT PAGE1           ; TURN ON GRAPHICS PAGE 1  
+ 774          BIT $C051
+ 775          LDA #BACKMSFR
+ 776          STA FREQ
+ 777          LDA /BACKMSFR
+ 778          STA FREQ+1
+ 779          LDA #BACKMSDR
+ 780          STA DURT
+ 781          LDA /BACKMSDR
+ 782          STA DURT+1
+ 783          LDA #0
+ 784          STA STATE
+ 785          LDA DEMOMODE
+ 786          BEQ >1
+ 787          JMP INTERP
+ 788 ^1       JSR NEWSCRN
+ 789          JSR SELECTP
+ 790 NEWPNTR  JSR MIDDLE          ; RESET ALL VARIABLES AND SCREEN
+ 791          JSR GRAPHON         ; TURN ON GRAPHICS
+ 792          JSR PRMPT2P
+ 793          JMP MAINLOOP        ; BRANCH INTO THE MAIN PROGRAM LOOP
+ 794 TEMPORI  INC MOUNCNT
+ 795          LDA MOUNCNT
+ 796          AND #$01
+ 797          BNE >1
+ 798          DEC YINDEX
+ 799          DEC CUONT2
+ 800          JSR NEWROUND
+ 801 ^1       LDA MOUNCNT
+ 802          AND #$F
+ 803          BNE RANOUT3
+ 804          JSR PULSATE
+ 805 RANOUT3  JSR DRAWBLTS        ; DRAW ANY BULLETS THAT ARE ON THE SCREEN  
+ 806          JSR DRAWALN         ; COMPLETE ALIEN ROUTINE
+ 807          JSR SHIPCHCK
+ 808          JSR SHIPFIRN
+ 809          JSR PLOTDCH
+ 810          JSR ROCKS
+ 811          JSR TANKBUL
+ 812          JSR ROCKCOL         ; COLLISON ROUTINE FOR ROCKS
+ 813          JSR COLISION        ; CHECK COLLISION FOR SHIPS
+ 814          LDA #$50
+ 815          JSR DELAY
+ 816          RTS 
+ 817 ;
+ 818 ;
+ 819 ;
+ 820 ;
+ 821 ;
+ 822 ; ================    SHIFT SHAPES ROUTINE     =================
+ 823 ;
+ 824 SHIFT:
+ 825 ;
+ 826          LDA #$00
+ 827          STA SHAPENUM        ; START WITH SHAPE ZERO
+ 828          STA SHIFBYT1
+ 829          STA SHIFBYT2
+ 830          LDA #$02            ; START WITH SHAPE 1 - SHIFT 0
+ 831          STA SHFINDX
+ 832          LDA #INFOTEC        ; SET UP ADDRESS OF FIRST INFO BLOCK
+ 833          STA BLOCK           ; SET UP ADDRESS OF FIRST INFO BLOCK
+ 834          LDA /INFOTEC        ; SET UP FOR INDIRECT ADDRESSING
+ 835          STA BLOCK+1
+ 836          LDY #$04            ; GET BUFFER TO THROW ALL SHIFTED SHAPES
+ 837          LDA (BLOCK),Y       ; GET LOW ADDRESS OF SHAPE BUFFER
+ 838          STA NEXTBUF         ; KEEP TRACK OF NEXT SHAPE
+ 839          INY 
+ 840          LDA (BLOCK),Y       ; GET HIGH ADDRESS OF SHAPE BUFFER
+ 841          STA NEXTBUF+1
+ 842 ^3       LDY SHFINDX         ; GET INDEX FOR WHICH SHAPE TO SHIFT
+ 843          LDA (BLOCK),Y       ; GET SHAPE TO SHIFT NEXT ONE FROM
+ 844          STA OLDSHP
+ 845          INY 
+ 846          LDA (BLOCK),Y       ; GET SHAPE TO SHIFT NEXT ONE FROM
+ 847          STA OLDSHP+1
+ 848          LDY #$00            ; GET WITH OF SHAPE
+ 849          LDA (BLOCK),Y
+ 850          TAX                 ; KEEP IT IN THE X REGISTER
+ 851          CMP #$FF            ; CHECK TO SEE IF AT END OF TABLE
+ 852          BNE SNAKE
+ 853          JMP FINISHED
+ 854 SNAKE    STA WIDTH           ; STORE IT AT WIDTH LOCATION 
+ 855          INY 
+ 856          LDA (BLOCK),Y       ; GET LENGTH OF SHAPE
+ 857          STA LENGTH
+ 858          JSR MULTIPLY        ; COMBINE WIDTH AND LENGTH TO GET THE
+ 859          STX AREA            ; STORE TOTAL LENGTH IN BYTES OF SHAPE
+ 860 ^1       CLC 
+ 861          LDY SHFINDX
+ 862          INY 
+ 863          INY 
+ 864          LDA NEXTBUF         ; GET LOW ADDRESS OF SHIFT
+ 865          STA (BLOCK),Y       ; STORE IN INFO BLOCK
+ 866          INY 
+ 867          LDA NEXTBUF+1       ; GET HIGH ADDRESS OF SHIFT
+ 868          STA (BLOCK),Y       ; STORE IN INFO BLOCK
+ 869          JSR SHIFTONE        ; SHIFT THAT ONE SHAPE
+ 870          ASL SHIFBYT1        ; PREPARE FOR NEXT BIT TO SHIFT IN
+ 871          ASL SHIFBYT2        ; PREPARE FOR NEXT BIT TO SHIFT IN
+ 872          LDA AREA
+ 873          CLC 
+ 874          ADC NEXTBUF         ; CALCULATE NEW SHAPE BUFFER
+ 875          BCC FOOD
+ 876          INC NEXTBUF+1
+ 877 FOOD     STA NEXTBUF
+ 878          INC SHFINDX         ; INCREMENT SHIFT INDEX
+ 879          INC SHFINDX         ; INCREMENT SHIFT INDEX
+ 880          LDA SHFINDX
+ 881          CMP #14             ; ON LAST SHAPE ? 
+ 882          BNE <3
+ 883          LDA #$10            ; ADD 16 TO INFORMATION BLOCK ADDRESS TO GET
+ 884          CLC                 ; ADDRESS OF NEXT BLOCK AVAILABLE
+ 885          ADC BLOCK
+ 886          STA BLOCK           ; STORE RESULT IN Z-PAGE LOOKUP
+ 887          LDA #$00            ; DONT'T FORGET THE GOOD OLD CARRY
+ 888          ADC BLOCK+1
+ 889          STA BLOCK+1         ; STORE RESULT IN Z-PAGE LOOKUP
+ 890          LDA #$02            ; RESET POINTER TO BEGINING OF INFO BLOCK
+ 891          STA SHFINDX
+ 892          INC SHAPENUM        ; INCREMENT FOR NEXT SHAPE
+ 893          LDA SHAPENUM
+ 894          CMP #DC1SS
+ 895          BEQ BRAXON
+ 896          CMP #DC2SS
+ 897          BEQ BRAXON
+ 898          CMP #DC3SS
+ 899          BEQ BRAXON
+ 900          CMP #DC4SS
+ 901          BEQ BRAXON
+ 902          CMP #DC5SS
+ 903          BEQ BRAXON
+ 904          LDA #$00
+ 905          STA SHIFBYT1
+ 906          STA SHIFBYT2
+ 907          JMP XENON
+ 908 *******************************
+ 909 BRAXON   LDA #$D5            ; GET SHIFTIN BYTE
+ 910          ASL                 ; CLEAR OUT COLOR BIT
+ 911          STA SHIFBYT1        ; STORE AT SHIFTIN BYTE LOCATION
+ 912          LDA #$D5            ; GET SHIFTIN BYTE 2
+ 913          ASL                 ; CLEAR OUT COLOR BIT
+ 914          STA SHIFBYT2
+ 915 *******************************
+ 916 XENON    JMP <3
+ 917 FINISHED RTS                 ; RETURN TO CALLER
+ 918 ;
+ 919 ;
+ 920 ; =====  WHITE NOISE ROUTINE DRIVEN BY RANDOM TABLE  =====
+ 921 ;
+ 922 WNOISE   LDA RANDAT,X
+ 923 ^2       CLC 
+ 924          ADC SCR6
+ 925          BCC <2
+ 926          JSR TWEEK
+ 927          INX 
+ 928          BNE WNOISE
+ 929          RTS 
+ 930 ;
+ 931 ;
+ 932 ;;
+ 933 ; =====  MULTIPLY ROUTINE  =====
+ 934 ;
+ 935 MULTIPLY:
+ 936 ;
+ 937          STA SCR0            ; MULTIPLY (A) AND (X)
+ 938          STX SCR1            ; RETURN WITH A=HIGH / X=LOW
+ 939          LDA #$00
+ 940          LDX #$08            ; SET COUNTER FOR ALL EIGHT BITS
+ 941 ^1       ASL 
+ 942          ROL SCR2            ; ROTATE BIT INTO NUMBER
+ 943          ASL SCR0            ; MULTIPLY BY TWO
+ 944          BCC >2              ; CHECK FOR OVERFLOW
+ 945          CLC 
+ 946          ADC SCR1            ; CHECK FOR OTHER OVERFLOW
+ 947          BCC >2
+ 948          INC SCR2            ; INCREMENT HIGH BYTE OF ANSWER
+ 949 ^2       DEX                 ; MAKE SYRE THAT YOU DO IT EIGHT TIMES
+ 950          BNE <1
+ 951          TAX                 ; PUT LOW PART OF ANSWER IN (X)
+ 952          LDA SCR2            ; PUT HIGH PART OF ANSWER IN (A)
+ 953          RTS                 ; RETURN WITH ANSWER
+ 954 ;
+ 955 ;
+ 956 ; =====  SHIFT ROUTINE SHIFTS SHIFT0 TO OTHER SHIFTS  =====
+ 957 ;
+ 958 SHIFTONE:
+ 959 ;
+ 960          LDA SHIFBYT1
+ 961          PHA 
+ 962          LDA SHIFBYT2
+ 963          PHA 
+ 964          LDA #$00            ; RESET INDEX COUNTER TO ZERO
+ 965          STA COUNT3
+ 966          TAY 
+ 967 ^2       LDA WIDTH           ; GET WIDTH OF SHAPE
+ 968          STA COUNT2          ; USE THAT LOCATION AS A COUNTER
+ 969          LDA (OLDSHP),Y      ; GET BYTE FORM SHAPE
+ 970          AND #3              ; TAKE OUT EVERYTHING BUT FIRST 2 BITS
+ 971          BNE >1
+ 972          LDA #0
+ 973          STA SHIFBYT1
+ 974          STA SHIFBYT2
+ 975 ^1       LDA (OLDSHP),Y      ; GET BYTE FORM SHAPE 
+ 976          AND #$80            ; TAKE OUT EVERYTHING BUT COLOR BIT
+ 977          STA COLR            ; STORE IT TEMPORARILY
+ 978          LDA SHIFBYT1        ; SHIFT BIT IN FROM SHIFTIN BYTE
+ 979          ASL 
+ 980          PHP 
+ 981 ^1       LDA (OLDSHP),Y      ; GET BYTE FROM PREVIOUS SHAPE
+ 982          AND #$7F
+ 983          PLP                 ; GET BIT FROM PREVIOUS SHAPE AND SPLERGE
+ 984          ROL                 ; ROTATE BYTE RIGHT
+ 985          ASL                 ; MOVE IT BACK LEFT AGAIN
+ 986          PHP                 ; SAVE PROCESSOR STATUS
+ 987          LSR                 ; SHIFT IT BACK IN AGAIN
+ 988          ORA COLR            ; PUT BACK THE COLOR BIT
+ 989          STA (NEXTBUF),Y     ; STORE SHIFTED BYTE IN NEXT SHAPE
+ 990          INY 
+ 991          BNE UPOL
+ 992          INC OLDSHP+1
+ 993          INC NEXTBUF+1
+ 994 UPOL     DEC COUNT2          ; DECREMENT BYTE COUNTER
+ 995          BNE <1
+ 996          INC COUNT3
+ 997          LDA COUNT3
+ 998          CMP LENGTH          ; CHECK TO SEE IF DONE WITH WHOLE SHAPE
+ 999          BEQ >2
+1000          PLP                 ; SWAP SHIFTIN BYTE FOR BACKGROUND PATTERN
+1001          LDA SHIFBYT1
+1002          PHA 
+1003          LDA SHIFBYT2
+1004          STA SHIFBYT1
+1005          PLA 
+1006          STA SHIFBYT2
+1007          JMP <2              ; JUMP BACK FOR NEXT LINE
+1008 ^2       PLP                 ; PULL STACK OFF AND EXIT ROUTINE
+1009          PLA 
+1010          STA SHIFBYT2
+1011          PLA 
+1012          STA SHIFBYT1
+1013          RTS                 ; RETURN TO CALLER
+1014 ;
+1015 ;
+1016 ;
+1017 ;
+1018 ;
+1019 WNOISE2  INY 
+1020          INX 
+1021 ^1       LDA RANDAT,X
+1022 ^2       CLC 
+1023          ADC SCR6
+1024          BCC <2
+1025          JSR TWEEK
+1026          DEX 
+1027          BEQ >2
+1028          LDA SCR0
+1029          JMP <1
+1030 ^2       DEY 
+1031          BNE <1
+1032          RTS 
+1033 ;
+1034 ;
+1035 ;
+1036 ;
+1037 ; =====  ROUTINE TO PLAY SHORT FREQ BLEEPS  =====
+1038 ;
+1039 ;
+1040 UPTHEA:
+1041 ;
+1042          STA SCR3
+1043          LDX #30
+1044 ^1       LDA SCR3
+1045          JSR DELAY
+1046          JSR TWEEK
+1047          DEX 
+1048          BPL <1
+1049          RTS 
+1050 ;
+1051 ; =====  ROCK BOOM SOUND WHEN YOU HIT ROCK  =====
+1052 ;    
+1053 ROCKBOOM:
+1054 ;        
+1055          LDA #1
+1056          STA SCR6
+1057          LDX #210
+1058          JSR WNOISE
+1059          RTS 
+1060 ;
+1061 ; =====  ROUTINE TO PLAY BACKGROUND MUSIC AT $300 INTERVALS  =====
+1062 ;
+1063 ;
+1064 PLAYBACK LDA STATE
+1065          BNE CLICK2
+1066          LDX #0
+1067          LDA (DURT,X)
+1068          ASL 
+1069          STA LSTDURT
+1070          LDA (FREQ,X)
+1071          BNE >1
+1072          LDA #BACKMSFR
+1073          STA FREQ
+1074          LDA /BACKMSFR
+1075          STA FREQ+1
+1076          LDA #BACKMSDR
+1077          STA DURT
+1078          LDA /BACKMSDR
+1079          STA DURT+1
+1080          LDA #0
+1081          STA STATE
+1082          RTS 
+1083 ^1       STA LSTFREQ
+1084 CLICK2   LDX #$FF
+1085          LDY #3
+1086 NXTPCE   LDA LSTFREQ         ; GET FREQUENCY OF NOTE   
+1087 WAIT1    NOP 
+1088          DEX 
+1089          BEQ >1
+1090          NOP 
+1091          JMP >2
+1092 ^1       DEY 
+1093          BEQ >3
+1094 ^2       SEC 
+1095          SBC #$01            ; USE AS DELAY BETWEEN CLICKS
+1096          BCS WAIT1           ; IF NOT DONE CONTINUE DELAY      
+1097          JSR TWEEK
+1098          DEX 
+1099          BEQ >1
+1100          NOP 
+1101          JMP >2
+1102 ^1       DEY 
+1103          BEQ >3
+1104 ^2       JMP NXTPCE
+1105 ^3       DEC LSTDURT
+1106          BEQ >1
+1107          LDA #1
+1108          STA STATE
+1109          JMP >3
+1110 ^1       INC DURT
+1111          BNE >1
+1112          INC DURT+1
+1113 ^1       INC FREQ
+1114          BNE >2
+1115          INC FREQ+1
+1116 ^2       LDA #0
+1117          STA STATE
+1118 ^3       RTS 
+1119 ;
+1120 ;
+1121 GOALZDO:
+1122 ;
+1123          BIT PAGE1
+1124          BIT $C051
+1125          JSR NEWSCRN
+1126          LDA OLDCRSL
+1127          STA COURSEL
+1128          LDA OLDCRSH
+1129          STA COURSEH
+1130          LDA #$FF
+1131          JSR DELAY
+1132          JSR READBASE
+1133          LDA #1
+1134          STA LEVEL
+1135          JSR SETUP2
+1136          JSR JSTDRAW
+1137          JSR NEWROUND
+1138          JSR READYSGN
+1139          JMP BASEPART
+1140 ;
+1141 ;
+1142 ;
+1143 ;
+1144 ;
+1145 ; =====  SONG ROUTINE THAT PLAYS TWO VOICE MUSIC  =====
+1146 ;
+1147 PLAYTWOV:
+1148 ;
+1149          STX MUSIC
+1150          STA MUSIC+1
+1151          LDA #0
+1152          STA SPKRUP
+1153          STA PITCHCUT
+1154          STA PITCHCUT+1
+1155 PLAYNOTE LDY #0
+1156          LDA (MUSIC),Y
+1157          BNE >1
+1158          RTS 
+1159 ^1       STA DUR
+1160          LDX #0
+1161          JSR GETNOTE
+1162          STA SPKRVEC0+1
+1163          STA SPKRVEC1+1
+1164          STX FLIPVEC0+1
+1165          STX FLIPVEC1+1
+1166          LDX #1
+1167          JSR GETNOTE
+1168          STA SPKVEC10+1
+1169          STA SPKVEC11+1
+1170          STX FLPVEC10+1
+1171          STX FLPVEC11+1
+1172          LDA PITCH+1
+1173          BNE >1
+1174          ASL PITCHCUT
+1175          ASL PITCHCUT
+1176          ASL PITCHCUT
+1177 ^1       LDA #0
+1178          LDX #$8A
+1179          LDY #$40
+1180          STA DUR+1
+1181 MUSICM:
+1182          STA SPKRUP
+1183          DEY 
+1184          BNE L0
+1185          LDY PITCH
+1186          BIT SPKRUP
+1187          BMI L3
+1188 SPKRVEC0 BIT $C030
+1189 FLIPVEC0 EOR #$80
+1190          JMP L7
+1191 L0       CPY PITCHCUT
+1192          BNE L2
+1193          BIT SPKRUP
+1194          BPL L4
+1195 SPKRVEC1 BIT $C030
+1196 FLIPVEC1 EOR #$80
+1197          JMP L1
+1198 L2       NOP 
+1199 L3       NOP 
+1200 L4       NOP 
+1201 L5       NOP 
+1202 L6       NOP 
+1203 L7       NOP 
+1204 L1:
+1205          STA SPKRUP
+1206          DEX 
+1207          BNE L10
+1208          LDX PITCH+1
+1209          BIT SPKRUP
+1210          BMI L13
+1211 SPKVEC10 BIT $C030
+1212 FLPVEC10 EOR #$80
+1213          JMP L17
+1214 L10      CPX PITCHCUT+1
+1215          BNE L12
+1216          BIT SPKRUP
+1217          BPL L14
+1218 SPKVEC11 BIT $C030
+1219 FLPVEC11 EOR #$80
+1220          JMP L11
+1221 L12      NOP 
+1222 L13      NOP 
+1223 L14      NOP 
+1224 L15      NOP 
+1225 L16      NOP 
+1226 L17      NOP 
+1227 L11:
+1228          DEC DUR+1
+1229          BNE L20
+1230          DEC DUR
+1231          BEQ NEXTN
+1232          JMP MUSICM
+1233 L20      NOP 
+1234          NOP 
+1235          NOP 
+1236          JMP MUSICM
+1237 NEXTN:
+1238          LDA MUSIC
+1239          CLC 
+1240          ADC #3
+1241          STA MUSIC
+1242          BCC >0
+1243          INC MUSIC+1
+1244 ^0       JMP PLAYNOTE
+1245 GETNOTE:
+1246          INY 
+1247          LDA (MUSIC),Y
+1248          PHP 
+1249          STA PITCH,X
+1250          LSR 
+1251          LSR 
+1252          LSR 
+1253          LSR 
+1254          STA PITCHCUT,X
+1255          PLP 
+1256          BEQ >3
+1257          LDA SOUNDTY
+1258          BEQ >1
+1259          LDA #$20
+1260          JMP >2
+1261 ^1       LDA #$30
+1262 ^2       LDX #$A0
+1263 ^3       RTS 
+1264 ;
+1265 ;
+1266 SCRLGOAL:
+1267 ;
+1268 ;
+1269          LDA ASCONL
+1270          STA VASCRL2+1
+1271          LDA ASCONH
+1272          STA VASCRL2+2
+1273          LDA #186
+1274          STA BSSCROLL
+1275          LDX #0
+1276          STX XSAVE
+1277 ^4       LDX BSSCROLL
+1278          LDA LOWADR,X
+1279          STA VASCRL3+1
+1280          STA VASCRL4+1
+1281          STA HOMOG1+1
+1282          LDA HGHADR,X
+1283          STA VASCRL3+2
+1284          STA VASCRL4+2
+1285          STA HOMOG1+2
+1286          LDA #$55
+1287          STA SCR5
+1288          LDA #$55
+1289          STA SCR6
+1290          LDX XSAVE
+1291 VASCRL2  LDA $FFFF,X         ; GET BYTE THESE BITS GOTO  
+1292          STX ZSAVE
+1293          ASL 
+1294          LDX ASCBI
+1295          INX 
+1296 GPX8     DEX 
+1297          BEQ GPX9
+1298          ROL SCR5
+1299          ROL 
+1300          ROL SCR6
+1301          JMP GPX8
+1302 GPX9     LSR 
+1303          ORA #$80
+1304          LDX ZSAVE
+1305          LDY ASCBT
+1306          CPY #0
+1307          BMI G46T
+1308          CPY #40
+1309          BGE G46T
+1310 VASCRL3  STA $FFFF,Y
+1311 G46T     LDA SCR6
+1312          INY 
+1313          CPY #0
+1314          BMI G47T
+1315          CPY #40
+1316          BGE G47T
+1317          ORA #$80
+1318 VASCRL4  STA $FFFF,Y
+1319 G47T     INY 
+1320          TYA 
+1321          AND #1
+1322          BEQ G40T
+1323          LDA #$D5
+1324          JMP G41T
+1325 G40T     LDA #$AA
+1326 G41T     CPY #0
+1327          BMI G1T
+1328          CPY #$28
+1329          BGE G1T
+1330 HOMOG1   STA $FFFF,Y
+1331 G1T      DEC BSSCROLL
+1332          INC XSAVE
+1333          LDA BSSCROLL
+1334          CMP #179
+1335          BNE <4
+1336          LDA ASCBI
+1337          SEC 
+1338          SBC XSPEED
+1339          BCS G2T
+1340          CLC 
+1341          ADC #7
+1342          DEC ASCBT
+1343 G2T      STA ASCBI
+1344          RTS 
+1345 ; 
+1346 ; =====  PLAY ELECTRIC DUET TYPE MUSIC ROUTINE  =====
+1347 ;
+1348 PLAYGOAL:
+1349 ;
+1350          LDX #GLMUSIC
+1351          LDA /GLMUSIC
+1352          JMP PLAYTWOV
+1353 ;
+1354 ;
+1355 ;
+1356 ; =====  PLAY ELECTRIC DUET TYPE MUSIC ROUTINE  =====   
+1357 ;
+1358 PLAYGLZ:
+1359 ;
+1360          LDX #GZMUSIC
+1361          LDA /GZMUSIC
+1362          JMP PLAYTWOV
+1363 ;
+1364 ;
+1365 ;
+1366 READYSGN:
+1367 ;
+1368          LDA LEVEL
+1369          BNE >1
+1370          LDX #8
+1371          LDY #78
+1372          LDA #1
+1373          STA DOOBIE
+1374          JSR PRINTXT
+1375          ASC "  BEGINNER COURSE GO !  @"
+1376          RTS 
+1377 ^1       LDX #8
+1378          LDY #78
+1379          LDA #1
+1380          STA DOOBIE
+1381          JSR PRINTXT
+1382          ASC "  CHAMPION COURSE GO !  @"
+1383          RTS 
+1384 ;
+1385 ;
+1386 ;
+1387 ;
+1388 ;
+1389 UNCOMPR  LDA SCR5            ; START SCANNING AT LINE 0 
+1390          SEC 
+1391          SBC #1
+1392          STA VLINE
+1393          LDA #0
+1394          STA BYTEL           ; START AT BYTE 0
+1395 ;
+1396 ;
+1397          JSR INCHPOS         ; SET HIRES CURSOR FOR FIRST POSITION
+1398 ^3       LDX #0
+1399          LDA (SCR2,X)
+1400          BPL >1
+1401          STA SCR0
+1402          JSR INCBUFER
+1403          LDA (SCR2,X)
+1404          STA PATTERNC
+1405 ^2       LDA SCR0
+1406          LDY BYTEL           ; GET BYTE OF CURRENT LINE
+1407          ORA #$80
+1408          CMP #$80
+1409          BEQ >7
+1410          STA (BASL),Y        ; GET NEXT BYTE FROM HIRES SCREEN
+1411 ^7       JSR INCHPOS
+1412          DEC PATTERNC
+1413          BNE <2
+1414          JSR INCBUFER
+1415          JMP <3
+1416 ^1       LDY BYTEL
+1417          ORA #$80
+1418          CMP #$80
+1419          BEQ >7
+1420          STA (BASL),Y
+1421 ^7       JSR INCHPOS
+1422          JSR INCBUFER
+1423          JMP <3
+1424 ;
+1425 ;
+1426 INCBUFER INC SCR2
+1427          BNE >1
+1428          INC SCR3            ; IF OVERFLOW THEN INCREMENT MSB OF BUFFER
+1429 ^1       RTS                 ; RETURN TO CALLER
+1430 ;
+1431 ;
+1432 INCHPOS  INC VLINE           ; INCREMENT VERTICAL POSITION OF HIRES CURSOR
+1433          LDA VLINE           ; IF LAST LINE WAS ALREADY DONE, THEN START
+1434 ;                            ; NEXT VERTICAL PASS WITH NEXT BYTE
+1435          CMP SCR6
+1436          BNE GETADDR         ; IF NOT DONE VERTICALLY, THEN CONTINUE
+1437          LDA SCR5
+1438          STA VLINE           ; RESET VERTICAL LINE ADDRESS
+1439          INC BYTEL           ; INCREMENT BYTE NUMBER
+1440          LDA BYTEL           ; CHECK TO SEE IF COMPLETELY DONE
+1441          CMP #$28
+1442          BEQ FINISHEB        ; GOT TO FINAL END OF ROUTINE
+1443 GETADDR  LDX VLINE
+1444          LDA HGHADR,X
+1445          STA BASH
+1446          LDA LOWADR,X
+1447          STA BASL
+1448          LDA #10
+1449          JSR DELAY
+1450          RTS 
+1451 ;
+1452 FINISHEB PLA                 ; POP OFF RETURN ADDRESS
+1453          PLA 
+1454          RTS                 ; RETURN TO CALLER
+1455 ;
+1456 ;
+1457 ;
+1458          LST 
+1459          NLS 
+1460          DCM "BSAVE OBJ4,A$800,L$1000,D1,S5"
+1461 ;
+1462          ICL "MOON PATROL5,D2,S6"
+:

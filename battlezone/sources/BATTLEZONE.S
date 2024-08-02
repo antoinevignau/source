@@ -57,7 +57,7 @@ L0824       STA   $80,X
             JSR   clearPAGE2
             JSR   checkJOYSTICK
             JSR   clearPAGE1
-            JSR   L675E
+            JSR   initHIGHSCORE
 
 *-----------------------
 
@@ -100,9 +100,9 @@ L0885       LDA   #$00
             JSR   L0970
             JMP   L088F
 
-L088F       JSR   L7F08
-            JSR   L6709
-            JSR   L676E
+L088F       JSR   printGAMEOVER
+            JSR   verifyHIGHSCORE
+            JSR   printHIGHSCORE
             JSR   L167A
             CMP   #" "
             BEQ   L087C
@@ -230,7 +230,7 @@ L0970       JSR   clearPAGE1
             JSR   L4A11
             LDA   MIXCLR
             JSR   L65CF
-            JSR   L676E
+            JSR   printHIGHSCORE
             LDA   #$FF
             STA   $A9
             STA   L7FCC
@@ -514,18 +514,18 @@ L0BD8       DB    $00
 L0BE5       STA   L0BD8
             STX   L0CFE
             STY   L0CFF
-            LDA   L10B0,X
+            LDA   tblXBIT,X
             ASL
             TAY
             INY
             CLC
-            LDA   $88
-            ADC   ($88),Y
+            LDA   ptrSTRING
+            ADC   (ptrSTRING),Y
             STA   $82
             DEY
-            LDA   $89
-            ADC   ($88),Y
-            STA   $83
+            LDA   ptrSTRING+1
+            ADC   (ptrSTRING),Y
+            STA   $82+1
             LDY   #$00
             LDA   ($82),Y
             STA   L0CA7
@@ -538,9 +538,9 @@ L0BE5       STA   L0BD8
             ADC   $82
             STA   $82
             BCC   L0C1B
-            INC   $83
+            INC   $82+1
 L0C1B       LDY   L0CFE
-            LDA   L0FD0,Y
+            LDA   tblXBYT,Y
             STA   L0CFD
             LDY   L0CFF
             CLC
@@ -584,7 +584,7 @@ L0C69       CLC
             ADC   $82
             STA   $82
             BCC   L0C75
-            INC   $83
+            INC   $82+1
 L0C75       INC   L0CFF
             DEC   L0CA6
             BNE   L0C1B
@@ -592,7 +592,7 @@ L0C75       INC   L0CFF
 
 *-----------------------
 
-clearPAGE1       LDA   #<HGR1
+clearPAGE1  LDA   #<HGR1
             STA   $80
             LDA   #>HGR1
             STA   $80+1
@@ -616,27 +616,29 @@ L0C97       TXA
             STA   $80+1
             RTS
 
+*-----------------------
+
 L0CA6       DB    $00
 L0CA7       DB    $00
 L0CA8       DB    $00
 L0CA9       DB    $00
 
-L0CAA       STY   L0CA8
+printSTRING STY   L0CA8
             STX   L0CA9
-            STA   $94
+            STA   charCOLOR
             LDY   #$00
-            LDA   ($88),Y
+            LDA   (ptrSTRING),Y
             STA   L0CA6
             INY
-            LDA   ($88),Y
-            STA   L0CA7
+            LDA   (ptrSTRING),Y
+            STA   L0CA6+1
             CLC
             LDA   #$02
-            ADC   $88
-            STA   $88
+            ADC   ptrSTRING
+            STA   ptrSTRING
             LDA   #$00
-            ADC   $88+1
-            STA   $88+1
+            ADC   ptrSTRING+1
+            STA   ptrSTRING+1
 L0CCC       LDX   L0CA8
             LDY   L0CA9
             JSR   L0C97
@@ -645,21 +647,23 @@ L0CCC       LDX   L0CA8
 L0CD9       TYA
             EOR   $80
             JSR   L0D85
-            AND   ($88),Y
+            AND   (ptrSTRING),Y
             STA   ($80),Y
             DEY
             BPL   L0CD9
             CLC
             LDA   L0CA7
-            ADC   $88
-            STA   $88
+            ADC   ptrSTRING
+            STA   ptrSTRING
             LDA   #$00
-            ADC   $88+1
-            STA   $88+1
+            ADC   ptrSTRING+1
+            STA   ptrSTRING+1
             INC   L0CA9
             DEC   L0CA6
             BNE   L0CCC
             RTS
+
+*-----------------------
 
 L0CFD       DB    $00
 L0CFE       DB    $00
@@ -667,17 +671,17 @@ L0CFF       DB    $00
 
 L0D00       STX   L0CFE
             STY   L0CFF
-            LDA   L10B0,X
+            LDA   tblXBIT,X
             ASL
             TAY
             INY
             CLC
-            LDA   $88
-            ADC   ($88),Y
+            LDA   ptrSTRING
+            ADC   (ptrSTRING),Y
             STA   $82
             DEY
-            LDA   $88+1
-            ADC   ($88),Y
+            LDA   ptrSTRING+1
+            ADC   (ptrSTRING),Y
             STA   $82+1
             LDY   #$00
             LDA   ($82),Y
@@ -693,7 +697,7 @@ L0D00       STX   L0CFE
             BCC   L0D33
             INC   $82+1
 L0D33       LDY   L0CFE
-            LDA   L0FD0,Y
+            LDA   tblXBYT,Y
             STA   L0CFD
             LDY   L0CFF
             CLC
@@ -734,12 +738,10 @@ L0D7C       INC   L0CFF
             RTS
 
 L0D85       AND   #$01
-            ORA   $94
+            ORA   charCOLOR
             TAX
             LDA   L0D8E,X
             RTS
-
-*-----------------------
 
 L0D8E       DB    $FF
             DB    $FF
@@ -753,31 +755,33 @@ L0D8E       DB    $FF
             DB    $D5
             DB    $00
             DB    $00
-L0D9A       DB    $00
-L0D9B       DB    $00
 
 *-----------------------
 
-L0D9C       LDY   #$00
+L0D9A       DB    $00
+L0D9B       DB    $00
+
+printSTRINGS
+            LDY   #$00	; index
             STY   L0D9B
-L0DA1       LDY   L0D9B
-            LDA   ($8A),Y
-            STA   $88
+L0DA1       LDY   L0D9B	; get pointer
+            LDA   (ptrSTRINGS),Y
+            STA   ptrSTRING
             INY
-            LDA   ($8A),Y
-            STA   $89
-            ORA   $88
-            BEQ   L0DCB
-            LDY   $8C
-            LDX   $8D
-            LDA   $94
-            JSR   L0CAA
-            INC   L0D9B
+            LDA   (ptrSTRINGS),Y
+            STA   ptrSTRING+1
+            ORA   ptrSTRING
+            BEQ   L0DCB	; 0 means the end
+            LDY   charX
+            LDX   charY
+            LDA   charCOLOR
+            JSR   printSTRING
+            INC   L0D9B	; next pointer
             INC   L0D9B
             CLC
             LDA   L0D9A
-            ADC   $8C
-            STA   $8C
+            ADC   charX
+            STA   charX
             JMP   L0DA1
 L0DCB       RTS
 
@@ -794,33 +798,33 @@ showTITLEPAGE
 * Show 1st string
 
             LDA   #<strATARISOFT
-            STA   $8A
+            STA   ptrSTRINGS
             LDA   #>strATARISOFT
-            STA   $8A+1
-            LDA   #$02
-            STA   $8C
-            LDA   #$02
-            STA   $8D
+            STA   ptrSTRINGS+1
+            LDA   #$02	; X
+            STA   charX
+            LDA   #$02	; Y
+            STA   charY
             STA   L0D9A
-            LDA   #$04
-            STA   $94
-            JSR   L0D9C
+            LDA   #$04	; color?
+            STA   charCOLOR
+            JSR   printSTRINGS
 
 * Show 2nd string
 
             LDA   #<strPRESENTS
-            STA   $8A
+            STA   ptrSTRINGS
             LDA   #>strPRESENTS
-            STA   $8A+1
+            STA   ptrSTRINGS+1
             LDA   #$02
             STA   L0D9A
             LDA   #$16
-            STA   $8C
+            STA   charX
             LDA   #$02
-            STA   $8D
+            STA   charY
             LDA   #$04
-            STA   $94
-            JSR   L0D9C
+            STA   charCOLOR
+            JSR   printSTRINGS
 
 * Show BATTLEZONE and the TANK
 
@@ -829,34 +833,34 @@ showTITLEPAGE
 * Show 3rd string
 
             LDA   #<strCOPYRIGHT
-            STA   $8A
+            STA   ptrSTRINGS
             LDA   #>strCOPYRIGHT
-            STA   $8A+1
+            STA   ptrSTRINGS+1
             LDA   #$00
-            STA   $8C
+            STA   charX
             LDA   #$7F
-            STA   $8D
+            STA   charY
             LDA   #$02
             STA   L0D9A
             LDA   #$06
-            STA   $94
-            JSR   L0D9C
+            STA   charCOLOR
+            JSR   printSTRINGS
 
 * Show 4th string
 
             LDA   #<strALLRIGHTS
-            STA   $8A
+            STA   ptrSTRINGS
             LDA   #>strALLRIGHTS
-            STA   $8A+1
+            STA   ptrSTRINGS+1
             LDA   #$00
-            STA   $8C
+            STA   charX
             LDA   #$93
-            STA   $8D
+            STA   charY
             LDA   #$02
             STA   L0D9A
             LDA   #$06
-            STA   $94
-            JSR   L0D9C
+            STA   charCOLOR
+            JSR   printSTRINGS
             RTS
 
 *-----------------------
@@ -887,7 +891,7 @@ tblHGRH     HEX   2024282C3034383C2024282C3034383C
             HEX   22262A2E32363A3E22262A2E32363A3E
             HEX   23272B2F33373B3F23272B2F33373B3F
 
-L0FD0       HEX   F6F6F6F7F7F7F7F8F8F8F9F9F9F9FAFA
+tblXBYT       HEX   F6F6F6F7F7F7F7F8F8F8F9F9F9F9FAFA
             HEX   FAFBFBFBFBFCFCFCFDFDFDFDFEFEFEFF
             HEX   FFFFFF00000001010101020202030303
             HEX   03040404050505050606060707070708
@@ -902,12 +906,12 @@ L0FD0       HEX   F6F6F6F7F7F7F7F8F8F8F9F9F9F9FAFA
             HEX   2D2D2D2D2E2E2E2F2F2F2F3030303131
             HEX   31313232323333333334343435353535
 
-L10B0       HEX   01030500020406010305000204060103
+tblXBIT       HEX   01030500020406010305000204060103
             HEX   05000204060103050002040601030500
             HEX   02040601030500020406010305000204
             HEX   06010305000204060103050002040601
             HEX   03050002040601030500020406010305
-L1100       HEX   00020406010305000204060103050002
+            HEX   00020406010305000204060103050002
             HEX   04060103050002040601030500020406
             HEX   01030500020406010305000204060103
             HEX   05000204060103050002040601030500
@@ -1686,9 +1690,9 @@ L1641       STA   $0650,X
 
             LDA   MIXSET	; and print the strings
             LDA   #<L16AA
-            STA   $8A
+            STA   ptrSTRINGS
             LDA   #>L16AA
-            STA   $8A+1
+            STA   ptrSTRINGS+1
             LDA   #$DB
             STA   $84
             LDA   #$06
@@ -1698,9 +1702,9 @@ L1641       STA   $0650,X
 * Print Space for options
 
             LDA   #<L16BB
-            STA   $8A
+            STA   ptrSTRINGS
             LDA   #>L16BB
-            STA   $8A+1
+            STA   ptrSTRINGS+1
             LDA   #$DB
             STA   $84
             LDA   #$07
@@ -1739,21 +1743,23 @@ L16A9       RTS
 L16AA       ASC   " RETURN TO BEGIN"00
 L16BB       ASC   "SPACE FOR OPTIONS"00
 
-L16CD       DA    L16E3
-            DA    L16E5
-            DA    L1701
-            DA    L171B
-            DA    L1735
-            DA    L1737
-            DA    L1739
-            DA    L173B
-            DA    L173D
-            DA    L1759
-            DA    L1386
+*-----------------------
+
+L16CD       DA    L16E3	; 0
+            DA    L16E5	; 1* (* means character used)
+            DA    L1701	; 2
+            DA    L171B	; 3*
+            DA    L1735	; 4
+            DA    L1737	; 5
+            DA    L1739	; 6
+            DA    L173B	; 7
+            DA    L173D	; 8*
+            DA    L1759	; 9*
+            DA    L1386	; _
 
 L16E3       DB    $0C
             DB    $02
-L16E5       DB    $0C
+L16E5       DB    $0C	; 1
             DB    $02
             DB    $C0
             DB    $81
@@ -1781,7 +1787,7 @@ L16E5       DB    $0C
             DB    $87
             DB    $00
             DB    $00
-L1701       DB    $0C
+L1701       DB    $0C	; 2
             DB    $02
             DB    $F0
             DB    $87
@@ -1807,7 +1813,7 @@ L1701       DB    $0C
             DB    $9F
             DB    $00
             DB    $00
-L171B       DB    $0C
+L171B       DB    $0C	; 3
             DB    $02
             DB    $FC
             DB    $9F
@@ -1833,15 +1839,15 @@ L171B       DB    $0C
             DB    $87
             DB    $F0
             DB    $87
-L1735       DB    $0C
+L1735       DB    $0C	; 4
             DB    $02
-L1737       DB    $0C
+L1737       DB    $0C	; 5
             DB    $02
-L1739       DB    $0C
+L1739       DB    $0C	; 6
             DB    $02
-L173B       DB    $0C
+L173B       DB    $0C	; 7
             DB    $02
-L173D       DB    $0C
+L173D       DB    $0C	; 8
             DB    $02
             DB    $F0
             DB    $87
@@ -1869,7 +1875,7 @@ L173D       DB    $0C
             DB    $87
             DB    $00
             DB    $00
-L1759       DB    $0C
+L1759       DB    $0C	; 9
             DB    $02
             DB    $F0
             DB    $87
@@ -1946,32 +1952,32 @@ L17C3       JSR   L1B04
             LDA   #<L1AEF
             LDX   #>L1AEF
             JSR   L1B04
-            LDX   #$01
+            LDX   #$01	; Player 1
             LDA   #$04
             STA   $84
             LDA   #$05
             STA   $85
-            JSR   L1BE7
-            LDX   #$02
+            JSR   printSCOREPX
+            LDX   #$02	; Player 2
             LDA   #$11
             STA   $84
             LDA   #$05
             STA   $85
             LDA   nbPLAYERS
             BEQ   L17F4
-            JSR   L1BE7
+            JSR   printSCOREPX
             JMP   L17FD
 
 L17F4       LDA   #<L1AE4
             LDX   #>L1AE4
             LDY   $85
             JSR   L1B04
-L17FD       LDX   #$00
+L17FD       LDX   #$00	; High-score
             LDA   #$1E
             STA   $84
             LDA   #$05
             STA   $85
-            JSR   L1BE7
+            JSR   printSCOREPX
             LDA   #$0A
             STA   $84
             LDY   #$06
@@ -2206,7 +2212,7 @@ L1AEF       ASC   "HI SCORE"00
 
 *-----------------------
 
-L1AF8       DB    $A0	; space
+tblKEYS     DB    $A0	; space
             DB    $88	; left arrow
             DB    $95	; right arrow
             DB    $C1	; A
@@ -2221,11 +2227,11 @@ L1AFF       DB    $95	; right arrow
 
 *-----------------------
 
-L1B04       STA   $8A
-            STY   $85
-            STX   $8A+1
+L1B04       STA   ptrSTRINGS
+            STY   $84+1
+            STX   ptrSTRINGS+1
 L1B0A       LDY   #$00
-L1B0C       LDA   ($8A),Y
+L1B0C       LDA   (ptrSTRINGS),Y
             BEQ   L1B15
             STA   ($84),Y
             INY
@@ -2247,30 +2253,30 @@ L1B1A       STA   $0650,X
 *-----------------------
 
 L1B2A       LDA   #$00
-            STA   $8C
+            STA   charX
             JSR   L1B16
             LDA   MIXSET
-L1B34       LDA   $8C
+L1B34       LDA   charX
             ASL
             TAX
             LDA   L19A8,X
-            STA   $8A
+            STA   ptrSTRINGS
             LDA   L19A8+1,X
-            STA   $8A+1
+            STA   ptrSTRINGS+1
             LDA   L1974,X
             STA   $84
             LDA   L1974+1,X
             STA   $84+1
             JSR   L1B0A
             JSR   L1B5B
-            INC   $8C
-            LDY   $8C
+            INC   charX
+            LDY   charX
             CPY   #$07
             BNE   L1B34
             RTS
 
-L1B5B       LDX   $8C
-            LDA   L1AF8,X
+L1B5B       LDX   charX
+            LDA   tblKEYS,X
             LDX   #$04
 L1B62       CMP   L1AFF,X
             BEQ   L1B75
@@ -2307,16 +2313,16 @@ L1B8C       LDX   $95
             ASL
             TAX
             LDA   L19A8,X
-            STA   $8A
+            STA   ptrSTRINGS
             LDA   L19A8+1,X
-            STA   $8A+1
+            STA   ptrSTRINGS+1
             LDX   #$00
             LDA   #$07
             STA   $85
             LDA   #$E8
             STA   $84
             LDY   #$00
-L1BAF       LDA   ($8A),Y
+L1BAF       LDA   (ptrSTRINGS),Y
             BEQ   L1BBB
             AND   #$7F
             STA   ($84),Y
@@ -2331,12 +2337,12 @@ L1BC0       LDA   KBD
             LDX   KBDSTROBE
             LDX   $95
             DEX
-L1BCB       CMP   L1AF8,X
+L1BCB       CMP   tblKEYS,X
             BEQ   L1BDD
             DEX
             BPL   L1BCB
             LDX   $95
-            STA   L1AF8,X
+            STA   tblKEYS,X
             INC   $95
             JMP   L1B8C
 
@@ -2346,7 +2352,10 @@ L1BDD       JSR   BELL1
 L1BE3       LDA   MIXCLR
             RTS
 
-L1BE7       TXA
+*-----------------------
+
+printSCOREPX
+            TXA
             ASL
             ASL
             CLC
@@ -2354,13 +2363,13 @@ L1BE7       TXA
             TAX
             LDY   #$00
             STY   $9B
-L1BF2       LDA   L63FF,X
+L1BF2       LDA   tblSCORES,X
             BNE   L1BFF
             LDA   $9B
             BNE   L1BFF
             LDA   #$A0
             BNE   L1C06
-L1BFF       LDA   L63FF,X
+L1BFF       LDA   tblSCORES,X
             INC   $9B
             ORA   #$B0
 L1C06       STA   ($84),Y
@@ -2379,6 +2388,8 @@ L1C16       STA   ($84),Y
             LDA   #$B0
             STA   ($84),Y
             RTS
+
+*-----------------------
 
 L1C22       DB    $00
             DB    $02
@@ -4099,41 +4110,41 @@ L431A       TAY
 L431F       AND   L44AF
             BEQ   L437A
             LDA   #<L4889
-            STA   $88
+            STA   ptrSTRING
             LDA   #>L4889
-            STA   $88+1
+            STA   ptrSTRING+1
             LDX   #$2A
             LDY   #$0B
             LDA   #$FF
             JSR   L0BE5
             LDA   #<L48E1
-            STA   $88
+            STA   ptrSTRING
             LDA   #>L48E1
-            STA   $88+1
+            STA   ptrSTRING+1
             LDX   #$2A
             LDY   #$13
             LDA   #$FF
             JSR   L0BE5
             LDA   #<L4929
-            STA   $88
+            STA   ptrSTRING
             LDA   #>L4929
-            STA   $89
+            STA   ptrSTRING+1
             LDX   #$42
             LDY   #$13
             LDA   #$FF
             JSR   L0BE5
             LDA   #<L4949
-            STA   $88
+            STA   ptrSTRING
             LDA   #>L4949
-            STA   $88+1
+            STA   ptrSTRING+1
             LDX   #$2A
             LDY   #$1B
             LDA   #$FF
             JSR   L0BE5
             LDA   #<L4971
-            STA   $88
+            STA   ptrSTRING
             LDA   #>L4971
-            STA   $88+1
+            STA   ptrSTRING+1
             LDX   #$35
             LDY   #$1B
             LDA   #$FF
@@ -4141,9 +4152,9 @@ L431F       AND   L44AF
             RTS
 
 L437A       LDA   #<L49C1
-            STA   $88
+            STA   ptrSTRING
             LDA   #>L49C1
-            STA   $88+1
+            STA   ptrSTRING+1
             LDX   #$2A
             LDY   #$0B
             LDA   #$0A
@@ -4169,9 +4180,9 @@ L437A       LDA   #<L49C1
 L43B0       AND   L44AF
             BEQ   L43C7
             LDA   #<L46F9
-            STA   $88
+            STA   ptrSTRING
             LDA   #>L46F9
-            STA   $88+1
+            STA   ptrSTRING+1
             LDX   #$2A
             LDY   #$28
             LDA   #$FF
@@ -4179,9 +4190,9 @@ L43B0       AND   L44AF
             RTS
 
 L43C7       LDA   #<L49C1
-            STA   $88
+            STA   ptrSTRING
             LDA   #>L49C1
-            STA   $88+1
+            STA   ptrSTRING+1
             LDX   #$2A
             LDY   #$28
             LDA   #$0A
@@ -4191,17 +4202,17 @@ L43C7       LDA   #<L49C1
 L43D9       AND   L44AF
             BEQ   L4401
             LDA   #<L4741
-            STA   $88
+            STA   ptrSTRING
             LDA   #>L4741
-            STA   $88+1
+            STA   ptrSTRING+1
             LDX   #$2A
             LDY   #$30
             LDA   #$FF
             JSR   L0BE5
             LDA   #<L4769
-            STA   $88
+            STA   ptrSTRING
             LDA   #>L4769
-            STA   $88+1
+            STA   ptrSTRING+1
             LDX   #$35
             LDY   #$30
             LDA   #$FF
@@ -4209,9 +4220,9 @@ L43D9       AND   L44AF
             RTS
 
 L4401       LDA   #<L49C1
-            STA   $88
+            STA   ptrSTRING
             LDA   #>L49C1
-            STA   $88+1
+            STA   ptrSTRING+1
             LDX   #$2A
             LDY   #$30
             LDA   #$0A
@@ -4225,17 +4236,17 @@ L4401       LDA   #<L49C1
 L441C       AND   L44AF
             BEQ   L4444
             LDA   #<L47B1
-            STA   $88
+            STA   ptrSTRING
             LDA   #>L47B1
-            STA   $88+1
+            STA   ptrSTRING+1
             LDX   #$2A
             LDY   #$38
             LDA   #$FF
             JSR   L0BE5
             LDA   #<L4811
-            STA   $88
+            STA   ptrSTRING
             LDA   #>L4811
-            STA   $88+1
+            STA   ptrSTRING+1
             LDX   #$35
             LDY   #$38
             LDA   #$FF
@@ -4243,9 +4254,9 @@ L441C       AND   L44AF
             RTS
 
 L4444       LDA   #<L49C1
-            STA   $88
+            STA   ptrSTRING
             LDA   #>L49C1
-            STA   $88+1
+            STA   ptrSTRING+1
             LDX   #$2A
             LDY   #$38
             LDA   #$0A
@@ -4259,17 +4270,17 @@ L4444       LDA   #<L49C1
 L445F       AND   L44AF
             BEQ   L4444
             LDA   #<L47B1
-            STA   $88
+            STA   ptrSTRING
             LDA   #>L47B1
-            STA   $88+1
+            STA   ptrSTRING+1
             LDX   #$2A
             LDY   #$38
             LDA   #$FF
             JSR   L0D00
             LDA   #<L47D9
-            STA   $88
+            STA   ptrSTRING
             LDA   #>L47D9
-            STA   $89
+            STA   ptrSTRING+1
             LDX   #$35
             LDY   #$38
             LDA   #$FF
@@ -4279,17 +4290,17 @@ L445F       AND   L44AF
 L4487       AND   L44AF
             BEQ   L4444
             LDA   #<L47B1
-            STA   $88
+            STA   ptrSTRING
             LDA   #>L47B1
-            STA   $88+1
+            STA   ptrSTRING+1
             LDX   #$2A
             LDY   #$38
             LDA   #$FF
             JSR   L0BE5
             LDA   #<L4851
-            STA   $88
+            STA   ptrSTRING
             LDA   #>L4851
-            STA   $89
+            STA   ptrSTRING+1
             LDX   #$35
             LDY   #$38
             LDA   #$FF
@@ -6721,30 +6732,30 @@ L4FCA       LDA   L4FBF
             STA   $A1
 L5009       LDY   $A8
             LDA   L5063,Y
-            STA   $88
+            STA   ptrSTRING
             INY
             LDA   L5063,Y
-            STA   $89
+            STA   ptrSTRING+1
             INY
             STY   $A8
             LDY   #$00
-L501B       LDA   ($88),Y
+L501B       LDA   (ptrSTRING),Y
             BMI   L5047
             CLC
             ADC   $B1
             STA   X1
             INY
-            LDA   ($88),Y
+            LDA   (ptrSTRING),Y
             CLC
             ADC   #$54
             STA   Y1
             INY
-            LDA   ($88),Y
+            LDA   (ptrSTRING),Y
             CLC
             ADC   $B1
             STA   X2
             INY
-            LDA   ($88),Y
+            LDA   (ptrSTRING),Y
             CLC
             ADC   #$54
             STA   Y2
@@ -6910,6 +6921,7 @@ L5156       STA   ($84),Y
             RTS
 
 *-----------------------
+* Draw the last point with sound
 
 L515F       DB    $00
 
@@ -6927,6 +6939,7 @@ L516F       LDA   L6F9C
             ROR
             ROR
             BCS   L5181
+
 L517E       LDA   SPKR
 L5181       CPY   #$22
             BCC   L51B1
@@ -6934,19 +6947,20 @@ L5181       CPY   #$22
             BCS   L51B1
             CPY   #$AE
             BCS   L51B1
+
 L518D       LDA   tblPAGE2L,X
             STA   $84
 L5192       LDA   tblPAGE2H,X
             STA   $84+1
             TYA
             TAX
-            LDY   L0FD0,X
-            LDA   L10B0,X
+            LDY   tblXBYT,X
+            LDA   tblXBIT,X
             TAX
-            LDA   L79F2,X
+            LDA   tblBITON,X
             ORA   ($84),Y
             STA   ($84),Y
-            LDA   L79F9,X
+            LDA   tblBITON2,X
             BMI   L51B1
             INY
             ORA   ($84),Y
@@ -7008,6 +7022,7 @@ L51F6       SEC
 L5201       STA   deltaX
 
 * Calculate delta Y
+
             SEC
             LDA   Y2
             SBC   Y1
@@ -7016,35 +7031,45 @@ L5201       STA   deltaX
             ADC   #$01
 L520E       STA   deltaY
 
+* Calculate error for X
 
-            LDY   #$FF
-            LDA   X2
-            SEC
+            LDY   #$FF	; X2<X1 = -1
+            LDA   X2	; X2=X1 = 0
+            SEC	; X2>X1 = 1
             CMP   X1
             BCC   L521D
             BEQ   L521C
             INY
 L521C       INY
-L521D       STY   $BE
+L521D       STY   errX
 
-            LDY   #$FF
-            LDA   Y2
-            SEC
+* Calculate error for Y
+
+            LDY   #$FF	; Y2<Y1 = -1
+            LDA   Y2	; Y2=Y1 = 0
+            SEC	; Y2>Y1 = 1
             CMP   Y1
             BCC   L522C
             BEQ   L522B
             INY
 L522B       INY
-L522C       STY   $BF
+L522C       STY   errY
+
+* Is the line more horizontal than vertical?
 
             SEC
             LDA   deltaX
             CMP   deltaY
-            BCS   L5238
-            JMP   L52B9
+            BCS   L5238	; yes
+            JMP   L52B9	; no
+
+* Draw an horizontal line
+* in Y, we have X
+* in X, we have Y
+* because of the 6502 :-)
 
 L5238       LDA   #$00
-            STA   $BD
+            STA   errVALUE
 L523C       LDX   Y1
             LDY   X1
             LDA   fgCLIPPING ; clipping needed?
@@ -7056,19 +7081,19 @@ L523C       LDX   Y1
             CPY   #$AE
             BCS   L5274
 
-L5250       LDA   tblPAGE2L,X
+L5250       LDA   tblPAGE2L,X	; get line
             STA   $84
 L5255       LDA   tblPAGE2H,X
             STA   $84+1
-            TYA
+            TYA		; X-coord
             TAX
-            LDY   L0FD0,X
-            LDA   L10B0,X
+            LDY   tblXBYT,X	; get the RAM column
+            LDA   tblXBIT,X	; get the bit in byte
             TAX
-            LDA   L79F2,X
+            LDA   tblBITON,X
             ORA   ($84),Y
             STA   ($84),Y
-            LDA   L79F9,X
+            LDA   tblBITON2,X
             BMI   L5274
             INY
             ORA   ($84),Y
@@ -7076,44 +7101,50 @@ L5255       LDA   tblPAGE2H,X
 
 L5274       LDX   Y1
             LDY   X1
-            CPX   #$78
+            CPX   #$78		; this is line 120...
             BNE   L5288
-            CPY   $E9
+            CPY   $E9		; is X<@E9 (0) on entry
             BCC   L5282
-            STY   $E9
-L5282       CPY   $E8
+            STY   $E9		; save new value
+L5282       CPY   $E8		; does it exceed the rightmost value as well?
             BCS   L5288
-            STY   $E8
-L5288       CLC
-            LDA   $BE
+            STY   $E8		; save it
+
+L5288       CLC		; now, add the error
+            LDA   errX		; check if we're done?
             ADC   X1
             STA   X1
-            CMP   X2
-            BEQ   L52B2
-            CLC
+            CMP   X2		; we must draw the last
+            BEQ   L52B2		; point in "music"
+
+            CLC		; add errors
             LDA   deltaY
-            ADC   $BD
-            STA   $BD
+            ADC   errVALUE
+            STA   errVALUE
             LDA   deltaX
-            CMP   $BD
+            CMP   errVALUE
             BCS   L523C
-            SEC
-            LDA   $BD
+            SEC		; correct the error
+            LDA   errVALUE
             SBC   deltaX
-            STA   $BD
-            CLC
-            LDA   $BF
+            STA   errVALUE
+
+            CLC		; next line
+            LDA   errY
             ADC   Y1
             STA   Y1
             BNE   L523C
             BEQ   L523C
-L52B2       LDX   Y1
+
+L52B2       LDX   Y1		; and loop
             LDY   X1
             JMP   L5160
 
-L52B9       LDA   #$00
-            STA   $BD
-L52BD       LDY   X1
+* Draw a vertical line
+
+L52B9       LDA   #$00		; same routine as above
+            STA   errVALUE	; but the error is higher
+L52BD       LDY   X1		; in vertical than in horizontal
             LDX   Y1
             LDA   fgCLIPPING
             BEQ   L52D1
@@ -7129,13 +7160,13 @@ L52D6       LDA   tblPAGE2H,X
             STA   $84+1
             TYA
             TAX
-            LDY   L0FD0,X
-            LDA   L10B0,X
+            LDY   tblXBYT,X
+            LDA   tblXBIT,X
             TAX
-            LDA   L79F2,X
+            LDA   tblBITON,X
             ORA   ($84),Y
             STA   ($84),Y
-            LDA   L79F9,X
+            LDA   tblBITON2,X
             BMI   L52F5
             INY
             ORA   ($84),Y
@@ -7151,30 +7182,31 @@ L5303       CPY   $E8
             BCS   L5309
             STY   $E8
 L5309       CLC
-            LDA   $BF
+            LDA   errY
             ADC   Y1
             STA   Y1
             CMP   Y2
             BEQ   L5333
             CLC
-            LDA   $BD
+            LDA   errVALUE
             ADC   deltaX
-            STA   $BD
+            STA   errVALUE
             LDA   deltaY
-            CMP   $BD
+            CMP   errVALUE
             BCS   L52BD
             SEC
-            LDA   $BD
+            LDA   errVALUE
             SBC   deltaY
-            STA   $BD
+            STA   errVALUE
             CLC
-            LDA   $BE
+            LDA   errX
             ADC   X1
             STA   X1
             BNE   L52BD
             BEQ   L52BD
-L5333       LDX   Y1
-            LDY   X1
+
+L5333       LDX   Y1		; draw the last
+            LDY   X1		; point in music
             JMP   L5160
 
 *-----------------------
@@ -7194,18 +7226,18 @@ L534A       CPX   #$01
 L5352       STA   $E7
 L5354       LDY   $CE
             LDA   ($80),Y
-            STA   $88
+            STA   ptrSTRING
             INY
             LDA   ($80),Y
-            STA   $89
+            STA   ptrSTRING+1
             JSR   L537C
             LDY   #$00
             STY   $96
 L5366       LDY   $96
-            LDA   ($88),Y
+            LDA   (ptrSTRING),Y
             STA   X1
             INY
-            LDA   ($88),Y
+            LDA   (ptrSTRING),Y
             STA   Y1
             CMP   #$FF
             BNE   L539C
@@ -7225,9 +7257,9 @@ L5388       CMP   #$0F
 L538F       ASL
             TAX
             LDA   L5C25,X
-            STA   $88
+            STA   ptrSTRING
             LDA   L5C26,X
-            STA   $89
+            STA   ptrSTRING+1
 L539B       RTS
 
 L539C       LDA   $A5
@@ -7341,7 +7373,7 @@ L543F       TAY
 L546A       LDA   $A3
             STA   $E9
             STA   $E8
-            LDA   #$FF
+            LDA   #$FF	; ends the list of points to draw
             STA   L9D81,X
             INX
             STA   L9D81,X
@@ -7614,9 +7646,9 @@ L5675       LDA   $C8
             STA   $9E
             JSR   L08D9
             LDA   $9E
-            STA   $88
+            STA   ptrSTRING
             LDA   $9B
-            STA   $89
+            STA   ptrSTRING+1
             LDA   L4C23
             STA   $9B
             LDA   #$00
@@ -7689,10 +7721,10 @@ L5720       LDA   L6C6D,Y
             BEQ   L5736
             SEC
             LDA   L6C71,Y
-            SBC   $88
+            SBC   ptrSTRING
             STA   L6C71,Y
             LDA   L6C72,Y
-            SBC   $89
+            SBC   ptrSTRING+1
             STA   L6C72,Y
 L5736       CLC
             TYA
@@ -7710,10 +7742,10 @@ L5747       LDA   L6C6D,Y
             BEQ   L575D
             CLC
             LDA   L6C71,Y
-            ADC   $88
+            ADC   ptrSTRING
             STA   L6C71,Y
             LDA   L6C72,Y
-            ADC   $89
+            ADC   ptrSTRING+1
             STA   L6C72,Y
 L575D       TYA
             CLC
@@ -7889,10 +7921,10 @@ L583B       PLA
 L584E       SEC
             LDA   $A6
             SBC   $AD
-            STA   $88
+            STA   ptrSTRING
             LDA   $A7
             SBC   $AE
-            STA   $89
+            STA   ptrSTRING+1
             BPL   L58CF
             CLC
             LDA   $AD
@@ -7929,10 +7961,10 @@ L588C       SEC
             CLC
             LDA   $A6
             ADC   $9F
-            STA   $88
+            STA   ptrSTRING
             LDA   $A7
             ADC   $A0
-            STA   $89
+            STA   ptrSTRING+1
             JMP   L58CF
 
 L58A9       LDA   #$FF
@@ -7945,15 +7977,15 @@ L58A9       LDA   #$FF
 L58B5       SEC
             LDA   $A6
             SBC   $AD
-            STA   $88
+            STA   ptrSTRING
             LDA   $A7
             SBC   $AE
-            STA   $89
+            STA   ptrSTRING+1
             BMI   L58A9
             SEC
-            LDA   $88
+            LDA   ptrSTRING
             SBC   #$C5
-            LDA   $89
+            LDA   ptrSTRING+1
             SBC   #$00
             BPL   L58A9
 L58CF       LDA   $C0
@@ -8081,7 +8113,7 @@ L59B8       STY   $A5
             ASL
             STA   $CE
             CLC
-            LDA   $88
+            LDA   ptrSTRING
             ADC   #$02
             STA   $A3
             CMP   #$56
@@ -10678,20 +10710,14 @@ L63F9       DB    $A0
 L63FA       DB    $80
 L63FB       DB    $D5
 L63FC       DB    $CD
-L63FD       DB    $FF
+L63FD       DB    $FF	; HGR output address (high byte)
 L63FE       DB    $A0
-L63FF       DB    $00
-L6400       DB    $00
-L6401       DB    $00
-L6402       DB    $00
-L6403       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
+
+* The scores
+
+tblSCORES   DS    $04	; High-score
+tblSCOREP1  DS    $04	; Player 1
+            DS    $04	; Player 2
 
 *-----------------------
 
@@ -10733,14 +10759,14 @@ L6451       LDA   #$00
             STY   L63FE
             CLC
             LDX   L63FB
-            LDA   L63FF,X
+            LDA   tblSCORES,X
             ADC   L63FA
 L6465       CMP   #$0A
             BCC   L646F
             INC   L63FC
             SEC
             SBC   #$0A
-L646F       STA   L63FF,X
+L646F       STA   tblSCORES,X
             JSR   L64B0
             LDA   L63FC
             BEQ   L648F
@@ -10749,35 +10775,39 @@ L646F       STA   L63FF,X
             INC   L63FB
             LDX   L63FB
             CLC
-            LDA   L63FF,X
+            LDA   tblSCORES,X
             ADC   #$01
             JMP   L6465
 L648F       RTS
 
-L6490       PHA
-            LDA   L63FD
-            STA   $85
-            PLA
+*-----------------------
+* Print a small char
+
+printSMALLCHAR
+            PHA	; save line
+            LDA   L63FD	; put HGR high address
+            STA   $84+1
+            PLA	; restore
             ASL
             ASL
-            ASL
+            ASL	; *8
             TAX
-L649B       LDA   L651F,X
-            STA   ($84),Y
+L649B       LDA   tblSMALLFONT,X ; get value
+            STA   ($84),Y ; save in HGR
             CLC
-            LDA   $85
+            LDA   $84+1	; next line
             ADC   #$04
-            STA   $85
+            STA   $84+1
             INX
             TXA
             AND   #$07
             CMP   #$07
-            BNE   L649B
+            BNE   L649B ; modulo 7
             RTS
 
 L64B0       PHA
             LDA   L63FD
-            STA   $85
+            STA   $84+1
             LDX   L63FE
             LDA   L6511,X
             STA   $9B
@@ -10792,13 +10822,13 @@ L64B0       PHA
             ASL
             ASL
             TAX
-L64D0       LDA   L651F,X
+L64D0       LDA   tblSMALLFONT,X
             STA   $9D
             LDA   #$00
             STA   $9E
             LDY   L63FE
 L64DC       BEQ   L64EA
-            ASL   $9D
+            ASL   $9D	; 16-bit mult
             ASL   $9D
             ROL   $9E
             LSR   $9D
@@ -10818,9 +10848,9 @@ L64EA       LDY   $9F
             ORA   #$80
             STA   ($84),Y
             CLC
-            LDA   $85
+            LDA   $84+1
             ADC   #$04
-            STA   $85
+            STA   $84+1
             INX
             TXA
             AND   #$07
@@ -10830,196 +10860,35 @@ L64EA       LDY   $9F
 
 *-----------------------
 
-L6511       DB    $81
-            DB    $83
-            DB    $87
-            DB    $8F
-            DB    $9F
-            DB    $BF
-            DB    $FF
-L6518       DB    $FE
-            DB    $FC
-            DB    $F8
-            DB    $F0
-            DB    $E0
-            DB    $C0
-            DB    $80
-L651F       DB    $54
-            DB    $44
-            DB    $44
-            DB    $44
-            DB    $44
-            DB    $44
-            DB    $54
-            DB    $FF
-            DB    $10
-            DB    $10
-            DB    $10
-            DB    $10
-            DB    $10
-            DB    $10
-            DB    $10
-            DB    $FF
-            DB    $54
-            DB    $40
-            DB    $40
-            DB    $54
-            DB    $04
-            DB    $04
-            DB    $54
-            DB    $FF
-            DB    $54
-            DB    $40
-            DB    $40
-            DB    $54
-            DB    $40
-            DB    $40
-            DB    $54
-            DB    $FF
-            DB    $44
-            DB    $44
-            DB    $44
-            DB    $54
-            DB    $40
-            DB    $40
-            DB    $40
-            DB    $FF
-            DB    $54
-            DB    $04
-            DB    $04
-            DB    $54
-            DB    $40
-            DB    $40
-            DB    $54
-            DB    $FF
-            DB    $54
-            DB    $04
-            DB    $04
-            DB    $54
-            DB    $44
-            DB    $44
-            DB    $54
-            DB    $FF
-            DB    $54
-            DB    $40
-            DB    $40
-            DB    $40
-            DB    $40
-            DB    $40
-            DB    $40
-            DB    $FF
-            DB    $54
-            DB    $44
-            DB    $44
-            DB    $54
-            DB    $44
-            DB    $44
-            DB    $54
-            DB    $FF
-            DB    $54
-            DB    $44
-            DB    $44
-            DB    $54
-            DB    $40
-            DB    $40
-            DB    $54
-            DB    $FF
-            DB    $00
-            DB    $84
-            DB    $94
-            DB    $D4
-            DB    $D4
-            DB    $D4
-            DB    $D4
-            DB    $FF
-            DB    $00
-            DB    $00
-            DB    $91
-            DB    $91
-            DB    $95
-            DB    $91
-            DB    $91
-            DB    $FF
-            DB    $00
-            DB    $00
-            DB    $A2
-            DB    $A2
-            DB    $A2
-            DB    $A2
-            DB    $A2
-            DB    $FF
-            DB    $00
-            DB    $00
-            DB    $80
-            DB    $80
-            DB    $80
-            DB    $80
-            DB    $80
-            DB    $FF
-            DB    $00
-            DB    $00
-            DB    $C5
-            DB    $C0
-            DB    $C4
-            DB    $C4
-            DB    $C5
-            DB    $FF
-            DB    $00
-            DB    $00
-            DB    $95
-            DB    $91
-            DB    $95
-            DB    $81
-            DB    $81
-            DB    $FF
-            DB    $00
-            DB    $00
-            DB    $82
-            DB    $82
-            DB    $82
-            DB    $82
-            DB    $AA
-            DB    $FF
-            DB    $00
-            DB    $00
-            DB    $88
-            DB    $88
-            DB    $8A
-            DB    $88
-            DB    $88
-            DB    $FF
-            DB    $00
-            DB    $00
-            DB    $90
-            DB    $90
-            DB    $90
-            DB    $90
-            DB    $90
-            DB    $FF
-            DB    $00
-            DB    $00
-            DB    $D4
-            DB    $C0
-            DB    $D4
-            DB    $84
-            DB    $D4
-            DB    $FF
-            DB    $00
-            DB    $80
-            DB    $80
-            DB    $AA
-            DB    $82
-            DB    $8A
-            DB    $AA
-            DB    $FF
-            DB    $81
-            DB    $85
-            DB    $95
-            DB    $D5
-            DB    $95
-            DB    $85
-            DB    $81
-            DB    $FF
+L6511       DB    $81	; 0
+            DB    $83	; 1
+            DB    $87	; 2
+            DB    $8F	; 3
+            DB    $9F	; 4
+            DB    $BF	; 5
+            DB    $FF	; 6
+L6518       DB    $FE	; 0
+            DB    $FC	; 1
+            DB    $F8	; 2
+            DB    $F0	; 3
+            DB    $E0	; 4
+            DB    $C0	; 5
+            DB    $80	; 6
+	
+* The small font...
+
+tblSMALLFONT
+            HEX   54444444444454FF10101010101010FF	; 0 1
+            HEX   54404054040454FF54404054404054FF	; 2 3
+            HEX   44444454404040FF54040454404054FF	; 4 5
+            HEX   54040454444454FF54404040404040FF	; 6 7
+            HEX   54444454444454FF54444454404054FF	; 8 9
+            HEX   008494D4D4D4D4FF00009191959191FF	; Ship H
+            HEX   0000A2A2A2A2A2FF00008080808080FF	; H _
+            HEX   0000C5C0C4C4C5FF00009591958181FF	; H P
+            HEX   000082828282AAFF000088888A8888FF	; L H
+            HEX   00009090909090FF0000D4C0D484D4FF	; 1 2
+            HEX   008080AA828AAAFF818595D5958581FF	; Ship I>
 
 *-----------------------
 
@@ -11027,7 +10896,7 @@ L65CF       LDA   #$00
             STA   $97
             STA   $98
             STA   $99
-            LDA   #$80
+            LDA   #$80	; $2080
             STA   $84
             LDX   #$1C
             LDA   #>HGR1
@@ -11058,11 +10927,13 @@ L65FE       STA   ($84),Y
             DEC   L63FB
             BNE   L65F8
 
+* 
+
             LDA   #$06
             STA   L63FE
-            LDA   nbPLAYERS
-            BEQ   L6624
-            LDX   #$23
+            LDA   nbPLAYERS ; number of players?
+            BEQ   L6624	; only 1
+            LDX   #$23	; two players
             STX   L63FD
             LDA   #$00
             JSR   L64B0
@@ -11078,53 +10949,58 @@ L6624       LDX   #$21
             LDY   #$1B
             LDA   #$20
             STA   L63FD
-            LDA   #$0B
-            JSR   L6490
+            LDA   #$0B	; H
+            JSR   printSMALLCHAR
             INY
-            LDA   #$0C
-            JSR   L6490
+            LDA   #$0C	; I
+            JSR   printSMALLCHAR
             INY
-            LDA   #$0E
-            JSR   L6490
+            LDA   #$0E	; G
+            JSR   printSMALLCHAR
             INY
-            LDA   #$11
-            JSR   L6490
+            LDA   #$11	; H
+            JSR   printSMALLCHAR
             INC   L63FD
             LDY   #$1B
-            LDA   #$0F
-            JSR   L6490
+            LDA   #$0F	; P
+            JSR   printSMALLCHAR
             INY
-            LDA   #$10
-            JSR   L6490
+            LDA   #$10	; L
+            JSR   printSMALLCHAR
             INY
-            LDA   #$12
-            JSR   L6490
+            LDA   #$12	; 1
+            JSR   printSMALLCHAR
+
             LDA   nbPLAYERS
             BEQ   L6693
+
             LDA   #$00
             STA   $84
             LDA   #$23
             STA   L63FD
             INY
-            LDA   #$0D
-            JSR   L6490
+            LDA   #$0D	; _
+            JSR   printSMALLCHAR
             DEY
-            LDA   #$13
-            JSR   L6490
+            LDA   #$13	; 2
+            JSR   printSMALLCHAR
             DEY
-            LDA   #$10
-            JSR   L6490
+            LDA   #$10	; L
+            JSR   printSMALLCHAR
             DEY
-            LDA   #$0F
-            JSR   L6490
+            LDA   #$0F	; P
+            JSR   printSMALLCHAR
 L6693       LDA   $E2
             BNE   L66A1
-            LDA   #$00
+
+            LDA   #$00	; erase players score
             LDY   #$07
-L669B       STA   L6403,Y
+L669B       STA   tblSCOREP1,Y
             DEY
             BPL   L669B
 L66A1       RTS
+
+*-----------------------
 
 L66A2       LDA   nbPLAYERS
             BNE   L66BE
@@ -11161,46 +11037,54 @@ L66DA       LDA   #$00
             STA   $84
             LDA   #$21
             STA   L63FD
-L66EF       LDA   #$0D
+L66EF       LDA   #$0D	; _
             LDY   #$19
-            JSR   L6490
+            JSR   printSMALLCHAR
             INY
-            LDA   #$0D
-            JMP   L6490
+            LDA   #$0D	; _
+            JMP   printSMALLCHAR
 
 L66FC       LDY   #$19
-            LDA   #$15
-            JSR   L6490
+            LDA   #$15	; ship
+            JSR   printSMALLCHAR
             INY
-            LDA   #$0D
-            JMP   L6490
+            LDA   #$0D	; _
+            JMP   printSMALLCHAR
 
-L6709       LDX   #$04
-            JSR   L6735
+*-----------------------
+
+verifyHIGHSCORE       LDX   #$04	; high-score for P1?
+            JSR   checkHIGHSCORE
             LDA   L63FC
-            BEQ   L6718
-            LDX   #$07
-            JSR   L6728
-L6718       LDX   #$08
-            JSR   L6735
+            BEQ   L6718	; no
+            LDX   #$07	; yes, set it (it decrements)
+            JSR   setHIGHSCORE
+L6718       LDX   #$08	; high-score for P2?
+            JSR   checkHIGHSCORE
             LDA   L63FC
-            BEQ   L6727
-            LDX   #$0B
-            JSR   L6728
+            BEQ   L6727	; no
+            LDX   #$0B	; yes, set it
+            JSR   setHIGHSCORE
 L6727       RTS
 
-L6728       LDY   #$03
-L672A       LDA   L63FF,X
-            STA   L63FF,Y
+*-----------------------
+
+setHIGHSCORE
+            LDY   #$03
+L672A       LDA   tblSCORES,X
+            STA   tblSCORES,Y
             DEX
             DEY
             BPL   L672A
             RTS
 
-L6735       LDY   #$00
+*-----------------------
+
+checkHIGHSCORE
+            LDY   #$00	; no high-score by default
             STY   L63FC
-L673A       LDA   L63FF,Y
-            CMP   L63FF,X
+L673A       LDA   tblSCORES,Y
+            CMP   tblSCORES,X
             BCC   L674A
 L6742       INX
             INY
@@ -11211,22 +11095,25 @@ L674A       INX
             INY
             CPY   #$04
             BEQ   L675A
-            LDA   L63FF,X
-            CMP   L63FF,Y
+            LDA   tblSCORES,X
+            CMP   tblSCORES,Y
             BCC   L6742
             BCS   L674A
-L675A       INC   L63FC
+L675A       INC   L63FC	; yes, a high-score!!
 L675D       RTS
 
 *-----------------------
 
-L675E       LDA   #$05
-            STA   L63FF
+initHIGHSCORE
+            LDA   #$05	; default high-score
+            STA   tblSCORES
             LDA   #$00
-            STA   L6400
-            STA   L6401
-            STA   L6402
-L676E       LDA   #$03
+            STA   tblSCORES+1
+            STA   tblSCORES+2
+            STA   tblSCORES+3
+
+printHIGHSCORE
+            LDA   #$03
             STA   L63FB
             LDA   #$80
             STA   $84
@@ -11235,13 +11122,13 @@ L676E       LDA   #$03
             LDA   #$20
             STA   L63FD
 L6781       LDX   L63FB
-            LDA   L63FF,X
+            LDA   tblSCORES,X
             BNE   L6797
             DEC   L63FB
             INC   L63FE
             BNE   L6781
 L6791       LDX   L63FB
-            LDA   L63FF,X
+            LDA   tblSCORES,X
 L6797       JSR   L64B0
             DEC   L63FB
             INC   L63FE
@@ -11279,20 +11166,20 @@ L67D4       STX   L67B4
             BEQ   L67EF
 L67DE       INY
             LDA   #$0A
-            JSR   L6490
+            JSR   printSMALLCHAR
             INY
             LDA   #$14
-            JSR   L6490
+            JSR   printSMALLCHAR
             DEC   L67B4
             BNE   L67DE
 L67EF       CPY   #$26
             BEQ   L6802
             INY
             LDA   #$0D
-            JSR   L6490
+            JSR   printSMALLCHAR
             INY
             LDA   #$0D
-            JSR   L6490
+            JSR   printSMALLCHAR
             JMP   L67EF
 L6802       RTS
 
@@ -11314,36 +11201,36 @@ L681A       RTS
 
 *-----------------------
 
-L681B       LDA   #$01
+L681B       LDA   #$01	; default is no button pressed
             STA   joyBTN
             LDA   KBD
             BPL   L684B
-            CMP   L1AFD
-            BNE   L682C
-            JSR   L795F
+            CMP   L1AFD	; is it escape for pause?
+            BNE   L682C	; no
+            JSR   doPAUSE	; yes
+
 L682C       LDX   KBDSTROBE
-            LDX   #$04
-L6831       CMP   L1AF8,X
+            LDX   #$04	; now compare key
+L6831       CMP   tblKEYS,X
             BEQ   L683B
             DEX
             BPL   L6831
             BMI   L684B
-L683B       LDA   L684C,X
+L683B       LDA   tblMOVEMENT,X
             BPL   L6845
-            LDA   #$00
+            LDA   #$00	; button is pressed
             STA   joyBTN
             RTS
-
-L6845       STA   $AB
-            ADC   #$55
+L6845       STA   $AB	; save movement
+            ADC   #$55	; 0101_0101
             STA   $AC
 L684B       RTS
 
-L684C       DB    $80
-            DB    $0B
-            DB    $07
-            DB    $0E
-            DB    $0D
+tblMOVEMENT DB    $80	; space (fire)
+            DB    $0B	; left arrow
+            DB    $07	; right arrow
+            DB    $0E	; A
+            DB    $0D	; Z
 
 *-----------------------
 
@@ -11557,11 +11444,11 @@ L69CA       LDA   $D0,X
             LDA   L6CCE
             STA   L99B3,X
             LDA   L6CCF
-            STA   L99B4,X
+            STA   L99B3+1,X
             LDA   L6CD1
-            STA   L99B5,X
+            STA   L99B3+2,X
             LDA   L6CD2
-            STA   L99B6,X
+            STA   L99B3+3,X
 L6A06       RTS
 
 L6A07       LDA   L69B2
@@ -11584,24 +11471,24 @@ L6A25       RTS
 
 L6A26       LDA   L6A17
             BEQ   L6A3E
-            LDA   #$80
+            LDA   #<L7A80
             STA   $84
-            LDA   #$7A
-            STA   $85
-            LDA   #$C0
-            STA   $88
-            LDA   #$7A
-            STA   $89
+            LDA   #>L7A80
+            STA   $84+1
+            LDA   #<L7AC0
+            STA   ptrSTRING
+            LDA   #>L7AC0
+            STA   ptrSTRING+1
             JMP   L6A4E
 
-L6A3E       LDA   #$00
+L6A3E       LDA   #<L7A00
             STA   $84
-            LDA   #$7A
-            STA   $85
-            LDA   #$40
-            STA   $88
-            LDA   #$7A
-            STA   $89
+            LDA   #>L7A00
+            STA   $84+1
+            LDA   #<L7A40
+            STA   ptrSTRING
+            LDA   #>L7A40
+            STA   ptrSTRING+1
 L6A4E       LDX   #$5E
 L6A50       LDY   #$03
             CLC
@@ -11636,7 +11523,7 @@ L6A80       LDY   #$03
             LDA   tblPAGE2H,X
             ADC   #$00
             STA   $9C
-L6A91       LDA   ($88),Y
+L6A91       LDA   (ptrSTRING),Y
             BEQ   L6A99
             ORA   ($9B),Y
             STA   ($9B),Y
@@ -11645,11 +11532,11 @@ L6A99       DEY
             INX
             CLC
             LDA   #$04
-            ADC   $88
-            STA   $88
+            ADC   ptrSTRING
+            STA   ptrSTRING
             LDA   #$00
-            ADC   $89
-            STA   $89
+            ADC   ptrSTRING+1
+            STA   ptrSTRING+1
             CPX   #$90
             BNE   L6A80
             RTS
@@ -12618,14 +12505,14 @@ L6FC5       ROR
             BCS   L6FD4
 L6FC8       LDX   #$0D
 L6FCA       LDA   L79E4,X
-            STA   L79F2,X
+            STA   tblBITON,X
             DEX
             BPL   L6FCA
             RTS
 
 L6FD4       LDX   #$0D
 L6FD6       LDA   L79D6,X
-            STA   L79F2,X
+            STA   tblBITON,X
             DEX
             BPL   L6FD6
             RTS
@@ -12690,53 +12577,53 @@ L7018       ASL
             CLC
             LDA   L6FE0,Y
             ADC   L6CCE
-            STA   $88
+            STA   ptrSTRING
             LDA   L6FE1,Y
             ADC   L6CCF
-            STA   $89
+            STA   ptrSTRING+1
             SEC
             LDA   L6C6E,X
-            SBC   $88
+            SBC   ptrSTRING
             LDA   L6C6F,X
-            SBC   $89
+            SBC   ptrSTRING+1
             BCS   L700D
             SEC
             LDA   L6CCE
             SBC   L6FE0,Y
-            STA   $88
+            STA   ptrSTRING
             LDA   L6CCF
             SBC   L6FE1,Y
-            STA   $89
+            STA   ptrSTRING+1
             SEC
-            LDA   $88
+            LDA   ptrSTRING
             SBC   L6C6E,X
-            LDA   $89
+            LDA   ptrSTRING+1
             SBC   L6C6F,X
             BCS   L700D
             CLC
             LDA   L6FE0,Y
             ADC   L6CD1
-            STA   $88
+            STA   ptrSTRING
             LDA   L6FE1,Y
             ADC   L6CD2
-            STA   $89
+            STA   ptrSTRING+1
             SEC
             LDA   L6C71,X
-            SBC   $88
+            SBC   ptrSTRING
             LDA   L6C72,X
-            SBC   $89
+            SBC   ptrSTRING+1
             BCS   L700D
             SEC
             LDA   L6CD1
             SBC   L6FE0,Y
-            STA   $88
+            STA   ptrSTRING
             LDA   L6CD2
             SBC   L6FE1,Y
-            STA   $89
+            STA   ptrSTRING+1
             SEC
-            LDA   $88
+            LDA   ptrSTRING
             SBC   L6C71,X
-            LDA   $89
+            LDA   ptrSTRING+1
             SBC   L6C72,X
             BCC   L70A4
             JMP   L700D
@@ -12895,19 +12782,19 @@ L71CE       INC   L54C6
             CLC
             LDA   $D1
             ADC   #$05
-            STA   $88
+            STA   ptrSTRING
             CLC
             LDA   $D1
             ADC   #$02
-            STA   $8A
+            STA   ptrSTRINGS
             SEC
             LDA   $D1
             SBC   #$05
-            STA   $89
+            STA   ptrSTRING+1
             SEC
             LDA   $D1
             SBC   #$02
-            STA   $8A+1
+            STA   ptrSTRINGS+1
             CLC
             LDA   $D4
             ADC   #$05
@@ -12994,9 +12881,9 @@ L7287       CMP   #$0D
             CMP   #$02
             BEQ   L72A7
             LDA   L6C6F,X
-            CMP   $88
+            CMP   ptrSTRING
             BCS   L724B
-            CMP   $89
+            CMP   ptrSTRING+1
             BCC   L724B
             LDA   L6C72,X
             CMP   $80
@@ -13005,7 +12892,7 @@ L7287       CMP   #$0D
             BCC   L724B
             BCS   L72BD
 L72A7       LDA   L6C6F,X
-            CMP   $8A
+            CMP   ptrSTRINGS
             BCS   L724B
             CMP   $8B
             BCC   L724B
@@ -13116,7 +13003,7 @@ L7382       JSR   L6DB1
             BPL   L73AF
             CMP   L1AFD
             BNE   L73AF
-            JSR   L795F
+            JSR   doPAUSE
 L73AF       LDX   KBDSTROBE
             LDX   #$02
 L73B4       LDA   #$80
@@ -13134,11 +13021,11 @@ L73BE       LDA   L73BD
 L73C4       CLC
             LDA   L6D5F
             ADC   #$05
-            STA   $88
+            STA   ptrSTRING
             SEC
             LDA   L6D5F
             SBC   #$05
-            STA   $89
+            STA   ptrSTRING+1
             CLC
             LDA   L6D62
             ADC   #$05
@@ -13171,9 +13058,9 @@ L73F4       ASL
             CMP   #$0F
             BEQ   L73E9
             LDA   L6C6F,X
-            CMP   $88
+            CMP   ptrSTRING
             BCS   L73E9
-            CMP   $89
+            CMP   ptrSTRING+1
             BCC   L73E9
             LDA   L6C72,X
             CMP   $80
@@ -13243,53 +13130,53 @@ L747C       ASL
             CLC
             LDA   L6FE0,Y
             ADC   L6CBE
-            STA   $88
+            STA   ptrSTRING
             LDA   L6FE1,Y
             ADC   L6CBF
-            STA   $89
+            STA   ptrSTRING+1
             SEC
             LDA   L6C6E,X
-            SBC   $88
+            SBC   ptrSTRING
             LDA   L6C6F,X
-            SBC   $89
+            SBC   ptrSTRING+1
             BCS   L7471
             SEC
             LDA   L6CBE
             SBC   L6FE0,Y
-            STA   $88
+            STA   ptrSTRING
             LDA   L6CBF
             SBC   L6FE1,Y
-            STA   $89
+            STA   ptrSTRING+1
             SEC
-            LDA   $88
+            LDA   ptrSTRING
             SBC   L6C6E,X
-            LDA   $89
+            LDA   ptrSTRING+1
             SBC   L6C6F,X
             BCS   L7471
             CLC
             LDA   L6FE0,Y
             ADC   L6CC1
-            STA   $88
+            STA   ptrSTRING
             LDA   L6FE1,Y
             ADC   L6CC2
-            STA   $89
+            STA   ptrSTRING+1
             SEC
             LDA   L6C71,X
-            SBC   $88
+            SBC   ptrSTRING
             LDA   L6C72,X
-            SBC   $89
+            SBC   ptrSTRING+1
             BCS   L7471
             SEC
             LDA   L6CC1
             SBC   L6FE0,Y
-            STA   $88
+            STA   ptrSTRING
             LDA   L6CC2
             SBC   L6FE1,Y
-            STA   $89
+            STA   ptrSTRING+1
             SEC
-            LDA   $88
+            LDA   ptrSTRING
             SBC   L6C71,X
-            LDA   $89
+            LDA   ptrSTRING+1
             SBC   L6C72,X
             BCC   L750C
 L7509       JMP   L7471
@@ -13338,11 +13225,11 @@ L7560       JMP   L7471
 L7563       CLC
             LDA   L6CBF
             ADC   #$02
-            STA   $8A
+            STA   ptrSTRINGS
             SEC
             LDA   L6CBF
             SBC   #$02
-            STA   $8A+1
+            STA   ptrSTRINGS+1
             CLC
             LDA   L6CC2
             ADC   #$02
@@ -13352,7 +13239,7 @@ L7563       CLC
             SBC   #$02
             STA   $85
             LDA   $D1
-            CMP   $8A
+            CMP   ptrSTRINGS
             BCS   L759C
             CMP   $8B
             BCC   L759C
@@ -13389,9 +13276,9 @@ L75C4       LDA   $9D
             PHA
             JSR   L08D9
             LDA   $9E
-            STA   $88
+            STA   ptrSTRING
             LDA   $9B
-            STA   $89
+            STA   ptrSTRING+1
             LDA   L4C23
             STA   $9B
             LDA   #$00
@@ -13432,20 +13319,20 @@ L761F       LDA   L5674
             EOR   $CB
             BNE   L7636
             CLC
-            LDA   $88
+            LDA   ptrSTRING
             ADC   $C4
             STA   $C4
-            LDA   $89
+            LDA   ptrSTRING+1
             ADC   $C5
             STA   $C5
             JMP   L7643
 
 L7636       SEC
             LDA   $C4
-            SBC   $88
+            SBC   ptrSTRING
             STA   $C4
             LDA   $C5
-            SBC   $89
+            SBC   ptrSTRING+1
             STA   $C5
 L7643       RTS
 
@@ -14024,30 +13911,34 @@ L794C       DB    $12
             DB    $0A
             DB    $22
 
-L795F       LDA   #$00
+*-----------------------
+
+doPAUSE     LDA   #$00	; timer is reset
             STA   $9B
             STA   $9C
             STA   $9D
             LDA   KBDSTROBE
-L796A       INC   $9B
-            BNE   L7976
-            INC   $9C
+L796A       INC   $9B	; increment timer
+            BNE   L7976	; while waiting for
+            INC   $9C	; a key
             BNE   L7976
             INC   $9D
-            BEQ   L797C
+            BEQ   L797C	; 256*256*256 means screen saver
 L7976       LDA   KBD
             BPL   L796A
             RTS
 
-L797C       STA   KBD
-            LDA   LORES
+* Enter the screen saver mode
+
+L797C       STA   KBD	; screen saver
+            LDA   LORES	; full text mode
             LDA   TXTPAGE1
             LDA   TXTCLR
             LDA   MIXCLR
             LDA   #$00
-L798D       JSR   L79BE
+L798D       JSR   clearTEXTPAGE1
             LDA   KBDSTROBE
-L7993       INC   $9B
+L7993       INC   $9B	; increment the timer
             BNE   L79AC
             INC   $9C
             BNE   L79AC
@@ -14062,24 +13953,27 @@ L7993       INC   $9B
             ORA   $9F
             JMP   L798D
 
-L79AC       LDA   KBD
-            BPL   L7993
-            LDA   HIRES
+L79AC       LDA   KBD	; we (finally) pressed
+            BPL   L7993	; a key
+            LDA   HIRES	; return to HGR mode
             LDA   TXTPAGE1
             LDA   TXTCLR
             LDA   MIXCLR
             RTS
 
-L79BE       LDX   #$04
-            STX   $85
-            LDX   #$00
+*-----------------------
+
+clearTEXTPAGE1
+            LDX   #>TEXT1
+            STX   $84+1
+            LDX   #<TEXT1
             STX   $84
             LDY   #$00
 L79C8       STA   ($84),Y
             INY
             BNE   L79C8
-            INC   $85
-            LDX   $85
+            INC   $84+1
+            LDX   $84+1
             CPX   #$08
             BNE   L79C8
             RTS
@@ -14114,276 +14008,38 @@ L79E4       DB    $06
             DB    $00
             DB    $01
             DB    $03
-L79F2       DB    $04
+
+tblBITON    DB    $04	; bit to lit
             DB    $08
             DB    $10
             DB    $20
             DB    $40
             DB    $00
             DB    $00
-L79F9       DB    $00
+tblBITON2   DB    $00	; lit the neighbor if set
             DB    $00
             DB    $00
             DB    $00
             DB    $00
             DB    $01
             DB    $02
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $54
-            DB    $2A
-            DB    $55
-            DB    $2A
-            DB    $04
-            DB    $00
-            DB    $00
-            DB    $20
-            DB    $04
-            DB    $00
-            DB    $00
-            DB    $20
-            DB    $04
-            DB    $00
-            DB    $00
-            DB    $20
-            DB    $04
-            DB    $00
-            DB    $00
-            DB    $20
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $04
-            DB    $00
-            DB    $00
-            DB    $20
-            DB    $04
-            DB    $00
-            DB    $00
-            DB    $20
-            DB    $04
-            DB    $00
-            DB    $00
-            DB    $20
-            DB    $04
-            DB    $00
-            DB    $00
-            DB    $20
-            DB    $54
-            DB    $2A
-            DB    $55
-            DB    $2A
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $54
-            DB    $2A
-            DB    $55
-            DB    $2A
-            DB    $54
-            DB    $2A
-            DB    $55
-            DB    $2A
-            DB    $14
-            DB    $00
-            DB    $00
-            DB    $28
-            DB    $50
-            DB    $00
-            DB    $00
-            DB    $0A
-            DB    $50
-            DB    $00
-            DB    $00
-            DB    $0A
-            DB    $40
-            DB    $02
-            DB    $40
-            DB    $02
-            DB    $40
-            DB    $02
-            DB    $40
-            DB    $02
-            DB    $00
-            DB    $0A
-            DB    $50
-            DB    $00
-            DB    $00
-            DB    $0A
-            DB    $50
-            DB    $00
-            DB    $00
-            DB    $0A
-            DB    $50
-            DB    $00
-            DB    $00
-            DB    $0A
-            DB    $50
-            DB    $00
-            DB    $40
-            DB    $02
-            DB    $40
-            DB    $02
-            DB    $40
-            DB    $02
-            DB    $40
-            DB    $02
-            DB    $50
-            DB    $00
-            DB    $00
-            DB    $0A
-            DB    $50
-            DB    $00
-            DB    $00
-            DB    $0A
-            DB    $14
-            DB    $00
-            DB    $00
-            DB    $28
-            DB    $54
-            DB    $2A
-            DB    $55
-            DB    $2A
-            DB    $54
-            DB    $2A
-            DB    $55
-            DB    $2A
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $01
-            DB    $00
+
+L7A00       HEX   00000100000001000000010000000100
+            HEX   000001000000010000000100542A552A
+            HEX   04000020040000200400002004000020
+            HEX   00000000000000000000000000000000
+L7A40       HEX   04000020040000200400002004000020
+            HEX   542A552A000001000000010000000100
+            HEX   00000100000001000000010000000100
+            HEX   00000000000000000000000000000000
+L7A80       HEX   00000100000001000000010000000100
+            HEX   000001000000010000000100542A552A
+            HEX   542A552A140000285000000A5000000A
+            HEX   4002400240024002000A5000000A5000
+L7AC0       HEX   000A5000000A50004002400240024002
+            HEX   5000000A5000000A14000028542A552A
+            HEX   542A552A000001000000010000000100
+            HEX   00000100000001000000010000000100
 
 *-----------------------
 
@@ -14464,11 +14120,11 @@ L7B79       LDA   L6D5D,X
             LDA   L6CBE
             STA   L99B3,X
             LDA   L6CBF
-            STA   L99B4,X
+            STA   L99B3+1,X
             LDA   L6CC1
-            STA   L99B5,X
+            STA   L99B3+2,X
             LDA   L6CC2
-            STA   L99B6,X
+            STA   L99B3+3,X
             LDA   #$0D
             STA   L6CBD
             TAY
@@ -14902,8 +14558,8 @@ L7EDD       DEC   L7E53
             STA   L7E53
 L7EF6       RTS
 
-L7EF7       JSR   L7F08
-            JSR   L7F25
+L7EF7       JSR   printGAMEOVER
+            JSR   printPLAYERX
             LDX   #$18
 L7EFF       LDA   #$A0
             JSR   WAIT
@@ -14911,73 +14567,78 @@ L7EFF       LDA   #$A0
             BPL   L7EFF
             RTS
 
-L7F08       LDA   #<strGAMEOVER
-            STA   $8A
+*-----------------------
+
+printGAMEOVER
+            LDA   #<strGAMEOVER
+            STA   ptrSTRINGS
             LDA   #>strGAMEOVER
-            STA   $8A+1
+            STA   ptrSTRINGS+1
             LDA   #$0A
-            STA   $8C
+            STA   charX
             LDA   #$50
-            STA   $8D
+            STA   charY
             LDA   #$06
-            STA   $94
+            STA   charCOLOR
             LDA   #$02
             STA   L0D9A
-            JSR   L0D9C
+            JSR   printSTRINGS
             RTS
 
-L7F25       LDA   nbPLAYERS
-            BNE   L7F2A
-            RTS
+*-----------------------
 
-L7F2A       LDA   curPLAYER
+printPLAYERX
+            LDA   nbPLAYERS	; how many players?
+            BNE   L7F2A		; two
+            RTS		; only one, show nothing
+L7F2A       LDA   curPLAYER	; who is dead?
             BNE   L7F35
-            LDA   #<L7F52
-            LDX   #>L7F52
+            LDA   #<strPLAYER1	; ...player 1
+            LDX   #>strPLAYER1
             JMP   L7F39
-L7F35       LDA   #<L7F64
-            LDX   #>L7F64
+L7F35       LDA   #<strPLAYER2	; ...player 2
+            LDX   #>strPLAYER2
 
-L7F39       STA   $8A
-            STX   $8B
+L7F39       STA   ptrSTRINGS	; draw the player's name
+            STX   ptrSTRINGS+1
             LDA   #$0C
-            STA   $8C
+            STA   charX
             LDA   #$91
-            STA   $8D
+            STA   charY
             LDA   #$06
-            STA   $94
+            STA   charCOLOR
             LDA   #$02
             STA   L0D9A
-            JSR   L0D9C
+            JSR   printSTRINGS
             RTS
 
-L7F52       DA    L12DA
-            DA    L11F0
-            DA    L128C
-            DA    L130E
-            DA    L120A
-            DA    L12F4
-            DA    L1386
-            DA    L16E5
+strPLAYER1  DA    L12DA	; P
+            DA    L11F0	; L
+            DA    L128C	; A
+            DA    L130E	; Y
+            DA    L120A	; E
+            DA    L12F4	; R
+            DA    L1386	; _
+            DA    L16E5	; 1
             DA    $0000
 
-L7F64       DA    L12DA
-            DA    L11F0
-            DA    L128C
-            DA    L130E
-            DA    L120A
-            DA    L12F4
-            DA    L1386
-	DA    L1701
+strPLAYER2  DA    L12DA	; P
+            DA    L11F0	; L
+            DA    L128C	; A
+            DA    L130E	; Y
+            DA    L120A	; E
+            DA    L12F4	; R
+            DA    L1386	; _
+	DA    L1701	; 2
 	DA    $0000
+
+*-----------------------
 
 L7F76       DB    $00
 L7F77       DB    $A4
 L7F78       DB    $80
 L7F79       DB    $A0
 L7F7A       DB    $A0
-
-*-----------------------
 
 L7F7B       CLC
             LDA   curPLAYER
@@ -15016,6 +14677,8 @@ L7FC2       JSR   L80CB
             LDA   L6D5D
             STA   L80C5
 L7FCB       RTS
+
+*-----------------------
 
 L7FCC       DB    $00
 L7FCD       DB    $00
@@ -15125,11 +14788,11 @@ L8058       LDA   $C8
             LDA   L6D5E
             STA   L99B3,X
             LDA   L6D5F
-            STA   L99B4,X
+            STA   L99B3+1,X
             LDA   L6D60
-            STA   L99B5,X
+            STA   L99B3+2,X
             LDA   L6D61
-            STA   L99B6,X
+            STA   L99B3+3,X
             RTS
 
 L80C5       DB    $00
@@ -15355,7 +15018,7 @@ L8270       LDX   $9D
             LDA   tblPAGE2L,X
             STA   $9E
             LDA   tblPAGE2H,X
-            STA   $9F
+            STA   $9E+1
             LDA   $A0
             STA   $A2
             LDX   $9B
@@ -15414,9 +15077,9 @@ L82D4       LDA   $A3
             SEC
             SBC   L82E9,Y
             TAX
-            LDA   L0FD0,X
+            LDA   tblXBYT,X
             STA   $9B
-            LDA   L10B0,X
+            LDA   tblXBIT,X
             STA   $9C
             RTS
 
@@ -15487,6 +15150,8 @@ L8398       LDA   $A0
             SBC   $A0
             STA   $9D
             RTS
+
+*-----------------------
 
 L83A2       DB    $00
             DB    $0E
@@ -15656,6 +15321,7 @@ L83A2       DB    $00
             DB    $11
             DB    $00
             DB    $22
+
 L844A       DB    $00
             DB    $0E
             DB    $00
@@ -15824,6 +15490,7 @@ L844A       DB    $00
             DB    $11
             DB    $00
             DB    $22
+
 L84F2       DB    $00
             DB    $0E
             DB    $00
@@ -20920,6 +20587,7 @@ L9801       DB    $00
             DB    $40
             DB    $2A
             DB    $01
+
 L98DA       DB    $00
             DB    $0E
             DB    $00
@@ -21137,10 +20805,11 @@ L98DA       DB    $00
             DB    $40
             DB    $2A
             DB    $01
+
 L99B3       DB    $F8
-L99B4       DB    $F9
-L99B5       DB    $EF
-L99B6       DB    $47
+            DB    $F9
+            DB    $EF
+            DB    $47
             DB    $60
             DB    $65
             DB    $6D
@@ -21857,8 +21526,7 @@ L99B6       DB    $47
             DB    $00
             DB    $00
 L9C82       DS    $FF
-L9D81       DS    $FB
-L9E7C       DS    $04
+L9D81       DS    $FF
 
 *----------------------- Page 2 table pointers
 

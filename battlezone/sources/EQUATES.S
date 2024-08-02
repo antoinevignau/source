@@ -30,6 +30,7 @@ WAIT        =	$FCA8
 
 *-----------------------------------
 
+TEXT1	=	$0400
 HGR1	=	$2000
 HGR2	=	$4000
 
@@ -37,6 +38,11 @@ LA000	=	$A000	; second page pointer
 	
 *-----------------------------------
 
+ptrSTRING	=	$88	; word - pointer to a C-string
+ptrSTRINGS	=	$8A	; word - pointer to list of strings
+charX	=	$8C	; byte - x-coord of 1st character to draw
+charY	=	$8D	; byte - y-coord of 2nd character to draw
+charCOLOR	=	$94	; byte - color of character
 nbPLAYERS	=	$8E	; byte - 0 = 1P, 1 = 2P
 curLEVEL	=	$92	; byte - current level
 fgOFFLIMIT	=	$93	; byte - 0 = draw if off limits, 1 = do not draw if off limits
@@ -47,7 +53,10 @@ X2	=	$B9	; byte - X2-coord for line drawing
 Y2	=	$BA	; byte - Y2-coord for line drawing
 deltaX	=	$BB	; byte - Bresenham delta X
 deltaY	=	$BC	; byte - Bresenham delta Y
-fgCLIP	=	$DE	; byte - 0 = no clipping needed, -1 = clipping needed
+errVALUE	=	$BD	; byte - Bresenham error value (either X or Y)
+errX	=	$BE	; byte - Bresenham error X
+errY	=	$BF	; byte - Bresenham error Y
+fgCLIPPING	=	$DE	; byte - 0 = no clipping needed, -1 = clipping needed
 joyX	=	$E3	; byte - X-joy position
 joyY	=	$E4	; byte - Y-joy position
 fgSOUND	=	$EA	; byte - 0 = no sound, 1 = sound

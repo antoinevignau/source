@@ -170,7 +170,7 @@ charWAIT	=	$21d	; byte - time to wait between drawing two chars
 curRANGE	=	$21e	; byte - 0/2/4/6/8 mean A/E/J/O/T
 fgBONUS	=	$21f	; byte - 0 = bonus, 1 = no bonus
 fgBESTTIME	=	$220	; byte - 0 = no best time, 1 = best time
-* $221 is not used
+PATTERNC	=	$221	; byte - used for the logo
 fgDEMO	=	$222	; byte - 0 = game mode, 1 = demo mode (replay?)
 demoINDEX	=	$223	; byte - index for demo data
 demoCNT	=	$224	; byte - demo frame counter * $224

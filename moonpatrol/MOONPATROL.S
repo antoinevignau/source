@@ -572,11 +572,13 @@ L0C19       LDA   wheel2Y
             ADC   #$86
             STA   vehicleY
             RTS
-L0C24       JMP   L2773
 
 *-----------------------------------
 * GET DEMO DATA (IF ACTIVE)
 *-----------------------------------
+
+showLOGO    JSR   MOONXX
+            JMP   INTERP
 
 getDEMODATA LDA   fgDEMO2
             BEQ   L0C6E
@@ -585,21 +587,23 @@ getDEMODATA LDA   fgDEMO2
             CMP   #" "
             BNE   L0C47
 
-            LDA   fgINPUT2	; save parms
-            STA   fgINPUT
-            LDA   courseTYPE2
-            STA   courseTYPE
-            LDA   nbPLAYERS2
-            STA   nbPLAYERS
-            JMP   L2773
+*            LDA   fgINPUT2	; save parms
+*            STA   fgINPUT
+*            LDA   courseTYPE2
+*            STA   courseTYPE
+*            LDA   nbPLAYERS2
+*            STA   nbPLAYERS
+            JMP   INTERP
 
 L0C47       DEC   demoCNT
             BNE   L0C6D
             INC   demoINDEX
             LDX   demoINDEX
             LDA   demoDATA,X
-            CMP   #$FF
-            BEQ   L0C24
+*            CMP   #$FF
+*            BEQ   showLOGO
+	CPX   #$03
+	BGE   showLOGO
             PHA
             INC   demoINDEX
             LDX   demoINDEX
@@ -660,7 +664,7 @@ L0CC6       CMP   #$8F	; ctrl-o
             BNE   L0CD3
             JSR   doLOADMOONBASE
             JSR   showHGRPAGE2
-            JMP   L2773
+            JMP   INTERP
 
 L0CD3       CMP   #$91	; ctrl-q
             BNE   L0CDA
@@ -1140,7 +1144,7 @@ L0FC2       LDA   #$00		; end of milestone display
 * DRAW GAME AREA
 *-----------------------------------
 
-L0FC9       LDA   #$00
+NEWSCRN     LDA   #$00
             STA   groundSTARTX
             JSR   drawGROUNDLINES	; draw ground lines
 
@@ -2920,7 +2924,7 @@ L1C91       LDA   #$FF
             CMP   #$19		; 25 = Z
             BNE   L1CAA
             JMP   setNEXTCOURSE
-L1CAA       JSR   L0FC9
+L1CAA       JSR   NEWSCRN
             JMP   L2EC2
 
 *-----------------------------------
@@ -2983,7 +2987,7 @@ L1CF6       JSR   resetBLINKING
             JSR   playMUSIC_GAMEWON		; play music for game end
             JMP   L1D0D
 L1D0A       JSR   playMUSIC_ENDSTAGE	; play music for stage end
-L1D0D       JSR   L0FC9
+L1D0D       JSR   NEWSCRN
 
             SED		; subtract 1 to time
             SEC
@@ -4270,7 +4274,7 @@ L2740       BIT   TXTPAGE1	; load the moon base picture
             STA   fgSOUND
             LDA   #SPKR
             STA   doBEEP+1
-L2773       LDA   #$01
+INTERP       LDA   #$01
             STA   fgDEMO2
             JSR   selectOPTIONS
             BCC   L2780		; start demo mode
@@ -4284,7 +4288,7 @@ L2780       JMP   L2B02
 L2783       BIT   KBDSTROBE
             BIT   TXTPAGE1
             BIT   TXTSET
-            JSR   L0FC9
+            JSR   NEWSCRN
             JSR   initALL
             LDA   #$00
             STA   fgBLINK
@@ -4420,6 +4424,36 @@ L28D3       LDX   #$20
 L28DE       RTS
 
 *-----------------------------------
+* THE MISSING MOON PATROL LOGO
+*-----------------------------------
+
+MOONXX
+	LDA   #<MOONX
+	STA   $02
+	LDA   #>MOONX
+	STA   $02+1
+	LDA   #$27
+	STA   $05
+	LDA   #$4E
+	STA   $06
+	JSR   UNCOMPR
+	LDA   #<PATROLX
+	STA   $02
+	LDA   #>PATROLX
+	STA   $02+1
+	LDA   #$51
+	STA   $05
+	LDA   #$7D
+	STA   $06
+	JSR   UNCOMPR
+	LDX   #15
+MOONXX1	LDA   #$FF
+	JSR   WAIT
+	DEX   
+	BNE   MOONXX1
+	RTS   
+
+*-----------------------------------
 * SELECT OPTIONS MENU
 *-----------------------------------
 
@@ -4427,7 +4461,7 @@ selectOPTIONS
             BIT   TXTPAGE1
             BIT   TXTSET
             BIT   KBDSTROBE
-            JSR   L0FC9
+            JSR   NEWSCRN
             LDA   #$BF
             STA   $00
 L28EF       LDX   $00
@@ -4594,13 +4628,13 @@ L2AFC       JSR   L2860
 L2B02       BIT   KBDSTROBE
             BIT   TXTPAGE1
             BIT   TXTSET
-            JSR   L0FC9
-            LDA   fgINPUT
-            STA   fgINPUT2
-            LDA   courseTYPE
-            STA   courseTYPE2
-            LDA   nbPLAYERS
-            STA   nbPLAYERS2
+            JSR   NEWSCRN
+*            LDA   fgINPUT
+*            STA   fgINPUT2
+*            LDA   courseTYPE
+*            STA   courseTYPE2
+*            LDA   nbPLAYERS
+*            STA   nbPLAYERS2
             LDA   #$00
             STA   fgBLINK
             STA   P1_score+4
@@ -5022,7 +5056,7 @@ L2E3F       PHA
             STA   courseTYPE
             LDA   nbPLAYERS2
             STA   nbPLAYERS
-            JMP   L2773		; let's make another round
+            JMP   INTERP		; let's make another round
 
 L2E83       JSR   savePLAYERDATA
             LDA   nbLIVES
@@ -5048,7 +5082,7 @@ L2E9F       BIT   TXTPAGE1
             STA   $75+1
             LDA   #$00
             STA   $A0
-            JSR   L0FC9
+            JSR   NEWSCRN
             JSR   L3254
             JSR   setPLAYERDATA
 L2EC2       JSR   L2B72
@@ -5284,7 +5318,7 @@ L303F       RTS
 setNEXTCOURSE
             BIT   TXTPAGE1	; we won the beginner course
             BIT   TXTSET	; so, let's start a...
-            JSR   L0FC9
+            JSR   NEWSCRN
             LDA   $83
             STA   ptrCOURSE
             LDA   $83+1
@@ -5557,6 +5591,73 @@ L322E       LDX   #$08
             JSR   printSTRING
             ASC   "  CHAMPION COURSE GO !  @"
             RTS
+
+*-----------------------------------
+* LOGO UNPACKER
+*-----------------------------------
+
+UNCOMPR	LDA   $05		; START SCANNING AT LINE 0 
+	SEC 
+	SBC   #1
+	STA   $A9
+	LDA   #0
+	STA   $AA		; START AT BYTE 0
+
+	JSR   INCHPOS	; SET HIRES CURSOR FOR FIRST POSITION
+UNP3	LDX   #0
+	LDA   ($02,X)
+	BPL   UNP1
+	STA   $00
+	JSR   INCBUFER
+	LDA   ($02,X)
+	STA   PATTERNC
+UNP2	LDA   $00
+	LDY   $AA		; GET BYTE OF CURRENT LINE
+	ORA   #$80
+	CMP   #$80
+	BEQ   UNP7
+	STA   ($26),Y	; GET NEXT BYTE FROM HIRES SCREEN
+UNP7	JSR   INCHPOS
+	DEC   PATTERNC
+	BNE   UNP2
+	JSR   INCBUFER
+	JMP   UNP3
+UNP1	LDY   $AA
+	ORA   #$80
+	CMP   #$80
+	BEQ   UNP77
+	STA   ($26),Y
+UNP77	JSR   INCHPOS
+	JSR   INCBUFER
+	JMP   UNP3
+
+INCBUFER	INC   $02
+	BNE   INCBUFER1
+	INC   $02+1		; IF OVERFLOW THEN INCREMENT MSB OF BUFFER
+INCBUFER1	RTS		; RETURN TO CALLER
+
+INCHPOS	INC   $A9		; INCREMENT VERTICAL POSITION OF HIRES CURSOR
+	LDA   $A9		; IF LAST LINE WAS ALREADY DONE, THEN START
+			; NEXT VERTICAL PASS WITH NEXT BYTE
+	CMP   $06
+	BNE   GETADDR	; IF NOT DONE VERTICALLY, THEN CONTINUE
+	LDA   $05
+	STA   $A9		; RESET VERTICAL LINE ADDRESS
+	INC   $AA		; INCREMENT BYTE NUMBER
+	LDA   $AA		; CHECK TO SEE IF COMPLETELY DONE
+	CMP   #$28
+	BEQ   FINISHEB	; GOT TO FINAL END OF ROUTINE
+GETADDR	LDX   $A9
+	LDA   tblHGRH,X
+	STA   $26+1
+	LDA   tblHGRL,X
+	STA   $26
+	LDA   #10
+	JSR   WAIT
+	RTS
+FINISHEB	PLA		; POP OFF RETURN ADDRESS
+	PLA 
+	RTS		; RETURN TO CALLER
 
 *-----------------------------------
 * 

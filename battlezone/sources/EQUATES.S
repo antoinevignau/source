@@ -39,7 +39,15 @@ LA000	=	$A000	; second page pointer
 
 nbPLAYERS	=	$8E	; byte - 0 = 1P, 1 = 2P
 curLEVEL	=	$92	; byte - current level
+fgOFFLIMIT	=	$93	; byte - 0 = draw if off limits, 1 = do not draw if off limits
 curPLAYER	=	$B3	; byte - 0..1
+X1	=	$B7	; byte - X1-coord for line drawing
+Y1	=	$B8	; byte - Y1-coord for line drawing
+X2	=	$B9	; byte - X2-coord for line drawing
+Y2	=	$BA	; byte - Y2-coord for line drawing
+deltaX	=	$BB	; byte - Bresenham delta X
+deltaY	=	$BC	; byte - Bresenham delta Y
+fgCLIP	=	$DE	; byte - 0 = no clipping needed, -1 = clipping needed
 joyX	=	$E3	; byte - X-joy position
 joyY	=	$E4	; byte - Y-joy position
 fgSOUND	=	$EA	; byte - 0 = no sound, 1 = sound

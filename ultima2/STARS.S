@@ -286,7 +286,7 @@ L8B69    LDA   $61
          LDA   L472C,Y
          STA   $FE
          LDA   L47EC,Y
-         STA   $FF
+         STA   $FE+1
          LDX   $60
          LDY   L48AC,X
          INY
@@ -302,7 +302,7 @@ L8B87    LDA   $61
          LDA   L472C,Y
          STA   $FE
          LDA   L47EC,Y
-         STA   $FF
+         STA   $FE+1
          LDX   $60
          LDY   L48AC,X
          INY

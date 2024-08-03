@@ -22,6 +22,8 @@ COUT     EQU   $FDED
 SETINV   EQU   $FE80
 SETNORM  EQU   $FE84
 
+L4E00    EQU   $4E00
+
 *----------------------------
 
          JSR   HOME
@@ -40,7 +42,7 @@ L602B    LDA   KBD
          ASC   "NOMONIOC"0D
          ASC   04
          ASC   "BLOAD PLAYER"0D00
-         LDA   $4E00
+         LDA   L4E00+$00
          BEQ   L6089
          JSR   HOME
          LDY   #$0B
@@ -88,57 +90,57 @@ L6089    JSR   HOME
          LDX   #$1A
          JSR   L6665
          JSR   L65E7
-         STA   $4E15
+         STA   L4E00+$15
          JSR   L6635
          LDY   #$05
          LDX   #$1A
          JSR   L6665
          JSR   L65E7
-         STA   $4E16
+         STA   L4E00+$16
          JSR   L6635
          LDX   #$1A
          LDY   #$06
          JSR   L6665
          JSR   L65E7
-         STA   $4E17
+         STA   L4E00+$17
          JSR   L6635
          LDY   #$07
          LDX   #$1A
          JSR   L6665
          JSR   L65E7
-         STA   $4E18
+         STA   L4E00+$18
          JSR   L6635
          LDX   #$1A
          LDY   #$08
          JSR   L6665
          JSR   L65E7
-         STA   $4E19
+         STA   L4E00+$19
          JSR   L6635
          LDX   #$1A
          LDY   #$09
          JSR   L6665
          JSR   L65E7
-         STA   $4E1A
+         STA   L4E00+$1A
          JSR   L6635
          LDX   #$14
          LDY   #$0B
          JSR   L6665
 L6306    JSR   RDKEY
-         STA   $4E10
+         STA   L4E00+$10
          CMP   #$CD       ; M
          BNE   L6333
          JSR   L65BA
          ASC   "MALE"00
-         LDA   $4E15
+         LDA   L4E00+$15
          SED
          CLC
          ADC   #$05
          CLD
-         STA   $4E15
+         STA   L4E00+$15
          LDX   #$1A
          LDY   #$04
          JSR   L6665
-         LDA   $4E15
+         LDA   L4E00+$15
          JSR   PRBYTE
          JMP   L6359
 
@@ -146,36 +148,36 @@ L6333    CMP   #$C6       ; F
          BNE   L6306
          JSR   L65BA
          ASC   "FEMALE"00
-         LDA   $4E18
+         LDA   L4E00+$18
          SED
          CLC
          ADC   #$10
          CLD
-         STA   $4E18
+         STA   L4E00+$18
          LDX   #$1A
          LDY   #$07
          JSR   L6665
-         LDA   $4E18
+         LDA   L4E00+$18
          JSR   PRBYTE
 L6359    LDX   #$14
          LDY   #$0C
          JSR   L6665
          JSR   RDKEY
-         STA   $4E12
+         STA   L4E00+$12
          CMP   #$B1
          BNE   L638E
          JSR   L65BA
          ASC   "HUMAN"00
-         LDA   $4E1A
+         LDA   L4E00+$1A
          SED
          CLC
          ADC   #$05
          CLD
-         STA   $4E1A
+         STA   L4E00+$1A
          LDX   #$1A
          LDY   #$09
          JSR   L6665
-         LDA   $4E1A
+         LDA   L4E00+$1A
          JSR   PRBYTE
          JMP   L6405
 
@@ -183,16 +185,16 @@ L638E    CMP   #$B2
          BNE   L63B4
          JSR   L65BA
          ASC   "ELF"00
-         LDA   $4E16
+         LDA   L4E00+$16
          SED
          CLC
          ADC   #$05
          CLD
-         STA   $4E16
+         STA   L4E00+$16
          LDX   #$1A
          LDY   #$05
          JSR   L6665
-         LDA   $4E16
+         LDA   L4E00+$16
          JSR   PRBYTE
          JMP   L6405
 
@@ -200,16 +202,16 @@ L63B4    CMP   #$B3
          BNE   L63DC
          JSR   L65BA
          ASC   "DWARF"00
-         LDA   $4E15
+         LDA   L4E00+$15
          SED
          CLC
          ADC   #$05
          CLD
-         STA   $4E15
+         STA   L4E00+$15
          LDX   #$1A
          LDY   #$04
          JSR   L6665
-         LDA   $4E15
+         LDA   L4E00+$15
          JSR   PRBYTE
          JMP   L6405
 
@@ -219,40 +221,40 @@ L63DC    CMP   #$B4
 
 L63E3    JSR   L65BA
          ASC   "HOBBIT"00
-         LDA   $4E19
+         LDA   L4E00+$19
          SED
          CLC
          ADC   #$10
          CLD
-         STA   $4E19
+         STA   L4E00+$19
          LDX   #$1A
          LDY   #$08
          JSR   L6665
-         LDA   $4E19
+         LDA   L4E00+$19
          JSR   PRBYTE
 L6405    CLC
-         LDA   $4E12
+         LDA   L4E00+$12
          SBC   #$B0
-         STA   $4E12
+         STA   L4E00+$12
          LDY   #$0D
          LDX   #$14
          JSR   L6665
          JSR   RDKEY
-         STA   $4E11
+         STA   L4E00+$11
          CMP   #$B1
          BNE   L6445
          JSR   L65BA
          ASC   "FIGHTER"00
-         LDA   $4E15
+         LDA   L4E00+$15
          SED
          CLC
          ADC   #$15
          CLD
-         STA   $4E15
+         STA   L4E00+$15
          LDX   #$1A
          LDY   #$04
          JSR   L6665
-         LDA   $4E15
+         LDA   L4E00+$15
          JSR   PRBYTE
          JMP   L64BF
 
@@ -260,16 +262,16 @@ L6445    CMP   #$B2
          BNE   L646E
          JSR   L65BA
          ASC   "CLERIC"00
-         LDA   $4E19
+         LDA   L4E00+$19
          SED
          CLC
          ADC   #$10
          CLD
-         STA   $4E19
+         STA   L4E00+$19
          LDX   #$1A
          LDY   #$08
          JSR   L6665
-         LDA   $4E19
+         LDA   L4E00+$19
          JSR   PRBYTE
          JMP   L64BF
 
@@ -277,16 +279,16 @@ L646E    CMP   #$B3
          BNE   L6497
          JSR   L65BA
          ASC   "WIZARD"00
-         LDA   $4E1A
+         LDA   L4E00+$1A
          SED
          CLC
          ADC   #$10
          CLD
-         STA   $4E1A
+         STA   L4E00+$1A
          LDX   #$1A
          LDY   #$09
          JSR   L6665
-         LDA   $4E1A
+         LDA   L4E00+$1A
          JSR   PRBYTE
          JMP   L64BF
 
@@ -296,21 +298,21 @@ L6497    CMP   #$B4
 
 L649E    JSR   L65BA
          ASC   "THIEF"00
-         LDA   $4E16
+         LDA   L4E00+$16
          SED
          CLC
          ADC   #$10
          CLD
-         STA   $4E16
+         STA   L4E00+$16
          LDX   #$1A
          LDY   #$05
          JSR   L6665
-         LDA   $4E16
+         LDA   L4E00+$16
          JSR   PRBYTE
 L64BF    CLC
-         LDA   $4E11
+         LDA   L4E00+$11
          SBC   #$B0
-         STA   $4E11
+         STA   L4E00+$11
 L64C8    LDY   #$0E
          LDX   #$14
          JSR   L6665
@@ -321,7 +323,7 @@ L64C8    LDY   #$0E
          JSR   L6665
          LDX   #$0E
          LDA   #$00
-L64ED    STA   $4E00,X
+L64ED    STA   L4E00+$00,X
          DEX
          BNE   L64ED
          LDX   #$00
@@ -331,7 +333,7 @@ L64F5    JSR   RDKEY
          CMP   #$8D
          BEQ   L650B
          JSR   COUT
-         STA   $4E00,X
+         STA   L4E00+$00,X
          INX
          CPX   #$0C
          BCC   L64F5
@@ -347,15 +349,15 @@ L650B    LDY   #$10
 L651F    CMP   #$D9       ; Y
          BNE   L650B
          LDA   #$14
-         STA   $4E24
+         STA   L4E00+$24
          LDA   #$14
-         STA   $4E25
+         STA   L4E00+$25
          LDA   #$02
-         STA   $4E13
+         STA   L4E00+$13
          LDA   #$04
-         STA   $4E1B
-         STA   $4E1D
-         STA   $4E22
+         STA   L4E00+$1B
+         STA   L4E00+$1D
+         STA   L4E00+$22
          JSR   L65BA
          ASC   0D
          ASC   04

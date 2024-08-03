@@ -20,18 +20,26 @@ COUT     EQU   $FDED
 SETINV   EQU   $FE80
 SETNORM  EQU   $FE84
 
+L4A00    EQU   $4A00
+L4D00    EQU   $4D00
+L4E00    EQU   $4E00
+L9154    EQU   $9154
+L927D    EQU   $927D
+L933D    EQU   $933D
+L93FD    EQU   $93FD
+
 *----------------------------
 
 L4000    SEC
          LDA   $00
-         SBC   $4D00,X
+         SBC   L4D00+$00,X
          ASL
          ASL
          JSR   L44BD
          STA   $17
          SEC
          LDA   $01
-         SBC   $4D20,X
+         SBC   L4D00+$20,X
          ASL
          ASL
          JSR   L44BD
@@ -40,11 +48,11 @@ L4000    SEC
 
 L401B    SEC
          LDA   $00
-         SBC   $4D00,X
+         SBC   L4D00+$00,X
          STA   $17
          SEC
          LDA   $01
-         SBC   $4D20,X
+         SBC   L4D00+$20,X
          STA   $18
          RTS
 
@@ -68,9 +76,9 @@ L4046    LDA   $FF
          PHA
          RTS
 
-L404D    LDA   #$20
+L404D    LDA   #>HGR1
          STA   $FD
-         LDA   #$00
+         LDA   #<HGR1
          STA   $FC
 L4055    LDY   #$00
 L4057    LDA   ($FC),Y
@@ -80,11 +88,11 @@ L4057    LDA   ($FC),Y
          BNE   L4057
          INC   $FD
          LDA   $FD
-         CMP   #$40
+         CMP   #>HGR2
          BCC   L4055
          RTS
 
-L4069    LDA   $4E10
+L4069    LDA   L4E00+$10
          CMP   #$CD
          BNE   L4079
          JSR   L402C
@@ -97,7 +105,7 @@ L4079    JSR   L402C
 
 L4084    LDA   #$00
          STA   $FC
-         LDA   #$4E
+         LDA   #L4E00+$
          STA   $FD
          LDX   #$00
 L408E    LDA   ($FC,X)
@@ -332,13 +340,13 @@ L4435    LDA   L4398
          BNE   L443B
          RTS
 
-L443B    LDA   |$00FC     ; NOT ZP
-         STA   $44A5
+L443B    LDA   |$00FC     ; NOT ZP - BUG, USE ZP MODE
+         STA   L44A5
          LDA   #$01
          STA   L44A4
 L4446    LDA   |$00FD
 L4449    PHA
-         LDX   $44A5
+         LDX   L44A5
 L444D    DEX
          BNE   L444D
          BIT   SPKR
@@ -357,12 +365,12 @@ L4456    DEX
          CMP   #$1B
          BEQ   L4475
          STA   L44A4
-         DEC   $44A5
+         DEC   L44A5
          JMP   L4446
 
 L4475    LDA   |$00FD
 L4478    PHA
-         LDX   $44A5
+         LDX   L44A5
 L447C    DEX
          BNE   L447C
          BIT   SPKR
@@ -379,14 +387,15 @@ L4485    DEX
          SEC
          SBC   #$01
          CMP   #$01
-         BEQ   $44A6
+         BEQ   L44A6
          STA   L44A4
-         INC   $44A5
+         INC   L44A5
          JMP   L4475
 
 L44A4    HEX   20
-         HEX   31
-         RTS
+L44A5    HEX   31
+
+L44A6    RTS
 
 L44A7    LDA   #$C0
          STA   $FC
@@ -432,8 +441,8 @@ L44DE    LDA   #$28
          JSR   L402C
          ASC   0A
          ASC   "H.P.="00
-         LDX   $4E1C
-         LDA   $4E1B
+         LDX   L4E00+$1C
+         LDA   L4E00+$1B
          BNE   L44FF
          JSR   SETINV
 L44FF    JSR   PRNTAX
@@ -443,8 +452,8 @@ L44FF    JSR   PRNTAX
          JSR   L402C
          ASC   0A
          ASC   "FOOD="00
-         LDX   $4E1E
-         LDA   $4E1D
+         LDX   L4E00+$1E
+         LDA   L4E00+$1D
          BNE   L451E
          JSR   SETINV
 L451E    JSR   PRNTAX
@@ -454,16 +463,16 @@ L451E    JSR   PRNTAX
          JSR   L402C
          ASC   0A
          ASC   "EXP.="00
-         LDA   $4E20
-         LDX   $4E21
+         LDA   L4E00+$20
+         LDX   L4E00+$21
          JSR   PRNTAX
          LDA   #$1E
          STA   $24
          JSR   L402C
          ASC   0A
          ASC   "GOLD="00
-         LDA   $4E22
-         LDX   $4E23
+         LDA   L4E00+$22
+         LDX   L4E00+$23
          JSR   PRNTAX
          LDA   #$1E
          STA   $21
@@ -554,9 +563,9 @@ L45E1    STA   $AB
          LDA   $A2
          PHA
          LDX   $A0
-         LDY   $9154,X
+         LDY   L9154,X
          STY   $AA
-         LDA   $93FD,X
+         LDA   L93FD,X
          ASL
          TAX
          LDA   L463B,X
@@ -566,9 +575,9 @@ L45E1    STA   $AB
          LDX   #$10
          STX   $A8
 L4604    LDY   $A2
-         LDA   $927D,Y
+         LDA   L927D,Y
          STA   $A3
-         LDA   $933D,Y
+         LDA   L933D,Y
          STA   $A4
          LDX   #$02
          STX   $A9

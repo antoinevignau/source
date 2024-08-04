@@ -190,8 +190,8 @@ L0957       LDX   #$0D
             CMP   #$01
             BEQ   L0970
             DEX
-            LDA   #$13
-            JSR   L1375
+            LDA   #$13	; S (b/c there are 2 players)
+            JSR   printCHAR
 L0970       LDA   $1B
             BNE   L0978
             DEC   $1C
@@ -276,9 +276,9 @@ L0A00       JSR   L17F2
             LDA   $11
             INX
             JSR   L1870
-            LDA   #$30
+            LDA   #$30	; 0
             INX
-            JSR   L1375
+            JSR   printCHAR
             LDX   #$0C
             LDA   #<strHIGH
             JSR   printSTRING_8C
@@ -290,9 +290,9 @@ L0A00       JSR   L17F2
             LDA   $0702
             INX
             JSR   L1870
-            LDA   #$30
+            LDA   #$30	; 0
             INX
-            JSR   L1375
+            JSR   printCHAR
             LDA   #<strSCORE
             LDX   #$1D
             JSR   printSTRING_8C
@@ -301,9 +301,9 @@ L0A00       JSR   L17F2
             LDA   $0411
             INX
             JSR   L1870
-            LDA   #$30
+            LDA   #$30	; 0
             INX
-            JSR   L1375
+            JSR   printCHAR
             LDX   #$23
 L0A5F       JSR   L1892
             CMP   #$B0
@@ -437,8 +437,8 @@ L0B3E       STA   $38,X
             STA   $04
 L0B55       LDX   #$27
             LDY   #$17
-L0B59       LDA   #$20
-            JSR   L1375
+L0B59       LDA   #$20	; space
+            JSR   printCHAR
             DEX
             BPL   L0B59
             LDA   #<strSHIPS
@@ -448,7 +448,7 @@ L0B59       LDA   #$20
             BEQ   L0B78
             STA   $1F
 L0B6E       LDA   #$3E
-            JSR   L1375
+            JSR   printCHAR
             INX
             DEC   $1F
             BNE   L0B6E
@@ -472,10 +472,10 @@ L0B8C       SBC   #$0A
 L0B99       DEC   $1E
             BEQ   L0BAC
             LDA   #$3D
-            JSR   L1375
+            JSR   printCHAR
             LDA   #$3C
             DEX
-            JSR   L1375
+            JSR   printCHAR
             DEX
             JMP   L0B99
 
@@ -496,7 +496,7 @@ L0BB8       LDA   $02
             JSR   printSTRING_8C
             INX
             LDA   $0700
-            JSR   L1375
+            JSR   printCHAR
             LDX   #$0C
             LDA   nbPLAYERS
             LSR
@@ -1469,15 +1469,17 @@ L135B       LDA   L1E00,X
             LDX   $21
             JMP   L1885
 
-L1375       STY   $26
+*-----------------------
+
+printCHAR   STY   $26
             STX   $22
             ASL
             ASL
             ASL
             STA   $24
-            LDA   #$1C
+            LDA   #>L1C00
             ADC   #$00
-            STA   $25
+            STA   $24+1
             TYA
             ASL
             ASL
@@ -1488,7 +1490,7 @@ L1375       STY   $26
 L138D       LDA   L1E00,X
             STA   $20
             LDA   L1F00,X
-            STA   $21
+            STA   $20+1
             LDY   #$00
             LDA   ($24),Y
             LDY   $22
@@ -1919,7 +1921,7 @@ L16CB       TAX
             TAX
             LDY   #$17
             LDA   #$3E
-            JSR   L1375
+            JSR   printCHAR
             LDA   #$61
             STA   $2E
 L16FD       LDA   $11
@@ -1939,7 +1941,7 @@ L16FD       LDA   $11
             JSR   L1870
             INX
             LDA   #$30
-            JSR   L1375
+            JSR   printCHAR
 L1725       LDY   #$00
             LDX   #$06
             LDA   $0700
@@ -1953,7 +1955,7 @@ L1732       LDA   $12
             JSR   L1870
             INX
             LDA   #$30
-            JMP   L1375
+            JMP   printCHAR
 
 L1743       LDA   $02
             BNE   L174A
@@ -1976,7 +1978,7 @@ L174A       LDA   #$01
             JSR   printSTRING_8C
             LDA   $0700
             INX
-            JSR   L1375
+            JSR   printCHAR
             JSR   doLONGWAIT
             LDA   $0402
             BNE   L17A8
@@ -2043,10 +2045,10 @@ L17F1       RTS
 L17F2       LDX   #$27
 L17F4       LDY   #$00
             LDA   #$20
-            JSR   L1375
+            JSR   printCHAR
             LDY   #$17
             LDA   #$20
-            JSR   L1375
+            JSR   printCHAR
             DEX
             BPL   L17F4
 
@@ -2088,8 +2090,6 @@ L1825       JSR   L1892
 
 *-----------------------
 
-*-----------------------
-
 printSTRING_8C
             STA   $1E
             LDA   #>strGAMEOVER
@@ -2104,7 +2104,7 @@ L1845       STY   $1D
 L1851       LDY   $1D
             CMP   #$00
             BEQ   L1866
-            JSR   L1375
+            JSR   printCHAR
             INX
             CPX   #$28
             BNE   L1845
@@ -2128,12 +2128,12 @@ L1870       STA   $1F
             LSR
             LSR
             ORA   #$30
-            JSR   L1375
+            JSR   printCHAR
             INX
             LDA   $1F
             AND   #$0F
             ORA   #$30
-            JSR   L1375
+            JSR   printCHAR
 L1885       LDA   $0E
             CLC
             ADC   $0F
@@ -2933,6 +2933,8 @@ L1B80       DB    $10
             DB    $00
             DB    $00
 
+*-----------------------
+* FONT
 *-----------------------
 
 L1C00       DB    $04

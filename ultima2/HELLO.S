@@ -922,6 +922,7 @@ L7215    INC   $05
          STA   $07
          STA   $05
          TAY
+
 L722B    LDA   ($05),Y
          STA   $07
          JSR   L7215
@@ -1009,6 +1010,7 @@ L72D4    STA   ($FC),Y
          LDX   $FD
          CPX   #$40
          HEX   90
+
 L72E0    LDA   SOFTEV+1
          STA   PWREDUP
          JMP   L72F7
@@ -1024,7 +1026,7 @@ L72EE    JSR   RDKEY
          BCC   L72EE
          CMP   #$BA
 L72F7    DEC   L72FA
-L72FA    HEX   EF
+L72FA    HEX   EF	; EF -> EE (INC)
          DA    $72FA
          LDA   L731F
          EOR   #$8A

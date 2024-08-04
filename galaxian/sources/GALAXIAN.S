@@ -112,16 +112,16 @@ L08B5       DEY
             JSR   L13AB
             LDX   #$0A
             LDY   #$10
-            LDA   #$30
-            JSR   L183F
-            LDA   #$29
+            LDA   #<strCOPYRIGHT
+            JSR   printSTRING_8C
+            LDA   #<L8829
             LDX   #$0A
             LDY   #$06
-            JSR   L1867
+            JSR   printSTRING_88
             LDX   #$07
             LDY   #$14
-            LDA   #$4D
-            JSR   L1867
+            LDA   #<strCONTINUE
+            JSR   printSTRING_88
             LDA   #$70
             JSR   doWAIT
             JSR   checkBUTTONS
@@ -147,45 +147,45 @@ L0902       JSR   L1820
             JSR   L13AB
             LDX   #$03
             LDY   #$0B
-            LDA   L7C00
-            JSR   L183F
+            LDA   L7C00	; LOGO
+            JSR   printSTRING_8C
             LDY   #$0D
 L0917       LDX   #$03
             LDA   L7BF4,Y
-            JSR   L183F
+            JSR   printSTRING_8C
             INY
             CPY   #$11
             BNE   L0917
             JSR   doKBDSTROBE
-L0927       LDA   theDEVICE
+L0927       LDA   theDEVICE	; index 0 is JOYSTICK
             BEQ   L092D
-            LDA   #$09
+            LDA   #<strKEYBOARD	; or KEYBOARD
 L092D       LDX   #$03
             LDY   #$12
-            JSR   L1867
+            JSR   printSTRING_88
             INX
-            LDA   #$12
-            JSR   L1867
+            LDA   #<strSELECTED
+            JSR   printSTRING_88
             LDX   #$16
-            LDA   #$1B
-            JSR   L1867
+            LDA   #<strSOUND
+            JSR   printSTRING_88
             INX
-            LDA   fgSOUND
-            AND   #$21
+            LDA   fgSOUND	; 1111_1111 v 0010_0001 = 21
+            AND   #$21		; OFF
             BNE   L094A
-            LDA   #$25
-L094A       JSR   L1867
+            LDA   #<strOFF	; ON
+L094A       JSR   printSTRING_88
             LDY   nbPLAYERS
-            LDA   #$3D
+            LDA   #<strONE
             CPY   #$01
             BEQ   L0957
-            LDA   #$41
+            LDA   #<strTWO
 L0957       LDX   #$0D
             LDY   #$13
-            JSR   L1867
-            LDA   #$45
+            JSR   printSTRING_88
+            LDA   #<strPLAYER
             INX
-            JSR   L1867
+            JSR   printSTRING_88
             LDA   nbPLAYERS
             CMP   #$01
             BEQ   L0970
@@ -269,8 +269,8 @@ L0A00       JSR   L17F2
             STA   $0700
             LDX   #$00
             LDY   #$00
-            LDA   #$0A
-            JSR   L183F
+            LDA   #<strSCORE
+            JSR   printSTRING_8C
             LDA   $12
             JSR   L1870
             LDA   $11
@@ -280,11 +280,11 @@ L0A00       JSR   L17F2
             INX
             JSR   L1375
             LDX   #$0C
-            LDA   #$16
-            JSR   L183F
-            LDA   #$0A
+            LDA   #<strHIGH
+            JSR   printSTRING_8C
+            LDA   #<strSCORE
             LDX   #$11
-            JSR   L183F
+            JSR   printSTRING_8C
             LDA   $0701
             JSR   L1870
             LDA   $0702
@@ -293,9 +293,9 @@ L0A00       JSR   L17F2
             LDA   #$30
             INX
             JSR   L1375
-            LDA   #$0A
+            LDA   #<strSCORE
             LDX   #$1D
-            JSR   L183F
+            JSR   printSTRING_8C
             LDA   $0412
             JSR   L1870
             LDA   $0411
@@ -441,9 +441,9 @@ L0B59       LDA   #$20
             JSR   L1375
             DEX
             BPL   L0B59
-            LDA   #$1B
+            LDA   #<strSHIPS
             LDX   #$00
-            JSR   L183F
+            JSR   printSTRING_8C
             LDA   $0D
             BEQ   L0B78
             STA   $1F
@@ -452,9 +452,9 @@ L0B6E       LDA   #$3E
             INX
             DEC   $1F
             BNE   L0B6E
-L0B78       LDA   #$22
+L0B78       LDA   #<strWAVE
             LDX   #$12
-            JSR   L183F
+            JSR   printSTRING_8C
             LDA   $16
             CMP   #$31
             BCC   L0B87
@@ -490,10 +490,10 @@ L0BB8       LDA   $02
             LDA   $43
             BEQ   L0BE4
             JSR   L1820
-            LDA   #$28
+            LDA   #<strPLAYER2
             LDY   #$0D
             LDX   #$0F
-            JSR   L183F
+            JSR   printSTRING_8C
             INX
             LDA   $0700
             JSR   L1375
@@ -1967,23 +1967,23 @@ L174A       LDA   #$01
             JSR   L1820
             LDX   #$0F
             LDY   #$0C
-            LDA   #$00
+            LDA   #<strGAMEOVER
             STA   $02
-            JSR   L183F
+            JSR   printSTRING_8C
             LDX   #$0F
             LDY   #$0E
-            LDA   #$28
-            JSR   L183F
+            LDA   #<strPLAYER2
+            JSR   printSTRING_8C
             LDA   $0700
             INX
             JSR   L1375
             JSR   doLONGWAIT
             LDA   $0402
             BNE   L17A8
-            LDA   #$67
+            LDA   #<strOPTIONS
             LDY   #$14
             LDX   #$08
-            JSR   L1867
+            JSR   printSTRING_88
             JSR   doKBDSTROBE
             LDY   #$28
 L1789       LDA   #$00
@@ -1994,10 +1994,11 @@ L1789       LDA   #$00
             CMP   #" "
             BNE   L179D
 L179A       JMP   L0902
-
 L179D       DEY
             BPL   L1789
             JMP   L086E
+
+*-----------------------
 
 L17A3       LDA   $0402
             BEQ   L17E0
@@ -2036,6 +2037,8 @@ L17E3       LDA   $01
             LDA   #$01
             STA   $01
 L17F1       RTS
+
+*-----------------------
 
 L17F2       LDX   #$27
 L17F4       LDY   #$00
@@ -2085,8 +2088,11 @@ L1825       JSR   L1892
 
 *-----------------------
 
-L183F       STA   $1E
-            LDA   #>L8C00
+*-----------------------
+
+printSTRING_8C
+            STA   $1E
+            LDA   #>strGAMEOVER
             STA   $1E+1
 
 L1845       STY   $1D
@@ -2108,8 +2114,11 @@ L1851       LDY   $1D
             BNE   L1845
 L1866       RTS
 
-L1867       STA   $1E
-            LDA   #>L8800
+*-----------------------
+
+printSTRING_88
+            STA   $1E
+            LDA   #>strJOYSTICK
             STA   $1E+1
             JMP   L1845
 
@@ -10741,6 +10750,7 @@ L60BC       DB    $C0
             DB    $94
             DB    $C0
             DB    $F3
+
 L7BF4       DB    $9C
             DB    $80
             DB    $80
@@ -10753,11 +10763,12 @@ L7BF4       DB    $9C
             DB    $80
             DB    $80
             DB    $80
-L7C00       DB    $48
-            DB    $69
-            DB    $8C
-            DB    $B1
-            DB    $D4
+L7C00       DB    <strOPTIONKEYS
+            DB    <strTOGGLESOUND	; +$0D
+            DB    <str1OR2PLAYERS	; +$0E
+            DB    <strJORK	; +$0F
+            DB    <L8CD4	; +$10 (not $D5 instead?)
+
             DB    $2A
             DB    $55
 L7C07       DB    $15
@@ -13831,7 +13842,10 @@ L8700       DB    $00
             DB    $24
             DB    $24
             DB    $24
-L8800       DB    $0A
+
+*-----------------------
+
+strJOYSTICK DB    $0A	; JOYSTICK
             DB    $0F
             DB    $19
             DB    $13
@@ -13840,7 +13854,7 @@ L8800       DB    $0A
             DB    $03
             DB    $0B
             DB    $00
-            DB    $0B
+strKEYBOARD DB    $0B	; KEYBOARD
             DB    $05
             DB    $19
             DB    $02
@@ -13849,7 +13863,7 @@ L8800       DB    $0A
             DB    $12
             DB    $04
             DB    $00
-            DB    $13
+strSELECTED DB    $13	; SELECTED
             DB    $05
             DB    $0C
             DB    $05
@@ -13858,49 +13872,49 @@ L8800       DB    $0A
             DB    $05
             DB    $04
             DB    $00
-            DB    $13
+strSOUND    DB    $13	; SOUND
             DB    $0F
             DB    $15
             DB    $0E
             DB    $04
             DB    $00
-            DB    $0F
+strON       DB    $0F	; ON_
             DB    $0E
             DB    $20
             DB    $00
-            DB    $0F
+strOFF      DB    $0F	; OFF
             DB    $06
             DB    $06
             DB    $00
-            DB    $01
-            DB    $14
-            DB    $01
-            DB    $12
-            DB    $09
-            DB    $13
-            DB    $0F
-            DB    $06
-            DB    $14
-            DB    $20
-            DB    $10
-            DB    $12
-            DB    $05
-            DB    $13
-            DB    $05
+L8829       DB    $01	; A
+            DB    $14	; T
+            DB    $01	; A
+            DB    $12	; R
+            DB    $09	; I
+            DB    $13	; S
+            DB    $0F	; O
+            DB    $06	; F
+            DB    $14	; T
+            DB    $20	; 
+            DB    $10	; P
+            DB    $12	; R
+            DB    $05	; E
+            DB    $13	; S
+            DB    $05	; E
+            DB    $0E	; N
+            DB    $14	; T
+            DB    $13	; S
+            DB    $3A	; :
+            DB    $00
+strONE      DB    $0F	; ONE
             DB    $0E
-            DB    $14
-            DB    $13
-            DB    $3A
-            DB    $00
-            DB    $0F
-            DB    $0E
             DB    $05
             DB    $00
-            DB    $14
+strTWO      DB    $14	; TWO
             DB    $17
             DB    $0F
             DB    $00
-            DB    $10
+strPLAYER   DB    $10	; PLAYER_
             DB    $0C
             DB    $01
             DB    $19
@@ -13908,185 +13922,58 @@ L8800       DB    $0A
             DB    $12
             DB    $20
             DB    $00
-            DB    $20
-            DB    $10
-            DB    $12
-            DB    $05
-            DB    $13
-            DB    $13
-            DB    $20
-            DB    $13
-            DB    $10
-            DB    $01
-            DB    $03
-            DB    $05
-            DB    $20
-            DB    $14
-            DB    $0F
-            DB    $20
-            DB    $03
-            DB    $0F
-            DB    $0E
-            DB    $14
-            DB    $09
-            DB    $0E
-            DB    $15
-            DB    $05
-            DB    $20
-            DB    $00
-            DB    $10
-            DB    $12
-            DB    $05
-            DB    $13
-            DB    $13
-            DB    $20
-            DB    $13
-            DB    $10
-            DB    $01
-            DB    $03
-            DB    $05
-            DB    $20
-            DB    $06
-            DB    $0F
-            DB    $12
-            DB    $20
-            DB    $0F
-            DB    $10
-            DB    $14
-            DB    $09
-            DB    $0F
-            DB    $0E
-            DB    $13
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
+strCONTINUE DB    $20	; _
+            DB    $10	; P
+            DB    $12	; R
+            DB    $05	; E
+            DB    $13	; S
+            DB    $13	; S
+            DB    $20	; _
+            DB    $13	; S
+            DB    $10	; P
+            DB    $01	; A
+            DB    $03	; C
+            DB    $05	; E
+            DB    $20	; _
+            DB    $14	; T
+            DB    $0F	; O
+            DB    $20	; _
+            DB    $03	; C
+            DB    $0F	; O
+            DB    $0E	; N
+            DB    $14	; T
+            DB    $09	; I
+            DB    $0E	; N
+            DB    $15	; U
+            DB    $05	; E
+            DB    $20	; _
+            DB    $00	; 
+strOPTIONS  DB    $10	; P
+            DB    $12	; R
+            DB    $05	; E
+            DB    $13	; S
+            DB    $13	; S
+            DB    $20	; _
+            DB    $13	; S
+            DB    $10	; P
+            DB    $01	; A
+            DB    $03	; C
+            DB    $05	; E
+            DB    $20	; _
+            DB    $06	; F
+            DB    $0F	; O
+            DB    $12	; R
+            DB    $20	; _
+            DB    $0F	; O
+            DB    $10	; P
+            DB    $14	; T
+            DB    $09	; I
+            DB    $0F	; O
+            DB    $0E	; N
+            DB    $13	; S
+            DB    $00
+            DS    \
+
 L8900       DB    $00
             DB    $01
             DB    $02
@@ -14343,6 +14230,7 @@ L8900       DB    $00
             DB    $01
             DB    $02
             DB    $03
+
 L8A00       DB    $A0
             DB    $80
             DB    $80
@@ -14599,6 +14487,7 @@ L8A00       DB    $A0
             DB    $00
             DB    $00
             DB    $00
+
 L8B00       DB    $80
             DB    $84
             DB    $80
@@ -14855,254 +14744,258 @@ L8B00       DB    $80
             DB    $00
             DB    $FF
             DB    $FF
-L8C00       DB    $07
-            DB    $01
-            DB    $0D
-            DB    $05
-            DB    $20
-            DB    $0F
-            DB    $16
-            DB    $05
-            DB    $12
-            DB    $00
-            DB    $13
-            DB    $03
-            DB    $0F
-            DB    $12
-            DB    $05
-            DB    $3A
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $08
-            DB    $09
-            DB    $07
-            DB    $08
-            DB    $00
-            DB    $13
-            DB    $08
-            DB    $09
-            DB    $10
-            DB    $13
-            DB    $3A
-            DB    $00
-            DB    $17
-            DB    $01
-            DB    $16
-            DB    $05
-            DB    $3A
-            DB    $00
-            DB    $10
-            DB    $0C
-            DB    $01
-            DB    $19
-            DB    $05
-            DB    $12
-            DB    $20
-            DB    $00
 
-L8C30       DB    $28	; (C) 1983, ATARI, INC.
-            DB    $03
-            DB    $29
-            DB    $20
-            DB    $31
-            DB    $39
-            DB    $38
-            DB    $33
-            DB    $20
+strGAMEOVER DB    $07	; GAME OVER
             DB    $01
-            DB    $14
-            DB    $01
-            DB    $12
-            DB    $09
-            DB    $2C
-            DB    $20
-            DB    $09
-            DB    $0E
-            DB    $03
-            DB    $2E
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-L8C48       DB    $20
-            DB    $20
-            DB    $20
-            DB    $20
-            DB    $20
-            DB    $20
-            DB    $20
-            DB    $20
-            DB    $20
-            DB    $0F
-            DB    $10
-            DB    $14
-            DB    $09
-            DB    $0F
-            DB    $0E
-            DB    $20
-            DB    $0B
+            DB    $0D
             DB    $05
-            DB    $19
-            DB    $13
-            DB    $00
-            DB    $0D
-            DB    $0F
             DB    $20
+            DB    $0F
+            DB    $16
+            DB    $05
+            DB    $12
+            DB    $00
+strSCORE    DB    $13	; SCORE:
             DB    $03
             DB    $0F
-            DB    $0D
-            DB    $0D
-            DB    $01
-            DB    $0E
-            DB    $04
-            DB    $13
+            DB    $12
+            DB    $05
+            DB    $3A
             DB    $00
-            DB    $20
-            DB    $20
-            DB    $20
-            DB    $20
-            DB    $20
-            DB    $13
-            DB    $20
-            DB    $2D
-            DB    $20
-            DB    $14
-            DB    $0F
+L8C11       DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+strHIGH     DB    $08	; HIGH
+            DB    $09
             DB    $07
-            DB    $07
-            DB    $0C
-            DB    $05
-            DB    $20
-            DB    $13
-            DB    $0F
-            DB    $15
-            DB    $0E
-            DB    $04
-            DB    $00
-            DB    $0C
-            DB    $2D
-            DB    $13
-            DB    $20
-            DB    $2D
-            DB    $20
-            DB    $13
-            DB    $0F
-            DB    $15
-            DB    $0E
-            DB    $04
-            DB    $00
-            DB    $00
-            DB    $31
-            DB    $20
-            DB    $0F
-            DB    $12
-            DB    $20
-            DB    $32
-            DB    $20
-            DB    $2D
-            DB    $20
-            DB    $0F
-            DB    $0E
-            DB    $05
-            DB    $20
-            DB    $0F
-            DB    $12
-            DB    $20
-            DB    $14
-            DB    $17
-            DB    $0F
-            DB    $20
-            DB    $10
-            DB    $0C
-            DB    $01
-            DB    $19
-            DB    $05
-            DB    $12
-            DB    $13
-            DB    $00
-            DB    $10
-            DB    $0C
-            DB    $01
-            DB    $19
-            DB    $05
-            DB    $12
-            DB    $13
-            DB    $00
-            DB    $00
-            DB    $0A
-            DB    $20
-            DB    $0F
-            DB    $12
-            DB    $20
-            DB    $0B
-            DB    $20
-            DB    $2D
-            DB    $20
-            DB    $0A
-            DB    $0F
-            DB    $19
-            DB    $13
-            DB    $14
-            DB    $09
-            DB    $03
-            DB    $0B
-            DB    $20
-            DB    $0F
-            DB    $12
-            DB    $20
-            DB    $0B
-            DB    $05
-            DB    $19
-            DB    $02
-            DB    $0F
-            DB    $01
-            DB    $12
-            DB    $04
-            DB    $00
-            DB    $12
-            DB    $14
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $14
             DB    $08
+            DB    $00
+strSHIPS    DB    $13	; SHIPS:
+            DB    $08
+            DB    $09
+            DB    $10
+            DB    $13
+            DB    $3A
+            DB    $00
+strWAVE     DB    $17	; WAVE:
+            DB    $01
+            DB    $16
+            DB    $05
+            DB    $3A
+            DB    $00
+strPLAYER2  DB    $10	; PLAYER_
+            DB    $0C
+            DB    $01
+            DB    $19
             DB    $05
             DB    $12
             DB    $20
-            DB    $2D
-            DB    $20
-            DB    $13
-            DB    $14
-            DB    $0F
-            DB    $10
-            DB    $20
-            DB    $20
-            DB    $20
-            DB    $20
-            DB    $20
-            DB    $20
-            DB    $20
-            DB    $0A
-            DB    $20
-            DB    $0F
-            DB    $12
-            DB    $20
-            DB    $0B
-            DB    $20
-            DB    $2D
-            DB    $20
-            DB    $03
-            DB    $0F
-            DB    $0E
-            DB    $14
-            DB    $12
-            DB    $0F
-            DB    $0C
+            DB    $00
+strCOPYRIGHT
+            DB    $28	; (
+            DB    $03	; C
+            DB    $29	; )
+            DB    $20	; _
+            DB    $31	; 1
+            DB    $39	; 9
+            DB    $38	; 8
+            DB    $33	; 3
+            DB    $20	; _
+            DB    $01	; A
+            DB    $14	; T
+            DB    $01	; A
+            DB    $12	; R
+            DB    $09	; I
+            DB    $2C	; ,
+            DB    $20	; _
+            DB    $09	; I
+            DB    $0E	; N
+            DB    $03	; C
+            DB    $2E	; .
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+strOPTIONKEYS
+            DB    $20	; _
+            DB    $20	; _
+            DB    $20	; _
+            DB    $20	; _
+            DB    $20	; _
+            DB    $20	; _
+            DB    $20	; _
+            DB    $20	; _
+            DB    $20	; _
+            DB    $0F	; O
+            DB    $10	; P
+            DB    $14	; T
+            DB    $09	; I
+            DB    $0F	; O
+            DB    $0E	; N
+            DB    $20	; _
+            DB    $0B	; K
+            DB    $05	; E
+            DB    $19	; Y
+            DB    $13	; S
+            DB    $00
+strCOMMANDS DB    $0D	; M
+            DB    $0F	; O
+            DB    $20	; _
+            DB    $03	; C
+            DB    $0F	; O
+            DB    $0D	; M
+            DB    $0D	; M
+            DB    $01	; A
+            DB    $0E	; N
+            DB    $04	; D
+            DB    $13	; S
+            DB    $00
+strTOGGLESOUND
+            DB    $20	; _
+            DB    $20	; _
+            DB    $20	; _
+            DB    $20	; _
+            DB    $20	; _
+            DB    $13	; S
+            DB    $20	; _
+            DB    $2D	; :
+            DB    $20	; _
+            DB    $14	; T
+            DB    $0F	; O
+            DB    $07	; G
+            DB    $07	; G
+            DB    $0C	; L
+            DB    $05	; E
+            DB    $20	; _
+            DB    $13	; S
+            DB    $0F	; O
+            DB    $15	; U
+            DB    $0E	; N
+            DB    $04	; D
+            DB    $00
+strLSSOUND  DB    $0C	; L
+            DB    $2D	; :
+            DB    $13	; S
+            DB    $20	; _
+            DB    $2D	; :
+            DB    $20	; _
+            DB    $13	; S
+            DB    $0F	; O
+            DB    $15	; U
+            DB    $0E	; N
+            DB    $04	; D
+            DB    $00
+            DB    $00
+str1OR2PLAYERS
+            DB    $31	; 1
+            DB    $20	; _
+            DB    $0F	; O
+            DB    $12	; R
+            DB    $20	; _
+            DB    $32	; 2
+            DB    $20	; _
+            DB    $2D	; :
+            DB    $20	; _
+            DB    $0F	; O
+            DB    $0E	; N
+            DB    $05	; E
+            DB    $20	; _
+            DB    $0F	; O
+            DB    $12	; R
+            DB    $20	; _
+            DB    $14	; T
+            DB    $17	; W
+            DB    $0F	; O
+            DB    $20	; _
+            DB    $10	; P
+            DB    $0C	; L
+            DB    $01	; A
+            DB    $19	; Y
+            DB    $05	; E
+            DB    $12	; R
+            DB    $13	; S
+            DB    $00
+strPLAYERS  DB    $10	; P
+            DB    $0C	; L
+            DB    $01	; A
+            DB    $19	; Y
+            DB    $05	; E
+            DB    $12	; R
+            DB    $13	; S
+            DB    $00
+            DB    $00
+strJORK     DB    $0A	; J
+            DB    $20	; _
+            DB    $0F	; O
+            DB    $12	; R
+            DB    $20	; _
+            DB    $0B	; K
+            DB    $20	; _
+            DB    $2D	; /
+            DB    $20	; _
+            DB    $0A	; J
+            DB    $0F	; O
+            DB    $19	; Y
+            DB    $13	; S
+            DB    $14	; T
+            DB    $09	; I
+            DB    $03	; C
+            DB    $0B	; K
+            DB    $20	; _
+            DB    $0F	; O
+            DB    $12	; R
+            DB    $20	; _
+            DB    $0B	; K
+            DB    $05	; E
+            DB    $19	; Y
+            DB    $02	; B
+            DB    $0F	; O
+            DB    $01	; A
+            DB    $12	; R
+            DB    $04	; D
+            DB    $00
+L8CCF       DB    $12	; R
+            DB    $14	; T
+            DB    $00
+            DB    $00
+            DB    $00
+L8CD4       DB    $00
+L8CD5       DB    $14	; T
+            DB    $08	; H
+            DB    $05	; E
+            DB    $12	; R
+            DB    $20	; _
+            DB    $2D	; :
+            DB    $20	; _
+            DB    $13	; S
+            DB    $14	; T
+            DB    $0F	; O
+            DB    $10	; P
+            DB    $20	; _
+            DB    $20	; _
+            DB    $20	; _
+            DB    $20	; _
+            DB    $20	; _
+            DB    $20	; _
+            DB    $20	; _
+            DB    $0A	; J
+            DB    $20	; _
+            DB    $0F	; O
+            DB    $12	; R
+            DB    $20	; _
+            DB    $0B	; K
+            DB    $20	; _
+            DB    $2D	; /
+            DB    $20	; _
+            DB    $03	; C
+            DB    $0F	; O
+            DB    $0E	; N
+            DB    $14	; T
+            DB    $12	; R
+            DB    $0F	; O
+            DB    $0C	; L
             DB    $00
             DB    $00
             DB    $00

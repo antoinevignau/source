@@ -3925,8 +3925,8 @@ L7BD5    DB    $DF
          DB    $E5
          DB    $E5
          DB    $E5
-         DB    fgPAGE
-         DB    fgPAGE
+         DB    $E6
+         DB    $E6
 L7C01    DB    $00
          DB    $28
          DB    $50

@@ -1,5 +1,6 @@
 *
 * Robotron: 2084
+* by Steve Hays
 *
 * (c) 1982, Atari and Williams
 * (s) 2024, Antoine Vignau
@@ -2598,525 +2599,52 @@ L1180       DB    $00
             DB    $00
             DB    $00
             DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $80
-            DB    $80
-            DB    $80
-            DB    $80
-            DB    $80
-            DB    $80
-            DB    $80
-            DB    $80
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $80
-            DB    $80
-            DB    $80
-            DB    $80
-            DB    $80
-            DB    $80
-            DB    $80
-            DB    $80
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $80
-            DB    $80
-            DB    $80
-            DB    $80
-            DB    $80
-            DB    $80
-            DB    $80
-            DB    $80
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $80
-            DB    $80
-            DB    $80
-            DB    $80
-            DB    $80
-            DB    $80
-            DB    $80
-            DB    $80
-            DB    $28
-            DB    $28
-            DB    $28
-            DB    $28
-            DB    $28
-            DB    $28
-            DB    $28
-            DB    $28
-            DB    $A8
-            DB    $A8
-            DB    $A8
-            DB    $A8
-            DB    $A8
-            DB    $A8
-            DB    $A8
-            DB    $A8
-            DB    $28
-            DB    $28
-            DB    $28
-            DB    $28
-            DB    $28
-            DB    $28
-            DB    $28
-            DB    $28
-            DB    $A8
-            DB    $A8
-            DB    $A8
-            DB    $A8
-            DB    $A8
-            DB    $A8
-            DB    $A8
-            DB    $A8
-            DB    $28
-            DB    $28
-            DB    $28
-            DB    $28
-            DB    $28
-            DB    $28
-            DB    $28
-            DB    $28
-            DB    $A8
-            DB    $A8
-            DB    $A8
-            DB    $A8
-            DB    $A8
-            DB    $A8
-            DB    $A8
-            DB    $A8
-            DB    $28
-            DB    $28
-            DB    $28
-            DB    $28
-            DB    $28
-            DB    $28
-            DB    $28
-            DB    $28
-            DB    $A8
-            DB    $A8
-            DB    $A8
-            DB    $A8
-            DB    $A8
-            DB    $A8
-            DB    $A8
-            DB    $A8
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $50
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $D0
-            DB    $20
-            DB    $24
-            DB    $28
-            DB    $2C
-            DB    $30
-            DB    $34
-            DB    $38
-            DB    $3C
-            DB    $20
-            DB    $24
-            DB    $28
-            DB    $2C
-            DB    $30
-            DB    $34
-            DB    $38
-            DB    $3C
-            DB    $21
-            DB    $25
-            DB    $29
-            DB    $2D
-            DB    $31
-            DB    $35
-            DB    $39
-            DB    $3D
-            DB    $21
-            DB    $25
-            DB    $29
-            DB    $2D
-            DB    $31
-            DB    $35
-            DB    $39
-            DB    $3D
-            DB    $22
-            DB    $26
-            DB    $2A
-            DB    $2E
-            DB    $32
-            DB    $36
-            DB    $3A
-            DB    $3E
-            DB    $22
-            DB    $26
-            DB    $2A
-            DB    $2E
-            DB    $32
-            DB    $36
-            DB    $3A
-            DB    $3E
-            DB    $23
-            DB    $27
-            DB    $2B
-            DB    $2F
-            DB    $33
-            DB    $37
-            DB    $3B
-            DB    $3F
-            DB    $23
-            DB    $27
-            DB    $2B
-            DB    $2F
-            DB    $33
-            DB    $37
-            DB    $3B
-            DB    $3F
-            DB    $20
-            DB    $24
-            DB    $28
-            DB    $2C
-            DB    $30
-            DB    $34
-            DB    $38
-            DB    $3C
-            DB    $20
-            DB    $24
-            DB    $28
-            DB    $2C
-            DB    $30
-            DB    $34
-            DB    $38
-            DB    $3C
-            DB    $21
-            DB    $25
-            DB    $29
-            DB    $2D
-            DB    $31
-            DB    $35
-            DB    $39
-            DB    $3D
-            DB    $21
-            DB    $25
-            DB    $29
-            DB    $2D
-            DB    $31
-            DB    $35
-            DB    $39
-            DB    $3D
-            DB    $22
-            DB    $26
-            DB    $2A
-            DB    $2E
-            DB    $32
-            DB    $36
-            DB    $3A
-            DB    $3E
-            DB    $22
-            DB    $26
-            DB    $2A
-            DB    $2E
-            DB    $32
-            DB    $36
-            DB    $3A
-            DB    $3E
-            DB    $23
-            DB    $27
-            DB    $2B
-            DB    $2F
-            DB    $33
-            DB    $37
-            DB    $3B
-            DB    $3F
-            DB    $23
-            DB    $27
-            DB    $2B
-            DB    $2F
-            DB    $33
-            DB    $37
-            DB    $3B
-            DB    $3F
-            DB    $20
-            DB    $24
-            DB    $28
-            DB    $2C
-            DB    $30
-            DB    $34
-            DB    $38
-            DB    $3C
-            DB    $20
-            DB    $24
-            DB    $28
-            DB    $2C
-            DB    $30
-            DB    $34
-            DB    $38
-            DB    $3C
-            DB    $21
-            DB    $25
-            DB    $29
-            DB    $2D
-            DB    $31
-            DB    $35
-            DB    $39
-            DB    $3D
-            DB    $21
-            DB    $25
-            DB    $29
-            DB    $2D
-            DB    $31
-            DB    $35
-            DB    $39
-            DB    $3D
-            DB    $22
-            DB    $26
-            DB    $2A
-            DB    $2E
-            DB    $32
-            DB    $36
-            DB    $3A
-            DB    $3E
-            DB    $22
-            DB    $26
-            DB    $2A
-            DB    $2E
-            DB    $32
-            DB    $36
-            DB    $3A
-            DB    $3E
-            DB    $23
-            DB    $27
-            DB    $2B
-            DB    $2F
-            DB    $33
-            DB    $37
-            DB    $3B
-            DB    $3F
-            DB    $23
-            DB    $27
-            DB    $2B
-            DB    $2F
-            DB    $33
-            DB    $37
-            DB    $3B
-            DB    $3F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
-            DB    $1F
 
-*-----------------------------------
-*
-*-----------------------------------
+L1200       HEX   00000000000000008080808080808080
+            HEX   00000000000000008080808080808080
+            HEX   00000000000000008080808080808080
+            HEX   00000000000000008080808080808080
+            HEX   2828282828282828A8A8A8A8A8A8A8A8
+            HEX   2828282828282828A8A8A8A8A8A8A8A8
+            HEX   2828282828282828A8A8A8A8A8A8A8A8
+            HEX   2828282828282828A8A8A8A8A8A8A8A8
+            HEX   5050505050505050D0D0D0D0D0D0D0D0
+            HEX   5050505050505050D0D0D0D0D0D0D0D0
+            HEX   5050505050505050D0D0D0D0D0D0D0D0
+            HEX   5050505050505050D0D0D0D0D0D0D0D0
+            HEX   D0D0D0D0D0D0D0D0D0D0D0D0D0D0D0D0
+            HEX   D0D0D0D0D0D0D0D0D0D0D0D0D0D0D0D0
+            HEX   D0D0D0D0D0D0D0D0D0D0D0D0D0D0D0D0
+            HEX   D0D0D0D0D0D0D0D0D0D0D0D0D0D0D0D0
+
+L1300       HEX   2024282C3034383C2024282C3034383C
+            HEX   2125292D3135393D2125292D3135393D
+            HEX   22262A2E32363A3E22262A2E32363A3E
+            HEX   23272B2F33373B3F23272B2F33373B3F
+            HEX   2024282C3034383C2024282C3034383C
+            HEX   2125292D3135393D2125292D3135393D
+            HEX   22262A2E32363A3E22262A2E32363A3E
+            HEX   23272B2F33373B3F23272B2F33373B3F
+            HEX   2024282C3034383C2024282C3034383C
+            HEX   2125292D3135393D2125292D3135393D
+            HEX   22262A2E32363A3E22262A2E32363A3E
+            HEX   23272B2F33373B3F23272B2F33373B3F
+            HEX   1F1F1F1F1F1F1F1F1F1F1F1F1F1F1F1F
+            HEX   1F1F1F1F1F1F1F1F1F1F1F1F1F1F1F1F
+            HEX   1F1F1F1F1F1F1F1F1F1F1F1F1F1F1F1F
+            HEX   1F1F1F1F1F1F1F1F1F1F1F1F1F1F1F1F
+
+*-----------------------
+* $1400..$1FFF is used
+*-----------------------
+
+*-----------------------
+* WE ARE AT $100
+*-----------------------
 
             ORG   $000100
 
+L0100       DB    $00
             DB    $00
             DB    $00
             DB    $00
@@ -3180,7 +2708,7 @@ L1180       DB    $00
             DB    $00
             DB    $00
             DB    $00
-            DB    $00
+
 L0140       JMP   L0158
 L0143       JMP   L034F
 L0146       JMP   L028E
@@ -3739,28 +3267,32 @@ L054A       JSR   L51B8
             ORG   $004000
             MX    %11
 
-L4000       LDX   #$3F
+L4000       LDX   #$3F	; move data once
             TXS
-            LDA   #$2E	; $2E00 -> $0800
+            LDA   #$2E	; $2E00..$39FF -> $0800..$13FF, 12 pages
             LDX   #$0C
             LDY   #$08
             JSR   L449D
-            LDA   #$3A	; $3A00 -> $0100
+            LDA   #$3A	; $3A00..$3FFF -> $0100..$6FF, 6 pages
             LDX   #$06
             LDY   #$01
             JSR   L449D
+
             LDX   #$3F
             TXS
-            JSR   L512F
-            LDA   #$EA
+            JSR   makeSPRITES
+
+            LDA   #$EA	; put NOP above
             LDX   #$14
 L401F       STA   L4000,X
             DEX
             BPL   L401F
-            LDA   #$12
-            STA   $FD
-            LDA   #$13
-            STA   $FF
+
+            LDA   #>L1200 ; set the pointers to the HGR table
+            STA   $FC+1
+            LDA   #>L1300
+            STA   $FE+1
+
             LDA   TXTCLR
             LDA   MIXCLR
             LDA   TXTPAGE1
@@ -4260,12 +3792,16 @@ L448E       STA   $1D40,X
             STA   $1428
             RTS
 
-L449D       STA   $07
-            STY   $09
+*-----------------------
+* moveDATA
+*-----------------------
+
+L449D       STA   $06+1	; move X pages
+            STY   $08+1	; from AAzz to YYxx
             LDY   #$00
             STY   $06
             STY   $08
-            PLA
+            PLA	; useless
             STA   $01
             PLA
             STA   $00
@@ -4273,15 +3809,19 @@ L44AD       LDA   ($06),Y
             STA   ($08),Y
             INY
             BNE   L44AD
-            INC   $07
-            INC   $09
+            INC   $06+1
+            INC   $08+1
             DEX
             BNE   L44AD
-            LDA   $00
+            LDA   $00	; useless
             PHA
             LDA   $01
             PHA
             RTS
+
+*-----------------------
+* 
+*-----------------------
 
 L44C2       JSR   L426B
             JSR   L425B
@@ -4334,21 +3874,25 @@ L453D       LDY   KBD
             STY   KBDSTROBE
             PLA
             PLA
-            CPY   #$8D
+            CPY   #$8D	; return
             BNE   L454C
             RTS
 
 L454C       PLA
             PLA
-            CPY   #$A0
+            CPY   #" "	; space
             BNE   L4553
             RTS
 
-L4553       CPY   #$9B
+L4553       CPY   #$9B	; escape
             BNE   L455A
             JMP   L4537
 L455A       JMP   L4522
 L455D       RTS
+
+*-----------------------
+* 
+*-----------------------
 
 L455E       JSR   L4F42
             LDA   $1432
@@ -4454,6 +3998,10 @@ L4630       JSR   L426B
             LDA   ($28),Y
             BNE   L4630
             RTS
+
+*-----------------------
+* 
+*-----------------------
 
 L4643       LDA   #$00
             STA   $1402
@@ -5823,13 +5371,17 @@ L5128       STA   $FFFF,X
             BPL   L511C
             RTS
 
-L512F       LDA   #$00
-            STA   $00
-            STA   $08
-            LDA   #$7A
-            STA   $01
-            LDA   #$90
-            STA   $09
+*-----------------------
+* MAKE SPRITES
+*-----------------------
+
+makeSPRITES LDA   #<L7A00	; make sprites
+            STA   $00		; from table data at $7A00
+            STA   $08		; to the sprite area at $9000+
+            LDA   #>L7A00
+            STA   $00+1
+            LDA   #>L9000
+            STA   $08+1
 L513D       LDY   #$00
             LDA   ($00),Y
             BPL   L5144
@@ -10777,1542 +10329,361 @@ L7998       DB    $10
             DB    $10
             DB    $10
             DB    $50
+
+*-----------------------
+* PACKED SPRITES AREA
+*-----------------------
+
+L7A00       DB    $02
+            DB    $0A
+            DA    $8200
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $02
             DB    $0A
-            DB    $00
-            DB    $82
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $8214
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $02
             DB    $0A
-            DB    $14
-            DB    $82
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $8228
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $02
             DB    $0A
-            DB    $28
-            DB    $82
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $823C
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $02
             DB    $0A
-            DB    $3C
-            DB    $82
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $8250
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $02
             DB    $0A
-            DB    $50
-            DB    $82
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $8264
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $02
             DB    $0A
-            DB    $64
-            DB    $82
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $02
-            DB    $0A
-            DB    $78
-            DB    $82
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $8278
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0D
-            DB    $8C
-            DB    $82
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $828C
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0D
-            DB    $B3
-            DB    $82
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $82B3
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $02
             DB    $0A
-            DB    $DA
-            DB    $82
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $82DA
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $02
             DB    $0A
-            DB    $00
-            DB    $83
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $8300
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $02
             DB    $0A
-            DB    $14
-            DB    $83
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $8314
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $02
             DB    $0A
-            DB    $28
-            DB    $83
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $8328
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0E
-            DB    $3C
-            DB    $83
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $833C
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0E
-            DB    $66
-            DB    $83
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $8366
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0E
-            DB    $90
-            DB    $83
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $8390
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0E
-            DB    $BA
-            DB    $83
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $83BA
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0E
-            DB    $00
-            DB    $84
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $8400
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0E
-            DB    $2A
-            DB    $84
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $842A
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0D
-            DB    $54
-            DB    $84
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $8454
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0D
-            DB    $7B
-            DB    $84
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $847B
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0D
-            DB    $A2
-            DB    $84
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $84A2
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0D
-            DB    $C9
-            DB    $84
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $84C9
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $02
             DB    $07
-            DB    $F0
-            DB    $84
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $84F0
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $02
             DB    $07
-            DB    $00
-            DB    $85
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $8500
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0D
-            DB    $0E
-            DB    $85
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $850E
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0D
-            DB    $35
-            DB    $85
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $8535
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0D
-            DB    $5C
-            DB    $85
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $855C
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0D
-            DB    $83
-            DB    $85
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $8583
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0C
-            DB    $AA
-            DB    $85
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $85AA
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0C
-            DB    $CE
-            DB    $85
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $85CE
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0C
-            DB    $00
-            DB    $86
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $8600
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0C
-            DB    $24
-            DB    $86
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $8624
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0C
-            DB    $48
-            DB    $86
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $8648
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0C
-            DB    $6C
-            DB    $86
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $866C
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0C
-            DB    $90
-            DB    $86
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $8690
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0D
-            DB    $B4
-            DB    $86
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $86B4
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0D
-            DB    $00
-            DB    $87
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $8700
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0D
-            DB    $27
-            DB    $87
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $8727
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $02
             DB    $0A
-            DB    $4E
-            DB    $87
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $874E
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $02
             DB    $0A
-            DB    $62
-            DB    $87
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $8762
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $02
             DB    $0A
-            DB    $76
-            DB    $87
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $8776
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $02
             DB    $0A
-            DB    $8A
-            DB    $87
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $878A
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $02
             DB    $0A
-            DB    $9E
-            DB    $87
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $879E
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $02
             DB    $0A
-            DB    $B2
-            DB    $87
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $87B2
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0F
-            DB    $C6
-            DB    $87
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $87C6
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0F
-            DB    $00
-            DB    $88
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $8800
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0F
-            DB    $2D
-            DB    $88
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $882D
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0F
-            DB    $5A
-            DB    $88
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $885A
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0D
-            DB    $87
-            DB    $88
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $8887
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0D
-            DB    $AE
-            DB    $88
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $88AE
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0D
-            DB    $D5
-            DB    $88
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $88D5
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0D
-            DB    $00
-            DB    $89
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $8900
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $02
             DB    $07
-            DB    $27
-            DB    $89
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $8927
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $02
             DB    $07
-            DB    $35
-            DB    $89
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $8935
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $02
             DB    $0A
-            DB    $00
-            DB    $7E
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    L7E00
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $02
             DB    $0A
-            DB    $14
-            DB    $7E
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    L7E14
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $02
             DB    $0A
-            DB    $28
-            DB    $7E
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    L7E28
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $02
             DB    $0A
-            DB    $3C
-            DB    $7E
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    L7E3C
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $02
             DB    $0A
-            DB    $50
-            DB    $7E
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    L7E50
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $02
             DB    $0A
-            DB    $64
-            DB    $7E
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    L7E64
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $02
             DB    $0A
-            DB    $78
-            DB    $7E
+            DA    L7E78
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $FF
             DB    $FF
+            DA    $FFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $FF
             DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $00
-            DB    $00
-            DB    $18
-            DB    $00
-            DB    $08
-            DB    $00
-            DB    $1C
-            DB    $00
-            DB    $1C
-            DB    $00
-            DB    $1C
-            DB    $00
-            DB    $08
-            DB    $00
-            DB    $1C
-            DB    $00
-            DB    $1C
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $3C
-            DB    $00
-            DB    $14
-            DB    $00
-            DB    $1C
-            DB    $00
-            DB    $3E
-            DB    $00
-            DB    $1C
-            DB    $00
-            DB    $08
-            DB    $00
-            DB    $1C
-            DB    $00
-            DB    $1C
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $0C
-            DB    $00
-            DB    $08
-            DB    $00
-            DB    $1C
-            DB    $00
-            DB    $1C
-            DB    $00
-            DB    $1C
-            DB    $00
-            DB    $08
-            DB    $00
-            DB    $1C
-            DB    $00
-            DB    $1C
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $1E
-            DB    $00
-            DB    $14
-            DB    $00
-            DB    $1C
-            DB    $00
-            DB    $3E
-            DB    $00
-            DB    $1C
-            DB    $00
-            DB    $08
-            DB    $00
-            DB    $1C
-            DB    $00
-            DB    $1C
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $67
-            DB    $00
-            DB    $77
-            DB    $00
-            DB    $63
-            DB    $00
-            DB    $63
-            DB    $00
-            DB    $63
-            DB    $00
-            DB    $77
-            DB    $00
-            DB    $63
-            DB    $00
-            DB    $63
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $73
-            DB    $00
-            DB    $77
-            DB    $00
-            DB    $63
-            DB    $00
-            DB    $63
-            DB    $00
-            DB    $63
-            DB    $00
-            DB    $77
-            DB    $00
-            DB    $63
-            DB    $00
-            DB    $63
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $49
-            DB    $00
-            DB    $6B
-            DB    $00
-            DB    $22
-            DB    $00
-            DB    $22
-            DB    $00
-            DB    $41
-            DB    $00
-            DB    $77
-            DB    $00
-            DB    $63
-            DB    $00
-            DB    $63
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $D0
-            DB    $82
-            DB    $80
-            DB    $D4
-            DB    $8A
-            DB    $80
-            DB    $84
-            DB    $88
-            DB    $80
-            DB    $C5
-            DB    $A8
-            DB    $80
-            DB    $80
-            DB    $80
-            DB    $80
-            DB    $DD
-            DB    $BB
-            DB    $80
-            DB    $D5
-            DB    $AA
-            DB    $80
-            DB    $DD
-            DB    $BB
-            DB    $80
-            DB    $80
-            DB    $80
-            DB    $80
-            DB    $C5
-            DB    $A8
-            DB    $80
-            DB    $84
-            DB    $88
-            DB    $80
-            DB    $D4
-            DB    $8A
-            DB    $80
-            DB    $D0
-            DB    $82
-            DB    $80
-            DB    $55
-            DB    $2A
-            DB    $00
-            DB    $33
-            DB    $33
-            DB    $00
-            DB    $65
-            DB    $29
-            DB    $00
-            DB    $49
-            DB    $24
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $5D
-            DB    $3B
-            DB    $00
-            DB    $55
-            DB    $2A
-            DB    $00
-            DB    $5D
-            DB    $3B
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $49
-            DB    $24
-            DB    $00
-            DB    $65
-            DB    $29
-            DB    $00
-            DB    $33
-            DB    $33
-            DB    $00
-            DB    $55
-            DB    $2A
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
+            DA    $FFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
+	
+L7E00       HEX   0000180008001C001C001C0008001C00
+            HEX   1C000000
+L7E14       HEX   00003C0014001C003E001C0008001C00
+            HEX   1C000000
+L7E28       HEX   00000C0008001C001C001C0008001C00
+            HEX   1C000000
+L7E3C       HEX   00001E0014001C003E001C0008001C00
+            HEX   1C000000
+L7E50       HEX   00006700770063006300630077006300
+            HEX   63000000
+L7E64       HEX   00007300770063006300630077006300
+            HEX   63000000
+L7E78       HEX   000049006B0022002200410077006300
+            HEX   63000000
+L7E8C       HEX   D08280D48A80848880C5A880808080DD
+            HEX   BB80D5AA80DDBB80808080C5A8808488
+            HEX   80D48A80D08280
+L7EB3       HEX   552A003333006529004924000000005D
+            HEX   3B00552A005D3B000000004924006529
+            HEX   00333300552A00
+L7EDA       HEX   00000000000000000000000000000000
+            HEX   00000000000000000000000000000000
+            HEX   000000000000
+
+L7F00       DB    $03
+            DB    $05
+            DA    $8943
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $05
-            DB    $43
-            DB    $89
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $8952
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $05
-            DB    $52
-            DB    $89
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $8961
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $05
-            DB    $61
-            DB    $89
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $8970
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $05
-            DB    $70
-            DB    $89
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $03
-            DB    $05
-            DB    $7F
-            DB    $89
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $897F
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $02
             DB    $0C
-            DB    $8E
-            DB    $89
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $898E
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $02
             DB    $0C
-            DB    $A6
-            DB    $89
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $89A6
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $02
             DB    $0C
-            DB    $BE
-            DB    $89
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $89BE
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $02
             DB    $0C
-            DB    $D6
-            DB    $89
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $89D6
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0D
-            DB    $8C
-            DB    $7E
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    L7E8C
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $03
             DB    $0D
-            DB    $B3
-            DB    $7E
+            DA    L7EB3
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $FF
             DB    $FF
+            DA    L7EDA
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $FF
             DB    $FF
+            DA    $FFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $FF
             DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $DA
-            DB    $7E
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $FFFF
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $08
             DB    $28
-            DB    $C0
-            DB    $05
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $05C0
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
             DB    $22
             DB    $2D
-            DB    $00
-            DB    $8A
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
-            DB    $FF
+            DA    $8A00
+            HEX   FFFFFFFFFFFFFFFFFFFFFFFF
+
+*-----------------------
+* WE ARE AT $8000
+*-----------------------
+
             DB    $00
             DB    $00
             DB    $00
@@ -16407,3 +14778,10 @@ L7998       DB    $10
             DB    $FF
             DB    $FF
 
+	DS    \
+
+*-----------------------
+* WE ARE AT $9000 NOW
+*-----------------------
+
+L9000	=	*

@@ -1,5 +1,5 @@
-This is MASOS for the Apple IIgs
-Ensoniq disks file export
+This is MASOS for the Apple IIgs.
+It exports files from Ensoniq disks.
 
 * How does it work?
 * 1. The program opens the filename pointed by pFILE

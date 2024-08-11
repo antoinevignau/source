@@ -1,0 +1,691 @@
+*
+* Ensoniq disk export (MASOS)
+*
+* (c) 2023-2024, Antoine Vignau
+*
+
+* How does it work?
+* 1. The program opens the filename pointed by pFILE
+* 2. It loads all files from the disk image
+* 3. And outputs them in the Output folder
+*
+* For another disk image:
+* 1. Change the path of pFILE here, assemble the program
+* 2. Create another Output folder
+* 3. Run MASOS
+
+	mx	%00
+	rel
+	typ	$b3
+	dsk	masos.l
+
+	use	4/Locator.Macs
+	use	4/Mem.Macs
+	use	4/Misc.Macs
+	use	4/Util.Macs
+	
+*-----------------------------------
+* EQUATES
+*-----------------------------------
+
+dpFROM	=	$00
+dpTO	=	$04
+
+dpOFFSET	=	$08	; pointer to offset list
+theSECTOR	=	$0a	; sector to read
+sizeSECTOR	=	$0c	; sector size
+theINDEX	=	$0e	; index with the file list to generate
+
+GSOS	=	$e100a8
+
+*-----------------------------------
+* ENTRY POINT
+*-----------------------------------
+
+	phk
+	plb
+	bra	gotoCODE
+
+*-----------------------------------
+* THE FILENAME TO CHANGE
+*-----------------------------------
+
+pFILE	strl	'1/SD15.IMG'
+
+*-----------------------------------
+* BACK TO THE CODE
+*-----------------------------------
+	
+gotoCODE
+*	lda	#main
+*	stal	$300
+*	lda	#^main
+*	stal	$302	
+*	tdc
+*	stal	$308
+	
+	_TLStartUp
+	pha
+	_MMStartUp
+	pla
+	sta	mainID
+	ora	#$0100
+	sta	myID
+	_MTStartUp
+
+*---------- Compress memory
+
+	pha
+	pha
+	PushLong #$8fffff
+	PushWord myID
+	PushWord #%11000000_00000000
+	PushLong #0
+	_NewHandle
+	_DisposeHandle
+	_CompactMem
+
+*---------- 512k for the disk image
+
+	pha
+	pha
+	PushLong #$080000
+	PushWord myID
+	PushWord #%11000000_00001100
+	PushLong #0
+	_NewHandle
+	phd
+	tsc
+	tcd
+	lda	[3]
+	sta	ptrFROM
+	sta	proREAD+4
+	ldy	#2
+	lda	[3],y
+	sta	ptrFROM+2
+	sta	proREAD+6
+	pld
+	pla
+	pla
+
+*---------- 64k for the output files
+
+	pha
+	pha
+	PushLong #$010000
+	PushWord myID
+	PushWord #%11000000_00011100
+	PushLong #0
+	_NewHandle
+	phd
+	tsc
+	tcd
+	lda	[3]
+	sta	ptrTO
+	sta	proWRITE+4
+	ldy	#2
+	lda	[3],y
+	sta	ptrTO+2
+	sta	proWRITE+6
+	pld
+	pla
+	pla
+
+*---------- Execute code
+
+	jsr	main
+
+*---------- Exit
+
+	_MTShutDown
+	
+	PushWord myID
+	_DisposeAll
+
+	PushWord mainID
+	_MMShutDown
+
+	_TLShutDown
+
+	jsl	GSOS
+	dw	$2029
+	adrl	proQUIT
+
+	brk	$bd
+
+*-----------------------------------
+* CODE
+*-----------------------------------
+
+*---------------------- main
+
+main	jsr	loadFILE	; load the image disk
+
+*---------- Main loop
+
+	stz	theINDEX
+]lp	lda	theINDEX
+	asl
+	asl
+	asl
+	tax
+	lda	fileLIST,x
+	cmp	#-1
+	bne	mainOK
+	rts		; we're done
+	
+mainOK	tay
+	lda	|$0000,y	; the first sector
+	sta	theSECTOR
+
+	lda	fileLIST+2,x ; the sector offset list
+	sta	dpOFFSET
+
+	lda	fileLIST+4,x ; points to the destination filename
+	sta	proDESTROY+2
+	sta	proCREATE+2
+	sta	proOPEN+4
+
+	lda	fileLIST+6,x ; size of the output destination filename
+	tay
+	lda	|$0000,y
+	sta	proCREATE+16
+	sta	proWRITE+8
+	lda	|$0002,y
+	sta	proCREATE+18
+	sta	proWRITE+10
+		
+	jsr	makeFILE
+	
+	sep	#$20
+	ldal	$c034
+	inc
+	stal	$c034
+	rep	#$20
+	
+	inc	theINDEX
+	bra	]lp
+
+*---------- Make the file
+
+makeFILE	lda	ptrTO	; set start of destination
+	sta	dpTO
+	lda	ptrTO+2
+	sta	dpTO+2
+
+]lp	lda	(dpOFFSET)	; browse the offset list
+	cmp	#-1
+	beq	mfEND
+	
+	clc		; to get the sector number
+	adc	theSECTOR
+	sta	theSECTOR
+	jsr	getSectorAddress ; read it
+	
+	jsr	copySector	; save it
+
+	lda	dpOFFSET	; next offset list entry
+	clc
+	adc	#2
+	sta	dpOFFSET
+	bra	]lp
+
+mfEND	jmp	writeFILE	; output the file please
+	
+*---------------------- Disk image manipulations
+
+*---------- From a sector number to its address
+
+getSectorAddress		
+	asl
+	tax
+	lda	sizeSEC,x
+	sta	sizeSECTOR
+	txa
+	asl
+	tax
+	lda	offsetSEC,x
+	clc
+	adc	ptrFROM
+	sta	dpFROM
+	lda	offsetSEC+2,x
+	adc	ptrFROM+2
+	sta	dpFROM+2
+	rts
+
+*---------- Copy sector
+
+copySector	ldx	#0
+]lp	lda	[dpFROM]
+	sta	[dpTO]
+	
+	lda	dpFROM
+	clc
+	adc	#2
+	sta	dpFROM
+	lda	dpFROM+2
+	adc	#0
+	sta	dpFROM+2
+
+	lda	dpTO
+	clc
+	adc	#2
+	sta	dpTO
+	lda	dpTO+2
+	adc	#0
+	sta	dpTO+2
+	
+	inx
+	inx
+	cpx	sizeSECTOR
+	bcc	]lp
+	rts
+
+*---------------------- GS/OS
+
+*---------- Load file
+
+loadFILE	jsl	GSOS
+	dw	$2010
+	adrl	proOPEN
+	bcs	loadERR
+	
+	lda	proOPEN+2
+	sta	proREAD+2
+	sta	proCLOSE+2
+	
+	lda	proEOF
+	sta	proREAD+8
+	lda	proEOF+2
+	sta	proREAD+10
+	
+	jsl	GSOS
+	dw	$2012
+	adrl	proREAD
+
+	jsl	GSOS
+	dw	$2014
+	adrl	proCLOSE
+loadERR	rts
+
+*---------- Write file
+
+writeFILE	jsl	GSOS
+	dw	$2002
+	adrl	proDESTROY
+
+	jsl	GSOS
+	dw	$2001
+	adrl	proCREATE
+	
+	jsl	GSOS
+	dw	$2010
+	adrl	proOPEN
+	bcs	writeERR
+
+	lda	proOPEN+2
+	sta	proWRITE+2
+	sta	proCLOSE+2
+	
+	jsl	GSOS
+	dw	$2013
+	adrl	proWRITE
+
+	jsl	GSOS
+	dw	$2014
+	adrl	proCLOSE
+writeERR	rts
+
+*-----------------------------------
+* DATA
+*-----------------------------------
+
+*---------------------- Memory
+
+mainID	ds	2
+myID	ds	2
+
+ptrFROM	ds	4
+ptrTO	ds	4
+
+*---------------------- File sizes
+
+sSNDP	adrl	1024
+sSNDD	adrl	1024*64
+
+sDIR	adrl	512
+
+sSHORTSEQ	adrl	512*4
+sLONGSEQ	adrl	512*16
+
+*---------------------- Sector list
+
+lSOUNDDIR	dw	197
+lSHORTDIR	dw	203
+lLONGDIR	dw	209
+
+lSND1LHP	dw	12
+lSND1LHD	dw	13
+lSND1UHP	dw	90
+lSND1UHD	dw	91
+lSND2LHP	dw	168
+lSND2LHD	dw	169
+lSND2UHP	dw	246
+lSND2UHD	dw	247
+lSND3LHP	dw	324
+lSND3UHP	dw	402
+lSND3LHD	dw	325
+lSND3UHD	dw	403
+
+lSHORTSEQ1	dw	125
+lSHORTSEQ2	dw	215
+lSHORTSEQ3	dw	335
+lSHORTSEQ4	dw	149
+lSHORTSEQ5	dw	173
+lSHORTSEQ6	dw	239
+lSHORTSEQ7	dw	263
+lSHORTSEQ8	dw	359
+
+lLONGSEQ1	dw	77
+lLONGSEQ2	dw	215
+lLONGSEQ3	dw	335
+
+oDIR	dw	0,-1
+oSNDP	dw	0,-1
+oSNDD	dw	0,1,1,1
+	dw	2,1,1,1,1
+	dw	2,1,1,1,1
+	dw	2,1,1,1,1
+	dw	2,1,1,1,1
+	dw	2,1,1,1,1
+	dw	2,1,1,1,1
+	dw	2,1,1,1,1
+	dw	2,1,1,1,1
+	dw	2,1,1,1,1
+	dw	2,1,1,1,1
+	dw	2,1,1,1,1
+	dw	2,1,1,1,1
+	dw	-1
+oSHORTSEQ	dw	0,6,6,6,-1
+oLONGSEQ	dw	0,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,-1
+
+*---------------------- Disk image tables
+
+sizeSEC	dw	1024,1024,1024,1024,1024,512	; 0
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512	; 10
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512	; 20
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512	; 30
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512	; 40
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512	; 50
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512	; 60
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512	; 70
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+	dw	1024,1024,1024,1024,1024,512
+
+offsetSEC	adrl	$00000000,$00000400,$00000800,$00000C00,$00001000,$00001400
+	adrl	$00001600,$00001A00,$00001E00,$00002200,$00002600,$00002A00
+	adrl	$00002C00,$00003000,$00003400,$00003800,$00003C00,$00004000
+	adrl	$00004200,$00004600,$00004A00,$00004E00,$00005200,$00005600
+	adrl	$00005800,$00005C00,$00006000,$00006400,$00006800,$00006C00
+	adrl	$00006E00,$00007200,$00007600,$00007A00,$00007E00,$00008200
+	adrl	$00008400,$00008800,$00008C00,$00009000,$00009400,$00009800
+	adrl	$00009A00,$00009E00,$0000A200,$0000A600,$0000AA00,$0000AE00
+	adrl	$0000B000,$0000B400,$0000B800,$0000BC00,$0000C000,$0000C400
+	adrl	$0000C600,$0000CA00,$0000CE00,$0000D200,$0000D600,$0000DA00
+	adrl	$0000DC00,$0000E000,$0000E400,$0000E800,$0000EC00,$0000F000
+	adrl	$0000F200,$0000F600,$0000FA00,$0000FE00,$00010200,$00010600
+	adrl	$00010800,$00010C00,$00011000,$00011400,$00011800,$00011C00
+	adrl	$00011E00,$00012200,$00012600,$00012A00,$00012E00,$00013200
+	adrl	$00013400,$00013800,$00013C00,$00014000,$00014400,$00014800
+	adrl	$00014A00,$00014E00,$00015200,$00015600,$00015A00,$00015E00
+	adrl	$00016000,$00016400,$00016800,$00016C00,$00017000,$00017400
+	adrl	$00017600,$00017A00,$00017E00,$00018200,$00018600,$00018A00
+	adrl	$00018C00,$00019000,$00019400,$00019800,$00019C00,$0001A000
+	adrl	$0001A200,$0001A600,$0001AA00,$0001AE00,$0001B200,$0001B600
+	adrl	$0001B800,$0001BC00,$0001C000,$0001C400,$0001C800,$0001CC00
+	adrl	$0001CE00,$0001D200,$0001D600,$0001DA00,$0001DE00,$0001E200
+	adrl	$0001E400,$0001E800,$0001EC00,$0001F000,$0001F400,$0001F800
+	adrl	$0001FA00,$0001FE00,$00020200,$00020600,$00020A00,$00020E00
+	adrl	$00021000,$00021400,$00021800,$00021C00,$00022000,$00022400
+	adrl	$00022600,$00022A00,$00022E00,$00023200,$00023600,$00023A00
+	adrl	$00023C00,$00024000,$00024400,$00024800,$00024C00,$00025000
+	adrl	$00025200,$00025600,$00025A00,$00025E00,$00026200,$00026600
+	adrl	$00026800,$00026C00,$00027000,$00027400,$00027800,$00027C00
+	adrl	$00027E00,$00028200,$00028600,$00028A00,$00028E00,$00029200
+	adrl	$00029400,$00029800,$00029C00,$0002A000,$0002A400,$0002A800
+	adrl	$0002AA00,$0002AE00,$0002B200,$0002B600,$0002BA00,$0002BE00
+	adrl	$0002C000,$0002C400,$0002C800,$0002CC00,$0002D000,$0002D400
+	adrl	$0002D600,$0002DA00,$0002DE00,$0002E200,$0002E600,$0002EA00
+	adrl	$0002EC00,$0002F000,$0002F400,$0002F800,$0002FC00,$00030000
+	adrl	$00030200,$00030600,$00030A00,$00030E00,$00031200,$00031600
+	adrl	$00031800,$00031C00,$00032000,$00032400,$00032800,$00032C00
+	adrl	$00032E00,$00033200,$00033600,$00033A00,$00033E00,$00034200
+	adrl	$00034400,$00034800,$00034C00,$00035000,$00035400,$00035800
+	adrl	$00035A00,$00035E00,$00036200,$00036600,$00036A00,$00036E00
+	adrl	$00037000,$00037400,$00037800,$00037C00,$00038000,$00038400
+	adrl	$00038600,$00038A00,$00038E00,$00039200,$00039600,$00039A00
+	adrl	$00039C00,$0003A000,$0003A400,$0003A800,$0003AC00,$0003B000
+	adrl	$0003B200,$0003B600,$0003BA00,$0003BE00,$0003C200,$0003C600
+	adrl	$0003C800,$0003CC00,$0003D000,$0003D400,$0003D800,$0003DC00
+	adrl	$0003DE00,$0003E200,$0003E600,$0003EA00,$0003EE00,$0003F200
+	adrl	$0003F400,$0003F800,$0003FC00,$00040000,$00040400,$00040800
+	adrl	$00040A00,$00040E00,$00041200,$00041600,$00041A00,$00041E00
+	adrl	$00042000,$00042400,$00042800,$00042C00,$00043000,$00043400
+	adrl	$00043600,$00043A00,$00043E00,$00044200,$00044600,$00044A00
+	adrl	$00044C00,$00045000,$00045400,$00045800,$00045C00,$00046000
+	adrl	$00046200,$00046600,$00046A00,$00046E00,$00047200,$00047600
+	adrl	$00047800,$00047C00,$00048000,$00048400,$00048800,$00048C00
+	adrl	$00048E00,$00049200,$00049600,$00049A00,$00049E00,$0004A200
+	adrl	$0004A400,$0004A800,$0004AC00,$0004B000,$0004B400,$0004B800
+	adrl	$0004BA00,$0004BE00,$0004C200,$0004C600,$0004CA00,$0004CE00
+	adrl	$0004D000,$0004D400,$0004D800,$0004DC00,$0004E000,$0004E400
+	adrl	$0004E600,$0004EA00,$0004EE00,$0004F200,$0004F600,$0004FA00
+	adrl	$0004FC00,$00050000,$00050400,$00050800,$00050C00,$00051000
+	adrl	$00051200,$00051600,$00051A00,$00051E00,$00052200,$00052600
+	adrl	$00052800,$00052C00,$00053000,$00053400,$00053800,$00053C00
+	adrl	$00053E00,$00054200,$00054600,$00054A00,$00054E00,$00055200
+	adrl	$00055400,$00055800,$00055C00,$00056000,$00056400,$00056800
+	adrl	$00056A00,$00056E00,$00057200,$00057600,$00057A00,$00057E00
+	adrl	$00058000,$00058400,$00058800,$00058C00,$00059000,$00059400
+	adrl	$00059600,$00059A00,$00059E00,$0005A200,$0005A600,$0005AA00
+	adrl	$0005AC00,$0005B000,$0005B400,$0005B800,$0005BC00,$0005C000
+	adrl	$0005C200,$0005C600,$0005CA00,$0005CE00,$0005D200,$0005D600
+	adrl	$0005D800,$0005DC00,$0005E000,$0005E400,$0005E800,$0005EC00
+	adrl	$0005EE00,$0005F200,$0005F600,$0005FA00,$0005FE00,$00060200
+	adrl	$00060400,$00060800,$00060C00,$00061000,$00061400,$00061800
+	adrl	$00061A00,$00061E00,$00062200,$00062600,$00062A00,$00062E00
+	adrl	$00063000,$00063400,$00063800,$00063C00,$00064000,$00064400
+	adrl	$00064600,$00064A00,$00064E00,$00065200,$00065600,$00065A00
+	adrl	$00065C00,$00066000,$00066400,$00066800,$00066C00,$00067000
+	adrl	$00067200,$00067600,$00067A00,$00067E00,$00068200,$00068600
+	adrl	$00068800,$00068C00,$00069000,$00069400,$00069800,$00069C00
+	adrl	$00069E00,$0006A200,$0006A600,$0006AA00,$0006AE00,$0006B200
+	adrl	$0006B400,$0006B800,$0006BC00,$0006C000,$0006C400,$0006C800
+	adrl	$0006CA00,$0006CE00,$0006D200,$0006D600,$0006DA00,$0006DE00
+
+*---------------------- File list
+
+fileLIST	da	lSOUNDDIR,oDIR,pSOUNDDIR,sDIR
+	da	lSHORTDIR,oDIR,pSHORTDIR,sDIR
+	da	lLONGDIR,oDIR,pLONGDIR,sDIR
+
+	da	lSND1LHP,oSNDP,pSND1LHP,sSNDP
+	da	lSND1LHD,oSNDD,pSND1LHD,sSNDD
+	da	lSND1UHP,oSNDP,pSND1UHP,sSNDP
+	da	lSND1UHD,oSNDD,pSND1UHD,sSNDD
+
+	da	lSND2LHP,oSNDP,pSND2LHP,sSNDP
+	da	lSND2LHD,oSNDD,pSND2LHD,sSNDD
+	da	lSND2UHP,oSNDP,pSND2UHP,sSNDP
+	da	lSND2UHD,oSNDD,pSND2UHD,sSNDD
+
+	da	lSND3LHP,oSNDP,pSND3LHP,sSNDP
+	da	lSND3LHD,oSNDD,pSND3LHD,sSNDD
+	da	lSND3UHP,oSNDP,pSND3UHP,sSNDP
+	da	lSND3UHD,oSNDD,pSND3UHD,sSNDD
+
+	da	lSHORTSEQ1,oSHORTSEQ,pSHORTSEQ1,sSHORTSEQ
+	da	lSHORTSEQ2,oSHORTSEQ,pSHORTSEQ2,sSHORTSEQ
+	da	lSHORTSEQ3,oSHORTSEQ,pSHORTSEQ3,sSHORTSEQ
+	da	lSHORTSEQ4,oSHORTSEQ,pSHORTSEQ4,sSHORTSEQ
+	da	lSHORTSEQ5,oSHORTSEQ,pSHORTSEQ5,sSHORTSEQ
+	da	lSHORTSEQ6,oSHORTSEQ,pSHORTSEQ6,sSHORTSEQ
+	da	lSHORTSEQ7,oSHORTSEQ,pSHORTSEQ7,sSHORTSEQ
+	da	lSHORTSEQ8,oSHORTSEQ,pSHORTSEQ8,sSHORTSEQ
+
+	da	lLONGSEQ1,oLONGSEQ,pLONGSEQ1,sLONGSEQ
+	da	lLONGSEQ2,oLONGSEQ,pLONGSEQ2,sLONGSEQ
+	da	lLONGSEQ3,oLONGSEQ,pLONGSEQ3,sLONGSEQ
+
+	dw	-1
+			
+*---------------------- Filenames
+
+pSOUNDDIR	strl	'1/OUTPUT/SOUNDDIR'
+pSHORTDIR	strl	'1/OUTPUT/SHORTSEQDIR'
+pLONGDIR	strl	'1/OUTPUT/LONGSEQDIR'
+
+pSND1LHP	strl	'1/OUTPUT/SND1LHP'
+pSND1LHD	strl	'1/OUTPUT/SND1LHD'
+pSND1UHP	strl	'1/OUTPUT/SND1UHP'
+pSND1UHD	strl	'1/OUTPUT/SND1UHD'
+
+pSND2LHP	strl	'1/OUTPUT/SND2LHP'
+pSND2LHD	strl	'1/OUTPUT/SND2LHD'
+pSND2UHP	strl	'1/OUTPUT/SND2UHP'
+pSND2UHD	strl	'1/OUTPUT/SND2UHD'
+
+pSND3LHP	strl	'1/OUTPUT/SND3LHP'
+pSND3LHD	strl	'1/OUTPUT/SND3LHD'
+pSND3UHP	strl	'1/OUTPUT/SND3UHP'
+pSND3UHD	strl	'1/OUTPUT/SND3UHD'
+
+pSHORTSEQ1	strl	'1/OUTPUT/SHORTSEQ1'
+pSHORTSEQ2	strl	'1/OUTPUT/SHORTSEQ2'
+pSHORTSEQ3	strl	'1/OUTPUT/SHORTSEQ3'
+pSHORTSEQ4	strl	'1/OUTPUT/SHORTSEQ4'
+pSHORTSEQ5	strl	'1/OUTPUT/SHORTSEQ5'
+pSHORTSEQ6	strl	'1/OUTPUT/SHORTSEQ6'
+pSHORTSEQ7	strl	'1/OUTPUT/SHORTSEQ7'
+pSHORTSEQ8	strl	'1/OUTPUT/SHORTSEQ8'
+
+pLONGSEQ1	strl	'1/OUTPUT/LONGSEQ1'
+pLONGSEQ2	strl	'1/OUTPUT/LONGSEQ2'
+pLONGSEQ3	strl	'1/OUTPUT/LONGSEQ3'
+
+*---------------------- GS/OS
+
+proCREATE	dw	7	; 00 pcount
+	adrl	pFILE	; 02 pathname
+	dw	$c3	; 06 access_code
+	dw	$06	; 08 file_type
+	ds	4	; 0A aux_type
+	ds	2	; 0E storage_type
+	ds	4	; 10 eof
+	ds	4	; 14 resource_eof
+
+proDESTROY	dw	1	; 00 pcount
+	adrl	pFILE	; 02 pathname
+	
+proOPEN	dw	12	; 00 pcount
+	ds	2	; 02 file id
+	adrl	pFILE	; 04 pathname
+	ds	2
+	ds	2
+	ds	2
+	ds	2
+	ds	4
+	ds	2
+	ds	8
+	ds	8
+	ds	4
+proEOF	ds	4
+
+proREAD	dw	4	; 00 pcount
+	ds	2	; 02 file id
+	ds	4	; 04 pointer
+	ds	4	; 08 request count
+	ds	4	; 0C transfer count
+	
+proWRITE	dw	4	; 00 pcount
+	ds	2	; 02 file id
+	ds	4	; 04 pointer
+	ds	4	; 08 request count
+	ds	4	; 0C transfer count
+
+proCLOSE	dw	1	; 00 pcount
+	ds	2	; 02 file id
+	
+proQUIT	dw	2	; 00 pcount
+	ds	4	; 02 pathname
+	ds	2	; 06 flags

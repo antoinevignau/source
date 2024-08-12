@@ -2,7 +2,7 @@
 * Moon Patrol
 *
 * (c) 1982, Williams
-* (c) 1983, Atari (Dan Petrich)
+* (c) 1983, Atari (Dan Repich)
 * (s) 2024, Antoine Vignau
 *
 

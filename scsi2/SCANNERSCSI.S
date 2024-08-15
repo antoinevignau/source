@@ -6,44 +6,51 @@
 * Visit brutaldeluxe.fr
 *
 
-                  xc
-                  xc
-                  mx        %00
+	xc
+	xc
+	mx	%00
 
-                  rel
-                  dsk       SCANNERSCSI.l
-                  lst       off
-
-*----------
-
-                  use       4/Int.Macs
-                  use       4/Locator.Macs
-                  use       4/Mem.Macs
-                  use       4/Misc.Macs
-                  use       4/Text.Macs
-                  use       4/Util.Macs
-
-Debut             =         $00
-GSOS              =         $e100a8
+	rel
+	dsk	SCANNERSCSI.l
+	lst	off
 
 *----------
 
-devSCANNER        =         $001a
+	use	4/Int.Macs
+	use	4/Locator.Macs
+	use	4/Mem.Macs
+	use	4/Misc.Macs
+	use	4/Text.Macs
+	use	4/Util.Macs
 
-maxDEVICES        =         8
+Debut	=	$00
+GSOS	=	$e100a8
 
-dcINQUIRY         =         $8012
-doMODESELECT      =         $8015
-dcMODESENSE6      =         $801a
-dcSTARTSTOP       =         $801b	; also eject/insert
-dcGETWINDOW24     =         $8024	; for scanner
-dcGETWINDOW25     =         $8025	; for scanner
-dcREADCAPACITY    =         $8025
-dcSUBCHANNEL      =         $8042
-dcREADTOC         =         $8043
-dcPATI            =         $8048
-dcPAUSERESUME     =         $804b
-dcMODESENSE10     =         $805a
+*----------
+
+devSCANNER	=	$001a
+
+maxDEVICES	=	8
+
+dcEXPLORE	=	$800e	; status
+dcINQUIRY	=	$8012	; status
+dcMODESELECT =	$8015
+dcMODESENSE6 =	$801a
+dcSTARTSTOP	=	$801b	; also eject/insert
+dcSETWINDOWPARAMETERS =	$8024	; for scanner (control)
+dcGETWINDOWPARAMETERS =	$8025	; for scanner (status)
+
+stEXPLORE	=	$0e	; status
+stINQUIRY	=	$12	; status
+stMODESELECT =	$15
+stMODESENSE6 =	$1a
+stSTARTSTOP	=	$1b	; also eject/insert
+stSETWINDOWPARAMETERS =	$24	; for scanner (control)
+stGETWINDOWPARAMETERS =	$25	; for scanner (status)
+
+DInfo	=	$202c
+DStatus	=	$202d
+DControl	=	$202e
 
 *----------
 
@@ -118,18 +125,6 @@ dcMODESENSE10     =         $805a
 
                   PushWord  #$0c                 ; home
                   _WriteChar
-
-* DEBUG
-
-                  lda       #proSTATUS
-                  stal      $300
-                  lda       #^proSTATUS
-                  stal      $302
-
-                  lda       #proCONTROL
-                  stal      $310
-                  lda       #^proCONTROL
-                  stal      $312
 
 *----------------------------
 * MAIN MENU
@@ -339,31 +334,59 @@ deviceMENU2       cmp       #"5"+1
 deviceMENU3       jsr       $bdbd
                   jmp       deviceMENU
 
-ptrCOMMANDS       da        doINQUIRY
-                  da        doGWP2424
-                  da        doGWP2425
-                  da        doGWP2524
-                  da        doGWP2525
+ptrCOMMANDS
+	da	doINQUIRY
+	da	doMODESENSE6
+	da	doEXPLORE
+	da	doGETMODE
+	da	doGETWINDOWPARAMETERS
 
 *--- Data
 
-strDEVICEMENU     asc	0d'Using SCSI Scanner device $'
-strDEVMENU        asc	'0000'0d
-                  asc	' 0. Go back to previous menu'0d
-                  asc	' 1. Inquiry'0d
-                  asc	' 2. Get Window Parameters 24/24'0d
-                  asc	' 3. Get Window Parameters 24/25'0d
-                  asc	' 4. Get Window Parameters 25/24'0d
-                  asc	' 5. Get Window Parameters 25/25'0d
-	      asc	00
+strDEVICEMENU
+	asc	0d'Using SCSI Scanner device $'
+strDEVMENU
+	asc	'0000'0d
+	asc	' 0. Go back to previous menu'0d
+	asc	' 1. Inquiry'0d
+	asc	' 2. Mode Sense (6)'0d
+	asc	' 3. Exploratory status'0d
+	asc	' 4. Get mode'0d
+	asc	' 5. Get Window Parameters'0d
+	asc	00
+
+*----------------
+* APPLE SCANNERS
+*
+* Scanner (300dpi 4-bit grey)
+*  06 00 02 02 2C 00 00 00 'APPLE   SCANNER A9M0337 '
+*  06 00 02 02 28 00 00 00 'CPC INC Smart Scan(FW)  '
+*
+* OneScanner (300dpi 8-bit grey)
+*  06 00 02 02 2C 20 04 08 'APPLE   SCANNER II      2.02'
+*  00 20 00 90 00 27 34 01 08 A0 48 00 FF FF
+*
+* Color OneScanner (300dpi 24-bit color)
+*  
+*
+* Color OneScanner 600/27 (600dpi 27-bit color)
+*  06 00 02 02 1F 00 00 10 'CANON   IX-03035B       1.01' FF
+*
+* Color OneScanner 1200/30 (1200dpi 30-bit color)
+*  06 00 02 02 1F 00 00 10 'CANON   IX-06015C       1.07' FF
+*
+* ---End of list
 
 *----------------
 * SCSI COMMANDS
 *----------------
 
-doINQUIRY         =         *
+*-----------------------
+* STATUS $8012 - INQUIRY
+*-----------------------
 
-                  jsr       initSTATUSDATA
+doINQUIRY
+        jsr       initSTATUSDATA
 
                   ldx       #6-2                 ; put the inquiry data
 ]lp               lda       scsiINQUIRY,x
@@ -616,7 +639,7 @@ doINQUIRY1
 
 *--- Data
 
-scsiINQUIRY       hex       12,00,00,00,00,00
+scsiINQUIRY       hex       12,00,00,00,F0,00
 
 strPQ             asc       0d' Peripheral qualifier: '00
 strPDT            asc       ' - Peripheral device type : '00
@@ -639,28 +662,203 @@ strVI             asc       0d' Vendor identification: '00
 strPI             asc       0d' Product identification: '00
 strPRL            asc       0d' Product revision level: '00
 
-*----------------
+*-----------------------
+* STATUS $801A - MODE SENSE (6)
+*-----------------------
 
-doGWP2424	lda	#dcGETWINDOW24
-	ldx	#$24
-	bra	doGETWINDOW
+doMODESENSE6
+       	jsr	initSTATUSDATA
 
-doGWP2425	lda	#dcGETWINDOW24
-	ldx	#$25
-	bra	doGETWINDOW
+	ldx	#6-2                 ; put the inquiry data
+]lp	lda	scsiMODESENSE6,x
+	sta	statusDATA,x
+	dex
+	dex
+	bpl	]lp
 
-doGWP2524	lda	#dcGETWINDOW25
-	ldx	#$24
-	bra	doGETWINDOW
-
-doGWP2525	lda	#dcGETWINDOW25
-	ldx	#$25
-
-doGETWINDOW	sta	doGETWIN0+1
-	sep	#$10
-	stx	scsiGETWIN
-	rep	#$10
+	lda	#doMODESENSE6
+	stal	$300
+	lda	#^doMODESENSE6
+	stal	$302
 	
+	lda	#dcMODESENSE6
+	jsr	statusCALL
+	jmp	waitKEY
+
+*--- Data
+
+scsiMODESENSE6
+	hex       1A,00,3F,00,F0,00
+
+* 00_11_1111
+
+*-----------------------
+* BLINK BORDER
+*-----------------------
+
+blinkBORDER
+	sep	#$20
+	ldal	$c034
+	inc
+	stal	$c034
+	rep	#$20
+	rts
+
+*-----------------------
+* STATUS $800E - EXPLORE (NOT DESCRIBED BY APPLE)
+*-----------------------
+
+doEXPLORE
+	jsr	getDEVICEID
+	sta	proEXPLORE+2
+	
+	jsl	GSOS
+	dw	DStatus
+	adrl	proEXPLORE
+	bcc	doEXPLORE1
+	jsr	blinkBORDER
+
+doEXPLORE1
+
+*--- Display status
+
+	PushLong	#strXSTATUS
+	_WriteCString
+
+	lda	expBUFF
+	jsr	showBYTE
+
+*--- Display rate
+
+	PushLong	#strTRATE
+	_WriteCString
+	
+	lda	expBUFF+1
+	xba
+	jsr	showWORD
+
+	jmp	waitKEY
+
+*--- Data
+
+proEXPLORE	dw	5
+	ds	2
+	dw	$800E
+	adrl	exploreBUFF
+	adrl	12
+	ds	4
+
+exploreBUFF	dw	0
+	hex	0e
+	hex	00,00,00
+	dfb	12
+	hex	00,00,00,00,00,00,00
+	adrl	expBUFF
+
+expBUFF	ds	12
+
+strXSTATUS	asc	0d' Status: '00
+strTRATE	asc	0d' Rate: '00
+
+*-----------------------
+* STATUS $801A - MODE SENSE 6
+*-----------------------
+
+doGETMODE	jsr	getDEVICEID
+	sta	proGETMODE+2
+	
+	jsl	GSOS
+	dw	DStatus
+	adrl	proGETMODE
+	bcc	doGETMODE1
+	jsr	blinkBORDER
+
+doGETMODE1
+
+*--- Display Type
+
+	PushLong	#strTYPE
+	_WriteCString
+
+	lda	gmBUFF+4
+	and	#$ff
+	cmp	#$80
+	bcs	doPAGETYPE
+
+	PushLong	#strTYPEH
+	_WriteCString
+	bra	doGETMODE2
+
+doPAGETYPE	PushLong	#strTYPEP
+	_WriteCString
+
+*--- Display Page control
+
+doGETMODE2	PushLong	#strPAGECTL
+	_WriteCString
+
+	lda	gmBUFF+6
+	jsr	showBYTE
+
+*--- Display Hand control
+
+	PushLong	#strHANDCTL
+	_WriteCString
+
+	lda	gmBUFF+7
+	jsr	showBYTE
+
+*--- Display Bytes per line
+
+	PushLong	#strSCANLEN
+	_WriteCString
+
+	lda	gmBUFF+8
+	xba
+	jsr	showWORD
+
+*--- Display Shutoff timer
+
+	PushLong	#strTIMER
+	_WriteCString
+
+	lda	gmBUFF+10
+	xba
+	jsr	showWORD
+
+	jmp	waitKEY
+
+*--- Data
+
+proGETMODE	dw	5
+	ds	2
+	dw	$801A
+	adrl	getmodeBUFF
+	adrl	12
+	ds	4
+
+getmodeBUFF	dw	0
+	hex	1A
+	hex	00,00,00
+	dfb	12
+	hex	00,00,00,00,00,00,00
+	adrl	gmBUFF
+
+gmBUFF	ds	12
+
+strTYPE	asc	0d'Scanner type: '00
+strTYPEP	asc	'Page'00
+strTYPEH	asc	'Hand'00
+strPAGECTL	asc	0d'Page control: '00
+strHANDCTL	asc	0d'Hand control: '00
+strSCANLEN	asc	0d'Byter per line: '00
+strTIMER	asc	0d'Shutoff timer: '00
+
+*-----------------------
+* STATUS $8025 - GET WINDOW PARAMETERS
+*-----------------------
+
+doGETWINDOWPARAMETERS
 	jsr	initSTATUSDATA
 
 	ldx	#10-2		; put the getwindow data
@@ -670,12 +868,20 @@ doGETWINDOW	sta	doGETWIN0+1
 	dex
 	bpl	]lp
 
-doGETWIN0	lda	#dcGETWINDOW24
+	lda	#dcGETWINDOWPARAMETERS
 	jsr	statusCALL
 	bcc	doGETWINDOW1
 	rts
 
 doGETWINDOW1
+
+	PushLong	#strGWXRES
+	 _WriteCString
+
+	 ldy	#2
+	 lda	[Debut],y
+	 xba
+	 jsr	showWORD
 
 *--- Check response length
 
@@ -907,7 +1113,7 @@ okGWCT	asl
 
 *--- Data
 
-scsiGETWIN	hex	25,00,00,00,00,00,00,00,00,00
+scsiGETWIN	hex	25,00,00,00,F0,00,00,00,00,00
 
 strGWID	asc	0d'Window identifier: $'00
 strGWXRES	asc	0d'X-Axis resolution: $'00
@@ -983,19 +1189,19 @@ strGWCT10	asc	' (Optical character recognition)'00
 *--- SCSI routines
 
 initSTATUSDATA                                  ; clear SCSI command buffer
-                  ldx       #12-2
-]lp               stz       statusDATA,x
+                  ldx	#12-2
+]lp               stz	statusDATA,x
                   dex
                   dex
-                  bpl       ]lp
+                  bpl	]lp
                   rts
 
 initCOMMANDDATA                                  ; clear SCSI command buffer
-                  ldx       #12-2
-]lp               stz       commandDATA,x
+                  ldx	#12-2
+]lp               stz	commandDATA,x
                   dex
                   dex
-                  bpl       ]lp
+                  bpl	]lp
                   rts
 
 *--- DStatus
@@ -1038,6 +1244,11 @@ showERR           bcc       showNOERR
                   sec                            ; force carry
 showNOERR         rts
 
+*--- Get my Device ID
+
+getDEVICEID	lda	theDEVICE	; get our ID
+	rts
+
 *----------------------------
 * TEXT ROUTINES
 *----------------------------
@@ -1047,10 +1258,10 @@ showNOERR         rts
 * X: nb of chars to print
 * offset from commandBUFF
 
-showTEXT          ldy       #^commandBUFF
+showTEXT          ldy       #^statusBUFF
                   phy
                   clc
-                  adc       #commandBUFF
+                  adc       #statusBUFF
                   pha
                   PushWord  #0
                   phx
@@ -1226,75 +1437,75 @@ strINPUT          asc       'Select an entry: '00
 * DATA
 *----------------------------
 
-errCODE           ds        2                    ; GS/OS error code
+errCODE           ds        2		; GS/OS error code
 strERROR          asc       0d'<!> GS/OS error code $'00
 
 *---
 
-proQUIT           dw        2                    ; pcount
-                  ds        4                    ; pathname
-                  ds        2                    ; flags
+proQUIT           dw        2		; pcount
+                  ds        4		; pathname
+                  ds        2		; flags
 
-proDINFO          dw        8                    ; Parms for DInfo
-                  ds        2                    ; 02 device num
-                  adrl      devINFO              ; 04 device name
-                  ds        2                    ; 08 characteristics
-                  ds        4                    ; 0A total blocks
-                  ds        2                    ; 0E slot number
-                  ds        2                    ; 10 unit number
-                  ds        2                    ; 12 version
-                  ds        2                    ; 14 device id
+proDINFO          dw        8		; Parms for DInfo
+                  ds        2		; 02 device num
+                  adrl      devINFO		; 04 device name
+                  ds        2		; 08 characteristics
+                  ds        4		; 0A total blocks
+                  ds        2		; 0E slot number
+                  ds        2		; 10 unit number
+                  ds        2		; 12 version
+                  ds        2		; 14 device id
 
-devINFO           dw        $0032                ; buffer size
-devINFO1          db        $00                  ; length
+devINFO           dw        $0032		; buffer size
+devINFO1          db        $00		; length
 devINFO2          db        $00
-devINFO3          ds        $30                  ; data
+devINFO3          ds        $30		; data
 
-proSTATUS         dw        5                    ; 00 pcount
-                  ds        2                    ; 02 device num
-                  dw        $8000                ; 04 status/control code
-                  adrl      statusLIST           ; 06 status list
-                  adrl      1024                 ; 0A request count
-                  ds        4                    ; 0E transfer count
+proSTATUS         dw        5		; 00 pcount
+                  ds        2		; 02 device num
+                  dw        $8000		; 04 status/control code
+                  adrl      statusLIST	; 06 status list
+                  adrl      240		; 0A request count (AVI was 1024/32)
+                  ds        4		; 0E transfer count
 
-statusLIST        ds        2                    ; always 0000
-statusDATA        hex       00                   ; 00
-                  hex       00                   ; 01
-                  hex       00                   ; 02
-                  hex       00                   ; 03
-                  hex       00                   ; 04
-                  hex       00                   ; 05
-                  hex       00                   ; 06
-                  hex       00                   ; 07
-                  hex       00                   ; 08
-                  hex       00                   ; 09
-                  hex       00                   ; 10
-                  hex       00                   ; 11
+statusLIST        ds        2		; always 0000
+statusDATA        hex       00		; 00
+                  hex       00		; 01
+                  hex       00		; 02
+                  hex       00		; 03
+                  dfb       240		; 04 - (AVI was $00)
+                  hex       00		; 05
+                  hex       00		; 06
+                  hex       00		; 07
+                  hex       00		; 08
+                  hex       00		; 09
+                  hex       00		; 10
+                  hex       00		; 11
                   adrl      statusBUFF
-statusBUFF        ds        1234                 ; more than 1024
+statusBUFF        ds        256		; more than 240
 
-proCONTROL        dw        5                    ; 00 pcount
-                  ds        2                    ; 02 device num
-                  dw        $8000                ; 04 status/control code
-                  adrl      controlLIST          ; 06 status list
-                  adrl      1024                 ; 0A request count
-                  ds        4                    ; 0E transfer count
+proCONTROL        dw        5		; 00 pcount
+                  ds        2		; 02 device num
+                  dw        $8000		; 04 status/control code
+                  adrl      controlLIST	; 06 status list
+                  adrl      240		; 0A request count
+                  ds        4		; 0E transfer count
 
-controlLIST       ds        2                    ; always 0000
-commandDATA       hex       00                   ; 00
-                  hex       00                   ; 01
-                  hex       00                   ; 02
-                  hex       00                   ; 03
-                  hex       00                   ; 04
-                  hex       00                   ; 05
-                  hex       00                   ; 06
-                  hex       00                   ; 07
-                  hex       00                   ; 08
-                  hex       00                   ; 09
-                  hex       00                   ; 10
-                  hex       00                   ; 11
+controlLIST       ds        2		; always 0000
+commandDATA       hex       00		; 00
+                  hex       00		; 01
+                  hex       00		; 02
+                  hex       00		; 03
+                  dfb       240		; 04
+                  hex       00		; 05
+                  hex       00		; 06
+                  hex       00		; 07
+                  hex       00		; 08
+                  hex       00		; 09
+                  hex       00		; 10
+                  hex       00		; 11
 commandPTR        adrl      commandBUFF
-commandBUFF       ds        1234                 ; more than 1024
+commandBUFF       ds        256		; more than 240
 
 *----------
 

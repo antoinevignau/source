@@ -254,34 +254,41 @@ found             lda       proDINFO+20          ; not SCANNER
 * x - $xxxx - .NAMEOFDEVICE
 
 showDEVICEINFO
-                  pha                            ; from a word to a string
-                  pha
-                  pha
-                  _HexIt
-                  PullLong  strDEVID
+          pha                           ; from a word to a string
+          pha
+          pha
+          _HexIt
+          PullLong  strDEVID
 
-                  PushWord  #$20                 ; space
-                  _WriteChar
+          PushWord  #$20                ; space
+          _WriteChar
 
-                  lda       nbDEVICES            ; write device index
-                  inc
-                  ora       #"0"
-                  pha
-                  _WriteChar
+          lda       nbDEVICES           ; write device index
+          inc
+          ora       #"0"
+          pha
+          _WriteChar
 
-                  PushLong  #strDEV              ; show the string
-                  _WriteCString
+          PushLong  #strDEV             ; show the string
+          _WriteCString
 
-                  lda       devINFO1             ; from a STRL to a STR
-                  xba
-                  sta       devINFO1
+	ldx	#$32                ; copy the original
+]lp	lda       devINFO1,x          ; devname for open/close
+          sta       devNAME,x           ; calls
+          dex
+          dex
+          bpl       ]lp
+          
+          lda       devINFO1             ; from a STRL to a STR
+          xba
+          sta       devINFO1
 
-                  PushLong  #devINFO2
-                  _WriteString
+          PushLong  #devINFO2
+          _WriteString
 
-                  PushWord  #$0d
-                  _WriteChar
-                  rts
+          PushWord  #$0d
+          _WriteChar
+          rts
 
 *---------- Data
 
@@ -293,8 +300,8 @@ theDEVICE         ds        2                    ; the device to play with
 tblDEVICES        ds        16*2                 ; we authorize 16 devices
 
 strSEARCHMENU
-                  asc       0d'Searching for SCSI Scanners...'0d
-                  asc       ' 0. Go back to previous menu'0d00
+          asc       0d'Searching for SCSI Scanners...'0d
+          asc       ' 0. Go back to previous menu'0d00
 
 *----------------------------
 * DEVICE MENU
@@ -322,7 +329,7 @@ deviceMENU        =         *
                   bcc       ]lp
                   bne       deviceMENU2
                   jmp       searchMENU           ; or even 0 to exit
-deviceMENU2       cmp       #"5"+1
+deviceMENU2       cmp       #"2"+1
                   bcs       ]lp
 
                   sec                            ; call the routines
@@ -336,10 +343,11 @@ deviceMENU3       jsr       $bdbd
 
 ptrCOMMANDS
 	da	doINQUIRY
-	da	doMODESENSE6
-	da	doEXPLORE
-	da	doGETMODE
-	da	doGETWINDOWPARAMETERS
+          da        previewPAGE
+*	da	doMODESENSE6
+*	da	doEXPLORE
+*	da	doGETMODE
+*	da	doGETWINDOWPARAMETERS
 
 *--- Data
 
@@ -348,11 +356,8 @@ strDEVICEMENU
 strDEVMENU
 	asc	'0000'0d
 	asc	' 0. Go back to previous menu'0d
-	asc	' 1. Inquiry'0d
-	asc	' 2. Mode Sense (6)'0d
-	asc	' 3. Exploratory status'0d
-	asc	' 4. Get mode'0d
-	asc	' 5. Get Window Parameters'0d
+	asc       ' 1. Inquiry'0d
+	asc       ' 2. Preview page'0d
 	asc	00
 
 *----------------
@@ -386,19 +391,19 @@ strDEVMENU
 *-----------------------
 
 doINQUIRY
-        jsr       initSTATUSDATA
+          jsr       initSTATUSDATA
 
-                  ldx       #6-2                 ; put the inquiry data
-]lp               lda       scsiINQUIRY,x
-                  sta       statusDATA,x
-                  dex
-                  dex
-                  bpl       ]lp
+          ldx       #6-2                 ; put the inquiry data
+]lp       lda       scsiINQUIRY,x
+          sta       statusDATA,x
+          dex
+          dex
+          bpl       ]lp
 
-                  lda       #dcINQUIRY
-                  jsr       statusCALL
-                  bcc       doINQUIRY1
-                  rts
+          lda       #dcINQUIRY
+          jsr       statusCALL
+          bcc       doINQUIRY1
+          rts
 
 doINQUIRY1
 
@@ -639,7 +644,7 @@ doINQUIRY1
 
 *--- Data
 
-scsiINQUIRY       hex       12,00,00,00,F0,00
+scsiINQUIRY       hex       12,00,00,00,00,00
 
 strPQ             asc       0d' Peripheral qualifier: '00
 strPDT            asc       ' - Peripheral device type : '00
@@ -663,6 +668,255 @@ strPI             asc       0d' Product identification: '00
 strPRL            asc       0d' Product revision level: '00
 
 *-----------------------
+* PREVIEW PAGE
+*-----------------------
+
+previewPAGE
+          jsr       openSCANNER
+          jsr       setMODE
+          jsr       setWINDOW
+          jsr       askforMEM
+          jsr       scanSCANNER
+          jsr       readSCANNER
+          jmp       closeSCANNER
+
+*-----------------------
+* OPEN THE SCANNER
+*-----------------------
+
+openSCANNER
+          jsl       GSOS
+          dw        $2010
+          adrl      proOPEN
+          bcs       os_err
+          
+          lda       proOPEN+2
+          sta       proREAD+2
+          sta       proCLOSE+2
+          
+          lda       theDEVICE
+          sta       proWAIT+2
+          
+          jsl       GSOS
+          dw        DControl
+          adrl      proWAIT
+          bcs       os_err
+          rts
+os_err    brk       $b0
+
+*---
+
+proOPEN   dw        2         ; 00 pcount
+          ds        2         ; 02 ref num
+          adrl      devNAME   ; 04 path name
+
+proWAIT   dw        5         ; 00 pcount
+          ds        2         ; 02 device ID
+          dw        4         ; 04 control code (setwaitstatus)
+          adrl      waitDATA  ; 06 control list pointer
+          adrl      2         ; 0A request length
+          ds        4         ; 0E transfer length
+
+waitDATA  dw        0         ; activate wait mode
+
+*-----------------------
+* SET THE MODE
+*-----------------------
+
+setMODE
+          lda       theDEVICE
+          sta       proSETMODE+2
+
+          jsl       GSOS
+          dw        DControl
+          adrl      proSETMODE
+          bcs       st_err
+          rts
+st_err    brk       $b2
+
+*---
+
+proSETMODE
+          dw        5
+          ds        2
+          dw        $8015
+          adrl      setmodeBUFF
+          adrl      12
+          ds        4
+
+setmodeBUFF
+          dw        $0000
+          hex       15
+          hex       10
+          hex       00,00
+          dfb       12
+          hex       00,00,00,00,00,00,00
+          adrl      setmodeDATA
+
+setmodeDATA
+          hex       00,00,00,00
+          hex       01
+          hex       08
+          hex       01
+          hex       40
+          hex       00
+          hex       00,00,00
+          
+*-----------------------
+* SET THE WINDOW
+*-----------------------
+
+setWINDOW
+          lda       theDEVICE
+          sta       proSETWINDOW+2
+
+          jsl       GSOS
+          dw        DControl
+          adrl      proSETWINDOW
+          bcs       sw_err
+          rts
+sw_err    brk       $b4
+
+*---
+
+proSETWINDOW
+          dw        5
+          ds        2
+          dw        $8024
+          adrl      setwindowBUFF
+          adrl      48
+          ds        4
+
+setwindowBUFF
+          dw        $0000
+          hex       24
+          hex       00,00,00,00,00,00,00
+          dfb       48
+          hex       80
+          hex       00,00
+          adrl      setwindowDATA
+
+setwindowDATA
+          hex       00,00,00,00,00,00
+          hex       00,28	; 40 in big endian
+          hex       00	; window identifier
+          hex       00	; reserved
+          dfb	00,75	; x-axis resolution
+          dfb	00,75	; y-axis resolution
+          hex       00,00,00,00	; x-upper left
+          hex       00,00,00,00	; y-upper left
+          hex       00,00,27,D8	; x-width
+          hex       00,00,33,90	; y-height
+          hex       00	; brightness
+          hex       00	; threshold
+          hex       00	; contrast
+          hex       01	; imageComposition
+          hex       08	; bitsPerPixel
+          hex       00,02	; halftone (to be validated with 8bpp)
+          hex       03	; paddingType
+          hex       00,00,00,00,00,00,00,00,00,00
+
+*-----------------------
+* ASK FOR MEMORY
+*-----------------------
+
+askforMEM
+          pha
+          pha
+          PushLong  #526350   ; 638 bytes-w * 825 bytes-h
+          PushWord  myID
+          PushWord  #%01000000_00000000
+          PushLong  #0
+          _NewHandle
+          phd
+          tsc
+          tcd
+          lda       [3]
+          sta       proREAD+4
+          ldy       #2
+          lda       [3],y
+          sta       proREAD+6
+          pld
+          pla
+          pla
+          bcs       am_err
+          rts
+am_err    brk       $b6
+
+*-----------------------
+* START THE SCANNING
+*-----------------------
+
+scanSCANNER
+          lda       theDEVICE
+          sta       proSCAN+2
+
+          jsl       GSOS
+          dw        DControl
+          adrl      proSCAN
+          bcs       ss_err
+          rts
+ss_err    brk       $b8
+
+*---
+
+proSCAN   dw        5
+          ds        2
+          dw        $801b
+          adrl      scanBUFF
+          adrl      1
+          ds        4
+
+scanBUFF
+          dw        $0000
+          hex       1b
+          hex       00,00,00
+          hex       01
+          hex       00
+          hex       00,00,00,00,00,00
+          adrl      scanDATA
+
+scanDATA
+          hex       00
+          
+*-----------------------
+* READ THE PAGE
+*-----------------------
+
+readSCANNER
+          jsl       GSOS
+          dw        $2012
+          adrl      proREAD
+          bcs       rs_err
+          rts
+rs_err    brk       $ba
+
+*---
+
+proREAD   dw        4	; 00 pcount
+          ds        2	; 02 ref num
+          ds        4	; 04 buffer ptr
+          adrl      526350	; 08 requested length
+          ds        4	; 0C transfer length
+
+*-----------------------
+* CLOSE THE SCANNER
+*-----------------------
+
+closeSCANNER
+          jsl       GSOS
+          dw        $2014
+          adrl      proCLOSE
+          bcs       cs_err
+          rts
+cs_err    brk       $bc
+
+*---
+
+proCLOSE  dw        1         ; 00 pcount
+          ds        2         ; 02 ref num
+
+*-----------------------
 * STATUS $801A - MODE SENSE (6)
 *-----------------------
 
@@ -676,9 +930,9 @@ doMODESENSE6
 	dex
 	bpl	]lp
 
-	lda	#doMODESENSE6
+	lda	#previewPAGE
 	stal	$300
-	lda	#^doMODESENSE6
+	lda	#^previewPAGE
 	stal	$302
 	
 	lda	#dcMODESENSE6
@@ -688,7 +942,7 @@ doMODESENSE6
 *--- Data
 
 scsiMODESENSE6
-	hex       1A,00,3F,00,F0,00
+	hex       1A,00,00,00,00,00
 
 * 00_11_1111
 
@@ -741,14 +995,16 @@ doEXPLORE1
 
 *--- Data
 
-proEXPLORE	dw	5
+proEXPLORE
+	dw	5
 	ds	2
 	dw	$800E
 	adrl	exploreBUFF
 	adrl	12
 	ds	4
 
-exploreBUFF	dw	0
+exploreBUFF
+	dw	0
 	hex	0e
 	hex	00,00,00
 	dfb	12
@@ -757,8 +1013,10 @@ exploreBUFF	dw	0
 
 expBUFF	ds	12
 
-strXSTATUS	asc	0d' Status: '00
-strTRATE	asc	0d' Rate: '00
+strXSTATUS
+	asc	0d' Status: '00
+strTRATE
+	asc	0d' Rate: '00
 
 *-----------------------
 * STATUS $801A - MODE SENSE 6
@@ -1448,7 +1706,7 @@ proQUIT           dw        2		; pcount
 
 proDINFO          dw        8		; Parms for DInfo
                   ds        2		; 02 device num
-                  adrl      devINFO		; 04 device name
+                  adrl      devINFO	; 04 device name
                   ds        2		; 08 characteristics
                   ds        4		; 0A total blocks
                   ds        2		; 0E slot number
@@ -1456,56 +1714,58 @@ proDINFO          dw        8		; Parms for DInfo
                   ds        2		; 12 version
                   ds        2		; 14 device id
 
-devINFO           dw        $0032		; buffer size
-devINFO1          db        $00		; length
-devINFO2          db        $00
-devINFO3          ds        $30		; data
+devINFO           dw        $0034	; buffer size
+devINFO1          db        $00	; length from a GS/OS string
+devINFO2          db        $00	; to a Pascal string
+devINFO3          ds        $30	; data
+
+devNAME           ds        $32         ; GS/OS string containing the device name
 
 proSTATUS         dw        5		; 00 pcount
                   ds        2		; 02 device num
-                  dw        $8000		; 04 status/control code
+                  dw        $8000	; 04 status/control code
                   adrl      statusLIST	; 06 status list
-                  adrl      240		; 0A request count (AVI was 1024/32)
+                  adrl      240	; 0A request count (AVI was 1024/32)
                   ds        4		; 0E transfer count
 
 statusLIST        ds        2		; always 0000
-statusDATA        hex       00		; 00
-                  hex       00		; 01
-                  hex       00		; 02
-                  hex       00		; 03
-                  dfb       240		; 04 - (AVI was $00)
-                  hex       00		; 05
-                  hex       00		; 06
-                  hex       00		; 07
-                  hex       00		; 08
-                  hex       00		; 09
-                  hex       00		; 10
-                  hex       00		; 11
+statusDATA        hex       00	; 00
+                  hex       00	; 01
+                  hex       00	; 02
+                  hex       00	; 03
+                  hex       00	; 04 - (240 AVI was $00)
+                  hex       00	; 05
+                  hex       00	; 06
+                  hex       00	; 07
+                  hex       00	; 08
+                  hex       00	; 09
+                  hex       00	; 10
+                  hex       00	; 11
                   adrl      statusBUFF
-statusBUFF        ds        256		; more than 240
+statusBUFF        ds        256	; more than 240
 
 proCONTROL        dw        5		; 00 pcount
                   ds        2		; 02 device num
-                  dw        $8000		; 04 status/control code
+                  dw        $8000	; 04 status/control code
                   adrl      controlLIST	; 06 status list
-                  adrl      240		; 0A request count
+                  adrl      240	; 0A request count
                   ds        4		; 0E transfer count
 
 controlLIST       ds        2		; always 0000
-commandDATA       hex       00		; 00
-                  hex       00		; 01
-                  hex       00		; 02
-                  hex       00		; 03
-                  dfb       240		; 04
-                  hex       00		; 05
-                  hex       00		; 06
-                  hex       00		; 07
-                  hex       00		; 08
-                  hex       00		; 09
-                  hex       00		; 10
-                  hex       00		; 11
+commandDATA       hex       00	; 00
+                  hex       00	; 01
+                  hex       00	; 02
+                  hex       00	; 03
+                  dfb       00	; 04
+                  hex       00	; 05
+                  hex       00	; 06
+                  hex       00	; 07
+                  hex       00	; 08
+                  hex       00	; 09
+                  hex       00	; 10
+                  hex       00	; 11
 commandPTR        adrl      commandBUFF
-commandBUFF       ds        256		; more than 240
+commandBUFF       ds        256	; more than 240
 
 *----------
 

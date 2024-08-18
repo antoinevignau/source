@@ -683,8 +683,8 @@ strPRL            asc       0d' Product revision level: '00
 
 previewPAGE
           jsr	openSCANNER
-          bit	setMODE
-	bit	setHALFTONES
+          jsr	setMODE
+	jsr	setHALFTONES
           jsr	setWINDOW
           jsr	askforMEM
           jsr	scanSCANNER
@@ -703,35 +703,27 @@ openSCANNER
           jsl       GSOS
           dw        $2010
           adrl      proOPEN
-          bcc       os_ok
-
-	PushLong	#openOS
-	_WriteCString
-
-os_ok	lda       proOPEN+2
-	sta       proREAD+2
-	sta       proCLOSE+2
-
-	lda       theDEVICE
-	sta       proWAIT+2
-
-	jsl       GSOS
-	dw        DControl
-	adrl      proWAIT
-	bcc       os_ok2
-
-	PushLong	#waitOS
-	_WriteCString
-
-os_ok2	PushLong	#endOS
+          bcs       os_err
+          
+          lda       proOPEN+2
+          sta       proREAD+2
+          sta       proCLOSE+2
+          
+          lda       theDEVICE
+          sta       proWAIT+2
+          
+          jsl       GSOS
+          dw        DControl
+          adrl      proWAIT
+          bcs       os_err
+	PushLong	#endOS
 	_WriteCString
           rts
+os_err    brk       $b0
 
 *---
 
 startOS	asc	0d'Start openSCANNER...'00
-openOS	asc	' (open not OK) '00
-waitOS	asc	' (wait not OK) '00
 endOS	asc	'End'00
 
 proOPEN   dw        2         ; 00 pcount
@@ -762,10 +754,7 @@ setMODE
           dw        DControl
           adrl      proSETMODE
           bcc       st_ok
-
-	PushLong	#controlSM
-	_WriteCString
-
+	jsr	blinkBORDER
 st_ok	PushLong	#endSM
 	_WriteCString
           rts
@@ -773,7 +762,6 @@ st_ok	PushLong	#endSM
 *---
 
 startSM	asc	0d'Start setMODE...'00
-controlSM	asc	' (dcontrol not OK) '00
 endSM	asc	'End'00
 
 proSETMODE
@@ -787,20 +775,20 @@ proSETMODE
 setmodeBUFF
           dw        $0000
           hex       15
-          hex       10	; PF (bit is 1) for SCSI-2
-          hex       00,00	; reserved
-          dfb       12	; parameter list length
+          hex       10
+          hex       00,00
+          dfb       12
           hex       00,00,00,00,00,00,00
           adrl      setmodeDATA
 
 setmodeDATA
-          hex       00,00,00,00 ; mode parameter header (8.3.3, table 91)
-          hex       01	; page code - Apple-specific parameter page
-          hex       08	; page length - Apple-specific page
-          hex       01	; graymap - 1 = no alteration to data
-          hex       40	; auto background adjustment threshold
-          hex       00	; lamp - 0 = turn off
-          hex       00,00,00	; reserved - 3 bytes
+          hex       00,00,00,00
+          hex       01
+          hex       08
+          hex       01
+          hex       40
+          hex       00
+          hex       00,00,00
 
 *-----------------------
 * SET HALFTONES
@@ -817,10 +805,7 @@ setHALFTONES
           dw        DControl
           adrl      proSETHALFTONES
           bcc       sht_ok
-
-	PushLong	#controlSHT
-	_WriteCString
-
+	jsr	blinkBORDER
 sht_ok	PushLong	#endSHT
 	_WriteCString
           rts
@@ -828,7 +813,6 @@ sht_ok	PushLong	#endSHT
 *---
 
 startSHT	asc	0d'Start setHALFTONES...'00
-controlSHT asc	' (control not OK) '00
 endSHT	asc	'End'00
 
 proSETHALFTONES
@@ -841,14 +825,14 @@ proSETHALFTONES
 
 sethalftonesBUFF
           dw        $0000
-          hex       2A	; operation code
-          hex       00	; logical unit / reserved
-	hex	02	; data type code (halftone mask)
-	hex	00	; reserved
-	hex	00,02	; data type qualifier (halftone mask)
-	dfb	00,00,17	; transfer length
-	hex	00	; control
+          hex       2A
+          hex       00
+	dfb	02
 	hex	00,00
+	dfb	02
+	hex	00,00
+	dfb	17
+	hex	00,00,00
           adrl      sethalftonesDATA
 
 sethalftonesDATA
@@ -871,8 +855,7 @@ setWINDOW
           adrl      proSETWINDOW
           bcc       sw_ok
 
-	PushLong	#controlSW
-	_WriteCString
+	jsr	blinkBORDER
 
 sw_ok	lda	#^setwindowDATA
 	jsr	showWORD
@@ -886,7 +869,6 @@ sw_ok	lda	#^setwindowDATA
 *---
 
 startSW	asc	0d'Start setWINDOW... Adr=$'00
-controlSW asc	' (control not OK) '00
 endSW	asc	'...End'00
 
 proSETWINDOW
@@ -903,7 +885,7 @@ setwindowBUFF
           hex       00
 	hex	00,00,00,00
           dfb       00,00,48	; length is 48 bytes
-          hex       80	; control
+          hex       80			; control
 	hex	00,00
           adrl      setwindowDATA
 
@@ -917,16 +899,14 @@ setwindowDATA
           dfb	00,75	; y-axis resolution
           hex       00,00,00,00	; x-upper left
           hex       00,00,00,00	; y-upper left
-*          hex       00,00,27,D8	; x-width (10200)
-          hex       00,00,13,EC	; x-width ( 5100)
-*          hex       00,00,33,90	; y-height (13200)
-          hex       00,00,11,30	; y-height ( 4400)
+          hex       00,00,27,D8	; x-width
+          hex       00,00,33,90	; y-height (19C8)
           hex       00	; brightness
           hex       00	; threshold
           hex       00	; contrast
-          hex       05	; imageComposition (see table 283)
+          hex       02	; imageComposition (see table 283)
           hex       08	; bitsPerPixel (8)
-          hex       00,00	; halftone (2)
+          hex       00,02	; halftone (2)
           hex       03	; paddingType (byte boundary)
           hex       00,00	; bit ordering
 	hex	00	; compression type
@@ -1005,20 +985,16 @@ scanSCANNER
           jsl       GSOS
           dw        DControl
           adrl      proSCAN
-          bcc       ss_ok
-
-	PushLong	#controlSS
-	_WriteCString
-
-ss_ok	PushLong	#endSS
+          bcs       ss_err
+	PushLong	#endSS
 	_WriteCString
 	clc
           rts
+ss_err    brk       $b8
 
 *---
 
 startSS	asc	0d'Start scanSCANNER...'00
-controlSS	asc	' (control not OK) '00
 endSS	asc	'End'00
 
 proSCAN   dw        5
@@ -1031,15 +1007,14 @@ proSCAN   dw        5
 scanBUFF
           dw        $0000
           hex       1b
-          hex       00
-	hex	00,00
-          hex       01	; length is 1
+          hex       00,00,00
+          hex       01
           hex       00
           hex       00,00,00,00,00,00
           adrl      scanDATA
 
 scanDATA
-          hex       00	; the window identifier we want to scan
+          hex       00
           
 *-----------------------
 * READ THE PAGE
@@ -1052,12 +1027,9 @@ readSCANNER
           jsl       GSOS
           dw        $2012
           adrl      proREAD
-          bcc       rs_ok
-
-	PushLong	#controlRS
-	_WriteCString
-
-rs_ok	PushLong	#lengthRS
+          bcs       rs_err
+	
+	PushLong	#lengthRS
 	_WriteCString
 	lda	proREAD+14
 	jsr	showWORD
@@ -1066,11 +1038,11 @@ rs_ok	PushLong	#lengthRS
 	PushLong	#endRS
 	_WriteCString
           rts
+rs_err    brk       $ba
 
 *---
 
 startRS	asc	0d'Start readSCANNER...'00
-controlRS asc	' (read not OK) '00
 lengthRS	asc	' Len=$'00
 endRS	asc	'...End'00
 
@@ -1091,19 +1063,15 @@ closeSCANNER
           jsl       GSOS
           dw        $2014
           adrl      proCLOSE
-          bcc       cs_ok
-
-	PushLong	#closeCS
-	_WriteCString
-
-cs_ok	PushLong	#endCS
+          bcs       cs_err
+	PushLong	#endCS
 	_WriteCString
           rts
+cs_err    brk       $bc
 
 *---
 
 startCS	asc	0d'Start closeSCANNER...'00
-closeCS	asc	' (close not OK) '00
 endCS	asc	'End'00
 
 proCLOSE  dw        1         ; 00 pcount

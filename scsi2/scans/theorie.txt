@@ -1,0 +1,85 @@
+Tests sur Mac
+
+OneScanner
+
+------------------
+
+xGSres = getResolutionPopUp(GetCtlHandleFromID(NULL,XResolutionPopUp));
+	75, 150, 200, 300
+yGSres = getResolutionPopUp(GetCtlHandleFromID(NULL,YResolutionPopUp));
+	75, 150, 200, 300
+
+scanLength = doGetXYPos(&xStart,&xEnd,&yStart,&yEnd);
+scanWidth = doFixXPos(&xStart,&xEnd,&yStart,&yEnd,xGSres);
+
+switch(xGSres){
+ case 75:
+  scanWidth += 16;
+  break;
+ case 150:
+  scanWidth += 8;
+  break;
+}
+
+/* in bytes */
+ dataWidth = (((scanWidth * xGSres) / 1200) * (long) (sWindowDef.bitsPerPixel))/8;
+ 	4-bits / 75 dpi : (10200 x 75 / 1200) x (4/8)
+	8-bits / 75 dpi : (10200 x 75 / 1200) x (8/8)
+	
+/* # of scan lines */
+ dataLength = (scanLength * yGSres) / 1200;
+			
+bufferSize = dataWidth * dataLength;	/* bytes per scan line * # of scan lines */
+
+------------------
+
+#define XINSET 30
+#define YINSET 20
+#define XOFFSET 2
+#define YOFFSET 2
+#define	hPPI	16	/* pixels per inch as displayed on screen rulers */
+#define vPPI	10
+bitsPerPixel = 4, 8, 24
+
+------------------ for scanLength
+par dŽfaut, c'est 13200 pour 11 pouces
+
+doGetXYPos (xStart, xEnd, yStart, yEnd)
+if not preview window opened
+ *xStart = *yStart = 0;	/* use default values to define page */
+ *xEnd = 10200;	/* 1200 * 8.5 inches */
+ *yEnd = 13200;	/* 1200 * 11 inches */
+else
+ *xStart = ((long) (boxRect->h1 - XINSET) * 1200) / hPPI;
+ *xEnd   = ((long) (boxRect->h2 - XINSET) * 1200) / hPPI;
+ *yStart = ((long) (boxRect->v1 - YINSET) * 1200) / vPPI;
+ *yEnd   = ((long) (boxRect->v2 - YINSET) * 1200) / vPPI;
+endif
+return (*yEnd - *yStart);	/* scanlength */
+
+------------------ for scanWidth
+par dŽfaut, c'est 10200 pour 8.5 pouces
+
+doFixXPos (xStart, xEnd, yStart, yEnd, xGSres)
+diff = (Long)(*xEnd - *xStart);
+	10200 - 0 = 10200
+chunkiness = 8 * xres;
+	8 x 75 = 600
+deltaX = diff % chunkiness;
+	10200 % 600 = 0
+fixAmount = chunkiness - deltaX;
+	600 - 0 = 600
+
+if(deltaX != 0) {
+ if(*xEnd + fixAmount > maxX) {
+  if(fixAmount >= *xStart) {
+    *xStart = 0;
+    *xEnd = maxX;
+  } else {
+    *xStart -= fixAmount;
+  }
+ } else {
+  *xEnd += fixAmount;
+ }
+}
+return(*xEnd - *xStart);	/* return scanWidth */

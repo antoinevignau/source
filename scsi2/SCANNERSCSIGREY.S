@@ -685,7 +685,7 @@ strPRL            asc       0d' Product revision level: '00
 previewPAGE
           jsr	openSCANNER
           jsr	setMODE
-	jsr	setHALFTONES
+	bit	setHALFTONES
           jsr	setWINDOW
           jsr	askforMEM
           jsr	scanSCANNER
@@ -815,7 +815,7 @@ setmodeDATA
 	hex	00,00
           hex       01	; 04 page code - Apple-specific parameter page
           hex       08	; 05 page length - Apple-specific page
-	dfb	01	; 06 graymap (Apple Scanner)
+	dfb	00	; 06 graymap (Apple Scanner)
 			;	0: dark
 			;	1: normal
 			;	2: light
@@ -824,7 +824,7 @@ setmodeDATA
 			;	bit 0 - 0: do not use custom CCT / 1: use custom CCT (3*3 Color Correction Table)
 			;	bit 1 - 0: do not use custom gamma / 1: use custom gamma
 			;	bit 2 - 0: setting of the ambler LED off / 1: setting on (OneScanner)
-	dfb	%00000001	; 08 parameters setting 1
+	dfb	%00000101	; 08 parameters setting 1
 			; 	bit 0 - 0: turn lamp off / 1: turn lamp on
 			;	bit 1 - power of the CCD array on / 1: power off
 			;      bits 2/3 - 00: normal / 01: fast / 10: high speed (OneScanner)

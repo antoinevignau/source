@@ -1020,7 +1020,7 @@
  1350 |  1 SCANNERSCSIGREY.S    685 | Empty       | 00 |         |    0 | 00/0757               | previewPAGE                                         
  1351 |  1 SCANNERSCSIGREY.S    686 | Code        | 00 |  2      |    3 | 00/0757 : 20 72 07    |                        jsr       openSCANNER        
  1352 |  1 SCANNERSCSIGREY.S    687 | Code        | 00 |  2      |    3 | 00/075A : 20 23 08    |                        jsr       setMODE            
- 1353 |  1 SCANNERSCSIGREY.S    688 | Code        | 00 |  2      |    3 | 00/075D : 20 D6 08    |                        jsr       setHALFTONES       
+ 1353 |  1 SCANNERSCSIGREY.S    688 | Code        | 00 |  2      |    3 | 00/075D : 2C D6 08    |                        bit       setHALFTONES       
  1354 |  1 SCANNERSCSIGREY.S    689 | Code        | 00 |  2      |    3 | 00/0760 : 20 0F 0A    |                        jsr       setWINDOW          
  1355 |  1 SCANNERSCSIGREY.S    690 | Code        | 00 |  2      |    3 | 00/0763 : 20 E6 0A    |                        jsr       askforMEM          
  1356 |  1 SCANNERSCSIGREY.S    691 | Code        | 00 |  2      |    3 | 00/0766 : 20 AB 0B    |                        jsr       scanSCANNER        
@@ -1204,7 +1204,7 @@
  1608 |  1 SCANNERSCSIGREY.S    815 | Data        | 00 |         |    2 | 00/08CA : 00 00       |                        hex       00,00              
  1609 |  1 SCANNERSCSIGREY.S    816 | Data        | 00 |         |    1 | 00/08CC : 01          |                        hex       01                 ; 04 page code - Apple-specific parameter page
  1610 |  1 SCANNERSCSIGREY.S    817 | Data        | 00 |         |    1 | 00/08CD : 08          |                        hex       08                 ; 05 page length - Apple-specific page
- 1611 |  1 SCANNERSCSIGREY.S    818 | Data        | 00 |         |    1 | 00/08CE : 01          |                        dfb       01                 ; 06 graymap (Apple Scanner)
+ 1611 |  1 SCANNERSCSIGREY.S    818 | Data        | 00 |         |    1 | 00/08CE : 00          |                        dfb       00                 ; 06 graymap (Apple Scanner)
  1612 |  1 SCANNERSCSIGREY.S    819 | Comment     | 00 |         |    0 | 00/08CF               | 			;	0: dark
  1613 |  1 SCANNERSCSIGREY.S    820 | Comment     | 00 |         |    0 | 00/08CF               | 			;	1: normal
  1614 |  1 SCANNERSCSIGREY.S    821 | Comment     | 00 |         |    0 | 00/08CF               | 			;	2: light
@@ -1213,7 +1213,7 @@
  1617 |  1 SCANNERSCSIGREY.S    824 | Comment     | 00 |         |    0 | 00/08D0               | 			;	bit 0 - 0: do not use custom CCT / 1: use custom CCT (3*3 Color Correction Table)
  1618 |  1 SCANNERSCSIGREY.S    825 | Comment     | 00 |         |    0 | 00/08D0               | 			;	bit 1 - 0: do not use custom gamma / 1: use custom gamma
  1619 |  1 SCANNERSCSIGREY.S    826 | Comment     | 00 |         |    0 | 00/08D0               | 			;	bit 2 - 0: setting of the ambler LED off / 1: setting on (OneScanner)
- 1620 |  1 SCANNERSCSIGREY.S    827 | Data        | 00 |         |    1 | 00/08D0 : 01          |                        dfb       %00000001          ; 08 parameters setting 1
+ 1620 |  1 SCANNERSCSIGREY.S    827 | Data        | 00 |         |    1 | 00/08D0 : 05          |                        dfb       %00000101          ; 08 parameters setting 1
  1621 |  1 SCANNERSCSIGREY.S    828 | Comment     | 00 |         |    0 | 00/08D1               | 			; 	bit 0 - 0: turn lamp off / 1: turn lamp on
  1622 |  1 SCANNERSCSIGREY.S    829 | Comment     | 00 |         |    0 | 00/08D1               | 			;	bit 1 - power of the CCD array on / 1: power off
  1623 |  1 SCANNERSCSIGREY.S    830 | Comment     | 00 |         |    0 | 00/08D1               | 			;      bits 2/3 - 00: normal / 01: fast / 10: high speed (OneScanner)

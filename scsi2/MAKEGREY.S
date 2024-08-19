@@ -8,7 +8,7 @@
 
 * Assemble files
 
-         ASM   SCANNERSCSI.S
+         ASM   SCANNERSCSIGREY.S
          KND   $0000
          SNA   ScannerSCSI
 

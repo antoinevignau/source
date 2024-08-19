@@ -11,7 +11,6 @@
 	mx	%00
 
 	rel
-	dsk	SCANNERSCSI.l
 	lst	off
 
 *----------
@@ -27,6 +26,8 @@ Debut	=	$00
 GSOS	=	$e100a8
 
 *----------
+
+windowID	=	0
 
 devSCANNER	=	$001a
 
@@ -282,7 +283,7 @@ showDEVICEINFO
           PushLong  #strDEV             ; show the string
           _WriteCString
 
-		  ldx	#$32-2                ; copy the original
+	ldx	#$32-2                ; copy the original
 ]lp       lda	devINFO1,x          ; devname for open/close
           sta	devNAME,x           ; calls
           dex
@@ -384,10 +385,10 @@ strDEVMENU
 * Color OneScanner (300dpi 24-bit color)
 *  
 *
-* Color OneScanner 600/27 (600dpi 27-bit color)
+* Color OneScanner 600/27 (600dpi 27-bit color) - CANOSCAN 300 (CS300)
 *  06 00 02 02 1F 00 00 10 'CANON   IX-03035B       1.01' FF
 *
-* Color OneScanner 1200/30 (1200dpi 30-bit color)
+* Color OneScanner 1200/30 (1200dpi 30-bit color) - CANOSCAN 600  (CS600)
 *  06 00 02 02 1F 00 00 10 'CANON   IX-06015C       1.07' FF
 *
 * ---End of list
@@ -683,8 +684,8 @@ strPRL            asc       0d' Product revision level: '00
 
 previewPAGE
           jsr	openSCANNER
-          bit	setMODE
-	bit	setHALFTONES
+          jsr	setMODE
+	jsr	setHALFTONES
           jsr	setWINDOW
           jsr	askforMEM
           jsr	scanSCANNER
@@ -699,6 +700,12 @@ previewPAGE
 openSCANNER
 	PushLong	#startOS
 	_WriteCString
+	lda	#^openSCANNER
+	jsr	showWORD
+	lda	#openSCANNER
+	jsr	showWORD
+	PushLong	#startOS2
+	_WriteCString
 
           jsl       GSOS
           dw        $2010
@@ -712,16 +719,16 @@ os_ok	lda       proOPEN+2
 	sta       proREAD+2
 	sta       proCLOSE+2
 
-	lda       theDEVICE
-	sta       proWAIT+2
-
-	jsl       GSOS
-	dw        DControl
-	adrl      proWAIT
-	bcc       os_ok2
-
-	PushLong	#waitOS
-	_WriteCString
+*	lda       theDEVICE
+*	sta       proWAIT+2
+*
+*	jsl       GSOS
+*	dw        DControl
+*	adrl      proWAIT
+*	bcc       os_ok2
+*
+*	PushLong	#waitOS
+*	_WriteCString
 
 os_ok2	PushLong	#endOS
 	_WriteCString
@@ -729,10 +736,11 @@ os_ok2	PushLong	#endOS
 
 *---
 
-startOS	asc	0d'Start openSCANNER...'00
+startOS	asc	0d'Start openSCANNER ($'00
+startOS2	asc	')'00
 openOS	asc	' (open not OK) '00
 waitOS	asc	' (wait not OK) '00
-endOS	asc	'End'00
+endOS	asc	'...End'00
 
 proOPEN   dw        2         ; 00 pcount
           ds        2         ; 02 ref num
@@ -754,6 +762,12 @@ waitDATA  dw        0         ; activate wait mode
 setMODE
 	PushLong	#startSM
 	_WriteCString
+	lda	#^setMODE
+	jsr	showWORD
+	lda	#setMODE
+	jsr	showWORD
+	PushLong	#startSM2
+	_WriteCString
 
           lda       theDEVICE
           sta       proSETMODE+2
@@ -772,9 +786,10 @@ st_ok	PushLong	#endSM
 
 *---
 
-startSM	asc	0d'Start setMODE...'00
-controlSM	asc	' (dcontrol not OK) '00
-endSM	asc	'End'00
+startSM	asc	0d'Start setMODE ($'00
+startSM2	asc	')'00
+controlSM	asc	' (control not OK) '00
+endSM	asc	'...End'00
 
 proSETMODE
           dw        5
@@ -786,21 +801,43 @@ proSETMODE
 
 setmodeBUFF
           dw        $0000
-          hex       15
-          hex       10	; PF (bit is 1) for SCSI-2
-          hex       00,00	; reserved
-          dfb       12	; parameter list length
+          hex       15	; 00
+          hex       10	; 01 PF (bit is 1) for SCSI-2
+          hex       00,00	; 02 reserved
+          dfb       12	; 04 parameter list length
           hex       00,00,00,00,00,00,00
           adrl      setmodeDATA
 
+*--- For OneScanner
+
 setmodeDATA
-          hex       00,00,00,00 ; mode parameter header (8.3.3, table 91)
-          hex       01	; page code - Apple-specific parameter page
-          hex       08	; page length - Apple-specific page
-          hex       01	; graymap - 1 = no alteration to data
-          hex       40	; auto background adjustment threshold
-          hex       00	; lamp - 0 = turn off
-          hex       00,00,00	; reserved - 3 bytes
+          hex       00,00	; 00 mode parameter header (8.3.3, table 91)
+	hex	00,00
+          hex       01	; 04 page code - Apple-specific parameter page
+          hex       08	; 05 page length - Apple-specific page
+	dfb	01	; 06 graymap (Apple Scanner)
+			;	0: dark
+			;	1: normal
+			;	2: light
+	dfb	%00000100	; 07 auto background adjustment threshold
+			;  	Default threshold value is 64 (Apple Scanner)
+			;	bit 0 - 0: do not use custom CCT / 1: use custom CCT (3*3 Color Correction Table)
+			;	bit 1 - 0: do not use custom gamma / 1: use custom gamma
+			;	bit 2 - 0: setting of the ambler LED off / 1: setting on (OneScanner)
+	dfb	%00000001	; 08 parameters setting 1
+			; 	bit 0 - 0: turn lamp off / 1: turn lamp on
+			;	bit 1 - power of the CCD array on / 1: power off
+			;      bits 2/3 - 00: normal / 01: fast / 10: high speed (OneScanner)
+			;	bit 2 - 0: do not reverse B&W / 1: reverse B&W (Color OneScanner)
+			;	bit 3 - 0: no ICP / 1: ICP on (Color OneScanner)
+			;	bit 4 - 0: no MTF / 1: MTF on (Color OneScanner)
+	dfb	00	; 09 color sensor (color onescanner)
+			;	0: all
+			;	1: red
+			;	2: green
+			;	3: blue
+	hex	00,00	; 10 reserved - 2 bytes
+	hex	00,00	; 12 reserved - 2 bytes
 
 *-----------------------
 * SET HALFTONES
@@ -808,6 +845,12 @@ setmodeDATA
 
 setHALFTONES
 	PushLong	#startSHT
+	_WriteCString
+	lda	#^setHALFTONES
+	jsr	showWORD
+	lda	#setHALFTONES
+	jsr	showWORD
+	PushLong	#startSHT2
 	_WriteCString
 
           lda       theDEVICE
@@ -827,9 +870,10 @@ sht_ok	PushLong	#endSHT
 
 *---
 
-startSHT	asc	0d'Start setHALFTONES...'00
+startSHT	asc	0d'Start setHALFTONES ($'00
+startSHT2	asc	')'00
 controlSHT asc	' (control not OK) '00
-endSHT	asc	'End'00
+endSHT	asc	'...End'00
 
 proSETHALFTONES
           dw        5
@@ -851,16 +895,81 @@ sethalftonesBUFF
 	hex	00,00
           adrl      sethalftonesDATA
 
+* Halftone patterns
+* 0: spiral 4*4
+* 1: Bayer 4*4
+* 3: spiral 8*8
+* 4: Bayer 8*8
+
 sethalftonesDATA
-          hex       44,F0,40,80,C0,B0,00,10,50
-	hex	70,30,20,90,E0,A0,60,D0
-          
+
+* 4x4 Bayer ordered dither matrix (ID = 1) (from Dev.CD Mar 92 / Dev.Sample.aii)
+
+	hex	44
+	hex	08,88,28,A8
+	hex	C8,48,E8,68
+	hex	38,B8,18,98
+	hex	F8,78,D8,58
+
+	hex	44
+	dfb	00,08,02,10
+	dfb	12,04,14,06
+	dfb	03,11,01,09
+	dfb	15,07,13,05
+
+* Weird Apple dither matrix
+
+	hex       44	; 4x4 matrix size + pel 0 to 15
+	hex	F0,40,80,C0
+	hex	B0,00,10,50
+	hex	70,30,20,90
+	hex	E0,A0,60,D0
+
+	hex	44
+	dfb	15,04,08,12
+	dfb	11,00,01,05
+	dfb	07,03,02,09
+	dfb	14,10,06,13
+
+* Exemple de spirale
+* 01,02,03,04
+* 12,13,14,05
+* 11,16,15,06
+* 10,09,08,07
+
+* 8*8 Bayer ordered dither matrix (ID = 4)
+
+	hex	88
+	dfb	00,32,08,40,02,34,10,42
+	dfb	48,16,56,24,50,18,58,26
+	dfb	12,44,04,36,14,46,06,38
+	dfb	60,28,52,20,62,30,54,22
+	dfb	03,35,11,43,01,33,09,41
+	dfb	51,19,59,27,49,17,57,25
+	dfb	15,47,07,39,13,45,05,37
+	dfb	63,31,55,23,61,29,53,21
+
+* 2x2 Bayer ordered dither matrix
+	hex	22
+	hex	08,20
+	hex	30,10
+
+	hex	22
+	dfb	0,2
+	dfb	3,1
+			
 *-----------------------
 * SET THE WINDOW
 *-----------------------
 
 setWINDOW
 	PushLong	#startSW
+	_WriteCString
+	lda	#^setWINDOW
+	jsr	showWORD
+	lda	#setWINDOW
+	jsr	showWORD
+	PushLong	#startSW2
 	_WriteCString
 
           lda       theDEVICE
@@ -874,18 +983,14 @@ setWINDOW
 	PushLong	#controlSW
 	_WriteCString
 
-sw_ok	lda	#^setwindowDATA
-	jsr	showWORD
-	lda	#setwindowDATA
-	jsr	showWORD
-	
-	PushLong	#endSW
+sw_ok	PushLong	#endSW
 	_WriteCString
 	rts
 
 *---
 
-startSW	asc	0d'Start setWINDOW... Adr=$'00
+startSW	asc	0d'Start setWINDOW ($'00
+startSW2	asc	')'00
 controlSW asc	' (control not OK) '00
 endSW	asc	'...End'00
 
@@ -893,9 +998,11 @@ proSETWINDOW
           dw        5
           ds        2
           dw        $8024
-          adrl      setwindowBUFF
-          adrl      48
-          ds        4
+	adrl      setwindowBUFF	; for Apple Scanner
+	adrl      48
+	ds        4
+
+*--- For Apple Scanner
 
 setwindowBUFF
           dw        $0000
@@ -903,35 +1010,35 @@ setwindowBUFF
           hex       00
 	hex	00,00,00,00
           dfb       00,00,48	; length is 48 bytes
-          hex       80	; control
+          hex       00	; control ($80: the Apple bit)
 	hex	00,00
           adrl      setwindowDATA
 
 setwindowDATA
-          hex       00,00,00,00,00,00
-          dfb       00,40	; window length
+          hex       00,00,00,00,00,00	; 
+          dfb       00,40		; window length (first scanners)
 
-          hex       00	; window identifier
-          hex       00	; reserved
-          dfb	00,75	; x-axis resolution
-          dfb	00,75	; y-axis resolution
-          hex       00,00,00,00	; x-upper left
-          hex       00,00,00,00	; y-upper left
-*          hex       00,00,27,D8	; x-width (10200)
-          hex       00,00,13,EC	; x-width ( 5100)
-*          hex       00,00,33,90	; y-height (13200)
-          hex       00,00,11,30	; y-height ( 4400)
-          hex       00	; brightness
-          hex       00	; threshold
-          hex       00	; contrast
-          hex       05	; imageComposition (see table 283)
-          hex       08	; bitsPerPixel (8)
-          hex       00,00	; halftone (2)
-          hex       03	; paddingType (byte boundary)
-          hex       00,00	; bit ordering
-	hex	00	; compression type
-	hex	00	; compression argument
-	hex	00,00,00,00,00,00
+	dfb	windowID		; 00 window identifier
+          hex       00		; 01 reserved
+
+          dfb	00,150		; 02 x-axis resolution
+          dfb	00,150		; 04 y-axis resolution
+          hex       00,00,00,00	; 06 x-upper left
+          hex       00,00,00,00	; 10 y-upper left
+* Photographie 5 x 3,5 = 6000 x 4200 = $1770 x $1068
+	hex	00,00,17,70	; 14 x-width (27D8 for 10200)
+          hex       00,00,10,68	; 18 y-height (3390 for 13200)
+          hex       00		; 22 brightness
+          hex       00		; 23 threshold
+          hex       00		; 24 contrast
+          hex       02		; 25 imageComposition (see table 283)
+          hex       08		; 26 bitsPerPixel (8)
+          hex       00,00		; 27 halftone (2)
+          hex       03		; 29 paddingType (byte boundary)
+          hex       00,00		; 30 bit ordering
+	hex	00		; 32 compression type
+	hex	00		; 33 compression argument
+	hex	00,00,00,00,00,00	; 34 reserved
 
 *-----------------------
 * ASK FOR MEMORY
@@ -939,6 +1046,12 @@ setwindowDATA
 
 askforMEM
 	PushLong	#startMEM
+	_WriteCString
+	lda	#^askforMEM
+	jsr	showWORD
+	lda	#askforMEM
+	jsr	showWORD
+	PushLong	#startMEM2
 	_WriteCString
 
 	lda	haMEM
@@ -985,7 +1098,8 @@ am_err    brk       $b6
 
 *---
 
-startMEM	asc	0d'Start askforMEM...'00
+startMEM	asc	0d'Start askforMEM ($'00
+startMEM2	asc	')'00
 adrMEM	asc	' Adr=$'00
 endMEM	asc	'...End'00
 
@@ -997,6 +1111,12 @@ haMEM	ds	4
 
 scanSCANNER
 	PushLong	#startSS
+	_WriteCString
+	lda	#^scanSCANNER
+	jsr	showWORD
+	lda	#scanSCANNER
+	jsr	showWORD
+	PushLong	#startSS2
 	_WriteCString
 	
           lda       theDEVICE
@@ -1017,9 +1137,10 @@ ss_ok	PushLong	#endSS
 
 *---
 
-startSS	asc	0d'Start scanSCANNER...'00
+startSS	asc	0d'Start scanSCANNER ($'00
+startSS2	asc	')'00
 controlSS	asc	' (control not OK) '00
-endSS	asc	'End'00
+endSS	asc	'...End'00
 
 proSCAN   dw        5
           ds        2
@@ -1030,16 +1151,18 @@ proSCAN   dw        5
 
 scanBUFF
           dw        $0000
-          hex       1b
-          hex       00
-	hex	00,00
-          hex       01	; length is 1
-          hex       00
+          hex       1b	; 0
+          hex       00	; 1
+	hex	00,00	; 2
+          hex       01	; 4 length is 1
+          hex       00	; 5 (data?)
+			;	bit 7 - 1: stop wait mode (Apple Scanner)
+			;	bit 5 - 0: no calibrate / 1: calibrate (OneScanner)
           hex       00,00,00,00,00,00
           adrl      scanDATA
 
 scanDATA
-          hex       00	; the window identifier we want to scan
+          dfb	windowID	; the window identifier we want to scan
           
 *-----------------------
 * READ THE PAGE
@@ -1047,6 +1170,12 @@ scanDATA
 
 readSCANNER
 	PushLong	#startRS
+	_WriteCString
+	lda	#^readSCANNER
+	jsr	showWORD
+	lda	#readSCANNER
+	jsr	showWORD
+	PushLong	#startRS2
 	_WriteCString
 
           jsl       GSOS
@@ -1069,7 +1198,8 @@ rs_ok	PushLong	#lengthRS
 
 *---
 
-startRS	asc	0d'Start readSCANNER...'00
+startRS	asc	0d'Start readSCANNER ($'00
+startRS2	asc	')'00
 controlRS asc	' (read not OK) '00
 lengthRS	asc	' Len=$'00
 endRS	asc	'...End'00
@@ -1087,6 +1217,12 @@ proREAD   dw        4	; 00 pcount
 closeSCANNER
 	PushLong	#startCS
 	_WriteCString
+	lda	#^closeSCANNER
+	jsr	showWORD
+	lda	#closeSCANNER
+	jsr	showWORD
+	PushLong	#startCS2
+	_WriteCString
 
           jsl       GSOS
           dw        $2014
@@ -1102,9 +1238,10 @@ cs_ok	PushLong	#endCS
 
 *---
 
-startCS	asc	0d'Start closeSCANNER...'00
+startCS	asc	0d'Start closeSCANNER ($'00
+startCS2	asc	')'00
 closeCS	asc	' (close not OK) '00
-endCS	asc	'End'00
+endCS	asc	'...End'00
 
 proCLOSE  dw        1         ; 00 pcount
           ds        2         ; 02 ref num
@@ -1115,6 +1252,12 @@ proCLOSE  dw        1         ; 00 pcount
 
 saveFILE
 	PushLong	#startFILE
+	_WriteCString
+	lda	#^saveFILE
+	jsr	showWORD
+	lda	#saveFILE
+	jsr	showWORD
+	PushLong	#startFILE2
 	_WriteCString
 
 	lda	proREAD+4
@@ -1140,14 +1283,9 @@ saveFILE
 	adrl	fileOPEN
 
 	lda	fileOPEN+2
-*	sta	fileHEADER+2
 	sta	fileWRITE+2
 	sta	fileCLOSE+2
 
-*	jsl	GSOS
-*	dw	$2013
-*	adrl	fileHEADER
-	
 	jsl	GSOS
 	dw	$2013
 	adrl	fileWRITE
@@ -1162,8 +1300,9 @@ saveFILE
 
 *--- Data
 
-startFILE	asc	0d'Write file...'00
-endFILE	asc	'End'0d00
+startFILE	asc	0d'Write file ($'00
+startFILE2 asc	')'00
+endFILE	asc	'...End'0d00
 
 fileDESTROY
 	dw	1	; pcount
@@ -1184,14 +1323,6 @@ fileOPEN
 	ds	2
 	adrl	pFILE
 
-fileHEADER
-	dw	5
-	ds	2
-	adrl	headerDATA
-	adrl	4
-	ds	4
-	dw	1
-	
 fileWRITE	dw	5
 	ds	2
 	ds	4
@@ -1201,10 +1332,6 @@ fileWRITE	dw	5
 
 fileCLOSE	dw	1
 	ds	2
-
-headerDATA
-	dw	500
-	dw	800
 
 pFILE	strl	'1/Scan.BIN'
 	

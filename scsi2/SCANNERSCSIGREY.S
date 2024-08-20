@@ -1034,7 +1034,7 @@ setwindowDATA
           hex       02		; 25 imageComposition (see table 283)
           hex       08		; 26 bitsPerPixel (8)
           hex       00,00		; 27 halftone (2)
-          hex       03		; 29 paddingType (byte boundary)
+          hex       83		; 29 RIF + paddingType (byte boundary)
           hex       00,00		; 30 bit ordering
 	hex	00		; 32 compression type
 	hex	00		; 33 compression argument

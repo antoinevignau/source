@@ -2,13 +2,13 @@
 * Expansion linker file
 
 
-         DSK   SCANNERSCSIC
+         DSK   SCANNERSCSIBW
          TYP   $B3
          AUX   $DB00
 
 * Assemble files
 
-         ASM   SCANNERSCSICOLOR.S
+         ASM   SCANNERSCSIBW.S
          KND   $0000
          SNA   ScannerSCSI
 

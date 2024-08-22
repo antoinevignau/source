@@ -11,6 +11,7 @@
 	mx	%00
 
 	rel
+	dsk	SCANNERCOLOR.l
 	lst	off
 
 *----------
@@ -340,7 +341,7 @@ deviceMENU        =         *
                   bcc       ]lp
                   bne       deviceMENU2
                   jmp       searchMENU           ; or even 0 to exit
-deviceMENU2       cmp       #"2"+1
+deviceMENU2       cmp       #"4"+1
                   bcs       ]lp
 
                   sec                            ; call the routines
@@ -355,6 +356,9 @@ deviceMENU3       jsr       $bdbd
 ptrCOMMANDS
 	da	doINQUIRY
           da        previewPAGE
+	da	doLESS
+	da	doMORE
+
 *	da	doMODESENSE6
 *	da	doEXPLORE
 *	da	doGETMODE
@@ -369,7 +373,30 @@ strDEVMENU
 	asc	' 0. Go back to previous menu'0d
 	asc       ' 1. Inquiry'0d
 	asc       ' 2. Preview page'0d
+	asc	' 3. Decrease length and test'0d
+	asc	' 4. Increase length and test'0d
 	asc	00
+
+*---
+
+doLESS	dec	zeLEN1
+	dec	zeLEN2
+	dec	zeLEN3
+	bra	showLEN
+
+doMORE	inc	zeLEN1
+	inc	zeLEN2
+	inc	zeLEN3
+
+showLEN	PushLong	#zeLEN
+	_WriteCString
+	lda	zeLEN1
+	jsr	showBYTE
+	PushWord	#$d
+	_WriteChar
+	jmp	previewPAGE
+
+zeLEN	asc	0d'Buffer length: $'00
 
 *----------------
 * APPLE SCANNERS
@@ -377,20 +404,24 @@ strDEVMENU
 * Scanner (300dpi 4-bit grey)
 *  06 00 02 02 2C 00 00 00 'APPLE   SCANNER A9M0337 '
 *  06 00 02 02 28 00 00 00 'CPC INC Smart Scan(FW)  '
-*
+* => link is  / sync is 
+
 * OneScanner (300dpi 8-bit grey)
 *  06 00 02 02 2C 20 04 08 'APPLE   SCANNER II      2.02'
 *  00 20 00 90 00 27 34 01 08 A0 48 00 FF FF
-*
+* => link is 1 / sync is 0
+
 * Color OneScanner (300dpi 24-bit color)
-*  
-*
+* => link is   
+
 * Color OneScanner 600/27 (600dpi 27-bit color) - CANOSCAN 300 (CS300)
 *  06 00 02 02 1F 00 00 10 'CANON   IX-03035B       1.01' FF
-*
+* => link is 0 / sync is 1
+
 * Color OneScanner 1200/30 (1200dpi 30-bit color) - CANOSCAN 600  (CS600)
 *  06 00 02 02 1F 00 00 10 'CANON   IX-06015C       1.07' FF
-*
+* => link is 0 / sync is 1
+
 * ---End of list
 
 *----------------
@@ -684,7 +715,7 @@ strPRL            asc       0d' Product revision level: '00
 
 previewPAGE
           jsr	openSCANNER
-          jsr	setMODE
+          jsr	setMODE	; works fine but we want 1200dpi vertical
 	bit	setHALFTONES
           jsr	setWINDOW
           jsr	askforMEM
@@ -738,8 +769,8 @@ os_ok2	PushLong	#endOS
 
 startOS	asc	0d'Start openSCANNER ($'00
 startOS2	asc	')'00
-openOS	asc	' (open not OK) '00
-waitOS	asc	' (wait not OK) '00
+openOS	asc	' (open not OK)'00
+waitOS	asc	' (wait not OK)'00
 endOS	asc	'...End'00
 
 proOPEN   dw        2         ; 00 pcount
@@ -788,7 +819,7 @@ st_ok	PushLong	#endSM
 
 startSM	asc	0d'Start setMODE ($'00
 startSM2	asc	')'00
-controlSM	asc	' (control not OK) '00
+controlSM	asc	' (control not OK)'00
 endSM	asc	'...End'00
 
 proSETMODE
@@ -805,52 +836,21 @@ setmodeBUFF
           hex       10	; 01 PF bit is 1 for SCSI-2
           hex       00,00	; 02 reserved
           dfb       12	; 04 parameter list length
-          hex       00,00,00,00,00,00,00
+          hex       00	; 05 control
+	hex	00,00,00,00,00,00
           adrl      setmodeonescannerDATA
 
-*--- for Scanner
-
-setmodeDATA
-          hex       00,00	; 00 mode parameter header (8.3.3, table 91)
-	hex	00,00
-          hex       01	; 04
-          hex       08	; 05
-	hex	00	; 06
-	hex	00	; 07
-	hex	02	; 08
-	hex	58	; 09
-	hex	00,00	; 10 reserved - 2 bytes
-
-*--- For OneScanner
+*--- for OneScanner
 
 setmodeonescannerDATA
-          hex	00,00	; 00 mode parameter header (8.3.3, table 91)
+          hex       00,00	; 00 mode parameter header (8.3.3, table 91)
 	hex	00,00
-          dfb	1	; 04 page code - Apple-specific parameter page
-          dfb	8	; 05 page length - Apple-specific page
-	dfb	0	; 06 graymap (Apple Scanner)
-			;	0: dark
-			;	1: normal
-			;	2: light
-	dfb	%00000000	; 07 auto background adjustment threshold
-			;  	Default threshold value is 64 (Apple Scanner)
-			;	bit 0 - 0: do not use custom CCT / 1: use custom CCT (3*3 Color Correction Table)
-			;	bit 1 - 0: do not use custom gamma / 1: use custom gamma
-			;	bit 2 - 0: setting of the ambler LED off / 1: setting on (OneScanner)
-	dfb	%00000000	; 08 parameters setting 1
-			; 	bit 0 - 0: turn lamp off / 1: turn lamp on
-			;	bit 1 - power of the CCD array on / 1: power off
-			;      bits 2/3 - 00: normal / 01: fast / 10: high speed (OneScanner)
-			;	bit 2 - 0: do not reverse B&W / 1: reverse B&W (Color OneScanner)
-			;	bit 3 - 0: no ICP / 1: ICP on (Color OneScanner)
-			;	bit 4 - 0: no MTF / 1: MTF on (Color OneScanner)
-	dfb	0	; 09 color sensor (color onescanner)
-			;	0: all
-			;	1: red
-			;	2: green
-			;	3: blue
+          hex       03	; 04 00 - measurements units page
+          hex       06	; 05 01 - parameter length
+	hex	00	; 06 02 - basic measurement unit (see 15.3.3.1 table 298) = inch
+	hex	00	; 07 03 - reserved
+	hex	02,58	; 08 04 - measurement unit divisor (258x = 600d, from a std 1200)
 	hex	00,00	; 10 reserved - 2 bytes
-	hex	00,00	; for testing purposes
 	
 *-----------------------
 * SET HALFTONES
@@ -885,7 +885,7 @@ sht_ok	PushLong	#endSHT
 
 startSHT	asc	0d'Start setHALFTONES ($'00
 startSHT2	asc	')'00
-controlSHT asc	' (control not OK) '00
+controlSHT asc	' (control not OK)'00
 endSHT	asc	'...End'00
 
 proSETHALFTONES
@@ -1004,7 +1004,7 @@ sw_ok	PushLong	#endSW
 
 startSW	asc	0d'Start setWINDOW ($'00
 startSW2	asc	')'00
-controlSW asc	' (control not OK) '00
+controlSW asc	' (control not OK)'00
 endSW	asc	'...End'00
 
 proSETWINDOW
@@ -1012,48 +1012,52 @@ proSETWINDOW
           ds        2
           dw        $8024
 	adrl      coloronescannerBUFF	; for OneScanner and above
-	adrl      80
+	ds	3
+zeLEN1	dfb	72
 	ds        4
 
 *--- For Apple Color OneScanner
-	
+
 coloronescannerBUFF
-          dw        $0000
-          hex       24
-          hex       00
-	hex	00,00,00,00
-          dfb       00,00,72	; length is 50 bytes for OneScanner
-          hex       00	; control ($80: the Apple bit)
-	hex	00,00
-          adrl      coloronescannerDATA
+	dw        $0000
+	hex       24		; 00
+	hex       00		; 01
+	hex	00,00,00,00	; 02
+	dfb	00,00		; 06 length is 72 bytes for the Color OneScanner
+zeLEN2	dfb	72		; 06 length is 72 bytes for the Color OneScanner
+	hex       80		; 09 control ($80: the Apple bit)
+	hex	00,00		; 10
+	adrl      coloronescannerDATA
 
 coloronescannerDATA
-          hex	00,00,00,00,00,00	; 00
-          dfb	00,64		; 06 window length (canon scanners)
+	hex	00,00,00,00,00,00	; 00
+	dfb	00		; 06 window length (canon scanners)
+zeLEN3	dfb	64		; 06 window length (canon scanners)
 
-          dfb	windowID		; 08 00 window identifier
-          hex	00		; 09 01 reserved
+	dfb	windowID		; 08 00 window identifier
+	hex	00		; 09 01 reserved
 
-          dfb	00,75		; 10 02 x-axis resolution
-          dfb	00,75		; 12 04 y-axis resolution
-          hex	00,00,00,00	; 14 06 x-upper left
-          hex	00,00,00,00	; 18 10 y-upper left
+	dfb	00,75		; 10 02 x-axis resolution
+	dfb	00,75		; 12 04 y-axis resolution
+	hex	00,00,00,00	; 14 06 x-upper left
+	hex	00,00,00,00	; 18 10 y-upper left
 * Photographie 5 x 3,5 = 6000 x 4200 = $1770 x $1068
-	hex	00,00,17,70	; 14 x-width (27D8 for 10200)
-          hex       00,00,10,68	; 18 y-height (3390 for 13200)
+* Photographie 6 x 4 = 7200 x 4800 = $1C20 x $12C0
+	hex	00,00,1C,20	; 22 14 x-width (27D8 for 10200)
+          hex       00,00,12,C0	; 26 18 y-height (3390 for 13200)
           dfb	0		; 30 22 brightness
           dfb	0		; 31 23 threshold
           dfb	0		; 32 24 contrast
           dfb	5		; 33 25 imageComposition (see table 283)
-          dfb	24		; 34 26 bitsPerPixel (8)
-          hex	00,01		; 35 27 halftone (2)
-          dfb	128+3		; 37 29 RIF + paddingType (byte boundary)
-          hex	00,00		; 38 30 bit ordering
+	dfb	24		; 34 26 bitsPerPixel (8)
+	hex	00,00		; 35 27 halftone (2 or 1)
+	dfb	3		; 37 29 RIF + paddingType (byte boundary)
+	hex	00,00		; 38 30 bit ordering
 	hex	00		; 40 32 compression type
 	hex	00		; 41 33 compression argument
 	hex	00,00,00,00,00,00	; 42 34
-	dfb	255		; 48 40 OPT_VOLT_REF_TOP = 255
-	dfb	1		; 49 41 OPT_VOLT_REF_BOTTOM = 1
+	dfb	0		; 48 40 OPT_VOLT_REF_TOP = 255
+	dfb	0		; 49 41 OPT_VOLT_REF_BOTTOM = 1
 	dfb	0		; 50 42 bit 3: GRC, bit 2: Mirror
 	hex	00		; 51 43
 	hex	00		; 52 44
@@ -1063,20 +1067,21 @@ coloronescannerDATA
 	hex	00		; 56 48
 	dfb	1		; 57 49
 	dfb	1		; 58 50
-	hex	255		; 59 51 Hilite R
-	hex	0		; 60 52 Shadow R
+	dfb	0		; 59 51 Hilite R
+	dfb	0		; 60 52 Shadow R 1
 	hex	00		; 61 53
-	hex	255		; 62 54 Shadow G
+	dfb	255		; 62 54 Hilite G 255
 	hex	00		; 63 55
-	hex	0		; 64 56 Hilite G
+	dfb	0		; 64 56 Shadow G 1
 	hex	00		; 65 57 
 	hex	00		; 66 58 
 	hex	00		; 67 59 
 	hex	00		; 68 60 
 	hex	00		; 69 61 
-	hex	255		; 70 62 Hilite B
-	hex	0		; 71 63 Shadow B
-
+	dfb	0		; 70 62 Hilite B 255
+	dfb	0		; 71 63 Shadow B 1
+	ds	10		; for padding
+	
 *-----------------------
 * ASK FOR MEMORY
 *-----------------------
@@ -1176,7 +1181,7 @@ ss_ok	PushLong	#endSS
 
 startSS	asc	0d'Start scanSCANNER ($'00
 startSS2	asc	')'00
-controlSS	asc	' (control not OK) '00
+controlSS	asc	' (control not OK)'00
 endSS	asc	'...End'00
 
 proSCAN   dw        5
@@ -1237,7 +1242,7 @@ rs_ok	PushLong	#lengthRS
 
 startRS	asc	0d'Start readSCANNER ($'00
 startRS2	asc	')'00
-controlRS asc	' (read not OK) '00
+controlRS asc	' (read not OK)'00
 lengthRS	asc	' Len=$'00
 endRS	asc	'...End'00
 
@@ -1277,7 +1282,7 @@ cs_ok	PushLong	#endCS
 
 startCS	asc	0d'Start closeSCANNER ($'00
 startCS2	asc	')'00
-closeCS	asc	' (close not OK) '00
+closeCS	asc	' (close not OK)'00
 endCS	asc	'...End'00
 
 proCLOSE  dw        1         ; 00 pcount

@@ -2,7 +2,7 @@
 * Expansion linker file
 
 
-         DSK   SCANNERSCSI
+         DSK   SCANNERSCSIG
          TYP   $B3
          AUX   $DB00
 

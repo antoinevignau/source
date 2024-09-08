@@ -73,6 +73,7 @@ diskSwitchedBit  =     $0001
 diskInDriveBit   =     $0010
 diskModifyBit    =     $0100
 
+devPROFILE10MB = 	$0002
 devRAMDISK	=	$000e	; device ID for RAM/ROM disks
 devHDD	=	$0013	; device ID for HDD (generic)
 

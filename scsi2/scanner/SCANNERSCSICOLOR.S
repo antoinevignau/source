@@ -341,7 +341,7 @@ deviceMENU        =         *
                   bcc       ]lp
                   bne       deviceMENU2
                   jmp       searchMENU           ; or even 0 to exit
-deviceMENU2       cmp       #"4"+1
+deviceMENU2       cmp       #"5"+1
                   bcs       ]lp
 
                   sec                            ; call the routines
@@ -355,6 +355,7 @@ deviceMENU3       jsr       $bdbd
 
 ptrCOMMANDS
 	da	doINQUIRY
+	da	doINQUIRYVITAL
           da        previewPAGE
 	da	doLESS
 	da	doMORE
@@ -372,9 +373,10 @@ strDEVMENU
 	asc	'0000'0d
 	asc	' 0. Go back to previous menu'0d
 	asc       ' 1. Inquiry'0d
-	asc       ' 2. Preview page'0d
-	asc	' 3. Decrease length and test'0d
-	asc	' 4. Increase length and test'0d
+	asc	' 2. Inquiry Vital information'0d
+	asc       ' 3. Preview page'0d
+	asc	' 4. Decrease length and test'0d
+	asc	' 5. Increase length and test'0d
 	asc	00
 
 *---
@@ -429,14 +431,46 @@ zeLEN	asc	0d'Buffer length: $'00
 *----------------
 
 *-----------------------
+* STATUS $8012 - INQUIRY WITH VITAL
+*-----------------------
+
+doINQUIRYVITAL
+	PushLong	#strINQ1
+	_WriteCString
+	lda	#^doINQUIRYVITAL
+	jsr	showWORD
+	lda	#doINQUIRYVITAL
+	jsr	showWORD
+	PushWord	#$0d
+	_WriteChar
+		
+          jsr       initSTATUSDATA
+
+          ldx       #6-2		; put the inquiry data
+]lp       lda       scsiINQUIRYVITAL,x	; and not sciINQUIRY
+          sta       statusDATA,x
+          dex
+          dex
+          bpl       ]lp
+
+          lda       #dcINQUIRY
+          jmp       statusCALL
+
+*---
+
+strINQ1	asc	0d'Command address $'00
+
+scsiINQUIRYVITAL	hex	12,01,F0,00,F0,00
+
+*-----------------------
 * STATUS $8012 - INQUIRY
 *-----------------------
 
 doINQUIRY
           jsr       initSTATUSDATA
 
-          ldx       #6-2                 ; put the inquiry data
-]lp       lda       scsiINQUIRY,x
+          ldx       #6-2		; put the inquiry data
+]lp       lda       scsiINQUIRY,x	; and not sciINQUIRY
           sta       statusDATA,x
           dex
           dex
@@ -446,6 +480,8 @@ doINQUIRY
           jsr       statusCALL
           bcc       doINQUIRY1
           rts
+
+*---
 
 doINQUIRY1
 
@@ -686,7 +722,7 @@ doINQUIRY1
 
 *--- Data
 
-scsiINQUIRY       hex       12,00,00,00,F0,00
+scsiINQUIRY	hex	12,00,00,00,F0,00
 
 strPQ             asc       0d' Peripheral qualifier: '00
 strPDT            asc       ' - Peripheral device type : '00
@@ -1037,28 +1073,28 @@ zeLEN3	dfb	64		; 06 window length (canon scanners)
 	dfb	windowID		; 08 00 window identifier
 	hex	00		; 09 01 reserved
 
-	dfb	00,75		; 10 02 x-axis resolution
-	dfb	00,75		; 12 04 y-axis resolution
+	hex	01,2C		; 10 02 x-axis resolution
+	hex	01,2C		; 12 04 y-axis resolution
 	hex	00,00,00,00	; 14 06 x-upper left
 	hex	00,00,00,00	; 18 10 y-upper left
 * Photographie 5 x 3,5 = 6000 x 4200 = $1770 x $1068
 * Photographie 6 x 4 = 7200 x 4800 = $1C20 x $12C0
-	hex	00,00,1C,20	; 22 14 x-width (27D8 for 10200)
-          hex       00,00,12,C0	; 26 18 y-height (3390 for 13200)
-          dfb	0		; 30 22 brightness
-          dfb	0		; 31 23 threshold
-          dfb	0		; 32 24 contrast
-          dfb	5		; 33 25 imageComposition (see table 283)
-	dfb	24		; 34 26 bitsPerPixel (8)
-	hex	00,00		; 35 27 halftone (2 or 1)
-	dfb	3		; 37 29 RIF + paddingType (byte boundary)
+	hex	00,00,05,DC	; 22 14 x-width (27D8 for 10200)
+          hex       00,00,04,B0	; 26 18 y-height (3390 for 13200)
+          dfb	0		; 30 22 brightness 80
+          dfb	0		; 31 23 threshold 00
+          dfb	0		; 32 24 contrast 80
+          dfb	5		; 33 25 imageComposition (see table 283) 01
+	dfb	24		; 34 26 bitsPerPixel (8) 01
+	hex	00,00		; 35 27 halftone (2 or 1) 00 01
+	dfb	128+3		; 37 29 RIF + paddingType (byte boundary) 03
 	hex	00,00		; 38 30 bit ordering
 	hex	00		; 40 32 compression type
 	hex	00		; 41 33 compression argument
 	hex	00,00,00,00,00,00	; 42 34
 	dfb	0		; 48 40 OPT_VOLT_REF_TOP = 255
 	dfb	0		; 49 41 OPT_VOLT_REF_BOTTOM = 1
-	dfb	0		; 50 42 bit 3: GRC, bit 2: Mirror
+	dfb	0		; 50 42 bit 3: GRC, bit 2: Mirror, bit 0: Auto-Exposure
 	hex	00		; 51 43
 	hex	00		; 52 44
 	hex	00		; 53 45
@@ -1070,7 +1106,7 @@ zeLEN3	dfb	64		; 06 window length (canon scanners)
 	dfb	0		; 59 51 Hilite R
 	dfb	0		; 60 52 Shadow R 1
 	hex	00		; 61 53
-	dfb	255		; 62 54 Hilite G 255
+	dfb	0		; 62 54 Hilite G 255
 	hex	00		; 63 55
 	dfb	0		; 64 56 Shadow G 1
 	hex	00		; 65 57 

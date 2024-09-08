@@ -43,8 +43,7 @@ maxBLOCKP	=	65536	; 65536 blocks for ProDOS 8
 * E 1110 block device + write allowed + read allowed
 * C 1100 format allowed + removable media
 
-dftCHAR	=	$03EC	; default characteristics
-*dftCHAR	=	$8BEC	; default characteristics - LOGO
+dftCHAR	=	$8BEC	; default characteristics
 dftSLOT	=	$8000	; not slot dependent
 dftUNIT	=	$0001	; unit 1
 dftVERSION	=	$1000	; v1
@@ -110,7 +109,7 @@ DStartup
 ]lp	lda	proDEVNAME+3,x
 	sta	MyDevName+1,x
 	inx
-	cpx	#9
+	cpx	#10
 	bcc	]lp
 	stx	MyDevName
 	rep	#$30
@@ -148,7 +147,13 @@ DRead	jsr	doSETUP
 
 *--- The AS magic is here
 
-dr1	pei	bufferPtr+1	; save pointer
+dr1	sep	#$20
+	ldal	$c034
+	inc
+	stal	$c034
+	rep	#$20
+
+	pei	bufferPtr+1	; save pointer
 
 	sep	#$20
 	lda	blockNum+3
@@ -556,13 +561,10 @@ MyDIB	ds	4	; +00 pointer to the next DIB
 	dw	dftCHAR	; +08 characteristics
 	adrl	maxBLOCKS	; +0A block count
 MyDevName	ds	32	; +0E device name
-*	str	'ASSDDevice' ; +0E device name - LOGO
-*	ds	21	; 32 - 11 = 21
 	dw	dftSLOT	; +2E slot number
 	dw	dftUNIT	; +30 unit number
 	dw	dftVERSION	; +32 version
-	dw	devHDD	; +34 device ID
-*	dw	devRAMDISK	; +34 device ID - LOGO
+	dw	devRAMDISK	; +34 device ID - LOGO
 	dw	$0000	; +36 first linked device
 	dw	$0000	; +38 next linked device
 	adrl	$00000000	; +3A extended DIB ptr

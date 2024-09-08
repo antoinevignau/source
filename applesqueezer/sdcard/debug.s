@@ -237,20 +237,45 @@ found	lda	proDINFO+8           ; block device?
 	
 *--- Perform a DRead
 
-	PushLong  #strDREAD	; show the string
+doREAD	PushLong  #strDREAD	; show the string
 	_WriteCString
 
-	jsr	debugBORDER
+*	jsr	debugBORDER
 	
 	jsl	GSOS
 	dw	$202f
 	adrl	proDREAD
+	pha
+	lda	proDREAD+14
+	jsr	showWORD
+	lda	proDREAD+12
+	jsr	showWORD
+	
+	PushWord	#' '
+	_WriteChar
+	lda	proDREAD+20
+	jsr	showWORD
+	lda	proDREAD+18
+	jsr	showWORD
+	
+	pla
 	jsr	showERRCODE
 	jsr	printBUFFER	; output two lines of buffer
+
+	jsr	waitFORKEY           ; is it 0-9
+	cmp	#$1b
+	beq	doEXIT
+	cmp	#$9b
+	beq	doEXIT
 	
+	inc	proDREAD+12
+	bne	doREAD
+	inc	proDREAD+14
+	bra	doREAD
+
 	lda	errCODE	; only write if read is OK
 	beq	okWRITE
-	rts
+doEXIT	rts
 
 *--- Perform a DWrite
 
@@ -333,14 +358,14 @@ printME	pha	; from a word to a string
 	
 *---------- Data
 
-strDREAD	asc	0d0d'DRead '00
+strDREAD	asc	0d0d'DRead block $'00
 strDWRITE	asc	0d0d'DWrite '00
 strDSTATUS	asc	0d0d'DStatus '00
 
 strCHARS	asc	' Characteristics:  '00
 strBLOCKS	asc	0d' Number of blocks: '00
 
-strERR	asc	'- Error code '00
+strERR	asc	0d'- Error code '00
 
 *----------------------------
 * DEBUG
@@ -430,7 +455,7 @@ proDREAD	dw	6	; pCount
 	ds	2	; 02 devNum
 	adrl	myBUFFER	; 04 buffer
 	adrl	512	; 08 requestCount
-	adrl	117	; 0C startingBlock
+	adrl	0	; 0C startingBlock
 	dw	512	; 10 blockSize
 	ds	4	; 14 transferCount
 	
@@ -438,7 +463,7 @@ proDWRITE	dw	6	; pCount
 	ds	2	; 02 devNum
 	adrl	myBUFFER	; 04 buffer
 	adrl	512	; 08 requestCount
-	adrl	117	; 0C startingBlock
+	adrl	0	; 0C startingBlock
 	dw	512	; 10 blockSize
 	ds	4	; 14 transferCount
 

@@ -214,6 +214,42 @@ showDEVICEINFO
                   PushLong  #strDEV              ; show the string
                   _WriteCString
 
+*--- slot num
+
+                  lda       proDINFO+14
+                  pha                            ; from a word to a string
+                  pha
+                  pha
+                  _HexIt
+                  PullLong  strDEVID
+
+                  PushLong  #strDEV              ; show the string
+                  _WriteCString
+
+*--- unit num
+
+                  lda       proDINFO+16
+                  pha                            ; from a word to a string
+                  pha
+                  pha
+                  _HexIt
+                  PullLong  strDEVID
+
+                  PushLong  #strDEV              ; show the string
+                  _WriteCString
+
+*--- deviceid num
+
+                  lda       proDINFO+20
+                  pha                            ; from a word to a string
+                  pha
+                  pha
+                  _HexIt
+                  PullLong  strDEVID
+
+                  PushLong  #strDEV              ; show the string
+                  _WriteCString
+
 *--- name
 
                   lda       devINFO1             ; from a STRL to a STR

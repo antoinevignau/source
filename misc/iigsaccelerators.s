@@ -99,7 +99,17 @@ no_AS	rep	#$20	; Check Transwarp IIgs
 	jsl	GetCurSpeed	; get current speed
 	sta	accSPEED	; save it
 	lda	#2600	; set 2.6MHz
-	jsr	SetCurSpeed	; the closest match
+	jsl	SetCurSpeed	; the closest match
+
+* If you prefer the index stuff...
+
+	jsl	GetCurISpeed	; get current speed
+	stx	accSPEED	; save it
+	ldx	#1	; set 2.6MHz
+	jsl	SetCurISpeed	; the closest match
+
+*... end of preference
+
 	lda	#2
 	sta	theACC	; tell we have a TWGS
 	rts
@@ -154,6 +164,14 @@ check_TW	cmp	#2	; Transwarp GS?
 
 	lda	accSPEED	; restore speed
 	jsl	SetCurSpeed
+
+* If you prefer the index stuff...
+
+	ldx	accSPEED
+	jsl	SetCurISpeed
+
+*... end of preference
+
 	rts
 	
 check_ZIP	cmp	#3	; ZipGSX?

@@ -17,6 +17,11 @@ zpCURTRACK     =         zpLASTTRACK+1
 zpCURSTATUS    =         zpCURTRACK+1
 zpERRORCODE    =         zpCURSTATUS+1
 
+zpCURHOUR      =         zpERRORCODE+1
+zpCURMINUTE    =         zpCURHOUR+1
+zpCURSECOND    =         zpCURMINUTE+1
+zpCURFRAME     =         zpCURSECOND+1
+
 *--- Equates
 
 spSTATUS       =         0
@@ -62,16 +67,81 @@ call24615      jmp       doFASTFORWARD
 * SET SLOT AND INIT PLAYER
 *----------------------------
 
-doSETSLOT      lda       zpFIRSTTRACK
-               and       #%00000111
-               ora       #%11000000
+doSETSLOT
+* lda zpFIRSTTRACK
+* and #%00000111
+* ora #%11000000
+* sta callHS+2
+
+               lda       #$00
+               sta       $00
+               lda       #$c7
+               sta       $01
+
+]lp            ldy       #1
+               lda       ($00),y
+               cmp       #$20
+               bne       nextSLOT
+               iny
+               iny
+               lda       ($00),y
+               bne       nextSLOT
+               iny
+               iny
+               lda       ($00),y
+               cmp       #$03
+               bne       nextSLOT
+               iny
+               iny
+               lda       ($00),y
+               bne       nextSLOT
+               ldy       #$fb
+               lda       ($00),y
+               cmp       #$82
+               beq       cardFOUND
+
+nextSLOT       dec       $01
+               lda       $01
+               cmp       #$c1
+               bcs       ]lp
+
+noCARD         dec       zpERRORCODE
+               rts
+
+cardFOUND      ldy       #$ff
+               lda       ($00),y
+               clc
+               adc       #3
+               sta       callHS+1
+               sta       devLOOP+1
+               lda       $01
                sta       callHS+2
+               sta       devLOOP+2
 
-               lda       #0
-               sta       zpFIRSTTRACK
-               sta       zpLASTTRACK
-               sta       zpCURTRACK
+               lda       #1
+               sta       dibLIST+1       ; first device
 
+devLOOP        jsr       $c710
+               db        spSTATUS
+               da        dibLIST
+               bcs       noCARD
+
+               lda       bufferPTR+21
+               cmp       #$05
+               bne       notCDROM
+               lda       bufferPTR+22
+               cmp       #$c0
+               beq       gotCDROM
+
+notCDROM       inc       dibLIST+1
+               lda       dibLIST+1
+               bmi       noCARD
+               bpl       devLOOP
+
+gotCDROM       lda       dibLIST+1
+               sta       spCOMMAND+1
+
+               jsr       initALL
                jmp       doGETSTATUS
 
 *----------------------------
@@ -82,16 +152,19 @@ doINSERTEJECT
                lda       fgINSERT
                eor       #1
                sta       fgINSERT
-               bne       doINSERT
+               beq       doINSERT
 
 doEJECT        _CONTROL  #scsiEJECT
-               lda       #0
-               sta       fgINSERT
-               rts
+               lda       #1
+               bne       doIE
 
 doINSERT       _CONTROL  #scsiINSERT
-               lda       #1
-               sta       fgINSERT
+               lda       #0
+
+doIE           sta       fgINSERT
+               lda       #0
+               sta       fgPAUSE
+               sta       fgPLAY
                rts
 
 *----------------------------
@@ -99,21 +172,29 @@ doINSERT       _CONTROL  #scsiINSERT
 *----------------------------
 
 doPLAYSTOP
-               lda       fgPLAY
+               lda       fgINSERT        ; is disk inserted?
+               beq       doPS1
+               rts
+
+doPS1          lda       fgPLAY          ; is play activated?
+               beq       doPS2           ; no, force play/stop
+
+               lda       fgPAUSE         ; are we on pause?
+               beq       doPS2           ; no
+               jmp       doRESUME        ; yes, resume only
+
+doPS2          lda       fgPLAY
                eor       #1
                sta       fgPLAY
                bne       doPLAY
 
 doSTOP         _CONTROL  #scsiSTOP
-               lda       #0
-               sta       zpCURTRACK
-               sta       fgPLAY
-               rts
+               jmp       initALL
 
 doPLAY         jsr       doREADTOC       ; always read TOC
                bcc       doPLAYOK
 
-               lda       #1              ; on error, se fake values
+               lda       #1              ; on error, set fake values
                sta       bufferPTR+2
                sta       bufferPTR+3
 
@@ -135,7 +216,15 @@ doPLAYALL      _CONTROL  #scsiPLAY
 *----------------------------
 
 doPAUSERESUME
-               lda       fgPAUSE
+               lda       fgINSERT        ; is disk inserted?
+               beq       doPR1
+               rts
+
+doPR1          lda       fgPLAY          ; are we playing?
+               bne       doPR2           ; yes
+               rts                       ; no, exit
+
+doPR2          lda       fgPAUSE
                eor       #1
                sta       fgPAUSE
                bne       doPAUSE
@@ -157,10 +246,19 @@ doPAUSE        _CONTROL  #scsiPAUSE
 doGETSTATUS
                _CONTROL  #scsiSTATUS
 
-               lda       bufferPTR+1
+               lda       bufferPTR+8     ; current play position
+               sta       zpCURHOUR
+               lda       bufferPTR+9
+               sta       zpCURMINUTE
+               lda       bufferPTR+10
+               sta       zpCURSECOND
+               lda       bufferPTR+11
+               sta       zpCURFRAME
+
+               lda       bufferPTR+1     ; current play status
                sta       zpCURSTATUS
 
-               lda       bufferPTR+6
+               lda       bufferPTR+6     ; current play track
                sta       zpCURTRACK
                rts
 
@@ -228,6 +326,20 @@ doFAST2        clc                       ; move to next track
 *----------------------------
 
 *----------------------------
+* INIT VARIABLES
+*----------------------------
+
+initALL        lda       #0
+               sta       zpFIRSTTRACK
+               sta       zpLASTTRACK
+               sta       zpCURTRACK
+               sta       zpCURHOUR
+               sta       zpCURMINUTE
+               sta       zpCURSECOND
+               sta       zpCURFRAME
+               rts
+
+*----------------------------
 * EXECUTE A COMMAND
 *----------------------------
 
@@ -275,11 +387,18 @@ DCMOVE         adrl      bufferPTR       ; return buffer
 theCOMMAND     ds        16              ; room for a SCSI command
 bufferPTR      ds        bufferLEN       ; the return buffer
 
+*--- Variables for HS card & CDROM identification
+
+dibLIST        dfb       $03
+               dfb       $01
+               da        bufferPTR
+               dfb       $03             ; get DIB status
+
 *--- My variables
 
-fgINSERT       ds        1
-fgPAUSE        ds        1
-fgPLAY         ds        1
+fgINSERT       ds        1               ; 0:inserted / 1:ejected
+fgPAUSE        ds        1               ; 0:resume / 1:pause
+fgPLAY         ds        1               ; 0:stop / 1:play
 
 *--- The commands
 
@@ -287,7 +406,7 @@ scsiSTOP       hex       1b,00,00,00,00,00
 scsiREADY      hex       1b,00,00,00,01,00
 scsiEJECT      hex       1b,00,00,00,02,00
 scsiINSERT     hex       1b,00,00,00,03,00
-scsiSTATUS     hex       42,00,40,00,00,00,00,04,00,00
+scsiSTATUS     hex       42,02,40,01,00,00,00,04,00,00
 scsiTOC        hex       43,02,00,00,00,00,00,04,00,00
 scsiPLAY       hex       48,00,00,00,01,00,00,99,00,00
 scsiPAUSE      hex       4b,00,00,00,00,00,00,00,00,00

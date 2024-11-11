@@ -13,6 +13,11 @@
 * v1.1 (202306) - AV
 *   Writes a sector too!
 *
+* v1.2 (202307) - AV
+*   Uses disk insertion status
+*
+* v1.3 (202307) - AV
+*   Formatting options
 
 	mx	%00
 	rel
@@ -20,8 +25,28 @@
 	dsk	ASSDDriver
 
 	use	AS.EQUATES.S
-	
+
+	use	4/Sch.Macs
 	use	4/Util.Macs
+
+*-----------------------------------
+* AS DRIVER EQUATES
+*-----------------------------------
+
+maxIMAGES	=	1	; no more than N images
+blockSIZE	=	512	; ProDOS 8 block size
+maxBLOCKS	=	$ffffffff	; that is a huge number of blocks
+maxBLOCKP	=	65536	; 65536 blocks for ProDOS 8
+
+* 0 0000
+* 3 0011 not speed dependent
+* E 1110 block device + write allowed + read allowed
+* C 1100 format allowed + removable media
+
+dftCHAR	=	$8BEC	; default characteristics
+dftSLOT	=	$8000	; not slot dependent
+dftUNIT	=	$0001	; unit 1
+dftVERSION	=	$1000	; v1
 
 *-----------------------------------------------
 
@@ -78,6 +103,21 @@ DStartup
 
 	lda	#1	; we're on
 	sta	fgSTARTED
+
+	sep	#$30
+	ldx	#0
+]lp	lda	proDEVNAME+3,x
+	sta	MyDevName+1,x
+	inx
+	cpx	#10
+	bcc	]lp
+	stx	MyDevName
+	rep	#$30
+
+	PushWord	#0
+	PushLong	#myTASK
+	_SchAddTask
+	pla
 	rts
 	
 *
@@ -103,102 +143,51 @@ DFlush			; Driver_Flush
 
 DRead	jsr	doSETUP
 	bcc	dr1
-	
-	brk	$bd
 	rts
 
 *--- The AS magic is here
 
-dr1	pei	workSpace+2
-	pei	workSpace
-*	pei	bufferPtr+1	; save pointer
+dr1	sep	#$20
+	ldal	$c034
+	inc
+	stal	$c034
+	rep	#$20
 
-*	sep	#$20
-*	lda	blockNum+3
-*	stal	SD_ADDRESS_SET_MSB
-*	lda	blockNum+2
-*	stal	SD_ADDRESS_SET_MSB_1
-*	lda	blockNum+1
-*	stal	SD_ADDRESS_SET_MSB_2
-*	lda	blockNum
-*	stal	SD_ADDRESS_SET_MSB_3
+	pei	bufferPtr+1	; save pointer
 
-	lda	#^SD_ADDRESS_SET_MSB	; #$00e4
-	sta	workSpace+2
-
-	lda	#SD_ADDRESS_SET_MSB	; $00
-	sta	workSpace
 	sep	#$20
 	lda	blockNum+3
-	sta	[workSpace]
-	rep	#$20
-
-	lda	#SD_ADDRESS_SET_MSB_1	; $02
-	sta	workSpace
-	sep	#$20
+	stal	SD_ADDRESS_SET_MSB
 	lda	blockNum+2
-	sta	[workSpace]
-	rep	#$20
-	
-	lda	#SD_ADDRESS_SET_MSB_2	; $04
-	sta	workSpace
-	sep	#$20
+	stal	SD_ADDRESS_SET_MSB_1
 	lda	blockNum+1
-	sta	[workSpace]
-	rep	#$20
-	
-	lda	#SD_ADDRESS_SET_MSB_3	; $06
-	sta	workSpace
-	sep	#$20
+	stal	SD_ADDRESS_SET_MSB_2
 	lda	blockNum
-	sta	[workSpace]
-	rep	#$20
-	
-*	lda	#1
-*	stal	SD_START_READ
+	stal	SD_ADDRESS_SET_MSB_3
 
-	lda	#SD_START_READ		; $08
-	sta	workSpace
-	sep	#$20
 	lda	#1
-	sta	[workSpace]
-	rep	#$20
+	stal	SD_START_READ
 
-	lda	#SD_READ		; $0a
-	sta	workSpace
+	ldx	nbPAGES	; number of 512-byte pages to copy
+dr2	ldy	#0	; read one block
 	sep	#$20
-	ldy	#0
-]lp	lda	[workSpace]
+]lp	ldal	SD_READ
 	sta	[bufferPtr],y
 	iny
-	cpy	#512
-	bne	]lp
-	rep	#$20
+	cpy	#blockSIZE
+	bcc	]lp
+
+	rep	#$20	; move destination pointer
+	lda	bufferPtr+1
+	clc
+	adc	#>blockSIZE	; rwBlockSize+1
+	sta	bufferPtr+1
+
+	dex		; next block
+	bne	dr2
 	
-*	ldx	nbPAGES	; number of 512-byte pages to copy
-*dr2	ldy	#0	; read one block
-*	sep	#$20
-*]lp	ldal	SD_READ
-*	sta	[bufferPtr],y
-*	iny
-*	cpy	#blockSIZE
-*	bcc	]lp
-*
-*	rep	#$20	; move destination pointer
-*	lda	bufferPtr+1
-*	clc
-*	adc	#>blockSIZE	; rwBlockSize+1
-*	sta	bufferPtr+1
-*
-*	dex		; next block
-*	bne	dr2
-	
-*	pla		; restore pointer
-*	sta	bufferPtr+1
-	pla
-	sta	workSpace
-	pla
-	sta	workSpace+2
+	pla		; restore pointer
+	sta	bufferPtr+1
 	rts
 
 *--- The AS magic ends here
@@ -273,7 +262,7 @@ DStatus1	asl
 tblSTATUS	da	SGetStatus	; GetDeviceStatus
 	da	SGet	; GetConfigParameters
 	da	SGet	; GetWaitStatus
-	da	SGet	; GetFormatOptions
+	da	SGetFormatOptions	; GetFormatOptions
 	da	SNada	; GetPartitionMap
 
 SNada	rts
@@ -298,8 +287,10 @@ SGetStatus	lda	#2		; GetDeviceStatus
 	sta	[statusListPtr],y
 
 SGS1	ldx	#diskInDriveBit
-	lda	fgSTARTED		; send the status of the driver
-	bne	SGS2
+	ldal	SD_CARD_INSERTED	; check if a card is inserted
+	and	#$ff
+	cmp	#1
+	beq	SGS2		; yes, a SD card is inserted
 	inx
 SGS2	txa
 	ora	#uncertainBlockCountBit	; we are uncertain of the block count
@@ -313,6 +304,24 @@ SGet	lda	#0                           ; GetConfigParameters
 	lda	#2
 	sta	transferCount
 	rts
+
+*----------- GetFormatOptions
+
+SGetFormatOptions
+	lda	requestCount	; check size of buffer
+	cmp	#formatOptionsTableEnd-formatOptionsTable
+	bcc	SGetFormat1
+
+	ldy	#0		; and move data
+]lp	lda	formatOptionsTable,y
+	sta	[statusListPtr],y
+	iny
+	iny
+	cpy	#formatOptionsTableEnd-formatOptionsTable
+	bcc	]lp
+	sty	transferCount	; save size
+
+SGetFormat1	rts
 
 *
 * Driver_Control
@@ -338,17 +347,49 @@ DControl2	asl
 	rts
 
 tblCONTROL	da	CNada	; 0 ResetDevice
-	da	CNada	; 1 FormatDevice
+	da	CFormatDevice	; 1 FormatDevice
 	da	CNada	; 2 EjectMedium
 	da	CSet	; 3 SetConfigParameters
 	da	CSet	; 4 SetWaitStatus
-	da	CSet	; 5 SetFormatOptions
+	da	CSetFormatOptions	; 5 SetFormatOptions
 	da	CNada	; 6 AssignPartitionOwner
 	da	CNada	; 7 ArmSignal
 	da	CNada	; 8 DisarmSignal
 	da	CNada	; 9 SetPartitionMap
 
 CNada	rts
+
+*----------- FormatDevice
+
+CFormatDevice
+	lda	fgFORMAT	; if 1, the Format call
+	bne	CFormat1	; was already called
+	rts
+
+CFormat1	rts
+
+*----------- SetFormatOptions
+
+CSetFormatOptions
+	lda	[controlListPtr]
+	beq	CSFO9	; empty option is not ours
+	cmp	#3	; 1-2 only
+	bcs	CSFO9
+	
+	cmp	#1
+	bne	CSFOHFS
+
+	ldx	#^maxBLOCKS	; it is 1, default values for HFS
+	ldy	#maxBLOCKS
+	bra	CSFOAll
+
+CSFOHFS	ldx	#^maxBLOCKP	; it is 2, default values for ProDOS
+	ldy	#maxBLOCKP
+
+CSFOAll	sty	fBlockCount
+	stx	fBlockCount+2
+
+CSFO9	rts
 
 *----------- SetConfigParameters / SetWaitStatus
 
@@ -417,13 +458,15 @@ ds6	lda	requestCount	; assume transfer=request
 *----------------------------
 
 checkSWITCHED
-	lda	fgSTARTED
-	bne	cs1
+	ldal	SD_CARD_INSERTED
+	and	#$ff
+	cmp	#1
+	beq	cs1
 	
 	jsl	SET_DISKSW
 
-	lda	#1
-	sta	fgSTARTED
+*	lda	#1
+*	sta	fgSTARTED
 	lda	#$002e
 	sta	errCODE
 	sec
@@ -432,9 +475,83 @@ checkSWITCHED
 cs1	clc
 	rts
 
+*---------------------------- Check RAMDISK was init'ed
+
+myTASK	PushLong	#proVOLUME
+	PushWord	#$2008
+	jsl	GSOS2
+	bcc	myTASK1
+
+	PushLong	#proFORMAT
+	PushWord	#$2024
+	jsl	GSOS2
+
+	lda	#1	; tell the driver we've been there
+	stal	fgFORMAT	; a format will now be a real format
+
+	lda	#$4000	; no more silent formatting
+	stal	proFORMAT+14
+
+myTASK1	rtl
+
+*---------------------------- GS/OS
+
+proVOLUME	dw	2
+	adrl	proDEVNAME
+	adrl	outVOLNAME
+
+proFORMAT	dw	5	; +00
+	adrl	proDEVNAME	; +02
+	adrl	proVOLNAME	; +06
+	dw	6	; +10
+	dw	6	; +12 - Default is ProDOS
+	dw	$2000	; +14 - Cant rename, can change selection, silent formatting
+
+proDEVNAME	strl	'.ASSDDevice'
+proVOLNAME	strl	':AppleSSD'
+
+outVOLNAME	dw	36	; (word) output buffer
+	ds	34	; (word) strl + (array) string
+
+*----------------------------
+
+
+formatOptionsTable
+
+* 8 bytes
+	dw	2	; numOptions
+	dw	2	; numDisplayed
+	dw	1	; recommendedOption
+	dw	1	; currentOption
+
+* 16 bytes
+	dw	1	; formatOptionNum
+	dw	2	; linkRefNum
+	dw	%0000_1101	; flags 1101 - GB size - Apple format
+	adrl	maxBLOCKS	; blockCount is the max for HFS
+	dw	blockSIZE	; blockSize is 512 bytes
+	dw	0	; interleaveFactor
+	dw	32	; mediaSize 11 - GB size
+
+* 16 bytes
+	dw	2	; formatOptionNum
+	dw	0	; linkRefNum
+	dw	%0000_1001	; flags 1001 - MB size - Apple format
+	adrl	maxBLOCKP	; blockCount is 65536 for ProDOS 8
+	dw	blockSIZE	; blockSize is 512 bytes for ProDOS 8
+	dw	0	; interleaveFactor
+	dw	32	; mediaSize 10 - MB size
+
+formatOptionsTableEnd
+
+*--- Default formatting options
+
+fBlockCount	adrl	maxBLOCKS	; 65536
+
 *----------------------------
 
 fgSTARTED	ds	2	; 0: not started, 1: started
+fgFORMAT	ds	2	; 0: GS/OS Format never called, 1 instead
 errCODE	ds	2
 thePAGE	ds	4	; page to read/write: $hh/ll00
 nbPAGES	ds	2	; number of blockSIZEP pages to copy
@@ -442,13 +559,12 @@ nbPAGES	ds	2	; number of blockSIZEP pages to copy
 MyDIB	ds	4	; +00 pointer to the next DIB
 	adrl	entryPOINT	; +04 driver entry point
 	dw	dftCHAR	; +08 characteristics
-	ds	4	; +0A block count
-	str	'ASSDDevice' ; +0E device name
-	ds	21	; 32 - 12 = 20
-	dw	$0000	; +2E slot number
-	dw	$0000	; +30 unit number
+	adrl	maxBLOCKS	; +0A block count
+MyDevName	ds	32	; +0E device name
+	dw	dftSLOT	; +2E slot number
+	dw	dftUNIT	; +30 unit number
 	dw	dftVERSION	; +32 version
-	dw	dftHDD	; +34 device ID
+	dw	devRAMDISK	; +34 device ID - LOGO
 	dw	$0000	; +36 first linked device
 	dw	$0000	; +38 next linked device
 	adrl	$00000000	; +3A extended DIB ptr

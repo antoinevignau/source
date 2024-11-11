@@ -16,14 +16,6 @@
 
 *----------
 
-SD_ADDRESS_SET_MSB =	$e40000
-SD_ADDRESS_SET_MSB_1 =	$e40002
-SD_ADDRESS_SET_MSB_2 =	$e40004
-SD_ADDRESS_SET_MSB_3 =	$e40006
-SD_START_READ	=	$e40008	; starts reading the sector (if it was idle)
-SD_READ 	=	$e4000a 
-SD_START_WRITE 	=	$e4000c	; starts writing the sector (if it was idle)
-
                   use       4/Int.Macs
                   use       4/Locator.Macs
                   use       4/Mem.Macs
@@ -84,11 +76,6 @@ maxDEVICES        =         128
                   plx
                   stx       haBUFFER+2
 
-	  lda	#myBUFFER
-	  stal	$300
-	  lda	#^myBUFFER
-	  stal	$302
-	  
 *----------
 
                   PushWord  #$00FF
@@ -255,13 +242,10 @@ doREAD	PushLong  #strDREAD	; show the string
 
 *	jsr	debugBORDER
 	
-	jsr	readablock
-
-*	jsl	GSOS
-*	dw	$202f
-*	adrl	proDREAD
-*	pha
-
+	jsl	GSOS
+	dw	$202f
+	adrl	proDREAD
+	pha
 	lda	proDREAD+14
 	jsr	showWORD
 	lda	proDREAD+12
@@ -292,31 +276,6 @@ doREAD	PushLong  #strDREAD	; show the string
 	lda	errCODE	; only write if read is OK
 	beq	okWRITE
 doEXIT	rts
-
-*---
-
-readablock	sep	#$20
-	lda	proDREAD+15
-	stal	SD_ADDRESS_SET_MSB
-	lda	proDREAD+14
-	stal	SD_ADDRESS_SET_MSB_1
-	lda	proDREAD+13
-	stal	SD_ADDRESS_SET_MSB_2
-	lda	proDREAD+12
-	stal	SD_ADDRESS_SET_MSB_3
-
-	lda	#1
-	stal	SD_START_READ
-
-	ldy	#0
-]lp	ldal	SD_READ
-	sta	myBUFFER,y
-	iny
-	cpy	#512
-	bne	]lp
-	rep	#$20
-
-	rts
 
 *--- Perform a DWrite
 

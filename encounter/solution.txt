@@ -1,0 +1,278 @@
+ENCOUNTER
+Severn Software, 1984
+=====================
+
+Solution by Exemptus - June 2020
+Fix by Antoine Vignau - November 2024
+
+Overview and general hints:
+---------------------------
+In this adventure you have to rescue a young girl who has been kidnapped by a
+gang of thugs and kept in a house. There is a limit of 500 moves to achieve this
+and a score will be given based on the number of actions taken to complete the
+game (some of them completely optional) and the moves taken. The game has no
+random elements so a given solution will always work.
+
+We are also told that is we trigger the alarm at the house we have 20 seconds to
+turn it off. Of course, we are not told how this is done or what activates the
+alarm in the first place. Also it is given that we can manufacture some items
+and a knowledge of chemistry will be useful. In practice this will be only
+limited to making gunpowder and a fuse from components in order to build a bomb.
+
+Some objects require a container to be put into: the black and yellow dusts, the
+water and the petrol. There are several containers, such as the box, bag, tin or
+bucket, but they are not operated like true containers - they are just a device
+to be able to carry the mentioned items, taking additional inventory slots.
+
+Although the limit seems tight, the game can be finished in as few as 120 moves.
+The problem is that some versions are bugged and the game will crash in some
+circumstances. In the Spectrum version labelled as 1.1, frisking the thug after
+killing him will crash the game with a "Variable not found" report. Indeed, one
+of the game's internal flags is not initialised correctly. Although it is
+possible to finish the game without the mentioned action, points are awarded for
+it. It is possible to patch the Spectrum version with the following POKEs:
+
+POKE 23759,241
+POKE 23760,102
+POKE 23761,107
+POKE 23762,61
+POKE 23763,176
+POKE 23764,34
+POKE 23765,48
+POKE 23766,34
+POKE 23767,58
+POKE 23768,234
+
+The POKEs need to be executed before the game runs, for those using an emulator.
+With this patch the game will run as intended.
+
+Points are given for the following actions:
+
+Action                                Points
+--------------------------------------------
+Feeding the meat to the dog             20
+Killing the dog with the snooker cue    50
+Opening the steel door                 200
+Breaking the upstairs window           100
+Killing the thug                        50
+Frisking the thug                       50
+Making the gunpowder                   100
+Making the fuse                        100
+Making the bomb                        200
+Opening the safe                       200
+Stopping the alarm after triggered     200
+Completing the adventure               200
+
+This gives a maximum possible score of 1,470 points minus the number of moves
+taken. Scores into the 1,200 are perfectly possible. The walkthrough below does
+not try to minimise moves but follows a reasonable, logical sequence. It is
+based on the Spectrum version, although I'm not aware of any significant
+differences with other versions.
+
+
+Walkthrough:
+------------
+[We begin at the market square.]
+
+E
+N
+GET KEYS [Keys are always useful]
+N
+N
+E
+N [If we go N we will be confronted by the dog, which we are not yet ready for]
+GET KNIFE
+N
+W [Note a barred window can be seen from here]
+S
+W
+GET CUE [This will be extremely useful]
+S
+GET MEAT
+
+[The bread can also be used to feed the dove. However, the dove has no real use
+so we can ignore it.]
+
+S
+GET TIN
+E
+THROW MEAT
+
+[The dog eats the meat. This does not have any effect - we still have to kill
+it. We did it for the points. Until we kill the dog, we are unable to move in
+other directions.]
+
+THROW CUE [We spear the dog this way - there are other ways to kill it though]
+GET CUE
+N
+N
+N
+THROW CUE [This smashes the upstairs window]
+
+[The alarm has been activated. We have 20 moves to turn it off, but fortunately
+we can do it, as the mechanism is hidden behind a panel in the cellar, which the
+keys will open.]
+
+S
+E
+D
+D [Note there is a heavy safe here]
+S [Fix by Antoine Vignau: move was missing]
+USE KEYS [A red button appears]
+PRESS BUTTON
+
+[The alarm is now off. One could have though that the alarm might alert the
+thugs in the house, but it turns out there is only one and he's fast asleep, so
+there is nothing to be concerned about. By the way, we have dropped the keys
+automatically on using them, so we just have the knife and tin in our inventory.
+We will need other components, which we will retrieve now.]
+
+N
+U
+U
+GET MATCHES
+W
+N
+E
+GET LADDER
+
+[We may think that the ladder is a good option to reach the broken window, but
+it turns out it is too short. The only real use of the ladder is to escape the
+pit where the yellow powder is.]
+
+S
+S
+S [Note the abandoned car]
+S
+S
+GET BAG [To put the yellow powder in]
+N
+E
+GET POWDER [Carry it where?]
+BAG
+CLIMB LADDER
+
+[We are out. The ladder remains in the pit.]
+
+W
+S
+W
+N
+GET DUST [Carry it where?]
+TIN
+MAKE GUNPOWDER [From the carbon and brimstone]
+GET GUNPOWDER [Carry it where?]
+BAG [Which was emptied after making the gunpowder]
+
+[Now we need some petrol and tissue in order to make a fuse. The petrol can be
+siphoned from the abandoned car and the tissue is upstairs in the house.]
+
+N
+N
+GET HOSE
+E
+E
+S
+
+[We can OPEN CAR or OPEN TRUNK if we wish, but that achieves nothing. The game
+tells us to try the trunk, so we can assume other parts of the car are there as
+well.]
+
+OPEN TANK
+SIPHON PETROL [What shall we use?]
+HOSE [Carry it where?]
+TIN
+N
+W
+N
+U
+U
+
+[We are now upstairs, so far unexplored. To the West and North of here there is
+a padlocked steel door, which we can correctly assume holds the kidnapped girl.
+We can also assume the bomb is for opening the door, but this would be a flawed
+assumption, because it is not.]
+
+E
+E
+
+[There is an asleep thug here. If we FRISK THUG the game tells us that we should
+subdue him first, so we may think of tying him up using the rope, the twine, or
+the hose. The game clearly favours more violent approaches, though.]
+
+KILL THUG [I'm game. How?]
+STAB HIM [With what?]
+KNIFE [Messy]
+
+[But effective - the thug is now dead. It also would have worked to STRANGLE him
+using the rope, twine or hose, HIT him with the cue, or even SUFFOCATE him with
+the bag. No comment.]
+
+GET KNIFE
+FRISK THUG
+
+[We find a pistol, but we are not going to use it, so we'll leave it here. If we
+wanted to, we could LOAD it with the three bullets we found in the cellar.]
+
+N
+GET TISSUE
+MAKE FUSE [Using the tissue and petrol]
+GET FUSE [Now we can make the bomb]
+MAKE BOMB
+GET BOMB
+S
+W
+W
+D
+D
+N
+N
+E
+D
+D
+
+[We have to open the safe with the bomb, as it has an object that will allow us
+to deal with the steel door upstairs.]
+
+BLOW UP SAFE [Using what?]
+BOMB [How shall we light it?]
+MATCHES
+
+[The safe is open now. We would have to re-enter the room in order to refresh
+the description, but no need: it contains a bottle.]
+
+GET BOTTLE
+
+[Finding out what is in the bottle is not difficult; if we THROW it we will be
+told that there is a funny smell and afterwards there will be an acid burn in
+the location. So the bottle holds a corrosive acid, which is what we need.]
+
+U
+U
+W
+S
+S
+U
+U
+W
+N
+
+[Here is the famous door, impregnable to everything but the acid. Actually there
+are other possible ways to rescue the girl, such as using the rope to facilitate
+her climbing down the window, but I won't go into them. Feel free to investigate
+if you please.]
+
+THROW BOTTLE [The acid melts a hole and we can see the girl now]
+THROW KNIFE [The girl cuts her bonds]
+GET GIRL [She is carryable]
+S
+E
+D
+D
+S
+S
+S
+S
+W
+
+[End of game, with 1262 points if all went well.]

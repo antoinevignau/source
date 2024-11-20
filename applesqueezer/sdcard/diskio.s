@@ -184,36 +184,23 @@ disk_read	ldal	SD_CARD_INSERTED
 dr_0	sty	drSECTOR
 	stx	drSECTOR+2
 
-
 	sep	#$20
 
 	lda	drSECTOR+3
 	stal	SD_ADDRESS_SET_MSB
-	nop
-	nop
 	lda	drSECTOR+2
 	stal	SD_ADDRESS_SET_MSB+1
-	nop
-	nop
 	lda	drSECTOR+1
 	stal	SD_ADDRESS_SET_MSB+2
-	nop
-	nop
 	lda	drSECTOR
 	stal	SD_ADDRESS_SET_MSB+3
-	nop
-	nop
 	
 	lda	#1	; dummy read
 	stal	SD_START_READ
-	nop
-	nop
 	
 	ldx	#0
 ]lp	ldal	SD_ACCESS
 	sta	buff,x
-	nop
-	nop
 	inx
 	cpx	#SIZE_SECTOR
 	bcc	]lp

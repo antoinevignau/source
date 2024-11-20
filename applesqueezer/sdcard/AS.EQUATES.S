@@ -42,8 +42,11 @@ SD_ADDRESS_SET_MSB_1 =	$e40002
 SD_ADDRESS_SET_MSB_2 =	$e40004
 SD_ADDRESS_SET_MSB_3 =	$e40006
 SD_START_READ	=	$e40008	; starts reading the sector (if it was idle)
-SD_READ 	=	$e4000a 
+SD_ACCESS 	=	$e4000a	; read or write
 SD_START_WRITE 	=	$e4000c	; starts writing the sector (if it was idle)
+
+SD_IDLE	=	$e4000e        
+SD_CARD_INSERTED =	$e40012	; 0: no card inserted, 1: card inserted
 
 STA_NOINIT	=	1	; Drive not initialized
 STA_NODISK	=	2	; No medium in the drive
@@ -63,21 +66,21 @@ AS_SPEED	=	$e50000	; just write a speed byte
 * GS/OS EQUATES
 *-----------------------------------
 
-GSOS2            =     $E100B0
-MOVE_INFO        =     $01FC70
-SET_DISKSW       =     $01FC90
+GSOS2	=	$E100B0
+MOVE_INFO	=	$01FC70
+SET_DISKSW	=	$01FC90
 
-uncertainBlockCountBit = $8000
-diskSwitchedBit  =     $0001
-diskInDriveBit   =     $0010
-diskModifyBit    =     $0100
+uncertainBlockCountBit =	$8000
+diskSwitchedBit	=	$0001
+diskInDriveBit	=	$0010
+diskModifyBit	=	$0100
 
-dftHDD	     =     $0013		; device ID for HDD (generic)
+dftHDD	=	$0013		; device ID for HDD (generic)
 
-dchar            =     $08
-dblockcount      =     $0a
-ddeviceid        =     $34
-ddevnumber       =     $3e
+dchar	=	$08
+dblockcount	=	$0a
+ddeviceid	=	$34
+ddevnumber	=	$3e
 
 *-----------------------------------
 * AS DRIVER EQUATES
@@ -87,14 +90,13 @@ maxIMAGES	=	1	; no more than N images
 blockSIZE	=	512	; ProDOS 8 block size
 maxBLOCKS	=	$ffffffff	; that is a huge number of blocks
 
-* 0 0000 => 0 0000
+* 0 0000 => 4 4000 generated device
 * B 1011 => B 1011 restartable + not speed dependent
 * A 1010 => E 1110 block device | write allowed | read allowed
 * 0 0000 => 8 1000 format allowed
 
-dftCHAR	=	$0BA8	; default characteristics 0BA8
-
-dftVERSION	=	$1000	; v1
+dftCHAR	=	$4BE8	; default characteristics 0BA8
+dftVERSION	=	$1020	; v1
 
 *-----------------------------------
 * GS/OS DIRECT PAGE

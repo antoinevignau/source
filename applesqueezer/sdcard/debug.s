@@ -16,6 +16,8 @@
 
 *----------
 
+SECTOR	=	$0000
+
 SD_ADDRESS_SET_MSB =	$e40000
 SD_ADDRESS_SET_MSB_1 =	$e40002
 SD_ADDRESS_SET_MSB_2 =	$e40004
@@ -34,6 +36,8 @@ SD_START_WRITE 	=	$e4000c	; starts writing the sector (if it was idle)
 Debut             =         $00
 GSOS              =         $e100a8
 
+dpSDREAD	=	Debut+4
+
 *----------
 
 dcREMOVE          =         $0004
@@ -41,6 +45,9 @@ dcONLINE          =         $0010
 dcBLOCKDEVICE     =         $0080
 
 maxDEVICES        =         128
+
+KBD	=	$c000
+KBDSTROBE	=	$c010
 
 *----------
 
@@ -84,9 +91,9 @@ maxDEVICES        =         128
                   plx
                   stx       haBUFFER+2
 
-	  lda	#myBUFFER
+	  lda	#myBUFFER1
 	  stal	$300
-	  lda	#^myBUFFER
+	  lda	#^myBUFFER1
 	  stal	$302
 	  
 *----------
@@ -163,161 +170,163 @@ doQUIT	_IMShutDown
 * POLL DEVICES
 *----------------------------
 
-pollDEVICES	lda	#1                   ; start with device 1
-	sta	proDINFO+2
+pollDEVICES	PushWord	#$0d
+	_WriteChar
 
-]lp	jsl	GSOS                 ; do a DInfo
-	dw	$202c
-	adrl	proDINFO
-	bcc	found
+doREAD	lda	#$00e4
+	sta	dpSDREAD+2
+	stz	dpSDREAD
+	
+	jsr	debugBORDER
+	
+	jsr	readablock1
+	jsr	readablock2
 
-	cmp	#$0011               ; no more devices
-	bne	loop
-	rts
+	lda	#^myBUFFER
+	jsr	showWORD
+	lda	#myBUFFER
+	jsr	showWORD
 
-loop	inc	proDINFO+2
-	bra	]lp
-
-*---------- Show device
-
-found	lda	proDINFO+8           ; block device?
-	and	#dcBLOCKDEVICE
-	beq	loop
-
-	lda	devINFO1             ; from a STRL to a STR
+	brk	$bd
+	
+	ldal	KBD-1
+	bpl	nextBLOCK
+	stal	KBDSTROBE-1
 	xba
-	sta	devINFO1
-
-	ldx	#10	; compare name
-]lp	lda	devINFO2,x
-	cmp	strDEVICE,x
-	bne	loop
-	dex
-	dex
-	bpl	]lp
-	
-*--- Show device ID
-
-	lda	proDINFO+2
-	sta	proDREAD+2
-	sta	proDWRITE+2
-	sta	proDSTATUS+2
-	jsr	showHEX
-
-	PushWord  #$20
-	_WriteChar
-
-*--- Show Characteristics
-
-	lda	proDINFO+8
-	jsr	showHEX
-
-	PushWord  #$20
-	_WriteChar
-
-*--- Show Name
-
-	PushLong  #devINFO2
-	_WriteString
-
-*--- Perform a DStatus
-
-	PushLong  #strDSTATUS	; show the string
-	_WriteCString
-
-	jsl	GSOS
-	dw	$202d
-	adrl	proDSTATUS
-	jsr	showERRCODE
-
-*--- Show device status characteristics
-
-	PushLong  #strCHARS	; show device characteristics
-	_WriteCString
-	
-	lda	myLIST
-	jsr	showHEX
-	
-*--- Show device status number of blocks
-
-	PushLong  #strBLOCKS	; show number of blocks
-	_WriteCString
-	
-	lda	myLIST+4
-	jsr	showHEX
-	lda	myLIST+2
-	jsr	showWORD
-	
-*--- Perform a DRead
-
-doREAD	PushLong  #strDREAD	; show the string
-	_WriteCString
-
-*	jsr	debugBORDER
-	
-	jsr	readablock
-
-*	jsl	GSOS
-*	dw	$202f
-*	adrl	proDREAD
-*	pha
-
-	lda	proDREAD+14
-	jsr	showWORD
-	lda	proDREAD+12
-	jsr	showWORD
-	
-	PushWord	#' '
-	_WriteChar
-	lda	proDREAD+20
-	jsr	showWORD
-	lda	proDREAD+18
-	jsr	showWORD
-	
-	pla
-	jsr	showERRCODE
-	jsr	printBUFFER	; output two lines of buffer
-
-	jsr	waitFORKEY           ; is it 0-9
-	cmp	#$1b
-	beq	doEXIT
+	and	#$ff
 	cmp	#$9b
 	beq	doEXIT
 	
-	inc	proDREAD+12
+nextBLOCK	inc	proDREAD+12
 	bne	doREAD
 	inc	proDREAD+14
 	bra	doREAD
-
-	lda	errCODE	; only write if read is OK
-	beq	okWRITE
 doEXIT	rts
 
 *---
 
 readablock	sep	#$20
+	lda	#SD_ADDRESS_SET_MSB
+	sta	dpSDREAD
 	lda	proDREAD+15
-	stal	SD_ADDRESS_SET_MSB
+	sta	[dpSDREAD]
+	jsr	waitPLEASE
+	
+	lda	#SD_ADDRESS_SET_MSB_1
+	sta	dpSDREAD
 	lda	proDREAD+14
-	stal	SD_ADDRESS_SET_MSB_1
+	sta	[dpSDREAD]
+	jsr	waitPLEASE
+
+	lda	#SD_ADDRESS_SET_MSB_2
+	sta	dpSDREAD
 	lda	proDREAD+13
-	stal	SD_ADDRESS_SET_MSB_2
+	sta	[dpSDREAD]
+	jsr	waitPLEASE
+
+	lda	#SD_ADDRESS_SET_MSB_3
+	sta	dpSDREAD
 	lda	proDREAD+12
+	sta	[dpSDREAD]
+	jsr	waitPLEASE
+
+	lda	#SD_START_READ
+	sta	dpSDREAD
+	lda	#1
+	sta	[dpSDREAD]
+	jsr	waitPLEASE
+
+	rep	#$20
+	lda	#SD_READ
+	sta	dpSDREAD
+
+	ldy	#0
+]lp	lda	[dpSDREAD]
+	and	#$ff
+	sta	myBUFFER1,y
+	jsr	waitPLEASE
+	iny
+	cpy	#512
+	bne	]lp
+
+checkBLOCK	ldx	#512-2
+]lp	lda	myBUFFER1,x
+	bne	gotDATA
+	dex
+	dex
+	bpl	]lp
+	rts
+gotDATA	lda	#^myBUFFER1
+	jsr	showWORD
+	lda	#myBUFFER1
+	jsr	showWORD
+
+*	lda	proDREAD+14
+*	jsr	showWORD
+*	lda	proDREAD+12
+*	jsr	showWORD
+*	
+*	PushWord	#' '
+*	_WriteChar
+	
+	brk	$bd
+	rts
+
+waitPLEASE	ds	128,$EA	; 32 NOP x 2 cycles = 64 + JSR/RTS
+	rts
+	
+*---
+
+readablock1	sep	#$20
+	lda	#0
+	stal	SD_ADDRESS_SET_MSB
+	lda	#0
+	stal	SD_ADDRESS_SET_MSB_1
+	lda	#0
+	stal	SD_ADDRESS_SET_MSB_2
+	lda	#0
 	stal	SD_ADDRESS_SET_MSB_3
 
 	lda	#1
 	stal	SD_START_READ
 
-	ldy	#0
+	ldx	#0
 ]lp	ldal	SD_READ
-	sta	myBUFFER,y
-	iny
-	cpy	#512
-	bne	]lp
+	sta	myBUFFER1,x
+	jsr	waitPLEASE
+	inx
+	cpx	#512
+	bcc	]lp
+
 	rep	#$20
-
 	rts
+	
+*---
 
+readablock2	sep	#$20
+	lda	#$00
+	stal	SD_ADDRESS_SET_MSB
+	lda	#$00
+	stal	SD_ADDRESS_SET_MSB_1
+	lda	#$20
+	stal	SD_ADDRESS_SET_MSB_2
+	lda	#$00
+	stal	SD_ADDRESS_SET_MSB_3
+
+	lda	#1
+	stal	SD_START_READ
+
+	ldx	#0
+]lp	ldal	SD_READ
+	sta	myBUFFER2,x
+	jsr	waitPLEASE
+	inx
+	cpx	#512
+	bcc	]lp
+
+	rep	#$20
+	rts
+	
 *--- Perform a DWrite
 
 okWRITE	PushLong  #strDWRITE	; show the string
@@ -412,8 +421,7 @@ strERR	asc	0d'- Error code '00
 * DEBUG
 *----------------------------
 
-debugBORDER
-	sep	#$20
+debugBORDER	sep	#$20
 	ldal	$c034
 	inc
 	stal	$c034
@@ -494,17 +502,17 @@ proDINFO	dw	8	; Parms for DInfo
 
 proDREAD	dw	6	; pCount
 	ds	2	; 02 devNum
-	adrl	myBUFFER	; 04 buffer
+	adrl	myBUFFER1	; 04 buffer
 	adrl	512	; 08 requestCount
-	adrl	0	; 0C startingBlock
+	adrl	SECTOR	; 0C startingBlock
 	dw	512	; 10 blockSize
 	ds	4	; 14 transferCount
 	
 proDWRITE	dw	6	; pCount
 	ds	2	; 02 devNum
-	adrl	myBUFFER	; 04 buffer
+	adrl	myBUFFER1	; 04 buffer
 	adrl	512	; 08 requestCount
-	adrl	0	; 0C startingBlock
+	adrl	SECTOR	; 0C startingBlock
 	dw	512	; 10 blockSize
 	ds	4	; 14 transferCount
 
@@ -535,6 +543,12 @@ haBUFFER	ds	4
 
 *----------
 
-myBUFFER	ds	512,$bd
+myBUFFER
+myBUFFER1	ds	512,$bd
+	ds	2,$ff
+	
+myBUFFER2	ds	512,$bd
+	ds	2,$ff
+
 myLIST	ds	512
 

@@ -2,7 +2,7 @@
 * AppleSqueezer - SD Driver
 *
 * (c) 2023, Niek Van Suchtelen
-* (c) 2023, Brutal Deluxe Software
+* (c) 2023-24, Brutal Deluxe Software
 *
 
 * v1.0 (202304) - AV
@@ -12,6 +12,11 @@
 *
 * v1.1 (202306) - AV
 *   Writes a sector too!
+*
+* v1.2 (202411) - AV
+*   The Time flies version
+*   We read/write 512 bytes only
+*   I know what a partition map is...
 *
 
 	mx	%00
@@ -65,8 +70,7 @@ tblDISPATCH	da	DStartup		; Driver_Startup
 * Driver_Startup
 *
 
-DStartup
-	ldal	FL_IDLE
+DStartup	ldal	FL_IDLE
 	and	#$ff
 	cmp	#$01
 	bne	DShutdown	; no AS found
@@ -103,102 +107,31 @@ DFlush			; Driver_Flush
 
 DRead	jsr	doSETUP
 	bcc	dr1
-	
-	brk	$bd
 	rts
 
 *--- The AS magic is here
 
-dr1	pei	workSpace+2
-	pei	workSpace
-*	pei	bufferPtr+1	; save pointer
-
-*	sep	#$20
-*	lda	blockNum+3
-*	stal	SD_ADDRESS_SET_MSB
-*	lda	blockNum+2
-*	stal	SD_ADDRESS_SET_MSB_1
-*	lda	blockNum+1
-*	stal	SD_ADDRESS_SET_MSB_2
-*	lda	blockNum
-*	stal	SD_ADDRESS_SET_MSB_3
-
-	lda	#^SD_ADDRESS_SET_MSB	; #$00e4
-	sta	workSpace+2
-
-	lda	#SD_ADDRESS_SET_MSB	; $00
-	sta	workSpace
-	sep	#$20
+dr1	sep	#$20
 	lda	blockNum+3
-	sta	[workSpace]
-	rep	#$20
-
-	lda	#SD_ADDRESS_SET_MSB_1	; $02
-	sta	workSpace
-	sep	#$20
+	stal	SD_ADDRESS_SET_MSB
 	lda	blockNum+2
-	sta	[workSpace]
-	rep	#$20
-	
-	lda	#SD_ADDRESS_SET_MSB_2	; $04
-	sta	workSpace
-	sep	#$20
+	stal	SD_ADDRESS_SET_MSB_1
 	lda	blockNum+1
-	sta	[workSpace]
-	rep	#$20
-	
-	lda	#SD_ADDRESS_SET_MSB_3	; $06
-	sta	workSpace
-	sep	#$20
+	stal	SD_ADDRESS_SET_MSB_2
 	lda	blockNum
-	sta	[workSpace]
-	rep	#$20
-	
-*	lda	#1
-*	stal	SD_START_READ
+	stal	SD_ADDRESS_SET_MSB_3
 
-	lda	#SD_START_READ		; $08
-	sta	workSpace
-	sep	#$20
 	lda	#1
-	sta	[workSpace]
-	rep	#$20
+	stal	SD_START_READ
 
-	lda	#SD_READ		; $0a
-	sta	workSpace
-	sep	#$20
-	ldy	#0
-]lp	lda	[workSpace]
+	ldy	#0	; read one block
+]lp	ldal	SD_ACCESS
 	sta	[bufferPtr],y
 	iny
-	cpy	#512
-	bne	]lp
+	cpy	#blockSIZE
+	bcc	]lp
+	
 	rep	#$20
-	
-*	ldx	nbPAGES	; number of 512-byte pages to copy
-*dr2	ldy	#0	; read one block
-*	sep	#$20
-*]lp	ldal	SD_READ
-*	sta	[bufferPtr],y
-*	iny
-*	cpy	#blockSIZE
-*	bcc	]lp
-*
-*	rep	#$20	; move destination pointer
-*	lda	bufferPtr+1
-*	clc
-*	adc	#>blockSIZE	; rwBlockSize+1
-*	sta	bufferPtr+1
-*
-*	dex		; next block
-*	bne	dr2
-	
-*	pla		; restore pointer
-*	sta	bufferPtr+1
-	pla
-	sta	workSpace
-	pla
-	sta	workSpace+2
 	rts
 
 *--- The AS magic ends here
@@ -213,9 +146,7 @@ DWrite	jsr	doSETUP
 
 *--- The AS magic is here
 
-dw1	pei	bufferPtr+1	; save pointer
-
-	sep	#$20
+dw1	sep	#$20
 	lda	blockNum+3
 	stal	SD_ADDRESS_SET_MSB
 	lda	blockNum+2
@@ -228,26 +159,14 @@ dw1	pei	bufferPtr+1	; save pointer
 	lda	#1
 	stal	SD_START_WRITE
 
-	ldx	nbPAGES	; number of 512-byte pages to copy
-dw2	ldy	#0	; read one block
-	sep	#$20
+	ldy	#0	; read one block
 ]lp	lda	[bufferPtr],y
-	stal	SD_READ
+	stal	SD_ACCESS
 	iny
 	cpy	#blockSIZE
 	bcc	]lp
 
 	rep	#$20	; move destination pointer
-	lda	bufferPtr+1
-	clc
-	adc	#>blockSIZE	; rwBlockSize+1
-	sta	bufferPtr+1
-
-	dex		; next block
-	bne	dw2
-	
-	pla		; restore pointer
-	sta	bufferPtr+1
 	rts
 
 *--- The AS magic ends here
@@ -378,7 +297,7 @@ ds2	lda	requestCount	; nb of bytes to read
 	ora	requestCount+2
 	bne	ds4
 
-	lda	#$002C		; invalidByteCount
+	lda	#$002C	; invalidByteCount
 	sta	errCODE
 	sec
 	rts
@@ -388,14 +307,7 @@ ds2	lda	requestCount	; nb of bytes to read
 *--- requestcount : $0200 => 1
 *--- From a Block to a RAM address
 
-ds4	lda	requestCount+3	; number of pages
-	and	#$00ff		; to calculate
-	lsr
-	lda	requestCount+1	; $01020400 => $010204 => $8102
-	ror
-	sta	nbPAGES		; to calculate
-
-	lda	requestCount	; multiple of $0200
+ds4	lda	requestCount	; multiple of $0200
 	and	#blockSIZE-1
 	beq	ds6
 
@@ -416,8 +328,7 @@ ds6	lda	requestCount	; assume transfer=request
 	
 *----------------------------
 
-checkSWITCHED
-	lda	fgSTARTED
+checkSWITCHED	lda	fgSTARTED
 	bne	cs1
 	
 	jsl	SET_DISKSW
@@ -443,10 +354,10 @@ MyDIB	ds	4	; +00 pointer to the next DIB
 	adrl	entryPOINT	; +04 driver entry point
 	dw	dftCHAR	; +08 characteristics
 	ds	4	; +0A block count
-	str	'ASSDDevice' ; +0E device name
-	ds	21	; 32 - 12 = 20
-	dw	$0000	; +2E slot number
-	dw	$0000	; +30 unit number
+	str	'ASSDDevice'	; +0E device name
+	ds	21	; 32 - 11 = 21
+	dw	$8000	; +2E slot number
+	dw	$0001	; +30 unit number
 	dw	dftVERSION	; +32 version
 	dw	dftHDD	; +34 device ID
 	dw	$0000	; +36 first linked device

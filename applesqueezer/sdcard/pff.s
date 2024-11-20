@@ -12,6 +12,10 @@
 * EQUATES
 *-------------------------------
 
+FS_OK	=	0
+FS_NOT_FAT	=	1
+FS_NOT_BR	=	2
+
 PF_USE_READ	=	1
 PF_USE_DIR	=	0
 PF_USE_LSEEK	=	0
@@ -108,8 +112,8 @@ DIR_FileSize	=	28
 check_fs	lda	buff+BS_55AA	; check record signature
 	cmp	#$aa55
 	beq	cfs_1
-	
-	lda	#2
+
+	lda	#FS_NOT_BR
 	sec
 	rts
 
@@ -121,11 +125,11 @@ cfs_1	lda	buff+BS_FilSysType	; check FAT12/16
 	cmp	#$4146
 	bne	cfs_2
 
-cfs_ok	lda	#0
+cfs_ok	lda	#FS_OK	; we have a FAT
 	clc
 	rts
 
-cfs_2	lda	#1
+cfs_2	lda	#FS_NOT_FAT	; we do not have a FAT
 	sec
 	rts
 

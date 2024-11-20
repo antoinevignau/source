@@ -1,8 +1,8 @@
 *--------------------------------------
 *
-* Mount Disk Images 1.5
+* Mount Disk Images 1.6
 *
-* (c) Brutal Deluxe, 2011-2022
+* (c) Brutal Deluxe, 2011-2024
 *
 
                lst       off
@@ -13,6 +13,8 @@
                mx        %00
 
 *--------------------------------------
+* v1.6 - AV 202411
+*   Really support .PO/.2mg of any size (in RAM)
 
                use       MI.Equates
 
@@ -395,38 +397,83 @@ handleERR1     rts
 * X=1: PO
 * X=2: 2MG
 
-checkFORMAT    lda       proEOF                ; check we have a valid disk...
-               ora       proEOF+2
-               bne       cf0
-               sec
-               rts
+checkFORMAT	lda	proEOF                ; check we have a valid disk...
+	ora	proEOF+2
+	bne	cf0
+	sec
+	rts
 
-cf0            ldx       #0
-               ldy       #dftDEV525
-               cmp       #$3002                ; 140KB - $0002 v $3000 : PO/DSK
-               beq       cf1
-               inx
-               ldy       #dftDEV35
-               cmp       #$800c                ; 800KB - $000c v $8000 : PO
-               beq       cf1
-               inx
-               cmp       #$804c                ; 800KB - $000c v $8040 : 2MG
-               beq       cf1
-               ldy       #dftDEV525
-               cmp       #$3042                ; 140KB - $0002 v $3040 : 2MG
-               beq       cf1
+cf0	ldx	#cDSK
+	ldy	#dftDEV525
+	cmp	#$3002	; 140KB - $0002 v $3000 : PO/DSK 0/5.25"
+	beq	cf1
 
-               ldy       #dftDEV35
-               and       #$0040                ; it is a 2MG image
-               bne       cf1                   ; of whatever size
-               dex                             ; or force a PO/DSK format
-                                               ; it expands the possibilities
+	ldx	#cPO
+	ldy	#dftDEV35
+	cmp	#$800c	; 800KB - $000c v $8000 : PO 1/3.5"
+	beq	cf1
 
-cf1            stx       theFORMAT             ; 0-1: PO/DSK image, 2: 2MG image
-               sty       theDEVID              ; 0 for 5.25, 3 for 3.5 disks
+	ldx	#c2MG
+	cmp	#$804c	; 800KB - $000c v $8040 : 2MG 2/3.5"
+	beq	cf1
 
-cf2            clc
-               rts
+	ldy	#dftDEV525
+	cmp	#$3042	; 140KB - $0002 v $3040 : 2MG 2/5.25"
+	beq	cf1
+
+*	ldy	#dftDEV35
+*	and	#$0040	; it is a 2MG image
+*	bne	cf1	; of 800k size
+
+	jsr	checkSUFFIX	; v1.6 - check suffix of path
+	bcs	cf2	; not a .2MG nor .PO
+
+cf1	stx	theFORMAT	; 0-1: PO/DSK image, 2: 2MG image
+	sty	theDEVID	; $14 for 5.25, $03 for 3.5 disks, $13 for HDD
+	clc
+cf2	rts
+
+*--------------------------------------
+*
+* check suffix of path to disk image
+*
+
+checkSUFFIX	lda	[Arrivee]
+	tay
+	lda	[Arrivee],y
+	and	#$5f5f
+	cmp	#'MG'
+	bne	cs_po
+	dey
+	dey
+	lda	[Arrivee],y
+	cmp	#'.2'
+	bne	cs_po
+
+	ldx	#c2MG	; set 2mg of any size
+	ldy	#dftDEVHDD
+	clc
+	rts
+
+cs_po	lda	[Arrivee]
+	tay
+	lda	[Arrivee],y
+	and	#$5f5f
+	cmp	#'PO'
+	bne	cs_ko
+	dey
+	lda	[Arrivee],y
+	and	#$5fff
+	cmp	#'.P'
+	bne	cs_ko
+
+	ldx	#cPO	; set PO of any size
+	ldy	#dftDEVHDD
+	clc
+	rts
+
+cs_ko	sec
+	rts
 
 *--------------------------------------
 *

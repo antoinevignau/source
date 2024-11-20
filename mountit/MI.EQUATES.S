@@ -33,7 +33,9 @@ sizePATH         =     128           ; set GS/OS path length to N bytes
 
 dftCHAR          =     $83EC         ; default characteristics
 dftVERSION       =     $1200         ; v1.2.0
+
 dftDEV525        =     $0014         ; device ID for 5.25 disks
+dftDEVHDD        =     $0013         ; device ID for Hard disk drive (generic)
 dftDEV35         =     $0003         ; device ID for 3.5 disks
 
 drvrDiskSwitch   =     $002E

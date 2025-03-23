@@ -1,8 +1,12 @@
 *
 * Time to read a file
 *
-* (c) 2013, Brutal Deluxe Software
+* (c) 2013-2025, Brutal Deluxe Software
 *
+* v1.1: - take less text room to see all results on one page
+*       - escape is also a key to cancel an action
+*
+
 
                xc
                xc
@@ -700,24 +704,27 @@ strNBBLOCKS    ds        10                   ; 8+2 trailer 00
 * SOME MISC ROUTINES
 *----------------------------
 
-checkCANCEL    =         *                    ; Did user cancel?
+checkCANCEL	ldal	$bfff	; Did user cancel?
+	bpl	check2	; no
+	and	#$ff00	; yes, check keys?
+	xba
+	sep	#$20
+	stal	$c010
+	rep	#$20
 
-               ldal      $bfff                ; key pressed?
-               bpl       check1
-               stal      $c00f
+	cmp	#$83	; CTRL-C
+	beq	check1
+	cmp	#$9b	; escape
+	bne	check2
 
-               and       #$ff00               ; check keypress
-               cmp       #$8300               ; CTRL-C
-               bne       check1
+check1	PushLong	#strCANCEL	; we cancel
+	_WriteCString
 
-               PushLong  #strCANCEL
-               _WriteCString
-
-               inc       fgCANCEL
-               sec
-               rts
-check1         clc
-               rts
+	inc	fgCANCEL
+	sec
+	rts
+check2	clc		; we continue
+	rts
 
 *----------------------------
 
@@ -879,8 +886,8 @@ calcSPEED      =         *
 * DATA
 *----------------------------
 
-strINTRO       asc       'BenchmarkeD'0d
-               asc       '(c) 2013, Brutal Deluxe Software'0d0d
+strINTRO       asc       'BenchmarkeD v1.1'0d
+               asc       '(c) 2013-2025, Brutal Deluxe Software'0d0d
                asc       'File options'0d
                asc       ' 1- Write speed'0d
                asc       ' 2- Read speed'0d
@@ -898,9 +905,12 @@ strRERR        asc       0d'=== Read failed! ==='00
 strWERR        asc       0d'=== Write failed! ==='00
 strCANCEL      asc       0d'=== Cancelled! ==='00
 
-strFROM        asc       0d' Started at '00
-strTO          asc       0d'   Ended at '00
-strSPEED       asc       0d'Average speed: '00
+*strFROM        asc       0d' Started at '00
+*strTO          asc       0d'   Ended at '00
+
+strFROM        asc       ', started at '00
+strTO          asc       0d'Ended at '00
+strSPEED       asc       ', for an average speed of '00
 strKBS         asc       ' KB/s'00
 strBLOCKS      asc       ' blocks'00
 

@@ -1,0 +1,1467 @@
+------+-------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File             Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+-------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1 BenchmarkeD.s      1 | Comment     | 11 |         |    0 | 00/0000               | *
+    2 |  1 BenchmarkeD.s      2 | Comment     | 11 |         |    0 | 00/0000               | * Time to read a file
+    3 |  1 BenchmarkeD.s      3 | Comment     | 11 |         |    0 | 00/0000               | *
+    4 |  1 BenchmarkeD.s      4 | Comment     | 11 |         |    0 | 00/0000               | * (c) 2013-2025, Brutal Deluxe Software
+    5 |  1 BenchmarkeD.s      5 | Comment     | 11 |         |    0 | 00/0000               | *
+    6 |  1 BenchmarkeD.s      6 | Comment     | 11 |         |    0 | 00/0000               | * v1.1: - take less text room to see all results on one page
+    7 |  1 BenchmarkeD.s      7 | Comment     | 11 |         |    0 | 00/0000               | *       - escape is also a key to cancel an action
+    8 |  1 BenchmarkeD.s      8 | Comment     | 11 |         |    0 | 00/0000               | *
+    9 |  1 BenchmarkeD.s      9 | Empty       | 11 |         |    0 | 00/0000               |                                         
+   10 |  1 BenchmarkeD.s     10 | Empty       | 11 |         |    0 | 00/0000               |                                         
+   11 |  1 BenchmarkeD.s     11 | Directive   | 11 |         |    0 | 00/0000               |                xc                       
+   12 |  1 BenchmarkeD.s     12 | Directive   | 11 |         |    0 | 00/0000               |                xc                       
+   13 |  1 BenchmarkeD.s     13 | Directive   | 00 |         |    0 | 00/0000               |                mx        %00            
+   14 |  1 BenchmarkeD.s     14 | Empty       | 00 |         |    0 | 00/0000               |                                         
+   15 |  1 BenchmarkeD.s     15 | Directive   | 00 |         |    0 | 00/0000               |                rel                      
+   16 |  1 BenchmarkeD.s     16 | Directive   | 00 |         |    0 | 00/0000               |                dsk       BenchmarkeD.l  
+   17 |  1 BenchmarkeD.s     17 | Directive   | 00 |         |    0 | 00/0000               |                lst       off            
+   18 |  1 BenchmarkeD.s     18 | Empty       | 00 |         |    0 | 00/0000               |                                         
+   19 |  1 BenchmarkeD.s     19 | Comment     | 00 |         |    0 | 00/0000               | *----------
+   20 |  1 BenchmarkeD.s     20 | Empty       | 00 |         |    0 | 00/0000               |                                         
+   21 |  1 BenchmarkeD.s     21 | Directive   | 00 |         |    0 | 00/0000               |                use       4/Int.Macs     
+   22 |  1 BenchmarkeD.s     22 | Directive   | 00 |         |    0 | 00/0000               |                use       4/Locator.Macs 
+   23 |  1 BenchmarkeD.s     23 | Directive   | 00 |         |    0 | 00/0000               |                use       4/Mem.Macs     
+   24 |  1 BenchmarkeD.s     24 | Directive   | 00 |         |    0 | 00/0000               |                use       4/Misc.Macs    
+   25 |  1 BenchmarkeD.s     25 | Directive   | 00 |         |    0 | 00/0000               |                use       4/Text.Macs    
+   26 |  1 BenchmarkeD.s     26 | Directive   | 00 |         |    0 | 00/0000               |                use       4/Util.Macs    
+   27 |  1 BenchmarkeD.s     27 | Empty       | 00 |         |    0 | 00/0000               |                                         
+   28 |  1 BenchmarkeD.s     28 | Equivalence | 00 |         |    0 | 00/0000               | Debut          =         $00            
+   29 |  1 BenchmarkeD.s     29 | Equivalence | 00 |         |    0 | 00/0000               | proDOS         =         $e100a8        
+   30 |  1 BenchmarkeD.s     30 | Empty       | 00 |         |    0 | 00/0000               |                                         
+   31 |  1 BenchmarkeD.s     31 | Comment     | 00 |         |    0 | 00/0000               | *----------
+   32 |  1 BenchmarkeD.s     32 | Empty       | 00 |         |    0 | 00/0000               |                                         
+   33 |  1 BenchmarkeD.s     33 | Code        | 00 |         |    1 | 00/0000 : 4B          |                phk                      
+   34 |  1 BenchmarkeD.s     34 | Code        | 00 |         |    1 | 00/0001 : AB          |                plb                      
+   35 |  1 BenchmarkeD.s     35 | Empty       | 00 |         |    0 | 00/0002               |                                         
+   36 |  1 BenchmarkeD.s     36 | Code        | 00 |         |    1 | 00/0002 : 7B          |                tdc                      
+   37 |  1 BenchmarkeD.s     37 | Code        | 00 |  2      |    3 | 00/0003 : 8D B4 0A    |                sta       myDP           
+   38 |  1 BenchmarkeD.s     38 | Empty       | 00 |         |    0 | 00/0006               |                                         
+   39 |  1 BenchmarkeD.s     39 | Macro       | 00 |         |    0 | 00/0006               |                _TLStartUp                 
+   41 |  1 BenchmarkeD.s     39 | Code        | 00 |         |    3 | 00/0006 : A2 01 02    |                LDX       #$201          ; load tool call #
+   42 |  1 BenchmarkeD.s     39 | Code        | 00 |         |    4 | 00/0009 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+   43 |  1 BenchmarkeD.s     40 | Code        | 00 |         |    1 | 00/000D : 48          |                pha                      
+   44 |  1 BenchmarkeD.s     41 | Macro       | 00 |         |    0 | 00/000E               |                _MMStartUp                 
+   46 |  1 BenchmarkeD.s     41 | Code        | 00 |         |    3 | 00/000E : A2 02 02    |                LDX       #$202          ; load tool call #
+   47 |  1 BenchmarkeD.s     41 | Code        | 00 |         |    4 | 00/0011 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+   48 |  1 BenchmarkeD.s     42 | Code        | 00 |         |    1 | 00/0015 : 68          |                pla                      
+   49 |  1 BenchmarkeD.s     43 | Code        | 00 |  2      |    3 | 00/0016 : 8D B0 0A    |                sta       appID          
+   50 |  1 BenchmarkeD.s     44 | Code        | 00 |         |    3 | 00/0019 : 09 00 01    |                ora       #$0100         
+   51 |  1 BenchmarkeD.s     45 | Code        | 00 |  2      |    3 | 00/001C : 8D B2 0A    |                sta       myID           
+   52 |  1 BenchmarkeD.s     46 | Empty       | 00 |         |    0 | 00/001F               |                                         
+   53 |  1 BenchmarkeD.s     47 | Macro       | 00 |         |    0 | 00/001F               |                _MTStartUp                 
+   55 |  1 BenchmarkeD.s     47 | Code        | 00 |         |    3 | 00/001F : A2 03 02    |                LDX       #$203          ; load tool call #
+   56 |  1 BenchmarkeD.s     47 | Code        | 00 |         |    4 | 00/0022 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+   57 |  1 BenchmarkeD.s     48 | Macro       | 00 |         |    0 | 00/0026               |                _TextStartUp                 
+   59 |  1 BenchmarkeD.s     48 | Code        | 00 |         |    3 | 00/0026 : A2 0C 02    |                LDX       #$20C          ; load tool call #
+   60 |  1 BenchmarkeD.s     48 | Code        | 00 |         |    4 | 00/0029 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+   61 |  1 BenchmarkeD.s     49 | Empty       | 00 |         |    0 | 00/002D               |                                         
+   62 |  1 BenchmarkeD.s     50 | Macro       | 00 |         |    0 | 00/002D               |                _IMStartUp                 
+   64 |  1 BenchmarkeD.s     50 | Code        | 00 |         |    3 | 00/002D : A2 0B 02    |                LDX       #$20B          ; load tool call #
+   65 |  1 BenchmarkeD.s     50 | Code        | 00 |         |    4 | 00/0030 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+   66 |  1 BenchmarkeD.s     51 | Empty       | 00 |         |    0 | 00/0034               |                                         
+   67 |  1 BenchmarkeD.s     52 | Comment     | 00 |         |    0 | 00/0034               | * Get 64KB and make it our read buffer
+   68 |  1 BenchmarkeD.s     53 | Empty       | 00 |         |    0 | 00/0034               |                                         
+   69 |  1 BenchmarkeD.s     54 | Code        | 00 |         |    1 | 00/0034 : 48          |                pha                      
+   70 |  1 BenchmarkeD.s     55 | Code        | 00 |         |    1 | 00/0035 : 48          |                pha                      
+   71 |  1 BenchmarkeD.s     56 | Macro       | 00 |         |    0 | 00/0036               |                PushLong  #$010000       
+   75 |  1 BenchmarkeD.s     56 | Code        | 00 |         |    3 | 00/0036 : F4 01 00    |                PEA       #^#$010000     
+   82 |  1 BenchmarkeD.s     56 | Code        | 00 |         |    3 | 00/0039 : F4 00 00    |                PEA       #$010000       
+   85 |  1 BenchmarkeD.s     57 | Macro       | 00 |         |    0 | 00/003C               |                PushWord  myID           
+   90 |  1 BenchmarkeD.s     57 | Code        | 00 |  2      |    3 | 00/003C : AD B2 0A    |                LDA       myID           
+   91 |  1 BenchmarkeD.s     57 | Code        | 00 |         |    1 | 00/003F : 48          |                PHA                      
+   93 |  1 BenchmarkeD.s     58 | Macro       | 00 |         |    0 | 00/0040               |                PushWord  #%11000000_00011100
+   95 |  1 BenchmarkeD.s     58 | Code        | 00 |         |    3 | 00/0040 : F4 1C C0    |                PEA       #%11000000_00011100
+   98 |  1 BenchmarkeD.s     59 | Macro       | 00 |         |    0 | 00/0043               |                PushLong  #0             
+  102 |  1 BenchmarkeD.s     59 | Code        | 00 |         |    3 | 00/0043 : F4 00 00    |                PEA       #^#0           
+  109 |  1 BenchmarkeD.s     59 | Code        | 00 |         |    3 | 00/0046 : F4 00 00    |                PEA       #0             
+  112 |  1 BenchmarkeD.s     60 | Macro       | 00 |         |    0 | 00/0049               |                _NewHandle                 
+  114 |  1 BenchmarkeD.s     60 | Code        | 00 |         |    3 | 00/0049 : A2 02 09    |                LDX       #$902          ; load tool call #
+  115 |  1 BenchmarkeD.s     60 | Code        | 00 |         |    4 | 00/004C : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  116 |  1 BenchmarkeD.s     61 | Code        | 00 |         |    1 | 00/0050 : 0B          |                phd                      
+  117 |  1 BenchmarkeD.s     62 | Code        | 00 |         |    1 | 00/0051 : 3B          |                tsc                      
+  118 |  1 BenchmarkeD.s     63 | Code        | 00 |         |    1 | 00/0052 : 5B          |                tcd                      
+  119 |  1 BenchmarkeD.s     64 | Code        | 00 |         |    2 | 00/0053 : A7 03       |                lda       [3]            
+  120 |  1 BenchmarkeD.s     65 | Code        | 00 |  2      |    3 | 00/0055 : 8D C2 08    |                sta       proREAD+4      ; file buffer
+  121 |  1 BenchmarkeD.s     66 | Code        | 00 |  2      |    3 | 00/0058 : 8D 0C 09    |                sta       proDREAD+4     ; block buffer
+  122 |  1 BenchmarkeD.s     67 | Code        | 00 |         |    3 | 00/005B : A0 02 00    |                ldy       #2             
+  123 |  1 BenchmarkeD.s     68 | Code        | 00 |         |    2 | 00/005E : B7 03       |                lda       [3],y          
+  124 |  1 BenchmarkeD.s     69 | Code        | 00 |  2      |    3 | 00/0060 : 8D C4 08    |                sta       proREAD+6      
+  125 |  1 BenchmarkeD.s     70 | Code        | 00 |  2      |    3 | 00/0063 : 8D 0E 09    |                sta       proDREAD+6     
+  126 |  1 BenchmarkeD.s     71 | Code        | 00 |         |    1 | 00/0066 : 2B          |                pld                      
+  127 |  1 BenchmarkeD.s     72 | Code        | 00 |         |    1 | 00/0067 : 7A          |                ply                      
+  128 |  1 BenchmarkeD.s     73 | Code        | 00 |  2      |    3 | 00/0068 : 8C B6 0A    |                sty       haBUFFER       
+  129 |  1 BenchmarkeD.s     74 | Code        | 00 |         |    1 | 00/006B : FA          |                plx                      
+  130 |  1 BenchmarkeD.s     75 | Code        | 00 |  2      |    3 | 00/006C : 8E B8 0A    |                stx       haBUFFER+2     
+  131 |  1 BenchmarkeD.s     76 | Empty       | 00 |         |    0 | 00/006F               |                                         
+  132 |  1 BenchmarkeD.s     77 | Comment     | 00 |         |    0 | 00/006F               | *----------
+  133 |  1 BenchmarkeD.s     78 | Empty       | 00 |         |    0 | 00/006F               |                                         
+  134 |  1 BenchmarkeD.s     79 | Code        | 00 |         |    4 | 00/006F : 22 A8 00 E1 |                jsl       {$e100a8}      
+  135 |  1 BenchmarkeD.s     80 | Data        | 00 |         |    2 | 00/0073 : 2A 20       |                dw        $202a          
+  136 |  1 BenchmarkeD.s     81 | Data        | 00 |  3      |    4 | 00/0075 : EE 08 00 00 |                adrl      proVERSION     
+  137 |  1 BenchmarkeD.s     82 | Empty       | 00 |         |    0 | 00/0079               |                                         
+  138 |  1 BenchmarkeD.s     83 | Code        | 00 |  2      |    3 | 00/0079 : AD F0 08    |                lda       proVERSION+2   
+  139 |  1 BenchmarkeD.s     84 | Code        | 00 |         |    3 | 00/007C : 29 FF 0F    |                and       #$0fff         
+  140 |  1 BenchmarkeD.s     85 | Code        | 00 |         |    3 | 00/007F : C9 00 04    |                cmp       #$0400         ; System 6.0.1
+  141 |  1 BenchmarkeD.s     86 | Code        | 00 |         |    2 | 00/0082 : B0 03       |                bge       versionOK      
+  142 |  1 BenchmarkeD.s     87 | Empty       | 00 |         |    0 | 00/0084               |                                         
+  143 |  1 BenchmarkeD.s     88 | Code        | 00 |  2      |    3 | 00/0084 : 4C 72 01    |                jmp       doQUIT         ; Ouch...
+  144 |  1 BenchmarkeD.s     89 | Empty       | 00 |         |    0 | 00/0087               |                                         
+  145 |  1 BenchmarkeD.s     90 | Comment     | 00 |         |    0 | 00/0087               | *----------
+  146 |  1 BenchmarkeD.s     91 | Empty       | 00 |         |    0 | 00/0087               |                                         
+  147 |  1 BenchmarkeD.s     92 | Empty       | 00 |         |    0 | 00/0087               | versionOK                               
+  148 |  1 BenchmarkeD.s     93 | Macro       | 00 |         |    0 | 00/0087               |                PushWord  #$00FF         
+  150 |  1 BenchmarkeD.s     93 | Code        | 00 |         |    3 | 00/0087 : F4 FF 00    |                PEA       #$00FF         
+  153 |  1 BenchmarkeD.s     94 | Macro       | 00 |         |    0 | 00/008A               |                PushWord  #$0080         
+  155 |  1 BenchmarkeD.s     94 | Code        | 00 |         |    3 | 00/008A : F4 80 00    |                PEA       #$0080         
+  158 |  1 BenchmarkeD.s     95 | Macro       | 00 |         |    0 | 00/008D               |                _SetInGlobals                 
+  160 |  1 BenchmarkeD.s     95 | Code        | 00 |         |    3 | 00/008D : A2 0C 09    |                LDX       #$90C          ; load tool call #
+  161 |  1 BenchmarkeD.s     95 | Code        | 00 |         |    4 | 00/0090 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  162 |  1 BenchmarkeD.s     96 | Macro       | 00 |         |    0 | 00/0094               |                PushWord  #$00FF         
+  164 |  1 BenchmarkeD.s     96 | Code        | 00 |         |    3 | 00/0094 : F4 FF 00    |                PEA       #$00FF         
+  167 |  1 BenchmarkeD.s     97 | Macro       | 00 |         |    0 | 00/0097               |                PushWord  #$0080         
+  169 |  1 BenchmarkeD.s     97 | Code        | 00 |         |    3 | 00/0097 : F4 80 00    |                PEA       #$0080         
+  172 |  1 BenchmarkeD.s     98 | Macro       | 00 |         |    0 | 00/009A               |                _SetOutGlobals                 
+  174 |  1 BenchmarkeD.s     98 | Code        | 00 |         |    3 | 00/009A : A2 0C 0A    |                LDX       #$A0C          ; load tool call #
+  175 |  1 BenchmarkeD.s     98 | Code        | 00 |         |    4 | 00/009D : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  176 |  1 BenchmarkeD.s     99 | Macro       | 00 |         |    0 | 00/00A1               |                PushWord  #$00FF         
+  178 |  1 BenchmarkeD.s     99 | Code        | 00 |         |    3 | 00/00A1 : F4 FF 00    |                PEA       #$00FF         
+  181 |  1 BenchmarkeD.s    100 | Macro       | 00 |         |    0 | 00/00A4               |                PushWord  #$0080         
+  183 |  1 BenchmarkeD.s    100 | Code        | 00 |         |    3 | 00/00A4 : F4 80 00    |                PEA       #$0080         
+  186 |  1 BenchmarkeD.s    101 | Macro       | 00 |         |    0 | 00/00A7               |                _SetErrGlobals                 
+  188 |  1 BenchmarkeD.s    101 | Code        | 00 |         |    3 | 00/00A7 : A2 0C 0B    |                LDX       #$B0C          ; load tool call #
+  189 |  1 BenchmarkeD.s    101 | Code        | 00 |         |    4 | 00/00AA : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  190 |  1 BenchmarkeD.s    102 | Empty       | 00 |         |    0 | 00/00AE               |                                         
+  191 |  1 BenchmarkeD.s    103 | Macro       | 00 |         |    0 | 00/00AE               |                PushWord  #0             
+  193 |  1 BenchmarkeD.s    103 | Code        | 00 |         |    3 | 00/00AE : F4 00 00    |                PEA       #0             
+  196 |  1 BenchmarkeD.s    104 | Macro       | 00 |         |    0 | 00/00B1               |                PushLong  #3             
+  200 |  1 BenchmarkeD.s    104 | Code        | 00 |         |    3 | 00/00B1 : F4 00 00    |                PEA       #^#3           
+  207 |  1 BenchmarkeD.s    104 | Code        | 00 |         |    3 | 00/00B4 : F4 03 00    |                PEA       #3             
+  210 |  1 BenchmarkeD.s    105 | Macro       | 00 |         |    0 | 00/00B7               |                _SetInputDevice                 
+  212 |  1 BenchmarkeD.s    105 | Code        | 00 |         |    3 | 00/00B7 : A2 0C 0F    |                LDX       #$F0C          ; load tool call #
+  213 |  1 BenchmarkeD.s    105 | Code        | 00 |         |    4 | 00/00BA : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  214 |  1 BenchmarkeD.s    106 | Macro       | 00 |         |    0 | 00/00BE               |                PushWord  #0             
+  216 |  1 BenchmarkeD.s    106 | Code        | 00 |         |    3 | 00/00BE : F4 00 00    |                PEA       #0             
+  219 |  1 BenchmarkeD.s    107 | Macro       | 00 |         |    0 | 00/00C1               |                PushLong  #3             
+  223 |  1 BenchmarkeD.s    107 | Code        | 00 |         |    3 | 00/00C1 : F4 00 00    |                PEA       #^#3           
+  230 |  1 BenchmarkeD.s    107 | Code        | 00 |         |    3 | 00/00C4 : F4 03 00    |                PEA       #3             
+  233 |  1 BenchmarkeD.s    108 | Macro       | 00 |         |    0 | 00/00C7               |                _SetOutputDevice                 
+  235 |  1 BenchmarkeD.s    108 | Code        | 00 |         |    3 | 00/00C7 : A2 0C 10    |                LDX       #$100C         ; load tool call #
+  236 |  1 BenchmarkeD.s    108 | Code        | 00 |         |    4 | 00/00CA : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  237 |  1 BenchmarkeD.s    109 | Macro       | 00 |         |    0 | 00/00CE               |                PushWord  #0             
+  239 |  1 BenchmarkeD.s    109 | Code        | 00 |         |    3 | 00/00CE : F4 00 00    |                PEA       #0             
+  242 |  1 BenchmarkeD.s    110 | Macro       | 00 |         |    0 | 00/00D1               |                PushLong  #3             
+  246 |  1 BenchmarkeD.s    110 | Code        | 00 |         |    3 | 00/00D1 : F4 00 00    |                PEA       #^#3           
+  253 |  1 BenchmarkeD.s    110 | Code        | 00 |         |    3 | 00/00D4 : F4 03 00    |                PEA       #3             
+  256 |  1 BenchmarkeD.s    111 | Macro       | 00 |         |    0 | 00/00D7               |                _SetErrorDevice                 
+  258 |  1 BenchmarkeD.s    111 | Code        | 00 |         |    3 | 00/00D7 : A2 0C 11    |                LDX       #$110C         ; load tool call #
+  259 |  1 BenchmarkeD.s    111 | Code        | 00 |         |    4 | 00/00DA : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  260 |  1 BenchmarkeD.s    112 | Empty       | 00 |         |    0 | 00/00DE               |                                         
+  261 |  1 BenchmarkeD.s    113 | Macro       | 00 |         |    0 | 00/00DE               |                PushWord  #0             
+  263 |  1 BenchmarkeD.s    113 | Code        | 00 |         |    3 | 00/00DE : F4 00 00    |                PEA       #0             
+  266 |  1 BenchmarkeD.s    114 | Macro       | 00 |         |    0 | 00/00E1               |                _InitTextDev                 
+  268 |  1 BenchmarkeD.s    114 | Code        | 00 |         |    3 | 00/00E1 : A2 0C 15    |                LDX       #$150C         ; load tool call #
+  269 |  1 BenchmarkeD.s    114 | Code        | 00 |         |    4 | 00/00E4 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  270 |  1 BenchmarkeD.s    115 | Macro       | 00 |         |    0 | 00/00E8               |                PushWord  #1             
+  272 |  1 BenchmarkeD.s    115 | Code        | 00 |         |    3 | 00/00E8 : F4 01 00    |                PEA       #1             
+  275 |  1 BenchmarkeD.s    116 | Macro       | 00 |         |    0 | 00/00EB               |                _InitTextDev                 
+  277 |  1 BenchmarkeD.s    116 | Code        | 00 |         |    3 | 00/00EB : A2 0C 15    |                LDX       #$150C         ; load tool call #
+  278 |  1 BenchmarkeD.s    116 | Code        | 00 |         |    4 | 00/00EE : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  279 |  1 BenchmarkeD.s    117 | Macro       | 00 |         |    0 | 00/00F2               |                PushWord  #2             
+  281 |  1 BenchmarkeD.s    117 | Code        | 00 |         |    3 | 00/00F2 : F4 02 00    |                PEA       #2             
+  284 |  1 BenchmarkeD.s    118 | Macro       | 00 |         |    0 | 00/00F5               |                _InitTextDev                 
+  286 |  1 BenchmarkeD.s    118 | Code        | 00 |         |    3 | 00/00F5 : A2 0C 15    |                LDX       #$150C         ; load tool call #
+  287 |  1 BenchmarkeD.s    118 | Code        | 00 |         |    4 | 00/00F8 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  288 |  1 BenchmarkeD.s    119 | Empty       | 00 |         |    0 | 00/00FC               |                                         
+  289 |  1 BenchmarkeD.s    120 | Comment     | 00 |         |    0 | 00/00FC               | *----------
+  290 |  1 BenchmarkeD.s    121 | Empty       | 00 |         |    0 | 00/00FC               |                                         
+  291 |  1 BenchmarkeD.s    122 | Empty       | 00 |         |    0 | 00/00FC               | mainLOOP                                
+  292 |  1 BenchmarkeD.s    123 | Empty       | 00 |         |    0 | 00/00FC               |                                         
+  293 |  1 BenchmarkeD.s    124 | Code        | 00 |  2      |    3 | 00/00FC : 9C 68 08    |                stz       fgCANCEL       ; reset cancel flag
+  294 |  1 BenchmarkeD.s    125 | Empty       | 00 |         |    0 | 00/00FF               |                                         
+  295 |  1 BenchmarkeD.s    126 | Macro       | 00 |         |    0 | 00/00FF               |                PushWord  #$0c           ; home
+  297 |  1 BenchmarkeD.s    126 | Code        | 00 |         |    3 | 00/00FF : F4 0C 00    |                PEA       #$0c           
+  300 |  1 BenchmarkeD.s    127 | Macro       | 00 |         |    0 | 00/0102               |                _WriteChar                 
+  302 |  1 BenchmarkeD.s    127 | Code        | 00 |         |    3 | 00/0102 : A2 0C 18    |                LDX       #$180C         ; load tool call #
+  303 |  1 BenchmarkeD.s    127 | Code        | 00 |         |    4 | 00/0105 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  304 |  1 BenchmarkeD.s    128 | Empty       | 00 |         |    0 | 00/0109               |                                         
+  305 |  1 BenchmarkeD.s    129 | Macro       | 00 |         |    0 | 00/0109               |                PushLong  #strINTRO      
+  309 |  1 BenchmarkeD.s    129 | Code        | 00 |  1 >>16 |    3 | 00/0109 : F4 00 00    |                PEA       #^#strINTRO    
+  316 |  1 BenchmarkeD.s    129 | Code        | 00 |  2      |    3 | 00/010C : F4 93 06    |                PEA       #strINTRO      
+  319 |  1 BenchmarkeD.s    130 | Macro       | 00 |         |    0 | 00/010F               |                _WriteCString                 
+  321 |  1 BenchmarkeD.s    130 | Code        | 00 |         |    3 | 00/010F : A2 0C 20    |                LDX       #$200C         ; load tool call #
+  322 |  1 BenchmarkeD.s    130 | Code        | 00 |         |    4 | 00/0112 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  323 |  1 BenchmarkeD.s    131 | Empty       | 00 |         |    0 | 00/0116               |                                         
+  324 |  1 BenchmarkeD.s    132 | Macro       | 00 |         |    0 | 00/0116               |                PushWord  #0             ; wait for key
+  326 |  1 BenchmarkeD.s    132 | Code        | 00 |         |    3 | 00/0116 : F4 00 00    |                PEA       #0             
+  329 |  1 BenchmarkeD.s    133 | Macro       | 00 |         |    0 | 00/0119               |                PushWord  #1             ; echo char
+  331 |  1 BenchmarkeD.s    133 | Code        | 00 |         |    3 | 00/0119 : F4 01 00    |                PEA       #1             
+  334 |  1 BenchmarkeD.s    134 | Macro       | 00 |         |    0 | 00/011C               |                _ReadChar                 
+  336 |  1 BenchmarkeD.s    134 | Code        | 00 |         |    3 | 00/011C : A2 0C 22    |                LDX       #$220C         ; load tool call #
+  337 |  1 BenchmarkeD.s    134 | Code        | 00 |         |    4 | 00/011F : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  338 |  1 BenchmarkeD.s    135 | Code        | 00 |         |    1 | 00/0123 : 68          |                pla                      
+  339 |  1 BenchmarkeD.s    136 | Code        | 00 |         |    3 | 00/0124 : 29 FF 00    |                and       #$ff           ; mask bits 15-8
+  340 |  1 BenchmarkeD.s    137 | Empty       | 00 |         |    0 | 00/0127               |                                         
+  341 |  1 BenchmarkeD.s    138 | Code        | 00 |         |    3 | 00/0127 : C9 B1 00    |                cmp       #"1"           
+  342 |  1 BenchmarkeD.s    139 | Code        | 00 |         |    2 | 00/012A : D0 03       |                bne       noCREATE       
+  343 |  1 BenchmarkeD.s    140 | Empty       | 00 |         |    0 | 00/012C               |                                         
+  344 |  1 BenchmarkeD.s    141 | Code        | 00 |  2      |    3 | 00/012C : 4C 73 02    |                jmp       doFCREATE      
+  345 |  1 BenchmarkeD.s    142 | Empty       | 00 |         |    0 | 00/012F               |                                         
+  346 |  1 BenchmarkeD.s    143 | Code        | 00 |         |    3 | 00/012F : C9 B2 00    | noCREATE       cmp       #"2"           
+  347 |  1 BenchmarkeD.s    144 | Code        | 00 |         |    2 | 00/0132 : D0 03       |                bne       noFREAD        
+  348 |  1 BenchmarkeD.s    145 | Empty       | 00 |         |    0 | 00/0134               |                                         
+  349 |  1 BenchmarkeD.s    146 | Code        | 00 |  2      |    3 | 00/0134 : 4C B0 01    |                jmp       doFREAD        
+  350 |  1 BenchmarkeD.s    147 | Empty       | 00 |         |    0 | 00/0137               |                                         
+  351 |  1 BenchmarkeD.s    148 | Code        | 00 |         |    3 | 00/0137 : C9 B3 00    | noFREAD        cmp       #"3"           
+  352 |  1 BenchmarkeD.s    149 | Code        | 00 |         |    2 | 00/013A : D0 03       |                bne       noBREAD3       
+  353 |  1 BenchmarkeD.s    150 | Empty       | 00 |         |    0 | 00/013C               |                                         
+  354 |  1 BenchmarkeD.s    151 | Code        | 00 |  2      |    3 | 00/013C : 4C 8D 03    |                jmp       doBREADtrois   
+  355 |  1 BenchmarkeD.s    152 | Empty       | 00 |         |    0 | 00/013F               |                                         
+  356 |  1 BenchmarkeD.s    153 | Code        | 00 |         |    3 | 00/013F : C9 B4 00    | noBREAD3       cmp       #"4"           
+  357 |  1 BenchmarkeD.s    154 | Code        | 00 |         |    2 | 00/0142 : D0 03       |                bne       noBREAD4       
+  358 |  1 BenchmarkeD.s    155 | Empty       | 00 |         |    0 | 00/0144               |                                         
+  359 |  1 BenchmarkeD.s    156 | Code        | 00 |  2      |    3 | 00/0144 : 4C 9E 03    |                jmp       doBREADquatre  
+  360 |  1 BenchmarkeD.s    157 | Empty       | 00 |         |    0 | 00/0147               |                                         
+  361 |  1 BenchmarkeD.s    158 | Code        | 00 |         |    3 | 00/0147 : C9 F1 00    | noBREAD4       cmp       #"q"           
+  362 |  1 BenchmarkeD.s    159 | Code        | 00 |         |    2 | 00/014A : F0 26       |                beq       doQUIT         
+  363 |  1 BenchmarkeD.s    160 | Code        | 00 |         |    3 | 00/014C : C9 D1 00    |                cmp       #"Q"           
+  364 |  1 BenchmarkeD.s    161 | Code        | 00 |         |    2 | 00/014F : F0 21       |                beq       doQUIT         
+  365 |  1 BenchmarkeD.s    162 | Empty       | 00 |         |    0 | 00/0151               |                                         
+  366 |  1 BenchmarkeD.s    163 | Code        | 00 |  2      |    3 | 00/0151 : 4C FC 00    |                jmp       mainLOOP       
+  367 |  1 BenchmarkeD.s    164 | Empty       | 00 |         |    0 | 00/0154               |                                         
+  368 |  1 BenchmarkeD.s    165 | Comment     | 00 |         |    0 | 00/0154               | *---------- End of routine, wait for key
+  369 |  1 BenchmarkeD.s    166 | Empty       | 00 |         |    0 | 00/0154               |                                         
+  370 |  1 BenchmarkeD.s    167 | Empty       | 00 |         |    0 | 00/0154               | mainNEXT                                
+  371 |  1 BenchmarkeD.s    168 | Macro       | 00 |         |    0 | 00/0154               |                PushLong  #strBYE        
+  375 |  1 BenchmarkeD.s    168 | Code        | 00 |  1 >>16 |    3 | 00/0154 : F4 00 00    |                PEA       #^#strBYE      
+  382 |  1 BenchmarkeD.s    168 | Code        | 00 |  2      |    3 | 00/0157 : F4 57 07    |                PEA       #strBYE        
+  385 |  1 BenchmarkeD.s    169 | Macro       | 00 |         |    0 | 00/015A               |                _WriteCString                 
+  387 |  1 BenchmarkeD.s    169 | Code        | 00 |         |    3 | 00/015A : A2 0C 20    |                LDX       #$200C         ; load tool call #
+  388 |  1 BenchmarkeD.s    169 | Code        | 00 |         |    4 | 00/015D : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  389 |  1 BenchmarkeD.s    170 | Empty       | 00 |         |    0 | 00/0161               |                                         
+  390 |  1 BenchmarkeD.s    171 | Macro       | 00 |         |    0 | 00/0161               |                PushWord  #0             
+  392 |  1 BenchmarkeD.s    171 | Code        | 00 |         |    3 | 00/0161 : F4 00 00    |                PEA       #0             
+  395 |  1 BenchmarkeD.s    172 | Macro       | 00 |         |    0 | 00/0164               |                PushWord  #0             
+  397 |  1 BenchmarkeD.s    172 | Code        | 00 |         |    3 | 00/0164 : F4 00 00    |                PEA       #0             
+  400 |  1 BenchmarkeD.s    173 | Macro       | 00 |         |    0 | 00/0167               |                _ReadChar                 
+  402 |  1 BenchmarkeD.s    173 | Code        | 00 |         |    3 | 00/0167 : A2 0C 22    |                LDX       #$220C         ; load tool call #
+  403 |  1 BenchmarkeD.s    173 | Code        | 00 |         |    4 | 00/016A : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  404 |  1 BenchmarkeD.s    174 | Code        | 00 |         |    1 | 00/016E : 68          |                pla                      
+  405 |  1 BenchmarkeD.s    175 | Code        | 00 |  2      |    3 | 00/016F : 4C FC 00    |                jmp       mainLOOP       
+  406 |  1 BenchmarkeD.s    176 | Empty       | 00 |         |    0 | 00/0172               |                                         
+  407 |  1 BenchmarkeD.s    177 | Comment     | 00 |         |    0 | 00/0172               | *----------------------------
+  408 |  1 BenchmarkeD.s    178 | Comment     | 00 |         |    0 | 00/0172               | * QUIT PROGRAM
+  409 |  1 BenchmarkeD.s    179 | Comment     | 00 |         |    0 | 00/0172               | *----------------------------
+  410 |  1 BenchmarkeD.s    180 | Empty       | 00 |         |    0 | 00/0172               |                                         
+  411 |  1 BenchmarkeD.s    181 | Empty       | 00 |         |    0 | 00/0172               | doQUIT                                  
+  412 |  1 BenchmarkeD.s    182 | Macro       | 00 |         |    0 | 00/0172               |                _IMShutDown                 
+  414 |  1 BenchmarkeD.s    182 | Code        | 00 |         |    3 | 00/0172 : A2 0B 03    |                LDX       #$30B          ; load tool call #
+  415 |  1 BenchmarkeD.s    182 | Code        | 00 |         |    4 | 00/0175 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  416 |  1 BenchmarkeD.s    183 | Macro       | 00 |         |    0 | 00/0179               |                _TextShutDown                 
+  418 |  1 BenchmarkeD.s    183 | Code        | 00 |         |    3 | 00/0179 : A2 0C 03    |                LDX       #$30C          ; load tool call #
+  419 |  1 BenchmarkeD.s    183 | Code        | 00 |         |    4 | 00/017C : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  420 |  1 BenchmarkeD.s    184 | Macro       | 00 |         |    0 | 00/0180               |                _MTShutDown                 
+  422 |  1 BenchmarkeD.s    184 | Code        | 00 |         |    3 | 00/0180 : A2 03 03    |                LDX       #$303          ; load tool call #
+  423 |  1 BenchmarkeD.s    184 | Code        | 00 |         |    4 | 00/0183 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  424 |  1 BenchmarkeD.s    185 | Empty       | 00 |         |    0 | 00/0187               |                                         
+  425 |  1 BenchmarkeD.s    186 | Macro       | 00 |         |    0 | 00/0187               |                PushWord  myID           
+  430 |  1 BenchmarkeD.s    186 | Code        | 00 |  2      |    3 | 00/0187 : AD B2 0A    |                LDA       myID           
+  431 |  1 BenchmarkeD.s    186 | Code        | 00 |         |    1 | 00/018A : 48          |                PHA                      
+  433 |  1 BenchmarkeD.s    187 | Macro       | 00 |         |    0 | 00/018B               |                _DisposeAll                 
+  435 |  1 BenchmarkeD.s    187 | Code        | 00 |         |    3 | 00/018B : A2 02 11    |                LDX       #$1102         ; load tool call #
+  436 |  1 BenchmarkeD.s    187 | Code        | 00 |         |    4 | 00/018E : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  437 |  1 BenchmarkeD.s    188 | Empty       | 00 |         |    0 | 00/0192               |                                         
+  438 |  1 BenchmarkeD.s    189 | Macro       | 00 |         |    0 | 00/0192               |                PushWord  appID          
+  443 |  1 BenchmarkeD.s    189 | Code        | 00 |  2      |    3 | 00/0192 : AD B0 0A    |                LDA       appID          
+  444 |  1 BenchmarkeD.s    189 | Code        | 00 |         |    1 | 00/0195 : 48          |                PHA                      
+  446 |  1 BenchmarkeD.s    190 | Macro       | 00 |         |    0 | 00/0196               |                _MMShutDown                 
+  448 |  1 BenchmarkeD.s    190 | Code        | 00 |         |    3 | 00/0196 : A2 02 03    |                LDX       #$302          ; load tool call #
+  449 |  1 BenchmarkeD.s    190 | Code        | 00 |         |    4 | 00/0199 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  450 |  1 BenchmarkeD.s    191 | Empty       | 00 |         |    0 | 00/019D               |                                         
+  451 |  1 BenchmarkeD.s    192 | Macro       | 00 |         |    0 | 00/019D               |                _TLShutDown                 
+  453 |  1 BenchmarkeD.s    192 | Code        | 00 |         |    3 | 00/019D : A2 01 03    |                LDX       #$301          ; load tool call #
+  454 |  1 BenchmarkeD.s    192 | Code        | 00 |         |    4 | 00/01A0 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  455 |  1 BenchmarkeD.s    193 | Empty       | 00 |         |    0 | 00/01A4               |                                         
+  456 |  1 BenchmarkeD.s    194 | Code        | 00 |         |    4 | 00/01A4 : 22 A8 00 E1 |                jsl       {$e100a8}      
+  457 |  1 BenchmarkeD.s    195 | Data        | 00 |         |    2 | 00/01A8 : 29 20       |                dw        $2029          
+  458 |  1 BenchmarkeD.s    196 | Data        | 00 |  3      |    4 | 00/01AA : E6 08 00 00 |                adrl      proQUIT        
+  459 |  1 BenchmarkeD.s    197 | Empty       | 00 |         |    0 | 00/01AE               |                                         
+  460 |  1 BenchmarkeD.s    198 | Code        | 00 |         |    2 | 00/01AE : 00 BD       |                brk       $bd            
+  461 |  1 BenchmarkeD.s    199 | Empty       | 00 |         |    0 | 00/01B0               |                                         
+  462 |  1 BenchmarkeD.s    200 | Comment     | 00 |         |    0 | 00/01B0               | *----------------------------
+  463 |  1 BenchmarkeD.s    201 | Comment     | 00 |         |    0 | 00/01B0               | * READ FILE SPEED
+  464 |  1 BenchmarkeD.s    202 | Comment     | 00 |         |    0 | 00/01B0               | *----------------------------
+  465 |  1 BenchmarkeD.s    203 | Empty       | 00 |         |    0 | 00/01B0               |                                         
+  466 |  1 BenchmarkeD.s    204 | Empty       | 00 |         |    0 | 00/01B0               | doFREAD                                 
+  467 |  1 BenchmarkeD.s    205 | Empty       | 00 |         |    0 | 00/01B0               |                                         
+  468 |  1 BenchmarkeD.s    206 | Comment     | 00 |         |    0 | 00/01B0               | * Read by chunks of 64KB
+  469 |  1 BenchmarkeD.s    207 | Empty       | 00 |         |    0 | 00/01B0               |                                         
+  470 |  1 BenchmarkeD.s    208 | Comment     | 00 |         |    0 | 00/01B0               | * 512K
+  471 |  1 BenchmarkeD.s    209 | Code        | 00 |  2      |    3 | 00/01B0 : A9 27 08    |                lda       #pathname1     
+  472 |  1 BenchmarkeD.s    210 | Code        | 00 |         |    3 | 00/01B3 : A0 00 02    |                ldy       #512           
+  473 |  1 BenchmarkeD.s    211 | Code        | 00 |  2      |    3 | 00/01B6 : 20 02 02    |                jsr       readFILE       
+  474 |  1 BenchmarkeD.s    212 | Empty       | 00 |         |    0 | 00/01B9               |                                         
+  475 |  1 BenchmarkeD.s    213 | Code        | 00 |  2      |    3 | 00/01B9 : AD 68 08    |                lda       fgCANCEL       
+  476 |  1 BenchmarkeD.s    214 | Code        | 00 |         |    2 | 00/01BC : D0 41       |                bne       doFREAD1       
+  477 |  1 BenchmarkeD.s    215 | Empty       | 00 |         |    0 | 00/01BE               |                                         
+  478 |  1 BenchmarkeD.s    216 | Comment     | 00 |         |    0 | 00/01BE               | * 1M
+  479 |  1 BenchmarkeD.s    217 | Code        | 00 |  2      |    3 | 00/01BE : A9 33 08    |                lda       #pathname2     
+  480 |  1 BenchmarkeD.s    218 | Code        | 00 |         |    3 | 00/01C1 : A0 00 04    |                ldy       #1024          
+  481 |  1 BenchmarkeD.s    219 | Code        | 00 |  2      |    3 | 00/01C4 : 20 02 02    |                jsr       readFILE       
+  482 |  1 BenchmarkeD.s    220 | Empty       | 00 |         |    0 | 00/01C7               |                                         
+  483 |  1 BenchmarkeD.s    221 | Code        | 00 |  2      |    3 | 00/01C7 : AD 68 08    |                lda       fgCANCEL       
+  484 |  1 BenchmarkeD.s    222 | Code        | 00 |         |    2 | 00/01CA : D0 33       |                bne       doFREAD1       
+  485 |  1 BenchmarkeD.s    223 | Empty       | 00 |         |    0 | 00/01CC               |                                         
+  486 |  1 BenchmarkeD.s    224 | Comment     | 00 |         |    0 | 00/01CC               | * 2M
+  487 |  1 BenchmarkeD.s    225 | Code        | 00 |  2      |    3 | 00/01CC : A9 3D 08    |                lda       #pathname3     
+  488 |  1 BenchmarkeD.s    226 | Code        | 00 |         |    3 | 00/01CF : A0 00 08    |                ldy       #2048          
+  489 |  1 BenchmarkeD.s    227 | Code        | 00 |  2      |    3 | 00/01D2 : 20 02 02    |                jsr       readFILE       
+  490 |  1 BenchmarkeD.s    228 | Empty       | 00 |         |    0 | 00/01D5               |                                         
+  491 |  1 BenchmarkeD.s    229 | Code        | 00 |  2      |    3 | 00/01D5 : AD 68 08    |                lda       fgCANCEL       
+  492 |  1 BenchmarkeD.s    230 | Code        | 00 |         |    2 | 00/01D8 : D0 25       |                bne       doFREAD1       
+  493 |  1 BenchmarkeD.s    231 | Empty       | 00 |         |    0 | 00/01DA               |                                         
+  494 |  1 BenchmarkeD.s    232 | Comment     | 00 |         |    0 | 00/01DA               | * 4M
+  495 |  1 BenchmarkeD.s    233 | Code        | 00 |  2      |    3 | 00/01DA : A9 47 08    |                lda       #pathname4     
+  496 |  1 BenchmarkeD.s    234 | Code        | 00 |         |    3 | 00/01DD : A0 00 10    |                ldy       #4096          
+  497 |  1 BenchmarkeD.s    235 | Code        | 00 |  2      |    3 | 00/01E0 : 20 02 02    |                jsr       readFILE       
+  498 |  1 BenchmarkeD.s    236 | Empty       | 00 |         |    0 | 00/01E3               |                                         
+  499 |  1 BenchmarkeD.s    237 | Code        | 00 |  2      |    3 | 00/01E3 : AD 68 08    |                lda       fgCANCEL       
+  500 |  1 BenchmarkeD.s    238 | Code        | 00 |         |    2 | 00/01E6 : D0 17       |                bne       doFREAD1       
+  501 |  1 BenchmarkeD.s    239 | Empty       | 00 |         |    0 | 00/01E8               |                                         
+  502 |  1 BenchmarkeD.s    240 | Comment     | 00 |         |    0 | 00/01E8               | * 8M
+  503 |  1 BenchmarkeD.s    241 | Code        | 00 |  2      |    3 | 00/01E8 : A9 51 08    |                lda       #pathname5     
+  504 |  1 BenchmarkeD.s    242 | Code        | 00 |         |    3 | 00/01EB : A0 00 20    |                ldy       #8192          
+  505 |  1 BenchmarkeD.s    243 | Code        | 00 |  2      |    3 | 00/01EE : 20 02 02    |                jsr       readFILE       
+  506 |  1 BenchmarkeD.s    244 | Empty       | 00 |         |    0 | 00/01F1               |                                         
+  507 |  1 BenchmarkeD.s    245 | Code        | 00 |  2      |    3 | 00/01F1 : AD 68 08    |                lda       fgCANCEL       
+  508 |  1 BenchmarkeD.s    246 | Code        | 00 |         |    2 | 00/01F4 : D0 09       |                bne       doFREAD1       
+  509 |  1 BenchmarkeD.s    247 | Empty       | 00 |         |    0 | 00/01F6               |                                         
+  510 |  1 BenchmarkeD.s    248 | Comment     | 00 |         |    0 | 00/01F6               | * 16M
+  511 |  1 BenchmarkeD.s    249 | Code        | 00 |  2      |    3 | 00/01F6 : A9 5B 08    |                lda       #pathname6     
+  512 |  1 BenchmarkeD.s    250 | Code        | 00 |         |    3 | 00/01F9 : A0 00 40    |                ldy       #16384         
+  513 |  1 BenchmarkeD.s    251 | Code        | 00 |  2      |    3 | 00/01FC : 20 02 02    |                jsr       readFILE       
+  514 |  1 BenchmarkeD.s    252 | Empty       | 00 |         |    0 | 00/01FF               |                                         
+  515 |  1 BenchmarkeD.s    253 | Code        | 00 |  2      |    3 | 00/01FF : 4C 54 01    | doFREAD1       jmp       mainNEXT       
+  516 |  1 BenchmarkeD.s    254 | Empty       | 00 |         |    0 | 00/0202               |                                         
+  517 |  1 BenchmarkeD.s    255 | Comment     | 00 |         |    0 | 00/0202               | *----------
+  518 |  1 BenchmarkeD.s    256 | Empty       | 00 |         |    0 | 00/0202               |                                         
+  519 |  1 BenchmarkeD.s    257 | Empty       | 00 |         |    0 | 00/0202               | readFILE                                
+  520 |  1 BenchmarkeD.s    258 | Empty       | 00 |         |    0 | 00/0202               |                                         
+  521 |  1 BenchmarkeD.s    259 | Code        | 00 |  2      |    3 | 00/0202 : 8D 88 08    |                sta       proOPEN+4      ; file pointer
+  522 |  1 BenchmarkeD.s    260 | Code        | 00 |  2      |    3 | 00/0205 : 8C AC 0A    |                sty       filesize       ; filesize in KB
+  523 |  1 BenchmarkeD.s    261 | Empty       | 00 |         |    0 | 00/0208               |                                         
+  524 |  1 BenchmarkeD.s    262 | Comment     | 00 |         |    0 | 00/0208               | *--- Check if file exists...
+  525 |  1 BenchmarkeD.s    263 | Empty       | 00 |         |    0 | 00/0208               |                                         
+  526 |  1 BenchmarkeD.s    264 | Code        | 00 |         |    4 | 00/0208 : 22 A8 00 E1 |                jsl       {$e100a8}      ; open
+  527 |  1 BenchmarkeD.s    265 | Data        | 00 |         |    2 | 00/020C : 10 20       |                dw        $2010          
+  528 |  1 BenchmarkeD.s    266 | Data        | 00 |  3      |    4 | 00/020E : 84 08 00 00 |                adrl      proOPEN        
+  529 |  1 BenchmarkeD.s    267 | Code        | 00 |         |    2 | 00/0212 : 90 01       |                bcc       readFILE1      
+  530 |  1 BenchmarkeD.s    268 | Empty       | 00 |         |    0 | 00/0214               |                                         
+  531 |  1 BenchmarkeD.s    269 | Code        | 00 |         |    1 | 00/0214 : 60          |                rts                      
+  532 |  1 BenchmarkeD.s    270 | Empty       | 00 |         |    0 | 00/0215               |                                         
+  533 |  1 BenchmarkeD.s    271 | Comment     | 00 |         |    0 | 00/0215               | *---
+  534 |  1 BenchmarkeD.s    272 | Empty       | 00 |         |    0 | 00/0215               |                                         
+  535 |  1 BenchmarkeD.s    273 | Empty       | 00 |         |    0 | 00/0215               | readFILE1                               ; file exists
+  536 |  1 BenchmarkeD.s    274 | Macro       | 00 |         |    0 | 00/0215               |                PushLong  #strREAD       
+  540 |  1 BenchmarkeD.s    274 | Code        | 00 |  1 >>16 |    3 | 00/0215 : F4 00 00    |                PEA       #^#strREAD     
+  547 |  1 BenchmarkeD.s    274 | Code        | 00 |  2      |    3 | 00/0218 : F4 7F 07    |                PEA       #strREAD       
+  550 |  1 BenchmarkeD.s    275 | Macro       | 00 |         |    0 | 00/021B               |                _WriteCString                 
+  552 |  1 BenchmarkeD.s    275 | Code        | 00 |         |    3 | 00/021B : A2 0C 20    |                LDX       #$200C         ; load tool call #
+  553 |  1 BenchmarkeD.s    275 | Code        | 00 |         |    4 | 00/021E : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  554 |  1 BenchmarkeD.s    276 | Empty       | 00 |         |    0 | 00/0222               |                                         
+  555 |  1 BenchmarkeD.s    277 | Code        | 00 |  2      |    3 | 00/0222 : AE 8A 08    |                ldx       proOPEN+6      
+  556 |  1 BenchmarkeD.s    278 | Code        | 00 |  2      |    3 | 00/0225 : AC 88 08    |                ldy       proOPEN+4      
+  557 |  1 BenchmarkeD.s    279 | Code        | 00 |  2      |    3 | 00/0228 : 20 36 05    |                jsr       printC1        
+  558 |  1 BenchmarkeD.s    280 | Empty       | 00 |         |    0 | 00/022B               |                                         
+  559 |  1 BenchmarkeD.s    281 | Code        | 00 |  2      |    3 | 00/022B : 20 4A 05    |                jsr       printDATEFROM  
+  560 |  1 BenchmarkeD.s    282 | Empty       | 00 |         |    0 | 00/022E               |                                         
+  561 |  1 BenchmarkeD.s    283 | Comment     | 00 |         |    0 | 00/022E               | *----------
+  562 |  1 BenchmarkeD.s    284 | Empty       | 00 |         |    0 | 00/022E               |                                         
+  563 |  1 BenchmarkeD.s    285 | Code        | 00 |  2      |    3 | 00/022E : AD 86 08    |                lda       proOPEN+2      
+  564 |  1 BenchmarkeD.s    286 | Code        | 00 |  2      |    3 | 00/0231 : 8D C0 08    |                sta       proREAD+2      
+  565 |  1 BenchmarkeD.s    287 | Code        | 00 |  2      |    3 | 00/0234 : 8D E4 08    |                sta       proCLOSE+2     
+  566 |  1 BenchmarkeD.s    288 | Empty       | 00 |         |    0 | 00/0237               |                                         
+  567 |  1 BenchmarkeD.s    289 | Code        | 00 |  2      |    3 | 00/0237 : 20 1C 05    | ozunid_1       jsr       displayWHEEL   
+  568 |  1 BenchmarkeD.s    290 | Code        | 00 |  2      |    3 | 00/023A : 20 EC 04    |                jsr       checkCANCEL    
+  569 |  1 BenchmarkeD.s    291 | Code        | 00 |         |    2 | 00/023D : B0 29       |                bcs       readFILE3      
+  570 |  1 BenchmarkeD.s    292 | Empty       | 00 |         |    0 | 00/023F               |                                         
+  571 |  1 BenchmarkeD.s    293 | Code        | 00 |         |    4 | 00/023F : 22 A8 00 E1 |                jsl       {$e100a8}      ; read
+  572 |  1 BenchmarkeD.s    294 | Data        | 00 |         |    2 | 00/0243 : 12 20       |                dw        $2012          
+  573 |  1 BenchmarkeD.s    295 | Data        | 00 |  3      |    4 | 00/0245 : BE 08 00 00 |                adrl      proREAD        
+  574 |  1 BenchmarkeD.s    296 | Code        | 00 |         |    2 | 00/0249 : 90 EC       |                bcc       ozunid_1       ; until error
+  575 |  1 BenchmarkeD.s    297 | Empty       | 00 |         |    0 | 00/024B               |                                         
+  576 |  1 BenchmarkeD.s    298 | Code        | 00 |         |    3 | 00/024B : C9 27 00    |                cmp       #$27           ; I/O error
+  577 |  1 BenchmarkeD.s    299 | Code        | 00 |         |    2 | 00/024E : D0 0E       |                bne       readFILE2      
+  578 |  1 BenchmarkeD.s    300 | Empty       | 00 |         |    0 | 00/0250               |                                         
+  579 |  1 BenchmarkeD.s    301 | Comment     | 00 |         |    0 | 00/0250               | *- Fatal I/O error!!
+  580 |  1 BenchmarkeD.s    302 | Empty       | 00 |         |    0 | 00/0250               |                                         
+  581 |  1 BenchmarkeD.s    303 | Macro       | 00 |         |    0 | 00/0250               |                PushLong  #strRERR       
+  585 |  1 BenchmarkeD.s    303 | Code        | 00 |  1 >>16 |    3 | 00/0250 : F4 00 00    |                PEA       #^#strRERR     
+  592 |  1 BenchmarkeD.s    303 | Code        | 00 |  2      |    3 | 00/0253 : F4 A4 07    |                PEA       #strRERR       
+  595 |  1 BenchmarkeD.s    304 | Macro       | 00 |         |    0 | 00/0256               |                _WriteCString                 
+  597 |  1 BenchmarkeD.s    304 | Code        | 00 |         |    3 | 00/0256 : A2 0C 20    |                LDX       #$200C         ; load tool call #
+  598 |  1 BenchmarkeD.s    304 | Code        | 00 |         |    4 | 00/0259 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  599 |  1 BenchmarkeD.s    305 | Empty       | 00 |         |    0 | 00/025D               |                                         
+  600 |  1 BenchmarkeD.s    306 | Code        | 00 |         |    1 | 00/025D : 60          |                rts                      
+  601 |  1 BenchmarkeD.s    307 | Empty       | 00 |         |    0 | 00/025E               |                                         
+  602 |  1 BenchmarkeD.s    308 | Comment     | 00 |         |    0 | 00/025E               | *- Continue
+  603 |  1 BenchmarkeD.s    309 | Empty       | 00 |         |    0 | 00/025E               |                                         
+  604 |  1 BenchmarkeD.s    310 | Code        | 00 |  2      |    3 | 00/025E : 20 68 02    | readFILE2      jsr       readFILE3      ; close
+  605 |  1 BenchmarkeD.s    311 | Code        | 00 |  2      |    3 | 00/0261 : 20 93 05    |                jsr       printDATETO    
+  606 |  1 BenchmarkeD.s    312 | Code        | 00 |  2      |    3 | 00/0264 : 20 DC 05    |                jsr       calcSPEED      
+  607 |  1 BenchmarkeD.s    313 | Code        | 00 |         |    1 | 00/0267 : 60          |                rts                      
+  608 |  1 BenchmarkeD.s    314 | Empty       | 00 |         |    0 | 00/0268               |                                         
+  609 |  1 BenchmarkeD.s    315 | Code        | 00 |         |    4 | 00/0268 : 22 A8 00 E1 | readFILE3      jsl       {$e100a8}      ; close
+  610 |  1 BenchmarkeD.s    316 | Data        | 00 |         |    2 | 00/026C : 14 20       |                dw        $2014          
+  611 |  1 BenchmarkeD.s    317 | Data        | 00 |  3      |    4 | 00/026E : E2 08 00 00 |                adrl      proCLOSE       
+  612 |  1 BenchmarkeD.s    318 | Code        | 00 |         |    1 | 00/0272 : 60          |                rts                      
+  613 |  1 BenchmarkeD.s    319 | Empty       | 00 |         |    0 | 00/0273               |                                         
+  614 |  1 BenchmarkeD.s    320 | Comment     | 00 |         |    0 | 00/0273               | *----------------------------
+  615 |  1 BenchmarkeD.s    321 | Comment     | 00 |         |    0 | 00/0273               | * FILE CREATION
+  616 |  1 BenchmarkeD.s    322 | Comment     | 00 |         |    0 | 00/0273               | *----------------------------
+  617 |  1 BenchmarkeD.s    323 | Empty       | 00 |         |    0 | 00/0273               |                                         
+  618 |  1 BenchmarkeD.s    324 | Comment     | 00 |         |    0 | 00/0273               | * Write 8 banks of 64KB
+  619 |  1 BenchmarkeD.s    325 | Comment     | 00 |         |    0 | 00/0273               | * starting on bank 2
+  620 |  1 BenchmarkeD.s    326 | Empty       | 00 |         |    0 | 00/0273               |                                         
+  621 |  1 BenchmarkeD.s    327 | Empty       | 00 |         |    0 | 00/0273               | doFCREATE                               
+  622 |  1 BenchmarkeD.s    328 | Empty       | 00 |         |    0 | 00/0273               |                                         
+  623 |  1 BenchmarkeD.s    329 | Code        | 00 |  2      |    3 | 00/0273 : 9C 66 08    |                stz       fgWERR         ; reset flag
+  624 |  1 BenchmarkeD.s    330 | Empty       | 00 |         |    0 | 00/0276               |                                         
+  625 |  1 BenchmarkeD.s    331 | Comment     | 00 |         |    0 | 00/0276               | * 512K
+  626 |  1 BenchmarkeD.s    332 | Code        | 00 |  2      |    3 | 00/0276 : A9 27 08    |                lda       #pathname1     
+  627 |  1 BenchmarkeD.s    333 | Code        | 00 |         |    3 | 00/0279 : A0 00 02    |                ldy       #512           
+  628 |  1 BenchmarkeD.s    334 | Code        | 00 |  2      |    3 | 00/027C : 20 D7 02    |                jsr       createFILE     
+  629 |  1 BenchmarkeD.s    335 | Empty       | 00 |         |    0 | 00/027F               |                                         
+  630 |  1 BenchmarkeD.s    336 | Code        | 00 |  2      |    3 | 00/027F : AD 66 08    |                lda       fgWERR         ; why create a file
+  631 |  1 BenchmarkeD.s    337 | Code        | 00 |  2      |    3 | 00/0282 : 0D 68 08    |                ora       fgCANCEL       
+  632 |  1 BenchmarkeD.s    338 | Code        | 00 |         |    2 | 00/0285 : D0 4D       |                bne       doFCREATE9     ; when there is no room?
+  633 |  1 BenchmarkeD.s    339 | Empty       | 00 |         |    0 | 00/0287               |                                         
+  634 |  1 BenchmarkeD.s    340 | Comment     | 00 |         |    0 | 00/0287               | * 1M
+  635 |  1 BenchmarkeD.s    341 | Code        | 00 |  2      |    3 | 00/0287 : A9 33 08    |                lda       #pathname2     
+  636 |  1 BenchmarkeD.s    342 | Code        | 00 |         |    3 | 00/028A : A0 00 04    |                ldy       #1024          
+  637 |  1 BenchmarkeD.s    343 | Code        | 00 |  2      |    3 | 00/028D : 20 D7 02    |                jsr       createFILE     
+  638 |  1 BenchmarkeD.s    344 | Empty       | 00 |         |    0 | 00/0290               |                                         
+  639 |  1 BenchmarkeD.s    345 | Code        | 00 |  2      |    3 | 00/0290 : AD 66 08    |                lda       fgWERR         
+  640 |  1 BenchmarkeD.s    346 | Code        | 00 |  2      |    3 | 00/0293 : 0D 68 08    |                ora       fgCANCEL       
+  641 |  1 BenchmarkeD.s    347 | Code        | 00 |         |    2 | 00/0296 : D0 3C       |                bne       doFCREATE9     
+  642 |  1 BenchmarkeD.s    348 | Empty       | 00 |         |    0 | 00/0298               |                                         
+  643 |  1 BenchmarkeD.s    349 | Comment     | 00 |         |    0 | 00/0298               | * 2M
+  644 |  1 BenchmarkeD.s    350 | Code        | 00 |  2      |    3 | 00/0298 : A9 3D 08    |                lda       #pathname3     
+  645 |  1 BenchmarkeD.s    351 | Code        | 00 |         |    3 | 00/029B : A0 00 08    |                ldy       #2048          
+  646 |  1 BenchmarkeD.s    352 | Code        | 00 |  2      |    3 | 00/029E : 20 D7 02    |                jsr       createFILE     
+  647 |  1 BenchmarkeD.s    353 | Empty       | 00 |         |    0 | 00/02A1               |                                         
+  648 |  1 BenchmarkeD.s    354 | Code        | 00 |  2      |    3 | 00/02A1 : AD 66 08    |                lda       fgWERR         
+  649 |  1 BenchmarkeD.s    355 | Code        | 00 |  2      |    3 | 00/02A4 : 0D 68 08    |                ora       fgCANCEL       
+  650 |  1 BenchmarkeD.s    356 | Code        | 00 |         |    2 | 00/02A7 : D0 2B       |                bne       doFCREATE9     
+  651 |  1 BenchmarkeD.s    357 | Empty       | 00 |         |    0 | 00/02A9               |                                         
+  652 |  1 BenchmarkeD.s    358 | Comment     | 00 |         |    0 | 00/02A9               | * 4M
+  653 |  1 BenchmarkeD.s    359 | Code        | 00 |  2      |    3 | 00/02A9 : A9 47 08    |                lda       #pathname4     
+  654 |  1 BenchmarkeD.s    360 | Code        | 00 |         |    3 | 00/02AC : A0 00 10    |                ldy       #4096          
+  655 |  1 BenchmarkeD.s    361 | Code        | 00 |  2      |    3 | 00/02AF : 20 D7 02    |                jsr       createFILE     
+  656 |  1 BenchmarkeD.s    362 | Empty       | 00 |         |    0 | 00/02B2               |                                         
+  657 |  1 BenchmarkeD.s    363 | Code        | 00 |  2      |    3 | 00/02B2 : AD 66 08    |                lda       fgWERR         
+  658 |  1 BenchmarkeD.s    364 | Code        | 00 |  2      |    3 | 00/02B5 : 0D 68 08    |                ora       fgCANCEL       
+  659 |  1 BenchmarkeD.s    365 | Code        | 00 |         |    2 | 00/02B8 : D0 1A       |                bne       doFCREATE9     
+  660 |  1 BenchmarkeD.s    366 | Empty       | 00 |         |    0 | 00/02BA               |                                         
+  661 |  1 BenchmarkeD.s    367 | Comment     | 00 |         |    0 | 00/02BA               | * 8M
+  662 |  1 BenchmarkeD.s    368 | Code        | 00 |  2      |    3 | 00/02BA : A9 51 08    |                lda       #pathname5     
+  663 |  1 BenchmarkeD.s    369 | Code        | 00 |         |    3 | 00/02BD : A0 00 20    |                ldy       #8192          
+  664 |  1 BenchmarkeD.s    370 | Code        | 00 |  2      |    3 | 00/02C0 : 20 D7 02    |                jsr       createFILE     
+  665 |  1 BenchmarkeD.s    371 | Empty       | 00 |         |    0 | 00/02C3               |                                         
+  666 |  1 BenchmarkeD.s    372 | Code        | 00 |  2      |    3 | 00/02C3 : AD 66 08    |                lda       fgWERR         
+  667 |  1 BenchmarkeD.s    373 | Code        | 00 |  2      |    3 | 00/02C6 : 0D 68 08    |                ora       fgCANCEL       
+  668 |  1 BenchmarkeD.s    374 | Code        | 00 |         |    2 | 00/02C9 : D0 09       |                bne       doFCREATE9     
+  669 |  1 BenchmarkeD.s    375 | Empty       | 00 |         |    0 | 00/02CB               |                                         
+  670 |  1 BenchmarkeD.s    376 | Comment     | 00 |         |    0 | 00/02CB               | * 16M
+  671 |  1 BenchmarkeD.s    377 | Code        | 00 |  2      |    3 | 00/02CB : A9 5B 08    |                lda       #pathname6     
+  672 |  1 BenchmarkeD.s    378 | Code        | 00 |         |    3 | 00/02CE : A0 00 40    |                ldy       #16384         
+  673 |  1 BenchmarkeD.s    379 | Code        | 00 |  2      |    3 | 00/02D1 : 20 D7 02    |                jsr       createFILE     
+  674 |  1 BenchmarkeD.s    380 | Empty       | 00 |         |    0 | 00/02D4               |                                         
+  675 |  1 BenchmarkeD.s    381 | Code        | 00 |  2      |    3 | 00/02D4 : 4C 54 01    | doFCREATE9     jmp       mainNEXT       
+  676 |  1 BenchmarkeD.s    382 | Empty       | 00 |         |    0 | 00/02D7               |                                         
+  677 |  1 BenchmarkeD.s    383 | Comment     | 00 |         |    0 | 00/02D7               | *----------
+  678 |  1 BenchmarkeD.s    384 | Empty       | 00 |         |    0 | 00/02D7               |                                         
+  679 |  1 BenchmarkeD.s    385 | Empty       | 00 |         |    0 | 00/02D7               | createFILE                              
+  680 |  1 BenchmarkeD.s    386 | Empty       | 00 |         |    0 | 00/02D7               |                                         
+  681 |  1 BenchmarkeD.s    387 | Comment     | 00 |         |    0 | 00/02D7               | * pathname
+  682 |  1 BenchmarkeD.s    388 | Code        | 00 |  2      |    3 | 00/02D7 : 8D 80 08    |                sta       proDESTROY+2   
+  683 |  1 BenchmarkeD.s    389 | Code        | 00 |  2      |    3 | 00/02DA : 8D 6C 08    |                sta       proCREATE+2    
+  684 |  1 BenchmarkeD.s    390 | Code        | 00 |  2      |    3 | 00/02DD : 8D 88 08    |                sta       proOPEN+4      
+  685 |  1 BenchmarkeD.s    391 | Empty       | 00 |         |    0 | 00/02E0               |                                         
+  686 |  1 BenchmarkeD.s    392 | Comment     | 00 |         |    0 | 00/02E0               | * filesize in KB
+  687 |  1 BenchmarkeD.s    393 | Code        | 00 |  2      |    3 | 00/02E0 : 8C AC 0A    |                sty       filesize       
+  688 |  1 BenchmarkeD.s    394 | Empty       | 00 |         |    0 | 00/02E3               |                                         
+  689 |  1 BenchmarkeD.s    395 | Comment     | 00 |         |    0 | 00/02E3               | * number of 64K blocks
+  690 |  1 BenchmarkeD.s    396 | Code        | 00 |         |    1 | 00/02E3 : 98          |                tya                      ; 512K
+  691 |  1 BenchmarkeD.s    397 | Code        | 00 |         |    1 | 00/02E4 : EB          |                xba                      ; divide by 64
+  692 |  1 BenchmarkeD.s    398 | Code        | 00 |         |    1 | 00/02E5 : 0A          |                asl                      ; =
+  693 |  1 BenchmarkeD.s    399 | Code        | 00 |         |    1 | 00/02E6 : 0A          |                asl                      ; xba * 4, see below...
+  694 |  1 BenchmarkeD.s    400 | Comment     | 00 |         |    0 | 00/02E7               | * lsr  ; /2
+  695 |  1 BenchmarkeD.s    401 | Comment     | 00 |         |    0 | 00/02E7               | * lsr  ; /4
+  696 |  1 BenchmarkeD.s    402 | Comment     | 00 |         |    0 | 00/02E7               | * lsr  ; /8
+  697 |  1 BenchmarkeD.s    403 | Comment     | 00 |         |    0 | 00/02E7               | * lsr ; /16
+  698 |  1 BenchmarkeD.s    404 | Comment     | 00 |         |    0 | 00/02E7               | * lsr ; /32
+  699 |  1 BenchmarkeD.s    405 | Comment     | 00 |         |    0 | 00/02E7               | * lsr ; /64
+  700 |  1 BenchmarkeD.s    406 | Code        | 00 |  2      |    3 | 00/02E7 : 8D AA 0A    |                sta       maxINDEX       
+  701 |  1 BenchmarkeD.s    407 | Empty       | 00 |         |    0 | 00/02EA               |                                         
+  702 |  1 BenchmarkeD.s    408 | Comment     | 00 |         |    0 | 00/02EA               | *----------
+  703 |  1 BenchmarkeD.s    409 | Comment     | 00 |         |    0 | 00/02EA               | * First, delete file
+  704 |  1 BenchmarkeD.s    410 | Comment     | 00 |         |    0 | 00/02EA               | * Must not be taken into account
+  705 |  1 BenchmarkeD.s    411 | Comment     | 00 |         |    0 | 00/02EA               | * in the file creation process
+  706 |  1 BenchmarkeD.s    412 | Empty       | 00 |         |    0 | 00/02EA               |                                         
+  707 |  1 BenchmarkeD.s    413 | Code        | 00 |         |    4 | 00/02EA : 22 A8 00 E1 |                jsl       {$e100a8}      ; destroy
+  708 |  1 BenchmarkeD.s    414 | Data        | 00 |         |    2 | 00/02EE : 02 20       |                dw        $2002          
+  709 |  1 BenchmarkeD.s    415 | Data        | 00 |  3      |    4 | 00/02F0 : 7E 08 00 00 |                adrl      proDESTROY     ; (hope the file is not locked)
+  710 |  1 BenchmarkeD.s    416 | Empty       | 00 |         |    0 | 00/02F4               |                                         
+  711 |  1 BenchmarkeD.s    417 | Comment     | 00 |         |    0 | 00/02F4               | *--- Check if we can create a file
+  712 |  1 BenchmarkeD.s    418 | Empty       | 00 |         |    0 | 00/02F4               |                                         
+  713 |  1 BenchmarkeD.s    419 | Code        | 00 |         |    4 | 00/02F4 : 22 A8 00 E1 |                jsl       {$e100a8}      ; create
+  714 |  1 BenchmarkeD.s    420 | Data        | 00 |         |    2 | 00/02F8 : 01 20       |                dw        $2001          
+  715 |  1 BenchmarkeD.s    421 | Data        | 00 |  3      |    4 | 00/02FA : 6A 08 00 00 |                adrl      proCREATE      
+  716 |  1 BenchmarkeD.s    422 | Code        | 00 |         |    2 | 00/02FE : 90 01       |                bcc       createFILE1    
+  717 |  1 BenchmarkeD.s    423 | Empty       | 00 |         |    0 | 00/0300               |                                         
+  718 |  1 BenchmarkeD.s    424 | Code        | 00 |         |    1 | 00/0300 : 60          |                rts                      ; nope, volume full probably...
+  719 |  1 BenchmarkeD.s    425 | Empty       | 00 |         |    0 | 00/0301               |                                         
+  720 |  1 BenchmarkeD.s    426 | Comment     | 00 |         |    0 | 00/0301               | *---
+  721 |  1 BenchmarkeD.s    427 | Empty       | 00 |         |    0 | 00/0301               |                                         
+  722 |  1 BenchmarkeD.s    428 | Empty       | 00 |         |    0 | 00/0301               | createFILE1                             ; yes, we can
+  723 |  1 BenchmarkeD.s    429 | Macro       | 00 |         |    0 | 00/0301               |                PushLong  #strCREATE     
+  727 |  1 BenchmarkeD.s    429 | Code        | 00 |  1 >>16 |    3 | 00/0301 : F4 00 00    |                PEA       #^#strCREATE   
+  734 |  1 BenchmarkeD.s    429 | Code        | 00 |  2      |    3 | 00/0304 : F4 91 07    |                PEA       #strCREATE     
+  737 |  1 BenchmarkeD.s    430 | Macro       | 00 |         |    0 | 00/0307               |                _WriteCString                 
+  739 |  1 BenchmarkeD.s    430 | Code        | 00 |         |    3 | 00/0307 : A2 0C 20    |                LDX       #$200C         ; load tool call #
+  740 |  1 BenchmarkeD.s    430 | Code        | 00 |         |    4 | 00/030A : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  741 |  1 BenchmarkeD.s    431 | Empty       | 00 |         |    0 | 00/030E               |                                         
+  742 |  1 BenchmarkeD.s    432 | Code        | 00 |  2      |    3 | 00/030E : AE 8A 08    |                ldx       proOPEN+6      
+  743 |  1 BenchmarkeD.s    433 | Code        | 00 |  2      |    3 | 00/0311 : AC 88 08    |                ldy       proOPEN+4      
+  744 |  1 BenchmarkeD.s    434 | Code        | 00 |  2      |    3 | 00/0314 : 20 36 05    |                jsr       printC1        
+  745 |  1 BenchmarkeD.s    435 | Empty       | 00 |         |    0 | 00/0317               |                                         
+  746 |  1 BenchmarkeD.s    436 | Code        | 00 |  2      |    3 | 00/0317 : 20 4A 05    |                jsr       printDATEFROM  
+  747 |  1 BenchmarkeD.s    437 | Empty       | 00 |         |    0 | 00/031A               |                                         
+  748 |  1 BenchmarkeD.s    438 | Comment     | 00 |         |    0 | 00/031A               | *---
+  749 |  1 BenchmarkeD.s    439 | Empty       | 00 |         |    0 | 00/031A               |                                         
+  750 |  1 BenchmarkeD.s    440 | Code        | 00 |         |    4 | 00/031A : 22 A8 00 E1 |                jsl       {$e100a8}      
+  751 |  1 BenchmarkeD.s    441 | Data        | 00 |         |    2 | 00/031E : 10 20       |                dw        $2010          
+  752 |  1 BenchmarkeD.s    442 | Data        | 00 |  3      |    4 | 00/0320 : 84 08 00 00 |                adrl      proOPEN        
+  753 |  1 BenchmarkeD.s    443 | Empty       | 00 |         |    0 | 00/0324               |                                         
+  754 |  1 BenchmarkeD.s    444 | Code        | 00 |  2      |    3 | 00/0324 : AD 86 08    |                lda       proOPEN+2      
+  755 |  1 BenchmarkeD.s    445 | Code        | 00 |  2      |    3 | 00/0327 : 8D D2 08    |                sta       proWRITE+2     
+  756 |  1 BenchmarkeD.s    446 | Code        | 00 |  2      |    3 | 00/032A : 8D E4 08    |                sta       proCLOSE+2     
+  757 |  1 BenchmarkeD.s    447 | Empty       | 00 |         |    0 | 00/032D               |                                         
+  758 |  1 BenchmarkeD.s    448 | Code        | 00 |  2      |    3 | 00/032D : 9C A8 0A    |                stz       theINDEX       
+  759 |  1 BenchmarkeD.s    449 | Empty       | 00 |         |    0 | 00/0330               |                                         
+  760 |  1 BenchmarkeD.s    450 | Code        | 00 |  2      |    3 | 00/0330 : 20 1C 05    | ozunid_2       jsr       displayWHEEL   
+  761 |  1 BenchmarkeD.s    451 | Code        | 00 |  2      |    3 | 00/0333 : 20 EC 04    |                jsr       checkCANCEL    
+  762 |  1 BenchmarkeD.s    452 | Code        | 00 |         |    2 | 00/0336 : B0 24       |                bcs       createFILE2    
+  763 |  1 BenchmarkeD.s    453 | Empty       | 00 |         |    0 | 00/0338               |                                         
+  764 |  1 BenchmarkeD.s    454 | Code        | 00 |         |    4 | 00/0338 : 22 A8 00 E1 |                jsl       {$e100a8}      
+  765 |  1 BenchmarkeD.s    455 | Data        | 00 |         |    2 | 00/033C : 13 20       |                dw        $2013          
+  766 |  1 BenchmarkeD.s    456 | Data        | 00 |  3      |    4 | 00/033E : D0 08 00 00 |                adrl      proWRITE       
+  767 |  1 BenchmarkeD.s    457 | Code        | 00 |         |    2 | 00/0342 : 90 2D       |                bcc       createFILE3    
+  768 |  1 BenchmarkeD.s    458 | Empty       | 00 |         |    0 | 00/0344               |                                         
+  769 |  1 BenchmarkeD.s    459 | Code        | 00 |         |    3 | 00/0344 : C9 48 00    |                cmp       #$0048         
+  770 |  1 BenchmarkeD.s    460 | Code        | 00 |         |    2 | 00/0347 : D0 28       |                bne       createFILE3    
+  771 |  1 BenchmarkeD.s    461 | Empty       | 00 |         |    0 | 00/0349               |                                         
+  772 |  1 BenchmarkeD.s    462 | Comment     | 00 |         |    0 | 00/0349               | *--- Special case: we encountered a volume full error
+  773 |  1 BenchmarkeD.s    463 | Comment     | 00 |         |    0 | 00/0349               | * we will close the file and delete it...
+  774 |  1 BenchmarkeD.s    464 | Empty       | 00 |         |    0 | 00/0349               |                                         
+  775 |  1 BenchmarkeD.s    465 | Macro       | 00 |         |    0 | 00/0349               |                PushLong  #strWERR       
+  779 |  1 BenchmarkeD.s    465 | Code        | 00 |  1 >>16 |    3 | 00/0349 : F4 00 00    |                PEA       #^#strWERR     
+  786 |  1 BenchmarkeD.s    465 | Code        | 00 |  2      |    3 | 00/034C : F4 BA 07    |                PEA       #strWERR       
+  789 |  1 BenchmarkeD.s    466 | Macro       | 00 |         |    0 | 00/034F               |                _WriteCString                 
+  791 |  1 BenchmarkeD.s    466 | Code        | 00 |         |    3 | 00/034F : A2 0C 20    |                LDX       #$200C         ; load tool call #
+  792 |  1 BenchmarkeD.s    466 | Code        | 00 |         |    4 | 00/0352 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+  793 |  1 BenchmarkeD.s    467 | Empty       | 00 |         |    0 | 00/0356               |                                         
+  794 |  1 BenchmarkeD.s    468 | Code        | 00 |         |    3 | 00/0356 : A9 01 00    |                lda       #1             ; set the error flag
+  795 |  1 BenchmarkeD.s    469 | Code        | 00 |  2      |    3 | 00/0359 : 8D 66 08    |                sta       fgWERR         ; for other file creations
+  796 |  1 BenchmarkeD.s    470 | Empty       | 00 |         |    0 | 00/035C               |                                         
+  797 |  1 BenchmarkeD.s    471 | Empty       | 00 |         |    0 | 00/035C               | createFILE2                             ; errrooorrrrrrrr
+  798 |  1 BenchmarkeD.s    472 | Empty       | 00 |         |    0 | 00/035C               |                                         
+  799 |  1 BenchmarkeD.s    473 | Code        | 00 |         |    4 | 00/035C : 22 A8 00 E1 |                jsl       {$e100a8}      ; error #$48...
+  800 |  1 BenchmarkeD.s    474 | Data        | 00 |         |    2 | 00/0360 : 14 20       |                dw        $2014          
+  801 |  1 BenchmarkeD.s    475 | Data        | 00 |  3      |    4 | 00/0362 : E2 08 00 00 |                adrl      proCLOSE       
+  802 |  1 BenchmarkeD.s    476 | Empty       | 00 |         |    0 | 00/0366               |                                         
+  803 |  1 BenchmarkeD.s    477 | Code        | 00 |         |    4 | 00/0366 : 22 A8 00 E1 |                jsl       {$e100a8}      
+  804 |  1 BenchmarkeD.s    478 | Data        | 00 |         |    2 | 00/036A : 02 20       |                dw        $2002          
+  805 |  1 BenchmarkeD.s    479 | Data        | 00 |  3      |    4 | 00/036C : 7E 08 00 00 |                adrl      proDESTROY     
+  806 |  1 BenchmarkeD.s    480 | Empty       | 00 |         |    0 | 00/0370               |                                         
+  807 |  1 BenchmarkeD.s    481 | Code        | 00 |         |    1 | 00/0370 : 60          |                rts                      
+  808 |  1 BenchmarkeD.s    482 | Empty       | 00 |         |    0 | 00/0371               |                                         
+  809 |  1 BenchmarkeD.s    483 | Comment     | 00 |         |    0 | 00/0371               | *---
+  810 |  1 BenchmarkeD.s    484 | Empty       | 00 |         |    0 | 00/0371               |                                         
+  811 |  1 BenchmarkeD.s    485 | Empty       | 00 |         |    0 | 00/0371               | createFILE3                             ; let's go on
+  812 |  1 BenchmarkeD.s    486 | Code        | 00 |  2      |    3 | 00/0371 : EE A8 0A    |                inc       theINDEX       
+  813 |  1 BenchmarkeD.s    487 | Code        | 00 |  2      |    3 | 00/0374 : AD A8 0A    |                lda       theINDEX       
+  814 |  1 BenchmarkeD.s    488 | Code        | 00 |  2      |    3 | 00/0377 : CD AA 0A    |                cmp       maxINDEX       ; 32*8*64 = 16M
+  815 |  1 BenchmarkeD.s    489 | Code        | 00 |         |    2 | 00/037A : 90 B4       |                blt       ozunid_2       
+  816 |  1 BenchmarkeD.s    490 | Empty       | 00 |         |    0 | 00/037C               |                                         
+  817 |  1 BenchmarkeD.s    491 | Code        | 00 |         |    4 | 00/037C : 22 A8 00 E1 |                jsl       {$e100a8}      
+  818 |  1 BenchmarkeD.s    492 | Data        | 00 |         |    2 | 00/0380 : 14 20       |                dw        $2014          
+  819 |  1 BenchmarkeD.s    493 | Data        | 00 |  3      |    4 | 00/0382 : E2 08 00 00 |                adrl      proCLOSE       
+  820 |  1 BenchmarkeD.s    494 | Empty       | 00 |         |    0 | 00/0386               |                                         
+  821 |  1 BenchmarkeD.s    495 | Code        | 00 |  2      |    3 | 00/0386 : 20 93 05    |                jsr       printDATETO    
+  822 |  1 BenchmarkeD.s    496 | Code        | 00 |  2      |    3 | 00/0389 : 20 DC 05    |                jsr       calcSPEED      
+  823 |  1 BenchmarkeD.s    497 | Code        | 00 |         |    1 | 00/038C : 60          |                rts                      
+  824 |  1 BenchmarkeD.s    498 | Empty       | 00 |         |    0 | 00/038D               |                                         
+  825 |  1 BenchmarkeD.s    499 | Comment     | 00 |         |    0 | 00/038D               | *----------------------------
+  826 |  1 BenchmarkeD.s    500 | Comment     | 00 |         |    0 | 00/038D               | * READ BLOCK SPEED
+  827 |  1 BenchmarkeD.s    501 | Comment     | 00 |         |    0 | 00/038D               | *----------------------------
+  828 |  1 BenchmarkeD.s    502 | Empty       | 00 |         |    0 | 00/038D               |                                         
+  829 |  1 BenchmarkeD.s    503 | Comment     | 00 |         |    0 | 00/038D               | *----------------------------
+  830 |  1 BenchmarkeD.s    504 | Comment     | 00 |         |    0 | 00/038D               | * Entry point for menu 3
+  831 |  1 BenchmarkeD.s    505 | Empty       | 00 |         |    0 | 00/038D               |                                         
+  832 |  1 BenchmarkeD.s    506 | Empty       | 00 |         |    0 | 00/038D               | doBREADtrois                            
+  833 |  1 BenchmarkeD.s    507 | Empty       | 00 |         |    0 | 00/038D               |                                         
+  834 |  1 BenchmarkeD.s    508 | Code        | 00 |         |    3 | 00/038D : A9 01 00    |                lda       #1             ; 64KB
+  835 |  1 BenchmarkeD.s    509 | Code        | 00 |  2      |    3 | 00/0390 : 8D 12 09    |                sta       proDREAD+$0a   
+  836 |  1 BenchmarkeD.s    510 | Code        | 00 |  2      |    3 | 00/0393 : 9C 10 09    |                stz       proDREAD+$08   
+  837 |  1 BenchmarkeD.s    511 | Empty       | 00 |         |    0 | 00/0396               |                                         
+  838 |  1 BenchmarkeD.s    512 | Code        | 00 |         |    3 | 00/0396 : A9 80 00    |                lda       #128           ; step is 128 blocks
+  839 |  1 BenchmarkeD.s    513 | Code        | 00 |  2      |    3 | 00/0399 : 8D E0 04    |                sta       blockSTEP      
+  840 |  1 BenchmarkeD.s    514 | Code        | 00 |         |    2 | 00/039C : D0 0F       |                bne       doBREADgo      
+  841 |  1 BenchmarkeD.s    515 | Empty       | 00 |         |    0 | 00/039E               |                                         
+  842 |  1 BenchmarkeD.s    516 | Comment     | 00 |         |    0 | 00/039E               | *----------------------------
+  843 |  1 BenchmarkeD.s    517 | Comment     | 00 |         |    0 | 00/039E               | * Entry point for menu 4
+  844 |  1 BenchmarkeD.s    518 | Empty       | 00 |         |    0 | 00/039E               |                                         
+  845 |  1 BenchmarkeD.s    519 | Empty       | 00 |         |    0 | 00/039E               | doBREADquatre                           
+  846 |  1 BenchmarkeD.s    520 | Empty       | 00 |         |    0 | 00/039E               |                                         
+  847 |  1 BenchmarkeD.s    521 | Code        | 00 |         |    3 | 00/039E : A9 00 02    |                lda       #512           ; 512 bytes
+  848 |  1 BenchmarkeD.s    522 | Code        | 00 |  2      |    3 | 00/03A1 : 8D 10 09    |                sta       proDREAD+$08   
+  849 |  1 BenchmarkeD.s    523 | Code        | 00 |  2      |    3 | 00/03A4 : 9C 12 09    |                stz       proDREAD+$0a   
+  850 |  1 BenchmarkeD.s    524 | Empty       | 00 |         |    0 | 00/03A7               |                                         
+  851 |  1 BenchmarkeD.s    525 | Code        | 00 |         |    3 | 00/03A7 : A9 01 00    |                lda       #1             ; step is 1 block
+  852 |  1 BenchmarkeD.s    526 | Code        | 00 |  2      |    3 | 00/03AA : 8D E0 04    |                sta       blockSTEP      
+  853 |  1 BenchmarkeD.s    527 | Empty       | 00 |         |    0 | 00/03AD               |                                         
+  854 |  1 BenchmarkeD.s    528 | Comment     | 00 |         |    0 | 00/03AD               | *----------------------------
+  855 |  1 BenchmarkeD.s    529 | Comment     | 00 |         |    0 | 00/03AD               | * Common routine
+  856 |  1 BenchmarkeD.s    530 | Empty       | 00 |         |    0 | 00/03AD               |                                         
+  857 |  1 BenchmarkeD.s    531 | Empty       | 00 |         |    0 | 00/03AD               | doBREADgo                               
+  858 |  1 BenchmarkeD.s    532 | Empty       | 00 |         |    0 | 00/03AD               |                                         
+  859 |  1 BenchmarkeD.s    533 | Comment     | 00 |         |    0 | 00/03AD               | *--- First, get our prefix
+  860 |  1 BenchmarkeD.s    534 | Empty       | 00 |         |    0 | 00/03AD               |                                         
+  861 |  1 BenchmarkeD.s    535 | Code        | 00 |         |    4 | 00/03AD : 22 A8 00 E1 |                jsl       {$e100a8}      ; get our prefix
+  862 |  1 BenchmarkeD.s    536 | Data        | 00 |         |    2 | 00/03B1 : 0A 20       |                dw        $200a          
+  863 |  1 BenchmarkeD.s    537 | Data        | 00 |  3      |    4 | 00/03B3 : F2 08 00 00 |                adrl      proGETPREFIX   
+  864 |  1 BenchmarkeD.s    538 | Empty       | 00 |         |    0 | 00/03B7               |                                         
+  865 |  1 BenchmarkeD.s    539 | Comment     | 00 |         |    0 | 00/03B7               | *--- Make it a volume name
+  866 |  1 BenchmarkeD.s    540 | Empty       | 00 |         |    0 | 00/03B7               |                                         
+  867 |  1 BenchmarkeD.s    541 | Code        | 10 |         |    2 | 00/03B7 : E2 20       |                sep       #$20           ; make a short one
+  868 |  1 BenchmarkeD.s    542 | Empty       | 10 |         |    0 | 00/03B9               |                                         
+  869 |  1 BenchmarkeD.s    543 | Code        | 10 |  2      |    3 | 00/03B9 : CE 6A 09    |                dec       pfxNAMEopen    ; remove final ':'
+  870 |  1 BenchmarkeD.s    544 | Empty       | 10 |         |    0 | 00/03BC               |                                         
+  871 |  1 BenchmarkeD.s    545 | Code        | 10 |         |    3 | 00/03BC : A2 01 00    |                ldx       #1             ; find the first :
+  872 |  1 BenchmarkeD.s    546 | Code        | 10 |  2      |    3 | 00/03BF : BD 6C 09    | ozunid_3       lda       pfxNAMEopen2,x 
+  873 |  1 BenchmarkeD.s    547 | Code        | 10 |         |    2 | 00/03C2 : C9 3A       |                cmp       #':'           
+  874 |  1 BenchmarkeD.s    548 | Code        | 10 |         |    2 | 00/03C4 : F0 06       |                beq       doBREAD1       ; we'll get a volume name
+  875 |  1 BenchmarkeD.s    549 | Empty       | 10 |         |    0 | 00/03C6               |                                         
+  876 |  1 BenchmarkeD.s    550 | Code        | 10 |         |    1 | 00/03C6 : E8          |                inx                      
+  877 |  1 BenchmarkeD.s    551 | Code        | 10 |  2      |    3 | 00/03C7 : EC 6A 09    |                cpx       pfxNAMEopen    
+  878 |  1 BenchmarkeD.s    552 | Code        | 10 |         |    2 | 00/03CA : D0 F3       |                bne       ozunid_3       
+  879 |  1 BenchmarkeD.s    553 | Empty       | 10 |         |    0 | 00/03CC               |                                         
+  880 |  1 BenchmarkeD.s    554 | Code        | 10 |  2      |    3 | 00/03CC : 8E 6A 09    | doBREAD1       stx       pfxNAMEopen    ; save new length
+  881 |  1 BenchmarkeD.s    555 | Empty       | 10 |         |    0 | 00/03CF               |                                         
+  882 |  1 BenchmarkeD.s    556 | Code        | 00 |         |    2 | 00/03CF : C2 20       |                rep       #$20           
+  883 |  1 BenchmarkeD.s    557 | Empty       | 00 |         |    0 | 00/03D1               |                                         
+  884 |  1 BenchmarkeD.s    558 | Comment     | 00 |         |    0 | 00/03D1               | *--- Browse the list of devices and get our devnum
+  885 |  1 BenchmarkeD.s    559 | Empty       | 00 |         |    0 | 00/03D1               |                                         
+  886 |  1 BenchmarkeD.s    560 | Code        | 00 |         |    3 | 00/03D1 : A9 01 00    |                lda       #1             ; start with device 1
+  887 |  1 BenchmarkeD.s    561 | Code        | 00 |  2      |    3 | 00/03D4 : 8D FC 08    |                sta       proDINFO+2     
+  888 |  1 BenchmarkeD.s    562 | Empty       | 00 |         |    0 | 00/03D7               |                                         
+  889 |  1 BenchmarkeD.s    563 | Code        | 00 |         |    4 | 00/03D7 : 22 A8 00 E1 | buildVOL1      jsl       {$e100a8}      ; get device info
+  890 |  1 BenchmarkeD.s    564 | Data        | 00 |         |    2 | 00/03DB : 2C 20       |                dw        $202C          
+  891 |  1 BenchmarkeD.s    565 | Data        | 00 |  3      |    4 | 00/03DD : FA 08 00 00 |                adrl      proDINFO       
+  892 |  1 BenchmarkeD.s    566 | Code        | 00 |         |    2 | 00/03E1 : 90 0D       |                bcc       buildVOL3      
+  893 |  1 BenchmarkeD.s    567 | Empty       | 00 |         |    0 | 00/03E3               |                                         
+  894 |  1 BenchmarkeD.s    568 | Code        | 00 |         |    3 | 00/03E3 : C9 11 00    |                cmp       #$0011         ; no more devices
+  895 |  1 BenchmarkeD.s    569 | Code        | 00 |         |    2 | 00/03E6 : D0 03       |                bne       buildVOL9      
+  896 |  1 BenchmarkeD.s    570 | Empty       | 00 |         |    0 | 00/03E8               |                                         
+  897 |  1 BenchmarkeD.s    571 | Code        | 00 |  2      |    3 | 00/03E8 : 4C 54 01    |                jmp       mainNEXT       ; done and not found!
+  898 |  1 BenchmarkeD.s    572 | Empty       | 00 |         |    0 | 00/03EB               |                                         
+  899 |  1 BenchmarkeD.s    573 | Code        | 00 |  2      |    3 | 00/03EB : EE FC 08    | buildVOL9      inc       proDINFO+2     
+  900 |  1 BenchmarkeD.s    574 | Code        | 00 |         |    2 | 00/03EE : 80 E7       |                bra       buildVOL1      
+  901 |  1 BenchmarkeD.s    575 | Empty       | 00 |         |    0 | 00/03F0               |                                         
+  902 |  1 BenchmarkeD.s    576 | Comment     | 00 |         |    0 | 00/03F0               | *--- Check the block device
+  903 |  1 BenchmarkeD.s    577 | Empty       | 00 |         |    0 | 00/03F0               |                                         
+  904 |  1 BenchmarkeD.s    578 | Code        | 00 |  2      |    3 | 00/03F0 : AD 02 09    | buildVOL3      lda       proDINFO+8     
+  905 |  1 BenchmarkeD.s    579 | Code        | 00 |         |    3 | 00/03F3 : 29 80 00    |                and       #$0080         ; block device + read allowed
+  906 |  1 BenchmarkeD.s    580 | Code        | 00 |         |    2 | 00/03F6 : F0 F3       |                beq       buildVOL9      ; not a block device
+  907 |  1 BenchmarkeD.s    581 | Empty       | 00 |         |    0 | 00/03F8               |                                         
+  908 |  1 BenchmarkeD.s    582 | Code        | 00 |         |    4 | 00/03F8 : 22 A8 00 E1 |                jsl       {$e100a8}      
+  909 |  1 BenchmarkeD.s    583 | Data        | 00 |         |    2 | 00/03FC : 08 20       |                dw        $2008          
+  910 |  1 BenchmarkeD.s    584 | Data        | 00 |  3      |    4 | 00/03FE : 1E 09 00 00 |                adrl      proVOLUME      
+  911 |  1 BenchmarkeD.s    585 | Code        | 00 |         |    2 | 00/0402 : B0 E7       |                bcs       buildVOL9      ; probably no disk in drive
+  912 |  1 BenchmarkeD.s    586 | Empty       | 00 |         |    0 | 00/0404               |                                         
+  913 |  1 BenchmarkeD.s    587 | Comment     | 00 |         |    0 | 00/0404               | *--- Is it a ProDOS file system (for v2 ;-))
+  914 |  1 BenchmarkeD.s    588 | Empty       | 00 |         |    0 | 00/0404               |                                         
+  915 |  1 BenchmarkeD.s    589 | Code        | 00 |  2      |    3 | 00/0404 : AD 30 09    |                lda       proVOLUME+$12  
+  916 |  1 BenchmarkeD.s    590 | Code        | 00 |         |    3 | 00/0407 : C9 01 00    |                cmp       #1             ; ProDOS
+  917 |  1 BenchmarkeD.s    591 | Code        | 00 |         |    2 | 00/040A : D0 DF       |                bne       buildVOL9      
+  918 |  1 BenchmarkeD.s    592 | Empty       | 00 |         |    0 | 00/040C               |                                         
+  919 |  1 BenchmarkeD.s    593 | Code        | 00 |  2      |    3 | 00/040C : AD 32 09    |                lda       proVOLUME+$14  
+  920 |  1 BenchmarkeD.s    594 | Code        | 00 |         |    3 | 00/040F : C9 00 02    |                cmp       #512           ; blockSize
+  921 |  1 BenchmarkeD.s    595 | Code        | 00 |         |    2 | 00/0412 : D0 D7       |                bne       buildVOL9      
+  922 |  1 BenchmarkeD.s    596 | Empty       | 00 |         |    0 | 00/0414               |                                         
+  923 |  1 BenchmarkeD.s    597 | Comment     | 00 |         |    0 | 00/0414               | *--- Now compare
+  924 |  1 BenchmarkeD.s    598 | Empty       | 00 |         |    0 | 00/0414               |                                         
+  925 |  1 BenchmarkeD.s    599 | Code        | 00 |  2      |    3 | 00/0414 : AD 6A 09    | buildVOL4      lda       pfxNAMEopen    ; length...
+  926 |  1 BenchmarkeD.s    600 | Code        | 00 |  2      |    3 | 00/0417 : CD 2E 0A    |                cmp       volNAMEopen    
+  927 |  1 BenchmarkeD.s    601 | Code        | 00 |         |    2 | 00/041A : D0 CF       |                bne       buildVOL9      
+  928 |  1 BenchmarkeD.s    602 | Empty       | 00 |         |    0 | 00/041C               |                                         
+  929 |  1 BenchmarkeD.s    603 | Code        | 00 |         |    3 | 00/041C : A2 00 00    |                ldx       #0             ; string
+  930 |  1 BenchmarkeD.s    604 | Code        | 00 |  2      |    3 | 00/041F : BD 6A 09    | ozunid_4       lda       pfxNAMEopen,x  
+  931 |  1 BenchmarkeD.s    605 | Code        | 00 |  2      |    3 | 00/0422 : DD 2E 0A    |                cmp       volNAMEopen,x  
+  932 |  1 BenchmarkeD.s    606 | Code        | 00 |         |    2 | 00/0425 : D0 C4       |                bne       buildVOL9      
+  933 |  1 BenchmarkeD.s    607 | Code        | 00 |         |    1 | 00/0427 : E8          |                inx                      
+  934 |  1 BenchmarkeD.s    608 | Code        | 00 |  2      |    3 | 00/0428 : EC 6A 09    |                cpx       pfxNAMEopen    
+  935 |  1 BenchmarkeD.s    609 | Code        | 00 |         |    2 | 00/042B : D0 F2       |                bne       ozunid_4       
+  936 |  1 BenchmarkeD.s    610 | Empty       | 00 |         |    0 | 00/042D               |                                         
+  937 |  1 BenchmarkeD.s    611 | Comment     | 00 |         |    0 | 00/042D               | *--- Here we have our volume, yeah!
+  938 |  1 BenchmarkeD.s    612 | Empty       | 00 |         |    0 | 00/042D               |                                         
+  939 |  1 BenchmarkeD.s    613 | Code        | 00 |  2      |    3 | 00/042D : AD FC 08    |                lda       proDINFO+2     ; Get the device ID
+  940 |  1 BenchmarkeD.s    614 | Code        | 00 |  2      |    3 | 00/0430 : 8D 0A 09    |                sta       proDREAD+2     
+  941 |  1 BenchmarkeD.s    615 | Empty       | 00 |         |    0 | 00/0433               |                                         
+  942 |  1 BenchmarkeD.s    616 | Code        | 00 |  2      |    3 | 00/0433 : 9C 14 09    |                stz       proDREAD+$0c   ; startingBlock
+  943 |  1 BenchmarkeD.s    617 | Code        | 00 |  2      |    3 | 00/0436 : 9C 16 09    |                stz       proDREAD+$0e   
+  944 |  1 BenchmarkeD.s    618 | Empty       | 00 |         |    0 | 00/0439               |                                         
+  945 |  1 BenchmarkeD.s    619 | Comment     | 00 |         |    0 | 00/0439               | *--- Prepare speed calculation
+  946 |  1 BenchmarkeD.s    620 | Empty       | 00 |         |    0 | 00/0439               |                                         
+  947 |  1 BenchmarkeD.s    621 | Code        | 00 |  2      |    3 | 00/0439 : AD 28 09    |                lda       proVOLUME+$0a  
+  948 |  1 BenchmarkeD.s    622 | Code        | 00 |         |    1 | 00/043C : 4A          |                lsr                      
+  949 |  1 BenchmarkeD.s    623 | Code        | 00 |         |    1 | 00/043D : 1A          |                inc                      
+  950 |  1 BenchmarkeD.s    624 | Code        | 00 |  2      |    3 | 00/043E : 8D AC 0A    |                sta       filesize       
+  951 |  1 BenchmarkeD.s    625 | Empty       | 00 |         |    0 | 00/0441               |                                         
+  952 |  1 BenchmarkeD.s    626 | Comment     | 00 |         |    0 | 00/0441               | *---
+  953 |  1 BenchmarkeD.s    627 | Empty       | 00 |         |    0 | 00/0441               |                                         
+  954 |  1 BenchmarkeD.s    628 | Macro       | 00 |         |    0 | 00/0441               |                PushLong  proVOLUME+$0a  
+  962 |  1 BenchmarkeD.s    628 | Code        | 00 |  2      |    3 | 00/0441 : AD 2A 09    |                LDA       proVOLUME+$0a+2
+  963 |  1 BenchmarkeD.s    628 | Code        | 00 |         |    1 | 00/0444 : 48          |                PHA                      
+  971 |  1 BenchmarkeD.s    628 | Code        | 00 |  2      |    3 | 00/0445 : AD 28 09    |                LDA       proVOLUME+$0a  
+  972 |  1 BenchmarkeD.s    628 | Code        | 00 |         |    1 | 00/0448 : 48          |                PHA                      
+  974 |  1 BenchmarkeD.s    629 | Macro       | 00 |         |    0 | 00/0449               |                PushLong  #strNBBLOCKS   
+  978 |  1 BenchmarkeD.s    629 | Code        | 00 |  1 >>16 |    3 | 00/0449 : F4 00 00    |                PEA       #^#strNBBLOCKS 
+  985 |  1 BenchmarkeD.s    629 | Code        | 00 |  2      |    3 | 00/044C : F4 E2 04    |                PEA       #strNBBLOCKS   
+  988 |  1 BenchmarkeD.s    630 | Macro       | 00 |         |    0 | 00/044F               |                PushWord  #5             ; 65536 blocks max
+  990 |  1 BenchmarkeD.s    630 | Code        | 00 |         |    3 | 00/044F : F4 05 00    |                PEA       #5             
+  993 |  1 BenchmarkeD.s    631 | Macro       | 00 |         |    0 | 00/0452               |                PushWord  #0             
+  995 |  1 BenchmarkeD.s    631 | Code        | 00 |         |    3 | 00/0452 : F4 00 00    |                PEA       #0             
+  998 |  1 BenchmarkeD.s    632 | Macro       | 00 |         |    0 | 00/0455               |                _Long2Dec                 
+ 1000 |  1 BenchmarkeD.s    632 | Code        | 00 |         |    3 | 00/0455 : A2 0B 27    |                LDX       #$270B         ; load tool call #
+ 1001 |  1 BenchmarkeD.s    632 | Code        | 00 |         |    4 | 00/0458 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+ 1002 |  1 BenchmarkeD.s    633 | Empty       | 00 |         |    0 | 00/045C               |                                         
+ 1003 |  1 BenchmarkeD.s    634 | Comment     | 00 |         |    0 | 00/045C               | *--- Now, shome some data
+ 1004 |  1 BenchmarkeD.s    635 | Empty       | 00 |         |    0 | 00/045C               |                                         
+ 1005 |  1 BenchmarkeD.s    636 | Macro       | 00 |         |    0 | 00/045C               |                PushLong  #strREAD       
+ 1009 |  1 BenchmarkeD.s    636 | Code        | 00 |  1 >>16 |    3 | 00/045C : F4 00 00    |                PEA       #^#strREAD     
+ 1016 |  1 BenchmarkeD.s    636 | Code        | 00 |  2      |    3 | 00/045F : F4 7F 07    |                PEA       #strREAD       
+ 1019 |  1 BenchmarkeD.s    637 | Macro       | 00 |         |    0 | 00/0462               |                _WriteCString                 
+ 1021 |  1 BenchmarkeD.s    637 | Code        | 00 |         |    3 | 00/0462 : A2 0C 20    |                LDX       #$200C         ; load tool call #
+ 1022 |  1 BenchmarkeD.s    637 | Code        | 00 |         |    4 | 00/0465 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+ 1023 |  1 BenchmarkeD.s    638 | Empty       | 00 |         |    0 | 00/0469               |                                         
+ 1024 |  1 BenchmarkeD.s    639 | Macro       | 00 |         |    0 | 00/0469               |                PushLong  #strNBBLOCKS   
+ 1028 |  1 BenchmarkeD.s    639 | Code        | 00 |  1 >>16 |    3 | 00/0469 : F4 00 00    |                PEA       #^#strNBBLOCKS 
+ 1035 |  1 BenchmarkeD.s    639 | Code        | 00 |  2      |    3 | 00/046C : F4 E2 04    |                PEA       #strNBBLOCKS   
+ 1038 |  1 BenchmarkeD.s    640 | Macro       | 00 |         |    0 | 00/046F               |                _WriteCString                 
+ 1040 |  1 BenchmarkeD.s    640 | Code        | 00 |         |    3 | 00/046F : A2 0C 20    |                LDX       #$200C         ; load tool call #
+ 1041 |  1 BenchmarkeD.s    640 | Code        | 00 |         |    4 | 00/0472 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+ 1042 |  1 BenchmarkeD.s    641 | Empty       | 00 |         |    0 | 00/0476               |                                         
+ 1043 |  1 BenchmarkeD.s    642 | Macro       | 00 |         |    0 | 00/0476               |                PushLong  #strBLOCKS     
+ 1047 |  1 BenchmarkeD.s    642 | Code        | 00 |  1 >>16 |    3 | 00/0476 : F4 00 00    |                PEA       #^#strBLOCKS   
+ 1054 |  1 BenchmarkeD.s    642 | Code        | 00 |  2      |    3 | 00/0479 : F4 1F 08    |                PEA       #strBLOCKS     
+ 1057 |  1 BenchmarkeD.s    643 | Macro       | 00 |         |    0 | 00/047C               |                _WriteCString                 
+ 1059 |  1 BenchmarkeD.s    643 | Code        | 00 |         |    3 | 00/047C : A2 0C 20    |                LDX       #$200C         ; load tool call #
+ 1060 |  1 BenchmarkeD.s    643 | Code        | 00 |         |    4 | 00/047F : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+ 1061 |  1 BenchmarkeD.s    644 | Empty       | 00 |         |    0 | 00/0483               |                                         
+ 1062 |  1 BenchmarkeD.s    645 | Code        | 00 |  2      |    3 | 00/0483 : 20 4A 05    |                jsr       printDATEFROM  
+ 1063 |  1 BenchmarkeD.s    646 | Empty       | 00 |         |    0 | 00/0486               |                                         
+ 1064 |  1 BenchmarkeD.s    647 | Comment     | 00 |         |    0 | 00/0486               | *---
+ 1065 |  1 BenchmarkeD.s    648 | Empty       | 00 |         |    0 | 00/0486               |                                         
+ 1066 |  1 BenchmarkeD.s    649 | Code        | 00 |  2      |    3 | 00/0486 : 20 1C 05    | doBREAD2       jsr       displayWHEEL   
+ 1067 |  1 BenchmarkeD.s    650 | Code        | 00 |  2      |    3 | 00/0489 : 20 EC 04    |                jsr       checkCANCEL    
+ 1068 |  1 BenchmarkeD.s    651 | Code        | 00 |         |    2 | 00/048C : B0 23       |                bcs       doBREAD3       
+ 1069 |  1 BenchmarkeD.s    652 | Empty       | 00 |         |    0 | 00/048E               |                                         
+ 1070 |  1 BenchmarkeD.s    653 | Code        | 00 |         |    4 | 00/048E : 22 A8 00 E1 |                jsl       {$e100a8}      
+ 1071 |  1 BenchmarkeD.s    654 | Data        | 00 |         |    2 | 00/0492 : 2F 20       |                dw        $202f          ; DRead
+ 1072 |  1 BenchmarkeD.s    655 | Data        | 00 |  3      |    4 | 00/0494 : 08 09 00 00 |                adrl      proDREAD       
+ 1073 |  1 BenchmarkeD.s    656 | Code        | 00 |         |    2 | 00/0498 : 90 1A       |                bcc       doBREAD4       
+ 1074 |  1 BenchmarkeD.s    657 | Empty       | 00 |         |    0 | 00/049A               |                                         
+ 1075 |  1 BenchmarkeD.s    658 | Code        | 00 |         |    3 | 00/049A : C9 2D 00    |                cmp       #$2d           ; end of data
+ 1076 |  1 BenchmarkeD.s    659 | Code        | 00 |         |    2 | 00/049D : F0 38       |                beq       doBREAD9       
+ 1077 |  1 BenchmarkeD.s    660 | Empty       | 00 |         |    0 | 00/049F               |                                         
+ 1078 |  1 BenchmarkeD.s    661 | Code        | 00 |         |    3 | 00/049F : C9 27 00    |                cmp       #$27           ; I/O error
+ 1079 |  1 BenchmarkeD.s    662 | Code        | 00 |         |    2 | 00/04A2 : D0 10       |                bne       doBREAD4       
+ 1080 |  1 BenchmarkeD.s    663 | Empty       | 00 |         |    0 | 00/04A4               |                                         
+ 1081 |  1 BenchmarkeD.s    664 | Comment     | 00 |         |    0 | 00/04A4               | *- Fatal I/O error!!
+ 1082 |  1 BenchmarkeD.s    665 | Empty       | 00 |         |    0 | 00/04A4               |                                         
+ 1083 |  1 BenchmarkeD.s    666 | Macro       | 00 |         |    0 | 00/04A4               |                PushLong  #strRERR       
+ 1087 |  1 BenchmarkeD.s    666 | Code        | 00 |  1 >>16 |    3 | 00/04A4 : F4 00 00    |                PEA       #^#strRERR     
+ 1094 |  1 BenchmarkeD.s    666 | Code        | 00 |  2      |    3 | 00/04A7 : F4 A4 07    |                PEA       #strRERR       
+ 1097 |  1 BenchmarkeD.s    667 | Macro       | 00 |         |    0 | 00/04AA               |                _WriteCString                 
+ 1099 |  1 BenchmarkeD.s    667 | Code        | 00 |         |    3 | 00/04AA : A2 0C 20    |                LDX       #$200C         ; load tool call #
+ 1100 |  1 BenchmarkeD.s    667 | Code        | 00 |         |    4 | 00/04AD : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+ 1101 |  1 BenchmarkeD.s    668 | Empty       | 00 |         |    0 | 00/04B1               |                                         
+ 1102 |  1 BenchmarkeD.s    669 | Code        | 00 |  2      |    3 | 00/04B1 : 4C 54 01    | doBREAD3       jmp       mainNEXT       
+ 1103 |  1 BenchmarkeD.s    670 | Empty       | 00 |         |    0 | 00/04B4               |                                         
+ 1104 |  1 BenchmarkeD.s    671 | Comment     | 00 |         |    0 | 00/04B4               | *- Continue
+ 1105 |  1 BenchmarkeD.s    672 | Empty       | 00 |         |    0 | 00/04B4               |                                         
+ 1106 |  1 BenchmarkeD.s    673 | Code        | 00 |  2      |    3 | 00/04B4 : AD 14 09    | doBREAD4       lda       proDREAD+$0c   
+ 1107 |  1 BenchmarkeD.s    674 | Code        | 00 |         |    1 | 00/04B7 : 18          |                clc                      
+ 1108 |  1 BenchmarkeD.s    675 | Code        | 00 |  2      |    3 | 00/04B8 : 6D E0 04    |                adc       blockSTEP      ; 128b * 512b = 64K
+ 1109 |  1 BenchmarkeD.s    676 | Code        | 00 |  2      |    3 | 00/04BB : 8D 14 09    |                sta       proDREAD+$0c   
+ 1110 |  1 BenchmarkeD.s    677 | Code        | 00 |  2      |    3 | 00/04BE : AD 16 09    |                lda       proDREAD+$0e   
+ 1111 |  1 BenchmarkeD.s    678 | Code        | 00 |         |    3 | 00/04C1 : 69 00 00    |                adc       #0             
+ 1112 |  1 BenchmarkeD.s    679 | Code        | 00 |  2      |    3 | 00/04C4 : 8D 16 09    |                sta       proDREAD+$0e   
+ 1113 |  1 BenchmarkeD.s    680 | Empty       | 00 |         |    0 | 00/04C7               |                                         
+ 1114 |  1 BenchmarkeD.s    681 | Comment     | 00 |         |    0 | 00/04C7               | *- Did we reach the end?
+ 1115 |  1 BenchmarkeD.s    682 | Empty       | 00 |         |    0 | 00/04C7               |                                         
+ 1116 |  1 BenchmarkeD.s    683 | Code        | 00 |  2      |    3 | 00/04C7 : AD 14 09    |                lda       proDREAD+$0c   
+ 1117 |  1 BenchmarkeD.s    684 | Code        | 00 |  2      |    3 | 00/04CA : CD 04 09    |                cmp       proDINFO+$0a   
+ 1118 |  1 BenchmarkeD.s    685 | Code        | 00 |         |    2 | 00/04CD : 90 B7       |                bcc       doBREAD2       
+ 1119 |  1 BenchmarkeD.s    686 | Code        | 00 |  2      |    3 | 00/04CF : AD 16 09    |                lda       proDREAD+$0e   
+ 1120 |  1 BenchmarkeD.s    687 | Code        | 00 |  2      |    3 | 00/04D2 : CD 06 09    |                cmp       proDINFO+$0c   
+ 1121 |  1 BenchmarkeD.s    688 | Code        | 00 |         |    2 | 00/04D5 : 90 AF       |                bcc       doBREAD2       
+ 1122 |  1 BenchmarkeD.s    689 | Empty       | 00 |         |    0 | 00/04D7               |                                         
+ 1123 |  1 BenchmarkeD.s    690 | Comment     | 00 |         |    0 | 00/04D7               | *- Yes, we did!
+ 1124 |  1 BenchmarkeD.s    691 | Empty       | 00 |         |    0 | 00/04D7               |                                         
+ 1125 |  1 BenchmarkeD.s    692 | Code        | 00 |  2      |    3 | 00/04D7 : 20 93 05    | doBREAD9       jsr       printDATETO    
+ 1126 |  1 BenchmarkeD.s    693 | Code        | 00 |  2      |    3 | 00/04DA : 20 DC 05    |                jsr       calcSPEED      
+ 1127 |  1 BenchmarkeD.s    694 | Empty       | 00 |         |    0 | 00/04DD               |                                         
+ 1128 |  1 BenchmarkeD.s    695 | Code        | 00 |  2      |    3 | 00/04DD : 4C 54 01    |                jmp       mainNEXT       
+ 1129 |  1 BenchmarkeD.s    696 | Empty       | 00 |         |    0 | 00/04E0               |                                         
+ 1130 |  1 BenchmarkeD.s    697 | Comment     | 00 |         |    0 | 00/04E0               | *--- Some data
+ 1131 |  1 BenchmarkeD.s    698 | Empty       | 00 |         |    0 | 00/04E0               |                                         
+ 1132 |  1 BenchmarkeD.s    699 | Data        | 00 |         |    2 | 00/04E0 : 00 00       | blockSTEP      ds        2              ; 128 or 1
+ 1133 |  1 BenchmarkeD.s    700 | Empty       | 00 |         |    0 | 00/04E2               |                                         
+ 1134 |  1 BenchmarkeD.s    701 | Data        | 00 |         |   10 | 00/04E2 : 00 00 00 00 | strNBBLOCKS    ds        10             ; 8+2 trailer 00
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00       |
+ 1135 |  1 BenchmarkeD.s    702 | Empty       | 00 |         |    0 | 00/04EC               |                                         
+ 1136 |  1 BenchmarkeD.s    703 | Comment     | 00 |         |    0 | 00/04EC               | *----------------------------
+ 1137 |  1 BenchmarkeD.s    704 | Comment     | 00 |         |    0 | 00/04EC               | * SOME MISC ROUTINES
+ 1138 |  1 BenchmarkeD.s    705 | Comment     | 00 |         |    0 | 00/04EC               | *----------------------------
+ 1139 |  1 BenchmarkeD.s    706 | Empty       | 00 |         |    0 | 00/04EC               |                                         
+ 1140 |  1 BenchmarkeD.s    707 | Code        | 00 |         |    4 | 00/04EC : AF FF BF 00 | checkCANCEL    ldal      $bfff          ; Did user cancel?
+ 1141 |  1 BenchmarkeD.s    708 | Code        | 00 |         |    2 | 00/04F0 : 10 28       |                bpl       check2         ; no
+ 1142 |  1 BenchmarkeD.s    709 | Code        | 00 |         |    3 | 00/04F2 : 29 00 FF    |                and       #$ff00         ; yes, check keys?
+ 1143 |  1 BenchmarkeD.s    710 | Code        | 00 |         |    1 | 00/04F5 : EB          |                xba                      
+ 1144 |  1 BenchmarkeD.s    711 | Code        | 10 |         |    2 | 00/04F6 : E2 20       |                sep       #$20           
+ 1145 |  1 BenchmarkeD.s    712 | Code        | 10 |         |    4 | 00/04F8 : 8F 10 C0 00 |                stal      $c010          
+ 1146 |  1 BenchmarkeD.s    713 | Code        | 00 |         |    2 | 00/04FC : C2 20       |                rep       #$20           
+ 1147 |  1 BenchmarkeD.s    714 | Empty       | 00 |         |    0 | 00/04FE               |                                         
+ 1148 |  1 BenchmarkeD.s    715 | Code        | 00 |         |    3 | 00/04FE : C9 83 00    |                cmp       #$83           ; CTRL-C
+ 1149 |  1 BenchmarkeD.s    716 | Code        | 00 |         |    2 | 00/0501 : F0 05       |                beq       check1         
+ 1150 |  1 BenchmarkeD.s    717 | Code        | 00 |         |    3 | 00/0503 : C9 9B 00    |                cmp       #$9b           ; escape
+ 1151 |  1 BenchmarkeD.s    718 | Code        | 00 |         |    2 | 00/0506 : D0 12       |                bne       check2         
+ 1152 |  1 BenchmarkeD.s    719 | Empty       | 00 |         |    0 | 00/0508               |                                         
+ 1153 |  1 BenchmarkeD.s    720 | Macro       | 00 |         |    0 | 00/0508               | check1         PushLong  #strCANCEL     ; we cancel
+ 1157 |  1 BenchmarkeD.s    720 | Code        | 00 |  1 >>16 |    3 | 00/0508 : F4 00 00    |                PEA       #^#strCANCEL   
+ 1164 |  1 BenchmarkeD.s    720 | Code        | 00 |  2      |    3 | 00/050B : F4 D1 07    |                PEA       #strCANCEL     
+ 1167 |  1 BenchmarkeD.s    721 | Macro       | 00 |         |    0 | 00/050E               |                _WriteCString                 
+ 1169 |  1 BenchmarkeD.s    721 | Code        | 00 |         |    3 | 00/050E : A2 0C 20    |                LDX       #$200C         ; load tool call #
+ 1170 |  1 BenchmarkeD.s    721 | Code        | 00 |         |    4 | 00/0511 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+ 1171 |  1 BenchmarkeD.s    722 | Empty       | 00 |         |    0 | 00/0515               |                                         
+ 1172 |  1 BenchmarkeD.s    723 | Code        | 00 |  2      |    3 | 00/0515 : EE 68 08    |                inc       fgCANCEL       
+ 1173 |  1 BenchmarkeD.s    724 | Code        | 00 |         |    1 | 00/0518 : 38          |                sec                      
+ 1174 |  1 BenchmarkeD.s    725 | Code        | 00 |         |    1 | 00/0519 : 60          |                rts                      
+ 1175 |  1 BenchmarkeD.s    726 | Code        | 00 |         |    1 | 00/051A : 18          | check2         clc                      ; we continue
+ 1176 |  1 BenchmarkeD.s    727 | Code        | 00 |         |    1 | 00/051B : 60          |                rts                      
+ 1177 |  1 BenchmarkeD.s    728 | Empty       | 00 |         |    0 | 00/051C               |                                         
+ 1178 |  1 BenchmarkeD.s    729 | Comment     | 00 |         |    0 | 00/051C               | *----------------------------
+ 1179 |  1 BenchmarkeD.s    730 | Empty       | 00 |         |    0 | 00/051C               |                                         
+ 1180 |  1 BenchmarkeD.s    731 | Empty       | 00 |         |    0 | 00/051C               | displayWHEEL                            ; Show there's something...
+ 1181 |  1 BenchmarkeD.s    732 | Empty       | 00 |         |    0 | 00/051C               |                                         
+ 1182 |  1 BenchmarkeD.s    733 | Code        | 11 |         |    2 | 00/051C : E2 30       |                sep       #$30           
+ 1183 |  1 BenchmarkeD.s    734 | Code        | 11 |  2      |    3 | 00/051E : EE 31 05    |                inc       indexWHEEL     
+ 1184 |  1 BenchmarkeD.s    735 | Code        | 11 |  2      |    3 | 00/0521 : AD 31 05    |                lda       indexWHEEL     
+ 1185 |  1 BenchmarkeD.s    736 | Code        | 11 |         |    2 | 00/0524 : 29 03       |                and       #%0000_0011    
+ 1186 |  1 BenchmarkeD.s    737 | Code        | 11 |         |    1 | 00/0526 : AA          |                tax                      
+ 1187 |  1 BenchmarkeD.s    738 | Code        | 11 |  2      |    3 | 00/0527 : BD 32 05    |                lda       strWHEEL,x     
+ 1188 |  1 BenchmarkeD.s    739 | Code        | 11 |         |    4 | 00/052A : 8F 26 04 01 |                stal      $010426        ; last char of text line 0
+ 1189 |  1 BenchmarkeD.s    740 | Code        | 00 |         |    2 | 00/052E : C2 30       |                rep       #$30           
+ 1190 |  1 BenchmarkeD.s    741 | Code        | 00 |         |    1 | 00/0530 : 60          |                rts                      
+ 1191 |  1 BenchmarkeD.s    742 | Empty       | 00 |         |    0 | 00/0531               |                                         
+ 1192 |  1 BenchmarkeD.s    743 | Data        | 00 |         |    1 | 00/0531 : FF          | indexWHEEL     dfb       $ff            
+ 1193 |  1 BenchmarkeD.s    744 | Data        | 00 |         |    4 | 00/0532 : FC AF AD DC | strWHEEL       asc       "|/-\"         
+ 1194 |  1 BenchmarkeD.s    745 | Empty       | 00 |         |    0 | 00/0536               |                                         
+ 1195 |  1 BenchmarkeD.s    746 | Comment     | 00 |         |    0 | 00/0536               | *----------------------------
+ 1196 |  1 BenchmarkeD.s    747 | Empty       | 00 |         |    0 | 00/0536               |                                         
+ 1197 |  1 BenchmarkeD.s    748 | Empty       | 00 |         |    0 | 00/0536               | printC1                                 ; Print a C1 string
+ 1198 |  1 BenchmarkeD.s    749 | Empty       | 00 |         |    0 | 00/0536               |                                         
+ 1199 |  1 BenchmarkeD.s    750 | Comment     | 00 |         |    0 | 00/0536               | * Pointer
+ 1200 |  1 BenchmarkeD.s    751 | Code        | 00 |         |    1 | 00/0536 : DA          |                phx                      
+ 1201 |  1 BenchmarkeD.s    752 | Code        | 00 |         |    2 | 00/0537 : 86 02       |                stx       {$00}+2        
+ 1202 |  1 BenchmarkeD.s    753 | Code        | 00 |         |    1 | 00/0539 : 5A          |                phy                      
+ 1203 |  1 BenchmarkeD.s    754 | Code        | 00 |         |    2 | 00/053A : 84 00       |                sty       {$00}          
+ 1204 |  1 BenchmarkeD.s    755 | Empty       | 00 |         |    0 | 00/053C               |                                         
+ 1205 |  1 BenchmarkeD.s    756 | Comment     | 00 |         |    0 | 00/053C               | * Offset (is 2 because STRL)
+ 1206 |  1 BenchmarkeD.s    757 | Macro       | 00 |         |    0 | 00/053C               |                PushWord  #2             
+ 1208 |  1 BenchmarkeD.s    757 | Code        | 00 |         |    3 | 00/053C : F4 02 00    |                PEA       #2             
+ 1211 |  1 BenchmarkeD.s    758 | Empty       | 00 |         |    0 | 00/053F               |                                         
+ 1212 |  1 BenchmarkeD.s    759 | Comment     | 00 |         |    0 | 00/053F               | * Length
+ 1213 |  1 BenchmarkeD.s    760 | Code        | 00 |         |    2 | 00/053F : A7 00       |                lda       [{$00}]        
+ 1214 |  1 BenchmarkeD.s    761 | Code        | 00 |         |    1 | 00/0541 : 48          |                pha                      
+ 1215 |  1 BenchmarkeD.s    762 | Macro       | 00 |         |    0 | 00/0542               |                _TextWriteBlock                 
+ 1217 |  1 BenchmarkeD.s    762 | Code        | 00 |         |    3 | 00/0542 : A2 0C 1E    |                LDX       #$1E0C         ; load tool call #
+ 1218 |  1 BenchmarkeD.s    762 | Code        | 00 |         |    4 | 00/0545 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+ 1219 |  1 BenchmarkeD.s    763 | Code        | 00 |         |    1 | 00/0549 : 60          |                rts                      
+ 1220 |  1 BenchmarkeD.s    764 | Empty       | 00 |         |    0 | 00/054A               |                                         
+ 1221 |  1 BenchmarkeD.s    765 | Comment     | 00 |         |    0 | 00/054A               | *----------------------------
+ 1222 |  1 BenchmarkeD.s    766 | Empty       | 00 |         |    0 | 00/054A               |                                         
+ 1223 |  1 BenchmarkeD.s    767 | Empty       | 00 |         |    0 | 00/054A               | printDATEFROM                           
+ 1224 |  1 BenchmarkeD.s    768 | Macro       | 00 |         |    0 | 00/054A               |                PushLong  #strFROM       
+ 1228 |  1 BenchmarkeD.s    768 | Code        | 00 |  1 >>16 |    3 | 00/054A : F4 00 00    |                PEA       #^#strFROM     
+ 1235 |  1 BenchmarkeD.s    768 | Code        | 00 |  2      |    3 | 00/054D : F4 E5 07    |                PEA       #strFROM       
+ 1238 |  1 BenchmarkeD.s    769 | Macro       | 00 |         |    0 | 00/0550               |                _WriteCString                 
+ 1240 |  1 BenchmarkeD.s    769 | Code        | 00 |         |    3 | 00/0550 : A2 0C 20    |                LDX       #$200C         ; load tool call #
+ 1241 |  1 BenchmarkeD.s    769 | Code        | 00 |         |    4 | 00/0553 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+ 1242 |  1 BenchmarkeD.s    770 | Empty       | 00 |         |    0 | 00/0557               |                                         
+ 1243 |  1 BenchmarkeD.s    771 | Macro       | 00 |         |    0 | 00/0557               |                PushLong  #asciitime     
+ 1247 |  1 BenchmarkeD.s    771 | Code        | 00 |  1 >>16 |    3 | 00/0557 : F4 00 00    |                PEA       #^#asciitime   
+ 1254 |  1 BenchmarkeD.s    771 | Code        | 00 |  2      |    3 | 00/055A : F4 60 0A    |                PEA       #asciitime     
+ 1257 |  1 BenchmarkeD.s    772 | Macro       | 00 |         |    0 | 00/055D               |                _ReadAsciiTime                 
+ 1259 |  1 BenchmarkeD.s    772 | Code        | 00 |         |    3 | 00/055D : A2 03 0F    |                LDX       #$F03          ; load tool call #
+ 1260 |  1 BenchmarkeD.s    772 | Code        | 00 |         |    4 | 00/0560 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+ 1261 |  1 BenchmarkeD.s    773 | Empty       | 00 |         |    0 | 00/0564               |                                         
+ 1262 |  1 BenchmarkeD.s    774 | Code        | 00 |         |    1 | 00/0564 : 48          |                pha                      ; read time in hex format
+ 1263 |  1 BenchmarkeD.s    775 | Code        | 00 |         |    1 | 00/0565 : 48          |                pha                      ; for a later conversion
+ 1264 |  1 BenchmarkeD.s    776 | Code        | 00 |         |    1 | 00/0566 : 48          |                pha                      
+ 1265 |  1 BenchmarkeD.s    777 | Code        | 00 |         |    1 | 00/0567 : 48          |                pha                      
+ 1266 |  1 BenchmarkeD.s    778 | Macro       | 00 |         |    0 | 00/0568               |                _ReadTimeHex                 
+ 1268 |  1 BenchmarkeD.s    778 | Code        | 00 |         |    3 | 00/0568 : A2 03 0D    |                LDX       #$D03          ; load tool call #
+ 1269 |  1 BenchmarkeD.s    778 | Code        | 00 |         |    4 | 00/056B : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+ 1270 |  1 BenchmarkeD.s    779 | Code        | 00 |         |    1 | 00/056F : 68          |                pla                      
+ 1271 |  1 BenchmarkeD.s    780 | Code        | 00 |  2      |    3 | 00/0570 : 8D 80 0A    |                sta       hextime1       
+ 1272 |  1 BenchmarkeD.s    781 | Code        | 00 |         |    1 | 00/0573 : 68          |                pla                      
+ 1273 |  1 BenchmarkeD.s    782 | Code        | 00 |  2      |    3 | 00/0574 : 8D 82 0A    |                sta       hextime1+2     
+ 1274 |  1 BenchmarkeD.s    783 | Code        | 00 |         |    1 | 00/0577 : 68          |                pla                      
+ 1275 |  1 BenchmarkeD.s    784 | Code        | 00 |  2      |    3 | 00/0578 : 8D 84 0A    |                sta       hextime1+4     
+ 1276 |  1 BenchmarkeD.s    785 | Code        | 00 |         |    1 | 00/057B : 68          |                pla                      
+ 1277 |  1 BenchmarkeD.s    786 | Code        | 00 |  2      |    3 | 00/057C : 8D 86 0A    |                sta       hextime1+6     
+ 1278 |  1 BenchmarkeD.s    787 | Empty       | 00 |         |    0 | 00/057F               |                                         
+ 1279 |  1 BenchmarkeD.s    788 | Macro       | 00 |         |    0 | 00/057F               |                PushLong  #asciitime     
+ 1283 |  1 BenchmarkeD.s    788 | Code        | 00 |  1 >>16 |    3 | 00/057F : F4 00 00    |                PEA       #^#asciitime   
+ 1290 |  1 BenchmarkeD.s    788 | Code        | 00 |  2      |    3 | 00/0582 : F4 60 0A    |                PEA       #asciitime     
+ 1293 |  1 BenchmarkeD.s    789 | Macro       | 00 |         |    0 | 00/0585               |                PushWord  #0             
+ 1295 |  1 BenchmarkeD.s    789 | Code        | 00 |         |    3 | 00/0585 : F4 00 00    |                PEA       #0             
+ 1298 |  1 BenchmarkeD.s    790 | Macro       | 00 |         |    0 | 00/0588               |                PushWord  #20            
+ 1300 |  1 BenchmarkeD.s    790 | Code        | 00 |         |    3 | 00/0588 : F4 14 00    |                PEA       #20            
+ 1303 |  1 BenchmarkeD.s    791 | Macro       | 00 |         |    0 | 00/058B               |                _TextWriteBlock                 
+ 1305 |  1 BenchmarkeD.s    791 | Code        | 00 |         |    3 | 00/058B : A2 0C 1E    |                LDX       #$1E0C         ; load tool call #
+ 1306 |  1 BenchmarkeD.s    791 | Code        | 00 |         |    4 | 00/058E : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+ 1307 |  1 BenchmarkeD.s    792 | Code        | 00 |         |    1 | 00/0592 : 60          |                rts                      
+ 1308 |  1 BenchmarkeD.s    793 | Empty       | 00 |         |    0 | 00/0593               |                                         
+ 1309 |  1 BenchmarkeD.s    794 | Comment     | 00 |         |    0 | 00/0593               | *----------------------------
+ 1310 |  1 BenchmarkeD.s    795 | Empty       | 00 |         |    0 | 00/0593               |                                         
+ 1311 |  1 BenchmarkeD.s    796 | Empty       | 00 |         |    0 | 00/0593               | printDATETO                             
+ 1312 |  1 BenchmarkeD.s    797 | Macro       | 00 |         |    0 | 00/0593               |                PushLong  #strTO         
+ 1316 |  1 BenchmarkeD.s    797 | Code        | 00 |  1 >>16 |    3 | 00/0593 : F4 00 00    |                PEA       #^#strTO       
+ 1323 |  1 BenchmarkeD.s    797 | Code        | 00 |  2      |    3 | 00/0596 : F4 F3 07    |                PEA       #strTO         
+ 1326 |  1 BenchmarkeD.s    798 | Macro       | 00 |         |    0 | 00/0599               |                _WriteCString                 
+ 1328 |  1 BenchmarkeD.s    798 | Code        | 00 |         |    3 | 00/0599 : A2 0C 20    |                LDX       #$200C         ; load tool call #
+ 1329 |  1 BenchmarkeD.s    798 | Code        | 00 |         |    4 | 00/059C : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+ 1330 |  1 BenchmarkeD.s    799 | Empty       | 00 |         |    0 | 00/05A0               |                                         
+ 1331 |  1 BenchmarkeD.s    800 | Macro       | 00 |         |    0 | 00/05A0               |                PushLong  #asciitime     
+ 1335 |  1 BenchmarkeD.s    800 | Code        | 00 |  1 >>16 |    3 | 00/05A0 : F4 00 00    |                PEA       #^#asciitime   
+ 1342 |  1 BenchmarkeD.s    800 | Code        | 00 |  2      |    3 | 00/05A3 : F4 60 0A    |                PEA       #asciitime     
+ 1345 |  1 BenchmarkeD.s    801 | Macro       | 00 |         |    0 | 00/05A6               |                _ReadAsciiTime                 
+ 1347 |  1 BenchmarkeD.s    801 | Code        | 00 |         |    3 | 00/05A6 : A2 03 0F    |                LDX       #$F03          ; load tool call #
+ 1348 |  1 BenchmarkeD.s    801 | Code        | 00 |         |    4 | 00/05A9 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+ 1349 |  1 BenchmarkeD.s    802 | Empty       | 00 |         |    0 | 00/05AD               |                                         
+ 1350 |  1 BenchmarkeD.s    803 | Code        | 00 |         |    1 | 00/05AD : 48          |                pha                      ; read time in hex format
+ 1351 |  1 BenchmarkeD.s    804 | Code        | 00 |         |    1 | 00/05AE : 48          |                pha                      ; for a later conversion
+ 1352 |  1 BenchmarkeD.s    805 | Code        | 00 |         |    1 | 00/05AF : 48          |                pha                      
+ 1353 |  1 BenchmarkeD.s    806 | Code        | 00 |         |    1 | 00/05B0 : 48          |                pha                      
+ 1354 |  1 BenchmarkeD.s    807 | Macro       | 00 |         |    0 | 00/05B1               |                _ReadTimeHex                 
+ 1356 |  1 BenchmarkeD.s    807 | Code        | 00 |         |    3 | 00/05B1 : A2 03 0D    |                LDX       #$D03          ; load tool call #
+ 1357 |  1 BenchmarkeD.s    807 | Code        | 00 |         |    4 | 00/05B4 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+ 1358 |  1 BenchmarkeD.s    808 | Code        | 00 |         |    1 | 00/05B8 : 68          |                pla                      
+ 1359 |  1 BenchmarkeD.s    809 | Code        | 00 |  2      |    3 | 00/05B9 : 8D 88 0A    |                sta       hextime2       
+ 1360 |  1 BenchmarkeD.s    810 | Code        | 00 |         |    1 | 00/05BC : 68          |                pla                      
+ 1361 |  1 BenchmarkeD.s    811 | Code        | 00 |  2      |    3 | 00/05BD : 8D 8A 0A    |                sta       hextime2+2     
+ 1362 |  1 BenchmarkeD.s    812 | Code        | 00 |         |    1 | 00/05C0 : 68          |                pla                      
+ 1363 |  1 BenchmarkeD.s    813 | Code        | 00 |  2      |    3 | 00/05C1 : 8D 8C 0A    |                sta       hextime2+4     
+ 1364 |  1 BenchmarkeD.s    814 | Code        | 00 |         |    1 | 00/05C4 : 68          |                pla                      
+ 1365 |  1 BenchmarkeD.s    815 | Code        | 00 |  2      |    3 | 00/05C5 : 8D 8E 0A    |                sta       hextime2+6     
+ 1366 |  1 BenchmarkeD.s    816 | Empty       | 00 |         |    0 | 00/05C8               |                                         
+ 1367 |  1 BenchmarkeD.s    817 | Macro       | 00 |         |    0 | 00/05C8               |                PushLong  #asciitime     
+ 1371 |  1 BenchmarkeD.s    817 | Code        | 00 |  1 >>16 |    3 | 00/05C8 : F4 00 00    |                PEA       #^#asciitime   
+ 1378 |  1 BenchmarkeD.s    817 | Code        | 00 |  2      |    3 | 00/05CB : F4 60 0A    |                PEA       #asciitime     
+ 1381 |  1 BenchmarkeD.s    818 | Macro       | 00 |         |    0 | 00/05CE               |                PushWord  #0             
+ 1383 |  1 BenchmarkeD.s    818 | Code        | 00 |         |    3 | 00/05CE : F4 00 00    |                PEA       #0             
+ 1386 |  1 BenchmarkeD.s    819 | Macro       | 00 |         |    0 | 00/05D1               |                PushWord  #20            
+ 1388 |  1 BenchmarkeD.s    819 | Code        | 00 |         |    3 | 00/05D1 : F4 14 00    |                PEA       #20            
+ 1391 |  1 BenchmarkeD.s    820 | Macro       | 00 |         |    0 | 00/05D4               |                _TextWriteBlock                 
+ 1393 |  1 BenchmarkeD.s    820 | Code        | 00 |         |    3 | 00/05D4 : A2 0C 1E    |                LDX       #$1E0C         ; load tool call #
+ 1394 |  1 BenchmarkeD.s    820 | Code        | 00 |         |    4 | 00/05D7 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+ 1395 |  1 BenchmarkeD.s    821 | Code        | 00 |         |    1 | 00/05DB : 60          |                rts                      
+ 1396 |  1 BenchmarkeD.s    822 | Empty       | 00 |         |    0 | 00/05DC               |                                         
+ 1397 |  1 BenchmarkeD.s    823 | Comment     | 00 |         |    0 | 00/05DC               | *----------------------------
+ 1398 |  1 BenchmarkeD.s    824 | Empty       | 00 |         |    0 | 00/05DC               |                                         
+ 1399 |  1 BenchmarkeD.s    825 | Empty       | 00 |         |    0 | 00/05DC               | calcSPEED                               
+ 1400 |  1 BenchmarkeD.s    826 | Code        | 00 |         |    1 | 00/05DC : 48          |                pha                      
+ 1401 |  1 BenchmarkeD.s    827 | Code        | 00 |         |    1 | 00/05DD : 48          |                pha                      
+ 1402 |  1 BenchmarkeD.s    828 | Macro       | 00 |         |    0 | 00/05DE               |                PushWord  #1             ; from readtimehex to seconds
+ 1404 |  1 BenchmarkeD.s    828 | Code        | 00 |         |    3 | 00/05DE : F4 01 00    |                PEA       #1             
+ 1407 |  1 BenchmarkeD.s    829 | Macro       | 00 |         |    0 | 00/05E1               |                PushLong  #0             ; ignore
+ 1411 |  1 BenchmarkeD.s    829 | Code        | 00 |         |    3 | 00/05E1 : F4 00 00    |                PEA       #^#0           
+ 1418 |  1 BenchmarkeD.s    829 | Code        | 00 |         |    3 | 00/05E4 : F4 00 00    |                PEA       #0             
+ 1421 |  1 BenchmarkeD.s    830 | Macro       | 00 |         |    0 | 00/05E7               |                PushLong  #hextime1      
+ 1425 |  1 BenchmarkeD.s    830 | Code        | 00 |  1 >>16 |    3 | 00/05E7 : F4 00 00    |                PEA       #^#hextime1    
+ 1432 |  1 BenchmarkeD.s    830 | Code        | 00 |  2      |    3 | 00/05EA : F4 80 0A    |                PEA       #hextime1      
+ 1435 |  1 BenchmarkeD.s    831 | Macro       | 00 |         |    0 | 00/05ED               |                _ConvSeconds                 
+ 1437 |  1 BenchmarkeD.s    831 | Code        | 00 |         |    3 | 00/05ED : A2 03 37    |                LDX       #$3703         ; load tool call #
+ 1438 |  1 BenchmarkeD.s    831 | Code        | 00 |         |    4 | 00/05F0 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+ 1439 |  1 BenchmarkeD.s    832 | Macro       | 00 |         |    0 | 00/05F4               |                PullLong  seconds1       
+ 1442 |  1 BenchmarkeD.s    832 | Code        | 00 |         |    1 | 00/05F4 : 68          |                PLA                      
+ 1444 |  1 BenchmarkeD.s    832 | Code        | 00 |  2      |    3 | 00/05F5 : 8D 90 0A    |                STA       seconds1       
+ 1449 |  1 BenchmarkeD.s    832 | Code        | 00 |         |    1 | 00/05F8 : 68          |                PLA                      
+ 1451 |  1 BenchmarkeD.s    832 | Code        | 00 |  2      |    3 | 00/05F9 : 8D 92 0A    |                STA       seconds1+2     
+ 1457 |  1 BenchmarkeD.s    833 | Empty       | 00 |         |    0 | 00/05FC               |                                         
+ 1458 |  1 BenchmarkeD.s    834 | Code        | 00 |         |    1 | 00/05FC : 48          |                pha                      
+ 1459 |  1 BenchmarkeD.s    835 | Code        | 00 |         |    1 | 00/05FD : 48          |                pha                      
+ 1460 |  1 BenchmarkeD.s    836 | Macro       | 00 |         |    0 | 00/05FE               |                PushWord  #1             ; from readtimehex to seconds
+ 1462 |  1 BenchmarkeD.s    836 | Code        | 00 |         |    3 | 00/05FE : F4 01 00    |                PEA       #1             
+ 1465 |  1 BenchmarkeD.s    837 | Macro       | 00 |         |    0 | 00/0601               |                PushLong  #0             ; ignore
+ 1469 |  1 BenchmarkeD.s    837 | Code        | 00 |         |    3 | 00/0601 : F4 00 00    |                PEA       #^#0           
+ 1476 |  1 BenchmarkeD.s    837 | Code        | 00 |         |    3 | 00/0604 : F4 00 00    |                PEA       #0             
+ 1479 |  1 BenchmarkeD.s    838 | Macro       | 00 |         |    0 | 00/0607               |                PushLong  #hextime2      
+ 1483 |  1 BenchmarkeD.s    838 | Code        | 00 |  1 >>16 |    3 | 00/0607 : F4 00 00    |                PEA       #^#hextime2    
+ 1490 |  1 BenchmarkeD.s    838 | Code        | 00 |  2      |    3 | 00/060A : F4 88 0A    |                PEA       #hextime2      
+ 1493 |  1 BenchmarkeD.s    839 | Macro       | 00 |         |    0 | 00/060D               |                _ConvSeconds                 
+ 1495 |  1 BenchmarkeD.s    839 | Code        | 00 |         |    3 | 00/060D : A2 03 37    |                LDX       #$3703         ; load tool call #
+ 1496 |  1 BenchmarkeD.s    839 | Code        | 00 |         |    4 | 00/0610 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+ 1497 |  1 BenchmarkeD.s    840 | Macro       | 00 |         |    0 | 00/0614               |                PullLong  seconds2       
+ 1500 |  1 BenchmarkeD.s    840 | Code        | 00 |         |    1 | 00/0614 : 68          |                PLA                      
+ 1502 |  1 BenchmarkeD.s    840 | Code        | 00 |  2      |    3 | 00/0615 : 8D 94 0A    |                STA       seconds2       
+ 1507 |  1 BenchmarkeD.s    840 | Code        | 00 |         |    1 | 00/0618 : 68          |                PLA                      
+ 1509 |  1 BenchmarkeD.s    840 | Code        | 00 |  2      |    3 | 00/0619 : 8D 96 0A    |                STA       seconds2+2     
+ 1515 |  1 BenchmarkeD.s    841 | Empty       | 00 |         |    0 | 00/061C               |                                         
+ 1516 |  1 BenchmarkeD.s    842 | Comment     | 00 |         |    0 | 00/061C               | * Now, get the time in seconds
+ 1517 |  1 BenchmarkeD.s    843 | Code        | 00 |  2      |    3 | 00/061C : AD 94 0A    |                lda       seconds2       ; take low word only
+ 1518 |  1 BenchmarkeD.s    844 | Code        | 00 |         |    1 | 00/061F : 38          |                sec                      
+ 1519 |  1 BenchmarkeD.s    845 | Code        | 00 |  2      |    3 | 00/0620 : ED 90 0A    |                sbc       seconds1       
+ 1520 |  1 BenchmarkeD.s    846 | Code        | 00 |  2      |    3 | 00/0623 : 8D 98 0A    |                sta       seconds        
+ 1521 |  1 BenchmarkeD.s    847 | Empty       | 00 |         |    0 | 00/0626               |                                         
+ 1522 |  1 BenchmarkeD.s    848 | Comment     | 00 |         |    0 | 00/0626               | * Operation in seconds, now
+ 1523 |  1 BenchmarkeD.s    849 | Comment     | 00 |         |    0 | 00/0626               | * calculate the speed
+ 1524 |  1 BenchmarkeD.s    850 | Comment     | 00 |         |    0 | 00/0626               | * filesize / speed = nb bytes per second
+ 1525 |  1 BenchmarkeD.s    851 | Empty       | 00 |         |    0 | 00/0626               |                                         
+ 1526 |  1 BenchmarkeD.s    852 | Code        | 00 |         |    1 | 00/0626 : 48          |                pha                      
+ 1527 |  1 BenchmarkeD.s    853 | Code        | 00 |         |    1 | 00/0627 : 48          |                pha                      
+ 1528 |  1 BenchmarkeD.s    854 | Code        | 00 |         |    1 | 00/0628 : 48          |                pha                      
+ 1529 |  1 BenchmarkeD.s    855 | Code        | 00 |         |    1 | 00/0629 : 48          |                pha                      
+ 1530 |  1 BenchmarkeD.s    856 | Macro       | 00 |         |    0 | 00/062A               |                PushLong  filesize       
+ 1538 |  1 BenchmarkeD.s    856 | Code        | 00 |  2      |    3 | 00/062A : AD AE 0A    |                LDA       filesize+2     
+ 1539 |  1 BenchmarkeD.s    856 | Code        | 00 |         |    1 | 00/062D : 48          |                PHA                      
+ 1547 |  1 BenchmarkeD.s    856 | Code        | 00 |  2      |    3 | 00/062E : AD AC 0A    |                LDA       filesize       
+ 1548 |  1 BenchmarkeD.s    856 | Code        | 00 |         |    1 | 00/0631 : 48          |                PHA                      
+ 1550 |  1 BenchmarkeD.s    857 | Macro       | 00 |         |    0 | 00/0632               |                PushLong  seconds        
+ 1558 |  1 BenchmarkeD.s    857 | Code        | 00 |  2      |    3 | 00/0632 : AD 9A 0A    |                LDA       seconds+2      
+ 1559 |  1 BenchmarkeD.s    857 | Code        | 00 |         |    1 | 00/0635 : 48          |                PHA                      
+ 1567 |  1 BenchmarkeD.s    857 | Code        | 00 |  2      |    3 | 00/0636 : AD 98 0A    |                LDA       seconds        
+ 1568 |  1 BenchmarkeD.s    857 | Code        | 00 |         |    1 | 00/0639 : 48          |                PHA                      
+ 1570 |  1 BenchmarkeD.s    858 | Macro       | 00 |         |    0 | 00/063A               |                _LongDivide                 
+ 1572 |  1 BenchmarkeD.s    858 | Code        | 00 |         |    3 | 00/063A : A2 0B 0D    |                LDX       #$D0B          ; load tool call #
+ 1573 |  1 BenchmarkeD.s    858 | Code        | 00 |         |    4 | 00/063D : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+ 1574 |  1 BenchmarkeD.s    859 | Macro       | 00 |         |    0 | 00/0641               |                PullLong  kbs            ; quotient
+ 1577 |  1 BenchmarkeD.s    859 | Code        | 00 |         |    1 | 00/0641 : 68          |                PLA                      
+ 1579 |  1 BenchmarkeD.s    859 | Code        | 00 |  2      |    3 | 00/0642 : 8D 9C 0A    |                STA       kbs            
+ 1584 |  1 BenchmarkeD.s    859 | Code        | 00 |         |    1 | 00/0645 : 68          |                PLA                      
+ 1586 |  1 BenchmarkeD.s    859 | Code        | 00 |  2      |    3 | 00/0646 : 8D 9E 0A    |                STA       kbs+2          
+ 1592 |  1 BenchmarkeD.s    860 | Code        | 00 |         |    1 | 00/0649 : 68          |                pla                      ; remainder
+ 1593 |  1 BenchmarkeD.s    861 | Code        | 00 |         |    1 | 00/064A : 68          |                pla                      
+ 1594 |  1 BenchmarkeD.s    862 | Empty       | 00 |         |    0 | 00/064B               |                                         
+ 1595 |  1 BenchmarkeD.s    863 | Code        | 00 |         |    3 | 00/064B : A9 30 30    |                lda       #'00'          ; clear string
+ 1596 |  1 BenchmarkeD.s    864 | Code        | 00 |  2      |    3 | 00/064E : 8D A0 0A    |                sta       strCALCKBS     
+ 1597 |  1 BenchmarkeD.s    865 | Code        | 00 |  2      |    3 | 00/0651 : 8D A2 0A    |                sta       strCALCKBS+2   
+ 1598 |  1 BenchmarkeD.s    866 | Comment     | 00 |         |    0 | 00/0654               |                                               ; let a trailing x00
+ 1599 |  1 BenchmarkeD.s    867 | Macro       | 00 |         |    0 | 00/0654               |                PushWord  kbs            
+ 1604 |  1 BenchmarkeD.s    867 | Code        | 00 |  2      |    3 | 00/0654 : AD 9C 0A    |                LDA       kbs            
+ 1605 |  1 BenchmarkeD.s    867 | Code        | 00 |         |    1 | 00/0657 : 48          |                PHA                      
+ 1607 |  1 BenchmarkeD.s    868 | Macro       | 00 |         |    0 | 00/0658               |                PushLong  #strCALCKBS    
+ 1611 |  1 BenchmarkeD.s    868 | Code        | 00 |  1 >>16 |    3 | 00/0658 : F4 00 00    |                PEA       #^#strCALCKBS  
+ 1618 |  1 BenchmarkeD.s    868 | Code        | 00 |  2      |    3 | 00/065B : F4 A0 0A    |                PEA       #strCALCKBS    
+ 1621 |  1 BenchmarkeD.s    869 | Macro       | 00 |         |    0 | 00/065E               |                PushWord  #4             
+ 1623 |  1 BenchmarkeD.s    869 | Code        | 00 |         |    3 | 00/065E : F4 04 00    |                PEA       #4             
+ 1626 |  1 BenchmarkeD.s    870 | Macro       | 00 |         |    0 | 00/0661               |                PushWord  #0             
+ 1628 |  1 BenchmarkeD.s    870 | Code        | 00 |         |    3 | 00/0661 : F4 00 00    |                PEA       #0             
+ 1631 |  1 BenchmarkeD.s    871 | Macro       | 00 |         |    0 | 00/0664               |                _Int2Dec                 
+ 1633 |  1 BenchmarkeD.s    871 | Code        | 00 |         |    3 | 00/0664 : A2 0B 26    |                LDX       #$260B         ; load tool call #
+ 1634 |  1 BenchmarkeD.s    871 | Code        | 00 |         |    4 | 00/0667 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+ 1635 |  1 BenchmarkeD.s    872 | Empty       | 00 |         |    0 | 00/066B               |                                         
+ 1636 |  1 BenchmarkeD.s    873 | Comment     | 00 |         |    0 | 00/066B               | *----------
+ 1637 |  1 BenchmarkeD.s    874 | Empty       | 00 |         |    0 | 00/066B               |                                         
+ 1638 |  1 BenchmarkeD.s    875 | Macro       | 00 |         |    0 | 00/066B               |                PushLong  #strSPEED      
+ 1642 |  1 BenchmarkeD.s    875 | Code        | 00 |  1 >>16 |    3 | 00/066B : F4 00 00    |                PEA       #^#strSPEED    
+ 1649 |  1 BenchmarkeD.s    875 | Code        | 00 |  2      |    3 | 00/066E : F4 FE 07    |                PEA       #strSPEED      
+ 1652 |  1 BenchmarkeD.s    876 | Macro       | 00 |         |    0 | 00/0671               |                _WriteCString                 ; params set above
+ 1654 |  1 BenchmarkeD.s    876 | Code        | 00 |         |    3 | 00/0671 : A2 0C 20    |                LDX       #$200C         ; load tool call #
+ 1655 |  1 BenchmarkeD.s    876 | Code        | 00 |         |    4 | 00/0674 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+ 1656 |  1 BenchmarkeD.s    877 | Empty       | 00 |         |    0 | 00/0678               |                                         
+ 1657 |  1 BenchmarkeD.s    878 | Macro       | 00 |         |    0 | 00/0678               |                PushLong  #strCALCKBS    
+ 1661 |  1 BenchmarkeD.s    878 | Code        | 00 |  1 >>16 |    3 | 00/0678 : F4 00 00    |                PEA       #^#strCALCKBS  
+ 1668 |  1 BenchmarkeD.s    878 | Code        | 00 |  2      |    3 | 00/067B : F4 A0 0A    |                PEA       #strCALCKBS    
+ 1671 |  1 BenchmarkeD.s    879 | Macro       | 00 |         |    0 | 00/067E               |                _WriteCString                 ; params set above
+ 1673 |  1 BenchmarkeD.s    879 | Code        | 00 |         |    3 | 00/067E : A2 0C 20    |                LDX       #$200C         ; load tool call #
+ 1674 |  1 BenchmarkeD.s    879 | Code        | 00 |         |    4 | 00/0681 : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+ 1675 |  1 BenchmarkeD.s    880 | Empty       | 00 |         |    0 | 00/0685               |                                         
+ 1676 |  1 BenchmarkeD.s    881 | Macro       | 00 |         |    0 | 00/0685               |                PushLong  #strKBS        
+ 1680 |  1 BenchmarkeD.s    881 | Code        | 00 |  1 >>16 |    3 | 00/0685 : F4 00 00    |                PEA       #^#strKBS      
+ 1687 |  1 BenchmarkeD.s    881 | Code        | 00 |  2      |    3 | 00/0688 : F4 19 08    |                PEA       #strKBS        
+ 1690 |  1 BenchmarkeD.s    882 | Macro       | 00 |         |    0 | 00/068B               |                _WriteCString                 ; params set above
+ 1692 |  1 BenchmarkeD.s    882 | Code        | 00 |         |    3 | 00/068B : A2 0C 20    |                LDX       #$200C         ; load tool call #
+ 1693 |  1 BenchmarkeD.s    882 | Code        | 00 |         |    4 | 00/068E : 22 00 00 E1 |                JSL       $E10000        ; go to dispatcher
+ 1694 |  1 BenchmarkeD.s    883 | Code        | 00 |         |    1 | 00/0692 : 60          |                rts                      
+ 1695 |  1 BenchmarkeD.s    884 | Empty       | 00 |         |    0 | 00/0693               |                                         
+ 1696 |  1 BenchmarkeD.s    885 | Comment     | 00 |         |    0 | 00/0693               | *----------------------------
+ 1697 |  1 BenchmarkeD.s    886 | Comment     | 00 |         |    0 | 00/0693               | * DATA
+ 1698 |  1 BenchmarkeD.s    887 | Comment     | 00 |         |    0 | 00/0693               | *----------------------------
+ 1699 |  1 BenchmarkeD.s    888 | Empty       | 00 |         |    0 | 00/0693               |                                         
+ 1700 |  1 BenchmarkeD.s    889 | Data        | 00 |         |   17 | 00/0693 : 42 65 6E 63 | strINTRO       asc       'BenchmarkeD v1.1'0d
+      |                         |             |    |         |      |           68 6D 61 72 |
+      |                         |             |    |         |      |           6B 65 44 20 |
+      |                         |             |    |         |      |           76 31 2E 31 |
+      |                         |             |    |         |      |           0D          |
+ 1701 |  1 BenchmarkeD.s    890 | Data        | 00 |         |   39 | 00/06A4 : 28 63 29 20 |                asc       '(c) 2013-2025, Brutal Deluxe Software'0d0d
+      |                         |             |    |         |      |           32 30 31 33 |
+      |                         |             |    |         |      |           2D 32 30 32 |
+      |                         |             |    |         |      |           35 2C 20 42 |
+      |                         |             |    |         |      |           72 75 74 61 |
+      |                         |             |    |         |      |           6C 20 44 65 |
+      |                         |             |    |         |      |           6C 75 78 65 |
+      |                         |             |    |         |      |           20 53 6F 66 |
+      |                         |             |    |         |      |           74 77 61 72 |
+      |                         |             |    |         |      |           65 0D 0D    |
+ 1702 |  1 BenchmarkeD.s    891 | Data        | 00 |         |   13 | 00/06CB : 46 69 6C 65 |                asc       'File options'0d
+      |                         |             |    |         |      |           20 6F 70 74 |
+      |                         |             |    |         |      |           69 6F 6E 73 |
+      |                         |             |    |         |      |           0D          |
+ 1703 |  1 BenchmarkeD.s    892 | Data        | 00 |         |   16 | 00/06D8 : 20 31 2D 20 |                asc       ' 1- Write speed'0d
+      |                         |             |    |         |      |           57 72 69 74 |
+      |                         |             |    |         |      |           65 20 73 70 |
+      |                         |             |    |         |      |           65 65 64 0D |
+ 1704 |  1 BenchmarkeD.s    893 | Data        | 00 |         |   15 | 00/06E8 : 20 32 2D 20 |                asc       ' 2- Read speed'0d
+      |                         |             |    |         |      |           52 65 61 64 |
+      |                         |             |    |         |      |           20 73 70 65 |
+      |                         |             |    |         |      |           65 64 0D    |
+ 1705 |  1 BenchmarkeD.s    894 | Data        | 00 |         |   14 | 00/06F7 : 42 6C 6F 63 |                asc       'Block options'0d
+      |                         |             |    |         |      |           6B 20 6F 70 |
+      |                         |             |    |         |      |           74 69 6F 6E |
+      |                         |             |    |         |      |           73 0D       |
+ 1706 |  1 BenchmarkeD.s    895 | Data        | 00 |         |   25 | 00/0705 : 20 33 2D 20 |                asc       ' 3- Read with 64K buffer'0d
+      |                         |             |    |         |      |           52 65 61 64 |
+      |                         |             |    |         |      |           20 77 69 74 |
+      |                         |             |    |         |      |           68 20 36 34 |
+      |                         |             |    |         |      |           4B 20 62 75 |
+      |                         |             |    |         |      |           66 66 65 72 |
+      |                         |             |    |         |      |           0D          |
+ 1707 |  1 BenchmarkeD.s    896 | Data        | 00 |         |   24 | 00/071E : 20 34 2D 20 |                asc       ' 4- Read block-by-block'0d
+      |                         |             |    |         |      |           52 65 61 64 |
+      |                         |             |    |         |      |           20 62 6C 6F |
+      |                         |             |    |         |      |           63 6B 2D 62 |
+      |                         |             |    |         |      |           79 2D 62 6C |
+      |                         |             |    |         |      |           6F 63 6B 0D |
+ 1708 |  1 BenchmarkeD.s    897 | Data        | 00 |         |    1 | 00/0736 : 0D          |                asc       0d             
+ 1709 |  1 BenchmarkeD.s    898 | Data        | 00 |         |   32 | 00/0737 : 49 6E 70 75 |                asc       'Input your choice (Q to quit) >'00
+      |                         |             |    |         |      |           74 20 79 6F |
+      |                         |             |    |         |      |           75 72 20 63 |
+      |                         |             |    |         |      |           68 6F 69 63 |
+      |                         |             |    |         |      |           65 20 28 51 |
+      |                         |             |    |         |      |           20 74 6F 20 |
+      |                         |             |    |         |      |           71 75 69 74 |
+      |                         |             |    |         |      |           29 20 3E 00 |
+ 1710 |  1 BenchmarkeD.s    899 | Empty       | 00 |         |    0 | 00/0757               |                                         
+ 1711 |  1 BenchmarkeD.s    900 | Data        | 00 |         |   40 | 00/0757 : 0D 0D 54 68 | strBYE         asc       0d0d'Thank you. Press a key to continue...'00
+      |                         |             |    |         |      |           61 6E 6B 20 |
+      |                         |             |    |         |      |           79 6F 75 2E |
+      |                         |             |    |         |      |           20 50 72 65 |
+      |                         |             |    |         |      |           73 73 20 61 |
+      |                         |             |    |         |      |           20 6B 65 79 |
+      |                         |             |    |         |      |           20 74 6F 20 |
+      |                         |             |    |         |      |           63 6F 6E 74 |
+      |                         |             |    |         |      |           69 6E 75 65 |
+      |                         |             |    |         |      |           2E 2E 2E 00 |
+ 1712 |  1 BenchmarkeD.s    901 | Empty       | 00 |         |    0 | 00/077F               |                                         
+ 1713 |  1 BenchmarkeD.s    902 | Data        | 00 |         |   18 | 00/077F : 0D 0D 4E 6F | strREAD        asc       0d0d'Now reading... '00
+      |                         |             |    |         |      |           77 20 72 65 |
+      |                         |             |    |         |      |           61 64 69 6E |
+      |                         |             |    |         |      |           67 2E 2E 2E |
+      |                         |             |    |         |      |           20 00       |
+ 1714 |  1 BenchmarkeD.s    903 | Data        | 00 |         |   19 | 00/0791 : 0D 0D 4E 6F | strCREATE      asc       0d0d'Now creating... '00
+      |                         |             |    |         |      |           77 20 63 72 |
+      |                         |             |    |         |      |           65 61 74 69 |
+      |                         |             |    |         |      |           6E 67 2E 2E |
+      |                         |             |    |         |      |           2E 20 00    |
+ 1715 |  1 BenchmarkeD.s    904 | Data        | 00 |         |   22 | 00/07A4 : 0D 3D 3D 3D | strRERR        asc       0d'=== Read failed! ==='00
+      |                         |             |    |         |      |           20 52 65 61 |
+      |                         |             |    |         |      |           64 20 66 61 |
+      |                         |             |    |         |      |           69 6C 65 64 |
+      |                         |             |    |         |      |           21 20 3D 3D |
+      |                         |             |    |         |      |           3D 00       |
+ 1716 |  1 BenchmarkeD.s    905 | Data        | 00 |         |   23 | 00/07BA : 0D 3D 3D 3D | strWERR        asc       0d'=== Write failed! ==='00
+      |                         |             |    |         |      |           20 57 72 69 |
+      |                         |             |    |         |      |           74 65 20 66 |
+      |                         |             |    |         |      |           61 69 6C 65 |
+      |                         |             |    |         |      |           64 21 20 3D |
+      |                         |             |    |         |      |           3D 3D 00    |
+ 1717 |  1 BenchmarkeD.s    906 | Data        | 00 |         |   20 | 00/07D1 : 0D 3D 3D 3D | strCANCEL      asc       0d'=== Cancelled! ==='00
+      |                         |             |    |         |      |           20 43 61 6E |
+      |                         |             |    |         |      |           63 65 6C 6C |
+      |                         |             |    |         |      |           65 64 21 20 |
+      |                         |             |    |         |      |           3D 3D 3D 00 |
+ 1718 |  1 BenchmarkeD.s    907 | Empty       | 00 |         |    0 | 00/07E5               |                                         
+ 1719 |  1 BenchmarkeD.s    908 | Comment     | 00 |         |    0 | 00/07E5               | *strFROM        asc       0d' Started at '00
+ 1720 |  1 BenchmarkeD.s    909 | Comment     | 00 |         |    0 | 00/07E5               | *strTO          asc       0d'   Ended at '00
+ 1721 |  1 BenchmarkeD.s    910 | Empty       | 00 |         |    0 | 00/07E5               |                                         
+ 1722 |  1 BenchmarkeD.s    911 | Data        | 00 |         |   14 | 00/07E5 : 2C 20 73 74 | strFROM        asc       ', started at '00
+      |                         |             |    |         |      |           61 72 74 65 |
+      |                         |             |    |         |      |           64 20 61 74 |
+      |                         |             |    |         |      |           20 00       |
+ 1723 |  1 BenchmarkeD.s    912 | Data        | 00 |         |   11 | 00/07F3 : 0D 45 6E 64 | strTO          asc       0d'Ended at '00
+      |                         |             |    |         |      |           65 64 20 61 |
+      |                         |             |    |         |      |           74 20 00    |
+ 1724 |  1 BenchmarkeD.s    913 | Data        | 00 |         |   27 | 00/07FE : 2C 20 66 6F | strSPEED       asc       ', for an average speed of '00
+      |                         |             |    |         |      |           72 20 61 6E |
+      |                         |             |    |         |      |           20 61 76 65 |
+      |                         |             |    |         |      |           72 61 67 65 |
+      |                         |             |    |         |      |           20 73 70 65 |
+      |                         |             |    |         |      |           65 64 20 6F |
+      |                         |             |    |         |      |           66 20 00    |
+ 1725 |  1 BenchmarkeD.s    914 | Data        | 00 |         |    6 | 00/0819 : 20 4B 42 2F | strKBS         asc       ' KB/s'00      
+      |                         |             |    |         |      |           73 00       |
+ 1726 |  1 BenchmarkeD.s    915 | Data        | 00 |         |    8 | 00/081F : 20 62 6C 6F | strBLOCKS      asc       ' blocks'00    
+      |                         |             |    |         |      |           63 6B 73 00 |
+ 1727 |  1 BenchmarkeD.s    916 | Empty       | 00 |         |    0 | 00/0827               |                                         
+ 1728 |  1 BenchmarkeD.s    917 | Comment     | 00 |         |    0 | 00/0827               | *----------
+ 1729 |  1 BenchmarkeD.s    918 | Empty       | 00 |         |    0 | 00/0827               |                                         
+ 1730 |  1 BenchmarkeD.s    919 | Data        | 00 |         |   12 | 00/0827 : 0A 00 31 2F | pathname1      strl      '1/File512K'   
+      |                         |             |    |         |      |           46 69 6C 65 |
+      |                         |             |    |         |      |           35 31 32 4B |
+ 1731 |  1 BenchmarkeD.s    920 | Data        | 00 |         |   10 | 00/0833 : 08 00 31 2F | pathname2      strl      '1/File1M'     
+      |                         |             |    |         |      |           46 69 6C 65 |
+      |                         |             |    |         |      |           31 4D       |
+ 1732 |  1 BenchmarkeD.s    921 | Data        | 00 |         |   10 | 00/083D : 08 00 31 2F | pathname3      strl      '1/File2M'     
+      |                         |             |    |         |      |           46 69 6C 65 |
+      |                         |             |    |         |      |           32 4D       |
+ 1733 |  1 BenchmarkeD.s    922 | Data        | 00 |         |   10 | 00/0847 : 08 00 31 2F | pathname4      strl      '1/File4M'     
+      |                         |             |    |         |      |           46 69 6C 65 |
+      |                         |             |    |         |      |           34 4D       |
+ 1734 |  1 BenchmarkeD.s    923 | Data        | 00 |         |   10 | 00/0851 : 08 00 31 2F | pathname5      strl      '1/File8M'     
+      |                         |             |    |         |      |           46 69 6C 65 |
+      |                         |             |    |         |      |           38 4D       |
+ 1735 |  1 BenchmarkeD.s    924 | Data        | 00 |         |   11 | 00/085B : 09 00 31 2F | pathname6      strl      '1/File16M'    
+      |                         |             |    |         |      |           46 69 6C 65 |
+      |                         |             |    |         |      |           31 36 4D    |
+ 1736 |  1 BenchmarkeD.s    925 | Empty       | 00 |         |    0 | 00/0866               |                                         
+ 1737 |  1 BenchmarkeD.s    926 | Data        | 00 |         |    2 | 00/0866 : 00 00       | fgWERR         ds        2              
+ 1738 |  1 BenchmarkeD.s    927 | Data        | 00 |         |    2 | 00/0868 : 00 00       | fgCANCEL       ds        2              
+ 1739 |  1 BenchmarkeD.s    928 | Empty       | 00 |         |    0 | 00/086A               |                                         
+ 1740 |  1 BenchmarkeD.s    929 | Comment     | 00 |         |    0 | 00/086A               | *----------
+ 1741 |  1 BenchmarkeD.s    930 | Empty       | 00 |         |    0 | 00/086A               |                                         
+ 1742 |  1 BenchmarkeD.s    931 | Data        | 00 |         |    2 | 00/086A : 06 00       | proCREATE      dw        6              ; 00 pcount
+ 1743 |  1 BenchmarkeD.s    932 | Data        | 00 |  3      |    4 | 00/086C : 27 08 00 00 |                adrl      pathname1      ; 02 pathname
+ 1744 |  1 BenchmarkeD.s    933 | Data        | 00 |         |    2 | 00/0870 : C3 00       |                dw        $c3            ; 06 access
+ 1745 |  1 BenchmarkeD.s    934 | Data        | 00 |         |    2 | 00/0872 : 06 00       |                dw        $06            ; 08 fileType
+ 1746 |  1 BenchmarkeD.s    935 | Data        | 00 |         |    4 | 00/0874 : 00 00 00 00 |                ds        4              ; 0A auxType
+ 1747 |  1 BenchmarkeD.s    936 | Data        | 00 |         |    2 | 00/0878 : 01 00       |                dw        $01            ; 0E storageType
+ 1748 |  1 BenchmarkeD.s    937 | Data        | 00 |         |    4 | 00/087A : 00 00 00 00 |                ds        4              ; 10 eof
+ 1749 |  1 BenchmarkeD.s    938 | Empty       | 00 |         |    0 | 00/087E               |                                         
+ 1750 |  1 BenchmarkeD.s    939 | Data        | 00 |         |    2 | 00/087E : 01 00       | proDESTROY     dw        1              ; 00 pcount
+ 1751 |  1 BenchmarkeD.s    940 | Data        | 00 |  3      |    4 | 00/0880 : 27 08 00 00 |                adrl      pathname1      ; 02 pathname
+ 1752 |  1 BenchmarkeD.s    941 | Empty       | 00 |         |    0 | 00/0884               |                                         
+ 1753 |  1 BenchmarkeD.s    942 | Data        | 00 |         |    2 | 00/0884 : 0F 00       | proOPEN        dw        15             ; pcount
+ 1754 |  1 BenchmarkeD.s    943 | Data        | 00 |         |    2 | 00/0886 : 00 00       |                ds        2              ; ref_num
+ 1755 |  1 BenchmarkeD.s    944 | Data        | 00 |  3      |    4 | 00/0888 : 27 08 00 00 |                adrl      pathname1      ; pathname
+ 1756 |  1 BenchmarkeD.s    945 | Data        | 00 |         |    2 | 00/088C : 00 00       |                ds        2              ; request_access
+ 1757 |  1 BenchmarkeD.s    946 | Data        | 00 |         |    2 | 00/088E : 00 00       |                ds        2              ; resource_num
+ 1758 |  1 BenchmarkeD.s    947 | Data        | 00 |         |    2 | 00/0890 : 00 00       |                ds        2              ; access
+ 1759 |  1 BenchmarkeD.s    948 | Data        | 00 |         |    2 | 00/0892 : 00 00       |                ds        2              ; file_type
+ 1760 |  1 BenchmarkeD.s    949 | Data        | 00 |         |    4 | 00/0894 : 00 00 00 00 |                ds        4              ; aux_type
+ 1761 |  1 BenchmarkeD.s    950 | Data        | 00 |         |    2 | 00/0898 : 00 00       |                ds        2              ; storage_type
+ 1762 |  1 BenchmarkeD.s    951 | Data        | 00 |         |    8 | 00/089A : 00 00 00 00 |                ds        8              ; create_td
+      |                         |             |    |         |      |           00 00 00 00 |
+ 1763 |  1 BenchmarkeD.s    952 | Data        | 00 |         |    8 | 00/08A2 : 00 00 00 00 |                ds        8              ; modify_td
+      |                         |             |    |         |      |           00 00 00 00 |
+ 1764 |  1 BenchmarkeD.s    953 | Data        | 00 |         |    4 | 00/08AA : 00 00 00 00 |                ds        4              ; option_list
+ 1765 |  1 BenchmarkeD.s    954 | Data        | 00 |         |    4 | 00/08AE : 00 00 00 00 |                ds        4              ; eof
+ 1766 |  1 BenchmarkeD.s    955 | Data        | 00 |         |    4 | 00/08B2 : 00 00 00 00 |                ds        4              ; blocks_used
+ 1767 |  1 BenchmarkeD.s    956 | Data        | 00 |         |    4 | 00/08B6 : 00 00 00 00 |                ds        4              ; resource_eof
+ 1768 |  1 BenchmarkeD.s    957 | Data        | 00 |         |    4 | 00/08BA : 00 00 00 00 |                ds        4              ; resource_blocks
+ 1769 |  1 BenchmarkeD.s    958 | Empty       | 00 |         |    0 | 00/08BE               |                                         
+ 1770 |  1 BenchmarkeD.s    959 | Data        | 00 |         |    2 | 00/08BE : 05 00       | proREAD        dw        5              ; +00 pcount
+ 1771 |  1 BenchmarkeD.s    960 | Data        | 00 |         |    2 | 00/08C0 : 00 00       |                ds        2              ; +02 ref_num
+ 1772 |  1 BenchmarkeD.s    961 | Data        | 00 |         |    4 | 00/08C2 : 00 00 00 00 |                ds        4              ; +04 data_buffer
+ 1773 |  1 BenchmarkeD.s    962 | Data        | 00 |         |    4 | 00/08C6 : 00 00 01 00 |                adrl      $00010000      ; +08 request_count
+ 1774 |  1 BenchmarkeD.s    963 | Data        | 00 |         |    4 | 00/08CA : 00 00 00 00 |                ds        4              ; +12 transfer_count
+ 1775 |  1 BenchmarkeD.s    964 | Data        | 00 |         |    2 | 00/08CE : 01 00       |                dw        1              ; +16 cache_priority
+ 1776 |  1 BenchmarkeD.s    965 | Empty       | 00 |         |    0 | 00/08D0               |                                         
+ 1777 |  1 BenchmarkeD.s    966 | Data        | 00 |         |    2 | 00/08D0 : 05 00       | proWRITE       dw        5              ; pcount
+ 1778 |  1 BenchmarkeD.s    967 | Data        | 00 |         |    2 | 00/08D2 : 00 00       |                ds        2              ; ref_num
+ 1779 |  1 BenchmarkeD.s    968 | Data        | 00 |         |    4 | 00/08D4 : 00 00 02 00 |                adrl      $00020000      ; data_buffer
+ 1780 |  1 BenchmarkeD.s    969 | Data        | 00 |         |    4 | 00/08D8 : 00 00 01 00 |                adrl      $00010000      ; request_count
+ 1781 |  1 BenchmarkeD.s    970 | Data        | 00 |         |    4 | 00/08DC : 00 00 00 00 |                ds        4              ; transfer_count
+ 1782 |  1 BenchmarkeD.s    971 | Data        | 00 |         |    2 | 00/08E0 : 01 00       |                dw        1              ; cache_priority
+ 1783 |  1 BenchmarkeD.s    972 | Empty       | 00 |         |    0 | 00/08E2               |                                         
+ 1784 |  1 BenchmarkeD.s    973 | Data        | 00 |         |    2 | 00/08E2 : 01 00       | proCLOSE       dw        1              ; pcount
+ 1785 |  1 BenchmarkeD.s    974 | Data        | 00 |         |    2 | 00/08E4 : 00 00       |                ds        2              ; ref_num
+ 1786 |  1 BenchmarkeD.s    975 | Empty       | 00 |         |    0 | 00/08E6               |                                         
+ 1787 |  1 BenchmarkeD.s    976 | Data        | 00 |         |    2 | 00/08E6 : 02 00       | proQUIT        dw        2              ; pcount
+ 1788 |  1 BenchmarkeD.s    977 | Data        | 00 |         |    4 | 00/08E8 : 00 00 00 00 |                ds        4              ; pathname
+ 1789 |  1 BenchmarkeD.s    978 | Data        | 00 |         |    2 | 00/08EC : 00 00       |                ds        2              ; flags
+ 1790 |  1 BenchmarkeD.s    979 | Empty       | 00 |         |    0 | 00/08EE               |                                         
+ 1791 |  1 BenchmarkeD.s    980 | Data        | 00 |         |    2 | 00/08EE : 01 00       | proVERSION     dw        1              ; pcount
+ 1792 |  1 BenchmarkeD.s    981 | Data        | 00 |         |    2 | 00/08F0 : 00 00       |                ds        2              ; version
+ 1793 |  1 BenchmarkeD.s    982 | Empty       | 00 |         |    0 | 00/08F2               |                                         
+ 1794 |  1 BenchmarkeD.s    983 | Comment     | 00 |         |    0 | 00/08F2               | *----------
+ 1795 |  1 BenchmarkeD.s    984 | Empty       | 00 |         |    0 | 00/08F2               |                                         
+ 1796 |  1 BenchmarkeD.s    985 | Data        | 00 |         |    2 | 00/08F2 : 02 00       | proGETPREFIX   dw        2              ; Parms for GetPrefix
+ 1797 |  1 BenchmarkeD.s    986 | Data        | 00 |         |    2 | 00/08F4 : 01 00       |                dw        1              ; 02 prefix num
+ 1798 |  1 BenchmarkeD.s    987 | Data        | 00 |  3      |    4 | 00/08F6 : 68 09 00 00 |                adrl      pfxOPEN        ; 04 prefix
+ 1799 |  1 BenchmarkeD.s    988 | Empty       | 00 |         |    0 | 00/08FA               |                                         
+ 1800 |  1 BenchmarkeD.s    989 | Data        | 00 |         |    2 | 00/08FA : 04 00       | proDINFO       dw        4              ; Parms for DInfo
+ 1801 |  1 BenchmarkeD.s    990 | Data        | 00 |         |    2 | 00/08FC : 00 00       |                ds        2              ; 02 device num
+ 1802 |  1 BenchmarkeD.s    991 | Data        | 00 |  3      |    4 | 00/08FE : 34 09 00 00 |                adrl      devOPEN        ; 04 device name
+ 1803 |  1 BenchmarkeD.s    992 | Data        | 00 |         |    2 | 00/0902 : 00 00       |                ds        2              ; 08 characteristics
+ 1804 |  1 BenchmarkeD.s    993 | Data        | 00 |         |    4 | 00/0904 : 00 00 00 00 |                ds        4              ; 0A total blocks
+ 1805 |  1 BenchmarkeD.s    994 | Empty       | 00 |         |    0 | 00/0908               |                                         
+ 1806 |  1 BenchmarkeD.s    995 | Data        | 00 |         |    2 | 00/0908 : 06 00       | proDREAD       dw        6              ; Parms for DRead
+ 1807 |  1 BenchmarkeD.s    996 | Data        | 00 |         |    2 | 00/090A : 00 00       |                ds        2              ; 02 device num
+ 1808 |  1 BenchmarkeD.s    997 | Data        | 00 |         |    4 | 00/090C : 00 00 00 00 |                ds        4              ; 04 buffer
+ 1809 |  1 BenchmarkeD.s    998 | Data        | 00 |         |    4 | 00/0910 : 00 00 01 00 |                adrl      $00010000      ; 08 request count
+ 1810 |  1 BenchmarkeD.s    999 | Data        | 00 |         |    4 | 00/0914 : 00 00 00 00 |                ds        4              ; 0C starting block
+ 1811 |  1 BenchmarkeD.s   1000 | Data        | 00 |         |    2 | 00/0918 : 00 02       |                dw        512            ; 10 block size
+ 1812 |  1 BenchmarkeD.s   1001 | Data        | 00 |         |    4 | 00/091A : 00 00 00 00 |                ds        4              ; 12 transfer count
+ 1813 |  1 BenchmarkeD.s   1002 | Empty       | 00 |         |    0 | 00/091E               |                                         
+ 1814 |  1 BenchmarkeD.s   1003 | Data        | 00 |         |    2 | 00/091E : 06 00       | proVOLUME      dw        6              ; Parms for Volume
+ 1815 |  1 BenchmarkeD.s   1004 | Data        | 00 |  3      |    4 | 00/0920 : 36 09 00 00 |                adrl      devNAMEopen    ;02  device name
+ 1816 |  1 BenchmarkeD.s   1005 | Data        | 00 |  3      |    4 | 00/0924 : 2C 0A 00 00 |                adrl      volOPEN        ; 06 volume name
+ 1817 |  1 BenchmarkeD.s   1006 | Data        | 00 |         |    4 | 00/0928 : 00 00 00 00 |                ds        4              ; 0A total blocks
+ 1818 |  1 BenchmarkeD.s   1007 | Data        | 00 |         |    4 | 00/092C : 00 00 00 00 |                ds        4              ; 0E free blocks
+ 1819 |  1 BenchmarkeD.s   1008 | Data        | 00 |         |    2 | 00/0930 : 00 00       |                ds        2              ; 12 file_sys_id
+ 1820 |  1 BenchmarkeD.s   1009 | Data        | 00 |         |    2 | 00/0932 : 00 00       |                ds        2              ; 14 block_size
+ 1821 |  1 BenchmarkeD.s   1010 | Empty       | 00 |         |    0 | 00/0934               |                                         
+ 1822 |  1 BenchmarkeD.s   1011 | Data        | 00 |         |    2 | 00/0934 : 32 00       | devOPEN        dw        $0032          ; buffer size
+ 1823 |  1 BenchmarkeD.s   1012 | Data        | 00 |         |    1 | 00/0936 : 00          | devNAMEopen    db        $00            ; length
+ 1824 |  1 BenchmarkeD.s   1013 | Data        | 00 |         |    1 | 00/0937 : 00          | devNAMEopen1   db        $00            
+ 1825 |  1 BenchmarkeD.s   1014 | Data        | 00 |         |   48 | 00/0938 : 00 00 00 00 | devNAMEopen2   ds        $30            ; data
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+ 1826 |  1 BenchmarkeD.s   1015 | Empty       | 00 |         |    0 | 00/0968               |                                         
+ 1827 |  1 BenchmarkeD.s   1016 | Data        | 00 |         |    2 | 00/0968 : C2 00       | pfxOPEN        dw        $00c2          ; buffer size
+ 1828 |  1 BenchmarkeD.s   1017 | Data        | 00 |         |    1 | 00/096A : 00          | pfxNAMEopen    db        $00            ; length
+ 1829 |  1 BenchmarkeD.s   1018 | Data        | 00 |         |    1 | 00/096B : 00          | pfxNAMEopen1   db        $00            
+ 1830 |  1 BenchmarkeD.s   1019 | Data        | 00 |         |  192 | 00/096C : 00 00 00 00 | pfxNAMEopen2   ds        $c0            ; data
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+ 1831 |  1 BenchmarkeD.s   1020 | Empty       | 00 |         |    0 | 00/0A2C               |                                         
+ 1832 |  1 BenchmarkeD.s   1021 | Data        | 00 |         |    2 | 00/0A2C : 32 00       | volOPEN        dw        $0032          ; buffer size
+ 1833 |  1 BenchmarkeD.s   1022 | Data        | 00 |         |    1 | 00/0A2E : 00          | volNAMEopen    db        $00            ; length
+ 1834 |  1 BenchmarkeD.s   1023 | Data        | 00 |         |    1 | 00/0A2F : 00          | volNAMEopen1   db        $00            
+ 1835 |  1 BenchmarkeD.s   1024 | Data        | 00 |         |   48 | 00/0A30 : 00 00 00 00 | volNAMEopen2   ds        $30            ; data
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+ 1836 |  1 BenchmarkeD.s   1025 | Empty       | 00 |         |    0 | 00/0A60               |                                         
+ 1837 |  1 BenchmarkeD.s   1026 | Comment     | 00 |         |    0 | 00/0A60               | *----------
+ 1838 |  1 BenchmarkeD.s   1027 | Empty       | 00 |         |    0 | 00/0A60               |                                         
+ 1839 |  1 BenchmarkeD.s   1028 | Data        | 00 |         |   32 | 00/0A60 : 00 00 00 00 | asciitime      ds        32             
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+ 1840 |  1 BenchmarkeD.s   1029 | Empty       | 00 |         |    0 | 00/0A80               |                                         
+ 1841 |  1 BenchmarkeD.s   1030 | Data        | 00 |         |    8 | 00/0A80 : 00 00 00 00 | hextime1       ds        8              
+      |                         |             |    |         |      |           00 00 00 00 |
+ 1842 |  1 BenchmarkeD.s   1031 | Data        | 00 |         |    8 | 00/0A88 : 00 00 00 00 | hextime2       ds        8              
+      |                         |             |    |         |      |           00 00 00 00 |
+ 1843 |  1 BenchmarkeD.s   1032 | Empty       | 00 |         |    0 | 00/0A90               |                                         
+ 1844 |  1 BenchmarkeD.s   1033 | Data        | 00 |         |    4 | 00/0A90 : 00 00 00 00 | seconds1       ds        4              
+ 1845 |  1 BenchmarkeD.s   1034 | Data        | 00 |         |    4 | 00/0A94 : 00 00 00 00 | seconds2       ds        4              
+ 1846 |  1 BenchmarkeD.s   1035 | Data        | 00 |         |    4 | 00/0A98 : 00 00 00 00 | seconds        ds        4              
+ 1847 |  1 BenchmarkeD.s   1036 | Empty       | 00 |         |    0 | 00/0A9C               |                                         
+ 1848 |  1 BenchmarkeD.s   1037 | Data        | 00 |         |    4 | 00/0A9C : 00 00 00 00 | kbs            ds        4              
+ 1849 |  1 BenchmarkeD.s   1038 | Data        | 00 |         |    8 | 00/0AA0 : 00 00 00 00 | strCALCKBS     ds        8              
+      |                         |             |    |         |      |           00 00 00 00 |
+ 1850 |  1 BenchmarkeD.s   1039 | Empty       | 00 |         |    0 | 00/0AA8               |                                         
+ 1851 |  1 BenchmarkeD.s   1040 | Comment     | 00 |         |    0 | 00/0AA8               | *----------
+ 1852 |  1 BenchmarkeD.s   1041 | Empty       | 00 |         |    0 | 00/0AA8               |                                         
+ 1853 |  1 BenchmarkeD.s   1042 | Data        | 00 |         |    2 | 00/0AA8 : 00 00       | theINDEX       ds        2              
+ 1854 |  1 BenchmarkeD.s   1043 | Data        | 00 |         |    2 | 00/0AAA : 00 00       | maxINDEX       ds        2              
+ 1855 |  1 BenchmarkeD.s   1044 | Data        | 00 |         |    4 | 00/0AAC : 00 00 00 00 | filesize       ds        4              ; in KB
+ 1856 |  1 BenchmarkeD.s   1045 | Empty       | 00 |         |    0 | 00/0AB0               |                                         
+ 1857 |  1 BenchmarkeD.s   1046 | Comment     | 00 |         |    0 | 00/0AB0               | *----------
+ 1858 |  1 BenchmarkeD.s   1047 | Empty       | 00 |         |    0 | 00/0AB0               |                                         
+ 1859 |  1 BenchmarkeD.s   1048 | Data        | 00 |         |    2 | 00/0AB0 : 00 00       | appID          ds        2              
+ 1860 |  1 BenchmarkeD.s   1049 | Data        | 00 |         |    2 | 00/0AB2 : 00 00       | myID           ds        2              
+ 1861 |  1 BenchmarkeD.s   1050 | Empty       | 00 |         |    0 | 00/0AB4               |                                         
+ 1862 |  1 BenchmarkeD.s   1051 | Data        | 00 |         |    2 | 00/0AB4 : 00 00       | myDP           ds        2              
+ 1863 |  1 BenchmarkeD.s   1052 | Data        | 00 |         |    4 | 00/0AB6 : 00 00 00 00 | haBUFFER       ds        4              
+ 1864 |  1 BenchmarkeD.s   1053 | Empty       | 00 |         |    0 | 00/0ABA               |                                         
+ 1865 |  1 BenchmarkeD.s   1054 | Empty       | 00 |         |    0 | 00/0ABA               |                                         
+------+-------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

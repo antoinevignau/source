@@ -1,0 +1,185 @@
+------+------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File      Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1 dhgr.s      1 | Comment     | 11 |         |    0 | 00/8000               | *
+    2 |  1 dhgr.s      2 | Comment     | 11 |         |    0 | 00/8000               | * HGR & DHGR
+    3 |  1 dhgr.s      3 | Comment     | 11 |         |    0 | 00/8000               | *
+    4 |  1 dhgr.s      4 | Comment     | 11 |         |    0 | 00/8000               | * (c) 2025, Brutal Deluxe Software
+    5 |  1 dhgr.s      5 | Comment     | 11 |         |    0 | 00/8000               | *
+    6 |  1 dhgr.s      6 | Empty       | 11 |         |    0 | 00/8000               |                                      
+    7 |  1 dhgr.s      7 | Directive   | 11 |         |    0 | 00/8000               |                 org   $1000          
+    8 |  1 dhgr.s      8 | Directive   | 11 |         |    0 | 00/1000               |                 mx    %11            
+    9 |  1 dhgr.s      9 | Directive   | 11 |         |    0 | 00/1000               |                 lst   off            
+   10 |  1 dhgr.s     10 | Empty       | 11 |         |    0 | 00/1000               |                                      
+   11 |  1 dhgr.s     11 | Comment     | 11 |         |    0 | 00/1000               | *----------------------------------------
+   12 |  1 dhgr.s     12 | Comment     | 11 |         |    0 | 00/1000               | * Switch HGR/DHGR on/off
+   13 |  1 dhgr.s     13 | Comment     | 11 |         |    0 | 00/1000               | *----------------------------------------
+   14 |  1 dhgr.s     14 | Empty       | 11 |         |    0 | 00/1000               |                                      
+   15 |  1 dhgr.s     15 | Comment     | 11 |         |    0 | 00/1000               | *----------------------------------------
+   16 |  1 dhgr.s     16 | Comment     | 11 |         |    0 | 00/1000               | * APPLE II MEMORY MAP
+   17 |  1 dhgr.s     17 | Comment     | 11 |         |    0 | 00/1000               | *
+   18 |  1 dhgr.s     18 | Comment     | 11 |         |    0 | 00/1000               | * Main memory:
+   19 |  1 dhgr.s     19 | Comment     | 11 |         |    0 | 00/1000               | * $2000..$3FFF: PAGE1
+   20 |  1 dhgr.s     20 | Comment     | 11 |         |    0 | 00/1000               | * $4000..$5FFF: PAGE2
+   21 |  1 dhgr.s     21 | Comment     | 11 |         |    0 | 00/1000               | *
+   22 |  1 dhgr.s     22 | Comment     | 11 |         |    0 | 00/1000               | * Auxiliary memory:
+   23 |  1 dhgr.s     23 | Comment     | 11 |         |    0 | 00/1000               | * $2000..$3FFF: PAGE1X
+   24 |  1 dhgr.s     24 | Comment     | 11 |         |    0 | 00/1000               | * $4000..$5FFF: PAGE2X
+   25 |  1 dhgr.s     25 | Comment     | 11 |         |    0 | 00/1000               | *
+   26 |  1 dhgr.s     26 | Empty       | 11 |         |    0 | 00/1000               |                                      
+   27 |  1 dhgr.s     27 | Comment     | 11 |         |    0 | 00/1000               | *----------------------------------------
+   28 |  1 dhgr.s     28 | Comment     | 11 |         |    0 | 00/1000               | * APPLE II FILE FORMATS
+   29 |  1 dhgr.s     29 | Comment     | 11 |         |    0 | 00/1000               | *
+   30 |  1 dhgr.s     30 | Comment     | 11 |         |    0 | 00/1000               | * HGR picture:
+   31 |  1 dhgr.s     31 | Comment     | 11 |         |    0 | 00/1000               | * - One binary file of size $1FF8 or $2000
+   32 |  1 dhgr.s     32 | Comment     | 11 |         |    0 | 00/1000               | *
+   33 |  1 dhgr.s     33 | Comment     | 11 |         |    0 | 00/1000               | * DHGR picture:
+   34 |  1 dhgr.s     34 | Comment     | 11 |         |    0 | 00/1000               | *  - One binary file of $4000 bytes
+   35 |  1 dhgr.s     35 | Comment     | 11 |         |    0 | 00/1000               | *  - The first $2000 for the AUX mem part
+   36 |  1 dhgr.s     36 | Comment     | 11 |         |    0 | 00/1000               | *  - The second for the MAIN mem part
+   37 |  1 dhgr.s     37 | Comment     | 11 |         |    0 | 00/1000               | *
+   38 |  1 dhgr.s     38 | Comment     | 11 |         |    0 | 00/1000               | *  Programmers usually do:
+   39 |  1 dhgr.s     39 | Comment     | 11 |         |    0 | 00/1000               | *  - load the first $2000 bytes at $2000
+   40 |  1 dhgr.s     40 | Comment     | 11 |         |    0 | 00/1000               | *  - move them to $2000..$3FFF in AUX mem
+   41 |  1 dhgr.s     41 | Comment     | 11 |         |    0 | 00/1000               | *  - load the last $2000 bytes at $2000
+   42 |  1 dhgr.s     42 | Comment     | 11 |         |    0 | 00/1000               | *
+   43 |  1 dhgr.s     43 | Comment     | 11 |         |    0 | 00/1000               | *  Or, if the file is entirely in memory:
+   44 |  1 dhgr.s     44 | Comment     | 11 |         |    0 | 00/1000               | *  - move $2000..$3FFF MAIN to $2000 AUX
+   45 |  1 dhgr.s     45 | Comment     | 11 |         |    0 | 00/1000               | *  - move $4000..$5FFF MAIN to $2000 MAIN
+   46 |  1 dhgr.s     46 | Comment     | 11 |         |    0 | 00/1000               | *
+   47 |  1 dhgr.s     47 | Empty       | 11 |         |    0 | 00/1000               |                                      
+   48 |  1 dhgr.s     48 | Comment     | 11 |         |    0 | 00/1000               | *----------------------------------------
+   49 |  1 dhgr.s     49 | Comment     | 11 |         |    0 | 00/1000               | * EQUATES
+   50 |  1 dhgr.s     50 | Comment     | 11 |         |    0 | 00/1000               | *----------------------------------------
+   51 |  1 dhgr.s     51 | Empty       | 11 |         |    0 | 00/1000               |                                      
+   52 |  1 dhgr.s     52 | Equivalence | 11 |         |    0 | 00/1000               | CLR80COL        =     $c000          ;disable 80 column store
+   53 |  1 dhgr.s     53 | Equivalence | 11 |         |    0 | 00/1000               | SET80COL        =     $c001          ;enable 80 column store
+   54 |  1 dhgr.s     54 | Equivalence | 11 |         |    0 | 00/1000               | RDMAINRAM       =     $c002          ;read from main 48K RAM
+   55 |  1 dhgr.s     55 | Equivalence | 11 |         |    0 | 00/1000               | RDCARDRAM       =     $c003          ;read from alt. 48K RAM
+   56 |  1 dhgr.s     56 | Equivalence | 11 |         |    0 | 00/1000               | WRMAINRAM       =     $c004          ;write to main 48K RAM
+   57 |  1 dhgr.s     57 | Equivalence | 11 |         |    0 | 00/1000               | WRCARDRAM       =     $c005          ;write to alt. 48K RAM
+   58 |  1 dhgr.s     58 | Equivalence | 11 |         |    0 | 00/1000               | CLR80VID        =     $c00c          ;disable 80 column hardware
+   59 |  1 dhgr.s     59 | Equivalence | 11 |         |    0 | 00/1000               | SET80VID        =     $c00d          ;enable 80 column hardware
+   60 |  1 dhgr.s     60 | Empty       | 11 |         |    0 | 00/1000               |                                      
+   61 |  1 dhgr.s     61 | Equivalence | 11 |         |    0 | 00/1000               | TXTCLR          =     $c050          ;switch in graphics (not text)
+   62 |  1 dhgr.s     62 | Equivalence | 11 |         |    0 | 00/1000               | TXTSET          =     $c051          ;switch in text (not graphics)
+   63 |  1 dhgr.s     63 | Equivalence | 11 |         |    0 | 00/1000               | MIXCLR          =     $c052          ;clear mixed-mode
+   64 |  1 dhgr.s     64 | Equivalence | 11 |         |    0 | 00/1000               | MIXSET          =     $c053          ;set mixed-mode (4 lines text)
+   65 |  1 dhgr.s     65 | Equivalence | 11 |         |    0 | 00/1000               | TXTPAGE1        =     $c054          ;switch in text page 1
+   66 |  1 dhgr.s     66 | Equivalence | 11 |         |    0 | 00/1000               | TXTPAGE2        =     $c055          ;switch in text page 2
+   67 |  1 dhgr.s     67 | Equivalence | 11 |         |    0 | 00/1000               | LORES           =     $c056          ;low-resolution graphics
+   68 |  1 dhgr.s     68 | Equivalence | 11 |         |    0 | 00/1000               | HIRES           =     $c057          ;high-resolution graphics
+   69 |  1 dhgr.s     69 | Equivalence | 11 |         |    0 | 00/1000               | SETAN0          =     $c058          ;Clear annunciator 0
+   70 |  1 dhgr.s     70 | Equivalence | 11 |         |    0 | 00/1000               | CLRAN0          =     $c059          ;Set annunciator 0
+   71 |  1 dhgr.s     71 | Equivalence | 11 |         |    0 | 00/1000               | SETAN1          =     $c05a          ;Clear annunciator 1
+   72 |  1 dhgr.s     72 | Equivalence | 11 |         |    0 | 00/1000               | CLRAN1          =     $c05b          ;Set annunciator 1
+   73 |  1 dhgr.s     73 | Equivalence | 11 |         |    0 | 00/1000               | SETAN2          =     $c05c          ;Clear annunciator 2
+   74 |  1 dhgr.s     74 | Equivalence | 11 |         |    0 | 00/1000               | CLRAN2          =     $c05d          ;Set annunciator 2
+   75 |  1 dhgr.s     75 | Equivalence | 11 |         |    0 | 00/1000               | SETAN3          =     $c05e          ;Clear annunciator 3
+   76 |  1 dhgr.s     76 | Equivalence | 11 |         |    0 | 00/1000               | CLRAN3          =     $c05f          ;Set annunciator 3
+   77 |  1 dhgr.s     77 | Empty       | 11 |         |    0 | 00/1000               |                                      
+   78 |  1 dhgr.s     78 | Equivalence | 11 |         |    0 | 00/1000               | AUXMOVE         =     $c311          ;80-col firmware move from/to AUX/MAIN RAM
+   79 |  1 dhgr.s     79 | Equivalence | 11 |         |    0 | 00/1000               | MOVE            =     $fe2c          ;Firmware - Move RAM
+   80 |  1 dhgr.s     80 | Empty       | 11 |         |    0 | 00/1000               |                                      
+   81 |  1 dhgr.s     81 | Comment     | 11 |         |    0 | 00/1000               | *----------------------------------------
+   82 |  1 dhgr.s     82 | Comment     | 11 |         |    0 | 00/1000               | * SET HGR ON
+   83 |  1 dhgr.s     83 | Comment     | 11 |         |    0 | 00/1000               | *----------------------------------------
+   84 |  1 dhgr.s     84 | Empty       | 11 |         |    0 | 00/1000               |                                      
+   85 |  1 dhgr.s     85 | Code        | 11 |         |    3 | 00/1000 : AD 50 C0    | setHGR          lda   {$c050}        
+   86 |  1 dhgr.s     86 | Code        | 11 |         |    3 | 00/1003 : AD 52 C0    |                 lda   {$c052}        
+   87 |  1 dhgr.s     87 | Code        | 11 |         |    3 | 00/1006 : AD 54 C0    |                 lda   {$c054}        
+   88 |  1 dhgr.s     88 | Code        | 11 |         |    3 | 00/1009 : AD 57 C0    |                 lda   {$c057}        
+   89 |  1 dhgr.s     89 | Code        | 11 |         |    1 | 00/100C : 60          |                 rts                  
+   90 |  1 dhgr.s     90 | Empty       | 11 |         |    0 | 00/100D               |                                      
+   91 |  1 dhgr.s     91 | Comment     | 11 |         |    0 | 00/100D               | *----------------------------------------
+   92 |  1 dhgr.s     92 | Comment     | 11 |         |    0 | 00/100D               | * SET HGR OFF
+   93 |  1 dhgr.s     93 | Comment     | 11 |         |    0 | 00/100D               | *----------------------------------------
+   94 |  1 dhgr.s     94 | Empty       | 11 |         |    0 | 00/100D               |                                      
+   95 |  1 dhgr.s     95 | Code        | 11 |         |    3 | 00/100D : AD 56 C0    | unsetHGR        lda   {$c056}        
+   96 |  1 dhgr.s     96 | Code        | 11 |         |    3 | 00/1010 : AD 54 C0    |                 lda   {$c054}        
+   97 |  1 dhgr.s     97 | Code        | 11 |         |    3 | 00/1013 : AD 53 C0    |                 lda   {$c053}        
+   98 |  1 dhgr.s     98 | Code        | 11 |         |    3 | 00/1016 : AD 51 C0    |                 lda   {$c051}        
+   99 |  1 dhgr.s     99 | Code        | 11 |         |    1 | 00/1019 : 60          |                 rts                  
+  100 |  1 dhgr.s    100 | Empty       | 11 |         |    0 | 00/101A               |                                      
+  101 |  1 dhgr.s    101 | Comment     | 11 |         |    0 | 00/101A               | *----------------------------------------
+  102 |  1 dhgr.s    102 | Comment     | 11 |         |    0 | 00/101A               | * MOVE PICTURE INTO MEMORY
+  103 |  1 dhgr.s    103 | Comment     | 11 |         |    0 | 00/101A               | *----------------------------------------
+  104 |  1 dhgr.s    104 | Empty       | 11 |         |    0 | 00/101A               |                                      
+  105 |  1 dhgr.s    105 | Code        | 11 |         |    2 | 00/101A : A9 00       | movePICTURE     lda   #$00           ; move $2000..$3fff MAIN
+  106 |  1 dhgr.s    106 | Code        | 11 |         |    2 | 00/101C : 85 3C       |                 sta   $3C            ;   to $2000..$3fff AUX
+  107 |  1 dhgr.s    107 | Code        | 11 |         |    2 | 00/101E : A9 20       |                 lda   #$20           
+  108 |  1 dhgr.s    108 | Code        | 11 |         |    2 | 00/1020 : 85 3D       |                 sta   $3D            
+  109 |  1 dhgr.s    109 | Code        | 11 |         |    2 | 00/1022 : A9 FF       |                 lda   #$FF           
+  110 |  1 dhgr.s    110 | Code        | 11 |         |    2 | 00/1024 : 85 3E       |                 sta   $3E            
+  111 |  1 dhgr.s    111 | Code        | 11 |         |    2 | 00/1026 : A9 3F       |                 lda   #$3F           
+  112 |  1 dhgr.s    112 | Code        | 11 |         |    2 | 00/1028 : 85 3F       |                 sta   $3F            
+  113 |  1 dhgr.s    113 | Code        | 11 |         |    2 | 00/102A : A9 00       |                 lda   #$00           
+  114 |  1 dhgr.s    114 | Code        | 11 |         |    2 | 00/102C : 85 42       |                 sta   $42            
+  115 |  1 dhgr.s    115 | Code        | 11 |         |    2 | 00/102E : A9 20       |                 lda   #$20           
+  116 |  1 dhgr.s    116 | Code        | 11 |         |    2 | 00/1030 : 85 43       |                 sta   $43            
+  117 |  1 dhgr.s    117 | Code        | 11 |         |    1 | 00/1032 : 38          |                 sec                  ; move from MAIN to AUX
+  118 |  1 dhgr.s    118 | Code        | 11 |         |    3 | 00/1033 : 20 11 C3    |                 jsr   {$c311}        
+  119 |  1 dhgr.s    119 | Empty       | 11 |         |    0 | 00/1036               |                                      
+  120 |  1 dhgr.s    120 | Code        | 11 |         |    2 | 00/1036 : A9 00       |                 lda   #$00           ; move $4000..$5fff MAIN
+  121 |  1 dhgr.s    121 | Code        | 11 |         |    2 | 00/1038 : 85 3C       |                 sta   $3C            ;   to $2000..$3fff MAIN
+  122 |  1 dhgr.s    122 | Code        | 11 |         |    2 | 00/103A : A9 40       |                 lda   #$40           
+  123 |  1 dhgr.s    123 | Code        | 11 |         |    2 | 00/103C : 85 3D       |                 sta   $3D            
+  124 |  1 dhgr.s    124 | Code        | 11 |         |    2 | 00/103E : A9 FF       |                 lda   #$FF           
+  125 |  1 dhgr.s    125 | Code        | 11 |         |    2 | 00/1040 : 85 3E       |                 sta   $3E            
+  126 |  1 dhgr.s    126 | Code        | 11 |         |    2 | 00/1042 : A9 5F       |                 lda   #$5F           
+  127 |  1 dhgr.s    127 | Code        | 11 |         |    2 | 00/1044 : 85 3F       |                 sta   $3F            
+  128 |  1 dhgr.s    128 | Code        | 11 |         |    2 | 00/1046 : A9 00       |                 lda   #$00           
+  129 |  1 dhgr.s    129 | Code        | 11 |         |    2 | 00/1048 : 85 42       |                 sta   $42            
+  130 |  1 dhgr.s    130 | Code        | 11 |         |    2 | 00/104A : A9 20       |                 lda   #$20           
+  131 |  1 dhgr.s    131 | Code        | 11 |         |    2 | 00/104C : 85 43       |                 sta   $43            
+  132 |  1 dhgr.s    132 | Code        | 11 |         |    2 | 00/104E : A0 00       |                 ldy   #$00           
+  133 |  1 dhgr.s    133 | Code        | 11 |         |    3 | 00/1050 : 20 2C FE    |                 jsr   {$fe2c}        
+  134 |  1 dhgr.s    134 | Code        | 11 |         |    1 | 00/1053 : 60          |                 rts                  
+  135 |  1 dhgr.s    135 | Empty       | 11 |         |    0 | 00/1054               |                                      
+  136 |  1 dhgr.s    136 | Comment     | 11 |         |    0 | 00/1054               | *----------------------------------------
+  137 |  1 dhgr.s    137 | Comment     | 11 |         |    0 | 00/1054               | * SET DHGR COLOR ON
+  138 |  1 dhgr.s    138 | Comment     | 11 |         |    0 | 00/1054               | *----------------------------------------
+  139 |  1 dhgr.s    139 | Empty       | 11 |         |    0 | 00/1054               |                                      
+  140 |  1 dhgr.s    140 | Code        | 11 |         |    3 | 00/1054 : 8D 01 C0    | setDHGRCOLOR    sta   {$c001}        
+  141 |  1 dhgr.s    141 | Code        | 11 |         |    3 | 00/1057 : 8D 0D C0    |                 sta   {$c00d}        
+  142 |  1 dhgr.s    142 | Code        | 11 |         |    3 | 00/105A : 8D 50 C0    |                 sta   {$c050}        
+  143 |  1 dhgr.s    143 | Code        | 11 |         |    3 | 00/105D : 8D 52 C0    |                 sta   {$c052}        
+  144 |  1 dhgr.s    144 | Code        | 11 |         |    3 | 00/1060 : 8D 54 C0    |                 sta   {$c054}        
+  145 |  1 dhgr.s    145 | Code        | 11 |         |    3 | 00/1063 : 8D 57 C0    |                 sta   {$c057}        
+  146 |  1 dhgr.s    146 | Code        | 11 |         |    3 | 00/1066 : 8D 5E C0    |                 sta   {$c05e}        
+  147 |  1 dhgr.s    147 | Code        | 11 |         |    1 | 00/1069 : 60          |                 rts                  
+  148 |  1 dhgr.s    148 | Empty       | 11 |         |    0 | 00/106A               |                                      
+  149 |  1 dhgr.s    149 | Comment     | 11 |         |    0 | 00/106A               | *----------------------------------------
+  150 |  1 dhgr.s    150 | Comment     | 11 |         |    0 | 00/106A               | * SET DHGR MONOCHROME ON
+  151 |  1 dhgr.s    151 | Comment     | 11 |         |    0 | 00/106A               | *----------------------------------------
+  152 |  1 dhgr.s    152 | Empty       | 11 |         |    0 | 00/106A               |                                      
+  153 |  1 dhgr.s    153 | Code        | 11 |         |    3 | 00/106A : AD 50 C0    | setDHGRMONO     lda   {$c050}        
+  154 |  1 dhgr.s    154 | Code        | 11 |         |    3 | 00/106D : AD 52 C0    |                 lda   {$c052}        
+  155 |  1 dhgr.s    155 | Code        | 11 |         |    3 | 00/1070 : AD 54 C0    |                 lda   {$c054}        
+  156 |  1 dhgr.s    156 | Code        | 11 |         |    3 | 00/1073 : AD 57 C0    |                 lda   {$c057}        
+  157 |  1 dhgr.s    157 | Code        | 11 |         |    2 | 00/1076 : A2 02       |                 ldx   #2             
+  158 |  1 dhgr.s    158 | Code        | 11 |         |    3 | 00/1078 : 8D 01 C0    | ozunid_1        sta   {$c001}        
+  159 |  1 dhgr.s    159 | Code        | 11 |         |    3 | 00/107B : 8D 5D C0    |                 sta   {$c05d}        
+  160 |  1 dhgr.s    160 | Code        | 11 |         |    3 | 00/107E : 8D 0C C0    |                 sta   {$c00c}        
+  161 |  1 dhgr.s    161 | Code        | 11 |         |    3 | 00/1081 : 8D 5E C0    |                 sta   {$c05e}        
+  162 |  1 dhgr.s    162 | Code        | 11 |         |    3 | 00/1084 : 8D 5F C0    |                 sta   {$c05f}        
+  163 |  1 dhgr.s    163 | Code        | 11 |         |    3 | 00/1087 : 8D 0D C0    |                 sta   {$c00d}        
+  164 |  1 dhgr.s    164 | Code        | 11 |         |    3 | 00/108A : 8D 5E C0    |                 sta   {$c05e}        
+  165 |  1 dhgr.s    165 | Code        | 11 |         |    1 | 00/108D : CA          |                 dex                  
+  166 |  1 dhgr.s    166 | Code        | 11 |         |    2 | 00/108E : D0 E8       |                 bne   ozunid_1       
+  167 |  1 dhgr.s    167 | Code        | 11 |         |    1 | 00/1090 : 60          |                 rts                  
+  168 |  1 dhgr.s    168 | Empty       | 11 |         |    0 | 00/1091               |                                      
+  169 |  1 dhgr.s    169 | Comment     | 11 |         |    0 | 00/1091               | *----------------------------------------
+  170 |  1 dhgr.s    170 | Comment     | 11 |         |    0 | 00/1091               | * SET DHGR COLOR/MONOCHROME OFF
+  171 |  1 dhgr.s    171 | Comment     | 11 |         |    0 | 00/1091               | *----------------------------------------
+  172 |  1 dhgr.s    172 | Empty       | 11 |         |    0 | 00/1091               |                                      
+  173 |  1 dhgr.s    173 | Code        | 11 |         |    3 | 00/1091 : 8D 5F C0    | unsetDHGRMONO   sta   {$c05f}        
+  174 |  1 dhgr.s    174 | Code        | 11 |         |    3 | 00/1094 : 8D 56 C0    | unsetDHGRCOLOR  sta   {$c056}        
+  175 |  1 dhgr.s    175 | Code        | 11 |         |    3 | 00/1097 : 8D 54 C0    |                 sta   {$c054}        
+  176 |  1 dhgr.s    176 | Code        | 11 |         |    3 | 00/109A : 8D 53 C0    |                 sta   {$c053}        
+  177 |  1 dhgr.s    177 | Code        | 11 |         |    3 | 00/109D : 8D 51 C0    |                 sta   {$c051}        
+  178 |  1 dhgr.s    178 | Code        | 11 |         |    3 | 00/10A0 : 8D 0C C0    |                 sta   {$c00c}        
+  179 |  1 dhgr.s    179 | Code        | 11 |         |    3 | 00/10A3 : 8D 00 C0    |                 sta   {$c000}        
+  180 |  1 dhgr.s    180 | Code        | 11 |         |    1 | 00/10A6 : 60          |                 rts                  
+  181 |  1 dhgr.s    181 | Empty       | 11 |         |    0 | 00/10A7               |                                      
+------+------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

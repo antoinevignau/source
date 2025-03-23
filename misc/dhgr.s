@@ -162,6 +162,8 @@ setDHGRMONO	lda	TXTCLR
 	sta	CLRAN3
 	sta	SET80VID
 	sta	SETAN3
+	dex
+	bne	]lp
 	rts
 	
 *----------------------------------------

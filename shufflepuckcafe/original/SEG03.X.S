@@ -1,0 +1,57 @@
+
+* TFBD generated externals
+*     (c) PHC 1992,93
+
+
+         EXT   L230551
+         EXT   L0F02C5
+         EXT   L0F03A1
+         EXT   L0F0378
+         EXT   L0F03D0
+         EXT   L230887
+         EXT   L230863
+         EXT   L0F0405
+         EXT   L0F043A
+         EXT   L2308CF
+         EXT   L2308AB
+         EXT   L2308F3
+         EXT   L0F04ED
+         EXT   L0F0523
+         EXT   L23093B
+         EXT   L230917
+         EXT   L0F0648
+         EXT   L0F067D
+         EXT   L2309B3
+         EXT   L23096B
+         EXT   L23098F
+         EXT   L2309D7
+         EXT   L230A43
+         EXT   L230A1F
+         EXT   L0F0730
+         EXT   L0F0765
+         EXT   L230A67
+         EXT   L230AAF
+         EXT   L230A8B
+         EXT   L230AD3
+         EXT   L230787
+         EXT   L2307F5
+         EXT   L230763
+         EXT   L0F092A
+         EXT   L0F0A76
+         EXT   L240366
+         EXT   L240000
+         EXT   L1A2C96
+         EXT   L1A2410
+         EXT   L1A31B8
+         EXT   L1A29DA
+         EXT   L1A24CD
+         EXT   L1A2C42
+         EXT   L1A23E0
+         EXT   L1A30CC
+         EXT   L1A2875
+         EXT   L1A23F8
+         EXT   L1A2E1C
+         EXT   L1A29C2
+         EXT   L1A32EA
+         EXT   L1A2BFA
+         EXT   L1A2B9C

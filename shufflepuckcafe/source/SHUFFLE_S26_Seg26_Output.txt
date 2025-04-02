@@ -1,0 +1,1014 @@
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File         Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1   SEG26.S      1 | Comment     | 11 |         |    0 | 00/0000               | *
+    2 |  1   SEG26.S      2 | Comment     | 11 |         |    0 | 00/0000               | * Shufflepuck Cafe
+    3 |  1   SEG26.S      3 | Comment     | 11 |         |    0 | 00/0000               | *
+    4 |  1   SEG26.S      4 | Comment     | 11 |         |    0 | 00/0000               | * (c) Broderbund Software
+    5 |  1   SEG26.S      5 | Comment     | 11 |         |    0 | 00/0000               | * (s) 2014, Brutal Deluxe Software
+    6 |  1   SEG26.S      6 | Comment     | 11 |         |    0 | 00/0000               | *
+    7 |  1   SEG26.S      7 | Empty       | 11 |         |    0 | 00/0000               |                                  
+    8 |  1   SEG26.S      8 | Directive   | 00 |         |    0 | 00/0000               |             mx    %00            
+    9 |  1   SEG26.S      9 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   10 |  1   SEG26.S     10 | Directive   | 00 |         |    0 | 00/0000               |             rel                  
+   11 |  1   SEG26.S     11 | Directive   | 00 |         |    0 | 00/0000               |             dsk   Seg26.L        
+   12 |  1   SEG26.S     12 | Directive   | 00 |         |    0 | 00/0000               |             lst   off            
+   13 |  1   SEG26.S     13 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   14 |  1   SEG26.S     14 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   15 |  1   SEG26.S     15 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   16 |  1   SEG26.S     16 | Directive   | 00 |         |    0 | 00/0000               |             use   Seg26.X        
+   17 |  2 Seg26.X.s      1 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   18 |  2 Seg26.X.s      2 | Comment     | 00 |         |    0 | 00/0000               | * TFBD generated externals
+   19 |  2 Seg26.X.s      3 | Comment     | 00 |         |    0 | 00/0000               | *     (c) PHC 1992,93
+   20 |  2 Seg26.X.s      4 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   21 |  2 Seg26.X.s      5 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   22 |  2 Seg26.X.s      6 | External    | 00 |         |    0 | 00/0000               | L0201E7     EXT                  
+   23 |  2 Seg26.X.s      7 | External    | 00 |         |    0 | 00/0000               | L040033     EXT                  
+   24 |  2 Seg26.X.s      8 | External    | 00 |         |    0 | 00/0000               | L04064E     EXT                  
+   25 |  2 Seg26.X.s      9 | External    | 00 |         |    0 | 00/0000               | L240DF3     EXT                  
+   26 |  2 Seg26.X.s     10 | External    | 00 |         |    0 | 00/0000               | L1A0EFF     EXT                  
+   27 |  2 Seg26.X.s     11 | External    | 00 |         |    0 | 00/0000               | L1A0E02     EXT                  
+   28 |  2 Seg26.X.s     12 | External    | 00 |         |    0 | 00/0000               | L1A0E95     EXT                  
+   29 |  2 Seg26.X.s     13 | External    | 00 |         |    0 | 00/0000               | L0401AE     EXT                  
+   30 |  2 Seg26.X.s     14 | External    | 00 |         |    0 | 00/0000               | L0400A9     EXT                  
+   31 |  2 Seg26.X.s     15 | External    | 00 |         |    0 | 00/0000               | L040152     EXT                  
+   32 |  2 Seg26.X.s     16 | External    | 00 |         |    0 | 00/0000               | L1A109A     EXT                  
+   33 |  2 Seg26.X.s     17 | External    | 00 |         |    0 | 00/0000               | L020087     EXT                  
+   34 |  2 Seg26.X.s     18 | External    | 00 |         |    0 | 00/0000               | L020045     EXT                  
+   35 |  2 Seg26.X.s     19 | External    | 00 |         |    0 | 00/0000               | L020047     EXT                  
+   36 |  2 Seg26.X.s     20 | External    | 00 |         |    0 | 00/0000               | L0F15F0     EXT                  
+   37 |  2 Seg26.X.s     21 | External    | 00 |         |    0 | 00/0000               | L0F11B0     EXT                  
+   38 |  2 Seg26.X.s     22 | External    | 00 |         |    0 | 00/0000               | L1A1336     EXT                  
+   39 |  2 Seg26.X.s     23 | External    | 00 |         |    0 | 00/0000               | L0200A2     EXT                  
+   40 |  2 Seg26.X.s     24 | External    | 00 |         |    0 | 00/0000               | L0200A0     EXT                  
+   41 |  2 Seg26.X.s     25 | External    | 00 |         |    0 | 00/0000               | L0201E1     EXT                  
+   42 |  2 Seg26.X.s     26 | External    | 00 |         |    0 | 00/0000               | L100000     EXT                  
+   43 |  2 Seg26.X.s     27 | External    | 00 |         |    0 | 00/0000               | L130027     EXT                  
+   44 |  2 Seg26.X.s     28 | External    | 00 |         |    0 | 00/0000               | L1D0395     EXT                  
+   45 |  2 Seg26.X.s     29 | External    | 00 |         |    0 | 00/0000               | L040311     EXT                  
+   46 |  2 Seg26.X.s     30 | External    | 00 |         |    0 | 00/0000               | L140206     EXT                  
+   47 |  2 Seg26.X.s     31 | External    | 00 |         |    0 | 00/0000               | L0F15CB     EXT                  
+   48 |  2 Seg26.X.s     32 | External    | 00 |         |    0 | 00/0000               | L1C0667     EXT                  
+   49 |  2 Seg26.X.s     33 | External    | 00 |         |    0 | 00/0000               | L0D02F7     EXT                  
+   50 |  2 Seg26.X.s     34 | External    | 00 |         |    0 | 00/0000               | L130040     EXT                  
+   51 |  2 Seg26.X.s     35 | External    | 00 |         |    0 | 00/0000               | L210761     EXT                  
+   52 |  2 Seg26.X.s     36 | External    | 00 |         |    0 | 00/0000               | L2500A9     EXT                  
+   53 |  2 Seg26.X.s     37 | External    | 00 |         |    0 | 00/0000               | L240303     EXT                  
+   54 |  2 Seg26.X.s     38 | External    | 00 |         |    0 | 00/0000               | L040187     EXT                  
+   55 |  2 Seg26.X.s     39 | External    | 00 |         |    0 | 00/0000               | L0400CE     EXT                  
+   56 |  2 Seg26.X.s     40 | External    | 00 |         |    0 | 00/0000               | L0901F9     EXT                  
+   57 |  2 Seg26.X.s     41 | External    | 00 |         |    0 | 00/0000               | L1C0351     EXT                  
+   58 |  2 Seg26.X.s     42 | External    | 00 |         |    0 | 00/0000               | L1C03B6     EXT                  
+   59 |  2 Seg26.X.s     43 | External    | 00 |         |    0 | 00/0000               | L240ED4     EXT                  
+   60 |  2 Seg26.X.s     44 | External    | 00 |         |    0 | 00/0000               | L033077     EXT                  
+   61 |  2 Seg26.X.s     45 | External    | 00 |         |    0 | 00/0000               | L1003C0     EXT                  
+   62 |  2 Seg26.X.s     46 | External    | 00 |         |    0 | 00/0000               | L1003D9     EXT                  
+   63 |  2 Seg26.X.s     47 | External    | 00 |         |    0 | 00/0000               | L050000     EXT                  
+   64 |  2 Seg26.X.s     48 | External    | 00 |         |    0 | 00/0000               | L03333F     EXT                  
+   65 |  2 Seg26.X.s     49 | External    | 00 |         |    0 | 00/0000               | L03334D     EXT                  
+   66 |  2 Seg26.X.s     50 | External    | 00 |         |    0 | 00/0000               | L033355     EXT                  
+   67 |  2 Seg26.X.s     51 | External    | 00 |         |    0 | 00/0000               | L033366     EXT                  
+   68 |  2 Seg26.X.s     52 | External    | 00 |         |    0 | 00/0000               | L033317     EXT                  
+   69 |  2 Seg26.X.s     53 | External    | 00 |         |    0 | 00/0000               | L033097     EXT                  
+   70 |  2 Seg26.X.s     54 | External    | 00 |         |    0 | 00/0000               | L03336E     EXT                  
+   71 |  2 Seg26.X.s     55 | External    | 00 |         |    0 | 00/0000               | L033373     EXT                  
+   72 |  2 Seg26.X.s     56 | External    | 00 |         |    0 | 00/0000               | L033378     EXT                  
+   73 |  2 Seg26.X.s     57 | External    | 00 |         |    0 | 00/0000               | L033385     EXT                  
+   74 |  2 Seg26.X.s     58 | External    | 00 |         |    0 | 00/0000               | L0333AF     EXT                  
+   75 |  2 Seg26.X.s     59 | External    | 00 |         |    0 | 00/0000               | L033397     EXT                  
+   76 |  2 Seg26.X.s     60 | External    | 00 |         |    0 | 00/0000               | L0333C3     EXT                  
+   77 |  2 Seg26.X.s     61 | External    | 00 |         |    0 | 00/0000               | L0333C7     EXT                  
+   78 |  2 Seg26.X.s     62 | External    | 00 |         |    0 | 00/0000               | L0333D2     EXT                  
+   79 |  2 Seg26.X.s     63 | External    | 00 |         |    0 | 00/0000               | L0333E5     EXT                  
+   80 |  2 Seg26.X.s     64 | External    | 00 |         |    0 | 00/0000               | L0333E9     EXT                  
+   81 |  2 Seg26.X.s     65 | External    | 00 |         |    0 | 00/0000               | L0333ED     EXT                  
+   82 |  2 Seg26.X.s     66 | External    | 00 |         |    0 | 00/0000               | L0333F8     EXT                  
+   83 |  2 Seg26.X.s     67 | External    | 00 |         |    0 | 00/0000               | L03340B     EXT                  
+   84 |  2 Seg26.X.s     68 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   85 |  1   SEG26.S     17 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   86 |  1   SEG26.S     18 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   87 |  1   SEG26.S     19 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   88 |  1   SEG26.S     20 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Qd.Macs      
+   89 |  1   SEG26.S     21 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Util.Macs    
+   90 |  1   SEG26.S     22 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   91 |  1   SEG26.S     23 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   92 |  1   SEG26.S     24 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   93 |  1   SEG26.S     25 | Global      | 00 |         |    0 | 00/0000               | L260000     ENT                  
+   94 |  1   SEG26.S     26 | Code        | 00 |         |    1 | 00/0000 : 0B          |             PHD                  
+   95 |  1   SEG26.S     27 | Code        | 00 |         |    1 | 00/0001 : 3B          |             TSC                  
+   96 |  1   SEG26.S     28 | Code        | 00 |         |    1 | 00/0002 : 38          |             SEC                  
+   97 |  1   SEG26.S     29 | Code        | 00 |         |    3 | 00/0003 : E9 FB 00    |             SBC   #$00FB         
+   98 |  1   SEG26.S     30 | Code        | 00 |         |    1 | 00/0006 : 5B          |             TCD                  
+   99 |  1   SEG26.S     31 | Code        | 00 |         |    3 | 00/0007 : 69 F2 00    |             ADC   #$00F2         
+  100 |  1   SEG26.S     32 | Code        | 00 |         |    1 | 00/000A : 1B          |             TCS                  
+  101 |  1   SEG26.S     33 | Code        | 00 |E 1 >>16 |    3 | 00/000B : F4 00 00    |             PEA   ^L03333F       
+  102 |  1   SEG26.S     34 | Code        | 00 |E 2      |    3 | 00/000E : F4 4C 33    |             PEA   L03333F        
+  103 |  1   SEG26.S     35 | Code        | 00 |E 3      |    4 | 00/0011 : 22 D5 0D 1A |             JSL   L1A0E02        
+  104 |  1   SEG26.S     36 | Code        | 00 |         |    1 | 00/0015 : 7A          |             PLY                  
+  105 |  1   SEG26.S     37 | Code        | 00 |         |    1 | 00/0016 : 7A          |             PLY                  
+  106 |  1   SEG26.S     38 | Code        | 00 |E 1 >>16 |    3 | 00/0017 : F4 00 00    |             PEA   ^L03334D       
+  107 |  1   SEG26.S     39 | Code        | 00 |E 2      |    3 | 00/001A : F4 5A 33    |             PEA   L03334D        
+  108 |  1   SEG26.S     40 | Code        | 00 |E 3      |    4 | 00/001D : 22 3C 01 04 |             JSL   L040152        
+  109 |  1   SEG26.S     41 | Code        | 00 |         |    1 | 00/0021 : 7A          |             PLY                  
+  110 |  1   SEG26.S     42 | Code        | 00 |         |    1 | 00/0022 : 7A          |             PLY                  
+  111 |  1   SEG26.S     43 | Code        | 00 |         |    2 | 00/0023 : 85 F4       |             STA   $F4            
+  112 |  1   SEG26.S     44 | Code        | 00 |         |    1 | 00/0025 : A8          |             TAY                  
+  113 |  1   SEG26.S     45 | Code        | 00 |         |    2 | 00/0026 : F0 38       |             BEQ   L260060        
+  114 |  1   SEG26.S     46 | Code        | 00 |         |    3 | 00/0028 : F4 C8 02    |             PEA   $02C8          
+  115 |  1   SEG26.S     47 | Code        | 00 |E 2      |    3 | 00/002B : A9 84 30    |             LDA   #L033077       
+  116 |  1   SEG26.S     48 | Code        | 00 |E 1 >>16 |    3 | 00/002E : A2 00 00    |             LDX   #^L033077      
+  117 |  1   SEG26.S     49 | Code        | 00 |         |    1 | 00/0031 : A8          |             TAY                  
+  118 |  1   SEG26.S     50 | Code        | 00 |         |    1 | 00/0032 : 3B          |             TSC                  
+  119 |  1   SEG26.S     51 | Code        | 00 |         |    1 | 00/0033 : 38          |             SEC                  
+  120 |  1   SEG26.S     52 | Code        | 00 |         |    3 | 00/0034 : E9 20 00    |             SBC   #$0020         
+  121 |  1   SEG26.S     53 | Code        | 00 |         |    1 | 00/0037 : 1B          |             TCS                  
+  122 |  1   SEG26.S     54 | Code        | 00 |         |    1 | 00/0038 : DA          |             PHX                  
+  123 |  1   SEG26.S     55 | Code        | 00 |         |    1 | 00/0039 : 5A          |             PHY                  
+  124 |  1   SEG26.S     56 | Code        | 00 |         |    3 | 00/003A : F4 00 00    |             PEA   $0000          
+  125 |  1   SEG26.S     57 | Code        | 00 |         |    1 | 00/003D : 1A          |             INC                  
+  126 |  1   SEG26.S     58 | Code        | 00 |         |    1 | 00/003E : 48          |             PHA                  
+  127 |  1   SEG26.S     59 | Code        | 00 |         |    3 | 00/003F : F4 20 00    |             PEA   $0020          
+  128 |  1   SEG26.S     60 | Code        | 00 |E 3      |    4 | 00/0042 : 22 09 13 1A |             JSL   L1A1336        
+  129 |  1   SEG26.S     61 | Code        | 00 |         |    1 | 00/0046 : 7A          |             PLY                  
+  130 |  1   SEG26.S     62 | Code        | 00 |         |    1 | 00/0047 : 7A          |             PLY                  
+  131 |  1   SEG26.S     63 | Code        | 00 |         |    1 | 00/0048 : 7A          |             PLY                  
+  132 |  1   SEG26.S     64 | Code        | 00 |         |    1 | 00/0049 : 7A          |             PLY                  
+  133 |  1   SEG26.S     65 | Code        | 00 |         |    1 | 00/004A : 7A          |             PLY                  
+  134 |  1   SEG26.S     66 | Code        | 00 |         |    2 | 00/004B : D4 F4       |             PEI   $F4            
+  135 |  1   SEG26.S     67 | Code        | 00 |E 3      |    4 | 00/004D : 22 93 00 04 |             JSL   L0400A9        
+  136 |  1   SEG26.S     68 | Code        | 00 |         |    1 | 00/0051 : A8          |             TAY                  
+  137 |  1   SEG26.S     69 | Code        | 00 |         |    1 | 00/0052 : 3B          |             TSC                  
+  138 |  1   SEG26.S     70 | Code        | 00 |         |    1 | 00/0053 : 18          |             CLC                  
+  139 |  1   SEG26.S     71 | Code        | 00 |         |    3 | 00/0054 : 69 24 00    |             ADC   #$0024         
+  140 |  1   SEG26.S     72 | Code        | 00 |         |    1 | 00/0057 : 1B          |             TCS                  
+  141 |  1   SEG26.S     73 | Code        | 00 |         |    1 | 00/0058 : 98          |             TYA                  
+  142 |  1   SEG26.S     74 | Code        | 00 |         |    2 | 00/0059 : D4 F4       |             PEI   $F4            
+  143 |  1   SEG26.S     75 | Code        | 00 |E 3      |    4 | 00/005B : 22 98 01 04 |             JSL   L0401AE        
+  144 |  1   SEG26.S     76 | Code        | 00 |         |    1 | 00/005F : 7A          |             PLY                  
+  145 |  1   SEG26.S     77 | Code        | 00 |E 3      |    4 | 00/0060 : 22 68 0E 1A | L260060     JSL   L1A0E95        
+  146 |  1   SEG26.S     78 | Code        | 00 |         |    1 | 00/0064 : 3B          |             TSC                  
+  147 |  1   SEG26.S     79 | Code        | 00 |         |    1 | 00/0065 : 18          |             CLC                  
+  148 |  1   SEG26.S     80 | Code        | 00 |         |    3 | 00/0066 : 69 08 00    |             ADC   #$0008         
+  149 |  1   SEG26.S     81 | Code        | 00 |         |    1 | 00/0069 : 1B          |             TCS                  
+  150 |  1   SEG26.S     82 | Code        | 00 |         |    1 | 00/006A : 2B          |             PLD                  
+  151 |  1   SEG26.S     83 | Code        | 00 |         |    1 | 00/006B : 6B          |             RTL                  
+  152 |  1   SEG26.S     84 | Empty       | 00 |         |    0 | 00/006C               |                                  
+  153 |  1   SEG26.S     85 | Code        | 00 |         |    1 | 00/006C : 0B          | L26006C     PHD                  
+  154 |  1   SEG26.S     86 | Code        | 00 |         |    1 | 00/006D : 3B          |             TSC                  
+  155 |  1   SEG26.S     87 | Code        | 00 |         |    1 | 00/006E : 38          |             SEC                  
+  156 |  1   SEG26.S     88 | Code        | 00 |         |    3 | 00/006F : E9 FB 00    |             SBC   #$00FB         
+  157 |  1   SEG26.S     89 | Code        | 00 |         |    1 | 00/0072 : 5B          |             TCD                  
+  158 |  1   SEG26.S     90 | Code        | 00 |         |    3 | 00/0073 : 69 F2 00    |             ADC   #$00F2         
+  159 |  1   SEG26.S     91 | Code        | 00 |         |    1 | 00/0076 : 1B          |             TCS                  
+  160 |  1   SEG26.S     92 | Code        | 00 |E 1 >>16 |    3 | 00/0077 : F4 00 00    |             PEA   ^L033355       
+  161 |  1   SEG26.S     93 | Code        | 00 |E 2      |    3 | 00/007A : F4 62 33    |             PEA   L033355        
+  162 |  1   SEG26.S     94 | Code        | 00 |E 3      |    4 | 00/007D : 22 D5 0D 1A |             JSL   L1A0E02        
+  163 |  1   SEG26.S     95 | Code        | 00 |         |    1 | 00/0081 : 7A          |             PLY                  
+  164 |  1   SEG26.S     96 | Code        | 00 |         |    1 | 00/0082 : 7A          |             PLY                  
+  165 |  1   SEG26.S     97 | Code        | 00 |E 1 >>16 |    3 | 00/0083 : F4 00 00    |             PEA   ^L033366       
+  166 |  1   SEG26.S     98 | Code        | 00 |E 2      |    3 | 00/0086 : F4 73 33    |             PEA   L033366        
+  167 |  1   SEG26.S     99 | Code        | 00 |E 3      |    4 | 00/0089 : 22 71 01 04 |             JSL   L040187        
+  168 |  1   SEG26.S    100 | Code        | 00 |         |    1 | 00/008D : 7A          |             PLY                  
+  169 |  1   SEG26.S    101 | Code        | 00 |         |    1 | 00/008E : 7A          |             PLY                  
+  170 |  1   SEG26.S    102 | Code        | 00 |         |    2 | 00/008F : 85 F4       |             STA   $F4            
+  171 |  1   SEG26.S    103 | Code        | 00 |         |    3 | 00/0091 : F4 C8 02    |             PEA   $02C8          
+  172 |  1   SEG26.S    104 | Code        | 00 |E 2      |    3 | 00/0094 : A9 84 30    |             LDA   #L033077       
+  173 |  1   SEG26.S    105 | Code        | 00 |E 1 >>16 |    3 | 00/0097 : A2 00 00    |             LDX   #^L033077      
+  174 |  1   SEG26.S    106 | Code        | 00 |         |    1 | 00/009A : A8          |             TAY                  
+  175 |  1   SEG26.S    107 | Code        | 00 |         |    1 | 00/009B : 3B          |             TSC                  
+  176 |  1   SEG26.S    108 | Code        | 00 |         |    1 | 00/009C : 38          |             SEC                  
+  177 |  1   SEG26.S    109 | Code        | 00 |         |    3 | 00/009D : E9 20 00    |             SBC   #$0020         
+  178 |  1   SEG26.S    110 | Code        | 00 |         |    1 | 00/00A0 : 1B          |             TCS                  
+  179 |  1   SEG26.S    111 | Code        | 00 |         |    1 | 00/00A1 : DA          |             PHX                  
+  180 |  1   SEG26.S    112 | Code        | 00 |         |    1 | 00/00A2 : 5A          |             PHY                  
+  181 |  1   SEG26.S    113 | Code        | 00 |         |    3 | 00/00A3 : F4 00 00    |             PEA   $0000          
+  182 |  1   SEG26.S    114 | Code        | 00 |         |    1 | 00/00A6 : 1A          |             INC                  
+  183 |  1   SEG26.S    115 | Code        | 00 |         |    1 | 00/00A7 : 48          |             PHA                  
+  184 |  1   SEG26.S    116 | Code        | 00 |         |    3 | 00/00A8 : F4 20 00    |             PEA   $0020          
+  185 |  1   SEG26.S    117 | Code        | 00 |E 3      |    4 | 00/00AB : 22 09 13 1A |             JSL   L1A1336        
+  186 |  1   SEG26.S    118 | Code        | 00 |         |    1 | 00/00AF : 7A          |             PLY                  
+  187 |  1   SEG26.S    119 | Code        | 00 |         |    1 | 00/00B0 : 7A          |             PLY                  
+  188 |  1   SEG26.S    120 | Code        | 00 |         |    1 | 00/00B1 : 7A          |             PLY                  
+  189 |  1   SEG26.S    121 | Code        | 00 |         |    1 | 00/00B2 : 7A          |             PLY                  
+  190 |  1   SEG26.S    122 | Code        | 00 |         |    1 | 00/00B3 : 7A          |             PLY                  
+  191 |  1   SEG26.S    123 | Code        | 00 |         |    2 | 00/00B4 : D4 F4       |             PEI   $F4            
+  192 |  1   SEG26.S    124 | Code        | 00 |E 3      |    4 | 00/00B6 : 22 B8 00 04 |             JSL   L0400CE        
+  193 |  1   SEG26.S    125 | Code        | 00 |         |    1 | 00/00BA : A8          |             TAY                  
+  194 |  1   SEG26.S    126 | Code        | 00 |         |    1 | 00/00BB : 3B          |             TSC                  
+  195 |  1   SEG26.S    127 | Code        | 00 |         |    1 | 00/00BC : 18          |             CLC                  
+  196 |  1   SEG26.S    128 | Code        | 00 |         |    3 | 00/00BD : 69 24 00    |             ADC   #$0024         
+  197 |  1   SEG26.S    129 | Code        | 00 |         |    1 | 00/00C0 : 1B          |             TCS                  
+  198 |  1   SEG26.S    130 | Code        | 00 |         |    1 | 00/00C1 : 98          |             TYA                  
+  199 |  1   SEG26.S    131 | Code        | 00 |         |    2 | 00/00C2 : D4 F4       |             PEI   $F4            
+  200 |  1   SEG26.S    132 | Code        | 00 |E 3      |    4 | 00/00C4 : 22 98 01 04 |             JSL   L0401AE        
+  201 |  1   SEG26.S    133 | Code        | 00 |         |    1 | 00/00C8 : 7A          |             PLY                  
+  202 |  1   SEG26.S    134 | Code        | 00 |E 3      |    4 | 00/00C9 : 22 68 0E 1A |             JSL   L1A0E95        
+  203 |  1   SEG26.S    135 | Code        | 00 |         |    1 | 00/00CD : 3B          |             TSC                  
+  204 |  1   SEG26.S    136 | Code        | 00 |         |    1 | 00/00CE : 18          |             CLC                  
+  205 |  1   SEG26.S    137 | Code        | 00 |         |    3 | 00/00CF : 69 08 00    |             ADC   #$0008         
+  206 |  1   SEG26.S    138 | Code        | 00 |         |    1 | 00/00D2 : 1B          |             TCS                  
+  207 |  1   SEG26.S    139 | Code        | 00 |         |    1 | 00/00D3 : 2B          |             PLD                  
+  208 |  1   SEG26.S    140 | Code        | 00 |         |    1 | 00/00D4 : 6B          |             RTL                  
+  209 |  1   SEG26.S    141 | Empty       | 00 |         |    0 | 00/00D5               |                                  
+  210 |  1   SEG26.S    142 | Code        | 00 |         |    1 | 00/00D5 : 0B          | L2600D5     PHD                  
+  211 |  1   SEG26.S    143 | Code        | 00 |         |    1 | 00/00D6 : 3B          |             TSC                  
+  212 |  1   SEG26.S    144 | Code        | 00 |         |    1 | 00/00D7 : 38          |             SEC                  
+  213 |  1   SEG26.S    145 | Code        | 00 |         |    3 | 00/00D8 : E9 FB 00    |             SBC   #$00FB         
+  214 |  1   SEG26.S    146 | Code        | 00 |         |    1 | 00/00DB : 5B          |             TCD                  
+  215 |  1   SEG26.S    147 | Code        | 00 |         |    3 | 00/00DC : 69 F0 00    |             ADC   #$00F0         
+  216 |  1   SEG26.S    148 | Code        | 00 |         |    1 | 00/00DF : 1B          |             TCS                  
+  217 |  1   SEG26.S    149 | Code        | 00 |         |    2 | 00/00E0 : 64 F4       |             STZ   $F4            
+  218 |  1   SEG26.S    150 | Code        | 00 |         |    2 | 00/00E2 : 80 36       |             BRA   L26011A        
+  219 |  1   SEG26.S    151 | Code        | 00 |         |    2 | 00/00E4 : A5 F4       | L2600E4     LDA   $F4            
+  220 |  1   SEG26.S    152 | Code        | 00 |         |    1 | 00/00E6 : 0A          |             ASL                  
+  221 |  1   SEG26.S    153 | Code        | 00 |         |    3 | 00/00E7 : A2 00 00    |             LDX   #$0000         
+  222 |  1   SEG26.S    154 | Code        | 00 |         |    1 | 00/00EA : DA          |             PHX                  
+  223 |  1   SEG26.S    155 | Code        | 00 |         |    1 | 00/00EB : 48          |             PHA                  
+  224 |  1   SEG26.S    156 | Code        | 00 |E 2      |    3 | 00/00EC : A9 24 33    |             LDA   #L033317       
+  225 |  1   SEG26.S    157 | Code        | 00 |E 1 >>16 |    3 | 00/00EF : A2 00 00    |             LDX   #^L033317      
+  226 |  1   SEG26.S    158 | Code        | 00 |E 3      |    4 | 00/00F2 : 22 D2 0E 1A |             JSL   L1A0EFF        
+  227 |  1   SEG26.S    159 | Code        | 00 |         |    1 | 00/00F6 : 68          |             PLA                  
+  228 |  1   SEG26.S    160 | Code        | 00 |         |    1 | 00/00F7 : FA          |             PLX                  
+  229 |  1   SEG26.S    161 | Code        | 00 |         |    2 | 00/00F8 : 85 F6       |             STA   $F6            
+  230 |  1   SEG26.S    162 | Code        | 00 |         |    2 | 00/00FA : 86 F8       |             STX   $F8            
+  231 |  1   SEG26.S    163 | Code        | 00 |         |    2 | 00/00FC : A7 F6       |             LDA   [$F6]          
+  232 |  1   SEG26.S    164 | Code        | 00 |         |    1 | 00/00FE : 38          |             SEC                  
+  233 |  1   SEG26.S    165 | Code        | 00 |E 2      |    3 | 00/00FF : ED 48 00    |             SBC   L020047        
+  234 |  1   SEG26.S    166 | Code        | 00 |         |    2 | 00/0102 : 70 03       |             BVS   L260107        
+  235 |  1   SEG26.S    167 | Code        | 00 |         |    3 | 00/0104 : 49 00 80    |             EOR   #$8000         
+  236 |  1   SEG26.S    168 | Code        | 00 |         |    2 | 00/0107 : 30 0D       | L260107     BMI   L260116        
+  237 |  1   SEG26.S    169 | Code        | 00 |         |    2 | 00/0109 : A5 F4       |             LDA   $F4            
+  238 |  1   SEG26.S    170 | Code        | 00 |         |    1 | 00/010B : 38          |             SEC                  
+  239 |  1   SEG26.S    171 | Code        | 00 |         |    3 | 00/010C : E9 14 00    |             SBC   #$0014         
+  240 |  1   SEG26.S    172 | Code        | 00 |         |    2 | 00/010F : 70 03       |             BVS   L260114        
+  241 |  1   SEG26.S    173 | Code        | 00 |         |    3 | 00/0111 : 49 00 80    |             EOR   #$8000         
+  242 |  1   SEG26.S    174 | Code        | 00 |         |    2 | 00/0114 : 10 02       | L260114     BPL   L260118        
+  243 |  1   SEG26.S    175 | Code        | 00 |         |    2 | 00/0116 : 80 0F       | L260116     BRA   L260127        
+  244 |  1   SEG26.S    176 | Code        | 00 |         |    2 | 00/0118 : E6 F4       | L260118     INC   $F4            
+  245 |  1   SEG26.S    177 | Code        | 00 |         |    2 | 00/011A : A5 F4       | L26011A     LDA   $F4            
+  246 |  1   SEG26.S    178 | Code        | 00 |         |    1 | 00/011C : 38          |             SEC                  
+  247 |  1   SEG26.S    179 | Code        | 00 |         |    3 | 00/011D : E9 14 00    |             SBC   #$0014         
+  248 |  1   SEG26.S    180 | Code        | 00 |         |    2 | 00/0120 : 70 03       |             BVS   L260125        
+  249 |  1   SEG26.S    181 | Code        | 00 |         |    3 | 00/0122 : 49 00 80    |             EOR   #$8000         
+  250 |  1   SEG26.S    182 | Code        | 00 |         |    2 | 00/0125 : 10 BD       | L260125     BPL   L2600E4        
+  251 |  1   SEG26.S    183 | Code        | 00 |         |    2 | 00/0127 : A5 F4       | L260127     LDA   $F4            
+  252 |  1   SEG26.S    184 | Code        | 00 |         |    1 | 00/0129 : 38          |             SEC                  
+  253 |  1   SEG26.S    185 | Code        | 00 |         |    3 | 00/012A : E9 14 00    |             SBC   #$0014         
+  254 |  1   SEG26.S    186 | Code        | 00 |         |    2 | 00/012D : 70 03       |             BVS   L260132        
+  255 |  1   SEG26.S    187 | Code        | 00 |         |    3 | 00/012F : 49 00 80    |             EOR   #$8000         
+  256 |  1   SEG26.S    188 | Code        | 00 |         |    2 | 00/0132 : 10 03       | L260132     BPL   L260137        
+  257 |  1   SEG26.S    189 | Code        | 00 |         |    3 | 00/0134 : 82 D6 00    |             BRL   L26020D        
+  258 |  1   SEG26.S    190 | Code        | 00 |         |    3 | 00/0137 : A9 13 00    | L260137     LDA   #$0013         
+  259 |  1   SEG26.S    191 | Code        | 00 |         |    2 | 00/013A : 85 F2       |             STA   $F2            
+  260 |  1   SEG26.S    192 | Code        | 00 |         |    3 | 00/013C : 82 78 00    |             BRL   L2601B7        
+  261 |  1   SEG26.S    193 | Code        | 00 |         |    3 | 00/013F : F4 20 00    | L26013F     PEA   $0020          
+  262 |  1   SEG26.S    194 | Code        | 00 |         |    2 | 00/0142 : A5 F2       |             LDA   $F2            
+  263 |  1   SEG26.S    195 | Code        | 00 |         |    1 | 00/0144 : 0A          |             ASL                  
+  264 |  1   SEG26.S    196 | Code        | 00 |         |    1 | 00/0145 : 0A          |             ASL                  
+  265 |  1   SEG26.S    197 | Code        | 00 |         |    1 | 00/0146 : 0A          |             ASL                  
+  266 |  1   SEG26.S    198 | Code        | 00 |         |    1 | 00/0147 : 0A          |             ASL                  
+  267 |  1   SEG26.S    199 | Code        | 00 |         |    1 | 00/0148 : 0A          |             ASL                  
+  268 |  1   SEG26.S    200 | Code        | 00 |         |    3 | 00/0149 : A2 00 00    |             LDX   #$0000         
+  269 |  1   SEG26.S    201 | Code        | 00 |         |    1 | 00/014C : DA          |             PHX                  
+  270 |  1   SEG26.S    202 | Code        | 00 |         |    1 | 00/014D : 48          |             PHA                  
+  271 |  1   SEG26.S    203 | Code        | 00 |E 2      |    3 | 00/014E : A9 A4 30    |             LDA   #L033097       
+  272 |  1   SEG26.S    204 | Code        | 00 |E 1 >>16 |    3 | 00/0151 : A2 00 00    |             LDX   #^L033097      
+  273 |  1   SEG26.S    205 | Code        | 00 |E 3      |    4 | 00/0154 : 22 D2 0E 1A |             JSL   L1A0EFF        
+  274 |  1   SEG26.S    206 | Code        | 00 |         |    2 | 00/0158 : A5 F2       |             LDA   $F2            
+  275 |  1   SEG26.S    207 | Code        | 00 |         |    1 | 00/015A : 38          |             SEC                  
+  276 |  1   SEG26.S    208 | Code        | 00 |         |    3 | 00/015B : E9 01 00    |             SBC   #$0001         
+  277 |  1   SEG26.S    209 | Code        | 00 |         |    1 | 00/015E : 0A          |             ASL                  
+  278 |  1   SEG26.S    210 | Code        | 00 |         |    1 | 00/015F : 0A          |             ASL                  
+  279 |  1   SEG26.S    211 | Code        | 00 |         |    1 | 00/0160 : 0A          |             ASL                  
+  280 |  1   SEG26.S    212 | Code        | 00 |         |    1 | 00/0161 : 0A          |             ASL                  
+  281 |  1   SEG26.S    213 | Code        | 00 |         |    1 | 00/0162 : 0A          |             ASL                  
+  282 |  1   SEG26.S    214 | Code        | 00 |         |    3 | 00/0163 : A2 00 00    |             LDX   #$0000         
+  283 |  1   SEG26.S    215 | Code        | 00 |         |    1 | 00/0166 : DA          |             PHX                  
+  284 |  1   SEG26.S    216 | Code        | 00 |         |    1 | 00/0167 : 48          |             PHA                  
+  285 |  1   SEG26.S    217 | Code        | 00 |E 2      |    3 | 00/0168 : A9 A4 30    |             LDA   #L033097       
+  286 |  1   SEG26.S    218 | Code        | 00 |E 1 >>16 |    3 | 00/016B : A2 00 00    |             LDX   #^L033097      
+  287 |  1   SEG26.S    219 | Code        | 00 |E 3      |    4 | 00/016E : 22 D2 0E 1A |             JSL   L1A0EFF        
+  288 |  1   SEG26.S    220 | Code        | 00 |E 3      |    4 | 00/0172 : 22 F9 01 09 |             JSL   L0901F9        
+  289 |  1   SEG26.S    221 | Code        | 00 |         |    1 | 00/0176 : 7A          |             PLY                  
+  290 |  1   SEG26.S    222 | Code        | 00 |         |    1 | 00/0177 : 7A          |             PLY                  
+  291 |  1   SEG26.S    223 | Code        | 00 |         |    1 | 00/0178 : 7A          |             PLY                  
+  292 |  1   SEG26.S    224 | Code        | 00 |         |    1 | 00/0179 : 7A          |             PLY                  
+  293 |  1   SEG26.S    225 | Code        | 00 |         |    1 | 00/017A : 7A          |             PLY                  
+  294 |  1   SEG26.S    226 | Code        | 00 |         |    2 | 00/017B : A5 F2       |             LDA   $F2            
+  295 |  1   SEG26.S    227 | Code        | 00 |         |    1 | 00/017D : 38          |             SEC                  
+  296 |  1   SEG26.S    228 | Code        | 00 |         |    3 | 00/017E : E9 01 00    |             SBC   #$0001         
+  297 |  1   SEG26.S    229 | Code        | 00 |         |    1 | 00/0181 : 0A          |             ASL                  
+  298 |  1   SEG26.S    230 | Code        | 00 |         |    3 | 00/0182 : A2 00 00    |             LDX   #$0000         
+  299 |  1   SEG26.S    231 | Code        | 00 |         |    1 | 00/0185 : DA          |             PHX                  
+  300 |  1   SEG26.S    232 | Code        | 00 |         |    1 | 00/0186 : 48          |             PHA                  
+  301 |  1   SEG26.S    233 | Code        | 00 |E 2      |    3 | 00/0187 : A9 24 33    |             LDA   #L033317       
+  302 |  1   SEG26.S    234 | Code        | 00 |E 1 >>16 |    3 | 00/018A : A2 00 00    |             LDX   #^L033317      
+  303 |  1   SEG26.S    235 | Code        | 00 |E 3      |    4 | 00/018D : 22 D2 0E 1A |             JSL   L1A0EFF        
+  304 |  1   SEG26.S    236 | Code        | 00 |         |    1 | 00/0191 : 68          |             PLA                  
+  305 |  1   SEG26.S    237 | Code        | 00 |         |    1 | 00/0192 : FA          |             PLX                  
+  306 |  1   SEG26.S    238 | Code        | 00 |         |    2 | 00/0193 : 85 F6       |             STA   $F6            
+  307 |  1   SEG26.S    239 | Code        | 00 |         |    2 | 00/0195 : 86 F8       |             STX   $F8            
+  308 |  1   SEG26.S    240 | Code        | 00 |         |    2 | 00/0197 : A7 F6       |             LDA   [$F6]          
+  309 |  1   SEG26.S    241 | Code        | 00 |         |    1 | 00/0199 : 48          |             PHA                  
+  310 |  1   SEG26.S    242 | Code        | 00 |         |    2 | 00/019A : A5 F2       |             LDA   $F2            
+  311 |  1   SEG26.S    243 | Code        | 00 |         |    1 | 00/019C : 0A          |             ASL                  
+  312 |  1   SEG26.S    244 | Code        | 00 |         |    3 | 00/019D : A2 00 00    |             LDX   #$0000         
+  313 |  1   SEG26.S    245 | Code        | 00 |         |    1 | 00/01A0 : DA          |             PHX                  
+  314 |  1   SEG26.S    246 | Code        | 00 |         |    1 | 00/01A1 : 48          |             PHA                  
+  315 |  1   SEG26.S    247 | Code        | 00 |E 2      |    3 | 00/01A2 : A9 24 33    |             LDA   #L033317       
+  316 |  1   SEG26.S    248 | Code        | 00 |E 1 >>16 |    3 | 00/01A5 : A2 00 00    |             LDX   #^L033317      
+  317 |  1   SEG26.S    249 | Code        | 00 |E 3      |    4 | 00/01A8 : 22 D2 0E 1A |             JSL   L1A0EFF        
+  318 |  1   SEG26.S    250 | Code        | 00 |         |    1 | 00/01AC : 68          |             PLA                  
+  319 |  1   SEG26.S    251 | Code        | 00 |         |    1 | 00/01AD : FA          |             PLX                  
+  320 |  1   SEG26.S    252 | Code        | 00 |         |    2 | 00/01AE : 85 F6       |             STA   $F6            
+  321 |  1   SEG26.S    253 | Code        | 00 |         |    2 | 00/01B0 : 86 F8       |             STX   $F8            
+  322 |  1   SEG26.S    254 | Code        | 00 |         |    1 | 00/01B2 : 68          |             PLA                  
+  323 |  1   SEG26.S    255 | Code        | 00 |         |    2 | 00/01B3 : 87 F6       |             STA   [$F6]          
+  324 |  1   SEG26.S    256 | Code        | 00 |         |    2 | 00/01B5 : C6 F2       |             DEC   $F2            
+  325 |  1   SEG26.S    257 | Code        | 00 |         |    2 | 00/01B7 : A5 F2       | L2601B7     LDA   $F2            
+  326 |  1   SEG26.S    258 | Code        | 00 |         |    1 | 00/01B9 : 38          |             SEC                  
+  327 |  1   SEG26.S    259 | Code        | 00 |         |    2 | 00/01BA : E5 F4       |             SBC   $F4            
+  328 |  1   SEG26.S    260 | Code        | 00 |         |    2 | 00/01BC : F0 0A       |             BEQ   L2601C8        
+  329 |  1   SEG26.S    261 | Code        | 00 |         |    2 | 00/01BE : 70 03       |             BVS   L2601C3        
+  330 |  1   SEG26.S    262 | Code        | 00 |         |    3 | 00/01C0 : 49 00 80    |             EOR   #$8000         
+  331 |  1   SEG26.S    263 | Code        | 00 |         |    2 | 00/01C3 : 10 03       | L2601C3     BPL   L2601C8        
+  332 |  1   SEG26.S    264 | Code        | 00 |         |    3 | 00/01C5 : 82 77 FF    |             BRL   L26013F        
+  333 |  1   SEG26.S    265 | Code        | 00 |         |    2 | 00/01C8 : A5 F4       | L2601C8     LDA   $F4            
+  334 |  1   SEG26.S    266 | Code        | 00 |         |    1 | 00/01CA : 0A          |             ASL                  
+  335 |  1   SEG26.S    267 | Code        | 00 |         |    3 | 00/01CB : A2 00 00    |             LDX   #$0000         
+  336 |  1   SEG26.S    268 | Code        | 00 |         |    1 | 00/01CE : DA          |             PHX                  
+  337 |  1   SEG26.S    269 | Code        | 00 |         |    1 | 00/01CF : 48          |             PHA                  
+  338 |  1   SEG26.S    270 | Code        | 00 |E 2      |    3 | 00/01D0 : A9 24 33    |             LDA   #L033317       
+  339 |  1   SEG26.S    271 | Code        | 00 |E 1 >>16 |    3 | 00/01D3 : A2 00 00    |             LDX   #^L033317      
+  340 |  1   SEG26.S    272 | Code        | 00 |E 3      |    4 | 00/01D6 : 22 D2 0E 1A |             JSL   L1A0EFF        
+  341 |  1   SEG26.S    273 | Code        | 00 |         |    1 | 00/01DA : 68          |             PLA                  
+  342 |  1   SEG26.S    274 | Code        | 00 |         |    1 | 00/01DB : FA          |             PLX                  
+  343 |  1   SEG26.S    275 | Code        | 00 |         |    2 | 00/01DC : 85 F6       |             STA   $F6            
+  344 |  1   SEG26.S    276 | Code        | 00 |         |    2 | 00/01DE : 86 F8       |             STX   $F8            
+  345 |  1   SEG26.S    277 | Code        | 00 |E 2      |    3 | 00/01E0 : AD 48 00    |             LDA   L020047        
+  346 |  1   SEG26.S    278 | Code        | 00 |         |    2 | 00/01E3 : 87 F6       |             STA   [$F6]          
+  347 |  1   SEG26.S    279 | Code        | 00 |         |    3 | 00/01E5 : F4 20 00    |             PEA   $0020          
+  348 |  1   SEG26.S    280 | Code        | 00 |         |    2 | 00/01E8 : A5 F4       |             LDA   $F4            
+  349 |  1   SEG26.S    281 | Code        | 00 |         |    1 | 00/01EA : 0A          |             ASL                  
+  350 |  1   SEG26.S    282 | Code        | 00 |         |    1 | 00/01EB : 0A          |             ASL                  
+  351 |  1   SEG26.S    283 | Code        | 00 |         |    1 | 00/01EC : 0A          |             ASL                  
+  352 |  1   SEG26.S    284 | Code        | 00 |         |    1 | 00/01ED : 0A          |             ASL                  
+  353 |  1   SEG26.S    285 | Code        | 00 |         |    1 | 00/01EE : 0A          |             ASL                  
+  354 |  1   SEG26.S    286 | Code        | 00 |         |    3 | 00/01EF : A2 00 00    |             LDX   #$0000         
+  355 |  1   SEG26.S    287 | Code        | 00 |         |    1 | 00/01F2 : DA          |             PHX                  
+  356 |  1   SEG26.S    288 | Code        | 00 |         |    1 | 00/01F3 : 48          |             PHA                  
+  357 |  1   SEG26.S    289 | Code        | 00 |E 2      |    3 | 00/01F4 : A9 A4 30    |             LDA   #L033097       
+  358 |  1   SEG26.S    290 | Code        | 00 |E 1 >>16 |    3 | 00/01F7 : A2 00 00    |             LDX   #^L033097      
+  359 |  1   SEG26.S    291 | Code        | 00 |E 3      |    4 | 00/01FA : 22 D2 0E 1A |             JSL   L1A0EFF        
+  360 |  1   SEG26.S    292 | Code        | 00 |E 1 >>16 |    3 | 00/01FE : F4 00 00    |             PEA   ^L033077       
+  361 |  1   SEG26.S    293 | Code        | 00 |E 2      |    3 | 00/0201 : F4 84 30    |             PEA   L033077        
+  362 |  1   SEG26.S    294 | Code        | 00 |E 3      |    4 | 00/0204 : 22 F9 01 09 |             JSL   L0901F9        
+  363 |  1   SEG26.S    295 | Code        | 00 |         |    1 | 00/0208 : 7A          |             PLY                  
+  364 |  1   SEG26.S    296 | Code        | 00 |         |    1 | 00/0209 : 7A          |             PLY                  
+  365 |  1   SEG26.S    297 | Code        | 00 |         |    1 | 00/020A : 7A          |             PLY                  
+  366 |  1   SEG26.S    298 | Code        | 00 |         |    1 | 00/020B : 7A          |             PLY                  
+  367 |  1   SEG26.S    299 | Code        | 00 |         |    1 | 00/020C : 7A          |             PLY                  
+  368 |  1   SEG26.S    300 | Code        | 00 |         |    1 | 00/020D : 3B          | L26020D     TSC                  
+  369 |  1   SEG26.S    301 | Code        | 00 |         |    1 | 00/020E : 18          |             CLC                  
+  370 |  1   SEG26.S    302 | Code        | 00 |         |    3 | 00/020F : 69 0A 00    |             ADC   #$000A         
+  371 |  1   SEG26.S    303 | Code        | 00 |         |    1 | 00/0212 : 1B          |             TCS                  
+  372 |  1   SEG26.S    304 | Code        | 00 |         |    1 | 00/0213 : 2B          |             PLD                  
+  373 |  1   SEG26.S    305 | Code        | 00 |         |    1 | 00/0214 : 6B          |             RTL                  
+  374 |  1   SEG26.S    306 | Empty       | 00 |         |    0 | 00/0215               |                                  
+  375 |  1   SEG26.S    307 | Global      | 00 |         |    0 | 00/0215               | L260215     ENT                  
+  376 |  1   SEG26.S    308 | Code        | 00 |         |    1 | 00/0215 : 0B          |             PHD                  
+  377 |  1   SEG26.S    309 | Code        | 00 |         |    1 | 00/0216 : 3B          |             TSC                  
+  378 |  1   SEG26.S    310 | Code        | 00 |         |    1 | 00/0217 : 38          |             SEC                  
+  379 |  1   SEG26.S    311 | Code        | 00 |         |    3 | 00/0218 : E9 FB 00    |             SBC   #$00FB         
+  380 |  1   SEG26.S    312 | Code        | 00 |         |    1 | 00/021B : 5B          |             TCD                  
+  381 |  1   SEG26.S    313 | Code        | 00 |         |    3 | 00/021C : 69 F2 00    |             ADC   #$00F2         
+  382 |  1   SEG26.S    314 | Code        | 00 |         |    1 | 00/021F : 1B          |             TCS                  
+  383 |  1   SEG26.S    315 | Code        | 00 |         |    2 | 00/0220 : 64 F4       |             STZ   $F4            
+  384 |  1   SEG26.S    316 | Code        | 00 |         |    3 | 00/0222 : 82 93 00    |             BRL   L2602D3        
+  385 |  1   SEG26.S    317 | Code        | 00 |         |    2 | 00/0225 : A5 F4       | L260225     LDA   $F4            
+  386 |  1   SEG26.S    318 | Code        | 00 |         |    1 | 00/0227 : 0A          |             ASL                  
+  387 |  1   SEG26.S    319 | Code        | 00 |         |    3 | 00/0228 : A2 00 00    |             LDX   #$0000         
+  388 |  1   SEG26.S    320 | Code        | 00 |         |    1 | 00/022B : DA          |             PHX                  
+  389 |  1   SEG26.S    321 | Code        | 00 |         |    1 | 00/022C : 48          |             PHA                  
+  390 |  1   SEG26.S    322 | Code        | 00 |E 2      |    3 | 00/022D : A9 24 33    |             LDA   #L033317       
+  391 |  1   SEG26.S    323 | Code        | 00 |E 1 >>16 |    3 | 00/0230 : A2 00 00    |             LDX   #^L033317      
+  392 |  1   SEG26.S    324 | Code        | 00 |E 3      |    4 | 00/0233 : 22 D2 0E 1A |             JSL   L1A0EFF        
+  393 |  1   SEG26.S    325 | Code        | 00 |         |    1 | 00/0237 : 68          |             PLA                  
+  394 |  1   SEG26.S    326 | Code        | 00 |         |    1 | 00/0238 : FA          |             PLX                  
+  395 |  1   SEG26.S    327 | Code        | 00 |         |    2 | 00/0239 : 85 F6       |             STA   $F6            
+  396 |  1   SEG26.S    328 | Code        | 00 |         |    2 | 00/023B : 86 F8       |             STX   $F8            
+  397 |  1   SEG26.S    329 | Code        | 00 |         |    2 | 00/023D : A7 F6       |             LDA   [$F6]          
+  398 |  1   SEG26.S    330 | Code        | 00 |         |    1 | 00/023F : 38          |             SEC                  
+  399 |  1   SEG26.S    331 | Code        | 00 |         |    3 | 00/0240 : E9 0F 00    |             SBC   #$000F         
+  400 |  1   SEG26.S    332 | Code        | 00 |         |    2 | 00/0243 : 70 03       |             BVS   L260248        
+  401 |  1   SEG26.S    333 | Code        | 00 |         |    3 | 00/0245 : 49 00 80    |             EOR   #$8000         
+  402 |  1   SEG26.S    334 | Code        | 00 |         |    2 | 00/0248 : 10 03       | L260248     BPL   L26024D        
+  403 |  1   SEG26.S    335 | Code        | 00 |         |    3 | 00/024A : 82 69 00    |             BRL   L2602D1        
+  404 |  1   SEG26.S    336 | Code        | 00 |         |    3 | 00/024D : F4 0A 00    | L26024D     PEA   $000A          
+  405 |  1   SEG26.S    337 | Code        | 00 |         |    2 | 00/0250 : A5 F4       |             LDA   $F4            
+  406 |  1   SEG26.S    338 | Code        | 00 |         |    1 | 00/0252 : 48          |             PHA                  
+  407 |  1   SEG26.S    339 | Code        | 00 |         |    3 | 00/0253 : A9 0D 00    |             LDA   #$000D         
+  408 |  1   SEG26.S    340 | Code        | 00 |         |    1 | 00/0256 : 38          |             SEC                  
+  409 |  1   SEG26.S    341 | Code        | 00 |E 3      |    4 | 00/0257 : 22 6D 10 1A |             JSL   L1A109A        
+  410 |  1   SEG26.S    342 | Code        | 00 |         |    3 | 00/025B : A9 44 00    |             LDA   #$0044         
+  411 |  1   SEG26.S    343 | Code        | 00 |         |    1 | 00/025E : FA          |             PLX                  
+  412 |  1   SEG26.S    344 | Code        | 00 |         |    2 | 00/025F : 86 FA       |             STX   $FA            
+  413 |  1   SEG26.S    345 | Code        | 00 |         |    1 | 00/0261 : 18          |             CLC                  
+  414 |  1   SEG26.S    346 | Code        | 00 |         |    2 | 00/0262 : 65 FA       |             ADC   $FA            
+  415 |  1   SEG26.S    347 | Code        | 00 |         |    1 | 00/0264 : 48          |             PHA                  
+  416 |  1   SEG26.S    348 | Macro       | 00 |         |    0 | 00/0265               |             _MoveTo                 
+  418 |  1   SEG26.S    348 | Code        | 00 |         |    3 | 00/0265 : A2 04 3A    |             LDX   #$3A04         ; load tool call #
+  419 |  1   SEG26.S    348 | Code        | 00 |         |    4 | 00/0268 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  420 |  1   SEG26.S    349 | Comment     | 00 |         |    0 | 00/026C               | * BCS L260271
+  421 |  1   SEG26.S    350 | Comment     | 00 |         |    0 | 00/026C               | * LDA #$0000
+  422 |  1   SEG26.S    351 | Comment     | 00 |         |    0 | 00/026C               | *L260271 STAL L0201E7
+  423 |  1   SEG26.S    352 | Code        | 00 |         |    2 | 00/026C : A5 F4       |             LDA   $F4            
+  424 |  1   SEG26.S    353 | Code        | 00 |         |    1 | 00/026E : 0A          |             ASL                  
+  425 |  1   SEG26.S    354 | Code        | 00 |         |    1 | 00/026F : 0A          |             ASL                  
+  426 |  1   SEG26.S    355 | Code        | 00 |         |    1 | 00/0270 : 0A          |             ASL                  
+  427 |  1   SEG26.S    356 | Code        | 00 |         |    1 | 00/0271 : 0A          |             ASL                  
+  428 |  1   SEG26.S    357 | Code        | 00 |         |    1 | 00/0272 : 0A          |             ASL                  
+  429 |  1   SEG26.S    358 | Code        | 00 |         |    3 | 00/0273 : A2 00 00    |             LDX   #$0000         
+  430 |  1   SEG26.S    359 | Code        | 00 |         |    1 | 00/0276 : DA          |             PHX                  
+  431 |  1   SEG26.S    360 | Code        | 00 |         |    1 | 00/0277 : 48          |             PHA                  
+  432 |  1   SEG26.S    361 | Code        | 00 |E 2      |    3 | 00/0278 : A9 A4 30    |             LDA   #L033097       
+  433 |  1   SEG26.S    362 | Code        | 00 |E 1 >>16 |    3 | 00/027B : A2 00 00    |             LDX   #^L033097      
+  434 |  1   SEG26.S    363 | Code        | 00 |E 3      |    4 | 00/027E : 22 D2 0E 1A |             JSL   L1A0EFF        
+  435 |  1   SEG26.S    364 | Macro       | 00 |         |    0 | 00/0282               |             _DrawString                 
+  437 |  1   SEG26.S    364 | Code        | 00 |         |    3 | 00/0282 : A2 04 A5    |             LDX   #$A504         ; load tool call #
+  438 |  1   SEG26.S    364 | Code        | 00 |         |    4 | 00/0285 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  439 |  1   SEG26.S    365 | Comment     | 00 |         |    0 | 00/0289               | * BCS L260297
+  440 |  1   SEG26.S    366 | Comment     | 00 |         |    0 | 00/0289               | * LDA #$0000
+  441 |  1   SEG26.S    367 | Comment     | 00 |         |    0 | 00/0289               | *L260297 STAL L0201E7
+  442 |  1   SEG26.S    368 | Code        | 00 |E 1 >>16 |    3 | 00/0289 : F4 00 00    |             PEA   ^L03336E       
+  443 |  1   SEG26.S    369 | Code        | 00 |E 2      |    3 | 00/028C : F4 7B 33    |             PEA   L03336E        
+  444 |  1   SEG26.S    370 | Macro       | 00 |         |    0 | 00/028F               |             _DrawString                 
+  446 |  1   SEG26.S    370 | Code        | 00 |         |    3 | 00/028F : A2 04 A5    |             LDX   #$A504         ; load tool call #
+  447 |  1   SEG26.S    370 | Code        | 00 |         |    4 | 00/0292 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  448 |  1   SEG26.S    371 | Comment     | 00 |         |    0 | 00/0296               | * BCS L2602AD
+  449 |  1   SEG26.S    372 | Comment     | 00 |         |    0 | 00/0296               | * LDA #$0000
+  450 |  1   SEG26.S    373 | Comment     | 00 |         |    0 | 00/0296               | *L2602AD STAL L0201E7
+  451 |  1   SEG26.S    374 | Code        | 00 |         |    2 | 00/0296 : A5 F4       |             LDA   $F4            
+  452 |  1   SEG26.S    375 | Code        | 00 |         |    1 | 00/0298 : 0A          |             ASL                  
+  453 |  1   SEG26.S    376 | Code        | 00 |         |    3 | 00/0299 : A2 00 00    |             LDX   #$0000         
+  454 |  1   SEG26.S    377 | Code        | 00 |         |    1 | 00/029C : DA          |             PHX                  
+  455 |  1   SEG26.S    378 | Code        | 00 |         |    1 | 00/029D : 48          |             PHA                  
+  456 |  1   SEG26.S    379 | Code        | 00 |E 2      |    3 | 00/029E : A9 24 33    |             LDA   #L033317       
+  457 |  1   SEG26.S    380 | Code        | 00 |E 1 >>16 |    3 | 00/02A1 : A2 00 00    |             LDX   #^L033317      
+  458 |  1   SEG26.S    381 | Code        | 00 |E 3      |    4 | 00/02A4 : 22 D2 0E 1A |             JSL   L1A0EFF        
+  459 |  1   SEG26.S    382 | Code        | 00 |         |    1 | 00/02A8 : 68          |             PLA                  
+  460 |  1   SEG26.S    383 | Code        | 00 |         |    1 | 00/02A9 : FA          |             PLX                  
+  461 |  1   SEG26.S    384 | Code        | 00 |         |    2 | 00/02AA : 85 F6       |             STA   $F6            
+  462 |  1   SEG26.S    385 | Code        | 00 |         |    2 | 00/02AC : 86 F8       |             STX   $F8            
+  463 |  1   SEG26.S    386 | Code        | 00 |         |    2 | 00/02AE : A7 F6       |             LDA   [$F6]          
+  464 |  1   SEG26.S    387 | Code        | 00 |         |    1 | 00/02B0 : 48          |             PHA                  
+  465 |  1   SEG26.S    388 | Code        | 00 |E 3      |    4 | 00/02B1 : 22 96 05 04 |             JSL   L04064E        
+  466 |  1   SEG26.S    389 | Code        | 00 |         |    1 | 00/02B5 : 7A          |             PLY                  
+  467 |  1   SEG26.S    390 | Code        | 00 |         |    2 | 00/02B6 : E6 F4       | L2602D1     INC   $F4            
+  468 |  1   SEG26.S    391 | Code        | 00 |         |    2 | 00/02B8 : A5 F4       | L2602D3     LDA   $F4            
+  469 |  1   SEG26.S    392 | Code        | 00 |         |    1 | 00/02BA : 38          |             SEC                  
+  470 |  1   SEG26.S    393 | Code        | 00 |         |    3 | 00/02BB : E9 0A 00    |             SBC   #$000A         
+  471 |  1   SEG26.S    394 | Code        | 00 |         |    2 | 00/02BE : 70 03       |             BVS   L2602DE        
+  472 |  1   SEG26.S    395 | Code        | 00 |         |    3 | 00/02C0 : 49 00 80    |             EOR   #$8000         
+  473 |  1   SEG26.S    396 | Code        | 00 |         |    2 | 00/02C3 : 30 03       | L2602DE     BMI   L2602E3        
+  474 |  1   SEG26.S    397 | Code        | 00 |         |    3 | 00/02C5 : 82 5D FF    |             BRL   L260225        
+  475 |  1   SEG26.S    398 | Code        | 00 |         |    2 | 00/02C8 : 64 F4       | L2602E3     STZ   $F4            
+  476 |  1   SEG26.S    399 | Code        | 00 |         |    3 | 00/02CA : 82 9F 00    |             BRL   L2603A2        
+  477 |  1   SEG26.S    400 | Code        | 00 |         |    2 | 00/02CD : A5 F4       | L2602E8     LDA   $F4            
+  478 |  1   SEG26.S    401 | Code        | 00 |         |    1 | 00/02CF : 18          |             CLC                  
+  479 |  1   SEG26.S    402 | Code        | 00 |         |    3 | 00/02D0 : 69 0A 00    |             ADC   #$000A         
+  480 |  1   SEG26.S    403 | Code        | 00 |         |    1 | 00/02D3 : 0A          |             ASL                  
+  481 |  1   SEG26.S    404 | Code        | 00 |         |    3 | 00/02D4 : A2 00 00    |             LDX   #$0000         
+  482 |  1   SEG26.S    405 | Code        | 00 |         |    1 | 00/02D7 : DA          |             PHX                  
+  483 |  1   SEG26.S    406 | Code        | 00 |         |    1 | 00/02D8 : 48          |             PHA                  
+  484 |  1   SEG26.S    407 | Code        | 00 |E 2      |    3 | 00/02D9 : A9 24 33    |             LDA   #L033317       
+  485 |  1   SEG26.S    408 | Code        | 00 |E 1 >>16 |    3 | 00/02DC : A2 00 00    |             LDX   #^L033317      
+  486 |  1   SEG26.S    409 | Code        | 00 |E 3      |    4 | 00/02DF : 22 D2 0E 1A |             JSL   L1A0EFF        
+  487 |  1   SEG26.S    410 | Code        | 00 |         |    1 | 00/02E3 : 68          |             PLA                  
+  488 |  1   SEG26.S    411 | Code        | 00 |         |    1 | 00/02E4 : FA          |             PLX                  
+  489 |  1   SEG26.S    412 | Code        | 00 |         |    2 | 00/02E5 : 85 F6       |             STA   $F6            
+  490 |  1   SEG26.S    413 | Code        | 00 |         |    2 | 00/02E7 : 86 F8       |             STX   $F8            
+  491 |  1   SEG26.S    414 | Code        | 00 |         |    2 | 00/02E9 : A7 F6       |             LDA   [$F6]          
+  492 |  1   SEG26.S    415 | Code        | 00 |         |    1 | 00/02EB : 38          |             SEC                  
+  493 |  1   SEG26.S    416 | Code        | 00 |         |    3 | 00/02EC : E9 0F 00    |             SBC   #$000F         
+  494 |  1   SEG26.S    417 | Code        | 00 |         |    2 | 00/02EF : 70 03       |             BVS   L26030F        
+  495 |  1   SEG26.S    418 | Code        | 00 |         |    3 | 00/02F1 : 49 00 80    |             EOR   #$8000         
+  496 |  1   SEG26.S    419 | Code        | 00 |         |    2 | 00/02F4 : 10 03       | L26030F     BPL   L260314        
+  497 |  1   SEG26.S    420 | Code        | 00 |         |    3 | 00/02F6 : 82 71 00    |             BRL   L2603A0        
+  498 |  1   SEG26.S    421 | Code        | 00 |         |    3 | 00/02F9 : F4 A7 00    | L260314     PEA   $00A7          
+  499 |  1   SEG26.S    422 | Code        | 00 |         |    2 | 00/02FC : A5 F4       |             LDA   $F4            
+  500 |  1   SEG26.S    423 | Code        | 00 |         |    1 | 00/02FE : 48          |             PHA                  
+  501 |  1   SEG26.S    424 | Code        | 00 |         |    3 | 00/02FF : A9 0D 00    |             LDA   #$000D         
+  502 |  1   SEG26.S    425 | Code        | 00 |         |    1 | 00/0302 : 38          |             SEC                  
+  503 |  1   SEG26.S    426 | Code        | 00 |E 3      |    4 | 00/0303 : 22 6D 10 1A |             JSL   L1A109A        
+  504 |  1   SEG26.S    427 | Code        | 00 |         |    3 | 00/0307 : A9 44 00    |             LDA   #$0044         
+  505 |  1   SEG26.S    428 | Code        | 00 |         |    1 | 00/030A : FA          |             PLX                  
+  506 |  1   SEG26.S    429 | Code        | 00 |         |    2 | 00/030B : 86 FA       |             STX   $FA            
+  507 |  1   SEG26.S    430 | Code        | 00 |         |    1 | 00/030D : 18          |             CLC                  
+  508 |  1   SEG26.S    431 | Code        | 00 |         |    2 | 00/030E : 65 FA       |             ADC   $FA            
+  509 |  1   SEG26.S    432 | Code        | 00 |         |    1 | 00/0310 : 48          |             PHA                  
+  510 |  1   SEG26.S    433 | Macro       | 00 |         |    0 | 00/0311               |             _MoveTo                 
+  512 |  1   SEG26.S    433 | Code        | 00 |         |    3 | 00/0311 : A2 04 3A    |             LDX   #$3A04         ; load tool call #
+  513 |  1   SEG26.S    433 | Code        | 00 |         |    4 | 00/0314 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  514 |  1   SEG26.S    434 | Comment     | 00 |         |    0 | 00/0318               | * BCS L260338
+  515 |  1   SEG26.S    435 | Comment     | 00 |         |    0 | 00/0318               | * LDA #$0000
+  516 |  1   SEG26.S    436 | Comment     | 00 |         |    0 | 00/0318               | *L260338 STAL L0201E7
+  517 |  1   SEG26.S    437 | Code        | 00 |         |    2 | 00/0318 : A5 F4       |             LDA   $F4            
+  518 |  1   SEG26.S    438 | Code        | 00 |         |    1 | 00/031A : 18          |             CLC                  
+  519 |  1   SEG26.S    439 | Code        | 00 |         |    3 | 00/031B : 69 0A 00    |             ADC   #$000A         
+  520 |  1   SEG26.S    440 | Code        | 00 |         |    1 | 00/031E : 0A          |             ASL                  
+  521 |  1   SEG26.S    441 | Code        | 00 |         |    1 | 00/031F : 0A          |             ASL                  
+  522 |  1   SEG26.S    442 | Code        | 00 |         |    1 | 00/0320 : 0A          |             ASL                  
+  523 |  1   SEG26.S    443 | Code        | 00 |         |    1 | 00/0321 : 0A          |             ASL                  
+  524 |  1   SEG26.S    444 | Code        | 00 |         |    1 | 00/0322 : 0A          |             ASL                  
+  525 |  1   SEG26.S    445 | Code        | 00 |         |    3 | 00/0323 : A2 00 00    |             LDX   #$0000         
+  526 |  1   SEG26.S    446 | Code        | 00 |         |    1 | 00/0326 : DA          |             PHX                  
+  527 |  1   SEG26.S    447 | Code        | 00 |         |    1 | 00/0327 : 48          |             PHA                  
+  528 |  1   SEG26.S    448 | Code        | 00 |E 2      |    3 | 00/0328 : A9 A4 30    |             LDA   #L033097       
+  529 |  1   SEG26.S    449 | Code        | 00 |E 1 >>16 |    3 | 00/032B : A2 00 00    |             LDX   #^L033097      
+  530 |  1   SEG26.S    450 | Code        | 00 |E 3      |    4 | 00/032E : 22 D2 0E 1A |             JSL   L1A0EFF        
+  531 |  1   SEG26.S    451 | Macro       | 00 |         |    0 | 00/0332               |             _DrawString                 
+  533 |  1   SEG26.S    451 | Code        | 00 |         |    3 | 00/0332 : A2 04 A5    |             LDX   #$A504         ; load tool call #
+  534 |  1   SEG26.S    451 | Code        | 00 |         |    4 | 00/0335 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  535 |  1   SEG26.S    452 | Comment     | 00 |         |    0 | 00/0339               | * BCS L260362
+  536 |  1   SEG26.S    453 | Comment     | 00 |         |    0 | 00/0339               | * LDA #$0000
+  537 |  1   SEG26.S    454 | Comment     | 00 |         |    0 | 00/0339               | *L260362 STAL L0201E7
+  538 |  1   SEG26.S    455 | Code        | 00 |E 1 >>16 |    3 | 00/0339 : F4 00 00    |             PEA   ^L033373       
+  539 |  1   SEG26.S    456 | Code        | 00 |E 2      |    3 | 00/033C : F4 80 33    |             PEA   L033373        
+  540 |  1   SEG26.S    457 | Macro       | 00 |         |    0 | 00/033F               |             _DrawString                 
+  542 |  1   SEG26.S    457 | Code        | 00 |         |    3 | 00/033F : A2 04 A5    |             LDX   #$A504         ; load tool call #
+  543 |  1   SEG26.S    457 | Code        | 00 |         |    4 | 00/0342 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  544 |  1   SEG26.S    458 | Comment     | 00 |         |    0 | 00/0346               | * BCS L260378
+  545 |  1   SEG26.S    459 | Comment     | 00 |         |    0 | 00/0346               | * LDA #$0000
+  546 |  1   SEG26.S    460 | Comment     | 00 |         |    0 | 00/0346               | *L260378 STAL L0201E7
+  547 |  1   SEG26.S    461 | Code        | 00 |         |    2 | 00/0346 : A5 F4       |             LDA   $F4            
+  548 |  1   SEG26.S    462 | Code        | 00 |         |    1 | 00/0348 : 18          |             CLC                  
+  549 |  1   SEG26.S    463 | Code        | 00 |         |    3 | 00/0349 : 69 0A 00    |             ADC   #$000A         
+  550 |  1   SEG26.S    464 | Code        | 00 |         |    1 | 00/034C : 0A          |             ASL                  
+  551 |  1   SEG26.S    465 | Code        | 00 |         |    3 | 00/034D : A2 00 00    |             LDX   #$0000         
+  552 |  1   SEG26.S    466 | Code        | 00 |         |    1 | 00/0350 : DA          |             PHX                  
+  553 |  1   SEG26.S    467 | Code        | 00 |         |    1 | 00/0351 : 48          |             PHA                  
+  554 |  1   SEG26.S    468 | Code        | 00 |E 2      |    3 | 00/0352 : A9 24 33    |             LDA   #L033317       
+  555 |  1   SEG26.S    469 | Code        | 00 |E 1 >>16 |    3 | 00/0355 : A2 00 00    |             LDX   #^L033317      
+  556 |  1   SEG26.S    470 | Code        | 00 |E 3      |    4 | 00/0358 : 22 D2 0E 1A |             JSL   L1A0EFF        
+  557 |  1   SEG26.S    471 | Code        | 00 |         |    1 | 00/035C : 68          |             PLA                  
+  558 |  1   SEG26.S    472 | Code        | 00 |         |    1 | 00/035D : FA          |             PLX                  
+  559 |  1   SEG26.S    473 | Code        | 00 |         |    2 | 00/035E : 85 F6       |             STA   $F6            
+  560 |  1   SEG26.S    474 | Code        | 00 |         |    2 | 00/0360 : 86 F8       |             STX   $F8            
+  561 |  1   SEG26.S    475 | Code        | 00 |         |    2 | 00/0362 : A7 F6       |             LDA   [$F6]          
+  562 |  1   SEG26.S    476 | Code        | 00 |         |    1 | 00/0364 : 48          |             PHA                  
+  563 |  1   SEG26.S    477 | Code        | 00 |E 3      |    4 | 00/0365 : 22 96 05 04 |             JSL   L04064E        
+  564 |  1   SEG26.S    478 | Code        | 00 |         |    1 | 00/0369 : 7A          |             PLY                  
+  565 |  1   SEG26.S    479 | Code        | 00 |         |    2 | 00/036A : E6 F4       | L2603A0     INC   $F4            
+  566 |  1   SEG26.S    480 | Code        | 00 |         |    2 | 00/036C : A5 F4       | L2603A2     LDA   $F4            
+  567 |  1   SEG26.S    481 | Code        | 00 |         |    1 | 00/036E : 38          |             SEC                  
+  568 |  1   SEG26.S    482 | Code        | 00 |         |    3 | 00/036F : E9 0A 00    |             SBC   #$000A         
+  569 |  1   SEG26.S    483 | Code        | 00 |         |    2 | 00/0372 : 70 03       |             BVS   L2603AD        
+  570 |  1   SEG26.S    484 | Code        | 00 |         |    3 | 00/0374 : 49 00 80    |             EOR   #$8000         
+  571 |  1   SEG26.S    485 | Code        | 00 |         |    2 | 00/0377 : 30 03       | L2603AD     BMI   L2603B2        
+  572 |  1   SEG26.S    486 | Code        | 00 |         |    3 | 00/0379 : 82 51 FF    |             BRL   L2602E8        
+  573 |  1   SEG26.S    487 | Code        | 00 |         |    1 | 00/037C : 3B          | L2603B2     TSC                  
+  574 |  1   SEG26.S    488 | Code        | 00 |         |    1 | 00/037D : 18          |             CLC                  
+  575 |  1   SEG26.S    489 | Code        | 00 |         |    3 | 00/037E : 69 08 00    |             ADC   #$0008         
+  576 |  1   SEG26.S    490 | Code        | 00 |         |    1 | 00/0381 : 1B          |             TCS                  
+  577 |  1   SEG26.S    491 | Code        | 00 |         |    1 | 00/0382 : 2B          |             PLD                  
+  578 |  1   SEG26.S    492 | Code        | 00 |         |    1 | 00/0383 : 6B          |             RTL                  
+  579 |  1   SEG26.S    493 | Empty       | 00 |         |    0 | 00/0384               |                                  
+  580 |  1   SEG26.S    494 | Global      | 00 |         |    0 | 00/0384               | L2603BA     ENT                  
+  581 |  1   SEG26.S    495 | Code        | 00 |         |    1 | 00/0384 : 0B          |             PHD                  
+  582 |  1   SEG26.S    496 | Code        | 00 |         |    1 | 00/0385 : 3B          |             TSC                  
+  583 |  1   SEG26.S    497 | Code        | 00 |         |    1 | 00/0386 : 38          |             SEC                  
+  584 |  1   SEG26.S    498 | Code        | 00 |         |    3 | 00/0387 : E9 FB 00    |             SBC   #$00FB         
+  585 |  1   SEG26.S    499 | Code        | 00 |         |    1 | 00/038A : 5B          |             TCD                  
+  586 |  1   SEG26.S    500 | Code        | 00 |         |    3 | 00/038B : 69 EC 00    |             ADC   #$00EC         
+  587 |  1   SEG26.S    501 | Code        | 00 |         |    1 | 00/038E : 1B          |             TCS                  
+  588 |  1   SEG26.S    502 | Code        | 00 |         |    3 | 00/038F : F4 4B 00    |             PEA   $004B          
+  589 |  1   SEG26.S    503 | Code        | 00 |         |    3 | 00/0392 : F4 2D 00    |             PEA   $002D          
+  590 |  1   SEG26.S    504 | Macro       | 00 |         |    0 | 00/0395               |             _MoveTo                 
+  592 |  1   SEG26.S    504 | Code        | 00 |         |    3 | 00/0395 : A2 04 3A    |             LDX   #$3A04         ; load tool call #
+  593 |  1   SEG26.S    504 | Code        | 00 |         |    4 | 00/0398 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  594 |  1   SEG26.S    505 | Comment     | 00 |         |    0 | 00/039C               | * BCS L2603D7
+  595 |  1   SEG26.S    506 | Comment     | 00 |         |    0 | 00/039C               | * LDA #$0000
+  596 |  1   SEG26.S    507 | Comment     | 00 |         |    0 | 00/039C               | *L2603D7 STAL L0201E7
+  597 |  1   SEG26.S    508 | Code        | 00 |         |    3 | 00/039C : F4 0F 00    |             PEA   $000F          
+  598 |  1   SEG26.S    509 | Macro       | 00 |         |    0 | 00/039F               |             _SetForeColor                 
+  600 |  1   SEG26.S    509 | Code        | 00 |         |    3 | 00/039F : A2 04 A0    |             LDX   #$A004         ; load tool call #
+  601 |  1   SEG26.S    509 | Code        | 00 |         |    4 | 00/03A2 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  602 |  1   SEG26.S    510 | Comment     | 00 |         |    0 | 00/03A6               | * BCS L2603EA
+  603 |  1   SEG26.S    511 | Comment     | 00 |         |    0 | 00/03A6               | * LDA #$0000
+  604 |  1   SEG26.S    512 | Comment     | 00 |         |    0 | 00/03A6               | *L2603EA STAL L0201E7
+  605 |  1   SEG26.S    513 | Code        | 00 |         |    3 | 00/03A6 : F4 00 00    |             PEA   $0000          
+  606 |  1   SEG26.S    514 | Macro       | 00 |         |    0 | 00/03A9               |             _SetBackColor                 
+  608 |  1   SEG26.S    514 | Code        | 00 |         |    3 | 00/03A9 : A2 04 A2    |             LDX   #$A204         ; load tool call #
+  609 |  1   SEG26.S    514 | Code        | 00 |         |    4 | 00/03AC : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  610 |  1   SEG26.S    515 | Comment     | 00 |         |    0 | 00/03B0               | * BCS L2603FD
+  611 |  1   SEG26.S    516 | Comment     | 00 |         |    0 | 00/03B0               | * LDA #$0000
+  612 |  1   SEG26.S    517 | Comment     | 00 |         |    0 | 00/03B0               | *L2603FD STAL L0201E7
+  613 |  1   SEG26.S    518 | Code        | 00 |E 1 >>16 |    3 | 00/03B0 : F4 00 00    |             PEA   ^L033077       
+  614 |  1   SEG26.S    519 | Code        | 00 |E 2      |    3 | 00/03B3 : F4 84 30    |             PEA   L033077        
+  615 |  1   SEG26.S    520 | Code        | 00 |E 3      |    4 | 00/03B6 : 22 A9 02 24 |             JSL   L240303        
+  616 |  1   SEG26.S    521 | Code        | 00 |         |    1 | 00/03BA : 7A          |             PLY                  
+  617 |  1   SEG26.S    522 | Code        | 00 |         |    1 | 00/03BB : 7A          |             PLY                  
+  618 |  1   SEG26.S    523 | Code        | 00 |         |    1 | 00/03BC : 3B          |             TSC                  
+  619 |  1   SEG26.S    524 | Code        | 00 |         |    1 | 00/03BD : 18          |             CLC                  
+  620 |  1   SEG26.S    525 | Code        | 00 |         |    3 | 00/03BE : 69 0E 00    |             ADC   #$000E         
+  621 |  1   SEG26.S    526 | Code        | 00 |         |    1 | 00/03C1 : 1B          |             TCS                  
+  622 |  1   SEG26.S    527 | Code        | 00 |         |    1 | 00/03C2 : 2B          |             PLD                  
+  623 |  1   SEG26.S    528 | Code        | 00 |         |    1 | 00/03C3 : 6B          |             RTL                  
+  624 |  1   SEG26.S    529 | Empty       | 00 |         |    0 | 00/03C4               |                                  
+  625 |  1   SEG26.S    530 | Global      | 00 |         |    0 | 00/03C4               | L260415     ENT                  
+  626 |  1   SEG26.S    531 | Code        | 00 |         |    1 | 00/03C4 : 0B          |             PHD                  
+  627 |  1   SEG26.S    532 | Code        | 00 |         |    1 | 00/03C5 : 3B          |             TSC                  
+  628 |  1   SEG26.S    533 | Code        | 00 |         |    1 | 00/03C6 : 38          |             SEC                  
+  629 |  1   SEG26.S    534 | Code        | 00 |         |    3 | 00/03C7 : E9 FB 00    |             SBC   #$00FB         
+  630 |  1   SEG26.S    535 | Code        | 00 |         |    1 | 00/03CA : 5B          |             TCD                  
+  631 |  1   SEG26.S    536 | Code        | 00 |         |    3 | 00/03CB : 69 F4 00    |             ADC   #$00F4         
+  632 |  1   SEG26.S    537 | Code        | 00 |         |    1 | 00/03CE : 1B          |             TCS                  
+  633 |  1   SEG26.S    538 | Code        | 00 |         |    3 | 00/03CF : A9 01 00    |             LDA   #$0001         
+  634 |  1   SEG26.S    539 | Code        | 00 |E 2      |    3 | 00/03D2 : 8D E6 01    |             STA   L0201E1        
+  635 |  1   SEG26.S    540 | Code        | 00 |E 3      |    4 | 00/03D5 : 22 4D 07 21 |             JSL   L210761        
+  636 |  1   SEG26.S    541 | Code        | 00 |E 3      |    4 | 00/03D9 : 22 A9 00 25 |             JSL   L2500A9        
+  637 |  1   SEG26.S    542 | Code        | 00 |E 3      |    4 | 00/03DD : 22 23 05 1C |             JSL   L1C0667        
+  638 |  1   SEG26.S    543 | Code        | 00 |E 3      |    4 | 00/03E1 : 22 94 02 1C |             JSL   L1C0351        
+  639 |  1   SEG26.S    544 | Code        | 00 |         |    1 | 00/03E5 : 3B          |             TSC                  
+  640 |  1   SEG26.S    545 | Code        | 00 |         |    1 | 00/03E6 : 18          |             CLC                  
+  641 |  1   SEG26.S    546 | Code        | 00 |         |    3 | 00/03E7 : 69 06 00    |             ADC   #$0006         
+  642 |  1   SEG26.S    547 | Code        | 00 |         |    1 | 00/03EA : 1B          |             TCS                  
+  643 |  1   SEG26.S    548 | Code        | 00 |         |    1 | 00/03EB : 2B          |             PLD                  
+  644 |  1   SEG26.S    549 | Code        | 00 |         |    1 | 00/03EC : 6B          |             RTL                  
+  645 |  1   SEG26.S    550 | Empty       | 00 |         |    0 | 00/03ED               |                                  
+  646 |  1   SEG26.S    551 | Global      | 00 |         |    0 | 00/03ED               | L26043E     ENT                  
+  647 |  1   SEG26.S    552 | Code        | 00 |         |    1 | 00/03ED : 0B          |             PHD                  
+  648 |  1   SEG26.S    553 | Code        | 00 |         |    1 | 00/03EE : 3B          |             TSC                  
+  649 |  1   SEG26.S    554 | Code        | 00 |         |    1 | 00/03EF : 38          |             SEC                  
+  650 |  1   SEG26.S    555 | Code        | 00 |         |    3 | 00/03F0 : E9 FB 00    |             SBC   #$00FB         
+  651 |  1   SEG26.S    556 | Code        | 00 |         |    1 | 00/03F3 : 5B          |             TCD                  
+  652 |  1   SEG26.S    557 | Code        | 00 |         |    3 | 00/03F4 : 69 F4 00    |             ADC   #$00F4         
+  653 |  1   SEG26.S    558 | Code        | 00 |         |    1 | 00/03F7 : 1B          |             TCS                  
+  654 |  1   SEG26.S    559 | Code        | 00 |E 1 >>16 |    3 | 00/03F8 : F4 00 00    |             PEA   ^L033378       
+  655 |  1   SEG26.S    560 | Code        | 00 |E 2      |    3 | 00/03FB : F4 85 33    |             PEA   L033378        
+  656 |  1   SEG26.S    561 | Code        | 00 |E 3      |    4 | 00/03FE : 22 D5 0D 1A |             JSL   L1A0E02        
+  657 |  1   SEG26.S    562 | Code        | 00 |         |    1 | 00/0402 : 7A          |             PLY                  
+  658 |  1   SEG26.S    563 | Code        | 00 |         |    1 | 00/0403 : 7A          |             PLY                  
+  659 |  1   SEG26.S    564 | Code        | 00 |E 2      |    3 | 00/0404 : AD E6 01    |             LDA   L0201E1        
+  660 |  1   SEG26.S    565 | Code        | 00 |         |    2 | 00/0407 : F0 07       |             BEQ   L260461        
+  661 |  1   SEG26.S    566 | Code        | 00 |E 3      |    4 | 00/0409 : 22 D5 02 1C |             JSL   L1C03B6        
+  662 |  1   SEG26.S    567 | Code        | 00 |E 2      |    3 | 00/040D : 9C E6 01    |             STZ   L0201E1        
+  663 |  1   SEG26.S    568 | Code        | 00 |E 3      |    4 | 00/0410 : 22 68 0E 1A | L260461     JSL   L1A0E95        
+  664 |  1   SEG26.S    569 | Code        | 00 |         |    1 | 00/0414 : 3B          |             TSC                  
+  665 |  1   SEG26.S    570 | Code        | 00 |         |    1 | 00/0415 : 18          |             CLC                  
+  666 |  1   SEG26.S    571 | Code        | 00 |         |    3 | 00/0416 : 69 06 00    |             ADC   #$0006         
+  667 |  1   SEG26.S    572 | Code        | 00 |         |    1 | 00/0419 : 1B          |             TCS                  
+  668 |  1   SEG26.S    573 | Code        | 00 |         |    1 | 00/041A : 2B          |             PLD                  
+  669 |  1   SEG26.S    574 | Code        | 00 |         |    1 | 00/041B : 6B          |             RTL                  
+  670 |  1   SEG26.S    575 | Empty       | 00 |         |    0 | 00/041C               |                                  
+  671 |  1   SEG26.S    576 | Code        | 00 |         |    1 | 00/041C : 0B          | L26046D     PHD                  
+  672 |  1   SEG26.S    577 | Code        | 00 |         |    1 | 00/041D : 3B          |             TSC                  
+  673 |  1   SEG26.S    578 | Code        | 00 |         |    1 | 00/041E : 38          |             SEC                  
+  674 |  1   SEG26.S    579 | Code        | 00 |         |    3 | 00/041F : E9 FB 00    |             SBC   #$00FB         
+  675 |  1   SEG26.S    580 | Code        | 00 |         |    1 | 00/0422 : 5B          |             TCD                  
+  676 |  1   SEG26.S    581 | Code        | 00 |         |    3 | 00/0423 : 69 EE 00    |             ADC   #$00EE         
+  677 |  1   SEG26.S    582 | Code        | 00 |         |    1 | 00/0426 : 1B          |             TCS                  
+  678 |  1   SEG26.S    583 | Code        | 00 |         |    2 | 00/0427 : 64 F0       |             STZ   $F0            
+  679 |  1   SEG26.S    584 | Code        | 00 |E 3      |    4 | 00/0429 : 22 CC 15 0F | L26047A     JSL   L0F15F0        
+  680 |  1   SEG26.S    585 | Code        | 00 |         |    1 | 00/042D : A8          |             TAY                  
+  681 |  1   SEG26.S    586 | Code        | 00 |         |    2 | 00/042E : F0 0A       |             BEQ   L26048B        
+  682 |  1   SEG26.S    587 | Code        | 00 |E 3      |    4 | 00/0430 : 22 9E 11 0F |             JSL   L0F11B0        
+  683 |  1   SEG26.S    588 | Code        | 00 |E 3      |    4 | 00/0434 : 22 95 03 1D |             JSL   L1D0395        
+  684 |  1   SEG26.S    589 | Code        | 00 |         |    2 | 00/0438 : 80 EF       |             BRA   L26047A        
+  685 |  1   SEG26.S    590 | Code        | 00 |         |    3 | 00/043A : F4 00 00    | L26048B     PEA   $0000          
+  686 |  1   SEG26.S    591 | Code        | 00 |         |    1 | 00/043D : 7B          |             TDC                  
+  687 |  1   SEG26.S    592 | Code        | 00 |         |    1 | 00/043E : 18          |             CLC                  
+  688 |  1   SEG26.S    593 | Code        | 00 |         |    3 | 00/043F : 69 F2 00    |             ADC   #$00F2         
+  689 |  1   SEG26.S    594 | Code        | 00 |         |    1 | 00/0442 : 48          |             PHA                  
+  690 |  1   SEG26.S    595 | Code        | 00 |E 3      |    4 | 00/0443 : 22 94 0C 24 |             JSL   L240ED4        
+  691 |  1   SEG26.S    596 | Code        | 00 |         |    1 | 00/0447 : 7A          |             PLY                  
+  692 |  1   SEG26.S    597 | Code        | 00 |         |    1 | 00/0448 : 7A          |             PLY                  
+  693 |  1   SEG26.S    598 | Code        | 00 |         |    2 | 00/0449 : A7 F2       | L26049A     LDA   [$F2]          
+  694 |  1   SEG26.S    599 | Code        | 00 |         |    3 | 00/044B : 29 FF 00    |             AND   #$00FF         
+  695 |  1   SEG26.S    600 | Code        | 00 |         |    2 | 00/044E : F0 37       |             BEQ   L2604D8        
+  696 |  1   SEG26.S    601 | Code        | 00 |         |    2 | 00/0450 : A6 F4       |             LDX   $F4            
+  697 |  1   SEG26.S    602 | Code        | 00 |         |    2 | 00/0452 : A5 F2       |             LDA   $F2            
+  698 |  1   SEG26.S    603 | Code        | 00 |         |    2 | 00/0454 : E6 F2       |             INC   $F2            
+  699 |  1   SEG26.S    604 | Code        | 00 |         |    2 | 00/0456 : D0 02       |             BNE   L2604AB        
+  700 |  1   SEG26.S    605 | Code        | 00 |         |    2 | 00/0458 : E6 F4       |             INC   $F4            
+  701 |  1   SEG26.S    606 | Code        | 00 |         |    2 | 00/045A : 85 F6       | L2604AB     STA   $F6            
+  702 |  1   SEG26.S    607 | Code        | 00 |         |    2 | 00/045C : 86 F8       |             STX   $F8            
+  703 |  1   SEG26.S    608 | Code        | 00 |         |    2 | 00/045E : A7 F6       |             LDA   [$F6]          
+  704 |  1   SEG26.S    609 | Code        | 00 |         |    1 | 00/0460 : 48          |             PHA                  
+  705 |  1   SEG26.S    610 | Code        | 00 |         |    2 | 00/0461 : A5 F0       |             LDA   $F0            
+  706 |  1   SEG26.S    611 | Code        | 00 |         |    2 | 00/0463 : E6 F0       |             INC   $F0            
+  707 |  1   SEG26.S    612 | Code        | 00 |         |    1 | 00/0465 : 18          |             CLC                  
+  708 |  1   SEG26.S    613 | Code        | 00 |         |    3 | 00/0466 : 69 01 00    |             ADC   #$0001         
+  709 |  1   SEG26.S    614 | Code        | 00 |         |    3 | 00/0469 : A2 00 00    |             LDX   #$0000         
+  710 |  1   SEG26.S    615 | Code        | 00 |         |    1 | 00/046C : DA          |             PHX                  
+  711 |  1   SEG26.S    616 | Code        | 00 |         |    1 | 00/046D : 48          |             PHA                  
+  712 |  1   SEG26.S    617 | Code        | 00 |E 2      |    3 | 00/046E : A9 84 30    |             LDA   #L033077       
+  713 |  1   SEG26.S    618 | Code        | 00 |E 1 >>16 |    3 | 00/0471 : A2 00 00    |             LDX   #^L033077      
+  714 |  1   SEG26.S    619 | Code        | 00 |E 3      |    4 | 00/0474 : 22 D2 0E 1A |             JSL   L1A0EFF        
+  715 |  1   SEG26.S    620 | Code        | 00 |         |    1 | 00/0478 : 68          |             PLA                  
+  716 |  1   SEG26.S    621 | Code        | 00 |         |    1 | 00/0479 : FA          |             PLX                  
+  717 |  1   SEG26.S    622 | Code        | 00 |         |    2 | 00/047A : 85 F6       |             STA   $F6            
+  718 |  1   SEG26.S    623 | Code        | 00 |         |    2 | 00/047C : 86 F8       |             STX   $F8            
+  719 |  1   SEG26.S    624 | Code        | 00 |         |    1 | 00/047E : 68          |             PLA                  
+  720 |  1   SEG26.S    625 | Code        | 10 |         |    2 | 00/047F : E2 20       |             SEP   #$20           
+  721 |  1   SEG26.S    626 | Code        | 10 |         |    2 | 00/0481 : 87 F6       |             STA   [$F6]          
+  722 |  1   SEG26.S    627 | Code        | 00 |         |    2 | 00/0483 : C2 20       |             REP   #$20           
+  723 |  1   SEG26.S    628 | Code        | 00 |         |    2 | 00/0485 : 80 C2       |             BRA   L26049A        
+  724 |  1   SEG26.S    629 | Code        | 00 |         |    2 | 00/0487 : A5 F0       | L2604D8     LDA   $F0            
+  725 |  1   SEG26.S    630 | Code        | 10 |         |    2 | 00/0489 : E2 20       |             SEP   #$20           
+  726 |  1   SEG26.S    631 | Code        | 10 |E 3      |    4 | 00/048B : 8F 84 30 03 |             STAL  L033077        
+  727 |  1   SEG26.S    632 | Code        | 00 |         |    2 | 00/048F : C2 20       |             REP   #$20           
+  728 |  1   SEG26.S    633 | Code        | 00 |E 2      |    3 | 00/0491 : AE A3 00    |             LDX   L0200A2        
+  729 |  1   SEG26.S    634 | Code        | 00 |E 2      |    3 | 00/0494 : AD A1 00    |             LDA   L0200A0        
+  730 |  1   SEG26.S    635 | Code        | 00 |         |    1 | 00/0497 : DA          |             PHX                  
+  731 |  1   SEG26.S    636 | Code        | 00 |         |    1 | 00/0498 : 48          |             PHA                  
+  732 |  1   SEG26.S    637 | Macro       | 00 |         |    0 | 00/0499               |             _SetPort                 
+  734 |  1   SEG26.S    637 | Code        | 00 |         |    3 | 00/0499 : A2 04 1B    |             LDX   #$1B04         ; load tool call #
+  735 |  1   SEG26.S    637 | Code        | 00 |         |    4 | 00/049C : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  736 |  1   SEG26.S    638 | Comment     | 00 |         |    0 | 00/04A0               | * BCS L2604F6
+  737 |  1   SEG26.S    639 | Comment     | 00 |         |    0 | 00/04A0               | * LDA #$0000
+  738 |  1   SEG26.S    640 | Comment     | 00 |         |    0 | 00/04A0               | *L2604F6 STAL L0201E7
+  739 |  1   SEG26.S    641 | Code        | 00 |  3      |    4 | 00/04A0 : 22 D5 00 00 |             JSL   L2600D5        
+  740 |  1   SEG26.S    642 | Code        | 00 |  3      |    4 | 00/04A4 : 22 6C 00 00 |             JSL   L26006C        
+  741 |  1   SEG26.S    643 | Code        | 00 |E 2      |    3 | 00/04A8 : AE A3 00    |             LDX   L0200A2        
+  742 |  1   SEG26.S    644 | Code        | 00 |E 2      |    3 | 00/04AB : AD A1 00    |             LDA   L0200A0        
+  743 |  1   SEG26.S    645 | Code        | 00 |         |    1 | 00/04AE : DA          |             PHX                  
+  744 |  1   SEG26.S    646 | Code        | 00 |         |    1 | 00/04AF : 48          |             PHA                  
+  745 |  1   SEG26.S    647 | Macro       | 00 |         |    0 | 00/04B0               |             _SetPort                 
+  747 |  1   SEG26.S    647 | Code        | 00 |         |    3 | 00/04B0 : A2 04 1B    |             LDX   #$1B04         ; load tool call #
+  748 |  1   SEG26.S    647 | Code        | 00 |         |    4 | 00/04B3 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  749 |  1   SEG26.S    648 | Comment     | 00 |         |    0 | 00/04B7               | * BCS L260516
+  750 |  1   SEG26.S    649 | Comment     | 00 |         |    0 | 00/04B7               | * LDA #$0000
+  751 |  1   SEG26.S    650 | Comment     | 00 |         |    0 | 00/04B7               | *L260516 STAL L0201E7
+  752 |  1   SEG26.S    651 | Code        | 00 |E 3      |    4 | 00/04B7 : 22 06 02 14 |             JSL   L140206        
+  753 |  1   SEG26.S    652 | Code        | 00 |E 3      |    4 | 00/04BB : 22 D7 02 04 |             JSL   L040311        
+  754 |  1   SEG26.S    653 | Code        | 00 |E 3      |    4 | 00/04BF : 22 AE 03 10 |             JSL   L1003C0        
+  755 |  1   SEG26.S    654 | Code        | 00 |E 3      |    4 | 00/04C3 : 22 F7 02 0D |             JSL   L0D02F7        
+  756 |  1   SEG26.S    655 | Code        | 00 |E 3      |    4 | 00/04C7 : 22 3E 00 13 |             JSL   L130040        
+  757 |  1   SEG26.S    656 | Code        | 00 |         |    1 | 00/04CB : 3B          |             TSC                  
+  758 |  1   SEG26.S    657 | Code        | 00 |         |    1 | 00/04CC : 18          |             CLC                  
+  759 |  1   SEG26.S    658 | Code        | 00 |         |    3 | 00/04CD : 69 0C 00    |             ADC   #$000C         
+  760 |  1   SEG26.S    659 | Code        | 00 |         |    1 | 00/04D0 : 1B          |             TCS                  
+  761 |  1   SEG26.S    660 | Code        | 00 |         |    1 | 00/04D1 : 2B          |             PLD                  
+  762 |  1   SEG26.S    661 | Code        | 00 |         |    1 | 00/04D2 : 6B          |             RTL                  
+  763 |  1   SEG26.S    662 | Empty       | 00 |         |    0 | 00/04D3               |                                  
+  764 |  1   SEG26.S    663 | Global      | 00 |         |    0 | 00/04D3               | L260536     ENT                  
+  765 |  1   SEG26.S    664 | Code        | 00 |         |    1 | 00/04D3 : 0B          |             PHD                  
+  766 |  1   SEG26.S    665 | Code        | 00 |         |    1 | 00/04D4 : 3B          |             TSC                  
+  767 |  1   SEG26.S    666 | Code        | 00 |         |    1 | 00/04D5 : 38          |             SEC                  
+  768 |  1   SEG26.S    667 | Code        | 00 |         |    3 | 00/04D6 : E9 FB 00    |             SBC   #$00FB         
+  769 |  1   SEG26.S    668 | Code        | 00 |         |    1 | 00/04D9 : 5B          |             TCD                  
+  770 |  1   SEG26.S    669 | Code        | 00 |         |    3 | 00/04DA : 69 F4 00    |             ADC   #$00F4         
+  771 |  1   SEG26.S    670 | Code        | 00 |         |    1 | 00/04DD : 1B          |             TCS                  
+  772 |  1   SEG26.S    671 | Code        | 00 |E 2      |    3 | 00/04DE : AD E6 01    |             LDA   L0201E1        
+  773 |  1   SEG26.S    672 | Code        | 00 |         |    2 | 00/04E1 : F0 23       |             BEQ   L260569        
+  774 |  1   SEG26.S    673 | Code        | 00 |E 2      |    3 | 00/04E3 : AD 88 00    |             LDA   L020087        
+  775 |  1   SEG26.S    674 | Code        | 00 |         |    1 | 00/04E6 : 38          |             SEC                  
+  776 |  1   SEG26.S    675 | Code        | 00 |         |    3 | 00/04E7 : E9 08 00    |             SBC   #$0008         
+  777 |  1   SEG26.S    676 | Code        | 00 |         |    2 | 00/04EA : 70 03       |             BVS   L260552        
+  778 |  1   SEG26.S    677 | Code        | 00 |         |    3 | 00/04EC : 49 00 80    |             EOR   #$8000         
+  779 |  1   SEG26.S    678 | Code        | 00 |         |    2 | 00/04EF : 30 11       | L260552     BMI   L260565        
+  780 |  1   SEG26.S    679 | Code        | 00 |E 3      |    4 | 00/04F1 : 22 A7 15 0F |             JSL   L0F15CB        
+  781 |  1   SEG26.S    680 | Code        | 00 |E 2      |    3 | 00/04F5 : EE 88 00    |             INC   L020087        
+  782 |  1   SEG26.S    681 | Code        | 00 |E 3      |    4 | 00/04F8 : 22 00 00 10 |             JSL   L100000        
+  783 |  1   SEG26.S    682 | Code        | 00 |E 3      |    4 | 00/04FC : 22 25 00 13 |             JSL   L130027        
+  784 |  1   SEG26.S    683 | Code        | 00 |         |    2 | 00/0500 : 80 04       |             BRA   L260569        
+  785 |  1   SEG26.S    684 | Code        | 00 |  3      |    4 | 00/0502 : 22 1C 04 00 | L260565     JSL   L26046D        
+  786 |  1   SEG26.S    685 | Code        | 00 |         |    1 | 00/0506 : 3B          | L260569     TSC                  
+  787 |  1   SEG26.S    686 | Code        | 00 |         |    1 | 00/0507 : 18          |             CLC                  
+  788 |  1   SEG26.S    687 | Code        | 00 |         |    3 | 00/0508 : 69 06 00    |             ADC   #$0006         
+  789 |  1   SEG26.S    688 | Code        | 00 |         |    1 | 00/050B : 1B          |             TCS                  
+  790 |  1   SEG26.S    689 | Code        | 00 |         |    1 | 00/050C : 2B          |             PLD                  
+  791 |  1   SEG26.S    690 | Code        | 00 |         |    1 | 00/050D : 6B          |             RTL                  
+  792 |  1   SEG26.S    691 | Empty       | 00 |         |    0 | 00/050E               |                                  
+  793 |  1   SEG26.S    692 | Code        | 00 |         |    1 | 00/050E : 0B          | L260571     PHD                  
+  794 |  1   SEG26.S    693 | Code        | 00 |         |    1 | 00/050F : 3B          |             TSC                  
+  795 |  1   SEG26.S    694 | Code        | 00 |         |    1 | 00/0510 : 38          |             SEC                  
+  796 |  1   SEG26.S    695 | Code        | 00 |         |    3 | 00/0511 : E9 FB 00    |             SBC   #$00FB         
+  797 |  1   SEG26.S    696 | Code        | 00 |         |    1 | 00/0514 : 5B          |             TCD                  
+  798 |  1   SEG26.S    697 | Code        | 00 |         |    3 | 00/0515 : 69 F4 00    |             ADC   #$00F4         
+  799 |  1   SEG26.S    698 | Code        | 00 |         |    1 | 00/0518 : 1B          |             TCS                  
+  800 |  1   SEG26.S    699 | Code        | 00 |E 1 >>16 |    3 | 00/0519 : F4 00 00    |             PEA   ^L033385       
+  801 |  1   SEG26.S    700 | Code        | 00 |E 2      |    3 | 00/051C : F4 92 33    |             PEA   L033385        
+  802 |  1   SEG26.S    701 | Code        | 00 |E 3      |    4 | 00/051F : 22 D5 0D 1A |             JSL   L1A0E02        
+  803 |  1   SEG26.S    702 | Code        | 00 |         |    1 | 00/0523 : 7A          |             PLY                  
+  804 |  1   SEG26.S    703 | Code        | 00 |         |    1 | 00/0524 : 7A          |             PLY                  
+  805 |  1   SEG26.S    704 | Code        | 00 |E 3      |    4 | 00/0525 : 22 C7 03 10 |             JSL   L1003D9        
+  806 |  1   SEG26.S    705 | Code        | 00 |E 3      |    4 | 00/0529 : 22 F7 02 0D |             JSL   L0D02F7        
+  807 |  1   SEG26.S    706 | Code        | 00 |E 3      |    4 | 00/052D : 22 3E 00 13 |             JSL   L130040        
+  808 |  1   SEG26.S    707 | Code        | 00 |E 3      |    4 | 00/0531 : 22 68 0E 1A |             JSL   L1A0E95        
+  809 |  1   SEG26.S    708 | Code        | 00 |         |    1 | 00/0535 : 3B          |             TSC                  
+  810 |  1   SEG26.S    709 | Code        | 00 |         |    1 | 00/0536 : 18          |             CLC                  
+  811 |  1   SEG26.S    710 | Code        | 00 |         |    3 | 00/0537 : 69 06 00    |             ADC   #$0006         
+  812 |  1   SEG26.S    711 | Code        | 00 |         |    1 | 00/053A : 1B          |             TCS                  
+  813 |  1   SEG26.S    712 | Code        | 00 |         |    1 | 00/053B : 2B          |             PLD                  
+  814 |  1   SEG26.S    713 | Code        | 00 |         |    1 | 00/053C : 6B          |             RTL                  
+  815 |  1   SEG26.S    714 | Empty       | 00 |         |    0 | 00/053D               |                                  
+  816 |  1   SEG26.S    715 | Global      | 00 |         |    0 | 00/053D               | L2605A0     ENT                  
+  817 |  1   SEG26.S    716 | Code        | 00 |         |    1 | 00/053D : 0B          |             PHD                  
+  818 |  1   SEG26.S    717 | Code        | 00 |         |    1 | 00/053E : 3B          |             TSC                  
+  819 |  1   SEG26.S    718 | Code        | 00 |         |    1 | 00/053F : 38          |             SEC                  
+  820 |  1   SEG26.S    719 | Code        | 00 |         |    3 | 00/0540 : E9 FB 00    |             SBC   #$00FB         
+  821 |  1   SEG26.S    720 | Code        | 00 |         |    1 | 00/0543 : 5B          |             TCD                  
+  822 |  1   SEG26.S    721 | Code        | 00 |         |    3 | 00/0544 : 69 F4 00    |             ADC   #$00F4         
+  823 |  1   SEG26.S    722 | Code        | 00 |         |    1 | 00/0547 : 1B          |             TCS                  
+  824 |  1   SEG26.S    723 | Code        | 00 |E 2      |    3 | 00/0548 : AD E6 01    |             LDA   L0201E1        
+  825 |  1   SEG26.S    724 | Code        | 00 |         |    2 | 00/054B : F0 04       |             BEQ   L2605B4        
+  826 |  1   SEG26.S    725 | Code        | 00 |  3      |    4 | 00/054D : 22 0E 05 00 |             JSL   L260571        
+  827 |  1   SEG26.S    726 | Code        | 00 |         |    1 | 00/0551 : 3B          | L2605B4     TSC                  
+  828 |  1   SEG26.S    727 | Code        | 00 |         |    1 | 00/0552 : 18          |             CLC                  
+  829 |  1   SEG26.S    728 | Code        | 00 |         |    3 | 00/0553 : 69 06 00    |             ADC   #$0006         
+  830 |  1   SEG26.S    729 | Code        | 00 |         |    1 | 00/0556 : 1B          |             TCS                  
+  831 |  1   SEG26.S    730 | Code        | 00 |         |    1 | 00/0557 : 2B          |             PLD                  
+  832 |  1   SEG26.S    731 | Code        | 00 |         |    1 | 00/0558 : 6B          |             RTL                  
+  833 |  1   SEG26.S    732 | Empty       | 00 |         |    0 | 00/0559               |                                  
+  834 |  1   SEG26.S    733 | Code        | 00 |         |    1 | 00/0559 : 0B          |             PHD                  
+  835 |  1   SEG26.S    734 | Code        | 00 |         |    1 | 00/055A : 3B          |             TSC                  
+  836 |  1   SEG26.S    735 | Code        | 00 |         |    1 | 00/055B : 38          |             SEC                  
+  837 |  1   SEG26.S    736 | Code        | 00 |         |    3 | 00/055C : E9 FB 00    |             SBC   #$00FB         
+  838 |  1   SEG26.S    737 | Code        | 00 |         |    1 | 00/055F : 5B          |             TCD                  
+  839 |  1   SEG26.S    738 | Code        | 00 |         |    3 | 00/0560 : 69 F4 00    |             ADC   #$00F4         
+  840 |  1   SEG26.S    739 | Code        | 00 |         |    1 | 00/0563 : 1B          |             TCS                  
+  841 |  1   SEG26.S    740 | Code        | 00 |E 1 >>16 |    3 | 00/0564 : F4 00 00    |             PEA   ^L0333AF       
+  842 |  1   SEG26.S    741 | Code        | 00 |E 2      |    3 | 00/0567 : F4 BC 33    |             PEA   L0333AF        
+  843 |  1   SEG26.S    742 | Code        | 00 |E 1 >>16 |    3 | 00/056A : F4 00 00    |             PEA   ^L033397       
+  844 |  1   SEG26.S    743 | Code        | 00 |E 2      |    3 | 00/056D : F4 A4 33    |             PEA   L033397        
+  845 |  1   SEG26.S    744 | Code        | 00 |E 3      |    4 | 00/0570 : 22 26 00 04 |             JSL   L040033        
+  846 |  1   SEG26.S    745 | Code        | 00 |         |    1 | 00/0574 : 7A          |             PLY                  
+  847 |  1   SEG26.S    746 | Code        | 00 |         |    1 | 00/0575 : 7A          |             PLY                  
+  848 |  1   SEG26.S    747 | Code        | 00 |         |    1 | 00/0576 : 7A          |             PLY                  
+  849 |  1   SEG26.S    748 | Code        | 00 |         |    1 | 00/0577 : 7A          |             PLY                  
+  850 |  1   SEG26.S    749 | Code        | 00 |         |    1 | 00/0578 : 3B          |             TSC                  
+  851 |  1   SEG26.S    750 | Code        | 00 |         |    1 | 00/0579 : 18          |             CLC                  
+  852 |  1   SEG26.S    751 | Code        | 00 |         |    3 | 00/057A : 69 06 00    |             ADC   #$0006         
+  853 |  1   SEG26.S    752 | Code        | 00 |         |    1 | 00/057D : 1B          |             TCS                  
+  854 |  1   SEG26.S    753 | Code        | 00 |         |    1 | 00/057E : 2B          |             PLD                  
+  855 |  1   SEG26.S    754 | Code        | 00 |         |    1 | 00/057F : 6B          |             RTL                  
+  856 |  1   SEG26.S    755 | Empty       | 00 |         |    0 | 00/0580               |                                  
+  857 |  1   SEG26.S    756 | Global      | 00 |         |    0 | 00/0580               | L2605E3     ENT                  
+  858 |  1   SEG26.S    757 | Code        | 00 |         |    1 | 00/0580 : 0B          |             PHD                  
+  859 |  1   SEG26.S    758 | Code        | 00 |         |    1 | 00/0581 : 3B          |             TSC                  
+  860 |  1   SEG26.S    759 | Code        | 00 |         |    1 | 00/0582 : 38          |             SEC                  
+  861 |  1   SEG26.S    760 | Code        | 00 |         |    3 | 00/0583 : E9 FB 00    |             SBC   #$00FB         
+  862 |  1   SEG26.S    761 | Code        | 00 |         |    1 | 00/0586 : 5B          |             TCD                  
+  863 |  1   SEG26.S    762 | Code        | 00 |         |    3 | 00/0587 : 69 F2 00    |             ADC   #$00F2         
+  864 |  1   SEG26.S    763 | Code        | 00 |         |    1 | 00/058A : 1B          |             TCS                  
+  865 |  1   SEG26.S    764 | Code        | 00 |E 1 >>16 |    3 | 00/058B : F4 00 00    |             PEA   ^L0333C3       
+  866 |  1   SEG26.S    765 | Code        | 00 |E 2      |    3 | 00/058E : F4 D0 33    |             PEA   L0333C3        
+  867 |  1   SEG26.S    766 | Code        | 00 |         |    3 | 00/0591 : F4 04 00    |             PEA   $0004          
+  868 |  1   SEG26.S    767 | Code        | 00 |E 3      |    4 | 00/0594 : 22 00 00 05 |             JSL   L050000        
+  869 |  1   SEG26.S    768 | Code        | 00 |         |    1 | 00/0598 : 7A          |             PLY                  
+  870 |  1   SEG26.S    769 | Code        | 00 |         |    1 | 00/0599 : 7A          |             PLY                  
+  871 |  1   SEG26.S    770 | Code        | 00 |         |    1 | 00/059A : 7A          |             PLY                  
+  872 |  1   SEG26.S    771 | Code        | 00 |E 1 >>16 |    3 | 00/059B : F4 00 00    |             PEA   ^L0333C7       
+  873 |  1   SEG26.S    772 | Code        | 00 |E 2      |    3 | 00/059E : F4 D4 33    |             PEA   L0333C7        
+  874 |  1   SEG26.S    773 | Code        | 00 |E 3      |    4 | 00/05A1 : 22 71 01 04 |             JSL   L040187        
+  875 |  1   SEG26.S    774 | Code        | 00 |         |    1 | 00/05A5 : 7A          |             PLY                  
+  876 |  1   SEG26.S    775 | Code        | 00 |         |    1 | 00/05A6 : 7A          |             PLY                  
+  877 |  1   SEG26.S    776 | Code        | 00 |         |    2 | 00/05A7 : 85 F4       |             STA   $F4            
+  878 |  1   SEG26.S    777 | Code        | 00 |         |    2 | 00/05A9 : A5 F4       |             LDA   $F4            
+  879 |  1   SEG26.S    778 | Code        | 00 |         |    3 | 00/05AB : C9 FF FF    |             CMP   #$FFFF         
+  880 |  1   SEG26.S    779 | Code        | 00 |         |    2 | 00/05AE : D0 16       |             BNE   L260632        
+  881 |  1   SEG26.S    780 | Code        | 00 |E 1 >>16 |    3 | 00/05B0 : F4 00 00    |             PEA   ^L0333D2       
+  882 |  1   SEG26.S    781 | Code        | 00 |E 2      |    3 | 00/05B3 : F4 DF 33    |             PEA   L0333D2        
+  883 |  1   SEG26.S    782 | Code        | 00 |E 3      |    4 | 00/05B6 : 22 E9 0B 24 |             JSL   L240DF3        
+  884 |  1   SEG26.S    783 | Code        | 00 |         |    1 | 00/05BA : 7A          |             PLY                  
+  885 |  1   SEG26.S    784 | Code        | 00 |         |    1 | 00/05BB : 7A          |             PLY                  
+  886 |  1   SEG26.S    785 | Macro       | 00 |         |    0 | 00/05BC               |             _ShowCursor                 
+  888 |  1   SEG26.S    785 | Code        | 00 |         |    3 | 00/05BC : A2 04 91    |             LDX   #$9104         ; load tool call #
+  889 |  1   SEG26.S    785 | Code        | 00 |         |    4 | 00/05BF : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  890 |  1   SEG26.S    786 | Comment     | 00 |         |    0 | 00/05C3               | * BCS L26062B
+  891 |  1   SEG26.S    787 | Comment     | 00 |         |    0 | 00/05C3               | * LDA #$0000
+  892 |  1   SEG26.S    788 | Comment     | 00 |         |    0 | 00/05C3               | *L26062B STAL L0201E7
+  893 |  1   SEG26.S    789 | Code        | 00 |         |    3 | 00/05C3 : 82 40 00    |             BRL   L260672        
+  894 |  1   SEG26.S    790 | Code        | 00 |         |    3 | 00/05C6 : F4 02 00    | L260632     PEA   $0002          
+  895 |  1   SEG26.S    791 | Code        | 00 |E 1 >>16 |    3 | 00/05C9 : F4 00 00    |             PEA   ^L020045       
+  896 |  1   SEG26.S    792 | Code        | 00 |E 2      |    3 | 00/05CC : F4 46 00    |             PEA   L020045        
+  897 |  1   SEG26.S    793 | Code        | 00 |         |    2 | 00/05CF : D4 F4       |             PEI   $F4            
+  898 |  1   SEG26.S    794 | Code        | 00 |E 3      |    4 | 00/05D1 : 22 B8 00 04 |             JSL   L0400CE        
+  899 |  1   SEG26.S    795 | Code        | 00 |         |    1 | 00/05D5 : 7A          |             PLY                  
+  900 |  1   SEG26.S    796 | Code        | 00 |         |    1 | 00/05D6 : 7A          |             PLY                  
+  901 |  1   SEG26.S    797 | Code        | 00 |         |    1 | 00/05D7 : 7A          |             PLY                  
+  902 |  1   SEG26.S    798 | Code        | 00 |         |    1 | 00/05D8 : 7A          |             PLY                  
+  903 |  1   SEG26.S    799 | Code        | 00 |         |    3 | 00/05D9 : F4 02 00    |             PEA   $0002          
+  904 |  1   SEG26.S    800 | Code        | 00 |E 1 >>16 |    3 | 00/05DC : F4 00 00    |             PEA   ^L020047       
+  905 |  1   SEG26.S    801 | Code        | 00 |E 2      |    3 | 00/05DF : F4 48 00    |             PEA   L020047        
+  906 |  1   SEG26.S    802 | Code        | 00 |         |    2 | 00/05E2 : D4 F4       |             PEI   $F4            
+  907 |  1   SEG26.S    803 | Code        | 00 |E 3      |    4 | 00/05E4 : 22 B8 00 04 |             JSL   L0400CE        
+  908 |  1   SEG26.S    804 | Code        | 00 |         |    1 | 00/05E8 : 7A          |             PLY                  
+  909 |  1   SEG26.S    805 | Code        | 00 |         |    1 | 00/05E9 : 7A          |             PLY                  
+  910 |  1   SEG26.S    806 | Code        | 00 |         |    1 | 00/05EA : 7A          |             PLY                  
+  911 |  1   SEG26.S    807 | Code        | 00 |         |    1 | 00/05EB : 7A          |             PLY                  
+  912 |  1   SEG26.S    808 | Code        | 00 |         |    3 | 00/05EC : F4 02 00    |             PEA   $0002          
+  913 |  1   SEG26.S    809 | Code        | 00 |E 1 >>16 |    3 | 00/05EF : F4 00 00    |             PEA   ^L020087       
+  914 |  1   SEG26.S    810 | Code        | 00 |E 2      |    3 | 00/05F2 : F4 88 00    |             PEA   L020087        
+  915 |  1   SEG26.S    811 | Code        | 00 |         |    2 | 00/05F5 : D4 F4       |             PEI   $F4            
+  916 |  1   SEG26.S    812 | Code        | 00 |E 3      |    4 | 00/05F7 : 22 B8 00 04 |             JSL   L0400CE        
+  917 |  1   SEG26.S    813 | Code        | 00 |         |    1 | 00/05FB : 7A          |             PLY                  
+  918 |  1   SEG26.S    814 | Code        | 00 |         |    1 | 00/05FC : 7A          |             PLY                  
+  919 |  1   SEG26.S    815 | Code        | 00 |         |    1 | 00/05FD : 7A          |             PLY                  
+  920 |  1   SEG26.S    816 | Code        | 00 |         |    1 | 00/05FE : 7A          |             PLY                  
+  921 |  1   SEG26.S    817 | Code        | 00 |         |    2 | 00/05FF : D4 F4       |             PEI   $F4            
+  922 |  1   SEG26.S    818 | Code        | 00 |E 3      |    4 | 00/0601 : 22 98 01 04 |             JSL   L0401AE        
+  923 |  1   SEG26.S    819 | Code        | 00 |         |    1 | 00/0605 : 7A          |             PLY                  
+  924 |  1   SEG26.S    820 | Code        | 00 |E 1 >>16 |    3 | 00/0606 : F4 00 00    | L260672     PEA   ^L0333E5       
+  925 |  1   SEG26.S    821 | Code        | 00 |E 2      |    3 | 00/0609 : F4 F2 33    |             PEA   L0333E5        
+  926 |  1   SEG26.S    822 | Code        | 00 |         |    3 | 00/060C : F4 04 00    |             PEA   $0004          
+  927 |  1   SEG26.S    823 | Code        | 00 |E 3      |    4 | 00/060F : 22 00 00 05 |             JSL   L050000        
+  928 |  1   SEG26.S    824 | Code        | 00 |         |    1 | 00/0613 : 7A          |             PLY                  
+  929 |  1   SEG26.S    825 | Code        | 00 |         |    1 | 00/0614 : 7A          |             PLY                  
+  930 |  1   SEG26.S    826 | Code        | 00 |         |    1 | 00/0615 : 7A          |             PLY                  
+  931 |  1   SEG26.S    827 | Code        | 00 |         |    1 | 00/0616 : 3B          |             TSC                  
+  932 |  1   SEG26.S    828 | Code        | 00 |         |    1 | 00/0617 : 18          |             CLC                  
+  933 |  1   SEG26.S    829 | Code        | 00 |         |    3 | 00/0618 : 69 08 00    |             ADC   #$0008         
+  934 |  1   SEG26.S    830 | Code        | 00 |         |    1 | 00/061B : 1B          |             TCS                  
+  935 |  1   SEG26.S    831 | Code        | 00 |         |    1 | 00/061C : 2B          |             PLD                  
+  936 |  1   SEG26.S    832 | Code        | 00 |         |    1 | 00/061D : 6B          |             RTL                  
+  937 |  1   SEG26.S    833 | Empty       | 00 |         |    0 | 00/061E               |                                  
+  938 |  1   SEG26.S    834 | Global      | 00 |         |    0 | 00/061E               | L26068A     ENT                  
+  939 |  1   SEG26.S    835 | Code        | 00 |         |    1 | 00/061E : 0B          |             PHD                  
+  940 |  1   SEG26.S    836 | Code        | 00 |         |    1 | 00/061F : 3B          |             TSC                  
+  941 |  1   SEG26.S    837 | Code        | 00 |         |    1 | 00/0620 : 38          |             SEC                  
+  942 |  1   SEG26.S    838 | Code        | 00 |         |    3 | 00/0621 : E9 FB 00    |             SBC   #$00FB         
+  943 |  1   SEG26.S    839 | Code        | 00 |         |    1 | 00/0624 : 5B          |             TCD                  
+  944 |  1   SEG26.S    840 | Code        | 00 |         |    3 | 00/0625 : 69 F2 00    |             ADC   #$00F2         
+  945 |  1   SEG26.S    841 | Code        | 00 |         |    1 | 00/0628 : 1B          |             TCS                  
+  946 |  1   SEG26.S    842 | Code        | 00 |E 1 >>16 |    3 | 00/0629 : F4 00 00    |             PEA   ^L0333E9       
+  947 |  1   SEG26.S    843 | Code        | 00 |E 2      |    3 | 00/062C : F4 F6 33    |             PEA   L0333E9        
+  948 |  1   SEG26.S    844 | Code        | 00 |         |    3 | 00/062F : F4 04 00    |             PEA   $0004          
+  949 |  1   SEG26.S    845 | Code        | 00 |E 3      |    4 | 00/0632 : 22 00 00 05 |             JSL   L050000        
+  950 |  1   SEG26.S    846 | Code        | 00 |         |    1 | 00/0636 : 7A          |             PLY                  
+  951 |  1   SEG26.S    847 | Code        | 00 |         |    1 | 00/0637 : 7A          |             PLY                  
+  952 |  1   SEG26.S    848 | Code        | 00 |         |    1 | 00/0638 : 7A          |             PLY                  
+  953 |  1   SEG26.S    849 | Code        | 00 |E 1 >>16 |    3 | 00/0639 : F4 00 00    |             PEA   ^L0333ED       
+  954 |  1   SEG26.S    850 | Code        | 00 |E 2      |    3 | 00/063C : F4 FA 33    |             PEA   L0333ED        
+  955 |  1   SEG26.S    851 | Code        | 00 |E 3      |    4 | 00/063F : 22 3C 01 04 |             JSL   L040152        
+  956 |  1   SEG26.S    852 | Code        | 00 |         |    1 | 00/0643 : 7A          |             PLY                  
+  957 |  1   SEG26.S    853 | Code        | 00 |         |    1 | 00/0644 : 7A          |             PLY                  
+  958 |  1   SEG26.S    854 | Code        | 00 |         |    2 | 00/0645 : 85 F4       |             STA   $F4            
+  959 |  1   SEG26.S    855 | Code        | 00 |         |    1 | 00/0647 : A8          |             TAY                  
+  960 |  1   SEG26.S    856 | Code        | 00 |         |    2 | 00/0648 : D0 03       |             BNE   L2606B9        
+  961 |  1   SEG26.S    857 | Code        | 00 |         |    3 | 00/064A : 82 50 00    |             BRL   L260709        
+  962 |  1   SEG26.S    858 | Code        | 00 |  3      |    4 | 00/064D : 22 C4 03 00 | L2606B9     JSL   L260415        
+  963 |  1   SEG26.S    859 | Code        | 00 |         |    3 | 00/0651 : F4 02 00    |             PEA   $0002          
+  964 |  1   SEG26.S    860 | Code        | 00 |E 1 >>16 |    3 | 00/0654 : F4 00 00    |             PEA   ^L020045       
+  965 |  1   SEG26.S    861 | Code        | 00 |E 2      |    3 | 00/0657 : F4 46 00    |             PEA   L020045        
+  966 |  1   SEG26.S    862 | Code        | 00 |         |    2 | 00/065A : D4 F4       |             PEI   $F4            
+  967 |  1   SEG26.S    863 | Code        | 00 |E 3      |    4 | 00/065C : 22 93 00 04 |             JSL   L0400A9        
+  968 |  1   SEG26.S    864 | Code        | 00 |         |    1 | 00/0660 : 7A          |             PLY                  
+  969 |  1   SEG26.S    865 | Code        | 00 |         |    1 | 00/0661 : 7A          |             PLY                  
+  970 |  1   SEG26.S    866 | Code        | 00 |         |    1 | 00/0662 : 7A          |             PLY                  
+  971 |  1   SEG26.S    867 | Code        | 00 |         |    1 | 00/0663 : 7A          |             PLY                  
+  972 |  1   SEG26.S    868 | Code        | 00 |         |    3 | 00/0664 : F4 02 00    |             PEA   $0002          
+  973 |  1   SEG26.S    869 | Code        | 00 |E 1 >>16 |    3 | 00/0667 : F4 00 00    |             PEA   ^L020047       
+  974 |  1   SEG26.S    870 | Code        | 00 |E 2      |    3 | 00/066A : F4 48 00    |             PEA   L020047        
+  975 |  1   SEG26.S    871 | Code        | 00 |         |    2 | 00/066D : D4 F4       |             PEI   $F4            
+  976 |  1   SEG26.S    872 | Code        | 00 |E 3      |    4 | 00/066F : 22 93 00 04 |             JSL   L0400A9        
+  977 |  1   SEG26.S    873 | Code        | 00 |         |    1 | 00/0673 : 7A          |             PLY                  
+  978 |  1   SEG26.S    874 | Code        | 00 |         |    1 | 00/0674 : 7A          |             PLY                  
+  979 |  1   SEG26.S    875 | Code        | 00 |         |    1 | 00/0675 : 7A          |             PLY                  
+  980 |  1   SEG26.S    876 | Code        | 00 |         |    1 | 00/0676 : 7A          |             PLY                  
+  981 |  1   SEG26.S    877 | Code        | 00 |E 2      |    3 | 00/0677 : 9C 46 00    |             STZ   L020045        
+  982 |  1   SEG26.S    878 | Code        | 00 |E 2      |    3 | 00/067A : 9C 48 00    |             STZ   L020047        
+  983 |  1   SEG26.S    879 | Code        | 00 |         |    3 | 00/067D : F4 02 00    |             PEA   $0002          
+  984 |  1   SEG26.S    880 | Code        | 00 |E 1 >>16 |    3 | 00/0680 : F4 00 00    |             PEA   ^L020087       
+  985 |  1   SEG26.S    881 | Code        | 00 |E 2      |    3 | 00/0683 : F4 88 00    |             PEA   L020087        
+  986 |  1   SEG26.S    882 | Code        | 00 |         |    2 | 00/0686 : D4 F4       |             PEI   $F4            
+  987 |  1   SEG26.S    883 | Code        | 00 |E 3      |    4 | 00/0688 : 22 93 00 04 |             JSL   L0400A9        
+  988 |  1   SEG26.S    884 | Code        | 00 |         |    1 | 00/068C : 7A          |             PLY                  
+  989 |  1   SEG26.S    885 | Code        | 00 |         |    1 | 00/068D : 7A          |             PLY                  
+  990 |  1   SEG26.S    886 | Code        | 00 |         |    1 | 00/068E : 7A          |             PLY                  
+  991 |  1   SEG26.S    887 | Code        | 00 |         |    1 | 00/068F : 7A          |             PLY                  
+  992 |  1   SEG26.S    888 | Code        | 00 |         |    2 | 00/0690 : D4 F4       |             PEI   $F4            
+  993 |  1   SEG26.S    889 | Code        | 00 |E 3      |    4 | 00/0692 : 22 98 01 04 |             JSL   L0401AE        
+  994 |  1   SEG26.S    890 | Code        | 00 |         |    1 | 00/0696 : 7A          |             PLY                  
+  995 |  1   SEG26.S    891 | Code        | 00 |E 3      |    4 | 00/0697 : 22 00 00 10 |             JSL   L100000        
+  996 |  1   SEG26.S    892 | Code        | 00 |         |    2 | 00/069B : 80 13       |             BRA   L260725        
+  997 |  1   SEG26.S    893 | Code        | 00 |E 1 >>16 |    3 | 00/069D : F4 00 00    | L260709     PEA   ^L0333F8       
+  998 |  1   SEG26.S    894 | Code        | 00 |E 2      |    3 | 00/06A0 : F4 05 34    |             PEA   L0333F8        
+  999 |  1   SEG26.S    895 | Code        | 00 |E 3      |    4 | 00/06A3 : 22 E9 0B 24 |             JSL   L240DF3        
+ 1000 |  1   SEG26.S    896 | Code        | 00 |         |    1 | 00/06A7 : 7A          |             PLY                  
+ 1001 |  1   SEG26.S    897 | Code        | 00 |         |    1 | 00/06A8 : 7A          |             PLY                  
+ 1002 |  1   SEG26.S    898 | Macro       | 00 |         |    0 | 00/06A9               |             _ShowCursor                 
+ 1004 |  1   SEG26.S    898 | Code        | 00 |         |    3 | 00/06A9 : A2 04 91    |             LDX   #$9104         ; load tool call #
+ 1005 |  1   SEG26.S    898 | Code        | 00 |         |    4 | 00/06AC : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+ 1006 |  1   SEG26.S    899 | Comment     | 00 |         |    0 | 00/06B0               | * BCS L260721
+ 1007 |  1   SEG26.S    900 | Comment     | 00 |         |    0 | 00/06B0               | * LDA #$0000
+ 1008 |  1   SEG26.S    901 | Comment     | 00 |         |    0 | 00/06B0               | *L260721 STAL L0201E7
+ 1009 |  1   SEG26.S    902 | Code        | 00 |E 1 >>16 |    3 | 00/06B0 : F4 00 00    | L260725     PEA   ^L03340B       
+ 1010 |  1   SEG26.S    903 | Code        | 00 |E 2      |    3 | 00/06B3 : F4 18 34    |             PEA   L03340B        
+ 1011 |  1   SEG26.S    904 | Code        | 00 |         |    3 | 00/06B6 : F4 04 00    |             PEA   $0004          
+ 1012 |  1   SEG26.S    905 | Code        | 00 |E 3      |    4 | 00/06B9 : 22 00 00 05 |             JSL   L050000        
+ 1013 |  1   SEG26.S    906 | Code        | 00 |         |    1 | 00/06BD : 7A          |             PLY                  
+ 1014 |  1   SEG26.S    907 | Code        | 00 |         |    1 | 00/06BE : 7A          |             PLY                  
+ 1015 |  1   SEG26.S    908 | Code        | 00 |         |    1 | 00/06BF : 7A          |             PLY                  
+ 1016 |  1   SEG26.S    909 | Code        | 00 |         |    1 | 00/06C0 : 3B          |             TSC                  
+ 1017 |  1   SEG26.S    910 | Code        | 00 |         |    1 | 00/06C1 : 18          |             CLC                  
+ 1018 |  1   SEG26.S    911 | Code        | 00 |         |    3 | 00/06C2 : 69 08 00    |             ADC   #$0008         
+ 1019 |  1   SEG26.S    912 | Code        | 00 |         |    1 | 00/06C5 : 1B          |             TCS                  
+ 1020 |  1   SEG26.S    913 | Code        | 00 |         |    1 | 00/06C6 : 2B          |             PLD                  
+ 1021 |  1   SEG26.S    914 | Code        | 00 |         |    1 | 00/06C7 : 6B          |             RTL                  
+ 1022 |  1   SEG26.S    915 | Empty       | 00 |         |    0 | 00/06C8               |                                  
+ 1023 |  1   SEG26.S    916 | Empty       | 00 |         |    0 | 00/06C8               |                                  
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

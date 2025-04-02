@@ -5,739 +5,736 @@
 * (s) 2014, Brutal Deluxe Software
 *
 
- mx %00
+            mx    %00
 
- rel
- dsk Seg02.L
- lst off
-
-*-----------
-
- use Seg02.E
+            rel
+            dsk   Seg02.L
+            lst   off
 
 *-----------
 
- DB $00
- DB $00
- DB $00
- DB $00
- DB $00
- DB $00
-L020006 ENT
- DB $00
- DB $00
-L020008 ENT
- DB $00
- DB $00
-L02000A ENT
- DB $00
- DB $00
-L02C036 ENT
- DB $00
-L02C034 ENT
- DB $00
-L02000D ENT
- DB $C8
- DB $00
-L02000F ENT
- DB $00
- DB $00
-L020011 ENT
- DB $00 ; X low
-L020012 ENT
- DB $00 ; X high
-L020013 ENT
- DB $00 ; Y low
-L020014 ENT
- DB $00 ; Y high
+            use   Seg02.E
 
-L020015 ENT
- DB $00
- DB $00
-L020017 ENT
- DB $00
- DB $00
-L020019 ENT
- DB $00
- DB $00
-L02001B ENT
- DB $00
- DB $00
-L02001D ENT
- DB $78
- DB $05
-L02001F ENT
- DB $00
- DB $00
-L020021 ENT
- DB $00
- DB $00
-L020023 ENT
- DB $00
- DB $00
-L020025 ENT
- DB $00
- DB $00
-L020027 ENT
- DB $00
- DB $00
-L020029 ENT
- DB $00
- DB $00
-L02002B ENT
- DB $00
- DB $00
-L02002D ENT
- DB $00
- DB $00
- DB $00
- DB $00
- DB $00
- DB $00
-L020033 ENT
- DB $00
- DB $00
-L020035 ENT
- DB $00
- DB $00
-L020037 ENT
- DB $00
- DB $00
-L020039 ENT
- DB $00
- DB $00
- DB $00
- DB $00
- DB $00
- DB $00
- DB $00
- DB $00
- DB $00
- DB $00
-L020043 ENT
- DB $00
- DB $00
-L020045 ENT
- DB $00
- DB $00
-L020047 ENT
- DB $FF
- DB $00
-L020049 ENT
- DB $00
- DB $00
-L02004B ENT
- DB $00
- DB $00
-L02004D ENT
- DB $00
- DB $00
-L02004F ENT
- DB $00
- DB $00
-L020051 ENT
- DB $05
- DB $00
-L020053 ENT
- DB $00
- DB $00
-L020055 ENT
- DB $00
- DB $00
- DB $05
- DB $00
-L020059 ENT
- DB $00
- DB $00
-L02005B ENT
- DB $00
- DB $00
-L02005D ENT
- DB $FB
- DB $FF
- DB $28
- DB $00
-L020061 ENT
- DB $00
- DB $00
-L020063 ENT
- DB $00
- DB $00
-L020065 ENT
- DB $01
- DB $00
-L020067 ENT
- DB $00
- DB $00
-L020069 ENT
- DB $00
- DB $00
-L02006B ENT
- DB $00
- DB $00
-L02006D ENT
- DB $00
- DB $00
-L02006F ENT
- DB $00
- DB $00
-L020071 ENT
- DB $00
- DB $00
-L020073 ENT
- DB $00
- DB $00
-L020075 ENT
- DB $00
- DB $00
-L020077 ENT
- DB $00
- DB $00
-L020079 ENT
- DB $00
- DB $00
- DB $00
- DB $00
- DB $00
- DB $00
- DB $00
- DB $00
- DB $00
- DB $00
-L020083 ENT
- DB $00
- DB $00
-L020085 ENT
- DB $00
- DB $00
-L020087 ENT
- DB $00
- DB $00
-L020089 ENT
- DB $00
- DB $00
-L02008B ENT
- DB $00
- DB $00
-L02008D ENT
- DB $00
- DB $00
-L02008F ENT
- DB $00
- DB $00
-L020091 ENT
- DB $00
- DB $00
-L020093 ENT
- DB $00
- DB $00
-L020095 ENT
- DB $00
- DB $00
-L020097 ENT
- DB $00
- DB $00
-L020099 ENT
- DB $00
- DB $00
-L02009B ENT
- DB $00
- DB $00
-L02009D ENT
- DB $00
- DB $00
-L02009F ENT
- DB $00
-L0200A0 ENT
- DB $00
- DB $00
-L0200A2 ENT
- DB $00
- DB $00
-L0200A4 ENT
- DB $00
- DB $00
-L0200A6 ENT
- DB $00
- DB $00
-L0200A8 ENT
- DB $32
- DB $00
-L0200AA ENT
- DB $32
- DB $00
-L0200AC ENT
- DB $64
- DB $00
-L0200AE ENT
- DB $64
- DB $00
-L0200B0 ENT
- DB $32
- DB $00
-L0200B2 ENT
- DB $32
- DB $00
-L0200B4 ENT
- DB $64
- DB $00
-L0200B6 ENT
- DB $64
- DB $00
-L0200B8 ENT
- DB $32
- DB $00
-L0200BA ENT
- DB $0A
- DB $00
-L0200BC ENT
- DB $64
- DB $00
-L0200BE ENT
- DB $0A
- DB $00
-L0200C0 ENT
- DB $9C
- DB $FF
-L0200C2 ENT
- DB $0A
- DB $00
-L0200C4 ENT
- DB $64
- DB $00
-L0200C6 ENT
- DB $0A
- DB $00
-L0200C8 ENT
- DB $C8
- DB $00
-L0200CA ENT
- DB $64
- DB $00
-L0200CC ENT
- DB $D0
- DB $07
-L0200CE ENT
- DB $00
- DB $00
-L0200D0 ENT
- DB $00
- DB $00
-L0200D2 ENT
- DB $14
- DB $00
-L0200D4 ENT
- DB $15
- DB $00
-L0200D6 ENT
- DB $16
- DB $00
-L0200D8 ENT
- DB $17
- DB $00
-L0200DA ENT
- DB $32
- DB $00
-L0200DC ENT
- DB $19
- DB $00
-L0200DE ENT
- DB $C8
- DB $00
-L0200E0 ENT
- DB $64
- DB $00
-L0200E2 ENT
- DB $64
- DB $00
-L0200E4 ENT
- DB $64
- DB $00
-L0200E6 ENT
- DB $2C
- DB $01
-L0200E8 ENT
- DB $2C
- DB $01
-L0200EA ENT
- DB $14
- DB $00
-L0200EC ENT
- DB $14
- DB $00
-L0200EE ENT
- DB $00
- DB $00
-L0200F0 ENT
- DB $00
- DB $00
-L0200F2 ENT
- DB $00
- DB $00
-L0200F4 ENT
- DB $00
- DB $00
-L0200F6 ENT
- DB $00
- DB $00
-L0200F8 ENT
- DB $00
- DB $00
-L0200FA ENT
- DB $00
- DB $00
-L0200FC ENT
- DB $00
- DB $00
-L0200FE ENT
- DB $00
- DB $00
-L020100 ENT
- DB $00
- DB $00
-L020102 ENT
- DB $00
- DB $00
-L020104 ENT
- DB $00
- DB $00
-L020106 ENT
- DB $01
- DB $00
-L020108 ENT
- DB $00
- DB $00
-L02010A ENT
- DB $00
- DB $00
-L02010C ENT
- DB $00
- DB $00
-L02010E ENT
- DB $00
- DB $00
-L020110 ENT
- DB $00
- DB $00
-L020112 ENT
- DB $00
- DB $00
-L020114 ENT
- DB $00
- DB $00
-L020116 ENT
- DB $00
- DB $00
-L020118 ENT
- DB $00
- DB $00
-L02011A ENT
- DB $00
- DB $00
-L02011C ENT
- DB $00
- DB $00
-L02011E ENT
- DB $00
- DB $00
-L020120 ENT
- DB $01
- DB $00
-L020122 ENT
- DB $01
- DB $00
- DB $00
- DB $00
- DB $FF
- DB $FF
-L020128 ENT
- DB $00
- DB $00
-L02012A ENT
- DB $00
- DB $00
- DB $00
- DB $00
- DB $00
- DB $00
- DB $00
-L020131 ENT
- DB $00
- DB $00
-L020133 ENT
- DB $00
- DB $00
-L020135 ENT
- DB $00
- DB $00
-L020137 ENT
- DB $00
- DB $00
-L020139 ENT
- DB $00
- DB $00
-L02013B ENT
- DB $00
- DB $00
-L02013D ENT
- DB $00
- DB $00
-L02013F ENT
- DB $00
- DB $00
-L020141 ENT
- DB $00
- DB $00
-L020143 ENT
- DB $00
- DB $00
-L020145 ENT
- DB $00
- DB $00
-L020147 ENT
- DB $00
- DB $00
-L020149 ENT
- DB $00
- DB $00
-L02014B ENT
- DB $00
- DB $00
-L02014D ENT
- DB $00
- DB $00
-L02014F ENT
- DB $00
- DB $00
-L020151 ENT
- DB $00
- DB $00
-L020153 ENT
- DB $00
- DB $00
-L020155 ENT
- DB $00
- DB $00
- DB $00
- DB $00
- DB $00
- DB $00
-L02015B ENT
- DB $00
- DB $00
-L02015D ENT
- DB $00
- DB $00
-L02015F ENT
- DB $00
- DB $00
-L020161 ENT
- DB $00
- DB $00
-L020163 ENT
- DB $96
- DB $00
-L020165 ENT
- DB $00
- DB $00
-L020167 ENT
- DB $00
- DB $00
-L020169 ENT
- DB $00
- DB $00
-L02016B ENT
- DB $00
- DB $00
-L02016D ENT
- DB $00
- DB $00
-L02016F ENT
- DB $00
- DB $00
-L020171 ENT
- DB $00
- DB $00
-L020173 ENT
- DB $00
- DB $00
-L020175 ENT
- DB $00
- DB $00
- DB $00
- DB $00
- DB $00
- DB $00
-L02017B ENT
- DB $32
- DB $00
-L02017D ENT
- DB $32
- DB $00
-L02017F ENT
- DB $46
- DB $00
-L020181 ENT
- DB $82
- DB $00
-L020183 ENT
- DB $32
- DB $00
-L020185 ENT
- DB $32
- DB $00
-L020187 ENT
- DB $46
- DB $00
-L020189 ENT
- DB $8C
- DB $00
-L02018B ENT
- DB $32
- DB $00
-L02018D ENT
- DB $32
- DB $00
-L02018F ENT
- DB $32
- DB $00
-L020191 ENT
- DB $00
- DB $00
-L020193 ENT
- DB $00
- DB $00
-L020195 ENT
- DB $00
- DB $00
- DB $00
- DB $00
-L020199 ENT
- DB $00
- DB $00
-L02019B ENT
- DB $00
- DB $00
-L02019D ENT
- DB $00
- DB $00
-L02019F ENT
- DB $00
- DB $00
-L0201A1 ENT
- DB $00
- DB $00
-L0201A3 ENT
- DB $00
- DB $00
-L0201A5 ENT
- DB $00
- DB $00
-L0201A7 ENT
- DB $00
- DB $00
-L0201A9 ENT
- DB $00
- DB $00
+*-----------
 
-PTRROM ENT ; pointer to ROM.01 file
- ds 4
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L020006     ENT
+            DB    $00
+            DB    $00
+L020008     ENT
+            DB    $00
+            DB    $00
+L02000A     ENT
+            DB    $00
+            DB    $00
+L02C036     ENT
+            DB    $00
+L02C034     ENT
+            DB    $00
+L02000D     ENT
+            DB    $C8
+            DB    $00
+L02000F     ENT
+            DB    $00
+            DB    $00
+L020011     ENT
+            DW    $0000       ; X low
+L020013     ENT
+            DW    $0000       ; Y low
 
-L0201AB ENT
- DB $00
- DB $00
- DB $00
- DB $00
-L0201AF ENT
- DB $00
- DB $00
-L0201B1 ENT
- DB $00
- DB $00
-L0201B3 ENT
- DB $00
- DB $00
-L0201B5 ENT
- DB $00
- DB $00
-L0201B7 ENT
- DB $00
- DB $00
-L0201B9 ENT
- DB $00
- DB $00
- DB $FF
- DB $FF
-L0201BD ENT
- DB $50
- DB $00
-L0201BF ENT
- DB $01
- DB $00
-L0201C1 ENT
- DB $00
- DB $00
-L0201C3 ENT
- DB $00
- DB $00
-L0201C5 ENT
- DB $00
- DB $00
-L0201C7 ENT
- DB $00
- DB $00
- DB $00
- DB $00
- DB $00
- DB $00
- DB $00
- DB $00
- DB $00
- DB $00
- DB $00
- DB $00
-L0201D3 ENT
- DB $00
- DB $00
-L0201D5 ENT
- DB $00
- DB $00
-L0201D7 ENT
- DB $00
- DB $00
-L0201D9 ENT
- DB $00
- DB $00
-L0201DB ENT
- DB $00
- DB $00
-L0201DD ENT
- DB $00
- DB $00
-L0201DF ENT
- DB $00
- DB $00
-L0201E1 ENT
- DB $00
- DB $00
-L0201E3 ENT
- DB $00
- DB $00
-L0201E5 ENT
- DB $00
- DB $00
-L0201E7 ENT
- DB $00
- DB $00
-L0201E9 ENT
- DB $00
- DB $00
-L0201EB ENT
- DB $00
- DB $00
-L0201ED ENT
- DB $00
- DB $00
-L0201EF ENT
- DB $00
- DB $00
+L020015     ENT
+            DB    $00
+            DB    $00
+L020017     ENT
+            DB    $00
+            DB    $00
+L020019     ENT
+            DB    $00
+            DB    $00
+L02001B     ENT
+            DB    $00
+            DB    $00
+L02001D     ENT
+            DB    $78
+            DB    $05
+L02001F     ENT
+            DB    $00
+            DB    $00
+L020021     ENT
+            DB    $00
+            DB    $00
+L020023     ENT
+            DB    $00
+            DB    $00
+L020025     ENT
+            DB    $00
+            DB    $00
+L020027     ENT
+            DB    $00
+            DB    $00
+L020029     ENT
+            DB    $00
+            DB    $00
+L02002B     ENT
+            DB    $00
+            DB    $00
+L02002D     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L020033     ENT
+            DB    $00
+            DB    $00
+L020035     ENT
+            DB    $00
+            DB    $00
+L020037     ENT
+            DB    $00
+            DB    $00
+L020039     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L020043     ENT
+            DB    $00
+            DB    $00
+L020045     ENT
+            DB    $00
+            DB    $00
+L020047     ENT
+            DB    $FF
+            DB    $00
+L020049     ENT
+            DB    $00
+            DB    $00
+L02004B     ENT
+            DB    $00
+            DB    $00
+L02004D     ENT
+            DB    $00
+            DB    $00
+L02004F     ENT
+            DB    $00
+            DB    $00
+L020051     ENT
+            DB    $05
+            DB    $00
+L020053     ENT
+            DB    $00
+            DB    $00
+L020055     ENT
+            DB    $00
+            DB    $00
+            DB    $05
+            DB    $00
+L020059     ENT
+            DB    $00
+            DB    $00
+L02005B     ENT
+            DB    $00
+            DB    $00
+L02005D     ENT
+            DB    $FB
+            DB    $FF
+            DB    $28
+            DB    $00
+L020061     ENT
+            DB    $00
+            DB    $00
+L020063     ENT
+            DB    $00
+            DB    $00
+L020065     ENT
+            DB    $01
+            DB    $00
+L020067     ENT
+            DB    $00
+            DB    $00
+L020069     ENT
+            DB    $00
+            DB    $00
+L02006B     ENT
+            DB    $00
+            DB    $00
+L02006D     ENT
+            DB    $00
+            DB    $00
+L02006F     ENT
+            DB    $00
+            DB    $00
+L020071     ENT
+            DB    $00
+            DB    $00
+L020073     ENT
+            DB    $00
+            DB    $00
+L020075     ENT
+            DB    $00
+            DB    $00
+L020077     ENT
+            DB    $00
+            DB    $00
+L020079     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L020083     ENT
+            DB    $00
+            DB    $00
+L020085     ENT
+            DB    $00
+            DB    $00
+L020087     ENT
+            DB    $00
+            DB    $00
+L020089     ENT
+            DB    $00
+            DB    $00
+L02008B     ENT
+            DB    $00
+            DB    $00
+L02008D     ENT
+            DB    $00
+            DB    $00
+L02008F     ENT
+            DB    $00
+            DB    $00
+L020091     ENT
+            DB    $00
+            DB    $00
+L020093     ENT
+            DB    $00
+            DB    $00
+L020095     ENT
+            DB    $00
+            DB    $00
+L020097     ENT
+            DB    $00
+            DB    $00
+L020099     ENT
+            DB    $00
+            DB    $00
+L02009B     ENT
+            DB    $00
+            DB    $00
+L02009D     ENT
+            DB    $00
+            DB    $00
+L02009F     ENT
+            DB    $00
+L0200A0     ENT
+            DB    $00
+            DB    $00
+L0200A2     ENT
+            DB    $00
+            DB    $00
+L0200A4     ENT
+            DB    $00
+            DB    $00
+L0200A6     ENT
+            DB    $00
+            DB    $00
+L0200A8     ENT
+            DB    $32
+            DB    $00
+L0200AA     ENT
+            DB    $32
+            DB    $00
+L0200AC     ENT
+            DB    $64
+            DB    $00
+L0200AE     ENT
+            DB    $64
+            DB    $00
+L0200B0     ENT
+            DB    $32
+            DB    $00
+L0200B2     ENT
+            DB    $32
+            DB    $00
+L0200B4     ENT
+            DB    $64
+            DB    $00
+L0200B6     ENT
+            DB    $64
+            DB    $00
+L0200B8     ENT
+            DB    $32
+            DB    $00
+L0200BA     ENT
+            DB    $0A
+            DB    $00
+L0200BC     ENT
+            DB    $64
+            DB    $00
+L0200BE     ENT
+            DB    $0A
+            DB    $00
+L0200C0     ENT
+            DB    $9C
+            DB    $FF
+L0200C2     ENT
+            DB    $0A
+            DB    $00
+L0200C4     ENT
+            DB    $64
+            DB    $00
+L0200C6     ENT
+            DB    $0A
+            DB    $00
+L0200C8     ENT
+            DB    $C8
+            DB    $00
+L0200CA     ENT
+            DB    $64
+            DB    $00
+L0200CC     ENT
+            DB    $D0
+            DB    $07
+L0200CE     ENT
+            DB    $00
+            DB    $00
+L0200D0     ENT
+            DB    $00
+            DB    $00
+L0200D2     ENT
+            DB    $14
+            DB    $00
+L0200D4     ENT
+            DB    $15
+            DB    $00
+L0200D6     ENT
+            DB    $16
+            DB    $00
+L0200D8     ENT
+            DB    $17
+            DB    $00
+L0200DA     ENT
+            DB    $32
+            DB    $00
+L0200DC     ENT
+            DB    $19
+            DB    $00
+L0200DE     ENT
+            DB    $C8
+            DB    $00
+L0200E0     ENT
+            DB    $64
+            DB    $00
+L0200E2     ENT
+            DB    $64
+            DB    $00
+L0200E4     ENT
+            DB    $64
+            DB    $00
+L0200E6     ENT
+            DB    $2C
+            DB    $01
+L0200E8     ENT
+            DB    $2C
+            DB    $01
+L0200EA     ENT
+            DB    $14
+            DB    $00
+L0200EC     ENT
+            DB    $14
+            DB    $00
+L0200EE     ENT
+            DB    $00
+            DB    $00
+L0200F0     ENT
+            DB    $00
+            DB    $00
+L0200F2     ENT
+            DB    $00
+            DB    $00
+L0200F4     ENT
+            DB    $00
+            DB    $00
+L0200F6     ENT
+            DB    $00
+            DB    $00
+L0200F8     ENT
+            DB    $00
+            DB    $00
+L0200FA     ENT
+            DB    $00
+            DB    $00
+L0200FC     ENT
+            DB    $00
+            DB    $00
+L0200FE     ENT
+            DB    $00
+            DB    $00
+L020100     ENT
+            DB    $00
+            DB    $00
+L020102     ENT
+            DB    $00
+            DB    $00
+L020104     ENT
+            DB    $00
+            DB    $00
+L020106     ENT
+            DB    $01
+            DB    $00
+L020108     ENT
+            DB    $00
+            DB    $00
+L02010A     ENT
+            DB    $00
+            DB    $00
+L02010C     ENT
+            DB    $00
+            DB    $00
+L02010E     ENT
+            DB    $00
+            DB    $00
+L020110     ENT
+            DB    $00
+            DB    $00
+L020112     ENT
+            DB    $00
+            DB    $00
+L020114     ENT
+            DB    $00
+            DB    $00
+L020116     ENT
+            DB    $00
+            DB    $00
+L020118     ENT
+            DB    $00
+            DB    $00
+L02011A     ENT
+            DB    $00
+            DB    $00
+L02011C     ENT
+            DB    $00
+            DB    $00
+L02011E     ENT
+            DB    $00
+            DB    $00
+L020120     ENT
+            DB    $01
+            DB    $00
+L020122     ENT
+            DB    $01
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $FF
+            DB    $FF
+L020128     ENT
+            DB    $00
+            DB    $00
+L02012A     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L020131     ENT
+            DB    $00
+            DB    $00
+L020133     ENT
+            DB    $00
+            DB    $00
+L020135     ENT
+            DB    $00
+            DB    $00
+L020137     ENT
+            DB    $00
+            DB    $00
+L020139     ENT
+            DB    $00
+            DB    $00
+L02013B     ENT
+            DB    $00
+            DB    $00
+L02013D     ENT
+            DB    $00
+            DB    $00
+L02013F     ENT
+            DB    $00
+            DB    $00
+L020141     ENT
+            DB    $00
+            DB    $00
+L020143     ENT
+            DB    $00
+            DB    $00
+L020145     ENT
+            DB    $00
+            DB    $00
+L020147     ENT
+            DB    $00
+            DB    $00
+L020149     ENT
+            DB    $00
+            DB    $00
+L02014B     ENT
+            DB    $00
+            DB    $00
+L02014D     ENT
+            DB    $00
+            DB    $00
+L02014F     ENT
+            DB    $00
+            DB    $00
+L020151     ENT
+            DB    $00
+            DB    $00
+L020153     ENT
+            DB    $00
+            DB    $00
+L020155     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L02015B     ENT
+            DB    $00
+            DB    $00
+L02015D     ENT
+            DB    $00
+            DB    $00
+L02015F     ENT
+            DB    $00
+            DB    $00
+L020161     ENT
+            DB    $00
+            DB    $00
+L020163     ENT
+            DB    $96
+            DB    $00
+L020165     ENT
+            DB    $00
+            DB    $00
+L020167     ENT
+            DB    $00
+            DB    $00
+L020169     ENT
+            DB    $00
+            DB    $00
+L02016B     ENT
+            DB    $00
+            DB    $00
+L02016D     ENT
+            DB    $00
+            DB    $00
+L02016F     ENT
+            DB    $00
+            DB    $00
+L020171     ENT
+            DB    $00
+            DB    $00
+L020173     ENT
+            DB    $00
+            DB    $00
+L020175     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L02017B     ENT
+            DB    $32
+            DB    $00
+L02017D     ENT
+            DB    $32
+            DB    $00
+L02017F     ENT
+            DB    $46
+            DB    $00
+L020181     ENT
+            DB    $82
+            DB    $00
+L020183     ENT
+            DB    $32
+            DB    $00
+L020185     ENT
+            DB    $32
+            DB    $00
+L020187     ENT
+            DB    $46
+            DB    $00
+L020189     ENT
+            DB    $8C
+            DB    $00
+L02018B     ENT
+            DB    $32
+            DB    $00
+L02018D     ENT
+            DB    $32
+            DB    $00
+L02018F     ENT
+            DB    $32
+            DB    $00
+L020191     ENT
+            DB    $00
+            DB    $00
+L020193     ENT
+            DB    $00
+            DB    $00
+L020195     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L020199     ENT
+            DB    $00
+            DB    $00
+L02019B     ENT
+            DB    $00
+            DB    $00
+L02019D     ENT
+            DB    $00
+            DB    $00
+L02019F     ENT
+            DB    $00
+            DB    $00
+L0201A1     ENT
+            DB    $00
+            DB    $00
+L0201A3     ENT
+            DB    $00
+            DB    $00
+L0201A5     ENT
+            DB    $00
+            DB    $00
+L0201A7     ENT
+            DB    $00
+            DB    $00
+L0201A9     ENT
+            DB    $00
+            DB    $00
+
+PTRROM      ENT               ; pointer to ROM.01 file
+            ds    4
+
+L0201AB     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L0201AF     ENT
+            DB    $00
+            DB    $00
+L0201B1     ENT
+            DB    $00
+            DB    $00
+L0201B3     ENT
+            DB    $00
+            DB    $00
+L0201B5     ENT
+            DB    $00
+            DB    $00
+L0201B7     ENT
+            DB    $00
+            DB    $00
+L0201B9     ENT
+            DB    $00
+            DB    $00
+            DB    $FF
+            DB    $FF
+L0201BD     ENT
+            DB    $50
+            DB    $00
+L0201BF     ENT
+            DB    $01
+            DB    $00
+L0201C1     ENT
+            DB    $00
+            DB    $00
+L0201C3     ENT
+            DB    $00
+            DB    $00
+L0201C5     ENT
+            DB    $00
+            DB    $00
+L0201C7     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L0201D3     ENT
+            DB    $00
+            DB    $00
+L0201D5     ENT
+            DB    $00
+            DB    $00
+L0201D7     ENT
+            DB    $00
+            DB    $00
+L0201D9     ENT
+            DB    $00
+            DB    $00
+L0201DB     ENT
+            DB    $00
+            DB    $00
+L0201DD     ENT
+            DB    $00
+            DB    $00
+L0201DF     ENT
+            DB    $00
+            DB    $00
+L0201E1     ENT
+            DB    $00
+            DB    $00
+L0201E3     ENT
+            DB    $00
+            DB    $00
+L0201E5     ENT
+            DB    $00
+            DB    $00
+L0201E7     ENT
+            DB    $00
+            DB    $00
+L0201E9     ENT
+            DB    $00
+            DB    $00
+L0201EB     ENT
+            DB    $00
+            DB    $00
+L0201ED     ENT
+            DB    $00
+            DB    $00
+L0201EF     ENT
+            DB    $00
+            DB    $00
+

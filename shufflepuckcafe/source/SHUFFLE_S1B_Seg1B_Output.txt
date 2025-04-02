@@ -1,0 +1,745 @@
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File         Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1   SEG1B.S      1 | Comment     | 11 |         |    0 | 00/0000               | *
+    2 |  1   SEG1B.S      2 | Comment     | 11 |         |    0 | 00/0000               | * Shufflepuck Cafe
+    3 |  1   SEG1B.S      3 | Comment     | 11 |         |    0 | 00/0000               | *
+    4 |  1   SEG1B.S      4 | Comment     | 11 |         |    0 | 00/0000               | * (c) Broderbund Software
+    5 |  1   SEG1B.S      5 | Comment     | 11 |         |    0 | 00/0000               | * (s) 2014, Brutal Deluxe Software
+    6 |  1   SEG1B.S      6 | Comment     | 11 |         |    0 | 00/0000               | *
+    7 |  1   SEG1B.S      7 | Empty       | 11 |         |    0 | 00/0000               |                                  
+    8 |  1   SEG1B.S      8 | Directive   | 00 |         |    0 | 00/0000               |             mx    %00            
+    9 |  1   SEG1B.S      9 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   10 |  1   SEG1B.S     10 | Directive   | 00 |         |    0 | 00/0000               |             rel                  
+   11 |  1   SEG1B.S     11 | Directive   | 00 |         |    0 | 00/0000               |             dsk   Seg1B.L        
+   12 |  1   SEG1B.S     12 | Directive   | 00 |         |    0 | 00/0000               |             lst   off            
+   13 |  1   SEG1B.S     13 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   14 |  1   SEG1B.S     14 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   15 |  1   SEG1B.S     15 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   16 |  1   SEG1B.S     16 | Directive   | 00 |         |    0 | 00/0000               |             use   Seg1B.X        
+   17 |  2 Seg1B.X.s      1 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   18 |  2 Seg1B.X.s      2 | Comment     | 00 |         |    0 | 00/0000               | * TFBD generated externals
+   19 |  2 Seg1B.X.s      3 | Comment     | 00 |         |    0 | 00/0000               | *     (c) PHC 1992,93
+   20 |  2 Seg1B.X.s      4 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   21 |  2 Seg1B.X.s      5 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   22 |  2 Seg1B.X.s      6 | External    | 00 |         |    0 | 00/0000               | myINDEX     EXT                  
+   23 |  2 Seg1B.X.s      7 | External    | 00 |         |    0 | 00/0000               | L0201E7     EXT                  
+   24 |  2 Seg1B.X.s      8 | External    | 00 |         |    0 | 00/0000               | L1A0EFF     EXT                  
+   25 |  2 Seg1B.X.s      9 | External    | 00 |         |    0 | 00/0000               | L1A0F19     EXT                  
+   26 |  2 Seg1B.X.s     10 | External    | 00 |         |    0 | 00/0000               | L1A0F9E     EXT                  
+   27 |  2 Seg1B.X.s     11 | External    | 00 |         |    0 | 00/0000               | L1A184A     EXT                  
+   28 |  2 Seg1B.X.s     12 | External    | 00 |         |    0 | 00/0000               | L1A10DF     EXT                  
+   29 |  2 Seg1B.X.s     13 | External    | 00 |         |    0 | 00/0000               | L1A186E     EXT                  
+   30 |  2 Seg1B.X.s     14 | External    | 00 |         |    0 | 00/0000               | L1A0F0A     EXT                  
+   31 |  2 Seg1B.X.s     15 | External    | 00 |         |    0 | 00/0000               | L020043     EXT                  
+   32 |  2 Seg1B.X.s     16 | External    | 00 |         |    0 | 00/0000               | L09007C     EXT                  
+   33 |  2 Seg1B.X.s     17 | External    | 00 |         |    0 | 00/0000               | L1A108F     EXT                  
+   34 |  2 Seg1B.X.s     18 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   35 |  1   SEG1B.S     17 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   36 |  1   SEG1B.S     18 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   37 |  1   SEG1B.S     19 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   38 |  1   SEG1B.S     20 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Event.Macs   
+   39 |  1   SEG1B.S     21 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Misc.Macs    
+   40 |  1   SEG1B.S     22 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Util.Macs    
+   41 |  1   SEG1B.S     23 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   42 |  1   SEG1B.S     24 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   43 |  1   SEG1B.S     25 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   44 |  1   SEG1B.S     26 | Global      | 00 |         |    0 | 00/0000               | L1B0000     ENT                  
+   45 |  1   SEG1B.S     27 | Code        | 00 |         |    1 | 00/0000 : 0B          |             PHD                  
+   46 |  1   SEG1B.S     28 | Code        | 00 |         |    1 | 00/0001 : 3B          |             TSC                  
+   47 |  1   SEG1B.S     29 | Code        | 00 |         |    1 | 00/0002 : 38          |             SEC                  
+   48 |  1   SEG1B.S     30 | Code        | 00 |         |    3 | 00/0003 : E9 F9 00    |             SBC   #$00F9         
+   49 |  1   SEG1B.S     31 | Code        | 00 |         |    1 | 00/0006 : 5B          |             TCD                  
+   50 |  1   SEG1B.S     32 | Code        | 00 |         |    3 | 00/0007 : 69 F2 00    |             ADC   #$00F2         
+   51 |  1   SEG1B.S     33 | Code        | 00 |         |    1 | 00/000A : 1B          |             TCS                  
+   52 |  1   SEG1B.S     34 | Code        | 00 |         |    2 | 00/000B : A5 FF       |             LDA   $FF            
+   53 |  1   SEG1B.S     35 | Code        | 00 |         |    1 | 00/000D : 38          |             SEC                  
+   54 |  1   SEG1B.S     36 | Code        | 00 |         |    3 | 00/000E : E9 00 00    |             SBC   #$0000         
+   55 |  1   SEG1B.S     37 | Code        | 00 |         |    2 | 00/0011 : 70 03       |             BVS   L1B0016        
+   56 |  1   SEG1B.S     38 | Code        | 00 |         |    3 | 00/0013 : 49 00 80    |             EOR   #$8000         
+   57 |  1   SEG1B.S     39 | Code        | 00 |         |    2 | 00/0016 : 30 0A       | L1B0016     BMI   L1B0022        
+   58 |  1   SEG1B.S     40 | Code        | 00 |         |    2 | 00/0018 : A5 FF       |             LDA   $FF            
+   59 |  1   SEG1B.S     41 | Code        | 00 |         |    3 | 00/001A : 49 FF FF    |             EOR   #$FFFF         
+   60 |  1   SEG1B.S     42 | Code        | 00 |         |    1 | 00/001D : 1A          |             INC                  
+   61 |  1   SEG1B.S     43 | Code        | 00 |         |    2 | 00/001E : 80 04       |             BRA   L1B0024        
+   62 |  1   SEG1B.S     44 | Code        | 00 |         |    2 | 00/0020 : 80 02       |             BRA   L1B0024        
+   63 |  1   SEG1B.S     45 | Code        | 00 |         |    2 | 00/0022 : A5 FF       | L1B0022     LDA   $FF            
+   64 |  1   SEG1B.S     46 | Code        | 00 |         |    1 | 00/0024 : A8          | L1B0024     TAY                  
+   65 |  1   SEG1B.S     47 | Code        | 00 |         |    1 | 00/0025 : 3B          |             TSC                  
+   66 |  1   SEG1B.S     48 | Code        | 00 |         |    1 | 00/0026 : 18          |             CLC                  
+   67 |  1   SEG1B.S     49 | Code        | 00 |         |    3 | 00/0027 : 69 06 00    |             ADC   #$0006         
+   68 |  1   SEG1B.S     50 | Code        | 00 |         |    1 | 00/002A : 1B          |             TCS                  
+   69 |  1   SEG1B.S     51 | Code        | 00 |         |    1 | 00/002B : 98          |             TYA                  
+   70 |  1   SEG1B.S     52 | Code        | 00 |         |    1 | 00/002C : 2B          |             PLD                  
+   71 |  1   SEG1B.S     53 | Code        | 00 |         |    1 | 00/002D : 6B          |             RTL                  
+   72 |  1   SEG1B.S     54 | Empty       | 00 |         |    0 | 00/002E               |                                  
+   73 |  1   SEG1B.S     55 | Global      | 00 |         |    0 | 00/002E               | L1B002E     ENT                  
+   74 |  1   SEG1B.S     56 | Code        | 00 |         |    1 | 00/002E : 0B          |             PHD                  
+   75 |  1   SEG1B.S     57 | Code        | 00 |         |    1 | 00/002F : 3B          |             TSC                  
+   76 |  1   SEG1B.S     58 | Code        | 00 |         |    1 | 00/0030 : 38          |             SEC                  
+   77 |  1   SEG1B.S     59 | Code        | 00 |         |    3 | 00/0031 : E9 F7 00    |             SBC   #$00F7         
+   78 |  1   SEG1B.S     60 | Code        | 00 |         |    1 | 00/0034 : 5B          |             TCD                  
+   79 |  1   SEG1B.S     61 | Code        | 00 |         |    3 | 00/0035 : 69 F0 00    |             ADC   #$00F0         
+   80 |  1   SEG1B.S     62 | Code        | 00 |         |    1 | 00/0038 : 1B          |             TCS                  
+   81 |  1   SEG1B.S     63 | Code        | 00 |         |    1 | 00/0039 : 38          |             SEC                  
+   82 |  1   SEG1B.S     64 | Code        | 00 |         |    2 | 00/003A : A5 FD       |             LDA   $FD            
+   83 |  1   SEG1B.S     65 | Code        | 00 |         |    3 | 00/003C : E9 00 00    |             SBC   #$0000         
+   84 |  1   SEG1B.S     66 | Code        | 00 |         |    2 | 00/003F : D0 07       |             BNE   L1B0048        
+   85 |  1   SEG1B.S     67 | Code        | 00 |         |    2 | 00/0041 : A5 FF       |             LDA   $FF            
+   86 |  1   SEG1B.S     68 | Code        | 00 |         |    3 | 00/0043 : E9 00 00    |             SBC   #$0000         
+   87 |  1   SEG1B.S     69 | Code        | 00 |         |    2 | 00/0046 : 80 07       |             BRA   L1B004F        
+   88 |  1   SEG1B.S     70 | Code        | 00 |         |    2 | 00/0048 : A5 FF       | L1B0048     LDA   $FF            
+   89 |  1   SEG1B.S     71 | Code        | 00 |         |    3 | 00/004A : E9 00 00    |             SBC   #$0000         
+   90 |  1   SEG1B.S     72 | Code        | 00 |         |    2 | 00/004D : C2 02       |             REP   #$02           
+   91 |  1   SEG1B.S     73 | Code        | 00 |         |    2 | 00/004F : 70 03       | L1B004F     BVS   L1B0054        
+   92 |  1   SEG1B.S     74 | Code        | 00 |         |    3 | 00/0051 : 49 00 80    |             EOR   #$8000         
+   93 |  1   SEG1B.S     75 | Code        | 00 |         |    2 | 00/0054 : 30 0C       | L1B0054     BMI   L1B0062        
+   94 |  1   SEG1B.S     76 | Code        | 00 |         |    2 | 00/0056 : A6 FF       |             LDX   $FF            
+   95 |  1   SEG1B.S     77 | Code        | 00 |         |    2 | 00/0058 : A5 FD       |             LDA   $FD            
+   96 |  1   SEG1B.S     78 | Code        | 00 |E 3      |    4 | 00/005A : 22 DD 0E 1A |             JSL   L1A0F0A        
+   97 |  1   SEG1B.S     79 | Code        | 00 |         |    2 | 00/005E : 80 06       |             BRA   L1B0066        
+   98 |  1   SEG1B.S     80 | Code        | 00 |         |    2 | 00/0060 : 80 04       |             BRA   L1B0066        
+   99 |  1   SEG1B.S     81 | Code        | 00 |         |    2 | 00/0062 : A6 FF       | L1B0062     LDX   $FF            
+  100 |  1   SEG1B.S     82 | Code        | 00 |         |    2 | 00/0064 : A5 FD       |             LDA   $FD            
+  101 |  1   SEG1B.S     83 | Code        | 00 |         |    1 | 00/0066 : A8          | L1B0066     TAY                  
+  102 |  1   SEG1B.S     84 | Code        | 00 |         |    1 | 00/0067 : 3B          |             TSC                  
+  103 |  1   SEG1B.S     85 | Code        | 00 |         |    1 | 00/0068 : 18          |             CLC                  
+  104 |  1   SEG1B.S     86 | Code        | 00 |         |    3 | 00/0069 : 69 06 00    |             ADC   #$0006         
+  105 |  1   SEG1B.S     87 | Code        | 00 |         |    1 | 00/006C : 1B          |             TCS                  
+  106 |  1   SEG1B.S     88 | Code        | 00 |         |    1 | 00/006D : 98          |             TYA                  
+  107 |  1   SEG1B.S     89 | Code        | 00 |         |    1 | 00/006E : 2B          |             PLD                  
+  108 |  1   SEG1B.S     90 | Code        | 00 |         |    1 | 00/006F : 6B          |             RTL                  
+  109 |  1   SEG1B.S     91 | Empty       | 00 |         |    0 | 00/0070               |                                  
+  110 |  1   SEG1B.S     92 | Global      | 00 |         |    0 | 00/0070               | L1B0070     ENT                  
+  111 |  1   SEG1B.S     93 | Code        | 00 |         |    1 | 00/0070 : 0B          |             PHD                  
+  112 |  1   SEG1B.S     94 | Code        | 00 |         |    1 | 00/0071 : 3B          |             TSC                  
+  113 |  1   SEG1B.S     95 | Code        | 00 |         |    1 | 00/0072 : 38          |             SEC                  
+  114 |  1   SEG1B.S     96 | Code        | 00 |         |    3 | 00/0073 : E9 F7 00    |             SBC   #$00F7         
+  115 |  1   SEG1B.S     97 | Code        | 00 |         |    1 | 00/0076 : 5B          |             TCD                  
+  116 |  1   SEG1B.S     98 | Code        | 00 |         |    3 | 00/0077 : 69 F0 00    |             ADC   #$00F0         
+  117 |  1   SEG1B.S     99 | Code        | 00 |         |    1 | 00/007A : 1B          |             TCS                  
+  118 |  1   SEG1B.S    100 | Code        | 00 |         |    2 | 00/007B : A5 FD       |             LDA   $FD            
+  119 |  1   SEG1B.S    101 | Code        | 00 |         |    1 | 00/007D : 38          |             SEC                  
+  120 |  1   SEG1B.S    102 | Code        | 00 |         |    2 | 00/007E : E5 FF       |             SBC   $FF            
+  121 |  1   SEG1B.S    103 | Code        | 00 |         |    2 | 00/0080 : 70 03       |             BVS   L1B0085        
+  122 |  1   SEG1B.S    104 | Code        | 00 |         |    3 | 00/0082 : 49 00 80    |             EOR   #$8000         
+  123 |  1   SEG1B.S    105 | Code        | 00 |         |    2 | 00/0085 : 30 06       | L1B0085     BMI   L1B008D        
+  124 |  1   SEG1B.S    106 | Code        | 00 |         |    2 | 00/0087 : A5 FD       |             LDA   $FD            
+  125 |  1   SEG1B.S    107 | Code        | 00 |         |    2 | 00/0089 : 80 04       |             BRA   L1B008F        
+  126 |  1   SEG1B.S    108 | Code        | 00 |         |    2 | 00/008B : 80 02       |             BRA   L1B008F        
+  127 |  1   SEG1B.S    109 | Code        | 00 |         |    2 | 00/008D : A5 FF       | L1B008D     LDA   $FF            
+  128 |  1   SEG1B.S    110 | Code        | 00 |         |    1 | 00/008F : A8          | L1B008F     TAY                  
+  129 |  1   SEG1B.S    111 | Code        | 00 |         |    1 | 00/0090 : 3B          |             TSC                  
+  130 |  1   SEG1B.S    112 | Code        | 00 |         |    1 | 00/0091 : 18          |             CLC                  
+  131 |  1   SEG1B.S    113 | Code        | 00 |         |    3 | 00/0092 : 69 06 00    |             ADC   #$0006         
+  132 |  1   SEG1B.S    114 | Code        | 00 |         |    1 | 00/0095 : 1B          |             TCS                  
+  133 |  1   SEG1B.S    115 | Code        | 00 |         |    1 | 00/0096 : 98          |             TYA                  
+  134 |  1   SEG1B.S    116 | Code        | 00 |         |    1 | 00/0097 : 2B          |             PLD                  
+  135 |  1   SEG1B.S    117 | Code        | 00 |         |    1 | 00/0098 : 6B          |             RTL                  
+  136 |  1   SEG1B.S    118 | Empty       | 00 |         |    0 | 00/0099               |                                  
+  137 |  1   SEG1B.S    119 | Global      | 00 |         |    0 | 00/0099               | L1B0099     ENT                  
+  138 |  1   SEG1B.S    120 | Code        | 00 |         |    1 | 00/0099 : 0B          |             PHD                  
+  139 |  1   SEG1B.S    121 | Code        | 00 |         |    1 | 00/009A : 3B          |             TSC                  
+  140 |  1   SEG1B.S    122 | Code        | 00 |         |    1 | 00/009B : 38          |             SEC                  
+  141 |  1   SEG1B.S    123 | Code        | 00 |         |    3 | 00/009C : E9 F7 00    |             SBC   #$00F7         
+  142 |  1   SEG1B.S    124 | Code        | 00 |         |    1 | 00/009F : 5B          |             TCD                  
+  143 |  1   SEG1B.S    125 | Code        | 00 |         |    3 | 00/00A0 : 69 F0 00    |             ADC   #$00F0         
+  144 |  1   SEG1B.S    126 | Code        | 00 |         |    1 | 00/00A3 : 1B          |             TCS                  
+  145 |  1   SEG1B.S    127 | Code        | 00 |         |    2 | 00/00A4 : A5 FD       |             LDA   $FD            
+  146 |  1   SEG1B.S    128 | Code        | 00 |         |    1 | 00/00A6 : 38          |             SEC                  
+  147 |  1   SEG1B.S    129 | Code        | 00 |         |    2 | 00/00A7 : E5 FF       |             SBC   $FF            
+  148 |  1   SEG1B.S    130 | Code        | 00 |         |    2 | 00/00A9 : F0 0D       |             BEQ   L1B00B8        
+  149 |  1   SEG1B.S    131 | Code        | 00 |         |    2 | 00/00AB : 70 03       |             BVS   L1B00B0        
+  150 |  1   SEG1B.S    132 | Code        | 00 |         |    3 | 00/00AD : 49 00 80    |             EOR   #$8000         
+  151 |  1   SEG1B.S    133 | Code        | 00 |         |    2 | 00/00B0 : 10 06       | L1B00B0     BPL   L1B00B8        
+  152 |  1   SEG1B.S    134 | Code        | 00 |         |    2 | 00/00B2 : A5 FD       |             LDA   $FD            
+  153 |  1   SEG1B.S    135 | Code        | 00 |         |    2 | 00/00B4 : 80 04       |             BRA   L1B00BA        
+  154 |  1   SEG1B.S    136 | Code        | 00 |         |    2 | 00/00B6 : 80 02       |             BRA   L1B00BA        
+  155 |  1   SEG1B.S    137 | Code        | 00 |         |    2 | 00/00B8 : A5 FF       | L1B00B8     LDA   $FF            
+  156 |  1   SEG1B.S    138 | Code        | 00 |         |    1 | 00/00BA : A8          | L1B00BA     TAY                  
+  157 |  1   SEG1B.S    139 | Code        | 00 |         |    1 | 00/00BB : 3B          |             TSC                  
+  158 |  1   SEG1B.S    140 | Code        | 00 |         |    1 | 00/00BC : 18          |             CLC                  
+  159 |  1   SEG1B.S    141 | Code        | 00 |         |    3 | 00/00BD : 69 06 00    |             ADC   #$0006         
+  160 |  1   SEG1B.S    142 | Code        | 00 |         |    1 | 00/00C0 : 1B          |             TCS                  
+  161 |  1   SEG1B.S    143 | Code        | 00 |         |    1 | 00/00C1 : 98          |             TYA                  
+  162 |  1   SEG1B.S    144 | Code        | 00 |         |    1 | 00/00C2 : 2B          |             PLD                  
+  163 |  1   SEG1B.S    145 | Code        | 00 |         |    1 | 00/00C3 : 6B          |             RTL                  
+  164 |  1   SEG1B.S    146 | Empty       | 00 |         |    0 | 00/00C4               |                                  
+  165 |  1   SEG1B.S    147 | Global      | 00 |         |    0 | 00/00C4               | L1B00C4     ENT                  
+  166 |  1   SEG1B.S    148 | Code        | 00 |         |    1 | 00/00C4 : 0B          |             PHD                  
+  167 |  1   SEG1B.S    149 | Code        | 00 |         |    1 | 00/00C5 : 3B          |             TSC                  
+  168 |  1   SEG1B.S    150 | Code        | 00 |         |    1 | 00/00C6 : 38          |             SEC                  
+  169 |  1   SEG1B.S    151 | Code        | 00 |         |    3 | 00/00C7 : E9 F5 00    |             SBC   #$00F5         
+  170 |  1   SEG1B.S    152 | Code        | 00 |         |    1 | 00/00CA : 5B          |             TCD                  
+  171 |  1   SEG1B.S    153 | Code        | 00 |         |    3 | 00/00CB : 69 EE 00    |             ADC   #$00EE         
+  172 |  1   SEG1B.S    154 | Code        | 00 |         |    1 | 00/00CE : 1B          |             TCS                  
+  173 |  1   SEG1B.S    155 | Code        | 00 |         |    2 | 00/00CF : A5 FD       |             LDA   $FD            
+  174 |  1   SEG1B.S    156 | Code        | 00 |         |    2 | 00/00D1 : C5 FF       |             CMP   $FF            
+  175 |  1   SEG1B.S    157 | Code        | 00 |         |    2 | 00/00D3 : 30 07       |             BMI   L1B00DC        
+  176 |  1   SEG1B.S    158 | Code        | 00 |         |    2 | 00/00D5 : A6 FF       |             LDX   $FF            
+  177 |  1   SEG1B.S    159 | Code        | 00 |         |    2 | 00/00D7 : 86 FD       |             STX   $FD            
+  178 |  1   SEG1B.S    160 | Code        | 00 |         |    2 | 00/00D9 : 85 FF       |             STA   $FF            
+  179 |  1   SEG1B.S    161 | Code        | 00 |         |    1 | 00/00DB : 8A          |             TXA                  
+  180 |  1   SEG1B.S    162 | Code        | 00 |         |    2 | 00/00DC : C5 FB       | L1B00DC     CMP   $FB            
+  181 |  1   SEG1B.S    163 | Code        | 00 |         |    2 | 00/00DE : 30 02       |             BMI   L1B00E2        
+  182 |  1   SEG1B.S    164 | Code        | 00 |         |    2 | 00/00E0 : 85 FB       |             STA   $FB            
+  183 |  1   SEG1B.S    165 | Code        | 00 |         |    2 | 00/00E2 : A5 FF       | L1B00E2     LDA   $FF            
+  184 |  1   SEG1B.S    166 | Code        | 00 |         |    2 | 00/00E4 : C5 FB       |             CMP   $FB            
+  185 |  1   SEG1B.S    167 | Code        | 00 |         |    2 | 00/00E6 : 10 02       |             BPL   L1B00EA        
+  186 |  1   SEG1B.S    168 | Code        | 00 |         |    2 | 00/00E8 : 85 FB       |             STA   $FB            
+  187 |  1   SEG1B.S    169 | Code        | 00 |         |    2 | 00/00EA : A5 FB       | L1B00EA     LDA   $FB            
+  188 |  1   SEG1B.S    170 | Code        | 00 |         |    1 | 00/00EC : A8          |             TAY                  
+  189 |  1   SEG1B.S    171 | Code        | 00 |         |    1 | 00/00ED : 3B          |             TSC                  
+  190 |  1   SEG1B.S    172 | Code        | 00 |         |    1 | 00/00EE : 18          |             CLC                  
+  191 |  1   SEG1B.S    173 | Code        | 00 |         |    3 | 00/00EF : 69 06 00    |             ADC   #$0006         
+  192 |  1   SEG1B.S    174 | Code        | 00 |         |    1 | 00/00F2 : 1B          |             TCS                  
+  193 |  1   SEG1B.S    175 | Code        | 00 |         |    1 | 00/00F3 : 98          |             TYA                  
+  194 |  1   SEG1B.S    176 | Code        | 00 |         |    1 | 00/00F4 : 2B          |             PLD                  
+  195 |  1   SEG1B.S    177 | Code        | 00 |         |    1 | 00/00F5 : 6B          |             RTL                  
+  196 |  1   SEG1B.S    178 | Empty       | 00 |         |    0 | 00/00F6               |                                  
+  197 |  1   SEG1B.S    179 | Code        | 00 |         |    1 | 00/00F6 : 0B          |             PHD                  
+  198 |  1   SEG1B.S    180 | Code        | 00 |         |    1 | 00/00F7 : 3B          |             TSC                  
+  199 |  1   SEG1B.S    181 | Code        | 00 |         |    1 | 00/00F8 : 38          |             SEC                  
+  200 |  1   SEG1B.S    182 | Code        | 00 |         |    3 | 00/00F9 : E9 F7 00    |             SBC   #$00F7         
+  201 |  1   SEG1B.S    183 | Code        | 00 |         |    1 | 00/00FC : 5B          |             TCD                  
+  202 |  1   SEG1B.S    184 | Code        | 00 |         |    3 | 00/00FD : 69 F0 00    |             ADC   #$00F0         
+  203 |  1   SEG1B.S    185 | Code        | 00 |         |    1 | 00/0100 : 1B          |             TCS                  
+  204 |  1   SEG1B.S    186 | Code        | 00 |         |    2 | 00/0101 : A5 FD       |             LDA   $FD            
+  205 |  1   SEG1B.S    187 | Code        | 00 |         |    1 | 00/0103 : 38          |             SEC                  
+  206 |  1   SEG1B.S    188 | Code        | 00 |         |    3 | 00/0104 : E9 00 00    |             SBC   #$0000         
+  207 |  1   SEG1B.S    189 | Code        | 00 |         |    2 | 00/0107 : 70 03       |             BVS   L1B010C        
+  208 |  1   SEG1B.S    190 | Code        | 00 |         |    3 | 00/0109 : 49 00 80    |             EOR   #$8000         
+  209 |  1   SEG1B.S    191 | Code        | 00 |         |    2 | 00/010C : 30 13       | L1B010C     BMI   L1B0121        
+  210 |  1   SEG1B.S    192 | Code        | 00 |         |    2 | 00/010E : A5 FF       |             LDA   $FF            
+  211 |  1   SEG1B.S    193 | Code        | 00 |         |    3 | 00/0110 : 49 FF FF    |             EOR   #$FFFF         
+  212 |  1   SEG1B.S    194 | Code        | 00 |         |    1 | 00/0113 : 1A          |             INC                  
+  213 |  1   SEG1B.S    195 | Code        | 00 |         |    1 | 00/0114 : 48          |             PHA                  
+  214 |  1   SEG1B.S    196 | Code        | 00 |         |    2 | 00/0115 : D4 FD       |             PEI   $FD            
+  215 |  1   SEG1B.S    197 | Code        | 00 |  3      |    4 | 00/0117 : 22 99 00 00 |             JSL   L1B0099        
+  216 |  1   SEG1B.S    198 | Code        | 00 |         |    1 | 00/011B : 7A          |             PLY                  
+  217 |  1   SEG1B.S    199 | Code        | 00 |         |    1 | 00/011C : 7A          |             PLY                  
+  218 |  1   SEG1B.S    200 | Code        | 00 |         |    2 | 00/011D : 80 0C       |             BRA   L1B012B        
+  219 |  1   SEG1B.S    201 | Code        | 00 |         |    2 | 00/011F : 80 0A       |             BRA   L1B012B        
+  220 |  1   SEG1B.S    202 | Code        | 00 |         |    2 | 00/0121 : D4 FF       | L1B0121     PEI   $FF            
+  221 |  1   SEG1B.S    203 | Code        | 00 |         |    2 | 00/0123 : D4 FD       |             PEI   $FD            
+  222 |  1   SEG1B.S    204 | Code        | 00 |  3      |    4 | 00/0125 : 22 70 00 00 |             JSL   L1B0070        
+  223 |  1   SEG1B.S    205 | Code        | 00 |         |    1 | 00/0129 : 7A          |             PLY                  
+  224 |  1   SEG1B.S    206 | Code        | 00 |         |    1 | 00/012A : 7A          |             PLY                  
+  225 |  1   SEG1B.S    207 | Code        | 00 |         |    1 | 00/012B : A8          | L1B012B     TAY                  
+  226 |  1   SEG1B.S    208 | Code        | 00 |         |    1 | 00/012C : 3B          |             TSC                  
+  227 |  1   SEG1B.S    209 | Code        | 00 |         |    1 | 00/012D : 18          |             CLC                  
+  228 |  1   SEG1B.S    210 | Code        | 00 |         |    3 | 00/012E : 69 06 00    |             ADC   #$0006         
+  229 |  1   SEG1B.S    211 | Code        | 00 |         |    1 | 00/0131 : 1B          |             TCS                  
+  230 |  1   SEG1B.S    212 | Code        | 00 |         |    1 | 00/0132 : 98          |             TYA                  
+  231 |  1   SEG1B.S    213 | Code        | 00 |         |    1 | 00/0133 : 2B          |             PLD                  
+  232 |  1   SEG1B.S    214 | Code        | 00 |         |    1 | 00/0134 : 6B          |             RTL                  
+  233 |  1   SEG1B.S    215 | Empty       | 00 |         |    0 | 00/0135               |                                  
+  234 |  1   SEG1B.S    216 | Global      | 00 |         |    0 | 00/0135               | L1B0135     ENT                  
+  235 |  1   SEG1B.S    217 | Code        | 00 |         |    1 | 00/0135 : 0B          |             PHD                  
+  236 |  1   SEG1B.S    218 | Code        | 00 |         |    1 | 00/0136 : 3B          |             TSC                  
+  237 |  1   SEG1B.S    219 | Code        | 00 |         |    1 | 00/0137 : 38          |             SEC                  
+  238 |  1   SEG1B.S    220 | Code        | 00 |         |    3 | 00/0138 : E9 F3 00    |             SBC   #$00F3         
+  239 |  1   SEG1B.S    221 | Code        | 00 |         |    1 | 00/013B : 5B          |             TCD                  
+  240 |  1   SEG1B.S    222 | Code        | 00 |         |    3 | 00/013C : 69 EC 00    |             ADC   #$00EC         
+  241 |  1   SEG1B.S    223 | Code        | 00 |         |    1 | 00/013F : 1B          |             TCS                  
+  242 |  1   SEG1B.S    224 | Code        | 00 |         |    1 | 00/0140 : 38          |             SEC                  
+  243 |  1   SEG1B.S    225 | Code        | 00 |         |    2 | 00/0141 : A5 F9       |             LDA   $F9            
+  244 |  1   SEG1B.S    226 | Code        | 00 |         |    2 | 00/0143 : E5 FD       |             SBC   $FD            
+  245 |  1   SEG1B.S    227 | Code        | 00 |         |    2 | 00/0145 : D0 06       |             BNE   L1B014D        
+  246 |  1   SEG1B.S    228 | Code        | 00 |         |    2 | 00/0147 : A5 FB       |             LDA   $FB            
+  247 |  1   SEG1B.S    229 | Code        | 00 |         |    2 | 00/0149 : E5 FF       |             SBC   $FF            
+  248 |  1   SEG1B.S    230 | Code        | 00 |         |    2 | 00/014B : 80 06       |             BRA   L1B0153        
+  249 |  1   SEG1B.S    231 | Code        | 00 |         |    2 | 00/014D : A5 FB       | L1B014D     LDA   $FB            
+  250 |  1   SEG1B.S    232 | Code        | 00 |         |    2 | 00/014F : E5 FF       |             SBC   $FF            
+  251 |  1   SEG1B.S    233 | Code        | 00 |         |    2 | 00/0151 : C2 02       |             REP   #$02           
+  252 |  1   SEG1B.S    234 | Code        | 00 |         |    2 | 00/0153 : 70 03       | L1B0153     BVS   L1B0158        
+  253 |  1   SEG1B.S    235 | Code        | 00 |         |    3 | 00/0155 : 49 00 80    |             EOR   #$8000         
+  254 |  1   SEG1B.S    236 | Code        | 00 |         |    2 | 00/0158 : 30 08       | L1B0158     BMI   L1B0162        
+  255 |  1   SEG1B.S    237 | Code        | 00 |         |    2 | 00/015A : A6 FB       |             LDX   $FB            
+  256 |  1   SEG1B.S    238 | Code        | 00 |         |    2 | 00/015C : A5 F9       |             LDA   $F9            
+  257 |  1   SEG1B.S    239 | Code        | 00 |         |    2 | 00/015E : 80 06       |             BRA   L1B0166        
+  258 |  1   SEG1B.S    240 | Code        | 00 |         |    2 | 00/0160 : 80 04       |             BRA   L1B0166        
+  259 |  1   SEG1B.S    241 | Code        | 00 |         |    2 | 00/0162 : A6 FF       | L1B0162     LDX   $FF            
+  260 |  1   SEG1B.S    242 | Code        | 00 |         |    2 | 00/0164 : A5 FD       |             LDA   $FD            
+  261 |  1   SEG1B.S    243 | Code        | 00 |         |    1 | 00/0166 : A8          | L1B0166     TAY                  
+  262 |  1   SEG1B.S    244 | Code        | 00 |         |    1 | 00/0167 : 3B          |             TSC                  
+  263 |  1   SEG1B.S    245 | Code        | 00 |         |    1 | 00/0168 : 18          |             CLC                  
+  264 |  1   SEG1B.S    246 | Code        | 00 |         |    3 | 00/0169 : 69 06 00    |             ADC   #$0006         
+  265 |  1   SEG1B.S    247 | Code        | 00 |         |    1 | 00/016C : 1B          |             TCS                  
+  266 |  1   SEG1B.S    248 | Code        | 00 |         |    1 | 00/016D : 98          |             TYA                  
+  267 |  1   SEG1B.S    249 | Code        | 00 |         |    1 | 00/016E : 2B          |             PLD                  
+  268 |  1   SEG1B.S    250 | Code        | 00 |         |    1 | 00/016F : 6B          |             RTL                  
+  269 |  1   SEG1B.S    251 | Empty       | 00 |         |    0 | 00/0170               |                                  
+  270 |  1   SEG1B.S    252 | Global      | 00 |         |    0 | 00/0170               | L1B0170     ENT                  
+  271 |  1   SEG1B.S    253 | Code        | 00 |         |    1 | 00/0170 : 0B          |             PHD                  
+  272 |  1   SEG1B.S    254 | Code        | 00 |         |    1 | 00/0171 : 3B          |             TSC                  
+  273 |  1   SEG1B.S    255 | Code        | 00 |         |    1 | 00/0172 : 38          |             SEC                  
+  274 |  1   SEG1B.S    256 | Code        | 00 |         |    3 | 00/0173 : E9 F3 00    |             SBC   #$00F3         
+  275 |  1   SEG1B.S    257 | Code        | 00 |         |    1 | 00/0176 : 5B          |             TCD                  
+  276 |  1   SEG1B.S    258 | Code        | 00 |         |    3 | 00/0177 : 69 EC 00    |             ADC   #$00EC         
+  277 |  1   SEG1B.S    259 | Code        | 00 |         |    1 | 00/017A : 1B          |             TCS                  
+  278 |  1   SEG1B.S    260 | Code        | 00 |         |    1 | 00/017B : 38          |             SEC                  
+  279 |  1   SEG1B.S    261 | Code        | 00 |         |    2 | 00/017C : A5 F9       |             LDA   $F9            
+  280 |  1   SEG1B.S    262 | Code        | 00 |         |    2 | 00/017E : E5 FD       |             SBC   $FD            
+  281 |  1   SEG1B.S    263 | Code        | 00 |         |    2 | 00/0180 : D0 06       |             BNE   L1B0188        
+  282 |  1   SEG1B.S    264 | Code        | 00 |         |    2 | 00/0182 : A5 FB       |             LDA   $FB            
+  283 |  1   SEG1B.S    265 | Code        | 00 |         |    2 | 00/0184 : E5 FF       |             SBC   $FF            
+  284 |  1   SEG1B.S    266 | Code        | 00 |         |    2 | 00/0186 : 80 06       |             BRA   L1B018E        
+  285 |  1   SEG1B.S    267 | Code        | 00 |         |    2 | 00/0188 : A5 FB       | L1B0188     LDA   $FB            
+  286 |  1   SEG1B.S    268 | Code        | 00 |         |    2 | 00/018A : E5 FF       |             SBC   $FF            
+  287 |  1   SEG1B.S    269 | Code        | 00 |         |    2 | 00/018C : C2 02       |             REP   #$02           
+  288 |  1   SEG1B.S    270 | Code        | 00 |         |    2 | 00/018E : F0 0F       | L1B018E     BEQ   L1B019F        
+  289 |  1   SEG1B.S    271 | Code        | 00 |         |    2 | 00/0190 : 70 03       |             BVS   L1B0195        
+  290 |  1   SEG1B.S    272 | Code        | 00 |         |    3 | 00/0192 : 49 00 80    |             EOR   #$8000         
+  291 |  1   SEG1B.S    273 | Code        | 00 |         |    2 | 00/0195 : 10 08       | L1B0195     BPL   L1B019F        
+  292 |  1   SEG1B.S    274 | Code        | 00 |         |    2 | 00/0197 : A6 FB       |             LDX   $FB            
+  293 |  1   SEG1B.S    275 | Code        | 00 |         |    2 | 00/0199 : A5 F9       |             LDA   $F9            
+  294 |  1   SEG1B.S    276 | Code        | 00 |         |    2 | 00/019B : 80 06       |             BRA   L1B01A3        
+  295 |  1   SEG1B.S    277 | Code        | 00 |         |    2 | 00/019D : 80 04       |             BRA   L1B01A3        
+  296 |  1   SEG1B.S    278 | Code        | 00 |         |    2 | 00/019F : A6 FF       | L1B019F     LDX   $FF            
+  297 |  1   SEG1B.S    279 | Code        | 00 |         |    2 | 00/01A1 : A5 FD       |             LDA   $FD            
+  298 |  1   SEG1B.S    280 | Code        | 00 |         |    1 | 00/01A3 : A8          | L1B01A3     TAY                  
+  299 |  1   SEG1B.S    281 | Code        | 00 |         |    1 | 00/01A4 : 3B          |             TSC                  
+  300 |  1   SEG1B.S    282 | Code        | 00 |         |    1 | 00/01A5 : 18          |             CLC                  
+  301 |  1   SEG1B.S    283 | Code        | 00 |         |    3 | 00/01A6 : 69 06 00    |             ADC   #$0006         
+  302 |  1   SEG1B.S    284 | Code        | 00 |         |    1 | 00/01A9 : 1B          |             TCS                  
+  303 |  1   SEG1B.S    285 | Code        | 00 |         |    1 | 00/01AA : 98          |             TYA                  
+  304 |  1   SEG1B.S    286 | Code        | 00 |         |    1 | 00/01AB : 2B          |             PLD                  
+  305 |  1   SEG1B.S    287 | Code        | 00 |         |    1 | 00/01AC : 6B          |             RTL                  
+  306 |  1   SEG1B.S    288 | Empty       | 00 |         |    0 | 00/01AD               |                                  
+  307 |  1   SEG1B.S    289 | Code        | 00 |         |    1 | 00/01AD : 0B          |             PHD                  
+  308 |  1   SEG1B.S    290 | Code        | 00 |         |    1 | 00/01AE : 3B          |             TSC                  
+  309 |  1   SEG1B.S    291 | Code        | 00 |         |    1 | 00/01AF : 38          |             SEC                  
+  310 |  1   SEG1B.S    292 | Code        | 00 |         |    3 | 00/01B0 : E9 EF 00    |             SBC   #$00EF         
+  311 |  1   SEG1B.S    293 | Code        | 00 |         |    1 | 00/01B3 : 5B          |             TCD                  
+  312 |  1   SEG1B.S    294 | Code        | 00 |         |    3 | 00/01B4 : 69 E8 00    |             ADC   #$00E8         
+  313 |  1   SEG1B.S    295 | Code        | 00 |         |    1 | 00/01B7 : 1B          |             TCS                  
+  314 |  1   SEG1B.S    296 | Code        | 00 |         |    2 | 00/01B8 : D4 FB       |             PEI   $FB            
+  315 |  1   SEG1B.S    297 | Code        | 00 |         |    2 | 00/01BA : D4 F9       |             PEI   $F9            
+  316 |  1   SEG1B.S    298 | Code        | 00 |         |    2 | 00/01BC : D4 F7       |             PEI   $F7            
+  317 |  1   SEG1B.S    299 | Code        | 00 |         |    2 | 00/01BE : D4 F5       |             PEI   $F5            
+  318 |  1   SEG1B.S    300 | Code        | 00 |  3      |    4 | 00/01C0 : 22 70 01 00 |             JSL   L1B0170        
+  319 |  1   SEG1B.S    301 | Code        | 00 |         |    1 | 00/01C4 : 7A          |             PLY                  
+  320 |  1   SEG1B.S    302 | Code        | 00 |         |    1 | 00/01C5 : 7A          |             PLY                  
+  321 |  1   SEG1B.S    303 | Code        | 00 |         |    1 | 00/01C6 : 7A          |             PLY                  
+  322 |  1   SEG1B.S    304 | Code        | 00 |         |    1 | 00/01C7 : 7A          |             PLY                  
+  323 |  1   SEG1B.S    305 | Code        | 00 |         |    2 | 00/01C8 : 86 F7       |             STX   $F7            
+  324 |  1   SEG1B.S    306 | Code        | 00 |         |    2 | 00/01CA : 85 F5       |             STA   $F5            
+  325 |  1   SEG1B.S    307 | Code        | 00 |         |    2 | 00/01CC : D4 FF       |             PEI   $FF            
+  326 |  1   SEG1B.S    308 | Code        | 00 |         |    2 | 00/01CE : D4 FD       |             PEI   $FD            
+  327 |  1   SEG1B.S    309 | Code        | 00 |         |    2 | 00/01D0 : D4 F7       |             PEI   $F7            
+  328 |  1   SEG1B.S    310 | Code        | 00 |         |    2 | 00/01D2 : D4 F5       |             PEI   $F5            
+  329 |  1   SEG1B.S    311 | Code        | 00 |  3      |    4 | 00/01D4 : 22 35 01 00 |             JSL   L1B0135        
+  330 |  1   SEG1B.S    312 | Code        | 00 |         |    1 | 00/01D8 : 7A          |             PLY                  
+  331 |  1   SEG1B.S    313 | Code        | 00 |         |    1 | 00/01D9 : 7A          |             PLY                  
+  332 |  1   SEG1B.S    314 | Code        | 00 |         |    1 | 00/01DA : 7A          |             PLY                  
+  333 |  1   SEG1B.S    315 | Code        | 00 |         |    1 | 00/01DB : 7A          |             PLY                  
+  334 |  1   SEG1B.S    316 | Code        | 00 |         |    1 | 00/01DC : A8          |             TAY                  
+  335 |  1   SEG1B.S    317 | Code        | 00 |         |    1 | 00/01DD : 3B          |             TSC                  
+  336 |  1   SEG1B.S    318 | Code        | 00 |         |    1 | 00/01DE : 18          |             CLC                  
+  337 |  1   SEG1B.S    319 | Code        | 00 |         |    3 | 00/01DF : 69 06 00    |             ADC   #$0006         
+  338 |  1   SEG1B.S    320 | Code        | 00 |         |    1 | 00/01E2 : 1B          |             TCS                  
+  339 |  1   SEG1B.S    321 | Code        | 00 |         |    1 | 00/01E3 : 98          |             TYA                  
+  340 |  1   SEG1B.S    322 | Code        | 00 |         |    1 | 00/01E4 : 2B          |             PLD                  
+  341 |  1   SEG1B.S    323 | Code        | 00 |         |    1 | 00/01E5 : 6B          |             RTL                  
+  342 |  1   SEG1B.S    324 | Empty       | 00 |         |    0 | 00/01E6               |                                  
+  343 |  1   SEG1B.S    325 | Code        | 00 |         |    1 | 00/01E6 : 0B          |             PHD                  
+  344 |  1   SEG1B.S    326 | Code        | 00 |         |    1 | 00/01E7 : 3B          |             TSC                  
+  345 |  1   SEG1B.S    327 | Code        | 00 |         |    1 | 00/01E8 : 38          |             SEC                  
+  346 |  1   SEG1B.S    328 | Code        | 00 |         |    3 | 00/01E9 : E9 F3 00    |             SBC   #$00F3         
+  347 |  1   SEG1B.S    329 | Code        | 00 |         |    1 | 00/01EC : 5B          |             TCD                  
+  348 |  1   SEG1B.S    330 | Code        | 00 |         |    3 | 00/01ED : 69 EC 00    |             ADC   #$00EC         
+  349 |  1   SEG1B.S    331 | Code        | 00 |         |    1 | 00/01F0 : 1B          |             TCS                  
+  350 |  1   SEG1B.S    332 | Code        | 00 |         |    1 | 00/01F1 : 38          |             SEC                  
+  351 |  1   SEG1B.S    333 | Code        | 00 |         |    2 | 00/01F2 : A5 F9       |             LDA   $F9            
+  352 |  1   SEG1B.S    334 | Code        | 00 |         |    3 | 00/01F4 : E9 00 00    |             SBC   #$0000         
+  353 |  1   SEG1B.S    335 | Code        | 00 |         |    2 | 00/01F7 : D0 07       |             BNE   L1B0200        
+  354 |  1   SEG1B.S    336 | Code        | 00 |         |    2 | 00/01F9 : A5 FB       |             LDA   $FB            
+  355 |  1   SEG1B.S    337 | Code        | 00 |         |    3 | 00/01FB : E9 00 00    |             SBC   #$0000         
+  356 |  1   SEG1B.S    338 | Code        | 00 |         |    2 | 00/01FE : 80 07       |             BRA   L1B0207        
+  357 |  1   SEG1B.S    339 | Code        | 00 |         |    2 | 00/0200 : A5 FB       | L1B0200     LDA   $FB            
+  358 |  1   SEG1B.S    340 | Code        | 00 |         |    3 | 00/0202 : E9 00 00    |             SBC   #$0000         
+  359 |  1   SEG1B.S    341 | Code        | 00 |         |    2 | 00/0205 : C2 02       |             REP   #$02           
+  360 |  1   SEG1B.S    342 | Code        | 00 |         |    2 | 00/0207 : 70 03       | L1B0207     BVS   L1B020C        
+  361 |  1   SEG1B.S    343 | Code        | 00 |         |    3 | 00/0209 : 49 00 80    |             EOR   #$8000         
+  362 |  1   SEG1B.S    344 | Code        | 00 |         |    2 | 00/020C : 30 1A       | L1B020C     BMI   L1B0228        
+  363 |  1   SEG1B.S    345 | Code        | 00 |         |    2 | 00/020E : A6 FF       |             LDX   $FF            
+  364 |  1   SEG1B.S    346 | Code        | 00 |         |    2 | 00/0210 : A5 FD       |             LDA   $FD            
+  365 |  1   SEG1B.S    347 | Code        | 00 |E 3      |    4 | 00/0212 : 22 DD 0E 1A |             JSL   L1A0F0A        
+  366 |  1   SEG1B.S    348 | Code        | 00 |         |    1 | 00/0216 : DA          |             PHX                  
+  367 |  1   SEG1B.S    349 | Code        | 00 |         |    1 | 00/0217 : 48          |             PHA                  
+  368 |  1   SEG1B.S    350 | Code        | 00 |         |    2 | 00/0218 : D4 FB       |             PEI   $FB            
+  369 |  1   SEG1B.S    351 | Code        | 00 |         |    2 | 00/021A : D4 F9       |             PEI   $F9            
+  370 |  1   SEG1B.S    352 | Code        | 00 |  3      |    4 | 00/021C : 22 70 01 00 |             JSL   L1B0170        
+  371 |  1   SEG1B.S    353 | Code        | 00 |         |    1 | 00/0220 : 7A          |             PLY                  
+  372 |  1   SEG1B.S    354 | Code        | 00 |         |    1 | 00/0221 : 7A          |             PLY                  
+  373 |  1   SEG1B.S    355 | Code        | 00 |         |    1 | 00/0222 : 7A          |             PLY                  
+  374 |  1   SEG1B.S    356 | Code        | 00 |         |    1 | 00/0223 : 7A          |             PLY                  
+  375 |  1   SEG1B.S    357 | Code        | 00 |         |    2 | 00/0224 : 80 12       |             BRA   L1B0238        
+  376 |  1   SEG1B.S    358 | Code        | 00 |         |    2 | 00/0226 : 80 10       |             BRA   L1B0238        
+  377 |  1   SEG1B.S    359 | Code        | 00 |         |    2 | 00/0228 : D4 FF       | L1B0228     PEI   $FF            
+  378 |  1   SEG1B.S    360 | Code        | 00 |         |    2 | 00/022A : D4 FD       |             PEI   $FD            
+  379 |  1   SEG1B.S    361 | Code        | 00 |         |    2 | 00/022C : D4 FB       |             PEI   $FB            
+  380 |  1   SEG1B.S    362 | Code        | 00 |         |    2 | 00/022E : D4 F9       |             PEI   $F9            
+  381 |  1   SEG1B.S    363 | Code        | 00 |  3      |    4 | 00/0230 : 22 35 01 00 |             JSL   L1B0135        
+  382 |  1   SEG1B.S    364 | Code        | 00 |         |    1 | 00/0234 : 7A          |             PLY                  
+  383 |  1   SEG1B.S    365 | Code        | 00 |         |    1 | 00/0235 : 7A          |             PLY                  
+  384 |  1   SEG1B.S    366 | Code        | 00 |         |    1 | 00/0236 : 7A          |             PLY                  
+  385 |  1   SEG1B.S    367 | Code        | 00 |         |    1 | 00/0237 : 7A          |             PLY                  
+  386 |  1   SEG1B.S    368 | Code        | 00 |         |    1 | 00/0238 : A8          | L1B0238     TAY                  
+  387 |  1   SEG1B.S    369 | Code        | 00 |         |    1 | 00/0239 : 3B          |             TSC                  
+  388 |  1   SEG1B.S    370 | Code        | 00 |         |    1 | 00/023A : 18          |             CLC                  
+  389 |  1   SEG1B.S    371 | Code        | 00 |         |    3 | 00/023B : 69 06 00    |             ADC   #$0006         
+  390 |  1   SEG1B.S    372 | Code        | 00 |         |    1 | 00/023E : 1B          |             TCS                  
+  391 |  1   SEG1B.S    373 | Code        | 00 |         |    1 | 00/023F : 98          |             TYA                  
+  392 |  1   SEG1B.S    374 | Code        | 00 |         |    1 | 00/0240 : 2B          |             PLD                  
+  393 |  1   SEG1B.S    375 | Code        | 00 |         |    1 | 00/0241 : 6B          |             RTL                  
+  394 |  1   SEG1B.S    376 | Empty       | 00 |         |    0 | 00/0242               |                                  
+  395 |  1   SEG1B.S    377 | Global      | 00 |         |    0 | 00/0242               | L1B0242     ENT                  
+  396 |  1   SEG1B.S    378 | Code        | 00 |         |    1 | 00/0242 : 0B          |             PHD                  
+  397 |  1   SEG1B.S    379 | Code        | 00 |         |    1 | 00/0243 : 3B          |             TSC                  
+  398 |  1   SEG1B.S    380 | Code        | 00 |         |    1 | 00/0244 : 38          |             SEC                  
+  399 |  1   SEG1B.S    381 | Code        | 00 |         |    3 | 00/0245 : E9 F7 00    |             SBC   #$00F7         
+  400 |  1   SEG1B.S    382 | Code        | 00 |         |    1 | 00/0248 : 5B          |             TCD                  
+  401 |  1   SEG1B.S    383 | Code        | 00 |         |    3 | 00/0249 : 69 EA 00    |             ADC   #$00EA         
+  402 |  1   SEG1B.S    384 | Code        | 00 |         |    1 | 00/024C : 1B          |             TCS                  
+  403 |  1   SEG1B.S    385 | Code        | 00 |         |    2 | 00/024D : A5 FD       |             LDA   $FD            
+  404 |  1   SEG1B.S    386 | Code        | 00 |         |    2 | 00/024F : C5 FF       |             CMP   $FF            
+  405 |  1   SEG1B.S    387 | Code        | 00 |         |    2 | 00/0251 : 30 06       |             BMI   L1B0259        
+  406 |  1   SEG1B.S    388 | Code        | 00 |         |    2 | 00/0253 : A6 FF       |             LDX   $FF            
+  407 |  1   SEG1B.S    389 | Code        | 00 |         |    2 | 00/0255 : 86 FD       |             STX   $FD            
+  408 |  1   SEG1B.S    390 | Code        | 00 |         |    2 | 00/0257 : 85 FF       |             STA   $FF            
+  409 |  1   SEG1B.S    391 | Code        | 00 |         |    2 | 00/0259 : E6 FF       | L1B0259     INC   $FF            
+  410 |  1   SEG1B.S    392 | Code        | 00 |E 3      |    4 | 00/025B : 22 7C 00 09 |             JSL   L09007C        
+  411 |  1   SEG1B.S    393 | Code        | 00 |         |    3 | 00/025F : A2 00 00    |             LDX   #$0000         
+  412 |  1   SEG1B.S    394 | Code        | 00 |         |    2 | 00/0262 : 86 F0       |             STX   $F0            
+  413 |  1   SEG1B.S    395 | Code        | 00 |         |    2 | 00/0264 : 85 EE       |             STA   $EE            
+  414 |  1   SEG1B.S    396 | Code        | 00 |         |    2 | 00/0266 : A5 FF       |             LDA   $FF            
+  415 |  1   SEG1B.S    397 | Code        | 00 |         |    1 | 00/0268 : 38          |             SEC                  
+  416 |  1   SEG1B.S    398 | Code        | 00 |         |    2 | 00/0269 : E5 FD       |             SBC   $FD            
+  417 |  1   SEG1B.S    399 | Code        | 00 |         |    3 | 00/026B : A2 00 00    |             LDX   #$0000         
+  418 |  1   SEG1B.S    400 | Code        | 00 |         |    1 | 00/026E : A8          |             TAY                  
+  419 |  1   SEG1B.S    401 | Code        | 00 |         |    2 | 00/026F : 10 01       |             BPL   L1B0272        
+  420 |  1   SEG1B.S    402 | Code        | 00 |         |    1 | 00/0271 : CA          |             DEX                  
+  421 |  1   SEG1B.S    403 | Code        | 00 |         |    1 | 00/0272 : DA          | L1B0272     PHX                  
+  422 |  1   SEG1B.S    404 | Code        | 00 |         |    1 | 00/0273 : 48          |             PHA                  
+  423 |  1   SEG1B.S    405 | Code        | 00 |         |    2 | 00/0274 : A6 F0       |             LDX   $F0            
+  424 |  1   SEG1B.S    406 | Code        | 00 |         |    2 | 00/0276 : A5 EE       |             LDA   $EE            
+  425 |  1   SEG1B.S    407 | Code        | 00 |         |    1 | 00/0278 : 38          |             SEC                  
+  426 |  1   SEG1B.S    408 | Code        | 00 |E 3      |    4 | 00/0279 : 22 B2 10 1A |             JSL   L1A10DF        
+  427 |  1   SEG1B.S    409 | Code        | 00 |         |    1 | 00/027D : 68          |             PLA                  
+  428 |  1   SEG1B.S    410 | Code        | 00 |         |    1 | 00/027E : FA          |             PLX                  
+  429 |  1   SEG1B.S    411 | Code        | 00 |         |    2 | 00/027F : 86 F0       |             STX   $F0            
+  430 |  1   SEG1B.S    412 | Code        | 00 |         |    2 | 00/0281 : 85 EE       |             STA   $EE            
+  431 |  1   SEG1B.S    413 | Code        | 00 |         |    2 | 00/0283 : A5 F0       |             LDA   $F0            
+  432 |  1   SEG1B.S    414 | Code        | 00 |         |    2 | 00/0285 : 85 EC       |             STA   $EC            
+  433 |  1   SEG1B.S    415 | Code        | 00 |         |    2 | 00/0287 : A5 EC       |             LDA   $EC            
+  434 |  1   SEG1B.S    416 | Code        | 00 |         |    1 | 00/0289 : 18          |             CLC                  
+  435 |  1   SEG1B.S    417 | Code        | 00 |         |    2 | 00/028A : 65 FD       |             ADC   $FD            
+  436 |  1   SEG1B.S    418 | Code        | 00 |         |    1 | 00/028C : A8          |             TAY                  
+  437 |  1   SEG1B.S    419 | Code        | 00 |         |    1 | 00/028D : 3B          |             TSC                  
+  438 |  1   SEG1B.S    420 | Code        | 00 |         |    1 | 00/028E : 18          |             CLC                  
+  439 |  1   SEG1B.S    421 | Code        | 00 |         |    3 | 00/028F : 69 0C 00    |             ADC   #$000C         
+  440 |  1   SEG1B.S    422 | Code        | 00 |         |    1 | 00/0292 : 1B          |             TCS                  
+  441 |  1   SEG1B.S    423 | Code        | 00 |         |    1 | 00/0293 : 98          |             TYA                  
+  442 |  1   SEG1B.S    424 | Code        | 00 |         |    1 | 00/0294 : 2B          |             PLD                  
+  443 |  1   SEG1B.S    425 | Code        | 00 |         |    1 | 00/0295 : 6B          |             RTL                  
+  444 |  1   SEG1B.S    426 | Empty       | 00 |         |    0 | 00/0296               |                                  
+  445 |  1   SEG1B.S    427 | Global      | 00 |         |    0 | 00/0296               | L1B0296     ENT                  
+  446 |  1   SEG1B.S    428 | Code        | 00 |         |    1 | 00/0296 : 0B          |             PHD                  
+  447 |  1   SEG1B.S    429 | Code        | 00 |         |    1 | 00/0297 : 3B          |             TSC                  
+  448 |  1   SEG1B.S    430 | Code        | 00 |         |    1 | 00/0298 : 38          |             SEC                  
+  449 |  1   SEG1B.S    431 | Code        | 00 |         |    3 | 00/0299 : E9 FB 00    |             SBC   #$00FB         
+  450 |  1   SEG1B.S    432 | Code        | 00 |         |    1 | 00/029C : 5B          |             TCD                  
+  451 |  1   SEG1B.S    433 | Code        | 00 |         |    3 | 00/029D : 69 F4 00    |             ADC   #$00F4         
+  452 |  1   SEG1B.S    434 | Code        | 00 |         |    1 | 00/02A0 : 1B          |             TCS                  
+  453 |  1   SEG1B.S    435 | Code        | 00 |         |    1 | 00/02A1 : DA          |             PHX                  
+  454 |  1   SEG1B.S    436 | Code        | 00 |         |    1 | 00/02A2 : 48          |             PHA                  
+  455 |  1   SEG1B.S    437 | Macro       | 00 |         |    0 | 00/02A3               |             _GetTick                 
+  457 |  1   SEG1B.S    437 | Code        | 00 |         |    3 | 00/02A3 : A2 03 25    |             LDX   #$2503         ; load tool call #
+  458 |  1   SEG1B.S    437 | Code        | 00 |         |    4 | 00/02A6 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  459 |  1   SEG1B.S    438 | Comment     | 00 |         |    0 | 00/02AA               | * BCS L1B02AF
+  460 |  1   SEG1B.S    439 | Comment     | 00 |         |    0 | 00/02AA               | * LDA #$0000
+  461 |  1   SEG1B.S    440 | Comment     | 00 |         |    0 | 00/02AA               | *L1B02AF STAL L0201E7
+  462 |  1   SEG1B.S    441 | Code        | 00 |         |    1 | 00/02AA : 68          |             PLA                  
+  463 |  1   SEG1B.S    442 | Code        | 00 |         |    1 | 00/02AB : FA          |             PLX                  
+  464 |  1   SEG1B.S    443 | Code        | 00 |E 2      |    3 | 00/02AC : 8D 44 00    |             STA   L020043        
+  465 |  1   SEG1B.S    444 | Empty       | 00 |         |    0 | 00/02AF               |                                  
+  466 |  1   SEG1B.S    445 | Code        | 00 |         |    1 | 00/02AF : 3B          |             TSC                  
+  467 |  1   SEG1B.S    446 | Code        | 00 |         |    1 | 00/02B0 : 18          |             CLC                  
+  468 |  1   SEG1B.S    447 | Code        | 00 |         |    3 | 00/02B1 : 69 06 00    |             ADC   #$0006         
+  469 |  1   SEG1B.S    448 | Code        | 00 |         |    1 | 00/02B4 : 1B          |             TCS                  
+  470 |  1   SEG1B.S    449 | Code        | 00 |         |    1 | 00/02B5 : 2B          |             PLD                  
+  471 |  1   SEG1B.S    450 | Code        | 00 |         |    1 | 00/02B6 : 6B          |             RTL                  
+  472 |  1   SEG1B.S    451 | Empty       | 00 |         |    0 | 00/02B7               |                                  
+  473 |  1   SEG1B.S    452 | Global      | 00 |         |    0 | 00/02B7               | L1B02C0     ENT                  
+  474 |  1   SEG1B.S    453 | Code        | 00 |         |    1 | 00/02B7 : 0B          |             PHD                  
+  475 |  1   SEG1B.S    454 | Code        | 00 |         |    1 | 00/02B8 : 3B          |             TSC                  
+  476 |  1   SEG1B.S    455 | Code        | 00 |         |    1 | 00/02B9 : 38          |             SEC                  
+  477 |  1   SEG1B.S    456 | Code        | 00 |         |    3 | 00/02BA : E9 F7 00    |             SBC   #$00F7         
+  478 |  1   SEG1B.S    457 | Code        | 00 |         |    1 | 00/02BD : 5B          |             TCD                  
+  479 |  1   SEG1B.S    458 | Code        | 00 |         |    3 | 00/02BE : 69 EE 00    |             ADC   #$00EE         
+  480 |  1   SEG1B.S    459 | Code        | 00 |         |    1 | 00/02C1 : 1B          |             TCS                  
+  481 |  1   SEG1B.S    460 | Code        | 00 |         |    2 | 00/02C2 : A5 FD       |             LDA   $FD            
+  482 |  1   SEG1B.S    461 | Code        | 00 |         |    1 | 00/02C4 : 38          |             SEC                  
+  483 |  1   SEG1B.S    462 | Code        | 00 |         |    3 | 00/02C5 : E9 00 00    |             SBC   #$0000         
+  484 |  1   SEG1B.S    463 | Code        | 00 |         |    2 | 00/02C8 : 70 03       |             BVS   L1B02D6        
+  485 |  1   SEG1B.S    464 | Code        | 00 |         |    3 | 00/02CA : 49 00 80    |             EOR   #$8000         
+  486 |  1   SEG1B.S    465 | Code        | 00 |         |    2 | 00/02CD : 30 0A       | L1B02D6     BMI   L1B02E2        
+  487 |  1   SEG1B.S    466 | Code        | 00 |         |    2 | 00/02CF : A5 FD       |             LDA   $FD            
+  488 |  1   SEG1B.S    467 | Code        | 00 |         |    3 | 00/02D1 : 49 FF FF    |             EOR   #$FFFF         
+  489 |  1   SEG1B.S    468 | Code        | 00 |         |    1 | 00/02D4 : 1A          |             INC                  
+  490 |  1   SEG1B.S    469 | Code        | 00 |         |    2 | 00/02D5 : 85 F0       |             STA   $F0            
+  491 |  1   SEG1B.S    470 | Code        | 00 |         |    2 | 00/02D7 : 80 04       |             BRA   L1B02E6        
+  492 |  1   SEG1B.S    471 | Code        | 00 |         |    2 | 00/02D9 : A5 FD       | L1B02E2     LDA   $FD            
+  493 |  1   SEG1B.S    472 | Code        | 00 |         |    2 | 00/02DB : 85 F0       |             STA   $F0            
+  494 |  1   SEG1B.S    473 | Code        | 00 |         |    2 | 00/02DD : A5 F0       | L1B02E6     LDA   $F0            
+  495 |  1   SEG1B.S    474 | Code        | 00 |         |    1 | 00/02DF : 18          |             CLC                  
+  496 |  1   SEG1B.S    475 | Code        | 00 |         |    2 | 00/02E0 : 65 FF       |             ADC   $FF            
+  497 |  1   SEG1B.S    476 | Code        | 00 |         |    2 | 00/02E2 : 85 F0       |             STA   $F0            
+  498 |  1   SEG1B.S    477 | Code        | 00 |         |    2 | 00/02E4 : A5 FD       |             LDA   $FD            
+  499 |  1   SEG1B.S    478 | Code        | 00 |         |    1 | 00/02E6 : 38          |             SEC                  
+  500 |  1   SEG1B.S    479 | Code        | 00 |         |    3 | 00/02E7 : E9 00 00    |             SBC   #$0000         
+  501 |  1   SEG1B.S    480 | Code        | 00 |         |    2 | 00/02EA : 70 03       |             BVS   L1B02F8        
+  502 |  1   SEG1B.S    481 | Code        | 00 |         |    3 | 00/02EC : 49 00 80    |             EOR   #$8000         
+  503 |  1   SEG1B.S    482 | Code        | 00 |         |    2 | 00/02EF : 30 0A       | L1B02F8     BMI   L1B0304        
+  504 |  1   SEG1B.S    483 | Code        | 00 |         |    2 | 00/02F1 : A5 F0       |             LDA   $F0            
+  505 |  1   SEG1B.S    484 | Code        | 00 |         |    3 | 00/02F3 : 49 FF FF    |             EOR   #$FFFF         
+  506 |  1   SEG1B.S    485 | Code        | 00 |         |    1 | 00/02F6 : 1A          |             INC                  
+  507 |  1   SEG1B.S    486 | Code        | 00 |         |    2 | 00/02F7 : 80 04       |             BRA   L1B0306        
+  508 |  1   SEG1B.S    487 | Code        | 00 |         |    2 | 00/02F9 : 80 02       |             BRA   L1B0306        
+  509 |  1   SEG1B.S    488 | Code        | 00 |         |    2 | 00/02FB : A5 F0       | L1B0304     LDA   $F0            
+  510 |  1   SEG1B.S    489 | Code        | 00 |         |    1 | 00/02FD : A8          | L1B0306     TAY                  
+  511 |  1   SEG1B.S    490 | Code        | 00 |         |    1 | 00/02FE : 3B          |             TSC                  
+  512 |  1   SEG1B.S    491 | Code        | 00 |         |    1 | 00/02FF : 18          |             CLC                  
+  513 |  1   SEG1B.S    492 | Code        | 00 |         |    3 | 00/0300 : 69 08 00    |             ADC   #$0008         
+  514 |  1   SEG1B.S    493 | Code        | 00 |         |    1 | 00/0303 : 1B          |             TCS                  
+  515 |  1   SEG1B.S    494 | Code        | 00 |         |    1 | 00/0304 : 98          |             TYA                  
+  516 |  1   SEG1B.S    495 | Code        | 00 |         |    1 | 00/0305 : 2B          |             PLD                  
+  517 |  1   SEG1B.S    496 | Code        | 00 |         |    1 | 00/0306 : 6B          |             RTL                  
+  518 |  1   SEG1B.S    497 | Empty       | 00 |         |    0 | 00/0307               |                                  
+  519 |  1   SEG1B.S    498 | Code        | 00 |         |    1 | 00/0307 : 0B          |             PHD                  
+  520 |  1   SEG1B.S    499 | Code        | 00 |         |    1 | 00/0308 : 3B          |             TSC                  
+  521 |  1   SEG1B.S    500 | Code        | 00 |         |    1 | 00/0309 : 38          |             SEC                  
+  522 |  1   SEG1B.S    501 | Code        | 00 |         |    3 | 00/030A : E9 F3 00    |             SBC   #$00F3         
+  523 |  1   SEG1B.S    502 | Code        | 00 |         |    1 | 00/030D : 5B          |             TCD                  
+  524 |  1   SEG1B.S    503 | Code        | 00 |         |    3 | 00/030E : 69 E8 00    |             ADC   #$00E8         
+  525 |  1   SEG1B.S    504 | Code        | 00 |         |    1 | 00/0311 : 1B          |             TCS                  
+  526 |  1   SEG1B.S    505 | Code        | 00 |         |    1 | 00/0312 : 38          |             SEC                  
+  527 |  1   SEG1B.S    506 | Code        | 00 |         |    2 | 00/0313 : A5 F9       |             LDA   $F9            
+  528 |  1   SEG1B.S    507 | Code        | 00 |         |    3 | 00/0315 : E9 00 00    |             SBC   #$0000         
+  529 |  1   SEG1B.S    508 | Code        | 00 |         |    2 | 00/0318 : D0 07       |             BNE   L1B032A        
+  530 |  1   SEG1B.S    509 | Code        | 00 |         |    2 | 00/031A : A5 FB       |             LDA   $FB            
+  531 |  1   SEG1B.S    510 | Code        | 00 |         |    3 | 00/031C : E9 00 00    |             SBC   #$0000         
+  532 |  1   SEG1B.S    511 | Code        | 00 |         |    2 | 00/031F : 80 07       |             BRA   L1B0331        
+  533 |  1   SEG1B.S    512 | Code        | 00 |         |    2 | 00/0321 : A5 FB       | L1B032A     LDA   $FB            
+  534 |  1   SEG1B.S    513 | Code        | 00 |         |    3 | 00/0323 : E9 00 00    |             SBC   #$0000         
+  535 |  1   SEG1B.S    514 | Code        | 00 |         |    2 | 00/0326 : C2 02       |             REP   #$02           
+  536 |  1   SEG1B.S    515 | Code        | 00 |         |    2 | 00/0328 : 70 03       | L1B0331     BVS   L1B0336        
+  537 |  1   SEG1B.S    516 | Code        | 00 |         |    3 | 00/032A : 49 00 80    |             EOR   #$8000         
+  538 |  1   SEG1B.S    517 | Code        | 00 |         |    2 | 00/032D : 30 0E       | L1B0336     BMI   L1B0346        
+  539 |  1   SEG1B.S    518 | Code        | 00 |         |    2 | 00/032F : A6 FB       |             LDX   $FB            
+  540 |  1   SEG1B.S    519 | Code        | 00 |         |    2 | 00/0331 : A5 F9       |             LDA   $F9            
+  541 |  1   SEG1B.S    520 | Code        | 00 |E 3      |    4 | 00/0333 : 22 DD 0E 1A |             JSL   L1A0F0A        
+  542 |  1   SEG1B.S    521 | Code        | 00 |         |    2 | 00/0337 : 86 EC       |             STX   $EC            
+  543 |  1   SEG1B.S    522 | Code        | 00 |         |    2 | 00/0339 : 85 EA       |             STA   $EA            
+  544 |  1   SEG1B.S    523 | Code        | 00 |         |    2 | 00/033B : 80 08       |             BRA   L1B034E        
+  545 |  1   SEG1B.S    524 | Code        | 00 |         |    2 | 00/033D : A6 FB       | L1B0346     LDX   $FB            
+  546 |  1   SEG1B.S    525 | Code        | 00 |         |    2 | 00/033F : A5 F9       |             LDA   $F9            
+  547 |  1   SEG1B.S    526 | Code        | 00 |         |    2 | 00/0341 : 86 EC       |             STX   $EC            
+  548 |  1   SEG1B.S    527 | Code        | 00 |         |    2 | 00/0343 : 85 EA       |             STA   $EA            
+  549 |  1   SEG1B.S    528 | Code        | 00 |         |    2 | 00/0345 : A6 EC       | L1B034E     LDX   $EC            
+  550 |  1   SEG1B.S    529 | Code        | 00 |         |    2 | 00/0347 : A5 EA       |             LDA   $EA            
+  551 |  1   SEG1B.S    530 | Code        | 00 |         |    1 | 00/0349 : 18          |             CLC                  
+  552 |  1   SEG1B.S    531 | Code        | 00 |         |    2 | 00/034A : 65 FD       |             ADC   $FD            
+  553 |  1   SEG1B.S    532 | Code        | 00 |         |    1 | 00/034C : 48          |             PHA                  
+  554 |  1   SEG1B.S    533 | Code        | 00 |         |    1 | 00/034D : 8A          |             TXA                  
+  555 |  1   SEG1B.S    534 | Code        | 00 |         |    2 | 00/034E : 65 FF       |             ADC   $FF            
+  556 |  1   SEG1B.S    535 | Code        | 00 |         |    1 | 00/0350 : AA          |             TAX                  
+  557 |  1   SEG1B.S    536 | Code        | 00 |         |    1 | 00/0351 : 68          |             PLA                  
+  558 |  1   SEG1B.S    537 | Code        | 00 |         |    2 | 00/0352 : 86 EC       |             STX   $EC            
+  559 |  1   SEG1B.S    538 | Code        | 00 |         |    2 | 00/0354 : 85 EA       |             STA   $EA            
+  560 |  1   SEG1B.S    539 | Code        | 00 |         |    1 | 00/0356 : 38          |             SEC                  
+  561 |  1   SEG1B.S    540 | Code        | 00 |         |    2 | 00/0357 : A5 F9       |             LDA   $F9            
+  562 |  1   SEG1B.S    541 | Code        | 00 |         |    3 | 00/0359 : E9 00 00    |             SBC   #$0000         
+  563 |  1   SEG1B.S    542 | Code        | 00 |         |    2 | 00/035C : D0 07       |             BNE   L1B036E        
+  564 |  1   SEG1B.S    543 | Code        | 00 |         |    2 | 00/035E : A5 FB       |             LDA   $FB            
+  565 |  1   SEG1B.S    544 | Code        | 00 |         |    3 | 00/0360 : E9 00 00    |             SBC   #$0000         
+  566 |  1   SEG1B.S    545 | Code        | 00 |         |    2 | 00/0363 : 80 07       |             BRA   L1B0375        
+  567 |  1   SEG1B.S    546 | Code        | 00 |         |    2 | 00/0365 : A5 FB       | L1B036E     LDA   $FB            
+  568 |  1   SEG1B.S    547 | Code        | 00 |         |    3 | 00/0367 : E9 00 00    |             SBC   #$0000         
+  569 |  1   SEG1B.S    548 | Code        | 00 |         |    2 | 00/036A : C2 02       |             REP   #$02           
+  570 |  1   SEG1B.S    549 | Code        | 00 |         |    2 | 00/036C : 70 03       | L1B0375     BVS   L1B037A        
+  571 |  1   SEG1B.S    550 | Code        | 00 |         |    3 | 00/036E : 49 00 80    |             EOR   #$8000         
+  572 |  1   SEG1B.S    551 | Code        | 00 |         |    2 | 00/0371 : 30 0C       | L1B037A     BMI   L1B0388        
+  573 |  1   SEG1B.S    552 | Code        | 00 |         |    2 | 00/0373 : A6 EC       |             LDX   $EC            
+  574 |  1   SEG1B.S    553 | Code        | 00 |         |    2 | 00/0375 : A5 EA       |             LDA   $EA            
+  575 |  1   SEG1B.S    554 | Code        | 00 |E 3      |    4 | 00/0377 : 22 DD 0E 1A |             JSL   L1A0F0A        
+  576 |  1   SEG1B.S    555 | Code        | 00 |         |    2 | 00/037B : 80 06       |             BRA   L1B038C        
+  577 |  1   SEG1B.S    556 | Code        | 00 |         |    2 | 00/037D : 80 04       |             BRA   L1B038C        
+  578 |  1   SEG1B.S    557 | Code        | 00 |         |    2 | 00/037F : A6 EC       | L1B0388     LDX   $EC            
+  579 |  1   SEG1B.S    558 | Code        | 00 |         |    2 | 00/0381 : A5 EA       |             LDA   $EA            
+  580 |  1   SEG1B.S    559 | Code        | 00 |         |    1 | 00/0383 : A8          | L1B038C     TAY                  
+  581 |  1   SEG1B.S    560 | Code        | 00 |         |    1 | 00/0384 : 3B          |             TSC                  
+  582 |  1   SEG1B.S    561 | Code        | 00 |         |    1 | 00/0385 : 18          |             CLC                  
+  583 |  1   SEG1B.S    562 | Code        | 00 |         |    3 | 00/0386 : 69 0A 00    |             ADC   #$000A         
+  584 |  1   SEG1B.S    563 | Code        | 00 |         |    1 | 00/0389 : 1B          |             TCS                  
+  585 |  1   SEG1B.S    564 | Code        | 00 |         |    1 | 00/038A : 98          |             TYA                  
+  586 |  1   SEG1B.S    565 | Code        | 00 |         |    1 | 00/038B : 2B          |             PLD                  
+  587 |  1   SEG1B.S    566 | Code        | 00 |         |    1 | 00/038C : 6B          |             RTL                  
+  588 |  1   SEG1B.S    567 | Empty       | 00 |         |    0 | 00/038D               |                                  
+  589 |  1   SEG1B.S    568 | Code        | 00 |         |    1 | 00/038D : 0B          |             PHD                  
+  590 |  1   SEG1B.S    569 | Code        | 00 |         |    1 | 00/038E : 3B          |             TSC                  
+  591 |  1   SEG1B.S    570 | Code        | 00 |         |    1 | 00/038F : 38          |             SEC                  
+  592 |  1   SEG1B.S    571 | Code        | 00 |         |    3 | 00/0390 : E9 F3 00    |             SBC   #$00F3         
+  593 |  1   SEG1B.S    572 | Code        | 00 |         |    1 | 00/0393 : 5B          |             TCD                  
+  594 |  1   SEG1B.S    573 | Code        | 00 |         |    3 | 00/0394 : 69 EC 00    |             ADC   #$00EC         
+  595 |  1   SEG1B.S    574 | Code        | 00 |         |    1 | 00/0397 : 1B          |             TCS                  
+  596 |  1   SEG1B.S    575 | Code        | 00 |         |    2 | 00/0398 : A6 FF       |             LDX   $FF            
+  597 |  1   SEG1B.S    576 | Code        | 00 |         |    2 | 00/039A : A5 FD       |             LDA   $FD            
+  598 |  1   SEG1B.S    577 | Code        | 00 |         |    1 | 00/039C : DA          |             PHX                  
+  599 |  1   SEG1B.S    578 | Code        | 00 |         |    1 | 00/039D : 48          |             PHA                  
+  600 |  1   SEG1B.S    579 | Code        | 00 |         |    3 | 00/039E : A2 00 00    |             LDX   #$0000         
+  601 |  1   SEG1B.S    580 | Code        | 00 |         |    3 | 00/03A1 : A9 01 00    |             LDA   #$0001         
+  602 |  1   SEG1B.S    581 | Code        | 00 |         |    1 | 00/03A4 : DA          |             PHX                  
+  603 |  1   SEG1B.S    582 | Code        | 00 |         |    1 | 00/03A5 : 48          |             PHA                  
+  604 |  1   SEG1B.S    583 | Code        | 00 |         |    2 | 00/03A6 : A6 FF       |             LDX   $FF            
+  605 |  1   SEG1B.S    584 | Code        | 00 |         |    2 | 00/03A8 : A5 FD       |             LDA   $FD            
+  606 |  1   SEG1B.S    585 | Code        | 00 |         |    1 | 00/03AA : 38          |             SEC                  
+  607 |  1   SEG1B.S    586 | Code        | 00 |E 3      |    4 | 00/03AB : 22 41 18 1A |             JSL   L1A186E        
+  608 |  1   SEG1B.S    587 | Code        | 00 |         |    2 | 00/03AF : A6 FB       |             LDX   $FB            
+  609 |  1   SEG1B.S    588 | Code        | 00 |         |    2 | 00/03B1 : A5 F9       |             LDA   $F9            
+  610 |  1   SEG1B.S    589 | Code        | 00 |E 3      |    4 | 00/03B3 : 22 D2 0E 1A |             JSL   L1A0EFF        
+  611 |  1   SEG1B.S    590 | Code        | 00 |         |    1 | 00/03B7 : 68          |             PLA                  
+  612 |  1   SEG1B.S    591 | Code        | 00 |         |    1 | 00/03B8 : FA          |             PLX                  
+  613 |  1   SEG1B.S    592 | Code        | 00 |         |    1 | 00/03B9 : 38          |             SEC                  
+  614 |  1   SEG1B.S    593 | Code        | 00 |E 3      |    4 | 00/03BA : 22 71 0F 1A |             JSL   L1A0F9E        
+  615 |  1   SEG1B.S    594 | Code        | 00 |         |    1 | 00/03BE : 7A          |             PLY                  
+  616 |  1   SEG1B.S    595 | Code        | 00 |         |    1 | 00/03BF : 7A          |             PLY                  
+  617 |  1   SEG1B.S    596 | Code        | 00 |         |    1 | 00/03C0 : A8          |             TAY                  
+  618 |  1   SEG1B.S    597 | Code        | 00 |         |    1 | 00/03C1 : 3B          |             TSC                  
+  619 |  1   SEG1B.S    598 | Code        | 00 |         |    1 | 00/03C2 : 18          |             CLC                  
+  620 |  1   SEG1B.S    599 | Code        | 00 |         |    3 | 00/03C3 : 69 06 00    |             ADC   #$0006         
+  621 |  1   SEG1B.S    600 | Code        | 00 |         |    1 | 00/03C6 : 1B          |             TCS                  
+  622 |  1   SEG1B.S    601 | Code        | 00 |         |    1 | 00/03C7 : 98          |             TYA                  
+  623 |  1   SEG1B.S    602 | Code        | 00 |         |    1 | 00/03C8 : 2B          |             PLD                  
+  624 |  1   SEG1B.S    603 | Code        | 00 |         |    1 | 00/03C9 : 6B          |             RTL                  
+  625 |  1   SEG1B.S    604 | Empty       | 00 |         |    0 | 00/03CA               |                                  
+  626 |  1   SEG1B.S    605 | Global      | 00 |         |    0 | 00/03CA               | L1B03D3     ENT                  
+  627 |  1   SEG1B.S    606 | Code        | 00 |         |    1 | 00/03CA : 0B          |             PHD                  
+  628 |  1   SEG1B.S    607 | Code        | 00 |         |    1 | 00/03CB : 3B          |             TSC                  
+  629 |  1   SEG1B.S    608 | Code        | 00 |         |    1 | 00/03CC : 38          |             SEC                  
+  630 |  1   SEG1B.S    609 | Code        | 00 |         |    3 | 00/03CD : E9 F7 00    |             SBC   #$00F7         
+  631 |  1   SEG1B.S    610 | Code        | 00 |         |    1 | 00/03D0 : 5B          |             TCD                  
+  632 |  1   SEG1B.S    611 | Code        | 00 |         |    3 | 00/03D1 : 69 F0 00    |             ADC   #$00F0         
+  633 |  1   SEG1B.S    612 | Code        | 00 |         |    1 | 00/03D4 : 1B          |             TCS                  
+  634 |  1   SEG1B.S    613 | Code        | 00 |         |    2 | 00/03D5 : A5 FF       |             LDA   $FF            
+  635 |  1   SEG1B.S    614 | Code        | 00 |         |    1 | 00/03D7 : 48          |             PHA                  
+  636 |  1   SEG1B.S    615 | Code        | 00 |         |    3 | 00/03D8 : A9 01 00    |             LDA   #$0001         
+  637 |  1   SEG1B.S    616 | Code        | 00 |         |    1 | 00/03DB : 48          |             PHA                  
+  638 |  1   SEG1B.S    617 | Code        | 00 |         |    2 | 00/03DC : A5 FF       |             LDA   $FF            
+  639 |  1   SEG1B.S    618 | Code        | 00 |         |    1 | 00/03DE : 38          |             SEC                  
+  640 |  1   SEG1B.S    619 | Code        | 00 |E 3      |    4 | 00/03DF : 22 1D 18 1A |             JSL   L1A184A        
+  641 |  1   SEG1B.S    620 | Code        | 00 |         |    2 | 00/03E3 : A5 FD       |             LDA   $FD            
+  642 |  1   SEG1B.S    621 | Code        | 00 |         |    1 | 00/03E5 : FA          |             PLX                  
+  643 |  1   SEG1B.S    622 | Code        | 00 |         |    2 | 00/03E6 : 86 F6       |             STX   $F6            
+  644 |  1   SEG1B.S    623 | Code        | 00 |         |    1 | 00/03E8 : 18          |             CLC                  
+  645 |  1   SEG1B.S    624 | Code        | 00 |         |    2 | 00/03E9 : 65 F6       |             ADC   $F6            
+  646 |  1   SEG1B.S    625 | Code        | 00 |         |    1 | 00/03EB : 38          |             SEC                  
+  647 |  1   SEG1B.S    626 | Code        | 00 |E 3      |    4 | 00/03EC : 22 EC 0E 1A |             JSL   L1A0F19        
+  648 |  1   SEG1B.S    627 | Code        | 00 |         |    1 | 00/03F0 : 7A          |             PLY                  
+  649 |  1   SEG1B.S    628 | Code        | 00 |         |    1 | 00/03F1 : A8          |             TAY                  
+  650 |  1   SEG1B.S    629 | Code        | 00 |         |    1 | 00/03F2 : 3B          |             TSC                  
+  651 |  1   SEG1B.S    630 | Code        | 00 |         |    1 | 00/03F3 : 18          |             CLC                  
+  652 |  1   SEG1B.S    631 | Code        | 00 |         |    3 | 00/03F4 : 69 06 00    |             ADC   #$0006         
+  653 |  1   SEG1B.S    632 | Code        | 00 |         |    1 | 00/03F7 : 1B          |             TCS                  
+  654 |  1   SEG1B.S    633 | Code        | 00 |         |    1 | 00/03F8 : 98          |             TYA                  
+  655 |  1   SEG1B.S    634 | Code        | 00 |         |    1 | 00/03F9 : 2B          |             PLD                  
+  656 |  1   SEG1B.S    635 | Code        | 00 |         |    1 | 00/03FA : 6B          |             RTL                  
+  657 |  1   SEG1B.S    636 | Empty       | 00 |         |    0 | 00/03FB               |                                  
+  658 |  1   SEG1B.S    637 | Global      | 00 |         |    0 | 00/03FB               | L1B0404     ENT                  
+  659 |  1   SEG1B.S    638 | Code        | 00 |         |    1 | 00/03FB : 0B          |             PHD                  
+  660 |  1   SEG1B.S    639 | Code        | 00 |         |    1 | 00/03FC : 3B          |             TSC                  
+  661 |  1   SEG1B.S    640 | Code        | 00 |         |    1 | 00/03FD : 38          |             SEC                  
+  662 |  1   SEG1B.S    641 | Code        | 00 |         |    3 | 00/03FE : E9 F1 00    |             SBC   #$00F1         
+  663 |  1   SEG1B.S    642 | Code        | 00 |         |    1 | 00/0401 : 5B          |             TCD                  
+  664 |  1   SEG1B.S    643 | Code        | 00 |         |    3 | 00/0402 : 69 E6 00    |             ADC   #$00E6         
+  665 |  1   SEG1B.S    644 | Code        | 00 |         |    1 | 00/0405 : 1B          |             TCS                  
+  666 |  1   SEG1B.S    645 | Code        | 00 |         |    2 | 00/0406 : A5 F7       |             LDA   $F7            
+  667 |  1   SEG1B.S    646 | Code        | 00 |         |    3 | 00/0408 : A2 00 00    |             LDX   #$0000         
+  668 |  1   SEG1B.S    647 | Code        | 00 |         |    1 | 00/040B : A8          |             TAY                  
+  669 |  1   SEG1B.S    648 | Code        | 00 |         |    2 | 00/040C : 10 01       |             BPL   L1B0418        
+  670 |  1   SEG1B.S    649 | Code        | 00 |         |    1 | 00/040E : CA          |             DEX                  
+  671 |  1   SEG1B.S    650 | Code        | 00 |         |    2 | 00/040F : 86 EA       | L1B0418     STX   $EA            
+  672 |  1   SEG1B.S    651 | Code        | 00 |         |    2 | 00/0411 : 85 E8       |             STA   $E8            
+  673 |  1   SEG1B.S    652 | Code        | 00 |         |    2 | 00/0413 : A5 F9       |             LDA   $F9            
+  674 |  1   SEG1B.S    653 | Code        | 00 |         |    3 | 00/0415 : A2 00 00    |             LDX   #$0000         
+  675 |  1   SEG1B.S    654 | Code        | 00 |         |    1 | 00/0418 : A8          |             TAY                  
+  676 |  1   SEG1B.S    655 | Code        | 00 |         |    2 | 00/0419 : 10 01       |             BPL   L1B0425        
+  677 |  1   SEG1B.S    656 | Code        | 00 |         |    1 | 00/041B : CA          |             DEX                  
+  678 |  1   SEG1B.S    657 | Code        | 00 |         |    1 | 00/041C : DA          | L1B0425     PHX                  
+  679 |  1   SEG1B.S    658 | Code        | 00 |         |    1 | 00/041D : 48          |             PHA                  
+  680 |  1   SEG1B.S    659 | Code        | 00 |         |    2 | 00/041E : A6 EA       |             LDX   $EA            
+  681 |  1   SEG1B.S    660 | Code        | 00 |         |    2 | 00/0420 : A5 E8       |             LDA   $E8            
+  682 |  1   SEG1B.S    661 | Code        | 00 |E 3      |    4 | 00/0422 : 22 62 10 1A |             JSL   L1A108F        
+  683 |  1   SEG1B.S    662 | Code        | 00 |         |    1 | 00/0426 : 68          |             PLA                  
+  684 |  1   SEG1B.S    663 | Code        | 00 |         |    1 | 00/0427 : FA          |             PLX                  
+  685 |  1   SEG1B.S    664 | Code        | 00 |         |    2 | 00/0428 : 86 EA       |             STX   $EA            
+  686 |  1   SEG1B.S    665 | Code        | 00 |         |    2 | 00/042A : 85 E8       |             STA   $E8            
+  687 |  1   SEG1B.S    666 | Code        | 00 |         |    2 | 00/042C : A5 FF       |             LDA   $FF            
+  688 |  1   SEG1B.S    667 | Code        | 00 |         |    1 | 00/042E : 38          |             SEC                  
+  689 |  1   SEG1B.S    668 | Code        | 00 |         |    2 | 00/042F : E5 FD       |             SBC   $FD            
+  690 |  1   SEG1B.S    669 | Code        | 00 |         |    3 | 00/0431 : A2 00 00    |             LDX   #$0000         
+  691 |  1   SEG1B.S    670 | Code        | 00 |         |    1 | 00/0434 : A8          |             TAY                  
+  692 |  1   SEG1B.S    671 | Code        | 00 |         |    2 | 00/0435 : 10 01       |             BPL   L1B0441        
+  693 |  1   SEG1B.S    672 | Code        | 00 |         |    1 | 00/0437 : CA          |             DEX                  
+  694 |  1   SEG1B.S    673 | Code        | 00 |         |    1 | 00/0438 : DA          | L1B0441     PHX                  
+  695 |  1   SEG1B.S    674 | Code        | 00 |         |    1 | 00/0439 : 48          |             PHA                  
+  696 |  1   SEG1B.S    675 | Code        | 00 |         |    2 | 00/043A : A6 EA       |             LDX   $EA            
+  697 |  1   SEG1B.S    676 | Code        | 00 |         |    2 | 00/043C : A5 E8       |             LDA   $E8            
+  698 |  1   SEG1B.S    677 | Code        | 00 |         |    1 | 00/043E : 38          |             SEC                  
+  699 |  1   SEG1B.S    678 | Code        | 00 |E 3      |    4 | 00/043F : 22 B2 10 1A |             JSL   L1A10DF        
+  700 |  1   SEG1B.S    679 | Code        | 00 |         |    1 | 00/0443 : 68          |             PLA                  
+  701 |  1   SEG1B.S    680 | Code        | 00 |         |    1 | 00/0444 : FA          |             PLX                  
+  702 |  1   SEG1B.S    681 | Code        | 00 |         |    2 | 00/0445 : 86 EA       |             STX   $EA            
+  703 |  1   SEG1B.S    682 | Code        | 00 |         |    2 | 00/0447 : 85 E8       |             STA   $E8            
+  704 |  1   SEG1B.S    683 | Code        | 00 |         |    2 | 00/0449 : A5 FB       |             LDA   $FB            
+  705 |  1   SEG1B.S    684 | Code        | 00 |         |    1 | 00/044B : 38          |             SEC                  
+  706 |  1   SEG1B.S    685 | Code        | 00 |         |    2 | 00/044C : E5 F9       |             SBC   $F9            
+  707 |  1   SEG1B.S    686 | Code        | 00 |         |    3 | 00/044E : A2 00 00    |             LDX   #$0000         
+  708 |  1   SEG1B.S    687 | Code        | 00 |         |    1 | 00/0451 : A8          |             TAY                  
+  709 |  1   SEG1B.S    688 | Code        | 00 |         |    2 | 00/0452 : 10 01       |             BPL   L1B045E        
+  710 |  1   SEG1B.S    689 | Code        | 00 |         |    1 | 00/0454 : CA          |             DEX                  
+  711 |  1   SEG1B.S    690 | Code        | 00 |         |    1 | 00/0455 : DA          | L1B045E     PHX                  
+  712 |  1   SEG1B.S    691 | Code        | 00 |         |    1 | 00/0456 : 48          |             PHA                  
+  713 |  1   SEG1B.S    692 | Code        | 00 |         |    2 | 00/0457 : A6 EA       |             LDX   $EA            
+  714 |  1   SEG1B.S    693 | Code        | 00 |         |    2 | 00/0459 : A5 E8       |             LDA   $E8            
+  715 |  1   SEG1B.S    694 | Code        | 00 |         |    1 | 00/045B : 38          |             SEC                  
+  716 |  1   SEG1B.S    695 | Code        | 00 |E 3      |    4 | 00/045C : 22 71 0F 1A |             JSL   L1A0F9E        
+  717 |  1   SEG1B.S    696 | Code        | 00 |         |    1 | 00/0460 : 7A          |             PLY                  
+  718 |  1   SEG1B.S    697 | Code        | 00 |         |    1 | 00/0461 : 7A          |             PLY                  
+  719 |  1   SEG1B.S    698 | Code        | 00 |         |    2 | 00/0462 : 86 EA       |             STX   $EA            
+  720 |  1   SEG1B.S    699 | Code        | 00 |         |    2 | 00/0464 : 85 E8       |             STA   $E8            
+  721 |  1   SEG1B.S    700 | Code        | 00 |         |    2 | 00/0466 : A5 FD       |             LDA   $FD            
+  722 |  1   SEG1B.S    701 | Code        | 00 |         |    3 | 00/0468 : A2 00 00    |             LDX   #$0000         
+  723 |  1   SEG1B.S    702 | Code        | 00 |         |    1 | 00/046B : A8          |             TAY                  
+  724 |  1   SEG1B.S    703 | Code        | 00 |         |    2 | 00/046C : 10 01       |             BPL   L1B0478        
+  725 |  1   SEG1B.S    704 | Code        | 00 |         |    1 | 00/046E : CA          |             DEX                  
+  726 |  1   SEG1B.S    705 | Code        | 00 |         |    1 | 00/046F : DA          | L1B0478     PHX                  
+  727 |  1   SEG1B.S    706 | Code        | 00 |         |    1 | 00/0470 : 48          |             PHA                  
+  728 |  1   SEG1B.S    707 | Code        | 00 |         |    2 | 00/0471 : A6 EA       |             LDX   $EA            
+  729 |  1   SEG1B.S    708 | Code        | 00 |         |    2 | 00/0473 : A5 E8       |             LDA   $E8            
+  730 |  1   SEG1B.S    709 | Code        | 00 |E 3      |    4 | 00/0475 : 22 D2 0E 1A |             JSL   L1A0EFF        
+  731 |  1   SEG1B.S    710 | Code        | 00 |         |    1 | 00/0479 : 68          |             PLA                  
+  732 |  1   SEG1B.S    711 | Code        | 00 |         |    1 | 00/047A : FA          |             PLX                  
+  733 |  1   SEG1B.S    712 | Code        | 00 |         |    1 | 00/047B : A8          |             TAY                  
+  734 |  1   SEG1B.S    713 | Code        | 00 |         |    1 | 00/047C : 3B          |             TSC                  
+  735 |  1   SEG1B.S    714 | Code        | 00 |         |    1 | 00/047D : 18          |             CLC                  
+  736 |  1   SEG1B.S    715 | Code        | 00 |         |    3 | 00/047E : 69 0A 00    |             ADC   #$000A         
+  737 |  1   SEG1B.S    716 | Code        | 00 |         |    1 | 00/0481 : 1B          |             TCS                  
+  738 |  1   SEG1B.S    717 | Code        | 00 |         |    1 | 00/0482 : 98          |             TYA                  
+  739 |  1   SEG1B.S    718 | Code        | 00 |         |    1 | 00/0483 : 2B          |             PLD                  
+  740 |  1   SEG1B.S    719 | Code        | 00 |         |    1 | 00/0484 : 6B          |             RTL                  
+  741 |  1   SEG1B.S    720 | Empty       | 00 |         |    0 | 00/0485               |                                  
+  742 |  1   SEG1B.S    721 | Empty       | 00 |         |    0 | 00/0485               |                                  
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

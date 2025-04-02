@@ -1,0 +1,618 @@
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File         Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1   SEG13.S      1 | Comment     | 11 |         |    0 | 00/0000               | *
+    2 |  1   SEG13.S      2 | Comment     | 11 |         |    0 | 00/0000               | * Shufflepuck Cafe
+    3 |  1   SEG13.S      3 | Comment     | 11 |         |    0 | 00/0000               | *
+    4 |  1   SEG13.S      4 | Comment     | 11 |         |    0 | 00/0000               | * (c) Broderbund Software
+    5 |  1   SEG13.S      5 | Comment     | 11 |         |    0 | 00/0000               | * (s) 2014, Brutal Deluxe Software
+    6 |  1   SEG13.S      6 | Comment     | 11 |         |    0 | 00/0000               | *
+    7 |  1   SEG13.S      7 | Empty       | 11 |         |    0 | 00/0000               |                                  
+    8 |  1   SEG13.S      8 | Directive   | 00 |         |    0 | 00/0000               |             mx    %00            
+    9 |  1   SEG13.S      9 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   10 |  1   SEG13.S     10 | Directive   | 00 |         |    0 | 00/0000               |             rel                  
+   11 |  1   SEG13.S     11 | Directive   | 00 |         |    0 | 00/0000               |             dsk   Seg13.L        
+   12 |  1   SEG13.S     12 | Directive   | 00 |         |    0 | 00/0000               |             lst   off            
+   13 |  1   SEG13.S     13 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   14 |  1   SEG13.S     14 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   15 |  1   SEG13.S     15 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   16 |  1   SEG13.S     16 | Directive   | 00 |         |    0 | 00/0000               |             use   Seg13.E        
+   17 |  2 Seg13.E.s      1 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   18 |  2 Seg13.E.s      2 | Comment     | 00 |         |    0 | 00/0000               | * TFBD generated equates
+   19 |  2 Seg13.E.s      3 | Comment     | 00 |         |    0 | 00/0000               | *    (c) PHC 1992,93
+   20 |  2 Seg13.E.s      4 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   21 |  2 Seg13.E.s      5 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   22 |  2 Seg13.E.s      6 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   23 |  1   SEG13.S     17 | Directive   | 00 |         |    0 | 00/0000               |             use   Seg13.X        
+   24 |  3 Seg13.X.s      1 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   25 |  3 Seg13.X.s      2 | Comment     | 00 |         |    0 | 00/0000               | * TFBD generated externals
+   26 |  3 Seg13.X.s      3 | Comment     | 00 |         |    0 | 00/0000               | *     (c) PHC 1992,93
+   27 |  3 Seg13.X.s      4 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   28 |  3 Seg13.X.s      5 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   29 |  3 Seg13.X.s      6 | External    | 00 |         |    0 | 00/0000               | PATCHROM    EXT                  
+   30 |  3 Seg13.X.s      7 | External    | 00 |         |    0 | 00/0000               | ROMFILE     EXT                  
+   31 |  3 Seg13.X.s      8 | External    | 00 |         |    0 | 00/0000               | PTRROM      EXT                  
+   32 |  3 Seg13.X.s      9 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   33 |  3 Seg13.X.s     10 | External    | 00 |         |    0 | 00/0000               | L0201E7     EXT                  
+   34 |  3 Seg13.X.s     11 | External    | 00 |         |    0 | 00/0000               | L040537     EXT                  
+   35 |  3 Seg13.X.s     12 | External    | 00 |         |    0 | 00/0000               | L033441     EXT                  
+   36 |  3 Seg13.X.s     13 | External    | 00 |         |    0 | 00/0000               | L03343F     EXT                  
+   37 |  3 Seg13.X.s     14 | External    | 00 |         |    0 | 00/0000               | L1A0DAA     EXT                  
+   38 |  3 Seg13.X.s     15 | External    | 00 |         |    0 | 00/0000               | L1A0E02     EXT                  
+   39 |  3 Seg13.X.s     16 | External    | 00 |         |    0 | 00/0000               | L1A0E95     EXT                  
+   40 |  3 Seg13.X.s     17 | External    | 00 |         |    0 | 00/0000               | L03343D     EXT                  
+   41 |  3 Seg13.X.s     18 | External    | 00 |         |    0 | 00/0000               | L1A184A     EXT                  
+   42 |  3 Seg13.X.s     19 | External    | 00 |         |    0 | 00/0000               | L1A109A     EXT                  
+   43 |  3 Seg13.X.s     20 | External    | 00 |         |    0 | 00/0000               | L02014D     EXT                  
+   44 |  3 Seg13.X.s     21 | External    | 00 |         |    0 | 00/0000               | L02014B     EXT                  
+   45 |  3 Seg13.X.s     22 | External    | 00 |         |    0 | 00/0000               | L02009B     EXT                  
+   46 |  3 Seg13.X.s     23 | External    | 00 |         |    0 | 00/0000               | L020099     EXT                  
+   47 |  3 Seg13.X.s     24 | External    | 00 |         |    0 | 00/0000               | L020106     EXT                  
+   48 |  3 Seg13.X.s     25 | External    | 00 |         |    0 | 00/0000               | L04039E     EXT                  
+   49 |  3 Seg13.X.s     26 | External    | 00 |         |    0 | 00/0000               | L05051F     EXT                  
+   50 |  3 Seg13.X.s     27 | External    | 00 |         |    0 | 00/0000               | L050542     EXT                  
+   51 |  3 Seg13.X.s     28 | External    | 00 |         |    0 | 00/0000               | L040514     EXT                  
+   52 |  3 Seg13.X.s     29 | External    | 00 |         |    0 | 00/0000               | L0200A2     EXT                  
+   53 |  3 Seg13.X.s     30 | External    | 00 |         |    0 | 00/0000               | L0200A0     EXT                  
+   54 |  3 Seg13.X.s     31 | External    | 00 |         |    0 | 00/0000               | L060000     EXT                  
+   55 |  3 Seg13.X.s     32 | External    | 00 |         |    0 | 00/0000               | L02011E     EXT                  
+   56 |  3 Seg13.X.s     33 | External    | 00 |         |    0 | 00/0000               | L03344B     EXT                  
+   57 |  3 Seg13.X.s     34 | External    | 00 |         |    0 | 00/0000               | L03344F     EXT                  
+   58 |  3 Seg13.X.s     35 | External    | 00 |         |    0 | 00/0000               | L03344D     EXT                  
+   59 |  3 Seg13.X.s     36 | External    | 00 |         |    0 | 00/0000               | L1C0764     EXT                  
+   60 |  3 Seg13.X.s     37 | External    | 00 |         |    0 | 00/0000               | L1004F3     EXT                  
+   61 |  3 Seg13.X.s     38 | External    | 00 |         |    0 | 00/0000               | L170178     EXT                  
+   62 |  3 Seg13.X.s     39 | External    | 00 |         |    0 | 00/0000               | L090036     EXT                  
+   63 |  3 Seg13.X.s     40 | External    | 00 |         |    0 | 00/0000               | L040344     EXT                  
+   64 |  3 Seg13.X.s     41 | External    | 00 |         |    0 | 00/0000               | L090091     EXT                  
+   65 |  3 Seg13.X.s     42 | External    | 00 |         |    0 | 00/0000               | L05008E     EXT                  
+   66 |  3 Seg13.X.s     43 | External    | 00 |         |    0 | 00/0000               | L05058F     EXT                  
+   67 |  3 Seg13.X.s     44 | External    | 00 |         |    0 | 00/0000               | L140000     EXT                  
+   68 |  3 Seg13.X.s     45 | External    | 00 |         |    0 | 00/0000               | L0803B6     EXT                  
+   69 |  3 Seg13.X.s     46 | External    | 00 |         |    0 | 00/0000               | L200000     EXT                  
+   70 |  3 Seg13.X.s     47 | External    | 00 |         |    0 | 00/0000               | L2402F0     EXT                  
+   71 |  3 Seg13.X.s     48 | External    | 00 |         |    0 | 00/0000               | L21013B     EXT                  
+   72 |  3 Seg13.X.s     49 | External    | 00 |         |    0 | 00/0000               | L1B0296     EXT                  
+   73 |  3 Seg13.X.s     50 | External    | 00 |         |    0 | 00/0000               | L040311     EXT                  
+   74 |  3 Seg13.X.s     51 | External    | 00 |         |    0 | 00/0000               | L230B1C     EXT                  
+   75 |  3 Seg13.X.s     52 | External    | 00 |         |    0 | 00/0000               | L19003E     EXT                  
+   76 |  3 Seg13.X.s     53 | External    | 00 |         |    0 | 00/0000               | L140206     EXT                  
+   77 |  3 Seg13.X.s     54 | External    | 00 |         |    0 | 00/0000               | L02009D     EXT                  
+   78 |  3 Seg13.X.s     55 | External    | 00 |         |    0 | 00/0000               | L02009F     EXT                  
+   79 |  3 Seg13.X.s     56 | External    | 00 |         |    0 | 00/0000               | L0320A4     EXT                  
+   80 |  3 Seg13.X.s     57 | External    | 00 |         |    0 | 00/0000               | L0320B1     EXT                  
+   81 |  3 Seg13.X.s     58 | External    | 00 |         |    0 | 00/0000               | L0320BC     EXT                  
+   82 |  3 Seg13.X.s     59 | External    | 00 |         |    0 | 00/0000               | L0320CD     EXT                  
+   83 |  3 Seg13.X.s     60 | External    | 00 |         |    0 | 00/0000               | L0320DF     EXT                  
+   84 |  3 Seg13.X.s     61 | External    | 00 |         |    0 | 00/0000               | L0320F2     EXT                  
+   85 |  3 Seg13.X.s     62 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   86 |  1   SEG13.S     18 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   87 |  1   SEG13.S     19 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   88 |  1   SEG13.S     20 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   89 |  1   SEG13.S     21 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Event.Macs   
+   90 |  1   SEG13.S     22 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Menu.Macs    
+   91 |  1   SEG13.S     23 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Qd.Macs      
+   92 |  1   SEG13.S     24 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Util.Macs    
+   93 |  1   SEG13.S     25 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   94 |  1   SEG13.S     26 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   95 |  1   SEG13.S     27 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   96 |  1   SEG13.S     28 | Global      | 00 |         |    0 | 00/0000               | L130000     ENT                  
+   97 |  1   SEG13.S     29 | Code        | 00 |         |    1 | 00/0000 : 0B          |             PHD                  
+   98 |  1   SEG13.S     30 | Code        | 00 |         |    1 | 00/0001 : 3B          |             TSC                  
+   99 |  1   SEG13.S     31 | Code        | 00 |         |    1 | 00/0002 : 38          |             SEC                  
+  100 |  1   SEG13.S     32 | Code        | 00 |         |    3 | 00/0003 : E9 FB 00    |             SBC   #$00FB         
+  101 |  1   SEG13.S     33 | Code        | 00 |         |    1 | 00/0006 : 5B          |             TCD                  
+  102 |  1   SEG13.S     34 | Code        | 00 |         |    3 | 00/0007 : 69 F4 00    |             ADC   #$00F4         
+  103 |  1   SEG13.S     35 | Code        | 00 |         |    1 | 00/000A : 1B          |             TCS                  
+  104 |  1   SEG13.S     36 | Code        | 00 |E 2      |    3 | 00/000B : AD 9E 00    |             LDA   L02009D        
+  105 |  1   SEG13.S     37 | Code        | 00 |         |    3 | 00/000E : C9 03 00    |             CMP   #$0003         
+  106 |  1   SEG13.S     38 | Code        | 00 |         |    2 | 00/0011 : D0 05       |             BNE   L13001A        
+  107 |  1   SEG13.S     39 | Code        | 00 |         |    3 | 00/0013 : A9 00 00    |             LDA   #$0000         
+  108 |  1   SEG13.S     40 | Code        | 00 |         |    2 | 00/0016 : 80 03       |             BRA   L13001D        
+  109 |  1   SEG13.S     41 | Comment     | 00 |         |    0 | 00/0018               | * BRA L13001D
+  110 |  1   SEG13.S     42 | Code        | 00 |         |    3 | 00/0018 : A9 01 00    | L13001A     LDA   #$0001         
+  111 |  1   SEG13.S     43 | Code        | 00 |         |    1 | 00/001B : A8          | L13001D     TAY                  
+  112 |  1   SEG13.S     44 | Code        | 00 |         |    1 | 00/001C : 3B          |             TSC                  
+  113 |  1   SEG13.S     45 | Code        | 00 |         |    1 | 00/001D : 18          |             CLC                  
+  114 |  1   SEG13.S     46 | Code        | 00 |         |    3 | 00/001E : 69 06 00    |             ADC   #$0006         
+  115 |  1   SEG13.S     47 | Code        | 00 |         |    1 | 00/0021 : 1B          |             TCS                  
+  116 |  1   SEG13.S     48 | Code        | 00 |         |    1 | 00/0022 : 98          |             TYA                  
+  117 |  1   SEG13.S     49 | Code        | 00 |         |    1 | 00/0023 : 2B          |             PLD                  
+  118 |  1   SEG13.S     50 | Code        | 00 |         |    1 | 00/0024 : 6B          |             RTL                  
+  119 |  1   SEG13.S     51 | Empty       | 00 |         |    0 | 00/0025               |                                  
+  120 |  1   SEG13.S     52 | Global      | 00 |         |    0 | 00/0025               | L130027     ENT                  
+  121 |  1   SEG13.S     53 | Code        | 00 |         |    1 | 00/0025 : 0B          |             PHD                  
+  122 |  1   SEG13.S     54 | Code        | 00 |         |    1 | 00/0026 : 3B          |             TSC                  
+  123 |  1   SEG13.S     55 | Code        | 00 |         |    1 | 00/0027 : 38          |             SEC                  
+  124 |  1   SEG13.S     56 | Code        | 00 |         |    3 | 00/0028 : E9 FB 00    |             SBC   #$00FB         
+  125 |  1   SEG13.S     57 | Code        | 00 |         |    1 | 00/002B : 5B          |             TCD                  
+  126 |  1   SEG13.S     58 | Code        | 00 |         |    3 | 00/002C : 69 F4 00    |             ADC   #$00F4         
+  127 |  1   SEG13.S     59 | Code        | 00 |         |    1 | 00/002F : 1B          |             TCS                  
+  128 |  1   SEG13.S     60 | Code        | 00 |         |    3 | 00/0030 : A9 02 00    |             LDA   #$0002         
+  129 |  1   SEG13.S     61 | Code        | 00 |E 2      |    3 | 00/0033 : 8D 9E 00    |             STA   L02009D        
+  130 |  1   SEG13.S     62 | Code        | 00 |         |    1 | 00/0036 : 3B          |             TSC                  
+  131 |  1   SEG13.S     63 | Code        | 00 |         |    1 | 00/0037 : 18          |             CLC                  
+  132 |  1   SEG13.S     64 | Code        | 00 |         |    3 | 00/0038 : 69 06 00    |             ADC   #$0006         
+  133 |  1   SEG13.S     65 | Code        | 00 |         |    1 | 00/003B : 1B          |             TCS                  
+  134 |  1   SEG13.S     66 | Code        | 00 |         |    1 | 00/003C : 2B          |             PLD                  
+  135 |  1   SEG13.S     67 | Code        | 00 |         |    1 | 00/003D : 6B          |             RTL                  
+  136 |  1   SEG13.S     68 | Empty       | 00 |         |    0 | 00/003E               |                                  
+  137 |  1   SEG13.S     69 | Global      | 00 |         |    0 | 00/003E               | L130040     ENT                  
+  138 |  1   SEG13.S     70 | Code        | 00 |         |    1 | 00/003E : 0B          |             PHD                  
+  139 |  1   SEG13.S     71 | Code        | 00 |         |    1 | 00/003F : 3B          |             TSC                  
+  140 |  1   SEG13.S     72 | Code        | 00 |         |    1 | 00/0040 : 38          |             SEC                  
+  141 |  1   SEG13.S     73 | Code        | 00 |         |    3 | 00/0041 : E9 FB 00    |             SBC   #$00FB         
+  142 |  1   SEG13.S     74 | Code        | 00 |         |    1 | 00/0044 : 5B          |             TCD                  
+  143 |  1   SEG13.S     75 | Code        | 00 |         |    3 | 00/0045 : 69 F4 00    |             ADC   #$00F4         
+  144 |  1   SEG13.S     76 | Code        | 00 |         |    1 | 00/0048 : 1B          |             TCS                  
+  145 |  1   SEG13.S     77 | Code        | 00 |         |    3 | 00/0049 : A9 03 00    |             LDA   #$0003         
+  146 |  1   SEG13.S     78 | Code        | 00 |E 2      |    3 | 00/004C : 8D 9E 00    |             STA   L02009D        
+  147 |  1   SEG13.S     79 | Code        | 00 |         |    1 | 00/004F : 3B          |             TSC                  
+  148 |  1   SEG13.S     80 | Code        | 00 |         |    1 | 00/0050 : 18          |             CLC                  
+  149 |  1   SEG13.S     81 | Code        | 00 |         |    3 | 00/0051 : 69 06 00    |             ADC   #$0006         
+  150 |  1   SEG13.S     82 | Code        | 00 |         |    1 | 00/0054 : 1B          |             TCS                  
+  151 |  1   SEG13.S     83 | Code        | 00 |         |    1 | 00/0055 : 2B          |             PLD                  
+  152 |  1   SEG13.S     84 | Code        | 00 |         |    1 | 00/0056 : 6B          |             RTL                  
+  153 |  1   SEG13.S     85 | Empty       | 00 |         |    0 | 00/0057               |                                  
+  154 |  1   SEG13.S     86 | Code        | 00 |         |    1 | 00/0057 : 0B          | L130059     PHD                  
+  155 |  1   SEG13.S     87 | Code        | 00 |         |    1 | 00/0058 : 3B          |             TSC                  
+  156 |  1   SEG13.S     88 | Code        | 00 |         |    1 | 00/0059 : 38          |             SEC                  
+  157 |  1   SEG13.S     89 | Code        | 00 |         |    3 | 00/005A : E9 F9 00    |             SBC   #$00F9         
+  158 |  1   SEG13.S     90 | Code        | 00 |         |    1 | 00/005D : 5B          |             TCD                  
+  159 |  1   SEG13.S     91 | Code        | 00 |         |    3 | 00/005E : 69 F2 00    |             ADC   #$00F2         
+  160 |  1   SEG13.S     92 | Code        | 00 |         |    1 | 00/0061 : 1B          |             TCS                  
+  161 |  1   SEG13.S     93 | Code        | 00 |         |    3 | 00/0062 : A9 01 00    |             LDA   #$0001         
+  162 |  1   SEG13.S     94 | Code        | 00 |E 2      |    3 | 00/0065 : 8D 9E 00    |             STA   L02009D        
+  163 |  1   SEG13.S     95 | Code        | 00 |         |    2 | 00/0068 : A5 FF       |             LDA   $FF            
+  164 |  1   SEG13.S     96 | Code        | 10 |         |    2 | 00/006A : E2 20       |             SEP   #$20           
+  165 |  1   SEG13.S     97 | Code        | 10 |E 2      |    3 | 00/006C : 8D A0 00    |             STA   L02009F        
+  166 |  1   SEG13.S     98 | Code        | 00 |         |    2 | 00/006F : C2 20       |             REP   #$20           
+  167 |  1   SEG13.S     99 | Code        | 00 |         |    1 | 00/0071 : 3B          |             TSC                  
+  168 |  1   SEG13.S    100 | Code        | 00 |         |    1 | 00/0072 : 18          |             CLC                  
+  169 |  1   SEG13.S    101 | Code        | 00 |         |    3 | 00/0073 : 69 06 00    |             ADC   #$0006         
+  170 |  1   SEG13.S    102 | Code        | 00 |         |    1 | 00/0076 : 1B          |             TCS                  
+  171 |  1   SEG13.S    103 | Code        | 00 |         |    1 | 00/0077 : 2B          |             PLD                  
+  172 |  1   SEG13.S    104 | Code        | 00 |         |    1 | 00/0078 : 6B          |             RTL                  
+  173 |  1   SEG13.S    105 | Empty       | 00 |         |    0 | 00/0079               |                                  
+  174 |  1   SEG13.S    106 | Global      | 00 |         |    0 | 00/0079               | L13007B     ENT                  
+  175 |  1   SEG13.S    107 | Code        | 00 |         |    1 | 00/0079 : 0B          |             PHD                  
+  176 |  1   SEG13.S    108 | Code        | 00 |         |    1 | 00/007A : 3B          |             TSC                  
+  177 |  1   SEG13.S    109 | Code        | 00 |         |    1 | 00/007B : 38          |             SEC                  
+  178 |  1   SEG13.S    110 | Code        | 00 |         |    3 | 00/007C : E9 FB 00    |             SBC   #$00FB         
+  179 |  1   SEG13.S    111 | Code        | 00 |         |    1 | 00/007F : 5B          |             TCD                  
+  180 |  1   SEG13.S    112 | Code        | 00 |         |    3 | 00/0080 : 69 F4 00    |             ADC   #$00F4         
+  181 |  1   SEG13.S    113 | Code        | 00 |         |    1 | 00/0083 : 1B          |             TCS                  
+  182 |  1   SEG13.S    114 | Code        | 00 |E 2      |    3 | 00/0084 : AD 9E 00    |             LDA   L02009D        
+  183 |  1   SEG13.S    115 | Code        | 00 |         |    3 | 00/0087 : C9 02 00    |             CMP   #$0002         
+  184 |  1   SEG13.S    116 | Code        | 00 |         |    2 | 00/008A : F0 0D       |             BEQ   L13009B        
+  185 |  1   SEG13.S    117 | Code        | 00 |E 2      |    3 | 00/008C : AD 9E 00    |             LDA   L02009D        
+  186 |  1   SEG13.S    118 | Code        | 00 |         |    3 | 00/008F : C9 03 00    |             CMP   #$0003         
+  187 |  1   SEG13.S    119 | Code        | 00 |         |    2 | 00/0092 : F0 05       |             BEQ   L13009B        
+  188 |  1   SEG13.S    120 | Code        | 00 |         |    3 | 00/0094 : A9 00 00    |             LDA   #$0000         
+  189 |  1   SEG13.S    121 | Code        | 00 |         |    2 | 00/0097 : 80 03       |             BRA   L13009E        
+  190 |  1   SEG13.S    122 | Code        | 00 |         |    3 | 00/0099 : A9 01 00    | L13009B     LDA   #$0001         
+  191 |  1   SEG13.S    123 | Code        | 00 |         |    1 | 00/009C : A8          | L13009E     TAY                  
+  192 |  1   SEG13.S    124 | Code        | 00 |         |    1 | 00/009D : 3B          |             TSC                  
+  193 |  1   SEG13.S    125 | Code        | 00 |         |    1 | 00/009E : 18          |             CLC                  
+  194 |  1   SEG13.S    126 | Code        | 00 |         |    3 | 00/009F : 69 06 00    |             ADC   #$0006         
+  195 |  1   SEG13.S    127 | Code        | 00 |         |    1 | 00/00A2 : 1B          |             TCS                  
+  196 |  1   SEG13.S    128 | Code        | 00 |         |    1 | 00/00A3 : 98          |             TYA                  
+  197 |  1   SEG13.S    129 | Code        | 00 |         |    1 | 00/00A4 : 2B          |             PLD                  
+  198 |  1   SEG13.S    130 | Code        | 00 |         |    1 | 00/00A5 : 6B          |             RTL                  
+  199 |  1   SEG13.S    131 | Empty       | 00 |         |    0 | 00/00A6               |                                  
+  200 |  1   SEG13.S    132 | Global      | 00 |         |    0 | 00/00A6               | L1300A8     ENT                  
+  201 |  1   SEG13.S    133 | Code        | 00 |         |    1 | 00/00A6 : 0B          |             PHD                  
+  202 |  1   SEG13.S    134 | Code        | 00 |         |    1 | 00/00A7 : 3B          |             TSC                  
+  203 |  1   SEG13.S    135 | Code        | 00 |         |    1 | 00/00A8 : 38          |             SEC                  
+  204 |  1   SEG13.S    136 | Code        | 00 |         |    3 | 00/00A9 : E9 FB 00    |             SBC   #$00FB         
+  205 |  1   SEG13.S    137 | Code        | 00 |         |    1 | 00/00AC : 5B          |             TCD                  
+  206 |  1   SEG13.S    138 | Code        | 00 |         |    3 | 00/00AD : 69 F2 00    |             ADC   #$00F2         
+  207 |  1   SEG13.S    139 | Code        | 00 |         |    1 | 00/00B0 : 1B          |             TCS                  
+  208 |  1   SEG13.S    140 | Code        | 00 |E 2      |    3 | 00/00B1 : AD 9E 00    |             LDA   L02009D        
+  209 |  1   SEG13.S    141 | Code        | 00 |         |    2 | 00/00B4 : D0 05       |             BNE   L1300BD        
+  210 |  1   SEG13.S    142 | Code        | 00 |         |    2 | 00/00B6 : 64 F4       |             STZ   $F4            
+  211 |  1   SEG13.S    143 | Code        | 00 |         |    3 | 00/00B8 : 82 88 00    |             BRL   L13014E        
+  212 |  1   SEG13.S    144 | Code        | 00 |         |    3 | 00/00BB : A9 01 00    | L1300BD     LDA   #$0001         
+  213 |  1   SEG13.S    145 | Code        | 00 |         |    2 | 00/00BE : 85 F4       |             STA   $F4            
+  214 |  1   SEG13.S    146 | Code        | 00 |E 2      |    3 | 00/00C0 : AD 9E 00    |             LDA   L02009D        
+  215 |  1   SEG13.S    147 | Code        | 00 |         |    1 | 00/00C3 : 48          |             PHA                  
+  216 |  1   SEG13.S    148 | Code        | 00 |E 1 >>16 |    3 | 00/00C4 : F4 00 00    |             PEA   ^L0320A4       
+  217 |  1   SEG13.S    149 | Code        | 00 |E 2      |    3 | 00/00C7 : F4 B1 20    |             PEA   L0320A4        
+  218 |  1   SEG13.S    150 | Code        | 00 |E 3      |    4 | 00/00CA : 22 80 0D 1A |             JSL   L1A0DAA        
+  219 |  1   SEG13.S    151 | Code        | 00 |         |    1 | 00/00CE : 7A          |             PLY                  
+  220 |  1   SEG13.S    152 | Code        | 00 |         |    1 | 00/00CF : 7A          |             PLY                  
+  221 |  1   SEG13.S    153 | Code        | 00 |         |    1 | 00/00D0 : 7A          |             PLY                  
+  222 |  1   SEG13.S    154 | Code        | 00 |E 2      |    3 | 00/00D1 : AD 9E 00    |             LDA   L02009D        
+  223 |  1   SEG13.S    155 | Code        | 00 |         |    3 | 00/00D4 : C9 01 00    |             CMP   #$0001         
+  224 |  1   SEG13.S    156 | Code        | 00 |         |    2 | 00/00D7 : F0 03       |             BEQ   L1300DE        
+  225 |  1   SEG13.S    157 | Code        | 00 |         |    3 | 00/00D9 : 82 49 00    |             BRL   L130130        
+  226 |  1   SEG13.S    158 | Code        | 00 |E 2      |    3 | 00/00DC : 9C 9E 00    | L1300DE     STZ   L02009D        
+  227 |  1   SEG13.S    159 | Code        | 00 |         |    3 | 00/00DF : A9 05 00    |             LDA   #$0005         
+  228 |  1   SEG13.S    160 | Code        | 00 |E 3      |    4 | 00/00E2 : 8F 4A 34 03 |             STAL  L03343D        
+  229 |  1   SEG13.S    161 | Code        | 00 |E 2      |    3 | 00/00E6 : AD A0 00    |             LDA   L02009F        
+  230 |  1   SEG13.S    162 | Code        | 00 |         |    3 | 00/00E9 : 29 FF 00    |             AND   #$00FF         
+  231 |  1   SEG13.S    163 | Code        | 00 |         |    3 | 00/00EC : A2 00 00    |             LDX   #$0000         
+  232 |  1   SEG13.S    164 | Code        | 00 |         |    1 | 00/00EF : 48          |             PHA                  
+  233 |  1   SEG13.S    165 | Code        | 00 |         |    1 | 00/00F0 : 8A          |             TXA                  
+  234 |  1   SEG13.S    166 | Code        | 00 |E 3      |    4 | 00/00F1 : 8F 4E 34 03 |             STAL  L033441        
+  235 |  1   SEG13.S    167 | Code        | 00 |         |    1 | 00/00F5 : 68          |             PLA                  
+  236 |  1   SEG13.S    168 | Code        | 00 |E 3      |    4 | 00/00F6 : 8F 4C 34 03 |             STAL  L03343F        
+  237 |  1   SEG13.S    169 | Code        | 00 |         |    3 | 00/00FA : A9 00 01    |             LDA   #$0100         
+  238 |  1   SEG13.S    170 | Code        | 00 |E 3      |    4 | 00/00FD : 8F 58 34 03 |             STAL  L03344B        
+  239 |  1   SEG13.S    171 | Code        | 00 |E 1 >>16 |    3 | 00/0101 : F4 00 00    |             PEA   ^L03343D       
+  240 |  1   SEG13.S    172 | Code        | 00 |E 2      |    3 | 00/0104 : F4 4A 34    |             PEA   L03343D        
+  241 |  1   SEG13.S    173 | Code        | 00 |         |    3 | 00/0107 : F4 00 00    |             PEA   $0000          
+  242 |  1   SEG13.S    174 | Code        | 00 |         |    3 | 00/010A : F4 00 00    |             PEA   $0000          
+  243 |  1   SEG13.S    175 | Macro       | 00 |         |    0 | 00/010D               |             _MenuKey                 
+  245 |  1   SEG13.S    175 | Code        | 00 |         |    3 | 00/010D : A2 0F 09    |             LDX   #$90F          ; load tool call #
+  246 |  1   SEG13.S    175 | Code        | 00 |         |    4 | 00/0110 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  247 |  1   SEG13.S    176 | Comment     | 00 |         |    0 | 00/0114               | * BCS L13011B
+  248 |  1   SEG13.S    177 | Comment     | 00 |         |    0 | 00/0114               | * LDA #$0000
+  249 |  1   SEG13.S    178 | Comment     | 00 |         |    0 | 00/0114               | *L13011B STAL L0201E7
+  250 |  1   SEG13.S    179 | Code        | 00 |E 3      |    4 | 00/0114 : AF 5C 34 03 |             LDAL  L03344F        
+  251 |  1   SEG13.S    180 | Code        | 00 |         |    1 | 00/0118 : AA          |             TAX                  
+  252 |  1   SEG13.S    181 | Code        | 00 |E 3      |    4 | 00/0119 : AF 5A 34 03 |             LDAL  L03344D        
+  253 |  1   SEG13.S    182 | Code        | 00 |         |    1 | 00/011D : DA          |             PHX                  
+  254 |  1   SEG13.S    183 | Code        | 00 |         |    1 | 00/011E : 48          |             PHA                  
+  255 |  1   SEG13.S    184 | Code        | 00 |E 3      |    4 | 00/011F : 22 20 06 1C |             JSL   L1C0764        
+  256 |  1   SEG13.S    185 | Code        | 00 |         |    1 | 00/0123 : 7A          |             PLY                  
+  257 |  1   SEG13.S    186 | Code        | 00 |         |    1 | 00/0124 : 7A          |             PLY                  
+  258 |  1   SEG13.S    187 | Code        | 00 |E 2      |    3 | 00/0125 : AD 9E 00    | L130130     LDA   L02009D        
+  259 |  1   SEG13.S    188 | Code        | 00 |         |    3 | 00/0128 : C9 03 00    |             CMP   #$0003         
+  260 |  1   SEG13.S    189 | Code        | 00 |         |    2 | 00/012B : D0 07       |             BNE   L13013F        
+  261 |  1   SEG13.S    190 | Code        | 00 |E 2      |    3 | 00/012D : 9C 9E 00    |             STZ   L02009D        
+  262 |  1   SEG13.S    191 | Code        | 00 |E 3      |    4 | 00/0130 : 22 CF 04 10 |             JSL   L1004F3        
+  263 |  1   SEG13.S    192 | Code        | 00 |E 2      |    3 | 00/0134 : AD 9E 00    | L13013F     LDA   L02009D        
+  264 |  1   SEG13.S    193 | Code        | 00 |         |    3 | 00/0137 : C9 02 00    |             CMP   #$0002         
+  265 |  1   SEG13.S    194 | Code        | 00 |         |    2 | 00/013A : D0 07       |             BNE   L13014E        
+  266 |  1   SEG13.S    195 | Code        | 00 |E 2      |    3 | 00/013C : 9C 9E 00    |             STZ   L02009D        
+  267 |  1   SEG13.S    196 | Code        | 00 |E 3      |    4 | 00/013F : 22 78 01 17 |             JSL   L170178        
+  268 |  1   SEG13.S    197 | Code        | 00 |         |    2 | 00/0143 : A5 F4       | L13014E     LDA   $F4            
+  269 |  1   SEG13.S    198 | Code        | 00 |         |    1 | 00/0145 : A8          |             TAY                  
+  270 |  1   SEG13.S    199 | Code        | 00 |         |    1 | 00/0146 : 3B          |             TSC                  
+  271 |  1   SEG13.S    200 | Code        | 00 |         |    1 | 00/0147 : 18          |             CLC                  
+  272 |  1   SEG13.S    201 | Code        | 00 |         |    3 | 00/0148 : 69 08 00    |             ADC   #$0008         
+  273 |  1   SEG13.S    202 | Code        | 00 |         |    1 | 00/014B : 1B          |             TCS                  
+  274 |  1   SEG13.S    203 | Code        | 00 |         |    1 | 00/014C : 98          |             TYA                  
+  275 |  1   SEG13.S    204 | Code        | 00 |         |    1 | 00/014D : 2B          |             PLD                  
+  276 |  1   SEG13.S    205 | Code        | 00 |         |    1 | 00/014E : 6B          |             RTL                  
+  277 |  1   SEG13.S    206 | Empty       | 00 |         |    0 | 00/014F               |                                  
+  278 |  1   SEG13.S    207 | Global      | 00 |         |    0 | 00/014F               | L13015A     ENT                  
+  279 |  1   SEG13.S    208 | Code        | 00 |         |    1 | 00/014F : 0B          |             PHD                  
+  280 |  1   SEG13.S    209 | Code        | 00 |         |    1 | 00/0150 : 3B          |             TSC                  
+  281 |  1   SEG13.S    210 | Code        | 00 |         |    1 | 00/0151 : 38          |             SEC                  
+  282 |  1   SEG13.S    211 | Code        | 00 |         |    3 | 00/0152 : E9 F9 00    |             SBC   #$00F9         
+  283 |  1   SEG13.S    212 | Code        | 00 |         |    1 | 00/0155 : 5B          |             TCD                  
+  284 |  1   SEG13.S    213 | Code        | 00 |         |    3 | 00/0156 : 69 F2 00    |             ADC   #$00F2         
+  285 |  1   SEG13.S    214 | Code        | 00 |         |    1 | 00/0159 : 1B          |             TCS                  
+  286 |  1   SEG13.S    215 | Code        | 00 |         |    3 | 00/015A : A9 03 00    |             LDA   #$0003         
+  287 |  1   SEG13.S    216 | Code        | 00 |         |    1 | 00/015D : 48          |             PHA                  
+  288 |  1   SEG13.S    217 | Code        | 00 |         |    2 | 00/015E : A5 FF       |             LDA   $FF            
+  289 |  1   SEG13.S    218 | Code        | 00 |         |    1 | 00/0160 : 48          |             PHA                  
+  290 |  1   SEG13.S    219 | Code        | 00 |         |    3 | 00/0161 : A9 05 00    |             LDA   #$0005         
+  291 |  1   SEG13.S    220 | Code        | 00 |         |    1 | 00/0164 : 38          |             SEC                  
+  292 |  1   SEG13.S    221 | Code        | 00 |E 3      |    4 | 00/0165 : 22 70 10 1A |             JSL   L1A109A        
+  293 |  1   SEG13.S    222 | Code        | 00 |         |    1 | 00/0169 : 68          |             PLA                  
+  294 |  1   SEG13.S    223 | Code        | 00 |         |    1 | 00/016A : 38          |             SEC                  
+  295 |  1   SEG13.S    224 | Code        | 00 |E 3      |    4 | 00/016B : 22 20 18 1A |             JSL   L1A184A        
+  296 |  1   SEG13.S    225 | Code        | 00 |         |    1 | 00/016F : 68          |             PLA                  
+  297 |  1   SEG13.S    226 | Code        | 00 |         |    1 | 00/0170 : A8          |             TAY                  
+  298 |  1   SEG13.S    227 | Code        | 00 |         |    1 | 00/0171 : 3B          |             TSC                  
+  299 |  1   SEG13.S    228 | Code        | 00 |         |    1 | 00/0172 : 18          |             CLC                  
+  300 |  1   SEG13.S    229 | Code        | 00 |         |    3 | 00/0173 : 69 06 00    |             ADC   #$0006         
+  301 |  1   SEG13.S    230 | Code        | 00 |         |    1 | 00/0176 : 1B          |             TCS                  
+  302 |  1   SEG13.S    231 | Code        | 00 |         |    1 | 00/0177 : 98          |             TYA                  
+  303 |  1   SEG13.S    232 | Code        | 00 |         |    1 | 00/0178 : 2B          |             PLD                  
+  304 |  1   SEG13.S    233 | Code        | 00 |         |    1 | 00/0179 : 6B          |             RTL                  
+  305 |  1   SEG13.S    234 | Empty       | 00 |         |    0 | 00/017A               |                                  
+  306 |  1   SEG13.S    235 | Global      | 00 |         |    0 | 00/017A               | L130185     ENT                  
+  307 |  1   SEG13.S    236 | Code        | 00 |         |    1 | 00/017A : 0B          |             PHD                  
+  308 |  1   SEG13.S    237 | Code        | 00 |         |    1 | 00/017B : 3B          |             TSC                  
+  309 |  1   SEG13.S    238 | Code        | 00 |         |    1 | 00/017C : 38          |             SEC                  
+  310 |  1   SEG13.S    239 | Code        | 00 |         |    3 | 00/017D : E9 FB 00    |             SBC   #$00FB         
+  311 |  1   SEG13.S    240 | Code        | 00 |         |    1 | 00/0180 : 5B          |             TCD                  
+  312 |  1   SEG13.S    241 | Code        | 00 |         |    3 | 00/0181 : 69 F0 00    |             ADC   #$00F0         
+  313 |  1   SEG13.S    242 | Code        | 00 |         |    1 | 00/0184 : 1B          |             TCS                  
+  314 |  1   SEG13.S    243 | Code        | 00 |E 1 >>16 |    3 | 00/0185 : F4 00 00    |             PEA   ^L0320B1       
+  315 |  1   SEG13.S    244 | Code        | 00 |E 2      |    3 | 00/0188 : F4 BE 20    |             PEA   L0320B1        
+  316 |  1   SEG13.S    245 | Code        | 00 |E 3      |    4 | 00/018B : 22 D8 0D 1A |             JSL   L1A0E02        
+  317 |  1   SEG13.S    246 | Code        | 00 |         |    1 | 00/018F : 7A          |             PLY                  
+  318 |  1   SEG13.S    247 | Code        | 00 |         |    1 | 00/0190 : 7A          |             PLY                  
+  319 |  1   SEG13.S    248 | Code        | 00 |E 3      |    4 | 00/0191 : 22 36 00 09 |             JSL   L090036        
+  320 |  1   SEG13.S    249 | Code        | 00 |E 3      |    4 | 00/0195 : 22 0E 03 04 |             JSL   L040344        
+  321 |  1   SEG13.S    250 | Code        | 00 |         |    3 | 00/0199 : F4 00 00    |             PEA   $0000          
+  322 |  1   SEG13.S    251 | Code        | 00 |E 3      |    4 | 00/019C : 22 91 00 09 |             JSL   L090091        
+  323 |  1   SEG13.S    252 | Code        | 00 |         |    1 | 00/01A0 : 7A          |             PLY                  
+  324 |  1   SEG13.S    253 | Code        | 00 |E 3      |    4 | 00/01A1 : 22 8E 00 05 |             JSL   L05008E        
+  325 |  1   SEG13.S    254 | Macro       | 00 |         |    0 | 00/01A5               |             _InitCursor                 
+  327 |  1   SEG13.S    254 | Code        | 00 |         |    3 | 00/01A5 : A2 04 CA    |             LDX   #$CA04         ; load tool call #
+  328 |  1   SEG13.S    254 | Code        | 00 |         |    4 | 00/01A8 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  329 |  1   SEG13.S    255 | Comment     | 00 |         |    0 | 00/01AC               | * BCS L1301BC
+  330 |  1   SEG13.S    256 | Comment     | 00 |         |    0 | 00/01AC               | * LDA #$0000
+  331 |  1   SEG13.S    257 | Comment     | 00 |         |    0 | 00/01AC               | *L1301BC STAL L0201E7
+  332 |  1   SEG13.S    258 | Macro       | 00 |         |    0 | 00/01AC               |             _HideCursor                 
+  334 |  1   SEG13.S    258 | Code        | 00 |         |    3 | 00/01AC : A2 04 90    |             LDX   #$9004         ; load tool call #
+  335 |  1   SEG13.S    258 | Code        | 00 |         |    4 | 00/01AF : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  336 |  1   SEG13.S    259 | Comment     | 00 |         |    0 | 00/01B3               | * BCS L1301CC
+  337 |  1   SEG13.S    260 | Comment     | 00 |         |    0 | 00/01B3               | * LDA #$0000
+  338 |  1   SEG13.S    261 | Comment     | 00 |         |    0 | 00/01B3               | *L1301CC STAL L0201E7
+  339 |  1   SEG13.S    262 | Empty       | 00 |         |    0 | 00/01B3               |                                  
+  340 |  1   SEG13.S    263 | Comment     | 00 |         |    0 | 00/01B3               | *--- Patch for ROM3 random values
+  341 |  1   SEG13.S    264 | Empty       | 00 |         |    0 | 00/01B3               |                                  
+  342 |  1   SEG13.S    265 | Code        | 00 |E 2      |    3 | 00/01B3 : AD AE 01    |             lda   PTRROM+2       ; already loaded?
+  343 |  1   SEG13.S    266 | Code        | 00 |E 2      |    3 | 00/01B6 : 0D AC 01    |             ora   PTRROM         
+  344 |  1   SEG13.S    267 | Code        | 00 |         |    2 | 00/01B9 : D0 5A       |             bne   noPATCH        
+  345 |  1   SEG13.S    268 | Empty       | 00 |         |    0 | 00/01BB               |                                  
+  346 |  1   SEG13.S    269 | Code        | 00 |E 1 >>16 |    3 | 00/01BB : F4 00 00    |             PEA   ^ROMFILE       ; no load it
+  347 |  1   SEG13.S    270 | Code        | 00 |E 2      |    3 | 00/01BE : F4 8E 1D    |             PEA   ROMFILE        
+  348 |  1   SEG13.S    271 | Code        | 00 |E 3      |    4 | 00/01C1 : 22 42 05 05 |             JSL   L050542        
+  349 |  1   SEG13.S    272 | Code        | 00 |         |    1 | 00/01C5 : 7A          |             PLY                  
+  350 |  1   SEG13.S    273 | Code        | 00 |         |    1 | 00/01C6 : 7A          |             PLY                  
+  351 |  1   SEG13.S    274 | Code        | 00 |E 2      |    3 | 00/01C7 : 8E AE 01    |             STX   PTRROM+2       
+  352 |  1   SEG13.S    275 | Code        | 00 |E 2      |    3 | 00/01CA : 8D AC 01    |             STA   PTRROM         
+  353 |  1   SEG13.S    276 | Empty       | 00 |         |    0 | 00/01CD               |                                  
+  354 |  1   SEG13.S    277 | Code        | 00 |E 2      |    3 | 00/01CD : AD AC 01    |             lda   PTRROM         ; table 1
+  355 |  1   SEG13.S    278 | Code        | 00 |         |    1 | 00/01D0 : 18          |             clc                  
+  356 |  1   SEG13.S    279 | Code        | 00 |         |    3 | 00/01D1 : 69 00 0F    |             adc   #$0F00         
+  357 |  1   SEG13.S    280 | Code        | 00 |E 3      |    4 | 00/01D4 : 8F 85 00 09 |             stal  PATCHROM+1     
+  358 |  1   SEG13.S    281 | Code        | 10 |         |    2 | 00/01D8 : E2 20       |             sep   #$20           
+  359 |  1   SEG13.S    282 | Code        | 10 |E 2      |    3 | 00/01DA : AD AE 01    |             lda   PTRROM+2       
+  360 |  1   SEG13.S    283 | Code        | 10 |         |    2 | 00/01DD : 69 00       |             adc   #0             
+  361 |  1   SEG13.S    284 | Code        | 10 |E 3      |    4 | 00/01DF : 8F 87 00 09 |             stal  PATCHROM+3     
+  362 |  1   SEG13.S    285 | Code        | 00 |         |    2 | 00/01E3 : C2 20       |             rep   #$20           
+  363 |  1   SEG13.S    286 | Empty       | 00 |         |    0 | 00/01E5               |                                  
+  364 |  1   SEG13.S    287 | Code        | 00 |E 2      |    3 | 00/01E5 : AD AC 01    |             lda   PTRROM         ; table 2
+  365 |  1   SEG13.S    288 | Code        | 00 |         |    1 | 00/01E8 : 18          |             clc                  
+  366 |  1   SEG13.S    289 | Code        | 00 |         |    3 | 00/01E9 : 69 00 7F    |             adc   #$7F00         
+  367 |  1   SEG13.S    290 | Code        | 00 |E 3      |    4 | 00/01EC : 8F 89 00 09 |             stal  PATCHROM+5     
+  368 |  1   SEG13.S    291 | Code        | 10 |         |    2 | 00/01F0 : E2 20       |             sep   #$20           
+  369 |  1   SEG13.S    292 | Code        | 10 |E 2      |    3 | 00/01F2 : AD AE 01    |             lda   PTRROM+2       
+  370 |  1   SEG13.S    293 | Code        | 10 |         |    2 | 00/01F5 : 69 00       |             adc   #0             
+  371 |  1   SEG13.S    294 | Code        | 10 |E 3      |    4 | 00/01F7 : 8F 8B 00 09 |             stal  PATCHROM+7     
+  372 |  1   SEG13.S    295 | Code        | 00 |         |    2 | 00/01FB : C2 20       |             rep   #$20           
+  373 |  1   SEG13.S    296 | Empty       | 00 |         |    0 | 00/01FD               |                                  
+  374 |  1   SEG13.S    297 | Code        | 00 |E 2      |    3 | 00/01FD : AD AC 01    |             lda   PTRROM         ; table 3
+  375 |  1   SEG13.S    298 | Code        | 00 |         |    1 | 00/0200 : 18          |             clc                  
+  376 |  1   SEG13.S    299 | Code        | 00 |         |    3 | 00/0201 : 69 00 F0    |             adc   #$F000         
+  377 |  1   SEG13.S    300 | Code        | 00 |E 3      |    4 | 00/0204 : 8F 8D 00 09 |             stal  PATCHROM+9     
+  378 |  1   SEG13.S    301 | Code        | 10 |         |    2 | 00/0208 : E2 20       |             sep   #$20           
+  379 |  1   SEG13.S    302 | Code        | 10 |E 2      |    3 | 00/020A : AD AE 01    |             lda   PTRROM+2       
+  380 |  1   SEG13.S    303 | Code        | 10 |         |    2 | 00/020D : 69 00       |             adc   #0             
+  381 |  1   SEG13.S    304 | Code        | 10 |E 3      |    4 | 00/020F : 8F 8F 00 09 |             stal  PATCHROM+11    
+  382 |  1   SEG13.S    305 | Code        | 00 |         |    2 | 00/0213 : C2 20       |             rep   #$20           
+  383 |  1   SEG13.S    306 | Empty       | 00 |         |    0 | 00/0215               |                                  
+  384 |  1   SEG13.S    307 | Comment     | 00 |         |    0 | 00/0215               | *---
+  385 |  1   SEG13.S    308 | Empty       | 00 |         |    0 | 00/0215               |                                  
+  386 |  1   SEG13.S    309 | Code        | 00 |         |    3 | 00/0215 : F4 00 00    | noPATCH     PEA   $0000          
+  387 |  1   SEG13.S    310 | Code        | 00 |         |    3 | 00/0218 : F4 20 7D    |             PEA   $7D20          
+  388 |  1   SEG13.S    311 | Code        | 00 |E 3      |    4 | 00/021B : 22 9F 04 04 |             JSL   L040514        
+  389 |  1   SEG13.S    312 | Code        | 00 |         |    1 | 00/021F : 7A          |             PLY                  
+  390 |  1   SEG13.S    313 | Code        | 00 |         |    1 | 00/0220 : 7A          |             PLY                  
+  391 |  1   SEG13.S    314 | Code        | 00 |E 2      |    3 | 00/0221 : 8E 4E 01    |             STX   L02014D        
+  392 |  1   SEG13.S    315 | Code        | 00 |E 2      |    3 | 00/0224 : 8D 4C 01    |             STA   L02014B        
+  393 |  1   SEG13.S    316 | Code        | 00 |         |    3 | 00/0227 : A2 E1 00    |             LDX   #$00E1         
+  394 |  1   SEG13.S    317 | Code        | 00 |         |    3 | 00/022A : A9 00 20    |             LDA   #$2000         
+  395 |  1   SEG13.S    318 | Code        | 00 |E 2      |    3 | 00/022D : 8E A3 00    |             STX   L0200A2        
+  396 |  1   SEG13.S    319 | Code        | 00 |E 2      |    3 | 00/0230 : 8D A1 00    |             STA   L0200A0        
+  397 |  1   SEG13.S    320 | Code        | 00 |E 1 >>16 |    3 | 00/0233 : F4 00 00    |             PEA   ^L0320BC       
+  398 |  1   SEG13.S    321 | Code        | 00 |E 2      |    3 | 00/0236 : F4 C9 20    |             PEA   L0320BC        
+  399 |  1   SEG13.S    322 | Code        | 00 |E 3      |    4 | 00/0239 : 22 42 05 05 |             JSL   L050542        
+  400 |  1   SEG13.S    323 | Code        | 00 |         |    1 | 00/023D : 7A          |             PLY                  
+  401 |  1   SEG13.S    324 | Code        | 00 |         |    1 | 00/023E : 7A          |             PLY                  
+  402 |  1   SEG13.S    325 | Code        | 00 |         |    2 | 00/023F : 86 F4       |             STX   $F4            
+  403 |  1   SEG13.S    326 | Code        | 00 |         |    2 | 00/0241 : 85 F2       |             STA   $F2            
+  404 |  1   SEG13.S    327 | Code        | 00 |E 2      |    3 | 00/0243 : AE 4E 01    |             LDX   L02014D        
+  405 |  1   SEG13.S    328 | Code        | 00 |E 2      |    3 | 00/0246 : AD 4C 01    |             LDA   L02014B        
+  406 |  1   SEG13.S    329 | Code        | 00 |         |    1 | 00/0249 : DA          |             PHX                  
+  407 |  1   SEG13.S    330 | Code        | 00 |         |    1 | 00/024A : 48          |             PHA                  
+  408 |  1   SEG13.S    331 | Code        | 00 |         |    2 | 00/024B : D4 F4       |             PEI   $F4            
+  409 |  1   SEG13.S    332 | Code        | 00 |         |    2 | 00/024D : D4 F2       |             PEI   $F2            
+  410 |  1   SEG13.S    333 | Code        | 00 |E 3      |    4 | 00/024F : 22 8F 05 05 |             JSL   L05058F        
+  411 |  1   SEG13.S    334 | Code        | 00 |         |    1 | 00/0253 : 7A          |             PLY                  
+  412 |  1   SEG13.S    335 | Code        | 00 |         |    1 | 00/0254 : 7A          |             PLY                  
+  413 |  1   SEG13.S    336 | Code        | 00 |         |    1 | 00/0255 : 7A          |             PLY                  
+  414 |  1   SEG13.S    337 | Code        | 00 |         |    1 | 00/0256 : 7A          |             PLY                  
+  415 |  1   SEG13.S    338 | Code        | 00 |E 3      |    4 | 00/0257 : 22 00 00 06 |             JSL   L060000        
+  416 |  1   SEG13.S    339 | Code        | 00 |E 3      |    4 | 00/025B : 22 00 00 14 |             JSL   L140000        
+  417 |  1   SEG13.S    340 | Code        | 00 |         |    2 | 00/025F : D4 F4       |             PEI   $F4            
+  418 |  1   SEG13.S    341 | Code        | 00 |         |    2 | 00/0261 : D4 F2       |             PEI   $F2            
+  419 |  1   SEG13.S    342 | Code        | 00 |E 3      |    4 | 00/0263 : 22 C2 04 04 |             JSL   L040537        
+  420 |  1   SEG13.S    343 | Code        | 00 |         |    1 | 00/0267 : 7A          |             PLY                  
+  421 |  1   SEG13.S    344 | Code        | 00 |         |    1 | 00/0268 : 7A          |             PLY                  
+  422 |  1   SEG13.S    345 | Code        | 00 |E 3      |    4 | 00/0269 : 22 B6 03 08 |             JSL   L0803B6        
+  423 |  1   SEG13.S    346 | Code        | 00 |E 3      |    4 | 00/026D : 22 00 00 20 |             JSL   L200000        
+  424 |  1   SEG13.S    347 | Code        | 00 |E 3      |    4 | 00/0271 : 22 96 02 24 |             JSL   L2402F0        
+  425 |  1   SEG13.S    348 | Code        | 00 |E 3      |    4 | 00/0275 : 22 3B 01 21 |             JSL   L21013B        
+  426 |  1   SEG13.S    349 | Code        | 00 |E 3      |    4 | 00/0279 : 22 96 02 1B |             JSL   L1B0296        
+  427 |  1   SEG13.S    350 | Code        | 00 |E 1 >>16 |    3 | 00/027D : F4 00 00    |             PEA   ^L0320CD       
+  428 |  1   SEG13.S    351 | Code        | 00 |E 2      |    3 | 00/0280 : F4 DA 20    |             PEA   L0320CD        
+  429 |  1   SEG13.S    352 | Code        | 00 |E 3      |    4 | 00/0283 : 22 42 05 05 |             JSL   L050542        
+  430 |  1   SEG13.S    353 | Code        | 00 |         |    1 | 00/0287 : 7A          |             PLY                  
+  431 |  1   SEG13.S    354 | Code        | 00 |         |    1 | 00/0288 : 7A          |             PLY                  
+  432 |  1   SEG13.S    355 | Code        | 00 |         |    2 | 00/0289 : 86 F4       |             STX   $F4            
+  433 |  1   SEG13.S    356 | Code        | 00 |         |    2 | 00/028B : 85 F2       |             STA   $F2            
+  434 |  1   SEG13.S    357 | Code        | 00 |E 2      |    3 | 00/028D : AE 4E 01    |             LDX   L02014D        
+  435 |  1   SEG13.S    358 | Code        | 00 |E 2      |    3 | 00/0290 : AD 4C 01    |             LDA   L02014B        
+  436 |  1   SEG13.S    359 | Code        | 00 |         |    1 | 00/0293 : DA          |             PHX                  
+  437 |  1   SEG13.S    360 | Code        | 00 |         |    1 | 00/0294 : 48          |             PHA                  
+  438 |  1   SEG13.S    361 | Code        | 00 |         |    2 | 00/0295 : D4 F4       |             PEI   $F4            
+  439 |  1   SEG13.S    362 | Code        | 00 |         |    2 | 00/0297 : D4 F2       |             PEI   $F2            
+  440 |  1   SEG13.S    363 | Code        | 00 |E 3      |    4 | 00/0299 : 22 8F 05 05 |             JSL   L05058F        
+  441 |  1   SEG13.S    364 | Code        | 00 |         |    1 | 00/029D : 7A          |             PLY                  
+  442 |  1   SEG13.S    365 | Code        | 00 |         |    1 | 00/029E : 7A          |             PLY                  
+  443 |  1   SEG13.S    366 | Code        | 00 |         |    1 | 00/029F : 7A          |             PLY                  
+  444 |  1   SEG13.S    367 | Code        | 00 |         |    1 | 00/02A0 : 7A          |             PLY                  
+  445 |  1   SEG13.S    368 | Code        | 00 |         |    2 | 00/02A1 : D4 F4       |             PEI   $F4            
+  446 |  1   SEG13.S    369 | Code        | 00 |         |    2 | 00/02A3 : D4 F2       |             PEI   $F2            
+  447 |  1   SEG13.S    370 | Code        | 00 |E 3      |    4 | 00/02A5 : 22 C2 04 04 |             JSL   L040537        
+  448 |  1   SEG13.S    371 | Code        | 00 |         |    1 | 00/02A9 : 7A          |             PLY                  
+  449 |  1   SEG13.S    372 | Code        | 00 |         |    1 | 00/02AA : 7A          |             PLY                  
+  450 |  1   SEG13.S    373 | Code        | 00 |E 3      |    4 | 00/02AB : 22 00 00 06 |             JSL   L060000        
+  451 |  1   SEG13.S    374 | Code        | 00 |E 2      |    3 | 00/02AF : AE 4E 01    |             LDX   L02014D        
+  452 |  1   SEG13.S    375 | Code        | 00 |E 2      |    3 | 00/02B2 : AD 4C 01    |             LDA   L02014B        
+  453 |  1   SEG13.S    376 | Code        | 00 |         |    1 | 00/02B5 : 18          |             CLC                  
+  454 |  1   SEG13.S    377 | Code        | 00 |         |    3 | 00/02B6 : 69 20 00    |             ADC   #$0020         
+  455 |  1   SEG13.S    378 | Code        | 00 |         |    1 | 00/02B9 : 48          |             PHA                  
+  456 |  1   SEG13.S    379 | Code        | 00 |         |    1 | 00/02BA : 8A          |             TXA                  
+  457 |  1   SEG13.S    380 | Code        | 00 |         |    3 | 00/02BB : 69 00 00    |             ADC   #$0000         
+  458 |  1   SEG13.S    381 | Code        | 00 |         |    1 | 00/02BE : AA          |             TAX                  
+  459 |  1   SEG13.S    382 | Code        | 00 |         |    1 | 00/02BF : 68          |             PLA                  
+  460 |  1   SEG13.S    383 | Code        | 00 |         |    1 | 00/02C0 : DA          |             PHX                  
+  461 |  1   SEG13.S    384 | Code        | 00 |         |    1 | 00/02C1 : 48          |             PHA                  
+  462 |  1   SEG13.S    385 | Code        | 00 |E 3      |    4 | 00/02C2 : 22 5F 03 04 |             JSL   L04039E        
+  463 |  1   SEG13.S    386 | Code        | 00 |         |    1 | 00/02C6 : 7A          |             PLY                  
+  464 |  1   SEG13.S    387 | Code        | 00 |         |    1 | 00/02C7 : 7A          |             PLY                  
+  465 |  1   SEG13.S    388 | Code        | 00 |E 3      |    4 | 00/02C8 : 22 00 00 14 |             JSL   L140000        
+  466 |  1   SEG13.S    389 | Code        | 00 |E 1 >>16 |    3 | 00/02CC : F4 00 00    |             PEA   ^L0320DF       
+  467 |  1   SEG13.S    390 | Code        | 00 |E 2      |    3 | 00/02CF : F4 EC 20    |             PEA   L0320DF        
+  468 |  1   SEG13.S    391 | Code        | 00 |E 3      |    4 | 00/02D2 : 22 1F 05 05 |             JSL   L05051F        
+  469 |  1   SEG13.S    392 | Code        | 00 |         |    1 | 00/02D6 : 7A          |             PLY                  
+  470 |  1   SEG13.S    393 | Code        | 00 |         |    1 | 00/02D7 : 7A          |             PLY                  
+  471 |  1   SEG13.S    394 | Code        | 00 |E 2      |    3 | 00/02D8 : 8E 9C 00    |             STX   L02009B        
+  472 |  1   SEG13.S    395 | Code        | 00 |E 2      |    3 | 00/02DB : 8D 9A 00    |             STA   L020099        
+  473 |  1   SEG13.S    396 | Code        | 00 |E 3      |    4 | 00/02DE : 22 CF 04 10 |             JSL   L1004F3        
+  474 |  1   SEG13.S    397 | Code        | 00 |E 3      |    4 | 00/02E2 : 22 6B 0E 1A |             JSL   L1A0E95        
+  475 |  1   SEG13.S    398 | Code        | 00 |         |    1 | 00/02E6 : 3B          |             TSC                  
+  476 |  1   SEG13.S    399 | Code        | 00 |         |    1 | 00/02E7 : 18          |             CLC                  
+  477 |  1   SEG13.S    400 | Code        | 00 |         |    3 | 00/02E8 : 69 0A 00    |             ADC   #$000A         
+  478 |  1   SEG13.S    401 | Code        | 00 |         |    1 | 00/02EB : 1B          |             TCS                  
+  479 |  1   SEG13.S    402 | Code        | 00 |         |    1 | 00/02EC : 2B          |             PLD                  
+  480 |  1   SEG13.S    403 | Code        | 00 |         |    1 | 00/02ED : 6B          |             RTL                  
+  481 |  1   SEG13.S    404 | Empty       | 00 |         |    0 | 00/02EE               |                                  
+  482 |  1   SEG13.S    405 | Global      | 00 |         |    0 | 00/02EE               | L1302A9     ENT                  
+  483 |  1   SEG13.S    406 | Code        | 00 |         |    1 | 00/02EE : 0B          |             PHD                  
+  484 |  1   SEG13.S    407 | Code        | 00 |         |    1 | 00/02EF : 3B          |             TSC                  
+  485 |  1   SEG13.S    408 | Code        | 00 |         |    1 | 00/02F0 : 38          |             SEC                  
+  486 |  1   SEG13.S    409 | Code        | 00 |         |    3 | 00/02F1 : E9 FB 00    |             SBC   #$00FB         
+  487 |  1   SEG13.S    410 | Code        | 00 |         |    1 | 00/02F4 : 5B          |             TCD                  
+  488 |  1   SEG13.S    411 | Code        | 00 |         |    3 | 00/02F5 : 69 F2 00    |             ADC   #$00F2         
+  489 |  1   SEG13.S    412 | Code        | 00 |         |    1 | 00/02F8 : 1B          |             TCS                  
+  490 |  1   SEG13.S    413 | Code        | 00 |         |    1 | 00/02F9 : 48          |             PHA                  
+  491 |  1   SEG13.S    414 | Code        | 00 |         |    3 | 00/02FA : F4 08 00    |             PEA   $0008          
+  492 |  1   SEG13.S    415 | Code        | 00 |E 1 >>16 |    3 | 00/02FD : F4 00 00    |             PEA   ^L03343D       
+  493 |  1   SEG13.S    416 | Code        | 00 |E 2      |    3 | 00/0300 : F4 4A 34    |             PEA   L03343D        
+  494 |  1   SEG13.S    417 | Macro       | 00 |         |    0 | 00/0303               |             _GetNextEvent                 
+  496 |  1   SEG13.S    417 | Code        | 00 |         |    3 | 00/0303 : A2 06 0A    |             LDX   #$A06          ; load tool call #
+  497 |  1   SEG13.S    417 | Code        | 00 |         |    4 | 00/0306 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  498 |  1   SEG13.S    418 | Comment     | 00 |         |    0 | 00/030A               | * BCS L1302CA
+  499 |  1   SEG13.S    419 | Comment     | 00 |         |    0 | 00/030A               | * LDA #$0000
+  500 |  1   SEG13.S    420 | Comment     | 00 |         |    0 | 00/030A               | *L1302CA STAL L0201E7
+  501 |  1   SEG13.S    421 | Code        | 00 |         |    1 | 00/030A : 68          |             PLA                  
+  502 |  1   SEG13.S    422 | Code        | 00 |         |    1 | 00/030B : A8          |             TAY                  
+  503 |  1   SEG13.S    423 | Code        | 00 |         |    2 | 00/030C : D0 03       |             BNE   L1302D5        
+  504 |  1   SEG13.S    424 | Code        | 00 |         |    3 | 00/030E : 82 53 00    |             BRL   L130328        
+  505 |  1   SEG13.S    425 | Code        | 00 |E 3      |    4 | 00/0311 : AF 4E 34 03 | L1302D5     LDAL  L033441        
+  506 |  1   SEG13.S    426 | Code        | 00 |         |    1 | 00/0315 : AA          |             TAX                  
+  507 |  1   SEG13.S    427 | Code        | 00 |E 3      |    4 | 00/0316 : AF 4C 34 03 |             LDAL  L03343F        
+  508 |  1   SEG13.S    428 | Code        | 00 |         |    3 | 00/031A : 29 FF 00    |             AND   #$00FF         
+  509 |  1   SEG13.S    429 | Code        | 00 |         |    1 | 00/031D : 48          |             PHA                  
+  510 |  1   SEG13.S    430 | Code        | 00 |         |    1 | 00/031E : 8A          |             TXA                  
+  511 |  1   SEG13.S    431 | Code        | 00 |         |    3 | 00/031F : 29 00 00    |             AND   #$0000         
+  512 |  1   SEG13.S    432 | Code        | 00 |         |    1 | 00/0322 : AA          |             TAX                  
+  513 |  1   SEG13.S    433 | Code        | 00 |         |    1 | 00/0323 : 68          |             PLA                  
+  514 |  1   SEG13.S    434 | Code        | 00 |         |    2 | 00/0324 : 85 F4       |             STA   $F4            
+  515 |  1   SEG13.S    435 | Code        | 00 |         |    2 | 00/0326 : D4 F4       |             PEI   $F4            
+  516 |  1   SEG13.S    436 | Code        | 00 |E 1 >>16 |    3 | 00/0328 : F4 00 00    |             PEA   ^L0320F2       
+  517 |  1   SEG13.S    437 | Code        | 00 |E 2      |    3 | 00/032B : F4 FF 20    |             PEA   L0320F2        
+  518 |  1   SEG13.S    438 | Code        | 00 |E 3      |    4 | 00/032E : 22 80 0D 1A |             JSL   L1A0DAA        
+  519 |  1   SEG13.S    439 | Code        | 00 |         |    1 | 00/0332 : 7A          |             PLY                  
+  520 |  1   SEG13.S    440 | Code        | 00 |         |    1 | 00/0333 : 7A          |             PLY                  
+  521 |  1   SEG13.S    441 | Code        | 00 |         |    1 | 00/0334 : 7A          |             PLY                  
+  522 |  1   SEG13.S    442 | Code        | 00 |         |    2 | 00/0335 : A5 F4       |             LDA   $F4            
+  523 |  1   SEG13.S    443 | Code        | 00 |         |    3 | 00/0337 : 82 1D 00    |             BRL   L13031B        
+  524 |  1   SEG13.S    444 | Code        | 00 |E 3      |    4 | 00/033A : 22 E4 02 04 | L1302FE     JSL   L040311        
+  525 |  1   SEG13.S    445 | Code        | 00 |         |    3 | 00/033E : 82 23 00    |             BRL   L130328        
+  526 |  1   SEG13.S    446 | Code        | 00 |E 2      |    3 | 00/0341 : 9C 07 01    | L130305     STZ   L020106        
+  527 |  1   SEG13.S    447 | Code        | 00 |E 3      |    4 | 00/0344 : AF 58 34 03 |             LDAL  L03344B        
+  528 |  1   SEG13.S    448 | Code        | 00 |         |    3 | 00/0348 : 29 00 01    |             AND   #$0100         
+  529 |  1   SEG13.S    449 | Code        | 00 |         |    1 | 00/034B : A8          |             TAY                  
+  530 |  1   SEG13.S    450 | Code        | 00 |         |    2 | 00/034C : F0 07       |             BEQ   L130319        
+  531 |  1   SEG13.S    451 | Code        | 00 |         |    2 | 00/034E : D4 F4       |             PEI   $F4            
+  532 |  1   SEG13.S    452 | Code        | 00 |  3      |    4 | 00/0350 : 22 57 00 00 |             JSL   L130059        
+  533 |  1   SEG13.S    453 | Code        | 00 |         |    1 | 00/0354 : 7A          |             PLY                  
+  534 |  1   SEG13.S    454 | Code        | 00 |         |    2 | 00/0355 : 80 0D       | L130319     BRA   L130328        
+  535 |  1   SEG13.S    455 | Code        | 00 |         |    3 | 00/0357 : C9 50 00    | L13031B     CMP   #$0050         
+  536 |  1   SEG13.S    456 | Code        | 00 |         |    2 | 00/035A : F0 DE       |             BEQ   L1302FE        
+  537 |  1   SEG13.S    457 | Code        | 00 |         |    3 | 00/035C : C9 70 00    |             CMP   #$0070         
+  538 |  1   SEG13.S    458 | Code        | 00 |         |    2 | 00/035F : F0 D9       |             BEQ   L1302FE        
+  539 |  1   SEG13.S    459 | Code        | 00 |  2      |    3 | 00/0361 : 4C 41 03    |             JMP   L130305        
+  540 |  1   SEG13.S    460 | Empty       | 00 |         |    0 | 00/0364               |                                  
+  541 |  1   SEG13.S    461 | Code        | 00 |         |    1 | 00/0364 : 3B          | L130328     TSC                  
+  542 |  1   SEG13.S    462 | Code        | 00 |         |    1 | 00/0365 : 18          |             CLC                  
+  543 |  1   SEG13.S    463 | Code        | 00 |         |    3 | 00/0366 : 69 08 00    |             ADC   #$0008         
+  544 |  1   SEG13.S    464 | Code        | 00 |         |    1 | 00/0369 : 1B          |             TCS                  
+  545 |  1   SEG13.S    465 | Code        | 00 |         |    1 | 00/036A : 2B          |             PLD                  
+  546 |  1   SEG13.S    466 | Code        | 00 |         |    1 | 00/036B : 6B          |             RTL                  
+  547 |  1   SEG13.S    467 | Empty       | 00 |         |    0 | 00/036C               |                                  
+  548 |  1   SEG13.S    468 | Global      | 00 |         |    0 | 00/036C               | L130330     ENT                  
+  549 |  1   SEG13.S    469 | Code        | 00 |         |    1 | 00/036C : 0B          |             PHD                  
+  550 |  1   SEG13.S    470 | Code        | 00 |         |    1 | 00/036D : 3B          |             TSC                  
+  551 |  1   SEG13.S    471 | Code        | 00 |         |    1 | 00/036E : 38          |             SEC                  
+  552 |  1   SEG13.S    472 | Code        | 00 |         |    3 | 00/036F : E9 FB 00    |             SBC   #$00FB         
+  553 |  1   SEG13.S    473 | Code        | 00 |         |    1 | 00/0372 : 5B          |             TCD                  
+  554 |  1   SEG13.S    474 | Code        | 00 |         |    3 | 00/0373 : 69 DA 00    |             ADC   #$00DA         
+  555 |  1   SEG13.S    475 | Code        | 00 |         |    1 | 00/0376 : 1B          |             TCS                  
+  556 |  1   SEG13.S    476 | Code        | 00 |         |    1 | 00/0377 : 48          |             PHA                  
+  557 |  1   SEG13.S    477 | Code        | 00 |         |    3 | 00/0378 : F4 08 00    |             PEA   $0008          
+  558 |  1   SEG13.S    478 | Code        | 00 |         |    3 | 00/037B : F4 00 00    |             PEA   $0000          
+  559 |  1   SEG13.S    479 | Code        | 00 |         |    1 | 00/037E : 7B          |             TDC                  
+  560 |  1   SEG13.S    480 | Code        | 00 |         |    1 | 00/037F : 18          |             CLC                  
+  561 |  1   SEG13.S    481 | Code        | 00 |         |    3 | 00/0380 : 69 DE 00    |             ADC   #$00DE         
+  562 |  1   SEG13.S    482 | Code        | 00 |         |    1 | 00/0383 : 48          |             PHA                  
+  563 |  1   SEG13.S    483 | Macro       | 00 |         |    0 | 00/0384               |             _GetNextEvent                 
+  565 |  1   SEG13.S    483 | Code        | 00 |         |    3 | 00/0384 : A2 06 0A    |             LDX   #$A06          ; load tool call #
+  566 |  1   SEG13.S    483 | Code        | 00 |         |    4 | 00/0387 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  567 |  1   SEG13.S    484 | Comment     | 00 |         |    0 | 00/038B               | * BCS L130354
+  568 |  1   SEG13.S    485 | Comment     | 00 |         |    0 | 00/038B               | * LDA #$0000
+  569 |  1   SEG13.S    486 | Comment     | 00 |         |    0 | 00/038B               | *L130354 STAL L0201E7
+  570 |  1   SEG13.S    487 | Code        | 00 |         |    1 | 00/038B : 68          |             PLA                  
+  571 |  1   SEG13.S    488 | Code        | 00 |         |    3 | 00/038C : C9 00 00    |             CMP   #$0000         
+  572 |  1   SEG13.S    489 | Code        | 00 |         |    2 | 00/038F : D0 03       |             BNE   L130361        
+  573 |  1   SEG13.S    490 | Code        | 00 |         |    3 | 00/0391 : 82 57 00    |             BRL   L1303B8        
+  574 |  1   SEG13.S    491 | Code        | 00 |         |    2 | 00/0394 : A5 EC       | L130361     LDA   $EC            
+  575 |  1   SEG13.S    492 | Code        | 00 |         |    3 | 00/0396 : 29 00 01    |             AND   #$0100         
+  576 |  1   SEG13.S    493 | Code        | 00 |         |    1 | 00/0399 : A8          |             TAY                  
+  577 |  1   SEG13.S    494 | Code        | 00 |         |    2 | 00/039A : D0 03       |             BNE   L13036C        
+  578 |  1   SEG13.S    495 | Code        | 00 |         |    3 | 00/039C : 82 4C 00    |             BRL   L1303B8        
+  579 |  1   SEG13.S    496 | Code        | 00 |         |    2 | 00/039F : A6 E2       | L13036C     LDX   $E2            
+  580 |  1   SEG13.S    497 | Code        | 00 |         |    2 | 00/03A1 : A5 E0       |             LDA   $E0            
+  581 |  1   SEG13.S    498 | Code        | 00 |         |    3 | 00/03A3 : 29 3F 00    |             AND   #$003F         
+  582 |  1   SEG13.S    499 | Code        | 00 |         |    1 | 00/03A6 : 48          |             PHA                  
+  583 |  1   SEG13.S    500 | Code        | 00 |         |    1 | 00/03A7 : 8A          |             TXA                  
+  584 |  1   SEG13.S    501 | Code        | 00 |         |    3 | 00/03A8 : 29 00 00    |             AND   #$0000         
+  585 |  1   SEG13.S    502 | Code        | 00 |         |    1 | 00/03AB : AA          |             TAX                  
+  586 |  1   SEG13.S    503 | Code        | 00 |         |    1 | 00/03AC : 68          |             PLA                  
+  587 |  1   SEG13.S    504 | Code        | 00 |         |    2 | 00/03AD : 85 DC       |             STA   $DC            
+  588 |  1   SEG13.S    505 | Code        | 00 |         |    2 | 00/03AF : A5 DC       |             LDA   $DC            
+  589 |  1   SEG13.S    506 | Code        | 00 |         |    3 | 00/03B1 : 82 26 00    |             BRL   L1303A7        
+  590 |  1   SEG13.S    507 | Code        | 00 |         |    3 | 00/03B4 : A9 01 00    | L130381     LDA   #$0001         
+  591 |  1   SEG13.S    508 | Code        | 00 |E 2      |    3 | 00/03B7 : 8D 1F 01    |             STA   L02011E        
+  592 |  1   SEG13.S    509 | Code        | 00 |         |    3 | 00/03BA : 82 2E 00    |             BRL   L1303B8        
+  593 |  1   SEG13.S    510 | Code        | 00 |E 3      |    4 | 00/03BD : 22 F8 0A 23 | L13038A     JSL   L230B1C        
+  594 |  1   SEG13.S    511 | Code        | 00 |         |    3 | 00/03C1 : 82 27 00    |             BRL   L1303B8        
+  595 |  1   SEG13.S    512 | Code        | 00 |E 3      |    4 | 00/03C4 : 22 3E 00 19 | L130391     JSL   L19003E        
+  596 |  1   SEG13.S    513 | Code        | 00 |E 3      |    4 | 00/03C8 : 22 06 02 14 |             JSL   L140206        
+  597 |  1   SEG13.S    514 | Code        | 00 |         |    3 | 00/03CC : 82 1C 00    |             BRL   L1303B8        
+  598 |  1   SEG13.S    515 | Code        | 00 |         |    3 | 00/03CF : 82 19 00    | L13039C     BRL   L1303B8        
+  599 |  1   SEG13.S    516 | Data        | 00 |  2      |    2 | 00/03D2 : B4 03       | L13039F     DA    L130381        
+  600 |  1   SEG13.S    517 | Data        | 00 |  2      |    2 | 00/03D4 : C4 03       |             DA    L130391        
+  601 |  1   SEG13.S    518 | Data        | 00 |  2      |    2 | 00/03D6 : BD 03       |             DA    L13038A        
+  602 |  1   SEG13.S    519 | Data        | 00 |  2      |    2 | 00/03D8 : CF 03       |             DA    L13039C        
+  603 |  1   SEG13.S    520 | Code        | 00 |         |    1 | 00/03DA : 38          | L1303A7     SEC                  
+  604 |  1   SEG13.S    521 | Code        | 00 |         |    3 | 00/03DB : E9 51 00    |             SBC   #$0051         
+  605 |  1   SEG13.S    522 | Code        | 00 |         |    3 | 00/03DE : C9 03 00    |             CMP   #$0003         
+  606 |  1   SEG13.S    523 | Code        | 00 |         |    2 | 00/03E1 : 90 03       |             BCC   L1303B3        
+  607 |  1   SEG13.S    524 | Code        | 00 |         |    3 | 00/03E3 : A9 03 00    |             LDA   #$0003         
+  608 |  1   SEG13.S    525 | Code        | 00 |         |    1 | 00/03E6 : 0A          | L1303B3     ASL                  
+  609 |  1   SEG13.S    526 | Code        | 00 |         |    1 | 00/03E7 : AA          |             TAX                  
+  610 |  1   SEG13.S    527 | Code        | 00 |  2      |    3 | 00/03E8 : 7C D2 03    |             JMP   (L13039F,X)    
+  611 |  1   SEG13.S    528 | Empty       | 00 |         |    0 | 00/03EB               |                                  
+  612 |  1   SEG13.S    529 | Code        | 00 |         |    1 | 00/03EB : 3B          | L1303B8     TSC                  
+  613 |  1   SEG13.S    530 | Code        | 00 |         |    1 | 00/03EC : 18          |             CLC                  
+  614 |  1   SEG13.S    531 | Code        | 00 |         |    3 | 00/03ED : 69 20 00    |             ADC   #$0020         
+  615 |  1   SEG13.S    532 | Code        | 00 |         |    1 | 00/03F0 : 1B          |             TCS                  
+  616 |  1   SEG13.S    533 | Code        | 00 |         |    1 | 00/03F1 : 2B          |             PLD                  
+  617 |  1   SEG13.S    534 | Code        | 00 |         |    1 | 00/03F2 : 6B          |             RTL                  
+  618 |  1   SEG13.S    535 | Empty       | 00 |         |    0 | 00/03F3               |                                  
+  619 |  1   SEG13.S    536 | Empty       | 00 |         |    0 | 00/03F3               |                                  
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

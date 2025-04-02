@@ -1,0 +1,1382 @@
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File         Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1   SEG04.S      1 | Comment     | 11 |         |    0 | 00/0000               | *
+    2 |  1   SEG04.S      2 | Comment     | 11 |         |    0 | 00/0000               | * Shufflepuck Cafe
+    3 |  1   SEG04.S      3 | Comment     | 11 |         |    0 | 00/0000               | *
+    4 |  1   SEG04.S      4 | Comment     | 11 |         |    0 | 00/0000               | * (c) Broderbund Software
+    5 |  1   SEG04.S      5 | Comment     | 11 |         |    0 | 00/0000               | * (s) 2014, Brutal Deluxe Software
+    6 |  1   SEG04.S      6 | Comment     | 11 |         |    0 | 00/0000               | *
+    7 |  1   SEG04.S      7 | Empty       | 11 |         |    0 | 00/0000               |                                  
+    8 |  1   SEG04.S      8 | Directive   | 00 |         |    0 | 00/0000               |             mx    %00            
+    9 |  1   SEG04.S      9 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   10 |  1   SEG04.S     10 | Directive   | 00 |         |    0 | 00/0000               |             rel                  
+   11 |  1   SEG04.S     11 | Directive   | 00 |         |    0 | 00/0000               |             dsk   Seg04.L        
+   12 |  1   SEG04.S     12 | Directive   | 00 |         |    0 | 00/0000               |             lst   off            
+   13 |  1   SEG04.S     13 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   14 |  1   SEG04.S     14 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   15 |  1   SEG04.S     15 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   16 |  1   SEG04.S     16 | Directive   | 00 |         |    0 | 00/0000               |             use   Seg04.E        
+   17 |  2 Seg04.E.s      1 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   18 |  2 Seg04.E.s      2 | Comment     | 00 |         |    0 | 00/0000               | * TFBD generated equates
+   19 |  2 Seg04.E.s      3 | Comment     | 00 |         |    0 | 00/0000               | *    (c) PHC 1992,93
+   20 |  2 Seg04.E.s      4 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   21 |  2 Seg04.E.s      5 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   22 |  2 Seg04.E.s      6 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   23 |  1   SEG04.S     17 | Directive   | 00 |         |    0 | 00/0000               |             use   Seg04.X        
+   24 |  3 Seg04.X.s      1 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   25 |  3 Seg04.X.s      2 | Comment     | 00 |         |    0 | 00/0000               | * TFBD generated externals
+   26 |  3 Seg04.X.s      3 | Comment     | 00 |         |    0 | 00/0000               | *     (c) PHC 1992,93
+   27 |  3 Seg04.X.s      4 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   28 |  3 Seg04.X.s      5 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   29 |  3 Seg04.X.s      6 | External    | 00 |         |    0 | 00/0000               | L0201E7     EXT                  
+   30 |  3 Seg04.X.s      7 | External    | 00 |         |    0 | 00/0000               | L0201E3     EXT                  
+   31 |  3 Seg04.X.s      8 | External    | 00 |         |    0 | 00/0000               | L1A17A7     EXT                  
+   32 |  3 Seg04.X.s      9 | External    | 00 |         |    0 | 00/0000               | L010254     EXT                  
+   33 |  3 Seg04.X.s     10 | External    | 00 |         |    0 | 00/0000               | L1A1166     EXT                  
+   34 |  3 Seg04.X.s     11 | External    | 00 |         |    0 | 00/0000               | L1A1649     EXT                  
+   35 |  3 Seg04.X.s     12 | External    | 00 |         |    0 | 00/0000               | L1A13B3     EXT                  
+   36 |  3 Seg04.X.s     13 | External    | 00 |         |    0 | 00/0000               | L1A1248     EXT                  
+   37 |  3 Seg04.X.s     14 | External    | 00 |         |    0 | 00/0000               | L240DF3     EXT                  
+   38 |  3 Seg04.X.s     15 | External    | 00 |         |    0 | 00/0000               | L1A1390     EXT                  
+   39 |  3 Seg04.X.s     16 | External    | 00 |         |    0 | 00/0000               | L1A13FF     EXT                  
+   40 |  3 Seg04.X.s     17 | External    | 00 |         |    0 | 00/0000               | L0301A1     EXT                  
+   41 |  3 Seg04.X.s     18 | External    | 00 |         |    0 | 00/0000               | L033441     EXT                  
+   42 |  3 Seg04.X.s     19 | External    | 00 |         |    0 | 00/0000               | L03343F     EXT                  
+   43 |  3 Seg04.X.s     20 | External    | 00 |         |    0 | 00/0000               | L1A0EFF     EXT                  
+   44 |  3 Seg04.X.s     21 | External    | 00 |         |    0 | 00/0000               | L1A0DAA     EXT                  
+   45 |  3 Seg04.X.s     22 | External    | 00 |         |    0 | 00/0000               | L1A0F19     EXT                  
+   46 |  3 Seg04.X.s     23 | External    | 00 |         |    0 | 00/0000               | L1A0E02     EXT                  
+   47 |  3 Seg04.X.s     24 | External    | 00 |         |    0 | 00/0000               | L1A0F9E     EXT                  
+   48 |  3 Seg04.X.s     25 | External    | 00 |         |    0 | 00/0000               | L1A0E95     EXT                  
+   49 |  3 Seg04.X.s     26 | External    | 00 |         |    0 | 00/0000               | L020011     EXT                  
+   50 |  3 Seg04.X.s     27 | External    | 00 |         |    0 | 00/0000               | L020013     EXT                  
+   51 |  3 Seg04.X.s     28 | External    | 00 |         |    0 | 00/0000               | L020017     EXT                  
+   52 |  3 Seg04.X.s     29 | External    | 00 |         |    0 | 00/0000               | L020015     EXT                  
+   53 |  3 Seg04.X.s     30 | External    | 00 |         |    0 | 00/0000               | L030018     EXT                  
+   54 |  3 Seg04.X.s     31 | External    | 00 |         |    0 | 00/0000               | L03001D     EXT                  
+   55 |  3 Seg04.X.s     32 | External    | 00 |         |    0 | 00/0000               | L030024     EXT                  
+   56 |  3 Seg04.X.s     33 | External    | 00 |         |    0 | 00/0000               | L030038     EXT                  
+   57 |  3 Seg04.X.s     34 | External    | 00 |         |    0 | 00/0000               | L03343D     EXT                  
+   58 |  3 Seg04.X.s     35 | External    | 00 |         |    0 | 00/0000               | L030050     EXT                  
+   59 |  3 Seg04.X.s     36 | External    | 00 |         |    0 | 00/0000               | L030054     EXT                  
+   60 |  3 Seg04.X.s     37 | External    | 00 |         |    0 | 00/0000               | L03005F     EXT                  
+   61 |  3 Seg04.X.s     38 | External    | 00 |         |    0 | 00/0000               | L030084     EXT                  
+   62 |  3 Seg04.X.s     39 | External    | 00 |         |    0 | 00/0000               | L0300B6     EXT                  
+   63 |  3 Seg04.X.s     40 | External    | 00 |         |    0 | 00/0000               | L030098     EXT                  
+   64 |  3 Seg04.X.s     41 | External    | 00 |         |    0 | 00/0000               | L0300BE     EXT                  
+   65 |  3 Seg04.X.s     42 | External    | 00 |         |    0 | 00/0000               | L0300E0     EXT                  
+   66 |  3 Seg04.X.s     43 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   67 |  1   SEG04.S     18 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   68 |  1   SEG04.S     19 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   69 |  1   SEG04.S     20 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   70 |  1   SEG04.S     21 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Event.Macs   
+   71 |  1   SEG04.S     22 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Locator.Macs 
+   72 |  1   SEG04.S     23 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Mem.Macs     
+   73 |  1   SEG04.S     24 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Misc.Macs    
+   74 |  1   SEG04.S     25 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Qd.Macs      
+   75 |  1   SEG04.S     26 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Util.Macs    
+   76 |  1   SEG04.S     27 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   77 |  1   SEG04.S     28 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   78 |  1   SEG04.S     29 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   79 |  1   SEG04.S     30 | Global      | 00 |         |    0 | 00/0000               | L040000     ENT                  
+   80 |  1   SEG04.S     31 | Code        | 00 |         |    1 | 00/0000 : 0B          |             PHD                  
+   81 |  1   SEG04.S     32 | Code        | 00 |         |    1 | 00/0001 : 3B          |             TSC                  
+   82 |  1   SEG04.S     33 | Code        | 00 |         |    1 | 00/0002 : 38          |             SEC                  
+   83 |  1   SEG04.S     34 | Code        | 00 |         |    3 | 00/0003 : E9 FB 00    |             SBC   #$00FB         
+   84 |  1   SEG04.S     35 | Code        | 00 |         |    1 | 00/0006 : 5B          |             TCD                  
+   85 |  1   SEG04.S     36 | Code        | 00 |         |    3 | 00/0007 : 69 F4 00    |             ADC   #$00F4         
+   86 |  1   SEG04.S     37 | Code        | 00 |         |    1 | 00/000A : 1B          |             TCS                  
+   87 |  1   SEG04.S     38 | Empty       | 00 |         |    0 | 00/000B               |                                  
+   88 |  1   SEG04.S     39 | Comment     | 00 |         |    0 | 00/000B               | *            SEP   #$20
+   89 |  1   SEG04.S     40 | Comment     | 00 |         |    0 | 00/000B               | *            LDAL  $00047C
+   90 |  1   SEG04.S     41 | Comment     | 00 |         |    0 | 00/000B               | *            STA   L020011     ; X low
+   91 |  1   SEG04.S     42 | Comment     | 00 |         |    0 | 00/000B               | *            LDAL  $00057C
+   92 |  1   SEG04.S     43 | Comment     | 00 |         |    0 | 00/000B               | *            STA   L020011+1     ; X high
+   93 |  1   SEG04.S     44 | Comment     | 00 |         |    0 | 00/000B               | *            LDAL  $0004FC
+   94 |  1   SEG04.S     45 | Comment     | 00 |         |    0 | 00/000B               | *            STA   L020013     ; Y low
+   95 |  1   SEG04.S     46 | Comment     | 00 |         |    0 | 00/000B               | *            LDAL  $0005FC
+   96 |  1   SEG04.S     47 | Comment     | 00 |         |    0 | 00/000B               | *            STA   L020013+1     ; Y high
+   97 |  1   SEG04.S     48 | Comment     | 00 |         |    0 | 00/000B               | *            REP   #$20
+   98 |  1   SEG04.S     49 | Empty       | 00 |         |    0 | 00/000B               |                                  
+   99 |  1   SEG04.S     50 | Code        | 00 |         |    1 | 00/000B : 48          |             pha                  
+  100 |  1   SEG04.S     51 | Code        | 00 |         |    1 | 00/000C : 48          |             pha                  
+  101 |  1   SEG04.S     52 | Code        | 00 |         |    1 | 00/000D : 48          |             pha                  
+  102 |  1   SEG04.S     53 | Macro       | 00 |         |    0 | 00/000E               |             _ReadMouse                 
+  104 |  1   SEG04.S     53 | Code        | 00 |         |    3 | 00/000E : A2 03 17    |             LDX   #$1703         ; load tool call #
+  105 |  1   SEG04.S     53 | Code        | 00 |         |    4 | 00/0011 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  106 |  1   SEG04.S     54 | Code        | 00 |         |    1 | 00/0015 : 68          |             pla                  
+  107 |  1   SEG04.S     55 | Code        | 00 |         |    1 | 00/0016 : 68          |             pla                  
+  108 |  1   SEG04.S     56 | Code        | 00 |E 2      |    3 | 00/0017 : 8D 14 00    |             sta   L020013        
+  109 |  1   SEG04.S     57 | Code        | 00 |         |    1 | 00/001A : 68          |             pla                  
+  110 |  1   SEG04.S     58 | Code        | 00 |E 2      |    3 | 00/001B : 8D 12 00    |             sta   L020011        
+  111 |  1   SEG04.S     59 | Empty       | 00 |         |    0 | 00/001E               |                                  
+  112 |  1   SEG04.S     60 | Code        | 00 |         |    1 | 00/001E : 3B          |             TSC                  
+  113 |  1   SEG04.S     61 | Code        | 00 |         |    1 | 00/001F : 18          |             CLC                  
+  114 |  1   SEG04.S     62 | Code        | 00 |         |    3 | 00/0020 : 69 06 00    |             ADC   #$0006         
+  115 |  1   SEG04.S     63 | Code        | 00 |         |    1 | 00/0023 : 1B          |             TCS                  
+  116 |  1   SEG04.S     64 | Code        | 00 |         |    1 | 00/0024 : 2B          |             PLD                  
+  117 |  1   SEG04.S     65 | Code        | 00 |         |    1 | 00/0025 : 6B          |             RTL                  
+  118 |  1   SEG04.S     66 | Empty       | 00 |         |    0 | 00/0026               |                                  
+  119 |  1   SEG04.S     67 | Global      | 00 |         |    0 | 00/0026               | L040033     ENT                  
+  120 |  1   SEG04.S     68 | Code        | 00 |         |    1 | 00/0026 : 0B          |             PHD                  
+  121 |  1   SEG04.S     69 | Code        | 00 |         |    1 | 00/0027 : 3B          |             TSC                  
+  122 |  1   SEG04.S     70 | Code        | 00 |         |    1 | 00/0028 : 38          |             SEC                  
+  123 |  1   SEG04.S     71 | Code        | 00 |         |    3 | 00/0029 : E9 F3 00    |             SBC   #$00F3         
+  124 |  1   SEG04.S     72 | Code        | 00 |         |    1 | 00/002C : 5B          |             TCD                  
+  125 |  1   SEG04.S     73 | Code        | 00 |         |    3 | 00/002D : 69 EC 00    |             ADC   #$00EC         
+  126 |  1   SEG04.S     74 | Code        | 00 |         |    1 | 00/0030 : 1B          |             TCS                  
+  127 |  1   SEG04.S     75 | Code        | 00 |         |    3 | 00/0031 : F4 14 00    |             PEA   $0014          
+  128 |  1   SEG04.S     76 | Code        | 00 |         |    3 | 00/0034 : F4 14 00    |             PEA   $0014          
+  129 |  1   SEG04.S     77 | Code        | 00 |         |    2 | 00/0037 : D4 FB       |             PEI   $FB            
+  130 |  1   SEG04.S     78 | Code        | 00 |         |    2 | 00/0039 : D4 F9       |             PEI   $F9            
+  131 |  1   SEG04.S     79 | Code        | 00 |E 3      |    4 | 00/003B : 22 7A 17 1A |             JSL   L1A17A7        
+  132 |  1   SEG04.S     80 | Code        | 00 |         |    1 | 00/003F : 7A          |             PLY                  
+  133 |  1   SEG04.S     81 | Code        | 00 |         |    1 | 00/0040 : 7A          |             PLY                  
+  134 |  1   SEG04.S     82 | Code        | 00 |         |    1 | 00/0041 : DA          |             PHX                  
+  135 |  1   SEG04.S     83 | Code        | 00 |         |    1 | 00/0042 : 48          |             PHA                  
+  136 |  1   SEG04.S     84 | Code        | 00 |         |    2 | 00/0043 : D4 FF       |             PEI   $FF            
+  137 |  1   SEG04.S     85 | Code        | 00 |         |    2 | 00/0045 : D4 FD       |             PEI   $FD            
+  138 |  1   SEG04.S     86 | Code        | 00 |E 3      |    4 | 00/0047 : 22 7A 17 1A |             JSL   L1A17A7        
+  139 |  1   SEG04.S     87 | Code        | 00 |         |    1 | 00/004B : 7A          |             PLY                  
+  140 |  1   SEG04.S     88 | Code        | 00 |         |    1 | 00/004C : 7A          |             PLY                  
+  141 |  1   SEG04.S     89 | Code        | 00 |         |    1 | 00/004D : DA          |             PHX                  
+  142 |  1   SEG04.S     90 | Code        | 00 |         |    1 | 00/004E : 48          |             PHA                  
+  143 |  1   SEG04.S     91 | Code        | 00 |E 1 >>16 |    3 | 00/004F : F4 00 00    |             PEA   ^L030018       
+  144 |  1   SEG04.S     92 | Code        | 00 |E 2      |    3 | 00/0052 : F4 18 00    |             PEA   L030018        
+  145 |  1   SEG04.S     93 | Code        | 00 |E 1 >>16 |    3 | 00/0055 : F4 00 00    |             PEA   ^L03001D       
+  146 |  1   SEG04.S     94 | Code        | 00 |E 2      |    3 | 00/0058 : F4 1D 00    |             PEA   L03001D        
+  147 |  1   SEG04.S     95 | Macro       | 00 |         |    0 | 00/005B               |             _TLMountVolume                 
+  149 |  1   SEG04.S     95 | Code        | 00 |         |    3 | 00/005B : A2 01 11    |             LDX   #$1101         ; load tool call #
+  150 |  1   SEG04.S     95 | Code        | 00 |         |    4 | 00/005E : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  151 |  1   SEG04.S     96 | Comment     | 00 |         |    0 | 00/0062               | * BCS L040074
+  152 |  1   SEG04.S     97 | Comment     | 00 |         |    0 | 00/0062               | * LDA #$0000
+  153 |  1   SEG04.S     98 | Comment     | 00 |         |    0 | 00/0062               | *L040074 STAL L0201E7
+  154 |  1   SEG04.S     99 | Code        | 00 |E 3      |    4 | 00/0062 : 22 89 01 01 |             JSL   L010254        
+  155 |  1   SEG04.S    100 | Code        | 00 |         |    1 | 00/0066 : 3B          |             TSC                  
+  156 |  1   SEG04.S    101 | Code        | 00 |         |    1 | 00/0067 : 18          |             CLC                  
+  157 |  1   SEG04.S    102 | Code        | 00 |         |    3 | 00/0068 : 69 06 00    |             ADC   #$0006         
+  158 |  1   SEG04.S    103 | Code        | 00 |         |    1 | 00/006B : 1B          |             TCS                  
+  159 |  1   SEG04.S    104 | Code        | 00 |         |    1 | 00/006C : 2B          |             PLD                  
+  160 |  1   SEG04.S    105 | Code        | 00 |         |    1 | 00/006D : 6B          |             RTL                  
+  161 |  1   SEG04.S    106 | Empty       | 00 |         |    0 | 00/006E               |                                  
+  162 |  1   SEG04.S    107 | Code        | 00 |         |    1 | 00/006E : 0B          |             PHD                  
+  163 |  1   SEG04.S    108 | Code        | 00 |         |    1 | 00/006F : 3B          |             TSC                  
+  164 |  1   SEG04.S    109 | Code        | 00 |         |    1 | 00/0070 : 38          |             SEC                  
+  165 |  1   SEG04.S    110 | Code        | 00 |         |    3 | 00/0071 : E9 F7 00    |             SBC   #$00F7         
+  166 |  1   SEG04.S    111 | Code        | 00 |         |    1 | 00/0074 : 5B          |             TCD                  
+  167 |  1   SEG04.S    112 | Code        | 00 |         |    3 | 00/0075 : 69 F0 00    |             ADC   #$00F0         
+  168 |  1   SEG04.S    113 | Code        | 00 |         |    1 | 00/0078 : 1B          |             TCS                  
+  169 |  1   SEG04.S    114 | Code        | 00 |         |    2 | 00/0079 : D4 FF       |             PEI   $FF            
+  170 |  1   SEG04.S    115 | Code        | 00 |         |    2 | 00/007B : D4 FD       |             PEI   $FD            
+  171 |  1   SEG04.S    116 | Code        | 00 |E 1 >>16 |    3 | 00/007D : F4 00 00    |             PEA   ^L030024       
+  172 |  1   SEG04.S    117 | Code        | 00 |E 2      |    3 | 00/0080 : F4 24 00    |             PEA   L030024        
+  173 |  1   SEG04.S    118 | Code        | 00 |  3      |    4 | 00/0083 : 22 26 00 00 |             JSL   L040033        
+  174 |  1   SEG04.S    119 | Code        | 00 |         |    1 | 00/0087 : 7A          |             PLY                  
+  175 |  1   SEG04.S    120 | Code        | 00 |         |    1 | 00/0088 : 7A          |             PLY                  
+  176 |  1   SEG04.S    121 | Code        | 00 |         |    1 | 00/0089 : 7A          |             PLY                  
+  177 |  1   SEG04.S    122 | Code        | 00 |         |    1 | 00/008A : 7A          |             PLY                  
+  178 |  1   SEG04.S    123 | Code        | 00 |         |    1 | 00/008B : 3B          |             TSC                  
+  179 |  1   SEG04.S    124 | Code        | 00 |         |    1 | 00/008C : 18          |             CLC                  
+  180 |  1   SEG04.S    125 | Code        | 00 |         |    3 | 00/008D : 69 06 00    |             ADC   #$0006         
+  181 |  1   SEG04.S    126 | Code        | 00 |         |    1 | 00/0090 : 1B          |             TCS                  
+  182 |  1   SEG04.S    127 | Code        | 00 |         |    1 | 00/0091 : 2B          |             PLD                  
+  183 |  1   SEG04.S    128 | Code        | 00 |         |    1 | 00/0092 : 6B          |             RTL                  
+  184 |  1   SEG04.S    129 | Empty       | 00 |         |    0 | 00/0093               |                                  
+  185 |  1   SEG04.S    130 | Global      | 00 |         |    0 | 00/0093               | L0400A9     ENT                  
+  186 |  1   SEG04.S    131 | Code        | 00 |         |    1 | 00/0093 : 0B          |             PHD                  
+  187 |  1   SEG04.S    132 | Code        | 00 |         |    1 | 00/0094 : 3B          |             TSC                  
+  188 |  1   SEG04.S    133 | Code        | 00 |         |    1 | 00/0095 : 38          |             SEC                  
+  189 |  1   SEG04.S    134 | Code        | 00 |         |    3 | 00/0096 : E9 F3 00    |             SBC   #$00F3         
+  190 |  1   SEG04.S    135 | Code        | 00 |         |    1 | 00/0099 : 5B          |             TCD                  
+  191 |  1   SEG04.S    136 | Code        | 00 |         |    3 | 00/009A : 69 EC 00    |             ADC   #$00EC         
+  192 |  1   SEG04.S    137 | Code        | 00 |         |    1 | 00/009D : 1B          |             TCS                  
+  193 |  1   SEG04.S    138 | Code        | 00 |         |    2 | 00/009E : D4 FF       |             PEI   $FF            
+  194 |  1   SEG04.S    139 | Code        | 00 |         |    2 | 00/00A0 : D4 FD       |             PEI   $FD            
+  195 |  1   SEG04.S    140 | Code        | 00 |         |    2 | 00/00A2 : D4 FB       |             PEI   $FB            
+  196 |  1   SEG04.S    141 | Code        | 00 |         |    2 | 00/00A4 : D4 F9       |             PEI   $F9            
+  197 |  1   SEG04.S    142 | Code        | 00 |E 3      |    4 | 00/00A6 : 22 39 11 1A |             JSL   L1A1166        
+  198 |  1   SEG04.S    143 | Code        | 00 |         |    1 | 00/00AA : 7A          |             PLY                  
+  199 |  1   SEG04.S    144 | Code        | 00 |         |    1 | 00/00AB : 7A          |             PLY                  
+  200 |  1   SEG04.S    145 | Code        | 00 |         |    1 | 00/00AC : 7A          |             PLY                  
+  201 |  1   SEG04.S    146 | Code        | 00 |         |    1 | 00/00AD : 7A          |             PLY                  
+  202 |  1   SEG04.S    147 | Code        | 00 |         |    1 | 00/00AE : A8          |             TAY                  
+  203 |  1   SEG04.S    148 | Code        | 00 |         |    1 | 00/00AF : 3B          |             TSC                  
+  204 |  1   SEG04.S    149 | Code        | 00 |         |    1 | 00/00B0 : 18          |             CLC                  
+  205 |  1   SEG04.S    150 | Code        | 00 |         |    3 | 00/00B1 : 69 06 00    |             ADC   #$0006         
+  206 |  1   SEG04.S    151 | Code        | 00 |         |    1 | 00/00B4 : 1B          |             TCS                  
+  207 |  1   SEG04.S    152 | Code        | 00 |         |    1 | 00/00B5 : 98          |             TYA                  
+  208 |  1   SEG04.S    153 | Code        | 00 |         |    1 | 00/00B6 : 2B          |             PLD                  
+  209 |  1   SEG04.S    154 | Code        | 00 |         |    1 | 00/00B7 : 6B          |             RTL                  
+  210 |  1   SEG04.S    155 | Empty       | 00 |         |    0 | 00/00B8               |                                  
+  211 |  1   SEG04.S    156 | Global      | 00 |         |    0 | 00/00B8               | L0400CE     ENT                  
+  212 |  1   SEG04.S    157 | Code        | 00 |         |    1 | 00/00B8 : 0B          |             PHD                  
+  213 |  1   SEG04.S    158 | Code        | 00 |         |    1 | 00/00B9 : 3B          |             TSC                  
+  214 |  1   SEG04.S    159 | Code        | 00 |         |    1 | 00/00BA : 38          |             SEC                  
+  215 |  1   SEG04.S    160 | Code        | 00 |         |    3 | 00/00BB : E9 F3 00    |             SBC   #$00F3         
+  216 |  1   SEG04.S    161 | Code        | 00 |         |    1 | 00/00BE : 5B          |             TCD                  
+  217 |  1   SEG04.S    162 | Code        | 00 |         |    3 | 00/00BF : 69 EC 00    |             ADC   #$00EC         
+  218 |  1   SEG04.S    163 | Code        | 00 |         |    1 | 00/00C2 : 1B          |             TCS                  
+  219 |  1   SEG04.S    164 | Code        | 00 |         |    2 | 00/00C3 : D4 FF       |             PEI   $FF            
+  220 |  1   SEG04.S    165 | Code        | 00 |         |    2 | 00/00C5 : D4 FD       |             PEI   $FD            
+  221 |  1   SEG04.S    166 | Code        | 00 |         |    2 | 00/00C7 : D4 FB       |             PEI   $FB            
+  222 |  1   SEG04.S    167 | Code        | 00 |         |    2 | 00/00C9 : D4 F9       |             PEI   $F9            
+  223 |  1   SEG04.S    168 | Code        | 00 |E 3      |    4 | 00/00CB : 22 1C 16 1A |             JSL   L1A1649        
+  224 |  1   SEG04.S    169 | Code        | 00 |         |    1 | 00/00CF : 7A          |             PLY                  
+  225 |  1   SEG04.S    170 | Code        | 00 |         |    1 | 00/00D0 : 7A          |             PLY                  
+  226 |  1   SEG04.S    171 | Code        | 00 |         |    1 | 00/00D1 : 7A          |             PLY                  
+  227 |  1   SEG04.S    172 | Code        | 00 |         |    1 | 00/00D2 : 7A          |             PLY                  
+  228 |  1   SEG04.S    173 | Code        | 00 |         |    1 | 00/00D3 : A8          |             TAY                  
+  229 |  1   SEG04.S    174 | Code        | 00 |         |    1 | 00/00D4 : 3B          |             TSC                  
+  230 |  1   SEG04.S    175 | Code        | 00 |         |    1 | 00/00D5 : 18          |             CLC                  
+  231 |  1   SEG04.S    176 | Code        | 00 |         |    3 | 00/00D6 : 69 06 00    |             ADC   #$0006         
+  232 |  1   SEG04.S    177 | Code        | 00 |         |    1 | 00/00D9 : 1B          |             TCS                  
+  233 |  1   SEG04.S    178 | Code        | 00 |         |    1 | 00/00DA : 98          |             TYA                  
+  234 |  1   SEG04.S    179 | Code        | 00 |         |    1 | 00/00DB : 2B          |             PLD                  
+  235 |  1   SEG04.S    180 | Code        | 00 |         |    1 | 00/00DC : 6B          |             RTL                  
+  236 |  1   SEG04.S    181 | Empty       | 00 |         |    0 | 00/00DD               |                                  
+  237 |  1   SEG04.S    182 | Global      | 00 |         |    0 | 00/00DD               | L0400F3     ENT                  
+  238 |  1   SEG04.S    183 | Code        | 00 |         |    1 | 00/00DD : 0B          |             PHD                  
+  239 |  1   SEG04.S    184 | Code        | 00 |         |    1 | 00/00DE : 3B          |             TSC                  
+  240 |  1   SEG04.S    185 | Code        | 00 |         |    1 | 00/00DF : 38          |             SEC                  
+  241 |  1   SEG04.S    186 | Code        | 00 |         |    3 | 00/00E0 : E9 F3 00    |             SBC   #$00F3         
+  242 |  1   SEG04.S    187 | Code        | 00 |         |    1 | 00/00E3 : 5B          |             TCD                  
+  243 |  1   SEG04.S    188 | Code        | 00 |         |    3 | 00/00E4 : 69 EC 00    |             ADC   #$00EC         
+  244 |  1   SEG04.S    189 | Code        | 00 |         |    1 | 00/00E7 : 1B          |             TCS                  
+  245 |  1   SEG04.S    190 | Code        | 00 |         |    2 | 00/00E8 : D4 FF       |             PEI   $FF            
+  246 |  1   SEG04.S    191 | Code        | 00 |         |    2 | 00/00EA : D4 FD       |             PEI   $FD            
+  247 |  1   SEG04.S    192 | Code        | 00 |         |    2 | 00/00EC : D4 FB       |             PEI   $FB            
+  248 |  1   SEG04.S    193 | Code        | 00 |         |    2 | 00/00EE : D4 F9       |             PEI   $F9            
+  249 |  1   SEG04.S    194 | Code        | 00 |E 3      |    4 | 00/00F0 : 22 86 13 1A |             JSL   L1A13B3        
+  250 |  1   SEG04.S    195 | Code        | 00 |         |    1 | 00/00F4 : 7A          |             PLY                  
+  251 |  1   SEG04.S    196 | Code        | 00 |         |    1 | 00/00F5 : 7A          |             PLY                  
+  252 |  1   SEG04.S    197 | Code        | 00 |         |    1 | 00/00F6 : 7A          |             PLY                  
+  253 |  1   SEG04.S    198 | Code        | 00 |         |    1 | 00/00F7 : 7A          |             PLY                  
+  254 |  1   SEG04.S    199 | Code        | 00 |         |    1 | 00/00F8 : A8          |             TAY                  
+  255 |  1   SEG04.S    200 | Code        | 00 |         |    1 | 00/00F9 : 3B          |             TSC                  
+  256 |  1   SEG04.S    201 | Code        | 00 |         |    1 | 00/00FA : 18          |             CLC                  
+  257 |  1   SEG04.S    202 | Code        | 00 |         |    3 | 00/00FB : 69 06 00    |             ADC   #$0006         
+  258 |  1   SEG04.S    203 | Code        | 00 |         |    1 | 00/00FE : 1B          |             TCS                  
+  259 |  1   SEG04.S    204 | Code        | 00 |         |    1 | 00/00FF : 98          |             TYA                  
+  260 |  1   SEG04.S    205 | Code        | 00 |         |    1 | 00/0100 : 2B          |             PLD                  
+  261 |  1   SEG04.S    206 | Code        | 00 |         |    1 | 00/0101 : 6B          |             RTL                  
+  262 |  1   SEG04.S    207 | Empty       | 00 |         |    0 | 00/0102               |                                  
+  263 |  1   SEG04.S    208 | Global      | 00 |         |    0 | 00/0102               | L040118     ENT                  
+  264 |  1   SEG04.S    209 | Code        | 00 |         |    1 | 00/0102 : 0B          |             PHD                  
+  265 |  1   SEG04.S    210 | Code        | 00 |         |    1 | 00/0103 : 3B          |             TSC                  
+  266 |  1   SEG04.S    211 | Code        | 00 |         |    1 | 00/0104 : 38          |             SEC                  
+  267 |  1   SEG04.S    212 | Code        | 00 |         |    3 | 00/0105 : E9 F7 00    |             SBC   #$00F7         
+  268 |  1   SEG04.S    213 | Code        | 00 |         |    1 | 00/0108 : 5B          |             TCD                  
+  269 |  1   SEG04.S    214 | Code        | 00 |         |    3 | 00/0109 : 69 EE 00    |             ADC   #$00EE         
+  270 |  1   SEG04.S    215 | Code        | 00 |         |    1 | 00/010C : 1B          |             TCS                  
+  271 |  1   SEG04.S    216 | Code        | 00 |         |    3 | 00/010D : F4 20 00    | L040123     PEA   $0020          
+  272 |  1   SEG04.S    217 | Code        | 00 |         |    2 | 00/0110 : D4 FF       |             PEI   $FF            
+  273 |  1   SEG04.S    218 | Code        | 00 |         |    2 | 00/0112 : D4 FD       |             PEI   $FD            
+  274 |  1   SEG04.S    219 | Code        | 00 |E 3      |    4 | 00/0114 : 22 1B 12 1A |             JSL   L1A1248        
+  275 |  1   SEG04.S    220 | Code        | 00 |         |    1 | 00/0118 : 7A          |             PLY                  
+  276 |  1   SEG04.S    221 | Code        | 00 |         |    1 | 00/0119 : 7A          |             PLY                  
+  277 |  1   SEG04.S    222 | Code        | 00 |         |    1 | 00/011A : 7A          |             PLY                  
+  278 |  1   SEG04.S    223 | Code        | 00 |         |    2 | 00/011B : 85 F0       |             STA   $F0            
+  279 |  1   SEG04.S    224 | Code        | 00 |         |    3 | 00/011D : C9 FF FF    |             CMP   #$FFFF         
+  280 |  1   SEG04.S    225 | Code        | 00 |         |    2 | 00/0120 : D0 0E       |             BNE   L040146        
+  281 |  1   SEG04.S    226 | Code        | 00 |E 1 >>16 |    3 | 00/0122 : F4 00 00    |             PEA   ^L030038       
+  282 |  1   SEG04.S    227 | Code        | 00 |E 2      |    3 | 00/0125 : F4 38 00    |             PEA   L030038        
+  283 |  1   SEG04.S    228 | Code        | 00 |E 3      |    4 | 00/0128 : 22 E9 0B 24 |             JSL   L240DF3        
+  284 |  1   SEG04.S    229 | Code        | 00 |         |    1 | 00/012C : 7A          |             PLY                  
+  285 |  1   SEG04.S    230 | Code        | 00 |         |    1 | 00/012D : 7A          |             PLY                  
+  286 |  1   SEG04.S    231 | Code        | 00 |         |    2 | 00/012E : 80 DD       |             BRA   L040123        
+  287 |  1   SEG04.S    232 | Code        | 00 |         |    2 | 00/0130 : A5 F0       | L040146     LDA   $F0            
+  288 |  1   SEG04.S    233 | Code        | 00 |         |    1 | 00/0132 : A8          |             TAY                  
+  289 |  1   SEG04.S    234 | Code        | 00 |         |    1 | 00/0133 : 3B          |             TSC                  
+  290 |  1   SEG04.S    235 | Code        | 00 |         |    1 | 00/0134 : 18          |             CLC                  
+  291 |  1   SEG04.S    236 | Code        | 00 |         |    3 | 00/0135 : 69 08 00    |             ADC   #$0008         
+  292 |  1   SEG04.S    237 | Code        | 00 |         |    1 | 00/0138 : 1B          |             TCS                  
+  293 |  1   SEG04.S    238 | Code        | 00 |         |    1 | 00/0139 : 98          |             TYA                  
+  294 |  1   SEG04.S    239 | Code        | 00 |         |    1 | 00/013A : 2B          |             PLD                  
+  295 |  1   SEG04.S    240 | Code        | 00 |         |    1 | 00/013B : 6B          |             RTL                  
+  296 |  1   SEG04.S    241 | Empty       | 00 |         |    0 | 00/013C               |                                  
+  297 |  1   SEG04.S    242 | Global      | 00 |         |    0 | 00/013C               | L040152     ENT                  
+  298 |  1   SEG04.S    243 | Code        | 00 |         |    1 | 00/013C : 0B          |             PHD                  
+  299 |  1   SEG04.S    244 | Code        | 00 |         |    1 | 00/013D : 3B          |             TSC                  
+  300 |  1   SEG04.S    245 | Code        | 00 |         |    1 | 00/013E : 38          |             SEC                  
+  301 |  1   SEG04.S    246 | Code        | 00 |         |    3 | 00/013F : E9 F7 00    |             SBC   #$00F7         
+  302 |  1   SEG04.S    247 | Code        | 00 |         |    1 | 00/0142 : 5B          |             TCD                  
+  303 |  1   SEG04.S    248 | Code        | 00 |         |    3 | 00/0143 : 69 EE 00    |             ADC   #$00EE         
+  304 |  1   SEG04.S    249 | Code        | 00 |         |    1 | 00/0146 : 1B          |             TCS                  
+  305 |  1   SEG04.S    250 | Code        | 00 |         |    3 | 00/0147 : F4 20 00    |             PEA   $0020          
+  306 |  1   SEG04.S    251 | Code        | 00 |         |    2 | 00/014A : D4 FF       |             PEI   $FF            
+  307 |  1   SEG04.S    252 | Code        | 00 |         |    2 | 00/014C : D4 FD       |             PEI   $FD            
+  308 |  1   SEG04.S    253 | Code        | 00 |E 3      |    4 | 00/014E : 22 1B 12 1A |             JSL   L1A1248        
+  309 |  1   SEG04.S    254 | Code        | 00 |         |    1 | 00/0152 : 7A          |             PLY                  
+  310 |  1   SEG04.S    255 | Code        | 00 |         |    1 | 00/0153 : 7A          |             PLY                  
+  311 |  1   SEG04.S    256 | Code        | 00 |         |    1 | 00/0154 : 7A          |             PLY                  
+  312 |  1   SEG04.S    257 | Code        | 00 |         |    2 | 00/0155 : 85 F0       |             STA   $F0            
+  313 |  1   SEG04.S    258 | Code        | 00 |         |    2 | 00/0157 : A5 F0       |             LDA   $F0            
+  314 |  1   SEG04.S    259 | Code        | 00 |         |    3 | 00/0159 : C9 FF FF    |             CMP   #$FFFF         
+  315 |  1   SEG04.S    260 | Code        | 00 |         |    2 | 00/015C : D0 07       |             BNE   L04017B        
+  316 |  1   SEG04.S    261 | Code        | 00 |         |    3 | 00/015E : A9 00 00    |             LDA   #$0000         
+  317 |  1   SEG04.S    262 | Code        | 00 |         |    2 | 00/0161 : 80 04       |             BRA   L04017D        
+  318 |  1   SEG04.S    263 | Code        | 00 |         |    2 | 00/0163 : 80 02       |             BRA   L04017D        
+  319 |  1   SEG04.S    264 | Code        | 00 |         |    2 | 00/0165 : A5 F0       | L04017B     LDA   $F0            
+  320 |  1   SEG04.S    265 | Code        | 00 |         |    1 | 00/0167 : A8          | L04017D     TAY                  
+  321 |  1   SEG04.S    266 | Code        | 00 |         |    1 | 00/0168 : 3B          |             TSC                  
+  322 |  1   SEG04.S    267 | Code        | 00 |         |    1 | 00/0169 : 18          |             CLC                  
+  323 |  1   SEG04.S    268 | Code        | 00 |         |    3 | 00/016A : 69 08 00    |             ADC   #$0008         
+  324 |  1   SEG04.S    269 | Code        | 00 |         |    1 | 00/016D : 1B          |             TCS                  
+  325 |  1   SEG04.S    270 | Code        | 00 |         |    1 | 00/016E : 98          |             TYA                  
+  326 |  1   SEG04.S    271 | Code        | 00 |         |    1 | 00/016F : 2B          |             PLD                  
+  327 |  1   SEG04.S    272 | Code        | 00 |         |    1 | 00/0170 : 6B          |             RTL                  
+  328 |  1   SEG04.S    273 | Empty       | 00 |         |    0 | 00/0171               |                                  
+  329 |  1   SEG04.S    274 | Global      | 00 |         |    0 | 00/0171               | L040187     ENT                  
+  330 |  1   SEG04.S    275 | Code        | 00 |         |    1 | 00/0171 : 0B          |             PHD                  
+  331 |  1   SEG04.S    276 | Code        | 00 |         |    1 | 00/0172 : 3B          |             TSC                  
+  332 |  1   SEG04.S    277 | Code        | 00 |         |    1 | 00/0173 : 38          |             SEC                  
+  333 |  1   SEG04.S    278 | Code        | 00 |         |    3 | 00/0174 : E9 F7 00    |             SBC   #$00F7         
+  334 |  1   SEG04.S    279 | Code        | 00 |         |    1 | 00/0177 : 5B          |             TCD                  
+  335 |  1   SEG04.S    280 | Code        | 00 |         |    3 | 00/0178 : 69 F0 00    |             ADC   #$00F0         
+  336 |  1   SEG04.S    281 | Code        | 00 |         |    1 | 00/017B : 1B          |             TCS                  
+  337 |  1   SEG04.S    282 | Code        | 00 |         |    3 | 00/017C : F4 AA 00    |             PEA   $00AA          
+  338 |  1   SEG04.S    283 | Code        | 00 |         |    3 | 00/017F : F4 24 00    |             PEA   $0024          
+  339 |  1   SEG04.S    284 | Code        | 00 |         |    2 | 00/0182 : D4 FF       |             PEI   $FF            
+  340 |  1   SEG04.S    285 | Code        | 00 |         |    2 | 00/0184 : D4 FD       |             PEI   $FD            
+  341 |  1   SEG04.S    286 | Code        | 00 |E 3      |    4 | 00/0186 : 22 63 13 1A |             JSL   L1A1390        
+  342 |  1   SEG04.S    287 | Code        | 00 |         |    1 | 00/018A : 7A          |             PLY                  
+  343 |  1   SEG04.S    288 | Code        | 00 |         |    1 | 00/018B : 7A          |             PLY                  
+  344 |  1   SEG04.S    289 | Code        | 00 |         |    1 | 00/018C : 7A          |             PLY                  
+  345 |  1   SEG04.S    290 | Code        | 00 |         |    1 | 00/018D : 7A          |             PLY                  
+  346 |  1   SEG04.S    291 | Code        | 00 |         |    1 | 00/018E : A8          |             TAY                  
+  347 |  1   SEG04.S    292 | Code        | 00 |         |    1 | 00/018F : 3B          |             TSC                  
+  348 |  1   SEG04.S    293 | Code        | 00 |         |    1 | 00/0190 : 18          |             CLC                  
+  349 |  1   SEG04.S    294 | Code        | 00 |         |    3 | 00/0191 : 69 06 00    |             ADC   #$0006         
+  350 |  1   SEG04.S    295 | Code        | 00 |         |    1 | 00/0194 : 1B          |             TCS                  
+  351 |  1   SEG04.S    296 | Code        | 00 |         |    1 | 00/0195 : 98          |             TYA                  
+  352 |  1   SEG04.S    297 | Code        | 00 |         |    1 | 00/0196 : 2B          |             PLD                  
+  353 |  1   SEG04.S    298 | Code        | 00 |         |    1 | 00/0197 : 6B          |             RTL                  
+  354 |  1   SEG04.S    299 | Empty       | 00 |         |    0 | 00/0198               |                                  
+  355 |  1   SEG04.S    300 | Global      | 00 |         |    0 | 00/0198               | L0401AE     ENT                  
+  356 |  1   SEG04.S    301 | Code        | 00 |         |    1 | 00/0198 : 0B          |             PHD                  
+  357 |  1   SEG04.S    302 | Code        | 00 |         |    1 | 00/0199 : 3B          |             TSC                  
+  358 |  1   SEG04.S    303 | Code        | 00 |         |    1 | 00/019A : 38          |             SEC                  
+  359 |  1   SEG04.S    304 | Code        | 00 |         |    3 | 00/019B : E9 F9 00    |             SBC   #$00F9         
+  360 |  1   SEG04.S    305 | Code        | 00 |         |    1 | 00/019E : 5B          |             TCD                  
+  361 |  1   SEG04.S    306 | Code        | 00 |         |    3 | 00/019F : 69 F2 00    |             ADC   #$00F2         
+  362 |  1   SEG04.S    307 | Code        | 00 |         |    1 | 00/01A2 : 1B          |             TCS                  
+  363 |  1   SEG04.S    308 | Code        | 00 |         |    2 | 00/01A3 : D4 FF       |             PEI   $FF            
+  364 |  1   SEG04.S    309 | Code        | 00 |E 3      |    4 | 00/01A5 : 22 D2 13 1A |             JSL   L1A13FF        
+  365 |  1   SEG04.S    310 | Code        | 00 |         |    1 | 00/01A9 : 7A          |             PLY                  
+  366 |  1   SEG04.S    311 | Code        | 00 |         |    1 | 00/01AA : A8          |             TAY                  
+  367 |  1   SEG04.S    312 | Code        | 00 |         |    1 | 00/01AB : 3B          |             TSC                  
+  368 |  1   SEG04.S    313 | Code        | 00 |         |    1 | 00/01AC : 18          |             CLC                  
+  369 |  1   SEG04.S    314 | Code        | 00 |         |    3 | 00/01AD : 69 06 00    |             ADC   #$0006         
+  370 |  1   SEG04.S    315 | Code        | 00 |         |    1 | 00/01B0 : 1B          |             TCS                  
+  371 |  1   SEG04.S    316 | Code        | 00 |         |    1 | 00/01B1 : 98          |             TYA                  
+  372 |  1   SEG04.S    317 | Code        | 00 |         |    1 | 00/01B2 : 2B          |             PLD                  
+  373 |  1   SEG04.S    318 | Code        | 00 |         |    1 | 00/01B3 : 6B          |             RTL                  
+  374 |  1   SEG04.S    319 | Empty       | 00 |         |    0 | 00/01B4               |                                  
+  375 |  1   SEG04.S    320 | Global      | 00 |         |    0 | 00/01B4               | L0401CA     ENT                  
+  376 |  1   SEG04.S    321 | Code        | 00 |         |    1 | 00/01B4 : 0B          |             PHD                  
+  377 |  1   SEG04.S    322 | Code        | 00 |         |    1 | 00/01B5 : 3B          |             TSC                  
+  378 |  1   SEG04.S    323 | Code        | 00 |         |    1 | 00/01B6 : 38          |             SEC                  
+  379 |  1   SEG04.S    324 | Code        | 00 |         |    3 | 00/01B7 : E9 F5 00    |             SBC   #$00F5         
+  380 |  1   SEG04.S    325 | Code        | 00 |         |    1 | 00/01BA : 5B          |             TCD                  
+  381 |  1   SEG04.S    326 | Code        | 00 |         |    3 | 00/01BB : 69 E9 00    |             ADC   #$00E9         
+  382 |  1   SEG04.S    327 | Code        | 00 |         |    1 | 00/01BE : 1B          |             TCS                  
+  383 |  1   SEG04.S    328 | Code        | 00 |         |    2 | 00/01BF : 64 ED       |             STZ   $ED            
+  384 |  1   SEG04.S    329 | Code        | 00 |         |    2 | 00/01C1 : 64 EB       |             STZ   $EB            
+  385 |  1   SEG04.S    330 | Code        | 00 |         |    3 | 00/01C3 : A9 00 00    |             LDA   #$0000         
+  386 |  1   SEG04.S    331 | Code        | 10 |         |    2 | 00/01C6 : E2 20       |             SEP   #$20           
+  387 |  1   SEG04.S    332 | Code        | 10 |E 3      |    4 | 00/01C8 : 8F A1 01 03 |             STAL  L0301A1        
+  388 |  1   SEG04.S    333 | Code        | 00 |         |    2 | 00/01CC : C2 20       |             REP   #$20           
+  389 |  1   SEG04.S    334 | Code        | 00 |         |    1 | 00/01CE : 48          | L0401E4     PHA                  
+  390 |  1   SEG04.S    335 | Code        | 00 |         |    3 | 00/01CF : F4 08 00    |             PEA   $0008          
+  391 |  1   SEG04.S    336 | Code        | 00 |E 1 >>16 |    3 | 00/01D2 : F4 00 00    |             PEA   ^L03343D       
+  392 |  1   SEG04.S    337 | Code        | 00 |E 2      |    3 | 00/01D5 : F4 4A 34    |             PEA   L03343D        
+  393 |  1   SEG04.S    338 | Macro       | 00 |         |    0 | 00/01D8               |             _GetNextEvent                 
+  395 |  1   SEG04.S    338 | Code        | 00 |         |    3 | 00/01D8 : A2 06 0A    |             LDX   #$A06          ; load tool call #
+  396 |  1   SEG04.S    338 | Code        | 00 |         |    4 | 00/01DB : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  397 |  1   SEG04.S    339 | Comment     | 00 |         |    0 | 00/01DF               | * BCS L0401FA
+  398 |  1   SEG04.S    340 | Comment     | 00 |         |    0 | 00/01DF               | * LDA #$0000
+  399 |  1   SEG04.S    341 | Comment     | 00 |         |    0 | 00/01DF               | *L0401FA STAL L0201E7
+  400 |  1   SEG04.S    342 | Code        | 00 |         |    1 | 00/01DF : 68          |             PLA                  
+  401 |  1   SEG04.S    343 | Code        | 00 |         |    1 | 00/01E0 : A8          |             TAY                  
+  402 |  1   SEG04.S    344 | Code        | 00 |         |    2 | 00/01E1 : D0 02       |             BNE   L040204        
+  403 |  1   SEG04.S    345 | Code        | 00 |         |    2 | 00/01E3 : 80 E9       |             BRA   L0401E4        
+  404 |  1   SEG04.S    346 | Code        | 00 |E 3      |    4 | 00/01E5 : AF 4E 34 03 | L040204     LDAL  L033441        
+  405 |  1   SEG04.S    347 | Code        | 00 |         |    1 | 00/01E9 : AA          |             TAX                  
+  406 |  1   SEG04.S    348 | Code        | 00 |E 3      |    4 | 00/01EA : AF 4C 34 03 |             LDAL  L03343F        
+  407 |  1   SEG04.S    349 | Code        | 00 |         |    3 | 00/01EE : 29 FF 00    |             AND   #$00FF         
+  408 |  1   SEG04.S    350 | Code        | 00 |         |    1 | 00/01F1 : 48          |             PHA                  
+  409 |  1   SEG04.S    351 | Code        | 00 |         |    1 | 00/01F2 : 8A          |             TXA                  
+  410 |  1   SEG04.S    352 | Code        | 00 |         |    3 | 00/01F3 : 29 00 00    |             AND   #$0000         
+  411 |  1   SEG04.S    353 | Code        | 00 |         |    1 | 00/01F6 : AA          |             TAX                  
+  412 |  1   SEG04.S    354 | Code        | 00 |         |    1 | 00/01F7 : 68          |             PLA                  
+  413 |  1   SEG04.S    355 | Code        | 10 |         |    2 | 00/01F8 : E2 20       |             SEP   #$20           
+  414 |  1   SEG04.S    356 | Code        | 10 |         |    2 | 00/01FA : 85 EF       |             STA   $EF            
+  415 |  1   SEG04.S    357 | Code        | 00 |         |    2 | 00/01FC : C2 20       |             REP   #$20           
+  416 |  1   SEG04.S    358 | Code        | 00 |         |    2 | 00/01FE : A5 EF       |             LDA   $EF            
+  417 |  1   SEG04.S    359 | Code        | 00 |         |    3 | 00/0200 : 29 FF 00    |             AND   #$00FF         
+  418 |  1   SEG04.S    360 | Code        | 00 |         |    3 | 00/0203 : C9 7F 00    |             CMP   #$007F         
+  419 |  1   SEG04.S    361 | Code        | 00 |         |    2 | 00/0206 : D0 29       |             BNE   L040250        
+  420 |  1   SEG04.S    362 | Code        | 00 |         |    2 | 00/0208 : A5 ED       |             LDA   $ED            
+  421 |  1   SEG04.S    363 | Code        | 00 |         |    2 | 00/020A : F0 25       |             BEQ   L040250        
+  422 |  1   SEG04.S    364 | Code        | 00 |         |    2 | 00/020C : C6 ED       |             DEC   $ED            
+  423 |  1   SEG04.S    365 | Code        | 00 |         |    2 | 00/020E : A5 ED       |             LDA   $ED            
+  424 |  1   SEG04.S    366 | Code        | 00 |         |    3 | 00/0210 : A2 00 00    |             LDX   #$0000         
+  425 |  1   SEG04.S    367 | Code        | 00 |         |    1 | 00/0213 : DA          |             PHX                  
+  426 |  1   SEG04.S    368 | Code        | 00 |         |    1 | 00/0214 : 48          |             PHA                  
+  427 |  1   SEG04.S    369 | Code        | 00 |E 2      |    3 | 00/0215 : A9 A1 01    |             LDA   #L0301A1       
+  428 |  1   SEG04.S    370 | Code        | 00 |E 1 >>16 |    3 | 00/0218 : A2 00 00    |             LDX   #^L0301A1      
+  429 |  1   SEG04.S    371 | Code        | 00 |E 3      |    4 | 00/021B : 22 D2 0E 1A |             JSL   L1A0EFF        
+  430 |  1   SEG04.S    372 | Code        | 00 |         |    1 | 00/021F : 68          |             PLA                  
+  431 |  1   SEG04.S    373 | Code        | 00 |         |    1 | 00/0220 : FA          |             PLX                  
+  432 |  1   SEG04.S    374 | Code        | 00 |         |    2 | 00/0221 : 85 F0       |             STA   $F0            
+  433 |  1   SEG04.S    375 | Code        | 00 |         |    2 | 00/0223 : 86 F2       |             STX   $F2            
+  434 |  1   SEG04.S    376 | Code        | 00 |         |    3 | 00/0225 : A9 00 00    |             LDA   #$0000         
+  435 |  1   SEG04.S    377 | Code        | 10 |         |    2 | 00/0228 : E2 20       |             SEP   #$20           
+  436 |  1   SEG04.S    378 | Code        | 10 |         |    2 | 00/022A : 87 F0       |             STA   [$F0]          
+  437 |  1   SEG04.S    379 | Code        | 00 |         |    2 | 00/022C : C2 20       |             REP   #$20           
+  438 |  1   SEG04.S    380 | Code        | 00 |         |    3 | 00/022E : 82 6A 00    |             BRL   L0402BA        
+  439 |  1   SEG04.S    381 | Code        | 00 |         |    2 | 00/0231 : A5 EF       | L040250     LDA   $EF            
+  440 |  1   SEG04.S    382 | Code        | 00 |         |    3 | 00/0233 : 29 FF 00    |             AND   #$00FF         
+  441 |  1   SEG04.S    383 | Code        | 00 |         |    1 | 00/0236 : 38          |             SEC                  
+  442 |  1   SEG04.S    384 | Code        | 00 |         |    3 | 00/0237 : E9 1F 00    |             SBC   #$001F         
+  443 |  1   SEG04.S    385 | Code        | 00 |         |    2 | 00/023A : F0 50       |             BEQ   L0402AB        
+  444 |  1   SEG04.S    386 | Code        | 00 |         |    2 | 00/023C : 70 03       |             BVS   L040260        
+  445 |  1   SEG04.S    387 | Code        | 00 |         |    3 | 00/023E : 49 00 80    |             EOR   #$8000         
+  446 |  1   SEG04.S    388 | Code        | 00 |         |    2 | 00/0241 : 10 49       | L040260     BPL   L0402AB        
+  447 |  1   SEG04.S    389 | Code        | 00 |         |    2 | 00/0243 : A5 ED       |             LDA   $ED            
+  448 |  1   SEG04.S    390 | Code        | 00 |         |    2 | 00/0245 : C5 FF       |             CMP   $FF            
+  449 |  1   SEG04.S    391 | Code        | 00 |         |    2 | 00/0247 : B0 43       |             BCS   L0402AB        
+  450 |  1   SEG04.S    392 | Code        | 00 |         |    2 | 00/0249 : A5 ED       |             LDA   $ED            
+  451 |  1   SEG04.S    393 | Code        | 00 |         |    2 | 00/024B : E6 ED       |             INC   $ED            
+  452 |  1   SEG04.S    394 | Code        | 00 |         |    3 | 00/024D : A2 00 00    |             LDX   #$0000         
+  453 |  1   SEG04.S    395 | Code        | 00 |         |    1 | 00/0250 : DA          |             PHX                  
+  454 |  1   SEG04.S    396 | Code        | 00 |         |    1 | 00/0251 : 48          |             PHA                  
+  455 |  1   SEG04.S    397 | Code        | 00 |E 2      |    3 | 00/0252 : A9 A1 01    |             LDA   #L0301A1       
+  456 |  1   SEG04.S    398 | Code        | 00 |E 1 >>16 |    3 | 00/0255 : A2 00 00    |             LDX   #^L0301A1      
+  457 |  1   SEG04.S    399 | Code        | 00 |E 3      |    4 | 00/0258 : 22 D2 0E 1A |             JSL   L1A0EFF        
+  458 |  1   SEG04.S    400 | Code        | 00 |         |    1 | 00/025C : 68          |             PLA                  
+  459 |  1   SEG04.S    401 | Code        | 00 |         |    1 | 00/025D : FA          |             PLX                  
+  460 |  1   SEG04.S    402 | Code        | 00 |         |    2 | 00/025E : 85 F0       |             STA   $F0            
+  461 |  1   SEG04.S    403 | Code        | 00 |         |    2 | 00/0260 : 86 F2       |             STX   $F2            
+  462 |  1   SEG04.S    404 | Code        | 00 |         |    2 | 00/0262 : A5 EF       |             LDA   $EF            
+  463 |  1   SEG04.S    405 | Code        | 10 |         |    2 | 00/0264 : E2 20       |             SEP   #$20           
+  464 |  1   SEG04.S    406 | Code        | 10 |         |    2 | 00/0266 : 87 F0       |             STA   [$F0]          
+  465 |  1   SEG04.S    407 | Code        | 00 |         |    2 | 00/0268 : C2 20       |             REP   #$20           
+  466 |  1   SEG04.S    408 | Code        | 00 |         |    2 | 00/026A : A5 ED       |             LDA   $ED            
+  467 |  1   SEG04.S    409 | Code        | 00 |         |    3 | 00/026C : A2 00 00    |             LDX   #$0000         
+  468 |  1   SEG04.S    410 | Code        | 00 |         |    1 | 00/026F : DA          |             PHX                  
+  469 |  1   SEG04.S    411 | Code        | 00 |         |    1 | 00/0270 : 48          |             PHA                  
+  470 |  1   SEG04.S    412 | Code        | 00 |E 2      |    3 | 00/0271 : A9 A1 01    |             LDA   #L0301A1       
+  471 |  1   SEG04.S    413 | Code        | 00 |E 1 >>16 |    3 | 00/0274 : A2 00 00    |             LDX   #^L0301A1      
+  472 |  1   SEG04.S    414 | Code        | 00 |E 3      |    4 | 00/0277 : 22 D2 0E 1A |             JSL   L1A0EFF        
+  473 |  1   SEG04.S    415 | Code        | 00 |         |    1 | 00/027B : 68          |             PLA                  
+  474 |  1   SEG04.S    416 | Code        | 00 |         |    1 | 00/027C : FA          |             PLX                  
+  475 |  1   SEG04.S    417 | Code        | 00 |         |    2 | 00/027D : 85 F0       |             STA   $F0            
+  476 |  1   SEG04.S    418 | Code        | 00 |         |    2 | 00/027F : 86 F2       |             STX   $F2            
+  477 |  1   SEG04.S    419 | Code        | 00 |         |    3 | 00/0281 : A9 00 00    |             LDA   #$0000         
+  478 |  1   SEG04.S    420 | Code        | 10 |         |    2 | 00/0284 : E2 20       |             SEP   #$20           
+  479 |  1   SEG04.S    421 | Code        | 10 |         |    2 | 00/0286 : 87 F0       |             STA   [$F0]          
+  480 |  1   SEG04.S    422 | Code        | 00 |         |    2 | 00/0288 : C2 20       |             REP   #$20           
+  481 |  1   SEG04.S    423 | Code        | 00 |         |    2 | 00/028A : 80 0F       |             BRA   L0402BA        
+  482 |  1   SEG04.S    424 | Code        | 00 |         |    2 | 00/028C : A5 EF       | L0402AB     LDA   $EF            
+  483 |  1   SEG04.S    425 | Code        | 00 |         |    3 | 00/028E : 29 FF 00    |             AND   #$00FF         
+  484 |  1   SEG04.S    426 | Code        | 00 |         |    3 | 00/0291 : C9 0D 00    |             CMP   #$000D         
+  485 |  1   SEG04.S    427 | Code        | 00 |         |    2 | 00/0294 : D0 05       |             BNE   L0402BA        
+  486 |  1   SEG04.S    428 | Code        | 00 |         |    3 | 00/0296 : A9 01 00    |             LDA   #$0001         
+  487 |  1   SEG04.S    429 | Code        | 00 |         |    2 | 00/0299 : 85 EB       |             STA   $EB            
+  488 |  1   SEG04.S    430 | Code        | 00 |         |    2 | 00/029B : D4 FB       | L0402BA     PEI   $FB            
+  489 |  1   SEG04.S    431 | Code        | 00 |         |    2 | 00/029D : D4 FD       |             PEI   $FD            
+  490 |  1   SEG04.S    432 | Macro       | 00 |         |    0 | 00/029F               |             _MoveTo                 
+  492 |  1   SEG04.S    432 | Code        | 00 |         |    3 | 00/029F : A2 04 3A    |             LDX   #$3A04         ; load tool call #
+  493 |  1   SEG04.S    432 | Code        | 00 |         |    4 | 00/02A2 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  494 |  1   SEG04.S    433 | Comment     | 00 |         |    0 | 00/02A6               | * BCS L0402CA
+  495 |  1   SEG04.S    434 | Comment     | 00 |         |    0 | 00/02A6               | * LDA #$0000
+  496 |  1   SEG04.S    435 | Comment     | 00 |         |    0 | 00/02A6               | *L0402CA STAL L0201E7
+  497 |  1   SEG04.S    436 | Code        | 00 |E 1 >>16 |    3 | 00/02A6 : F4 00 00    |             PEA   ^L0301A1       
+  498 |  1   SEG04.S    437 | Code        | 00 |E 2      |    3 | 00/02A9 : F4 A1 01    |             PEA   L0301A1        
+  499 |  1   SEG04.S    438 | Macro       | 00 |         |    0 | 00/02AC               |             _DrawCString                 
+  501 |  1   SEG04.S    438 | Code        | 00 |         |    3 | 00/02AC : A2 04 A6    |             LDX   #$A604         ; load tool call #
+  502 |  1   SEG04.S    438 | Code        | 00 |         |    4 | 00/02AF : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  503 |  1   SEG04.S    439 | Comment     | 00 |         |    0 | 00/02B3               | * BCS L0402E0
+  504 |  1   SEG04.S    440 | Comment     | 00 |         |    0 | 00/02B3               | * LDA #$0000
+  505 |  1   SEG04.S    441 | Comment     | 00 |         |    0 | 00/02B3               | *L0402E0 STAL L0201E7
+  506 |  1   SEG04.S    442 | Code        | 00 |E 1 >>16 |    3 | 00/02B3 : F4 00 00    |             PEA   ^L030050       
+  507 |  1   SEG04.S    443 | Code        | 00 |E 2      |    3 | 00/02B6 : F4 50 00    |             PEA   L030050        
+  508 |  1   SEG04.S    444 | Macro       | 00 |         |    0 | 00/02B9               |             _DrawCString                 
+  510 |  1   SEG04.S    444 | Code        | 00 |         |    3 | 00/02B9 : A2 04 A6    |             LDX   #$A604         ; load tool call #
+  511 |  1   SEG04.S    444 | Code        | 00 |         |    4 | 00/02BC : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  512 |  1   SEG04.S    445 | Comment     | 00 |         |    0 | 00/02C0               | * BCS L0402F6
+  513 |  1   SEG04.S    446 | Comment     | 00 |         |    0 | 00/02C0               | * LDA #$0000
+  514 |  1   SEG04.S    447 | Comment     | 00 |         |    0 | 00/02C0               | *L0402F6 STAL L0201E7
+  515 |  1   SEG04.S    448 | Code        | 00 |         |    2 | 00/02C0 : A5 EB       |             LDA   $EB            
+  516 |  1   SEG04.S    449 | Code        | 00 |         |    2 | 00/02C2 : D0 03       |             BNE   L040301        
+  517 |  1   SEG04.S    450 | Code        | 00 |         |    3 | 00/02C4 : 82 07 FF    |             BRL   L0401E4        
+  518 |  1   SEG04.S    451 | Code        | 00 |E 2      |    3 | 00/02C7 : A9 A1 01    | L040301     LDA   #L0301A1       
+  519 |  1   SEG04.S    452 | Code        | 00 |E 1 >>16 |    3 | 00/02CA : A2 00 00    |             LDX   #^L0301A1      
+  520 |  1   SEG04.S    453 | Code        | 00 |         |    1 | 00/02CD : A8          |             TAY                  
+  521 |  1   SEG04.S    454 | Code        | 00 |         |    1 | 00/02CE : 3B          |             TSC                  
+  522 |  1   SEG04.S    455 | Code        | 00 |         |    1 | 00/02CF : 18          |             CLC                  
+  523 |  1   SEG04.S    456 | Code        | 00 |         |    3 | 00/02D0 : 69 0B 00    |             ADC   #$000B         
+  524 |  1   SEG04.S    457 | Code        | 00 |         |    1 | 00/02D3 : 1B          |             TCS                  
+  525 |  1   SEG04.S    458 | Code        | 00 |         |    1 | 00/02D4 : 98          |             TYA                  
+  526 |  1   SEG04.S    459 | Code        | 00 |         |    1 | 00/02D5 : 2B          |             PLD                  
+  527 |  1   SEG04.S    460 | Code        | 00 |         |    1 | 00/02D6 : 6B          |             RTL                  
+  528 |  1   SEG04.S    461 | Empty       | 00 |         |    0 | 00/02D7               |                                  
+  529 |  1   SEG04.S    462 | Global      | 00 |         |    0 | 00/02D7               | L040311     ENT                  
+  530 |  1   SEG04.S    463 | Code        | 00 |         |    1 | 00/02D7 : 0B          |             PHD                  
+  531 |  1   SEG04.S    464 | Code        | 00 |         |    1 | 00/02D8 : 3B          |             TSC                  
+  532 |  1   SEG04.S    465 | Code        | 00 |         |    1 | 00/02D9 : 38          |             SEC                  
+  533 |  1   SEG04.S    466 | Code        | 00 |         |    3 | 00/02DA : E9 FB 00    |             SBC   #$00FB         
+  534 |  1   SEG04.S    467 | Code        | 00 |         |    1 | 00/02DD : 5B          |             TCD                  
+  535 |  1   SEG04.S    468 | Code        | 00 |         |    3 | 00/02DE : 69 F4 00    |             ADC   #$00F4         
+  536 |  1   SEG04.S    469 | Code        | 00 |         |    1 | 00/02E1 : 1B          |             TCS                  
+  537 |  1   SEG04.S    470 | Code        | 00 |         |    1 | 00/02E2 : 48          | L04031C     PHA                  
+  538 |  1   SEG04.S    471 | Code        | 00 |         |    3 | 00/02E3 : F4 02 00    |             PEA   $0002          
+  539 |  1   SEG04.S    472 | Code        | 00 |E 1 >>16 |    3 | 00/02E6 : F4 00 00    |             PEA   ^L03343D       
+  540 |  1   SEG04.S    473 | Code        | 00 |E 2      |    3 | 00/02E9 : F4 4A 34    |             PEA   L03343D        
+  541 |  1   SEG04.S    474 | Macro       | 00 |         |    0 | 00/02EC               |             _GetNextEvent                 
+  543 |  1   SEG04.S    474 | Code        | 00 |         |    3 | 00/02EC : A2 06 0A    |             LDX   #$A06          ; load tool call #
+  544 |  1   SEG04.S    474 | Code        | 00 |         |    4 | 00/02EF : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  545 |  1   SEG04.S    475 | Comment     | 00 |         |    0 | 00/02F3               | * BCS L040332
+  546 |  1   SEG04.S    476 | Comment     | 00 |         |    0 | 00/02F3               | * LDA #$0000
+  547 |  1   SEG04.S    477 | Comment     | 00 |         |    0 | 00/02F3               | *L040332 STAL L0201E7
+  548 |  1   SEG04.S    478 | Code        | 00 |         |    1 | 00/02F3 : 68          |             PLA                  
+  549 |  1   SEG04.S    479 | Code        | 00 |         |    1 | 00/02F4 : A8          |             TAY                  
+  550 |  1   SEG04.S    480 | Code        | 00 |         |    2 | 00/02F5 : D0 02       |             BNE   L04033C        
+  551 |  1   SEG04.S    481 | Code        | 00 |         |    2 | 00/02F7 : 80 E9       |             BRA   L04031C        
+  552 |  1   SEG04.S    482 | Code        | 00 |         |    1 | 00/02F9 : 3B          | L04033C     TSC                  
+  553 |  1   SEG04.S    483 | Code        | 00 |         |    1 | 00/02FA : 18          |             CLC                  
+  554 |  1   SEG04.S    484 | Code        | 00 |         |    3 | 00/02FB : 69 06 00    |             ADC   #$0006         
+  555 |  1   SEG04.S    485 | Code        | 00 |         |    1 | 00/02FE : 1B          |             TCS                  
+  556 |  1   SEG04.S    486 | Code        | 00 |         |    1 | 00/02FF : 2B          |             PLD                  
+  557 |  1   SEG04.S    487 | Code        | 00 |         |    1 | 00/0300 : 6B          |             RTL                  
+  558 |  1   SEG04.S    488 | Empty       | 00 |         |    0 | 00/0301               |                                  
+  559 |  1   SEG04.S    489 | Global      | 00 |         |    0 | 00/0301               | L040344     ENT                  
+  560 |  1   SEG04.S    490 | Code        | 00 |         |    1 | 00/0301 : 0B          |             PHD                  
+  561 |  1   SEG04.S    491 | Code        | 00 |         |    1 | 00/0302 : 3B          |             TSC                  
+  562 |  1   SEG04.S    492 | Code        | 00 |         |    1 | 00/0303 : 38          |             SEC                  
+  563 |  1   SEG04.S    493 | Code        | 00 |         |    3 | 00/0304 : E9 FB 00    |             SBC   #$00FB         
+  564 |  1   SEG04.S    494 | Code        | 00 |         |    1 | 00/0307 : 5B          |             TCD                  
+  565 |  1   SEG04.S    495 | Code        | 00 |         |    3 | 00/0308 : 69 F4 00    |             ADC   #$00F4         
+  566 |  1   SEG04.S    496 | Code        | 00 |         |    1 | 00/030B : 1B          |             TCS                  
+  567 |  1   SEG04.S    497 | Code        | 00 |         |    1 | 00/030C : DA          |             PHX                  
+  568 |  1   SEG04.S    498 | Code        | 00 |         |    1 | 00/030D : 48          |             PHA                  
+  569 |  1   SEG04.S    499 | Macro       | 00 |         |    0 | 00/030E               |             _GetPort                 
+  571 |  1   SEG04.S    499 | Code        | 00 |         |    3 | 00/030E : A2 04 1C    |             LDX   #$1C04         ; load tool call #
+  572 |  1   SEG04.S    499 | Code        | 00 |         |    4 | 00/0311 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  573 |  1   SEG04.S    500 | Comment     | 00 |         |    0 | 00/0315               | * BCS L04035D
+  574 |  1   SEG04.S    501 | Comment     | 00 |         |    0 | 00/0315               | * LDA #$0000
+  575 |  1   SEG04.S    502 | Comment     | 00 |         |    0 | 00/0315               | *L04035D STAL L0201E7
+  576 |  1   SEG04.S    503 | Code        | 00 |         |    1 | 00/0315 : 68          |             PLA                  
+  577 |  1   SEG04.S    504 | Code        | 00 |         |    1 | 00/0316 : FA          |             PLX                  
+  578 |  1   SEG04.S    505 | Code        | 00 |         |    1 | 00/0317 : 18          |             CLC                  
+  579 |  1   SEG04.S    506 | Code        | 00 |         |    3 | 00/0318 : 69 02 00    |             ADC   #$0002         
+  580 |  1   SEG04.S    507 | Code        | 00 |         |    1 | 00/031B : 48          |             PHA                  
+  581 |  1   SEG04.S    508 | Code        | 00 |         |    1 | 00/031C : 8A          |             TXA                  
+  582 |  1   SEG04.S    509 | Code        | 00 |         |    3 | 00/031D : 69 00 00    |             ADC   #$0000         
+  583 |  1   SEG04.S    510 | Code        | 00 |         |    1 | 00/0320 : AA          |             TAX                  
+  584 |  1   SEG04.S    511 | Code        | 00 |         |    1 | 00/0321 : 68          |             PLA                  
+  585 |  1   SEG04.S    512 | Code        | 00 |E 2      |    3 | 00/0322 : 8E 18 00    |             STX   L020017        
+  586 |  1   SEG04.S    513 | Code        | 00 |E 2      |    3 | 00/0325 : 8D 16 00    |             STA   L020015        
+  587 |  1   SEG04.S    514 | Code        | 00 |E 2      |    3 | 00/0328 : AE 18 00    |             LDX   L020017        
+  588 |  1   SEG04.S    515 | Code        | 00 |E 2      |    3 | 00/032B : AD 16 00    |             LDA   L020015        
+  589 |  1   SEG04.S    516 | Code        | 00 |         |    2 | 00/032E : 85 F6       |             STA   $F6            
+  590 |  1   SEG04.S    517 | Code        | 00 |         |    2 | 00/0330 : 86 F8       |             STX   $F8            
+  591 |  1   SEG04.S    518 | Code        | 00 |         |    3 | 00/0332 : A0 02 00    |             LDY   #$0002         
+  592 |  1   SEG04.S    519 | Code        | 00 |         |    2 | 00/0335 : B7 F6       |             LDA   [$F6],Y        
+  593 |  1   SEG04.S    520 | Code        | 00 |         |    1 | 00/0337 : AA          |             TAX                  
+  594 |  1   SEG04.S    521 | Code        | 00 |         |    2 | 00/0338 : A7 F6       |             LDA   [$F6]          
+  595 |  1   SEG04.S    522 | Code        | 00 |         |    1 | 00/033A : DA          |             PHX                  
+  596 |  1   SEG04.S    523 | Code        | 00 |         |    1 | 00/033B : 48          |             PHA                  
+  597 |  1   SEG04.S    524 | Code        | 00 |E 1 >>16 |    3 | 00/033C : F4 00 00    |             PEA   ^L030054       
+  598 |  1   SEG04.S    525 | Code        | 00 |E 2      |    3 | 00/033F : F4 54 00    |             PEA   L030054        
+  599 |  1   SEG04.S    526 | Code        | 00 |E 3      |    4 | 00/0342 : 22 7D 0D 1A |             JSL   L1A0DAA        
+  600 |  1   SEG04.S    527 | Code        | 00 |         |    1 | 00/0346 : 7A          |             PLY                  
+  601 |  1   SEG04.S    528 | Code        | 00 |         |    1 | 00/0347 : 7A          |             PLY                  
+  602 |  1   SEG04.S    529 | Code        | 00 |         |    1 | 00/0348 : 7A          |             PLY                  
+  603 |  1   SEG04.S    530 | Code        | 00 |         |    1 | 00/0349 : 7A          |             PLY                  
+  604 |  1   SEG04.S    531 | Code        | 00 |         |    1 | 00/034A : 3B          |             TSC                  
+  605 |  1   SEG04.S    532 | Code        | 00 |         |    1 | 00/034B : 18          |             CLC                  
+  606 |  1   SEG04.S    533 | Code        | 00 |         |    3 | 00/034C : 69 06 00    |             ADC   #$0006         
+  607 |  1   SEG04.S    534 | Code        | 00 |         |    1 | 00/034F : 1B          |             TCS                  
+  608 |  1   SEG04.S    535 | Code        | 00 |         |    1 | 00/0350 : 2B          |             PLD                  
+  609 |  1   SEG04.S    536 | Code        | 00 |         |    1 | 00/0351 : 6B          |             RTL                  
+  610 |  1   SEG04.S    537 | Empty       | 00 |         |    0 | 00/0352               |                                  
+  611 |  1   SEG04.S    538 | Global      | 00 |         |    0 | 00/0352               | L04039E     ENT                  
+  612 |  1   SEG04.S    539 | Code        | 00 |         |    1 | 00/0352 : 0B          |             PHD                  
+  613 |  1   SEG04.S    540 | Code        | 00 |         |    1 | 00/0353 : 3B          |             TSC                  
+  614 |  1   SEG04.S    541 | Code        | 00 |         |    1 | 00/0354 : 38          |             SEC                  
+  615 |  1   SEG04.S    542 | Code        | 00 |         |    3 | 00/0355 : E9 F7 00    |             SBC   #$00F7         
+  616 |  1   SEG04.S    543 | Code        | 00 |         |    1 | 00/0358 : 5B          |             TCD                  
+  617 |  1   SEG04.S    544 | Code        | 00 |         |    3 | 00/0359 : 69 F0 00    |             ADC   #$00F0         
+  618 |  1   SEG04.S    545 | Code        | 00 |         |    1 | 00/035C : 1B          |             TCS                  
+  619 |  1   SEG04.S    546 | Code        | 00 |E 2      |    3 | 00/035D : AE 18 00    |             LDX   L020017        
+  620 |  1   SEG04.S    547 | Code        | 00 |E 2      |    3 | 00/0360 : AD 16 00    |             LDA   L020015        
+  621 |  1   SEG04.S    548 | Code        | 00 |         |    2 | 00/0363 : 85 F2       |             STA   $F2            
+  622 |  1   SEG04.S    549 | Code        | 00 |         |    2 | 00/0365 : 86 F4       |             STX   $F4            
+  623 |  1   SEG04.S    550 | Code        | 00 |         |    2 | 00/0367 : A6 FF       |             LDX   $FF            
+  624 |  1   SEG04.S    551 | Code        | 00 |         |    2 | 00/0369 : A5 FD       |             LDA   $FD            
+  625 |  1   SEG04.S    552 | Code        | 00 |         |    3 | 00/036B : A0 02 00    |             LDY   #$0002         
+  626 |  1   SEG04.S    553 | Code        | 00 |         |    1 | 00/036E : 48          |             PHA                  
+  627 |  1   SEG04.S    554 | Code        | 00 |         |    1 | 00/036F : 8A          |             TXA                  
+  628 |  1   SEG04.S    555 | Code        | 00 |         |    2 | 00/0370 : 97 F2       |             STA   [$F2],Y        
+  629 |  1   SEG04.S    556 | Code        | 00 |         |    1 | 00/0372 : 68          |             PLA                  
+  630 |  1   SEG04.S    557 | Code        | 00 |         |    2 | 00/0373 : 87 F2       |             STA   [$F2]          
+  631 |  1   SEG04.S    558 | Code        | 00 |         |    1 | 00/0375 : 3B          |             TSC                  
+  632 |  1   SEG04.S    559 | Code        | 00 |         |    1 | 00/0376 : 18          |             CLC                  
+  633 |  1   SEG04.S    560 | Code        | 00 |         |    3 | 00/0377 : 69 06 00    |             ADC   #$0006         
+  634 |  1   SEG04.S    561 | Code        | 00 |         |    1 | 00/037A : 1B          |             TCS                  
+  635 |  1   SEG04.S    562 | Code        | 00 |         |    1 | 00/037B : 2B          |             PLD                  
+  636 |  1   SEG04.S    563 | Code        | 00 |         |    1 | 00/037C : 6B          |             RTL                  
+  637 |  1   SEG04.S    564 | Empty       | 00 |         |    0 | 00/037D               |                                  
+  638 |  1   SEG04.S    565 | Code        | 00 |         |    1 | 00/037D : 0B          |             PHD                  
+  639 |  1   SEG04.S    566 | Code        | 00 |         |    1 | 00/037E : 3B          |             TSC                  
+  640 |  1   SEG04.S    567 | Code        | 00 |         |    1 | 00/037F : 38          |             SEC                  
+  641 |  1   SEG04.S    568 | Code        | 00 |         |    3 | 00/0380 : E9 ED 00    |             SBC   #$00ED         
+  642 |  1   SEG04.S    569 | Code        | 00 |         |    1 | 00/0383 : 5B          |             TCD                  
+  643 |  1   SEG04.S    570 | Code        | 00 |         |    3 | 00/0384 : 69 DE 00    |             ADC   #$00DE         
+  644 |  1   SEG04.S    571 | Code        | 00 |         |    1 | 00/0387 : 1B          |             TCS                  
+  645 |  1   SEG04.S    572 | Code        | 00 |E 2      |    3 | 00/0388 : AE 18 00    |             LDX   L020017        
+  646 |  1   SEG04.S    573 | Code        | 00 |E 2      |    3 | 00/038B : AD 16 00    |             LDA   L020015        
+  647 |  1   SEG04.S    574 | Code        | 00 |         |    2 | 00/038E : 85 E8       |             STA   $E8            
+  648 |  1   SEG04.S    575 | Code        | 00 |         |    2 | 00/0390 : 86 EA       |             STX   $EA            
+  649 |  1   SEG04.S    576 | Code        | 00 |         |    2 | 00/0392 : A6 FF       |             LDX   $FF            
+  650 |  1   SEG04.S    577 | Code        | 00 |         |    2 | 00/0394 : A5 FD       |             LDA   $FD            
+  651 |  1   SEG04.S    578 | Code        | 00 |         |    3 | 00/0396 : A0 02 00    |             LDY   #$0002         
+  652 |  1   SEG04.S    579 | Code        | 00 |         |    1 | 00/0399 : 48          |             PHA                  
+  653 |  1   SEG04.S    580 | Code        | 00 |         |    1 | 00/039A : 8A          |             TXA                  
+  654 |  1   SEG04.S    581 | Code        | 00 |         |    2 | 00/039B : 97 E8       |             STA   [$E8],Y        
+  655 |  1   SEG04.S    582 | Code        | 00 |         |    1 | 00/039D : 68          |             PLA                  
+  656 |  1   SEG04.S    583 | Code        | 00 |         |    2 | 00/039E : 87 E8       |             STA   [$E8]          
+  657 |  1   SEG04.S    584 | Code        | 00 |         |    3 | 00/03A0 : F4 00 00    |             PEA   $0000          
+  658 |  1   SEG04.S    585 | Code        | 00 |         |    1 | 00/03A3 : 7B          |             TDC                  
+  659 |  1   SEG04.S    586 | Code        | 00 |         |    1 | 00/03A4 : 18          |             CLC                  
+  660 |  1   SEG04.S    587 | Code        | 00 |         |    3 | 00/03A5 : 69 E0 00    |             ADC   #$00E0         
+  661 |  1   SEG04.S    588 | Code        | 00 |         |    1 | 00/03A8 : 48          |             PHA                  
+  662 |  1   SEG04.S    589 | Code        | 00 |         |    2 | 00/03A9 : D4 F3       |             PEI   $F3            
+  663 |  1   SEG04.S    590 | Code        | 00 |         |    2 | 00/03AB : D4 F5       |             PEI   $F5            
+  664 |  1   SEG04.S    591 | Code        | 00 |         |    2 | 00/03AD : D4 F7       |             PEI   $F7            
+  665 |  1   SEG04.S    592 | Code        | 00 |         |    2 | 00/03AF : D4 F9       |             PEI   $F9            
+  666 |  1   SEG04.S    593 | Macro       | 00 |         |    0 | 00/03B1               |             _SetRect                 
+  668 |  1   SEG04.S    593 | Code        | 00 |         |    3 | 00/03B1 : A2 04 4A    |             LDX   #$4A04         ; load tool call #
+  669 |  1   SEG04.S    593 | Code        | 00 |         |    4 | 00/03B4 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  670 |  1   SEG04.S    594 | Comment     | 00 |         |    0 | 00/03B8               | * BCS L040409
+  671 |  1   SEG04.S    595 | Comment     | 00 |         |    0 | 00/03B8               | * LDA #$0000
+  672 |  1   SEG04.S    596 | Comment     | 00 |         |    0 | 00/03B8               | *L040409 STAL L0201E7
+  673 |  1   SEG04.S    597 | Code        | 00 |         |    2 | 00/03B8 : D4 FB       |             PEI   $FB            
+  674 |  1   SEG04.S    598 | Macro       | 00 |         |    0 | 00/03BA               |             _SetSolidPenPat                 
+  676 |  1   SEG04.S    598 | Code        | 00 |         |    3 | 00/03BA : A2 04 37    |             LDX   #$3704         ; load tool call #
+  677 |  1   SEG04.S    598 | Code        | 00 |         |    4 | 00/03BD : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  678 |  1   SEG04.S    599 | Comment     | 00 |         |    0 | 00/03C1               | * BCS L04041B
+  679 |  1   SEG04.S    600 | Comment     | 00 |         |    0 | 00/03C1               | * LDA #$0000
+  680 |  1   SEG04.S    601 | Comment     | 00 |         |    0 | 00/03C1               | *L04041B STAL L0201E7
+  681 |  1   SEG04.S    602 | Code        | 00 |         |    3 | 00/03C1 : F4 00 00    |             PEA   $0000          
+  682 |  1   SEG04.S    603 | Code        | 00 |         |    1 | 00/03C4 : 7B          |             TDC                  
+  683 |  1   SEG04.S    604 | Code        | 00 |         |    1 | 00/03C5 : 18          |             CLC                  
+  684 |  1   SEG04.S    605 | Code        | 00 |         |    3 | 00/03C6 : 69 E0 00    |             ADC   #$00E0         
+  685 |  1   SEG04.S    606 | Code        | 00 |         |    1 | 00/03C9 : 48          |             PHA                  
+  686 |  1   SEG04.S    607 | Macro       | 00 |         |    0 | 00/03CA               |             _FrameRect                 
+  688 |  1   SEG04.S    607 | Code        | 00 |         |    3 | 00/03CA : A2 04 53    |             LDX   #$5304         ; load tool call #
+  689 |  1   SEG04.S    607 | Code        | 00 |         |    4 | 00/03CD : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  690 |  1   SEG04.S    608 | Comment     | 00 |         |    0 | 00/03D1               | * BCS L040434
+  691 |  1   SEG04.S    609 | Comment     | 00 |         |    0 | 00/03D1               | * LDA #$0000
+  692 |  1   SEG04.S    610 | Comment     | 00 |         |    0 | 00/03D1               | *L040434 STAL L0201E7
+  693 |  1   SEG04.S    611 | Code        | 00 |         |    1 | 00/03D1 : 3B          |             TSC                  
+  694 |  1   SEG04.S    612 | Code        | 00 |         |    1 | 00/03D2 : 18          |             CLC                  
+  695 |  1   SEG04.S    613 | Code        | 00 |         |    3 | 00/03D3 : 69 0E 00    |             ADC   #$000E         
+  696 |  1   SEG04.S    614 | Code        | 00 |         |    1 | 00/03D6 : 1B          |             TCS                  
+  697 |  1   SEG04.S    615 | Code        | 00 |         |    1 | 00/03D7 : 2B          |             PLD                  
+  698 |  1   SEG04.S    616 | Code        | 00 |         |    1 | 00/03D8 : 6B          |             RTL                  
+  699 |  1   SEG04.S    617 | Empty       | 00 |         |    0 | 00/03D9               |                                  
+  700 |  1   SEG04.S    618 | Global      | 00 |         |    0 | 00/03D9               | L040440     ENT                  
+  701 |  1   SEG04.S    619 | Code        | 00 |         |    1 | 00/03D9 : 0B          |             PHD                  
+  702 |  1   SEG04.S    620 | Code        | 00 |         |    1 | 00/03DA : 3B          |             TSC                  
+  703 |  1   SEG04.S    621 | Code        | 00 |         |    1 | 00/03DB : 38          |             SEC                  
+  704 |  1   SEG04.S    622 | Code        | 00 |         |    3 | 00/03DC : E9 F5 00    |             SBC   #$00F5         
+  705 |  1   SEG04.S    623 | Code        | 00 |         |    1 | 00/03DF : 5B          |             TCD                  
+  706 |  1   SEG04.S    624 | Code        | 00 |         |    3 | 00/03E0 : 69 EA 00    |             ADC   #$00EA         
+  707 |  1   SEG04.S    625 | Code        | 00 |         |    1 | 00/03E3 : 1B          |             TCS                  
+  708 |  1   SEG04.S    626 | Code        | 00 |         |    1 | 00/03E4 : DA          | L04044B     PHX                  
+  709 |  1   SEG04.S    627 | Code        | 00 |         |    1 | 00/03E5 : 48          |             PHA                  
+  710 |  1   SEG04.S    628 | Code        | 00 |         |    2 | 00/03E6 : D4 FD       |             PEI   $FD            
+  711 |  1   SEG04.S    629 | Code        | 00 |         |    2 | 00/03E8 : D4 FB       |             PEI   $FB            
+  712 |  1   SEG04.S    630 | Code        | 00 |E 2      |    3 | 00/03EA : AD E8 01    |             LDA   L0201E3        
+  713 |  1   SEG04.S    631 | Code        | 00 |         |    1 | 00/03ED : 48          |             PHA                  
+  714 |  1   SEG04.S    632 | Code        | 00 |         |    3 | 00/03EE : A9 00 80    |             LDA   #$8000         
+  715 |  1   SEG04.S    633 | Code        | 00 |         |    2 | 00/03F1 : 05 FF       |             ORA   $FF            
+  716 |  1   SEG04.S    634 | Code        | 00 |         |    1 | 00/03F3 : 48          |             PHA                  
+  717 |  1   SEG04.S    635 | Code        | 00 |         |    3 | 00/03F4 : F4 00 00    |             PEA   $0000          
+  718 |  1   SEG04.S    636 | Code        | 00 |         |    3 | 00/03F7 : F4 00 00    |             PEA   $0000          
+  719 |  1   SEG04.S    637 | Macro       | 00 |         |    0 | 00/03FA               |             _NewHandle                 
+  721 |  1   SEG04.S    637 | Code        | 00 |         |    3 | 00/03FA : A2 02 09    |             LDX   #$902          ; load tool call #
+  722 |  1   SEG04.S    637 | Code        | 00 |         |    4 | 00/03FD : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  723 |  1   SEG04.S    638 | Comment     | 00 |         |    0 | 00/0401               | * BCS L04046D
+  724 |  1   SEG04.S    639 | Comment     | 00 |         |    0 | 00/0401               | * LDA #$0000
+  725 |  1   SEG04.S    640 | Comment     | 00 |         |    0 | 00/0401               | *L04046D STAL L0201E7
+  726 |  1   SEG04.S    641 | Code        | 00 |         |    1 | 00/0401 : 68          |             PLA                  
+  727 |  1   SEG04.S    642 | Code        | 00 |         |    1 | 00/0402 : FA          |             PLX                  
+  728 |  1   SEG04.S    643 | Code        | 00 |         |    2 | 00/0403 : 86 EE       |             STX   $EE            
+  729 |  1   SEG04.S    644 | Code        | 00 |         |    2 | 00/0405 : 85 EC       |             STA   $EC            
+  730 |  1   SEG04.S    645 | Code        | 00 |         |    1 | 00/0407 : DA          |             PHX                  
+  731 |  1   SEG04.S    646 | Code        | 00 |         |    1 | 00/0408 : 48          |             PHA                  
+  732 |  1   SEG04.S    647 | Macro       | 00 |         |    0 | 00/0409               |             _MaxBlock                 
+  734 |  1   SEG04.S    647 | Code        | 00 |         |    3 | 00/0409 : A2 02 1C    |             LDX   #$1C02         ; load tool call #
+  735 |  1   SEG04.S    647 | Code        | 00 |         |    4 | 00/040C : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  736 |  1   SEG04.S    648 | Comment     | 00 |         |    0 | 00/0410               | * BCS L040485
+  737 |  1   SEG04.S    649 | Comment     | 00 |         |    0 | 00/0410               | * LDA #$0000
+  738 |  1   SEG04.S    650 | Comment     | 00 |         |    0 | 00/0410               | *L040485 STAL L0201E7
+  739 |  1   SEG04.S    651 | Code        | 00 |         |    1 | 00/0410 : DA          |             PHX                  
+  740 |  1   SEG04.S    652 | Code        | 00 |         |    1 | 00/0411 : 48          |             PHA                  
+  741 |  1   SEG04.S    653 | Macro       | 00 |         |    0 | 00/0412               |             _FreeMem                 
+  743 |  1   SEG04.S    653 | Code        | 00 |         |    3 | 00/0412 : A2 02 1B    |             LDX   #$1B02         ; load tool call #
+  744 |  1   SEG04.S    653 | Code        | 00 |         |    4 | 00/0415 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  745 |  1   SEG04.S    654 | Comment     | 00 |         |    0 | 00/0419               | * BCS L040497
+  746 |  1   SEG04.S    655 | Comment     | 00 |         |    0 | 00/0419               | * LDA #$0000
+  747 |  1   SEG04.S    656 | Comment     | 00 |         |    0 | 00/0419               | *L040497 STAL L0201E7
+  748 |  1   SEG04.S    657 | Code        | 00 |         |    2 | 00/0419 : D4 FD       |             PEI   $FD            
+  749 |  1   SEG04.S    658 | Code        | 00 |         |    2 | 00/041B : D4 FB       |             PEI   $FB            
+  750 |  1   SEG04.S    659 | Code        | 00 |         |    3 | 00/041D : A0 02 00    |             LDY   #$0002         
+  751 |  1   SEG04.S    660 | Code        | 00 |         |    2 | 00/0420 : B7 EC       |             LDA   [$EC],Y        
+  752 |  1   SEG04.S    661 | Code        | 00 |         |    1 | 00/0422 : AA          |             TAX                  
+  753 |  1   SEG04.S    662 | Code        | 00 |         |    2 | 00/0423 : A7 EC       |             LDA   [$EC]          
+  754 |  1   SEG04.S    663 | Code        | 00 |         |    1 | 00/0425 : DA          |             PHX                  
+  755 |  1   SEG04.S    664 | Code        | 00 |         |    1 | 00/0426 : 48          |             PHA                  
+  756 |  1   SEG04.S    665 | Code        | 00 |E 1 >>16 |    3 | 00/0427 : F4 00 00    |             PEA   ^L03005F       
+  757 |  1   SEG04.S    666 | Code        | 00 |E 2      |    3 | 00/042A : F4 5F 00    |             PEA   L03005F        
+  758 |  1   SEG04.S    667 | Code        | 00 |E 3      |    4 | 00/042D : 22 7D 0D 1A |             JSL   L1A0DAA        
+  759 |  1   SEG04.S    668 | Code        | 00 |         |    1 | 00/0431 : A8          |             TAY                  
+  760 |  1   SEG04.S    669 | Code        | 00 |         |    1 | 00/0432 : 3B          |             TSC                  
+  761 |  1   SEG04.S    670 | Code        | 00 |         |    1 | 00/0433 : 18          |             CLC                  
+  762 |  1   SEG04.S    671 | Code        | 00 |         |    3 | 00/0434 : 69 14 00    |             ADC   #$0014         
+  763 |  1   SEG04.S    672 | Code        | 00 |         |    1 | 00/0437 : 1B          |             TCS                  
+  764 |  1   SEG04.S    673 | Code        | 00 |         |    1 | 00/0438 : 98          |             TYA                  
+  765 |  1   SEG04.S    674 | Code        | 00 |         |    2 | 00/0439 : A6 EE       |             LDX   $EE            
+  766 |  1   SEG04.S    675 | Code        | 00 |         |    2 | 00/043B : A5 EC       |             LDA   $EC            
+  767 |  1   SEG04.S    676 | Code        | 00 |         |    2 | 00/043D : 86 F0       |             STX   $F0            
+  768 |  1   SEG04.S    677 | Code        | 00 |         |    2 | 00/043F : 05 F0       |             ORA   $F0            
+  769 |  1   SEG04.S    678 | Code        | 00 |         |    2 | 00/0441 : D0 23       |             BNE   L0404E8        
+  770 |  1   SEG04.S    679 | Code        | 00 |E 1 >>16 |    3 | 00/0443 : F4 00 00    |             PEA   ^L030084       
+  771 |  1   SEG04.S    680 | Code        | 00 |E 2      |    3 | 00/0446 : F4 84 00    |             PEA   L030084        
+  772 |  1   SEG04.S    681 | Code        | 00 |E 3      |    4 | 00/0449 : 22 7D 0D 1A |             JSL   L1A0DAA        
+  773 |  1   SEG04.S    682 | Code        | 00 |         |    1 | 00/044D : 7A          |             PLY                  
+  774 |  1   SEG04.S    683 | Code        | 00 |         |    1 | 00/044E : 7A          |             PLY                  
+  775 |  1   SEG04.S    684 | Code        | 00 |E 1 >>16 |    3 | 00/044F : F4 00 00    |             PEA   ^L0300B6       
+  776 |  1   SEG04.S    685 | Code        | 00 |E 2      |    3 | 00/0452 : F4 B6 00    |             PEA   L0300B6        
+  777 |  1   SEG04.S    686 | Code        | 00 |E 1 >>16 |    3 | 00/0455 : F4 00 00    |             PEA   ^L030098       
+  778 |  1   SEG04.S    687 | Code        | 00 |E 2      |    3 | 00/0458 : F4 98 00    |             PEA   L030098        
+  779 |  1   SEG04.S    688 | Code        | 00 |  3      |    4 | 00/045B : 22 26 00 00 |             JSL   L040033        
+  780 |  1   SEG04.S    689 | Code        | 00 |         |    1 | 00/045F : 7A          |             PLY                  
+  781 |  1   SEG04.S    690 | Code        | 00 |         |    1 | 00/0460 : 7A          |             PLY                  
+  782 |  1   SEG04.S    691 | Code        | 00 |         |    1 | 00/0461 : 7A          |             PLY                  
+  783 |  1   SEG04.S    692 | Code        | 00 |         |    1 | 00/0462 : 7A          |             PLY                  
+  784 |  1   SEG04.S    693 | Code        | 00 |         |    3 | 00/0463 : 82 7E FF    |             BRL   L04044B        
+  785 |  1   SEG04.S    694 | Code        | 00 |         |    2 | 00/0466 : A5 FF       | L0404E8     LDA   $FF            
+  786 |  1   SEG04.S    695 | Code        | 00 |         |    2 | 00/0468 : D0 16       |             BNE   L040502        
+  787 |  1   SEG04.S    696 | Code        | 00 |         |    3 | 00/046A : A0 02 00    |             LDY   #$0002         
+  788 |  1   SEG04.S    697 | Code        | 00 |         |    2 | 00/046D : B7 EC       |             LDA   [$EC],Y        
+  789 |  1   SEG04.S    698 | Code        | 00 |         |    1 | 00/046F : AA          |             TAX                  
+  790 |  1   SEG04.S    699 | Code        | 00 |         |    2 | 00/0470 : A7 EC       |             LDA   [$EC]          
+  791 |  1   SEG04.S    700 | Code        | 00 |         |    3 | 00/0472 : 09 00 00    |             ORA   #$0000         
+  792 |  1   SEG04.S    701 | Code        | 00 |         |    1 | 00/0475 : 48          |             PHA                  
+  793 |  1   SEG04.S    702 | Code        | 00 |         |    1 | 00/0476 : 8A          |             TXA                  
+  794 |  1   SEG04.S    703 | Code        | 00 |         |    3 | 00/0477 : 09 00 80    |             ORA   #$8000         
+  795 |  1   SEG04.S    704 | Code        | 00 |         |    1 | 00/047A : AA          |             TAX                  
+  796 |  1   SEG04.S    705 | Code        | 00 |         |    1 | 00/047B : 68          |             PLA                  
+  797 |  1   SEG04.S    706 | Code        | 00 |         |    2 | 00/047C : 80 0A       |             BRA   L04050A        
+  798 |  1   SEG04.S    707 | Code        | 00 |         |    2 | 00/047E : 80 08       |             BRA   L04050A        
+  799 |  1   SEG04.S    708 | Code        | 00 |         |    3 | 00/0480 : A0 02 00    | L040502     LDY   #$0002         
+  800 |  1   SEG04.S    709 | Code        | 00 |         |    2 | 00/0483 : B7 EC       |             LDA   [$EC],Y        
+  801 |  1   SEG04.S    710 | Code        | 00 |         |    1 | 00/0485 : AA          |             TAX                  
+  802 |  1   SEG04.S    711 | Code        | 00 |         |    2 | 00/0486 : A7 EC       |             LDA   [$EC]          
+  803 |  1   SEG04.S    712 | Code        | 00 |         |    1 | 00/0488 : A8          | L04050A     TAY                  
+  804 |  1   SEG04.S    713 | Code        | 00 |         |    1 | 00/0489 : 3B          |             TSC                  
+  805 |  1   SEG04.S    714 | Code        | 00 |         |    1 | 00/048A : 18          |             CLC                  
+  806 |  1   SEG04.S    715 | Code        | 00 |         |    3 | 00/048B : 69 0A 00    |             ADC   #$000A         
+  807 |  1   SEG04.S    716 | Code        | 00 |         |    1 | 00/048E : 1B          |             TCS                  
+  808 |  1   SEG04.S    717 | Code        | 00 |         |    1 | 00/048F : 98          |             TYA                  
+  809 |  1   SEG04.S    718 | Code        | 00 |         |    1 | 00/0490 : 2B          |             PLD                  
+  810 |  1   SEG04.S    719 | Code        | 00 |         |    1 | 00/0491 : 6B          |             RTL                  
+  811 |  1   SEG04.S    720 | Empty       | 00 |         |    0 | 00/0492               |                                  
+  812 |  1   SEG04.S    721 | Global      | 00 |         |    0 | 00/0492               | L040514     ENT                  
+  813 |  1   SEG04.S    722 | Code        | 00 |         |    1 | 00/0492 : 0B          |             PHD                  
+  814 |  1   SEG04.S    723 | Code        | 00 |         |    1 | 00/0493 : 3B          |             TSC                  
+  815 |  1   SEG04.S    724 | Code        | 00 |         |    1 | 00/0494 : 38          |             SEC                  
+  816 |  1   SEG04.S    725 | Code        | 00 |         |    3 | 00/0495 : E9 F7 00    |             SBC   #$00F7         
+  817 |  1   SEG04.S    726 | Code        | 00 |         |    1 | 00/0498 : 5B          |             TCD                  
+  818 |  1   SEG04.S    727 | Code        | 00 |         |    3 | 00/0499 : 69 F0 00    |             ADC   #$00F0         
+  819 |  1   SEG04.S    728 | Code        | 00 |         |    1 | 00/049C : 1B          |             TCS                  
+  820 |  1   SEG04.S    729 | Code        | 00 |         |    3 | 00/049D : F4 10 00    |             PEA   $0010          
+  821 |  1   SEG04.S    730 | Code        | 00 |         |    2 | 00/04A0 : D4 FF       |             PEI   $FF            
+  822 |  1   SEG04.S    731 | Code        | 00 |         |    2 | 00/04A2 : D4 FD       |             PEI   $FD            
+  823 |  1   SEG04.S    732 | Code        | 00 |  3      |    4 | 00/04A4 : 22 D9 03 00 |             JSL   L040440        
+  824 |  1   SEG04.S    733 | Code        | 00 |         |    1 | 00/04A8 : 7A          |             PLY                  
+  825 |  1   SEG04.S    734 | Code        | 00 |         |    1 | 00/04A9 : 7A          |             PLY                  
+  826 |  1   SEG04.S    735 | Code        | 00 |         |    1 | 00/04AA : 7A          |             PLY                  
+  827 |  1   SEG04.S    736 | Code        | 00 |         |    1 | 00/04AB : A8          |             TAY                  
+  828 |  1   SEG04.S    737 | Code        | 00 |         |    1 | 00/04AC : 3B          |             TSC                  
+  829 |  1   SEG04.S    738 | Code        | 00 |         |    1 | 00/04AD : 18          |             CLC                  
+  830 |  1   SEG04.S    739 | Code        | 00 |         |    3 | 00/04AE : 69 06 00    |             ADC   #$0006         
+  831 |  1   SEG04.S    740 | Code        | 00 |         |    1 | 00/04B1 : 1B          |             TCS                  
+  832 |  1   SEG04.S    741 | Code        | 00 |         |    1 | 00/04B2 : 98          |             TYA                  
+  833 |  1   SEG04.S    742 | Code        | 00 |         |    1 | 00/04B3 : 2B          |             PLD                  
+  834 |  1   SEG04.S    743 | Code        | 00 |         |    1 | 00/04B4 : 6B          |             RTL                  
+  835 |  1   SEG04.S    744 | Empty       | 00 |         |    0 | 00/04B5               |                                  
+  836 |  1   SEG04.S    745 | Global      | 00 |         |    0 | 00/04B5               | L040537     ENT                  
+  837 |  1   SEG04.S    746 | Code        | 00 |         |    1 | 00/04B5 : 0B          |             PHD                  
+  838 |  1   SEG04.S    747 | Code        | 00 |         |    1 | 00/04B6 : 3B          |             TSC                  
+  839 |  1   SEG04.S    748 | Code        | 00 |         |    1 | 00/04B7 : 38          |             SEC                  
+  840 |  1   SEG04.S    749 | Code        | 00 |         |    3 | 00/04B8 : E9 F7 00    |             SBC   #$00F7         
+  841 |  1   SEG04.S    750 | Code        | 00 |         |    1 | 00/04BB : 5B          |             TCD                  
+  842 |  1   SEG04.S    751 | Code        | 00 |         |    3 | 00/04BC : 69 F0 00    |             ADC   #$00F0         
+  843 |  1   SEG04.S    752 | Code        | 00 |         |    1 | 00/04BF : 1B          |             TCS                  
+  844 |  1   SEG04.S    753 | Code        | 00 |         |    2 | 00/04C0 : A6 FF       |             LDX   $FF            
+  845 |  1   SEG04.S    754 | Code        | 00 |         |    2 | 00/04C2 : A5 FD       |             LDA   $FD            
+  846 |  1   SEG04.S    755 | Code        | 00 |         |    3 | 00/04C4 : 29 FF FF    |             AND   #$FFFF         
+  847 |  1   SEG04.S    756 | Code        | 00 |         |    1 | 00/04C7 : 48          |             PHA                  
+  848 |  1   SEG04.S    757 | Code        | 00 |         |    1 | 00/04C8 : 8A          |             TXA                  
+  849 |  1   SEG04.S    758 | Code        | 00 |         |    3 | 00/04C9 : 29 FF 7F    |             AND   #$7FFF         
+  850 |  1   SEG04.S    759 | Code        | 00 |         |    1 | 00/04CC : AA          |             TAX                  
+  851 |  1   SEG04.S    760 | Code        | 00 |         |    1 | 00/04CD : 68          |             PLA                  
+  852 |  1   SEG04.S    761 | Code        | 00 |         |    2 | 00/04CE : 86 FF       |             STX   $FF            
+  853 |  1   SEG04.S    762 | Code        | 00 |         |    2 | 00/04D0 : 85 FD       |             STA   $FD            
+  854 |  1   SEG04.S    763 | Code        | 00 |         |    1 | 00/04D2 : DA          |             PHX                  
+  855 |  1   SEG04.S    764 | Code        | 00 |         |    1 | 00/04D3 : 48          |             PHA                  
+  856 |  1   SEG04.S    765 | Code        | 00 |         |    2 | 00/04D4 : D4 FF       |             PEI   $FF            
+  857 |  1   SEG04.S    766 | Code        | 00 |         |    2 | 00/04D6 : D4 FD       |             PEI   $FD            
+  858 |  1   SEG04.S    767 | Macro       | 00 |         |    0 | 00/04D8               |             _FindHandle                 
+  860 |  1   SEG04.S    767 | Code        | 00 |         |    3 | 00/04D8 : A2 02 1A    |             LDX   #$1A02         ; load tool call #
+  861 |  1   SEG04.S    767 | Code        | 00 |         |    4 | 00/04DB : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  862 |  1   SEG04.S    768 | Comment     | 00 |         |    0 | 00/04DF               | * BCS L040566
+  863 |  1   SEG04.S    769 | Comment     | 00 |         |    0 | 00/04DF               | * LDA #$0000
+  864 |  1   SEG04.S    770 | Comment     | 00 |         |    0 | 00/04DF               | *L040566 STAL L0201E7
+  865 |  1   SEG04.S    771 | Macro       | 00 |         |    0 | 00/04DF               |             _DisposeHandle                 
+  867 |  1   SEG04.S    771 | Code        | 00 |         |    3 | 00/04DF : A2 02 10    |             LDX   #$1002         ; load tool call #
+  868 |  1   SEG04.S    771 | Code        | 00 |         |    4 | 00/04E2 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  869 |  1   SEG04.S    772 | Comment     | 00 |         |    0 | 00/04E6               | * BCS L040576
+  870 |  1   SEG04.S    773 | Comment     | 00 |         |    0 | 00/04E6               | * LDA #$0000
+  871 |  1   SEG04.S    774 | Comment     | 00 |         |    0 | 00/04E6               | *L040576 STAL L0201E7
+  872 |  1   SEG04.S    775 | Code        | 00 |         |    1 | 00/04E6 : DA          |             PHX                  
+  873 |  1   SEG04.S    776 | Code        | 00 |         |    1 | 00/04E7 : 48          |             PHA                  
+  874 |  1   SEG04.S    777 | Macro       | 00 |         |    0 | 00/04E8               |             _MaxBlock                 
+  876 |  1   SEG04.S    777 | Code        | 00 |         |    3 | 00/04E8 : A2 02 1C    |             LDX   #$1C02         ; load tool call #
+  877 |  1   SEG04.S    777 | Code        | 00 |         |    4 | 00/04EB : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  878 |  1   SEG04.S    778 | Comment     | 00 |         |    0 | 00/04EF               | * BCS L040588
+  879 |  1   SEG04.S    779 | Comment     | 00 |         |    0 | 00/04EF               | * LDA #$0000
+  880 |  1   SEG04.S    780 | Comment     | 00 |         |    0 | 00/04EF               | *L040588 STAL L0201E7
+  881 |  1   SEG04.S    781 | Code        | 00 |         |    1 | 00/04EF : DA          |             PHX                  
+  882 |  1   SEG04.S    782 | Code        | 00 |         |    1 | 00/04F0 : 48          |             PHA                  
+  883 |  1   SEG04.S    783 | Macro       | 00 |         |    0 | 00/04F1               |             _FreeMem                 
+  885 |  1   SEG04.S    783 | Code        | 00 |         |    3 | 00/04F1 : A2 02 1B    |             LDX   #$1B02         ; load tool call #
+  886 |  1   SEG04.S    783 | Code        | 00 |         |    4 | 00/04F4 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  887 |  1   SEG04.S    784 | Comment     | 00 |         |    0 | 00/04F8               | * BCS L04059A
+  888 |  1   SEG04.S    785 | Comment     | 00 |         |    0 | 00/04F8               | * LDA #$0000
+  889 |  1   SEG04.S    786 | Comment     | 00 |         |    0 | 00/04F8               | *L04059A STAL L0201E7
+  890 |  1   SEG04.S    787 | Code        | 00 |         |    2 | 00/04F8 : D4 FF       |             PEI   $FF            
+  891 |  1   SEG04.S    788 | Code        | 00 |         |    2 | 00/04FA : D4 FD       |             PEI   $FD            
+  892 |  1   SEG04.S    789 | Code        | 00 |E 1 >>16 |    3 | 00/04FC : F4 00 00    |             PEA   ^L0300BE       
+  893 |  1   SEG04.S    790 | Code        | 00 |E 2      |    3 | 00/04FF : F4 BE 00    |             PEA   L0300BE        
+  894 |  1   SEG04.S    791 | Code        | 00 |E 3      |    4 | 00/0502 : 22 7D 0D 1A |             JSL   L1A0DAA        
+  895 |  1   SEG04.S    792 | Code        | 00 |         |    1 | 00/0506 : A8          |             TAY                  
+  896 |  1   SEG04.S    793 | Code        | 00 |         |    1 | 00/0507 : 3B          |             TSC                  
+  897 |  1   SEG04.S    794 | Code        | 00 |         |    1 | 00/0508 : 18          |             CLC                  
+  898 |  1   SEG04.S    795 | Code        | 00 |         |    3 | 00/0509 : 69 10 00    |             ADC   #$0010         
+  899 |  1   SEG04.S    796 | Code        | 00 |         |    1 | 00/050C : 1B          |             TCS                  
+  900 |  1   SEG04.S    797 | Code        | 00 |         |    1 | 00/050D : 98          |             TYA                  
+  901 |  1   SEG04.S    798 | Code        | 00 |         |    1 | 00/050E : 3B          |             TSC                  
+  902 |  1   SEG04.S    799 | Code        | 00 |         |    1 | 00/050F : 18          |             CLC                  
+  903 |  1   SEG04.S    800 | Code        | 00 |         |    3 | 00/0510 : 69 06 00    |             ADC   #$0006         
+  904 |  1   SEG04.S    801 | Code        | 00 |         |    1 | 00/0513 : 1B          |             TCS                  
+  905 |  1   SEG04.S    802 | Code        | 00 |         |    1 | 00/0514 : 2B          |             PLD                  
+  906 |  1   SEG04.S    803 | Code        | 00 |         |    1 | 00/0515 : 6B          |             RTL                  
+  907 |  1   SEG04.S    804 | Empty       | 00 |         |    0 | 00/0516               |                                  
+  908 |  1   SEG04.S    805 | Global      | 00 |         |    0 | 00/0516               | L0405BC     ENT                  
+  909 |  1   SEG04.S    806 | Code        | 00 |         |    1 | 00/0516 : 0B          |             PHD                  
+  910 |  1   SEG04.S    807 | Code        | 00 |         |    1 | 00/0517 : 3B          |             TSC                  
+  911 |  1   SEG04.S    808 | Code        | 00 |         |    1 | 00/0518 : 38          |             SEC                  
+  912 |  1   SEG04.S    809 | Code        | 00 |         |    3 | 00/0519 : E9 F7 00    |             SBC   #$00F7         
+  913 |  1   SEG04.S    810 | Code        | 00 |         |    1 | 00/051C : 5B          |             TCD                  
+  914 |  1   SEG04.S    811 | Code        | 00 |         |    3 | 00/051D : 69 F0 00    |             ADC   #$00F0         
+  915 |  1   SEG04.S    812 | Code        | 00 |         |    1 | 00/0520 : 1B          |             TCS                  
+  916 |  1   SEG04.S    813 | Code        | 00 |         |    3 | 00/0521 : A0 02 00    |             LDY   #$0002         
+  917 |  1   SEG04.S    814 | Code        | 00 |         |    2 | 00/0524 : B7 FD       |             LDA   [$FD],Y        
+  918 |  1   SEG04.S    815 | Code        | 00 |         |    1 | 00/0526 : AA          |             TAX                  
+  919 |  1   SEG04.S    816 | Code        | 00 |         |    2 | 00/0527 : A7 FD       |             LDA   [$FD]          
+  920 |  1   SEG04.S    817 | Code        | 00 |         |    2 | 00/0529 : 86 F2       |             STX   $F2            
+  921 |  1   SEG04.S    818 | Code        | 00 |         |    2 | 00/052B : 05 F2       |             ORA   $F2            
+  922 |  1   SEG04.S    819 | Code        | 00 |         |    2 | 00/052D : F0 20       |             BEQ   L0405F5        
+  923 |  1   SEG04.S    820 | Code        | 00 |         |    3 | 00/052F : A0 02 00    |             LDY   #$0002         
+  924 |  1   SEG04.S    821 | Code        | 00 |         |    2 | 00/0532 : B7 FD       |             LDA   [$FD],Y        
+  925 |  1   SEG04.S    822 | Code        | 00 |         |    1 | 00/0534 : AA          |             TAX                  
+  926 |  1   SEG04.S    823 | Code        | 00 |         |    2 | 00/0535 : A7 FD       |             LDA   [$FD]          
+  927 |  1   SEG04.S    824 | Code        | 00 |         |    1 | 00/0537 : DA          |             PHX                  
+  928 |  1   SEG04.S    825 | Code        | 00 |         |    1 | 00/0538 : 48          |             PHA                  
+  929 |  1   SEG04.S    826 | Code        | 00 |  3      |    4 | 00/0539 : 22 B5 04 00 |             JSL   L040537        
+  930 |  1   SEG04.S    827 | Code        | 00 |         |    1 | 00/053D : 7A          |             PLY                  
+  931 |  1   SEG04.S    828 | Code        | 00 |         |    1 | 00/053E : 7A          |             PLY                  
+  932 |  1   SEG04.S    829 | Code        | 00 |         |    3 | 00/053F : A2 00 00    |             LDX   #$0000         
+  933 |  1   SEG04.S    830 | Code        | 00 |         |    3 | 00/0542 : A9 00 00    |             LDA   #$0000         
+  934 |  1   SEG04.S    831 | Code        | 00 |         |    3 | 00/0545 : A0 02 00    |             LDY   #$0002         
+  935 |  1   SEG04.S    832 | Code        | 00 |         |    1 | 00/0548 : 48          |             PHA                  
+  936 |  1   SEG04.S    833 | Code        | 00 |         |    1 | 00/0549 : 8A          |             TXA                  
+  937 |  1   SEG04.S    834 | Code        | 00 |         |    2 | 00/054A : 97 FD       |             STA   [$FD],Y        
+  938 |  1   SEG04.S    835 | Code        | 00 |         |    1 | 00/054C : 68          |             PLA                  
+  939 |  1   SEG04.S    836 | Code        | 00 |         |    2 | 00/054D : 87 FD       |             STA   [$FD]          
+  940 |  1   SEG04.S    837 | Code        | 00 |         |    1 | 00/054F : 3B          | L0405F5     TSC                  
+  941 |  1   SEG04.S    838 | Code        | 00 |         |    1 | 00/0550 : 18          |             CLC                  
+  942 |  1   SEG04.S    839 | Code        | 00 |         |    3 | 00/0551 : 69 06 00    |             ADC   #$0006         
+  943 |  1   SEG04.S    840 | Code        | 00 |         |    1 | 00/0554 : 1B          |             TCS                  
+  944 |  1   SEG04.S    841 | Code        | 00 |         |    1 | 00/0555 : 2B          |             PLD                  
+  945 |  1   SEG04.S    842 | Code        | 00 |         |    1 | 00/0556 : 6B          |             RTL                  
+  946 |  1   SEG04.S    843 | Empty       | 00 |         |    0 | 00/0557               |                                  
+  947 |  1   SEG04.S    844 | Code        | 00 |         |    1 | 00/0557 : 0B          |             PHD                  
+  948 |  1   SEG04.S    845 | Code        | 00 |         |    1 | 00/0558 : 3B          |             TSC                  
+  949 |  1   SEG04.S    846 | Code        | 00 |         |    1 | 00/0559 : 38          |             SEC                  
+  950 |  1   SEG04.S    847 | Code        | 00 |         |    3 | 00/055A : E9 F7 00    |             SBC   #$00F7         
+  951 |  1   SEG04.S    848 | Code        | 00 |         |    1 | 00/055D : 5B          |             TCD                  
+  952 |  1   SEG04.S    849 | Code        | 00 |         |    3 | 00/055E : 69 F0 00    |             ADC   #$00F0         
+  953 |  1   SEG04.S    850 | Code        | 00 |         |    1 | 00/0561 : 1B          |             TCS                  
+  954 |  1   SEG04.S    851 | Code        | 00 |         |    2 | 00/0562 : A6 FF       |             LDX   $FF            
+  955 |  1   SEG04.S    852 | Code        | 00 |         |    2 | 00/0564 : A5 FD       |             LDA   $FD            
+  956 |  1   SEG04.S    853 | Code        | 00 |         |    3 | 00/0566 : 29 FF FF    |             AND   #$FFFF         
+  957 |  1   SEG04.S    854 | Code        | 00 |         |    1 | 00/0569 : 48          |             PHA                  
+  958 |  1   SEG04.S    855 | Code        | 00 |         |    1 | 00/056A : 8A          |             TXA                  
+  959 |  1   SEG04.S    856 | Code        | 00 |         |    3 | 00/056B : 29 FF 7F    |             AND   #$7FFF         
+  960 |  1   SEG04.S    857 | Code        | 00 |         |    1 | 00/056E : AA          |             TAX                  
+  961 |  1   SEG04.S    858 | Code        | 00 |         |    1 | 00/056F : 68          |             PLA                  
+  962 |  1   SEG04.S    859 | Code        | 00 |         |    2 | 00/0570 : 86 FF       |             STX   $FF            
+  963 |  1   SEG04.S    860 | Code        | 00 |         |    2 | 00/0572 : 85 FD       |             STA   $FD            
+  964 |  1   SEG04.S    861 | Code        | 00 |         |    1 | 00/0574 : DA          |             PHX                  
+  965 |  1   SEG04.S    862 | Code        | 00 |         |    1 | 00/0575 : 48          |             PHA                  
+  966 |  1   SEG04.S    863 | Code        | 00 |         |    1 | 00/0576 : DA          |             PHX                  
+  967 |  1   SEG04.S    864 | Code        | 00 |         |    1 | 00/0577 : 48          |             PHA                  
+  968 |  1   SEG04.S    865 | Code        | 00 |         |    2 | 00/0578 : D4 FF       |             PEI   $FF            
+  969 |  1   SEG04.S    866 | Code        | 00 |         |    2 | 00/057A : D4 FD       |             PEI   $FD            
+  970 |  1   SEG04.S    867 | Macro       | 00 |         |    0 | 00/057C               |             _FindHandle                 
+  972 |  1   SEG04.S    867 | Code        | 00 |         |    3 | 00/057C : A2 02 1A    |             LDX   #$1A02         ; load tool call #
+  973 |  1   SEG04.S    867 | Code        | 00 |         |    4 | 00/057F : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  974 |  1   SEG04.S    868 | Comment     | 00 |         |    0 | 00/0583               | * BCS L04062E
+  975 |  1   SEG04.S    869 | Comment     | 00 |         |    0 | 00/0583               | * LDA #$0000
+  976 |  1   SEG04.S    870 | Comment     | 00 |         |    0 | 00/0583               | *L04062E STAL L0201E7
+  977 |  1   SEG04.S    871 | Macro       | 00 |         |    0 | 00/0583               |             _GetHandleSize                 
+  979 |  1   SEG04.S    871 | Code        | 00 |         |    3 | 00/0583 : A2 02 18    |             LDX   #$1802         ; load tool call #
+  980 |  1   SEG04.S    871 | Code        | 00 |         |    4 | 00/0586 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  981 |  1   SEG04.S    872 | Comment     | 00 |         |    0 | 00/058A               | * BCS L04063E
+  982 |  1   SEG04.S    873 | Comment     | 00 |         |    0 | 00/058A               | * LDA #$0000
+  983 |  1   SEG04.S    874 | Comment     | 00 |         |    0 | 00/058A               | *L04063E STAL L0201E7
+  984 |  1   SEG04.S    875 | Code        | 00 |         |    1 | 00/058A : 68          |             PLA                  
+  985 |  1   SEG04.S    876 | Code        | 00 |         |    1 | 00/058B : FA          |             PLX                  
+  986 |  1   SEG04.S    877 | Code        | 00 |         |    1 | 00/058C : A8          |             TAY                  
+  987 |  1   SEG04.S    878 | Code        | 00 |         |    1 | 00/058D : 3B          |             TSC                  
+  988 |  1   SEG04.S    879 | Code        | 00 |         |    1 | 00/058E : 18          |             CLC                  
+  989 |  1   SEG04.S    880 | Code        | 00 |         |    3 | 00/058F : 69 06 00    |             ADC   #$0006         
+  990 |  1   SEG04.S    881 | Code        | 00 |         |    1 | 00/0592 : 1B          |             TCS                  
+  991 |  1   SEG04.S    882 | Code        | 00 |         |    1 | 00/0593 : 98          |             TYA                  
+  992 |  1   SEG04.S    883 | Code        | 00 |         |    1 | 00/0594 : 2B          |             PLD                  
+  993 |  1   SEG04.S    884 | Code        | 00 |         |    1 | 00/0595 : 6B          |             RTL                  
+  994 |  1   SEG04.S    885 | Empty       | 00 |         |    0 | 00/0596               |                                  
+  995 |  1   SEG04.S    886 | Global      | 00 |         |    0 | 00/0596               | L04064E     ENT                  
+  996 |  1   SEG04.S    887 | Code        | 00 |         |    1 | 00/0596 : 0B          |             PHD                  
+  997 |  1   SEG04.S    888 | Code        | 00 |         |    1 | 00/0597 : 3B          |             TSC                  
+  998 |  1   SEG04.S    889 | Code        | 00 |         |    1 | 00/0598 : 38          |             SEC                  
+  999 |  1   SEG04.S    890 | Code        | 00 |         |    3 | 00/0599 : E9 F9 00    |             SBC   #$00F9         
+ 1000 |  1   SEG04.S    891 | Code        | 00 |         |    1 | 00/059C : 5B          |             TCD                  
+ 1001 |  1   SEG04.S    892 | Code        | 00 |         |    3 | 00/059D : 69 E8 00    |             ADC   #$00E8         
+ 1002 |  1   SEG04.S    893 | Code        | 00 |         |    1 | 00/05A0 : 1B          |             TCS                  
+ 1003 |  1   SEG04.S    894 | Code        | 00 |         |    3 | 00/05A1 : A9 00 00    |             LDA   #$0000         
+ 1004 |  1   SEG04.S    895 | Code        | 10 |         |    2 | 00/05A4 : E2 20       |             SEP   #$20           
+ 1005 |  1   SEG04.S    896 | Code        | 10 |         |    2 | 00/05A6 : 85 F1       |             STA   $F1            
+ 1006 |  1   SEG04.S    897 | Code        | 00 |         |    2 | 00/05A8 : C2 20       |             REP   #$20           
+ 1007 |  1   SEG04.S    898 | Code        | 00 |         |    3 | 00/05AA : A9 06 00    |             LDA   #$0006         
+ 1008 |  1   SEG04.S    899 | Code        | 00 |         |    2 | 00/05AD : 85 F2       |             STA   $F2            
+ 1009 |  1   SEG04.S    900 | Code        | 00 |         |    3 | 00/05AF : A9 0A 00    | L040667     LDA   #$000A         
+ 1010 |  1   SEG04.S    901 | Code        | 00 |         |    1 | 00/05B2 : 48          |             PHA                  
+ 1011 |  1   SEG04.S    902 | Code        | 00 |         |    2 | 00/05B3 : A5 FF       |             LDA   $FF            
+ 1012 |  1   SEG04.S    903 | Code        | 00 |         |    1 | 00/05B5 : 18          |             CLC                  
+ 1013 |  1   SEG04.S    904 | Code        | 00 |E 3      |    4 | 00/05B6 : 22 EC 0E 1A |             JSL   L1A0F19        
+ 1014 |  1   SEG04.S    905 | Code        | 00 |         |    3 | 00/05BA : A9 30 00    |             LDA   #$0030         
+ 1015 |  1   SEG04.S    906 | Code        | 00 |         |    1 | 00/05BD : FA          |             PLX                  
+ 1016 |  1   SEG04.S    907 | Code        | 00 |         |    2 | 00/05BE : 86 F8       |             STX   $F8            
+ 1017 |  1   SEG04.S    908 | Code        | 00 |         |    1 | 00/05C0 : 18          |             CLC                  
+ 1018 |  1   SEG04.S    909 | Code        | 00 |         |    2 | 00/05C1 : 65 F8       |             ADC   $F8            
+ 1019 |  1   SEG04.S    910 | Code        | 00 |         |    1 | 00/05C3 : 48          |             PHA                  
+ 1020 |  1   SEG04.S    911 | Code        | 00 |         |    2 | 00/05C4 : A5 F2       |             LDA   $F2            
+ 1021 |  1   SEG04.S    912 | Code        | 00 |         |    2 | 00/05C6 : C6 F2       |             DEC   $F2            
+ 1022 |  1   SEG04.S    913 | Code        | 00 |         |    3 | 00/05C8 : A2 00 00    |             LDX   #$0000         
+ 1023 |  1   SEG04.S    914 | Code        | 00 |         |    1 | 00/05CB : DA          |             PHX                  
+ 1024 |  1   SEG04.S    915 | Code        | 00 |         |    1 | 00/05CC : 48          |             PHA                  
+ 1025 |  1   SEG04.S    916 | Code        | 00 |         |    3 | 00/05CD : A2 00 00    |             LDX   #$0000         
+ 1026 |  1   SEG04.S    917 | Code        | 00 |         |    1 | 00/05D0 : 7B          |             TDC                  
+ 1027 |  1   SEG04.S    918 | Code        | 00 |         |    1 | 00/05D1 : 18          |             CLC                  
+ 1028 |  1   SEG04.S    919 | Code        | 00 |         |    3 | 00/05D2 : 69 EA 00    |             ADC   #$00EA         
+ 1029 |  1   SEG04.S    920 | Code        | 00 |E 3      |    4 | 00/05D5 : 22 D2 0E 1A |             JSL   L1A0EFF        
+ 1030 |  1   SEG04.S    921 | Code        | 00 |         |    1 | 00/05D9 : 68          |             PLA                  
+ 1031 |  1   SEG04.S    922 | Code        | 00 |         |    1 | 00/05DA : FA          |             PLX                  
+ 1032 |  1   SEG04.S    923 | Code        | 00 |         |    2 | 00/05DB : 85 F4       |             STA   $F4            
+ 1033 |  1   SEG04.S    924 | Code        | 00 |         |    2 | 00/05DD : 86 F6       |             STX   $F6            
+ 1034 |  1   SEG04.S    925 | Code        | 00 |         |    1 | 00/05DF : 68          |             PLA                  
+ 1035 |  1   SEG04.S    926 | Code        | 10 |         |    2 | 00/05E0 : E2 20       |             SEP   #$20           
+ 1036 |  1   SEG04.S    927 | Code        | 10 |         |    2 | 00/05E2 : 87 F4       |             STA   [$F4]          
+ 1037 |  1   SEG04.S    928 | Code        | 00 |         |    2 | 00/05E4 : C2 20       |             REP   #$20           
+ 1038 |  1   SEG04.S    929 | Code        | 00 |         |    3 | 00/05E6 : A9 0A 00    |             LDA   #$000A         
+ 1039 |  1   SEG04.S    930 | Code        | 00 |         |    1 | 00/05E9 : 48          |             PHA                  
+ 1040 |  1   SEG04.S    931 | Code        | 00 |         |    2 | 00/05EA : A5 FF       |             LDA   $FF            
+ 1041 |  1   SEG04.S    932 | Code        | 00 |         |    1 | 00/05EC : 18          |             CLC                  
+ 1042 |  1   SEG04.S    933 | Code        | 00 |E 3      |    4 | 00/05ED : 22 EC 0E 1A |             JSL   L1A0F19        
+ 1043 |  1   SEG04.S    934 | Code        | 00 |         |    1 | 00/05F1 : 7A          |             PLY                  
+ 1044 |  1   SEG04.S    935 | Code        | 00 |         |    2 | 00/05F2 : 85 FF       |             STA   $FF            
+ 1045 |  1   SEG04.S    936 | Code        | 00 |         |    2 | 00/05F4 : A5 FF       |             LDA   $FF            
+ 1046 |  1   SEG04.S    937 | Code        | 00 |         |    2 | 00/05F6 : D0 B7       |             BNE   L040667        
+ 1047 |  1   SEG04.S    938 | Code        | 00 |         |    2 | 00/05F8 : A5 F2       |             LDA   $F2            
+ 1048 |  1   SEG04.S    939 | Code        | 00 |         |    1 | 00/05FA : 18          |             CLC                  
+ 1049 |  1   SEG04.S    940 | Code        | 00 |         |    3 | 00/05FB : 69 01 00    |             ADC   #$0001         
+ 1050 |  1   SEG04.S    941 | Code        | 00 |         |    3 | 00/05FE : A2 00 00    |             LDX   #$0000         
+ 1051 |  1   SEG04.S    942 | Code        | 00 |         |    1 | 00/0601 : DA          |             PHX                  
+ 1052 |  1   SEG04.S    943 | Code        | 00 |         |    1 | 00/0602 : 48          |             PHA                  
+ 1053 |  1   SEG04.S    944 | Code        | 00 |         |    3 | 00/0603 : A2 00 00    |             LDX   #$0000         
+ 1054 |  1   SEG04.S    945 | Code        | 00 |         |    1 | 00/0606 : 7B          |             TDC                  
+ 1055 |  1   SEG04.S    946 | Code        | 00 |         |    1 | 00/0607 : 18          |             CLC                  
+ 1056 |  1   SEG04.S    947 | Code        | 00 |         |    3 | 00/0608 : 69 EA 00    |             ADC   #$00EA         
+ 1057 |  1   SEG04.S    948 | Code        | 00 |E 3      |    4 | 00/060B : 22 D2 0E 1A |             JSL   L1A0EFF        
+ 1058 |  1   SEG04.S    949 | Macro       | 00 |         |    0 | 00/060F               |             _DrawCString                 
+ 1060 |  1   SEG04.S    949 | Code        | 00 |         |    3 | 00/060F : A2 04 A6    |             LDX   #$A604         ; load tool call #
+ 1061 |  1   SEG04.S    949 | Code        | 00 |         |    4 | 00/0612 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+ 1062 |  1   SEG04.S    950 | Comment     | 00 |         |    0 | 00/0616               | * BCS L0406D3
+ 1063 |  1   SEG04.S    951 | Comment     | 00 |         |    0 | 00/0616               | * LDA #$0000
+ 1064 |  1   SEG04.S    952 | Comment     | 00 |         |    0 | 00/0616               | *L0406D3 STAL L0201E7
+ 1065 |  1   SEG04.S    953 | Code        | 00 |         |    1 | 00/0616 : 3B          |             TSC                  
+ 1066 |  1   SEG04.S    954 | Code        | 00 |         |    1 | 00/0617 : 18          |             CLC                  
+ 1067 |  1   SEG04.S    955 | Code        | 00 |         |    3 | 00/0618 : 69 10 00    |             ADC   #$0010         
+ 1068 |  1   SEG04.S    956 | Code        | 00 |         |    1 | 00/061B : 1B          |             TCS                  
+ 1069 |  1   SEG04.S    957 | Code        | 00 |         |    1 | 00/061C : 2B          |             PLD                  
+ 1070 |  1   SEG04.S    958 | Code        | 00 |         |    1 | 00/061D : 6B          |             RTL                  
+ 1071 |  1   SEG04.S    959 | Empty       | 00 |         |    0 | 00/061E               |                                  
+ 1072 |  1   SEG04.S    960 | Global      | 00 |         |    0 | 00/061E               | L0406DF     ENT                  
+ 1073 |  1   SEG04.S    961 | Code        | 00 |         |    1 | 00/061E : 0B          |             PHD                  
+ 1074 |  1   SEG04.S    962 | Code        | 00 |         |    1 | 00/061F : 3B          |             TSC                  
+ 1075 |  1   SEG04.S    963 | Code        | 00 |         |    1 | 00/0620 : 38          |             SEC                  
+ 1076 |  1   SEG04.S    964 | Code        | 00 |         |    3 | 00/0621 : E9 F9 00    |             SBC   #$00F9         
+ 1077 |  1   SEG04.S    965 | Code        | 00 |         |    1 | 00/0624 : 5B          |             TCD                  
+ 1078 |  1   SEG04.S    966 | Code        | 00 |         |    3 | 00/0625 : 69 EA 00    |             ADC   #$00EA         
+ 1079 |  1   SEG04.S    967 | Code        | 00 |         |    1 | 00/0628 : 1B          |             TCS                  
+ 1080 |  1   SEG04.S    968 | Code        | 00 |         |    2 | 00/0629 : 64 F2       |             STZ   $F2            
+ 1081 |  1   SEG04.S    969 | Code        | 00 |         |    2 | 00/062B : 80 24       |             BRA   L040712        
+ 1082 |  1   SEG04.S    970 | Code        | 00 |         |    2 | 00/062D : A5 F2       | L0406EE     LDA   $F2            
+ 1083 |  1   SEG04.S    971 | Code        | 00 |         |    3 | 00/062F : A2 00 00    |             LDX   #$0000         
+ 1084 |  1   SEG04.S    972 | Code        | 00 |         |    1 | 00/0632 : DA          |             PHX                  
+ 1085 |  1   SEG04.S    973 | Code        | 00 |         |    1 | 00/0633 : 48          |             PHA                  
+ 1086 |  1   SEG04.S    974 | Code        | 00 |         |    3 | 00/0634 : A2 00 00    |             LDX   #$0000         
+ 1087 |  1   SEG04.S    975 | Code        | 00 |         |    1 | 00/0637 : 7B          |             TDC                  
+ 1088 |  1   SEG04.S    976 | Code        | 00 |         |    1 | 00/0638 : 18          |             CLC                  
+ 1089 |  1   SEG04.S    977 | Code        | 00 |         |    3 | 00/0639 : 69 EC 00    |             ADC   #$00EC         
+ 1090 |  1   SEG04.S    978 | Code        | 00 |E 3      |    4 | 00/063C : 22 D2 0E 1A |             JSL   L1A0EFF        
+ 1091 |  1   SEG04.S    979 | Code        | 00 |         |    1 | 00/0640 : 68          |             PLA                  
+ 1092 |  1   SEG04.S    980 | Code        | 00 |         |    1 | 00/0641 : FA          |             PLX                  
+ 1093 |  1   SEG04.S    981 | Code        | 00 |         |    2 | 00/0642 : 85 F4       |             STA   $F4            
+ 1094 |  1   SEG04.S    982 | Code        | 00 |         |    2 | 00/0644 : 86 F6       |             STX   $F6            
+ 1095 |  1   SEG04.S    983 | Code        | 00 |         |    3 | 00/0646 : A9 30 00    |             LDA   #$0030         
+ 1096 |  1   SEG04.S    984 | Code        | 10 |         |    2 | 00/0649 : E2 20       |             SEP   #$20           
+ 1097 |  1   SEG04.S    985 | Code        | 10 |         |    2 | 00/064B : 87 F4       |             STA   [$F4]          
+ 1098 |  1   SEG04.S    986 | Code        | 00 |         |    2 | 00/064D : C2 20       |             REP   #$20           
+ 1099 |  1   SEG04.S    987 | Code        | 00 |         |    2 | 00/064F : E6 F2       |             INC   $F2            
+ 1100 |  1   SEG04.S    988 | Code        | 00 |         |    2 | 00/0651 : A5 F2       | L040712     LDA   $F2            
+ 1101 |  1   SEG04.S    989 | Code        | 00 |         |    3 | 00/0653 : C9 04 00    |             CMP   #$0004         
+ 1102 |  1   SEG04.S    990 | Code        | 00 |         |    2 | 00/0656 : D0 D5       |             BNE   L0406EE        
+ 1103 |  1   SEG04.S    991 | Code        | 00 |         |    3 | 00/0658 : A9 00 00    |             LDA   #$0000         
+ 1104 |  1   SEG04.S    992 | Code        | 10 |         |    2 | 00/065B : E2 20       |             SEP   #$20           
+ 1105 |  1   SEG04.S    993 | Code        | 10 |         |    2 | 00/065D : 85 F0       |             STA   $F0            
+ 1106 |  1   SEG04.S    994 | Code        | 00 |         |    2 | 00/065F : C2 20       |             REP   #$20           
+ 1107 |  1   SEG04.S    995 | Code        | 00 |         |    2 | 00/0661 : A5 FF       |             LDA   $FF            
+ 1108 |  1   SEG04.S    996 | Code        | 00 |         |    1 | 00/0663 : 38          |             SEC                  
+ 1109 |  1   SEG04.S    997 | Code        | 00 |         |    3 | 00/0664 : E9 00 00    |             SBC   #$0000         
+ 1110 |  1   SEG04.S    998 | Code        | 00 |         |    2 | 00/0667 : 70 03       |             BVS   L04072D        
+ 1111 |  1   SEG04.S    999 | Code        | 00 |         |    3 | 00/0669 : 49 00 80    |             EOR   #$8000         
+ 1112 |  1   SEG04.S   1000 | Code        | 00 |         |    2 | 00/066C : 30 13       | L04072D     BMI   L040742        
+ 1113 |  1   SEG04.S   1001 | Code        | 00 |         |    2 | 00/066E : A5 FF       |             LDA   $FF            
+ 1114 |  1   SEG04.S   1002 | Code        | 00 |         |    3 | 00/0670 : 49 FF FF    |             EOR   #$FFFF         
+ 1115 |  1   SEG04.S   1003 | Code        | 00 |         |    1 | 00/0673 : 1A          |             INC                  
+ 1116 |  1   SEG04.S   1004 | Code        | 00 |         |    2 | 00/0674 : 85 FF       |             STA   $FF            
+ 1117 |  1   SEG04.S   1005 | Code        | 00 |         |    3 | 00/0676 : A9 2D 00    |             LDA   #$002D         
+ 1118 |  1   SEG04.S   1006 | Code        | 10 |         |    2 | 00/0679 : E2 20       |             SEP   #$20           
+ 1119 |  1   SEG04.S   1007 | Code        | 10 |         |    2 | 00/067B : 85 EC       |             STA   $EC            
+ 1120 |  1   SEG04.S   1008 | Code        | 00 |         |    2 | 00/067D : C2 20       |             REP   #$20           
+ 1121 |  1   SEG04.S   1009 | Code        | 00 |         |    2 | 00/067F : 80 09       |             BRA   L04074B        
+ 1122 |  1   SEG04.S   1010 | Code        | 00 |         |    3 | 00/0681 : A9 2B 00    | L040742     LDA   #$002B         
+ 1123 |  1   SEG04.S   1011 | Code        | 10 |         |    2 | 00/0684 : E2 20       |             SEP   #$20           
+ 1124 |  1   SEG04.S   1012 | Code        | 10 |         |    2 | 00/0686 : 85 EC       |             STA   $EC            
+ 1125 |  1   SEG04.S   1013 | Code        | 00 |         |    2 | 00/0688 : C2 20       |             REP   #$20           
+ 1126 |  1   SEG04.S   1014 | Code        | 00 |         |    3 | 00/068A : A9 0A 00    | L04074B     LDA   #$000A         
+ 1127 |  1   SEG04.S   1015 | Code        | 00 |         |    1 | 00/068D : 48          |             PHA                  
+ 1128 |  1   SEG04.S   1016 | Code        | 00 |         |    2 | 00/068E : A5 FF       |             LDA   $FF            
+ 1129 |  1   SEG04.S   1017 | Code        | 00 |         |    1 | 00/0690 : 38          |             SEC                  
+ 1130 |  1   SEG04.S   1018 | Code        | 00 |E 3      |    4 | 00/0691 : 22 EC 0E 1A |             JSL   L1A0F19        
+ 1131 |  1   SEG04.S   1019 | Code        | 00 |         |    1 | 00/0695 : 68          |             PLA                  
+ 1132 |  1   SEG04.S   1020 | Code        | 00 |         |    2 | 00/0696 : 85 F2       |             STA   $F2            
+ 1133 |  1   SEG04.S   1021 | Code        | 00 |         |    3 | 00/0698 : A9 0A 00    |             LDA   #$000A         
+ 1134 |  1   SEG04.S   1022 | Code        | 00 |         |    1 | 00/069B : 48          |             PHA                  
+ 1135 |  1   SEG04.S   1023 | Code        | 00 |         |    2 | 00/069C : A5 FF       |             LDA   $FF            
+ 1136 |  1   SEG04.S   1024 | Code        | 00 |         |    1 | 00/069E : 38          |             SEC                  
+ 1137 |  1   SEG04.S   1025 | Code        | 00 |E 3      |    4 | 00/069F : 22 EC 0E 1A |             JSL   L1A0F19        
+ 1138 |  1   SEG04.S   1026 | Code        | 00 |         |    1 | 00/06A3 : 7A          |             PLY                  
+ 1139 |  1   SEG04.S   1027 | Code        | 00 |         |    2 | 00/06A4 : 85 FF       |             STA   $FF            
+ 1140 |  1   SEG04.S   1028 | Code        | 00 |         |    3 | 00/06A6 : A9 30 00    |             LDA   #$0030         
+ 1141 |  1   SEG04.S   1029 | Code        | 00 |         |    1 | 00/06A9 : 18          |             CLC                  
+ 1142 |  1   SEG04.S   1030 | Code        | 00 |         |    2 | 00/06AA : 65 F2       |             ADC   $F2            
+ 1143 |  1   SEG04.S   1031 | Code        | 10 |         |    2 | 00/06AC : E2 20       |             SEP   #$20           
+ 1144 |  1   SEG04.S   1032 | Code        | 10 |         |    2 | 00/06AE : 85 EF       |             STA   $EF            
+ 1145 |  1   SEG04.S   1033 | Code        | 00 |         |    2 | 00/06B0 : C2 20       |             REP   #$20           
+ 1146 |  1   SEG04.S   1034 | Code        | 00 |         |    3 | 00/06B2 : A9 0A 00    |             LDA   #$000A         
+ 1147 |  1   SEG04.S   1035 | Code        | 00 |         |    1 | 00/06B5 : 48          |             PHA                  
+ 1148 |  1   SEG04.S   1036 | Code        | 00 |         |    2 | 00/06B6 : A5 FF       |             LDA   $FF            
+ 1149 |  1   SEG04.S   1037 | Code        | 00 |         |    1 | 00/06B8 : 38          |             SEC                  
+ 1150 |  1   SEG04.S   1038 | Code        | 00 |E 3      |    4 | 00/06B9 : 22 EC 0E 1A |             JSL   L1A0F19        
+ 1151 |  1   SEG04.S   1039 | Code        | 00 |         |    1 | 00/06BD : 68          |             PLA                  
+ 1152 |  1   SEG04.S   1040 | Code        | 00 |         |    2 | 00/06BE : 85 F2       |             STA   $F2            
+ 1153 |  1   SEG04.S   1041 | Code        | 00 |         |    3 | 00/06C0 : A9 0A 00    |             LDA   #$000A         
+ 1154 |  1   SEG04.S   1042 | Code        | 00 |         |    1 | 00/06C3 : 48          |             PHA                  
+ 1155 |  1   SEG04.S   1043 | Code        | 00 |         |    2 | 00/06C4 : A5 FF       |             LDA   $FF            
+ 1156 |  1   SEG04.S   1044 | Code        | 00 |         |    1 | 00/06C6 : 38          |             SEC                  
+ 1157 |  1   SEG04.S   1045 | Code        | 00 |E 3      |    4 | 00/06C7 : 22 EC 0E 1A |             JSL   L1A0F19        
+ 1158 |  1   SEG04.S   1046 | Code        | 00 |         |    1 | 00/06CB : 7A          |             PLY                  
+ 1159 |  1   SEG04.S   1047 | Code        | 00 |         |    2 | 00/06CC : 85 FF       |             STA   $FF            
+ 1160 |  1   SEG04.S   1048 | Code        | 00 |         |    3 | 00/06CE : A9 30 00    |             LDA   #$0030         
+ 1161 |  1   SEG04.S   1049 | Code        | 00 |         |    1 | 00/06D1 : 18          |             CLC                  
+ 1162 |  1   SEG04.S   1050 | Code        | 00 |         |    2 | 00/06D2 : 65 F2       |             ADC   $F2            
+ 1163 |  1   SEG04.S   1051 | Code        | 10 |         |    2 | 00/06D4 : E2 20       |             SEP   #$20           
+ 1164 |  1   SEG04.S   1052 | Code        | 10 |         |    2 | 00/06D6 : 85 EE       |             STA   $EE            
+ 1165 |  1   SEG04.S   1053 | Code        | 00 |         |    2 | 00/06D8 : C2 20       |             REP   #$20           
+ 1166 |  1   SEG04.S   1054 | Code        | 00 |         |    3 | 00/06DA : A9 0A 00    |             LDA   #$000A         
+ 1167 |  1   SEG04.S   1055 | Code        | 00 |         |    1 | 00/06DD : 48          |             PHA                  
+ 1168 |  1   SEG04.S   1056 | Code        | 00 |         |    2 | 00/06DE : A5 FF       |             LDA   $FF            
+ 1169 |  1   SEG04.S   1057 | Code        | 00 |         |    1 | 00/06E0 : 38          |             SEC                  
+ 1170 |  1   SEG04.S   1058 | Code        | 00 |E 3      |    4 | 00/06E1 : 22 EC 0E 1A |             JSL   L1A0F19        
+ 1171 |  1   SEG04.S   1059 | Code        | 00 |         |    1 | 00/06E5 : 68          |             PLA                  
+ 1172 |  1   SEG04.S   1060 | Code        | 00 |         |    2 | 00/06E6 : 85 F2       |             STA   $F2            
+ 1173 |  1   SEG04.S   1061 | Code        | 00 |         |    3 | 00/06E8 : A9 30 00    |             LDA   #$0030         
+ 1174 |  1   SEG04.S   1062 | Code        | 00 |         |    1 | 00/06EB : 18          |             CLC                  
+ 1175 |  1   SEG04.S   1063 | Code        | 00 |         |    2 | 00/06EC : 65 F2       |             ADC   $F2            
+ 1176 |  1   SEG04.S   1064 | Code        | 10 |         |    2 | 00/06EE : E2 20       |             SEP   #$20           
+ 1177 |  1   SEG04.S   1065 | Code        | 10 |         |    2 | 00/06F0 : 85 ED       |             STA   $ED            
+ 1178 |  1   SEG04.S   1066 | Code        | 00 |         |    2 | 00/06F2 : C2 20       |             REP   #$20           
+ 1179 |  1   SEG04.S   1067 | Code        | 00 |         |    3 | 00/06F4 : F4 00 00    |             PEA   $0000          
+ 1180 |  1   SEG04.S   1068 | Code        | 00 |         |    1 | 00/06F7 : 7B          |             TDC                  
+ 1181 |  1   SEG04.S   1069 | Code        | 00 |         |    1 | 00/06F8 : 18          |             CLC                  
+ 1182 |  1   SEG04.S   1070 | Code        | 00 |         |    3 | 00/06F9 : 69 EC 00    |             ADC   #$00EC         
+ 1183 |  1   SEG04.S   1071 | Code        | 00 |         |    1 | 00/06FC : 48          |             PHA                  
+ 1184 |  1   SEG04.S   1072 | Macro       | 00 |         |    0 | 00/06FD               |             _DrawCString                 
+ 1186 |  1   SEG04.S   1072 | Code        | 00 |         |    3 | 00/06FD : A2 04 A6    |             LDX   #$A604         ; load tool call #
+ 1187 |  1   SEG04.S   1072 | Code        | 00 |         |    4 | 00/0700 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+ 1188 |  1   SEG04.S   1073 | Comment     | 00 |         |    0 | 00/0704               | * BCS L0407CA
+ 1189 |  1   SEG04.S   1074 | Comment     | 00 |         |    0 | 00/0704               | * LDA #$0000
+ 1190 |  1   SEG04.S   1075 | Comment     | 00 |         |    0 | 00/0704               | *L0407CA STAL L0201E7
+ 1191 |  1   SEG04.S   1076 | Code        | 00 |         |    1 | 00/0704 : 3B          |             TSC                  
+ 1192 |  1   SEG04.S   1077 | Code        | 00 |         |    1 | 00/0705 : 18          |             CLC                  
+ 1193 |  1   SEG04.S   1078 | Code        | 00 |         |    3 | 00/0706 : 69 0E 00    |             ADC   #$000E         
+ 1194 |  1   SEG04.S   1079 | Code        | 00 |         |    1 | 00/0709 : 1B          |             TCS                  
+ 1195 |  1   SEG04.S   1080 | Code        | 00 |         |    1 | 00/070A : 2B          |             PLD                  
+ 1196 |  1   SEG04.S   1081 | Code        | 00 |         |    1 | 00/070B : 6B          |             RTL                  
+ 1197 |  1   SEG04.S   1082 | Empty       | 00 |         |    0 | 00/070C               |                                  
+ 1198 |  1   SEG04.S   1083 | Code        | 00 |         |    1 | 00/070C : 0B          | L0407D6     PHD                  
+ 1199 |  1   SEG04.S   1084 | Code        | 00 |         |    1 | 00/070D : 3B          |             TSC                  
+ 1200 |  1   SEG04.S   1085 | Code        | 00 |         |    1 | 00/070E : 38          |             SEC                  
+ 1201 |  1   SEG04.S   1086 | Code        | 00 |         |    3 | 00/070F : E9 F7 00    |             SBC   #$00F7         
+ 1202 |  1   SEG04.S   1087 | Code        | 00 |         |    1 | 00/0712 : 5B          |             TCD                  
+ 1203 |  1   SEG04.S   1088 | Code        | 00 |         |    3 | 00/0713 : 69 E6 00    |             ADC   #$00E6         
+ 1204 |  1   SEG04.S   1089 | Code        | 00 |         |    1 | 00/0716 : 1B          |             TCS                  
+ 1205 |  1   SEG04.S   1090 | Code        | 00 |E 1 >>16 |    3 | 00/0717 : F4 00 00    |             PEA   ^L0300E0       
+ 1206 |  1   SEG04.S   1091 | Code        | 00 |E 2      |    3 | 00/071A : F4 E0 00    |             PEA   L0300E0        
+ 1207 |  1   SEG04.S   1092 | Code        | 00 |E 3      |    4 | 00/071D : 22 D5 0D 1A |             JSL   L1A0E02        
+ 1208 |  1   SEG04.S   1093 | Code        | 00 |         |    1 | 00/0721 : 7A          |             PLY                  
+ 1209 |  1   SEG04.S   1094 | Code        | 00 |         |    1 | 00/0722 : 7A          |             PLY                  
+ 1210 |  1   SEG04.S   1095 | Code        | 00 |         |    3 | 00/0723 : A9 00 00    |             LDA   #$0000         
+ 1211 |  1   SEG04.S   1096 | Code        | 10 |         |    2 | 00/0726 : E2 20       |             SEP   #$20           
+ 1212 |  1   SEG04.S   1097 | Code        | 10 |         |    2 | 00/0728 : 85 EF       |             STA   $EF            
+ 1213 |  1   SEG04.S   1098 | Code        | 00 |         |    2 | 00/072A : C2 20       |             REP   #$20           
+ 1214 |  1   SEG04.S   1099 | Code        | 00 |         |    3 | 00/072C : A9 06 00    |             LDA   #$0006         
+ 1215 |  1   SEG04.S   1100 | Code        | 00 |         |    2 | 00/072F : 85 F0       |             STA   $F0            
+ 1216 |  1   SEG04.S   1101 | Code        | 00 |         |    3 | 00/0731 : A2 00 00    | L0407FB     LDX   #$0000         
+ 1217 |  1   SEG04.S   1102 | Code        | 00 |         |    3 | 00/0734 : A9 0A 00    |             LDA   #$000A         
+ 1218 |  1   SEG04.S   1103 | Code        | 00 |         |    1 | 00/0737 : DA          |             PHX                  
+ 1219 |  1   SEG04.S   1104 | Code        | 00 |         |    1 | 00/0738 : 48          |             PHA                  
+ 1220 |  1   SEG04.S   1105 | Code        | 00 |         |    2 | 00/0739 : A6 FF       |             LDX   $FF            
+ 1221 |  1   SEG04.S   1106 | Code        | 00 |         |    2 | 00/073B : A5 FD       |             LDA   $FD            
+ 1222 |  1   SEG04.S   1107 | Code        | 00 |         |    1 | 00/073D : 18          |             CLC                  
+ 1223 |  1   SEG04.S   1108 | Code        | 00 |E 3      |    4 | 00/073E : 22 71 0F 1A |             JSL   L1A0F9E        
+ 1224 |  1   SEG04.S   1109 | Code        | 00 |         |    3 | 00/0742 : A2 00 00    |             LDX   #$0000         
+ 1225 |  1   SEG04.S   1110 | Code        | 00 |         |    3 | 00/0745 : A9 30 00    |             LDA   #$0030         
+ 1226 |  1   SEG04.S   1111 | Code        | 00 |E 3      |    4 | 00/0748 : 22 D2 0E 1A |             JSL   L1A0EFF        
+ 1227 |  1   SEG04.S   1112 | Code        | 00 |         |    1 | 00/074C : 68          |             PLA                  
+ 1228 |  1   SEG04.S   1113 | Code        | 00 |         |    1 | 00/074D : FA          |             PLX                  
+ 1229 |  1   SEG04.S   1114 | Code        | 00 |         |    1 | 00/074E : 48          |             PHA                  
+ 1230 |  1   SEG04.S   1115 | Code        | 00 |         |    2 | 00/074F : A5 F0       |             LDA   $F0            
+ 1231 |  1   SEG04.S   1116 | Code        | 00 |         |    2 | 00/0751 : C6 F0       |             DEC   $F0            
+ 1232 |  1   SEG04.S   1117 | Code        | 00 |         |    3 | 00/0753 : A2 00 00    |             LDX   #$0000         
+ 1233 |  1   SEG04.S   1118 | Code        | 00 |         |    1 | 00/0756 : DA          |             PHX                  
+ 1234 |  1   SEG04.S   1119 | Code        | 00 |         |    1 | 00/0757 : 48          |             PHA                  
+ 1235 |  1   SEG04.S   1120 | Code        | 00 |         |    3 | 00/0758 : A2 00 00    |             LDX   #$0000         
+ 1236 |  1   SEG04.S   1121 | Code        | 00 |         |    1 | 00/075B : 7B          |             TDC                  
+ 1237 |  1   SEG04.S   1122 | Code        | 00 |         |    1 | 00/075C : 18          |             CLC                  
+ 1238 |  1   SEG04.S   1123 | Code        | 00 |         |    3 | 00/075D : 69 E8 00    |             ADC   #$00E8         
+ 1239 |  1   SEG04.S   1124 | Code        | 00 |E 3      |    4 | 00/0760 : 22 D2 0E 1A |             JSL   L1A0EFF        
+ 1240 |  1   SEG04.S   1125 | Code        | 00 |         |    1 | 00/0764 : 68          |             PLA                  
+ 1241 |  1   SEG04.S   1126 | Code        | 00 |         |    1 | 00/0765 : FA          |             PLX                  
+ 1242 |  1   SEG04.S   1127 | Code        | 00 |         |    2 | 00/0766 : 85 F2       |             STA   $F2            
+ 1243 |  1   SEG04.S   1128 | Code        | 00 |         |    2 | 00/0768 : 86 F4       |             STX   $F4            
+ 1244 |  1   SEG04.S   1129 | Code        | 00 |         |    1 | 00/076A : 68          |             PLA                  
+ 1245 |  1   SEG04.S   1130 | Code        | 10 |         |    2 | 00/076B : E2 20       |             SEP   #$20           
+ 1246 |  1   SEG04.S   1131 | Code        | 10 |         |    2 | 00/076D : 87 F2       |             STA   [$F2]          
+ 1247 |  1   SEG04.S   1132 | Code        | 00 |         |    2 | 00/076F : C2 20       |             REP   #$20           
+ 1248 |  1   SEG04.S   1133 | Code        | 00 |         |    3 | 00/0771 : A2 00 00    |             LDX   #$0000         
+ 1249 |  1   SEG04.S   1134 | Code        | 00 |         |    3 | 00/0774 : A9 0A 00    |             LDA   #$000A         
+ 1250 |  1   SEG04.S   1135 | Code        | 00 |         |    1 | 00/0777 : DA          |             PHX                  
+ 1251 |  1   SEG04.S   1136 | Code        | 00 |         |    1 | 00/0778 : 48          |             PHA                  
+ 1252 |  1   SEG04.S   1137 | Code        | 00 |         |    2 | 00/0779 : A6 FF       |             LDX   $FF            
+ 1253 |  1   SEG04.S   1138 | Code        | 00 |         |    2 | 00/077B : A5 FD       |             LDA   $FD            
+ 1254 |  1   SEG04.S   1139 | Code        | 00 |         |    1 | 00/077D : 18          |             CLC                  
+ 1255 |  1   SEG04.S   1140 | Code        | 00 |E 3      |    4 | 00/077E : 22 71 0F 1A |             JSL   L1A0F9E        
+ 1256 |  1   SEG04.S   1141 | Code        | 00 |         |    1 | 00/0782 : 7A          |             PLY                  
+ 1257 |  1   SEG04.S   1142 | Code        | 00 |         |    1 | 00/0783 : 7A          |             PLY                  
+ 1258 |  1   SEG04.S   1143 | Code        | 00 |         |    2 | 00/0784 : 86 FF       |             STX   $FF            
+ 1259 |  1   SEG04.S   1144 | Code        | 00 |         |    2 | 00/0786 : 85 FD       |             STA   $FD            
+ 1260 |  1   SEG04.S   1145 | Code        | 00 |         |    2 | 00/0788 : A6 FF       |             LDX   $FF            
+ 1261 |  1   SEG04.S   1146 | Code        | 00 |         |    2 | 00/078A : A5 FD       |             LDA   $FD            
+ 1262 |  1   SEG04.S   1147 | Code        | 00 |         |    2 | 00/078C : 86 F2       |             STX   $F2            
+ 1263 |  1   SEG04.S   1148 | Code        | 00 |         |    2 | 00/078E : 05 F2       |             ORA   $F2            
+ 1264 |  1   SEG04.S   1149 | Code        | 00 |         |    2 | 00/0790 : D0 9F       |             BNE   L0407FB        
+ 1265 |  1   SEG04.S   1150 | Code        | 00 |         |    2 | 00/0792 : A5 F0       |             LDA   $F0            
+ 1266 |  1   SEG04.S   1151 | Code        | 00 |         |    1 | 00/0794 : 18          |             CLC                  
+ 1267 |  1   SEG04.S   1152 | Code        | 00 |         |    3 | 00/0795 : 69 01 00    |             ADC   #$0001         
+ 1268 |  1   SEG04.S   1153 | Code        | 00 |         |    3 | 00/0798 : A2 00 00    |             LDX   #$0000         
+ 1269 |  1   SEG04.S   1154 | Code        | 00 |         |    1 | 00/079B : DA          |             PHX                  
+ 1270 |  1   SEG04.S   1155 | Code        | 00 |         |    1 | 00/079C : 48          |             PHA                  
+ 1271 |  1   SEG04.S   1156 | Code        | 00 |         |    3 | 00/079D : A2 00 00    |             LDX   #$0000         
+ 1272 |  1   SEG04.S   1157 | Code        | 00 |         |    1 | 00/07A0 : 7B          |             TDC                  
+ 1273 |  1   SEG04.S   1158 | Code        | 00 |         |    1 | 00/07A1 : 18          |             CLC                  
+ 1274 |  1   SEG04.S   1159 | Code        | 00 |         |    3 | 00/07A2 : 69 E8 00    |             ADC   #$00E8         
+ 1275 |  1   SEG04.S   1160 | Code        | 00 |E 3      |    4 | 00/07A5 : 22 D2 0E 1A |             JSL   L1A0EFF        
+ 1276 |  1   SEG04.S   1161 | Macro       | 00 |         |    0 | 00/07A9               |             _DrawCString                 
+ 1278 |  1   SEG04.S   1161 | Code        | 00 |         |    3 | 00/07A9 : A2 04 A6    |             LDX   #$A604         ; load tool call #
+ 1279 |  1   SEG04.S   1161 | Code        | 00 |         |    4 | 00/07AC : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+ 1280 |  1   SEG04.S   1162 | Comment     | 00 |         |    0 | 00/07B0               | * BCS L04087F
+ 1281 |  1   SEG04.S   1163 | Comment     | 00 |         |    0 | 00/07B0               | * LDA #$0000
+ 1282 |  1   SEG04.S   1164 | Comment     | 00 |         |    0 | 00/07B0               | *L04087F STAL L0201E7
+ 1283 |  1   SEG04.S   1165 | Code        | 00 |E 3      |    4 | 00/07B0 : 22 68 0E 1A |             JSL   L1A0E95        
+ 1284 |  1   SEG04.S   1166 | Code        | 00 |         |    1 | 00/07B4 : 3B          |             TSC                  
+ 1285 |  1   SEG04.S   1167 | Code        | 00 |         |    1 | 00/07B5 : 18          |             CLC                  
+ 1286 |  1   SEG04.S   1168 | Code        | 00 |         |    3 | 00/07B6 : 69 10 00    |             ADC   #$0010         
+ 1287 |  1   SEG04.S   1169 | Code        | 00 |         |    1 | 00/07B9 : 1B          |             TCS                  
+ 1288 |  1   SEG04.S   1170 | Code        | 00 |         |    1 | 00/07BA : 2B          |             PLD                  
+ 1289 |  1   SEG04.S   1171 | Code        | 00 |         |    1 | 00/07BB : 6B          |             RTL                  
+ 1290 |  1   SEG04.S   1172 | Empty       | 00 |         |    0 | 00/07BC               |                                  
+ 1291 |  1   SEG04.S   1173 | Code        | 00 |         |    1 | 00/07BC : 0B          |             PHD                  
+ 1292 |  1   SEG04.S   1174 | Code        | 00 |         |    1 | 00/07BD : 3B          |             TSC                  
+ 1293 |  1   SEG04.S   1175 | Code        | 00 |         |    1 | 00/07BE : 38          |             SEC                  
+ 1294 |  1   SEG04.S   1176 | Code        | 00 |         |    3 | 00/07BF : E9 F5 00    |             SBC   #$00F5         
+ 1295 |  1   SEG04.S   1177 | Code        | 00 |         |    1 | 00/07C2 : 5B          |             TCD                  
+ 1296 |  1   SEG04.S   1178 | Code        | 00 |         |    3 | 00/07C3 : 69 EE 00    |             ADC   #$00EE         
+ 1297 |  1   SEG04.S   1179 | Code        | 00 |         |    1 | 00/07C6 : 1B          |             TCS                  
+ 1298 |  1   SEG04.S   1180 | Code        | 00 |         |    2 | 00/07C7 : D4 FB       |             PEI   $FB            
+ 1299 |  1   SEG04.S   1181 | Code        | 00 |         |    2 | 00/07C9 : D4 FD       |             PEI   $FD            
+ 1300 |  1   SEG04.S   1182 | Macro       | 00 |         |    0 | 00/07CB               |             _MoveTo                 
+ 1302 |  1   SEG04.S   1182 | Code        | 00 |         |    3 | 00/07CB : A2 04 3A    |             LDX   #$3A04         ; load tool call #
+ 1303 |  1   SEG04.S   1182 | Code        | 00 |         |    4 | 00/07CE : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+ 1304 |  1   SEG04.S   1183 | Comment     | 00 |         |    0 | 00/07D2               | * BCS L0408AA
+ 1305 |  1   SEG04.S   1184 | Comment     | 00 |         |    0 | 00/07D2               | * LDA #$0000
+ 1306 |  1   SEG04.S   1185 | Comment     | 00 |         |    0 | 00/07D2               | *L0408AA STAL L0201E7
+ 1307 |  1   SEG04.S   1186 | Code        | 00 |         |    2 | 00/07D2 : D4 FF       |             PEI   $FF            
+ 1308 |  1   SEG04.S   1187 | Code        | 00 |  3      |    4 | 00/07D4 : 22 96 05 00 |             JSL   L04064E        
+ 1309 |  1   SEG04.S   1188 | Code        | 00 |         |    1 | 00/07D8 : 7A          |             PLY                  
+ 1310 |  1   SEG04.S   1189 | Code        | 00 |         |    1 | 00/07D9 : 3B          |             TSC                  
+ 1311 |  1   SEG04.S   1190 | Code        | 00 |         |    1 | 00/07DA : 18          |             CLC                  
+ 1312 |  1   SEG04.S   1191 | Code        | 00 |         |    3 | 00/07DB : 69 06 00    |             ADC   #$0006         
+ 1313 |  1   SEG04.S   1192 | Code        | 00 |         |    1 | 00/07DE : 1B          |             TCS                  
+ 1314 |  1   SEG04.S   1193 | Code        | 00 |         |    1 | 00/07DF : 2B          |             PLD                  
+ 1315 |  1   SEG04.S   1194 | Code        | 00 |         |    1 | 00/07E0 : 6B          |             RTL                  
+ 1316 |  1   SEG04.S   1195 | Empty       | 00 |         |    0 | 00/07E1               |                                  
+ 1317 |  1   SEG04.S   1196 | Code        | 00 |         |    1 | 00/07E1 : 0B          |             PHD                  
+ 1318 |  1   SEG04.S   1197 | Code        | 00 |         |    1 | 00/07E2 : 3B          |             TSC                  
+ 1319 |  1   SEG04.S   1198 | Code        | 00 |         |    1 | 00/07E3 : 38          |             SEC                  
+ 1320 |  1   SEG04.S   1199 | Code        | 00 |         |    3 | 00/07E4 : E9 F3 00    |             SBC   #$00F3         
+ 1321 |  1   SEG04.S   1200 | Code        | 00 |         |    1 | 00/07E7 : 5B          |             TCD                  
+ 1322 |  1   SEG04.S   1201 | Code        | 00 |         |    3 | 00/07E8 : 69 EC 00    |             ADC   #$00EC         
+ 1323 |  1   SEG04.S   1202 | Code        | 00 |         |    1 | 00/07EB : 1B          |             TCS                  
+ 1324 |  1   SEG04.S   1203 | Code        | 00 |         |    2 | 00/07EC : D4 F9       |             PEI   $F9            
+ 1325 |  1   SEG04.S   1204 | Code        | 00 |         |    2 | 00/07EE : D4 FB       |             PEI   $FB            
+ 1326 |  1   SEG04.S   1205 | Macro       | 00 |         |    0 | 00/07F0               |             _MoveTo                 
+ 1328 |  1   SEG04.S   1205 | Code        | 00 |         |    3 | 00/07F0 : A2 04 3A    |             LDX   #$3A04         ; load tool call #
+ 1329 |  1   SEG04.S   1205 | Code        | 00 |         |    4 | 00/07F3 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+ 1330 |  1   SEG04.S   1206 | Comment     | 00 |         |    0 | 00/07F7               | * BCS L0408D8
+ 1331 |  1   SEG04.S   1207 | Comment     | 00 |         |    0 | 00/07F7               | * LDA #$0000
+ 1332 |  1   SEG04.S   1208 | Comment     | 00 |         |    0 | 00/07F7               | *L0408D8 STAL L0201E7
+ 1333 |  1   SEG04.S   1209 | Code        | 00 |         |    2 | 00/07F7 : D4 FF       |             PEI   $FF            
+ 1334 |  1   SEG04.S   1210 | Code        | 00 |         |    2 | 00/07F9 : D4 FD       |             PEI   $FD            
+ 1335 |  1   SEG04.S   1211 | Code        | 00 |  3      |    4 | 00/07FB : 22 0C 07 00 |             JSL   L0407D6        
+ 1336 |  1   SEG04.S   1212 | Code        | 00 |         |    1 | 00/07FF : 7A          |             PLY                  
+ 1337 |  1   SEG04.S   1213 | Code        | 00 |         |    1 | 00/0800 : 7A          |             PLY                  
+ 1338 |  1   SEG04.S   1214 | Code        | 00 |         |    1 | 00/0801 : 3B          |             TSC                  
+ 1339 |  1   SEG04.S   1215 | Code        | 00 |         |    1 | 00/0802 : 18          |             CLC                  
+ 1340 |  1   SEG04.S   1216 | Code        | 00 |         |    3 | 00/0803 : 69 06 00    |             ADC   #$0006         
+ 1341 |  1   SEG04.S   1217 | Code        | 00 |         |    1 | 00/0806 : 1B          |             TCS                  
+ 1342 |  1   SEG04.S   1218 | Code        | 00 |         |    1 | 00/0807 : 2B          |             PLD                  
+ 1343 |  1   SEG04.S   1219 | Code        | 00 |         |    1 | 00/0808 : 6B          |             RTL                  
+ 1344 |  1   SEG04.S   1220 | Empty       | 00 |         |    0 | 00/0809               |                                  
+ 1345 |  1   SEG04.S   1221 | Code        | 00 |         |    1 | 00/0809 : 0B          |             PHD                  
+ 1346 |  1   SEG04.S   1222 | Code        | 00 |         |    1 | 00/080A : 3B          |             TSC                  
+ 1347 |  1   SEG04.S   1223 | Code        | 00 |         |    1 | 00/080B : 38          |             SEC                  
+ 1348 |  1   SEG04.S   1224 | Code        | 00 |         |    3 | 00/080C : E9 F7 00    |             SBC   #$00F7         
+ 1349 |  1   SEG04.S   1225 | Code        | 00 |         |    1 | 00/080F : 5B          |             TCD                  
+ 1350 |  1   SEG04.S   1226 | Code        | 00 |         |    3 | 00/0810 : 69 F0 00    |             ADC   #$00F0         
+ 1351 |  1   SEG04.S   1227 | Code        | 00 |         |    1 | 00/0813 : 1B          |             TCS                  
+ 1352 |  1   SEG04.S   1228 | Code        | 00 |         |    2 | 00/0814 : D4 FD       |             PEI   $FD            
+ 1353 |  1   SEG04.S   1229 | Macro       | 00 |         |    0 | 00/0816               |             _SetForeColor                 
+ 1355 |  1   SEG04.S   1229 | Code        | 00 |         |    3 | 00/0816 : A2 04 A0    |             LDX   #$A004         ; load tool call #
+ 1356 |  1   SEG04.S   1229 | Code        | 00 |         |    4 | 00/0819 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+ 1357 |  1   SEG04.S   1230 | Comment     | 00 |         |    0 | 00/081D               | * BCS L040907
+ 1358 |  1   SEG04.S   1231 | Comment     | 00 |         |    0 | 00/081D               | * LDA #$0000
+ 1359 |  1   SEG04.S   1232 | Comment     | 00 |         |    0 | 00/081D               | *L040907 STAL L0201E7
+ 1360 |  1   SEG04.S   1233 | Code        | 00 |         |    2 | 00/081D : D4 FF       |             PEI   $FF            
+ 1361 |  1   SEG04.S   1234 | Macro       | 00 |         |    0 | 00/081F               |             _SetBackColor                 
+ 1363 |  1   SEG04.S   1234 | Code        | 00 |         |    3 | 00/081F : A2 04 A2    |             LDX   #$A204         ; load tool call #
+ 1364 |  1   SEG04.S   1234 | Code        | 00 |         |    4 | 00/0822 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+ 1365 |  1   SEG04.S   1235 | Comment     | 00 |         |    0 | 00/0826               | * BCS L040919
+ 1366 |  1   SEG04.S   1236 | Comment     | 00 |         |    0 | 00/0826               | * LDA #$0000
+ 1367 |  1   SEG04.S   1237 | Comment     | 00 |         |    0 | 00/0826               | *L040919 STAL L0201E7
+ 1368 |  1   SEG04.S   1238 | Code        | 00 |         |    1 | 00/0826 : 3B          |             TSC                  
+ 1369 |  1   SEG04.S   1239 | Code        | 00 |         |    1 | 00/0827 : 18          |             CLC                  
+ 1370 |  1   SEG04.S   1240 | Code        | 00 |         |    3 | 00/0828 : 69 06 00    |             ADC   #$0006         
+ 1371 |  1   SEG04.S   1241 | Code        | 00 |         |    1 | 00/082B : 1B          |             TCS                  
+ 1372 |  1   SEG04.S   1242 | Code        | 00 |         |    1 | 00/082C : 2B          |             PLD                  
+ 1373 |  1   SEG04.S   1243 | Code        | 00 |         |    1 | 00/082D : 6B          |             RTL                  
+ 1374 |  1   SEG04.S   1244 | Empty       | 00 |         |    0 | 00/082E               |                                  
+ 1375 |  1   SEG04.S   1245 | Code        | 00 |         |    1 | 00/082E : 0B          |             PHD                  
+ 1376 |  1   SEG04.S   1246 | Code        | 00 |         |    1 | 00/082F : 3B          |             TSC                  
+ 1377 |  1   SEG04.S   1247 | Code        | 00 |         |    1 | 00/0830 : 38          |             SEC                  
+ 1378 |  1   SEG04.S   1248 | Code        | 00 |         |    3 | 00/0831 : E9 F3 00    |             SBC   #$00F3         
+ 1379 |  1   SEG04.S   1249 | Code        | 00 |         |    1 | 00/0834 : 5B          |             TCD                  
+ 1380 |  1   SEG04.S   1250 | Code        | 00 |         |    3 | 00/0835 : 69 EC 00    |             ADC   #$00EC         
+ 1381 |  1   SEG04.S   1251 | Code        | 00 |         |    1 | 00/0838 : 1B          |             TCS                  
+ 1382 |  1   SEG04.S   1252 | Code        | 00 |         |    2 | 00/0839 : D4 F9       |             PEI   $F9            
+ 1383 |  1   SEG04.S   1253 | Code        | 00 |         |    2 | 00/083B : D4 FB       |             PEI   $FB            
+ 1384 |  1   SEG04.S   1254 | Macro       | 00 |         |    0 | 00/083D               |             _MoveTo                 
+ 1386 |  1   SEG04.S   1254 | Code        | 00 |         |    3 | 00/083D : A2 04 3A    |             LDX   #$3A04         ; load tool call #
+ 1387 |  1   SEG04.S   1254 | Code        | 00 |         |    4 | 00/0840 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+ 1388 |  1   SEG04.S   1255 | Comment     | 00 |         |    0 | 00/0844               | * BCS L040940
+ 1389 |  1   SEG04.S   1256 | Comment     | 00 |         |    0 | 00/0844               | * LDA #$0000
+ 1390 |  1   SEG04.S   1257 | Comment     | 00 |         |    0 | 00/0844               | *L040940 STAL L0201E7
+ 1391 |  1   SEG04.S   1258 | Code        | 00 |         |    2 | 00/0844 : D4 FF       |             PEI   $FF            
+ 1392 |  1   SEG04.S   1259 | Code        | 00 |         |    2 | 00/0846 : D4 FD       |             PEI   $FD            
+ 1393 |  1   SEG04.S   1260 | Macro       | 00 |         |    0 | 00/0848               |             _DrawCString                 
+ 1395 |  1   SEG04.S   1260 | Code        | 00 |         |    3 | 00/0848 : A2 04 A6    |             LDX   #$A604         ; load tool call #
+ 1396 |  1   SEG04.S   1260 | Code        | 00 |         |    4 | 00/084B : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+ 1397 |  1   SEG04.S   1261 | Comment     | 00 |         |    0 | 00/084F               | * BCS L040954
+ 1398 |  1   SEG04.S   1262 | Comment     | 00 |         |    0 | 00/084F               | * LDA #$0000
+ 1399 |  1   SEG04.S   1263 | Comment     | 00 |         |    0 | 00/084F               | *L040954 STAL L0201E7
+ 1400 |  1   SEG04.S   1264 | Code        | 00 |         |    1 | 00/084F : 3B          |             TSC                  
+ 1401 |  1   SEG04.S   1265 | Code        | 00 |         |    1 | 00/0850 : 18          |             CLC                  
+ 1402 |  1   SEG04.S   1266 | Code        | 00 |         |    3 | 00/0851 : 69 06 00    |             ADC   #$0006         
+ 1403 |  1   SEG04.S   1267 | Code        | 00 |         |    1 | 00/0854 : 1B          |             TCS                  
+ 1404 |  1   SEG04.S   1268 | Code        | 00 |         |    1 | 00/0855 : 2B          |             PLD                  
+ 1405 |  1   SEG04.S   1269 | Code        | 00 |         |    1 | 00/0856 : 6B          |             RTL                  
+ 1406 |  1   SEG04.S   1270 | Empty       | 00 |         |    0 | 00/0857               |                                  
+ 1407 |  1   SEG04.S   1271 | Empty       | 00 |         |    0 | 00/0857               |                                  
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

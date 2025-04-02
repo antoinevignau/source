@@ -1,0 +1,795 @@
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File         Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1   SEG0D.S      1 | Comment     | 11 |         |    0 | 00/0000               | *
+    2 |  1   SEG0D.S      2 | Comment     | 11 |         |    0 | 00/0000               | * Shufflepuck Cafe
+    3 |  1   SEG0D.S      3 | Comment     | 11 |         |    0 | 00/0000               | *
+    4 |  1   SEG0D.S      4 | Comment     | 11 |         |    0 | 00/0000               | * (c) Broderbund Software
+    5 |  1   SEG0D.S      5 | Comment     | 11 |         |    0 | 00/0000               | * (s) 2014, Brutal Deluxe Software
+    6 |  1   SEG0D.S      6 | Comment     | 11 |         |    0 | 00/0000               | *
+    7 |  1   SEG0D.S      7 | Empty       | 11 |         |    0 | 00/0000               |                                  
+    8 |  1   SEG0D.S      8 | Directive   | 00 |         |    0 | 00/0000               |             mx    %00            
+    9 |  1   SEG0D.S      9 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   10 |  1   SEG0D.S     10 | Directive   | 00 |         |    0 | 00/0000               |             rel                  
+   11 |  1   SEG0D.S     11 | Directive   | 00 |         |    0 | 00/0000               |             dsk   Seg0D.L        
+   12 |  1   SEG0D.S     12 | Directive   | 00 |         |    0 | 00/0000               |             lst   off            
+   13 |  1   SEG0D.S     13 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   14 |  1   SEG0D.S     14 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   15 |  1   SEG0D.S     15 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   16 |  1   SEG0D.S     16 | Directive   | 00 |         |    0 | 00/0000               |             use   Seg0D.E        
+   17 |  2 Seg0D.E.s      1 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   18 |  2 Seg0D.E.s      2 | Comment     | 00 |         |    0 | 00/0000               | * TFBD generated equates
+   19 |  2 Seg0D.E.s      3 | Comment     | 00 |         |    0 | 00/0000               | *    (c) PHC 1992,93
+   20 |  2 Seg0D.E.s      4 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   21 |  2 Seg0D.E.s      5 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   22 |  2 Seg0D.E.s      6 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   23 |  1   SEG0D.S     17 | Directive   | 00 |         |    0 | 00/0000               |             use   Seg0D.X        
+   24 |  3 Seg0D.X.s      1 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   25 |  3 Seg0D.X.s      2 | Comment     | 00 |         |    0 | 00/0000               | * TFBD generated externals
+   26 |  3 Seg0D.X.s      3 | Comment     | 00 |         |    0 | 00/0000               | *     (c) PHC 1992,93
+   27 |  3 Seg0D.X.s      4 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   28 |  3 Seg0D.X.s      5 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   29 |  3 Seg0D.X.s      6 | External    | 00 |         |    0 | 00/0000               | L1A0E02     EXT                  
+   30 |  3 Seg0D.X.s      7 | External    | 00 |         |    0 | 00/0000               | L1A0E95     EXT                  
+   31 |  3 Seg0D.X.s      8 | External    | 00 |         |    0 | 00/0000               | L070000     EXT                  
+   32 |  3 Seg0D.X.s      9 | External    | 00 |         |    0 | 00/0000               | L020151     EXT                  
+   33 |  3 Seg0D.X.s     10 | External    | 00 |         |    0 | 00/0000               | L02014F     EXT                  
+   34 |  3 Seg0D.X.s     11 | External    | 00 |         |    0 | 00/0000               | L1103A3     EXT                  
+   35 |  3 Seg0D.X.s     12 | External    | 00 |         |    0 | 00/0000               | L1103D4     EXT                  
+   36 |  3 Seg0D.X.s     13 | External    | 00 |         |    0 | 00/0000               | L2605A0     EXT                  
+   37 |  3 Seg0D.X.s     14 | External    | 00 |         |    0 | 00/0000               | L260536     EXT                  
+   38 |  3 Seg0D.X.s     15 | External    | 00 |         |    0 | 00/0000               | L170000     EXT                  
+   39 |  3 Seg0D.X.s     16 | External    | 00 |         |    0 | 00/0000               | L1F0000     EXT                  
+   40 |  3 Seg0D.X.s     17 | External    | 00 |         |    0 | 00/0000               | L1D03CA     EXT                  
+   41 |  3 Seg0D.X.s     18 | External    | 00 |         |    0 | 00/0000               | L0F1565     EXT                  
+   42 |  3 Seg0D.X.s     19 | External    | 00 |         |    0 | 00/0000               | L0F190A     EXT                  
+   43 |  3 Seg0D.X.s     20 | External    | 00 |         |    0 | 00/0000               | L0F1598     EXT                  
+   44 |  3 Seg0D.X.s     21 | External    | 00 |         |    0 | 00/0000               | L0F1933     EXT                  
+   45 |  3 Seg0D.X.s     22 | External    | 00 |         |    0 | 00/0000               | L0F0000     EXT                  
+   46 |  3 Seg0D.X.s     23 | External    | 00 |         |    0 | 00/0000               | L11015C     EXT                  
+   47 |  3 Seg0D.X.s     24 | External    | 00 |         |    0 | 00/0000               | L02009B     EXT                  
+   48 |  3 Seg0D.X.s     25 | External    | 00 |         |    0 | 00/0000               | L020099     EXT                  
+   49 |  3 Seg0D.X.s     26 | External    | 00 |         |    0 | 00/0000               | L020087     EXT                  
+   50 |  3 Seg0D.X.s     27 | External    | 00 |         |    0 | 00/0000               | L020045     EXT                  
+   51 |  3 Seg0D.X.s     28 | External    | 00 |         |    0 | 00/0000               | L020049     EXT                  
+   52 |  3 Seg0D.X.s     29 | External    | 00 |         |    0 | 00/0000               | L020047     EXT                  
+   53 |  3 Seg0D.X.s     30 | External    | 00 |         |    0 | 00/0000               | L02004B     EXT                  
+   54 |  3 Seg0D.X.s     31 | External    | 00 |         |    0 | 00/0000               | L020106     EXT                  
+   55 |  3 Seg0D.X.s     32 | External    | 00 |         |    0 | 00/0000               | L020108     EXT                  
+   56 |  3 Seg0D.X.s     33 | External    | 00 |         |    0 | 00/0000               | L020091     EXT                  
+   57 |  3 Seg0D.X.s     34 | External    | 00 |         |    0 | 00/0000               | L020093     EXT                  
+   58 |  3 Seg0D.X.s     35 | External    | 00 |         |    0 | 00/0000               | L02008B     EXT                  
+   59 |  3 Seg0D.X.s     36 | External    | 00 |         |    0 | 00/0000               | L020089     EXT                  
+   60 |  3 Seg0D.X.s     37 | External    | 00 |         |    0 | 00/0000               | L02008F     EXT                  
+   61 |  3 Seg0D.X.s     38 | External    | 00 |         |    0 | 00/0000               | L02008D     EXT                  
+   62 |  3 Seg0D.X.s     39 | External    | 00 |         |    0 | 00/0000               | L03057D     EXT                  
+   63 |  3 Seg0D.X.s     40 | External    | 00 |         |    0 | 00/0000               | L03058B     EXT                  
+   64 |  3 Seg0D.X.s     41 | External    | 00 |         |    0 | 00/0000               | L030598     EXT                  
+   65 |  3 Seg0D.X.s     42 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   66 |  1   SEG0D.S     18 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   67 |  1   SEG0D.S     19 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   68 |  1   SEG0D.S     20 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   69 |  1   SEG0D.S     21 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Util.Macs    
+   70 |  1   SEG0D.S     22 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   71 |  1   SEG0D.S     23 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   72 |  1   SEG0D.S     24 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   73 |  1   SEG0D.S     25 | Global      | 00 |         |    0 | 00/0000               | L0D0000     ENT                  
+   74 |  1   SEG0D.S     26 | Code        | 00 |         |    1 | 00/0000 : 0B          |             PHD                  
+   75 |  1   SEG0D.S     27 | Code        | 00 |         |    1 | 00/0001 : 3B          |             TSC                  
+   76 |  1   SEG0D.S     28 | Code        | 00 |         |    1 | 00/0002 : 38          |             SEC                  
+   77 |  1   SEG0D.S     29 | Code        | 00 |         |    3 | 00/0003 : E9 FB 00    |             SBC   #$00FB         
+   78 |  1   SEG0D.S     30 | Code        | 00 |         |    1 | 00/0006 : 5B          |             TCD                  
+   79 |  1   SEG0D.S     31 | Code        | 00 |         |    3 | 00/0007 : 69 F4 00    |             ADC   #$00F4         
+   80 |  1   SEG0D.S     32 | Code        | 00 |         |    1 | 00/000A : 1B          |             TCS                  
+   81 |  1   SEG0D.S     33 | Code        | 00 |E 2      |    3 | 00/000B : AE 9C 00    |             LDX   L02009B        
+   82 |  1   SEG0D.S     34 | Code        | 00 |E 2      |    3 | 00/000E : AD 9A 00    |             LDA   L020099        
+   83 |  1   SEG0D.S     35 | Code        | 00 |         |    1 | 00/0011 : DA          |             PHX                  
+   84 |  1   SEG0D.S     36 | Code        | 00 |         |    1 | 00/0012 : 48          |             PHA                  
+   85 |  1   SEG0D.S     37 | Code        | 00 |E 2      |    3 | 00/0013 : AE 52 01    |             LDX   L020151        
+   86 |  1   SEG0D.S     38 | Code        | 00 |E 2      |    3 | 00/0016 : AD 50 01    |             LDA   L02014F        
+   87 |  1   SEG0D.S     39 | Code        | 00 |         |    1 | 00/0019 : DA          |             PHX                  
+   88 |  1   SEG0D.S     40 | Code        | 00 |         |    1 | 00/001A : 48          |             PHA                  
+   89 |  1   SEG0D.S     41 | Code        | 00 |         |    3 | 00/001B : F4 16 00    |             PEA   $0016          
+   90 |  1   SEG0D.S     42 | Code        | 00 |         |    3 | 00/001E : F4 06 00    |             PEA   $0006          
+   91 |  1   SEG0D.S     43 | Code        | 00 |         |    3 | 00/0021 : F4 00 00    |             PEA   $0000          
+   92 |  1   SEG0D.S     44 | Code        | 00 |E 3      |    4 | 00/0024 : 22 00 00 07 |             JSL   L070000        
+   93 |  1   SEG0D.S     45 | Code        | 00 |         |    1 | 00/0028 : A8          |             TAY                  
+   94 |  1   SEG0D.S     46 | Code        | 00 |         |    1 | 00/0029 : 3B          |             TSC                  
+   95 |  1   SEG0D.S     47 | Code        | 00 |         |    1 | 00/002A : 18          |             CLC                  
+   96 |  1   SEG0D.S     48 | Code        | 00 |         |    3 | 00/002B : 69 0E 00    |             ADC   #$000E         
+   97 |  1   SEG0D.S     49 | Code        | 00 |         |    1 | 00/002E : 1B          |             TCS                  
+   98 |  1   SEG0D.S     50 | Code        | 00 |         |    1 | 00/002F : 98          |             TYA                  
+   99 |  1   SEG0D.S     51 | Code        | 00 |E 2      |    3 | 00/0030 : AE 9C 00    |             LDX   L02009B        
+  100 |  1   SEG0D.S     52 | Code        | 00 |E 2      |    3 | 00/0033 : AD 9A 00    |             LDA   L020099        
+  101 |  1   SEG0D.S     53 | Code        | 00 |         |    1 | 00/0036 : DA          |             PHX                  
+  102 |  1   SEG0D.S     54 | Code        | 00 |         |    1 | 00/0037 : 48          |             PHA                  
+  103 |  1   SEG0D.S     55 | Code        | 00 |E 2      |    3 | 00/0038 : AE 52 01    |             LDX   L020151        
+  104 |  1   SEG0D.S     56 | Code        | 00 |E 2      |    3 | 00/003B : AD 50 01    |             LDA   L02014F        
+  105 |  1   SEG0D.S     57 | Code        | 00 |         |    1 | 00/003E : DA          |             PHX                  
+  106 |  1   SEG0D.S     58 | Code        | 00 |         |    1 | 00/003F : 48          |             PHA                  
+  107 |  1   SEG0D.S     59 | Code        | 00 |         |    3 | 00/0040 : F4 21 00    |             PEA   $0021          
+  108 |  1   SEG0D.S     60 | Code        | 00 |         |    3 | 00/0043 : F4 06 00    |             PEA   $0006          
+  109 |  1   SEG0D.S     61 | Code        | 00 |E 2      |    3 | 00/0046 : AD 88 00    |             LDA   L020087        
+  110 |  1   SEG0D.S     62 | Code        | 00 |         |    1 | 00/0049 : 48          |             PHA                  
+  111 |  1   SEG0D.S     63 | Code        | 00 |E 3      |    4 | 00/004A : 22 00 00 07 |             JSL   L070000        
+  112 |  1   SEG0D.S     64 | Code        | 00 |         |    1 | 00/004E : A8          |             TAY                  
+  113 |  1   SEG0D.S     65 | Code        | 00 |         |    1 | 00/004F : 3B          |             TSC                  
+  114 |  1   SEG0D.S     66 | Code        | 00 |         |    1 | 00/0050 : 18          |             CLC                  
+  115 |  1   SEG0D.S     67 | Code        | 00 |         |    3 | 00/0051 : 69 0E 00    |             ADC   #$000E         
+  116 |  1   SEG0D.S     68 | Code        | 00 |         |    1 | 00/0054 : 1B          |             TCS                  
+  117 |  1   SEG0D.S     69 | Code        | 00 |         |    1 | 00/0055 : 98          |             TYA                  
+  118 |  1   SEG0D.S     70 | Code        | 00 |         |    1 | 00/0056 : 3B          |             TSC                  
+  119 |  1   SEG0D.S     71 | Code        | 00 |         |    1 | 00/0057 : 18          |             CLC                  
+  120 |  1   SEG0D.S     72 | Code        | 00 |         |    3 | 00/0058 : 69 06 00    |             ADC   #$0006         
+  121 |  1   SEG0D.S     73 | Code        | 00 |         |    1 | 00/005B : 1B          |             TCS                  
+  122 |  1   SEG0D.S     74 | Code        | 00 |         |    1 | 00/005C : 2B          |             PLD                  
+  123 |  1   SEG0D.S     75 | Code        | 00 |         |    1 | 00/005D : 6B          |             RTL                  
+  124 |  1   SEG0D.S     76 | Empty       | 00 |         |    0 | 00/005E               |                                  
+  125 |  1   SEG0D.S     77 | Global      | 00 |         |    0 | 00/005E               | L0D005E     ENT                  
+  126 |  1   SEG0D.S     78 | Code        | 00 |         |    1 | 00/005E : 0B          |             PHD                  
+  127 |  1   SEG0D.S     79 | Code        | 00 |         |    1 | 00/005F : 3B          |             TSC                  
+  128 |  1   SEG0D.S     80 | Code        | 00 |         |    1 | 00/0060 : 38          |             SEC                  
+  129 |  1   SEG0D.S     81 | Code        | 00 |         |    3 | 00/0061 : E9 FB 00    |             SBC   #$00FB         
+  130 |  1   SEG0D.S     82 | Code        | 00 |         |    1 | 00/0064 : 5B          |             TCD                  
+  131 |  1   SEG0D.S     83 | Code        | 00 |         |    3 | 00/0065 : 69 F4 00    |             ADC   #$00F4         
+  132 |  1   SEG0D.S     84 | Code        | 00 |         |    1 | 00/0068 : 1B          |             TCS                  
+  133 |  1   SEG0D.S     85 | Code        | 00 |E 2      |    3 | 00/0069 : AD 46 00    |             LDA   L020045        
+  134 |  1   SEG0D.S     86 | Code        | 00 |E 2      |    3 | 00/006C : 8D 4A 00    |             STA   L020049        
+  135 |  1   SEG0D.S     87 | Code        | 00 |E 2      |    3 | 00/006F : AD 48 00    |             LDA   L020047        
+  136 |  1   SEG0D.S     88 | Code        | 00 |E 2      |    3 | 00/0072 : 8D 4C 00    |             STA   L02004B        
+  137 |  1   SEG0D.S     89 | Code        | 00 |         |    1 | 00/0075 : 3B          |             TSC                  
+  138 |  1   SEG0D.S     90 | Code        | 00 |         |    1 | 00/0076 : 18          |             CLC                  
+  139 |  1   SEG0D.S     91 | Code        | 00 |         |    3 | 00/0077 : 69 06 00    |             ADC   #$0006         
+  140 |  1   SEG0D.S     92 | Code        | 00 |         |    1 | 00/007A : 1B          |             TCS                  
+  141 |  1   SEG0D.S     93 | Code        | 00 |         |    1 | 00/007B : 2B          |             PLD                  
+  142 |  1   SEG0D.S     94 | Code        | 00 |         |    1 | 00/007C : 6B          |             RTL                  
+  143 |  1   SEG0D.S     95 | Empty       | 00 |         |    0 | 00/007D               |                                  
+  144 |  1   SEG0D.S     96 | Code        | 00 |         |    1 | 00/007D : 0B          | L0D007D     PHD                  
+  145 |  1   SEG0D.S     97 | Code        | 00 |         |    1 | 00/007E : 3B          |             TSC                  
+  146 |  1   SEG0D.S     98 | Code        | 00 |         |    1 | 00/007F : 38          |             SEC                  
+  147 |  1   SEG0D.S     99 | Code        | 00 |         |    3 | 00/0080 : E9 F7 00    |             SBC   #$00F7         
+  148 |  1   SEG0D.S    100 | Code        | 00 |         |    1 | 00/0083 : 5B          |             TCD                  
+  149 |  1   SEG0D.S    101 | Code        | 00 |         |    3 | 00/0084 : 69 E4 00    |             ADC   #$00E4         
+  150 |  1   SEG0D.S    102 | Code        | 00 |         |    1 | 00/0087 : 1B          |             TCS                  
+  151 |  1   SEG0D.S    103 | Code        | 00 |E 1 >>16 |    3 | 00/0088 : F4 00 00    |             PEA   ^L03057D       
+  152 |  1   SEG0D.S    104 | Code        | 00 |E 2      |    3 | 00/008B : F4 7D 05    |             PEA   L03057D        
+  153 |  1   SEG0D.S    105 | Code        | 00 |E 3      |    4 | 00/008E : 22 D5 0D 1A |             JSL   L1A0E02        
+  154 |  1   SEG0D.S    106 | Code        | 00 |         |    1 | 00/0092 : 7A          |             PLY                  
+  155 |  1   SEG0D.S    107 | Code        | 00 |         |    1 | 00/0093 : 7A          |             PLY                  
+  156 |  1   SEG0D.S    108 | Code        | 00 |         |    3 | 00/0094 : A9 F3 FF    |             LDA   #$FFF3         
+  157 |  1   SEG0D.S    109 | Code        | 00 |         |    2 | 00/0097 : 85 F0       |             STA   $F0            
+  158 |  1   SEG0D.S    110 | Code        | 00 |         |    2 | 00/0099 : A5 FD       | L0D0099     LDA   $FD            
+  159 |  1   SEG0D.S    111 | Code        | 00 |         |    1 | 00/009B : 38          |             SEC                  
+  160 |  1   SEG0D.S    112 | Code        | 00 |         |    3 | 00/009C : E9 05 00    |             SBC   #$0005         
+  161 |  1   SEG0D.S    113 | Code        | 00 |         |    2 | 00/009F : F0 19       |             BEQ   L0D00BA        
+  162 |  1   SEG0D.S    114 | Code        | 00 |         |    2 | 00/00A1 : 70 03       |             BVS   L0D00A6        
+  163 |  1   SEG0D.S    115 | Code        | 00 |         |    3 | 00/00A3 : 49 00 80    |             EOR   #$8000         
+  164 |  1   SEG0D.S    116 | Code        | 00 |         |    2 | 00/00A6 : 10 12       | L0D00A6     BPL   L0D00BA        
+  165 |  1   SEG0D.S    117 | Code        | 00 |         |    2 | 00/00A8 : A5 FD       |             LDA   $FD            
+  166 |  1   SEG0D.S    118 | Code        | 00 |         |    1 | 00/00AA : 38          |             SEC                  
+  167 |  1   SEG0D.S    119 | Code        | 00 |         |    3 | 00/00AB : E9 05 00    |             SBC   #$0005         
+  168 |  1   SEG0D.S    120 | Code        | 00 |         |    2 | 00/00AE : 85 FD       |             STA   $FD            
+  169 |  1   SEG0D.S    121 | Code        | 00 |         |    2 | 00/00B0 : A5 F0       |             LDA   $F0            
+  170 |  1   SEG0D.S    122 | Code        | 00 |         |    1 | 00/00B2 : 18          |             CLC                  
+  171 |  1   SEG0D.S    123 | Code        | 00 |         |    3 | 00/00B3 : 69 14 00    |             ADC   #$0014         
+  172 |  1   SEG0D.S    124 | Code        | 00 |         |    2 | 00/00B6 : 85 F0       |             STA   $F0            
+  173 |  1   SEG0D.S    125 | Code        | 00 |         |    2 | 00/00B8 : 80 DF       |             BRA   L0D0099        
+  174 |  1   SEG0D.S    126 | Code        | 00 |         |    2 | 00/00BA : A5 FD       | L0D00BA     LDA   $FD            
+  175 |  1   SEG0D.S    127 | Code        | 00 |         |    1 | 00/00BC : 0A          |             ASL                  
+  176 |  1   SEG0D.S    128 | Code        | 00 |         |    1 | 00/00BD : 0A          |             ASL                  
+  177 |  1   SEG0D.S    129 | Code        | 00 |         |    1 | 00/00BE : 48          |             PHA                  
+  178 |  1   SEG0D.S    130 | Code        | 00 |         |    2 | 00/00BF : A5 F0       |             LDA   $F0            
+  179 |  1   SEG0D.S    131 | Code        | 00 |         |    1 | 00/00C1 : FA          |             PLX                  
+  180 |  1   SEG0D.S    132 | Code        | 00 |         |    2 | 00/00C2 : 86 F6       |             STX   $F6            
+  181 |  1   SEG0D.S    133 | Code        | 00 |         |    1 | 00/00C4 : 18          |             CLC                  
+  182 |  1   SEG0D.S    134 | Code        | 00 |         |    2 | 00/00C5 : 65 F6       |             ADC   $F6            
+  183 |  1   SEG0D.S    135 | Code        | 00 |         |    2 | 00/00C7 : 85 F0       |             STA   $F0            
+  184 |  1   SEG0D.S    136 | Code        | 00 |         |    3 | 00/00C9 : A9 08 00    |             LDA   #$0008         
+  185 |  1   SEG0D.S    137 | Code        | 00 |         |    1 | 00/00CC : 18          |             CLC                  
+  186 |  1   SEG0D.S    138 | Code        | 00 |         |    2 | 00/00CD : 65 FF       |             ADC   $FF            
+  187 |  1   SEG0D.S    139 | Code        | 00 |         |    2 | 00/00CF : 85 EE       |             STA   $EE            
+  188 |  1   SEG0D.S    140 | Code        | 00 |         |    3 | 00/00D1 : F4 00 00    |             PEA   $0000          
+  189 |  1   SEG0D.S    141 | Code        | 00 |         |    3 | 00/00D4 : F4 32 00    |             PEA   $0032          
+  190 |  1   SEG0D.S    142 | Code        | 00 |         |    3 | 00/00D7 : F4 C4 FF    |             PEA   $FFC4          
+  191 |  1   SEG0D.S    143 | Code        | 00 |E 3      |    4 | 00/00DA : 22 A3 03 11 |             JSL   L1103A3        
+  192 |  1   SEG0D.S    144 | Code        | 00 |         |    1 | 00/00DE : 7A          |             PLY                  
+  193 |  1   SEG0D.S    145 | Code        | 00 |         |    1 | 00/00DF : 7A          |             PLY                  
+  194 |  1   SEG0D.S    146 | Code        | 00 |         |    1 | 00/00E0 : 7A          |             PLY                  
+  195 |  1   SEG0D.S    147 | Code        | 00 |         |    2 | 00/00E1 : A5 FD       |             LDA   $FD            
+  196 |  1   SEG0D.S    148 | Code        | 00 |         |    3 | 00/00E3 : C9 05 00    |             CMP   #$0005         
+  197 |  1   SEG0D.S    149 | Code        | 00 |         |    2 | 00/00E6 : D0 41       |             BNE   L0D0129        
+  198 |  1   SEG0D.S    150 | Code        | 00 |         |    2 | 00/00E8 : A5 F0       |             LDA   $F0            
+  199 |  1   SEG0D.S    151 | Code        | 00 |         |    1 | 00/00EA : 38          |             SEC                  
+  200 |  1   SEG0D.S    152 | Code        | 00 |         |    3 | 00/00EB : E9 02 00    |             SBC   #$0002         
+  201 |  1   SEG0D.S    153 | Code        | 00 |         |    2 | 00/00EE : 85 F0       |             STA   $F0            
+  202 |  1   SEG0D.S    154 | Code        | 00 |         |    3 | 00/00F0 : F4 0A 00    |             PEA   $000A          
+  203 |  1   SEG0D.S    155 | Code        | 00 |         |    3 | 00/00F3 : F4 00 00    |             PEA   $0000          
+  204 |  1   SEG0D.S    156 | Code        | 00 |         |    2 | 00/00F6 : A5 EE       |             LDA   $EE            
+  205 |  1   SEG0D.S    157 | Code        | 00 |         |    1 | 00/00F8 : 18          |             CLC                  
+  206 |  1   SEG0D.S    158 | Code        | 00 |         |    3 | 00/00F9 : 69 01 00    |             ADC   #$0001         
+  207 |  1   SEG0D.S    159 | Code        | 00 |         |    1 | 00/00FC : 48          |             PHA                  
+  208 |  1   SEG0D.S    160 | Code        | 00 |         |    2 | 00/00FD : D4 F0       |             PEI   $F0            
+  209 |  1   SEG0D.S    161 | Code        | 00 |E 3      |    4 | 00/00FF : 22 D4 03 11 |             JSL   L1103D4        
+  210 |  1   SEG0D.S    162 | Code        | 00 |         |    1 | 00/0103 : 7A          |             PLY                  
+  211 |  1   SEG0D.S    163 | Code        | 00 |         |    1 | 00/0104 : 7A          |             PLY                  
+  212 |  1   SEG0D.S    164 | Code        | 00 |         |    1 | 00/0105 : 7A          |             PLY                  
+  213 |  1   SEG0D.S    165 | Code        | 00 |         |    1 | 00/0106 : 7A          |             PLY                  
+  214 |  1   SEG0D.S    166 | Code        | 00 |         |    3 | 00/0107 : F4 02 00    |             PEA   $0002          
+  215 |  1   SEG0D.S    167 | Code        | 00 |         |    3 | 00/010A : F4 01 00    |             PEA   $0001          
+  216 |  1   SEG0D.S    168 | Code        | 00 |         |    2 | 00/010D : A5 EE       |             LDA   $EE            
+  217 |  1   SEG0D.S    169 | Code        | 00 |         |    1 | 00/010F : 18          |             CLC                  
+  218 |  1   SEG0D.S    170 | Code        | 00 |         |    3 | 00/0110 : 69 07 00    |             ADC   #$0007         
+  219 |  1   SEG0D.S    171 | Code        | 00 |         |    1 | 00/0113 : 38          |             SEC                  
+  220 |  1   SEG0D.S    172 | Code        | 00 |         |    3 | 00/0114 : E9 01 00    |             SBC   #$0001         
+  221 |  1   SEG0D.S    173 | Code        | 00 |         |    1 | 00/0117 : 48          |             PHA                  
+  222 |  1   SEG0D.S    174 | Code        | 00 |         |    2 | 00/0118 : A5 F0       |             LDA   $F0            
+  223 |  1   SEG0D.S    175 | Code        | 00 |         |    1 | 00/011A : 38          |             SEC                  
+  224 |  1   SEG0D.S    176 | Code        | 00 |         |    3 | 00/011B : E9 10 00    |             SBC   #$0010         
+  225 |  1   SEG0D.S    177 | Code        | 00 |         |    1 | 00/011E : 48          |             PHA                  
+  226 |  1   SEG0D.S    178 | Code        | 00 |E 3      |    4 | 00/011F : 22 D4 03 11 |             JSL   L1103D4        
+  227 |  1   SEG0D.S    179 | Code        | 00 |         |    1 | 00/0123 : 7A          |             PLY                  
+  228 |  1   SEG0D.S    180 | Code        | 00 |         |    1 | 00/0124 : 7A          |             PLY                  
+  229 |  1   SEG0D.S    181 | Code        | 00 |         |    1 | 00/0125 : 7A          |             PLY                  
+  230 |  1   SEG0D.S    182 | Code        | 00 |         |    1 | 00/0126 : 7A          |             PLY                  
+  231 |  1   SEG0D.S    183 | Code        | 00 |         |    2 | 00/0127 : 80 29       |             BRA   L0D0152        
+  232 |  1   SEG0D.S    184 | Code        | 00 |         |    3 | 00/0129 : F4 0A 00    | L0D0129     PEA   $000A          
+  233 |  1   SEG0D.S    185 | Code        | 00 |         |    3 | 00/012C : F4 00 00    |             PEA   $0000          
+  234 |  1   SEG0D.S    186 | Code        | 00 |         |    2 | 00/012F : D4 EE       |             PEI   $EE            
+  235 |  1   SEG0D.S    187 | Code        | 00 |         |    2 | 00/0131 : D4 F0       |             PEI   $F0            
+  236 |  1   SEG0D.S    188 | Code        | 00 |E 3      |    4 | 00/0133 : 22 D4 03 11 |             JSL   L1103D4        
+  237 |  1   SEG0D.S    189 | Code        | 00 |         |    1 | 00/0137 : 7A          |             PLY                  
+  238 |  1   SEG0D.S    190 | Code        | 00 |         |    1 | 00/0138 : 7A          |             PLY                  
+  239 |  1   SEG0D.S    191 | Code        | 00 |         |    1 | 00/0139 : 7A          |             PLY                  
+  240 |  1   SEG0D.S    192 | Code        | 00 |         |    1 | 00/013A : 7A          |             PLY                  
+  241 |  1   SEG0D.S    193 | Code        | 00 |         |    3 | 00/013B : F4 02 00    |             PEA   $0002          
+  242 |  1   SEG0D.S    194 | Code        | 00 |         |    3 | 00/013E : F4 01 00    |             PEA   $0001          
+  243 |  1   SEG0D.S    195 | Code        | 00 |         |    2 | 00/0141 : A5 EE       |             LDA   $EE            
+  244 |  1   SEG0D.S    196 | Code        | 00 |         |    1 | 00/0143 : 18          |             CLC                  
+  245 |  1   SEG0D.S    197 | Code        | 00 |         |    3 | 00/0144 : 69 07 00    |             ADC   #$0007         
+  246 |  1   SEG0D.S    198 | Code        | 00 |         |    1 | 00/0147 : 48          |             PHA                  
+  247 |  1   SEG0D.S    199 | Code        | 00 |         |    2 | 00/0148 : D4 F0       |             PEI   $F0            
+  248 |  1   SEG0D.S    200 | Code        | 00 |E 3      |    4 | 00/014A : 22 D4 03 11 |             JSL   L1103D4        
+  249 |  1   SEG0D.S    201 | Code        | 00 |         |    1 | 00/014E : 7A          |             PLY                  
+  250 |  1   SEG0D.S    202 | Code        | 00 |         |    1 | 00/014F : 7A          |             PLY                  
+  251 |  1   SEG0D.S    203 | Code        | 00 |         |    1 | 00/0150 : 7A          |             PLY                  
+  252 |  1   SEG0D.S    204 | Code        | 00 |         |    1 | 00/0151 : 7A          |             PLY                  
+  253 |  1   SEG0D.S    205 | Code        | 00 |         |    3 | 00/0152 : F4 0A 00    | L0D0152     PEA   $000A          
+  254 |  1   SEG0D.S    206 | Code        | 00 |         |    3 | 00/0155 : F4 00 00    |             PEA   $0000          
+  255 |  1   SEG0D.S    207 | Code        | 00 |         |    3 | 00/0158 : F4 32 00    |             PEA   $0032          
+  256 |  1   SEG0D.S    208 | Code        | 00 |         |    3 | 00/015B : F4 C4 FF    |             PEA   $FFC4          
+  257 |  1   SEG0D.S    209 | Code        | 00 |E 3      |    4 | 00/015E : 22 D4 03 11 |             JSL   L1103D4        
+  258 |  1   SEG0D.S    210 | Code        | 00 |         |    1 | 00/0162 : 7A          |             PLY                  
+  259 |  1   SEG0D.S    211 | Code        | 00 |         |    1 | 00/0163 : 7A          |             PLY                  
+  260 |  1   SEG0D.S    212 | Code        | 00 |         |    1 | 00/0164 : 7A          |             PLY                  
+  261 |  1   SEG0D.S    213 | Code        | 00 |         |    1 | 00/0165 : 7A          |             PLY                  
+  262 |  1   SEG0D.S    214 | Code        | 00 |E 3      |    4 | 00/0166 : 22 68 0E 1A |             JSL   L1A0E95        
+  263 |  1   SEG0D.S    215 | Code        | 00 |         |    1 | 00/016A : 3B          |             TSC                  
+  264 |  1   SEG0D.S    216 | Code        | 00 |         |    1 | 00/016B : 18          |             CLC                  
+  265 |  1   SEG0D.S    217 | Code        | 00 |         |    3 | 00/016C : 69 12 00    |             ADC   #$0012         
+  266 |  1   SEG0D.S    218 | Code        | 00 |         |    1 | 00/016F : 1B          |             TCS                  
+  267 |  1   SEG0D.S    219 | Code        | 00 |         |    1 | 00/0170 : 2B          |             PLD                  
+  268 |  1   SEG0D.S    220 | Code        | 00 |         |    1 | 00/0171 : 6B          |             RTL                  
+  269 |  1   SEG0D.S    221 | Empty       | 00 |         |    0 | 00/0172               |                                  
+  270 |  1   SEG0D.S    222 | Code        | 00 |         |    1 | 00/0172 : 0B          | L0D0172     PHD                  
+  271 |  1   SEG0D.S    223 | Code        | 00 |         |    1 | 00/0173 : 3B          |             TSC                  
+  272 |  1   SEG0D.S    224 | Code        | 00 |         |    1 | 00/0174 : 38          |             SEC                  
+  273 |  1   SEG0D.S    225 | Code        | 00 |         |    3 | 00/0175 : E9 F9 00    |             SBC   #$00F9         
+  274 |  1   SEG0D.S    226 | Code        | 00 |         |    1 | 00/0178 : 5B          |             TCD                  
+  275 |  1   SEG0D.S    227 | Code        | 00 |         |    3 | 00/0179 : 69 F2 00    |             ADC   #$00F2         
+  276 |  1   SEG0D.S    228 | Code        | 00 |         |    1 | 00/017C : 1B          |             TCS                  
+  277 |  1   SEG0D.S    229 | Code        | 00 |         |    3 | 00/017D : F4 0B 00    |             PEA   $000B          
+  278 |  1   SEG0D.S    230 | Code        | 00 |         |    2 | 00/0180 : D4 FF       |             PEI   $FF            
+  279 |  1   SEG0D.S    231 | Code        | 00 |  3      |    4 | 00/0182 : 22 7D 00 00 |             JSL   L0D007D        
+  280 |  1   SEG0D.S    232 | Code        | 00 |         |    1 | 00/0186 : 7A          |             PLY                  
+  281 |  1   SEG0D.S    233 | Code        | 00 |         |    1 | 00/0187 : 7A          |             PLY                  
+  282 |  1   SEG0D.S    234 | Code        | 00 |         |    1 | 00/0188 : 3B          |             TSC                  
+  283 |  1   SEG0D.S    235 | Code        | 00 |         |    1 | 00/0189 : 18          |             CLC                  
+  284 |  1   SEG0D.S    236 | Code        | 00 |         |    3 | 00/018A : 69 06 00    |             ADC   #$0006         
+  285 |  1   SEG0D.S    237 | Code        | 00 |         |    1 | 00/018D : 1B          |             TCS                  
+  286 |  1   SEG0D.S    238 | Code        | 00 |         |    1 | 00/018E : 2B          |             PLD                  
+  287 |  1   SEG0D.S    239 | Code        | 00 |         |    1 | 00/018F : 6B          |             RTL                  
+  288 |  1   SEG0D.S    240 | Empty       | 00 |         |    0 | 00/0190               |                                  
+  289 |  1   SEG0D.S    241 | Code        | 00 |         |    1 | 00/0190 : 0B          | L0D0190     PHD                  
+  290 |  1   SEG0D.S    242 | Code        | 00 |         |    1 | 00/0191 : 3B          |             TSC                  
+  291 |  1   SEG0D.S    243 | Code        | 00 |         |    1 | 00/0192 : 38          |             SEC                  
+  292 |  1   SEG0D.S    244 | Code        | 00 |         |    3 | 00/0193 : E9 F9 00    |             SBC   #$00F9         
+  293 |  1   SEG0D.S    245 | Code        | 00 |         |    1 | 00/0196 : 5B          |             TCD                  
+  294 |  1   SEG0D.S    246 | Code        | 00 |         |    3 | 00/0197 : 69 F2 00    |             ADC   #$00F2         
+  295 |  1   SEG0D.S    247 | Code        | 00 |         |    1 | 00/019A : 1B          |             TCS                  
+  296 |  1   SEG0D.S    248 | Code        | 00 |         |    3 | 00/019B : F4 00 00    |             PEA   $0000          
+  297 |  1   SEG0D.S    249 | Code        | 00 |         |    2 | 00/019E : D4 FF       |             PEI   $FF            
+  298 |  1   SEG0D.S    250 | Code        | 00 |  3      |    4 | 00/01A0 : 22 7D 00 00 |             JSL   L0D007D        
+  299 |  1   SEG0D.S    251 | Code        | 00 |         |    1 | 00/01A4 : 7A          |             PLY                  
+  300 |  1   SEG0D.S    252 | Code        | 00 |         |    1 | 00/01A5 : 7A          |             PLY                  
+  301 |  1   SEG0D.S    253 | Code        | 00 |         |    1 | 00/01A6 : 3B          |             TSC                  
+  302 |  1   SEG0D.S    254 | Code        | 00 |         |    1 | 00/01A7 : 18          |             CLC                  
+  303 |  1   SEG0D.S    255 | Code        | 00 |         |    3 | 00/01A8 : 69 06 00    |             ADC   #$0006         
+  304 |  1   SEG0D.S    256 | Code        | 00 |         |    1 | 00/01AB : 1B          |             TCS                  
+  305 |  1   SEG0D.S    257 | Code        | 00 |         |    1 | 00/01AC : 2B          |             PLD                  
+  306 |  1   SEG0D.S    258 | Code        | 00 |         |    1 | 00/01AD : 6B          |             RTL                  
+  307 |  1   SEG0D.S    259 | Empty       | 00 |         |    0 | 00/01AE               |                                  
+  308 |  1   SEG0D.S    260 | Global      | 00 |         |    0 | 00/01AE               | L0D01AE     ENT                  
+  309 |  1   SEG0D.S    261 | Code        | 00 |         |    1 | 00/01AE : 0B          |             PHD                  
+  310 |  1   SEG0D.S    262 | Code        | 00 |         |    1 | 00/01AF : 3B          |             TSC                  
+  311 |  1   SEG0D.S    263 | Code        | 00 |         |    1 | 00/01B0 : 38          |             SEC                  
+  312 |  1   SEG0D.S    264 | Code        | 00 |         |    3 | 00/01B1 : E9 FB 00    |             SBC   #$00FB         
+  313 |  1   SEG0D.S    265 | Code        | 00 |         |    1 | 00/01B4 : 5B          |             TCD                  
+  314 |  1   SEG0D.S    266 | Code        | 00 |         |    3 | 00/01B5 : 69 F4 00    |             ADC   #$00F4         
+  315 |  1   SEG0D.S    267 | Code        | 00 |         |    1 | 00/01B8 : 1B          |             TCS                  
+  316 |  1   SEG0D.S    268 | Code        | 00 |E 2      |    3 | 00/01B9 : 9C 46 00    |             STZ   L020045        
+  317 |  1   SEG0D.S    269 | Code        | 00 |E 2      |    3 | 00/01BC : 9C 48 00    |             STZ   L020047        
+  318 |  1   SEG0D.S    270 | Code        | 00 |         |    1 | 00/01BF : 3B          |             TSC                  
+  319 |  1   SEG0D.S    271 | Code        | 00 |         |    1 | 00/01C0 : 18          |             CLC                  
+  320 |  1   SEG0D.S    272 | Code        | 00 |         |    3 | 00/01C1 : 69 06 00    |             ADC   #$0006         
+  321 |  1   SEG0D.S    273 | Code        | 00 |         |    1 | 00/01C4 : 1B          |             TCS                  
+  322 |  1   SEG0D.S    274 | Code        | 00 |         |    1 | 00/01C5 : 2B          |             PLD                  
+  323 |  1   SEG0D.S    275 | Code        | 00 |         |    1 | 00/01C6 : 6B          |             RTL                  
+  324 |  1   SEG0D.S    276 | Empty       | 00 |         |    0 | 00/01C7               |                                  
+  325 |  1   SEG0D.S    277 | Global      | 00 |         |    0 | 00/01C7               | L0D01C7     ENT                  
+  326 |  1   SEG0D.S    278 | Code        | 00 |         |    1 | 00/01C7 : 0B          |             PHD                  
+  327 |  1   SEG0D.S    279 | Code        | 00 |         |    1 | 00/01C8 : 3B          |             TSC                  
+  328 |  1   SEG0D.S    280 | Code        | 00 |         |    1 | 00/01C9 : 38          |             SEC                  
+  329 |  1   SEG0D.S    281 | Code        | 00 |         |    3 | 00/01CA : E9 FB 00    |             SBC   #$00FB         
+  330 |  1   SEG0D.S    282 | Code        | 00 |         |    1 | 00/01CD : 5B          |             TCD                  
+  331 |  1   SEG0D.S    283 | Code        | 00 |         |    3 | 00/01CE : 69 F4 00    |             ADC   #$00F4         
+  332 |  1   SEG0D.S    284 | Code        | 00 |         |    1 | 00/01D1 : 1B          |             TCS                  
+  333 |  1   SEG0D.S    285 | Code        | 00 |E 2      |    3 | 00/01D2 : AD 48 00    |             LDA   L020047        
+  334 |  1   SEG0D.S    286 | Code        | 00 |         |    1 | 00/01D5 : 38          |             SEC                  
+  335 |  1   SEG0D.S    287 | Code        | 00 |         |    3 | 00/01D6 : E9 0F 00    |             SBC   #$000F         
+  336 |  1   SEG0D.S    288 | Code        | 00 |         |    2 | 00/01D9 : 70 03       |             BVS   L0D01DE        
+  337 |  1   SEG0D.S    289 | Code        | 00 |         |    3 | 00/01DB : 49 00 80    |             EOR   #$8000         
+  338 |  1   SEG0D.S    290 | Code        | 00 |         |    2 | 00/01DE : 30 0E       | L0D01DE     BMI   L0D01EE        
+  339 |  1   SEG0D.S    291 | Code        | 00 |E 2      |    3 | 00/01E0 : AD 46 00    |             LDA   L020045        
+  340 |  1   SEG0D.S    292 | Code        | 00 |         |    1 | 00/01E3 : 38          |             SEC                  
+  341 |  1   SEG0D.S    293 | Code        | 00 |         |    3 | 00/01E4 : E9 0F 00    |             SBC   #$000F         
+  342 |  1   SEG0D.S    294 | Code        | 00 |         |    2 | 00/01E7 : 70 03       |             BVS   L0D01EC        
+  343 |  1   SEG0D.S    295 | Code        | 00 |         |    3 | 00/01E9 : 49 00 80    |             EOR   #$8000         
+  344 |  1   SEG0D.S    296 | Code        | 00 |         |    2 | 00/01EC : 10 07       | L0D01EC     BPL   L0D01F5        
+  345 |  1   SEG0D.S    297 | Code        | 00 |         |    3 | 00/01EE : A9 01 00    | L0D01EE     LDA   #$0001         
+  346 |  1   SEG0D.S    298 | Code        | 00 |         |    2 | 00/01F1 : 80 05       |             BRA   L0D01F8        
+  347 |  1   SEG0D.S    299 | Code        | 00 |         |    2 | 00/01F3 : 80 03       |             BRA   L0D01F8        
+  348 |  1   SEG0D.S    300 | Code        | 00 |         |    3 | 00/01F5 : A9 00 00    | L0D01F5     LDA   #$0000         
+  349 |  1   SEG0D.S    301 | Code        | 00 |         |    1 | 00/01F8 : A8          | L0D01F8     TAY                  
+  350 |  1   SEG0D.S    302 | Code        | 00 |         |    1 | 00/01F9 : 3B          |             TSC                  
+  351 |  1   SEG0D.S    303 | Code        | 00 |         |    1 | 00/01FA : 18          |             CLC                  
+  352 |  1   SEG0D.S    304 | Code        | 00 |         |    3 | 00/01FB : 69 06 00    |             ADC   #$0006         
+  353 |  1   SEG0D.S    305 | Code        | 00 |         |    1 | 00/01FE : 1B          |             TCS                  
+  354 |  1   SEG0D.S    306 | Code        | 00 |         |    1 | 00/01FF : 98          |             TYA                  
+  355 |  1   SEG0D.S    307 | Code        | 00 |         |    1 | 00/0200 : 2B          |             PLD                  
+  356 |  1   SEG0D.S    308 | Code        | 00 |         |    1 | 00/0201 : 6B          |             RTL                  
+  357 |  1   SEG0D.S    309 | Empty       | 00 |         |    0 | 00/0202               |                                  
+  358 |  1   SEG0D.S    310 | Code        | 00 |         |    1 | 00/0202 : 0B          | L0D0202     PHD                  
+  359 |  1   SEG0D.S    311 | Code        | 00 |         |    1 | 00/0203 : 3B          |             TSC                  
+  360 |  1   SEG0D.S    312 | Code        | 00 |         |    1 | 00/0204 : 38          |             SEC                  
+  361 |  1   SEG0D.S    313 | Code        | 00 |         |    3 | 00/0205 : E9 FB 00    |             SBC   #$00FB         
+  362 |  1   SEG0D.S    314 | Code        | 00 |         |    1 | 00/0208 : 5B          |             TCD                  
+  363 |  1   SEG0D.S    315 | Code        | 00 |         |    3 | 00/0209 : 69 F4 00    |             ADC   #$00F4         
+  364 |  1   SEG0D.S    316 | Code        | 00 |         |    1 | 00/020C : 1B          |             TCS                  
+  365 |  1   SEG0D.S    317 | Code        | 00 |E 2      |    3 | 00/020D : AD 48 00    |             LDA   L020047        
+  366 |  1   SEG0D.S    318 | Code        | 00 |         |    1 | 00/0210 : 38          |             SEC                  
+  367 |  1   SEG0D.S    319 | Code        | 00 |         |    3 | 00/0211 : E9 0F 00    |             SBC   #$000F         
+  368 |  1   SEG0D.S    320 | Code        | 00 |         |    2 | 00/0214 : 70 03       |             BVS   L0D0219        
+  369 |  1   SEG0D.S    321 | Code        | 00 |         |    3 | 00/0216 : 49 00 80    |             EOR   #$8000         
+  370 |  1   SEG0D.S    322 | Code        | 00 |         |    2 | 00/0219 : 10 07       | L0D0219     BPL   L0D0222        
+  371 |  1   SEG0D.S    323 | Code        | 00 |E 2      |    3 | 00/021B : 9C 07 01    |             STZ   L020106        
+  372 |  1   SEG0D.S    324 | Code        | 00 |E 3      |    4 | 00/021E : 22 3D 05 26 |             JSL   L2605A0        
+  373 |  1   SEG0D.S    325 | Code        | 00 |E 2      |    3 | 00/0222 : AD 46 00    | L0D0222     LDA   L020045        
+  374 |  1   SEG0D.S    326 | Code        | 00 |         |    1 | 00/0225 : 38          |             SEC                  
+  375 |  1   SEG0D.S    327 | Code        | 00 |         |    3 | 00/0226 : E9 0F 00    |             SBC   #$000F         
+  376 |  1   SEG0D.S    328 | Code        | 00 |         |    2 | 00/0229 : 70 03       |             BVS   L0D022E        
+  377 |  1   SEG0D.S    329 | Code        | 00 |         |    3 | 00/022B : 49 00 80    |             EOR   #$8000         
+  378 |  1   SEG0D.S    330 | Code        | 00 |         |    2 | 00/022E : 10 07       | L0D022E     BPL   L0D0237        
+  379 |  1   SEG0D.S    331 | Code        | 00 |E 2      |    3 | 00/0230 : 9C 07 01    |             STZ   L020106        
+  380 |  1   SEG0D.S    332 | Code        | 00 |E 3      |    4 | 00/0233 : 22 D3 04 26 |             JSL   L260536        
+  381 |  1   SEG0D.S    333 | Code        | 00 |E 2      |    3 | 00/0237 : AD 07 01    | L0D0237     LDA   L020106        
+  382 |  1   SEG0D.S    334 | Code        | 00 |         |    2 | 00/023A : F0 04       |             BEQ   L0D0240        
+  383 |  1   SEG0D.S    335 | Code        | 00 |E 3      |    4 | 00/023C : 22 00 00 17 |             JSL   L170000        
+  384 |  1   SEG0D.S    336 | Code        | 00 |E 3      |    4 | 00/0240 : 22 68 0E 1A | L0D0240     JSL   L1A0E95        
+  385 |  1   SEG0D.S    337 | Code        | 00 |         |    1 | 00/0244 : 3B          |             TSC                  
+  386 |  1   SEG0D.S    338 | Code        | 00 |         |    1 | 00/0245 : 18          |             CLC                  
+  387 |  1   SEG0D.S    339 | Code        | 00 |         |    3 | 00/0246 : 69 06 00    |             ADC   #$0006         
+  388 |  1   SEG0D.S    340 | Code        | 00 |         |    1 | 00/0249 : 1B          |             TCS                  
+  389 |  1   SEG0D.S    341 | Code        | 00 |         |    1 | 00/024A : 2B          |             PLD                  
+  390 |  1   SEG0D.S    342 | Code        | 00 |         |    1 | 00/024B : 6B          |             RTL                  
+  391 |  1   SEG0D.S    343 | Empty       | 00 |         |    0 | 00/024C               |                                  
+  392 |  1   SEG0D.S    344 | Code        | 00 |         |    1 | 00/024C : 0B          | L0D024C     PHD                  
+  393 |  1   SEG0D.S    345 | Code        | 00 |         |    1 | 00/024D : 3B          |             TSC                  
+  394 |  1   SEG0D.S    346 | Code        | 00 |         |    1 | 00/024E : 38          |             SEC                  
+  395 |  1   SEG0D.S    347 | Code        | 00 |         |    3 | 00/024F : E9 FB 00    |             SBC   #$00FB         
+  396 |  1   SEG0D.S    348 | Code        | 00 |         |    1 | 00/0252 : 5B          |             TCD                  
+  397 |  1   SEG0D.S    349 | Code        | 00 |         |    3 | 00/0253 : 69 F4 00    |             ADC   #$00F4         
+  398 |  1   SEG0D.S    350 | Code        | 00 |         |    1 | 00/0256 : 1B          |             TCS                  
+  399 |  1   SEG0D.S    351 | Code        | 00 |E 2      |    3 | 00/0257 : AD 09 01    |             LDA   L020108        
+  400 |  1   SEG0D.S    352 | Code        | 00 |         |    3 | 00/025A : C9 00 00    |             CMP   #$0000         
+  401 |  1   SEG0D.S    353 | Code        | 00 |         |    2 | 00/025D : D0 0E       |             BNE   L0D026D        
+  402 |  1   SEG0D.S    354 | Code        | 00 |         |    3 | 00/025F : F4 1F 04    |             PEA   $041F          
+  403 |  1   SEG0D.S    355 | Code        | 00 |         |    3 | 00/0262 : F4 00 00    |             PEA   $0000          
+  404 |  1   SEG0D.S    356 | Code        | 00 |E 3      |    4 | 00/0265 : 22 00 00 1F |             JSL   L1F0000        
+  405 |  1   SEG0D.S    357 | Code        | 00 |         |    1 | 00/0269 : 7A          |             PLY                  
+  406 |  1   SEG0D.S    358 | Code        | 00 |         |    1 | 00/026A : 7A          |             PLY                  
+  407 |  1   SEG0D.S    359 | Code        | 00 |         |    2 | 00/026B : 80 0C       |             BRA   L0D0279        
+  408 |  1   SEG0D.S    360 | Code        | 00 |         |    3 | 00/026D : F4 C3 00    | L0D026D     PEA   $00C3          
+  409 |  1   SEG0D.S    361 | Code        | 00 |         |    3 | 00/0270 : F4 00 00    |             PEA   $0000          
+  410 |  1   SEG0D.S    362 | Code        | 00 |E 3      |    4 | 00/0273 : 22 00 00 1F |             JSL   L1F0000        
+  411 |  1   SEG0D.S    363 | Code        | 00 |         |    1 | 00/0277 : 7A          |             PLY                  
+  412 |  1   SEG0D.S    364 | Code        | 00 |         |    1 | 00/0278 : 7A          |             PLY                  
+  413 |  1   SEG0D.S    365 | Code        | 00 |         |    1 | 00/0279 : 3B          | L0D0279     TSC                  
+  414 |  1   SEG0D.S    366 | Code        | 00 |         |    1 | 00/027A : 18          |             CLC                  
+  415 |  1   SEG0D.S    367 | Code        | 00 |         |    3 | 00/027B : 69 06 00    |             ADC   #$0006         
+  416 |  1   SEG0D.S    368 | Code        | 00 |         |    1 | 00/027E : 1B          |             TCS                  
+  417 |  1   SEG0D.S    369 | Code        | 00 |         |    1 | 00/027F : 2B          |             PLD                  
+  418 |  1   SEG0D.S    370 | Code        | 00 |         |    1 | 00/0280 : 6B          |             RTL                  
+  419 |  1   SEG0D.S    371 | Empty       | 00 |         |    0 | 00/0281               |                                  
+  420 |  1   SEG0D.S    372 | Global      | 00 |         |    0 | 00/0281               | L0D0281     ENT                  
+  421 |  1   SEG0D.S    373 | Code        | 00 |         |    1 | 00/0281 : 0B          |             PHD                  
+  422 |  1   SEG0D.S    374 | Code        | 00 |         |    1 | 00/0282 : 3B          |             TSC                  
+  423 |  1   SEG0D.S    375 | Code        | 00 |         |    1 | 00/0283 : 38          |             SEC                  
+  424 |  1   SEG0D.S    376 | Code        | 00 |         |    3 | 00/0284 : E9 FB 00    |             SBC   #$00FB         
+  425 |  1   SEG0D.S    377 | Code        | 00 |         |    1 | 00/0287 : 5B          |             TCD                  
+  426 |  1   SEG0D.S    378 | Code        | 00 |         |    3 | 00/0288 : 69 F4 00    |             ADC   #$00F4         
+  427 |  1   SEG0D.S    379 | Code        | 00 |         |    1 | 00/028B : 1B          |             TCS                  
+  428 |  1   SEG0D.S    380 | Code        | 00 |E 3      |    4 | 00/028C : 22 CA 03 1D |             JSL   L1D03CA        
+  429 |  1   SEG0D.S    381 | Code        | 00 |E 2      |    3 | 00/0290 : EE 48 00    |             INC   L020047        
+  430 |  1   SEG0D.S    382 | Code        | 00 |E 3      |    4 | 00/0293 : 22 41 15 0F |             JSL   L0F1565        
+  431 |  1   SEG0D.S    383 | Code        | 00 |E 3      |    4 | 00/0297 : 22 E6 18 0F |             JSL   L0F190A        
+  432 |  1   SEG0D.S    384 | Code        | 00 |E 3      |    4 | 00/029B : 22 CA 03 1D |             JSL   L1D03CA        
+  433 |  1   SEG0D.S    385 | Code        | 00 |  3      |    4 | 00/029F : 22 4C 02 00 |             JSL   L0D024C        
+  434 |  1   SEG0D.S    386 | Code        | 00 |E 2      |    3 | 00/02A3 : AD 48 00    |             LDA   L020047        
+  435 |  1   SEG0D.S    387 | Code        | 00 |         |    1 | 00/02A6 : 48          |             PHA                  
+  436 |  1   SEG0D.S    388 | Code        | 00 |  3      |    4 | 00/02A7 : 22 72 01 00 |             JSL   L0D0172        
+  437 |  1   SEG0D.S    389 | Code        | 00 |         |    1 | 00/02AB : 7A          |             PLY                  
+  438 |  1   SEG0D.S    390 | Code        | 00 |  3      |    4 | 00/02AC : 22 5E 00 00 |             JSL   L0D005E        
+  439 |  1   SEG0D.S    391 | Code        | 00 |  3      |    4 | 00/02B0 : 22 02 02 00 |             JSL   L0D0202        
+  440 |  1   SEG0D.S    392 | Code        | 00 |         |    1 | 00/02B4 : 3B          |             TSC                  
+  441 |  1   SEG0D.S    393 | Code        | 00 |         |    1 | 00/02B5 : 18          |             CLC                  
+  442 |  1   SEG0D.S    394 | Code        | 00 |         |    3 | 00/02B6 : 69 06 00    |             ADC   #$0006         
+  443 |  1   SEG0D.S    395 | Code        | 00 |         |    1 | 00/02B9 : 1B          |             TCS                  
+  444 |  1   SEG0D.S    396 | Code        | 00 |         |    1 | 00/02BA : 2B          |             PLD                  
+  445 |  1   SEG0D.S    397 | Code        | 00 |         |    1 | 00/02BB : 6B          |             RTL                  
+  446 |  1   SEG0D.S    398 | Empty       | 00 |         |    0 | 00/02BC               |                                  
+  447 |  1   SEG0D.S    399 | Global      | 00 |         |    0 | 00/02BC               | L0D02BC     ENT                  
+  448 |  1   SEG0D.S    400 | Code        | 00 |         |    1 | 00/02BC : 0B          |             PHD                  
+  449 |  1   SEG0D.S    401 | Code        | 00 |         |    1 | 00/02BD : 3B          |             TSC                  
+  450 |  1   SEG0D.S    402 | Code        | 00 |         |    1 | 00/02BE : 38          |             SEC                  
+  451 |  1   SEG0D.S    403 | Code        | 00 |         |    3 | 00/02BF : E9 FB 00    |             SBC   #$00FB         
+  452 |  1   SEG0D.S    404 | Code        | 00 |         |    1 | 00/02C2 : 5B          |             TCD                  
+  453 |  1   SEG0D.S    405 | Code        | 00 |         |    3 | 00/02C3 : 69 F4 00    |             ADC   #$00F4         
+  454 |  1   SEG0D.S    406 | Code        | 00 |         |    1 | 00/02C6 : 1B          |             TCS                  
+  455 |  1   SEG0D.S    407 | Code        | 00 |E 3      |    4 | 00/02C7 : 22 CA 03 1D |             JSL   L1D03CA        
+  456 |  1   SEG0D.S    408 | Code        | 00 |E 2      |    3 | 00/02CB : EE 46 00    |             INC   L020045        
+  457 |  1   SEG0D.S    409 | Code        | 00 |E 3      |    4 | 00/02CE : 22 74 15 0F |             JSL   L0F1598        
+  458 |  1   SEG0D.S    410 | Code        | 00 |E 3      |    4 | 00/02D2 : 22 0F 19 0F |             JSL   L0F1933        
+  459 |  1   SEG0D.S    411 | Code        | 00 |E 3      |    4 | 00/02D6 : 22 00 00 0F |             JSL   L0F0000        
+  460 |  1   SEG0D.S    412 | Code        | 00 |  3      |    4 | 00/02DA : 22 4C 02 00 |             JSL   L0D024C        
+  461 |  1   SEG0D.S    413 | Code        | 00 |E 2      |    3 | 00/02DE : AD 46 00    |             LDA   L020045        
+  462 |  1   SEG0D.S    414 | Code        | 00 |         |    1 | 00/02E1 : 48          |             PHA                  
+  463 |  1   SEG0D.S    415 | Code        | 00 |  3      |    4 | 00/02E2 : 22 90 01 00 |             JSL   L0D0190        
+  464 |  1   SEG0D.S    416 | Code        | 00 |         |    1 | 00/02E6 : 7A          |             PLY                  
+  465 |  1   SEG0D.S    417 | Code        | 00 |  3      |    4 | 00/02E7 : 22 5E 00 00 |             JSL   L0D005E        
+  466 |  1   SEG0D.S    418 | Code        | 00 |  3      |    4 | 00/02EB : 22 02 02 00 |             JSL   L0D0202        
+  467 |  1   SEG0D.S    419 | Code        | 00 |         |    1 | 00/02EF : 3B          |             TSC                  
+  468 |  1   SEG0D.S    420 | Code        | 00 |         |    1 | 00/02F0 : 18          |             CLC                  
+  469 |  1   SEG0D.S    421 | Code        | 00 |         |    3 | 00/02F1 : 69 06 00    |             ADC   #$0006         
+  470 |  1   SEG0D.S    422 | Code        | 00 |         |    1 | 00/02F4 : 1B          |             TCS                  
+  471 |  1   SEG0D.S    423 | Code        | 00 |         |    1 | 00/02F5 : 2B          |             PLD                  
+  472 |  1   SEG0D.S    424 | Code        | 00 |         |    1 | 00/02F6 : 6B          |             RTL                  
+  473 |  1   SEG0D.S    425 | Empty       | 00 |         |    0 | 00/02F7               |                                  
+  474 |  1   SEG0D.S    426 | Global      | 00 |         |    0 | 00/02F7               | L0D02F7     ENT                  
+  475 |  1   SEG0D.S    427 | Code        | 00 |         |    1 | 00/02F7 : 0B          |             PHD                  
+  476 |  1   SEG0D.S    428 | Code        | 00 |         |    1 | 00/02F8 : 3B          |             TSC                  
+  477 |  1   SEG0D.S    429 | Code        | 00 |         |    1 | 00/02F9 : 38          |             SEC                  
+  478 |  1   SEG0D.S    430 | Code        | 00 |         |    3 | 00/02FA : E9 FB 00    |             SBC   #$00FB         
+  479 |  1   SEG0D.S    431 | Code        | 00 |         |    1 | 00/02FD : 5B          |             TCD                  
+  480 |  1   SEG0D.S    432 | Code        | 00 |         |    3 | 00/02FE : 69 F4 00    |             ADC   #$00F4         
+  481 |  1   SEG0D.S    433 | Code        | 00 |         |    1 | 00/0301 : 1B          |             TCS                  
+  482 |  1   SEG0D.S    434 | Code        | 00 |E 2      |    3 | 00/0302 : AD 48 00    |             LDA   L020047        
+  483 |  1   SEG0D.S    435 | Code        | 00 |         |    2 | 00/0305 : F0 08       |             BEQ   L0D030F        
+  484 |  1   SEG0D.S    436 | Code        | 00 |         |    3 | 00/0307 : A9 0F 00    |             LDA   #$000F         
+  485 |  1   SEG0D.S    437 | Code        | 00 |E 2      |    3 | 00/030A : 8D 48 00    |             STA   L020047        
+  486 |  1   SEG0D.S    438 | Code        | 00 |         |    2 | 00/030D : 80 0B       |             BRA   L0D031A        
+  487 |  1   SEG0D.S    439 | Code        | 00 |E 2      |    3 | 00/030F : AD 46 00    | L0D030F     LDA   L020045        
+  488 |  1   SEG0D.S    440 | Code        | 00 |         |    2 | 00/0312 : F0 06       |             BEQ   L0D031A        
+  489 |  1   SEG0D.S    441 | Code        | 00 |         |    3 | 00/0314 : A9 0F 00    |             LDA   #$000F         
+  490 |  1   SEG0D.S    442 | Code        | 00 |E 2      |    3 | 00/0317 : 8D 46 00    |             STA   L020045        
+  491 |  1   SEG0D.S    443 | Code        | 00 |         |    1 | 00/031A : 3B          | L0D031A     TSC                  
+  492 |  1   SEG0D.S    444 | Code        | 00 |         |    1 | 00/031B : 18          |             CLC                  
+  493 |  1   SEG0D.S    445 | Code        | 00 |         |    3 | 00/031C : 69 06 00    |             ADC   #$0006         
+  494 |  1   SEG0D.S    446 | Code        | 00 |         |    1 | 00/031F : 1B          |             TCS                  
+  495 |  1   SEG0D.S    447 | Code        | 00 |         |    1 | 00/0320 : 2B          |             PLD                  
+  496 |  1   SEG0D.S    448 | Code        | 00 |         |    1 | 00/0321 : 6B          |             RTL                  
+  497 |  1   SEG0D.S    449 | Empty       | 00 |         |    0 | 00/0322               |                                  
+  498 |  1   SEG0D.S    450 | Global      | 00 |         |    0 | 00/0322               | L0D0322     ENT                  
+  499 |  1   SEG0D.S    451 | Code        | 00 |         |    1 | 00/0322 : 0B          |             PHD                  
+  500 |  1   SEG0D.S    452 | Code        | 00 |         |    1 | 00/0323 : 3B          |             TSC                  
+  501 |  1   SEG0D.S    453 | Code        | 00 |         |    1 | 00/0324 : 38          |             SEC                  
+  502 |  1   SEG0D.S    454 | Code        | 00 |         |    3 | 00/0325 : E9 FB 00    |             SBC   #$00FB         
+  503 |  1   SEG0D.S    455 | Code        | 00 |         |    1 | 00/0328 : 5B          |             TCD                  
+  504 |  1   SEG0D.S    456 | Code        | 00 |         |    3 | 00/0329 : 69 EE 00    |             ADC   #$00EE         
+  505 |  1   SEG0D.S    457 | Code        | 00 |         |    1 | 00/032C : 1B          |             TCS                  
+  506 |  1   SEG0D.S    458 | Code        | 00 |         |    3 | 00/032D : A9 01 00    |             LDA   #$0001         
+  507 |  1   SEG0D.S    459 | Code        | 00 |E 2      |    3 | 00/0330 : 8D 07 01    |             STA   L020106        
+  508 |  1   SEG0D.S    460 | Code        | 00 |         |    3 | 00/0333 : A9 F6 FF    |             LDA   #$FFF6         
+  509 |  1   SEG0D.S    461 | Code        | 00 |         |    2 | 00/0336 : 85 F4       |             STA   $F4            
+  510 |  1   SEG0D.S    462 | Code        | 00 |         |    3 | 00/0338 : A9 06 00    |             LDA   #$0006         
+  511 |  1   SEG0D.S    463 | Code        | 00 |         |    2 | 00/033B : 85 F2       |             STA   $F2            
+  512 |  1   SEG0D.S    464 | Code        | 00 |         |    3 | 00/033D : F4 00 00    |             PEA   $0000          
+  513 |  1   SEG0D.S    465 | Code        | 00 |         |    3 | 00/0340 : F4 32 00    |             PEA   $0032          
+  514 |  1   SEG0D.S    466 | Code        | 00 |         |    3 | 00/0343 : F4 C4 FF    |             PEA   $FFC4          
+  515 |  1   SEG0D.S    467 | Code        | 00 |E 3      |    4 | 00/0346 : 22 A3 03 11 |             JSL   L1103A3        
+  516 |  1   SEG0D.S    468 | Code        | 00 |         |    1 | 00/034A : 7A          |             PLY                  
+  517 |  1   SEG0D.S    469 | Code        | 00 |         |    1 | 00/034B : 7A          |             PLY                  
+  518 |  1   SEG0D.S    470 | Code        | 00 |         |    1 | 00/034C : 7A          |             PLY                  
+  519 |  1   SEG0D.S    471 | Code        | 00 |E 2      |    3 | 00/034D : AD 46 00    |             LDA   L020045        
+  520 |  1   SEG0D.S    472 | Code        | 00 |         |    2 | 00/0350 : F0 33       |             BEQ   L0D0385        
+  521 |  1   SEG0D.S    473 | Code        | 00 |         |    3 | 00/0352 : F4 0A 00    |             PEA   $000A          
+  522 |  1   SEG0D.S    474 | Code        | 00 |         |    3 | 00/0355 : F4 03 00    |             PEA   $0003          
+  523 |  1   SEG0D.S    475 | Code        | 00 |         |    2 | 00/0358 : A5 F2       |             LDA   $F2            
+  524 |  1   SEG0D.S    476 | Code        | 00 |         |    1 | 00/035A : 18          |             CLC                  
+  525 |  1   SEG0D.S    477 | Code        | 00 |         |    3 | 00/035B : 69 01 00    |             ADC   #$0001         
+  526 |  1   SEG0D.S    478 | Code        | 00 |         |    1 | 00/035E : 48          |             PHA                  
+  527 |  1   SEG0D.S    479 | Code        | 00 |         |    2 | 00/035F : D4 F4       |             PEI   $F4            
+  528 |  1   SEG0D.S    480 | Code        | 00 |E 3      |    4 | 00/0361 : 22 D4 03 11 |             JSL   L1103D4        
+  529 |  1   SEG0D.S    481 | Code        | 00 |         |    1 | 00/0365 : 7A          |             PLY                  
+  530 |  1   SEG0D.S    482 | Code        | 00 |         |    1 | 00/0366 : 7A          |             PLY                  
+  531 |  1   SEG0D.S    483 | Code        | 00 |         |    1 | 00/0367 : 7A          |             PLY                  
+  532 |  1   SEG0D.S    484 | Code        | 00 |         |    1 | 00/0368 : 7A          |             PLY                  
+  533 |  1   SEG0D.S    485 | Code        | 00 |         |    3 | 00/0369 : F4 06 00    |             PEA   $0006          
+  534 |  1   SEG0D.S    486 | Code        | 00 |         |    3 | 00/036C : F4 02 00    |             PEA   $0002          
+  535 |  1   SEG0D.S    487 | Code        | 00 |         |    2 | 00/036F : A5 F2       |             LDA   $F2            
+  536 |  1   SEG0D.S    488 | Code        | 00 |         |    1 | 00/0371 : 18          |             CLC                  
+  537 |  1   SEG0D.S    489 | Code        | 00 |         |    3 | 00/0372 : 69 01 00    |             ADC   #$0001         
+  538 |  1   SEG0D.S    490 | Code        | 00 |         |    1 | 00/0375 : 48          |             PHA                  
+  539 |  1   SEG0D.S    491 | Code        | 00 |         |    2 | 00/0376 : A5 F4       |             LDA   $F4            
+  540 |  1   SEG0D.S    492 | Code        | 00 |         |    1 | 00/0378 : 18          |             CLC                  
+  541 |  1   SEG0D.S    493 | Code        | 00 |         |    3 | 00/0379 : 69 3E 00    |             ADC   #$003E         
+  542 |  1   SEG0D.S    494 | Code        | 00 |         |    1 | 00/037C : 48          |             PHA                  
+  543 |  1   SEG0D.S    495 | Code        | 00 |E 3      |    4 | 00/037D : 22 D4 03 11 |             JSL   L1103D4        
+  544 |  1   SEG0D.S    496 | Code        | 00 |         |    1 | 00/0381 : 7A          |             PLY                  
+  545 |  1   SEG0D.S    497 | Code        | 00 |         |    1 | 00/0382 : 7A          |             PLY                  
+  546 |  1   SEG0D.S    498 | Code        | 00 |         |    1 | 00/0383 : 7A          |             PLY                  
+  547 |  1   SEG0D.S    499 | Code        | 00 |         |    1 | 00/0384 : 7A          |             PLY                  
+  548 |  1   SEG0D.S    500 | Code        | 00 |E 2      |    3 | 00/0385 : AD 48 00    | L0D0385     LDA   L020047        
+  549 |  1   SEG0D.S    501 | Code        | 00 |         |    2 | 00/0388 : F0 53       |             BEQ   L0D03DD        
+  550 |  1   SEG0D.S    502 | Code        | 00 |E 2      |    3 | 00/038A : AD 48 00    |             LDA   L020047        
+  551 |  1   SEG0D.S    503 | Code        | 00 |         |    3 | 00/038D : C9 FF 00    |             CMP   #$00FF         
+  552 |  1   SEG0D.S    504 | Code        | 00 |         |    2 | 00/0390 : F0 4B       |             BEQ   L0D03DD        
+  553 |  1   SEG0D.S    505 | Code        | 00 |         |    2 | 00/0392 : A5 F2       |             LDA   $F2            
+  554 |  1   SEG0D.S    506 | Code        | 00 |         |    1 | 00/0394 : 18          |             CLC                  
+  555 |  1   SEG0D.S    507 | Code        | 00 |         |    3 | 00/0395 : 69 0B 00    |             ADC   #$000B         
+  556 |  1   SEG0D.S    508 | Code        | 00 |         |    2 | 00/0398 : 85 F2       |             STA   $F2            
+  557 |  1   SEG0D.S    509 | Code        | 00 |E 2      |    3 | 00/039A : AD 46 00    |             LDA   L020045        
+  558 |  1   SEG0D.S    510 | Code        | 00 |         |    2 | 00/039D : F0 07       |             BEQ   L0D03A6        
+  559 |  1   SEG0D.S    511 | Code        | 00 |         |    3 | 00/039F : A9 05 00    |             LDA   #$0005         
+  560 |  1   SEG0D.S    512 | Code        | 00 |         |    2 | 00/03A2 : 85 F0       |             STA   $F0            
+  561 |  1   SEG0D.S    513 | Code        | 00 |         |    2 | 00/03A4 : 80 05       |             BRA   L0D03AB        
+  562 |  1   SEG0D.S    514 | Code        | 00 |         |    3 | 00/03A6 : A9 0A 00    | L0D03A6     LDA   #$000A         
+  563 |  1   SEG0D.S    515 | Code        | 00 |         |    2 | 00/03A9 : 85 F0       |             STA   $F0            
+  564 |  1   SEG0D.S    516 | Code        | 00 |         |    2 | 00/03AB : D4 F0       | L0D03AB     PEI   $F0            
+  565 |  1   SEG0D.S    517 | Code        | 00 |         |    3 | 00/03AD : F4 03 00    |             PEA   $0003          
+  566 |  1   SEG0D.S    518 | Code        | 00 |         |    2 | 00/03B0 : A5 F2       |             LDA   $F2            
+  567 |  1   SEG0D.S    519 | Code        | 00 |         |    1 | 00/03B2 : 18          |             CLC                  
+  568 |  1   SEG0D.S    520 | Code        | 00 |         |    3 | 00/03B3 : 69 01 00    |             ADC   #$0001         
+  569 |  1   SEG0D.S    521 | Code        | 00 |         |    1 | 00/03B6 : 48          |             PHA                  
+  570 |  1   SEG0D.S    522 | Code        | 00 |         |    2 | 00/03B7 : D4 F4       |             PEI   $F4            
+  571 |  1   SEG0D.S    523 | Code        | 00 |E 3      |    4 | 00/03B9 : 22 D4 03 11 |             JSL   L1103D4        
+  572 |  1   SEG0D.S    524 | Code        | 00 |         |    1 | 00/03BD : 7A          |             PLY                  
+  573 |  1   SEG0D.S    525 | Code        | 00 |         |    1 | 00/03BE : 7A          |             PLY                  
+  574 |  1   SEG0D.S    526 | Code        | 00 |         |    1 | 00/03BF : 7A          |             PLY                  
+  575 |  1   SEG0D.S    527 | Code        | 00 |         |    1 | 00/03C0 : 7A          |             PLY                  
+  576 |  1   SEG0D.S    528 | Code        | 00 |         |    3 | 00/03C1 : F4 06 00    |             PEA   $0006          
+  577 |  1   SEG0D.S    529 | Code        | 00 |         |    3 | 00/03C4 : F4 02 00    |             PEA   $0002          
+  578 |  1   SEG0D.S    530 | Code        | 00 |         |    2 | 00/03C7 : A5 F2       |             LDA   $F2            
+  579 |  1   SEG0D.S    531 | Code        | 00 |         |    1 | 00/03C9 : 18          |             CLC                  
+  580 |  1   SEG0D.S    532 | Code        | 00 |         |    3 | 00/03CA : 69 01 00    |             ADC   #$0001         
+  581 |  1   SEG0D.S    533 | Code        | 00 |         |    1 | 00/03CD : 48          |             PHA                  
+  582 |  1   SEG0D.S    534 | Code        | 00 |         |    2 | 00/03CE : A5 F4       |             LDA   $F4            
+  583 |  1   SEG0D.S    535 | Code        | 00 |         |    1 | 00/03D0 : 18          |             CLC                  
+  584 |  1   SEG0D.S    536 | Code        | 00 |         |    3 | 00/03D1 : 69 3E 00    |             ADC   #$003E         
+  585 |  1   SEG0D.S    537 | Code        | 00 |         |    1 | 00/03D4 : 48          |             PHA                  
+  586 |  1   SEG0D.S    538 | Code        | 00 |E 3      |    4 | 00/03D5 : 22 D4 03 11 |             JSL   L1103D4        
+  587 |  1   SEG0D.S    539 | Code        | 00 |         |    1 | 00/03D9 : 7A          |             PLY                  
+  588 |  1   SEG0D.S    540 | Code        | 00 |         |    1 | 00/03DA : 7A          |             PLY                  
+  589 |  1   SEG0D.S    541 | Code        | 00 |         |    1 | 00/03DB : 7A          |             PLY                  
+  590 |  1   SEG0D.S    542 | Code        | 00 |         |    1 | 00/03DC : 7A          |             PLY                  
+  591 |  1   SEG0D.S    543 | Code        | 00 |         |    3 | 00/03DD : F4 0A 00    | L0D03DD     PEA   $000A          
+  592 |  1   SEG0D.S    544 | Code        | 00 |         |    3 | 00/03E0 : F4 03 00    |             PEA   $0003          
+  593 |  1   SEG0D.S    545 | Code        | 00 |         |    3 | 00/03E3 : F4 32 00    |             PEA   $0032          
+  594 |  1   SEG0D.S    546 | Code        | 00 |         |    3 | 00/03E6 : F4 C4 FF    |             PEA   $FFC4          
+  595 |  1   SEG0D.S    547 | Code        | 00 |E 3      |    4 | 00/03E9 : 22 D4 03 11 |             JSL   L1103D4        
+  596 |  1   SEG0D.S    548 | Code        | 00 |         |    1 | 00/03ED : 7A          |             PLY                  
+  597 |  1   SEG0D.S    549 | Code        | 00 |         |    1 | 00/03EE : 7A          |             PLY                  
+  598 |  1   SEG0D.S    550 | Code        | 00 |         |    1 | 00/03EF : 7A          |             PLY                  
+  599 |  1   SEG0D.S    551 | Code        | 00 |         |    1 | 00/03F0 : 7A          |             PLY                  
+  600 |  1   SEG0D.S    552 | Code        | 00 |         |    1 | 00/03F1 : 3B          |             TSC                  
+  601 |  1   SEG0D.S    553 | Code        | 00 |         |    1 | 00/03F2 : 18          |             CLC                  
+  602 |  1   SEG0D.S    554 | Code        | 00 |         |    3 | 00/03F3 : 69 0C 00    |             ADC   #$000C         
+  603 |  1   SEG0D.S    555 | Code        | 00 |         |    1 | 00/03F6 : 1B          |             TCS                  
+  604 |  1   SEG0D.S    556 | Code        | 00 |         |    1 | 00/03F7 : 2B          |             PLD                  
+  605 |  1   SEG0D.S    557 | Code        | 00 |         |    1 | 00/03F8 : 6B          |             RTL                  
+  606 |  1   SEG0D.S    558 | Empty       | 00 |         |    0 | 00/03F9               |                                  
+  607 |  1   SEG0D.S    559 | Code        | 00 |         |    1 | 00/03F9 : 0B          | L0D03F9     PHD                  
+  608 |  1   SEG0D.S    560 | Code        | 00 |         |    1 | 00/03FA : 3B          |             TSC                  
+  609 |  1   SEG0D.S    561 | Code        | 00 |         |    1 | 00/03FB : 38          |             SEC                  
+  610 |  1   SEG0D.S    562 | Code        | 00 |         |    3 | 00/03FC : E9 F3 00    |             SBC   #$00F3         
+  611 |  1   SEG0D.S    563 | Code        | 00 |         |    1 | 00/03FF : 5B          |             TCD                  
+  612 |  1   SEG0D.S    564 | Code        | 00 |         |    3 | 00/0400 : 69 EC 00    |             ADC   #$00EC         
+  613 |  1   SEG0D.S    565 | Code        | 00 |         |    1 | 00/0403 : 1B          |             TCS                  
+  614 |  1   SEG0D.S    566 | Code        | 00 |E 1 >>16 |    3 | 00/0404 : F4 00 00    |             PEA   ^L03058B       
+  615 |  1   SEG0D.S    567 | Code        | 00 |E 2      |    3 | 00/0407 : F4 8B 05    |             PEA   L03058B        
+  616 |  1   SEG0D.S    568 | Code        | 00 |E 3      |    4 | 00/040A : 22 D5 0D 1A |             JSL   L1A0E02        
+  617 |  1   SEG0D.S    569 | Code        | 00 |         |    1 | 00/040E : 7A          |             PLY                  
+  618 |  1   SEG0D.S    570 | Code        | 00 |         |    1 | 00/040F : 7A          |             PLY                  
+  619 |  1   SEG0D.S    571 | Code        | 00 |         |    2 | 00/0410 : A5 F9       |             LDA   $F9            
+  620 |  1   SEG0D.S    572 | Code        | 00 |E 2      |    3 | 00/0412 : 8D 92 00    |             STA   L020091        
+  621 |  1   SEG0D.S    573 | Code        | 00 |         |    2 | 00/0415 : A5 FB       |             LDA   $FB            
+  622 |  1   SEG0D.S    574 | Code        | 00 |E 2      |    3 | 00/0417 : 8D 94 00    |             STA   L020093        
+  623 |  1   SEG0D.S    575 | Code        | 00 |         |    2 | 00/041A : A5 FD       |             LDA   $FD            
+  624 |  1   SEG0D.S    576 | Code        | 00 |         |    3 | 00/041C : A2 00 00    |             LDX   #$0000         
+  625 |  1   SEG0D.S    577 | Code        | 00 |         |    1 | 00/041F : A8          |             TAY                  
+  626 |  1   SEG0D.S    578 | Code        | 00 |         |    2 | 00/0420 : 10 01       |             BPL   L0D0423        
+  627 |  1   SEG0D.S    579 | Code        | 00 |         |    1 | 00/0422 : CA          |             DEX                  
+  628 |  1   SEG0D.S    580 | Code        | 00 |E 2      |    3 | 00/0423 : 8E 8C 00    | L0D0423     STX   L02008B        
+  629 |  1   SEG0D.S    581 | Code        | 00 |E 2      |    3 | 00/0426 : 8D 8A 00    |             STA   L020089        
+  630 |  1   SEG0D.S    582 | Code        | 00 |         |    2 | 00/0429 : A5 FF       |             LDA   $FF            
+  631 |  1   SEG0D.S    583 | Code        | 00 |         |    3 | 00/042B : A2 00 00    |             LDX   #$0000         
+  632 |  1   SEG0D.S    584 | Code        | 00 |         |    1 | 00/042E : A8          |             TAY                  
+  633 |  1   SEG0D.S    585 | Code        | 00 |         |    2 | 00/042F : 10 01       |             BPL   L0D0432        
+  634 |  1   SEG0D.S    586 | Code        | 00 |         |    1 | 00/0431 : CA          |             DEX                  
+  635 |  1   SEG0D.S    587 | Code        | 00 |E 2      |    3 | 00/0432 : 8E 90 00    | L0D0432     STX   L02008F        
+  636 |  1   SEG0D.S    588 | Code        | 00 |E 2      |    3 | 00/0435 : 8D 8E 00    |             STA   L02008D        
+  637 |  1   SEG0D.S    589 | Code        | 00 |         |    3 | 00/0438 : F4 00 00    |             PEA   $0000          
+  638 |  1   SEG0D.S    590 | Code        | 00 |         |    2 | 00/043B : D4 FF       |             PEI   $FF            
+  639 |  1   SEG0D.S    591 | Code        | 00 |         |    2 | 00/043D : D4 FD       |             PEI   $FD            
+  640 |  1   SEG0D.S    592 | Code        | 00 |E 3      |    4 | 00/043F : 22 5C 01 11 |             JSL   L11015C        
+  641 |  1   SEG0D.S    593 | Code        | 00 |         |    1 | 00/0443 : 7A          |             PLY                  
+  642 |  1   SEG0D.S    594 | Code        | 00 |         |    1 | 00/0444 : 7A          |             PLY                  
+  643 |  1   SEG0D.S    595 | Code        | 00 |         |    1 | 00/0445 : 7A          |             PLY                  
+  644 |  1   SEG0D.S    596 | Code        | 00 |E 3      |    4 | 00/0446 : 22 68 0E 1A |             JSL   L1A0E95        
+  645 |  1   SEG0D.S    597 | Code        | 00 |         |    1 | 00/044A : 3B          |             TSC                  
+  646 |  1   SEG0D.S    598 | Code        | 00 |         |    1 | 00/044B : 18          |             CLC                  
+  647 |  1   SEG0D.S    599 | Code        | 00 |         |    3 | 00/044C : 69 06 00    |             ADC   #$0006         
+  648 |  1   SEG0D.S    600 | Code        | 00 |         |    1 | 00/044F : 1B          |             TCS                  
+  649 |  1   SEG0D.S    601 | Code        | 00 |         |    1 | 00/0450 : 2B          |             PLD                  
+  650 |  1   SEG0D.S    602 | Code        | 00 |         |    1 | 00/0451 : 6B          |             RTL                  
+  651 |  1   SEG0D.S    603 | Empty       | 00 |         |    0 | 00/0452               |                                  
+  652 |  1   SEG0D.S    604 | Code        | 00 |         |    1 | 00/0452 : 0B          | L0D0452     PHD                  
+  653 |  1   SEG0D.S    605 | Code        | 00 |         |    1 | 00/0453 : 3B          |             TSC                  
+  654 |  1   SEG0D.S    606 | Code        | 00 |         |    1 | 00/0454 : 38          |             SEC                  
+  655 |  1   SEG0D.S    607 | Code        | 00 |         |    3 | 00/0455 : E9 F7 00    |             SBC   #$00F7         
+  656 |  1   SEG0D.S    608 | Code        | 00 |         |    1 | 00/0458 : 5B          |             TCD                  
+  657 |  1   SEG0D.S    609 | Code        | 00 |         |    3 | 00/0459 : 69 EC 00    |             ADC   #$00EC         
+  658 |  1   SEG0D.S    610 | Code        | 00 |         |    1 | 00/045C : 1B          |             TCS                  
+  659 |  1   SEG0D.S    611 | Code        | 00 |E 1 >>16 |    3 | 00/045D : F4 00 00    |             PEA   ^L030598       
+  660 |  1   SEG0D.S    612 | Code        | 00 |E 2      |    3 | 00/0460 : F4 98 05    |             PEA   L030598        
+  661 |  1   SEG0D.S    613 | Code        | 00 |E 3      |    4 | 00/0463 : 22 D5 0D 1A |             JSL   L1A0E02        
+  662 |  1   SEG0D.S    614 | Code        | 00 |         |    1 | 00/0467 : 7A          |             PLY                  
+  663 |  1   SEG0D.S    615 | Code        | 00 |         |    1 | 00/0468 : 7A          |             PLY                  
+  664 |  1   SEG0D.S    616 | Code        | 00 |         |    3 | 00/0469 : A9 F3 FF    |             LDA   #$FFF3         
+  665 |  1   SEG0D.S    617 | Code        | 00 |         |    2 | 00/046C : 85 F0       |             STA   $F0            
+  666 |  1   SEG0D.S    618 | Code        | 00 |         |    2 | 00/046E : A5 FD       | L0D046E     LDA   $FD            
+  667 |  1   SEG0D.S    619 | Code        | 00 |         |    1 | 00/0470 : 38          |             SEC                  
+  668 |  1   SEG0D.S    620 | Code        | 00 |         |    3 | 00/0471 : E9 05 00    |             SBC   #$0005         
+  669 |  1   SEG0D.S    621 | Code        | 00 |         |    2 | 00/0474 : F0 19       |             BEQ   L0D048F        
+  670 |  1   SEG0D.S    622 | Code        | 00 |         |    2 | 00/0476 : 70 03       |             BVS   L0D047B        
+  671 |  1   SEG0D.S    623 | Code        | 00 |         |    3 | 00/0478 : 49 00 80    |             EOR   #$8000         
+  672 |  1   SEG0D.S    624 | Code        | 00 |         |    2 | 00/047B : 10 12       | L0D047B     BPL   L0D048F        
+  673 |  1   SEG0D.S    625 | Code        | 00 |         |    2 | 00/047D : A5 FD       |             LDA   $FD            
+  674 |  1   SEG0D.S    626 | Code        | 00 |         |    1 | 00/047F : 38          |             SEC                  
+  675 |  1   SEG0D.S    627 | Code        | 00 |         |    3 | 00/0480 : E9 05 00    |             SBC   #$0005         
+  676 |  1   SEG0D.S    628 | Code        | 00 |         |    2 | 00/0483 : 85 FD       |             STA   $FD            
+  677 |  1   SEG0D.S    629 | Code        | 00 |         |    2 | 00/0485 : A5 F0       |             LDA   $F0            
+  678 |  1   SEG0D.S    630 | Code        | 00 |         |    1 | 00/0487 : 18          |             CLC                  
+  679 |  1   SEG0D.S    631 | Code        | 00 |         |    3 | 00/0488 : 69 14 00    |             ADC   #$0014         
+  680 |  1   SEG0D.S    632 | Code        | 00 |         |    2 | 00/048B : 85 F0       |             STA   $F0            
+  681 |  1   SEG0D.S    633 | Code        | 00 |         |    2 | 00/048D : 80 DF       |             BRA   L0D046E        
+  682 |  1   SEG0D.S    634 | Code        | 00 |         |    2 | 00/048F : A5 FD       | L0D048F     LDA   $FD            
+  683 |  1   SEG0D.S    635 | Code        | 00 |         |    1 | 00/0491 : 0A          |             ASL                  
+  684 |  1   SEG0D.S    636 | Code        | 00 |         |    1 | 00/0492 : 0A          |             ASL                  
+  685 |  1   SEG0D.S    637 | Code        | 00 |         |    1 | 00/0493 : 48          |             PHA                  
+  686 |  1   SEG0D.S    638 | Code        | 00 |         |    2 | 00/0494 : A5 F0       |             LDA   $F0            
+  687 |  1   SEG0D.S    639 | Code        | 00 |         |    1 | 00/0496 : FA          |             PLX                  
+  688 |  1   SEG0D.S    640 | Code        | 00 |         |    2 | 00/0497 : 86 F6       |             STX   $F6            
+  689 |  1   SEG0D.S    641 | Code        | 00 |         |    1 | 00/0499 : 18          |             CLC                  
+  690 |  1   SEG0D.S    642 | Code        | 00 |         |    2 | 00/049A : 65 F6       |             ADC   $F6            
+  691 |  1   SEG0D.S    643 | Code        | 00 |         |    2 | 00/049C : 85 F0       |             STA   $F0            
+  692 |  1   SEG0D.S    644 | Code        | 00 |         |    3 | 00/049E : A9 08 00    |             LDA   #$0008         
+  693 |  1   SEG0D.S    645 | Code        | 00 |         |    1 | 00/04A1 : 18          |             CLC                  
+  694 |  1   SEG0D.S    646 | Code        | 00 |         |    2 | 00/04A2 : 65 FF       |             ADC   $FF            
+  695 |  1   SEG0D.S    647 | Code        | 00 |         |    2 | 00/04A4 : 85 EE       |             STA   $EE            
+  696 |  1   SEG0D.S    648 | Code        | 00 |         |    2 | 00/04A6 : A5 FD       |             LDA   $FD            
+  697 |  1   SEG0D.S    649 | Code        | 00 |         |    3 | 00/04A8 : C9 05 00    |             CMP   #$0005         
+  698 |  1   SEG0D.S    650 | Code        | 00 |         |    2 | 00/04AB : D0 2D       |             BNE   L0D04DA        
+  699 |  1   SEG0D.S    651 | Code        | 00 |         |    2 | 00/04AD : A5 F0       |             LDA   $F0            
+  700 |  1   SEG0D.S    652 | Code        | 00 |         |    1 | 00/04AF : 38          |             SEC                  
+  701 |  1   SEG0D.S    653 | Code        | 00 |         |    3 | 00/04B0 : E9 02 00    |             SBC   #$0002         
+  702 |  1   SEG0D.S    654 | Code        | 00 |         |    2 | 00/04B3 : 85 F0       |             STA   $F0            
+  703 |  1   SEG0D.S    655 | Code        | 00 |         |    2 | 00/04B5 : A5 EE       |             LDA   $EE            
+  704 |  1   SEG0D.S    656 | Code        | 00 |         |    1 | 00/04B7 : 18          |             CLC                  
+  705 |  1   SEG0D.S    657 | Code        | 00 |         |    3 | 00/04B8 : 69 07 00    |             ADC   #$0007         
+  706 |  1   SEG0D.S    658 | Code        | 00 |         |    1 | 00/04BB : 38          |             SEC                  
+  707 |  1   SEG0D.S    659 | Code        | 00 |         |    3 | 00/04BC : E9 02 00    |             SBC   #$0002         
+  708 |  1   SEG0D.S    660 | Code        | 00 |         |    1 | 00/04BF : 48          |             PHA                  
+  709 |  1   SEG0D.S    661 | Code        | 00 |         |    2 | 00/04C0 : A5 F0       |             LDA   $F0            
+  710 |  1   SEG0D.S    662 | Code        | 00 |         |    1 | 00/04C2 : 38          |             SEC                  
+  711 |  1   SEG0D.S    663 | Code        | 00 |         |    3 | 00/04C3 : E9 10 00    |             SBC   #$0010         
+  712 |  1   SEG0D.S    664 | Code        | 00 |         |    1 | 00/04C6 : 48          |             PHA                  
+  713 |  1   SEG0D.S    665 | Code        | 00 |         |    2 | 00/04C7 : A5 EE       |             LDA   $EE            
+  714 |  1   SEG0D.S    666 | Code        | 00 |         |    1 | 00/04C9 : 18          |             CLC                  
+  715 |  1   SEG0D.S    667 | Code        | 00 |         |    3 | 00/04CA : 69 01 00    |             ADC   #$0001         
+  716 |  1   SEG0D.S    668 | Code        | 00 |         |    1 | 00/04CD : 48          |             PHA                  
+  717 |  1   SEG0D.S    669 | Code        | 00 |         |    2 | 00/04CE : D4 F0       |             PEI   $F0            
+  718 |  1   SEG0D.S    670 | Code        | 00 |  3      |    4 | 00/04D0 : 22 F9 03 00 |             JSL   L0D03F9        
+  719 |  1   SEG0D.S    671 | Code        | 00 |         |    1 | 00/04D4 : 7A          |             PLY                  
+  720 |  1   SEG0D.S    672 | Code        | 00 |         |    1 | 00/04D5 : 7A          |             PLY                  
+  721 |  1   SEG0D.S    673 | Code        | 00 |         |    1 | 00/04D6 : 7A          |             PLY                  
+  722 |  1   SEG0D.S    674 | Code        | 00 |         |    1 | 00/04D7 : 7A          |             PLY                  
+  723 |  1   SEG0D.S    675 | Code        | 00 |         |    2 | 00/04D8 : 80 15       |             BRA   L0D04EF        
+  724 |  1   SEG0D.S    676 | Code        | 00 |         |    2 | 00/04DA : A5 EE       | L0D04DA     LDA   $EE            
+  725 |  1   SEG0D.S    677 | Code        | 00 |         |    1 | 00/04DC : 18          |             CLC                  
+  726 |  1   SEG0D.S    678 | Code        | 00 |         |    3 | 00/04DD : 69 07 00    |             ADC   #$0007         
+  727 |  1   SEG0D.S    679 | Code        | 00 |         |    1 | 00/04E0 : 48          |             PHA                  
+  728 |  1   SEG0D.S    680 | Code        | 00 |         |    2 | 00/04E1 : D4 F0       |             PEI   $F0            
+  729 |  1   SEG0D.S    681 | Code        | 00 |         |    2 | 00/04E3 : D4 EE       |             PEI   $EE            
+  730 |  1   SEG0D.S    682 | Code        | 00 |         |    2 | 00/04E5 : D4 F0       |             PEI   $F0            
+  731 |  1   SEG0D.S    683 | Code        | 00 |  3      |    4 | 00/04E7 : 22 F9 03 00 |             JSL   L0D03F9        
+  732 |  1   SEG0D.S    684 | Code        | 00 |         |    1 | 00/04EB : 7A          |             PLY                  
+  733 |  1   SEG0D.S    685 | Code        | 00 |         |    1 | 00/04EC : 7A          |             PLY                  
+  734 |  1   SEG0D.S    686 | Code        | 00 |         |    1 | 00/04ED : 7A          |             PLY                  
+  735 |  1   SEG0D.S    687 | Code        | 00 |         |    1 | 00/04EE : 7A          |             PLY                  
+  736 |  1   SEG0D.S    688 | Code        | 00 |E 3      |    4 | 00/04EF : 22 68 0E 1A | L0D04EF     JSL   L1A0E95        
+  737 |  1   SEG0D.S    689 | Code        | 00 |         |    1 | 00/04F3 : 3B          |             TSC                  
+  738 |  1   SEG0D.S    690 | Code        | 00 |         |    1 | 00/04F4 : 18          |             CLC                  
+  739 |  1   SEG0D.S    691 | Code        | 00 |         |    3 | 00/04F5 : 69 0A 00    |             ADC   #$000A         
+  740 |  1   SEG0D.S    692 | Code        | 00 |         |    1 | 00/04F8 : 1B          |             TCS                  
+  741 |  1   SEG0D.S    693 | Code        | 00 |         |    1 | 00/04F9 : 2B          |             PLD                  
+  742 |  1   SEG0D.S    694 | Code        | 00 |         |    1 | 00/04FA : 6B          |             RTL                  
+  743 |  1   SEG0D.S    695 | Empty       | 00 |         |    0 | 00/04FB               |                                  
+  744 |  1   SEG0D.S    696 | Global      | 00 |         |    0 | 00/04FB               | L0D04FB     ENT                  
+  745 |  1   SEG0D.S    697 | Code        | 00 |         |    1 | 00/04FB : 0B          |             PHD                  
+  746 |  1   SEG0D.S    698 | Code        | 00 |         |    1 | 00/04FC : 3B          |             TSC                  
+  747 |  1   SEG0D.S    699 | Code        | 00 |         |    1 | 00/04FD : 38          |             SEC                  
+  748 |  1   SEG0D.S    700 | Code        | 00 |         |    3 | 00/04FE : E9 FB 00    |             SBC   #$00FB         
+  749 |  1   SEG0D.S    701 | Code        | 00 |         |    1 | 00/0501 : 5B          |             TCD                  
+  750 |  1   SEG0D.S    702 | Code        | 00 |         |    3 | 00/0502 : 69 F2 00    |             ADC   #$00F2         
+  751 |  1   SEG0D.S    703 | Code        | 00 |         |    1 | 00/0505 : 1B          |             TCS                  
+  752 |  1   SEG0D.S    704 | Code        | 00 |         |    3 | 00/0506 : A9 01 00    |             LDA   #$0001         
+  753 |  1   SEG0D.S    705 | Code        | 00 |         |    2 | 00/0509 : 85 F4       |             STA   $F4            
+  754 |  1   SEG0D.S    706 | Code        | 00 |         |    2 | 00/050B : 80 0D       |             BRA   L0D051A        
+  755 |  1   SEG0D.S    707 | Code        | 00 |         |    3 | 00/050D : F4 0B 00    | L0D050D     PEA   $000B          
+  756 |  1   SEG0D.S    708 | Code        | 00 |         |    2 | 00/0510 : D4 F4       |             PEI   $F4            
+  757 |  1   SEG0D.S    709 | Code        | 00 |  3      |    4 | 00/0512 : 22 52 04 00 |             JSL   L0D0452        
+  758 |  1   SEG0D.S    710 | Code        | 00 |         |    1 | 00/0516 : 7A          |             PLY                  
+  759 |  1   SEG0D.S    711 | Code        | 00 |         |    1 | 00/0517 : 7A          |             PLY                  
+  760 |  1   SEG0D.S    712 | Code        | 00 |         |    2 | 00/0518 : E6 F4       |             INC   $F4            
+  761 |  1   SEG0D.S    713 | Code        | 00 |         |    2 | 00/051A : A5 F4       | L0D051A     LDA   $F4            
+  762 |  1   SEG0D.S    714 | Code        | 00 |         |    1 | 00/051C : 38          |             SEC                  
+  763 |  1   SEG0D.S    715 | Code        | 00 |E 2      |    3 | 00/051D : ED 4C 00    |             SBC   L02004B        
+  764 |  1   SEG0D.S    716 | Code        | 00 |         |    2 | 00/0520 : F0 EB       |             BEQ   L0D050D        
+  765 |  1   SEG0D.S    717 | Code        | 00 |         |    2 | 00/0522 : 70 03       |             BVS   L0D0527        
+  766 |  1   SEG0D.S    718 | Code        | 00 |         |    3 | 00/0524 : 49 00 80    |             EOR   #$8000         
+  767 |  1   SEG0D.S    719 | Code        | 00 |         |    2 | 00/0527 : 10 E4       | L0D0527     BPL   L0D050D        
+  768 |  1   SEG0D.S    720 | Code        | 00 |         |    3 | 00/0529 : A9 01 00    |             LDA   #$0001         
+  769 |  1   SEG0D.S    721 | Code        | 00 |         |    2 | 00/052C : 85 F4       |             STA   $F4            
+  770 |  1   SEG0D.S    722 | Code        | 00 |         |    2 | 00/052E : 80 0D       |             BRA   L0D053D        
+  771 |  1   SEG0D.S    723 | Code        | 00 |         |    3 | 00/0530 : F4 00 00    | L0D0530     PEA   $0000          
+  772 |  1   SEG0D.S    724 | Code        | 00 |         |    2 | 00/0533 : D4 F4       |             PEI   $F4            
+  773 |  1   SEG0D.S    725 | Code        | 00 |  3      |    4 | 00/0535 : 22 52 04 00 |             JSL   L0D0452        
+  774 |  1   SEG0D.S    726 | Code        | 00 |         |    1 | 00/0539 : 7A          |             PLY                  
+  775 |  1   SEG0D.S    727 | Code        | 00 |         |    1 | 00/053A : 7A          |             PLY                  
+  776 |  1   SEG0D.S    728 | Code        | 00 |         |    2 | 00/053B : E6 F4       |             INC   $F4            
+  777 |  1   SEG0D.S    729 | Code        | 00 |         |    2 | 00/053D : A5 F4       | L0D053D     LDA   $F4            
+  778 |  1   SEG0D.S    730 | Code        | 00 |         |    1 | 00/053F : 38          |             SEC                  
+  779 |  1   SEG0D.S    731 | Code        | 00 |E 2      |    3 | 00/0540 : ED 4A 00    |             SBC   L020049        
+  780 |  1   SEG0D.S    732 | Code        | 00 |         |    2 | 00/0543 : F0 EB       |             BEQ   L0D0530        
+  781 |  1   SEG0D.S    733 | Code        | 00 |         |    2 | 00/0545 : 70 03       |             BVS   L0D054A        
+  782 |  1   SEG0D.S    734 | Code        | 00 |         |    3 | 00/0547 : 49 00 80    |             EOR   #$8000         
+  783 |  1   SEG0D.S    735 | Code        | 00 |         |    2 | 00/054A : 10 E4       | L0D054A     BPL   L0D0530        
+  784 |  1   SEG0D.S    736 | Code        | 00 |         |    1 | 00/054C : 3B          |             TSC                  
+  785 |  1   SEG0D.S    737 | Code        | 00 |         |    1 | 00/054D : 18          |             CLC                  
+  786 |  1   SEG0D.S    738 | Code        | 00 |         |    3 | 00/054E : 69 08 00    |             ADC   #$0008         
+  787 |  1   SEG0D.S    739 | Code        | 00 |         |    1 | 00/0551 : 1B          |             TCS                  
+  788 |  1   SEG0D.S    740 | Code        | 00 |         |    1 | 00/0552 : 2B          |             PLD                  
+  789 |  1   SEG0D.S    741 | Code        | 00 |         |    1 | 00/0553 : 6B          |             RTL                  
+  790 |  1   SEG0D.S    742 | Empty       | 00 |         |    0 | 00/0554               |                                  
+  791 |  1   SEG0D.S    743 | Empty       | 00 |         |    0 | 00/0554               |                                  
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

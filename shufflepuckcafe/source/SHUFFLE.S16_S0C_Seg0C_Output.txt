@@ -1,0 +1,104 @@
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File         Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1   SEG0C.S      1 | Comment     | 11 |         |    0 | 00/0000               | *
+    2 |  1   SEG0C.S      2 | Comment     | 11 |         |    0 | 00/0000               | * Shufflepuck Cafe
+    3 |  1   SEG0C.S      3 | Comment     | 11 |         |    0 | 00/0000               | *
+    4 |  1   SEG0C.S      4 | Comment     | 11 |         |    0 | 00/0000               | * (c) Broderbund Software
+    5 |  1   SEG0C.S      5 | Comment     | 11 |         |    0 | 00/0000               | * (s) 2014, Brutal Deluxe Software
+    6 |  1   SEG0C.S      6 | Comment     | 11 |         |    0 | 00/0000               | *
+    7 |  1   SEG0C.S      7 | Empty       | 11 |         |    0 | 00/0000               |                                  
+    8 |  1   SEG0C.S      8 | Directive   | 00 |         |    0 | 00/0000               |             mx    %00            
+    9 |  1   SEG0C.S      9 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   10 |  1   SEG0C.S     10 | Directive   | 00 |         |    0 | 00/0000               |             rel                  
+   11 |  1   SEG0C.S     11 | Directive   | 00 |         |    0 | 00/0000               |             dsk   Seg0C.L        
+   12 |  1   SEG0C.S     12 | Directive   | 00 |         |    0 | 00/0000               |             lst   off            
+   13 |  1   SEG0C.S     13 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   14 |  1   SEG0C.S     14 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   15 |  1   SEG0C.S     15 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   16 |  1   SEG0C.S     16 | Directive   | 00 |         |    0 | 00/0000               |             use   Seg0C.E        
+   17 |  2 Seg0C.E.s      1 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   18 |  2 Seg0C.E.s      2 | Comment     | 00 |         |    0 | 00/0000               | * TFBD generated equates
+   19 |  2 Seg0C.E.s      3 | Comment     | 00 |         |    0 | 00/0000               | *    (c) PHC 1992,93
+   20 |  2 Seg0C.E.s      4 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   21 |  2 Seg0C.E.s      5 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   22 |  2 Seg0C.E.s      6 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   23 |  1   SEG0C.S     17 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   24 |  1   SEG0C.S     18 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   25 |  1   SEG0C.S     19 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   26 |  1   SEG0C.S     20 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Util.Macs    
+   27 |  1   SEG0C.S     21 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   28 |  1   SEG0C.S     22 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   29 |  1   SEG0C.S     23 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   30 |  1   SEG0C.S     24 | Global      | 00 |         |    0 | 00/0000               | L0C0000     ENT                  
+   31 |  1   SEG0C.S     25 | Code        | 00 |         |    1 | 00/0000 : 0B          |             PHD                  
+   32 |  1   SEG0C.S     26 | Code        | 00 |         |    1 | 00/0001 : 3B          |             TSC                  
+   33 |  1   SEG0C.S     27 | Code        | 00 |         |    1 | 00/0002 : 38          |             SEC                  
+   34 |  1   SEG0C.S     28 | Code        | 00 |         |    3 | 00/0003 : E9 F7 00    |             SBC   #$00F7         
+   35 |  1   SEG0C.S     29 | Code        | 00 |         |    1 | 00/0006 : 5B          |             TCD                  
+   36 |  1   SEG0C.S     30 | Code        | 00 |         |    3 | 00/0007 : 69 EC 00    |             ADC   #$00EC         
+   37 |  1   SEG0C.S     31 | Code        | 00 |         |    1 | 00/000A : 1B          |             TCS                  
+   38 |  1   SEG0C.S     32 | Code        | 00 |         |    2 | 00/000B : A5 FD       |             LDA   $FD            
+   39 |  1   SEG0C.S     33 | Code        | 00 |         |    1 | 00/000D : EB          |             XBA                  
+   40 |  1   SEG0C.S     34 | Code        | 00 |         |    2 | 00/000E : 85 F0       |             STA   $F0            
+   41 |  1   SEG0C.S     35 | Code        | 00 |         |    2 | 00/0010 : A5 FF       |             LDA   $FF            
+   42 |  1   SEG0C.S     36 | Code        | 00 |         |    1 | 00/0012 : EB          |             XBA                  
+   43 |  1   SEG0C.S     37 | Code        | 00 |         |    2 | 00/0013 : 85 EE       |             STA   $EE            
+   44 |  1   SEG0C.S     38 | Code        | 00 |         |    2 | 00/0015 : A6 F0       |             LDX   $F0            
+   45 |  1   SEG0C.S     39 | Code        | 00 |         |    2 | 00/0017 : A5 EE       |             LDA   $EE            
+   46 |  1   SEG0C.S     40 | Code        | 00 |         |    1 | 00/0019 : A8          |             TAY                  
+   47 |  1   SEG0C.S     41 | Code        | 00 |         |    1 | 00/001A : 3B          |             TSC                  
+   48 |  1   SEG0C.S     42 | Code        | 00 |         |    1 | 00/001B : 18          |             CLC                  
+   49 |  1   SEG0C.S     43 | Code        | 00 |         |    3 | 00/001C : 69 0A 00    |             ADC   #$000A         
+   50 |  1   SEG0C.S     44 | Code        | 00 |         |    1 | 00/001F : 1B          |             TCS                  
+   51 |  1   SEG0C.S     45 | Code        | 00 |         |    1 | 00/0020 : 98          |             TYA                  
+   52 |  1   SEG0C.S     46 | Code        | 00 |         |    1 | 00/0021 : 2B          |             PLD                  
+   53 |  1   SEG0C.S     47 | Code        | 00 |         |    1 | 00/0022 : 6B          |             RTL                  
+   54 |  1   SEG0C.S     48 | Empty       | 00 |         |    0 | 00/0023               |                                  
+   55 |  1   SEG0C.S     49 | Global      | 00 |         |    0 | 00/0023               | L0C0023     ENT                  
+   56 |  1   SEG0C.S     50 | Code        | 00 |         |    1 | 00/0023 : 0B          |             PHD                  
+   57 |  1   SEG0C.S     51 | Code        | 00 |         |    1 | 00/0024 : 3B          |             TSC                  
+   58 |  1   SEG0C.S     52 | Code        | 00 |         |    1 | 00/0025 : 38          |             SEC                  
+   59 |  1   SEG0C.S     53 | Code        | 00 |         |    3 | 00/0026 : E9 F9 00    |             SBC   #$00F9         
+   60 |  1   SEG0C.S     54 | Code        | 00 |         |    1 | 00/0029 : 5B          |             TCD                  
+   61 |  1   SEG0C.S     55 | Code        | 00 |         |    3 | 00/002A : 69 F2 00    |             ADC   #$00F2         
+   62 |  1   SEG0C.S     56 | Code        | 00 |         |    1 | 00/002D : 1B          |             TCS                  
+   63 |  1   SEG0C.S     57 | Code        | 00 |         |    2 | 00/002E : A5 FF       |             LDA   $FF            
+   64 |  1   SEG0C.S     58 | Code        | 00 |         |    1 | 00/0030 : EB          |             XBA                  
+   65 |  1   SEG0C.S     59 | Code        | 00 |         |    2 | 00/0031 : 85 FF       |             STA   $FF            
+   66 |  1   SEG0C.S     60 | Code        | 00 |         |    2 | 00/0033 : A5 FF       |             LDA   $FF            
+   67 |  1   SEG0C.S     61 | Code        | 00 |         |    1 | 00/0035 : A8          |             TAY                  
+   68 |  1   SEG0C.S     62 | Code        | 00 |         |    1 | 00/0036 : 3B          |             TSC                  
+   69 |  1   SEG0C.S     63 | Code        | 00 |         |    1 | 00/0037 : 18          |             CLC                  
+   70 |  1   SEG0C.S     64 | Code        | 00 |         |    3 | 00/0038 : 69 06 00    |             ADC   #$0006         
+   71 |  1   SEG0C.S     65 | Code        | 00 |         |    1 | 00/003B : 1B          |             TCS                  
+   72 |  1   SEG0C.S     66 | Code        | 00 |         |    1 | 00/003C : 98          |             TYA                  
+   73 |  1   SEG0C.S     67 | Code        | 00 |         |    1 | 00/003D : 2B          |             PLD                  
+   74 |  1   SEG0C.S     68 | Code        | 00 |         |    1 | 00/003E : 6B          |             RTL                  
+   75 |  1   SEG0C.S     69 | Empty       | 00 |         |    0 | 00/003F               |                                  
+   76 |  1   SEG0C.S     70 | Code        | 00 |         |    1 | 00/003F : 0B          |             PHD                  
+   77 |  1   SEG0C.S     71 | Code        | 00 |         |    1 | 00/0040 : 3B          |             TSC                  
+   78 |  1   SEG0C.S     72 | Code        | 00 |         |    1 | 00/0041 : 38          |             SEC                  
+   79 |  1   SEG0C.S     73 | Code        | 00 |         |    3 | 00/0042 : E9 F9 00    |             SBC   #$00F9         
+   80 |  1   SEG0C.S     74 | Code        | 00 |         |    1 | 00/0045 : 5B          |             TCD                  
+   81 |  1   SEG0C.S     75 | Code        | 00 |         |    3 | 00/0046 : 69 F2 00    |             ADC   #$00F2         
+   82 |  1   SEG0C.S     76 | Code        | 00 |         |    1 | 00/0049 : 1B          |             TCS                  
+   83 |  1   SEG0C.S     77 | Code        | 00 |         |    2 | 00/004A : A5 FF       |             LDA   $FF            
+   84 |  1   SEG0C.S     78 | Code        | 00 |         |    3 | 00/004C : C9 80 00    |             CMP   #$0080         
+   85 |  1   SEG0C.S     79 | Code        | 00 |         |    2 | 00/004F : B0 06       |             BCS   L0C0057        
+   86 |  1   SEG0C.S     80 | Code        | 00 |         |    2 | 00/0051 : A5 FF       |             LDA   $FF            
+   87 |  1   SEG0C.S     81 | Code        | 00 |         |    2 | 00/0053 : 80 07       |             BRA   L0C005C        
+   88 |  1   SEG0C.S     82 | Code        | 00 |         |    2 | 00/0055 : 80 05       |             BRA   L0C005C        
+   89 |  1   SEG0C.S     83 | Code        | 00 |         |    3 | 00/0057 : A9 00 0F    | L0C0057     LDA   #$0F00         
+   90 |  1   SEG0C.S     84 | Code        | 00 |         |    2 | 00/005A : 05 FF       |             ORA   $FF            
+   91 |  1   SEG0C.S     85 | Code        | 00 |         |    1 | 00/005C : A8          | L0C005C     TAY                  
+   92 |  1   SEG0C.S     86 | Code        | 00 |         |    1 | 00/005D : 3B          |             TSC                  
+   93 |  1   SEG0C.S     87 | Code        | 00 |         |    1 | 00/005E : 18          |             CLC                  
+   94 |  1   SEG0C.S     88 | Code        | 00 |         |    3 | 00/005F : 69 06 00    |             ADC   #$0006         
+   95 |  1   SEG0C.S     89 | Code        | 00 |         |    1 | 00/0062 : 1B          |             TCS                  
+   96 |  1   SEG0C.S     90 | Code        | 00 |         |    1 | 00/0063 : 98          |             TYA                  
+   97 |  1   SEG0C.S     91 | Code        | 00 |         |    1 | 00/0064 : 2B          |             PLD                  
+   98 |  1   SEG0C.S     92 | Code        | 00 |         |    1 | 00/0065 : 6B          |             RTL                  
+   99 |  1   SEG0C.S     93 | Empty       | 00 |         |    0 | 00/0066               |                                  
+  100 |  1   SEG0C.S     94 | Empty       | 00 |         |    0 | 00/0066               |                                  
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

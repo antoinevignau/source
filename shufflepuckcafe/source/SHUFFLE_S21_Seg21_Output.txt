@@ -1,0 +1,1170 @@
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File         Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1   SEG21.S      1 | Comment     | 11 |         |    0 | 00/0000               | *
+    2 |  1   SEG21.S      2 | Comment     | 11 |         |    0 | 00/0000               | * Shufflepuck Cafe
+    3 |  1   SEG21.S      3 | Comment     | 11 |         |    0 | 00/0000               | *
+    4 |  1   SEG21.S      4 | Comment     | 11 |         |    0 | 00/0000               | * (c) Broderbund Software
+    5 |  1   SEG21.S      5 | Comment     | 11 |         |    0 | 00/0000               | * (s) 2014, Brutal Deluxe Software
+    6 |  1   SEG21.S      6 | Comment     | 11 |         |    0 | 00/0000               | *
+    7 |  1   SEG21.S      7 | Empty       | 11 |         |    0 | 00/0000               |                                  
+    8 |  1   SEG21.S      8 | Directive   | 00 |         |    0 | 00/0000               |             mx    %00            
+    9 |  1   SEG21.S      9 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   10 |  1   SEG21.S     10 | Directive   | 00 |         |    0 | 00/0000               |             rel                  
+   11 |  1   SEG21.S     11 | Directive   | 00 |         |    0 | 00/0000               |             dsk   Seg21.L        
+   12 |  1   SEG21.S     12 | Directive   | 00 |         |    0 | 00/0000               |             lst   off            
+   13 |  1   SEG21.S     13 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   14 |  1   SEG21.S     14 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   15 |  1   SEG21.S     15 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   16 |  1   SEG21.S     16 | Directive   | 00 |         |    0 | 00/0000               |             use   Seg21.X        
+   17 |  2 Seg21.X.s      1 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   18 |  2 Seg21.X.s      2 | Comment     | 00 |         |    0 | 00/0000               | * TFBD generated externals
+   19 |  2 Seg21.X.s      3 | Comment     | 00 |         |    0 | 00/0000               | *     (c) PHC 1992,93
+   20 |  2 Seg21.X.s      4 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   21 |  2 Seg21.X.s      5 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   22 |  2 Seg21.X.s      6 | External    | 00 |         |    0 | 00/0000               | L0201E7     EXT                  
+   23 |  2 Seg21.X.s      7 | External    | 00 |         |    0 | 00/0000               | L1A0F9E     EXT                  
+   24 |  2 Seg21.X.s      8 | External    | 00 |         |    0 | 00/0000               | L1A10DF     EXT                  
+   25 |  2 Seg21.X.s      9 | External    | 00 |         |    0 | 00/0000               | L1A186E     EXT                  
+   26 |  2 Seg21.X.s     10 | External    | 00 |         |    0 | 00/0000               | L1A0F0A     EXT                  
+   27 |  2 Seg21.X.s     11 | External    | 00 |         |    0 | 00/0000               | L1A130B     EXT                  
+   28 |  2 Seg21.X.s     12 | External    | 00 |         |    0 | 00/0000               | L1B0170     EXT                  
+   29 |  2 Seg21.X.s     13 | External    | 00 |         |    0 | 00/0000               | L1B0070     EXT                  
+   30 |  2 Seg21.X.s     14 | External    | 00 |         |    0 | 00/0000               | L1B0135     EXT                  
+   31 |  2 Seg21.X.s     15 | External    | 00 |         |    0 | 00/0000               | L1B0099     EXT                  
+   32 |  2 Seg21.X.s     16 | External    | 00 |         |    0 | 00/0000               | L02016B     EXT                  
+   33 |  2 Seg21.X.s     17 | External    | 00 |         |    0 | 00/0000               | L02016D     EXT                  
+   34 |  2 Seg21.X.s     18 | External    | 00 |         |    0 | 00/0000               | L020169     EXT                  
+   35 |  2 Seg21.X.s     19 | External    | 00 |         |    0 | 00/0000               | L020167     EXT                  
+   36 |  2 Seg21.X.s     20 | External    | 00 |         |    0 | 00/0000               | L020165     EXT                  
+   37 |  2 Seg21.X.s     21 | External    | 00 |         |    0 | 00/0000               | L020163     EXT                  
+   38 |  2 Seg21.X.s     22 | External    | 00 |         |    0 | 00/0000               | L020161     EXT                  
+   39 |  2 Seg21.X.s     23 | External    | 00 |         |    0 | 00/0000               | L02015F     EXT                  
+   40 |  2 Seg21.X.s     24 | External    | 00 |         |    0 | 00/0000               | L1B002E     EXT                  
+   41 |  2 Seg21.X.s     25 | External    | 00 |         |    0 | 00/0000               | L1A108F     EXT                  
+   42 |  2 Seg21.X.s     26 | External    | 00 |         |    0 | 00/0000               | L02010A     EXT                  
+   43 |  2 Seg21.X.s     27 | External    | 00 |         |    0 | 00/0000               | L02018F     EXT                  
+   44 |  2 Seg21.X.s     28 | External    | 00 |         |    0 | 00/0000               | L020199     EXT                  
+   45 |  2 Seg21.X.s     29 | External    | 00 |         |    0 | 00/0000               | L02019B     EXT                  
+   46 |  2 Seg21.X.s     30 | External    | 00 |         |    0 | 00/0000               | L02019D     EXT                  
+   47 |  2 Seg21.X.s     31 | External    | 00 |         |    0 | 00/0000               | L02019F     EXT                  
+   48 |  2 Seg21.X.s     32 | External    | 00 |         |    0 | 00/0000               | L090000     EXT                  
+   49 |  2 Seg21.X.s     33 | External    | 00 |         |    0 | 00/0000               | L2201FD     EXT                  
+   50 |  2 Seg21.X.s     34 | External    | 00 |         |    0 | 00/0000               | L230BBC     EXT                  
+   51 |  2 Seg21.X.s     35 | External    | 00 |         |    0 | 00/0000               | L1C05C2     EXT                  
+   52 |  2 Seg21.X.s     36 | External    | 00 |         |    0 | 00/0000               | L1C05EB     EXT                  
+   53 |  2 Seg21.X.s     37 | External    | 00 |         |    0 | 00/0000               | L02018B     EXT                  
+   54 |  2 Seg21.X.s     38 | External    | 00 |         |    0 | 00/0000               | L02018D     EXT                  
+   55 |  2 Seg21.X.s     39 | External    | 00 |         |    0 | 00/0000               | L0201A3     EXT                  
+   56 |  2 Seg21.X.s     40 | External    | 00 |         |    0 | 00/0000               | L0201A1     EXT                  
+   57 |  2 Seg21.X.s     41 | External    | 00 |         |    0 | 00/0000               | L0201A7     EXT                  
+   58 |  2 Seg21.X.s     42 | External    | 00 |         |    0 | 00/0000               | L0201A5     EXT                  
+   59 |  2 Seg21.X.s     43 | External    | 00 |         |    0 | 00/0000               | L020195     EXT                  
+   60 |  2 Seg21.X.s     44 | External    | 00 |         |    0 | 00/0000               | L020193     EXT                  
+   61 |  2 Seg21.X.s     45 | External    | 00 |         |    0 | 00/0000               | L020191     EXT                  
+   62 |  2 Seg21.X.s     46 | External    | 00 |         |    0 | 00/0000               | L020181     EXT                  
+   63 |  2 Seg21.X.s     47 | External    | 00 |         |    0 | 00/0000               | L02017F     EXT                  
+   64 |  2 Seg21.X.s     48 | External    | 00 |         |    0 | 00/0000               | L02017B     EXT                  
+   65 |  2 Seg21.X.s     49 | External    | 00 |         |    0 | 00/0000               | L020189     EXT                  
+   66 |  2 Seg21.X.s     50 | External    | 00 |         |    0 | 00/0000               | L020187     EXT                  
+   67 |  2 Seg21.X.s     51 | External    | 00 |         |    0 | 00/0000               | L020183     EXT                  
+   68 |  2 Seg21.X.s     52 | External    | 00 |         |    0 | 00/0000               | L02017D     EXT                  
+   69 |  2 Seg21.X.s     53 | External    | 00 |         |    0 | 00/0000               | L020185     EXT                  
+   70 |  2 Seg21.X.s     54 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   71 |  1   SEG21.S     17 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   72 |  1   SEG21.S     18 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   73 |  1   SEG21.S     19 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   74 |  1   SEG21.S     20 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Event.Macs   
+   75 |  1   SEG21.S     21 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Misc.Macs    
+   76 |  1   SEG21.S     22 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Util.Macs    
+   77 |  1   SEG21.S     23 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   78 |  1   SEG21.S     24 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   79 |  1   SEG21.S     25 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   80 |  1   SEG21.S     26 | Code        | 00 |         |    1 | 00/0000 : 0B          |             PHD                  
+   81 |  1   SEG21.S     27 | Code        | 00 |         |    1 | 00/0001 : 3B          |             TSC                  
+   82 |  1   SEG21.S     28 | Code        | 00 |         |    1 | 00/0002 : 38          |             SEC                  
+   83 |  1   SEG21.S     29 | Code        | 00 |         |    3 | 00/0003 : E9 F9 00    |             SBC   #$00F9         
+   84 |  1   SEG21.S     30 | Code        | 00 |         |    1 | 00/0006 : 5B          |             TCD                  
+   85 |  1   SEG21.S     31 | Code        | 00 |         |    3 | 00/0007 : 69 F2 00    |             ADC   #$00F2         
+   86 |  1   SEG21.S     32 | Code        | 00 |         |    1 | 00/000A : 1B          |             TCS                  
+   87 |  1   SEG21.S     33 | Code        | 00 |         |    2 | 00/000B : A5 FF       |             LDA   $FF            
+   88 |  1   SEG21.S     34 | Code        | 00 |E 2      |    3 | 00/000D : 8D 8C 01    |             STA   L02018B        
+   89 |  1   SEG21.S     35 | Code        | 00 |         |    1 | 00/0010 : 3B          |             TSC                  
+   90 |  1   SEG21.S     36 | Code        | 00 |         |    1 | 00/0011 : 18          |             CLC                  
+   91 |  1   SEG21.S     37 | Code        | 00 |         |    3 | 00/0012 : 69 06 00    |             ADC   #$0006         
+   92 |  1   SEG21.S     38 | Code        | 00 |         |    1 | 00/0015 : 1B          |             TCS                  
+   93 |  1   SEG21.S     39 | Code        | 00 |         |    1 | 00/0016 : 2B          |             PLD                  
+   94 |  1   SEG21.S     40 | Code        | 00 |         |    1 | 00/0017 : 6B          |             RTL                  
+   95 |  1   SEG21.S     41 | Empty       | 00 |         |    0 | 00/0018               |                                  
+   96 |  1   SEG21.S     42 | Code        | 00 |         |    1 | 00/0018 : 0B          | L210018     PHD                  
+   97 |  1   SEG21.S     43 | Code        | 00 |         |    1 | 00/0019 : 3B          |             TSC                  
+   98 |  1   SEG21.S     44 | Code        | 00 |         |    1 | 00/001A : 38          |             SEC                  
+   99 |  1   SEG21.S     45 | Code        | 00 |         |    3 | 00/001B : E9 FB 00    |             SBC   #$00FB         
+  100 |  1   SEG21.S     46 | Code        | 00 |         |    1 | 00/001E : 5B          |             TCD                  
+  101 |  1   SEG21.S     47 | Code        | 00 |         |    3 | 00/001F : 69 EE 00    |             ADC   #$00EE         
+  102 |  1   SEG21.S     48 | Code        | 00 |         |    1 | 00/0022 : 1B          |             TCS                  
+  103 |  1   SEG21.S     49 | Code        | 00 |E 2      |    3 | 00/0023 : AD 8E 01    |             LDA   L02018D        
+  104 |  1   SEG21.S     50 | Code        | 00 |         |    1 | 00/0026 : 38          |             SEC                  
+  105 |  1   SEG21.S     51 | Code        | 00 |E 2      |    3 | 00/0027 : ED 8C 01    |             SBC   L02018B        
+  106 |  1   SEG21.S     52 | Code        | 00 |         |    2 | 00/002A : 85 F4       |             STA   $F4            
+  107 |  1   SEG21.S     53 | Code        | 00 |         |    3 | 00/002C : A9 04 01    |             LDA   #$0104         
+  108 |  1   SEG21.S     54 | Code        | 00 |         |    2 | 00/002F : 85 F2       |             STA   $F2            
+  109 |  1   SEG21.S     55 | Code        | 00 |E 2      |    3 | 00/0031 : AD 90 01    |             LDA   L02018F        
+  110 |  1   SEG21.S     56 | Code        | 00 |         |    2 | 00/0034 : 85 F0       |             STA   $F0            
+  111 |  1   SEG21.S     57 | Code        | 00 |         |    2 | 00/0036 : A5 F0       |             LDA   $F0            
+  112 |  1   SEG21.S     58 | Code        | 00 |         |    3 | 00/0038 : A2 00 00    |             LDX   #$0000         
+  113 |  1   SEG21.S     59 | Code        | 00 |         |    1 | 00/003B : A8          |             TAY                  
+  114 |  1   SEG21.S     60 | Code        | 00 |         |    2 | 00/003C : 10 01       |             BPL   L21003F        
+  115 |  1   SEG21.S     61 | Code        | 00 |         |    1 | 00/003E : CA          |             DEX                  
+  116 |  1   SEG21.S     62 | Code        | 00 |         |    1 | 00/003F : 18          | L21003F     CLC                  
+  117 |  1   SEG21.S     63 | Code        | 00 |         |    3 | 00/0040 : 69 40 02    |             ADC   #$0240         
+  118 |  1   SEG21.S     64 | Code        | 00 |         |    1 | 00/0043 : 48          |             PHA                  
+  119 |  1   SEG21.S     65 | Code        | 00 |         |    1 | 00/0044 : 8A          |             TXA                  
+  120 |  1   SEG21.S     66 | Code        | 00 |         |    3 | 00/0045 : 69 00 00    |             ADC   #$0000         
+  121 |  1   SEG21.S     67 | Code        | 00 |         |    1 | 00/0048 : AA          |             TAX                  
+  122 |  1   SEG21.S     68 | Code        | 00 |         |    1 | 00/0049 : 68          |             PLA                  
+  123 |  1   SEG21.S     69 | Code        | 00 |         |    1 | 00/004A : DA          |             PHX                  
+  124 |  1   SEG21.S     70 | Code        | 00 |         |    1 | 00/004B : 48          |             PHA                  
+  125 |  1   SEG21.S     71 | Code        | 00 |         |    2 | 00/004C : A5 F4       |             LDA   $F4            
+  126 |  1   SEG21.S     72 | Code        | 00 |         |    3 | 00/004E : A2 00 00    |             LDX   #$0000         
+  127 |  1   SEG21.S     73 | Code        | 00 |         |    1 | 00/0051 : A8          |             TAY                  
+  128 |  1   SEG21.S     74 | Code        | 00 |         |    2 | 00/0052 : 10 01       |             BPL   L210055        
+  129 |  1   SEG21.S     75 | Code        | 00 |         |    1 | 00/0054 : CA          |             DEX                  
+  130 |  1   SEG21.S     76 | Code        | 00 |         |    3 | 00/0055 : F4 00 00    | L210055     PEA   $0000          
+  131 |  1   SEG21.S     77 | Code        | 00 |         |    3 | 00/0058 : F4 68 01    |             PEA   $0168          
+  132 |  1   SEG21.S     78 | Code        | 00 |         |    1 | 00/005B : 18          |             CLC                  
+  133 |  1   SEG21.S     79 | Code        | 00 |E 3      |    4 | 00/005C : 22 B2 10 1A |             JSL   L1A10DF        
+  134 |  1   SEG21.S     80 | Code        | 00 |         |    1 | 00/0060 : 68          |             PLA                  
+  135 |  1   SEG21.S     81 | Code        | 00 |         |    1 | 00/0061 : FA          |             PLX                  
+  136 |  1   SEG21.S     82 | Code        | 00 |         |    1 | 00/0062 : 38          |             SEC                  
+  137 |  1   SEG21.S     83 | Code        | 00 |E 3      |    4 | 00/0063 : 22 71 0F 1A |             JSL   L1A0F9E        
+  138 |  1   SEG21.S     84 | Code        | 00 |         |    1 | 00/0067 : 7A          |             PLY                  
+  139 |  1   SEG21.S     85 | Code        | 00 |         |    1 | 00/0068 : 7A          |             PLY                  
+  140 |  1   SEG21.S     86 | Code        | 00 |         |    1 | 00/0069 : 18          |             CLC                  
+  141 |  1   SEG21.S     87 | Code        | 00 |         |    3 | 00/006A : 69 A0 00    |             ADC   #$00A0         
+  142 |  1   SEG21.S     88 | Code        | 00 |         |    1 | 00/006D : 48          |             PHA                  
+  143 |  1   SEG21.S     89 | Code        | 00 |         |    1 | 00/006E : 8A          |             TXA                  
+  144 |  1   SEG21.S     90 | Code        | 00 |         |    3 | 00/006F : 69 00 00    |             ADC   #$0000         
+  145 |  1   SEG21.S     91 | Code        | 00 |         |    1 | 00/0072 : AA          |             TAX                  
+  146 |  1   SEG21.S     92 | Code        | 00 |         |    1 | 00/0073 : 68          |             PLA                  
+  147 |  1   SEG21.S     93 | Code        | 00 |E 2      |    3 | 00/0074 : 8D 9C 01    |             STA   L02019B        
+  148 |  1   SEG21.S     94 | Code        | 00 |         |    2 | 00/0077 : A5 F0       |             LDA   $F0            
+  149 |  1   SEG21.S     95 | Code        | 00 |         |    3 | 00/0079 : A2 00 00    |             LDX   #$0000         
+  150 |  1   SEG21.S     96 | Code        | 00 |         |    1 | 00/007C : A8          |             TAY                  
+  151 |  1   SEG21.S     97 | Code        | 00 |         |    2 | 00/007D : 10 01       |             BPL   L210080        
+  152 |  1   SEG21.S     98 | Code        | 00 |         |    1 | 00/007F : CA          |             DEX                  
+  153 |  1   SEG21.S     99 | Code        | 00 |         |    1 | 00/0080 : 18          | L210080     CLC                  
+  154 |  1   SEG21.S    100 | Code        | 00 |         |    3 | 00/0081 : 69 40 02    |             ADC   #$0240         
+  155 |  1   SEG21.S    101 | Code        | 00 |         |    1 | 00/0084 : 48          |             PHA                  
+  156 |  1   SEG21.S    102 | Code        | 00 |         |    1 | 00/0085 : 8A          |             TXA                  
+  157 |  1   SEG21.S    103 | Code        | 00 |         |    3 | 00/0086 : 69 00 00    |             ADC   #$0000         
+  158 |  1   SEG21.S    104 | Code        | 00 |         |    1 | 00/0089 : AA          |             TAX                  
+  159 |  1   SEG21.S    105 | Code        | 00 |         |    1 | 00/008A : 68          |             PLA                  
+  160 |  1   SEG21.S    106 | Code        | 00 |         |    1 | 00/008B : DA          |             PHX                  
+  161 |  1   SEG21.S    107 | Code        | 00 |         |    1 | 00/008C : 48          |             PHA                  
+  162 |  1   SEG21.S    108 | Code        | 00 |         |    2 | 00/008D : A5 F2       |             LDA   $F2            
+  163 |  1   SEG21.S    109 | Code        | 00 |         |    3 | 00/008F : A2 00 00    |             LDX   #$0000         
+  164 |  1   SEG21.S    110 | Code        | 00 |         |    1 | 00/0092 : A8          |             TAY                  
+  165 |  1   SEG21.S    111 | Code        | 00 |         |    2 | 00/0093 : 10 01       |             BPL   L210096        
+  166 |  1   SEG21.S    112 | Code        | 00 |         |    1 | 00/0095 : CA          |             DEX                  
+  167 |  1   SEG21.S    113 | Code        | 00 |         |    3 | 00/0096 : F4 00 00    | L210096     PEA   $0000          
+  168 |  1   SEG21.S    114 | Code        | 00 |         |    3 | 00/0099 : F4 53 01    |             PEA   $0153          
+  169 |  1   SEG21.S    115 | Code        | 00 |         |    1 | 00/009C : 18          |             CLC                  
+  170 |  1   SEG21.S    116 | Code        | 00 |E 3      |    4 | 00/009D : 22 B2 10 1A |             JSL   L1A10DF        
+  171 |  1   SEG21.S    117 | Code        | 00 |         |    1 | 00/00A1 : 68          |             PLA                  
+  172 |  1   SEG21.S    118 | Code        | 00 |         |    1 | 00/00A2 : FA          |             PLX                  
+  173 |  1   SEG21.S    119 | Code        | 00 |         |    1 | 00/00A3 : 38          |             SEC                  
+  174 |  1   SEG21.S    120 | Code        | 00 |E 3      |    4 | 00/00A4 : 22 71 0F 1A |             JSL   L1A0F9E        
+  175 |  1   SEG21.S    121 | Code        | 00 |         |    1 | 00/00A8 : 7A          |             PLY                  
+  176 |  1   SEG21.S    122 | Code        | 00 |         |    1 | 00/00A9 : 7A          |             PLY                  
+  177 |  1   SEG21.S    123 | Code        | 00 |         |    1 | 00/00AA : 18          |             CLC                  
+  178 |  1   SEG21.S    124 | Code        | 00 |         |    3 | 00/00AB : 69 11 00    |             ADC   #$0011         
+  179 |  1   SEG21.S    125 | Code        | 00 |         |    1 | 00/00AE : 48          |             PHA                  
+  180 |  1   SEG21.S    126 | Code        | 00 |         |    1 | 00/00AF : 8A          |             TXA                  
+  181 |  1   SEG21.S    127 | Code        | 00 |         |    3 | 00/00B0 : 69 00 00    |             ADC   #$0000         
+  182 |  1   SEG21.S    128 | Code        | 00 |         |    1 | 00/00B3 : AA          |             TAX                  
+  183 |  1   SEG21.S    129 | Code        | 00 |         |    1 | 00/00B4 : 68          |             PLA                  
+  184 |  1   SEG21.S    130 | Code        | 00 |E 2      |    3 | 00/00B5 : 8D 9A 01    |             STA   L020199        
+  185 |  1   SEG21.S    131 | Code        | 00 |E 2      |    3 | 00/00B8 : AD 8E 01    |             LDA   L02018D        
+  186 |  1   SEG21.S    132 | Code        | 00 |         |    1 | 00/00BB : 18          |             CLC                  
+  187 |  1   SEG21.S    133 | Code        | 00 |E 2      |    3 | 00/00BC : 6D 8C 01    |             ADC   L02018B        
+  188 |  1   SEG21.S    134 | Code        | 00 |         |    2 | 00/00BF : 85 F4       |             STA   $F4            
+  189 |  1   SEG21.S    135 | Code        | 00 |         |    2 | 00/00C1 : A5 F0       |             LDA   $F0            
+  190 |  1   SEG21.S    136 | Code        | 00 |         |    3 | 00/00C3 : A2 00 00    |             LDX   #$0000         
+  191 |  1   SEG21.S    137 | Code        | 00 |         |    1 | 00/00C6 : A8          |             TAY                  
+  192 |  1   SEG21.S    138 | Code        | 00 |         |    2 | 00/00C7 : 10 01       |             BPL   L2100CA        
+  193 |  1   SEG21.S    139 | Code        | 00 |         |    1 | 00/00C9 : CA          |             DEX                  
+  194 |  1   SEG21.S    140 | Code        | 00 |         |    1 | 00/00CA : 18          | L2100CA     CLC                  
+  195 |  1   SEG21.S    141 | Code        | 00 |         |    3 | 00/00CB : 69 40 02    |             ADC   #$0240         
+  196 |  1   SEG21.S    142 | Code        | 00 |         |    1 | 00/00CE : 48          |             PHA                  
+  197 |  1   SEG21.S    143 | Code        | 00 |         |    1 | 00/00CF : 8A          |             TXA                  
+  198 |  1   SEG21.S    144 | Code        | 00 |         |    3 | 00/00D0 : 69 00 00    |             ADC   #$0000         
+  199 |  1   SEG21.S    145 | Code        | 00 |         |    1 | 00/00D3 : AA          |             TAX                  
+  200 |  1   SEG21.S    146 | Code        | 00 |         |    1 | 00/00D4 : 68          |             PLA                  
+  201 |  1   SEG21.S    147 | Code        | 00 |         |    1 | 00/00D5 : DA          |             PHX                  
+  202 |  1   SEG21.S    148 | Code        | 00 |         |    1 | 00/00D6 : 48          |             PHA                  
+  203 |  1   SEG21.S    149 | Code        | 00 |         |    2 | 00/00D7 : A5 F4       |             LDA   $F4            
+  204 |  1   SEG21.S    150 | Code        | 00 |         |    3 | 00/00D9 : A2 00 00    |             LDX   #$0000         
+  205 |  1   SEG21.S    151 | Code        | 00 |         |    1 | 00/00DC : A8          |             TAY                  
+  206 |  1   SEG21.S    152 | Code        | 00 |         |    2 | 00/00DD : 10 01       |             BPL   L2100E0        
+  207 |  1   SEG21.S    153 | Code        | 00 |         |    1 | 00/00DF : CA          |             DEX                  
+  208 |  1   SEG21.S    154 | Code        | 00 |         |    3 | 00/00E0 : F4 00 00    | L2100E0     PEA   $0000          
+  209 |  1   SEG21.S    155 | Code        | 00 |         |    3 | 00/00E3 : F4 68 01    |             PEA   $0168          
+  210 |  1   SEG21.S    156 | Code        | 00 |         |    1 | 00/00E6 : 18          |             CLC                  
+  211 |  1   SEG21.S    157 | Code        | 00 |E 3      |    4 | 00/00E7 : 22 B2 10 1A |             JSL   L1A10DF        
+  212 |  1   SEG21.S    158 | Code        | 00 |         |    1 | 00/00EB : 68          |             PLA                  
+  213 |  1   SEG21.S    159 | Code        | 00 |         |    1 | 00/00EC : FA          |             PLX                  
+  214 |  1   SEG21.S    160 | Code        | 00 |         |    1 | 00/00ED : 38          |             SEC                  
+  215 |  1   SEG21.S    161 | Code        | 00 |E 3      |    4 | 00/00EE : 22 71 0F 1A |             JSL   L1A0F9E        
+  216 |  1   SEG21.S    162 | Code        | 00 |         |    1 | 00/00F2 : 7A          |             PLY                  
+  217 |  1   SEG21.S    163 | Code        | 00 |         |    1 | 00/00F3 : 7A          |             PLY                  
+  218 |  1   SEG21.S    164 | Code        | 00 |         |    1 | 00/00F4 : 18          |             CLC                  
+  219 |  1   SEG21.S    165 | Code        | 00 |         |    3 | 00/00F5 : 69 A0 00    |             ADC   #$00A0         
+  220 |  1   SEG21.S    166 | Code        | 00 |         |    1 | 00/00F8 : 48          |             PHA                  
+  221 |  1   SEG21.S    167 | Code        | 00 |         |    1 | 00/00F9 : 8A          |             TXA                  
+  222 |  1   SEG21.S    168 | Code        | 00 |         |    3 | 00/00FA : 69 00 00    |             ADC   #$0000         
+  223 |  1   SEG21.S    169 | Code        | 00 |         |    1 | 00/00FD : AA          |             TAX                  
+  224 |  1   SEG21.S    170 | Code        | 00 |         |    1 | 00/00FE : 68          |             PLA                  
+  225 |  1   SEG21.S    171 | Code        | 00 |E 2      |    3 | 00/00FF : 8D A0 01    |             STA   L02019F        
+  226 |  1   SEG21.S    172 | Code        | 00 |         |    2 | 00/0102 : A5 F0       |             LDA   $F0            
+  227 |  1   SEG21.S    173 | Code        | 00 |         |    3 | 00/0104 : A2 00 00    |             LDX   #$0000         
+  228 |  1   SEG21.S    174 | Code        | 00 |         |    1 | 00/0107 : A8          |             TAY                  
+  229 |  1   SEG21.S    175 | Code        | 00 |         |    2 | 00/0108 : 10 01       |             BPL   L21010B        
+  230 |  1   SEG21.S    176 | Code        | 00 |         |    1 | 00/010A : CA          |             DEX                  
+  231 |  1   SEG21.S    177 | Code        | 00 |         |    1 | 00/010B : 18          | L21010B     CLC                  
+  232 |  1   SEG21.S    178 | Code        | 00 |         |    3 | 00/010C : 69 40 02    |             ADC   #$0240         
+  233 |  1   SEG21.S    179 | Code        | 00 |         |    1 | 00/010F : 48          |             PHA                  
+  234 |  1   SEG21.S    180 | Code        | 00 |         |    1 | 00/0110 : 8A          |             TXA                  
+  235 |  1   SEG21.S    181 | Code        | 00 |         |    3 | 00/0111 : 69 00 00    |             ADC   #$0000         
+  236 |  1   SEG21.S    182 | Code        | 00 |         |    1 | 00/0114 : AA          |             TAX                  
+  237 |  1   SEG21.S    183 | Code        | 00 |         |    1 | 00/0115 : 68          |             PLA                  
+  238 |  1   SEG21.S    184 | Code        | 00 |         |    1 | 00/0116 : DA          |             PHX                  
+  239 |  1   SEG21.S    185 | Code        | 00 |         |    1 | 00/0117 : 48          |             PHA                  
+  240 |  1   SEG21.S    186 | Code        | 00 |         |    3 | 00/0118 : A2 01 00    |             LDX   #$0001         
+  241 |  1   SEG21.S    187 | Code        | 00 |         |    3 | 00/011B : A9 44 8D    |             LDA   #$8D44         
+  242 |  1   SEG21.S    188 | Code        | 00 |         |    1 | 00/011E : 38          |             SEC                  
+  243 |  1   SEG21.S    189 | Code        | 00 |E 3      |    4 | 00/011F : 22 71 0F 1A |             JSL   L1A0F9E        
+  244 |  1   SEG21.S    190 | Code        | 00 |         |    1 | 00/0123 : 7A          |             PLY                  
+  245 |  1   SEG21.S    191 | Code        | 00 |         |    1 | 00/0124 : 7A          |             PLY                  
+  246 |  1   SEG21.S    192 | Code        | 00 |         |    1 | 00/0125 : 18          |             CLC                  
+  247 |  1   SEG21.S    193 | Code        | 00 |         |    3 | 00/0126 : 69 11 00    |             ADC   #$0011         
+  248 |  1   SEG21.S    194 | Code        | 00 |         |    1 | 00/0129 : 48          |             PHA                  
+  249 |  1   SEG21.S    195 | Code        | 00 |         |    1 | 00/012A : 8A          |             TXA                  
+  250 |  1   SEG21.S    196 | Code        | 00 |         |    3 | 00/012B : 69 00 00    |             ADC   #$0000         
+  251 |  1   SEG21.S    197 | Code        | 00 |         |    1 | 00/012E : AA          |             TAX                  
+  252 |  1   SEG21.S    198 | Code        | 00 |         |    1 | 00/012F : 68          |             PLA                  
+  253 |  1   SEG21.S    199 | Code        | 00 |E 2      |    3 | 00/0130 : 8D 9E 01    |             STA   L02019D        
+  254 |  1   SEG21.S    200 | Code        | 00 |         |    1 | 00/0133 : 3B          |             TSC                  
+  255 |  1   SEG21.S    201 | Code        | 00 |         |    1 | 00/0134 : 18          |             CLC                  
+  256 |  1   SEG21.S    202 | Code        | 00 |         |    3 | 00/0135 : 69 0C 00    |             ADC   #$000C         
+  257 |  1   SEG21.S    203 | Code        | 00 |         |    1 | 00/0138 : 1B          |             TCS                  
+  258 |  1   SEG21.S    204 | Code        | 00 |         |    1 | 00/0139 : 2B          |             PLD                  
+  259 |  1   SEG21.S    205 | Code        | 00 |         |    1 | 00/013A : 6B          |             RTL                  
+  260 |  1   SEG21.S    206 | Empty       | 00 |         |    0 | 00/013B               |                                  
+  261 |  1   SEG21.S    207 | Global      | 00 |         |    0 | 00/013B               | L21013B     ENT                  
+  262 |  1   SEG21.S    208 | Code        | 00 |         |    1 | 00/013B : 0B          |             PHD                  
+  263 |  1   SEG21.S    209 | Code        | 00 |         |    1 | 00/013C : 3B          |             TSC                  
+  264 |  1   SEG21.S    210 | Code        | 00 |         |    1 | 00/013D : 38          |             SEC                  
+  265 |  1   SEG21.S    211 | Code        | 00 |         |    3 | 00/013E : E9 FB 00    |             SBC   #$00FB         
+  266 |  1   SEG21.S    212 | Code        | 00 |         |    1 | 00/0141 : 5B          |             TCD                  
+  267 |  1   SEG21.S    213 | Code        | 00 |         |    3 | 00/0142 : 69 F4 00    |             ADC   #$00F4         
+  268 |  1   SEG21.S    214 | Code        | 00 |         |    1 | 00/0145 : 1B          |             TCS                  
+  269 |  1   SEG21.S    215 | Code        | 00 |E 2      |    3 | 00/0146 : 9C A4 01    |             STZ   L0201A3        
+  270 |  1   SEG21.S    216 | Code        | 00 |E 2      |    3 | 00/0149 : 9C A2 01    |             STZ   L0201A1        
+  271 |  1   SEG21.S    217 | Code        | 00 |E 2      |    3 | 00/014C : AD 8C 01    |             LDA   L02018B        
+  272 |  1   SEG21.S    218 | Code        | 00 |         |    1 | 00/014F : 0A          |             ASL                  
+  273 |  1   SEG21.S    219 | Code        | 00 |         |    1 | 00/0150 : 48          |             PHA                  
+  274 |  1   SEG21.S    220 | Code        | 00 |         |    3 | 00/0151 : A9 F4 01    |             LDA   #$01F4         
+  275 |  1   SEG21.S    221 | Code        | 00 |         |    1 | 00/0154 : FA          |             PLX                  
+  276 |  1   SEG21.S    222 | Code        | 00 |         |    2 | 00/0155 : 86 FA       |             STX   $FA            
+  277 |  1   SEG21.S    223 | Code        | 00 |         |    1 | 00/0157 : 38          |             SEC                  
+  278 |  1   SEG21.S    224 | Code        | 00 |         |    2 | 00/0158 : E5 FA       |             SBC   $FA            
+  279 |  1   SEG21.S    225 | Code        | 00 |E 2      |    3 | 00/015A : 8D A8 01    |             STA   L0201A7        
+  280 |  1   SEG21.S    226 | Code        | 00 |         |    3 | 00/015D : A9 C8 00    |             LDA   #$00C8         
+  281 |  1   SEG21.S    227 | Code        | 00 |E 2      |    3 | 00/0160 : 8D A6 01    |             STA   L0201A5        
+  282 |  1   SEG21.S    228 | Code        | 00 |         |    1 | 00/0163 : 3B          |             TSC                  
+  283 |  1   SEG21.S    229 | Code        | 00 |         |    1 | 00/0164 : 18          |             CLC                  
+  284 |  1   SEG21.S    230 | Code        | 00 |         |    3 | 00/0165 : 69 06 00    |             ADC   #$0006         
+  285 |  1   SEG21.S    231 | Code        | 00 |         |    1 | 00/0168 : 1B          |             TCS                  
+  286 |  1   SEG21.S    232 | Code        | 00 |         |    1 | 00/0169 : 2B          |             PLD                  
+  287 |  1   SEG21.S    233 | Code        | 00 |         |    1 | 00/016A : 6B          |             RTL                  
+  288 |  1   SEG21.S    234 | Empty       | 00 |         |    0 | 00/016B               |                                  
+  289 |  1   SEG21.S    235 | Global      | 00 |         |    0 | 00/016B               | L21016B     ENT                  
+  290 |  1   SEG21.S    236 | Code        | 00 |         |    1 | 00/016B : 0B          |             PHD                  
+  291 |  1   SEG21.S    237 | Code        | 00 |         |    1 | 00/016C : 3B          |             TSC                  
+  292 |  1   SEG21.S    238 | Code        | 00 |         |    1 | 00/016D : 38          |             SEC                  
+  293 |  1   SEG21.S    239 | Code        | 00 |         |    3 | 00/016E : E9 FB 00    |             SBC   #$00FB         
+  294 |  1   SEG21.S    240 | Code        | 00 |         |    1 | 00/0171 : 5B          |             TCD                  
+  295 |  1   SEG21.S    241 | Code        | 00 |         |    3 | 00/0172 : 69 EC 00    |             ADC   #$00EC         
+  296 |  1   SEG21.S    242 | Code        | 00 |         |    1 | 00/0175 : 1B          |             TCS                  
+  297 |  1   SEG21.S    243 | Code        | 00 |E 2      |    3 | 00/0176 : AD 90 01    |             LDA   L02018F        
+  298 |  1   SEG21.S    244 | Code        | 00 |E 2      |    3 | 00/0179 : 8D 96 01    |             STA   L020195        
+  299 |  1   SEG21.S    245 | Code        | 00 |E 2      |    3 | 00/017C : AD 8E 01    |             LDA   L02018D        
+  300 |  1   SEG21.S    246 | Code        | 00 |E 2      |    3 | 00/017F : 8D 94 01    |             STA   L020193        
+  301 |  1   SEG21.S    247 | Empty       | 00 |         |    0 | 00/0182               |                                  
+  302 |  1   SEG21.S    248 | Code        | 00 |         |    1 | 00/0182 : 48          |             pha                  
+  303 |  1   SEG21.S    249 | Code        | 00 |         |    1 | 00/0183 : 48          |             pha                  
+  304 |  1   SEG21.S    250 | Code        | 00 |         |    1 | 00/0184 : 48          |             pha                  
+  305 |  1   SEG21.S    251 | Macro       | 00 |         |    0 | 00/0185               |             _ReadMouse                 
+  307 |  1   SEG21.S    251 | Code        | 00 |         |    3 | 00/0185 : A2 03 17    |             LDX   #$1703         ; load tool call #
+  308 |  1   SEG21.S    251 | Code        | 00 |         |    4 | 00/0188 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  309 |  1   SEG21.S    252 | Code        | 00 |         |    1 | 00/018C : 68          |             pla                  
+  310 |  1   SEG21.S    253 | Code        | 00 |         |    1 | 00/018D : 68          |             pla                  
+  311 |  1   SEG21.S    254 | Code        | 00 |         |    2 | 00/018E : 85 F4       |             sta   $F4            
+  312 |  1   SEG21.S    255 | Code        | 00 |         |    1 | 00/0190 : 68          |             pla                  
+  313 |  1   SEG21.S    256 | Code        | 00 |         |    2 | 00/0191 : 85 F2       |             sta   $F2            
+  314 |  1   SEG21.S    257 | Empty       | 00 |         |    0 | 00/0193               |                                  
+  315 |  1   SEG21.S    258 | Comment     | 00 |         |    0 | 00/0193               | * SEP #$30
+  316 |  1   SEG21.S    259 | Comment     | 00 |         |    0 | 00/0193               | * LDAL $00047C
+  317 |  1   SEG21.S    260 | Comment     | 00 |         |    0 | 00/0193               | * STA $F2
+  318 |  1   SEG21.S    261 | Comment     | 00 |         |    0 | 00/0193               | * LDAL $00057C
+  319 |  1   SEG21.S    262 | Comment     | 00 |         |    0 | 00/0193               | * STA $F3
+  320 |  1   SEG21.S    263 | Comment     | 00 |         |    0 | 00/0193               | * LDAL $0004FC
+  321 |  1   SEG21.S    264 | Comment     | 00 |         |    0 | 00/0193               | * STA $F4
+  322 |  1   SEG21.S    265 | Comment     | 00 |         |    0 | 00/0193               | * LDAL $0005FC
+  323 |  1   SEG21.S    266 | Comment     | 00 |         |    0 | 00/0193               | * STA $F5
+  324 |  1   SEG21.S    267 | Comment     | 00 |         |    0 | 00/0193               | * REP #$30
+  325 |  1   SEG21.S    268 | Empty       | 00 |         |    0 | 00/0193               |                                  
+  326 |  1   SEG21.S    269 | Code        | 00 |         |    2 | 00/0193 : A5 F2       |             LDA   $F2            
+  327 |  1   SEG21.S    270 | Code        | 00 |         |    1 | 00/0195 : 0A          |             ASL                  
+  328 |  1   SEG21.S    271 | Code        | 00 |         |    1 | 00/0196 : 0A          |             ASL                  
+  329 |  1   SEG21.S    272 | Code        | 00 |         |    1 | 00/0197 : 0A          |             ASL                  
+  330 |  1   SEG21.S    273 | Code        | 00 |         |    2 | 00/0198 : 85 F2       |             STA   $F2            
+  331 |  1   SEG21.S    274 | Code        | 00 |         |    2 | 00/019A : A6 F2       |             LDX   $F2            
+  332 |  1   SEG21.S    275 | Code        | 00 |         |    3 | 00/019C : A9 05 00    |             LDA   #$0005         
+  333 |  1   SEG21.S    276 | Code        | 00 |E 3      |    4 | 00/019F : 22 00 00 09 |             JSL   L090000        
+  334 |  1   SEG21.S    277 | Code        | 00 |         |    2 | 00/01A3 : 85 F2       |             STA   $F2            
+  335 |  1   SEG21.S    278 | Code        | 00 |         |    2 | 00/01A5 : A5 F4       |             LDA   $F4            
+  336 |  1   SEG21.S    279 | Code        | 00 |         |    1 | 00/01A7 : 0A          |             ASL                  
+  337 |  1   SEG21.S    280 | Code        | 00 |         |    1 | 00/01A8 : 0A          |             ASL                  
+  338 |  1   SEG21.S    281 | Code        | 00 |         |    1 | 00/01A9 : 0A          |             ASL                  
+  339 |  1   SEG21.S    282 | Code        | 00 |         |    1 | 00/01AA : 0A          |             ASL                  
+  340 |  1   SEG21.S    283 | Code        | 00 |         |    1 | 00/01AB : 18          |             CLC                  
+  341 |  1   SEG21.S    284 | Code        | 00 |         |    2 | 00/01AC : 65 F4       |             ADC   $F4            
+  342 |  1   SEG21.S    285 | Code        | 00 |         |    1 | 00/01AE : 4A          |             LSR                  
+  343 |  1   SEG21.S    286 | Code        | 00 |         |    1 | 00/01AF : AA          |             TAX                  
+  344 |  1   SEG21.S    287 | Code        | 00 |         |    3 | 00/01B0 : A9 05 00    |             LDA   #$0005         
+  345 |  1   SEG21.S    288 | Code        | 00 |E 3      |    4 | 00/01B3 : 22 00 00 09 |             JSL   L090000        
+  346 |  1   SEG21.S    289 | Code        | 00 |         |    2 | 00/01B7 : 85 F4       |             STA   $F4            
+  347 |  1   SEG21.S    290 | Code        | 00 |         |    3 | 00/01B9 : A9 00 00    |             LDA   #$0000         
+  348 |  1   SEG21.S    291 | Code        | 00 |         |    2 | 00/01BC : 85 EE       |             STA   $EE            
+  349 |  1   SEG21.S    292 | Code        | 00 |         |    2 | 00/01BE : 85 F0       |             STA   $F0            
+  350 |  1   SEG21.S    293 | Code        | 00 |E 2      |    3 | 00/01C0 : AD A8 01    |             LDA   L0201A7        
+  351 |  1   SEG21.S    294 | Code        | 00 |         |    2 | 00/01C3 : C5 F2       |             CMP   $F2            
+  352 |  1   SEG21.S    295 | Code        | 00 |         |    2 | 00/01C5 : B0 0A       |             BCS   L2101DC        
+  353 |  1   SEG21.S    296 | Code        | 00 |         |    2 | 00/01C7 : A5 F2       |             LDA   $F2            
+  354 |  1   SEG21.S    297 | Code        | 00 |         |    1 | 00/01C9 : 38          |             SEC                  
+  355 |  1   SEG21.S    298 | Code        | 00 |E 2      |    3 | 00/01CA : ED A8 01    |             SBC   L0201A7        
+  356 |  1   SEG21.S    299 | Code        | 00 |         |    2 | 00/01CD : 85 F0       |             STA   $F0            
+  357 |  1   SEG21.S    300 | Code        | 00 |         |    2 | 00/01CF : 80 11       |             BRA   L2101ED        
+  358 |  1   SEG21.S    301 | Code        | 00 |E 2      |    3 | 00/01D1 : AD A4 01    | L2101DC     LDA   L0201A3        
+  359 |  1   SEG21.S    302 | Code        | 00 |         |    2 | 00/01D4 : C5 F2       |             CMP   $F2            
+  360 |  1   SEG21.S    303 | Code        | 00 |         |    2 | 00/01D6 : F0 0A       |             BEQ   L2101ED        
+  361 |  1   SEG21.S    304 | Code        | 00 |         |    2 | 00/01D8 : 90 08       |             BCC   L2101ED        
+  362 |  1   SEG21.S    305 | Code        | 00 |         |    2 | 00/01DA : A5 F2       |             LDA   $F2            
+  363 |  1   SEG21.S    306 | Code        | 00 |         |    1 | 00/01DC : 38          |             SEC                  
+  364 |  1   SEG21.S    307 | Code        | 00 |E 2      |    3 | 00/01DD : ED A4 01    |             SBC   L0201A3        
+  365 |  1   SEG21.S    308 | Code        | 00 |         |    2 | 00/01E0 : 85 F0       |             STA   $F0            
+  366 |  1   SEG21.S    309 | Code        | 00 |E 2      |    3 | 00/01E2 : AD A6 01    | L2101ED     LDA   L0201A5        
+  367 |  1   SEG21.S    310 | Code        | 00 |         |    2 | 00/01E5 : C5 F4       |             CMP   $F4            
+  368 |  1   SEG21.S    311 | Code        | 00 |         |    2 | 00/01E7 : B0 0A       |             BCS   L2101FE        
+  369 |  1   SEG21.S    312 | Code        | 00 |         |    2 | 00/01E9 : A5 F4       |             LDA   $F4            
+  370 |  1   SEG21.S    313 | Code        | 00 |         |    1 | 00/01EB : 38          |             SEC                  
+  371 |  1   SEG21.S    314 | Code        | 00 |E 2      |    3 | 00/01EC : ED A6 01    |             SBC   L0201A5        
+  372 |  1   SEG21.S    315 | Code        | 00 |         |    2 | 00/01EF : 85 EE       |             STA   $EE            
+  373 |  1   SEG21.S    316 | Code        | 00 |         |    2 | 00/01F1 : 80 11       |             BRA   L21020F        
+  374 |  1   SEG21.S    317 | Code        | 00 |E 2      |    3 | 00/01F3 : AD A2 01    | L2101FE     LDA   L0201A1        
+  375 |  1   SEG21.S    318 | Code        | 00 |         |    2 | 00/01F6 : C5 F4       |             CMP   $F4            
+  376 |  1   SEG21.S    319 | Code        | 00 |         |    2 | 00/01F8 : F0 0A       |             BEQ   L21020F        
+  377 |  1   SEG21.S    320 | Code        | 00 |         |    2 | 00/01FA : 90 08       |             BCC   L21020F        
+  378 |  1   SEG21.S    321 | Code        | 00 |         |    2 | 00/01FC : A5 F4       |             LDA   $F4            
+  379 |  1   SEG21.S    322 | Code        | 00 |         |    1 | 00/01FE : 38          |             SEC                  
+  380 |  1   SEG21.S    323 | Code        | 00 |E 2      |    3 | 00/01FF : ED A2 01    |             SBC   L0201A1        
+  381 |  1   SEG21.S    324 | Code        | 00 |         |    2 | 00/0202 : 85 EE       |             STA   $EE            
+  382 |  1   SEG21.S    325 | Code        | 00 |E 2      |    3 | 00/0204 : AD A2 01    | L21020F     LDA   L0201A1        
+  383 |  1   SEG21.S    326 | Code        | 00 |         |    1 | 00/0207 : 18          |             CLC                  
+  384 |  1   SEG21.S    327 | Code        | 00 |         |    2 | 00/0208 : 65 EE       |             ADC   $EE            
+  385 |  1   SEG21.S    328 | Code        | 00 |E 2      |    3 | 00/020A : 8D A2 01    |             STA   L0201A1        
+  386 |  1   SEG21.S    329 | Code        | 00 |E 2      |    3 | 00/020D : AD A6 01    |             LDA   L0201A5        
+  387 |  1   SEG21.S    330 | Code        | 00 |         |    1 | 00/0210 : 18          |             CLC                  
+  388 |  1   SEG21.S    331 | Code        | 00 |         |    2 | 00/0211 : 65 EE       |             ADC   $EE            
+  389 |  1   SEG21.S    332 | Code        | 00 |E 2      |    3 | 00/0213 : 8D A6 01    |             STA   L0201A5        
+  390 |  1   SEG21.S    333 | Code        | 00 |E 2      |    3 | 00/0216 : AD A8 01    |             LDA   L0201A7        
+  391 |  1   SEG21.S    334 | Code        | 00 |         |    1 | 00/0219 : 18          |             CLC                  
+  392 |  1   SEG21.S    335 | Code        | 00 |         |    2 | 00/021A : 65 F0       |             ADC   $F0            
+  393 |  1   SEG21.S    336 | Code        | 00 |E 2      |    3 | 00/021C : 8D A8 01    |             STA   L0201A7        
+  394 |  1   SEG21.S    337 | Code        | 00 |E 2      |    3 | 00/021F : AD A4 01    |             LDA   L0201A3        
+  395 |  1   SEG21.S    338 | Code        | 00 |         |    1 | 00/0222 : 18          |             CLC                  
+  396 |  1   SEG21.S    339 | Code        | 00 |         |    2 | 00/0223 : 65 F0       |             ADC   $F0            
+  397 |  1   SEG21.S    340 | Code        | 00 |E 2      |    3 | 00/0225 : 8D A4 01    |             STA   L0201A3        
+  398 |  1   SEG21.S    341 | Code        | 00 |         |    2 | 00/0228 : A5 F2       |             LDA   $F2            
+  399 |  1   SEG21.S    342 | Code        | 00 |         |    1 | 00/022A : 38          |             SEC                  
+  400 |  1   SEG21.S    343 | Code        | 00 |E 2      |    3 | 00/022B : ED A4 01    |             SBC   L0201A3        
+  401 |  1   SEG21.S    344 | Code        | 00 |         |    1 | 00/022E : 48          |             PHA                  
+  402 |  1   SEG21.S    345 | Code        | 00 |E 2      |    3 | 00/022F : AD 8C 01    |             LDA   L02018B        
+  403 |  1   SEG21.S    346 | Code        | 00 |         |    1 | 00/0232 : FA          |             PLX                  
+  404 |  1   SEG21.S    347 | Code        | 00 |         |    2 | 00/0233 : 86 FA       |             STX   $FA            
+  405 |  1   SEG21.S    348 | Code        | 00 |         |    1 | 00/0235 : 18          |             CLC                  
+  406 |  1   SEG21.S    349 | Code        | 00 |         |    2 | 00/0236 : 65 FA       |             ADC   $FA            
+  407 |  1   SEG21.S    350 | Code        | 00 |         |    1 | 00/0238 : 38          |             SEC                  
+  408 |  1   SEG21.S    351 | Code        | 00 |         |    3 | 00/0239 : E9 FA 00    |             SBC   #$00FA         
+  409 |  1   SEG21.S    352 | Code        | 00 |E 2      |    3 | 00/023C : 8D 8E 01    |             STA   L02018D        
+  410 |  1   SEG21.S    353 | Code        | 00 |         |    2 | 00/023F : A5 F4       |             LDA   $F4            
+  411 |  1   SEG21.S    354 | Code        | 00 |         |    1 | 00/0241 : 38          |             SEC                  
+  412 |  1   SEG21.S    355 | Code        | 00 |E 2      |    3 | 00/0242 : ED A2 01    |             SBC   L0201A1        
+  413 |  1   SEG21.S    356 | Code        | 00 |         |    1 | 00/0245 : 48          |             PHA                  
+  414 |  1   SEG21.S    357 | Code        | 00 |         |    3 | 00/0246 : A9 C8 00    |             LDA   #$00C8         
+  415 |  1   SEG21.S    358 | Code        | 00 |         |    1 | 00/0249 : FA          |             PLX                  
+  416 |  1   SEG21.S    359 | Code        | 00 |         |    2 | 00/024A : 86 FA       |             STX   $FA            
+  417 |  1   SEG21.S    360 | Code        | 00 |         |    1 | 00/024C : 38          |             SEC                  
+  418 |  1   SEG21.S    361 | Code        | 00 |         |    2 | 00/024D : E5 FA       |             SBC   $FA            
+  419 |  1   SEG21.S    362 | Code        | 00 |E 2      |    3 | 00/024F : 8D 90 01    |             STA   L02018F        
+  420 |  1   SEG21.S    363 | Code        | 00 |  3      |    4 | 00/0252 : 22 18 00 00 |             JSL   L210018        
+  421 |  1   SEG21.S    364 | Code        | 00 |         |    1 | 00/0256 : 3B          |             TSC                  
+  422 |  1   SEG21.S    365 | Code        | 00 |         |    1 | 00/0257 : 18          |             CLC                  
+  423 |  1   SEG21.S    366 | Code        | 00 |         |    3 | 00/0258 : 69 0E 00    |             ADC   #$000E         
+  424 |  1   SEG21.S    367 | Code        | 00 |         |    1 | 00/025B : 1B          |             TCS                  
+  425 |  1   SEG21.S    368 | Code        | 00 |         |    1 | 00/025C : 2B          |             PLD                  
+  426 |  1   SEG21.S    369 | Code        | 00 |         |    1 | 00/025D : 6B          |             RTL                  
+  427 |  1   SEG21.S    370 | Empty       | 00 |         |    0 | 00/025E               |                                  
+  428 |  1   SEG21.S    371 | Global      | 00 |         |    0 | 00/025E               | L210269     ENT                  
+  429 |  1   SEG21.S    372 | Code        | 00 |         |    1 | 00/025E : 0B          |             PHD                  
+  430 |  1   SEG21.S    373 | Code        | 00 |         |    1 | 00/025F : 3B          |             TSC                  
+  431 |  1   SEG21.S    374 | Code        | 00 |         |    1 | 00/0260 : 38          |             SEC                  
+  432 |  1   SEG21.S    375 | Code        | 00 |         |    3 | 00/0261 : E9 FB 00    |             SBC   #$00FB         
+  433 |  1   SEG21.S    376 | Code        | 00 |         |    1 | 00/0264 : 5B          |             TCD                  
+  434 |  1   SEG21.S    377 | Code        | 00 |         |    3 | 00/0265 : 69 F4 00    |             ADC   #$00F4         
+  435 |  1   SEG21.S    378 | Code        | 00 |         |    1 | 00/0268 : 1B          |             TCS                  
+  436 |  1   SEG21.S    379 | Code        | 00 |E 2      |    3 | 00/0269 : 9C 92 01    |             STZ   L020191        
+  437 |  1   SEG21.S    380 | Code        | 00 |         |    1 | 00/026C : 3B          |             TSC                  
+  438 |  1   SEG21.S    381 | Code        | 00 |         |    1 | 00/026D : 18          |             CLC                  
+  439 |  1   SEG21.S    382 | Code        | 00 |         |    3 | 00/026E : 69 06 00    |             ADC   #$0006         
+  440 |  1   SEG21.S    383 | Code        | 00 |         |    1 | 00/0271 : 1B          |             TCS                  
+  441 |  1   SEG21.S    384 | Code        | 00 |         |    1 | 00/0272 : 2B          |             PLD                  
+  442 |  1   SEG21.S    385 | Code        | 00 |         |    1 | 00/0273 : 6B          |             RTL                  
+  443 |  1   SEG21.S    386 | Empty       | 00 |         |    0 | 00/0274               |                                  
+  444 |  1   SEG21.S    387 | Code        | 00 |         |    1 | 00/0274 : 0B          | L21027F     PHD                  
+  445 |  1   SEG21.S    388 | Code        | 00 |         |    1 | 00/0275 : 3B          |             TSC                  
+  446 |  1   SEG21.S    389 | Code        | 00 |         |    1 | 00/0276 : 38          |             SEC                  
+  447 |  1   SEG21.S    390 | Code        | 00 |         |    3 | 00/0277 : E9 ED 00    |             SBC   #$00ED         
+  448 |  1   SEG21.S    391 | Code        | 00 |         |    1 | 00/027A : 5B          |             TCD                  
+  449 |  1   SEG21.S    392 | Code        | 00 |         |    3 | 00/027B : 69 E6 00    |             ADC   #$00E6         
+  450 |  1   SEG21.S    393 | Code        | 00 |         |    1 | 00/027E : 1B          |             TCS                  
+  451 |  1   SEG21.S    394 | Code        | 00 |E 2      |    3 | 00/027F : AD 92 01    |             LDA   L020191        
+  452 |  1   SEG21.S    395 | Code        | 00 |         |    1 | 00/0282 : 38          |             SEC                  
+  453 |  1   SEG21.S    396 | Code        | 00 |         |    3 | 00/0283 : E9 00 00    |             SBC   #$0000         
+  454 |  1   SEG21.S    397 | Code        | 00 |         |    2 | 00/0286 : F0 0A       |             BEQ   L21029D        
+  455 |  1   SEG21.S    398 | Code        | 00 |         |    2 | 00/0288 : 70 03       |             BVS   L210298        
+  456 |  1   SEG21.S    399 | Code        | 00 |         |    3 | 00/028A : 49 00 80    |             EOR   #$8000         
+  457 |  1   SEG21.S    400 | Code        | 00 |         |    2 | 00/028D : 10 03       | L210298     BPL   L21029D        
+  458 |  1   SEG21.S    401 | Code        | 00 |         |    3 | 00/028F : 82 45 01    |             BRL   L2103E2        
+  459 |  1   SEG21.S    402 | Code        | 00 |         |    3 | 00/0292 : A2 00 00    | L21029D     LDX   #$0000         
+  460 |  1   SEG21.S    403 | Code        | 00 |         |    3 | 00/0295 : A9 07 00    |             LDA   #$0007         
+  461 |  1   SEG21.S    404 | Code        | 00 |         |    1 | 00/0298 : DA          |             PHX                  
+  462 |  1   SEG21.S    405 | Code        | 00 |         |    1 | 00/0299 : 48          |             PHA                  
+  463 |  1   SEG21.S    406 | Code        | 00 |         |    2 | 00/029A : A7 FB       |             LDA   [$FB]          
+  464 |  1   SEG21.S    407 | Code        | 00 |         |    3 | 00/029C : A2 00 00    |             LDX   #$0000         
+  465 |  1   SEG21.S    408 | Code        | 00 |         |    1 | 00/029F : A8          |             TAY                  
+  466 |  1   SEG21.S    409 | Code        | 00 |         |    2 | 00/02A0 : 10 01       |             BPL   L2102AE        
+  467 |  1   SEG21.S    410 | Code        | 00 |         |    1 | 00/02A2 : CA          |             DEX                  
+  468 |  1   SEG21.S    411 | Code        | 00 |         |    1 | 00/02A3 : DA          | L2102AE     PHX                  
+  469 |  1   SEG21.S    412 | Code        | 00 |         |    1 | 00/02A4 : 48          |             PHA                  
+  470 |  1   SEG21.S    413 | Code        | 00 |E 2      |    3 | 00/02A5 : AE 6A 01    |             LDX   L020169        
+  471 |  1   SEG21.S    414 | Code        | 00 |E 2      |    3 | 00/02A8 : AD 68 01    |             LDA   L020167        
+  472 |  1   SEG21.S    415 | Code        | 00 |         |    1 | 00/02AB : 38          |             SEC                  
+  473 |  1   SEG21.S    416 | Code        | 00 |E 3      |    4 | 00/02AC : 22 B2 10 1A |             JSL   L1A10DF        
+  474 |  1   SEG21.S    417 | Code        | 00 |         |    1 | 00/02B0 : 68          |             PLA                  
+  475 |  1   SEG21.S    418 | Code        | 00 |         |    1 | 00/02B1 : FA          |             PLX                  
+  476 |  1   SEG21.S    419 | Code        | 00 |         |    1 | 00/02B2 : 38          |             SEC                  
+  477 |  1   SEG21.S    420 | Code        | 00 |E 3      |    4 | 00/02B3 : 22 41 18 1A |             JSL   L1A186E        
+  478 |  1   SEG21.S    421 | Code        | 00 |         |    1 | 00/02B7 : 68          |             PLA                  
+  479 |  1   SEG21.S    422 | Code        | 00 |         |    1 | 00/02B8 : FA          |             PLX                  
+  480 |  1   SEG21.S    423 | Code        | 00 |E 2      |    3 | 00/02B9 : 8E 6A 01    |             STX   L020169        
+  481 |  1   SEG21.S    424 | Code        | 00 |E 2      |    3 | 00/02BC : 8D 68 01    |             STA   L020167        
+  482 |  1   SEG21.S    425 | Code        | 00 |         |    2 | 00/02BF : A5 FF       |             LDA   $FF            
+  483 |  1   SEG21.S    426 | Code        | 00 |         |    2 | 00/02C1 : D0 03       |             BNE   L2102D1        
+  484 |  1   SEG21.S    427 | Code        | 00 |         |    3 | 00/02C3 : 82 47 00    |             BRL   L210318        
+  485 |  1   SEG21.S    428 | Code        | 00 |         |    3 | 00/02C6 : A2 00 00    | L2102D1     LDX   #$0000         
+  486 |  1   SEG21.S    429 | Code        | 00 |         |    3 | 00/02C9 : A9 07 00    |             LDA   #$0007         
+  487 |  1   SEG21.S    430 | Code        | 00 |         |    1 | 00/02CC : DA          |             PHX                  
+  488 |  1   SEG21.S    431 | Code        | 00 |         |    1 | 00/02CD : 48          |             PHA                  
+  489 |  1   SEG21.S    432 | Code        | 00 |         |    3 | 00/02CE : A0 02 00    |             LDY   #$0002         
+  490 |  1   SEG21.S    433 | Code        | 00 |         |    2 | 00/02D1 : B7 FB       |             LDA   [$FB],Y        
+  491 |  1   SEG21.S    434 | Code        | 00 |         |    3 | 00/02D3 : A2 00 00    |             LDX   #$0000         
+  492 |  1   SEG21.S    435 | Code        | 00 |         |    1 | 00/02D6 : A8          |             TAY                  
+  493 |  1   SEG21.S    436 | Code        | 00 |         |    2 | 00/02D7 : 10 01       |             BPL   L2102E5        
+  494 |  1   SEG21.S    437 | Code        | 00 |         |    1 | 00/02D9 : CA          |             DEX                  
+  495 |  1   SEG21.S    438 | Code        | 00 |         |    1 | 00/02DA : DA          | L2102E5     PHX                  
+  496 |  1   SEG21.S    439 | Code        | 00 |         |    1 | 00/02DB : 48          |             PHA                  
+  497 |  1   SEG21.S    440 | Code        | 00 |E 2      |    3 | 00/02DC : AE 6E 01    |             LDX   L02016D        
+  498 |  1   SEG21.S    441 | Code        | 00 |E 2      |    3 | 00/02DF : AD 6C 01    |             LDA   L02016B        
+  499 |  1   SEG21.S    442 | Code        | 00 |         |    1 | 00/02E2 : 38          |             SEC                  
+  500 |  1   SEG21.S    443 | Code        | 00 |E 3      |    4 | 00/02E3 : 22 B2 10 1A |             JSL   L1A10DF        
+  501 |  1   SEG21.S    444 | Code        | 00 |         |    1 | 00/02E7 : 68          |             PLA                  
+  502 |  1   SEG21.S    445 | Code        | 00 |         |    1 | 00/02E8 : FA          |             PLX                  
+  503 |  1   SEG21.S    446 | Code        | 00 |         |    1 | 00/02E9 : 38          |             SEC                  
+  504 |  1   SEG21.S    447 | Code        | 00 |E 3      |    4 | 00/02EA : 22 41 18 1A |             JSL   L1A186E        
+  505 |  1   SEG21.S    448 | Code        | 00 |         |    1 | 00/02EE : 68          |             PLA                  
+  506 |  1   SEG21.S    449 | Code        | 00 |         |    1 | 00/02EF : FA          |             PLX                  
+  507 |  1   SEG21.S    450 | Code        | 00 |E 2      |    3 | 00/02F0 : 8E 6E 01    |             STX   L02016D        
+  508 |  1   SEG21.S    451 | Code        | 00 |E 2      |    3 | 00/02F3 : 8D 6C 01    |             STA   L02016B        
+  509 |  1   SEG21.S    452 | Code        | 00 |E 2      |    3 | 00/02F6 : AE 6E 01    |             LDX   L02016D        
+  510 |  1   SEG21.S    453 | Code        | 00 |E 2      |    3 | 00/02F9 : AD 6C 01    |             LDA   L02016B        
+  511 |  1   SEG21.S    454 | Code        | 00 |         |    1 | 00/02FC : DA          |             PHX                  
+  512 |  1   SEG21.S    455 | Code        | 00 |         |    1 | 00/02FD : 48          |             PHA                  
+  513 |  1   SEG21.S    456 | Code        | 00 |E 3      |    4 | 00/02FE : 22 2E 00 1B |             JSL   L1B002E        
+  514 |  1   SEG21.S    457 | Code        | 00 |         |    1 | 00/0302 : 7A          |             PLY                  
+  515 |  1   SEG21.S    458 | Code        | 00 |         |    1 | 00/0303 : 7A          |             PLY                  
+  516 |  1   SEG21.S    459 | Code        | 00 |E 2      |    3 | 00/0304 : 8E 6E 01    |             STX   L02016D        
+  517 |  1   SEG21.S    460 | Code        | 00 |E 2      |    3 | 00/0307 : 8D 6C 01    |             STA   L02016B        
+  518 |  1   SEG21.S    461 | Code        | 00 |         |    3 | 00/030A : 82 48 00    |             BRL   L210360        
+  519 |  1   SEG21.S    462 | Code        | 00 |         |    3 | 00/030D : A2 00 00    | L210318     LDX   #$0000         
+  520 |  1   SEG21.S    463 | Code        | 00 |         |    3 | 00/0310 : A9 07 00    |             LDA   #$0007         
+  521 |  1   SEG21.S    464 | Code        | 00 |         |    1 | 00/0313 : DA          |             PHX                  
+  522 |  1   SEG21.S    465 | Code        | 00 |         |    1 | 00/0314 : 48          |             PHA                  
+  523 |  1   SEG21.S    466 | Code        | 00 |         |    3 | 00/0315 : A0 02 00    |             LDY   #$0002         
+  524 |  1   SEG21.S    467 | Code        | 00 |         |    2 | 00/0318 : B7 FB       |             LDA   [$FB],Y        
+  525 |  1   SEG21.S    468 | Code        | 00 |         |    3 | 00/031A : A2 00 00    |             LDX   #$0000         
+  526 |  1   SEG21.S    469 | Code        | 00 |         |    1 | 00/031D : A8          |             TAY                  
+  527 |  1   SEG21.S    470 | Code        | 00 |         |    2 | 00/031E : 10 01       |             BPL   L21032C        
+  528 |  1   SEG21.S    471 | Code        | 00 |         |    1 | 00/0320 : CA          |             DEX                  
+  529 |  1   SEG21.S    472 | Code        | 00 |         |    1 | 00/0321 : DA          | L21032C     PHX                  
+  530 |  1   SEG21.S    473 | Code        | 00 |         |    1 | 00/0322 : 48          |             PHA                  
+  531 |  1   SEG21.S    474 | Code        | 00 |E 2      |    3 | 00/0323 : AE 6E 01    |             LDX   L02016D        
+  532 |  1   SEG21.S    475 | Code        | 00 |E 2      |    3 | 00/0326 : AD 6C 01    |             LDA   L02016B        
+  533 |  1   SEG21.S    476 | Code        | 00 |         |    1 | 00/0329 : 38          |             SEC                  
+  534 |  1   SEG21.S    477 | Code        | 00 |E 3      |    4 | 00/032A : 22 B2 10 1A |             JSL   L1A10DF        
+  535 |  1   SEG21.S    478 | Code        | 00 |         |    1 | 00/032E : 68          |             PLA                  
+  536 |  1   SEG21.S    479 | Code        | 00 |         |    1 | 00/032F : FA          |             PLX                  
+  537 |  1   SEG21.S    480 | Code        | 00 |         |    1 | 00/0330 : 38          |             SEC                  
+  538 |  1   SEG21.S    481 | Code        | 00 |E 3      |    4 | 00/0331 : 22 41 18 1A |             JSL   L1A186E        
+  539 |  1   SEG21.S    482 | Code        | 00 |         |    1 | 00/0335 : 68          |             PLA                  
+  540 |  1   SEG21.S    483 | Code        | 00 |         |    1 | 00/0336 : FA          |             PLX                  
+  541 |  1   SEG21.S    484 | Code        | 00 |E 2      |    3 | 00/0337 : 8E 6E 01    |             STX   L02016D        
+  542 |  1   SEG21.S    485 | Code        | 00 |E 2      |    3 | 00/033A : 8D 6C 01    |             STA   L02016B        
+  543 |  1   SEG21.S    486 | Code        | 00 |E 2      |    3 | 00/033D : AE 6E 01    |             LDX   L02016D        
+  544 |  1   SEG21.S    487 | Code        | 00 |E 2      |    3 | 00/0340 : AD 6C 01    |             LDA   L02016B        
+  545 |  1   SEG21.S    488 | Code        | 00 |         |    1 | 00/0343 : DA          |             PHX                  
+  546 |  1   SEG21.S    489 | Code        | 00 |         |    1 | 00/0344 : 48          |             PHA                  
+  547 |  1   SEG21.S    490 | Code        | 00 |E 3      |    4 | 00/0345 : 22 2E 00 1B |             JSL   L1B002E        
+  548 |  1   SEG21.S    491 | Code        | 00 |         |    1 | 00/0349 : 7A          |             PLY                  
+  549 |  1   SEG21.S    492 | Code        | 00 |         |    1 | 00/034A : 7A          |             PLY                  
+  550 |  1   SEG21.S    493 | Code        | 00 |E 3      |    4 | 00/034B : 22 DD 0E 1A |             JSL   L1A0F0A        
+  551 |  1   SEG21.S    494 | Code        | 00 |E 2      |    3 | 00/034F : 8E 6E 01    |             STX   L02016D        
+  552 |  1   SEG21.S    495 | Code        | 00 |E 2      |    3 | 00/0352 : 8D 6C 01    |             STA   L02016B        
+  553 |  1   SEG21.S    496 | Code        | 00 |         |    3 | 00/0355 : A2 00 00    | L210360     LDX   #$0000         
+  554 |  1   SEG21.S    497 | Code        | 00 |         |    3 | 00/0358 : A9 07 00    |             LDA   #$0007         
+  555 |  1   SEG21.S    498 | Code        | 00 |         |    1 | 00/035B : DA          |             PHX                  
+  556 |  1   SEG21.S    499 | Code        | 00 |         |    1 | 00/035C : 48          |             PHA                  
+  557 |  1   SEG21.S    500 | Code        | 00 |         |    3 | 00/035D : A0 04 00    |             LDY   #$0004         
+  558 |  1   SEG21.S    501 | Code        | 00 |         |    2 | 00/0360 : B7 FB       |             LDA   [$FB],Y        
+  559 |  1   SEG21.S    502 | Code        | 00 |         |    3 | 00/0362 : A2 00 00    |             LDX   #$0000         
+  560 |  1   SEG21.S    503 | Code        | 00 |         |    1 | 00/0365 : A8          |             TAY                  
+  561 |  1   SEG21.S    504 | Code        | 00 |         |    2 | 00/0366 : 10 01       |             BPL   L210374        
+  562 |  1   SEG21.S    505 | Code        | 00 |         |    1 | 00/0368 : CA          |             DEX                  
+  563 |  1   SEG21.S    506 | Code        | 00 |         |    1 | 00/0369 : DA          | L210374     PHX                  
+  564 |  1   SEG21.S    507 | Code        | 00 |         |    1 | 00/036A : 48          |             PHA                  
+  565 |  1   SEG21.S    508 | Code        | 00 |         |    2 | 00/036B : A6 F5       |             LDX   $F5            
+  566 |  1   SEG21.S    509 | Code        | 00 |         |    2 | 00/036D : A5 F3       |             LDA   $F3            
+  567 |  1   SEG21.S    510 | Code        | 00 |         |    1 | 00/036F : 38          |             SEC                  
+  568 |  1   SEG21.S    511 | Code        | 00 |E 3      |    4 | 00/0370 : 22 B2 10 1A |             JSL   L1A10DF        
+  569 |  1   SEG21.S    512 | Code        | 00 |         |    1 | 00/0374 : 68          |             PLA                  
+  570 |  1   SEG21.S    513 | Code        | 00 |         |    1 | 00/0375 : FA          |             PLX                  
+  571 |  1   SEG21.S    514 | Code        | 00 |         |    1 | 00/0376 : 38          |             SEC                  
+  572 |  1   SEG21.S    515 | Code        | 00 |E 3      |    4 | 00/0377 : 22 41 18 1A |             JSL   L1A186E        
+  573 |  1   SEG21.S    516 | Code        | 00 |         |    1 | 00/037B : 68          |             PLA                  
+  574 |  1   SEG21.S    517 | Code        | 00 |         |    1 | 00/037C : FA          |             PLX                  
+  575 |  1   SEG21.S    518 | Code        | 00 |         |    2 | 00/037D : 86 F5       |             STX   $F5            
+  576 |  1   SEG21.S    519 | Code        | 00 |         |    2 | 00/037F : 85 F3       |             STA   $F3            
+  577 |  1   SEG21.S    520 | Code        | 00 |         |    3 | 00/0381 : A2 00 00    |             LDX   #$0000         
+  578 |  1   SEG21.S    521 | Code        | 00 |         |    3 | 00/0384 : A9 07 00    |             LDA   #$0007         
+  579 |  1   SEG21.S    522 | Code        | 00 |         |    1 | 00/0387 : DA          |             PHX                  
+  580 |  1   SEG21.S    523 | Code        | 00 |         |    1 | 00/0388 : 48          |             PHA                  
+  581 |  1   SEG21.S    524 | Code        | 00 |         |    3 | 00/0389 : A0 06 00    |             LDY   #$0006         
+  582 |  1   SEG21.S    525 | Code        | 00 |         |    2 | 00/038C : B7 FB       |             LDA   [$FB],Y        
+  583 |  1   SEG21.S    526 | Code        | 00 |         |    3 | 00/038E : A2 00 00    |             LDX   #$0000         
+  584 |  1   SEG21.S    527 | Code        | 00 |         |    1 | 00/0391 : A8          |             TAY                  
+  585 |  1   SEG21.S    528 | Code        | 00 |         |    2 | 00/0392 : 10 01       |             BPL   L2103A0        
+  586 |  1   SEG21.S    529 | Code        | 00 |         |    1 | 00/0394 : CA          |             DEX                  
+  587 |  1   SEG21.S    530 | Code        | 00 |         |    1 | 00/0395 : DA          | L2103A0     PHX                  
+  588 |  1   SEG21.S    531 | Code        | 00 |         |    1 | 00/0396 : 48          |             PHA                  
+  589 |  1   SEG21.S    532 | Code        | 00 |         |    2 | 00/0397 : A6 F9       |             LDX   $F9            
+  590 |  1   SEG21.S    533 | Code        | 00 |         |    2 | 00/0399 : A5 F7       |             LDA   $F7            
+  591 |  1   SEG21.S    534 | Code        | 00 |         |    1 | 00/039B : 38          |             SEC                  
+  592 |  1   SEG21.S    535 | Code        | 00 |E 3      |    4 | 00/039C : 22 B2 10 1A |             JSL   L1A10DF        
+  593 |  1   SEG21.S    536 | Code        | 00 |         |    1 | 00/03A0 : 68          |             PLA                  
+  594 |  1   SEG21.S    537 | Code        | 00 |         |    1 | 00/03A1 : FA          |             PLX                  
+  595 |  1   SEG21.S    538 | Code        | 00 |         |    1 | 00/03A2 : 38          |             SEC                  
+  596 |  1   SEG21.S    539 | Code        | 00 |E 3      |    4 | 00/03A3 : 22 41 18 1A |             JSL   L1A186E        
+  597 |  1   SEG21.S    540 | Code        | 00 |         |    1 | 00/03A7 : 68          |             PLA                  
+  598 |  1   SEG21.S    541 | Code        | 00 |         |    1 | 00/03A8 : FA          |             PLX                  
+  599 |  1   SEG21.S    542 | Code        | 00 |         |    2 | 00/03A9 : 86 F9       |             STX   $F9            
+  600 |  1   SEG21.S    543 | Code        | 00 |         |    2 | 00/03AB : 85 F7       |             STA   $F7            
+  601 |  1   SEG21.S    544 | Code        | 00 |E 2      |    3 | 00/03AD : AE 6A 01    |             LDX   L020169        
+  602 |  1   SEG21.S    545 | Code        | 00 |E 2      |    3 | 00/03B0 : AD 68 01    |             LDA   L020167        
+  603 |  1   SEG21.S    546 | Code        | 00 |         |    1 | 00/03B3 : 18          |             CLC                  
+  604 |  1   SEG21.S    547 | Code        | 00 |         |    2 | 00/03B4 : 65 F3       |             ADC   $F3            
+  605 |  1   SEG21.S    548 | Code        | 00 |         |    1 | 00/03B6 : 48          |             PHA                  
+  606 |  1   SEG21.S    549 | Code        | 00 |         |    1 | 00/03B7 : 8A          |             TXA                  
+  607 |  1   SEG21.S    550 | Code        | 00 |         |    2 | 00/03B8 : 65 F5       |             ADC   $F5            
+  608 |  1   SEG21.S    551 | Code        | 00 |         |    1 | 00/03BA : AA          |             TAX                  
+  609 |  1   SEG21.S    552 | Code        | 00 |         |    1 | 00/03BB : 68          |             PLA                  
+  610 |  1   SEG21.S    553 | Code        | 00 |E 2      |    3 | 00/03BC : 8E 6A 01    |             STX   L020169        
+  611 |  1   SEG21.S    554 | Code        | 00 |E 2      |    3 | 00/03BF : 8D 68 01    |             STA   L020167        
+  612 |  1   SEG21.S    555 | Code        | 00 |E 2      |    3 | 00/03C2 : AE 6E 01    |             LDX   L02016D        
+  613 |  1   SEG21.S    556 | Code        | 00 |E 2      |    3 | 00/03C5 : AD 6C 01    |             LDA   L02016B        
+  614 |  1   SEG21.S    557 | Code        | 00 |         |    1 | 00/03C8 : 18          |             CLC                  
+  615 |  1   SEG21.S    558 | Code        | 00 |         |    2 | 00/03C9 : 65 F7       |             ADC   $F7            
+  616 |  1   SEG21.S    559 | Code        | 00 |         |    1 | 00/03CB : 48          |             PHA                  
+  617 |  1   SEG21.S    560 | Code        | 00 |         |    1 | 00/03CC : 8A          |             TXA                  
+  618 |  1   SEG21.S    561 | Code        | 00 |         |    2 | 00/03CD : 65 F9       |             ADC   $F9            
+  619 |  1   SEG21.S    562 | Code        | 00 |         |    1 | 00/03CF : AA          |             TAX                  
+  620 |  1   SEG21.S    563 | Code        | 00 |         |    1 | 00/03D0 : 68          |             PLA                  
+  621 |  1   SEG21.S    564 | Code        | 00 |E 2      |    3 | 00/03D1 : 8E 6E 01    |             STX   L02016D        
+  622 |  1   SEG21.S    565 | Code        | 00 |E 2      |    3 | 00/03D4 : 8D 6C 01    |             STA   L02016B        
+  623 |  1   SEG21.S    566 | Code        | 00 |         |    2 | 00/03D7 : A5 FF       | L2103E2     LDA   $FF            
+  624 |  1   SEG21.S    567 | Code        | 00 |         |    2 | 00/03D9 : F0 39       |             BEQ   L21041F        
+  625 |  1   SEG21.S    568 | Code        | 00 |E 2      |    3 | 00/03DB : AD 90 01    |             LDA   L02018F        
+  626 |  1   SEG21.S    569 | Code        | 00 |         |    1 | 00/03DE : 18          |             CLC                  
+  627 |  1   SEG21.S    570 | Code        | 00 |         |    3 | 00/03DF : 69 18 00    |             ADC   #$0018         
+  628 |  1   SEG21.S    571 | Code        | 00 |         |    3 | 00/03E2 : A2 00 00    |             LDX   #$0000         
+  629 |  1   SEG21.S    572 | Code        | 00 |         |    1 | 00/03E5 : A8          |             TAY                  
+  630 |  1   SEG21.S    573 | Code        | 00 |         |    2 | 00/03E6 : 10 01       |             BPL   L2103F4        
+  631 |  1   SEG21.S    574 | Code        | 00 |         |    1 | 00/03E8 : CA          |             DEX                  
+  632 |  1   SEG21.S    575 | Code        | 00 |         |    1 | 00/03E9 : DA          | L2103F4     PHX                  
+  633 |  1   SEG21.S    576 | Code        | 00 |         |    1 | 00/03EA : 48          |             PHA                  
+  634 |  1   SEG21.S    577 | Code        | 00 |E 2      |    3 | 00/03EB : AE 66 01    |             LDX   L020165        
+  635 |  1   SEG21.S    578 | Code        | 00 |E 2      |    3 | 00/03EE : AD 64 01    |             LDA   L020163        
+  636 |  1   SEG21.S    579 | Code        | 00 |E 3      |    4 | 00/03F1 : 22 DE 12 1A |             JSL   L1A130B        
+  637 |  1   SEG21.S    580 | Code        | 00 |         |    2 | 00/03F5 : F0 1B       |             BEQ   L21041D        
+  638 |  1   SEG21.S    581 | Code        | 00 |         |    2 | 00/03F7 : 70 03       |             BVS   L210407        
+  639 |  1   SEG21.S    582 | Code        | 00 |         |    3 | 00/03F9 : 49 00 80    |             EOR   #$8000         
+  640 |  1   SEG21.S    583 | Code        | 00 |         |    2 | 00/03FC : 10 14       | L210407     BPL   L21041D        
+  641 |  1   SEG21.S    584 | Code        | 00 |E 2      |    3 | 00/03FE : AD 90 01    |             LDA   L02018F        
+  642 |  1   SEG21.S    585 | Code        | 00 |         |    1 | 00/0401 : 18          |             CLC                  
+  643 |  1   SEG21.S    586 | Code        | 00 |         |    3 | 00/0402 : 69 18 00    |             ADC   #$0018         
+  644 |  1   SEG21.S    587 | Code        | 00 |         |    3 | 00/0405 : A2 00 00    |             LDX   #$0000         
+  645 |  1   SEG21.S    588 | Code        | 00 |         |    1 | 00/0408 : A8          |             TAY                  
+  646 |  1   SEG21.S    589 | Code        | 00 |         |    2 | 00/0409 : 10 01       |             BPL   L210417        
+  647 |  1   SEG21.S    590 | Code        | 00 |         |    1 | 00/040B : CA          |             DEX                  
+  648 |  1   SEG21.S    591 | Code        | 00 |E 2      |    3 | 00/040C : 8E 66 01    | L210417     STX   L020165        
+  649 |  1   SEG21.S    592 | Code        | 00 |E 2      |    3 | 00/040F : 8D 64 01    |             STA   L020163        
+  650 |  1   SEG21.S    593 | Code        | 00 |         |    2 | 00/0412 : 80 35       | L21041D     BRA   L210454        
+  651 |  1   SEG21.S    594 | Code        | 00 |E 2      |    3 | 00/0414 : AD 90 01    | L21041F     LDA   L02018F        
+  652 |  1   SEG21.S    595 | Code        | 00 |         |    1 | 00/0417 : 38          |             SEC                  
+  653 |  1   SEG21.S    596 | Code        | 00 |         |    3 | 00/0418 : E9 18 00    |             SBC   #$0018         
+  654 |  1   SEG21.S    597 | Code        | 00 |         |    3 | 00/041B : A2 00 00    |             LDX   #$0000         
+  655 |  1   SEG21.S    598 | Code        | 00 |         |    1 | 00/041E : A8          |             TAY                  
+  656 |  1   SEG21.S    599 | Code        | 00 |         |    2 | 00/041F : 10 01       |             BPL   L21042D        
+  657 |  1   SEG21.S    600 | Code        | 00 |         |    1 | 00/0421 : CA          |             DEX                  
+  658 |  1   SEG21.S    601 | Code        | 00 |         |    1 | 00/0422 : DA          | L21042D     PHX                  
+  659 |  1   SEG21.S    602 | Code        | 00 |         |    1 | 00/0423 : 48          |             PHA                  
+  660 |  1   SEG21.S    603 | Code        | 00 |E 2      |    3 | 00/0424 : AE 66 01    |             LDX   L020165        
+  661 |  1   SEG21.S    604 | Code        | 00 |E 2      |    3 | 00/0427 : AD 64 01    |             LDA   L020163        
+  662 |  1   SEG21.S    605 | Code        | 00 |E 3      |    4 | 00/042A : 22 DE 12 1A |             JSL   L1A130B        
+  663 |  1   SEG21.S    606 | Code        | 00 |         |    2 | 00/042E : 70 03       |             BVS   L21043E        
+  664 |  1   SEG21.S    607 | Code        | 00 |         |    3 | 00/0430 : 49 00 80    |             EOR   #$8000         
+  665 |  1   SEG21.S    608 | Code        | 00 |         |    2 | 00/0433 : 30 14       | L21043E     BMI   L210454        
+  666 |  1   SEG21.S    609 | Code        | 00 |E 2      |    3 | 00/0435 : AD 90 01    |             LDA   L02018F        
+  667 |  1   SEG21.S    610 | Code        | 00 |         |    1 | 00/0438 : 38          |             SEC                  
+  668 |  1   SEG21.S    611 | Code        | 00 |         |    3 | 00/0439 : E9 18 00    |             SBC   #$0018         
+  669 |  1   SEG21.S    612 | Code        | 00 |         |    3 | 00/043C : A2 00 00    |             LDX   #$0000         
+  670 |  1   SEG21.S    613 | Code        | 00 |         |    1 | 00/043F : A8          |             TAY                  
+  671 |  1   SEG21.S    614 | Code        | 00 |         |    2 | 00/0440 : 10 01       |             BPL   L21044E        
+  672 |  1   SEG21.S    615 | Code        | 00 |         |    1 | 00/0442 : CA          |             DEX                  
+  673 |  1   SEG21.S    616 | Code        | 00 |E 2      |    3 | 00/0443 : 8E 66 01    | L21044E     STX   L020165        
+  674 |  1   SEG21.S    617 | Code        | 00 |E 2      |    3 | 00/0446 : 8D 64 01    |             STA   L020163        
+  675 |  1   SEG21.S    618 | Code        | 00 |         |    1 | 00/0449 : 38          | L210454     SEC                  
+  676 |  1   SEG21.S    619 | Code        | 00 |E 2      |    3 | 00/044A : AD 64 01    |             LDA   L020163        
+  677 |  1   SEG21.S    620 | Code        | 00 |         |    3 | 00/044D : E9 C8 00    |             SBC   #$00C8         
+  678 |  1   SEG21.S    621 | Code        | 00 |         |    2 | 00/0450 : D0 08       |             BNE   L210465        
+  679 |  1   SEG21.S    622 | Code        | 00 |E 2      |    3 | 00/0452 : AD 66 01    |             LDA   L020165        
+  680 |  1   SEG21.S    623 | Code        | 00 |         |    3 | 00/0455 : E9 00 00    |             SBC   #$0000         
+  681 |  1   SEG21.S    624 | Code        | 00 |         |    2 | 00/0458 : 80 08       |             BRA   L21046D        
+  682 |  1   SEG21.S    625 | Code        | 00 |E 2      |    3 | 00/045A : AD 66 01    | L210465     LDA   L020165        
+  683 |  1   SEG21.S    626 | Code        | 00 |         |    3 | 00/045D : E9 00 00    |             SBC   #$0000         
+  684 |  1   SEG21.S    627 | Code        | 00 |         |    2 | 00/0460 : C2 02       |             REP   #$02           
+  685 |  1   SEG21.S    628 | Code        | 00 |         |    2 | 00/0462 : F0 33       | L21046D     BEQ   L2104A2        
+  686 |  1   SEG21.S    629 | Code        | 00 |         |    2 | 00/0464 : 70 03       |             BVS   L210474        
+  687 |  1   SEG21.S    630 | Code        | 00 |         |    3 | 00/0466 : 49 00 80    |             EOR   #$8000         
+  688 |  1   SEG21.S    631 | Code        | 00 |         |    2 | 00/0469 : 10 2C       | L210474     BPL   L2104A2        
+  689 |  1   SEG21.S    632 | Code        | 00 |         |    1 | 00/046B : 38          |             SEC                  
+  690 |  1   SEG21.S    633 | Code        | 00 |E 2      |    3 | 00/046C : AD 6C 01    |             LDA   L02016B        
+  691 |  1   SEG21.S    634 | Code        | 00 |         |    3 | 00/046F : E9 05 00    |             SBC   #$0005         
+  692 |  1   SEG21.S    635 | Code        | 00 |         |    2 | 00/0472 : D0 08       |             BNE   L210487        
+  693 |  1   SEG21.S    636 | Code        | 00 |E 2      |    3 | 00/0474 : AD 6E 01    |             LDA   L02016D        
+  694 |  1   SEG21.S    637 | Code        | 00 |         |    3 | 00/0477 : E9 00 00    |             SBC   #$0000         
+  695 |  1   SEG21.S    638 | Code        | 00 |         |    2 | 00/047A : 80 08       |             BRA   L21048F        
+  696 |  1   SEG21.S    639 | Code        | 00 |E 2      |    3 | 00/047C : AD 6E 01    | L210487     LDA   L02016D        
+  697 |  1   SEG21.S    640 | Code        | 00 |         |    3 | 00/047F : E9 00 00    |             SBC   #$0000         
+  698 |  1   SEG21.S    641 | Code        | 00 |         |    2 | 00/0482 : C2 02       |             REP   #$02           
+  699 |  1   SEG21.S    642 | Code        | 00 |         |    2 | 00/0484 : 70 03       | L21048F     BVS   L210494        
+  700 |  1   SEG21.S    643 | Code        | 00 |         |    3 | 00/0486 : 49 00 80    |             EOR   #$8000         
+  701 |  1   SEG21.S    644 | Code        | 00 |         |    2 | 00/0489 : 30 0C       | L210494     BMI   L2104A2        
+  702 |  1   SEG21.S    645 | Code        | 00 |         |    3 | 00/048B : A2 00 00    |             LDX   #$0000         
+  703 |  1   SEG21.S    646 | Code        | 00 |         |    3 | 00/048E : A9 05 00    |             LDA   #$0005         
+  704 |  1   SEG21.S    647 | Code        | 00 |E 2      |    3 | 00/0491 : 8E 6E 01    |             STX   L02016D        
+  705 |  1   SEG21.S    648 | Code        | 00 |E 2      |    3 | 00/0494 : 8D 6C 01    |             STA   L02016B        
+  706 |  1   SEG21.S    649 | Code        | 00 |         |    1 | 00/0497 : 3B          | L2104A2     TSC                  
+  707 |  1   SEG21.S    650 | Code        | 00 |         |    1 | 00/0498 : 18          |             CLC                  
+  708 |  1   SEG21.S    651 | Code        | 00 |         |    3 | 00/0499 : 69 06 00    |             ADC   #$0006         
+  709 |  1   SEG21.S    652 | Code        | 00 |         |    1 | 00/049C : 1B          |             TCS                  
+  710 |  1   SEG21.S    653 | Code        | 00 |         |    1 | 00/049D : 2B          |             PLD                  
+  711 |  1   SEG21.S    654 | Code        | 00 |         |    1 | 00/049E : 6B          |             RTL                  
+  712 |  1   SEG21.S    655 | Empty       | 00 |         |    0 | 00/049F               |                                  
+  713 |  1   SEG21.S    656 | Code        | 00 |         |    1 | 00/049F : 0B          | L2104AA     PHD                  
+  714 |  1   SEG21.S    657 | Code        | 00 |         |    1 | 00/04A0 : 3B          |             TSC                  
+  715 |  1   SEG21.S    658 | Code        | 00 |         |    1 | 00/04A1 : 38          |             SEC                  
+  716 |  1   SEG21.S    659 | Code        | 00 |         |    3 | 00/04A2 : E9 F1 00    |             SBC   #$00F1         
+  717 |  1   SEG21.S    660 | Code        | 00 |         |    1 | 00/04A5 : 5B          |             TCD                  
+  718 |  1   SEG21.S    661 | Code        | 00 |         |    3 | 00/04A6 : 69 E8 00    |             ADC   #$00E8         
+  719 |  1   SEG21.S    662 | Code        | 00 |         |    1 | 00/04A9 : 1B          |             TCS                  
+  720 |  1   SEG21.S    663 | Code        | 00 |         |    1 | 00/04AA : 48          |             PHA                  
+  721 |  1   SEG21.S    664 | Code        | 00 |         |    3 | 00/04AB : F4 00 00    |             PEA   $0000          
+  722 |  1   SEG21.S    665 | Macro       | 00 |         |    0 | 00/04AE               |             _Button                 
+  724 |  1   SEG21.S    665 | Code        | 00 |         |    3 | 00/04AE : A2 06 0D    |             LDX   #$D06          ; load tool call #
+  725 |  1   SEG21.S    665 | Code        | 00 |         |    4 | 00/04B1 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  726 |  1   SEG21.S    666 | Comment     | 00 |         |    0 | 00/04B5               | * BCS L2104C5
+  727 |  1   SEG21.S    667 | Comment     | 00 |         |    0 | 00/04B5               | * LDA #$0000
+  728 |  1   SEG21.S    668 | Comment     | 00 |         |    0 | 00/04B5               | *L2104C5 STAL L0201E7
+  729 |  1   SEG21.S    669 | Code        | 00 |         |    1 | 00/04B5 : 68          |             PLA                  
+  730 |  1   SEG21.S    670 | Code        | 00 |         |    2 | 00/04B6 : 85 EA       |             STA   $EA            
+  731 |  1   SEG21.S    671 | Code        | 00 |         |    2 | 00/04B8 : A5 EA       |             LDA   $EA            
+  732 |  1   SEG21.S    672 | Code        | 00 |         |    2 | 00/04BA : D0 43       |             BNE   L210513        
+  733 |  1   SEG21.S    673 | Code        | 00 |E 2      |    3 | 00/04BC : AD 0B 01    |             LDA   L02010A        
+  734 |  1   SEG21.S    674 | Code        | 00 |         |    3 | 00/04BF : C9 01 00    |             CMP   #$0001         
+  735 |  1   SEG21.S    675 | Code        | 00 |         |    2 | 00/04C2 : D0 1D       |             BNE   L2104F5        
+  736 |  1   SEG21.S    676 | Code        | 00 |E 2      |    3 | 00/04C4 : 9C 0B 01    |             STZ   L02010A        
+  737 |  1   SEG21.S    677 | Code        | 00 |E 2      |    3 | 00/04C7 : AD 82 01    |             LDA   L020181        
+  738 |  1   SEG21.S    678 | Code        | 00 |         |    1 | 00/04CA : 48          |             PHA                  
+  739 |  1   SEG21.S    679 | Code        | 00 |E 2      |    3 | 00/04CB : AD 80 01    |             LDA   L02017F        
+  740 |  1   SEG21.S    680 | Code        | 00 |         |    1 | 00/04CE : 48          |             PHA                  
+  741 |  1   SEG21.S    681 | Code        | 00 |         |    2 | 00/04CF : A6 FD       |             LDX   $FD            
+  742 |  1   SEG21.S    682 | Code        | 00 |         |    2 | 00/04D1 : A5 FB       |             LDA   $FB            
+  743 |  1   SEG21.S    683 | Code        | 00 |         |    1 | 00/04D3 : 48          |             PHA                  
+  744 |  1   SEG21.S    684 | Code        | 00 |         |    2 | 00/04D4 : A6 F9       |             LDX   $F9            
+  745 |  1   SEG21.S    685 | Code        | 00 |         |    2 | 00/04D6 : A5 F7       |             LDA   $F7            
+  746 |  1   SEG21.S    686 | Code        | 00 |         |    1 | 00/04D8 : 48          |             PHA                  
+  747 |  1   SEG21.S    687 | Code        | 00 |E 3      |    4 | 00/04D9 : 22 FD 01 22 |             JSL   L2201FD        
+  748 |  1   SEG21.S    688 | Code        | 00 |         |    1 | 00/04DD : 7A          |             PLY                  
+  749 |  1   SEG21.S    689 | Code        | 00 |         |    1 | 00/04DE : 7A          |             PLY                  
+  750 |  1   SEG21.S    690 | Code        | 00 |         |    1 | 00/04DF : 7A          |             PLY                  
+  751 |  1   SEG21.S    691 | Code        | 00 |         |    1 | 00/04E0 : 7A          |             PLY                  
+  752 |  1   SEG21.S    692 | Code        | 00 |         |    2 | 00/04E1 : D4 FF       | L2104F5     PEI   $FF            
+  753 |  1   SEG21.S    693 | Code        | 00 |E 1 >>16 |    3 | 00/04E3 : F4 00 00    |             PEA   ^L02017B       
+  754 |  1   SEG21.S    694 | Code        | 00 |E 2      |    3 | 00/04E6 : F4 7C 01    |             PEA   L02017B        
+  755 |  1   SEG21.S    695 | Code        | 00 |         |    2 | 00/04E9 : D4 FD       |             PEI   $FD            
+  756 |  1   SEG21.S    696 | Code        | 00 |         |    2 | 00/04EB : D4 FB       |             PEI   $FB            
+  757 |  1   SEG21.S    697 | Code        | 00 |         |    2 | 00/04ED : D4 F9       |             PEI   $F9            
+  758 |  1   SEG21.S    698 | Code        | 00 |         |    2 | 00/04EF : D4 F7       |             PEI   $F7            
+  759 |  1   SEG21.S    699 | Code        | 00 |  3      |    4 | 00/04F1 : 22 74 02 00 |             JSL   L21027F        
+  760 |  1   SEG21.S    700 | Code        | 00 |         |    1 | 00/04F5 : A8          |             TAY                  
+  761 |  1   SEG21.S    701 | Code        | 00 |         |    1 | 00/04F6 : 3B          |             TSC                  
+  762 |  1   SEG21.S    702 | Code        | 00 |         |    1 | 00/04F7 : 18          |             CLC                  
+  763 |  1   SEG21.S    703 | Code        | 00 |         |    3 | 00/04F8 : 69 0E 00    |             ADC   #$000E         
+  764 |  1   SEG21.S    704 | Code        | 00 |         |    1 | 00/04FB : 1B          |             TCS                  
+  765 |  1   SEG21.S    705 | Code        | 00 |         |    1 | 00/04FC : 98          |             TYA                  
+  766 |  1   SEG21.S    706 | Code        | 00 |         |    2 | 00/04FD : 80 41       |             BRA   L210554        
+  767 |  1   SEG21.S    707 | Code        | 00 |E 2      |    3 | 00/04FF : AD 0B 01    | L210513     LDA   L02010A        
+  768 |  1   SEG21.S    708 | Code        | 00 |         |    3 | 00/0502 : C9 01 00    |             CMP   #$0001         
+  769 |  1   SEG21.S    709 | Code        | 00 |         |    2 | 00/0505 : D0 1D       |             BNE   L210538        
+  770 |  1   SEG21.S    710 | Code        | 00 |E 2      |    3 | 00/0507 : 9C 0B 01    |             STZ   L02010A        
+  771 |  1   SEG21.S    711 | Code        | 00 |E 2      |    3 | 00/050A : AD 8A 01    |             LDA   L020189        
+  772 |  1   SEG21.S    712 | Code        | 00 |         |    1 | 00/050D : 48          |             PHA                  
+  773 |  1   SEG21.S    713 | Code        | 00 |E 2      |    3 | 00/050E : AD 88 01    |             LDA   L020187        
+  774 |  1   SEG21.S    714 | Code        | 00 |         |    1 | 00/0511 : 48          |             PHA                  
+  775 |  1   SEG21.S    715 | Code        | 00 |         |    2 | 00/0512 : A6 FD       |             LDX   $FD            
+  776 |  1   SEG21.S    716 | Code        | 00 |         |    2 | 00/0514 : A5 FB       |             LDA   $FB            
+  777 |  1   SEG21.S    717 | Code        | 00 |         |    1 | 00/0516 : 48          |             PHA                  
+  778 |  1   SEG21.S    718 | Code        | 00 |         |    2 | 00/0517 : A6 F9       |             LDX   $F9            
+  779 |  1   SEG21.S    719 | Code        | 00 |         |    2 | 00/0519 : A5 F7       |             LDA   $F7            
+  780 |  1   SEG21.S    720 | Code        | 00 |         |    1 | 00/051B : 48          |             PHA                  
+  781 |  1   SEG21.S    721 | Code        | 00 |E 3      |    4 | 00/051C : 22 FD 01 22 |             JSL   L2201FD        
+  782 |  1   SEG21.S    722 | Code        | 00 |         |    1 | 00/0520 : 7A          |             PLY                  
+  783 |  1   SEG21.S    723 | Code        | 00 |         |    1 | 00/0521 : 7A          |             PLY                  
+  784 |  1   SEG21.S    724 | Code        | 00 |         |    1 | 00/0522 : 7A          |             PLY                  
+  785 |  1   SEG21.S    725 | Code        | 00 |         |    1 | 00/0523 : 7A          |             PLY                  
+  786 |  1   SEG21.S    726 | Code        | 00 |         |    2 | 00/0524 : D4 FF       | L210538     PEI   $FF            
+  787 |  1   SEG21.S    727 | Code        | 00 |E 1 >>16 |    3 | 00/0526 : F4 00 00    |             PEA   ^L020183       
+  788 |  1   SEG21.S    728 | Code        | 00 |E 2      |    3 | 00/0529 : F4 84 01    |             PEA   L020183        
+  789 |  1   SEG21.S    729 | Code        | 00 |         |    2 | 00/052C : D4 FD       |             PEI   $FD            
+  790 |  1   SEG21.S    730 | Code        | 00 |         |    2 | 00/052E : D4 FB       |             PEI   $FB            
+  791 |  1   SEG21.S    731 | Code        | 00 |         |    2 | 00/0530 : D4 F9       |             PEI   $F9            
+  792 |  1   SEG21.S    732 | Code        | 00 |         |    2 | 00/0532 : D4 F7       |             PEI   $F7            
+  793 |  1   SEG21.S    733 | Code        | 00 |  3      |    4 | 00/0534 : 22 74 02 00 |             JSL   L21027F        
+  794 |  1   SEG21.S    734 | Code        | 00 |         |    1 | 00/0538 : A8          |             TAY                  
+  795 |  1   SEG21.S    735 | Code        | 00 |         |    1 | 00/0539 : 3B          |             TSC                  
+  796 |  1   SEG21.S    736 | Code        | 00 |         |    1 | 00/053A : 18          |             CLC                  
+  797 |  1   SEG21.S    737 | Code        | 00 |         |    3 | 00/053B : 69 0E 00    |             ADC   #$000E         
+  798 |  1   SEG21.S    738 | Code        | 00 |         |    1 | 00/053E : 1B          |             TCS                  
+  799 |  1   SEG21.S    739 | Code        | 00 |         |    1 | 00/053F : 98          |             TYA                  
+  800 |  1   SEG21.S    740 | Code        | 00 |         |    1 | 00/0540 : 3B          | L210554     TSC                  
+  801 |  1   SEG21.S    741 | Code        | 00 |         |    1 | 00/0541 : 18          |             CLC                  
+  802 |  1   SEG21.S    742 | Code        | 00 |         |    3 | 00/0542 : 69 08 00    |             ADC   #$0008         
+  803 |  1   SEG21.S    743 | Code        | 00 |         |    1 | 00/0545 : 1B          |             TCS                  
+  804 |  1   SEG21.S    744 | Code        | 00 |         |    1 | 00/0546 : 2B          |             PLD                  
+  805 |  1   SEG21.S    745 | Code        | 00 |         |    1 | 00/0547 : 6B          |             RTL                  
+  806 |  1   SEG21.S    746 | Empty       | 00 |         |    0 | 00/0548               |                                  
+  807 |  1   SEG21.S    747 | Code        | 00 |         |    1 | 00/0548 : 0B          | L21055C     PHD                  
+  808 |  1   SEG21.S    748 | Code        | 00 |         |    1 | 00/0549 : 3B          |             TSC                  
+  809 |  1   SEG21.S    749 | Code        | 00 |         |    1 | 00/054A : 38          |             SEC                  
+  810 |  1   SEG21.S    750 | Code        | 00 |         |    3 | 00/054B : E9 F9 00    |             SBC   #$00F9         
+  811 |  1   SEG21.S    751 | Code        | 00 |         |    1 | 00/054E : 5B          |             TCD                  
+  812 |  1   SEG21.S    752 | Code        | 00 |         |    3 | 00/054F : 69 F0 00    |             ADC   #$00F0         
+  813 |  1   SEG21.S    753 | Code        | 00 |         |    1 | 00/0552 : 1B          |             TCS                  
+  814 |  1   SEG21.S    754 | Code        | 00 |         |    2 | 00/0553 : 64 F2       |             STZ   $F2            
+  815 |  1   SEG21.S    755 | Code        | 00 |E 2      |    3 | 00/0555 : AE 62 01    |             LDX   L020161        
+  816 |  1   SEG21.S    756 | Code        | 00 |E 2      |    3 | 00/0558 : AD 60 01    |             LDA   L02015F        
+  817 |  1   SEG21.S    757 | Code        | 00 |         |    1 | 00/055B : 38          |             SEC                  
+  818 |  1   SEG21.S    758 | Code        | 00 |E 2      |    3 | 00/055C : ED 68 01    |             SBC   L020167        
+  819 |  1   SEG21.S    759 | Code        | 00 |         |    1 | 00/055F : 48          |             PHA                  
+  820 |  1   SEG21.S    760 | Code        | 00 |         |    1 | 00/0560 : 8A          |             TXA                  
+  821 |  1   SEG21.S    761 | Code        | 00 |E 2      |    3 | 00/0561 : ED 6A 01    |             SBC   L020169        
+  822 |  1   SEG21.S    762 | Code        | 00 |         |    1 | 00/0564 : AA          |             TAX                  
+  823 |  1   SEG21.S    763 | Code        | 00 |         |    1 | 00/0565 : 68          |             PLA                  
+  824 |  1   SEG21.S    764 | Code        | 00 |         |    1 | 00/0566 : DA          |             PHX                  
+  825 |  1   SEG21.S    765 | Code        | 00 |         |    1 | 00/0567 : 48          |             PHA                  
+  826 |  1   SEG21.S    766 | Code        | 00 |E 2      |    3 | 00/0568 : AE 62 01    |             LDX   L020161        
+  827 |  1   SEG21.S    767 | Code        | 00 |E 2      |    3 | 00/056B : AD 60 01    |             LDA   L02015F        
+  828 |  1   SEG21.S    768 | Code        | 00 |         |    1 | 00/056E : DA          |             PHX                  
+  829 |  1   SEG21.S    769 | Code        | 00 |         |    1 | 00/056F : 48          |             PHA                  
+  830 |  1   SEG21.S    770 | Code        | 00 |E 3      |    4 | 00/0570 : 22 70 01 1B |             JSL   L1B0170        
+  831 |  1   SEG21.S    771 | Code        | 00 |         |    1 | 00/0574 : 7A          |             PLY                  
+  832 |  1   SEG21.S    772 | Code        | 00 |         |    1 | 00/0575 : 7A          |             PLY                  
+  833 |  1   SEG21.S    773 | Code        | 00 |         |    1 | 00/0576 : 7A          |             PLY                  
+  834 |  1   SEG21.S    774 | Code        | 00 |         |    1 | 00/0577 : 7A          |             PLY                  
+  835 |  1   SEG21.S    775 | Code        | 00 |         |    1 | 00/0578 : 18          |             CLC                  
+  836 |  1   SEG21.S    776 | Code        | 00 |         |    3 | 00/0579 : 69 14 00    |             ADC   #$0014         
+  837 |  1   SEG21.S    777 | Code        | 00 |         |    1 | 00/057C : 48          |             PHA                  
+  838 |  1   SEG21.S    778 | Code        | 00 |E 2      |    3 | 00/057D : AD 94 01    |             LDA   L020193        
+  839 |  1   SEG21.S    779 | Code        | 00 |         |    1 | 00/0580 : 48          |             PHA                  
+  840 |  1   SEG21.S    780 | Code        | 00 |E 2      |    3 | 00/0581 : AD 8E 01    |             LDA   L02018D        
+  841 |  1   SEG21.S    781 | Code        | 00 |         |    1 | 00/0584 : 48          |             PHA                  
+  842 |  1   SEG21.S    782 | Code        | 00 |E 3      |    4 | 00/0585 : 22 70 00 1B |             JSL   L1B0070        
+  843 |  1   SEG21.S    783 | Code        | 00 |         |    1 | 00/0589 : 7A          |             PLY                  
+  844 |  1   SEG21.S    784 | Code        | 00 |         |    1 | 00/058A : 7A          |             PLY                  
+  845 |  1   SEG21.S    785 | Code        | 00 |         |    1 | 00/058B : 38          |             SEC                  
+  846 |  1   SEG21.S    786 | Code        | 00 |E 2      |    3 | 00/058C : ED 8C 01    |             SBC   L02018B        
+  847 |  1   SEG21.S    787 | Code        | 00 |         |    1 | 00/058F : FA          |             PLX                  
+  848 |  1   SEG21.S    788 | Code        | 00 |         |    2 | 00/0590 : 86 F4       |             STX   $F4            
+  849 |  1   SEG21.S    789 | Code        | 00 |         |    1 | 00/0592 : 38          |             SEC                  
+  850 |  1   SEG21.S    790 | Code        | 00 |         |    2 | 00/0593 : E5 F4       |             SBC   $F4            
+  851 |  1   SEG21.S    791 | Code        | 00 |         |    2 | 00/0595 : 70 03       |             BVS   L2105AE        
+  852 |  1   SEG21.S    792 | Code        | 00 |         |    3 | 00/0597 : 49 00 80    |             EOR   #$8000         
+  853 |  1   SEG21.S    793 | Code        | 00 |         |    2 | 00/059A : 10 03       | L2105AE     BPL   L2105B3        
+  854 |  1   SEG21.S    794 | Code        | 00 |         |    3 | 00/059C : 82 4E 00    |             BRL   L210601        
+  855 |  1   SEG21.S    795 | Code        | 00 |E 2      |    3 | 00/059F : AE 62 01    | L2105B3     LDX   L020161        
+  856 |  1   SEG21.S    796 | Code        | 00 |E 2      |    3 | 00/05A2 : AD 60 01    |             LDA   L02015F        
+  857 |  1   SEG21.S    797 | Code        | 00 |         |    1 | 00/05A5 : 38          |             SEC                  
+  858 |  1   SEG21.S    798 | Code        | 00 |E 2      |    3 | 00/05A6 : ED 68 01    |             SBC   L020167        
+  859 |  1   SEG21.S    799 | Code        | 00 |         |    1 | 00/05A9 : 48          |             PHA                  
+  860 |  1   SEG21.S    800 | Code        | 00 |         |    1 | 00/05AA : 8A          |             TXA                  
+  861 |  1   SEG21.S    801 | Code        | 00 |E 2      |    3 | 00/05AB : ED 6A 01    |             SBC   L020169        
+  862 |  1   SEG21.S    802 | Code        | 00 |         |    1 | 00/05AE : AA          |             TAX                  
+  863 |  1   SEG21.S    803 | Code        | 00 |         |    1 | 00/05AF : 68          |             PLA                  
+  864 |  1   SEG21.S    804 | Code        | 00 |         |    1 | 00/05B0 : DA          |             PHX                  
+  865 |  1   SEG21.S    805 | Code        | 00 |         |    1 | 00/05B1 : 48          |             PHA                  
+  866 |  1   SEG21.S    806 | Code        | 00 |E 2      |    3 | 00/05B2 : AE 62 01    |             LDX   L020161        
+  867 |  1   SEG21.S    807 | Code        | 00 |E 2      |    3 | 00/05B5 : AD 60 01    |             LDA   L02015F        
+  868 |  1   SEG21.S    808 | Code        | 00 |         |    1 | 00/05B8 : DA          |             PHX                  
+  869 |  1   SEG21.S    809 | Code        | 00 |         |    1 | 00/05B9 : 48          |             PHA                  
+  870 |  1   SEG21.S    810 | Code        | 00 |E 3      |    4 | 00/05BA : 22 35 01 1B |             JSL   L1B0135        
+  871 |  1   SEG21.S    811 | Code        | 00 |         |    1 | 00/05BE : 7A          |             PLY                  
+  872 |  1   SEG21.S    812 | Code        | 00 |         |    1 | 00/05BF : 7A          |             PLY                  
+  873 |  1   SEG21.S    813 | Code        | 00 |         |    1 | 00/05C0 : 7A          |             PLY                  
+  874 |  1   SEG21.S    814 | Code        | 00 |         |    1 | 00/05C1 : 7A          |             PLY                  
+  875 |  1   SEG21.S    815 | Code        | 00 |         |    1 | 00/05C2 : 38          |             SEC                  
+  876 |  1   SEG21.S    816 | Code        | 00 |         |    3 | 00/05C3 : E9 14 00    |             SBC   #$0014         
+  877 |  1   SEG21.S    817 | Code        | 00 |         |    1 | 00/05C6 : 48          |             PHA                  
+  878 |  1   SEG21.S    818 | Code        | 00 |E 2      |    3 | 00/05C7 : AD 94 01    |             LDA   L020193        
+  879 |  1   SEG21.S    819 | Code        | 00 |         |    1 | 00/05CA : 48          |             PHA                  
+  880 |  1   SEG21.S    820 | Code        | 00 |E 2      |    3 | 00/05CB : AD 8E 01    |             LDA   L02018D        
+  881 |  1   SEG21.S    821 | Code        | 00 |         |    1 | 00/05CE : 48          |             PHA                  
+  882 |  1   SEG21.S    822 | Code        | 00 |E 3      |    4 | 00/05CF : 22 99 00 1B |             JSL   L1B0099        
+  883 |  1   SEG21.S    823 | Code        | 00 |         |    1 | 00/05D3 : 7A          |             PLY                  
+  884 |  1   SEG21.S    824 | Code        | 00 |         |    1 | 00/05D4 : 7A          |             PLY                  
+  885 |  1   SEG21.S    825 | Code        | 00 |         |    1 | 00/05D5 : 18          |             CLC                  
+  886 |  1   SEG21.S    826 | Code        | 00 |E 2      |    3 | 00/05D6 : 6D 8C 01    |             ADC   L02018B        
+  887 |  1   SEG21.S    827 | Code        | 00 |         |    1 | 00/05D9 : FA          |             PLX                  
+  888 |  1   SEG21.S    828 | Code        | 00 |         |    2 | 00/05DA : 86 F4       |             STX   $F4            
+  889 |  1   SEG21.S    829 | Code        | 00 |         |    1 | 00/05DC : 38          |             SEC                  
+  890 |  1   SEG21.S    830 | Code        | 00 |         |    2 | 00/05DD : E5 F4       |             SBC   $F4            
+  891 |  1   SEG21.S    831 | Code        | 00 |         |    2 | 00/05DF : F0 0C       |             BEQ   L210601        
+  892 |  1   SEG21.S    832 | Code        | 00 |         |    2 | 00/05E1 : 70 03       |             BVS   L2105FA        
+  893 |  1   SEG21.S    833 | Code        | 00 |         |    3 | 00/05E3 : 49 00 80    |             EOR   #$8000         
+  894 |  1   SEG21.S    834 | Code        | 00 |         |    2 | 00/05E6 : 10 05       | L2105FA     BPL   L210601        
+  895 |  1   SEG21.S    835 | Code        | 00 |         |    3 | 00/05E8 : A9 01 00    |             LDA   #$0001         
+  896 |  1   SEG21.S    836 | Code        | 00 |         |    2 | 00/05EB : 85 F2       |             STA   $F2            
+  897 |  1   SEG21.S    837 | Code        | 00 |         |    2 | 00/05ED : A5 F2       | L210601     LDA   $F2            
+  898 |  1   SEG21.S    838 | Code        | 00 |         |    1 | 00/05EF : A8          |             TAY                  
+  899 |  1   SEG21.S    839 | Code        | 00 |         |    1 | 00/05F0 : 3B          |             TSC                  
+  900 |  1   SEG21.S    840 | Code        | 00 |         |    1 | 00/05F1 : 18          |             CLC                  
+  901 |  1   SEG21.S    841 | Code        | 00 |         |    3 | 00/05F2 : 69 08 00    |             ADC   #$0008         
+  902 |  1   SEG21.S    842 | Code        | 00 |         |    1 | 00/05F5 : 1B          |             TCS                  
+  903 |  1   SEG21.S    843 | Code        | 00 |         |    1 | 00/05F6 : 98          |             TYA                  
+  904 |  1   SEG21.S    844 | Code        | 00 |         |    1 | 00/05F7 : 2B          |             PLD                  
+  905 |  1   SEG21.S    845 | Code        | 00 |         |    1 | 00/05F8 : 6B          |             RTL                  
+  906 |  1   SEG21.S    846 | Empty       | 00 |         |    0 | 00/05F9               |                                  
+  907 |  1   SEG21.S    847 | Code        | 00 |         |    1 | 00/05F9 : 0B          | L21060D     PHD                  
+  908 |  1   SEG21.S    848 | Code        | 00 |         |    1 | 00/05FA : 3B          |             TSC                  
+  909 |  1   SEG21.S    849 | Code        | 00 |         |    1 | 00/05FB : 38          |             SEC                  
+  910 |  1   SEG21.S    850 | Code        | 00 |         |    3 | 00/05FC : E9 F7 00    |             SBC   #$00F7         
+  911 |  1   SEG21.S    851 | Code        | 00 |         |    1 | 00/05FF : 5B          |             TCD                  
+  912 |  1   SEG21.S    852 | Code        | 00 |         |    3 | 00/0600 : 69 EE 00    |             ADC   #$00EE         
+  913 |  1   SEG21.S    853 | Code        | 00 |         |    1 | 00/0603 : 1B          |             TCS                  
+  914 |  1   SEG21.S    854 | Code        | 00 |         |    2 | 00/0604 : 64 F0       |             STZ   $F0            
+  915 |  1   SEG21.S    855 | Code        | 00 |E 2      |    3 | 00/0606 : AE 66 01    |             LDX   L020165        
+  916 |  1   SEG21.S    856 | Code        | 00 |E 2      |    3 | 00/0609 : AD 64 01    |             LDA   L020163        
+  917 |  1   SEG21.S    857 | Code        | 00 |         |    1 | 00/060C : 38          |             SEC                  
+  918 |  1   SEG21.S    858 | Code        | 00 |E 2      |    3 | 00/060D : ED 6C 01    |             SBC   L02016B        
+  919 |  1   SEG21.S    859 | Code        | 00 |         |    1 | 00/0610 : 48          |             PHA                  
+  920 |  1   SEG21.S    860 | Code        | 00 |         |    1 | 00/0611 : 8A          |             TXA                  
+  921 |  1   SEG21.S    861 | Code        | 00 |E 2      |    3 | 00/0612 : ED 6E 01    |             SBC   L02016D        
+  922 |  1   SEG21.S    862 | Code        | 00 |         |    1 | 00/0615 : AA          |             TAX                  
+  923 |  1   SEG21.S    863 | Code        | 00 |         |    1 | 00/0616 : 68          |             PLA                  
+  924 |  1   SEG21.S    864 | Code        | 00 |         |    1 | 00/0617 : DA          |             PHX                  
+  925 |  1   SEG21.S    865 | Code        | 00 |         |    1 | 00/0618 : 48          |             PHA                  
+  926 |  1   SEG21.S    866 | Code        | 00 |E 2      |    3 | 00/0619 : AD 96 01    |             LDA   L020195        
+  927 |  1   SEG21.S    867 | Code        | 00 |         |    3 | 00/061C : A2 00 00    |             LDX   #$0000         
+  928 |  1   SEG21.S    868 | Code        | 00 |         |    1 | 00/061F : A8          |             TAY                  
+  929 |  1   SEG21.S    869 | Code        | 00 |         |    2 | 00/0620 : 10 01       |             BPL   L210637        
+  930 |  1   SEG21.S    870 | Code        | 00 |         |    1 | 00/0622 : CA          |             DEX                  
+  931 |  1   SEG21.S    871 | Code        | 00 |E 3      |    4 | 00/0623 : 22 DE 12 1A | L210637     JSL   L1A130B        
+  932 |  1   SEG21.S    872 | Code        | 00 |         |    2 | 00/0627 : F0 3B       |             BEQ   L210678        
+  933 |  1   SEG21.S    873 | Code        | 00 |         |    2 | 00/0629 : 70 03       |             BVS   L210642        
+  934 |  1   SEG21.S    874 | Code        | 00 |         |    3 | 00/062B : 49 00 80    |             EOR   #$8000         
+  935 |  1   SEG21.S    875 | Code        | 00 |         |    2 | 00/062E : 10 34       | L210642     BPL   L210678        
+  936 |  1   SEG21.S    876 | Code        | 00 |         |    3 | 00/0630 : A9 01 00    |             LDA   #$0001         
+  937 |  1   SEG21.S    877 | Code        | 00 |         |    2 | 00/0633 : 87 FD       |             STA   [$FD]          
+  938 |  1   SEG21.S    878 | Code        | 00 |E 2      |    3 | 00/0635 : AE 66 01    |             LDX   L020165        
+  939 |  1   SEG21.S    879 | Code        | 00 |E 2      |    3 | 00/0638 : AD 64 01    |             LDA   L020163        
+  940 |  1   SEG21.S    880 | Code        | 00 |         |    1 | 00/063B : 38          |             SEC                  
+  941 |  1   SEG21.S    881 | Code        | 00 |         |    3 | 00/063C : E9 18 00    |             SBC   #$0018         
+  942 |  1   SEG21.S    882 | Code        | 00 |         |    1 | 00/063F : 48          |             PHA                  
+  943 |  1   SEG21.S    883 | Code        | 00 |         |    1 | 00/0640 : 8A          |             TXA                  
+  944 |  1   SEG21.S    884 | Code        | 00 |         |    3 | 00/0641 : E9 00 00    |             SBC   #$0000         
+  945 |  1   SEG21.S    885 | Code        | 00 |         |    1 | 00/0644 : AA          |             TAX                  
+  946 |  1   SEG21.S    886 | Code        | 00 |         |    1 | 00/0645 : 68          |             PLA                  
+  947 |  1   SEG21.S    887 | Code        | 00 |         |    1 | 00/0646 : DA          |             PHX                  
+  948 |  1   SEG21.S    888 | Code        | 00 |         |    1 | 00/0647 : 48          |             PHA                  
+  949 |  1   SEG21.S    889 | Code        | 00 |E 2      |    3 | 00/0648 : AD 90 01    |             LDA   L02018F        
+  950 |  1   SEG21.S    890 | Code        | 00 |         |    3 | 00/064B : A2 00 00    |             LDX   #$0000         
+  951 |  1   SEG21.S    891 | Code        | 00 |         |    1 | 00/064E : A8          |             TAY                  
+  952 |  1   SEG21.S    892 | Code        | 00 |         |    2 | 00/064F : 10 01       |             BPL   L210666        
+  953 |  1   SEG21.S    893 | Code        | 00 |         |    1 | 00/0651 : CA          |             DEX                  
+  954 |  1   SEG21.S    894 | Code        | 00 |E 3      |    4 | 00/0652 : 22 DE 12 1A | L210666     JSL   L1A130B        
+  955 |  1   SEG21.S    895 | Code        | 00 |         |    2 | 00/0656 : 70 03       |             BVS   L21066F        
+  956 |  1   SEG21.S    896 | Code        | 00 |         |    3 | 00/0658 : 49 00 80    |             EOR   #$8000         
+  957 |  1   SEG21.S    897 | Code        | 00 |         |    2 | 00/065B : 30 05       | L21066F     BMI   L210676        
+  958 |  1   SEG21.S    898 | Code        | 00 |         |    3 | 00/065D : A9 01 00    |             LDA   #$0001         
+  959 |  1   SEG21.S    899 | Code        | 00 |         |    2 | 00/0660 : 85 F0       |             STA   $F0            
+  960 |  1   SEG21.S    900 | Code        | 00 |         |    2 | 00/0662 : 80 34       | L210676     BRA   L2106AC        
+  961 |  1   SEG21.S    901 | Code        | 00 |         |    3 | 00/0664 : A9 00 00    | L210678     LDA   #$0000         
+  962 |  1   SEG21.S    902 | Code        | 00 |         |    2 | 00/0667 : 87 FD       |             STA   [$FD]          
+  963 |  1   SEG21.S    903 | Code        | 00 |E 2      |    3 | 00/0669 : AE 66 01    |             LDX   L020165        
+  964 |  1   SEG21.S    904 | Code        | 00 |E 2      |    3 | 00/066C : AD 64 01    |             LDA   L020163        
+  965 |  1   SEG21.S    905 | Code        | 00 |         |    1 | 00/066F : 18          |             CLC                  
+  966 |  1   SEG21.S    906 | Code        | 00 |         |    3 | 00/0670 : 69 18 00    |             ADC   #$0018         
+  967 |  1   SEG21.S    907 | Code        | 00 |         |    1 | 00/0673 : 48          |             PHA                  
+  968 |  1   SEG21.S    908 | Code        | 00 |         |    1 | 00/0674 : 8A          |             TXA                  
+  969 |  1   SEG21.S    909 | Code        | 00 |         |    3 | 00/0675 : 69 00 00    |             ADC   #$0000         
+  970 |  1   SEG21.S    910 | Code        | 00 |         |    1 | 00/0678 : AA          |             TAX                  
+  971 |  1   SEG21.S    911 | Code        | 00 |         |    1 | 00/0679 : 68          |             PLA                  
+  972 |  1   SEG21.S    912 | Code        | 00 |         |    1 | 00/067A : DA          |             PHX                  
+  973 |  1   SEG21.S    913 | Code        | 00 |         |    1 | 00/067B : 48          |             PHA                  
+  974 |  1   SEG21.S    914 | Code        | 00 |E 2      |    3 | 00/067C : AD 90 01    |             LDA   L02018F        
+  975 |  1   SEG21.S    915 | Code        | 00 |         |    3 | 00/067F : A2 00 00    |             LDX   #$0000         
+  976 |  1   SEG21.S    916 | Code        | 00 |         |    1 | 00/0682 : A8          |             TAY                  
+  977 |  1   SEG21.S    917 | Code        | 00 |         |    2 | 00/0683 : 10 01       |             BPL   L21069A        
+  978 |  1   SEG21.S    918 | Code        | 00 |         |    1 | 00/0685 : CA          |             DEX                  
+  979 |  1   SEG21.S    919 | Code        | 00 |E 3      |    4 | 00/0686 : 22 DE 12 1A | L21069A     JSL   L1A130B        
+  980 |  1   SEG21.S    920 | Code        | 00 |         |    2 | 00/068A : F0 0C       |             BEQ   L2106AC        
+  981 |  1   SEG21.S    921 | Code        | 00 |         |    2 | 00/068C : 70 03       |             BVS   L2106A5        
+  982 |  1   SEG21.S    922 | Code        | 00 |         |    3 | 00/068E : 49 00 80    |             EOR   #$8000         
+  983 |  1   SEG21.S    923 | Code        | 00 |         |    2 | 00/0691 : 10 05       | L2106A5     BPL   L2106AC        
+  984 |  1   SEG21.S    924 | Code        | 00 |         |    3 | 00/0693 : A9 01 00    |             LDA   #$0001         
+  985 |  1   SEG21.S    925 | Code        | 00 |         |    2 | 00/0696 : 85 F0       |             STA   $F0            
+  986 |  1   SEG21.S    926 | Code        | 00 |         |    2 | 00/0698 : A5 F0       | L2106AC     LDA   $F0            
+  987 |  1   SEG21.S    927 | Code        | 00 |         |    1 | 00/069A : A8          |             TAY                  
+  988 |  1   SEG21.S    928 | Code        | 00 |         |    1 | 00/069B : 3B          |             TSC                  
+  989 |  1   SEG21.S    929 | Code        | 00 |         |    1 | 00/069C : 18          |             CLC                  
+  990 |  1   SEG21.S    930 | Code        | 00 |         |    3 | 00/069D : 69 08 00    |             ADC   #$0008         
+  991 |  1   SEG21.S    931 | Code        | 00 |         |    1 | 00/06A0 : 1B          |             TCS                  
+  992 |  1   SEG21.S    932 | Code        | 00 |         |    1 | 00/06A1 : 98          |             TYA                  
+  993 |  1   SEG21.S    933 | Code        | 00 |         |    1 | 00/06A2 : 2B          |             PLD                  
+  994 |  1   SEG21.S    934 | Code        | 00 |         |    1 | 00/06A3 : 6B          |             RTL                  
+  995 |  1   SEG21.S    935 | Empty       | 00 |         |    0 | 00/06A4               |                                  
+  996 |  1   SEG21.S    936 | Global      | 00 |         |    0 | 00/06A4               | L2106B8     ENT                  
+  997 |  1   SEG21.S    937 | Code        | 00 |         |    1 | 00/06A4 : 0B          |             PHD                  
+  998 |  1   SEG21.S    938 | Code        | 00 |         |    1 | 00/06A5 : 3B          |             TSC                  
+  999 |  1   SEG21.S    939 | Code        | 00 |         |    1 | 00/06A6 : 38          |             SEC                  
+ 1000 |  1   SEG21.S    940 | Code        | 00 |         |    3 | 00/06A7 : E9 FB 00    |             SBC   #$00FB         
+ 1001 |  1   SEG21.S    941 | Code        | 00 |         |    1 | 00/06AA : 5B          |             TCD                  
+ 1002 |  1   SEG21.S    942 | Code        | 00 |         |    3 | 00/06AB : 69 EA 00    |             ADC   #$00EA         
+ 1003 |  1   SEG21.S    943 | Code        | 00 |         |    1 | 00/06AE : 1B          |             TCS                  
+ 1004 |  1   SEG21.S    944 | Code        | 00 |         |    3 | 00/06AF : F4 00 00    |             PEA   $0000          
+ 1005 |  1   SEG21.S    945 | Code        | 00 |         |    1 | 00/06B2 : 7B          |             TDC                  
+ 1006 |  1   SEG21.S    946 | Code        | 00 |         |    1 | 00/06B3 : 18          |             CLC                  
+ 1007 |  1   SEG21.S    947 | Code        | 00 |         |    3 | 00/06B4 : 69 F4 00    |             ADC   #$00F4         
+ 1008 |  1   SEG21.S    948 | Code        | 00 |         |    1 | 00/06B7 : 48          |             PHA                  
+ 1009 |  1   SEG21.S    949 | Code        | 00 |  3      |    4 | 00/06B8 : 22 F9 05 00 |             JSL   L21060D        
+ 1010 |  1   SEG21.S    950 | Code        | 00 |         |    1 | 00/06BC : 7A          |             PLY                  
+ 1011 |  1   SEG21.S    951 | Code        | 00 |         |    1 | 00/06BD : 7A          |             PLY                  
+ 1012 |  1   SEG21.S    952 | Code        | 00 |         |    1 | 00/06BE : A8          |             TAY                  
+ 1013 |  1   SEG21.S    953 | Code        | 00 |         |    2 | 00/06BF : D0 03       |             BNE   L2106D8        
+ 1014 |  1   SEG21.S    954 | Code        | 00 |         |    3 | 00/06C1 : 82 6E 00    |             BRL   L210746        
+ 1015 |  1   SEG21.S    955 | Code        | 00 |  3      |    4 | 00/06C4 : 22 48 05 00 | L2106D8     JSL   L21055C        
+ 1016 |  1   SEG21.S    956 | Code        | 00 |         |    1 | 00/06C8 : A8          |             TAY                  
+ 1017 |  1   SEG21.S    957 | Code        | 00 |         |    2 | 00/06C9 : D0 03       |             BNE   L2106E2        
+ 1018 |  1   SEG21.S    958 | Code        | 00 |         |    3 | 00/06CB : 82 64 00    |             BRL   L210746        
+ 1019 |  1   SEG21.S    959 | Code        | 00 |E 2      |    3 | 00/06CE : AD 94 01    | L2106E2     LDA   L020193        
+ 1020 |  1   SEG21.S    960 | Code        | 00 |         |    3 | 00/06D1 : A2 00 00    |             LDX   #$0000         
+ 1021 |  1   SEG21.S    961 | Code        | 00 |         |    1 | 00/06D4 : A8          |             TAY                  
+ 1022 |  1   SEG21.S    962 | Code        | 00 |         |    2 | 00/06D5 : 10 01       |             BPL   L2106EC        
+ 1023 |  1   SEG21.S    963 | Code        | 00 |         |    1 | 00/06D7 : CA          |             DEX                  
+ 1024 |  1   SEG21.S    964 | Code        | 00 |         |    1 | 00/06D8 : DA          | L2106EC     PHX                  
+ 1025 |  1   SEG21.S    965 | Code        | 00 |         |    1 | 00/06D9 : 48          |             PHA                  
+ 1026 |  1   SEG21.S    966 | Code        | 00 |E 2      |    3 | 00/06DA : AD 8E 01    |             LDA   L02018D        
+ 1027 |  1   SEG21.S    967 | Code        | 00 |         |    3 | 00/06DD : A2 00 00    |             LDX   #$0000         
+ 1028 |  1   SEG21.S    968 | Code        | 00 |         |    1 | 00/06E0 : A8          |             TAY                  
+ 1029 |  1   SEG21.S    969 | Code        | 00 |         |    2 | 00/06E1 : 10 01       |             BPL   L2106F8        
+ 1030 |  1   SEG21.S    970 | Code        | 00 |         |    1 | 00/06E3 : CA          |             DEX                  
+ 1031 |  1   SEG21.S    971 | Code        | 00 |E 3      |    4 | 00/06E4 : 22 62 10 1A | L2106F8     JSL   L1A108F        
+ 1032 |  1   SEG21.S    972 | Code        | 00 |         |    1 | 00/06E8 : 68          |             PLA                  
+ 1033 |  1   SEG21.S    973 | Code        | 00 |         |    1 | 00/06E9 : FA          |             PLX                  
+ 1034 |  1   SEG21.S    974 | Code        | 00 |         |    2 | 00/06EA : 86 F2       |             STX   $F2            
+ 1035 |  1   SEG21.S    975 | Code        | 00 |         |    2 | 00/06EC : 85 F0       |             STA   $F0            
+ 1036 |  1   SEG21.S    976 | Code        | 00 |E 2      |    3 | 00/06EE : AD 96 01    |             LDA   L020195        
+ 1037 |  1   SEG21.S    977 | Code        | 00 |         |    3 | 00/06F1 : A2 00 00    |             LDX   #$0000         
+ 1038 |  1   SEG21.S    978 | Code        | 00 |         |    1 | 00/06F4 : A8          |             TAY                  
+ 1039 |  1   SEG21.S    979 | Code        | 00 |         |    2 | 00/06F5 : 10 01       |             BPL   L21070C        
+ 1040 |  1   SEG21.S    980 | Code        | 00 |         |    1 | 00/06F7 : CA          |             DEX                  
+ 1041 |  1   SEG21.S    981 | Code        | 00 |         |    1 | 00/06F8 : DA          | L21070C     PHX                  
+ 1042 |  1   SEG21.S    982 | Code        | 00 |         |    1 | 00/06F9 : 48          |             PHA                  
+ 1043 |  1   SEG21.S    983 | Code        | 00 |E 2      |    3 | 00/06FA : AD 90 01    |             LDA   L02018F        
+ 1044 |  1   SEG21.S    984 | Code        | 00 |         |    3 | 00/06FD : A2 00 00    |             LDX   #$0000         
+ 1045 |  1   SEG21.S    985 | Code        | 00 |         |    1 | 00/0700 : A8          |             TAY                  
+ 1046 |  1   SEG21.S    986 | Code        | 00 |         |    2 | 00/0701 : 10 01       |             BPL   L210718        
+ 1047 |  1   SEG21.S    987 | Code        | 00 |         |    1 | 00/0703 : CA          |             DEX                  
+ 1048 |  1   SEG21.S    988 | Code        | 00 |E 3      |    4 | 00/0704 : 22 62 10 1A | L210718     JSL   L1A108F        
+ 1049 |  1   SEG21.S    989 | Code        | 00 |         |    1 | 00/0708 : 68          |             PLA                  
+ 1050 |  1   SEG21.S    990 | Code        | 00 |         |    1 | 00/0709 : FA          |             PLX                  
+ 1051 |  1   SEG21.S    991 | Code        | 00 |         |    2 | 00/070A : 86 EE       |             STX   $EE            
+ 1052 |  1   SEG21.S    992 | Code        | 00 |         |    2 | 00/070C : 85 EC       |             STA   $EC            
+ 1053 |  1   SEG21.S    993 | Code        | 00 |E 2      |    3 | 00/070E : AD 92 01    |             LDA   L020191        
+ 1054 |  1   SEG21.S    994 | Code        | 00 |         |    2 | 00/0711 : D0 04       |             BNE   L21072B        
+ 1055 |  1   SEG21.S    995 | Code        | 00 |E 3      |    4 | 00/0713 : 22 98 0B 23 |             JSL   L230BBC        
+ 1056 |  1   SEG21.S    996 | Code        | 00 |         |    2 | 00/0717 : D4 F4       | L21072B     PEI   $F4            
+ 1057 |  1   SEG21.S    997 | Code        | 00 |         |    2 | 00/0719 : D4 EE       |             PEI   $EE            
+ 1058 |  1   SEG21.S    998 | Code        | 00 |         |    2 | 00/071B : D4 EC       |             PEI   $EC            
+ 1059 |  1   SEG21.S    999 | Code        | 00 |         |    2 | 00/071D : D4 F2       |             PEI   $F2            
+ 1060 |  1   SEG21.S   1000 | Code        | 00 |         |    2 | 00/071F : D4 F0       |             PEI   $F0            
+ 1061 |  1   SEG21.S   1001 | Code        | 00 |  3      |    4 | 00/0721 : 22 9F 04 00 |             JSL   L2104AA        
+ 1062 |  1   SEG21.S   1002 | Code        | 00 |         |    1 | 00/0725 : 7A          |             PLY                  
+ 1063 |  1   SEG21.S   1003 | Code        | 00 |         |    1 | 00/0726 : 7A          |             PLY                  
+ 1064 |  1   SEG21.S   1004 | Code        | 00 |         |    1 | 00/0727 : 7A          |             PLY                  
+ 1065 |  1   SEG21.S   1005 | Code        | 00 |         |    1 | 00/0728 : 7A          |             PLY                  
+ 1066 |  1   SEG21.S   1006 | Code        | 00 |         |    1 | 00/0729 : 7A          |             PLY                  
+ 1067 |  1   SEG21.S   1007 | Code        | 00 |         |    3 | 00/072A : A9 05 00    |             LDA   #$0005         
+ 1068 |  1   SEG21.S   1008 | Code        | 00 |E 2      |    3 | 00/072D : 8D 92 01    |             STA   L020191        
+ 1069 |  1   SEG21.S   1009 | Code        | 00 |         |    2 | 00/0730 : 80 13       |             BRA   L210759        
+ 1070 |  1   SEG21.S   1010 | Code        | 00 |E 2      |    3 | 00/0732 : AD 92 01    | L210746     LDA   L020191        
+ 1071 |  1   SEG21.S   1011 | Code        | 00 |         |    1 | 00/0735 : 38          |             SEC                  
+ 1072 |  1   SEG21.S   1012 | Code        | 00 |         |    3 | 00/0736 : E9 00 00    |             SBC   #$0000         
+ 1073 |  1   SEG21.S   1013 | Code        | 00 |         |    2 | 00/0739 : F0 0A       |             BEQ   L210759        
+ 1074 |  1   SEG21.S   1014 | Code        | 00 |         |    2 | 00/073B : 70 03       |             BVS   L210754        
+ 1075 |  1   SEG21.S   1015 | Code        | 00 |         |    3 | 00/073D : 49 00 80    |             EOR   #$8000         
+ 1076 |  1   SEG21.S   1016 | Code        | 00 |         |    2 | 00/0740 : 10 03       | L210754     BPL   L210759        
+ 1077 |  1   SEG21.S   1017 | Code        | 00 |E 2      |    3 | 00/0742 : CE 92 01    |             DEC   L020191        
+ 1078 |  1   SEG21.S   1018 | Code        | 00 |         |    1 | 00/0745 : 3B          | L210759     TSC                  
+ 1079 |  1   SEG21.S   1019 | Code        | 00 |         |    1 | 00/0746 : 18          |             CLC                  
+ 1080 |  1   SEG21.S   1020 | Code        | 00 |         |    3 | 00/0747 : 69 10 00    |             ADC   #$0010         
+ 1081 |  1   SEG21.S   1021 | Code        | 00 |         |    1 | 00/074A : 1B          |             TCS                  
+ 1082 |  1   SEG21.S   1022 | Code        | 00 |         |    1 | 00/074B : 2B          |             PLD                  
+ 1083 |  1   SEG21.S   1023 | Code        | 00 |         |    1 | 00/074C : 6B          |             RTL                  
+ 1084 |  1   SEG21.S   1024 | Empty       | 00 |         |    0 | 00/074D               |                                  
+ 1085 |  1   SEG21.S   1025 | Global      | 00 |         |    0 | 00/074D               | L210761     ENT                  
+ 1086 |  1   SEG21.S   1026 | Code        | 00 |         |    1 | 00/074D : 0B          |             PHD                  
+ 1087 |  1   SEG21.S   1027 | Code        | 00 |         |    1 | 00/074E : 3B          |             TSC                  
+ 1088 |  1   SEG21.S   1028 | Code        | 00 |         |    1 | 00/074F : 38          |             SEC                  
+ 1089 |  1   SEG21.S   1029 | Code        | 00 |         |    3 | 00/0750 : E9 FB 00    |             SBC   #$00FB         
+ 1090 |  1   SEG21.S   1030 | Code        | 00 |         |    1 | 00/0753 : 5B          |             TCD                  
+ 1091 |  1   SEG21.S   1031 | Code        | 00 |         |    3 | 00/0754 : 69 F4 00    |             ADC   #$00F4         
+ 1092 |  1   SEG21.S   1032 | Code        | 00 |         |    1 | 00/0757 : 1B          |             TCS                  
+ 1093 |  1   SEG21.S   1033 | Code        | 00 |         |    3 | 00/0758 : A9 32 00    |             LDA   #$0032         
+ 1094 |  1   SEG21.S   1034 | Code        | 00 |E 2      |    3 | 00/075B : 8D 7C 01    |             STA   L02017B        
+ 1095 |  1   SEG21.S   1035 | Code        | 00 |         |    3 | 00/075E : A9 32 00    |             LDA   #$0032         
+ 1096 |  1   SEG21.S   1036 | Code        | 00 |E 2      |    3 | 00/0761 : 8D 7E 01    |             STA   L02017D        
+ 1097 |  1   SEG21.S   1037 | Code        | 00 |         |    3 | 00/0764 : A9 46 00    |             LDA   #$0046         
+ 1098 |  1   SEG21.S   1038 | Code        | 00 |E 2      |    3 | 00/0767 : 8D 80 01    |             STA   L02017F        
+ 1099 |  1   SEG21.S   1039 | Code        | 00 |         |    3 | 00/076A : A9 82 00    |             LDA   #$0082         
+ 1100 |  1   SEG21.S   1040 | Code        | 00 |E 2      |    3 | 00/076D : 8D 82 01    |             STA   L020181        
+ 1101 |  1   SEG21.S   1041 | Code        | 00 |         |    3 | 00/0770 : A9 32 00    |             LDA   #$0032         
+ 1102 |  1   SEG21.S   1042 | Code        | 00 |E 2      |    3 | 00/0773 : 8D 84 01    |             STA   L020183        
+ 1103 |  1   SEG21.S   1043 | Code        | 00 |         |    3 | 00/0776 : A9 32 00    |             LDA   #$0032         
+ 1104 |  1   SEG21.S   1044 | Code        | 00 |E 2      |    3 | 00/0779 : 8D 86 01    |             STA   L020185        
+ 1105 |  1   SEG21.S   1045 | Code        | 00 |         |    3 | 00/077C : A9 46 00    |             LDA   #$0046         
+ 1106 |  1   SEG21.S   1046 | Code        | 00 |E 2      |    3 | 00/077F : 8D 88 01    |             STA   L020187        
+ 1107 |  1   SEG21.S   1047 | Code        | 00 |         |    3 | 00/0782 : A9 8C 00    |             LDA   #$008C         
+ 1108 |  1   SEG21.S   1048 | Code        | 00 |E 2      |    3 | 00/0785 : 8D 8A 01    |             STA   L020189        
+ 1109 |  1   SEG21.S   1049 | Code        | 00 |         |    3 | 00/0788 : A9 32 00    |             LDA   #$0032         
+ 1110 |  1   SEG21.S   1050 | Code        | 00 |E 2      |    3 | 00/078B : 8D 8C 01    |             STA   L02018B        
+ 1111 |  1   SEG21.S   1051 | Code        | 00 |  3      |    4 | 00/078E : 22 3B 01 00 |             JSL   L21013B        
+ 1112 |  1   SEG21.S   1052 | Code        | 00 |E 3      |    4 | 00/0792 : 22 90 04 1C |             JSL   L1C05C2        
+ 1113 |  1   SEG21.S   1053 | Code        | 00 |         |    1 | 00/0796 : 3B          |             TSC                  
+ 1114 |  1   SEG21.S   1054 | Code        | 00 |         |    1 | 00/0797 : 18          |             CLC                  
+ 1115 |  1   SEG21.S   1055 | Code        | 00 |         |    3 | 00/0798 : 69 06 00    |             ADC   #$0006         
+ 1116 |  1   SEG21.S   1056 | Code        | 00 |         |    1 | 00/079B : 1B          |             TCS                  
+ 1117 |  1   SEG21.S   1057 | Code        | 00 |         |    1 | 00/079C : 2B          |             PLD                  
+ 1118 |  1   SEG21.S   1058 | Code        | 00 |         |    1 | 00/079D : 6B          |             RTL                  
+ 1119 |  1   SEG21.S   1059 | Empty       | 00 |         |    0 | 00/079E               |                                  
+ 1120 |  1   SEG21.S   1060 | Global      | 00 |         |    0 | 00/079E               | L2107B2     ENT                  
+ 1121 |  1   SEG21.S   1061 | Code        | 00 |         |    1 | 00/079E : 0B          |             PHD                  
+ 1122 |  1   SEG21.S   1062 | Code        | 00 |         |    1 | 00/079F : 3B          |             TSC                  
+ 1123 |  1   SEG21.S   1063 | Code        | 00 |         |    1 | 00/07A0 : 38          |             SEC                  
+ 1124 |  1   SEG21.S   1064 | Code        | 00 |         |    3 | 00/07A1 : E9 FB 00    |             SBC   #$00FB         
+ 1125 |  1   SEG21.S   1065 | Code        | 00 |         |    1 | 00/07A4 : 5B          |             TCD                  
+ 1126 |  1   SEG21.S   1066 | Code        | 00 |         |    3 | 00/07A5 : 69 F4 00    |             ADC   #$00F4         
+ 1127 |  1   SEG21.S   1067 | Code        | 00 |         |    1 | 00/07A8 : 1B          |             TCS                  
+ 1128 |  1   SEG21.S   1068 | Code        | 00 |E 2      |    3 | 00/07A9 : AD 7C 01    |             LDA   L02017B        
+ 1129 |  1   SEG21.S   1069 | Code        | 00 |         |    3 | 00/07AC : C9 32 00    |             CMP   #$0032         
+ 1130 |  1   SEG21.S   1070 | Code        | 00 |         |    2 | 00/07AF : F0 03       |             BEQ   L2107C8        
+ 1131 |  1   SEG21.S   1071 | Code        | 00 |         |    3 | 00/07B1 : 82 4C 00    |             BRL   L210814        
+ 1132 |  1   SEG21.S   1072 | Code        | 00 |E 2      |    3 | 00/07B4 : AD 7E 01    | L2107C8     LDA   L02017D        
+ 1133 |  1   SEG21.S   1073 | Code        | 00 |         |    3 | 00/07B7 : C9 32 00    |             CMP   #$0032         
+ 1134 |  1   SEG21.S   1074 | Code        | 00 |         |    2 | 00/07BA : F0 03       |             BEQ   L2107D3        
+ 1135 |  1   SEG21.S   1075 | Code        | 00 |         |    3 | 00/07BC : 82 41 00    |             BRL   L210814        
+ 1136 |  1   SEG21.S   1076 | Code        | 00 |E 2      |    3 | 00/07BF : AD 80 01    | L2107D3     LDA   L02017F        
+ 1137 |  1   SEG21.S   1077 | Code        | 00 |         |    3 | 00/07C2 : C9 46 00    |             CMP   #$0046         
+ 1138 |  1   SEG21.S   1078 | Code        | 00 |         |    2 | 00/07C5 : F0 03       |             BEQ   L2107DE        
+ 1139 |  1   SEG21.S   1079 | Code        | 00 |         |    3 | 00/07C7 : 82 36 00    |             BRL   L210814        
+ 1140 |  1   SEG21.S   1080 | Code        | 00 |E 2      |    3 | 00/07CA : AD 82 01    | L2107DE     LDA   L020181        
+ 1141 |  1   SEG21.S   1081 | Code        | 00 |         |    3 | 00/07CD : C9 82 00    |             CMP   #$0082         
+ 1142 |  1   SEG21.S   1082 | Code        | 00 |         |    2 | 00/07D0 : D0 2E       |             BNE   L210814        
+ 1143 |  1   SEG21.S   1083 | Code        | 00 |E 2      |    3 | 00/07D2 : AD 84 01    |             LDA   L020183        
+ 1144 |  1   SEG21.S   1084 | Code        | 00 |         |    3 | 00/07D5 : C9 32 00    |             CMP   #$0032         
+ 1145 |  1   SEG21.S   1085 | Code        | 00 |         |    2 | 00/07D8 : D0 26       |             BNE   L210814        
+ 1146 |  1   SEG21.S   1086 | Code        | 00 |E 2      |    3 | 00/07DA : AD 86 01    |             LDA   L020185        
+ 1147 |  1   SEG21.S   1087 | Code        | 00 |         |    3 | 00/07DD : C9 32 00    |             CMP   #$0032         
+ 1148 |  1   SEG21.S   1088 | Code        | 00 |         |    2 | 00/07E0 : D0 1E       |             BNE   L210814        
+ 1149 |  1   SEG21.S   1089 | Code        | 00 |E 2      |    3 | 00/07E2 : AD 88 01    |             LDA   L020187        
+ 1150 |  1   SEG21.S   1090 | Code        | 00 |         |    3 | 00/07E5 : C9 46 00    |             CMP   #$0046         
+ 1151 |  1   SEG21.S   1091 | Code        | 00 |         |    2 | 00/07E8 : D0 16       |             BNE   L210814        
+ 1152 |  1   SEG21.S   1092 | Code        | 00 |E 2      |    3 | 00/07EA : AD 8A 01    |             LDA   L020189        
+ 1153 |  1   SEG21.S   1093 | Code        | 00 |         |    3 | 00/07ED : C9 8C 00    |             CMP   #$008C         
+ 1154 |  1   SEG21.S   1094 | Code        | 00 |         |    2 | 00/07F0 : D0 0E       |             BNE   L210814        
+ 1155 |  1   SEG21.S   1095 | Code        | 00 |E 2      |    3 | 00/07F2 : AD 8C 01    |             LDA   L02018B        
+ 1156 |  1   SEG21.S   1096 | Code        | 00 |         |    3 | 00/07F5 : C9 32 00    |             CMP   #$0032         
+ 1157 |  1   SEG21.S   1097 | Code        | 00 |         |    2 | 00/07F8 : D0 06       |             BNE   L210814        
+ 1158 |  1   SEG21.S   1098 | Code        | 00 |E 3      |    4 | 00/07FA : 22 90 04 1C |             JSL   L1C05C2        
+ 1159 |  1   SEG21.S   1099 | Code        | 00 |         |    2 | 00/07FE : 80 04       |             BRA   L210818        
+ 1160 |  1   SEG21.S   1100 | Code        | 00 |E 3      |    4 | 00/0800 : 22 B0 04 1C | L210814     JSL   L1C05EB        
+ 1161 |  1   SEG21.S   1101 | Code        | 00 |         |    1 | 00/0804 : 3B          | L210818     TSC                  
+ 1162 |  1   SEG21.S   1102 | Code        | 00 |         |    1 | 00/0805 : 18          |             CLC                  
+ 1163 |  1   SEG21.S   1103 | Code        | 00 |         |    3 | 00/0806 : 69 06 00    |             ADC   #$0006         
+ 1164 |  1   SEG21.S   1104 | Code        | 00 |         |    1 | 00/0809 : 1B          |             TCS                  
+ 1165 |  1   SEG21.S   1105 | Code        | 00 |         |    1 | 00/080A : 2B          |             PLD                  
+ 1166 |  1   SEG21.S   1106 | Code        | 00 |         |    1 | 00/080B : 6B          |             RTL                  
+ 1167 |  1   SEG21.S   1107 | Empty       | 00 |         |    0 | 00/080C               |                                  
+ 1168 |  1   SEG21.S   1108 | Empty       | 00 |         |    0 | 00/080C               |                                  
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

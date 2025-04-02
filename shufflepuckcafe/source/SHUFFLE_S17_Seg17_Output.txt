@@ -1,0 +1,492 @@
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File         Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1   SEG17.S      1 | Comment     | 11 |         |    0 | 00/0000               | *
+    2 |  1   SEG17.S      2 | Comment     | 11 |         |    0 | 00/0000               | * Shufflepuck Cafe
+    3 |  1   SEG17.S      3 | Comment     | 11 |         |    0 | 00/0000               | *
+    4 |  1   SEG17.S      4 | Comment     | 11 |         |    0 | 00/0000               | * (c) Broderbund Software
+    5 |  1   SEG17.S      5 | Comment     | 11 |         |    0 | 00/0000               | * (s) 2014, Brutal Deluxe Software
+    6 |  1   SEG17.S      6 | Comment     | 11 |         |    0 | 00/0000               | *
+    7 |  1   SEG17.S      7 | Empty       | 11 |         |    0 | 00/0000               |                                  
+    8 |  1   SEG17.S      8 | Directive   | 00 |         |    0 | 00/0000               |             mx    %00            
+    9 |  1   SEG17.S      9 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   10 |  1   SEG17.S     10 | Directive   | 00 |         |    0 | 00/0000               |             rel                  
+   11 |  1   SEG17.S     11 | Directive   | 00 |         |    0 | 00/0000               |             dsk   Seg17.L        
+   12 |  1   SEG17.S     12 | Directive   | 00 |         |    0 | 00/0000               |             lst   off            
+   13 |  1   SEG17.S     13 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   14 |  1   SEG17.S     14 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   15 |  1   SEG17.S     15 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   16 |  1   SEG17.S     16 | Directive   | 00 |         |    0 | 00/0000               |             use   Seg17.E        
+   17 |  2 Seg17.E.s      1 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   18 |  2 Seg17.E.s      2 | Comment     | 00 |         |    0 | 00/0000               | * TFBD generated equates
+   19 |  2 Seg17.E.s      3 | Comment     | 00 |         |    0 | 00/0000               | *    (c) PHC 1992,93
+   20 |  2 Seg17.E.s      4 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   21 |  2 Seg17.E.s      5 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   22 |  2 Seg17.E.s      6 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   23 |  1   SEG17.S     17 | Directive   | 00 |         |    0 | 00/0000               |             use   Seg17.X        
+   24 |  3 Seg17.X.s      1 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   25 |  3 Seg17.X.s      2 | Comment     | 00 |         |    0 | 00/0000               | * TFBD generated externals
+   26 |  3 Seg17.X.s      3 | Comment     | 00 |         |    0 | 00/0000               | *     (c) PHC 1992,93
+   27 |  3 Seg17.X.s      4 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   28 |  3 Seg17.X.s      5 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   29 |  3 Seg17.X.s      6 | External    | 00 |         |    0 | 00/0000               | L0201E7     EXT                  
+   30 |  3 Seg17.X.s      7 | External    | 00 |         |    0 | 00/0000               | L1A0DAA     EXT                  
+   31 |  3 Seg17.X.s      8 | External    | 00 |         |    0 | 00/0000               | L1A0E02     EXT                  
+   32 |  3 Seg17.X.s      9 | External    | 00 |         |    0 | 00/0000               | L1A0E95     EXT                  
+   33 |  3 Seg17.X.s     10 | External    | 00 |         |    0 | 00/0000               | L0B0054     EXT                  
+   34 |  3 Seg17.X.s     11 | External    | 00 |         |    0 | 00/0000               | L070000     EXT                  
+   35 |  3 Seg17.X.s     12 | External    | 00 |         |    0 | 00/0000               | L020151     EXT                  
+   36 |  3 Seg17.X.s     13 | External    | 00 |         |    0 | 00/0000               | L02014F     EXT                  
+   37 |  3 Seg17.X.s     14 | External    | 00 |         |    0 | 00/0000               | L02014D     EXT                  
+   38 |  3 Seg17.X.s     15 | External    | 00 |         |    0 | 00/0000               | L02014B     EXT                  
+   39 |  3 Seg17.X.s     16 | External    | 00 |         |    0 | 00/0000               | L020165     EXT                  
+   40 |  3 Seg17.X.s     17 | External    | 00 |         |    0 | 00/0000               | L020163     EXT                  
+   41 |  3 Seg17.X.s     18 | External    | 00 |         |    0 | 00/0000               | L0D005E     EXT                  
+   42 |  3 Seg17.X.s     19 | External    | 00 |         |    0 | 00/0000               | L020106     EXT                  
+   43 |  3 Seg17.X.s     20 | External    | 00 |         |    0 | 00/0000               | L020108     EXT                  
+   44 |  3 Seg17.X.s     21 | External    | 00 |         |    0 | 00/0000               | L0F15F0     EXT                  
+   45 |  3 Seg17.X.s     22 | External    | 00 |         |    0 | 00/0000               | L0F11B0     EXT                  
+   46 |  3 Seg17.X.s     23 | External    | 00 |         |    0 | 00/0000               | L0200A2     EXT                  
+   47 |  3 Seg17.X.s     24 | External    | 00 |         |    0 | 00/0000               | L0200A0     EXT                  
+   48 |  3 Seg17.X.s     25 | External    | 00 |         |    0 | 00/0000               | L060000     EXT                  
+   49 |  3 Seg17.X.s     26 | External    | 00 |         |    0 | 00/0000               | L020116     EXT                  
+   50 |  3 Seg17.X.s     27 | External    | 00 |         |    0 | 00/0000               | L020153     EXT                  
+   51 |  3 Seg17.X.s     28 | External    | 00 |         |    0 | 00/0000               | L020118     EXT                  
+   52 |  3 Seg17.X.s     29 | External    | 00 |         |    0 | 00/0000               | L020155     EXT                  
+   53 |  3 Seg17.X.s     30 | External    | 00 |         |    0 | 00/0000               | L02010C     EXT                  
+   54 |  3 Seg17.X.s     31 | External    | 00 |         |    0 | 00/0000               | L180000     EXT                  
+   55 |  3 Seg17.X.s     32 | External    | 00 |         |    0 | 00/0000               | L1D0395     EXT                  
+   56 |  3 Seg17.X.s     33 | External    | 00 |         |    0 | 00/0000               | L1302A9     EXT                  
+   57 |  3 Seg17.X.s     34 | External    | 00 |         |    0 | 00/0000               | L0901BD     EXT                  
+   58 |  3 Seg17.X.s     35 | External    | 00 |         |    0 | 00/0000               | L0600EB     EXT                  
+   59 |  3 Seg17.X.s     36 | External    | 00 |         |    0 | 00/0000               | L1602C7     EXT                  
+   60 |  3 Seg17.X.s     37 | External    | 00 |         |    0 | 00/0000               | L0E0019     EXT                  
+   61 |  3 Seg17.X.s     38 | External    | 00 |         |    0 | 00/0000               | L0802D6     EXT                  
+   62 |  3 Seg17.X.s     39 | External    | 00 |         |    0 | 00/0000               | L08034B     EXT                  
+   63 |  3 Seg17.X.s     40 | External    | 00 |         |    0 | 00/0000               | L21016B     EXT                  
+   64 |  3 Seg17.X.s     41 | External    | 00 |         |    0 | 00/0000               | L1D0000     EXT                  
+   65 |  3 Seg17.X.s     42 | External    | 00 |         |    0 | 00/0000               | L1F025A     EXT                  
+   66 |  3 Seg17.X.s     43 | External    | 00 |         |    0 | 00/0000               | L1602ED     EXT                  
+   67 |  3 Seg17.X.s     44 | External    | 00 |         |    0 | 00/0000               | L1607D4     EXT                  
+   68 |  3 Seg17.X.s     45 | External    | 00 |         |    0 | 00/0000               | L1F0219     EXT                  
+   69 |  3 Seg17.X.s     46 | External    | 00 |         |    0 | 00/0000               | L0D0281     EXT                  
+   70 |  3 Seg17.X.s     47 | External    | 00 |         |    0 | 00/0000               | L0D02BC     EXT                  
+   71 |  3 Seg17.X.s     48 | External    | 00 |         |    0 | 00/0000               | L0D01AE     EXT                  
+   72 |  3 Seg17.X.s     49 | External    | 00 |         |    0 | 00/0000               | L0E0000     EXT                  
+   73 |  3 Seg17.X.s     50 | External    | 00 |         |    0 | 00/0000               | L1F01E8     EXT                  
+   74 |  3 Seg17.X.s     51 | External    | 00 |         |    0 | 00/0000               | L2201EA     EXT                  
+   75 |  3 Seg17.X.s     52 | External    | 00 |         |    0 | 00/0000               | L160645     EXT                  
+   76 |  3 Seg17.X.s     53 | External    | 00 |         |    0 | 00/0000               | L13007B     EXT                  
+   77 |  3 Seg17.X.s     54 | External    | 00 |         |    0 | 00/0000               | L0D01C7     EXT                  
+   78 |  3 Seg17.X.s     55 | External    | 00 |         |    0 | 00/0000               | L0F1632     EXT                  
+   79 |  3 Seg17.X.s     56 | External    | 00 |         |    0 | 00/0000               | L0F1864     EXT                  
+   80 |  3 Seg17.X.s     57 | External    | 00 |         |    0 | 00/0000               | L0F0CFA     EXT                  
+   81 |  3 Seg17.X.s     58 | External    | 00 |         |    0 | 00/0000               | L0D0000     EXT                  
+   82 |  3 Seg17.X.s     59 | External    | 00 |         |    0 | 00/0000               | L0D04FB     EXT                  
+   83 |  3 Seg17.X.s     60 | External    | 00 |         |    0 | 00/0000               | L0F01B9     EXT                  
+   84 |  3 Seg17.X.s     61 | External    | 00 |         |    0 | 00/0000               | L0F01F7     EXT                  
+   85 |  3 Seg17.X.s     62 | External    | 00 |         |    0 | 00/0000               | L0D0322     EXT                  
+   86 |  3 Seg17.X.s     63 | External    | 00 |         |    0 | 00/0000               | L0F15CB     EXT                  
+   87 |  3 Seg17.X.s     64 | External    | 00 |         |    0 | 00/0000               | L130000     EXT                  
+   88 |  3 Seg17.X.s     65 | External    | 00 |         |    0 | 00/0000               | L1D0333     EXT                  
+   89 |  3 Seg17.X.s     66 | External    | 00 |         |    0 | 00/0000               | L1C01FD     EXT                  
+   90 |  3 Seg17.X.s     67 | External    | 00 |         |    0 | 00/0000               | L160000     EXT                  
+   91 |  3 Seg17.X.s     68 | External    | 00 |         |    0 | 00/0000               | L02010A     EXT                  
+   92 |  3 Seg17.X.s     69 | External    | 00 |         |    0 | 00/0000               | L032501     EXT                  
+   93 |  3 Seg17.X.s     70 | External    | 00 |         |    0 | 00/0000               | L032510     EXT                  
+   94 |  3 Seg17.X.s     71 | External    | 00 |         |    0 | 00/0000               | L03251C     EXT                  
+   95 |  3 Seg17.X.s     72 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   96 |  1   SEG17.S     18 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   97 |  1   SEG17.S     19 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   98 |  1   SEG17.S     20 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   99 |  1   SEG17.S     21 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Event.Macs   
+  100 |  1   SEG17.S     22 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Qd.Macs      
+  101 |  1   SEG17.S     23 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Util.Macs    
+  102 |  1   SEG17.S     24 | Empty       | 00 |         |    0 | 00/0000               |                                  
+  103 |  1   SEG17.S     25 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+  104 |  1   SEG17.S     26 | Empty       | 00 |         |    0 | 00/0000               |                                  
+  105 |  1   SEG17.S     27 | Global      | 00 |         |    0 | 00/0000               | L170000     ENT                  
+  106 |  1   SEG17.S     28 | Code        | 00 |         |    1 | 00/0000 : 0B          |             PHD                  
+  107 |  1   SEG17.S     29 | Code        | 00 |         |    1 | 00/0001 : 3B          |             TSC                  
+  108 |  1   SEG17.S     30 | Code        | 00 |         |    1 | 00/0002 : 38          |             SEC                  
+  109 |  1   SEG17.S     31 | Code        | 00 |         |    3 | 00/0003 : E9 FB 00    |             SBC   #$00FB         
+  110 |  1   SEG17.S     32 | Code        | 00 |         |    1 | 00/0006 : 5B          |             TCD                  
+  111 |  1   SEG17.S     33 | Code        | 00 |         |    3 | 00/0007 : 69 F4 00    |             ADC   #$00F4         
+  112 |  1   SEG17.S     34 | Code        | 00 |         |    1 | 00/000A : 1B          |             TCS                  
+  113 |  1   SEG17.S     35 | Code        | 00 |E 3      |    4 | 00/000B : 22 CC 15 0F | L17000B     JSL   L0F15F0        
+  114 |  1   SEG17.S     36 | Code        | 00 |         |    1 | 00/000F : A8          |             TAY                  
+  115 |  1   SEG17.S     37 | Code        | 00 |         |    2 | 00/0010 : F0 0A       |             BEQ   L17001C        
+  116 |  1   SEG17.S     38 | Code        | 00 |E 3      |    4 | 00/0012 : 22 9E 11 0F |             JSL   L0F11B0        
+  117 |  1   SEG17.S     39 | Code        | 00 |E 3      |    4 | 00/0016 : 22 95 03 1D |             JSL   L1D0395        
+  118 |  1   SEG17.S     40 | Code        | 00 |         |    2 | 00/001A : 80 EF       |             BRA   L17000B        
+  119 |  1   SEG17.S     41 | Code        | 00 |E 3      |    4 | 00/001C : 22 ED 02 16 | L17001C     JSL   L1602ED        
+  120 |  1   SEG17.S     42 | Code        | 00 |E 2      |    3 | 00/0020 : AD 09 01    |             LDA   L020108        
+  121 |  1   SEG17.S     43 | Code        | 00 |         |    3 | 00/0023 : C9 00 00    |             CMP   #$0000         
+  122 |  1   SEG17.S     44 | Code        | 00 |         |    2 | 00/0026 : D0 06       |             BNE   L17002E        
+  123 |  1   SEG17.S     45 | Code        | 00 |E 3      |    4 | 00/0028 : 22 D4 07 16 |             JSL   L1607D4        
+  124 |  1   SEG17.S     46 | Code        | 00 |         |    2 | 00/002C : 80 0E       |             BRA   L17003C        
+  125 |  1   SEG17.S     47 | Code        | 00 |E 3      |    4 | 00/002E : 22 C7 02 16 | L17002E     JSL   L1602C7        
+  126 |  1   SEG17.S     48 | Code        | 00 |E 3      |    4 | 00/0032 : 22 19 02 1F |             JSL   L1F0219        
+  127 |  1   SEG17.S     49 | Code        | 00 |         |    3 | 00/0036 : A9 01 00    |             LDA   #$0001         
+  128 |  1   SEG17.S     50 | Code        | 00 |E 2      |    3 | 00/0039 : 8D 0B 01    |             STA   L02010A        
+  129 |  1   SEG17.S     51 | Code        | 00 |         |    1 | 00/003C : 3B          | L17003C     TSC                  
+  130 |  1   SEG17.S     52 | Code        | 00 |         |    1 | 00/003D : 18          |             CLC                  
+  131 |  1   SEG17.S     53 | Code        | 00 |         |    3 | 00/003E : 69 06 00    |             ADC   #$0006         
+  132 |  1   SEG17.S     54 | Code        | 00 |         |    1 | 00/0041 : 1B          |             TCS                  
+  133 |  1   SEG17.S     55 | Code        | 00 |         |    1 | 00/0042 : 2B          |             PLD                  
+  134 |  1   SEG17.S     56 | Code        | 00 |         |    1 | 00/0043 : 6B          |             RTL                  
+  135 |  1   SEG17.S     57 | Empty       | 00 |         |    0 | 00/0044               |                                  
+  136 |  1   SEG17.S     58 | Code        | 00 |         |    1 | 00/0044 : 0B          | L170044     PHD                  
+  137 |  1   SEG17.S     59 | Code        | 00 |         |    1 | 00/0045 : 3B          |             TSC                  
+  138 |  1   SEG17.S     60 | Code        | 00 |         |    1 | 00/0046 : 38          |             SEC                  
+  139 |  1   SEG17.S     61 | Code        | 00 |         |    3 | 00/0047 : E9 FB 00    |             SBC   #$00FB         
+  140 |  1   SEG17.S     62 | Code        | 00 |         |    1 | 00/004A : 5B          |             TCD                  
+  141 |  1   SEG17.S     63 | Code        | 00 |         |    3 | 00/004B : 69 F4 00    |             ADC   #$00F4         
+  142 |  1   SEG17.S     64 | Code        | 00 |         |    1 | 00/004E : 1B          |             TCS                  
+  143 |  1   SEG17.S     65 | Code        | 00 |E 2      |    3 | 00/004F : AD 09 01    |             LDA   L020108        
+  144 |  1   SEG17.S     66 | Code        | 00 |         |    3 | 00/0052 : C9 01 00    |             CMP   #$0001         
+  145 |  1   SEG17.S     67 | Code        | 00 |         |    2 | 00/0055 : D0 05       |             BNE   L17005C        
+  146 |  1   SEG17.S     68 | Code        | 00 |E 2      |    3 | 00/0057 : 9C 09 01    |             STZ   L020108        
+  147 |  1   SEG17.S     69 | Code        | 00 |         |    2 | 00/005A : 80 06       |             BRA   L170062        
+  148 |  1   SEG17.S     70 | Code        | 00 |         |    3 | 00/005C : A9 01 00    | L17005C     LDA   #$0001         
+  149 |  1   SEG17.S     71 | Code        | 00 |E 2      |    3 | 00/005F : 8D 09 01    |             STA   L020108        
+  150 |  1   SEG17.S     72 | Code        | 00 |         |    1 | 00/0062 : 3B          | L170062     TSC                  
+  151 |  1   SEG17.S     73 | Code        | 00 |         |    1 | 00/0063 : 18          |             CLC                  
+  152 |  1   SEG17.S     74 | Code        | 00 |         |    3 | 00/0064 : 69 06 00    |             ADC   #$0006         
+  153 |  1   SEG17.S     75 | Code        | 00 |         |    1 | 00/0067 : 1B          |             TCS                  
+  154 |  1   SEG17.S     76 | Code        | 00 |         |    1 | 00/0068 : 2B          |             PLD                  
+  155 |  1   SEG17.S     77 | Code        | 00 |         |    1 | 00/0069 : 6B          |             RTL                  
+  156 |  1   SEG17.S     78 | Empty       | 00 |         |    0 | 00/006A               |                                  
+  157 |  1   SEG17.S     79 | Code        | 00 |         |    1 | 00/006A : 0B          | L17006A     PHD                  
+  158 |  1   SEG17.S     80 | Code        | 00 |         |    1 | 00/006B : 3B          |             TSC                  
+  159 |  1   SEG17.S     81 | Code        | 00 |         |    1 | 00/006C : 38          |             SEC                  
+  160 |  1   SEG17.S     82 | Code        | 00 |         |    3 | 00/006D : E9 FB 00    |             SBC   #$00FB         
+  161 |  1   SEG17.S     83 | Code        | 00 |         |    1 | 00/0070 : 5B          |             TCD                  
+  162 |  1   SEG17.S     84 | Code        | 00 |         |    3 | 00/0071 : 69 F4 00    |             ADC   #$00F4         
+  163 |  1   SEG17.S     85 | Code        | 00 |         |    1 | 00/0074 : 1B          |             TCS                  
+  164 |  1   SEG17.S     86 | Code        | 00 |         |    1 | 00/0075 : 38          |             SEC                  
+  165 |  1   SEG17.S     87 | Code        | 00 |E 2      |    3 | 00/0076 : AD 64 01    |             LDA   L020163        
+  166 |  1   SEG17.S     88 | Code        | 00 |         |    3 | 00/0079 : E9 00 00    |             SBC   #$0000         
+  167 |  1   SEG17.S     89 | Code        | 00 |         |    2 | 00/007C : D0 08       |             BNE   L170086        
+  168 |  1   SEG17.S     90 | Code        | 00 |E 2      |    3 | 00/007E : AD 66 01    |             LDA   L020165        
+  169 |  1   SEG17.S     91 | Code        | 00 |         |    3 | 00/0081 : E9 00 00    |             SBC   #$0000         
+  170 |  1   SEG17.S     92 | Code        | 00 |         |    2 | 00/0084 : 80 08       |             BRA   L17008E        
+  171 |  1   SEG17.S     93 | Code        | 00 |E 2      |    3 | 00/0086 : AD 66 01    | L170086     LDA   L020165        
+  172 |  1   SEG17.S     94 | Code        | 00 |         |    3 | 00/0089 : E9 00 00    |             SBC   #$0000         
+  173 |  1   SEG17.S     95 | Code        | 00 |         |    2 | 00/008C : C2 02       |             REP   #$02           
+  174 |  1   SEG17.S     96 | Code        | 00 |         |    2 | 00/008E : F0 07       | L17008E     BEQ   L170097        
+  175 |  1   SEG17.S     97 | Code        | 00 |         |    2 | 00/0090 : 70 03       |             BVS   L170095        
+  176 |  1   SEG17.S     98 | Code        | 00 |         |    3 | 00/0092 : 49 00 80    |             EOR   #$8000         
+  177 |  1   SEG17.S     99 | Code        | 00 |         |    2 | 00/0095 : 30 0C       | L170095     BMI   L1700A3        
+  178 |  1   SEG17.S    100 | Code        | 00 |  3      |    4 | 00/0097 : 22 44 00 00 | L170097     JSL   L170044        
+  179 |  1   SEG17.S    101 | Code        | 00 |E 3      |    4 | 00/009B : 22 81 02 0D |             JSL   L0D0281        
+  180 |  1   SEG17.S    102 | Code        | 00 |E 3      |    4 | 00/009F : 22 6B 01 21 |             JSL   L21016B        
+  181 |  1   SEG17.S    103 | Code        | 00 |         |    1 | 00/00A3 : 38          | L1700A3     SEC                  
+  182 |  1   SEG17.S    104 | Code        | 00 |E 2      |    3 | 00/00A4 : AD 64 01    |             LDA   L020163        
+  183 |  1   SEG17.S    105 | Code        | 00 |         |    3 | 00/00A7 : E9 78 05    |             SBC   #$0578         
+  184 |  1   SEG17.S    106 | Code        | 00 |         |    2 | 00/00AA : D0 08       |             BNE   L1700B4        
+  185 |  1   SEG17.S    107 | Code        | 00 |E 2      |    3 | 00/00AC : AD 66 01    |             LDA   L020165        
+  186 |  1   SEG17.S    108 | Code        | 00 |         |    3 | 00/00AF : E9 00 00    |             SBC   #$0000         
+  187 |  1   SEG17.S    109 | Code        | 00 |         |    2 | 00/00B2 : 80 08       |             BRA   L1700BC        
+  188 |  1   SEG17.S    110 | Code        | 00 |E 2      |    3 | 00/00B4 : AD 66 01    | L1700B4     LDA   L020165        
+  189 |  1   SEG17.S    111 | Code        | 00 |         |    3 | 00/00B7 : E9 00 00    |             SBC   #$0000         
+  190 |  1   SEG17.S    112 | Code        | 00 |         |    2 | 00/00BA : C2 02       |             REP   #$02           
+  191 |  1   SEG17.S    113 | Code        | 00 |         |    2 | 00/00BC : 70 03       | L1700BC     BVS   L1700C1        
+  192 |  1   SEG17.S    114 | Code        | 00 |         |    3 | 00/00BE : 49 00 80    |             EOR   #$8000         
+  193 |  1   SEG17.S    115 | Code        | 00 |         |    2 | 00/00C1 : 10 0C       | L1700C1     BPL   L1700CF        
+  194 |  1   SEG17.S    116 | Code        | 00 |  3      |    4 | 00/00C3 : 22 44 00 00 |             JSL   L170044        
+  195 |  1   SEG17.S    117 | Code        | 00 |E 3      |    4 | 00/00C7 : 22 BC 02 0D |             JSL   L0D02BC        
+  196 |  1   SEG17.S    118 | Code        | 00 |E 3      |    4 | 00/00CB : 22 6B 01 21 |             JSL   L21016B        
+  197 |  1   SEG17.S    119 | Code        | 00 |         |    1 | 00/00CF : 3B          | L1700CF     TSC                  
+  198 |  1   SEG17.S    120 | Code        | 00 |         |    1 | 00/00D0 : 18          |             CLC                  
+  199 |  1   SEG17.S    121 | Code        | 00 |         |    3 | 00/00D1 : 69 06 00    |             ADC   #$0006         
+  200 |  1   SEG17.S    122 | Code        | 00 |         |    1 | 00/00D4 : 1B          |             TCS                  
+  201 |  1   SEG17.S    123 | Code        | 00 |         |    1 | 00/00D5 : 2B          |             PLD                  
+  202 |  1   SEG17.S    124 | Code        | 00 |         |    1 | 00/00D6 : 6B          |             RTL                  
+  203 |  1   SEG17.S    125 | Empty       | 00 |         |    0 | 00/00D7               |                                  
+  204 |  1   SEG17.S    126 | Code        | 00 |         |    1 | 00/00D7 : 0B          | L1700D7     PHD                  
+  205 |  1   SEG17.S    127 | Code        | 00 |         |    1 | 00/00D8 : 3B          |             TSC                  
+  206 |  1   SEG17.S    128 | Code        | 00 |         |    1 | 00/00D9 : 38          |             SEC                  
+  207 |  1   SEG17.S    129 | Code        | 00 |         |    3 | 00/00DA : E9 FB 00    |             SBC   #$00FB         
+  208 |  1   SEG17.S    130 | Code        | 00 |         |    1 | 00/00DD : 5B          |             TCD                  
+  209 |  1   SEG17.S    131 | Code        | 00 |         |    3 | 00/00DE : 69 F4 00    |             ADC   #$00F4         
+  210 |  1   SEG17.S    132 | Code        | 00 |         |    1 | 00/00E1 : 1B          |             TCS                  
+  211 |  1   SEG17.S    133 | Code        | 00 |E 1 >>16 |    3 | 00/00E2 : F4 00 00    |             PEA   ^L032501       
+  212 |  1   SEG17.S    134 | Code        | 00 |E 2      |    3 | 00/00E5 : F4 0E 25    |             PEA   L032501        
+  213 |  1   SEG17.S    135 | Code        | 00 |E 3      |    4 | 00/00E8 : 22 D5 0D 1A |             JSL   L1A0E02        
+  214 |  1   SEG17.S    136 | Code        | 00 |         |    1 | 00/00EC : 7A          |             PLY                  
+  215 |  1   SEG17.S    137 | Code        | 00 |         |    1 | 00/00ED : 7A          |             PLY                  
+  216 |  1   SEG17.S    138 | Code        | 00 |E 3      |    4 | 00/00EE : 22 AE 01 0D |             JSL   L0D01AE        
+  217 |  1   SEG17.S    139 | Code        | 00 |E 3      |    4 | 00/00F2 : 22 00 00 0E |             JSL   L0E0000        
+  218 |  1   SEG17.S    140 | Code        | 00 |E 3      |    4 | 00/00F6 : 22 E8 01 1F |             JSL   L1F01E8        
+  219 |  1   SEG17.S    141 | Code        | 00 |E 3      |    4 | 00/00FA : 22 EA 01 22 |             JSL   L2201EA        
+  220 |  1   SEG17.S    142 | Code        | 00 |         |    3 | 00/00FE : A9 01 00    |             LDA   #$0001         
+  221 |  1   SEG17.S    143 | Code        | 00 |E 2      |    3 | 00/0101 : 8D 09 01    |             STA   L020108        
+  222 |  1   SEG17.S    144 | Code        | 00 |E 3      |    4 | 00/0104 : 22 68 0E 1A |             JSL   L1A0E95        
+  223 |  1   SEG17.S    145 | Code        | 00 |         |    1 | 00/0108 : 3B          |             TSC                  
+  224 |  1   SEG17.S    146 | Code        | 00 |         |    1 | 00/0109 : 18          |             CLC                  
+  225 |  1   SEG17.S    147 | Code        | 00 |         |    3 | 00/010A : 69 06 00    |             ADC   #$0006         
+  226 |  1   SEG17.S    148 | Code        | 00 |         |    1 | 00/010D : 1B          |             TCS                  
+  227 |  1   SEG17.S    149 | Code        | 00 |         |    1 | 00/010E : 2B          |             PLD                  
+  228 |  1   SEG17.S    150 | Code        | 00 |         |    1 | 00/010F : 6B          |             RTL                  
+  229 |  1   SEG17.S    151 | Empty       | 00 |         |    0 | 00/0110               |                                  
+  230 |  1   SEG17.S    152 | Code        | 00 |         |    1 | 00/0110 : 0B          | L170110     PHD                  
+  231 |  1   SEG17.S    153 | Code        | 00 |         |    1 | 00/0111 : 3B          |             TSC                  
+  232 |  1   SEG17.S    154 | Code        | 00 |         |    1 | 00/0112 : 38          |             SEC                  
+  233 |  1   SEG17.S    155 | Code        | 00 |         |    3 | 00/0113 : E9 FB 00    |             SBC   #$00FB         
+  234 |  1   SEG17.S    156 | Code        | 00 |         |    1 | 00/0116 : 5B          |             TCD                  
+  235 |  1   SEG17.S    157 | Code        | 00 |         |    3 | 00/0117 : 69 F4 00    |             ADC   #$00F4         
+  236 |  1   SEG17.S    158 | Code        | 00 |         |    1 | 00/011A : 1B          |             TCS                  
+  237 |  1   SEG17.S    159 | Code        | 00 |E 3      |    4 | 00/011B : 22 00 00 18 |             JSL   L180000        
+  238 |  1   SEG17.S    160 | Code        | 00 |E 2      |    3 | 00/011F : AD 07 01    | L17011F     LDA   L020106        
+  239 |  1   SEG17.S    161 | Code        | 00 |         |    2 | 00/0122 : D0 03       |             BNE   L170127        
+  240 |  1   SEG17.S    162 | Code        | 00 |         |    3 | 00/0124 : 82 2A 00    |             BRL   L170151        
+  241 |  1   SEG17.S    163 | Code        | 00 |E 3      |    4 | 00/0127 : 22 45 06 16 | L170127     JSL   L160645        
+  242 |  1   SEG17.S    164 | Code        | 00 |E 3      |    4 | 00/012B : 22 D6 02 08 |             JSL   L0802D6        
+  243 |  1   SEG17.S    165 | Code        | 00 |E 3      |    4 | 00/012F : 22 4B 03 08 |             JSL   L08034B        
+  244 |  1   SEG17.S    166 | Code        | 00 |E 3      |    4 | 00/0133 : 22 19 00 0E |             JSL   L0E0019        
+  245 |  1   SEG17.S    167 | Code        | 00 |E 3      |    4 | 00/0137 : 22 6B 01 21 |             JSL   L21016B        
+  246 |  1   SEG17.S    168 | Code        | 00 |E 3      |    4 | 00/013B : 22 5A 02 1F |             JSL   L1F025A        
+  247 |  1   SEG17.S    169 | Code        | 00 |E 3      |    4 | 00/013F : 22 9E 11 0F |             JSL   L0F11B0        
+  248 |  1   SEG17.S    170 | Code        | 00 |E 3      |    4 | 00/0143 : 22 00 00 1D |             JSL   L1D0000        
+  249 |  1   SEG17.S    171 | Code        | 00 |E 3      |    4 | 00/0147 : 22 EE 02 13 |             JSL   L1302A9        
+  250 |  1   SEG17.S    172 | Code        | 00 |  3      |    4 | 00/014B : 22 6A 00 00 |             JSL   L17006A        
+  251 |  1   SEG17.S    173 | Code        | 00 |         |    2 | 00/014F : 80 CE       |             BRA   L17011F        
+  252 |  1   SEG17.S    174 | Code        | 00 |E 3      |    4 | 00/0151 : 22 79 00 13 | L170151     JSL   L13007B        
+  253 |  1   SEG17.S    175 | Code        | 00 |         |    1 | 00/0155 : A8          |             TAY                  
+  254 |  1   SEG17.S    176 | Code        | 00 |         |    2 | 00/0156 : D0 18       |             BNE   L170170        
+  255 |  1   SEG17.S    177 | Code        | 00 |E 3      |    4 | 00/0158 : 22 CC 15 0F |             JSL   L0F15F0        
+  256 |  1   SEG17.S    178 | Code        | 00 |         |    1 | 00/015C : A8          |             TAY                  
+  257 |  1   SEG17.S    179 | Code        | 00 |         |    2 | 00/015D : F0 11       |             BEQ   L170170        
+  258 |  1   SEG17.S    180 | Code        | 00 |E 3      |    4 | 00/015F : 22 C7 01 0D |             JSL   L0D01C7        
+  259 |  1   SEG17.S    181 | Code        | 00 |         |    1 | 00/0163 : A8          |             TAY                  
+  260 |  1   SEG17.S    182 | Code        | 00 |         |    2 | 00/0164 : F0 0A       |             BEQ   L170170        
+  261 |  1   SEG17.S    183 | Code        | 00 |E 3      |    4 | 00/0166 : 22 9E 11 0F |             JSL   L0F11B0        
+  262 |  1   SEG17.S    184 | Code        | 00 |E 3      |    4 | 00/016A : 22 95 03 1D |             JSL   L1D0395        
+  263 |  1   SEG17.S    185 | Code        | 00 |         |    2 | 00/016E : 80 E1       |             BRA   L170151        
+  264 |  1   SEG17.S    186 | Code        | 00 |         |    1 | 00/0170 : 3B          | L170170     TSC                  
+  265 |  1   SEG17.S    187 | Code        | 00 |         |    1 | 00/0171 : 18          |             CLC                  
+  266 |  1   SEG17.S    188 | Code        | 00 |         |    3 | 00/0172 : 69 06 00    |             ADC   #$0006         
+  267 |  1   SEG17.S    189 | Code        | 00 |         |    1 | 00/0175 : 1B          |             TCS                  
+  268 |  1   SEG17.S    190 | Code        | 00 |         |    1 | 00/0176 : 2B          |             PLD                  
+  269 |  1   SEG17.S    191 | Code        | 00 |         |    1 | 00/0177 : 6B          |             RTL                  
+  270 |  1   SEG17.S    192 | Empty       | 00 |         |    0 | 00/0178               |                                  
+  271 |  1   SEG17.S    193 | Global      | 00 |         |    0 | 00/0178               | L170178     ENT                  
+  272 |  1   SEG17.S    194 | Code        | 00 |         |    1 | 00/0178 : 0B          |             PHD                  
+  273 |  1   SEG17.S    195 | Code        | 00 |         |    1 | 00/0179 : 3B          |             TSC                  
+  274 |  1   SEG17.S    196 | Code        | 00 |         |    1 | 00/017A : 38          |             SEC                  
+  275 |  1   SEG17.S    197 | Code        | 00 |         |    3 | 00/017B : E9 FB 00    |             SBC   #$00FB         
+  276 |  1   SEG17.S    198 | Code        | 00 |         |    1 | 00/017E : 5B          |             TCD                  
+  277 |  1   SEG17.S    199 | Code        | 00 |         |    3 | 00/017F : 69 F4 00    |             ADC   #$00F4         
+  278 |  1   SEG17.S    200 | Code        | 00 |         |    1 | 00/0182 : 1B          |             TCS                  
+  279 |  1   SEG17.S    201 | Code        | 00 |E 1 >>16 |    3 | 00/0183 : F4 00 00    |             PEA   ^L032510       
+  280 |  1   SEG17.S    202 | Code        | 00 |E 2      |    3 | 00/0186 : F4 1D 25    |             PEA   L032510        
+  281 |  1   SEG17.S    203 | Code        | 00 |E 3      |    4 | 00/0189 : 22 D5 0D 1A |             JSL   L1A0E02        
+  282 |  1   SEG17.S    204 | Code        | 00 |         |    1 | 00/018D : 7A          |             PLY                  
+  283 |  1   SEG17.S    205 | Code        | 00 |         |    1 | 00/018E : 7A          |             PLY                  
+  284 |  1   SEG17.S    206 | Macro       | 00 |         |    0 | 00/018F               |             _HideCursor                 
+  286 |  1   SEG17.S    206 | Code        | 00 |         |    3 | 00/018F : A2 04 90    |             LDX   #$9004         ; load tool call #
+  287 |  1   SEG17.S    206 | Code        | 00 |         |    4 | 00/0192 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  288 |  1   SEG17.S    207 | Comment     | 00 |         |    0 | 00/0196               | * BCS L17019B
+  289 |  1   SEG17.S    208 | Comment     | 00 |         |    0 | 00/0196               | * LDA #$0000
+  290 |  1   SEG17.S    209 | Comment     | 00 |         |    0 | 00/0196               | *L17019B STAL L0201E7
+  291 |  1   SEG17.S    210 | Code        | 00 |E 3      |    4 | 00/0196 : 22 0E 16 0F |             JSL   L0F1632        
+  292 |  1   SEG17.S    211 | Code        | 00 |E 2      |    3 | 00/019A : AE 4E 01    |             LDX   L02014D        
+  293 |  1   SEG17.S    212 | Code        | 00 |E 2      |    3 | 00/019D : AD 4C 01    |             LDA   L02014B        
+  294 |  1   SEG17.S    213 | Code        | 00 |         |    1 | 00/01A0 : 18          |             CLC                  
+  295 |  1   SEG17.S    214 | Code        | 00 |         |    3 | 00/01A1 : 69 20 00    |             ADC   #$0020         
+  296 |  1   SEG17.S    215 | Code        | 00 |         |    1 | 00/01A4 : 48          |             PHA                  
+  297 |  1   SEG17.S    216 | Code        | 00 |         |    1 | 00/01A5 : 8A          |             TXA                  
+  298 |  1   SEG17.S    217 | Code        | 00 |         |    3 | 00/01A6 : 69 00 00    |             ADC   #$0000         
+  299 |  1   SEG17.S    218 | Code        | 00 |         |    1 | 00/01A9 : AA          |             TAX                  
+  300 |  1   SEG17.S    219 | Code        | 00 |         |    1 | 00/01AA : 68          |             PLA                  
+  301 |  1   SEG17.S    220 | Code        | 00 |         |    1 | 00/01AB : DA          |             PHX                  
+  302 |  1   SEG17.S    221 | Code        | 00 |         |    1 | 00/01AC : 48          |             PHA                  
+  303 |  1   SEG17.S    222 | Code        | 00 |E 2      |    3 | 00/01AD : AE 56 01    |             LDX   L020155        
+  304 |  1   SEG17.S    223 | Code        | 00 |E 2      |    3 | 00/01B0 : AD 54 01    |             LDA   L020153        
+  305 |  1   SEG17.S    224 | Code        | 00 |         |    1 | 00/01B3 : 18          |             CLC                  
+  306 |  1   SEG17.S    225 | Code        | 00 |         |    3 | 00/01B4 : 69 20 00    |             ADC   #$0020         
+  307 |  1   SEG17.S    226 | Code        | 00 |         |    1 | 00/01B7 : 48          |             PHA                  
+  308 |  1   SEG17.S    227 | Code        | 00 |         |    1 | 00/01B8 : 8A          |             TXA                  
+  309 |  1   SEG17.S    228 | Code        | 00 |         |    3 | 00/01B9 : 69 00 00    |             ADC   #$0000         
+  310 |  1   SEG17.S    229 | Code        | 00 |         |    1 | 00/01BC : AA          |             TAX                  
+  311 |  1   SEG17.S    230 | Code        | 00 |         |    1 | 00/01BD : 68          |             PLA                  
+  312 |  1   SEG17.S    231 | Code        | 00 |         |    1 | 00/01BE : DA          |             PHX                  
+  313 |  1   SEG17.S    232 | Code        | 00 |         |    1 | 00/01BF : 48          |             PHA                  
+  314 |  1   SEG17.S    233 | Code        | 00 |E 3      |    4 | 00/01C0 : 22 54 00 0B |             JSL   L0B0054        
+  315 |  1   SEG17.S    234 | Code        | 00 |         |    1 | 00/01C4 : 7A          |             PLY                  
+  316 |  1   SEG17.S    235 | Code        | 00 |         |    1 | 00/01C5 : 7A          |             PLY                  
+  317 |  1   SEG17.S    236 | Code        | 00 |         |    1 | 00/01C6 : 7A          |             PLY                  
+  318 |  1   SEG17.S    237 | Code        | 00 |         |    1 | 00/01C7 : 7A          |             PLY                  
+  319 |  1   SEG17.S    238 | Code        | 00 |E 2      |    3 | 00/01C8 : AE 19 01    |             LDX   L020118        
+  320 |  1   SEG17.S    239 | Code        | 00 |E 2      |    3 | 00/01CB : AD 17 01    |             LDA   L020116        
+  321 |  1   SEG17.S    240 | Code        | 00 |         |    1 | 00/01CE : DA          |             PHX                  
+  322 |  1   SEG17.S    241 | Code        | 00 |         |    1 | 00/01CF : 48          |             PHA                  
+  323 |  1   SEG17.S    242 | Code        | 00 |E 2      |    3 | 00/01D0 : AE 4E 01    |             LDX   L02014D        
+  324 |  1   SEG17.S    243 | Code        | 00 |E 2      |    3 | 00/01D3 : AD 4C 01    |             LDA   L02014B        
+  325 |  1   SEG17.S    244 | Code        | 00 |         |    1 | 00/01D6 : 18          |             CLC                  
+  326 |  1   SEG17.S    245 | Code        | 00 |         |    3 | 00/01D7 : 69 20 00    |             ADC   #$0020         
+  327 |  1   SEG17.S    246 | Code        | 00 |         |    1 | 00/01DA : 48          |             PHA                  
+  328 |  1   SEG17.S    247 | Code        | 00 |         |    1 | 00/01DB : 8A          |             TXA                  
+  329 |  1   SEG17.S    248 | Code        | 00 |         |    3 | 00/01DC : 69 00 00    |             ADC   #$0000         
+  330 |  1   SEG17.S    249 | Code        | 00 |         |    1 | 00/01DF : AA          |             TAX                  
+  331 |  1   SEG17.S    250 | Code        | 00 |         |    1 | 00/01E0 : 68          |             PLA                  
+  332 |  1   SEG17.S    251 | Code        | 00 |         |    1 | 00/01E1 : DA          |             PHX                  
+  333 |  1   SEG17.S    252 | Code        | 00 |         |    1 | 00/01E2 : 48          |             PHA                  
+  334 |  1   SEG17.S    253 | Code        | 00 |         |    3 | 00/01E3 : F4 24 00    |             PEA   $0024          
+  335 |  1   SEG17.S    254 | Code        | 00 |         |    3 | 00/01E6 : F4 00 00    |             PEA   $0000          
+  336 |  1   SEG17.S    255 | Code        | 00 |         |    3 | 00/01E9 : F4 01 40    |             PEA   $4001          
+  337 |  1   SEG17.S    256 | Code        | 00 |E 3      |    4 | 00/01EC : 22 00 00 07 |             JSL   L070000        
+  338 |  1   SEG17.S    257 | Code        | 00 |         |    1 | 00/01F0 : A8          |             TAY                  
+  339 |  1   SEG17.S    258 | Code        | 00 |         |    1 | 00/01F1 : 3B          |             TSC                  
+  340 |  1   SEG17.S    259 | Code        | 00 |         |    1 | 00/01F2 : 18          |             CLC                  
+  341 |  1   SEG17.S    260 | Code        | 00 |         |    3 | 00/01F3 : 69 0E 00    |             ADC   #$000E         
+  342 |  1   SEG17.S    261 | Code        | 00 |         |    1 | 00/01F6 : 1B          |             TCS                  
+  343 |  1   SEG17.S    262 | Code        | 00 |         |    1 | 00/01F7 : 98          |             TYA                  
+  344 |  1   SEG17.S    263 | Code        | 00 |E 3      |    4 | 00/01F8 : 22 40 18 0F |             JSL   L0F1864        
+  345 |  1   SEG17.S    264 | Code        | 00 |         |    3 | 00/01FC : F4 C8 00    |             PEA   $00C8          
+  346 |  1   SEG17.S    265 | Code        | 00 |E 2      |    3 | 00/01FF : AE 52 01    |             LDX   L020151        
+  347 |  1   SEG17.S    266 | Code        | 00 |E 2      |    3 | 00/0202 : AD 50 01    |             LDA   L02014F        
+  348 |  1   SEG17.S    267 | Code        | 00 |         |    1 | 00/0205 : DA          |             PHX                  
+  349 |  1   SEG17.S    268 | Code        | 00 |         |    1 | 00/0206 : 48          |             PHA                  
+  350 |  1   SEG17.S    269 | Code        | 00 |E 2      |    3 | 00/0207 : AE 4E 01    |             LDX   L02014D        
+  351 |  1   SEG17.S    270 | Code        | 00 |E 2      |    3 | 00/020A : AD 4C 01    |             LDA   L02014B        
+  352 |  1   SEG17.S    271 | Code        | 00 |         |    1 | 00/020D : 18          |             CLC                  
+  353 |  1   SEG17.S    272 | Code        | 00 |         |    3 | 00/020E : 69 20 00    |             ADC   #$0020         
+  354 |  1   SEG17.S    273 | Code        | 00 |         |    1 | 00/0211 : 48          |             PHA                  
+  355 |  1   SEG17.S    274 | Code        | 00 |         |    1 | 00/0212 : 8A          |             TXA                  
+  356 |  1   SEG17.S    275 | Code        | 00 |         |    3 | 00/0213 : 69 00 00    |             ADC   #$0000         
+  357 |  1   SEG17.S    276 | Code        | 00 |         |    1 | 00/0216 : AA          |             TAX                  
+  358 |  1   SEG17.S    277 | Code        | 00 |         |    1 | 00/0217 : 68          |             PLA                  
+  359 |  1   SEG17.S    278 | Code        | 00 |         |    1 | 00/0218 : DA          |             PHX                  
+  360 |  1   SEG17.S    279 | Code        | 00 |         |    1 | 00/0219 : 48          |             PHA                  
+  361 |  1   SEG17.S    280 | Code        | 00 |E 3      |    4 | 00/021A : 22 BD 01 09 |             JSL   L0901BD        
+  362 |  1   SEG17.S    281 | Code        | 00 |         |    1 | 00/021E : 7A          |             PLY                  
+  363 |  1   SEG17.S    282 | Code        | 00 |         |    1 | 00/021F : 7A          |             PLY                  
+  364 |  1   SEG17.S    283 | Code        | 00 |         |    1 | 00/0220 : 7A          |             PLY                  
+  365 |  1   SEG17.S    284 | Code        | 00 |         |    1 | 00/0221 : 7A          |             PLY                  
+  366 |  1   SEG17.S    285 | Code        | 00 |         |    1 | 00/0222 : 7A          |             PLY                  
+  367 |  1   SEG17.S    286 | Code        | 00 |E 3      |    4 | 00/0223 : 22 FA 0C 0F |             JSL   L0F0CFA        
+  368 |  1   SEG17.S    287 | Code        | 00 |E 3      |    4 | 00/0227 : 22 00 00 0D |             JSL   L0D0000        
+  369 |  1   SEG17.S    288 | Code        | 00 |E 3      |    4 | 00/022B : 22 FB 04 0D |             JSL   L0D04FB        
+  370 |  1   SEG17.S    289 | Code        | 00 |E 2      |    3 | 00/022F : AD 0D 01    |             LDA   L02010C        
+  371 |  1   SEG17.S    290 | Code        | 00 |         |    2 | 00/0232 : F0 04       |             BEQ   L170241        
+  372 |  1   SEG17.S    291 | Code        | 00 |E 3      |    4 | 00/0234 : 22 00 00 06 |             JSL   L060000        
+  373 |  1   SEG17.S    292 | Code        | 00 |E 3      |    4 | 00/0238 : 22 B9 01 0F | L170241     JSL   L0F01B9        
+  374 |  1   SEG17.S    293 | Code        | 00 |         |    3 | 00/023C : F4 C8 00    |             PEA   $00C8          
+  375 |  1   SEG17.S    294 | Code        | 00 |E 2      |    3 | 00/023F : AE A3 00    |             LDX   L0200A2        
+  376 |  1   SEG17.S    295 | Code        | 00 |E 2      |    3 | 00/0242 : AD A1 00    |             LDA   L0200A0        
+  377 |  1   SEG17.S    296 | Code        | 00 |         |    1 | 00/0245 : DA          |             PHX                  
+  378 |  1   SEG17.S    297 | Code        | 00 |         |    1 | 00/0246 : 48          |             PHA                  
+  379 |  1   SEG17.S    298 | Code        | 00 |E 2      |    3 | 00/0247 : AE 52 01    |             LDX   L020151        
+  380 |  1   SEG17.S    299 | Code        | 00 |E 2      |    3 | 00/024A : AD 50 01    |             LDA   L02014F        
+  381 |  1   SEG17.S    300 | Code        | 00 |         |    1 | 00/024D : DA          |             PHX                  
+  382 |  1   SEG17.S    301 | Code        | 00 |         |    1 | 00/024E : 48          |             PHA                  
+  383 |  1   SEG17.S    302 | Code        | 00 |E 3      |    4 | 00/024F : 22 BD 01 09 |             JSL   L0901BD        
+  384 |  1   SEG17.S    303 | Code        | 00 |         |    1 | 00/0253 : 7A          |             PLY                  
+  385 |  1   SEG17.S    304 | Code        | 00 |         |    1 | 00/0254 : 7A          |             PLY                  
+  386 |  1   SEG17.S    305 | Code        | 00 |         |    1 | 00/0255 : 7A          |             PLY                  
+  387 |  1   SEG17.S    306 | Code        | 00 |         |    1 | 00/0256 : 7A          |             PLY                  
+  388 |  1   SEG17.S    307 | Code        | 00 |         |    1 | 00/0257 : 7A          |             PLY                  
+  389 |  1   SEG17.S    308 | Code        | 00 |E 2      |    3 | 00/0258 : AD 0D 01    |             LDA   L02010C        
+  390 |  1   SEG17.S    309 | Code        | 00 |         |    2 | 00/025B : F0 11       |             BEQ   L170277        
+  391 |  1   SEG17.S    310 | Code        | 00 |E 2      |    3 | 00/025D : 9C 0D 01    |             STZ   L02010C        
+  392 |  1   SEG17.S    311 | Code        | 00 |E 2      |    3 | 00/0260 : AE 56 01    |             LDX   L020155        
+  393 |  1   SEG17.S    312 | Code        | 00 |E 2      |    3 | 00/0263 : AD 54 01    |             LDA   L020153        
+  394 |  1   SEG17.S    313 | Code        | 00 |         |    1 | 00/0266 : DA          |             PHX                  
+  395 |  1   SEG17.S    314 | Code        | 00 |         |    1 | 00/0267 : 48          |             PHA                  
+  396 |  1   SEG17.S    315 | Code        | 00 |E 3      |    4 | 00/0268 : 22 D9 00 06 |             JSL   L0600EB        
+  397 |  1   SEG17.S    316 | Code        | 00 |         |    1 | 00/026C : 7A          |             PLY                  
+  398 |  1   SEG17.S    317 | Code        | 00 |         |    1 | 00/026D : 7A          |             PLY                  
+  399 |  1   SEG17.S    318 | Code        | 00 |         |    3 | 00/026E : A9 01 00    | L170277     LDA   #$0001         
+  400 |  1   SEG17.S    319 | Code        | 00 |E 2      |    3 | 00/0271 : 8D 07 01    |             STA   L020106        
+  401 |  1   SEG17.S    320 | Code        | 00 |E 3      |    4 | 00/0274 : 22 F7 01 0F |             JSL   L0F01F7        
+  402 |  1   SEG17.S    321 | Code        | 00 |E 3      |    4 | 00/0278 : 22 C7 01 0D |             JSL   L0D01C7        
+  403 |  1   SEG17.S    322 | Code        | 00 |         |    1 | 00/027C : A8          |             TAY                  
+  404 |  1   SEG17.S    323 | Code        | 00 |         |    2 | 00/027D : F0 14       |             BEQ   L17029C        
+  405 |  1   SEG17.S    324 | Code        | 00 |E 3      |    4 | 00/027F : 22 22 03 0D |             JSL   L0D0322        
+  406 |  1   SEG17.S    325 | Code        | 00 |  3      |    4 | 00/0283 : 22 D7 00 00 |             JSL   L1700D7        
+  407 |  1   SEG17.S    326 | Code        | 00 |E 1 >>16 |    3 | 00/0287 : F4 00 00    |             PEA   ^L03251C       
+  408 |  1   SEG17.S    327 | Code        | 00 |E 2      |    3 | 00/028A : F4 29 25    |             PEA   L03251C        
+  409 |  1   SEG17.S    328 | Code        | 00 |E 3      |    4 | 00/028D : 22 7D 0D 1A |             JSL   L1A0DAA        
+  410 |  1   SEG17.S    329 | Code        | 00 |         |    1 | 00/0291 : 7A          |             PLY                  
+  411 |  1   SEG17.S    330 | Code        | 00 |         |    1 | 00/0292 : 7A          |             PLY                  
+  412 |  1   SEG17.S    331 | Code        | 00 |E 3      |    4 | 00/0293 : 22 6B 01 21 | L17029C     JSL   L21016B        
+  413 |  1   SEG17.S    332 | Code        | 00 |  3      |    4 | 00/0297 : 22 00 00 00 |             JSL   L170000        
+  414 |  1   SEG17.S    333 | Code        | 00 |  3      |    4 | 00/029B : 22 10 01 00 |             JSL   L170110        
+  415 |  1   SEG17.S    334 | Code        | 00 |E 3      |    4 | 00/029F : 22 A7 15 0F |             JSL   L0F15CB        
+  416 |  1   SEG17.S    335 | Code        | 00 |E 3      |    4 | 00/02A3 : 22 00 00 13 |             JSL   L130000        
+  417 |  1   SEG17.S    336 | Code        | 00 |         |    1 | 00/02A7 : A8          |             TAY                  
+  418 |  1   SEG17.S    337 | Code        | 00 |         |    2 | 00/02A8 : D0 03       |             BNE   L1702B6        
+  419 |  1   SEG17.S    338 | Code        | 00 |         |    3 | 00/02AA : 82 55 00    |             BRL   L17030B        
+  420 |  1   SEG17.S    339 | Code        | 00 |E 3      |    4 | 00/02AD : 22 79 00 13 | L1702B6     JSL   L13007B        
+  421 |  1   SEG17.S    340 | Code        | 00 |         |    1 | 00/02B1 : A8          |             TAY                  
+  422 |  1   SEG17.S    341 | Code        | 00 |         |    2 | 00/02B2 : F0 03       |             BEQ   L1702C0        
+  423 |  1   SEG17.S    342 | Code        | 00 |         |    3 | 00/02B4 : 82 4B 00    |             BRL   L17030B        
+  424 |  1   SEG17.S    343 | Code        | 00 |E 3      |    4 | 00/02B7 : 22 33 03 1D | L1702C0     JSL   L1D0333        
+  425 |  1   SEG17.S    344 | Code        | 00 |         |    3 | 00/02BB : F4 C8 00    |             PEA   $00C8          
+  426 |  1   SEG17.S    345 | Code        | 00 |E 2      |    3 | 00/02BE : AE 52 01    |             LDX   L020151        
+  427 |  1   SEG17.S    346 | Code        | 00 |E 2      |    3 | 00/02C1 : AD 50 01    |             LDA   L02014F        
+  428 |  1   SEG17.S    347 | Code        | 00 |         |    1 | 00/02C4 : DA          |             PHX                  
+  429 |  1   SEG17.S    348 | Code        | 00 |         |    1 | 00/02C5 : 48          |             PHA                  
+  430 |  1   SEG17.S    349 | Code        | 00 |E 2      |    3 | 00/02C6 : AE 4E 01    |             LDX   L02014D        
+  431 |  1   SEG17.S    350 | Code        | 00 |E 2      |    3 | 00/02C9 : AD 4C 01    |             LDA   L02014B        
+  432 |  1   SEG17.S    351 | Code        | 00 |         |    1 | 00/02CC : 18          |             CLC                  
+  433 |  1   SEG17.S    352 | Code        | 00 |         |    3 | 00/02CD : 69 20 00    |             ADC   #$0020         
+  434 |  1   SEG17.S    353 | Code        | 00 |         |    1 | 00/02D0 : 48          |             PHA                  
+  435 |  1   SEG17.S    354 | Code        | 00 |         |    1 | 00/02D1 : 8A          |             TXA                  
+  436 |  1   SEG17.S    355 | Code        | 00 |         |    3 | 00/02D2 : 69 00 00    |             ADC   #$0000         
+  437 |  1   SEG17.S    356 | Code        | 00 |         |    1 | 00/02D5 : AA          |             TAX                  
+  438 |  1   SEG17.S    357 | Code        | 00 |         |    1 | 00/02D6 : 68          |             PLA                  
+  439 |  1   SEG17.S    358 | Code        | 00 |         |    1 | 00/02D7 : DA          |             PHX                  
+  440 |  1   SEG17.S    359 | Code        | 00 |         |    1 | 00/02D8 : 48          |             PHA                  
+  441 |  1   SEG17.S    360 | Code        | 00 |E 3      |    4 | 00/02D9 : 22 BD 01 09 |             JSL   L0901BD        
+  442 |  1   SEG17.S    361 | Code        | 00 |         |    1 | 00/02DD : 7A          |             PLY                  
+  443 |  1   SEG17.S    362 | Code        | 00 |         |    1 | 00/02DE : 7A          |             PLY                  
+  444 |  1   SEG17.S    363 | Code        | 00 |         |    1 | 00/02DF : 7A          |             PLY                  
+  445 |  1   SEG17.S    364 | Code        | 00 |         |    1 | 00/02E0 : 7A          |             PLY                  
+  446 |  1   SEG17.S    365 | Code        | 00 |         |    1 | 00/02E1 : 7A          |             PLY                  
+  447 |  1   SEG17.S    366 | Code        | 00 |         |    3 | 00/02E2 : F4 C8 00    |             PEA   $00C8          
+  448 |  1   SEG17.S    367 | Code        | 00 |E 2      |    3 | 00/02E5 : AE A3 00    |             LDX   L0200A2        
+  449 |  1   SEG17.S    368 | Code        | 00 |E 2      |    3 | 00/02E8 : AD A1 00    |             LDA   L0200A0        
+  450 |  1   SEG17.S    369 | Code        | 00 |         |    1 | 00/02EB : DA          |             PHX                  
+  451 |  1   SEG17.S    370 | Code        | 00 |         |    1 | 00/02EC : 48          |             PHA                  
+  452 |  1   SEG17.S    371 | Code        | 00 |E 2      |    3 | 00/02ED : AE 52 01    |             LDX   L020151        
+  453 |  1   SEG17.S    372 | Code        | 00 |E 2      |    3 | 00/02F0 : AD 50 01    |             LDA   L02014F        
+  454 |  1   SEG17.S    373 | Code        | 00 |         |    1 | 00/02F3 : DA          |             PHX                  
+  455 |  1   SEG17.S    374 | Code        | 00 |         |    1 | 00/02F4 : 48          |             PHA                  
+  456 |  1   SEG17.S    375 | Code        | 00 |E 3      |    4 | 00/02F5 : 22 BD 01 09 |             JSL   L0901BD        
+  457 |  1   SEG17.S    376 | Code        | 00 |         |    1 | 00/02F9 : 7A          |             PLY                  
+  458 |  1   SEG17.S    377 | Code        | 00 |         |    1 | 00/02FA : 7A          |             PLY                  
+  459 |  1   SEG17.S    378 | Code        | 00 |         |    1 | 00/02FB : 7A          |             PLY                  
+  460 |  1   SEG17.S    379 | Code        | 00 |         |    1 | 00/02FC : 7A          |             PLY                  
+  461 |  1   SEG17.S    380 | Code        | 00 |         |    1 | 00/02FD : 7A          |             PLY                  
+  462 |  1   SEG17.S    381 | Code        | 00 |E 3      |    4 | 00/02FE : 22 7F 01 1C |             JSL   L1C01FD        
+  463 |  1   SEG17.S    382 | Code        | 00 |E 3      |    4 | 00/0302 : 22 5E 00 0D | L17030B     JSL   L0D005E        
+  464 |  1   SEG17.S    383 | Code        | 00 |E 3      |    4 | 00/0306 : 22 00 00 16 |             JSL   L160000        
+  465 |  1   SEG17.S    384 | Macro       | 00 |         |    0 | 00/030A               |             _InitCursor                 
+  467 |  1   SEG17.S    384 | Code        | 00 |         |    3 | 00/030A : A2 04 CA    |             LDX   #$CA04         ; load tool call #
+  468 |  1   SEG17.S    384 | Code        | 00 |         |    4 | 00/030D : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  469 |  1   SEG17.S    385 | Comment     | 00 |         |    0 | 00/0311               | * BCS L17031F
+  470 |  1   SEG17.S    386 | Comment     | 00 |         |    0 | 00/0311               | * LDA #$0000
+  471 |  1   SEG17.S    387 | Comment     | 00 |         |    0 | 00/0311               | *L17031F STAL L0201E7
+  472 |  1   SEG17.S    388 | Code        | 00 |         |    1 | 00/0311 : 48          |             PHA                  
+  473 |  1   SEG17.S    389 | Code        | 00 |         |    3 | 00/0312 : F4 FF FF    |             PEA   $FFFF          
+  474 |  1   SEG17.S    390 | Code        | 00 |         |    3 | 00/0315 : F4 00 00    |             PEA   $0000          
+  475 |  1   SEG17.S    391 | Macro       | 00 |         |    0 | 00/0318               |             _FlushEvents                 
+  477 |  1   SEG17.S    391 | Code        | 00 |         |    3 | 00/0318 : A2 06 15    |             LDX   #$1506         ; load tool call #
+  478 |  1   SEG17.S    391 | Code        | 00 |         |    4 | 00/031B : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  479 |  1   SEG17.S    392 | Comment     | 00 |         |    0 | 00/031F               | * BCS L170336
+  480 |  1   SEG17.S    393 | Comment     | 00 |         |    0 | 00/031F               | * LDA #$0000
+  481 |  1   SEG17.S    394 | Comment     | 00 |         |    0 | 00/031F               | *L170336 STAL L0201E7
+  482 |  1   SEG17.S    395 | Code        | 00 |         |    1 | 00/031F : 68          |             PLA                  
+  483 |  1   SEG17.S    396 | Code        | 00 |E 3      |    4 | 00/0320 : 22 68 0E 1A |             JSL   L1A0E95        
+  484 |  1   SEG17.S    397 | Code        | 00 |         |    1 | 00/0324 : 3B          |             TSC                  
+  485 |  1   SEG17.S    398 | Code        | 00 |         |    1 | 00/0325 : 18          |             CLC                  
+  486 |  1   SEG17.S    399 | Code        | 00 |         |    3 | 00/0326 : 69 06 00    |             ADC   #$0006         
+  487 |  1   SEG17.S    400 | Code        | 00 |         |    1 | 00/0329 : 1B          |             TCS                  
+  488 |  1   SEG17.S    401 | Code        | 00 |         |    1 | 00/032A : 2B          |             PLD                  
+  489 |  1   SEG17.S    402 | Code        | 00 |         |    1 | 00/032B : 6B          |             RTL                  
+  490 |  1   SEG17.S    403 | Empty       | 00 |         |    0 | 00/032C               |                                  
+  491 |  1   SEG17.S    404 | Empty       | 00 |         |    0 | 00/032C               |                                  
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

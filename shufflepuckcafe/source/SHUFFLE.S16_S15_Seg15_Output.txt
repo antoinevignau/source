@@ -1,0 +1,225 @@
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File         Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1   SEG15.S      1 | Comment     | 11 |         |    0 | 00/0000               | *
+    2 |  1   SEG15.S      2 | Comment     | 11 |         |    0 | 00/0000               | * Shufflepuck Cafe
+    3 |  1   SEG15.S      3 | Comment     | 11 |         |    0 | 00/0000               | *
+    4 |  1   SEG15.S      4 | Comment     | 11 |         |    0 | 00/0000               | * (c) Broderbund Software
+    5 |  1   SEG15.S      5 | Comment     | 11 |         |    0 | 00/0000               | * (s) 2014, Brutal Deluxe Software
+    6 |  1   SEG15.S      6 | Comment     | 11 |         |    0 | 00/0000               | *
+    7 |  1   SEG15.S      7 | Empty       | 11 |         |    0 | 00/0000               |                                  
+    8 |  1   SEG15.S      8 | Directive   | 00 |         |    0 | 00/0000               |             mx    %00            
+    9 |  1   SEG15.S      9 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   10 |  1   SEG15.S     10 | Directive   | 00 |         |    0 | 00/0000               |             rel                  
+   11 |  1   SEG15.S     11 | Directive   | 00 |         |    0 | 00/0000               |             dsk   Seg15.L        
+   12 |  1   SEG15.S     12 | Directive   | 00 |         |    0 | 00/0000               |             lst   off            
+   13 |  1   SEG15.S     13 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   14 |  1   SEG15.S     14 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   15 |  1   SEG15.S     15 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   16 |  1   SEG15.S     16 | Directive   | 00 |         |    0 | 00/0000               |             use   Seg15.E        
+   17 |  2 Seg15.E.s      1 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   18 |  2 Seg15.E.s      2 | Comment     | 00 |         |    0 | 00/0000               | * TFBD generated equates
+   19 |  2 Seg15.E.s      3 | Comment     | 00 |         |    0 | 00/0000               | *    (c) PHC 1992,93
+   20 |  2 Seg15.E.s      4 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   21 |  2 Seg15.E.s      5 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   22 |  2 Seg15.E.s      6 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   23 |  1   SEG15.S     17 | Directive   | 00 |         |    0 | 00/0000               |             use   Seg15.X        
+   24 |  3 Seg15.X.s      1 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   25 |  3 Seg15.X.s      2 | Comment     | 00 |         |    0 | 00/0000               | * TFBD generated externals
+   26 |  3 Seg15.X.s      3 | Comment     | 00 |         |    0 | 00/0000               | *     (c) PHC 1992,93
+   27 |  3 Seg15.X.s      4 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   28 |  3 Seg15.X.s      5 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   29 |  3 Seg15.X.s      6 | External    | 00 |         |    0 | 00/0000               | L1A0EFF     EXT                  
+   30 |  3 Seg15.X.s      7 | External    | 00 |         |    0 | 00/0000               | L0200A8     EXT                  
+   31 |  3 Seg15.X.s      8 | External    | 00 |         |    0 | 00/0000               | L0200AA     EXT                  
+   32 |  3 Seg15.X.s      9 | External    | 00 |         |    0 | 00/0000               | L0200AC     EXT                  
+   33 |  3 Seg15.X.s     10 | External    | 00 |         |    0 | 00/0000               | L0200AE     EXT                  
+   34 |  3 Seg15.X.s     11 | External    | 00 |         |    0 | 00/0000               | L0200B0     EXT                  
+   35 |  3 Seg15.X.s     12 | External    | 00 |         |    0 | 00/0000               | L0200B2     EXT                  
+   36 |  3 Seg15.X.s     13 | External    | 00 |         |    0 | 00/0000               | L0200B4     EXT                  
+   37 |  3 Seg15.X.s     14 | External    | 00 |         |    0 | 00/0000               | L0200B6     EXT                  
+   38 |  3 Seg15.X.s     15 | External    | 00 |         |    0 | 00/0000               | L0200BA     EXT                  
+   39 |  3 Seg15.X.s     16 | External    | 00 |         |    0 | 00/0000               | L0200BC     EXT                  
+   40 |  3 Seg15.X.s     17 | External    | 00 |         |    0 | 00/0000               | L0200BE     EXT                  
+   41 |  3 Seg15.X.s     18 | External    | 00 |         |    0 | 00/0000               | L0200C0     EXT                  
+   42 |  3 Seg15.X.s     19 | External    | 00 |         |    0 | 00/0000               | L0200C2     EXT                  
+   43 |  3 Seg15.X.s     20 | External    | 00 |         |    0 | 00/0000               | L0200C4     EXT                  
+   44 |  3 Seg15.X.s     21 | External    | 00 |         |    0 | 00/0000               | L0200C6     EXT                  
+   45 |  3 Seg15.X.s     22 | External    | 00 |         |    0 | 00/0000               | L0200C8     EXT                  
+   46 |  3 Seg15.X.s     23 | External    | 00 |         |    0 | 00/0000               | L0200D2     EXT                  
+   47 |  3 Seg15.X.s     24 | External    | 00 |         |    0 | 00/0000               | L0200D4     EXT                  
+   48 |  3 Seg15.X.s     25 | External    | 00 |         |    0 | 00/0000               | L0200D6     EXT                  
+   49 |  3 Seg15.X.s     26 | External    | 00 |         |    0 | 00/0000               | L0200D8     EXT                  
+   50 |  3 Seg15.X.s     27 | External    | 00 |         |    0 | 00/0000               | L0200DA     EXT                  
+   51 |  3 Seg15.X.s     28 | External    | 00 |         |    0 | 00/0000               | L0200DC     EXT                  
+   52 |  3 Seg15.X.s     29 | External    | 00 |         |    0 | 00/0000               | L0200DE     EXT                  
+   53 |  3 Seg15.X.s     30 | External    | 00 |         |    0 | 00/0000               | L0200E0     EXT                  
+   54 |  3 Seg15.X.s     31 | External    | 00 |         |    0 | 00/0000               | L0200E2     EXT                  
+   55 |  3 Seg15.X.s     32 | External    | 00 |         |    0 | 00/0000               | L0200E4     EXT                  
+   56 |  3 Seg15.X.s     33 | External    | 00 |         |    0 | 00/0000               | L0200E6     EXT                  
+   57 |  3 Seg15.X.s     34 | External    | 00 |         |    0 | 00/0000               | L0200E8     EXT                  
+   58 |  3 Seg15.X.s     35 | External    | 00 |         |    0 | 00/0000               | L0200EA     EXT                  
+   59 |  3 Seg15.X.s     36 | External    | 00 |         |    0 | 00/0000               | L0200EC     EXT                  
+   60 |  3 Seg15.X.s     37 | External    | 00 |         |    0 | 00/0000               | L0200CA     EXT                  
+   61 |  3 Seg15.X.s     38 | External    | 00 |         |    0 | 00/0000               | L0200CC     EXT                  
+   62 |  3 Seg15.X.s     39 | External    | 00 |         |    0 | 00/0000               | L0200CE     EXT                  
+   63 |  3 Seg15.X.s     40 | External    | 00 |         |    0 | 00/0000               | L0200D0     EXT                  
+   64 |  3 Seg15.X.s     41 | External    | 00 |         |    0 | 00/0000               | L03241F     EXT                  
+   65 |  3 Seg15.X.s     42 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   66 |  1   SEG15.S     18 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   67 |  1   SEG15.S     19 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   68 |  1   SEG15.S     20 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   69 |  1   SEG15.S     21 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Util.Macs    
+   70 |  1   SEG15.S     22 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   71 |  1   SEG15.S     23 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   72 |  1   SEG15.S     24 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   73 |  1   SEG15.S     25 | Global      | 00 |         |    0 | 00/0000               | L150000     ENT                  
+   74 |  1   SEG15.S     26 | Code        | 00 |         |    1 | 00/0000 : 0B          |             PHD                  
+   75 |  1   SEG15.S     27 | Code        | 00 |         |    1 | 00/0001 : 3B          |             TSC                  
+   76 |  1   SEG15.S     28 | Code        | 00 |         |    1 | 00/0002 : 38          |             SEC                  
+   77 |  1   SEG15.S     29 | Code        | 00 |         |    3 | 00/0003 : E9 F9 00    |             SBC   #$00F9         
+   78 |  1   SEG15.S     30 | Code        | 00 |         |    1 | 00/0006 : 5B          |             TCD                  
+   79 |  1   SEG15.S     31 | Code        | 00 |         |    3 | 00/0007 : 69 EE 00    |             ADC   #$00EE         
+   80 |  1   SEG15.S     32 | Code        | 00 |         |    1 | 00/000A : 1B          |             TCS                  
+   81 |  1   SEG15.S     33 | Code        | 00 |         |    2 | 00/000B : A5 FF       |             LDA   $FF            
+   82 |  1   SEG15.S     34 | Code        | 00 |         |    1 | 00/000D : 38          |             SEC                  
+   83 |  1   SEG15.S     35 | Code        | 00 |         |    3 | 00/000E : E9 09 00    |             SBC   #$0009         
+   84 |  1   SEG15.S     36 | Code        | 00 |         |    2 | 00/0011 : F0 0A       |             BEQ   L15001D        
+   85 |  1   SEG15.S     37 | Code        | 00 |         |    2 | 00/0013 : 70 03       |             BVS   L150018        
+   86 |  1   SEG15.S     38 | Code        | 00 |         |    3 | 00/0015 : 49 00 80    |             EOR   #$8000         
+   87 |  1   SEG15.S     39 | Code        | 00 |         |    2 | 00/0018 : 10 03       | L150018     BPL   L15001D        
+   88 |  1   SEG15.S     40 | Code        | 00 |         |    3 | 00/001A : 82 39 01    |             BRL   L150156        
+   89 |  1   SEG15.S     41 | Code        | 00 |         |    2 | 00/001D : A5 FF       | L15001D     LDA   $FF            
+   90 |  1   SEG15.S     42 | Code        | 00 |         |    1 | 00/001F : 38          |             SEC                  
+   91 |  1   SEG15.S     43 | Code        | 00 |         |    3 | 00/0020 : E9 01 00    |             SBC   #$0001         
+   92 |  1   SEG15.S     44 | Code        | 00 |         |    1 | 00/0023 : 0A          |             ASL                  
+   93 |  1   SEG15.S     45 | Code        | 00 |         |    1 | 00/0024 : 0A          |             ASL                  
+   94 |  1   SEG15.S     46 | Code        | 00 |         |    3 | 00/0025 : A2 00 00    |             LDX   #$0000         
+   95 |  1   SEG15.S     47 | Code        | 00 |         |    1 | 00/0028 : DA          |             PHX                  
+   96 |  1   SEG15.S     48 | Code        | 00 |         |    1 | 00/0029 : 48          |             PHA                  
+   97 |  1   SEG15.S     49 | Code        | 00 |E 2      |    3 | 00/002A : A9 2C 24    |             LDA   #L03241F       
+   98 |  1   SEG15.S     50 | Code        | 00 |E 1 >>16 |    3 | 00/002D : A2 00 00    |             LDX   #^L03241F      
+   99 |  1   SEG15.S     51 | Code        | 00 |E 3      |    4 | 00/0030 : 22 D5 0E 1A |             JSL   L1A0EFF        
+  100 |  1   SEG15.S     52 | Code        | 00 |         |    1 | 00/0034 : 68          |             PLA                  
+  101 |  1   SEG15.S     53 | Code        | 00 |         |    1 | 00/0035 : FA          |             PLX                  
+  102 |  1   SEG15.S     54 | Code        | 00 |         |    2 | 00/0036 : 85 F4       |             STA   $F4            
+  103 |  1   SEG15.S     55 | Code        | 00 |         |    2 | 00/0038 : 86 F6       |             STX   $F6            
+  104 |  1   SEG15.S     56 | Code        | 00 |         |    3 | 00/003A : A0 02 00    |             LDY   #$0002         
+  105 |  1   SEG15.S     57 | Code        | 00 |         |    2 | 00/003D : B7 F4       |             LDA   [$F4],Y        
+  106 |  1   SEG15.S     58 | Code        | 00 |         |    1 | 00/003F : AA          |             TAX                  
+  107 |  1   SEG15.S     59 | Code        | 00 |         |    2 | 00/0040 : A7 F4       |             LDA   [$F4]          
+  108 |  1   SEG15.S     60 | Code        | 00 |         |    2 | 00/0042 : 86 F2       |             STX   $F2            
+  109 |  1   SEG15.S     61 | Code        | 00 |         |    2 | 00/0044 : 85 F0       |             STA   $F0            
+  110 |  1   SEG15.S     62 | Code        | 00 |         |    3 | 00/0046 : A0 0A 00    |             LDY   #$000A         
+  111 |  1   SEG15.S     63 | Code        | 00 |         |    2 | 00/0049 : B7 F0       |             LDA   [$F0],Y        
+  112 |  1   SEG15.S     64 | Code        | 00 |E 2      |    3 | 00/004B : 8D A9 00    |             STA   L0200A8        
+  113 |  1   SEG15.S     65 | Code        | 00 |         |    3 | 00/004E : A0 0C 00    |             LDY   #$000C         
+  114 |  1   SEG15.S     66 | Code        | 00 |         |    2 | 00/0051 : B7 F0       |             LDA   [$F0],Y        
+  115 |  1   SEG15.S     67 | Code        | 00 |E 2      |    3 | 00/0053 : 8D AB 00    |             STA   L0200AA        
+  116 |  1   SEG15.S     68 | Code        | 00 |         |    3 | 00/0056 : A0 0E 00    |             LDY   #$000E         
+  117 |  1   SEG15.S     69 | Code        | 00 |         |    2 | 00/0059 : B7 F0       |             LDA   [$F0],Y        
+  118 |  1   SEG15.S     70 | Code        | 00 |E 2      |    3 | 00/005B : 8D AD 00    |             STA   L0200AC        
+  119 |  1   SEG15.S     71 | Code        | 00 |         |    3 | 00/005E : A0 10 00    |             LDY   #$0010         
+  120 |  1   SEG15.S     72 | Code        | 00 |         |    2 | 00/0061 : B7 F0       |             LDA   [$F0],Y        
+  121 |  1   SEG15.S     73 | Code        | 00 |E 2      |    3 | 00/0063 : 8D AF 00    |             STA   L0200AE        
+  122 |  1   SEG15.S     74 | Code        | 00 |         |    3 | 00/0066 : A0 12 00    |             LDY   #$0012         
+  123 |  1   SEG15.S     75 | Code        | 00 |         |    2 | 00/0069 : B7 F0       |             LDA   [$F0],Y        
+  124 |  1   SEG15.S     76 | Code        | 00 |E 2      |    3 | 00/006B : 8D B1 00    |             STA   L0200B0        
+  125 |  1   SEG15.S     77 | Code        | 00 |         |    3 | 00/006E : A0 14 00    |             LDY   #$0014         
+  126 |  1   SEG15.S     78 | Code        | 00 |         |    2 | 00/0071 : B7 F0       |             LDA   [$F0],Y        
+  127 |  1   SEG15.S     79 | Code        | 00 |E 2      |    3 | 00/0073 : 8D B3 00    |             STA   L0200B2        
+  128 |  1   SEG15.S     80 | Code        | 00 |         |    3 | 00/0076 : A0 16 00    |             LDY   #$0016         
+  129 |  1   SEG15.S     81 | Code        | 00 |         |    2 | 00/0079 : B7 F0       |             LDA   [$F0],Y        
+  130 |  1   SEG15.S     82 | Code        | 00 |E 2      |    3 | 00/007B : 8D B5 00    |             STA   L0200B4        
+  131 |  1   SEG15.S     83 | Code        | 00 |         |    3 | 00/007E : A0 18 00    |             LDY   #$0018         
+  132 |  1   SEG15.S     84 | Code        | 00 |         |    2 | 00/0081 : B7 F0       |             LDA   [$F0],Y        
+  133 |  1   SEG15.S     85 | Code        | 00 |E 2      |    3 | 00/0083 : 8D B7 00    |             STA   L0200B6        
+  134 |  1   SEG15.S     86 | Code        | 00 |         |    3 | 00/0086 : A0 26 00    |             LDY   #$0026         
+  135 |  1   SEG15.S     87 | Code        | 00 |         |    2 | 00/0089 : B7 F0       |             LDA   [$F0],Y        
+  136 |  1   SEG15.S     88 | Code        | 00 |E 2      |    3 | 00/008B : 8D BB 00    |             STA   L0200BA        
+  137 |  1   SEG15.S     89 | Code        | 00 |         |    3 | 00/008E : A0 1E 00    |             LDY   #$001E         
+  138 |  1   SEG15.S     90 | Code        | 00 |         |    2 | 00/0091 : B7 F0       |             LDA   [$F0],Y        
+  139 |  1   SEG15.S     91 | Code        | 00 |E 2      |    3 | 00/0093 : 8D BD 00    |             STA   L0200BC        
+  140 |  1   SEG15.S     92 | Code        | 00 |         |    3 | 00/0096 : A0 28 00    |             LDY   #$0028         
+  141 |  1   SEG15.S     93 | Code        | 00 |         |    2 | 00/0099 : B7 F0       |             LDA   [$F0],Y        
+  142 |  1   SEG15.S     94 | Code        | 00 |E 2      |    3 | 00/009B : 8D BF 00    |             STA   L0200BE        
+  143 |  1   SEG15.S     95 | Code        | 00 |         |    3 | 00/009E : A0 20 00    |             LDY   #$0020         
+  144 |  1   SEG15.S     96 | Code        | 00 |         |    2 | 00/00A1 : B7 F0       |             LDA   [$F0],Y        
+  145 |  1   SEG15.S     97 | Code        | 00 |E 2      |    3 | 00/00A3 : 8D C1 00    |             STA   L0200C0        
+  146 |  1   SEG15.S     98 | Code        | 00 |         |    3 | 00/00A6 : A0 2C 00    |             LDY   #$002C         
+  147 |  1   SEG15.S     99 | Code        | 00 |         |    2 | 00/00A9 : B7 F0       |             LDA   [$F0],Y        
+  148 |  1   SEG15.S    100 | Code        | 00 |E 2      |    3 | 00/00AB : 8D C3 00    |             STA   L0200C2        
+  149 |  1   SEG15.S    101 | Code        | 00 |         |    3 | 00/00AE : A0 24 00    |             LDY   #$0024         
+  150 |  1   SEG15.S    102 | Code        | 00 |         |    2 | 00/00B1 : B7 F0       |             LDA   [$F0],Y        
+  151 |  1   SEG15.S    103 | Code        | 00 |E 2      |    3 | 00/00B3 : 8D C5 00    |             STA   L0200C4        
+  152 |  1   SEG15.S    104 | Code        | 00 |         |    3 | 00/00B6 : A0 2A 00    |             LDY   #$002A         
+  153 |  1   SEG15.S    105 | Code        | 00 |         |    2 | 00/00B9 : B7 F0       |             LDA   [$F0],Y        
+  154 |  1   SEG15.S    106 | Code        | 00 |E 2      |    3 | 00/00BB : 8D C7 00    |             STA   L0200C6        
+  155 |  1   SEG15.S    107 | Code        | 00 |         |    3 | 00/00BE : A0 22 00    |             LDY   #$0022         
+  156 |  1   SEG15.S    108 | Code        | 00 |         |    2 | 00/00C1 : B7 F0       |             LDA   [$F0],Y        
+  157 |  1   SEG15.S    109 | Code        | 00 |E 2      |    3 | 00/00C3 : 8D C9 00    |             STA   L0200C8        
+  158 |  1   SEG15.S    110 | Code        | 00 |         |    3 | 00/00C6 : A0 2E 00    |             LDY   #$002E         
+  159 |  1   SEG15.S    111 | Code        | 00 |         |    2 | 00/00C9 : B7 F0       |             LDA   [$F0],Y        
+  160 |  1   SEG15.S    112 | Code        | 00 |E 2      |    3 | 00/00CB : 8D D3 00    |             STA   L0200D2        
+  161 |  1   SEG15.S    113 | Code        | 00 |         |    3 | 00/00CE : A0 30 00    |             LDY   #$0030         
+  162 |  1   SEG15.S    114 | Code        | 00 |         |    2 | 00/00D1 : B7 F0       |             LDA   [$F0],Y        
+  163 |  1   SEG15.S    115 | Code        | 00 |E 2      |    3 | 00/00D3 : 8D D5 00    |             STA   L0200D4        
+  164 |  1   SEG15.S    116 | Code        | 00 |         |    3 | 00/00D6 : A0 34 00    |             LDY   #$0034         
+  165 |  1   SEG15.S    117 | Code        | 00 |         |    2 | 00/00D9 : B7 F0       |             LDA   [$F0],Y        
+  166 |  1   SEG15.S    118 | Code        | 00 |E 2      |    3 | 00/00DB : 8D D7 00    |             STA   L0200D6        
+  167 |  1   SEG15.S    119 | Code        | 00 |         |    3 | 00/00DE : A0 32 00    |             LDY   #$0032         
+  168 |  1   SEG15.S    120 | Code        | 00 |         |    2 | 00/00E1 : B7 F0       |             LDA   [$F0],Y        
+  169 |  1   SEG15.S    121 | Code        | 00 |E 2      |    3 | 00/00E3 : 8D D9 00    |             STA   L0200D8        
+  170 |  1   SEG15.S    122 | Code        | 00 |         |    3 | 00/00E6 : A0 44 00    |             LDY   #$0044         
+  171 |  1   SEG15.S    123 | Code        | 00 |         |    2 | 00/00E9 : B7 F0       |             LDA   [$F0],Y        
+  172 |  1   SEG15.S    124 | Code        | 00 |E 2      |    3 | 00/00EB : 8D DB 00    |             STA   L0200DA        
+  173 |  1   SEG15.S    125 | Code        | 00 |         |    3 | 00/00EE : A0 42 00    |             LDY   #$0042         
+  174 |  1   SEG15.S    126 | Code        | 00 |         |    2 | 00/00F1 : B7 F0       |             LDA   [$F0],Y        
+  175 |  1   SEG15.S    127 | Code        | 00 |E 2      |    3 | 00/00F3 : 8D DD 00    |             STA   L0200DC        
+  176 |  1   SEG15.S    128 | Code        | 00 |         |    3 | 00/00F6 : A0 48 00    |             LDY   #$0048         
+  177 |  1   SEG15.S    129 | Code        | 00 |         |    2 | 00/00F9 : B7 F0       |             LDA   [$F0],Y        
+  178 |  1   SEG15.S    130 | Code        | 00 |E 2      |    3 | 00/00FB : 8D DF 00    |             STA   L0200DE        
+  179 |  1   SEG15.S    131 | Code        | 00 |         |    3 | 00/00FE : A0 46 00    |             LDY   #$0046         
+  180 |  1   SEG15.S    132 | Code        | 00 |         |    2 | 00/0101 : B7 F0       |             LDA   [$F0],Y        
+  181 |  1   SEG15.S    133 | Code        | 00 |E 2      |    3 | 00/0103 : 8D E1 00    |             STA   L0200E0        
+  182 |  1   SEG15.S    134 | Code        | 00 |         |    3 | 00/0106 : A0 3A 00    |             LDY   #$003A         
+  183 |  1   SEG15.S    135 | Code        | 00 |         |    2 | 00/0109 : B7 F0       |             LDA   [$F0],Y        
+  184 |  1   SEG15.S    136 | Code        | 00 |E 2      |    3 | 00/010B : 8D E3 00    |             STA   L0200E2        
+  185 |  1   SEG15.S    137 | Code        | 00 |         |    3 | 00/010E : A0 3E 00    |             LDY   #$003E         
+  186 |  1   SEG15.S    138 | Code        | 00 |         |    2 | 00/0111 : B7 F0       |             LDA   [$F0],Y        
+  187 |  1   SEG15.S    139 | Code        | 00 |E 2      |    3 | 00/0113 : 8D E5 00    |             STA   L0200E4        
+  188 |  1   SEG15.S    140 | Code        | 00 |         |    3 | 00/0116 : A0 3C 00    |             LDY   #$003C         
+  189 |  1   SEG15.S    141 | Code        | 00 |         |    2 | 00/0119 : B7 F0       |             LDA   [$F0],Y        
+  190 |  1   SEG15.S    142 | Code        | 00 |E 2      |    3 | 00/011B : 8D E7 00    |             STA   L0200E6        
+  191 |  1   SEG15.S    143 | Code        | 00 |         |    3 | 00/011E : A0 40 00    |             LDY   #$0040         
+  192 |  1   SEG15.S    144 | Code        | 00 |         |    2 | 00/0121 : B7 F0       |             LDA   [$F0],Y        
+  193 |  1   SEG15.S    145 | Code        | 00 |E 2      |    3 | 00/0123 : 8D E9 00    |             STA   L0200E8        
+  194 |  1   SEG15.S    146 | Code        | 00 |         |    3 | 00/0126 : A0 36 00    |             LDY   #$0036         
+  195 |  1   SEG15.S    147 | Code        | 00 |         |    2 | 00/0129 : B7 F0       |             LDA   [$F0],Y        
+  196 |  1   SEG15.S    148 | Code        | 00 |E 2      |    3 | 00/012B : 8D EB 00    |             STA   L0200EA        
+  197 |  1   SEG15.S    149 | Code        | 00 |         |    3 | 00/012E : A0 38 00    |             LDY   #$0038         
+  198 |  1   SEG15.S    150 | Code        | 00 |         |    2 | 00/0131 : B7 F0       |             LDA   [$F0],Y        
+  199 |  1   SEG15.S    151 | Code        | 00 |E 2      |    3 | 00/0133 : 8D ED 00    |             STA   L0200EC        
+  200 |  1   SEG15.S    152 | Code        | 00 |         |    3 | 00/0136 : A0 50 00    |             LDY   #$0050         
+  201 |  1   SEG15.S    153 | Code        | 00 |         |    2 | 00/0139 : B7 F0       |             LDA   [$F0],Y        
+  202 |  1   SEG15.S    154 | Code        | 00 |E 2      |    3 | 00/013B : 8D CB 00    |             STA   L0200CA        
+  203 |  1   SEG15.S    155 | Code        | 00 |         |    3 | 00/013E : A0 4E 00    |             LDY   #$004E         
+  204 |  1   SEG15.S    156 | Code        | 00 |         |    2 | 00/0141 : B7 F0       |             LDA   [$F0],Y        
+  205 |  1   SEG15.S    157 | Code        | 00 |E 2      |    3 | 00/0143 : 8D CD 00    |             STA   L0200CC        
+  206 |  1   SEG15.S    158 | Code        | 00 |         |    3 | 00/0146 : A0 4A 00    |             LDY   #$004A         
+  207 |  1   SEG15.S    159 | Code        | 00 |         |    2 | 00/0149 : B7 F0       |             LDA   [$F0],Y        
+  208 |  1   SEG15.S    160 | Code        | 00 |E 2      |    3 | 00/014B : 8D CF 00    |             STA   L0200CE        
+  209 |  1   SEG15.S    161 | Code        | 00 |         |    3 | 00/014E : A0 4C 00    |             LDY   #$004C         
+  210 |  1   SEG15.S    162 | Code        | 00 |         |    2 | 00/0151 : B7 F0       |             LDA   [$F0],Y        
+  211 |  1   SEG15.S    163 | Code        | 00 |E 2      |    3 | 00/0153 : 8D D1 00    |             STA   L0200D0        
+  212 |  1   SEG15.S    164 | Code        | 00 |         |    1 | 00/0156 : A8          | L150156     TAY                  
+  213 |  1   SEG15.S    165 | Code        | 00 |         |    1 | 00/0157 : 3B          |             TSC                  
+  214 |  1   SEG15.S    166 | Code        | 00 |         |    1 | 00/0158 : 18          |             CLC                  
+  215 |  1   SEG15.S    167 | Code        | 00 |         |    3 | 00/0159 : 69 0A 00    |             ADC   #$000A         
+  216 |  1   SEG15.S    168 | Code        | 00 |         |    1 | 00/015C : 1B          |             TCS                  
+  217 |  1   SEG15.S    169 | Code        | 00 |         |    1 | 00/015D : 98          |             TYA                  
+  218 |  1   SEG15.S    170 | Code        | 00 |         |    1 | 00/015E : 2B          |             PLD                  
+  219 |  1   SEG15.S    171 | Code        | 00 |         |    1 | 00/015F : 6B          |             RTL                  
+  220 |  1   SEG15.S    172 | Empty       | 00 |         |    0 | 00/0160               |                                  
+  221 |  1   SEG15.S    173 | Empty       | 00 |         |    0 | 00/0160               |                                  
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

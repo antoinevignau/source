@@ -1,0 +1,867 @@
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File         Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1   SEG25.S      1 | Comment     | 11 |         |    0 | 00/0000               | *
+    2 |  1   SEG25.S      2 | Comment     | 11 |         |    0 | 00/0000               | * Shufflepuck Cafe
+    3 |  1   SEG25.S      3 | Comment     | 11 |         |    0 | 00/0000               | *
+    4 |  1   SEG25.S      4 | Comment     | 11 |         |    0 | 00/0000               | * (c) Broderbund Software
+    5 |  1   SEG25.S      5 | Comment     | 11 |         |    0 | 00/0000               | * (s) 2014, Brutal Deluxe Software
+    6 |  1   SEG25.S      6 | Comment     | 11 |         |    0 | 00/0000               | *
+    7 |  1   SEG25.S      7 | Empty       | 11 |         |    0 | 00/0000               |                                  
+    8 |  1   SEG25.S      8 | Directive   | 00 |         |    0 | 00/0000               |             mx    %00            
+    9 |  1   SEG25.S      9 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   10 |  1   SEG25.S     10 | Directive   | 00 |         |    0 | 00/0000               |             rel                  
+   11 |  1   SEG25.S     11 | Directive   | 00 |         |    0 | 00/0000               |             dsk   Seg25.L        
+   12 |  1   SEG25.S     12 | Directive   | 00 |         |    0 | 00/0000               |             lst   off            
+   13 |  1   SEG25.S     13 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   14 |  1   SEG25.S     14 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   15 |  1   SEG25.S     15 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   16 |  1   SEG25.S     16 | Directive   | 00 |         |    0 | 00/0000               |             use   Seg25.X        
+   17 |  2 Seg25.X.s      1 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   18 |  2 Seg25.X.s      2 | Comment     | 00 |         |    0 | 00/0000               | * TFBD generated externals
+   19 |  2 Seg25.X.s      3 | Comment     | 00 |         |    0 | 00/0000               | *     (c) PHC 1992,93
+   20 |  2 Seg25.X.s      4 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   21 |  2 Seg25.X.s      5 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   22 |  2 Seg25.X.s      6 | External    | 00 |         |    0 | 00/0000               | L1A0F19     EXT                  
+   23 |  2 Seg25.X.s      7 | External    | 00 |         |    0 | 00/0000               | L1A109A     EXT                  
+   24 |  2 Seg25.X.s      8 | External    | 00 |         |    0 | 00/0000               | L0200A8     EXT                  
+   25 |  2 Seg25.X.s      9 | External    | 00 |         |    0 | 00/0000               | L0200B8     EXT                  
+   26 |  2 Seg25.X.s     10 | External    | 00 |         |    0 | 00/0000               | L02004F     EXT                  
+   27 |  2 Seg25.X.s     11 | External    | 00 |         |    0 | 00/0000               | L020051     EXT                  
+   28 |  2 Seg25.X.s     12 | External    | 00 |         |    0 | 00/0000               | L02004D     EXT                  
+   29 |  2 Seg25.X.s     13 | External    | 00 |         |    0 | 00/0000               | L21013B     EXT                  
+   30 |  2 Seg25.X.s     14 | External    | 00 |         |    0 | 00/0000               | L0200BA     EXT                  
+   31 |  2 Seg25.X.s     15 | External    | 00 |         |    0 | 00/0000               | L0200BC     EXT                  
+   32 |  2 Seg25.X.s     16 | External    | 00 |         |    0 | 00/0000               | L0200BE     EXT                  
+   33 |  2 Seg25.X.s     17 | External    | 00 |         |    0 | 00/0000               | L0200C0     EXT                  
+   34 |  2 Seg25.X.s     18 | External    | 00 |         |    0 | 00/0000               | L0200C2     EXT                  
+   35 |  2 Seg25.X.s     19 | External    | 00 |         |    0 | 00/0000               | L0200C4     EXT                  
+   36 |  2 Seg25.X.s     20 | External    | 00 |         |    0 | 00/0000               | L0200C6     EXT                  
+   37 |  2 Seg25.X.s     21 | External    | 00 |         |    0 | 00/0000               | L0200C8     EXT                  
+   38 |  2 Seg25.X.s     22 | External    | 00 |         |    0 | 00/0000               | L0200D2     EXT                  
+   39 |  2 Seg25.X.s     23 | External    | 00 |         |    0 | 00/0000               | L0200D4     EXT                  
+   40 |  2 Seg25.X.s     24 | External    | 00 |         |    0 | 00/0000               | L0200D6     EXT                  
+   41 |  2 Seg25.X.s     25 | External    | 00 |         |    0 | 00/0000               | L0200D8     EXT                  
+   42 |  2 Seg25.X.s     26 | External    | 00 |         |    0 | 00/0000               | L0200DA     EXT                  
+   43 |  2 Seg25.X.s     27 | External    | 00 |         |    0 | 00/0000               | L0200DC     EXT                  
+   44 |  2 Seg25.X.s     28 | External    | 00 |         |    0 | 00/0000               | L0200DE     EXT                  
+   45 |  2 Seg25.X.s     29 | External    | 00 |         |    0 | 00/0000               | L0200E0     EXT                  
+   46 |  2 Seg25.X.s     30 | External    | 00 |         |    0 | 00/0000               | L0200E2     EXT                  
+   47 |  2 Seg25.X.s     31 | External    | 00 |         |    0 | 00/0000               | L0200E4     EXT                  
+   48 |  2 Seg25.X.s     32 | External    | 00 |         |    0 | 00/0000               | L0200E6     EXT                  
+   49 |  2 Seg25.X.s     33 | External    | 00 |         |    0 | 00/0000               | L0200E8     EXT                  
+   50 |  2 Seg25.X.s     34 | External    | 00 |         |    0 | 00/0000               | L0200EA     EXT                  
+   51 |  2 Seg25.X.s     35 | External    | 00 |         |    0 | 00/0000               | L0200EC     EXT                  
+   52 |  2 Seg25.X.s     36 | External    | 00 |         |    0 | 00/0000               | L02018B     EXT                  
+   53 |  2 Seg25.X.s     37 | External    | 00 |         |    0 | 00/0000               | L02017B     EXT                  
+   54 |  2 Seg25.X.s     38 | External    | 00 |         |    0 | 00/0000               | L020183     EXT                  
+   55 |  2 Seg25.X.s     39 | External    | 00 |         |    0 | 00/0000               | L240F96     EXT                  
+   56 |  2 Seg25.X.s     40 | External    | 00 |         |    0 | 00/0000               | L0E0305     EXT                  
+   57 |  2 Seg25.X.s     41 | External    | 00 |         |    0 | 00/0000               | L240CD7     EXT                  
+   58 |  2 Seg25.X.s     42 | External    | 00 |         |    0 | 00/0000               | L1B03D3     EXT                  
+   59 |  2 Seg25.X.s     43 | External    | 00 |         |    0 | 00/0000               | L240C01     EXT                  
+   60 |  2 Seg25.X.s     44 | External    | 00 |         |    0 | 00/0000               | L190018     EXT                  
+   61 |  2 Seg25.X.s     45 | External    | 00 |         |    0 | 00/0000               | L0201DD     EXT                  
+   62 |  2 Seg25.X.s     46 | External    | 00 |         |    0 | 00/0000               | L0201DF     EXT                  
+   63 |  2 Seg25.X.s     47 | External    | 00 |         |    0 | 00/0000               | L032ECB     EXT                  
+   64 |  2 Seg25.X.s     48 | External    | 00 |         |    0 | 00/0000               | L032EBA     EXT                  
+   65 |  2 Seg25.X.s     49 | External    | 00 |         |    0 | 00/0000               | L032EA9     EXT                  
+   66 |  2 Seg25.X.s     50 | External    | 00 |         |    0 | 00/0000               | L032E97     EXT                  
+   67 |  2 Seg25.X.s     51 | External    | 00 |         |    0 | 00/0000               | L032EEB     EXT                  
+   68 |  2 Seg25.X.s     52 | External    | 00 |         |    0 | 00/0000               | L032EE4     EXT                  
+   69 |  2 Seg25.X.s     53 | External    | 00 |         |    0 | 00/0000               | L032EDB     EXT                  
+   70 |  2 Seg25.X.s     54 | External    | 00 |         |    0 | 00/0000               | L032EF4     EXT                  
+   71 |  2 Seg25.X.s     55 | External    | 00 |         |    0 | 00/0000               | L032F01     EXT                  
+   72 |  2 Seg25.X.s     56 | External    | 00 |         |    0 | 00/0000               | L032F14     EXT                  
+   73 |  2 Seg25.X.s     57 | External    | 00 |         |    0 | 00/0000               | L032F29     EXT                  
+   74 |  2 Seg25.X.s     58 | External    | 00 |         |    0 | 00/0000               | L032F36     EXT                  
+   75 |  2 Seg25.X.s     59 | External    | 00 |         |    0 | 00/0000               | L032F86     EXT                  
+   76 |  2 Seg25.X.s     60 | External    | 00 |         |    0 | 00/0000               | L032F73     EXT                  
+   77 |  2 Seg25.X.s     61 | External    | 00 |         |    0 | 00/0000               | L032F60     EXT                  
+   78 |  2 Seg25.X.s     62 | External    | 00 |         |    0 | 00/0000               | L032F4D     EXT                  
+   79 |  2 Seg25.X.s     63 | External    | 00 |         |    0 | 00/0000               | L032F47     EXT                  
+   80 |  2 Seg25.X.s     64 | External    | 00 |         |    0 | 00/0000               | L032FE0     EXT                  
+   81 |  2 Seg25.X.s     65 | External    | 00 |         |    0 | 00/0000               | L032FCB     EXT                  
+   82 |  2 Seg25.X.s     66 | External    | 00 |         |    0 | 00/0000               | L032FB6     EXT                  
+   83 |  2 Seg25.X.s     67 | External    | 00 |         |    0 | 00/0000               | L032FA1     EXT                  
+   84 |  2 Seg25.X.s     68 | External    | 00 |         |    0 | 00/0000               | L032F99     EXT                  
+   85 |  2 Seg25.X.s     69 | External    | 00 |         |    0 | 00/0000               | L03303B     EXT                  
+   86 |  2 Seg25.X.s     70 | External    | 00 |         |    0 | 00/0000               | L033026     EXT                  
+   87 |  2 Seg25.X.s     71 | External    | 00 |         |    0 | 00/0000               | L033011     EXT                  
+   88 |  2 Seg25.X.s     72 | External    | 00 |         |    0 | 00/0000               | L032FFC     EXT                  
+   89 |  2 Seg25.X.s     73 | External    | 00 |         |    0 | 00/0000               | L032FF5     EXT                  
+   90 |  2 Seg25.X.s     74 | External    | 00 |         |    0 | 00/0000               | L033065     EXT                  
+   91 |  2 Seg25.X.s     75 | External    | 00 |         |    0 | 00/0000               | L033057     EXT                  
+   92 |  2 Seg25.X.s     76 | External    | 00 |         |    0 | 00/0000               | L033050     EXT                  
+   93 |  2 Seg25.X.s     77 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   94 |  1   SEG25.S     17 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   95 |  1   SEG25.S     18 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   96 |  1   SEG25.S     19 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   97 |  1   SEG25.S     20 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Util.Macs    
+   98 |  1   SEG25.S     21 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   99 |  1   SEG25.S     22 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+  100 |  1   SEG25.S     23 | Empty       | 00 |         |    0 | 00/0000               |                                  
+  101 |  1   SEG25.S     24 | Code        | 00 |         |    1 | 00/0000 : 0B          | L250000     PHD                  
+  102 |  1   SEG25.S     25 | Code        | 00 |         |    1 | 00/0001 : 3B          |             TSC                  
+  103 |  1   SEG25.S     26 | Code        | 00 |         |    1 | 00/0002 : 38          |             SEC                  
+  104 |  1   SEG25.S     27 | Code        | 00 |         |    3 | 00/0003 : E9 F3 00    |             SBC   #$00F3         
+  105 |  1   SEG25.S     28 | Code        | 00 |         |    1 | 00/0006 : 5B          |             TCD                  
+  106 |  1   SEG25.S     29 | Code        | 00 |         |    3 | 00/0007 : 69 EA 00    |             ADC   #$00EA         
+  107 |  1   SEG25.S     30 | Code        | 00 |         |    1 | 00/000A : 1B          |             TCS                  
+  108 |  1   SEG25.S     31 | Code        | 00 |         |    2 | 00/000B : A7 F9       |             LDA   [$F9]          
+  109 |  1   SEG25.S     32 | Code        | 00 |         |    2 | 00/000D : 85 EC       |             STA   $EC            
+  110 |  1   SEG25.S     33 | Code        | 00 |         |    2 | 00/000F : A7 FD       |             LDA   [$FD]          
+  111 |  1   SEG25.S     34 | Code        | 00 |         |    2 | 00/0011 : 87 F9       |             STA   [$F9]          
+  112 |  1   SEG25.S     35 | Code        | 00 |         |    2 | 00/0013 : A5 EC       |             LDA   $EC            
+  113 |  1   SEG25.S     36 | Code        | 00 |         |    2 | 00/0015 : 87 FD       |             STA   [$FD]          
+  114 |  1   SEG25.S     37 | Code        | 00 |         |    1 | 00/0017 : 3B          |             TSC                  
+  115 |  1   SEG25.S     38 | Code        | 00 |         |    1 | 00/0018 : 18          |             CLC                  
+  116 |  1   SEG25.S     39 | Code        | 00 |         |    3 | 00/0019 : 69 08 00    |             ADC   #$0008         
+  117 |  1   SEG25.S     40 | Code        | 00 |         |    1 | 00/001C : 1B          |             TCS                  
+  118 |  1   SEG25.S     41 | Code        | 00 |         |    1 | 00/001D : 2B          |             PLD                  
+  119 |  1   SEG25.S     42 | Code        | 00 |         |    1 | 00/001E : 6B          |             RTL                  
+  120 |  1   SEG25.S     43 | Empty       | 00 |         |    0 | 00/001F               |                                  
+  121 |  1   SEG25.S     44 | Code        | 00 |         |    1 | 00/001F : 0B          | L25001F     PHD                  
+  122 |  1   SEG25.S     45 | Code        | 00 |         |    1 | 00/0020 : 3B          |             TSC                  
+  123 |  1   SEG25.S     46 | Code        | 00 |         |    1 | 00/0021 : 38          |             SEC                  
+  124 |  1   SEG25.S     47 | Code        | 00 |         |    3 | 00/0022 : E9 F3 00    |             SBC   #$00F3         
+  125 |  1   SEG25.S     48 | Code        | 00 |         |    1 | 00/0025 : 5B          |             TCD                  
+  126 |  1   SEG25.S     49 | Code        | 00 |         |    3 | 00/0026 : 69 EC 00    |             ADC   #$00EC         
+  127 |  1   SEG25.S     50 | Code        | 00 |         |    1 | 00/0029 : 1B          |             TCS                  
+  128 |  1   SEG25.S     51 | Code        | 00 |         |    3 | 00/002A : F4 C8 00    |             PEA   $00C8          
+  129 |  1   SEG25.S     52 | Code        | 00 |         |    3 | 00/002D : F4 00 00    |             PEA   $0000          
+  130 |  1   SEG25.S     53 | Code        | 00 |         |    2 | 00/0030 : A6 FF       |             LDX   $FF            
+  131 |  1   SEG25.S     54 | Code        | 00 |         |    2 | 00/0032 : A5 FD       |             LDA   $FD            
+  132 |  1   SEG25.S     55 | Code        | 00 |         |    1 | 00/0034 : 18          |             CLC                  
+  133 |  1   SEG25.S     56 | Code        | 00 |         |    3 | 00/0035 : 69 06 00    |             ADC   #$0006         
+  134 |  1   SEG25.S     57 | Code        | 00 |         |    1 | 00/0038 : 48          |             PHA                  
+  135 |  1   SEG25.S     58 | Code        | 00 |         |    1 | 00/0039 : 8A          |             TXA                  
+  136 |  1   SEG25.S     59 | Code        | 00 |         |    3 | 00/003A : 69 00 00    |             ADC   #$0000         
+  137 |  1   SEG25.S     60 | Code        | 00 |         |    1 | 00/003D : AA          |             TAX                  
+  138 |  1   SEG25.S     61 | Code        | 00 |         |    1 | 00/003E : 68          |             PLA                  
+  139 |  1   SEG25.S     62 | Code        | 00 |         |    1 | 00/003F : DA          |             PHX                  
+  140 |  1   SEG25.S     63 | Code        | 00 |         |    1 | 00/0040 : 48          |             PHA                  
+  141 |  1   SEG25.S     64 | Code        | 00 |E 1 >>16 |    3 | 00/0041 : F4 00 00    |             PEA   ^L032ECB       
+  142 |  1   SEG25.S     65 | Code        | 00 |E 2      |    3 | 00/0044 : F4 D8 2E    |             PEA   L032ECB        
+  143 |  1   SEG25.S     66 | Code        | 00 |         |    3 | 00/0047 : F4 C8 00    |             PEA   $00C8          
+  144 |  1   SEG25.S     67 | Code        | 00 |         |    3 | 00/004A : F4 00 00    |             PEA   $0000          
+  145 |  1   SEG25.S     68 | Code        | 00 |         |    2 | 00/004D : A6 FF       |             LDX   $FF            
+  146 |  1   SEG25.S     69 | Code        | 00 |         |    2 | 00/004F : A5 FD       |             LDA   $FD            
+  147 |  1   SEG25.S     70 | Code        | 00 |         |    1 | 00/0051 : 18          |             CLC                  
+  148 |  1   SEG25.S     71 | Code        | 00 |         |    3 | 00/0052 : 69 04 00    |             ADC   #$0004         
+  149 |  1   SEG25.S     72 | Code        | 00 |         |    1 | 00/0055 : 48          |             PHA                  
+  150 |  1   SEG25.S     73 | Code        | 00 |         |    1 | 00/0056 : 8A          |             TXA                  
+  151 |  1   SEG25.S     74 | Code        | 00 |         |    3 | 00/0057 : 69 00 00    |             ADC   #$0000         
+  152 |  1   SEG25.S     75 | Code        | 00 |         |    1 | 00/005A : AA          |             TAX                  
+  153 |  1   SEG25.S     76 | Code        | 00 |         |    1 | 00/005B : 68          |             PLA                  
+  154 |  1   SEG25.S     77 | Code        | 00 |         |    1 | 00/005C : DA          |             PHX                  
+  155 |  1   SEG25.S     78 | Code        | 00 |         |    1 | 00/005D : 48          |             PHA                  
+  156 |  1   SEG25.S     79 | Code        | 00 |E 1 >>16 |    3 | 00/005E : F4 00 00    |             PEA   ^L032EBA       
+  157 |  1   SEG25.S     80 | Code        | 00 |E 2      |    3 | 00/0061 : F4 C7 2E    |             PEA   L032EBA        
+  158 |  1   SEG25.S     81 | Code        | 00 |         |    3 | 00/0064 : F4 64 00    |             PEA   $0064          
+  159 |  1   SEG25.S     82 | Code        | 00 |         |    3 | 00/0067 : F4 00 00    |             PEA   $0000          
+  160 |  1   SEG25.S     83 | Code        | 00 |         |    2 | 00/006A : A6 FF       |             LDX   $FF            
+  161 |  1   SEG25.S     84 | Code        | 00 |         |    2 | 00/006C : A5 FD       |             LDA   $FD            
+  162 |  1   SEG25.S     85 | Code        | 00 |         |    1 | 00/006E : 18          |             CLC                  
+  163 |  1   SEG25.S     86 | Code        | 00 |         |    3 | 00/006F : 69 02 00    |             ADC   #$0002         
+  164 |  1   SEG25.S     87 | Code        | 00 |         |    1 | 00/0072 : 48          |             PHA                  
+  165 |  1   SEG25.S     88 | Code        | 00 |         |    1 | 00/0073 : 8A          |             TXA                  
+  166 |  1   SEG25.S     89 | Code        | 00 |         |    3 | 00/0074 : 69 00 00    |             ADC   #$0000         
+  167 |  1   SEG25.S     90 | Code        | 00 |         |    1 | 00/0077 : AA          |             TAX                  
+  168 |  1   SEG25.S     91 | Code        | 00 |         |    1 | 00/0078 : 68          |             PLA                  
+  169 |  1   SEG25.S     92 | Code        | 00 |         |    1 | 00/0079 : DA          |             PHX                  
+  170 |  1   SEG25.S     93 | Code        | 00 |         |    1 | 00/007A : 48          |             PHA                  
+  171 |  1   SEG25.S     94 | Code        | 00 |E 1 >>16 |    3 | 00/007B : F4 00 00    |             PEA   ^L032EA9       
+  172 |  1   SEG25.S     95 | Code        | 00 |E 2      |    3 | 00/007E : F4 B6 2E    |             PEA   L032EA9        
+  173 |  1   SEG25.S     96 | Code        | 00 |         |    3 | 00/0081 : F4 64 00    |             PEA   $0064          
+  174 |  1   SEG25.S     97 | Code        | 00 |         |    3 | 00/0084 : F4 00 00    |             PEA   $0000          
+  175 |  1   SEG25.S     98 | Code        | 00 |         |    2 | 00/0087 : D4 FF       |             PEI   $FF            
+  176 |  1   SEG25.S     99 | Code        | 00 |         |    2 | 00/0089 : D4 FD       |             PEI   $FD            
+  177 |  1   SEG25.S    100 | Code        | 00 |E 1 >>16 |    3 | 00/008B : F4 00 00    |             PEA   ^L032E97       
+  178 |  1   SEG25.S    101 | Code        | 00 |E 2      |    3 | 00/008E : F4 A4 2E    |             PEA   L032E97        
+  179 |  1   SEG25.S    102 | Code        | 00 |         |    2 | 00/0091 : D4 FB       |             PEI   $FB            
+  180 |  1   SEG25.S    103 | Code        | 00 |         |    2 | 00/0093 : D4 F9       |             PEI   $F9            
+  181 |  1   SEG25.S    104 | Code        | 00 |E 3      |    4 | 00/0095 : 22 29 0D 24 |             JSL   L240F96        
+  182 |  1   SEG25.S    105 | Code        | 00 |         |    1 | 00/0099 : A8          |             TAY                  
+  183 |  1   SEG25.S    106 | Code        | 00 |         |    1 | 00/009A : 3B          |             TSC                  
+  184 |  1   SEG25.S    107 | Code        | 00 |         |    1 | 00/009B : 18          |             CLC                  
+  185 |  1   SEG25.S    108 | Code        | 00 |         |    3 | 00/009C : 69 34 00    |             ADC   #$0034         
+  186 |  1   SEG25.S    109 | Code        | 00 |         |    1 | 00/009F : 1B          |             TCS                  
+  187 |  1   SEG25.S    110 | Code        | 00 |         |    1 | 00/00A0 : 98          |             TYA                  
+  188 |  1   SEG25.S    111 | Code        | 00 |         |    1 | 00/00A1 : 3B          |             TSC                  
+  189 |  1   SEG25.S    112 | Code        | 00 |         |    1 | 00/00A2 : 18          |             CLC                  
+  190 |  1   SEG25.S    113 | Code        | 00 |         |    3 | 00/00A3 : 69 06 00    |             ADC   #$0006         
+  191 |  1   SEG25.S    114 | Code        | 00 |         |    1 | 00/00A6 : 1B          |             TCS                  
+  192 |  1   SEG25.S    115 | Code        | 00 |         |    1 | 00/00A7 : 2B          |             PLD                  
+  193 |  1   SEG25.S    116 | Code        | 00 |         |    1 | 00/00A8 : 6B          |             RTL                  
+  194 |  1   SEG25.S    117 | Empty       | 00 |         |    0 | 00/00A9               |                                  
+  195 |  1   SEG25.S    118 | Global      | 00 |         |    0 | 00/00A9               | L2500A9     ENT                  
+  196 |  1   SEG25.S    119 | Code        | 00 |         |    1 | 00/00A9 : 0B          |             PHD                  
+  197 |  1   SEG25.S    120 | Code        | 00 |         |    1 | 00/00AA : 3B          |             TSC                  
+  198 |  1   SEG25.S    121 | Code        | 00 |         |    1 | 00/00AB : 38          |             SEC                  
+  199 |  1   SEG25.S    122 | Code        | 00 |         |    3 | 00/00AC : E9 FB 00    |             SBC   #$00FB         
+  200 |  1   SEG25.S    123 | Code        | 00 |         |    1 | 00/00AF : 5B          |             TCD                  
+  201 |  1   SEG25.S    124 | Code        | 00 |         |    3 | 00/00B0 : 69 F4 00    |             ADC   #$00F4         
+  202 |  1   SEG25.S    125 | Code        | 00 |         |    1 | 00/00B3 : 1B          |             TCS                  
+  203 |  1   SEG25.S    126 | Code        | 00 |E 2      |    3 | 00/00B4 : 9C 4E 00    |             STZ   L02004D        
+  204 |  1   SEG25.S    127 | Code        | 00 |E 2      |    3 | 00/00B7 : 9C 50 00    |             STZ   L02004F        
+  205 |  1   SEG25.S    128 | Code        | 00 |E 2      |    3 | 00/00BA : 9C E2 01    |             STZ   L0201DD        
+  206 |  1   SEG25.S    129 | Code        | 00 |         |    1 | 00/00BD : 3B          |             TSC                  
+  207 |  1   SEG25.S    130 | Code        | 00 |         |    1 | 00/00BE : 18          |             CLC                  
+  208 |  1   SEG25.S    131 | Code        | 00 |         |    3 | 00/00BF : 69 06 00    |             ADC   #$0006         
+  209 |  1   SEG25.S    132 | Code        | 00 |         |    1 | 00/00C2 : 1B          |             TCS                  
+  210 |  1   SEG25.S    133 | Code        | 00 |         |    1 | 00/00C3 : 2B          |             PLD                  
+  211 |  1   SEG25.S    134 | Code        | 00 |         |    1 | 00/00C4 : 6B          |             RTL                  
+  212 |  1   SEG25.S    135 | Empty       | 00 |         |    0 | 00/00C5               |                                  
+  213 |  1   SEG25.S    136 | Global      | 00 |         |    0 | 00/00C5               | L2500C5     ENT                  
+  214 |  1   SEG25.S    137 | Code        | 00 |         |    1 | 00/00C5 : 0B          |             PHD                  
+  215 |  1   SEG25.S    138 | Code        | 00 |         |    1 | 00/00C6 : 3B          |             TSC                  
+  216 |  1   SEG25.S    139 | Code        | 00 |         |    1 | 00/00C7 : 38          |             SEC                  
+  217 |  1   SEG25.S    140 | Code        | 00 |         |    3 | 00/00C8 : E9 FB 00    |             SBC   #$00FB         
+  218 |  1   SEG25.S    141 | Code        | 00 |         |    1 | 00/00CB : 5B          |             TCD                  
+  219 |  1   SEG25.S    142 | Code        | 00 |         |    3 | 00/00CC : 69 F4 00    |             ADC   #$00F4         
+  220 |  1   SEG25.S    143 | Code        | 00 |         |    1 | 00/00CF : 1B          |             TCS                  
+  221 |  1   SEG25.S    144 | Code        | 00 |         |    3 | 00/00D0 : A9 01 00    |             LDA   #$0001         
+  222 |  1   SEG25.S    145 | Code        | 00 |E 2      |    3 | 00/00D3 : 8D 4E 00    |             STA   L02004D        
+  223 |  1   SEG25.S    146 | Code        | 00 |         |    3 | 00/00D6 : A9 19 00    |             LDA   #$0019         
+  224 |  1   SEG25.S    147 | Code        | 00 |E 2      |    3 | 00/00D9 : 8D 50 00    |             STA   L02004F        
+  225 |  1   SEG25.S    148 | Code        | 00 |         |    3 | 00/00DC : A9 19 00    |             LDA   #$0019         
+  226 |  1   SEG25.S    149 | Code        | 00 |E 2      |    3 | 00/00DF : 8D E2 01    |             STA   L0201DD        
+  227 |  1   SEG25.S    150 | Code        | 00 |         |    3 | 00/00E2 : A9 05 00    |             LDA   #$0005         
+  228 |  1   SEG25.S    151 | Code        | 00 |E 2      |    3 | 00/00E5 : 8D 52 00    |             STA   L020051        
+  229 |  1   SEG25.S    152 | Code        | 00 |E 3      |    4 | 00/00E8 : 22 05 03 0E |             JSL   L0E0305        
+  230 |  1   SEG25.S    153 | Code        | 00 |         |    1 | 00/00EC : 3B          |             TSC                  
+  231 |  1   SEG25.S    154 | Code        | 00 |         |    1 | 00/00ED : 18          |             CLC                  
+  232 |  1   SEG25.S    155 | Code        | 00 |         |    3 | 00/00EE : 69 06 00    |             ADC   #$0006         
+  233 |  1   SEG25.S    156 | Code        | 00 |         |    1 | 00/00F1 : 1B          |             TCS                  
+  234 |  1   SEG25.S    157 | Code        | 00 |         |    1 | 00/00F2 : 2B          |             PLD                  
+  235 |  1   SEG25.S    158 | Code        | 00 |         |    1 | 00/00F3 : 6B          |             RTL                  
+  236 |  1   SEG25.S    159 | Empty       | 00 |         |    0 | 00/00F4               |                                  
+  237 |  1   SEG25.S    160 | Global      | 00 |         |    0 | 00/00F4               | L2500F4     ENT                  
+  238 |  1   SEG25.S    161 | Code        | 00 |         |    1 | 00/00F4 : 0B          |             PHD                  
+  239 |  1   SEG25.S    162 | Code        | 00 |         |    1 | 00/00F5 : 3B          |             TSC                  
+  240 |  1   SEG25.S    163 | Code        | 00 |         |    1 | 00/00F6 : 38          |             SEC                  
+  241 |  1   SEG25.S    164 | Code        | 00 |         |    3 | 00/00F7 : E9 FB 00    |             SBC   #$00FB         
+  242 |  1   SEG25.S    165 | Code        | 00 |         |    1 | 00/00FA : 5B          |             TCD                  
+  243 |  1   SEG25.S    166 | Code        | 00 |         |    3 | 00/00FB : 69 F4 00    |             ADC   #$00F4         
+  244 |  1   SEG25.S    167 | Code        | 00 |         |    1 | 00/00FE : 1B          |             TCS                  
+  245 |  1   SEG25.S    168 | Code        | 00 |         |    3 | 00/00FF : A9 01 00    |             LDA   #$0001         
+  246 |  1   SEG25.S    169 | Code        | 00 |E 2      |    3 | 00/0102 : 8D 4E 00    |             STA   L02004D        
+  247 |  1   SEG25.S    170 | Code        | 00 |         |    3 | 00/0105 : A9 32 00    |             LDA   #$0032         
+  248 |  1   SEG25.S    171 | Code        | 00 |E 2      |    3 | 00/0108 : 8D 50 00    |             STA   L02004F        
+  249 |  1   SEG25.S    172 | Code        | 00 |         |    3 | 00/010B : A9 32 00    |             LDA   #$0032         
+  250 |  1   SEG25.S    173 | Code        | 00 |E 2      |    3 | 00/010E : 8D E2 01    |             STA   L0201DD        
+  251 |  1   SEG25.S    174 | Code        | 00 |         |    3 | 00/0111 : A9 05 00    |             LDA   #$0005         
+  252 |  1   SEG25.S    175 | Code        | 00 |E 2      |    3 | 00/0114 : 8D 52 00    |             STA   L020051        
+  253 |  1   SEG25.S    176 | Code        | 00 |E 3      |    4 | 00/0117 : 22 05 03 0E |             JSL   L0E0305        
+  254 |  1   SEG25.S    177 | Code        | 00 |         |    1 | 00/011B : 3B          |             TSC                  
+  255 |  1   SEG25.S    178 | Code        | 00 |         |    1 | 00/011C : 18          |             CLC                  
+  256 |  1   SEG25.S    179 | Code        | 00 |         |    3 | 00/011D : 69 06 00    |             ADC   #$0006         
+  257 |  1   SEG25.S    180 | Code        | 00 |         |    1 | 00/0120 : 1B          |             TCS                  
+  258 |  1   SEG25.S    181 | Code        | 00 |         |    1 | 00/0121 : 2B          |             PLD                  
+  259 |  1   SEG25.S    182 | Code        | 00 |         |    1 | 00/0122 : 6B          |             RTL                  
+  260 |  1   SEG25.S    183 | Empty       | 00 |         |    0 | 00/0123               |                                  
+  261 |  1   SEG25.S    184 | Global      | 00 |         |    0 | 00/0123               | L250123     ENT                  
+  262 |  1   SEG25.S    185 | Code        | 00 |         |    1 | 00/0123 : 0B          |             PHD                  
+  263 |  1   SEG25.S    186 | Code        | 00 |         |    1 | 00/0124 : 3B          |             TSC                  
+  264 |  1   SEG25.S    187 | Code        | 00 |         |    1 | 00/0125 : 38          |             SEC                  
+  265 |  1   SEG25.S    188 | Code        | 00 |         |    3 | 00/0126 : E9 FB 00    |             SBC   #$00FB         
+  266 |  1   SEG25.S    189 | Code        | 00 |         |    1 | 00/0129 : 5B          |             TCD                  
+  267 |  1   SEG25.S    190 | Code        | 00 |         |    3 | 00/012A : 69 F4 00    |             ADC   #$00F4         
+  268 |  1   SEG25.S    191 | Code        | 00 |         |    1 | 00/012D : 1B          |             TCS                  
+  269 |  1   SEG25.S    192 | Code        | 00 |         |    3 | 00/012E : A9 01 00    |             LDA   #$0001         
+  270 |  1   SEG25.S    193 | Code        | 00 |E 2      |    3 | 00/0131 : 8D 4E 00    |             STA   L02004D        
+  271 |  1   SEG25.S    194 | Code        | 00 |         |    3 | 00/0134 : A9 4B 00    |             LDA   #$004B         
+  272 |  1   SEG25.S    195 | Code        | 00 |E 2      |    3 | 00/0137 : 8D 50 00    |             STA   L02004F        
+  273 |  1   SEG25.S    196 | Code        | 00 |         |    3 | 00/013A : A9 4B 00    |             LDA   #$004B         
+  274 |  1   SEG25.S    197 | Code        | 00 |E 2      |    3 | 00/013D : 8D E2 01    |             STA   L0201DD        
+  275 |  1   SEG25.S    198 | Code        | 00 |         |    3 | 00/0140 : A9 05 00    |             LDA   #$0005         
+  276 |  1   SEG25.S    199 | Code        | 00 |E 2      |    3 | 00/0143 : 8D 52 00    |             STA   L020051        
+  277 |  1   SEG25.S    200 | Code        | 00 |E 3      |    4 | 00/0146 : 22 05 03 0E |             JSL   L0E0305        
+  278 |  1   SEG25.S    201 | Code        | 00 |         |    1 | 00/014A : 3B          |             TSC                  
+  279 |  1   SEG25.S    202 | Code        | 00 |         |    1 | 00/014B : 18          |             CLC                  
+  280 |  1   SEG25.S    203 | Code        | 00 |         |    3 | 00/014C : 69 06 00    |             ADC   #$0006         
+  281 |  1   SEG25.S    204 | Code        | 00 |         |    1 | 00/014F : 1B          |             TCS                  
+  282 |  1   SEG25.S    205 | Code        | 00 |         |    1 | 00/0150 : 2B          |             PLD                  
+  283 |  1   SEG25.S    206 | Code        | 00 |         |    1 | 00/0151 : 6B          |             RTL                  
+  284 |  1   SEG25.S    207 | Empty       | 00 |         |    0 | 00/0152               |                                  
+  285 |  1   SEG25.S    208 | Global      | 00 |         |    0 | 00/0152               | L250152     ENT                  
+  286 |  1   SEG25.S    209 | Code        | 00 |         |    1 | 00/0152 : 0B          |             PHD                  
+  287 |  1   SEG25.S    210 | Code        | 00 |         |    1 | 00/0153 : 3B          |             TSC                  
+  288 |  1   SEG25.S    211 | Code        | 00 |         |    1 | 00/0154 : 38          |             SEC                  
+  289 |  1   SEG25.S    212 | Code        | 00 |         |    3 | 00/0155 : E9 FB 00    |             SBC   #$00FB         
+  290 |  1   SEG25.S    213 | Code        | 00 |         |    1 | 00/0158 : 5B          |             TCD                  
+  291 |  1   SEG25.S    214 | Code        | 00 |         |    3 | 00/0159 : 69 F2 00    |             ADC   #$00F2         
+  292 |  1   SEG25.S    215 | Code        | 00 |         |    1 | 00/015C : 1B          |             TCS                  
+  293 |  1   SEG25.S    216 | Code        | 00 |         |    3 | 00/015D : A9 05 00    |             LDA   #$0005         
+  294 |  1   SEG25.S    217 | Code        | 00 |         |    2 | 00/0160 : 85 F4       |             STA   $F4            
+  295 |  1   SEG25.S    218 | Code        | 00 |E 2      |    3 | 00/0162 : AD 52 00    |             LDA   L020051        
+  296 |  1   SEG25.S    219 | Code        | 00 |         |    3 | 00/0165 : C9 05 00    |             CMP   #$0005         
+  297 |  1   SEG25.S    220 | Code        | 00 |         |    2 | 00/0168 : F0 03       |             BEQ   L25016D        
+  298 |  1   SEG25.S    221 | Code        | 00 |         |    3 | 00/016A : 82 42 00    |             BRL   L2501AF        
+  299 |  1   SEG25.S    222 | Code        | 00 |E 2      |    3 | 00/016D : AD 50 00    | L25016D     LDA   L02004F        
+  300 |  1   SEG25.S    223 | Code        | 00 |         |    3 | 00/0170 : C9 00 00    |             CMP   #$0000         
+  301 |  1   SEG25.S    224 | Code        | 00 |         |    2 | 00/0173 : D0 07       |             BNE   L25017C        
+  302 |  1   SEG25.S    225 | Code        | 00 |         |    3 | 00/0175 : A9 01 00    |             LDA   #$0001         
+  303 |  1   SEG25.S    226 | Code        | 00 |         |    2 | 00/0178 : 85 F4       |             STA   $F4            
+  304 |  1   SEG25.S    227 | Code        | 00 |         |    2 | 00/017A : 80 33       |             BRA   L2501AF        
+  305 |  1   SEG25.S    228 | Code        | 00 |E 2      |    3 | 00/017C : AD 50 00    | L25017C     LDA   L02004F        
+  306 |  1   SEG25.S    229 | Code        | 00 |         |    3 | 00/017F : C9 19 00    |             CMP   #$0019         
+  307 |  1   SEG25.S    230 | Code        | 00 |         |    2 | 00/0182 : D0 07       |             BNE   L25018B        
+  308 |  1   SEG25.S    231 | Code        | 00 |         |    3 | 00/0184 : A9 02 00    |             LDA   #$0002         
+  309 |  1   SEG25.S    232 | Code        | 00 |         |    2 | 00/0187 : 85 F4       |             STA   $F4            
+  310 |  1   SEG25.S    233 | Code        | 00 |         |    2 | 00/0189 : 80 24       |             BRA   L2501AF        
+  311 |  1   SEG25.S    234 | Code        | 00 |E 2      |    3 | 00/018B : AD 50 00    | L25018B     LDA   L02004F        
+  312 |  1   SEG25.S    235 | Code        | 00 |         |    3 | 00/018E : C9 32 00    |             CMP   #$0032         
+  313 |  1   SEG25.S    236 | Code        | 00 |         |    2 | 00/0191 : D0 07       |             BNE   L25019A        
+  314 |  1   SEG25.S    237 | Code        | 00 |         |    3 | 00/0193 : A9 03 00    |             LDA   #$0003         
+  315 |  1   SEG25.S    238 | Code        | 00 |         |    2 | 00/0196 : 85 F4       |             STA   $F4            
+  316 |  1   SEG25.S    239 | Code        | 00 |         |    2 | 00/0198 : 80 15       |             BRA   L2501AF        
+  317 |  1   SEG25.S    240 | Code        | 00 |E 2      |    3 | 00/019A : AD 50 00    | L25019A     LDA   L02004F        
+  318 |  1   SEG25.S    241 | Code        | 00 |         |    3 | 00/019D : C9 4B 00    |             CMP   #$004B         
+  319 |  1   SEG25.S    242 | Code        | 00 |         |    2 | 00/01A0 : D0 0D       |             BNE   L2501AF        
+  320 |  1   SEG25.S    243 | Code        | 00 |E 2      |    3 | 00/01A2 : AD 52 00    |             LDA   L020051        
+  321 |  1   SEG25.S    244 | Code        | 00 |         |    3 | 00/01A5 : C9 05 00    |             CMP   #$0005         
+  322 |  1   SEG25.S    245 | Code        | 00 |         |    2 | 00/01A8 : D0 05       |             BNE   L2501AF        
+  323 |  1   SEG25.S    246 | Code        | 00 |         |    3 | 00/01AA : A9 04 00    |             LDA   #$0004         
+  324 |  1   SEG25.S    247 | Code        | 00 |         |    2 | 00/01AD : 85 F4       |             STA   $F4            
+  325 |  1   SEG25.S    248 | Code        | 00 |         |    2 | 00/01AF : A5 F4       | L2501AF     LDA   $F4            
+  326 |  1   SEG25.S    249 | Code        | 00 |         |    1 | 00/01B1 : A8          |             TAY                  
+  327 |  1   SEG25.S    250 | Code        | 00 |         |    1 | 00/01B2 : 3B          |             TSC                  
+  328 |  1   SEG25.S    251 | Code        | 00 |         |    1 | 00/01B3 : 18          |             CLC                  
+  329 |  1   SEG25.S    252 | Code        | 00 |         |    3 | 00/01B4 : 69 08 00    |             ADC   #$0008         
+  330 |  1   SEG25.S    253 | Code        | 00 |         |    1 | 00/01B7 : 1B          |             TCS                  
+  331 |  1   SEG25.S    254 | Code        | 00 |         |    1 | 00/01B8 : 98          |             TYA                  
+  332 |  1   SEG25.S    255 | Code        | 00 |         |    1 | 00/01B9 : 2B          |             PLD                  
+  333 |  1   SEG25.S    256 | Code        | 00 |         |    1 | 00/01BA : 6B          |             RTL                  
+  334 |  1   SEG25.S    257 | Empty       | 00 |         |    0 | 00/01BB               |                                  
+  335 |  1   SEG25.S    258 | Global      | 00 |         |    0 | 00/01BB               | L2501BB     ENT                  
+  336 |  1   SEG25.S    259 | Code        | 00 |         |    1 | 00/01BB : 0B          |             PHD                  
+  337 |  1   SEG25.S    260 | Code        | 00 |         |    1 | 00/01BC : 3B          |             TSC                  
+  338 |  1   SEG25.S    261 | Code        | 00 |         |    1 | 00/01BD : 38          |             SEC                  
+  339 |  1   SEG25.S    262 | Code        | 00 |         |    3 | 00/01BE : E9 FB 00    |             SBC   #$00FB         
+  340 |  1   SEG25.S    263 | Code        | 00 |         |    1 | 00/01C1 : 5B          |             TCD                  
+  341 |  1   SEG25.S    264 | Code        | 00 |         |    3 | 00/01C2 : 69 F4 00    |             ADC   #$00F4         
+  342 |  1   SEG25.S    265 | Code        | 00 |         |    1 | 00/01C5 : 1B          |             TCS                  
+  343 |  1   SEG25.S    266 | Code        | 00 |         |    3 | 00/01C6 : F4 0A 00    |             PEA   $000A          
+  344 |  1   SEG25.S    267 | Code        | 00 |         |    3 | 00/01C9 : F4 01 00    |             PEA   $0001          
+  345 |  1   SEG25.S    268 | Code        | 00 |E 1 >>16 |    3 | 00/01CC : F4 00 00    |             PEA   ^L020051       
+  346 |  1   SEG25.S    269 | Code        | 00 |E 2      |    3 | 00/01CF : F4 52 00    |             PEA   L020051        
+  347 |  1   SEG25.S    270 | Code        | 00 |E 1 >>16 |    3 | 00/01D2 : F4 00 00    |             PEA   ^L032EEB       
+  348 |  1   SEG25.S    271 | Code        | 00 |E 2      |    3 | 00/01D5 : F4 F8 2E    |             PEA   L032EEB        
+  349 |  1   SEG25.S    272 | Code        | 00 |         |    3 | 00/01D8 : F4 4B 00    |             PEA   $004B          
+  350 |  1   SEG25.S    273 | Code        | 00 |         |    3 | 00/01DB : F4 00 00    |             PEA   $0000          
+  351 |  1   SEG25.S    274 | Code        | 00 |E 1 >>16 |    3 | 00/01DE : F4 00 00    |             PEA   ^L0201DD       
+  352 |  1   SEG25.S    275 | Code        | 00 |E 2      |    3 | 00/01E1 : F4 E2 01    |             PEA   L0201DD        
+  353 |  1   SEG25.S    276 | Code        | 00 |E 1 >>16 |    3 | 00/01E4 : F4 00 00    |             PEA   ^L032EE4       
+  354 |  1   SEG25.S    277 | Code        | 00 |E 2      |    3 | 00/01E7 : F4 F1 2E    |             PEA   L032EE4        
+  355 |  1   SEG25.S    278 | Code        | 00 |E 1 >>16 |    3 | 00/01EA : F4 00 00    |             PEA   ^L032EDB       
+  356 |  1   SEG25.S    279 | Code        | 00 |E 2      |    3 | 00/01ED : F4 E8 2E    |             PEA   L032EDB        
+  357 |  1   SEG25.S    280 | Code        | 00 |E 3      |    4 | 00/01F0 : 22 F1 0A 24 |             JSL   L240CD7        
+  358 |  1   SEG25.S    281 | Code        | 00 |         |    1 | 00/01F4 : A8          |             TAY                  
+  359 |  1   SEG25.S    282 | Code        | 00 |         |    1 | 00/01F5 : 3B          |             TSC                  
+  360 |  1   SEG25.S    283 | Code        | 00 |         |    1 | 00/01F6 : 18          |             CLC                  
+  361 |  1   SEG25.S    284 | Code        | 00 |         |    3 | 00/01F7 : 69 1C 00    |             ADC   #$001C         
+  362 |  1   SEG25.S    285 | Code        | 00 |         |    1 | 00/01FA : 1B          |             TCS                  
+  363 |  1   SEG25.S    286 | Code        | 00 |         |    1 | 00/01FB : 98          |             TYA                  
+  364 |  1   SEG25.S    287 | Code        | 00 |         |    1 | 00/01FC : A8          |             TAY                  
+  365 |  1   SEG25.S    288 | Code        | 00 |         |    2 | 00/01FD : D0 03       |             BNE   L250202        
+  366 |  1   SEG25.S    289 | Code        | 00 |         |    3 | 00/01FF : 82 43 00    |             BRL   L250245        
+  367 |  1   SEG25.S    290 | Code        | 00 |E 2      |    3 | 00/0202 : AD E2 01    | L250202     LDA   L0201DD        
+  368 |  1   SEG25.S    291 | Code        | 00 |         |    1 | 00/0205 : 38          |             SEC                  
+  369 |  1   SEG25.S    292 | Code        | 00 |         |    3 | 00/0206 : E9 00 00    |             SBC   #$0000         
+  370 |  1   SEG25.S    293 | Code        | 00 |         |    2 | 00/0209 : F0 1D       |             BEQ   L250228        
+  371 |  1   SEG25.S    294 | Code        | 00 |         |    2 | 00/020B : 70 03       |             BVS   L250210        
+  372 |  1   SEG25.S    295 | Code        | 00 |         |    3 | 00/020D : 49 00 80    |             EOR   #$8000         
+  373 |  1   SEG25.S    296 | Code        | 00 |         |    2 | 00/0210 : 10 16       | L250210     BPL   L250228        
+  374 |  1   SEG25.S    297 | Code        | 00 |E 2      |    3 | 00/0212 : AD E2 01    |             LDA   L0201DD        
+  375 |  1   SEG25.S    298 | Code        | 00 |         |    1 | 00/0215 : 38          |             SEC                  
+  376 |  1   SEG25.S    299 | Code        | 00 |         |    3 | 00/0216 : E9 08 00    |             SBC   #$0008         
+  377 |  1   SEG25.S    300 | Code        | 00 |         |    2 | 00/0219 : 70 03       |             BVS   L25021E        
+  378 |  1   SEG25.S    301 | Code        | 00 |         |    3 | 00/021B : 49 00 80    |             EOR   #$8000         
+  379 |  1   SEG25.S    302 | Code        | 00 |         |    2 | 00/021E : 30 08       | L25021E     BMI   L250228        
+  380 |  1   SEG25.S    303 | Code        | 00 |         |    3 | 00/0220 : A9 08 00    |             LDA   #$0008         
+  381 |  1   SEG25.S    304 | Code        | 00 |E 2      |    3 | 00/0223 : 8D 50 00    |             STA   L02004F        
+  382 |  1   SEG25.S    305 | Code        | 00 |         |    2 | 00/0226 : 80 06       |             BRA   L25022E        
+  383 |  1   SEG25.S    306 | Code        | 00 |E 2      |    3 | 00/0228 : AD E2 01    | L250228     LDA   L0201DD        
+  384 |  1   SEG25.S    307 | Code        | 00 |E 2      |    3 | 00/022B : 8D 50 00    |             STA   L02004F        
+  385 |  1   SEG25.S    308 | Code        | 00 |E 2      |    3 | 00/022E : AD 50 00    | L25022E     LDA   L02004F        
+  386 |  1   SEG25.S    309 | Code        | 00 |         |    3 | 00/0231 : C9 00 00    |             CMP   #$0000         
+  387 |  1   SEG25.S    310 | Code        | 00 |         |    2 | 00/0234 : D0 05       |             BNE   L25023B        
+  388 |  1   SEG25.S    311 | Code        | 00 |E 2      |    3 | 00/0236 : 9C 4E 00    |             STZ   L02004D        
+  389 |  1   SEG25.S    312 | Code        | 00 |         |    2 | 00/0239 : 80 0A       |             BRA   L250245        
+  390 |  1   SEG25.S    313 | Code        | 00 |         |    3 | 00/023B : A9 01 00    | L25023B     LDA   #$0001         
+  391 |  1   SEG25.S    314 | Code        | 00 |E 2      |    3 | 00/023E : 8D 4E 00    |             STA   L02004D        
+  392 |  1   SEG25.S    315 | Code        | 00 |E 3      |    4 | 00/0241 : 22 05 03 0E |             JSL   L0E0305        
+  393 |  1   SEG25.S    316 | Code        | 00 |         |    1 | 00/0245 : 3B          | L250245     TSC                  
+  394 |  1   SEG25.S    317 | Code        | 00 |         |    1 | 00/0246 : 18          |             CLC                  
+  395 |  1   SEG25.S    318 | Code        | 00 |         |    3 | 00/0247 : 69 06 00    |             ADC   #$0006         
+  396 |  1   SEG25.S    319 | Code        | 00 |         |    1 | 00/024A : 1B          |             TCS                  
+  397 |  1   SEG25.S    320 | Code        | 00 |         |    1 | 00/024B : 2B          |             PLD                  
+  398 |  1   SEG25.S    321 | Code        | 00 |         |    1 | 00/024C : 6B          |             RTL                  
+  399 |  1   SEG25.S    322 | Empty       | 00 |         |    0 | 00/024D               |                                  
+  400 |  1   SEG25.S    323 | Global      | 00 |         |    0 | 00/024D               | L25024D     ENT                  
+  401 |  1   SEG25.S    324 | Code        | 00 |         |    1 | 00/024D : 0B          |             PHD                  
+  402 |  1   SEG25.S    325 | Code        | 00 |         |    1 | 00/024E : 3B          |             TSC                  
+  403 |  1   SEG25.S    326 | Code        | 00 |         |    1 | 00/024F : 38          |             SEC                  
+  404 |  1   SEG25.S    327 | Code        | 00 |         |    3 | 00/0250 : E9 FB 00    |             SBC   #$00FB         
+  405 |  1   SEG25.S    328 | Code        | 00 |         |    1 | 00/0253 : 5B          |             TCD                  
+  406 |  1   SEG25.S    329 | Code        | 00 |         |    3 | 00/0254 : 69 F4 00    |             ADC   #$00F4         
+  407 |  1   SEG25.S    330 | Code        | 00 |         |    1 | 00/0257 : 1B          |             TCS                  
+  408 |  1   SEG25.S    331 | Code        | 00 |E 2      |    3 | 00/0258 : AD 8C 01    |             LDA   L02018B        
+  409 |  1   SEG25.S    332 | Code        | 00 |         |    1 | 00/025B : 0A          |             ASL                  
+  410 |  1   SEG25.S    333 | Code        | 00 |E 2      |    3 | 00/025C : 8D E4 01    |             STA   L0201DF        
+  411 |  1   SEG25.S    334 | Code        | 00 |         |    3 | 00/025F : F4 05 00    |             PEA   $0005          
+  412 |  1   SEG25.S    335 | Code        | 00 |E 2      |    3 | 00/0262 : AD E4 01    |             LDA   L0201DF        
+  413 |  1   SEG25.S    336 | Code        | 00 |         |    1 | 00/0265 : 48          |             PHA                  
+  414 |  1   SEG25.S    337 | Code        | 00 |E 3      |    4 | 00/0266 : 22 CA 03 1B |             JSL   L1B03D3        
+  415 |  1   SEG25.S    338 | Code        | 00 |         |    1 | 00/026A : 7A          |             PLY                  
+  416 |  1   SEG25.S    339 | Code        | 00 |         |    1 | 00/026B : 7A          |             PLY                  
+  417 |  1   SEG25.S    340 | Code        | 00 |E 2      |    3 | 00/026C : 8D E4 01    |             STA   L0201DF        
+  418 |  1   SEG25.S    341 | Code        | 00 |         |    3 | 00/026F : F4 64 00    |             PEA   $0064          
+  419 |  1   SEG25.S    342 | Code        | 00 |         |    3 | 00/0272 : F4 05 00    |             PEA   $0005          
+  420 |  1   SEG25.S    343 | Code        | 00 |E 1 >>16 |    3 | 00/0275 : F4 00 00    |             PEA   ^L0201DF       
+  421 |  1   SEG25.S    344 | Code        | 00 |E 2      |    3 | 00/0278 : F4 E4 01    |             PEA   L0201DF        
+  422 |  1   SEG25.S    345 | Code        | 00 |E 1 >>16 |    3 | 00/027B : F4 00 00    |             PEA   ^L032EF4       
+  423 |  1   SEG25.S    346 | Code        | 00 |E 2      |    3 | 00/027E : F4 01 2F    |             PEA   L032EF4        
+  424 |  1   SEG25.S    347 | Code        | 00 |E 3      |    4 | 00/0281 : 22 3F 0A 24 |             JSL   L240C01        
+  425 |  1   SEG25.S    348 | Code        | 00 |         |    1 | 00/0285 : A8          |             TAY                  
+  426 |  1   SEG25.S    349 | Code        | 00 |         |    1 | 00/0286 : 3B          |             TSC                  
+  427 |  1   SEG25.S    350 | Code        | 00 |         |    1 | 00/0287 : 18          |             CLC                  
+  428 |  1   SEG25.S    351 | Code        | 00 |         |    3 | 00/0288 : 69 0C 00    |             ADC   #$000C         
+  429 |  1   SEG25.S    352 | Code        | 00 |         |    1 | 00/028B : 1B          |             TCS                  
+  430 |  1   SEG25.S    353 | Code        | 00 |         |    1 | 00/028C : 98          |             TYA                  
+  431 |  1   SEG25.S    354 | Code        | 00 |E 2      |    3 | 00/028D : AD E4 01    |             LDA   L0201DF        
+  432 |  1   SEG25.S    355 | Code        | 00 |         |    1 | 00/0290 : 48          |             PHA                  
+  433 |  1   SEG25.S    356 | Code        | 00 |         |    3 | 00/0291 : A9 05 00    |             LDA   #$0005         
+  434 |  1   SEG25.S    357 | Code        | 00 |         |    1 | 00/0294 : 38          |             SEC                  
+  435 |  1   SEG25.S    358 | Code        | 00 |E 3      |    4 | 00/0295 : 22 6D 10 1A |             JSL   L1A109A        
+  436 |  1   SEG25.S    359 | Code        | 00 |         |    1 | 00/0299 : 68          |             PLA                  
+  437 |  1   SEG25.S    360 | Code        | 00 |E 2      |    3 | 00/029A : 8D 8C 01    |             STA   L02018B        
+  438 |  1   SEG25.S    361 | Code        | 00 |         |    3 | 00/029D : A9 02 00    |             LDA   #$0002         
+  439 |  1   SEG25.S    362 | Code        | 00 |         |    1 | 00/02A0 : 48          |             PHA                  
+  440 |  1   SEG25.S    363 | Code        | 00 |E 2      |    3 | 00/02A1 : AD 8C 01    |             LDA   L02018B        
+  441 |  1   SEG25.S    364 | Code        | 00 |         |    1 | 00/02A4 : 38          |             SEC                  
+  442 |  1   SEG25.S    365 | Code        | 00 |E 3      |    4 | 00/02A5 : 22 EC 0E 1A |             JSL   L1A0F19        
+  443 |  1   SEG25.S    366 | Code        | 00 |         |    1 | 00/02A9 : 7A          |             PLY                  
+  444 |  1   SEG25.S    367 | Code        | 00 |E 2      |    3 | 00/02AA : 8D 8C 01    |             STA   L02018B        
+  445 |  1   SEG25.S    368 | Code        | 00 |E 3      |    4 | 00/02AD : 22 3B 01 21 |             JSL   L21013B        
+  446 |  1   SEG25.S    369 | Code        | 00 |         |    1 | 00/02B1 : 3B          |             TSC                  
+  447 |  1   SEG25.S    370 | Code        | 00 |         |    1 | 00/02B2 : 18          |             CLC                  
+  448 |  1   SEG25.S    371 | Code        | 00 |         |    3 | 00/02B3 : 69 06 00    |             ADC   #$0006         
+  449 |  1   SEG25.S    372 | Code        | 00 |         |    1 | 00/02B6 : 1B          |             TCS                  
+  450 |  1   SEG25.S    373 | Code        | 00 |         |    1 | 00/02B7 : 2B          |             PLD                  
+  451 |  1   SEG25.S    374 | Code        | 00 |         |    1 | 00/02B8 : 6B          |             RTL                  
+  452 |  1   SEG25.S    375 | Empty       | 00 |         |    0 | 00/02B9               |                                  
+  453 |  1   SEG25.S    376 | Global      | 00 |         |    0 | 00/02B9               | L2502B9     ENT                  
+  454 |  1   SEG25.S    377 | Code        | 00 |         |    1 | 00/02B9 : 0B          |             PHD                  
+  455 |  1   SEG25.S    378 | Code        | 00 |         |    1 | 00/02BA : 3B          |             TSC                  
+  456 |  1   SEG25.S    379 | Code        | 00 |         |    1 | 00/02BB : 38          |             SEC                  
+  457 |  1   SEG25.S    380 | Code        | 00 |         |    3 | 00/02BC : E9 FB 00    |             SBC   #$00FB         
+  458 |  1   SEG25.S    381 | Code        | 00 |         |    1 | 00/02BF : 5B          |             TCD                  
+  459 |  1   SEG25.S    382 | Code        | 00 |         |    3 | 00/02C0 : 69 F4 00    |             ADC   #$00F4         
+  460 |  1   SEG25.S    383 | Code        | 00 |         |    1 | 00/02C3 : 1B          |             TCS                  
+  461 |  1   SEG25.S    384 | Code        | 00 |E 1 >>16 |    3 | 00/02C4 : F4 00 00    |             PEA   ^L02017B       
+  462 |  1   SEG25.S    385 | Code        | 00 |E 2      |    3 | 00/02C7 : F4 7C 01    |             PEA   L02017B        
+  463 |  1   SEG25.S    386 | Code        | 00 |E 1 >>16 |    3 | 00/02CA : F4 00 00    |             PEA   ^L032F01       
+  464 |  1   SEG25.S    387 | Code        | 00 |E 2      |    3 | 00/02CD : F4 0E 2F    |             PEA   L032F01        
+  465 |  1   SEG25.S    388 | Code        | 00 |  3      |    4 | 00/02D0 : 22 1F 00 00 |             JSL   L25001F        
+  466 |  1   SEG25.S    389 | Code        | 00 |         |    1 | 00/02D4 : 7A          |             PLY                  
+  467 |  1   SEG25.S    390 | Code        | 00 |         |    1 | 00/02D5 : 7A          |             PLY                  
+  468 |  1   SEG25.S    391 | Code        | 00 |         |    1 | 00/02D6 : 7A          |             PLY                  
+  469 |  1   SEG25.S    392 | Code        | 00 |         |    1 | 00/02D7 : 7A          |             PLY                  
+  470 |  1   SEG25.S    393 | Code        | 00 |         |    1 | 00/02D8 : 3B          |             TSC                  
+  471 |  1   SEG25.S    394 | Code        | 00 |         |    1 | 00/02D9 : 18          |             CLC                  
+  472 |  1   SEG25.S    395 | Code        | 00 |         |    3 | 00/02DA : 69 06 00    |             ADC   #$0006         
+  473 |  1   SEG25.S    396 | Code        | 00 |         |    1 | 00/02DD : 1B          |             TCS                  
+  474 |  1   SEG25.S    397 | Code        | 00 |         |    1 | 00/02DE : 2B          |             PLD                  
+  475 |  1   SEG25.S    398 | Code        | 00 |         |    1 | 00/02DF : 6B          |             RTL                  
+  476 |  1   SEG25.S    399 | Empty       | 00 |         |    0 | 00/02E0               |                                  
+  477 |  1   SEG25.S    400 | Global      | 00 |         |    0 | 00/02E0               | L2502E0     ENT                  
+  478 |  1   SEG25.S    401 | Code        | 00 |         |    1 | 00/02E0 : 0B          |             PHD                  
+  479 |  1   SEG25.S    402 | Code        | 00 |         |    1 | 00/02E1 : 3B          |             TSC                  
+  480 |  1   SEG25.S    403 | Code        | 00 |         |    1 | 00/02E2 : 38          |             SEC                  
+  481 |  1   SEG25.S    404 | Code        | 00 |         |    3 | 00/02E3 : E9 FB 00    |             SBC   #$00FB         
+  482 |  1   SEG25.S    405 | Code        | 00 |         |    1 | 00/02E6 : 5B          |             TCD                  
+  483 |  1   SEG25.S    406 | Code        | 00 |         |    3 | 00/02E7 : 69 F4 00    |             ADC   #$00F4         
+  484 |  1   SEG25.S    407 | Code        | 00 |         |    1 | 00/02EA : 1B          |             TCS                  
+  485 |  1   SEG25.S    408 | Code        | 00 |E 1 >>16 |    3 | 00/02EB : F4 00 00    |             PEA   ^L020183       
+  486 |  1   SEG25.S    409 | Code        | 00 |E 2      |    3 | 00/02EE : F4 84 01    |             PEA   L020183        
+  487 |  1   SEG25.S    410 | Code        | 00 |E 1 >>16 |    3 | 00/02F1 : F4 00 00    |             PEA   ^L032F14       
+  488 |  1   SEG25.S    411 | Code        | 00 |E 2      |    3 | 00/02F4 : F4 21 2F    |             PEA   L032F14        
+  489 |  1   SEG25.S    412 | Code        | 00 |  3      |    4 | 00/02F7 : 22 1F 00 00 |             JSL   L25001F        
+  490 |  1   SEG25.S    413 | Code        | 00 |         |    1 | 00/02FB : 7A          |             PLY                  
+  491 |  1   SEG25.S    414 | Code        | 00 |         |    1 | 00/02FC : 7A          |             PLY                  
+  492 |  1   SEG25.S    415 | Code        | 00 |         |    1 | 00/02FD : 7A          |             PLY                  
+  493 |  1   SEG25.S    416 | Code        | 00 |         |    1 | 00/02FE : 7A          |             PLY                  
+  494 |  1   SEG25.S    417 | Code        | 00 |         |    1 | 00/02FF : 3B          |             TSC                  
+  495 |  1   SEG25.S    418 | Code        | 00 |         |    1 | 00/0300 : 18          |             CLC                  
+  496 |  1   SEG25.S    419 | Code        | 00 |         |    3 | 00/0301 : 69 06 00    |             ADC   #$0006         
+  497 |  1   SEG25.S    420 | Code        | 00 |         |    1 | 00/0304 : 1B          |             TCS                  
+  498 |  1   SEG25.S    421 | Code        | 00 |         |    1 | 00/0305 : 2B          |             PLD                  
+  499 |  1   SEG25.S    422 | Code        | 00 |         |    1 | 00/0306 : 6B          |             RTL                  
+  500 |  1   SEG25.S    423 | Empty       | 00 |         |    0 | 00/0307               |                                  
+  501 |  1   SEG25.S    424 | Global      | 00 |         |    0 | 00/0307               | L250307     ENT                  
+  502 |  1   SEG25.S    425 | Code        | 00 |         |    1 | 00/0307 : 0B          |             PHD                  
+  503 |  1   SEG25.S    426 | Code        | 00 |         |    1 | 00/0308 : 3B          |             TSC                  
+  504 |  1   SEG25.S    427 | Code        | 00 |         |    1 | 00/0309 : 38          |             SEC                  
+  505 |  1   SEG25.S    428 | Code        | 00 |         |    3 | 00/030A : E9 FB 00    |             SBC   #$00FB         
+  506 |  1   SEG25.S    429 | Code        | 00 |         |    1 | 00/030D : 5B          |             TCD                  
+  507 |  1   SEG25.S    430 | Code        | 00 |         |    3 | 00/030E : 69 F2 00    |             ADC   #$00F2         
+  508 |  1   SEG25.S    431 | Code        | 00 |         |    1 | 00/0311 : 1B          |             TCS                  
+  509 |  1   SEG25.S    432 | Code        | 00 |E 2      |    3 | 00/0312 : AD B9 00    |             LDA   L0200B8        
+  510 |  1   SEG25.S    433 | Code        | 00 |         |    1 | 00/0315 : 0A          |             ASL                  
+  511 |  1   SEG25.S    434 | Code        | 00 |         |    2 | 00/0316 : 85 F4       |             STA   $F4            
+  512 |  1   SEG25.S    435 | Code        | 00 |         |    3 | 00/0318 : F4 05 00    |             PEA   $0005          
+  513 |  1   SEG25.S    436 | Code        | 00 |         |    2 | 00/031B : D4 F4       |             PEI   $F4            
+  514 |  1   SEG25.S    437 | Code        | 00 |E 3      |    4 | 00/031D : 22 CA 03 1B |             JSL   L1B03D3        
+  515 |  1   SEG25.S    438 | Code        | 00 |         |    1 | 00/0321 : 7A          |             PLY                  
+  516 |  1   SEG25.S    439 | Code        | 00 |         |    1 | 00/0322 : 7A          |             PLY                  
+  517 |  1   SEG25.S    440 | Code        | 00 |         |    2 | 00/0323 : 85 F4       |             STA   $F4            
+  518 |  1   SEG25.S    441 | Code        | 00 |         |    3 | 00/0325 : F4 28 00    |             PEA   $0028          
+  519 |  1   SEG25.S    442 | Code        | 00 |         |    3 | 00/0328 : F4 0A 00    |             PEA   $000A          
+  520 |  1   SEG25.S    443 | Code        | 00 |         |    3 | 00/032B : F4 00 00    |             PEA   $0000          
+  521 |  1   SEG25.S    444 | Code        | 00 |         |    1 | 00/032E : 7B          |             TDC                  
+  522 |  1   SEG25.S    445 | Code        | 00 |         |    1 | 00/032F : 18          |             CLC                  
+  523 |  1   SEG25.S    446 | Code        | 00 |         |    3 | 00/0330 : 69 F4 00    |             ADC   #$00F4         
+  524 |  1   SEG25.S    447 | Code        | 00 |         |    1 | 00/0333 : 48          |             PHA                  
+  525 |  1   SEG25.S    448 | Code        | 00 |E 1 >>16 |    3 | 00/0334 : F4 00 00    |             PEA   ^L032F29       
+  526 |  1   SEG25.S    449 | Code        | 00 |E 2      |    3 | 00/0337 : F4 36 2F    |             PEA   L032F29        
+  527 |  1   SEG25.S    450 | Code        | 00 |E 3      |    4 | 00/033A : 22 3F 0A 24 |             JSL   L240C01        
+  528 |  1   SEG25.S    451 | Code        | 00 |         |    1 | 00/033E : A8          |             TAY                  
+  529 |  1   SEG25.S    452 | Code        | 00 |         |    1 | 00/033F : 3B          |             TSC                  
+  530 |  1   SEG25.S    453 | Code        | 00 |         |    1 | 00/0340 : 18          |             CLC                  
+  531 |  1   SEG25.S    454 | Code        | 00 |         |    3 | 00/0341 : 69 0C 00    |             ADC   #$000C         
+  532 |  1   SEG25.S    455 | Code        | 00 |         |    1 | 00/0344 : 1B          |             TCS                  
+  533 |  1   SEG25.S    456 | Code        | 00 |         |    1 | 00/0345 : 98          |             TYA                  
+  534 |  1   SEG25.S    457 | Code        | 00 |         |    1 | 00/0346 : A8          |             TAY                  
+  535 |  1   SEG25.S    458 | Code        | 00 |         |    2 | 00/0347 : F0 23       |             BEQ   L25036C        
+  536 |  1   SEG25.S    459 | Code        | 00 |         |    2 | 00/0349 : A5 F4       |             LDA   $F4            
+  537 |  1   SEG25.S    460 | Code        | 00 |         |    1 | 00/034B : 48          |             PHA                  
+  538 |  1   SEG25.S    461 | Code        | 00 |         |    3 | 00/034C : A9 05 00    |             LDA   #$0005         
+  539 |  1   SEG25.S    462 | Code        | 00 |         |    1 | 00/034F : 38          |             SEC                  
+  540 |  1   SEG25.S    463 | Code        | 00 |E 3      |    4 | 00/0350 : 22 6D 10 1A |             JSL   L1A109A        
+  541 |  1   SEG25.S    464 | Code        | 00 |         |    1 | 00/0354 : 68          |             PLA                  
+  542 |  1   SEG25.S    465 | Code        | 00 |E 2      |    3 | 00/0355 : 8D B9 00    |             STA   L0200B8        
+  543 |  1   SEG25.S    466 | Code        | 00 |         |    3 | 00/0358 : A9 02 00    |             LDA   #$0002         
+  544 |  1   SEG25.S    467 | Code        | 00 |         |    1 | 00/035B : 48          |             PHA                  
+  545 |  1   SEG25.S    468 | Code        | 00 |E 2      |    3 | 00/035C : AD B9 00    |             LDA   L0200B8        
+  546 |  1   SEG25.S    469 | Code        | 00 |         |    1 | 00/035F : 38          |             SEC                  
+  547 |  1   SEG25.S    470 | Code        | 00 |E 3      |    4 | 00/0360 : 22 EC 0E 1A |             JSL   L1A0F19        
+  548 |  1   SEG25.S    471 | Code        | 00 |         |    1 | 00/0364 : 7A          |             PLY                  
+  549 |  1   SEG25.S    472 | Code        | 00 |E 2      |    3 | 00/0365 : 8D B9 00    |             STA   L0200B8        
+  550 |  1   SEG25.S    473 | Code        | 00 |E 3      |    4 | 00/0368 : 22 18 00 19 |             JSL   L190018        
+  551 |  1   SEG25.S    474 | Code        | 00 |         |    1 | 00/036C : 3B          | L25036C     TSC                  
+  552 |  1   SEG25.S    475 | Code        | 00 |         |    1 | 00/036D : 18          |             CLC                  
+  553 |  1   SEG25.S    476 | Code        | 00 |         |    3 | 00/036E : 69 08 00    |             ADC   #$0008         
+  554 |  1   SEG25.S    477 | Code        | 00 |         |    1 | 00/0371 : 1B          |             TCS                  
+  555 |  1   SEG25.S    478 | Code        | 00 |         |    1 | 00/0372 : 2B          |             PLD                  
+  556 |  1   SEG25.S    479 | Code        | 00 |         |    1 | 00/0373 : 6B          |             RTL                  
+  557 |  1   SEG25.S    480 | Empty       | 00 |         |    0 | 00/0374               |                                  
+  558 |  1   SEG25.S    481 | Global      | 00 |         |    0 | 00/0374               | L250374     ENT                  
+  559 |  1   SEG25.S    482 | Code        | 00 |         |    1 | 00/0374 : 0B          |             PHD                  
+  560 |  1   SEG25.S    483 | Code        | 00 |         |    1 | 00/0375 : 3B          |             TSC                  
+  561 |  1   SEG25.S    484 | Code        | 00 |         |    1 | 00/0376 : 38          |             SEC                  
+  562 |  1   SEG25.S    485 | Code        | 00 |         |    3 | 00/0377 : E9 FB 00    |             SBC   #$00FB         
+  563 |  1   SEG25.S    486 | Code        | 00 |         |    1 | 00/037A : 5B          |             TCD                  
+  564 |  1   SEG25.S    487 | Code        | 00 |         |    3 | 00/037B : 69 F4 00    |             ADC   #$00F4         
+  565 |  1   SEG25.S    488 | Code        | 00 |         |    1 | 00/037E : 1B          |             TCS                  
+  566 |  1   SEG25.S    489 | Code        | 00 |E 1 >>16 |    3 | 00/037F : F4 00 00    |             PEA   ^L0200A8       
+  567 |  1   SEG25.S    490 | Code        | 00 |E 2      |    3 | 00/0382 : F4 A9 00    |             PEA   L0200A8        
+  568 |  1   SEG25.S    491 | Code        | 00 |E 1 >>16 |    3 | 00/0385 : F4 00 00    |             PEA   ^L032F36       
+  569 |  1   SEG25.S    492 | Code        | 00 |E 2      |    3 | 00/0388 : F4 43 2F    |             PEA   L032F36        
+  570 |  1   SEG25.S    493 | Code        | 00 |  3      |    4 | 00/038B : 22 1F 00 00 |             JSL   L25001F        
+  571 |  1   SEG25.S    494 | Code        | 00 |         |    1 | 00/038F : 7A          |             PLY                  
+  572 |  1   SEG25.S    495 | Code        | 00 |         |    1 | 00/0390 : 7A          |             PLY                  
+  573 |  1   SEG25.S    496 | Code        | 00 |         |    1 | 00/0391 : 7A          |             PLY                  
+  574 |  1   SEG25.S    497 | Code        | 00 |         |    1 | 00/0392 : 7A          |             PLY                  
+  575 |  1   SEG25.S    498 | Code        | 00 |         |    1 | 00/0393 : 3B          |             TSC                  
+  576 |  1   SEG25.S    499 | Code        | 00 |         |    1 | 00/0394 : 18          |             CLC                  
+  577 |  1   SEG25.S    500 | Code        | 00 |         |    3 | 00/0395 : 69 06 00    |             ADC   #$0006         
+  578 |  1   SEG25.S    501 | Code        | 00 |         |    1 | 00/0398 : 1B          |             TCS                  
+  579 |  1   SEG25.S    502 | Code        | 00 |         |    1 | 00/0399 : 2B          |             PLD                  
+  580 |  1   SEG25.S    503 | Code        | 00 |         |    1 | 00/039A : 6B          |             RTL                  
+  581 |  1   SEG25.S    504 | Empty       | 00 |         |    0 | 00/039B               |                                  
+  582 |  1   SEG25.S    505 | Global      | 00 |         |    0 | 00/039B               | L25039B     ENT                  
+  583 |  1   SEG25.S    506 | Code        | 00 |         |    1 | 00/039B : 0B          |             PHD                  
+  584 |  1   SEG25.S    507 | Code        | 00 |         |    1 | 00/039C : 3B          |             TSC                  
+  585 |  1   SEG25.S    508 | Code        | 00 |         |    1 | 00/039D : 38          |             SEC                  
+  586 |  1   SEG25.S    509 | Code        | 00 |         |    3 | 00/039E : E9 FB 00    |             SBC   #$00FB         
+  587 |  1   SEG25.S    510 | Code        | 00 |         |    1 | 00/03A1 : 5B          |             TCD                  
+  588 |  1   SEG25.S    511 | Code        | 00 |         |    3 | 00/03A2 : 69 F2 00    |             ADC   #$00F2         
+  589 |  1   SEG25.S    512 | Code        | 00 |         |    1 | 00/03A5 : 1B          |             TCS                  
+  590 |  1   SEG25.S    513 | Code        | 00 |         |    3 | 00/03A6 : A9 96 00    |             LDA   #$0096         
+  591 |  1   SEG25.S    514 | Code        | 00 |         |    1 | 00/03A9 : 38          |             SEC                  
+  592 |  1   SEG25.S    515 | Code        | 00 |E 2      |    3 | 00/03AA : ED C5 00    |             SBC   L0200C4        
+  593 |  1   SEG25.S    516 | Code        | 00 |         |    2 | 00/03AD : 85 F4       |             STA   $F4            
+  594 |  1   SEG25.S    517 | Code        | 00 |         |    3 | 00/03AF : F4 64 00    |             PEA   $0064          
+  595 |  1   SEG25.S    518 | Code        | 00 |         |    3 | 00/03B2 : F4 00 00    |             PEA   $0000          
+  596 |  1   SEG25.S    519 | Code        | 00 |E 1 >>16 |    3 | 00/03B5 : F4 00 00    |             PEA   ^L0200C6       
+  597 |  1   SEG25.S    520 | Code        | 00 |E 2      |    3 | 00/03B8 : F4 C7 00    |             PEA   L0200C6        
+  598 |  1   SEG25.S    521 | Code        | 00 |E 1 >>16 |    3 | 00/03BB : F4 00 00    |             PEA   ^L032F86       
+  599 |  1   SEG25.S    522 | Code        | 00 |E 2      |    3 | 00/03BE : F4 93 2F    |             PEA   L032F86        
+  600 |  1   SEG25.S    523 | Code        | 00 |         |    3 | 00/03C1 : F4 96 00    |             PEA   $0096          
+  601 |  1   SEG25.S    524 | Code        | 00 |         |    3 | 00/03C4 : F4 00 00    |             PEA   $0000          
+  602 |  1   SEG25.S    525 | Code        | 00 |         |    3 | 00/03C7 : F4 00 00    |             PEA   $0000          
+  603 |  1   SEG25.S    526 | Code        | 00 |         |    1 | 00/03CA : 7B          |             TDC                  
+  604 |  1   SEG25.S    527 | Code        | 00 |         |    1 | 00/03CB : 18          |             CLC                  
+  605 |  1   SEG25.S    528 | Code        | 00 |         |    3 | 00/03CC : 69 F4 00    |             ADC   #$00F4         
+  606 |  1   SEG25.S    529 | Code        | 00 |         |    1 | 00/03CF : 48          |             PHA                  
+  607 |  1   SEG25.S    530 | Code        | 00 |E 1 >>16 |    3 | 00/03D0 : F4 00 00    |             PEA   ^L032F73       
+  608 |  1   SEG25.S    531 | Code        | 00 |E 2      |    3 | 00/03D3 : F4 80 2F    |             PEA   L032F73        
+  609 |  1   SEG25.S    532 | Code        | 00 |         |    3 | 00/03D6 : F4 64 00    |             PEA   $0064          
+  610 |  1   SEG25.S    533 | Code        | 00 |         |    3 | 00/03D9 : F4 00 00    |             PEA   $0000          
+  611 |  1   SEG25.S    534 | Code        | 00 |E 1 >>16 |    3 | 00/03DC : F4 00 00    |             PEA   ^L0200BA       
+  612 |  1   SEG25.S    535 | Code        | 00 |E 2      |    3 | 00/03DF : F4 BB 00    |             PEA   L0200BA        
+  613 |  1   SEG25.S    536 | Code        | 00 |E 1 >>16 |    3 | 00/03E2 : F4 00 00    |             PEA   ^L032F60       
+  614 |  1   SEG25.S    537 | Code        | 00 |E 2      |    3 | 00/03E5 : F4 6D 2F    |             PEA   L032F60        
+  615 |  1   SEG25.S    538 | Code        | 00 |         |    3 | 00/03E8 : F4 FA 00    |             PEA   $00FA          
+  616 |  1   SEG25.S    539 | Code        | 00 |         |    3 | 00/03EB : F4 00 00    |             PEA   $0000          
+  617 |  1   SEG25.S    540 | Code        | 00 |E 1 >>16 |    3 | 00/03EE : F4 00 00    |             PEA   ^L0200C0       
+  618 |  1   SEG25.S    541 | Code        | 00 |E 2      |    3 | 00/03F1 : F4 C1 00    |             PEA   L0200C0        
+  619 |  1   SEG25.S    542 | Code        | 00 |E 1 >>16 |    3 | 00/03F4 : F4 00 00    |             PEA   ^L032F4D       
+  620 |  1   SEG25.S    543 | Code        | 00 |E 2      |    3 | 00/03F7 : F4 5A 2F    |             PEA   L032F4D        
+  621 |  1   SEG25.S    544 | Code        | 00 |E 1 >>16 |    3 | 00/03FA : F4 00 00    |             PEA   ^L032F47       
+  622 |  1   SEG25.S    545 | Code        | 00 |E 2      |    3 | 00/03FD : F4 54 2F    |             PEA   L032F47        
+  623 |  1   SEG25.S    546 | Code        | 00 |E 3      |    4 | 00/0400 : 22 29 0D 24 |             JSL   L240F96        
+  624 |  1   SEG25.S    547 | Code        | 00 |         |    1 | 00/0404 : A8          |             TAY                  
+  625 |  1   SEG25.S    548 | Code        | 00 |         |    1 | 00/0405 : 3B          |             TSC                  
+  626 |  1   SEG25.S    549 | Code        | 00 |         |    1 | 00/0406 : 18          |             CLC                  
+  627 |  1   SEG25.S    550 | Code        | 00 |         |    3 | 00/0407 : 69 34 00    |             ADC   #$0034         
+  628 |  1   SEG25.S    551 | Code        | 00 |         |    1 | 00/040A : 1B          |             TCS                  
+  629 |  1   SEG25.S    552 | Code        | 00 |         |    1 | 00/040B : 98          |             TYA                  
+  630 |  1   SEG25.S    553 | Code        | 00 |E 2      |    3 | 00/040C : AD C1 00    |             LDA   L0200C0        
+  631 |  1   SEG25.S    554 | Code        | 00 |         |    3 | 00/040F : 49 FF FF    |             EOR   #$FFFF         
+  632 |  1   SEG25.S    555 | Code        | 00 |         |    1 | 00/0412 : 1A          |             INC                  
+  633 |  1   SEG25.S    556 | Code        | 00 |E 2      |    3 | 00/0413 : 8D BD 00    |             STA   L0200BC        
+  634 |  1   SEG25.S    557 | Code        | 00 |E 2      |    3 | 00/0416 : AD BB 00    |             LDA   L0200BA        
+  635 |  1   SEG25.S    558 | Code        | 00 |E 2      |    3 | 00/0419 : 8D BF 00    |             STA   L0200BE        
+  636 |  1   SEG25.S    559 | Code        | 00 |         |    3 | 00/041C : A9 96 00    |             LDA   #$0096         
+  637 |  1   SEG25.S    560 | Code        | 00 |         |    1 | 00/041F : 18          |             CLC                  
+  638 |  1   SEG25.S    561 | Code        | 00 |         |    2 | 00/0420 : 65 F4       |             ADC   $F4            
+  639 |  1   SEG25.S    562 | Code        | 00 |E 2      |    3 | 00/0422 : 8D C9 00    |             STA   L0200C8        
+  640 |  1   SEG25.S    563 | Code        | 00 |         |    3 | 00/0425 : A9 96 00    |             LDA   #$0096         
+  641 |  1   SEG25.S    564 | Code        | 00 |         |    1 | 00/0428 : 38          |             SEC                  
+  642 |  1   SEG25.S    565 | Code        | 00 |         |    2 | 00/0429 : E5 F4       |             SBC   $F4            
+  643 |  1   SEG25.S    566 | Code        | 00 |E 2      |    3 | 00/042B : 8D C5 00    |             STA   L0200C4        
+  644 |  1   SEG25.S    567 | Code        | 00 |E 2      |    3 | 00/042E : AD C7 00    |             LDA   L0200C6        
+  645 |  1   SEG25.S    568 | Code        | 00 |E 2      |    3 | 00/0431 : 8D C3 00    |             STA   L0200C2        
+  646 |  1   SEG25.S    569 | Code        | 00 |         |    1 | 00/0434 : 3B          |             TSC                  
+  647 |  1   SEG25.S    570 | Code        | 00 |         |    1 | 00/0435 : 18          |             CLC                  
+  648 |  1   SEG25.S    571 | Code        | 00 |         |    3 | 00/0436 : 69 08 00    |             ADC   #$0008         
+  649 |  1   SEG25.S    572 | Code        | 00 |         |    1 | 00/0439 : 1B          |             TCS                  
+  650 |  1   SEG25.S    573 | Code        | 00 |         |    1 | 00/043A : 2B          |             PLD                  
+  651 |  1   SEG25.S    574 | Code        | 00 |         |    1 | 00/043B : 6B          |             RTL                  
+  652 |  1   SEG25.S    575 | Empty       | 00 |         |    0 | 00/043C               |                                  
+  653 |  1   SEG25.S    576 | Global      | 00 |         |    0 | 00/043C               | L25043C     ENT                  
+  654 |  1   SEG25.S    577 | Code        | 00 |         |    1 | 00/043C : 0B          |             PHD                  
+  655 |  1   SEG25.S    578 | Code        | 00 |         |    1 | 00/043D : 3B          |             TSC                  
+  656 |  1   SEG25.S    579 | Code        | 00 |         |    1 | 00/043E : 38          |             SEC                  
+  657 |  1   SEG25.S    580 | Code        | 00 |         |    3 | 00/043F : E9 FB 00    |             SBC   #$00FB         
+  658 |  1   SEG25.S    581 | Code        | 00 |         |    1 | 00/0442 : 5B          |             TCD                  
+  659 |  1   SEG25.S    582 | Code        | 00 |         |    3 | 00/0443 : 69 F4 00    |             ADC   #$00F4         
+  660 |  1   SEG25.S    583 | Code        | 00 |         |    1 | 00/0446 : 1B          |             TCS                  
+  661 |  1   SEG25.S    584 | Code        | 00 |         |    3 | 00/0447 : F4 2C 01    |             PEA   $012C          
+  662 |  1   SEG25.S    585 | Code        | 00 |         |    3 | 00/044A : F4 00 00    |             PEA   $0000          
+  663 |  1   SEG25.S    586 | Code        | 00 |E 1 >>16 |    3 | 00/044D : F4 00 00    |             PEA   ^L0200E8       
+  664 |  1   SEG25.S    587 | Code        | 00 |E 2      |    3 | 00/0450 : F4 E9 00    |             PEA   L0200E8        
+  665 |  1   SEG25.S    588 | Code        | 00 |E 1 >>16 |    3 | 00/0453 : F4 00 00    |             PEA   ^L032FE0       
+  666 |  1   SEG25.S    589 | Code        | 00 |E 2      |    3 | 00/0456 : F4 ED 2F    |             PEA   L032FE0        
+  667 |  1   SEG25.S    590 | Code        | 00 |         |    3 | 00/0459 : F4 2C 01    |             PEA   $012C          
+  668 |  1   SEG25.S    591 | Code        | 00 |         |    3 | 00/045C : F4 00 00    |             PEA   $0000          
+  669 |  1   SEG25.S    592 | Code        | 00 |E 1 >>16 |    3 | 00/045F : F4 00 00    |             PEA   ^L0200E4       
+  670 |  1   SEG25.S    593 | Code        | 00 |E 2      |    3 | 00/0462 : F4 E5 00    |             PEA   L0200E4        
+  671 |  1   SEG25.S    594 | Code        | 00 |E 1 >>16 |    3 | 00/0465 : F4 00 00    |             PEA   ^L032FCB       
+  672 |  1   SEG25.S    595 | Code        | 00 |E 2      |    3 | 00/0468 : F4 D8 2F    |             PEA   L032FCB        
+  673 |  1   SEG25.S    596 | Code        | 00 |         |    3 | 00/046B : F4 2C 01    |             PEA   $012C          
+  674 |  1   SEG25.S    597 | Code        | 00 |         |    3 | 00/046E : F4 D4 FE    |             PEA   $FED4          
+  675 |  1   SEG25.S    598 | Code        | 00 |E 1 >>16 |    3 | 00/0471 : F4 00 00    |             PEA   ^L0200E6       
+  676 |  1   SEG25.S    599 | Code        | 00 |E 2      |    3 | 00/0474 : F4 E7 00    |             PEA   L0200E6        
+  677 |  1   SEG25.S    600 | Code        | 00 |E 1 >>16 |    3 | 00/0477 : F4 00 00    |             PEA   ^L032FB6       
+  678 |  1   SEG25.S    601 | Code        | 00 |E 2      |    3 | 00/047A : F4 C3 2F    |             PEA   L032FB6        
+  679 |  1   SEG25.S    602 | Code        | 00 |         |    3 | 00/047D : F4 2C 01    |             PEA   $012C          
+  680 |  1   SEG25.S    603 | Code        | 00 |         |    3 | 00/0480 : F4 D4 FE    |             PEA   $FED4          
+  681 |  1   SEG25.S    604 | Code        | 00 |E 1 >>16 |    3 | 00/0483 : F4 00 00    |             PEA   ^L0200E2       
+  682 |  1   SEG25.S    605 | Code        | 00 |E 2      |    3 | 00/0486 : F4 E3 00    |             PEA   L0200E2        
+  683 |  1   SEG25.S    606 | Code        | 00 |E 1 >>16 |    3 | 00/0489 : F4 00 00    |             PEA   ^L032FA1       
+  684 |  1   SEG25.S    607 | Code        | 00 |E 2      |    3 | 00/048C : F4 AE 2F    |             PEA   L032FA1        
+  685 |  1   SEG25.S    608 | Code        | 00 |E 1 >>16 |    3 | 00/048F : F4 00 00    |             PEA   ^L032F99       
+  686 |  1   SEG25.S    609 | Code        | 00 |E 2      |    3 | 00/0492 : F4 A6 2F    |             PEA   L032F99        
+  687 |  1   SEG25.S    610 | Code        | 00 |E 3      |    4 | 00/0495 : 22 29 0D 24 |             JSL   L240F96        
+  688 |  1   SEG25.S    611 | Code        | 00 |         |    1 | 00/0499 : A8          |             TAY                  
+  689 |  1   SEG25.S    612 | Code        | 00 |         |    1 | 00/049A : 3B          |             TSC                  
+  690 |  1   SEG25.S    613 | Code        | 00 |         |    1 | 00/049B : 18          |             CLC                  
+  691 |  1   SEG25.S    614 | Code        | 00 |         |    3 | 00/049C : 69 34 00    |             ADC   #$0034         
+  692 |  1   SEG25.S    615 | Code        | 00 |         |    1 | 00/049F : 1B          |             TCS                  
+  693 |  1   SEG25.S    616 | Code        | 00 |         |    1 | 00/04A0 : 98          |             TYA                  
+  694 |  1   SEG25.S    617 | Code        | 00 |         |    1 | 00/04A1 : A8          |             TAY                  
+  695 |  1   SEG25.S    618 | Code        | 00 |         |    2 | 00/04A2 : D0 03       |             BNE   L2504A7        
+  696 |  1   SEG25.S    619 | Code        | 00 |         |    3 | 00/04A4 : 82 48 00    |             BRL   L2504EF        
+  697 |  1   SEG25.S    620 | Code        | 00 |E 2      |    3 | 00/04A7 : AD E3 00    | L2504A7     LDA   L0200E2        
+  698 |  1   SEG25.S    621 | Code        | 00 |         |    1 | 00/04AA : 38          |             SEC                  
+  699 |  1   SEG25.S    622 | Code        | 00 |E 2      |    3 | 00/04AB : ED E7 00    |             SBC   L0200E6        
+  700 |  1   SEG25.S    623 | Code        | 00 |         |    2 | 00/04AE : F0 1B       |             BEQ   L2504CB        
+  701 |  1   SEG25.S    624 | Code        | 00 |         |    2 | 00/04B0 : 70 03       |             BVS   L2504B5        
+  702 |  1   SEG25.S    625 | Code        | 00 |         |    3 | 00/04B2 : 49 00 80    |             EOR   #$8000         
+  703 |  1   SEG25.S    626 | Code        | 00 |         |    2 | 00/04B5 : 10 14       | L2504B5     BPL   L2504CB        
+  704 |  1   SEG25.S    627 | Code        | 00 |E 1 >>16 |    3 | 00/04B7 : F4 00 00    |             PEA   ^L0200E6       
+  705 |  1   SEG25.S    628 | Code        | 00 |E 2      |    3 | 00/04BA : F4 E7 00    |             PEA   L0200E6        
+  706 |  1   SEG25.S    629 | Code        | 00 |E 1 >>16 |    3 | 00/04BD : F4 00 00    |             PEA   ^L0200E2       
+  707 |  1   SEG25.S    630 | Code        | 00 |E 2      |    3 | 00/04C0 : F4 E3 00    |             PEA   L0200E2        
+  708 |  1   SEG25.S    631 | Code        | 00 |  3      |    4 | 00/04C3 : 22 00 00 00 |             JSL   L250000        
+  709 |  1   SEG25.S    632 | Code        | 00 |         |    1 | 00/04C7 : 7A          |             PLY                  
+  710 |  1   SEG25.S    633 | Code        | 00 |         |    1 | 00/04C8 : 7A          |             PLY                  
+  711 |  1   SEG25.S    634 | Code        | 00 |         |    1 | 00/04C9 : 7A          |             PLY                  
+  712 |  1   SEG25.S    635 | Code        | 00 |         |    1 | 00/04CA : 7A          |             PLY                  
+  713 |  1   SEG25.S    636 | Code        | 00 |E 2      |    3 | 00/04CB : AD E5 00    | L2504CB     LDA   L0200E4        
+  714 |  1   SEG25.S    637 | Code        | 00 |         |    1 | 00/04CE : 38          |             SEC                  
+  715 |  1   SEG25.S    638 | Code        | 00 |E 2      |    3 | 00/04CF : ED E9 00    |             SBC   L0200E8        
+  716 |  1   SEG25.S    639 | Code        | 00 |         |    2 | 00/04D2 : F0 1B       |             BEQ   L2504EF        
+  717 |  1   SEG25.S    640 | Code        | 00 |         |    2 | 00/04D4 : 70 03       |             BVS   L2504D9        
+  718 |  1   SEG25.S    641 | Code        | 00 |         |    3 | 00/04D6 : 49 00 80    |             EOR   #$8000         
+  719 |  1   SEG25.S    642 | Code        | 00 |         |    2 | 00/04D9 : 10 14       | L2504D9     BPL   L2504EF        
+  720 |  1   SEG25.S    643 | Code        | 00 |E 1 >>16 |    3 | 00/04DB : F4 00 00    |             PEA   ^L0200E8       
+  721 |  1   SEG25.S    644 | Code        | 00 |E 2      |    3 | 00/04DE : F4 E9 00    |             PEA   L0200E8        
+  722 |  1   SEG25.S    645 | Code        | 00 |E 1 >>16 |    3 | 00/04E1 : F4 00 00    |             PEA   ^L0200E4       
+  723 |  1   SEG25.S    646 | Code        | 00 |E 2      |    3 | 00/04E4 : F4 E5 00    |             PEA   L0200E4        
+  724 |  1   SEG25.S    647 | Code        | 00 |  3      |    4 | 00/04E7 : 22 00 00 00 |             JSL   L250000        
+  725 |  1   SEG25.S    648 | Code        | 00 |         |    1 | 00/04EB : 7A          |             PLY                  
+  726 |  1   SEG25.S    649 | Code        | 00 |         |    1 | 00/04EC : 7A          |             PLY                  
+  727 |  1   SEG25.S    650 | Code        | 00 |         |    1 | 00/04ED : 7A          |             PLY                  
+  728 |  1   SEG25.S    651 | Code        | 00 |         |    1 | 00/04EE : 7A          |             PLY                  
+  729 |  1   SEG25.S    652 | Code        | 00 |         |    1 | 00/04EF : 3B          | L2504EF     TSC                  
+  730 |  1   SEG25.S    653 | Code        | 00 |         |    1 | 00/04F0 : 18          |             CLC                  
+  731 |  1   SEG25.S    654 | Code        | 00 |         |    3 | 00/04F1 : 69 06 00    |             ADC   #$0006         
+  732 |  1   SEG25.S    655 | Code        | 00 |         |    1 | 00/04F4 : 1B          |             TCS                  
+  733 |  1   SEG25.S    656 | Code        | 00 |         |    1 | 00/04F5 : 2B          |             PLD                  
+  734 |  1   SEG25.S    657 | Code        | 00 |         |    1 | 00/04F6 : 6B          |             RTL                  
+  735 |  1   SEG25.S    658 | Empty       | 00 |         |    0 | 00/04F7               |                                  
+  736 |  1   SEG25.S    659 | Global      | 00 |         |    0 | 00/04F7               | L2504F7     ENT                  
+  737 |  1   SEG25.S    660 | Code        | 00 |         |    1 | 00/04F7 : 0B          |             PHD                  
+  738 |  1   SEG25.S    661 | Code        | 00 |         |    1 | 00/04F8 : 3B          |             TSC                  
+  739 |  1   SEG25.S    662 | Code        | 00 |         |    1 | 00/04F9 : 38          |             SEC                  
+  740 |  1   SEG25.S    663 | Code        | 00 |         |    3 | 00/04FA : E9 FB 00    |             SBC   #$00FB         
+  741 |  1   SEG25.S    664 | Code        | 00 |         |    1 | 00/04FD : 5B          |             TCD                  
+  742 |  1   SEG25.S    665 | Code        | 00 |         |    3 | 00/04FE : 69 F4 00    |             ADC   #$00F4         
+  743 |  1   SEG25.S    666 | Code        | 00 |         |    1 | 00/0501 : 1B          |             TCS                  
+  744 |  1   SEG25.S    667 | Code        | 00 |         |    3 | 00/0502 : F4 2C 01    |             PEA   $012C          
+  745 |  1   SEG25.S    668 | Code        | 00 |         |    3 | 00/0505 : F4 00 00    |             PEA   $0000          
+  746 |  1   SEG25.S    669 | Code        | 00 |E 1 >>16 |    3 | 00/0508 : F4 00 00    |             PEA   ^L0200DE       
+  747 |  1   SEG25.S    670 | Code        | 00 |E 2      |    3 | 00/050B : F4 DF 00    |             PEA   L0200DE        
+  748 |  1   SEG25.S    671 | Code        | 00 |E 1 >>16 |    3 | 00/050E : F4 00 00    |             PEA   ^L03303B       
+  749 |  1   SEG25.S    672 | Code        | 00 |E 2      |    3 | 00/0511 : F4 48 30    |             PEA   L03303B        
+  750 |  1   SEG25.S    673 | Code        | 00 |         |    3 | 00/0514 : F4 2C 01    |             PEA   $012C          
+  751 |  1   SEG25.S    674 | Code        | 00 |         |    3 | 00/0517 : F4 00 00    |             PEA   $0000          
+  752 |  1   SEG25.S    675 | Code        | 00 |E 1 >>16 |    3 | 00/051A : F4 00 00    |             PEA   ^L0200E0       
+  753 |  1   SEG25.S    676 | Code        | 00 |E 2      |    3 | 00/051D : F4 E1 00    |             PEA   L0200E0        
+  754 |  1   SEG25.S    677 | Code        | 00 |E 1 >>16 |    3 | 00/0520 : F4 00 00    |             PEA   ^L033026       
+  755 |  1   SEG25.S    678 | Code        | 00 |E 2      |    3 | 00/0523 : F4 33 30    |             PEA   L033026        
+  756 |  1   SEG25.S    679 | Code        | 00 |         |    3 | 00/0526 : F4 2C 01    |             PEA   $012C          
+  757 |  1   SEG25.S    680 | Code        | 00 |         |    3 | 00/0529 : F4 D4 FE    |             PEA   $FED4          
+  758 |  1   SEG25.S    681 | Code        | 00 |E 1 >>16 |    3 | 00/052C : F4 00 00    |             PEA   ^L0200DA       
+  759 |  1   SEG25.S    682 | Code        | 00 |E 2      |    3 | 00/052F : F4 DB 00    |             PEA   L0200DA        
+  760 |  1   SEG25.S    683 | Code        | 00 |E 1 >>16 |    3 | 00/0532 : F4 00 00    |             PEA   ^L033011       
+  761 |  1   SEG25.S    684 | Code        | 00 |E 2      |    3 | 00/0535 : F4 1E 30    |             PEA   L033011        
+  762 |  1   SEG25.S    685 | Code        | 00 |         |    3 | 00/0538 : F4 2C 01    |             PEA   $012C          
+  763 |  1   SEG25.S    686 | Code        | 00 |         |    3 | 00/053B : F4 D4 FE    |             PEA   $FED4          
+  764 |  1   SEG25.S    687 | Code        | 00 |E 1 >>16 |    3 | 00/053E : F4 00 00    |             PEA   ^L0200DC       
+  765 |  1   SEG25.S    688 | Code        | 00 |E 2      |    3 | 00/0541 : F4 DD 00    |             PEA   L0200DC        
+  766 |  1   SEG25.S    689 | Code        | 00 |E 1 >>16 |    3 | 00/0544 : F4 00 00    |             PEA   ^L032FFC       
+  767 |  1   SEG25.S    690 | Code        | 00 |E 2      |    3 | 00/0547 : F4 09 30    |             PEA   L032FFC        
+  768 |  1   SEG25.S    691 | Code        | 00 |E 1 >>16 |    3 | 00/054A : F4 00 00    |             PEA   ^L032FF5       
+  769 |  1   SEG25.S    692 | Code        | 00 |E 2      |    3 | 00/054D : F4 02 30    |             PEA   L032FF5        
+  770 |  1   SEG25.S    693 | Code        | 00 |E 3      |    4 | 00/0550 : 22 29 0D 24 |             JSL   L240F96        
+  771 |  1   SEG25.S    694 | Code        | 00 |         |    1 | 00/0554 : A8          |             TAY                  
+  772 |  1   SEG25.S    695 | Code        | 00 |         |    1 | 00/0555 : 3B          |             TSC                  
+  773 |  1   SEG25.S    696 | Code        | 00 |         |    1 | 00/0556 : 18          |             CLC                  
+  774 |  1   SEG25.S    697 | Code        | 00 |         |    3 | 00/0557 : 69 34 00    |             ADC   #$0034         
+  775 |  1   SEG25.S    698 | Code        | 00 |         |    1 | 00/055A : 1B          |             TCS                  
+  776 |  1   SEG25.S    699 | Code        | 00 |         |    1 | 00/055B : 98          |             TYA                  
+  777 |  1   SEG25.S    700 | Code        | 00 |         |    1 | 00/055C : A8          |             TAY                  
+  778 |  1   SEG25.S    701 | Code        | 00 |         |    2 | 00/055D : D0 03       |             BNE   L250562        
+  779 |  1   SEG25.S    702 | Code        | 00 |         |    3 | 00/055F : 82 48 00    |             BRL   L2505AA        
+  780 |  1   SEG25.S    703 | Code        | 00 |E 2      |    3 | 00/0562 : AD DD 00    | L250562     LDA   L0200DC        
+  781 |  1   SEG25.S    704 | Code        | 00 |         |    1 | 00/0565 : 38          |             SEC                  
+  782 |  1   SEG25.S    705 | Code        | 00 |E 2      |    3 | 00/0566 : ED DB 00    |             SBC   L0200DA        
+  783 |  1   SEG25.S    706 | Code        | 00 |         |    2 | 00/0569 : F0 1B       |             BEQ   L250586        
+  784 |  1   SEG25.S    707 | Code        | 00 |         |    2 | 00/056B : 70 03       |             BVS   L250570        
+  785 |  1   SEG25.S    708 | Code        | 00 |         |    3 | 00/056D : 49 00 80    |             EOR   #$8000         
+  786 |  1   SEG25.S    709 | Code        | 00 |         |    2 | 00/0570 : 10 14       | L250570     BPL   L250586        
+  787 |  1   SEG25.S    710 | Code        | 00 |E 1 >>16 |    3 | 00/0572 : F4 00 00    |             PEA   ^L0200DA       
+  788 |  1   SEG25.S    711 | Code        | 00 |E 2      |    3 | 00/0575 : F4 DB 00    |             PEA   L0200DA        
+  789 |  1   SEG25.S    712 | Code        | 00 |E 1 >>16 |    3 | 00/0578 : F4 00 00    |             PEA   ^L0200DC       
+  790 |  1   SEG25.S    713 | Code        | 00 |E 2      |    3 | 00/057B : F4 DD 00    |             PEA   L0200DC        
+  791 |  1   SEG25.S    714 | Code        | 00 |  3      |    4 | 00/057E : 22 00 00 00 |             JSL   L250000        
+  792 |  1   SEG25.S    715 | Code        | 00 |         |    1 | 00/0582 : 7A          |             PLY                  
+  793 |  1   SEG25.S    716 | Code        | 00 |         |    1 | 00/0583 : 7A          |             PLY                  
+  794 |  1   SEG25.S    717 | Code        | 00 |         |    1 | 00/0584 : 7A          |             PLY                  
+  795 |  1   SEG25.S    718 | Code        | 00 |         |    1 | 00/0585 : 7A          |             PLY                  
+  796 |  1   SEG25.S    719 | Code        | 00 |E 2      |    3 | 00/0586 : AD E1 00    | L250586     LDA   L0200E0        
+  797 |  1   SEG25.S    720 | Code        | 00 |         |    1 | 00/0589 : 38          |             SEC                  
+  798 |  1   SEG25.S    721 | Code        | 00 |E 2      |    3 | 00/058A : ED DF 00    |             SBC   L0200DE        
+  799 |  1   SEG25.S    722 | Code        | 00 |         |    2 | 00/058D : F0 1B       |             BEQ   L2505AA        
+  800 |  1   SEG25.S    723 | Code        | 00 |         |    2 | 00/058F : 70 03       |             BVS   L250594        
+  801 |  1   SEG25.S    724 | Code        | 00 |         |    3 | 00/0591 : 49 00 80    |             EOR   #$8000         
+  802 |  1   SEG25.S    725 | Code        | 00 |         |    2 | 00/0594 : 10 14       | L250594     BPL   L2505AA        
+  803 |  1   SEG25.S    726 | Code        | 00 |E 1 >>16 |    3 | 00/0596 : F4 00 00    |             PEA   ^L0200E0       
+  804 |  1   SEG25.S    727 | Code        | 00 |E 2      |    3 | 00/0599 : F4 E1 00    |             PEA   L0200E0        
+  805 |  1   SEG25.S    728 | Code        | 00 |E 1 >>16 |    3 | 00/059C : F4 00 00    |             PEA   ^L0200E0       
+  806 |  1   SEG25.S    729 | Code        | 00 |E 2      |    3 | 00/059F : F4 E1 00    |             PEA   L0200E0        
+  807 |  1   SEG25.S    730 | Code        | 00 |  3      |    4 | 00/05A2 : 22 00 00 00 |             JSL   L250000        
+  808 |  1   SEG25.S    731 | Code        | 00 |         |    1 | 00/05A6 : 7A          |             PLY                  
+  809 |  1   SEG25.S    732 | Code        | 00 |         |    1 | 00/05A7 : 7A          |             PLY                  
+  810 |  1   SEG25.S    733 | Code        | 00 |         |    1 | 00/05A8 : 7A          |             PLY                  
+  811 |  1   SEG25.S    734 | Code        | 00 |         |    1 | 00/05A9 : 7A          |             PLY                  
+  812 |  1   SEG25.S    735 | Code        | 00 |         |    1 | 00/05AA : 3B          | L2505AA     TSC                  
+  813 |  1   SEG25.S    736 | Code        | 00 |         |    1 | 00/05AB : 18          |             CLC                  
+  814 |  1   SEG25.S    737 | Code        | 00 |         |    3 | 00/05AC : 69 06 00    |             ADC   #$0006         
+  815 |  1   SEG25.S    738 | Code        | 00 |         |    1 | 00/05AF : 1B          |             TCS                  
+  816 |  1   SEG25.S    739 | Code        | 00 |         |    1 | 00/05B0 : 2B          |             PLD                  
+  817 |  1   SEG25.S    740 | Code        | 00 |         |    1 | 00/05B1 : 6B          |             RTL                  
+  818 |  1   SEG25.S    741 | Empty       | 00 |         |    0 | 00/05B2               |                                  
+  819 |  1   SEG25.S    742 | Global      | 00 |         |    0 | 00/05B2               | L2505B2     ENT                  
+  820 |  1   SEG25.S    743 | Code        | 00 |         |    1 | 00/05B2 : 0B          |             PHD                  
+  821 |  1   SEG25.S    744 | Code        | 00 |         |    1 | 00/05B3 : 3B          |             TSC                  
+  822 |  1   SEG25.S    745 | Code        | 00 |         |    1 | 00/05B4 : 38          |             SEC                  
+  823 |  1   SEG25.S    746 | Code        | 00 |         |    3 | 00/05B5 : E9 FB 00    |             SBC   #$00FB         
+  824 |  1   SEG25.S    747 | Code        | 00 |         |    1 | 00/05B8 : 5B          |             TCD                  
+  825 |  1   SEG25.S    748 | Code        | 00 |         |    3 | 00/05B9 : 69 F4 00    |             ADC   #$00F4         
+  826 |  1   SEG25.S    749 | Code        | 00 |         |    1 | 00/05BC : 1B          |             TCS                  
+  827 |  1   SEG25.S    750 | Code        | 00 |         |    3 | 00/05BD : F4 C8 00    |             PEA   $00C8          
+  828 |  1   SEG25.S    751 | Code        | 00 |         |    3 | 00/05C0 : F4 01 00    |             PEA   $0001          
+  829 |  1   SEG25.S    752 | Code        | 00 |E 1 >>16 |    3 | 00/05C3 : F4 00 00    |             PEA   ^L0200EA       
+  830 |  1   SEG25.S    753 | Code        | 00 |E 2      |    3 | 00/05C6 : F4 EB 00    |             PEA   L0200EA        
+  831 |  1   SEG25.S    754 | Code        | 00 |E 1 >>16 |    3 | 00/05C9 : F4 00 00    |             PEA   ^L033065       
+  832 |  1   SEG25.S    755 | Code        | 00 |E 2      |    3 | 00/05CC : F4 72 30    |             PEA   L033065        
+  833 |  1   SEG25.S    756 | Code        | 00 |         |    3 | 00/05CF : F4 C8 00    |             PEA   $00C8          
+  834 |  1   SEG25.S    757 | Code        | 00 |         |    3 | 00/05D2 : F4 01 00    |             PEA   $0001          
+  835 |  1   SEG25.S    758 | Code        | 00 |E 1 >>16 |    3 | 00/05D5 : F4 00 00    |             PEA   ^L0200D2       
+  836 |  1   SEG25.S    759 | Code        | 00 |E 2      |    3 | 00/05D8 : F4 D3 00    |             PEA   L0200D2        
+  837 |  1   SEG25.S    760 | Code        | 00 |E 1 >>16 |    3 | 00/05DB : F4 00 00    |             PEA   ^L033057       
+  838 |  1   SEG25.S    761 | Code        | 00 |E 2      |    3 | 00/05DE : F4 64 30    |             PEA   L033057        
+  839 |  1   SEG25.S    762 | Code        | 00 |E 1 >>16 |    3 | 00/05E1 : F4 00 00    |             PEA   ^L033050       
+  840 |  1   SEG25.S    763 | Code        | 00 |E 2      |    3 | 00/05E4 : F4 5D 30    |             PEA   L033050        
+  841 |  1   SEG25.S    764 | Code        | 00 |E 3      |    4 | 00/05E7 : 22 F1 0A 24 |             JSL   L240CD7        
+  842 |  1   SEG25.S    765 | Code        | 00 |         |    1 | 00/05EB : A8          |             TAY                  
+  843 |  1   SEG25.S    766 | Code        | 00 |         |    1 | 00/05EC : 3B          |             TSC                  
+  844 |  1   SEG25.S    767 | Code        | 00 |         |    1 | 00/05ED : 18          |             CLC                  
+  845 |  1   SEG25.S    768 | Code        | 00 |         |    3 | 00/05EE : 69 1C 00    |             ADC   #$001C         
+  846 |  1   SEG25.S    769 | Code        | 00 |         |    1 | 00/05F1 : 1B          |             TCS                  
+  847 |  1   SEG25.S    770 | Code        | 00 |         |    1 | 00/05F2 : 98          |             TYA                  
+  848 |  1   SEG25.S    771 | Code        | 00 |E 2      |    3 | 00/05F3 : AD D3 00    |             LDA   L0200D2        
+  849 |  1   SEG25.S    772 | Code        | 00 |E 2      |    3 | 00/05F6 : 8D D5 00    |             STA   L0200D4        
+  850 |  1   SEG25.S    773 | Code        | 00 |E 2      |    3 | 00/05F9 : AD D3 00    |             LDA   L0200D2        
+  851 |  1   SEG25.S    774 | Code        | 00 |E 2      |    3 | 00/05FC : 8D D7 00    |             STA   L0200D6        
+  852 |  1   SEG25.S    775 | Code        | 00 |E 2      |    3 | 00/05FF : AD D3 00    |             LDA   L0200D2        
+  853 |  1   SEG25.S    776 | Code        | 00 |E 2      |    3 | 00/0602 : 8D D9 00    |             STA   L0200D8        
+  854 |  1   SEG25.S    777 | Code        | 00 |E 2      |    3 | 00/0605 : AD EB 00    |             LDA   L0200EA        
+  855 |  1   SEG25.S    778 | Code        | 00 |E 2      |    3 | 00/0608 : 8D ED 00    |             STA   L0200EC        
+  856 |  1   SEG25.S    779 | Code        | 00 |         |    1 | 00/060B : 3B          |             TSC                  
+  857 |  1   SEG25.S    780 | Code        | 00 |         |    1 | 00/060C : 18          |             CLC                  
+  858 |  1   SEG25.S    781 | Code        | 00 |         |    3 | 00/060D : 69 06 00    |             ADC   #$0006         
+  859 |  1   SEG25.S    782 | Code        | 00 |         |    1 | 00/0610 : 1B          |             TCS                  
+  860 |  1   SEG25.S    783 | Code        | 00 |         |    1 | 00/0611 : 2B          |             PLD                  
+  861 |  1   SEG25.S    784 | Code        | 00 |         |    1 | 00/0612 : 6B          |             RTL                  
+  862 |  1   SEG25.S    785 | Empty       | 00 |         |    0 | 00/0613               |                                  
+  863 |  1   SEG25.S    786 | Empty       | 00 |         |    0 | 00/0613               |                                  
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

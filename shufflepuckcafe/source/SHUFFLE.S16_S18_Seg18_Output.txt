@@ -1,0 +1,221 @@
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File         Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1   SEG18.S      1 | Comment     | 11 |         |    0 | 00/0000               | *
+    2 |  1   SEG18.S      2 | Comment     | 11 |         |    0 | 00/0000               | * Shufflepuck Cafe
+    3 |  1   SEG18.S      3 | Comment     | 11 |         |    0 | 00/0000               | *
+    4 |  1   SEG18.S      4 | Comment     | 11 |         |    0 | 00/0000               | * (c) Broderbund Software
+    5 |  1   SEG18.S      5 | Comment     | 11 |         |    0 | 00/0000               | * (s) 2014, Brutal Deluxe Software
+    6 |  1   SEG18.S      6 | Comment     | 11 |         |    0 | 00/0000               | *
+    7 |  1   SEG18.S      7 | Empty       | 11 |         |    0 | 00/0000               |                                  
+    8 |  1   SEG18.S      8 | Directive   | 00 |         |    0 | 00/0000               |             mx    %00            
+    9 |  1   SEG18.S      9 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   10 |  1   SEG18.S     10 | Directive   | 00 |         |    0 | 00/0000               |             rel                  
+   11 |  1   SEG18.S     11 | Directive   | 00 |         |    0 | 00/0000               |             dsk   Seg18.L        
+   12 |  1   SEG18.S     12 | Directive   | 00 |         |    0 | 00/0000               |             lst   off            
+   13 |  1   SEG18.S     13 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   14 |  1   SEG18.S     14 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   15 |  1   SEG18.S     15 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   16 |  1   SEG18.S     16 | Directive   | 00 |         |    0 | 00/0000               |             use   Seg18.E        
+   17 |  2 Seg18.E.s      1 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   18 |  2 Seg18.E.s      2 | Comment     | 00 |         |    0 | 00/0000               | * TFBD generated equates
+   19 |  2 Seg18.E.s      3 | Comment     | 00 |         |    0 | 00/0000               | *    (c) PHC 1992,93
+   20 |  2 Seg18.E.s      4 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   21 |  2 Seg18.E.s      5 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   22 |  2 Seg18.E.s      6 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   23 |  1   SEG18.S     17 | Directive   | 00 |         |    0 | 00/0000               |             use   Seg18.X        
+   24 |  3 Seg18.X.s      1 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   25 |  3 Seg18.X.s      2 | Comment     | 00 |         |    0 | 00/0000               | * TFBD generated externals
+   26 |  3 Seg18.X.s      3 | Comment     | 00 |         |    0 | 00/0000               | *     (c) PHC 1992,93
+   27 |  3 Seg18.X.s      4 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   28 |  3 Seg18.X.s      5 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   29 |  3 Seg18.X.s      6 | External    | 00 |         |    0 | 00/0000               | L0201E7     EXT                  
+   30 |  3 Seg18.X.s      7 | External    | 00 |         |    0 | 00/0000               | L1A130B     EXT                  
+   31 |  3 Seg18.X.s      8 | External    | 00 |         |    0 | 00/0000               | L02010E     EXT                  
+   32 |  3 Seg18.X.s      9 | External    | 00 |         |    0 | 00/0000               | L020110     EXT                  
+   33 |  3 Seg18.X.s     10 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   34 |  1   SEG18.S     18 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   35 |  1   SEG18.S     19 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   36 |  1   SEG18.S     20 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   37 |  1   SEG18.S     21 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Misc.Macs    
+   38 |  1   SEG18.S     22 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Util.Macs    
+   39 |  1   SEG18.S     23 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   40 |  1   SEG18.S     24 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   41 |  1   SEG18.S     25 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   42 |  1   SEG18.S     26 | Global      | 00 |         |    0 | 00/0000               | L180000     ENT                  
+   43 |  1   SEG18.S     27 | Code        | 00 |         |    1 | 00/0000 : 0B          |             PHD                  
+   44 |  1   SEG18.S     28 | Code        | 00 |         |    1 | 00/0001 : 3B          |             TSC                  
+   45 |  1   SEG18.S     29 | Code        | 00 |         |    1 | 00/0002 : 38          |             SEC                  
+   46 |  1   SEG18.S     30 | Code        | 00 |         |    3 | 00/0003 : E9 FB 00    |             SBC   #$00FB         
+   47 |  1   SEG18.S     31 | Code        | 00 |         |    1 | 00/0006 : 5B          |             TCD                  
+   48 |  1   SEG18.S     32 | Code        | 00 |         |    3 | 00/0007 : 69 F0 00    |             ADC   #$00F0         
+   49 |  1   SEG18.S     33 | Code        | 00 |         |    1 | 00/000A : 1B          |             TCS                  
+   50 |  1   SEG18.S     34 | Code        | 00 |         |    1 | 00/000B : DA          |             PHX                  
+   51 |  1   SEG18.S     35 | Code        | 00 |         |    1 | 00/000C : 48          |             PHA                  
+   52 |  1   SEG18.S     36 | Macro       | 00 |         |    0 | 00/000D               |             _GetTick                 
+   54 |  1   SEG18.S     36 | Code        | 00 |         |    3 | 00/000D : A2 03 25    |             LDX   #$2503         ; load tool call #
+   55 |  1   SEG18.S     36 | Code        | 00 |         |    4 | 00/0010 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+   56 |  1   SEG18.S     37 | Comment     | 00 |         |    0 | 00/0014               | * BCS L180019
+   57 |  1   SEG18.S     38 | Comment     | 00 |         |    0 | 00/0014               | * LDA #$0000
+   58 |  1   SEG18.S     39 | Comment     | 00 |         |    0 | 00/0014               | *L180019 STAL L0201E7
+   59 |  1   SEG18.S     40 | Code        | 00 |         |    1 | 00/0014 : 68          |             PLA                  
+   60 |  1   SEG18.S     41 | Code        | 00 |         |    1 | 00/0015 : FA          |             PLX                  
+   61 |  1   SEG18.S     42 | Code        | 00 |         |    2 | 00/0016 : 86 F4       |             STX   $F4            
+   62 |  1   SEG18.S     43 | Code        | 00 |         |    2 | 00/0018 : 85 F2       |             STA   $F2            
+   63 |  1   SEG18.S     44 | Code        | 00 |         |    1 | 00/001A : DA          | L180023     PHX                  
+   64 |  1   SEG18.S     45 | Code        | 00 |         |    1 | 00/001B : 48          |             PHA                  
+   65 |  1   SEG18.S     46 | Macro       | 00 |         |    0 | 00/001C               |             _GetTick                 
+   67 |  1   SEG18.S     46 | Code        | 00 |         |    3 | 00/001C : A2 03 25    |             LDX   #$2503         ; load tool call #
+   68 |  1   SEG18.S     46 | Code        | 00 |         |    4 | 00/001F : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+   69 |  1   SEG18.S     47 | Comment     | 00 |         |    0 | 00/0023               | * BCS L180031
+   70 |  1   SEG18.S     48 | Comment     | 00 |         |    0 | 00/0023               | * LDA #$0000
+   71 |  1   SEG18.S     49 | Comment     | 00 |         |    0 | 00/0023               | *L180031 STAL L0201E7
+   72 |  1   SEG18.S     50 | Code        | 00 |         |    2 | 00/0023 : A6 F4       |             LDX   $F4            
+   73 |  1   SEG18.S     51 | Code        | 00 |         |    2 | 00/0025 : A5 F2       |             LDA   $F2            
+   74 |  1   SEG18.S     52 | Code        | 00 |E 3      |    4 | 00/0027 : 22 E1 12 1A |             JSL   L1A130B        
+   75 |  1   SEG18.S     53 | Code        | 00 |         |    2 | 00/002B : D0 02       |             BNE   L180041        
+   76 |  1   SEG18.S     54 | Code        | 00 |         |    2 | 00/002D : 80 EB       |             BRA   L180023        
+   77 |  1   SEG18.S     55 | Code        | 00 |         |    1 | 00/002F : 3B          | L180041     TSC                  
+   78 |  1   SEG18.S     56 | Code        | 00 |         |    1 | 00/0030 : 18          |             CLC                  
+   79 |  1   SEG18.S     57 | Code        | 00 |         |    3 | 00/0031 : 69 0A 00    |             ADC   #$000A         
+   80 |  1   SEG18.S     58 | Code        | 00 |         |    1 | 00/0034 : 1B          |             TCS                  
+   81 |  1   SEG18.S     59 | Code        | 00 |         |    1 | 00/0035 : 2B          |             PLD                  
+   82 |  1   SEG18.S     60 | Code        | 00 |         |    1 | 00/0036 : 6B          |             RTL                  
+   83 |  1   SEG18.S     61 | Empty       | 00 |         |    0 | 00/0037               |                                  
+   84 |  1   SEG18.S     62 | Code        | 00 |         |    1 | 00/0037 : 0B          |             PHD                  
+   85 |  1   SEG18.S     63 | Code        | 00 |         |    1 | 00/0038 : 3B          |             TSC                  
+   86 |  1   SEG18.S     64 | Code        | 00 |         |    1 | 00/0039 : 38          |             SEC                  
+   87 |  1   SEG18.S     65 | Code        | 00 |         |    3 | 00/003A : E9 F9 00    |             SBC   #$00F9         
+   88 |  1   SEG18.S     66 | Code        | 00 |         |    1 | 00/003D : 5B          |             TCD                  
+   89 |  1   SEG18.S     67 | Code        | 00 |         |    3 | 00/003E : 69 F2 00    |             ADC   #$00F2         
+   90 |  1   SEG18.S     68 | Code        | 00 |         |    1 | 00/0041 : 1B          |             TCS                  
+   91 |  1   SEG18.S     69 | Code        | 00 |         |    2 | 00/0042 : A5 FF       | L180054     LDA   $FF            
+   92 |  1   SEG18.S     70 | Code        | 00 |         |    1 | 00/0044 : 38          |             SEC                  
+   93 |  1   SEG18.S     71 | Code        | 00 |         |    3 | 00/0045 : E9 00 00    |             SBC   #$0000         
+   94 |  1   SEG18.S     72 | Code        | 00 |         |    2 | 00/0048 : F0 0F       |             BEQ   L18006B        
+   95 |  1   SEG18.S     73 | Code        | 00 |         |    2 | 00/004A : 70 03       |             BVS   L180061        
+   96 |  1   SEG18.S     74 | Code        | 00 |         |    3 | 00/004C : 49 00 80    |             EOR   #$8000         
+   97 |  1   SEG18.S     75 | Code        | 00 |         |    2 | 00/004F : 10 08       | L180061     BPL   L18006B        
+   98 |  1   SEG18.S     76 | Code        | 00 |         |    2 | 00/0051 : C6 FF       |             DEC   $FF            
+   99 |  1   SEG18.S     77 | Code        | 00 |  3      |    4 | 00/0053 : 22 00 00 00 |             JSL   L180000        
+  100 |  1   SEG18.S     78 | Code        | 00 |         |    2 | 00/0057 : 80 E9       |             BRA   L180054        
+  101 |  1   SEG18.S     79 | Code        | 00 |         |    1 | 00/0059 : 3B          | L18006B     TSC                  
+  102 |  1   SEG18.S     80 | Code        | 00 |         |    1 | 00/005A : 18          |             CLC                  
+  103 |  1   SEG18.S     81 | Code        | 00 |         |    3 | 00/005B : 69 06 00    |             ADC   #$0006         
+  104 |  1   SEG18.S     82 | Code        | 00 |         |    1 | 00/005E : 1B          |             TCS                  
+  105 |  1   SEG18.S     83 | Code        | 00 |         |    1 | 00/005F : 2B          |             PLD                  
+  106 |  1   SEG18.S     84 | Code        | 00 |         |    1 | 00/0060 : 6B          |             RTL                  
+  107 |  1   SEG18.S     85 | Empty       | 00 |         |    0 | 00/0061               |                                  
+  108 |  1   SEG18.S     86 | Global      | 00 |         |    0 | 00/0061               | L180073     ENT                  
+  109 |  1   SEG18.S     87 | Code        | 00 |         |    1 | 00/0061 : 0B          |             PHD                  
+  110 |  1   SEG18.S     88 | Code        | 00 |         |    1 | 00/0062 : 3B          |             TSC                  
+  111 |  1   SEG18.S     89 | Code        | 00 |         |    1 | 00/0063 : 38          |             SEC                  
+  112 |  1   SEG18.S     90 | Code        | 00 |         |    3 | 00/0064 : E9 F9 00    |             SBC   #$00F9         
+  113 |  1   SEG18.S     91 | Code        | 00 |         |    1 | 00/0067 : 5B          |             TCD                  
+  114 |  1   SEG18.S     92 | Code        | 00 |         |    3 | 00/0068 : 69 EE 00    |             ADC   #$00EE         
+  115 |  1   SEG18.S     93 | Code        | 00 |         |    1 | 00/006B : 1B          |             TCS                  
+  116 |  1   SEG18.S     94 | Code        | 00 |         |    1 | 00/006C : DA          |             PHX                  
+  117 |  1   SEG18.S     95 | Code        | 00 |         |    1 | 00/006D : 48          |             PHA                  
+  118 |  1   SEG18.S     96 | Macro       | 00 |         |    0 | 00/006E               |             _GetTick                 
+  120 |  1   SEG18.S     96 | Code        | 00 |         |    3 | 00/006E : A2 03 25    |             LDX   #$2503         ; load tool call #
+  121 |  1   SEG18.S     96 | Code        | 00 |         |    4 | 00/0071 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  122 |  1   SEG18.S     97 | Comment     | 00 |         |    0 | 00/0075               | * BCS L18008C
+  123 |  1   SEG18.S     98 | Comment     | 00 |         |    0 | 00/0075               | * LDA #$0000
+  124 |  1   SEG18.S     99 | Comment     | 00 |         |    0 | 00/0075               | *L18008C STAL L0201E7
+  125 |  1   SEG18.S    100 | Code        | 00 |         |    1 | 00/0075 : 68          |             PLA                  
+  126 |  1   SEG18.S    101 | Code        | 00 |         |    1 | 00/0076 : FA          |             PLX                  
+  127 |  1   SEG18.S    102 | Code        | 00 |         |    2 | 00/0077 : 86 F2       |             STX   $F2            
+  128 |  1   SEG18.S    103 | Code        | 00 |         |    2 | 00/0079 : 85 F0       |             STA   $F0            
+  129 |  1   SEG18.S    104 | Code        | 00 |         |    2 | 00/007B : A5 FF       | L180096     LDA   $FF            
+  130 |  1   SEG18.S    105 | Code        | 00 |         |    3 | 00/007D : A2 00 00    |             LDX   #$0000         
+  131 |  1   SEG18.S    106 | Code        | 00 |         |    1 | 00/0080 : A8          |             TAY                  
+  132 |  1   SEG18.S    107 | Code        | 00 |         |    2 | 00/0081 : 10 01       |             BPL   L18009F        
+  133 |  1   SEG18.S    108 | Code        | 00 |         |    1 | 00/0083 : CA          |             DEX                  
+  134 |  1   SEG18.S    109 | Code        | 00 |         |    1 | 00/0084 : DA          | L18009F     PHX                  
+  135 |  1   SEG18.S    110 | Code        | 00 |         |    1 | 00/0085 : 48          |             PHA                  
+  136 |  1   SEG18.S    111 | Code        | 00 |         |    2 | 00/0086 : A6 F2       |             LDX   $F2            
+  137 |  1   SEG18.S    112 | Code        | 00 |         |    2 | 00/0088 : A5 F0       |             LDA   $F0            
+  138 |  1   SEG18.S    113 | Code        | 00 |         |    1 | 00/008A : 38          |             SEC                  
+  139 |  1   SEG18.S    114 | Code        | 00 |E 2      |    3 | 00/008B : ED 0F 01    |             SBC   L02010E        
+  140 |  1   SEG18.S    115 | Code        | 00 |         |    1 | 00/008E : 48          |             PHA                  
+  141 |  1   SEG18.S    116 | Code        | 00 |         |    1 | 00/008F : 8A          |             TXA                  
+  142 |  1   SEG18.S    117 | Code        | 00 |E 2      |    3 | 00/0090 : ED 11 01    |             SBC   L020110        
+  143 |  1   SEG18.S    118 | Code        | 00 |         |    1 | 00/0093 : AA          |             TAX                  
+  144 |  1   SEG18.S    119 | Code        | 00 |         |    1 | 00/0094 : 68          |             PLA                  
+  145 |  1   SEG18.S    120 | Code        | 00 |E 3      |    4 | 00/0095 : 22 E1 12 1A |             JSL   L1A130B        
+  146 |  1   SEG18.S    121 | Code        | 00 |         |    2 | 00/0099 : F0 18       |             BEQ   L1800D7        
+  147 |  1   SEG18.S    122 | Code        | 00 |         |    2 | 00/009B : 70 03       |             BVS   L1800BB        
+  148 |  1   SEG18.S    123 | Code        | 00 |         |    3 | 00/009D : 49 00 80    |             EOR   #$8000         
+  149 |  1   SEG18.S    124 | Code        | 00 |         |    2 | 00/00A0 : 10 11       | L1800BB     BPL   L1800D7        
+  150 |  1   SEG18.S    125 | Code        | 00 |         |    1 | 00/00A2 : DA          |             PHX                  
+  151 |  1   SEG18.S    126 | Code        | 00 |         |    1 | 00/00A3 : 48          |             PHA                  
+  152 |  1   SEG18.S    127 | Macro       | 00 |         |    0 | 00/00A4               |             _GetTick                 
+  154 |  1   SEG18.S    127 | Code        | 00 |         |    3 | 00/00A4 : A2 03 25    |             LDX   #$2503         ; load tool call #
+  155 |  1   SEG18.S    127 | Code        | 00 |         |    4 | 00/00A7 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  156 |  1   SEG18.S    128 | Comment     | 00 |         |    0 | 00/00AB               | * BCS L1800CB
+  157 |  1   SEG18.S    129 | Comment     | 00 |         |    0 | 00/00AB               | * LDA #$0000
+  158 |  1   SEG18.S    130 | Comment     | 00 |         |    0 | 00/00AB               | *L1800CB STAL L0201E7
+  159 |  1   SEG18.S    131 | Code        | 00 |         |    1 | 00/00AB : 68          |             PLA                  
+  160 |  1   SEG18.S    132 | Code        | 00 |         |    1 | 00/00AC : FA          |             PLX                  
+  161 |  1   SEG18.S    133 | Code        | 00 |         |    2 | 00/00AD : 86 F2       |             STX   $F2            
+  162 |  1   SEG18.S    134 | Code        | 00 |         |    2 | 00/00AF : 85 F0       |             STA   $F0            
+  163 |  1   SEG18.S    135 | Code        | 00 |         |    2 | 00/00B1 : 80 C8       |             BRA   L180096        
+  164 |  1   SEG18.S    136 | Code        | 00 |         |    2 | 00/00B3 : A6 F2       | L1800D7     LDX   $F2            
+  165 |  1   SEG18.S    137 | Code        | 00 |         |    2 | 00/00B5 : A5 F0       |             LDA   $F0            
+  166 |  1   SEG18.S    138 | Code        | 00 |E 2      |    3 | 00/00B7 : 8E 11 01    |             STX   L020110        
+  167 |  1   SEG18.S    139 | Code        | 00 |E 2      |    3 | 00/00BA : 8D 0F 01    |             STA   L02010E        
+  168 |  1   SEG18.S    140 | Code        | 00 |         |    1 | 00/00BD : 3B          |             TSC                  
+  169 |  1   SEG18.S    141 | Code        | 00 |         |    1 | 00/00BE : 18          |             CLC                  
+  170 |  1   SEG18.S    142 | Code        | 00 |         |    3 | 00/00BF : 69 0A 00    |             ADC   #$000A         
+  171 |  1   SEG18.S    143 | Code        | 00 |         |    1 | 00/00C2 : 1B          |             TCS                  
+  172 |  1   SEG18.S    144 | Code        | 00 |         |    1 | 00/00C3 : 2B          |             PLD                  
+  173 |  1   SEG18.S    145 | Code        | 00 |         |    1 | 00/00C4 : 6B          |             RTL                  
+  174 |  1   SEG18.S    146 | Empty       | 00 |         |    0 | 00/00C5               |                                  
+  175 |  1   SEG18.S    147 | Code        | 00 |         |    1 | 00/00C5 : 0B          |             PHD                  
+  176 |  1   SEG18.S    148 | Code        | 00 |         |    1 | 00/00C6 : 3B          |             TSC                  
+  177 |  1   SEG18.S    149 | Code        | 00 |         |    1 | 00/00C7 : 38          |             SEC                  
+  178 |  1   SEG18.S    150 | Code        | 00 |         |    3 | 00/00C8 : E9 EB 00    |             SBC   #$00EB         
+  179 |  1   SEG18.S    151 | Code        | 00 |         |    1 | 00/00CB : 5B          |             TCD                  
+  180 |  1   SEG18.S    152 | Code        | 00 |         |    3 | 00/00CC : 69 E2 00    |             ADC   #$00E2         
+  181 |  1   SEG18.S    153 | Code        | 00 |         |    1 | 00/00CF : 1B          |             TCS                  
+  182 |  1   SEG18.S    154 | Code        | 00 |         |    2 | 00/00D0 : 64 E4       |             STZ   $E4            
+  183 |  1   SEG18.S    155 | Code        | 00 |         |    2 | 00/00D2 : A5 F3       |             LDA   $F3            
+  184 |  1   SEG18.S    156 | Code        | 00 |         |    1 | 00/00D4 : 38          |             SEC                  
+  185 |  1   SEG18.S    157 | Code        | 00 |         |    2 | 00/00D5 : E5 FF       |             SBC   $FF            
+  186 |  1   SEG18.S    158 | Code        | 00 |         |    2 | 00/00D7 : 70 03       |             BVS   L180100        
+  187 |  1   SEG18.S    159 | Code        | 00 |         |    3 | 00/00D9 : 49 00 80    |             EOR   #$8000         
+  188 |  1   SEG18.S    160 | Code        | 00 |         |    2 | 00/00DC : 30 2D       | L180100     BMI   L18012F        
+  189 |  1   SEG18.S    161 | Code        | 00 |         |    2 | 00/00DE : A5 F7       |             LDA   $F7            
+  190 |  1   SEG18.S    162 | Code        | 00 |         |    1 | 00/00E0 : 38          |             SEC                  
+  191 |  1   SEG18.S    163 | Code        | 00 |         |    2 | 00/00E1 : E5 FB       |             SBC   $FB            
+  192 |  1   SEG18.S    164 | Code        | 00 |         |    2 | 00/00E3 : F0 26       |             BEQ   L18012F        
+  193 |  1   SEG18.S    165 | Code        | 00 |         |    2 | 00/00E5 : 70 03       |             BVS   L18010E        
+  194 |  1   SEG18.S    166 | Code        | 00 |         |    3 | 00/00E7 : 49 00 80    |             EOR   #$8000         
+  195 |  1   SEG18.S    167 | Code        | 00 |         |    2 | 00/00EA : 10 1F       | L18010E     BPL   L18012F        
+  196 |  1   SEG18.S    168 | Code        | 00 |         |    2 | 00/00EC : A5 F5       |             LDA   $F5            
+  197 |  1   SEG18.S    169 | Code        | 00 |         |    1 | 00/00EE : 38          |             SEC                  
+  198 |  1   SEG18.S    170 | Code        | 00 |         |    2 | 00/00EF : E5 F9       |             SBC   $F9            
+  199 |  1   SEG18.S    171 | Code        | 00 |         |    2 | 00/00F1 : F0 18       |             BEQ   L18012F        
+  200 |  1   SEG18.S    172 | Code        | 00 |         |    2 | 00/00F3 : 70 03       |             BVS   L18011C        
+  201 |  1   SEG18.S    173 | Code        | 00 |         |    3 | 00/00F5 : 49 00 80    |             EOR   #$8000         
+  202 |  1   SEG18.S    174 | Code        | 00 |         |    2 | 00/00F8 : 10 11       | L18011C     BPL   L18012F        
+  203 |  1   SEG18.S    175 | Code        | 00 |         |    2 | 00/00FA : A5 F1       |             LDA   $F1            
+  204 |  1   SEG18.S    176 | Code        | 00 |         |    1 | 00/00FC : 38          |             SEC                  
+  205 |  1   SEG18.S    177 | Code        | 00 |         |    2 | 00/00FD : E5 FD       |             SBC   $FD            
+  206 |  1   SEG18.S    178 | Code        | 00 |         |    2 | 00/00FF : 70 03       |             BVS   L180128        
+  207 |  1   SEG18.S    179 | Code        | 00 |         |    3 | 00/0101 : 49 00 80    |             EOR   #$8000         
+  208 |  1   SEG18.S    180 | Code        | 00 |         |    2 | 00/0104 : 30 05       | L180128     BMI   L18012F        
+  209 |  1   SEG18.S    181 | Code        | 00 |         |    3 | 00/0106 : A9 01 00    |             LDA   #$0001         
+  210 |  1   SEG18.S    182 | Code        | 00 |         |    2 | 00/0109 : 85 E4       |             STA   $E4            
+  211 |  1   SEG18.S    183 | Code        | 00 |         |    2 | 00/010B : A5 E4       | L18012F     LDA   $E4            
+  212 |  1   SEG18.S    184 | Code        | 00 |         |    1 | 00/010D : A8          |             TAY                  
+  213 |  1   SEG18.S    185 | Code        | 00 |         |    1 | 00/010E : 3B          |             TSC                  
+  214 |  1   SEG18.S    186 | Code        | 00 |         |    1 | 00/010F : 18          |             CLC                  
+  215 |  1   SEG18.S    187 | Code        | 00 |         |    3 | 00/0110 : 69 08 00    |             ADC   #$0008         
+  216 |  1   SEG18.S    188 | Code        | 00 |         |    1 | 00/0113 : 1B          |             TCS                  
+  217 |  1   SEG18.S    189 | Code        | 00 |         |    1 | 00/0114 : 98          |             TYA                  
+  218 |  1   SEG18.S    190 | Code        | 00 |         |    1 | 00/0115 : 2B          |             PLD                  
+  219 |  1   SEG18.S    191 | Code        | 00 |         |    1 | 00/0116 : 6B          |             RTL                  
+  220 |  1   SEG18.S    192 | Empty       | 00 |         |    0 | 00/0117               |                                  
+  221 |  1   SEG18.S    193 | Empty       | 00 |         |    0 | 00/0117               |                                  
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

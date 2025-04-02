@@ -1,0 +1,470 @@
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File         Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1   SEG01.S      1 | Comment     | 11 |         |    0 | 00/0000               | *
+    2 |  1   SEG01.S      2 | Comment     | 11 |         |    0 | 00/0000               | * Shufflepuck Cafe
+    3 |  1   SEG01.S      3 | Comment     | 11 |         |    0 | 00/0000               | *
+    4 |  1   SEG01.S      4 | Comment     | 11 |         |    0 | 00/0000               | * (c) Broderbund Software
+    5 |  1   SEG01.S      5 | Comment     | 11 |         |    0 | 00/0000               | * (s) 2014, Brutal Deluxe Software
+    6 |  1   SEG01.S      6 | Comment     | 11 |         |    0 | 00/0000               | *
+    7 |  1   SEG01.S      7 | Empty       | 11 |         |    0 | 00/0000               |                                  
+    8 |  1   SEG01.S      8 | Directive   | 00 |         |    0 | 00/0000               |             mx    %00            
+    9 |  1   SEG01.S      9 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   10 |  1   SEG01.S     10 | Directive   | 00 |         |    0 | 00/0000               |             rel                  
+   11 |  1   SEG01.S     11 | Directive   | 00 |         |    0 | 00/0000               |             dsk   Seg01.L        
+   12 |  1   SEG01.S     12 | Directive   | 00 |         |    0 | 00/0000               |             lst   off            
+   13 |  1   SEG01.S     13 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   14 |  1   SEG01.S     14 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   15 |  1   SEG01.S     15 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   16 |  1   SEG01.S     16 | Directive   | 00 |         |    0 | 00/0000               |             use   Seg01.E        
+   17 |  2 Seg01.E.s      1 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   18 |  2 Seg01.E.s      2 | Comment     | 00 |         |    0 | 00/0000               | * TFBD generated equates
+   19 |  2 Seg01.E.s      3 | Comment     | 00 |         |    0 | 00/0000               | *    (c) PHC 1992,93
+   20 |  2 Seg01.E.s      4 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   21 |  2 Seg01.E.s      5 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   22 |  2 Seg01.E.s      6 | Equivalence | 00 |         |    0 | 00/0000               | GSOS        EQU   $E100A8        
+   23 |  2 Seg01.E.s      7 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   24 |  1   SEG01.S     17 | Directive   | 00 |         |    0 | 00/0000               |             use   Seg01.X        
+   25 |  3 Seg01.X.s      1 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   26 |  3 Seg01.X.s      2 | Comment     | 00 |         |    0 | 00/0000               | * TFBD generated externals
+   27 |  3 Seg01.X.s      3 | Comment     | 00 |         |    0 | 00/0000               | *     (c) PHC 1992,93
+   28 |  3 Seg01.X.s      4 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   29 |  3 Seg01.X.s      5 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   30 |  3 Seg01.X.s      6 | External    | 00 |         |    0 | 00/0000               | theVBL      EXT                  
+   31 |  3 Seg01.X.s      7 | External    | 00 |         |    0 | 00/0000               | L02000A     EXT                  
+   32 |  3 Seg01.X.s      8 | External    | 00 |         |    0 | 00/0000               | L030008     EXT                  
+   33 |  3 Seg01.X.s      9 | External    | 00 |         |    0 | 00/0000               | L0201E5     EXT                  
+   34 |  3 Seg01.X.s     10 | External    | 00 |         |    0 | 00/0000               | L0201E7     EXT                  
+   35 |  3 Seg01.X.s     11 | External    | 00 |         |    0 | 00/0000               | L1A00D4     EXT                  
+   36 |  3 Seg01.X.s     12 | External    | 00 |         |    0 | 00/0000               | L02C036     EXT                  
+   37 |  3 Seg01.X.s     13 | External    | 00 |         |    0 | 00/0000               | L02C034     EXT                  
+   38 |  3 Seg01.X.s     14 | External    | 00 |         |    0 | 00/0000               | L020008     EXT                  
+   39 |  3 Seg01.X.s     15 | External    | 00 |         |    0 | 00/0000               | L020006     EXT                  
+   40 |  3 Seg01.X.s     16 | External    | 00 |         |    0 | 00/0000               | L0201E3     EXT                  
+   41 |  3 Seg01.X.s     17 | External    | 00 |         |    0 | 00/0000               | L03340F     EXT                  
+   42 |  3 Seg01.X.s     18 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   43 |  1   SEG01.S     18 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   44 |  1   SEG01.S     19 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   45 |  1   SEG01.S     20 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   46 |  1   SEG01.S     21 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Ctl.Macs     
+   47 |  1   SEG01.S     22 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Desk.Macs    
+   48 |  1   SEG01.S     23 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Dialog.Macs  
+   49 |  1   SEG01.S     24 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Event.Macs   
+   50 |  1   SEG01.S     25 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Line.Macs    
+   51 |  1   SEG01.S     26 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Locator.Macs 
+   52 |  1   SEG01.S     27 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Mem.Macs     
+   53 |  1   SEG01.S     28 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Menu.Macs    
+   54 |  1   SEG01.S     29 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Misc.Macs    
+   55 |  1   SEG01.S     30 | Directive   | 00 |         |    0 | 00/0000               |             use   4/QD.Macs      
+   56 |  1   SEG01.S     31 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Sound.Macs   
+   57 |  1   SEG01.S     32 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Util.Macs    
+   58 |  1   SEG01.S     33 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Window.Macs  
+   59 |  1   SEG01.S     34 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   60 |  1   SEG01.S     35 | Comment     | 00 |         |    0 | 00/0000               | *-----------
+   61 |  1   SEG01.S     36 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   62 |  1   SEG01.S     37 | Comment     | 00 |         |    0 | 00/0000               | * BRA L010005
+   63 |  1   SEG01.S     38 | Comment     | 00 |         |    0 | 00/0000               | * NOP
+   64 |  1   SEG01.S     39 | Comment     | 00 |         |    0 | 00/0000               | * NOP
+   65 |  1   SEG01.S     40 | Comment     | 00 |         |    0 | 00/0000               | * NOP
+   66 |  1   SEG01.S     41 | Code        | 00 |E 3      |    4 | 00/0000 : 8F EA 01 02 | L010005     STAL  L0201E5        
+   67 |  1   SEG01.S     42 | Code        | 00 |         |    1 | 00/0004 : 0B          |             PHD                  
+   68 |  1   SEG01.S     43 | Code        | 00 |         |    1 | 00/0005 : 3B          |             TSC                  
+   69 |  1   SEG01.S     44 | Code        | 00 |         |    1 | 00/0006 : 38          |             SEC                  
+   70 |  1   SEG01.S     45 | Code        | 00 |         |    3 | 00/0007 : E9 FB 00    |             SBC   #$00FB         
+   71 |  1   SEG01.S     46 | Code        | 00 |         |    1 | 00/000A : 5B          |             TCD                  
+   72 |  1   SEG01.S     47 | Code        | 00 |         |    3 | 00/000B : 69 F0 00    |             ADC   #$00F0         
+   73 |  1   SEG01.S     48 | Code        | 00 |         |    1 | 00/000E : 1B          |             TCS                  
+   74 |  1   SEG01.S     49 | Empty       | 00 |         |    0 | 00/000F               |                                  
+   75 |  1   SEG01.S     50 | Code        | 10 |         |    2 | 00/000F : E2 20       |             SEP   #$20           
+   76 |  1   SEG01.S     51 | Code        | 10 |E 1 >>16 |    2 | 00/0011 : A9 00       |             LDA   #^L02000A      
+   77 |  1   SEG01.S     52 | Code        | 10 |         |    1 | 00/0013 : 48          |             PHA                  
+   78 |  1   SEG01.S     53 | Code        | 10 |         |    1 | 00/0014 : AB          |             PLB                  
+   79 |  1   SEG01.S     54 | Empty       | 10 |         |    0 | 00/0015               |                                  
+   80 |  1   SEG01.S     55 | Comment     | 10 |         |    0 | 00/0015               | * REP #$20
+   81 |  1   SEG01.S     56 | Comment     | 10 |         |    0 | 00/0015               | * LDX #$0000
+   82 |  1   SEG01.S     57 | Comment     | 10 |         |    0 | 00/0015               | * LDA #$C036
+   83 |  1   SEG01.S     58 | Comment     | 10 |         |    0 | 00/0015               | * STA $F6
+   84 |  1   SEG01.S     59 | Comment     | 10 |         |    0 | 00/0015               | * STX $F8
+   85 |  1   SEG01.S     60 | Comment     | 10 |         |    0 | 00/0015               | * LDA [$F6]
+   86 |  1   SEG01.S     61 | Comment     | 10 |         |    0 | 00/0015               | * AND #$00FF
+   87 |  1   SEG01.S     62 | Comment     | 10 |         |    0 | 00/0015               | * AND #$0080
+   88 |  1   SEG01.S     63 | Comment     | 10 |         |    0 | 00/0015               | * SEP #$20
+   89 |  1   SEG01.S     64 | Comment     | 10 |         |    0 | 00/0015               | * STA L02C036
+   90 |  1   SEG01.S     65 | Comment     | 10 |         |    0 | 00/0015               | * REP #$20
+   91 |  1   SEG01.S     66 | Comment     | 10 |         |    0 | 00/0015               | * LDX #$0000
+   92 |  1   SEG01.S     67 | Comment     | 10 |         |    0 | 00/0015               | * LDA #$C036
+   93 |  1   SEG01.S     68 | Comment     | 10 |         |    0 | 00/0015               | * STA $F6
+   94 |  1   SEG01.S     69 | Comment     | 10 |         |    0 | 00/0015               | * STX $F8
+   95 |  1   SEG01.S     70 | Comment     | 10 |         |    0 | 00/0015               | * LDA [$F6]
+   96 |  1   SEG01.S     71 | Comment     | 10 |         |    0 | 00/0015               | * AND #$00FF
+   97 |  1   SEG01.S     72 | Comment     | 10 |         |    0 | 00/0015               | * ORA #$0080
+   98 |  1   SEG01.S     73 | Comment     | 10 |         |    0 | 00/0015               | * SEP #$20
+   99 |  1   SEG01.S     74 | Comment     | 10 |         |    0 | 00/0015               | * STA [$F6]
+  100 |  1   SEG01.S     75 | Comment     | 10 |         |    0 | 00/0015               | * REP #$20
+  101 |  1   SEG01.S     76 | Empty       | 10 |         |    0 | 00/0015               |                                  
+  102 |  1   SEG01.S     77 | Code        | 10 |         |    4 | 00/0015 : AF 36 C0 00 |             ldal  $c036          
+  103 |  1   SEG01.S     78 | Code        | 10 |E 2      |    3 | 00/0019 : 8D 0C 00    |             sta   L02C036        
+  104 |  1   SEG01.S     79 | Code        | 10 |         |    2 | 00/001C : 09 80       |             ora   #$80           
+  105 |  1   SEG01.S     80 | Code        | 10 |         |    4 | 00/001E : 8F 36 C0 00 |             stal  $c036          
+  106 |  1   SEG01.S     81 | Empty       | 10 |         |    0 | 00/0022               |                                  
+  107 |  1   SEG01.S     82 | Code        | 10 |         |    4 | 00/0022 : AF 34 C0 00 |             ldal  $c034          
+  108 |  1   SEG01.S     83 | Code        | 10 |E 2      |    3 | 00/0026 : 8D 0D 00    |             sta   L02C034        
+  109 |  1   SEG01.S     84 | Code        | 10 |         |    2 | 00/0029 : 29 F0       |             and   #$f0           
+  110 |  1   SEG01.S     85 | Code        | 10 |         |    4 | 00/002B : 8F 34 C0 00 |             stal  $c034          
+  111 |  1   SEG01.S     86 | Code        | 00 |         |    2 | 00/002F : C2 20       |             rep   #$20           
+  112 |  1   SEG01.S     87 | Empty       | 00 |         |    0 | 00/0031               |                                  
+  113 |  1   SEG01.S     88 | Code        | 00 |         |    1 | 00/0031 : DA          |             PHX                  
+  114 |  1   SEG01.S     89 | Code        | 00 |         |    1 | 00/0032 : 48          |             PHA                  
+  115 |  1   SEG01.S     90 | Code        | 00 |         |    3 | 00/0033 : F4 00 00    |             PEA   $0000          
+  116 |  1   SEG01.S     91 | Code        | 00 |         |    3 | 00/0036 : F4 00 15    |             PEA   $1500          
+  117 |  1   SEG01.S     92 | Code        | 00 |E 2      |    3 | 00/0039 : AD EA 01    |             LDA   L0201E5        
+  118 |  1   SEG01.S     93 | Code        | 00 |         |    1 | 00/003C : 48          |             PHA                  
+  119 |  1   SEG01.S     94 | Code        | 00 |         |    3 | 00/003D : F4 11 C0    |             PEA   $C011          
+  120 |  1   SEG01.S     95 | Code        | 00 |         |    3 | 00/0040 : F4 00 00    |             PEA   $0000          
+  121 |  1   SEG01.S     96 | Code        | 00 |         |    3 | 00/0043 : F4 00 00    |             PEA   $0000          
+  122 |  1   SEG01.S     97 | Macro       | 00 |         |    0 | 00/0046               |             _NewHandle                 
+  124 |  1   SEG01.S     97 | Code        | 00 |         |    3 | 00/0046 : A2 02 09    |             LDX   #$902          ; load tool call #
+  125 |  1   SEG01.S     97 | Code        | 00 |         |    4 | 00/0049 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  126 |  1   SEG01.S     98 | Comment     | 00 |         |    0 | 00/004D               | * BCS L01006E
+  127 |  1   SEG01.S     99 | Comment     | 00 |         |    0 | 00/004D               | * LDA #$0000
+  128 |  1   SEG01.S    100 | Comment     | 00 |         |    0 | 00/004D               | *L01006E STAL L0201E7
+  129 |  1   SEG01.S    101 | Code        | 00 |         |    1 | 00/004D : 68          |             PLA                  
+  130 |  1   SEG01.S    102 | Code        | 00 |         |    1 | 00/004E : FA          |             PLX                  
+  131 |  1   SEG01.S    103 | Code        | 00 |         |    2 | 00/004F : 86 F4       |             STX   $F4            
+  132 |  1   SEG01.S    104 | Code        | 00 |         |    2 | 00/0051 : 85 F2       |             STA   $F2            
+  133 |  1   SEG01.S    105 | Comment     | 00 |         |    0 | 00/0053               | * LDX $F4
+  134 |  1   SEG01.S    106 | Code        | 00 |         |    2 | 00/0053 : A5 F2       |             LDA   $F2            
+  135 |  1   SEG01.S    107 | Comment     | 00 |         |    0 | 00/0055               | * STX $F6
+  136 |  1   SEG01.S    108 | Comment     | 00 |         |    0 | 00/0055               | * ORA $F6
+  137 |  1   SEG01.S    109 | Code        | 00 |         |    2 | 00/0055 : 05 F4       |             ORA   $F4            
+  138 |  1   SEG01.S    110 | Code        | 00 |         |    2 | 00/0057 : D0 03       |             BNE   L010085        
+  139 |  1   SEG01.S    111 | Code        | 00 |         |    3 | 00/0059 : 82 E3 00    |             BRL   L0101E1        
+  140 |  1   SEG01.S    112 | Code        | 00 |         |    3 | 00/005C : A0 02 00    | L010085     LDY   #$0002         
+  141 |  1   SEG01.S    113 | Code        | 00 |         |    2 | 00/005F : B7 F2       |             LDA   [$F2],Y        
+  142 |  1   SEG01.S    114 | Code        | 00 |         |    1 | 00/0061 : AA          |             TAX                  
+  143 |  1   SEG01.S    115 | Code        | 00 |         |    2 | 00/0062 : A7 F2       |             LDA   [$F2]          
+  144 |  1   SEG01.S    116 | Code        | 00 |E 2      |    3 | 00/0064 : 8E 08 00    |             STX   L020008        
+  145 |  1   SEG01.S    117 | Code        | 00 |E 2      |    3 | 00/0067 : 8D 06 00    |             STA   L020006        
+  146 |  1   SEG01.S    118 | Comment     | 00 |         |    0 | 00/006A               | * LDA L020006
+  147 |  1   SEG01.S    119 | Code        | 00 |         |    1 | 00/006A : 18          |             CLC                  
+  148 |  1   SEG01.S    120 | Code        | 00 |         |    3 | 00/006B : 69 00 15    |             ADC   #$1500         
+  149 |  1   SEG01.S    121 | Code        | 00 |         |    1 | 00/006E : 1B          |             TCS                  
+  150 |  1   SEG01.S    122 | Macro       | 00 |         |    0 | 00/006F               |             _TLStartUp                 
+  152 |  1   SEG01.S    122 | Code        | 00 |         |    3 | 00/006F : A2 01 02    |             LDX   #$201          ; load tool call #
+  153 |  1   SEG01.S    122 | Code        | 00 |         |    4 | 00/0072 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  154 |  1   SEG01.S    123 | Comment     | 00 |         |    0 | 00/0076               | * BCS L0100A7
+  155 |  1   SEG01.S    124 | Comment     | 00 |         |    0 | 00/0076               | * LDA #$0000
+  156 |  1   SEG01.S    125 | Comment     | 00 |         |    0 | 00/0076               | *L0100A7 STAL L0201E7
+  157 |  1   SEG01.S    126 | Code        | 00 |         |    1 | 00/0076 : 48          |             PHA                  
+  158 |  1   SEG01.S    127 | Macro       | 00 |         |    0 | 00/0077               |             _MMStartUp                 
+  160 |  1   SEG01.S    127 | Code        | 00 |         |    3 | 00/0077 : A2 02 02    |             LDX   #$202          ; load tool call #
+  161 |  1   SEG01.S    127 | Code        | 00 |         |    4 | 00/007A : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  162 |  1   SEG01.S    128 | Comment     | 00 |         |    0 | 00/007E               | * BCS L0100B8
+  163 |  1   SEG01.S    129 | Comment     | 00 |         |    0 | 00/007E               | * LDA #$0000
+  164 |  1   SEG01.S    130 | Comment     | 00 |         |    0 | 00/007E               | *L0100B8 STAL L0201E7
+  165 |  1   SEG01.S    131 | Code        | 00 |         |    1 | 00/007E : 68          |             PLA                  
+  166 |  1   SEG01.S    132 | Code        | 00 |E 2      |    3 | 00/007F : 8D E8 01    |             STA   L0201E3        
+  167 |  1   SEG01.S    133 | Macro       | 00 |         |    0 | 00/0082               |             _MTStartUp                 
+  169 |  1   SEG01.S    133 | Code        | 00 |         |    3 | 00/0082 : A2 03 02    |             LDX   #$203          ; load tool call #
+  170 |  1   SEG01.S    133 | Code        | 00 |         |    4 | 00/0085 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  171 |  1   SEG01.S    134 | Comment     | 00 |         |    0 | 00/0089               | * BCS L0100CC
+  172 |  1   SEG01.S    135 | Comment     | 00 |         |    0 | 00/0089               | * LDA #$0000
+  173 |  1   SEG01.S    136 | Comment     | 00 |         |    0 | 00/0089               | *L0100CC STAL L0201E7
+  174 |  1   SEG01.S    137 | Code        | 00 |E 1 >>16 |    3 | 00/0089 : F4 00 00    |             PEA   ^L03340F       
+  175 |  1   SEG01.S    138 | Code        | 00 |E 2      |    3 | 00/008C : F4 1C 34    |             PEA   L03340F        
+  176 |  1   SEG01.S    139 | Macro       | 00 |         |    0 | 00/008F               |             _LoadTools                 
+  178 |  1   SEG01.S    139 | Code        | 00 |         |    3 | 00/008F : A2 01 0E    |             LDX   #$E01          ; load tool call #
+  179 |  1   SEG01.S    139 | Code        | 00 |         |    4 | 00/0092 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  180 |  1   SEG01.S    140 | Comment     | 00 |         |    0 | 00/0096               | * BCS L0100E2
+  181 |  1   SEG01.S    141 | Comment     | 00 |         |    0 | 00/0096               | * LDA #$0000
+  182 |  1   SEG01.S    142 | Comment     | 00 |         |    0 | 00/0096               | *L0100E2 STAL L0201E7
+  183 |  1   SEG01.S    143 | Empty       | 00 |         |    0 | 00/0096               |                                  
+  184 |  1   SEG01.S    144 | Comment     | 00 |         |    0 | 00/0096               | *---
+  185 |  1   SEG01.S    145 | Empty       | 00 |         |    0 | 00/0096               |                                  
+  186 |  1   SEG01.S    146 | Code        | 00 |E 2      |    3 | 00/0096 : AE 08 00    |             LDX   L020008        
+  187 |  1   SEG01.S    147 | Code        | 00 |E 2      |    3 | 00/0099 : AD 06 00    |             LDA   L020006        
+  188 |  1   SEG01.S    148 | Code        | 00 |         |    1 | 00/009C : 18          |             CLC                  
+  189 |  1   SEG01.S    149 | Code        | 00 |         |    3 | 00/009D : 69 00 03    |             ADC   #$0300         
+  190 |  1   SEG01.S    150 | Code        | 00 |         |    1 | 00/00A0 : 48          |             PHA                  
+  191 |  1   SEG01.S    151 | Code        | 00 |         |    1 | 00/00A1 : 8A          |             TXA                  
+  192 |  1   SEG01.S    152 | Code        | 00 |         |    3 | 00/00A2 : 69 00 00    |             ADC   #$0000         
+  193 |  1   SEG01.S    153 | Code        | 00 |         |    1 | 00/00A5 : AA          |             TAX                  
+  194 |  1   SEG01.S    154 | Code        | 00 |         |    3 | 00/00A6 : F4 01 00    |             PEA   $0001          ; temp put $0000
+  195 |  1   SEG01.S    155 | Code        | 00 |         |    3 | 00/00A9 : F4 00 00    |             PEA   $0000          
+  196 |  1   SEG01.S    156 | Code        | 00 |         |    3 | 00/00AC : F4 3F 01    |             PEA   $013F          
+  197 |  1   SEG01.S    157 | Code        | 00 |         |    3 | 00/00AF : F4 00 00    |             PEA   $0000          
+  198 |  1   SEG01.S    158 | Code        | 00 |         |    3 | 00/00B2 : F4 C7 00    |             PEA   $00C7          
+  199 |  1   SEG01.S    159 | Code        | 00 |E 2      |    3 | 00/00B5 : AD E8 01    |             LDA   L0201E3        
+  200 |  1   SEG01.S    160 | Code        | 00 |         |    1 | 00/00B8 : 48          |             PHA                  
+  201 |  1   SEG01.S    161 | Macro       | 00 |         |    0 | 00/00B9               |             _EMStartUp                 
+  203 |  1   SEG01.S    161 | Code        | 00 |         |    3 | 00/00B9 : A2 06 02    |             LDX   #$206          ; load tool call #
+  204 |  1   SEG01.S    161 | Code        | 00 |         |    4 | 00/00BC : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  205 |  1   SEG01.S    162 | Comment     | 00 |         |    0 | 00/00C0               | * BCS L010115
+  206 |  1   SEG01.S    163 | Comment     | 00 |         |    0 | 00/00C0               | * LDA #$0000
+  207 |  1   SEG01.S    164 | Comment     | 00 |         |    0 | 00/00C0               | *L010115 STAL L0201E7
+  208 |  1   SEG01.S    165 | Code        | 00 |E 2      |    3 | 00/00C0 : AE 08 00    |             LDX   L020008        
+  209 |  1   SEG01.S    166 | Code        | 00 |E 2      |    3 | 00/00C3 : AD 06 00    |             LDA   L020006        
+  210 |  1   SEG01.S    167 | Code        | 00 |         |    1 | 00/00C6 : 18          |             CLC                  
+  211 |  1   SEG01.S    168 | Code        | 00 |         |    3 | 00/00C7 : 69 00 04    |             ADC   #$0400         
+  212 |  1   SEG01.S    169 | Code        | 00 |         |    1 | 00/00CA : 48          |             PHA                  
+  213 |  1   SEG01.S    170 | Code        | 00 |         |    1 | 00/00CB : 8A          |             TXA                  
+  214 |  1   SEG01.S    171 | Code        | 00 |         |    3 | 00/00CC : 69 00 00    |             ADC   #$0000         
+  215 |  1   SEG01.S    172 | Code        | 00 |         |    1 | 00/00CF : AA          |             TAX                  
+  216 |  1   SEG01.S    173 | Macro       | 00 |         |    0 | 00/00D0               |             _SoundStartUp                 
+  218 |  1   SEG01.S    173 | Code        | 00 |         |    3 | 00/00D0 : A2 08 02    |             LDX   #$208          ; load tool call #
+  219 |  1   SEG01.S    173 | Code        | 00 |         |    4 | 00/00D3 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  220 |  1   SEG01.S    174 | Comment     | 00 |         |    0 | 00/00D7               | * BCS L010135
+  221 |  1   SEG01.S    175 | Comment     | 00 |         |    0 | 00/00D7               | * LDA #$0000
+  222 |  1   SEG01.S    176 | Comment     | 00 |         |    0 | 00/00D7               | *L010135 STAL L0201E7
+  223 |  1   SEG01.S    177 | Code        | 00 |E 2      |    3 | 00/00D7 : AE 08 00    |             LDX   L020008        
+  224 |  1   SEG01.S    178 | Code        | 00 |E 2      |    3 | 00/00DA : AD 06 00    |             LDA   L020006        
+  225 |  1   SEG01.S    179 | Code        | 00 |         |    1 | 00/00DD : 48          |             PHA                  
+  226 |  1   SEG01.S    180 | Code        | 00 |         |    3 | 00/00DE : F4 00 00    |             PEA   $0000          
+  227 |  1   SEG01.S    181 | Code        | 00 |         |    3 | 00/00E1 : F4 A0 00    |             PEA   $00A0          
+  228 |  1   SEG01.S    182 | Code        | 00 |E 2      |    3 | 00/00E4 : AD E8 01    |             LDA   L0201E3        
+  229 |  1   SEG01.S    183 | Code        | 00 |         |    1 | 00/00E7 : 48          |             PHA                  
+  230 |  1   SEG01.S    184 | Macro       | 00 |         |    0 | 00/00E8               |             _QDStartUp                 
+  232 |  1   SEG01.S    184 | Code        | 00 |         |    3 | 00/00E8 : A2 04 02    |             LDX   #$204          ; load tool call #
+  233 |  1   SEG01.S    184 | Code        | 00 |         |    4 | 00/00EB : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  234 |  1   SEG01.S    185 | Comment     | 00 |         |    0 | 00/00EF               | * BCS L010156
+  235 |  1   SEG01.S    186 | Comment     | 00 |         |    0 | 00/00EF               | * LDA #$0000
+  236 |  1   SEG01.S    187 | Comment     | 00 |         |    0 | 00/00EF               | *L010156 STAL L0201E7
+  237 |  1   SEG01.S    188 | Comment     | 00 |         |    0 | 00/00EF               | * LDX #$0000
+  238 |  1   SEG01.S    189 | Comment     | 00 |         |    0 | 00/00EF               | * LDA #$C034
+  239 |  1   SEG01.S    190 | Comment     | 00 |         |    0 | 00/00EF               | * STA $F6
+  240 |  1   SEG01.S    191 | Comment     | 00 |         |    0 | 00/00EF               | * STX $F8
+  241 |  1   SEG01.S    192 | Comment     | 00 |         |    0 | 00/00EF               | * LDA #$0000
+  242 |  1   SEG01.S    193 | Comment     | 00 |         |    0 | 00/00EF               | * SEP #$20
+  243 |  1   SEG01.S    194 | Comment     | 00 |         |    0 | 00/00EF               | * STA [$F6]
+  244 |  1   SEG01.S    195 | Comment     | 00 |         |    0 | 00/00EF               | * REP #$20
+  245 |  1   SEG01.S    196 | Empty       | 00 |         |    0 | 00/00EF               |                                  
+  246 |  1   SEG01.S    197 | Code        | 00 |E 2      |    3 | 00/00EF : AD E8 01    |             LDA   L0201E3        
+  247 |  1   SEG01.S    198 | Code        | 00 |         |    1 | 00/00F2 : 48          |             PHA                  
+  248 |  1   SEG01.S    199 | Macro       | 00 |         |    0 | 00/00F3               |             _WindStartUp                 
+  250 |  1   SEG01.S    199 | Code        | 00 |         |    3 | 00/00F3 : A2 0E 02    |             LDX   #$20E          ; load tool call #
+  251 |  1   SEG01.S    199 | Code        | 00 |         |    4 | 00/00F6 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  252 |  1   SEG01.S    200 | Comment     | 00 |         |    0 | 00/00FA               | * BCS L01017D
+  253 |  1   SEG01.S    201 | Comment     | 00 |         |    0 | 00/00FA               | * LDA #$0000
+  254 |  1   SEG01.S    202 | Comment     | 00 |         |    0 | 00/00FA               | *L01017D STAL L0201E7
+  255 |  1   SEG01.S    203 | Code        | 00 |E 2      |    3 | 00/00FA : AD E8 01    |             LDA   L0201E3        
+  256 |  1   SEG01.S    204 | Code        | 00 |         |    1 | 00/00FD : 48          |             PHA                  
+  257 |  1   SEG01.S    205 | Code        | 00 |E 2      |    3 | 00/00FE : AE 08 00    |             LDX   L020008        
+  258 |  1   SEG01.S    206 | Code        | 00 |E 2      |    3 | 00/0101 : AD 06 00    |             LDA   L020006        
+  259 |  1   SEG01.S    207 | Code        | 00 |         |    1 | 00/0104 : 18          |             CLC                  
+  260 |  1   SEG01.S    208 | Code        | 00 |         |    3 | 00/0105 : 69 00 06    |             ADC   #$0600         
+  261 |  1   SEG01.S    209 | Code        | 00 |         |    1 | 00/0108 : 48          |             PHA                  
+  262 |  1   SEG01.S    210 | Code        | 00 |         |    1 | 00/0109 : 8A          |             TXA                  
+  263 |  1   SEG01.S    211 | Code        | 00 |         |    3 | 00/010A : 69 00 00    |             ADC   #$0000         
+  264 |  1   SEG01.S    212 | Code        | 00 |         |    1 | 00/010D : AA          |             TAX                  
+  265 |  1   SEG01.S    213 | Macro       | 00 |         |    0 | 00/010E               |             _CtlStartUp                 
+  267 |  1   SEG01.S    213 | Code        | 00 |         |    3 | 00/010E : A2 10 02    |             LDX   #$210          ; load tool call #
+  268 |  1   SEG01.S    213 | Code        | 00 |         |    4 | 00/0111 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  269 |  1   SEG01.S    214 | Comment     | 00 |         |    0 | 00/0115               | * BCS L0101A1
+  270 |  1   SEG01.S    215 | Comment     | 00 |         |    0 | 00/0115               | * LDA #$0000
+  271 |  1   SEG01.S    216 | Comment     | 00 |         |    0 | 00/0115               | *L0101A1 STAL L0201E7
+  272 |  1   SEG01.S    217 | Code        | 00 |E 2      |    3 | 00/0115 : AD E8 01    |             LDA   L0201E3        
+  273 |  1   SEG01.S    218 | Code        | 00 |         |    1 | 00/0118 : 48          |             PHA                  
+  274 |  1   SEG01.S    219 | Code        | 00 |E 2      |    3 | 00/0119 : AE 08 00    |             LDX   L020008        
+  275 |  1   SEG01.S    220 | Code        | 00 |E 2      |    3 | 00/011C : AD 06 00    |             LDA   L020006        
+  276 |  1   SEG01.S    221 | Code        | 00 |         |    1 | 00/011F : 18          |             CLC                  
+  277 |  1   SEG01.S    222 | Code        | 00 |         |    3 | 00/0120 : 69 00 07    |             ADC   #$0700         
+  278 |  1   SEG01.S    223 | Code        | 00 |         |    1 | 00/0123 : 48          |             PHA                  
+  279 |  1   SEG01.S    224 | Code        | 00 |         |    1 | 00/0124 : 8A          |             TXA                  
+  280 |  1   SEG01.S    225 | Code        | 00 |         |    3 | 00/0125 : 69 00 00    |             ADC   #$0000         
+  281 |  1   SEG01.S    226 | Code        | 00 |         |    1 | 00/0128 : AA          |             TAX                  
+  282 |  1   SEG01.S    227 | Macro       | 00 |         |    0 | 00/0129               |             _LEStartUp                 
+  284 |  1   SEG01.S    227 | Code        | 00 |         |    3 | 00/0129 : A2 14 02    |             LDX   #$214          ; load tool call #
+  285 |  1   SEG01.S    227 | Code        | 00 |         |    4 | 00/012C : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  286 |  1   SEG01.S    228 | Comment     | 00 |         |    0 | 00/0130               | * BCS L0101C5
+  287 |  1   SEG01.S    229 | Comment     | 00 |         |    0 | 00/0130               | * LDA #$0000
+  288 |  1   SEG01.S    230 | Comment     | 00 |         |    0 | 00/0130               | *L0101C5 STAL L0201E7
+  289 |  1   SEG01.S    231 | Code        | 00 |E 2      |    3 | 00/0130 : AD E8 01    |             LDA   L0201E3        
+  290 |  1   SEG01.S    232 | Code        | 00 |         |    1 | 00/0133 : 48          |             PHA                  
+  291 |  1   SEG01.S    233 | Macro       | 00 |         |    0 | 00/0134               |             _DialogStartUp                 
+  293 |  1   SEG01.S    233 | Code        | 00 |         |    3 | 00/0134 : A2 15 02    |             LDX   #$215          ; load tool call #
+  294 |  1   SEG01.S    233 | Code        | 00 |         |    4 | 00/0137 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  295 |  1   SEG01.S    234 | Comment     | 00 |         |    0 | 00/013B               | * BCS L0101D9
+  296 |  1   SEG01.S    235 | Comment     | 00 |         |    0 | 00/013B               | * LDA #$0000
+  297 |  1   SEG01.S    236 | Comment     | 00 |         |    0 | 00/013B               | *L0101D9 STAL L0201E7
+  298 |  1   SEG01.S    237 | Code        | 00 |E 3      |    4 | 00/013B : 22 B9 00 1A |             JSL   L1A00D4        
+  299 |  1   SEG01.S    238 | Empty       | 00 |         |    0 | 00/013F               |                                  
+  300 |  1   SEG01.S    239 | Empty       | 00 |         |    0 | 00/013F               | L0101E1                          
+  301 |  1   SEG01.S    240 | Empty       | 00 |         |    0 | 00/013F               |                                  
+  302 |  1   SEG01.S    241 | Comment     | 00 |         |    0 | 00/013F               | *L0101E1 LDA L02C036
+  303 |  1   SEG01.S    242 | Comment     | 00 |         |    0 | 00/013F               | * AND #$00FF
+  304 |  1   SEG01.S    243 | Comment     | 00 |         |    0 | 00/013F               | * PHA
+  305 |  1   SEG01.S    244 | Comment     | 00 |         |    0 | 00/013F               | * LDX #$0000
+  306 |  1   SEG01.S    245 | Comment     | 00 |         |    0 | 00/013F               | * LDA #$C036
+  307 |  1   SEG01.S    246 | Comment     | 00 |         |    0 | 00/013F               | * STA $F6
+  308 |  1   SEG01.S    247 | Comment     | 00 |         |    0 | 00/013F               | * STX $F8
+  309 |  1   SEG01.S    248 | Comment     | 00 |         |    0 | 00/013F               | * LDA [$F6]
+  310 |  1   SEG01.S    249 | Comment     | 00 |         |    0 | 00/013F               | * AND #$00FF
+  311 |  1   SEG01.S    250 | Comment     | 00 |         |    0 | 00/013F               | * AND #$007F
+  312 |  1   SEG01.S    251 | Comment     | 00 |         |    0 | 00/013F               | * PLX
+  313 |  1   SEG01.S    252 | Comment     | 00 |         |    0 | 00/013F               | * STX $FA
+  314 |  1   SEG01.S    253 | Comment     | 00 |         |    0 | 00/013F               | * ORA $FA
+  315 |  1   SEG01.S    254 | Comment     | 00 |         |    0 | 00/013F               | * PHA
+  316 |  1   SEG01.S    255 | Comment     | 00 |         |    0 | 00/013F               | * LDX #$0000
+  317 |  1   SEG01.S    256 | Comment     | 00 |         |    0 | 00/013F               | * LDA #$C036
+  318 |  1   SEG01.S    257 | Comment     | 00 |         |    0 | 00/013F               | * STA $F6
+  319 |  1   SEG01.S    258 | Comment     | 00 |         |    0 | 00/013F               | * STX $F8
+  320 |  1   SEG01.S    259 | Comment     | 00 |         |    0 | 00/013F               | * PLA
+  321 |  1   SEG01.S    260 | Comment     | 00 |         |    0 | 00/013F               | * SEP #$20
+  322 |  1   SEG01.S    261 | Comment     | 00 |         |    0 | 00/013F               | * STA [$F6]
+  323 |  1   SEG01.S    262 | Comment     | 00 |         |    0 | 00/013F               | * REP #$20
+  324 |  1   SEG01.S    263 | Empty       | 00 |         |    0 | 00/013F               |                                  
+  325 |  1   SEG01.S    264 | Code        | 10 |         |    2 | 00/013F : E2 20       |             sep   #$20           
+  326 |  1   SEG01.S    265 | Code        | 10 |E 2      |    3 | 00/0141 : AD 0C 00    |             lda   L02C036        
+  327 |  1   SEG01.S    266 | Code        | 10 |         |    4 | 00/0144 : 8F 36 C0 00 |             stal  $c036          
+  328 |  1   SEG01.S    267 | Code        | 10 |E 2      |    3 | 00/0148 : AD 0D 00    |             lda   L02C034        
+  329 |  1   SEG01.S    268 | Code        | 10 |         |    4 | 00/014B : 8F 34 C0 00 |             stal  $c034          
+  330 |  1   SEG01.S    269 | Code        | 00 |         |    2 | 00/014F : C2 20       |             rep   #$20           
+  331 |  1   SEG01.S    270 | Empty       | 00 |         |    0 | 00/0151               |                                  
+  332 |  1   SEG01.S    271 | Code        | 00 |  3      |    4 | 00/0151 : 22 8B 01 00 |             JSL   L010254        
+  333 |  1   SEG01.S    272 | Code        | 00 |         |    1 | 00/0155 : 3B          |             TSC                  
+  334 |  1   SEG01.S    273 | Code        | 00 |         |    1 | 00/0156 : 18          |             CLC                  
+  335 |  1   SEG01.S    274 | Code        | 00 |         |    3 | 00/0157 : 69 0A 00    |             ADC   #$000A         
+  336 |  1   SEG01.S    275 | Code        | 00 |         |    1 | 00/015A : 1B          |             TCS                  
+  337 |  1   SEG01.S    276 | Code        | 00 |         |    1 | 00/015B : 2B          |             PLD                  
+  338 |  1   SEG01.S    277 | Code        | 00 |         |    1 | 00/015C : 6B          |             RTL                  
+  339 |  1   SEG01.S    278 | Empty       | 00 |         |    0 | 00/015D               |                                  
+  340 |  1   SEG01.S    279 | Global      | 00 |         |    0 | 00/015D               | L01021D     ENT                  
+  341 |  1   SEG01.S    280 | Code        | 00 |         |    1 | 00/015D : 0B          |             PHD                  
+  342 |  1   SEG01.S    281 | Code        | 00 |         |    1 | 00/015E : 3B          |             TSC                  
+  343 |  1   SEG01.S    282 | Code        | 00 |         |    1 | 00/015F : 38          |             SEC                  
+  344 |  1   SEG01.S    283 | Code        | 00 |         |    3 | 00/0160 : E9 FB 00    |             SBC   #$00FB         
+  345 |  1   SEG01.S    284 | Code        | 00 |         |    1 | 00/0163 : 5B          |             TCD                  
+  346 |  1   SEG01.S    285 | Code        | 00 |         |    3 | 00/0164 : 69 F4 00    |             ADC   #$00F4         
+  347 |  1   SEG01.S    286 | Code        | 00 |         |    1 | 00/0167 : 1B          |             TCS                  
+  348 |  1   SEG01.S    287 | Code        | 00 |E 2      |    3 | 00/0168 : AD E8 01    |             LDA   L0201E3        
+  349 |  1   SEG01.S    288 | Code        | 00 |         |    1 | 00/016B : 48          |             PHA                  
+  350 |  1   SEG01.S    289 | Code        | 00 |E 2      |    3 | 00/016C : AE 08 00    |             LDX   L020008        
+  351 |  1   SEG01.S    290 | Code        | 00 |E 2      |    3 | 00/016F : AD 06 00    |             LDA   L020006        
+  352 |  1   SEG01.S    291 | Code        | 00 |         |    1 | 00/0172 : 18          |             CLC                  
+  353 |  1   SEG01.S    292 | Code        | 00 |         |    3 | 00/0173 : 69 00 05    |             ADC   #$0500         
+  354 |  1   SEG01.S    293 | Code        | 00 |         |    1 | 00/0176 : 48          |             PHA                  
+  355 |  1   SEG01.S    294 | Code        | 00 |         |    1 | 00/0177 : 8A          |             TXA                  
+  356 |  1   SEG01.S    295 | Code        | 00 |         |    3 | 00/0178 : 69 00 00    |             ADC   #$0000         
+  357 |  1   SEG01.S    296 | Code        | 00 |         |    1 | 00/017B : AA          |             TAX                  
+  358 |  1   SEG01.S    297 | Macro       | 00 |         |    0 | 00/017C               |             _MenuStartUp                 
+  360 |  1   SEG01.S    297 | Code        | 00 |         |    3 | 00/017C : A2 0F 02    |             LDX   #$20F          ; load tool call #
+  361 |  1   SEG01.S    297 | Code        | 00 |         |    4 | 00/017F : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  362 |  1   SEG01.S    298 | Comment     | 00 |         |    0 | 00/0183               | * BCS L010248
+  363 |  1   SEG01.S    299 | Comment     | 00 |         |    0 | 00/0183               | * LDA #$0000
+  364 |  1   SEG01.S    300 | Comment     | 00 |         |    0 | 00/0183               | *L010248 STAL L0201E7
+  365 |  1   SEG01.S    301 | Code        | 00 |         |    1 | 00/0183 : 3B          |             TSC                  
+  366 |  1   SEG01.S    302 | Code        | 00 |         |    1 | 00/0184 : 18          |             CLC                  
+  367 |  1   SEG01.S    303 | Code        | 00 |         |    3 | 00/0185 : 69 06 00    |             ADC   #$0006         
+  368 |  1   SEG01.S    304 | Code        | 00 |         |    1 | 00/0188 : 1B          |             TCS                  
+  369 |  1   SEG01.S    305 | Code        | 00 |         |    1 | 00/0189 : 2B          |             PLD                  
+  370 |  1   SEG01.S    306 | Code        | 00 |         |    1 | 00/018A : 6B          |             RTL                  
+  371 |  1   SEG01.S    307 | Empty       | 00 |         |    0 | 00/018B               |                                  
+  372 |  1   SEG01.S    308 | Global      | 00 |         |    0 | 00/018B               | L010254     ENT                  
+  373 |  1   SEG01.S    309 | Code        | 00 |         |    1 | 00/018B : 0B          |             PHD                  
+  374 |  1   SEG01.S    310 | Code        | 00 |         |    1 | 00/018C : 3B          |             TSC                  
+  375 |  1   SEG01.S    311 | Code        | 00 |         |    1 | 00/018D : 38          |             SEC                  
+  376 |  1   SEG01.S    312 | Code        | 00 |         |    3 | 00/018E : E9 FB 00    |             SBC   #$00FB         
+  377 |  1   SEG01.S    313 | Code        | 00 |         |    1 | 00/0191 : 5B          |             TCD                  
+  378 |  1   SEG01.S    314 | Code        | 00 |         |    3 | 00/0192 : 69 F4 00    |             ADC   #$00F4         
+  379 |  1   SEG01.S    315 | Code        | 00 |         |    1 | 00/0195 : 1B          |             TCS                  
+  380 |  1   SEG01.S    316 | Macro       | 00 |         |    0 | 00/0196               |             _GrafOff                 
+  382 |  1   SEG01.S    316 | Code        | 00 |         |    3 | 00/0196 : A2 04 0B    |             LDX   #$B04          ; load tool call #
+  383 |  1   SEG01.S    316 | Code        | 00 |         |    4 | 00/0199 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  384 |  1   SEG01.S    317 | Comment     | 00 |         |    0 | 00/019D               | * BCS L01026B
+  385 |  1   SEG01.S    318 | Comment     | 00 |         |    0 | 00/019D               | * LDA #$0000
+  386 |  1   SEG01.S    319 | Comment     | 00 |         |    0 | 00/019D               | *L01026B STAL L0201E7
+  387 |  1   SEG01.S    320 | Macro       | 00 |         |    0 | 00/019D               |             _DialogShutDown                 
+  389 |  1   SEG01.S    320 | Code        | 00 |         |    3 | 00/019D : A2 15 03    |             LDX   #$315          ; load tool call #
+  390 |  1   SEG01.S    320 | Code        | 00 |         |    4 | 00/01A0 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  391 |  1   SEG01.S    321 | Comment     | 00 |         |    0 | 00/01A4               | * BCS L01027B
+  392 |  1   SEG01.S    322 | Comment     | 00 |         |    0 | 00/01A4               | * LDA #$0000
+  393 |  1   SEG01.S    323 | Comment     | 00 |         |    0 | 00/01A4               | *L01027B STAL L0201E7
+  394 |  1   SEG01.S    324 | Macro       | 00 |         |    0 | 00/01A4               |             _LEShutDown                 
+  396 |  1   SEG01.S    324 | Code        | 00 |         |    3 | 00/01A4 : A2 14 03    |             LDX   #$314          ; load tool call #
+  397 |  1   SEG01.S    324 | Code        | 00 |         |    4 | 00/01A7 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  398 |  1   SEG01.S    325 | Comment     | 00 |         |    0 | 00/01AB               | * BCS L01028B
+  399 |  1   SEG01.S    326 | Comment     | 00 |         |    0 | 00/01AB               | * LDA #$0000
+  400 |  1   SEG01.S    327 | Comment     | 00 |         |    0 | 00/01AB               | *L01028B STAL L0201E7
+  401 |  1   SEG01.S    328 | Macro       | 00 |         |    0 | 00/01AB               |             _CtlShutDown                 
+  403 |  1   SEG01.S    328 | Code        | 00 |         |    3 | 00/01AB : A2 10 03    |             LDX   #$310          ; load tool call #
+  404 |  1   SEG01.S    328 | Code        | 00 |         |    4 | 00/01AE : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  405 |  1   SEG01.S    329 | Comment     | 00 |         |    0 | 00/01B2               | * BCS L01029B
+  406 |  1   SEG01.S    330 | Comment     | 00 |         |    0 | 00/01B2               | * LDA #$0000
+  407 |  1   SEG01.S    331 | Comment     | 00 |         |    0 | 00/01B2               | *L01029B STAL L0201E7
+  408 |  1   SEG01.S    332 | Macro       | 00 |         |    0 | 00/01B2               |             _MenuShutDown                 
+  410 |  1   SEG01.S    332 | Code        | 00 |         |    3 | 00/01B2 : A2 0F 03    |             LDX   #$30F          ; load tool call #
+  411 |  1   SEG01.S    332 | Code        | 00 |         |    4 | 00/01B5 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  412 |  1   SEG01.S    333 | Comment     | 00 |         |    0 | 00/01B9               | * BCS L0102AB
+  413 |  1   SEG01.S    334 | Comment     | 00 |         |    0 | 00/01B9               | * LDA #$0000
+  414 |  1   SEG01.S    335 | Comment     | 00 |         |    0 | 00/01B9               | *L0102AB STAL L0201E7
+  415 |  1   SEG01.S    336 | Macro       | 00 |         |    0 | 00/01B9               |             _WindShutDown                 
+  417 |  1   SEG01.S    336 | Code        | 00 |         |    3 | 00/01B9 : A2 0E 03    |             LDX   #$30E          ; load tool call #
+  418 |  1   SEG01.S    336 | Code        | 00 |         |    4 | 00/01BC : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  419 |  1   SEG01.S    337 | Comment     | 00 |         |    0 | 00/01C0               | * BCS L0102BB
+  420 |  1   SEG01.S    338 | Comment     | 00 |         |    0 | 00/01C0               | * LDA #$0000
+  421 |  1   SEG01.S    339 | Comment     | 00 |         |    0 | 00/01C0               | *L0102BB STAL L0201E7
+  422 |  1   SEG01.S    340 | Macro       | 00 |         |    0 | 00/01C0               |             _SoundShutDown                 
+  424 |  1   SEG01.S    340 | Code        | 00 |         |    3 | 00/01C0 : A2 08 03    |             LDX   #$308          ; load tool call #
+  425 |  1   SEG01.S    340 | Code        | 00 |         |    4 | 00/01C3 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  426 |  1   SEG01.S    341 | Comment     | 00 |         |    0 | 00/01C7               | * BCS L0102CB
+  427 |  1   SEG01.S    342 | Comment     | 00 |         |    0 | 00/01C7               | * LDA #$0000
+  428 |  1   SEG01.S    343 | Comment     | 00 |         |    0 | 00/01C7               | *L0102CB STAL L0201E7
+  429 |  1   SEG01.S    344 | Macro       | 00 |         |    0 | 00/01C7               |             _EMShutDown                 
+  431 |  1   SEG01.S    344 | Code        | 00 |         |    3 | 00/01C7 : A2 06 03    |             LDX   #$306          ; load tool call #
+  432 |  1   SEG01.S    344 | Code        | 00 |         |    4 | 00/01CA : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  433 |  1   SEG01.S    345 | Comment     | 00 |         |    0 | 00/01CE               | * BCS L0102DB
+  434 |  1   SEG01.S    346 | Comment     | 00 |         |    0 | 00/01CE               | * LDA #$0000
+  435 |  1   SEG01.S    347 | Comment     | 00 |         |    0 | 00/01CE               | *L0102DB STAL L0201E7
+  436 |  1   SEG01.S    348 | Macro       | 00 |         |    0 | 00/01CE               |             _QDShutDown                 
+  438 |  1   SEG01.S    348 | Code        | 00 |         |    3 | 00/01CE : A2 04 03    |             LDX   #$304          ; load tool call #
+  439 |  1   SEG01.S    348 | Code        | 00 |         |    4 | 00/01D1 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  440 |  1   SEG01.S    349 | Comment     | 00 |         |    0 | 00/01D5               | * BCS L0102EB
+  441 |  1   SEG01.S    350 | Comment     | 00 |         |    0 | 00/01D5               | * LDA #$0000
+  442 |  1   SEG01.S    351 | Comment     | 00 |         |    0 | 00/01D5               | *L0102EB STAL L0201E7
+  443 |  1   SEG01.S    352 | Empty       | 00 |         |    0 | 00/01D5               |                                  
+  444 |  1   SEG01.S    353 | Comment     | 00 |         |    0 | 00/01D5               | * sei
+  445 |  1   SEG01.S    354 | Comment     | 00 |         |    0 | 00/01D5               | * PushLong theVBL
+  446 |  1   SEG01.S    355 | Comment     | 00 |         |    0 | 00/01D5               | * _SetVector
+  447 |  1   SEG01.S    356 | Comment     | 00 |         |    0 | 00/01D5               | * cli
+  448 |  1   SEG01.S    357 | Empty       | 00 |         |    0 | 00/01D5               |                                  
+  449 |  1   SEG01.S    358 | Macro       | 00 |         |    0 | 00/01D5               |             _MTShutDown                 
+  451 |  1   SEG01.S    358 | Code        | 00 |         |    3 | 00/01D5 : A2 03 03    |             LDX   #$303          ; load tool call #
+  452 |  1   SEG01.S    358 | Code        | 00 |         |    4 | 00/01D8 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  453 |  1   SEG01.S    359 | Comment     | 00 |         |    0 | 00/01DC               | * BCS L0102FB
+  454 |  1   SEG01.S    360 | Comment     | 00 |         |    0 | 00/01DC               | * LDA #$0000
+  455 |  1   SEG01.S    361 | Comment     | 00 |         |    0 | 00/01DC               | *L0102FB STAL L0201E7
+  456 |  1   SEG01.S    362 | Code        | 00 |E 2      |    3 | 00/01DC : AD E8 01    |             LDA   L0201E3        
+  457 |  1   SEG01.S    363 | Code        | 00 |         |    1 | 00/01DF : 48          |             PHA                  
+  458 |  1   SEG01.S    364 | Macro       | 00 |         |    0 | 00/01E0               |             _MMShutDown                 
+  460 |  1   SEG01.S    364 | Code        | 00 |         |    3 | 00/01E0 : A2 02 03    |             LDX   #$302          ; load tool call #
+  461 |  1   SEG01.S    364 | Code        | 00 |         |    4 | 00/01E3 : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  462 |  1   SEG01.S    365 | Comment     | 00 |         |    0 | 00/01E7               | * BCS L01030F
+  463 |  1   SEG01.S    366 | Comment     | 00 |         |    0 | 00/01E7               | * LDA #$0000
+  464 |  1   SEG01.S    367 | Comment     | 00 |         |    0 | 00/01E7               | *L01030F STAL L0201E7
+  465 |  1   SEG01.S    368 | Macro       | 00 |         |    0 | 00/01E7               |             _TLShutDown                 
+  467 |  1   SEG01.S    368 | Code        | 00 |         |    3 | 00/01E7 : A2 01 03    |             LDX   #$301          ; load tool call #
+  468 |  1   SEG01.S    368 | Code        | 00 |         |    4 | 00/01EA : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  469 |  1   SEG01.S    369 | Comment     | 00 |         |    0 | 00/01EE               | * BCS L01031F
+  470 |  1   SEG01.S    370 | Comment     | 00 |         |    0 | 00/01EE               | * LDA #$0000
+  471 |  1   SEG01.S    371 | Comment     | 00 |         |    0 | 00/01EE               | *L01031F STAL L0201E7
+  472 |  1   SEG01.S    372 | Empty       | 00 |         |    0 | 00/01EE               |                                  
+  473 |  1   SEG01.S    373 | Code        | 00 |         |    4 | 00/01EE : 22 A8 00 E1 |             JSL   {$E100A8}      
+  474 |  1   SEG01.S    374 | Data        | 00 |         |    2 | 00/01F2 : 29 00       |             DW    $0029          ; Quit
+  475 |  1   SEG01.S    375 | Data        | 00 |E 3      |    4 | 00/01F4 : 08 00 03 00 |             ADRL  L030008        
+  476 |  1   SEG01.S    376 | Comment     | 00 |         |    0 | 00/01F8               | * BRK $00
+  477 |  1   SEG01.S    377 | Empty       | 00 |         |    0 | 00/01F8               |                                  
+  478 |  1   SEG01.S    378 | Code        | 00 |         |    2 | 00/01F8 : 00 BD       |             brk   $bd            
+  479 |  1   SEG01.S    379 | Empty       | 00 |         |    0 | 00/01FA               |                                  
+  480 |  1   SEG01.S    380 | Comment     | 00 |         |    0 | 00/01FA               | * TSC
+  481 |  1   SEG01.S    381 | Comment     | 00 |         |    0 | 00/01FA               | * CLC
+  482 |  1   SEG01.S    382 | Comment     | 00 |         |    0 | 00/01FA               | * ADC #$0006
+  483 |  1   SEG01.S    383 | Comment     | 00 |         |    0 | 00/01FA               | * TCS
+  484 |  1   SEG01.S    384 | Comment     | 00 |         |    0 | 00/01FA               | * PLD
+  485 |  1   SEG01.S    385 | Comment     | 00 |         |    0 | 00/01FA               | * RTL
+  486 |  1   SEG01.S    386 | Empty       | 00 |         |    0 | 00/01FA               |                                  
+  487 |  1   SEG01.S    387 | Comment     | 00 |         |    0 | 00/01FA               | *-------------
+  488 |  1   SEG01.S    388 | Empty       | 00 |         |    0 | 00/01FA               |                                  
+  489 |  1   SEG01.S    389 | Directive   | 00 |         |    0 | 00/01FA               |             mx    %00            
+  490 |  1   SEG01.S    390 | Empty       | 00 |         |    0 | 00/01FA               |                                  
+  491 |  1   SEG01.S    391 | Empty       | 00 |         |    0 | 00/01FA               |                                  
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

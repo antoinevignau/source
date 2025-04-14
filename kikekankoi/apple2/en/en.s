@@ -347,7 +347,7 @@ tblA1	dfb	$bd
 	dfb	11,11,11,11,11,11,11,11,11,11
 	dfb	63,63,19,19,19,19,24,24,24,24
 *	dfb	24,11,51,19,19,51,56,56,26,57 DEBR BATT x 2 (56 => 100)
-	dfb	24,11,51,19,19,51,100,100,26,57
+	dfb	24,11,51,19,19,51,100,100,26,57	; FROM 100 -> 96
 	dfb	12,16,24,58,12,59,54,57,24,12
 	dfb	12,12,12,62,62,12,20,10,10,10
 	dfb	10,10,10,10,10,10,10,10,10,10
@@ -673,8 +673,8 @@ V$73	str	"BREA"	; "CASS"
 V$74	str	"TRY"	; "ESSA"
 V$75	str	"FEEL"	; "SENS"
 V$76	str	"SMEL"	; "RENI"
-V$77	str	"ADHE"	; "ADHE"
-V$78	str	"CUT"	; "DECO"
+V$77	str	"TAPE"	; "ADHE"
+V$78	str	"UNGL"	; "DECOller" "CUT" => "UNGLue"
 V$79	str	"PLAC"	; "PLAC"
 V$80	str	"ROW"	; "RAME"
 V$81	str	"TUBE"	; "TUBE"

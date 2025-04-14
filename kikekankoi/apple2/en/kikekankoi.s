@@ -7,6 +7,8 @@
 
 	mx	%11
 	org	$800
+	typ	BIN
+	dsk	KIKEKANKOI
 	lst	off
 
 *-----------------------------------
@@ -514,7 +516,7 @@ REPLAY	jsr	initALL
 	
 :1450	jsr	$bdbd
 	
-:1460	lda	OK
+	lda	OK
 	bne	:1470
 	jmp	:1100
 
@@ -672,7 +674,7 @@ tbl1500	da	:1500,:1510,:1520,:1530,:1540
 
 :1750	jsr	$bdbd
 
-:1760	lda	BREAK
+	lda	BREAK
 	beq	:1780
 	asl
 	tax
@@ -1636,7 +1638,7 @@ initALL
 	sta	strTEMPS+1
 	sta	strTEMPS+2
 	sta	strTEMPS+3
-	
+
 *---
 
 	ldx	#nbO	; reset object table

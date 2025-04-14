@@ -7,6 +7,8 @@
 
 	mx	%11
 	org	$800
+	typ	BIN
+	dsk	KIKEKANKOI
 	lst	off
 
 *-----------------------------------
@@ -225,7 +227,7 @@ REPLAY	jsr	initALL
 :222	jsr	$bdbd
 	jsr	setMIXEDON
 	
-:300	lda	#0
+	lda	#0
 	sta	H
 	sta	HH	; for comma
 	lda	#1
@@ -1636,7 +1638,7 @@ initALL
 	sta	strTEMPS+1
 	sta	strTEMPS+2
 	sta	strTEMPS+3
-		
+
 *---
 
 	ldx	#nbO	; reset object table

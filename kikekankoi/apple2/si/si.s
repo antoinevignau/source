@@ -9,50 +9,66 @@
 * Les chaines standards
 *
 
-strVOUSDETENEZ	asc	8D"You carry: "00
-strVOUSRIEN	asc	8D"Don't bother looking, you have nothing on you"00
+strVOUSDETENEZ	asc	8D"Prenasas: "00
+strVOUSRIEN	asc	8D"Ne prenasas nicesar"00
 strPOINT	asc	"."00
-strEVIDENT	asc	8D"You think you're the Hulk, you can't carry so much!"8D00
-strVOUSLAVEZ	asc	8D"You already have it. If your memory is bad, make a list"8D00
-strNOTOWNED	asc	8D"Until further notice, you can't put down what you do not own..."8D00
+strEVIDENT	asc	8D"Mislis, da si Hulk? Roke imas polne vsega!"00
+strVOUSLAVEZ	asc	8D"Ze imas. Poglej na seznam."00
+strNOTOWNED	asc	8D"Tega nimas."00
 strDACCORD	asc	"OK"00
-strILFAITNOIR	asc	"It is very dark, perhaps you should switch on the lights"8D00
-strILYA	asc	8D"The room contains:"00
+strILFAITNOIR	asc	"Temno je, nic ne vidis, potrebujes svetilko"8D00
+strILYA	asc	8D"V sobi je:"00
 strCOMMA	asc	","00
 strSPACE	asc	8D" "00
 strRETURN	asc	8D00
-strCMD	asc	8D"Your command? "00
-strCOMMANDE	asc	8D"Command ("
+
+strCMD	asc	8D"Tvoj ukaz? "00
+
+strCOMMANDE	asc	8D"Ukaz ("
 strTEMPS	asc	"5000) ? "00
+
+strLOAD	asc	8D"Nalozi igro (predal 1-9)? "00	; ** new ** load game (slot 1-9)?
+strSAVE	asc	8D"Shrani igro (predal 1-9)? "00	; ** new ** save game (slot 1-9)?
 
 tbl580	da	$bdbd
 	da	str581,str582,str583,str584,str585
 	da	str586,str587,str588,str589,str590
 
-str581	asc	8D"Don't talk nonsense"8D00
-str582	asc	8D"Sorry"8D00
-str583	asc	8D"What?"8D00
-str584	asc	8D"I don't understand"8D00
-str585	asc	8D"Sorry, I don't understand"8D00
-str586	asc	8D"The jokers who programmed me didn't teach me this vocabulary"8D00
-str587	asc	8D"I don't understand"8D00
+str581	asc	8D"Ne govori neumnosti."8D00
+str582	asc	8D"Oprosti."8D00
+str583	asc	8D"Kaj?"8D00
+str584	asc	8D"Tega ne razumem."8D00
+str585	asc	8D"Ne razumem."8D00
+str586	asc	8D"Ne poznam teh ukazov."8D00
+str587	asc	8D"Ne razumem."8D00
 str588	asc	8D"OK"8D00
-str589	asc	8D"Okey dokey"8D00
-str590	asc	8D"All right"8D00
+str589	asc	8D"Seveda."8D00
+str590	asc	8D"V redu."8D00
 
-strIMPOSSIBLE	asc	8D"Not possible "00
-strCECHEMIN	asc	"to take this path"00
-strEXCLAM	asc	" !"8D00
-strREPLAY	asc	8D"Do you want to play again? "00
-strPERDU	asc	"IN THIS PAINFUL HOUR, I APPLE ][ I have the terrible duty to announce the"
-	asc	"tragic death of your own person in the formidable KIKEKANKOI, but perhaps you already knew...?"8D
+strIMPOSSIBLE	asc	8D"Nemogoce "00
+strCECHEMIN	asc	"ubrati to pot "00
+strEXCLAM	asc	"!"8D00
+strREPLAY	asc	8D"Nova igra? "00
+strPERDU	asc	"V TEM TRENUTKU, TI JAZ APPLE ]["8D
+	asc	"sporocam, da te je doletela"8D
+	asc	"tragicna smrt."8D
+	asc	"Ampak, to verjetno ze ves ... "8D
 	asc	8D
-	asc	"Your funeral was respectable, for the proof of courage you had given and for the person who at this time is still a prisoner of the mysterious city..."00
-strPERDU2	asc	8D8D"WOW... Yes, I know, burials are always too long..."8D8D00
-strGAGNE	asc	"Awesome..., coming out of KIKEKANKOI alive, you had to do it, especially since you didn't even scratch a finger! But don't stick around too long, because"
-	asc	"the mad scientist may still have some experiments to do on you, like grafting you a monkey's head or a 64 KB brain..."8D
+	asc	"Imel si spokojen pogreb,"8D
+	asc	"bil si pravi junak."8D
+	asc	"Ampak, nekdo je se vedno ujet"8D
+	asc	"v skrivnostnem svetu te igre..."00
+strPERDU2	asc	8D8D"VEM... pogrebi zmeraj trajajo predolgo..."8D8D00
+strGAGNE	asc	"Odlicno..., resil si uganko KIKEKANKOI"8D
+	asc	"in to ziv. Se prsta si nisi poskodoval."8D
+	asc	"Toda ne veseli se predolgo!"8D
+	asc	"Nori znanstvenik bo uporabil tebe"8D
+	asc	"kot preizkus... in preveril, ce imas"8D
+	asc	"v glavi vsaj 64 KB spomina"8D
 	asc	8D
-	asc	"Thank you for staying at your keyboard for so long and again all my congratu- -lations"8D8D00
+	asc	"Hvala ker si tako dolgo vstrajal"8D
+	asc	"za tipkovnico-cestitke se enkrat"8D
+	asc	"za potrpezljivost."8D8D00
 
 *-----------------------------------
 * LES DONNEES
@@ -299,7 +315,7 @@ tblA1	dfb	$bd
 	dfb	11,11,11,11,11,11,11,11,11,11
 	dfb	63,63,19,19,19,19,24,24,24,24
 *	dfb	24,11,51,19,19,51,56,56,26,57 DEBR BATT x 2 (56 => 100)
-	dfb	24,11,51,19,19,51,100,100,26,57	; FROM 100 -> 96
+	dfb	24,11,51,19,19,51,100,100,26,57
 	dfb	12,16,24,58,12,59,54,57,24,12
 	dfb	12,12,12,62,62,12,20,10,10,10
 	dfb	10,10,10,10,10,10,10,10,10,10
@@ -365,11 +381,11 @@ refO	dfb	$bd
 	dfb	35,00,47,47,47,46,44,50,50,49
 	dfb	54,42,45,00,00,53,40
 
-O	dfb	$bd
-	dfb	02,00,05,00,14,00,00,19,00,00
-	dfb	20,00,18,15,17,26,27,28,33,34
-	dfb	35,00,47,47,47,46,44,50,50,49
-	dfb	54,42,45,00,00,53,40
+*O	dfb	$bd
+*	dfb	02,00,05,00,14,00,00,19,00,00
+*	dfb	20,00,18,15,17,26,27,28,33,34
+*	dfb	35,00,47,47,47,46,44,50,50,49
+*	dfb	54,42,45,00,00,53,40
 
 refO$	da	$bdbd
 	da	O$1,O$2,O$3,O$4,O$5,O$6,O$7,O$8,O$9,O$10
@@ -383,43 +399,43 @@ tblO$	da	$bdbd
 	da	O$21,O$22,O$23,O$24,O$25,O$26,O$27,O$28,O$29,O$30
 	da	O$31,O$32,O$33,O$34,O$35,O$36,O$37
 
-O$1 	asc	"A battery"00
-O$2 	asc	"A connected battery"00
-O$3 	asc	"A boat"00
+O$1 	asc	"Baterija"00
+O$2 	asc	"Priklopljena baterija"00
+O$3 	asc	"Coln"00
 O$4 	asc	"X"00
-O$5 	asc	"A bucket"00
-O$6 	asc	"A bucket full of sand"00
-O$7 	asc	"A bucket full of water"00
-O$8 	asc	"An electric lamp"00
-O$9 	asc	"A lamp with a bulb"00
-O$10 	asc	"A burning lamp"00
-O$11 	asc	"A flask"00
-O$12 	asc	"A key"00
-O$13 	asc	"A bottle"00
-O$14 	asc	"A book"00
-O$15 	asc	"A pass everywhere"00
-O$16 	asc	"A screwdriver"00
-O$17 	asc	"A delta plane"00
-O$18 	asc	"A rope ladder"00
-O$19 	asc	"A tube of glue"00
-O$20 	asc	"A light bulb"00
-O$21 	asc	"A box"00
-O$22 	asc	"Broken glass"00
-O$23 	asc	"A gas mask"00
-O$24 	asc	"Quinine"00
-O$25 	asc	"An aspirin"00
-O$26 	asc	"A pair of espadrilles"00
-O$27 	asc	"A dress"00
-O$28 	asc	"A wallet"00
-O$29 	asc	"A brooch"00
-O$30 	asc	"A harness"00
-O$31 	asc	"An insecticide bomb"00
-O$32 	asc	"An axe"00
-O$33 	asc	"A pot of cream"00
-O$34 	asc	"A wad of notes"00
-O$35 	asc	"Your shoes"00
-O$36 	asc	"A super pretty girl tied up and naked"00
-O$37 	asc	"A mallet"00
+O$5 	asc	"Vedro"00
+O$6 	asc	"Vedro polno peska"00
+O$7 	asc	"Vedro polno vode"00
+O$8 	asc	"Elektricno svetilko"00
+O$9 	asc	"Svetilko z zarnico"00
+O$10 	asc	"Goreco svetilko"00
+O$11 	asc	"Ampula"00
+O$12 	asc	"Kljuc"00
+O$13 	asc	"Steklenico"00
+O$14 	asc	"Knjigo"00
+O$15 	asc	"Prepustnico"00
+O$16 	asc	"Izvijac"00
+O$17 	asc	"Letalo"00
+O$18 	asc	"Vrvna lestev"00
+O$19 	asc	"Tuba lepila"00
+O$20 	asc	"Zarnica"00
+O$21 	asc	"Skatla"00
+O$22 	asc	"Razbito steklo"00
+O$23 	asc	"Plinska maska"00
+O$24 	asc	"Rastlinska spojina"00
+O$25 	asc	"Aspirin"00
+O$26 	asc	"Pleteni cevlji"00
+O$27 	asc	"Obleka"00
+O$28 	asc	"Denarnica"00
+O$29 	asc	"Broska"00
+O$30 	asc	"Jermen"00
+O$31 	asc	"Insekticidna bomba"00
+O$32 	asc	"Sekira"00
+O$33 	asc	"Krema"00
+O$34 	asc	"Note"00
+O$35 	asc	"Tvoji cevlji"00
+O$36 	asc	"Privezano golo dekle"00
+O$37 	asc	"Kladivo"00
 
 *
 * Les directions
@@ -499,7 +515,7 @@ M$58	dfb	01,57,00
 * on fera index-1 b/c 8-bits
 *
 
-V	=	130+3
+V	=	130+6
 
 tblVL$	dfb	$bd
 	dfb	<V$1,<V$2,<V$3,<V$4,<V$5,<V$6,<V$7,<V$8,<V$9,<V$10
@@ -515,7 +531,7 @@ tblVL$	dfb	$bd
 	dfb	<V$101,<V$102,<V$103,<V$104,<V$105,<V$106,<V$107,<V$108,<V$109,<V$110
 	dfb	<V$111,<V$112,<V$113,<V$114,<V$115,<V$116,<V$117,<V$118,<V$119,<V$120
 	dfb	<V$121,<V$122,<V$123,<V$124,<V$125,<V$126,<V$127,<V$128,<V$129,<V$130
-	dfb	<V$201,<V$202,<V$203
+	dfb	<V$201,<V$202,<V$203,<V$204,<V$205,<V$206
 	
 tblVH$	dfb	$bd
 	dfb	>V$1,>V$2,>V$3,>V$4,>V$5,>V$6,>V$7,>V$8,>V$9,>V$10
@@ -531,7 +547,7 @@ tblVH$	dfb	$bd
 	dfb	>V$101,>V$102,>V$103,>V$104,>V$105,>V$106,>V$107,>V$108,>V$109,>V$110
 	dfb	>V$111,>V$112,>V$113,>V$114,>V$115,>V$116,>V$117,>V$118,>V$119,>V$120
 	dfb	>V$121,>V$122,>V$123,>V$124,>V$125,>V$126,>V$127,>V$128,>V$129,>V$130
-	dfb	>V$201,>V$202,>V$203
+	dfb	>V$201,>V$202,>V$203,>V$204,>V$205,>V$206
 	
 tblV	dfb	$bd
 	dfb	01,01,02,02,03,03,04,04,05,05
@@ -547,143 +563,147 @@ tblV	dfb	$bd
 	dfb	77,78,78,78,79,79,79,80,81,82
 	dfb	83,84,85,86,87,88,89,90,91,92
 	dfb	93,93,94,94,96,97,98,99,75,100
-	dfb	201,202,203
+	dfb	201,202,203,204,205,206
 	
-V$1	str	"N"   	; "N"
-V$2	str	"NORT"	; "NORD"
-V$3	str	"S"   	; "S"
-V$4	str	"SOUT" 	; "SUD"
-V$5	str	"E"   	; "E"
-V$6	str	"EAST" 	; "EST"
-V$7	str	"W"   	; "O"
-V$8	str	"WEST"	; "OUES"
-V$9	str	"U"   	; "M"
-V$10	str	"UP"	; "MONT"
-V$11	str	"CLIM"	; "GRIM"
-V$12	str	"DOWN"	; "DESC"
+V$1	str	"S"   	; "N"
+V$2	str	"SEVE"	; "NORD"
+V$3	str	"J"   	; "S"
+V$4	str	"JUG" 	; "SUD"
+V$5	str	"V"   	; "E"
+V$6	str	"VZHO" 	; "EST"
+V$7	str	"Z"   	; "O"
+V$8	str	"ZAHO"	; "OUES"
+V$9	str	"G"   	; "M"
+V$10	str	"GOR"	; "MONT"
+V$11	str	"PLEZ"	; "GRIM"
+V$12	str	"DOL"	; "DESC"
 V$13	str	"D"   	; "D"
-V$14	str	"ENTE"	; "ENTR"
-V$15	str	"ADVA"	; "AVAN"
-V$16	str	"TAKE"	; "PREN"
-V$17	str	"PICK"	; "RAMA"
-V$18	str	"DROP"	; "POSE"
-V$19	str	"LEAV"	; "LAIS"
-V$20	str	"OPEN"	; "OUVR"
-V$21	str	"CLOS"	; "FERM"
-V$22	str	"LIGH"	; "ALLU"
-V$23	str	"ILLU"	; "ECLA"
-V$24	str	"SWIT"	; "ETEI"
-V$25	str	"STOP"	; "ARRE"
-V$26	str	"READ" 	; "LIS"
-V$27	str	"READ" 	; "LIT"
-V$28	str	"LOOK"	; "REGA"
-V$29	str	"FILL"	; "REMP"
-V$30	str	"EMPT"	; "VIDE"
+V$14	str	"VSTO"	; "ENTR"
+V$15	str	"NAPR"	; "AVAN"
+V$16	str	"VZEM"	; "PREN"
+V$17	str	"POBE"	; "RAMA"
+V$18	str	"SPUS"	; "POSE"
+V$19	str	"ZAPU"	; "LAIS"
+V$20	str	"ODPR"	; "OUVR"
+V$21	str	"ZAPR"	; "FERM"
+V$22	str	"PRIZ"	; "ALLU"
+V$23	str	"OSVE"	; "ECLA"
+V$24	str	"PREK"	; "ETEI"
+V$25	str	"USTA"	; "ARRE"
+V$26	str	"BERI" 	; "LIS"
+V$27	str	"PREB" 	; "LIT"
+V$28	str	"POGL"	; "REGA"
+V$29	str	"NAPO"	; "REMP"
+V$30	str	"IZPR"	; "VIDE"
 V$31	str	"INVE"	; "INVE"
-V$32	str	"NOTH"	; "RIEN"
-V$33	str	"WAIT"	; "ATTE"
-V$34	str	"HIT"	; "FRAP"
-V$35	str	"KNOC"	; "ASSO"
-V$36	str	"ATTA"	; "ATTA"
-V$37	str	"PUSH"	; "POUS"
-V$38	str	"PULL"	; "TIRE"
-V$39	str	"DISC"	; "JETT"
-V$40	str	"EAT"	; "MANG"
-V$41	str	"TAST"	; "GOUT"
-V$42	str	"DRIN"	; "BOIS"
-V$43	str	"THRO"	; "LANC"
-V$44	str	"BOAT"	; "BARQ"
+V$32	str	"NICE"	; "RIEN"
+V$33	str	"POCA"	; "ATTE"
+V$34	str	"UDAR"	; "FRAP"
+V$35	str	"IZBI"	; "ASSO"
+V$36	str	"NAPA"	; "ATTA"
+V$37	str	"PORI"	; "POUS"
+V$38	str	"POTE"	; "TIRE"
+V$39	str	"ZAVR"	; "JETT" ;*?
+V$40	str	"JEJ"	; "MANG"
+V$41	str	"OKUS"	; "GOUT"
+V$42	str	"PIJ"	; "BOIS"
+V$43	str	"VRZI"	; "LANC"
+V$44	str	"COLN"	; "BARQ"
 V$45	str	"RAFT"	; "RADE"
-V$46	str	"BOTT"	; "BOUT"
-V$47	str	"MESS"	; "MESS"
-V$48	str	"BUCK"	; "SEAU"
-V$49	str	"MANU"	; "MANU"
-V$50	str	"BOOK"	; "LIVR"
-V$51	str	"LADD"	; "ECHE"
-V$52	str	"PASS"	; "PASS"-age
-V$53	str	"LAMP"	; "LAMP"
-V$54	str	"TORC"	; "TORC"
-V$55	str	"BATT"	; "BATT"
-V$56	str	"FLAS"	; "FIOL"
-V$57	str	"DELT"	; "DELT"
-V$58	str	"WICK"	; "TOUR" - TOURNEVIS = UNE MECHE
-V$59	str	"BULB"	; "AMPO"
-V$60	str	"BOX"	; "BOIT"
-V$61	str	"KEY"	; "CLEF"
-V$62	str	"POT"	; "MARM"
-V$63	str	"RING"	; "ANNE"
-V$64	str	"RED"	; "ROUG"
-V$65	str	"GREE"	; "VERT"
-V$66	str	"BLUE"	; "BLEU"
-V$67	str	"TRAP"	; "TRAP"
-V$68	str	"SAND"	; "SABL"
+V$46	str	"STEK"	; "BOUT"
+V$47	str	"SPOR"	; "MESS" ;*?
+V$48	str	"VEDR"	; "SEAU" ;*?
+V$49	str	"NAVO"	; "MANU" ;*?
+V$50	str	"KNJI"	; "LIVR"
+V$51	str	"LEST"	; "ECHE" ;*?
+V$52	str	"PREP"	; "PASS"-age ;*?
+V$53	str	"SVET"	; "LAMP"
+V$54	str	"BAKL"	; "TORC"
+V$55	str	"BATE"	; "BATT"
+V$56	str	"AMPU"	; "FIOL"
+V$57	str	"LETA"	; "DELT"
+V$58	str	"VIJA"	; "TOUR" - TOURNEVIS = UNE MECHE
+V$59	str	"ZARN"	; "AMPO"
+V$60	str	"SKAT"	; "BOIT"
+V$61	str	"KLJU"	; "CLEF"
+V$62	str	"POSO"	; "MARM"
+V$63	str	"PRST"	; "ANNE"
+V$64	str	"RDEC"	; "ROUG"
+V$65	str	"ZELE"	; "VERT"
+V$66	str	"MODE"	; "BLEU"
+V$67	str	"RESE"	; "TRAP"
+V$68	str	"PESE"	; "SABL"
 V$69	str	"ROBO"	; "ROBO"
-V$70	str	"GLUE"	; "COLL"
-V$71	str	"SCRE"	; "VISS"
-V$72	str	"WATE" 	; "EAU"
-V$73	str	"BREA"	; "CASS"
-V$74	str	"TRY"	; "ESSA"
-V$75	str	"FEEL"	; "SENS"
-V$76	str	"SMEL"	; "RENI"
-V$77	str	"TAPE"	; "ADHE"
-V$78	str	"UNGL"	; "DECOller" "CUT" => "UNGLue"
-V$79	str	"PLAC"	; "PLAC"
-V$80	str	"ROW"	; "RAME"
-V$81	str	"TUBE"	; "TUBE"
-V$82	str	"CHRO"	; "CHRO"
-V$83	str	"LIST"	; "LIST"
-V$84	str	"PLUG"	; "BRAN"
-V$85	str	"STAI"	; "ESCA"
-V$86	str	"EXIT"	; "SORS"
-V$87	str	"SWAL"	; "AVAL"
-V$88	str	"MALL"	; "MAIL"
+V$70	str	"LEPI"	; "COLL"
+V$71	str	"PRIV"	; "VISS"
+V$72	str	"VODA" 	; "EAU"
+V$73	str	"RAZB"	; "CASS"
+V$74	str	"PROB"	; "ESSA"
+V$75	str	"OBCU"	; "SENS"
+V$76	str	"VOHA"	; "RENI"
+V$77	str	"TRAK"	; "ADHE"
+V$78	str	"ODLE"	; "DECO"
+V$79	str	"VSTA"	; "PLAC"
+V$80	str	"VESL"	; "RAME"
+V$81	str	"CEV"	; "TUBE"
+V$82	str	"KROM"	; "CHRO"
+V$83	str	"SEZN"	; "LIST"
+V$84	str	"VKLO"	; "BRAN"
+V$85	str	"STOP"	; "ESCA"
+V$86	str	"IZHO"	; "SORS"
+V$87	str	"POGO"	; "AVAL"
+V$88	str	"KLAD"	; "MAIL"
 V$89	str	"MASK"	; "MASQ"
-V$90	str	"BOOT"	; "CHAU"
-V$91	str	"DRES"	; "ROBE"
-V$92	str	"CARR"	; "PORT"
-V$93	str	"BROO"	; "BROC"
-V$94	str	"HARN"	; "HARN"
+V$90	str	"SKOR"	; "CHAU"
+V$91	str	"OBLE"	; "ROBE"
+V$92	str	"NOSI"	; "PORT"
+V$93	str	"BROS"	; "BROC"
+V$94	str	"JERM"	; "HARN"
 V$95	str	"BOMB"	; "BOMB"
-V$96	str	"PUT"	; "METS"
-V$97	str	"WEAR"	; "ENFI"
-V$98	str	"PASS"	; "PASS"-er
-V$99	str	"GIVE"	; "DONN"
-V$100	str	"SELL"	; "VEND"
-V$101	str	"PURC"	; "ACHE"
-V$102	str	"REMO"	; "ENLE"
-V$103	str	"TEAR"	; "ARRA"
-V$104	str	"DIG"	; "CREU"
-V$105	str	"STON"	; "PIER"
-V$106	str	"BLOC"	; "BLOC"
-V$107	str	"WALL" 	; "MUR"
+V$96	str	"POLO"	; "METS"
+V$97	str	"OBLE"	; "ENFI"
+V$98	str	"PREP"	; "PASS"-er
+V$99	str	"DAJ"	; "DONN"
+V$100	str	"PROD"	; "VEND"
+V$101	str	"KUPI"	; "ACHE"
+V$102	str	"ODST"	; "ENLE"
+V$103	str	"STRG"	; "ARRA"
+V$104	str	"ODKO"	; "CREU"
+V$105	str	"KAME"	; "PIER" ;*?
+V$106	str	"BLOK"	; "BLOC"
+V$107	str	"STEN" 	; "MUR"
 V$108	str	"ESPA"	; "ESPA"
-V$109	str	"AXE"	; "HACH"
-V$110	str	"POT" 	; "POT"
-V$111	str	"WAD"	; "LIAS"
+V$109	str	"SEKI"	; "HACH"
+V$110	str	"POSO" 	; "POT"
+V$111	str	"PAKE"	; "LIAS"
 V$112	str	"TOBA"	; "TABA"
-V$113	str	"DOCT"	; "MEDE"
-V$114	str	"SHOE"	; "CHAU"
-V$115	str	"CREA"	; "CREM"
-V$116	str	"GROC"	; "TRAI"
-V$117	str	"BAKE"	; "BOUL"
-V$118	str	"TAIL"	; "TAIL"
-V$119	str	"DRUG"	; "DROG"
+V$113	str	"ZDRA"	; "MEDE"
+V$114	str	"CEVL"	; "CHAU"
+V$115	str	"KREM"	; "CREM"
+V$116	str	"TRGO"	; "TRAI"
+V$117	str	"PEKA"	; "BOUL"
+V$118	str	"KROJ"	; "TAIL"
+V$119	str	"LEKA"	; "DROG"
 V$120	str	"TEMP"	; "TEMP"
-V$121	str	"FREE"	; "DELI"
-V$122	str	"RELE"	; "LIBE"
-V$123	str	"WOMA"	; "FEMM"
-V$124	str	"GIRL"	; "FILL"
-V$125	str	"GLAS"	; "DEBR"
+V$121	str	"OSVO"	; "DELI"
+V$122	str	"IZPU"	; "LIBE"
+V$123	str	"ZENS"	; "FEMM"
+V$124	str	"DEKL"	; "FILL"
+V$125	str	"KOZA"	; "DEBR"
 V$126	str	"ASPI"	; "ASPI"
-V$127	str	"QUIN"	; "QUIN"
-V$128	str	"END" 	; "FIN"
-V$129	str	"CLOT"	; "VETE"
+V$127	str	"SPOJ"	; "QUIN"
+V$128	str	"KONC" 	; "FIN"
+V$129	str	"OBLE"	; "VETE"
 
-V$130	str	"UNPL"	; "DEBR"-anche, index 100
+V$130	str	"ODKL"	; "DEBR"-anche, index 100
 
-V$201	str	"QUIT"
-V$202	str	"CASE"
-V$203	str	"ENER"
+V$201	str	"KONC"	; QUIT
+V$202	str	"PISA"	; CASE
+V$203	str	"ENER"	; ENERGY
+V$204	str	"DEBU"	; DEBUG
+V$205	str	"LOAD"	; LOAD
+V$206	str	"SAVE"	; SAVE
+
 
 *
 * Les lieux (str8xxx)
@@ -693,64 +713,64 @@ V$203	str	"ENER"
 *		"0123456789012345678901234567890123456789"
 *		"----------------------------------------"
 
-str8010	asc	"The demon's lair. You are in a cave..."00
-str8020	asc	"The surgeon's landmark with a door to the south, there's lots of chirurgical photos on the walls"00
-str8030	asc	""00
-str8040	asc	"The wizard's lair"00
-str8050	asc	"On the edge of the lake. You are on the edge of an underground lake"00
+str8010	asc	"Demonov brlog. Jama obdana s temo in skrivnostmi."00
+str8020	asc	"Kirurgovo skrivalisce. Na juzni strani vidis stevilne fotografije raznih posegov."00
+str8030	asc	"Carovnikov brlog"00
+str8040	asc	"Si v predoru nad"8D
+str8050	asc	"podzemnim jezerom."00
 str8060	asc	""00
-str8070	asc	"The reader's landmark"00
-str8080	asc	"To the north, a sandbank. You are on the side of the lake, the only path is to the north in the form of a sandbar"00
-str8090	asc	"The end of the lake."00
-str8100	asc	"The mechnical room."00
-str8110	asc	"An empty cave."00
-str8120	asc	"The rage trap. There is a trap on the ground, fitted with a lock."00
-str8130	asc	"There's a door to the south marked EXIT."00
-str8140	asc	"There's a door to the south with day of light filtering underneath"00
-str8150	asc	"The reader's den"00
-str8160	asc	"There are three pots with red, green and blue soups"00
-str8170	asc	"The workshop."00
-str8180	asc	"In a frail droge made of tape and rotten wood, close to the shore."00
-str8190	asc	"The room of lights."00
-str8200	asc	"The alchemist's refuge"00
-str8210	asc	"The fakir's cottage. There is a ring fixed on the wall"00
-str8220	asc	"The lair of truth"00
-str8230	asc	"The madman's den."00
-str8240	asc	"The skinny guy's lair"00
-str8250	asc	"The embalmer's landmark."00
-str8260	asc	"The handyman's cottage. There is an opening to the south..."00
-str8270	asc	"The fugitive's place. There's a trapdoor"00
-str8280	asc	"The mountaineer's refuge."00
-str8290	asc	"The path of rodents."00
-str8300	asc	"The antechamber of death."00
-str8310	asc	"Noise in the east. A door marked DANGER to the south"00
-str8320	asc	"Light in the south. There's a passage to the south where funny noises come from"00
-str8330	asc	"The maniac's lair"00
-str8340	asc	"The rat den. There are rats everywhere..."00
-str8350	asc	"The survivor's room."00
-str8360	asc	"The creamery and the tailor."00
-str8370	asc	"Tobacco shop and bakery."00
-str8380	asc	"The grocery."00
-str8390	asc	"The doctor and the bootmaker."00
-str8400	asc	"The northwest corner of the city."00
-str8410	asc	"The end of the city!"00
-str8420	asc	"In the tobacco shop. The salesman sleeps on the counter"00
+str8070	asc	"Prostor za svobodonjake."00
+str8080	asc	"Si ob jezeru, po tleh so sipine peska."00
+str8090	asc	"Si na drugem koncu jezera."00
+str8100	asc	"Mehanicna soba."00
+str8110	asc	"Si v prazni jami."00
+str8120	asc	"Na tleh vidis resetko, na kateri je kljucavnica."00
+str8130	asc	"Na jugu so vrata z napisom IZHOD."00
+str8140	asc	"Bezna svetloba sije po tleh."00
+str8150	asc	"Baronov brlog"00
+str8160	asc	"Vidis tri posode z rdeco, zeleno in modro juho."00
+str8170	asc	"Si v jamski delavnici."00
+str8180	asc	"Vidis tudi zalepljen trak lepila ob robu colna."00
+str8190	asc	"Soba svetlobe."00
+str8200	asc	"Alkimistovo zatocisce."00
+str8210	asc	"Carovnikova koca. Vidis tudi prstan pricvrscen na steno"00
+str8220	asc	"Brlog resnice."00
+str8230	asc	"Brlog norcev."00
+str8240	asc	"Brlog nesramnega cloveka."00
+str8250	asc	"Zaviti brlog."00
+str8260	asc	"Mojstrova koca. Odprtina je na jugu..."00
+str8270	asc	"Prostor begunca. Vidis resetke."00
+str8280	asc	"Soba s stopnicami."00
+str8290	asc	"Pot glodalcev s skrivnimi prehodi."00
+str8300	asc	"Si v predoru smrti."00
+str8310	asc	"Slisi se hrup na vzhodu. Vrata oznacena NEVARNOST na jugu."00
+str8320	asc	"Vidis svetlobo na jugu. Vidis prehod na jug slisis cudne zvoke"00
+str8330	asc	"Manijakov brlog."00
+str8340	asc	"Podganje gnezdo. Povsod same podgane..."00
+str8350	asc	"Soba prezivelih."00
+str8360	asc	"Prodajalna krem in krojac."00
+str8370	asc	"Tobacna in pekarna."00
+str8380	asc	"Prodajalna."00
+str8390	asc	"Zdravnik in cevljar."00
+str8400	asc	"Severozahod mesta."00
+str8410	asc	"Konec mesta!"00
+str8420	asc	"V tobacni. Prodajalec spi za pultom."00
 str8430	asc	""00
-str8440	asc	"At the tailor's. There are plenty of clothes for sale"00
-str8450	asc	"You are in the creamery."00
-str8460	asc	"You are at the bootmaker's. The store is well stocked"00
-str8470	asc	"At the doctor's. The doctor left"00
-str8480	asc	"You are facing the drugstore."00
-str8490	asc	"In the drugstore."00
-str8500	asc	"The southeast corner of the city."00
-str8510	asc	"In front of a monument..? The famous Temple to the glory of the GREAT KiKeKanKoi"00
-str8520	asc	"What do you sell?"00
-str8530	asc	"The good deed room"00
-str8540	asc	"The exterminator's mausoleum."00
-str8550	asc	"The heart of the Temple."00
-str8560	asc	"The venere's lair. There is a door to the south"00
-str8570	asc	"The path of the dipterans."00
-str8580	asc	"The lair of the victorious. You are in a recess whose walls are made of stone blocks."00
+str8440	asc	"Pri Krojacu. Veliko oblacil je na prodaj."00
+str8450	asc	"Si v prodajalni krem."00
+str8460	asc	"Si pri cevljarju. Trgovina ima polno zalog."00
+str8470	asc	"Pri zdravniku. Zdravnik je odsel."00
+str8480	asc	"Nasproti lekarne."00
+str8490	asc	"V lekarni."00
+str8500	asc	"Jugovzhod mesta."00
+str8510	asc	"Pred kipom ...? Priznani tempel slavi VELIKEGA KiKeKanKoi-a"00
+str8520	asc	"Kaj prodajate?"00
+str8530	asc	"Soba dobrih dejanj."00
+str8540	asc	"Iztrebljevalcev mavzolej."00
+str8550	asc	"Srce templja."00
+str8560	asc	"Venerin brlog. Vrata so na jugu."00
+str8570	asc	"Pot netopirjev."00
+str8580	asc	"Brlog zmagovalcev. Si v prostoru, katere stene so narejene iz kamna."00
 str8590	asc	""00
 str8600	asc	""00
 
@@ -762,83 +782,83 @@ str8600	asc	""00
 *		"0123456789012345678901234567890123456789"
 *		"----------------------------------------"
 
-str4010	asc	"You have arrived in the dissection room, and you didn't last long"00
-str4020	asc	"You fell into the incinerator organs..."00
-str4030	asc	"You just fell in a precipice of at least 200 m."00
-str4040	asc	"This soup had sulfuric acid perfume... Hum! Sweet death."00
-str4050	asc	"Nothing happens, it always does a winning meal."00
-str4060	asc	"The soup is euphoric, you have it vision of a golden city."00
-str4070	asc	"You die choking in quicksand..."00
-str4080	asc	"You stumble when approaching him.... Yum, yum (piranhas)."00
-str4090	asc	"Deadly gases are escaping from the bottle... it's sad."00
-str4100	asc	"A wall panel rotates, COBRAS in come out... Goodbye!"00
-str4110	asc	"You trip and impale yourself on the screwdriver."00
-str4120	asc	"You have been crushed!!!"00
-str4130	asc	"The robot is crushing your bones..."00
-str4140	asc	"A rung of the ladder comes loose."00
-str4150	asc	"You didn't know how to fly the DELTA- PLANE... Goodbye!"00
-str4160	asc	"I wondered if learning using a DELTA- PLANE in 10 lessons was OK."00
-str4170	asc	"You were hit by a hydraulic pump..."00
-str4180	asc	"You are burning on the generator of the operating room."00
-str4190	asc	"You slip on the way up, the glue squirts in your eyes."00
-str4200	asc	"Water is touching the electrical system... You are grilling..."00
-str4210	asc	"Madness has taken you (empty an empty bucket), you commit suicide."00
-str4220	asc	"You electrocute the robot, but you also at the same time."00
-str4230	asc	"Little genius, eh? You stopped the robot mechanism."00
-str4240	asc	"You stuck your fingers together and, in wanting to separate them with a razor blade, you cut your throat."00
-str4250	asc	"Oh thank you, thank you very much... SMACK!"00
-str4260	asc	"You already did it."00
-str4270	asc	"Maybe we should unplug it battery."00
-str4280	asc	"This book teaches DELTA-PLANE in 10 lessons."00
-str4290	asc	"The place is a little too cramped to try such a thing."00
-str4300	asc	"Are you planning to shoot up?"00
-str4310	asc	"The box explodes!"00
-str4320	asc	"There is a key under the sticker."00
-str4330	asc	"This time you removed too much, the boat goes to pieces."00
-str4340	asc	"The hatch is locked."00
-str4350	asc	"The key does not work with this lock."00
-str4360	asc	"The walls are getting closer to each others, you are flattened."00
-str4370	asc	"You don't have any time left!"00
-str4380	asc	"Maybe we need electricity.."00
-str4390	asc	"Maybe we should screw one in light bulb."00
-str4400	asc	"IMPOSSIBLE"00
-str4410	asc	"You fall into a coffin that closes on you."00
-str4420	asc	"You must have caught rabies from rats..."00
-str4430	asc	"You have difficulty digesting the soup, it's intoxication."00
-str4440	asc	"You were electrocuted by the lamp."00
-str4450	asc	"By remaining in the dark, you've gone crazy!"00
-str4460	asc	"You cannot take, you must buy."00
-str4470	asc	"The merchant is crazy, he jumps on you and he kills you."00
-str4480	asc	"Hey! He! We're not going into a temple with his shoes, the guards kill you"00
-str4490	asc	"The room was full of tse-tse flies!!!"00
-str4500	asc	"The walls are collapsing on you, you shouldn't have left her, you big coward."00
-str4510	asc	"Congratulations."00
-str4520	asc	"We should have put the mask on, the gases kill you!"00
-str4530	asc	"The girl didn't have a mask, she dies and so do you (remorse...)."00
-str4540	asc	"The girl was naked, she could not follow you. To take revenge she cuts your throat with the broken glass."00
-str4550	asc	"You have nothing to slice strings."00
-str4560	asc	"You should've turned off the lamp before to unplug. What a short circuit!!!"00
-str4570	asc	"The owner of the wallet had to have leprosy..."00
-str4580	asc	"You trip over the axe... So much blood..."00
-str4590	asc	"Here at last is the city of the maimed. Poor survivors of the experiments cruels of the mad scientist."8D00
-str4600	asc	"You must have had a hard time."00
-str4610	asc	"The quinine was too strong, you die poisoned..."00
-str4620	asc	"I'm not interested."00
-str4630	asc	"So, what are you doing here?"00
-str4640	asc	"If you'd like to waste time"00
-str4650	asc	"Oh thank you, thank you very much... ' SMACK '"00
+str4010	asc	"Prisli ste v sobo za seciranje, in nisi dolgo zdrzal"00
+str4020	asc	"Padel si v sezigalnico organov..."00
+str4030	asc	"Pravkar si padel v prepad najmanj 200 m."00
+str4040	asc	"Ta juha ima vonj po zveplovi kislini... Hm! Sladka smrt."00
+str4050	asc	"Nic se ne zgodi, ocitno je to zmagovalni obrok."00
+str4060	asc	"Juha je evforicna, vi jo imate zlatega mesta."00
+str4070	asc	"Umres zadusen v zivem pesku..."00
+str4080	asc	"Spotaknete se, ko se mu priblizate.... Yum, yum (piranje)."00
+str4090	asc	"Smrtonosni plini uhajajo iz steklenice... zalostno."00
+str4100	asc	"Stenska plosca se vrti, vstopijo KOBRE... Nasvidenje!"00
+str4110	asc	"Spotaknete se in se nabodete na izvijac."00
+str4120	asc	"Zdrobljen si bil!!!"00
+str4130	asc	"Robot ti drobi kosti..."00
+str4140	asc	"Precka lestve se zrahlja."00
+str4150	asc	"Niste znali leteti z DELTA-LETALOM ... Nasvidenje!"00
+str4160	asc	"Spraseval sem se, ali je ucenje letenja DELTA-LETALA v 10 lekcija dovolj."00
+str4170	asc	"Zadela vas je hidravlicna crpalka..."00
+str4180	asc	"Gorite na generatorju operacijske sobe."00
+str4190	asc	"Na poti navzgor ti spodrsne, lepilo brizgne v tvoje oci."00
+str4200	asc	"Voda se dotika elektrike sistema ... pecete se na zaru..."00
+str4210	asc	"Zajela vas je norost (prazno vedro), naredil si samomor."00
+str4220	asc	"Robota ubijete z elektricnim udarom, istocasno tudi sebe."00
+str4230	asc	"Mali genij, kajne? Ustavili si robota..."00
+str4240	asc	"Stisnil si, si prste skupaj ko jih zelis lociti z rezilom, si prerezes vrat."00
+str4250	asc	"Oh hvala, najlepsa hvala... CMOK!"00
+str4260	asc	"To si ze naredil."00
+str4270	asc	"Mogoce bi morali odklopiti baterijo."00
+str4280	asc	"Ta knjiga te nauci DELTA-PLANE v 10 lekcijah."00
+str4290	asc	"Mesto je malo pretesno, da bi poskusil tako stvar."00
+str4300	asc	"Ali nameravas streljati?"00
+str4310	asc	"Skatla eksplodira!"00
+str4320	asc	"Pod nalepko je kljuc."00
+str4330	asc	"Tokrat ste odstranili prevec, coln gre na koscke."00
+str4340	asc	"Loputa je zaklenjena."00
+str4350	asc	"Kljuc ne deluje s to kljucavnico."00
+str4360	asc	"Zidovi so vse blizje, stisnili so te."00
+str4370	asc	"Nimate vec casa!"00
+str4380	asc	"Mogoce potrebujemo elektriko.."00
+str4390	asc	"Mogoce bi moral priviti zarnico."00
+str4400	asc	"NEMOGOCE"00
+str4410	asc	"Padel is v krsto, katere pokrov se je zaprl in zaprl tudi tebe."00
+str4420	asc	"Verjetno si dobil steklino od podgan..."00
+str4430	asc	"Tezko prebavis juho, zastrupis se."00
+str4440	asc	"Stresla te je svetilka."00
+str4450	asc	"Ker si predolgo stal v temi se ti je zmesalo!"00
+str4460	asc	"Ne mores uzeti, moras kupiti."00
+str4470	asc	"Prodajalec je nor, skoci nate in te ubije."00
+str4480	asc	"Hej! He! ne gres v temple ubije te strazar."00
+str4490	asc	"Soba je polna muh!!!"00
+str4500	asc	"Stene padajo nate, ne bi je smel zapustiti, strahopetec."00
+str4510	asc	"Cestitamo."00
+str4520	asc	"Moral bi uporabiti masko plini te ubijejo!"00
+str4530	asc	"Dekle ni imelo maske zato umre, prav tako tudi ti ..."00
+str4540	asc	"Dekle je golo, ne more te slediti. V besu pobere steklo in ti prereze vrat."00
+str4550	asc	"Nimas nicesar, da bi lahko prerezal strune."00
+str4560	asc	"Prej bi moral ugasniti svetilko, povzrocil si kratek stik!!!"00
+str4570	asc	"Lastnik denarnice je bil verjetno gobav..."00
+str4580	asc	"Spotaknil si se ob sekiro... koliko krvi ..."00
+str4590	asc	"Koncno mesto pohabljenih. Ubozci, ki so preziveli eksperimente. Krutosti norega znanstvenika."8D00
+str4600	asc	"Izgleda, da ti je tezko."00
+str4610	asc	"Spojina je bila premocna, zato si se zastrupil..."00
+str4620	asc	"Me ne zanima."00
+str4630	asc	"Kaj delas tukaj??"00
+str4640	asc	"Ce bi rad zapravljal cas."00
+str4650	asc	"Oh, hvala, najelpsa hvala ..."A7" CMOK "A700
 
 tbl4660	da	$bdbd
 	da	str4670,str4680,str4690,str4700
 	da	str4710,str4720,str4730,str4740
 	da	str4750
 	
-str4670	asc	8D"Be strong, think of the reward..."00
-str4680	asc	8D"Hum! There is an idea in what you do."00
-str4690	asc	8D"I wouldn't have thought of doing that."00
-str4700	asc	8D"Are you familiar with adventure games?"00
-str4710	asc	8D"What a funny idea!"00
-str4720	asc	8D"Why not?"00
-str4730	asc	8D"What an adventurer you are... fiiuuue"00
-str4740	asc	8D"At this rate, you will eventually get"8D"there"00
-str4750	asc	8D"You don't have oil, but you have ideas"00
+str4670	asc	8D"Bodi mocan, pomisli na nagrado ..."00
+str4680	asc	8D"Hm! Imam idejo."00
+str4690	asc	8D"Ne bi se spomnil kaj takega."00
+str4700	asc	8D"Poznas avanture?"00
+str4710	asc	8D"Dobra ideja!"00
+str4720	asc	8D"Zakaj ne?"00
+str4730	asc	8D"Kaksen avanturist ... fijuu"00
+str4740	asc	8D"S taksnim tempom, mogoce prides."00
+str4750	asc	8D"Nimas olja, imas pa ideje."00

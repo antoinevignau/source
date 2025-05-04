@@ -9,40 +9,18 @@
 * Les chaines standards
 *
 
-strVOUSDETENEZ
-	asc	8D"Vous avez en votre possession : "00
-
-strVOUSRIEN
-	asc	8D"Pas la peine de regarder, vous n"A7"avez"8D
-	asc	"rien sur vous"00
-
-strPOINT
-	asc	"."00
-	
-strEVIDENT
-	asc	8D"Vous vous prenez pour HULK..., vous ne"8D
-	asc	"pouvez porter tant de choses !"8D00
-
-strVOUSLAVEZ
-	asc	8D"Vous l"A7"avez deja. Si votre memoire"8D
-	asc	"est mauvaise, faites une liste"8D00
-	
-strNOTOWNED
-	asc	8D"Jusqu"A7"a nouvel ordre, on ne peut poser"8D
-	asc	"ce que l"A7"on ne possede pas..."8D00
-
-strDACCORD
-	asc	"D"A7"accord"00
-
-strILFAITNOIR
-	asc	"Il fait trop sombre pour voir quelque"8D
-	asc	"chose, il faudrait peut-etre allumer"8D00
-
+strVOUSDETENEZ	asc	8D"Vous avez en votre possession : "00
+strVOUSRIEN	asc	8D"Pas la peine de regarder, vous n'avez rien sur vous"00
+strPOINT	asc	"."00
+strEVIDENT	asc	8D"Vous vous prenez pour HULK..., vous ne pouvez porter tant de choses !"8D00
+strVOUSLAVEZ	asc	8D"Vous l'avez deja. Si votre memoire est mauvaise, faites une liste"8D00
+strNOTOWNED	asc	8D"Jusqu'a nouvel ordre, on ne peut poser ce que l'on ne possede pas..."8D00
+strDACCORD	asc	"D'accord"00
+strILFAITNOIR	asc	"Il fait trop sombre pour voir quelque chose, il faudrait peut-etre allumer"8D00
 strILYA	asc	8D"Ici, il y a egalement :"00
 strCOMMA	asc	","00
 strSPACE	asc	8D" "00
 strRETURN	asc	8D00
-
 strCMD	asc	8D"Votre commande ? "00
 
 strCOMMANDE	asc	8D"Commande ("
@@ -52,59 +30,29 @@ tbl580	da	$bdbd
 	da	str581,str582,str583,str584,str585
 	da	str586,str587,str588,str589,str590
 	
-str581	asc	8D"Ne racontez pas n"A7"importe quoi"8D00
+str581	asc	8D"Ne racontez pas n'importe quoi"8D00
 str582	asc	8D"Pardon"8D00
 str583	asc	8D"Comment"8D00
 str584	asc	8D"Je ne comprends pas"8D00
-str585	asc	8D"Sorry, I don"A7"t understand"8D00
-str586	asc	8D"Les rigolos qui m"A7"ont programme ne m"A7"ont"
-	asc	"pas appris ce vocabulaire"8D00
-str587	asc	8D"Je n"A7"ai pas compris"8D00
+str585	asc	8D"Sorry, I don't understand"8D00
+str586	asc	8D"Les rigolos qui m'ont programme ne m'ont pas appris ce vocabulaire"8D00
+str587	asc	8D"Je n'ai pas compris"8D00
 str588	asc	8D"OK"8D00
 str589	asc	8D"Ca marche"8D00
-str590	asc	8D"D"A7"accord"8D00
+str590	asc	8D"D'accord"8D00
 
-strIMPOSSIBLE
-	asc	8D"Impossible "00
-strCECHEMIN
-	asc	"de prendre ce chemin"00
-strEXCLAM
-	asc	" !"8D00
-
+strIMPOSSIBLE	asc	8D"Impossible "00
+strCECHEMIN	asc	"de prendre ce chemin"00
+strEXCLAM	asc	" !"8D00
 strREPLAY	asc	8D"Voulez-vous rejouer ? "00
-
-strPERDU
-	asc	"EN CETTE HEURE PENIBLE, MOI APPLE ]["8D8D
-	asc	"J"A7"ai le terrible devoir de vous"8D
-	asc	"annoncer la mort tragique de votre"8D
-	asc	"propre personne dans la redoutable"8D
-	asc	"KIKEKANKOI, mais peut-etre vous en"8D
-	asc	"etiez vous rendu compte...?"8D
+strPERDU	asc	"EN CETTE HEURE PENIBLE, MOI APPLE ]["8D8D
+	asc	"J'ai le terrible devoir de vous annoncer la mort tragique de votre propre personne dans la redoutable KIKEKANKOI, mais peut-etre vous en etiez vous rendu compte...?"8D
 	asc	8D
-	asc	"Vos funerailles furent respectables,"8D
-	asc	"de par la preuve de courage que vous"8D
-	asc	"aviez donnee et pour la personne qui"8D
-	asc	"a cette heure-ci est encore prison-"8D
-	asc	"niere de la cite mysterieuse... "00
-
-strPERDU2
-	asc	8D8D"OUF..... oui je sais, c"A7"est toujours"8D
-	asc	"trop long les sepultures..."8D8D00
-
-strGAGNE
-	asc	"Quelle classe..., ressortir vivant de"8D
-	asc	"KIKEKANKOI, il fallait le faire,"8D
-	asc	"d"A7"autant plus que vous ne vous etes"8D
-	asc	"meme pas ecorche un doigt! Mais ne"8D
-	asc	"restez pas trop dans les parages, car"8D
-	asc	"le savant fou a peut-etre encore"8D
-	asc	"quelques experiences a faire sur vous,"8D
-	asc	"comme vous greffer une tete de singe"8D
-	asc	"ou un cerveau electronique de 64 Ko..."8D
+	asc	"Vos funerailles furent respectables, de par la preuve de courage que vous aviez donnee et pour la personne qui a cette heure-ci est encore prison- niere de la cite mysterieuse... "00
+strPERDU2	asc	8D8D"OUF..... oui je sais, c'est toujours trop long les sepultures..."8D8D00
+strGAGNE	asc	"Quelle classe..., ressortir vivant de KIKEKANKOI, il fallait le faire, d'autant plus que vous ne vous etes meme pas ecorche un doigt! Mais ne restez pas trop dans les parages, car le savant fou a peut-etre encore quelques experiences a faire sur vous, comme vous greffer une tete de singe ou un cerveau electronique de 64 Ko..."8D
 	asc	8D
-	asc	"Merci d"A7"etre reste si longtemps a"8D
-	asc	"votre clavier et encore toutes mes"8D
-	asc	"felicitations"8D8D00
+	asc	"Merci d'etre reste si longtemps a votre clavier et encore toutes mes felicitations"8D8D00
 
 *-----------------------------------
 * LES DONNEES
@@ -441,7 +389,7 @@ O$3	asc	"Une barque"00
 O$4	asc	"X"00
 O$5	asc	"Un seau"00
 O$6	asc	"Un seau plein de sable"00
-O$7	asc	"Un seau plein d"A7"eau"00
+O$7	asc	"Un seau plein d'eau"00
 O$8	asc	"Une lampe electrique"00
 O$9	asc	"Une lampe avec une ampoule"00
 O$10	asc	"Une lampe allumee"00
@@ -470,7 +418,7 @@ O$32	asc	"Une hache"00
 O$33	asc	"Un pot de creme"00
 O$34	asc	"Une liasse de billets"00
 O$35	asc	"Vos chaussures"00
-O$36	asc	"Une super jolie fille ligotee....et nue qui plus est."00
+O$36	asc	"Une super jolie fille ligotee et nue."00
 O$37	asc	"Un maillet"00
 
 *
@@ -743,56 +691,40 @@ V$203	str	"ENER"
 *		"0123456789012345678901234567890123456789"
 *		"----------------------------------------"
 
-str8010	asc	"L"A7"antre du demon."8D
-	asc	"Vous etes dans une grotte amenagee..."00
-str8020	asc	"Le repere du chirurgien."8D
-	asc	"Il y a une porte au sud, il y a plein de"
-	asc	"photos chirurgicales sur les murs"00
+str8010	asc	"L'antre du demon. Vous etes dans une grotte amenagee..."00
+str8020	asc	"Le repere du chirurgien. Il y a une porte au sud, il y a plein de photos chirurgicales sur les murs"00
 str8030	asc	""00	; X la mort
-str8040	asc	"L"A7"antre du sorcier."00
-str8050	asc	"Au bord du lac."8D
-	asc	"Vous etes au bord d"A7"un lac souterrain"00
+str8040	asc	"L'antre du sorcier."00
+str8050	asc	"Au bord du lac. Vous etes au bord d'un lac souterrain"00
 str8060	asc	""00	; X gagne
 str8070	asc	"Le repere du lecteur."00
-str8080	asc	"Au nord, un banc de sable. Vous etes sur"
-	asc	"le cote du lac, le seul chemin est au"8D
-	asc	"nord sous la forme d"A7"un banc de sable"00
+str8080	asc	"Au nord, un banc de sable. Vous etes sur le cote du lac, le seul chemin est au nord sous la forme d'un banc de sable"00
 str8090	asc	"Le bout du lac."00
 str8100	asc	"La salle mecanique."00
 str8110	asc	"Une grotte vide."00
-str8120	asc	"La trappe des enrages. Il y a une trappe"
-	asc	"au sol, munie d"A7"une serrure."00
+str8120	asc	"La trappe des enrages. Il y a une trappe au sol, munie d'une serrure."00
 str8130	asc	"Il y a une porte au sud marquee EXIT."00
-str8140	asc	"Il y a une porte au sud avec le jour qui"
-	asc	"filtre en dessous"00
-str8150	asc	"L"A7"antre du lecteur."00
-str8160	asc	"Il y a trois marmites avec des soupes"8D
-	asc	"rouge, verte et bleue"00
-str8170	asc	"L"A7"atelier."00
-str8180	asc	"Dans une frele esquive en scotch et bois"
-	asc	"pourri, proche de la rive."00
+str8140	asc	"Il y a une porte au sud avec le jour qui filtre en dessous"00
+str8150	asc	"L'antre du lecteur."00
+str8160	asc	"Il y a trois marmites avec des soupes rouge, verte et bleue"00
+str8170	asc	"L'atelier."00
+str8180	asc	"Dans une frele esquive en scotch et bois pourri, proche de la rive."00
 str8190	asc	"La chambre des lumieres."00
-str8200	asc	"Le refuge de l"A7"alchimiste."00
-str8210	asc	"Le gite du fakir."8D
-	asc	"Il y a un anneau fixe au mur"00
-str8220	asc	"L"A7"antre de la verite."00
-str8230	asc	"L"A7"antre du fou."00
-str8240	asc	"L"A7"antre du maigre."00
-str8250	asc	"Le repere de l"A7"embaumeur."00
-str8260	asc	"Le gite du bricoleur."8D
-	asc	"Il y a une ouverture au sud..."00
+str8200	asc	"Le refuge de l'alchimiste."00
+str8210	asc	"Le gite du fakir. Il y a un anneau fixe au mur"00
+str8220	asc	"L'antre de la verite."00
+str8230	asc	"L'antre du fou."00
+str8240	asc	"L'antre du maigre."00
+str8250	asc	"Le repere de l'embaumeur."00
+str8260	asc	"Le gite du bricoleur. Il y a une ouverture au sud..."00
 str8270	asc	"Le repere du fuyard. Il y a une trappe."00
 str8280	asc	"Le refuge du montagnard."00
 str8290	asc	"Le chemin des rongeurs."00
-str8300	asc	"L"A7"antichambre de la mort."00
-str8310	asc	"Du bruit a l"A7"est."8D
-	asc	"Il y a une porte marquee DANGER au sud"00
-str8320	asc	"De la lumiere au sud."8D
-	asc	"Il y a au sud un passage d"A7"ou viennent"8D
-	asc	"de droles de bruits"00
-str8330	asc	"L"A7"antre du maniaque."00
-str8340	asc	"Le repere des rats."8D
-	asc	"Il y a des rats un peu partout..."00
+str8300	asc	"L'antichambre de la mort."00
+str8310	asc	"Du bruit a l'est. Il y a une porte marquee DANGER au sud"00
+str8320	asc	"De la lumiere au sud. Il y a au sud un passage d'ou viennent de droles de bruits"00
+str8330	asc	"L'antre du maniaque."00
+str8340	asc	"Le repere des rats. Il y a des rats un peu partout..."00
 str8350	asc	"La salle des survivants."00
 str8360	asc	"La cremerie et le tailleur."00
 str8370	asc	"Le tabac et la boulangerie."00
@@ -800,31 +732,23 @@ str8380	asc	"Le traiteur."00
 str8390	asc	"Le medecin et le chausseur."00
 str8400	asc	"Le coin nord-ouest de la ville."00
 str8410	asc	"La fin de la ville !"00
-str8420	asc	"Dans le tabac."8D
-	asc	"Le vendeur dort sur le comptoir"00
+str8420	asc	"Dans le tabac. Le vendeur dort sur le comptoir"00
 str8430	asc	""00	; X rien
-str8440	asc	"Chez le tailleur."8D
-	asc	"Il y a plein d"A7"habits a vendre"00
+str8440	asc	"Chez le tailleur. Il y a plein d'habits a vendre"00
 str8450	asc	"Vous etes dans la cremerie."00
-str8460	asc	"Vous etes chez le chausseur."8D
-	asc	"La boutique est bien achalandee"00
-str8470	asc	"Chez le medecin."8D
-	asc	"Le medecin est parti"00
+str8460	asc	"Vous etes chez le chausseur. La boutique est bien achalandee"00
+str8470	asc	"Chez le medecin. Le medecin est parti"00
 str8480	asc	"Vous etes face a la droguerie."00
 str8490	asc	"Dans la droguerie."00
 str8500	asc	"Le coin sud-est de la ville."00
-str8510	asc	"Devant un monument..? Le fameux temple a"
-	asc	"la gloire du GRAND KiKeKanKoi !"00
+str8510	asc	"Devant un monument..? Le fameux temple a la gloire du GRAND KiKeKanKoi !"00
 str8520	asc	"Que vendez-vous ?"00
 str8530	asc	"La salle de la B.A."00
-str8540	asc	"Le mausolee de l"A7"exterminateur."00
+str8540	asc	"Le mausolee de l'exterminateur."00
 str8550	asc	"Le coeur du Temple."00
-str8560	asc	"L"A7"antre du venere."8D
-	asc	"Il y a une porte au sud"00
+str8560	asc	"L'antre du venere. Il y a une porte au sud"00
 str8570	asc	"Le chemin des dipteres."00
-str8580	asc	"L"A7"antre du victorieux."8D
-	asc	"Vous etes dans un reduit dont les murs"8D
-	asc	"sont faits de blocs de pierre."00
+str8580	asc	"L'antre du victorieux. Vous etes dans un reduit dont les murs sont faits de blocs de pierre."00
 str8590	asc	""00
 str8600	asc	""00
 
@@ -836,121 +760,71 @@ str8600	asc	""00
 *		"0123456789012345678901234567890123456789"
 *		"----------------------------------------"
 
-str4010	asc	"Vous etes arrive dans la salle de dis-"8D
-	asc	"-section, et vous n"A7"avez pas fait de"8D
-	asc	"vieux os..."00
-str4020	asc	"Vous etes tombe dans l"A7"incinerateur"8D
-	asc	"d"A7"organes..."00
-str4030	asc	"Vous venez de faire une chute dans un"8D
-	asc	"precipice d"A7"au moins 200 m."00
-str4040	asc	"Cette soupe etait un acide sulfurique"8D
-	asc	"parfume... Hum! Douce mort."00
-str4050	asc	"Il ne se passe rien, cela fait toujours"8D
-	asc	"un repas de gagne."00
-str4060	asc	"La soupe est euphorisante, vous avez la"8D
-	asc	"vision d"A7"une ville doree."00
-str4070	asc	"Vous mourez etouffe dans les sables"8D
-	asc	"mouvants..."00
-str4080	asc	"Vous trebuchez en l"A7"abordant...."8D
-	asc	"Miam, miam (les piranhas)."00
-str4090	asc	"Des gaz mortels s"A7"echappent de la"8D
-	asc	"bouteille... c"A7"est triste."00
-str4100	asc	"Un panneau du mur pivote, des COBRAS en"8D
-	asc	" sortent... Adieu !"00
-str4110	asc	"Vous trebuchez et vous vous empallez sur"
-	asc	"le tournevis."00
+str4010	asc	"Vous etes arrive dans la salle de dissection, et vous n'avez pas fait de vieux os..."00
+str4020	asc	"Vous etes tombe dans l'incinerateur d'organes..."00
+str4030	asc	"Vous venez de faire une chute dans un precipice d'au moins 200 m."00
+str4040	asc	"Cette soupe etait un acide sulfurique parfume... Hum! Douce mort."00
+str4050	asc	"Il ne se passe rien, cela fait toujours un repas de gagne."00
+str4060	asc	"La soupe est euphorisante, vous avez la vision d'une ville doree."00
+str4070	asc	"Vous mourez etouffe dans les sables mouvants..."00
+str4080	asc	"Vous trebuchez en l'abordant.... Miam, miam (les piranhas)."00
+str4090	asc	"Des gaz mortels s'echappent de la bouteille... c'est triste."00
+str4100	asc	"Un panneau du mur pivote, des COBRAS en sortent... Adieu !"00
+str4110	asc	"Vous trebuchez et vous vous empallez sur le tournevis."00
 str4120	asc	"Vous avez ete broye !!!"00
 str4130	asc	"Le robot vous broie les os..."00
-str4140	asc	"Un barreau de l"A7"echelle se detache."00
-str4150	asc	"Vous ne saviez pas piloter le DELTA-"8D
-	asc	"PLANE... Adieu !"00
-str4160	asc	"J"A7"ai toujours pense qu"A7"en 10 lecons le"8D
-	asc	"DELTA c"A7"etait juste."00
-str4170	asc	"Vous avez ete happe par une presse"8D
-	asc	"hydraulique..."00
-str4180	asc	"Vous grillez sur le generateur de la"8D
-	asc	"salle d"A7"operation."00
-str4190	asc	"Vous glissez en montant, la colle gicle"8D
-	asc	"dans vos yeux."00
-str4200	asc	"L"A7"eau touche le systeme electrique..."8D
-	asc	"Vous grillez..."00
-str4210	asc	"La folie vous a pris (vider un seau"8D
-	asc	"vide), vous vous suicidez."00
-str4220	asc	"Vous electrocutez le robot, mais vous"8D
-	asc	"aussi par la meme occasion."00
-str4230	asc	"Petit genie, hein ? Vous avez enraye le"8D
-	asc	"mecanisme du robot."00
-str4240	asc	"Vous vous etes colles les doigts et, en"8D
-	asc	" voulant les separer a la lame de rasoir"
-	asc	"vous vous etes tranche la gorge."00
+str4140	asc	"Un barreau de l'echelle se detache."00
+str4150	asc	"Vous ne saviez pas piloter le DELTA- PLANE... Adieu !"00
+str4160	asc	"J'ai toujours pense qu'en 10 lecons le DELTA c'etait juste."00
+str4170	asc	"Vous avez ete happe par une presse hydraulique..."00
+str4180	asc	"Vous grillez sur le generateur de la salle d'operation."00
+str4190	asc	"Vous glissez en montant, la colle gicle dans vos yeux."00
+str4200	asc	"L'eau touche le systeme electrique... Vous grillez..."00
+str4210	asc	"La folie vous a pris (vider un seau vide), vous vous suicidez."00
+str4220	asc	"Vous electrocutez le robot, mais vous aussi par la meme occasion."00
+str4230	asc	"Petit genie, hein ? Vous avez enraye le mecanisme du robot."00
+str4240	asc	"Vous vous etes colles les doigts et, en voulant les separer a la lame de rasoir vous vous etes tranche la gorge."00
 str4250	asc	"Oh merci, merci beaucoup... SMACK !"00
-str4260	asc	"Vous l"A7"avez deja fait."00
-str4270	asc	"Il faudrait peut-etre debrancher la"8D
-	asc	"batterie."00
-str4280	asc	"Ce livre apprend le DELTA-PLANE en 10"8D
-	asc	"lecons."00
-str4290	asc	"L"A7"endroit est un peu trop exigu pour"8D
-	asc	"essayer une telle chose."00
-str4300	asc	"Vous avez l"A7"intention de vous shooter ?"00
+str4260	asc	"Vous l'avez deja fait."00
+str4270	asc	"Il faudrait peut-etre debrancher la batterie."00
+str4280	asc	"Ce livre apprend le DELTA-PLANE en 10 lecons."00
+str4290	asc	"L'endroit est un peu trop exigu pour essayer une telle chose."00
+str4300	asc	"Vous avez l'intention de vous shooter ?"00
 str4310	asc	"La boite explose !"00
-str4320	asc	"Il y a une clef sous l"A7"adhesif."00
-str4330	asc	"Cette fois vous en avez trop enleve, la"8D
-	asc	"barque part en miettes."00
+str4320	asc	"Il y a une clef sous l'adhesif."00
+str4330	asc	"Cette fois vous en avez trop enleve, la barque part en miettes."00
 str4340	asc	"La trappe est fermee a clef."00
-str4350	asc	"Le passe partout ne fonctionne pas avec"8D
-	asc	"cette serrure."00
-str4360	asc	"Les murs se rapprochent les uns des"8D
-	asc	"autres, vous etes aplati."00
+str4350	asc	"Le passe partout ne fonctionne pas avec cette serrure."00
+str4360	asc	"Les murs se rapprochent les uns des autres, vous etes aplati."00
 str4370	asc	"Il ne vous reste plus de temps !"00
-str4380	asc	"Il faudrait peut etre de l"A7"electricite.."00
-str4390	asc	"Il faudrait peut etre y visser une"8D
-	asc	"ampoule."00
+str4380	asc	"Il faudrait peut etre de l'electricite.."00
+str4390	asc	"Il faudrait peut etre y visser une ampoule."00
 str4400	asc	"IMPOSSIBLE"00
-str4410	asc	"Vous tombez dans un cercueil qui se"8D
-	asc	"referme sur vous."00
-str4420	asc	"Vous avez du attraper la rage aupres de"8D
-	asc	"rats..."00
-str4430	asc	"Vous avez mal digere la soupe, c"A7"est"8D
-	asc	" une intoxication."00
+str4410	asc	"Vous tombez dans un cercueil qui se referme sur vous."00
+str4420	asc	"Vous avez du attraper la rage aupres de rats..."00
+str4430	asc	"Vous avez mal digere la soupe, c'est une intoxication."00
 str4440	asc	"Vous avez ete electrocute par la lampe."00
-str4450	asc	"A force de rester dans le noir, vous"8D
-	asc	"etes devenu fou !"00
+str4450	asc	"A force de rester dans le noir, vous etes devenu fou !"00
 str4460	asc	"Vous ne pouvez prendre, il faut acheter."00
-str4470	asc	"Le marchand est fou, il se jette sur"8D
-	asc	"vous et vous tue."00
-str4480	asc	"He! he! On ne rentre pas dans un temple"8D
-	asc	"avec ses chaussures, les gardes vous"8D
-	asc	"tuent"00
-str4490	asc	"La piece etait pleine de mouches........"
-	asc	"tse-tse !!!"00
-str4500	asc	"Les murs s"A7"ecroulent sur vous, vous"8D
-	asc	"n"A7"auriez pas du la laisser, grand lache."00
+str4470	asc	"Le marchand est fou, il se jette sur vous et vous tue."00
+str4480	asc	"He! he! On ne rentre pas dans un temple avec ses chaussures, les gardes vous tuent"00
+str4490	asc	"La piece etait pleine de mouches........ tse-tse !!!"00
+str4500	asc	"Les murs s'ecroulent sur vous, vous n'auriez pas du la laisser, grand lache."00
 str4510	asc	"Toutes mes felicitations."00
-str4520	asc	"Il aurait fallu mettre le masque, les"8D
-	asc	"gaz vous tuent !"00
-str4530	asc	"La fille n"A7"avait pas de masque, elle"8D
-	asc	" meurt et vous aussi (le remord...)."00
-str4540	asc	"La fille etait nue, elle ne pouvait vous"
-	asc	"suivre. Pour se venger elle vous tranche"
-	asc	"la gorge avec les debris."00
-str4550	asc	"Vous n"A7"avez rien pour trancher les"8D
-	asc	"cordes."00
-str4560	asc	"Vous auriez du eteindre la lampe avant"8D
-	asc	"de debrancher. Quel court circuit !!!"00
-str4570	asc	"Le possesseur du portefeuille devait"8D
-	asc	"avoir la lepre..."00
-str4580	asc	"Vous trebuchez sur la hache..."8D
-	asc	"Que de sang..."00
-str4590	asc	"Voici enfin la ville des mutiles."8D
-	asc	"Pauvres survivants des experiences"8D
-	asc	"cruelles du savant fou."8D00
+str4520	asc	"Il aurait fallu mettre le masque, les gaz vous tuent !"00
+str4530	asc	"La fille n'avait pas de masque, elle meurt et vous aussi (le remord...)."00
+str4540	asc	"La fille etait nue, elle ne pouvait vous suivre. Pour se venger elle vous tranche la gorge avec les debris."00
+str4550	asc	"Vous n'avez rien pour trancher les cordes."00
+str4560	asc	"Vous auriez du eteindre la lampe avant de debrancher. Quel court circuit !!!"00
+str4570	asc	"Le possesseur du portefeuille devait avoir la lepre..."00
+str4580	asc	"Vous trebuchez sur la hache... Que de sang..."00
+str4590	asc	"Voici enfin la ville des mutiles. Pauvres survivants des experiences cruelles du savant fou."8D00
 str4600	asc	"Vous avez du prendre mal par les pieds."00
-str4610	asc	"La quinine etait trop forte, vous mourez"
-	asc	"empoisonne..."00
+str4610	asc	"La quinine etait trop forte, vous mourez empoisonne..."00
 str4620	asc	"Je ne suis pas interesse."00
 str4630	asc	"Alors, que faites vous la ?"00
 str4640	asc	"Si cela vous plait de perdre du temps"00
-str4650	asc	"Oh merci, merci beaucoup... "A7" SMACK "A700
+str4650	asc	"Oh merci, merci beaucoup... ' SMACK '"00
 
 tbl4660	da	$bdbd
 	da	str4670,str4680,str4690,str4700
@@ -958,15 +832,11 @@ tbl4660	da	$bdbd
 	da	str4750
 	
 str4670	asc	8D"Courage, pensez a la recompense..."00
-str4680	asc	8D"Hum! Il y a de l"A7"idee dans ce que vous"8D
-	asc	"faites."00 
-str4690	asc	8D"Je n"A7"aurais pas pense a faire cela."00
-str4700	asc	8D"Vous etes un habitue des jeux d"A78D
-	asc	"aventures ?"00 
-str4710	asc	8D"Quelle drole d"A7"idee ?"00 
+str4680	asc	8D"Hum ! Il y a de l'idee dans ce que vous faites."00 
+str4690	asc	8D"Je n'aurais pas pense a faire cela."00
+str4700	asc	8D"Vous etes un habitue des jeux d'aventures ?"00 
+str4710	asc	8D"Quelle drole d'idee ?"00 
 str4720	asc	8D"Pourquoi pas ?"00
-str4730	asc	8D"Quel aventurier vous faites...fiiuuue"00
-str4740	asc	8D"A ce train la, vous finirez bien par y"8D
-	asc	"arriver"00
-str4750	asc	8D"Vous, vous avez pas de petrole, mais"8D
-	asc	"vous avez des idees"00
+str4730	asc	8D"Quel aventurier vous faites... fiiuuue"00
+str4740	asc	8D"A ce train la, vous finirez bien par y arriver"00
+str4750	asc	8D"Vous, vous n'avez pas de petrole, mais vous avez des idees"00

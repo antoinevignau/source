@@ -23,7 +23,7 @@ LINNUM	=	$50	; result from GETADR
 X0L	=	$e0	; X-coord
 X0H	=	$e1
 Y0	=	$e2	; Y-coord
-dpTEXT	=	$fe
+dpTEXT	=	$fe	; pointer to text
 
 maxY	=	191	; 0 to 191 = 192
 nbLINES	=	200	; 200 lignes sur un CPC
@@ -36,19 +36,23 @@ chrRA	=	$95
 chrDEL	=	$ff
 chrRET	=	$8d
 chrSPC	=	$a0
-TEXTBUFFER = 	$200
+TEXTBUFFER	= 	$200
 maxLEN	=	20
 
-chrOUI	=	"O"
+chrOUI	=	"D"
 chrNON	=	"N"
 
 scrWIDTH	=	40
 
 idxTEMPO	=	200
-idxQUITTER =	201
+idxQUITTER	=	201
 idxCASSE	=	202
 idxENERGIE	=	203
+idxDEBUG	=	204
+idxCHARGE	=	205
+idxSAUVE	=	206
 
+proBUFFER	=	$bb00
 PRODOS	=	$bf00
 
 KBD	=	$c000
@@ -80,6 +84,7 @@ HOME	=	$FC58
 WAIT	=	$FCA8
 RDKEY	=	$FD0C
 *GETLN1	=	$FD6F	; using mine now
+PRBYTE	=	$FDDA
 COUT	=	$FDED
 IDROUTINE	=	$FE1F
 SETNORM	=	$FE84
@@ -330,6 +335,8 @@ REPLAY	jsr	initALL
 	jsr	rewriteSTRING	; from lower to upper
 	jsr	:6000	; cherche les mots
 
+	jsr	DEBUG
+
 	lda	MO$1
 	bne	:900
 
@@ -347,6 +354,42 @@ REPLAY	jsr	initALL
 	jmp	:100
 
 *-----------------------------------
+
+DEBUG	lda	fgDEBUG
+	bne	DEBUG1
+	rts
+DEBUG1	lda	#"S"
+	jsr	COUT
+	lda	#":"
+	jsr	COUT
+	lda	SALLE
+	jsr	PRBYTE
+
+	lda	#"/"
+	jsr	COUT
+	lda	#"W"
+	jsr	COUT
+	lda	#"1"
+	jsr	COUT
+	lda	#":"
+	jsr	COUT
+	lda	MO$1
+	jsr	PRBYTE
+
+	lda	#"/"
+	jsr	COUT
+	lda	#"W"
+	jsr	COUT
+	lda	#"2"
+	jsr	COUT
+	lda	#":"
+	jsr	COUT
+	lda	MO$2
+	jsr	PRBYTE
+	lda	#$8d
+	jmp	COUT
+
+*-----------------------------------
 * 900 - CONTROLES APPLE II
 *-----------------------------------
 
@@ -361,9 +404,29 @@ REPLAY	jsr	initALL
 	jmp	:100
 
 :910	cmp	#idxENERGIE
-	bne	:915
+	bne	:911
 	
 	jsr	switchENERGIE
+	jmp	:100
+
+:911	cmp	#idxDEBUG
+	bne	:912
+	
+	lda	fgDEBUG
+	eor	#1
+	sta	fgDEBUG
+	jmp	:100
+
+:912	cmp	#idxCHARGE
+	bne	:913
+	
+	jsr	doCHARGE
+	jmp	:100
+
+:913	cmp	#idxSAUVE
+	bne	:915
+	
+	jsr	doSAUVE
 	jmp	:100
 
 *-----------------------------------
@@ -610,14 +673,15 @@ tbl1500	da	:1500,:1510,:1520,:1530,:1540
 
 *-------- H
 
-:1570	rts
+:1570
+*	rts
 *	lda	VBL	; LOGO - Use a better RND?
 *	eor	VERTCNT
 *	cmp	N
 *	bcs	:1575
-*	lda	#1
-*	sta	OK
-*:1575	rts
+	lda	#1
+	sta	OK
+:1575	rts
 
 *-------- I
 
@@ -713,8 +777,8 @@ tbl1800	da	:1800,:1900
 	sta	HH
 	sta	H	; for comma
 	
-*	lda	#2	; 500
-*	sta	BREAK
+	lda	#2	; 500
+	sta	BREAK
 
 :1810	inc	G
 	lda	G
@@ -1662,6 +1726,7 @@ initALL
 *-----------------------------------
 
 :perdu
+	@wait	#400
 	@explode
 	@draw	#3
 	@wait	#400
@@ -1707,6 +1772,7 @@ sauveMONO ds	1
 *-----------------------------------
 
 :gagne
+	@wait	#400
 	@draw	#6
 	@wait	#400
 	jsr	setTEXTFULL
@@ -1764,6 +1830,153 @@ switchCASE
 	eor	#$80
 	sta	fgCASE
 	rts
+
+*----------------------
+* CHARGE
+*----------------------
+
+doCHARGE	@print	#strLOAD
+	jsr	RDKEY
+	cmp	#"1"
+	bcc	load_bad
+	cmp	#"9"+1
+	bcs	load_bad
+
+	jsr	COUT	; show chosen slot
+	jsr	loadSLOT
+	bcs	load_bad
+
+load_good	clc
+	rts
+
+load_bad	sec
+	rts
+
+*---
+
+loadSLOT	sta	pPARTY+5
+
+	jsr	PRODOS
+	dfb	$C8
+	da	gOPEN
+	bcc	ls_ok
+	rts
+
+ls_ok	lda	gOPEN+5
+	sta	gREAD+1
+	sta	gCLOSE+1
+	
+	jsr	PRODOS
+	dfb	$CA
+	da	gREAD
+	bcs	ls_end
+
+	ldx	#3
+]lp	lda	lsHEADER,x
+	cmp	mySTRING,x
+	bne	ls_err
+	dex
+	bpl	]lp
+
+	clc
+	hex	24
+ls_err	sec
+
+ls_end	php
+	jsr	PRODOS
+	dfb	$CC
+	da	gCLOSE
+	plp
+	rts
+
+	rts
+
+*----------------------
+* SAUVE
+*----------------------
+
+doSAUVE	@print	#strSAVE
+	jsr	RDKEY
+	cmp	#"1"
+	bcc	save_bad
+	cmp	#"9"+1
+	bcs	save_bad
+
+	jsr	COUT	; show chosen slot
+	jsr	saveSLOT
+	bcs	save_bad
+
+save_good	clc
+	rts
+
+save_bad	sec
+	rts
+
+*---
+
+saveSLOT	sta	pPARTY+5
+
+	jsr	PRODOS
+	dfb	$C1
+	da	gDESTROY
+
+	jsr	PRODOS
+	dfb	$C0
+	da	gCREATE
+
+	jsr	PRODOS
+	dfb	$C8
+	da	gOPEN
+	bcc	ss_ok
+	rts
+
+ss_ok	lda	gOPEN+5
+	sta	gREAD+1
+	sta	gCLOSE+1
+	
+	jsr	PRODOS
+	dfb	$CB	; it is a WRITE
+	da	gREAD
+
+	php
+	jsr	PRODOS
+	dfb	$CC
+	da	gCLOSE
+	plp
+	rts
+
+*--- Data
+
+gDESTROY	dfb	$01
+	da	pPARTY	; +01
+
+gCREATE	dfb	$07
+	da	pPARTY	; +01
+	dfb	$e3	; +03
+	dfb	$5d	; +04
+	dw	$8027	; +05
+	dfb	$01	; +07
+	ds	2	; +08
+	ds	2	; +0A
+
+*--- Data
+
+mySTRING	asc	"BDKK"
+pPARTY	str	"GAME0"
+
+gOPEN	dfb	$3
+	da	pPARTY	; pathname (par défaut, le moteur)
+	da	proBUFFER	; io_buffer
+	ds	1	; ref_num
+
+gREAD	dfb	$4
+	ds	1	; ref_num
+	da	lsHEADER	; data_buffer
+	dw	DATA_END-DATA_BEGIN ; request_count
+	ds	2	; transfer_count
+
+gCLOSE	dfb	$1
+	ds	1	; ref_num
 
 *----------------------
 * GETLEN1 par LoGo
@@ -1999,6 +2212,7 @@ pcslEND	rts
 
 wordLEN	ds	1
 fgCASE	ds	1	; $00 lower OK, $80 otherwise
+fgDEBUG	ds	1	
 
 *----------------------
 * waitMS
@@ -2233,8 +2447,7 @@ translateKEY
 	lda	tblKEY,x
 	rts
 
-tblKEY
-	hex	00,01,02,03,04,05,06,07,08,09,0A,0B,0C,0D,0E,0F
+tblKEY	hex	00,01,02,03,04,05,06,07,08,09,0A,0B,0C,0D,0E,0F
 	hex	10,11,12,13,14,15,16,17,18,19,1A,1B,1C,1D,1E,1F
 	hex	20,21,22,23,24,25,26,27,28,29,2A,2B,2C,2D,2E,2F
 	hex	30,31,32,33,34,35,36,37,38,39,3A,3B,3C,3D,3E,3F
@@ -2379,8 +2592,9 @@ LA0F0	BVS	LA095
 * VARIABLES
 *-----------------------------------
 
+DATA_BEGIN
+lsHEADER	asc	"BDKK"
 DEBUT_DATA
-
 A1	ds	1
 BREAK	ds	1
 E	ds	1
@@ -2403,12 +2617,19 @@ Z	ds	1
 lenSTRING	ds	1
 TEMPS	ds	4	; le temps = 5000
 
+O	dfb	$bd
+	dfb	02,00,05,00,14,00,00,19,00,00
+	dfb	20,00,18,15,17,26,27,28,33,34
+	dfb	35,00,47,47,47,46,44,50,50,49
+	dfb	54,42,45,00,00,53,40
+
 C	ds	61+1
 E$	ds	32	; the longest string
 P	ds	61+1
 X$1	ds	4+1	; premier mot saisi
 X$2	ds	4+1	; second mot saisi
 
+DATA_END
 FIN_DATA
 
 *--- The lazy decimal to hexadecimal conversion
@@ -2506,8 +2727,8 @@ zikINTRODUCTION
 	hex	260C1B260C1C260C1B260C1B2D0C1C2D 
 	hex	0C1E2D0C1C2D0C1C000C20000C22000C 
 	hex	20000C20000C26000C2D000C33000C39 
-	hex	000C2D390C26390C20390C1C400C1640 
 	ds	\
+*	hex	000C2D390C26390C20390C1C400C1640 
 *	hex	0C15400C16400103030C15440C1C440C 
 *	hex	22440C26440C22660C1C660C2B660C22 
 *	hex	660102020C39000C2B390C2D390C3339 
@@ -2555,7 +2776,7 @@ zikINTRODUCTION
 *	hex	300C1C300102020C11560C1C560C2B56 
 *	hex	0C1C560C11300C1C300C11560C1C5630 
 *	hex	1040FFFFFE00FFFE1000000000000000 
-
+	
 *-----------------------------------
 * LES AUTRES FICHIERS
 *-----------------------------------
@@ -2563,7 +2784,7 @@ zikINTRODUCTION
 	ds	\
 	ds	$4000-*
 
-	put	fr.s
+	put	si.s
 	put	../common/images.s
 	put	../common/musiques.s
 	

@@ -23,6 +23,7 @@ LINNUM	=	$50	; result from GETADR
 X0L	=	$e0	; X-coord
 X0H	=	$e1
 Y0	=	$e2	; Y-coord
+dpTEXT	=	$fe
 
 maxY	=	191	; 0 to 191 = 192
 nbLINES	=	200	; 200 lignes sur un CPC
@@ -40,6 +41,8 @@ maxLEN	=	20
 
 chrOUI	=	"Y"
 chrNON	=	"N"
+
+scrWIDTH	=	40
 
 idxTEMPO	=	200
 idxQUITTER =	201
@@ -1881,22 +1884,43 @@ setMIXEDOFF		; FULL HGR
 	rts
 
 *----------------------
-* printCSTR
+* printCSTRING
 *----------------------
 
-printCSTRING
-	sty	pcs1+1
+*-------------- PRINT C STRING
+* on prend la longueur d'un mot
+* on ajoute ˆ CH
+* si >39 alors
+*  RC
+* print word
+
+printCSTRING	sty	pcs1+1
 	stx	pcs1+2
-	
+	sty	dpTEXT
+	stx	dpTEXT+1
+
+*--- All cases: check string length
+
+	ldy	#0
+]lp	lda	(dpTEXT),y
+	beq	pcsEOS
+	iny
+	bne	]lp
+	ldy	#scrWIDTH
+pcsEOS	cpy	#scrWIDTH
+	bcc	pcs1
+	jmp	pcsLONG
+
+*--- Case 1: string length is <40
+
 pcs1	lda	$ffff
-	beq	pcs3
+	beq	pcs4
 	
 	bit	fgCASE
 	bpl	pcs2
-	
 	tax		; from lower to upper
 	lda	tblKEY,x
-	
+
 pcs2	jsr	COUT
 	
 	inc	pcs1+1
@@ -1904,10 +1928,76 @@ pcs2	jsr	COUT
 	inc	pcs1+2
 	bne	pcs1
 	
-pcs3	rts
+pcs4	rts
 
-*--------
+*--- Case 2: string length is >39
 
+* 012345678
+* ANTOINE_TOINET
+* ANTOINE/
+
+pcsLONG	ldy	#0
+	sty	wordLEN
+
+]lp	lda	(dpTEXT),y	; get word length
+	beq	pcslEOS	; end of string
+	cmp	#chrRET
+	beq	pcslEOW	; end of word (with a return)
+	cmp	#chrSPC
+	beq	pcslEOW	; end of word (with a space)
+	iny
+	bne	]lp
+
+pcslEOW	iny		; output the space character
+pcslEOS	sty	wordLEN	; save nb of chars to output
+	tya		; end X pos =+ word length
+	clc
+	adc	CH
+	cmp	#scrWIDTH
+	bcc	pcslGOOD	; we can output the word normally
+	beq	pcslGOOD
+	
+	lda	#chrRET	; must perform a CR before outputting
+	jsr	COUT
+
+pcslGOOD	ldy	#0
+]lp	lda	(dpTEXT),y
+	beq	pcslEND
+
+	bit	fgCASE
+	bpl	pcslg2
+	tax		; from lower to upper
+	lda	tblKEY,x
+
+pcslg2	cmp	#chrSPC	; shall we skip the space character?
+	bne	pcslg4
+
+	lda	CH	; beginning of screen
+	beq	pcslg5
+	cmp	#scrWIDTH-1	; end of screen
+	beq	pcslg5
+	lda	#chrSPC
+
+pcslg4	jsr	COUT	; output the char
+
+	iny		; until end of string
+	cpy	wordLEN
+	bcc	]lp
+	
+pcslg5	lda	dpTEXT
+	clc
+	adc	wordLEN
+	sta	dpTEXT
+	lda	dpTEXT+1
+	adc	#0
+	sta	dpTEXT+1
+	jmp	pcsLONG
+
+pcslEND	rts
+
+*--- Data
+
+wordLEN	ds	1
 fgCASE	ds	1	; $00 lower OK, $80 otherwise
 
 *----------------------

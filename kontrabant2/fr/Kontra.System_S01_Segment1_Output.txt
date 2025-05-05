@@ -1,0 +1,375 @@
+------+--------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File        Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+--------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1 kontra.s      1 | Comment     | 11 |         |    0 | 00/8000               | *
+    2 |  1 kontra.s      2 | Comment     | 11 |         |    0 | 00/8000               | * Kontrabant 2
+    3 |  1 kontra.s      3 | Comment     | 11 |         |    0 | 00/8000               | *
+    4 |  1 kontra.s      4 | Comment     | 11 |         |    0 | 00/8000               | * (c) 1984, Radio Student
+    5 |  1 kontra.s      5 | Comment     | 11 |         |    0 | 00/8000               | * (c) 2023, Tomaz Stih
+    6 |  1 kontra.s      6 | Comment     | 11 |         |    0 | 00/8000               | * (c) 2024, Janez J. Starc & Brutal Deluxe Software
+    7 |  1 kontra.s      7 | Comment     | 11 |         |    0 | 00/8000               | *
+    8 |  1 kontra.s      8 | Comment     | 11 |         |    0 | 00/8000               | * See the MIT license @ https://github.com/iskra-delta/idp-quill/blob/main/LICENSE
+    9 |  1 kontra.s      9 | Comment     | 11 |         |    0 | 00/8000               | *
+   10 |  1 kontra.s     10 | Empty       | 11 |         |    0 | 00/8000               |                                    
+   11 |  1 kontra.s     11 | Directive   | 11 |         |    0 | 00/8000               |               mx    %11            
+   12 |  1 kontra.s     12 | Directive   | 11 |         |    0 | 00/8000               |               org   $2000          
+   13 |  1 kontra.s     13 | Directive   | 11 |         |    0 | 00/2000               |               typ   $FF            
+   14 |  1 kontra.s     14 | Directive   | 11 |         |    0 | 00/2000               |               dsk   Kontra.System  
+   15 |  1 kontra.s     15 | Directive   | 11 |         |    0 | 00/2000               |               lst   off            
+   16 |  1 kontra.s     16 | Empty       | 11 |         |    0 | 00/2000               |                                    
+   17 |  1 kontra.s     17 | Comment     | 11 |         |    0 | 00/2000               | *------------------------------
+   18 |  1 kontra.s     18 | Comment     | 11 |         |    0 | 00/2000               | * EQUATES
+   19 |  1 kontra.s     19 | Comment     | 11 |         |    0 | 00/2000               | *------------------------------
+   20 |  1 kontra.s     20 | Empty       | 11 |         |    0 | 00/2000               |                                    
+   21 |  1 kontra.s     21 | Comment     | 11 |         |    0 | 00/2000               | *-------------- Zero page & friends
+   22 |  1 kontra.s     22 | Empty       | 11 |         |    0 | 00/2000               |                                    
+   23 |  1 kontra.s     23 | Equivalence | 11 |         |    0 | 00/2000               | HPAG          =     $e6            
+   24 |  1 kontra.s     24 | Empty       | 11 |         |    0 | 00/2000               |                                    
+   25 |  1 kontra.s     25 | Equivalence | 11 |         |    0 | 00/2000               | src           =     $f8            
+   26 |  1 kontra.s     26 | Equivalence | 11 |         |    0 | 00/2000               | dst           =     {$f8}+2        
+   27 |  1 kontra.s     27 | Empty       | 11 |         |    0 | 00/2000               |                                    
+   28 |  1 kontra.s     28 | Comment     | 11 |         |    0 | 00/2000               | *-------------- Game
+   29 |  1 kontra.s     29 | Empty       | 11 |         |    0 | 00/2000               |                                    
+   30 |  1 kontra.s     30 | Equivalence | 11 |         |    0 | 00/2000               | ptrPREFIX     =     $280           
+   31 |  1 kontra.s     31 | Equivalence | 11 |         |    0 | 00/2000               | ptrRELOCATE   =     $1000          
+   32 |  1 kontra.s     32 | Equivalence | 11 |         |    0 | 00/2000               | HGRPAGE1      =     $2000          
+   33 |  1 kontra.s     33 | Equivalence | 11 |         |    0 | 00/2000               | ptrTITLE      =     $4000          
+   34 |  1 kontra.s     34 | Equivalence | 11 |         |    0 | 00/2000               | theGAME       =     $4000          
+   35 |  1 kontra.s     35 | Equivalence | 11 |         |    0 | 00/2000               | proBUFFER     =     $0c00          ; was $bb00
+   36 |  1 kontra.s     36 | Equivalence | 11 |         |    0 | 00/2000               | PRODOS        =     $bf00          
+   37 |  1 kontra.s     37 | Empty       | 11 |         |    0 | 00/2000               |                                    
+   38 |  1 kontra.s     38 | Comment     | 11 |         |    0 | 00/2000               | *-------------- Softswitches
+   39 |  1 kontra.s     39 | Empty       | 11 |         |    0 | 00/2000               |                                    
+   40 |  1 kontra.s     40 | Equivalence | 11 |         |    0 | 00/2000               | KBD           =     $C000          
+   41 |  1 kontra.s     41 | Equivalence | 11 |         |    0 | 00/2000               | CLR80VID      =     $C00C          
+   42 |  1 kontra.s     42 | Equivalence | 11 |         |    0 | 00/2000               | KBDSTROBE     =     $C010          
+   43 |  1 kontra.s     43 | Equivalence | 11 |         |    0 | 00/2000               | VBL           =     $C019          
+   44 |  1 kontra.s     44 | Equivalence | 11 |         |    0 | 00/2000               | MONOCOLOR     =     $C021          
+   45 |  1 kontra.s     45 | Equivalence | 11 |         |    0 | 00/2000               | NEWVIDEO      =     $C029          
+   46 |  1 kontra.s     46 | Equivalence | 11 |         |    0 | 00/2000               | VERTCNT       =     $C02E          
+   47 |  1 kontra.s     47 | Equivalence | 11 |         |    0 | 00/2000               | SPKR          =     $C030          
+   48 |  1 kontra.s     48 | Equivalence | 11 |         |    0 | 00/2000               | CYAREG        =     $C036          
+   49 |  1 kontra.s     49 | Equivalence | 11 |         |    0 | 00/2000               | TXTCLR        =     $C050          
+   50 |  1 kontra.s     50 | Equivalence | 11 |         |    0 | 00/2000               | TXTSET        =     $C051          
+   51 |  1 kontra.s     51 | Equivalence | 11 |         |    0 | 00/2000               | MIXCLR        =     $C052          
+   52 |  1 kontra.s     52 | Equivalence | 11 |         |    0 | 00/2000               | MIXSET        =     $C053          
+   53 |  1 kontra.s     53 | Equivalence | 11 |         |    0 | 00/2000               | TXTPAGE1      =     $C054          
+   54 |  1 kontra.s     54 | Equivalence | 11 |         |    0 | 00/2000               | TXTPAGE2      =     $C055          
+   55 |  1 kontra.s     55 | Equivalence | 11 |         |    0 | 00/2000               | LORES         =     $C056          
+   56 |  1 kontra.s     56 | Equivalence | 11 |         |    0 | 00/2000               | HIRES         =     $C057          
+   57 |  1 kontra.s     57 | Empty       | 11 |         |    0 | 00/2000               |                                    
+   58 |  1 kontra.s     58 | Comment     | 11 |         |    0 | 00/2000               | *-------------- The firmware routines
+   59 |  1 kontra.s     59 | Empty       | 11 |         |    0 | 00/2000               |                                    
+   60 |  1 kontra.s     60 | Equivalence | 11 |         |    0 | 00/2000               | HGR           =     $F3E2          
+   61 |  1 kontra.s     61 | Equivalence | 11 |         |    0 | 00/2000               | HPOSN         =     $F417          
+   62 |  1 kontra.s     62 | Equivalence | 11 |         |    0 | 00/2000               | INIT          =     $FB2F          
+   63 |  1 kontra.s     63 | Equivalence | 11 |         |    0 | 00/2000               | TABV          =     $FB5B          
+   64 |  1 kontra.s     64 | Equivalence | 11 |         |    0 | 00/2000               | SETPWRC       =     $FB6F          
+   65 |  1 kontra.s     65 | Equivalence | 11 |         |    0 | 00/2000               | HOME          =     $FC58          
+   66 |  1 kontra.s     66 | Equivalence | 11 |         |    0 | 00/2000               | WAIT          =     $FCA8          
+   67 |  1 kontra.s     67 | Equivalence | 11 |         |    0 | 00/2000               | RDKEY         =     $FD0C          
+   68 |  1 kontra.s     68 | Equivalence | 11 |         |    0 | 00/2000               | GETLN1        =     $FD6F          
+   69 |  1 kontra.s     69 | Equivalence | 11 |         |    0 | 00/2000               | PRBYTE        =     $FDDA          
+   70 |  1 kontra.s     70 | Equivalence | 11 |         |    0 | 00/2000               | COUT          =     $FDED          
+   71 |  1 kontra.s     71 | Equivalence | 11 |         |    0 | 00/2000               | IDROUTINE     =     $FE1F          
+   72 |  1 kontra.s     72 | Equivalence | 11 |         |    0 | 00/2000               | SETNORM       =     $FE84          
+   73 |  1 kontra.s     73 | Equivalence | 11 |         |    0 | 00/2000               | SETKBD        =     $FE89          
+   74 |  1 kontra.s     74 | Equivalence | 11 |         |    0 | 00/2000               | BELL          =     $FF3A          
+   75 |  1 kontra.s     75 | Empty       | 11 |         |    0 | 00/2000               |                                    
+   76 |  1 kontra.s     76 | Comment     | 11 |         |    0 | 00/2000               | *-----------------------------------
+   77 |  1 kontra.s     77 | Comment     | 11 |         |    0 | 00/2000               | * RELOCATE ME
+   78 |  1 kontra.s     78 | Comment     | 11 |         |    0 | 00/2000               | *-----------------------------------
+   79 |  1 kontra.s     79 | Empty       | 11 |         |    0 | 00/2000               |                                    
+   80 |  1 kontra.s     80 | Code        | 11 |         |    2 | 00/2000 : A2 08       |               ldx   #8             
+   81 |  1 kontra.s     81 | Code        | 11 |         |    2 | 00/2002 : A0 00       |               ldy   #0             
+   82 |  1 kontra.s     82 | Code        | 11 |         |    3 | 00/2004 : B9 19 20    | theFROM       lda   ICI,y          
+   83 |  1 kontra.s     83 | Code        | 11 |         |    3 | 00/2007 : 99 00 10    | theTO         sta   {$1000},y      
+   84 |  1 kontra.s     84 | Code        | 11 |         |    1 | 00/200A : C8          |               iny                  
+   85 |  1 kontra.s     85 | Code        | 11 |         |    2 | 00/200B : D0 F7       |               bne   theFROM        
+   86 |  1 kontra.s     86 | Code        | 11 |         |    3 | 00/200D : EE 06 20    |               inc   theFROM+2      
+   87 |  1 kontra.s     87 | Code        | 11 |         |    3 | 00/2010 : EE 09 20    |               inc   theTO+2        
+   88 |  1 kontra.s     88 | Code        | 11 |         |    1 | 00/2013 : CA          |               dex                  
+   89 |  1 kontra.s     89 | Code        | 11 |         |    2 | 00/2014 : D0 EE       |               bne   theFROM        
+   90 |  1 kontra.s     90 | Code        | 11 |         |    3 | 00/2016 : 4C 00 10    |               jmp   {$1000}        
+   91 |  1 kontra.s     91 | Empty       | 11 |         |    0 | 00/2019               |                                    
+   92 |  1 kontra.s     92 | Empty       | 11 |         |    0 | 00/2019               | ICI                                
+   93 |  1 kontra.s     93 | Empty       | 11 |         |    0 | 00/2019               |                                    
+   94 |  1 kontra.s     94 | Comment     | 11 |         |    0 | 00/2019               | *-----------------------------------
+   95 |  1 kontra.s     95 | Comment     | 11 |         |    0 | 00/2019               | * LOAD THE GAME
+   96 |  1 kontra.s     96 | Comment     | 11 |         |    0 | 00/2019               | *-----------------------------------
+   97 |  1 kontra.s     97 | Empty       | 11 |         |    0 | 00/2019               |                                    
+   98 |  1 kontra.s     98 | Directive   | 11 |         |    0 | 00/2019               |               org   {$1000}        ; we are relocated
+   99 |  1 kontra.s     99 | Empty       | 11 |         |    0 | 00/1000               |                                    
+  100 |  1 kontra.s    100 | Code        | 11 |         |    3 | 00/1000 : 20 00 BF    |               jsr   {$bf00}        ; get the prefix
+  101 |  1 kontra.s    101 | Data        | 11 |         |    1 | 00/1003 : C7          |               dfb   $c7            
+  102 |  1 kontra.s    102 | Data        | 11 |         |    2 | 00/1004 : 74 11       |               da    proGETPFX      
+  103 |  1 kontra.s    103 | Empty       | 11 |         |    0 | 00/1006               |                                    
+  104 |  1 kontra.s    104 | Code        | 11 |         |    3 | 00/1006 : 20 00 BF    |               jsr   {$bf00}        ; set it
+  105 |  1 kontra.s    105 | Data        | 11 |         |    1 | 00/1009 : C6          |               dfb   $c6            
+  106 |  1 kontra.s    106 | Data        | 11 |         |    2 | 00/100A : 74 11       |               da    proGETPFX      
+  107 |  1 kontra.s    107 | Empty       | 11 |         |    0 | 00/100C               |                                    
+  108 |  1 kontra.s    108 | Code        | 11 |         |    1 | 00/100C : 38          |               sec                  
+  109 |  1 kontra.s    109 | Code        | 11 |         |    3 | 00/100D : 20 1F FE    |               jsr   {$FE1F}        
+  110 |  1 kontra.s    110 | Code        | 11 |         |    2 | 00/1010 : B0 16       |               bcs   in_notiigs     
+  111 |  1 kontra.s    111 | Empty       | 11 |         |    0 | 00/1012               |                                    
+  112 |  1 kontra.s    112 | Code        | 11 |         |    3 | 00/1012 : AD 29 C0    |               lda   {$C029}        ; B/W hi-res
+  113 |  1 kontra.s    113 | Code        | 11 |         |    3 | 00/1015 : 8D 5A 10    |               sta   oldNEWVIDEO    
+  114 |  1 kontra.s    114 | Code        | 11 |         |    2 | 00/1018 : 09 20       |               ora   #%0010_0000    
+  115 |  1 kontra.s    115 | Code        | 11 |         |    3 | 00/101A : 8D 29 C0    |               sta   {$C029}        
+  116 |  1 kontra.s    116 | Empty       | 11 |         |    0 | 00/101D               |                                    
+  117 |  1 kontra.s    117 | Code        | 11 |         |    3 | 00/101D : AD 21 C0    |               lda   {$C021}        ; disables color
+  118 |  1 kontra.s    118 | Code        | 11 |         |    3 | 00/1020 : 8D 58 10    |               sta   oldMONOCOLOR   
+  119 |  1 kontra.s    119 | Code        | 11 |         |    2 | 00/1023 : 09 80       |               ora   #%1000_0000    
+  120 |  1 kontra.s    120 | Code        | 11 |         |    3 | 00/1025 : 8D 21 C0    |               sta   {$C021}        
+  121 |  1 kontra.s    121 | Empty       | 11 |         |    0 | 00/1028               |                                    
+  122 |  1 kontra.s    122 | Code        | 11 |         |    2 | 00/1028 : A9 20       | in_notiigs    lda   #>{$2000}      
+  123 |  1 kontra.s    123 | Code        | 11 |         |    2 | 00/102A : 85 E6       |               sta   {$e6}          
+  124 |  1 kontra.s    124 | Code        | 11 |         |    3 | 00/102C : 20 E2 F3    |               jsr   {$F3E2}        
+  125 |  1 kontra.s    125 | Code        | 11 |         |    3 | 00/102F : AD 52 C0    |               lda   {$C052}        
+  126 |  1 kontra.s    126 | Empty       | 11 |         |    0 | 00/1032               |                                    
+  127 |  1 kontra.s    127 | Code        | 11 |         |    2 | 00/1032 : A0 8C       |               ldy   #<pTITLE       
+  128 |  1 kontra.s    128 | Code        | 11 |         |    2 | 00/1034 : A2 11       |               ldx   #>pTITLE       
+  129 |  1 kontra.s    129 | Code        | 11 |         |    3 | 00/1036 : 20 26 11    |               jsr   loadFILE       
+  130 |  1 kontra.s    130 | Code        | 11 |         |    3 | 00/1039 : 20 5C 10    |               jsr   unpackLZ4      
+  131 |  1 kontra.s    131 | Empty       | 11 |         |    0 | 00/103C               |                                    
+  132 |  1 kontra.s    132 | Code        | 11 |         |    2 | 00/103C : A0 96       |               ldy   #<pGAME        
+  133 |  1 kontra.s    133 | Code        | 11 |         |    2 | 00/103E : A2 11       |               ldx   #>pGAME        
+  134 |  1 kontra.s    134 | Code        | 11 |         |    3 | 00/1040 : 20 26 11    |               jsr   loadFILE       
+  135 |  1 kontra.s    135 | Empty       | 11 |         |    0 | 00/1043               |                                    
+  136 |  1 kontra.s    136 | Code        | 11 |         |    1 | 00/1043 : 38          |               sec                  
+  137 |  1 kontra.s    137 | Code        | 11 |         |    3 | 00/1044 : 20 1F FE    |               jsr   {$FE1F}        
+  138 |  1 kontra.s    138 | Code        | 11 |         |    2 | 00/1047 : B0 0C       |               bcs   out_notiigs    
+  139 |  1 kontra.s    139 | Empty       | 11 |         |    0 | 00/1049               |                                    
+  140 |  1 kontra.s    140 | Code        | 11 |         |    3 | 00/1049 : AD 5A 10    |               lda   oldNEWVIDEO    ; B/W hi-res
+  141 |  1 kontra.s    141 | Code        | 11 |         |    3 | 00/104C : 8D 29 C0    |               sta   {$C029}        
+  142 |  1 kontra.s    142 | Empty       | 11 |         |    0 | 00/104F               |                                    
+  143 |  1 kontra.s    143 | Code        | 11 |         |    3 | 00/104F : AD 58 10    |               lda   oldMONOCOLOR   ; disables color
+  144 |  1 kontra.s    144 | Code        | 11 |         |    3 | 00/1052 : 8D 21 C0    |               sta   {$C021}        
+  145 |  1 kontra.s    145 | Empty       | 11 |         |    0 | 00/1055               |                                    
+  146 |  1 kontra.s    146 | Code        | 11 |         |    3 | 00/1055 : 4C 00 40    | out_notiigs   jmp   {$4000}        
+  147 |  1 kontra.s    147 | Empty       | 11 |         |    0 | 00/1058               |                                    
+  148 |  1 kontra.s    148 | Comment     | 11 |         |    0 | 00/1058               | *--- Data
+  149 |  1 kontra.s    149 | Empty       | 11 |         |    0 | 00/1058               |                                    
+  150 |  1 kontra.s    150 | Data        | 11 |         |    2 | 00/1058 : 00 00       | oldMONOCOLOR  ds    2              ; $C027
+  151 |  1 kontra.s    151 | Data        | 11 |         |    2 | 00/105A : 00 00       | oldNEWVIDEO   ds    2              ; $C029
+  152 |  1 kontra.s    152 | Empty       | 11 |         |    0 | 00/105C               |                                    
+  153 |  1 kontra.s    153 | Comment     | 11 |         |    0 | 00/105C               | *--------------------------------------
+  154 |  1 kontra.s    154 | Comment     | 11 |         |    0 | 00/105C               | * unpackLZ4
+  155 |  1 kontra.s    155 | Comment     | 11 |         |    0 | 00/105C               | *
+  156 |  1 kontra.s    156 | Comment     | 11 |         |    0 | 00/105C               | * Unpack a LZ4 image
+  157 |  1 kontra.s    157 | Comment     | 11 |         |    0 | 00/105C               | * Code by Peter Ferrie
+  158 |  1 kontra.s    158 | Comment     | 11 |         |    0 | 00/105C               | * Used with permission
+  159 |  1 kontra.s    159 | Comment     | 11 |         |    0 | 00/105C               | * Adapted for the game engine
+  160 |  1 kontra.s    160 | Comment     | 11 |         |    0 | 00/105C               | *
+  161 |  1 kontra.s    161 | Comment     | 11 |         |    0 | 00/105C               | *--------------------------------------
+  162 |  1 kontra.s    162 | Empty       | 11 |         |    0 | 00/105C               |                                    
+  163 |  1 kontra.s    163 | Code        | 11 |         |    2 | 00/105C : A0 00       | unpackLZ4     ldy   #<{$4000}      ; src
+  164 |  1 kontra.s    164 | Code        | 11 |         |    2 | 00/105E : A2 40       |               ldx   #>{$4000}      
+  165 |  1 kontra.s    165 | Empty       | 11 |         |    0 | 00/1060               |                                    
+  166 |  1 kontra.s    166 | Code        | 11 |         |    1 | 00/1060 : 98          |               tya                  ; end
+  167 |  1 kontra.s    167 | Code        | 11 |         |    1 | 00/1061 : 18          |               clc                  
+  168 |  1 kontra.s    168 | Code        | 11 |         |    3 | 00/1062 : 6D 89 11    |               adc   proGETEOF+2    
+  169 |  1 kontra.s    169 | Code        | 11 |         |    3 | 00/1065 : 8D 20 11    |               sta   lz4end         
+  170 |  1 kontra.s    170 | Code        | 11 |         |    1 | 00/1068 : 8A          |               txa                  
+  171 |  1 kontra.s    171 | Code        | 11 |         |    3 | 00/1069 : 6D 8A 11    |               adc   proGETEOF+3    
+  172 |  1 kontra.s    172 | Code        | 11 |         |    3 | 00/106C : 8D 21 11    |               sta   lz4end+1       
+  173 |  1 kontra.s    173 | Empty       | 11 |         |    0 | 00/106F               |                                    
+  174 |  1 kontra.s    174 | Code        | 11 |         |    2 | 00/106F : A9 00       |               lda   #<{$2000}      ; dest
+  175 |  1 kontra.s    175 | Code        | 11 |         |    2 | 00/1071 : 85 FA       |               sta   {{$f8}+2}      
+  176 |  1 kontra.s    176 | Code        | 11 |         |    2 | 00/1073 : A9 20       |               lda   #>{$2000}      
+  177 |  1 kontra.s    177 | Code        | 11 |         |    2 | 00/1075 : 85 FB       |               sta   {{$f8}+2}+1    
+  178 |  1 kontra.s    178 | Empty       | 11 |         |    0 | 00/1077               |                                    
+  179 |  1 kontra.s    179 | Code        | 11 |         |    1 | 00/1077 : 98          |               tya                  ; move to data
+  180 |  1 kontra.s    180 | Code        | 11 |         |    1 | 00/1078 : 18          |               clc                  
+  181 |  1 kontra.s    181 | Code        | 11 |         |    2 | 00/1079 : 69 10       |               adc   #16            
+  182 |  1 kontra.s    182 | Code        | 11 |         |    2 | 00/107B : 85 F8       |               sta   {$f8}          
+  183 |  1 kontra.s    183 | Code        | 11 |         |    1 | 00/107D : 8A          |               txa                  
+  184 |  1 kontra.s    184 | Code        | 11 |         |    2 | 00/107E : 69 00       |               adc   #0             
+  185 |  1 kontra.s    185 | Code        | 11 |         |    2 | 00/1080 : 85 F9       |               sta   {$f8}+1        
+  186 |  1 kontra.s    186 | Empty       | 11 |         |    0 | 00/1082               |                                    
+  187 |  1 kontra.s    187 | Code        | 11 |         |    2 | 00/1082 : A0 00       |               ldy   #0             ; src/dst index
+  188 |  1 kontra.s    188 | Code        | 11 |         |    3 | 00/1084 : 8C 22 11    |               sty   count          
+  189 |  1 kontra.s    189 | Empty       | 11 |         |    0 | 00/1087               |                                    
+  190 |  1 kontra.s    190 | Code        | 11 |         |    3 | 00/1087 : 20 17 11    | parsetoken    jsr   getsrc         
+  191 |  1 kontra.s    191 | Code        | 11 |         |    1 | 00/108A : 48          |               pha                  
+  192 |  1 kontra.s    192 | Code        | 11 |         |    1 | 00/108B : 4A          |               lsr                  
+  193 |  1 kontra.s    193 | Code        | 11 |         |    1 | 00/108C : 4A          |               lsr                  
+  194 |  1 kontra.s    194 | Code        | 11 |         |    1 | 00/108D : 4A          |               lsr                  
+  195 |  1 kontra.s    195 | Code        | 11 |         |    1 | 00/108E : 4A          |               lsr                  
+  196 |  1 kontra.s    196 | Code        | 11 |         |    2 | 00/108F : F0 13       |               beq   copymatches    
+  197 |  1 kontra.s    197 | Code        | 11 |         |    3 | 00/1091 : 20 EE 10    |               jsr   buildcount     
+  198 |  1 kontra.s    198 | Code        | 11 |         |    1 | 00/1094 : AA          |               tax                  
+  199 |  1 kontra.s    199 | Code        | 11 |         |    3 | 00/1095 : 20 E2 10    |               jsr   docopy         
+  200 |  1 kontra.s    200 | Empty       | 11 |         |    0 | 00/1098               |                                    
+  201 |  1 kontra.s    201 | Code        | 11 |         |    2 | 00/1098 : A5 F8       |               lda   {$f8}          ; did we reach the end?
+  202 |  1 kontra.s    202 | Code        | 11 |         |    3 | 00/109A : CD 20 11    |               cmp   lz4end         
+  203 |  1 kontra.s    203 | Code        | 11 |         |    2 | 00/109D : A5 F9       |               lda   {$f8}+1        
+  204 |  1 kontra.s    204 | Code        | 11 |         |    3 | 00/109F : ED 21 11    |               sbc   lz4end+1       
+  205 |  1 kontra.s    205 | Code        | 11 |         |    2 | 00/10A2 : B0 3C       |               bcs   lz4done        
+  206 |  1 kontra.s    206 | Empty       | 11 |         |    0 | 00/10A4               |                                    
+  207 |  1 kontra.s    207 | Code        | 11 |         |    3 | 00/10A4 : 20 17 11    | copymatches   jsr   getsrc         
+  208 |  1 kontra.s    208 | Code        | 11 |         |    3 | 00/10A7 : 8D 24 11    |               sta   delta          
+  209 |  1 kontra.s    209 | Code        | 11 |         |    3 | 00/10AA : 20 17 11    |               jsr   getsrc         
+  210 |  1 kontra.s    210 | Code        | 11 |         |    3 | 00/10AD : 8D 25 11    |               sta   delta+1        
+  211 |  1 kontra.s    211 | Code        | 11 |         |    1 | 00/10B0 : 68          |               pla                  
+  212 |  1 kontra.s    212 | Code        | 11 |         |    2 | 00/10B1 : 29 0F       |               and   #$0f           
+  213 |  1 kontra.s    213 | Code        | 11 |         |    3 | 00/10B3 : 20 EE 10    |               jsr   buildcount     
+  214 |  1 kontra.s    214 | Code        | 11 |         |    1 | 00/10B6 : 18          |               clc                  
+  215 |  1 kontra.s    215 | Code        | 11 |         |    2 | 00/10B7 : 69 04       |               adc   #4             
+  216 |  1 kontra.s    216 | Code        | 11 |         |    1 | 00/10B9 : AA          |               tax                  
+  217 |  1 kontra.s    217 | Code        | 11 |         |    2 | 00/10BA : 90 03       |               bcc   copymatches1   
+  218 |  1 kontra.s    218 | Code        | 11 |         |    3 | 00/10BC : EE 23 11    |               inc   count+1        
+  219 |  1 kontra.s    219 | Code        | 11 |         |    2 | 00/10BF : A5 F9       | copymatches1  lda   {$f8}+1        
+  220 |  1 kontra.s    220 | Code        | 11 |         |    1 | 00/10C1 : 48          |               pha                  
+  221 |  1 kontra.s    221 | Code        | 11 |         |    2 | 00/10C2 : A5 F8       |               lda   {$f8}          
+  222 |  1 kontra.s    222 | Code        | 11 |         |    1 | 00/10C4 : 48          |               pha                  
+  223 |  1 kontra.s    223 | Code        | 11 |         |    1 | 00/10C5 : 38          |               sec                  
+  224 |  1 kontra.s    224 | Code        | 11 |         |    2 | 00/10C6 : A5 FA       |               lda   {{$f8}+2}      
+  225 |  1 kontra.s    225 | Code        | 11 |         |    3 | 00/10C8 : ED 24 11    |               sbc   delta          
+  226 |  1 kontra.s    226 | Code        | 11 |         |    2 | 00/10CB : 85 F8       |               sta   {$f8}          
+  227 |  1 kontra.s    227 | Code        | 11 |         |    2 | 00/10CD : A5 FB       |               lda   {{$f8}+2}+1    
+  228 |  1 kontra.s    228 | Code        | 11 |         |    3 | 00/10CF : ED 25 11    |               sbc   delta+1        
+  229 |  1 kontra.s    229 | Code        | 11 |         |    2 | 00/10D2 : 85 F9       |               sta   {$f8}+1        
+  230 |  1 kontra.s    230 | Code        | 11 |         |    3 | 00/10D4 : 20 E2 10    |               jsr   docopy         
+  231 |  1 kontra.s    231 | Code        | 11 |         |    1 | 00/10D7 : 68          |               pla                  
+  232 |  1 kontra.s    232 | Code        | 11 |         |    2 | 00/10D8 : 85 F8       |               sta   {$f8}          
+  233 |  1 kontra.s    233 | Code        | 11 |         |    1 | 00/10DA : 68          |               pla                  
+  234 |  1 kontra.s    234 | Code        | 11 |         |    2 | 00/10DB : 85 F9       |               sta   {$f8}+1        
+  235 |  1 kontra.s    235 | Code        | 11 |         |    3 | 00/10DD : 4C 87 10    |               jmp   parsetoken     
+  236 |  1 kontra.s    236 | Empty       | 11 |         |    0 | 00/10E0               |                                    
+  237 |  1 kontra.s    237 | Code        | 11 |         |    1 | 00/10E0 : 68          | lz4done       pla                  ; yes, exit!
+  238 |  1 kontra.s    238 | Code        | 11 |         |    1 | 00/10E1 : 60          |               rts                  
+  239 |  1 kontra.s    239 | Empty       | 11 |         |    0 | 00/10E2               |                                    
+  240 |  1 kontra.s    240 | Comment     | 11 |         |    0 | 00/10E2               | *---
+  241 |  1 kontra.s    241 | Empty       | 11 |         |    0 | 00/10E2               |                                    
+  242 |  1 kontra.s    242 | Code        | 11 |         |    3 | 00/10E2 : 20 0B 11    | docopy        jsr   getput         
+  243 |  1 kontra.s    243 | Code        | 11 |         |    1 | 00/10E5 : CA          |               dex                  
+  244 |  1 kontra.s    244 | Code        | 11 |         |    2 | 00/10E6 : D0 FA       |               bne   docopy         
+  245 |  1 kontra.s    245 | Code        | 11 |         |    3 | 00/10E8 : CE 23 11    |               dec   count+1        
+  246 |  1 kontra.s    246 | Code        | 11 |         |    2 | 00/10EB : D0 F5       |               bne   docopy         
+  247 |  1 kontra.s    247 | Code        | 11 |         |    1 | 00/10ED : 60          |               rts                  
+  248 |  1 kontra.s    248 | Empty       | 11 |         |    0 | 00/10EE               |                                    
+  249 |  1 kontra.s    249 | Comment     | 11 |         |    0 | 00/10EE               | *---
+  250 |  1 kontra.s    250 | Empty       | 11 |         |    0 | 00/10EE               |                                    
+  251 |  1 kontra.s    251 | Code        | 11 |         |    2 | 00/10EE : A2 01       | buildcount    ldx   #1             
+  252 |  1 kontra.s    252 | Code        | 11 |         |    3 | 00/10F0 : 8E 23 11    |               stx   count+1        
+  253 |  1 kontra.s    253 | Code        | 11 |         |    2 | 00/10F3 : C9 0F       |               cmp   #$0f           
+  254 |  1 kontra.s    254 | Code        | 11 |         |    2 | 00/10F5 : D0 13       |               bne   buildcount2    
+  255 |  1 kontra.s    255 | Code        | 11 |         |    3 | 00/10F7 : 8D 22 11    | ozunid_1      sta   count          
+  256 |  1 kontra.s    256 | Code        | 11 |         |    3 | 00/10FA : 20 17 11    |               jsr   getsrc         
+  257 |  1 kontra.s    257 | Code        | 11 |         |    1 | 00/10FD : AA          |               tax                  
+  258 |  1 kontra.s    258 | Code        | 11 |         |    1 | 00/10FE : 18          |               clc                  
+  259 |  1 kontra.s    259 | Code        | 11 |         |    3 | 00/10FF : 6D 22 11    |               adc   count          
+  260 |  1 kontra.s    260 | Code        | 11 |         |    2 | 00/1102 : 90 03       |               bcc   buildcount1    
+  261 |  1 kontra.s    261 | Code        | 11 |         |    3 | 00/1104 : EE 23 11    |               inc   count+1        
+  262 |  1 kontra.s    262 | Code        | 11 |         |    1 | 00/1107 : E8          | buildcount1   inx                  
+  263 |  1 kontra.s    263 | Code        | 11 |         |    2 | 00/1108 : F0 ED       |               beq   ozunid_1       
+  264 |  1 kontra.s    264 | Code        | 11 |         |    1 | 00/110A : 60          | buildcount2   rts                  
+  265 |  1 kontra.s    265 | Empty       | 11 |         |    0 | 00/110B               |                                    
+  266 |  1 kontra.s    266 | Comment     | 11 |         |    0 | 00/110B               | *---
+  267 |  1 kontra.s    267 | Empty       | 11 |         |    0 | 00/110B               |                                    
+  268 |  1 kontra.s    268 | Code        | 11 |         |    3 | 00/110B : 20 17 11    | getput        jsr   getsrc         
+  269 |  1 kontra.s    269 | Empty       | 11 |         |    0 | 00/110E               |                                    
+  270 |  1 kontra.s    270 | Code        | 11 |         |    2 | 00/110E : 91 FA       | putdst        sta   ({{$f8}+2}),y  
+  271 |  1 kontra.s    271 | Code        | 11 |         |    2 | 00/1110 : E6 FA       |               inc   {{$f8}+2}      
+  272 |  1 kontra.s    272 | Code        | 11 |         |    2 | 00/1112 : D0 02       |               bne   putdst1        
+  273 |  1 kontra.s    273 | Code        | 11 |         |    2 | 00/1114 : E6 FB       |               inc   {{$f8}+2}+1    
+  274 |  1 kontra.s    274 | Code        | 11 |         |    1 | 00/1116 : 60          | putdst1       rts                  
+  275 |  1 kontra.s    275 | Empty       | 11 |         |    0 | 00/1117               |                                    
+  276 |  1 kontra.s    276 | Comment     | 11 |         |    0 | 00/1117               | *---
+  277 |  1 kontra.s    277 | Empty       | 11 |         |    0 | 00/1117               |                                    
+  278 |  1 kontra.s    278 | Code        | 11 |         |    2 | 00/1117 : B1 F8       | getsrc        lda   ({$f8}),y      
+  279 |  1 kontra.s    279 | Code        | 11 |         |    2 | 00/1119 : E6 F8       |               inc   {$f8}          
+  280 |  1 kontra.s    280 | Code        | 11 |         |    2 | 00/111B : D0 02       |               bne   getsrc1        
+  281 |  1 kontra.s    281 | Code        | 11 |         |    2 | 00/111D : E6 F9       |               inc   {$f8}+1        
+  282 |  1 kontra.s    282 | Code        | 11 |         |    1 | 00/111F : 60          | getsrc1       rts                  
+  283 |  1 kontra.s    283 | Empty       | 11 |         |    0 | 00/1120               |                                    
+  284 |  1 kontra.s    284 | Comment     | 11 |         |    0 | 00/1120               | *--- Data
+  285 |  1 kontra.s    285 | Empty       | 11 |         |    0 | 00/1120               |                                    
+  286 |  1 kontra.s    286 | Data        | 11 |         |    2 | 00/1120 : 00 00       | lz4end        ds    2              
+  287 |  1 kontra.s    287 | Data        | 11 |         |    2 | 00/1122 : 00 00       | count         ds    2              
+  288 |  1 kontra.s    288 | Data        | 11 |         |    2 | 00/1124 : 00 00       | delta         ds    2              
+  289 |  1 kontra.s    289 | Empty       | 11 |         |    0 | 00/1126               |                                    
+  290 |  1 kontra.s    290 | Comment     | 11 |         |    0 | 00/1126               | *-----------------------------------
+  291 |  1 kontra.s    291 | Comment     | 11 |         |    0 | 00/1126               | * LOAD A FILE
+  292 |  1 kontra.s    292 | Comment     | 11 |         |    0 | 00/1126               | *-----------------------------------
+  293 |  1 kontra.s    293 | Empty       | 11 |         |    0 | 00/1126               |                                    
+  294 |  1 kontra.s    294 | Code        | 11 |         |    3 | 00/1126 : 8C 78 11    | loadFILE      sty   proOPEN+1      
+  295 |  1 kontra.s    295 | Code        | 11 |         |    3 | 00/1129 : 8E 79 11    |               stx   proOPEN+2      
+  296 |  1 kontra.s    296 | Empty       | 11 |         |    0 | 00/112C               |                                    
+  297 |  1 kontra.s    297 | Code        | 11 |         |    3 | 00/112C : 20 00 BF    |               jsr   {$bf00}        
+  298 |  1 kontra.s    298 | Data        | 11 |         |    1 | 00/112F : C8          |               dfb   $c8            
+  299 |  1 kontra.s    299 | Data        | 11 |         |    2 | 00/1130 : 77 11       |               da    proOPEN        
+  300 |  1 kontra.s    300 | Code        | 11 |         |    2 | 00/1132 : B0 31       |               bcs   quitME         
+  301 |  1 kontra.s    301 | Empty       | 11 |         |    0 | 00/1134               |                                    
+  302 |  1 kontra.s    302 | Code        | 11 |         |    3 | 00/1134 : AD 7C 11    |               lda   proOPEN+5      ; zou, on prend l'ID
+  303 |  1 kontra.s    303 | Code        | 11 |         |    3 | 00/1137 : 8D 88 11    |               sta   proGETEOF+1    
+  304 |  1 kontra.s    304 | Code        | 11 |         |    3 | 00/113A : 8D 7E 11    |               sta   proREAD+1      
+  305 |  1 kontra.s    305 | Code        | 11 |         |    3 | 00/113D : 8D 86 11    |               sta   proCLOSE+1     
+  306 |  1 kontra.s    306 | Empty       | 11 |         |    0 | 00/1140               |                                    
+  307 |  1 kontra.s    307 | Code        | 11 |         |    3 | 00/1140 : 20 00 BF    |               jsr   {$bf00}        ; longueur du fichier
+  308 |  1 kontra.s    308 | Data        | 11 |         |    1 | 00/1143 : D1          |               dfb   $d1            
+  309 |  1 kontra.s    309 | Data        | 11 |         |    2 | 00/1144 : 87 11       |               da    proGETEOF      
+  310 |  1 kontra.s    310 | Code        | 11 |         |    2 | 00/1146 : B0 1D       |               bcs   quitME         
+  311 |  1 kontra.s    311 | Empty       | 11 |         |    0 | 00/1148               |                                    
+  312 |  1 kontra.s    312 | Code        | 11 |         |    3 | 00/1148 : AD 89 11    |               lda   proGETEOF+2    
+  313 |  1 kontra.s    313 | Code        | 11 |         |    3 | 00/114B : 8D 81 11    |               sta   proREAD+4      
+  314 |  1 kontra.s    314 | Code        | 11 |         |    3 | 00/114E : AD 8A 11    |               lda   proGETEOF+3    
+  315 |  1 kontra.s    315 | Code        | 11 |         |    3 | 00/1151 : 8D 82 11    |               sta   proREAD+5      
+  316 |  1 kontra.s    316 | Empty       | 11 |         |    0 | 00/1154               |                                    
+  317 |  1 kontra.s    317 | Code        | 11 |         |    3 | 00/1154 : 20 00 BF    |               jsr   {$bf00}        ; lecture du fichier
+  318 |  1 kontra.s    318 | Data        | 11 |         |    1 | 00/1157 : CA          |               dfb   $ca            
+  319 |  1 kontra.s    319 | Data        | 11 |         |    2 | 00/1158 : 7D 11       |               da    proREAD        
+  320 |  1 kontra.s    320 | Code        | 11 |         |    2 | 00/115A : B0 09       |               bcs   quitME         
+  321 |  1 kontra.s    321 | Empty       | 11 |         |    0 | 00/115C               |                                    
+  322 |  1 kontra.s    322 | Code        | 11 |         |    3 | 00/115C : 20 00 BF    |               jsr   {$bf00}        ; fermeture du fichier
+  323 |  1 kontra.s    323 | Data        | 11 |         |    1 | 00/115F : CC          |               dfb   $cc            
+  324 |  1 kontra.s    324 | Data        | 11 |         |    2 | 00/1160 : 85 11       |               da    proCLOSE       
+  325 |  1 kontra.s    325 | Code        | 11 |         |    2 | 00/1162 : B0 01       |               bcs   quitME         
+  326 |  1 kontra.s    326 | Empty       | 11 |         |    0 | 00/1164               |                                    
+  327 |  1 kontra.s    327 | Code        | 11 |         |    1 | 00/1164 : 60          |               rts                  
+  328 |  1 kontra.s    328 | Empty       | 11 |         |    0 | 00/1165               |                                    
+  329 |  1 kontra.s    329 | Code        | 11 |         |    3 | 00/1165 : 20 00 BF    | quitME        jsr   {$bf00}        ; exit
+  330 |  1 kontra.s    330 | Data        | 11 |         |    1 | 00/1168 : 65          |               dfb   $65            
+  331 |  1 kontra.s    331 | Data        | 11 |         |    2 | 00/1169 : 6D 11       |               da    proQUIT        
+  332 |  1 kontra.s    332 | Empty       | 11 |         |    0 | 00/116B               |                                    
+  333 |  1 kontra.s    333 | Code        | 11 |         |    2 | 00/116B : 00 BD       |               brk   $bd            ; on ne se refait pas ;-)
+  334 |  1 kontra.s    334 | Empty       | 11 |         |    0 | 00/116D               |                                    
+  335 |  1 kontra.s    335 | Comment     | 11 |         |    0 | 00/116D               | *--- Data
+  336 |  1 kontra.s    336 | Empty       | 11 |         |    0 | 00/116D               |                                    
+  337 |  1 kontra.s    337 | Data        | 11 |         |    1 | 00/116D : 04          | proQUIT       dfb   $4             
+  338 |  1 kontra.s    338 | Data        | 11 |         |    1 | 00/116E : 00          |               ds    1              
+  339 |  1 kontra.s    339 | Data        | 11 |         |    2 | 00/116F : 00 00       |               ds    2              
+  340 |  1 kontra.s    340 | Data        | 11 |         |    1 | 00/1171 : 00          |               ds    1              
+  341 |  1 kontra.s    341 | Data        | 11 |         |    2 | 00/1172 : 00 00       |               ds    2              
+  342 |  1 kontra.s    342 | Empty       | 11 |         |    0 | 00/1174               |                                    
+  343 |  1 kontra.s    343 | Data        | 11 |         |    1 | 00/1174 : 01          | proGETPFX     dfb   $1             
+  344 |  1 kontra.s    344 | Data        | 11 |         |    2 | 00/1175 : 80 02       |               da    {$280}         
+  345 |  1 kontra.s    345 | Empty       | 11 |         |    0 | 00/1177               |                                    
+  346 |  1 kontra.s    346 | Data        | 11 |         |    1 | 00/1177 : 03          | proOPEN       dfb   $3             
+  347 |  1 kontra.s    347 | Data        | 11 |         |    2 | 00/1178 : 8C 11       |               da    pTITLE         ; pathname (par défaut, le moteur)
+  348 |  1 kontra.s    348 | Data        | 11 |         |    2 | 00/117A : 00 0C       |               da    {$0c00}        ; io_buffer
+  349 |  1 kontra.s    349 | Data        | 11 |         |    1 | 00/117C : 00          |               ds    1              ; ref_num
+  350 |  1 kontra.s    350 | Empty       | 11 |         |    0 | 00/117D               |                                    
+  351 |  1 kontra.s    351 | Data        | 11 |         |    1 | 00/117D : 04          | proREAD       dfb   $4             
+  352 |  1 kontra.s    352 | Data        | 11 |         |    1 | 00/117E : 00          |               ds    1              ; ref_num
+  353 |  1 kontra.s    353 | Data        | 11 |         |    2 | 00/117F : 00 40       |               da    {$4000}        ; data_buffer
+  354 |  1 kontra.s    354 | Data        | 11 |         |    2 | 00/1181 : 00 00       |               ds    2              ; request_count
+  355 |  1 kontra.s    355 | Data        | 11 |         |    2 | 00/1183 : 00 00       |               ds    2              ; transfer_count
+  356 |  1 kontra.s    356 | Empty       | 11 |         |    0 | 00/1185               |                                    
+  357 |  1 kontra.s    357 | Data        | 11 |         |    1 | 00/1185 : 01          | proCLOSE      dfb   $1             
+  358 |  1 kontra.s    358 | Data        | 11 |         |    1 | 00/1186 : 00          |               ds    1              ; ref_num
+  359 |  1 kontra.s    359 | Empty       | 11 |         |    0 | 00/1187               |                                    
+  360 |  1 kontra.s    360 | Data        | 11 |         |    1 | 00/1187 : 02          | proGETEOF     dfb   $2             
+  361 |  1 kontra.s    361 | Data        | 11 |         |    1 | 00/1188 : 00          |               ds    1              ; ref_num
+  362 |  1 kontra.s    362 | Data        | 11 |         |    3 | 00/1189 : 00 00 00    |               ds    3              ; eof
+  363 |  1 kontra.s    363 | Empty       | 11 |         |    0 | 00/118C               |                                    
+  364 |  1 kontra.s    364 | Data        | 11 |         |   10 | 00/118C : 09 74 69 74 | pTITLE        str   'title.lz4'    
+      |                    |             |    |         |      |           6C 65 2E 6C |
+      |                    |             |    |         |      |           7A 34       |
+  365 |  1 kontra.s    365 | Data        | 11 |         |    5 | 00/1196 : 04 67 61 6D | pGAME         str   'game'         
+      |                    |             |    |         |      |           65          |
+  366 |  1 kontra.s    366 | Empty       | 11 |         |    0 | 00/119B               |                                    
+  367 |  1 kontra.s    367 | Comment     | 11 |         |    0 | 00/119B               | *--- The end
+  368 |  1 kontra.s    368 | Empty       | 11 |         |    0 | 00/119B               |                                    
+------+--------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

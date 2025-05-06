@@ -1600,9 +1600,9 @@
  1558 |  1         kikekankoi.s   1303 | Code        | 11 |         |    2 | 00/1130 : A0 01       | _6022            ldy     #1                   
  1559 |  1         kikekankoi.s   1304 | Code        | 11 |         |    3 | 00/1132 : BD 00 02    | ozunid_4         lda     {$200},x             
  1560 |  1         kikekankoi.s   1305 | Code        | 11 |         |    2 | 00/1135 : C9 8D       |                  cmp     #{$8d}               
- 1561 |  1         kikekankoi.s   1306 | Code        | 11 |         |    2 | 00/1137 : F0 15       |                  beq     _6023                
+ 1561 |  1         kikekankoi.s   1306 | Code        | 11 |         |    2 | 00/1137 : F0 14       |                  beq     _6022_bis            
  1562 |  1         kikekankoi.s   1307 | Code        | 11 |         |    2 | 00/1139 : C9 A0       |                  cmp     #{$a0}               
- 1563 |  1         kikekankoi.s   1308 | Code        | 11 |         |    2 | 00/113B : F0 11       |                  beq     _6023                
+ 1563 |  1         kikekankoi.s   1308 | Code        | 11 |         |    2 | 00/113B : F0 10       |                  beq     _6022_bis            
  1564 |  1         kikekankoi.s   1309 | Code        | 11 |         |    3 | 00/113D : 99 67 1C    |                  sta     X$1,y                ; 0P1R2E3N4
  1565 |  1         kikekankoi.s   1310 | Code        | 11 |         |    1 | 00/1140 : E8          |                  inx                          
  1566 |  1         kikekankoi.s   1311 | Code        | 11 |         |    3 | 00/1141 : EC A0 1B    |                  cpx     lenSTRING            
@@ -1611,7 +1611,7 @@
  1569 |  1         kikekankoi.s   1314 | Code        | 11 |         |    2 | 00/1147 : C0 04       |                  cpy     #4                   
  1570 |  1         kikekankoi.s   1315 | Code        | 11 |         |    2 | 00/1149 : 90 E7       |                  bcc     ozunid_4             
  1571 |  1         kikekankoi.s   1316 | Code        | 11 |         |    2 | 00/114B : F0 E5       |                  beq     ozunid_4             
- 1572 |  1         kikekankoi.s   1317 | Code        | 11 |         |    1 | 00/114D : 88          |                  dey                          
+ 1572 |  1         kikekankoi.s   1317 | Code        | 11 |         |    1 | 00/114D : 88          | _6022_bis        dey                          
  1573 |  1         kikekankoi.s   1318 | Code        | 11 |         |    3 | 00/114E : 8C 67 1C    | _6023            sty     X$1                  ; sauve la longueur
  1574 |  1         kikekankoi.s   1319 | Empty       | 11 |         |    0 | 00/1151               |                                               
  1575 |  1         kikekankoi.s   1320 | Comment     | 11 |         |    0 | 00/1151               | * 3. cherche un espace
@@ -1635,9 +1635,9 @@
  1593 |  1         kikekankoi.s   1338 | Code        | 11 |         |    2 | 00/1161 : A0 01       |                  ldy     #1                   
  1594 |  1         kikekankoi.s   1339 | Code        | 11 |         |    3 | 00/1163 : BD 00 02    | ozunid_6         lda     {$200},x             
  1595 |  1         kikekankoi.s   1340 | Code        | 11 |         |    2 | 00/1166 : C9 8D       |                  cmp     #{$8d}               
- 1596 |  1         kikekankoi.s   1341 | Code        | 11 |         |    2 | 00/1168 : F0 15       |                  beq     _6033                
+ 1596 |  1         kikekankoi.s   1341 | Code        | 11 |         |    2 | 00/1168 : F0 14       |                  beq     _6032_bis            
  1597 |  1         kikekankoi.s   1342 | Code        | 11 |         |    2 | 00/116A : C9 A0       |                  cmp     #{$a0}               
- 1598 |  1         kikekankoi.s   1343 | Code        | 11 |         |    2 | 00/116C : F0 11       |                  beq     _6033                
+ 1598 |  1         kikekankoi.s   1343 | Code        | 11 |         |    2 | 00/116C : F0 10       |                  beq     _6032_bis            
  1599 |  1         kikekankoi.s   1344 | Code        | 11 |         |    3 | 00/116E : 99 6C 1C    |                  sta     X$2,y                
  1600 |  1         kikekankoi.s   1345 | Code        | 11 |         |    1 | 00/1171 : E8          |                  inx                          
  1601 |  1         kikekankoi.s   1346 | Code        | 11 |         |    3 | 00/1172 : EC A0 1B    |                  cpx     lenSTRING            
@@ -1646,7 +1646,7 @@
  1604 |  1         kikekankoi.s   1349 | Code        | 11 |         |    2 | 00/1178 : C0 04       |                  cpy     #4                   
  1605 |  1         kikekankoi.s   1350 | Code        | 11 |         |    2 | 00/117A : 90 E7       |                  bcc     ozunid_6             
  1606 |  1         kikekankoi.s   1351 | Code        | 11 |         |    2 | 00/117C : F0 E5       |                  beq     ozunid_6             
- 1607 |  1         kikekankoi.s   1352 | Code        | 11 |         |    1 | 00/117E : 88          |                  dey                          
+ 1607 |  1         kikekankoi.s   1352 | Code        | 11 |         |    1 | 00/117E : 88          | _6032_bis        dey                          
  1608 |  1         kikekankoi.s   1353 | Code        | 11 |         |    3 | 00/117F : 8C 6C 1C    | _6033            sty     X$2                  ; sauve la longueur
  1609 |  1         kikekankoi.s   1354 | Empty       | 11 |         |    0 | 00/1182               |                                               
  1610 |  1         kikekankoi.s   1355 | Comment     | 11 |         |    0 | 00/1182               | * 5. cherche le mot dans les options

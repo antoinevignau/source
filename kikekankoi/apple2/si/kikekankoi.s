@@ -62,7 +62,7 @@ VBL	=	$c019
 MONOCOLOR	=	$c021
 VERTCNT	=	$c02e
 SPKR	=	$c030
-CYAREG	=	$C036
+CYAREG	=	$c036
 TXTCLR	=	$c050
 TXTSET	=	$c051
 MIXCLR	=	$c052
@@ -1303,9 +1303,9 @@ tbl4000	da	$bdbd
 :6022	ldy	#1
 ]lp	lda	TEXTBUFFER,x
 	cmp	#chrRET
-	beq	:6023
+	beq	:6022_bis
 	cmp	#chrSPC
-	beq	:6023
+	beq	:6022_bis
 	sta	X$1,y	; 0P1R2E3N4
 	inx
 	cpx	lenSTRING
@@ -1314,7 +1314,7 @@ tbl4000	da	$bdbd
 	cpy	#4
 	bcc	]lp
 	beq	]lp
-	dey
+:6022_bis	dey
 :6023	sty	X$1	; sauve la longueur
 
 * 3. cherche un espace
@@ -1338,9 +1338,9 @@ tbl4000	da	$bdbd
 	ldy	#1
 ]lp	lda	TEXTBUFFER,x
 	cmp	#chrRET
-	beq	:6033
+	beq	:6032_bis
 	cmp	#chrSPC
-	beq	:6033
+	beq	:6032_bis
 	sta	X$2,y
 	inx
 	cpx	lenSTRING
@@ -1349,7 +1349,7 @@ tbl4000	da	$bdbd
 	cpy	#4
 	bcc	]lp
 	beq	]lp
-	dey
+:6032_bis	dey
 :6033	sty	X$2	; sauve la longueur
 
 * 5. cherche le mot dans les options

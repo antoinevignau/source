@@ -26,6 +26,9 @@ strCMD	asc	8D"Votre commande ? "00
 strCOMMANDE	asc	8D"Commande ("
 strTEMPS	asc	"5000) ? "00
 
+strLOAD	asc 	8D"Charger la partie (emplacements 1-9) ? "00	; ** nouveau ** charger la partie (emplacements 1 "C0" 9) ?
+strSAVE	asc 	8D"Sauvegarder la partie (emplacements 1-9) ? "00	; **Ênouveau** sauvegarde (emplacements 1-9)Ê?
+
 tbl580	da	$bdbd
 	da	str581,str582,str583,str584,str585
 	da	str586,str587,str588,str589,str590
@@ -365,11 +368,11 @@ refO	dfb	$bd
 	dfb	35,00,47,47,47,46,44,50,50,49
 	dfb	54,42,45,00,00,53,40
 
-O	dfb	$bd
-	dfb	02,00,05,00,14,00,00,19,00,00
-	dfb	20,00,18,15,17,26,27,28,33,34
-	dfb	35,00,47,47,47,46,44,50,50,49
-	dfb	54,42,45,00,00,53,40
+*O	dfb	$bd
+*	dfb	02,00,05,00,14,00,00,19,00,00
+*	dfb	20,00,18,15,17,26,27,28,33,34
+*	dfb	35,00,47,47,47,46,44,50,50,49
+*	dfb	54,42,45,00,00,53,40
 
 refO$	da	$bdbd
 	da	O$1,O$2,O$3,O$4,O$5,O$6,O$7,O$8,O$9,O$10
@@ -499,7 +502,7 @@ M$58	dfb	01,57,00
 * on fera index-1 b/c 8-bits
 *
 
-V	=	129+3
+V	=	129+6
 
 tblVL$	dfb	$bd
 	dfb	<V$1,<V$2,<V$3,<V$4,<V$5,<V$6,<V$7,<V$8,<V$9,<V$10
@@ -515,7 +518,7 @@ tblVL$	dfb	$bd
 	dfb	<V$101,<V$102,<V$103,<V$104,<V$105,<V$106,<V$107,<V$108,<V$109,<V$110
 	dfb	<V$111,<V$112,<V$113,<V$114,<V$115,<V$116,<V$117,<V$118,<V$119,<V$120
 	dfb	<V$121,<V$122,<V$123,<V$124,<V$125,<V$126,<V$127,<V$128,<V$129
-	dfb	<V$201,<V$202,<V$203
+	dfb	<V$201,<V$202,<V$203,<V$204,<V$205,<V$206
 	
 tblVH$	dfb	$bd
 	dfb	>V$1,>V$2,>V$3,>V$4,>V$5,>V$6,>V$7,>V$8,>V$9,>V$10
@@ -531,7 +534,7 @@ tblVH$	dfb	$bd
 	dfb	>V$101,>V$102,>V$103,>V$104,>V$105,>V$106,>V$107,>V$108,>V$109,>V$110
 	dfb	>V$111,>V$112,>V$113,>V$114,>V$115,>V$116,>V$117,>V$118,>V$119,>V$120
 	dfb	>V$121,>V$122,>V$123,>V$124,>V$125,>V$126,>V$127,>V$128,>V$129
-	dfb	>V$201,>V$202,>V$203
+	dfb	>V$201,>V$202,>V$203,>V$204,>V$205,>V$206
 	
 tblV	dfb	$bd
 	dfb	01,01,02,02,03,03,04,04,05,05
@@ -547,7 +550,7 @@ tblV	dfb	$bd
 	dfb	77,78,78,78,79,79,79,80,81,82
 	dfb	83,84,85,86,87,88,89,90,91,92
 	dfb	93,93,94,94,96,97,98,99,75
-	dfb	201,202,203
+	dfb	201,202,203,204,205,206
 	
 V$1	str	"N"
 V$2	str	"NORD"
@@ -682,6 +685,9 @@ V$129	str	"VETE"
 V$201	str	"QUIT"
 V$202	str	"CASE"
 V$203	str	"ENER"
+V$204	str	"DEBU"	; DEBUG
+V$205	str	"LOAD"	; LOAD
+V$206	str	"SAVE"	; SAVE
 
 *
 * Les lieux (str8xxx)

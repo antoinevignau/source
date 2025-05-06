@@ -45,10 +45,14 @@ chrNON	=	"N"
 scrWIDTH	=	40
 
 idxTEMPO	=	200
-idxQUITTER =	201
+idxQUITTER	=	201
 idxCASSE	=	202
 idxENERGIE	=	203
+idxDEBUG	=	204
+idxCHARGE	=	205
+idxSAUVE	=	206
 
+proBUFFER	=	$bb00
 PRODOS	=	$bf00
 
 KBD	=	$c000
@@ -80,6 +84,7 @@ HOME	=	$FC58
 WAIT	=	$FCA8
 RDKEY	=	$FD0C
 *GETLN1	=	$FD6F	; using mine now
+PRBYTE	=	$FDDA
 COUT	=	$FDED
 IDROUTINE	=	$FE1F
 SETNORM	=	$FE84
@@ -330,6 +335,8 @@ REPLAY	jsr	initALL
 	jsr	rewriteSTRING	; from lower to upper
 	jsr	:6000	; cherche les mots
 
+	jsr	DEBUG
+	
 	lda	MO$1
 	bne	:900
 
@@ -347,6 +354,42 @@ REPLAY	jsr	initALL
 	jmp	:100
 
 *-----------------------------------
+
+DEBUG	lda	fgDEBUG
+	bne	DEBUG1
+	rts
+DEBUG1	lda	#"S"
+	jsr	COUT
+	lda	#":"
+	jsr	COUT
+	lda	SALLE
+	jsr	PRBYTE
+
+	lda	#"/"
+	jsr	COUT
+	lda	#"W"
+	jsr	COUT
+	lda	#"1"
+	jsr	COUT
+	lda	#":"
+	jsr	COUT
+	lda	MO$1
+	jsr	PRBYTE
+
+	lda	#"/"
+	jsr	COUT
+	lda	#"W"
+	jsr	COUT
+	lda	#"2"
+	jsr	COUT
+	lda	#":"
+	jsr	COUT
+	lda	MO$2
+	jsr	PRBYTE
+	lda	#$8d
+	jmp	COUT
+
+*-----------------------------------
 * 900 - CONTROLES APPLE II
 *-----------------------------------
 
@@ -361,9 +404,29 @@ REPLAY	jsr	initALL
 	jmp	:100
 
 :910	cmp	#idxENERGIE
-	bne	:915
+	bne	:911
 	
 	jsr	switchENERGIE
+	jmp	:100
+
+:911	cmp	#idxDEBUG
+	bne	:912
+	
+	lda	fgDEBUG
+	eor	#1
+	sta	fgDEBUG
+	jmp	:100
+
+:912	cmp	#idxCHARGE
+	bne	:913
+	
+	jsr	doCHARGE
+	jmp	:100
+
+:913	cmp	#idxSAUVE
+	bne	:915
+	
+	jsr	doSAUVE
 	jmp	:100
 
 *-----------------------------------
@@ -713,8 +776,8 @@ tbl1800	da	:1800,:1900
 	sta	HH
 	sta	H	; for comma
 	
-*	lda	#2	; 500
-*	sta	BREAK
+	lda	#2	; 500
+	sta	BREAK
 
 :1810	inc	G
 	lda	G
@@ -1239,9 +1302,9 @@ tbl4000	da	$bdbd
 :6022	ldy	#1
 ]lp	lda	TEXTBUFFER,x
 	cmp	#chrRET
-	beq	:6023
+	beq	:6022_bis
 	cmp	#chrSPC
-	beq	:6023
+	beq	:6022_bis
 	sta	X$1,y	; 0P1R2E3N4
 	inx
 	cpx	lenSTRING
@@ -1250,7 +1313,7 @@ tbl4000	da	$bdbd
 	cpy	#4
 	bcc	]lp
 	beq	]lp
-	dey
+:6022_bis	dey
 :6023	sty	X$1	; sauve la longueur
 
 * 3. cherche un espace
@@ -1274,9 +1337,9 @@ tbl4000	da	$bdbd
 	ldy	#1
 ]lp	lda	TEXTBUFFER,x
 	cmp	#chrRET
-	beq	:6033
+	beq	:6032_bis
 	cmp	#chrSPC
-	beq	:6033
+	beq	:6032_bis
 	sta	X$2,y
 	inx
 	cpx	lenSTRING
@@ -1285,7 +1348,7 @@ tbl4000	da	$bdbd
 	cpy	#4
 	bcc	]lp
 	beq	]lp
-	dey
+:6032_bis	dey
 :6033	sty	X$2	; sauve la longueur
 
 * 5. cherche le mot dans les options
@@ -1766,6 +1829,153 @@ switchCASE
 	rts
 
 *----------------------
+* CHARGE
+*----------------------
+
+doCHARGE	@print	#strLOAD
+	jsr	RDKEY
+	cmp	#"1"
+	bcc	load_bad
+	cmp	#"9"+1
+	bcs	load_bad
+
+	jsr	COUT	; show chosen slot
+	jsr	loadSLOT
+	bcs	load_bad
+
+load_good	clc
+	rts
+
+load_bad	sec
+	rts
+
+*---
+
+loadSLOT	sta	pPARTY+5
+
+	jsr	PRODOS
+	dfb	$C8
+	da	gOPEN
+	bcc	ls_ok
+	rts
+
+ls_ok	lda	gOPEN+5
+	sta	gREAD+1
+	sta	gCLOSE+1
+	
+	jsr	PRODOS
+	dfb	$CA
+	da	gREAD
+	bcs	ls_end
+
+	ldx	#3
+]lp	lda	lsHEADER,x
+	cmp	mySTRING,x
+	bne	ls_err
+	dex
+	bpl	]lp
+
+	clc
+	hex	24
+ls_err	sec
+
+ls_end	php
+	jsr	PRODOS
+	dfb	$CC
+	da	gCLOSE
+	plp
+	rts
+
+	rts
+
+*----------------------
+* SAUVE
+*----------------------
+
+doSAUVE	@print	#strSAVE
+	jsr	RDKEY
+	cmp	#"1"
+	bcc	save_bad
+	cmp	#"9"+1
+	bcs	save_bad
+
+	jsr	COUT	; show chosen slot
+	jsr	saveSLOT
+	bcs	save_bad
+
+save_good	clc
+	rts
+
+save_bad	sec
+	rts
+
+*---
+
+saveSLOT	sta	pPARTY+5
+
+	jsr	PRODOS
+	dfb	$C1
+	da	gDESTROY
+
+	jsr	PRODOS
+	dfb	$C0
+	da	gCREATE
+
+	jsr	PRODOS
+	dfb	$C8
+	da	gOPEN
+	bcc	ss_ok
+	rts
+
+ss_ok	lda	gOPEN+5
+	sta	gREAD+1
+	sta	gCLOSE+1
+	
+	jsr	PRODOS
+	dfb	$CB	; it is a WRITE
+	da	gREAD
+
+	php
+	jsr	PRODOS
+	dfb	$CC
+	da	gCLOSE
+	plp
+	rts
+
+*--- Data
+
+gDESTROY	dfb	$01
+	da	pPARTY	; +01
+
+gCREATE	dfb	$07
+	da	pPARTY	; +01
+	dfb	$e3	; +03
+	dfb	$5d	; +04
+	dw	$8027	; +05
+	dfb	$01	; +07
+	ds	2	; +08
+	ds	2	; +0A
+
+*--- Data
+
+mySTRING	asc	"BDKK"
+pPARTY	str	"GAME0"
+
+gOPEN	dfb	$3
+	da	pPARTY	; pathname (par défaut, le moteur)
+	da	proBUFFER	; io_buffer
+	ds	1	; ref_num
+
+gREAD	dfb	$4
+	ds	1	; ref_num
+	da	lsHEADER	; data_buffer
+	dw	DATA_END-DATA_BEGIN ; request_count
+	ds	2	; transfer_count
+
+gCLOSE	dfb	$1
+	ds	1	; ref_num
+
+*----------------------
 * GETLEN1 par LoGo
 *----------------------
 
@@ -1999,6 +2209,7 @@ pcslEND	rts
 
 wordLEN	ds	1
 fgCASE	ds	1	; $00 lower OK, $80 otherwise
+fgDEBUG	ds	1
 
 *----------------------
 * waitMS
@@ -2379,8 +2590,9 @@ LA0F0	BVS	LA095
 * VARIABLES
 *-----------------------------------
 
+DATA_BEGIN
+lsHEADER	asc	"BDKK"
 DEBUT_DATA
-
 A1	ds	1
 BREAK	ds	1
 E	ds	1
@@ -2403,12 +2615,19 @@ Z	ds	1
 lenSTRING	ds	1
 TEMPS	ds	4	; le temps = 5000
 
+O	dfb	$bd
+	dfb	02,00,05,00,14,00,00,19,00,00
+	dfb	20,00,18,15,17,26,27,28,33,34
+	dfb	35,00,47,47,47,46,44,50,50,49
+	dfb	54,42,45,00,00,53,40
+
 C	ds	61+1
 E$	ds	32	; the longest string
 P	ds	61+1
 X$1	ds	4+1	; premier mot saisi
 X$2	ds	4+1	; second mot saisi
 
+DATA_END
 FIN_DATA
 
 *--- The lazy decimal to hexadecimal conversion

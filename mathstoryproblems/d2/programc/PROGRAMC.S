@@ -5474,7 +5474,7 @@ L342C       LDA   #^L3423
 L343B       JMP   L3446
 
 	DO	VF
-L343E       STR   'pour obtenir '
+L343E       STR   'pour avoir '
 	ELSE
 L343E       STR   'to get '
 	FIN
@@ -5509,9 +5509,9 @@ L347E       LDA   #$0005
             JMP   L34C2
 
 	DO	VF
-L349E       STR   '    C'27'est une erreur. Tu dois utiliser '
+L349E       STR   '    C'27'est une erreur. Tu dois utiliser'
 	ELSE
-L349E       STR   '     That is not correct.  You use '
+L349E       STR   '     That is not correct.  You use'
 	FIN
 L34C2       LDA   #^L349E
             STA   L0CF1
@@ -5533,7 +5533,7 @@ L34EB       LDA   #^L34DF
             STA   L0CF1
             LDA   #L34DF
             STA   L0CEF
-            JSR   L122A
+            JSR   L1201
             JMP   L3518
 L34FD       JMP   L3509
 
@@ -5546,19 +5546,19 @@ L3509       LDA   #^L3500
             STA   L0CF1
             LDA   #L3500
             STA   L0CEF
-            JSR   L122A
+            JSR   L1201
 L3518       JMP   L3536
 
 	DO	VF
-L351B       STR   'pour obtenir le bon r'8E'sultat.'
+L351B       STR   ' pour obtenir le bon r'8E'sultat.'
 	ELSE
-L351B       STR   'to get the correct answer.'
+L351B       STR   ' to get the correct answer.'
 	FIN
 L3536       LDA   #^L351B
             STA   L0CF1
             LDA   #L351B
             STA   L0CEF
-            JSR   L1201
+            JSR   L122A
 L3545       LDA   #$000C
             PHA
             _SetForeColor
@@ -7454,7 +7454,7 @@ L4B17       ADRL  L4B2B
 L4B2B       JMP   L4B5D
 
 	DO	VF
-L4B2E       STR   '    Un chien a eu huit chiots. Si six ont'
+L4B2E       STR   '    Un chien a eu huit chiots. Si six'
 	ELSE
 L4B2E       STR   '     A terrier had eight puppies.  If six were'
 	FIN
@@ -7466,7 +7466,7 @@ L4B5D       LDA   #^L4B2E
             JMP   L4B97
 
 	DO	VF
-L4B6F       STR   8e't'8e' donn'8e's, combien en'
+L4B6F       STR   'chiots ont '8e't'8e' donn'8e's, combien en'
 	ELSE
 L4B6F       STR   'given away to good homes, how many were'
 	FIN
@@ -7478,7 +7478,7 @@ L4B97       LDA   #^L4B6F
             JMP   L4BAF
 
 	DO	VF
-L4BA9       STR   'reste-t-il ?'
+L4BA9       STR   'reste t-il ?'
 	ELSE
 L4BA9       STR   'left?'
 	FIN
@@ -7521,7 +7521,7 @@ L4C27       LDA   #^L4BFA
             JMP   L4C5E
 
 	DO	VF
-L4C39       STR   'Jim en a mang'8e' deux. Combien en reste-t-il ?'
+L4C39       STR   'Jim en a mang'8e' deux. Combien en reste t-il ?'
 	ELSE
 L4C39       STR   'by and ate two.  How many were left?'
 	FIN
@@ -7564,7 +7564,7 @@ L4CD7       LDA   #^L4CA9
             JMP   L4D11
 
 	DO	VF
-L4CE9       STR   'on lui donne quatre nouveaux singes. Combien'
+L4CE9       STR   'on lui donne quatre nouveaux singes.'
 	ELSE
 L4CE9       STR   'it was given another four monkeys.  How'
 	FIN
@@ -7576,7 +7576,7 @@ L4D11       LDA   #^L4CE9
             JMP   L4D3E
 
 	DO	VF
-L4D23       STR   'le zoo en a-t-il en tout ?'
+L4D23       STR   'Combien le zoo en a-t-il en tout ?'
 	ELSE
 L4D23       STR   'many did they have in all?'
 	FIN
@@ -7607,7 +7607,7 @@ L4D3E       LDA   #^L4D23
 L4D86       JMP   L4DB3
 
 	DO	VF
-L4D89       STR   '    Sept canard volent vers le sud pour l'27
+L4D89       STR   '    Sept canards volent vers le sud pour l'27
 	ELSE
 L4D89       STR   '     Seven ducks are flying south for the'
 	FIN
@@ -7934,7 +7934,7 @@ L527E       LDA   #^L5254
             JMP   L52AB
 
 	DO	VF
-L5290       STR   'donne 54. Combien en reste-t-il ?'
+L5290       STR   'donne 54. Combien en reste t-il ?'
 	ELSE
 L5290       STR   'away.  How many were left?'
 	FIN
@@ -8201,7 +8201,7 @@ L5615       LDA   #^L5609
 L565D       JMP   L568B
 
 	DO	VF
-L5660       STR   '    Une baleine bleue mesure 175 m'8f'tres de long'
+L5660       STR   '    Une baleine bleue mesure 175 m'8f'tres de'
 	ELSE
 L5660       STR   '     A blue whale is 175 feet long and its'
 	FIN
@@ -8213,7 +8213,7 @@ L568B       LDA   #^L5660
             JMP   L56C7
 
 	DO	VF
-L569D       STR   'et son b'8e'b'8e' 42 m'8f'tres. De combien la'
+L569D       STR   'long et son b'8e'b'8e' 42 m'8f'tres. De combien'
 	ELSE
 L569D       STR   'baby is 42 feet long.  How much longer is'
 	FIN
@@ -8225,7 +8225,7 @@ L56C7       LDA   #^L569D
             JMP   L56EB
 
 	DO	VF
-L56D9       STR   'la maman baleine est-elle plus longue '
+L56D9       STR   'la maman baleine est-elle plus longue ?'
 	ELSE
 L56D9       STR   'the mother whale?'
 	FIN

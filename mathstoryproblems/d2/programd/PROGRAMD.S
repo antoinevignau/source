@@ -380,7 +380,7 @@ L0374       LDAL  $E0C034
             JMP   L03FC
 
 	DO	VF
-L03D0       STR   '     When we measure distances, we know how'
+L03D0       STR   '    Mesurer une distance, c'27'est conna'94'tre'
 	ELSE
 L03D0       STR   '     When we measure distances, we know how'
 	FIN
@@ -392,7 +392,7 @@ L03FC       LDA   #^L03D0
             JMP   L0432
 
 	DO	VF
-L040E       STR   'far away one thing is from another.'
+L040E       STR   'la distance entre deux choses.'
 	ELSE
 L040E       STR   'far away one thing is from another.'
 	FIN
@@ -415,7 +415,7 @@ L0432       LDA   #^L040E
             JMP   L0497
 
 	DO	VF
-L046B       STR   '     We can measure how many miles you live'
+L046B       STR   '    On peut mesurer les kilom'8f'tres entre ta'
 	ELSE
 L046B       STR   '     We can measure how many miles you live'
 	FIN
@@ -427,7 +427,7 @@ L0497       LDA   #^L046B
             JMP   L04D1
 
 	DO	VF
-L04A9       STR   'from school, or how many feet long your'
+L04A9       STR   'maison et l'278e'cole, les m'8f'tres de ta'
 	ELSE
 L04A9       STR   'from school, or how many feet long your'
 	FIN
@@ -439,7 +439,7 @@ L04D1       LDA   #^L04A9
             JMP   L050F
 
 	DO	VF
-L04E3       STR   'room is, or how many inches wide your front'
+L04E3       STR   'chambre, les centim'8f'tres de la largeur'
 	ELSE
 L04E3       STR   'room is, or how many inches wide your front'
 	FIN
@@ -451,7 +451,7 @@ L050F       LDA   #^L04E3
             JMP   L052A
 
 	DO	VF
-L0521       STR   'door is.'
+L0521       STR   'de ta porte d'27'entr'8e'e.'
 	ELSE
 L0521       STR   'door is.'
 	FIN
@@ -475,7 +475,7 @@ L052A       LDA   #^L0521
             JMP   L0593
 
 	DO	VF
-L0566       STR   '     Miles, yards, feet, and inches are some'
+L0566       STR   '   Kilom'8f'tres, m'8f'tres et centim'8f'tres'
 	ELSE
 L0566       STR   '     Miles, yards, feet, and inches are some'
 	FIN
@@ -487,7 +487,7 @@ L0593       LDA   #^L0566
             JMP   L05C9
 
 	DO	VF
-L05A5       STR   'words that tell us we are measuring'
+L05A5       STR   'sont des mots qui nous disent que'
 	ELSE
 L05A5       STR   'words that tell us we are measuring'
 	FIN
@@ -499,7 +499,7 @@ L05C9       LDA   #^L05A5
             JMP   L05E5
 
 	DO	VF
-L05DB       STR   'distance.'
+L05DB       STR   'nous mesurons des distances.'
 	ELSE
 L05DB       STR   'distance.'
 	FIN
@@ -557,7 +557,7 @@ L0633       LDAL  $E0C034
             JMP   L06AE
 
 	DO	VF
-L0682       STR   '     Maybe you'27've seen something that looks'
+L0682       STR   '    Tu as probablement d'8e'j'88' vu cela dans une'
 	ELSE
 L0682       STR   '     Maybe you'27've seen something that looks'
 	FIN
@@ -569,7 +569,7 @@ L06AE       LDA   #^L0682
             JMP   L06E9
 
 	DO	VF
-L06C0       STR   'like this inside a car.  It is measuring'
+L06C0       STR   'voiture. Cela indique la distance en'
 	ELSE
 L06C0       STR   'like this inside a car.  It is measuring'
 	FIN
@@ -581,7 +581,7 @@ L06E9       LDA   #^L06C0
             JMP   L0725
 
 	DO	VF
-L06FB       STR   'the distance that the car has traveled in'
+L06FB       STR   'kilom'8f'tres que la voiture a d'8e'j'88
 	ELSE
 L06FB       STR   'the distance that the car has traveled in'
 	FIN
@@ -593,7 +593,7 @@ L0725       LDA   #^L06FB
             JMP   L073E
 
 	DO	VF
-L0737       STR   'miles.'
+L0737       STR   'parcourue.'
 	ELSE
 L0737       STR   'miles.'
 	FIN
@@ -784,7 +784,7 @@ L08DD       LDAL  $E0C034
             JMP   L0955
 
 	DO	VF
-L0933       STR   '     Now, let'27's try some distance'
+L0933       STR   '    Maintenant, essayons de r'8e'soudre'
 	ELSE
 L0933       STR   '     Now, let'27's try some distance'
 	FIN
@@ -796,7 +796,7 @@ L0955       LDA   #^L0933
             JMP   L097D
 
 	DO	VF
-L0967       STR   'measurement problems.'
+L0967       STR   'des probl'8f'mes sur les distances.'
 	ELSE
 L0967       STR   'measurement problems.'
 	FIN
@@ -944,7 +944,7 @@ L0AE5       LDA   #^L0ACE
             JMP   L0B28
 
 	DO	VF
-L0B21       STR   ' feet.'
+L0B21       STR   ' m'8f'tres.'
 	ELSE
 L0B21       STR   ' feet.'
 	FIN
@@ -1014,7 +1014,7 @@ L0B82       LDAL  $E0C034
             JMP   L0C06
 
 	DO	VF
-L0BE1       STR   '     When we measure temperature, we'
+L0BE1       STR   '    Quand nous prenons des temp'8e'ratures,'
 	ELSE
 L0BE1       STR   '     When we measure temperature, we'
 	FIN
@@ -1026,7 +1026,7 @@ L0C06       LDA   #^L0BE1
             JMP   L0C3D
 
 	DO	VF
-L0C18       STR   'measure how much heat is present.  A'
+L0C18       STR   'nous mesurons la chaleur pr'8e'sente.'
 	ELSE
 L0C18       STR   'measure how much heat is present.  A'
 	FIN
@@ -1038,7 +1038,7 @@ L0C3D       LDA   #^L0C18
             JMP   L0C75
 
 	DO	VF
-L0C4F       STR   'thermometer is a device that measures'
+L0C4F       STR   'Un thermom'8f'tre permet de mesurer'
 	ELSE
 L0C4F       STR   'thermometer is a device that measures'
 	FIN
@@ -1050,7 +1050,7 @@ L0C75       LDA   #^L0C4F
             JMP   L0C94
 
 	DO	VF
-L0C87       STR   'temperature.'
+L0C87       STR   'la temp'8e'rature.'
 	ELSE
 L0C87       STR   'temperature.'
 	FIN
@@ -1107,9 +1107,10 @@ L0CDD       LDAL  $E0C034
             JMP   L0D4F
 
 	DO	VF
+L0D2F       STR   '    Voici '88' quoi ressemble un'
 	ELSE
-	FIN
 L0D2F       STR   '     This is what a thermometer'
+	FIN
 L0D4F       LDA   #^L0D2F
             STA   L1CFB
             LDA   #L0D2F
@@ -1118,9 +1119,10 @@ L0D4F       LDA   #^L0D2F
             JMP   L0D81
 
 	DO	VF
+L0D61       STR   'thermom'8f'tre. Les chiffres sur'
 	ELSE
-	FIN
 L0D61       STR   'looks like.  The numbers on the'
+	FIN
 L0D81       LDA   #^L0D61
             STA   L1CFB
             LDA   #L0D61
@@ -1129,9 +1131,10 @@ L0D81       LDA   #^L0D61
             JMP   L0DB2
 
 	DO	VF
+L0D93       STR   'les c'99't'8e's indiquent la'
 	ELSE
-	FIN
 L0D93       STR   'side tell us what the tempera-'
+	FIN
 L0DB2       LDA   #^L0D93
             STA   L1CFB
             LDA   #L0D93
@@ -1140,9 +1143,10 @@ L0DB2       LDA   #^L0D93
             JMP   L0DE3
 
 	DO	VF
+L0DC4       STR   'temp'8e'rature en degr'8e's Celsius.'
 	ELSE
-	FIN
 L0DC4       STR   'ture is in degrees Fahrenheit.'
+	FIN
 L0DE3       LDA   #^L0DC4
             STA   L1CFB
             LDA   #L0DC4
@@ -1179,9 +1183,10 @@ L0DE3       LDA   #^L0DC4
             JMP   L0E6A
 
 	DO	VF
+L0E49       STR   '    21 degr'8e's est une temp'8e'rature'
 	ELSE
-	FIN
 L0E49       STR   '     70 degrees is a comfortable'
+	FIN
 L0E6A       LDA   #^L0E49
             STA   L1CFB
             LDA   #L0E49
@@ -1190,9 +1195,10 @@ L0E6A       LDA   #^L0E49
             JMP   L0E8E
 
 	DO	VF
+L0E7C       STR   'confortable dans une maison.'
 	ELSE
-	FIN
 L0E7C       STR   'room temperature.'
+	FIN
 L0E8E       LDA   #^L0E7C
             STA   L1CFB
             LDA   #L0E7C
@@ -1229,9 +1235,10 @@ L0E8E       LDA   #^L0E7C
             JMP   L0F15
 
 	DO	VF
+L0EF4       STR   '    L'27'eau se transforme en glace'
 	ELSE
-	FIN
 L0EF4       STR   '     Water freezes into ice when'
+	FIN
 L0F15       LDA   #^L0EF4
             STA   L1CFB
             LDA   #L0EF4
@@ -1240,9 +1247,10 @@ L0F15       LDA   #^L0EF4
             JMP   L0F46
 
 	DO	VF
+L0F27       STR   88' une temp'8e'rature de 0 degr'8e'.'
 	ELSE
-	FIN
 L0F27       STR   'the temperature is 32 degrees.'
+	FIN
 L0F46       LDA   #^L0F27
             STA   L1CFB
             LDA   #L0F27
@@ -1279,9 +1287,10 @@ L0F46       LDA   #^L0F27
             JMP   L0FCF
 
 	DO	VF
+L0FAC       STR   '    La temp'8e'rature de ton corps est'
 	ELSE
-	FIN
 L0FAC       STR   '     Your body temperature is 98.6'
+	FIN
 L0FCF       LDA   #^L0FAC
             STA   L1CFB
             LDA   #L0FAC
@@ -1290,9 +1299,10 @@ L0FCF       LDA   #^L0FAC
             JMP   L0FEA
 
 	DO	VF
+L0FE1       STR   'est de 37 degr'8e's.'
 	ELSE
-	FIN
 L0FE1       STR   'degrees.'
+	FIN
 L0FEA       LDA   #^L0FE1
             STA   L1CFB
             LDA   #L0FE1
@@ -1335,9 +1345,10 @@ L1001       LDAL  $E0C034
             JMP   L1086
 
 	DO	VF
+L1060       STR   '    Maintenant, essayons de r'8e'soudre'
 	ELSE
-	FIN
 L1060       STR   '     Now we'27'll do some problems using'
+	FIN
 L1086       LDA   #^L1060
             STA   L1CFB
             LDA   #L1060
@@ -1346,9 +1357,10 @@ L1086       LDA   #^L1060
             JMP   L10A5
 
 	DO	VF
+L1098       STR   'des probl'8f'mes de temp'8e'rature.'
 	ELSE
-	FIN
 L1098       STR   'temperature.'
+	FIN
 L10A5       LDA   #^L1098
             STA   L1CFB
             LDA   #L1098
@@ -1443,7 +1455,11 @@ L11B7       LDA   #^L11A5
             LDA   #L11A5
             STA   L1CF9
             LDA   L1D6F
-            CMP   #$0054
+	DO	VF
+            CMP   #'V'
+	ELSE
+            CMP   #'T'
+	FIN
             BNE   L11CE
             JMP   L11F8
 
@@ -1497,7 +1513,7 @@ L124A       ADRL  L1252
 L124E       ADRL  L1259
 	DO	VF
 L1252       STR   'fausse.'
-L1259       STR   'vrai.'
+L1259       STR   'vraie.'
 	ELSE
 L1252       STR   'false.'
 L1259       STR   'true.'
@@ -1573,7 +1589,7 @@ L1294       LDAL  $E0C034
             JMP   L1336
 
 	DO	VF
-L1324       STR   'A penny is worth:'
+L1324       STR   'Un penny vaut :'
 	ELSE
 L1324       STR   'A penny is worth:'
 	FIN
@@ -1592,7 +1608,7 @@ L1336       LDA   #^L1324
             JMP   L1367
 
 	DO	VF
-L135D       STR   'one cent.'
+L135D       STR   'un cent.'
 	ELSE
 L135D       STR   'one cent.'
 	FIN
@@ -1639,7 +1655,7 @@ L1367       LDA   #^L135D
             JMP   L13F1
 
 	DO	VF
-L13DE       STR   'A nickel is worth:'
+L13DE       STR   'Un nickel vaut :'
 	ELSE
 L13DE       STR   'A nickel is worth:'
 	FIN
@@ -1658,7 +1674,7 @@ L13F1       LDA   #^L13DE
             JMP   L1426
 
 	DO	VF
-L1418       STR   'five pennies.'
+L1418       STR   'cinq pennies.'
 	ELSE
 L1418       STR   'five pennies.'
 	FIN
@@ -1705,7 +1721,7 @@ L1426       LDA   #^L1418
             JMP   L14AE
 
 	DO	VF
-L149D       STR   'A dime is worth:'
+L149D       STR   'Une dime vaut :'
 	ELSE
 L149D       STR   'A dime is worth:'
 	FIN
@@ -1724,7 +1740,7 @@ L14AE       LDA   #^L149D
             JMP   L14E2
 
 	DO	VF
-L14D5       STR   'ten pennies.'
+L14D5       STR   'dix pennies.'
 	ELSE
 L14D5       STR   'ten pennies.'
 	FIN
@@ -1736,7 +1752,7 @@ L14E2       LDA   #^L14D5
             JMP   L1501
 
 	DO	VF
-L14F4       STR   'two nickels.'
+L14F4       STR   'Deux nickels.'
 	ELSE
 L14F4       STR   'two nickels.'
 	FIN
@@ -1783,7 +1799,7 @@ L1501       LDA   #^L14F4
             JMP   L158C
 
 	DO	VF
-L1578       STR   'A quarter is worth:'
+L1578       STR   'Un quarter vaut :'
 	ELSE
 L1578       STR   'A quarter is worth:'
 	FIN
@@ -1826,7 +1842,7 @@ L15DC       LDA   #^L15D1
             JMP   L1606
 
 	DO	VF
-L15EE       STR   '2 dimes and one nickel.'
+L15EE       STR   '2 dimes et un nickel.'
 	ELSE
 L15EE       STR   '2 dimes and one nickel.'
 	FIN
@@ -1873,7 +1889,7 @@ L1606       LDA   #^L15EE
             JMP   L1695
 
 	DO	VF
-L167D       STR   'A half-dollar is worth:'
+L167D       STR   'Un demi-dollar vaut :'
 	ELSE
 L167D       STR   'A half-dollar is worth:'
 	FIN
@@ -1975,7 +1991,7 @@ L171F       LDA   #^L1713
             JMP   L17A9
 
 	DO	VF
-L1796       STR   'A dollar is worth:'
+L1796       STR   'Un dollar vaut :'
 	ELSE
 L1796       STR   'A dollar is worth:'
 	FIN
@@ -2042,7 +2058,7 @@ L1835       LDA   #^L1829
             JMP   L1857
 
 	DO	VF
-L1847       STR   '2 half-dollars.'
+L1847       STR   '2 demi-dollars.'
 	ELSE
 L1847       STR   '2 half-dollars.'
 	FIN
@@ -2088,7 +2104,7 @@ L186E       LDAL  $E0C034
             JMP   L18F4
 
 	DO	VF
-L18CD       STR   '     Now let'27's try some problems using'
+L18CD       STR   '    Maintenant, essayons de r'8e'soudre'
 	ELSE
 L18CD       STR   '     Now let'27's try some problems using'
 	FIN
@@ -2100,7 +2116,7 @@ L18F4       LDA   #^L18CD
             JMP   L190D
 
 	DO	VF
-L1906       STR   'money.'
+L1906       STR   'des probl'8f'mes sur l'27'argent.'
 	ELSE
 L1906       STR   'money.'
 	FIN
@@ -6568,7 +6584,7 @@ L424B       ADRL  L425F
 L425F       JMP   L4290
 
 	DO	VF
-L4262       STR   '     If John decides to walk to Sally'27's house'
+L4262       STR   '    Si John va chez Sally plut'99't qu'2788
 	ELSE
 L4262       STR   '     If John decides to walk to Sally'27's house'
 	FIN
@@ -6580,7 +6596,7 @@ L4290       LDA   #^L4262
             JMP   L42CB
 
 	DO	VF
-L42A2       STR   'instead of school, how much farther does'
+L42A2       STR   'l'278e'cole, combien de m'8f'tres en plus'
 	ELSE
 L42A2       STR   'instead of school, how much farther does'
 	FIN
@@ -6592,7 +6608,7 @@ L42CB       LDA   #^L42A2
             JMP   L42EE
 
 	DO	VF
-L42DD       STR   'he have to walk?'
+L42DD       STR   'est-ce que John devra marcher ?'
 	ELSE
 L42DD       STR   'he have to walk?'
 	FIN
@@ -6607,7 +6623,7 @@ L42EE       LDA   #^L42DD
 L4306       JMP   L4334
 
 	DO	VF
-L4309       STR   '     John walked to Sally'27's house and then'
+L4309       STR   '    John est all'8e' chez Sally puis dans le'
 	ELSE
 L4309       STR   '     John walked to Sally'27's house and then'
 	FIN
@@ -6619,7 +6635,7 @@ L4334       LDA   #^L4309
             JMP   L436A
 
 	DO	VF
-L4346       STR   'to the store.  How far did he walk?'
+L4346       STR   'magasin. Quelle distance a-t-il parcouru ?'
 	ELSE
 L4346       STR   'to the store.  How far did he walk?'
 	FIN
@@ -6634,7 +6650,7 @@ L436A       LDA   #^L4346
 L4382       JMP   L43B2
 
 	DO	VF
-L4385       STR   '     Sally walked past the store, to school,'
+L4385       STR   '    Sally est pass'8e'e par le magasin, l'278e'cole,'
 	ELSE
 L4385       STR   '     Sally walked past the store, to school,'
 	FIN
@@ -6646,7 +6662,7 @@ L43B2       LDA   #^L4385
             JMP   L43EB
 
 	DO	VF
-L43C4       STR   'visited John after school, then walked'
+L43C4       STR   'a rendu visite '88' John puis est rentr'8e'e chez'
 	ELSE
 L43C4       STR   'visited John after school, then walked'
 	FIN
@@ -6658,7 +6674,7 @@ L43EB       LDA   #^L43C4
             JMP   L441A
 
 	DO	VF
-L43FD       STR   'home.  How far did she walk?'
+L43FD       STR   'elle. Quelle distance a-t-elle parcourue ?'
 	ELSE
 L43FD       STR   'home.  How far did she walk?'
 	FIN
@@ -6673,7 +6689,7 @@ L441A       LDA   #^L43FD
 L4432       JMP   L445F
 
 	DO	VF
-L4435       STR   '     If Sally decides to go home from the'
+L4435       STR   'Si Sally rentre chez elle depuis le magasin'
 	ELSE
 L4435       STR   '     If Sally decides to go home from the'
 	FIN
@@ -6685,7 +6701,7 @@ L445F       LDA   #^L4435
             JMP   L449B
 
 	DO	VF
-L4471       STR   'store instead of going to school from the'
+L4471       STR   'plut'99't que d'27'aller '88' l'278e'cole, quelle'
 	ELSE
 L4471       STR   'store instead of going to school from the'
 	FIN
@@ -6697,7 +6713,7 @@ L449B       LDA   #^L4471
             JMP   L44D4
 
 	DO	VF
-L44AD       STR   'store, how much farther will she walk?'
+L44AD       STR   'distance suppl'8e'mentaire aura-t-elle ?'
 	ELSE
 L44AD       STR   'store, how much farther will she walk?'
 	FIN
@@ -6712,7 +6728,7 @@ L44D4       LDA   #^L44AD
 L44EC       JMP   L451B
 
 	DO	VF
-L44EF       STR   '     How far does Sally have to walk to get'
+L44EF       STR   'Quelle distance aura Sally jusqu'2788
 	ELSE
 L44EF       STR   '     How far does Sally have to walk to get'
 	FIN
@@ -6724,7 +6740,7 @@ L451B       LDA   #^L44EF
             JMP   L4558
 
 	DO	VF
-L452D       STR   'to school, if she goes to the store first?'
+L452D       STR   'l'278e'cole, en passant d'27'abord par le magasin ?'
 	ELSE
 L452D       STR   'to school, if she goes to the store first?'
 	FIN
@@ -6806,7 +6822,7 @@ L45CA       LDA   #^L45C2
             JMP   L464E
 
 	DO	VF
-L4649       STR   'feet'
+L4649       STR   'm'8f'tres'
 	ELSE
 L4649       STR   'feet'
 	FIN
@@ -6880,7 +6896,7 @@ L4702       LDA   #$006E
             JMP   L4729
 
 	DO	VF
-L470E       STR   '     The temperature is 20'
+L470E       STR   '    La temp'8e'rature est de -6 degr'8e's.'
 	ELSE
 L470E       STR   '     The temperature is 20'
 	FIN
@@ -6892,7 +6908,7 @@ L4729       LDA   #^L470E
             JMP   L4759
 
 	DO	VF
-L473B       STR   'degrees.  You go ice skating.'
+L473B       STR   'Tu vas faire du patin '88' glace.'
 	ELSE
 L473B       STR   'degrees.  You go ice skating.'
 	FIN
@@ -6901,7 +6917,11 @@ L4759       LDA   #^L473B
             LDA   #L473B
             STA   L1CF9
             JSR   L220B
-            LDA   #$0054
+	DO	VF
+            LDA   #'V'
+	ELSE
+            LDA   #'T'
+	FIN
             JMP   L4935
 
 L476E       LDA   #$001B
@@ -6910,7 +6930,7 @@ L476E       LDA   #$001B
             JMP   L479C
 
 	DO	VF
-L477A       STR   '     The temperature inside is 95'
+L477A       STR   '    La temp'8e'rature int'8e'rieure est'
 	ELSE
 L477A       STR   '     The temperature inside is 95'
 	FIN
@@ -6922,7 +6942,7 @@ L479C       LDA   #^L477A
             JMP   L47CD
 
 	DO	VF
-L47AE       STR   'degrees.  You put on a jacket.'
+L47AE       STR   'de 34 degr'8e's. Tu mets une veste.'
 	ELSE
 L47AE       STR   'degrees.  You put on a jacket.'
 	FIN
@@ -6931,7 +6951,7 @@ L47CD       LDA   #^L47AE
             LDA   #L47AE
             STA   L1CF9
             JSR   L220B
-            LDA   #$0046
+            LDA   #'F'
             JMP   L4935
 
 L47E2       LDA   #$0026
@@ -6940,7 +6960,7 @@ L47E2       LDA   #$0026
             JMP   L480D
 
 	DO	VF
-L47EE       STR   '     It is 85 degrees outside.'
+L47EE       STR   '    Il fait 29 degr'8e's dehors.'
 	ELSE
 L47EE       STR   '     It is 85 degrees outside.'
 	FIN
@@ -6952,7 +6972,7 @@ L480D       LDA   #^L47EE
             JMP   L4830
 
 	DO	VF
-L481F       STR   'You go swimming.'
+L481F       STR   'Tu pars nager.'
 	ELSE
 L481F       STR   'You go swimming.'
 	FIN
@@ -6961,7 +6981,11 @@ L4830       LDA   #^L481F
             LDA   #L481F
             STA   L1CF9
             JSR   L220B
-            LDA   #$0054
+	DO	VF
+            LDA   #'V'
+	ELSE
+            LDA   #'T'
+	FIN
             JMP   L4935
 
 L4845       LDA   #$000F
@@ -6970,7 +6994,7 @@ L4845       LDA   #$000F
             JMP   L486F
 
 	DO	VF
-L4851       STR   '     Your body temperature is'
+L4851       STR   '    Ta temp'8e'rature est de'
 	ELSE
 L4851       STR   '     Your body temperature is'
 	FIN
@@ -6982,7 +7006,7 @@ L486F       LDA   #^L4851
             JMP   L48A1
 
 	DO	VF
-L4881       STR   '105 degrees.  You have a fever.'
+L4881       STR   '40 degr'8e's. Tu as de la fi'8f'vre.'
 	ELSE
 L4881       STR   '105 degrees.  You have a fever.'
 	FIN
@@ -6991,7 +7015,11 @@ L48A1       LDA   #^L4881
             LDA   #L4881
             STA   L1CF9
             JSR   L220B
-            LDA   #$0054
+	DO	VF
+            LDA   #'V'
+	ELSE
+            LDA   #'T'
+	FIN
             JMP   L4935
 
 L48B6       LDA   #$002E
@@ -7000,7 +7028,7 @@ L48B6       LDA   #$002E
             JMP   L48DD
 
 	DO	VF
-L48C2       STR   '     The temperature is 78'
+L48C2       STR   '    La temp'8e'rature est de 21'
 	ELSE
 L48C2       STR   '     The temperature is 78'
 	FIN
@@ -7012,7 +7040,7 @@ L48DD       LDA   #^L48C2
             JMP   L490B
 
 	DO	VF
-L48EF       STR   'degrees.  You are shoveling'
+L48EF       STR   'degr'8e's. Tu nettoies'
 	ELSE
 L48EF       STR   'degrees.  You are shoveling'
 	FIN
@@ -7024,7 +7052,7 @@ L490B       LDA   #^L48EF
             JMP   L4923
 
 	DO	VF
-L491D       STR   'snow.'
+L491D       STR   'la neige.'
 	ELSE
 L491D       STR   'snow.'
 	FIN
@@ -7033,7 +7061,7 @@ L4923       LDA   #^L491D
             LDA   #L491D
             STA   L1CF9
             JSR   L220B
-            LDA   #$0046
+            LDA   #'F'
 L4935       STA   L1D6F
             LDA   #$000B
             PHA
@@ -7270,9 +7298,17 @@ L4BA7       PEA   $00E0
             ADC   #$0001
             PHA
             _SetRect
-            LDA   #$0054
+	DO	VF
+            LDA   #'V'
+	ELSE
+            LDA   #'T'
+	FIN
             STA   L1E6F
-            LDA   #$0046
+	DO	VF
+            LDA   #'F'
+	ELSE
+            LDA   #'F'
+	FIN
             STA   L1E71
             LDA   #$0002
             STA   L1E6D
@@ -7314,9 +7350,9 @@ L4C4C       LDA   #^L4C41
             JMP   L4C6A
 
 	DO	VF
-L4C5B       STR   '2 half-dollars'
+L4C5B       STR   '2 demi-dollars'
 	ELSE
-L4C5B       STR   '2 half-dollars'
+L4C5B       STR   '2 demi-dollars'
 	FIN
 L4C6A       LDA   #^L4C5B
             STA   L2017
@@ -7378,9 +7414,9 @@ L4CE0       LDA   #^L4CD8
 L4CF5       JMP   L4D06
 
 	DO	VF
-L4CF8       STR   '1 half-dollar'
+L4CF8       STR   '1 demi-dollar'
 	ELSE
-L4CF8       STR   '1 half-dollar'
+L4CF8       STR   '1 demi-dollar'
 	FIN
 L4D06       LDA   #^L4CF8
             STA   L2013

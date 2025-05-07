@@ -2740,7 +2740,11 @@ L13D4       PEA   $0056
             _DrawString
             JMP   L13F5
 
+	DO	VF
 L13F3       STR   'N'
+	ELSE
+L13F3       STR   'N'
+	FIN
 L13F5       PEA   $00C9
             PEA   $006D
             _MoveTo

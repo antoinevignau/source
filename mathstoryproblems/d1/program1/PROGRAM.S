@@ -2629,12 +2629,12 @@ L131A       PEA   $0056
             _DrawString
             JMP   L133B
 
-L1339       STR   'N'
 	DO	VF
-L133B       PEA   $00C5
+L1339       STR   'N'
 	ELSE
-L133B       PEA   $00C9
+L1339       STR   'N'
 	FIN
+L133B       PEA   $00C9
             PEA   $006D
             _MoveTo
             LDA   #^L1339

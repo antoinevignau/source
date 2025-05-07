@@ -742,7 +742,11 @@ L06A5       PEA   $0050
             _SetForeColor
             JMP   L07C1
 
+	DO	VF
 L07BF       STR   'N'
+	ELSE
+L07BF       STR   'N'
+	FIN
 L07C1       PEA   $00E5
             PEA   $0073
             _MoveTo
@@ -7450,7 +7454,7 @@ L4B17       ADRL  L4B2B
 L4B2B       JMP   L4B5D
 
 	DO	VF
-L4B2E       STR   '     A terrier had eight puppies.  If six were'
+L4B2E       STR   '    Un chien a eu huit chiots. Si six ont'
 	ELSE
 L4B2E       STR   '     A terrier had eight puppies.  If six were'
 	FIN
@@ -7462,7 +7466,7 @@ L4B5D       LDA   #^L4B2E
             JMP   L4B97
 
 	DO	VF
-L4B6F       STR   'given away to good homes, how many were'
+L4B6F       STR   8e't'8e' donn'8e's, combien en'
 	ELSE
 L4B6F       STR   'given away to good homes, how many were'
 	FIN
@@ -7474,7 +7478,7 @@ L4B97       LDA   #^L4B6F
             JMP   L4BAF
 
 	DO	VF
-L4BA9       STR   'left?'
+L4BA9       STR   'reste-t-il ?'
 	ELSE
 L4BA9       STR   'left?'
 	FIN
@@ -7505,7 +7509,7 @@ L4BAF       LDA   #^L4BA9
 L4BF7       JMP   L4C27
 
 	DO	VF
-L4BFA       STR   '     A cook baked three cookies.  Jim walked'
+L4BFA       STR   '    Un cuisinier a pr'8e'par'8e' trois biscuits.'
 	ELSE
 L4BFA       STR   '     A cook baked three cookies.  Jim walked'
 	FIN
@@ -7517,7 +7521,7 @@ L4C27       LDA   #^L4BFA
             JMP   L4C5E
 
 	DO	VF
-L4C39       STR   'by and ate two.  How many were left?'
+L4C39       STR   'Jim en a mang'8e' deux. Combien en reste-t-il ?'
 	ELSE
 L4C39       STR   'by and ate two.  How many were left?'
 	FIN
@@ -7548,7 +7552,7 @@ L4C5E       LDA   #^L4C39
 L4CA6       JMP   L4CD7
 
 	DO	VF
-L4CA9       STR   '     A zoo had eight monkeys.  A month later,'
+L4CA9       STR   '    Un zoo a huit singes. Un mois plus tard,'
 	ELSE
 L4CA9       STR   '     A zoo had eight monkeys.  A month later,'
 	FIN
@@ -7560,7 +7564,7 @@ L4CD7       LDA   #^L4CA9
             JMP   L4D11
 
 	DO	VF
-L4CE9       STR   'it was given another four monkeys.  How'
+L4CE9       STR   'on lui donne quatre nouveaux singes. Combien'
 	ELSE
 L4CE9       STR   'it was given another four monkeys.  How'
 	FIN
@@ -7572,7 +7576,7 @@ L4D11       LDA   #^L4CE9
             JMP   L4D3E
 
 	DO	VF
-L4D23       STR   'many did they have in all?'
+L4D23       STR   'le zoo en a-t-il en tout ?'
 	ELSE
 L4D23       STR   'many did they have in all?'
 	FIN
@@ -7603,7 +7607,7 @@ L4D3E       LDA   #^L4D23
 L4D86       JMP   L4DB3
 
 	DO	VF
-L4D89       STR   '     Seven ducks are flying south for the'
+L4D89       STR   '    Sept canard volent vers le sud pour l'27
 	ELSE
 L4D89       STR   '     Seven ducks are flying south for the'
 	FIN
@@ -7615,7 +7619,7 @@ L4DB3       LDA   #^L4D89
             JMP   L4DF1
 
 	DO	VF
-L4DC5       STR   'winter.  They are joined by four more.  How'
+L4DC5       STR   'hiver. Ils sont rejoints par quatre autres.'
 	ELSE
 L4DC5       STR   'winter.  They are joined by four more.  How'
 	FIN
@@ -7627,7 +7631,7 @@ L4DF1       LDA   #^L4DC5
             JMP   L4E1E
 
 	DO	VF
-L4E03       STR   'many are there altogether?'
+L4E03       STR   'Combien sont-ils en tout ?'
 	ELSE
 L4E03       STR   'many are there altogether?'
 	FIN
@@ -7658,7 +7662,7 @@ L4E1E       LDA   #^L4E03
 L4E66       JMP   L4E95
 
 	DO	VF
-L4E69       STR   '     A chicken laid nine eggs last week and'
+L4E69       STR   '    Une poule a pondu neuf 'cf'ufs la semaine'
 	ELSE
 L4E69       STR   '     A chicken laid nine eggs last week and'
 	FIN
@@ -7670,7 +7674,7 @@ L4E95       LDA   #^L4E69
             JMP   L4ED0
 
 	DO	VF
-L4EA7       STR   'five eggs this week.  How many more eggs'
+L4EA7       STR   'derni'8f're et cinq cette semaine. Combien'
 	ELSE
 L4EA7       STR   'five eggs this week.  How many more eggs'
 	FIN
@@ -7682,7 +7686,7 @@ L4ED0       LDA   #^L4EA7
             JMP   L4F0A
 
 	DO	VF
-L4EE2       STR   'did she lay last week than she did this'
+L4EE2       STR   'd'27cf'ufs a-t-elle pondu en plus la premi'8f're'
 	ELSE
 L4EE2       STR   'did she lay last week than she did this'
 	FIN
@@ -7694,7 +7698,7 @@ L4F0A       LDA   #^L4EE2
             JMP   L4F22
 
 	DO	VF
-L4F1C       STR   'week?'
+L4F1C       STR   'semaine par rapport '88' la seconde ?'
 	ELSE
 L4F1C       STR   'week?'
 	FIN
@@ -7753,7 +7757,7 @@ L4FA2       ADRL  L4FB6
 L4FB6       JMP   L4FE4
 
 	DO	VF
-L4FB9       STR   '     70 students wanted to try out for the'
+L4FB9       STR   '    70 '8e'tudiants ont postul'8e' '88' l'278e'quipe de'
 	ELSE
 L4FB9       STR   '     70 students wanted to try out for the'
 	FIN
@@ -7765,7 +7769,7 @@ L4FE4       LDA   #^L4FB9
             JMP   L5021
 
 	DO	VF
-L4FF6       STR   'soccer team.  If 9 students were selected,'
+L4FF6       STR   'football. Si 9 ont '8e't'8e' s'8e'lectionn'8e's,'
 	ELSE
 L4FF6       STR   'soccer team.  If 9 students were selected,'
 	FIN
@@ -7777,7 +7781,7 @@ L5021       LDA   #^L4FF6
             JMP   L5053
 
 	DO	VF
-L5033       STR   'how many did not make the team?'
+L5033       STR   'combien ne l'27'ont pas '8e't'8e' ?'
 	ELSE
 L5033       STR   'how many did not make the team?'
 	FIN
@@ -7808,7 +7812,7 @@ L5053       LDA   #^L5033
 L509B       JMP   L50C7
 
 	DO	VF
-L509E       STR   '     A hot dog stand sold 96 hot dogs on'
+L509E       STR   '    Un stand de hot-dogs a vendu 96 hot-'
 	ELSE
 L509E       STR   '     A hot dog stand sold 96 hot dogs on'
 	FIN
@@ -7820,7 +7824,7 @@ L50C7       LDA   #^L509E
             JMP   L5102
 
 	DO	VF
-L50D9       STR   'Tuesday and 79 on Monday.  How many were'
+L50D9       STR   'dogs mardi et 79 lundi. Combien ont '8e't'8e
 	ELSE
 L50D9       STR   'Tuesday and 79 on Monday.  How many were'
 	FIN
@@ -7832,7 +7836,7 @@ L5102       LDA   #^L50D9
             JMP   L5125
 
 	DO	VF
-L5114       STR   'sold altogether?'
+L5114       STR   'vendus en tout ?'
 	ELSE
 L5114       STR   'sold altogether?'
 	FIN
@@ -7863,7 +7867,7 @@ L5125       LDA   #^L5114
 L516D       JMP   L5199
 
 	DO	VF
-L5170       STR   '     44 children attend Camp Mohawk.  17'
+L5170       STR   '    44 enfants sont '88' Camp Mohawk. 17'
 	ELSE
 L5170       STR   '     44 children attend Camp Mohawk.  17'
 	FIN
@@ -7875,7 +7879,7 @@ L5199       LDA   #^L5170
             JMP   L51D6
 
 	DO	VF
-L51AB       STR   'children attend Camp White Lake.  How many'
+L51AB       STR   'sont au Camp du Lac Blanc. Combien d'27
 	ELSE
 L51AB       STR   'children attend Camp White Lake.  How many'
 	FIN
@@ -7887,7 +7891,7 @@ L51D6       LDA   #^L51AB
             JMP   L5209
 
 	DO	VF
-L51E8       STR   'more children go to Camp Mohawk?'
+L51E8       STR   'enfants de plus sont '88' Camp Mohawk ?'
 	ELSE
 L51E8       STR   'more children go to Camp Mohawk?'
 	FIN
@@ -7918,7 +7922,7 @@ L5209       LDA   #^L51E8
 L5251       JMP   L527E
 
 	DO	VF
-L5254       STR   '     A farm bought 92 rabbits and gave 54'
+L5254       STR   '    Un fermier ach'8f'te 92 lapins et en'
 	ELSE
 L5254       STR   '     A farm bought 92 rabbits and gave 54'
 	FIN
@@ -7930,7 +7934,7 @@ L527E       LDA   #^L5254
             JMP   L52AB
 
 	DO	VF
-L5290       STR   'away.  How many were left?'
+L5290       STR   'donne 54. Combien en reste-t-il ?'
 	ELSE
 L5290       STR   'away.  How many were left?'
 	FIN
@@ -7961,7 +7965,7 @@ L52AB       LDA   #^L5290
 L52F3       JMP   L531E
 
 	DO	VF
-L52F6       STR   '     A boy needs 32 marbles.  He has 31'
+L52F6       STR   '    Un gar'8d'on a besoin de 32 billes. Il'
 	ELSE
 L52F6       STR   '     A boy needs 32 marbles.  He has 31'
 	FIN
@@ -7973,7 +7977,7 @@ L531E       LDA   #^L52F6
             JMP   L5356
 
 	DO	VF
-L5330       STR   'marbles.  How many more does he need?'
+L5330       STR   'en a 31. Combien lui en faut-il en plus ?'
 	ELSE
 L5330       STR   'marbles.  How many more does he need?'
 	FIN
@@ -8032,7 +8036,7 @@ L53D6       ADRL  L53EA
 L53EA       JMP   L5419
 
 	DO	VF
-L53ED       STR   '     A giant was 460 feet tall and Jack was'
+L53ED       STR   '    Un g'8e'ant mesure 460 m'8f'tres et'
 	ELSE
 L53ED       STR   '     A giant was 460 feet tall and Jack was'
 	FIN
@@ -8044,7 +8048,7 @@ L5419       LDA   #^L53ED
             JMP   L5452
 
 	DO	VF
-L542B       STR   '75 feet tall.  How much taller was the'
+L542B       STR   'Jack mesure 75 m'8f'tres. De combien le'
 	ELSE
 L542B       STR   '75 feet tall.  How much taller was the'
 	FIN
@@ -8056,7 +8060,7 @@ L5452       LDA   #^L542B
             JMP   L5475
 
 	DO	VF
-L5464       STR   'giant than Jack?'
+L5464       STR   'g'8e'ant est-il plus grand que Jack ?'
 	ELSE
 L5464       STR   'giant than Jack?'
 	FIN
@@ -8087,7 +8091,7 @@ L5475       LDA   #^L5464
 L54BD       JMP   L54EF
 
 	DO	VF
-L54C0       STR   '     A tree is 312 feet tall.  If a lumberjack'
+L54C0       STR   '    Un arbre mesure 312 m'8f'tres de haut. Si un'
 	ELSE
 L54C0       STR   '     A tree is 312 feet tall.  If a lumberjack'
 	FIN
@@ -8099,7 +8103,7 @@ L54EF       LDA   #^L54C0
             JMP   L552B
 
 	DO	VF
-L5501       STR   'cuts 78 feet off the top, how high is the'
+L5501       STR   'b'9e'cheron coupe 78 m'8f'tres, combien mesure'
 	ELSE
 L5501       STR   'cuts 78 feet off the top, how high is the'
 	FIN
@@ -8111,7 +8115,7 @@ L552B       LDA   #^L5501
             JMP   L5547
 
 	DO	VF
-L553D       STR   'tree now?'
+L553D       STR   'l'27'arbre maintenant ?'
 	ELSE
 L553D       STR   'tree now?'
 	FIN
@@ -8142,7 +8146,7 @@ L5547       LDA   #^L553D
 L558F       JMP   L55BF
 
 	DO	VF
-L5592       STR   '     A big man ate 415 donuts while his wife'
+L5592       STR   '    Un ogre a mang'8e' 415 donuts et sa femme'
 	ELSE
 L5592       STR   '     A big man ate 415 donuts while his wife'
 	FIN
@@ -8154,7 +8158,7 @@ L55BF       LDA   #^L5592
             JMP   L55F7
 
 	DO	VF
-L55D1       STR   'ate 87 donuts.  How many did they eat'
+L55D1       STR   'en a mang'8e' 87. Combien de donuts'
 	ELSE
 L55D1       STR   'ate 87 donuts.  How many did they eat'
 	FIN
@@ -8166,7 +8170,7 @@ L55F7       LDA   #^L55D1
             JMP   L5615
 
 	DO	VF
-L5609       STR   'altogether?'
+L5609       STR   'ont-ils mang'8e' ensemble ?'
 	ELSE
 L5609       STR   'altogether?'
 	FIN
@@ -8197,7 +8201,7 @@ L5615       LDA   #^L5609
 L565D       JMP   L568B
 
 	DO	VF
-L5660       STR   '     A blue whale is 175 feet long and its'
+L5660       STR   '    Une baleine bleue mesure 175 m'8f'tres de long'
 	ELSE
 L5660       STR   '     A blue whale is 175 feet long and its'
 	FIN
@@ -8209,7 +8213,7 @@ L568B       LDA   #^L5660
             JMP   L56C7
 
 	DO	VF
-L569D       STR   'baby is 42 feet long.  How much longer is'
+L569D       STR   'et son b'8e'b'8e' 42 m'8f'tres. De combien la'
 	ELSE
 L569D       STR   'baby is 42 feet long.  How much longer is'
 	FIN
@@ -8221,7 +8225,7 @@ L56C7       LDA   #^L569D
             JMP   L56EB
 
 	DO	VF
-L56D9       STR   'the mother whale?'
+L56D9       STR   'la maman baleine est-elle plus longue '
 	ELSE
 L56D9       STR   'the mother whale?'
 	FIN
@@ -8252,7 +8256,7 @@ L56EB       LDA   #^L56D9
 L5733       JMP   L5762
 
 	DO	VF
-L5736       STR   '     Grandmother'27's house is 235 miles away.'
+L5736       STR   '    La maison de Grand-M'8f're est '88' 235 km.'
 	ELSE
 L5736       STR   '     Grandmother'27's house is 235 miles away.'
 	FIN
@@ -8264,7 +8268,7 @@ L5762       LDA   #^L5736
             JMP   L579E
 
 	DO	VF
-L5774       STR   'While driving to her house, our car broke'
+L5774       STR   'En rentrant chez elle, elle tombe en panne.'
 	ELSE
 L5774       STR   'While driving to her house, our car broke'
 	FIN
@@ -8276,7 +8280,7 @@ L579E       LDA   #^L5774
             JMP   L57DA
 
 	DO	VF
-L57B0       STR   'down.  If we were 57 miles from her house'
+L57B0       STR   'Si elle '8e'tait '88' 57 km de sa maison,'
 	ELSE
 L57B0       STR   'down.  If we were 57 miles from her house'
 	FIN
@@ -8288,7 +8292,7 @@ L57DA       LDA   #^L57B0
             JMP   L5816
 
 	DO	VF
-L57EC       STR   'when the car broke down, then how far had'
+L57EC       STR   'alors combien de kilom'8f'tres avait-elle'
 	ELSE
 L57EC       STR   'when the car broke down, then how far had'
 	FIN
@@ -8300,7 +8304,7 @@ L5816       LDA   #^L57EC
             JMP   L5833
 
 	DO	VF
-L5828       STR   'we driven?'
+L5828       STR   'd'8e'j'88' parcouru ?'
 	ELSE
 L5828       STR   'we driven?'
 	FIN
@@ -8359,7 +8363,7 @@ L58B9       ADRL  L58C5
 L58C5       JMP   L58F3
 
 	DO	VF
-L58C8       STR   '     Henry climbed 221 feet up a mountain.'
+L58C8       STR   '    Henry a grimp'8e' 221 m'8f'tres d'27'une montagne.'
 	ELSE
 L58C8       STR   '     Henry climbed 221 feet up a mountain.'
 	FIN
@@ -8371,7 +8375,7 @@ L58F3       LDA   #^L58C8
             JMP   L592D
 
 	DO	VF
-L5905       STR   'One hour later he climbed up another 79'
+L5905       STR   'Une heure apr'8f's, il avait grimp'8e' 79 m'8f'tres'
 	ELSE
 L5905       STR   'One hour later he climbed up another 79'
 	FIN
@@ -8383,7 +8387,7 @@ L592D       LDA   #^L5905
             JMP   L596B
 
 	DO	VF
-L593F       STR   'feet.  The mountain was 400 feet high.  How'
+L593F       STR   'de plus. La montagne mesure 400 m'8f'tres.'
 	ELSE
 L593F       STR   'feet.  The mountain was 400 feet high.  How'
 	FIN
@@ -8395,7 +8399,7 @@ L596B       LDA   #^L593F
             JMP   L5992
 
 	DO	VF
-L597D       STR   'far did Henry climb?'
+L597D       STR   'Jusqu'27'o'9d' Henry est-il mont'8e' ?'
 	ELSE
 L597D       STR   'far did Henry climb?'
 	FIN
@@ -8426,7 +8430,7 @@ L5992       LDA   #^L597D
 L59DA       JMP   L5A0C
 
 	DO	VF
-L59DD       STR   '     An army has 60 tanks, 246 planes, and 836'
+L59DD       STR   '    Une arm'8e' a 60 chars, 246 avions et 836'
 	ELSE
 L59DD       STR   '     An army has 60 tanks, 246 planes, and 836'
 	FIN
@@ -8438,7 +8442,7 @@ L5A0C       LDA   #^L59DD
             JMP   L5A49
 
 	DO	VF
-L5A1E       STR   'troops.  How many tanks and planes does it'
+L5A1E       STR   'soldats. Combien de chars et d'27'avions'
 	ELSE
 L5A1E       STR   'troops.  How many tanks and planes does it'
 	FIN
@@ -8450,7 +8454,7 @@ L5A49       LDA   #^L5A1E
             JMP   L5A61
 
 	DO	VF
-L5A5B       STR   'have?'
+L5A5B       STR   'poss'8f'de-t-elle ?'
 	ELSE
 L5A5B       STR   'have?'
 	FIN
@@ -8481,7 +8485,7 @@ L5A61       LDA   #^L5A5B
 L5AA9       JMP   L5AD7
 
 	DO	VF
-L5AAC       STR   '     A cookie factory can bake 399 cookies'
+L5AAC       STR   '    Une usine peut produire 399 cookies'
 	ELSE
 L5AAC       STR   '     A cookie factory can bake 399 cookies'
 	FIN
@@ -8493,7 +8497,7 @@ L5AD7       LDA   #^L5AAC
             JMP   L5B12
 
 	DO	VF
-L5AE9       STR   'in one day.  In the morning it baked 242'
+L5AE9       STR   'par jour. Le matin, elle produit 242'
 	ELSE
 L5AE9       STR   'in one day.  In the morning it baked 242'
 	FIN
@@ -8505,7 +8509,7 @@ L5B12       LDA   #^L5AE9
             JMP   L5B4E
 
 	DO	VF
-L5B24       STR   'cookies and in the afternoon, 57 cookies.'
+L5B24       STR   'cookies et l'27'apr'8f's-midi, 57 cookies.'
 	ELSE
 L5B24       STR   'cookies and in the afternoon, 57 cookies.'
 	FIN
@@ -8517,7 +8521,7 @@ L5B4E       LDA   #^L5B24
             JMP   L5B7D
 
 	DO	VF
-L5B60       STR   'How many were baked all day?'
+L5B60       STR   'Combien en a-t-elle produit en un jour ?'
 	ELSE
 L5B60       STR   'How many were baked all day?'
 	FIN
@@ -8575,7 +8579,7 @@ L5C07       ADRL  L5C0F
 L5C0F       JMP   L5C3F
 
 	DO	VF
-L5C12       STR   '     A farmer has horses, 9 cows, 9 rabbits,'
+L5C12       STR   '    Un fermier a des chevaux, 9 vaches,'
 	ELSE
 L5C12       STR   '     A farmer has horses, 9 cows, 9 rabbits,'
 	FIN
@@ -8587,7 +8591,7 @@ L5C3F       LDA   #^L5C12
             JMP   L5C7C
 
 	DO	VF
-L5C51       STR   'and 18 chickens.  How many animals does he'
+L5C51       STR   '9 lapins et 18 poules. Combien d'27'animaux'
 	ELSE
 L5C51       STR   'and 18 chickens.  How many animals does he'
 	FIN
@@ -8599,7 +8603,7 @@ L5C7C       LDA   #^L5C51
             JMP   L5C94
 
 	DO	VF
-L5C8E       STR   'have?'
+L5C8E       STR   'poss'8f'de-t-il ?'
 	ELSE
 L5C8E       STR   'have?'
 	FIN
@@ -8611,7 +8615,7 @@ L5C94       LDA   #^L5C8E
             JMP   L5CAF
 
 	DO	VF
-L5CA6       STR   '8 horses'
+L5CA6       STR   '8 chevaux'
 	ELSE
 L5CA6       STR   '8 horses'
 	FIN
@@ -8622,7 +8626,7 @@ L5CAF       LDA   #^L5CA6
             JMP   L5CC5
 
 	DO	VF
-L5CBE       STR   '9 cows'
+L5CBE       STR   '9 vaches'
 	ELSE
 L5CBE       STR   '9 cows'
 	FIN
@@ -8633,7 +8637,7 @@ L5CC5       LDA   #^L5CBE
             JMP   L5CE0
 
 	DO	VF
-L5CD4       STR   '18 chickens'
+L5CD4       STR   '18 poules'
 	ELSE
 L5CD4       STR   '18 chickens'
 	FIN
@@ -8668,7 +8672,7 @@ L5D0B       LDA   #^L5D01
 L5D2C       JMP   L5D59
 
 	DO	VF
-L5D2F       STR   '     A wealthy lady, her servants, her 11'
+L5D2F       STR   '    Une dame riche, ses domestiques, ses'
 	ELSE
 L5D2F       STR   '     A wealthy lady, her servants, her 11'
 	FIN
@@ -8680,7 +8684,7 @@ L5D59       LDA   #^L5D2F
             JMP   L5D97
 
 	DO	VF
-L5D6B       STR   'dogs, and her 18 cats all fell asleep.  How'
+L5D6B       STR   '11 chiens et ses 18 chats se sont endormis.'
 	ELSE
 L5D6B       STR   'dogs, and her 18 cats all fell asleep.  How'
 	FIN
@@ -8692,7 +8696,7 @@ L5D97       LDA   #^L5D6B
             JMP   L5DBB
 
 	DO	VF
-L5DA9       STR   'many fell asleep?'
+L5DA9       STR   'Combien se sont endormis ?'
 	ELSE
 L5DA9       STR   'many fell asleep?'
 	FIN
@@ -8704,7 +8708,7 @@ L5DBB       LDA   #^L5DA9
             JMP   L5DD8
 
 	DO	VF
-L5DCD       STR   '8 servants'
+L5DCD       STR   '8 domestiques'
 	ELSE
 L5DCD       STR   '8 servants'
 	FIN
@@ -8715,7 +8719,7 @@ L5DD8       LDA   #^L5DCD
             JMP   L5DEF
 
 	DO	VF
-L5DE7       STR   '11 dogs'
+L5DE7       STR   '11 chiens'
 	ELSE
 L5DE7       STR   '11 dogs'
 	FIN
@@ -8726,7 +8730,7 @@ L5DEF       LDA   #^L5DE7
             JMP   L5E06
 
 	DO	VF
-L5DFE       STR   '18 cats'
+L5DFE       STR   '18 chats'
 	ELSE
 L5DFE       STR   '18 cats'
 	FIN

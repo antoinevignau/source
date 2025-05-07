@@ -2344,10 +2344,12 @@ L0FBB       LDA   L0406,X
             JMP   L0FF9
 
 	DO	VF
+L0FE4       STR   'Espace pour continuer'
+L0FF9       PEA   $001A
 	ELSE
-	FIN
 L0FE4       STR   'Spacebar to continue'
 L0FF9       PEA   $001E
+	FIN
             PEA   $00BF
             _MoveTo
             LDA   #^L0FE4
@@ -2358,10 +2360,12 @@ L0FF9       PEA   $001E
             JMP   L1024
 
 	DO	VF
+L1018       STR   'ESC pour quitter'
+L1024       PEA   $00C2
 	ELSE
-	FIN
 L1018       STR   'ESC to quit'
 L1024       PEA   $00D6
+	FIN
             PEA   $00BF
             _MoveTo
             LDA   #^L1018
@@ -2571,9 +2575,10 @@ L1236       LDA   L0406,X
             JMP   L126F
 
 	DO	VF
+L125E       STR   'Veux-tu vraiment'
 	ELSE
-	FIN
 L125E       STR   'Are you sure you'
+	FIN
 L126F       PEA   $0063
             PEA   $004E
             _MoveTo
@@ -2585,10 +2590,12 @@ L126F       PEA   $0063
             JMP   L129C
 
 	DO	VF
+L128E       STR   'quitter le jeu ?'
+L129C       PEA   $0058
 	ELSE
-	FIN
 L128E       STR   'want to quit?'
 L129C       PEA   $0064
+	FIN
             PEA   $0059
             _MoveTo
             LDA   #^L128E
@@ -2599,9 +2606,10 @@ L129C       PEA   $0064
             JMP   L12BF
 
 	DO	VF
+L12BB       STR   'ui'
 	ELSE
+L12BB       STR   'es'
 	FIN
-L12BB       STR   'yes'
 L12BF       PEA   $0064
             PEA   $006D
             _MoveTo
@@ -2613,9 +2621,10 @@ L12BF       PEA   $0064
             JMP   L12E1
 
 	DO	VF
+L12DE       STR   'on'
 	ELSE
+L12DE       STR   'o'
 	FIN
-L12DE       STR   'no'
 L12E1       PEA   $00D7
             PEA   $006D
             _MoveTo
@@ -2629,9 +2638,10 @@ L12E1       PEA   $00D7
             JMP   L130C
 
 	DO	VF
+L130A       STR   'O'
 	ELSE
-	FIN
 L130A       STR   'Y'
+	FIN
 L130C       PEA   $0056
             PEA   $006D
             _MoveTo
@@ -2643,9 +2653,10 @@ L130C       PEA   $0056
             JMP   L132D
 
 	DO	VF
-	ELSE
-	FIN
 L132B       STR   'N'
+	ELSE
+L132B       STR   'N'
+	FIN
 L132D       PEA   $00C9
             PEA   $006D
             _MoveTo
@@ -2784,9 +2795,10 @@ L1418       DW    $0000
             JMP   L14A6
 
 	DO	VF
+L1490       STR   'Merci d'27'avoir utilis'8e
 	ELSE
-	FIN
 L1490       STR   'Thank you for running'
+	FIN
 L14A6       PEA   $0055
             PEA   $004F
             _MoveTo
@@ -2798,10 +2810,12 @@ L14A6       PEA   $0055
             JMP   L14D2
 
 	DO	VF
+L14C5       STR   'le programmee.'
+L14D2       PEA   $0076
 	ELSE
-	FIN
 L14C5       STR   'the program.'
 L14D2       PEA   $007A
+	FIN
             PEA   $005A
             _MoveTo
             LDA   #^L14C5
@@ -2814,10 +2828,12 @@ L14D2       PEA   $007A
             JMP   L1511
 
 	DO	VF
+L14FB       STR   'Eteins l'27'ordinateur'
+L1511       PEA   $004B
 	ELSE
-	FIN
 L14FB       STR   'Turn off the computer'
 L1511       PEA   $0053
+	FIN
             PEA   $006B
             _MoveTo
             LDA   #^L14FB
@@ -2828,10 +2844,12 @@ L1511       PEA   $0053
             JMP   L153B
 
 	DO	VF
+L1530       STR   'ou red'8e'marre.'
+L153B       PEA   $0074
 	ELSE
-	FIN
 L1530       STR   'or reboot.'
 L153B       PEA   $0080
+	FIN
             PEA   $0076
             _MoveTo
             LDA   #^L1530
@@ -3227,9 +3245,10 @@ L1936       BRK   $00
             JMP   L19AC
 
 	DO	VF
+L199C       STR   'Clique sur la souris'
 	ELSE
-	FIN
 L199C       STR   'Click the mouse'
+	FIN
 L19AC       LDA   #^L199C
             STA   L03BB+2
             LDA   #L199C
@@ -3246,9 +3265,10 @@ L19AC       LDA   #^L199C
             JMP   L19DF
 
 	DO	VF
+L19D2       STR   'pour continuer.'
 	ELSE
-	FIN
 L19D2       STR   'to continue.'
+	FIN
 L19DF       LDA   #^L19D2
             STA   L03BB+2
             LDA   #L19D2

@@ -673,8 +673,7 @@ tbl1500	da	:1500,:1510,:1520,:1530,:1540
 
 *-------- H
 
-:1570
-*	rts
+:1570	rts
 *	lda	VBL	; LOGO - Use a better RND?
 *	eor	VERTCNT
 *	cmp	N

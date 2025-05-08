@@ -5550,7 +5550,7 @@ L3509       LDA   #^L3500
 L3518       JMP   L3536
 
 	DO	VF
-L351B       STR   ' pour obtenir le bon r'8E'sultat.'
+L351B       STR   ' pour avoir le bon r'8E'sultat.'
 	ELSE
 L351B       STR   ' to get the correct answer.'
 	FIN

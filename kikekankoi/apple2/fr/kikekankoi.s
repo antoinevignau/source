@@ -1725,6 +1725,7 @@ initALL
 *-----------------------------------
 
 :perdu
+	@wait	#400
 	@explode
 	@draw	#3
 	@wait	#400
@@ -1770,6 +1771,7 @@ sauveMONO ds	1
 *-----------------------------------
 
 :gagne
+	@wait	#400
 	@draw	#6
 	@wait	#400
 	jsr	setTEXTFULL

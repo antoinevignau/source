@@ -1,1 +1,0 @@
-all		Ä			unset echo	cd :: 	make	cd src

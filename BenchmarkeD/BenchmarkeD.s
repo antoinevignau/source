@@ -3,7 +3,7 @@
 *
 * (c) 2013-2025, Brutal Deluxe Software
 *
-* v1.1: - take less text room to see all results on one page
+* v1.1: - take less text space to see all results on one page
 *       - escape is also a key to cancel an action
 *
 

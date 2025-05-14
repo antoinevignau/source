@@ -369,8 +369,8 @@ IOB_DFT     DB    $01
             DB    $00
             DB    $00
             DB    $00
-            DA    $54DD
-            DA    $1000
+            DA    L54DD
+            DA    L1000
             DB    $00
             DB    $00
             DB    $00
@@ -422,7 +422,7 @@ L532A       DB    <L53C3
             DB    >L547B	; 22 TAPE VERIFY
             DB    <L547B
             DB    >L5488	; 24 VERIFY COMPLETE
-            DB    >L5488
+            DB    <L5488
 
 L534F       ASC   "COPY ABORT"0D
 L535A       ASC   "TAPE READ ERROR"0D
@@ -457,7 +457,7 @@ IOB         DB    $01	; 0 IOB type
 IOB_TRACK   DB    $00	; 4 Track
 IOB_SECTOR  DB    $00	; 5 Sector
             DA    L54DD
-IOB_BUFFER  DA    $1000	; 8 Buffer
+IOB_BUFFER  DA    L1000	; 8 Buffer
             DB    $00
             DB    $00
 IOB_COMMAND DB    $00	; Command

@@ -1,7 +1,7 @@
 *
-* MountIt: equates
+* Applesqueezer: equates
 *
-* (c) 2009, Brutal Deluxe Software
+* (c) 2022, Brutal Deluxe Software
 *
 
 *-----------------------------------

@@ -1,0 +1,336 @@
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File         Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1 restore.s      1 | Comment     | 11 |         |    0 | 00/8000               | *
+    2 |  1 restore.s      2 | Comment     | 11 |         |    0 | 00/8000               | * AppleSqueezer in 16-bit assembly
+    3 |  1 restore.s      3 | Comment     | 11 |         |    0 | 00/8000               | *
+    4 |  1 restore.s      4 | Comment     | 11 |         |    0 | 00/8000               | * (c) 2022, Niek van Suchtelen
+    5 |  1 restore.s      5 | Comment     | 11 |         |    0 | 00/8000               | * (a) 2025, Brutal Deluxe Software
+    6 |  1 restore.s      6 | Comment     | 11 |         |    0 | 00/8000               | *
+    7 |  1 restore.s      7 | Empty       | 11 |         |    0 | 00/8000               |                                                      
+    8 |  1 restore.s      8 | Directive   | 11 |         |    0 | 00/8000               |                               mx    %11              
+    9 |  1 restore.s      9 | Directive   | 11 |         |    0 | 00/8000               |                               org   $2000            
+   10 |  1 restore.s     10 | Directive   | 11 |         |    0 | 00/2000               |                               typ   SYS              
+   11 |  1 restore.s     11 | Directive   | 11 |         |    0 | 00/2000               |                               dsk   restore.system   
+   12 |  1 restore.s     12 | Directive   | 11 |         |    0 | 00/2000               |                               lst   off              
+   13 |  1 restore.s     13 | Empty       | 11 |         |    0 | 00/2000               |                                                      
+   14 |  1 restore.s     14 | Comment     | 11 |         |    0 | 00/2000               | *-----------------------------------
+   15 |  1 restore.s     15 | Comment     | 11 |         |    0 | 00/2000               | * APPLESQUEEZER EQUATES
+   16 |  1 restore.s     16 | Comment     | 11 |         |    0 | 00/2000               | *-----------------------------------
+   17 |  1 restore.s     17 | Empty       | 11 |         |    0 | 00/2000               |                                                      
+   18 |  1 restore.s     18 | Comment     | 11 |         |    0 | 00/2000               | * data
+   19 |  1 restore.s     19 | Comment     | 11 |         |    0 | 00/2000               | * bit 0: 1 if Acceralation is enabled
+   20 |  1 restore.s     20 | Comment     | 11 |         |    0 | 00/2000               | * bit 1: 1 if Built-RAM is enabled
+   21 |  1 restore.s     21 | Comment     | 11 |         |    0 | 00/2000               | * bit 2: 1 if Extra RAM is enabled
+   22 |  1 restore.s     22 | Comment     | 11 |         |    0 | 00/2000               | * bit 3-7: values unknown
+   23 |  1 restore.s     23 | Empty       | 11 |         |    0 | 00/2000               |                                                      
+   24 |  1 restore.s     24 | Equivalence | 11 |         |    0 | 00/2000               | FL_WRITE                      =     $e20000          
+   25 |  1 restore.s     25 | Equivalence | 11 |         |    0 | 00/2000               | FL_READ_REQUEST               =     $e20002          
+   26 |  1 restore.s     26 | Equivalence | 11 |         |    0 | 00/2000               | FL_READ                       =     $e20004          
+   27 |  1 restore.s     27 | Equivalence | 11 |         |    0 | 00/2000               | FL_CS                         =     $e20006          
+   28 |  1 restore.s     28 | Equivalence | 11 |         |    0 | 00/2000               | FL_READY                      =     $e20008          
+   29 |  1 restore.s     29 | Equivalence | 11 |         |    0 | 00/2000               | FL_IDLE                       =     $e2000a          
+   30 |  1 restore.s     30 | Equivalence | 11 |         |    0 | 00/2000               | FL_VERSION                    =     $e2000c          
+   31 |  1 restore.s     31 | Empty       | 11 |         |    0 | 00/2000               |                                                      
+   32 |  1 restore.s     32 | Equivalence | 11 |         |    0 | 00/2000               | CMD_WRITE_ENABLE              =     $06              
+   33 |  1 restore.s     33 | Equivalence | 11 |         |    0 | 00/2000               | CMD_WRITE_DISABLE             =     $04              
+   34 |  1 restore.s     34 | Equivalence | 11 |         |    0 | 00/2000               | CMD_PAGE_PROGRAM              =     $02              
+   35 |  1 restore.s     35 | Equivalence | 11 |         |    0 | 00/2000               | CMD_SECTOR_ERASE              =     $d8              
+   36 |  1 restore.s     36 | Equivalence | 11 |         |    0 | 00/2000               | CMD_BULK_ERASE                =     $c7              
+   37 |  1 restore.s     37 | Equivalence | 11 |         |    0 | 00/2000               | CMD_READ_DATA_BYTES           =     $03              
+   38 |  1 restore.s     38 | Equivalence | 11 |         |    0 | 00/2000               | CMD_READ_STATUS_REGISTER      =     $05              
+   39 |  1 restore.s     39 | Empty       | 11 |         |    0 | 00/2000               |                                                      
+   40 |  1 restore.s     40 | Equivalence | 11 |         |    0 | 00/2000               | exdram_address_set_main_bank  =     $e30000          ; 00..0E
+   41 |  1 restore.s     41 | Equivalence | 11 |         |    0 | 00/2000               | exdram_address_set_addr_low   =     $e30002          ; 00/00xx
+   42 |  1 restore.s     42 | Equivalence | 11 |         |    0 | 00/2000               | exdram_address_set_addr_high  =     $e30004          ; 00/xx00
+   43 |  1 restore.s     43 | Equivalence | 11 |         |    0 | 00/2000               | exdram_address_set_addr_bank  =     $e30006          ; xx/0000
+   44 |  1 restore.s     44 | Equivalence | 11 |         |    0 | 00/2000               | exdram_address_access         =     $e30008          ; R/W auto-increment to end of main bank
+   45 |  1 restore.s     45 | Empty       | 11 |         |    0 | 00/2000               |                                                      
+   46 |  1 restore.s     46 | Equivalence | 11 |         |    0 | 00/2000               | TRUE                          =     1                
+   47 |  1 restore.s     47 | Equivalence | 11 |         |    0 | 00/2000               | FALSE                         =     0                
+   48 |  1 restore.s     48 | Empty       | 11 |         |    0 | 00/2000               |                                                      
+   49 |  1 restore.s     49 | Equivalence | 11 |         |    0 | 00/2000               | minVERSION                    =     7                ; minimum core version to handle the driver
+   50 |  1 restore.s     50 | Empty       | 11 |         |    0 | 00/2000               |                                                      
+   51 |  1 restore.s     51 | Comment     | 11 |         |    0 | 00/2000               | *-----------------------------------
+   52 |  1 restore.s     52 | Comment     | 11 |         |    0 | 00/2000               | * CODE
+   53 |  1 restore.s     53 | Comment     | 11 |         |    0 | 00/2000               | *-----------------------------------
+   54 |  1 restore.s     54 | Empty       | 11 |         |    0 | 00/2000               |                                                      
+   55 |  1 restore.s     55 | Equivalence | 11 |         |    0 | 00/2000               | HOME                          =     $fc58            
+   56 |  1 restore.s     56 | Equivalence | 11 |         |    0 | 00/2000               | PRBYTE                        =     $fdda            
+   57 |  1 restore.s     57 | Equivalence | 11 |         |    0 | 00/2000               | COUT                          =     $fded            
+   58 |  1 restore.s     58 | Equivalence | 11 |         |    0 | 00/2000               | dpFROM                        =     $fe              
+   59 |  1 restore.s     59 | Empty       | 11 |         |    0 | 00/2000               |                                                      
+   60 |  1 restore.s     60 | Comment     | 11 |         |    0 | 00/2000               | *---
+   61 |  1 restore.s     61 | Empty       | 11 |         |    0 | 00/2000               |                                                      
+   62 |  1 restore.s     62 | Code        | 11 |         |    3 | 00/2000 : 20 58 FC    |                               jsr   {$fc58}          
+   63 |  1 restore.s     63 | Code        | 11 |         |    3 | 00/2003 : 20 AA 20    |                               jsr   isAppleSqueezer  
+   64 |  1 restore.s     64 | Code        | 11 |         |    2 | 00/2006 : F0 0A       |                               beq   gotAS            
+   65 |  1 restore.s     65 | Empty       | 11 |         |    0 | 00/2008               |                                                      
+   66 |  1 restore.s     66 | Code        | 11 |         |    2 | 00/2008 : A2 20       |                               ldx   #>strNOAS        
+   67 |  1 restore.s     67 | Code        | 11 |         |    2 | 00/200A : A0 43       |                               ldy   #<strNOAS        
+   68 |  1 restore.s     68 | Code        | 11 |         |    3 | 00/200C : 20 99 20    |                               jsr   printSTRING      
+   69 |  1 restore.s     69 | Code        | 11 |         |    3 | 00/200F : 4C 0F 20    | ozunid_1                      jmp   ozunid_1         
+   70 |  1 restore.s     70 | Empty       | 11 |         |    0 | 00/2012               |                                                      
+   71 |  1 restore.s     71 | Comment     | 11 |         |    0 | 00/2012               | *---
+   72 |  1 restore.s     72 | Empty       | 11 |         |    0 | 00/2012               |                                                      
+   73 |  1 restore.s     73 | Code        | 11 |         |    2 | 00/2012 : A2 20       | gotAS                         ldx   #>strVERSION     ; show core version
+   74 |  1 restore.s     74 | Code        | 11 |         |    2 | 00/2014 : A0 5D       |                               ldy   #<strVERSION     
+   75 |  1 restore.s     75 | Code        | 11 |         |    3 | 00/2016 : 20 99 20    |                               jsr   printSTRING      
+   76 |  1 restore.s     76 | Code        | 11 |         |    3 | 00/2019 : 20 B3 20    |                               jsr   coreVersion      
+   77 |  1 restore.s     77 | Code        | 11 |         |    3 | 00/201C : 20 DA FD    |                               jsr   {$fdda}          
+   78 |  1 restore.s     78 | Empty       | 11 |         |    0 | 00/201F               |                                                      
+   79 |  1 restore.s     79 | Code        | 11 |         |    2 | 00/201F : A2 20       |                               ldx   #>strPREVIOUS    ; get saved value
+   80 |  1 restore.s     80 | Code        | 11 |         |    2 | 00/2021 : A0 6C       |                               ldy   #<strPREVIOUS    
+   81 |  1 restore.s     81 | Code        | 11 |         |    3 | 00/2023 : 20 99 20    |                               jsr   printSTRING      
+   82 |  1 restore.s     82 | Code        | 11 |         |    3 | 00/2026 : 20 92 21    |                               jsr   loadValues       
+   83 |  1 restore.s     83 | Code        | 11 |         |    3 | 00/2029 : 20 DA FD    |                               jsr   {$fdda}          
+   84 |  1 restore.s     84 | Empty       | 11 |         |    0 | 00/202C               |                                                      
+   85 |  1 restore.s     85 | Comment     | 11 |         |    0 | 00/202C               | *--- Restore the value
+   86 |  1 restore.s     86 | Empty       | 11 |         |    0 | 00/202C               |                                                      
+   87 |  1 restore.s     87 | Code        | 11 |         |    3 | 00/202C : AD BF 21    |                               lda   data             
+   88 |  1 restore.s     88 | Code        | 11 |         |    2 | 00/202F : 29 F8       |                               and   #%11111000       
+   89 |  1 restore.s     89 | Code        | 11 |         |    2 | 00/2031 : 09 07       |                               ora   #%00000111       ; on + ram + extra ram
+   90 |  1 restore.s     90 | Code        | 11 |         |    3 | 00/2033 : 8D BF 21    |                               sta   data             
+   91 |  1 restore.s     91 | Code        | 11 |         |    3 | 00/2036 : 20 9B 21    |                               jsr   storeValues      
+   92 |  1 restore.s     92 | Empty       | 11 |         |    0 | 00/2039               |                                                      
+   93 |  1 restore.s     93 | Code        | 11 |         |    2 | 00/2039 : A2 20       |                               ldx   #>strRESTORE     ; say we're done!
+   94 |  1 restore.s     94 | Code        | 11 |         |    2 | 00/203B : A0 7E       |                               ldy   #<strRESTORE     ; if we are here
+   95 |  1 restore.s     95 | Code        | 11 |         |    3 | 00/203D : 20 99 20    |                               jsr   printSTRING      ; the data was saved
+   96 |  1 restore.s     96 | Code        | 11 |         |    3 | 00/2040 : 4C 40 20    | ozunid_2                      jmp   ozunid_2         
+   97 |  1 restore.s     97 | Empty       | 11 |         |    0 | 00/2043               |                                                      
+   98 |  1 restore.s     98 | Comment     | 11 |         |    0 | 00/2043               | *---
+   99 |  1 restore.s     99 | Empty       | 11 |         |    0 | 00/2043               |                                                      
+  100 |  1 restore.s    100 | Data        | 11 |         |   26 | 00/2043 : CE CF A0 C1 | strNOAS                       asc   "NO APPLESQUEEZER DETECTED"00
+      |                     |             |    |         |      |           D0 D0 CC C5 |
+      |                     |             |    |         |      |           D3 D1 D5 C5 |
+      |                     |             |    |         |      |           C5 DA C5 D2 |
+      |                     |             |    |         |      |           A0 C4 C5 D4 |
+      |                     |             |    |         |      |           C5 C3 D4 C5 |
+      |                     |             |    |         |      |           C4 00       |
+  101 |  1 restore.s    101 | Data        | 11 |         |   15 | 00/205D : C3 CF D2 C5 | strVERSION                    asc   "CORE VERSION: "00
+      |                     |             |    |         |      |           A0 D6 C5 D2 |
+      |                     |             |    |         |      |           D3 C9 CF CE |
+      |                     |             |    |         |      |           BA A0 00    |
+  102 |  1 restore.s    102 | Data        | 11 |         |   18 | 00/206C : 8D D0 D2 C5 | strPREVIOUS                   asc   8D"PREVIOUS VALUE: "00
+      |                     |             |    |         |      |           D6 C9 CF D5 |
+      |                     |             |    |         |      |           D3 A0 D6 C1 |
+      |                     |             |    |         |      |           CC D5 C5 BA |
+      |                     |             |    |         |      |           A0 00       |
+  103 |  1 restore.s    103 | Data        | 11 |         |   15 | 00/207E : 8D D6 C1 CC | strRESTORE                    asc   8D"VALUE RESTORED"
+      |                     |             |    |         |      |           D5 C5 A0 D2 |
+      |                     |             |    |         |      |           C5 D3 D4 CF |
+      |                     |             |    |         |      |           D2 C5 C4    |
+  104 |  1 restore.s    104 | Data        | 11 |         |   12 | 00/208D : 8D D2 C5 C2 |                               asc   8D"REBOOT NOW"00 
+      |                     |             |    |         |      |           CF CF D4 A0 |
+      |                     |             |    |         |      |           CE CF D7 00 |
+  105 |  1 restore.s    105 | Empty       | 11 |         |    0 | 00/2099               |                                                      
+  106 |  1 restore.s    106 | Comment     | 11 |         |    0 | 00/2099               | *---
+  107 |  1 restore.s    107 | Empty       | 11 |         |    0 | 00/2099               |                                                      
+  108 |  1 restore.s    108 | Code        | 11 |         |    2 | 00/2099 : 84 FE       | printSTRING                   sty   {$fe}            
+  109 |  1 restore.s    109 | Code        | 11 |         |    2 | 00/209B : 86 FF       |                               stx   {$fe}+1          
+  110 |  1 restore.s    110 | Code        | 11 |         |    2 | 00/209D : A0 00       |                               ldy   #0               
+  111 |  1 restore.s    111 | Code        | 11 |         |    2 | 00/209F : B1 FE       | ozunid_3                      lda   ({$fe}),y        
+  112 |  1 restore.s    112 | Code        | 11 |         |    2 | 00/20A1 : F0 06       |                               beq   printSTRING9     
+  113 |  1 restore.s    113 | Code        | 11 |         |    3 | 00/20A3 : 20 ED FD    |                               jsr   {$fded}          
+  114 |  1 restore.s    114 | Code        | 11 |         |    1 | 00/20A6 : C8          |                               iny                    
+  115 |  1 restore.s    115 | Code        | 11 |         |    2 | 00/20A7 : D0 F6       |                               bne   ozunid_3         
+  116 |  1 restore.s    116 | Code        | 11 |         |    1 | 00/20A9 : 60          | printSTRING9                  rts                    
+  117 |  1 restore.s    117 | Empty       | 11 |         |    0 | 00/20AA               |                                                      
+  118 |  1 restore.s    118 | Comment     | 11 |         |    0 | 00/20AA               | *-----------------------------------
+  119 |  1 restore.s    119 | Comment     | 11 |         |    0 | 00/20AA               | * SPI FLASH OPERATIONS
+  120 |  1 restore.s    120 | Comment     | 11 |         |    0 | 00/20AA               | *-----------------------------------
+  121 |  1 restore.s    121 | Empty       | 11 |         |    0 | 00/20AA               |                                                      
+  122 |  1 restore.s    122 | Comment     | 11 |         |    0 | 00/20AA               | *-----------
+  123 |  1 restore.s    123 | Empty       | 11 |         |    0 | 00/20AA               | isAppleSqueezer                                      
+  124 |  1 restore.s    124 | Code        | 11 |         |    4 | 00/20AA : AF 0A 00 E2 |                               ldal  {$e2000a}        
+  125 |  1 restore.s    125 | Code        | 11 |         |    2 | 00/20AE : 29 FF       |                               and   #$ff             
+  126 |  1 restore.s    126 | Code        | 11 |         |    2 | 00/20B0 : C9 01       |                               cmp   #{1}             ; if AS is present
+  127 |  1 restore.s    127 | Code        | 11 |         |    1 | 00/20B2 : 60          |                               rts                    
+  128 |  1 restore.s    128 | Empty       | 11 |         |    0 | 00/20B3               |                                                      
+  129 |  1 restore.s    129 | Comment     | 11 |         |    0 | 00/20B3               | *-----------
+  130 |  1 restore.s    130 | Empty       | 11 |         |    0 | 00/20B3               | coreVersion                                          
+  131 |  1 restore.s    131 | Code        | 11 |         |    4 | 00/20B3 : AF 0C 00 E2 |                               ldal  {$e2000c}        
+  132 |  1 restore.s    132 | Code        | 11 |         |    1 | 00/20B7 : 60          |                               rts                    
+  133 |  1 restore.s    133 | Empty       | 11 |         |    0 | 00/20B8               |                                                      
+  134 |  1 restore.s    134 | Comment     | 11 |         |    0 | 00/20B8               | *-----------
+  135 |  1 restore.s    135 | Empty       | 11 |         |    0 | 00/20B8               | chipSelect                                           
+  136 |  1 restore.s    136 | Code        | 11 |         |    4 | 00/20B8 : 8F 06 00 E2 |                               stal  {$e20006}        
+  137 |  1 restore.s    137 | Code        | 11 |         |    1 | 00/20BC : 60          |                               rts                    
+  138 |  1 restore.s    138 | Empty       | 11 |         |    0 | 00/20BD               |                                                      
+  139 |  1 restore.s    139 | Comment     | 11 |         |    0 | 00/20BD               | *-----------
+  140 |  1 restore.s    140 | Empty       | 11 |         |    0 | 00/20BD               | waitIdle                                             
+  141 |  1 restore.s    141 | Code        | 11 |         |    4 | 00/20BD : AF 0A 00 E2 |                               ldal  {$e2000a}        
+  142 |  1 restore.s    142 | Code        | 11 |         |    2 | 00/20C1 : F0 FA       |                               beq   waitIdle         
+  143 |  1 restore.s    143 | Code        | 11 |         |    1 | 00/20C3 : 60          |                               rts                    
+  144 |  1 restore.s    144 | Empty       | 11 |         |    0 | 00/20C4               |                                                      
+  145 |  1 restore.s    145 | Comment     | 11 |         |    0 | 00/20C4               | *-----------
+  146 |  1 restore.s    146 | Empty       | 11 |         |    0 | 00/20C4               | waitReadReady                                        
+  147 |  1 restore.s    147 | Code        | 11 |         |    4 | 00/20C4 : AF 08 00 E2 |                               ldal  {$e20008}        
+  148 |  1 restore.s    148 | Code        | 11 |         |    2 | 00/20C8 : 29 FF       |                               and   #$ff             
+  149 |  1 restore.s    149 | Code        | 11 |         |    2 | 00/20CA : F0 F8       |                               beq   waitReadReady    
+  150 |  1 restore.s    150 | Code        | 11 |         |    1 | 00/20CC : 60          |                               rts                    
+  151 |  1 restore.s    151 | Empty       | 11 |         |    0 | 00/20CD               |                                                      
+  152 |  1 restore.s    152 | Comment     | 11 |         |    0 | 00/20CD               | *-----------
+  153 |  1 restore.s    153 | Empty       | 11 |         |    0 | 00/20CD               | flashWrite                                           
+  154 |  1 restore.s    154 | Code        | 11 |         |    4 | 00/20CD : 8F 00 00 E2 |                               stal  {$e20000}        
+  155 |  1 restore.s    155 | Code        | 11 |         |    3 | 00/20D1 : 4C BD 20    |                               jmp   waitIdle         
+  156 |  1 restore.s    156 | Empty       | 11 |         |    0 | 00/20D4               |                                                      
+  157 |  1 restore.s    157 | Comment     | 11 |         |    0 | 00/20D4               | *-----------
+  158 |  1 restore.s    158 | Empty       | 11 |         |    0 | 00/20D4               | flashRead                                            
+  159 |  1 restore.s    159 | Code        | 11 |         |    3 | 00/20D4 : 20 BD 20    |                               jsr   waitIdle         
+  160 |  1 restore.s    160 | Code        | 11 |         |    2 | 00/20D7 : A9 00       |                               lda   #0               
+  161 |  1 restore.s    161 | Code        | 11 |         |    4 | 00/20D9 : 8F 02 00 E2 |                               stal  {$e20002}        
+  162 |  1 restore.s    162 | Code        | 11 |         |    3 | 00/20DD : 20 BD 20    |                               jsr   waitIdle         
+  163 |  1 restore.s    163 | Code        | 11 |         |    3 | 00/20E0 : 20 C4 20    |                               jsr   waitReadReady    
+  164 |  1 restore.s    164 | Empty       | 11 |         |    0 | 00/20E3               |                                                      
+  165 |  1 restore.s    165 | Code        | 11 |         |    4 | 00/20E3 : AF 04 00 E2 |                               ldal  {$e20004}        
+  166 |  1 restore.s    166 | Code        | 11 |         |    1 | 00/20E7 : 60          |                               rts                    
+  167 |  1 restore.s    167 | Empty       | 11 |         |    0 | 00/20E8               |                                                      
+  168 |  1 restore.s    168 | Comment     | 11 |         |    0 | 00/20E8               | *-----------
+  169 |  1 restore.s    169 | Empty       | 11 |         |    0 | 00/20E8               | writeEnable                                          
+  170 |  1 restore.s    170 | Code        | 11 |         |    2 | 00/20E8 : A9 00       |                               lda   #0               
+  171 |  1 restore.s    171 | Code        | 11 |         |    3 | 00/20EA : 20 B8 20    |                               jsr   chipSelect       
+  172 |  1 restore.s    172 | Code        | 11 |         |    2 | 00/20ED : A9 06       |                               lda   #{$06}           
+  173 |  1 restore.s    173 | Code        | 11 |         |    3 | 00/20EF : 20 CD 20    |                               jsr   flashWrite       
+  174 |  1 restore.s    174 | Code        | 11 |         |    2 | 00/20F2 : A9 01       |                               lda   #1               
+  175 |  1 restore.s    175 | Code        | 11 |         |    3 | 00/20F4 : 4C B8 20    |                               jmp   chipSelect       
+  176 |  1 restore.s    176 | Empty       | 11 |         |    0 | 00/20F7               |                                                      
+  177 |  1 restore.s    177 | Comment     | 11 |         |    0 | 00/20F7               | *-----------
+  178 |  1 restore.s    178 | Comment     | 11 |         |    0 | 00/20F7               | * before sectorErase, call writeEnable
+  179 |  1 restore.s    179 | Empty       | 11 |         |    0 | 00/20F7               | sectorErase                                          
+  180 |  1 restore.s    180 | Code        | 11 |         |    2 | 00/20F7 : A9 00       |                               lda   #0               
+  181 |  1 restore.s    181 | Code        | 11 |         |    3 | 00/20F9 : 20 B8 20    |                               jsr   chipSelect       
+  182 |  1 restore.s    182 | Code        | 11 |         |    2 | 00/20FC : A9 D8       |                               lda   #{$d8}           
+  183 |  1 restore.s    183 | Code        | 11 |         |    3 | 00/20FE : 20 CD 20    |                               jsr   flashWrite       
+  184 |  1 restore.s    184 | Code        | 11 |         |    2 | 00/2101 : A9 0F       |                               lda   #$0f             ; sector 15: 000F 0000 - 000F EFFF
+  185 |  1 restore.s    185 | Code        | 11 |         |    3 | 00/2103 : 20 CD 20    |                               jsr   flashWrite       
+  186 |  1 restore.s    186 | Code        | 11 |         |    2 | 00/2106 : A9 00       |                               lda   #0               
+  187 |  1 restore.s    187 | Code        | 11 |         |    3 | 00/2108 : 20 CD 20    |                               jsr   flashWrite       
+  188 |  1 restore.s    188 | Code        | 11 |         |    2 | 00/210B : A9 00       |                               lda   #0               
+  189 |  1 restore.s    189 | Code        | 11 |         |    3 | 00/210D : 20 CD 20    |                               jsr   flashWrite       
+  190 |  1 restore.s    190 | Code        | 11 |         |    2 | 00/2110 : A9 01       |                               lda   #1               
+  191 |  1 restore.s    191 | Code        | 11 |         |    3 | 00/2112 : 4C B8 20    |                               jmp   chipSelect       
+  192 |  1 restore.s    192 | Empty       | 11 |         |    0 | 00/2115               |                                                      
+  193 |  1 restore.s    193 | Comment     | 11 |         |    0 | 00/2115               | *-----------
+  194 |  1 restore.s    194 | Comment     | 11 |         |    0 | 00/2115               | * before bulkErase, call writeEnable
+  195 |  1 restore.s    195 | Empty       | 11 |         |    0 | 00/2115               | bulkErase                                            
+  196 |  1 restore.s    196 | Code        | 11 |         |    2 | 00/2115 : A9 00       |                               lda   #0               
+  197 |  1 restore.s    197 | Code        | 11 |         |    3 | 00/2117 : 20 B8 20    |                               jsr   chipSelect       
+  198 |  1 restore.s    198 | Code        | 11 |         |    2 | 00/211A : A9 C7       |                               lda   #{$c7}           
+  199 |  1 restore.s    199 | Code        | 11 |         |    3 | 00/211C : 20 CD 20    |                               jsr   flashWrite       
+  200 |  1 restore.s    200 | Code        | 11 |         |    2 | 00/211F : A9 01       |                               lda   #1               
+  201 |  1 restore.s    201 | Code        | 11 |         |    3 | 00/2121 : 4C B8 20    |                               jmp   chipSelect       
+  202 |  1 restore.s    202 | Empty       | 11 |         |    0 | 00/2124               |                                                      
+  203 |  1 restore.s    203 | Comment     | 11 |         |    0 | 00/2124               | *-----------
+  204 |  1 restore.s    204 | Comment     | 11 |         |    0 | 00/2124               | * before pageProgramSingle, call writeEnable
+  205 |  1 restore.s    205 | Empty       | 11 |         |    0 | 00/2124               | pageProgramSingle                                    
+  206 |  1 restore.s    206 | Code        | 11 |         |    1 | 00/2124 : 48          |                               pha                    ; save data
+  207 |  1 restore.s    207 | Empty       | 11 |         |    0 | 00/2125               |                                                      
+  208 |  1 restore.s    208 | Code        | 11 |         |    2 | 00/2125 : A9 00       |                               lda   #0               
+  209 |  1 restore.s    209 | Code        | 11 |         |    3 | 00/2127 : 20 B8 20    |                               jsr   chipSelect       
+  210 |  1 restore.s    210 | Code        | 11 |         |    2 | 00/212A : A9 02       |                               lda   #{$02}           
+  211 |  1 restore.s    211 | Code        | 11 |         |    3 | 00/212C : 20 CD 20    |                               jsr   flashWrite       
+  212 |  1 restore.s    212 | Empty       | 11 |         |    0 | 00/212F               |                                                      
+  213 |  1 restore.s    213 | Comment     | 11 |         |    0 | 00/212F               | * address
+  214 |  1 restore.s    214 | Code        | 11 |         |    2 | 00/212F : A9 0F       |                               lda   #$0f             ; sector 15: 000F 0000 - 000F EFFF
+  215 |  1 restore.s    215 | Code        | 11 |         |    3 | 00/2131 : 20 CD 20    |                               jsr   flashWrite       
+  216 |  1 restore.s    216 | Code        | 11 |         |    2 | 00/2134 : A9 00       |                               lda   #0               
+  217 |  1 restore.s    217 | Code        | 11 |         |    3 | 00/2136 : 20 CD 20    |                               jsr   flashWrite       
+  218 |  1 restore.s    218 | Code        | 11 |         |    2 | 00/2139 : A9 00       |                               lda   #0               
+  219 |  1 restore.s    219 | Code        | 11 |         |    3 | 00/213B : 20 CD 20    |                               jsr   flashWrite       
+  220 |  1 restore.s    220 | Empty       | 11 |         |    0 | 00/213E               |                                                      
+  221 |  1 restore.s    221 | Comment     | 11 |         |    0 | 00/213E               | * data
+  222 |  1 restore.s    222 | Code        | 11 |         |    1 | 00/213E : 68          |                               pla                    ; restore data
+  223 |  1 restore.s    223 | Code        | 11 |         |    3 | 00/213F : 20 CD 20    |                               jsr   flashWrite       
+  224 |  1 restore.s    224 | Empty       | 11 |         |    0 | 00/2142               |                                                      
+  225 |  1 restore.s    225 | Code        | 11 |         |    2 | 00/2142 : A9 01       |                               lda   #1               
+  226 |  1 restore.s    226 | Code        | 11 |         |    3 | 00/2144 : 4C B8 20    |                               jmp   chipSelect       
+  227 |  1 restore.s    227 | Empty       | 11 |         |    0 | 00/2147               |                                                      
+  228 |  1 restore.s    228 | Comment     | 11 |         |    0 | 00/2147               | *----------- TO DO - Use the stack I think
+  229 |  1 restore.s    229 | Comment     | 11 |         |    0 | 00/2147               | * before pageProgram, call writeEnable
+  230 |  1 restore.s    230 | Empty       | 11 |         |    0 | 00/2147               | pageProgram                                          
+  231 |  1 restore.s    231 | Code        | 11 |         |    1 | 00/2147 : 60          |                               rts                    
+  232 |  1 restore.s    232 | Empty       | 11 |         |    0 | 00/2148               |                                                      
+  233 |  1 restore.s    233 | Comment     | 11 |         |    0 | 00/2148               | *-----------
+  234 |  1 restore.s    234 | Empty       | 11 |         |    0 | 00/2148               | readStateRegister                                    
+  235 |  1 restore.s    235 | Code        | 11 |         |    2 | 00/2148 : A9 00       |                               lda   #0               
+  236 |  1 restore.s    236 | Code        | 11 |         |    3 | 00/214A : 20 B8 20    |                               jsr   chipSelect       
+  237 |  1 restore.s    237 | Code        | 11 |         |    2 | 00/214D : A9 05       |                               lda   #{$05}           
+  238 |  1 restore.s    238 | Code        | 11 |         |    3 | 00/214F : 20 CD 20    |                               jsr   flashWrite       
+  239 |  1 restore.s    239 | Code        | 11 |         |    3 | 00/2152 : 20 D4 20    |                               jsr   flashRead        
+  240 |  1 restore.s    240 | Code        | 11 |         |    1 | 00/2155 : 48          |                               pha                    
+  241 |  1 restore.s    241 | Code        | 11 |         |    2 | 00/2156 : A9 01       |                               lda   #1               
+  242 |  1 restore.s    242 | Code        | 11 |         |    3 | 00/2158 : 20 B8 20    |                               jsr   chipSelect       
+  243 |  1 restore.s    243 | Code        | 11 |         |    1 | 00/215B : 68          |                               pla                    
+  244 |  1 restore.s    244 | Code        | 11 |         |    1 | 00/215C : 60          |                               rts                    
+  245 |  1 restore.s    245 | Empty       | 11 |         |    0 | 00/215D               |                                                      
+  246 |  1 restore.s    246 | Comment     | 11 |         |    0 | 00/215D               | *-----------
+  247 |  1 restore.s    247 | Empty       | 11 |         |    0 | 00/215D               | writeInProgress                                      
+  248 |  1 restore.s    248 | Code        | 11 |         |    3 | 00/215D : 20 48 21    |                               jsr   readStateRegister; WIP - write in progress bit
+  249 |  1 restore.s    249 | Code        | 11 |         |    2 | 00/2160 : 29 01       |                               and   #%00000001       ; if 1, write is in progress
+  250 |  1 restore.s    250 | Code        | 11 |         |    2 | 00/2162 : C9 01       |                               cmp   #{1}             
+  251 |  1 restore.s    251 | Code        | 11 |         |    1 | 00/2164 : 60          |                               rts                    ; return TRUE if write is in progress
+  252 |  1 restore.s    252 | Empty       | 11 |         |    0 | 00/2165               |                                                      
+  253 |  1 restore.s    253 | Comment     | 11 |         |    0 | 00/2165               | *-----------
+  254 |  1 restore.s    254 | Empty       | 11 |         |    0 | 00/2165               | writeEnabled                                         
+  255 |  1 restore.s    255 | Code        | 11 |         |    3 | 00/2165 : 20 48 21    |                               jsr   readStateRegister; WEL - write enable latch bit
+  256 |  1 restore.s    256 | Code        | 11 |         |    2 | 00/2168 : 29 02       |                               and   #%00000010       ; if 1, write is enabled
+  257 |  1 restore.s    257 | Code        | 11 |         |    1 | 00/216A : 4A          |                               lsr                    ; move bit 1 in bit 0 for comparison
+  258 |  1 restore.s    258 | Code        | 11 |         |    2 | 00/216B : C9 01       |                               cmp   #{1}             
+  259 |  1 restore.s    259 | Code        | 11 |         |    1 | 00/216D : 60          |                               rts                    ; return TRUE is write is enabled
+  260 |  1 restore.s    260 | Empty       | 11 |         |    0 | 00/216E               |                                                      
+  261 |  1 restore.s    261 | Comment     | 11 |         |    0 | 00/216E               | *-----------
+  262 |  1 restore.s    262 | Empty       | 11 |         |    0 | 00/216E               | readDataBytes                                        
+  263 |  1 restore.s    263 | Code        | 11 |         |    1 | 00/216E : 48          |                               pha                    ; save address
+  264 |  1 restore.s    264 | Code        | 11 |         |    2 | 00/216F : A9 00       |                               lda   #0               
+  265 |  1 restore.s    265 | Code        | 11 |         |    3 | 00/2171 : 20 B8 20    |                               jsr   chipSelect       
+  266 |  1 restore.s    266 | Code        | 11 |         |    2 | 00/2174 : A9 03       |                               lda   #{$03}           
+  267 |  1 restore.s    267 | Code        | 11 |         |    3 | 00/2176 : 20 CD 20    |                               jsr   flashWrite       
+  268 |  1 restore.s    268 | Empty       | 11 |         |    0 | 00/2179               |                                                      
+  269 |  1 restore.s    269 | Comment     | 11 |         |    0 | 00/2179               | * address
+  270 |  1 restore.s    270 | Code        | 11 |         |    2 | 00/2179 : A9 0F       |                               lda   #$0f             ; sector 15: 000F 0000 - 000F EFFF
+  271 |  1 restore.s    271 | Code        | 11 |         |    3 | 00/217B : 20 CD 20    |                               jsr   flashWrite       
+  272 |  1 restore.s    272 | Code        | 11 |         |    2 | 00/217E : A9 00       |                               lda   #0               
+  273 |  1 restore.s    273 | Code        | 11 |         |    3 | 00/2180 : 20 CD 20    |                               jsr   flashWrite       
+  274 |  1 restore.s    274 | Code        | 11 |         |    1 | 00/2183 : 68          |                               pla                    ; restore address
+  275 |  1 restore.s    275 | Code        | 11 |         |    3 | 00/2184 : 20 CD 20    |                               jsr   flashWrite       
+  276 |  1 restore.s    276 | Empty       | 11 |         |    0 | 00/2187               |                                                      
+  277 |  1 restore.s    277 | Comment     | 11 |         |    0 | 00/2187               | * read data
+  278 |  1 restore.s    278 | Code        | 11 |         |    3 | 00/2187 : 20 D4 20    |                               jsr   flashRead        
+  279 |  1 restore.s    279 | Code        | 11 |         |    1 | 00/218A : 48          |                               pha                    
+  280 |  1 restore.s    280 | Code        | 11 |         |    2 | 00/218B : A9 01       |                               lda   #1               
+  281 |  1 restore.s    281 | Code        | 11 |         |    3 | 00/218D : 20 B8 20    |                               jsr   chipSelect       
+  282 |  1 restore.s    282 | Code        | 11 |         |    1 | 00/2190 : 68          |                               pla                    
+  283 |  1 restore.s    283 | Code        | 11 |         |    1 | 00/2191 : 60          |                               rts                    
+  284 |  1 restore.s    284 | Empty       | 11 |         |    0 | 00/2192               |                                                      
+  285 |  1 restore.s    285 | Comment     | 11 |         |    0 | 00/2192               | *-----------
+  286 |  1 restore.s    286 | Empty       | 11 |         |    0 | 00/2192               | loadValues                                           
+  287 |  1 restore.s    287 | Code        | 11 |         |    2 | 00/2192 : A9 00       |                               lda   #0               ; read byte at address $0F/0000
+  288 |  1 restore.s    288 | Code        | 11 |         |    3 | 00/2194 : 20 6E 21    |                               jsr   readDataBytes    
+  289 |  1 restore.s    289 | Code        | 11 |         |    3 | 00/2197 : 8D BF 21    |                               sta   data             
+  290 |  1 restore.s    290 | Code        | 11 |         |    1 | 00/219A : 60          |                               rts                    
+  291 |  1 restore.s    291 | Empty       | 11 |         |    0 | 00/219B               |                                                      
+  292 |  1 restore.s    292 | Comment     | 11 |         |    0 | 00/219B               | *-----------
+  293 |  1 restore.s    293 | Empty       | 11 |         |    0 | 00/219B               | storeValues                                          
+  294 |  1 restore.s    294 | Code        | 11 |         |    3 | 00/219B : 20 E8 20    |                               jsr   writeEnable      
+  295 |  1 restore.s    295 | Code        | 11 |         |    3 | 00/219E : 20 65 21    | ozunid_4                      jsr   writeEnabled     ; FALSE if not possible to write
+  296 |  1 restore.s    296 | Code        | 11 |         |    2 | 00/21A1 : D0 FB       |                               bne   ozunid_4         
+  297 |  1 restore.s    297 | Empty       | 11 |         |    0 | 00/21A3               |                                                      
+  298 |  1 restore.s    298 | Code        | 11 |         |    3 | 00/21A3 : 20 F7 20    |                               jsr   sectorErase      
+  299 |  1 restore.s    299 | Code        | 11 |         |    3 | 00/21A6 : 20 5D 21    | ozunid_5                      jsr   writeInProgress  ; TRUE if write in progress
+  300 |  1 restore.s    300 | Code        | 11 |         |    2 | 00/21A9 : F0 FB       |                               beq   ozunid_5         
+  301 |  1 restore.s    301 | Empty       | 11 |         |    0 | 00/21AB               |                                                      
+  302 |  1 restore.s    302 | Code        | 11 |         |    3 | 00/21AB : 20 E8 20    |                               jsr   writeEnable      
+  303 |  1 restore.s    303 | Code        | 11 |         |    3 | 00/21AE : 20 65 21    | ozunid_6                      jsr   writeEnabled     ; FALSE if not possible to write
+  304 |  1 restore.s    304 | Code        | 11 |         |    2 | 00/21B1 : D0 FB       |                               bne   ozunid_6         
+  305 |  1 restore.s    305 | Empty       | 11 |         |    0 | 00/21B3               |                                                      
+  306 |  1 restore.s    306 | Code        | 11 |         |    3 | 00/21B3 : AD BF 21    |                               lda   data             
+  307 |  1 restore.s    307 | Code        | 11 |         |    3 | 00/21B6 : 20 24 21    |                               jsr   pageProgramSingle; CDA/NDA harmonization
+  308 |  1 restore.s    308 | Code        | 11 |         |    3 | 00/21B9 : 20 5D 21    | ozunid_7                      jsr   writeInProgress  ; TRUE if write in progress
+  309 |  1 restore.s    309 | Code        | 11 |         |    2 | 00/21BC : F0 FB       |                               beq   ozunid_7         
+  310 |  1 restore.s    310 | Code        | 11 |         |    1 | 00/21BE : 60          |                               rts                    
+  311 |  1 restore.s    311 | Empty       | 11 |         |    0 | 00/21BF               |                                                      
+  312 |  1 restore.s    312 | Comment     | 11 |         |    0 | 00/21BF               | *----------- DATA
+  313 |  1 restore.s    313 | Empty       | 11 |         |    0 | 00/21BF               |                                                      
+  314 |  1 restore.s    314 | Data        | 11 |         |    1 | 00/21BF : 00          | data                          ds    1                
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

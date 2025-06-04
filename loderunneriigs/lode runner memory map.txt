@@ -1,0 +1,124 @@
+			$0F00..$19FF				SCORE TABLE	LEVEL
+$0C00	$0D00	$0E00	$0F00	$1A00	$1B00	$1C00	$1D00	$1E00		$1F00
+$0CA0	$0D00	$0E00	LOGO	$1A85	$1B45	$1C05	$1D00			$1FF4
+$0CC0	$0D0B	$0E80				$1C15	$1D26			$1F03
+$0CE0						$1C25	$1DB2			$1F02
+$0C70						$1C06				$1F01
+$0C98						$1C16				$1F04
+$0C30						$1C26				$1F05
+$0C60						$1C51				$1F06
+$0C68						$1C35				$1F07
+$0C70						$1C62				$1F08
+$0C78						$1C7E			
+$0C80						$1C9A			
+$0C88									
+$0C90									
+
+*-------------------------------
+* 
+*-------------------------------
+
+
+Memory map
+
+$0C00..$1DFF	Tables
+$0D00..$0DFF	Level?
+$1E00..$1EFF	Level
+$1F00..$1FFF	Score file
+$2000..$3FFF	HGR1
+$4000..$5FFF	HGR2
+$6000..$8EFF	Code
+$9B00..$ACFF	Tables
+$AD00..$xxxx	Fonts / Sprites
+$yyyy..$B5FF	Tables
+$B600..$BFFF	RWTS
+
+Zero Page
+
+$06 w	pointer
+$08 w	pointer
+$0C w	pointer
+$0E w   pointer
+$10 w	pointer
+1E	key pressed (and sprite, see editor
+1F	HGR page
+60									
+61									
+62									
+63									
+64									
+65	X-POS								
+66	Y-POS								
+67									
+68									
+69									
+6A									
+6B									
+6C									
+6D									
+6E									
+6F									
+70									
+71									
+72									
+73									
+74									
+75									
+76									
+77									
+78									
+79									
+7A									
+7B									
+7C									
+7D									
+7E									
+7F									
+80									
+81									
+82									
+83									
+84									
+85	X-coord for text/cursor
+86	Y-coord for text/cursor
+87	HGR page to draw on
+88									
+89	score 1
+8A	score 2
+8B	score 3
+8C	fgDELAY	Number of loops to wait							
+8D									
+8E									
+8F									
+90									
+91									
+92									
+93									
+94									
+95	fgINPUT	CA: Joystick / CB: Keyboard							
+96	theLEVEL	current played level							
+97									
+98	number of men								
+99	fgSOUND								
+9A	X								
+9B									
+9C									
+9D									
+9E	X								
+9F	X								
+A0									
+A1									
+A2									
+A3									
+A4									
+A5									
+A6	current level
+A7	X								
+A8	X								
+A9	X								
+AA	X								
+AB	X	demo mode?							
+AC	X								
+AD									
+AE									
+AF									

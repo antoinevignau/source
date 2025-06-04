@@ -9,12 +9,12 @@
 * Les chaines standards
 *
 
-strVOUSDETENEZ	asc	8D"Prenasam: "00
-strVOUSRIEN	asc	8D"Ne prenasam nicesar"00
+strVOUSDETENEZ	asc	8D"Prena{am: "00
+strVOUSRIEN	asc	8D"Ne prena{am ni~esar"00
 strPOINT	asc	"."00
 strEVIDENT	asc	8D"Obe roki imam polni!"00
-strVOUSLAVEZ	asc	8D"Ze imam. Poglej seznam."00
-strNOTOWNED	asc	8D"Tega sploh ne prenasam."00
+strVOUSLAVEZ	asc	8D"@e imam. Poglej seznam."00
+strNOTOWNED	asc	8D"Tega sploh ne prena{am."00
 strDACCORD	asc	"OK"00
 strILFAITNOIR	asc	"Temno je kot v rogu ..."8D00
 strILYA	asc	8D"Vidim tudi:"00
@@ -27,7 +27,7 @@ strCMD	asc	8D"Tvoj ukaz? "00
 strCOMMANDE	asc	8D"Tvoj ukaz? ("
 strTEMPS	asc	"5000) "00
 
-strLOAD	asc	8D"Nalozi igro (predal 1-9)? "00	; ** new ** load game (slot 1-9)?
+strLOAD	asc	8D"Nalo`i igro (predal 1-9)? "00	; ** new ** load game (slot 1-9)?
 strSAVE	asc	8D"Shrani igro (predal 1-9)? "00	; ** new ** save game (slot 1-9)?
 
 tbl580	da	$bdbd
@@ -50,25 +50,25 @@ strCECHEMIN	asc	" ubrati te poti"00
 strEXCLAM	asc	"!"8D00
 strREPLAY	asc	8D"Nova igra? "00
 strPERDU	asc	"V TEM TRENUTKU, TI JAZ APPLE ]["8D
-	asc	"sporocam, da te je doletela"8D
-	asc	"tragicna smrt."8D
-	asc	"Seveda, to zdaj ze ves ... "8D
+	asc	"sporo~am, da te je doletela"8D
+	asc	"tragi~na smrt."8D
+	asc	"Seveda, to zdaj `e ve{ ... "8D
 	asc	8D
 	asc	"Imel si spokojen pogreb,"8D
 	asc	"bil si pravi junak."8D
-	asc	"Toda, nekdo je se vedno ujet"8D
+	asc	"Toda, nekdo je {e vedno ujet"8D
 	asc	"v skrivnostnem svetu KIKEKANKOI-a..."00
 strPERDU2	asc	8D8D"VEM... pogrebi trajajo predolgo..."8D8D00
-strGAGNE	asc	"Odlicno..., resil si uganko KIKEKANKOI"8D
-	asc	"in to ziv. Se prsta si nisi poskodoval."8D
+strGAGNE	asc	"Odli~no..., re{il si uganko KIKEKANKOI"8D
+	asc	"in to `iv. [e prsta si nisi po{kodoval."8D
 	asc	"Toda ne veseli se predolgo!"8D
 	asc	"Nori znanstvenik bo uporabil tebe"8D
-	asc	"kot preizkus... in preveril, ce imas"8D
+	asc	"kot preizkus... in preveril, ~e ima{"8D
 	asc	"v glavi vsaj 64 KB spomina"8D
 	asc	8D
 	asc	"Hvala ker si tako dolgo vstrajal"8D
-	asc	"za tipkovnico, cestitke se enkrat"8D
-	asc	"za potrpezljivost."8D8D00
+	asc	"za tipkovnico, ~estitke {e enkrat"8D
+	asc	"za potrpe`ljivost."8D8D00
 
 *-----------------------------------
 * LES DONNEES
@@ -714,59 +714,59 @@ V$206	str	"SHRA"	; SAVE
 *		"----------------------------------------"
 
 str8010	asc	"Demonov brlog. Brezno obdano s temo in skrivnostmi."00
-str8020	asc	"Kirurgovo skrivalisce. Na steni vidis fotografije raznih posegov."00
-str8030	asc	"Carovnikov brlog"00
+str8020	asc	"Kirurgovo skrivali{~e. Na steni vidi{ fotografije raznih posegov."00
+str8030	asc	"^arovnikov brlog"00
 str8040	asc	"Si v predoru nad podzemnim jezerom."00
 str8050	asc	"Podzemno jezero"00
 str8060	asc	""00
 str8070	asc	"Prostor raznih znamenitosti."00
-str8080	asc	"Hodis po sipinah peska ob jezeru."00
-str8090	asc	"Stojis na drugem koncu jezera."00
-str8100	asc	"Tehnicna soba z robotom."00
+str8080	asc	"Hodi{ po sipinah peska ob jezeru."00
+str8090	asc	"Stoji{ na drugem koncu jezera."00
+str8100	asc	"Tehni~na soba z robotom."00
 str8110	asc	"Si v hodniku v jami."00
-str8120	asc	"Na tleh vidis resetko, na kateri je kljucavnica."00
-str8130	asc	"Na jugu vidis vrata z napisom IZHOD."00
-str8140	asc	"Bezna svetloba sije po tleh jame."00
-str8150	asc	"Baronovo skirvalisce."00
-str8160	asc	"Vidis rdeco, zeleno in modro posodo z napitkom."00
+str8120	asc	"Na tleh vidi{ re{etko, na kateri je klju~avnica."00
+str8130	asc	"Na jugu vidi{ vrata z napisom IZHOD."00
+str8140	asc	"Be`na svetloba sije po tleh jame."00
+str8150	asc	"Baronovo skirvali{~e."00
+str8160	asc	"Vidi{ rde~o, zeleno in modro posodo z napitkom."00
 str8170	asc	"Si v jamski delavnici."00
-str8180	asc	"Rob colna je zalepljen s trakom."00
+str8180	asc	"Rob ~olna je zalepljen s trakom."00
 str8190	asc	"Prostor raznih svetil."00
 str8200	asc	"Kemijska soba z ampulami."00
-str8210	asc	"Carovnikov prostor. Vidis prstan pricvrscen na steno"00
+str8210	asc	"^arovnikov prostor. Vidi{ prstan pri~vr{~en na steno"00
 str8220	asc	"Brlog resnice."00
 str8230	asc	"Brlog norcev."00
-str8240	asc	"Brlog majhnega cloveka."00
+str8240	asc	"Brlog majhnega ~loveka."00
 str8250	asc	"Prostor za balzamiranje."00
-str8260	asc	"Vescakov prostor. Odprtina je na jugu..."00
-str8270	asc	"Beguncev prostor. Na steni so resetke."00
+str8260	asc	"Ve{~akov prostor. Odprtina je na jugu..."00
+str8270	asc	"Begun~ev prostor. Na steni so re{etke."00
 str8280	asc	"Soba s stopnicami."00
 str8290	asc	"Pot glodalcev, pazi se stekline."00
 str8300	asc	"Predor smrti."00
-str8310	asc	"Slisis hrup na vzhodu. Vidis vrata, NEVARNOST na jugu."00
-str8320	asc	"Vidis svetlobo na jugu. Slisis cudne zvoke"00
+str8310	asc	"Sli{i{ hrup na vzhodu. Vidi{ vrata, NEVARNOST na jugu."00
+str8320	asc	"Vidi{ svetlobo na jugu. Sli{i{ ~udne zvoke"00
 str8330	asc	"Manijakov brlog."00
 str8340	asc	"Podganje gnezdo. Povsod same podgane ..."00
-str8350	asc	"Soba prezivelih."00
-str8360	asc	"Vidis slascicarno in krojaca."00
+str8350	asc	"Soba pre`ivelih."00
+str8360	asc	"Vidi{ sla{~i~arno in kroja~a."00
 str8370	asc	"Pred tabo sta trafika in pekarna."00
 str8380	asc	"Na desni strani je trgovina."00
-str8390	asc	"Pred hiso zdravnika in cevljara."00
+str8390	asc	"Pred hi{o zdravnika in ~evljara."00
 str8400	asc	"Severozahod mesta."00
 str8410	asc	"Konec mesta!"00
 str8420	asc	"V trafiki. Prodajalec spi za pultom."00
 str8430	asc	""00
-str8440	asc	"Pri krojacu. Veliko oblacil ima na prodaj."00
-str8450	asc	"Si v slascicarni."00
-str8460	asc	"Si pri cevljarju. Razstavljenih ima veliko cevljev."00
-str8470	asc	"Pri zdravniku. Zdravnik je odsel."00
+str8440	asc	"Pri kroja~u. Veliko obla~il ima na prodaj."00
+str8450	asc	"Si v sla{~i~arni."00
+str8460	asc	"Si pri ~evljarju. Razstavljenih ima veliko ~evljev."00
+str8470	asc	"Pri zdravniku. Zdravnik je od{el."00
 str8480	asc	"Pred lekarno."00
 str8490	asc	"V lekarni."00
 str8500	asc	"Jugovzhod mesta."00
 str8510	asc	"Pred teboj je tempelj VELIKEGA KIKEKANKOI-a"00
-str8520	asc	"Imate kaj na prodaj?, te vprasa trgovec."00
+str8520	asc	"Imate kaj na prodaj?, te vpra{a trgovec."00
 str8530	asc	"Soba dobrih dejanj."00
-str8540	asc	"Iztrebljevalcev mavzolej."00
+str8540	asc	"Iztrebljeval~ev mavzolej."00
 str8550	asc	"Srce templja."00
 str8560	asc	"Venerin brlog. Izhod je na jugu netopirjeve poti."00
 str8570	asc	"Pot netopirjev."00
@@ -782,83 +782,83 @@ str8600	asc	""00
 *		"0123456789012345678901234567890123456789"
 *		"----------------------------------------"
 
-str4010	asc	"Prisel si v sobo za seciranje, in nisi dolgo zdrzal."00
-str4020	asc	"Padel si v sezigalnico organov ..."00
+str4010	asc	"Pri{el si v sobo za seciranje, in nisi dolgo zdr`al."00
+str4020	asc	"Padel si v se`igalnico organov ..."00
 str4030	asc	"Pravkar si padel v prepad 200 m globoko."00
-str4040	asc	"Ta napitek ima vonj po zveplovi kislini ...! Sladka smrt."00
-str4050	asc	"Nic se ne zgodi, ocitno si izbral zmagovalni napitek."00
-str4060	asc	"Napitek te omami, imas vizijo skrivnostnega mesta."00
-str4070	asc	"Umres zadusen v zivem pesku..."00
+str4040	asc	"Ta napitek ima vonj po `veplovi kislini ...! Sladka smrt."00
+str4050	asc	"Ni~ se ne zgodi, o~itno si izbral zmagovalni napitek."00
+str4060	asc	"Napitek te omami, ima{ vizijo skrivnostnega mesta."00
+str4070	asc	"Umre{ zadu{en v `ivem pesku..."00
 str4080	asc	"Spotaknil si se, ... mljask, mljask (pojejo te piranje)."00
 str4090	asc	"Smrtonosni plini uidejo iz steklenice ... ."00
-str4100	asc	"Stenska plosca se zavrti, vstopijo KOBRE... Nasvidenje!"00
-str4110	asc	"Spotaknes se in nabodes na izvijac."00
+str4100	asc	"Stenska plo{~a se zavrti, vstopijo KOBRE... Nasvidenje!"00
+str4110	asc	"Spotakne{ se in nabode{ na izvija~."00
 str4120	asc	"Nekdo ti je zdrobil kosti !!!"00
 str4130	asc	"Robot ti polomi kosti ..."00
-str4140	asc	"Precka lestve se zrahlja."00
-str4150	asc	"Ne znas leteti z LETALOM ... Nasvidenje!"00
-str4160	asc	"Spraseval sem se, ali je ucenje letenja LETALA v 10 lekcijah dovolj."00
-str4170	asc	"Zadela te je hidravlicna crpalka..."00
+str4140	asc	"Pre~ka lestve se zrahlja."00
+str4150	asc	"Ne zna{ leteti z LETALOM ... Nasvidenje!"00
+str4160	asc	"Spra{eval sem se, ali je u~enje letenja LETALA v 10 lekcijah dovolj."00
+str4170	asc	"Zadela te je hidravli~na ~rpalka..."00
 str4180	asc	"Zgorel si na generatorju operacijske sobe."00
-str4190	asc	"Na poti navzgor ti spodrsne, lepilo brizgne v tvoje oci."00
-str4200	asc	"Voda se dotika elektrike ... peces se na zaru..."00
+str4190	asc	"Na poti navzgor ti spodrsne, lepilo brizgne v tvoje o~i."00
+str4200	asc	"Voda se dotika elektrike ... pe~e{ se na `aru..."00
 str4210	asc	"Zajela te je norost (prazno vedro), naredil si samomor."00
-str4220	asc	"Robota ubijes z elektricnim udarom, istocasno tudi sebe."00
+str4220	asc	"Robota ubije{ z elektri~nim udarom, isto~asno tudi sebe."00
 str4230	asc	"Uspelo ti je pokvariti robota ..."00
-str4240	asc	"Stisnil si, si prste skupaj. Zelis jih lociti z rezilom a si prerezes vrat."00
-str4250	asc	"Oh hvala, najlepsa hvala ... CMOK!"00
-str4260	asc	"To si ze naredil."00
-str4270	asc	"Mogoce bi moral odklopiti baterijo."00
+str4240	asc	"Stisnil si, si prste skupaj. @eli{ jih lo~iti z rezilom a si prere`e{ vrat."00
+str4250	asc	"Oh hvala, najlep{a hvala ... CMOK!"00
+str4260	asc	"To si `e naredil."00
+str4270	asc	"Mogo~e bi moral odklopiti baterijo."00
 str4280	asc	"V knjigi so navodila za letenje z letalom."00
 str4290	asc	"Malo je premajhno, da bi poskusil leteti."00
-str4300	asc	"Ali nameravas streljati?"00
-str4310	asc	"Skatla eksplodira!"00
-str4320	asc	"Pod trakom je kljuc."00
-str4330	asc	"Tokrat si odstranil prevec, coln gre na koscke."00
+str4300	asc	"Ali namerava{ streljati?"00
+str4310	asc	"[katla eksplodira!"00
+str4320	asc	"Pod trakom je klju~."00
+str4330	asc	"Tokrat si odstranil preve~, ~oln gre na ko{~ke."00
 str4340	asc	"Loputa je zaklenjena."00
-str4350	asc	"Kljuc ne deluje s to kljucavnico."00
-str4360	asc	"Zidovi so vse blizje, stisnili so te."00
-str4370	asc	"Nimas vec casa!"00
-str4380	asc	"Mogoce potrebujes elektriko ..."00
-str4390	asc	"Mogoce bi moral priviti zarnico."00
-str4400	asc	"NEMOGOCE"00
+str4350	asc	"Klju~ ne deluje s to klju~avnico."00
+str4360	asc	"Zidovi so vse bli`je, stisnili so te."00
+str4370	asc	"Nima{ ve~ ~asa!"00
+str4380	asc	"Mogo~e potrebuje{ elektriko ..."00
+str4390	asc	"Mogo~e bi moral priviti `arnico."00
+str4400	asc	"NEMOGO^E"00
 str4410	asc	"Padel is v krsto, katere pokrov se je zaprl s tabo vred."00
-str4420	asc	"Dobil si steklino od podgan ... moral bi spiti kaksno zdravilo"00
+str4420	asc	"Dobil si steklino od podgan ... moral bi spiti kak{no zdravilo"00
 str4430	asc	"Zastrupil si se z juho ..."00
 str4440	asc	"Stresla te je svetilka."00
-str4450	asc	"Ker si predolgo stal v temi se ti je zmesalo!"00
-str4460	asc	"Ne mores uzeti, moras kupiti."00
-str4470	asc	"Prodajalec je nor, skoci nate in te ubije."00
-str4480	asc	"Obut ne mores v tempelj, ubije te strazar."00
+str4450	asc	"Ker si predolgo stal v temi se ti je zme{alo!"00
+str4460	asc	"Ne more{ uzeti, mora{ kupiti."00
+str4470	asc	"Prodajalec je nor, sko~i nate in te ubije."00
+str4480	asc	"Obut ne more{ v tempelj, ubije te stra`ar."00
 str4490	asc	"Soba je polna muh!!!"00
 str4500	asc	"Stene padajo nate, ne bi je smel zapustiti, strahopetec."00
-str4510	asc	"Cestitamo."00
+str4510	asc	"^estitamo."00
 str4520	asc	"Moral bi nositi masko, strupeni plini te ubijejo!"00
 str4530	asc	"Dekle ni imelo maske zato umre, prav tako tudi ti ..."00
-str4540	asc	"Dekle je golo, ne more ti slediti. V besu pobere steklo in ti prereze vrat."00
-str4550	asc	"Nimas nicesar, da bi lahko prerezal vrv."00
-str4560	asc	"Prej bi moral ugasniti svetilko, povzrocil si kratek stik!!!"00
+str4540	asc	"Dekle je golo, ne more ti slediti. V besu pobere steklo in ti prere`e vrat."00
+str4550	asc	"Nima{ ni~esar, da bi lahko prerezal vrv."00
+str4560	asc	"Prej bi moral ugasniti svetilko, povzro~il si kratek stik!!!"00
 str4570	asc	"Lastnik denarnice je bil verjetno gobav..."00
 str4580	asc	"Spotaknil si se ob sekiro... koliko krvi ..."00
-str4590	asc	"Mesto pohabljenih. Tukaj zivijo ubozci, ki so preziveli krutosti norega znanstvenika."8D00
-str4600	asc	"Izgleda, da ti je tezko."00
-str4610	asc	"Spojina je bila premocna, zato si se zastrupil..."00
+str4590	asc	"Mesto pohabljenih. Tukaj `ivijo ubo`ci, ki so pre`iveli krutosti norega znanstvenika."8D00
+str4600	asc	"Izgleda, da ti je te`ko."00
+str4610	asc	"Spojina je bila premo~na, zato si se zastrupil..."00
 str4620	asc	"Me ne zanima."00
-str4630	asc	"Kaj delas tukaj??"00
-str4640	asc	"Bi rad zapravljal cas?"00
-str4650	asc	"Oh, hvala, najelpsa hvala ..."A7" CMOK "A700
+str4630	asc	"Kaj dela{ tukaj??"00
+str4640	asc	"Bi rad zapravljal ~as?"00
+str4650	asc	"Oh, hvala, najelp{a hvala ..."A7" CMOK "A700
 
 tbl4660	da	$bdbd
 	da	str4670,str4680,str4690,str4700
 	da	str4710,str4720,str4730,str4740
 	da	str4750
 	
-str4670	asc	8D"Bodi mocan, pomisli na nagrado ..."00
+str4670	asc	8D"Bodi mo~an, pomisli na nagrado ..."00
 str4680	asc	8D"Imam idejo."00
 str4690	asc	8D"Ne bi se spomnil kaj takega."00
-str4700	asc	8D"Poznas avanture?"00
+str4700	asc	8D"Pozna{ avanture?"00
 str4710	asc	8D"Dobra ideja!"00
 str4720	asc	8D"Zakaj pa ne?"00
-str4730	asc	8D"Kaksen avanturist pa si?"00
+str4730	asc	8D"Kak{en avanturist pa si?"00
 str4740	asc	8D"Si pa hiter."00
 str4750	asc	8D"Zanimiva ideja."00

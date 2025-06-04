@@ -46,7 +46,7 @@ str589	asc	8D"Seveda."8D00
 str590	asc	8D"V redu."8D00
 
 strIMPOSSIBLE	asc	8D"Ne morem"00
-strCECHEMIN	asc	" ubrati te poti"00
+strCECHEMIN	asc	"ubrati te poti"00
 strEXCLAM	asc	"!"8D00
 strREPLAY	asc	8D"Nova igra? "00
 strPERDU	asc	"V TEM TRENUTKU, TI JAZ APPLE ]["8D
@@ -428,7 +428,7 @@ O$26 	asc	"Espadrile"00
 O$27 	asc	"Obleko"00
 O$28 	asc	"Denarnico"00
 O$29 	asc	"Brosko"00
-O$30 	asc	"Oprsnico"00
+O$30 	asc	"Jermen"00
 O$31 	asc	"Insekticidno bombo"00
 O$32 	asc	"Sekiro"00
 O$33 	asc	"Smetano"00
@@ -658,7 +658,7 @@ V$90	str	"CEVL"	; "CHAU"
 V$91	str	"OBLE"	; "ROBE"
 V$92	str	"NOSI"	; "PORT"
 V$93	str	"BROS"	; "BROC"
-V$94	str	"OPRS"	; "HARN"
+V$94	str	"JERM"	; "HARN"
 V$95	str	"BOMB"	; "BOMB"
 V$96	str	"POLO"	; "METS"
 V$97	str	"NATA"	; "ENFI"
@@ -679,7 +679,7 @@ V$111	str	"PAKE"	; "LIAS"
 V$112	str	"TRAF"	; "TABA"
 V$113	str	"ZDRA"	; "MEDE"
 V$114	str	"COPA"	; "CHAU"
-V$115	str	"SMET"	; "CREM"
+V$115	str	"SLAS"	; "CREM"
 V$116	str	"TRGO"	; "TRAI"
 V$117	str	"PEKA"	; "BOUL"
 V$118	str	"KROJ"	; "TAIL"
@@ -713,7 +713,7 @@ V$206	str	"SHRA"	; SAVE
 *		"0123456789012345678901234567890123456789"
 *		"----------------------------------------"
 
-str8010	asc	"Demonov brlog. Brezno obdano s temo in skrivnostmi."00
+str8010	asc	"Demonov brlog. Jama obdana s temo in skrivnostmi."00
 str8020	asc	"Kirurgovo skrivalisce. Na steni vidis fotografije raznih posegov."00
 str8030	asc	"Carovnikov brlog"00
 str8040	asc	"Si v predoru nad podzemnim jezerom."00
@@ -768,9 +768,9 @@ str8520	asc	"Imate kaj na prodaj?, te vprasa trgovec."00
 str8530	asc	"Soba dobrih dejanj."00
 str8540	asc	"Iztrebljevalcev mavzolej."00
 str8550	asc	"Srce templja."00
-str8560	asc	"Venerin brlog. Izhod je na jugu netopirjeve poti."00
+str8560	asc	"Venerin brlog. Vrata so na jugu."00
 str8570	asc	"Pot netopirjev."00
-str8580	asc	"Brlog zmagovalcev. Kamni so zasuli izhod proti svobodi."00
+str8580	asc	"Brlog zmagovalcev. Si v prostoru, iz kamnitih sten."00
 str8590	asc	""00
 str8600	asc	""00
 
@@ -810,7 +810,7 @@ str4250	asc	"Oh hvala, najlepsa hvala ... CMOK!"00
 str4260	asc	"To si ze naredil."00
 str4270	asc	"Mogoce bi moral odklopiti baterijo."00
 str4280	asc	"V knjigi so navodila za letenje z letalom."00
-str4290	asc	"Malo je premajhno, da bi poskusil leteti."00
+str4290	asc	"Malo je pretesno, da bi poskusil tako stvar."00
 str4300	asc	"Ali nameravas streljati?"00
 str4310	asc	"Skatla eksplodira!"00
 str4320	asc	"Pod trakom je kljuc."00

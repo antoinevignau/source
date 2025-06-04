@@ -1,0 +1,124 @@
+status 00
+B4	1011_0100 (block/read/online/wp)
+B0	size in 512-byte blocks
+F1	isn't that in bytes?
+0B	
+
+status 03
+B4	see above
+B0
+F1
+0B
+10
+SONY    CD-ROM 
+43	0100_0011 (disksw/res/add cmds)
+05	type
+C0	subtype SCSI CD-ROM disk drive
+00	version
+30	version 00.30
+
+Status
+ok	07 Test unit ready
+ok	08 Inquiry
+ok	0A Read capacity
+  00 0B F1 AF
+  00 00 02 00
+ko	0B Read TOC
+  Yeah, that's normal because non standard
+
+READ TOC
+1000:19 00 20 10 00 00 40 10 00 00
+1020:43 00 00 00 00 00 00 20 00 00
+Buffer at $2000
+
+PLAY AUDIO TRACK
+1020:48 00 00 00 01 00 00 02 00 00
+
+PAUSE/RESUME
+1020:4B 00 00 00 00 00 00 00 00 00
+RESUME
+1020:4B 00 00 00 00 00 00 00 01 00
+
+
+CD-SC
+A4
+00 00 00
+10
+'SONY    CD-ROM '
+43
+05 C0
+00 30
+
+CD-150
+A4
+00 00 00
+10
+'SONY    CD-ROM '
+43
+05 C0
+00 30
+
+CD-300
+A4
+00 00 00
+10
+'SONY    CD-ROM '
+43
+05 C0
+00 30
+
+300E PLUS
+B4
+E8 8B 0E
+10
+'MATSHITACD-ROM '
+43
+05 C0
+00 30
+
+READ SUB CHANNEL
+1020:42 00 40 03 00 00 01 10 10 00
+              ^- TRACK ISRC
+2000:
+00 - RESERVED
+15 - AUDIO STATUS
+00 14 - SUB-CHANNEL DATA LENGTH
+03 - SUB CHANNEL DATA FORMAT CODE
+10 - 
+ 0001 - ADR
+ 0000 - CONTROL
+01 - TRACK NUMBER
+00 - RESERVED
+00 - BIT 7 IS TCVAL + RESERVED
+30 30 30 30 30 30 30 30 30 30 30 30 30 30 30
+^- TRACK INTERNATIONAL STANDARD RECORDING CODE (NULL TERMINATED?)
+
+START STOP UNIT
+EJECT
+1020:1B 0 0 0 2 0
+INSERT
+1020:1B 0 0 0 3 0
+MEDIA READY
+1020:1B 0 0 0 1 0
+STOP UNIT REALLY
+1020:1B 0 0 0 0 0
+
+READ AUDIO DATA
+1020:D8 00 00 00 20 00 00 00 10 00
+READ $10 BLOCKS FROM BLOCK $20
+1040:00 20 00 00 00 10 00 00
+SET BUFFER AT $2000, LENGTH IS $1000
+
+inquiry disk
+disk capacity
+read toc (blocks / msf)
+read sub channel (0/1/2/3)
+play stop disk
+pause resume
+eject insert disk
+
+1B 00 00 08	+3
+00 00 00 00
+00
+00 02 00
+0E 0E

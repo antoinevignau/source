@@ -1,0 +1,1112 @@
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File         Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1 fmradio.s      1 | Comment     | 11 |         |    0 | 00/0000               | *
+    2 |  1 fmradio.s      2 | Comment     | 11 |         |    0 | 00/0000               | * FM Radio
+    3 |  1 fmradio.s      3 | Comment     | 11 |         |    0 | 00/0000               | * A test app to listen to the radio on the Apple IIgs
+    4 |  1 fmradio.s      4 | Comment     | 11 |         |    0 | 00/0000               | *
+    5 |  1 fmradio.s      5 | Comment     | 11 |         |    0 | 00/0000               | * (c) 2023, Brutal Deluxe Software
+    6 |  1 fmradio.s      6 | Comment     | 11 |         |    0 | 00/0000               | * Visit brutaldeluxe.fr
+    7 |  1 fmradio.s      7 | Comment     | 11 |         |    0 | 00/0000               | *
+    8 |  1 fmradio.s      8 | Empty       | 11 |         |    0 | 00/0000               |                                               
+    9 |  1 fmradio.s      9 | Directive   | 11 |         |    0 | 00/0000               |                      xc                       
+   10 |  1 fmradio.s     10 | Directive   | 11 |         |    0 | 00/0000               |                      xc                       
+   11 |  1 fmradio.s     11 | Directive   | 00 |         |    0 | 00/0000               |                      mx        %00            
+   12 |  1 fmradio.s     12 | Empty       | 00 |         |    0 | 00/0000               |                                               
+   13 |  1 fmradio.s     13 | Directive   | 00 |         |    0 | 00/0000               |                      rel                      
+   14 |  1 fmradio.s     14 | Directive   | 00 |         |    0 | 00/0000               |                      lst       off            
+   15 |  1 fmradio.s     15 | Empty       | 00 |         |    0 | 00/0000               |                                               
+   16 |  1 fmradio.s     16 | Comment     | 00 |         |    0 | 00/0000               | *----------
+   17 |  1 fmradio.s     17 | Empty       | 00 |         |    0 | 00/0000               |                                               
+   18 |  1 fmradio.s     18 | Directive   | 00 |         |    0 | 00/0000               |                      use       4/ADB.Macs     
+   19 |  1 fmradio.s     19 | Directive   | 00 |         |    0 | 00/0000               |                      use       4/Int.Macs     
+   20 |  1 fmradio.s     20 | Directive   | 00 |         |    0 | 00/0000               |                      use       4/Locator.Macs 
+   21 |  1 fmradio.s     21 | Directive   | 00 |         |    0 | 00/0000               |                      use       4/Mem.Macs     
+   22 |  1 fmradio.s     22 | Directive   | 00 |         |    0 | 00/0000               |                      use       4/Misc.Macs    
+   23 |  1 fmradio.s     23 | Directive   | 00 |         |    0 | 00/0000               |                      use       4/Text.Macs    
+   24 |  1 fmradio.s     24 | Directive   | 00 |         |    0 | 00/0000               |                      use       4/Util.Macs    
+   25 |  1 fmradio.s     25 | Empty       | 00 |         |    0 | 00/0000               |                                               
+   26 |  1 fmradio.s     26 | Equivalence | 00 |         |    0 | 00/0000               | GSOS                 =         $e100a8        
+   27 |  1 fmradio.s     27 | Empty       | 00 |         |    0 | 00/0000               |                                               
+   28 |  1 fmradio.s     28 | Comment     | 00 |         |    0 | 00/0000               | *---------- ADB
+   29 |  1 fmradio.s     29 | Comment     | 00 |         |    0 | 00/0000               | *
+   30 |  1 fmradio.s     30 | Comment     | 00 |         |    0 | 00/0000               | * Sources
+   31 |  1 fmradio.s     31 | Comment     | 00 |         |    0 | 00/0000               | *  Macintosh Inside Mac ADB Manager
+   32 |  1 fmradio.s     32 | Comment     | 00 |         |    0 | 00/0000               | *   https://drive.google.com/file/d/16xFkb8oUzATYxg81mgSRrTVVxJlStRA1/view?usp=share_link
+   33 |  1 fmradio.s     33 | Comment     | 00 |         |    0 | 00/0000               | *
+   34 |  1 fmradio.s     34 | Comment     | 00 |         |    0 | 00/0000               | *  Apple IIgs Toolbox Reference Volume 1
+   35 |  1 fmradio.s     35 | Comment     | 00 |         |    0 | 00/0000               | *   https://drive.google.com/file/d/1uUJtv4EI7XCUd29V0EQ_RzSw9hfEJl3W/view?usp=share_link
+   36 |  1 fmradio.s     36 | Comment     | 00 |         |    0 | 00/0000               | *
+   37 |  1 fmradio.s     37 | Comment     | 00 |         |    0 | 00/0000               | *  ADB specifications
+   38 |  1 fmradio.s     38 | Comment     | 00 |         |    0 | 00/0000               | *   Rev B: http://www.brutaldeluxe.fr/documentation/cortland/v5/Front%20Desk%20Bus%20Specifications%20-%20062-0267%20Rev%20B%20-%2019850916.pdf
+   39 |  1 fmradio.s     39 | Comment     | 00 |         |    0 | 00/0000               | *   v2.50: http://www.brutaldeluxe.fr/documentation/cortland/v3/Front%20Desk%20Bus%20ERS%20-%20Peter%20Baum%20-%20v02.50%20-%2019851024.pdf
+   40 |  1 fmradio.s     40 | Comment     | 00 |         |    0 | 00/0000               | *   v3.0 : http://www.brutaldeluxe.fr/documentation/cortland/v3_10_FDBERS.pdf
+   41 |  1 fmradio.s     41 | Empty       | 00 |         |    0 | 00/0000               |                                               
+   42 |  1 fmradio.s     42 | Comment     | 00 |         |    0 | 00/0000               | *  Apple IIgs ADB toolset ERS
+   43 |  1 fmradio.s     43 | Comment     | 00 |         |    0 | 00/0000               | *   v1.0: http://www.brutaldeluxe.fr/documentation/cortland/v3/The%20FDB%20uC%20Tool%20Set%20-%20Peter%20Baum%20-%20Rev%201.0%20-%2019860312.pdf
+   44 |  1 fmradio.s     44 | Comment     | 00 |         |    0 | 00/0000               | *   v1.1: http://www.brutaldeluxe.fr/documentation/cortland/v3/The%20ADB%20uC%20Tool%20Set%20-%20Peter%20Baum%20-%20Rev%201.1%20-%2019860515.pdf
+   45 |  1 fmradio.s     45 | Empty       | 00 |         |    0 | 00/0000               |                                               
+   46 |  1 fmradio.s     46 | Comment     | 00 |         |    0 | 00/0000               | *  Tashtari's notes (thank you a lot for your help)
+   47 |  1 fmradio.s     47 | Comment     | 00 |         |    0 | 00/0000               | *   http://github.com/lampmerchant/tashnotes/blob/main/macintosh/adb/other/lacie_fm_radio.md
+   48 |  1 fmradio.s     48 | Comment     | 00 |         |    0 | 00/0000               | *
+   49 |  1 fmradio.s     49 | Comment     | 00 |         |    0 | 00/0000               | * Comments
+   50 |  1 fmradio.s     50 | Comment     | 00 |         |    0 | 00/0000               | *  The Mac directly talks/listens to the ADB chip
+   51 |  1 fmradio.s     51 | Comment     | 00 |         |    0 | 00/0000               | *  The IIgs communicates with the ADB chip through the Keygloo.
+   52 |  1 fmradio.s     52 | Comment     | 00 |         |    0 | 00/0000               | *  The Keygloo allows communication between the uC and the system processor.
+   53 |  1 fmradio.s     53 | Comment     | 00 |         |    0 | 00/0000               | *  All commands described in the Apple IIgs Toolbox Reference Volume 1 are between the toolset and the Keygloo *ONLY*
+   54 |  1 fmradio.s     54 | Comment     | 00 |         |    0 | 00/0000               | *
+   55 |  1 fmradio.s     55 | Comment     | 00 |         |    0 | 00/0000               | * ADB commands
+   56 |  1 fmradio.s     56 | Comment     | 00 |         |    0 | 00/0000               | *  Talk: from a device to the host - It means: "Device, talk to me, send me data"
+   57 |  1 fmradio.s     57 | Comment     | 00 |         |    0 | 00/0000               | *  Listen: from the host to a device - It means: "Device, listen to me, eat my data"
+   58 |  1 fmradio.s     58 | Comment     | 00 |         |    0 | 00/0000               | *
+   59 |  1 fmradio.s     59 | Comment     | 00 |         |    0 | 00/0000               | *  Command syntax
+   60 |  1 fmradio.s     60 | Comment     | 00 |         |    0 | 00/0000               | *   7654 32 10 Command
+   61 |  1 fmradio.s     61 | Comment     | 00 |         |    0 | 00/0000               | *   --------------------
+   62 |  1 fmradio.s     62 | Comment     | 00 |         |    0 | 00/0000               | *   xxxx 00 00 SENDRESET
+   63 |  1 fmradio.s     63 | Comment     | 00 |         |    0 | 00/0000               | *   ADDR 00 01 FLUSH
+   64 |  1 fmradio.s     64 | Comment     | 00 |         |    0 | 00/0000               | *   XXXX 00 10 RESERVED
+   65 |  1 fmradio.s     65 | Comment     | 00 |         |    0 | 00/0000               | *   XXXX 00 11 RESERVED
+   66 |  1 fmradio.s     66 | Comment     | 00 |         |    0 | 00/0000               | *   XXXX 01 XX RESERVED
+   67 |  1 fmradio.s     67 | Comment     | 00 |         |    0 | 00/0000               | *   ADDR 10 RR LISTEN
+   68 |  1 fmradio.s     68 | Comment     | 00 |         |    0 | 00/0000               | *   ADDR 11 RR TALK
+   69 |  1 fmradio.s     69 | Comment     | 00 |         |    0 | 00/0000               | *
+   70 |  1 fmradio.s     70 | Comment     | 00 |         |    0 | 00/0000               | *   ADDR = 0..15
+   71 |  1 fmradio.s     71 | Comment     | 00 |         |    0 | 00/0000               | *   RR = 0..3
+   72 |  1 fmradio.s     72 | Comment     | 00 |         |    0 | 00/0000               | *
+   73 |  1 fmradio.s     73 | Empty       | 00 |         |    0 | 00/0000               |                                               
+   74 |  1 fmradio.s     74 | Comment     | 00 |         |    0 | 00/0000               | *---------- Apple IIgs SendInfo ADB Commands (the ADB Tool Set *only*)
+   75 |  1 fmradio.s     75 | Empty       | 00 |         |    0 | 00/0000               |                                               
+   76 |  1 fmradio.s     76 | Equivalence | 00 |         |    0 | 00/0000               | transmitADBBytes     =         %01000111      ; $47
+   77 |  1 fmradio.s     77 | Equivalence | 00 |         |    0 | 00/0000               | enableSRQ            =         %01010000      ; $50
+   78 |  1 fmradio.s     78 | Equivalence | 00 |         |    0 | 00/0000               | disableSRQ           =         %01110000      ; $70
+   79 |  1 fmradio.s     79 | Equivalence | 00 |         |    0 | 00/0000               | listen               =         %10000000      ; $80
+   80 |  1 fmradio.s     80 | Equivalence | 00 |         |    0 | 00/0000               | talk                 =         %11000000      ; $C0
+   81 |  1 fmradio.s     81 | Empty       | 00 |         |    0 | 00/0000               |                                               
+   82 |  1 fmradio.s     82 | Comment     | 00 |         |    0 | 00/0000               | *---------- Error codes
+   83 |  1 fmradio.s     83 | Empty       | 00 |         |    0 | 00/0000               |                                               
+   84 |  1 fmradio.s     84 | Equivalence | 00 |         |    0 | 00/0000               | cmdIncomplete        =         $0910          ; Command not completed
+   85 |  1 fmradio.s     85 | Equivalence | 00 |         |    0 | 00/0000               | cantSync             =         $0911          ; Can't synchronize with system
+   86 |  1 fmradio.s     86 | Equivalence | 00 |         |    0 | 00/0000               | adbBusy              =         $0982          ; ADB busy (command pending)
+   87 |  1 fmradio.s     87 | Equivalence | 00 |         |    0 | 00/0000               | devNotAtAddr         =         $0983          ; Device not present at address
+   88 |  1 fmradio.s     88 | Equivalence | 00 |         |    0 | 00/0000               | srqListFull          =         $0984          ; SRQ list full
+   89 |  1 fmradio.s     89 | Empty       | 00 |         |    0 | 00/0000               |                                               
+   90 |  1 fmradio.s     90 | Comment     | 00 |         |    0 | 00/0000               | *---------- FM Radio registers (big endian ordering in RAM, from Tashtari)
+   91 |  1 fmradio.s     91 | Empty       | 00 |         |    0 | 00/0000               |                                               
+   92 |  1 fmradio.s     92 | Equivalence | 00 |         |    0 | 00/0000               | baseFREQ             =         $0358          ; (-)10.7 MHz
+   93 |  1 fmradio.s     93 | Empty       | 00 |         |    0 | 00/0000               |                                               
+   94 |  1 fmradio.s     94 | Comment     | 00 |         |    0 | 00/0000               | * Register 1 - Volume and tone controls
+   95 |  1 fmradio.s     95 | Comment     | 00 |         |    0 | 00/0000               | * Register 1 sets the volume and tone controls and is three bytes in length.
+   96 |  1 fmradio.s     96 | Comment     | 00 |         |    0 | 00/0000               | * Talk 1 has a fourth byte appended which is the firmware revision of the FM Radio (mine is 0x0A).
+   97 |  1 fmradio.s     97 | Comment     | 00 |         |    0 | 00/0000               | *
+   98 |  1 fmradio.s     98 | Comment     | 00 |         |    0 | 00/0000               | *   Bit  Description
+   99 |  1 fmradio.s     99 | Comment     | 00 |         |    0 | 00/0000               | * 23-16  Volume, apparently set in increments of 0x11 by the application
+  100 |  1 fmradio.s    100 | Comment     | 00 |         |    0 | 00/0000               | *    15  Always zero
+  101 |  1 fmradio.s    101 | Comment     | 00 |         |    0 | 00/0000               | * 14-12  Treble
+  102 |  1 fmradio.s    102 | Comment     | 00 |         |    0 | 00/0000               | *    11  Always zero
+  103 |  1 fmradio.s    103 | Comment     | 00 |         |    0 | 00/0000               | *  10-8  Bass
+  104 |  1 fmradio.s    104 | Comment     | 00 |         |    0 | 00/0000               | *     7  Mute, active high
+  105 |  1 fmradio.s    105 | Comment     | 00 |         |    0 | 00/0000               | *   6-5  Sound fading, 0 = normal, 1 = low, 2 = medium, 3 = high
+  106 |  1 fmradio.s    106 | Comment     | 00 |         |    0 | 00/0000               | *   4-1  Undetermined, apparently always zero
+  107 |  1 fmradio.s    107 | Comment     | 00 |         |    0 | 00/0000               | *     0  Undetermined, initially zero but always set high by the application
+  108 |  1 fmradio.s    108 | Comment     | 00 |         |    0 | 00/0000               | *
+  109 |  1 fmradio.s    109 | Comment     | 00 |         |    0 | 00/0000               | * Register 2 - FM station selection
+  110 |  1 fmradio.s    110 | Comment     | 00 |         |    0 | 00/0000               | * 
+  111 |  1 fmradio.s    111 | Comment     | 00 |         |    0 | 00/0000               | * First byte
+  112 |  1 fmradio.s    112 | Comment     | 00 |         |    0 | 00/0000               | * In a Listen 2 command ,the fist byte seems to always be 0x41. In a Talk command, the bits of the first bytes are as follows:
+  113 |  1 fmradio.s    113 | Comment     | 00 |         |    0 | 00/0000               | *
+  114 |  1 fmradio.s    114 | Comment     | 00 |         |    0 | 00/0000               | * Bit  Description
+  115 |  1 fmradio.s    115 | Comment     | 00 |         |    0 | 00/0000               | *   7  FM stereo indicator, active high
+  116 |  1 fmradio.s    116 | Comment     | 00 |         |    0 | 00/0000               | * 6-1  Undetermined, apparently always zero
+  117 |  1 fmradio.s    117 | Comment     | 00 |         |    0 | 00/0000               | *   0  Signal strength indicator, active high
+  118 |  1 fmradio.s    118 | Comment     | 00 |         |    0 | 00/0000               | *
+  119 |  1 fmradio.s    119 | Comment     | 00 |         |    0 | 00/0000               | * Second and third bytes (big endian)
+  120 |  1 fmradio.s    120 | Comment     | 00 |         |    0 | 00/0000               | * The second and third bytes indicate the FM station. Starting from a base of -10.7 MHz (0x358), the following values are added to it:
+  121 |  1 fmradio.s    121 | Comment     | 00 |         |    0 | 00/0000               | *
+  122 |  1 fmradio.s    122 | Comment     | 00 |         |    0 | 00/0000               | * Bit  Description
+  123 |  1 fmradio.s    123 | Comment     | 00 |         |    0 | 00/0000               | *  15  Undetermined, always zero
+  124 |  1 fmradio.s    124 | Comment     | 00 |         |    0 | 00/0000               | *  14  Undetermined, always zero
+  125 |  1 fmradio.s    125 | Comment     | 00 |         |    0 | 00/0000               | *  13  102.4 MHz
+  126 |  1 fmradio.s    126 | Comment     | 00 |         |    0 | 00/0000               | *  12  51.2 MHz
+  127 |  1 fmradio.s    127 | Comment     | 00 |         |    0 | 00/0000               | *  11  25.6 MHz
+  128 |  1 fmradio.s    128 | Comment     | 00 |         |    0 | 00/0000               | *  10  12.8 MHz
+  129 |  1 fmradio.s    129 | Comment     | 00 |         |    0 | 00/0000               | *   9  6.4 MHz
+  130 |  1 fmradio.s    130 | Comment     | 00 |         |    0 | 00/0000               | *   8  3.2 MHz
+  131 |  1 fmradio.s    131 | Comment     | 00 |         |    0 | 00/0000               | *   7  1.6 MHz
+  132 |  1 fmradio.s    132 | Comment     | 00 |         |    0 | 00/0000               | *   6  800 kHz
+  133 |  1 fmradio.s    133 | Comment     | 00 |         |    0 | 00/0000               | *   5  400 kHz
+  134 |  1 fmradio.s    134 | Comment     | 00 |         |    0 | 00/0000               | *   4  200 kHz
+  135 |  1 fmradio.s    135 | Comment     | 00 |         |    0 | 00/0000               | *   3  100 kHz
+  136 |  1 fmradio.s    136 | Comment     | 00 |         |    0 | 00/0000               | *   2  50 kHz
+  137 |  1 fmradio.s    137 | Comment     | 00 |         |    0 | 00/0000               | *   1  Undetermined, always zero
+  138 |  1 fmradio.s    138 | Comment     | 00 |         |    0 | 00/0000               | *   0  Undetermined, always zero
+  139 |  1 fmradio.s    139 | Comment     | 00 |         |    0 | 00/0000               | *
+  140 |  1 fmradio.s    140 | Comment     | 00 |         |    0 | 00/0000               | * Register 3 - Default device data
+  141 |  1 fmradio.s    141 | Comment     | 00 |         |    0 | 00/0000               | *
+  142 |  1 fmradio.s    142 | Comment     | 00 |         |    0 | 00/0000               | *  For FM Radio, this is 0779
+  143 |  1 fmradio.s    143 | Comment     | 00 |         |    0 | 00/0000               | *   Default address is 07
+  144 |  1 fmradio.s    144 | Comment     | 00 |         |    0 | 00/0000               | *   Default handler ID is 79
+  145 |  1 fmradio.s    145 | Comment     | 00 |         |    0 | 00/0000               | *
+  146 |  1 fmradio.s    146 | Comment     | 00 |         |    0 | 00/0000               | * -------------------------------
+  147 |  1 fmradio.s    147 | Comment     | 00 |         |    0 | 00/0000               | * 1 1 1 1 1
+  148 |  1 fmradio.s    148 | Comment     | 00 |         |    0 | 00/0000               | * 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
+  149 |  1 fmradio.s    149 | Comment     | 00 |         |    0 | 00/0000               | * -------------------------------
+  150 |  1 fmradio.s    150 | Comment     | 00 |         |    0 | 00/0000               | * 0 ! ! 0 ------- ---------------
+  151 |  1 fmradio.s    151 | Comment     | 00 |         |    0 | 00/0000               | *   ! !   Address Dev handler ID
+  152 |  1 fmradio.s    152 | Comment     | 00 |         |    0 | 00/0000               | *   ! > Service request enable
+  153 |  1 fmradio.s    153 | Comment     | 00 |         |    0 | 00/0000               | *   > Exceptional event
+  154 |  1 fmradio.s    154 | Comment     | 00 |         |    0 | 00/0000               | *
+  155 |  1 fmradio.s    155 | Comment     | 00 |         |    0 | 00/0000               | *
+  156 |  1 fmradio.s    156 | Comment     | 00 |         |    0 | 00/0000               | * HOW TO USE
+  157 |  1 fmradio.s    157 | Comment     | 00 |         |    0 | 00/0000               | *  To set volume & tone: send 8 Talk 0 commands, then a Listen 1 command followed by 8 Talk 0 commands
+  158 |  1 fmradio.s    158 | Comment     | 00 |         |    0 | 00/0000               | *  To set the frequency: send 8 Talk 0 commands, then a Listen 2 command followed by 8 Talk 0 commands
+  159 |  1 fmradio.s    159 | Comment     | 00 |         |    0 | 00/0000               | * 
+  160 |  1 fmradio.s    160 | Comment     | 00 |         |    0 | 00/0000               | *----------------------------
+  161 |  1 fmradio.s    161 | Comment     | 00 |         |    0 | 00/0000               | * ENTRY POINT
+  162 |  1 fmradio.s    162 | Comment     | 00 |         |    0 | 00/0000               | *----------------------------
+  163 |  1 fmradio.s    163 | Empty       | 00 |         |    0 | 00/0000               |                                               
+  164 |  1 fmradio.s    164 | Code        | 00 |         |    1 | 00/0000 : 4B          |                      phk                      
+  165 |  1 fmradio.s    165 | Code        | 00 |         |    1 | 00/0001 : AB          |                      plb                      
+  166 |  1 fmradio.s    166 | Empty       | 00 |         |    0 | 00/0002               |                                               
+  167 |  1 fmradio.s    167 | Code        | 00 |         |    1 | 00/0002 : 18          |                      clc                      
+  168 |  1 fmradio.s    168 | Code        | 00 |         |    1 | 00/0003 : FB          |                      xce                      
+  169 |  1 fmradio.s    169 | Code        | 00 |         |    2 | 00/0004 : C2 30       |                      rep       #$30           
+  170 |  1 fmradio.s    170 | Empty       | 00 |         |    0 | 00/0006               |                                               
+  171 |  1 fmradio.s    171 | Macro       | 00 |         |    0 | 00/0006               |                      _TLStartUp                 
+  173 |  1 fmradio.s    171 | Code        | 00 |         |    3 | 00/0006 : A2 01 02    |                      LDX       #$201          ; load tool call #
+  174 |  1 fmradio.s    171 | Code        | 00 |         |    4 | 00/0009 : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+  175 |  1 fmradio.s    172 | Code        | 00 |         |    1 | 00/000D : 48          |                      pha                      
+  176 |  1 fmradio.s    173 | Macro       | 00 |         |    0 | 00/000E               |                      _MMStartUp                 
+  178 |  1 fmradio.s    173 | Code        | 00 |         |    3 | 00/000E : A2 02 02    |                      LDX       #$202          ; load tool call #
+  179 |  1 fmradio.s    173 | Code        | 00 |         |    4 | 00/0011 : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+  180 |  1 fmradio.s    174 | Code        | 00 |         |    1 | 00/0015 : 68          |                      pla                      
+  181 |  1 fmradio.s    175 | Code        | 00 |  2      |    3 | 00/0016 : 8D 24 06    |                      sta       appID          
+  182 |  1 fmradio.s    176 | Code        | 00 |         |    3 | 00/0019 : 09 00 01    |                      ora       #$0100         
+  183 |  1 fmradio.s    177 | Code        | 00 |  2      |    3 | 00/001C : 8D 26 06    |                      sta       myID           
+  184 |  1 fmradio.s    178 | Empty       | 00 |         |    0 | 00/001F               |                                               
+  185 |  1 fmradio.s    179 | Macro       | 00 |         |    0 | 00/001F               |                      _MTStartUp                 
+  187 |  1 fmradio.s    179 | Code        | 00 |         |    3 | 00/001F : A2 03 02    |                      LDX       #$203          ; load tool call #
+  188 |  1 fmradio.s    179 | Code        | 00 |         |    4 | 00/0022 : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+  189 |  1 fmradio.s    180 | Macro       | 00 |         |    0 | 00/0026               |                      _TextStartUp                 
+  191 |  1 fmradio.s    180 | Code        | 00 |         |    3 | 00/0026 : A2 0C 02    |                      LDX       #$20C          ; load tool call #
+  192 |  1 fmradio.s    180 | Code        | 00 |         |    4 | 00/0029 : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+  193 |  1 fmradio.s    181 | Macro       | 00 |         |    0 | 00/002D               |                      _IMStartUp                 
+  195 |  1 fmradio.s    181 | Code        | 00 |         |    3 | 00/002D : A2 0B 02    |                      LDX       #$20B          ; load tool call #
+  196 |  1 fmradio.s    181 | Code        | 00 |         |    4 | 00/0030 : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+  197 |  1 fmradio.s    182 | Macro       | 00 |         |    0 | 00/0034               |                      _ADBStartUp                 
+  199 |  1 fmradio.s    182 | Code        | 00 |         |    3 | 00/0034 : A2 09 02    |                      LDX       #$209          ; load tool call #
+  200 |  1 fmradio.s    182 | Code        | 00 |         |    4 | 00/0037 : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+  201 |  1 fmradio.s    183 | Empty       | 00 |         |    0 | 00/003B               |                                               
+  202 |  1 fmradio.s    184 | Comment     | 00 |         |    0 | 00/003B               | *----------
+  203 |  1 fmradio.s    185 | Empty       | 00 |         |    0 | 00/003B               |                                               
+  204 |  1 fmradio.s    186 | Macro       | 00 |         |    0 | 00/003B               |                      PushWord  #$00FF         
+  206 |  1 fmradio.s    186 | Code        | 00 |         |    3 | 00/003B : F4 FF 00    |                      PEA       #$00FF         
+  209 |  1 fmradio.s    187 | Macro       | 00 |         |    0 | 00/003E               |                      PushWord  #$0080         
+  211 |  1 fmradio.s    187 | Code        | 00 |         |    3 | 00/003E : F4 80 00    |                      PEA       #$0080         
+  214 |  1 fmradio.s    188 | Macro       | 00 |         |    0 | 00/0041               |                      _SetInGlobals                 
+  216 |  1 fmradio.s    188 | Code        | 00 |         |    3 | 00/0041 : A2 0C 09    |                      LDX       #$90C          ; load tool call #
+  217 |  1 fmradio.s    188 | Code        | 00 |         |    4 | 00/0044 : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+  218 |  1 fmradio.s    189 | Macro       | 00 |         |    0 | 00/0048               |                      PushWord  #$00FF         
+  220 |  1 fmradio.s    189 | Code        | 00 |         |    3 | 00/0048 : F4 FF 00    |                      PEA       #$00FF         
+  223 |  1 fmradio.s    190 | Macro       | 00 |         |    0 | 00/004B               |                      PushWord  #$0080         
+  225 |  1 fmradio.s    190 | Code        | 00 |         |    3 | 00/004B : F4 80 00    |                      PEA       #$0080         
+  228 |  1 fmradio.s    191 | Macro       | 00 |         |    0 | 00/004E               |                      _SetOutGlobals                 
+  230 |  1 fmradio.s    191 | Code        | 00 |         |    3 | 00/004E : A2 0C 0A    |                      LDX       #$A0C          ; load tool call #
+  231 |  1 fmradio.s    191 | Code        | 00 |         |    4 | 00/0051 : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+  232 |  1 fmradio.s    192 | Macro       | 00 |         |    0 | 00/0055               |                      PushWord  #$00FF         
+  234 |  1 fmradio.s    192 | Code        | 00 |         |    3 | 00/0055 : F4 FF 00    |                      PEA       #$00FF         
+  237 |  1 fmradio.s    193 | Macro       | 00 |         |    0 | 00/0058               |                      PushWord  #$0080         
+  239 |  1 fmradio.s    193 | Code        | 00 |         |    3 | 00/0058 : F4 80 00    |                      PEA       #$0080         
+  242 |  1 fmradio.s    194 | Macro       | 00 |         |    0 | 00/005B               |                      _SetErrGlobals                 
+  244 |  1 fmradio.s    194 | Code        | 00 |         |    3 | 00/005B : A2 0C 0B    |                      LDX       #$B0C          ; load tool call #
+  245 |  1 fmradio.s    194 | Code        | 00 |         |    4 | 00/005E : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+  246 |  1 fmradio.s    195 | Empty       | 00 |         |    0 | 00/0062               |                                               
+  247 |  1 fmradio.s    196 | Macro       | 00 |         |    0 | 00/0062               |                      PushWord  #0             
+  249 |  1 fmradio.s    196 | Code        | 00 |         |    3 | 00/0062 : F4 00 00    |                      PEA       #0             
+  252 |  1 fmradio.s    197 | Macro       | 00 |         |    0 | 00/0065               |                      PushLong  #3             
+  256 |  1 fmradio.s    197 | Code        | 00 |         |    3 | 00/0065 : F4 00 00    |                      PEA       #^#3           
+  263 |  1 fmradio.s    197 | Code        | 00 |         |    3 | 00/0068 : F4 03 00    |                      PEA       #3             
+  266 |  1 fmradio.s    198 | Macro       | 00 |         |    0 | 00/006B               |                      _SetInputDevice                 
+  268 |  1 fmradio.s    198 | Code        | 00 |         |    3 | 00/006B : A2 0C 0F    |                      LDX       #$F0C          ; load tool call #
+  269 |  1 fmradio.s    198 | Code        | 00 |         |    4 | 00/006E : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+  270 |  1 fmradio.s    199 | Macro       | 00 |         |    0 | 00/0072               |                      PushWord  #0             
+  272 |  1 fmradio.s    199 | Code        | 00 |         |    3 | 00/0072 : F4 00 00    |                      PEA       #0             
+  275 |  1 fmradio.s    200 | Macro       | 00 |         |    0 | 00/0075               |                      PushLong  #3             
+  279 |  1 fmradio.s    200 | Code        | 00 |         |    3 | 00/0075 : F4 00 00    |                      PEA       #^#3           
+  286 |  1 fmradio.s    200 | Code        | 00 |         |    3 | 00/0078 : F4 03 00    |                      PEA       #3             
+  289 |  1 fmradio.s    201 | Macro       | 00 |         |    0 | 00/007B               |                      _SetOutputDevice                 
+  291 |  1 fmradio.s    201 | Code        | 00 |         |    3 | 00/007B : A2 0C 10    |                      LDX       #$100C         ; load tool call #
+  292 |  1 fmradio.s    201 | Code        | 00 |         |    4 | 00/007E : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+  293 |  1 fmradio.s    202 | Macro       | 00 |         |    0 | 00/0082               |                      PushWord  #0             
+  295 |  1 fmradio.s    202 | Code        | 00 |         |    3 | 00/0082 : F4 00 00    |                      PEA       #0             
+  298 |  1 fmradio.s    203 | Macro       | 00 |         |    0 | 00/0085               |                      PushLong  #3             
+  302 |  1 fmradio.s    203 | Code        | 00 |         |    3 | 00/0085 : F4 00 00    |                      PEA       #^#3           
+  309 |  1 fmradio.s    203 | Code        | 00 |         |    3 | 00/0088 : F4 03 00    |                      PEA       #3             
+  312 |  1 fmradio.s    204 | Macro       | 00 |         |    0 | 00/008B               |                      _SetErrorDevice                 
+  314 |  1 fmradio.s    204 | Code        | 00 |         |    3 | 00/008B : A2 0C 11    |                      LDX       #$110C         ; load tool call #
+  315 |  1 fmradio.s    204 | Code        | 00 |         |    4 | 00/008E : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+  316 |  1 fmradio.s    205 | Empty       | 00 |         |    0 | 00/0092               |                                               
+  317 |  1 fmradio.s    206 | Macro       | 00 |         |    0 | 00/0092               |                      PushWord  #0             
+  319 |  1 fmradio.s    206 | Code        | 00 |         |    3 | 00/0092 : F4 00 00    |                      PEA       #0             
+  322 |  1 fmradio.s    207 | Macro       | 00 |         |    0 | 00/0095               |                      _InitTextDev                 
+  324 |  1 fmradio.s    207 | Code        | 00 |         |    3 | 00/0095 : A2 0C 15    |                      LDX       #$150C         ; load tool call #
+  325 |  1 fmradio.s    207 | Code        | 00 |         |    4 | 00/0098 : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+  326 |  1 fmradio.s    208 | Macro       | 00 |         |    0 | 00/009C               |                      PushWord  #1             
+  328 |  1 fmradio.s    208 | Code        | 00 |         |    3 | 00/009C : F4 01 00    |                      PEA       #1             
+  331 |  1 fmradio.s    209 | Macro       | 00 |         |    0 | 00/009F               |                      _InitTextDev                 
+  333 |  1 fmradio.s    209 | Code        | 00 |         |    3 | 00/009F : A2 0C 15    |                      LDX       #$150C         ; load tool call #
+  334 |  1 fmradio.s    209 | Code        | 00 |         |    4 | 00/00A2 : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+  335 |  1 fmradio.s    210 | Macro       | 00 |         |    0 | 00/00A6               |                      PushWord  #2             
+  337 |  1 fmradio.s    210 | Code        | 00 |         |    3 | 00/00A6 : F4 02 00    |                      PEA       #2             
+  340 |  1 fmradio.s    211 | Macro       | 00 |         |    0 | 00/00A9               |                      _InitTextDev                 
+  342 |  1 fmradio.s    211 | Code        | 00 |         |    3 | 00/00A9 : A2 0C 15    |                      LDX       #$150C         ; load tool call #
+  343 |  1 fmradio.s    211 | Code        | 00 |         |    4 | 00/00AC : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+  344 |  1 fmradio.s    212 | Empty       | 00 |         |    0 | 00/00B0               |                                               
+  345 |  1 fmradio.s    213 | Macro       | 00 |         |    0 | 00/00B0               |                      PushWord  #$0c           ; home
+  347 |  1 fmradio.s    213 | Code        | 00 |         |    3 | 00/00B0 : F4 0C 00    |                      PEA       #$0c           
+  350 |  1 fmradio.s    214 | Macro       | 00 |         |    0 | 00/00B3               |                      _WriteChar                 
+  352 |  1 fmradio.s    214 | Code        | 00 |         |    3 | 00/00B3 : A2 0C 18    |                      LDX       #$180C         ; load tool call #
+  353 |  1 fmradio.s    214 | Code        | 00 |         |    4 | 00/00B6 : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+  354 |  1 fmradio.s    215 | Empty       | 00 |         |    0 | 00/00BA               |                                               
+  355 |  1 fmradio.s    216 | Comment     | 00 |         |    0 | 00/00BA               | *----------------------------
+  356 |  1 fmradio.s    217 | Comment     | 00 |         |    0 | 00/00BA               | * MENU: MAIN
+  357 |  1 fmradio.s    218 | Comment     | 00 |         |    0 | 00/00BA               | *----------------------------
+  358 |  1 fmradio.s    219 | Empty       | 00 |         |    0 | 00/00BA               |                                               
+  359 |  1 fmradio.s    220 | Empty       | 00 |         |    0 | 00/00BA               | mainMENU                                      
+  360 |  1 fmradio.s    221 | Macro       | 00 |         |    0 | 00/00BA               |                      PushLong  #strMAINMENU   
+  364 |  1 fmradio.s    221 | Code        | 00 |  1 >>16 |    3 | 00/00BA : F4 00 00    |                      PEA       #^#strMAINMENU 
+  371 |  1 fmradio.s    221 | Code        | 00 |  2      |    3 | 00/00BD : F4 49 01    |                      PEA       #strMAINMENU   
+  374 |  1 fmradio.s    222 | Macro       | 00 |         |    0 | 00/00C0               |                      _WriteCString                 
+  376 |  1 fmradio.s    222 | Code        | 00 |         |    3 | 00/00C0 : A2 0C 20    |                      LDX       #$200C         ; load tool call #
+  377 |  1 fmradio.s    222 | Code        | 00 |         |    4 | 00/00C3 : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+  378 |  1 fmradio.s    223 | Empty       | 00 |         |    0 | 00/00C7               |                                               
+  379 |  1 fmradio.s    224 | Code        | 00 |  2      |    3 | 00/00C7 : 20 D8 05    |                      jsr       waitFORKEY     
+  380 |  1 fmradio.s    225 | Code        | 00 |         |    3 | 00/00CA : C9 D1 00    |                      cmp       #"Q"           
+  381 |  1 fmradio.s    226 | Code        | 00 |         |    2 | 00/00CD : F0 35       |                      beq       doQUIT         
+  382 |  1 fmradio.s    227 | Code        | 00 |         |    3 | 00/00CF : C9 F1 00    |                      cmp       #"q"           
+  383 |  1 fmradio.s    228 | Code        | 00 |         |    2 | 00/00D2 : F0 30       |                      beq       doQUIT         
+  384 |  1 fmradio.s    229 | Code        | 00 |         |    3 | 00/00D4 : C9 B1 00    |                      cmp       #"1"           
+  385 |  1 fmradio.s    230 | Code        | 00 |         |    2 | 00/00D7 : D0 03       |                      bne       mmNOT1         
+  386 |  1 fmradio.s    231 | Code        | 00 |  2      |    3 | 00/00D9 : 4C C9 01    |                      jmp       broadcastRangeMENU
+  387 |  1 fmradio.s    232 | Code        | 00 |         |    3 | 00/00DC : C9 B2 00    | mmNOT1               cmp       #"2"           
+  388 |  1 fmradio.s    233 | Code        | 00 |         |    2 | 00/00DF : D0 03       |                      bne       mmNOT2         
+  389 |  1 fmradio.s    234 | Code        | 00 |  2      |    3 | 00/00E1 : 4C DB 02    |                      jmp       volumeDownMENU 
+  390 |  1 fmradio.s    235 | Code        | 00 |         |    3 | 00/00E4 : C9 B3 00    | mmNOT2               cmp       #"3"           
+  391 |  1 fmradio.s    236 | Code        | 00 |         |    2 | 00/00E7 : D0 03       |                      bne       mmNOT3         
+  392 |  1 fmradio.s    237 | Code        | 00 |  2      |    3 | 00/00E9 : 4C 0B 03    |                      jmp       volumeUpMENU   
+  393 |  1 fmradio.s    238 | Code        | 00 |         |    3 | 00/00EC : C9 B4 00    | mmNOT3               cmp       #"4"           
+  394 |  1 fmradio.s    239 | Code        | 00 |         |    2 | 00/00EF : D0 03       |                      bne       mmNOT4         
+  395 |  1 fmradio.s    240 | Code        | 00 |  2      |    3 | 00/00F1 : 4C 3D 03    |                      jmp       setFrequencyMENU
+  396 |  1 fmradio.s    241 | Code        | 00 |         |    3 | 00/00F4 : C9 AD 00    | mmNOT4               cmp       #"-"           
+  397 |  1 fmradio.s    242 | Code        | 00 |         |    2 | 00/00F7 : D0 03       |                      bne       mmNOT5         
+  398 |  1 fmradio.s    243 | Code        | 00 |  2      |    3 | 00/00F9 : 4C 51 04    |                      jmp       decreaseFREQUENCY
+  399 |  1 fmradio.s    244 | Code        | 00 |         |    3 | 00/00FC : C9 AB 00    | mmNOT5               cmp       #"+"           
+  400 |  1 fmradio.s    245 | Code        | 00 |         |    2 | 00/00FF : D0 B9       |                      bne       mainMENU       
+  401 |  1 fmradio.s    246 | Code        | 00 |  2      |    3 | 00/0101 : 4C 5E 04    |                      jmp       increaseFREQUENCY
+  402 |  1 fmradio.s    247 | Empty       | 00 |         |    0 | 00/0104               |                                               
+  403 |  1 fmradio.s    248 | Comment     | 00 |         |    0 | 00/0104               | *----------------------------
+  404 |  1 fmradio.s    249 | Comment     | 00 |         |    0 | 00/0104               | * QUIT PROGRAM
+  405 |  1 fmradio.s    250 | Comment     | 00 |         |    0 | 00/0104               | *----------------------------
+  406 |  1 fmradio.s    251 | Empty       | 00 |         |    0 | 00/0104               |                                               
+  407 |  1 fmradio.s    252 | Empty       | 00 |         |    0 | 00/0104               | doQUIT                                        
+  408 |  1 fmradio.s    253 | Macro       | 00 |         |    0 | 00/0104               |                      _ADBShutDown                 
+  410 |  1 fmradio.s    253 | Code        | 00 |         |    3 | 00/0104 : A2 09 03    |                      LDX       #$309          ; load tool call #
+  411 |  1 fmradio.s    253 | Code        | 00 |         |    4 | 00/0107 : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+  412 |  1 fmradio.s    254 | Macro       | 00 |         |    0 | 00/010B               |                      _IMShutDown                 
+  414 |  1 fmradio.s    254 | Code        | 00 |         |    3 | 00/010B : A2 0B 03    |                      LDX       #$30B          ; load tool call #
+  415 |  1 fmradio.s    254 | Code        | 00 |         |    4 | 00/010E : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+  416 |  1 fmradio.s    255 | Macro       | 00 |         |    0 | 00/0112               |                      _TextShutDown                 
+  418 |  1 fmradio.s    255 | Code        | 00 |         |    3 | 00/0112 : A2 0C 03    |                      LDX       #$30C          ; load tool call #
+  419 |  1 fmradio.s    255 | Code        | 00 |         |    4 | 00/0115 : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+  420 |  1 fmradio.s    256 | Macro       | 00 |         |    0 | 00/0119               |                      _MTShutDown                 
+  422 |  1 fmradio.s    256 | Code        | 00 |         |    3 | 00/0119 : A2 03 03    |                      LDX       #$303          ; load tool call #
+  423 |  1 fmradio.s    256 | Code        | 00 |         |    4 | 00/011C : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+  424 |  1 fmradio.s    257 | Empty       | 00 |         |    0 | 00/0120               |                                               
+  425 |  1 fmradio.s    258 | Macro       | 00 |         |    0 | 00/0120               |                      PushWord  myID           
+  430 |  1 fmradio.s    258 | Code        | 00 |  2      |    3 | 00/0120 : AD 26 06    |                      LDA       myID           
+  431 |  1 fmradio.s    258 | Code        | 00 |         |    1 | 00/0123 : 48          |                      PHA                      
+  433 |  1 fmradio.s    259 | Macro       | 00 |         |    0 | 00/0124               |                      _DisposeAll                 
+  435 |  1 fmradio.s    259 | Code        | 00 |         |    3 | 00/0124 : A2 02 11    |                      LDX       #$1102         ; load tool call #
+  436 |  1 fmradio.s    259 | Code        | 00 |         |    4 | 00/0127 : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+  437 |  1 fmradio.s    260 | Empty       | 00 |         |    0 | 00/012B               |                                               
+  438 |  1 fmradio.s    261 | Macro       | 00 |         |    0 | 00/012B               |                      PushWord  appID          
+  443 |  1 fmradio.s    261 | Code        | 00 |  2      |    3 | 00/012B : AD 24 06    |                      LDA       appID          
+  444 |  1 fmradio.s    261 | Code        | 00 |         |    1 | 00/012E : 48          |                      PHA                      
+  446 |  1 fmradio.s    262 | Macro       | 00 |         |    0 | 00/012F               |                      _MMShutDown                 
+  448 |  1 fmradio.s    262 | Code        | 00 |         |    3 | 00/012F : A2 02 03    |                      LDX       #$302          ; load tool call #
+  449 |  1 fmradio.s    262 | Code        | 00 |         |    4 | 00/0132 : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+  450 |  1 fmradio.s    263 | Empty       | 00 |         |    0 | 00/0136               |                                               
+  451 |  1 fmradio.s    264 | Macro       | 00 |         |    0 | 00/0136               |                      _TLShutDown                 
+  453 |  1 fmradio.s    264 | Code        | 00 |         |    3 | 00/0136 : A2 01 03    |                      LDX       #$301          ; load tool call #
+  454 |  1 fmradio.s    264 | Code        | 00 |         |    4 | 00/0139 : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+  455 |  1 fmradio.s    265 | Empty       | 00 |         |    0 | 00/013D               |                                               
+  456 |  1 fmradio.s    266 | Code        | 00 |         |    4 | 00/013D : 22 A8 00 E1 |                      jsl       {$e100a8}      
+  457 |  1 fmradio.s    267 | Data        | 00 |         |    2 | 00/0141 : 29 20       |                      dw        $2029          
+  458 |  1 fmradio.s    268 | Data        | 00 |  3      |    4 | 00/0143 : 1C 06 00 00 |                      adrl      proQUIT        
+  459 |  1 fmradio.s    269 | Empty       | 00 |         |    0 | 00/0147               |                                               
+  460 |  1 fmradio.s    270 | Code        | 00 |         |    2 | 00/0147 : 00 BD       |                      brk       $bd            
+  461 |  1 fmradio.s    271 | Empty       | 00 |         |    0 | 00/0149               |                                               
+  462 |  1 fmradio.s    272 | Comment     | 00 |         |    0 | 00/0149               | *---------- Data
+  463 |  1 fmradio.s    273 | Empty       | 00 |         |    0 | 00/0149               |                                               
+  464 |  1 fmradio.s    274 | Empty       | 00 |         |    0 | 00/0149               | strMAINMENU                                   
+  465 |  1 fmradio.s    275 | Data        | 00 |         |   10 | 00/0149 : 0D 46 4D 20 |                      asc       0d'FM Radio'0d 
+      |                     |             |    |         |      |           52 61 64 69 |
+      |                     |             |    |         |      |           6F 0D       |
+  466 |  1 fmradio.s    276 | Data        | 00 |         |   33 | 00/0153 : 28 63 29 20 |                      asc       '(c) 2023, Brutal Deluxe Software'0d
+      |                     |             |    |         |      |           32 30 32 33 |
+      |                     |             |    |         |      |           2C 20 42 72 |
+      |                     |             |    |         |      |           75 74 61 6C |
+      |                     |             |    |         |      |           20 44 65 6C |
+      |                     |             |    |         |      |           75 78 65 20 |
+      |                     |             |    |         |      |           53 6F 66 74 |
+      |                     |             |    |         |      |           77 61 72 65 |
+      |                     |             |    |         |      |           0D          |
+  467 |  1 fmradio.s    277 | Data        | 00 |         |   27 | 00/0174 : 20 31 2E 20 |                      asc       ' 1. Set FM broadcast range'0d
+      |                     |             |    |         |      |           53 65 74 20 |
+      |                     |             |    |         |      |           46 4D 20 62 |
+      |                     |             |    |         |      |           72 6F 61 64 |
+      |                     |             |    |         |      |           63 61 73 74 |
+      |                     |             |    |         |      |           20 72 61 6E |
+      |                     |             |    |         |      |           67 65 0D    |
+  468 |  1 fmradio.s    278 | Data        | 00 |         |   16 | 00/018F : 20 32 2E 20 |                      asc       ' 2. Volume down'0d
+      |                     |             |    |         |      |           56 6F 6C 75 |
+      |                     |             |    |         |      |           6D 65 20 64 |
+      |                     |             |    |         |      |           6F 77 6E 0D |
+  469 |  1 fmradio.s    279 | Data        | 00 |         |   14 | 00/019F : 20 33 2E 20 |                      asc       ' 3. Volume up'0d
+      |                     |             |    |         |      |           56 6F 6C 75 |
+      |                     |             |    |         |      |           6D 65 20 75 |
+      |                     |             |    |         |      |           70 0D       |
+  470 |  1 fmradio.s    280 | Data        | 00 |         |   18 | 00/01AD : 20 34 2E 20 |                      asc       ' 4. Set frequency'0d
+      |                     |             |    |         |      |           53 65 74 20 |
+      |                     |             |    |         |      |           66 72 65 71 |
+      |                     |             |    |         |      |           75 65 6E 63 |
+      |                     |             |    |         |      |           79 0D       |
+  471 |  1 fmradio.s    281 | Data        | 00 |         |   10 | 00/01BF : 20 51 2E 20 |                      asc       ' Q. Quit'0d00 
+      |                     |             |    |         |      |           51 75 69 74 |
+      |                     |             |    |         |      |           0D 00       |
+  472 |  1 fmradio.s    282 | Empty       | 00 |         |    0 | 00/01C9               |                                               
+  473 |  1 fmradio.s    283 | Comment     | 00 |         |    0 | 00/01C9               | *----------------------------
+  474 |  1 fmradio.s    284 | Comment     | 00 |         |    0 | 00/01C9               | * MENU: FM BROADCAST RANGE
+  475 |  1 fmradio.s    285 | Comment     | 00 |         |    0 | 00/01C9               | *----------------------------
+  476 |  1 fmradio.s    286 | Comment     | 00 |         |    0 | 00/01C9               | * There are different FM broadcast ranges in the world,
+  477 |  1 fmradio.s    287 | Comment     | 00 |         |    0 | 00/01C9               | * a couple are shown here, and will let the users select
+  478 |  1 fmradio.s    288 | Comment     | 00 |         |    0 | 00/01C9               | * their own range. See the text below to find your range.
+  479 |  1 fmradio.s    289 | Comment     | 00 |         |    0 | 00/01C9               | *
+  480 |  1 fmradio.s    290 | Comment     | 00 |         |    0 | 00/01C9               | * The values match those of the FM Radio (including the -10.7 MHz thing)
+  481 |  1 fmradio.s    291 | Comment     | 00 |         |    0 | 00/01C9               | *
+  482 |  1 fmradio.s    292 | Empty       | 00 |         |    0 | 00/01C9               |                                               
+  483 |  1 fmradio.s    293 | Empty       | 00 |         |    0 | 00/01C9               | broadcastRangeMENU                            
+  484 |  1 fmradio.s    294 | Macro       | 00 |         |    0 | 00/01C9               |                      PushLong  #strBROADCASTMENU
+  488 |  1 fmradio.s    294 | Code        | 00 |  1 >>16 |    3 | 00/01C9 : F4 00 00    |                      PEA       #^#strBROADCASTMENU
+  495 |  1 fmradio.s    294 | Code        | 00 |  2      |    3 | 00/01CC : F4 FE 01    |                      PEA       #strBROADCASTMENU
+  498 |  1 fmradio.s    295 | Macro       | 00 |         |    0 | 00/01CF               |                      _WriteCString                 
+  500 |  1 fmradio.s    295 | Code        | 00 |         |    3 | 00/01CF : A2 0C 20    |                      LDX       #$200C         ; load tool call #
+  501 |  1 fmradio.s    295 | Code        | 00 |         |    4 | 00/01D2 : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+  502 |  1 fmradio.s    296 | Empty       | 00 |         |    0 | 00/01D6               |                                               
+  503 |  1 fmradio.s    297 | Code        | 00 |  2      |    3 | 00/01D6 : 20 D8 05    | ozunid_1             jsr       waitFORKEY     ; is it 0-9
+  504 |  1 fmradio.s    298 | Code        | 00 |         |    3 | 00/01D9 : C9 B0 00    |                      cmp       #"0"           
+  505 |  1 fmradio.s    299 | Code        | 00 |         |    2 | 00/01DC : 90 F8       |                      bcc       ozunid_1       
+  506 |  1 fmradio.s    300 | Code        | 00 |         |    2 | 00/01DE : D0 03       |                      bne       brmOK          
+  507 |  1 fmradio.s    301 | Code        | 00 |  2      |    3 | 00/01E0 : 4C BA 00    |                      jmp       mainMENU       ; or even 0 to exit
+  508 |  1 fmradio.s    302 | Empty       | 00 |         |    0 | 00/01E3               |                                               
+  509 |  1 fmradio.s    303 | Code        | 00 |         |    3 | 00/01E3 : C9 B6 00    | brmOK                cmp       #"5"+1         
+  510 |  1 fmradio.s    304 | Code        | 00 |         |    2 | 00/01E6 : B0 EE       |                      bcs       ozunid_1       
+  511 |  1 fmradio.s    305 | Empty       | 00 |         |    0 | 00/01E8               |                                               
+  512 |  1 fmradio.s    306 | Code        | 00 |         |    1 | 00/01E8 : 38          |                      sec                      ; we have our device ID
+  513 |  1 fmradio.s    307 | Code        | 00 |         |    3 | 00/01E9 : E9 B1 00    |                      sbc       #"1"           
+  514 |  1 fmradio.s    308 | Code        | 00 |         |    1 | 00/01EC : 0A          |                      asl                      
+  515 |  1 fmradio.s    309 | Code        | 00 |         |    1 | 00/01ED : 0A          |                      asl                      
+  516 |  1 fmradio.s    310 | Code        | 00 |         |    1 | 00/01EE : AA          |                      tax                      
+  517 |  1 fmradio.s    311 | Code        | 00 |  2      |    3 | 00/01EF : BD C7 02    |                      lda       freqTABLE,x    
+  518 |  1 fmradio.s    312 | Code        | 00 |  2      |    3 | 00/01F2 : 8D 4D 04    |                      sta       freqMIN        
+  519 |  1 fmradio.s    313 | Code        | 00 |  2      |    3 | 00/01F5 : BD C9 02    |                      lda       freqTABLE+2,x  
+  520 |  1 fmradio.s    314 | Code        | 00 |  2      |    3 | 00/01F8 : 8D 4F 04    |                      sta       freqMAX        
+  521 |  1 fmradio.s    315 | Code        | 00 |  2      |    3 | 00/01FB : 4C BA 00    |                      jmp       mainMENU       
+  522 |  1 fmradio.s    316 | Empty       | 00 |         |    0 | 00/01FE               |                                               
+  523 |  1 fmradio.s    317 | Comment     | 00 |         |    0 | 00/01FE               | *---------- Data
+  524 |  1 fmradio.s    318 | Empty       | 00 |         |    0 | 00/01FE               |                                               
+  525 |  1 fmradio.s    319 | Empty       | 00 |         |    0 | 00/01FE               | strBROADCASTMENU                              
+  526 |  1 fmradio.s    320 | Data        | 00 |         |   19 | 00/01FE : 0D 53 65 6C |                      asc       0d'Select your area:'0d
+      |                     |             |    |         |      |           65 63 74 20 |
+      |                     |             |    |         |      |           79 6F 75 72 |
+      |                     |             |    |         |      |           20 61 72 65 |
+      |                     |             |    |         |      |           61 3A 0D    |
+  527 |  1 fmradio.s    321 | Data        | 00 |         |   36 | 00/0211 : 20 31 2E 20 |                      asc       ' 1. Australia (87.5 MHz to 108 MHz)'0d
+      |                     |             |    |         |      |           41 75 73 74 |
+      |                     |             |    |         |      |           72 61 6C 69 |
+      |                     |             |    |         |      |           61 20 28 38 |
+      |                     |             |    |         |      |           37 2E 35 20 |
+      |                     |             |    |         |      |           4D 48 7A 20 |
+      |                     |             |    |         |      |           74 6F 20 31 |
+      |                     |             |    |         |      |           30 38 20 4D |
+      |                     |             |    |         |      |           48 7A 29 0D |
+  528 |  1 fmradio.s    322 | Data        | 00 |         |   33 | 00/0235 : 20 32 2E 20 |                      asc       ' 2. Brazil (76.1 MHz to 108 MHz)'0d
+      |                     |             |    |         |      |           42 72 61 7A |
+      |                     |             |    |         |      |           69 6C 20 28 |
+      |                     |             |    |         |      |           37 36 2E 31 |
+      |                     |             |    |         |      |           20 4D 48 7A |
+      |                     |             |    |         |      |           20 74 6F 20 |
+      |                     |             |    |         |      |           31 30 38 20 |
+      |                     |             |    |         |      |           4D 48 7A 29 |
+      |                     |             |    |         |      |           0D          |
+  529 |  1 fmradio.s    323 | Data        | 00 |         |   33 | 00/0256 : 20 33 2E 20 |                      asc       ' 3. Europe (87.5 MHz to 108 MHz)'0d
+      |                     |             |    |         |      |           45 75 72 6F |
+      |                     |             |    |         |      |           70 65 20 28 |
+      |                     |             |    |         |      |           38 37 2E 35 |
+      |                     |             |    |         |      |           20 4D 48 7A |
+      |                     |             |    |         |      |           20 74 6F 20 |
+      |                     |             |    |         |      |           31 30 38 20 |
+      |                     |             |    |         |      |           4D 48 7A 29 |
+      |                     |             |    |         |      |           0D          |
+  530 |  1 fmradio.s    324 | Data        | 00 |         |   29 | 00/0277 : 20 34 2E 20 |                      asc       ' 4. Japan (76 MHz to 95 MHz)'0d
+      |                     |             |    |         |      |           4A 61 70 61 |
+      |                     |             |    |         |      |           6E 20 28 37 |
+      |                     |             |    |         |      |           36 20 4D 48 |
+      |                     |             |    |         |      |           7A 20 74 6F |
+      |                     |             |    |         |      |           20 39 35 20 |
+      |                     |             |    |         |      |           4D 48 7A 29 |
+      |                     |             |    |         |      |           0D          |
+  531 |  1 fmradio.s    325 | Data        | 00 |         |   28 | 00/0294 : 20 35 2E 20 |                      asc       ' 5. USA (88 MHz to 108 MHz)'0d
+      |                     |             |    |         |      |           55 53 41 20 |
+      |                     |             |    |         |      |           28 38 38 20 |
+      |                     |             |    |         |      |           4D 48 7A 20 |
+      |                     |             |    |         |      |           74 6F 20 31 |
+      |                     |             |    |         |      |           30 38 20 4D |
+      |                     |             |    |         |      |           48 7A 29 0D |
+  532 |  1 fmradio.s    326 | Data        | 00 |         |   23 | 00/02B0 : 20 30 2E 20 |                      asc       ' 0. Back to main menu'0d00
+      |                     |             |    |         |      |           42 61 63 6B |
+      |                     |             |    |         |      |           20 74 6F 20 |
+      |                     |             |    |         |      |           6D 61 69 6E |
+      |                     |             |    |         |      |           20 6D 65 6E |
+      |                     |             |    |         |      |           75 0D 00    |
+  533 |  1 fmradio.s    327 | Empty       | 00 |         |    0 | 00/02C7               |                                               
+  534 |  1 fmradio.s    328 | Empty       | 00 |         |    0 | 00/02C7               | freqTABLE                                     
+  535 |  1 fmradio.s    329 | Data        | 00 |         |    4 | 00/02C7 : B0 1E 18 25 |                      dw        $1EB0,$2518    ; Australia
+  536 |  1 fmradio.s    330 | Data        | 00 |         |    4 | 00/02CB : 20 1B 18 25 |                      dw        $1B20,$2518    ; Brazil
+  537 |  1 fmradio.s    331 | Data        | 00 |         |    4 | 00/02CF : B0 1E 18 25 |                      dw        $1EB0,$2518    ; Europe
+  538 |  1 fmradio.s    332 | Data        | 00 |         |    4 | 00/02D3 : 18 1B 08 21 |                      dw        $1B18,$2108    ; Japan
+  539 |  1 fmradio.s    333 | Data        | 00 |         |    4 | 00/02D7 : D8 1E 18 25 |                      dw        $1ED8,$2518    ; USA
+  540 |  1 fmradio.s    334 | Empty       | 00 |         |    0 | 00/02DB               |                                               
+  541 |  1 fmradio.s    335 | Comment     | 00 |         |    0 | 00/02DB               | *----------------------------
+  542 |  1 fmradio.s    336 | Comment     | 00 |         |    0 | 00/02DB               | * MENU: VOLUME DOWN
+  543 |  1 fmradio.s    337 | Comment     | 00 |         |    0 | 00/02DB               | *----------------------------
+  544 |  1 fmradio.s    338 | Comment     | 00 |         |    0 | 00/02DB               | * We simply subtract 0x11 to the current volume
+  545 |  1 fmradio.s    339 | Comment     | 00 |         |    0 | 00/02DB               | *
+  546 |  1 fmradio.s    340 | Empty       | 00 |         |    0 | 00/02DB               |                                               
+  547 |  1 fmradio.s    341 | Empty       | 00 |         |    0 | 00/02DB               | volumeDownMENU                                
+  548 |  1 fmradio.s    342 | Code        | 10 |         |    2 | 00/02DB : E2 20       |                      sep       #$20           ; switch to 8-bit
+  549 |  1 fmradio.s    343 | Code        | 10 |  2      |    3 | 00/02DD : AD 87 04    |                      lda       volume         
+  550 |  1 fmradio.s    344 | Code        | 10 |         |    2 | 00/02E0 : D0 05       |                      bne       vdOK           
+  551 |  1 fmradio.s    345 | Code        | 00 |         |    2 | 00/02E2 : C2 20       |                      rep       #$20           ; cannot change volume
+  552 |  1 fmradio.s    346 | Code        | 00 |  2      |    3 | 00/02E4 : 4C BA 00    |                      jmp       mainMENU       
+  553 |  1 fmradio.s    347 | Empty       | 00 |         |    0 | 00/02E7               |                                               
+  554 |  1 fmradio.s    348 | Directive   | 10 |         |    0 | 00/02E7               |                      mx        %10            ; still in 8-bit for A
+  555 |  1 fmradio.s    349 | Empty       | 10 |         |    0 | 00/02E7               |                                               
+  556 |  1 fmradio.s    350 | Code        | 10 |         |    1 | 00/02E7 : 38          | vdOK                 sec                      
+  557 |  1 fmradio.s    351 | Code        | 10 |         |    2 | 00/02E8 : E9 11       |                      sbc       #%0001_0001    ; decrements by 0x11
+  558 |  1 fmradio.s    352 | Code        | 10 |  2      |    3 | 00/02EA : 8D 87 04    |                      sta       volume         
+  559 |  1 fmradio.s    353 | Code        | 00 |         |    2 | 00/02ED : C2 20       |                      rep       #$20           ; back to 16-bit world
+  560 |  1 fmradio.s    354 | Empty       | 00 |         |    0 | 00/02EF               |                                               
+  561 |  1 fmradio.s    355 | Directive   | 00 |         |    0 | 00/02EF               |                      mx        %00            
+  562 |  1 fmradio.s    356 | Empty       | 00 |         |    0 | 00/02EF               |                                               
+  563 |  1 fmradio.s    357 | Code        | 00 |         |    3 | 00/02EF : A2 08 00    |                      ldx       #8             
+  564 |  1 fmradio.s    358 | Code        | 00 |         |    1 | 00/02F2 : DA          | ozunid_2             phx                      
+  565 |  1 fmradio.s    359 | Code        | 00 |  2      |    3 | 00/02F3 : 20 A9 04    |                      jsr       FMTalkRegister0
+  566 |  1 fmradio.s    360 | Code        | 00 |         |    1 | 00/02F6 : FA          |                      plx                      
+  567 |  1 fmradio.s    361 | Code        | 00 |         |    1 | 00/02F7 : CA          |                      dex                      
+  568 |  1 fmradio.s    362 | Code        | 00 |         |    2 | 00/02F8 : D0 F8       |                      bne       ozunid_2       
+  569 |  1 fmradio.s    363 | Empty       | 00 |         |    0 | 00/02FA               | skipmedown                                    
+  570 |  1 fmradio.s    364 | Code        | 00 |  2      |    3 | 00/02FA : 20 6B 04    |                      jsr       FMSendRegister1
+  571 |  1 fmradio.s    365 | Empty       | 00 |         |    0 | 00/02FD               |                                               
+  572 |  1 fmradio.s    366 | Code        | 00 |         |    3 | 00/02FD : A2 08 00    |                      ldx       #8             
+  573 |  1 fmradio.s    367 | Code        | 00 |         |    1 | 00/0300 : DA          | ozunid_3             phx                      
+  574 |  1 fmradio.s    368 | Code        | 00 |  2      |    3 | 00/0301 : 20 A9 04    |                      jsr       FMTalkRegister0
+  575 |  1 fmradio.s    369 | Code        | 00 |         |    1 | 00/0304 : FA          |                      plx                      
+  576 |  1 fmradio.s    370 | Code        | 00 |         |    1 | 00/0305 : CA          |                      dex                      
+  577 |  1 fmradio.s    371 | Code        | 00 |         |    2 | 00/0306 : D0 F8       |                      bne       ozunid_3       
+  578 |  1 fmradio.s    372 | Empty       | 00 |         |    0 | 00/0308               |                                               
+  579 |  1 fmradio.s    373 | Code        | 00 |  2      |    3 | 00/0308 : 4C BA 00    |                      jmp       mainMENU       
+  580 |  1 fmradio.s    374 | Empty       | 00 |         |    0 | 00/030B               |                                               
+  581 |  1 fmradio.s    375 | Comment     | 00 |         |    0 | 00/030B               | *----------------------------
+  582 |  1 fmradio.s    376 | Comment     | 00 |         |    0 | 00/030B               | * MENU: VOLUME UP
+  583 |  1 fmradio.s    377 | Comment     | 00 |         |    0 | 00/030B               | *----------------------------
+  584 |  1 fmradio.s    378 | Comment     | 00 |         |    0 | 00/030B               | * We add 0x11 to the current volume
+  585 |  1 fmradio.s    379 | Comment     | 00 |         |    0 | 00/030B               | *
+  586 |  1 fmradio.s    380 | Empty       | 00 |         |    0 | 00/030B               |                                               
+  587 |  1 fmradio.s    381 | Empty       | 00 |         |    0 | 00/030B               | volumeUpMENU                                  
+  588 |  1 fmradio.s    382 | Code        | 10 |         |    2 | 00/030B : E2 20       |                      sep       #$20           ; switch to 8-bit
+  589 |  1 fmradio.s    383 | Code        | 10 |  2      |    3 | 00/030D : AD 87 04    |                      lda       volume         
+  590 |  1 fmradio.s    384 | Code        | 10 |         |    2 | 00/0310 : C9 FF       |                      cmp       #%1111_1111    ; max volume?
+  591 |  1 fmradio.s    385 | Code        | 10 |         |    2 | 00/0312 : D0 05       |                      bne       vuOK           
+  592 |  1 fmradio.s    386 | Code        | 00 |         |    2 | 00/0314 : C2 20       |                      rep       #$20           ; cannot change volume
+  593 |  1 fmradio.s    387 | Code        | 00 |  2      |    3 | 00/0316 : 4C BA 00    |                      jmp       mainMENU       
+  594 |  1 fmradio.s    388 | Empty       | 00 |         |    0 | 00/0319               |                                               
+  595 |  1 fmradio.s    389 | Directive   | 10 |         |    0 | 00/0319               |                      mx        %10            ; still in 8-bit for A
+  596 |  1 fmradio.s    390 | Empty       | 10 |         |    0 | 00/0319               |                                               
+  597 |  1 fmradio.s    391 | Code        | 10 |         |    1 | 00/0319 : 18          | vuOK                 clc                      
+  598 |  1 fmradio.s    392 | Code        | 10 |         |    2 | 00/031A : 69 11       |                      adc       #%0001_0001    ; decrements by 0x11
+  599 |  1 fmradio.s    393 | Code        | 10 |  2      |    3 | 00/031C : 8D 87 04    |                      sta       volume         
+  600 |  1 fmradio.s    394 | Code        | 00 |         |    2 | 00/031F : C2 20       |                      rep       #$20           ; back to 16-bit world
+  601 |  1 fmradio.s    395 | Empty       | 00 |         |    0 | 00/0321               |                                               
+  602 |  1 fmradio.s    396 | Directive   | 00 |         |    0 | 00/0321               |                      mx        %00            
+  603 |  1 fmradio.s    397 | Empty       | 00 |         |    0 | 00/0321               |                                               
+  604 |  1 fmradio.s    398 | Code        | 00 |         |    3 | 00/0321 : A2 08 00    |                      ldx       #8             
+  605 |  1 fmradio.s    399 | Code        | 00 |         |    1 | 00/0324 : DA          | ozunid_4             phx                      
+  606 |  1 fmradio.s    400 | Code        | 00 |  2      |    3 | 00/0325 : 20 A9 04    |                      jsr       FMTalkRegister0
+  607 |  1 fmradio.s    401 | Code        | 00 |         |    1 | 00/0328 : FA          |                      plx                      
+  608 |  1 fmradio.s    402 | Code        | 00 |         |    1 | 00/0329 : CA          |                      dex                      
+  609 |  1 fmradio.s    403 | Code        | 00 |         |    2 | 00/032A : D0 F8       |                      bne       ozunid_4       
+  610 |  1 fmradio.s    404 | Empty       | 00 |         |    0 | 00/032C               | skipmeup                                      
+  611 |  1 fmradio.s    405 | Empty       | 00 |         |    0 | 00/032C               |                                               
+  612 |  1 fmradio.s    406 | Code        | 00 |  2      |    3 | 00/032C : 20 6B 04    |                      jsr       FMSendRegister1
+  613 |  1 fmradio.s    407 | Empty       | 00 |         |    0 | 00/032F               |                                               
+  614 |  1 fmradio.s    408 | Code        | 00 |         |    3 | 00/032F : A2 08 00    |                      ldx       #8             
+  615 |  1 fmradio.s    409 | Code        | 00 |         |    1 | 00/0332 : DA          | ozunid_5             phx                      
+  616 |  1 fmradio.s    410 | Code        | 00 |  2      |    3 | 00/0333 : 20 A9 04    |                      jsr       FMTalkRegister0
+  617 |  1 fmradio.s    411 | Code        | 00 |         |    1 | 00/0336 : FA          |                      plx                      
+  618 |  1 fmradio.s    412 | Code        | 00 |         |    1 | 00/0337 : CA          |                      dex                      
+  619 |  1 fmradio.s    413 | Code        | 00 |         |    2 | 00/0338 : D0 F8       |                      bne       ozunid_5       
+  620 |  1 fmradio.s    414 | Empty       | 00 |         |    0 | 00/033A               |                                               
+  621 |  1 fmradio.s    415 | Code        | 00 |  2      |    3 | 00/033A : 4C BA 00    |                      jmp       mainMENU       
+  622 |  1 fmradio.s    416 | Empty       | 00 |         |    0 | 00/033D               |                                               
+  623 |  1 fmradio.s    417 | Comment     | 00 |         |    0 | 00/033D               | *----------------------------
+  624 |  1 fmradio.s    418 | Comment     | 00 |         |    0 | 00/033D               | * MENU: SET FREQUENCY
+  625 |  1 fmradio.s    419 | Comment     | 00 |         |    0 | 00/033D               | *----------------------------
+  626 |  1 fmradio.s    420 | Comment     | 00 |         |    0 | 00/033D               | * We set the requested FM Frequency.
+  627 |  1 fmradio.s    421 | Comment     | 00 |         |    0 | 00/033D               | * Some checks are done but not all.
+  628 |  1 fmradio.s    422 | Comment     | 00 |         |    0 | 00/033D               | * It is a proof of concept app :-)
+  629 |  1 fmradio.s    423 | Comment     | 00 |         |    0 | 00/033D               | * For < 100 MHz stations, either enter 095.2 or 95.20
+  630 |  1 fmradio.s    424 | Comment     | 00 |         |    0 | 00/033D               | *
+  631 |  1 fmradio.s    425 | Empty       | 00 |         |    0 | 00/033D               |                                               
+  632 |  1 fmradio.s    426 | Equivalence | 00 |         |    0 | 00/033D               | maxCount             =         5              
+  633 |  1 fmradio.s    427 | Empty       | 00 |         |    0 | 00/033D               |                                               
+  634 |  1 fmradio.s    428 | Empty       | 00 |         |    0 | 00/033D               | setFrequencyMENU                              
+  635 |  1 fmradio.s    429 | Macro       | 00 |         |    0 | 00/033D               |                      PushLong  #strSETFREQUENCYMENU
+  639 |  1 fmradio.s    429 | Code        | 00 |  1 >>16 |    3 | 00/033D : F4 00 00    |                      PEA       #^#strSETFREQUENCYMENU
+  646 |  1 fmradio.s    429 | Code        | 00 |  2      |    3 | 00/0340 : F4 1D 04    |                      PEA       #strSETFREQUENCYMENU
+  649 |  1 fmradio.s    430 | Macro       | 00 |         |    0 | 00/0343               |                      _WriteCString                 
+  651 |  1 fmradio.s    430 | Code        | 00 |         |    3 | 00/0343 : A2 0C 20    |                      LDX       #$200C         ; load tool call #
+  652 |  1 fmradio.s    430 | Code        | 00 |         |    4 | 00/0346 : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+  653 |  1 fmradio.s    431 | Empty       | 00 |         |    0 | 00/034A               |                                               
+  654 |  1 fmradio.s    432 | Comment     | 00 |         |    0 | 00/034A               | * Clear entry buffer
+  655 |  1 fmradio.s    433 | Empty       | 00 |         |    0 | 00/034A               |                                               
+  656 |  1 fmradio.s    434 | Code        | 10 |         |    2 | 00/034A : E2 20       |                      sep       #$20           
+  657 |  1 fmradio.s    435 | Code        | 10 |         |    3 | 00/034C : A2 04 00    |                      ldx       #{5}-1         
+  658 |  1 fmradio.s    436 | Code        | 10 |         |    2 | 00/034F : A9 AE       |                      lda       #"."           
+  659 |  1 fmradio.s    437 | Code        | 10 |  2      |    3 | 00/0351 : 9D 42 04    | ozunid_6             sta       strBUFFER,x    
+  660 |  1 fmradio.s    438 | Code        | 10 |         |    1 | 00/0354 : CA          |                      dex                      
+  661 |  1 fmradio.s    439 | Code        | 10 |         |    2 | 00/0355 : 10 FA       |                      bpl       ozunid_6       
+  662 |  1 fmradio.s    440 | Code        | 00 |         |    2 | 00/0357 : C2 20       |                      rep       #$20           
+  663 |  1 fmradio.s    441 | Empty       | 00 |         |    0 | 00/0359               |                                               
+  664 |  1 fmradio.s    442 | Macro       | 00 |         |    0 | 00/0359               |                      PushWord  #0             ; wordspace
+  666 |  1 fmradio.s    442 | Code        | 00 |         |    3 | 00/0359 : F4 00 00    |                      PEA       #0             
+  669 |  1 fmradio.s    443 | Macro       | 00 |         |    0 | 00/035C               |                      PushLong  #strBUFFER     ; bufferPtr
+  673 |  1 fmradio.s    443 | Code        | 00 |  1 >>16 |    3 | 00/035C : F4 00 00    |                      PEA       #^#strBUFFER   
+  680 |  1 fmradio.s    443 | Code        | 00 |  2      |    3 | 00/035F : F4 42 04    |                      PEA       #strBUFFER     
+  683 |  1 fmradio.s    444 | Macro       | 00 |         |    0 | 00/0362               |                      PushWord  #{5}           ; maxCount
+  685 |  1 fmradio.s    444 | Code        | 00 |         |    3 | 00/0362 : F4 05 00    |                      PEA       #{5}           
+  688 |  1 fmradio.s    445 | Macro       | 00 |         |    0 | 00/0365               |                      PushWord  #$8d           ; eolChar
+  690 |  1 fmradio.s    445 | Code        | 00 |         |    3 | 00/0365 : F4 8D 00    |                      PEA       #$8d           
+  693 |  1 fmradio.s    446 | Macro       | 00 |         |    0 | 00/0368               |                      PushWord  #1             ; echoFlag
+  695 |  1 fmradio.s    446 | Code        | 00 |         |    3 | 00/0368 : F4 01 00    |                      PEA       #1             
+  698 |  1 fmradio.s    447 | Macro       | 00 |         |    0 | 00/036B               |                      _ReadLine                 
+  700 |  1 fmradio.s    447 | Code        | 00 |         |    3 | 00/036B : A2 0C 24    |                      LDX       #$240C         ; load tool call #
+  701 |  1 fmradio.s    447 | Code        | 00 |         |    4 | 00/036E : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+  702 |  1 fmradio.s    448 | Code        | 00 |         |    1 | 00/0372 : 68          |                      pla                      
+  703 |  1 fmradio.s    449 | Code        | 00 |         |    2 | 00/0373 : D0 03       |                      bne       sfmOK          
+  704 |  1 fmradio.s    450 | Code        | 00 |  2      |    3 | 00/0375 : 4C BA 00    | sfmKO                jmp       mainMENU       
+  705 |  1 fmradio.s    451 | Empty       | 00 |         |    0 | 00/0378               |                                               
+  706 |  1 fmradio.s    452 | Code        | 00 |         |    3 | 00/0378 : C9 02 00    | sfmOK                cmp       #2             ; two chars at a minimum!
+  707 |  1 fmradio.s    453 | Code        | 00 |         |    2 | 00/037B : 90 F8       |                      bcc       sfmKO          
+  708 |  1 fmradio.s    454 | Empty       | 00 |         |    0 | 00/037D               |                                               
+  709 |  1 fmradio.s    455 | Comment     | 00 |         |    0 | 00/037D               | * Reset the frequency string
+  710 |  1 fmradio.s    456 | Empty       | 00 |         |    0 | 00/037D               |                                               
+  711 |  1 fmradio.s    457 | Code        | 00 |         |    3 | 00/037D : A9 B0 B0    |                      lda       #"00"          
+  712 |  1 fmradio.s    458 | Code        | 00 |  2      |    3 | 00/0380 : 8D 47 04    |                      sta       mySTRFREQ      
+  713 |  1 fmradio.s    459 | Code        | 00 |  2      |    3 | 00/0383 : 8D 49 04    |                      sta       mySTRFREQ+2    
+  714 |  1 fmradio.s    460 | Empty       | 00 |         |    0 | 00/0386               |                                               
+  715 |  1 fmradio.s    461 | Comment     | 00 |         |    0 | 00/0386               | * Copy string (skip separator)
+  716 |  1 fmradio.s    462 | Empty       | 00 |         |    0 | 00/0386               |                                               
+  717 |  1 fmradio.s    463 | Code        | 10 |         |    2 | 00/0386 : E2 20       |                      sep       #$20           ; 8-bit world
+  718 |  1 fmradio.s    464 | Empty       | 10 |         |    0 | 00/0388               |                                               
+  719 |  1 fmradio.s    465 | Code        | 10 |         |    3 | 00/0388 : A2 00 00    |                      ldx       #0             
+  720 |  1 fmradio.s    466 | Code        | 10 |         |    1 | 00/038B : 9B          |                      txy                      
+  721 |  1 fmradio.s    467 | Code        | 10 |  2      |    3 | 00/038C : BD 42 04    | ozunid_7             lda       strBUFFER,x    
+  722 |  1 fmradio.s    468 | Code        | 10 |         |    2 | 00/038F : C9 AE       |                      cmp       #"."           ; skip dot
+  723 |  1 fmradio.s    469 | Code        | 10 |         |    2 | 00/0391 : F0 08       |                      beq       sfmDOT         
+  724 |  1 fmradio.s    470 | Code        | 10 |         |    2 | 00/0393 : C9 8D       |                      cmp       #$8d           ; CR
+  725 |  1 fmradio.s    471 | Code        | 10 |         |    2 | 00/0395 : F0 04       |                      beq       sfmDOT         
+  726 |  1 fmradio.s    472 | Code        | 10 |  2      |    3 | 00/0397 : 99 47 04    |                      sta       mySTRFREQ,y    
+  727 |  1 fmradio.s    473 | Code        | 10 |         |    1 | 00/039A : C8          |                      iny                      
+  728 |  1 fmradio.s    474 | Code        | 10 |         |    1 | 00/039B : E8          | sfmDOT               inx                      
+  729 |  1 fmradio.s    475 | Code        | 10 |         |    3 | 00/039C : E0 05 00    |                      cpx       #{5}           
+  730 |  1 fmradio.s    476 | Code        | 10 |         |    2 | 00/039F : 90 EB       |                      bcc       ozunid_7       
+  731 |  1 fmradio.s    477 | Empty       | 10 |         |    0 | 00/03A1               |                                               
+  732 |  1 fmradio.s    478 | Comment     | 10 |         |    0 | 00/03A1               | * Right justify it now
+  733 |  1 fmradio.s    479 | Empty       | 10 |         |    0 | 00/03A1               |                                               
+  734 |  1 fmradio.s    480 | Code        | 10 |  2      |    3 | 00/03A1 : AD 47 04    |                      lda       mySTRFREQ      
+  735 |  1 fmradio.s    481 | Code        | 10 |         |    2 | 00/03A4 : C9 B1       |                      cmp       #"1"           
+  736 |  1 fmradio.s    482 | Code        | 10 |         |    2 | 00/03A6 : F0 17       |                      beq       sfmNADA        
+  737 |  1 fmradio.s    483 | Empty       | 10 |         |    0 | 00/03A8               |                                               
+  738 |  1 fmradio.s    484 | Code        | 10 |  2      |    3 | 00/03A8 : AD 49 04    |                      lda       mySTRFREQ+2    
+  739 |  1 fmradio.s    485 | Code        | 10 |  2      |    3 | 00/03AB : 8D 4A 04    |                      sta       mySTRFREQ+3    
+  740 |  1 fmradio.s    486 | Code        | 10 |  2      |    3 | 00/03AE : AD 48 04    |                      lda       mySTRFREQ+1    
+  741 |  1 fmradio.s    487 | Code        | 10 |  2      |    3 | 00/03B1 : 8D 49 04    |                      sta       mySTRFREQ+2    
+  742 |  1 fmradio.s    488 | Code        | 10 |  2      |    3 | 00/03B4 : AD 47 04    |                      lda       mySTRFREQ      
+  743 |  1 fmradio.s    489 | Code        | 10 |  2      |    3 | 00/03B7 : 8D 48 04    |                      sta       mySTRFREQ+1    
+  744 |  1 fmradio.s    490 | Code        | 10 |         |    2 | 00/03BA : A9 B0       |                      lda       #"0"           
+  745 |  1 fmradio.s    491 | Code        | 10 |  2      |    3 | 00/03BC : 8D 47 04    |                      sta       mySTRFREQ      
+  746 |  1 fmradio.s    492 | Empty       | 10 |         |    0 | 00/03BF               |                                               
+  747 |  1 fmradio.s    493 | Comment     | 10 |         |    0 | 00/03BF               | * Convert in hex
+  748 |  1 fmradio.s    494 | Empty       | 10 |         |    0 | 00/03BF               |                                               
+  749 |  1 fmradio.s    495 | Code        | 00 |         |    2 | 00/03BF : C2 20       | sfmNADA              rep       #$20           
+  750 |  1 fmradio.s    496 | Empty       | 00 |         |    0 | 00/03C1               |                                               
+  751 |  1 fmradio.s    497 | Macro       | 00 |         |    0 | 00/03C1               |                      PushLong  #0             
+  755 |  1 fmradio.s    497 | Code        | 00 |         |    3 | 00/03C1 : F4 00 00    |                      PEA       #^#0           
+  762 |  1 fmradio.s    497 | Code        | 00 |         |    3 | 00/03C4 : F4 00 00    |                      PEA       #0             
+  765 |  1 fmradio.s    498 | Macro       | 00 |         |    0 | 00/03C7               |                      PushLong  #mySTRFREQ     
+  769 |  1 fmradio.s    498 | Code        | 00 |  1 >>16 |    3 | 00/03C7 : F4 00 00    |                      PEA       #^#mySTRFREQ   
+  776 |  1 fmradio.s    498 | Code        | 00 |  2      |    3 | 00/03CA : F4 47 04    |                      PEA       #mySTRFREQ     
+  779 |  1 fmradio.s    499 | Macro       | 00 |         |    0 | 00/03CD               |                      PushWord  #4             ; strLength
+  781 |  1 fmradio.s    499 | Code        | 00 |         |    3 | 00/03CD : F4 04 00    |                      PEA       #4             
+  784 |  1 fmradio.s    500 | Macro       | 00 |         |    0 | 00/03D0               |                      PushWord  #0             ; unsigned
+  786 |  1 fmradio.s    500 | Code        | 00 |         |    3 | 00/03D0 : F4 00 00    |                      PEA       #0             
+  789 |  1 fmradio.s    501 | Macro       | 00 |         |    0 | 00/03D3               |                      _Dec2Long                 
+  791 |  1 fmradio.s    501 | Code        | 00 |         |    3 | 00/03D3 : A2 0B 29    |                      LDX       #$290B         ; load tool call #
+  792 |  1 fmradio.s    501 | Code        | 00 |         |    4 | 00/03D6 : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+  793 |  1 fmradio.s    502 | Code        | 00 |         |    1 | 00/03DA : 68          |                      pla                      
+  794 |  1 fmradio.s    503 | Code        | 00 |         |    1 | 00/03DB : FA          |                      plx                      
+  795 |  1 fmradio.s    504 | Code        | 00 |         |    2 | 00/03DC : 90 03       |                      bcc       sfmNEXT        ; no error, that's cool
+  796 |  1 fmradio.s    505 | Code        | 00 |  2      |    3 | 00/03DE : 4C BA 00    |                      jmp       mainMENU       ; we quit!!
+  797 |  1 fmradio.s    506 | Empty       | 00 |         |    0 | 00/03E1               |                                               
+  798 |  1 fmradio.s    507 | Comment     | 00 |         |    0 | 00/03E1               | * We have the hex equivalent of the frequency
+  799 |  1 fmradio.s    508 | Empty       | 00 |         |    0 | 00/03E1               |                                               
+  800 |  1 fmradio.s    509 | Code        | 00 |         |    1 | 00/03E1 : 0A          | sfmNEXT              asl                      ; *8
+  801 |  1 fmradio.s    510 | Code        | 00 |         |    1 | 00/03E2 : 0A          |                      asl                      
+  802 |  1 fmradio.s    511 | Code        | 00 |         |    1 | 00/03E3 : 0A          |                      asl                      
+  803 |  1 fmradio.s    512 | Code        | 00 |         |    1 | 00/03E4 : 18          |                      clc                      
+  804 |  1 fmradio.s    513 | Code        | 00 |         |    3 | 00/03E5 : 69 58 03    |                      adc       #{$0358}       ; +$358
+  805 |  1 fmradio.s    514 | Code        | 00 |  2      |    3 | 00/03E8 : 8D 4B 04    |                      sta       freqCURRENT    
+  806 |  1 fmradio.s    515 | Empty       | 00 |         |    0 | 00/03EB               |                                               
+  807 |  1 fmradio.s    516 | Comment     | 00 |         |    0 | 00/03EB               | * Now compare with the limits
+  808 |  1 fmradio.s    517 | Empty       | 00 |         |    0 | 00/03EB               |                                               
+  809 |  1 fmradio.s    518 | Empty       | 00 |         |    0 | 00/03EB               | theHiddenCall                                 
+  810 |  1 fmradio.s    519 | Empty       | 00 |         |    0 | 00/03EB               |                                               
+  811 |  1 fmradio.s    520 | Code        | 00 |  2      |    3 | 00/03EB : AD 4B 04    |                      lda       freqCURRENT    
+  812 |  1 fmradio.s    521 | Code        | 00 |  2      |    3 | 00/03EE : CD 4D 04    |                      cmp       freqMIN        
+  813 |  1 fmradio.s    522 | Code        | 00 |         |    2 | 00/03F1 : B0 0A       |                      bcs       stmFREQOK      
+  814 |  1 fmradio.s    523 | Code        | 00 |  2      |    3 | 00/03F3 : CD 4F 04    |                      cmp       freqMAX        
+  815 |  1 fmradio.s    524 | Code        | 00 |         |    2 | 00/03F6 : 90 05       |                      bcc       stmFREQOK      
+  816 |  1 fmradio.s    525 | Code        | 00 |         |    2 | 00/03F8 : F0 03       |                      beq       stmFREQOK      
+  817 |  1 fmradio.s    526 | Code        | 00 |  2      |    3 | 00/03FA : 4C BA 00    |                      jmp       mainMENU       
+  818 |  1 fmradio.s    527 | Empty       | 00 |         |    0 | 00/03FD               |                                               
+  819 |  1 fmradio.s    528 | Code        | 00 |         |    1 | 00/03FD : EB          | stmFREQOK            xba                      ; big endian world
+  820 |  1 fmradio.s    529 | Code        | 00 |  2      |    3 | 00/03FE : 8D A7 04    |                      sta       frequency      ; final frequency!
+  821 |  1 fmradio.s    530 | Empty       | 00 |         |    0 | 00/0401               |                                               
+  822 |  1 fmradio.s    531 | Code        | 00 |         |    3 | 00/0401 : A2 08 00    |                      ldx       #8             
+  823 |  1 fmradio.s    532 | Code        | 00 |         |    1 | 00/0404 : DA          | ozunid_8             phx                      
+  824 |  1 fmradio.s    533 | Code        | 00 |  2      |    3 | 00/0405 : 20 A9 04    |                      jsr       FMTalkRegister0
+  825 |  1 fmradio.s    534 | Code        | 00 |         |    1 | 00/0408 : FA          |                      plx                      
+  826 |  1 fmradio.s    535 | Code        | 00 |         |    1 | 00/0409 : CA          |                      dex                      
+  827 |  1 fmradio.s    536 | Code        | 00 |         |    2 | 00/040A : D0 F8       |                      bne       ozunid_8       
+  828 |  1 fmradio.s    537 | Empty       | 00 |         |    0 | 00/040C               |                                               
+  829 |  1 fmradio.s    538 | Code        | 00 |  2      |    3 | 00/040C : 20 8A 04    | skipme2              jsr       FMSendRegister2
+  830 |  1 fmradio.s    539 | Empty       | 00 |         |    0 | 00/040F               |                                               
+  831 |  1 fmradio.s    540 | Code        | 00 |         |    3 | 00/040F : A2 08 00    |                      ldx       #8             
+  832 |  1 fmradio.s    541 | Code        | 00 |         |    1 | 00/0412 : DA          | ozunid_9             phx                      
+  833 |  1 fmradio.s    542 | Code        | 00 |  2      |    3 | 00/0413 : 20 A9 04    |                      jsr       FMTalkRegister0
+  834 |  1 fmradio.s    543 | Code        | 00 |         |    1 | 00/0416 : FA          |                      plx                      
+  835 |  1 fmradio.s    544 | Code        | 00 |         |    1 | 00/0417 : CA          |                      dex                      
+  836 |  1 fmradio.s    545 | Code        | 00 |         |    2 | 00/0418 : D0 F8       |                      bne       ozunid_9       
+  837 |  1 fmradio.s    546 | Empty       | 00 |         |    0 | 00/041A               |                                               
+  838 |  1 fmradio.s    547 | Code        | 00 |  2      |    3 | 00/041A : 4C BA 00    |                      jmp       mainMENU       
+  839 |  1 fmradio.s    548 | Empty       | 00 |         |    0 | 00/041D               |                                               
+  840 |  1 fmradio.s    549 | Comment     | 00 |         |    0 | 00/041D               | *---------- Data
+  841 |  1 fmradio.s    550 | Empty       | 00 |         |    0 | 00/041D               |                                               
+  842 |  1 fmradio.s    551 | Empty       | 00 |         |    0 | 00/041D               | strSETFREQUENCYMENU                           
+  843 |  1 fmradio.s    552 | Data        | 00 |         |   37 | 00/041D : 0D 57 68 69 |                      asc       0d'Which frequency (88, 95.2, 107.7)? '00
+      |                     |             |    |         |      |           63 68 20 66 |
+      |                     |             |    |         |      |           72 65 71 75 |
+      |                     |             |    |         |      |           65 6E 63 79 |
+      |                     |             |    |         |      |           20 28 38 38 |
+      |                     |             |    |         |      |           2C 20 39 35 |
+      |                     |             |    |         |      |           2E 32 2C 20 |
+      |                     |             |    |         |      |           31 30 37 2E |
+      |                     |             |    |         |      |           37 29 3F 20 |
+      |                     |             |    |         |      |           00          |
+  844 |  1 fmradio.s    553 | Empty       | 00 |         |    0 | 00/0442               |                                               
+  845 |  1 fmradio.s    554 | Data        | 00 |         |    5 | 00/0442 : 00 00 00 00 | strBUFFER            ds        {5}            ; 102.7 is the max length
+      |                     |             |    |         |      |           00          |
+  846 |  1 fmradio.s    555 | Data        | 00 |         |    4 | 00/0447 : 30 30 30 30 | mySTRFREQ            asc       '0000'         ; 1055 1000 0995
+  847 |  1 fmradio.s    556 | Empty       | 00 |         |    0 | 00/044B               |                                               
+  848 |  1 fmradio.s    557 | Comment     | 00 |         |    0 | 00/044B               | *---------- My frequency data is little endian
+  849 |  1 fmradio.s    558 | Empty       | 00 |         |    0 | 00/044B               |                                               
+  850 |  1 fmradio.s    559 | Data        | 00 |         |    2 | 00/044B : 00 25       | freqCURRENT          dw        $2500          ; The default
+  851 |  1 fmradio.s    560 | Data        | 00 |         |    2 | 00/044D : 00 00       | freqMIN              ds        2              
+  852 |  1 fmradio.s    561 | Data        | 00 |         |    2 | 00/044F : 00 00       | freqMAX              ds        2              
+  853 |  1 fmradio.s    562 | Empty       | 00 |         |    0 | 00/0451               |                                               
+  854 |  1 fmradio.s    563 | Comment     | 00 |         |    0 | 00/0451               | *----------------------------
+  855 |  1 fmradio.s    564 | Comment     | 00 |         |    0 | 00/0451               | * MENU: DECREASE/INCREASE FREQUENCY
+  856 |  1 fmradio.s    565 | Comment     | 00 |         |    0 | 00/0451               | *----------------------------
+  857 |  1 fmradio.s    566 | Comment     | 00 |         |    0 | 00/0451               | * frequency -= 8 or frequency += 8
+  858 |  1 fmradio.s    567 | Empty       | 00 |         |    0 | 00/0451               |                                               
+  859 |  1 fmradio.s    568 | Empty       | 00 |         |    0 | 00/0451               | decreaseFREQUENCY                             
+  860 |  1 fmradio.s    569 | Code        | 00 |  2      |    3 | 00/0451 : AD 4B 04    |                      lda       freqCURRENT    
+  861 |  1 fmradio.s    570 | Code        | 00 |         |    1 | 00/0454 : 38          |                      sec                      
+  862 |  1 fmradio.s    571 | Code        | 00 |         |    3 | 00/0455 : E9 08 00    |                      sbc       #8             
+  863 |  1 fmradio.s    572 | Code        | 00 |  2      |    3 | 00/0458 : 8D 4B 04    |                      sta       freqCURRENT    
+  864 |  1 fmradio.s    573 | Code        | 00 |         |    3 | 00/045B : 82 8D FF    |                      brl       theHiddenCall  
+  865 |  1 fmradio.s    574 | Empty       | 00 |         |    0 | 00/045E               |                                               
+  866 |  1 fmradio.s    575 | Empty       | 00 |         |    0 | 00/045E               | increaseFREQUENCY                             
+  867 |  1 fmradio.s    576 | Code        | 00 |  2      |    3 | 00/045E : AD 4B 04    |                      lda       freqCURRENT    
+  868 |  1 fmradio.s    577 | Code        | 00 |         |    1 | 00/0461 : 18          |                      clc                      
+  869 |  1 fmradio.s    578 | Code        | 00 |         |    3 | 00/0462 : 69 08 00    |                      adc       #8             
+  870 |  1 fmradio.s    579 | Code        | 00 |  2      |    3 | 00/0465 : 8D 4B 04    |                      sta       freqCURRENT    
+  871 |  1 fmradio.s    580 | Code        | 00 |         |    3 | 00/0468 : 82 80 FF    |                      brl       theHiddenCall  
+  872 |  1 fmradio.s    581 | Empty       | 00 |         |    0 | 00/046B               |                                               
+  873 |  1 fmradio.s    582 | Comment     | 00 |         |    0 | 00/046B               | *------------------------------------------------
+  874 |  1 fmradio.s    583 | Comment     | 00 |         |    0 | 00/046B               | *
+  875 |  1 fmradio.s    584 | Comment     | 00 |         |    0 | 00/046B               | * ADB TOOL SET ROUTINES
+  876 |  1 fmradio.s    585 | Comment     | 00 |         |    0 | 00/046B               | *
+  877 |  1 fmradio.s    586 | Comment     | 00 |         |    0 | 00/046B               | *------------------------------------------------
+  878 |  1 fmradio.s    587 | Empty       | 00 |         |    0 | 00/046B               |                                               
+  879 |  1 fmradio.s    588 | Comment     | 00 |         |    0 | 00/046B               | *-----------------------
+  880 |  1 fmradio.s    589 | Comment     | 00 |         |    0 | 00/046B               | * LISTEN routines to send
+  881 |  1 fmradio.s    590 | Comment     | 00 |         |    0 | 00/046B               | * data to the radio
+  882 |  1 fmradio.s    591 | Comment     | 00 |         |    0 | 00/046B               | *-----------------------
+  883 |  1 fmradio.s    592 | Empty       | 00 |         |    0 | 00/046B               |                                               
+  884 |  1 fmradio.s    593 | Empty       | 00 |         |    0 | 00/046B               | FMSendRegister1                               ; send volume & tone data to the FM Radio
+  885 |  1 fmradio.s    594 | Empty       | 00 |         |    0 | 00/046B               |                                               
+  886 |  1 fmradio.s    595 | Macro       | 00 |         |    0 | 00/046B               | ozunid_10            PushWord  #1+3           ; command (1) + data (3)
+  888 |  1 fmradio.s    595 | Code        | 00 |         |    3 | 00/046B : F4 04 00    |                      PEA       #1+3           
+  891 |  1 fmradio.s    596 | Macro       | 00 |         |    0 | 00/046E               |                      PushLong  #dataListen1   
+  895 |  1 fmradio.s    596 | Code        | 00 |  1 >>16 |    3 | 00/046E : F4 00 00    |                      PEA       #^#dataListen1 
+  902 |  1 fmradio.s    596 | Code        | 00 |  2      |    3 | 00/0471 : F4 86 04    |                      PEA       #dataListen1   
+  905 |  1 fmradio.s    597 | Macro       | 00 |         |    0 | 00/0474               |                      PushWord  #{%01000111}+3 ; + number of data bytes
+  907 |  1 fmradio.s    597 | Code        | 00 |         |    3 | 00/0474 : F4 4A 00    |                      PEA       #{%01000111}+3 
+  910 |  1 fmradio.s    598 | Macro       | 00 |         |    0 | 00/0477               |                      _SendInfo                 
+  912 |  1 fmradio.s    598 | Code        | 00 |         |    3 | 00/0477 : A2 09 09    |                      LDX       #$909          ; load tool call #
+  913 |  1 fmradio.s    598 | Code        | 00 |         |    4 | 00/047A : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+  914 |  1 fmradio.s    599 | Code        | 00 |         |    2 | 00/047E : 90 05       |                      bcc       FMLR1OK        
+  915 |  1 fmradio.s    600 | Code        | 00 |         |    3 | 00/0480 : C9 82 09    |                      cmp       #{$0982}       
+  916 |  1 fmradio.s    601 | Code        | 00 |         |    2 | 00/0483 : F0 E6       |                      beq       ozunid_10      
+  917 |  1 fmradio.s    602 | Code        | 00 |         |    1 | 00/0485 : 60          | FMLR1OK              rts                      
+  918 |  1 fmradio.s    603 | Empty       | 00 |         |    0 | 00/0486               |                                               
+  919 |  1 fmradio.s    604 | Comment     | 00 |         |    0 | 00/0486               | *-----------
+  920 |  1 fmradio.s    605 | Empty       | 00 |         |    0 | 00/0486               |                                               
+  921 |  1 fmradio.s    606 | Empty       | 00 |         |    0 | 00/0486               | dataListen1                                   
+  922 |  1 fmradio.s    607 | Data        | 00 |         |    1 | 00/0486 : 79          |                      dfb       %0111_10_01    ; ADB command: Address (0111) + Listen (10) + Register (01)
+  923 |  1 fmradio.s    608 | Data        | 00 |         |    1 | 00/0487 : 77          | volume               dfb       %0111_0111     ; volume (by increments of 0x11)
+  924 |  1 fmradio.s    609 | Data        | 00 |         |    1 | 00/0488 : 11          |                      dfb       %0001_0001     ; treble (1) and bass (1)
+  925 |  1 fmradio.s    610 | Data        | 00 |         |    1 | 00/0489 : 00          |                      dfb       %0000_0000     ; mute (off) & fading (normal)
+  926 |  1 fmradio.s    611 | Empty       | 00 |         |    0 | 00/048A               |                                               
+  927 |  1 fmradio.s    612 | Comment     | 00 |         |    0 | 00/048A               | *-----------------------
+  928 |  1 fmradio.s    613 | Empty       | 00 |         |    0 | 00/048A               |                                               
+  929 |  1 fmradio.s    614 | Empty       | 00 |         |    0 | 00/048A               | FMSendRegister2                               ; send FM frequency to the FM Radio
+  930 |  1 fmradio.s    615 | Empty       | 00 |         |    0 | 00/048A               |                                               
+  931 |  1 fmradio.s    616 | Macro       | 00 |         |    0 | 00/048A               | ozunid_11            PushWord  #1+3           ; command (1) + data (3)
+  933 |  1 fmradio.s    616 | Code        | 00 |         |    3 | 00/048A : F4 04 00    |                      PEA       #1+3           
+  936 |  1 fmradio.s    617 | Macro       | 00 |         |    0 | 00/048D               |                      PushLong  #dataListen2   
+  940 |  1 fmradio.s    617 | Code        | 00 |  1 >>16 |    3 | 00/048D : F4 00 00    |                      PEA       #^#dataListen2 
+  947 |  1 fmradio.s    617 | Code        | 00 |  2      |    3 | 00/0490 : F4 A5 04    |                      PEA       #dataListen2   
+  950 |  1 fmradio.s    618 | Macro       | 00 |         |    0 | 00/0493               |                      PushWord  #{%01000111}+3 ; + number of data bytes
+  952 |  1 fmradio.s    618 | Code        | 00 |         |    3 | 00/0493 : F4 4A 00    |                      PEA       #{%01000111}+3 
+  955 |  1 fmradio.s    619 | Macro       | 00 |         |    0 | 00/0496               |                      _SendInfo                 
+  957 |  1 fmradio.s    619 | Code        | 00 |         |    3 | 00/0496 : A2 09 09    |                      LDX       #$909          ; load tool call #
+  958 |  1 fmradio.s    619 | Code        | 00 |         |    4 | 00/0499 : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+  959 |  1 fmradio.s    620 | Code        | 00 |         |    2 | 00/049D : 90 05       |                      bcc       FMLR2OK        
+  960 |  1 fmradio.s    621 | Code        | 00 |         |    3 | 00/049F : C9 82 09    |                      cmp       #{$0982}       
+  961 |  1 fmradio.s    622 | Code        | 00 |         |    2 | 00/04A2 : F0 E6       |                      beq       ozunid_11      
+  962 |  1 fmradio.s    623 | Code        | 00 |         |    1 | 00/04A4 : 60          | FMLR2OK              rts                      
+  963 |  1 fmradio.s    624 | Empty       | 00 |         |    0 | 00/04A5               |                                               
+  964 |  1 fmradio.s    625 | Comment     | 00 |         |    0 | 00/04A5               | *-----------
+  965 |  1 fmradio.s    626 | Empty       | 00 |         |    0 | 00/04A5               |                                               
+  966 |  1 fmradio.s    627 | Empty       | 00 |         |    0 | 00/04A5               | dataListen2                                   
+  967 |  1 fmradio.s    628 | Data        | 00 |         |    1 | 00/04A5 : 7A          |                      dfb       %0111_10_10    ; ADB command: Address (0111) + Listen (10) + Register (10)
+  968 |  1 fmradio.s    629 | Data        | 00 |         |    1 | 00/04A6 : 41          |                      dfb       %0100_0001     ; Default value (0x41)
+  969 |  1 fmradio.s    630 | Data        | 00 |         |    2 | 00/04A7 : 25 00       | frequency            hex       2500           ; Frequency (107.5 MHz, big endian)
+  970 |  1 fmradio.s    631 | Empty       | 00 |         |    0 | 00/04A9               |                                               
+  971 |  1 fmradio.s    632 | Comment     | 00 |         |    0 | 00/04A9               | *-----------------------
+  972 |  1 fmradio.s    633 | Comment     | 00 |         |    0 | 00/04A9               | * TALK routines to get
+  973 |  1 fmradio.s    634 | Comment     | 00 |         |    0 | 00/04A9               | * data from the radio
+  974 |  1 fmradio.s    635 | Comment     | 00 |         |    0 | 00/04A9               | *-----------------------
+  975 |  1 fmradio.s    636 | Empty       | 00 |         |    0 | 00/04A9               |                                               
+  976 |  1 fmradio.s    637 | Empty       | 00 |         |    0 | 00/04A9               | FMTalkRegister0                               ; ask the FM Radio to talk to me on register 0
+  977 |  1 fmradio.s    638 | Empty       | 00 |         |    0 | 00/04A9               |                                               
+  978 |  1 fmradio.s    639 | Code        | 00 |  2      |    3 | 00/04A9 : A9 C7 04    |                      lda       #dataTalk0     
+  979 |  1 fmradio.s    640 | Code        | 00 |  2      |    3 | 00/04AC : 8D 4E 05    |                      sta       cpBuffer+1     
+  980 |  1 fmradio.s    641 | Empty       | 00 |         |    0 | 00/04AF               |                                               
+  981 |  1 fmradio.s    642 | Macro       | 00 |         |    0 | 00/04AF               | ozunid_12            PushLong  #completionRoutine
+  985 |  1 fmradio.s    642 | Code        | 00 |  1 >>16 |    3 | 00/04AF : F4 00 00    |                      PEA       #^#completionRoutine
+  992 |  1 fmradio.s    642 | Code        | 00 |  2      |    3 | 00/04B2 : F4 41 05    |                      PEA       #completionRoutine
+  995 |  1 fmradio.s    643 | Macro       | 00 |         |    0 | 00/04B5               |                      PushWord  #%11_00_0111   ; talk (11) + register (00) + address (0111)
+  997 |  1 fmradio.s    643 | Code        | 00 |         |    3 | 00/04B5 : F4 C7 00    |                      PEA       #%11_00_0111   
+ 1000 |  1 fmradio.s    644 | Macro       | 00 |         |    0 | 00/04B8               |                      _AsyncADBReceive                 
+ 1002 |  1 fmradio.s    644 | Code        | 00 |         |    3 | 00/04B8 : A2 09 0D    |                      LDX       #$D09          ; load tool call #
+ 1003 |  1 fmradio.s    644 | Code        | 00 |         |    4 | 00/04BB : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+ 1004 |  1 fmradio.s    645 | Code        | 00 |         |    2 | 00/04BF : 90 05       |                      bcc       FMTR0OK        
+ 1005 |  1 fmradio.s    646 | Code        | 00 |         |    3 | 00/04C1 : C9 82 09    |                      cmp       #{$0982}       
+ 1006 |  1 fmradio.s    647 | Code        | 00 |         |    2 | 00/04C4 : F0 E9       |                      beq       ozunid_12      
+ 1007 |  1 fmradio.s    648 | Code        | 00 |         |    1 | 00/04C6 : 60          | FMTR0OK              rts                      
+ 1008 |  1 fmradio.s    649 | Empty       | 00 |         |    0 | 00/04C7               |                                               
+ 1009 |  1 fmradio.s    650 | Comment     | 00 |         |    0 | 00/04C7               | *-----------
+ 1010 |  1 fmradio.s    651 | Empty       | 00 |         |    0 | 00/04C7               |                                               
+ 1011 |  1 fmradio.s    652 | Data        | 00 |         |    8 | 00/04C7 : 00 00 00 00 | dataTalk0            ds        8              ; unknown format
+      |                     |             |    |         |      |           00 00 00 00 |
+ 1012 |  1 fmradio.s    653 | Empty       | 00 |         |    0 | 00/04CF               |                                               
+ 1013 |  1 fmradio.s    654 | Comment     | 00 |         |    0 | 00/04CF               | *-----------------------
+ 1014 |  1 fmradio.s    655 | Empty       | 00 |         |    0 | 00/04CF               |                                               
+ 1015 |  1 fmradio.s    656 | Empty       | 00 |         |    0 | 00/04CF               | FMTalkRegister1                               ; ask the FM Radio to talk to me on register 1
+ 1016 |  1 fmradio.s    657 | Empty       | 00 |         |    0 | 00/04CF               |                                               
+ 1017 |  1 fmradio.s    658 | Code        | 00 |  2      |    3 | 00/04CF : A9 ED 04    |                      lda       #dataTalk1     
+ 1018 |  1 fmradio.s    659 | Code        | 00 |  2      |    3 | 00/04D2 : 8D 4E 05    |                      sta       cpBuffer+1     
+ 1019 |  1 fmradio.s    660 | Empty       | 00 |         |    0 | 00/04D5               |                                               
+ 1020 |  1 fmradio.s    661 | Macro       | 00 |         |    0 | 00/04D5               | ozunid_13            PushLong  #completionRoutine
+ 1024 |  1 fmradio.s    661 | Code        | 00 |  1 >>16 |    3 | 00/04D5 : F4 00 00    |                      PEA       #^#completionRoutine
+ 1031 |  1 fmradio.s    661 | Code        | 00 |  2      |    3 | 00/04D8 : F4 41 05    |                      PEA       #completionRoutine
+ 1034 |  1 fmradio.s    662 | Macro       | 00 |         |    0 | 00/04DB               |                      PushWord  #%11_01_0111   ; talk (11) + register (01) + address (0111)
+ 1036 |  1 fmradio.s    662 | Code        | 00 |         |    3 | 00/04DB : F4 D7 00    |                      PEA       #%11_01_0111   
+ 1039 |  1 fmradio.s    663 | Macro       | 00 |         |    0 | 00/04DE               |                      _AsyncADBReceive                 
+ 1041 |  1 fmradio.s    663 | Code        | 00 |         |    3 | 00/04DE : A2 09 0D    |                      LDX       #$D09          ; load tool call #
+ 1042 |  1 fmradio.s    663 | Code        | 00 |         |    4 | 00/04E1 : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+ 1043 |  1 fmradio.s    664 | Code        | 00 |         |    2 | 00/04E5 : 90 05       |                      bcc       FMTR1OK        
+ 1044 |  1 fmradio.s    665 | Code        | 00 |         |    3 | 00/04E7 : C9 82 09    |                      cmp       #{$0982}       
+ 1045 |  1 fmradio.s    666 | Code        | 00 |         |    2 | 00/04EA : F0 E9       |                      beq       ozunid_13      
+ 1046 |  1 fmradio.s    667 | Code        | 00 |         |    1 | 00/04EC : 60          | FMTR1OK              rts                      
+ 1047 |  1 fmradio.s    668 | Empty       | 00 |         |    0 | 00/04ED               |                                               
+ 1048 |  1 fmradio.s    669 | Comment     | 00 |         |    0 | 00/04ED               | *-----------
+ 1049 |  1 fmradio.s    670 | Empty       | 00 |         |    0 | 00/04ED               |                                               
+ 1050 |  1 fmradio.s    671 | Data        | 00 |         |    1 | 00/04ED : 00          | dataTalk1            ds        1              ; volume
+ 1051 |  1 fmradio.s    672 | Data        | 00 |         |    1 | 00/04EE : 00          |                      ds        1              ; tone
+ 1052 |  1 fmradio.s    673 | Data        | 00 |         |    1 | 00/04EF : 00          |                      ds        1              ; mute / fading
+ 1053 |  1 fmradio.s    674 | Data        | 00 |         |    1 | 00/04F0 : 00          |                      ds        1              ; firmware revision
+ 1054 |  1 fmradio.s    675 | Data        | 00 |         |    4 | 00/04F1 : 00 00 00 00 |                      ds        4              ; padding
+ 1055 |  1 fmradio.s    676 | Empty       | 00 |         |    0 | 00/04F5               |                                               
+ 1056 |  1 fmradio.s    677 | Comment     | 00 |         |    0 | 00/04F5               | *-----------------------
+ 1057 |  1 fmradio.s    678 | Empty       | 00 |         |    0 | 00/04F5               |                                               
+ 1058 |  1 fmradio.s    679 | Empty       | 00 |         |    0 | 00/04F5               | FMTalkRegister2                               ; ask the FM Radio to talk to me on register 2
+ 1059 |  1 fmradio.s    680 | Empty       | 00 |         |    0 | 00/04F5               |                                               
+ 1060 |  1 fmradio.s    681 | Code        | 00 |  2      |    3 | 00/04F5 : A9 13 05    |                      lda       #dataTalk2     
+ 1061 |  1 fmradio.s    682 | Code        | 00 |  2      |    3 | 00/04F8 : 8D 4E 05    |                      sta       cpBuffer+1     
+ 1062 |  1 fmradio.s    683 | Empty       | 00 |         |    0 | 00/04FB               |                                               
+ 1063 |  1 fmradio.s    684 | Macro       | 00 |         |    0 | 00/04FB               | ozunid_14            PushLong  #completionRoutine
+ 1067 |  1 fmradio.s    684 | Code        | 00 |  1 >>16 |    3 | 00/04FB : F4 00 00    |                      PEA       #^#completionRoutine
+ 1074 |  1 fmradio.s    684 | Code        | 00 |  2      |    3 | 00/04FE : F4 41 05    |                      PEA       #completionRoutine
+ 1077 |  1 fmradio.s    685 | Macro       | 00 |         |    0 | 00/0501               |                      PushWord  #%11_10_0111   ; talk (11) + register (10) + address (0111)
+ 1079 |  1 fmradio.s    685 | Code        | 00 |         |    3 | 00/0501 : F4 E7 00    |                      PEA       #%11_10_0111   
+ 1082 |  1 fmradio.s    686 | Macro       | 00 |         |    0 | 00/0504               |                      _AsyncADBReceive                 
+ 1084 |  1 fmradio.s    686 | Code        | 00 |         |    3 | 00/0504 : A2 09 0D    |                      LDX       #$D09          ; load tool call #
+ 1085 |  1 fmradio.s    686 | Code        | 00 |         |    4 | 00/0507 : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+ 1086 |  1 fmradio.s    687 | Code        | 00 |         |    2 | 00/050B : 90 05       |                      bcc       FMTR2OK        
+ 1087 |  1 fmradio.s    688 | Code        | 00 |         |    3 | 00/050D : C9 82 09    |                      cmp       #{$0982}       
+ 1088 |  1 fmradio.s    689 | Code        | 00 |         |    2 | 00/0510 : F0 E9       |                      beq       ozunid_14      
+ 1089 |  1 fmradio.s    690 | Code        | 00 |         |    1 | 00/0512 : 60          | FMTR2OK              rts                      
+ 1090 |  1 fmradio.s    691 | Empty       | 00 |         |    0 | 00/0513               |                                               
+ 1091 |  1 fmradio.s    692 | Comment     | 00 |         |    0 | 00/0513               | *-----------
+ 1092 |  1 fmradio.s    693 | Empty       | 00 |         |    0 | 00/0513               |                                               
+ 1093 |  1 fmradio.s    694 | Data        | 00 |         |    1 | 00/0513 : 00          | dataTalk2            ds        1              ; FM indicators
+ 1094 |  1 fmradio.s    695 | Data        | 00 |         |    2 | 00/0514 : 00 00       |                      ds        2              ; frequency
+ 1095 |  1 fmradio.s    696 | Data        | 00 |         |    5 | 00/0516 : 00 00 00 00 |                      ds        5              ; padding
+      |                     |             |    |         |      |           00          |
+ 1096 |  1 fmradio.s    697 | Empty       | 00 |         |    0 | 00/051B               |                                               
+ 1097 |  1 fmradio.s    698 | Comment     | 00 |         |    0 | 00/051B               | *-----------------------
+ 1098 |  1 fmradio.s    699 | Empty       | 00 |         |    0 | 00/051B               |                                               
+ 1099 |  1 fmradio.s    700 | Empty       | 00 |         |    0 | 00/051B               | fmTalkRegister3                               ; ask the FM Radio to talk to me on register 3
+ 1100 |  1 fmradio.s    701 | Empty       | 00 |         |    0 | 00/051B               |                                               
+ 1101 |  1 fmradio.s    702 | Code        | 00 |  2      |    3 | 00/051B : A9 39 05    |                      lda       #dataTalk3     
+ 1102 |  1 fmradio.s    703 | Code        | 00 |  2      |    3 | 00/051E : 8D 4E 05    |                      sta       cpBuffer+1     
+ 1103 |  1 fmradio.s    704 | Empty       | 00 |         |    0 | 00/0521               |                                               
+ 1104 |  1 fmradio.s    705 | Macro       | 00 |         |    0 | 00/0521               | ozunid_15            PushLong  #completionRoutine
+ 1108 |  1 fmradio.s    705 | Code        | 00 |  1 >>16 |    3 | 00/0521 : F4 00 00    |                      PEA       #^#completionRoutine
+ 1115 |  1 fmradio.s    705 | Code        | 00 |  2      |    3 | 00/0524 : F4 41 05    |                      PEA       #completionRoutine
+ 1118 |  1 fmradio.s    706 | Macro       | 00 |         |    0 | 00/0527               |                      PushWord  #%11_11_0111   ; talk (11) + register (11) + address (0111)
+ 1120 |  1 fmradio.s    706 | Code        | 00 |         |    3 | 00/0527 : F4 F7 00    |                      PEA       #%11_11_0111   
+ 1123 |  1 fmradio.s    707 | Macro       | 00 |         |    0 | 00/052A               |                      _AsyncADBReceive                 
+ 1125 |  1 fmradio.s    707 | Code        | 00 |         |    3 | 00/052A : A2 09 0D    |                      LDX       #$D09          ; load tool call #
+ 1126 |  1 fmradio.s    707 | Code        | 00 |         |    4 | 00/052D : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+ 1127 |  1 fmradio.s    708 | Code        | 00 |         |    2 | 00/0531 : 90 05       |                      bcc       FMTR3OK        
+ 1128 |  1 fmradio.s    709 | Code        | 00 |         |    3 | 00/0533 : C9 82 09    |                      cmp       #{$0982}       
+ 1129 |  1 fmradio.s    710 | Code        | 00 |         |    2 | 00/0536 : F0 E9       |                      beq       ozunid_15      
+ 1130 |  1 fmradio.s    711 | Code        | 00 |         |    1 | 00/0538 : 60          | FMTR3OK              rts                      
+ 1131 |  1 fmradio.s    712 | Empty       | 00 |         |    0 | 00/0539               |                                               
+ 1132 |  1 fmradio.s    713 | Comment     | 00 |         |    0 | 00/0539               | *-----------
+ 1133 |  1 fmradio.s    714 | Empty       | 00 |         |    0 | 00/0539               |                                               
+ 1134 |  1 fmradio.s    715 | Data        | 00 |         |    2 | 00/0539 : 00 00       | dataTalk3            ds        2              ; address & handler
+ 1135 |  1 fmradio.s    716 | Data        | 00 |         |    6 | 00/053B : 00 00 00 00 |                      ds        6              ; padding
+      |                     |             |    |         |      |           00 00       |
+ 1136 |  1 fmradio.s    717 | Empty       | 00 |         |    0 | 00/0541               |                                               
+ 1137 |  1 fmradio.s    718 | Comment     | 00 |         |    0 | 00/0541               | *-----------------------
+ 1138 |  1 fmradio.s    719 | Empty       | 00 |         |    0 | 00/0541               |                                               
+ 1139 |  1 fmradio.s    720 | Directive   | 11 |         |    0 | 00/0541               |                      mx        %11            ; enter the 8-bit world
+ 1140 |  1 fmradio.s    721 | Empty       | 11 |         |    0 | 00/0541               |                                               
+ 1141 |  1 fmradio.s    722 | Empty       | 11 |         |    0 | 00/0541               | completionRoutine                             ; nearly standard ADB completion routine
+ 1142 |  1 fmradio.s    723 | Code        | 11 |         |    1 | 00/0541 : 0B          |                      phd                      
+ 1143 |  1 fmradio.s    724 | Code        | 11 |         |    1 | 00/0542 : 3B          |                      tsc                      
+ 1144 |  1 fmradio.s    725 | Code        | 11 |         |    1 | 00/0543 : 5B          |                      tcd                      
+ 1145 |  1 fmradio.s    726 | Code        | 11 |         |    2 | 00/0544 : A7 06       |                      lda       [6]            
+ 1146 |  1 fmradio.s    727 | Code        | 11 |         |    2 | 00/0546 : F0 0C       |                      beq       endpool        
+ 1147 |  1 fmradio.s    728 | Code        | 11 |         |    1 | 00/0548 : A8          |                      tay                      
+ 1148 |  1 fmradio.s    729 | Code        | 11 |         |    1 | 00/0549 : C8          |                      iny                      
+ 1149 |  1 fmradio.s    730 | Code        | 11 |         |    2 | 00/054A : B7 06       | ozunid_16            lda       [6],y          
+ 1150 |  1 fmradio.s    731 | Code        | 11 |         |    1 | 00/054C : BB          |                      tyx                      
+ 1151 |  1 fmradio.s    732 | Code        | 11 |  3      |    4 | 00/054D : 9F C7 04 00 | cpBuffer             stal      dataTalk0,x    ; patch this address please
+ 1152 |  1 fmradio.s    733 | Code        | 11 |         |    1 | 00/0551 : 88          |                      dey                      
+ 1153 |  1 fmradio.s    734 | Code        | 11 |         |    2 | 00/0552 : D0 F6       |                      bne       ozunid_16      
+ 1154 |  1 fmradio.s    735 | Code        | 11 |         |    1 | 00/0554 : 2B          | endpool              pld                      
+ 1155 |  1 fmradio.s    736 | Code        | 11 |         |    1 | 00/0555 : 6B          |                      rtl                      
+ 1156 |  1 fmradio.s    737 | Empty       | 11 |         |    0 | 00/0556               |                                               
+ 1157 |  1 fmradio.s    738 | Directive   | 00 |         |    0 | 00/0556               |                      mx        %00            ; back to the 16-bit world
+ 1158 |  1 fmradio.s    739 | Empty       | 00 |         |    0 | 00/0556               |                                               
+ 1159 |  1 fmradio.s    740 | Comment     | 00 |         |    0 | 00/0556               | *------------------------------------------------
+ 1160 |  1 fmradio.s    741 | Comment     | 00 |         |    0 | 00/0556               | *
+ 1161 |  1 fmradio.s    742 | Comment     | 00 |         |    0 | 00/0556               | * SUB-ROUTINES
+ 1162 |  1 fmradio.s    743 | Comment     | 00 |         |    0 | 00/0556               | *
+ 1163 |  1 fmradio.s    744 | Comment     | 00 |         |    0 | 00/0556               | *------------------------------------------------
+ 1164 |  1 fmradio.s    745 | Empty       | 00 |         |    0 | 00/0556               |                                               
+ 1165 |  1 fmradio.s    746 | Comment     | 00 |         |    0 | 00/0556               | *----------------------------
+ 1166 |  1 fmradio.s    747 | Comment     | 00 |         |    0 | 00/0556               | * TEXT ROUTINES
+ 1167 |  1 fmradio.s    748 | Comment     | 00 |         |    0 | 00/0556               | *----------------------------
+ 1168 |  1 fmradio.s    749 | Empty       | 00 |         |    0 | 00/0556               |                                               
+ 1169 |  1 fmradio.s    750 | Comment     | 00 |         |    0 | 00/0556               | *---------- Display a word
+ 1170 |  1 fmradio.s    751 | Empty       | 00 |         |    0 | 00/0556               |                                               
+ 1171 |  1 fmradio.s    752 | Code        | 00 |         |    1 | 00/0556 : 48          | showWORD             pha                      ; from a word to a string
+ 1172 |  1 fmradio.s    753 | Code        | 00 |         |    1 | 00/0557 : 48          |                      pha                      
+ 1173 |  1 fmradio.s    754 | Code        | 00 |         |    1 | 00/0558 : 48          |                      pha                      ; <= here, really
+ 1174 |  1 fmradio.s    755 | Macro       | 00 |         |    0 | 00/0559               |                      _HexIt                   
+ 1176 |  1 fmradio.s    755 | Code        | 00 |         |    3 | 00/0559 : A2 0B 2A    |                      LDX       #$2A0B         ; load tool call #
+ 1177 |  1 fmradio.s    755 | Code        | 00 |         |    4 | 00/055C : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+ 1178 |  1 fmradio.s    756 | Macro       | 00 |         |    0 | 00/0560               |                      PullLong  strHEX         
+ 1181 |  1 fmradio.s    756 | Code        | 00 |         |    1 | 00/0560 : 68          |                      PLA                      
+ 1183 |  1 fmradio.s    756 | Code        | 00 |  2      |    3 | 00/0561 : 8D 76 05    |                      STA       strHEX         
+ 1188 |  1 fmradio.s    756 | Code        | 00 |         |    1 | 00/0564 : 68          |                      PLA                      
+ 1190 |  1 fmradio.s    756 | Code        | 00 |  2      |    3 | 00/0565 : 8D 78 05    |                      STA       strHEX+2       
+ 1196 |  1 fmradio.s    757 | Empty       | 00 |         |    0 | 00/0568               |                                               
+ 1197 |  1 fmradio.s    758 | Macro       | 00 |         |    0 | 00/0568               |                      PushLong  #strHEX        ; show the string
+ 1201 |  1 fmradio.s    758 | Code        | 00 |  1 >>16 |    3 | 00/0568 : F4 00 00    |                      PEA       #^#strHEX      
+ 1208 |  1 fmradio.s    758 | Code        | 00 |  2      |    3 | 00/056B : F4 76 05    |                      PEA       #strHEX        
+ 1211 |  1 fmradio.s    759 | Macro       | 00 |         |    0 | 00/056E               |                      _WriteCString                 
+ 1213 |  1 fmradio.s    759 | Code        | 00 |         |    3 | 00/056E : A2 0C 20    |                      LDX       #$200C         ; load tool call #
+ 1214 |  1 fmradio.s    759 | Code        | 00 |         |    4 | 00/0571 : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+ 1215 |  1 fmradio.s    760 | Code        | 00 |         |    1 | 00/0575 : 60          |                      rts                      
+ 1216 |  1 fmradio.s    761 | Empty       | 00 |         |    0 | 00/0576               |                                               
+ 1217 |  1 fmradio.s    762 | Comment     | 00 |         |    0 | 00/0576               | *--- Data
+ 1218 |  1 fmradio.s    763 | Empty       | 00 |         |    0 | 00/0576               |                                               
+ 1219 |  1 fmradio.s    764 | Data        | 00 |         |    5 | 00/0576 : 30 30 30 30 | strHEX               asc       '0000'00       
+      |                     |             |    |         |      |           00          |
+ 1220 |  1 fmradio.s    765 | Empty       | 00 |         |    0 | 00/057B               |                                               
+ 1221 |  1 fmradio.s    766 | Comment     | 00 |         |    0 | 00/057B               | *---------- Wait for a key in a range 0-Acc
+ 1222 |  1 fmradio.s    767 | Comment     | 00 |         |    0 | 00/057B               | * A: high key
+ 1223 |  1 fmradio.s    768 | Comment     | 00 |         |    0 | 00/057B               | * X: high ptr to C string
+ 1224 |  1 fmradio.s    769 | Comment     | 00 |         |    0 | 00/057B               | * Y: low ptr to C string
+ 1225 |  1 fmradio.s    770 | Empty       | 00 |         |    0 | 00/057B               |                                               
+ 1226 |  1 fmradio.s    771 | Code        | 00 |  2      |    3 | 00/057B : 8D BD 05    | keyINRANGE           sta       keyHIGH        
+ 1227 |  1 fmradio.s    772 | Code        | 00 |  2      |    3 | 00/057E : 8C B9 05    |                      sty       strKEY         
+ 1228 |  1 fmradio.s    773 | Code        | 00 |  2      |    3 | 00/0581 : 8E BB 05    |                      stx       strKEY+2       
+ 1229 |  1 fmradio.s    774 | Empty       | 00 |         |    0 | 00/0584               |                                               
+ 1230 |  1 fmradio.s    775 | Macro       | 00 |         |    0 | 00/0584               | ozunid_17            PushLong  strKEY         
+ 1238 |  1 fmradio.s    775 | Code        | 00 |  2      |    3 | 00/0584 : AD BB 05    |                      LDA       strKEY+2       
+ 1239 |  1 fmradio.s    775 | Code        | 00 |         |    1 | 00/0587 : 48          |                      PHA                      
+ 1247 |  1 fmradio.s    775 | Code        | 00 |  2      |    3 | 00/0588 : AD B9 05    |                      LDA       strKEY         
+ 1248 |  1 fmradio.s    775 | Code        | 00 |         |    1 | 00/058B : 48          |                      PHA                      
+ 1250 |  1 fmradio.s    776 | Macro       | 00 |         |    0 | 00/058C               |                      _WriteCString                 
+ 1252 |  1 fmradio.s    776 | Code        | 00 |         |    3 | 00/058C : A2 0C 20    |                      LDX       #$200C         ; load tool call #
+ 1253 |  1 fmradio.s    776 | Code        | 00 |         |    4 | 00/058F : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+ 1254 |  1 fmradio.s    777 | Empty       | 00 |         |    0 | 00/0593               |                                               
+ 1255 |  1 fmradio.s    778 | Macro       | 00 |         |    0 | 00/0593               |                      PushWord  #0             
+ 1257 |  1 fmradio.s    778 | Code        | 00 |         |    3 | 00/0593 : F4 00 00    |                      PEA       #0             
+ 1260 |  1 fmradio.s    779 | Macro       | 00 |         |    0 | 00/0596               |                      PushWord  #1             ; echo char
+ 1262 |  1 fmradio.s    779 | Code        | 00 |         |    3 | 00/0596 : F4 01 00    |                      PEA       #1             
+ 1265 |  1 fmradio.s    780 | Macro       | 00 |         |    0 | 00/0599               |                      _ReadChar                 
+ 1267 |  1 fmradio.s    780 | Code        | 00 |         |    3 | 00/0599 : A2 0C 22    |                      LDX       #$220C         ; load tool call #
+ 1268 |  1 fmradio.s    780 | Code        | 00 |         |    4 | 00/059C : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+ 1269 |  1 fmradio.s    781 | Code        | 00 |         |    1 | 00/05A0 : 68          |                      pla                      
+ 1270 |  1 fmradio.s    782 | Code        | 00 |         |    3 | 00/05A1 : 29 FF 00    |                      and       #$ff           
+ 1271 |  1 fmradio.s    783 | Code        | 00 |         |    3 | 00/05A4 : C9 B0 00    |                      cmp       #"0"           
+ 1272 |  1 fmradio.s    784 | Code        | 00 |         |    2 | 00/05A7 : 90 DB       |                      bcc       ozunid_17      
+ 1273 |  1 fmradio.s    785 | Code        | 00 |  2      |    3 | 00/05A9 : CD BD 05    |                      cmp       keyHIGH        
+ 1274 |  1 fmradio.s    786 | Code        | 00 |         |    2 | 00/05AC : 90 04       |                      bcc       keyINRANGE9    
+ 1275 |  1 fmradio.s    787 | Code        | 00 |         |    2 | 00/05AE : F0 02       |                      beq       keyINRANGE9    
+ 1276 |  1 fmradio.s    788 | Code        | 00 |         |    2 | 00/05B0 : 80 D2       |                      bra       ozunid_17      
+ 1277 |  1 fmradio.s    789 | Empty       | 00 |         |    0 | 00/05B2               |                                               
+ 1278 |  1 fmradio.s    790 | Code        | 00 |         |    1 | 00/05B2 : 38          | keyINRANGE9          sec                      
+ 1279 |  1 fmradio.s    791 | Code        | 00 |         |    3 | 00/05B3 : E9 B0 00    |                      sbc       #"0"           
+ 1280 |  1 fmradio.s    792 | Code        | 00 |         |    1 | 00/05B6 : 48          |                      pha                      
+ 1281 |  1 fmradio.s    793 | Code        | 00 |         |    2 | 00/05B7 : 80 45       |                      bra       waitKEY8       
+ 1282 |  1 fmradio.s    794 | Empty       | 00 |         |    0 | 00/05B9               |                                               
+ 1283 |  1 fmradio.s    795 | Comment     | 00 |         |    0 | 00/05B9               | *--- Data
+ 1284 |  1 fmradio.s    796 | Empty       | 00 |         |    0 | 00/05B9               |                                               
+ 1285 |  1 fmradio.s    797 | Data        | 00 |         |    4 | 00/05B9 : 00 00 00 00 | strKEY               ds        4              ; pointer to string
+ 1286 |  1 fmradio.s    798 | Data        | 00 |         |    2 | 00/05BD : 00 00       | keyHIGH              ds        2              
+ 1287 |  1 fmradio.s    799 | Empty       | 00 |         |    0 | 00/05BF               |                                               
+ 1288 |  1 fmradio.s    800 | Comment     | 00 |         |    0 | 00/05BF               | *---------- Wait for a key
+ 1289 |  1 fmradio.s    801 | Empty       | 00 |         |    0 | 00/05BF               |                                               
+ 1290 |  1 fmradio.s    802 | Macro       | 00 |         |    0 | 00/05BF               | waitKEY              PushWord  #$0d           
+ 1292 |  1 fmradio.s    802 | Code        | 00 |         |    3 | 00/05BF : F4 0D 00    |                      PEA       #$0d           
+ 1295 |  1 fmradio.s    803 | Macro       | 00 |         |    0 | 00/05C2               |                      _WriteChar                 
+ 1297 |  1 fmradio.s    803 | Code        | 00 |         |    3 | 00/05C2 : A2 0C 18    |                      LDX       #$180C         ; load tool call #
+ 1298 |  1 fmradio.s    803 | Code        | 00 |         |    4 | 00/05C5 : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+ 1299 |  1 fmradio.s    804 | Empty       | 00 |         |    0 | 00/05C9               |                                               
+ 1300 |  1 fmradio.s    805 | Macro       | 00 |         |    0 | 00/05C9               |                      PushWord  #0             
+ 1302 |  1 fmradio.s    805 | Code        | 00 |         |    3 | 00/05C9 : F4 00 00    |                      PEA       #0             
+ 1305 |  1 fmradio.s    806 | Macro       | 00 |         |    0 | 00/05CC               |                      PushWord  #0             ; don't echo char
+ 1307 |  1 fmradio.s    806 | Code        | 00 |         |    3 | 00/05CC : F4 00 00    |                      PEA       #0             
+ 1310 |  1 fmradio.s    807 | Macro       | 00 |         |    0 | 00/05CF               |                      _ReadChar                 
+ 1312 |  1 fmradio.s    807 | Code        | 00 |         |    3 | 00/05CF : A2 0C 22    |                      LDX       #$220C         ; load tool call #
+ 1313 |  1 fmradio.s    807 | Code        | 00 |         |    4 | 00/05D2 : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+ 1314 |  1 fmradio.s    808 | Code        | 00 |         |    2 | 00/05D6 : 80 1A       |                      bra       waitKEY1       ; go below
+ 1315 |  1 fmradio.s    809 | Empty       | 00 |         |    0 | 00/05D8               |                                               
+ 1316 |  1 fmradio.s    810 | Comment     | 00 |         |    0 | 00/05D8               | *---------- Wait for a key
+ 1317 |  1 fmradio.s    811 | Empty       | 00 |         |    0 | 00/05D8               |                                               
+ 1318 |  1 fmradio.s    812 | Macro       | 00 |         |    0 | 00/05D8               | waitFORKEY           PushLong  #strINPUT      
+ 1322 |  1 fmradio.s    812 | Code        | 00 |  1 >>16 |    3 | 00/05D8 : F4 00 00    |                      PEA       #^#strINPUT    
+ 1329 |  1 fmradio.s    812 | Code        | 00 |  2      |    3 | 00/05DB : F4 0A 06    |                      PEA       #strINPUT      
+ 1332 |  1 fmradio.s    813 | Macro       | 00 |         |    0 | 00/05DE               |                      _WriteCString                 
+ 1334 |  1 fmradio.s    813 | Code        | 00 |         |    3 | 00/05DE : A2 0C 20    |                      LDX       #$200C         ; load tool call #
+ 1335 |  1 fmradio.s    813 | Code        | 00 |         |    4 | 00/05E1 : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+ 1336 |  1 fmradio.s    814 | Empty       | 00 |         |    0 | 00/05E5               |                                               
+ 1337 |  1 fmradio.s    815 | Macro       | 00 |         |    0 | 00/05E5               |                      PushWord  #0             ; wait for key
+ 1339 |  1 fmradio.s    815 | Code        | 00 |         |    3 | 00/05E5 : F4 00 00    |                      PEA       #0             
+ 1342 |  1 fmradio.s    816 | Macro       | 00 |         |    0 | 00/05E8               |                      PushWord  #1             ; echo char
+ 1344 |  1 fmradio.s    816 | Code        | 00 |         |    3 | 00/05E8 : F4 01 00    |                      PEA       #1             
+ 1347 |  1 fmradio.s    817 | Macro       | 00 |         |    0 | 00/05EB               |                      _ReadChar                 
+ 1349 |  1 fmradio.s    817 | Code        | 00 |         |    3 | 00/05EB : A2 0C 22    |                      LDX       #$220C         ; load tool call #
+ 1350 |  1 fmradio.s    817 | Code        | 00 |         |    4 | 00/05EE : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+ 1351 |  1 fmradio.s    818 | Empty       | 00 |         |    0 | 00/05F2               |                                               
+ 1352 |  1 fmradio.s    819 | Code        | 00 |         |    2 | 00/05F2 : A3 01       | waitKEY1             lda       1,s            ; check CR
+ 1353 |  1 fmradio.s    820 | Code        | 00 |         |    3 | 00/05F4 : 29 FF 00    |                      and       #$ff           ; of typed
+ 1354 |  1 fmradio.s    821 | Code        | 00 |         |    2 | 00/05F7 : 83 01       |                      sta       1,s            ; in char
+ 1355 |  1 fmradio.s    822 | Code        | 00 |         |    3 | 00/05F9 : C9 8D 00    |                      cmp       #$8d           
+ 1356 |  1 fmradio.s    823 | Code        | 00 |         |    2 | 00/05FC : F0 0A       |                      beq       waitKEY9       
+ 1357 |  1 fmradio.s    824 | Empty       | 00 |         |    0 | 00/05FE               |                                               
+ 1358 |  1 fmradio.s    825 | Macro       | 00 |         |    0 | 00/05FE               | waitKEY8             PushWord  #$0d           ; return
+ 1360 |  1 fmradio.s    825 | Code        | 00 |         |    3 | 00/05FE : F4 0D 00    |                      PEA       #$0d           
+ 1363 |  1 fmradio.s    826 | Macro       | 00 |         |    0 | 00/0601               |                      _WriteChar                 
+ 1365 |  1 fmradio.s    826 | Code        | 00 |         |    3 | 00/0601 : A2 0C 18    |                      LDX       #$180C         ; load tool call #
+ 1366 |  1 fmradio.s    826 | Code        | 00 |         |    4 | 00/0604 : 22 00 00 E1 |                      JSL       $E10000        ; go to dispatcher
+ 1367 |  1 fmradio.s    827 | Empty       | 00 |         |    0 | 00/0608               |                                               
+ 1368 |  1 fmradio.s    828 | Code        | 00 |         |    1 | 00/0608 : 68          | waitKEY9             pla                      ; restore entered char
+ 1369 |  1 fmradio.s    829 | Code        | 00 |         |    1 | 00/0609 : 60          |                      rts                      
+ 1370 |  1 fmradio.s    830 | Empty       | 00 |         |    0 | 00/060A               |                                               
+ 1371 |  1 fmradio.s    831 | Comment     | 00 |         |    0 | 00/060A               | *--- Data
+ 1372 |  1 fmradio.s    832 | Empty       | 00 |         |    0 | 00/060A               |                                               
+ 1373 |  1 fmradio.s    833 | Data        | 00 |         |   18 | 00/060A : 53 65 6C 65 | strINPUT             asc       'Select an entry: '00
+      |                     |             |    |         |      |           63 74 20 61 |
+      |                     |             |    |         |      |           6E 20 65 6E |
+      |                     |             |    |         |      |           74 72 79 3A |
+      |                     |             |    |         |      |           20 00       |
+ 1374 |  1 fmradio.s    834 | Empty       | 00 |         |    0 | 00/061C               |                                               
+ 1375 |  1 fmradio.s    835 | Comment     | 00 |         |    0 | 00/061C               | *----------------------------
+ 1376 |  1 fmradio.s    836 | Comment     | 00 |         |    0 | 00/061C               | * DATA
+ 1377 |  1 fmradio.s    837 | Comment     | 00 |         |    0 | 00/061C               | *----------------------------
+ 1378 |  1 fmradio.s    838 | Empty       | 00 |         |    0 | 00/061C               |                                               
+ 1379 |  1 fmradio.s    839 | Comment     | 00 |         |    0 | 00/061C               | *--- GS/OS
+ 1380 |  1 fmradio.s    840 | Empty       | 00 |         |    0 | 00/061C               |                                               
+ 1381 |  1 fmradio.s    841 | Data        | 00 |         |    2 | 00/061C : 02 00       | proQUIT              dw        2              ; pcount
+ 1382 |  1 fmradio.s    842 | Data        | 00 |         |    4 | 00/061E : 00 00 00 00 |                      ds        4              ; pathname
+ 1383 |  1 fmradio.s    843 | Data        | 00 |         |    2 | 00/0622 : 00 00       |                      ds        2              ; flags
+ 1384 |  1 fmradio.s    844 | Empty       | 00 |         |    0 | 00/0624               |                                               
+ 1385 |  1 fmradio.s    845 | Comment     | 00 |         |    0 | 00/0624               | *---------- Application
+ 1386 |  1 fmradio.s    846 | Empty       | 00 |         |    0 | 00/0624               |                                               
+ 1387 |  1 fmradio.s    847 | Data        | 00 |         |    2 | 00/0624 : 00 00       | appID                ds        2              
+ 1388 |  1 fmradio.s    848 | Data        | 00 |         |    2 | 00/0626 : 00 00       | myID                 ds        2              
+ 1389 |  1 fmradio.s    849 | Empty       | 00 |         |    0 | 00/0628               |                                               
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

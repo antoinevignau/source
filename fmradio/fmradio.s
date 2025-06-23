@@ -67,8 +67,8 @@ GSOS	=	$e100a8
 *   ADDR 10 RR LISTEN
 *   ADDR 11 RR TALK
 *
-*   ADDR = 0..15
-*   RR = 0..3
+*   ADDR = 0..15 - device address
+*   RR = 0..3 - register
 *
 
 *---------- Apple IIgs SendInfo ADB Commands (the ADB Tool Set *only*)
@@ -109,7 +109,7 @@ baseFREQ	=	$0358	; (-)10.7 MHz
 * Register 2 - FM station selection
 * 
 * First byte
-* In a Listen 2 command ,the fist byte seems to always be 0x41. In a Talk command, the bits of the first bytes are as follows:
+* In a Listen 2 command, the fist byte seems to always be 0x41. In a Talk command, the bits of the first bytes are as follows:
 *
 * Bit  Description
 *   7  FM stereo indicator, active high

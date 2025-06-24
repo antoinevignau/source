@@ -10,6 +10,8 @@
 	typ	NDA
 	dsk	OpenSesame.l
 
+BUFFSIZE	=	510
+
 *------------------------------
 
 	use	4/Desk.Macs
@@ -25,15 +27,20 @@
 	use	4/Window.Macs
 	
 *------------------------------
+* NDA
+*------------------------------
 
-            ADRL  openROUTINE	; Open routine
-            ADRL  closeROUTINE	; Close routine
-            ADRL  actionROUTINE	; Action routine
-            ADRL  initROUTINE	; Init routine
-            DW    $FFFF	; Period
-            DW    $FFFF	; Event mask
-L0014       ASC   '##OpenSesame\H**'00
+	ADRL	openROUTINE	; Open routine
+	ADRL	closeROUTINE	; Close routine
+	ADRL	actionROUTINE	; Action routine
+	ADRL	initROUTINE	; Init routine
+	DW	$FFFF	; Period
+	DW	$FFFF	; Event mask
+	ASC	'##OpenSesame\H'
+menuID	ASC	'**'00
 
+*------------------------------
+* ROUTINES 
 *------------------------------
 
 closeROUTINE
@@ -42,45 +49,53 @@ initROUTINE
             RTL
 
 *------------------------------
+* OPEN ROUTINE
+*------------------------------
 
 openROUTINE
-            PHB
+            PHB		; my bank
             PHK
             PLB
             _WaitCursor
-            PHA
+
+            PHA		; are we running on...
             _QDVersion
             PLA
             AND   #$0FFF
-            CMP   #$0307
-            BCS   L0056
-            LDA   L0014+$E
+            CMP   #$0307	; System 6 or above?
+            BCS   L0056	; yes
+
+            LDA   menuID	; no, disable me
             PHA
             _DisableMItem
             _SysBeep
-            BRL   L0097
-L0056       PHA
+            BRL   exitNOW
+
+L0056       PHA		; get an ID
             _MMStartUp
             PLA
-            STA   L02F3
-            JSR   L01EB
-            BCS   L0097
-            PHA
-            PEA   ^L00A7
-            PEA   L00A7
+            STA   memID
+            JSR   doOPEN	; do the action
+            BCS   exitNOW
+
+            PHA		; add a task
+            PEA   ^myTASK
+            PEA   myTASK
             _SchAddTask
             PLA
-            BNE   L0097
-            _InitCursor
+            BNE   exitNOW	; added successfully
+
+            _InitCursor	; failed to add task
             PHA
             PEA   $0020
             PEA   $0000
             PEA   $0000
-            PEA   ^L0558
-            PEA   L0558
+            PEA   ^errNOTASK
+            PEA   errNOTASK
             _AlertWindow
             PLA
-L0097       LDA   #$0000
+
+exitNOW     LDA   #$0000	; we are good, exit
             STA   $07,S
             STA   $05,S
             _InitCursor
@@ -88,85 +103,100 @@ L0097       LDA   #$0000
             RTL
 
 *------------------------------
+* TASK
+*------------------------------
 
-L00A7       PHB
+myTASK      PHB
             PHK
             PLB
-            PEA   $0104
+
+            PEA   $0104	; finderSaysBeforeOpen
             PEA   $8000
             PEA   $0000
             PEA   $0000
-            PEA   ^L02F5
-            PEA   L02F5
-            PEA   ^L030D
-            PEA   L030D
+            PEA   ^dataIn
+            PEA   dataIn
+            PEA   ^dataOut
+            PEA   dataOut
             _SendRequest
-            BCC   L00FC
-            PEA   $0105
+            BCC   taskOK
+
+            PEA   $0105	; finderSaysOpenFailed
             PEA   $8000
             PEA   $0000
             PEA   $0000
-            PEA   ^L02F5
-            PEA   L02F5
-            PEA   ^L030D
-            PEA   L030D
+            PEA   ^dataIn
+            PEA   dataIn
+            PEA   ^dataOut
+            PEA   dataOut
             _SendRequest
-            BCC   L00FC
-            STZ   L0102
-            PEA   ^L00FE
-            PEA   L00FE
+            BCC   taskOK
+
+            STZ   myQUEUE+4
+            PEA   ^myQUEUE
+            PEA   myQUEUE
             _AddToRunQ
-L00FC       PLB
+
+taskOK      PLB
             RTL
 
 *------------------------------
+* TELL FOUND NO ONE
+*------------------------------
 
-L00FE       ADRL  $00000000
-L0102       DW    $0000
+myQUEUE     ADRL  $00000000
+            DW    $0000
             DW    $A55A
             ADRL  $00000000
 
-            PEA   ^L00FE
-            PEA   L00FE
+            PEA   ^myQUEUE	; remove me
+            PEA   myQUEUE
             _RemoveFromRunQ
-            PHA
+
+            PHA		; save the cursor
             PHA
             _GetCursorAdr
-            _InitCursor
-            PHA
+            _InitCursor	; show the std cursor
+
+            PHA		; and tell no FE handled the request
             PEA   $0020
             PEA   $0000
             PEA   $0000
-            PEA   ^L0513
-            PEA   L0513
+            PEA   ^errNOFOUND
+            PEA   errNOFOUND
             _AlertWindow
             PLA
-            _SetCursor
-            RTL
+
+            _SetCursor	; restore the cursor
+            RTL		; and exit
 
 *------------------------------
+* START STANDARD FILE
+*------------------------------
 
-L0147       STZ   L01E5
-            STZ   L01E7
-            STZ   L01E7+2
+startSF     STZ   fgSF
+            STZ   haDP
+            STZ   haDP+2
             PHA
             _SFStatus
             PLA
-            BCS   L015D
-            BNE   L01B5
-L015D       PEA   $0017
+            BCS   loadSF	; not here
+            BNE   exitSFOK	; here and active
+
+loadSF      PEA   $0017	; load Standard File
             PEA   $0101
             _LoadOneTool
-            BCC   L0175
-L016C       _SysBeep
+            BCC   okSF
+
+errSF       _SysBeep	; cannot load
             SEC
             RTS
 
-L0175       PHA
+okSF        PHA		; ask for one DP page
             PHA
             PEA   $0000
             PEA   $0100
-            LDA   L02F3
+            LDA   memID
             PHA
             PEA   $C005
             PEA   $0000
@@ -174,86 +204,110 @@ L0175       PHA
             _NewHandle
             PLX
             PLA
-            BCS   L016C
-            STX   L01E7
-            STA   L01E7+2
-            PHD
+            BCS   errSF
+            STX   haDP
+            STA   haDP+2
+
+            PHD		; deref
             PHA
             PHX
             TSC
             TCD
             LDA   [$01]
-            TAX
+            TAX		; in X
             PLY
             PLY
             PLD
-            LDA   L02F3
+
+            LDA   memID
             PHA
-            PHX
+            PHX		; my DP
             _SFStartUp
-            INC   L01E5
-L01B5       CLC
+            INC   fgSF	; SF started
+
+exitSFOK    CLC
             RTS
 
-L01B7       LDA   L01E5
-            BEQ   L01E4
-            _SFShutDown
+*------------------------------
+* STOP STANDARD FILE
+*------------------------------
+
+stopSF      LDA   fgSF	; is Standard File started?
+            BEQ   L01E4	; no
+
+            _SFShutDown	; yes...
             PEA   $0017
             _UnloadOneTool
-            LDA   L01E7
-            ORA   L01E7+2
+
+            LDA   haDP	; do we have a DP handle?
+            ORA   haDP+2
             BEQ   L01E4
-            LDA   L01E7+2
+
+            LDA   haDP+2	; yes, dispose it?
             PHA
-            LDA   L01E7
+            LDA   haDP
             PHA
             _DisposeHandle
 L01E4       RTS
 
-L01E5       DW    $0000
-L01E7       ADRL  $00000000
-L01EB       JSR   L0147
-            BCC   L01FD
+*------------------------------
+
+fgSF        DW    $0000
+haDP        ADRL  $00000000
+
+*------------------------------
+* OPEN ROUTINE
+*------------------------------
+
+doOPEN      JSR   startSF	; start the tool
+            BCC   openOK
             RTS
 
-L01F1       _SysBeep
-            JSR   L01B7
+L01F1       _SysBeep	; error, exit
+            JSR   stopSF
             SEC
             RTS
 
-L01FD       PEA   $0010
-            PEA   $0028
+openOK      PEA   $0010	; Let the user
+            PEA   $0028	; select files
             PEA   $0000
-            PEA   ^L02CE
-            PEA   L02CE
-            PEA   $0000
-            PEA   $0000
+            PEA   ^strOPEN
+            PEA   strOPEN
             PEA   $0000
             PEA   $0000
-            PEA   ^L02DF
-            PEA   L02DF
+            PEA   $0000
+            PEA   $0000
+            PEA   ^replyPtr
+            PEA   replyPtr
             _InitCursor
             _SFGetFile2
             BCS   L01F1
+
             _WaitCursor
-            LDA   L02DF
-            BNE   L023F
-            JSR   L01B7
+
+            LDA   replyPtr	; do we have a selection?
+            BNE   handleIT	; yes
+
+            JSR   stopSF	; no, exit
             SEC
             RTS
 
-L023F       LDA   L02EB
+*------------------------------
+
+handleIT    LDA   nameRef+2	; dispose the filename handle
             PHA
-            LDA   L02E9
+            LDA   nameRef
             PHA
             _DisposeHandle
-            LDA   L02EF+2
+
+            LDA   pathRef+2	; but lock the path one
             PHA
-            LDA   L02EF
+            LDA   pathRef
             PHA
             _HLock
-            LDA   L02EF
-            LDX   L02EF+2
+
+            LDA   pathRef	; dereference it
+            LDX   pathRef+2
             PHD
             PHX
             PHA
@@ -269,124 +323,88 @@ L023F       LDA   L02EB
             INC
             INC
             PHA
-            LDA   [$01]
-            CMP   #$01FD
-            BCS   L02B7
-            PEA   ^L0315
-            PEA   L0315
+            LDA   [$01]	; check size
+            CMP   #BUFFSIZE
+            BCS   handleKO	; too big!!
+
+            PEA   ^myBUFFER	; move to my byffer
+            PEA   myBUFFER
             PEA   $0000
             INC
             INC
             PHA
             _BlockMove
             PLD
-            JSR   L01B7
-            LDA   L02EF+2
+
+            JSR   stopSF	; stop the Std File toolset
+
+            LDA   pathRef+2	; and dispose the handle
             PHA
-            LDA   L02EF
+            LDA   pathRef
             PHA
             _DisposeHandle
-            LDA   L02E1
-            STA   L02FF
-            LDA   L02E3
-            STA   L0301
-            LDA   L02E5
-            STA   L0303
-            CLC
+
+            LDA   fileType	; copy the file and aux types
+            STA   diFiletype
+            LDA   auxType
+            STA   diAuxtype
+            LDA   auxType+2
+            STA   diAuxtype+2
+            CLC		; return OK
             RTS
 
-L02B7       PLA
+*------------------------------
+
+handleKO    PLA		; pathname too long
             PLA
             PLD
-            JSR   L01B7
-            LDA   L02EF+2
+
+            JSR   stopSF	; stop the Std File toolset
+
+            LDA   pathRef+2	; and dispose the handle
             PHA
-            LDA   L02EF
+            LDA   pathRef
             PHA
             _DisposeHandle
-            SEC
+            SEC		; return NOT OK
             RTS
 
-L02CE       STR   'Open which file:'
-L02DF       DB    $00
-            DB    $00
-L02E1       DB    $00
-            DB    $00
-L02E3       DB    $00
-            DB    $00
-L02E5       DB    $00
-            DB    $00
-            DB    $03
-            DB    $00
-L02E9       DB    $00
-            DB    $00
-L02EB       DB    $00
-            DB    $00
-            DB    $03
-            DB    $00
-L02EF       ADRL  $00000000
-L02F3       DW    $0000
-L02F5       DW    $0007
-            ADRL  L0315
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-L02FF       DB    $00
-            DB    $00
-L0301       DB    $00
-            DB    $00
-L0303       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-L030D       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-L0315       HEX   00000000000000000000000000000000
-            HEX   00000000000000000000000000000000
-            HEX   00000000000000000000000000000000
-            HEX   00000000000000000000000000000000
-            HEX   00000000000000000000000000000000
-            HEX   00000000000000000000000000000000
-            HEX   00000000000000000000000000000000
-            HEX   00000000000000000000000000000000
-            HEX   00000000000000000000000000000000
-            HEX   00000000000000000000000000000000
-            HEX   00000000000000000000000000000000
-            HEX   00000000000000000000000000000000
-            HEX   00000000000000000000000000000000
-            HEX   00000000000000000000000000000000
-            HEX   00000000000000000000000000000000
-            HEX   00000000000000000000000000000000
-            HEX   00000000000000000000000000000000
-            HEX   00000000000000000000000000000000
-            HEX   00000000000000000000000000000000
-            HEX   00000000000000000000000000000000
-            HEX   00000000000000000000000000000000
-            HEX   00000000000000000000000000000000
-            HEX   00000000000000000000000000000000
-            HEX   00000000000000000000000000000000
-            HEX   00000000000000000000000000000000
-            HEX   00000000000000000000000000000000
-            HEX   00000000000000000000000000000000
-            HEX   00000000000000000000000000000000
-            HEX   00000000000000000000000000000000
-            HEX   00000000000000000000000000000000
-            HEX   00000000000000000000000000000000
-            HEX   0000000000000000000000000000
+*------------------------------
+* DATA
+*------------------------------
 
-L0513       ASC   '52~None of the installed System Extensions could open this file.~^#6'00
-L0558       ASC   '52~The System is too busy at this time to handle this request.~^#6'00
+strOPEN     STR   'Open which file:'
+
+replyPtr    DW    $0000	; New-style reply record
+fileType    DW    $0000
+auxType     ADRL  $00000000
+            DW    $0003	; Reference is undefined
+nameRef     ADRL  $00000000
+            DW    $0003	; Reference is undefined
+pathRef     ADRL  $00000000
+
+memID       DW    $0000
+
+dataIn      DW    $0007	; number of parameters
+            ADRL  myBUFFER	; pointer to class-one pathname
+            ADRL  $00000000	; pointer to rectangle to zoom out from
+diFiletype  DW    $0000	; filetype
+diAuxtype   ADRL  $00000000	; auxiliary type
+            DW    $0000	; modifiers
+            ADRL  $00000000	; theIconObj
+            DW    $0000	; printFlag
+
+dataOut     DW    $0000
+            DW    $0000
+            DW    $0000
+            DW    $0000
+
+*------------------------------
+
+myBUFFER    DS    BUFFSIZE
+
+*------------------------------
+
+errNOFOUND  ASC   '52~None of the installed System Extensions could open this file.~^#6'00
+errNOTASK   ASC   '52~The System is too busy at this time to handle this request.~^#6'00
 

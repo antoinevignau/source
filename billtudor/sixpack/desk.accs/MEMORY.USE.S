@@ -13,6 +13,8 @@
 GSOS	EQU	$E100A8
 
 *------------------------------
+* MACROS
+*------------------------------
 
 	use	4/Ctl.Macs
 	use	4/Load.Macs
@@ -27,101 +29,128 @@ GSOS	EQU	$E100A8
 	use	4/Window.Macs
 	
 *------------------------------
+* NDA entry point
+*------------------------------
 
-            ADRL  openROUTINE	; Open routine
-            ADRL  closeROUTINE	; Close routine
-            ADRL  actionROUTINE	; Action routine
-            ADRL  initROUTINE	; Init routine
-            DW    $003C       ; Period
-            DW    $FFFF       ; Event mask
-L0014       ASC   '##Memory Use\H**'00
+	ADRL	openROUTINE	; Open routine
+	ADRL	closeROUTINE	; Close routine
+	ADRL	actionROUTINE	; Action routine
+	ADRL	initROUTINE	; Init routine
+	DW	$003C       ; Period
+	DW	$FFFF       ; Event mask
+	ASC	'##Memory Use\H'
+menuID	ASC '**'00
 
+*------------------------------
+* THE OPEN ROUTINE
 *------------------------------
 
 openROUTINE PHB
             PHK
             PLB
-            LDA   L054B
-            BEQ   L0030
-            BRL   L01F9
-L0030       PHA
+            LDA   fgSTART
+            BEQ   openME
+            BRL   imOPEN
+
+*------------------------------
+
+openME      PHA		; save cursor address
             PHA
             _GetCursorAdr
             PLA
-            STA   L0238
+            STA   saveCURSOR
             PLA
-            STA   L0238+2
+            STA   saveCURSOR+2
             _WaitCursor
+
             PHA
             PHA
             _TotalMem
             PLA
-            STA   L03D9
+            STA   totalMEM
             PLA
-            STA   L03D9+2
-            STZ   L03DD
-            PEA   $0000
+            STA   totalMEM+2
+
+            STZ   theRAM
+
+            PEA   $0000	; save the current resource app ID
             _GetCurResourceApp
             PLA
-            STA   L0236
-            PHA
+            STA   saveRESID
+
+            PHA		; get a Memory Manager ID
             _MMStartUp
             PLA
-            STA   L054D
-            LDA   L054D
+            STA   memID
+
+            LDA   memID	; and start the resource manager
             PHA
             _ResourceStartUp
-            BCC   L0086
-            BRL   L01FB
-L0086       PEA   $0000
+            BCC   okRES
+            BRL   exitNORES
+
+*------------------------------
+
+okRES       PEA   $0000	; get my pathname
             PEA   $0000
-            LDA   L054D
+            LDA   memID
             PHA
             PEA   $0001
             _LGetPathname2
             PLA
-            STA   L0232
+            STA   pathADDR
             PLA
-            STA   L0232+2
-            BCC   L00A7
-            BRL   L01FB
-L00A7       JSL   GSOS
+            STA   pathADDR+2
+            BCC   okPATH	; got it
+            BRL   exitNORES	; no name...
+
+*------------------------------
+
+okPATH      JSL   GSOS
             DW    $201B       ; GetLevel
-            ADRL  L023E
+            ADRL  proSAVELEVEL
             JSL   GSOS
             DW    $201A       ; SetLevel
-            ADRL  L0242
+            ADRL  proSETLEVEL
             JSL   GSOS
             DW    $200F       ; GetSysPrefs
-            ADRL  L0246
-            LDA   L0248
+            ADRL  proSAVESYSPREFS
+
+            LDA   proSAVESYSPREFS+2
             AND   #$7FFF
-            ORA   #$8000
-            STA   L024C
+            ORA   #$8000	; Display Volume Mount dialog box
+            STA   proSETSYSPREFS+2
+
             JSL   GSOS
             DW    $200C       ; SetSysPrefs
-            ADRL  L024A
-            PEA   $0000
+            ADRL  proSETSYSPREFS
+
+*------------------------------
+
+            PEA   $0000	; open my resource file, please
             PEA   $0001
             PEA   $0000
             PEA   $0000
-            LDA   L0232+2
+            LDA   pathADDR+2
             PHA
-            LDA   L0232
+            LDA   pathADDR
             PHA
             _OpenResourceFile
             PLA
-            STA   L054F
-            BCC   L00FF
-            BRL   L0206
-L00FF       PEA   $0000
+            STA   resID
+            BCC   okMYRES	; ok
+            BRL   exitNOWIN	; not ok
+
+*------------------------------
+
+okMYRES     PEA   $0000	; load my window
+            PEA   $0000	; but do not show it
+            PEA   ^winTITLE
+            PEA   winTITLE
             PEA   $0000
-            PEA   ^L0553
-            PEA   L0553
             PEA   $0000
-            PEA   $0000
-            PEA   ^L03DF
-            PEA   L03DF
+            PEA   ^winREFRESH
+            PEA   winREFRESH
             PEA   $0000
             PEA   $0000
             PEA   $0002
@@ -131,155 +160,203 @@ L00FF       PEA   $0000
             _NewWindow2
             PLX
             PLA
-            BCC   L0137
-            BRL   L0206
-L0137       STX   L0563
-            STA   L0563+2
+            BCC   okWIN
+            BRL   exitNOWIN
+
+*------------------------------
+
+okWIN       STX   ptrWINDOW	; save my window pointer
+            STA   ptrWINDOW+2
             STA   $07,S
             TXA
             STA   $05,S
-            LDA   L0563+2
+
+            LDA   ptrWINDOW+2	; make it my port
             PHA
-            LDA   L0563
+            LDA   ptrWINDOW
             PHA
             _SetPort
-            LDA   L0563+2
+
+            LDA   ptrWINDOW+2	; make it a system window
             PHA
-            LDA   L0563
+            LDA   ptrWINDOW
             PHA
             _SetSysWindow
-            PHA
+
+*------------------------------
+
+            PHA		; which mode are we in?
             _GetMasterSCB
             PLA
             AND   #$0080
-            BNE   L0171
-            BRL   L0195
-L0171       PEA   ^L0571
-            PEA   L0571
-            LDA   L0563+2
+            BNE   set640	; 640...
+            BRL   set320	; or 320
+
+set640      PEA   ^tblCOLOR640
+            PEA   tblCOLOR640
+            LDA   ptrWINDOW+2
             PHA
-            LDA   L0563
-            PHA
-            _SetFrameColor
-            LDA   #^L046C
-            STA   L0428+2
-            LDA   #L046C
-            STA   L0428
-            BRL   L01B6
-L0195       PEA   ^L0567
-            PEA   L0567
-            LDA   L0563+2
-            PHA
-            LDA   L0563
+            LDA   ptrWINDOW
             PHA
             _SetFrameColor
-            LDA   #^L044C
-            STA   L0428+2
-            LDA   #L044C
-            STA   L0428
-L01B6       LDA   L0563+2
+            LDA   #^pattern640
+            STA   busyPATTPTR+2
+            LDA   #pattern640
+            STA   busyPATTPTR
+            BRL   showMYWIN
+
+set320      PEA   ^tblCOLOR320
+            PEA   tblCOLOR320
+            LDA   ptrWINDOW+2
             PHA
-            LDA   L0563
+            LDA   ptrWINDOW
+            PHA
+            _SetFrameColor
+            LDA   #^pattern320
+            STA   busyPATTPTR+2
+            LDA   #pattern320
+            STA   busyPATTPTR
+
+*------------------------------
+
+showMYWIN   LDA   ptrWINDOW+2	; show the window
+            PHA
+            LDA   ptrWINDOW
             PHA
             _ShowWindow
-            LDA   #$FFFF
-            STA   L054B
-L01CB       JSL   GSOS
+
+            LDA   #$FFFF	; say we ARE started
+            STA   fgSTART
+
+*------------------------------
+
+restorePREFS
+            JSL   GSOS	; restore the original values
             DW    $201A       ; SetLevel
-            ADRL  L023E
+            ADRL  proSAVELEVEL
             JSL   GSOS
             DW    $200C       ; SetSysPrefs
-            ADRL  L0246
-L01DF       LDA   L0236
+            ADRL  proSAVESYSPREFS
+
+restoreRES  LDA   saveRESID	; restore the user resource ID
             PHA
             _SetCurResourceApp
-            LDA   L0238+2
+
+            LDA   saveCURSOR+2	; restore the cursor
             PHA
-            LDA   L0238
+            LDA   saveCURSOR
             PHA
             _SetCursor
-L01F9       PLB
-            RTL
 
-L01FB       LDA   #L0504
-            LDY   #^L0504
-            JSR   L048C
-            BRA   L01DF
-L0206       LDA   #L051F
-            LDY   #^L051F
-            JSR   L048C
-            BRA   L01CB
-            LDA   #L0533
-            LDY   #^L0533
-            JSR   L048C
+imOPEN      PLB		; and exit
+            RTL		; yeepee
+
+
+*------------------------------
+* ERROR MESSAGES
+*------------------------------
+
+exitNORES   LDA   #strNORES
+            LDY   #^strNORES
+            JSR   showERROR
+            BRA   restoreRES
+
+exitNOWIN   LDA   #strNOWIN
+            LDY   #^strNOWIN
+            JSR   showERROR
+            BRA   restorePREFS
+
+            LDA   #strNOCTL
+            LDY   #^strNOCTL
+            JSR   showERROR
             LDA   #$0000
             STA   $07,S
             STA   $05,S
-            LDA   L0563+2
+            LDA   ptrWINDOW+2
             PHA
-            LDA   L0563
+            LDA   ptrWINDOW
             PHA
             _CloseWindow
-            BRA   L01CB
+            BRA   restorePREFS
 
-L0232       ADRL  $00000000
-L0236       DW    $0000
-L0238       ADRL  $00000000
-            DW    $0000
-L023E       DW    $0001       ; Parms for SetLevel
-            DW    $0000       ;  ref num
-L0242       DW    $0001       ; Parms for SetLevel
-            DW    $0000       ;  ref num
-L0246       DW    $0001       ; Parms for SetSysPrefs
-L0248       DW    $0000       ;  preferences
-L024A       DW    $0001       ; Parms for SetSysPrefs
-L024C       DW    $0000       ;  preferences
+*------------------------------
+* DATA
+*------------------------------
 
+pathADDR    ADRL  $00000000	; path to my NDA
+
+saveRESID   DW    $0000	; the previous resource ID
+
+saveCURSOR  ADRL  $00000000	; the previous cursor address
+
+            DW    $0000	; not used
+
+proSAVELEVEL
+            DW    $0001       ; Parms for SetLevel
+            DW    $0000       ;  ref num
+
+proSETLEVEL DW    $0001       ; Parms for SetLevel
+            DW    $0000       ;  ref num
+
+proSAVESYSPREFS
+            DW    $0001       ; Parms for SetSysPrefs
+            DW    $0000       ;  preferences
+
+proSETSYSPREFS
+            DW    $0001       ; Parms for SetSysPrefs
+            DW    $0000       ;  preferences
+
+*------------------------------
+* INIT
 *------------------------------
 
 initROUTINE
             PHB
             PHK
             PLB
-            CMP   #$0000
-            BNE   L0258
-            PLB
+            CMP   #$0000	; is it a DeskStartUp?
+            BNE   initSHUT	; no...
+            PLB		; yes, exit
             RTL
 
-L0258       STZ   L054B
-            LDA   #$0000
-            LDY   #$0014
-            STA   L058B
-            STA   L058B+2
-L0267       STA   L0593,Y
+initSHUT    STZ   fgSTART	; we had a DeskShutDown call
+            LDA   #$0000	; clear our data
+            LDY   #$0014	; clear the extended record
+            STA   taskDATA
+            STA   taskDATA+2
+L0267       STA   taskEXT,Y
             DEY
             DEY
             BPL   L0267
-            LDA   #$FFFF
-            STA   L058F
+
+            LDA   #$FFFF	; reset task mask
+            STA   taskMASK
             LDA   #$001F
-            STA   L058F+2
+            STA   taskMASK+2
             PLB
             RTL
 
+*------------------------------
+* CLOSE
 *------------------------------
 
 closeROUTINE
             PHB
             PHK
             PLB
-            LDA   L054B
-            BEQ   L02B3
-            STZ   L054B
-            LDA   L0563+2
+            LDA   fgSTART	; were we started?
+            BEQ   L02B3	; no
+
+            STZ   fgSTART
+            LDA   ptrWINDOW+2
             PHA
-            LDA   L0563
+            LDA   ptrWINDOW
             PHA
             _CloseWindow
-            LDA   L054F
+            LDA   resID
             PHA
             _CloseResourceFile
-            LDA   L054D
+            LDA   memID
             PHA
             _SetCurResourceApp
             _ResourceShutDown
@@ -287,242 +364,269 @@ L02B3       PLB
             RTL
 
 *------------------------------
+* ACTION
+*------------------------------
 
 actionROUTINE
-            PHB
+            PHB		; set my bank
             PHK
             PLB
-            PHA
-            PHY
-            PHX
-            PEA   ^L057B
-            PEA   L057B
+            PHA		; A: action code
+            PHY		; YX: point to the
+            PHX		; event record
+
+            PEA   ^taskREC	; move 16 bytes from Y/X to
+            PEA   taskREC	; the taskREC
             PEA   $0000
             PEA   $0010
             _BlockMove
-            PLA
+            PLA		; restore the action code
             ASL
             TAX
-            JSR   (L02D6,X)
+            JSR   (tblACTION,X)
             PLB
             RTL
 
-L02D6       DA    L02EA
-            DA    L02EE
-            DA    L0306
-            DA    L02EA
-            DA    L02EA
-            DA    L02EA
-            DA    L02EA
-            DA    L02EA
-            DA    L02EA
-            DA    L02EA
-L02EA       LDA   #$FFFF
+*------------------------------
+
+tblACTION   DA    doSAYOK	; 0
+            DA    doEVENT	; 1 eventAction
+            DA    showTHERMO	; 2 runAction
+            DA    doSAYOK	; 3 cursorAction
+            DA    doSAYOK	; 4 not used
+            DA    doSAYOK	; 5 undoAction
+            DA    doSAYOK	; 6 cutAction
+            DA    doSAYOK	; 7 copyAction
+            DA    doSAYOK	; 8 pasteAction
+            DA    doSAYOK	; 9 clearAction
+
+*------------------------------
+
+doSAYOK     LDA   #$FFFF	; return TRUE
             RTS
 
-L02EE       PEA   $0000
-            PEA   $FFFF
-            PEA   ^L057B
-            PEA   L057B
+*------------------------------
+
+doEVENT     PEA   $0000	; space for result
+            PEA   $FFFF	; eventMask - not used
+            PEA   ^taskREC	; taskRecPtr
+            PEA   taskREC
             _TaskMasterDA
             PLA
-            LDA   #$0000
+            LDA   #$0000	; always return OK
             RTS
 
-L0306       PHA
+*------------------------------
+* SHOW THE THERMO "REFRESH"
+*------------------------------
+
+showTHERMO  PHA		; save port
             PHA
             _GetPort
-            LDA   L0563+2
+
+            LDA   ptrWINDOW+2	; set my port
             PHA
-            LDA   L0563
+            LDA   ptrWINDOW
             PHA
             _SetPort
-            PEA   $0000
+
+            PEA   $0000	; get current free RAM
             PEA   $0000
             PEA   $0000
             PEA   $0000
             PEA   $0000
             PEA   $0000
             _RealFreeMem
-            PEA   $0000
+
+            PEA   $0000	; multiply by 100
             PEA   $0064
             _LongMul
             PLA
-            STA   L03D5
+            STA   freeRAM
             PLA
-            STA   L03D5+2
+            STA   freeRAM+2
             PLA
             PLA
+
+            PEA   $0000	; and divide
             PEA   $0000
             PEA   $0000
             PEA   $0000
-            PEA   $0000
-            LDA   L03D5+2
+            LDA   freeRAM+2
             PHA
-            LDA   L03D5
+            LDA   freeRAM
             PHA
-            LDA   L03D9+2
+            LDA   totalMEM+2
             PHA
-            LDA   L03D9
+            LDA   totalMEM
             PHA
             _LongDivide
+            PLA		; to get the real free RAM
+            STA   freeRAM
             PLA
-            STA   L03D5
-            PLA
-            STA   L03D5+2
+            STA   freeRAM+2
             PLA
             PLA
-            LDA   #$0064
+
+            LDA   #$0064	; calculate thermo limit
             SEC
-            SBC   L03D5
-            CMP   #$0064
+            SBC   freeRAM	; - freeRAM
+            CMP   #$0064	; 100
             BCC   L038A
-            LDA   #$0064
+            LDA   #$0064	; 100
 L038A       CLC
-            ADC   L041A
-            CMP   L03DD
-            BEQ   L03CA
-            STA   L041E
-            STA   L03DD
-            STA   L0422
-            LDA   #$006A
-            STA   L0426
-            PEA   ^L0418
-            PEA   L0418
-            LDA   L0428+2
+            ADC   busyRECT_X1	; + left
+            CMP   theRAM	; end reached?
+            BEQ   L03CA	; yes, the same, exit
+            STA   busyRECT_X2	; set right
+            STA   theRAM	; save width
+            STA   freeRECT_X1	; free begins after used
+            LDA   #$006A	; 110
+            STA   freeRECT_X2	; until its right limit
+
+            PEA   ^busyRECT	; fill the busy RAM rectangle
+            PEA   busyRECT
+            LDA   busyPATTPTR+2
             PHA
-            LDA   L0428
+            LDA   busyPATTPTR
             PHA
             _FillRect
-            PEA   ^L0420
-            PEA   L0420
-            PEA   ^L042C
-            PEA   L042C
+
+            PEA   ^freeRECT	; draw the free CPU rectangle
+            PEA   freeRECT
+            PEA   ^freePATTERN
+            PEA   freePATTERN
             _FillRect
 L03CA       LDA   #$0000
             _SetPort
             RTS
 
-L03D5       ADRL  $00000000
-L03D9       ADRL  $00000000
-L03DD       DW    $0000
-
 *------------------------------
 
-L03DF       PHB
+freeRAM     ADRL  $00000000
+totalMEM    ADRL  $00000000
+theRAM      DW    $0000
+
+*------------------------------
+* WINDOW REFRESH ROUTINE
+*------------------------------
+
+winREFRESH  PHB
             PHK
             PLB
-            LDA   L0563+2
+            LDA   ptrWINDOW+2
             PHA
-            LDA   L0563
+            LDA   ptrWINDOW
             PHA
             _DrawControls
             PEA   $0000
             _SetSolidPenPat
-            PEA   ^L0410
-            PEA   L0410
+            PEA   ^frameRECT
+            PEA   frameRECT
             _FrameRect
-            STZ   L03DD
-            JSR   L0306
+            STZ   theRAM
+            JSR   showTHERMO
             PLB
             RTL
 
-L0410       DW    $0003
+*------------------------------
+
+frameRECT   DW    $0003
             DW    $0007
             DW    $000C
             DW    $006C
-L0418       DW    $0004
-L041A       DW    $0008
-            DW    $000B
-L041E       DW    $006A
-L0420       DW    $0004
-L0422       DW    $0008
-            DW    $000B
-L0426       DW    $006A
-L0428       ADRL  L044C
 
-L042C       HEX   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+busyRECT    DW    $0004
+busyRECT_X1 DW    $0008
+            DW    $000B
+busyRECT_X2 DW    $006A
+
+freeRECT    DW    $0004
+freeRECT_X1 DW    $0008
+            DW    $000B
+freeRECT_X2 DW    $006A
+
+busyPATTPTR ADRL  pattern320
+
+freePATTERN HEX   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
             HEX   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-L044C       HEX   77777777777777777777777777777777
+pattern320  HEX   77777777777777777777777777777777
             HEX   77777777777777777777777777777777
-L046C       HEX   44444444444444444444444444444444
+pattern640  HEX   44444444444444444444444444444444
             HEX   44444444444444444444444444444444
 
 *------------------------------
+* SOHW THE ERROR AND DISABLE ME
+*------------------------------
 
-L048C       STA   L04C3
-            STY   L04C3+2
+showERROR   STA   ptrSTRING
+            STY   ptrSTRING+2
             PEA   $0000
-            PEA   ^L04C7
-            PEA   L04C7
-            LDA   L04C3+2
+            PEA   ^strFATAL
+            PEA   strFATAL
+            LDA   ptrSTRING+2
             PHA
-            LDA   L04C3
+            LDA   ptrSTRING
             PHA
-            PEA   ^L04E8
-            PEA   L04E8
-            PEA   ^L0502
-            PEA   L0502
+            PEA   ^strRETURN
+            PEA   strRETURN
+            PEA   ^strSPACE
+            PEA   strSPACE
             _TLTextMountVolume
             PLA
-            LDA   L0014+$E
+
+            LDA   menuID	; disable my menu item :-(
             PHA
             _DisableMItem
             RTS
 
 *------------------------------
 
-L04C3       ADRL  $00000000
-L04C7       STR   'Memory Use:Fatal Error Occurred.'
-L04E8       STR   'Press RETURN to continue.'
-L0502       STR   ' '
-L0504       STR   'Cannot open Resource Fork.'
-L051F       STR   'Cannot open window.'
-L0533       STR   'Cannot access controls.'
-L054B       DW    $0000
-L054D       DW    $0000
-L054F       DW    $0000
+ptrSTRING   ADRL  $00000000
+
+strFATAL    STR   'Memory Use:Fatal Error Occurred.'
+strRETURN   STR   'Press RETURN to continue.'
+strSPACE    STR   ' '
+
+strNORES    STR   'Cannot open Resource Fork.'
+strNOWIN    STR   'Cannot open window.'
+strNOCTL    STR   'Cannot access controls.'
+
+*------------------------------
+
+fgSTART     DW    $0000	; 0: not started, -1: started
+memID       DW    $0000	; my Memory Manager ID
+resID       DW    $0000	; my Resource Manager ID
             DW    $0000
-L0553       STR   ' Memory Use... '
-L0563       ADRL  $00000000
-L0567       DW    $0000
+
+winTITLE    STR   ' Memory Use... '
+
+ptrWINDOW   ADRL  $00000000	; pointer to my window port
+
+tblCOLOR320 DW    $0000	; color table for the 320-mode window
             DW    $0F04
             DW    $024F
             DW    $F0FF
             DW    $00F0
-L0571       DW    $0000
+
+tblCOLOR640 DW    $0000	; color table for the 640-mode window
             DW    $0F01
             DW    $021F
             DW    $F0FF
             DW    $00F0
-L057B       DW    $0000       ; event code
-            ADRL  $00000000   ; event message
-            ADRL  $00000000   ; tick count
-            DW    $0000       ; mouse location
-            DW    $0000
-            DW    $0000       ; modifiers
-L058B       ADRL  $00000000   ; task data
-L058F       ADRL  $001FFFFF   ; task mask
-L0593       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
 
+taskREC     DW    $0000	; event code
+            ADRL  $00000000	; event message
+            ADRL  $00000000	; tick count
+            DW    $0000	; mouse location
+            DW    $0000
+            DW    $0000	; modifiers
+taskDATA    ADRL  $00000000	; task data
+taskMASK    ADRL  $001FFFFF	; task mask
+taskEXT     ADRL  $00000000
+            DW    $0000
+            ADRL  $00000000
+            ADRL  $00000000
+            ADRL  $00000000
+            DW    $0000
+            DW    $0000

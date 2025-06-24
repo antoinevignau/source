@@ -263,7 +263,7 @@
   272 |  1 CPU.USE.S    230 | Data        | 00 |         |    2 | 00/01C5 : 0C 20       |                  DW    $200C                ; SetSysPrefs
   273 |  1 CPU.USE.S    231 | Data        | 00 |  3      |    4 | 00/01C7 : 42 02 00 00 |                  ADRL  proSAVESYSPREFS      
   274 |  1 CPU.USE.S    232 | Empty       | 00 |         |    0 | 00/01CB               |                                             
-  275 |  1 CPU.USE.S    233 | Code        | 00 |  2      |    3 | 00/01CB : AD 32 02    | restoreRES       LDA   saveRESID            ; restore the resource user ID
+  275 |  1 CPU.USE.S    233 | Code        | 00 |  2      |    3 | 00/01CB : AD 32 02    | restoreRES       LDA   saveRESID            ; restore the user resource ID
   276 |  1 CPU.USE.S    234 | Code        | 00 |         |    1 | 00/01CE : 48          |                  PHA                        
   277 |  1 CPU.USE.S    235 | Macro       | 00 |         |    0 | 00/01CF               |                  _SetCurResourceApp                       
   279 |  1 CPU.USE.S    235 | Code        | 00 |         |    3 | 00/01CF : A2 1E 13    |                  LDX   #$131E               ; load tool call #
@@ -391,279 +391,282 @@
   405 |  1 CPU.USE.S    348 | Code        | 00 |         |    1 | 00/028E : 6B          |                  RTL                        
   406 |  1 CPU.USE.S    349 | Empty       | 00 |         |    0 | 00/028F               |                                             
   407 |  1 CPU.USE.S    350 | Comment     | 00 |         |    0 | 00/028F               | *------------------------------
-  408 |  1 CPU.USE.S    351 | Empty       | 00 |         |    0 | 00/028F               |                                             
-  409 |  1 CPU.USE.S    352 | Empty       | 00 |         |    0 | 00/028F               | closeROUTINE                                
-  410 |  1 CPU.USE.S    353 | Code        | 00 |         |    1 | 00/028F : 8B          |                  PHB                        
-  411 |  1 CPU.USE.S    354 | Code        | 00 |         |    1 | 00/0290 : 4B          |                  PHK                        
-  412 |  1 CPU.USE.S    355 | Code        | 00 |         |    1 | 00/0291 : AB          |                  PLB                        
-  413 |  1 CPU.USE.S    356 | Code        | 00 |  2      |    3 | 00/0292 : AD 16 05    |                  LDA   fgSTART              
-  414 |  1 CPU.USE.S    357 | Code        | 00 |         |    2 | 00/0295 : F0 44       |                  BEQ   L02DB                
-  415 |  1 CPU.USE.S    358 | Code        | 00 |  2      |    3 | 00/0297 : AD 69 02    |                  LDA   fgHEARTBEAT          
-  416 |  1 CPU.USE.S    359 | Code        | 00 |         |    2 | 00/029A : F0 10       |                  BEQ   L02AC                
-  417 |  1 CPU.USE.S    360 | Code        | 00 |  1 >>16 |    3 | 00/029C : F4 00 00    |                  PEA   ^myHEARTBEAT         
-  418 |  1 CPU.USE.S    361 | Code        | 00 |  2      |    3 | 00/029F : F4 6F 05    |                  PEA   myHEARTBEAT          
-  419 |  1 CPU.USE.S    362 | Macro       | 00 |         |    0 | 00/02A2               |                  _DelHeartBeat                       
-  421 |  1 CPU.USE.S    362 | Code        | 00 |         |    3 | 00/02A2 : A2 03 13    |                  LDX   #$1303               ; load tool call #
-  422 |  1 CPU.USE.S    362 | Code        | 00 |         |    4 | 00/02A5 : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
-  423 |  1 CPU.USE.S    363 | Code        | 00 |  2      |    3 | 00/02A9 : 9C 69 02    |                  STZ   fgHEARTBEAT          
-  424 |  1 CPU.USE.S    364 | Code        | 00 |  2      |    3 | 00/02AC : 9C 16 05    | L02AC            STZ   fgSTART              
-  425 |  1 CPU.USE.S    365 | Code        | 00 |  2      |    3 | 00/02AF : AD 2B 05    |                  LDA   ptrWINDOW+2          
-  426 |  1 CPU.USE.S    366 | Code        | 00 |         |    1 | 00/02B2 : 48          |                  PHA                        
-  427 |  1 CPU.USE.S    367 | Code        | 00 |  2      |    3 | 00/02B3 : AD 29 05    |                  LDA   ptrWINDOW            
-  428 |  1 CPU.USE.S    368 | Code        | 00 |         |    1 | 00/02B6 : 48          |                  PHA                        
-  429 |  1 CPU.USE.S    369 | Macro       | 00 |         |    0 | 00/02B7               |                  _CloseWindow                       
-  431 |  1 CPU.USE.S    369 | Code        | 00 |         |    3 | 00/02B7 : A2 0E 0B    |                  LDX   #$B0E                ; load tool call #
-  432 |  1 CPU.USE.S    369 | Code        | 00 |         |    4 | 00/02BA : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
-  433 |  1 CPU.USE.S    370 | Code        | 00 |  2      |    3 | 00/02BE : AD 1A 05    |                  LDA   resID                
-  434 |  1 CPU.USE.S    371 | Code        | 00 |         |    1 | 00/02C1 : 48          |                  PHA                        
-  435 |  1 CPU.USE.S    372 | Macro       | 00 |         |    0 | 00/02C2               |                  _CloseResourceFile                       
-  437 |  1 CPU.USE.S    372 | Code        | 00 |         |    3 | 00/02C2 : A2 1E 0B    |                  LDX   #$B1E                ; load tool call #
-  438 |  1 CPU.USE.S    372 | Code        | 00 |         |    4 | 00/02C5 : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
-  439 |  1 CPU.USE.S    373 | Code        | 00 |  2      |    3 | 00/02C9 : AD 18 05    |                  LDA   memID                
-  440 |  1 CPU.USE.S    374 | Code        | 00 |         |    1 | 00/02CC : 48          |                  PHA                        
-  441 |  1 CPU.USE.S    375 | Macro       | 00 |         |    0 | 00/02CD               |                  _SetCurResourceApp                       
-  443 |  1 CPU.USE.S    375 | Code        | 00 |         |    3 | 00/02CD : A2 1E 13    |                  LDX   #$131E               ; load tool call #
-  444 |  1 CPU.USE.S    375 | Code        | 00 |         |    4 | 00/02D0 : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
-  445 |  1 CPU.USE.S    376 | Macro       | 00 |         |    0 | 00/02D4               |                  _ResourceShutDown                       
-  447 |  1 CPU.USE.S    376 | Code        | 00 |         |    3 | 00/02D4 : A2 1E 03    |                  LDX   #$31E                ; load tool call #
-  448 |  1 CPU.USE.S    376 | Code        | 00 |         |    4 | 00/02D7 : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
-  449 |  1 CPU.USE.S    377 | Code        | 00 |         |    1 | 00/02DB : AB          | L02DB            PLB                        
-  450 |  1 CPU.USE.S    378 | Code        | 00 |         |    1 | 00/02DC : 6B          |                  RTL                        
-  451 |  1 CPU.USE.S    379 | Empty       | 00 |         |    0 | 00/02DD               |                                             
-  452 |  1 CPU.USE.S    380 | Comment     | 00 |         |    0 | 00/02DD               | *------------------------------
-  453 |  1 CPU.USE.S    381 | Comment     | 00 |         |    0 | 00/02DD               | * ACTION ROUTINE
-  454 |  1 CPU.USE.S    382 | Comment     | 00 |         |    0 | 00/02DD               | *------------------------------
-  455 |  1 CPU.USE.S    383 | Empty       | 00 |         |    0 | 00/02DD               |                                             
-  456 |  1 CPU.USE.S    384 | Empty       | 00 |         |    0 | 00/02DD               | actionROUTINE                               
-  457 |  1 CPU.USE.S    385 | Code        | 00 |         |    1 | 00/02DD : 8B          |                  PHB                        ; set my bank
-  458 |  1 CPU.USE.S    386 | Code        | 00 |         |    1 | 00/02DE : 4B          |                  PHK                        
-  459 |  1 CPU.USE.S    387 | Code        | 00 |         |    1 | 00/02DF : AB          |                  PLB                        
-  460 |  1 CPU.USE.S    388 | Code        | 00 |         |    1 | 00/02E0 : 48          |                  PHA                        ; A: action code
-  461 |  1 CPU.USE.S    389 | Code        | 00 |         |    1 | 00/02E1 : 5A          |                  PHY                        ; YX point to the
-  462 |  1 CPU.USE.S    390 | Code        | 00 |         |    1 | 00/02E2 : DA          |                  PHX                        ; event record
-  463 |  1 CPU.USE.S    391 | Empty       | 00 |         |    0 | 00/02E3               |                                             
-  464 |  1 CPU.USE.S    392 | Code        | 00 |  1 >>16 |    3 | 00/02E3 : F4 00 00    |                  PEA   ^taskREC             ; move 16 bytes from Y/X to
-  465 |  1 CPU.USE.S    393 | Code        | 00 |  2      |    3 | 00/02E6 : F4 41 05    |                  PEA   taskREC              ; the taskREC
-  466 |  1 CPU.USE.S    394 | Code        | 00 |         |    3 | 00/02E9 : F4 00 00    |                  PEA   $0000                
-  467 |  1 CPU.USE.S    395 | Code        | 00 |         |    3 | 00/02EC : F4 10 00    |                  PEA   $0010                
-  468 |  1 CPU.USE.S    396 | Macro       | 00 |         |    0 | 00/02EF               |                  _BlockMove                       
-  470 |  1 CPU.USE.S    396 | Code        | 00 |         |    3 | 00/02EF : A2 02 2B    |                  LDX   #$2B02               ; load tool call #
-  471 |  1 CPU.USE.S    396 | Code        | 00 |         |    4 | 00/02F2 : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
-  472 |  1 CPU.USE.S    397 | Code        | 00 |         |    1 | 00/02F6 : 68          |                  PLA                        ; restore the action code
-  473 |  1 CPU.USE.S    398 | Code        | 00 |         |    1 | 00/02F7 : 0A          |                  ASL                        
-  474 |  1 CPU.USE.S    399 | Code        | 00 |         |    1 | 00/02F8 : AA          |                  TAX                        
-  475 |  1 CPU.USE.S    400 | Code        | 00 |  2      |    3 | 00/02F9 : FC FE 02    |                  JSR   (tblACTION,X)        
-  476 |  1 CPU.USE.S    401 | Code        | 00 |         |    1 | 00/02FC : AB          |                  PLB                        
-  477 |  1 CPU.USE.S    402 | Code        | 00 |         |    1 | 00/02FD : 6B          |                  RTL                        
-  478 |  1 CPU.USE.S    403 | Empty       | 00 |         |    0 | 00/02FE               |                                             
-  479 |  1 CPU.USE.S    404 | Comment     | 00 |         |    0 | 00/02FE               | *------------------------------
-  480 |  1 CPU.USE.S    405 | Empty       | 00 |         |    0 | 00/02FE               |                                             
-  481 |  1 CPU.USE.S    406 | Data        | 00 |  2      |    2 | 00/02FE : 12 03       | tblACTION        DA    doSAYOK              ; 0
-  482 |  1 CPU.USE.S    407 | Data        | 00 |  2      |    2 | 00/0300 : 16 03       |                  DA    doEVENT              ; 1 eventAction
-  483 |  1 CPU.USE.S    408 | Data        | 00 |  2      |    2 | 00/0302 : 2E 03       |                  DA    doRUN                ; 2 runAction
-  484 |  1 CPU.USE.S    409 | Data        | 00 |  2      |    2 | 00/0304 : 12 03       |                  DA    doSAYOK              ; 3 cursorAction
-  485 |  1 CPU.USE.S    410 | Data        | 00 |  2      |    2 | 00/0306 : 12 03       |                  DA    doSAYOK              ; 4 not used
-  486 |  1 CPU.USE.S    411 | Data        | 00 |  2      |    2 | 00/0308 : 12 03       |                  DA    doSAYOK              ; 5 undoAction
-  487 |  1 CPU.USE.S    412 | Data        | 00 |  2      |    2 | 00/030A : 12 03       |                  DA    doSAYOK              ; 6 cutAction
-  488 |  1 CPU.USE.S    413 | Data        | 00 |  2      |    2 | 00/030C : 12 03       |                  DA    doSAYOK              ; 7 copyAction
-  489 |  1 CPU.USE.S    414 | Data        | 00 |  2      |    2 | 00/030E : 12 03       |                  DA    doSAYOK              ; 8 pasteAction
-  490 |  1 CPU.USE.S    415 | Data        | 00 |  2      |    2 | 00/0310 : 12 03       |                  DA    doSAYOK              ; 9 clearAction
-  491 |  1 CPU.USE.S    416 | Empty       | 00 |         |    0 | 00/0312               |                                             
-  492 |  1 CPU.USE.S    417 | Comment     | 00 |         |    0 | 00/0312               | *------------------------------
-  493 |  1 CPU.USE.S    418 | Empty       | 00 |         |    0 | 00/0312               |                                             
-  494 |  1 CPU.USE.S    419 | Code        | 00 |         |    3 | 00/0312 : A9 FF FF    | doSAYOK          LDA   #$FFFF               ; return TRUE
-  495 |  1 CPU.USE.S    420 | Code        | 00 |         |    1 | 00/0315 : 60          |                  RTS                        
-  496 |  1 CPU.USE.S    421 | Empty       | 00 |         |    0 | 00/0316               |                                             
-  497 |  1 CPU.USE.S    422 | Comment     | 00 |         |    0 | 00/0316               | *------------------------------
-  498 |  1 CPU.USE.S    423 | Empty       | 00 |         |    0 | 00/0316               |                                             
-  499 |  1 CPU.USE.S    424 | Code        | 00 |         |    3 | 00/0316 : F4 00 00    | doEVENT          PEA   $0000                ; space for result
-  500 |  1 CPU.USE.S    425 | Code        | 00 |         |    3 | 00/0319 : F4 FF FF    |                  PEA   $FFFF                ; eventMask - not used
-  501 |  1 CPU.USE.S    426 | Code        | 00 |  1 >>16 |    3 | 00/031C : F4 00 00    |                  PEA   ^taskREC             ; taskRecPtr
-  502 |  1 CPU.USE.S    427 | Code        | 00 |  2      |    3 | 00/031F : F4 41 05    |                  PEA   taskREC              
-  503 |  1 CPU.USE.S    428 | Macro       | 00 |         |    0 | 00/0322               |                  _TaskMasterDA                       
-  505 |  1 CPU.USE.S    428 | Code        | 00 |         |    3 | 00/0322 : A2 0E 5F    |                  LDX   #$5F0E               ; load tool call #
-  506 |  1 CPU.USE.S    428 | Code        | 00 |         |    4 | 00/0325 : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
-  507 |  1 CPU.USE.S    429 | Code        | 00 |         |    1 | 00/0329 : 68          |                  PLA                        
-  508 |  1 CPU.USE.S    430 | Code        | 00 |         |    3 | 00/032A : A9 00 00    |                  LDA   #$0000               ; always return OK
-  509 |  1 CPU.USE.S    431 | Code        | 00 |         |    1 | 00/032D : 60          |                  RTS                        
-  510 |  1 CPU.USE.S    432 | Empty       | 00 |         |    0 | 00/032E               |                                             
-  511 |  1 CPU.USE.S    433 | Comment     | 00 |         |    0 | 00/032E               | *------------------------------
-  512 |  1 CPU.USE.S    434 | Empty       | 00 |         |    0 | 00/032E               |                                             
-  513 |  1 CPU.USE.S    435 | Code        | 00 |  2      |    3 | 00/032E : EE AE 03    | doRUN            INC   theTIME              ; say we must do something
-  514 |  1 CPU.USE.S    436 | Code        | 00 |         |    1 | 00/0331 : 60          |                  RTS                        
-  515 |  1 CPU.USE.S    437 | Empty       | 00 |         |    0 | 00/0332               |                                             
-  516 |  1 CPU.USE.S    438 | Comment     | 00 |         |    0 | 00/0332               | *------------------------------
-  517 |  1 CPU.USE.S    439 | Comment     | 00 |         |    0 | 00/0332               | * SHOW THE THERMO "REFRESH"
-  518 |  1 CPU.USE.S    440 | Comment     | 00 |         |    0 | 00/0332               | *------------------------------
-  519 |  1 CPU.USE.S    441 | Empty       | 00 |         |    0 | 00/0332               |                                             
-  520 |  1 CPU.USE.S    442 | Code        | 00 |         |    1 | 00/0332 : 48          | showTHERMO       PHA                        ; save port
-  521 |  1 CPU.USE.S    443 | Code        | 00 |         |    1 | 00/0333 : 48          |                  PHA                        
-  522 |  1 CPU.USE.S    444 | Macro       | 00 |         |    0 | 00/0334               |                  _GetPort                       
-  524 |  1 CPU.USE.S    444 | Code        | 00 |         |    3 | 00/0334 : A2 04 1C    |                  LDX   #$1C04               ; load tool call #
-  525 |  1 CPU.USE.S    444 | Code        | 00 |         |    4 | 00/0337 : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
-  526 |  1 CPU.USE.S    445 | Empty       | 00 |         |    0 | 00/033B               |                                             
-  527 |  1 CPU.USE.S    446 | Code        | 00 |  2      |    3 | 00/033B : AD 2B 05    |                  LDA   ptrWINDOW+2          ; set my port
-  528 |  1 CPU.USE.S    447 | Code        | 00 |         |    1 | 00/033E : 48          |                  PHA                        
-  529 |  1 CPU.USE.S    448 | Code        | 00 |  2      |    3 | 00/033F : AD 29 05    |                  LDA   ptrWINDOW            
-  530 |  1 CPU.USE.S    449 | Code        | 00 |         |    1 | 00/0342 : 48          |                  PHA                        
-  531 |  1 CPU.USE.S    450 | Macro       | 00 |         |    0 | 00/0343               |                  _SetPort                       
-  533 |  1 CPU.USE.S    450 | Code        | 00 |         |    3 | 00/0343 : A2 04 1B    |                  LDX   #$1B04               ; load tool call #
-  534 |  1 CPU.USE.S    450 | Code        | 00 |         |    4 | 00/0346 : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
-  535 |  1 CPU.USE.S    451 | Empty       | 00 |         |    0 | 00/034A               |                                             
-  536 |  1 CPU.USE.S    452 | Code        | 00 |  2      |    3 | 00/034A : AD AE 03    |                  LDA   theTIME              ; calculate thermo limits
-  537 |  1 CPU.USE.S    453 | Code        | 00 |         |    1 | 00/034D : 0A          |                  ASL                        
-  538 |  1 CPU.USE.S    454 | Code        | 00 |         |    3 | 00/034E : C9 64 00    |                  CMP   #$0064               
-  539 |  1 CPU.USE.S    455 | Code        | 00 |         |    2 | 00/0351 : 90 03       |                  BCC   L0356                
-  540 |  1 CPU.USE.S    456 | Code        | 00 |         |    3 | 00/0353 : A9 64 00    |                  LDA   #$0064               ; 100
-  541 |  1 CPU.USE.S    457 | Code        | 00 |  2      |    3 | 00/0356 : 8D A8 03    | L0356            STA   curBUSY              
-  542 |  1 CPU.USE.S    458 | Code        | 00 |         |    3 | 00/0359 : A9 64 00    |                  LDA   #$0064               ; 100
-  543 |  1 CPU.USE.S    459 | Code        | 00 |         |    1 | 00/035C : 38          |                  SEC                        
-  544 |  1 CPU.USE.S    460 | Code        | 00 |  2      |    3 | 00/035D : ED A8 03    |                  SBC   curBUSY              ; - theTIME
-  545 |  1 CPU.USE.S    461 | Code        | 00 |         |    1 | 00/0360 : 18          |                  CLC                        
-  546 |  1 CPU.USE.S    462 | Code        | 00 |  2      |    3 | 00/0361 : 6D E8 03    |                  ADC   busyRECT_X1          ; + left
-  547 |  1 CPU.USE.S    463 | Code        | 00 |  2      |    3 | 00/0364 : CD AC 03    |                  CMP   oldBUSY              ; end reached?
-  548 |  1 CPU.USE.S    464 | Code        | 00 |         |    2 | 00/0367 : F0 37       |                  BEQ   L03A0                ; yes, the same, exit
-  549 |  1 CPU.USE.S    465 | Code        | 00 |  2      |    3 | 00/0369 : 8D EC 03    |                  STA   busyRECT_X2          ; set right
-  550 |  1 CPU.USE.S    466 | Code        | 00 |  2      |    3 | 00/036C : 8D AC 03    |                  STA   oldBUSY              ; save width
-  551 |  1 CPU.USE.S    467 | Code        | 00 |  2      |    3 | 00/036F : 8D F0 03    |                  STA   freeRECT_X1          ; free begins after used
-  552 |  1 CPU.USE.S    468 | Code        | 00 |         |    3 | 00/0372 : A9 6B 00    |                  LDA   #$006B               ; 111
-  553 |  1 CPU.USE.S    469 | Code        | 00 |  2      |    3 | 00/0375 : 8D F4 03    |                  STA   freeRECT_X2          ; until its right limit
-  554 |  1 CPU.USE.S    470 | Empty       | 00 |         |    0 | 00/0378               |                                             
-  555 |  1 CPU.USE.S    471 | Code        | 00 |  1 >>16 |    3 | 00/0378 : F4 00 00    |                  PEA   ^busyRECT            ; fill the busy CPU rectangle
-  556 |  1 CPU.USE.S    472 | Code        | 00 |  2      |    3 | 00/037B : F4 E6 03    |                  PEA   busyRECT             
-  557 |  1 CPU.USE.S    473 | Code        | 00 |  2      |    3 | 00/037E : AD F8 03    |                  LDA   busyPATTPTR+2        
-  558 |  1 CPU.USE.S    474 | Code        | 00 |         |    1 | 00/0381 : 48          |                  PHA                        
-  559 |  1 CPU.USE.S    475 | Code        | 00 |  2      |    3 | 00/0382 : AD F6 03    |                  LDA   busyPATTPTR          
-  560 |  1 CPU.USE.S    476 | Code        | 00 |         |    1 | 00/0385 : 48          |                  PHA                        
-  561 |  1 CPU.USE.S    477 | Macro       | 00 |         |    0 | 00/0386               |                  _FillRect                       
-  563 |  1 CPU.USE.S    477 | Code        | 00 |         |    3 | 00/0386 : A2 04 57    |                  LDX   #$5704               ; load tool call #
-  564 |  1 CPU.USE.S    477 | Code        | 00 |         |    4 | 00/0389 : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
-  565 |  1 CPU.USE.S    478 | Empty       | 00 |         |    0 | 00/038D               |                                             
-  566 |  1 CPU.USE.S    479 | Code        | 00 |  1 >>16 |    3 | 00/038D : F4 00 00    |                  PEA   ^freeRECT            ; draw the free CPU rectangle
-  567 |  1 CPU.USE.S    480 | Code        | 00 |  2      |    3 | 00/0390 : F4 EE 03    |                  PEA   freeRECT             
-  568 |  1 CPU.USE.S    481 | Code        | 00 |  1 >>16 |    3 | 00/0393 : F4 00 00    |                  PEA   ^freePATTERN         
-  569 |  1 CPU.USE.S    482 | Code        | 00 |  2      |    3 | 00/0396 : F4 FA 03    |                  PEA   freePATTERN          
-  570 |  1 CPU.USE.S    483 | Macro       | 00 |         |    0 | 00/0399               |                  _FillRect                       
-  572 |  1 CPU.USE.S    483 | Code        | 00 |         |    3 | 00/0399 : A2 04 57    |                  LDX   #$5704               ; load tool call #
-  573 |  1 CPU.USE.S    483 | Code        | 00 |         |    4 | 00/039C : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
-  574 |  1 CPU.USE.S    484 | Macro       | 00 |         |    0 | 00/03A0               | L03A0            _SetPort                       
-  576 |  1 CPU.USE.S    484 | Code        | 00 |         |    3 | 00/03A0 : A2 04 1B    |                  LDX   #$1B04               ; load tool call #
-  577 |  1 CPU.USE.S    484 | Code        | 00 |         |    4 | 00/03A3 : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
-  578 |  1 CPU.USE.S    485 | Code        | 00 |         |    1 | 00/03A7 : 60          |                  RTS                        
-  579 |  1 CPU.USE.S    486 | Empty       | 00 |         |    0 | 00/03A8               |                                             
-  580 |  1 CPU.USE.S    487 | Comment     | 00 |         |    0 | 00/03A8               | *------------------------------
-  581 |  1 CPU.USE.S    488 | Empty       | 00 |         |    0 | 00/03A8               |                                             
-  582 |  1 CPU.USE.S    489 | Data        | 00 |         |    2 | 00/03A8 : 00 00       | curBUSY          DW    $0000                
-  583 |  1 CPU.USE.S    490 | Data        | 00 |         |    2 | 00/03AA : 00 00       |                  DW    $0000                ; not used
-  584 |  1 CPU.USE.S    491 | Data        | 00 |         |    2 | 00/03AC : 00 00       | oldBUSY          DW    $0000                
-  585 |  1 CPU.USE.S    492 | Empty       | 00 |         |    0 | 00/03AE               |                                             
-  586 |  1 CPU.USE.S    493 | Data        | 00 |         |    2 | 00/03AE : 00 00       | theTIME          DW    $0000                
-  587 |  1 CPU.USE.S    494 | Empty       | 00 |         |    0 | 00/03B0               |                                             
-  588 |  1 CPU.USE.S    495 | Comment     | 00 |         |    0 | 00/03B0               | *------------------------------
-  589 |  1 CPU.USE.S    496 | Comment     | 00 |         |    0 | 00/03B0               | * WINDOW REFRESH ROUTINE
-  590 |  1 CPU.USE.S    497 | Comment     | 00 |         |    0 | 00/03B0               | *------------------------------
-  591 |  1 CPU.USE.S    498 | Empty       | 00 |         |    0 | 00/03B0               |                                             
-  592 |  1 CPU.USE.S    499 | Code        | 00 |         |    1 | 00/03B0 : 8B          | winREFRESH       PHB                        
-  593 |  1 CPU.USE.S    500 | Code        | 00 |         |    1 | 00/03B1 : 4B          |                  PHK                        
-  594 |  1 CPU.USE.S    501 | Code        | 00 |         |    1 | 00/03B2 : AB          |                  PLB                        
-  595 |  1 CPU.USE.S    502 | Code        | 00 |  2      |    3 | 00/03B3 : AD 2B 05    |                  LDA   ptrWINDOW+2          ; set my port
-  596 |  1 CPU.USE.S    503 | Code        | 00 |         |    1 | 00/03B6 : 48          |                  PHA                        
-  597 |  1 CPU.USE.S    504 | Code        | 00 |  2      |    3 | 00/03B7 : AD 29 05    |                  LDA   ptrWINDOW            
-  598 |  1 CPU.USE.S    505 | Code        | 00 |         |    1 | 00/03BA : 48          |                  PHA                        
-  599 |  1 CPU.USE.S    506 | Macro       | 00 |         |    0 | 00/03BB               |                  _DrawControls                       
-  601 |  1 CPU.USE.S    506 | Code        | 00 |         |    3 | 00/03BB : A2 10 10    |                  LDX   #$1010               ; load tool call #
-  602 |  1 CPU.USE.S    506 | Code        | 00 |         |    4 | 00/03BE : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
-  603 |  1 CPU.USE.S    507 | Code        | 00 |         |    3 | 00/03C2 : F4 00 00    |                  PEA   $0000                ; force white
-  604 |  1 CPU.USE.S    508 | Macro       | 00 |         |    0 | 00/03C5               |                  _SetSolidPenPat                       
-  606 |  1 CPU.USE.S    508 | Code        | 00 |         |    3 | 00/03C5 : A2 04 37    |                  LDX   #$3704               ; load tool call #
-  607 |  1 CPU.USE.S    508 | Code        | 00 |         |    4 | 00/03C8 : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
-  608 |  1 CPU.USE.S    509 | Code        | 00 |  1 >>16 |    3 | 00/03CC : F4 00 00    |                  PEA   ^frameRECT           ; erase the full frame
-  609 |  1 CPU.USE.S    510 | Code        | 00 |  2      |    3 | 00/03CF : F4 DE 03    |                  PEA   frameRECT            
-  610 |  1 CPU.USE.S    511 | Macro       | 00 |         |    0 | 00/03D2               |                  _FrameRect                       
-  612 |  1 CPU.USE.S    511 | Code        | 00 |         |    3 | 00/03D2 : A2 04 53    |                  LDX   #$5304               ; load tool call #
-  613 |  1 CPU.USE.S    511 | Code        | 00 |         |    4 | 00/03D5 : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
-  614 |  1 CPU.USE.S    512 | Code        | 00 |  2      |    3 | 00/03D9 : 20 32 03    |                  JSR   showTHERMO           ; show the usage
-  615 |  1 CPU.USE.S    513 | Code        | 00 |         |    1 | 00/03DC : AB          |                  PLB                        
-  616 |  1 CPU.USE.S    514 | Code        | 00 |         |    1 | 00/03DD : 6B          |                  RTL                        
-  617 |  1 CPU.USE.S    515 | Empty       | 00 |         |    0 | 00/03DE               |                                             
-  618 |  1 CPU.USE.S    516 | Comment     | 00 |         |    0 | 00/03DE               | *------------------------------
-  619 |  1 CPU.USE.S    517 | Empty       | 00 |         |    0 | 00/03DE               |                                             
-  620 |  1 CPU.USE.S    518 | Data        | 00 |         |    2 | 00/03DE : 03 00       | frameRECT        DW    $0003                ; the complete frame rectangle
-  621 |  1 CPU.USE.S    519 | Data        | 00 |         |    2 | 00/03E0 : 07 00       |                  DW    $0007                
-  622 |  1 CPU.USE.S    520 | Data        | 00 |         |    2 | 00/03E2 : 0C 00       |                  DW    $000C                
-  623 |  1 CPU.USE.S    521 | Data        | 00 |         |    2 | 00/03E4 : 6D 00       |                  DW    $006D                
-  624 |  1 CPU.USE.S    522 | Empty       | 00 |         |    0 | 00/03E6               |                                             
-  625 |  1 CPU.USE.S    523 | Data        | 00 |         |    2 | 00/03E6 : 04 00       | busyRECT         DW    $0004                ; the CPU used rectangle
-  626 |  1 CPU.USE.S    524 | Data        | 00 |         |    2 | 00/03E8 : 08 00       | busyRECT_X1      DW    $0008                
-  627 |  1 CPU.USE.S    525 | Data        | 00 |         |    2 | 00/03EA : 0B 00       |                  DW    $000B                
-  628 |  1 CPU.USE.S    526 | Data        | 00 |         |    2 | 00/03EC : 6A 00       | busyRECT_X2      DW    $006A                
-  629 |  1 CPU.USE.S    527 | Empty       | 00 |         |    0 | 00/03EE               |                                             
-  630 |  1 CPU.USE.S    528 | Data        | 00 |         |    2 | 00/03EE : 04 00       | freeRECT         DW    $0004                ; the CPU unused rectangle
-  631 |  1 CPU.USE.S    529 | Data        | 00 |         |    2 | 00/03F0 : 08 00       | freeRECT_X1      DW    $0008                
-  632 |  1 CPU.USE.S    530 | Data        | 00 |         |    2 | 00/03F2 : 0B 00       |                  DW    $000B                
-  633 |  1 CPU.USE.S    531 | Data        | 00 |         |    2 | 00/03F4 : 6A 00       | freeRECT_X2      DW    $006A                
-  634 |  1 CPU.USE.S    532 | Empty       | 00 |         |    0 | 00/03F6               |                                             
-  635 |  1 CPU.USE.S    533 | Data        | 00 |  3      |    4 | 00/03F6 : 1A 04 00 00 | busyPATTPTR      ADRL  pattern320           ; pointer to fill data
-  636 |  1 CPU.USE.S    534 | Empty       | 00 |         |    0 | 00/03FA               |                                             
-  637 |  1 CPU.USE.S    535 | Data        | 00 |         |   16 | 00/03FA : FF FF FF FF | freePATTERN      HEX   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF; pattern
+  408 |  1 CPU.USE.S    351 | Comment     | 00 |         |    0 | 00/028F               | * CLOSE
+  409 |  1 CPU.USE.S    352 | Comment     | 00 |         |    0 | 00/028F               | *------------------------------
+  410 |  1 CPU.USE.S    353 | Empty       | 00 |         |    0 | 00/028F               |                                             
+  411 |  1 CPU.USE.S    354 | Empty       | 00 |         |    0 | 00/028F               | closeROUTINE                                
+  412 |  1 CPU.USE.S    355 | Code        | 00 |         |    1 | 00/028F : 8B          |                  PHB                        
+  413 |  1 CPU.USE.S    356 | Code        | 00 |         |    1 | 00/0290 : 4B          |                  PHK                        
+  414 |  1 CPU.USE.S    357 | Code        | 00 |         |    1 | 00/0291 : AB          |                  PLB                        
+  415 |  1 CPU.USE.S    358 | Code        | 00 |  2      |    3 | 00/0292 : AD 16 05    |                  LDA   fgSTART              ; were we started?
+  416 |  1 CPU.USE.S    359 | Code        | 00 |         |    2 | 00/0295 : F0 44       |                  BEQ   L02DB                ; nada
+  417 |  1 CPU.USE.S    360 | Empty       | 00 |         |    0 | 00/0297               |                                             
+  418 |  1 CPU.USE.S    361 | Code        | 00 |  2      |    3 | 00/0297 : AD 69 02    |                  LDA   fgHEARTBEAT          ; was the heartbeat installed?
+  419 |  1 CPU.USE.S    362 | Code        | 00 |         |    2 | 00/029A : F0 10       |                  BEQ   L02AC                ; nada
+  420 |  1 CPU.USE.S    363 | Code        | 00 |  1 >>16 |    3 | 00/029C : F4 00 00    |                  PEA   ^myHEARTBEAT         
+  421 |  1 CPU.USE.S    364 | Code        | 00 |  2      |    3 | 00/029F : F4 6F 05    |                  PEA   myHEARTBEAT          
+  422 |  1 CPU.USE.S    365 | Macro       | 00 |         |    0 | 00/02A2               |                  _DelHeartBeat                       
+  424 |  1 CPU.USE.S    365 | Code        | 00 |         |    3 | 00/02A2 : A2 03 13    |                  LDX   #$1303               ; load tool call #
+  425 |  1 CPU.USE.S    365 | Code        | 00 |         |    4 | 00/02A5 : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
+  426 |  1 CPU.USE.S    366 | Code        | 00 |  2      |    3 | 00/02A9 : 9C 69 02    |                  STZ   fgHEARTBEAT          
+  427 |  1 CPU.USE.S    367 | Code        | 00 |  2      |    3 | 00/02AC : 9C 16 05    | L02AC            STZ   fgSTART              
+  428 |  1 CPU.USE.S    368 | Code        | 00 |  2      |    3 | 00/02AF : AD 2B 05    |                  LDA   ptrWINDOW+2          
+  429 |  1 CPU.USE.S    369 | Code        | 00 |         |    1 | 00/02B2 : 48          |                  PHA                        
+  430 |  1 CPU.USE.S    370 | Code        | 00 |  2      |    3 | 00/02B3 : AD 29 05    |                  LDA   ptrWINDOW            
+  431 |  1 CPU.USE.S    371 | Code        | 00 |         |    1 | 00/02B6 : 48          |                  PHA                        
+  432 |  1 CPU.USE.S    372 | Macro       | 00 |         |    0 | 00/02B7               |                  _CloseWindow                       
+  434 |  1 CPU.USE.S    372 | Code        | 00 |         |    3 | 00/02B7 : A2 0E 0B    |                  LDX   #$B0E                ; load tool call #
+  435 |  1 CPU.USE.S    372 | Code        | 00 |         |    4 | 00/02BA : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
+  436 |  1 CPU.USE.S    373 | Code        | 00 |  2      |    3 | 00/02BE : AD 1A 05    |                  LDA   resID                
+  437 |  1 CPU.USE.S    374 | Code        | 00 |         |    1 | 00/02C1 : 48          |                  PHA                        
+  438 |  1 CPU.USE.S    375 | Macro       | 00 |         |    0 | 00/02C2               |                  _CloseResourceFile                       
+  440 |  1 CPU.USE.S    375 | Code        | 00 |         |    3 | 00/02C2 : A2 1E 0B    |                  LDX   #$B1E                ; load tool call #
+  441 |  1 CPU.USE.S    375 | Code        | 00 |         |    4 | 00/02C5 : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
+  442 |  1 CPU.USE.S    376 | Code        | 00 |  2      |    3 | 00/02C9 : AD 18 05    |                  LDA   memID                
+  443 |  1 CPU.USE.S    377 | Code        | 00 |         |    1 | 00/02CC : 48          |                  PHA                        
+  444 |  1 CPU.USE.S    378 | Macro       | 00 |         |    0 | 00/02CD               |                  _SetCurResourceApp                       
+  446 |  1 CPU.USE.S    378 | Code        | 00 |         |    3 | 00/02CD : A2 1E 13    |                  LDX   #$131E               ; load tool call #
+  447 |  1 CPU.USE.S    378 | Code        | 00 |         |    4 | 00/02D0 : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
+  448 |  1 CPU.USE.S    379 | Macro       | 00 |         |    0 | 00/02D4               |                  _ResourceShutDown                       
+  450 |  1 CPU.USE.S    379 | Code        | 00 |         |    3 | 00/02D4 : A2 1E 03    |                  LDX   #$31E                ; load tool call #
+  451 |  1 CPU.USE.S    379 | Code        | 00 |         |    4 | 00/02D7 : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
+  452 |  1 CPU.USE.S    380 | Code        | 00 |         |    1 | 00/02DB : AB          | L02DB            PLB                        
+  453 |  1 CPU.USE.S    381 | Code        | 00 |         |    1 | 00/02DC : 6B          |                  RTL                        
+  454 |  1 CPU.USE.S    382 | Empty       | 00 |         |    0 | 00/02DD               |                                             
+  455 |  1 CPU.USE.S    383 | Comment     | 00 |         |    0 | 00/02DD               | *------------------------------
+  456 |  1 CPU.USE.S    384 | Comment     | 00 |         |    0 | 00/02DD               | * ACTION ROUTINE
+  457 |  1 CPU.USE.S    385 | Comment     | 00 |         |    0 | 00/02DD               | *------------------------------
+  458 |  1 CPU.USE.S    386 | Empty       | 00 |         |    0 | 00/02DD               |                                             
+  459 |  1 CPU.USE.S    387 | Empty       | 00 |         |    0 | 00/02DD               | actionROUTINE                               
+  460 |  1 CPU.USE.S    388 | Code        | 00 |         |    1 | 00/02DD : 8B          |                  PHB                        ; set my bank
+  461 |  1 CPU.USE.S    389 | Code        | 00 |         |    1 | 00/02DE : 4B          |                  PHK                        
+  462 |  1 CPU.USE.S    390 | Code        | 00 |         |    1 | 00/02DF : AB          |                  PLB                        
+  463 |  1 CPU.USE.S    391 | Code        | 00 |         |    1 | 00/02E0 : 48          |                  PHA                        ; A: action code
+  464 |  1 CPU.USE.S    392 | Code        | 00 |         |    1 | 00/02E1 : 5A          |                  PHY                        ; YX point to the
+  465 |  1 CPU.USE.S    393 | Code        | 00 |         |    1 | 00/02E2 : DA          |                  PHX                        ; event record
+  466 |  1 CPU.USE.S    394 | Empty       | 00 |         |    0 | 00/02E3               |                                             
+  467 |  1 CPU.USE.S    395 | Code        | 00 |  1 >>16 |    3 | 00/02E3 : F4 00 00    |                  PEA   ^taskREC             ; move 16 bytes from Y/X to
+  468 |  1 CPU.USE.S    396 | Code        | 00 |  2      |    3 | 00/02E6 : F4 41 05    |                  PEA   taskREC              ; the taskREC
+  469 |  1 CPU.USE.S    397 | Code        | 00 |         |    3 | 00/02E9 : F4 00 00    |                  PEA   $0000                
+  470 |  1 CPU.USE.S    398 | Code        | 00 |         |    3 | 00/02EC : F4 10 00    |                  PEA   $0010                
+  471 |  1 CPU.USE.S    399 | Macro       | 00 |         |    0 | 00/02EF               |                  _BlockMove                       
+  473 |  1 CPU.USE.S    399 | Code        | 00 |         |    3 | 00/02EF : A2 02 2B    |                  LDX   #$2B02               ; load tool call #
+  474 |  1 CPU.USE.S    399 | Code        | 00 |         |    4 | 00/02F2 : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
+  475 |  1 CPU.USE.S    400 | Code        | 00 |         |    1 | 00/02F6 : 68          |                  PLA                        ; restore the action code
+  476 |  1 CPU.USE.S    401 | Code        | 00 |         |    1 | 00/02F7 : 0A          |                  ASL                        
+  477 |  1 CPU.USE.S    402 | Code        | 00 |         |    1 | 00/02F8 : AA          |                  TAX                        
+  478 |  1 CPU.USE.S    403 | Code        | 00 |  2      |    3 | 00/02F9 : FC FE 02    |                  JSR   (tblACTION,X)        
+  479 |  1 CPU.USE.S    404 | Code        | 00 |         |    1 | 00/02FC : AB          |                  PLB                        
+  480 |  1 CPU.USE.S    405 | Code        | 00 |         |    1 | 00/02FD : 6B          |                  RTL                        
+  481 |  1 CPU.USE.S    406 | Empty       | 00 |         |    0 | 00/02FE               |                                             
+  482 |  1 CPU.USE.S    407 | Comment     | 00 |         |    0 | 00/02FE               | *------------------------------
+  483 |  1 CPU.USE.S    408 | Empty       | 00 |         |    0 | 00/02FE               |                                             
+  484 |  1 CPU.USE.S    409 | Data        | 00 |  2      |    2 | 00/02FE : 12 03       | tblACTION        DA    doSAYOK              ; 0
+  485 |  1 CPU.USE.S    410 | Data        | 00 |  2      |    2 | 00/0300 : 16 03       |                  DA    doEVENT              ; 1 eventAction
+  486 |  1 CPU.USE.S    411 | Data        | 00 |  2      |    2 | 00/0302 : 2E 03       |                  DA    doRUN                ; 2 runAction
+  487 |  1 CPU.USE.S    412 | Data        | 00 |  2      |    2 | 00/0304 : 12 03       |                  DA    doSAYOK              ; 3 cursorAction
+  488 |  1 CPU.USE.S    413 | Data        | 00 |  2      |    2 | 00/0306 : 12 03       |                  DA    doSAYOK              ; 4 not used
+  489 |  1 CPU.USE.S    414 | Data        | 00 |  2      |    2 | 00/0308 : 12 03       |                  DA    doSAYOK              ; 5 undoAction
+  490 |  1 CPU.USE.S    415 | Data        | 00 |  2      |    2 | 00/030A : 12 03       |                  DA    doSAYOK              ; 6 cutAction
+  491 |  1 CPU.USE.S    416 | Data        | 00 |  2      |    2 | 00/030C : 12 03       |                  DA    doSAYOK              ; 7 copyAction
+  492 |  1 CPU.USE.S    417 | Data        | 00 |  2      |    2 | 00/030E : 12 03       |                  DA    doSAYOK              ; 8 pasteAction
+  493 |  1 CPU.USE.S    418 | Data        | 00 |  2      |    2 | 00/0310 : 12 03       |                  DA    doSAYOK              ; 9 clearAction
+  494 |  1 CPU.USE.S    419 | Empty       | 00 |         |    0 | 00/0312               |                                             
+  495 |  1 CPU.USE.S    420 | Comment     | 00 |         |    0 | 00/0312               | *------------------------------
+  496 |  1 CPU.USE.S    421 | Empty       | 00 |         |    0 | 00/0312               |                                             
+  497 |  1 CPU.USE.S    422 | Code        | 00 |         |    3 | 00/0312 : A9 FF FF    | doSAYOK          LDA   #$FFFF               ; return TRUE
+  498 |  1 CPU.USE.S    423 | Code        | 00 |         |    1 | 00/0315 : 60          |                  RTS                        
+  499 |  1 CPU.USE.S    424 | Empty       | 00 |         |    0 | 00/0316               |                                             
+  500 |  1 CPU.USE.S    425 | Comment     | 00 |         |    0 | 00/0316               | *------------------------------
+  501 |  1 CPU.USE.S    426 | Empty       | 00 |         |    0 | 00/0316               |                                             
+  502 |  1 CPU.USE.S    427 | Code        | 00 |         |    3 | 00/0316 : F4 00 00    | doEVENT          PEA   $0000                ; space for result
+  503 |  1 CPU.USE.S    428 | Code        | 00 |         |    3 | 00/0319 : F4 FF FF    |                  PEA   $FFFF                ; eventMask - not used
+  504 |  1 CPU.USE.S    429 | Code        | 00 |  1 >>16 |    3 | 00/031C : F4 00 00    |                  PEA   ^taskREC             ; taskRecPtr
+  505 |  1 CPU.USE.S    430 | Code        | 00 |  2      |    3 | 00/031F : F4 41 05    |                  PEA   taskREC              
+  506 |  1 CPU.USE.S    431 | Macro       | 00 |         |    0 | 00/0322               |                  _TaskMasterDA                       
+  508 |  1 CPU.USE.S    431 | Code        | 00 |         |    3 | 00/0322 : A2 0E 5F    |                  LDX   #$5F0E               ; load tool call #
+  509 |  1 CPU.USE.S    431 | Code        | 00 |         |    4 | 00/0325 : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
+  510 |  1 CPU.USE.S    432 | Code        | 00 |         |    1 | 00/0329 : 68          |                  PLA                        
+  511 |  1 CPU.USE.S    433 | Code        | 00 |         |    3 | 00/032A : A9 00 00    |                  LDA   #$0000               ; always return OK
+  512 |  1 CPU.USE.S    434 | Code        | 00 |         |    1 | 00/032D : 60          |                  RTS                        
+  513 |  1 CPU.USE.S    435 | Empty       | 00 |         |    0 | 00/032E               |                                             
+  514 |  1 CPU.USE.S    436 | Comment     | 00 |         |    0 | 00/032E               | *------------------------------
+  515 |  1 CPU.USE.S    437 | Empty       | 00 |         |    0 | 00/032E               |                                             
+  516 |  1 CPU.USE.S    438 | Code        | 00 |  2      |    3 | 00/032E : EE AE 03    | doRUN            INC   theTIME              ; say we must do something
+  517 |  1 CPU.USE.S    439 | Code        | 00 |         |    1 | 00/0331 : 60          |                  RTS                        
+  518 |  1 CPU.USE.S    440 | Empty       | 00 |         |    0 | 00/0332               |                                             
+  519 |  1 CPU.USE.S    441 | Comment     | 00 |         |    0 | 00/0332               | *------------------------------
+  520 |  1 CPU.USE.S    442 | Comment     | 00 |         |    0 | 00/0332               | * SHOW THE THERMO "REFRESH"
+  521 |  1 CPU.USE.S    443 | Comment     | 00 |         |    0 | 00/0332               | *------------------------------
+  522 |  1 CPU.USE.S    444 | Empty       | 00 |         |    0 | 00/0332               |                                             
+  523 |  1 CPU.USE.S    445 | Code        | 00 |         |    1 | 00/0332 : 48          | showTHERMO       PHA                        ; save port
+  524 |  1 CPU.USE.S    446 | Code        | 00 |         |    1 | 00/0333 : 48          |                  PHA                        
+  525 |  1 CPU.USE.S    447 | Macro       | 00 |         |    0 | 00/0334               |                  _GetPort                       
+  527 |  1 CPU.USE.S    447 | Code        | 00 |         |    3 | 00/0334 : A2 04 1C    |                  LDX   #$1C04               ; load tool call #
+  528 |  1 CPU.USE.S    447 | Code        | 00 |         |    4 | 00/0337 : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
+  529 |  1 CPU.USE.S    448 | Empty       | 00 |         |    0 | 00/033B               |                                             
+  530 |  1 CPU.USE.S    449 | Code        | 00 |  2      |    3 | 00/033B : AD 2B 05    |                  LDA   ptrWINDOW+2          ; set my port
+  531 |  1 CPU.USE.S    450 | Code        | 00 |         |    1 | 00/033E : 48          |                  PHA                        
+  532 |  1 CPU.USE.S    451 | Code        | 00 |  2      |    3 | 00/033F : AD 29 05    |                  LDA   ptrWINDOW            
+  533 |  1 CPU.USE.S    452 | Code        | 00 |         |    1 | 00/0342 : 48          |                  PHA                        
+  534 |  1 CPU.USE.S    453 | Macro       | 00 |         |    0 | 00/0343               |                  _SetPort                       
+  536 |  1 CPU.USE.S    453 | Code        | 00 |         |    3 | 00/0343 : A2 04 1B    |                  LDX   #$1B04               ; load tool call #
+  537 |  1 CPU.USE.S    453 | Code        | 00 |         |    4 | 00/0346 : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
+  538 |  1 CPU.USE.S    454 | Empty       | 00 |         |    0 | 00/034A               |                                             
+  539 |  1 CPU.USE.S    455 | Code        | 00 |  2      |    3 | 00/034A : AD AE 03    |                  LDA   theTIME              ; calculate thermo limits
+  540 |  1 CPU.USE.S    456 | Code        | 00 |         |    1 | 00/034D : 0A          |                  ASL                        
+  541 |  1 CPU.USE.S    457 | Code        | 00 |         |    3 | 00/034E : C9 64 00    |                  CMP   #$0064               
+  542 |  1 CPU.USE.S    458 | Code        | 00 |         |    2 | 00/0351 : 90 03       |                  BCC   L0356                
+  543 |  1 CPU.USE.S    459 | Code        | 00 |         |    3 | 00/0353 : A9 64 00    |                  LDA   #$0064               ; 100
+  544 |  1 CPU.USE.S    460 | Code        | 00 |  2      |    3 | 00/0356 : 8D A8 03    | L0356            STA   curBUSY              
+  545 |  1 CPU.USE.S    461 | Code        | 00 |         |    3 | 00/0359 : A9 64 00    |                  LDA   #$0064               ; 100
+  546 |  1 CPU.USE.S    462 | Code        | 00 |         |    1 | 00/035C : 38          |                  SEC                        
+  547 |  1 CPU.USE.S    463 | Code        | 00 |  2      |    3 | 00/035D : ED A8 03    |                  SBC   curBUSY              ; - theTIME
+  548 |  1 CPU.USE.S    464 | Code        | 00 |         |    1 | 00/0360 : 18          |                  CLC                        
+  549 |  1 CPU.USE.S    465 | Code        | 00 |  2      |    3 | 00/0361 : 6D E8 03    |                  ADC   busyRECT_X1          ; + left
+  550 |  1 CPU.USE.S    466 | Code        | 00 |  2      |    3 | 00/0364 : CD AC 03    |                  CMP   oldBUSY              ; end reached?
+  551 |  1 CPU.USE.S    467 | Code        | 00 |         |    2 | 00/0367 : F0 37       |                  BEQ   L03A0                ; yes, the same, exit
+  552 |  1 CPU.USE.S    468 | Code        | 00 |  2      |    3 | 00/0369 : 8D EC 03    |                  STA   busyRECT_X2          ; set right
+  553 |  1 CPU.USE.S    469 | Code        | 00 |  2      |    3 | 00/036C : 8D AC 03    |                  STA   oldBUSY              ; save width
+  554 |  1 CPU.USE.S    470 | Code        | 00 |  2      |    3 | 00/036F : 8D F0 03    |                  STA   freeRECT_X1          ; free begins after used
+  555 |  1 CPU.USE.S    471 | Code        | 00 |         |    3 | 00/0372 : A9 6B 00    |                  LDA   #$006B               ; 111
+  556 |  1 CPU.USE.S    472 | Code        | 00 |  2      |    3 | 00/0375 : 8D F4 03    |                  STA   freeRECT_X2          ; until its right limit
+  557 |  1 CPU.USE.S    473 | Empty       | 00 |         |    0 | 00/0378               |                                             
+  558 |  1 CPU.USE.S    474 | Code        | 00 |  1 >>16 |    3 | 00/0378 : F4 00 00    |                  PEA   ^busyRECT            ; fill the busy CPU rectangle
+  559 |  1 CPU.USE.S    475 | Code        | 00 |  2      |    3 | 00/037B : F4 E6 03    |                  PEA   busyRECT             
+  560 |  1 CPU.USE.S    476 | Code        | 00 |  2      |    3 | 00/037E : AD F8 03    |                  LDA   busyPATTPTR+2        
+  561 |  1 CPU.USE.S    477 | Code        | 00 |         |    1 | 00/0381 : 48          |                  PHA                        
+  562 |  1 CPU.USE.S    478 | Code        | 00 |  2      |    3 | 00/0382 : AD F6 03    |                  LDA   busyPATTPTR          
+  563 |  1 CPU.USE.S    479 | Code        | 00 |         |    1 | 00/0385 : 48          |                  PHA                        
+  564 |  1 CPU.USE.S    480 | Macro       | 00 |         |    0 | 00/0386               |                  _FillRect                       
+  566 |  1 CPU.USE.S    480 | Code        | 00 |         |    3 | 00/0386 : A2 04 57    |                  LDX   #$5704               ; load tool call #
+  567 |  1 CPU.USE.S    480 | Code        | 00 |         |    4 | 00/0389 : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
+  568 |  1 CPU.USE.S    481 | Empty       | 00 |         |    0 | 00/038D               |                                             
+  569 |  1 CPU.USE.S    482 | Code        | 00 |  1 >>16 |    3 | 00/038D : F4 00 00    |                  PEA   ^freeRECT            ; draw the free CPU rectangle
+  570 |  1 CPU.USE.S    483 | Code        | 00 |  2      |    3 | 00/0390 : F4 EE 03    |                  PEA   freeRECT             
+  571 |  1 CPU.USE.S    484 | Code        | 00 |  1 >>16 |    3 | 00/0393 : F4 00 00    |                  PEA   ^freePATTERN         
+  572 |  1 CPU.USE.S    485 | Code        | 00 |  2      |    3 | 00/0396 : F4 FA 03    |                  PEA   freePATTERN          
+  573 |  1 CPU.USE.S    486 | Macro       | 00 |         |    0 | 00/0399               |                  _FillRect                       
+  575 |  1 CPU.USE.S    486 | Code        | 00 |         |    3 | 00/0399 : A2 04 57    |                  LDX   #$5704               ; load tool call #
+  576 |  1 CPU.USE.S    486 | Code        | 00 |         |    4 | 00/039C : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
+  577 |  1 CPU.USE.S    487 | Macro       | 00 |         |    0 | 00/03A0               | L03A0            _SetPort                       
+  579 |  1 CPU.USE.S    487 | Code        | 00 |         |    3 | 00/03A0 : A2 04 1B    |                  LDX   #$1B04               ; load tool call #
+  580 |  1 CPU.USE.S    487 | Code        | 00 |         |    4 | 00/03A3 : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
+  581 |  1 CPU.USE.S    488 | Code        | 00 |         |    1 | 00/03A7 : 60          |                  RTS                        
+  582 |  1 CPU.USE.S    489 | Empty       | 00 |         |    0 | 00/03A8               |                                             
+  583 |  1 CPU.USE.S    490 | Comment     | 00 |         |    0 | 00/03A8               | *------------------------------
+  584 |  1 CPU.USE.S    491 | Empty       | 00 |         |    0 | 00/03A8               |                                             
+  585 |  1 CPU.USE.S    492 | Data        | 00 |         |    2 | 00/03A8 : 00 00       | curBUSY          DW    $0000                
+  586 |  1 CPU.USE.S    493 | Data        | 00 |         |    2 | 00/03AA : 00 00       |                  DW    $0000                ; not used
+  587 |  1 CPU.USE.S    494 | Data        | 00 |         |    2 | 00/03AC : 00 00       | oldBUSY          DW    $0000                
+  588 |  1 CPU.USE.S    495 | Empty       | 00 |         |    0 | 00/03AE               |                                             
+  589 |  1 CPU.USE.S    496 | Data        | 00 |         |    2 | 00/03AE : 00 00       | theTIME          DW    $0000                
+  590 |  1 CPU.USE.S    497 | Empty       | 00 |         |    0 | 00/03B0               |                                             
+  591 |  1 CPU.USE.S    498 | Comment     | 00 |         |    0 | 00/03B0               | *------------------------------
+  592 |  1 CPU.USE.S    499 | Comment     | 00 |         |    0 | 00/03B0               | * WINDOW REFRESH ROUTINE
+  593 |  1 CPU.USE.S    500 | Comment     | 00 |         |    0 | 00/03B0               | *------------------------------
+  594 |  1 CPU.USE.S    501 | Empty       | 00 |         |    0 | 00/03B0               |                                             
+  595 |  1 CPU.USE.S    502 | Code        | 00 |         |    1 | 00/03B0 : 8B          | winREFRESH       PHB                        
+  596 |  1 CPU.USE.S    503 | Code        | 00 |         |    1 | 00/03B1 : 4B          |                  PHK                        
+  597 |  1 CPU.USE.S    504 | Code        | 00 |         |    1 | 00/03B2 : AB          |                  PLB                        
+  598 |  1 CPU.USE.S    505 | Code        | 00 |  2      |    3 | 00/03B3 : AD 2B 05    |                  LDA   ptrWINDOW+2          ; set my port
+  599 |  1 CPU.USE.S    506 | Code        | 00 |         |    1 | 00/03B6 : 48          |                  PHA                        
+  600 |  1 CPU.USE.S    507 | Code        | 00 |  2      |    3 | 00/03B7 : AD 29 05    |                  LDA   ptrWINDOW            
+  601 |  1 CPU.USE.S    508 | Code        | 00 |         |    1 | 00/03BA : 48          |                  PHA                        
+  602 |  1 CPU.USE.S    509 | Macro       | 00 |         |    0 | 00/03BB               |                  _DrawControls                       
+  604 |  1 CPU.USE.S    509 | Code        | 00 |         |    3 | 00/03BB : A2 10 10    |                  LDX   #$1010               ; load tool call #
+  605 |  1 CPU.USE.S    509 | Code        | 00 |         |    4 | 00/03BE : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
+  606 |  1 CPU.USE.S    510 | Code        | 00 |         |    3 | 00/03C2 : F4 00 00    |                  PEA   $0000                ; force white
+  607 |  1 CPU.USE.S    511 | Macro       | 00 |         |    0 | 00/03C5               |                  _SetSolidPenPat                       
+  609 |  1 CPU.USE.S    511 | Code        | 00 |         |    3 | 00/03C5 : A2 04 37    |                  LDX   #$3704               ; load tool call #
+  610 |  1 CPU.USE.S    511 | Code        | 00 |         |    4 | 00/03C8 : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
+  611 |  1 CPU.USE.S    512 | Code        | 00 |  1 >>16 |    3 | 00/03CC : F4 00 00    |                  PEA   ^frameRECT           ; erase the full frame
+  612 |  1 CPU.USE.S    513 | Code        | 00 |  2      |    3 | 00/03CF : F4 DE 03    |                  PEA   frameRECT            
+  613 |  1 CPU.USE.S    514 | Macro       | 00 |         |    0 | 00/03D2               |                  _FrameRect                       
+  615 |  1 CPU.USE.S    514 | Code        | 00 |         |    3 | 00/03D2 : A2 04 53    |                  LDX   #$5304               ; load tool call #
+  616 |  1 CPU.USE.S    514 | Code        | 00 |         |    4 | 00/03D5 : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
+  617 |  1 CPU.USE.S    515 | Code        | 00 |  2      |    3 | 00/03D9 : 20 32 03    |                  JSR   showTHERMO           ; show the usage
+  618 |  1 CPU.USE.S    516 | Code        | 00 |         |    1 | 00/03DC : AB          |                  PLB                        
+  619 |  1 CPU.USE.S    517 | Code        | 00 |         |    1 | 00/03DD : 6B          |                  RTL                        
+  620 |  1 CPU.USE.S    518 | Empty       | 00 |         |    0 | 00/03DE               |                                             
+  621 |  1 CPU.USE.S    519 | Comment     | 00 |         |    0 | 00/03DE               | *------------------------------
+  622 |  1 CPU.USE.S    520 | Empty       | 00 |         |    0 | 00/03DE               |                                             
+  623 |  1 CPU.USE.S    521 | Data        | 00 |         |    2 | 00/03DE : 03 00       | frameRECT        DW    $0003                ; the complete frame rectangle
+  624 |  1 CPU.USE.S    522 | Data        | 00 |         |    2 | 00/03E0 : 07 00       |                  DW    $0007                
+  625 |  1 CPU.USE.S    523 | Data        | 00 |         |    2 | 00/03E2 : 0C 00       |                  DW    $000C                
+  626 |  1 CPU.USE.S    524 | Data        | 00 |         |    2 | 00/03E4 : 6D 00       |                  DW    $006D                
+  627 |  1 CPU.USE.S    525 | Empty       | 00 |         |    0 | 00/03E6               |                                             
+  628 |  1 CPU.USE.S    526 | Data        | 00 |         |    2 | 00/03E6 : 04 00       | busyRECT         DW    $0004                ; the CPU used rectangle
+  629 |  1 CPU.USE.S    527 | Data        | 00 |         |    2 | 00/03E8 : 08 00       | busyRECT_X1      DW    $0008                
+  630 |  1 CPU.USE.S    528 | Data        | 00 |         |    2 | 00/03EA : 0B 00       |                  DW    $000B                
+  631 |  1 CPU.USE.S    529 | Data        | 00 |         |    2 | 00/03EC : 6A 00       | busyRECT_X2      DW    $006A                
+  632 |  1 CPU.USE.S    530 | Empty       | 00 |         |    0 | 00/03EE               |                                             
+  633 |  1 CPU.USE.S    531 | Data        | 00 |         |    2 | 00/03EE : 04 00       | freeRECT         DW    $0004                ; the CPU unused rectangle
+  634 |  1 CPU.USE.S    532 | Data        | 00 |         |    2 | 00/03F0 : 08 00       | freeRECT_X1      DW    $0008                
+  635 |  1 CPU.USE.S    533 | Data        | 00 |         |    2 | 00/03F2 : 0B 00       |                  DW    $000B                
+  636 |  1 CPU.USE.S    534 | Data        | 00 |         |    2 | 00/03F4 : 6A 00       | freeRECT_X2      DW    $006A                
+  637 |  1 CPU.USE.S    535 | Empty       | 00 |         |    0 | 00/03F6               |                                             
+  638 |  1 CPU.USE.S    536 | Data        | 00 |  3      |    4 | 00/03F6 : 1A 04 00 00 | busyPATTPTR      ADRL  pattern320           ; pointer to fill data
+  639 |  1 CPU.USE.S    537 | Empty       | 00 |         |    0 | 00/03FA               |                                             
+  640 |  1 CPU.USE.S    538 | Data        | 00 |         |   16 | 00/03FA : FF FF FF FF | freePATTERN      HEX   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF; pattern
       |                     |             |    |         |      |           FF FF FF FF |
       |                     |             |    |         |      |           FF FF FF FF |
       |                     |             |    |         |      |           FF FF FF FF |
-  638 |  1 CPU.USE.S    536 | Data        | 00 |         |   16 | 00/040A : FF FF FF FF |                  HEX   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+  641 |  1 CPU.USE.S    539 | Data        | 00 |         |   16 | 00/040A : FF FF FF FF |                  HEX   FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       |                     |             |    |         |      |           FF FF FF FF |
       |                     |             |    |         |      |           FF FF FF FF |
       |                     |             |    |         |      |           FF FF FF FF |
-  639 |  1 CPU.USE.S    537 | Data        | 00 |         |   16 | 00/041A : 77 77 77 77 | pattern320       HEX   77777777777777777777777777777777; red
+  642 |  1 CPU.USE.S    540 | Data        | 00 |         |   16 | 00/041A : 77 77 77 77 | pattern320       HEX   77777777777777777777777777777777; red
       |                     |             |    |         |      |           77 77 77 77 |
       |                     |             |    |         |      |           77 77 77 77 |
       |                     |             |    |         |      |           77 77 77 77 |
-  640 |  1 CPU.USE.S    538 | Data        | 00 |         |   16 | 00/042A : 77 77 77 77 |                  HEX   77777777777777777777777777777777
+  643 |  1 CPU.USE.S    541 | Data        | 00 |         |   16 | 00/042A : 77 77 77 77 |                  HEX   77777777777777777777777777777777
       |                     |             |    |         |      |           77 77 77 77 |
       |                     |             |    |         |      |           77 77 77 77 |
       |                     |             |    |         |      |           77 77 77 77 |
-  641 |  1 CPU.USE.S    539 | Data        | 00 |         |   16 | 00/043A : 44 44 44 44 | pattern640       HEX   44444444444444444444444444444444; red
+  644 |  1 CPU.USE.S    542 | Data        | 00 |         |   16 | 00/043A : 44 44 44 44 | pattern640       HEX   44444444444444444444444444444444; red
       |                     |             |    |         |      |           44 44 44 44 |
       |                     |             |    |         |      |           44 44 44 44 |
       |                     |             |    |         |      |           44 44 44 44 |
-  642 |  1 CPU.USE.S    540 | Data        | 00 |         |   16 | 00/044A : 44 44 44 44 |                  HEX   44444444444444444444444444444444
+  645 |  1 CPU.USE.S    543 | Data        | 00 |         |   16 | 00/044A : 44 44 44 44 |                  HEX   44444444444444444444444444444444
       |                     |             |    |         |      |           44 44 44 44 |
       |                     |             |    |         |      |           44 44 44 44 |
       |                     |             |    |         |      |           44 44 44 44 |
-  643 |  1 CPU.USE.S    541 | Empty       | 00 |         |    0 | 00/045A               |                                             
-  644 |  1 CPU.USE.S    542 | Comment     | 00 |         |    0 | 00/045A               | *------------------------------
-  645 |  1 CPU.USE.S    543 | Comment     | 00 |         |    0 | 00/045A               | * SHOW THE ERROR AND DISABLE ME
-  646 |  1 CPU.USE.S    544 | Comment     | 00 |         |    0 | 00/045A               | *------------------------------
-  647 |  1 CPU.USE.S    545 | Empty       | 00 |         |    0 | 00/045A               |                                             
-  648 |  1 CPU.USE.S    546 | Code        | 00 |  2      |    3 | 00/045A : 8D 91 04    | showERROR        STA   ptrSTRING            
-  649 |  1 CPU.USE.S    547 | Code        | 00 |  2      |    3 | 00/045D : 8C 93 04    |                  STY   ptrSTRING+2          
-  650 |  1 CPU.USE.S    548 | Code        | 00 |         |    3 | 00/0460 : F4 00 00    |                  PEA   $0000                
-  651 |  1 CPU.USE.S    549 | Code        | 00 |  1 >>16 |    3 | 00/0463 : F4 00 00    |                  PEA   ^strFATAL            
-  652 |  1 CPU.USE.S    550 | Code        | 00 |  2      |    3 | 00/0466 : F4 95 04    |                  PEA   strFATAL             
-  653 |  1 CPU.USE.S    551 | Code        | 00 |  2      |    3 | 00/0469 : AD 93 04    |                  LDA   ptrSTRING+2          
-  654 |  1 CPU.USE.S    552 | Code        | 00 |         |    1 | 00/046C : 48          |                  PHA                        
-  655 |  1 CPU.USE.S    553 | Code        | 00 |  2      |    3 | 00/046D : AD 91 04    |                  LDA   ptrSTRING            
-  656 |  1 CPU.USE.S    554 | Code        | 00 |         |    1 | 00/0470 : 48          |                  PHA                        
-  657 |  1 CPU.USE.S    555 | Code        | 00 |  1 >>16 |    3 | 00/0471 : F4 00 00    |                  PEA   ^strRETURN           
-  658 |  1 CPU.USE.S    556 | Code        | 00 |  2      |    3 | 00/0474 : F4 B3 04    |                  PEA   strRETURN            
-  659 |  1 CPU.USE.S    557 | Code        | 00 |  1 >>16 |    3 | 00/0477 : F4 00 00    |                  PEA   ^strSPACE            
-  660 |  1 CPU.USE.S    558 | Code        | 00 |  2      |    3 | 00/047A : F4 CD 04    |                  PEA   strSPACE             
-  661 |  1 CPU.USE.S    559 | Macro       | 00 |         |    0 | 00/047D               |                  _TLTextMountVolume                       
-  663 |  1 CPU.USE.S    559 | Code        | 00 |         |    3 | 00/047D : A2 01 12    |                  LDX   #$1201               ; load tool call #
-  664 |  1 CPU.USE.S    559 | Code        | 00 |         |    4 | 00/0480 : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
-  665 |  1 CPU.USE.S    560 | Code        | 00 |         |    1 | 00/0484 : 68          |                  PLA                        
-  666 |  1 CPU.USE.S    561 | Empty       | 00 |         |    0 | 00/0485               |                                             
-  667 |  1 CPU.USE.S    562 | Code        | 00 |  2      |    3 | 00/0485 : AD 1F 00    |                  LDA   menuID               ; disable my menu item :-(
-  668 |  1 CPU.USE.S    563 | Code        | 00 |         |    1 | 00/0488 : 48          |                  PHA                        
-  669 |  1 CPU.USE.S    564 | Macro       | 00 |         |    0 | 00/0489               |                  _DisableMItem                       
-  671 |  1 CPU.USE.S    564 | Code        | 00 |         |    3 | 00/0489 : A2 0F 31    |                  LDX   #$310F               ; load tool call #
-  672 |  1 CPU.USE.S    564 | Code        | 00 |         |    4 | 00/048C : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
-  673 |  1 CPU.USE.S    565 | Code        | 00 |         |    1 | 00/0490 : 60          |                  RTS                        
-  674 |  1 CPU.USE.S    566 | Empty       | 00 |         |    0 | 00/0491               |                                             
-  675 |  1 CPU.USE.S    567 | Comment     | 00 |         |    0 | 00/0491               | *------------------------------
-  676 |  1 CPU.USE.S    568 | Empty       | 00 |         |    0 | 00/0491               |                                             
-  677 |  1 CPU.USE.S    569 | Data        | 00 |         |    4 | 00/0491 : 00 00 00 00 | ptrSTRING        ADRL  $00000000            
-  678 |  1 CPU.USE.S    570 | Empty       | 00 |         |    0 | 00/0495               |                                             
-  679 |  1 CPU.USE.S    571 | Data        | 00 |         |   30 | 00/0495 : 1D 43 50 55 | strFATAL         STR   'CPU Use:Fatal Error Occurred.'
+  646 |  1 CPU.USE.S    544 | Empty       | 00 |         |    0 | 00/045A               |                                             
+  647 |  1 CPU.USE.S    545 | Comment     | 00 |         |    0 | 00/045A               | *------------------------------
+  648 |  1 CPU.USE.S    546 | Comment     | 00 |         |    0 | 00/045A               | * SHOW THE ERROR AND DISABLE ME
+  649 |  1 CPU.USE.S    547 | Comment     | 00 |         |    0 | 00/045A               | *------------------------------
+  650 |  1 CPU.USE.S    548 | Empty       | 00 |         |    0 | 00/045A               |                                             
+  651 |  1 CPU.USE.S    549 | Code        | 00 |  2      |    3 | 00/045A : 8D 91 04    | showERROR        STA   ptrSTRING            
+  652 |  1 CPU.USE.S    550 | Code        | 00 |  2      |    3 | 00/045D : 8C 93 04    |                  STY   ptrSTRING+2          
+  653 |  1 CPU.USE.S    551 | Code        | 00 |         |    3 | 00/0460 : F4 00 00    |                  PEA   $0000                
+  654 |  1 CPU.USE.S    552 | Code        | 00 |  1 >>16 |    3 | 00/0463 : F4 00 00    |                  PEA   ^strFATAL            
+  655 |  1 CPU.USE.S    553 | Code        | 00 |  2      |    3 | 00/0466 : F4 95 04    |                  PEA   strFATAL             
+  656 |  1 CPU.USE.S    554 | Code        | 00 |  2      |    3 | 00/0469 : AD 93 04    |                  LDA   ptrSTRING+2          
+  657 |  1 CPU.USE.S    555 | Code        | 00 |         |    1 | 00/046C : 48          |                  PHA                        
+  658 |  1 CPU.USE.S    556 | Code        | 00 |  2      |    3 | 00/046D : AD 91 04    |                  LDA   ptrSTRING            
+  659 |  1 CPU.USE.S    557 | Code        | 00 |         |    1 | 00/0470 : 48          |                  PHA                        
+  660 |  1 CPU.USE.S    558 | Code        | 00 |  1 >>16 |    3 | 00/0471 : F4 00 00    |                  PEA   ^strRETURN           
+  661 |  1 CPU.USE.S    559 | Code        | 00 |  2      |    3 | 00/0474 : F4 B3 04    |                  PEA   strRETURN            
+  662 |  1 CPU.USE.S    560 | Code        | 00 |  1 >>16 |    3 | 00/0477 : F4 00 00    |                  PEA   ^strSPACE            
+  663 |  1 CPU.USE.S    561 | Code        | 00 |  2      |    3 | 00/047A : F4 CD 04    |                  PEA   strSPACE             
+  664 |  1 CPU.USE.S    562 | Macro       | 00 |         |    0 | 00/047D               |                  _TLTextMountVolume                       
+  666 |  1 CPU.USE.S    562 | Code        | 00 |         |    3 | 00/047D : A2 01 12    |                  LDX   #$1201               ; load tool call #
+  667 |  1 CPU.USE.S    562 | Code        | 00 |         |    4 | 00/0480 : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
+  668 |  1 CPU.USE.S    563 | Code        | 00 |         |    1 | 00/0484 : 68          |                  PLA                        
+  669 |  1 CPU.USE.S    564 | Empty       | 00 |         |    0 | 00/0485               |                                             
+  670 |  1 CPU.USE.S    565 | Code        | 00 |  2      |    3 | 00/0485 : AD 1F 00    |                  LDA   menuID               ; disable my menu item :-(
+  671 |  1 CPU.USE.S    566 | Code        | 00 |         |    1 | 00/0488 : 48          |                  PHA                        
+  672 |  1 CPU.USE.S    567 | Macro       | 00 |         |    0 | 00/0489               |                  _DisableMItem                       
+  674 |  1 CPU.USE.S    567 | Code        | 00 |         |    3 | 00/0489 : A2 0F 31    |                  LDX   #$310F               ; load tool call #
+  675 |  1 CPU.USE.S    567 | Code        | 00 |         |    4 | 00/048C : 22 00 00 E1 |                  JSL   $E10000              ; go to dispatcher
+  676 |  1 CPU.USE.S    568 | Code        | 00 |         |    1 | 00/0490 : 60          |                  RTS                        
+  677 |  1 CPU.USE.S    569 | Empty       | 00 |         |    0 | 00/0491               |                                             
+  678 |  1 CPU.USE.S    570 | Comment     | 00 |         |    0 | 00/0491               | *------------------------------
+  679 |  1 CPU.USE.S    571 | Empty       | 00 |         |    0 | 00/0491               |                                             
+  680 |  1 CPU.USE.S    572 | Data        | 00 |         |    4 | 00/0491 : 00 00 00 00 | ptrSTRING        ADRL  $00000000            
+  681 |  1 CPU.USE.S    573 | Empty       | 00 |         |    0 | 00/0495               |                                             
+  682 |  1 CPU.USE.S    574 | Data        | 00 |         |   30 | 00/0495 : 1D 43 50 55 | strFATAL         STR   'CPU Use:Fatal Error Occurred.'
       |                     |             |    |         |      |           20 55 73 65 |
       |                     |             |    |         |      |           3A 46 61 74 |
       |                     |             |    |         |      |           61 6C 20 45 |
@@ -671,103 +674,103 @@
       |                     |             |    |         |      |           20 4F 63 63 |
       |                     |             |    |         |      |           75 72 72 65 |
       |                     |             |    |         |      |           64 2E       |
-  680 |  1 CPU.USE.S    572 | Data        | 00 |         |   26 | 00/04B3 : 19 50 72 65 | strRETURN        STR   'Press RETURN to continue.'
+  683 |  1 CPU.USE.S    575 | Data        | 00 |         |   26 | 00/04B3 : 19 50 72 65 | strRETURN        STR   'Press RETURN to continue.'
       |                     |             |    |         |      |           73 73 20 52 |
       |                     |             |    |         |      |           45 54 55 52 |
       |                     |             |    |         |      |           4E 20 74 6F |
       |                     |             |    |         |      |           20 63 6F 6E |
       |                     |             |    |         |      |           74 69 6E 75 |
       |                     |             |    |         |      |           65 2E       |
-  681 |  1 CPU.USE.S    573 | Data        | 00 |         |    2 | 00/04CD : 01 20       | strSPACE         STR   ' '                  
-  682 |  1 CPU.USE.S    574 | Empty       | 00 |         |    0 | 00/04CF               |                                             
-  683 |  1 CPU.USE.S    575 | Data        | 00 |         |   27 | 00/04CF : 1A 43 61 6E | strNORES         STR   'Cannot open Resource Fork.'
+  684 |  1 CPU.USE.S    576 | Data        | 00 |         |    2 | 00/04CD : 01 20       | strSPACE         STR   ' '                  
+  685 |  1 CPU.USE.S    577 | Empty       | 00 |         |    0 | 00/04CF               |                                             
+  686 |  1 CPU.USE.S    578 | Data        | 00 |         |   27 | 00/04CF : 1A 43 61 6E | strNORES         STR   'Cannot open Resource Fork.'
       |                     |             |    |         |      |           6E 6F 74 20 |
       |                     |             |    |         |      |           6F 70 65 6E |
       |                     |             |    |         |      |           20 52 65 73 |
       |                     |             |    |         |      |           6F 75 72 63 |
       |                     |             |    |         |      |           65 20 46 6F |
       |                     |             |    |         |      |           72 6B 2E    |
-  684 |  1 CPU.USE.S    576 | Data        | 00 |         |   20 | 00/04EA : 13 43 61 6E | strNOWIN         STR   'Cannot open window.'
+  687 |  1 CPU.USE.S    579 | Data        | 00 |         |   20 | 00/04EA : 13 43 61 6E | strNOWIN         STR   'Cannot open window.'
       |                     |             |    |         |      |           6E 6F 74 20 |
       |                     |             |    |         |      |           6F 70 65 6E |
       |                     |             |    |         |      |           20 77 69 6E |
       |                     |             |    |         |      |           64 6F 77 2E |
-  685 |  1 CPU.USE.S    577 | Data        | 00 |         |   24 | 00/04FE : 17 43 61 6E | strNOCTL         STR   'Cannot access controls.'
+  688 |  1 CPU.USE.S    580 | Data        | 00 |         |   24 | 00/04FE : 17 43 61 6E | strNOCTL         STR   'Cannot access controls.'
       |                     |             |    |         |      |           6E 6F 74 20 |
       |                     |             |    |         |      |           61 63 63 65 |
       |                     |             |    |         |      |           73 73 20 63 |
       |                     |             |    |         |      |           6F 6E 74 72 |
       |                     |             |    |         |      |           6F 6C 73 2E |
-  686 |  1 CPU.USE.S    578 | Empty       | 00 |         |    0 | 00/0516               |                                             
-  687 |  1 CPU.USE.S    579 | Comment     | 00 |         |    0 | 00/0516               | *------------------------------
-  688 |  1 CPU.USE.S    580 | Empty       | 00 |         |    0 | 00/0516               |                                             
-  689 |  1 CPU.USE.S    581 | Data        | 00 |         |    2 | 00/0516 : 00 00       | fgSTART          DW    $0000                ; 0: not started, -1: started
-  690 |  1 CPU.USE.S    582 | Data        | 00 |         |    2 | 00/0518 : 00 00       | memID            DW    $0000                ; my Memory Manager ID
-  691 |  1 CPU.USE.S    583 | Data        | 00 |         |    2 | 00/051A : 00 00       | resID            DW    $0000                ; my Resource Manager ID
-  692 |  1 CPU.USE.S    584 | Empty       | 00 |         |    0 | 00/051C               |                                             
-  693 |  1 CPU.USE.S    585 | Data        | 00 |         |   13 | 00/051C : 0C 20 43 50 | winTITLE         STR   ' CPU Use... '       
+  689 |  1 CPU.USE.S    581 | Empty       | 00 |         |    0 | 00/0516               |                                             
+  690 |  1 CPU.USE.S    582 | Comment     | 00 |         |    0 | 00/0516               | *------------------------------
+  691 |  1 CPU.USE.S    583 | Empty       | 00 |         |    0 | 00/0516               |                                             
+  692 |  1 CPU.USE.S    584 | Data        | 00 |         |    2 | 00/0516 : 00 00       | fgSTART          DW    $0000                ; 0: not started, -1: started
+  693 |  1 CPU.USE.S    585 | Data        | 00 |         |    2 | 00/0518 : 00 00       | memID            DW    $0000                ; my Memory Manager ID
+  694 |  1 CPU.USE.S    586 | Data        | 00 |         |    2 | 00/051A : 00 00       | resID            DW    $0000                ; my Resource Manager ID
+  695 |  1 CPU.USE.S    587 | Empty       | 00 |         |    0 | 00/051C               |                                             
+  696 |  1 CPU.USE.S    588 | Data        | 00 |         |   13 | 00/051C : 0C 20 43 50 | winTITLE         STR   ' CPU Use... '       
       |                     |             |    |         |      |           55 20 55 73 |
       |                     |             |    |         |      |           65 2E 2E 2E |
       |                     |             |    |         |      |           20          |
-  694 |  1 CPU.USE.S    586 | Empty       | 00 |         |    0 | 00/0529               |                                             
-  695 |  1 CPU.USE.S    587 | Data        | 00 |         |    4 | 00/0529 : 00 00 00 00 | ptrWINDOW        ADRL  $00000000            ; pointer to my window port
-  696 |  1 CPU.USE.S    588 | Empty       | 00 |         |    0 | 00/052D               |                                             
-  697 |  1 CPU.USE.S    589 | Data        | 00 |         |    2 | 00/052D : 00 00       | tblCOLOR320      DW    $0000                ; color table for the 320-mode window
-  698 |  1 CPU.USE.S    590 | Data        | 00 |         |    2 | 00/052F : 04 0F       |                  DW    $0F04                
-  699 |  1 CPU.USE.S    591 | Data        | 00 |         |    2 | 00/0531 : 4F 02       |                  DW    $024F                
-  700 |  1 CPU.USE.S    592 | Data        | 00 |         |    2 | 00/0533 : FF F0       |                  DW    $F0FF                
-  701 |  1 CPU.USE.S    593 | Data        | 00 |         |    2 | 00/0535 : F0 00       |                  DW    $00F0                
-  702 |  1 CPU.USE.S    594 | Empty       | 00 |         |    0 | 00/0537               |                                             
-  703 |  1 CPU.USE.S    595 | Data        | 00 |         |    2 | 00/0537 : 00 00       | tblCOLOR640      DW    $0000                ; color table for the 640-mode window
-  704 |  1 CPU.USE.S    596 | Data        | 00 |         |    2 | 00/0539 : 01 0F       |                  DW    $0F01                
-  705 |  1 CPU.USE.S    597 | Data        | 00 |         |    2 | 00/053B : 1F 02       |                  DW    $021F                
-  706 |  1 CPU.USE.S    598 | Data        | 00 |         |    2 | 00/053D : FF F0       |                  DW    $F0FF                
-  707 |  1 CPU.USE.S    599 | Data        | 00 |         |    2 | 00/053F : F0 00       |                  DW    $00F0                
-  708 |  1 CPU.USE.S    600 | Empty       | 00 |         |    0 | 00/0541               |                                             
-  709 |  1 CPU.USE.S    601 | Comment     | 00 |         |    0 | 00/0541               | *------------------------------
-  710 |  1 CPU.USE.S    602 | Empty       | 00 |         |    0 | 00/0541               |                                             
-  711 |  1 CPU.USE.S    603 | Data        | 00 |         |    2 | 00/0541 : 00 00       | taskREC          DW    $0000                ; event code
-  712 |  1 CPU.USE.S    604 | Data        | 00 |         |    4 | 00/0543 : 00 00 00 00 |                  ADRL  $00000000            ; event message
-  713 |  1 CPU.USE.S    605 | Data        | 00 |         |    4 | 00/0547 : 00 00 00 00 |                  ADRL  $00000000            ; tick count
-  714 |  1 CPU.USE.S    606 | Data        | 00 |         |    2 | 00/054B : 00 00       |                  DW    $0000                ; mouse location
-  715 |  1 CPU.USE.S    607 | Data        | 00 |         |    2 | 00/054D : 00 00       |                  DW    $0000                
-  716 |  1 CPU.USE.S    608 | Data        | 00 |         |    2 | 00/054F : 00 00       |                  DW    $0000                ; modifiers
-  717 |  1 CPU.USE.S    609 | Data        | 00 |         |    4 | 00/0551 : 00 00 00 00 | taskDATA         ADRL  $00000000            ; task data
-  718 |  1 CPU.USE.S    610 | Data        | 00 |         |    4 | 00/0555 : FF FF 1F 00 | taskMASK         ADRL  $001FFFFF            ; task mask
-  719 |  1 CPU.USE.S    611 | Data        | 00 |         |    4 | 00/0559 : 00 00 00 00 | taskEXT          ADRL  $00000000            
-  720 |  1 CPU.USE.S    612 | Data        | 00 |         |    2 | 00/055D : 00 00       |                  DW    $0000                
-  721 |  1 CPU.USE.S    613 | Data        | 00 |         |    4 | 00/055F : 00 00 00 00 |                  ADRL  $00000000            
-  722 |  1 CPU.USE.S    614 | Data        | 00 |         |    4 | 00/0563 : 00 00 00 00 |                  ADRL  $00000000            
-  723 |  1 CPU.USE.S    615 | Data        | 00 |         |    4 | 00/0567 : 00 00 00 00 |                  ADRL  $00000000            
-  724 |  1 CPU.USE.S    616 | Data        | 00 |         |    2 | 00/056B : 00 00       |                  DW    $0000                
-  725 |  1 CPU.USE.S    617 | Data        | 00 |         |    2 | 00/056D : 00 00       |                  DW    $0000                
-  726 |  1 CPU.USE.S    618 | Empty       | 00 |         |    0 | 00/056F               |                                             
-  727 |  1 CPU.USE.S    619 | Comment     | 00 |         |    0 | 00/056F               | *------------------------------
-  728 |  1 CPU.USE.S    620 | Comment     | 00 |         |    0 | 00/056F               | * THIS IS THE REFRESH HEARTBEAT
-  729 |  1 CPU.USE.S    621 | Comment     | 00 |         |    0 | 00/056F               | *------------------------------
-  730 |  1 CPU.USE.S    622 | Empty       | 00 |         |    0 | 00/056F               |                                             
-  731 |  1 CPU.USE.S    623 | Empty       | 00 |         |    0 | 00/056F               | myHEARTBEAT                                 
-  732 |  1 CPU.USE.S    624 | Data        | 00 |         |    4 | 00/056F : 00 00 00 00 |                  ADRL  $00000000            ; This heartbeat refreshes
-  733 |  1 CPU.USE.S    625 | Data        | 00 |         |    2 | 00/0573 : 1E 00       |                  DW    $001E                ; the thermometer display
-  734 |  1 CPU.USE.S    626 | Data        | 00 |         |    2 | 00/0575 : 5A A5       |                  DW    $A55A                ; when possible
-  735 |  1 CPU.USE.S    627 | Empty       | 00 |         |    0 | 00/0577               |                                             
-  736 |  1 CPU.USE.S    628 | Code        | 00 |         |    2 | 00/0577 : C2 30       |                  REP   #$30                 
-  737 |  1 CPU.USE.S    629 | Code        | 00 |         |    4 | 00/0579 : AF FF 00 E1 |                  LDAL  $E100FF              ; is system busy?
-  738 |  1 CPU.USE.S    630 | Code        | 00 |         |    2 | 00/057D : F0 05       |                  BEQ   L0584                ; no...
-  739 |  1 CPU.USE.S    631 | Code        | 00 |         |    3 | 00/057F : A9 01 00    |                  LDA   #$0001               ; yes, so retry faster
-  740 |  1 CPU.USE.S    632 | Code        | 00 |         |    2 | 00/0582 : 80 11       |                  BRA   L0595                
-  741 |  1 CPU.USE.S    633 | Code        | 00 |         |    1 | 00/0584 : 8B          | L0584            PHB                        ; no...
-  742 |  1 CPU.USE.S    634 | Code        | 00 |         |    1 | 00/0585 : 4B          |                  PHK                        
-  743 |  1 CPU.USE.S    635 | Code        | 00 |         |    1 | 00/0586 : AB          |                  PLB                        
-  744 |  1 CPU.USE.S    636 | Code        | 00 |  2      |    3 | 00/0587 : 20 32 03    |                  JSR   showTHERMO           ; refresh data
-  745 |  1 CPU.USE.S    637 | Code        | 00 |         |    1 | 00/058A : AB          |                  PLB                        
-  746 |  1 CPU.USE.S    638 | Code        | 00 |         |    3 | 00/058B : A9 00 00    |                  LDA   #$0000               
-  747 |  1 CPU.USE.S    639 | Code        | 00 |  3      |    4 | 00/058E : 8F AE 03 00 |                  STAL  theTIME              
-  748 |  1 CPU.USE.S    640 | Code        | 00 |         |    3 | 00/0592 : A9 1E 00    |                  LDA   #$001E               ; 30 = 1/2 second
-  749 |  1 CPU.USE.S    641 | Code        | 00 |  3      |    4 | 00/0595 : 8F 73 05 00 | L0595            STAL  myHEARTBEAT+4        
-  750 |  1 CPU.USE.S    642 | Code        | 11 |         |    2 | 00/0599 : E2 30       |                  SEP   #$30                 
-  751 |  1 CPU.USE.S    643 | Code        | 11 |         |    1 | 00/059B : 6B          |                  RTL                        
-  752 |  1 CPU.USE.S    644 | Empty       | 11 |         |    0 | 00/059C               |                                             
-  753 |  1 CPU.USE.S    645 | Empty       | 11 |         |    0 | 00/059C               |                                             
-  754 |  1 CPU.USE.S    646 | Empty       | 11 |         |    0 | 00/059C               |                                             
+  697 |  1 CPU.USE.S    589 | Empty       | 00 |         |    0 | 00/0529               |                                             
+  698 |  1 CPU.USE.S    590 | Data        | 00 |         |    4 | 00/0529 : 00 00 00 00 | ptrWINDOW        ADRL  $00000000            ; pointer to my window port
+  699 |  1 CPU.USE.S    591 | Empty       | 00 |         |    0 | 00/052D               |                                             
+  700 |  1 CPU.USE.S    592 | Data        | 00 |         |    2 | 00/052D : 00 00       | tblCOLOR320      DW    $0000                ; color table for the 320-mode window
+  701 |  1 CPU.USE.S    593 | Data        | 00 |         |    2 | 00/052F : 04 0F       |                  DW    $0F04                
+  702 |  1 CPU.USE.S    594 | Data        | 00 |         |    2 | 00/0531 : 4F 02       |                  DW    $024F                
+  703 |  1 CPU.USE.S    595 | Data        | 00 |         |    2 | 00/0533 : FF F0       |                  DW    $F0FF                
+  704 |  1 CPU.USE.S    596 | Data        | 00 |         |    2 | 00/0535 : F0 00       |                  DW    $00F0                
+  705 |  1 CPU.USE.S    597 | Empty       | 00 |         |    0 | 00/0537               |                                             
+  706 |  1 CPU.USE.S    598 | Data        | 00 |         |    2 | 00/0537 : 00 00       | tblCOLOR640      DW    $0000                ; color table for the 640-mode window
+  707 |  1 CPU.USE.S    599 | Data        | 00 |         |    2 | 00/0539 : 01 0F       |                  DW    $0F01                
+  708 |  1 CPU.USE.S    600 | Data        | 00 |         |    2 | 00/053B : 1F 02       |                  DW    $021F                
+  709 |  1 CPU.USE.S    601 | Data        | 00 |         |    2 | 00/053D : FF F0       |                  DW    $F0FF                
+  710 |  1 CPU.USE.S    602 | Data        | 00 |         |    2 | 00/053F : F0 00       |                  DW    $00F0                
+  711 |  1 CPU.USE.S    603 | Empty       | 00 |         |    0 | 00/0541               |                                             
+  712 |  1 CPU.USE.S    604 | Comment     | 00 |         |    0 | 00/0541               | *------------------------------
+  713 |  1 CPU.USE.S    605 | Empty       | 00 |         |    0 | 00/0541               |                                             
+  714 |  1 CPU.USE.S    606 | Data        | 00 |         |    2 | 00/0541 : 00 00       | taskREC          DW    $0000                ; event code
+  715 |  1 CPU.USE.S    607 | Data        | 00 |         |    4 | 00/0543 : 00 00 00 00 |                  ADRL  $00000000            ; event message
+  716 |  1 CPU.USE.S    608 | Data        | 00 |         |    4 | 00/0547 : 00 00 00 00 |                  ADRL  $00000000            ; tick count
+  717 |  1 CPU.USE.S    609 | Data        | 00 |         |    2 | 00/054B : 00 00       |                  DW    $0000                ; mouse location
+  718 |  1 CPU.USE.S    610 | Data        | 00 |         |    2 | 00/054D : 00 00       |                  DW    $0000                
+  719 |  1 CPU.USE.S    611 | Data        | 00 |         |    2 | 00/054F : 00 00       |                  DW    $0000                ; modifiers
+  720 |  1 CPU.USE.S    612 | Data        | 00 |         |    4 | 00/0551 : 00 00 00 00 | taskDATA         ADRL  $00000000            ; task data
+  721 |  1 CPU.USE.S    613 | Data        | 00 |         |    4 | 00/0555 : FF FF 1F 00 | taskMASK         ADRL  $001FFFFF            ; task mask
+  722 |  1 CPU.USE.S    614 | Data        | 00 |         |    4 | 00/0559 : 00 00 00 00 | taskEXT          ADRL  $00000000            
+  723 |  1 CPU.USE.S    615 | Data        | 00 |         |    2 | 00/055D : 00 00       |                  DW    $0000                
+  724 |  1 CPU.USE.S    616 | Data        | 00 |         |    4 | 00/055F : 00 00 00 00 |                  ADRL  $00000000            
+  725 |  1 CPU.USE.S    617 | Data        | 00 |         |    4 | 00/0563 : 00 00 00 00 |                  ADRL  $00000000            
+  726 |  1 CPU.USE.S    618 | Data        | 00 |         |    4 | 00/0567 : 00 00 00 00 |                  ADRL  $00000000            
+  727 |  1 CPU.USE.S    619 | Data        | 00 |         |    2 | 00/056B : 00 00       |                  DW    $0000                
+  728 |  1 CPU.USE.S    620 | Data        | 00 |         |    2 | 00/056D : 00 00       |                  DW    $0000                
+  729 |  1 CPU.USE.S    621 | Empty       | 00 |         |    0 | 00/056F               |                                             
+  730 |  1 CPU.USE.S    622 | Comment     | 00 |         |    0 | 00/056F               | *------------------------------
+  731 |  1 CPU.USE.S    623 | Comment     | 00 |         |    0 | 00/056F               | * THIS IS THE REFRESH HEARTBEAT
+  732 |  1 CPU.USE.S    624 | Comment     | 00 |         |    0 | 00/056F               | *------------------------------
+  733 |  1 CPU.USE.S    625 | Empty       | 00 |         |    0 | 00/056F               |                                             
+  734 |  1 CPU.USE.S    626 | Empty       | 00 |         |    0 | 00/056F               | myHEARTBEAT                                 
+  735 |  1 CPU.USE.S    627 | Data        | 00 |         |    4 | 00/056F : 00 00 00 00 |                  ADRL  $00000000            ; This heartbeat refreshes
+  736 |  1 CPU.USE.S    628 | Data        | 00 |         |    2 | 00/0573 : 1E 00       |                  DW    $001E                ; the thermometer display
+  737 |  1 CPU.USE.S    629 | Data        | 00 |         |    2 | 00/0575 : 5A A5       |                  DW    $A55A                ; when possible
+  738 |  1 CPU.USE.S    630 | Empty       | 00 |         |    0 | 00/0577               |                                             
+  739 |  1 CPU.USE.S    631 | Code        | 00 |         |    2 | 00/0577 : C2 30       |                  REP   #$30                 
+  740 |  1 CPU.USE.S    632 | Code        | 00 |         |    4 | 00/0579 : AF FF 00 E1 |                  LDAL  $E100FF              ; is system busy?
+  741 |  1 CPU.USE.S    633 | Code        | 00 |         |    2 | 00/057D : F0 05       |                  BEQ   L0584                ; no...
+  742 |  1 CPU.USE.S    634 | Code        | 00 |         |    3 | 00/057F : A9 01 00    |                  LDA   #$0001               ; yes, so retry faster
+  743 |  1 CPU.USE.S    635 | Code        | 00 |         |    2 | 00/0582 : 80 11       |                  BRA   L0595                
+  744 |  1 CPU.USE.S    636 | Code        | 00 |         |    1 | 00/0584 : 8B          | L0584            PHB                        ; no...
+  745 |  1 CPU.USE.S    637 | Code        | 00 |         |    1 | 00/0585 : 4B          |                  PHK                        
+  746 |  1 CPU.USE.S    638 | Code        | 00 |         |    1 | 00/0586 : AB          |                  PLB                        
+  747 |  1 CPU.USE.S    639 | Code        | 00 |  2      |    3 | 00/0587 : 20 32 03    |                  JSR   showTHERMO           ; refresh data
+  748 |  1 CPU.USE.S    640 | Code        | 00 |         |    1 | 00/058A : AB          |                  PLB                        
+  749 |  1 CPU.USE.S    641 | Code        | 00 |         |    3 | 00/058B : A9 00 00    |                  LDA   #$0000               
+  750 |  1 CPU.USE.S    642 | Code        | 00 |  3      |    4 | 00/058E : 8F AE 03 00 |                  STAL  theTIME              
+  751 |  1 CPU.USE.S    643 | Code        | 00 |         |    3 | 00/0592 : A9 1E 00    |                  LDA   #$001E               ; 30 = 1/2 second
+  752 |  1 CPU.USE.S    644 | Code        | 00 |  3      |    4 | 00/0595 : 8F 73 05 00 | L0595            STAL  myHEARTBEAT+4        
+  753 |  1 CPU.USE.S    645 | Code        | 11 |         |    2 | 00/0599 : E2 30       |                  SEP   #$30                 
+  754 |  1 CPU.USE.S    646 | Code        | 11 |         |    1 | 00/059B : 6B          |                  RTL                        
+  755 |  1 CPU.USE.S    647 | Empty       | 11 |         |    0 | 00/059C               |                                             
+  756 |  1 CPU.USE.S    648 | Empty       | 11 |         |    0 | 00/059C               |                                             
+  757 |  1 CPU.USE.S    649 | Empty       | 11 |         |    0 | 00/059C               |                                             
 ------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

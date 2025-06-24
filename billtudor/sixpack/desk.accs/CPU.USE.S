@@ -230,7 +230,7 @@ restorePREFS
             DW    $200C       ; SetSysPrefs
             ADRL  proSAVESYSPREFS
 
-restoreRES  LDA   saveRESID	; restore the resource user ID
+restoreRES  LDA   saveRESID	; restore the user resource ID
             PHA
             _SetCurResourceApp
 
@@ -348,15 +348,18 @@ L027A       STA   taskEXT,Y
             RTL
 
 *------------------------------
+* CLOSE
+*------------------------------
 
 closeROUTINE
             PHB
             PHK
             PLB
-            LDA   fgSTART
-            BEQ   L02DB
-            LDA   fgHEARTBEAT
-            BEQ   L02AC
+            LDA   fgSTART	; were we started?
+            BEQ   L02DB	; nada
+
+            LDA   fgHEARTBEAT	; was the heartbeat installed?
+            BEQ   L02AC	; nada
             PEA   ^myHEARTBEAT
             PEA   myHEARTBEAT
             _DelHeartBeat
@@ -600,14 +603,14 @@ tblCOLOR640 DW    $0000	; color table for the 640-mode window
 
 *------------------------------
 
-taskREC     DW    $0000       ; event code
-            ADRL  $00000000   ; event message
-            ADRL  $00000000   ; tick count
-            DW    $0000       ; mouse location
+taskREC     DW    $0000	; event code
+            ADRL  $00000000	; event message
+            ADRL  $00000000	; tick count
+            DW    $0000	; mouse location
             DW    $0000
-            DW    $0000       ; modifiers
-taskDATA    ADRL  $00000000   ; task data
-taskMASK    ADRL  $001FFFFF   ; task mask
+            DW    $0000	; modifiers
+taskDATA    ADRL  $00000000	; task data
+taskMASK    ADRL  $001FFFFF	; task mask
 taskEXT     ADRL  $00000000
             DW    $0000
             ADRL  $00000000

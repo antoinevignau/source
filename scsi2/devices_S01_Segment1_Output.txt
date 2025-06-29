@@ -1,0 +1,448 @@
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File         Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1 devices.s      1 | Comment     | 11 |         |    0 | 00/0000               | *
+    2 |  1 devices.s      2 | Comment     | 11 |         |    0 | 00/0000               | * Devices
+    3 |  1 devices.s      3 | Comment     | 11 |         |    0 | 00/0000               | * Show all connected devices
+    4 |  1 devices.s      4 | Comment     | 11 |         |    0 | 00/0000               | *
+    5 |  1 devices.s      5 | Comment     | 11 |         |    0 | 00/0000               | * (c) 2023, Brutal Deluxe Software
+    6 |  1 devices.s      6 | Comment     | 11 |         |    0 | 00/0000               | * Visit brutaldeluxe.fr
+    7 |  1 devices.s      7 | Comment     | 11 |         |    0 | 00/0000               | *
+    8 |  1 devices.s      8 | Empty       | 11 |         |    0 | 00/0000               |                                          
+    9 |  1 devices.s      9 | Directive   | 00 |         |    0 | 00/0000               |                 mx        %00            
+   10 |  1 devices.s     10 | Directive   | 00 |         |    0 | 00/0000               |                 rel                      
+   11 |  1 devices.s     11 | Directive   | 00 |         |    0 | 00/0000               |                 typ       S16            
+   12 |  1 devices.s     12 | Directive   | 00 |         |    0 | 00/0000               |                 dsk       devices.l      
+   13 |  1 devices.s     13 | Directive   | 00 |         |    0 | 00/0000               |                 lst       off            
+   14 |  1 devices.s     14 | Empty       | 00 |         |    0 | 00/0000               |                                          
+   15 |  1 devices.s     15 | Comment     | 00 |         |    0 | 00/0000               | *----------
+   16 |  1 devices.s     16 | Empty       | 00 |         |    0 | 00/0000               |                                          
+   17 |  1 devices.s     17 | Directive   | 00 |         |    0 | 00/0000               |                 use       4/Int.Macs     
+   18 |  1 devices.s     18 | Directive   | 00 |         |    0 | 00/0000               |                 use       4/Locator.Macs 
+   19 |  1 devices.s     19 | Directive   | 00 |         |    0 | 00/0000               |                 use       4/Mem.Macs     
+   20 |  1 devices.s     20 | Directive   | 00 |         |    0 | 00/0000               |                 use       4/Misc.Macs    
+   21 |  1 devices.s     21 | Directive   | 00 |         |    0 | 00/0000               |                 use       4/Text.Macs    
+   22 |  1 devices.s     22 | Directive   | 00 |         |    0 | 00/0000               |                 use       4/Util.Macs    
+   23 |  1 devices.s     23 | Empty       | 00 |         |    0 | 00/0000               |                                          
+   24 |  1 devices.s     24 | Equivalence | 00 |         |    0 | 00/0000               | Debut           =         $00            
+   25 |  1 devices.s     25 | Equivalence | 00 |         |    0 | 00/0000               | GSOS            =         $e100a8        
+   26 |  1 devices.s     26 | Empty       | 00 |         |    0 | 00/0000               |                                          
+   27 |  1 devices.s     27 | Comment     | 00 |         |    0 | 00/0000               | *----------
+   28 |  1 devices.s     28 | Empty       | 00 |         |    0 | 00/0000               |                                          
+   29 |  1 devices.s     29 | Equivalence | 00 |         |    0 | 00/0000               | dcREMOVE        =         $0004          
+   30 |  1 devices.s     30 | Equivalence | 00 |         |    0 | 00/0000               | dcONLINE        =         $0010          
+   31 |  1 devices.s     31 | Equivalence | 00 |         |    0 | 00/0000               | dcBLOCKDEVICE   =         $0080          
+   32 |  1 devices.s     32 | Empty       | 00 |         |    0 | 00/0000               |                                          
+   33 |  1 devices.s     33 | Comment     | 00 |         |    0 | 00/0000               | *----------
+   34 |  1 devices.s     34 | Empty       | 00 |         |    0 | 00/0000               |                                          
+   35 |  1 devices.s     35 | Code        | 00 |         |    1 | 00/0000 : 4B          |                 phk                      
+   36 |  1 devices.s     36 | Code        | 00 |         |    1 | 00/0001 : AB          |                 plb                      
+   37 |  1 devices.s     37 | Empty       | 00 |         |    0 | 00/0002               |                                          
+   38 |  1 devices.s     38 | Code        | 00 |         |    1 | 00/0002 : 7B          |                 tdc                      
+   39 |  1 devices.s     39 | Code        | 00 |  2      |    3 | 00/0003 : 8D DD 02    |                 sta       myDP           
+   40 |  1 devices.s     40 | Empty       | 00 |         |    0 | 00/0006               |                                          
+   41 |  1 devices.s     41 | Macro       | 00 |         |    0 | 00/0006               |                 _TLStartUp                 
+   43 |  1 devices.s     41 | Code        | 00 |         |    3 | 00/0006 : A2 01 02    |                 LDX       #$201          ; load tool call #
+   44 |  1 devices.s     41 | Code        | 00 |         |    4 | 00/0009 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+   45 |  1 devices.s     42 | Code        | 00 |         |    1 | 00/000D : 48          |                 pha                      
+   46 |  1 devices.s     43 | Macro       | 00 |         |    0 | 00/000E               |                 _MMStartUp                 
+   48 |  1 devices.s     43 | Code        | 00 |         |    3 | 00/000E : A2 02 02    |                 LDX       #$202          ; load tool call #
+   49 |  1 devices.s     43 | Code        | 00 |         |    4 | 00/0011 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+   50 |  1 devices.s     44 | Code        | 00 |         |    1 | 00/0015 : 68          |                 pla                      
+   51 |  1 devices.s     45 | Code        | 00 |  2      |    3 | 00/0016 : 8D D9 02    |                 sta       appID          
+   52 |  1 devices.s     46 | Code        | 00 |         |    3 | 00/0019 : 09 00 01    |                 ora       #$0100         
+   53 |  1 devices.s     47 | Code        | 00 |  2      |    3 | 00/001C : 8D DB 02    |                 sta       myID           
+   54 |  1 devices.s     48 | Empty       | 00 |         |    0 | 00/001F               |                                          
+   55 |  1 devices.s     49 | Macro       | 00 |         |    0 | 00/001F               |                 _MTStartUp                 
+   57 |  1 devices.s     49 | Code        | 00 |         |    3 | 00/001F : A2 03 02    |                 LDX       #$203          ; load tool call #
+   58 |  1 devices.s     49 | Code        | 00 |         |    4 | 00/0022 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+   59 |  1 devices.s     50 | Macro       | 00 |         |    0 | 00/0026               |                 _TextStartUp                 
+   61 |  1 devices.s     50 | Code        | 00 |         |    3 | 00/0026 : A2 0C 02    |                 LDX       #$20C          ; load tool call #
+   62 |  1 devices.s     50 | Code        | 00 |         |    4 | 00/0029 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+   63 |  1 devices.s     51 | Macro       | 00 |         |    0 | 00/002D               |                 _IMStartUp                 
+   65 |  1 devices.s     51 | Code        | 00 |         |    3 | 00/002D : A2 0B 02    |                 LDX       #$20B          ; load tool call #
+   66 |  1 devices.s     51 | Code        | 00 |         |    4 | 00/0030 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+   67 |  1 devices.s     52 | Empty       | 00 |         |    0 | 00/0034               |                                          
+   68 |  1 devices.s     53 | Code        | 00 |         |    1 | 00/0034 : 48          |                 pha                      
+   69 |  1 devices.s     54 | Code        | 00 |         |    1 | 00/0035 : 48          |                 pha                      
+   70 |  1 devices.s     55 | Macro       | 00 |         |    0 | 00/0036               |                 PushLong  #$010000       
+   74 |  1 devices.s     55 | Code        | 00 |         |    3 | 00/0036 : F4 01 00    |                 PEA       #^#$010000     
+   81 |  1 devices.s     55 | Code        | 00 |         |    3 | 00/0039 : F4 00 00    |                 PEA       #$010000       
+   84 |  1 devices.s     56 | Macro       | 00 |         |    0 | 00/003C               |                 PushWord  myID           
+   89 |  1 devices.s     56 | Code        | 00 |  2      |    3 | 00/003C : AD DB 02    |                 LDA       myID           
+   90 |  1 devices.s     56 | Code        | 00 |         |    1 | 00/003F : 48          |                 PHA                      
+   92 |  1 devices.s     57 | Macro       | 00 |         |    0 | 00/0040               |                 PushWord  #%11000000_00011100
+   94 |  1 devices.s     57 | Code        | 00 |         |    3 | 00/0040 : F4 1C C0    |                 PEA       #%11000000_00011100
+   97 |  1 devices.s     58 | Macro       | 00 |         |    0 | 00/0043               |                 PushLong  #0             
+  101 |  1 devices.s     58 | Code        | 00 |         |    3 | 00/0043 : F4 00 00    |                 PEA       #^#0           
+  108 |  1 devices.s     58 | Code        | 00 |         |    3 | 00/0046 : F4 00 00    |                 PEA       #0             
+  111 |  1 devices.s     59 | Macro       | 00 |         |    0 | 00/0049               |                 _NewHandle                 
+  113 |  1 devices.s     59 | Code        | 00 |         |    3 | 00/0049 : A2 02 09    |                 LDX       #$902          ; load tool call #
+  114 |  1 devices.s     59 | Code        | 00 |         |    4 | 00/004C : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  115 |  1 devices.s     60 | Code        | 00 |         |    1 | 00/0050 : 0B          |                 phd                      
+  116 |  1 devices.s     61 | Code        | 00 |         |    1 | 00/0051 : 3B          |                 tsc                      
+  117 |  1 devices.s     62 | Code        | 00 |         |    1 | 00/0052 : 5B          |                 tcd                      
+  118 |  1 devices.s     63 | Code        | 00 |         |    2 | 00/0053 : A7 03       |                 lda       [3]            
+  119 |  1 devices.s     64 | Code        | 00 |  2      |    3 | 00/0055 : 8D DF 02    |                 sta       ptrBUFFER      
+  120 |  1 devices.s     65 | Code        | 00 |         |    3 | 00/0058 : A0 02 00    |                 ldy       #2             
+  121 |  1 devices.s     66 | Code        | 00 |         |    2 | 00/005B : B7 03       |                 lda       [3],y          
+  122 |  1 devices.s     67 | Code        | 00 |  2      |    3 | 00/005D : 8D E1 02    |                 sta       ptrBUFFER+2    
+  123 |  1 devices.s     68 | Code        | 00 |         |    1 | 00/0060 : 2B          |                 pld                      
+  124 |  1 devices.s     69 | Code        | 00 |         |    1 | 00/0061 : 7A          |                 ply                      
+  125 |  1 devices.s     70 | Code        | 00 |  2      |    3 | 00/0062 : 8C E3 02    |                 sty       haBUFFER       
+  126 |  1 devices.s     71 | Code        | 00 |         |    1 | 00/0065 : FA          |                 plx                      
+  127 |  1 devices.s     72 | Code        | 00 |  2      |    3 | 00/0066 : 8E E5 02    |                 stx       haBUFFER+2     
+  128 |  1 devices.s     73 | Empty       | 00 |         |    0 | 00/0069               |                                          
+  129 |  1 devices.s     74 | Comment     | 00 |         |    0 | 00/0069               | *----------
+  130 |  1 devices.s     75 | Empty       | 00 |         |    0 | 00/0069               |                                          
+  131 |  1 devices.s     76 | Macro       | 00 |         |    0 | 00/0069               |                 PushWord  #$00FF         
+  133 |  1 devices.s     76 | Code        | 00 |         |    3 | 00/0069 : F4 FF 00    |                 PEA       #$00FF         
+  136 |  1 devices.s     77 | Macro       | 00 |         |    0 | 00/006C               |                 PushWord  #$0080         
+  138 |  1 devices.s     77 | Code        | 00 |         |    3 | 00/006C : F4 80 00    |                 PEA       #$0080         
+  141 |  1 devices.s     78 | Macro       | 00 |         |    0 | 00/006F               |                 _SetInGlobals                 
+  143 |  1 devices.s     78 | Code        | 00 |         |    3 | 00/006F : A2 0C 09    |                 LDX       #$90C          ; load tool call #
+  144 |  1 devices.s     78 | Code        | 00 |         |    4 | 00/0072 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  145 |  1 devices.s     79 | Macro       | 00 |         |    0 | 00/0076               |                 PushWord  #$00FF         
+  147 |  1 devices.s     79 | Code        | 00 |         |    3 | 00/0076 : F4 FF 00    |                 PEA       #$00FF         
+  150 |  1 devices.s     80 | Macro       | 00 |         |    0 | 00/0079               |                 PushWord  #$0080         
+  152 |  1 devices.s     80 | Code        | 00 |         |    3 | 00/0079 : F4 80 00    |                 PEA       #$0080         
+  155 |  1 devices.s     81 | Macro       | 00 |         |    0 | 00/007C               |                 _SetOutGlobals                 
+  157 |  1 devices.s     81 | Code        | 00 |         |    3 | 00/007C : A2 0C 0A    |                 LDX       #$A0C          ; load tool call #
+  158 |  1 devices.s     81 | Code        | 00 |         |    4 | 00/007F : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  159 |  1 devices.s     82 | Macro       | 00 |         |    0 | 00/0083               |                 PushWord  #$00FF         
+  161 |  1 devices.s     82 | Code        | 00 |         |    3 | 00/0083 : F4 FF 00    |                 PEA       #$00FF         
+  164 |  1 devices.s     83 | Macro       | 00 |         |    0 | 00/0086               |                 PushWord  #$0080         
+  166 |  1 devices.s     83 | Code        | 00 |         |    3 | 00/0086 : F4 80 00    |                 PEA       #$0080         
+  169 |  1 devices.s     84 | Macro       | 00 |         |    0 | 00/0089               |                 _SetErrGlobals                 
+  171 |  1 devices.s     84 | Code        | 00 |         |    3 | 00/0089 : A2 0C 0B    |                 LDX       #$B0C          ; load tool call #
+  172 |  1 devices.s     84 | Code        | 00 |         |    4 | 00/008C : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  173 |  1 devices.s     85 | Empty       | 00 |         |    0 | 00/0090               |                                          
+  174 |  1 devices.s     86 | Macro       | 00 |         |    0 | 00/0090               |                 PushWord  #0             
+  176 |  1 devices.s     86 | Code        | 00 |         |    3 | 00/0090 : F4 00 00    |                 PEA       #0             
+  179 |  1 devices.s     87 | Macro       | 00 |         |    0 | 00/0093               |                 PushLong  #3             
+  183 |  1 devices.s     87 | Code        | 00 |         |    3 | 00/0093 : F4 00 00    |                 PEA       #^#3           
+  190 |  1 devices.s     87 | Code        | 00 |         |    3 | 00/0096 : F4 03 00    |                 PEA       #3             
+  193 |  1 devices.s     88 | Macro       | 00 |         |    0 | 00/0099               |                 _SetInputDevice                 
+  195 |  1 devices.s     88 | Code        | 00 |         |    3 | 00/0099 : A2 0C 0F    |                 LDX       #$F0C          ; load tool call #
+  196 |  1 devices.s     88 | Code        | 00 |         |    4 | 00/009C : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  197 |  1 devices.s     89 | Macro       | 00 |         |    0 | 00/00A0               |                 PushWord  #0             
+  199 |  1 devices.s     89 | Code        | 00 |         |    3 | 00/00A0 : F4 00 00    |                 PEA       #0             
+  202 |  1 devices.s     90 | Macro       | 00 |         |    0 | 00/00A3               |                 PushLong  #3             
+  206 |  1 devices.s     90 | Code        | 00 |         |    3 | 00/00A3 : F4 00 00    |                 PEA       #^#3           
+  213 |  1 devices.s     90 | Code        | 00 |         |    3 | 00/00A6 : F4 03 00    |                 PEA       #3             
+  216 |  1 devices.s     91 | Macro       | 00 |         |    0 | 00/00A9               |                 _SetOutputDevice                 
+  218 |  1 devices.s     91 | Code        | 00 |         |    3 | 00/00A9 : A2 0C 10    |                 LDX       #$100C         ; load tool call #
+  219 |  1 devices.s     91 | Code        | 00 |         |    4 | 00/00AC : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  220 |  1 devices.s     92 | Macro       | 00 |         |    0 | 00/00B0               |                 PushWord  #0             
+  222 |  1 devices.s     92 | Code        | 00 |         |    3 | 00/00B0 : F4 00 00    |                 PEA       #0             
+  225 |  1 devices.s     93 | Macro       | 00 |         |    0 | 00/00B3               |                 PushLong  #3             
+  229 |  1 devices.s     93 | Code        | 00 |         |    3 | 00/00B3 : F4 00 00    |                 PEA       #^#3           
+  236 |  1 devices.s     93 | Code        | 00 |         |    3 | 00/00B6 : F4 03 00    |                 PEA       #3             
+  239 |  1 devices.s     94 | Macro       | 00 |         |    0 | 00/00B9               |                 _SetErrorDevice                 
+  241 |  1 devices.s     94 | Code        | 00 |         |    3 | 00/00B9 : A2 0C 11    |                 LDX       #$110C         ; load tool call #
+  242 |  1 devices.s     94 | Code        | 00 |         |    4 | 00/00BC : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  243 |  1 devices.s     95 | Empty       | 00 |         |    0 | 00/00C0               |                                          
+  244 |  1 devices.s     96 | Macro       | 00 |         |    0 | 00/00C0               |                 PushWord  #0             
+  246 |  1 devices.s     96 | Code        | 00 |         |    3 | 00/00C0 : F4 00 00    |                 PEA       #0             
+  249 |  1 devices.s     97 | Macro       | 00 |         |    0 | 00/00C3               |                 _InitTextDev                 
+  251 |  1 devices.s     97 | Code        | 00 |         |    3 | 00/00C3 : A2 0C 15    |                 LDX       #$150C         ; load tool call #
+  252 |  1 devices.s     97 | Code        | 00 |         |    4 | 00/00C6 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  253 |  1 devices.s     98 | Macro       | 00 |         |    0 | 00/00CA               |                 PushWord  #1             
+  255 |  1 devices.s     98 | Code        | 00 |         |    3 | 00/00CA : F4 01 00    |                 PEA       #1             
+  258 |  1 devices.s     99 | Macro       | 00 |         |    0 | 00/00CD               |                 _InitTextDev                 
+  260 |  1 devices.s     99 | Code        | 00 |         |    3 | 00/00CD : A2 0C 15    |                 LDX       #$150C         ; load tool call #
+  261 |  1 devices.s     99 | Code        | 00 |         |    4 | 00/00D0 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  262 |  1 devices.s    100 | Macro       | 00 |         |    0 | 00/00D4               |                 PushWord  #2             
+  264 |  1 devices.s    100 | Code        | 00 |         |    3 | 00/00D4 : F4 02 00    |                 PEA       #2             
+  267 |  1 devices.s    101 | Macro       | 00 |         |    0 | 00/00D7               |                 _InitTextDev                 
+  269 |  1 devices.s    101 | Code        | 00 |         |    3 | 00/00D7 : A2 0C 15    |                 LDX       #$150C         ; load tool call #
+  270 |  1 devices.s    101 | Code        | 00 |         |    4 | 00/00DA : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  271 |  1 devices.s    102 | Empty       | 00 |         |    0 | 00/00DE               |                                          
+  272 |  1 devices.s    103 | Macro       | 00 |         |    0 | 00/00DE               |                 PushWord  #$0c           ; home
+  274 |  1 devices.s    103 | Code        | 00 |         |    3 | 00/00DE : F4 0C 00    |                 PEA       #$0c           
+  277 |  1 devices.s    104 | Macro       | 00 |         |    0 | 00/00E1               |                 _WriteChar                 
+  279 |  1 devices.s    104 | Code        | 00 |         |    3 | 00/00E1 : A2 0C 18    |                 LDX       #$180C         ; load tool call #
+  280 |  1 devices.s    104 | Code        | 00 |         |    4 | 00/00E4 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  281 |  1 devices.s    105 | Empty       | 00 |         |    0 | 00/00E8               |                                          
+  282 |  1 devices.s    106 | Comment     | 00 |         |    0 | 00/00E8               | *----------------------------
+  283 |  1 devices.s    107 | Comment     | 00 |         |    0 | 00/00E8               | * MAIN MENU
+  284 |  1 devices.s    108 | Comment     | 00 |         |    0 | 00/00E8               | *----------------------------
+  285 |  1 devices.s    109 | Empty       | 00 |         |    0 | 00/00E8               |                                          
+  286 |  1 devices.s    110 | Macro       | 00 |         |    0 | 00/00E8               | mainMENU        PushLong  #strMAINMENU   
+  290 |  1 devices.s    110 | Code        | 00 |  1 >>16 |    3 | 00/00E8 : F4 00 00    |                 PEA       #^#strMAINMENU 
+  297 |  1 devices.s    110 | Code        | 00 |  2      |    3 | 00/00EB : F4 1B 02    |                 PEA       #strMAINMENU   
+  300 |  1 devices.s    111 | Macro       | 00 |         |    0 | 00/00EE               |                 _WriteCString                 
+  302 |  1 devices.s    111 | Code        | 00 |         |    3 | 00/00EE : A2 0C 20    |                 LDX       #$200C         ; load tool call #
+  303 |  1 devices.s    111 | Code        | 00 |         |    4 | 00/00F1 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  304 |  1 devices.s    112 | Empty       | 00 |         |    0 | 00/00F5               |                                          
+  305 |  1 devices.s    113 | Code        | 00 |  2      |    3 | 00/00F5 : 20 F6 01    |                 jsr       waitFORKEY     
+  306 |  1 devices.s    114 | Code        | 00 |         |    3 | 00/00F8 : C9 D1 00    |                 cmp       #"Q"           
+  307 |  1 devices.s    115 | Code        | 00 |         |    2 | 00/00FB : F0 11       |                 beq       doQUIT         
+  308 |  1 devices.s    116 | Code        | 00 |         |    3 | 00/00FD : C9 F1 00    |                 cmp       #"q"           
+  309 |  1 devices.s    117 | Code        | 00 |         |    2 | 00/0100 : F0 0C       |                 beq       doQUIT         
+  310 |  1 devices.s    118 | Code        | 00 |         |    3 | 00/0102 : C9 B1 00    |                 cmp       #"1"           
+  311 |  1 devices.s    119 | Code        | 00 |         |    2 | 00/0105 : F0 45       |                 beq       setALL         
+  312 |  1 devices.s    120 | Code        | 00 |         |    3 | 00/0107 : C9 B2 00    |                 cmp       #"2"           
+  313 |  1 devices.s    121 | Code        | 00 |         |    2 | 00/010A : F0 45       |                 beq       setBLOCK       
+  314 |  1 devices.s    122 | Code        | 00 |         |    2 | 00/010C : D0 DA       |                 bne       mainMENU       
+  315 |  1 devices.s    123 | Empty       | 00 |         |    0 | 00/010E               |                                          
+  316 |  1 devices.s    124 | Comment     | 00 |         |    0 | 00/010E               | *----------------------------
+  317 |  1 devices.s    125 | Comment     | 00 |         |    0 | 00/010E               | * QUIT PROGRAM
+  318 |  1 devices.s    126 | Comment     | 00 |         |    0 | 00/010E               | *----------------------------
+  319 |  1 devices.s    127 | Empty       | 00 |         |    0 | 00/010E               |                                          
+  320 |  1 devices.s    128 | Macro       | 00 |         |    0 | 00/010E               | doQUIT          _IMShutDown                 
+  322 |  1 devices.s    128 | Code        | 00 |         |    3 | 00/010E : A2 0B 03    |                 LDX       #$30B          ; load tool call #
+  323 |  1 devices.s    128 | Code        | 00 |         |    4 | 00/0111 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  324 |  1 devices.s    129 | Macro       | 00 |         |    0 | 00/0115               |                 _TextShutDown                 
+  326 |  1 devices.s    129 | Code        | 00 |         |    3 | 00/0115 : A2 0C 03    |                 LDX       #$30C          ; load tool call #
+  327 |  1 devices.s    129 | Code        | 00 |         |    4 | 00/0118 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  328 |  1 devices.s    130 | Macro       | 00 |         |    0 | 00/011C               |                 _MTShutDown                 
+  330 |  1 devices.s    130 | Code        | 00 |         |    3 | 00/011C : A2 03 03    |                 LDX       #$303          ; load tool call #
+  331 |  1 devices.s    130 | Code        | 00 |         |    4 | 00/011F : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  332 |  1 devices.s    131 | Empty       | 00 |         |    0 | 00/0123               |                                          
+  333 |  1 devices.s    132 | Macro       | 00 |         |    0 | 00/0123               |                 PushWord  myID           
+  338 |  1 devices.s    132 | Code        | 00 |  2      |    3 | 00/0123 : AD DB 02    |                 LDA       myID           
+  339 |  1 devices.s    132 | Code        | 00 |         |    1 | 00/0126 : 48          |                 PHA                      
+  341 |  1 devices.s    133 | Macro       | 00 |         |    0 | 00/0127               |                 _DisposeAll                 
+  343 |  1 devices.s    133 | Code        | 00 |         |    3 | 00/0127 : A2 02 11    |                 LDX       #$1102         ; load tool call #
+  344 |  1 devices.s    133 | Code        | 00 |         |    4 | 00/012A : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  345 |  1 devices.s    134 | Empty       | 00 |         |    0 | 00/012E               |                                          
+  346 |  1 devices.s    135 | Macro       | 00 |         |    0 | 00/012E               |                 PushWord  appID          
+  351 |  1 devices.s    135 | Code        | 00 |  2      |    3 | 00/012E : AD D9 02    |                 LDA       appID          
+  352 |  1 devices.s    135 | Code        | 00 |         |    1 | 00/0131 : 48          |                 PHA                      
+  354 |  1 devices.s    136 | Macro       | 00 |         |    0 | 00/0132               |                 _MMShutDown                 
+  356 |  1 devices.s    136 | Code        | 00 |         |    3 | 00/0132 : A2 02 03    |                 LDX       #$302          ; load tool call #
+  357 |  1 devices.s    136 | Code        | 00 |         |    4 | 00/0135 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  358 |  1 devices.s    137 | Empty       | 00 |         |    0 | 00/0139               |                                          
+  359 |  1 devices.s    138 | Macro       | 00 |         |    0 | 00/0139               |                 _TLShutDown                 
+  361 |  1 devices.s    138 | Code        | 00 |         |    3 | 00/0139 : A2 01 03    |                 LDX       #$301          ; load tool call #
+  362 |  1 devices.s    138 | Code        | 00 |         |    4 | 00/013C : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  363 |  1 devices.s    139 | Empty       | 00 |         |    0 | 00/0140               |                                          
+  364 |  1 devices.s    140 | Code        | 00 |         |    4 | 00/0140 : 22 A8 00 E1 |                 jsl       {$e100a8}      
+  365 |  1 devices.s    141 | Data        | 00 |         |    2 | 00/0144 : 29 20       |                 dw        $2029          
+  366 |  1 devices.s    142 | Data        | 00 |  3      |    4 | 00/0146 : 87 02 00 00 |                 adrl      proQUIT        
+  367 |  1 devices.s    143 | Empty       | 00 |         |    0 | 00/014A               |                                          
+  368 |  1 devices.s    144 | Code        | 00 |         |    2 | 00/014A : 00 BD       |                 brk       $bd            
+  369 |  1 devices.s    145 | Empty       | 00 |         |    0 | 00/014C               |                                          
+  370 |  1 devices.s    146 | Comment     | 00 |         |    0 | 00/014C               | *----------------------------
+  371 |  1 devices.s    147 | Comment     | 00 |         |    0 | 00/014C               | * HANDLE MENU
+  372 |  1 devices.s    148 | Comment     | 00 |         |    0 | 00/014C               | *----------------------------
+  373 |  1 devices.s    149 | Empty       | 00 |         |    0 | 00/014C               |                                          
+  374 |  1 devices.s    150 | Code        | 00 |         |    3 | 00/014C : A9 FF FF    | setALL          lda       #$ffff         
+  375 |  1 devices.s    151 | Code        | 00 |         |    2 | 00/014F : D0 03       |                 bne       showALL        
+  376 |  1 devices.s    152 | Code        | 00 |         |    3 | 00/0151 : A9 80 00    | setBLOCK        lda       #{$0080}       
+  377 |  1 devices.s    153 | Empty       | 00 |         |    0 | 00/0154               |                                          
+  378 |  1 devices.s    154 | Code        | 00 |  2      |    3 | 00/0154 : 8D 85 02    | showALL         sta       devMASK        
+  379 |  1 devices.s    155 | Code        | 00 |  2      |    3 | 00/0157 : 20 60 01    |                 jsr       pollDEVICES    
+  380 |  1 devices.s    156 | Code        | 00 |  2      |    3 | 00/015A : 20 F6 01    |                 jsr       waitFORKEY     
+  381 |  1 devices.s    157 | Code        | 00 |  2      |    3 | 00/015D : 4C E8 00    |                 jmp       mainMENU       
+  382 |  1 devices.s    158 | Empty       | 00 |         |    0 | 00/0160               |                                          
+  383 |  1 devices.s    159 | Comment     | 00 |         |    0 | 00/0160               | *----------------------------
+  384 |  1 devices.s    160 | Comment     | 00 |         |    0 | 00/0160               | * POLL DEVICES
+  385 |  1 devices.s    161 | Comment     | 00 |         |    0 | 00/0160               | *----------------------------
+  386 |  1 devices.s    162 | Empty       | 00 |         |    0 | 00/0160               |                                          
+  387 |  1 devices.s    163 | Code        | 00 |         |    3 | 00/0160 : A9 01 00    | pollDEVICES     lda       #1             ; start with device 1
+  388 |  1 devices.s    164 | Code        | 00 |  2      |    3 | 00/0163 : 8D 91 02    |                 sta       proDINFO+2     
+  389 |  1 devices.s    165 | Empty       | 00 |         |    0 | 00/0166               |                                          
+  390 |  1 devices.s    166 | Code        | 00 |         |    4 | 00/0166 : 22 A8 00 E1 | ozunid_1        jsl       {$e100a8}      ; do a DInfo
+  391 |  1 devices.s    167 | Data        | 00 |         |    2 | 00/016A : 2C 20       |                 dw        $202c          
+  392 |  1 devices.s    168 | Data        | 00 |  3      |    4 | 00/016C : 8F 02 00 00 |                 adrl      proDINFO       
+  393 |  1 devices.s    169 | Code        | 00 |         |    2 | 00/0170 : 90 0B       |                 bcc       found          
+  394 |  1 devices.s    170 | Empty       | 00 |         |    0 | 00/0172               |                                          
+  395 |  1 devices.s    171 | Code        | 00 |         |    3 | 00/0172 : C9 11 00    |                 cmp       #$0011         ; no more devices
+  396 |  1 devices.s    172 | Code        | 00 |         |    2 | 00/0175 : D0 01       |                 bne       loop           
+  397 |  1 devices.s    173 | Code        | 00 |         |    1 | 00/0177 : 60          |                 rts                      
+  398 |  1 devices.s    174 | Empty       | 00 |         |    0 | 00/0178               |                                          
+  399 |  1 devices.s    175 | Code        | 00 |  2      |    3 | 00/0178 : EE 91 02    | loop            inc       proDINFO+2     
+  400 |  1 devices.s    176 | Code        | 00 |         |    2 | 00/017B : 80 E9       |                 bra       ozunid_1       
+  401 |  1 devices.s    177 | Empty       | 00 |         |    0 | 00/017D               |                                          
+  402 |  1 devices.s    178 | Comment     | 00 |         |    0 | 00/017D               | *---------- Show device
+  403 |  1 devices.s    179 | Empty       | 00 |         |    0 | 00/017D               |                                          
+  404 |  1 devices.s    180 | Code        | 00 |  2      |    3 | 00/017D : AD 97 02    | found           lda       proDINFO+8     ; block device
+  405 |  1 devices.s    181 | Code        | 00 |  2      |    3 | 00/0180 : 2D 85 02    |                 and       devMASK        
+  406 |  1 devices.s    182 | Code        | 00 |         |    2 | 00/0183 : F0 F3       |                 beq       loop           
+  407 |  1 devices.s    183 | Empty       | 00 |         |    0 | 00/0185               |                                          
+  408 |  1 devices.s    184 | Code        | 00 |  2      |    3 | 00/0185 : 20 8A 01    |                 jsr       showDEVICEINFO 
+  409 |  1 devices.s    185 | Code        | 00 |         |    2 | 00/0188 : 80 EE       |                 bra       loop           
+  410 |  1 devices.s    186 | Empty       | 00 |         |    0 | 00/018A               |                                          
+  411 |  1 devices.s    187 | Comment     | 00 |         |    0 | 00/018A               | *--- Sub routines
+  412 |  1 devices.s    188 | Comment     | 00 |         |    0 | 00/018A               | *
+  413 |  1 devices.s    189 | Comment     | 00 |         |    0 | 00/018A               | * x - $xxxx - .NAMEOFDEVICE
+  414 |  1 devices.s    190 | Empty       | 00 |         |    0 | 00/018A               |                                          
+  415 |  1 devices.s    191 | Code        | 00 |  2      |    3 | 00/018A : AD 91 02    | showDEVICEINFO  lda       proDINFO+2     
+  416 |  1 devices.s    192 | Code        | 00 |         |    1 | 00/018D : 48          |                 pha                      ; from a word to a string
+  417 |  1 devices.s    193 | Code        | 00 |         |    1 | 00/018E : 48          |                 pha                      
+  418 |  1 devices.s    194 | Code        | 00 |         |    1 | 00/018F : 48          |                 pha                      
+  419 |  1 devices.s    195 | Macro       | 00 |         |    0 | 00/0190               |                 _HexIt                   
+  421 |  1 devices.s    195 | Code        | 00 |         |    3 | 00/0190 : A2 0B 2A    |                 LDX       #$2A0B         ; load tool call #
+  422 |  1 devices.s    195 | Code        | 00 |         |    4 | 00/0193 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  423 |  1 devices.s    196 | Macro       | 00 |         |    0 | 00/0197               |                 PullLong  strDEVID       
+  426 |  1 devices.s    196 | Code        | 00 |         |    1 | 00/0197 : 68          |                 PLA                      
+  428 |  1 devices.s    196 | Code        | 00 |  2      |    3 | 00/0198 : 8D EE 01    |                 STA       strDEVID       
+  433 |  1 devices.s    196 | Code        | 00 |         |    1 | 00/019B : 68          |                 PLA                      
+  435 |  1 devices.s    196 | Code        | 00 |  2      |    3 | 00/019C : 8D F0 01    |                 STA       strDEVID+2     
+  441 |  1 devices.s    197 | Empty       | 00 |         |    0 | 00/019F               |                                          
+  442 |  1 devices.s    198 | Macro       | 00 |         |    0 | 00/019F               |                 PushLong  #strDEV        ; show the string
+  446 |  1 devices.s    198 | Code        | 00 |  1 >>16 |    3 | 00/019F : F4 00 00    |                 PEA       #^#strDEV      
+  453 |  1 devices.s    198 | Code        | 00 |  2      |    3 | 00/01A2 : F4 ED 01    |                 PEA       #strDEV        
+  456 |  1 devices.s    199 | Macro       | 00 |         |    0 | 00/01A5               |                 _WriteCString                 
+  458 |  1 devices.s    199 | Code        | 00 |         |    3 | 00/01A5 : A2 0C 20    |                 LDX       #$200C         ; load tool call #
+  459 |  1 devices.s    199 | Code        | 00 |         |    4 | 00/01A8 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  460 |  1 devices.s    200 | Empty       | 00 |         |    0 | 00/01AC               |                                          
+  461 |  1 devices.s    201 | Comment     | 00 |         |    0 | 00/01AC               | *--- characteristics
+  462 |  1 devices.s    202 | Empty       | 00 |         |    0 | 00/01AC               |                                          
+  463 |  1 devices.s    203 | Code        | 00 |  2      |    3 | 00/01AC : AD 97 02    |                 lda       proDINFO+8     
+  464 |  1 devices.s    204 | Code        | 00 |         |    1 | 00/01AF : 48          |                 pha                      ; from a word to a string
+  465 |  1 devices.s    205 | Code        | 00 |         |    1 | 00/01B0 : 48          |                 pha                      
+  466 |  1 devices.s    206 | Code        | 00 |         |    1 | 00/01B1 : 48          |                 pha                      
+  467 |  1 devices.s    207 | Macro       | 00 |         |    0 | 00/01B2               |                 _HexIt                   
+  469 |  1 devices.s    207 | Code        | 00 |         |    3 | 00/01B2 : A2 0B 2A    |                 LDX       #$2A0B         ; load tool call #
+  470 |  1 devices.s    207 | Code        | 00 |         |    4 | 00/01B5 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  471 |  1 devices.s    208 | Macro       | 00 |         |    0 | 00/01B9               |                 PullLong  strDEVID       
+  474 |  1 devices.s    208 | Code        | 00 |         |    1 | 00/01B9 : 68          |                 PLA                      
+  476 |  1 devices.s    208 | Code        | 00 |  2      |    3 | 00/01BA : 8D EE 01    |                 STA       strDEVID       
+  481 |  1 devices.s    208 | Code        | 00 |         |    1 | 00/01BD : 68          |                 PLA                      
+  483 |  1 devices.s    208 | Code        | 00 |  2      |    3 | 00/01BE : 8D F0 01    |                 STA       strDEVID+2     
+  489 |  1 devices.s    209 | Empty       | 00 |         |    0 | 00/01C1               |                                          
+  490 |  1 devices.s    210 | Macro       | 00 |         |    0 | 00/01C1               |                 PushLong  #strDEV        ; show the string
+  494 |  1 devices.s    210 | Code        | 00 |  1 >>16 |    3 | 00/01C1 : F4 00 00    |                 PEA       #^#strDEV      
+  501 |  1 devices.s    210 | Code        | 00 |  2      |    3 | 00/01C4 : F4 ED 01    |                 PEA       #strDEV        
+  504 |  1 devices.s    211 | Macro       | 00 |         |    0 | 00/01C7               |                 _WriteCString                 
+  506 |  1 devices.s    211 | Code        | 00 |         |    3 | 00/01C7 : A2 0C 20    |                 LDX       #$200C         ; load tool call #
+  507 |  1 devices.s    211 | Code        | 00 |         |    4 | 00/01CA : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  508 |  1 devices.s    212 | Empty       | 00 |         |    0 | 00/01CE               |                                          
+  509 |  1 devices.s    213 | Comment     | 00 |         |    0 | 00/01CE               | *--- name
+  510 |  1 devices.s    214 | Empty       | 00 |         |    0 | 00/01CE               |                                          
+  511 |  1 devices.s    215 | Code        | 00 |  2      |    3 | 00/01CE : AD A7 02    |                 lda       devINFO1       ; from a STRL to a STR
+  512 |  1 devices.s    216 | Code        | 00 |         |    1 | 00/01D1 : EB          |                 xba                      
+  513 |  1 devices.s    217 | Code        | 00 |  2      |    3 | 00/01D2 : 8D A7 02    |                 sta       devINFO1       
+  514 |  1 devices.s    218 | Empty       | 00 |         |    0 | 00/01D5               |                                          
+  515 |  1 devices.s    219 | Macro       | 00 |         |    0 | 00/01D5               |                 PushLong  #devINFO2      
+  519 |  1 devices.s    219 | Code        | 00 |  1 >>16 |    3 | 00/01D5 : F4 00 00    |                 PEA       #^#devINFO2    
+  526 |  1 devices.s    219 | Code        | 00 |  2      |    3 | 00/01D8 : F4 A8 02    |                 PEA       #devINFO2      
+  529 |  1 devices.s    220 | Macro       | 00 |         |    0 | 00/01DB               |                 _WriteString                 
+  531 |  1 devices.s    220 | Code        | 00 |         |    3 | 00/01DB : A2 0C 1C    |                 LDX       #$1C0C         ; load tool call #
+  532 |  1 devices.s    220 | Code        | 00 |         |    4 | 00/01DE : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  533 |  1 devices.s    221 | Empty       | 00 |         |    0 | 00/01E2               |                                          
+  534 |  1 devices.s    222 | Macro       | 00 |         |    0 | 00/01E2               |                 PushWord  #$0d           
+  536 |  1 devices.s    222 | Code        | 00 |         |    3 | 00/01E2 : F4 0D 00    |                 PEA       #$0d           
+  539 |  1 devices.s    223 | Macro       | 00 |         |    0 | 00/01E5               |                 _WriteChar                 
+  541 |  1 devices.s    223 | Code        | 00 |         |    3 | 00/01E5 : A2 0C 18    |                 LDX       #$180C         ; load tool call #
+  542 |  1 devices.s    223 | Code        | 00 |         |    4 | 00/01E8 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  543 |  1 devices.s    224 | Code        | 00 |         |    1 | 00/01EC : 60          |                 rts                      
+  544 |  1 devices.s    225 | Empty       | 00 |         |    0 | 00/01ED               |                                          
+  545 |  1 devices.s    226 | Comment     | 00 |         |    0 | 00/01ED               | *---------- Data
+  546 |  1 devices.s    227 | Empty       | 00 |         |    0 | 00/01ED               |                                          
+  547 |  1 devices.s    228 | Data        | 00 |         |    1 | 00/01ED : 24          | strDEV          asc       '$'            
+  548 |  1 devices.s    229 | Data        | 00 |         |    8 | 00/01EE : 30 30 30 30 | strDEVID        asc       '0000 - '00    
+      |                     |             |    |         |      |           20 2D 20 00 |
+  549 |  1 devices.s    230 | Empty       | 00 |         |    0 | 00/01F6               |                                          
+  550 |  1 devices.s    231 | Comment     | 00 |         |    0 | 00/01F6               | *----------------------------
+  551 |  1 devices.s    232 | Comment     | 00 |         |    0 | 00/01F6               | * TEXT ROUTINES
+  552 |  1 devices.s    233 | Comment     | 00 |         |    0 | 00/01F6               | *----------------------------
+  553 |  1 devices.s    234 | Empty       | 00 |         |    0 | 00/01F6               |                                          
+  554 |  1 devices.s    235 | Comment     | 00 |         |    0 | 00/01F6               | *---------- Wait for a key
+  555 |  1 devices.s    236 | Empty       | 00 |         |    0 | 00/01F6               |                                          
+  556 |  1 devices.s    237 | Macro       | 00 |         |    0 | 00/01F6               | waitFORKEY      PushWord  #0             ; wait for key
+  558 |  1 devices.s    237 | Code        | 00 |         |    3 | 00/01F6 : F4 00 00    |                 PEA       #0             
+  561 |  1 devices.s    238 | Macro       | 00 |         |    0 | 00/01F9               |                 PushWord  #1             ; echo char
+  563 |  1 devices.s    238 | Code        | 00 |         |    3 | 00/01F9 : F4 01 00    |                 PEA       #1             
+  566 |  1 devices.s    239 | Macro       | 00 |         |    0 | 00/01FC               |                 _ReadChar                 
+  568 |  1 devices.s    239 | Code        | 00 |         |    3 | 00/01FC : A2 0C 22    |                 LDX       #$220C         ; load tool call #
+  569 |  1 devices.s    239 | Code        | 00 |         |    4 | 00/01FF : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  570 |  1 devices.s    240 | Empty       | 00 |         |    0 | 00/0203               |                                          
+  571 |  1 devices.s    241 | Code        | 00 |         |    2 | 00/0203 : A3 01       | waitKEY1        lda       1,s            ; check CR
+  572 |  1 devices.s    242 | Code        | 00 |         |    3 | 00/0205 : 29 FF 00    |                 and       #$ff           ; of typed
+  573 |  1 devices.s    243 | Code        | 00 |         |    2 | 00/0208 : 83 01       |                 sta       1,s            ; in char
+  574 |  1 devices.s    244 | Code        | 00 |         |    3 | 00/020A : C9 8D 00    |                 cmp       #$8d           
+  575 |  1 devices.s    245 | Code        | 00 |         |    2 | 00/020D : F0 0A       |                 beq       waitKEY9       
+  576 |  1 devices.s    246 | Empty       | 00 |         |    0 | 00/020F               |                                          
+  577 |  1 devices.s    247 | Macro       | 00 |         |    0 | 00/020F               | waitKEY8        PushWord  #$0d           ; return
+  579 |  1 devices.s    247 | Code        | 00 |         |    3 | 00/020F : F4 0D 00    |                 PEA       #$0d           
+  582 |  1 devices.s    248 | Macro       | 00 |         |    0 | 00/0212               |                 _WriteChar                 
+  584 |  1 devices.s    248 | Code        | 00 |         |    3 | 00/0212 : A2 0C 18    |                 LDX       #$180C         ; load tool call #
+  585 |  1 devices.s    248 | Code        | 00 |         |    4 | 00/0215 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  586 |  1 devices.s    249 | Empty       | 00 |         |    0 | 00/0219               |                                          
+  587 |  1 devices.s    250 | Code        | 00 |         |    1 | 00/0219 : 68          | waitKEY9        pla                      ; restore entered char
+  588 |  1 devices.s    251 | Code        | 00 |         |    1 | 00/021A : 60          |                 rts                      
+  589 |  1 devices.s    252 | Empty       | 00 |         |    0 | 00/021B               |                                          
+  590 |  1 devices.s    253 | Comment     | 00 |         |    0 | 00/021B               | *----------------------------
+  591 |  1 devices.s    254 | Comment     | 00 |         |    0 | 00/021B               | * DATA
+  592 |  1 devices.s    255 | Comment     | 00 |         |    0 | 00/021B               | *----------------------------
+  593 |  1 devices.s    256 | Empty       | 00 |         |    0 | 00/021B               |                                          
+  594 |  1 devices.s    257 | Comment     | 00 |         |    0 | 00/021B               | *--- Text
+  595 |  1 devices.s    258 | Empty       | 00 |         |    0 | 00/021B               |                                          
+  596 |  1 devices.s    259 | Data        | 00 |         |   14 | 00/021B : 0D 53 68 6F | strMAINMENU     asc       0d'Show devices'0d
+      |                     |             |    |         |      |           77 20 64 65 |
+      |                     |             |    |         |      |           76 69 63 65 |
+      |                     |             |    |         |      |           73 0D       |
+  597 |  1 devices.s    260 | Data        | 00 |         |   33 | 00/0229 : 28 63 29 20 |                 asc       '(c) 2023, Brutal Deluxe Software'0d
+      |                     |             |    |         |      |           32 30 32 33 |
+      |                     |             |    |         |      |           2C 20 42 72 |
+      |                     |             |    |         |      |           75 74 61 6C |
+      |                     |             |    |         |      |           20 44 65 6C |
+      |                     |             |    |         |      |           75 78 65 20 |
+      |                     |             |    |         |      |           53 6F 66 74 |
+      |                     |             |    |         |      |           77 61 72 65 |
+      |                     |             |    |         |      |           0D          |
+  598 |  1 devices.s    261 | Data        | 00 |         |   21 | 00/024A : 20 31 2E 20 |                 asc       ' 1. Show all devices'0d
+      |                     |             |    |         |      |           53 68 6F 77 |
+      |                     |             |    |         |      |           20 61 6C 6C |
+      |                     |             |    |         |      |           20 64 65 76 |
+      |                     |             |    |         |      |           69 63 65 73 |
+      |                     |             |    |         |      |           0D          |
+  599 |  1 devices.s    262 | Data        | 00 |         |   28 | 00/025F : 20 32 2E 20 |                 asc       ' 2. Show block devices only'0d
+      |                     |             |    |         |      |           53 68 6F 77 |
+      |                     |             |    |         |      |           20 62 6C 6F |
+      |                     |             |    |         |      |           63 6B 20 64 |
+      |                     |             |    |         |      |           65 76 69 63 |
+      |                     |             |    |         |      |           65 73 20 6F |
+      |                     |             |    |         |      |           6E 6C 79 0D |
+  600 |  1 devices.s    263 | Data        | 00 |         |   10 | 00/027B : 20 51 2E 20 |                 asc       ' Q. Quit'0d00 
+      |                     |             |    |         |      |           51 75 69 74 |
+      |                     |             |    |         |      |           0D 00       |
+  601 |  1 devices.s    264 | Empty       | 00 |         |    0 | 00/0285               |                                          
+  602 |  1 devices.s    265 | Comment     | 00 |         |    0 | 00/0285               | *--- GS/OS
+  603 |  1 devices.s    266 | Empty       | 00 |         |    0 | 00/0285               |                                          
+  604 |  1 devices.s    267 | Data        | 00 |         |    2 | 00/0285 : 80 00       | devMASK         dw        {$0080}        ; default for block devices
+  605 |  1 devices.s    268 | Empty       | 00 |         |    0 | 00/0287               |                                          
+  606 |  1 devices.s    269 | Data        | 00 |         |    2 | 00/0287 : 02 00       | proQUIT         dw        2              ; pcount
+  607 |  1 devices.s    270 | Data        | 00 |         |    4 | 00/0289 : 00 00 00 00 |                 ds        4              ; pathname
+  608 |  1 devices.s    271 | Data        | 00 |         |    2 | 00/028D : 00 00       |                 ds        2              ; flags
+  609 |  1 devices.s    272 | Empty       | 00 |         |    0 | 00/028F               |                                          
+  610 |  1 devices.s    273 | Data        | 00 |         |    2 | 00/028F : 08 00       | proDINFO        dw        8              ; Parms for DInfo
+  611 |  1 devices.s    274 | Data        | 00 |         |    2 | 00/0291 : 00 00       |                 ds        2              ; 02 device num
+  612 |  1 devices.s    275 | Data        | 00 |  3      |    4 | 00/0293 : A5 02 00 00 |                 adrl      devINFO        ; 04 device name
+  613 |  1 devices.s    276 | Data        | 00 |         |    2 | 00/0297 : 00 00       |                 ds        2              ; 08 characteristics
+  614 |  1 devices.s    277 | Data        | 00 |         |    4 | 00/0299 : 00 00 00 00 |                 ds        4              ; 0A total blocks
+  615 |  1 devices.s    278 | Data        | 00 |         |    2 | 00/029D : 00 00       |                 ds        2              ; 0E slot number
+  616 |  1 devices.s    279 | Data        | 00 |         |    2 | 00/029F : 00 00       |                 ds        2              ; 10 unit number
+  617 |  1 devices.s    280 | Data        | 00 |         |    2 | 00/02A1 : 00 00       |                 ds        2              ; 12 version
+  618 |  1 devices.s    281 | Data        | 00 |         |    2 | 00/02A3 : 00 00       |                 ds        2              ; 14 device id
+  619 |  1 devices.s    282 | Empty       | 00 |         |    0 | 00/02A5               |                                          
+  620 |  1 devices.s    283 | Data        | 00 |         |    2 | 00/02A5 : 32 00       | devINFO         dw        $0032          ; buffer size
+  621 |  1 devices.s    284 | Data        | 00 |         |    1 | 00/02A7 : 00          | devINFO1        db        $00            ; length
+  622 |  1 devices.s    285 | Data        | 00 |         |    1 | 00/02A8 : 00          | devINFO2        db        $00            
+  623 |  1 devices.s    286 | Data        | 00 |         |   48 | 00/02A9 : 00 00 00 00 | devINFO3        ds        $30            ; data
+      |                     |             |    |         |      |           00 00 00 00 |
+      |                     |             |    |         |      |           00 00 00 00 |
+      |                     |             |    |         |      |           00 00 00 00 |
+      |                     |             |    |         |      |           00 00 00 00 |
+      |                     |             |    |         |      |           00 00 00 00 |
+      |                     |             |    |         |      |           00 00 00 00 |
+      |                     |             |    |         |      |           00 00 00 00 |
+      |                     |             |    |         |      |           00 00 00 00 |
+      |                     |             |    |         |      |           00 00 00 00 |
+      |                     |             |    |         |      |           00 00 00 00 |
+      |                     |             |    |         |      |           00 00 00 00 |
+  624 |  1 devices.s    287 | Empty       | 00 |         |    0 | 00/02D9               |                                          
+  625 |  1 devices.s    288 | Comment     | 00 |         |    0 | 00/02D9               | *----------
+  626 |  1 devices.s    289 | Empty       | 00 |         |    0 | 00/02D9               |                                          
+  627 |  1 devices.s    290 | Data        | 00 |         |    2 | 00/02D9 : 00 00       | appID           ds        2              
+  628 |  1 devices.s    291 | Data        | 00 |         |    2 | 00/02DB : 00 00       | myID            ds        2              
+  629 |  1 devices.s    292 | Empty       | 00 |         |    0 | 00/02DD               |                                          
+  630 |  1 devices.s    293 | Data        | 00 |         |    2 | 00/02DD : 00 00       | myDP            ds        2              
+  631 |  1 devices.s    294 | Data        | 00 |         |    4 | 00/02DF : 00 00 00 00 | ptrBUFFER       ds        4              
+  632 |  1 devices.s    295 | Data        | 00 |         |    4 | 00/02E3 : 00 00 00 00 | haBUFFER        ds        4              
+  633 |  1 devices.s    296 | Empty       | 00 |         |    0 | 00/02E7               |                                          
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

@@ -1161,7 +1161,9 @@ IF R56 EQ $8D000000                    pCount 7
   READ R1 LONG
   NAME R1 $8002
   WRITE
-               %s   // pictureRef\n
+               %s               // pictureRef\n
+END
+IF R56 EQ $8D000000
   WRITE
        }};\n
   WRITE

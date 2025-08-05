@@ -12,6 +12,9 @@
 
 GSOS	EQU	$E100A8
 
+fileTYPE	=	$e0
+auxTYPE  =	$800c
+
 *------------------------------
 
 	use	4/Ctl.Macs
@@ -35,34 +38,38 @@ GSOS	EQU	$E100A8
             PHK
             PLB
             PHA
-            _QDVersion
+            _QDVersion	; are we running under 6.0?
             PLA
             AND   #$0FFF
             CMP   #$0307
-            BCC   L004D
-            PEA   ^L004F
-            PEA   L004F
-            PEA   ^L0079
-            PEA   L0079
+            BCC   L004D	; no
+            PEA   ^cStringPtr	; yes
+            PEA   cStringPtr
+            PEA   ^iconPtr
+            PEA   iconPtr
             _ShowBootInfo
-            PEA   ^L006C
-            PEA   L006C
+            PEA   ^nameSTR
+            PEA   nameSTR
             PHA
             _MMStartUp
             PLA
-            STA   L03A1
+            STA   appID
             PHA
             ORA   #$0100
-            STA   L03A3
-            PEA   ^L0211
-            PEA   L0211
+            STA   myID
+            PEA   ^myREQUEST
+            PEA   myREQUEST
             _AcceptRequests
 L004D       PLB
             RTL
 
-L004F       ASC   'Crypt                 v01.00'00
-L006C       STR   'Tudor~Crypt~'
-L0079       DW    $0080       ; Icon type
+*------------------------------
+*
+*------------------------------
+
+cStringPtr  ASC   'Crypt                 v01.00'00
+nameSTR     STR   'Tudor~Crypt~'
+iconPtr     DW    $0080       ; Icon type
             DW    $00C8       ; Icon size
             DW    $0014       ; Icon height
             DW    $0014       ; Icon width
@@ -106,43 +113,52 @@ L0079       DW    $0080       ; Icon type
             HEX   FFFFFFFFFFFFFFFFFFFF
             HEX   FFFFFFFFFFFFFFFFFFFF
             HEX   FFFFFFFFFFFFFFFFFFFF
-L0211       PHD
+
+*-----------------------------
+* MY REQUEST PROCEDURE
+*-----------------------------
+			
+myREQUEST   PHD
             TSC
             TCD
             LDA   $0E
-            CMP   #$0100
+            CMP   #$0100	; finderSaysHello
             BNE   L0221
-            JSR   L0313
-            BRL   L02FF
-L0221       CMP   #$0101
+            JSR   doHELLO
+            BRL   requestOK
+L0221       CMP   #$0101	; finderSaysGoodbye
             BNE   L022C
-            JSR   L0356
-            BRL   L02FF
-L022C       CMP   #$0108
-            BEQ   L0249
-            CMP   #$0003
+            JSR   doGOODBYE
+            BRL   requestOK
+L022C       CMP   #$0108	; finderSaysExtrasChosen
+            BEQ   doEXTRAS
+            CMP   #$0003	; srqGoAway
             BNE   L0257
-            LDY   #$0002
-            LDAL  L03A1
+
+            LDY   #$0002	; I accept to be kicked out
+            LDAL  appID	; see page 114 of Toolbox Ref Volume 6.0
             STA   [$06],Y
             INY
             INY
             LDA   #$0000
             STA   [$06],Y
-            BRL   L02FF
-L0249       LDA   $0A
-            CMPL  L03D5
-            BEQ   L025F
-            CMPL  L03CD
-            BEQ   L025A
+            BRL   requestOK
+
+doEXTRAS    LDA   $0A
+            CMPL  dataOut1+4	; is Encrypt menu chosen?
+            BEQ   L025F	; yes
+            CMPL  dataOut2+4	; is Decrypt menu chosen?
+            BEQ   L025A	; yes
 L0257       BRL   L0304
-L025A       LDA   #$0000
+
+L025A       LDA   #$0000	; decrypt
             BRA   L0262
-L025F       LDA   #$FFFF
-L0262       STAL  L1056
-            PEA   $0000
+L025F       LDA   #$FFFF	; encrypt
+L0262       STAL  fgCRYPT
+
+            PEA   $0000	; open my resource file
             _GetCurResourceApp
-            LDAL  L03A1
+            LDAL  appID
             PHA
             _ResourceStartUp
             PEA   $0000
@@ -151,42 +167,51 @@ L0262       STAL  L1056
             PEA   $0000
             PEA   $0000
             PEA   $0000
-            LDAL  L03A1
+            LDAL  appID
             PHA
             PEA   $0001
             _LGetPathname2
             _OpenResourceFile
             PLA
             BCS   L02F1
+
             PHB
             PHK
             PLB
-            PEA   $0000
-            PEA   $0000
+            PEA   $0000	; get current text substitution array
+            PEA   $0000	; for the Control Manager
             _GetCtlParamPtr
             PLA
-            STA   L10C8
+            STA   oldSubArray
             PLA
-            STA   L10C8+2
-            PEA   ^L10CC
-            PEA   L10CC
+            STA   oldSubArray+2
+
+            PEA   ^mySubArray	; install mine
+            PEA   mySubArray
             _SetCtlParamPtr
-            JSR   L0691
-            LDA   L03A3
+
+            JSR   doCRYPT	; do the work
+
+            LDA   myID	; dispose memory
             PHA
             _DisposeAll
-            LDA   L10C8+2
+
+            LDA   oldSubArray+2 ; restore the text substitution array
             PHA
-            LDA   L10C8
+            LDA   oldSubArray
             PHA
             _SetCtlParamPtr
-            _InitCursor
+
+            _InitCursor	; init cursor
             PLB
-L02F1       _ResourceShutDown
+
+L02F1       _ResourceShutDown	; exit
             _SetCurResourceApp
-L02FF       LDA   #$8000
+
+requestOK   LDA   #$8000	; handled request
             STA   $10
-L0304       PLD
+
+L0304       PLD		; exit request procedure
             LDA   $02,S
             STA   $0C,S
             LDA   $01,S
@@ -198,105 +223,110 @@ L0304       PLD
             PLY
             RTL
 
-L0313       PHB
+*-----------------------------
+* finderSaysHello
+*-----------------------------
+			
+doHELLO     PHB		; Add the two menu items
             PHK
             PLB
-            PEA   $800F
+            PEA   $800F	; tellFinderAddToExtras
             PEA   $0001
-            PEA   ^L03B7
-            PEA   L03B7
-            PEA   ^L03D9
-            PEA   L03D9
-            PEA   ^L03D1
-            PEA   L03D1
+            PEA   ^strFINDER
+            PEA   strFINDER
+            PEA   ^dataIn1
+            PEA   dataIn1
+            PEA   ^dataOut1
+            PEA   dataOut1
             _SendRequest
-            PEA   $800F
+            PEA   $800F	; tellFinderAddToExtras
             PEA   $0001
-            PEA   ^L03B7
-            PEA   L03B7
-            PEA   ^L03E7
-            PEA   L03E7
-            PEA   ^L03C9
-            PEA   L03C9
+            PEA   ^strFINDER
+            PEA   strFINDER
+            PEA   ^dataIn2
+            PEA   dataIn2
+            PEA   ^dataOut2
+            PEA   dataOut2
             _SendRequest
             PLB
             RTS
 
-L0356       PHB
+*-----------------------------
+* finderSaysGoodbye
+*-----------------------------
+			
+doGOODBYE   PHB		; Remove the two menu items
             PHK
             PLB
-            PEA   $8014
-            PEA   $0001
-            PEA   ^L03B7
-            PEA   L03B7
+            PEA   $8014	; tellFinderRemoveFromExtras
+            PEA   $0001	; sendToName
+            PEA   ^strFINDER
+            PEA   strFINDER
             PEA   $0000
-            LDA   L03D5
+            LDA   dataOut1+4	; menu ID
             PHA
-            PEA   ^L03C5
-            PEA   L03C5
+            PEA   ^dataOut3
+            PEA   dataOut3
             _SendRequest
-            PEA   $8014
-            PEA   $0001
-            PEA   ^L03B7
-            PEA   L03B7
+            PEA   $8014	; tellFinderRemoveFromExtras
+            PEA   $0001	; sendToName
+            PEA   ^strFINDER
+            PEA   strFINDER
             PEA   $0000
-            LDA   L03CD
+            LDA   dataOut2+4	; menu ID
             PHA
-            PEA   ^L03C5
-            PEA   L03C5
+            PEA   ^dataOut3
+            PEA   dataOut3
             _SendRequest
-            STZ   L03D5
-            STZ   L03CD
+            STZ   dataOut1+4
+            STZ   dataOut2+4
             PLB
             RTS
 
-L03A1       DW    $0000
-L03A3       DW    $0000
-L03A5       STR   'EncryptI'
-L03AE       STR   'DecryptI'
-L03B7       STR   'Apple~Finder~'
-L03C5       DW    $0000
-            DB    $00
-            DB    $00
-L03C9       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-L03CD       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-L03D1       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-L03D5       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-L03D9       DB    $00
-            DB    $80
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            ADRL  L03A5
-L03E7       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            ADRL  L03AE
-L03F5       PHD
+*-----------------------------
+* DATA
+*-----------------------------
+			
+appID       DW    $0000
+myID        DW    $0000
+menu1STR    STR   'EncryptI'
+menu2STR    STR   'DecryptI'
+strFINDER   STR   'Apple~Finder~'
+
+dataOut3    DW    $0000	; recvCount
+            DW    $0000	; finderResult
+
+dataOut2    DW    $0000	; recvCount
+            DW    $0000	; finderResult
+            DW    $0000	; menuItemNumber
+            DW    $0000	; IDExtrasMenu
+
+dataOut1    DW    $0000	; recvCount
+            DW    $0000	; finderResult
+            DW    $0000	; menuItemNumber
+            DW    $0000	; IDExtrasMenu
+
+dataIn1     DW    $8000	; version (divider needed)
+            DW    $0000	; itemID
+            DB    $00	; itemChar
+            DB    $00	; itemAltChar
+            DW    $0000	; itemCheck
+            DW    $0000	; itemFlag
+            ADRL  menu1STR	; itemTitleRef
+	  
+dataIn2     DW    $0000	; version
+            DW    $0000	; itemID
+            DB    $00	; itemChar
+            DB    $00	; itemAltChar
+            DW    $0000	; itemCheck
+            DW    $0000	; itemFlag
+            ADRL  menu2STR	; itemTitleRef
+
+*-----------------------------
+* DEREFERENCE HANDLE
+*-----------------------------
+			
+derefHANDLE PHD
             PHX
             PHA
             TSC
@@ -310,70 +340,82 @@ L03F5       PHD
             PLD
             RTS
 
-L0406       LDA   L1056
+*-----------------------------
+* SHOW THE RIGHT BUTTON
+*-----------------------------
+
+showTHERIGHTBUTTON
+            LDA   fgCRYPT	; what do we do?
             BNE   L0428
-            LDA   #L1131
+
+            LDA   #strKEY_ENTER	; ...decrypt
             STA   L10D4
-            LDA   #^L1131
+            LDA   #^strKEY_ENTER
             STA   L10D4+2
-            LDA   #L10EC
+            LDA   #strDECRYPT
             STA   L10D0
-            LDA   #^L10EC
+            LDA   #^strDECRYPT
             STA   L10D0+2
-            LDA   #$0003
+            LDA   #$0003	; ID=3
             BRA   L0443
-L0428       LDA   #L10F8
+
+L0428       LDA   #strKEY_REMEMBER	; ...encrypt
             STA   L10D4
-            LDA   #^L10F8
+            LDA   #^strKEY_REMEMBER
             STA   L10D4+2
-            LDA   #L10E0
+            LDA   #strENCRYPT
             STA   L10D0
-            LDA   #^L10E0
+            LDA   #^strENCRYPT
             STA   L10D0+2
-            LDA   #$0002
+            LDA   #$0002	; ID=2
+
 L0443       PEA   $0000
             PEA   $0000
-            LDX   L104C+2
+            LDX   myPORT+2
             PHX
-            LDX   L104C
+            LDX   myPORT
             PHX
             PEA   $0000
-            PHA
+            PHA		; control ID = 2 or 3
             _GetCtlHandleFromID
             PLA
-            STA   L1060
+            STA   haBUTTON
             PLY
-            STY   L1060+2
+            STY   haBUTTON+2	; get its handle
             PHY
             PHA
-            _ShowControl
+            _ShowControl	; show it
             RTS
+
+*-----------------------------
+* 
+*-----------------------------
 
 L046E       STZ   L11A7
             STZ   L11E1
-            LDA   L10C4+2
+            LDA   stringPtr+2
             STA   L11A1+2
             STA   L120D+2
-            LDA   L10C4
+            LDA   stringPtr
             CLC
-            ADC   L1066
+            ADC   offsetLIST
             STA   L11A1
             STA   L120D
             PHD
-            LDA   L10C4+2
+            LDA   stringPtr+2
             PHA
-            LDA   L10C4
+            LDA   stringPtr
             PHA
             TSC
             TCD
-            LDY   L1066
+            LDY   offsetLIST
             STY   L0636
             LDA   [$01],Y
             INC
             INC
             CLC
-            ADC   L1066
-            STA   L1066
+            ADC   offsetLIST
+            STA   offsetLIST
             TAY
             DEY
             LDX   #$0001
@@ -413,78 +455,85 @@ L04CD       LDA   [$01],Y
             SBC   L0634
             STX   L0634
             STA   [$01],Y
+
             JSL   GSOS
             DW    $2009       ; SetPrefix
             ADRL  L1209
+
             LDY   L0636
             LDA   L0634
             STA   [$01],Y
             PLY
             PLY
             PLD
+
+            PEA   $0000	; hilite the Cancel button
             PEA   $0000
             PEA   $0000
-            PEA   $0000
-            LDA   L104C+2
+            LDA   myPORT+2
             PHA
-            LDA   L104C
+            LDA   myPORT
             PHA
             PEA   $0000
             PEA   $0004
             _GetCtlHandleFromID
             _HiliteControl
+
+            PEA   $0000	; hilite the line edit control
             PEA   $0000
             PEA   $0000
-            PEA   $0000
-            LDA   L104C+2
+            LDA   myPORT+2
             PHA
-            LDA   L104C
+            LDA   myPORT
             PHA
             PEA   $0000
             PEA   $0005
             _GetCtlHandleFromID
             _HiliteControl
-            JSR   L0638
+            JSR   hideTHERMO
+
+            PEA   $0000	; space
             PEA   $0000
+            PEA   ^eventPtr	; eventPtr
+            PEA   eventPtr
+            PEA   $0000	; updateProc
             PEA   $0000
-            PEA   ^L1211
-            PEA   L1211
+            PEA   $8000	; eventHook
             PEA   $0000
+            PEA   $0000	; beepProc
             PEA   $0000
-            PEA   $8000
-            PEA   $0000
-            PEA   $0000
-            PEA   $0000
-            PEA   $0008
+            PEA   $0008	; flags
             _DoModalWindow
             PLA
             PLX
             PEA   $0000
             PEA   $0000
-            LDA   L104C+2
+            LDA   myPORT+2	; get stat text handle
             PHA
-            LDA   L104C
+            LDA   myPORT
             PHA
             PEA   $0000
             PEA   $0007
             _GetCtlHandleFromID
-            _DrawOneCtl
-            LDY   #$0038
+            _DrawOneCtl	; and draw the control
+
+            LDY   #$0038	; clear buffer
             LDA   #$0000
-L05A7       STA   L0C0F,Y
+L05A7       STA   myBUFFER,Y
             DEY
             BNE   L05A7
+
             JSL   GSOS
             DW    $2010       ; Open
             ADRL  L119D
             BCC   L05C1
-L05B9       STA   L1054
-            JSR   L0E9D
+L05B9       STA   theERROR
+            JSR   showERROR
             SEC
             RTS
 
 L05C1       LDA   L119F
-            STA   L1197
+            STA   proCLOSE1+2
             STA   L11EB
             LDA   #$0038
             STA   L11F1
@@ -495,7 +544,7 @@ L05C1       LDA   L119F
             PHA
             JSL   GSOS
             DW    $2014       ; Close
-            ADRL  L1195
+            ADRL  proCLOSE1
             PLA
             PLP
             BCS   L05B9
@@ -503,22 +552,23 @@ L05C1       LDA   L119F
             CMP   #$000F
             BNE   L05FF
             LDA   #$0002
-L05F5       JSR   L065B
+L05F5       JSR   showALERT
             SEC
             RTS
-
 L05FA       LDA   #$0008
             BRA   L05F5
-L05FF       LDA   L1056
-            BNE   L0632
-            LDA   L0C1D
-            CMP   #$4320
+
+L05FF       LDA   fgCRYPT
+            BNE   L0632	; skip if encrypt
+
+            LDA   L0C1D	; decrypt
+            CMP   #$4320	; " c"
             BNE   L05FA
             LDA   L0C1F
-            CMP   #$59D2
+            CMP   #$59D2	; "ry"
             BNE   L05FA
             LDA   L0C21
-            CMP   #$54D0
+            CMP   #$54D0	; "pt"
             BNE   L05FA
             LDA   L0C2D
             STA   L0C0D
@@ -532,178 +582,216 @@ L0625       LDA   L0C2F,Y
 L0632       CLC
             RTS
 
-L0634       BRK   $00
-L0636       BRK   $00
-L0638       PEA   $0000
+*-----------------------------
+			
+L0634       DW    $0000
+L0636       DW    $0000
+
+*-----------------------------
+* HIDE THE THERMOMETER
+*-----------------------------
+			
+hideTHERMO  PEA   $0000
             PEA   $0000
-            LDA   L104C+2
+            LDA   myPORT+2
             PHA
-            LDA   L104C
+            LDA   myPORT
             PHA
             PEA   $0000
-            PEA   $0009
+            PEA   $0009	; ID of the thermometer
             _GetCtlHandleFromID
             _HideControl
             RTS
 
-L065B       STA   L0680
+*-----------------------------
+* SHOW ALERT
+*-----------------------------
+			
+showALERT   STA   alertRef
             _InitCursor
             PHA
-            PEA   $0037
-            PEA   ^L10CC
-            PEA   L10CC
-            LDA   L0680+2
+            PEA   $0037	; flags: 0011_0111 - 5:awButtonLayout, 4:awForceBeep, 3:awTextFullWidth, 2-1:invalid!, 0:Pascal str
+            PEA   ^mySubArray
+            PEA   mySubArray
+            LDA   alertRef+2
             PHA
-            LDA   L0680
+            LDA   alertRef
             PHA
             _AlertWindow
             PLA
             RTS
 
-L0680       ADRL  $00000000
-L0684       LDA   #$00E0
-            STA   L1048
-            LDA   #$800C
-            STA   L104A
+*-----------------------------
+			
+alertRef    ADRL  $00000000
+
+*-----------------------------
+* SET FILE TYPE AND AUXTYPE
+*-----------------------------
+
+setMYTYPE   LDA   #fileTYPE
+            STA   myFILETYPE
+            LDA   #auxTYPE
+            STA   myAUXTYPE
             RTS
 
-L0691       _WaitCursor
-            JSR   L0684
-            PEA   $8004
+*-----------------------------
+* ENCRYPT OR DECRYPT...
+*-----------------------------
+
+doCRYPT     _WaitCursor
+            JSR   setMYTYPE	; set my file info
+	  
+            PEA   $8004	; tellFinderGetSelectedIcons
             PEA   $0001
-            PEA   ^L03B7
-            PEA   L03B7
+            PEA   ^strFINDER
+            PEA   strFINDER
+            PEA   $0000	; no dataIn
             PEA   $0000
-            PEA   $0000
-            PEA   ^L10B8
-            PEA   L10B8
+            PEA   ^dataOut	; dataOut
+            PEA   dataOut
             _SendRequest
-            BCC   L06BD
+            BCC   L06BD	; we're good
 L06BC       RTS
 
-L06BD       LDA   L10BA
-            BNE   L06BC
-            LDA   L10C2
+L06BD       LDA   dataOut+2	; did the Finder return an error?
+            BNE   L06BC	; yes, exit
+	  		; no
+            LDA   stringList+2
             PHA
-            LDA   L10C0
+            LDA   stringList
             PHA
             _HLock
-            LDA   L10C0
-            LDX   L10C2
-            JSR   L03F5
-            STX   L10C4+2
-            STA   L10C4
-            PHD
+            LDA   stringList	; dereference the handle
+            LDX   stringList+2
+            JSR   derefHANDLE
+            STX   stringPtr+2	; save the pointer
+            STA   stringPtr
+            PHD		; push the pointer
             PHX
             PHA
             TSC
             TCD
-            LDA   [$01]
+            LDA   [$01]	; get the number of records
             PLY
             PLY
             PLD
-            CMP   #$0000
-            BNE   L06F7
-            LDA   #$0001
-            JSR   L065B
+            CMP   #$0000	; zero selected icons?
+            BNE   L06F7	; no
+            LDA   #$0001	; yezs
+            JSR   showALERT
             BRA   L0746
-L06F7       STA   L1064
+
+L06F7       STA   nbICONS	; save the number of selected icons
             LDA   #$0002
-            STA   L1066
+            STA   offsetLIST
+
+            PEA   $0000	; and open the window
             PEA   $0000
             PEA   $0000
             PEA   $0000
             PEA   $0000
             PEA   $0000
+            PEA   ^DRAWCONTROLS
+            PEA   DRAWCONTROLS
             PEA   $0000
-            PEA   ^L0E8C
-            PEA   L0E8C
             PEA   $0000
+            PEA   $0002	; by resource
             PEA   $0000
-            PEA   $0002
-            PEA   $0000
-            PEA   $0064
+            PEA   $0064	; resource ID
             PEA   $800E
             _NewWindow2
-            STA   L1054
+            STA   theERROR
+            PLA		; save the port
+            STA   myPORT
             PLA
-            STA   L104C
-            PLA
-            STA   L104C+2
-            BCC   L076B
-            BRA   L0743
-            STA   L1054
-L0743       JSR   L0E9D
-L0746       _WaitCursor
-            LDA   L10C0
-            ORA   L10C2
-            BEQ   L076A
-            LDA   L10C2
+            STA   myPORT+2
+            BCC   L076B	; we're good
+            BRA   L0743	; an error occured
+            STA   theERROR	; dead code
+L0743       JSR   showERROR
+
+L0746       _WaitCursor	; the end
+            LDA   stringList	; cleat the handle
+            ORA   stringList+2
+            BEQ   L076A	; if it exists
+            LDA   stringList+2
             PHA
-            LDA   L10C0
+            LDA   stringList
             PHA
             _DisposeHandle
-            STZ   L10C0
-            STZ   L10C2
-L076A       RTS
+            STZ   stringList
+            STZ   stringList+2
+L076A       RTS		; and return
 
+*-----------------------------
+* 
+*-----------------------------
+			
 L076B       PHA
             PHA
             _GetPort
             PLA
-            STA   L1050
+            STA   savePORT
             PLA
-            STA   L1050+2
-            LDA   L104C+2
+            STA   savePORT+2
+            LDA   myPORT+2
             PHA
-            LDA   L104C
+            LDA   myPORT
             PHA
             _SetPort
-            JSR   L0406
-            LDA   L104C+2
+            JSR   showTHERIGHTBUTTON
+            LDA   myPORT+2
             PHA
-            LDA   L104C
+            LDA   myPORT
             PHA
             _ShowWindow
             STZ   L105C
             STZ   L105E
-            STZ   L105A
-L07A6       LDA   L105A
+            STZ   fgCANCEL
+L07A6       LDA   fgCANCEL
             BNE   L07CE
             STZ   L1058
             JSR   L046E
             BCC   L07BA
-            DEC   L1064
+            DEC   nbICONS
             BNE   L07A6
             BRA   L07CE
+
 L07BA       _InitCursor
 L07C1       LDA   L1058
             BNE   L07C9
             BRL   L07EF
-L07C9       DEC   L1064
-            BNE   L07A6
-L07CE       LDA   L104C+2
+L07C9       DEC   nbICONS	; next icon
+            BNE   L07A6	; please
+
+L07CE       LDA   myPORT+2
             PHA
-            LDA   L104C
+            LDA   myPORT
             PHA
             _CloseWindow
-            LDA   L1050+2
+            LDA   savePORT+2
             PHA
-            LDA   L1050
+            LDA   savePORT
             PHA
             _SetPort
             BRL   L0746
-L07EF       PEA   $0000
+
+*-----------------------------
+* 
+*-----------------------------
+			
+L07EF       PEA   $0000	; space
             PEA   $0000
-            PEA   ^L1211
-            PEA   L1211
+            PEA   ^eventPtr	; eventPtr
+            PEA   eventPtr
+            PEA   $0000	; updateProc
             PEA   $0000
+            PEA   $8000	; eventHook
             PEA   $0000
-            PEA   $8000
+            PEA   $0000	; beepProc
             PEA   $0000
-            PEA   $0000
-            PEA   $0000
-            PEA   $0008
+            PEA   $0008	; flags
             _DoModalWindow
             PLA
             PLX
@@ -715,21 +803,33 @@ L07EF       PEA   $0000
             ASL
             TAX
             JSR   (L0831,X)
-            LDA   L105A
+            LDA   fgCANCEL
             BNE   L07CE
 L082E       BRL   L07C1
-L0831       DA    L0E0C
-            DA    L0952
-            DA    L0849
-            DA    L083B
-            DA    L0DB0
+
+*-----------------------------
+			
+L0831       DA    L0E0C	; 1 rectangle (title)
+            DA    L0952	; 2 button (encrypt)
+            DA    L0849	; 3 button (decrypt)
+            DA    L083B	; 4 button (cancel)
+            DA    doLINEEDIT	; 5 line edit
+
+*-----------------------------
+* BUTTON CANCEL
+*-----------------------------
+			
 L083B       _WaitCursor
             DEC   L1058
-            DEC   L105A
+            DEC   fgCANCEL
             RTS
 
+*-----------------------------
+* BUTTON DECRYPT
+*-----------------------------
+			
 L0849       _WaitCursor
-            JSR   L0E6F
+            JSR   calcKEY
             CMP   L0C0D
             BNE   L0872
             LDA   L10A0
@@ -745,13 +845,13 @@ L0861       LDA   L10A0,X
             BRA   L0883
 L0870       REP   #$20
 L0872       LDA   #$0003
-L0875       JSR   L065B
-L0878       JSR   L0638
+L0875       JSR   showALERT
+L0878       JSR   hideTHERMO
             _InitCursor
             RTS
 
 L0883       LDA   L0C0D
-            STA   L1086
+            STA   myKEY
             LDA   L0C23
             STA   L107C
             LDA   L0C25
@@ -762,13 +862,14 @@ L0883       LDA   L0C0D
             JSR   L0F61
             BCS   L0878
             _WaitCursor
+
             JSL   GSOS
             DW    $2010       ; Open
             ADRL  L119D
             BCC   L08BD
             BRL   L093D
 L08BD       LDA   L119F
-            STA   L1197
+            STA   proCLOSE1+2
             STA   L11EB
             LDA   #$0038
             STA   L11F1
@@ -776,96 +877,112 @@ L08BD       LDA   L119F
             DW    $2012       ; Read
             ADRL  L11E9
             BCS   L092D
-            LDA   L11B1
-            STA   L1193
-            LDA   L107C
-            STA   L118D
-            LDA   L107E
-            STA   L118F
+
+            LDA   L11B1	; storageType
+            STA   proCREATE+14
+            LDA   L107C	; fileType
+            STA   proCREATE+8
+            LDA   L107E	; auxType
+            STA   proCREATE+10
             LDA   L107E+2
-            STA   L118F+2
+            STA   proCREATE+10+2
+
             JSL   GSOS
             DW    $2002       ; Destroy
-            ADRL  L11E3
+            ADRL  proDESTROY
+
             JSL   GSOS
             DW    $2001       ; Create
-            ADRL  L1185
+            ADRL  proCREATE
             BCS   L091E
+
             JSL   GSOS
             DW    $2010       ; Open
             ADRL  L11D7
             BCS   L091E
             LDA   L11D9
-            STA   L119B
+            STA   proCLOSE2+2
             STA   L11FB
             BRL   L0A77
-L091E       STA   L1054
+L091E       STA   theERROR
             JSL   GSOS
             DW    $2002       ; Destroy
-            ADRL  L11E3
+            ADRL  proDESTROY
             BRA   L0930
-L092D       STA   L1054
+L092D       STA   theERROR
 L0930       JSL   GSOS
             DW    $2014       ; Close
-            ADRL  L1195
-            JSR   L0E9D
-L093D       LDA   L1044+2
+            ADRL  proCLOSE1
+            JSR   showERROR
+L093D       LDA   replyPTR+16+2
             PHA
-            LDA   L1044
+            LDA   replyPTR+16
             PHA
             _DisposeHandle
             LDA   #$0006
             BRL   L0875
+
+*-----------------------------
+* BUTTON ENCRYPT
+*-----------------------------
+
 L0952       _WaitCursor
             LDA   L11C7
             ORA   L11C7+2
             BNE   L0972
             LDA   #$0007
-L0964       JSR   L065B
-L0967       JSR   L0638
+L0964       JSR   showALERT
+L0967       JSR   hideTHERMO
             _InitCursor
             RTS
 
 L0972       JSR   L0F61
             BCS   L0967
             _WaitCursor
-            JSR   L0E6F
-            STA   L1086
+            JSR   calcKEY
+            STA   myKEY
             LDY   #$0016
 L0987       LDA   L10A0,Y
-            EOR   L1086
+            EOR   myKEY
             STA   L1088,Y
             DEY
             DEY
             BPL   L0987
+
             JSL   GSOS
             DW    $2010       ; Open
             ADRL  L119D
             BCC   L09A3
             BRL   L0A5C
+
 L09A3       LDA   L119F
-            STA   L1197
+            STA   proCLOSE1+2
             STA   L11EB
-            LDA   L11B1
-            STA   L1193
-            LDA   L1048
-            STA   L118D
-            LDA   L104A
-            STA   L118F
-            STZ   L118F+2
+
+            LDA   L11B1	; storageType
+            STA   proCREATE+14
+            LDA   myFILETYPE
+            STA   proCREATE+8
+            LDA   myAUXTYPE
+            STA   proCREATE+10
+            STZ   proCREATE+10+2
+
             JSL   GSOS
             DW    $2002       ; Destroy
-            ADRL  L11E3
+            ADRL  proDESTROY
+
             JSL   GSOS
             DW    $2001       ; Create
-            ADRL  L1185
+            ADRL  proCREATE
             BCS   L0A4D
+
             JSL   GSOS
             DW    $2010       ; Open
             ADRL  L11D7
             BCS   L0A3B
+
             LDA   L11D9
-            STA   L119B
+            STA   proCLOSE2+2
             STA   L11FB
             LDA   L11AB
             STA   L107C
@@ -873,10 +990,11 @@ L09A3       LDA   L119F
             STA   L107E
             LDA   L11AD+2
             STA   L107E+2
-            PEA   ^L1068
-            PEA   L1068
-            PEA   ^L0C0F
-            PEA   L0C0F
+
+            PEA   ^headerENCRYPT
+            PEA   headerENCRYPT
+            PEA   ^myBUFFER
+            PEA   myBUFFER
             PEA   $0000
             PEA   $0038
             _BlockMove
@@ -887,27 +1005,27 @@ L09A3       LDA   L119F
             ADRL  L11F9
             BCS   L0A2C
             BRL   L0A77
-L0A2C       STA   L1054
+L0A2C       STA   theERROR
             JSL   GSOS
             DW    $2014       ; Close
-            ADRL  L1199
+            ADRL  proCLOSE2
             BRA   L0A3E
-L0A3B       STA   L1054
+L0A3B       STA   theERROR
 L0A3E       JSL   GSOS
             DW    $2002       ; Destroy
-            ADRL  L11E3
-            JSR   L0E9D
+            ADRL  proDESTROY
+            JSR   showERROR
             BRA   L0A62
-L0A4D       STA   L1054
+L0A4D       STA   theERROR
             JSL   GSOS
             DW    $2014       ; Close
-            ADRL  L1195
+            ADRL  proCLOSE1
             BRA   L0A5F
-L0A5C       STA   L1054
-L0A5F       JSR   L0E9D
-L0A62       LDA   L1044+2
+L0A5C       STA   theERROR
+L0A5F       JSR   showERROR
+L0A62       LDA   replyPTR+16+2
             PHA
-            LDA   L1044
+            LDA   replyPTR+16
             PHA
             _DisposeHandle
             LDA   #$0006
@@ -917,7 +1035,7 @@ L0A77       _WaitCursor
             STZ   L0C0B
             LDA   #$0100
             STA   L11F1
-            JSL   L0E8C
+            JSL   DRAWCONTROLS
 L0A8E       INC   L0C0B
             JSL   GSOS
             DW    $2012       ; Read
@@ -925,31 +1043,31 @@ L0A8E       INC   L0C0B
             BCC   L0ADF
             CMP   #$004C
             BEQ   L0B0C
-L0AA2       STA   L1054
+L0AA2       STA   theERROR
             JSL   GSOS
             DW    $2014       ; Close
-            ADRL  L1195
+            ADRL  proCLOSE1
             JSL   GSOS
             DW    $2014       ; Close
-            ADRL  L1199
+            ADRL  proCLOSE2
             JSL   GSOS
             DW    $2002       ; Destroy
-            ADRL  L11E3
-            JSR   L0E9D
+            ADRL  proDESTROY
+            JSR   showERROR
             LDA   #$0006
-L0AC9       JSR   L065B
-            JSR   L0638
-            LDA   L1044+2
+L0AC9       JSR   showALERT
+            JSR   hideTHERMO
+            LDA   replyPTR+16+2
             PHA
-            LDA   L1044
+            LDA   replyPTR+16
             PHA
             _DisposeHandle
             RTS
 
 L0ADF       LDY   #$0000
-L0AE2       LDA   L0C0F,Y
-            EOR   L1086
-            STA   L0C0F,Y
+L0AE2       LDA   myBUFFER,Y
+            EOR   myKEY
+            STA   myBUFFER,Y
             INY
             INY
             CPY   #$0100
@@ -968,10 +1086,10 @@ L0B0C       LDA   L11B1
             BNE   L0B8C
             JSL   GSOS
             DW    $2014       ; Close
-            ADRL  L1195
+            ADRL  proCLOSE1
             JSL   GSOS
             DW    $2014       ; Close
-            ADRL  L1199
+            ADRL  proCLOSE2
             LDA   #$0001
             STA   L11A7
             STA   L11E1
@@ -981,13 +1099,13 @@ L0B0C       LDA   L11B1
             BCS   L0B6F
             LDA   L119F
             STA   L11EB
-            STA   L1197
+            STA   proCLOSE1+2
             JSL   GSOS
             DW    $2010       ; Open
             ADRL  L11D7
             BCS   L0B6F
             LDA   L11D9
-            STA   L119B
+            STA   proCLOSE2+2
             STA   L11FB
 L0B5B       INC   L0C0B
             JSL   GSOS
@@ -1008,14 +1126,15 @@ L0B72       LDA   L11F5
             BRA   L0B5B
 L0B8C       JSL   GSOS
             DW    $2014       ; Close
-            ADRL  L1195
+            ADRL  proCLOSE1
             JSL   GSOS
             DW    $2014       ; Close
-            ADRL  L1199
+            ADRL  proCLOSE2
+
             PHD
-            LDA   L1187+2
+            LDA   proCREATE+2+2
             PHA
-            LDA   L1187
+            LDA   proCREATE+2
             PHA
             TSC
             TCD
@@ -1035,17 +1154,19 @@ L0BC6       DEY
             DEY
             TYA
             STA   [$01]
-            PEA   $800C
+
+            PEA   $800C	; tellFinderAboutChange
             PEA   $0001
-            PEA   ^L03B7
-            PEA   L03B7
-            LDA   L1187+2
+            PEA   ^strFINDER
+            PEA   strFINDER
+            LDA   proCREATE+2+2	; dataIn
             PHA
-            LDA   L1187
+            LDA   proCREATE+2
             PHA
-            PEA   ^L0C07
-            PEA   L0C07
+            PEA   ^dataOutChange	; dataOut
+            PEA   dataOutChange
             _SendRequest
+
             LDA   L0C05
             STA   [$01]
 L0BF1       PLA
@@ -1053,19 +1174,25 @@ L0BF1       PLA
             PLD
             DEC   L1058
             LDA   #$0004
-            LDX   L1056
+            LDX   fgCRYPT
             BNE   L0C02
             LDA   #$0005
 L0C02       BRL   L0AC9
+
+*-----------------------------
+* 
+*-----------------------------
+			
 L0C05       DW    $0000
-L0C07       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
+
+dataOutChange
+            DW    $0000	; recvCount
+            DW    $0000	; finderResult
+
 L0C0B       DB    $00
             DB    $00
 L0C0D       DW    $0000
-L0C0F       DB    $00
+myBUFFER    DB    $00
             DB    $00
             DB    $00
             DB    $00
@@ -1093,230 +1220,12 @@ L0C25       ADRL  $00000000
             DB    $00
 L0C2D       DB    $00
             DB    $00
-L0C2F       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
+L0C2F       DS    $E0
+
+*-----------------------------
+* 
+*-----------------------------
+			
 L0D0F       LDA   L11C7
             CLC
             ADC   L11CF
@@ -1343,9 +1252,9 @@ L0D0F       LDA   L11C7
             PHY
             PEA   $0000
             PEA   $0000
-            LDA   L104C+2
+            LDA   myPORT+2
             PHA
-            LDA   L104C
+            LDA   myPORT
             PHA
             PEA   $0000
             PEA   $0009
@@ -1381,10 +1290,17 @@ L0D9B       PHA
             _SetCtlValue
             RTS
 
+*-----------------------------
+			
 L0DAC       ADRL  $00000000
-L0DB0       LDA   L104C+2
+
+*-----------------------------
+* CLICK ON LINE EDIT
+*-----------------------------
+			
+doLINEEDIT  LDA   myPORT+2
             PHA
-            LDA   L104C
+            LDA   myPORT
             PHA
             PEA   $0000
             PEA   $0005
@@ -1397,9 +1313,9 @@ L0DB0       LDA   L104C+2
             LDA   L105E
             BNE   L0E0B
             PEA   $0000
-            LDA   L1060+2
+            LDA   haBUTTON+2
             PHA
-            LDA   L1060
+            LDA   haBUTTON
             PHA
             _HiliteControl
             LDA   #$FFFF
@@ -1409,19 +1325,23 @@ L0DB0       LDA   L104C+2
 L0DF1       LDA   L105E
             BEQ   L0E0B
             PEA   $00FF
-            LDA   L1060+2
+            LDA   haBUTTON+2
             PHA
-            LDA   L1060
+            LDA   haBUTTON
             PHA
             _HiliteControl
             STZ   L105E
 L0E0B       RTS
 
+*-----------------------------
+* CLICK ON TITLE BAR
+*-----------------------------
+			
 L0E0C       PEA   $0000
             PEA   $0000
-            LDA   L104C+2
+            LDA   myPORT+2
             PHA
-            LDA   L104C
+            LDA   myPORT
             PHA
             PEA   $0000
             PEA   $0066
@@ -1454,8 +1374,15 @@ L0E49       DEC   L105C
             _DrawOneCtl
 L0E6A       RTS
 
+*-----------------------------
+			
 L0E6B       ADRL  $00000000
-L0E6F       LDA   L10A0
+
+*-----------------------------
+* CALCULATE KEY
+*-----------------------------
+			
+calcKEY     LDA   L10A0
             AND   #$00FF
             BEQ   L0E8B
             TAY
@@ -1471,17 +1398,26 @@ L0E7E       EOR   L10A0,X
             REP   #$20
 L0E8B       RTS
 
-L0E8C       PHA
+*-----------------------------
+* DRAW THE WINDOW CONTROLS
+*-----------------------------
+			
+DRAWCONTROLS
+            PHA
             PHA
             _GetPort
             _DrawControls
             RTL
 
-L0E9D       PEA   $0000
+*-----------------------------
+* SHOW THE ERROR
+*-----------------------------
+			
+showERROR   PEA   $0000
             PEA   $0000
             PEA   $0000
             PEA   $0000
-            LDA   L1054
+            LDA   theERROR
             PHA
             _InitCursor
             _ErrorWindow
@@ -1489,28 +1425,32 @@ L0E9D       PEA   $0000
             SEC
             RTS
 
-L0EBE       STZ   L0F5B
-            STZ   L0F5D
-            STZ   L0F5D+2
+*-----------------------------
+* STARTUP STANDARD FILE
+*-----------------------------
+			
+startupSF   STZ   fgSTDFILE
+            STZ   haDP
+            STZ   haDP+2
             PHA
             _SFStatus
             PLA
             BCS   L0ED4
             BNE   L0F2B
-L0ED4       PEA   $0017
+L0ED4       PEA   $0017	; load Standard File Toolset
             PEA   $0101
             _LoadOneTool
             BCC   L0EEB
-L0EE3       STA   L1054
-            JSR   L0E9D
+L0EE3       STA   theERROR
+            JSR   showERROR
             SEC
             RTS
 
-L0EEB       PHA
+L0EEB       PHA		; we need one direct page
             PHA
             PEA   $0000
             PEA   $0100
-            LDA   L03A3
+            LDA   myID
             PHA
             PEA   $C005
             PEA   $0000
@@ -1519,9 +1459,9 @@ L0EEB       PHA
             PLX
             PLA
             BCS   L0EE3
-            STX   L0F5D
-            STA   L0F5D+2
-            PHD
+            STX   haDP
+            STA   haDP+2
+            PHD		; dereference it
             PHA
             PHX
             TSC
@@ -1531,115 +1471,139 @@ L0EEB       PHA
             PLY
             PLY
             PLD
-            LDA   L03A1
+            LDA   appID
             PHA
             PHX
-            _SFStartUp
-            INC   L0F5B
+            _SFStartUp	; start the tool set
+            INC   fgSTDFILE	; say we're done
 L0F2B       CLC
             RTS
 
-L0F2D       LDA   L0F5B
+*-----------------------------
+* SHUT DOWN TOOLSET
+*-----------------------------
+			
+shutdownSF  LDA   fgSTDFILE
             BEQ   L0F5A
             _SFShutDown
             PEA   $0017
             _UnloadOneTool
-            LDA   L0F5D
-            ORA   L0F5D+2
+            LDA   haDP
+            ORA   haDP+2
             BEQ   L0F5A
-            LDA   L0F5D+2
+            LDA   haDP+2
             PHA
-            LDA   L0F5D
+            LDA   haDP
             PHA
             _DisposeHandle
 L0F5A       RTS
 
-L0F5B       DW    $0000
-L0F5D       ADRL  $00000000
-L0F61       JSR   L0EBE
+*-----------------------------
+			
+fgSTDFILE   DW    $0000	; 0: not started, <>0: started
+haDP        ADRL  $00000000
+
+*-----------------------------
+* 
+*-----------------------------
+			
+L0F61       JSR   startupSF
             BCC   L0F72
             RTS
 
-L0F67       STA   L1054
-            JSR   L0E9D
-            JSR   L0F2D
+L0F67       STA   theERROR
+            JSR   showERROR
+            JSR   shutdownSF
             SEC
             RTS
 
-L0F72       PEA   $0078
+L0F72       PEA   $0078	; coordinates
             PEA   $0028
             PEA   $0000
-            LDA   L1056
+
+            LDA   fgCRYPT	; which option?
             BNE   L0F88
-            PEA   ^L0FF9
-            PEA   L0FF9
+
+            PEA   ^strSAVED	; decrypt
+            PEA   strSAVED
             BRA   L0F8E
-L0F88       PEA   ^L1012
-            PEA   L1012
-L0F8E       PEA   $0000
-            PEA   ^L102A
-            PEA   L102A
-            PEA   ^L1034
-            PEA   L1034
+L0F88       PEA   ^strSAVEE	; encrypt
+            PEA   strSAVEE
+
+L0F8E       PEA   $0000	; pointer
+            PEA   ^strFILESAVE ; GS/OS class 1 input string
+            PEA   strFILESAVE
+            PEA   ^replyPTR
+            PEA   replyPTR
             _SFPutFile2
-            BCS   L0F67
+            BCS   L0F67	; an error occured
             _WaitCursor
-            LDA   L1034
-            BNE   L0FB7
-            JSR   L0F2D
+            LDA   replyPTR	; did we cancel?
+            BNE   L0FB7	; no
+            JSR   shutdownSF	;yes
             SEC
             RTS
 
-L0FB7       LDA   L103E+2
+L0FB7       LDA   replyPTR+12	; dispose the pathname handle
             PHA
-            LDA   L103E
+            LDA   replyPTR+10
             PHA
             _DisposeHandle
-            LDA   L1044+2
+            LDA   replyPTR+18	; lock the filename handle
             PHA
-            LDA   L1044
+            LDA   replyPTR+16
             PHA
             _HLock
-            LDX   L1044+2
-            LDA   L1044
-            JSR   L03F5
+            LDX   replyPTR+16+2 ; dereference the handle
+            LDA   replyPTR+16
+            JSR   derefHANDLE
+            INC		; +2 b/c GS/OS output string
             INC
-            INC
-            STA   L11E5
+            STA   proDESTROY+2
             STA   L11DB
-            STA   L1187
-            STX   L11E5+2
+            STA   proCREATE+2
+            STX   proDESTROY+4
             STX   L11DB+2
-            STX   L1187+2
-            JSR   L0F2D
+            STX   proCREATE+2+2
+            JSR   shutdownSF
             CLC
             RTS
 
+*-----------------------------
+
             DW    $0000
-L0FF9       STR   'Save Descrypted File as:'
-L1012       STR   'Save Encrypted File as:'
-L102A       STRL  'Untitled'
-L1034       DW    $0000
-            DW    $0000
-            ADRL  $00000000
-            DW    $0003
-L103E       ADRL  $00000000
-            DW    $0003
-L1044       ADRL  $00000000
-L1048       DW    $0000
-L104A       DW    $0000
-L104C       ADRL  $00000000
-L1050       ADRL  $00000000
-L1054       DW    $0000
-L1056       DW    $0000
+strSAVED    STR   'Save Descrypted File as:'
+strSAVEE    STR   'Save Encrypted File as:'
+strFILESAVE STRL  'Untitled'
+
+replyPTR    DW    $0000	;  0
+            DW    $0000	;  2
+            ADRL  $00000000	;  4
+            DW    $0003	;  8 handle to
+            ADRL  $00000000	; 10 ...pathname
+            DW    $0003	; 14 handle to
+            ADRL  $00000000	; 16 ...filename
+
+myFILETYPE  DW    $0000
+myAUXTYPE   DW    $0000
+myPORT      ADRL  $00000000
+savePORT    ADRL  $00000000
+theERROR    DW    $0000
+fgCRYPT     DW    $0000	; 0: decrypt, -1: encrypt
 L1058       DW    $0000
-L105A       DW    $0000
+fgCANCEL    DW    $0000
 L105C       DW    $0000
 L105E       DW    $0000
-L1060       ADRL  $00000000
-L1064       DW    $0000
-L1066       DW    $0000
-L1068       ASC   'ENCRYPTED FILE C'
+haBUTTON    ADRL  $00000000
+nbICONS     DW    $0000	; number of selected icons
+offsetLIST  DW    $0000	; offset in stringList
+
+*-----------------------------
+* HEADER IS 58 BYTES
+*-----------------------------
+
+headerENCRYPT
+            ASC   'ENCRYPTED FILE C'
             ASC   "R"
             ASC   'Y'
             ASC   "P"
@@ -1650,7 +1614,7 @@ L107E       ADRL  $00000000
             DB    $00
             DB    $00
             DB    $00
-L1086       DB    $00
+myKEY       DB    $00
             DB    $00
 L1088       DB    $00
             DB    $00
@@ -1676,6 +1640,7 @@ L1088       DB    $00
             DB    $00
             DB    $00
             DB    $00
+
 L10A0       DB    $00
             DB    $00
             DB    $00
@@ -1700,29 +1665,30 @@ L10A0       DB    $00
             DB    $00
             DB    $00
             DB    $00
-L10B8       DB    $00
-            DB    $00
-L10BA       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-L10C0       DB    $00
-            DB    $00
-L10C2       DB    $00
-            DB    $00
-L10C4       ADRL  $00000000
-L10C8       ADRL  $00000000
-L10CC       ADRL  L1163
-L10D0       ADRL  L10DC
-L10D4       ADRL  L10DC
+
+*--- dataOut for tellFinderGetSelectedIcons
+
+dataOut     DW    $0000	; recvCount
+L10BA       DW    $0000	; finderResult
+            ADRL  $00000000	; pointer to window
+stringList  ADRL  $00000000	; stringListHandle
+
+stringPtr   ADRL  $00000000
+oldSubArray ADRL  $00000000
+mySubArray  ADRL  L1163
+
+L10D0       ADRL  strWHAT
+L10D4       ADRL  strWHAT
             ADRL  L10A0
-L10DC       STR   '???'
-L10E0       STR   'Encrypting '
-L10EC       STR   'Decrypting '
-L10F8       STR   'You must remember the key in order to decrypt this file.'
-L1131       STR   'Enter the key that was used to encrypt this file.'
+strWHAT     STR   '???'
+strENCRYPT  STR   'Encrypting '
+strDECRYPT  STR   'Decrypting '
+
+strKEY_REMEMBER
+            STR   'You must remember the key in order to decrypt this file.'
+strKEY_ENTER
+            STR   'Enter the key that was used to encrypt this file.'
+
 L1163       DB    $00
             DB    $00
             DB    $00
@@ -1757,16 +1723,20 @@ L1163       DB    $00
             DB    $00
             DB    $00
             DB    $00
-L1185       DW    $0005       ; Parms for Create
-L1187       ADRL  $00000000   ;  file name
-            DW    $00C3       ;  access
-L118D       DW    $0000       ;  file type
-L118F       ADRL  $00000000   ;  aux type
-L1193       DW    $0000       ;  storage
-L1195       DW    $0001       ; Parms for Close
-L1197       DW    $0000       ;  ref num
-L1199       DW    $0001       ; Parms for Close
-L119B       DW    $0000       ;  ref num
+
+proCREATE   DW    $0005       ;  0 Parms for Create
+            ADRL  $00000000   ;  2 file name
+            DW    $00C3       ;  6 access
+            DW    $0000       ;  8 file type
+            ADRL  $00000000   ; 10 aux type
+            DW    $0000       ; 14 storage
+
+proCLOSE1   DW    $0001       ; Parms for Close
+            DW    $0000       ;  ref num
+
+proCLOSE2   DW    $0001       ; Parms for Close
+            DW    $0000       ;  ref num
+
 L119D       DW    $000E       ; Parms for Open
 L119F       DW    $0000       ;  ref num
 L11A1       ADRL  $00000000   ;  path name
@@ -1786,27 +1756,33 @@ L11CF       ADRL  $00000000   ;  resource eof
             DB    $00
             DB    $00
             DB    $00
+
 L11D7       DW    $0004       ; Parms for Open
 L11D9       DW    $0000       ;  ref num
 L11DB       ADRL  $00000000   ;  path name
             DW    $0003       ;  req access
 L11E1       DW    $0000       ;  res num
-L11E3       DW    $0001       ; Parms for Destroy
-L11E5       ADRL  $00000000   ;  file name
+
+proDESTROY  DW    $0001       ; Parms for Destroy
+            ADRL  $00000000   ;  file name
+
 L11E9       DW    $0004       ; Parms for Read
 L11EB       DW    $0000       ;  ref num
-            ADRL  L0C0F       ;  buffer ptr
+            ADRL  myBUFFER    ;  buffer ptr
 L11F1       ADRL  $00000100   ;  request count
 L11F5       ADRL  $00000000   ;  transfer count
+
 L11F9       DW    $0004       ; Parms for Write
 L11FB       DW    $0000       ;  ref num
-            ADRL  L0C0F       ;  buffer ptr
+            ADRL  myBUFFER    ;  buffer ptr
 L1201       ADRL  $00000100   ;  request count
             ADRL  $00000000   ;  transfer count
+
 L1209       DW    $0002       ; Parms for SetPrefix
             DW    $0008       ;  prefix num
 L120D       ADRL  $00000000   ;  prefix ptr
-L1211       DB    $00
+
+eventPtr    DB    $00
             DB    $00
             DB    $00
             DB    $00

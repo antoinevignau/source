@@ -1,6 +1,6 @@
 *
-* SCANNER SCSI
-* A test app for SCSI scanner commands
+* SCSI
+* A test app for SCSI commands
 *
 * (c) 2024, Brutal Deluxe Software
 * Visit brutaldeluxe.fr
@@ -26,6 +26,8 @@
 Debut	=	$00
 GSOS	=	$e100a8
 
+bufSIZE	=	255
+
 *----------
 
 windowID	=	0
@@ -41,6 +43,8 @@ dcMODESENSE6 =	$801a
 dcSTARTSTOP	=	$801b	; also eject/insert
 dcSETWINDOWPARAMETERS =	$8024	; for scanner (control)
 dcGETWINDOWPARAMETERS =	$8025	; for scanner (status)
+dcPATI            =         $8048
+dcREELST	=	$80b8
 
 stEXPLORE	=	$0e	; status
 stINQUIRY	=	$12	; status
@@ -129,15 +133,22 @@ DControl	=	$202e
                   _WriteChar
 
 	        lda	#previewPAGE
+	        lda	#doPLAYLUN
 	        stal	$300
 	        lda	#^previewPAGE
+	        lda	#^doPLAYLUN
 	        stal	$302
 
 	        lda	#statusCALL
 	        stal	$310
 	        lda	#^statusCALL
 	        stal	$312
-		
+
+	        lda	#statusBUFF
+	        stal	$320
+	        lda	#^statusBUFF
+	        stal	$322
+	        
 *----------------------------
 * MAIN MENU
 *----------------------------
@@ -159,9 +170,9 @@ mainMENU          =         *
 
 *--- Data
 
-strMAINMENU       asc       0d'SCANNER SCSI'0d
+strMAINMENU       asc       0d'SCSI'0d
                   asc       '(c) 2024, Brutal Deluxe Software'0d
-                  asc       ' 1. Search for SCSI Scanners'0d
+                  asc       ' 1. Search for SCSI Peripherals'0d
                   asc       ' Q. Quit'0d00
 
 *----------------------------
@@ -239,15 +250,20 @@ pollCDSCSI        stz       nbDEVICES            ; number of SCSI CD-ROM found
 loop              inc       proDINFO+2
                   bra       ]lp
 
-*---------- Check it is a scanner
+*---------- Check it is a SCSI device
 
-found             lda       proDINFO+20          ; not SCANNER
-                  cmp       #devSCANNER
-                  bne       loop
+found             ldx       #0
+]lp	        lda       scsiDEVICES,x	; compare with SCSI device IDs
+	        bmi       loop
+	        cmp       proDINFO+20
+	        beq       gotSCSI
+	        inx
+	        inx
+	        bne       ]lp
 
-*--- We have a scanner
+*--- We have a SCSI device
 
-                  lda       nbDEVICES
+gotSCSI           lda       nbDEVICES
                   asl
                   tax
                   lda       proDINFO+2
@@ -312,9 +328,19 @@ theDEVICE         ds        2                    ; the device to play with
 tblDEVICES        ds        16*2                 ; we authorize 16 devices
 
 strSEARCHMENU
-          asc       0d'Searching for SCSI Scanners...'0d
+          asc       0d'Searching for SCSI peripherals...'0d
           asc       ' 0. Go back to previous menu'0d00
 
+scsiDEVICES
+	dw	$0004
+	dw	$0005
+	dw	$0006
+	dw	$0007
+	dw	$0008
+	dw	$001a
+	dw	$001b
+	dw	-1
+	
 *----------------------------
 * DEVICE MENU
 *----------------------------
@@ -341,7 +367,7 @@ deviceMENU        =         *
                   bcc       ]lp
                   bne       deviceMENU2
                   jmp       searchMENU           ; or even 0 to exit
-deviceMENU2       cmp       #"2"+1
+deviceMENU2       cmp       #"4"+1
                   bcs       ]lp
 
                   sec                            ; call the routines
@@ -355,6 +381,9 @@ deviceMENU3       jsr       $bdbd
 
 ptrCOMMANDS
 	da	doINQUIRY
+	da	doINQUIRYVITAL
+	da	doGETLUNPAGE
+	da	doPLAYLUN
           da        previewPAGE
 *	da	doMODESENSE6
 *	da	doEXPLORE
@@ -364,12 +393,16 @@ ptrCOMMANDS
 *--- Data
 
 strDEVICEMENU
-	asc	0d'Using SCSI Scanner device $'
+	asc	0d'Using SCSI Device $'
 strDEVMENU
 	asc	'0000'0d
 	asc	' 0. Go back to previous menu'0d
 	asc       ' 1. Inquiry'0d
-	asc       ' 2. Preview page'0d
+	asc	' 2. Inquiry Vital Information'0d
+	asc	' 3. Get LUN Assignment List'0d
+	asc	' 4. Play Disc'0d
+	asc	00
+	asc       ' 3. Preview page'0d
 	asc	00
 
 *----------------
@@ -394,6 +427,178 @@ strDEVMENU
 *
 * ---End of list
 
+*-----------------------
+* STATUS $801A - MODE SENSE(6)
+*-----------------------
+
+doGETLUNPAGE
+	jsr       initSTATUSDATA
+
+*--- Execute command
+
+	ldx       #6-2                 ; put the stop data
+]lp	lda       scsiLUNPAGE,x
+	sta       statusDATA,x
+	dex
+	dex
+	bpl       ]lp
+
+                 
+	lda       #dcMODESENSE6        ; MODE SENSE(6)
+	jsr       statusCALL
+	bcc	doGETOK
+	rts
+
+*--- Display data
+
+doGETOK
+
+* Bytes 2+3
+
+	PushLong  #strNSD
+	_WriteCString
+
+	lda       statusBUFF+6
+	xba
+	jsr       showDECIMAL
+
+* Disc number for logical unit 0 to 5
+
+	PushLong  #strDNLUN0
+	_WriteCString
+	lda       statusBUFF+8
+	and	#%11111111
+	jsr       showDECIMAL
+
+	PushLong  #strDNLUN1
+	_WriteCString
+	lda       statusBUFF+9
+	and	#%11111111
+	jsr       showDECIMAL
+
+	PushLong  #strDNLUN2
+	_WriteCString
+	lda       statusBUFF+10
+	and	#%11111111
+	jsr       showDECIMAL
+
+	PushLong  #strDNLUN3
+	_WriteCString
+	lda       statusBUFF+11
+	and	#%11111111
+	jsr       showDECIMAL
+
+	PushLong  #strDNLUN4
+	_WriteCString
+	lda       statusBUFF+12
+	and	#%11111111
+	jsr       showDECIMAL
+
+	PushLong  #strDNLUN5
+	_WriteCString
+	lda       statusBUFF+13
+	and	#%11111111
+	jsr       showDECIMAL
+	jmp       waitKEY
+
+*--- Data
+
+strNSD	asc	0d' Number of supported discs: '00
+strDNLUN0	asc	0d' Disc number for logical unit 0: '00
+strDNLUN1	asc	0d' Disc number for logical unit 1: '00
+strDNLUN2	asc	0d' Disc number for logical unit 2: '00
+strDNLUN3	asc	0d' Disc number for logical unit 3: '00
+strDNLUN4	asc	0d' Disc number for logical unit 4: '00
+strDNLUN5	asc	0d' Disc number for logical unit 5: '00
+
+* 4e is PC= changeable values, 0e=audio control parameters page
+* 3e is PC= current values, 3e = logical unit assignment list
+* 3f is all pages
+
+scsiLUNPAGE
+	hex	1a
+	dfb	%0000_1000
+	dfb	%00_111110
+	hex	00,f0,00
+
+*-----------------------
+* COMMAND - PLAY LUN
+*-----------------------
+
+doPLAYLUN
+	PushLong  #strWHICHLUN
+	_WriteCString
+
+	jsr       waitFORKEYALT	; is it 0-9
+	cmp	#"1"
+	bcc	doPLAYLUN
+	cmp	#"6"+1
+	bcs	doPLAYLUN
+	sec
+	sbc	#"1"
+	sta	theLUN
+
+* 1. START LUN
+
+	jsr	initCOMMANDDATA
+	
+	        sep	#$20
+	        lda	theLUN
+	        asl
+	        asl
+	        asl
+	        asl
+	        asl
+	        sta	scsiSTART+1
+	        rep	#$20
+
+                  ldx	#6-2		; put the stop data
+]lp               lda	scsiSTART,x
+                  sta	commandDATA,x
+                  dex
+                  dex
+                  bpl	]lp
+
+                  lda	#dcSTARTSTOP
+                  jsr	controlCALL
+
+
+
+* 2. PLAY
+
+	jsr	initCOMMANDDATA
+	
+	        sep	#$20                 ; copy first/last tracks
+	        lda	theLUN
+	        asl
+	        asl
+	        asl
+	        asl
+	        asl
+	        sta	scsiPLAY+1
+	        rep	#$20
+
+                  ldx       #10-2                ; put the play data
+]lp               lda       scsiPLAY,x
+                  sta       commandDATA,x
+                  dex
+                  dex
+                  bpl       ]lp
+
+                  lda	#dcPATI              ; PLAY AUDIO TRACK INDEX
+                  jmp	controlCALL
+
+*--- Data
+
+strWHICHLUN	asc	0d'Enter Disc to play (1-6) >'00
+
+oldLUN	ds	2	; the previous LUN
+theLUN	ds	2	; the requested LUN
+
+scsiSTOP          hex       1b,00,00,00,00,00
+scsiSTART         hex       1b,00,00,00,01,00
+scsiPLAY          hex       48,00,00,00,01,00,00,07,00,00
+
 *----------------
 * SCSI COMMANDS
 *----------------
@@ -411,7 +616,19 @@ doINQUIRY
           dex
           dex
           bpl       ]lp
+	bra	doINQUIRYALL
 
+doINQUIRYVITAL
+          jsr       initSTATUSDATA
+
+          ldx       #6-2                 ; put the inquiry data
+]lp       lda       scsiINQUIRYVITAL,x
+          sta       statusDATA,x
+          dex
+          dex
+          bpl       ]lp
+
+doINQUIRYALL
           lda       #dcINQUIRY
           jsr       statusCALL
           bcc       doINQUIRY1
@@ -652,11 +869,21 @@ doINQUIRY1
                   ldx       #4
                   jsr       showTEXT
 
+* Bytes 36
+
+                  PushLong  #strVS
+                  _WriteCString
+
+                  lda       #36
+                  ldx       #20
+                  jsr       showTEXT
+
                   jmp       waitKEY
 
 *--- Data
 
 scsiINQUIRY       hex       12,00,00,00,F0,00
+scsiINQUIRYVITAL  hex       12,01,F0,00,F0,00
 
 strPQ             asc       0d' Peripheral qualifier: '00
 strPDT            asc       ' - Peripheral device type : '00
@@ -678,6 +905,7 @@ strSFTRE          asc       ' - SftRe: '00
 strVI             asc       0d' Vendor identification: '00
 strPI             asc       0d' Product identification: '00
 strPRL            asc       0d' Product revision level: '00
+strVS             asc       0d' Vendor-specific: '00
 
 *-----------------------
 * PREVIEW PAGE
@@ -2087,7 +2315,7 @@ waitKEY           PushWord  #$0d
 waitFORKEY        PushLong  #strINPUT
                   _WriteCString
 
-                  PushWord  #0                   ; wait for key
+waitFORKEYALT     PushWord  #0                   ; wait for key
                   PushWord  #1                   ; echo char
                   _ReadChar
 
@@ -2141,7 +2369,7 @@ proSTATUS         dw        5		; 00 pcount
                   ds        2		; 02 device num
                   dw        $8000	; 04 status/control code
                   adrl      statusLIST	; 06 status list
-                  adrl      240		; 0A request count (AVI was 1024/32)
+                  adrl      bufSIZE	; 0A request count (AVI was 1024/32)
                   ds        4		; 0E transfer count
 
 statusLIST        ds        2		; always 0000
@@ -2149,7 +2377,7 @@ statusDATA        hex       00	; 00
                   hex       00	; 01
                   hex       00	; 02
                   hex       00	; 03
-                  dfb       240	; 04 - (240 AVI was $00)
+                  dfb       bufSIZE	; 04 - (240 AVI was $00)
                   hex       00	; 05
                   hex       00	; 06
                   hex       00	; 07
@@ -2158,13 +2386,13 @@ statusDATA        hex       00	; 00
                   hex       00	; 10
                   hex       00	; 11
                   adrl      statusBUFF
-statusBUFF        ds        256	; more than 240
+statusBUFF        ds        bufSIZE+16	; more than 240
 
 proCONTROL        dw        5		; 00 pcount
                   ds        2		; 02 device num
                   dw        $8000	; 04 status/control code
                   adrl      controlLIST	; 06 status list
-                  adrl      240	; 0A request count
+                  adrl      bufSIZE	; 0A request count
                   ds        4		; 0E transfer count
 
 controlLIST       ds        2		; always 0000
@@ -2181,7 +2409,7 @@ commandDATA       hex       00	; 00
                   hex       00	; 10
                   hex       00	; 11
 commandPTR        adrl      commandBUFF
-commandBUFF       ds        256	; more than 240
+commandBUFF       ds        bufSIZE+16	; more than 240
 
 *----------
 

@@ -1,0 +1,386 @@
+SYDNEY.BAS	$0170,$0180 => $02F0 => $0170,$94
+SYDNEY0.BIN	$7F8D,$2080 => $A00D => $7FCC,$2000
+SYDNEY1.BIN	$7B0D,$2A80 => $A58D => $7B0D,$29F4
+SYDNEY2.BIN	$59D9,$4D00 => $A6D9 => $59D9,$4C40
+SYDNEY3.BAS	$0170,$0100 => $0270 => $0170,$28
+SYDNEY4.BAS	$0170,$4B00 => $4C70 => $0170,$4A46
+SYDNEY5.BIN	$5CC7,$4900 => $A5C7 => $5CC7,483A
+
+SYDNEY.BAS
+10 MODE 1:MEMORY &2000  
+20 LOAD"!sydney0":POKE &81DB,&C9:CALL &7FCC      
+30 LOAD"!sydney1":POKE &3011,&C9:CALL &321D         
+40 LOAD"!sydney2":POKE &305A,&C9:CALL &3249
+50 RUN"!sydney3"   
+
+SYDNEY3.BAS
+10 MEMORY &5CC6:LOAD"!sydney5"
+20 RUN"!sydney4"
+
+Premire image
+- impact : 13,0
+- sacoche : 8,8 to 10,8
+- photo (clic suivant sur sacoche) : 8,8 to 10,8
+- clŽ (pour ouvrir la sacoche) : 16,8
+- portefeuille : 18,7
+
+Seconde image
+- empreinte : 2,5
+- douille : 8,11
+- mŽgot : 12,8
+
+Les variables :
+- adpho = photo => variable PHO = 1
+- adem = empreinte => variable EM = 1
+- adme = megot => variable ME = 1 & CA = 1
+- addo = douille => variable DO = 1
+
+SYDNEY4.BAS
+10 POKE &BDEE,&C9:ON BREAK GOSUB 2580:ON ERROR GOTO 2590:DEFINT d: adpho=&160: adpho1=&A672: adem=&161: adem1=&A673: adme=&162: adme1=&A674: addo=&163: addo1=&A675:
+ IF PEEK(adpho)<>0 OR PEEK(adpho1)<>0 THEN pho=1  
+20 IF PEEK(adem)<>0 OR PEEK(adem1)<>0 THEN em=1    
+30 IF PEEK(adme)<>0 OR PEEK(adme1)<>0 THEN me=1:CA=1    
+40 IF PEEK(addo)<>0 OR PEEK(addo1)<>0 THEN do=1
+50 DATA &af,&cd,&2b,&bd,&17,&12,&c9
+60 RESTORE 50:FOR buz=&150 TO &156:READ buzy:POKE buz,buzy:NEXT:dtr=0
+70 DIM a(39):INK 1,0:INK 0,26:BORDER 26:MODE 2:ENV 1,4,5,8:GOTO 90
+80 POKE &A48E,z-INT(z/256)*256:POKE &A48F,INT(z/256):CALL &A48D:RETURN
+90 WINDOW#1,2,40,1,20: PAPER#1,0: PEN#1,1:
+   WINDOW#2,46,76,3,14: PAPER#2,1: PEN#2,0: 
+   WINDOW#3,1,80,22,25: PAPER#3,1: PEN#3,0: 
+   WINDOW#4,1,41,21,21: PAPER#4,1: 
+   WINDOW#5,59,78,2,13: PAPER#5,1: 
+   WINDOW#6,42,80,1,21: PAPER#6,0: 
+   WINDOW#7,3,39,14,20: PAPER#7,0: PEN#7,1
+100 CLS#4:LOCATE 1,20:PRINT CHR$(143):LOCATE 41,20:PRINT CHR$(143);:CLS#1:CLS#2:GOSUB 110:GOSUB 280:GOTO 120
+110 z=25665:GOSUB 80:z=26685:GOSUB 80:z=26295:GOSUB 80:z=27075:GOSUB 80:z=25037:GOSUB 80:LOCATE#1,2,21:GOSUB 570:FOR t=1 TO 90:NEXT: PRINT#1: z=25377: GOSUB 80: z=25355: GOSUB 80: GOSUB 570: RETURN
+
+120 B$=UPPER$(INKEY$):IF B$=""THEN 120 ELSE SOUND 1,100,3
+130 x=0:
+    IF B$="M" THEN CLS#2:CLS#1:GOSUB 110:GOSUB 340:GOSUB 750:GOTO 590
+140 IF B$="D" THEN CLS#6:z=25443:GOSUB 80:GOTO 840
+150 IF B$="E" THEN 1620
+160 IF b$="I" THEN GOSUB 300
+170 IF B$="C" THEN 1440
+180 IF b$="A" THEN 1710
+190 GOTO 120
+
+200 PRINT#CAN," ";CHR$(143);CHR$(8);:CHAINB$="":CPT=0:MAXIML=100
+210 AX$=UPPER$(INKEY$):IF AX$="" THEN 210
+220 IF ASC(AX$)=13 THEN 270
+230 IF ASC(AX$)=&FC THEN 210 
+240 IF ASC(AX$)=127 THEN 260
+250 IF CPT>MAXIML THEN PRINT#CAN,CHR$(7);:GOTO 210 ELSE CPT=CPT+1:PRINT#CAN,CHR$(1);AX$;CHR$(143);CHR$(8);:CHAINB$=CHAINB$+AX$:GOTO 210
+260 IF CPT<=0 THEN PRINT#CAN,CHR$(7);:GOTO 210 ELSE CPT=CPT-1:CHAINB$=MID$(CHAINB$,1,LEN(CHAINB$)-1):PRINT#CAN,CHR$(16);CHR$(8);CHR$(16);CHR$(143);CHR$(8);:GOTO 210
+270 PRINT#CAN,CHR$(16);:RETURN
+
+** menu principal **
+
+280 CLS#3:LOCATE#3,2,2:PRINT#3,"M = message";SPC(17);"D = deposition":GOSUB 310
+290 LOCATE#3,2,3:PRINT#3,"E = examen";SPC(18);"C = comparaison";SPC(16);"A = arrestation":RETURN
+
+** imprimante ** REMOVED
+
+300 CALL &150,@dtr:IF dtr=0 THEN RETURN ELSE i=i+1
+310 IF I=2 OR i=0 THEN I=0:GOTO 330
+320 LOCATE#3,61,2:PRINT#3,CHR$(24);"I = imprimante";CHR$(24);:RETURN
+330 LOCATE#3,61,2:PRINT#3,"I = imprimante":RETURN
+
+340 PRINT#2,"ORIG GIE CLERMONT-FD","DEST",,"-------------------------------":LOCATE#2,6,2:B$="":C$="":X1=6
+350 LOCATE#2,X1,2:PRINT#2,CHR$(143)
+360 A$=UPPER$(INKEY$):IF A$="" THEN 360
+370 SOUND 1,100,3
+380 IF A$=CHR$(13) THEN LOCATE#2,X1,2:PRINT#2,CHR$(128):GOTO 420
+390 IF a$=CHR$(127) THEN LOCATE#2,x1,2: PRINT#2,CHR$(128): x1=x1+(X1<>6): LOCATE#2,x1,2: PRINT#2,CHR$(143): c$=LEFT$(c$,ABS(LEN(c$)-1)): GOTO 360
+400 c$=c$+A$:LOCATE#2,X1,2:PRINT#2,CHR$(1);A$:X1=X1+1:IF LEN(c$)=26 THEN 420 ELSE 350
+410 A$=INKEY$:IF A$<>CHR$(13) THEN 410
+420 x1=1:y1=4
+430 LOCATE#2,X1,Y1:PRINT#2,CHR$(143)
+440 A$=UPPER$(INKEY$):IF A$="" THEN 440
+450 SOUND 1,100,3
+460 IF A$=CHR$(13) THEN LOCATE#2,X1,Y1:PRINT#2,".STOP.":RETURN
+470 IF a$=CHR$(127) THEN LOCATE#2,x1,y1:PRINT#2,CHR$(128):IF x1=1 THEN x1=31:y1=y1+(Y1<>4):LOCATE#2,x1,y1:PRINT#2,CHR$(143):b$=LEFT$
+(b$,ABS(LEN(b$)-1)):GOTO 430:ELSE x1=x1+(X1<>1):LOCATE#2,x1,y1:PRINT#2,CHR$(143):b$=LEFT$(b$,ABS(LEN(b$)-1)):GOTO 430
+480 IF X1=32 THEN X1=1:Y1=Y1+1
+490 b$=b$+A$:LOCATE#2,X1,Y1:PRINT#2,CHR$(1);A$:X1=X1+1
+500 IF LEN(b$)=242 THEN LOCATE#2,X1,Y1:PRINT#2,".STOP.":RETURN ELSE 430
+
+** routines ** DONE
+
+510 IF X=1 THEN X=0:GOTO 540
+520 LOCATE#1,4,21:PRINT#1,A$:Z=25399:GOSUB 80:z=25421:GOSUB 80:X=1:IF I=1 THEN PRINT#8,A$
+530 RETURN
+540 LOCATE#1,4,21:PRINT#1,A$:Z=25355:GOSUB 80:z=25377:GOSUB 80:IF I=1 THEN PRINT#8,A$
+550 RETURN
+
+560 FOR tt=1 TO 30:SOUND 2,400,0.5,8:SOUND 2,0,2:NEXT
+570 SOUND 2,1,15,,,,1:FOR tt=1 TO 90:NEXT:RETURN 
+
+580 nn=nn+1:IF nn=1 THEN SOUND 1,2800,32,10,,1,20:RETURN:ELSE IF nn=3 THEN FOR tem=1 TO 150:NEXT tem:nn=0:RETURN:ELSE RETURN 
+
+** messagerie ** DONE
+
+590 FOR t=1 TO 1000:NEXT
+600 IF A(30)=1 THEN 650
+610 IF A(31)=1 OR A(39)=1 THEN 680
+620 IF a(32)=1 THEN 700
+630 IF a(33)=1 THEN 720
+640 X=0:A$="DESTINATAIRE INCONNU.STOP.":GOTO 670
+650 IF A(34)=1 AND A(18)=1 THEN GOSUB 730:M=6:RESTORE 2530:GOSUB 1430:GOSUB 740:GOTO 120
+660 X=0:A$="DESTINATAIRE NON CONCERNE.STOP."
+670 GOSUB 560:GOSUB 510:A$="":GOSUB 570:GOSUB 510:GOTO 120
+680 IF a(34)=1 THEN X=0:A$="HO! CHEF, T'ES PAS REVEILLE.":GOTO 670
+690 IF A(17)=1 AND A(18)=1 THEN C$="GIE ST-CHELY":GOSUB 730:M=5:RESTORE 2550:GOSUB 1430:GOSUB 740:GOTO 120
+700 IF a(36)=1 THEN 710 ELSE 660
+710 IF ((a(17)=1 AND a(18)=1) OR a(19)=1) THEN id=1:CLS#2:Z=30551:GOSUB 80:Z=23751:GOSUB 80:GOSUB 730:M=5:RESTORE 2520:GOSUB 1430:GOSUB 740:GOTO 120
+720 IF A(34)=1 AND A(18)=1 THEN GOSUB 730:M=3:RESTORE 2540:GOSUB 1430:GOSUB 740:GOTO 120:ELSE 660
+730 A$="ORIG "+c$:GOSUB 560:GOSUB 510:A$="DEST GIE CLERMONT-FD":GOSUB 560:GOSUB 510:A$="":GOSUB 570:GOSUB 510:RETURN
+740 A$="":GOSUB 570:GOSUB 510:RETURN
+
+** choix par liste ** DONE
+**  2140 : suspects
+**  2150 : lieux
+
+750 RESTORE 2140
+760 FOR t=1 TO 25:READ a$
+770 IF INSTR(B$,A$)>0 THEN A(T)=1 ELSE A(T)=0
+780 NEXT T
+790 RESTORE 2150
+800 FOR T=26 TO 39:READ A$
+810 IF INSTR(C$,A$)>0 THEN A(T)=1 ELSE A(T)=0
+820 NEXT T
+830 RETURN
+
+** deposition **
+
+840 PV$="  AUDITION         ":CLS#1:CLS#5:GOSUB 1360:CLS#3:LOCATE#3,2,2:PRINT#3,"DEPOSITION DE QUELLE PERSONNE ? ";:can=3:GOSUB 200:
+b$=CHAINB$:SOUND 1,100,3:b$=UPPER$(b$)
+850 CLS#3:LOCATE#3,2,2:PRINT#3,"OU TROUVEZ-VOUS CETTE PERSONNE ? ";:can=3:GOSUB 200:c$=CHAINB$:SOUND 1,100,3:c$=UPPER$(c$):GOSUB 750:GOSUB 280
+860 IF A(1)=1 OR A(2)=1 OR A(3)=1 THEN z=38267:GOSUB 80:m=3:RESTORE 1870:GOSUB 1390:GOTO 870 ELSE 890
+870 IF pa>0 THEN jea=2:m=4:RESTORE 1900:GOSUB 1390:GOTO 120
+880 m=8:RESTORE 1880:GOSUB 1390
+890 IF (A(4)=1 OR A(5)=1) AND A(27)=1 THEN 900 ELSE 940
+900 z=39553:GOSUB 80:re=1:m=6:RESTORE 1910:GOSUB 1390
+910 IF pho=0 THEN m=2:RESTORE 1920:GOSUB 1390
+920 IF pho=1 THEN re=2:m=3:RESTORE 1930:GOSUB 1390
+930 GOTO 120
+940 IF ((A(6)=1 AND A(7)=1) OR A(8)=1) AND A(26)=1 THEN z=35695:GOSUB 80:m=3:RESTORE 1940:GOSUB 1390:GOTO 950 ELSE 1010
+950 IF MAR=1 AND SY=2 THEN M=4:RESTORE 2130:GOSUB 1390:GOTO 120
+960 IF mar=0 THEN mar=1:m=4:RESTORE 1950:GOSUB 1390:GOTO 120
+970 IF de=1 THEN m=3:RESTORE 1970:GOSUB 1390
+980 IF re=2 THEN m=6:RESTORE 1980:GOSUB 1390:GOTO 120
+990 IF re=1 THEN m=3:RESTORE 1990:GOSUB 1390
+1000 m=3:RESTORE 1960:GOSUB 1390:GOTO 120
+1010 IF (A(10)=1 OR (A(9)=1 AND A(7)=1))AND A(26)=1 THEN z=31837:GOSUB 80:M=3:RESTORE 2000:GOSUB 1390:GOTO 1020 ELSE 1060
+1020 IF SY=0 THEN SY=1:M=4:RESTORE 2010:GOSUB 1390:GOTO 120
+1030 IF RE=2 AND PE=2 THEN SY=2:M=3:RESTORE 2030:GOSUB 1390
+1040 IF re=2 AND PE<2 THEN m=3:RESTORE 2020:GOSUB 1390
+1050 m=2:RESTORE 2380:GOSUB 1390:GOTO 120
+1060 IF (A(13)=1 OR A(14)=1) AND A(29)=1 THEN Z=40839:GOSUB 80:m=3:RESTORE 2260:GOSUB 1390:GOTO 1070 ELSE 1140
+1070 IF PA>4 AND tin>4 AND GAGNE=1 THEN tin=6:m=11:RESTORE 2330:GOSUB 1390:GOTO 120
+1080 IF do2=1 AND em1=1 AND ba2=1 AND tin>3 THEN tin=5:m=5:RESTORE 2320:GOSUB 1390:GOTO 120
+1090 IF PA>0 THEN TIN=4:M=6:RESTORE 2310:GOSUB 1390:GOTO 120
+1100 IF tin=0 THEN tin=1:M=7:RESTORE 2270:GOSUB 1390:GOTO 120
+1110 IF lu=3 THEN tin=3:m=3:RESTORE 2300:GOSUB 1390:GOTO 120
+1120 IF lu=2 THEN tin=2:m=2:RESTORE 2280:GOSUB 1390:GOTO 120
+1130 m=2:RESTORE 2290:GOSUB 1390:GOTO 120
+1140 IF A(15)=1 AND A(28)=1 THEN Z=36981:GOSUB 80:M=3:RESTORE 2040:GOSUB 1390:GOTO 1150 ELSE 1170
+1150 IF de=0 THEN de=1:m=5:RESTORE 2050:GOSUB 1390:GOTO 120
+1160 IF de=1 THEN m=3:RESTORE 2060:GOSUB 1390:GOTO 120
+1170 IF A(12)=1 OR (A(11)=1 AND A(7)=1) THEN Z=33123:GOSUB 80:M=3:RESTORE 2350:GOSUB 1390:GOTO 1180 ELSE 1220
+1180 IF lu=0 THEN lu=1:m=3:RESTORE 2360:GOSUB 1390:GOTO 120
+1190 IF tin=1 THEN lu=2:m=4:RESTORE 2370:GOSUB 1390:GOTO 120
+1200 IF tin=2 THEN lu=3:m=4:RESTORE 2390:GOSUB 1390:GOTO 120
+1210 m=2:RESTORE 2380:GOSUB 1390:GOTO 120
+1220 IF (A(17)=1 OR A(18)=1) AND A(35)=1 AND id=1 THEN Z=30551:GOSUB 80:m=3:RESTORE 2160:GOSUB 1390:GOTO 1230 ELSE 1300
+1230 IF tin>5 THEN pa=6:RESTORE 2220:m=11:GOSUB 1390:GOTO 1240 ELSE 1250
+1240 CALL &BB06:GOSUB 1350:m=8:RESTORE 2240:GOSUB 1390:GOTO 120
+1250 IF pa=0 THEN pa=1:m=3:RESTORE 2170:GOSUB 1390:GOTO 120
+1260 IF ba1=1 THEN pa=5:m=3:RESTORE 2210:GOSUB 1390
+1270 IF em1=1 THEN m=4:RESTORE 2190:GOSUB 1390
+1280 IF do2=1 THEN m=2:RESTORE 2200:GOSUB 1390
+1290 M=2:RESTORE 2180:GOSUB 1390:GOTO 120
+1300 IF (A(20)=1 OR A(21)=1 OR A(22)=1) AND A(26)=1 THEN Z=34409:GOSUB 80:M=3:RESTORE 2070:GOSUB 1390:GOTO 1310 ELSE 1330
+1310 IF pe>0 AND re=2 THEN pe=2:m=4:RESTORE 2090:GOSUB 1390:GOTO 120
+1320 pe=1:m=4:RESTORE 2080:GOSUB 1390:GOTO 120
+1330 IF (A(24)=1 OR A(25)=1) AND A(26)=1 THEN Z=29265:GOSUB 80:M=6:HE=HE+1:RESTORE 2100:GOSUB 1390:GOTO 1340 ELSE 120
+1340 IF HE>1 THEN M=2:RESTORE 2120:GOSUB 1390:GOTO 120 ELSE 120
+
+1350 CLS#1:LOCATE#1,1,20:PRINT#1,CHR$(254);:FOR t=1 TO 37:PRINT#1,CHR$(253);:NEXT:LOCATE#1,39,20:PRINT#1,CHR$(255);:RETURN
+
+1360 LOCATE#1,1,20:PRINT#1,CHR$(254);:
+     FOR t=1 TO 37: PRINT#1,CHR$(253);:NEXT:
+     LOCATE#1,39,20:PRINT#1,CHR$(255);:
+     LOCATE#1,1,21:PRINT#1,CHR$(211);"Brigade de    GENDARMERIE NATIONALE  ";CHR$(209);
+1370 LOCATE#1,1,21:PRINT#1,CHR$(211);"Recherches          --------         ";CHR$(209);:
+     LOCATE#1,1,21:PRINT#1,CHR$(211);" CLERMONT         ";PV$;CHR$(209);
+1380 LOCATE#1,1,21:PRINT#1,CHR$(211);"----------          --------         ";CHR$(209);:
+     LOCATE#1,1,21:PRINT#1,CHR$(211);:
+     LOCATE#1,39,20:PRINT#1,CHR$(209);:RETURN
+
+** routines **
+
+1390 FOR T=1 TO M:READ A$:GOSUB 580:LOCATE#1,1,21:PRINT#1,CHR$(211);A$;:LOCATE#1,39,20:PRINT#1,CHR$(209);
+1400 IF I=1 THEN PRINT#8,A$
+1410 NEXT
+1420 m=0:RETURN
+
+1430 FOR n=1 TO M:READ A$:GOSUB 560:GOSUB 510:NEXT:RETURN
+
+** comparaison ** DONE
+
+1440 CLS#2:CLS#1:GOSUB 110:CLS#3:LOCATE#3,2,2:PRINT#3,"COMPARAISON DES ELEMENTS CONNUS AVEC QUI ? ";:GOSUB 200:B$=CHAINB$:SOUND 1,100,3:b$=UPPER$(b$):GOSUB 750
+1450 IF (a(17)=1 OR a(18)=1) AND pa>0 THEN GOSUB 280:GOTO 1470
+1460 IF (a(14)=1 OR a(13)=1) AND tin>0 THEN GOSUB 280:GOTO 1560 ELSE 1600
+1470 m=1:RESTORE 2400:GOSUB 1430:GOSUB 740:m=2:RESTORE 2410:GOSUB 1430
+1480 IF jea=2 THEN rec=1:m=2:RESTORE 2420:GOSUB 1430
+1490 IF DO=1 THEN DO1=1:M=2:RESTORE 2430:GOSUB 1430
+1500 IF do2=1 THEN m=2:RESTORE 2440:GOSUB 1430 
+1510 IF EM=1 THEN em1=1:M=2:RESTORE 2450:GOSUB 1430
+1520 IF CA=1 THEN M=1:RESTORE 2460:GOSUB 1430
+1530 IF tin>3 THEN ba1=1:m=3:RESTORE 2470:GOSUB 1430
+1540 IF REC=1 AND DO1=1 AND DO2=1 AND EM1=1 AND CA=1 AND BA1=1 THEN GAGNE=1
+1550 GOTO 120
+1560 M=1:RESTORE 2480:GOSUB 1430:GOSUB 740:M=2:RESTORE 2490:GOSUB 1430
+1570 IF TIN1=1 AND ba1=1 THEN ba2=1:M=2:RESTORE 2510:GOSUB 1430
+1580 IF PA>0 THEN TIN1=1:M=2:RESTORE 2500:GOSUB 1430
+1590 GOTO 120
+
+1600 CLS#3:LOCATE#3,2,2:PRINT#3,"INVESTIGATION SANS INTERET":SOUND 1,100,3
+1610 LOCATE#3,72,4:PRINT#3,"SUITE ";CHR$(154);CHR$(243):CALL &BB18:SOUND 1,100,3:GOSUB 280:GOTO 120
+
+** examens divers ** DONE
+
+1620 CLS#3:LOCATE#3,2,2:PRINT#3,"QUEL EXAMEN ? ";:can=3:GOSUB 200:C$=CHAINB$:SOUND 1,100,3:C$=UPPER$(C$):B$=C$:GOSUB 750
+1630 IF a(37)=1 AND a(7)=1 THEN 1650
+1640 IF a(38)=1 THEN 1660 ELSE 1600
+1650 CLS#3:GOSUB 280:CLS#1:CLS#6:z=25443:GOSUB 80:M=10:PV$="  AUTOPSIE         ":GOSUB 1360:RESTORE 1810:GOSUB 1390:AUT=1:GOTO 120
+1660 CLS#3:GOSUB 280:CLS#1:CLS#6:z=25443:GOSUB 80:PV$=" BALISTIQUE        ":GOSUB 1360:m=5:RESTORE 1830:GOSUB 1390
+1670 IF aut=1 THEN m=3:RESTORE 1840:GOSUB 1390
+1680 IF do=1 AND do1=0 THEN m=3:RESTORE 1850:GOSUB 1390
+1690 IF DO1=1 THEN do2=1:M=3:RESTORE 1860:GOSUB 1390
+1700 GOTO 120
+
+** ACCUSATION ** DONE
+
+1710 CLS#3:LOCATE#3,2,2:PRINT#3,"QUI ARRETEZ-VOUS ? ";:can=3:GOSUB 200:B$=CHAINB$:SOUND 1,100,3:b$=UPPER$(b$):GOSUB 750:ga=0
+1720 IF (a(17)=1 OR a(18)=1) AND pa=6 THEN ga=ga+1
+1730 IF (a(13)=1 OR a(14)=1) AND tin=6 THEN ga=ga+1
+1740 ON ga GOTO 1760,1770
+1750 CLS#3:LOCATE#3,2,2:PRINT#3,"IL VOUS MANQUE DES ELEMENTS POUR MOTIVER CETTE ARRESTATION":LOCATE#3,2,3:PRINT#3,"UNE ERREUR JUDICIAIRE SERAIT INADMISSIBLE":GOTO 1610
+1760 CLS#3:LOCATE#3,2,2:PRINT#3,"CETTE ARRESTATION EST INSUFFISANTE":GOTO 1610
+1770 CLS#3:GOSUB 280:CLS#1:CLS#6:z=25443:GOSUB 80:M=8:PV$="FELICITATION       ":GOSUB 1360:RESTORE 2560:GOSUB 1390
+1780 FOR n=1 TO 4:SOUND 1,120,60,12:SOUND 1,100,50,12:NEXT
+1790 FOR n=12 TO 1 STEP -1:SOUND 1,120,60,n:SOUND 1,100,50,n:NEXT
+1800 GOTO 120
+
+** donnees ** DONE
+
+1810 DATA -La victime -SYDNEY James- est morte,par perforation de la boite cranienne,et destruction partielle du cerveau.,-Penetrati
+on frontale d'un projectile,qui est ressorti au niveau du bulbe,rachidien - provoquant la mort.
+1820 DATA -L'absence de brulure et de trace de,poudre autour de la blessure indique,que le coups de feu a ete tire d'une,distance su
+perieure a 5m.
+1830 DATA Des elements recueillis nous pouvons,etablir que le coups de feu a ete,tire de l'appartement situe au 4eme,etage de l'imme
+uble sis au 9 place,de la Republique.
+1840 DATA L'autopsie de la victime etablissant,qu'il s'agit d'un tir plongeant,confirme notre etude balistique.
+1850 DATA La douille de calibre 7x64 decouverte,sur place a ete tiree par une arme,longue a ejection automatique.
+1860 DATA La douille de calibre 7x64 decouverte,dans l'appartement a ete tiree par la,carabine REMINGTON de LANGUILLE.
+1870 DATA ESTRADE Jeannot - pl. de la,republique a CLERMONT-FD (63),
+1880 DATA --J'ai entendu une detonation et j'ai,vu un homme s'ecrouler a terre sur le,trottoir d'en face.,--Quelques instants plus t
+ard j'ai
+1890 DATA remarque un homme sortant du no 9 en,courrant. il portait un grand sac de,sport et s'est eloigne en direction,du boulevard
+ peripherique.
+1900 DATA --Je reconnais formellement le nomme,Patrick LANGUILLE comme etant l'homme,que j'ai vu sortir du no 9 quelques,instants ap
+res l'assassinat.
+1910 DATA RENARD Robert - 336 bis rue Blatin a,CLERMONT-FD (63) - detective-prive,,--Monsieur SYDNEY m'avait engage pour,surveiller 
+sa femme qu'il soupconnait,d'infidelite. 
+1920 DATA --Jusqu'a present je n'avais rien qui,puisse confirmer ses soupcons.
+1930 DATA --C'est bien moi qui ai pris la photo,que vous avez decouverte.Il s'agit de,Mm SYDNEY en compagnie de son amant. 
+1940 DATA DUPUIS Marianne ep SYDNEY - place,J.Jaures a CLERMONT-FERRAND (63),
+1950 DATA --J'ignore pourquoi et par qui mon,mari a ete assassine. Il se rendait a,son travail lorsque cela est arrive.,--Je ne lui 
+connais pas d'ennemi.
+1960 DATA --Je n'ai rien d'autre a declarer et,je suis tres fatiguee depuis le deces,de mon mari. N'insistez pas.
+1970 DATA --Effectivement j'avais demande a mon,mari qu'il accepte le divorce; ce qu',il refusait obstinement.
+1980 DATA --La photo que vous me presentez ne,me concerne pas. D'ailleurs il est,aise de constater que la jeune femme,porte des chev
+eux longs alors que je,les porte tres courts.,--Je n'ai pas d'amant. 
+1990 DATA --J'ignorais qu'un detective prive,avait ete engage par mon mari pour,me surveiller.
+2000 DATA SYDNEY Sylvie - place J.Jaures a,CLERMONT-FD(63),
+2010 DATA --Je ne peux pas croire que mon pere,ait ete assassine. C'etait un homme,calme qui ne desirait que le bonheur,de son foyer
+. 
+2020 DATA --Je ne reconnais pas les personnes,que l'on distingue en ombre chinoise,sur la photo que vous me presentez.
+2030 DATA--Sur la photo que vous me presentez,je reconnais bien ma mere avec un ami,de la famille ; Tino DI NALLO.
+2040 DATA DECOL Hubert - place de jaude a,CLERMONT-FD (63)- avocat -,
+2050 DATA --Mr SYDNEY m'avait charge de son,dossier de divorce.,--C'est sa femme qui en a fait la,demande et Mr SYDNEY voulait faire
+,durer la procedure.
+2060 DATA --J'ai cru comprendre que Mr SYDNEY,voulait engager un detective prive,mais j'ignore dans quel but.
+2070 DATA GACHET Peggy - employee de maison -,pl J.Jaures a CLERMONT-FD (63),
+2080 DATA --Je suis au service de la famille,SYDNEY depuis un an environ et je ne,vois pas qui aurait interet a assas-,siner Monsieu
+r.
+2090 DATA -Mm SYDNEY est peut-etre la femme que,l'on distingue sur la photo que vous,me presentez car il y a peu de temps,qu'elle a 
+fait couper ses cheveux.
+2100 DATA LAJOIE Henri - concierge -,pl. J.Jaures a CLERMONT-FD (63), 
+2110 DATA --Mr SYDNEY etait un homme tranquille,qui me donnait un pourboire lorsque,je lui appelais un taxi de chez moi.
+2120 DATA --Avant-hier il avait appele un taxi,pour se rendre rue blatin a CLERMONT. 
+2130 DATA--Effectivement je frequente Tino DI,NALLO depuis 6 mois mais cela n'a,rien a voir avec la mort de mon mari.,--Tino habite 
+pl. des Dores a COURNON
+2140 DATA TEMOIN,JEANNOT,ESTRADE,RENARD,ROBERT,MADAME,SYDNEY,MARIANNE,FILLE,SYLVIE,FILS,LUDOVIC,TINO,NALLO,DECOL,HUBERT,PATRICK,LANG
+UILLE,SERGENT,PEGGY,GACHET,SERVANTE,RECHERCHE,LAJOIE,CONCIERGE
+2150 DATA JAURES,BLATIN,JAUDE,DORES,CIAT,GIE,CRRJ,BDRJ,CLERMONT,CHELY,LYON,AUTOPSIE,BALISTIQUE,DG
+2160 DATA LANGUILLE Patrick - sans profession,Hotel "Gevaudan" a ST-CHELY (48),
+2170 DATA --Je ne connais pas Tino DI NALLO et,encore moins SYDNEY James. Je n'ai,rien a voir avec votre enquete.
+2180 DATA --Je n'ai rien a declarer concernant,cette affaire.
+2190 DATA --Vous m'informez que vous avez,trouve mes empreintes sur une vitre,dans l'appartement d'ou a ete tire,le coups de feu.
+2200 DATA --Vous affirmez que la douille decou-,verte a ete tire par ma carabine.
+2210 DATA--Je n'ai pas a m'expliquer sur la,provenance de la somme de 20000 frs,que j'ai deposee sur mon compte.
+2220 DATA --Puisque Tino a parle j'avoue.,--C'est moi qui ai jete le megot de,camel dans le vase et la douille a,bien ete tiree par 
+ma carabine.,--Tino m'avait propose 30000 frs pour,abattre SYDNEY.
+2230 DATA --N'ayant pas de travail j'ai accepte.,--J'ai repere un appartement inoccupe,devant lequel SYDNEY passait a pied,tous les 
+jours. J'ai force la serrure,et j'ai attendu que SYDNEY arrive.
+2240 DATA --Ma carabine etant equipee d'une,lunette je n'ai eu aucun mal a le,tuer d'une seule balle.,--Je me suis enfui a pied en c
+achant,mon arme dans un sac de sport.,--J'ai depose une partie de l'argent,sur mon compte bancaire et garde le 
+2250 DATA reste pour me mettre au 'vert'.
+2260 DATA DI NALLO Tino - representant,pl. des dores a COURNON (63),
+2270 DATA --Je reconnais avoir une liaison avec,Marianne depuis plusieurs mois.,--Je n'ai aucune interet dans la mort,de son mari pu
+isque Marianne avait, demande le divorce.,--Au moment du meurtre je me trouvais,a LYON chez des clients.
+2280 DATA --J'ai fait mon service militaire au,92 RI a CLERMONT en 1975.
+2290 DATA --Vous m'avez deja interroge et je,n'ai rien d'autre a dire.
+2300 DATA --Ludovic dit n'importe quoi. Je ne,connais pas le sergent dont il veut,parler.
+2310 DATA--Effectivement je connais LANGUILLE,de longue date. Neanmoins cela fait,tres longtemps que je ne l'ai pas,rencontre et je 
+ne vois pas comment,celui-ci puisse etre implique dans,le meurtre de Mr SYDNEY.
+2320 DATA--Effectivement j'ai retire la somme,de 30000 francs sur mon compte quel-,ques jours avant le meurtre.,J'avais des dettes d
+e jeux a regler,et je ne peux pas vous en dire plus.
+2330 DATA--Je suis l'instigateur du meurtre,du mari de Marianne. Celui-ci ne vou-,lait pas accorder le divorce.,--De ma propre initi
+ative j'ai decide,de l'eliminer. J'ai alors contacte,Patrick qui m'avait dit a plusieurs
+2340 DATA reprises que pour de l'argent il ac-,ceptait de tuer quelqu'un. Je lui ai,donc donne 30000 frs pour qu'il tue,le mari de M
+arianne le jour ou je me,trouvait a LYON. Ce qu'il a fait.
+2350 DATA SYDNEY Ludovic - etudiant,pl. J.Jaures a CLERMONT-FD (63),
+2360 DATA --Je ne peux pas comprendre pourquoi,mon pere a ete assassine. Peut-etre,s'agit-il d'une erreur.
+2370 DATA --Je connais tres bien Tino qui est,souvent a la maison. Je m'entends,bien avec lui. Il me parle de son,service militaire 
+ou de moto.
+2380 DATA --Je n'ai aucun renseignement qui,puisse vous aider dans votre enquete.
+2390 DATA --Un jour Tino m'a parle d'un de ses,copains de regiment qu'il appelait,sergent. D'apres Tino c'etait le,meilleur tireur d
+e la compagnie.
+2400 DATA COMPARAISON AVEC LANGUILLE PATRICK
+2410 DATA -IL A EFFECTUE SON SERVICE DANS LA,MEME COMPAGNIE QUE TINO DI NALLO
+2420 DATA -IL EST RECONNU FORMELLEMENT PAR,LE TEMOIN ESTRADE.
+2430 DATA -IL DETIENT UNE CARABINE REMINGTON,AUTOMATIQUE 7x64.
+2440 DATA -L'EXAMEN BALISTIQUE DESIGNE CETTE,CARABINE COMME L'ARME DU CRIME.
+2450 DATA -L'EMPREINTE DECOUVERTE CORRESPOND,A CELLE DE SON POUCE GAUCHE. 
+2460 DATA -IL FUME DES CAMELS.
+2470 DATA-LE 24 SEPTEMBRE IL A DEPOSE LA,SOMME DE 20000 FRS EN LIQUIDE,SUR SON COMPTE.
+2480 DATA COMPARAISON AVEC TINO DI NALLO
+2490 DATA-AU MOMENT DU MEURTRE IL ETAIT,BIEN A LYON
+2500 DATA-IL A ETE CAMARADE DE CHAMBREE,AVEC PATRICK LANGUILLE
+2510 DATA-IL A RETIRE 30000 FRS EN LIQUIDE,LE 20 SEPTEMBRE SUR SON COMPTE
+2520 DATA LANGUILLE PATRICK ALIAS SERGENT,CONDAMNE LE 22.8.82 PAR T.C. RIOM,POUR DETENTION D'ARMES DE LA 4 EME,CATEGORIE A 1 AN D'EM
+PRISONNEMENT.,AFFAIRE TRAITEE PAR CIAT CLERMONT.
+2530 DATA LE NOMME LANGUILLE PATRICK A ETE,INTERPELLE A LA SUITE D'UNE RIXE,SUR LA VOIE PUBLIQUE.,IL AVAIT ETE TROUVE PORTEUR D'UN,R
+EVOLVER 357 MAGNUM DONT IL N'A,JAMAIS AVOUE LA PROVENANCE.
+2540 DATA LANGUILLE PATRICK,NE FAIT ACTUELLEMENT L'OBJET,D'AUCUNE RECHERCHE.
+2550 DATA NOTRE UNITE VIENT D'INTERPELLER LE,NOMME LANGUILLE PATRICK AU COURS,D'UN CONTROLE ROUTIER.,INTERESSE EST A VOTRE DISPOSITI
+ON,DANS NOS LOCAUX.
+2560 DATA -        L'auteur a l'honneur de vous,adresser ses plus vives felicitations,pour  avoir su  mener avec  autant de,persever
+ance et  d'intelligence cette,affaire SYDNEY.
+2570 DATA -        Vous exercerez vos fonctions,prochainement   dans  votre  nouvelle,affectation au grade superieur.
+2580 RETURN
+2590 RESUME

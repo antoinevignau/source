@@ -1,0 +1,129 @@
+*--------------------------
+* MODES
+*--------------------------
+
+MODE <integer expression>
+
+COMMAND: To change the screen mode (0,1 or 2), and clear the screen to INK 0, which may not be the current PAPER INK. All text and graphics WINDOWS are reset to the whole screen, and the text and graphics cursors homed to their respective origins.
+
+MODE 0
+- 20 columns x 25 lines
+- 16 colors (out of 27)
+- 160 x 200 pixels
+
+MODE 1
+- 40 columns x 25 lines
+- 4 colors
+- 320 x 200 pixels
+    
+MODE 2
+- 80 columns x 25 lines
+- 2 colors
+- 640 x 200 pixels
+
+*--------------------------
+* LOCATE
+*--------------------------
+
+LOCATE #stream, x, y
+stream 0 is the default
+begins at 1,1
+
+COMMAND: Moves the text cursor at the stream indicated, to the position specified by the x and y co-ordinates, which are relative to the origin of the stream (WINDOW). Stream 0 is the default stream.
+
+*--------------------------
+* PAPER
+*--------------------------
+
+PAPER [#<stream expression>,]<masked ink>
+
+COMMAND: Sets the background ink for characters. When characters are written to the text screen, the character cell is filled with the PAPER ink before the character is written, unless the transparent mode has been selected.
+
+*--------------------------
+* PEN
+*--------------------------
+
+PEN [#<stream expression> ,]<masked ink>
+
+COMMAND: PEN sets the ink to be used when drawing at the given screen stream, defaulting to screen #0.
+
+*--------------------------
+* INK
+*--------------------------
+
+INK <ink>,<colour>[,<colour>]
+
+COMMAND: Depending on the current Screen Mode (Chapter 5), a number of INKs are available.
+The colour, or colours, used for an INK may be changed by an INK command, according to the table of colour values in Appendix IV.
+
+ 0 black
+ 1 blue
+ 2 bright blue
+ 3 red
+ 4 magenta
+ 5 mauve
+ 6 bright red
+ 7 purple
+ 8 bright magenta
+ 9 green
+10 cyan
+11 sky blue
+12 yellow
+13 white
+14 pastel blue
+15 orange
+16 pink
+17 pastel magenta
+18 bright green
+19 sea green
+20 bight cyan
+21 lime green
+22 pastel green
+23 pastel cyan
+24 bright yellow
+25 pastel yellow
+26 bright white
+
+if PAPER 2, then INK 2 will change the PAPER color
+if PEN 3, then INK 3 will change the PEN color
+*--------------------------
+* WINDOW
+*--------------------------
+
+WINDOW [#<stream expression>,]<left>,<right>,<top>, <bottom>
+
+COMMAND: Sets a text window for a given screen stream.
+
+*--------------------------
+* COLORS
+*--------------------------
+
+			Index
+Firmware Number	Colour Name	Hex      IIgs	Palette	Border
+0	Black	#000000  000	0	0
+1	Blue	#000080  008	4	2
+2	Bright Blue     #0000FF  00F	4	7
+3	Red	#800000  800	7	1
+4	Magenta	#800080  808		3
+5	Mauve	#8000FF  80F		3
+6	Bright Red      #FF0000  F00	7	1
+7	Purple	#FF0080  F08		3
+8	Bright Magenta  #FF00FF  F0F		8
+9	Green	#008000  080		4
+10	Cyan	#008080  088		8
+11	Sky Blue        #0080FF  08F		6
+12	Yellow	#808000  880	9	D
+13	White	#808080  888	F	5
+14	Pastel Blue     #8080FF  88F		6
+15	Orange	#FF8000  F80		9
+16	Pink	#FF8080  F88		B
+17	Pastel Magenta  #FF80FF  F8F		B
+18	Bright Green    #00FF00  0F0	10	C
+19	Sea Green       #00FF80  0F8		C
+20	Bright Cyan     #00FFFF  0FF		E
+21	Lime	#80FF00  8F0		C
+22	Pastel Green    #80FF80  8F8		C
+23	Pastel Cyan     #80FFFF  8FF		E
+24	Bright Yellow   #FFFF00  FF0		D
+25	Pastel Yellow   #FFFF80  FF8		D
+26	Bright White    #FFFFFF  FFF	F	F

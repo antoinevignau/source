@@ -1,0 +1,48 @@
+10 ' PLAGE
+15 MODE 0:BORDER 0
+16 for i=0 to 15:ink i,0:next i
+20 MEMORY &3FFF:LOAD"plage.cmp"
+25 for i=0 to 15:ink i,0:next i
+30 poke &A634,&C8:poke &A635,0:poke &A636,0:CALL &A60B
+40 poke &C7F1,&C9:CALL &C7D0
+50 CALL &A60B
+90 k$=INKEY$
+100 IF k$="1"THEN GOTO 300
+110 IF k$="2"THEN RUN "Rouage.bas"
+120 IF k$="3"THEN GOTO 200
+140 IF k$<>"1"OR k$<>"2"OR k$<>"3"THEN GOTO 90
+  
+200 INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6:MODE 1:LOCATE 1,2:PEN 1:PRINT"Vous vous allongez tranquillement"
+210 Print"sur le sable chaud, bien decide"
+220 Print"a profiter du soleil peruvien."
+230 Pen 2:Print:Print"Le bruit des vagues berce votre esprit."
+240 Pen 1:Print:print"Vous fermez les yeux, savourant"
+250 Print"ce moment de detente."
+260 Pen 3:Print:print"Mais l'astre brulant ne vous fait aucun cadeau. Peu a peu, la chaleur vous vide de vos forces. La soif vous tenaille,"
+270 Print"puis le monde devient flou..."
+280 Print"jusqu au noir complet."
+290 Pen 2:Print:Print"On vous retrouvera plus tard,"
+291 Print"plus grille qu'une vielle merguez"
+292 Print"oubliee sur un barbecue..."
+293 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+294 RUN"mort.bas"
+
+300 INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6:MODE 1:LOCATE 1,1:PEN 1:PRINT"L'eau scintille sous le soleil,"
+310 Print"et vous ne resistez pas a l'appel"
+315 Print"de la fraicheur."
+320 Pen 2:Print:Print"Vous courez, prenez votre elan..."
+325 Print"SPLASH ! Le choc est brutal :"
+330 Pen 3:Print:Print"Votre corps, chauffe a blanc, rencontre"
+335 Print"l'ocean glace."
+340 Pen 1:Print:Print"Votre coeur n'apprecie pas la surprise."
+350 PRINT"Une decharge glaciale parcourt"
+355 PRINT"vos veines."
+360 PRINT"Tout s'arrete. Plus de battement."
+365 Print"Plus rien..."
+370 Pen 2:PRINT:PRINT"Les vagues vous bercent une derniere"
+375 PRINT"fois, comme une caresse fatale."
+380 Print"On raconte qu'on vous a repeche avec    un sourire fige, comme si vous etiez"
+390 Print"ravi de votre plongeon express...
+395 PRINT"...vers l'au-dela !"
+400 PEN 2:LOCATE 15,24:INPUT" ENTER  ",en$
+410 RUN"mort.bas"

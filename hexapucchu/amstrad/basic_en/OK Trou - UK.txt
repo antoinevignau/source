@@ -1,0 +1,52 @@
+10 ' HOLE
+20 MODE 0:BORDER 0
+25 FOR i=0 TO 15:INK i,0:NEXT i
+30 MEMORY &3FFF
+40 LOAD"trou.cmp"
+45 FOR i=0 TO 15:INK i,0:NEXT i
+50 POKE &A634,&C8:POKE &A635,0:POKE &A636,0:CALL &A60B
+60 POKE &C7F1,&C9:CALL &C7D0
+70 CALL &A60B
+80 k$=INKEY$
+90 IF k$="1"THEN RUN"Poulie.bas"
+100 IF k$="2"THEN RUN"Grotte4.bas"
+110 IF k$="3"THEN GOTO 200
+120 IF k$="4"THEN GOTO 300
+130 IF k$="5"THEN GOTO 400
+140 IF k$="6"THEN GOTO 500
+150 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5"OR k$<>"6" THEN GOTO 80  
+
+200 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,2:PEN 1
+210 PRINT"You lean over the hole":PRINT"as if waiting for a miracle...":PRINT:PRINT"...and here it comes:"
+220 PEN 3:PRINT:PRINT"             gravity!"
+230 PEN 2:PRINT:PRINT"Your foot slips,":PRINT"and here you go, launched":PRINT"into a natural slide,":PRINT"screaming non-human sounds."
+240 PEN 1:PRINT:PRINT"After a never-ending slide,":PRINT"you land violently...":PRINT"in the lower cave level."
+250 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+260 RUN"Grotte1.bas"
+
+300 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,1:PEN 1
+310 PRINT"Your TikTok choreography":PRINT"was almost flawless..."
+320 PEN 2:PRINT:PRINT"Until your bouncy moves":PRINT"triggered vibrations":PRINT"that shook a big rock loose."
+330 PEN 3:PRINT:PRINT"SQUUUIRK!"
+340 PEN 1:PRINT:PRINT"You're now part of the floor..."
+350 PEN 2:LOCATE 15,24:INPUT" ENTER  ",en$
+360 RUN"Mort.bas"
+
+400 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,1:PEN 1
+410 PRINT"Okay, you're whistling. Why not."
+420 PEN 2:PRINT:PRINT"The echo bounces in the cave,":Print:PRINT"Once,":PRINT"         twice...":PRINT"                     three times."
+430 PEN 3:PRINT:PRINT"Huh?"
+440 PEN 1:PRINT:PRINT"The third echo seems to":PRINT"come from a hollow wall..."
+450 PEN 2:PRINT:PRINT"Or maybe it's just the":PRINT"gaping hole in the floor!"
+460 PEN 1:PRINT:PRINT"At least now we know":PRINT"the hole is deep.":PRINT"That's something!"
+470 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+480 MODE 0:GOTO 45
+
+500 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,1:PEN 1
+510 PRINT"Like an athlete":PRINT"ready to throw the discus,":PRINT"you take a run-up":PRINT"and hurl the rock":PRINT"with all your strength down the hole."
+520 PEN 2:PRINT:PRINT"Let’s say... not very far."
+530 PEN 3:PRINT:PRINT"But enough to awaken":PRINT"a whole army of bats":PRINT"sleeping peacefully inside."
+540 PEN 1:PRINT:PRINT"They swarm at you":PRINT"and drain all your blood."
+550 PEN 2:PRINT:PRINT"Blood type B Positive:":PRINT"their favourite menu!"
+560 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+570 RUN"mort.bas"

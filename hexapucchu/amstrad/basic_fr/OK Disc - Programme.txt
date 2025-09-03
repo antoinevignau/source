@@ -1,0 +1,47 @@
+10 ' 
+20 ' Hexapucchu, la Cite Perdue de Patchucca
+30 ' 
+40 ' 2025 - Eric Cubizolle (TITAN)
+50 '
+55 POKE &BDEE,&C9
+60 MODE 0:Border 0
+70 INK 0,0:INK 1,0:INK 2,0:INK 3,0:INK 4,0:INK 5,0:INK 6,0:INK 7,0:INK 8,0:INK 9,0:INK 10,0:INK 11,0:INK 12,0:INK 13,0:INK 14,0:INK 15,0
+80 LOAD"Title.scr",&c000
+90 MEMORY &6FFF
+100 music=&7000
+110 sfx=&9000
+120 player=&9500
+130 LOAD"music.akg",music
+140 LOAD"player.bin",player
+150 INK 0,0:INK 1,1:INK 2,2:INK 3,3:INK 4,6:INK 5,9:INK 6,10:INK 7,11:INK 8,12:INK 9,13:INK 10,15:INK 11,18:INK 12,19:INK 13,20:INK 14,24:INK 15,26
+160 CALL player,music,0
+170 CALL &BB06
+180 MODE 1:INK 0,0:INK 1,26:INK 2,6:INK 3,18:BORDER 0:CLS
+190 PEN 1:PRINT "JUILLET 2026,"
+200 PEN 2:PRINT:PRINT:PRINT "PROFESSION : JOURNALISTE"
+210 PRINT:PEN 3:PRINT "Le soleil ecrasait la cote peruvienne,"
+220 PRINT "mes articles dormaient dans les tiroirs."
+230 PEN 1:PRINT "Un moment rare : pas de bouclage,"
+240 PRINT "pas de rumeurs a verifier."
+250 PRINT "Juste le bruit des vagues,":PRINT "l'odeur du sel,"
+260 PRINT "et un carnet reste ferme":PRINT "depuis des semaines..."
+270 PEN 3:PRINT:PRINT "Une pause."
+280 PRINT "Des pensees qui derivent,"
+290 PRINT "des souvenirs d'enfance."
+300 PRINT:PRINT "Je croyais ces vacances paisibles."
+310 PEN 2:PRINT:PRINT "Je me trompais..."
+320 PRINT:PRINT
+330 PEN 1:PRINT "        Appuyez sur une touche..."
+340 CALL &BB06
+350 CLS:PEN 3:PRINT "Bienvenue dans cette aventure,":Print "a la maniere d'un livre dont vous":Print "etes le heros !"
+360 Pen 1:Print:Print "A chaque ecran,":Print "plusieurs choix vous seront proposes."
+370 Print "Certains feront avancer l'histoire,":Print "d'autres entraineront des fins...":Print "moins heureuses."
+380 Pen 3:Print:Print "Pour selectionner une action,":Print "il vous suffit d'appuyer sur le chiffre":Print "correspondant au clavier."
+400 Pen 2:Print:Print "             Bonne chance !"
+410 Pen 1:Print:Print"Vous allez en avoir besoin,":Print"car vous allez mourir...":locate 26,18:Pen 2:Print"Souvent."
+420 Pen 3:Print:Print:Print "  (c) 2025 - Eric Cubizolle (TITAN)
+425 Print "        Musique : Pulsophonic"
+430 PEN 1:PRINT:PRINT:PRINT "       Appuyez sur une touche..."
+440 CALL &BB06
+450 CALL player+3
+460 RUN"Plage.bas"

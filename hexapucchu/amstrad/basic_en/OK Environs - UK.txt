@@ -1,0 +1,53 @@
+10 ' ENVIRONS
+20 MODE 0:BORDER 0
+30 FOR i=0 TO 15:INK i,0:NEXT i
+40 MEMORY &3FFF
+50 LOAD"Environs.cmp"
+60 FOR i=0 TO 15:INK i,0:NEXT i
+70 POKE &A634,&C8:POKE &A635,0:POKE &A636,0:CALL &A60B
+80 POKE &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+100 k$=INKEY$
+110 IF k$="1"THEN RUN"Jungle.bas"
+120 IF k$="2"THEN RUN"Nature1.bas"
+130 IF k$="3"THEN RUN"Cascade.bas"
+140 IF k$="4"THEN GOTO 200
+150 IF k$="5"THEN GOTO 300
+160 IF k$="6"THEN GOTO 400
+170 IF k$="7"THEN GOTO 500
+180 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5"OR k$<>"6"OR k$<>"7" THEN GOTO 100
+
+200 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,2:PEN 1:PRINT"To the WEST, a path leads into a":PRINT"thick, green, lush and creepy jungle."
+220 PEN 2:PRINT:PRINT"To the NORTH, a trail goes to a field":PRINT"so peaceful, it seems too good":PRINT"to be true."
+230 PEN 1:PRINT:PRINT"To the EAST, a steep path climbs":PRINT"toward the mountain, hidden in":PRINT"ominous fog."
+240 PEN 3:PRINT:PRINT"Hard to choose... each direction":PRINT"looks even more welcoming":PRINT"than the last, right?"
+250 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+260 MODE 0:GOTO 60
+
+300 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,1:PEN 1:PRINT"Sandcastles were fun, now it's":PRINT"time for a treehouse?"
+310 PEN 2:PRINT:PRINT"You're such a child, really!"
+320 PEN 1:PRINT:PRINT"You start stacking branches..."
+330 PEN 2:PRINT:Print"After 3 hours,":PRINT"you've created a true piece":PRINT"of modern art, titled:"
+340 PEN 3:PRINT:PRINT"    ";CHR$(34);"Pile of sticks falling over";CHR$(34)
+350 PEN 1:PRINT:PRINT"Bravo, architect."
+360 PEN 2:PRINT:PRINT"Totally useless, except for":PRINT"collecting splinters":PRINT"and wasting your energy."
+370 PEN 2:LOCATE 15,24:INPUT" ENTER  ",en$
+380 MODE 0:GOTO 60
+
+400 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,1:PEN 1:PRINT"You think digging solves":PRINT"all your problems?"
+410 PEN 3:PRINT:PRINT:PRINT"Newsflash: life ain't Minecraft!"
+420 PEN 2:PRINT:PRINT"Just because you found":PRINT"a gear once doesn't mean":PRINT"the ground is a magic thrift shop."
+430 PEN 3:PRINT:PRINT"Here, all you get are blisters."
+440 PEN 1:PRINT:PRINT"Okay,":PRINT"time to pull it together,":PRINT"Mr. Weekend Boulder Dash."
+450 PEN 2:LOCATE 15,25:INPUT" ENTER  ",en$
+460 MODE 0:GOTO 60
+
+500 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,1:PEN 1:PRINT"Ah yes, classic plan B: go home."
+510 PEN 3:PRINT:PRINT"The coward's plan, clearly."
+520 PEN 2:PRINT:PRINT"Fine..."
+550 PEN 1:PRINT:PRINT"You rush to the airport, gear":PRINT"in hand, and board the first":PRINT"flight home to France."
+560 PEN 3:PRINT:PRINT"Problem:"
+570 PEN 2:PRINT:PRINT"During the flight,":PRINT"your Incan relic scrambles":PRINT"the instruments..."
+580 PEN 1:PRINT:PRINT"Result?":PRINT:PRINT"A direct dive towards the sea.":PRINT"No miles earned,":PRINT"but a lovely drowning instead."
+590 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+600 RUN"Mort.bas"

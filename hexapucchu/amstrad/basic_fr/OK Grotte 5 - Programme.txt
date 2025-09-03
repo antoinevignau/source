@@ -1,0 +1,74 @@
+10 ' GROTTE 5
+20 MODE 0:BORDER 0:P=0
+25 for i=0 to 15:ink i,0:next i
+30 MEMORY &3FFF
+40 LOAD"Grotte5.cmp"
+45 for i=0 to 15:ink i,0:next i
+50 poke &A634,&C8:poke &A635,0:poke &A636,0:CALL &A60B
+60 poke &C7F1,&C9:CALL &C7D0
+70 CALL &A60B
+80 k$=INKEY$
+90 IF k$="1"THEN IF P=0 GOTO 200 ELSE RUN"Grotte6.bas"
+100 IF k$="2"THEN IF P=0 GOTO 200 ELSE RUN"Grotte4.bas"
+110 IF k$="4"THEN IF P=0 GOTO 200 ELSE GOTO 700
+120 IF k$="3"THEN IF P=0 GOTO 200 ELSE RUN"Poulie.bas"
+130 IF k$="5"THEN GOTO 300
+140 IF k$="6"THEN GOTO 400
+150 IF k$="7"THEN GOTO 500
+160 IF k$="8"THEN GOTO 600
+170 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5"OR k$<>"6"OR k$<>"7"OR k$<>"8" THEN GOTO 80  
+
+200 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,2:PEN 1:PRINT"Vous quittez la cavite,":PRINT"persuade que tout va bien."
+220 PEN 3:Print:Print"Erreur !"
+230 Pen 2:Print:Print"La statue,":Print"visiblement pas fan des adieux,":Print"vous tire une fleche dans le dos."
+240 Pen 1: Print:Print"Le poison fait son effet :":Print"c'est votre dernier voyage."
+250 Pen 2:Print:Print"Moralite" :":Print"Ne jamais tourner le dos a l'art."
+250 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+260 MODE 0:RUN"Mort.bas"
+
+300 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"En observant la statue,":Print"vous decouvrez un orifice...":Print"pile a un endroit":Print"qui ferait rougir un Inca."
+310 Pen 2:Print:PRINT"Et sous son visage grimacant fige,":Print"une base polie par le temps."
+320 Pen 3:Print:Print"Elle a l’air de pouvoir tourner."
+330 Pen 1:Print:Print"Le sol, poli par des generations,":Print"revele que la statue":Print"fut longtemps honoree":Print"par des offrandes sacrees."
+340 Pen 2:Print:Print"Pour le reste, quatre passages,":Print"chacun vers un point cardinal."
+350 PEN 2:LOCATE 15,24:INPUT" ENTER  ",en$
+360 MODE 0:Goto 45 
+
+400 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous prenez appui,":Print"et poussez de toutes vos forces..."
+410 Pen 3:Print:Print"GROOONC..."
+420 PEN 2:PRINT:PRINT"La statue pivote lentement":Print"avec un sinistre grincement."
+430 Pen 1:Print:Print"Un declic, puis le silence."
+440 Pen 3:Print:Print"Un mecanisme semble avoir ete desarme !"
+450 Pen 1:Print:Print"Vous respirez enfin."
+460 Print:Print"Bon...":Print"Tant que vous etes la,":Print"souriez-lui : elle adore ca."
+470 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+480 P=1:MODE 0:GOTO 45
+
+500 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous tentez la conversation :"
+510 PEN 2:PRINT:Print"Meteo, foot, politique..."
+520 PEN 3:PRINT:PRINT"Rien."
+530 Pen 1:Print:PRINT"Vous tentez alors une blague :"
+540 Pen 2:Print:Print"Quel ustensile a ete invente":Print"par les azteques ?"
+550 Print:Print"....le couteau azteque !!!"
+555 Pen 3:Print:Print "Rien."
+560 Pen 1:Print:Print "Le couteau a steak, quoi !"
+570 Pen 3:Print:Print "Toujours rien..."
+580 Pen 1:Print:Print"Meme pas un sourire en pierre.":Print"Public difficile."
+590 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+595 MODE 0:GOTO 45
+
+600 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous vous mettez a genoux,":Print"mains jointes,":Print"priant avec ferveur..."
+610 Pen 3:Print:Print"Une mouche se pose sur votre nez."
+620 Pen 2:Print:Print"C'est le seul signe divin":Print"que vous recevrez aujourd hui."
+630 LOCATE 15,24:INPUT"  ENTER  ",en$
+640 MODE 0:GOTO 45
+
+700 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous empruntez l'issue a l'Ouest,":Print"tout en reculant prudemment pour garder":Print"un oeil sur la statue meurtriere...":Print"On ne sait jamais !"
+710 Pen 2: Print:Print"Un pas, deux pas..."
+720 Pen 3:Print"... et soudain, le vide !"
+730 Pen 1:Print:Print"La corniche escarpee n'etait":Print"clairement pas prevue au programme..."
+740 Pen 2:Print:Print"Vous basculez, tete la premiere,":Print"pret a embrasser la roche..."
+750 Pen 3:Print:Print"Mais miracle :":pen 1:Print"la jungle vous tend ses bras !"
+760 Print"Une vegetation dense amortit":Print"votre chute.":Pen 2:Print:Print"Dix metres plus bas,":Print"vous vous relevez, indemne,":Print"entoure d'arbres, de fougeres":print"... et de moustiques affames."
+770 Pen 2:LOCATE 15,25:INPUT"  ENTER  ",en$
+780 RUN"Corniche.bas"

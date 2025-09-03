@@ -1,0 +1,188 @@
+10 ' NATURE 1
+20 MODE 0:BORDER 0:T=0
+30 for i=0 to 15:ink i,0:next i
+40 MEMORY &3FFF
+50 LOAD"Nature1.cmp"
+60 for i=0 to 15:ink i,0:next i
+70 poke &A634,&C8:poke &A635,0:poke &A636,0:CALL &A60B
+80 poke &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+95 IF T>19 then T=1
+100 k$=INKEY$
+110 IF k$="1"THEN RUN"Nature2.bas"
+120 IF k$="2"THEN RUN"Environs.bas"
+130 IF k$="3"THEN GOTO 200
+140 IF k$="4"THEN GOTO 300
+150 IF k$="5" and T=0 THEN GOTO 2000
+151 IF k$="5" and T=1 THEN GOTO 2200
+152 IF k$="5" and T=2 THEN GOTO 2300
+153 IF k$="5" and T=3 THEN GOTO 2400
+154 IF k$="5" and T=4 THEN GOTO 2500
+155 IF k$="5" and T=5 THEN GOTO 2600
+156 IF k$="5" and T=6 THEN GOTO 2700
+157 IF k$="5" and T=7 THEN GOTO 2800
+158 IF k$="5" and T=8 THEN GOTO 2900
+159 IF k$="5" and T=9 THEN GOTO 3000
+160 IF k$="5" and T=10 THEN GOTO 3100
+161 IF k$="5" and T=11 THEN GOTO 3200
+162 IF k$="5" and T=12 THEN GOTO 3300
+163 IF k$="5" and T=13 THEN GOTO 3400
+164 IF k$="5" and T=14 THEN GOTO 3500
+165 IF k$="5" and T=15 THEN GOTO 3600
+166 IF k$="5" and T=16 THEN GOTO 3700
+167 IF k$="5" and T=17 THEN GOTO 3800
+168 IF k$="5" and T=18 THEN GOTO 3900
+169 IF k$="5" and T=19 THEN GOTO 4000
+170 IF k$="6"THEN GOTO 400
+171 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5"OR k$<>"6" THEN GOTO 100
+200 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,2:PEN 1:PRINT"With all the grace of a clumsy cat"
+210 PRINT"on a waxed floor, you charge ahead,"
+220 PRINT"ready to tame these stubborn rocks."
+230 PEN 3:PRINT:PRINT"Alas... each rock you try to climb"
+240 PRINT"decides to live its own life:"
+250 PEN 2:PRINT:PRINT"It slips, it rolls, it ignores you."
+260 PEN 1:PRINT:PRINT"You climb a bit, slip twice as much,"
+270 PRINT"and land flat in the grass with the"
+280 PRINT"grace of an oyster on a slide..."
+290 PEN 2:PRINT:PRINT"Nice try though, really."
+295 LOCATE 15,24:INPUT"  ENTER  ",en$
+296 MODE 0:Goto 60
+
+300 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"You look over the field around you."
+310 PEN 2:PRINT:PRINT"The grass bends softly in the breeze"
+320 PRINT"framed by dense plants that seem"
+330 PRINT"ready to throw you a silent challenge."
+340 PEN 3:PRINT:PRINT"To the left, the Inca statue gives"
+350 PRINT"a rather unfriendly grimace, as if"
+360 PRINT"jealously keeping its secrets..."
+370 PEN 1:PRINT:PRINT:PRINT"To the right, a cave entrance is"
+380 PRINT"blocked by an unstable rockfall,"
+390 PRINT"making entry impossible..."
+395 PEN 2:PRINT:Print"              ... for now."
+396 PEN 2:LOCATE 15,24:INPUT" ENTER  ",en$
+397 MODE 0:Goto 60
+
+400 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"You attack the pile of rocks like"
+410 PRINT"an eager young archaeologist..."
+420 PRINT"or a child hunting a treasure"
+430 PRINT"buried long ago by their dog."
+440 PEN 2:PRINT:PRINT"You flip, shift, stack, examine..."
+450 PRINT"to finally uncover a heart-shaped"
+460 PRINT"stone, a slimy slug, and an empty nut."
+470 PEN 3:PRINT:PRINT"A good lesson in expectations,"
+480 PRINT"that’s for sure."
+490 PEN 2:LOCATE 15,25:INPUT"  ENTER  ",en$
+500 MODE 0:Goto 60
+
+2000 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Talking to a statue in the field?"
+2010 PRINT"A genius idea, just after brushing"
+2020 PRINT"a rock's teeth or teaching salsa"
+2030 PRINT"to a compass."
+2040 PEN 2:PRINT:PRINT"You stand before the statue,"
+2050 PRINT"using your most solemn tone:"
+2060 PEN 3:PRINT:PRINT"O great spirit of stone, speak!"
+2070 PEN 1:PRINT:PRINT"Against all odds, the statue"
+2080 PRINT"mutters in a rocky voice:"
+2090 PEN 3:PRINT:PRINT Chr$(34);"Ah, another nutcase!
+2100 PRINT"Haven’t chatted in ages! Go on,"
+2110 PRINT"I have so much to share.";Chr$(34)
+2120 PEN 2:PRINT:PRINT"A chat with the statue might"
+2130 PRINT"not be that dumb after all..."
+2140 T=T+1
+2150 PEN 2:LOCATE 15,25:INPUT" ENTER  ",en$
+2160 MODE 0:Goto 60
+
+2200 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 9,6:PEN 1:Print"The statue replies:"
+2210 Pen 3:Locate 1,10:Print Chr$(34);"Watch out, behind you!":Print"...Ha, you jumped so high!";Chr$(34)
+2220 T=T+1:PEN 2:LOCATE 15,25:INPUT" ENTER  ",en$
+2230 MODE 0:Goto 60
+
+2300 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 9,6:PEN 1:Print"The statue replies:"
+2310 Pen 3:Locate 1,10:Print Chr$(34);"Your shoes are awful.":Print"There, I said it.";Chr$(34)
+2320 T=T+1:PEN 2:LOCATE 15,25:INPUT" ENTER  ",en$
+2330 MODE 0:Goto 60
+
+2400 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 9,6:PEN 1:Print"The statue replies:"
+2410 Pen 3:Locate 1,10:Print Chr$(34);"You smell like a human...":Print"And sunscreen...";Chr$(34)
+2420 T=T+1:PEN 2:LOCATE 15,25:INPUT" ENTER  ",en$
+2430 MODE 0:Goto 60
+
+2500 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 9,6:PEN 1:Print"The statue replies:"
+2510 Pen 3:Locate 1,10:Print Chr$(34);"Want a clue?":Print"Ask my cousin, the pebble.";Chr$(34)
+2520 T=T+1:PEN 2:LOCATE 15,25:INPUT" ENTER  ",en$
+2530 MODE 0:Goto 60
+
+2600 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 9,6:PEN 1:Print"The statue replies:"
+2610 Pen 3:Locate 1,10:Print Chr$(34);"Frozen for 1000 years, yet":Print"I still look less stiff than you.";Chr$(34)
+2620 T=T+1:PEN 2:LOCATE 15,25:INPUT" ENTER  ",en$
+2630 MODE 0:Goto 60
+
+2700 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 9,6:PEN 1:Print"The statue replies:"
+2710 Pen 3:Locate 1,10:Print Chr$(34);"I chew flint!";Chr$(34)
+2720 T=T+1:PEN 2:LOCATE 15,25:INPUT" ENTER  ",en$
+2730 MODE 0:Goto 60
+
+2800 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 9,6:PEN 1:Print"The statue replies:"
+2810 Pen 3:Locate 1,10:Print Chr$(34);"Here's a secret:":Print"I'm chattier than your ex.";Chr$(34)
+2820 T=T+1:PEN 2:LOCATE 15,25:INPUT" ENTER  ",en$
+2830 MODE 0:Goto 60
+
+2900 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 9,6:PEN 1:Print"The statue replies:"
+2910 Pen 3:Locate 1,10:Print Chr$(34);"My hobby: standing still.":Print"Yours? Struggling...";Chr$(34)
+2920 T=T+1:PEN 2:LOCATE 15,25:INPUT" ENTER  ",en$
+2930 MODE 0:Goto 60
+
+3000 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 9,6:PEN 1:Print"The statue replies:"
+3010 Pen 3:Locate 1,10:Print Chr$(34);"I saw empires fall.":Print"You trip over rocks...";Chr$(34)
+3020 T=T+1:PEN 2:LOCATE 15,25:INPUT" ENTER  ",en$
+3030 MODE 0:Goto 60
+
+3100 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 9,6:PEN 1:Print"The statue replies:"
+3110 Pen 3:Locate 1,10:Print Chr$(34);"Lightning obeys me!";Chr$(34)
+3120 T=T+1:PEN 2:LOCATE 15,25:INPUT" ENTER  ",en$
+3130 MODE 0:Goto 60
+
+3200 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 9,6:PEN 1:Print"The statue replies:"
+3210 Pen 3:Locate 1,10:Print Chr$(34);"I survived the Inca empire,":Print"and Spanish conquest too.":Print"But not sure I will survive":Print"your awkward sense of humor.";Chr$(34)
+3220 T=T+1:PEN 2:LOCATE 15,25:INPUT" ENTER  ",en$
+3230 MODE 0:Goto 60
+
+3300 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 9,6:PEN 1:Print"The statue replies:"
+3310 Pen 3:Locate 1,10:Print Chr$(34);"I'm Inca.":Print"You... you're a case.";Chr$(34)
+3320 T=T+1:PEN 2:LOCATE 15,25:INPUT" ENTER  ",en$
+3330 MODE 0:Goto 60
+
+3400 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 9,6:PEN 1:Print"The statue replies:"
+3410 Pen 3:Locate 1,10:Print Chr$(34);"Your fate is written...":Print"but I haven't read it.";Chr$(34)
+3420 T=T+1:PEN 2:LOCATE 15,25:INPUT" ENTER  ",en$
+3430 MODE 0:Goto 60
+
+3500 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 9,6:PEN 1:Print"The statue replies:"
+3510 Pen 3:Locate 1,10:Print Chr$(34);"Even bears fear me!";Chr$(34)
+3520 T=T+1:PEN 2:LOCATE 15,25:INPUT" ENTER  ",en$
+3530 MODE 0:Goto 60
+
+3600 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 9,6:PEN 1:Print"The statue replies:"
+3610 Pen 3:Locate 1,10:Print Chr$(34);"Incan potions bring visions,":Print"sometimes even secret codes!";Chr$(34)
+3620 T=T+1:PEN 2:LOCATE 15,25:INPUT" ENTER  ",en$
+3630 MODE 0:Goto 60
+
+3700 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 9,6:PEN 1:Print"The statue replies:"
+3710 Pen 3:Locate 1,10:Print Chr$(34);"Aztecs sacrificed people,":Print"I sacrifice my peace for you.";Chr$(34)
+3720 T=T+1:PEN 2:LOCATE 15,25:INPUT" ENTER  ",en$
+3730 MODE 0:Goto 60
+
+3800 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 9,6:PEN 1:Print"The statue replies:"
+3810 Pen 3:Locate 1,10:Print Chr$(34);"I'm not sulking...":Print"I've got bad digestion.";Chr$(34)
+3820 T=T+1:PEN 2:LOCATE 15,25:INPUT" ENTER  ",en$
+3830 MODE 0:Goto 60
+
+3900 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 9,6:PEN 1:Print"The statue replies:"
+3910 Pen 3:Locate 1,10:Print Chr$(34);"Want a selfie with me?":Print"Come back 900 years ago,":Print"I was trending back then.";Chr$(34)
+3920 T=T+1:PEN 2:LOCATE 15,25:INPUT" ENTER  ",en$
+3930 MODE 0:Goto 60
+
+4000 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 9,6:PEN 1:Print"The statue replies:"
+4010 Pen 3:Locate 1,10:Print Chr$(34);"How about some poker?":Print"I'm the queen of poker face!";Chr$(34)
+4020 T=T+1:PEN 2:LOCATE 15,25:INPUT" ENTER  ",en$
+4030 MODE 0:Goto 60

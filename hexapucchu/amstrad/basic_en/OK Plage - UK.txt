@@ -1,0 +1,50 @@
+10 ' PLAGE
+15 MODE 0:BORDER 0
+16 FOR i=0 TO 15:INK i,0:NEXT i
+20 MEMORY &3FFF:LOAD"plage.cmp"
+25 FOR i=0 TO 15:INK i,0:NEXT i
+30 POKE &A634,&C8:POKE &A635,0:POKE &A636,0:CALL &A60B
+40 POKE &C7F1,&C9:CALL &C7D0
+50 CALL &A60B
+90 k$=INKEY$
+100 IF k$="1"THEN GOTO 300
+110 IF k$="2"THEN RUN "Rouage.bas"
+120 IF k$="3"THEN GOTO 200
+140 IF k$<>"1"OR k$<>"2"OR k$<>"3"THEN GOTO 90
+
+200 INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6:MODE 1:LOCATE 1,2:PEN 1:PRINT"You lie down peacefully"
+210 PRINT"on the warm sand, ready"
+220 PRINT"to enjoy the Peruvian sun."
+230 PEN 2:PRINT:PRINT"The sound of waves soothes your mind."
+240 PEN 1:PRINT:PRINT"You close your eyes, savoring"
+250 PRINT"this moment of pure rest."
+260 PEN 3:PRINT:PRINT"But the burning sun shows no mercy."
+270 PRINT"Heat slowly drains your strength."
+280 PRINT"Thirst grips you, then all blurs..."
+290 PRINT"...until total darkness."
+291 PEN 2:PRINT:PRINT"They'll find you later,"
+292 PRINT"more roasted than an old sausage"
+293 PRINT"left on the barbecue..."
+294 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+295 RUN"mort.bas"
+
+300 INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6:MODE 1:LOCATE 1,1:PEN 1:PRINT"The water shimmers in the sun,"
+310 PRINT"and you can't resist the call"
+315 PRINT"of freshness."
+320 PEN 2:PRINT:PRINT"You run, take a big leap..."
+325 PRINT"SPLASH! The shock is brutal:"
+330 PEN 3:PRINT:PRINT"Your sun-heated body hits"
+335 PRINT"the icy ocean."
+340 PEN 1:PRINT:PRINT"Your heart dislikes the surprise."
+350 PRINT"A freezing jolt runs"
+355 PRINT"through your veins."
+360 PRINT"Everything stops. No more beating."
+365 PRINT"Nothing left..."
+370 PEN 2:PRINT:PRINT"The waves cradle you one last"
+375 PRINT"time, a fatal caress."
+380 PRINT"They say you were pulled out"
+385 PRINT"with a frozen smile, as if"
+390 PRINT"happy with your quick dive..."
+395 PRINT"...into the beyond!"
+400 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+410 RUN"mort.bas"

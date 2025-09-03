@@ -1,0 +1,80 @@
+10 ' CORNICHE
+20 MODE 0:BORDER 0
+30 FOR i=0 TO 15:INK i,0:NEXT i
+40 MEMORY &3FFF
+50 LOAD"Corniche.cmp"
+60 FOR i=0 TO 15:INK i,0:NEXT i
+70 POKE &A634,&C8:POKE &A635,0:POKE &A636,0:CALL &A60B
+80 POKE &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+100 k$=INKEY$
+110 IF k$="1"OR k$="2"OR k$="3"OR k$="4"THEN GOTO 200
+120 IF k$="5"THEN GOTO 300
+130 IF k$="6"THEN GOTO 400
+140 IF k$="7"THEN GOTO 500
+150 IF k$="8"THEN GOTO 600
+160 IF k$="9"THEN GOTO 700
+170 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5"OR k$<>"6"OR k$<>"7"OR k$<>"8"OR k$<>"9" THEN GOTO 100 
+
+200 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,2:PEN 1:PRINT"You try to make your way through..."
+220 PEN 3:PRINT:PRINT"...but the jungle mocks you."
+230 PEN 2:PRINT:PRINT"Every branch blocks you,":PRINT"like a nightclub bouncer."
+240 PEN 1:PRINT:PRINT"You push a bush — it pushes back.":PRINT"You try to break a vine —":PRINT"it slaps your face.":PRINT:PEN 2:PRINT"The jungle wins.":PRINT"It holds you hostage..."
+250 PEN 1:PRINT:PRINT"Verdict:"
+260 PEN 1:PRINT:PRINT"You're stuck here, VIP guest of":PRINT Chr$(34);"Club Vegetation";Chr$(34)
+270 PEN 2:LOCATE 15,24:INPUT" ENTER  ",en$
+280 MODE 0:GOTO 60
+
+300 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,1:PEN 1:PRINT"You look around..."
+310 PEN 2:PRINT:PRINT"Trees, ferns, vines everywhere."
+320 PEN 3:PRINT:PRINT"Well done, Sherlock.":PRINT"You're officially in":PRINT"the middle of a jungle!"
+330 PEN 1:PRINT:PRINT"Nothing surprising so far..."
+340 PEN 2:PRINT:PRINT"Except your hairstyle":PRINT"quit ten meters ago."
+350 PEN 1:PRINT:PRINT"If you have a manual called":PRINT Chr$(34);"How to Survive in a Giant Salad Bowl";Chr$(34):PRINT"now's the time to open it..."
+360 PEN 2:LOCATE 15,24:INPUT" ENTER  ",en$
+370 MODE 0:GOTO 60
+
+400 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,1:PEN 1:PRINT"You try to climb up."
+410 PEN 2:PRINT:PRINT"Two meters in, a branch":PRINT"whips your cheek.":PRINT:PRINT"Three meters,":PRINT"a frog stares at you..."
+420 PEN 1:PRINT:PRINT"After 12 heroic seconds,":PRINT"your arms send a clear message:"
+430 PEN 3:PRINT:PRINT"           ";CHR$(34);" WITHOUT US ! ";CHR$(34)
+440 PEN 2:PRINT:PRINT"You go back down faster":PRINT"than you climbed,":PRINT"soaked in sweat and regret."
+450 PEN 2:LOCATE 15,25:INPUT" ENTER  ",en$
+460 MODE 0:GOTO 60
+
+500 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,1:PEN 1:PRINT"You scream so loud Tarzan":PRINT"would be ashamed of you."
+510 PEN 3:PRINT:PRINT"Result:"
+520 PEN 2:PRINT:PRINT"A parrot repeats your cries":PRINT"...on a loop."
+550 PEN 1:PRINT:PRINT"It's official:":PRINT"Even the wildlife mocks you."
+560 PRINT:PRINT"And of course, it achieved":PRINT"absolutely nothing."
+570 PEN 2:LOCATE 15,24:INPUT" ENTER  ",en$
+580 MODE 0:GOTO 60
+
+600 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,1:PEN 1:PRINT"You lie down,":PRINT"enjoying the tropical calm."
+610 PEN 2:PRINT:PRINT"Birdsong, warm air...":PRINT"A real peaceful moment."
+620 PEN 1:PRINT:PRINT"Your mattress feels strangely":PRINT"comfortable...":PRINT"...until it starts to wiggle."
+630 PEN 3:PRINT:PRINT"Bad surprise:"
+640 PEN 1:PRINT:PRINT"You just stole the spot of":PRINT"an anaconda napping and digesting."
+650 PEN 2:PRINT:PRINT"It wakes up angry, and guess what?"
+660 PEN 3:PRINT:PRINT"You're its brunch."
+670 PEN 2:LOCATE 15,24:INPUT" ENTER  ",en$
+680 RUN"Mort.bas"
+
+700 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,1:PEN 1:PRINT"You climb the tree with all the":PRINT"grace of a drunk koala."
+710 PEN 2:PRINT:PRINT"After groans, scratches":PRINT"and early muscle despair,":PRINT"you reach the top."
+720 PEN 3:PRINT:PRINT"There, you spot a tight rope!"
+730 PEN 1:PRINT:PRINT"A makeshift zipline of vines":PRINT"that screams:":PRINT:PEN 3:PRINT"    ";CHR$(34);" Jungle accident zone ";CHR$(34):PEN 1:PRINT:PRINT"             for miles..."
+740 PEN 2:PRINT:PRINT"But hey, who doesn't like":PRINT"a bit of thrill before death?"
+750 PEN 3:LOCATE 2,22:INPUT"Use the zipline (Y/N) ";T$
+760 IF T$="N"OR T$="n"OR T$="NO"OR T$="no"OR T$="No" THEN GOTO 60
+770 IF T$="Y"OR T$="y"OR T$="YES"OR T$="yes"OR T$="Yes" THEN GOTO 800
+780 GOTO 750
+
+800 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,1:PEN 1:PRINT"You grab the vine,":PRINT"take a deep breath..."
+810 PEN 3:PRINT:PRINT"And here we go!"
+820 PEN 2:PRINT:PRINT"You slice through the air":PRINT"like a rocket, hair (what's left)":PRINT"floating in zero gravity."
+830 PEN 1:PRINT:PRINT"You're going fast, really fast.":PEN 2:PRINT:PRINT"You barely have time":PRINT"to regret your life choices":PRINT"before spotting the ground."
+840 PRINT:PRINT"A smooth landing...":PRINT"like a fridge dropped from a plane."
+850 PEN 1:PRINT:PRINT"But a landing nonetheless!"
+860 PEN 2:LOCATE 15,24:INPUT" ENTER  ",en$
+870 RUN"Environs.bas"

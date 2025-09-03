@@ -1,0 +1,53 @@
+10 ' ENVIRONS
+20 MODE 0:BORDER 0
+30 for i=0 to 15:ink i,0:next i
+40 MEMORY &3FFF
+50 LOAD"Environs.cmp"
+60 for i=0 to 15:ink i,0:next i
+70 poke &A634,&C8:poke &A635,0:poke &A636,0:CALL &A60B
+80 poke &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+100 k$=INKEY$
+110 IF k$="1"THEN RUN"Jungle.bas"
+120 IF k$="2"THEN RUN"Nature1.bas"
+130 IF k$="3"THEN RUN"Cascade.bas"
+140 IF k$="4"THEN GOTO 200
+150 IF k$="5"THEN GOTO 300
+160 IF k$="6"THEN GOTO 400
+170 IF k$="7"THEN GOTO 500
+180 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5"OR k$<>"6"OR k$<>"7" THEN GOTO 100
+
+200 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,2:PEN 1:PRINT"A l'OUEST, un sentier s'enfonce dans":PRINT"une jungle epaisse, verte, luxuriante":Print"et inquietante.."
+220 PEN 2:Print:Print"Au NORD, un chemin mene a une prairie":Print"paisible, presque trop belle pour etre":Print"honnete."
+230 Pen 1:Print:Print"A l'EST, un sentier escarpe grimpe":Print"vers la montagne, enveloppee de":Print"brumes menacantes."
+240 PEN 3:Print:Print"Pas facile de choisir tant chaque":Print"destination a l'air encore plus":Print"accueillante que la precedente, hein ?"
+250 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+260 MODE 0:Goto 60
+
+300 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Apres les chateaux de sable, c'est au":Print"tour de la cabane dans les bois ?"
+310 Pen 2:Print:PRINT"Vous etes un vrai gamin, vous !"
+320 Pen 1:Print:Print"Vous commencez a empiler des branches..."
+330 Pen 2:Print"Apres 3 heures,":Print"vous avez une oeuvre d'art":Print"conceptuelle baptisee :"
+340 Pen 3:Print:Print "  ";Chr$(34);" Tas de bois qui tient pas debout ";Chr$(34)
+350 Pen 1:Print:Print"Bravo, architecte."
+360 Pen 2:Print:Print"On est d'accord que ca n'a servi a rien":Print"A part collectionner les echardes":Print"et se fatiguer pour rien."
+370 PEN 2:LOCATE 15,24:INPUT" ENTER  ",en$
+380 MODE 0:Goto 60
+
+400 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous pensez que creuser est la reponse":Print"a tous vos problemes ?"
+410 Pen 3:Print:Print:Print"Newsflash : la vie c'est pas Minecraft !"
+420 PEN 2:Print:Print"Ce n'est pas parce que vous avez":Print"trouve un engrenage une fois, que":Print"le sol est devenu une brocante magique."
+430 Pen 3:Print:Print "Ici, tout ce que vous gagnez,":Print"c'est des ampoules."
+440 PEN 1:PRINT:PRINT"Bon,":Print"faudrait voir a se reprendre un peu,":Print"Hein, Mr Boulder Dash du dimanche."
+450 PEN 2:LOCATE 15,25:INPUT"  ENTER  ",en$
+460 MODE 0:Goto 60
+
+500 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Ah, le bon vieux plan B : repartir."
+510 PEN 3:PRINT:Print"Le plan des laches, quoi."
+520 PEN 2:PRINT:PRINT"Soit..."
+550 PEn 1:Print:Print"Vous foncez a l'aeroport avec votre":Print"engrenage sous le bras et embarquez":Print"dans le premier vol retour":Print"pour la France."
+560 Pen 3:Print:Print"Probleme : "
+570 PEn 2:Print:Print"Durant le vol,":Print"votre souvenir inca brouille les":Print"instruments de bord..."
+580 PEn 1:Print:Print"Conclusion ?":Print:Print"Un vol sans escale, direct dans l'ocean":Print"Pas de mile accumule,":Print"mais une jolie noyade offerte."
+590 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+600 Run"Mort.bas"

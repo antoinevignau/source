@@ -1,0 +1,50 @@
+10 ' GROTTE 1
+20 MODE 0:BORDER 0
+30 for i=0 to 15:ink i,0:next i
+40 MEMORY &3FFF
+50 LOAD"Grotte1.cmp"
+60 for i=0 to 15:ink i,0:next i
+70 poke &A634,&C8:poke &A635,0:poke &A636,0:CALL &A60B
+80 poke &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+100 k$=INKEY$
+110 IF k$="1"THEN RUN"Cascade.bas"
+120 IF k$="2"THEN RUN"Grotte2.bas"
+130 IF k$="3"THEN GOTO 200
+140 IF k$="4"THEN GOTO 300
+150 IF k$="5"THEN GOTO 400
+160 IF k$="6"THEN GOTO 500
+170 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5"OR k$<>"6" THEN GOTO 100
+
+200 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,2:PEN 1:PRINT"L'entree de la caverne est semblable":PRINT"a une gueule beante et affamee,":Print"prete a engloutir quiconque":Print"oserait s'y aventurer."
+220 PEN 2:Print:Print"Sur la roche humide, vous distinguez":Print"plusieurs graffitis."
+230 Pen 1:Print:Print"Entre les classiques :"
+240 Pen 3:Print:Print Chr$(34);"Enter at your own risk";Chr$(34);", ";Chr$(34);"Go away";Chr$(34);",":Print Chr$(34);"No Trespassing";Chr$(34);", ou encore ":Print Chr$(34);"Cuidado con el oso!";Chr$(34);" ,"
+250 PEN 2:Print:Print"un sobre mais intrigant":Pen 3:Print:Print "           ";Chr$(34);"Alan was here";Chr$(34):Pen 2:Pen 1:Print:print"semble vous fixer avec insistance..."
+260 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+270 MODE 0:Goto 60
+
+300 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Grand explorateur devant l'Eternel,":Print"vous decidez de faire une pause bien":Print"meritee... au bout de quoi ?":Print"      ...trois minutes d'aventure ?"
+310 Pen 2:Print:PRINT"Vous vous asseyez majestueusement":Print"sur un rocher, en quete de sagesse":Print"et d'inspiration."
+320 Pen 1:Print:Print"Le bruit apaisant de la cascade,":Print"le chant lointain d'un oiseau exotique,":Print"le ruissellement discret de l'eau":Print"dans vos chaussettes mouillees..."
+330 Pen 2:Print:Print"Un moment presque zen..."
+340 Pen 3:Print:Print "Jusqu'a ce qu'une fourmi curieuse":Print"et surtout mortelle, decouvre":Print"que votre fessier fait une excellente":Print"piste d’escalade !"
+350 Pen 1:Print:Print"       Sa morsure vous foudroie."
+360 PEN 2:LOCATE 15,25:INPUT" ENTER  ",en$
+370 Run"Mort.bas"
+
+400 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous vous asseyez en tailleur,":Print"fermez les yeux et laissez votre":Print"esprit voguer..."
+410 Pen 2:Print:Print:Print"Pendant votre meditation, vous sentez":Print"votre esprit s'elever..."
+420 Pen 3:Print:Print "Jusqu'a ce qu'il decide d'aller":Print"faire un tour au bar du coin sans":Print"vous prevenir."
+430 Pen 1:Print:Print "Vous restez la, perplexe, en train":Print"de mediter sur l'abandon spirituel."
+440 PEN 2:LOCATE 15,25:INPUT"  ENTER  ",en$
+450 MODE 0:Goto 60
+ 
+
+500 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Bravant l'humidite, vous vous glissez":Print"sous le rideau liquide."
+510 Pen 2:Print:Print"Sensation intense :"
+520 Pen 3:Print:Print"C'est comme se faire passer au karcher":Print"par Dame Nature."
+530 Pen 1:Print:Print"Vous ressortez aussi trempe qu'un":Print"sachet de the usage, mais avec":Print"le sentiment d'avoir accompli":Print"quelque chose."
+540 PEn 3:Print:Print"(On ne sait pas quoi, mais bravo.)"
+550 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+560 MODE 0:Goto 60

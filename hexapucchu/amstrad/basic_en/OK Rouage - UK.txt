@@ -1,0 +1,56 @@
+10 ' ROUAGE
+15 MODE 0:BORDER 0
+16 for i=0 to 15:ink i,0:next i
+20 MEMORY &3FFF
+30 LOAD"rouage.cmp"
+35 for i=0 to 15:ink i,0:next i
+40 poke &A634,&C8:poke &A635,0:poke &A636,0:CALL &A60B
+50 poke &C7F1,&C9:CALL &C7D0
+60 CALL &A60B    
+90 k$=INKEY$
+100 IF k$="1"THEN GOTO 200
+110 IF k$="2"THEN GOTO 300
+120 IF k$="3"THEN GOTO 400
+125 IF k$="4"THEN GOTO 500
+126 IF k$="5"THEN RUN"Environs.bas"
+140 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5" THEN GOTO 90 
+
+200 INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6:MODE 1:LOCATE 1,2:PEN 1:PRINT"The artefact looks like an old":PRINT"Inca cog, carved in stone with":PRINT"disturbing precision."
+220 Pen 2:Print:Print"It has ten teeth,":Print"weighs about 800 grams,"
+230 Print"and its center shows the stern":Print"face of a forgotten god..."
+240 Pen 1:Print:print"On the back, an engraved text":Print"catches your attention:"
+250 Pen 3:Print:Print"    Retriquay, Ignoru o Cansalco."
+260 Pen 1:Print:print"Strange...":Print:Print"These words sound familiar..."
+270 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+280 MODE 0:Goto 35
+
+300 INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6:MODE 1:LOCATE 1,1:PEN 1:PRINT"Hey, do you think you're Aladdin?"
+310 Pen 2:Print:Print"This is no magic lamp,"
+315 Print"but an old Inca gear!"
+320 Pen 3:Print:Print"Wrong story, my friend!"
+325 Pen 1:Print:Print"Yet as you rub it hard,":Print"fine magnetic dust starts to":Print"shine under the sunlight."
+330 Pen 2:Print:Print"As if the stone still whispered":Print"some ancient secrets..."
+340 LOCATE 15,24:INPUT" ENTER  ",en$
+350 MODE 0:Goto 35
+
+400 INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6:MODE 1:LOCATE 1,1:PEN 1:PRINT"You dip the cog in seawater,"
+410 Print"hoping to uncover more secrets."
+420 Pen 3:Print:Print"But the salt starts to attack":Print"the old stone insidiously."
+430 PEn 2:Print:Print"Suddenly, a deep rumble":Print"echoes through the cave..."
+440 PEn 1:Print:Print"A crack appears, and water":Print"seeps into a hidden mechanism."
+450 Pen 2:Print:Print"The cog spins wildly,":Print"triggering a chain reaction":Print"that swallows you":Print"in a merciless torrent..."
+460 Pen 3:Print:Print"Your adventure ends here."
+470 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+480 Run"mort.bas"
+
+500 INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6:MODE 1:LOCATE 1,1:PEN 1:PRINT"You shake the cog like a maraca,"
+510 Print"convinced it will reveal a clue."
+520 Pen 3:Print:Print"Bad idea:"
+530 PEn 2:Print:Print"A rattling sound follows,":Print"then a worrying click..."
+540 Pen 1:Print:Print"Congrats, you've just triggered":Print"the Inca-style self-destruct!"
+550 Pen 2:Print:Print"You only have time to think:"
+560 Pen 3:Print:Print"     Why the heck did I shake?!"
+570 Pen 1:Print:Print"...Before being turned into":Print"     ...archaeological dust!"
+580 Pen 3:Print:Print:Print"        End of the adventure!"
+590 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+600 Run"mort.bas"

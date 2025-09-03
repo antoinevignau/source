@@ -1,0 +1,66 @@
+10 ' GROTTE 4
+20 MODE 0:BORDER 0
+30 for i=0 to 15:ink i,0:next i
+40 MEMORY &3FFF
+50 LOAD"Grotte4.cmp"
+60 for i=0 to 15:ink i,0:next i
+70 poke &A634,&C8:poke &A635,0:poke &A636,0:CALL &A60B
+80 poke &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+100 k$=INKEY$
+110 IF k$="1"THEN RUN"Grotte3.bas"
+120 IF k$="2"THEN RUN"Trou.bas"
+130 IF k$="3"THEN GOTO 300
+140 IF k$="4"THEN GOTO 400
+150 IF k$="5"THEN GOTO 500
+160 IF k$="6"THEN GOTO 600
+170 IF k$="7"THEN GOTO 700
+180 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5"OR k$<>"6"OR k$<>"7" THEN GOTO 100 
+
+300 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous observez les lieux de plus pres."
+310 Pen 2:Print:PRINT"Ce boyau n'est pas qu'un simple":Print"couloir balaye par le vent :"
+320 Pen 3:Print:Print"Le visage sculpte dans le mur NORD":Print"semble trop detaille pour n'etre":Print"qu'un element decoratif."
+330 Pen 1:Print:Print"Son nez, notamment, depasse etrangement":Print"C'est peut-etre un indice.":Print"Ou juste un Inca avec un gros pif."
+340 Pen 2:Print:Print"Par ailleurs, en y regardant bien,":Print"il semble aussi tirer la langue."
+350 Pen 3:Print"Ce detail vous trouble."
+360 Pen 2:Print:Print"Un message code ?":Print"Une blague millenaire ?"
+370 Pen 1:Print:Print"Ou simplement un sculpteur facetieux":Print"avec du temps a perdre ?"
+380 PEN 2:LOCATE 15,25:INPUT" ENTER  ",en$
+390 MODE 0:Goto 60
+
+400 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Deja fatigue apres trois cailloux":Print"et deux flaques ?"
+410 Pen 2:Print:Print"Il va falloir serieusement penser":Print"a vous inscrire a la salle..."
+420 PEN 1:Print:Print"Soupirant, vous vous adossez":Print"au mur pour souffler un peu."
+430 Pen 3:Print:Print "Quand soudain : CLIC ! WHOOSH !!!"
+440 PEN 2:PRINT:PRINT"Votre dos vient d'appuyer pile sur":Print"le nez de la statue."
+450 Pen 1:Print:Print"Le mur se met a pivoter dans un":Print"grondement ancestral."
+460 Pen 3:Print:Print"Vous perdez l'equilibre,":Print"basculez en arriere":Print"et disparaissez dans l'ombre..."
+470 Pen 2:Print:Print"Direction : Mystere ! Mais c'est au NORD"
+480 PEN 2:LOCATE 15,25:INPUT"  ENTER  ",en$
+490 RUN"Grotte5.bas"
+
+500 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous vous placez face au visage":Print"sculpte et, dans un elan de grande":Print"maturite, vous tirez la langue":Print"a votre tour."
+510 PEN 3:PRINT:Print"Rien ne se passe..."
+520 PEN 2:PRINT:PRINT"Si ce n'est un grand moment de solitude."
+530 PEn 1:Print:Print"Mais qui sait ? "
+540 Pen 2:print:Print:Print"Peut-etre que quelque part,":Print"dans un monde parallele,":Print"une autre statue vous repond..."
+550 LOCATE 15,24:INPUT"  ENTER  ",en$
+560 MODE 0:Goto 60
+
+600 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 3:PRINT"          SESAME, OUVRE TOI !!!"
+610 Pen 1:Print:Print"Helas, ce n'est ni la bonne epoque,":Print"ni la bonne civilisation,":Print"ni la bonne voix..."
+620 Pen 2:Print:Print"A votre cri, un vieux mecanisme":Print"grince et s'active."
+630 PEn 3:PRINT:Print"Un geyser de boue chaude jaillit":Print"alors de la bouche du visage sculpte !"
+640 Pen 2:Print:Print"Vous voila copieusement barbouille":Pen 3:Print:Print"             ...et surtout tres mort."
+650 Pen 1:Print:Print"Dernieres pensees :":Print:Print"Je savais que j'aurais du tenter":Print"ABRACADABRA..."
+660 Pen 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+670 Run"Mort.bas"
+
+700 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous vous decidez a uriner,":Print"avec la determination et la maturite":Print"qui vous caracterisent."
+710 PEn 2:Print:Print"C'est a dire, en visant la bouche":Print"du visage sculpte dans le mur..."
+720 Pen 1:Print:Print"Puisqu'on est la, autant s'amuser."
+730 Pen 3:Print:Print"Surprise !"
+740 Pen 1:Print:Print"Votre jet se transforme instantanement":Print"en une colonne de vapeur au contact":Print"de l'orifice du mur !"
+750 Pen 2:Print:Print"Alors soit vous avez de sacres talents":Print"pyrotechniques, soit une source de":Print"chaleur mysterieuse bouillonne":Print"derriere ce mur."
+760 LOCATE 15,24:INPUT"  ENTER  ",en$
+770 MODE 0:Goto 60

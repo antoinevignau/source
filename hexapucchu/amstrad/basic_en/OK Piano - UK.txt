@@ -1,0 +1,88 @@
+10 ' PIANO
+20 MODE 0:BORDER 0
+30 for i=0 to 15:ink i,0:next i
+40 MEMORY &3FFF
+50 LOAD"Piano.cmp"
+60 for i=0 to 15:ink i,0:next i
+70 poke &A634,&C8:poke &A635,0:poke &A636,0:CALL &A60B
+80 poke &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+100 k$=INKEY$
+110 IF k$="1"THEN SOUND 1,159,60:SOUND 1,142,60:SOUND 1,179,60:SOUND 1,358,60:SOUND 1,239,60:GOTO 100
+120 IF k$="2"THEN SOUND 1,358,60:GOTO 100
+130 IF k$="3"THEN SOUND 2,239,60:GOTO 100
+140 IF k$="4"THEN SOUND 3,179,60:GOTO 100
+150 IF k$="5"THEN SOUND 1,159,60:GOTO 200
+160 IF k$="6"THEN SOUND 2,142,60:GOTO 100
+170 IF k$="7"THEN RUN"Fresque.bas"
+180 IF k$="8"THEN RUN"Poulie.bas"
+185 IF k$="9"THEN GOTO 700
+190 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5"OR k$<>"6"OR k$<>"7"OR k$<>"8"OR k$<>"9" THEN GOTO 100
+
+200 k$=INKEY$
+210 IF k$="1"THEN SOUND 1,159,60:SOUND 1,142,60:SOUND 1,179,60:SOUND 1,358,60:SOUND 1,239,60:GOTO 100
+220 IF k$="2"THEN SOUND 1,358,60:GOTO 100
+230 IF k$="3"THEN SOUND 2,239,60:GOTO 100
+240 IF k$="4"THEN SOUND 3,179,60:GOTO 100
+250 IF k$="5"THEN SOUND 2,159,60:GOTO 100
+260 IF k$="6"THEN SOUND 1,142,60:GOTO 300
+270 IF k$="7"THEN RUN"Fresque.bas"
+280 IF k$="8"THEN RUN"Poulie.bas"
+285 IF k$="9"THEN GOTO 700
+290 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5"OR k$<>"6"OR k$<>"7"OR k$<>"8"OR k$<>"9" THEN GOTO 200
+
+300 k$=INKEY$
+310 IF k$="1"THEN SOUND 1,159,60:SOUND 1,142,60:SOUND 1,179,60:SOUND 1,358,60:SOUND 1,239,60:GOTO 100
+320 IF k$="2"THEN SOUND 1,358,60:GOTO 100
+330 IF k$="3"THEN SOUND 2,239,60:GOTO 100
+340 IF k$="4"THEN SOUND 3,179,60:GOTO 400
+350 IF k$="5"THEN SOUND 2,159,60:GOTO 100
+360 IF k$="6"THEN SOUND 1,142,60:GOTO 100
+370 IF k$="7"THEN RUN"Fresque.bas"
+380 IF k$="8"THEN RUN"Poulie.bas"
+385 IF k$="9"THEN GOTO 700
+390 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5"OR k$<>"6"OR k$<>"7"OR k$<>"8"OR k$<>"9" THEN GOTO 300
+
+400 k$=INKEY$
+410 IF k$="1"THEN SOUND 1,159,60:SOUND 1,142,60:SOUND 1,179,60:SOUND 1,358,60:SOUND 1,239,60:GOTO 100
+420 IF k$="2"THEN SOUND 1,358,60:GOTO 500
+430 IF k$="3"THEN SOUND 2,239,60:GOTO 100
+440 IF k$="4"THEN SOUND 3,179,60:GOTO 100
+450 IF k$="5"THEN SOUND 2,159,60:GOTO 100
+460 IF k$="6"THEN SOUND 1,142,60:GOTO 100
+470 IF k$="7"THEN RUN"Fresque.bas"
+480 IF k$="8"THEN RUN"Poulie.bas"
+485 IF k$="9"THEN GOTO 700
+490 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5"OR k$<>"6"OR k$<>"7"OR k$<>"8"OR k$<>"9" THEN GOTO 400
+
+500 k$=INKEY$
+510 IF k$="1"THEN SOUND 1,159,60:SOUND 1,142,60:SOUND 1,179,60:SOUND 1,358,60:SOUND 1,239,60:GOTO 100
+520 IF k$="2"THEN SOUND 1,358,60:GOTO 100
+530 IF k$="3"THEN SOUND 2,239,60:GOTO 600
+540 IF k$="4"THEN SOUND 3,179,60:GOTO 100
+550 IF k$="5"THEN SOUND 2,159,60:GOTO 100
+560 IF k$="6"THEN SOUND 1,142,60:GOTO 100
+570 IF k$="7"THEN RUN"Fresque.bas"
+580 IF k$="8"THEN RUN"Poulie.bas"
+585 IF k$="9"THEN GOTO 700
+590 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5"OR k$<>"6"OR k$<>"7"OR k$<>"8"OR k$<>"9" THEN GOTO 500
+
+600 INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6:MODE 1:LOCATE 1,2:PEN 1:PRINT"The six blocks vibrate as one":Print"and echo across the cavern"
+610 PEN 2:Print:Print"The final note fades away,":Print"then a heavy silence settles."
+620 Pen 3: Print:Print"Suddenly, a low rumble."
+630 Pen 2: Print:Print"The stones tremble,":Print"dust falls from the ceiling..."
+640 Print:Print"And you realize with a smile":Print"that you've just impressed":Print"Steven Spielberg himself!"
+650 PEN 1:Print:Print"A section of wall slides aside,":Print"revealing a path to the SOUTH."
+655 Locate 25,18:Pen 3:Print "SOUTH"
+660 Pen 1:Print:Print"You take it without hesitation!"
+670 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+680 Run"Inca1.bas"
+
+700 INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6:MODE 1:LOCATE 1,2:PEN 1:PRINT"Mysterious symbols mark the blocks."
+710 Print:PRINT"Time and moisture":Print"have smoothed their surface,":Print"but signs of wear suggest":Print"they've been used many times."
+720 Pen 2:Print:Print"A breath of cold air":Print"flows through the gaps."
+730 Pen 3:Print:Print"You place your hand on a key:"
+740 Pen 1:Print:Print"It sinks down slightly":Print"and a low sound echoes":Print"deep into your chest."
+750 Pen 2:Print:Print"This organ is not just for show,":Print"it may be hiding a secret..."
+760 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+770 Mode 0:Goto 60

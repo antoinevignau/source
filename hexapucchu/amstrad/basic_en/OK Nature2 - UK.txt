@@ -1,0 +1,78 @@
+10 ' NATURE 2
+20 MODE 0:BORDER 0:L=0
+25 for i=0 to 15:ink i,0:next i
+30 MEMORY &3FFF
+40 LOAD"Nature2.cmp"
+45 for i=0 to 15:ink i,0:next i
+50 poke &A634,&C8:poke &A635,0:poke &A636,0:CALL &A60B
+60 poke &C7F1,&C9:CALL &C7D0
+70 CALL &A60B
+80 k$=INKEY$
+90 IF k$="1"THEN IF L=0 GOTO 200 ELSE GOTO 300
+100 IF k$="2"THEN IF L=0 GOTO 400 ELSE GOTO 500
+110 IF k$="3"THEN GOTO 600
+120 IF k$="4"THEN GOTO 700
+130 IF k$="5"THEN GOTO 900
+170 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5" THEN GOTO 80  
+
+200 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,2:PEN 1:PRINT"You squint your eyes,":PRINT"you stick out your tongue,":Print"you get closer...":Print:Print"You even try the technique":Print"of rapid blinking."
+220 PEN 3:Print:Print"... but nothing."
+230 Pen 2:Print:Print"Written smaller than":Print"an insurance contract!"
+240 PEn 1:PRint:Print "You'd need a magnifying glass,":Print"or eagle sight."
+250 Pen 1:Print:Print"Spoiler: you're not an eagle."
+260 Pen 2:Print:Print"You give up:":Print"No way you'll lose":Print "two tenths per eye for this!"
+270 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+280 MODE 0:Goto 45
+
+300 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"The carvings are ridiculously tiny."
+310 Pen 2:Print:PRINT"But with your brand new magnifier,":Print"miracle:"
+320 Pen 3:Print:Print"  the sacred signs appear!"
+330 Pen 1:Print:Print"      G-A-F-F-C : 56423"
+340 Pen 2:Print:PRINT"What is that?!?":Print:Print"A lullaby for sleepless llamas?":Print"A playlist for sun dancing?":Print"Or a lost hit from the Andes?"
+350 Pen 1:Print:Print"Who knows..."
+360 PEN 2:LOCATE 15,24:INPUT" ENTER  ",en$
+370 MODE 0:Goto 45
+
+400 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"You turn back":PRINT"when a small light on a leaf":Print"catches your eye."
+410 Pen 2:Print:Print"Curious like a cat,":Print"you lean closer.":Print"But it's really tiny."
+420 PEN 1:Print:Print"You decide to grab it":Print"to take a closer look."
+430 Pen 3:Print:Print"Bad idea:"
+440 PEN 2:PRINT:PRINT"It's a Phoneutria Nigriventer":Print"the most venomous spider."
+450 Pen 1:Print:Print"You offered your hand,":Print"and it offers... death."
+460 Pen 3:Print:Print"This wouldn't have happened":Print"if you'd used a magnifier first!"
+470 Pen 1:Print:Print"Just saying. Your call."
+480 PEN 2:LOCATE 15,25:INPUT"  ENTER  ",en$
+490 RUN"Mort.bas"
+
+500 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"On your way, your enhanced vision":Print"from the glass spots a tiny":Print"hairy shape."
+510 PEN 3:PRINT:Print"     A Phoneutria Nigriventer!"
+520 PEN 2:PRINT:PRINT"If you didn't know yet, this fancy":Print"spider name means:"
+530 Pen 3:Print:PRINT"     Game Over in three minutes!"
+540 Pen 1:Print:Print"But thanks to your wisdom,":Pen 2:Print"and mostly your magnifier,":Pen 1:Print"you dodge it and head South,":Print"alive and proud."
+545 PEN 2:Print:Print"PS: You put the magnifier back":Print"where you found it. Might help":Print"some lost adventurer like you..."
+550 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+560 RUN"Nature1.bas"
+
+600 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"You dive under the arch":Print"lift some stones,":Print"inspect the cracks..."
+610 Pen 3:Print:Print"...Nothing."
+620 Pen 2:Print:Print"No relic, no trap.":Print:Print"Not even a Pokemon card":Print"forgotten by a conquistador.":Print:Print"Nothing. Nada."
+630 Pen 1:PRINT:Print"Expected a treasure?":Print:Print"Wrong call: Indiana Jones":Print"is 3 km to the North."
+640 PEn 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+650 MODE 0:GOTO 45
+
+700 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"You push the leaves aside":Print"with admirable courage and..."
+710 Pen 3:Print:Print"You face a snake":Print"that bites before you can":Print"type ";:Print Chr$(34);"Snake Antidote";Chr$(34);" into Google."
+720 Locate 7,6:Pen 2:Print"Snake Antidote"
+730 Pen 2:Locate 1,9:Print"Your vision blurs,":Print"your legs get weak..."
+740 Pen 1:Print:Print"And you realize maybe, bushes":Print"aren't your thing."
+750 Pen 3:PRINT:Print"The story ends here."
+760 Pen 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+770 Run"Mort.bas"
+
+900 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"After moving enough rocks":Print"to build an Inca wall,":Print"you find... A MAGNIFYING GLASS!"
+910 Locate 13,3:Pen 3:Print"A MAGNIFYING GLASS"
+920 Pen 2:Print:Print"An item as thrilling as a dictionary,":Print"but it could save your life."
+930 Pen 1:Print:Print"Turns out,":Print "moles hide treasures too."
+940 Pen 3:PRINT:Print"Thanks to the Indiana Jones":Print"of cataracts who left it here."
+950 Pen 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+960 L=1:MODE 0:GOTO 45

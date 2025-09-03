@@ -1,0 +1,11 @@
+10 ' MORT
+15 MODE 0:BORDER 0
+16 for i=0 to 15:ink i,0:next i
+20 MEMORY &3FFF:LOAD"Mort.cmp"
+40 poke &A634,&C8:poke &A635,0:poke &A636,0:CALL &A60B
+50 poke &C7F1,&C9:CALL &C7D0
+60 CALL &A60B
+90 k$=INKEY$
+100 IF k$="O" or k$="o" THEN RUN"Plage.bas"
+110 IF k$="N" or k$="n" THEN CALL 0
+120 IF k$<>"O" OR k$<>"o" OR k$<>"N" OR k$<>"n" THEN GOTO 90

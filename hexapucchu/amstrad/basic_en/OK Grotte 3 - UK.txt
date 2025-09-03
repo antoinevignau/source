@@ -1,0 +1,70 @@
+10 ' CAVE 3
+20 MODE 0:BORDER 0
+30 FOR i=0 TO 15:INK i,0:NEXT i
+40 MEMORY &3FFF
+50 LOAD"Grotte3.cmp"
+60 FOR i=0 TO 15:INK i,0:NEXT i
+70 POKE &A634,&C8:POKE &A635,0:POKE &A636,0:CALL &A60B
+80 POKE &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+100 k$=INKEY$
+110 IF k$="1" THEN GOTO 700
+120 IF k$="2" THEN RUN"Grotte4.bas"
+130 IF k$="3" THEN RUN"Grotte2.bas"
+140 IF k$="4" THEN GOTO 200
+150 IF k$="5" THEN GOTO 300
+160 IF k$="6" THEN GOTO 400
+170 IF k$="7" THEN GOTO 500
+180 IF k$="8" THEN GOTO 600
+190 IF k$<>"1" OR k$<>"2" OR k$<>"3" OR k$<>"4" OR k$<>"5" OR k$<>"6" OR k$<>"7" OR k$<>"8" THEN GOTO 100
+
+200 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,2:PEN 1:PRINT"On the table, victuals that seem":PRINT"to have survived through the ages:"
+220 PEN 2:PRINT:PRINT"- A petrified loaf of bread,":PRINT"hard as granite."
+230 PRINT:PRINT"- A fruit basket":PRINT"dry as mummies."
+240 PRINT:PRINT"- A vial of potion so shady":PRINT"that a chemist would say ";CHR$(34);"No thanks";CHR$(34);"."
+250 PEN 3:PRINT:PRINT"All seems arranged":PRINT"a thousand years ago, to test":PRINT"the naivety of hungry tourists."
+260 PEN 1:PRINT:PRINT"And yet, like Alice in":PRINT"Wonderland but Peruvian style,":PRINT"you feel an irresistible":PRINT"urge to taste..."
+270 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+280 MODE 0:GOTO 60
+
+300 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,1:PEN 1:PRINT"You bravely bite the loaf":PRINT"and your teeth are the first to":PRINT"explode!"
+310 PEN 2:PRINT:PRINT"The bread stays intact.":PRINT"Your ego crumbles like":PRINT"a soggy biscuit."
+320 PEN 3:PRINT:PRINT"You unknowingly trigger a prophecy:"
+330 PEN 1:PRINT:PRINT"He who bites the Bread of Time":PRINT"will only get shame and":PRINT"ancient pain."
+340 PRINT:PRINT"Pathetic."
+350 PEN 2:PRINT:PRINT"You put the loaf back...":PRINT"while planning your future":PRINT"dental appointment."
+360 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+370 MODE 0:GOTO 60
+
+400 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,1:PEN 1:PRINT"You uncork the vial..."
+410 PEN 2:PRINT:PRINT"A scent of fermented cactus":PRINT"tickles your nose."
+420 PEN 3:PRINT:PRINT"You swallow...":PRINT"and trip into a technicolor dream!"
+430 PEN 1:PRINT:PRINT"Flashes of colors follow:"
+440 PEN 3:PRINT:PRINT"    Green, red, blue, black, green"
+450 PEN 2:PRINT:PRINT"When you come back to yourself,":PRINT"you're soaked, shivering,":PRINT"convinced the rock has a sense":PRINT"of humor..."
+460 PEN 1:PRINT:PRINT"I don’t know what that was...":PRINT"But that was some good stuff!"
+470 PEN 2:LOCATE 15,25:INPUT"  ENTER  ",en$
+480 MODE 0:GOTO 60
+
+500 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,1:PEN 1:PRINT"You go for the banana,":PRINT"mummified since the golden age":PRINT"of human sacrifices."
+510 PEN 3:PRINT:PRINT"One bite... and BAM!"
+520 PEN 2:PRINT:PRINT"Your tongue swells like a balloon,":PRINT"your eyes go wild, and you wiggle":PRINT"like a possessed puppet before":PRINT"ending up asphyxiated on the cold":PRINT"cave floor."
+550 PEN 1:PRINT:PRINT"Moral of the story:"
+560 PEN 2:PRINT:PRINT"The Inca banana":PRINT"is not your totem fruit."
+570 PEN 3:PRINT:PRINT"Game Over!"
+580 LOCATE 15,24:INPUT"  ENTER  ",en$
+590 RUN"Mort.bas"
+
+600 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,1:PEN 1:PRINT"You whistle a cheerful tune."
+610 PEN 2:PRINT:PRINT"Nothing happens..."
+620 PEN 1:PRINT:PRINT"Except a distant stalactite":PRINT"that seems to roll its eyes."
+630 PEN 3:PRINT:PRINT:PRINT"At least you livened up the cave."
+640 LOCATE 15,24:INPUT"  ENTER  ",en$
+650 MODE 0:GOTO 60
+
+700 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,1:PEN 1:PRINT"You head WEST."
+710 PEN 2:PRINT:PRINT"No sooner have you crossed the threshold":PRINT"that the ground, weakened by ages,":PRINT"gives way beneath your feet."
+720 PEN 3:PRINT:PRINT"You fall several meters":PRINT"down a narrow rocky passage..."
+730 PEN 1:PRINT:PRINT:PRINT"After a chaotic descent,":PRINT"you land outside the cave,":PRINT"in the middle of nature."
+740 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+750 RUN"Nature1.bas"   

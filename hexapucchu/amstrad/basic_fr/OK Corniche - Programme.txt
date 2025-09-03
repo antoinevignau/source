@@ -1,0 +1,80 @@
+10 ' CORNICHE
+20 MODE 0:BORDER 0
+30 for i=0 to 15:ink i,0:next i
+40 MEMORY &3FFF
+50 LOAD"Corniche.cmp"
+60 for i=0 to 15:ink i,0:next i
+70 poke &A634,&C8:poke &A635,0:poke &A636,0:CALL &A60B
+80 poke &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+100 k$=INKEY$
+110 IF k$="1"OR k$="2"OR k$="3"OR k$="4"THEN GOTO 200
+120 IF k$="5"THEN GOTO 300
+130 IF k$="6"THEN GOTO 400
+140 IF k$="7"THEN GOTO 500
+150 IF k$="8"THEN GOTO 600
+160 IF k$="9"THEN GOTO 700
+170 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5"OR k$<>"6"OR k$<>"7"OR k$<>"8"OR k$<>"9" THEN GOTO 100 
+
+200 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,2:PEN 1:PRINT"Vous tentez de vous frayer un chemin...":
+220 PEN 3:Print:Print"... mais la jungle vous rit au nez."
+230 Pen 2:Print:Print"Chaque branche bloque votre passage,":Print"tel un videur de boite de nuit."
+240 PEN 1:Print:Print"Vous poussez un buisson,":Print"il vous repousse.":Print:Print"Vous tentez de casser une liane,":Print"elle vous claque au visage.":Print:PEN 2:Print"La jungle a gagne.":Print"Elle vous garde en otage..."
+250 PEn 1:PRint:Print "Verdict :"
+260 Pen 1:Print:Print"Vous restez coince ici,":Print"en VIP du ";Chr$(34);"Club Vegetation";Chr$(34);"."
+270 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+280 MODE 0:Goto 60
+
+300 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous jetez un oeil autour de vous :"
+310 Pen 2:Print:PRINT"Des arbres, des fougeres, des lianes."
+320 Pen 3:Print:Print"Bravo, Sherlock,":Print"vous etes officiellement au milieu":Print"d'une jungle !"
+330 Pen 1:Print:Print"Rien de surprenant, en somme..."
+340 Pen 2:Print:PRINT"Si ce n'est que votre brushing":Print"a declare forfait il y a dix metres."
+350 Pen 1:Print:Print"Si vous avez un manuel intitule":Print Chr$(34);"Comment survivre dans un saladier XXL";Chr$(34):Print"c'est le moment de le consulter..."
+360 PEN 2:LOCATE 15,24:INPUT" ENTER  ",en$
+370 MODE 0:Goto 60
+
+400 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous tentez l'ascension.
+410 Pen 2:Print:Print"Deux metres plus haut,":Print"une branche vous fouette la joue.":PRINT:Print"Trois metres,":Print"une grenouille vous juge..."
+420 PEN 1:Print:Print"Apres 12 secondes d'efforts heroiques,":Print"vos bras envoient un message clair :"
+430 Pen 3:Print:Print "            ";Chr$(34);" SANS NOUS ";Chr$(34)
+440 PEN 2:PRINT:PRINT"Vous redescendez,":Print"plus vite que vous etes monte,":Print"trempe de sueur et de regrets."
+450 PEN 2:LOCATE 15,25:INPUT"  ENTER  ",en$
+460 MODE 0:Goto 60
+
+500 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous criez si fort que Tarzan":Print"lui-meme aurait honte pour vous."
+510 PEN 3:PRINT:Print"Resultat :"
+520 PEN 2:PRINT:PRINT"Un perroquet repete vos supplications":Print"... en boucle."
+550 PEn 1:Print:Print"C'est officiel :":Print"Meme la faune se fout de vous."
+560 Print:Print"Et, bien sur, ca n'a servi":Print"absolument a rien."
+570 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+580 MODE 0:Goto 60
+
+600 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous vous allongez,":Print"savourant le calme tropical."
+610 Pen 2:Print:Print"Le chant des oiseaux,":Print"l'air tiede... un vrai moment detente."
+620 Pen 1:Print:Print"Votre matelas semble par ailleurs":Print"etonnamment confortable...":Print"... jusqu'a ce qu'il se mette a onduler."
+630 Pen 3:PRINT:Print"Mauvaise surprise :"
+640 Pen 1:Print:Print"Vous venez de piquer la place":Print"d'un anaconda en pleine sieste digestive"
+650 Pen 2:Print:Print"Il se reveille, furieux,":Print"et devinez quoi ?"
+660 Pen 3:Print:Print"Vous etes son brunch."
+670 PEn 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+680 Run"Mort.bas"
+
+700 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous escaladez l'arbre avec toute la":Print"dignite d'un koala bourre."
+710 Pen 2:Print:Print"Apres quelques rales, ecorchures":Print"et un debut de depression musculaire,":Print"vous atteignez le sommet."
+720 Pen 3:Print:Print"La, vous decouvrez une corde tendue !"
+730 Pen 1:Print:Print"Une tyrolienne improvisee faite de":Print"lianes, qui crie :":Print:Pen 3:Print"      ";Chr$(34);" Accident de la jungle ";Chr$(34):Pen 1:Print:Print"                  a des kilometres..."
+740 Pen 2:Print:Print"Mais bon, qui n'aimerait pas":Print"un peu d'adrenaline avant de mourir ?"
+750 Pen 3:Locate 2,22:INPUT"Utilisez-vous la tyrolienne (O/N) ";T$
+760 IF T$="N"or T$="n"or T$="NON"or T$="non"or T$="Non" Then Goto 60
+770 If T$="O"or T$="o"or T$="OUI"or T$="oui"or T$="Oui" Then Goto 800
+780 Goto 750
+
+800 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous vous agrippez a la liane,":Print"inspirez un grand coup..."
+810 Pen 3:Print:Print"Et c'est parti !"
+820 PEn 2:Print:Print"Vous fendez l'air comme une fusee,":Print"les cheveux (ou ce qu il en reste)":Print"en apesanteur."
+830 Pen 1:Print:Print"Ca va vite, tres vite.":Pen 2:Print:Print"Vous avez a peine le temps":Print"de regretter toutes vos decisions":Print"de vie avant d'apercevoir le sol."
+840 Print:Print"Atterrissage tout en finesse...":Print"comme un frigo qu'on jette d'un avion."
+850 Pen 1:Print:Print"Mais atterissage quand meme !"
+860 Pen 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+870 Run"Environs.bas"

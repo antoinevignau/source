@@ -1,0 +1,57 @@
+10 ' POULIE
+20 MODE 0:BORDER 0
+25 for i=0 to 15:ink i,0:next i
+30 MEMORY &3FFF
+40 LOAD"Poulie.cmp"
+45 for i=0 to 15:ink i,0:next i
+50 poke &A634,&C8:poke &A635,0:poke &A636,0:CALL &A60B
+60 poke &C7F1,&C9:CALL &C7D0
+70 CALL &A60B
+80 k$=INKEY$
+90 IF k$="1"THEN GOTO 200
+100 IF k$="2"THEN GOTO 300
+110 IF k$="3"THEN GOTO 400
+120 IF k$="4"THEN GOTO 500
+130 IF k$="5"THEN RUN"Trou.bas"
+140 IF k$="6"THEN RUN"Grotte5.bas"
+150 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5"OR k$<>"6" THEN GOTO 80  
+
+200 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,2:PEN 1:PRINT"You run your hands over the stones,":PRINT"scratching, checking each gap":Print"with the care of a house fairy":Print"in full cleaning frenzy."
+220 PEN 2:Print:Print"Verdict:"
+221 Pen 3: Print:Print"A nice thick layer of dust!"
+222 Pen 1: Print:Print"      - thanks for the allergy -"
+223 Pen 2:Print:Print"One odd detail:":PRINT"a spot where the stone":Print"looks way more worn out...":Print"As if it had been moved."
+224 PEN 1:Print:Print"So,":Print"happy to scrub an Inca wall?"
+230 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+240 Mode 0: Goto 45
+
+300 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"To your great surprise,"
+310 Print"the hanging stones"
+315 Print"don’t come crashing":Print"onto your shiny skull."
+320 Pen 2:PRINT:Print"They slowly go down,"
+321 Print"acting as counterweights."
+322 Pen 3:Print:Print"A stone wall section"
+323 Print"slides upward,"
+325 Print"revealing a path to the EAST."
+326 Locate 25,11:Pen 2:Print"EAST"
+327 Pen 1:Print:Print"Without wasting a second,":Print"you slip right through":Print"before it closes again."
+340 PEN 2:LOCATE 15,24:INPUT" ENTER  ",en$
+350 RUN"Piano.bas"
+
+400 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"You carefully observe":Print"the mechanism:"
+410 Pen 2:Print:Print"A lever connects":Print"to huge heavy stones,":Print"hanging from the ceiling":Print"by an ingenious system":Print"of pulleys."
+415 PEN 3:PRINT:PRINT"Let’s be honest,":Print"it doesn’t feel very safe."
+420 Pen 1:Print:Print"Fine craftsmanship,":PRINT"signed by the ancient Incas,":Print"without a doubt!"
+470 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+480 MODE 0:GOTO 45
+
+500 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Honestly,":Print"it was kind of obvious, no?"
+510 PEN 2:PRINT:Print"You never once thought:"
+520 PEN 3:PRINT:PRINT"What if these giant stones":Print"drop right on my head":Print"as I walk under them?"
+530 Pen 1:Print:PRINT"No? Really?"
+540 Pen 2:PRINT:Print"Well... you should have.":Print:Print"Because that is EXACTLY":Print"what just happened."
+550 Pen 3:Locate 17,14:PRINT"EXACTLY"
+560 Locate 1,17:Print"You are dead,":Print"flattened like a pancake."
+570 Print"One could almost serve you":Print"with some sugar."
+580 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+590 Run"mort.bas"

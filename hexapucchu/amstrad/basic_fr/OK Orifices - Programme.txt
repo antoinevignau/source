@@ -1,0 +1,45 @@
+10 ' ORIFICES
+20 MODE 0:BORDER 0
+30 for i=0 to 15:ink i,0:next i
+40 MEMORY &3FFF
+50 LOAD"Orifices.cmp"
+60 for i=0 to 15:ink i,0:next i
+70 poke &A634,&C8:poke &A635,0:poke &A636,0:CALL &A60B
+80 poke &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+100 k$=INKEY$
+110 IF k$="1"THEN GOTO 200
+120 IF k$="2"THEN GOTO 200
+130 IF k$="3"THEN GOTO 200
+140 IF k$="4"THEN GOTO 300
+150 IF k$="5"THEN RUN"saut.bas"
+160 IF k$="6"THEN GOTO 400
+190 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5"OR k$<>"6" THEN GOTO 100
+
+200 INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6:MODE 1:LOCATE 1,2:PEN 1:PRINT"Vous inserez l'engrenage":Print"dans l orifice..."
+210 PEN 3:PRINT:PRINT"CLAC !"
+220 PEN 2:PRINT:PRINT"Un bruit sec,":PRINT"puis un sifflement sinistre."
+230 PEN 1:PRINT:PRINT"L'engrenage ressort tel un boomerang,":PRINT"traverse l'air a la vitesse":PRINT"d'un pigeon kamikaze":PRINT"et se loge pile entre vos deux yeux."
+240 PEN 2:PRINT:PRINT"Vous avez juste le temps de penser :"
+250 PEN 1:PRINT:PRINT"Ah, j'aurais du faire un meilleur choix,ou porter des lunettes de protection !"
+260 PEN 3:Print:PRINT"Puis tout devient noir."
+280 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+290 RUN"Mort.bas"
+
+300 INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6:MODE 1:LOCATE 1,2:PEN 1:PRINT"Vous glissez l'engrenage":Print"dans l'orifice aux 10 entailles,":PRINT"pile-poil le meme nombre de dents":Print"que l'artefact."
+310 PEN 2:PRINT:PRINT"Apres un cliquetis prometteur,"
+320 PRINT"l'engrenage se met a tourner":PRINT"dans son logement."
+330 PEN 3:PRINT:PRINT"Une pierre pivote et... SURPISE !"
+350 PEN 1:PRINT:PRINT"Un ordinateur ancien se revele !"
+370 PEN 2:PRINT:PRINT"Non, vous n'etes pas en train de rever."
+380 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+390 RUN"CPC.bas"
+
+400 INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6:MODE 1:LOCATE 1,2:PEN 1:PRINT"Vous inspectez les orifices."
+410 PEN 2:Print:PRINT"Au-dessus de chacun, vous distinguez":Print"des entailles, en nombre variable."
+420 PEN 1:PRINT:Print"Serait-ce un code ? Une deco ?":Print"Le nombre de fois ou les Incas":Print"ont perdu au demineur ?"
+430 PEN 3:Print:PRINT"Cela doit certainement":Print"faire reference a l'engrenage."
+440 PEN 1:Print:PRINT"Est-ce son poids ? son age ?":Print"son nombre de dents ?"
+450 PEN 2:Print::PRINT"Quoi qu il en soit,":Print"va falloir choisir intelligemment...":Print:Print"...ou prier tres fort !"
+480 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+490 MODE 0:Goto 60

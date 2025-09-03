@@ -1,0 +1,82 @@
+10 ' INCA 1
+20 MODE 0:BORDER 0:SUD=0
+30 for i=0 to 15:ink i,0:next i
+40 MEMORY &3FFF
+50 LOAD"Inca1.cmp"
+60 for i=0 to 15:ink i,0:next i
+70 poke &A634,&C8:poke &A635,0:poke &A636,0:CALL &A60B
+80 poke &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+92 Ink 0,0:Pen 0:locate 3,12:Pen A:Print Chr$(143):locate 5,12:Print Chr$(143):locate 7,12:Print Chr$(143):locate 9,12:Print Chr$(143):locate 11,12:Print Chr$(143)
+94 Ink 1,6:Ink 2,2:Ink 3,18
+95 A=0:B=0:C=0:D=0=E=0
+100 k$=INKEY$
+110 IF k$="1" Then A=A+1:sound 1,100:GOTO 200
+120 IF k$="2" Then B=B+1:sound 1,120:GOTO 300
+130 IF k$="3" Then C=C+1:sound 1,140:GOTO 400
+140 IF k$="4" Then D=D+1:sound 1,160:GOTO 500
+150 IF k$="5" Then E=E+1:sound 1,180:GOTO 600
+160 IF k$="6"THEN GOTO 700
+170 If K$="7"THEN RUN"Piano.bas"
+180 If K$="8"THEN GOTO 800
+190 If K$="9"THEN GOTO 2000
+195 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5"OR k$<>"6"OR k$<>"7"OR k$<>"8"OR k$<>"9" THEN GOTO 100
+
+200 If A>3 then A=0
+210 locate 3,12:Pen A:Print Chr$(143)
+220 Goto 1000
+300 If B>3 then B=0
+310 locate 5,12:Pen B:Print Chr$(143)
+320 Goto 1000
+400 If C>3 then C=0
+410 locate 7,12:Pen C:Print Chr$(143)
+420 Goto 1000
+500 If D>3 then D=0
+510 locate 9,12:Pen D:Print Chr$(143)
+520 Goto 1000
+600 If E>3 then E=0
+610 locate 11,12:Pen E:Print Chr$(143)
+620 Goto 1000
+
+700 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,2:PEN 2:PRINT"Cinq orifices qui s'illuminent en":Print"rouge, bleu ou vert selon vos":Print"manipulations."
+710 Pen 1:Print:Print"Vous avez deja vu ca quelque part..."
+720 PEN 3:Print:Print"Mais oui ! Cela vous revient !"
+730 Pen 2:Print:Print"Un bon vieux Mastermind,":Print"        ... version sacrifice humain."
+740 Pen 1:Print:Print"Une intuition vous souffle que la":Print"bonne combinaison deverrouillera":Print"un passage secret."
+750 Pen 3:Print:Print "Mais... combien d'essais avant":Print"la malediction ?"
+760 Print:Pen 2:Print"Si vous avez trouve un indice":Print"durant votre aventure, je pense que":Print"c'est le moment de vous en servir !"
+770 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+780 MODE 0:Goto 60
+
+800 IF SUD=0 Then goto 900 Else Run"Saut.bas"
+
+900 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,2:PEN 2:PRINT"Vous vous jetez sur la porte":Print"avec la conviction d'un heros":Print"de film action !"
+910 Pen 1:Print:Print"... et rebondissez comme une crepe sur":Print"une poele en fonte."
+920 PEN 3:Print:Print"La porte ? Meme pas egratignee."
+930 Pen 2:Print:Print"Vous ? Une cote legerement froissee":Print"et l'ego en miettes."
+940 Pen 1:Print:Print"Bref, la porte reste close..."
+950 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+960 MODE 0:Goto 60
+
+1000 IF A=3 and B=1 and C=2 and D=0 and E=3 Then sound 1,50:Sound 1,100:Sound 1,150:Sound 1,200:Sound 1,250:Sound 1,300: GOTO 3000
+1020 Goto 100
+
+2000 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,2:PEN 2:PRINT"Vous choisissez le passage a l'Ouest":Print"persuade que la gloire se cache":Print"toujours a gauche."
+2010 Pen 1:Print:Print"Quelques pas plus loin..."
+2020 PEN 3:Print:Print"Clic !"
+2030 Pen 2:Print:Print"Oh, ce doux son qui annonce":Print"un mecanisme ancestral !"
+2040 Pen 1:Print:Print"Soudain, des lances jaillissent":Print"des murs avec la precision d'un":Print"chef etoile dressant ses plats."
+2050 Pen 3:Print:Print "Vous tentez d'esquiver... rate."
+2060 Print:Pen 2:Print"Votre aventure se termine en":Print"brochette humaine.":Print"Au moins, c'est exotique."
+2070 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+2080 Run"Mort.bas"
+
+3000 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,2:PEN 3:PRINT"Ding-Dong !"
+3010 Pen 2:Print:Print"Tous les orifices s'illuminent comme":Print"un sapin de Noel sous acide !"
+3020 PEN 3:Print:Print"Vous avez entre la bonne combinaison !"
+3030 Pen 2:Print:Print"Un bruit sourd retentit, et la porte":Print"au SUD glisse avec elegance..."
+3040 Pen 1:Print:Print"ou en tout cas, autant d'elegance":Print"qu'une tonne de granite peut avoir."
+3050 Pen 3:Print:Print "La voie est libre !"
+3060 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+3070 SUD=1
+3080 MODE 0:Goto 60

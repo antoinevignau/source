@@ -1,0 +1,59 @@
+10 ' CASCADE
+20 MODE 0:BORDER 0
+30 for i=0 to 15:ink i,0:next i
+40 MEMORY &3FFF
+50 LOAD"Cascade.cmp"
+60 for i=0 to 15:ink i,0:next i
+70 poke &A634,&C8:poke &A635,0:poke &A636,0:CALL &A60B
+80 poke &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+100 k$=INKEY$
+110 IF k$="1"THEN RUN"Environs.bas"
+120 IF k$="2"THEN GOTO 300
+130 IF k$="3"THEN GOTO 400
+140 IF k$="4"THEN GOTO 500
+150 IF k$="5"THEN GOTO 600
+160 IF k$="6"THEN GOTO 700
+170 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5"OR k$<>"6" THEN GOTO 100 
+
+300 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous grimpez, vous grimpez...":Print:Print"vous grimpez...":Print:Print"Et grimpez encore..."
+310 Pen 2:Print:PRINT"... enfin, dans votre tete."
+320 Pen 3:Print:Print"En realite, vous etes colle au meme":Print"caillou depuis dix minutes,":Print"en nage, haletant."
+330 Pen 1:Print:Print"Ereinte, vous renoncez, redescendant":Print"le metre cinquante que vous aviez":Print"peniblement gravis..."
+340 PEN 2:LOCATE 15,24:INPUT" ENTER  ",en$
+350 MODE 0:Goto 60
+
+400 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous plongez vos mains dans l'eau":Print"glaciale et buvez a grandes gorgees."
+410 Pen 2:Print:Print"Delicieux..."
+420 PEN 3:Print:Print"...enfin, jusqu'a ce que votre estomac":Print"organise une rave party."
+430 Pen 1:Print:Print "Apparemment, cette eau contenait plus":Print"de bacteries qu'un clavier":Print"d'ordinateur partage."
+440 PEN 3:PRINT:PRINT"Vous rendez l'ame dans un mix":Print"de coliques et de desespoir."
+450 PEN 2:LOCATE 15,25:INPUT"  ENTER  ",en$
+460 RUN"Mort.bas"
+
+500 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous transformez vos doigts en":Print"hamecons et attendez..."
+510 PEN 3:PRINT:Print"Patiemment... tres patiemment."
+520 PEN 2:PRINT:PRINT"Dix minutes plus tard,":Print"un poisson s'approche,":Print"vous fixe comme s'il connaissait":Print"un terrible secret, puis repart."
+550 PEn 1:Print:Print"Intriguant."
+560 Pen 2:print:Print"Deux heures plus tard, victoire :":Print"Vous attrapez... une algue..."
+570 LOCATE 15,24:INPUT"  ENTER  ",en$
+580 MODE 0:Goto 60
+
+600 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 3:PRINT"PLOUF !":Pen 1:Print:Print"Vous plongez comme si vous saviez nager"
+610 Pen 3:Print:Print"...sauf que non."
+620 Pen 2:Print:Print"L'eau glaciale vous saisit, vos":Print"organes signent leur demission,":Print"mais vous ressortez VIVANT !":Locate 21,9:Pen 1:Print"VIVANT"
+630 PRINT:Print"Trempe, transi, et d'une proprete":Print"qui ferait jalouser une salle blanche."
+640 Pen 3:Print:Print"Au passage,":Print"vous avez cru apercevoir une lueur":Print"etrange sous la cascade..."
+650 Pen 2:Print:Print"Mais vos dents qui claquent":Print"couvrent toute reflexion."
+660 LOCATE 15,24:INPUT"  ENTER  ",en$
+670 MODE 0:Goto 60
+
+700 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous pensez vraiment denicher un":Print"passage derriere la cascade ?"
+710 Pen 2:Print:Print"Un peu trop cliche, non ?"
+720 Pen 1:Print:Print"Mais porte par votre optimisme et une":Print"bonne dose d'illusions, vous empruntez":Print"le petit sentier de pierres glissantes":Print"qui vous mene sous le rideau d'eau."
+730 Pen 3:Print:Print"Et la MIRACLE !!!"
+740 Pen 2:Print:Print"Une ouverture secrete s'offre a vous,":Print"devoilant l'entree d'une grotte":Print"mysterieuse a l'EST !"
+750 Pen 3:Locate 5,22:INPUT"L'empruntez-vous (O/N) ";T$
+760 IF T$="N"or T$="n"or T$="NON"or T$="non"or T$="Non" Then Goto 60
+770 If T$="O"or T$="o"or T$="OUI"or T$="oui"or T$="Oui" Then RUN"Grotte1.bas"
+780 Goto 750

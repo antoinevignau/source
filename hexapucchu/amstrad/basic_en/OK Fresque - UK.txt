@@ -1,0 +1,54 @@
+10 ' MURAL
+20 MODE 0:BORDER 0
+30 FOR i=0 TO 15:INK i,0:NEXT i
+40 MEMORY &3FFF
+50 LOAD"Fresque.cmp"
+60 FOR i=0 TO 15:INK i,0:NEXT i
+70 POKE &A634,&C8:POKE &A635,0:POKE &A636,0:CALL &A60B
+80 POKE &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+100 k$=INKEY$
+110 IF k$="1"THEN RUN"Piano.bas"
+120 IF k$="2"THEN GOTO 200
+130 IF k$="3"THEN GOTO 300
+140 IF k$="4"THEN GOTO 400
+150 IF k$="5"THEN GOTO 500
+160 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5" THEN GOTO 100
+
+200 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,2:PEN 1:PRINT"You pull out your phone,":PRINT"frame the shot, and click...":PRINT"Memory saved!"
+220 PEN 2:PRINT:PRINT"You post it on Insta with the caption:"
+230 PEN 3:PRINT:PRINT"Inca art? Sci-fi? Boom boom?":PRINT:PRINT CHR$(34);" #MillennialMystery #2BarsLeft ";CHR$(34)
+240 PEN 2:PRINT:PRINT"And now you wait for likes..."
+250 PEN 1:PRINT:PRINT"Even deep inside an Inca temple,":PRINT"the algorithm never sleeps."
+260 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+270 MODE 0:GOTO 60
+
+300 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,1:PEN 1:PRINT"You press your ear to the":PRINT"cold stone, hoping to hear something."
+310 PEN 3:PRINT:PRINT"An ancient voice?"
+320 PRINT:PRINT"The whisper of the Ancients?"
+330 PEN 2:PRINT:PRINT"Nothing..."
+340 PEN 1:PRINT:PRINT"But suddenly, a sharp pain:"
+350 PEN 3:PRINT:PRINT"A small scorpion was right at":PRINT"that spot."
+360 PEN 2:PRINT:PRINT"He said nothing either, but":PRINT"he clearly told you to leave...":PRINT"Feet first!"
+370 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+380 RUN"Mort.bas"
+
+400 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,1:PEN 1:PRINT"Feeling lonely, are we?"
+410 PEN 2:PRINT:PRINT:PRINT"You caress the fresco with the care":PRINT"of a cave painting expert..."
+420 PEN 3:PRINT:PRINT"But nothing happens."
+430 PEN 1:PRINT:PRINT"No thrill, no whisper,":PRINT"not even a stone sigh."
+440 PEN 2:PRINT:PRINT"At least you tried to bond":PRINT"with the rock."
+450 PEN 1:PRINT:PRINT"That’s something, right?"
+460 PEN 2:LOCATE 15,25:INPUT"  ENTER  ",en$
+470 MODE 0:GOTO 60
+
+500 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,1:PEN 1:PRINT"The walls are covered with":PRINT"a massive fresco carved in stone."
+510 PEN 2:PRINT:PRINT"The shapes are simple, stylized,":PRINT"but carved with eerie precision."
+520 PEN 1:PRINT:PRINT"To the left: a man with":PRINT"a solemn and powerful gaze.":PRINT:PRINT"The year 1984 is engraved below."
+530 PEN 2:PRINT:PRINT"To his right, a strange angular":PRINT"object... could it be... a computer!!!":PRINT:PRINT"The year 984 is carved below":PRINT"this curious figure."
+540 PEN 3:LOCATE 28,13:PRINT"computer"
+550 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+560 CLS:PEN 3:PRINT:PRINT"Farther along, a tortured shape":PRINT"evokes a nuclear mushroom cloud,":PRINT"frozen in time.":PRINT:PRINT"The year 2028 is carved beneath":PRINT"this apocalyptic symbol."
+570 PEN 1:PRINT:PRINT:PRINT"What does this strange fresco mean?":PEN 2:PRINT:PRINT:PRINT"A warning? A prophecy?"
+580 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+590 MODE 0:GOTO 60

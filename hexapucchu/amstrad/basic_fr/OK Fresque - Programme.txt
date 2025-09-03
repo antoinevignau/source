@@ -1,0 +1,54 @@
+10 ' FRESQUE
+20 MODE 0:BORDER 0
+30 for i=0 to 15:ink i,0:next i
+40 MEMORY &3FFF
+50 LOAD"Fresque.cmp"
+60 for i=0 to 15:ink i,0:next i
+70 poke &A634,&C8:poke &A635,0:poke &A636,0:CALL &A60B
+80 poke &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+100 k$=INKEY$
+110 IF k$="1"THEN RUN"Piano.bas"
+120 IF k$="2"THEN GOTO 200
+130 IF k$="3"THEN GOTO 300
+140 IF k$="4"THEN GOTO 400
+150 IF k$="5"THEN GOTO 500
+160 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5" THEN GOTO 100 
+
+200 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,2:PEN 1:PRINT"Vous degainez votre telephone,":PRINT"ajustez le cadre, et clic :":Print"souvenir pris !"
+220 PEN 2:Print:Print"Vous postez sur Insta avec la legende :"
+230 Pen 3:Print:Print"Art inca ? Science-fiction ? Boum Boum ?":Print Chr$(34);" #MystereMillenaire #JaiEncore2Barres ";Chr$(34)
+240 PEN 2:Print:Print"Et vous attendez les likes..."
+250 Pen 1:Print:Print"Parce que meme au fin fond d'une":Print"pyramide inca, l'algorithme, lui,":Print"ne dort jamais."
+260 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+270 MODE 0:Goto 60
+
+300 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous collez votre oreille contre la":Print"pierre froide, dans l'espoir":Print"d'entendre quelque chose."
+310 Pen 3:Print:PRINT"Une voix ancienne ?"
+320 Print:Print"Le murmure des Anciens ?"
+330 Pen 2:Print:Print"Rien..."
+340 Pen 1:Print:Print "En revanche, vous ressentez une":Print"vive douleur :"
+350 Pen 3:Print:Print"Un petit scorpion logeait pile a":Print"cet endroit."
+360 Pen 2:Print:Print"Il n'a rien dit non plus, mais il":Print"vous a clairement demande de degager...":Print"Les deux pieds devant !"
+370 PEN 2:LOCATE 15,24:INPUT" ENTER  ",en$
+380 Run"Mort.bas"
+
+400 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"En manque d'affection ?"
+410 Pen 2:Print:Print:Print"Vous caressez la fresque avec tout le":Print"serieux d'un expert en art rupestre..."
+420 Pen 3:Print:Print "Mais rien ne se passe."
+430 Pen 1:Print:Print "Pas un frisson, pas un murmure,":Print"meme pas un soupir de la pierre."
+440 PEN 2:PRINT:PRINT"Au moins vous aurez tente de creer":Print"du lien avec la roche."
+450 PEn 1:Print:Print"C'est deja ca, non ?"
+460 PEN 2:LOCATE 15,25:INPUT"  ENTER  ",en$
+470 MODE 0:Goto 60        
+
+500 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Les murs de la piece sont recouverts":Print"d'une fresque monumentale taillee dans":Print"la pierre."
+510 Pen 2:Print:Print"Les formes sont simples, stylisees,":Print"mais d'une precision etonnante."
+520 Pen 1:Print:Print"A gauche, figure un homme au regard":Print"grave et puissant.":Print:Print"La date 1984 est grave juste au dessous."
+530 Pen 2:Print:Print"A sa droite, un curieux objet":Print"geometrique aux lignes anguleuses":Print"ressemblant a un... ordinateur !!!":Print:Print"La date 984 est inscrite au dessous":Print"de cet etrange dessin."
+540 PEn 3:Locate 21,16:Print"ordinateur"
+550 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+560 CLS:Pen 3:Print:Print"Plus loin une forme tourmentee evoque":Print"un champignon atomique, silhouette":Print"menacante, suspendue dans le temps.":Print:Print"L'annee 2028 est gravee sous ce symbole":Print"d'apocalypse."
+570 Pen 1:Print:Print:Print"Que signifie cette enigmatique fresque ?":Pen 2:Print:Print:Print"Un avertissement ? Une prophetie ?"
+580 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+590 MODE 0:Goto 60  

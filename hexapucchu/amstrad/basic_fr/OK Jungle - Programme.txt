@@ -1,0 +1,61 @@
+10 ' JUNGLE
+20 MODE 0:BORDER 0
+25 for i=0 to 15:ink i,0:next i
+30 MEMORY &3FFF
+40 LOAD"jungle.cmp"
+45 for i=0 to 15:ink i,0:next i
+50 poke &A634,&C8:poke &A635,0:poke &A636,0:CALL &A60B
+60 poke &C7F1,&C9:CALL &C7D0
+70 CALL &A60B
+80 k$=INKEY$
+90 IF k$="1"THEN GOTO 200
+100 IF k$="2"THEN GOTO 300
+110 IF k$="3"THEN GOTO 400
+120 IF k$="4"THEN GOTO 500
+130 IF k$="5"THEN GOTO 600
+140 IF k$="6"THEN RUN"Environs.bas"
+150 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5"OR k$<>"6" THEN GOTO 80  
+
+200 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,2:PEN 1:PRINT"Vous regardez autour de vous,":PRINT"esperant voir un indice...":Print"ou un chargeur de telephone":Print"oublie par un autre touriste."
+220 PEN 2:Print:Print"Rien de tel, juste des plantes,":Print"un palmier imposant,"
+230 Pen 3:Print"et une promesse de piqures en serie."
+240 Pen 1: Print:Print"Pourtant,":Print"vous avez la curieuse impression":Print"que cette jungle murmure un secret..."
+250 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+260 MODE 0:Goto 45
+
+300 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous secouez le palmier":Print"avec l'enthousiasme":Print"d'un sportif du dimanche."
+310 Pen 3:PRINT:Print"Mauvais plan : CRAC... PLOC !"
+320 Pen 1:Print:Print"Une noix de coco se detache,":Print"vise votre tete":Print"et marque un parfait strike."
+330 Pen 2:Print:Print"Les palmiers viennent de remporter":Print"la manche."
+340 Pen 1:Print:Print"Score : Nature 1 - Touriste 0"
+350 PEN 2:LOCATE 15,24:INPUT" ENTER  ",en$
+360 RUN"Mort.bas"
+
+400 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous sortez votre couteau":Print"et commencez a sculpter fierement":Print"votre blaze..."
+410 Pen 3:Print:Print"Mais surprise :"
+420 PEN 2:PRINT:PRINT"quelqu'un est passe avant vous !"
+430 Pen 1:Print:Print"Sur l'ecorce, vous dechiffrez :
+440 Pen 3:Print:Print"10 dents, c'est moins que le crocodile"
+450 Pen 1:Print:Print"Et c'est signe : A.M.S."
+460 Print:Print"Bizarre...":Print:Print"Peut-etre serait-il bon":Print"de retenir cette information."
+470 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+480 MODE 0:GOTO 45
+
+500 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous soulevez les feuillages..."
+510 PEN 3:PRINT:Print"                ERREUR !"
+520 PEN 2:PRINT:PRINT"Une escadrille de moustiques tigres":Print"surgit, casques en tete,":Print"talkie-walkies gresillants."
+530 Pen 3:Print:PRINT"- Objectif visuel confirme,":Print"  on l'epuise !"
+540 Pen 1:PRINT:Print"Ils vous chargent en formation Delta,":Print"vous vident de votre sang":Print"comme un Capri-Sun."
+550 Pen 2:Print:Print"Derniere vision :":Print:Print"Un moustique qui vous salue,":Print"au garde-a-vous."
+560 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+570 Run"mort.bas"
+
+600 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous vous frayez un chemin":Print"vers le nord."
+610 Pen 2:Print:Print"Enfin, vous essayez..."
+620 Pen 1:Print:Print"Les plantes sont si denses":Print"qu'on dirait une file d'attente":Print"pour le Black Friday."
+630 Pen 2:Print:Print"Vous poussez, vous forcez..."
+640 Pen 3:Print:Print "SCHLACK !"
+650 Pen 1:Print:Print"Une liane se detache,":Print"s'enroule autour de votre cou":Print"et vous hisse dans les airs":Print"comme un jambon en promo."
+660 PEn 2:Print:Print"La nature, parfois, elle est pas cool..."
+670 LOCATE 15,24:INPUT"  ENTER  ",en$
+680 Run"mort.bas"

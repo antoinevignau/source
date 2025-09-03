@@ -1,0 +1,61 @@
+10 ' GROTTE 2
+20 MODE 0:BORDER 0
+30 for i=0 to 15:ink i,0:next i
+40 MEMORY &3FFF
+50 LOAD"Grotte2.cmp"
+60 for i=0 to 15:ink i,0:next i
+70 poke &A634,&C8:poke &A635,0:poke &A636,0:CALL &A60B
+80 poke &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+100 k$=INKEY$
+110 IF k$="1"THEN RUN"Grotte3.bas"
+120 IF k$="2"THEN GOTO 200
+130 IF k$="3"THEN RUN"Grotte1.bas"
+140 IF k$="4"THEN GOTO 300
+150 IF k$="5"THEN GOTO 600
+160 IF k$="6"THEN GOTO 400
+170 IF k$="7"THEN GOTO 500
+180 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5"OR k$<>"6"OR k$<>"7" THEN GOTO 100
+
+200 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,2:PEN 1:PRINT"Les yeux rives au plafond, vous":PRINT"scrutez les stalactites au cas ou l'une":Print"d'elles se detacherait lors de":Print"votre passage sous la voute NORD."
+220 PEN 3:Print:Print"Quand soudain, votre pied rencontre":Print"une stalagmite traitresse !"
+230 Pen 2:Print:Print"Vous voila delicatement empale,":Print"comme une brochette offerte aux":Print"dieux incas."
+240 Pen 1:Print:Print"Eh oui, le vrai danger, ce n'etait":Print"pas la-haut..."
+250 PEN 2:Print:Print"           Mais bien sous vos pieds !"
+260 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+270 Run"Mort.bas"
+
+300 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"L'echo vous renvoie un PLOC a chaque":Print"pas, comme si la grotte elle-meme":Print"applaudissait votre curiosite."
+310 Pen 2:Print:PRINT"A l'ouest, un vieil escalier taille":Print"dans la roche grimpe vaillamment vers":Print"l'etage superieur (sans rampe,":Print"evidemment)."
+320 Pen 3:Print:Print"Au NORD, une voute herissee de":Print"stalactites semble crier :":print"       ";Chr$(34);"Viens te planter ici !";Chr$(34)
+330 Pen 2:Print:Print"Et cette echelle a l'EST qui tente,":Print"heroiquement, d'atteindre une corniche":Print"ou un mur de pierres taillees attend":Print"manifestement qu'on le remarque..."
+340 Pen 2:Print:Print "Conclusion :"
+350 Pen 1:Print:Print"L'endroit est aussi accueillant qu'un":Print"escape game concu par un macon sadique."
+360 PEN 2:LOCATE 15,25:INPUT" ENTER  ",en$
+370 MODE 0:Goto 60
+
+400 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Creuser ? Vraiment ?"
+420 Pen 3:Print:Print "Encore et toujours cette obsession":Print"de trifouiller le sol ?"
+430 Pen 1:Print:Print "Mais d'ou cela vous vient-il ?":Print"Un traumatisme avec un bac a sable":Print"mal range ?":Print"Un complexe d'archeologue refoule ?"
+440 Pen 2:Print:Print"Vous voulez qu'on en parle ?":Print"Non ? Tant mieux !":Pen 1:Print:Print"Parce que la grotte, elle, n'a rien":Print"a dire.":Print:Print"Et la pierre non plus.":Print:Print"Pas meme un vers de terre pour faire":Print"la causette."
+450 Pen 3:Print:Print"Bref, vous ne trouvez rien."
+460 PEN 2:LOCATE 15,25:INPUT"  ENTER  ",en$
+470 MODE 0:Goto 60
+
+500 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous vous redressez, bras en l'air,":Print"regard habite, et d'une voix grave":Print"vous lancez :"
+510 Pen 3:Print:Print Chr$(34);"O esprit ancestral de la grotte,":Print"manifeste-toi !";Chr$(34)
+520 Pen 2:Print:Print"Un silence solennel s'installe.":Print"Pas de lumiere mystique,":Print"pas de voix venue des profondeurs,":Print"pas meme une petite brise dramatique."
+530 Pen 1:Print:Print"Juste un goute-a-goute regulier qui":Print"semble ponctuer votre echec.":Pen 2:Print:Print"       Ploc... Ploc... Ploc..."
+540 PEn 3:Print:Print"Felicitations. Vous venez d'invoquer":Print"l'indifference millenaire d'un caillou":Print"humide."
+550 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+560 MODE 0:Goto 60
+
+600 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous vous elancez vers l'echelle !"
+610 Pen 2:Print:Print"Helas... a peine avez-vous leve le pied":Print"en direction du premier barreau que":Print"vous comprenez :"
+620 Pen 3:Print:Print"Elle est trop courte.":Print "Beaucoup trop courte."
+630 Pen 1:Print:Print"A moins, bien sur, que ce ne soit vous":Print"qui soyez trop petit.":Pen 2:Print:Print"Difficile a dire, mais si vous avez":Print"deja perdu une bagarre contre un":Print"tabouret, cela meriterait reflexion..."
+640 PEn 1:Print:Print"Vous sautez, grimacez, soupirez.":Print"Rien n'y fait :"
+650 Pen 3:Print:Print"L'echelle se moque de vous depuis sa":Print"corniche, comme une star perchee":Print"refusant l'autographe."
+660 Pen 1:Print"Bref, vous etes coince au sol,":Print"et l'echelle, elle, a l'air de tres":Print"bien le vivre."
+660 PEN 2:LOCATE 15,25:INPUT"  ENTER  ",en$
+670 MODE 0:Goto 60

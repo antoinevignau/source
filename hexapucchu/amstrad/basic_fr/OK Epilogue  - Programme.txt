@@ -1,0 +1,60 @@
+10 ' EPILOGUE
+11 MEMORY &3FFF:LOAD"epilogue.cmp":for i=0 to 15:ink i,0:next i
+12 MODE 1:INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6:LOCATE 1,4:PEN 1:PRINT"Bravo, explorateur !"
+13 Pen 2:Print:Print"Vous avez survecu aux pieges,":Print"dechiffre les enigmes et decouvert":Print"le secret le mieux garde des Incas."
+14 Pen 1:Print:Print"Pas mal pour des vacances, non ?"
+15 Pen 3:Print:Print"Mais pas le temps de souffler :"
+16 Pen 2:Print:Print "Votre calepin vous appelle.":Print"L humanite doit savoir":Print"ce que vous avez vu !"
+17 Pen 1:Print:Print"Vous vous installez,":Print"un stylo a la main..."
+18 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+20 MODE 2:BORDER 26:ink 0,26:ink 1,13
+50 poke &A634,&C8:poke &A635,0:poke &A636,0:CALL &A60B
+60 poke &C7F1,&C9:CALL &C7D0:Border 26
+70 CALL &A60B
+100 PEN 1:Locate 1,4:PRINT"INCROYABLE : J AI TROUVE L ORDINATEUR DES INCAS... ET J AI SAUVE L HUMANITE ! "
+110 Print"============================================================================="
+120 Print:Print"                          Par votre envoye tres special au fin fond du Perou."
+130 Print:Print"Perdu dans la jungle peruvienne, entre moustiques kamikazes et pierres":Print"meurtrieres, je ne m attendais pas a tomber sur l'article de ma vie.":Print:Print"                                              Et pourtant..."
+
+140 Print:Print"Annee 984 :":Print:Print"les Incas, que l'on croyait occupes a sculpter des lamas, tresser des ponchos"
+150 Print"et inventer le quinoa, maniaient en realite la technologie comme personne.":Print"Leur chef d'oeuvre ? Incatrad, un ordinateur capable de calculs titanesques."
+160 Print "Une invention si prodigieuse qu'ils ont choisi de la proteger":Print"par un systeme radical :"
+170 Print:Print"Toute intrusion declenche un compte a rebours vers la fin du monde !":Print"Oui, les Incas avaient l'esprit dramatique."
+180 Locate 34,25:INPUT"  ENTER  ",en$
+190 Mode 2:CALL &A60B
+
+200 Locate 1,5:Print"Avance rapide : 1984.":Print:Print"Lors d'une balade touristique au Perou, un certain Alan Michael Sugar":Print"(ca vous dit quelque chose ?) decouvre Hexapucchu par hasard et y derobe":Print"les plans de l'Incatrad."
+210 Print:Print"Ces documents deviendront la pierre angulaire de ses futurs Amstrad CPC."
+220 Print:Print"Resultat : le compte a rebours demarre."
+225 Print:Print"Fin du monde prevue 44 ans plus tard, soit en 2028 !"
+230 Print:Print"Mais dans sa fuite, l'homme d'affaires perd un engrenage sur la plage.":Print:Print"Anecdote amusante : ses nombreuses dents lui inspireront plus tard les celebres"
+240 Print"pubs Amstrad... avec des crocodiles."
+250 Locate 34,25:INPUT"  ENTER  ",en$
+260 Mode 2:CALL &A60B
+
+270 Locate 1,5:Print"2026, de nos jours :":Print:Print "Moi, reporter en quete de sensations, je tombe sur cet engrenage maudit"
+280 Print"et m'aventure dans une pyramide Inca piegee.":Print:Print"Statues tueuses, trous sans fond, cocotiers fourbes :"
+290 Print"j'ai tout affronte, moi aussi, pour atteindre l'Incatrad.":Print:Print "Et la... miracle : tandis qu'il ne restait plus que deux ans avant le grand":Print"cataclysme, j'ai hacke le systeme."
+300 Print:Print"Certes, je n'ai pas stoppe le compte a rebours (on ne fait pas de miracles),":Print"mais j'ai gagne 255 ans."
+310 Print:Print "L'humanite respire."
+320 Locate 34,25:INPUT"  ENTER  ",en$
+330 Mode 2:CALL &A60B
+
+340 Locate 1,12:Print"Alors, ce soir, en sirotant mon Candy'up Chocolat, une question me taraude :":Print:Print"                  Qui sauvera le monde la prochaine fois ?"
+350 Locate 34,25:INPUT"  ENTER  ",en$
+360 MODE 1:INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6:LOCATE 1,9:PEN 1:PRINT"          Merci d'avoir joue a"
+370 Pen 3:Print:Print"               HEXAPUCCHU"
+380 Pen 2:Print:Print"      la Cite Perdue de Patchucca"
+390 Pen 1:Locate 10,20:Print"Eric Cubizolle (TITAN)"
+400 CALL &BB06
+
+500 MODE 2:BORDER 26:ink 0,26:ink 1,13:CALL &A60B
+510 Locate 1,5:Print"Hexapucchu a ete realise en 15 jours."
+520 Print:Print"Ce jeu est ne d'un vieux desir de creer un jeu d'aventure dans l'esprit":Print"de Devilry II, que j'avais programme durant ma jeunesse, en 1989."
+530 Print:Print"Les graphismes ont ete realises avec Multipaint pour le pixel art,":Print"et compreses grace a ConImgCPC."
+540 Print:Print"La programmation a ete effectuee en BASIC, avec mes modestes competences.":Print:Print"La structure des DSK et la manipulation des fichiers a ete produite":Print"avec ManageDSK."
+550 Print:Print"Je tiens a remercier tout particulierement Pulsophonic pour la musique,":Print"Roudoudou pour ses conseils et Demoniak pour son aide precieuse."
+560 Print"En esperant que ce petit jeu d'aventure vous aura plu."
+570 Print:Print"A ma famille : Cindy, Lana, Ellie, Oki.":Print"Tendres pensees a mon Papa."
+580 Print:Print"                              Longue vie au CPC !"
+590 Goto 590

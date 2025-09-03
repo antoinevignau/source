@@ -1,0 +1,67 @@
+10 ' CAVE 4
+20 MODE 0:BORDER 0
+30 for i=0 to 15:ink i,0:next i
+40 MEMORY &3FFF
+50 LOAD"Grotte4.cmp"
+60 for i=0 to 15:ink i,0:next i
+70 poke &A634,&C8:poke &A635,0:poke &A636,0:CALL &A60B
+80 poke &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+100 k$=INKEY$
+110 IF k$="1"THEN RUN"Grotte3.bas"
+120 IF k$="2"THEN RUN"Trou.bas"
+130 IF k$="3"THEN GOTO 300
+140 IF k$="4"THEN GOTO 400
+150 IF k$="5"THEN GOTO 500
+160 IF k$="6"THEN GOTO 600
+170 IF k$="7"THEN GOTO 700
+180 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5"OR k$<>"6"OR k$<>"7" THEN GOTO 100 
+
+300 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"You look closely at the place."
+310 Pen 2:Print:PRINT"This tunnel is not just a":Print"simple corridor swept by wind."
+320 Pen 3:Print:Print"The face carved in the NORTH wall":Print"looks too detailed to be":Print"just decoration."
+330 Pen 1:Print:Print"Its nose sticks out oddly.":Print"Maybe it's a clue.":Print"Or just an Inca with a big nose."
+340 Pen 2:Print:Print"Also, if you look well,":Print"it seems to be sticking out its tongue."
+350 Pen 3:Print"This detail puzzles you."
+360 Pen 2:Print:Print"A coded message?":Print"A thousand-year-old joke?"
+370 Pen 1:Print:Print"Or just a playful sculptor":Print"with too much time on hand?"
+380 PEN 2:LOCATE 15,25:INPUT" ENTER  ",en$
+390 MODE 0:Goto 60
+
+400 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Tired after three rocks and two":Print"puddles?"
+410 Pen 2:Print:Print"You should really think about":Print"joining a gym..."
+420 PEN 1:Print:Print"Sighing, you lean":Print"against the wall to rest."
+430 Pen 3:Print:Print "When suddenly: CLICK! WHOOSH!!!"
+440 PEN 2:PRINT:PRINT"Your back just pressed right on the":Print"statue's nose."
+450 Pen 1:Print:Print"The wall starts to turn with an":Print"ancient rumble."
+460 Pen 3:Print:Print"You lose your balance, fall backward":Print"and vanish into the shadows..."
+470 Pen 2:Print:Print"Direction: Mystery! But it's NORTH."
+480 PEN 2:LOCATE 15,25:INPUT"  ENTER  ",en$
+490 RUN"Grotte5.bas"
+
+500 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"You face the carved face and,":Print"in a burst of great maturity,":Print"you stick out your tongue too."
+510 PEN 3:PRINT:Print"Nothing happens..."
+520 PEN 2:PRINT:PRINT"Except a big moment of loneliness."
+530 PEn 1:Print:Print"But who knows?"
+540 Pen 2:print:Print:Print"Maybe somewhere,":Print"in a parallel world,":Print"another statue answers you..."
+550 LOCATE 15,24:INPUT"  ENTER  ",en$
+560 MODE 0:Goto 60
+
+600 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 3:PRINT"         SESAME, OPEN UP!!!"
+610 Pen 1:Print:Print"Alas, this is neither the time,":Print"nor the civilization,":Print"nor the right voice..."
+620 Pen 2:Print:Print"Your shout triggers an old":Print"mechanism creaking to life."
+630 PEn 3:PRINT:Print"A geyser of hot mud bursts":Print"from the carved face's mouth!"
+640 Pen 2:Print:Print"You are now thoroughly covered":Pen 3:Print:Print"        ...and mostly very dead."
+650 Pen 1:Print:Print"Last thoughts:"
+660 Pen 1:Print:Print"I knew I should have tried":Print"ABRACADABRA..."
+670 Pen 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+680 Run"Mort.bas"
+
+700 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"You decide to pee,":Print"with the determination and maturity":Print"that define you."
+710 PEn 2:Print:Print"That is, aiming at the mouth":Print"of the carved face in the wall..."
+720 Pen 1:Print:Print"Since you're here, might as well have":Print"fun."
+730 Pen 3:Print:Print"Surprise!"
+740 Pen 1:Print:Print"Your stream instantly turns into":Print"a steam column on contact":Print"with the wall opening!"
+750 Pen 2:Print:Print"Either you have pyrotechnic skills,":Print"or a mysterious heat source":Print"is boiling behind the wall."
+760 LOCATE 15,24:INPUT"  ENTER  ",en$
+770 MODE 0:Goto 60

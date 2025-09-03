@@ -1,0 +1,75 @@
+10 ' CAVE 5
+20 MODE 0:BORDER 0:P=0
+25 for i=0 to 15:ink i,0:next i
+30 MEMORY &3FFF
+40 LOAD"Grotte5.cmp"
+45 for i=0 to 15:ink i,0:next i
+50 poke &A634,&C8:poke &A635,0:poke &A636,0:CALL &A60B
+60 poke &C7F1,&C9:CALL &C7D0
+70 CALL &A60B
+80 k$=INKEY$
+90 IF k$="1"THEN IF P=0 GOTO 200 ELSE RUN"Grotte6.bas"
+100 IF k$="2"THEN IF P=0 GOTO 200 ELSE RUN"Grotte4.bas"
+110 IF k$="4"THEN IF P=0 GOTO 200 ELSE GOTO 700
+120 IF k$="3"THEN IF P=0 GOTO 200 ELSE RUN"Poulie.bas"
+130 IF k$="5"THEN GOTO 300
+140 IF k$="6"THEN GOTO 400
+150 IF k$="7"THEN GOTO 500
+160 IF k$="8"THEN GOTO 600
+170 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5"OR k$<>"6"OR k$<>"7"OR k$<>"8" THEN GOTO 80  
+
+200 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,2:PEN 1:PRINT"You leave the cavern,":PRINT"convinced all is well."
+220 PEN 3:Print:Print"Error!"
+230 Pen 2:Print:Print"The statue,":Print"clearly no fan of goodbyes,":Print"shoots an arrow in your back."
+240 Pen 1: Print:Print"The poison takes effect:":Print"this is your last journey."
+250 Pen 2:Print:Print"Moral of the story":Print"Never turn your back on art."
+250 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+260 MODE 0:RUN"Mort.bas"
+
+300 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Watching the statue,":Print"you find a hole...":Print"right where":Print"an Inca might blush."
+310 Pen 2:Print:PRINT"And beneath the grimacing face,":Print"a base worn smooth by time."
+320 Pen 3:Print:Print"It looks like it can turn."
+330 Pen 1:Print:Print"The floor, polished by ages,":Print"shows the statue":Print"was long honored":Print"with sacred offerings."
+340 Pen 2:Print:Print"Four passages remain,":Print"each toward a cardinal point."
+350 PEN 2:LOCATE 15,24:INPUT" ENTER  ",en$
+360 MODE 0:Goto 45 
+
+400 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"You brace yourself,":Print"and push with all your might..."
+410 Pen 3:Print:Print"GROOONC..."
+420 PEN 2:PRINT:PRINT"The statue slowly turns":Print"with a sinister creak."
+430 Pen 1:Print:Print"A click, then silence."
+440 Pen 3:Print:Print"A mechanism seems disarmed!"
+450 Pen 1:Print:Print"You finally breathe."
+460 Print:Print"Well...":Print"As long as you're here,":Print"smile at it: it loves that."
+470 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+480 P=1:MODE 0:GOTO 45
+
+500 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"You try to talk:"
+510 PEN 2:PRINT:Print"Weather, soccer, politics..."
+520 PEN 3:PRINT:PRINT"Nothing."
+530 Pen 1:Print:PRINT"Then you try a joke:"
+540 Pen 2:Print:Print"What utensil did the Aztecs invent?"
+550 Print:Print"....the Aztec knife!!!"
+555 Pen 3:Print:Print"Nothing."
+560 Pen 1:Print:Print"The steak knife, duh!"
+570 Pen 3:Print:Print"Still nothing..."
+580 Pen 1:Print:Print"Not even a stone smile.":Print"Tough crowd."
+590 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+595 MODE 0:GOTO 45
+
+600 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"You kneel down,":Print"hands clasped,":Print"praying fervently..."
+610 Pen 3:Print:Print"A fly lands on your nose."
+620 Pen 2:Print:Print"This is the only divine sign":Print"you receive today."
+630 LOCATE 15,24:INPUT"  ENTER  ",en$
+640 MODE 0:GOTO 45
+
+700 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"You take the west exit,":Print"while cautiously backing up to keep":Print"an eye on the deadly statue...":Print"Just in case!"
+710 Pen 2: Print:Print"One step, two steps..."
+720 Pen 3:Print"... and suddenly, the void!"
+730 Pen 1:Print:Print"The steep ledge was":Print"clearly not planned..."
+740 Pen 2:Print:Print"You topple, headfirst,":Print"ready to kiss the rock..."
+750 Pen 3:Print:Print"But miracle:":pen 1:Print "the jungle welcomes you!"
+760 Print"Dense vegetation softens your fall.":Pen 2:Print:Print"Ten meters below,":Print"you get up unharmed,":Print"surrounded by trees, ferns"
+print:"... and hungry mosquitoes."
+770 Pen 2:LOCATE 15,25:INPUT"  ENTER  ",en$
+780 RUN"Corniche.bas"

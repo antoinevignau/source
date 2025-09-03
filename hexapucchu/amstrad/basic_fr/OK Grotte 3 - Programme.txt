@@ -1,0 +1,71 @@
+10 ' GROTTE 3
+20 MODE 0:BORDER 0
+30 for i=0 to 15:ink i,0:next i
+40 MEMORY &3FFF
+50 LOAD"Grotte3.cmp"
+60 for i=0 to 15:ink i,0:next i
+70 poke &A634,&C8:poke &A635,0:poke &A636,0:CALL &A60B
+80 poke &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+100 k$=INKEY$
+110 IF k$="1"THEN GOTO 700
+120 IF k$="2"THEN RUN"Grotte4.bas"
+130 IF k$="3"THEN RUN"Grotte2.bas"
+140 IF k$="4"THEN GOTO 200
+150 IF k$="5"THEN GOTO 300
+160 IF k$="6"THEN GOTO 400
+170 IF k$="7"THEN GOTO 500
+180 IF k$="8"THEN GOTO 600
+190 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5"OR k$<>"6"OR k$<>"7"OR k$<>"8" THEN GOTO 100 
+
+200 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,2:PEN 1:PRINT"Sur la table, des victuailles qui":print"semblent avoir traverse les siecles :"
+220 PEN 2:Print:Print"- Une miche de pain petrifiee,":print"dure comme du granit."
+230 Print:Print"- Une corbeille de fruits":Print"secs comme des momies."
+240 Print:Print"- Une fiole de breuvage si louche":Print"qu'un chimiste dirait ";Chr$(34);"Non merci";Chr$(34);"."
+250 Pen 3:Print:Print"Le tout semble avoir ete dresse,":Print"il y a mille ans, pour tester le degre":Print"de naivete des touristes affames."
+260 PEN 1:Print:Print"Et pourtant, telle Alice au pays":Print"des merveilles version Perou,":Print"vous ressentez une irresistible":Print"envie d'y gouter..."
+270 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+280 MODE 0:Goto 60
+
+300 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous croquez vaillamment dans la miche":print"et c'est votre dentition qui explose":Print"la premiere !"
+310 Pen 2:Print:PRINT"Le pain reste intact.":Print"Votre ego, lui, s'effrite comme":Print"une biscotte mouillee."
+320 Pen 3:Print:Print"Vous venez sans le savoir":Print"d'activer une prophetie :"
+330 Pen 1:Print:Print"Celui qui mordra le Pain du Temps":Print"n'en tirera que honte et douleurs":Print"ancestrales."
+340 Print:Print"Pathetique."
+350 Pen 2:Print:Print"Vous reposez la miche...":Print"tout en planifiant votre futur":Print"rendez-vous chez le dentiste."
+360 PEN 2:LOCATE 15,24:INPUT" ENTER  ",en$
+370 MODE 0:Goto 60   
+
+400 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous debouchez la fiole..."
+410 Pen 2:Print:Print"Une odeur de cactus fermente":Print"vous chatouille le nez."
+420 PEN 3:Print:Print"Vous avalez...":Print"et partez dans un trip technicolor !"
+430 Pen 1:Print:Print"Les flashs de couleurs s'enchainent :"
+440 PEN 3:PRINT:PRINT"    Vert, rouge, bleu, noir, vert"
+450 Pen 2:Print:Print"Quand vous revenez a vous,":Print"vous etes trempe, frissonnant,":Print"et persuade que la roche a un sens":Print"de l humour..."
+460 Pen 1:Print:Print"Je ne sais pas pas ce que c'est...":Print"Mais c'est de la bonne !"
+470 PEN 2:LOCATE 15,25:INPUT"  ENTER  ",en$
+480 MODE 0:Goto 60
+
+500 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous jetez votre devolu sur la banane,":Print"momifiee depuis l'age d'or":Print"des sacrifices humains."
+510 PEN 3:PRINT:Print"Une bouchee... et PAF !"
+520 PEN 2:PRINT:PRINT"Votre langue gonfle comme un ballon":Print"de baudruche, vos yeux partent":Print"en freestyle, et vous vous tremoussez":Print"tel un pantin possede avant de":Print"finir asphyxie sur le sol froid":Print"de la grotte."
+550 PEn 1:Print:Print"Moralite :"
+560 Pen 2:print:Print"La banane inca,":Print"c'est pas votre fruit totem."
+570 Pen 3:Print:Print"Game Over !"
+580 LOCATE 15,24:INPUT"  ENTER  ",en$
+590 RUN"Mort.bas" 
+
+600 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous sifflez un air guilleret."
+610 Pen 2:Print:Print"Rien ne se passe..."
+620 Pen 1:Print:Print"Sinon une stalactite lointaine":Print"qui semble lever les yeux au ciel."
+630 Pen 3:PRINT:Print:Print"Au moins, vous avez anime la grotte."
+640 LOCATE 15,24:INPUT"  ENTER  ",en$
+650 MODE 0:Goto 60
+
+700 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous vous engagez a l'OUEST."
+710 Pen 2:Print:Print"A peine avez-vous franchi le seuil":Print"que le sol, fragilise par les siecles,":Print"se derobe sous vos pieds."
+720 Pen 3:Print:Print"Vous chutez de plusieurs metres":Print"dans un etroit conduit rocheux..."
+730 Pen 1:PRINT:Print:Print"Et apres une descente chaotique,":Print"vous atterrissez a l'exterieur de":Print"la grotte, en pleine nature."
+740 Pen 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+750 RUN"Nature1.bas"   
+   

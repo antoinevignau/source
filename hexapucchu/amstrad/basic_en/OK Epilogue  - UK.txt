@@ -1,0 +1,60 @@
+10 ' EPILOGUE
+11 MEMORY &3FFF:LOAD"epilogue.cmp":for i=0 to 15:ink i,0:next i
+12 MODE 1:INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6:LOCATE 1,4:PEN 1:PRINT"Well done, explorer!"
+13 Pen 2:Print:Print"You survived all the traps,":Print"solved the riddles and revealed":Print"the Incas' best-kept secret."
+14 Pen 1:Print:Print"Not bad for a vacation, huh?"
+15 Pen 3:Print:Print"But no time to rest:"
+16 Pen 2:Print:Print"Your notebook is calling.":Print"Humanity must learn":Print"what you've just seen!"
+17 Pen 1:Print:Print"You sit down,":Print"pen in hand..."
+18 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+20 MODE 2:BORDER 26:ink 0,26:ink 1,13
+50 poke &A634,&C8:poke &A635,0:poke &A636,0:CALL &A60B
+60 poke &C7F1,&C9:CALL &C7D0:Border 26
+70 CALL &A60B
+100 PEN 1:Locate 8,4:PRINT"INCREDIBLE: I FOUND THE INCAS' COMPUTER... AND SAVED HUMANITY!"
+110 Print"============================================================================="
+120 Print:Print"                             By your very special reporter from deep in Peru."
+130 Print:Print"Lost in the Peruvian jungle, between kamikaze mosquitoes and deadly rocks,":Print"I wasn’t expecting to stumble upon the story of my life.":Print:Print"And yet..."
+
+140 Print:Print"Year 984:":Print:Print"The Incas, thought to be busy carving llamas, weaving ponchos"
+150 Print"and inventing quinoa, were in fact tech geniuses beyond belief.":Print"Their masterpiece? Incatrad, a computer capable of massive calculations."
+160 Print"A creation so extraordinary they chose to protect it":Print"with a radical solution:"
+170 Print:Print"Any intrusion triggers a countdown to the end of the world!":Print"Yes, the Incas had a flair for drama."
+180 Locate 34,25:INPUT"  ENTER  ",en$
+190 Mode 2:CALL &A60B
+
+200 Locate 1,5:Print"Fast forward to 1984.":Print:Print"During a tourist trip to Peru, one Alan Michael Sugar":Print"(sounds familiar?) stumbles upon Hexapucchu and steals":Print"the blueprints of the Incatrad."
+210 Print:Print"These documents became the foundation of his future Amstrad CPC machines."
+220 Print:Print"Result: the countdown starts ticking."
+225 Print:Print"End of the world scheduled 44 years later: in 2028!"
+230 Print:Print"But during his escape, the businessman drops a gear on the beach.":Print:Print"Fun fact: its many teeth would later inspire":Print"those famous Amstrad ads... with crocodiles."
+250 Locate 34,25:INPUT"  ENTER  ",en$
+260 Mode 2:CALL &A60B
+
+270 Locate 1,5:Print"2026, present day:":Print:Print"I, a thrill-seeking reporter, stumble upon this cursed gear"
+280 Print"and venture into a trap-ridden Inca pyramid.":Print:Print"Killer statues, bottomless pits, treacherous palm trees:"
+290 Print"I too faced everything to reach the Incatrad.":Print:Print"And then... a miracle: with only two years":Print"left before the cataclysm, I hacked the system."
+300 Print:Print"Sure, I didn’t stop the countdown (I’m no magician),":Print"but I gained 255 years."
+310 Print:Print"Humanity can finally breathe."
+320 Locate 34,25:INPUT"  ENTER  ",en$
+330 Mode 2:CALL &A60B
+
+340 Locate 1,12:Print"    So tonight, while sipping my Jack Daniel's Whiskey, one thought lingers:":Print:Print"                        Who will save the world next time?"
+350 Locate 34,25:INPUT"  ENTER  ",en$
+360 MODE 1:INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6:LOCATE 1,9:PEN 1:PRINT"         Thank you for playing"
+370 Pen 3:Print:Print"              HEXAPUCCHU"
+380 Pen 2:Print:Print"      The Lost City of Patchucca"
+390 Pen 1:Locate 10,20:Print"Eric Cubizolle (TITAN)"
+400 CALL &BB06
+
+500 MODE 2:BORDER 26:ink 0,26:ink 1,13:CALL &A60B
+510 Locate 1,5:Print"Hexapucchu was created in just 15 days."
+520 Print"This game came from an old wish to create an adventure":Print"in the spirit of Devilry II, which I coded in my youth, back in 1989."
+530 Print:Print"Graphics were drawn using Multipaint for pixel art,":Print"and compressed with ConvImgCPC."
+540 Print:Print"The whole thing was programmed in BASIC, using my modest skills.":Print:Print"DSK structure and file handling were crafted with ManageDSK."
+550 Print:Print"Special thanks to Pulsophonic for the music,":Print"Roudoudou for his tips and Demoniak for precious help."
+555 Print"Dlfrsilver, Lizard and Renaud Guerin for their help with the English translation"
+560 Print"I hope you enjoyed this little adventure game."
+570 Print:Print"To my family: Cindy, Lana, Ellie, Oki.":Print"Tender thoughts to my Dad."
+580 Print:Print"                              Long live the CPC!"
+590 Goto 590

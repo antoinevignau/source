@@ -1,0 +1,106 @@
+10 ' INCA 1
+20 MODE 0:BORDER 0:SUD=0
+30 FOR I=0 TO 15:INK I,0:NEXT I
+40 MEMORY &3FFF
+50 LOAD "Inca1.cmp"
+60 FOR I=0 TO 15:INK I,0:NEXT I
+70 POKE &A634,&C8:POKE &A635,0:POKE &A636,0:CALL &A60B
+80 POKE &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+92 INK 0,0:PEN 0:LOCATE 3,12:PEN A:PRINT CHR$(143):LOCATE 5,12:PRINT CHR$(143):LOCATE 7,12:PRINT CHR$(143):LOCATE 9,12:PRINT CHR$(143):LOCATE 11,12:PRINT CHR$(143)
+94 INK 1,6:INK 2,2:INK 3,18
+95 A=0:B=0:C=0:D=0:E=0
+100 K$=INKEY$
+110 IF K$="1" THEN A=A+1:SOUND 1,100:GOTO 200
+120 IF K$="2" THEN B=B+1:SOUND 1,120:GOTO 300
+130 IF K$="3" THEN C=C+1:SOUND 1,140:GOTO 400
+140 IF K$="4" THEN D=D+1:SOUND 1,160:GOTO 500
+150 IF K$="5" THEN E=E+1:SOUND 1,180:GOTO 600
+160 IF K$="6" THEN GOTO 700
+170 IF K$="7" THEN RUN "Piano.bas"
+180 IF K$="8" THEN GOTO 880
+190 IF K$="9" THEN GOTO 2000
+195 IF K$<>"1" OR K$<>"2" OR K$<>"3" OR K$<>"4" OR K$<>"5" OR K$<>"6" OR K$<>"7" OR K$<>"8" OR K$<>"9" THEN GOTO 100
+
+200 IF A>3 THEN A=0
+210 LOCATE 3,12:PEN A:PRINT CHR$(143)
+220 GOTO 1000
+
+300 IF B>3 THEN B=0
+310 LOCATE 5,12:PEN B:PRINT CHR$(143)
+320 GOTO 1000
+
+400 IF C>3 THEN C=0
+410 LOCATE 7,12:PEN C:PRINT CHR$(143)
+420 GOTO 1000
+
+500 IF D>3 THEN D=0
+510 LOCATE 9,12:PEN D:PRINT CHR$(143)
+520 GOTO 1000
+
+600 IF E>3 THEN E=0
+610 LOCATE 11,12:PEN E:PRINT CHR$(143)
+620 GOTO 1000
+
+700 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,2:PEN 2:PRINT "Five orifices light up in"
+710 PRINT "red, blue or green depending on"
+720 PRINT "your manipulations."
+730 PEN 1:PRINT :PRINT "You've seen this somewhere before..."
+740 PEN 3:PRINT :PRINT "Yes! It's coming back to you!"
+750 PEN 2:PRINT:Print "An old Mastermind game,"
+760 PRINT "      ... human sacrifice version."
+770 PEN 1:Print:PRINT "A hunch tells you the right"
+780 PRINT "combination will unlock"
+790 PRINT "a secret passage."
+800 PEN 3:Print:PRINT "But... how many tries before"
+810 PRINT "the curse strikes?"
+820 PRINT :PEN 2:PRINT "If you found a clue on your adventure,"
+830 PRINT "now is the time to use it!"
+850 PEN 2:LOCATE 15,24:INPUT "  ENTER  ",EN$
+860 MODE 0:GOTO 60
+
+880 IF SUD=0 THEN GOTO 900 ELSE RUN "Saut.bas"
+
+900 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,2:PEN 2:PRINT "You throw yourself against the"
+910 PRINT "door with an action hero's"
+920 PRINT "conviction!"
+930 PEN 1:PRINT :PRINT "...and bounce like a crepe on"
+940 PRINT "a cast-iron pan."
+950 PEN 3:PRINT :PRINT "The door? Not a scratch."
+960 PEN 2:PRINT:PRINT "You? A bruised rib and"
+970 PRINT "your ego in pieces."
+980 PEN 1:PRINT:PRINT "Anyway, the door stays closed..."
+990 PEN 2:LOCATE 15,24:INPUT "  ENTER  ",EN$
+995 MODE 0:GOTO 60
+
+1000 IF A=3 AND B=1 AND C=2 AND D=0 AND E=3 THEN SOUND 1,50:SOUND 1,100:SOUND 1,150:SOUND 1,200:SOUND 1,250:SOUND 1,300:GOTO 3000
+1020 GOTO 100
+
+2000 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,2:PEN 2:PRINT "You choose the West passage,"
+2010 PRINT "convinced glory hides"
+2020 PRINT "always on the left."
+2030 PEN 1:PRINT :PRINT "A few steps ahead..."
+2040 PEN 3:PRINT:Print "Click!"
+2050 PEN 2:Print:PRINT "Oh, that sweet sound that"
+2060 PRINT "announces an ancient mechanism!"
+2080 PEN 1:Print:PRINT "Suddenly, spears shoot"
+2090 PRINT "from the walls with the"
+2100 PRINT "precision of a master chef."
+2110 PEN 3:Print:PRINT "You try to dodge... fail."
+2120 PRINT :PEN 2:PRINT "Your adventure ends as human kebab."
+2140 PRINT "At least it's exotic."
+2150 PEN 2:LOCATE 15,24:INPUT "  ENTER  ",EN$
+2160 RUN "Mort.bas"
+
+3000 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,2:PEN 3:PRINT "Ding-Dong!"
+3010 PEN 2:PRINT :PRINT "All orifices light up like"
+3020 PRINT "a Christmas tree on acid!"
+3030 PEN 3:PRINT :PRINT "You entered the right code!"
+3040 PEN 2:PRINT:PRINT "A dull noise sounds and the South"
+3050 PRINT "door slides open with elegance..."
+3070 PEN 1:PRINT:PRINT "or at least as elegant as a ton"
+3080 PRINT "of granite can be."
+3090 PEN 3:PRINT:PRINT "The way is clear!"
+3100 PEN 2:LOCATE 15,24:INPUT "  ENTER  ",EN$
+3110 SUD=1
+3120 MODE 0:GOTO 60

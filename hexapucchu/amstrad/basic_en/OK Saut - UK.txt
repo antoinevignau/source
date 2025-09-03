@@ -1,0 +1,53 @@
+10 ' Saut
+20 MODE 0:BORDER 0
+30 for i=0 to 15:ink i,0:next i
+40 MEMORY &3FFF
+50 LOAD"Saut.cmp"
+60 for i=0 to 15:ink i,0:next i
+70 poke &A634,&C8:poke &A635,0:poke &A636,0:CALL &A60B
+80 poke &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+100 k$=INKEY$
+110 IF k$="1"THEN RUN"Grotte2.bas"
+120 IF k$="2"THEN RUN"Inca1.bas"
+130 IF k$="3"THEN RUN"Orifices.bas"
+140 IF k$="4"THEN GOTO 200
+150 IF k$="5"THEN GOTO 300
+160 IF k$="6"THEN GOTO 400
+170 IF k$="7"THEN GOTO 500
+180 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5"OR k$<>"6"OR k$<>"7" THEN GOTO 100
+
+200 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,2:PEN 1:PRINT"You squint, frown, and strike":PRINT"the serious pose of someone at":Print"an ancient geology oral exam."
+220 PEN 3:Print:Print"Gold, iron oxide, cobalt oxide..."
+230 Pen 2:Print:Print"Nope, not an energy smoothie":Print"recipe, but a wall packed":Print"with minerals."
+240 Pen 1:Print:Print"With so much magnetic matter,":Print"you could almost store":Print"a thousand-year-old secret..."
+250 PEN 2:Print:Print"...or maybe some precious data,":Print"on the sly."
+260 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+270 MODE 0:Goto 60        
+
+300 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Like a bargain-bin Arsene Lupin,":Print"you steal a crystal with flair."
+310 Pen 2:Print:PRINT"One more tacky gem for your shelf,":Print"right next to the golden resin":Print"bust of David Hasselhoff":Print"you secretly worship."
+320 Pen 1:Print:Print"But a cold sweat runs down your spine:"
+330 Pen 3:Print:Print"What if it’s kryptonite?!?!!"
+340 Pen 2:Print:Print"Then you relax..."
+350 Pen 1:Print:Print"No danger.":Print"You’re about as SUPER":Print"as a Monday morning."
+360 PEN 2:LOCATE 15,25:INPUT" ENTER  ",en$
+370 MODE 0:Goto 60
+
+400 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"You pull out your ancient phone":Print"and pose with your best angle":Print"in front of this old wall."
+420 Pen 3:Print:Print"             CLICK! FLASH!"
+430 Pen 1:Print:Print"And then... miracle! The light":Print"from the crystals gives you":Print"a radioactive yet flattering glow."
+440 Pen 2:Print:Print"A little ";Chr$(34);"epic mist";Chr$(34);" filter later,":Print"and you've got the perfect pic..."
+450 Pen 1:Print:Print"...until you zoom in":Print"and notice, just behind you,":Print"a lizard sticking out its tongue":Print"with smug elegance."
+460 Pen 3:Print:Print"Congrats. You've just snapped":Print"the first ever ";Chr$(34);"geoselfie bombed":Print"by a snarky reptile.";Chr$(34)
+470 Pen 1:Print:Print"Instagram isn't ready. Neither are you."
+480 PEN 2:LOCATE 15,25:INPUT"  ENTER  ",en$
+490 MODE 0:Goto 60
+
+500 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"You’ve got a flair for drama...":Print"...or maybe just recklessness."
+510 Pen 3:Print:Print"The ledge, bumpy and unstable,":Print"is no dance floor, but no matter:"
+530 Pen 2:Print:Print"You step back, arms semi-graceful,":Print"eyes to the sky... and launch":Print"into a bold moonwalk."
+540 Pen 1:Print:Print"Result: half a slip,":Print"a knee twist one could call creative,":Print"and a final pose":Print"clinging to the wall with":Print"the grace of a llama caught":Print"in an avalanche."
+550 Pen 3:Print:Print"A lizard watches you.":Print"He's torn between admiration":Print"...and denunciation to the police."
+560 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+570 MODE 0:Goto 60

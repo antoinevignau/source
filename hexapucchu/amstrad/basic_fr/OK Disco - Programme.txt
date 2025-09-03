@@ -1,0 +1,81 @@
+10 ' Disco
+15 MODE 0:BORDER 0
+16 for i=0 to 15:ink i,0:next i
+20 MEMORY &3FFF
+30 LOAD"disco.cmp"
+35 for i=0 to 15:ink i,0:next i
+40 poke &A634,&C8:poke &A635,0:poke &A636,0:CALL &A60B
+50 poke &C7F1,&C9:CALL &C7D0
+60 CALL &A60B
+90 k$=INKEY$
+100 IF k$="1"THEN GOTO 400
+110 IF k$="2"THEN GOTO 300
+120 IF k$="3"THEN GOTO 200
+125 IF k$="4"THEN GOTO 600
+126 IF k$="5"THEN GOTO 500
+140 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5" THEN GOTO 90
+ 
+200 INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6:MODE 1:LOCATE 1,2:PEN 1:PRINT"En analysant les codes hexadecimaux,":PRINT"un detail vous glace :
+220 PEN 2:Print:Print"le mot     ,":Print "suivi de       et      ."
+225 locate 8,5:Pen 3:Print"BOOM":Locate 10,6:Print"TEMPS":Locate 19,6:Print"2 ANS"
+230 PEN 1:Locate 1,8:Print"Soudain, tout s'eclaire : ":Print:Print"Il s'agit d'un compte a rebours pour":PRINT "un cataclysme imagine par les incas":PRINT"depuis des siecles et qui prendra fin":Print:Print"      ...dans deux ans seulement !"
+240 PEN 2:Print:print"Il faut absolument arreter cela,"
+260 print"ou au moins tenter de le retarder...":PEN 3:Print:Print"Ne vous trompez pas !"
+270 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+280 MODE 0:Goto 35
+
+300 INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6:MODE 1:LOCATE 1,1:PEN 1:PRINT"Vous sortez votre smartphone et,"
+310 Print"grace a une unique barre de reseau,"
+315 Print"parvenez a charger la page de CPC-Power"
+320 Print:Print"            Vous y lisez :"
+321 Pen 2:Print:Print:Print"RAM du CPC 464 : 64 Ko"
+322 Print"Processeur : Z80"
+323 Print"Frequence du processeur : 4 Mhz"
+325 Print"Nombre de couleurs dans la palette : 27"
+326 Pen 3:Print:Print"Meilleur score a Gryzor : 999998"
+327 Print:Print "Pour 255 vies, remplacez XX par FF"
+328 Print"dans la sequence 3E XX 32"
+330 Pen 2:Print:Print "Nb de sprite Hardware sur CPC 6128 : 00"
+331 Print "Test clavier : CALL &BB06"
+333 Pen 1:Print:Print "Il doit bien y avoir une information":Print"pertinente la-dedans !"
+340 PEN 2:LOCATE 15,24:INPUT" ENTER  ",en$
+350 MODE 0:Goto 35
+
+400 INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6:MODE 1:LOCATE 1,1:PEN 1:PRINT"Serieusement ?":Print"Appuyer au hasard ?" 
+410 Print:Print"Vous devriez aussi taper":Print"vos mots de passe comme ca..."
+420 Pen 2:Print:Print"Forcement, ce n'etait pas":PRINT"la valeur attendue par la machine."
+425 Print:Print"Vous n'aviez qu'une seule chance,"
+430 Print"et vous l'avez gachee..."
+440 Pen 3:Print:Print"CLAC !":Pen 2:Print:Print"Le plafond descend...":Print:Print"rapide,":Print"        lourd,":Print"               inevitable."
+450 PEN 1:Print:Print"Fin de la partie, hacker du dimanche !"
+470 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+480 Run"mort.bas"
+
+500 INK 0,0:BORDER 0:INK 1,26:MODE 2:LOCATE 26,12:PEN 1:Input"Saisissez votre valeur : ",FF$
+510 If FF$="FF" or FF$="ff" or FF$="F F" or FF$="f f" then Goto 900
+520 INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6,0:MODE 1:LOCATE 1,8:PEN 1:PRINT"Vous validez la valeur..."
+530 PRINT"L'ecran clignote.":for i=1 to 1500:next i
+540 Sound 1,100:PEN 3:Print:Print:Print"  ERREUR FATALE : INSTRUCTION INVALIDE":for i=1 to 1200:next i
+550 Pen 2:Print:Print:Print"L'ordinateur emet un bip strident,":Print"puis une sequence inquietante apparait."
+560 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+570 CLS:INK 3,6:PEN 3:For i=1 to 10:Locate 20,11:Print 10-i:Sound 1,300-(5*i):for t=1 to 900:next t:next i
+580 Print:Print:Print "                 BOOM !!!":sound 1,80,200:for i=1 to 1400:Next i
+582 Pen 1:Print:Print:Print "Une gigantesque explosion":Print"raye les lieux de la carte !"
+583 Print:Print"Dommage, vous etiez si pres du but..."
+584 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+590 Run"mort.bas"
+
+600 INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6:MODE 1:LOCATE 1,1:PEN 1:PRINT"Vous paniquez magistralement :"
+610 Pen 2:Print:Print"Sueur, cris,":Print"meme une petite danse de la peur."
+620 Pen 1:Print:Print"Apres cinq bonnes minutes,":Print"vous realisez que cela n'a":Print"strictement rien change..."
+630 Print"sauf votre dignite."
+640 Pen 3:Print:Print "Allez, reprenez-vous, heros !"
+650 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+660 MODE 0:Goto 40
+
+900 INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6:MODE 1:LOCATE 1,1:PEN 3:PRINT"              Bien joue !"
+910 Pen 1:Print:Print:Print "En remplacant la valeur par FF":Print"(soit 255 en decimal),":Print"vous repoussez le compte a rebours."
+920 Pen 3:Print:Print"L'humanite vient de gagner":Print"255 ans de repit !"
+930 Pen 2:Print:Print"Vous pouvez a present quitter ces lieux":Print"le coeur leger et avec le sentiment":Print"du devoir accompli !"
+940 LOCATE 15,24:INPUT"  ENTER  ",en$
+950 RUN"epilogue.bas"

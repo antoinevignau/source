@@ -1,0 +1,81 @@
+10 ' CPC
+20 MODE 0:BORDER 0
+25 FOR i=0 TO 15:INK i,0:NEXT i
+30 MEMORY &3FFF
+40 LOAD"CPC.cmp"
+45 FOR i=0 TO 15:INK i,0:NEXT i
+50 POKE &A634,&C8:POKE &A635,0:POKE &A636,0:CALL &A60B
+60 POKE &C7F1,&C9:CALL &C7D0
+70 CALL &A60B
+80 k$=INKEY$
+90 IF k$="1"THEN GOTO 200
+100 IF k$="2"THEN GOTO 1000
+110 IF k$="3"THEN GOTO 300
+120 IF k$="4"THEN GOTO 400
+130 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4" THEN GOTO 80  
+
+200 INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6,3:MODE 1:LOCATE 1,2:PEN 1:PRINT"As soon as you release the key,":PRINT"the computer goes crazy and shows:":FOR i=1 TO 1200:NEXT i
+220 PEN 2:PRINT:PRINT"Booting system...":FOR i=1 TO 900:NEXT i
+221 PEN 3:PRINT:PRINT"Intrusion detected!":FOR i=1 TO 900:NEXT i
+222 PEN 2:PRINT:PRINT"System locked.":FOR i=1 TO 900:NEXT i
+223 PRINT:PRINT"Initializing self-destruct...":FOR i=1 TO 900:NEXT i
+224 PEN 1:PRINT:PRINT"A small PLOP is heard...":PRINT"followed by a massive BOOM!":PRINT"Everything explodes."
+225 PRINT:PRINT"        ...You included!"
+230 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+240 RUN"mort.bas"
+
+300 INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6:MODE 1:LOCATE 1,1:PEN 1:PRINT"You stick your hand into the hole"
+310 PRINT"where the gear once sat."
+315 PRINT"You search blindly..."
+320 PEN 3:PRINT:PRINT"CLACK!"
+321 PEN 2:PRINT:PRINT"A sharp noise,"
+322 PRINT"followed by sharp pain:"
+323 PRINT"A trap just sliced off your hand!"
+326 PEN 3:PRINT:PRINT"Blood sprays like a geyser."
+327 PEN 1:PRINT:PRINT"You realize two things:"
+328 PEN 1:PRINT:PRINT"1) That was a bad idea."
+330 PRINT"2) You'll never write your memoirs":PRINT"again."
+333 PEN 3:PRINT:PRINT"You bleed out and die":PRINT"with a rather silly scream."
+340 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+350 RUN"mort.bas"
+
+400 INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6:MODE 1:LOCATE 1,1:PEN 1:PRINT"Wait... Yes! You remember now!"
+410 PRINT:PRINT"This machine looks a lot like":PRINT"an AMSTRAD CPC 6128!!!"
+420 PEN 2:PRINT:PRINT"The one you got for Christmas,":PRINT"back when you were a kid!"
+425 PRINT:PRINT"What if that gear was really..."
+430 PEN 1:PRINT:PRINT"...an ancient floppy disk?"
+470 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+480 MODE 0:GOTO 45
+
+1000 CLS:INK 0,1:BORDER 1:INK 1,24:INK 2,20:INK 3,6:MODE 1:PEN 1:SOUND 1,100
+1010 PRINT"Incatrad 16K Microcomputer  (v0.1)":FOR i=1 TO 200:NEXT i
+1020 PRINT:PRINT CHR$(164);"984 Incatrad Consumer Electronics plc":FOR i=1 TO 200:NEXT i
+1030 PRINT"          and Locomotive Software Ltd.":FOR i=1 TO 200:NEXT i
+1040 PRINT:PRINT"BASIC 0.1":FOR i=1 TO 400:NEXT i:FOR i=1 TO 500:NEXT i
+1060 PEN 1:PRINT:PRINT"CAT":FOR i=1 TO 900:NEXT i
+1070 PRINT:PRINT"Drive A: user 0":PRINT
+1080 PRINT"BARBARIAN.BIN  10K    DISCO   .BAS   2K":FOR i=1 TO 200:NEXT i
+1090 PRINT"GRYZOR   .BIN  12K    IKARI   .BIN  13K":FOR i=1 TO 200:NEXT i
+1100 PRINT"RENEGADE .BIN  9K":FOR i=1 TO 200:NEXT i
+1110 PRINT:PRINT"132K free":FOR i=1 TO 200:NEXT i
+1150 PEN 2:LOCATE 1,19:PRINT"Type the name of a program to run"
+1190 PEN 1:LOCATE 1,24:INPUT"Your choice ";c$
+1200 IF c$="1" OR c$="3" OR c$="4" OR c$="5" THEN GOTO 1500
+1210 IF c$="BARBARIAN" OR c$="barbarian" OR c$="GRYZOR" OR c$="gryzor" OR c$="IKARI" OR c$="ikari" OR c$="RENEGADE" OR c$="renegade" THEN GOTO 1500
+1220 IF c$="BARBARIAN.BIN" OR c$="barbarian.bin" OR c$="GRYZOR.BIN" OR c$="gryzor.bin" OR c$="IKARI.BIN" OR c$="ikari.bin" OR c$="renegade.bin" OR c$="Renegade.bin" THEN GOTO 1500
+1230 IF c$="Barbarian.bin" OR c$="Barbarian.Bin" OR c$="Gryzor.bin" OR c$="Gryzor.Bin" OR c$="Ikari.bin" OR c$="Ikari.Bin" OR c$="Renegade.bin" OR c$="Renegade.Bin" THEN GOTO 1500
+1240 IF c$="2" OR c$="DISCO" OR c$="disco" OR c$="DISCO.BIN" OR c$="Disco.bin" OR c$="Disco.Bin" THEN GOTO 2000
+1250 SOUND 1,100:LOCATE 14,24:PRINT"                 ":GOTO 1190
+
+1500 INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6:MODE 1:LOCATE 1,1:PEN 1:PRINT"Seriously?":PRINT:PRINT"You really think this is the time to"
+1510 PRINT"play games?"
+1520 PRINT:PRINT"Really?"
+1530 PEN 2:PRINT:PRINT"Alas, this was a security system":PRINT"meant to detect casual gamers..."
+1540 PEN 1:PRINT:PRINT"And it looks like you just got caught."
+1550 PEN 3:PRINT:PRINT"The computer initiates a defense":PRINT"sequence..."
+1560 PRINT:PRINT"...just before it explodes!"
+1570 PRINT:PEN 1:PRINT"Game Over, my friend."
+1580 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+1590 RUN"mort.bas"
+
+2000 RUN"Disco.bas"

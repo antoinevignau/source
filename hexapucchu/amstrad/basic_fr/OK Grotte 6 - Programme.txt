@@ -1,0 +1,161 @@
+10 ' GROTTE 6
+20 MODE 0:BORDER 0:SUD=0
+30 for i=0 to 15:ink i,0:next i
+40 MEMORY &3FFF
+50 LOAD"Grotte6.cmp"
+60 for i=0 to 15:ink i,0:next i
+70 poke &A634,&C8:poke &A635,0:poke &A636,0:CALL &A60B
+80 poke &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+95 A=0:B=0:C=0:D=0=E=0:F=0
+100 k$=INKEY$
+110 IF k$="1" Then A=A+1:sound 1,100:GOTO 200
+120 IF k$="2" Then B=B+1:sound 1,120:GOTO 300
+130 IF k$="3" Then C=C+1:sound 1,140:GOTO 400
+140 IF k$="4" Then D=D+1:sound 1,160:GOTO 500
+150 IF k$="5" Then E=E+1:sound 1,180:GOTO 600
+160 IF k$="6" THEN F=F+1:sound 1,220:GOTO 700
+170 If K$="7"THEN GOTO 800
+180 If K$="8"THEN GOTO 900
+190 If K$="9"THEN RUN"Grotte5.bas"
+195 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5"OR k$<>"6"OR k$<>"7"OR k$<>"8"OR k$<>"9" THEN GOTO 100
+
+200 If A>12 then A=1
+210 If A=7 then A=8
+220 If A=11 then A=12
+230 If B=7 then B=8
+240 If B=11 then B=12
+250 If C=7 then C=8
+260 If C=11 then C=12
+270 If D=7 then D=8
+280 If D=11 then D=12
+290 If E=7 then E=8
+291 If E=11 then E=12
+292 If F=7 then F=8
+293 If F=11 then F=12
+294 locate 8,12:Pen 1:Print Chr$(144+A)
+295 Goto 1000
+
+300 If B>12 then B=1
+310 If A=7 then A=8
+320 If A=11 then A=12
+330 If B=7 then B=8
+340 If B=11 then B=12
+350 If C=7 then C=8
+360 If C=11 then C=12
+370 If D=7 then D=8
+380 If D=11 then D=12
+390 If E=7 then E=8
+391 If E=11 then E=12
+392 If F=7 then F=8
+393 If F=11 then F=12
+394 locate 9,12:Pen 1:Print Chr$(144+B)
+395 Goto 1000
+
+400 If C>12 then C=1
+410 If A=7 then A=8
+420 If A=11 then A=12
+430 If B=7 then B=8
+440 If B=11 then B=12
+450 If C=7 then C=8
+460 If C=11 then C=12
+470 If D=7 then D=8
+480 If D=11 then D=12
+490 If E=7 then E=8
+491 If E=11 then E=12
+492 If F=7 then F=8
+493 If F=11 then F=12
+494 locate 8,13:Pen 1:Print Chr$(144+C)
+495 Goto 1000
+
+500 If D>12 then D=1
+510 If A=7 then A=8
+520 If A=11 then A=12
+530 If B=7 then B=8
+540 If B=11 then B=12
+550 If C=7 then C=8
+560 If C=11 then C=12
+570 If D=7 then D=8
+580 If D=11 then D=12
+590 If E=7 then E=8
+591 If E=11 then E=12
+592 If F=7 then F=8
+593 If F=11 then F=12
+594 locate 8,14:Pen 1:Print Chr$(144+D)
+595 Goto 1000
+
+600 If E>12 then E=1
+610 If A=7 then A=8
+620 If A=11 then A=12
+630 If B=7 then B=8
+640 If B=11 then B=12
+650 If C=7 then C=8
+660 If C=11 then C=12
+670 If D=7 then D=8
+680 If D=11 then D=12
+690 If E=7 then E=8
+691 If E=11 then E=12
+692 If F=7 then F=8
+693 If F=11 then F=12
+694 locate 7,14:Pen 1:Print Chr$(144+E)
+695 Goto 1000
+
+700 If F>12 then F=1
+710 If A=7 then A=8
+720 If A=11 then A=12
+730 If B=7 then B=8
+740 If B=11 then B=12
+750 If C=7 then C=8
+760 If C=11 then C=12
+770 If D=7 then D=8
+780 If D=11 then D=12
+790 If E=7 then E=8
+791 If E=11 then E=12
+792 If F=7 then F=8
+793 If F=11 then F=12
+794 locate 6,14:Pen 1:Print Chr$(144+F)
+795 Goto 1000
+
+800 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,2:PEN 1:PRINT"Face a vous, un mur inca facon":Print"puzzle hydraulique,":Print"avec des conduits serpentant comme":Print"un plan de metro dessine par un fou."
+810 PEN 2:Print:Print"En haut, une arrivee de fluide rouge":Print"qui attend son heure."
+820 Pen 1:Print:Print"En bas, trois receptacles alignes,":Print"l'air innocents"
+830 PEN 3:Print:Print"mais mortels si vous les nourrissez mal."
+840 PEn 2:PRint:Print "Bref, jouez au plombier, mais":Print"rappelez-vous :"
+850 Pen 3:Print:Print"Ici, Mario, c'est vous...":Print"     ... et il n y a qu'une seule vie !"
+860 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+870 MODE 0:Goto 60
+
+900 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,2:PEN 1:PRINT"Vous goutez le fluide rouge."
+910 PEN 2:Print:Print"Surprise : c'est sucre !":Print:Print"Vous savourez..."
+920 Pen 3:Print:Print"Jusqu'a ce que vos dents decident de":Print"fondre comme du fromage a raclette."
+930 PEN 1:Print:Print"Quelques secondes plus tard,":Print"vous n'etes plus qu'une flaque":Print"rougeatre assortie au mur."
+940 PEn 2:PRint:Print "Bravo, vous etes devenu la deco !"
+950 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+960 Run"Mort.bas"      
+
+1000 IF A=6 and B=9 and C=5 and D=9 and E=10 and F=6 Then sound 1,300:Sound 1,250:Sound 1,200:Sound 1,150:Sound 1,100:Sound 1,50
+1130 IF A=6 and B=9 and C=5 and D=9 and E=10 and F=6 Then for i=1 to 14:Pen 0+i:Locate 8,12:Print Chr$(150);Chr$(153):Locate 8,13:Print Chr$(149):Locate 6,14:Print Chr$(150);Chr$(154);Chr$(153):next i:for i=1 to 600:next i:GOTO 3000
+
+1140 IF A=6 and B=9 and C=5 and D=5 Then sound 1,50:Sound 1,100:Sound 1,150:Sound 1,200:Sound 1,250:Sound 1,300:for i=1 to 600:next i:GOTO 2000
+
+1150 IF A=6 and B=9 and C=5 and D=9 and E=6 Then sound 1,50:Sound 1,100:Sound 1,150:Sound 1,200:Sound 1,250:Sound 1,300:for i=1 to 600:next i:GOTO 2000
+1160 Goto 100
+
+2000 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,2:PEN 3:PRINT"Bravo, Einstein !"
+2010 Pen 2:Print:Print"Vous avez brillamment guide":Print"le fluide..."
+2020 Pen 3:Print:Print"dans le MAUVAIS receptacle !!!"
+2030 Pen 1:Print:Print"Une reaction chimique se produit":Print"au contact des deux fluides,":Print"liberant un gaz mortel."
+2040 Pen 2:Print:Print"Vous avez juste invente la mort":Print"par inhalation express."
+2050 Pen 1:Print:Print"Felicitations !"
+2060 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+2070 Run"Mort.bas"
+
+3000 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,2:PEN 3:PRINT"Incroyable !"
+3010 Pen 2:Print:Print"Vous avez assemble les tuyaux comme":Print"un plombier intergalactique !"
+3020 PEN 1:Print:Print"Le fluide rouge glisse jusqu au":Print"bon receptacle et, miracle,":Print"aucun gaz, mortel aucune explosion,":Print"pas meme une petite brulure chimique."
+3030 Pen 2:Print:Print"Mario peut aller se rhabiller":Print"vous etes officiellement le maitre":Print"des canalisations incas !"
+3040 Pen 1:Print:Print"Au fait, vous venez de declencher un":Print"petit mecanisme secret :"
+3050 Pen 2:Print:Print "Un caillou grave avec les lettres :":PEn 3:Print"               Disco FF":Pen 2:Print"vient de tomber juste a vos pieds."
+3060 A=0:B=0:C=0:D=0=E=0:F=0
+3070 PEN 2:LOCATE 15,25:INPUT"  ENTER  ",en$
+3080 MODE 0:Goto 60 

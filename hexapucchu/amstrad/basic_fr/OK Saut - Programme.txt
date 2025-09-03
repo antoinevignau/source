@@ -1,0 +1,57 @@
+10 ' Saut
+20 MODE 0:BORDER 0
+30 for i=0 to 15:ink i,0:next i
+40 MEMORY &3FFF
+50 LOAD"Saut.cmp"
+60 for i=0 to 15:ink i,0:next i
+70 poke &A634,&C8:poke &A635,0:poke &A636,0:CALL &A60B
+80 poke &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+100 k$=INKEY$
+110 IF k$="1"THEN RUN"Grotte2.bas"
+120 IF k$="2"THEN RUN"Inca1.bas"
+130 IF k$="3"THEN RUN"Orifices.bas"
+140 IF k$="4"THEN GOTO 200
+150 IF k$="5"THEN GOTO 300
+160 IF k$="6"THEN GOTO 400
+170 IF k$="7"THEN GOTO 500
+180 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5"OR k$<>"6"OR k$<>"7" THEN GOTO 100
+
+200 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,2:PEN 1:PRINT"Vous plissez les yeux, froncez les":PRINT"sourcils et adoptez l'air grave de":Print"quelqu'un qui passe un oral de":Print"geologie antique."
+220 PEN 3:Print:Print"Or, oxyde de fer, oxyde de cobalt..."
+230 Pen 2:Print:Print"Non, ce n'est pas la recette d'un":Print"smoothie energetique, mais bien un mur":Print"riche en mineraux."
+240 Pen 1:Print:Print"Avec une telle concentration de matiere":Print"magnetique, on pourrait presque stocker":Print"un secret millenaire..."
+250 PEN 2:Print:Print"...ou quelques precieuses donnees,":Print"en mode discret."
+260 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+270 MODE 0:Goto 60        
+
+300 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Tel un Arsene Lupin version discount,":Print"vous derobez un cristal avec panache."
+310 Pen 2:Print:PRINT"Une jolie touche kitsch de plus pour":Print"votre etagere, juste a cote du buste":Print"en resine dore de David Hasselhoff":Print"que vous venerez en secret."
+320 Pen 1:Print:Print"Mais une sueur froide vous parcourt":Print"tout a coup :"
+330 Pen 3:Print:Print"Et si c'etait de la kryptonite ?!?!!"
+340 Pen 2:Print:Print "Puis vous vous detendez..."
+350 Pen 1:Print:Print"Aucun danger.":Print"Vous etes a peu pres aussi SUPER":Print"qu'un lundi matin."
+360 PEN 2:LOCATE 15,25:INPUT" ENTER  ",en$
+370 MODE 0:Goto 60
+
+400 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous sortez votre antique smartphone":Print"et cadrez votre meilleur profil":Print"devant ce mur millenaire."
+420 Pen 3:Print:Print "             CLIC ! FLASH !"
+430 Pen 1:Print:Print "Et la, miracle : l'eclairage des":Print"cristaux vous donne un teint legerement":Print"radioactif mais etonnamment flatteur."
+440 Pen 2:Print:Print"Un petit filtre ";Chr$(34);"epique brume";Chr$(34);" plus":Print"tard, vous obtenez la photo parfaite..."
+450 Pen 1:Print:Print"...jusqu'a ce que vous zoomiez":Print"et realisiez que derriere vous,":Print"un lezard tire la langue avec une":Print"elegance moqueuse."
+460 Pen 3:Print:Print"Bravo. Vous venez de capturer le tout":Print"premier "Chr$(34);"geoselfie photobombe par un":Print"reptile cynique.";Chr$(34)
+470 Pen 1:Print:Print"Instagram n'est pas pret. Vous, non plus"
+480 PEN 2:LOCATE 15,25:INPUT"  ENTER  ",en$
+490 MODE 0:Goto 60
+
+500 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous avez le sens du panache... ":Print"...ou de l'inconscience."
+510 Pen 3:Print:Print"La corniche, bosselee et incertaine,":Print"n'a rien d'une piste de danse, mais":Print"qu'importe :"
+530 Pen 2:Print:Print"Vous reculez, bras semi-gracieux,":Print"yeux leves au ciel... et vous vous":Print"lancez dans un moonwalk audacieux."
+540 Pen 1:Print:Print"Resultat : un demi-glissement,":Print"une torsion du genou qu'on pourrait":Print"qualifier de creative, et une pose":Print"finale accrochee a la paroi avec":Print"l'elegance d'un lama pris dans une":Print"avalanche."
+550 Pen 3:Print:Print"Un lezard vous observe.":Print"Il hesite entre l'admiration":Print"...et le signalement."
+560 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+570 MODE 0:Goto 60
+
+  
+     
+  

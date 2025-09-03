@@ -1,0 +1,48 @@
+10 ' TROU
+20 MODE 0:BORDER 0
+25 for i=0 to 15:ink i,0:next i
+30 MEMORY &3FFF
+40 LOAD"trou.cmp"
+45 for i=0 to 15:ink i,0:next i
+50 poke &A634,&C8:poke &A635,0:poke &A636,0:CALL &A60B
+60 poke &C7F1,&C9:CALL &C7D0
+70 CALL &A60B
+80 k$=INKEY$
+90 IF k$="1"THEN RUN"Poulie.bas"
+100 IF k$="2"THEN RUN"Grotte4.bas"
+110 IF k$="3"THEN GOTO 200
+120 IF k$="4"THEN GOTO 300
+130 IF k$="5"THEN GOTO 400
+140 IF k$="6"THEN GOTO 500
+150 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5"OR k$<>"6" THEN GOTO 80  
+
+200 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,2:PEN 1:PRINT"Vous vous penchez sur le trou":PRINT"comme si vous attendiez un miracle...":Print:Print"...et il arrive :"
+220 PEN 3:Print:Print"             la gravite !"
+230 Pen 2:Print:Print"Votre pied ripe,":Print"et vous voila projete":Print"dans un toboggan naturel,":Print"en hurlant des sons inhumains."
+240 Pen 1: Print:Print"Apres une glissade interminable,":Print"vous atterrissez violemment...":Print"au niveau inferieur de la grotte."
+250 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+260 RUN"Grotte1.bas"
+
+300 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Votre choragraphie TikTok":Print"etait presque parfaite..."
+310 PEN 2:Print:Print"Jusqu'a ce que les vibrations ":Print"provoquees par vos sauts erratiques":Print"decrochent un gros rocher du plafond."
+320 Pen 3:PRINT:Print"SCOUIRK !"
+330 Pen 1:Print:Print"Vous faites desormais":Print"partie du plancher."
+340 PEN 2:LOCATE 15,24:INPUT" ENTER  ",en$
+350 RUN"Mort.bas"
+
+400 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Ok, vous sifflez, pourquoi pas."
+410 Pen 2:Print:Print"L'echo rebondit dans la grotte,":Print:Print"Une fois,":Print"          deux fois...":Print"                       trois fois."
+420 PEN 3:PRINT:PRINT"Tiens ?"
+430 Pen 1:Print:Print"La troisieme resonance ":PRINT"semble venir d'un mur creux..."
+440 Pen 2:Print:Print"A moins que cela ne soit du":Print"au trou beant du sol !"
+450 Pen 1:Print:Print"Au moins, on sait a present":Print"que le trou est profond.":Print"C'est deja ca !"
+460 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+470 MODE 0:GOTO 45
+
+500 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Tel un athlete":Print"pret pour le lancer du poids,":Print"vous prenez votre elan":Print"et envoyez le caillou":Print"de toutes vos forces dans le trou."
+510 PEN 2:PRINT:Print"Autant dire... pas tres fort."
+520 PEN 3:PRINT:PRINT"Mais assez pour reveiller":Print"une armee de chauves-souris":Print"qui y dormait tranquillement."
+530 Pen 1:Print:PRINT"Elles vous fondent dessus":Print"et vous vident de votre sang."
+540 Pen 2:PRINT:Print"Groupe B Rhesus Positif :":Print"leur menu prefere !"
+550 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+560 Run"mort.bas"

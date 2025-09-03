@@ -1,0 +1,59 @@
+10 ' POULIE
+20 MODE 0:BORDER 0
+25 for i=0 to 15:ink i,0:next i
+30 MEMORY &3FFF
+40 LOAD"Poulie.cmp"
+45 for i=0 to 15:ink i,0:next i
+50 poke &A634,&C8:poke &A635,0:poke &A636,0:CALL &A60B
+60 poke &C7F1,&C9:CALL &C7D0
+70 CALL &A60B
+80 k$=INKEY$
+90 IF k$="1"THEN GOTO 200
+100 IF k$="2"THEN GOTO 300
+110 IF k$="3"THEN GOTO 400
+120 IF k$="4"THEN GOTO 500
+130 IF k$="5"THEN RUN"Trou.bas"
+140 IF k$="6"THEN RUN"Grotte5.bas"
+150 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5"OR k$<>"6" THEN GOTO 80  
+
+200 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,2:PEN 1:PRINT"Vous passez vos mains sur les pierres,":PRINT"grattez, fouillez chaque interstice":Print"avec la minutie d'une fee du logis":Print"en pleine crise de menage."
+220 PEN 2:Print:Print"Verdict :"
+221 Pen 3: Print:Print"Une belle epaisseur de poussiere !"
+222 Pen 1: Print:Print"      - merci pour l'allergie -"
+223 Pen 2:Print:Print"Detail intrigant,":PRINT"vous reperez une zone":Print"ou la pierre semble bien plus usee...":Print"Comme si elle avait bougee."
+224 PEN 1:Print:Print"Alors,":Print"heureux d'avoir astique un mur inca ?"
+230 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+240 Mode 0: Goto 45
+
+300 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"A votre grande surprise,"
+310 Print"les pierres suspendues"
+315 Print"ne s'ecrasent pas":Print"sur votre crane brillant."
+320 Pen 2:PRINT:Print"Elles descendent lentement,"
+321 Print"jouant le role de contrepoids."
+322 Pen 3:Print:Print"Un pan du mur de pierres"
+323 Print"glisse vers le haut,"
+325 Print"revelant une ouverture a l'EST."
+326 Locate 28,11:Pen 2:Print"EST"
+327 Pen 1:Print:Print"Sans perdre une seconde,":Print"vous vous y engouffrez":Print"avant qu'elle ne se referme."
+340 PEN 2:LOCATE 15,24:INPUT" ENTER  ",en$
+350 RUN"Piano.bas"
+
+400 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous observez attentivement":Print"le mecanisme :"
+410 Pen 2:Print:Print"Un levier relie":Print"a d'imposantes pierres massives,":Print"suspendues au plafond":Print"par un ingenieux systeme":Print"de poulies."
+415 PEN 3:PRINT:PRINT"Il faut l'avouer,":Print"cela n'inspire pas vraiment confiance."
+420 Pen 1:Print:Print"De la belle ouvrage,":PRINT"signee des anciens Incas,":Print"sans le moindre doute !"
+470 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+480 MODE 0:GOTO 45
+
+500 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Franchement,":Print"c'etait pourtant evident, non ?"
+510 PEN 2:PRINT:Print"A aucun moment vous ne vous etes dit :"
+520 PEN 3:PRINT:PRINT"Et si ces enormes pierres suspendues":Print"me tombent sur la tronche":Print"quand je passe dessous ?"
+530 Pen 1:Print:PRINT"Non ? Vraiment ?"
+540 Pen 2:PRINT:Print"Eh bien... vous auriez du.":Print:Print"Parce que c est EXACTEMENT":Print"ce qui vient d'arriver."
+550 Pen 3:Locate 17,14:PRINT"EXACTEMENT"
+560 Locate 1,17:Print"Vous etes mort,":Print"aplati comme une crepe bretonne."
+570 Print"On pourrait presque vous servir":Print"avec du sucre."
+580 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+590 Run"mort.bas"
+
+

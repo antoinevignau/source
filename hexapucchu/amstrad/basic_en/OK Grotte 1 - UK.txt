@@ -1,0 +1,49 @@
+10 ' CAVE 1
+20 MODE 0:BORDER 0
+30 FOR i=0 TO 15:INK i,0:NEXT i
+40 MEMORY &3FFF
+50 LOAD"Grotte1.cmp"
+60 FOR i=0 TO 15:INK i,0:NEXT i
+70 POKE &A634,&C8:POKE &A635,0:POKE &A636,0:CALL &A60B
+80 POKE &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+100 k$=INKEY$
+110 IF k$="1"THEN RUN"Cascade.bas"
+120 IF k$="2"THEN RUN"Grotte2.bas"
+130 IF k$="3"THEN GOTO 200
+140 IF k$="4"THEN GOTO 300
+150 IF k$="5"THEN GOTO 400
+160 IF k$="6"THEN GOTO 500
+170 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5"OR k$<>"6" THEN GOTO 100
+
+200 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,2:PEN 1:PRINT"The cave mouth looks like a gaping":PRINT"jaw, hungry to swallow the next":PRINT"fool brave enough to step in."
+220 PEN 2:PRINT:PRINT"On the damp rock, you spot":PRINT"several graffiti."
+230 PEN 1:PRINT:PRINT"Among the classics:"
+240 PEN 3:PRINT:PRINT CHR$(34);"Enter at your own risk";CHR$(34);", ";CHR$(34);"Go away";CHR$(34);",":PRINT CHR$(34);"No Trespassing";CHR$(34);", and ":PRINT CHR$(34);"Cuidado con el oso!";CHR$(34)
+250 PEN 2:PRINT:PRINT"... one message stands out :":PEN 3:PRINT:PRINT"           ";CHR$(34);"Alan was here";CHR$(34):PEN 2:PEN 1:PRINT:PRINT"seems to be staring at you insistently."
+260 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+270 MODE 0:GOTO 60
+
+300 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,1:PEN 1:PRINT"Great explorer that you are,":PRINT"you decide it's time for a break...":PRINT"After what, three minutes of effort?"
+310 PEN 2:PRINT:PRINT"You sit grandly on a rock,":PRINT"seeking wisdom and inspiration."
+320 PEN 1:PRINT:PRINT"The sound of the waterfall,":PRINT"the distant call of an exotic bird,":PRINT"the quiet trickle of water":PRINT"into your soaked socks..."
+330 PEN 2:PRINT:PRINT"A near-zen moment..."
+340 PEN 3:PRINT:PRINT"Until a curious (and deadly) ant":PRINT"decides your butt is":PRINT"a perfect climbing wall!"
+350 PEN 1:PRINT:PRINT"       Its bite is fatal."
+360 PEN 2:LOCATE 15,25:INPUT"  ENTER  ",en$
+370 RUN"Mort.bas"
+
+400 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,1:PEN 1:PRINT"You sit cross-legged, close your":PRINT"eyes, and let your mind drift..."
+410 PEN 2:PRINT:PRINT"During your meditation, you":PRINT"feel your spirit lift..."
+420 PEN 3:PRINT:PRINT"Until it decides to pop out":PRINT"for a drink without telling you."
+430 PEN 1:PRINT:PRINT"You're left behind, wondering":PRINT"how spiritual abandonment feels."
+440 PEN 2:LOCATE 15,25:INPUT"  ENTER  ",en$
+450 MODE 0:GOTO 60
+
+500 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,1:PEN 1:PRINT"Braving the humidity, you slip":PRINT"behind the curtain of water."
+510 PEN 2:PRINT:PRINT"A powerful feeling:"
+520 PEN 3:PRINT:PRINT"It's like Mother Nature":PRINT"hosing you down herself."
+530 PEN 1:PRINT:PRINT"You come out drenched,":PRINT"like a used tea bag, but also":PRINT"with a sense of purpose."
+540 PEN 3:PRINT:PRINT"(Not sure what purpose, though.)"
+550 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+560 MODE 0:GOTO 60

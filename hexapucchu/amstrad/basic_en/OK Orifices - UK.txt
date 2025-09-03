@@ -1,0 +1,45 @@
+10 ' ORIFICES
+20 MODE 0:BORDER 0
+30 FOR i=0 TO 15:INK i,0:NEXT i
+40 MEMORY &3FFF
+50 LOAD"Orifices.cmp"
+60 FOR i=0 TO 15:INK i,0:NEXT i
+70 POKE &A634,&C8:POKE &A635,0:POKE &A636,0:CALL &A60B
+80 POKE &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+100 k$=INKEY$
+110 IF k$="1"THEN GOTO 200
+120 IF k$="2"THEN GOTO 200
+130 IF k$="3"THEN GOTO 200
+140 IF k$="4"THEN GOTO 300
+150 IF k$="5"THEN RUN"saut.bas"
+160 IF k$="6"THEN GOTO 400
+190 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5"OR k$<>"6" THEN GOTO 100
+
+200 INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6:MODE 1:LOCATE 1,2:PEN 1:PRINT"You insert the gear":PRINT"into the orifice..."
+210 PEN 3:PRINT:PRINT"CLACK!"
+220 PEN 2:PRINT:PRINT"A dry sound,":PRINT"then a sinister hissing."
+230 PEN 1:PRINT:PRINT"The gear shoots out like a":PRINT"boomerang, cuts through air":PRINT"like a kamikaze pigeon,":PRINT"and hits right between your eyes."
+240 PEN 2:PRINT:PRINT"You barely have time to think:"
+250 PEN 1:PRINT:PRINT"Damn! I should’ve made a better":PRINT"choice or worn safety glasses!"
+260 PEN 3:PRINT:PRINT"Then everything goes black."
+280 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+290 RUN"Mort.bas"
+
+300 INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6:MODE 1:LOCATE 1,2:PEN 1:PRINT"You slide the gear":PRINT"into the slot with 10 notches,":PRINT"the exact number of teeth":PRINT"on the artifact."
+310 PEN 2:PRINT:PRINT"After a promising click,"
+320 PRINT"the gear starts spinning":PRINT"in its housing."
+330 PEN 3:PRINT:PRINT"A stone turns and... SURPRISE!"
+350 PEN 1:PRINT:PRINT"An old computer appears!"
+370 PEN 2:PRINT:PRINT"No, you're not dreaming."
+380 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+390 RUN"CPC.bas"
+
+400 INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6:MODE 1:LOCATE 1,2:PEN 1:PRINT"You examine the orifices."
+410 PEN 2:PRINT:PRINT"Above each one, you notice":PRINT"notches in various numbers."
+420 PEN 1:PRINT:PRINT"Is it a code? An adornment?":PRINT"Or how many times the Incas":PRINT"lost at Minesweeper?"
+430 PEN 3:PRINT:PRINT"It must refer to the gear."
+440 PEN 1:PRINT:PRINT"Its weight? Its age?":PRINT"Its number of teeth?"
+450 PEN 2:PRINT:PRINT"Whatever it is,":PRINT"you must choose wisely...":PRINT:PRINT"...or pray really hard!"
+480 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+490 MODE 0:GOTO 60

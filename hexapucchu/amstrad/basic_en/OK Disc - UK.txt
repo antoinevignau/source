@@ -1,0 +1,47 @@
+10 '
+20 ' Hexapucchu, the Lost City of Patchucca
+30 '
+40 ' 2025 - Eric Cubizolle (TITAN)
+50 '
+55 POKE &BDEE,&C9
+60 MODE 0:BORDER 0
+70 INK 0,0:INK 1,0:INK 2,0:INK 3,0:INK 4,0:INK 5,0:INK 6,0:INK 7,0:INK 8,0:INK 9,0:INK 10,0:INK 11,0:INK 12,0:INK 13,0:INK 14,0:INK 15,0
+80 LOAD"Title.scr",&c000
+90 MEMORY &6FFF
+100 music=&7000
+110 sfx=&9000
+120 player=&9500
+130 LOAD"music.akg",music
+140 LOAD"player.bin",player
+150 INK 0,0:INK 1,1:INK 2,2:INK 3,3:INK 4,6:INK 5,9:INK 6,10:INK 7,11:INK 8,12:INK 9,13:INK 10,15:INK 11,18:INK 12,19:INK 13,20:INK 14,24:INK 15,26
+160 CALL player,music,0
+170 CALL &BB06
+180 MODE 1:INK 0,0:INK 1,26:INK 2,6:INK 3,18:BORDER 0:CLS
+190 PEN 1:PRINT "JULY 2026,"
+200 PEN 2:PRINT:PRINT:PRINT "OCCUPATION: JOURNALIST"
+210 PRINT:PEN 3:PRINT "The sun was beating down":PRINT"on the Peruvian coast,"
+220 PRINT "my articles slept in drawers."
+230 PEN 1:PRINT "A rare moment: no deadlines,"
+240 PRINT "no rumors to check."
+250 PRINT "Just the sound of waves,":PRINT "the smell of salt,"
+260 PRINT "and a notebook left closed":PRINT "for weeks..."
+270 PEN 3:PRINT:PRINT "A real break."
+280 PRINT "Thoughts drifting,"
+290 PRINT "childhood memories."
+300 PRINT:PRINT "I believed this vacation was quiet."
+310 PEN 2:PRINT:PRINT "I was wrong..."
+320 PRINT:PRINT
+330 PEN 1:PRINT "      Press any key to continue..."
+340 CALL &BB06
+350 CLS:PEN 3:PRINT "Welcome to this adventure,":PRINT "in the spirit of a book":PRINT "where *you* are the hero!"
+360 PEN 1:PRINT:PRINT "At each screen,":PRINT "you will be given choices."
+370 PRINT "Some will make you progress,":PRINT "others may lead to endings...":PRINT "less fortunate."
+380 PEN 3:PRINT:PRINT "To select an action,":PRINT "just press the number":PRINT "on the keyboard."
+400 PEN 2:PRINT:PRINT "             Good luck!"
+410 PEN 1:PRINT:PRINT"You'll need it,":PRINT"because you will die...":LOCATE 25,18:PEN 2:PRINT"Often."
+420 PEN 3:PRINT:PRINT:PRINT "  (c) 2025 - Eric Cubizolle (TITAN)"
+425 PRINT "        Music by: Pulsophonic"
+430 PEN 1:PRINT:PRINT:PRINT "     Press any key to continue..."
+440 CALL &BB06
+450 CALL player+3
+460 RUN"Plage.bas"

@@ -1,0 +1,82 @@
+10 ' Disco
+15 MODE 0:BORDER 0
+16 FOR i=0 TO 15:INK i,0:NEXT i
+20 MEMORY &3FFF
+30 LOAD"disco.cmp"
+35 FOR i=0 TO 15:INK i,0:NEXT i
+40 POKE &A634,&C8:POKE &A635,0:POKE &A636,0:CALL &A60B
+50 POKE &C7F1,&C9:CALL &C7D0
+60 CALL &A60B
+90 k$=INKEY$
+100 IF k$="1"THEN GOTO 400
+110 IF k$="2"THEN GOTO 300
+120 IF k$="3"THEN GOTO 200
+125 IF k$="4"THEN GOTO 600
+126 IF k$="5"THEN GOTO 500
+140 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5" THEN GOTO 90
+
+200 INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6:MODE 1:LOCATE 1,2:PEN 1:PRINT"While analyzing hex codes,":PRINT"a detail freezes you:"
+220 PEN 2:PRINT:PRINT"the word     ,":PRINT"followed by      and      ."
+225 LOCATE 10,5:PEN 3:PRINT"BOOM":LOCATE 13,6:PRINT"TIME":LOCATE 22,6:PRINT"2 YEARS"
+230 PEN 1:LOCATE 1,8:PRINT"Suddenly, it becomes clear:":PRINT:PRINT"It's a countdown to a disaster":PRINT"planned by the Incas centuries ago"
+235 PRINT:PRINT"    ...ending in just two years!"
+240 PEN 2:PRINT:PRINT"This must be stopped, or at least"
+260 PRINT"delayed...":PEN 3:PRINT:PRINT"Do not mess this up!"
+270 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+280 MODE 0:GOTO 35
+
+300 INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6:MODE 1:LOCATE 1,1:PEN 1:PRINT"You pull out your smartphone and"
+310 PRINT"with a single bar of signal,"
+315 PRINT"you load CPC-Power's website"
+320 PRINT:PRINT"         It reads:"
+321 PEN 2:PRINT:PRINT:PRINT"CPC 464 RAM : 64 KB"
+322 PRINT"Processor: Z80"
+323 PRINT"Clock speed: 4 MHz"
+325 PRINT"Palette colors: 27"
+326 PEN 3:PRINT:PRINT"High score in Gryzor: 999998"
+327 PRINT:PRINT"For 255 lives, replace XX with FF"
+328 PRINT"in the sequence 3E XX 32"
+330 PEN 2:PRINT:PRINT"Hardware sprites on CPC 6128: 00"
+331 PRINT"Keyboard test: CALL &BB06"
+333 PEN 1:PRINT:PRINT"There must be something useful":PRINT"in here somewhere!"
+340 PEN 2:LOCATE 15,24:INPUT" ENTER  ",en$
+350 MODE 0:GOTO 35
+
+400 INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6:MODE 1:LOCATE 1,1:PEN 1:PRINT"Seriously?":PRINT"Pressing at random?"
+410 PRINT:PRINT"You probably type":PRINT"your passwords like that too..."
+420 PEN 2:PRINT:PRINT"Obviously, that wasn’t":PRINT"what the machine expected."
+425 PRINT:PRINT"You only had one shot,"
+430 PRINT"and you blew it..."
+440 PEN 3:PRINT:PRINT"CLACK!":PEN 2:PRINT:PRINT"The ceiling begins to lower...":PRINT:PRINT"fast,":PRINT"     heavy,":PRINT"           unstoppable."
+450 PEN 1:PRINT:PRINT"Game over, weekend hacker!"
+470 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+480 RUN"mort.bas"
+
+500 INK 0,0:BORDER 0:INK 1,26:MODE 2:LOCATE 26,12:PEN 1:INPUT"Enter your value: ",FF$
+510 IF FF$="FF" OR FF$="ff" OR FF$="F F" OR FF$="f f" THEN GOTO 900
+520 INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6,0:MODE 1:LOCATE 1,8:PEN 1:PRINT"You confirm the value..."
+530 PRINT"The screen flashes.":FOR i=1 TO 1500:NEXT i
+540 SOUND 1,100:PEN 3:PRINT:PRINT:PRINT"  FATAL ERROR: INVALID COMMAND":FOR i=1 TO 1200:NEXT i
+550 PEN 2:PRINT:PRINT:PRINT"The computer emits a sharp beep,":PRINT"then displays a worrying sequence."
+560 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+570 CLS:INK 3,6:PEN 3:FOR i=1 TO 10:LOCATE 20,11:PRINT 10-i:SOUND 1,300-(5*i):FOR t=1 TO 900:NEXT t:NEXT i
+580 PRINT:PRINT:PRINT"                 BOOM !!!":SOUND 1,80,200:FOR i=1 TO 1400:NEXT i
+582 PEN 1:PRINT:PRINT:PRINT"A massive explosion erases the place":PRINT"from the map!"
+583 PRINT:PRINT"Too bad... you were so close..."
+584 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+590 RUN"mort.bas"
+
+600 INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6:MODE 1:LOCATE 1,1:PEN 1:PRINT"You panic like a pro:"
+610 PEN 2:PRINT:PRINT"Sweat, screams,":PRINT"even a little fear dance."
+620 PEN 1:PRINT:PRINT"After five full minutes,":PRINT"you realize it changed":PRINT"absolutely nothing..."
+630 PRINT"except your dignity."
+640 PEN 3:PRINT:PRINT"Come on, pull yourself together!"
+650 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+660 MODE 0:GOTO 40
+
+900 INK 0,0:BORDER 0:INK 1,20:INK 2,24:INK 3,6:MODE 1:LOCATE 1,1:PEN 3:PRINT"            Well played!"
+910 PEN 1:PRINT:PRINT:PRINT"By replacing the value with FF":PRINT"(that's 255 in decimal),":PRINT"you delay the countdown!"
+920 PEN 3:PRINT:PRINT"Humanity just earned 255 more years!"
+930 PEN 2:PRINT:PRINT"You can now leave this place":PRINT"with a light heart,":PRINT"and a sense of duty done!"
+940 LOCATE 15,24:INPUT"  ENTER  ",en$
+950 RUN"epilogue.bas"

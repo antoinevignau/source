@@ -1,0 +1,61 @@
+10 ' CAVE 2
+20 MODE 0:BORDER 0
+30 for i=0 to 15:ink i,0:next i
+40 MEMORY &3FFF
+50 LOAD"Grotte2.cmp"
+60 for i=0 to 15:ink i,0:next i
+70 poke &A634,&C8:poke &A635,0:poke &A636,0:CALL &A60B
+80 poke &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+100 k$=INKEY$
+110 IF k$="1"THEN RUN"Grotte3.bas"
+120 IF k$="2"THEN GOTO 200
+130 IF k$="3"THEN RUN"Grotte1.bas"
+140 IF k$="4"THEN GOTO 300
+150 IF k$="5"THEN GOTO 600
+160 IF k$="6"THEN GOTO 400
+170 IF k$="7"THEN GOTO 500
+180 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5"OR k$<>"6"OR k$<>"7" THEN GOTO 100
+
+200 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,2:PEN 1:PRINT"Eyes fixed on the ceiling, you":PRINT"scan the stalactites in case one":Print"might fall as you're passing":Print"under the NORTHERN vault."
+220 PEN 3:Print:Print"Suddenly, your foot hits a":Print"treacherous stalagmite!"
+230 Pen 2:Print:Print"You are delicately impaled,":Print"like a skewer offered to the":Print"Inca gods."
+240 Pen 1:Print:Print"Indeed, the real danger wasn't":Print"up there..."
+250 PEN 2:Print:Print"        But right under your feet!"
+260 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+270 Run"Mort.bas"
+
+300 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"The echo gives back a PLOP each":Print"step, as if the cave itself":Print"were clapping your curiosity."
+310 Pen 2:Print:PRINT"To the west, an old staircase":Print"cut into the rock climbs up to":Print"the upper floor (no railing,":Print"of course)."
+320 Pen 3:Print:Print"To the NORTH, a vault bristling":Print"with stalactites seems to shout:":print"       ";Chr$(34);"Come stab yourself here!";Chr$(34)
+330 Pen 2:Print:Print"And that ladder to the EAST,":Print"heroically trying to reach a":Print"ledge where a stone wall":Print"obviously wants attention..."
+340 Pen 2:Print:Print "Conclusion:"
+350 Pen 1:Print:Print"The place is as welcoming as an":Print"escape room made by a sadistic mason."
+360 PEN 2:LOCATE 15,25:INPUT" ENTER  ",en$
+370 MODE 0:Goto 60
+
+400 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Dig? Seriously?"
+420 Pen 3:Print:Print "Still that obsession with":Print"messing with the ground?"
+430 Pen 1:Print:Print "Where does it come from?":Print"A trauma with a sandbox":Print"badly stored?":Print"A repressed archaeologist urge?"
+440 Pen 2:Print:Print"Want to talk about it?":Print"No? Great!":Pen 1:Print:Print"Because the cave has nothing to say.":Print:Print"Nor does the rock.":Print:Print"Not even a worm to chat with."
+450 Pen 3:Print:Print"In short, you find nothing."
+460 PEN 2:LOCATE 15,25:INPUT"  ENTER  ",en$
+470 MODE 0:Goto 60
+
+500 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"You rise up, arms in the air,":Print"possessed gaze, and solemnly say:"
+510 Pen 3:Print:Print Chr$(34);"O ancestral spirit of this cave,":Print"show yourself!";Chr$(34)
+520 Pen 2:Print:Print"A solemn silence settles in.":Print"No mystic light,":Print"no voice from the depths,":Print"not even a dramatic breeze."
+530 Pen 1:Print:Print"Just a dripping sound that":Print"seems to mark your failure.":Pen 2:Print:Print"       Plop... Plop... Plop..."
+540 PEn 3:Print:Print"Congrats. You just summoned":Print"the age-old indifference of":Print"a damp rock."
+550 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+560 MODE 0:Goto 60
+
+600 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"You dash toward the ladder!"
+610 Pen 2:Print:Print"Alas... barely do you lift your foot":Print"toward the first rung when":Print"you realize:"
+620 Pen 3:Print:Print"It's too short.":Print"Way too short."
+630 Pen 1:Print:Print"Unless you're the short one.":Pen 2:Print:Print"Hard to say, but if you ever":Print"lost a fight to a stool,":Print"maybe think about it..."
+640 PEn 1:Print:Print"You jump, groan, sigh.":Print"Nothing works:"
+650 Pen 3:Print:Print"The ladder mocks you from its":Print"ledge, like a perched star":Print"refusing autographs."
+660 Pen 1:Print"In short, you're stuck below,":Print"and the ladder seems":Print"perfectly fine with it."
+660 PEN 2:LOCATE 15,25:INPUT"  ENTER  ",en$
+670 MODE 0:Goto 60

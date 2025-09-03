@@ -1,0 +1,59 @@
+10 ' WATERFALL
+20 MODE 0:BORDER 0
+30 FOR i=0 TO 15:INK i,0:NEXT i
+40 MEMORY &3FFF
+50 LOAD"Cascade.cmp"
+60 FOR i=0 TO 15:INK i,0:NEXT i
+70 POKE &A634,&C8:POKE &A635,0:POKE &A636,0:CALL &A60B
+80 POKE &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+100 k$=INKEY$
+110 IF k$="1"THEN RUN"Environs.bas"
+120 IF k$="2"THEN GOTO 300
+130 IF k$="3"THEN GOTO 400
+140 IF k$="4"THEN GOTO 500
+150 IF k$="5"THEN GOTO 600
+160 IF k$="6"THEN GOTO 700
+170 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5"OR k$<>"6" THEN GOTO 100 
+
+300 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,1:PEN 1:PRINT"You climb, and climb...":PRINT:PRINT"and climb...":PRINT:PRINT"And still climb..."
+310 PEN 2:PRINT:PRINT"...well, in your head."
+320 PEN 3:PRINT:PRINT"In truth, you've been stuck":PRINT"on the same rock for 10 mins,":PRINT"sweaty and gasping."
+330 PEN 1:PRINT:PRINT"Exhausted, you give up, going":PRINT"back down the mighty 1.5 meters":PRINT"you had painfully climbed..."
+340 PEN 2:LOCATE 15,24:INPUT" ENTER  ",en$
+350 MODE 0:GOTO 60
+
+400 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,1:PEN 1:PRINT"You dip your hands in icy water":PRINT"and gulp it down greedily."
+410 PEN 2:PRINT:PRINT"Delicious..."
+420 PEN 3:PRINT:PRINT"...until your stomach throws":PRINT"a full-on rave party."
+430 PEN 1:PRINT:PRINT"Looks like this water held more":PRINT"bacteria than a shared":PRINT"computer keyboard."
+440 PEN 3:PRINT:PRINT"You give up the ghost in pain":PRINT"and intestinal despair."
+450 PEN 2:LOCATE 15,25:INPUT" ENTER  ",en$
+460 RUN"Mort.bas"
+
+500 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,1:PEN 1:PRINT"You shape your fingers like":PRINT"hooks and wait..."
+510 PEN 3:PRINT:PRINT"Patiently... very patiently."
+520 PEN 2:PRINT:PRINT"Ten minutes later,":PRINT"a fish swims up,":PRINT"stares at you like it knows":PRINT"a terrible secret, then leaves."
+550 PEN 1:PRINT:PRINT"Intriguing."
+560 PEN 2:PRINT:PRINT"Two hours later, success!":PRINT"You catch... some seaweed..."
+570 LOCATE 15,24:INPUT" ENTER  ",en$
+580 MODE 0:GOTO 60
+
+600 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,1:PEN 3:PRINT"SPLASH!":PEN 1:PRINT:PRINT"You dive like you know how to swim"
+610 PEN 3:PRINT:PRINT"...except you don’t."
+620 PEN 2:PRINT:PRINT"The icy water grabs you, your":PRINT"organs resign one by one...":PRINT"but you SURVIVE!":LOCATE 9,9:PEN 1:PRINT"SURVIVE"
+630 PRINT:PRINT"Soaked, frozen, and cleaner":PRINT"than a lab's cleanroom."
+640 PEN 3:PRINT:PRINT"By the way,":PRINT"you thought you saw a weird":PRINT"glow under the waterfall..."
+650 PEN 2:PRINT:PRINT"But your chattering teeth":PRINT"drown out any thought."
+660 LOCATE 15,24:INPUT" ENTER  ",en$
+670 MODE 0:GOTO 60
+
+700 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,1:PEN 1:PRINT"You really think there's a path":PRINT"behind the waterfall?"
+710 PEN 2:PRINT:PRINT"A bit too cliché, no?"
+720 PEN 1:PRINT:PRINT"But filled with hope and a good":PRINT"dose of wishful thinking, you take":PRINT"the small, slippery stone path":PRINT"leading behind the water curtain."
+730 PEN 3:PRINT:PRINT"And then... A MIRACLE!!!"
+740 PEN 2:PRINT:PRINT"A secret opening reveals":PRINT"the entrance to a cave to the EAST!"
+750 PEN 3:LOCATE 5,22:INPUT"Will you enter it (Y/N) ";T$
+760 IF T$="N"OR T$="n"OR T$="NO"OR T$="no"OR T$="No" THEN GOTO 60
+770 IF T$="Y"OR T$="y"OR T$="YES"OR T$="yes"OR T$="Yes" THEN RUN"Grotte1.bas"
+780 GOTO 750

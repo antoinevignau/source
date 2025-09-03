@@ -1,0 +1,78 @@
+10 ' NATURE 2
+20 MODE 0:BORDER 0:L=0
+25 for i=0 to 15:ink i,0:next i
+30 MEMORY &3FFF
+40 LOAD"Nature2.cmp"
+45 for i=0 to 15:ink i,0:next i
+50 poke &A634,&C8:poke &A635,0:poke &A636,0:CALL &A60B
+60 poke &C7F1,&C9:CALL &C7D0
+70 CALL &A60B
+80 k$=INKEY$
+90 IF k$="1"THEN IF L=0 GOTO 200 ELSE GOTO 300
+100 IF k$="2"THEN IF L=0 GOTO 400 ELSE GOTO 500
+110 IF k$="3"THEN GOTO 600
+120 IF k$="4"THEN GOTO 700
+130 IF k$="5"THEN GOTO 900
+170 IF k$<>"1"OR k$<>"2"OR k$<>"3"OR k$<>"4"OR k$<>"5" THEN GOTO 80  
+
+200 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,2:PEN 1:PRINT"Vous plissez les yeux,":PRINT"vous tirez la langue,":Print"vous vous rapprochez...":Print:Print"Vous tentez meme la technique":Print"du clignement rapide."
+220 PEN 3:Print:Print"... mais rien."
+230 Pen 2:Print:Print"C'est ecrit plus petit":Print"qu'un contrat d'assurance !"
+240 PEn 1:PRint:Print "Il vous faudrait une loupe,":Print"ou une vue d'aigle."
+250 Pen 1:Print:Print"Spoiler : vous n'etes pas un aigle."
+260 Pen 2:Print:Print"Vous abandonnez :":Print"Hors de question de perdre":Print "deux dixiemes par oeil pour ca !" 
+270 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+280 MODE 0:Goto 45
+
+300 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Les inscriptions sont ridiculement":Print"minuscules."
+310 Pen 2:Print:PRINT"Mais grace a votre loupe toute neuve,":Print"miracle :"
+320 Pen 3:Print:Print"  les signes graves se devoilent !"
+330 Pen 1:Print:Print"      SOL-LA-FA-FA-DO : 56423"
+340 Pen 2:Print:PRINT"C'est quoi ca ?!?!?":Print:Print"Une berceuse pour lamas insomniaques ?":Print"Une playlist pour danse du soleil ?":Print"Ou le premier tube des Andes ?"
+350 Pen 1:Print:Print"Allez savoir..."
+360 PEN 2:LOCATE 15,24:INPUT" ENTER  ",en$
+370 MODE 0:Goto 45
+
+400 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous faites demi-tour,":PRINT"quand une petite lueur sur une feuille":Print"attire votre attention."
+410 Pen 2:Print:Print"Curieux comme un chat,":Print"vous vous penchez.":Print"Mais la chose est vraiment petite."
+420 PEN 1:Print:Print"Vous decidez de l'attraper":Print"pour l'examiner de plus pres."
+430 Pen 3:Print:Print"Mauvaise idee :"
+440 PEN 2:PRINT:PRINT"C'est une Phoneutria Nigriventer":Print"l'araignée la plus venimeuse du monde."
+450 Pen 1:Print:Print"Vous venez de lui offrir votre main,":Print"et elle vous offre... la mort."
+460 Pen 3:Print:Print"Tout ca ne serait pas arrive,":Print"Si vous aviez utilise une loupe avant !"
+470 Pen 1:Print:Print"Enfin, je dis ca... je dis rien, hein."
+480 PEN 2:LOCATE 15,25:INPUT"  ENTER  ",en$
+490 RUN"Mort.bas"
+
+500 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"En chemin, votre vision":Print"amélioree par la loupe repere":Print"une minuscule silhouette poilue."
+510 PEN 3:PRINT:Print"     Une Phoneutria Nigriventer !"
+520 PEN 2:PRINT:PRINT"Si vous ne le saviez pas encore,":Print"ce petit nom d'arachnide":Print"se traduit par :"
+530 Pen 3:Print:PRINT"     Game Over en trois minutes !"
+540 Pen 1:Print:Print"Mais grace a votre clairvoyance,":Pen 2:Print"et surtout votre loupe,":Pen 1:Print"vous l'evitez et continuez au Sud,":Print"vivant et fier."
+545 PEN 2:Print:Print"PS : Vous replacez la loupe ou vous":Print"l'aviez trouve : Ca pourrait servir":Print"a un autre aventurier aussi peaume":Print"que vous..."
+550 PEN 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+560 RUN"Nature1.bas"
+
+600 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous plongez sous l'arche":Print"soulevez des pierres,":Print"inspectez les fissures..."
+610 Pen 3:Print:Print"...Rien."
+620 Pen 2:Print:Print"Pas une relique, pas un piege.":Print:Print"Meme pas une carte Pokemon":Print"oubliee par un conquistador.":Print:Print"Nada, que dalle."
+630 Pen 1:PRINT:Print"Vous esperiez un tresor ?":Print:Print"Mauvaise pioche : Indiana Jones,":Print"c'est a trois kilometres au Nord."
+640 PEn 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+650 MODE 0:GOTO 45
+
+700 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Vous ecartez les feuillages":Print"avec un courage admirable et..."
+710 Pen 3:Print:Print"Tombez nez a nez avec un serpent":Print"qui vous mord avant que vous ne":Print"puissiez chercher ";:Print Chr$(34);"Antidote Serpent";Chr$(34):Print"sur Google."
+720 Locate 20,6:Pen 2:Print"Antidote Serpent"
+730 Pen 2:Locate 1,9:Print"Votre vision se trouble,":Print"vos jambes se ramollissent..."
+740 Pen 1:Print:Print"Et vous vous dites que finalement,":Print"les bosquets,":Print"Ce n'est pas votre truc."
+750 Pen 3:PRINT:Print"Fin de l'histoire."
+760 Pen 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+770 Run"Mort.bas"
+
+900 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:Border 0:LOCATE 1,1:PEN 1:PRINT"Apres avoir deplace assez de pierres":Print"pour construire un mur Inca,":Print"vous tombez sur... UNE LOUPE !
+910 Locate 20,3:Pen 3:Print"Une LOUPE"
+920 Pen 2:Print:Print"Un objet aussi excitant":Print"qu'un dictionnaire,":Print"mais qui pourrait bien":Print"vous sauver la mise."
+930 Pen 1:Print:Print"Comme quoi,":Print "les taupes aussi laissent des tresors."
+940 Pen 3:PRINT:Print"Merci a l'Indiana Jones de la cataracte":Print"qui l'a laissee la."
+950 Pen 2:LOCATE 15,24:INPUT"  ENTER  ",en$
+960 L=1:MODE 0:GOTO 45

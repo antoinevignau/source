@@ -1,0 +1,85 @@
+10 ' JUNGLE
+20 MODE 0:BORDER 0
+25 FOR I=0 TO 15:INK I,0:NEXT I
+30 MEMORY &3FFF
+40 LOAD "jungle.cmp"
+45 FOR I=0 TO 15:INK I,0:NEXT I
+50 POKE &A634,&C8:POKE &A635,0:POKE &A636,0:CALL &A60B
+60 POKE &C7F1,&C9:CALL &C7D0
+70 CALL &A60B
+80 K$=INKEY$
+90 IF K$="1" THEN GOTO 200
+100 IF K$="2" THEN GOTO 300
+110 IF K$="3" THEN GOTO 400
+120 IF K$="4" THEN GOTO 500
+130 IF K$="5" THEN GOTO 600
+140 IF K$="6" THEN RUN "Environs.bas"
+150 IF K$<>"1" OR K$<>"2" OR K$<>"3" OR K$<>"4" OR K$<>"5" OR K$<>"6" THEN GOTO 80
+
+200 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,2:PEN 1:PRINT "You look around,"
+210 PRINT "hoping to find a clue..."
+220 PRINT "or a phone charger"
+230 PRINT "forgotten by another tourist."
+240 PEN 2:PRINT :PRINT "Nothing like that, just plants,"
+250 PRINT "a huge palm tree,"
+260 PEN 3:PRINT "and a promise of bites in series."
+270 PEN 1:PRINT :PRINT "Yet,"
+280 PRINT "you have the strange feeling"
+290 PRINT "this jungle whispers a secret..."
+295 PEN 2:LOCATE 15,24:INPUT "  ENTER  ",EN$
+296 MODE 0:GOTO 45
+
+300 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,1:PEN 1:PRINT "You shake the palm tree"
+310 PRINT "with the enthusiasm"
+320 PRINT "of a Sunday athlete."
+330 PEN 3:PRINT :PRINT "Bad plan: CRACK... SPLASH!"
+340 PEN 1:PRINT :PRINT "A coconut falls, aims your head"
+360 PRINT "and lands a perfect strike."
+370 PEN 2:PRINT :PRINT "The palms just won this round."
+390 PEN 1:PRINT :PRINT "Score: Nature 1 - Tourist 0"
+395 PEN 2:LOCATE 15,24:INPUT "  ENTER  ",EN$
+396 RUN "Mort.bas"
+
+400 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,1:PEN 1:PRINT "You take out your knife"
+410 PRINT "and proudly start carving"
+420 PRINT "your name..."
+430 PEN 3:PRINT :PRINT "But surprise:"
+440 PEN 2:PRINT :PRINT "someone passed before you!"
+450 PEN 1:PRINT :PRINT "On the bark, you read:"
+460 PEN 3:PRINT :PRINT "10 teeth, less than a crocodile"
+470 PEN 1:PRINT :PRINT "And it's signed: A.M.S."
+480 PRINT :PRINT "Weird..."
+490 PRINT :PRINT "Maybe it's good"
+491 PRINT "to remember this info."
+492 PEN 2:LOCATE 15,24:INPUT "  ENTER  ",EN$
+493 MODE 0:GOTO 45
+
+500 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,1:PEN 1:PRINT "You lift the leaves..."
+510 PEN 3:PRINT :PRINT "            ERROR!"
+520 PEN 2:PRINT :PRINT "A squadron of tiger mosquitoes"
+530 PRINT "appears, helmets on,"
+540 PRINT "walkie-talkies buzzing."
+550 PEN 3:PRINT :PRINT "- Visual target confirmed,"
+560 PRINT "  let's drain it!"
+570 PEN 1:PRINT :PRINT "They charge you in Delta formation,"
+580 PRINT "sucking your blood like a Capri-Sun."
+591 PEN 2:PRINT :PRINT "Last vision:"
+592 PRINT :PRINT "A mosquito saluting you,"
+593 PRINT "standing at attention."
+594 PEN 2:LOCATE 15,24:INPUT "  ENTER  ",EN$
+595 RUN "mort.bas"
+
+600 INK 0,0:INK 1,20:INK 2,24:INK 3,6:MODE 1:BORDER 0:LOCATE 1,1:PEN 1:PRINT "You make your way"
+610 PRINT "towards the north."
+620 PEN 2:PRINT :PRINT "Well, you try..."
+630 PEN 1:PRINT:Print "The plants are so dense"
+640 PRINT "they look like a Black Friday line."
+650 PEN 2:PRINT :PRINT "You push, you force..."
+660 PEN 3:PRINT :PRINT "SCHLACK!"
+670 PEN 1:PRINT :PRINT "A vine detaches,"
+680 PRINT "wraps around your neck,"
+690 PRINT "and hoists you up"
+700 PRINT "like a ham on sale."
+710 PEN 2:PRINT :PRINT "Nature, sometimes, is not cool..."
+720 LOCATE 15,24:INPUT "  ENTER  ",EN$
+730 RUN "mort.bas"

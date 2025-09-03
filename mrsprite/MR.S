@@ -14,15 +14,42 @@
 	xc
 	xc
 
-*----------------------------------- Macros
+*----------------------------------- Direct page
 
+theALGORITHM	=	$01
+theLANGUAGE	=	$03
+theORIGIN	=	$05
+sprHANDLE	=	$09
+theWORD	=	$15
+theMASK	=	$19
+ptrSCREEN	=	$1f
+ptrUNPACK	=	$23
+sprPOINTER	=	$27
+srcHANDLE	=	$2b
+picHANDLE	=	$2f
+theY1	=	$33
+theX1	=	$35
+theY2	=	$37
+theX2	=	$39
+theWIDTH	=	$3b
+theHEIGHT	=	$3d
+saveY1	=	$3f
+saveX1	=	$41
+saveY2	=	$43
+saveX2	=	$45
+finalHEIGHT	=	$47
+finalWIDTH	=	$49
+theOFFSET	=	$4d
+theOFFSET2	=	$4f
 theY	=	$6f
 theX	=	$71
 theBUTTON	=	$73
+fgMASK	=	$75	; 0: no mask, 1: mask
+fgODDEVEN	=	$79	; no odd/even if cmd data list
 
 GSOS	=	$e100a8
 
-*---------------
+*----------------------------------- Macros
 
 	use	4/Ctl.Macs
 	use	4/Desk.Macs
@@ -56,7 +83,8 @@ L0033       PHB
             PHK
             PLB
             TDC
-            STA   L2044
+            STA   myDP
+
             SEP   #$20
             LDAL  $E1C034
             PHA
@@ -64,40 +92,41 @@ L0033       PHB
             STAL  $E1C034
             PLA
             AND   #$0F
-            STA   L206E
+            STA   saveBORDER
             REP   #$20
+
             _TLStartUp
             PEA   $0000
             _MMStartUp
             PLA
-            STA   L2046
+            STA   appID
             ORA   #$0100
-            STA   L2048
+            STA   myID
             PHA
             _GetCurResourceApp
             PLA
             STA   L2484
             PHA
             PHA
-            LDA   L2048
+            LDA   myID
             PHA
             PEA   $0000
-            PEA   ^L2434
-            PEA   L2434
+            PEA   ^startStopRef
+            PEA   startStopRef
             _StartUpTools
             PLA
-            STA   L204E
+            STA   ssHANDLE
             PLA
-            STA   L2050
+            STA   ssHANDLE+2
             _WaitCursor
-            STZ   $33
-            STZ   $35
-            STZ   $37
-            STZ   $39
-            STZ   $01
-            STZ   $03
-            STZ   $05
-            STZ   $79
+            STZ   theY1
+            STZ   theX1
+            STZ   theY2
+            STZ   theX2
+            STZ   theALGORITHM
+            STZ   theLANGUAGE
+            STZ   theORIGIN
+            STZ   fgODDEVEN
             _CompactMem
             JSR   L1D79
             JSR   L1B8C
@@ -294,9 +323,9 @@ L02EF       CLC
             RTS
 
 L02F1       PEA   $0000
-            LDA   L2050
+            LDA   ssHANDLE+2
             PHA
-            LDA   L204E
+            LDA   ssHANDLE
             PHA
             _ShutDownTools
             LDA   L2484
@@ -305,25 +334,28 @@ L02F1       PEA   $0000
             JSL   GSOS
             DW    $2009       ; SetPrefix
             ADRL  L1E57
-            LDA   L2048
+            LDA   myID
             PHA
             _DisposeAll
-            LDA   L2046
+            LDA   appID
             PHA
             _MMShutDown
             _TLShutDown
-            SEP   #$20
+
+            SEP   #$20	; restore border
             LDAL  $E1C034
             AND   #$F0
-            ORA   L206E
+            ORA   saveBORDER
             STAL  $E1C034
             REP   #$20
             PLD
             PLB
             JSL   GSOS
             DW    $2029       ; Quit
-            ADRL  L0352
-L0352       DW    $0000       ; Parms for Quit
+            ADRL  proQUIT
+
+proQUIT     DW    $0000       ; Parms for Quit
+
 L0354       PHA
             PHA
             _FrontWindow
@@ -378,22 +410,23 @@ L03C6       DEX
 L03D2       RTS
 
 L03D3       DW    $0012
-L03D5       DW    $0001
-            DW    $0002
-            DW    $0003
-            DW    $0004
-            DW    $0005
-            DW    $0008
-            DW    $0009
-            DW    $000A
-            DW    $0016
-L03E7       DA    L1713
-            DA    L1526
-            DA    L13BF
-            DA    L0F38
-            DA    L104C
-            DA    L09C7
-            DA    L0994
+L03D5       DW    $0001	; Save
+            DW    $0002	; Test
+            DW    $0003	; Create
+            DW    $0004	; View
+            DW    $0005	; Cut
+            DW    $0008	; Language
+            DW    $0009	; Origin
+            DW    $000A	; Algorithm
+            DW    $0016	; Aide Sujet
+
+L03E7       DA    doSAVE
+            DA    doTEST
+            DA    doCREATE
+            DA    doVIEW
+            DA    doCUT
+            DA    doLANGUAGE
+            DA    doORIGIN
             DA    L0954
             DA    L0BD9
 L03F9       TSC
@@ -480,12 +513,12 @@ L0465       PHA
 L04A9       LDA   $01,S
             STA   L2554
             LDA   $03,S
-            STA   L2556
+            STA   L2554+2
             _SetPort
             LDX   L2554
-            LDY   L2556
+            LDY   L2554+2
             JSR   L1A69
-            LDA   L2556
+            LDA   L2554+2
             PHA
             LDA   L2554
             PHA
@@ -504,7 +537,7 @@ L04E5       PHA
             CMP   #$0002
             BNE   L04E5
             LDX   L2554
-            LDY   L2556
+            LDY   L2554+2
             JSR   L1A9F
 L0505       _InitCursor
             _SetPort
@@ -516,13 +549,13 @@ L0514       PHA
             PHA
             _GetMouseClamp
             PLA
-            STA   L205C	; yMax
+            STA   yMAX	; yMax
             PLA
-            STA   L205A	; yMin
+            STA   yMIN	; yMin
             PLA
-            STA   L2058	; xMax
+            STA   xMAX	; xMax
             PLA
-            STA   L2056	; xMin
+            STA   xMIN	; xMin
             PHA
             _GetMasterSCB
             PLA
@@ -568,13 +601,13 @@ L0514       PHA
             _SetPenSize
             RTS
 
-L05DD       LDA   L2056	; xMin
+L05DD       LDA   xMIN	; xMin
             PHA
-            LDA   L2058	; xMax
+            LDA   xMAX	; xMax
             PHA
-            LDA   L205A	; yMin
+            LDA   yMIN	; yMin
             PHA
-            LDA   L205C	; yMax
+            LDA   yMAX	; yMax
             PHA
             _ClampMouse
             LDA   L265E+2
@@ -647,8 +680,8 @@ L06AC       LDA   $01,S
             LDA   L2558
             PHA
             _SetInfoDraw
-            LDX   $01
-            LDA   L2492,X
+            LDX   theALGORITHM
+            LDA   miALGORITHM,X
             PHA
             PHA
             PHA
@@ -660,8 +693,8 @@ L06AC       LDA   $01,S
             PEA   $000A
             _GetCtlHandleFromID
             _SetCtlValue
-            LDX   $05
-            LDA   L249E,X
+            LDX   theORIGIN
+            LDA   miORIGIN,X
             PHA
             PHA
             PHA
@@ -673,8 +706,8 @@ L06AC       LDA   $01,S
             PEA   $0009
             _GetCtlHandleFromID
             _SetCtlValue
-            LDX   $03
-            LDA   L24A2,X
+            LDX   theLANGUAGE
+            LDA   miLANGUAGE,X
             PHA
             PHA
             PHA
@@ -686,7 +719,7 @@ L06AC       LDA   $01,S
             PEA   $0008
             _GetCtlHandleFromID
             _SetCtlValue
-            STZ   L2052
+            STZ   blkLEN
             JSR   L0A6B
             JSR   L0A65
             LDX   L2558
@@ -699,7 +732,7 @@ L0758       PHD
             PHB
             PHK
             PLB
-            LDA   L2044
+            LDA   myDP
             TCD
             PHA
             PHA
@@ -736,66 +769,66 @@ L079D       PHA
             PEA   $0006
             _SetFontFlags
             SEC
-            LDA   $39
-            SBC   $35
+            LDA   theX2
+            SBC   theX1
             INC
-            STA   $3B
+            STA   theWIDTH
             SEC
-            LDA   $37
-            SBC   $33
+            LDA   theY2
+            SBC   theY1
             INC
-            STA   $3D
-            LDA   $35
+            STA   theHEIGHT
+            LDA   theX1
             PHA
-            PEA   ^L26F6+3
-            PEA   L26F6+3
+            PEA   ^strX+3
+            PEA   strX+3
             PEA   $0003
             PEA   $0000
             _Int2Dec
-            LDA   $33
+            LDA   theY1
             PHA
-            PEA   ^L26FC+3
-            PEA   L26FC+3
+            PEA   ^strY+3
+            PEA   strY+3
             PEA   $0003
             PEA   $0000
             _Int2Dec
-            LDA   $3B
+            LDA   theWIDTH
             PHA
-            PEA   ^L2702+3
-            PEA   L2702+3
+            PEA   ^strWIDTH+3
+            PEA   strWIDTH+3
             PEA   $0003
             PEA   $0000
             _Int2Dec
-            LDA   $3D
+            LDA   theHEIGHT
             PHA
-            PEA   ^L2708+3
-            PEA   L2708+3
+            PEA   ^strHEIGHT+3
+            PEA   strHEIGHT+3
             PEA   $0003
             PEA   $0000
             _Int2Dec
             PEA   $006A
             PEA   $0024
             _MoveTo
-            PEA   ^L26F6
-            PEA   L26F6
+            PEA   ^strX
+            PEA   strX
             _DrawString
             PEA   $006A
             PEA   $0038
             _MoveTo
-            PEA   ^L26FC
-            PEA   L26FC
+            PEA   ^strY
+            PEA   strY
             _DrawString
             PEA   $006A
             PEA   $0044
             _MoveTo
-            PEA   ^L2702
-            PEA   L2702
+            PEA   ^strWIDTH
+            PEA   strWIDTH
             _DrawString
             PEA   $006A
             PEA   $004C
             _MoveTo
-            PEA   ^L2708
-            PEA   L2708
+            PEA   ^strHEIGHT
+            PEA   strHEIGHT
             _DrawString
             _SetFontFlags
             _SetPort
@@ -818,19 +851,19 @@ L08A6       PHD
             PEA   ^L26AC
             PEA   L26AC
             _EraseRect
-            LDAL  L2052
+            LDAL  blkLEN
             BEQ   L0932
             PHA
-            PEA   ^L270E+$E
-            PEA   L270E+$E
+            PEA   ^strLENGTH+$E
+            PEA   strLENGTH+$E
             PEA   $0005
             PEA   $0000
             _Int2Dec
             PEA   $0005
             _SetForeColor
             PHA
-            PEA   ^L270E
-            PEA   L270E
+            PEA   ^strLENGTH
+            PEA   strLENGTH
             _CStringWidth
             SEC
             LDAL  L26B2
@@ -842,8 +875,8 @@ L08A6       PHD
             ADC   #$0009
             PHA
             _MoveTo
-            PEA   ^L270E
-            PEA   L270E
+            PEA   ^strLENGTH
+            PEA   strLENGTH
             _DrawCString
 L0932       PLY
             LDA   $02,S
@@ -880,7 +913,7 @@ L0954       PHA
             _GetCtlValue
             PLA
             LDX   #$000A
-L0977       CMP   L2492,X
+L0977       CMP   miALGORITHM,X
             BEQ   L0980
             DEX
             DEX
@@ -889,13 +922,13 @@ L0980       LDY   #$0000
             CMP   #$010F
             BNE   L098B
             LDY   #$00FF
-L098B       STY   $79
-            CPX   $01
-            STX   $01
+L098B       STY   fgODDEVEN
+            CPX   theALGORITHM
+            STX   theALGORITHM
             BNE   L09FA
             RTS
 
-L0994       PHA
+doORIGIN    PHA
             PHA
             PHA
             LDA   L2558+2
@@ -908,17 +941,17 @@ L0994       PHA
             _GetCtlValue
             PLA
             LDX   #$0002
-L09B7       CMP   L249E,X
+L09B7       CMP   miORIGIN,X
             BEQ   L09C0
             DEX
             DEX
             BNE   L09B7
-L09C0       CPX   $05
-            STX   $05
+L09C0       CPX   theORIGIN
+            STX   theORIGIN
             BNE   L09FA
             RTS
 
-L09C7       PHA
+doLANGUAGE  PHA
             PHA
             PHA
             LDA   L2558+2
@@ -931,13 +964,13 @@ L09C7       PHA
             _GetCtlValue
             PLA
             LDX   #$0004
-L09EA       CMP   L24A2,X
+L09EA       CMP   miLANGUAGE,X
             BEQ   L09F3
             DEX
             DEX
             BNE   L09EA
-L09F3       CPX   $03
-            STX   $03
+L09F3       CPX   theLANGUAGE
+            STX   theLANGUAGE
             BNE   L09FA
             RTS
 
@@ -953,7 +986,7 @@ L09FA       PHA
             _SetPort
             PEA   $0006
             _SetFontFlags
-            STZ   L2052
+            STZ   blkLEN
             JSR   L0A6B
             JSR   L0A65
             LDA   L2558+2
@@ -968,7 +1001,7 @@ L09FA       PHA
             _SetPort
             RTS
 
-L0A54       LDX   $03
+L0A54       LDX   theLANGUAGE
             LDA   L0A5C,X
             STA   $7B
             RTS
@@ -987,7 +1020,7 @@ L0A6B       LDA   #$00FF
             STA   $7D
             RTS
 
-L0A71       LDA   $79
+L0A71       LDA   fgODDEVEN
             PHA
             PHA
             PHA
@@ -1073,7 +1106,7 @@ L0B38       LDA   $01,S
             LDA   L2558
             ORA   L2558+2
             BEQ   L0B7C
-            LDX   $01
+            LDX   theALGORITHM
             LDA   L24A8,X
             STA   $07
             LDA   L24C2,X
@@ -1202,65 +1235,65 @@ L0C8F       LDA   L1E3F
             BEQ   L0CDA
             JSL   GSOS
             DW    $2010       ; Open
-            ADRL  L1E0B
+            ADRL  proOPEN
             BCS   L0CCE
-            LDA   L1E0D
-            STA   L1E19
-            STA   L1E39
+            LDA   proOPEN+2
+            STA   proREAD+2
+            STA   proCLOSE+2
             LDA   #$8000
-            STA   L1E1F
+            STA   proREADLEN
             LDA   #$0000
-            STA   L1E1F+2
+            STA   proREADLEN+2
             LDA   #L38DE
-            STA   L1E1B
+            STA   proREADPTR
             LDA   #^L38DE
-            STA   L1E1B+2
+            STA   proREADPTR+2
             JSL   GSOS
             DW    $2012       ; Read
-            ADRL  L1E17
+            ADRL  proREAD
 L0CCE       PHP
             JSL   GSOS
             DW    $2014       ; Close
-            ADRL  L1E37
+            ADRL  proCLOSE
             PLP
 L0CDA       _InitCursor
             RTS
 
-L0CE2       STZ   $2F
-            STZ   $31
+L0CE2       STZ   picHANDLE
+            STZ   picHANDLE+2
             JSL   GSOS
             DW    $2006       ; GetFileInfo
-            ADRL  L1DD7
+            ADRL  proGETINFO
             BCS   L0D33
-            LDA   L1DFB
-            STA   L1E1F
-            LDA   L1DFB+2
-            STA   L1E1F+2
+            LDA   proEOF
+            STA   proREADLEN
+            LDA   proEOF+2
+            STA   proREADLEN+2
             JSR   L1C20
             BCS   L0D33
             JSL   GSOS
             DW    $2010       ; Open
-            ADRL  L1E0B
+            ADRL  proOPEN
             BCS   L0D22
-            LDA   L1E0D
-            STA   L1E19
-            STA   L1E39
+            LDA   proOPEN+2
+            STA   proREAD+2
+            STA   proCLOSE+2
             JSL   GSOS
             DW    $2012       ; Read
-            ADRL  L1E17
+            ADRL  proREAD
 L0D22       PHP
             JSL   GSOS
             DW    $2014       ; Close
-            ADRL  L1E37
+            ADRL  proCLOSE
             PLP
             BCS   L0D33
             JSR   L0D4E
-L0D33       LDA   $2F
-            ORA   $31
+L0D33       LDA   picHANDLE
+            ORA   picHANDLE+2
             BEQ   L0D46
-            LDA   $31
+            LDA   picHANDLE+2
             PHA
-            LDA   $2F
+            LDA   picHANDLE
             PHA
             _DisposeHandle
 L0D46       _InitCursor
@@ -1269,10 +1302,10 @@ L0D46       _InitCursor
 L0D4E       BRL   L0D5F
             DW    $7771
             STR   'UnPackBytes'
-L0D5F       LDA   L1E1B
-            STA   $23
-            LDA   L1E1B+2
-            STA   $25
+L0D5F       LDA   proREADPTR
+            STA   ptrUNPACK
+            LDA   proREADPTR+2
+            STA   ptrUNPACK+2
             LDA   L1E3F
             BEQ   L0D82
             CMP   #$0001
@@ -1310,10 +1343,10 @@ L0DA9       LDA   #$8000
             RTS
 
 L0DB7       LDY   #$0009
-            LDA   [$23],Y
+            LDA   [ptrUNPACK],Y
             STA   L2072
             LDY   #$000D
-            LDA   [$23],Y
+            LDA   [ptrUNPACK],Y
             STA   L0F2E
             INY
             INY
@@ -1326,7 +1359,7 @@ L0DB7       LDY   #$0009
             CLC
             ADC   L0F32
             TAY
-            LDA   [$23],Y
+            LDA   [ptrUNPACK],Y
             STA   L0F30
             INY
             INY
@@ -1376,7 +1409,7 @@ L0E38       JSR   L0E85
             PHA
             LDA   L0F22
             PHA
-            LDA   L1E1F
+            LDA   proREADLEN
             PHA
             PEA   ^L0F26
             PEA   L0F26
@@ -1412,10 +1445,10 @@ L0E85       STA   L0F2A
             CLC
             TXA
             CLC
-            ADC   $23
+            ADC   ptrUNPACK
             STA   L0F22
             LDA   #$0000
-            ADC   $25
+            ADC   ptrUNPACK+2
             STA   L0F24
             CLC
             TYA
@@ -1446,7 +1479,7 @@ L0EAD       LDA   #$00C8
             SEP   #$20
 L0EDC       INY
             INY
-            LDA   [$23],Y
+            LDA   [ptrUNPACK],Y
             AND   #$AF
             STA   L2074,X
             INY
@@ -1500,7 +1533,8 @@ L0F34       DB    $00
             DB    $00
 L0F36       DB    $00
             DB    $00
-L0F38       BRL   L0F49
+
+doVIEW      BRL   L0F49
             DW    $7771
             STR   'Voir Sprite'
 L0F49       _HideCursor
@@ -1513,7 +1547,7 @@ L0F49       _HideCursor
             JSR   L0514
             JSR   L12B1
 L0F67       JSR   L0F82
-            JSR   L1360
+            JSR   waitDELAY
             JSR   GetMouseStatusAndPosition
             LDA   theBUTTON
             BEQ   L0F67
@@ -1643,14 +1677,15 @@ L0FE4       DB    $42
             DB    $3E
 L102C       HEX   00000000000000000000000000000000
             HEX   00000000000000000000000000000000
-L104C       BRL   L105E
+
+doCUT       BRL   L105E
             DW    $7771
             STR   'Definir Bloc'
 L105E       _HideCursor
-            STZ   $33
-            STZ   $35
-            STZ   $37
-            STZ   $39
+            STZ   theY1
+            STZ   theX1
+            STZ   theY2
+            STZ   theX2
             LDA   #L38DE
             STA   L2650
             LDA   #^L38DE
@@ -1670,15 +1705,15 @@ L108D       JSR   GetMouseStatusAndPosition
             JSR   L114C
             JSR   L116B
             LDA   theX
-            STA   $35
+            STA   theX1
             STA   L269E
             LDA   theY
-            STA   $33
+            STA   theY1
             STA   L269C
-            LDA   $35	; xMin
+            LDA   theX1	; xMin
             PHA
             PEA   $027F	; xMax
-            LDA   $33	; yMin
+            LDA   theY1	; yMin
             PHA
             PEA   $00C7	; yMax
             _ClampMouse
@@ -1707,22 +1742,22 @@ L10E9       JSR   GetMouseStatusAndPosition
             RTS
 
 L110D       LDA   theY
-            CMP   $33
+            CMP   theY1
             BNE   L111A
             LDA   theX
-            CMP   $35
+            CMP   theX1
             BNE   L111A
             RTS
 
 L111A       JSR   L114C
             JSR   L116B
-            PEA   ^L264E
+            PEA   ^L264E	; srcLocInfo
             PEA   L264E
-            PEA   ^L26A4
+            PEA   ^L26A4	; srcLocRect
             PEA   L26A4
-            LDA   L26A6
+            LDA   L26A6	; x-dest
             PHA
-            LDA   L26A4
+            LDA   L26A4	; y-dest
             PHA
             PEA   $0000
             _PPToPort
@@ -1732,24 +1767,24 @@ L111A       JSR   L114C
             RTS
 
 L1148       LDA   theY
-            STA   $33
+            STA   theY1
 L114C       PEA   $0000
-            LDA   $33
+            LDA   theY1
             PHA
             _MoveTo
             PEA   $013F
-            LDA   $33
+            LDA   theY1
             PHA
             _LineTo
             RTS
 
 L1167       LDA   theX
-            STA   $35
-L116B       LDA   $35
+            STA   theX1
+L116B       LDA   theX1
             PHA
             PEA   $0000
             _MoveTo
-            LDA   $35
+            LDA   theX1
             PHA
             PEA   $00C7
             _LineTo
@@ -1757,14 +1792,14 @@ L116B       LDA   $35
 
 L1186       LDX   theX
             LDY   theY
-            CPX   $39
+            CPX   theX2
             BNE   L1193
-            CPY   $37
+            CPY   theY2
             BNE   L1193
             RTS
 
-L1193       STX   $39
-            STY   $37
+L1193       STX   theX2
+            STY   theY2
             PEA   ^L269C
             PEA   L269C
             _FrameRect
@@ -1793,21 +1828,21 @@ L11C5       LDX   theX
 PrintCursorPosition
             LDA   theX	; X-coord
             PHA
-            PEA   ^L26E6+3
-            PEA   L26E6+3
+            PEA   ^strXY+3
+            PEA   strXY+3
             PEA   $0003
             PEA   $0000
             _Int2Dec
             LDA   theY	; Y-coord
             PHA
-            PEA   ^L26E6+$B
-            PEA   L26E6+$B
+            PEA   ^strXY+$B
+            PEA   strXY+$B
             PEA   $0003
             PEA   $0000
             _Int2Dec
             PHA
-            PEA   ^L26E6
-            PEA   L26E6
+            PEA   ^strXY
+            PEA   strXY
             _CStringWidth
             PLA
             STA   L26AA
@@ -1825,8 +1860,8 @@ L1237       LDA   L26A6
             PHA
             PEA   $0009
             _MoveTo
-            PEA   ^L26E6
-            PEA   L26E6
+            PEA   ^strXY
+            PEA   strXY
             _DrawCString
             RTS
 
@@ -1933,30 +1968,31 @@ L1326       PEA   ^L213C
             _BlockMove
             RTS
 
-L1340       LDY   #$7D00
+copySCBPALETTES
+            LDY   #$7D00
 L1343       LDA   L38DE,Y
-            STA   [$1F],Y
+            STA   [ptrSCREEN],Y
             INY
             INY
             CPY   #$8000
             BCC   L1343
             RTS
 
-L1350       PHA
+flushEVENTS PHA
             PEA   $FFFF
             PEA   $0000
             _FlushEvents
             PLA
             RTS
 
-L1360       PHA
+waitDELAY   PHA
             PEA   $0000
             PEA   $0020
             _WaitUntil
             PLA
             RTS
 
-L1370       SEP   #$20
+waitVBL     SEP   #$20
 L1372       LDAL  $E1C019
             BPL   L1372
 L1378       LDAL  $E1C019
@@ -1964,7 +2000,8 @@ L1378       LDAL  $E1C019
             REP   #$20
             RTS
 
-L1381       SEP   #$20
+borderYELLOW
+            SEP   #$20
             LDAL  $E1C034
             AND   #$F0
             ORA   #$0D
@@ -1972,7 +2009,7 @@ L1381       SEP   #$20
             REP   #$20
             RTS
 
-L1392       SEP   #$20
+borderBLACK SEP   #$20
             LDAL  $E1C034
             AND   #$F0
             STAL  $E1C034
@@ -1993,9 +2030,10 @@ L13B3       SEP   #$20
             REP   #$20
             RTS
 
-L13BF       BRL   L13CD
+doCREATE    BRL   L13CD
             DW    $7771
             STR   'Creation'
+
 L13CD       STZ   $77
             STZ   $59
             STZ   $63
@@ -2006,9 +2044,9 @@ L13CD       STZ   $77
             JSR   L28C5
             _HideCursor
             LDA   #$2000
-            STA   $1F
+            STA   ptrSCREEN
             LDA   #$00E1
-            STA   $21
+            STA   ptrSCREEN+2
             LDA   #L38DE
             STA   L2650
             LDA   #^L38DE
@@ -2016,8 +2054,8 @@ L13CD       STZ   $77
             JSR   L0514
             PEA   $0000
             _ClearScreen
-            JSR   L1340
-            LDX   $01
+            JSR   copySCBPALETTES
+            LDX   theALGORITHM
             JSR   (L1470,X)
             JSR   L05DD
             JSR   L12D9
@@ -2025,7 +2063,7 @@ L13CD       STZ   $77
             LDA   $77
             BNE   L143E
             LDA   $59
-            STA   L2052
+            STA   blkLEN
             LDA   L2558+2
             PHA
             LDA   L2558
@@ -2044,7 +2082,7 @@ L143E       PHA
             PEA   $0003
             _AlertWindow
             PLA
-            STZ   L2052
+            STZ   blkLEN
             LDA   L2558+2
             PHA
             LDA   L2558
@@ -2055,12 +2093,13 @@ L143E       PHA
             SEC
             RTS
 
-L1470       DA    L2762
-            DA    L27D0
-            DA    L27F1
-            DA    L2AD1
-            DA    L326A
-            DA    L2E6A
+L1470       DA    L2762	; header AB01
+            DA    L27D0	; header AB02
+            DA    L27F1	; header AB03
+            DA    L2AD1	; header 
+            DA    L326A	; header 
+            DA    L2E6A	; header
+
 L147C       LDA   L2558+2
             PHA
             LDA   L2558
@@ -2077,7 +2116,7 @@ L147C       LDA   L2558+2
             JSR   L1282
             JSL   GSOS
             DW    $2007       ; JudgeName
-            ADRL  L1DA7
+            ADRL  proJUDGE
             LDA   L1DB7
             AND   #$E000
             BEQ   L1516
@@ -2126,20 +2165,21 @@ L1522       DB    $00
             DB    $00
 L1524       DB    $00
             DB    $00
-L1526       BRL   L1530
+
+doTEST      BRL   L1530
             DW    $7771
             STR   'Test'
-L1530       LDA   L2052
+L1530       LDA   blkLEN
             BEQ   L1567
             _HideCursor
             JSR   L1B05
             JSR   L0514
             PEA   $0000
             _ClearScreen
-            JSR   L1340
-            LDX   $01
+            JSR   copySCBPALETTES
+            LDX   theALGORITHM
             JSR   (L1568,X)
-            JSR   L1392
+            JSR   borderBLACK
             JSR   L05DD
             JSR   L12D9
             JSR   L1B12
@@ -2158,18 +2198,18 @@ L1574       LDA   #$2000
             STA   $61
             JSR   L167E
 L1581       JSR   L16E9
-            JSR   L1370
-            JSR   L1381
-            LDA   $29
+            JSR   waitVBL
+            JSR   borderYELLOW
+            LDA   sprPOINTER+2
             PHA
-            LDA   $27
+            LDA   sprPOINTER
             PHA
             LDA   $61
             PHA
             LDA   $5F
             PHA
             JSL   L2780
-            JSR   L1392
+            JSR   borderBLACK
             LDA   theBUTTON
             BEQ   L1581
             LDA   #$0000
@@ -2183,18 +2223,18 @@ L15A8       LDA   #$2000
             STA   $61
             JSR   L167E
 L15B5       JSR   L16E9
-            JSR   L1370
-            JSR   L1381
-            LDA   $29
+            JSR   waitVBL
+            JSR   borderYELLOW
+            LDA   sprPOINTER+2
             PHA
-            LDA   $27
+            LDA   sprPOINTER
             PHA
             LDA   $61
             PHA
             LDA   $5F
             PHA
             JSL   L281B
-            JSR   L1392
+            JSR   borderBLACK
             LDA   theBUTTON
             BEQ   L15B5
             LDA   #$0000
@@ -2207,16 +2247,16 @@ L15DA       LDA   #$2000
             STA   $61
             LDA   $28
             STA   L15FE+2
-            LDA   $27
+            LDA   sprPOINTER
             STA   L15FE+1
             JSR   L167E
 L15F1       JSR   L16E9
-            JSR   L1370
-            JSR   L1381
+            JSR   waitVBL
+            JSR   borderYELLOW
             LDY   $5F
             LDA   $61
 L15FE       JSL   L15FE
-            JSR   L1392
+            JSR   borderBLACK
             LDA   theBUTTON
             BEQ   L15F1
             LDA   #$0000
@@ -2229,16 +2269,16 @@ L160E       LDA   #$2000
             STA   $61
             LDA   $28
             STA   L1633+2
-            LDA   $27
+            LDA   sprPOINTER
             STA   L1633+1
             JSR   L13A1
             JSR   L167E
 L1628       JSR   L16E9
-            JSR   L1370
-            JSR   L1381
+            JSR   waitVBL
+            JSR   borderYELLOW
             LDY   $5F
 L1633       JSL   L1633
-            JSR   L1392
+            JSR   borderBLACK
             LDA   theBUTTON
             BEQ   L1628
             JSR   L13B3
@@ -2252,11 +2292,11 @@ L1646       LDA   #$2000
             STA   $61
             JSR   L167E
 L1653       JSR   L16E9
-            JSR   L1370
-            JSR   L1381
-            LDA   $29
+            JSR   waitVBL
+            JSR   borderYELLOW
+            LDA   sprPOINTER+2
             PHA
-            LDA   $27
+            LDA   sprPOINTER
             PHA
             LDA   $61
             PHA
@@ -2266,7 +2306,7 @@ L1653       JSR   L16E9
             AND   #$0001
             PHA
             JSL   L3163
-            JSR   L1392
+            JSR   borderBLACK
             LDA   theBUTTON
             BEQ   L1653
             LDA   #$0000
@@ -2274,14 +2314,14 @@ L1653       JSR   L16E9
             RTS
 
 L167E       LDY   #$0004
-            LDA   [$27],Y
+            LDA   [sprPOINTER],Y
             STA   L205E
             SEC
             LDA   #$0140
             SBC   L205E
             STA   L2060
             LDY   #$0002
-            LDA   [$27],Y
+            LDA   [sprPOINTER],Y
             LSR
             STA   L2062
             LDA   #$0000
@@ -2344,7 +2384,7 @@ L16E9       JSR   GetMouseStatusAndPosition
             PLA
             RTS
 
-L1713       BRL   L1726
+doSAVE      BRL   L1726
             DW    $7771
             STR   'Sauver sprite'
 L1726       JSR   L1D50
@@ -2378,49 +2418,53 @@ L172F       PHA
 L1773       LDA   $01,S
             STA   L2564
             LDA   $03,S
-            STA   L2566
+            STA   L2564+2
             _SetPort
-            LDA   L2566
+            LDA   L2564+2
             PHA
             LDA   L2564
             PHA
             _DrawControls
+
             JSL   GSOS
             DW    $2002       ; Destroy
-            ADRL  L1DB9
+            ADRL  proDESTROY
             BCC   L17A4
             CMP   #$0046
             BNE   L17FA
-L17A4       LDX   $03
-            LDA   L1818,X
-            STA   L1DC7
-            STZ   L1DC9
-            STZ   L1DC9+2
+
+L17A4       LDX   theLANGUAGE
+            LDA   tblFILETYPE,X
+            STA   proCREATE+8	; file type
+            STZ   proCREATE+10	; auxtype
+            STZ   proCREATE+12
             JSL   GSOS
             DW    $2001       ; Create
-            ADRL  L1DBF
+            ADRL  proCREATE
             BCS   L17FA
+
             JSL   GSOS
             DW    $2010       ; Open
-            ADRL  L1E0B
+            ADRL  proOPEN
             BCS   L17FA
-            LDA   L1E0D
-            STA   L1E29
-            STA   L1E39
-            LDA   $27
-            STA   L1E2B
-            LDA   $29
-            STA   L1E2B+2
-            LDA   L2052
-            STA   L1E2F
-            STZ   L1E2F+2
+            LDA   proOPEN+2
+            STA   proWRITE+2
+            STA   proCLOSE+2
+            LDA   sprPOINTER
+            STA   proWRITEPTR
+            LDA   sprPOINTER+2
+            STA   proWRITEPTR+2
+            LDA   blkLEN
+            STA   proWRITELEN
+            STZ   proWRITELEN+2
             JSL   GSOS
             DW    $2013       ; Write
-            ADRL  L1E27
+            ADRL  proWRITE
             JSL   GSOS
             DW    $2014       ; Close
-            ADRL  L1E37
-L17FA       LDA   L2566
+            ADRL  proCLOSE
+
+L17FA       LDA   L2564+2
             PHA
             LDA   L2564
             PHA
@@ -2429,21 +2473,22 @@ L1809       _InitCursor
             _SetPort
             RTS
 
-L1818       DW    $0006
+tblFILETYPE DW    $0006
             DW    $0004
             DW    $00B0
+
 L181E       BRL   L182F
             DW    $7771
             STR   'Voir source'
 L182F       LDA   L2560
-            ORA   L2562
+            ORA   L2560+2
             BEQ   L1856
-            LDA   L2562
+            LDA   L2560+2
             PHA
             LDA   L2560
             PHA
             _SelectWindow
-            LDA   L2562
+            LDA   L2560+2
             PHA
             LDA   L2560
             PHA
@@ -2457,8 +2502,8 @@ L1856       JSR   L1D0A
 
 L185F       _WaitCursor
             JSR   L19EF
-            STZ   $2B
-            STZ   $2D
+            STZ   srcHANDLE
+            STZ   srcHANDLE+2
             JSR   L1959
             BCS   L18C2
             PHA
@@ -2483,18 +2528,18 @@ L185F       _WaitCursor
 L18A5       LDA   $01,S
             STA   L2560
             LDA   $03,S
-            STA   L2562
+            STA   L2560+2
             _SetPort
             JSR   L1912
             LDX   L2560
-            LDY   L2562
+            LDY   L2560+2
             JSR   L1A69
-L18C2       LDA   $2B
-            ORA   $2D
+L18C2       LDA   srcHANDLE
+            ORA   srcHANDLE+2
             BEQ   L18D5
-            LDA   $2D
+            LDA   srcHANDLE+2
             PHA
-            LDA   $2B
+            LDA   srcHANDLE
             PHA
             _DisposeHandle
 L18D5       _InitCursor
@@ -2507,12 +2552,12 @@ L18DD       PHD
             PHA
             PHA
             _GetPort
-            LDA   L2562
+            LDA   L2560+2
             PHA
             LDA   L2560
             PHA
             _SetPort
-            LDA   L2562
+            LDA   L2560+2
             PHA
             LDA   L2560
             PHA
@@ -2523,9 +2568,9 @@ L18DD       PHD
             RTL
 
 L1912       PEA   $000D
-            LDA   $2D
+            LDA   srcHANDLE+2
             PHA
-            LDA   $2B
+            LDA   srcHANDLE
             PHA
             LDA   $02
             PHA
@@ -2536,7 +2581,7 @@ L1912       PEA   $000D
             PEA   $0000
             PHA
             PHA
-            LDA   L2562
+            LDA   L2560+2
             PHA
             LDA   L2560
             PHA
@@ -2547,10 +2592,10 @@ L1912       PEA   $000D
             RTS
 
 L1949       LDX   L2560
-            LDY   L2562
+            LDY   L2560+2
             JSR   L1A9F
             STZ   L2560
-            STZ   L2562
+            STZ   L2560+2
             RTS
 
 L1959       BRL   L196D
@@ -2558,28 +2603,28 @@ L1959       BRL   L196D
             STR   'Charger source'
 L196D       JSL   GSOS
             DW    $2006       ; GetFileInfo
-            ADRL  L1DD7
+            ADRL  proGETINFO
             BCS   L19C3
-            LDA   L1DFB
-            STA   L1E1F
-            LDA   L1DFB+2
-            STA   L1E1F+2
+            LDA   proEOF
+            STA   proREADLEN
+            LDA   proEOF+2
+            STA   proREADLEN+2
             JSR   L1BD1
             BCS   L19C3
             JSL   GSOS
             DW    $2010       ; Open
-            ADRL  L1E0B
+            ADRL  proOPEN
             BCS   L19A9
-            LDA   L1E0D
-            STA   L1E19
-            STA   L1E39
+            LDA   proOPEN+2
+            STA   proREAD+2
+            STA   proCLOSE+2
             JSL   GSOS
             DW    $2012       ; Read
-            ADRL  L1E17
+            ADRL  proREAD
 L19A9       PHP
             JSL   GSOS
             DW    $2014       ; Close
-            ADRL  L1E37
+            ADRL  proCLOSE
             PLP
             BCS   L19C3
             LDA   L1E3D
@@ -2589,12 +2634,12 @@ L19A9       PHP
 L19C2       CLC
 L19C3       RTS
 
-L19C4       LDA   L1E1B
+L19C4       LDA   proREADPTR
             STA   $09
-            LDA   L1E1B+2
+            LDA   proREADPTR+2
             STA   $0B
-            LDX   L1E1F
-            LDY   L1E1F+2
+            LDX   proREADLEN
+            LDY   proREADLEN+2
             SEP   #$20
 L19D6       LDA   [$09]
             AND   #$7F
@@ -2782,39 +2827,39 @@ L1B9E       PHA
             PHA
             PEA   $0001
             PEA   $0000
-            LDA   L2048
+            LDA   myID
             PHA
             PEA   $C010
             PEA   $0000
             PEA   $0000
             _NewHandle
             PLA
-            STA   $09
+            STA   sprHANDLE
             PLA
-            STA   $0B
+            STA   sprHANDLE+2
             BCC   L1BC5
             BRL   L1C92
 L1BC5       LDY   #$0002
-            LDA   [$09]
-            STA   $27
-            LDA   [$09],Y
-            STA   $29
+            LDA   [sprHANDLE]
+            STA   sprPOINTER
+            LDA   [sprHANDLE],Y
+            STA   sprPOINTER+2
             RTS
 
 L1BD1       BRL   L1BE3
             DW    $7771
             STR   'Alloc source'
 L1BE3       SEC
-            LDA   L1E1F
-            ORA   L1E1F+2
+            LDA   proREADLEN
+            ORA   proREADLEN+2
             BEQ   L1C1F
             PHA
             PHA
-            LDA   L1E1F+2
+            LDA   proREADLEN+2
             PHA
-            LDA   L1E1F
+            LDA   proREADLEN
             PHA
-            LDA   L2048
+            LDA   myID
             PHA
             PEA   $C000
             PEA   $0000
@@ -2823,29 +2868,29 @@ L1BE3       SEC
             PLX
             PLY
             BCS   L1C1F
-            STX   $2B
-            STY   $2D
+            STX   srcHANDLE
+            STY   srcHANDLE+2
             LDY   #$0002
-            LDA   [$2B]
-            STA   L1E1B
-            LDA   [$2B],Y
-            STA   L1E1B+2
+            LDA   [srcHANDLE]
+            STA   proREADPTR
+            LDA   [srcHANDLE],Y
+            STA   proREADPTR+2
 L1C1F       RTS
 
 L1C20       BRL   L1C33
             DW    $7771
             STR   'Alloc picture'
 L1C33       SEC
-            LDA   L1E1F
-            ORA   L1E1F+2
+            LDA   proREADLEN
+            ORA   proREADLEN+2
             BEQ   L1C6F
             PHA
             PHA
-            LDA   L1E1F+2
+            LDA   proREADLEN+2
             PHA
-            LDA   L1E1F
+            LDA   proREADLEN
             PHA
-            LDA   L2048
+            LDA   myID
             PHA
             PEA   $C004
             PEA   $0000
@@ -2854,13 +2899,13 @@ L1C33       SEC
             PLX
             PLY
             BCS   L1C6F
-            STX   $2F
-            STY   $31
+            STX   picHANDLE
+            STY   picHANDLE+2
             LDY   #$0002
-            LDA   [$2F]
-            STA   L1E1B
-            LDA   [$2F],Y
-            STA   L1E1B+2
+            LDA   [picHANDLE]
+            STA   proREADPTR
+            LDA   [picHANDLE],Y
+            STA   proREADPTR+2
 L1C6F       RTS
 
 L1C70       _InitCursor
@@ -2896,7 +2941,7 @@ L1C92       _InitCursor
             SEC
             RTS
 
-L1CCC       JSR   L1350
+L1CCC       JSR   flushEVENTS
             PEA   $0078
             PEA   $001E
             PEA   $0000
@@ -2929,7 +2974,7 @@ L1CF8       DB    $02
             DB    $00
             DB    $00
             DB    $00
-L1D0A       JSR   L1350
+L1D0A       JSR   flushEVENTS
             PEA   $0078
             PEA   $001E
             PEA   $0000
@@ -2958,7 +3003,7 @@ L1D36       DB    $03
             DB    $00
             DB    $50
             DB    $00
-            DB    $45
+            DB    saveX2
             DB    $54
             DB    $00
             DB    $00
@@ -2970,7 +3015,7 @@ L1D36       DB    $03
             DB    $00
             DB    $00
             DB    $00
-L1D50       JSR   L1350
+L1D50       JSR   flushEVENTS
             PEA   $008C
             PEA   $001E
             PEA   $0000
@@ -2998,21 +3043,23 @@ L1D88       JSL   GSOS
             ADRL  L1E67
             RTS
 
-L1DA7       DW    $0006       ; Parms for JudgeName
+proJUDGE    DW    $0006       ; Parms for JudgeName
             DW    $0001       ;  file system
             DW    $0000       ;  name type
 L1DAD       ADRL  $00000000   ;  syntax
             DW    $0000       ;  max len
             ADRL  L1EAB       ;  name buffer
 L1DB7       DW    $0000       ;  flags
-L1DB9       DW    $0001       ; Parms for Destroy
-            ADRL  L1EFF       ;  file name
-L1DBF       DW    $0005       ; Parms for Create
-            ADRL  L1EFF       ;  file name
-            DW    $00E3       ;  access
-L1DC7       DW    $0000       ;  file type
-L1DC9       ADRL  $00000000   ;  aux type
-            DW    $0001       ;  storage
+
+proDESTROY  DW    $0001       ; Parms for Destroy
+            ADRL  pFILE       ;  file name
+
+proCREATE   DW    $0005       ; Parms for Create
+            ADRL  pFILE       ;  +2 file name
+            DW    $00E3       ;  +6 access
+            DW    $0000       ;  +8 file type
+            ADRL  $00000000   ; +10 aux type
+            DW    $0001       ;     storage
             DB    $02
             DB    $00
             DB    $00
@@ -3021,8 +3068,9 @@ L1DC9       ADRL  $00000000   ;  aux type
             DB    $00
             DB    $00
             DB    $00
-L1DD7       DW    $000C       ; Parms for GetFileInfo
-            ADRL  L1EFF       ;  file name
+
+proGETINFO  DW    $000C       ; Parms for GetFileInfo
+            ADRL  pFILE       ;  file name
             DW    $0000       ;  access
             DW    $0000       ;  file type
             ADRL  $00000000   ;  aux type
@@ -3030,27 +3078,32 @@ L1DD7       DW    $000C       ; Parms for GetFileInfo
             DS    8           ;  creation date
             DS    8           ;  modification date
             ADRL  $00000000   ;  option list
-L1DFB       ADRL  $00000000   ;  end of file
+proEOF      ADRL  $00000000   ;  end of file
             ADRL  $00000000   ;  blocks used
             ADRL  $00000000   ;  resource eof
             ADRL  $00000000   ;  resource blocks
-L1E0B       DW    $0004       ; Parms for Open
-L1E0D       DW    $0000       ;  ref num
-            ADRL  L1EFF       ;  path name
+
+proOPEN     DW    $0004       ; Parms for Open
+            DW    $0000       ;  ref num
+            ADRL  pFILE       ;  path name
             DW    $0000       ;  req access
             DW    $0000       ;  res num
-L1E17       DW    $0004       ; Parms for Read
-L1E19       DW    $0000       ;  ref num
-L1E1B       ADRL  $00000000   ;  buffer ptr
-L1E1F       ADRL  $00000000   ;  request count
+
+proREAD     DW    $0004       ; Parms for Read
+            DW    $0000       ;  ref num
+proREADPTR  ADRL  $00000000   ;  buffer ptr
+proREADLEN  ADRL  $00000000   ;  request count
             ADRL  $00000000   ;  transfer count
-L1E27       DW    $0004       ; Parms for Write
-L1E29       DW    $0000       ;  ref num
-L1E2B       ADRL  $00000000   ;  buffer ptr
-L1E2F       ADRL  $00000000   ;  request count
+
+proWRITE    DW    $0004       ; Parms for Write
+            DW    $0000       ;  ref num
+proWRITEPTR ADRL  $00000000   ;  buffer ptr
+proWRITELEN ADRL  $00000000   ;  request count
             ADRL  $00000000   ;  transfer count
-L1E37       DW    $0001       ; Parms for Close
-L1E39       DW    $0000       ;  ref num
+
+proCLOSE    DW    $0001       ; Parms for Close
+            DW    $0000       ;  ref num
+
 L1E3B       DB    $00
             DB    $00
 L1E3D       DB    $00
@@ -3075,7 +3128,7 @@ L1E5F       DW    $0002       ; Parms for GetPrefix
             ADRL  L1EFD       ;  prefix ptr
 L1E67       DW    $0002       ; Parms for SetPrefix
             DW    $0008       ;  prefix num
-            ADRL  L1EFF       ;  prefix ptr
+            ADRL  pFILE       ;  prefix ptr
 L1E6F       DB    $00
             DB    $00
             DB    $00
@@ -3220,7 +3273,7 @@ L1EDF       DB    $00
             DB    $00
 L1EFD       DB    $FF
             DB    $00
-L1EFF       DB    $00
+pFILE       DB    $00
             DB    $00
             DB    $00
             DB    $00
@@ -3545,28 +3598,19 @@ L1FFE       DB    $00
             DB    $00
             DB    $00
             DB    $00
-L2044       DB    $00
-            DB    $00
-L2046       DB    $00
-            DB    $00
-L2048       DB    $00
+myDP        DW    $0000
+appID       DW    $0000
+myID        DW    $0000
             DB    $00
             DB    $00
             DB    $00
             DB    $00
-            DB    $00
-L204E       DB    $00
-            DB    $00
-L2050       DB    $00
-            DB    $00
-L2052       DB    $00
-            DB    $00
-            DB    $00
-            DB    $00
-L2056       DW    $0000
-L2058       DW    $0000
-L205A       DW    $0000
-L205C       DW    $0000
+ssHANDLE    ADRL  $00000000
+blkLEN      ADRL  $00000000
+xMIN        DW    $0000
+xMAX        DW    $0000
+yMIN        DW    $0000
+yMAX        DW    $0000
 L205E       DW    $0000
 L2060       DW    $0000
 L2062       DW    $0000
@@ -3579,8 +3623,7 @@ L2068       DB    $00
             DB    $00
             DB    $00
             DB    $00
-L206E       DB    $00
-            DB    $00
+saveBORDER  DW    $0000
 L2070       DB    $00
             DB    $00
 L2072       DB    $00
@@ -4529,7 +4572,9 @@ L242C       DB    $00
             DB    $00
             DB    $00
             DB    $00
-L2434       DW    $0000
+
+startStopRef
+            DW    $0000
             DW    $C080
             DW    $0000
             ADRL  $00000000
@@ -4564,10 +4609,11 @@ L2434       DW    $0000
             DW    $0301
             DW    $001C       ; list manager
             DW    $0301
-            DW    $001E
+            DW    $001E       ; resource manager
             DW    $0100
-            DW    $0022
+            DW    $0022       ; text edit
             DW    $0101
+
 L2484       DB    $00
             DB    $00
             DB    $00
@@ -4582,17 +4628,19 @@ L2484       DB    $00
             DB    $00
             DB    $00
             DB    $00
-L2492       DW    $00F7
-            DW    $010B
-            DW    $010C
-            DW    $010D
-            DW    $010E
-            DW    $010F
-L249E       DW    $00F8
-            DW    $010A
-L24A2       DW    $00F9
-            DW    $0108
-            DW    $0109
+
+miALGORITHM DW    $00F7	; Block of Data
+            DW    $010B	; Block of Data and Mask
+            DW    $010C	; Block of Mask
+            DW    $010D	; LDA STA ABS
+            DW    $010E	; LDA STA DIR
+            DW    $010F	; Command Data List
+miORIGIN    DW    $00F8	; pair / even
+            DW    $010A	; impair / odd
+miLANGUAGE  DW    $00F9	; BIN
+            DW    $0108	; Merlin 16+
+            DW    $0109	; APW
+
 L24A8       DW    $0007
             DW    $0008
             DW    $0009
@@ -4695,20 +4743,12 @@ L2516       DB    $00
             DB    $00
             DB    $00
             DB    $00
-L2554       DB    $00
-            DB    $00
-L2556       DB    $00
-            DB    $00
+L2554       ADRL  $00000000
 L2558       ADRL  $00000000
 L255C       ADRL  $00000000
-L2560       DB    $00
-            DB    $00
-L2562       DB    $00
-            DB    $00
-L2564       DB    $00
-            DB    $00
-L2566       DB    $00
-            DB    $00
+L2560       ADRL  $00000000
+L2564       ADRL  $00000000
+
 L2568       ADRL  L256C
 L256C       DB    $00
             DB    $00
@@ -4736,6 +4776,7 @@ L2584       DB    $00
             DB    $00
             DB    $D6
             DB    $E9
+
 L258C       DW    $0000       ; SCB byte
             ADRL  $00E12000   ; Pointer to pixel image
             DW    $00A0       ; Width
@@ -4996,24 +5037,34 @@ L26DE       DW    $0000
             DW    $0000
             DW    $0000
             DW    $0000
-L26E6       ASC   ' X=000 / Y=000 '00
-L26F6       STR   'X:123'
-L26FC       STR   'Y:123'
-L2702       STR   'W:123'
-L2708       STR   'H:123'
-L270E       ASC   'File length : 65536 bytes'00
+strXY       ASC   ' X=000 / Y=000 '00
+strX        STR   'X:123'
+strY        STR   'Y:123'
+strWIDTH    STR   'W:123'
+strHEIGHT   STR   'H:123'
+strLENGTH   ASC   'File length : 65536 bytes'00
 L2728       STR   'Select picture to load:'
 L2740       STR   'Save as...'
 L274B       STR   'Select source to view:'
+
 L2762       BRL   L276F
             DW    $7771
             STR   'BlkData'
-L276F       JSR   L36D9
-            LDA   #$AB01
-            JSR   L290B
-            JSR   L297F
-            STZ   $75
+L276F       JSR   calcBLOCK
+*
+* Antoine's hack is to output
+* the hex values only, no header.
+*
+*            LDA   #$AB01
+*            JSR   outputHEADER
+*            JSR   outputWIDTHHEIGHT
+            STZ   fgMASK
             BRL   L2889
+
+*
+* Test routine
+*
+
 L2780       SEI
             TSC
             SEC
@@ -5064,24 +5115,24 @@ L27AC       LDA   [$12],Y
 L27D0       BRL   L27DD
             DW    $7771
             STR   'BlkMask'
-L27DD       JSR   L36D9
+L27DD       JSR   calcBLOCK
             LDA   #$AB02
-            JSR   L290B
-            JSR   L297F
+            JSR   outputHEADER
+            JSR   outputWIDTHHEIGHT
             LDA   #$0001
-            STA   $75
+            STA   fgMASK
             BRL   L2889
 L27F1       BRL   L2802
             DW    $7771
             STR   'BlkDataMask'
-L2802       JSR   L36D9
+L2802       JSR   calcBLOCK
             LDA   #$AB03
-            JSR   L290B
-            JSR   L297F
-            STZ   $75
+            JSR   outputHEADER
+            JSR   outputWIDTHHEIGHT
+            STZ   fgMASK
             JSR   L2889
-            INC   $75
-            JSR   L36D9
+            INC   fgMASK
+            JSR   calcBLOCK
             BRL   L2889
 L281B       SEI
             TSC
@@ -5146,24 +5197,28 @@ L2861       LDA   [$0E],Y
             CLI
             RTL
 
+*
+* Output hex data or mask
+*
+
 L2889       JSR   L3746
-            LDA   $4D
-            STA   $4F
-            LDA   $47
+            LDA   theOFFSET
+            STA   theOFFSET2
+            LDA   finalHEIGHT
 L2892       PHA
             STZ   $7F
             LDX   $4B
             DEX
-            LDY   $4F
-L289A       LDA   [$1F],Y
-            STA   $15
-            LDA   $75
+            LDY   theOFFSET2
+L289A       LDA   [ptrSCREEN],Y
+            STA   theWORD
+            LDA   fgMASK
             BEQ   L28A7
             JSR   L3771
-            STA   $15
+            STA   theWORD
 L28A7       JSR   L2A53
             LDA   #$0000
-            STA   [$1F],Y
+            STA   [ptrSCREEN],Y
             INY
             INY
             DEX
@@ -5172,9 +5227,9 @@ L28A7       JSR   L2A53
             JSR   L2AB1
             CLC
             LDA   #$00A0
-            ADC   $4F
-            STA   $4F
-            PLA
+            ADC   theOFFSET2
+            STA   theOFFSET2
+            PLA		; next line
             DEC
             BNE   L2892
             RTS
@@ -5194,7 +5249,7 @@ L28D9       INX
             STA   L1E98,X
             BNE   L28CE
             REP   #$20
-            LDX   $03
+            LDX   theLANGUAGE
             JSR   (L28EC,X)
             PLY
             PLX
@@ -5215,9 +5270,14 @@ L28FF       LDY   #L1E98
             LDY   #L38A2
             BRL   L381A
 
-L290B       PHX
+*
+* Output header
+*
+
+outputHEADER
+            PHX
             PHY
-            LDX   $03
+            LDX   theLANGUAGE
             JSR   (L2915,X)
             PLY
             PLX
@@ -5229,7 +5289,7 @@ L2915       DA    L291B
 L291B       XBA
             STA   L2955
             LDY   #L2953
-            BRL   L37E0
+            BRL   outputHEX
 L2925       PHA
             PEA   ^L2957+5
             PEA   L2957+5
@@ -5248,9 +5308,15 @@ L2953       DW    $0002
 L2955       DW    $0000
 L2957       ASC   " Hex 0000 ;Ident."8D00
 L296A       ASC   " dc h'0000' ;Ident."8D00
-L297F       PHX
+
+*
+* Output Width/Height
+*
+
+outputWIDTHHEIGHT
+            PHX
             PHY
-            LDX   $03
+            LDX   theLANGUAGE
             JSR   (L2989,X)
             PLY
             PLX
@@ -5259,13 +5325,15 @@ L297F       PHX
 L2989       DA    L298F
             DA    L299F
             DA    L29CB
-L298F       LDA   $47
+
+L298F       LDA   finalHEIGHT
             STA   L29F9
             LDA   $4B
-            STA   L29F9+2
+            STA   L29FB
             LDY   #L29F7
-            BRL   L37E0
-L299F       LDA   $47
+            BRL   outputHEX
+
+L299F       LDA   finalHEIGHT
             PHA
             PEA   ^L29FD+5
             PEA   L29FD+5
@@ -5279,7 +5347,8 @@ L299F       LDA   $47
             _Int2Hex
             LDY   #L29FD
             BRL   L3801
-L29CB       LDA   $47
+
+L29CB       LDA   finalHEIGHT
             PHA
             PEA   ^L2A24+8
             PEA   L2A24+8
@@ -5294,14 +5363,20 @@ L29CB       LDA   $47
             LDY   #L2A24
             BRL   L381A
 L29F7       DW    $0004
-L29F9       HEX   00000000
-L29FD       ASC   " dw $0000 ;Hauteur"8D
-L2A10       ASC   " dw $0000 ;Largeur"8D00
-L2A24       ASC   " dc i2'$0000' ;Hauteur"8D
-L2A3B       ASC   " dc i2'$0000' ;Largeur"8D00
+L29F9       DW    $0000
+L29FB       DW    $0000
+L29FD       ASC   " dw $0000 ;Height"8D
+L2A10       ASC   " dw $0000 ;Width"8D00
+L2A24       ASC   " dc i2'$0000' ;Height"8D
+L2A3B       ASC   " dc i2'$0000' ;Width"8D00
+
+*
+* 
+*
+
 L2A53       PHX
             PHY
-            LDX   $03
+            LDX   theLANGUAGE
             JSR   (L2A5D,X)
             PLY
             PLX
@@ -5310,10 +5385,10 @@ L2A53       PHX
 L2A5D       DA    L2A63
             DA    L2A6E
             DA    L2A8C
-L2A63       LDA   $15
+L2A63       LDA   theWORD
             STA   L2AAF
             LDY   #L2AAD
-            BRL   L37E0
+            BRL   outputHEX
 
 L2A6E       LDX   $7F
             BNE   L2A77
@@ -5325,7 +5400,7 @@ L2A77       CPX   #$0014
             JSR   L3792
             STZ   $7F
             BRA   L2A6E
-L2A83       LDA   $15
+L2A83       LDA   theWORD
             XBA
             JSR   L37A4
             INC   $7F
@@ -5342,7 +5417,7 @@ L2A95       CPX   #$0028
             JSR   L37AD
             STZ   $7F
             BRA   L2A8C
-            LDA   $15
+            LDA   theWORD
             XBA
             JSR   L37C5
             INC   $7F
@@ -5352,7 +5427,7 @@ L2AAD       DW    $0002
 L2AAF       DW    $0000
 L2AB1       PHX
             PHY
-            LDX   $03
+            LDX   theLANGUAGE
             JSR   (L2ABB,X)
             PLY
             PLX
@@ -5375,9 +5450,9 @@ L2AC8       JSR   L37B9
 L2AD1       BRL   L2AE3
             DW    $7771
             STR   'LdaStaAbsAdr'
-L2AE3       JSR   L36D9
+L2AE3       JSR   calcBLOCK
             JSR   L2D78
-            JSR   L297F
+            JSR   outputWIDTHHEIGHT
             JSR   L3746
             JSR   L2DEA
             JSR   L2AFD
@@ -5386,26 +5461,26 @@ L2AE3       JSR   L36D9
             CLC
             RTS
 
-L2AFD       LDA   $4D
-            STA   $4F
-            LDA   $47
+L2AFD       LDA   theOFFSET
+            STA   theOFFSET2
+            LDA   finalHEIGHT
             DEC
-            STA   $49
+            STA   finalWIDTH
             STZ   $51
 L2B08       LDA   $51
             STA   $53
             LDX   $4B
             DEX
-            LDY   $4F
-L2B11       LDA   [$1F],Y
+            LDY   theOFFSET2
+L2B11       LDA   [ptrSCREEN],Y
             BEQ   L2B26
-            STA   $15
+            STA   theWORD
             JSR   L3771
-            LDA   $19
+            LDA   theMASK
             BEQ   L2B26
             JSR   L2BD5
             LDA   #$0000
-            STA   [$1F],Y
+            STA   [ptrSCREEN],Y
 L2B26       INC   $53
             INC   $53
             INY
@@ -5417,27 +5492,27 @@ L2B26       INC   $53
             LDA   $51
             ADC   #$00A0
             STA   $51
-            LDA   $4F
+            LDA   theOFFSET2
             ADC   #$00A0
-            STA   $4F
-            DEC   $49
+            STA   theOFFSET2
+            DEC   finalWIDTH
             BPL   L2B08
             RTS
 
-L2B44       LDA   $4D
-            STA   $4F
-            LDA   $47
+L2B44       LDA   theOFFSET
+            STA   theOFFSET2
+            LDA   finalHEIGHT
             DEC
-            STA   $49
+            STA   finalWIDTH
             STZ   $51
 L2B4F       LDA   $51
             STA   $53
             LDX   $4B
             DEX
-            LDY   $4F
-L2B58       LDA   [$1F],Y
+            LDY   theOFFSET2
+L2B58       LDA   [ptrSCREEN],Y
             BEQ   L2B64
-            STA   $15
+            STA   theWORD
             JSR   L2CB9
             JSR   L2B82
 L2B64       INC   $53
@@ -5451,18 +5526,18 @@ L2B64       INC   $53
             LDA   $51
             ADC   #$00A0
             STA   $51
-            LDA   $4F
+            LDA   theOFFSET2
             ADC   #$00A0
-            STA   $4F
-            DEC   $49
+            STA   theOFFSET2
+            DEC   finalWIDTH
             BPL   L2B4F
             RTS
 
 L2B82       PHX
             PHY
-            LDA   $4F
+            LDA   theOFFSET2
             PHA
-            LDA   $49
+            LDA   finalWIDTH
             PHA
             LDA   $53
             PHA
@@ -5473,13 +5548,13 @@ L2B92       LDA   $51
             STA   $53
             LDX   $4B
             DEX
-            LDY   $4F
-L2B9B       LDA   [$1F],Y
-            CMP   $15
+            LDY   theOFFSET2
+L2B9B       LDA   [ptrSCREEN],Y
+            CMP   theWORD
             BNE   L2BA9
             JSR   L2D18
             LDA   #$0000
-            STA   [$1F],Y
+            STA   [ptrSCREEN],Y
 L2BA9       INC   $53
             INC   $53
             INY
@@ -5491,26 +5566,26 @@ L2BA9       INC   $53
             LDA   $51
             ADC   #$00A0
             STA   $51
-            LDA   $4F
+            LDA   theOFFSET2
             ADC   #$00A0
-            STA   $4F
-            DEC   $49
+            STA   theOFFSET2
+            DEC   finalWIDTH
             BPL   L2B92
             PLA
             STA   $51
             PLA
             STA   $53
             PLA
-            STA   $49
+            STA   finalWIDTH
             PLA
-            STA   $4F
+            STA   theOFFSET2
             PLY
             PLX
             RTS
 
 L2BD5       PHX
             PHY
-            LDX   $03
+            LDX   theLANGUAGE
             JSR   (L2BDF,X)
             PLY
             PLX
@@ -5522,25 +5597,25 @@ L2BDF       DA    L2BE5
 L2BE5       LDA   $53
             STA   L2C7D+1
             STA   L2C86+1
-            LDA   $19
+            LDA   theMASK
             STA   L2C80+1
-            LDA   $15
+            LDA   theWORD
             STA   L2C83+1
             LDY   #L2C7B
-            BRL   L37E0
+            BRL   outputHEX
 L2BFD       LDA   $53
             PHA
             PEA   ^L2C89+6
             PEA   L2C89+6
             PEA   $0004
             _Int2Hex
-            LDA   $19
+            LDA   theMASK
             PHA
             PEA   ^L2C89+$C
             PEA   L2C89+$C
             PEA   $0004
             _Int2Hex
-            LDA   $15
+            LDA   theWORD
             PHA
             PEA   ^L2C89+$12
             PEA   L2C89+$12
@@ -5554,13 +5629,13 @@ L2C3C       LDA   $53
             PEA   L2CA1+6
             PEA   $0004
             _Int2Hex
-            LDA   $19
+            LDA   theMASK
             PHA
             PEA   ^L2CA1+$C
             PEA   L2CA1+$C
             PEA   $0004
             _Int2Hex
-            LDA   $15
+            LDA   theWORD
             PHA
             PEA   ^L2CA1+$12
             PEA   L2CA1+$12
@@ -5577,7 +5652,7 @@ L2C89       ASC   " Mk4 $0000;$0000;$0000"8D00
 L2CA1       ASC   " Mk4 $0000,$0000,$0000"8D00
 L2CB9       PHX
             PHY
-            LDX   $03
+            LDX   theLANGUAGE
             JSR   (L2CC3,X)
             PLY
             PLX
@@ -5586,11 +5661,11 @@ L2CB9       PHX
 L2CC3       DA    L2CC9
             DA    L2CD4
             DA    L2CED
-L2CC9       LDA   $15
+L2CC9       LDA   theWORD
             STA   L2D08+1
             LDY   #L2D06
-            BRL   L37E0
-L2CD4       LDA   $15
+            BRL   outputHEX
+L2CD4       LDA   theWORD
             PHA
             PEA   ^L2D0B+7
             PEA   L2D0B+7
@@ -5598,7 +5673,7 @@ L2CD4       LDA   $15
             _Int2Hex
             LDY   #L2D0B
             BRL   L3801
-L2CED       LDA   $15
+L2CED       LDA   theWORD
             PHA
             PEA   ^L2D0B+7
             PEA   L2D0B+7
@@ -5611,7 +5686,7 @@ L2D08       LDA   #$0000
 L2D0B       ASC   " Lda #$0000"8D00
 L2D18       PHX
             PHY
-            LDX   $03
+            LDX   theLANGUAGE
             JSR   (L2D22,X)
             PLY
             PLX
@@ -5623,7 +5698,7 @@ L2D22       DA    L2D28
 L2D28       LDA   $53
             STA   L2D67+1
             LDY   #L2D65
-            BRL   L37E0
+            BRL   outputHEX
 L2D33       LDA   $53
             PHA
             PEA   ^L2D6A+6
@@ -5645,7 +5720,7 @@ L2D67       STA   |$0000,Y
 L2D6A       ASC   " Sta $0000,Y"8D00
 L2D78       PHX
             PHY
-            LDX   $03
+            LDX   theLANGUAGE
             JSR   (L2D82,X)
             PLY
             PLX
@@ -5655,7 +5730,7 @@ L2D82       DA    L2D88
             DA    L2D8E
             DA    L2D94
 L2D88       LDY   #L2D9A
-            BRL   L37E0
+            BRL   outputHEX
 L2D8E       LDY   #L2D9E
             BRL   L3801
 L2D94       LDY   #L2DBE
@@ -5669,7 +5744,7 @@ L2DBE       ASC   " Longa on"8D
             ASC   " Bra *+6 ;A=Bank Y=Adr"8D00
 L2DEA       PHX
             PHY
-            LDX   $03
+            LDX   theLANGUAGE
             JSR   (L2DF4,X)
             PLY
             PLX
@@ -5679,7 +5754,7 @@ L2DF4       DA    L2DFA
             DA    L2E00
             DA    L2E06
 L2DFA       LDY   #L2E0C
-            BRL   L37E0
+            BRL   outputHEX
 L2E00       LDY   #L2E14
             BRL   L3801
 L2E06       LDY   #L2E14
@@ -5699,7 +5774,7 @@ L2E14       ASC   " Sei"8D
             ASC   " Plb"8D00
 L2E33       PHX
             PHY
-            LDX   $03
+            LDX   theLANGUAGE
             JSR   (L2E3D,X)
             PLY
             PLX
@@ -5709,7 +5784,7 @@ L2E3D       DA    L2E43
             DA    L2E49
             DA    L2E4F
 L2E43       LDY   #L2E55
-            BRL   L37E0
+            BRL   outputHEX
 L2E49       LDY   #L2E5A
             BRL   L3801
 L2E4F       LDY   #L2E5A
@@ -5726,10 +5801,10 @@ L2E6A       BRL   L2E7B
             DW    $7771
             STR   'CmdDataList'
 L2E7B       STZ   $55
-            JSR   L36D9
+            JSR   calcBLOCK
             LDA   #$AC01
-            JSR   L290B
-            JSR   L297F
+            JSR   outputHEADER
+            JSR   outputWIDTHHEIGHT
             JSR   L3746
             LDA   $59
             STA   L315F
@@ -5756,27 +5831,27 @@ L2E7B       STZ   $55
             STA   $59
             RTS
 
-L2EC3       LDA   $4D
-            STA   $4F
-            LDA   $47
+L2EC3       LDA   theOFFSET
+            STA   theOFFSET2
+            LDA   finalHEIGHT
             DEC
-            STA   $49
+            STA   finalWIDTH
             STZ   $51
 L2ECE       LDA   $51
             STA   $53
             LDX   $4B
             DEX
-            LDY   $4F
-L2ED7       LDA   [$1F],Y
+            LDY   theOFFSET2
+L2ED7       LDA   [ptrSCREEN],Y
             BEQ   L2EEF
-            STA   $15
+            STA   theWORD
             JSR   L3771
-            LDA   $19
+            LDA   theMASK
             BEQ   L2EEF
             JSR   L2FDE
             INC   L3161
             LDA   #$0000
-            STA   [$1F],Y
+            STA   [ptrSCREEN],Y
 L2EEF       INC   $53
             INC   $53
             INY
@@ -5788,31 +5863,31 @@ L2EEF       INC   $53
             LDA   $51
             ADC   #$00A0
             STA   $51
-            LDA   $4F
+            LDA   theOFFSET2
             ADC   #$00A0
-            STA   $4F
-            DEC   $49
+            STA   theOFFSET2
+            DEC   finalWIDTH
             BPL   L2ECE
             RTS
 
-L2F0D       LDA   $4D
-            STA   $4F
-            LDA   $47
+L2F0D       LDA   theOFFSET
+            STA   theOFFSET2
+            LDA   finalHEIGHT
             DEC
-            STA   $49
+            STA   finalWIDTH
             STZ   $51
 L2F18       LDA   $51
             STA   $53
             LDX   $4B
             DEX
-            LDY   $4F
-L2F21       LDA   [$1F],Y
+            LDY   theOFFSET2
+L2F21       LDA   [ptrSCREEN],Y
             BEQ   L2F32
-            STA   $15
+            STA   theWORD
             JSR   L30BB
             INC   L3161
             LDA   #$0000
-            STA   [$1F],Y
+            STA   [ptrSCREEN],Y
 L2F32       INC   $53
             INC   $53
             INY
@@ -5824,16 +5899,16 @@ L2F32       INC   $53
             LDA   $51
             ADC   #$00A0
             STA   $51
-            LDA   $4F
+            LDA   theOFFSET2
             ADC   #$00A0
-            STA   $4F
-            DEC   $49
+            STA   theOFFSET2
+            DEC   finalWIDTH
             BPL   L2F18
             RTS
 
 L2F50       PHX
             PHY
-            LDX   $03
+            LDX   theLANGUAGE
             JSR   (L2F5A,X)
             PLY
             PLX
@@ -5844,7 +5919,7 @@ L2F5A       DA    L2F60
 L2F60       LDA   L3161
             STA   L2FA2
             LDY   #L2FA0
-            BRL   L37E0
+            BRL   outputHEX
 L2F6C       LDA   L3161
             PHA
             PEA   ^L2FA4+5
@@ -5867,7 +5942,7 @@ L2FA4       ASC   " dw $0000 ;Nbr de Valeurs"8D00
 L2FBF       ASC   " dc i2'$0000' ;Nbr de Valeurs"8D00
 L2FDE       PHX
             PHY
-            LDX   $03
+            LDX   theLANGUAGE
             JSR   (L2FE8,X)
             PLY
             PLX
@@ -5878,25 +5953,25 @@ L2FE8       DA    L2FEE
             DA    L3042
 L2FEE       LDA   $53
             STA   L3083
-            LDA   $19
+            LDA   theMASK
             STA   L3083+2
-            LDA   $15
+            LDA   theWORD
             STA   L3083+4
             LDY   #L3081
-            BRL   L37E0
+            BRL   outputHEX
 L3003       LDA   $53
             PHA
             PEA   ^L3089+5
             PEA   L3089+5
             PEA   $0004
             _Int2Hex
-            LDA   $19
+            LDA   theMASK
             PHA
             PEA   ^L3089+$B
             PEA   L3089+$B
             PEA   $0004
             _Int2Hex
-            LDA   $15
+            LDA   theWORD
             PHA
             PEA   ^L3089+$11
             PEA   L3089+$11
@@ -5910,13 +5985,13 @@ L3042       LDA   $53
             PEA   L30A0+8
             PEA   $0004
             _Int2Hex
-            LDA   $19
+            LDA   theMASK
             PHA
             PEA   ^L30A0+$E
             PEA   L30A0+$E
             PEA   $0004
             _Int2Hex
-            LDA   $15
+            LDA   theWORD
             PHA
             PEA   ^L30A0+$14
             PEA   L30A0+$14
@@ -5930,7 +6005,7 @@ L3089       ASC   " dw $0000,$0000,$0000"8D00
 L30A0       ASC   " dc i2'$0000,$0000,$0000'"8D00
 L30BB       PHX
             PHY
-            LDX   $03
+            LDX   theLANGUAGE
             JSR   (L30C5,X)
             PLY
             PLX
@@ -5941,17 +6016,17 @@ L30C5       DA    L30CB
             DA    L3107
 L30CB       LDA   $53
             STA   L3135
-            LDA   $15
+            LDA   theWORD
             STA   L3135+2
             LDY   #L3133
-            BRL   L37E0
+            BRL   outputHEX
 L30DB       LDA   $53
             PHA
             PEA   ^L3139+5
             PEA   L3139+5
             PEA   $0004
             _Int2Hex
-            LDA   $15
+            LDA   theWORD
             PHA
             PEA   ^L3139+$B
             PEA   L3139+$B
@@ -5965,7 +6040,7 @@ L3107       LDA   $53
             PEA   L314A+8
             PEA   $0004
             _Int2Hex
-            LDA   $15
+            LDA   theWORD
             PHA
             PEA   ^L314A+$E
             PEA   L314A+$E
@@ -6146,9 +6221,9 @@ L3258       PLD
 L326A       BRL   L3279
             DW    $7771
             STR   'LdaStaDir'
-L3279       JSR   L36D9
+L3279       JSR   calcBLOCK
             JSR   L3597
-            JSR   L297F
+            JSR   outputWIDTHHEIGHT
             JSR   L3746
             JSR   L35FB
             JSR   L3290
@@ -6156,11 +6231,11 @@ L3279       JSR   L36D9
             CLC
             RTS
 
-L3290       LDA   $4D
-            STA   $4F
-            LDA   $47
+L3290       LDA   theOFFSET
+            STA   theOFFSET2
+            LDA   finalHEIGHT
             DEC
-            STA   $49
+            STA   finalWIDTH
             STZ   L38DA
             STZ   $17
             STZ   $51
@@ -6175,12 +6250,12 @@ L32B3       LDA   $51
             STA   $53
             LDX   $4B
             DEX
-            LDY   $4F
-L32BC       LDA   [$1F],Y
+            LDY   theOFFSET2
+L32BC       LDA   [ptrSCREEN],Y
             BEQ   L32CA
-            STA   $15
+            STA   theWORD
             LDA   #$0000
-            STA   [$1F],Y
+            STA   [ptrSCREEN],Y
             JSR   L32EB
 L32CA       INC   $53
             INC   $53
@@ -6193,11 +6268,11 @@ L32CA       INC   $53
             LDA   $51
             ADC   #$00A0
             STA   $51
-            LDA   $4F
+            LDA   theOFFSET2
             ADC   #$00A0
-            STA   $4F
+            STA   theOFFSET2
             INC   L38DA
-            DEC   $49
+            DEC   finalWIDTH
             BPL   L32B3
             RTS
 
@@ -6207,11 +6282,11 @@ L32EB       LDA   L38DA
             BCC   L32F8
             JSR   L3312
 L32F8       JSR   L3771
-            LDA   $19
+            LDA   theMASK
             BEQ   L3304
             STZ   $17
             BRL   L33A7
-L3304       LDA   $15
+L3304       LDA   theWORD
             CMP   $17
             BEQ   L330F
             STA   $17
@@ -6228,7 +6303,7 @@ L3312       PHX
             PLA
             PLX
             STA   L38DC
-            LDX   $03
+            LDX   theLANGUAGE
             JSR   (L3343,X)
             SEC
             LDA   $53
@@ -6247,7 +6322,7 @@ L3343       DA    L3349
 L3349       LDA   L38DC
             STA   L338C+1
             LDY   #L3389
-            BRL   L37E0
+            BRL   outputHEX
 L3355       LDA   L38DC
             PHA
             PEA   ^L3395+7
@@ -6273,7 +6348,7 @@ L3395       ASC   " Adc #$0000"8D
             ASC   " Tcd"8D00
 L33A7       PHX
             PHY
-            LDX   $03
+            LDX   theLANGUAGE
             JSR   (L33B1,X)
             PLY
             PLX
@@ -6287,25 +6362,25 @@ L33B7       SEP   #$20
             STA   L3479+1
             STA   L3481+1
             REP   #$20
-            LDA   $19
+            LDA   theMASK
             STA   L347B+1
-            LDA   $15
+            LDA   theWORD
             STA   L347E+1
             LDY   #L3477
-            BRL   L37E0
+            BRL   outputHEX
 L33D3       LDA   $53
             PHA
             PEA   ^L3483+6
             PEA   L3483+6
             PEA   $0002
             _Int2Hex
-            LDA   $19
+            LDA   theMASK
             PHA
             PEA   ^L348C+7
             PEA   L348C+7
             PEA   $0004
             _Int2Hex
-            LDA   $15
+            LDA   theWORD
             PHA
             PEA   ^L3498+7
             PEA   L3498+7
@@ -6325,13 +6400,13 @@ L3425       LDA   $53
             PEA   L34AE+6
             PEA   $0002
             _Int2Hex
-            LDA   $19
+            LDA   theMASK
             PHA
             PEA   ^L34B7+7
             PEA   L34B7+7
             PEA   $0004
             _Int2Hex
-            LDA   $15
+            LDA   theWORD
             PHA
             PEA   ^L34C3+7
             PEA   L34C3+7
@@ -6360,7 +6435,7 @@ L34C3       ASC   " Ora #$0000"8D
 L34CF       ASC   " Sta $00"8D00
 L34D9       PHX
             PHY
-            LDX   $03
+            LDX   theLANGUAGE
             JSR   (L34E3,X)
             PLY
             PLX
@@ -6369,11 +6444,11 @@ L34D9       PHX
 L34E3       DA    L34E9
             DA    L34F4
             DA    L350D
-L34E9       LDA   $15
+L34E9       LDA   theWORD
             STA   L3528+1
             LDY   #L3526
-            BRL   L37E0
-L34F4       LDA   $15
+            BRL   outputHEX
+L34F4       LDA   theWORD
             PHA
             PEA   ^L352B+7
             PEA   L352B+7
@@ -6381,7 +6456,7 @@ L34F4       LDA   $15
             _Int2Hex
             LDY   #L352B
             BRL   L3801
-L350D       LDA   $15
+L350D       LDA   theWORD
             PHA
             PEA   ^L352B+7
             PEA   L352B+7
@@ -6394,7 +6469,7 @@ L3528       LDA   #$0000
 L352B       ASC   " Lda #$0000"8D00
 L3538       PHX
             PHY
-            LDX   $03
+            LDX   theLANGUAGE
             JSR   (L3542,X)
             PLY
             PLX
@@ -6408,7 +6483,7 @@ L3548       SEP   #$20
             STA   L358B+1
             REP   #$20
             LDY   #L3589
-            BRL   L37E0
+            BRL   outputHEX
 L3557       LDA   $53
             PHA
             PEA   ^L358D+6
@@ -6430,7 +6505,7 @@ L358B       STA   $00
 L358D       ASC   " Sta $00"8D00
 L3597       PHX
             PHY
-            LDX   $03
+            LDX   theLANGUAGE
             JSR   (L35A1,X)
             PLY
             PLX
@@ -6440,7 +6515,7 @@ L35A1       DA    L35A7
             DA    L35AD
             DA    L35B3
 L35A7       LDY   #L35B9
-            BRL   L37E0
+            BRL   outputHEX
 L35AD       LDY   #L35BD
             BRL   L3801
 L35B3       LDY   #L35D6
@@ -6454,7 +6529,7 @@ L35D6       ASC   " Longa on"8D
             ASC   " Bra *+6 ;Y=Adr"8D00
 L35FB       PHX
             PHY
-            LDX   $03
+            LDX   theLANGUAGE
             JSR   (L3605,X)
             PLY
             PLX
@@ -6464,7 +6539,7 @@ L3605       DA    L360B
             DA    L3611
             DA    L3617
 L360B       LDY   #L361D
-            BRL   L37E0
+            BRL   outputHEX
 L3611       LDY   #L362F
             BRL   L3801
 L3617       LDY   #L362F
@@ -6488,7 +6563,7 @@ L362F       ASC   " Sei"8D
             ASC   " Clc"8D00
 L366F       PHX
             PHY
-            LDX   $03
+            LDX   theLANGUAGE
             JSR   (L3679,X)
             PLY
             PLX
@@ -6498,7 +6573,7 @@ L3679       DA    L367F
             DA    L3685
             DA    L368B
 L367F       LDY   #L3691
-            BRL   L37E0
+            BRL   outputHEX
 L3685       LDY   #L36A1
             BRL   L3801
 L368B       LDY   #L36A1
@@ -6517,38 +6592,44 @@ L36A1       ASC   " Lda >$E1C068"8D
             ASC   " Pld"8D
             ASC   " Cli"8D
             ASC   " Rtl"8D00
-L36D9       LDA   $33
-            STA   $3F
-            LDA   $35
-            STA   $41
-            LDA   $37
-            STA   $43
-            LDA   $39
-            STA   $45
+
+*
+* Calculate the block
+*
+
+calcBLOCK   LDA   theY1	; Y
+            STA   saveY1
+            LDA   theX1	; X
+            STA   saveX1
+            LDA   theY2
+            STA   saveY2
+            LDA   theX2
+            STA   saveX2
             SEC
-            LDA   $43
-            SBC   $3F
+            LDA   saveY2
+            SBC   saveY1
             INC
-            STA   $47
-            LDA   $79
+            STA   finalHEIGHT
+            LDA   fgODDEVEN
             BNE   L36F9
-            LDA   $05
-            BNE   L3704
-L36F9       LDA   $41
-            LSR
-            BCC   L370D
-            DEC   $41
-            DEC   $45
+            LDA   theORIGIN	; is it even?
+            BNE   L3704	; yes, it is
+L36F9       LDA   saveX1	; it is even
+            LSR		; check
+            BCC   L370D	; it is even
+            DEC   saveX1	; odd, fix X--
+            DEC   saveX2
             BRA   L370D
-L3704       LDA   $41
-            LSR
-            BCS   L370D
-            INC   $41
-            INC   $45
-L370D       LDA   $41
+L3704       LDA   saveX1	; it is odd
+            LSR		; check
+            BCS   L370D	; it is odd
+            INC   saveX1	; even, fix X++
+            INC   saveX2
+
+L370D       LDA   saveX1
             AND   #$FFFE
             STA   $4B
-            LDA   $45
+            LDA   saveX2
             ORA   #$0001
             SEC
             SBC   $4B
@@ -6559,35 +6640,35 @@ L370D       LDA   $41
             CLC
             ADC   $4B
             STA   $4B
-            PEA   ^L264E
+            PEA   ^L264E	; srcLocPtr
             PEA   L264E
-            PEA   ^L269C
+            PEA   ^L269C	; srcRectPtr
             PEA   L269C
-            LDA   $41
+            LDA   saveX1	; x-dest
             PHA
-            LDA   $3F
+            LDA   saveY1	; y-dest
             PHA
             PEA   $0000
             _PPToPort
             CLC
             RTS
 
-L3746       LDA   $41
+L3746       LDA   saveX1	; X1/2
             LSR
             PHA
             PEA   $0000
             PEA   $0000
-            LDA   $3F
+            LDA   saveY1	; Y1*160
             PHA
             PEA   $00A0
             _Multiply
-            PLA
+            PLA		; +X1
             PLX
             CLC
             ADC   $01,S
             STA   $01,S
             PLA
-            STA   $4D
+            STA   theOFFSET	; = offset in RAM of 1st word
             RTS
 
             LDA   $4B
@@ -6596,24 +6677,24 @@ L3746       LDA   $41
             STA   $4B
             RTS
 
-L3771       LDA   $15
-            STA   $19
+L3771       LDA   theWORD
+            STA   theMASK
             LSR
-            TSB   $19
+            TSB   theMASK
             LSR
-            TSB   $19
+            TSB   theMASK
             LSR
-            ORA   $19
+            ORA   theMASK
             AND   #$1111
-            STA   $19
+            STA   theMASK
             ASL
-            ORA   $19
+            ORA   theMASK
             ASL
-            ORA   $19
+            ORA   theMASK
             ASL
-            ORA   $19
+            ORA   theMASK
             EOR   #$FFFF
-            STA   $19
+            STA   theMASK
             RTS
 
 L3792       LDY   #L389A	; retour chariot
@@ -6643,8 +6724,8 @@ L37CE       PHA
             _Int2Hex
             RTS
 
-L37E0       TYX
-            LDA   |$0000,X
+outputHEX   TYX
+            LDA   |$0000,X	; length
             BEQ   L3800
             INX
             INX
@@ -6652,7 +6733,7 @@ L37E0       TYX
 L37EA       PHA
             LDA   |$0000,X
             SEP   #$20
-            STA   [$27],Y
+            STA   [sprPOINTER],Y
             REP   #$20
             INX
             INY
@@ -6669,7 +6750,7 @@ L3801       SEP   #$20
             LDY   $59
 L3806       LDA   |$0000,X
             BEQ   L3815
-            STA   [$27],Y
+            STA   [sprPOINTER],Y
             INX
             INY
             BNE   L3806
@@ -6704,7 +6785,7 @@ L383D       PHX
 L3849       PLX
             INC   $63
 L384C       SEP   #$20
-            STA   [$27],Y
+            STA   [sprPOINTER],Y
             REP   #$20
             JSR   L388E
             INX
@@ -6730,7 +6811,7 @@ L3877       LDA   #$0001
 L387A       TAX
             LDA   #$2020
 L387E       SEP   #$20
-            STA   [$27],Y
+            STA   [sprPOINTER],Y
             REP   #$20
             JSR   L388E
             INC   $63

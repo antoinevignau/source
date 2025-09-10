@@ -1686,6 +1686,9 @@ L105E       _HideCursor
             STZ   theX1
             STZ   theY2
             STZ   theX2
+            
+            stz	  phaseXY
+            
             LDA   #L38DE
             STA   L2650
             LDA   #^L38DE
@@ -1710,6 +1713,9 @@ L108D       JSR   GetMouseStatusAndPosition
             LDA   theY
             STA   theY1
             STA   L269C
+
+            inc	  phaseXY
+            
             LDA   theX1	; xMin
             PHA
             PEA   $027F	; xMax
@@ -1826,7 +1832,28 @@ L11C5       LDX   theX
             RTS
 
 PrintCursorPosition
-            LDA   theX	; X-coord
+
+	sep	#$20
+	lda	#'/'
+	sta	strXY+7
+	rep	#$20
+	
+	lda	phaseXY
+	beq	pcp_ok
+
+	lda	theX1
+	sec
+	sbc	theX
+	lsr
+	lsr
+	bcc	pcp_ok
+
+	sep	#$20
+	lda	#'*'
+	sta	strXY+7
+	rep	#$20
+
+pcp_ok      LDA   theX	; X-coord
             PHA
             PEA   ^strXY+3
             PEA   strXY+3
@@ -6842,6 +6869,10 @@ L38C7       ASC   "0000"00
 L38D8       DW    $0000
 L38DA       DW    $0000
 L38DC       DW    $0000
+
+*-------------------------------
+
+phaseXY	ds	2	; 0: X1,Y1 - 1: X2,Y2
 
 *-------------------------------
 

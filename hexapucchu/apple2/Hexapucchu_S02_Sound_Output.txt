@@ -1,0 +1,662 @@
+------+-------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File       Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+-------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1 sound.s      1 | Comment     | 11 |         |    0 | 00/0000               | *
+    2 |  1 sound.s      2 | Comment     | 11 |         |    0 | 00/0000               | * Hexapucchu, la Cite Perdue de Patchucca
+    3 |  1 sound.s      3 | Comment     | 11 |         |    0 | 00/0000               | *
+    4 |  1 sound.s      4 | Comment     | 11 |         |    0 | 00/0000               | * (c) 2025, Eric Cubizolle (TITAN)
+    5 |  1 sound.s      5 | Comment     | 11 |         |    0 | 00/0000               | * (c) 2025, Brutal Deluxe Software
+    6 |  1 sound.s      6 | Comment     | 11 |         |    0 | 00/0000               | *
+    7 |  1 sound.s      7 | Empty       | 11 |         |    0 | 00/0000               |                                  
+    8 |  1 sound.s      8 | Directive   | 00 |         |    0 | 00/0000               |             mx    %00            
+    9 |  1 sound.s      9 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   10 |  1 sound.s     10 | Comment     | 00 |         |    0 | 00/0000               | *-------------------------------
+   11 |  1 sound.s     11 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   12 |  1 sound.s     12 | Global      | 00 |         |    0 | 00/0000               | squareWAVE  ent                  
+   13 |  1 sound.s     13 | Data        | 00 |         |   16 | 00/0000 : 33 11 33 11 |             HEX   33113311331133222222113322222233
+      |                   |             |    |         |      |           33 11 33 22 |
+      |                   |             |    |         |      |           22 22 11 33 |
+      |                   |             |    |         |      |           22 22 22 33 |
+   14 |  1 sound.s     14 | Data        | 00 |         |   16 | 00/0010 : 11 33 22 22 |             HEX   113322222266FFDDEEDDEEDDEEFF6611
+      |                   |             |    |         |      |           22 66 FF DD |
+      |                   |             |    |         |      |           EE DD EE DD |
+      |                   |             |    |         |      |           EE FF 66 11 |
+   15 |  1 sound.s     15 | Data        | 00 |         |   16 | 00/0020 : 22 22 22 22 |             HEX   22222222222222CCEEDDDDDDDDDDEECC
+      |                   |             |    |         |      |           22 22 22 CC |
+      |                   |             |    |         |      |           EE DD DD DD |
+      |                   |             |    |         |      |           DD DD EE CC |
+   16 |  1 sound.s     16 | Data        | 00 |         |   16 | 00/0030 : 22 22 22 22 |             HEX   222222222222221166FFCCEEDDEEDDDD
+      |                   |             |    |         |      |           22 22 22 11 |
+      |                   |             |    |         |      |           66 FF CC EE |
+      |                   |             |    |         |      |           DD EE DD DD |
+   17 |  1 sound.s     17 | Data        | 00 |         |   16 | 00/0040 : EE 77 01 33 |             HEX   EE770133222222331133BBFFDDDDDDEE
+      |                   |             |    |         |      |           22 22 22 33 |
+      |                   |             |    |         |      |           11 33 BB FF |
+      |                   |             |    |         |      |           DD DD DD EE |
+   18 |  1 sound.s     18 | Data        | 00 |         |   16 | 00/0050 : DD FF CC 33 |             HEX   DDFFCC331133113311331177EEDDDDEE
+      |                   |             |    |         |      |           11 33 11 33 |
+      |                   |             |    |         |      |           11 33 11 77 |
+      |                   |             |    |         |      |           EE DD DD EE |
+   19 |  1 sound.s     19 | Data        | 00 |         |   16 | 00/0060 : DD EE CC FF |             HEX   DDEECCFF770133113311332222CCEECC
+      |                   |             |    |         |      |           77 01 33 11 |
+      |                   |             |    |         |      |           33 11 33 22 |
+      |                   |             |    |         |      |           22 CC EE CC |
+   20 |  1 sound.s     20 | Data        | 00 |         |   16 | 00/0070 : EE CC EE CC |             HEX   EECCEECCFFCC331133222222221177FF
+      |                   |             |    |         |      |           FF CC 33 11 |
+      |                   |             |    |         |      |           33 22 22 22 |
+      |                   |             |    |         |      |           22 11 77 FF |
+   21 |  1 sound.s     21 | Data        | 00 |         |   16 | 00/0080 : CC EE DD EE |             HEX   CCEEDDEEDDDDEE770133113311332222
+      |                   |             |    |         |      |           DD DD EE 77 |
+      |                   |             |    |         |      |           01 33 11 33 |
+      |                   |             |    |         |      |           11 33 22 22 |
+   22 |  1 sound.s     22 | Data        | 00 |         |   16 | 00/0090 : CC EE DD DD |             HEX   CCEEDDDDDDDDDDFFCC33223322332222
+      |                   |             |    |         |      |           DD DD DD FF |
+      |                   |             |    |         |      |           CC 33 22 33 |
+      |                   |             |    |         |      |           22 33 22 22 |
+   23 |  1 sound.s     23 | Data        | 00 |         |   16 | 00/00A0 : 11 66 FF CC |             HEX   1166FFCCEEDDEEDDDDFF771122222222
+      |                   |             |    |         |      |           EE DD EE DD |
+      |                   |             |    |         |      |           DD FF 77 11 |
+      |                   |             |    |         |      |           22 22 22 22 |
+   24 |  1 sound.s     24 | Data        | 00 |         |   16 | 00/00B0 : 22 22 22 CC |             HEX   222222CCFFCCEECCEECCFFBB33113311
+      |                   |             |    |         |      |           FF CC EE CC |
+      |                   |             |    |         |      |           EE CC FF BB |
+      |                   |             |    |         |      |           33 11 33 11 |
+   25 |  1 sound.s     25 | Data        | 00 |         |   16 | 00/00C0 : 33 11 33 01 |             HEX   3311330177FFCCEEDDEEDDDDFF661122
+      |                   |             |    |         |      |           77 FF CC EE |
+      |                   |             |    |         |      |           DD EE DD DD |
+      |                   |             |    |         |      |           FF 66 11 22 |
+   26 |  1 sound.s     26 | Data        | 00 |         |   16 | 00/00D0 : 22 33 11 33 |             HEX   223311332222CCEEDDEECCEECCFFBB33
+      |                   |             |    |         |      |           22 22 CC EE |
+      |                   |             |    |         |      |           DD EE CC EE |
+      |                   |             |    |         |      |           CC FF BB 33 |
+   27 |  1 sound.s     27 | Data        | 00 |         |   16 | 00/00E0 : 11 33 11 33 |             HEX   1133113311330177EEDDDDEEDDEEDDEE
+      |                   |             |    |         |      |           11 33 01 77 |
+      |                   |             |    |         |      |           EE DD DD EE |
+      |                   |             |    |         |      |           DD EE DD EE |
+   28 |  1 sound.s     28 | Data        | 00 |         |   16 | 00/00F0 : 77 11 22 22 |             HEX   771122223311331133BBFFCCEECCEECC
+      |                   |             |    |         |      |           33 11 33 11 |
+      |                   |             |    |         |      |           33 BB FF CC |
+      |                   |             |    |         |      |           EE CC EE CC |
+   29 |  1 sound.s     29 | Data        | 00 |         |   16 | 00/0100 : FF CC 33 22 |             HEX   FFCC332222223311330177EEDDDDDDEE
+      |                   |             |    |         |      |           22 22 33 11 |
+      |                   |             |    |         |      |           33 01 77 EE |
+      |                   |             |    |         |      |           DD DD DD EE |
+   30 |  1 sound.s     30 | Data        | 00 |         |   16 | 00/0110 : DD DD FF 77 |             HEX   DDDDFF770133112222222233BBFFCCEE
+      |                   |             |    |         |      |           01 33 11 22 |
+      |                   |             |    |         |      |           22 22 22 33 |
+      |                   |             |    |         |      |           BB FF CC EE |
+   31 |  1 sound.s     31 | Data        | 00 |         |   16 | 00/0120 : CC EE DD FF |             HEX   CCEEDDFFCC222222222222221166FFCC
+      |                   |             |    |         |      |           CC 22 22 22 |
+      |                   |             |    |         |      |           22 22 22 22 |
+      |                   |             |    |         |      |           11 66 FF CC |
+   32 |  1 sound.s     32 | Data        | 00 |         |   16 | 00/0130 : EE DD EE EE |             HEX   EEDDEEEECCFF661122113311331133CC
+      |                   |             |    |         |      |           CC FF 66 11 |
+      |                   |             |    |         |      |           22 11 33 11 |
+      |                   |             |    |         |      |           33 11 33 CC |
+   33 |  1 sound.s     33 | Data        | 00 |         |   16 | 00/0140 : EE DD DD DD |             HEX   EEDDDDDDDDDDFFCC3322222222222211
+      |                   |             |    |         |      |           DD DD FF CC |
+      |                   |             |    |         |      |           33 22 22 22 |
+      |                   |             |    |         |      |           22 22 22 11 |
+   34 |  1 sound.s     34 | Data        | 00 |         |   16 | 00/0150 : 77 FF DD EE |             HEX   77FFDDEEDDEEEEDDEE77013311331133
+      |                   |             |    |         |      |           DD EE EE DD |
+      |                   |             |    |         |      |           EE 77 01 33 |
+      |                   |             |    |         |      |           11 33 11 33 |
+   35 |  1 sound.s     35 | Data        | 00 |         |   16 | 00/0160 : 11 33 CC EE |             HEX   1133CCEEDDDDCCEECCEECC2222222233
+      |                   |             |    |         |      |           DD DD CC EE |
+      |                   |             |    |         |      |           CC EE CC 22 |
+      |                   |             |    |         |      |           22 22 22 33 |
+   36 |  1 sound.s     36 | Data        | 00 |         |   16 | 00/0170 : 11 33 11 66 |             HEX   11331166FFCCEEDDEEEECCFF66112211
+      |                   |             |    |         |      |           FF CC EE DD |
+      |                   |             |    |         |      |           EE EE CC FF |
+      |                   |             |    |         |      |           66 11 22 11 |
+   37 |  1 sound.s     37 | Data        | 00 |         |   16 | 00/0180 : 33 11 33 11 |             HEX   3311331133BBFFDDDDDDDDDDEECC3311
+      |                   |             |    |         |      |           33 BB FF DD |
+      |                   |             |    |         |      |           DD DD DD DD |
+      |                   |             |    |         |      |           EE CC 33 11 |
+   38 |  1 sound.s     38 | Data        | 00 |         |   16 | 00/0190 : 33 22 22 22 |             HEX   33222222221166FFCCEEEEDDEECCFF66
+      |                   |             |    |         |      |           22 11 66 FF |
+      |                   |             |    |         |      |           CC EE EE DD |
+      |                   |             |    |         |      |           EE CC FF 66 |
+   39 |  1 sound.s     39 | Data        | 00 |         |   16 | 00/01A0 : 11 22 22 22 |             HEX   1122222222331133CCEEDDDDDDDDDDEE
+      |                   |             |    |         |      |           22 33 11 33 |
+      |                   |             |    |         |      |           CC EE DD DD |
+      |                   |             |    |         |      |           DD DD DD EE |
+   40 |  1 sound.s     40 | Data        | 00 |         |   16 | 00/01B0 : CC 33 22 22 |             HEX   CC332222222222330177EEDDDDEEDDEE
+      |                   |             |    |         |      |           22 22 22 33 |
+      |                   |             |    |         |      |           01 77 EE DD |
+      |                   |             |    |         |      |           DD EE DD EE |
+   41 |  1 sound.s     41 | Data        | 00 |         |   16 | 00/01C0 : DD EE 77 01 |             HEX   DDEE770133222222222233BBFFCCEECC
+      |                   |             |    |         |      |           33 22 22 22 |
+      |                   |             |    |         |      |           22 22 33 BB |
+      |                   |             |    |         |      |           FF CC EE CC |
+   42 |  1 sound.s     42 | Data        | 00 |         |   16 | 00/01D0 : EE DD EE CC |             HEX   EEDDEECC331133113311330177EEDDDD
+      |                   |             |    |         |      |           33 11 33 11 |
+      |                   |             |    |         |      |           33 11 33 01 |
+      |                   |             |    |         |      |           77 EE DD DD |
+   43 |  1 sound.s     43 | Data        | 00 |         |   16 | 00/01E0 : EE DD DD DD |             HEX   EEDDDDDDEE770133113311331133CCEE
+      |                   |             |    |         |      |           EE 77 01 33 |
+      |                   |             |    |         |      |           11 33 11 33 |
+      |                   |             |    |         |      |           11 33 CC EE |
+   44 |  1 sound.s     44 | Data        | 00 |         |   16 | 00/01F0 : DD DD DD EE |             HEX   DDDDDDEEDDFFBB331133222222221177
+      |                   |             |    |         |      |           DD FF BB 33 |
+      |                   |             |    |         |      |           11 33 22 22 |
+      |                   |             |    |         |      |           22 22 11 77 |
+   45 |  1 sound.s     45 | Data        | 00 |         |   16 | 00/0200 : EE DD DD EE |             HEX   EEDDDDEEDDEECCFF6611332222223311
+      |                   |             |    |         |      |           DD EE CC FF |
+      |                   |             |    |         |      |           66 11 33 22 |
+      |                   |             |    |         |      |           22 22 33 11 |
+   46 |  1 sound.s     46 | Data        | 00 |         |   16 | 00/0210 : 33 BB FF DD |             HEX   33BBFFDDEECCEEDDFFCC222222222222
+      |                   |             |    |         |      |           EE CC EE DD |
+      |                   |             |    |         |      |           FF CC 22 22 |
+      |                   |             |    |         |      |           22 22 22 22 |
+   47 |  1 sound.s     47 | Data        | 00 |         |   16 | 00/0220 : 22 11 66 FF |             HEX   221166FFCCEEEEDDEECCFF6611222222
+      |                   |             |    |         |      |           CC EE EE DD |
+      |                   |             |    |         |      |           EE CC FF 66 |
+      |                   |             |    |         |      |           11 22 22 22 |
+   48 |  1 sound.s     48 | Data        | 00 |         |   16 | 00/0230 : 22 22 22 33 |             HEX   22222233BBFFDDDDDDDDDDEECC222222
+      |                   |             |    |         |      |           BB FF DD DD |
+      |                   |             |    |         |      |           DD DD DD EE |
+      |                   |             |    |         |      |           CC 22 22 22 |
+   49 |  1 sound.s     49 | Data        | 00 |         |   16 | 00/0240 : 22 22 22 33 |             HEX   222222330177EEDDEEEEDDEECCFF6611
+      |                   |             |    |         |      |           01 77 EE DD |
+      |                   |             |    |         |      |           EE EE DD EE |
+      |                   |             |    |         |      |           CC FF 66 11 |
+   50 |  1 sound.s     50 | Data        | 00 |         |   16 | 00/0250 : 22 22 22 22 |             HEX   22222222331133BBFFCCEECCEECCFFCC
+      |                   |             |    |         |      |           33 11 33 BB |
+      |                   |             |    |         |      |           FF CC EE CC |
+      |                   |             |    |         |      |           EE CC FF CC |
+   51 |  1 sound.s     51 | Data        | 00 |         |   16 | 00/0260 : 22 22 22 22 |             HEX   222222223311330177FFCCEEDDEEEECC
+      |                   |             |    |         |      |           33 11 33 01 |
+      |                   |             |    |         |      |           77 FF CC EE |
+      |                   |             |    |         |      |           DD EE EE CC |
+   52 |  1 sound.s     52 | Data        | 00 |         |   16 | 00/0270 : FF 77 01 33 |             HEX   FF770133113322332222CCEEDDEECCEE
+      |                   |             |    |         |      |           11 33 22 33 |
+      |                   |             |    |         |      |           22 22 CC EE |
+      |                   |             |    |         |      |           DD EE CC EE |
+   53 |  1 sound.s     53 | Data        | 00 |         |   16 | 00/0280 : CC FF BB 33 |             HEX   CCFFBB331133113311331166FFCCEEDD
+      |                   |             |    |         |      |           11 33 11 33 |
+      |                   |             |    |         |      |           11 33 11 66 |
+      |                   |             |    |         |      |           FF CC EE DD |
+   54 |  1 sound.s     54 | Data        | 00 |         |   16 | 00/0290 : EE EE DD FF |             HEX   EEEEDDFF661122222222222233CCEEDD
+      |                   |             |    |         |      |           66 11 22 22 |
+      |                   |             |    |         |      |           22 22 22 22 |
+      |                   |             |    |         |      |           33 CC EE DD |
+   55 |  1 sound.s     55 | Data        | 00 |         |   16 | 00/02A0 : EE CC EE CC |             HEX   EECCEECCFFBB332222222222221166FF
+      |                   |             |    |         |      |           FF BB 33 22 |
+      |                   |             |    |         |      |           22 22 22 22 |
+      |                   |             |    |         |      |           22 11 66 FF |
+   56 |  1 sound.s     56 | Data        | 00 |         |   16 | 00/02B0 : CC EE DD EE |             HEX   CCEEDDEEEECCFF661133113311331133
+      |                   |             |    |         |      |           EE CC FF 66 |
+      |                   |             |    |         |      |           11 33 11 33 |
+      |                   |             |    |         |      |           11 33 11 33 |
+   57 |  1 sound.s     57 | Data        | 00 |         |   16 | 00/02C0 : CC FF DD EE |             HEX   CCFFDDEEDDEECCFFBB33113322332233
+      |                   |             |    |         |      |           DD EE CC FF |
+      |                   |             |    |         |      |           BB 33 11 33 |
+      |                   |             |    |         |      |           22 33 22 33 |
+   58 |  1 sound.s     58 | Data        | 00 |         |   16 | 00/02D0 : 11 77 FF DD |             HEX   1177FFDDEEDDEEEEDDFF661133113311
+      |                   |             |    |         |      |           EE DD EE EE |
+      |                   |             |    |         |      |           DD FF 66 11 |
+      |                   |             |    |         |      |           33 11 33 11 |
+   59 |  1 sound.s     59 | Data        | 00 |         |   16 | 00/02E0 : 33 11 33 BB |             HEX   331133BBFFCCEECCEECCFFCC33113311
+      |                   |             |    |         |      |           FF CC EE CC |
+      |                   |             |    |         |      |           EE CC FF CC |
+      |                   |             |    |         |      |           33 11 33 11 |
+   60 |  1 sound.s     60 | Data        | 00 |         |   16 | 00/02F0 : 33 11 33 01 |             HEX   3311330177EEDDDDEEEEEEDDEE770133
+      |                   |             |    |         |      |           77 EE DD DD |
+      |                   |             |    |         |      |           EE EE EE DD |
+      |                   |             |    |         |      |           EE 77 01 33 |
+   61 |  1 sound.s     61 | Data        | 00 |         |   16 | 00/0300 : 11 33 11 33 |             HEX   113311332233CCEEDDDDDDEECCFFBB33
+      |                   |             |    |         |      |           22 33 CC EE |
+      |                   |             |    |         |      |           DD DD DD EE |
+      |                   |             |    |         |      |           CC FF BB 33 |
+   62 |  1 sound.s     62 | Data        | 00 |         |   16 | 00/0310 : 11 33 11 33 |             HEX   1133113322221166FFCCEEDDEEEECCFF
+      |                   |             |    |         |      |           22 22 11 66 |
+      |                   |             |    |         |      |           FF CC EE DD |
+      |                   |             |    |         |      |           EE EE CC FF |
+   63 |  1 sound.s     63 | Data        | 00 |         |   16 | 00/0320 : 66 11 22 22 |             HEX   661122222222222222CCFFCCEEDDDDDD
+      |                   |             |    |         |      |           22 22 22 22 |
+      |                   |             |    |         |      |           22 CC FF CC |
+      |                   |             |    |         |      |           EE DD DD DD |
+   64 |  1 sound.s     64 | Data        | 00 |         |   16 | 00/0330 : EE CC 22 22 |             HEX   EECC222233113311330177EEDDDDEEDD
+      |                   |             |    |         |      |           33 11 33 11 |
+      |                   |             |    |         |      |           33 01 77 EE |
+      |                   |             |    |         |      |           DD DD EE DD |
+   65 |  1 sound.s     65 | Data        | 00 |         |   16 | 00/0340 : EE CC FF 66 |             HEX   EECCFF661122222222222233BBFFCCEE
+      |                   |             |    |         |      |           11 22 22 22 |
+      |                   |             |    |         |      |           22 22 22 33 |
+      |                   |             |    |         |      |           BB FF CC EE |
+   66 |  1 sound.s     66 | Data        | 00 |         |   16 | 00/0350 : CC EE CC FF |             HEX   CCEECCFFBB222222223322331177EEDD
+      |                   |             |    |         |      |           BB 22 22 22 |
+      |                   |             |    |         |      |           22 33 22 33 |
+      |                   |             |    |         |      |           11 77 EE DD |
+   67 |  1 sound.s     67 | Data        | 00 |         |   16 | 00/0360 : DD EE DD EE |             HEX   DDEEDDEECCEE770133222222331133BB
+      |                   |             |    |         |      |           CC EE 77 01 |
+      |                   |             |    |         |      |           33 22 22 22 |
+      |                   |             |    |         |      |           33 11 33 BB |
+   68 |  1 sound.s     68 | Data        | 00 |         |   16 | 00/0370 : FF CC EE CC |             HEX   FFCCEECCEEDDEECC2222222222113301
+      |                   |             |    |         |      |           EE DD EE CC |
+      |                   |             |    |         |      |           22 22 22 22 |
+      |                   |             |    |         |      |           22 11 33 01 |
+   69 |  1 sound.s     69 | Data        | 00 |         |   16 | 00/0380 : 77 EE DD EE |             HEX   77EEDDEEDDEEDDDDFF77112222332233
+      |                   |             |    |         |      |           DD EE DD DD |
+      |                   |             |    |         |      |           FF 77 11 22 |
+      |                   |             |    |         |      |           22 33 22 33 |
+   70 |  1 sound.s     70 | Data        | 00 |         |   16 | 00/0390 : 11 33 BB FF |             HEX   1133BBFFCCEEDDDDDDEECC3311331133
+      |                   |             |    |         |      |           CC EE DD DD |
+      |                   |             |    |         |      |           DD EE CC 33 |
+      |                   |             |    |         |      |           11 33 11 33 |
+   71 |  1 sound.s     71 | Data        | 00 |         |   16 | 00/03A0 : 22 22 11 66 |             HEX   22221166FFCCEEEEDDEECCFF66112222
+      |                   |             |    |         |      |           FF CC EE EE |
+      |                   |             |    |         |      |           DD EE CC FF |
+      |                   |             |    |         |      |           66 11 22 22 |
+   72 |  1 sound.s     72 | Data        | 00 |         |   16 | 00/03B0 : 22 22 33 11 |             HEX   2222331133BBFFCCEECCEEDDEECC3322
+      |                   |             |    |         |      |           33 BB FF CC |
+      |                   |             |    |         |      |           EE CC EE DD |
+      |                   |             |    |         |      |           EE CC 33 22 |
+   73 |  1 sound.s     73 | Data        | 00 |         |   16 | 00/03C0 : 22 22 22 22 |             HEX   22222222330177EEDDEEEEEEDDDDEE77
+      |                   |             |    |         |      |           33 01 77 EE |
+      |                   |             |    |         |      |           DD EE EE EE |
+      |                   |             |    |         |      |           DD DD EE 77 |
+   74 |  1 sound.s     74 | Data        | 00 |         |   16 | 00/03D0 : 01 33 11 33 |             HEX   0133113322222222CCEEDDDDDDDDDDFF
+      |                   |             |    |         |      |           22 22 22 22 |
+      |                   |             |    |         |      |           CC EE DD DD |
+      |                   |             |    |         |      |           DD DD DD FF |
+   75 |  1 sound.s     75 | Data        | 00 |         |   16 | 00/03E0 : BB 33 11 33 |             HEX   BB331133222222330177EEDDDDEEDDEE
+      |                   |             |    |         |      |           22 22 22 33 |
+      |                   |             |    |         |      |           01 77 EE DD |
+      |                   |             |    |         |      |           DD EE DD EE |
+   76 |  1 sound.s     76 | Data        | 00 |         |   16 | 00/03F0 : CC FF 77 01 |             HEX   CCFF770133113311222222CCEEDDEEDD
+      |                   |             |    |         |      |           33 11 33 11 |
+      |                   |             |    |         |      |           22 22 22 CC |
+      |                   |             |    |         |      |           EE DD EE DD |
+   77 |  1 sound.s     77 | Data        | 00 |         |   16 | 00/0400 : EE DD FF BB |             HEX   EEDDFFBB331133113311331177EEDDDD
+      |                   |             |    |         |      |           33 11 33 11 |
+      |                   |             |    |         |      |           33 11 33 11 |
+      |                   |             |    |         |      |           77 EE DD DD |
+   78 |  1 sound.s     78 | Data        | 00 |         |   16 | 00/0410 : EE DD EE DD |             HEX   EEDDEEDDEE770133113311332222CCEE
+      |                   |             |    |         |      |           EE 77 01 33 |
+      |                   |             |    |         |      |           11 33 11 33 |
+      |                   |             |    |         |      |           22 22 CC EE |
+   79 |  1 sound.s     79 | Data        | 00 |         |   16 | 00/0420 : DD DD DD DD |             HEX   DDDDDDDDDDFFCC332222222222330177
+      |                   |             |    |         |      |           DD FF CC 33 |
+      |                   |             |    |         |      |           22 22 22 22 |
+      |                   |             |    |         |      |           22 33 01 77 |
+   80 |  1 sound.s     80 | Data        | 00 |         |   16 | 00/0430 : EE CC EE DD |             HEX   EECCEEDDEEDDDDEE7701332222222222
+      |                   |             |    |         |      |           EE DD DD EE |
+      |                   |             |    |         |      |           77 01 33 22 |
+      |                   |             |    |         |      |           22 22 22 22 |
+   81 |  1 sound.s     81 | Data        | 00 |         |   16 | 00/0440 : 33 CC EE DD |             HEX   33CCEEDDDDDDDDDDEECC222222223311
+      |                   |             |    |         |      |           DD DD DD DD |
+      |                   |             |    |         |      |           EE CC 22 22 |
+      |                   |             |    |         |      |           22 22 33 11 |
+   82 |  1 sound.s     82 | Data        | 00 |         |   16 | 00/0450 : 33 01 77 FF |             HEX   330177FFCCEEDDEEDDDDEE7711222233
+      |                   |             |    |         |      |           CC EE DD EE |
+      |                   |             |    |         |      |           DD DD EE 77 |
+      |                   |             |    |         |      |           11 22 22 33 |
+   83 |  1 sound.s     83 | Data        | 00 |         |   16 | 00/0460 : 11 33 11 33 |             HEX   11331133CCEEDDDDDDDDDDFFBB331133
+      |                   |             |    |         |      |           CC EE DD DD |
+      |                   |             |    |         |      |           DD DD DD FF |
+      |                   |             |    |         |      |           BB 33 11 33 |
+   84 |  1 sound.s     84 | Data        | 00 |         |   16 | 00/0470 : 11 33 11 33 |             HEX   113311330177EEDDDDEEEEDDDDFF6611
+      |                   |             |    |         |      |           01 77 EE DD |
+      |                   |             |    |         |      |           DD EE EE DD |
+      |                   |             |    |         |      |           DD FF 66 11 |
+   85 |  1 sound.s     85 | Data        | 00 |         |   16 | 00/0480 : 33 22 22 22 |             HEX   33222222222233BBFFCCEECCEECCFFBB
+      |                   |             |    |         |      |           22 22 33 BB |
+      |                   |             |    |         |      |           FF CC EE CC |
+      |                   |             |    |         |      |           EE CC FF BB |
+   86 |  1 sound.s     86 | Data        | 00 |         |   16 | 00/0490 : 33 22 22 22 |             HEX   332222222222330177EEDDEEDDEEDDDD
+      |                   |             |    |         |      |           22 22 33 01 |
+      |                   |             |    |         |      |           77 EE DD EE |
+      |                   |             |    |         |      |           DD EE DD DD |
+   87 |  1 sound.s     87 | Data        | 00 |         |   16 | 00/04A0 : EE 77 11 22 |             HEX   EE771122223322331133BBFFCCEECCEE
+      |                   |             |    |         |      |           22 33 22 33 |
+      |                   |             |    |         |      |           11 33 BB FF |
+      |                   |             |    |         |      |           CC EE CC EE |
+   88 |  1 sound.s     88 | Data        | 00 |         |   16 | 00/04B0 : CC FF BB 33 |             HEX   CCFFBB331133113311330177EEDDEEEE
+      |                   |             |    |         |      |           11 33 11 33 |
+      |                   |             |    |         |      |           11 33 01 77 |
+      |                   |             |    |         |      |           EE DD EE EE |
+   89 |  1 sound.s     89 | Data        | 00 |         |   16 | 00/04C0 : EE DD DD EE |             HEX   EEDDDDEE771133113311331133CCFFCC
+      |                   |             |    |         |      |           77 11 33 11 |
+      |                   |             |    |         |      |           33 11 33 11 |
+      |                   |             |    |         |      |           33 CC FF CC |
+   90 |  1 sound.s     90 | Data        | 00 |         |   16 | 00/04D0 : EE CC EE DD |             HEX   EECCEEDDFFBB331133113311330166FF
+      |                   |             |    |         |      |           FF BB 33 11 |
+      |                   |             |    |         |      |           33 11 33 11 |
+      |                   |             |    |         |      |           33 01 66 FF |
+   91 |  1 sound.s     91 | Data        | 00 |         |   16 | 00/04E0 : CC EE DD EE |             HEX   CCEEDDEEEEDDEE770133222222222222
+      |                   |             |    |         |      |           EE DD EE 77 |
+      |                   |             |    |         |      |           01 33 22 22 |
+      |                   |             |    |         |      |           22 22 22 22 |
+   92 |  1 sound.s     92 | Data        | 00 |         |   16 | 00/04F0 : CC EE DD EE |             HEX   CCEEDDEECCEECCFFBB33222222222233
+      |                   |             |    |         |      |           CC EE CC FF |
+      |                   |             |    |         |      |           BB 33 22 22 |
+      |                   |             |    |         |      |           22 22 22 33 |
+   93 |  1 sound.s     93 | Data        | 00 |         |   16 | 00/0500 : 01 77 FF CC |             HEX   0177FFCCEEDDEEEECCFF661133113311
+      |                   |             |    |         |      |           EE DD EE EE |
+      |                   |             |    |         |      |           CC FF 66 11 |
+      |                   |             |    |         |      |           33 11 33 11 |
+   94 |  1 sound.s     94 | Data        | 00 |         |   16 | 00/0510 : 22 22 22 CC |             HEX   222222CCEEDDEECCEECCFFBB33113311
+      |                   |             |    |         |      |           EE DD EE CC |
+      |                   |             |    |         |      |           EE CC FF BB |
+      |                   |             |    |         |      |           33 11 33 11 |
+   95 |  1 sound.s     95 | Data        | 00 |         |   16 | 00/0520 : 33 11 33 01 |             HEX   3311330177EEDDDDEEDDEECCFF770133
+      |                   |             |    |         |      |           77 EE DD DD |
+      |                   |             |    |         |      |           EE DD EE CC |
+      |                   |             |    |         |      |           FF 77 01 33 |
+   96 |  1 sound.s     96 | Data        | 00 |         |   16 | 00/0530 : 11 33 11 33 |             HEX   113311331133BBFFCCEECCEEDDFFCC33
+      |                   |             |    |         |      |           11 33 BB FF |
+      |                   |             |    |         |      |           CC EE CC EE |
+      |                   |             |    |         |      |           DD FF CC 33 |
+   97 |  1 sound.s     97 | Data        | 00 |         |   16 | 00/0540 : 11 33 11 33 |             HEX   1133113311221166FFDDDDEEDDEEDDFF
+      |                   |             |    |         |      |           11 22 11 66 |
+      |                   |             |    |         |      |           FF DD DD EE |
+      |                   |             |    |         |      |           DD EE DD FF |
+   98 |  1 sound.s     98 | Data        | 00 |         |   16 | 00/0550 : 77 01 33 11 |             HEX   770133113311331133BBFFCCEECCEEDD
+      |                   |             |    |         |      |           33 11 33 11 |
+      |                   |             |    |         |      |           33 BB FF CC |
+      |                   |             |    |         |      |           EE CC EE DD |
+   99 |  1 sound.s     99 | Data        | 00 |         |   16 | 00/0560 : EE CC 22 22 |             HEX   EECC222222222222221166FFCCDDEEDD
+      |                   |             |    |         |      |           22 22 22 22 |
+      |                   |             |    |         |      |           22 11 66 FF |
+      |                   |             |    |         |      |           CC DD EE DD |
+  100 |  1 sound.s    100 | Data        | 00 |         |   16 | 00/0570 : EE CC FF 77 |             HEX   EECCFF771133223311331133BBFFCCEE
+      |                   |             |    |         |      |           11 33 22 33 |
+      |                   |             |    |         |      |           11 33 11 33 |
+      |                   |             |    |         |      |           BB FF CC EE |
+  101 |  1 sound.s    101 | Data        | 00 |         |   16 | 00/0580 : CC EE CC FF |             HEX   CCEECCFFBB331133113322221166FFCC
+      |                   |             |    |         |      |           BB 33 11 33 |
+      |                   |             |    |         |      |           11 33 22 22 |
+      |                   |             |    |         |      |           11 66 FF CC |
+  102 |  1 sound.s    102 | Data        | 00 |         |   16 | 00/0590 : EE DD EE EE |             HEX   EEDDEEEECCFF661133113322222222CC
+      |                   |             |    |         |      |           CC FF 66 11 |
+      |                   |             |    |         |      |           33 11 33 22 |
+      |                   |             |    |         |      |           22 22 22 CC |
+  103 |  1 sound.s    103 | Data        | 00 |         |   16 | 00/05A0 : EE DD EE DD |             HEX   EEDDEEDDDDDDEECC2222222233113301
+      |                   |             |    |         |      |           DD DD EE CC |
+      |                   |             |    |         |      |           22 22 22 22 |
+      |                   |             |    |         |      |           33 11 33 01 |
+  104 |  1 sound.s    104 | Data        | 00 |         |   16 | 00/05B0 : 77 EE DD DD |             HEX   77EEDDDDEEDDEEDDFF77013311332222
+      |                   |             |    |         |      |           EE DD EE DD |
+      |                   |             |    |         |      |           FF 77 01 33 |
+      |                   |             |    |         |      |           11 33 22 22 |
+  105 |  1 sound.s    105 | Data        | 00 |         |   16 | 00/05C0 : 22 33 CC EE |             HEX   2233CCEEDDDDDDDDDDEECC2222222233
+      |                   |             |    |         |      |           DD DD DD DD |
+      |                   |             |    |         |      |           DD EE CC 22 |
+      |                   |             |    |         |      |           22 22 22 33 |
+  106 |  1 sound.s    106 | Data        | 00 |         |   16 | 00/05D0 : 11 33 01 77 |             HEX   11330177EEDDDDEEDDDDDDFF66112222
+      |                   |             |    |         |      |           EE DD DD EE |
+      |                   |             |    |         |      |           DD DD DD FF |
+      |                   |             |    |         |      |           66 11 22 22 |
+  107 |  1 sound.s    107 | Data        | 00 |         |   16 | 00/05E0 : 22 22 22 22 |             HEX   2222222222CCEEDDDDDDDDDDEECC2222
+      |                   |             |    |         |      |           22 CC EE DD |
+      |                   |             |    |         |      |           DD DD DD DD |
+      |                   |             |    |         |      |           EE CC 22 22 |
+  108 |  1 sound.s    108 | Data        | 00 |         |   16 | 00/05F0 : 33 22 22 22 |             HEX   33222222221166FFDDDDEEDDEEDDEE77
+      |                   |             |    |         |      |           22 11 66 FF |
+      |                   |             |    |         |      |           DD DD EE DD |
+      |                   |             |    |         |      |           EE DD EE 77 |
+  109 |  1 sound.s    109 | Data        | 00 |         |   16 | 00/0600 : 01 33 11 33 |             HEX   0133113311331133CCEEDDDDDDDDDDFF
+      |                   |             |    |         |      |           11 33 11 33 |
+      |                   |             |    |         |      |           CC EE DD DD |
+      |                   |             |    |         |      |           DD DD DD FF |
+  110 |  1 sound.s    110 | Data        | 00 |         |   16 | 00/0610 : BB 33 11 33 |             HEX   BB331133113322221166FFCCEEDDEEEE
+      |                   |             |    |         |      |           11 33 22 22 |
+      |                   |             |    |         |      |           11 66 FF CC |
+      |                   |             |    |         |      |           EE DD EE EE |
+  111 |  1 sound.s    111 | Data        | 00 |         |   16 | 00/0620 : CC FF 66 11 |             HEX   CCFF661133113322222222CCEECCEECC
+      |                   |             |    |         |      |           33 11 33 22 |
+      |                   |             |    |         |      |           22 22 22 CC |
+      |                   |             |    |         |      |           EE CC EE CC |
+  112 |  1 sound.s    112 | Data        | 00 |         |   16 | 00/0630 : EE DD EE CC |             HEX   EEDDEECC331133113322221177FFDDEE
+      |                   |             |    |         |      |           33 11 33 11 |
+      |                   |             |    |         |      |           33 22 22 11 |
+      |                   |             |    |         |      |           77 FF DD EE |
+  113 |  1 sound.s    113 | Data        | 00 |         |   16 | 00/0640 : EE EE EE DD |             HEX   EEEEEEDDEE770133113311332233BBFF
+      |                   |             |    |         |      |           EE 77 01 33 |
+      |                   |             |    |         |      |           11 33 11 33 |
+      |                   |             |    |         |      |           22 33 BB FF |
+  114 |  1 sound.s    114 | Data        | 00 |         |   16 | 00/0650 : CC EE DD DD |             HEX   CCEEDDDDDDEECC331133113311331166
+      |                   |             |    |         |      |           DD EE CC 33 |
+      |                   |             |    |         |      |           11 33 11 33 |
+      |                   |             |    |         |      |           11 33 11 66 |
+  115 |  1 sound.s    115 | Data        | 00 |         |   16 | 00/0660 : FF CC EE DD |             HEX   FFCCEEDDEEDDDDEE7701331133113311
+      |                   |             |    |         |      |           EE DD DD EE |
+      |                   |             |    |         |      |           77 01 33 11 |
+      |                   |             |    |         |      |           33 11 33 11 |
+  116 |  1 sound.s    116 | Data        | 00 |         |   16 | 00/0670 : 33 BB FF CC |             HEX   33BBFFCCEECCEECCFFCC222233113311
+      |                   |             |    |         |      |           EE CC EE CC |
+      |                   |             |    |         |      |           FF CC 22 22 |
+      |                   |             |    |         |      |           33 11 33 11 |
+  117 |  1 sound.s    117 | Data        | 00 |         |   16 | 00/0680 : 33 01 77 FF |             HEX   330177FFDDEEEEEEDDDDEE7701331133
+      |                   |             |    |         |      |           DD EE EE EE |
+      |                   |             |    |         |      |           DD DD EE 77 |
+      |                   |             |    |         |      |           01 33 11 33 |
+  118 |  1 sound.s    118 | Data        | 00 |         |   16 | 00/0690 : 11 33 11 33 |             HEX   11331133BBEEDDDDDDDDDDEECC332222
+      |                   |             |    |         |      |           BB EE DD DD |
+      |                   |             |    |         |      |           DD DD DD EE |
+      |                   |             |    |         |      |           CC 33 22 22 |
+  119 |  1 sound.s    119 | Data        | 00 |         |   16 | 00/06A0 : 22 22 22 22 |             HEX   222222221177EEDDDDEEDDEECCFF6611
+      |                   |             |    |         |      |           11 77 EE DD |
+      |                   |             |    |         |      |           DD EE DD EE |
+      |                   |             |    |         |      |           CC FF 66 11 |
+  120 |  1 sound.s    120 | Data        | 00 |         |   16 | 00/06B0 : 33 11 33 22 |             HEX   33113322222222CCEEDDDDDDDDDDEECC
+      |                   |             |    |         |      |           22 22 22 CC |
+      |                   |             |    |         |      |           EE DD DD DD |
+      |                   |             |    |         |      |           DD DD EE CC |
+  121 |  1 sound.s    121 | Data        | 00 |         |   16 | 00/06C0 : 33 11 33 11 |             HEX   331133113322221166FFDDDDEEEEDDDD
+      |                   |             |    |         |      |           33 22 22 11 |
+      |                   |             |    |         |      |           66 FF DD DD |
+      |                   |             |    |         |      |           EE EE DD DD |
+  122 |  1 sound.s    122 | Data        | 00 |         |   16 | 00/06D0 : EE 77 01 33 |             HEX   EE770133113311331133BBEEDDDDDDDD
+      |                   |             |    |         |      |           11 33 11 33 |
+      |                   |             |    |         |      |           11 33 BB EE |
+      |                   |             |    |         |      |           DD DD DD DD |
+  123 |  1 sound.s    123 | Data        | 00 |         |   16 | 00/06E0 : DD EE CC 22 |             HEX   DDEECC222222222222221166FFCCEEEE
+      |                   |             |    |         |      |           22 22 22 22 |
+      |                   |             |    |         |      |           22 22 11 66 |
+      |                   |             |    |         |      |           FF CC EE EE |
+  124 |  1 sound.s    124 | Data        | 00 |         |   16 | 00/06F0 : EE EE DD EE |             HEX   EEEEDDEE770133222222222233BBFFCC
+      |                   |             |    |         |      |           77 01 33 22 |
+      |                   |             |    |         |      |           22 22 22 22 |
+      |                   |             |    |         |      |           33 BB FF CC |
+  125 |  1 sound.s    125 | Data        | 00 |         |   16 | 00/0700 : DD DD DD DD |             HEX   DDDDDDDDEEBB331133223311330177FF
+      |                   |             |    |         |      |           EE BB 33 11 |
+      |                   |             |    |         |      |           33 22 33 11 |
+      |                   |             |    |         |      |           33 01 77 FF |
+  126 |  1 sound.s    126 | Data        | 00 |         |   16 | 00/0710 : CC EE EE EE |             HEX   CCEEEEEEEECCFF771122222222222233
+      |                   |             |    |         |      |           EE CC FF 77 |
+      |                   |             |    |         |      |           11 22 22 22 |
+      |                   |             |    |         |      |           22 22 22 33 |
+  127 |  1 sound.s    127 | Data        | 00 |         |   16 | 00/0720 : BB FF CC EE |             HEX   BBFFCCEECCEECCFFCC22222211331122
+      |                   |             |    |         |      |           CC EE CC FF |
+      |                   |             |    |         |      |           CC 22 22 22 |
+      |                   |             |    |         |      |           11 33 11 22 |
+  128 |  1 sound.s    128 | Data        | 00 |         |   16 | 00/0730 : 11 66 FF CC |             HEX   1166FFCCEEDDEEDDDDEE770133113322
+      |                   |             |    |         |      |           EE DD EE DD |
+      |                   |             |    |         |      |           DD EE 77 01 |
+      |                   |             |    |         |      |           33 11 33 22 |
+  129 |  1 sound.s    129 | Data        | 00 |         |   16 | 00/0740 : 22 22 22 CC |             HEX   222222CCFFCCEECCEECCFFCC33113322
+      |                   |             |    |         |      |           FF CC EE CC |
+      |                   |             |    |         |      |           EE CC FF CC |
+      |                   |             |    |         |      |           33 11 33 22 |
+  130 |  1 sound.s    130 | Data        | 00 |         |   16 | 00/0750 : 22 22 33 01 |             HEX   2222330177EEDDDDEEEEDDDDEE770122
+      |                   |             |    |         |      |           77 EE DD DD |
+      |                   |             |    |         |      |           EE EE DD DD |
+      |                   |             |    |         |      |           EE 77 01 22 |
+  131 |  1 sound.s    131 | Data        | 00 |         |   16 | 00/0760 : 22 22 22 22 |             HEX   222222222222CCEEDDDDDDEECCFFBB33
+      |                   |             |    |         |      |           22 22 CC EE |
+      |                   |             |    |         |      |           DD DD DD EE |
+      |                   |             |    |         |      |           CC FF BB 33 |
+  132 |  1 sound.s    132 | Data        | 00 |         |   16 | 00/0770 : 11 33 22 22 |             HEX   1133222222221177EEDDDDEEEEDDDDFF
+      |                   |             |    |         |      |           22 22 11 77 |
+      |                   |             |    |         |      |           EE DD DD EE |
+      |                   |             |    |         |      |           EE DD DD FF |
+  133 |  1 sound.s    133 | Data        | 00 |         |   16 | 00/0780 : 66 11 33 11 |             HEX   661133113311332233CCEEDDDDDDDDDD
+      |                   |             |    |         |      |           33 11 33 22 |
+      |                   |             |    |         |      |           33 CC EE DD |
+      |                   |             |    |         |      |           DD DD DD DD |
+  134 |  1 sound.s    134 | Data        | 00 |         |   16 | 00/0790 : EE CC 33 22 |             HEX   EECC332233223322330177EEDDDDEEDD
+      |                   |             |    |         |      |           33 22 33 22 |
+      |                   |             |    |         |      |           33 01 77 EE |
+      |                   |             |    |         |      |           DD DD EE DD |
+  135 |  1 sound.s    135 | Data        | 00 |         |   16 | 00/07A0 : EE CC FF 66 |             HEX   EECCFF661122222222221133BBFFCCEE
+      |                   |             |    |         |      |           11 22 22 22 |
+      |                   |             |    |         |      |           22 22 11 33 |
+      |                   |             |    |         |      |           BB FF CC EE |
+  136 |  1 sound.s    136 | Data        | 00 |         |   16 | 00/07B0 : DD EE DD FF |             HEX   DDEEDDFFBB332233222222221177EEDD
+      |                   |             |    |         |      |           BB 33 22 33 |
+      |                   |             |    |         |      |           22 22 22 22 |
+      |                   |             |    |         |      |           11 77 EE DD |
+  137 |  1 sound.s    137 | Data        | 00 |         |   16 | 00/07C0 : DD EE DD EE |             HEX   DDEEDDEECCFF770133113322332233BB
+      |                   |             |    |         |      |           CC FF 77 01 |
+      |                   |             |    |         |      |           33 11 33 22 |
+      |                   |             |    |         |      |           33 22 33 BB |
+  138 |  1 sound.s    138 | Data        | 00 |         |   16 | 00/07D0 : FF DD EE DD |             HEX   FFDDEEDDDDDDEECC2222222233223301
+      |                   |             |    |         |      |           DD DD EE CC |
+      |                   |             |    |         |      |           22 22 22 22 |
+      |                   |             |    |         |      |           33 22 33 01 |
+  139 |  1 sound.s    139 | Data        | 00 |         |   16 | 00/07E0 : 77 EE DD EE |             HEX   77EEDDEEEEEEEECCFF66112222222233
+      |                   |             |    |         |      |           EE EE EE CC |
+      |                   |             |    |         |      |           FF 66 11 22 |
+      |                   |             |    |         |      |           22 22 22 33 |
+  140 |  1 sound.s    140 | Data        | 00 |         |   16 | 00/07F0 : 22 33 BB FF |             HEX   2233BBFFCCEEDDDDDDEECC2222332222
+      |                   |             |    |         |      |           CC EE DD DD |
+      |                   |             |    |         |      |           DD EE CC 22 |
+      |                   |             |    |         |      |           22 33 22 22 |
+  141 |  1 sound.s    141 | Data        | 00 |         |   16 | 00/0800 : 22 33 01 77 |             HEX   22330177FFCCEEEEDDEECCFF66112222
+      |                   |             |    |         |      |           FF CC EE EE |
+      |                   |             |    |         |      |           DD EE CC FF |
+      |                   |             |    |         |      |           66 11 22 22 |
+  142 |  1 sound.s    142 | Data        | 00 |         |   16 | 00/0810 : 22 22 33 11 |             HEX   2222331133BBFFCCEEDDDDDDEEBB3311
+      |                   |             |    |         |      |           33 BB FF CC |
+      |                   |             |    |         |      |           EE DD DD DD |
+      |                   |             |    |         |      |           EE BB 33 11 |
+  143 |  1 sound.s    143 | Data        | 00 |         |   16 | 00/0820 : 33 11 33 22 |             HEX   33113322221166FFCCEEDDEEDDDDEE77
+      |                   |             |    |         |      |           22 11 66 FF |
+      |                   |             |    |         |      |           CC EE DD EE |
+      |                   |             |    |         |      |           DD DD EE 77 |
+  144 |  1 sound.s    144 | Data        | 00 |         |   16 | 00/0830 : 01 33 22 22 |             HEX   0133222222222222CCEEDDDDDDDDDDEE
+      |                   |             |    |         |      |           22 22 22 22 |
+      |                   |             |    |         |      |           CC EE DD DD |
+      |                   |             |    |         |      |           DD DD DD EE |
+  145 |  1 sound.s    145 | Data        | 00 |         |   16 | 00/0840 : CC 22 22 33 |             HEX   CC222233222222221177EEDDEEEEDDEE
+      |                   |             |    |         |      |           22 22 22 22 |
+      |                   |             |    |         |      |           11 77 EE DD |
+      |                   |             |    |         |      |           EE EE DD EE |
+  146 |  1 sound.s    146 | Data        | 00 |         |   16 | 00/0850 : CC FF 66 11 |             HEX   CCFF661133113322222222BBFFDDEEDD
+      |                   |             |    |         |      |           33 11 33 22 |
+      |                   |             |    |         |      |           22 22 22 BB |
+      |                   |             |    |         |      |           FF DD EE DD |
+  147 |  1 sound.s    147 | Data        | 00 |         |   16 | 00/0860 : EE DD FF CC |             HEX   EEDDFFCC222222222222221166FFDDEE
+      |                   |             |    |         |      |           22 22 22 22 |
+      |                   |             |    |         |      |           22 22 22 11 |
+      |                   |             |    |         |      |           66 FF DD EE |
+  148 |  1 sound.s    148 | Data        | 00 |         |   16 | 00/0870 : DD EE DD DD |             HEX   DDEEDDDDEE770133113311331133BBFF
+      |                   |             |    |         |      |           EE 77 01 33 |
+      |                   |             |    |         |      |           11 33 11 33 |
+      |                   |             |    |         |      |           11 33 BB FF |
+  149 |  1 sound.s    149 | Data        | 00 |         |   16 | 00/0880 : CC EE DD EE |             HEX   CCEEDDEEDDFFBB331133113322331177
+      |                   |             |    |         |      |           DD FF BB 33 |
+      |                   |             |    |         |      |           11 33 11 33 |
+      |                   |             |    |         |      |           22 33 11 77 |
+  150 |  1 sound.s    150 | Data        | 00 |         |   16 | 00/0890 : EE DD EE 99 |             HEX   EEDDEE99223322222222113311000000
+      |                   |             |    |         |      |           22 33 22 22 |
+      |                   |             |    |         |      |           22 22 11 33 |
+      |                   |             |    |         |      |           11 00 00 00 |
+  151 |  1 sound.s    151 | Data        | 00 |         |   16 | 00/08A0 : 00 00 00 00 |             HEX   00000000000000000000000000000000
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+  152 |  1 sound.s    152 | Data        | 00 |         |   16 | 00/08B0 : 00 00 00 00 |             HEX   00000000000000000000000000000000
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+  153 |  1 sound.s    153 | Data        | 00 |         |   16 | 00/08C0 : 00 00 00 00 |             HEX   00000000000000000000000000000000
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+  154 |  1 sound.s    154 | Data        | 00 |         |   16 | 00/08D0 : 00 00 00 00 |             HEX   00000000000000000000000000000000
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+  155 |  1 sound.s    155 | Data        | 00 |         |   16 | 00/08E0 : 00 00 00 00 |             HEX   00000000000000000000000000000000
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+  156 |  1 sound.s    156 | Data        | 00 |         |   16 | 00/08F0 : 00 00 00 00 |             HEX   00000000000000000000000000000000
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+  157 |  1 sound.s    157 | Empty       | 00 |         |    0 | 00/0900               |                                  
+  158 |  1 sound.s    158 | Comment     | 00 |         |    0 | 00/0900               | *---
+  159 |  1 sound.s    159 | Empty       | 00 |         |    0 | 00/0900               |                                  
+  160 |  1 sound.s    160 | Global      | 00 |         |    0 | 00/0900               | sinWAVE     ent                  
+  161 |  1 sound.s    161 | Data        | 00 |         |   16 | 00/0900 : 80 83 86 89 |             hex   808386898C8F9295989B9EA1A4A7AAAD
+      |                   |             |    |         |      |           8C 8F 92 95 |
+      |                   |             |    |         |      |           98 9B 9E A1 |
+      |                   |             |    |         |      |           A4 A7 AA AD |
+  162 |  1 sound.s    162 | Data        | 00 |         |   16 | 00/0910 : B0 B3 B6 B9 |             hex   B0B3B6B9BCBEC1C4C6C9CBCED0D3D5D7
+      |                   |             |    |         |      |           BC BE C1 C4 |
+      |                   |             |    |         |      |           C6 C9 CB CE |
+      |                   |             |    |         |      |           D0 D3 D5 D7 |
+  163 |  1 sound.s    163 | Data        | 00 |         |   16 | 00/0920 : DA DC DE E0 |             hex   DADCDEE0E2E4E6E8E9EBEDEEF0F1F3F4
+      |                   |             |    |         |      |           E2 E4 E6 E8 |
+      |                   |             |    |         |      |           E9 EB ED EE |
+      |                   |             |    |         |      |           F0 F1 F3 F4 |
+  164 |  1 sound.s    164 | Data        | 00 |         |   16 | 00/0930 : F5 F6 F7 F8 |             hex   F5F6F7F8F9FAFBFCFCFDFDFEFEFEFEFE
+      |                   |             |    |         |      |           F9 FA FB FC |
+      |                   |             |    |         |      |           FC FD FD FE |
+      |                   |             |    |         |      |           FE FE FE FE |
+  165 |  1 sound.s    165 | Data        | 00 |         |   16 | 00/0940 : FE FE FE FE |             hex   FEFEFEFEFEFDFDFCFCFBFBFAF9F8F7F6
+      |                   |             |    |         |      |           FE FD FD FC |
+      |                   |             |    |         |      |           FC FB FB FA |
+      |                   |             |    |         |      |           F9 F8 F7 F6 |
+  166 |  1 sound.s    166 | Data        | 00 |         |   16 | 00/0950 : F5 F3 F2 F1 |             hex   F5F3F2F1EFEEECEAE9E7E5E3E1DFDDDB
+      |                   |             |    |         |      |           EF EE EC EA |
+      |                   |             |    |         |      |           E9 E7 E5 E3 |
+      |                   |             |    |         |      |           E1 DF DD DB |
+  167 |  1 sound.s    167 | Data        | 00 |         |   16 | 00/0960 : D9 D6 D4 D2 |             hex   D9D6D4D2CFCDCAC8C5C2C0BDBAB8B5B2
+      |                   |             |    |         |      |           CF CD CA C8 |
+      |                   |             |    |         |      |           C5 C2 C0 BD |
+      |                   |             |    |         |      |           BA B8 B5 B2 |
+  168 |  1 sound.s    168 | Data        | 00 |         |   16 | 00/0970 : AF AC A9 A6 |             hex   AFACA9A6A3A09D9A9794918E8B888481
+      |                   |             |    |         |      |           A3 A0 9D 9A |
+      |                   |             |    |         |      |           97 94 91 8E |
+      |                   |             |    |         |      |           8B 88 84 81 |
+  169 |  1 sound.s    169 | Data        | 00 |         |   16 | 00/0980 : 7E 7B 78 75 |             hex   7E7B7875726F6B6865625F5C59565350
+      |                   |             |    |         |      |           72 6F 6B 68 |
+      |                   |             |    |         |      |           65 62 5F 5C |
+      |                   |             |    |         |      |           59 56 53 50 |
+  170 |  1 sound.s    170 | Data        | 00 |         |   16 | 00/0990 : 4D 4B 48 45 |             hex   4D4B484542403D3A383533302E2B2927
+      |                   |             |    |         |      |           42 40 3D 3A |
+      |                   |             |    |         |      |           38 35 33 30 |
+      |                   |             |    |         |      |           2E 2B 29 27 |
+  171 |  1 sound.s    171 | Data        | 00 |         |   16 | 00/09A0 : 25 22 20 1E |             hex   2522201E1C1A1817151312100F0D0C0B
+      |                   |             |    |         |      |           1C 1A 18 17 |
+      |                   |             |    |         |      |           15 13 12 10 |
+      |                   |             |    |         |      |           0F 0D 0C 0B |
+  172 |  1 sound.s    172 | Data        | 00 |         |   16 | 00/09B0 : 09 08 07 06 |             hex   09080706050504030302020101010101
+      |                   |             |    |         |      |           05 05 04 03 |
+      |                   |             |    |         |      |           03 02 02 01 |
+      |                   |             |    |         |      |           01 01 01 01 |
+  173 |  1 sound.s    173 | Data        | 00 |         |   16 | 00/09C0 : 01 01 01 01 |             hex   0101010101020203030405060708090A
+      |                   |             |    |         |      |           01 02 02 03 |
+      |                   |             |    |         |      |           03 04 05 06 |
+      |                   |             |    |         |      |           07 08 09 0A |
+  174 |  1 sound.s    174 | Data        | 00 |         |   16 | 00/09D0 : 0B 0C 0E 0F |             hex   0B0C0E0F1112141517191B1D1F212325
+      |                   |             |    |         |      |           11 12 14 15 |
+      |                   |             |    |         |      |           17 19 1B 1D |
+      |                   |             |    |         |      |           1F 21 23 25 |
+  175 |  1 sound.s    175 | Data        | 00 |         |   16 | 00/09E0 : 27 2A 2C 2E |             hex   272A2C2E313336383B3E404346494B4E
+      |                   |             |    |         |      |           31 33 36 38 |
+      |                   |             |    |         |      |           3B 3E 40 43 |
+      |                   |             |    |         |      |           46 49 4B 4E |
+  176 |  1 sound.s    176 | Data        | 00 |         |   16 | 00/09F0 : 51 54 57 5A |             hex   5154575A5D606366696C6F7376797C7F
+      |                   |             |    |         |      |           5D 60 63 66 |
+      |                   |             |    |         |      |           69 6C 6F 73 |
+      |                   |             |    |         |      |           76 79 7C 7F |
+  177 |  1 sound.s    177 | Empty       | 00 |         |    0 | 00/0A00               |                                  
+  178 |  1 sound.s    178 | Empty       | 00 |         |    0 | 00/0A00               |                                  
+------+-------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

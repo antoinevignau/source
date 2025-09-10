@@ -1,0 +1,84 @@
+Module name: New song
+Number of tracks: 4
+Number of patterns: 10
+Number of pattern positions: 10
+
+Module instrument oscillator requirements:
+Instrument   1: 2 oscillators
+Instrument   2: 2 oscillators
+Instrument   3: 2 oscillators
+Instrument   4: 2 oscillators
+Instrument   5: 1 oscillator
+Instrument   6: 1 oscillator
+Instrument   7: 1 oscillator
+Instrument   8: 1 oscillator
+
+NTP Instruments:
+number=  1, modnumber=  1, type=%1000, streamed=yes, length= 8712, volume=64, finetune= 0, docptr=$0000, docsiz=%000000, pos=$0028D9
+number=  2, modnumber=  2, type=%1000, streamed=yes, length= 8712, volume=64, finetune= 0, docptr=$0000, docsiz=%000000, pos=$004AE1
+number=  3, modnumber=  3, type=%1000, streamed=yes, length= 8712, volume=64, finetune= 0, docptr=$0000, docsiz=%000000, pos=$006CE9
+number=  4, modnumber=  4, type=%1000, streamed=yes, length= 8712, volume=64, finetune= 0, docptr=$0000, docsiz=%000000, pos=$008EF1
+number=  5, modnumber=  5, type=%0000, streamed=no , length= 8712, volume=64, finetune= 0, docptr=$0000, docsiz=%110110, pos=$00B0F9
+number=  6, modnumber=  6, type=%0000, streamed=no , length= 8712, volume=64, finetune= 0, docptr=$4000, docsiz=%110110, pos=$00D301
+number=  7, modnumber=  7, type=%0000, streamed=no , length= 8712, volume=64, finetune= 0, docptr=$8000, docsiz=%110110, pos=$00F509
+number=  8, modnumber=  8, type=%0000, streamed=no , length= 8712, volume=64, finetune= 0, docptr=$c000, docsiz=%110110, pos=$011711
+
+modnumber - Instrument number in the original module
+type - Bitmap field, see file format in source code archive
+docptr - Pointer to which page in sound ram the instrument is placed (streamed samples have a 0 here).
+docsiz - Bitmap field, see Apple IIGS hardware reference.
+pos - Position in NTP file where the instrument is stored at.
+
+DOC ram usage:
+$0000 1111111111111111
+$1000 1111111111111111
+$2000 1110222222000000
+$3000 0000000000000000
+$4000 1111111111111111
+$5000 1111111111111111
+$6000 1110000000000000
+$7000 0000000000000000
+$8000 1111111111111111
+$9000 1111111111111111
+$a000 1110000000000000
+$b000 0000000000000000
+$c000 1111111111111111
+$d000 1111111111111111
+$e000 1110000000000000
+$f000 0000000000000000
+0=free, 1=instrument, 2=stream buffer, 3=interrupt timer
+
+Oscillator usage:
+Oscillator 00: Track 1
+Oscillator 01: Track 1
+Oscillator 02: Track 2
+Oscillator 03: Track 2
+Oscillator 04: Track 3
+Oscillator 05: Track 3
+Oscillator 06: Track 4
+Oscillator 07: free
+Oscillator 08: free
+Oscillator 09: free
+Oscillator 10: free
+Oscillator 11: free
+Oscillator 12: free
+Oscillator 13: free
+Oscillator 14: free
+Oscillator 15: free
+Oscillator 16: free
+Oscillator 17: free
+Oscillator 18: free
+Oscillator 19: free
+Oscillator 20: free
+Oscillator 21: free
+Oscillator 22: free
+Oscillator 23: free
+Oscillator 24: free
+Oscillator 25: free
+Oscillator 26: free
+Oscillator 27: free
+Oscillator 28: free
+Oscillator 29: free
+Oscillator 30: free
+Oscillator 31: Music timer
+

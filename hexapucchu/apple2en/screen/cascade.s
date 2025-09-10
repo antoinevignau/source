@@ -54,7 +54,7 @@ CASCADE_750	@PRINT	#cascade_str750
 	cmp	#'N'
 	beq	CASCADE_770
 	
-	cmp	#'O'
+	cmp	#'Y'
 	bne	CASCADE_750
 
 CASCADE_760	jmp	GROTTE1

@@ -54,7 +54,7 @@ CASCADE_750	@PRINT	#cascade_str750
 	cmp	#'N'
 	beq	CASCADE_770
 	
-	cmp	#'Y'
+	cmp	#'O'
 	bne	CASCADE_750
 
 CASCADE_760	jmp	GROTTE1
@@ -203,7 +203,7 @@ cascade_str700	dfb	eMODE,1
 	dfb	ePEN,3
 	asc	0d'Et la MIRACLE !!!'0d
 	dfb	ePEN,2
-	asc	0d'Une ouverture secr'8f'te s'27'offres '88' vous,'0d
+	asc	0d'Une ouverture secr'8f'te s'27'offre '88' vous,'0d
 	asc	'd'8e'voilant l'27'entr'8e'e d'27'une grotte'0d
 	asc	'myst'8e'rieuse '88' l'27'EST !'
 	dfb	eEOD

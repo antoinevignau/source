@@ -216,7 +216,7 @@ grotte2_str600	dfb	eMODE,1
 	dfb	eCLS
 	dfb	eLOCATE,1,1
 	dfb	ePEN,1
-	asc	'Vous vous '8e'lancez vers l'27'chelle !'0d
+	asc	'Vous vous '8e'lancez vers l'278e'chelle !'0d
 	dfb	ePEN,2
 	asc	0d
 	asc	'H'8e'las... '88' peine avez-vous lev'8e' le pied'0d

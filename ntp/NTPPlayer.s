@@ -25,12 +25,15 @@
 * v1.1 - 20240203
 *   Removed code for srqGoAway
 *
+* v1.1 (again) - 20250919
+*   control-option-command-space to stop music
+*
 
-            mx        %00
-            rel
-            typ       $B6
-	dsk       NTPPlayer.l
-            lst       off
+	mx        %00
+	rel
+	typ       $B6
+	dsk       NTPPlayer
+	lst       off
 
 *----------------------------
 
@@ -96,8 +99,10 @@ myREQUEST   phd
             cmp	#$0101	; finderSaysGoodbye
             beq	doBYE
 myREQUEST2  cmp	#$0104	; finderSaysBeforeOpen
-            bne	myREQUEST4
             beq	doOPEN
+	cmp	#$010a	; finderSaysKeyHit
+	bne	myREQUEST4
+	brl	doKEYHIT
 
 myREQUEST3  lda	#$8000	; call handled
             sta	result
@@ -206,6 +211,26 @@ doOPEN3     lda       dataIn	; save dataIn ptr
 doOPEN4     PushWord  #0           ; no loop
             _NTPPlayMusic
             brl       myREQUEST3   ; muzak is playing!
+
+*----------------------------
+
+doKEYHIT	ldal	fgTOOL222	; was tool started?
+	beq	doKEYHIT9	; no
+
+	ldy	#2	; yes, check key combination
+	lda	[dataIn],y
+	cmp	#' '	; space character?
+	bne	doKEYHIT9
+	ldy	#4
+	lda	[dataIn],y	; control-option-command?
+	and	#%00011001_00000000
+	cmp	#%00011001_00000000
+	bne	doKEYHIT9
+	
+	_NTPStopMusic		; stop the muwak
+	brl	myREQUEST3	; and exit
+	
+doKEYHIT9	brl	myREQUEST4	; not for me
 
 *----------------------------
 

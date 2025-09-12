@@ -1,0 +1,143 @@
+             org A000h; A000h
+
+
+; Data accessed by:
+; A06Fh(in SUB1)
+A000 DATA1:
+A000              defb 00h    	; 0
+
+
+; Data accessed by:
+; A018h(in SUB1)
+A001 DATA2:
+A001              defb 00h    	; 0
+A002              defb 00h    	; 0
+
+
+; Data accessed by:
+; A063h(in SUB1)
+A003 DATA3:
+A003              defb 00h    	; 0
+A004              defb 00h    	; 0
+
+
+; Data accessed by:
+; A049h(in SUB1)
+A005 DATA4:
+A005              defb 00h    	; 0
+
+
+; Data accessed by:
+; A01Ch(in SUB1), A051h(in SUB1), A05Bh(in SUB1), A042h(in SUB1)
+A006 DATA5:
+A006              defb 00h    	; 0
+A007              defb 00h    	; 0
+
+
+; Data accessed by:
+; A020h(in SUB1), A033h(in SUB1), A03Eh(in SUB1)
+A008 DATA6:
+A008              defb 00h    	; 0
+A009              defb 00h    	; 0
+
+
+; Data accessed by:
+; A081h(in SUB1), A08Dh(in SUB1)
+A00A DATA7:
+A00A              defb 00h    	; 0
+A00B              defb 00h    	; 0
+
+
+A000	05
+A001	03 C8
+A003	C0 20
+A005	D8
+A006	
+A008	
+A00A	
+
+; Subroutine: Size=139, CC=6.
+; Called by: -
+; Calls: -
+A00C SUB1:
+A00C              ld   hl,4000h 	; 16384	- copie les 6 premiers octets
+A00F              inc  hl     			; de $A000 ˆ $A005
+A010              ld   bc,0006h 	; 6
+A013              ld   de,A000h 	; 40960, -24576
+A016              ldir        
+A018              ld   de,(DATA2) 	; A001h	$C803
+A01C              ld   (DATA5),de 	; A006h	$C803
+A020              ld   (DATA6),de 	; A008h	$C803
+A024              ld   b,00h  	; 0
+A026              ld   c,00h  	; 0
+A028              jp   .sub1_l1 	; A060h
+A02B .sub1_loop1:
+A02B              inc  b      
+A02C              ld   c,00h  	; 0
+A02E              ld   a,08h  	; 8
+A030              cp   b      
+A031              ret  z      
+A032              push bc     
+A033              ld   de,(DATA6) 	; A008h
+A037              ex   de,hl  
+A038              ld   bc,0800h 	; 2048
+A03B              add  hl,bc  
+A03C              ex   de,hl  
+A03D              pop  bc     
+A03E              ld   (DATA6),de 	; A008h
+A042              ld   (DATA5),de 	; A006h
+A046              jp   .sub1_l1 	; A060h
+A049 .sub1_loop2:
+A049              ld   a,(DATA4) 	; A005h
+A04C              cp   c      
+A04D              jp   z,.sub1_loop1 	; A02Bh
+A050              push bc     
+A051              ld   de,(DATA5) 	; A006h
+A055              ld   bc,0050h 	; 80
+A058              ex   de,hl  
+A059              add  hl,bc  
+A05A              ex   de,hl  
+A05B              ld   (DATA5),de 	; A006h
+A05F              pop  bc     
+A060 .sub1_l1:
+A060              push bc     
+A061              ld   c,00h  	; 0
+A063 .sub1_loop3:
+A063              ld   a,(DATA3) 	; A003h	20C0
+A066              cp   c      
+A067              jp   nz,.sub1_l2 	; A06Fh
+A06A              pop  bc     
+A06B              inc  c      
+A06C              jp   .sub1_loop2 	; A049h
+A06F .sub1_l2:
+A06F              ld   a,(DATA1) 	; A000h
+A072              ld   b,a    
+A073              ld   a,(hl) 
+A074              cp   b      
+A075              jp   z,.sub1_l3 	; A07Fh
+A078              ld   (de),a 
+A079              inc  de     
+A07A              inc  hl     
+A07B              inc  c      
+A07C              jp   .sub1_loop3 	; A063h
+A07F .sub1_l3:
+A07F              inc  hl     
+A080              ld   a,(hl) 
+A081              ld   (DATA7),a 	; A00Ah
+A084              inc  hl     
+A085              ld   a,(hl) 
+A086              ld   b,a    
+A087              inc  hl     
+A088 .sub1_loop4:
+A088              sub  a      
+A089              cp   b      
+A08A              jp   z,.sub1_loop3 	; A063h
+A08D              ld   a,(DATA7) 	; A00Ah
+A090              ld   (de),a 
+A091              inc  c      
+A092              inc  de     
+A093              dec  b      
+A094              jp   .sub1_loop4 	; A088h
+; ...
+; ...
+; ...

@@ -1,0 +1,25 @@
+1 POKE &BDEE,&C9
+2 GOSUB 10000
+1010 CLS#1:PEN#1,3:POKE &BE78,1
+1040 BORDER 26:INK 1,0:INK 0,26:INK 2,11:INK 3,15:MODE 1
+1060 LOAD"!western2.bin",&A000
+2000 LOAD"!montagne.bin",24375
+2100 INK 3,11:INK 2,15:ad=34902:GOSUB 3010
+2110 ad=32325:GOSUB 3010
+2120 ad=29973:GOSUB 3010
+2130 ad=27642:GOSUB 3010
+2140 ad=25889:GOSUB 3010
+2150 ad=24375:GOSUB 3010
+2990 END
+3010 POKE &A00D,AD-INT(AD/256)*256:POKE &A00E,INT(AD/256):CALL &A00C
+3014 LOCATE 1,22: PRINT "MONTAGNE "+STR$(AD)
+3016 A$=UPPER$(INKEY$): IF A$="" THEN 3016
+3030 RETURN
+10000 MEMORY &3FFF:DEF FNmsb(a)=&FF AND INT(a/256):DEF FNlsb(a)=&FF AND UNT(a):longueur=38:xval1=3:xval2=4:xval3=9:xval4=10:xval5=18:xval6=19:vecteur=&BC80:indir1=39:indir2=41:RESTORE 10150:GOSUB 10110
+10100 longueur=37:xval1=4:xval2=5:xval3=10:xval4=11:xval5=28:xval6=29:vecteur=&BC77:indir1=longueur+1:indir2=longueur+2:RESTORE 10140
+10110 MEMORY HIMEM-(longueur+3):FOR i=HIMEM+1 TO HIMEM+longueur:READ byte:POKE i,byte:NEXT i
+10120 POKE HIMEM+xval1,FNlsb(HIMEM+indir1):POKE HIMEM+xval2,FNmsb(HIMEM+indir1):POKE HIMEM+xval3,FNlsb(HIMEM+indir2):POKE HIMEM+xval4,FNmsb(HIMEM+indir2):POKE HIMEM+xval5,FNlsb(HIMEM+1):POKE HIMEM+xval6,FNmsb(HIMEM+1)
+10130 POKE HIMEM+longueur+1,PEEK(vecteur+0):POKE HIMEM+longueur+2,PEEK(vecteur+1):POKE HIMEM+longueur+3,PEEK(vecteur+2):POKE vecteur+0,&C3:POKE vecteur+1,FNlsb(HIMEM+1):POKE vecteur+2,FNmsb(HIMEM+1):RETURN
+10140 DATA &e5,&f5,&3a,&0,&0,&32,&77,&bc,&2a,&0,&0,&22,&78,&bc,&f1,&e1,&cd,&77,&bc,&f5,&e5,&3e,&c3,&32,&77,&bc,&21,&0,&0,&22,&78,&bc,&e1,&f1,&cb,&87,&c9
+10150 DATA &e5,&2a,&0,&0,&22,&80,&bc,&3a,&0,&0,&32,&82,&bc,&cd,&80,&bc,&21,&0,&0,&22,&81,&bc,&21,&80,&bc,&36,&c3,&e1,&d8,&c8,&fe,&1a,&37,&3f,&c0,&b7,&37,&c9
+

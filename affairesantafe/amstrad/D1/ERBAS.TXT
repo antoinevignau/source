@@ -1,0 +1,370 @@
+; EQU:
+; Data addresses used by the opcodes that point to uninitialized memory areas.
+DATA06:      equ  AC01h	; 44033. Data accessed by: A31Fh(in SUB2)
+DATA07:      equ  AC02h	; 44034. Data accessed by: A336h(in SUB2)
+SUB3:        equ  B900h	; 47360. Subroutine. Called by: SUB2[A309h].
+SUB4:        equ  B90Ch	; 47372. Subroutine. Called by: SUB2[A314h].
+DATA08:      equ  BB06h	; 47878. Data accessed by: A327h(in SUB2)
+DATA09:      equ  BB07h	; 47879. Data accessed by: A345h(in SUB2), A34Eh(in SUB2)
+DATA10:      equ  BB5Ah	; 47962. Data accessed by: A324h(in SUB2)
+DATA11:      equ  BB5Bh	; 47963. Data accessed by: A339h(in SUB2), A342h(in SUB2)
+DATA12:      equ  BC9Bh	; 48283. Data accessed by: A32Ah(in SUB2)
+DATA13:      equ  BC9Ch	; 48284. Data accessed by: A351h(in SUB2), A35Ah(in SUB2)
+DATA14:      equ  C002h	; 49154. Data accessed by: A30Dh(in SUB2)
+
+
+             org A300h; A300h
+
+
+; Subroutine: Size=3, CC=1.
+; Called by: -
+; Calls: SUB2.
+A300 SUB1:
+A300              jp   SUB2   	; A309h
+
+
+A303              defb C3h    	; 195,  -61
+A304              defb DBh    	; 219,  -37
+A305              defb A3h    	; 163,  -93
+A306              defb C3h    	; 195,  -61
+A307              defb 02h    	; 2
+A308              defb A4h    	; 164,  -92
+
+
+; Subroutine: Size=91, CC=3.
+; Called by: SUB1[A300h].
+; Calls: SUB3, SUB4.
+A309 SUB2:
+A309              call SUB3   	; B900h
+A30C              push af     
+A30D              ld   a,(DATA14) 	; C002h
+A310              ld   (DATA04),a 	; A442h
+A313              pop  af     
+A314              call SUB4   	; B90Ch
+A317              ld   a,(DATA04) 	; A442h
+A31A              or   a      
+A31B              jr   nz,.sub2_l1 	; A322h
+A31D              ld   a,C3h  	; 195,  -61
+A31F              ld   (DATA06),a 	; AC01h
+A322 .sub2_l1:
+A322              ld   a,C3h  	; 195,  -61
+A324              ld   (DATA10),a 	; BB5Ah
+A327              ld   (DATA08),a 	; BB06h
+A32A              ld   (DATA12),a 	; BC9Bh
+A32D              ld   a,(DATA04) 	; A442h
+A330              or   a      
+A331              jr   nz,.sub2_l2 	; A339h
+A333              ld   hl,A3B3h 	; 41907, -23629
+A336              ld   (DATA07),hl 	; AC02h
+A339 .sub2_l2:
+A339              ld   hl,(DATA11) 	; BB5Bh
+A33C              ld   (DATA01),hl 	; A3A6h
+A33F              ld   hl,A364h 	; 41828, -23708
+A342              ld   (DATA11),hl 	; BB5Bh
+A345              ld   hl,(DATA09) 	; BB07h
+A348              ld   (DATA02),hl 	; A3D0h
+A34B              ld   hl,A3C7h 	; 41927, -23609
+A34E              ld   (DATA09),hl 	; BB07h
+A351              ld   hl,(DATA13) 	; BC9Ch
+A354              ld   (DATA03),hl 	; A43Fh
+A357              ld   hl,A42Dh 	; 42029, -23507
+A35A              ld   (DATA13),hl 	; BC9Ch
+A35D              ld   hl,A445h 	; 42053, -23483
+A360              ld   (DATA05),hl 	; A443h
+A363              ret         
+
+
+A364              defb E3h    	; 227,  -29
+A365              defb F5h    	; 245,  -11
+A366              defb 7Ch    	; 124, '|'
+A367              defb FEh    	; 254,   -2
+A368              defb CBh    	; 203,  -53
+A369              defb 20h    	; 32, ' '
+A36A              defb 1Eh    	; 30
+A36B              defb 3Eh    	; 62, '>'
+A36C              defb 01h    	; 1
+A36D              defb 32h    	; 50, '2'
+A36E              defb 41h    	; 65, 'A'
+A36F              defb A4h    	; 164,  -92
+A370              defb F1h    	; 241,  -15
+A371              defb E5h    	; 229,  -27
+A372              defb 2Ah    	; 42, '*'
+A373              defb 43h    	; 67, 'C'
+A374              defb A4h    	; 164,  -92
+A375              defb FEh    	; 254,   -2
+A376              defb 0Ah    	; 10
+A377              defb 28h    	; 40, '('
+A378              defb 0Bh    	; 11
+A379              defb 77h    	; 119, 'w'
+A37A              defb 23h    	; 35, '#'
+A37B              defb 7Dh    	; 125, '}'
+A37C              defb FEh    	; 254,   -2
+A37D              defb 28h    	; 40, '('
+A37E              defb 20h    	; 32, ' '
+A37F              defb 01h    	; 1
+A380              defb 2Bh    	; 43, '+'
+A381              defb 22h    	; 34, '"'
+A382              defb 43h    	; 67, 'C'
+A383              defb A4h    	; 164,  -92
+A384              defb E1h    	; 225,  -31
+A385              defb F5h    	; 245,  -11
+A386              defb F1h    	; 241,  -15
+A387              defb E3h    	; 227,  -29
+A388              defb C9h    	; 201,  -55
+A389              defb 3Ah    	; 58, ':'
+A38A              defb 42h    	; 66, 'B'
+A38B              defb A4h    	; 164,  -92
+A38C              defb B7h    	; 183,  -73
+A38D              defb 28h    	; 40, '('
+A38E              defb 19h    	; 25
+A38F              defb 3Ah    	; 58, ':'
+A390              defb 41h    	; 65, 'A'
+A391              defb A4h    	; 164,  -92
+A392              defb B7h    	; 183,  -73
+A393              defb 28h    	; 40, '('
+A394              defb 01h    	; 1
+A395              defb 3Dh    	; 61, '='
+A396              defb 32h    	; 50, '2'
+A397              defb 41h    	; 65, 'A'
+A398              defb A4h    	; 164,  -92
+A399              defb 20h    	; 32, ' '
+A39A              defb EBh    	; 235,  -21
+A39B              defb E5h    	; 229,  -27
+A39C              defb 21h    	; 33, '!'
+A39D              defb 45h    	; 69, 'E'
+A39E              defb A4h    	; 164,  -92
+A39F              defb 22h    	; 34, '"'
+A3A0              defb 43h    	; 67, 'C'
+A3A1              defb A4h    	; 164,  -92
+A3A2              defb E1h    	; 225,  -31
+A3A3              defb F1h    	; 241,  -15
+A3A4              defb E3h    	; 227,  -29
+A3A5              defb CFh    	; 207,  -49
+
+
+; Data accessed by:
+; A33Ch(in SUB2)
+A3A6 DATA01:
+A3A6              defb 00h    	; 0
+A3A7              defb 94h    	; 148, -108
+A3A8              defb 3Ah    	; 58, ':'
+A3A9              defb 41h    	; 65, 'A'
+A3AA              defb A4h    	; 164,  -92
+A3AB              defb B7h    	; 183,  -73
+A3AC              defb 20h    	; 32, ' '
+A3AD              defb D8h    	; 216,  -40
+A3AE              defb F1h    	; 241,  -15
+A3AF              defb E3h    	; 227,  -29
+A3B0              defb CFh    	; 207,  -49
+A3B1              defb 00h    	; 0
+A3B2              defb 94h    	; 148, -108
+A3B3              defb 3Ah    	; 58, ':'
+A3B4              defb 41h    	; 65, 'A'
+A3B5              defb A4h    	; 164,  -92
+A3B6              defb B7h    	; 183,  -73
+A3B7              defb C8h    	; 200,  -56
+A3B8              defb AFh    	; 175,  -81
+A3B9              defb 32h    	; 50, '2'
+A3BA              defb 41h    	; 65, 'A'
+A3BB              defb A4h    	; 164,  -92
+A3BC              defb 21h    	; 33, '!'
+A3BD              defb 45h    	; 69, 'E'
+A3BE              defb A4h    	; 164,  -92
+A3BF              defb 22h    	; 34, '"'
+A3C0              defb 43h    	; 67, 'C'
+A3C1              defb A4h    	; 164,  -92
+A3C2              defb 1Eh    	; 30
+A3C3              defb 12h    	; 18
+A3C4              defb C3h    	; 195,  -61
+A3C5              defb 94h    	; 148, -108
+A3C6              defb CAh    	; 202,  -54
+A3C7              defb F5h    	; 245,  -11
+A3C8              defb 3Ah    	; 58, ':'
+A3C9              defb 41h    	; 65, 'A'
+A3CA              defb A4h    	; 164,  -92
+A3CB              defb B7h    	; 183,  -73
+A3CC              defb 20h    	; 32, ' '
+A3CD              defb 04h    	; 4
+A3CE              defb F1h    	; 241,  -15
+A3CF              defb CFh    	; 207,  -49
+
+
+; Data accessed by:
+; A348h(in SUB2)
+A3D0 DATA02:
+A3D0              defb 3Ch    	; 60, '<'
+A3D1              defb 9Ah    	; 154, -102
+A3D2              defb 3Eh    	; 62, '>'
+A3D3              defb 04h    	; 4
+A3D4              defb 32h    	; 50, '2'
+A3D5              defb 41h    	; 65, 'A'
+A3D6              defb A4h    	; 164,  -92
+A3D7              defb F1h    	; 241,  -15
+A3D8              defb 3Eh    	; 62, '>'
+A3D9              defb 43h    	; 67, 'C'
+A3DA              defb C9h    	; 201,  -55
+A3DB              defb FEh    	; 254,   -2
+A3DC              defb 01h    	; 1
+A3DD              defb C0h    	; 192,  -64
+A3DE              defb DDh    	; 221,  -35
+A3DF              defb 5Eh    	; 94, '^'
+A3E0              defb 00h    	; 0
+A3E1              defb DDh    	; 221,  -35
+A3E2              defb 56h    	; 86, 'V'
+A3E3              defb 01h    	; 1
+A3E4              defb 0Eh    	; 14
+A3E5              defb FFh    	; 255,   -1
+A3E6              defb 21h    	; 33, '!'
+A3E7              defb 45h    	; 69, 'E'
+A3E8              defb A4h    	; 164,  -92
+A3E9              defb 7Eh    	; 126, '~'
+A3EA              defb FEh    	; 254,   -2
+A3EB              defb 0Dh    	; 13
+A3EC              defb 23h    	; 35, '#'
+A3ED              defb 28h    	; 40, '('
+A3EE              defb FAh    	; 250,   -6
+A3EF              defb 2Bh    	; 43, '+'
+A3F0              defb E5h    	; 229,  -27
+A3F1              defb 2Bh    	; 43, '+'
+A3F2              defb 0Ch    	; 12
+A3F3              defb 23h    	; 35, '#'
+A3F4              defb 7Eh    	; 126, '~'
+A3F5              defb FEh    	; 254,   -2
+A3F6              defb 0Dh    	; 13
+A3F7              defb 20h    	; 32, ' '
+A3F8              defb F9h    	; 249,   -7
+A3F9              defb 79h    	; 121, 'y'
+A3FA              defb 12h    	; 18
+A3FB              defb E1h    	; 225,  -31
+A3FC              defb EBh    	; 235,  -21
+A3FD              defb 23h    	; 35, '#'
+A3FE              defb 73h    	; 115, 's'
+A3FF              defb 23h    	; 35, '#'
+A400              defb 72h    	; 114, 'r'
+A401              defb C9h    	; 201,  -55
+A402              defb 3Ah    	; 58, ':'
+A403              defb 42h    	; 66, 'B'
+A404              defb A4h    	; 164,  -92
+A405              defb B7h    	; 183,  -73
+A406              defb 20h    	; 32, ' '
+A407              defb 05h    	; 5
+A408              defb 3Eh    	; 62, '>'
+A409              defb C9h    	; 201,  -55
+A40A              defb 32h    	; 50, '2'
+A40B              defb 01h    	; 1
+A40C              defb ACh    	; 172,  -84
+A40D              defb 3Eh    	; 62, '>'
+A40E              defb CFh    	; 207,  -49
+A40F              defb 32h    	; 50, '2'
+A410              defb 5Ah    	; 90, 'Z'
+A411              defb BBh    	; 187,  -69
+A412              defb 32h    	; 50, '2'
+A413              defb 06h    	; 6
+A414              defb BBh    	; 187,  -69
+A415              defb 3Eh    	; 62, '>'
+A416              defb DFh    	; 223,  -33
+A417              defb 32h    	; 50, '2'
+A418              defb 9Bh    	; 155, -101
+A419              defb BCh    	; 188,  -68
+A41A              defb 2Ah    	; 42, '*'
+A41B              defb A6h    	; 166,  -90
+A41C              defb A3h    	; 163,  -93
+A41D              defb 22h    	; 34, '"'
+A41E              defb 5Bh    	; 91, '['
+A41F              defb BBh    	; 187,  -69
+A420              defb 2Ah    	; 42, '*'
+A421              defb D0h    	; 208,  -48
+A422              defb A3h    	; 163,  -93
+A423              defb 22h    	; 34, '"'
+A424              defb 07h    	; 7
+A425              defb BBh    	; 187,  -69
+A426              defb 21h    	; 33, '!'
+A427              defb 8Bh    	; 139, -117
+A428              defb A8h    	; 168,  -88
+A429              defb 22h    	; 34, '"'
+A42A              defb 9Ch    	; 156, -100
+A42B              defb BCh    	; 188,  -68
+A42C              defb C9h    	; 201,  -55
+A42D              defb F5h    	; 245,  -11
+A42E              defb E5h    	; 229,  -27
+A42F              defb CDh    	; 205,  -51
+A430              defb 02h    	; 2
+A431              defb A4h    	; 164,  -92
+A432              defb E1h    	; 225,  -31
+A433              defb F1h    	; 241,  -15
+A434              defb CDh    	; 205,  -51
+A435              defb 9Bh    	; 155, -101
+A436              defb BCh    	; 188,  -68
+A437              defb E5h    	; 229,  -27
+A438              defb F5h    	; 245,  -11
+A439              defb CDh    	; 205,  -51
+A43A              defb 09h    	; 9
+A43B              defb A3h    	; 163,  -93
+A43C              defb F1h    	; 241,  -15
+A43D              defb E1h    	; 225,  -31
+A43E              defb C9h    	; 201,  -55
+
+
+; Data accessed by:
+; A354h(in SUB2)
+A43F DATA03:
+A43F              defb 00h    	; 0
+A440              defb 00h    	; 0
+A441              defb 00h    	; 0
+
+
+; Data accessed by:
+; A310h(in SUB2), A317h(in SUB2), A32Dh(in SUB2)
+A442 DATA04:
+A442              defb 00h    	; 0
+
+
+; Data accessed by:
+; A360h(in SUB2)
+A443 DATA05:
+A443              defb 45h    	; 69, 'E'
+A444              defb A4h    	; 164,  -92
+A445              defb 4Fh    	; 79, 'O'
+A446              defb 4Bh    	; 75, 'K'
+A447              defb 0Dh    	; 13
+A448              defb 00h    	; 0
+A449              defb 00h    	; 0
+A44A              defb 00h    	; 0
+A44B              defb 00h    	; 0
+A44C              defb 00h    	; 0
+A44D              defb 00h    	; 0
+A44E              defb 00h    	; 0
+A44F              defb 00h    	; 0
+A450              defb 00h    	; 0
+A451              defb 00h    	; 0
+A452              defb 00h    	; 0
+A453              defb 00h    	; 0
+A454              defb 00h    	; 0
+A455              defb 00h    	; 0
+A456              defb 00h    	; 0
+A457              defb 00h    	; 0
+A458              defb 00h    	; 0
+A459              defb 00h    	; 0
+A45A              defb 00h    	; 0
+A45B              defb 00h    	; 0
+A45C              defb 00h    	; 0
+A45D              defb 00h    	; 0
+A45E              defb 00h    	; 0
+A45F              defb 00h    	; 0
+A460              defb 00h    	; 0
+A461              defb 00h    	; 0
+A462              defb 00h    	; 0
+A463              defb 00h    	; 0
+A464              defb 00h    	; 0
+A465              defb 00h    	; 0
+A466              defb 00h    	; 0
+A467              defb 00h    	; 0
+A468              defb 00h    	; 0
+A469              defb 00h    	; 0
+A46A              defb 00h    	; 0
+A46B              defb 00h    	; 0
+A46C              defb 00h    	; 0
+A46D              defb 00h    	; 0
+; ...
+; ...
+; ...

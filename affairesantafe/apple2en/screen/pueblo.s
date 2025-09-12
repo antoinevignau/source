@@ -1,0 +1,180 @@
+*
+* L'affaire Santa Fe
+*
+* (c) Gilles Blancon
+* (c) 1988, Infogrames
+* (c) 2025, Brutal Deluxe Software
+*
+
+	mx	%00
+	lst	off
+
+*-------------------------------
+* INTRODUCTION
+*-------------------------------
+
+PUEBLO	@border	#indexWHITE
+	@cls	#3
+	@pen	#2;#indexORANGE
+
+	stz	eau
+
+	@charge_image	#iPUEBLO;#pPUEBLO
+
+PUEBLO10010	@image	#iPUEBLO;#35238
+	@commentaire	#PUEBLO10200
+	@inkey
+	@commentaire	#PUEBLO10210
+	@inkey
+	@commentaire	#PUEBLO10220
+	@ordre	#3;#PUEBLO10230
+
+PUEBLO10020	lda	t
+	cmp	#1
+	beq	PUEBLO10060
+	cmp	#2
+	beq	PUEBLO10030
+	jmp	PUEBLO10120
+
+PUEBLO10030	lda	eau
+	cmp	#0
+	beq	PUEBLO10050
+
+	@commentaire	#PUEBLO10260
+	@chance
+	
+PUEBLO10040	lda	chance
+	cmp	#0
+	beq	PUEBLO10050
+
+	@commentaire	#PUEBLO10270
+	@inkey
+	jmp	INDIEN
+
+PUEBLO10050	@image	#iPUEBLO;#21343
+	@commentaire	#PUEBLO10250
+	@inkey
+	@commentaire	#PUEBLO10251
+	@inkey
+	jmp	DEBUT
+
+PUEBLO10060	@image	#iPUEBLO;#32568
+	@commentaire	#PUEBLO10280
+
+	lda	#100
+	sta	phase
+
+PUEBLO10080	@inkey_true	#A$
+
+	lda	A$
+	cmp	#0
+	beq	PUEBLO10085
+	jmp	PUEBLO10120
+
+PUEBLO10085	@image	#iPUEBLO;#31808
+*	asl	phase
+	@temporisation	phase
+	@image	#iPUEBLO;#32190
+*	lsr	phase
+	@temporisation	phase
+	@image	#iPUEBLO;#31466
+*	asl	phase
+	@temporisation	phase
+	@image	#iPUEBLO;#32190
+*	lsr	phase
+	@temporisation	phase
+	
+	lda	phase
+	sec
+	sbc	#5
+	sta	phase
+
+PUEBLO10090	lda	phase
+	cmp	#30
+	bcs	PUEBLO10080
+
+	@inkey
+
+PUEBLO10100	@commentaire	#PUEBLO10290
+	@ordre	#2;#PUEBLO10300
+	
+	lda	t
+	cmp	#1
+	beq	PUEBLO10110
+	jmp	PUEBLO10150
+
+PUEBLO10110	@image	#iPUEBLO;#23426
+	@commentaire	#PUEBLO10310
+	@inkey
+	@commentaire	#PUEBLO10311
+	@inkey
+	jmp	DEBUT
+
+PUEBLO10120	lda	#1
+	sta	eau
+	
+	@image	#iPUEBLO;#28809
+	@commentaire	#PUEBLO10240
+	
+PUEBLO10130	@inkey_true	#A$
+	lda	A$
+	cmp	#0
+	bne	PUEBLO10140
+
+	@image	#iPUEBLO;#28115
+	@temporisation	#100
+	@image	#iPUEBLO;#28463
+	@temporisation	#100
+	jmp	PUEBLO10130
+
+PUEBLO10140	@ordre	#2;#PUEBLO10230
+
+PUEBLO10150	@image	#iPUEBLO;#25989
+	@commentaire	#PUEBLO10320
+
+PUEBLO10160	@inkey_true	#A$
+	lda	A$
+	cmp	#0
+	bne	PUEBLO10170
+	
+	@image	#iPUEBLO;#25665
+	@temporisation	#200
+	@image	#iPUEBLO;#25017
+	@temporisation	#200
+	@image	#iPUEBLO;#25341
+	@temporisation	#200
+	jmp	PUEBLO10160
+
+PUEBLO10170	@commentaire	#PUEBLO10330
+	@ordre	#2;#PUEBLO10340
+	
+	lda	t
+	cmp	#2
+	beq	PUEBLO10190
+
+PUEBLO10180	jmp	INDIEN
+PUEBLO10190	jmp	CABANE
+
+*-------------------------------
+* reno
+*-------------------------------
+
+pPUEBLO	strl	'@/data/pueblo.bin'
+
+PUEBLO10200	asc	'   finally mexico i entered         the first pueblo i        encountered with suspicion'00
+PUEBLO10210	asc	' the village looked deserted      but i felt a multitude            of eyes on me'00
+PUEBLO10220	asc	'  i hesitated to stop there     i sensed an obscure danger'00
+PUEBLO10230	asc	'i entered the cantina,i moved on,i gave my mount a drink'00
+PUEBLO10240	asc	'  i took the opportunity to      fill my water bottle in             the fountain'00
+PUEBLO10250	asc	' exhausted by this long walk    i could not reach the next          watering hole'00
+PUEBLO10251	asc	' the vultures know the saying    one man'27's misfortune is          another man'27's gain'00
+PUEBLO10260	asc	'  i left the pueblo without          wasting a moment'00
+PUEBLO10270	asc	'      i continued south'00
+PUEBLO10280	asc	'      i ate heartily and             bought supplies'00
+PUEBLO10290	asc	'     the night was coming        shall i enjoy a good bed      or hit the road again'00
+PUEBLO10300	asc	'i took a room,i left'00
+PUEBLO10310	asc	'   i should have trusted my     instincts and been wary of   the owner who was so servile'00
+PUEBLO10311	asc	'   during the night someome     entered my room and pin me            to the bed'00
+PUEBLO10320	asc	'  i would settle down a few     miles from the pueblo and       spend a peaceful night'00
+PUEBLO10330	asc	'the next morning i was unsure    which direction to take'00
+PUEBLO10340	asc	'i continued south,i came back west'00

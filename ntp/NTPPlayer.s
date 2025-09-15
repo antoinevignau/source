@@ -1,8 +1,8 @@
 *
 * NTP Player
-* v1.0
+* v1.1.1.1.1.1.1.1.1......
 *
-* (c) 2019-2023, Brutal Deluxe Software
+* (c) 2019-2025, Brutal Deluxe Software
 *
 
 * v1.0b0 - 20190523
@@ -25,32 +25,33 @@
 * v1.1 - 20240203
 *   Removed code for srqGoAway
 *
-* v1.1 (again) - 20250919
+* v1.1.1 (again) - 20250915
 *   control-option-command-space to stop music
+*   fix of the srqGoAway code (my bad...)
 *
 
-	mx        %00
+	mx	%00
 	rel
-	typ       $B6
-	dsk       NTPPlayer
-	lst       off
+	typ	$B6
+	dsk	NTPPlayer
+	lst	off
 
 *----------------------------
 
-            use       4/Locator.Macs
-            use       4/Mem.Macs
-            use       4/Tool222.Macs
-            use       4/Misc.Macs
-            use       4/Util.Macs
+	use	4/Locator.Macs
+	use	4/Mem.Macs
+	use	4/Tool222.Macs
+	use	4/Misc.Macs
+	use	4/Util.Macs
 
 *----------------------------
 
-ntpTOOL     =	222
-ntpVERSION  =	$0100
-ntpTYPE     =	$d5
-ntpAUXTYPE  =	$08
+ntpTOOL	=	222
+ntpVERSION	=	$0100
+ntpTYPE	=	$00d5
+ntpAUXTYPE	=	$0008
 
-GSOS        =	$E100A8
+GSOS	=	$E100A8
 
 result	=	$10
 reqCode	=	$0e
@@ -59,158 +60,164 @@ dataOut	=	$06
 
 *----------------------------
 
-            phb
-            phk
-            plb
-
-            pha
-            _MMStartUp
-            pla
-            ora	#$0100
-            sta	myID
-
-            PushLong	#myBRUTAL
-            PushWord	myID
-            PushLong	#myREQUEST
-            _AcceptRequests
-
+	phb
+	phk
+	plb
+	
+	pha
+	_MMStartUp
+	pla
+*	ora	#$0100
+	sta	myID
+	
+	PushLong	#myBRUTAL
+	PushWord	myID
+	PushLong	#myREQUEST
+	_AcceptRequests
+	
 	PushLong	#mySTRING
 	PushLong	#0	; myICON
 	_ShowBootInfo
-
-            plb
-            rtl
+	
+	plb
+	rtl
 
 *----------------------------
-*
-*doSRQGOAWAY	ldy	#2
-*	lda	#0	; do not remove me from memory
-*	sta	[dataOut],y
-*	bra	myREQUEST3
-*
+
+doSRQGOAWAY	ldy	#2
+	ldal	myID
+	sta	[dataOut],y
+	iny
+	iny
+	lda	#0	; Not OK to shut me down
+	sta	[dataOut],y
+	bra	myREQUEST3
+
 *----------------------------
 
-myREQUEST   phd
-            tsc
-            tcd
-            lda	reqCode
-*	cmp	#3	; srqGoAway
-*	beq	doSRQGOAWAY	; nah, I want to stay in memory...
-            cmp	#$0101	; finderSaysGoodbye
-            beq	doBYE
-myREQUEST2  cmp	#$0104	; finderSaysBeforeOpen
-            beq	doOPEN
+myREQUEST	phd
+	tsc
+	tcd
+	
+	stz	result	; as in MountIt
+	
+	lda	reqCode
+	cmp	#3	; srqGoAway
+	beq	doSRQGOAWAY	; nah, I want to stay in memory...
+	cmp	#$0101	; finderSaysGoodbye
+	beq	doBYE
+myREQUEST2	cmp	#$0104	; finderSaysBeforeOpen
+	beq	doOPEN
 	cmp	#$010a	; finderSaysKeyHit
 	bne	myREQUEST4
 	brl	doKEYHIT
 
-myREQUEST3  lda	#$8000	; call handled
-            sta	result
+myREQUEST3	lda	#$8000	; call handled
+	sta	result
 
-myREQUEST4  pld
-            lda	$02,s
-            sta	$0c,s
-            lda	$01,s
-            sta	$0b,s
-            ply
-            ply
-            ply
-            ply
-            ply
-            rtl
-
-*----------------------------
-
-doBYE       ldal      fgTOOL222    ; did I activate the tool?
-            beq       doBYE9       ; nope
-
-            _NTPShutDown           ; yes, stop music & tool
-
-            PushWord  #ntpTOOL     ; unload it!
-            _UnloadOneTool
-
-doBYE9      lda       #0           ; tool is off
-            stal      fgTOOL222
-
-            bra       myREQUEST3   ; call handled
+myREQUEST4	pld
+	lda	$02,s
+	sta	$0c,s
+	lda	$01,s
+	sta	$0b,s
+	ply
+	ply
+	ply
+	ply
+	ply
+	rtl
 
 *----------------------------
 
-doOPEN      ldy       #$0016
-            lda       [dataIn],y      ; printFlag
-            beq       doOPEN2      ; 0 for open
-doOPEN1     bra       myREQUEST4
+doBYE	ldal	fgTOOL222	; did I activate the tool?
+	beq	doBYE9	; nope
 
-doOPEN2     ldy       #$000a       ; is it a NTP file?
-            lda       [$0a],y
-            cmp       #ntpTYPE
-            bne       doOPEN1
-            iny
-            iny
-            lda       [dataIn],y
-            cmp       #ntpAUXTYPE
-            bne       doOPEN1
+	_NTPShutDown		; yes, stop music & tool
+
+	PushWord	#ntpTOOL	; unload it!
+	_UnloadOneTool
+
+doBYE9	lda	#0	; tool is off
+	stal	fgTOOL222
+
+	bra	myREQUEST3	; call handled
+
+*----------------------------
+
+doOPEN	ldy	#22
+	lda	[dataIn],y	; printFlag
+	beq	doOPEN2	; 0 for open
+doOPEN1	bra	myREQUEST4
+
+doOPEN2	ldy	#10	; is it a NTP file?
+	lda	[dataIn],y
+	cmp	#ntpTYPE
+	bne	doOPEN1
+	ldy	#12
+	lda	[dataIn],y
+	cmp	#ntpAUXTYPE
+	bne	doOPEN1
 
 *--- Is tool in memory?
 
-            ldal      fgTOOL222
-            bne       doOPEN3      ; yes
+	ldal	fgTOOL222
+	bne	doOPEN3	; yes
 
-            PushWord  #ntpTOOL
-            PushWord  #ntpVERSION
-            _LoadOneTool
-            bcs       doOPEN1
+	PushWord	#ntpTOOL
+	PushWord	#ntpVERSION
+	_LoadOneTool
+	bcs	doOPEN1
 
-            lda       #1
-            stal      fgTOOL222
+	lda	#1
+	stal	fgTOOL222
 
-            ldal      myID
-            pha
-            _NTPStartUp
+	ldal	myID
+	pha
+	_NTPStartUp
 
 *--- Now, copy the GS/OS (STRL) pathname, we need a STR
 
-doOPEN3     lda       dataIn	; save dataIn ptr
-            stal      ptrSAVE
-            lda       dataIn+2
-            stal      ptrSAVE+2
+doOPEN3	lda	dataIn	; save dataIn ptr
+	stal	ptrSAVE
+	lda	dataIn+2
+	stal	ptrSAVE+2
 
-            ldy       #2           ; pathPtr
-            lda       [dataIn],y
-            tax
-            iny
-            iny
-            lda       [dataIn],y
-            sta       dataIn+2
-            stx       dataIn
+	ldy	#2	; pathPtr
+	lda	[dataIn],y
+	tax
+	iny
+	iny
+	lda	[dataIn],y
+	sta	dataIn+2
+	stx	dataIn
 
-            ldy       #768-2       ; copy path
-]lp         tyx
-            lda       [dataIn],y
-            stal      pathSONG,x
-            dey
-            dey
-            bpl       ]lp
+	ldy	#768-2	; copy path
+]lp	tyx
+	lda	[dataIn],y
+	stal	pathSONG,x
+	dey
+	dey
+	bpl	]lp
 
-            ldal      pathSONG     ; from STRL to STR
-            xba                    ; if path is long...
-            stal      pathSONG     ; ...ahem
+	ldal	pathSONG	; from STRL to STR
+	xba		; if path is long...
+	stal	pathSONG	; ...ahem
 
-            ldal      ptrSAVE+2
-            sta       dataIn+2
-            ldal      ptrSAVE
-            sta       dataIn
+	ldal	ptrSAVE+2
+	sta	dataIn+2
+	ldal	ptrSAVE
+	sta	dataIn
 
 *--- Now, play the song
 
-            PushLong  #pathSONG2
-            _NTPLoadOneMusic
-            bcc       doOPEN4
-            brl       myREQUEST4   ; error
+	PushLong	#pathSONG2
+	_NTPLoadOneMusic
+	bcc	doOPEN4
+	brl	myREQUEST4	; error
 
-doOPEN4     PushWord  #0           ; no loop
-            _NTPPlayMusic
-            brl       myREQUEST3   ; muzak is playing!
+doOPEN4	PushWord	#0	; no loop
+	_NTPPlayMusic
+	brl	myREQUEST3	; muzak is playing!
 
 *----------------------------
 
@@ -219,7 +226,8 @@ doKEYHIT	ldal	fgTOOL222	; was tool started?
 
 	ldy	#2	; yes, check key combination
 	lda	[dataIn],y
-	cmp	#' '	; space character?
+	and	#$ff
+	cmp	#$20	; space character?
 	bne	doKEYHIT9
 	ldy	#4
 	lda	[dataIn],y	; control-option-command?
@@ -234,61 +242,15 @@ doKEYHIT9	brl	myREQUEST4	; not for me
 
 *----------------------------
 
-fgTOOL222   ds        2            ; <>0 if tool in mem
-myID        ds        2            ; memID
+fgTOOL222	ds	2	; <>0 if tool in mem
+myID	ds	2	; memID
 
-ptrSAVE     ds        4            ; save dataIn ptr
-pathSONG    ds        1            ; STRL from GS/OS
-pathSONG2   ds        768          ; STR to the NTP tool
+ptrSAVE	ds	4	; save dataIn ptr
+pathSONG	ds	1	; STRL from GS/OS
+pathSONG2	ds	768	; STR to the NTP tool
 
 *----------------------------
 
-myBRUTAL    str       'BrutalDeluxe~NTPPlayer~'
+myBRUTAL	str	'BrutalDeluxe~NTPPlayer~'
 
-mySTRING asc 'NTPPlayer             v01.01  by Brutal Deluxe'00
-
-*myICON	dw	$0080 ; Icon type
-*	dw	$00C8 ; Icon size
-*	dw	$0014 ; Icon height
-*	dw	$0014 ; Icon width
-*	hex	33333333333333333333 ; Icon image
-*	hex	3AAAAAAAAAAAAAAAAA83
-*	hex	3A88888888888888A883
-*	hex	3A8888888888888AA883
-*	hex	3A8811111111111AA883
-*	hex	3A88111111111FFAA883
-*	hex	3A8811FFFF11111AA883
-*	hex	3A88111111111FFAA883
-*	hex	3A881FFFF111FFFAA883
-*	hex	3A8811111111111AA883
-*	hex	3A88EE1111EE111AA883
-*	hex	3A886EEEEE6EEEEAA883
-*	hex	3A8864EE666666EAA883
-*	hex	3A88644EEEEE644AA883
-*	hex	3A886646EE64466AA883
-*	hex	3A88AAAAAAAAAAAAA883
-*	hex	3A8AAAAAAAAAAAAAA883
-*	hex	3AA88888888888888883
-*	hex	3A888888888888888883
-*	hex	33333333333333333333
-*	hex	FFFFFFFFFFFFFFFFFFFF ; Icon mask
-*	hex	FFFFFFFFFFFFFFFFFFFF
-*	hex	FFFFFFFFFFFFFFFFFFFF
-*	hex	FFFFFFFFFFFFFFFFFFFF
-*	hex	FFFFFFFFFFFFFFFFFFFF
-*	hex	FFFFFFFFFFFFFFFFFFFF
-*	hex	FFFFFFFFFFFFFFFFFFFF
-*	hex	FFFFFFFFFFFFFFFFFFFF
-*	hex	FFFFFFFFFFFFFFFFFFFF
-*	hex	FFFFFFFFFFFFFFFFFFFF
-*	hex	FFFFFFFFFFFFFFFFFFFF
-*	hex	FFFFFFFFFFFFFFFFFFFF
-*	hex	FFFFFFFFFFFFFFFFFFFF
-*	hex	FFFFFFFFFFFFFFFFFFFF
-*	hex	FFFFFFFFFFFFFFFFFFFF
-*	hex	FFFFFFFFFFFFFFFFFFFF
-*	hex	FFFFFFFFFFFFFFFFFFFF
-*	hex	FFFFFFFFFFFFFFFFFFFF
-*	hex	FFFFFFFFFFFFFFFFFFFF
-*	hex	FFFFFFFFFFFFFFFFFFFF
-
+mySTRING	asc	'NTPPlayer             v01.11  by Brutal Deluxe'00

@@ -1,0 +1,127 @@
+*
+* Le secret d'Anubis
+*
+* (c) 2025, Eric Cubizolle (TITAN)
+* (c) 2025, Brutal Deluxe Software
+*
+
+	ext	CAIRE_str100
+	ext	CAIRE_str200
+	ext	CAIRE_str300
+	ext	CAIRE_str400
+	ext	CAIRE_str500
+	ext	CAIRE_str600
+	ext	CAIRE_str700
+	ext	CAIRE_str800
+	ext	CAIRE_str900
+	ext	CAIRE_str1100
+	ext	CAIRE_str1200
+
+CAIRE	@LOAD	#pCAIRE
+CAIRE_60	@SHOWPIC
+
+	@WINDOW	#1;#theWINDOW1
+	@PRINT	#1;CAIRE_str100
+	@PRINT	#0;CAIRE_str200
+
+CAIRE_LOOP	@INKEY
+	@DEBUG
+	cmp	#'1'
+	bne	CAIRE_230
+
+	lda	PEEK_7003
+	cmp	#FALSE
+	bne	CAIRE_220
+	jmp	CAIRE_300
+CAIRE_220	cmp	#TRUE
+	bne	CAIRE_LOOP
+	jmp	CAIRE_400
+
+CAIRE_230	cmp	#'2'
+	bne	CAIRE_240
+	jmp	CAIRE_500
+
+CAIRE_240	cmp	#'3'
+	bne	CAIRE_250
+	jmp	CAIRE_600
+
+CAIRE_250	cmp	#'4'
+	bne	CAIRE_265
+
+	lda	PEEK_7003
+	cmp	#FALSE
+	bne	CAIRE_220
+	jmp	CAIRE_700
+CAIRE_260	cmp	#TRUE
+	bne	CAIRE_LOOP
+	jmp	CAIRE_800
+
+CAIRE_265	cmp	#'5'
+	bne	CAIRE_270
+	jmp	CHAT
+
+CAIRE_270	cmp	#'6'
+	bne	CAIRE_285
+
+	lda	PEEK_7002
+	cmp	#FALSE
+	bne	CAIRE_275
+	jmp	CAIRE_900
+CAIRE_275	cmp	#TRUE
+	bne	CAIRE_280
+	jmp	CAIRE_1000
+CAIRE_280	jmp	CAIRE_LOOP
+	
+CAIRE_285	cmp	#'7'
+	bne	CAIRE_LOOP	
+	jmp	SOUK
+*---
+
+CAIRE_300	@PRINT	#0;CAIRE_str300
+	@INKEY
+	jmp	CAIRE_60
+
+CAIRE_400	@PRINT	#0;CAIRE_str400
+	@INKEY
+	jmp	DESERT1
+
+CAIRE_500	@PRINT	#0;CAIRE_str500
+	@INKEY
+	jmp	CAIRE_60
+
+CAIRE_600	@PRINT	#0;CAIRE_str600
+	@INKEY
+	jmp	CAIRE_60
+
+CAIRE_700	@PRINT	#0;CAIRE_str700
+	@INKEY
+	jmp	MORT
+
+CAIRE_800	@PRINT	#0;CAIRE_str800
+	@INKEY
+	jmp	CAIRE_60
+
+CAIRE_900	@PRINT	#0;CAIRE_str900
+	@INKEY
+	jmp	CAIRE_60
+
+CAIRE_1000	lda	PEEK_7003
+	cmp	#FALSE
+	beq	CAIRE_1100
+	cmp	#TRUE
+	beq	CAIRE_1200
+	jmp	CAIRE_60
+
+CAIRE_1100	@PRINT	#0;CAIRE_str1100
+	@INKEY
+	lda	#TRUE
+	sta	PEEK_7003
+	jmp	CAIRE_60
+
+CAIRE_1200	@PRINT	#0;CAIRE_str1200
+	@INKEY
+	jmp	CAIRE_60
+
+*---
+
+pCAIRE	strl	'@/data/caire.lz4'

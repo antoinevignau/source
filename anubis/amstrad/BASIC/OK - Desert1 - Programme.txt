@@ -1,0 +1,90 @@
+10 ' DESERT 1
+20 MODE 1:BORDER 0
+30 FOR i=0 TO 3:INK i,0:NEXT i
+40 MEMORY &3FFF
+50 LOAD"Desert1.cmp"
+60 FOR i=0 TO 3:INK i,0:NEXT i
+70 POKE &A634,&C8:POKE &A635,0:POKE &A636,0:CALL &A60B
+80 POKE &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+100 WINDOW #1,25,36,4,19
+110 INK 0,0:INK 1,3:INK 2,15:INK 3,24
+120 PEN #1,3:PRINT #1:PRINT #1,"Le desert.":PRINT #1:PRINT #1,"Des dunes":PRINT #1,"a perte":PRINT #1,"de vue,":PRINT #1,"balayees"
+125 PRINT #1,"par le":PRINT #1,"vent chaud":PRINT #1,"s'etirent":PRINT #1,"sous un":PRINT #1,"ciel":PRINT #1,"implacable."
+
+130 LOCATE 13,20:PEN 2:PRINT"QUE FAITES-VOUS ?"
+140 PEN 3:LOCATE 4,21:PRINT "1-Retourner au Caire    2-Examiner"
+150 PEN 2:LOCATE 4,22:PRINT "3-NORD  4-SUD  5-OUEST  6-S'assoir"
+160 PEN 3:LOCATE 4,23:PRINT "7-Admirer le coucher de soleil"
+170 PEN 2:LOCATE 4,24:PRINT "8-Faire semblant d'etre mort"
+
+200 k$=INKEY$
+210 IF k$="1"THEN RUN"Caire.bas"
+220 IF k$="2"THEN GOTO 300
+230 IF k$="3"THEN GOTO 400
+240 IF k$="4"THEN RUN"Desert2.bas"
+250 IF k$="5"THEN GOTO 500
+260 IF k$="6"THEN GOTO 600
+270 IF k$="7"THEN GOTO 700
+280 IF k$="8"THEN GOTO 800
+290 IF k$<"1"OR k$>"8" THEN GOTO 200
+
+300 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+310 PEN 1:PRINT"Bienvenue dans le desert !"
+320 PEN 3:PRINT:PRINT"Du sable partout : sous vos pieds,":PRINT"dans vos narines, et probablement":PRINT"jusque dans vos idees."
+330 PEN 2:PRINT:PRINT"Les dunes s'etendent a perte de vue,":PRINT"au point qu'un GPS jetterait l'eponge":PRINT"en pleurnichant."
+340 PEN 3:PRINT:PRINT"Bref, sans un plan precis, vous":PRINT"risquez moins de trouver une oasis que":Print"de finir comme une legende archeologique"
+350 Locate 1,13:Print:Print"dont on rigolera dans 3000 ans."
+360 PEN 1:Print:Print"TAREQ vous a surement laisse un indice":Print"pour trouver Qattara sans que":Print"vous ne finissiez perdu a tourner":Print"en rond dans ce tas infini de sable !"
+370 Pen 2:Print:Print"Faites marcher votre memoire..."
+380 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+390 GOTO 60
+
+400 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+410 PEN 3:PRINT:PRINT"Certains chantaient qu'au nord c'etait":Print"les corons..."
+420 PEN 1:PRINT:PRINT"Ici, c'est plutot les scorpions..."
+430 PEN 2:PRINT:Print"Et en rang d'oignon, prets a bloquer":PRINT"le passage comme des videurs de":Print"discotheque."
+440 Pen 3:Print:Print"Vous tentez bien d'en imiter un,":Print"histoire de passer incognito...":Print"Mais, soyez lucide, vous n'avez pas":Print"la queue assez longue pour etre":Print"credible !"
+460 PEN 2:PRINT:PRINT"Conclusion :":Print"Le NORD, ca va pas etre possible.":Locate 4,18:Pen 3:PRINT"NORD"
+470 PEn 1:Print:Print"Et il va par ailleurs falloir":PRint"commencer a vous mefier serieusement":PRint"de la faune locale si vous ne":Print"voulez pas finir en kebab."
+480 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+490 GOTO 60    
+
+500 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+510 PEN 3:PRINT:PRint"Ah, l'OUEST... Sublime initiative !"
+520 Pen 1:Print:Print"Comme toujours quand il s'agit de":Print"courir vers le danger !"
+530 Pen 2:Print:Print"Vous etes si previsible."
+540 Pen 3:Print:PRint"La-bas, les sables mouvants vous":Print"attendent comme des fans hysteriques":Print"a un spectacle de claquettes :"
+550 PEN 1:PRINT"prets a vous happer tout cru, en":PRint"applaudissant vos derniers pas."
+560 Pen 2:PRint:Print"Bon, soyons clairs : l'OUEST, c'est":PRint"le fast-pass express pour une mort":Print"ridicule.":locate 24,15:Pen 3:Print"OUEST"
+570 Pen 1:Locate 9,19:PRint"Vous restez donc ici."
+575 PEN 3:PRint:PRint"Et, un conseil : Ne posez pas vos":Print"orteilles n'importe ou a l'avenir..."
+580 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+590 GOTO 60
+
+600 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+610 PEn 3:PRint:Print"Vous posez votre auguste et delicat":Print"croupion sur le sable brulant du":Print"desert."
+620 PEn 2:Print:Print"Le contact, plutot confortable au":Print"debut, se fait tres clairement moins":Print"agreable lorsque la brulure au 3eme":PRint"degre causee par la chaleur intense":Print"vient consteller de cloques votre":Print"jolie peau de bebe..."
+630 Pen 3:Print:PRint"Allez, un peu de talc et c'est reparti !"
+640 Pen 1:Print:Print"Petite chochotte, va !"
+650 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+660 GOTO 60
+
+700 CLS:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+710 Pen 3:Print:Print"Une soudaine envie de vous":Print"rememorer les moments nostalgiques":Print"passes avec Germaine, votre ex":Print"partie trop tot avec Gerard, le":Print"boucher-charcutier ?"
+720 Pen 2:Print:Print"Vous etes un romantique vous,":Print"je le savais !"
+730 PEn 1:Print:Print"C'est vrai que quand Germaine se":Print"dechaine, difficile de l'oublier..."
+740 Pen 3:Print:Print"Bon, on arrete de pleurnicher":Print"comme une mauviette et on reprend":Print"l'aventure, hein ?"
+750 Pen 2:Print:Print"On dit qu'on fait comme ca, ok ?"
+760 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+770 Goto 60
+
+800 CLS:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+810 Pen 3:Print"Dans un eclair de genie...":Print"ou de deshydratation, vous vous":Print"allongez dans le sable, bras en croix,":Print"yeux mi-clos, telle une momie."
+820 Pen 2:Print:Print"Une mouche inspecte votre oreille,":Print"repart decue.":Print"Un vautour vous trouve trop frais":Print"pour etre comestible."
+830 Print"Des scarabees vous escaladent avec":Print"enthousiasme, pensant avoir trouve":Print"une nouvelle colline sacree."
+840 PEn 1:Print:PRint"Apres quelques minutes de cette":PRint"performance digne d'un Oscar, vous":Print"vous relevez."
+850 PEN 3:PRINT:Print"Bilan :":PRint"        - Aucun ennemi.":PRint"        - Vous etes encore vivant."
+860 PEN 2:PRint:PRint"Si un esprit du desert vous a vu,":PRint"Il a du bien se marrer !"
+870 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+880 Goto 60

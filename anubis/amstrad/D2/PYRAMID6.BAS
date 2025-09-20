@@ -1,0 +1,75 @@
+10 ' PYRAMID8
+20 MODE 1:BORDER 0
+30 FOR i=0 TO 3:INK i,0:NEXT i
+40 MEMORY &3FFF
+50 LOAD"Pyramid6.cmp"
+60 FOR i=0 TO 3:INK i,0:NEXT i
+70 POKE &A634,&C8:POKE &A635,0:POKE &A636,0:CALL &A60B
+80 POKE &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+100 WINDOW #1,25,36,4,19
+110 INK 0,0:INK 1,3:INK 2,15:INK 3,24
+120 PEN #1,3:PRINT #1:PRINT #1,"Un couloir":PRINT #1,"fige ou":PRINT #1,"l'ombre":PRINT #1,"etrein":PRINT #1,"la pierre,"
+130 PRINT #1,"et ou se":PRINT #1,"dresse":PRINT #1,"silencieux":PRINT #1,"l'echo":PRINT #1,"d'un roi":PRINT #1,"endormi."                    
+140 LOCATE 13,20:PEN 2:PRINT"QUE FAITES-VOUS ?"
+150 PEN 3:LOCATE 4,21:PRINT "1-OUEST  2-EST  3-SUD  4-Examiner"
+160 PEN 2:LOCATE 4,22:PRINT "5-Caresser les vases"
+170 PEN 3:LOCATE 4,23:PRINT "6-Fouiller le sarcophage"
+180 PEN 2:LOCATE 4,24:PRINT "7-Fouiller les vases   8-Creuser"
+200 k$=INKEY$
+210 IF k$="1"THEN RUN"Pyramid5.bas"
+220 IF k$="2"THEN RUN"Pyramid7.bas"
+230 IF k$="3"THEN RUN"Pyramid2.bas"
+240 IF k$="4"THEN GOTO 300
+250 IF k$="5"THEN GOTO 400
+260 IF k$="6"THEN GOTO 500
+270 IF k$="7"THEN GOTO 600
+280 IF k$="8"THEN GOTO 700
+290 IF k$<"1"OR k$>"8" THEN GOTO 200
+300 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+310 PEN 3:PRINT:PRINT"Vous inspectez le couloir avec":PRINT"attention."
+320 PEN 2:PRINT:PRINT"A gauche, un sarcophage royal vous toise":LOCATE 1,6:PRINT"avec ce petit air snob des types qui ont":LOCATE 1,7:PRINT"paye leur pyramide comptant."
+330 PEN 3:PRINT:PRINT"Devant vous, trois vases imposants se":PRINT"tiennent bien droits, comme des vigiles":PRINT"d'une boite de nuit antique."
+340 PRINT:PRINT"Le sol, en dalles de pierre froide,":PRINT"brille sous la poussiere : un carrelage":PRINT"parfait pour une cuisine..."
+350 PEN 2:PRINT:PRINT"Enfin, si vous aimez cuisiner dans un":PRINT"tombeau hante."
+360 PEN 1:PRINT:PRINT "Bref, c'est cosy, mais il manque quand":PRINT"meme un petit tapis ";CHR$(34);"Maisons du Monde";CHR$(34):PRINT"pour la deco."
+370 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+380 GOTO 60
+400 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+410 PEN 3:PRINT"Vous vous penchez vers les vases, et":PRINT"decidez... de les caresser."
+420 PEN 1:LOCATE 1,4::PRINT"Oui, vraiment, les caresser..."
+430 PEN 2:PRINT:PRINT"Au moment ou votre main effleure":PRINT"l'argile, un leger son se fait entendre."
+440 PEN 3:LOCATE 1,9:PRINT"Curieux : chaque vase produit une note":PRINT"differente."
+450 PEN 2:PRINT:PRINT"Vous continuez, un peu par curiosite,":PRINT"un peu par obsession...":PRINT"Et, miracle ! A force de flatter ces":PRINT"poteries antiques, une symphonie":PRINT"emerge enfin :"
+460 PEN 1:PRINT:PRINT"      LA - MI - RE - MI - SOL - MI"
+470 PRINT"      DO - SI - LA - SOL - LA - MI"
+480 PEN 3:PRINT:PRINT"Serait-ce un murmure du passe ?":PRINT"Ou meme la cle d'une symphonie oubliee ?"
+485 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+490 GOTO 60
+500 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+510 PEN 3:PRINT"Vous ouvrez le sarcophage, curieux de":PRINT"decouvrir ce qu'il pourrait renfermer."
+520 PEN 2:PRINT:PRINT"A peine votre main y glisse-t-elle qu'un":LOCATE 1,5:PRINT"nuage de poussiere vous saute au nez."
+530 PEN 1:PRINT:PRINT"Vous eternuez...":PRINT:PRINT"     Fort. Tres fort. Trop fort."
+540 PEN 3:PRINT:PRINT"Les vibrations font trembler le":PRINT"couvercle qui retombe aussitot sur":PRINT"vous !"
+550 PEN 2:PRINT:PRINT"Vous voila emprisonne pour l'eternite,":PRINT"avec pour seule compagnie le silence,":PRINT"le sable et un subtil parfum de momie."
+560 PEN 3:PRINT:PRINT"Vous avez finalement obtenu le destin":PRINT"d'un vrai pharaon...":PEN 1:PRINT:PRINT"              ...le prestige en moins."
+570 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+580 RUN"Mort.bas"
+600 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+610 PEN 3:PRINT"Vous decidez de fouiller les vases."
+620 PEN 2:PRINT:PRINT"Dans l'un d'eux, votre main tombe sur":PRINT"un bout de papyrus fragile."
+630 PEN 1:PRINT:PRINT"Vous le depliez avec soin... et":PRINT"decouvrez une partition musicale, mais":PRINT"pas n'importe laquelle :":PRINT:PRINT"        Une sequence numerique !"
+640 PEN 3:PRINT:PRINT"Helas, le temps a joue les petits":PRINT"farceurs et a fait disparaitre quelques":PRINT"chiffres."
+650 PEN 2:PRINT:PRINT"      Il ne reste plus que ceci :"
+660 PEN 1:PRINT:PRINT"         1 -   - 2 - 3 -   - 3":PRINT:PRINT"         7 - 6 -   - 4 - 5 -  "
+670 PEN 3:PRINT:PRINT"C'est illisible... Mais vous sentez":PRINT"quand meme que ce papyrus a du style."
+680 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+690 GOTO 60
+700 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+710 PEN 3:PRINT:PRINT"Vous plantez votre pelle dans le sol...":PRINT"et rien. Nada."
+720 PEN 2:PRINT:PRINT"Le sol, un dallage de pierre, est plus":PRINT"solide que votre motivation a faire":PRINT"du sport un lundi matin."
+730 PEN 3:PRINT:PRINT"Vous contemplez votre pelle...":PRINT:PRINT"       Puis la pierre...":PRINT:PRINT"           Et enfin vous-meme..."
+740 PEN 2:PRINT:PRINT"Et vous comprenez que ce dallage est":PRINT"fait pour durer, contrairement a votre":PRINT"patience."
+750 PEN 1:PRINT:PRINT"Allez, on range son joli jouet et on":PRINT"arrete de jouer les taupes hyperactives."
+760 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+770 GOTO 60

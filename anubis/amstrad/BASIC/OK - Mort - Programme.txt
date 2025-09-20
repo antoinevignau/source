@@ -1,0 +1,13 @@
+10 ' MORT
+20 MODE 1:BORDER 0
+30 Poke &7000,0:Poke &7001,0:Poke &7002,0:Poke &7003,0:Poke &7004,0:Poke &7005,0:Poke &7006,0
+40 for i=0 to 15:ink i,0:next i
+50 MEMORY &3FFF:LOAD"Mort.cmp"
+60 poke &A634,&C8:poke &A635,0:poke &A636,0:CALL &A60B
+70 poke &C7F1,&C9:CALL &C7D0
+80 CALL &A60B
+85 Locate 8,21:PEn 3:PRINT"Voulez-vous rejouer (O/N) ?"
+90 k$=INKEY$
+100 IF k$="O" or k$="o" THEN RUN"Caire.bas"
+110 IF k$="N" or k$="n" THEN CALL 0
+120 IF k$<>"O" OR k$<>"o" OR k$<>"N" OR k$<>"n" THEN GOTO 90

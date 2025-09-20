@@ -1,0 +1,138 @@
+10 ' PYRAMID4
+20 MODE 1:BORDER 0:PAPER 0
+25 IF PEEK(&7000)=0 then A=6:B=7:C=3:D=0:E=4:F=1
+30 IF PEEK(&7000)=1 then A=6:B=3:C=2:D=2:E=12:F=1
+35 FOR i=0 TO 3:INK i,0:NEXT i
+40 MEMORY &3FFF
+50 LOAD"Pyramid4.cmp"
+60 FOR i=0 TO 3:INK i,0:NEXT i
+70 POKE &A634,&C8:POKE &A635,0:POKE &A636,0:CALL &A60B
+80 POKE &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+
+95 IF PEEK(&7000)=0 then PEN 3:PAPER 2:locate 9,6:Print Chr$(150):locate 9,7:Print Chr$(151):locate 9,8:Print Chr$(147):locate 12,6:Print Chr$(32):locate 13,6:Print Chr$(148):locate 13,8:Print Chr$(145)
+
+96 IF PEEK(&7000)=1 then PEN 3:PAPER 2:locate 9,6:Print Chr$(150):locate 9,7:Print Chr$(147):locate 9,8:Print Chr$(146):locate 12,6:Print Chr$(146):locate 13,6:Print Chr$(156):locate 13,8:Print Chr$(145)
+
+99 PAPER 0
+100 WINDOW #1,25,36,4,19
+110 INK 0,0:INK 1,3:INK 2,15:INK 3,24
+120 PEN #1,3:PRINT #1:PRINT #1,"Un mur":PRINT #1,"millenaire":PRINT #1,"avec ses":PRINT #1,"pierres ":PRINT #1,"gravees"
+125 PRINT #1,"d'une":PRINT #1,"enigme que":PRINT #1,"seul un":PRINT #1,"esprit":PRINT #1,"perspicace":PRINT #1,"pourra":PRINT #1,"percer."
+
+130 LOCATE 13,20:PEN 2:PRINT"QUE FAITES-VOUS ?"
+150 PEN 3:LOCATE 4,22:PRINT "1-EST          2-Examiner le mur"
+160 PEN 2:LOCATE 4,23:PRINT "3-Frotter le mur avec ardeur"
+170 PEN 3:LOCATE 4,24:PRINT "Actionner le bouton: 4-5-6-7-8-9"
+
+200 k$=INKEY$
+210 IF k$="4"Then A=A+1:sound 1,100:GOTO 300
+220 IF k$="7"Then B=B+1:sound 1,120:GOTO 400
+230 IF k$="8"Then C=C+1:sound 1,140:GOTO 500
+240 IF k$="5"Then D=D+1:sound 1,160:GOTO 600
+250 IF k$="9"Then E=E+1:sound 1,180:GOTO 700
+255 IF k$="6"THEN F=F+1:sound 1,220:GOTO 800
+260 IF k$="1" THEN RUN"Pyramid5.bas"
+270 IF k$="2" THEN GOTO 1400
+280 IF k$="3" THEN GOTO 1600
+290 IF k$<"1"OR k$>"9" THEN GOTO 200
+
+300 If A>15 then A=1
+320 PEN 3:PAPER 2:locate 9,6:Print Chr$(144+A)
+330 Goto 1000
+
+400 If B>15 then B=1
+410 PEN 3:PAPER 2:locate 9,7:Print Chr$(144+B)
+420 Goto 1000
+
+500 If C>15 then C=1
+520 PEN 3:PAPER 2:locate 9,8:Print Chr$(144+C)
+530 Goto 1000
+
+600 If D>15 then D=1
+620 PEN 3:PAPER 2:locate 12,6:Print Chr$(144+D)
+630 Goto 1000
+
+700 If E>15 then E=1
+720 PEN 3:PAPER 2:locate 13,6:Print Chr$(144+E)
+730 Goto 1000
+
+800 If F>15 then F=1
+820 PEN 3:PAPER 2:locate 13,8:Print Chr$(144+F)
+830 Goto 1000
+
+1000 IF F=1 and A=6 and B=3 and C=2 and D=2 and E=12 Then Goto 1100
+1001 IF F=1 and A=6 and B=3 and C=2 and D=6 and E=12 Then Goto 1100
+1002 IF F=1 and A=6 and B=3 and C=2 and D=10 and E=12 Then Goto 1100
+1003 IF F=1 and A=6 and B=3 and C=3 and D=2 and E=12 Then Goto 1100
+1004 IF F=1 and A=6 and B=3 and C=3 and D=6 and E=12 Then Goto 1100
+1005 IF F=1 and A=6 and B=3 and C=3 and D=10 and E=12 Then Goto 1100
+1006 IF F=1 and A=6 and B=3 and C=10 and D=2 and E=12 Then Goto 1100
+1007 IF F=1 and A=6 and B=3 and C=10 and D=6 and E=12 Then Goto 1100
+1008 IF F=1 and A=6 and B=3 and C=10 and D=10 and E=12 Then Goto 1100
+
+1010 IF F=5 and A=6 and B=3 and C=2 and D=2 and E=12 Then Goto 1100
+1011 IF F=5 and A=6 and B=3 and C=2 and D=6 and E=12 Then Goto 1100
+1012 IF F=5 and A=6 and B=3 and C=2 and D=10 and E=12 Then Goto 1100
+1013 IF F=5 and A=6 and B=3 and C=3 and D=2 and E=12 Then Goto 1100
+1014 IF F=5 and A=6 and B=3 and C=3 and D=6 and E=12 Then Goto 1100
+1015 IF F=5 and A=6 and B=3 and C=3 and D=10 and E=12 Then Goto 1100
+1016 IF F=5 and A=6 and B=3 and C=10 and D=2 and E=12 Then Goto 1100
+1017 IF F=5 and A=6 and B=3 and C=10 and D=6 and E=12 Then Goto 1100
+1018 IF F=5 and A=6 and B=3 and C=10 and D=10 and E=12 Then Goto 1100
+
+1090 GOTO 200
+
+1100 Sound 1,300:Sound 1,250:Sound 1,200:Sound 1,150:Sound 1,100
+1110 Sound 1,50:Sound 1,300:Sound 1,250:Sound 1,200:Sound 1,150:Sound 1,100:Sound 1,50
+1120 For i=1 to 1000:Next i
+1130 If peek(&7000)=1 then GOTO 1300
+1140 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24:PAPER 0:Poke &7000,1
+1150 PEN 3:PRINT:PRINT"Incroyable !"
+1160 PEN 2:PRINT:PRINT"Vous venez de prouver que votre":PRINT"niveau en calcul mental depasse celui":PRINT"d'un eleve de CP moyen."
+1170 PEN 1:PRINT:PRINT"En recompense, le sol s'ouvre dans":PRINT"un grondement mystérieux..."
+1180 PEN 3:PRINT:PRINT"Et, surprise, une clef en forme":PRINT"d'Ankh apparait !"
+1190 PEN 2:PRINT:PRINT"Vous la ramassez, fier comme si vous":PRINT"veniez d'inventer les mathematiques.":PEN 1:PRINT:PRINT"Bravo, Einstein du desert !""
+1195 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+1197 POKE &7000,1:GOTO 60
+
+1300 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24:PAPER 0
+1310 PEN 3:PRINT:PRINT"Bravo..."
+1320 PEN 2:PRINT:PRINT"Encore une fois, vous avez resolu":PRINT"la meme enigme..."
+1330 PEN 1:PRINT:PRINT"         Quelle performance !"
+1340 PEN 3:PRINT:PRINT"Vous devez adorer reviser vos tables":PRINT"d'addition, hein ?"
+1350 PEN 2:PRINT:PRINT"Bon, on ne va pas se mentir :":PRINT"Ca ne sert a rien puisque vous avez":PRINT"deja recupere la clef mais si ca":PRINT"vous rend heureux, c'est tant mieux !"
+1360 PEN 1:PRINT:PRINT"Continuez, champion du calcul mental !"
+1370 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+1380 GOTO 60   
+
+1400 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24:PAPER 0
+1410 IF PEEK(&7000)=1 THEN GOTO 1500
+1420 PEN 3:PRINT:PRINT"Les anciens egyptiens avaient la":PRINT"reputation d'etre de fins":PRINT"mathematiciens..."
+1430 PEN 2:PRINT:PRINT"Pourtant, en voyant cette operation,":PRINT"vous vous dites qu'ils avaient":PRINT"peut-etre seche quelques cours."
+1440 PEN 1:PRINT:PRINT"    Grave dans la pierre : 6+1=12."
+1450 PEN 3:PRINT:PRINT"Hum... soit ils ont invente un systeme":PRINT"numerique que personne n'a jamais":PRINT"decouvert, soit quelqu'un s'est plante":PRINT"severe."
+1460 PEN 2:PRINT:PRINT"Sous l'operation, six boutons attendent":PRINT"vos doigts curieux."
+1470 PEN 3:PRINT:PRINT"Vous voila face a une enigme qui":PRINT"qui demandera autant de reflexion":PRINT"que de souvenirs de CP !"
+1480 LOCATE 15,25:INPUT" ENTER  ",en$
+1490 Goto 60
+
+1500 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24:PAPER 0
+1510 PEN 3:PRINT:PRINT"Vous contemplez fierement le mur :"
+1520 PEN 1:PRINT:PRINT"                5+7=12."
+1530 PEN 2:PRINT:PRINT"Une simple equation, mais une veritable":PRINT"oeuvre d'art a vos yeux."
+1540 PEN 3:PRINT:PRINT"C'est beau comme un lever de soleil":PRINT"sur un boulier."
+1550 PEN 2:PRINT:PRINT"Vous ne touchez a rien, evidemment,":PRINT"de peur que votre chef-d'oeuvre":PRINT"repasse en mode erreur."
+1560 PEN 1:PRINT:PRINT"Oui, vraiment, quelle harmonie…"
+1570 PEN 3:PRINT:PRINT"Vous pourriez presque encadrer ce mur":PRINT"et le vendre a un musee des":PRINT"mathematiques !"
+1580 LOCATE 15,25:INPUT" ENTER  ",en$
+1590 Goto 60
+
+1600 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24:PAPER 0
+1610 PEN 3:PRINT:PRINT"Vous vous lancez dans un frottage":PRINT"frenetique, digne d'un concours de":PRINT"menage olympique."
+1620 PEN 2:PRINT:PRINT"La poussiere vole, vos bras brulent,":PRINT"et pendant un instant, vous vous":PRINT"sentez presque utile."
+1630 PEN 1:PRINT:PRINT"Mais non..."
+1640 PEN 3:PRINT:PRINT"C'est toujours le meme vieux mur,":PRINT"aussi hermetique qu'un coffre-fort."
+1650 PEN 2:PRINT:PRINT"Frotter comme un forcene n'effacera":PRINT"pas l'addition... ce n'est pas":PRINT"un restaurant ici, et le serveur":PRINT"ne viendra pas !"
+1660 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+1670 Goto 60

@@ -1,0 +1,74 @@
+10 ' PYRAMID7
+20 MODE 1:BORDER 0:PAPER 0
+30 FOR i=0 TO 3:INK i,0:NEXT i
+40 MEMORY &3FFF
+50 LOAD"Pyramid7.cmp"
+60 FOR i=0 TO 3:INK i,0:NEXT i
+70 POKE &A634,&C8:POKE &A635,0:POKE &A636,0:CALL &A60B
+80 POKE &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+100 WINDOW #1,25,36,4,19
+110 INK 0,0:INK 1,3:INK 2,15:INK 3,24
+120 PEN #1,3:PRINT #1:PRINT #1,"Une salle":PRINT #1,"vide,":PRINT #1,"gardienne":PRINT #1,"d'un vase":PRINT #1,"muet, d'ou"
+130 PRINT #1,"s'elance":PRINT #1,"une echelle":PRINT #1,"vers un":PRINT #1,"gouffre":PRINT #1,"d'ombre au":PRINT #1,"plafond." 
+140 LOCATE 13,20:PEN 2:PRINT"QUE FAITES-VOUS ?"
+150 PEN 3:LOCATE 4,21:PRINT "1-OUEST      2-EST      3-Examiner"
+160 PEN 2:LOCATE 4,22:PRINT "4-Monter a l'echelle"
+170 PEN 3:LOCATE 4,23:PRINT "5-Fouiller le vase    6-Se reposer"
+180 PEN 2:LOCATE 4,24:PRINT "7-Passer sous l'echelle"
+200 k$=INKEY$
+210 IF k$="1"THEN RUN"Pyramid6.bas"
+220 IF k$="2"THEN RUN"Pyramid8.bas"
+230 IF k$="3"THEN GOTO 300
+240 IF k$="4"THEN GOTO 400
+250 IF k$="5"THEN GOTO 500
+260 IF k$="6"THEN GOTO 600
+270 IF k$="7"THEN GOTO 700
+280 IF k$<"1"OR k$>"7" THEN GOTO 200
+300 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+310 PEN 3:PRINT:PRINT"Vous regardez autour de vous :"
+320 PEN 2:PRINT:PRINT"Une salle vide, un vase solitaire et une":LOCATE 1,5:PRINT"echelle qui grimpe vers un trou noir."
+330 PEN 1:PRINT:PRINT"Si c'est une enigme, elle est":PRINT"sponsorisee par l'ennui..."
+340 PEN 3:PRINT:PRINT"Le vase semble vous dire :":PEN 1:PRINT:PRINT CHR$(34);"Allez, juste un petit coup d'oeil...":PRINT"c'est bon pour ton karma.";CHR$(34)
+350 PEN 3:PRINT:PRINT"Quant au trou, il se contente de":PRINT"rester noir, silencieux et profondement":PRINT"condescendant, comme si votre curiosite":PRINT"l'amusait infiniment."
+360 PEN 2:PRINT:PRINT"Vous commencez a douter que cette piece":PRINT"ait le moindre interet..."
+370 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+380 GOTO 60
+400 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+410 PEN 3:PRINT"Vous attrapez l'echelle avec une":PRINT"mefiance toute legitime :"
+420 PEN 2:PRINT:PRINT"Ce vieux bois semble avoir connu plus":PRINT"de siecles que votre ex-belle-mere."
+430 PEN 1:PRINT:PRINT"          Pourtant, miracle :"
+440 PEN 3:PRINT:PRINT"Elle ne bronche pas, meme quand vous":PRINT"y mettez tout votre poids... et celui":PRINT"du kebab XXL salade-tomate-oignon que":PRINT"vous avez englouti avant de partir":PRINT"a l'aventure"
+450 PEN 2:PRINT:PRINT"Pas de craquement, pas d'effondrement,":PRINT"juste une ascension digne des meilleures":LOCATE 1,17:PRINT"effectuees par le tyrolien du Juste":PRINT"Prix !"
+460 PEN 1:PRINT:PRINT"Vous atteignez le sommet, pret a":PRINT"decouvrir ce qui se cache derriere ce":PRINT"trou mysterieux..."
+470 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+480 RUN"PyramidB.bas"
+500 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+510 PEN 3:PRINT"Vous vous approchez du vase, qui s'avere":LOCATE 1,2:PRINT"etre... un vase canope !"
+520 PEN 2:PRINT:PRINT"Etrange qu'il soit seul... ou sont ses":PRINT"freres ?"
+530 PEN 3:PRINT:PRINT"Avec un melange de curiosite et":PRINT"d'ecoeurement, vous plongez la main a":PRINT"l'interieur, pret a rencontrer des":PRINT"visceres embaumes de Pharaon."
+540 PEN 1:PRINT:PRINT"Et en effet, il y a des restes...":PRINT"Mais pas ceux que vous imaginiez :"
+550 PEN 2:PRINT:PRINT"Des debris de vieux circuits imprimes !"
+560 PRINT"Des composants, des cartes brulees,":PRINT"Comme si R2D2 avait vide son sac a":PRINT"puces ici."
+570 PEN 3:PRINT:PRINT"A ce stade, soit les pharaons avaient un":LOCATE 1,21:PRINT"cote geek insoupconne, soit vous venez":PRINT"de trouver les restes de la premiere":PRINT"momie en version numerique !"
+580 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+590 GOTO 60
+600 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+610 PEN 3:PRINT:PRINT"Vous vous asseyez sur le dallage de":PRINT"pierre, histoire de souffler un peu."
+620 PEN 1:PRINT:PRINT"  Le sol est froid... glacial, meme."
+630 PEN 2:PRINT:PRINT"Si froid que votre arriere-train envoie":PRINT"un SOS directement a votre cerveau, vous":LOCATE 1,9:PRINT"faisant redresser la tete d'un coup sec."
+640 PEN 3:LOCATE 1,11:PRINT"Et la, vous voyez une lueur qui":PRINT"s'echappe du trou dans le plafond,":PRINT"accompagnee d'un leger bourdonnement,":LOCATE 1,14:PRINT"ou semblent se glisser des notes de":PRINT"musique sourdes, a peine audibles,"
+650 PRINT"comme un air que la pyramide elle-meme":PRINT"fredonnerait pour vous attirer plus":PRINT"haut..."
+660 PEN 1:PRINT:PRINT"Bonne nouvelle ? Ou le teaser officiel":PRINT"de votre prochain malheur ?"
+670 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+680 GOTO 60
+700 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+710 PEN 3:PRINT"Vous decidez de passer sous l'echelle."
+720 PEN 1:PRINT:PRINT"Bravo ! Un acte de courage...":PRINT"Ou de pure provocation envers les lois":PRINT"de la superstition !"
+730 PEN 2:PRINT:PRINT"Vous ne voulez pas aussi chercher un":PRINT"miroir a briser, renverser du sel ou":PRINT"croiser un chat noir pendant que vous y":PRINT"etes ?"
+740 PEN 3:PRINT:PRINT"Quoi qu'il en soit, au milieu de votre":PRINT"numero de bravoure, vous remarquez une":PRINT"inscription gravee sur un barreau :"
+750 PEN 1:LOCATE 1,16:PRINT "          ";CHR$(34);"I Want to believe"CHR$(34)
+760 PEN 3:PRINT:PRINT"Serieusement ? Une phrase en anglais,":PRINT"ici, sur une echelle en plein coeur":PRINT"d'une pyramide ?!?"
+770 PEN 2:PRINT:PRINT"A moins qu'un certain agent du FBI ait":PRINT"fait un stage en Egypte..."
+780 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+790 GOTO 60

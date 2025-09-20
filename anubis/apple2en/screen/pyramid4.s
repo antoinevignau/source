@@ -1,0 +1,283 @@
+*
+* Le secret d'Anubis
+*
+* (c) 2025, Eric Cubizolle (TITAN)
+* (c) 2025, Brutal Deluxe Software
+*
+
+	ext	PYRAMID4_str100
+	ext	PYRAMID4_str200
+	ext	PYRAMID4_str1100
+	ext	PYRAMID4_str1300
+	ext	PYRAMID4_str1400
+	ext	PYRAMID4_str1500
+	ext	PYRAMID4_str1600
+
+PYRAMID4	@LOAD	#pPYRAMID4
+
+	lda	PEEK_7006
+	cmp	#FALSE
+	beq	PYRAMID4_25
+	cmp	#TRUE
+	beq	PYRAMID4_30
+
+PYRAMID4_25	lda	#6
+	sta	VAR_A2
+	lda	#7
+	sta	VAR_B2
+	lda	#3
+	sta	VAR_C2
+	lda	#0
+	sta	VAR_D2
+	lda	#4
+	sta	VAR_E2
+	lda	#1
+	sta	VAR_F2
+	bra	PYRAMID4_60
+	
+PYRAMID4_30	lda	#6
+	sta	VAR_A2
+	lda	#3
+	sta	VAR_B2
+	lda	#2
+	sta	VAR_C2
+	lda	#2
+	sta	VAR_D2
+	lda	#12
+	sta	VAR_E2
+	lda	#1
+	sta	VAR_F2
+
+PYRAMID4_60	@MODE	#1
+	@SHOWPIC
+
+*	@PEN	#0;#3*3
+*	@PAPER	#0;#2*3
+	@COUT144	#9;#6;VAR_A2
+	@COUT144	#9;#7;VAR_B2
+	@COUT144	#9;#8;VAR_C2
+	@COUT144	#12;#6;VAR_D2
+	@COUT144	#13;#6;VAR_E2
+	@COUT144	#13;#8;VAR_F2
+
+	@WINDOW	#1;#theWINDOW1
+	@PRINT	#1;PYRAMID4_str100
+	@PRINT	#0;PYRAMID4_str200
+
+PYRAMID4_LOOP	@INKEY
+	@DEBUG
+	cmp	#'4'
+	bne	PYRAMID4_120
+	inc	VAR_A2
+	@SOUND	#1;#100;#0
+	jmp	PYRAMID4_300
+PYRAMID4_120	cmp	#'7'
+	bne	PYRAMID4_130
+	inc	VAR_B2
+	@SOUND	#1;#120;#0
+	jmp	PYRAMID4_400
+PYRAMID4_130	cmp	#'8'
+	bne	PYRAMID4_140
+	inc	VAR_C2
+	@SOUND	#1;#140;#0
+	jmp	PYRAMID4_500
+PYRAMID4_140	cmp	#'5'
+	bne	PYRAMID4_150
+	inc	VAR_D2
+	@SOUND	#1;#160;#0
+	jmp	PYRAMID4_600
+PYRAMID4_150	cmp	#'9'
+	bne	PYRAMID4_160
+	inc	VAR_E2
+	@SOUND	#1;#180;#0
+	jmp	PYRAMID4_700
+PYRAMID4_160	cmp	#'6'
+	bne	PYRAMID4_170
+	inc	VAR_F2
+	@SOUND	#1;#220;#0
+	jmp	PYRAMID4_800
+PYRAMID4_170	cmp	#'1'
+	bne	PYRAMID4_180
+	jmp	PYRAMID5
+PYRAMID4_180	cmp	#'2'
+	bne	PYRAMID4_190
+	jmp	PYRAMID4_1400
+PYRAMID4_190	cmp	#'3'
+	bne	PYRAMID4_195
+	jmp	PYRAMID4_1600
+PYRAMID4_195	jmp	PYRAMID4_LOOP
+
+*---
+
+PYRAMID4_300	lda	VAR_A2
+	cmp	#15+1
+	bcc	PYRAMID4_310
+	lda	#1
+	sta	VAR_A2
+
+PYRAMID4_310	@COUT144	#9;#6;VAR_A2
+	jmp	PYRAMID4_1000
+
+*---
+
+PYRAMID4_400	lda	VAR_B2
+	cmp	#15+1
+	bcc	PYRAMID4_410
+	lda	#1
+	sta	VAR_B2
+
+PYRAMID4_410	@COUT144	#9;#7;VAR_B2
+	jmp	PYRAMID4_1000
+
+*---
+
+PYRAMID4_500	lda	VAR_C2
+	cmp	#15+1
+	bcc	PYRAMID4_510
+	lda	#1
+	sta	VAR_C2
+
+PYRAMID4_510	@COUT144	#9;#8;VAR_C2
+	jmp	PYRAMID4_1000
+
+*---
+
+PYRAMID4_600	lda	VAR_D2
+	cmp	#15+1
+	bcc	PYRAMID4_610
+	lda	#1
+	sta	VAR_D2
+
+PYRAMID4_610	@COUT144	#12;#6;VAR_D2
+	jmp	PYRAMID4_1000
+
+*---
+
+PYRAMID4_700	lda	VAR_E2
+	cmp	#15+1
+	bcc	PYRAMID4_710
+	lda	#1
+	sta	VAR_E2
+
+PYRAMID4_710	@COUT144	#13;#6;VAR_E2
+	jmp	PYRAMID4_1000
+
+*---
+
+PYRAMID4_800	lda	VAR_F2
+	cmp	#15+1
+	bcc	PYRAMID4_810
+	lda	#1
+	sta	VAR_F2
+
+PYRAMID4_810	@COUT144	#13;#8;VAR_F2
+	jmp	PYRAMID4_1000	; ahem
+
+*---
+
+PYRAMID4_1000	ldx	#0
+PYRAMID4_1010	lda	PYRAMID4_TABLE,x
+	bmi	PYRAMID4_1090
+
+	cmp	VAR_A2
+	bne	PYRAMID4_1020
+	lda	PYRAMID4_TABLE+2,x
+	cmp	VAR_B2
+	bne	PYRAMID4_1020
+	lda	PYRAMID4_TABLE+4,x
+	cmp	VAR_C2
+	bne	PYRAMID4_1020
+	lda	PYRAMID4_TABLE+6,x
+	cmp	VAR_D2
+	bne	PYRAMID4_1020
+	lda	PYRAMID4_TABLE+8,x
+	cmp	VAR_E2
+	bne	PYRAMID4_1020
+	lda	PYRAMID4_TABLE+10,x
+	cmp	VAR_F2
+	beq	PYRAMID4_1100
+
+PYRAMID4_1020	txa
+	clc
+	adc	#6*2
+	tax
+	bra	PYRAMID4_1010
+PYRAMID4_1090	jmp	PYRAMID4_LOOP
+
+*---
+
+PYRAMID4_1100	@SOUND	#1;#300;#0
+	@SOUND	#1;#250;#0
+	@SOUND	#1;#200;#0
+	@SOUND	#1;#150;#0
+	@SOUND	#1;#100;#0
+	@SOUND	#1;#50;#0
+	@SOUND	#1;#300;#0
+	@SOUND	#1;#250;#0
+	@SOUND	#1;#200;#0
+	@SOUND	#1;#150;#0
+	@SOUND	#1;#100;#0
+	@SOUND	#1;#50;#0
+	@WAIT	#100
+	
+	lda	PEEK_7000
+	cmp	#TRUE
+	beq	PYRAMID4_1300
+
+	@PRINT	#0;PYRAMID4_str1100
+	@INKEY
+	
+	lda	#TRUE
+	sta	PEEK_7000
+	jmp	PYRAMID4_60
+
+PYRAMID4_1300	@PRINT	#0;PYRAMID4_str1300
+	@INKEY
+	jmp	PYRAMID4_60
+
+PYRAMID4_1400	lda	PEEK_7000
+	cmp	#TRUE
+	beq	PYRAMID4_1500
+	
+	@PRINT	#0;PYRAMID4_str1400
+	@INKEY
+	jmp	PYRAMID4_60
+
+PYRAMID4_1500	@PRINT	#0;PYRAMID4_str1500
+	@INKEY
+	jmp	PYRAMID4_60
+
+PYRAMID4_1600	@PRINT	#0;PYRAMID4_str1600
+	@INKEY
+	jmp	PYRAMID4_60
+	
+*---
+
+pPYRAMID4	strl	'@/data/pyramid4.lz4'
+
+VAR_A2	ds	2
+VAR_B2	ds	2
+VAR_C2	ds	2
+VAR_D2	ds	2
+VAR_E2	ds	2
+VAR_F2	ds	2
+
+PYRAMID4_TABLE	dw	6,3,2 ,2 ,12,1
+	dw	6,3,2 ,6 ,12,1
+	dw	6,3,2 ,10,12,1
+	dw	6,3,3 ,2 ,12,1
+	dw	6,3,3 ,6 ,12,1
+	dw	6,3,3 ,10,12,1
+	dw	6,3,10,2 ,12,1
+	dw	6,3,10,6 ,12,1
+	dw	6,3,10,10,12,1
+	dw	6,3,2 ,2 ,12,5
+	dw	6,3,2 ,6 ,12,5
+	dw	6,3,2 ,10,12,5
+	dw	6,3,3 ,2 ,12,5
+	dw	6,3,3 ,6 ,12,5
+	dw	6,3,3 ,10,12,5
+	dw	6,3,10,2 ,12,5
+	dw	6,3,10,6 ,12,5
+	dw	6,3,10,10,12,5
+	dw	-1

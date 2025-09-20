@@ -1,0 +1,113 @@
+10 ' DESERT 3
+20 MODE 1:BORDER 0
+30 FOR i=0 TO 3:INK i,0:NEXT i
+40 MEMORY &3FFF
+50 LOAD"Desert3.cmp"
+60 FOR i=0 TO 3:INK i,0:NEXT i
+70 POKE &A634,&C8:POKE &A635,0:POKE &A636,0:CALL &A60B
+80 POKE &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+100 WINDOW #1,25,36,4,19
+110 INK 0,0:INK 1,3:INK 2,15:INK 3,24
+120 PEN #1,3:PRINT #1:PRINT #1,"Une oasis":PRINT #1,"surgit":PRINT #1,"comme un":PRINT #1,"mirage.":PRINT #1:PRINT #1,"Ici, le"
+125 PRINT #1,"desert":PRINT #1,"s'incline":PRINT #1,"et offre":PRINT #1,"un souffle":PRINT #1,"de vie."
+
+130 LOCATE 13,20:PEN 2:PRINT"QUE FAITES-VOUS ?"
+140 PEN 3:LOCATE 4,21:PRINT "1-NORD    2-SUD    3-OUEST   4-EST"
+150 PEN 2:LOCATE 4,22:PRINT "5-Examiner  6-Plonger dans l'oasis"
+160 PEN 3:LOCATE 4,23:PRINT "7-Fouiller la vegetation"
+170 PEN 2:LOCATE 4,24:PRINT "8-Puiser de l'eau dans l'oasis"
+
+200 k$=INKEY$
+210 IF k$="1"THEN GOTO 300
+220 IF k$="2"THEN GOTO 400
+230 IF k$="3"THEN RUN"Desert4.bas"
+240 IF k$="4"THEN RUN"Desert2.bas"
+250 IF k$="5"THEN GOTO 500
+255 IF k$="6" and Peek(&7004)=0 THEN GOTO 600
+260 IF k$="6" and Peek(&7004)=1 THEN GOTO 700
+270 IF k$="7"THEN GOTO 800
+280 IF k$="8" and Peek(&7005)=0 THEN GOTO 900
+285 IF k$="8" and Peek(&7005)=1 THEN GOTO 1000
+290 IF k$<"1"OR k$>"8" THEN GOTO 200
+
+300 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+310 PEN 3:PRINT:PRINT"Vous allez au NORD."
+320 PEN 2:PRINT:PRINT"Tout a coup les dunes semblent":PRINT"inexplicablement se lever..."
+330 PEN 1:PRINT:PRINT"Hallucination ?"
+340 PEN 3:PRINT:PRINT"Non, vous etes simplement en train":PRINT"de vous enfoncer petit a petit dans":Print"les sables mouvants..."
+350 PEN 1:Print:Print"Impossible d'en sortir."
+360 PEN 2:Print:Print"Votre derniere pensee est celle":Print"d'une scene de film avec Pierre Richard":Print"et Gerard Depardieu..."
+370 Pen 1:Print:Print"Game Over !"
+380 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+390 RUN"Mort.bas"
+
+400 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+410 PEN 3:PRINT:PRINT"Vous filez vers le SUD, avec la":PRINT"fougue d'un explorateur...":Print:PRINT"Et l'intelligence d'un pigeon qui":PRINT"fonce dans une vitre."
+420 PEN 1:PRINT:PRINT"En deux pas, bravo :":PRINT"vous avez trouve le parc d'attractions":PRINT"officiel des sables mouvants !"
+430 PEN 2:PRINT:PRINT"Ticket unique, sortie definitive."
+440 PEN 3:PRINT:PRINT"Vous agitez les bras, mais ca ne":PRINT"change rien : au mieux, vous ressemblez":PRINT"a un nageur en compote de sable."
+450 PEN 1:PRINT:PRINT"Votre derniere bulle d'air s'echappe...":PRINT"et avec elle, votre dignite."
+460 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+470 RUN"Mort.bas"
+
+500 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+510 PEN 3:PRINT:PRint"Une oasis !"
+520 Pen 1:Print:Print"Miracle au milieu de ce grille-pain":Print"geant qu'on appelle le desert."
+530 Pen 3:Print:Print"Quelques palmiers, histoire de faire":Print"joli sur la carte postale, un peu de":Print"verdure qui se bat en duel, et autour":Print"les dunes, toujours les dunes..."
+540 PEN 2:PRINT:PRINT"Comme un public de sable qui vous":PRint"observe transpirer."
+550 Pen 3:PRint:Print"Au centre, une eau cristalline qui vous":PRINT"fait de l'oeil, genre :"
+560 PEN 2:PRINT:Print CHR$(34);"Allez, viens te baigner... qu'est ce":PRINT"qui pourrait mal se passer ?";CHR$(34)
+570 Pen 1:PRINT:PRINT"(Spoiler : toujours TOUT !!!)"
+580 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+590 GOTO 60
+
+600 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+610 PEn 3:PRint:Print"Ni une ni deux, vous plongez dans l'eau":Print"cristalline comme si vous etiez Tarzan":Print"en vacances."
+620 PEn 1:LOCATE 16,6:Print"SPLONK !"
+630 Pen 2:Print:PRint"Votre crane percute un truc metallique":PRINT"planque sous la surface."
+640 Pen 3:Print:Print"Bonne nouvelle : ce n'etait pas un":PRINT"sous-marin allemand, juste... une pelle.":Locate 31,12:Pen 1:Print"une pelle"
+650 PEN 2:LOCATE 1,14:PRINT"Vous la sortez de l'eau, fier comme":PRINT"si vous aviez peche Excalibur."
+660 PEN 1:PRINT:PRINT"Et avouez-le : une pelle dans le desert,":Locate 1,18:PRINT"ca fait tout de suite aventurier pro":PRINT"(ou fossoyeur du dimanche)."
+670 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+680 POKE &7004,1:GOTO 60
+
+700 CLS:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+710 Pen 3:Print:Print"Le coup de pelle en pleine tronche":Print"ne vous a pas suffit la premiere fois ?"
+720 Pen 2:Print:Print"Il faut que vous plongiez a nouveau":Print"dans cet oasis, c'est plus fort que":PRINT"vous, hein ?"
+730 PEn 1:Print:Print" Vous voici ENCORE au milieu de l'eau."
+740 Pen 3:Print:Print"Vous remuez, grattez, fouillez...":Print"et tout ce que vous reussissez a faire,":Print"c'est buller comme une carpe constipee."
+750 Pen 1:Print:Print"Resultat ?":Pen 2:PRINT:PRINT"Rien. Pas un tresor, pas une pelle":PRINT"magique numero 2, meme pas une vieille":PRINT"tong abandonnee."
+760 PEN 1:PRINT:PRINT"Allez, on sort et on fait semblant":PRINT"d'etre mature, deux minutes."
+770 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+780 Goto 60
+
+800 CLS:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+810 Pen 3:Print:PRINT"Vous decidez de fouiller la vegetation,":Print"convaincu que l'aventure vous sourit."
+820 Pen 2:Print:Print"Vous ecartez les hautes herbes en":PRINT"quete d'un tresor cache."
+830 PEN 1:PRINT:Print"Bravo ! Vous venez de trouver...":Print"un magnifique Datura, une plante":Print"toxique que l'on surnomme ici":PRINT:Print "          ";Chr$(34);"Herbe du Diable";Chr$(34)
+840 Locate 15,9:Pen 3:Print"Datura":Locate 1,14:PRint"Tout un programme !"
+850 PEN 2:PRINT:Print"En moins de deux minutes, vous voyez":Print"trois soleils et un chameau violet."
+860 PEN 1:PRint:PRint"Vous riez, vous pleurez, vous tombez,":PRint"vous mourez."
+870 Pen 2:Print:Print"Fin de l'exploration..."
+880 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+890 RUN"Mort.bas"
+
+900 CLS:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+910 Pen 3:Print:PRINT"Vous videz soigneusement le lait de":PRINT"votre jarre sur le sable."
+920 PEN 2:PRINT:PRINT"Le desert vous remercie :":PRINT"il n'attendait que ca pour ouvrir une":PRINT"fromagerie locale..."
+930 PEN 1:PRINT:PRINT"Puis, tel un sommelier en toc, vous":PRINT"remplissez votre precieuse jarre d'eau":PRINT"fraiche et cristalline de l'oasis."
+940 PEN 3:PRINT:PRINT " ";CHR$(34);"Une eau rare,":PRINT"    prete a etancher votre soif...":PRINT"                         d'aventure !";CHR$(34):Pen 1:Locate 28,15:Print"aventure"
+950 PEN 2:PRINT:PRINT:PRINT"Avouez, ca claque, hein ?":PRINT"Normal, c'est de moi."
+960 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+970 POKE &7005,1:GOTO 60
+
+1000 CLS:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+1010 Pen 3:Print:PRINT"Ok..."
+1020 PEN 2:PRINT:PRINT"Vous videz l'eau que vous aviez deja":PRINT"recueillie, juste pour remplir":PRINT"- A NOUVEAU - votre jarre.":Pen 3:Locate 3,6:Print"A NOUVEAU"
+1030 PEN 1:PRINT:PRINT"Heu...":PRINT"Serieusement, c'est quoi le projet ?":PRINT"Assecher toute l'oasis a vous tout":PRINT"seul ?"
+1040 PEN 3:PRINT:PRINT"Battre un record de gaspillage ou quoi ?"
+1050 PEN 2:PRINT:PRINT"Quoi qu'il en soit, vous avez":PRINT"- A NOUVEAU - de l'eau fraiche...":Pen 3:Locate 3,17:Print"A NOUVEAU"
+1060 PEN 1:PRINT:PRINT"Votre jarre est pleine, contrairement":PRINT"a votre sens de la reflexion qui,":PRINT"lui, est totalement vide."
+1070 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+1080 GOTO 60 

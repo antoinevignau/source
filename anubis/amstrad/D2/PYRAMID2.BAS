@@ -1,0 +1,108 @@
+10 ' PYRAMID2
+20 MODE 1:BORDER 0:C=0:NBC=PEEK(&7000)+PEEK(&7001)+PEEK(&7002)
+30 FOR i=0 TO 3:INK i,0:NEXT i
+40 MEMORY &3FFF
+50 LOAD"Pyramid2.cmp"
+60 FOR i=0 TO 3:INK i,0:NEXT i
+70 POKE &A634,&C8:POKE &A635,0:POKE &A636,0:CALL &A60B
+80 POKE &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+100 WINDOW #1,25,36,4,19
+110 INK 0,0:INK 1,3:INK 2,15:INK 3,24
+120 PEN #1,3:PRINT #1:PRINT #1,"Un hall":PRINT #1,"immobile":PRINT #1,"ou le temps":PRINT #1,"s'est":PRINT #1,"suspendu"
+130 PRINT #1,"entre":PRINT #1,"la pierre":PRINT #1,"et l'ombre":PRINT #1,"des":PRINT #1,"hauteurs."         
+140 LOCATE 13,20:PEN 2:PRINT"QUE FAITES-VOUS ?"
+150 PEN 3:LOCATE 4,21:PRINT "1-Examiner   2-Crier    3-Fouiller"
+160 PEN 2:LOCATE 4,22:PRINT "4-Monter les escaliers au NORD"
+170 PEN 3:LOCATE 4,23:PRINT "5-Repartir dans le desert au SUD"
+180 PEN 2:LOCATE 4,24:PRINT "6-Ouvrir la porte a l'OUEST"
+200 k$=INKEY$
+210 IF k$="1"THEN GOTO 300
+220 IF k$="2" AND C=0 THEN GOTO 400
+225 IF K$="2" AND C=1 THEN GOTO 1200
+230 IF k$="3"THEN GOTO 500
+240 IF k$="4"THEN RUN"Pyramid6.bas"
+250 IF k$="5"THEN GOTO 600
+260 IF k$="6" AND PEEK(&7004)=0 THEN GOTO 700
+270 IF k$="6" AND PEEK(&7004)=1 THEN GOTO 1000
+280 IF k$<"1"OR k$>"6" THEN GOTO 200
+300 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+310 PEN 3:PRINT:PRINT"Vos yeux balaient la piece."
+320 PEN 2:PRINT:PRINT"Au sol, des dalles antiques temoins":PRINT"d'un passe glorieux."
+330 PEN 3:PRINT:PRINT"A l'ouest, une porte qui semble presque":PRINT"moderne, comme si Ikea avait fait un":PRINT"partenariat avec les pharaons."
+340 PEN 1:PRINT:PRINT"L'anachronisme pique vos neurones."
+350 PEN 2:PRINT:PRINT"A droite, un escalier abrupt s'eleve,":PRINT"si raide qu'il semble vouloir tester":PRINT"votre assurance vie."
+360 PEN 1:PRINT:PRINT "L'ensemble respire le mystere,":PRINT"un melange d'histoire et de quelque":PRINT"chose... d'etrangement hors du temps."
+370 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+380 GOTO 60
+400 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+410 PEN 3:PRINT:PRINT"Vous criez si fort qu'on s'attend a":PRINT"voir tomber la poussiere du plafond..."
+420 PEN 2:PRINT:PRINT"Votre cri resonne dans la pyramide...":PRINT"Enfin, resonner est un bien grand mot."
+430 PEN 1:PRINT:PRINT"Disons qu'il meurt dans l'indifference":PRINT"totale des pierres millenaires."
+440 PEN 3:PRINT:PRINT"Mais au moins, vous avez libere toute":PRINT"la frustration accumulee depuis le":PRINT"debut de cette aventure !"
+450 PEN 2:PRINT:PRINT"N'hesite surtout pas a en remettre":PRINT"une couche, si hurler dans le vide":PRINT"est ta nouvelle passion."
+460 C=1:PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+470 GOTO 60
+500 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+510 PEN 3:PRINT:PRINT"Vous inspectez la piece avec la":PRINT"precision d'un controleur des impots":PRINT"en mission."
+520 PEN 2:PRINT:PRINT"Apres quelques minutes a ramper comme":PRINT"un scorpion, vous mettez la main sur":PRINT"des debris de poterie."
+530 PEN 1:PRINT:PRINT"Oui, des morceaux d'argile vieux de":PRINT"quelques millenaires."
+540 PEN 3:PRINT:PRINT"        Impressionnant, non ?"
+550 PEN 2:PRINT:PRINT"Vous vous demandez si c'est vraiment":PRINT"pour ca que TARIQ vous a envoye":PRINT"jusqu'ici, ou s'il avait juste envie":PRINT"de se debarrasser de vous pour le":PRINT"week-end..."
+560 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+570 GOTO 60
+600 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+610 PEN 3:PRINT:PRINT"Vous voulez faire demi-tour, retourner":PRINT"au desert de Qattara..."
+620 PEN 1:PRINT:PRINT"Mais la porte de la pyramide en a decide":LOCATE 1,6:PRINT"autrement :"
+630 PEN 3:PRINT:PRINT"Solide comme un rocher et plantee dans":PRINT"le sol avec ses tonnes de pierre,":PRINT"elle reste obstinement fermee."
+640 PEN 2:PRINT:PRINT"Ceci dit, avouez que ce serait dommage":PRINT"d'abandonner maintenant !"
+650 PEN 3:PRINT:PRINT"Et imaginez un peu la tete de TARIQ":PRINT"si vous laissiez tomber la mission":PRINT"qu'il vous a confiee."
+660 PEN 1:PRINT:PRINT"    Alors, hop hop hop, on avance !"
+670 PEN 2:PRINT:PRINT"L'aventure est maintenant devant vous !"
+680 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+690 GOTO 60
+700 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+710 PEN 3:PRINT"Vous avancez vers l'OUEST, esperant":PRINT"decouvrir ce que cache cette porte..."
+720 PEN 1:PRINT:PRINT"Mais vous vous heurtez a un obstacle":PRINT"des plus surprenants :"
+730 PEN 2:PRINT:PRINT"Entierement faite de metal, elle tranche":LOCATE 1,8:PRINT"avec le reste de la pyramide."
+740 PEN 3:PRINT:PRINT"Trois serrures en forme d'Ankh vous":PEN 1:LOCATE 1,10:PRINT"Trois":PEN 3:PRINT"narguent silencieusement."
+745 IF NBC>=1 AND NBC<3 THEN GOTO 800 '1ere fois mais plusieurs clefs
+748 IF NBC=3 THEN GOTO 900 '1ere fois mais 3 clefs
+750 PEN 2:PRINT:PRINT"A moins que vous ayez l'intention":PRINT"de scier le metal avec vos dents, mieux":PRINT"vaut esperer que les clefs necessaires"
+760 PRINT"se trouvent quelque part dans la":PRINT"pyramide pour revenir defier cette":PRINT"mysterieuse porte !"
+770 PEN 3:PRINT:PRINT"    Bonne chance dans votre quete !"
+780 LOCATE 15,25:INPUT" ENTER  ",en$
+790 POKE &7004,1:GOTO 60
+800 PEN 3:PRINT:PRINT"Helas, malgre toutes vos fouilles dans":PRINT"la pyramide, vous n'avez reussi a":PRINT"mettre la main que sur";NBC;"clef(s)."
+810 PEN 1:LOCATE 23,15:PRINT NBC
+820 PEN 2:PRINT:PRINT"Il vous faut donc poursuivre vos":PRINT"recherches, explorer plus en":PRINT"profondeur ou resoudre d'autres enigmes":PRINT"puis revenir pour enfin deverrouiller":PRINT"cette porte !"
+830 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+840 POKE &7004,1:GOTO 60
+900 PEN 3:PRINT:PRINT"Mais ce qui est cool, c'est qu'en":PRINT"resolvant toutes les enigmes de la":PRINT"pyramide, vous avez deja reussi a mettre":LOCATE 1,16:PRINT"la main sur ces trois precieuses clefs !"
+910 PEN 2:LOCATE 1,18:PRINT"Vous les inserez dans leurs serrures":PRINT"respectives... et, miracle, la porte":PRINT"metallique s'ouvre dans un grincement":PRINT"theatral..."
+920 PEN 1:PRINT:PRINT"   Vous en franchissez le seuil..."
+930 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+940 RUN"Pyramid3.bas"
+1000 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+1010 PEN 3:PRINT:PRINT"Vous vous dirigez de nouveau vers cette":PRINT"porte metallique qui reste stoique,":PRINT"silencieuse, et qui n'a aucune":PRINT"intention de s'ouvrir d'elle-meme..."
+1020 IF NBC=3 THEN GOTO 1100
+1030 PEN 2:PRINT:PRINT"Mais il va falloir jouer les":PRINT"explorateurs patients, fouiller chaque":PRINT"recoin et esperer trouver les":PRINT"mysterieuses clefs qui vous permettront":PRINT"enfin de la defier."
+1040 PEN 3:PRINT:PRINT"Car pour l'heure, vous ne disposez que":PRINT"de";NBC;"clef(s) sur les 3 necessaires."
+1050 PEN 1:LOCATE 3,14:PRINT NBC
+1060 PRINT:PRINT:PRINT"    Bonne chance dans votre quete !"
+1070 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+1080 GOTO 60
+1100 PEN 2:PRINT:PRINT"La bonne nouvelle, c'est qu'en":PRINT"resolvant toutes les enigmes de la":PRINT"pyramide, vous avez reussi a mettre":PRINT"la main sur ces trois precieuses clefs !"
+1110 PEN 3:LOCATE 1,12:PRINT"Vous les inserez dans leurs serrures":PRINT"respectives... et, miracle, la porte":PRINT"metallique s'ouvre dans un grincement":PRINT"theatral..."
+1120 PEN 1:PRINT:PRINT:PRINT"   Vous en franchissez le seuil..."
+1130 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+1140 RUN"Pyramid3.bas"
+1200 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+1210 PEN 3:PRINT:PRINT"   Vous inspirez un grand coup et..."
+1220 PEN 1:PRINT:PRINT:PRINT"    BWAAAAAAAH ! GAAAH ! HOUHOUHOU !"
+1230 PRINT:PRINT"                POUET !"
+1240 PEN 2:PRINT:PRINT"Oui, vous avez ajoute un ";CHR$(34);"POUET";CHR$(34);" pour":PRINT"l'originalite."
+1250 PEN 3:PRINT:PRINT:PRINT"En fait, on dirait un mix entre Tarzan":PRINT"et une chasse d'eau..."
+1260 PEN 1:PRINT:PRINT:PRINT"         Sinon, ca va mieux ?"
+1270 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+1280 GOTO 60

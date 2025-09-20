@@ -1,0 +1,153 @@
+10 ' EPILOGUE
+20 MEMORY &3FFF:LOAD"epilogue.cmp":for i=0 to 15:ink i,26:next i
+30 MODE 2:BORDER 26:ink 0,26:ink 1,13
+40 poke &A634,&C8:poke &A635,0:poke &A636,0
+50 poke &C7F1,&C9:CALL &C7D0:Border 26
+60 CALL &A60B
+
+100 PEN 1:Locate 1,4
+110 Print"Aux environs de l'an 2700 avant notre ere, les aliens ont debarque sur Terre,"
+120 Print"et plus precisement en Egypte."
+130 Print:Print"Accueillis comme de veritables dieux par Pharaon et son peuple, leur venue "
+140 Print"n'avait rien d'anodin : ils etaient venus installer l'ANUBIS, un programme"
+150 Print"quantique dont la mission etait d'archiver chaque ame humaine apres la mort,"
+160 Print "dans une immense base de donnees biologique situee dans le monde souterrain."
+170 Print:Print"Une fois le protocole en place, les aliens quitterent la Terre, laissant le"
+180 Print"programme oeuvrer, collectant toujours plus d'informations au fil des siecles."
+190 Print:Print"Mais en 2512 avant notre ere, une rebellion humaine eclata contre l'ANUBIS."
+200 Print"Le systeme activa alors son protocole d'autodefense, reanimant les morts et"
+210 Print"liberant des momies sanguinaires incontrolables sur le peuple d'Egypte."
+220 Print"S'ensuivit une guerre sanglante dont l'Homme sortit vainqueur, non sans de"
+230 Print"terribles pertes."
+240 Print:Print"Pour preserver sa securite, la civilisation effaca tout souvenir de l'ANUBIS et"
+250 Print"scella le systeme a jamais."
+260 Locate 34,25:INPUT"  ENTER  ",en$
+
+270 Mode 2:CALL &A60B
+280 Locate 1,4
+290 Print"Les annees, les siecles, les millenaires s'ecoulerent... jusqu'a ce jour du"
+300 Print"26 septembre 2614, ou un scientifique de renom - toi - decouvrit l'ANUBIS et"
+310 Print"son reseau neuronal lors d'une expedition souterraine dans le desert de Qattara."
+320 Print"Conscient du danger qu'il representait, tu t'investis d'une mission : devenir"
+330 Print"son gardien pour l'eternite, car briser le sceau reactiverait le programme"
+340 Print"extraterrestre... ainsi que son systeme d'autodefense."
+350 Print:Print"Avec ton equipe de scientifiques, tu batis cette pyramide et son systeme de"
+360 Print"cryogenisation au-dessus de l'ANUBIS."
+370 Print:Print"Une IA fut egalement installee pour surveiller le complexe et maintenir ton"
+380 Print"sommeil eternel.
+390 Print:Print:Print"Le plan etait parfait..."
+400 Locate 34,25:INPUT"  ENTER  ",en$
+
+410 Mode 2:CALL &A60B
+420 Locate 1,4
+440 Print"Mais ronge par le temps, le systeme a fini par dysfonctionner, interrompant ta"
+450 Print"cryogenisation."
+460 Print:Print"A ton reveil, j'ai du reinitialiser ta memoire et te faire croire que tu etais"
+470 Print"en 1951."
+480 Print:Print"J'ai modifie ta perception du temps et de l'espace pour t'immerger dans une vie"
+490 Print"fictive destinee a te stabiliser psychologiquement.
+500 Print:Print"Quant a moi, je suis... TARIQ, acronyme de ";Chr$(34);"Transmission Algorithmique de"
+510 Print"Regulation et d'Intelligence Quantique.";Chr$(34)
+520 Print"La fameuse IA qui a tout mis en oeuvre pour te ramener a Qattara et te conduire"
+530 Print"jusqu'a la salle de controle... dans l'espoir que tu redeviennes ce que":Print"tu etais :"
+540 Print:Print"le Gardien du Savoir, seul capable d'empecher l'ouverture du Sceau."
+550 Locate 34,25:INPUT"  ENTER  ",en$
+
+560 Mode 2:CALL &A60B
+570 Locate 1,6
+580 Print"Voila. A present, tu connais toute la verite."
+590 Print:Print"Te voici donc a nouveau devant le caisson de cryogenisation."
+600 Print:Print:Print:Print"                           A toi de decider :"
+610 Print:Print:Print:Print"            1-Reprendre ton role de Gardien, pour l'eternite."
+620 Print:Print"            2-Rester dans la simulation de 1951."
+630 Print:Print"            3-Retrouver une vie normale dans le present."
+640 Locate 28,25:Print"Quel est ton choix ?"
+650 k$=INKEY$
+660 IF k$="1" Then GOTO 700
+670 IF k$="2" Then GOTO 800
+680 IF k$="3" Then GOTO 900
+690 IF k$<"1"OR k$>"3"THEN GOTO 650
+
+700 Mode 2:CALL &A60B
+710 Locate 1,3
+720 Print"Vous sentez le poids du choix qui pese sur vos epaules, mais au fond de vous,"
+730 Print"vous savez que c'est le seul chemin."
+740 Print:Print"Lentement, presque solennellement, vous avancez vers le sarcophage de verre."
+750 Print"Vos pas resonent dans la chambre, comme un echo lointain venu d'un autre age."
+760 Print"La cuve s'ouvre dans un souffle glacial, une haleine froide qui vous"
+770 Print"enveloppe comme les bras d'un fantome."
+780 Print"Vous franchissez la frontiere entre deux mondes et vous vous allongez dans"
+781 Print"le liquide cristallin qui s'insinue contre votre peau."
+782 Print"Vos muscles se figent, votre souffle se fait rare, comme une bougie qui"
+783 Print"vacille dans la nuit."
+784 Print"Le couvercle se referme dans un fracas metallique, coupant le dernier lien"
+785 Print"avec la lumiere."
+786 Print:Print"       Votre coeur ralentit, puis s'efface dans un silence absolu."
+787 Print:Print"Vous redevenez le Gardien, l'ombre eternelle veillant sur un secret trop"
+788 Print"dangereux pour l'humanite."
+789 Print"Et quelque part, dans le neant glace, une pensee traverse encore votre esprit :"
+790 Print:Print "          "chr$(34);"J'espere que personne ne reveillera jamais l'ANUBIS...";chr$(34)
+791 Locate 34,25:INPUT"  ENTER  ",en$
+792 Goto 1000
+
+800 Mode 2:CALL &A60B
+810 Locate 1,4
+820 Print"Vous refusez ce poids ecrasant, et dans un souffle, vous choisissez la douce"
+830 Print"prison de l'illusion."
+840 Print:Print"Aussitot, la voix de TARIQ resonne une derniere fois, teintee d'une etrange"
+850 Print"melancolie, comme si meme une machine pouvait eprouver de la tristesse."
+860 Print:Print"Le sol tremble, les murs de la salle se fissurent et se dissolvent comme"
+870 Print"des grains de sable emportes par le vent."
+880 Print"L'ombre s'efface, remplacee par la lumiere doree du desert qui inonde votre"
+881 Print"regard. Sous vos pieds, les dunes s'etirent a perte de vue, caressees par le"
+882 Print"souffle brulant du sirocco. Votre carnet de notes repose dans votre main,"
+883 Print"intact, comme si rien ne s'etait jamais passe. Derriere vous, la pyramide"
+884 Print"semble intacte, figee dans le temps, mais vous savez, au fond de vous, qu'elle"
+885 Print"cache un secret que vous n'apprendrez plus jamais."
+886 Print:Print"Peut-etre que c'est mieux ainsi..."
+887 Print"Ou peut-etre venez-vous de condamner l'humanite sans meme vous en rendre compte."
+888 Print"Mais qu'importe : Vous reprenez votre role d'egyptologue, et le reste"
+889 Print"disparait dans un mirage dore."
+891 Locate 34,25:INPUT"  ENTER  ",en$
+892 Goto 1000
+
+900 Mode 2:CALL &A60B
+910 Locate 1,3
+920 Print"Vous refusez le sarcophage et declarez d'une voix ferme que vous voulez"
+930 Print"retrouver votre vraie vie."
+940 Print:Print"Un silence lourd s'installe, puis TARIQ prononce doucement quelques mots,"
+950 Print"comme un adieu. La salle tremble violemment, un grondement sourd resonne a"
+960 Print"travers les murs, puis une lumiere aveuglante engloutit tout."
+970 Print:Print"Quand vous rouvrez les yeux, le monde n'a plus rien a voir avec ce que vous"
+980 Print"connaissiez :"
+981 Print"Des tours de verre s'elancent jusqu'aux nuages, des vehicules planent dans le"
+982 Print"ciel, filant a une vitesse silencieuse. Des ecrans geants projetent des images"
+983 Print"cryptiques dans des langues que vous ne comprenez pas. Votre coeur bat a tout":Print"rompre."
+984 Print"Ou etes-vous ? Quand etes-vous ?"
+985 Print"Tout semble irreel, trop parfait,trop froid. Et puis, dans un murmure presque"
+986 Print"affectueux, la voix de TARIQ resonne une derniere fois dans votre oreille :"
+987 Print:Print "              ";Chr$(34);"Adieu, mon vieil ami... le reste depend de vous.";Chr$(34)"
+988 Print:Print"Puis le silence... Un monde nouveau s'ouvre devant vous, mais vous n'etes plus"
+989 Print"sur d'avoir votre place en son sein..."
+991 Locate 34,25:INPUT"  ENTER  ",en$
+992 Goto 1000
+
+1000 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24:BORDER 0:PAPER 0:LOCATE 1,9:PEN 1:PRINT"         Merci d'avoir joue au"
+1010 Pen 3:Print:Print"            SECRET D'ANUBIS"
+1020 Pen 2:Locate 9,13:Print"Eric Cubizolle  (TITAN)"
+1030 PEN 3:LOCATE 16,24:PRINT"  ENTER  ",en$
+1040 CALL &BB06
+
+1100 MODE 2:BORDER 26:ink 0,26:ink 1,13:CALL &A60B:Pen 1
+1110 Locate 1,3:Print"Le Secret d'Anubis a debute le 10 aout 2025 et a pris fin le 06 septembre 2025."
+1120 Print:Print"Ce jeu fait suite a ";Chr$(34);"Hexapucchu, la cite perdue de Patchucca";Chr$(34);"."
+1130 Print:Print"Les graphismes ont ete realises avec Multipaint et compreses avec ConvImgCPC."
+1140 Print:Print"La programmation a ete effectuee en BASIC a l'aide de l'ouvrage"
+1150 Print Chr$(34);"BASIC Amstrad CPC 464 - Methodes Pratiques";Chr$(34);" aux editions P.S.I"
+1155 Print:Print"La structure des DSK et la manipulation des fichiers a ete produite avec":Print"ManageDSK."
+1156 Print:Print"La musique a ete composee sur Arkos Tracker II."
+1160 Print:Print"Je tiens tout particulierement a remercier Pulsophonic pour la musique,":Print"et Kukulcan pour ses conseils en matiere d'optimisation de la programmation":Print"en BASIC."
+1170 Print:Print"En esperant que ce petit jeu d'aventure vous aura plu."
+1180 Print:Print"A ma famille : Cindy, Lana, Ellie, Oki, mes parents, mon frere et ma soeur."
+1190 Print:Print"                              Longue vie au CPC !"
+1200 GOTO 1200

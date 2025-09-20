@@ -1,0 +1,322 @@
+	dfb	eLOCATE,12,8
+	dfb	ePEN,A
+PAPER 2
+Print Chr$(244)
+	dfb	eLOCATE,13,8
+	dfb	ePEN,B
+PAPER 2
+Print Chr$(244)
+	dfb	eLOCATE,12,10
+	dfb	ePEN,C
+PAPER 2
+Print Chr$(244)
+	dfb	eLOCATE,13,10
+	dfb	ePEN,D
+PAPER 2
+Print Chr$(244)
+	dfb	eLOCATE,13,13
+	dfb	ePEN,E
+PAPER 2
+Print Chr$(244)
+
+IF PEEK(&BE81)=1 then 	dfb	eLOCATE,12,8
+	dfb	ePEN,1
+PAPER 2
+Print Chr$(244)
+	dfb	eLOCATE,13,8
+	dfb	ePEN,3
+PAPER 2
+Print Chr$(244)
+	dfb	eLOCATE,12,10
+	dfb	ePEN,3
+PAPER 2
+Print Chr$(244)
+	dfb	eLOCATE,13,10
+	dfb	ePEN,1
+PAPER 2
+Print Chr$(244)
+	dfb	eLOCATE,13,13
+	dfb	ePEN,0
+PAPER 2
+Print Chr$(244)
+
+WINDOW #1,25,36,4,19
+INK 0,0
+INK 1,3
+INK 2,15
+INK 3,24
+PAPER 0
+	dfb	ePEN,#1,3
+	asc	''0d
+	asc	'Two sacred'0d
+	asc	'figures'0d
+	asc	'engraved'0d
+	asc	'in stone,'0d
+	asc	'Ramses and'0d
+	asc	'Anubis,'0d
+	asc	'frozen in a'0d
+	asc	'duel of'0d
+	asc	'eternity.'0d
+
+	dfb	eLOCATE,13,20
+	dfb	ePEN,2
+	asc	'WHAT WILL YOU DO ?'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,4,22
+	asc	'0-EAST  1-SOUTH  2-Examine  3-Bark'0d
+	dfb	ePEN,2
+	dfb	eLOCATE,4,24
+	asc	'Press button
+  4-5-6-7-8'0d
+
+k$=INKEY$
+IF k$='0d4'0d THEN A=A+1
+SOUND 1,100
+GOTO 300
+IF k$='0d5'0d THEN B=B+1
+SOUND 1,120
+GOTO 400
+IF k$='0d6'0d THEN C=C+1
+SOUND 1,140
+GOTO 500
+IF k$='0d7'0d THEN D=D+1
+SOUND 1,160
+GOTO 600
+IF k$='0d8'0d THEN E=E+1
+SOUND 1,180
+GOTO 700
+IF k$='0d0'0d THEN RUN'0dPyramidA.bas'0d
+IF k$='0d1'0d THEN RUN'0dPyramid5.bas'0d
+IF k$='0d2'0d THEN GOTO 1000
+IF k$='0d3'0d THEN GOTO 1100
+IF k$<'0d0'0d OR k$>'0d8'0d THEN GOTO 200
+
+IF A>3 THEN A=0
+	dfb	eLOCATE,12,8
+	dfb	ePEN,A
+PAPER 2
+PRINT CHR$(244)
+GOTO 800
+
+IF B>3 THEN B=0
+	dfb	eLOCATE,13,8
+	dfb	ePEN,B
+PAPER 2
+PRINT CHR$(244)
+GOTO 800
+
+IF C>3 THEN C=0
+	dfb	eLOCATE,12,10
+	dfb	ePEN,C
+PAPER 2
+PRINT CHR$(244)
+GOTO 800
+
+IF D>3 THEN D=0
+	dfb	eLOCATE,13,10
+	dfb	ePEN,D
+PAPER 2
+PRINT CHR$(244)
+GOTO 800
+
+IF E>3 THEN E=0
+	dfb	eLOCATE,13,13
+	dfb	ePEN,E
+PAPER 2
+PRINT CHR$(244)
+GOTO 800
+
+IF A=1 AND B=3 AND C=3 AND D=1 AND E=0 THEN SOUND 1,300
+SOUND 1,250
+SOUND 1,200
+SOUND 1,150
+SOUND 1,100
+SOUND 1,50
+GOTO 2000
+GOTO 200
+
+IF PEEK(&BE81)=1 THEN GOTO 1200
+INK 0,0
+INK 1,6
+INK 2,15
+INK 3,24
+PAPER 0
+MODE 1
+	dfb	ePEN,3
+	asc	''0d
+	asc	'You study the hieroglyphs with care...'0d
+	dfb	ePEN,1
+	asc	''0d
+	asc	'Pharaoh and Anubis, frozen in an'0d
+	asc	'eternal confrontation.'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'But looking closer, it seems less'0d
+	asc	'a battle than a flea market trade:'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,1,10
+	asc	'Their outstretched arms seem to offer'0d
+	asc	'each other something.'0d
+	dfb	ePEN,1
+	dfb	eLOCATE,1,13
+	asc	'A jar for a jackal head?'0d
+	asc	'A collector'27's papyrus for a fake scarab?'0d
+	dfb	ePEN,2
+	asc	'Hard to say... But one thing is sure:'0d
+	asc	'objects are missing from this odd deal.'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,15,24
+INPUT '0d  ENTER  '0d,en$
+GOTO 60
+
+INK 0,0
+INK 1,6
+INK 2,15
+INK 3,24
+PAPER 0
+MODE 1
+	dfb	ePEN,3
+	asc	''0d
+	asc	'Ah yes, of course!'0d
+	asc	'Barking, what a genius idea.'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'Don'27't you think if Anubis wanted'0d
+	asc	'dialogue, he'27'd have engraved WOOF'0d
+	asc	'on the wall, right?'0d
+	dfb	ePEN,1
+	dfb	eLOCATE,30,6
+	asc	'WOOF'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,1,9
+	asc	'But continue, maybe one day he'27'll'0d
+	asc	'bring back the stick... of the scepter.'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,15,24
+INPUT '0d  ENTER  '0d,en$
+GOTO 60
+
+INK 0,0
+INK 1,6
+INK 2,15
+INK 3,24
+PAPER 0
+MODE 1
+	dfb	ePEN,3
+	asc	''0d
+	asc	'Ah, you come back to admire your'0d
+	asc	'masterpiece?'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'Sure, solving a millennia-old riddle'0d
+	asc	'makes one want to self-congratulate.'0d
+	dfb	ePEN,1
+	asc	''0d
+	asc	'But beware, staring at carvings'0d
+	asc	'does not make you a pharaoh...'0d
+	dfb	ePEN,3
+	asc	''0d
+	asc	'Spoiler:'0d;
+	asc	'the trap is still open,'0d
+	asc	'the key is still in your pocket,'0d
+	asc	'and Anubis hasn'27't moved an inch.'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'But hey, if you enjoy pretending'0d
+	asc	'to think...'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,15,24
+INPUT '0d  ENTER  '0d,en$
+GOTO 60
+
+IF PEEK(&BE81)=0 THEN GOTO 3000
+INK 0,0
+INK 1,6
+INK 2,15
+INK 3,24
+PAPER 0
+MODE 1
+	dfb	ePEN,1
+	asc	''0d
+	asc	'             Ah, well done!'0d
+	dfb	ePEN,3
+	asc	''0d
+	asc	'You solved the puzzle again!'0d
+	dfb	ePEN,1
+	asc	''0d
+	asc	'             Incredible!'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'What a performance, what a bright'0d
+	asc	'mind!'0d
+	dfb	ePEN,3
+	asc	''0d
+	asc	'Of course, it is useless,'0d
+	asc	'since you already had the key...'0d
+	asc	''0d
+	asc	'But apparently, you love puzzles,'0d;
+	asc	'especially when already solved.'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'It saves some neurons, right?'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,15,24
+INPUT '0d  ENTER  '0d,en$
+GOTO 60
+
+3000 INK 0,0
+INK 1,6
+INK 2,15
+INK 3,24
+PAPER 0
+MODE 1
+3010 	dfb	ePEN,3
+	asc	''0d
+	asc	'You adjust the last pyramid,'0d
+	asc	'holding your breath as if about'0d
+	asc	'to trigger the end of the world...'0d
+3020 	dfb	ePEN,1
+	asc	''0d
+	asc	'         And suddenly a CLICK!'0d
+3030 	dfb	ePEN,2
+	asc	''0d
+	asc	'Followed by a creak that would scare'0d
+	asc	'any ASMR fan.'0d
+3040 	dfb	ePEN,3
+	asc	''0d
+	asc	'The statues finally seem satisfied'0d
+	asc	'with their collection:'0d
+3045 	dfb	ePEN,2
+	asc	''0d
+	asc	'Pharaoh proudly shows his four'0d
+	asc	'yellow and brown pyramids, while'0d
+	asc	'Anubis grins with his small black'0d
+	asc	'pyramid.'0d
+3047 	dfb	ePEN,3
+	dfb	eLOCATE,15,25
+INPUT '0d  ENTER  '0d,en$
+3050 CLS
+	dfb	ePEN,2
+	asc	''0d
+	asc	'Then, miracle or well-oiled mechanism:'0d
+	dfb	ePEN,3
+	asc	''0d
+	asc	'A trap opens in the wall,'0d
+	asc	'dropping a shiny object...'0d
+3060 	dfb	ePEN,1
+	asc	''0d
+	asc	'      A key shaped like an ankh!'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'No triumphant music, but you'0d
+	asc	'can still raise your arms and shout:'0d
+	dfb	ePEN,1
+	asc	''0d
+	asc	'           I AM A GENIUS!'0d
+3070 	dfb	ePEN,3
+	asc	''0d
+	asc	'...before putting it in your inventory.'0d
+3080 	dfb	eLOCATE,15,25
+INPUT '0d  ENTER  '0d,en$
+3090 POKE &BE81,1
+Goto 60

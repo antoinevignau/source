@@ -1,0 +1,185 @@
+WINDOW #1,25,36,4,19
+INK 0,0
+INK 1,3
+INK 2,15
+INK 3,24
+	dfb	ePEN,#1,3
+	asc	''0d
+	asc	'The Chamber'0d
+	asc	'of the Last'0d
+	asc	'Breath:'0d 
+	asc	''0d
+	asc	'Here rests'0d
+	asc	'a secret'0d
+	asc	'shrouded in'0d
+	asc	'shadow'0d
+	asc	'and light,'0d
+	asc	'like a'0d
+	asc	'promise'0d
+	asc	'never'0d
+	asc	'broken.'0d
+
+	dfb	eLOCATE,13,20
+	dfb	ePEN,2
+	asc	'WHAT WILL YOU DO ?'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,4,21
+	asc	'1-EAST'0d
+	dfb	ePEN,2
+	dfb	eLOCATE,4,22
+	asc	'2-Unplug left computer'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,4,23
+	asc	'3-Unplug right computer'0d
+	dfb	ePEN,2
+	dfb	eLOCATE,4,24
+	asc	'4-Search the sarcophagus'0d
+
+k$=INKEY$
+IF k$='0d1'0d THEN GOTO 300
+IF k$='0d2'0d THEN GOTO 700
+IF k$='0d3'0d THEN GOTO 700
+IF k$='0d4'0d THEN GOTO 700
+IF k$<'0d1'0d OR k$>'0d4'0d THEN GOTO 200
+
+MODE 1
+INK 0,0
+INK 1,6
+INK 2,15
+INK 3,24
+	dfb	ePEN,3
+	asc	''0d
+	asc	'You can'27't just leave without'0d
+	asc	'tampering with something in'0d
+	asc	'this room full of totally'0d
+	asc	'anachronistic gear!'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'Show a little courage for once...'0d
+	dfb	ePEN,1
+	asc	''0d
+	asc	'Come on, let'27's go back!'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,15,25
+INPUT'0d ENTER  '0d,en$
+GOTO 60
+
+MODE 1
+INK 0,0
+INK 1,6
+INK 2,15
+INK 3,24
+	dfb	ePEN,3
+	asc	'In the funerary chamber, at the'0d
+	asc	'heart of the pyramid, you find'0d
+	asc	'a glass sarcophagus, connected to'0d
+	dfb	eLOCATE,1,4
+	asc	'cables, themselves linked to'0d
+	asc	'electronic machines!!!'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'You scan the room with your eyes.'0d
+	dfb	ePEN,1
+	asc	''0d
+	asc	'Chilling atmosphere, end-of-world'0d
+	asc	'lighting, and that big thing in'0d
+	asc	'the center...'0d
+	dfb	ePEN,3
+	asc	''0d
+	asc	'Seriously, who leaves a futuristic'0d
+	asc	'coffin in a millennia-old'0d
+	asc	'pyramid?'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'It looks like a mix between'0d
+	asc	'Tutankhamun and a power strip!'0d
+	dfb	ePEN,1
+	asc	''0d
+	asc	'Yet strangely, this place feels'0d
+	asc	'familiar... as if you had'0d
+	asc	'already lived in this sarcophagus!'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,15,25
+INPUT'0d ENTER  '0d,en$
+CLS
+	dfb	ePEN,1
+	dfb	eLOCATE,1,4
+	asc	'Suddenly, a synthetic voice from'0d
+	asc	'beyond the grave resounds:'0d
+	dfb	ePEN,3
+	asc	''0d
+	asc	'Hello, my old friend.'0d
+	asc	''0d
+	asc	'I suppose your memories and'0d
+	asc	'thoughts must be extremely confused.'0d
+	dfb	eLOCATE,1,12
+	asc	'Sit down and listen carefully, I'0d
+	asc	'will explain EVERYTHING...'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,15,25
+INPUT'0d ENTER  '0d,en$
+CLS
+	dfb	ePEN,3
+	asc	''0d
+	asc	'You are not in 1951.'0d
+	asc	''0d
+	asc	'You are not really an Egyptologist'0d
+	asc	'either...'0d
+	asc	''0d
+	asc	'In reality, you are a scientist of'0d
+	asc	'the future, placed in cryogenic'0d
+	dfb	eLOCATE,1,9
+	asc	'sleep in this pyramid that you'0d
+	asc	'built yourself with a scientific team,'0d
+	dfb	eLOCATE,1,11
+	asc	'to protect forbidden knowledge.'0d
+	asc	''0d
+	asc	'Knowledge so destructive that you'0d
+	asc	'discovered... and sealed here:'0d 
+ 	dfb	ePEN,1
+	asc	''0d
+	asc	'             THE ANUBIS.'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,15,25
+INPUT'0d ENTER  '0d,en$
+CLS
+	dfb	ePEN,3
+	dfb	eLOCATE,2,13
+	asc	'But let'27's go back to the beginning...'0d
+	dfb	eLOCATE,15,25
+INPUT'0d ENTER  '0d,en$
+RUN'0dEpilogue.bas'0d
+
+MODE 1
+INK 0,0
+INK 1,6
+INK 2,15
+INK 3,24
+	dfb	ePEN,3
+	dfb	eLOCATE,1,13
+	asc	'Are you sure you want to do this (Y/N)?'0d
+k$=INKEY$
+IF UPPER$(k$)='0dO'0d OR UPPER$(k$)='0dY'0d THEN GOTO 760
+IF UPPER$(k$)='0dN'0d THEN GOTO 60
+IF UPPER$(k$)<>'0dO'0d AND UPPER$(k$)<>'0dN'0d AND UPPER$(k$)<>'0dY'0d THEN GOTO 720
+CLS
+	dfb	eLOCATE,11,13
+	asc	'REALLY sure (Y/N)?'0d
+k$=INKEY$
+IF UPPER$(k$)='0dO'0d OR UPPER$(k$)='0dY'0d THEN GOTO 810
+IF UPPER$(k$)='0dN'0d THEN GOTO 60
+IF UPPER$(k$)<>'0dO'0d AND UPPER$(k$)<>'0dN'0d AND UPPER$(k$)<>'0dY'0d THEN GOTO 770
+CLS
+	dfb	eLOCATE,6,13
+	asc	'Truly, TRULY sure (Y/N)?'0d
+k$=INKEY$
+IF UPPER$(k$)='0dO'0d OR UPPER$(k$)='0dY'0d THEN GOTO 860
+IF UPPER$(k$)='0dN'0d THEN GOTO 60
+IF UPPER$(k$)<>'0dO'0d AND UPPER$(k$)<>'0dN'0d AND UPPER$(k$)<>'0dY'0d THEN GOTO 820
+CLS
+	dfb	eLOCATE,1,12
+	asc	'As you approach the device, a'0d
+	asc	'phenomenon occurs...'0d
+	dfb	eLOCATE,15,25
+INPUT'0d ENTER  '0d,en$
+GOTO 400

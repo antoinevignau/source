@@ -1,0 +1,108 @@
+10 ' CAIRE
+20 MODE 1:BORDER 0
+30 FOR i=0 TO 3:INK i,0:NEXT i
+40 MEMORY &3FFF
+50 LOAD"Caire.cmp"
+60 FOR i=0 TO 3:INK i,0:NEXT i
+70 POKE &A634,&C8:POKE &A635,0:POKE &A636,0:CALL &A60B
+80 POKE &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+100 WINDOW #1,25,36,4,19
+110 INK 0,0:INK 1,3:INK 2,15:INK 3,24
+120 PEN #1,3:PRINT #1:PRINT #1,"Le Caire.":PRINT #1:PRINT #1,"Aujourd'hui":PRINT #1,"ses rues":PRINT #1,"d'ordinaire":PRINT #1,"vivantes et":PRINT #1,"bruyantes":PRINT #1,"reposent":PRINT #1,"dans un":PRINT #1,"silence":PRINT #1,"inattendu."
+130 LOCATE 13,20:PEN 2:PRINT"QUE FAITES-VOUS ?"
+140 PEN 3:LOCATE 4,21:PRINT "1-Se rendre a Qattara en voiture"
+150 PEN 2:LOCATE 4,22:PRINT "2-Examiner     3-Chercher un chat" 
+160 PEN 3:LOCATE 4,23:PRINT "4-Entrer dans la voiture    5-NORD"
+170 PEN 2:LOCATE 4,24:PRINT "6-Parler a la femme assise  7-EST"
+200 k$=INKEY$
+210 IF k$="1" AND PEEK(&7003)=0 THEN GOTO 300
+220 IF k$="1" AND PEEK(&7003)=1 THEN GOTO 400
+230 IF k$="2" THEN GOTO 500
+240 IF k$="3" THEN GOTO 600
+250 IF k$="4" AND PEEK(&7003)=0 THEN GOTO 700
+260 IF k$="4" AND PEEK(&7003)=1 THEN GOTO 800
+265 IF k$="5" THEN RUN"Chat.bas"
+270 IF k$="6" AND PEEK(&7002)=0 THEN GOTO 900
+280 IF k$="6" AND PEEK(&7002)=1 THEN GOTO 1000
+285 IF k$="7" THEN RUN"Souk.bas"
+290 IF k$<"1"OR k$>"7" THEN GOTO 200
+
+300 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+310 PEN 3:PRINT:PRINT"Vous vous tenez devant la vieille":PRINT"voiture, admirant ses lignes...":PRint"Enfin, ce qu'il en reste."
+320 PEN 2:PRINT:PRINT"Helas, sans la clef, elle reste":PRINT"aussi inerte qu'une momie endormie":PRINT"depuis trois mille ans."
+330 PEN 3:PRINT:PRINT"Vous avez beau la contempler,":PRINT"la caresser ou lui murmurer des":PRINT"encouragements, rien n'y fait :"
+340 PEN 1:PRINT:PRINT"Pour l'instant, elle ne vous menera":PRINT"nulle part."
+350 Pen 2:Print:Print"Il va falloir trouver cette fameuse":Print"clef avant de pouvoir filer en":Print"direction du desert de Qattara.":Locate 24,19:Pen 3:Print"Qattara"
+360 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+370 GOTO 60
+
+400 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+410 PEN 3:PRINT:PRint"Clef en main, vous mettez le":Print"contact..."
+420 PEN 1:PRINT:PRINT"le moteur tousse,":Print"la vieille voiture grogne comme un":Print"sphinx en colere, avant de filer":Print"vers le desert de Qattara !":Locate 19,8:Pen 3:Print"Qattara"
+430 PEN 2:PRINT:Print"Vous priez pour qu'aucun chameau ne":PRINT"traverse la route en chemin tant":PRINT"les freins semblent plus symboliques":Print"qu'efficaces..."
+440 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+450 RUN"Desert1.bas"
+
+500 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+510 PEN 3:PRINT:PRint"Le Caire s'etire devant vous,":Print"calme aujourd'hui, comme un chat":Print"qui fait la sieste."
+520 Pen 1:Print:Print"A gauche, une vieille voiture repose,":Print"poussiereuse et fiere de son":Print"immobilite, comme un crocodile ":Print"endormi au soleil."
+530 Pen 2:Print:Print"A droite, une femme est assise":Print"sur le trottoir, l'air contrarie,":Print"tricotant des pensees plus emmelees":Print"que sa pelote de laine."
+540 Pen 3:Print:PRint"Autour, la rue est tranquille,":Print"seulement ponctuee du clapotis des":Print"fontaines et du froissement des robes":Print"des passants."
+550 Pen 2:Print:Print"De temps en temps, un miaulement":Print"lointain vient troubler ce calme."
+560 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+570 GOTO 60
+
+600 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+610 PEn 3:PRint:Print"Vous scrutez chaque recoin, esperant":Print"voir un chat surgir..."
+620 PEn 1:Print:Print"Mais rien."
+630 Pen 2:Print:PRint"A ce rythme, meme une poule en greve":Print"vous aurait echappe !"
+640 Pen 3:Print:Print"Le chat doit se bidonner quelque part,":Print"en notant dans son journal secret :"
+650 Pen 2:Print:Print "   ";Chr$(34);"Comment humilier un aventurier":Print"        sans lever la patte.";Chr$(34)
+660 PEn 1:Print:Print"Franchement, vous commencez a croire":Print"que cet animal n'existe pas."
+670 Pen 2:Print:Print"... Enfin, pas ici en tout cas."
+680 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+690 GOTO 60
+
+700 CLS:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+710 Pen 3:Print"Sans clef pour l'ouvrir, vous tentez":Print"de crocheter la portiere."
+720 Pen 1:Print:Print"Et la, paf !"
+730 Pen 2:Print:Print"Une sirene hurle, des lampes":Print"clignotent et un policier surgit comme":Print"un scarabee furieux !"
+740 Pen 3:Print:Print"Vous tentez d'expliquer que vous n'etes":Print"pas un voleur, juste un aventurier":Print"presse, mais le policier ne veut":Print"rien entendre."
+750 PEn 2:Print:PRint"Quelques heures plus tard...":Print"enfin, plusieurs siecles plus tard":Print"selon le calendrier egyptien,":Print"vous comprenez :"
+760 PEn 1:Print"Votre proces a ete oublie.":Print"Le juge est parti en retraite,":Print"le greffier s'est perdu dans le souk":Print"et vous, vous restez en prison pour":Print"l'eternite..."
+770 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+780 RUN"Mort.bas"
+
+800 CLS:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+810 Pen 3:Print:Print"Clef en main, vous ouvrez la portiere.":Pen 1:Print:Print"         Miracle, ca clique !"
+820 PEn 2:Print:Print"Vous avez reussi !":Print"Oui, vous avez vraiment reussi a ouvrir":Print"une voiture..."
+830 Pen 3:Print:Print"Et pas n'importe laquelle :":Print"Une relique capable de survivre a":Print"des siecles de poussiere et de sable !"
+840 PEn 1:Print:Print"Faites attention, heros du jour :":Pen 2:Print:Print"Vous tenez entre vos mains le volant":Print"du destin.":Print:Print"Ou du moins, le levier de vitesses":Print"d'un antique tas de metal pres a":Print"rugir... ou a tousser."
+850 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+860 GOTO 60
+
+900 CLS:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+910 Pen 1:Print:Print"La vielle femme :":pen 2:Print:Print"Toi !":Print:Print"Oui, toi avec ta tete d'aventurier":Print"fatigue.":Print:Print"Tu ne pourrais pas m'aider ?"
+920 Print:Print"Ce demon a moustaches, ce voleur poilu,":Print"ce... chat, m'a chipe ma pelote de":Print"laine !"
+930 Print:Print"Ramene-la-moi et en echange, je te":Print"filerai une clef que j'ai trouvee":Print"par terre."
+940 Print:Print"Ca semble ouvrir une voiture... ou un":Print"sarcophage moderne, je ne sais pas."
+950 PEN 3:LOCATE 15,24:INPUT" ENTER  ",en$
+960 Goto 60
+
+1000 if PEEK(&7003)=0 Then goto 1100
+1010 if PEEK(&7003)=1 then goto 1200
+
+1100 CLS:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+1110 Pen 1:Print:Print"La vielle femme :":pen 2:Print:Print Chr$(34);"Ma pelote ! Tu l'as retrouvee !":Print:Print"Ce satane chat me l'avait bien vole !"
+1115 Print:Print"Merci, etranger. Sans elle, j'etais":Print"obligee de tricoter du sable...":Print"et crois-moi, ca gratte !"
+1120 Print:Print"Tiens, prends cette clef.":Print"Je n'ai pas de voiture...":Print"et je doute qu'une chevre demarre":Print"avec ca !";Chr$(34):Locate 21,12:Pen 3:Print"clef"
+1130 PEN 3:LOCATE 15,24:INPUT" ENTER  ",en$
+1140 Poke &7003,1:Goto 60
+
+1200 CLS:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+1210 Pen 1:Print:Print"La vielle femme vous regarde, les yeux":Print"plisses, la pelote a nouveau entre":Print"les mains :"
+1220 PEn 2:Print:Print Chr$(34);"Eh ben dis donc, vous revenez encore ?":Print:Print"J'ai plus rien pour vous !":Print:Print"Allez, ouste !":Print:Print"Maintenant laissez-moi tricoter en":Print"paix !";Chr$(34)
+1230 PEn 3:Print:Print:Print"Charmante..."
+1240 LOCATE 15,24:INPUT" ENTER  ",en$
+1250 Goto 60

@@ -1,0 +1,399 @@
+*
+* Le secret d'Anubis
+*
+* (c) 2025, Eric Cubizolle (TITAN)
+* (c) 2025, Brutal Deluxe Software
+*
+
+PYRAMIDB_str100	ent
+*	dfb	eMODE,1
+*	dfb	eINK,0,0
+*	dfb	eINK,1,6
+*	dfb	eINK,2,15
+*	dfb	eINK,3,24
+*	dfb	eBORDER,0
+*	dfb	ePAPER,0
+*	dfb	eCLS
+	dfb	ePEN,3*3	; 3
+*	asc	'12345678901'
+	asc	''0d
+	asc	'Face'0d
+	asc	'frozen'0d
+	asc	'forever,'0d
+	asc	'the'0d
+	asc	'Sphinx'0d
+	asc	'sleeps.'0d
+	asc	''0d
+	asc	'Yet its'0d
+	asc	'gaze'0d
+	asc	'never'0d
+	asc	'dies.'
+	dfb	eEOD
+
+PYRAMIDB_str200	ent
+*	dfb	eMODE,1
+*	dfb	eINK,0,0
+*	dfb	eINK,1,6
+*	dfb	eINK,2,15
+*	dfb	eINK,3,24
+*	dfb	eBORDER,0
+*	dfb	ePAPER,0
+*	dfb	eCLS
+	dfb	eLOCATE,13,20
+	dfb	ePEN,2*3	; 2
+	asc	'WHAT DO YOU DO?'
+	dfb	ePEN,3*3	; 3
+	dfb	eLOCATE,4,21
+	asc	'1-WEST        2-Go down ladder'
+	dfb	ePEN,6	; 2
+	dfb	eLOCATE,4,22
+	asc	'3-Examine     4-Talk to Sphinx'
+	dfb	ePEN,9	; 3
+	dfb	eLOCATE,4,23
+	asc	'5-Search Sphinx'
+	dfb	ePEN,6	; 2
+	dfb	eLOCATE,4,24
+	asc	'6-Push Sphinx 7-Shout'
+	dfb	eEOD
+
+PYRAMIDB_str300	ent
+	dfb	eMODE,1
+	dfb	eINK,0,0
+	dfb	eINK,1,6
+	dfb	eINK,2,15
+	dfb	eINK,3,24
+	dfb	eBORDER,0
+	dfb	ePAPER,0
+	dfb	eCLS
+	dfb	ePEN,3
+	asc	'In this room, the dim light'0d
+	asc	'sets a dramatic mood.'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'At its center, the Sphinx.'0d
+	asc	'Majestic, imposing... and as chatty'0d
+	asc	'as an anvil.'0d
+	dfb	ePEN,1
+	asc	''0d
+	asc	'It has ruled for millennia,'0d
+	asc	'ignoring guided tours.'0d
+	dfb	ePEN,3
+	asc	''0d
+	asc	'Under your feet, a floor that has'0d
+	asc	'not seen a mop since Ramses II.'0d
+	dfb	ePEN,3
+	asc	''0d
+	asc	'And there, a hole with a ladder'0d
+	asc	'going down...'0d
+	asc	''0d
+	asc	'Why go down a dark hole?'0d
+	asc	'Because it'27's a brilliant idea!'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'Oh, and FYI: no exit except'0d
+	asc	'to the WEST. So if you hoped to'0d
+	asc	'Open a window to air out, forget it.'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,15,25
+	asc	' ENTER  'a5
+	dfb	eEOD
+
+PYRAMIDB_str400	ent
+	dfb	eMODE,1
+	dfb	eINK,0,0
+	dfb	eINK,1,6
+	dfb	eINK,2,15
+	dfb	eINK,3,24
+	dfb	eBORDER,0
+	dfb	ePAPER,0
+	dfb	eCLS
+	dfb	ePEN,3
+	asc	'You stand before the Sphinx and'0d
+	asc	'start talking, sure that the'0d
+	asc	'stone has much to say.'0d
+	dfb	ePEN,1
+	asc	''0d
+	asc	'            Total silence.'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'No whisper, no sigh...'0d
+	dfb	ePEN,3
+	asc	''0d
+	asc	'Just two fixed eyes staring'0d
+	asc	'at you emotionlessly.'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'You try everything:'0d
+	asc	'The weather, the best stuffed'0d
+	asc	'pigeon recipe, the papyrus market'0d
+	asc	'and even the debate '22'sand or gravel:'0d
+	asc	'who scrapes more'220d
+	dfb	ePEN,1
+	asc	''0d
+	asc	'                Nothing.'0d
+	dfb	ePEN,3
+	asc	''0d
+	asc	'Maybe with its limestone ears'0d
+	asc	'and ancient age, it doesn'27't hear well?'0d
+	asc	'Who knows... speaking louder might help.'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,15,25
+	asc	' ENTER  'a5
+	dfb	eEOD
+
+PYRAMIDB_str500	ent
+	dfb	eMODE,1
+	dfb	eINK,0,0
+	dfb	eINK,1,6
+	dfb	eINK,2,15
+	dfb	eINK,3,24
+	dfb	eBORDER,0
+	dfb	ePAPER,0
+	dfb	eCLS
+	dfb	ePEN,3
+	asc	'You decide to search the Sphinx.'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'Normal, who could resist the urge'0d
+	asc	'to touch a 4000-year-old monument?'0d
+	dfb	ePEN,3
+	asc	''0d
+	asc	'You feel the paws, look for a'0d
+	asc	'hiding place...'0d
+	asc	'when suddenly, a faint click is heard.'0d
+	dfb	ePEN,1
+	asc	''0d
+	asc	'Ouch...'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'You just triggered the oldest'0d
+	asc	'anti-burglar mechanism in'0d
+	asc	'the world.'0d
+	dfb	ePEN,3
+	asc	''0d
+	asc	'The floor opens under your feet,'0d
+	asc	'and you end your descent to'0d
+	asc	'the lower floor ...3D puzzle'0d
+	asc	'first prize.'0d
+	dfb	ePEN,1
+	asc	''0d
+	asc	'Curtain.'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,15,25
+	asc	' ENTER  'a5
+	dfb	eEOD
+
+PYRAMIDB_str600	ent
+	dfb	eMODE,1
+	dfb	eINK,0,0
+	dfb	eINK,1,6
+	dfb	eINK,2,15
+	dfb	eINK,3,24
+	dfb	eBORDER,0
+	dfb	ePAPER,0
+	dfb	eCLS
+	dfb	ePEN,3
+	asc	''0d
+	asc	'You take a deep breath,'0d
+	asc	'place your hands on the Sphinx and'0d
+	asc	'push with all your strength.'0d
+	dfb	ePEN,1
+	asc	''0d
+	asc	'After two seconds, a blinding'0d
+	asc	'realization:'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'This thing weighs more than a truck'0d
+	asc	'full of sarcophagi, and you, skipped'0d 
+	asc	'gym class.'0d
+	dfb	ePEN,3
+	asc	''0d
+	asc	'Then, catching your breath,'0d
+	dfb	eLOCATE,1,14
+	asc	'you notice numbers engraved on the'0d
+	asc	'base.'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'Strange numbers...'0d
+	dfb	ePEN,1
+	asc	''0d
+	asc	'Does the Sphinx have a small soft'0d
+	asc	'spot for math between existential'0d
+	asc	'riddles?'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,15,25
+	asc	' ENTER  'a5
+	dfb	eEOD
+
+PYRAMIDB_str700	ent
+	dfb	eMODE,1
+	dfb	eINK,0,0
+	dfb	eINK,1,6
+	dfb	eINK,2,15
+	dfb	eINK,3,24
+	dfb	eBORDER,0
+	dfb	ePAPER,0
+	dfb	eCLS
+	dfb	ePEN,3
+	asc	'You scream as if the whole desert'0d
+	asc	'would collapse, and... miracle!'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'The Sphinx opens its mouth and'0d
+	asc	'a strangely metallic sound'0d
+	asc	'emerges:'0d
+	dfb	ePEN,3
+	asc	''0d
+	asc	'- Vocal frequency analysis...'0d
+	asc	''0d
+	asc	'- User match confirmed.'0d
+	asc	''0d
+	asc	'- Identity recognized.'0d
+	asc	''0d
+	asc	'To access advanced pyramid info'0d
+	asc	'answer a question about the'0d
+	asc	'Egyptian gods.'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'A talking Sphinx analyzing my voice?!'0d
+	asc	'What a monumental mess!'0d
+	dfb	ePEN,1
+	dfb	eLOCATE,1,22
+	asc	'       Do you want to answer'0d
+	asc	'     the Sphinx riddle (Y/N)?'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,15,25
+	asc	' ENTER  'a5
+	dfb	eEOD
+
+PYRAMIDB_str880	ent
+	dfb	eMODE,1
+	dfb	eINK,0,0
+	dfb	eINK,1,6
+	dfb	eINK,2,15
+	dfb	eINK,3,24
+	dfb	eBORDER,0
+	dfb	ePAPER,0
+	dfb	eCLS
+	dfb	ePEN,3
+	asc	''0d
+	asc	'In Egyptian mythology, which'0d
+	asc	'animal is linked to the god '
+	dfb	eEOD
+
+PYRAMIDB_str890	ent
+	asc	' ?'0d	; 3,28
+	dfb	ePEN,2
+	asc	''0d
+	asc	''0d
+	asc	'1-Crocodile'0d
+	asc	'2-Ibis'0d
+	asc	'3-Hawk'0d
+	asc	'4-Cat'0d
+	asc	'5-Lion'0d
+	asc	'6-Ram'0d
+	asc	'7-Jackcal'0d
+	dfb	eLOCATE,1,16
+	dfb	ePEN,1
+	asc	'Your choice?'0d
+	dfb	eEOD
+
+PYRAMIDB_str1400	ent
+	dfb	eMODE,1
+	dfb	eINK,0,0
+	dfb	eINK,1,6
+	dfb	eINK,2,15
+	dfb	eINK,3,24
+	dfb	eBORDER,0
+	dfb	ePAPER,0
+	dfb	eCLS
+	dfb	ePEN,1
+	dfb	eLOCATE,1,11
+	asc	'             WRONG ANSWER!'0d
+	dfb	ePEN,1
+	asc	''0d
+	asc	'         ACCESS TO INFO DENIED'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,15,25
+	asc	' ENTER  'a5
+	dfb	eEOD
+
+PYRAMIDB_str1500	ent
+	dfb	eMODE,1
+	dfb	eINK,0,0
+	dfb	eINK,1,6
+	dfb	eINK,2,15
+	dfb	eINK,3,24
+	dfb	eBORDER,0
+	dfb	ePAPER,0
+	dfb	eCLS
+	dfb	ePEN,3
+	asc	''0d
+	asc	'CORRECT ANSWER!'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'ACCESS TO INFO GRANTED'0d
+	dfb	ePEN,1
+	asc	''0d
+	asc	''0d
+	asc	'Archive 6112-B'0d
+	dfb	ePEN,3
+	asc	''0d
+	asc	''0d
+	asc	'An old legend tells that'0d
+	asc	'when the 5 strongest gods joined'0d
+	asc	'the 7 most influential goddesses'0d
+	asc	'of the Egyptian pantheon, the 12'0d
+	asc	'divinities offered'0d
+	asc	'then one key of knowledge to'0d
+	asc	'the people of Egypt.'0d
+	dfb	ePEN,1
+	dfb	eLOCATE,10,11
+	asc	'5'0d
+	dfb	eLOCATE,5,12
+	asc	'7'0d
+	dfb	eLOCATE,31,13
+	asc	'12'0d
+	dfb	ePEN,2
+	dfb	eLOCATE,1,20
+	asc	'End of archive.'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,15,25
+	asc	' ENTER  'a5
+	dfb	eEOD
+
+PYRAMIDB_str1600	ent
+	dfb	eMODE,1
+	dfb	eINK,0,0
+	dfb	eINK,1,6
+	dfb	eINK,2,15
+	dfb	eINK,3,24
+	dfb	eBORDER,0
+	dfb	ePAPER,0
+	dfb	eCLS
+	dfb	ePEN,3
+	asc	'You take a deep breath and'0d
+	asc	'scream again, as if your'0d
+	asc	'Opera career depended on it.'0d
+	dfb	ePEN,1
+	asc	''0d
+	asc	'Maybe you forgot the hint the'0d
+	asc	'Sphinx already gave?'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'Or you hope it gives you the'0d
+	asc	'Wi-Fi code this time?'0d
+	dfb	ePEN,3
+	asc	''0d
+	asc	'Result: max vibration, decibels'0d
+	asc	'in the red... and the Sphinx'0d
+	asc	'reboots saying '22'You again?'220d
+	dfb	ePEN,3
+	asc	''0d
+	asc	'To access advanced pyramid info'0d
+	asc	'answer a question about the'0d
+	asc	'Egyptian gods.'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,15,25
+	asc	' ENTER  'a5
+	dfb	eEOD

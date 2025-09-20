@@ -1,0 +1,132 @@
+10 ' SOUK
+20 MODE 1:BORDER 0
+30 FOR i=0 TO 3:INK i,0:NEXT i
+40 MEMORY &3FFF
+50 LOAD"Souk.cmp"
+60 FOR i=0 TO 3:INK i,0:NEXT i
+70 POKE &A634,&C8:POKE &A635,0:POKE &A636,0:CALL &A60B
+80 POKE &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+100 WINDOW #1,25,36,4,19
+110 INK 0,0:INK 1,3:INK 2,15:INK 3,24
+120 PEN #1,3:PRINT #1:PRINT #1,"Le souk :":PRINT #1:PRINT #1,"Un dedale":PRINT #1,"bruissant":PRINT #1,"d'epices":PRINT #1,"et de voix."
+125 PRINT #1:PRINT #1,"La chaleur":PRINT #1,"y danse":PRINT #1,"entre ombre":PRINT #1,"et":PRINT #1,"poussiere":PRINT #1,"doree."
+130 LOCATE 13,20:PEN 2:PRINT"QUE FAITES-VOUS ?"
+140 PEN 3:LOCATE 4,21:PRINT "1-Retourner au Caire    2-Examiner"
+150 PEN 2:LOCATE 4,22:PRINT "3-Parler au marchand"
+160 PEN 3:LOCATE 4,23:PRINT "4-Traverser le souk par le NORD"
+170 PEN 2:LOCATE 4,24:PRINT "5-Gouter les epices     6-Chanter"
+200 k$=INKEY$
+210 IF k$="1"THEN RUN"Caire.bas"
+220 IF k$="2"THEN GOTO 300
+230 IF k$="3" AND PEEK(&7000)=0 THEN GOTO 700
+240 IF k$="3" AND PEEK(&7000)=1 THEN GOTO 800
+250 IF k$="3" AND PEEK(&7000)=2 THEN GOTO 900
+260 IF k$="3" AND PEEK(&7000)=3 THEN GOTO 1000
+270 IF k$="3" AND PEEK(&7000)=4 THEN GOTO 1100
+280 IF k$="3" AND PEEK(&7000)=5 THEN GOTO 1300
+290 IF k$="4"THEN GOTO 400
+292 IF k$="5"THEN GOTO 500
+294 IF k$="6"THEN GOTO 600
+296 IF k$<"1"OR k$>"6" THEN GOTO 200
+
+300 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+310 PEN 3:PRINT:PRINT"Le Souk et ses marchands hauts en":PRINT"couleur qui essayent de vous vendre":PRint"jusqu'a votre ombre..."
+320 PEN 2:PRINT:PRINT"Entre tapis volants douteux et epices":PRINT"qui font eternuer, vous realisez que":PRINT"votre nez va finir par parler toutes":Print"les langues du marche si ca continue."
+330 PEN 1:PRINT:PRINT"Vous remarquez ce vendeur de poteries":PRINT"qui vous fixe comme si vous etiez":PRINT"un vase rare."
+340 PEN 3:PRINT:PRINT"Avec un peu de chance, il a en stock":PRINT"le dernier mug ";Chr$(34);"Made in Taiwan";Chr$(34)
+350 Locate 17,16:Pen 2:Print"Made in Taiwan":Pen 3:PRint"ultra tendance !"
+360 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+370 GOTO 60
+
+400 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+410 PEN 3:PRINT:PRint"Vous tentez de filer vers le nord..."
+420 PEN 1:PRINT:PRINT"Mais la foule a decide de former un mur":Print"humain digne d'un festival de rock."
+430 PEN 2:PRINT:Print"Entre les bras qui s'agitent, les sacs":PRINT"qui volent et les vendeurs qui":PRINT"negocient avec vous comme si vous"
+440 Print"etiez un tapis rare, il devient":Print"clair que traverser le souk par ici":Print"est aussi simple que de danser le":Print"tango dans un ascenseur plein."
+450 PEN 3:PRINT:PRINT"Vous vous resignez a rebrousser":Print"chemin, la dignite un peu froissee":Print"mais intacte."
+460 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+470 GOTO 60          
+
+500 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+510 PEN 3:PRINT:PRint"Vous plongez votre nez... et votre":Print"langue, dans un melange d'epices":Print"si puissant que votre bouche se":Print"met a faire des pirouettes dignes":Print"d'un cirque."
+520 Pen 1:Print:Print"Vos papilles reclament un traite":Print"de paix, votre estomac menace de":Print"se declarer independant, tandis qu'un":Print"marchand voisin vous propose":Print"immediatement un antidote au":Print"gout douteux."
+530 Pen 2:Print:Print"Vous commencez a vous demander si":Print"vous avez vraiment envie de gouter":Print"le paprika ou juste de survivre..."
+540 Pen 3:Print:PRint"Fini les epices !":Print"Votre intestin est plus taille pour le":Print"yaourt et son bifidus actif !"
+550 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+560 GOTO 60           
+
+600 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+610 PEn 3:PRint:Print"Vous entamez votre chanson triomphale,":Print"quand une olive abimee, jetee par":Print Chr$(34);"inadvertance";Chr$(34);" par une acheteuse,":Print"plonge directement dans votre gorge."
+620 PEn 1:Print:Print"Vos notes s'interrompent brusquement,":Print"vos yeux s'ecarquillent, et la foule":Print"continue son commerce comme si de rien":PRint"n'etait."
+630 Pen 2:Print:PRint"Morale du jour :":Print:Print"Chanter au souk peut vraiment vous":Print"couter la peau !"
+640 Pen 1:Print:Print:Print"           Fin du voyage..."
+650 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+660 Run"Mort.bas"          
+
+700 CLS:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+710 Pen 1:Print:Print"Le marchand :":pen 2:Print:Print"Bienvenue, etranger !":Print:Print"Ici, les poteries sont aussi vieilles":Print"que ma grand-mere...":Print:Print"     ...et sentent a peu pres pareil."
+720 Pen 1:Print:Print"Vous:":pen 3:Print:Print"Oh... euh...":Print"je suis juste la pour flaner...":Print"et peut-etre eviter de casser quoi":Print"que ce soit."
+730 Pen 1:Print:Print"Le marchand :":pen 2:Print:Print"Alors vous etes deja meilleur client":Print"que le dernier touriste !"
+740 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+750 POKE &7000,1:Goto 60
+
+800 CLS:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+810 Pen 1:Print:Print"Le marchand :":pen 2:Print:Print"Regardez cette jarre de lait !":Print:Print"Elle a survecu a trois tempetes de":Print"sable et a deux belles-meres.":Print:Print"Une affaire en or !"
+820 Pen 3:Locate 1,12:Input"  Souhaitez-vous l'acheter (O/N) ";A$
+830 If UPPER$(A$)="O" then D=2:Goto 890
+840 If UPPER$(A$)="N" then Goto 860
+850 If UPPER$(A$)<>"O" OR UPPER$(A$)<>"N" then goto 820
+860 Pen 1:Print:Print"Le marchand :":Pen 2:Print:Print"Ah... je vois que vous hesitez...":Print:Print"Pourtant, c'est la jarre ideale pour":Print"stocker le lait dont raffolent les":Print"chats en Egypte.":Print:Print "   Tant pis !"
+870 PEN 3:LOCATE 15,24:INPUT" ENTER  ",en$
+880 Goto 60
+890 Pen 1:Print:Print"Le marchand :":Pen 2:Print:Print"Parfait !":Print:Print"Vous venez d'acheter un morceau":Print"d'histoire... ou au moins un":Print"morceau de terre cuite rempli de lait."
+895 PEN 3:LOCATE 15,24:INPUT" ENTER  ",en$
+897 POKE &7000,2:Goto 60
+
+900 CLS:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+910 Pen 1:Print:Print"Le marchand :":pen 2:Print:Print"J'aime les clients qui ne se sauvent":Print"pas apres un achat.":Print:Print"Vous, je vous sens... curieux.
+920 Pen 1:Print:Print"Vous:":pen 3:Print:Print"Curieux, oui... mais pas au point":Print"de gouter vos epices suspectes !"
+930 Pen 1:Print:Print"Le marchand :":pen 2:Print:Print"Dommage, c'est gratuit...":Print"et legerement hallucinogene."
+940 PEN 3:LOCATE 15,24:INPUT" ENTER  ",en$
+950 POKE &7000,3:Goto 60
+
+1000 CLS:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+1010 Pen 1:Print:Print"Le marchand :":pen 2:Print:Print"Vous savez...":Print"derriere mes poteries, je vends":Print"aussi... d'autres choses."
+1020 Pen 1:Print:Print"Vous:":pen 3:Print:Print"Des t-shirts ";Chr$(34);"I Love Qattara";Chr$(34);" ?"
+1030 Pen 1:Print:Print"Le marchand :":pen 2:Print:Print"Plus rare... plus ancien...":Print"et plus interdit."
+1040 Pen 1:Print:Print"Vous:":pen 3:Print:Print"Ah... comme mes photos de vacances":Print "en maillot de bain ?"
+1050 PEN 3:LOCATE 15,24:INPUT" ENTER  ",en$
+1060 POKE &7000,4:Goto 60
+
+1100 IF PEEK(&7001)=0 then goto 1120
+1110 IF PEEK(&7001)=1 then goto 1200
+
+1120 CLS:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+1130 Pen 1:Print:Print"Le marchand :":pen 2:Print:Print"J'ai trouve dans le desert 3 petites":Print"sculptures en forme de scarabees.":Print"Jaune, Orange, Marron..."
+1140 Pen 1:Print:Print"Vous:":pen 3:Print:Print"Parfait, j'aime beaucoup les objets":Print"qu'on n'ose pas poser sur la table":Print"du salon."
+1150 Pen 1:Print:Print"Le marchand :":pen 2:Print:Print"On raconte qu'ils ouvrent des portes":Print"que nous n'etes pas pret a franchir."
+1160 Pen 1:Print:Print"Vous:":pen 3:Print:Print"Comme celle des WC de ma tante !"
+1170 PEN 3:LOCATE 15,24:INPUT" ENTER  ",en$
+1180 CLS:Pen 1:Print:Print"Le marchand :":pen 2:Print:Print"Mais je ne les cederai pas contre":Print"de l'or, ni contre toutes les":Print"poteries du souk !"
+1190 PRINT:PRINT"Non... Il me faut mon tresor perdu :":PRINT"Un minuscule fragment de papyrus que":Print"j'ai egare dans le desert."
+1194 PRINT:PRINT"Ramene-le moi et ces 3 scarabees":Print"seront tiens...":PRINT:Print"Mais attention, si tu tardes trop,":Print"je risque de les echanger contre":Print"une brochette de falafels !"
+1196 PEN 3:LOCATE 15,24:INPUT" ENTER  ",en$
+1198 Goto 60
+
+1200 CLS:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+1210 Pen 1:Print:Print"Le marchand :":pen 2:Print:Print"Par les moustaches d'Anubis !!!":PRINT:Print"Vous avez trouve mon Papyrus.":Print"Celui que j'avais perdu dans le":Print"desert lors d'une tempete de sable !"
+1220 Print:PRint"On se moquait de moi parce qu'il":Print"est minuscule, mais il contient un":Print"hieroglyphe secret..."
+1230 Print:Print"A moins que ce ne soit une tache de":Print"the, je ne sais plus."
+1240 Print:Print"Quoi qu'il en soit, je vous l'echange":Print"contre mes trois scarabees, etranger !"
+1250 Pen 1:Print:Print"Vous:":pen 3:Print:Print"Affaire conclue !"
+1260 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+1270 Poke &7000,5:Goto 60
+
+1300 CLS:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+1310 Pen 1:Print:Print"Le marchand :":pen 2:Print:Print"Ah, vous voila encore !"
+1320 Print:Print"Vous voulez vraiment vider ma boutique,":Print"hein ?":Print:Print"Tout est vendu, il ne me reste que":Print"ma chevre, Sekhmeeeet...":Print:Print"Mais son lait est si puissant qu'on":Print"pourrait ressusciter une momie !"
+1330 Print"Impossible de m'en separer."
+1340 Print:Print"Revenez demain...":PRint:PRint"             ...ou dans un siecle !"
+1350 PEN 3:LOCATE 15,24:INPUT" ENTER  ",en$
+1360 Goto 60

@@ -1,0 +1,254 @@
+*
+* Le secret d'Anubis
+*
+* (c) 2025, Eric Cubizolle (TITAN)
+* (c) 2025, Brutal Deluxe Software
+*
+
+	ext	PYRAMID9_str100
+	ext	PYRAMID9_str200
+	ext	PYRAMID9_str1000
+	ext	PYRAMID9_str1100
+	ext	PYRAMID9_str1200
+	ext	PYRAMID9_str2000
+	ext	PYRAMID9_str3000
+	ext	PYRAMID9_str3050
+
+PYRAMID9	@LOAD	#pPYRAMID9
+
+PYRAMID9_60	@SHOWPIC
+
+PYRAMID9_100	lda	VAR_A
+	ldx	#12
+	ldy	#8
+	jsr	PYRAMID9_PRINT
+
+	lda	VAR_B
+	ldx	#13
+	ldy	#8
+	jsr	PYRAMID9_PRINT
+
+	lda	VAR_C
+	ldx	#12
+	ldy	#10
+	jsr	PYRAMID9_PRINT
+
+	lda	VAR_D
+	ldx	#13
+	ldy	#10
+	jsr	PYRAMID9_PRINT
+
+	lda	VAR_E
+	ldx	#13
+	ldy	#13
+	jsr	PYRAMID9_PRINT
+	
+*---
+
+PYRAMID9_110	@WINDOW	#1;#theWINDOW1
+	@PRINT	#1;PYRAMID9_str100
+	@PRINT	#0;PYRAMID9_str200
+
+PYRAMID9_LOOP	@INKEY
+*	@DEBUG
+	cmp	#'4'
+	bne	PYRAMID9_200
+	jmp	PYRAMID9_300
+PYRAMID9_200	cmp	#'5'
+	bne	PYRAMID9_210
+	jmp	PYRAMID9_400
+PYRAMID9_210	cmp	#'6'
+	bne	PYRAMID9_220
+	jmp	PYRAMID9_500
+PYRAMID9_220	cmp	#'7'
+	bne	PYRAMID9_230
+	jmp	PYRAMID9_600
+PYRAMID9_230	cmp	#'8'
+	bne	PYRAMID9_240
+	jmp	PYRAMID9_700
+PYRAMID9_240	cmp	#'0'
+	bne	PYRAMID9_250
+	jmp	PYRAMIDA
+PYRAMID9_250	cmp	#'1'
+	bne	PYRAMID9_260
+	jmp	PYRAMID5
+PYRAMID9_260	cmp	#'2'
+	bne	PYRAMID9_270
+	jmp	PYRAMID9_1000
+PYRAMID9_270	cmp	#'3'
+	bne	PYRAMID9_LOOP
+	jmp	PYRAMID9_1100
+*---
+
+PYRAMID9_300	inc	VAR_A
+	@SOUND	#1;#100;#0
+	lda	VAR_A
+	cmp	#3
+	bcc	PYRAMID9_310
+	beq	PYRAMID9_310
+	stz	VAR_A
+PYRAMID9_310	lda	VAR_A
+	ldx	#12
+	ldy	#8
+	jsr	PYRAMID9_PRINT
+*	@LOCATE	#0;#12;#8
+*	@PEN	#0;VAR_A
+*	@PAPER	#0;#2*3
+*	@PRINT	#0;strA5
+	jmp	PYRAMID9_800
+
+PYRAMID9_400	inc	VAR_B
+	@SOUND	#1;#120;#0
+	lda	VAR_B
+	cmp	#3
+	bcc	PYRAMID9_410
+	beq	PYRAMID9_410
+	stz	VAR_B
+PYRAMID9_410	lda	VAR_B
+	ldx	#13
+	ldy	#8
+	jsr	PYRAMID9_PRINT
+*	@LOCATE	#0;#13;#8
+*	@PEN	#0;VAR_B
+*	@PAPER	#0;#2*3
+*	@PRINT	#0;strA5
+	jmp	PYRAMID9_800
+
+PYRAMID9_500	inc	VAR_C
+	@SOUND	#1;#140;#0
+	lda	VAR_C
+	cmp	#3
+	bcc	PYRAMID9_510
+	beq	PYRAMID9_510
+	stz	VAR_C
+PYRAMID9_510	lda	VAR_C
+	ldx	#12
+	ldy	#10
+	jsr	PYRAMID9_PRINT
+*	@LOCATE	#0;#12;#10
+*	@PEN	#0;VAR_C
+*	@PAPER	#0;#2*3
+*	@PRINT	#0;strA5
+	jmp	PYRAMID9_800
+
+PYRAMID9_600	inc	VAR_D
+	@SOUND	#1;#160;#0
+	lda	VAR_D
+	cmp	#3
+	bcc	PYRAMID9_610
+	beq	PYRAMID9_610
+	stz	VAR_D
+PYRAMID9_610	lda	VAR_D
+	ldx	#13
+	ldy	#10
+	jsr	PYRAMID9_PRINT
+*	@LOCATE	#0;#13;#10
+*	@PEN	#0;VAR_D
+*	@PAPER	#0;#2*3
+*	@PRINT	#0;strA5
+	jmp	PYRAMID9_800
+
+PYRAMID9_700	inc	VAR_E
+	@SOUND	#1;#180;#0
+	lda	VAR_E
+	cmp	#3
+	bcc	PYRAMID9_710
+	beq	PYRAMID9_710
+	stz	VAR_E
+PYRAMID9_710	lda	VAR_E
+	ldx	#13
+	ldy	#13
+	jsr	PYRAMID9_PRINT
+*	@LOCATE	#0;#13;#13
+*	@PEN	#0;VAR_E
+*	@PAPER	#0;#2*3
+*	@PRINT	#0;strA5
+	jmp	PYRAMID9_800
+
+PYRAMID9_800	lda	VAR_A
+	cmp	#1
+	bne	PYRAMID9_810
+	lda	VAR_B
+	cmp	#3
+	bne	PYRAMID9_810
+	lda	VAR_C
+	cmp	#3
+	bne	PYRAMID9_810
+	lda	VAR_D
+	cmp	#1
+	bne	PYRAMID9_810
+	lda	VAR_E
+	cmp	#0
+	bne	PYRAMID9_810
+
+	@SOUND	#1;#300;#0
+	@SOUND	#1;#250;#0
+	@SOUND	#1;#200;#0
+	@SOUND	#1;#150;#0
+	@SOUND	#1;#100;#0
+	@SOUND	#1;#50;#0
+	jmp	PYRAMID9_2000
+
+PYRAMID9_810	jmp	PYRAMID9_LOOP
+
+PYRAMID9_1000	lda	PEEK_7001
+	cmp	#TRUE
+	beq	PYRAMID9_1200
+	
+	@PRINT	#0;PYRAMID9_str1000
+	@INKEY
+	jmp	PYRAMID9_60
+
+PYRAMID9_1100	@PRINT	#0;PYRAMID9_str1100
+	@INKEY
+	jmp	PYRAMID9_60
+
+PYRAMID9_1200	@PRINT	#0;PYRAMID9_str1200
+	@INKEY
+	jmp	PYRAMID9_60
+
+PYRAMID9_2000	lda	PEEK_7001
+	cmp	#FALSE
+	beq	PYRAMID9_3000
+	
+	@PRINT	#0;PYRAMID9_str2000
+	@INKEY
+	jmp	PYRAMID9_60
+
+PYRAMID9_3000	@PRINT	#0;PYRAMID9_str3000
+	@INKEY
+	@PRINT	#0;PYRAMID9_str3050
+	@INKEY
+	
+	lda	#TRUE
+	sta	PEEK_7001
+	jmp	PYRAMID9_60
+
+*---
+
+PYRAMID9_PRINT	clc
+	adc	#4
+	pha
+	
+	lda	#0
+	jsr	LOCATE
+
+	lda	#0
+	plx
+	jsr	PEN
+	
+	@PAPER	#0;#2*3
+	@PRINT	#0;strA5
+	rts
+
+*---
+
+pPYRAMID9	strl	'@/data/PYRAMID9.lz4'
+
+strA5	hex	A500	; the bullet character
+
+VAR_A	dw	2
+VAR_B	dw	2
+VAR_C	dw	2
+VAR_D	dw	2
+VAR_E	dw	2

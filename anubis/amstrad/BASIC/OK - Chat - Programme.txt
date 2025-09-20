@@ -1,0 +1,112 @@
+10 ' CHAT
+20 MODE 1:BORDER 0:P=0
+30 FOR i=0 TO 3:INK i,0:NEXT i
+40 MEMORY &3FFF
+50 LOAD"Chat.cmp"
+60 FOR i=0 TO 3:INK i,0:NEXT i
+70 POKE &A634,&C8:POKE &A635,0:POKE &A636,0:CALL &A60B
+80 POKE &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+100 WINDOW #1,25,36,4,19
+110 INK 0,0:INK 1,3:INK 2,15:INK 3,24
+120 PEN #1,3:PRINT #1:PRINT #1,"Rue Bastet.":PRINT #1:PRINT #1,"Des maisons":PRINT #1,"s'elevent,":PRINT #1,"et sur"
+125 PRINT #1,"leurs":PRINT #1,"toits,":PRINT #1,"des chats":PRINT #1,"egyptiens":PRINT #1,"regnent en":PRINT #1,"pharaons":PRINT #1,"moustachus."
+
+130 LOCATE 13,20:PEN 2:PRINT"QUE FAITES-VOUS ?"
+140 PEN 3:LOCATE 4,21:PRINT "1-NORD      2-SUD      3-Examiner"
+150 PEN 2:LOCATE 4,22:PRINT "4-S'approcher du chat de gauche" 
+160 PEN 3:LOCATE 4,23:PRINT "5-S'approcher du chat de droite"
+170 PEN 2:LOCATE 4,24:PRINT "6-Escalader les toits"
+
+200 k$=INKEY$
+210 IF k$="1" THEN GOTO 300
+220 IF k$="2" THEN RUN"Caire.bas"
+230 IF k$="3" THEN GOTO 400
+240 IF k$="4" THEN GOTO 700
+250 IF k$="5" THEN GOTO 500
+260 IF k$="6" THEN GOTO 600
+270 IF k$<"1"OR k$>"6" THEN GOTO 200
+
+300 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+310 PEN 3:PRINT:PRINT"Vous essayez d'avancer vers le NORD..."
+320 PEN 1:PRINT:PRINT"Mais une horde de chats egyptiens se":PRINT"dresse devant vous, moustaches au":PRINT"garde-a-vous !"
+330 PEN 2:PRINT:PRINT"Impossible de passer :":Print:PRINT"C'est comme si ces boules de poils":Print"gardaient un secret millenaire."
+340 PEN 3:PRINT:PRINT"Vous reculez, battu par une armee de":PRINT"ronrons..."
+350 Pen 2:Print:Print"Oui, mais des ronrons qui sonnent comme":Print"un ";Chr$(34);"NON";Chr$(34);" ferme et velu, et croyez-moi,":Print"c'est plus intimidant qu'une porte":Print"en pierre gardee par un sphinx":Print"grincheux."
+360 LOCATE 5,17:Pen 1:Print"NON"
+370 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+380 GOTO 60
+
+400 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+410 PEN 3:PRINT:PRint"Vous examinez la scene."
+420 PEN 2:PRINT:PRINT"Une ruelle tordue, des maisons":Print"bancales, et sur les toits...":Print"des chats egyptiens noirs."
+430 PEN 3:PRINT:Print"Majestueux, elances, et clairement:":PRINT"plus intelligents que vous."
+440 Pen 1:Print:Print"Ils vous fixent comme si vous veniez":Print"de marcher sur leur territoire sacre."
+450 Pen 2:Print:Print"Vous esperiez des indices ?":Print"Vous recoltez du mepris felin et":Print"une lecon silencieuse :"
+460 PEn 1:Print:Print"     Ici, c'est eux les boss !"
+470 PEn 3:Print:Print"Mais bon, versez du lait et vous aurez":Print"paye votre protection. Vous serez":Print"alors tolere...":Pen 2:Print"       ...jusqu'a la prochaine tournee !"
+480 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+490 GOTO 60
+
+500 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+510 PEN 3:PRINT:PRint"Vous approchez du chat de droite,":Print"l'air confiant..."
+520 Pen 1:Print:Print"            Erreur fatale."
+530 Pen 2:Print:Print"La creature vous fixe, l'oeil brillant":Print"comme une amulette maudite, puis decide":Print"soudain que votre visage est un":Print"griffoir."
+540 Pen 3:Print:PRint"Le chat saute de son perchoir":Print"et en une seconde, vous submerge de":Print"coups de griffes, de miaulements":Print"furieux et de poils volants."
+550 Pen 2:Print:Print"On racontera plus tard qu'un aventurier":Print"inconnu a fini en offrande feline,":Print"empaquete dans des poils de chat":Print"plutot que dans des bandelettes."
+560 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+570 Run "Mort.bas"
+
+600 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+610 PEn 3:PRint:Print"Comme tu sembles totalement demuni de":Print"bon sens, tu choisis de grimper sur des":Print"tuiles instables sous un soleil qui":Print"pourrait faire fondre un chameau."
+620 PEn 1:Print:Print"Tu t'agrippes a une gouttiere rouillee,":Print"qui proteste bruyamment qu'elle n'a":Print"pas signe pour ca.
+630 Pen 2:Print:PRint"Ton pied glisse sur une tuile qui,":Print"visiblement, avait des projets de":Print"retraite anticipee."
+640 Pen 3:Print:Print"Et apres une serie de contorsions":Print"dignes d'un ballet tragique, tu te":Print"retrouves a la case depart. Tu ne":Print"touches pas 20.000 Francs."
+650 Pen 2:Print:Print "Juste un peu de poussiere,":Print"beaucoup de regrets, et le regard":Print"moqueur d'un pigeon qui t'a vu tomber."
+680 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+690 GOTO 60
+         
+700 IF Peek(&7002)=1 THEN GOTO 800
+710 IF Peek(&7002)=0 and Peek(&7000)<2 THEN GOTO 900
+720 IF Peek(&7002)=0 and Peek(&7000)>=2 THEN GOTO 1100
+
+800 CLS:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+810 Pen 3:Print:Print"Vous vous approchez a nouveau du chat":Print"Mais ce dernier semble vous dire :"
+820 PEn 2:Print:Print Chr$(34);"Ah... c'est ENCORE toi !"
+830 Pen 1:Print:Print"Mais regarde-moi bien :":PRINT:Print"J'ai le ventre plein, la pelote ne":Print"m'amuse plus, et mes griffes sont en":Print"RTT."
+840 PEn 2:Print:Print"Tu veux quoi, une medaille ? Un calin ?"
+850 Pen 3:Print:Print"T'as eu la pelote, c'est deja plus":Print"que ce que la plupart obtiennent."
+860 Pen 2:Print:Print"Maintenant, circule. Le soleil chauffe":Print"mon flanc gauche et j'ai un rendez-vous":Print"avec une sieste de niveau olympique.";Chr$(34)
+870 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+880 GOTO 60  
+
+900 CLS:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+910 Pen 3:Print:Print"Le chat est la. Immobile.":Print"Trop immobile..."
+920 Pen 1:Print:Print"Son regard est vide, presque tragique.":Print"Son ventre gargouille."
+930 Pen 2:Print:Print"Vous vous approchez, pris d'un elan de":Print"compassion. Mais il ne bouge toujours":Print"pas."
+940 Print:Print"Pas un clignement. Juste ce regard":Print"fixe, accusateur, comme s'il attendait":Print"que vous lui offriez un festin royal."
+950 Pen 3:Print:Print"Mais vous n'avez rien...":Print"Rien pour le nourrir...":Print"Pas meme une croquette perimee..."
+960 PEN 3:LOCATE 15,24:INPUT" ENTER  ",en$
+970 Goto 60
+
+1100 CLS:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+1110 Pen 3:Print:Print"Le chat de gauche vous fixe,":Print"le regard profond, presque solennel."
+1115 Pen 2:Print:Print"Il a l'air affame.":Print"Son ventre grogne comme un tambour":Print"de guerre miniature."
+1120 Pen 1:Print:Print"Ses moustaches fremissent a chaque":Print"oscillation de la jarre que vous avez":Print"rapportee du souk."
+1130 PEn 3:Print:Print"Il a flaire le lait a l'intérieur, sans":Print"l'ombre d'un doute."
+1140 Pen 1:Locate 1,17:Input"  Lui donnez-vous du lait (O/N) ";A$
+1150 If UPPER$(A$)="O" then Goto 1200
+1160 If UPPER$(A$)="N" then Goto 1300
+1170 If UPPER$(A$)<>"O" OR UPPER$(A$)<>"N" then goto 1140
+
+1200 CLS:Pen 3:Print"Le chat hume le lait, l'air digne,":Print"presque hautain."
+1210 PEn 2:Print:Print"Vous lui tendez la jarre.":Print"Il s'approche, lape avec grace...":Print"Et dans un soupir de satisfaction,":Print"laisse tomber la pelote de laine":Print"qu'il tenait entre ses griffes."
+1220 Pen 1:Print:Print"Vous la ramassez, triomphant."
+1230 PEn 3:Print:PRint"Et dans son regard, un eclat malicieux.":Print"Ah, si le lait pouvait flatter autant":Print"que les mots, vous seriez roi des":Print"souks, cher donateur."
+1240 PEn 2:Print:Print"Mais vous avez gagne une pelotte.":Print"Et lui son repas. Deux esprits ruses,":Print"un echange equitable.":Pen 1:Print:Print"Morale : tout flatteur obtient pelote,":Print"pourvu qu'il ait du lait !"
+1250 PEN 3:LOCATE 15,24:INPUT" ENTER  ",en$
+1260 Poke &7002,1:GOTO 60
+
+1300 PEn 2:PRint:PRint"Le chat vous regarde, le ventre vide":Print"et l'espoir brise. Pas de lait ?":Print"Il vous classe dans la categorie :":PEn 1:Print "         ";Chr$(34);"humains inutiles";Chr$(34)
+1310 PEN 3:LOCATE 15,24:INPUT" ENTER  ",en$
+1320 GOTO 60

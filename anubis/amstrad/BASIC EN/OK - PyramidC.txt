@@ -1,0 +1,534 @@
+WINDOW #1,25,36,4,19
+INK 0,0
+INK 1,3
+INK 2,15
+INK 3,24
+	dfb	ePEN,#1,3
+	asc	''0d
+	asc	'Chamber'0d
+	asc	'of'0d
+	asc	'Lost'0d
+	asc	'Songs:'0d
+	asc	'The peak'0d
+	asc	'sings'0d
+	asc	'under'0d
+	asc	'ancient'0d
+	asc	'tones.'0d
+
+	dfb	eLOCATE,13,20
+	dfb	ePEN,2
+	asc	'WHAT WILL YOU DO?'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,4,22
+	asc	' Press keys
+ 0-1-2-3-4-5-6-7'0d
+	dfb	ePEN,2
+	dfb	eLOCATE,4,24
+	asc	' 8-Examine       9-Go down'0d
+
+k$=INKEY$
+IF k$='0d0'0d THEN SOUND 1,284,60
+SOUND 1,190,60
+SOUND 1,213,60
+SOUND 1,190,60
+SOUND 1,159,60
+SOUND 1,190,60
+SOUND 1,119,60
+SOUND 1,127,60
+SOUND 1,142,60
+SOUND 1,159,60
+SOUND 1,142,60
+SOUND 1,190,60
+GOTO 200
+IF k$='0d1'0d THEN SOUND 1,284,60
+GOTO 300
+IF k$='0d2'0d THEN SOUND 2,213,60
+GOTO 200
+IF k$='0d3'0d THEN SOUND 3,190,60
+GOTO 200
+IF k$='0d4'0d THEN SOUND 1,159,60
+GOTO 200
+IF k$='0d5'0d THEN SOUND 2,142,60
+GOTO 200
+IF k$='0d6'0d THEN SOUND 3,127,60
+GOTO 200
+IF k$='0d7'0d THEN SOUND 1,119,60
+GOTO 200
+IF k$='0d8'0d THEN GOTO 2000
+IF k$='0d9'0d THEN RUN'0dPyramidA.bas'0d
+IF k$<'0d0'0d OR k$>'0d9'0d THEN GOTO 200
+
+k$=INKEY$
+IF k$='0d0'0d THEN SOUND 1,284,60
+SOUND 1,190,60
+SOUND 1,213,60
+SOUND 1,190,60
+SOUND 1,159,60
+SOUND 1,190,60
+SOUND 1,119,60
+SOUND 1,127,60
+SOUND 1,142,60
+SOUND 1,159,60
+SOUND 1,142,60
+SOUND 1,190,60
+GOTO 200
+IF k$='0d1'0d THEN SOUND 1,284,60
+GOTO 200
+IF k$='0d2'0d THEN SOUND 2,213,60
+GOTO 200
+IF k$='0d3'0d THEN SOUND 3,190,60
+GOTO 400
+IF k$='0d4'0d THEN SOUND 1,159,60
+GOTO 200
+IF k$='0d5'0d THEN SOUND 2,142,60
+GOTO 200
+IF k$='0d6'0d THEN SOUND 3,127,60
+GOTO 200
+IF k$='0d7'0d THEN SOUND 1,119,60
+GOTO 200
+IF k$='0d8'0d THEN GOTO 2000
+IF k$='0d9'0d THEN RUN'0dPyramidA.bas'0d
+IF k$<'0d0'0d OR k$>'0d9'0d THEN GOTO 300
+
+k$=INKEY$
+IF k$='0d0'0d THEN SOUND 1,284,60
+SOUND 1,190,60
+SOUND 1,213,60
+SOUND 1,190,60
+SOUND 1,159,60
+SOUND 1,190,60
+SOUND 1,119,60
+SOUND 1,127,60
+SOUND 1,142,60
+SOUND 1,159,60
+SOUND 1,142,60
+SOUND 1,190,60
+GOTO 200
+IF k$='0d1'0d THEN SOUND 1,284,60
+GOTO 200
+IF k$='0d2'0d THEN SOUND 2,213,60
+GOTO 500
+IF k$='0d3'0d THEN SOUND 3,190,60
+GOTO 200
+IF k$='0d4'0d THEN SOUND 1,159,60
+GOTO 200
+IF k$='0d5'0d THEN SOUND 2,142,60
+GOTO 200
+IF k$='0d6'0d THEN SOUND 3,127,60
+GOTO 200
+IF k$='0d7'0d THEN SOUND 1,119,60
+GOTO 200
+IF k$='0d8'0d THEN GOTO 2000
+IF k$='0d9'0d THEN RUN'0dPyramidA.bas'0d
+IF k$<'0d0'0d OR k$>'0d9'0d THEN GOTO 400
+
+k$=INKEY$
+IF k$='0d0'0d THEN SOUND 1,284,60
+SOUND 1,190,60
+SOUND 1,213,60
+SOUND 1,190,60
+SOUND 1,159,60
+SOUND 1,190,60
+SOUND 1,119,60
+SOUND 1,127,60
+SOUND 1,142,60
+SOUND 1,159,60
+SOUND 1,142,60
+SOUND 1,190,60
+GOTO 200
+IF k$='0d1'0d THEN SOUND 1,284,60
+GOTO 200
+IF k$='0d2'0d THEN SOUND 2,213,60
+GOTO 200
+IF k$='0d3'0d THEN SOUND 3,190,60
+GOTO 600
+IF k$='0d4'0d THEN SOUND 1,159,60
+GOTO 200
+IF k$='0d5'0d THEN SOUND 2,142,60
+GOTO 200
+IF k$='0d6'0d THEN SOUND 3,127,60
+GOTO 200
+IF k$='0d7'0d THEN SOUND 1,119,60
+GOTO 200
+IF k$='0d8'0d THEN GOTO 2000
+IF k$='0d9'0d THEN RUN'0dPyramidA.bas'0d
+IF k$<'0d0'0d OR k$>'0d9'0d THEN GOTO 500
+
+k$=INKEY$
+IF k$='0d0'0d THEN SOUND 1,284,60
+SOUND 1,190,60
+SOUND 1,213,60
+SOUND 1,190,60
+SOUND 1,159,60
+SOUND 1,190,60
+SOUND 1,119,60
+SOUND 1,127,60
+SOUND 1,142,60
+SOUND 1,159,60
+SOUND 1,142,60
+SOUND 1,190,60
+GOTO 200
+IF k$='0d1'0d THEN SOUND 1,284,60
+GOTO 200
+IF k$='0d2'0d THEN SOUND 2,213,60
+GOTO 200
+IF k$='0d3'0d THEN SOUND 3,190,60
+GOTO 200
+IF k$='0d4'0d THEN SOUND 1,159,60
+GOTO 700
+IF k$='0d5'0d THEN SOUND 2,142,60
+GOTO 200
+IF k$='0d6'0d THEN SOUND 3,127,60
+GOTO 200
+IF k$='0d7'0d THEN SOUND 1,119,60
+GOTO 200
+IF k$='0d8'0d THEN GOTO 2000
+IF k$='0d9'0d THEN RUN'0dPyramidA.bas'0d
+IF k$<'0d0'0d OR k$>'0d9'0d THEN GOTO 600
+
+k$=INKEY$
+IF k$='0d0'0d THEN SOUND 1,284,60
+SOUND 1,190,60
+SOUND 1,213,60
+SOUND 1,190,60
+SOUND 1,159,60
+SOUND 1,190,60
+SOUND 1,119,60
+SOUND 1,127,60
+SOUND 1,142,60
+SOUND 1,159,60
+SOUND 1,142,60
+SOUND 1,190,60
+GOTO 200
+IF k$='0d1'0d THEN SOUND 1,284,60
+GOTO 200
+IF k$='0d2'0d THEN SOUND 2,213,60
+GOTO 200
+IF k$='0d3'0d THEN SOUND 3,190,60
+GOTO 800
+IF k$='0d4'0d THEN SOUND 1,159,60
+GOTO 200
+IF k$='0d5'0d THEN SOUND 2,142,60
+GOTO 200
+IF k$='0d6'0d THEN SOUND 3,127,60
+GOTO 200
+IF k$='0d7'0d THEN SOUND 1,119,60
+GOTO 200
+IF k$='0d8'0d THEN GOTO 2000
+IF k$='0d9'0d THEN RUN'0dPyramidA.bas'0d
+IF k$<'0d0'0d OR k$>'0d9'0d THEN GOTO 700
+
+k$=INKEY$
+IF k$='0d0'0d THEN SOUND 1,284,60
+SOUND 1,190,60
+SOUND 1,213,60
+SOUND 1,190,60
+SOUND 1,159,60
+SOUND 1,190,60
+SOUND 1,119,60
+SOUND 1,127,60
+SOUND 1,142,60
+SOUND 1,159,60
+SOUND 1,142,60
+SOUND 1,190,60
+GOTO 200
+IF k$='0d1'0d THEN SOUND 1,284,60
+GOTO 200
+IF k$='0d2'0d THEN SOUND 2,213,60
+GOTO 200
+IF k$='0d3'0d THEN SOUND 3,190,60
+GOTO 200
+IF k$='0d4'0d THEN SOUND 1,159,60
+GOTO 200
+IF k$='0d5'0d THEN SOUND 2,142,60
+GOTO 200
+IF k$='0d6'0d THEN SOUND 3,127,60
+GOTO 200
+IF k$='0d7'0d THEN SOUND 1,119,60
+GOTO 900
+IF k$='0d8'0d THEN GOTO 2000
+IF k$='0d9'0d THEN RUN'0dPyramidA.bas'0d
+IF k$<'0d0'0d OR k$>'0d9'0d THEN GOTO 800
+
+k$=INKEY$
+IF k$='0d0'0d THEN SOUND 1,284,60
+SOUND 1,190,60
+SOUND 1,213,60
+SOUND 1,190,60
+SOUND 1,159,60
+SOUND 1,190,60
+SOUND 1,119,60
+SOUND 1,127,60
+SOUND 1,142,60
+SOUND 1,159,60
+SOUND 1,142,60
+SOUND 1,190,60
+GOTO 200
+IF k$='0d1'0d THEN SOUND 1,284,60
+GOTO 200
+IF k$='0d2'0d THEN SOUND 2,213,60
+GOTO 200
+IF k$='0d3'0d THEN SOUND 3,190,60
+GOTO 200
+IF k$='0d4'0d THEN SOUND 1,159,60
+GOTO 200
+IF k$='0d5'0d THEN SOUND 2,142,60
+GOTO 200
+IF k$='0d6'0d THEN SOUND 3,127,60
+GOTO 1000
+IF k$='0d7'0d THEN SOUND 1,119,60
+GOTO 200
+IF k$='0d8'0d THEN GOTO 2000
+IF k$='0d9'0d THEN RUN'0dPyramidA.bas'0d
+IF k$<'0d0'0d OR k$>'0d9'0d THEN GOTO 900
+
+k$=INKEY$
+IF k$='0d0'0d THEN SOUND 1,284,60
+SOUND 1,190,60
+SOUND 1,213,60
+SOUND 1,190,60
+SOUND 1,159,60
+SOUND 1,190,60
+SOUND 1,119,60
+SOUND 1,127,60
+SOUND 1,142,60
+SOUND 1,159,60
+SOUND 1,142,60
+SOUND 1,190,60
+GOTO 200
+IF k$='0d1'0d THEN SOUND 1,284,60
+GOTO 200
+IF k$='0d2'0d THEN SOUND 2,213,60
+GOTO 200
+IF k$='0d3'0d THEN SOUND 3,190,60
+GOTO 200
+IF k$='0d4'0d THEN SOUND 1,159,60
+GOTO 200
+IF k$='0d5'0d THEN SOUND 2,142,60
+GOTO 1100
+IF k$='0d6'0d THEN SOUND 3,127,60
+GOTO 200
+IF k$='0d7'0d THEN SOUND 1,119,60
+GOTO 200
+IF k$='0d8'0d THEN GOTO 2000
+IF k$='0d9'0d THEN RUN'0dPyramidA.bas'0d
+IF k$<'0d0'0d OR k$>'0d9'0d THEN GOTO 1000
+
+k$=INKEY$
+IF k$='0d0'0d THEN SOUND 1,284,60
+SOUND 1,190,60
+SOUND 1,213,60
+SOUND 1,190,60
+SOUND 1,159,60
+SOUND 1,190,60
+SOUND 1,119,60
+SOUND 1,127,60
+SOUND 1,142,60
+SOUND 1,159,60
+SOUND 1,142,60
+SOUND 1,190,60
+GOTO 200
+IF k$='0d1'0d THEN SOUND 1,284,60
+GOTO 200
+IF k$='0d2'0d THEN SOUND 2,213,60
+GOTO 200
+IF k$='0d3'0d THEN SOUND 3,190,60
+GOTO 200
+IF k$='0d4'0d THEN SOUND 1,159,60
+GOTO 1200
+IF k$='0d5'0d THEN SOUND 2,142,60
+GOTO 200
+IF k$='0d6'0d THEN SOUND 3,127,60
+GOTO 200
+IF k$='0d7'0d THEN SOUND 1,119,60
+GOTO 200
+IF k$='0d8'0d THEN GOTO 2000
+IF k$='0d9'0d THEN RUN'0dPyramidA.bas'0d
+IF k$<'0d0'0d OR k$>'0d9'0d THEN GOTO 1100
+
+k$=INKEY$
+IF k$='0d0'0d THEN SOUND 1,284,60
+SOUND 1,190,60
+SOUND 1,213,60
+SOUND 1,190,60
+SOUND 1,159,60
+SOUND 1,190,60
+SOUND 1,119,60
+SOUND 1,127,60
+SOUND 1,142,60
+SOUND 1,159,60
+SOUND 1,142,60
+SOUND 1,190,60
+GOTO 200
+IF k$='0d1'0d THEN SOUND 1,284,60
+GOTO 200
+IF k$='0d2'0d THEN SOUND 2,213,60
+GOTO 200
+IF k$='0d3'0d THEN SOUND 3,190,60
+GOTO 200
+IF k$='0d4'0d THEN SOUND 1,159,60
+GOTO 200
+IF k$='0d5'0d THEN SOUND 2,142,60
+GOTO 1300
+IF k$='0d6'0d THEN SOUND 3,127,60
+GOTO 200
+IF k$='0d7'0d THEN SOUND 1,119,60
+GOTO 200
+IF k$='0d8'0d THEN GOTO 2000
+IF k$='0d9'0d THEN RUN'0dPyramidA.bas'0d
+IF k$<'0d0'0d OR k$>'0d9'0d THEN GOTO 1200
+
+k$=INKEY$
+IF k$='0d0'0d THEN SOUND 1,284,60
+SOUND 1,190,60
+SOUND 1,213,60
+SOUND 1,190,60
+SOUND 1,159,60
+SOUND 1,190,60
+SOUND 1,119,60
+SOUND 1,127,60
+SOUND 1,142,60
+SOUND 1,159,60
+SOUND 1,142,60
+SOUND 1,190,60
+GOTO 200
+IF k$='0d1'0d THEN SOUND 1,284,60
+GOTO 200
+IF k$='0d2'0d THEN SOUND 2,213,60
+GOTO 200
+IF k$='0d3'0d THEN SOUND 3,190,60
+GOTO 1400
+IF k$='0d4'0d THEN SOUND 1,159,60
+GOTO 200
+IF k$='0d5'0d THEN SOUND 2,142,60
+GOTO 200
+IF k$='0d6'0d THEN SOUND 3,127,60
+GOTO 200
+IF k$='0d7'0d THEN SOUND 1,119,60
+GOTO 200
+IF k$='0d8'0d THEN GOTO 2000
+IF k$='0d9'0d THEN RUN'0dPyramidA.bas'0d
+IF k$<'0d0'0d OR k$>'0d9'0d THEN GOTO 1300
+
+IF PEEK(&BE82)=0 THEN GOTO 1500
+MODE 1
+INK 0,0
+INK 1,6
+INK 2,15
+INK 3,24
+	dfb	ePEN,3
+	asc	'You replay the melody well.'0d
+	asc	'Yes, again...'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'Congrats, you might be the'0d
+	asc	'Beethoven of pyramids.'0d
+	dfb	ePEN,3
+	asc	''0d
+	asc	'Reminder
+ console is not a'0d
+	asc	'magic key dispenser!'0d
+	dfb	ePEN,1
+	asc	''0d
+	asc	'A click rings, the trapdoor opens'0d
+	asc	'but sadly stays empty.'0d
+	dfb	ePEN,3
+	asc	''0d
+	asc	'Remember, you already took the'0d
+	asc	'Ankh-shaped key!'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'Apparently only your memory'0d
+	asc	'decided to take a key...'0d
+	dfb	ePEN,1
+	dfb	eLOCATE,1,19
+	asc	'Nice, huh?'0d
+	asc	'Of course, it'27's me!'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,15,25
+INPUT '0d ENTER  '0d,en$
+GOTO 60
+
+MODE 1
+INK 0,0
+INK 1,6
+INK 2,15
+INK 3,24
+	dfb	ePEN,3
+	asc	'You press last note and'0d
+	asc	'miracle, the melody works!'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'Congrats, Beethoven, you proved'0d
+	asc	'playing three flute pieces in'0d
+	asc	'school was not totally useless.'0d
+	dfb	ePEN,1
+	asc	''0d
+	asc	'Console vibrates, click rings'0d
+	asc	'before trapdoor opens.'0d
+	dfb	ePEN,3
+	asc	''0d
+	asc	'An Ankh-shaped key falls'0d
+	dfb	eLOCATE,1,14
+	asc	'gracefully, like a fat pigeon.'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'You pick it up, add to inventory.'0d
+	dfb	ePEN,3
+	asc	''0d
+	asc	'Bravo, now explorer and musician.'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'Even Indiana Jones could go back'0d
+	asc	'to bed.'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,15,25
+INPUT '0d ENTER  '0d,en$
+POKE &BE82,1
+GOTO 60
+
+MODE 1
+INK 0,0
+INK 1,6
+INK 2,15
+INK 3,24
+	dfb	ePEN,3
+	asc	'You climbed all the steps'0d
+	asc	'to the summit, the top'0d
+	asc	'room of the pyramid.'0d
+	dfb	ePEN,1
+	asc	''0d
+	asc	'And there...'0d
+	asc	'A strange console with'0d
+	asc	'buttons 0 to 7 awaits.'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,9,7
+	asc	'0'0d
+	dfb	eLOCATE,14,7
+	asc	'7'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'Button 0 plays a full melody'0d
+	dfb	eLOCATE,8,9
+	dfb	ePEN,3
+	asc	'0'0d
+	dfb	ePEN,2
+	asc	'familiar...'0d
+	dfb	ePEN,3
+	asc	''0d
+	asc	'Others? Single notes, as if'0d
+	asc	'a musician struck mid-piece...'0d
+	dfb	ePEN,1
+	asc	''0d
+	asc	'Having muscles is not enough,'0d 
+	asc	'you also need an ear!'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'Good luck, maestro...'0d
+	dfb	ePEN,3
+	asc	''0d
+	asc	'Banging drums won'27't help.'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,15,25
+INPUT '0d ENTER  '0d,en$
+GOTO 60

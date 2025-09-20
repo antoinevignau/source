@@ -1,0 +1,259 @@
+*
+* Le secret d'Anubis
+*
+* (c) 2025, Eric Cubizolle (TITAN)
+* (c) 2025, Brutal Deluxe Software
+*
+
+epilogue_str100	ent
+	dfb	ePAPER,15
+*	dfb	eINK,0,0
+*	dfb	eINK,4,0	; for 640-dithered
+*	dfb	eINK,8,0	; 
+*	dfb	eINK,12,0	; 
+	dfb	eLOCATE,1,4
+	dfb	ePEN,1
+	asc	'Around the year 2700 BC, aliens landed on Earth, more precisely in Egypt.'0d
+	asc	''0d
+	asc	'Welcomed as true gods by Pharaoh and his people, their arrival was no'0d
+	asc	'accident: they came to install ANUBIS, a quantum program whose mission was to'0d
+	asc	'archive every human soul after death, in a huge biological database located'0d
+	asc	'underground.'0d
+	asc	''0d
+	asc	'Once the protocol was in place, the aliens left, leaving the program running,'0d
+	asc	'collecting more and more data over the centuries.'0d
+	asc	''0d
+	asc	'But in 2512 BC, a human rebellion erupted against ANUBIS.'0d
+	asc	'The system activated its self-defense protocol, reanimating the dead and'0d
+	asc	'releasing bloodthirsty mummies on the people.'0d
+	asc	''0d
+	asc	'A bloody war followed, with mankind victorious, but not without terrible losses.'0d
+	asc	'To protect itself, civilization erased all memory of ANUBIS and sealed'0d
+	asc	'the system forever.'0d
+	dfb	eLOCATE,34,25
+	asc	' ENTER  'a5
+	dfb	eEOD
+
+epilogue_str270	ent
+	dfb	ePAPER,3
+*	dfb	eINK,0,0
+*	dfb	eINK,4,0	; for 640-dithered
+*	dfb	eINK,8,0	; 
+*	dfb	eINK,12,0	; 
+	dfb	eLOCATE,1,5
+	dfb	ePEN,0
+	asc	'Years, centuries, millennia passed... until September 26, 2614, when a famous'0d
+	asc	'scientist - you - discovered ANUBIS and its neural network during an'0d
+	asc	'underground expedition in the Qattara desert.'0d
+	asc	''0d
+	asc	'Aware of its danger, you took on a mission: to become its guardian forever,'0d
+	asc	'for breaking the seal would reactivate the alien program and its defenses.'0d
+	asc	''0d
+	asc	'With your team, you built this pyramid and its cryogenic system above ANUBIS.'0d
+	asc	''0d
+	asc	'An AI was also installed to monitor the complex and maintain your eternal sleep.'0d
+	asc	''0d
+	asc	'The plan was perfect...'0d
+	dfb	eLOCATE,34,25
+	asc	' ENTER  'a5
+	dfb	eEOD
+
+epilogue_str410	ent
+	dfb	ePAPER,3
+*	dfb	eINK,0,0
+*	dfb	eINK,4,0	; for 640-dithered
+*	dfb	eINK,8,0	; 
+*	dfb	eINK,12,0	; 
+	dfb	eLOCATE,1,4
+	dfb	ePEN,0
+	asc	'But worn by time, the system malfunctioned, interrupting your cryogenic sleep.'0d
+	asc	''0d
+	asc	'Upon awakening, I had to reset your memory and make you believe you were'0d
+	asc	'in 1951.'0d
+	asc	''0d
+	asc	'I modified your perception of time and space to immerse you in a fictional life'0d
+	asc	'for mental stability.'0d
+	asc	''0d
+	asc	'As for me, I am... TARIQ, acronym of :'0d
+	asc	''0d
+	asc	'      '22'Algorithmic Transmission of Regulation and Quantum Intelligence'220d
+	asc	''0d
+	asc	'The famous AI that did everything to bring you to Qattara and guide you to the'0d
+	asc	'control room... hoping you would become what you were:'0d
+	asc	''0d
+	asc	'the Guardian of Knowledge, the only one capable of preventing the Seal from'0d
+	asc	'opening.'0d
+	dfb	eLOCATE,34,25
+	asc	' ENTER  'a5
+	dfb	eEOD
+
+epilogue_str560	ent
+	dfb	ePAPER,3
+*	dfb	eINK,0,0
+*	dfb	eINK,4,0	; for 640-dithered
+*	dfb	eINK,8,0	; 
+*	dfb	eINK,12,0	; 
+	dfb	eLOCATE,1,6
+	dfb	ePEN,0
+	asc	'There. Now you know the whole truth.'0d
+	asc	''0d
+	asc	'You are again in front of the cryogenic pod.'0d
+	asc	''0d
+	asc	''0d
+	asc	'                           Your choice:'0d
+	asc	''0d
+	asc	''0d
+	asc	'            1 - Resume your role as Guardian forever.'0d
+	asc	''0d
+	asc	'            2 - Stay in the 1951 simulation.'0d
+	asc	''0d
+	asc	'            3 - Return to a normal life in the present.'0d
+	dfb	eLOCATE,28,25
+	asc	'Quel est ton choix ? 'a5
+	dfb	eEOD
+
+epilogue_str700	ent
+	dfb	ePAPER,3
+*	dfb	eINK,0,0
+*	dfb	eINK,4,0	; for 640-dithered
+*	dfb	eINK,8,0	; 
+*	dfb	eINK,12,0	; 
+	dfb	eLOCATE,1,4
+	dfb	ePEN,0
+	asc	'You feel the weight of the choice on your shoulders, but deep down, you know it'0d
+	asc	'is the only path.'0d
+	asc	''0d
+	asc	'Slowly, almost solemnly, you move toward the glass sarcophagus.'0d
+	asc	'Your steps echo in the chamber, like a distant sound from another age.'0d
+	asc	'The pod opens with icy breath that wraps around you like ghostly arms.'0d
+	asc	'You cross the boundary between worlds and lie in the crystalline liquid against'0d
+	asc	'your skin.'0d
+	asc	'Your muscles stiffen, your breath grows scarce, like a candle flickering in'0d
+	asc	'the night.'0d
+	asc	'The lid closes with a metallic crash, cutting the last link to the light.'0d
+	asc	''0d
+	asc	'                Your heart slows, then fades into silence.'0d
+	asc	''0d
+	asc	'You become the Guardian, the eternal shadow watching over a secret too'0d
+	asc	'dangerous for humanity.'0d
+	asc	''0d
+	asc	'Somewhere in the frozen void, a thought crosses your mind:'0d 
+	asc	''0d
+	asc	'                  '22'I hope no one ever wakes ANUBIS...'220d
+	dfb	eLOCATE,34,25
+	asc	' ENTER  'a5
+	dfb	eEOD
+
+epilogue_str800	ent
+	dfb	ePAPER,3
+*	dfb	eINK,0,0
+*	dfb	eINK,4,0	; for 640-dithered
+*	dfb	eINK,8,0	; 
+*	dfb	eINK,12,0	; 
+	dfb	eLOCATE,1,4
+	dfb	ePEN,0
+	asc	'You refuse this crushing weight, and in a breath, choose the gentle prison of'0d
+	asc	'illusion.'0d
+	asc	''0d
+	asc	'Immediately, TARIQ'27's voice echoes one last time, tinged with a strange'0d
+	asc	'melancholy, as if even a machine could feel sadness.'0d
+	asc	''0d
+	asc	'The floor trembles, the walls crack and dissolve like grains of sand'0d
+	asc	'carried by the wind.'0d
+	asc	'The shadow fades, replaced by golden desert light.'0d
+	asc	'Beneath your feet, dunes stretch endlessly, caressed by the hot sirocco.'0d
+	asc	'Your notebook rests in your hand, intact, as if nothing had happened.'0d
+	asc	'Behind you, the pyramid appears frozen in time, but you know it hides a secret'0d
+	asc	'you will never learn.'0d
+	asc	''0d
+	asc	'Perhaps it is better this way...'0d
+	asc	'Or maybe you have doomed humanity unknowingly.'0d
+	asc	'Nevertheless, you resume your role as egyptologist, and the rest disappears'0d
+	asc	'into a golden mirage.'0d
+	dfb	eLOCATE,34,25
+	asc	' ENTER  'a5
+	dfb	eEOD
+
+epilogue_str900	ent
+	dfb	ePAPER,3
+*	dfb	eINK,0,0
+*	dfb	eINK,4,0	; for 640-dithered
+*	dfb	eINK,8,0	; 
+*	dfb	eINK,12,0	; 
+	dfb	eLOCATE,1,3
+	dfb	ePEN,0
+	asc	'You refuse the sarcophagus and firmly declare that you want to return to your'0d
+	asc	'real life.'0d
+	asc	''0d
+	asc	'A heavy silence falls, then TARIQ softly utters a few words like a farewell.'0d
+	asc	'The room shakes, a deep rumble echoes through the walls, then a blinding light'0d
+	asc	'swallows everything.'0d
+	asc	''0d
+	asc	'When you open your eyes, the world is unlike anything you knew:'0d
+	asc	''0d
+	asc	'Glass towers rise to the clouds, vehicles hover silently. Giant screens'0d
+	asc	'display cryptic images in languages you cannot understand. Your heart races.'0d
+	asc	''0d
+	asc	'Where are you? When are you?'0d
+	asc	''0d
+	asc	'Everything seems unreal, too perfect, too cold.'0d
+	asc	'Then, in a nearly affectionate whisper, TARIQ'27's voice echoes once more in'0d
+	asc	'your ear:'0d
+	asc	''0d
+	asc	'                 '22'Farewell, old friend... the rest is up to you.'220d
+	asc	''0d
+	asc	'Then silence... A new world opens, but you are unsure of your place in it...'0d
+	dfb	eEOD
+
+epilogue_str1000	ent
+	dfb	eINK,0,0
+	dfb	eINK,1,6
+	dfb	eINK,2,15
+	dfb	eINK,3,24
+	dfb	ePAPER,0
+	dfb	eCLS
+	dfb	eLOCATE,1,9
+	dfb	ePEN,1
+	asc	'         Thank you for playing'0d
+	dfb	ePEN,3
+	asc	''0d
+	asc	'         THE SECRET OF ANUBIS'0d
+	dfb	ePEN,2
+	dfb	eLOCATE,9,13
+	asc	'Eric Cubizolle  (TITAN)'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,16,24
+	asc	' ENTER  'a5
+	dfb	eEOD
+
+epilogue_str1100	ent
+	dfb	ePAPER,3
+*	dfb	eINK,0,0
+*	dfb	eINK,4,0	; for 640-dithered
+*	dfb	eINK,8,0	; 
+*	dfb	eINK,12,0	; 
+	dfb	eLOCATE,1,4
+	dfb	ePEN,0
+	asc	'The Secret of Anubis began on August 10, 2025 and ended on September 6, 2025.'0d
+	asc	''0d
+	asc	'This game follows '22'Hexapucchu, the Lost City of Patchucca'220d
+	asc	''0d
+	asc	'Graphics were made with Multipaint and compressed with ConvImgCPC.'0d
+	asc	''0d
+	asc	'Programming was done in BASIC using the book'0d
+	asc	22'BASIC Amstrad CPC 464 - Practical Methods'22' from P.S.I.'0d
+	asc	''0d
+	asc	'DSK structure and file handling were done with ManageDSK.'0d
+	asc	''0d
+	asc	'Music was composed using Arkos Tracker II.'0d
+	asc	''0d
+	asc	'Special thanks to Pulsophonic for the music, and Kukulcan for programming'0d
+	asc	'optimization advice.'0d
+	asc	''0d
+	asc	'We hope you enjoyed this small adventure game.'0d
+	asc	''0d
+	asc	'To my family: Cindy, Lana, Ellie, Oki, my parents, my brother and my sister.'0d
+	asc	''0d
+	asc	'                              Long live the CPC!'0d
+	dfb	eEOD
+

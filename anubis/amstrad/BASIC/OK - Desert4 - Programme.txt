@@ -1,0 +1,118 @@
+10 ' DESERT 4
+20 MODE 1:BORDER 0
+30 FOR i=0 TO 3:INK i,0:NEXT i
+40 MEMORY &3FFF
+50 LOAD"Desert4.cmp"
+60 FOR i=0 TO 3:INK i,0:NEXT i
+70 POKE &A634,&C8:POKE &A635,0:POKE &A636,0:CALL &A60B
+80 POKE &C7F1,&C9:CALL &C7D0
+90 CALL &A60B
+100 WINDOW #1,25,36,4,19
+110 INK 0,0:INK 1,3:INK 2,15:INK 3,24
+120 PEN #1,3:PRINT #1:PRINT #1,"Une":PRINT #1,"immense ":PRINT #1,"dune se":PRINT #1,"dresse":PRINT #1,"devant"
+125 PRINT #1,"vous,":PRINT #1,"comme":PRINT #1,"un mur":PRINT #1,"de sable":PRINT #1,"avalant":PRINT #1,"l'horizon."        
+
+130 LOCATE 13,20:PEN 2:PRINT"QUE FAITES-VOUS ?"
+140 PEN 3:LOCATE 4,21:PRINT "1-NORD    2-SUD    3-OUEST   4-EST"
+150 PEN 2:LOCATE 4,22:PRINT "5-Construire une cabane 6-Examiner"
+160 PEN 3:LOCATE 4,23:PRINT "7-Inventaire      8-Gravir la dune"
+170 PEN 2:LOCATE 4,24:PRINT "9-Attendre que ca se passe"
+
+200 k$=INKEY$
+210 IF k$="1"THEN GOTO 1000
+220 IF k$="2"THEN GOTO 300
+230 IF k$="3"THEN GOTO 400
+240 IF k$="4"THEN RUN"Desert3.bas"
+250 IF k$="5"THEN GOTO 500
+255 IF k$="6"THEN GOTO 700
+260 IF k$="7"THEN GOTO 600
+270 IF k$="8"THEN GOTO 900
+280 IF k$="9"THEN GOTO 800
+290 IF k$<"1"OR k$>"9" THEN GOTO 200
+
+300 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+310 PEN 3:PRINT:PRINT"Vous foncez vers le SUD, le moral":PRINT"au beau fixe...":Locate 17,3:PEN 1:PRINT"grave erreur !"
+320 PEN 2:PRINT:PRINT"Un troupeau de chameaux, visiblement":PRINT"furieux de votre intrusion, vous":PRINT"apercoit."
+330 PEN 1:PRINT:PRINT"Avant que vous n'ayez le temps de dire":PRINT CHR$(34);"oasis";CHR$(34);", ils vous chargent et":PRINT"commencent une choregraphie infernale":PRINT"de ruades et de coups de sabot."
+340 PEN 3:PRINT:PRINT"En quelques secondes, vous devenez un":PRINT"tapis humain pour chameaux en furie,":Print"projete dans le sable comme un vieux":PRINT"coussin abandonne."
+350 PEN 2:PRINT:PRINT"Vous etes mort, muerte, dead, kaputt..."
+360 PEN 1:Print:Print:PRINT"           That's all, folks!"
+370 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+380 RUN"Mort.bas" 
+
+400 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+410 PEN 3:PRINT:PRINT"Vous avancez vers l'OUEST, fier et":PRINT"intrepide..."
+420 PEN 1:PRINT:PRINT"Jusqu'a ce que vos pieds rencontrent un "
+430 Locate 1,6:PRINT"piege oublie, subtilement camoufle sous":PRINT"le sable il y a des siecles par des":PRINT"bedouins facetieux."
+440 PEN 2:PRINT:PRINT"Une trappe s'ouvre sous vos sandales,":PRINT"vous laissant choir dans un trou":PRINT"profond rempli de pieux..."
+450 PEN 1:PRINT:PRINT"              SCROUCH !"
+460 PEN 3:PRINT:PRINT"Si cela peut vous consoler, sachez que":PRINT"vous decorez desormais le desert mieux":PRINT"que n'importe quel cactus."
+470 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+480 RUN"Mort.bas"
+
+500 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+510 PEN 3:PRINT:PRint"Serieusement ?"
+520 Pen 1:Print:Print"Construire une cabane dans le desert ?"
+530 Pen 3:Print:Print"Vous voyez des arbres ou meme un brin":Print"d'herbe quelque part ?"
+540 PEN 2:PRINT:PRINT"Non, hein ? On est d'accord."
+550 Pen 3:PRint:Print"Bon, c'est officiel, le soleil vous a":PRINT"vraiment fait tourner la tete..."
+560 PEN 2:PRINT:Print "Allez, on se reprend, Castor Junior !"
+570 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+580 GOTO 60      
+
+600 MODE 1:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+610 PEn 3:PRint:Print"Vous disposez des elements suivants :"
+630 Pen 2:PRINT:PRINT
+635 PRINT"- Des clefs de voiture":PRINT
+640 If PEEK(&7000)=2 AND PEEK(&7005)=0 THEN PRINT"- Une jarre de lait":PRINT
+650 If PEEK(&7005)=1 THEN PRINT"- Une jarre d'eau fraiche":PRINT
+660 If PEEK(&7004)=1 THEN PRINT"- Une pelle":PRINT
+670 If PEEK(&7001)=1 AND PEEK(&7000)<=4 THEN PRINT"- Un fragment de papyrus":PRINT
+675 If PEEK(&7000)>=5 and Peek(&7006)=0 THEN PRINT"- 3 scarabees (Marron, orange, jaune)":PRINT
+676 PRINT"- Du sable dans vos sandales"
+680 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+690 GOTO 60
+
+700 CLS:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+710 Pen 3:Print:PRINT"Une dune gigantesque se dresse":Print"devant vous, si vaste qu'on pourrait":PRINT"y organiser un championnat de ski...":PRINT:PRINT"   ...et perdre tous les concurrents !"
+720 Pen 2:Print:Print"Sa crete touche presque le ciel, et":Print"vous, minuscule, vous vous sentez":PRINT"comme une fourmi en plein desert, sauf":PRINT"que la fourmi aurait probablement plus":PRINT"de jugeote que de vouloir la grimper."
+730 PEn 1:Print:Print"Pourtant, quelque chose vous attire":PRINT"irresistiblement vers son sommet,":PRINT"comme si le sable lui-meme chuchotait":PRINT"votre nom."
+740 PEN 3:PRINT:PRINT"Quel mystere cache-t-elle derriere":PRINT"ses courbes ?"
+750 LOCATE 15,25:INPUT" ENTER  ",en$
+760 Goto 60
+
+800 CLS:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+810 Pen 3:PRINT"Ah, vous choisissez la grande strategie":PRINT"du ";Chr$(34)"je reste plante la et j'attends que":PRINT"la vie se charge du reste";CHR$(34);" ?"
+820 Pen 2:Print:Print"Sage...":PRINT"ou completement paresseux, c'est selon."
+840 PEN 1:PRINT:PRINT"Ok.. attendons pour voir..."
+850 PEN 3:PRINT:Print"     5 minutes plus tard, rien...":PRINT:PRINT"     10 minutes, toujours rien...":PRINT:PRINT"     Une heure, pas mieux..."
+860 PEN 1:PRINT:PRINT"Voila, voila quoi..."
+870 PEN 2:PRINT:PRINT"Mais sinon, vous pensez vraiment que la":PRINT"solution va tomber du ciel, comme ca,":PRINT"en glandant au soleil ?":PRINT:PRINT"J'crois pas nan..."
+880 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+890 Goto 60
+
+900 CLS:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+910 Pen 3:PRINT"Vous vous lancez a l'assaut de la dune."
+920 PEN 2:PRINT:PRINT"Apres ce qui semble etre une eternite,":PRINT"vous atteignez enfin le sommet."
+930 PEN 1:PRINT:PRINT"De la-haut, le desert s'etend a perte":PRINT"de vue, une mer doree sans fin..."
+940 PEN 3:PRINT:PRINT"             Sauf au NORD."
+950 PEN 2:PRINT:PRINT"Une forme triangulaire se dessine a":PRINT"l'horizon."
+960 PEN 1:PRINT:PRINT"Une pyramide ? Un mirage ?":PRINT"Ou juste votre cerveau en manque de":PRINT"climatisation ?"
+970 PEN 3:PRINT:PRINT"Avant de pouvoir reflechir davantage,":PRINT"votre pied glisse."
+980 PEN 2:PRINT:PRINT"Et vous devalez la pente en roulant,":PRINT"tel un rouleau de printemps humain,":PRINT"avalant du sable a chaque rotation."
+990 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+992 CLS:Locate 1,6:PRINT"Quand votre descente infernale prend":PRINT"fin, vous realisez que vous avez":PRINT"atterri on ne sait trop comment de":PRINT"l'autre cote de la dune, au NORD"
+993 PRINT"du desert, avec du sable jusque dans":PRINT"des endroits que vous ne soupconniez":PRINT"meme pas.":Locate 29,9:PEN 1:PRINT"NORD"
+994 PEN 2:Locate 1,14:PRINT"Vos yeux reperent alors une toute":PRINT"petite pyramide qui semble vous narguer":PRINT"au loin."
+995 PEN 3:LOCATE 15,25:INPUT" ENTER  ",en$
+996 Run"Pyramid1.bas"
+
+1000 CLS:INK 0,0:INK 1,6:INK 2,15:INK 3,24
+1010 Pen 3:PRINT:PRINT"Ha, le NORD vous intrigue, pas vrai ?"
+1020 PEN 2:PRINT:PRINT"Il faut dire qu'avec son opulence":PRINT"insolente, cette dune, majestueuse et":PRINT"pretentieuse, refuse de reveler ce":PRINT"qu'elle cache."
+1030 PEN 3:PRINT:PRINT"Pour l'atteindre, oubliez la promenade":PRINT"tranquille... il va falloir vous":PRINT"retrousser les manches !"
+1040 PEN 1:PRINT:PRINT"Mais surveillez vos appuis !":PRINT"Le sable est traite, parfois..."
+1050 LOCATE 15,25:PEN 3:INPUT" ENTER  ",en$
+1060 Goto 60
+
+       

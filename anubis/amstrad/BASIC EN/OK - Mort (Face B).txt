@@ -1,0 +1,54 @@
+10 '27' DEATH (B)
+20 MODE 1
+BORDER 0
+30 POKE &BE80,0
+POKE &BE81,0
+POKE &BE82,0
+POKE &BE83,0
+POKE &BE84,0
+POKE &BE85,0
+POKE &BE86,0
+40 FOR i=0 TO 15
+INK i,0
+NEXT i
+50 MEMORY &3FFF
+LOAD'0dMort.cmp'0d
+60 POKE &A634,&C8
+POKE &A635,0
+POKE &A636,0
+CALL &A60B
+70 POKE &C7F1,&C9
+CALL &C7D0
+80 CALL &A60B
+85 	dfb	eLOCATE,4,21
+	dfb	ePEN,3
+	asc	'Do you want to play again (Y/N)?'0d
+90 k$=INKEY$
+100 IF k$='0dY'0d OR k$='0dy'0d THEN GOTO 200
+110 IF k$='0dN'0d OR k$='0dn'0d THEN CALL 0
+120 IF k$<>'0dY'0d AND k$<>'0dy'0d AND k$<>'0dN'0d AND k$<>'0dn'0d THEN GOTO 90
+
+200 INK 0,0
+INK 1,6
+INK 2,15
+INK 3,24
+MODE 1
+BORDER 0
+210 	dfb	ePEN,3
+	dfb	eLOCATE,1,8
+	asc	'          Back to the start!'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'   You are back in the initial room'0d
+	asc	'          of the pyramid...'0d
+220 	dfb	ePEN,1
+	dfb	eLOCATE,1,16
+	asc	'WARNING
+ You lose all objects, clues, and'0d
+	dfb	eLOCATE,1,17
+	asc	'knowledge previously acquired in'0d
+	asc	'the pyramid.'0d
+230 	dfb	ePEN,3
+	dfb	eLOCATE,15,25
+INPUT '0d  ENTER  '0d,en$
+240 RUN'0dPyramid2.bas'0d

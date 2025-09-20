@@ -1,0 +1,344 @@
+WINDOW #1,25,36,4,19
+INK 0,0
+INK 1,3
+INK 2,15
+INK 3,24
+	dfb	ePEN,#1,3
+	asc	''0d
+	asc	'Cairo.'0d
+	asc	''0d
+	asc	'Today its'0d
+	asc	'streets,'0d
+	asc	'usually so'0d
+	asc	'alive and'0d
+	asc	'so loud,'0d
+	asc	'are now'0d
+	asc	'lost in'0d
+	asc	'a deep'0d
+	asc	'silence.'0d
+	dfb	eLOCATE,13,20
+	dfb	ePEN,2
+	asc	'WHAT WILL YOU DO ?'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,4,21
+	asc	'1-Go to Qattara by car'0d
+	dfb	ePEN,2
+	dfb	eLOCATE,4,22
+	asc	'2-Examine      3-Look for a cat'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,4,23
+	asc	'4-Get in the car        5-NORTH'0d
+	dfb	ePEN,2
+	dfb	eLOCATE,4,24
+	asc	'6-Talk to the woman      7-EAST'0d
+k$=INKEY$
+IF k$='0d1'0d AND PEEK(&BE83)=0 THEN GOTO 300
+IF k$='0d1'0d AND PEEK(&BE83)=1 THEN GOTO 400
+IF k$='0d2'0d THEN GOTO 500
+IF k$='0d3'0d THEN GOTO 600
+IF k$='0d4'0d AND PEEK(&BE83)=0 THEN GOTO 700
+IF k$='0d4'0d AND PEEK(&BE83)=1 THEN GOTO 800
+IF k$='0d5'0d THEN RUN'0dChat.bas'0d
+IF k$='0d6'0d AND PEEK(&BE82)=0 THEN GOTO 900
+IF k$='0d6'0d AND PEEK(&BE82)=1 THEN GOTO 1000
+IF k$='0d7'0d THEN RUN'0dSouk.bas'0d
+IF k$<'0d1'0dOR k$>'0d7'0d THEN GOTO 200
+
+MODE 1
+INK 0,0
+INK 1,6
+INK 2,15
+INK 3,24
+	dfb	ePEN,3
+	asc	''0d
+	asc	'You stand before the old car,'0d
+	asc	'admiring its lines... well, what'0d
+	asc	'remains of them.'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'Alas, without the key, it is as'0d
+	asc	'motionless as a mummy asleep'0d
+	asc	'for three thousand years.'0d
+	dfb	ePEN,3
+	asc	''0d
+	asc	'You can stare, stroke, whisper'0d
+	asc	'sweet words, nothing works:'0d
+	dfb	ePEN,1
+	asc	''0d
+	asc	'For now, it'27's not taking you'0d
+	asc	'anywhere.'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'You must find the key before you'0d
+	asc	'can head toward the Qattara'0d
+	asc	'desert.'0d
+	dfb	eLOCATE,21,17
+	dfb	ePEN,3
+	asc	'Qattara'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,15,25
+INPUT'0d ENTER  '0d,en$
+GOTO 60
+
+MODE 1
+INK 0,0
+INK 1,6
+INK 2,15
+INK 3,24
+	dfb	ePEN,3
+	asc	''0d
+	asc	'Key in hand, you turn the ignition...'0d
+	dfb	ePEN,1
+	asc	''0d
+	asc	'The engine coughs, the car growls'0d
+	asc	'like an angry sphinx before it'0d
+	asc	'rushes toward the Qattara'0d
+	asc	'desert!'0d
+	dfb	eLOCATE,19,6
+	dfb	ePEN,3
+	asc	'Qattara'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	''0d
+	asc	'You pray no camel crosses the road,'0d
+	asc	'as the brakes feel more symbolic'0d
+	asc	'than efficient...'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,15,25
+INPUT'0d ENTER  '0d,en$
+RUN'0dDesert1.bas'0d
+
+MODE 1
+INK 0,0
+INK 1,6
+INK 2,15
+INK 3,24
+	dfb	ePEN,3
+	asc	''0d
+	asc	'Cairo stretches before you, calm'0d
+	asc	'today, like a cat napping in the'0d
+	asc	'sun.'0d
+	dfb	ePEN,1
+	asc	''0d
+	asc	'To the left, an old car rests,'0d
+	asc	'dusty and proud of its stillness,'0d
+	asc	'like a crocodile dozing on the'0d
+	asc	'riverbank.'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'To the right, a woman sits on the'0d
+	asc	'curb, frowning, knitting thoughts'0d
+	asc	'more tangled than her ball of'0d
+	asc	'yarn.'0d
+	dfb	ePEN,3
+	asc	''0d
+	asc	'Around you, the street is quiet,'0d
+	asc	'broken only by fountains and the'0d
+	asc	'rustle of passing robes.'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'Sometimes a distant meow cuts the'0d
+	asc	'silence.'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,15,25
+INPUT'0d ENTER  '0d,en$
+GOTO 60
+
+MODE 1
+INK 0,0
+INK 1,6
+INK 2,15
+INK 3,24
+	dfb	ePEN,3
+	asc	''0d
+	asc	'You scan every corner, hoping for'0d
+	asc	'a cat to appear...'0d
+	dfb	ePEN,1
+	asc	''0d
+	asc	'But nothing.'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'At this rate, even a striking hen'0d
+	asc	'would slip past you!'0d
+	dfb	ePEN,3
+	asc	''0d
+	asc	'The cat must be laughing somewhere,'0d
+	asc	'writing in his secret diary:'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'   '0d;CHR$(34);'0dHow to humiliate an adventurer'0d
+	asc	'        without lifting a paw.'0d;CHR$(34)
+	dfb	ePEN,1
+	asc	''0d
+	asc	'You start to think this creature'0d
+	asc	'doesn'27't exist at all.'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'...At least not here.'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,15,25
+INPUT'0d ENTER  '0d,en$
+GOTO 60
+
+CLS
+INK 0,0
+INK 1,6
+INK 2,15
+INK 3,24
+	dfb	ePEN,3
+	asc	'Without a key, you try to pick the'0d
+	asc	'lock.'0d
+	dfb	ePEN,1
+	asc	''0d
+	asc	'And then, bam!'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'A siren screams, lights flash, and'0d
+	asc	'a cop jumps out like an angry'0d
+	asc	'scarab!'0d
+	dfb	ePEN,3
+	asc	''0d
+	asc	'You try to explain you'27're not a'0d
+	asc	'thief, just an adventurer in a'0d
+	asc	'hurry, but he won'27't listen.'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'Hours later... or centuries later'0d
+	asc	'on the Egyptian calendar, you'0d
+	asc	'realize:'0d
+	dfb	ePEN,1
+	asc	''0d
+	asc	'Your trial was forgotten. The judge'0d
+	asc	'retired, the clerk got lost in the'0d
+	asc	'bazaar, and you... you rot in'0d
+	asc	'prison forever.'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,15,25
+INPUT'0d ENTER  '0d,en$
+RUN'0dMort.bas'0d
+
+CLS
+INK 0,0
+INK 1,6
+INK 2,15
+INK 3,24
+	dfb	ePEN,3
+	asc	''0d
+	asc	'Key in hand, you open the door.'0d
+	dfb	ePEN,1
+	asc	''0d
+	asc	'        Miracle, it clicks!'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'You did it! Yes, you really opened'0d
+	asc	'a car...'0d
+	dfb	ePEN,3
+	asc	''0d
+	asc	'And not just any car
+ a relic able'0d
+	asc	'to survive centuries of dust and'0d
+	asc	'sand!'0d
+	dfb	ePEN,1
+	asc	''0d
+	asc	'Careful, hero of the day:'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'You'27're holding the wheel of fate.'0d
+	asc	''0d
+	asc	'Or at least, the gear stick of an'0d
+	asc	'old heap ready to roar... or choke.'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,15,25
+INPUT'0d ENTER  '0d,en$
+GOTO 60
+
+CLS
+INK 0,0
+INK 1,6
+INK 2,15
+INK 3,24
+	dfb	ePEN,1
+	asc	''0d
+	asc	'The old woman:'0d
+	dfb	ePEN,2
+	asc	''0d
+	asc	'You!'0d
+	asc	''0d
+	asc	'Yes, you with your tired adventurer'0d
+	asc	'face.'0d
+	asc	''0d
+	asc	'Can'27't you help me?'0d
+	asc	''0d
+	asc	'That mustached demon, that furry'0d
+	asc	'thief, that... cat, stole my ball'0d
+	asc	'of yarn!'0d
+	asc	''0d
+	asc	'Bring it back and I'27'll give you a'0d
+	asc	'key I found on the ground.'0d
+	asc	''0d
+	asc	'Seems to open a car... or a modern'0d
+	asc	'sarcophagus, who knows.'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,15,24
+INPUT'0d ENTER  '0d,en$
+GOTO 60
+
+IF PEEK(&BE83)=0 THEN GOTO 1100
+IF PEEK(&BE83)=1 THEN GOTO 1200
+
+CLS
+INK 0,0
+INK 1,6
+INK 2,15
+INK 3,24
+	dfb	ePEN,1
+	asc	''0d
+	asc	'The old woman:'0d
+	dfb	ePEN,2
+	asc	''0d
+PRINT CHR$(34);'0dMy yarn! You found it!'0d
+	asc	''0d
+	asc	'That cursed cat really stole it!'0d
+	asc	''0d
+	asc	'Thank you, stranger. Without it, I'0d
+	asc	'had to knit sand... and believe'0d
+	asc	'me, it scratches!'0d
+	asc	''0d
+	asc	'Here, take this key.'0d
+	asc	'I don'27't own a car...'0d
+	asc	'and I doubt a goat would start with'0d
+	asc	'this!'0d;CHR$(34)
+	dfb	eLOCATE,17,12
+	dfb	ePEN,3
+	asc	'key'0d
+	dfb	ePEN,3
+	dfb	eLOCATE,15,24
+INPUT'0d ENTER  '0d,en$
+POKE &BE83,1
+GOTO 60
+
+CLS
+INK 0,0
+INK 1,6
+INK 2,15
+INK 3,24
+	dfb	ePEN,1
+	asc	''0d
+	asc	'The old woman stares at you, eyes'0d
+	asc	'squinted, the yarn in her hands:'0d
+	dfb	ePEN,2
+	asc	''0d
+PRINT CHR$(34);'0dWhat now? You again?'0d
+	asc	''0d
+	asc	'I'27've got nothing left for you!'0d
+	asc	''0d
+	asc	'Go on, shoo!'0d
+	asc	''0d
+	asc	'Now let me knit in peace!'0d;CHR$(34)
+	dfb	ePEN,3
+	asc	''0d
+	asc	''0d
+	asc	'Charming...'0d
+	dfb	eLOCATE,15,24
+INPUT'0d ENTER  '0d,en$
+GOTO 60

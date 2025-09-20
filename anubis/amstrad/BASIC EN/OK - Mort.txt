@@ -1,0 +1,29 @@
+10 '27' DEATH
+20 MODE 1
+BORDER 0
+30 POKE &BE80,0
+POKE &BE81,0
+POKE &BE82,0
+POKE &BE83,0
+POKE &BE84,0
+POKE &BE85,0
+POKE &BE86,0
+40 FOR i=0 TO 15
+INK i,0
+NEXT i
+50 MEMORY &3FFF
+LOAD'0dMort.cmp'0d
+60 POKE &A634,&C8
+POKE &A635,0
+POKE &A636,0
+CALL &A60B
+70 POKE &C7F1,&C9
+CALL &C7D0
+80 CALL &A60B
+85 	dfb	eLOCATE,4,21
+	dfb	ePEN,3
+	asc	'Do you want to play again (Y/N)?'0d
+90 k$=INKEY$
+100 IF k$='0dY'0d OR k$='0dy'0d THEN RUN'0dCaire.bas'0d
+110 IF k$='0dN'0d OR k$='0dn'0d THEN CALL 0
+120 IF k$<>'0dY'0d AND k$<>'0dy'0d AND k$<>'0dN'0d AND k$<>'0dn'0d THEN GOTO 90

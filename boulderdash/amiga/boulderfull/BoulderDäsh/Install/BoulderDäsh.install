@@ -1,0 +1,1231 @@
+; $VER: BoulderDäsh.install 5.24 (07.03.2008)
+; Install script for BoulderDäsh (Workbench 2.0 or higher)
+;
+(COMPLETE 0)
+(USER 2)
+(SET #ApplicationName "BoulderDäsh")
+(SET #ApplicationDir (EXPANDPATH "sys:tools"))
+(SET #ApplicationDir1 "work:")
+(SET #ApplicationDir2 "games:")
+(SET #ApplicationDir3 "game:")
+(SET #ApplicationDir4 "work:games")
+(SET #ArchiveDir "/")
+(SET #Language -1)
+(SET #Documents -1)
+(SET #Keymaps 0)
+(SET #ApplicationKeyfile (CAT #ApplicationName ".key"))
+(SET #CDMode "0") ;"1" if used on BoulderDäshCD:
+(SET #InstallerVersion 44)
+(SET #InstallerRevision 10)
+
+
+;=============================================================================
+; English strings
+
+(SET default_lang 1)
+
+(SET #bad-kick "You must have at least Workbench 2.0+")
+(SET #bad-installer
+(CAT "You have an old version of the program 'Installer' "
+     "on your Amiga!\n\nThe installation procedure needs at least Installer %ld.%ld.\n\n"
+     "Please check your configuration!\n"
+))
+
+(SET #App-InstallMsg
+(CAT "\n\n%s Installation Script.\n\n"
+        "This script installs %s on your Amiga.\n\n"
+        "Read the guide file for more information\n"
+        " on the distribution of %s.\n\n"
+        "%s © 1995-2003 Guido Mersmann\n"
+        "All rights reserved."
+))
+(SET #App-MainMode "Please choose mode:")
+
+(SET #App-Where
+(CAT "Where would you like to install %s ?\n"
+        "(A drawer will be created)"
+))
+
+(SET #App-Update
+(CAT "\n\nA %s drawer does already exist in the selected "
+        " directory.\n\n By selecting \"Proceed\", you"
+        " indicate that you want to update the %s"
+        " installation with the most recent version.\n\n"
+        "Several %s specific files will be overwritten!"
+))
+
+(SET #App-Main "Which %s version should be installed ?")
+(SET #App-Main-help
+(CAT "The OS2.0+ version should only be used on Systems with OS2."
+     " The OS2.1+ and the OS3.0+ version need less Memory. Locale is required!"
+     " Special OS3.0+ functions are used to save more memory."
+))
+
+(SET #App-Language "Which languages should be installed ?")
+(SET #App-Language-help
+(CAT "\nThe Amiga can be operated in many different"
+          " languages."
+          "To reduce the amount of space consumed by the"
+          " language files, you can select to have only the"
+          " files of specific languages copied.\n\n"
+          "Simply check the boxes of the languages you wish"
+          " to have available on your system.\n\n"
+          @askoptions-help
+))
+
+(SET #App-Keymaps "Which keymaps should be installed ?")
+
+(SET #App-Help "Which Amiga-guide files should be installed ?")
+
+(SET #Startup-prompt    "\n\nSome lines need to be added to S:User-Startup for %s\n\n%s")
+
+(SET #App-Exit "\n\n%s installed !!\n\n%s can be found in your \"%s\" drawer (or partiton).")
+;--------- DEINSTALLATION STRINGS
+(SET #App-DeInstallWhere "Where is the location of %s ?\n")
+(SET #App-Install "Install")
+(SET #App-DeInstall "Deinstall")
+(SET #bad-DeInstall "There is no %s installation at the specified position!")
+(SET #StartupRemove-prompt "\nRemove %s lines within your user-startup?")
+(SET #Deinstall-Done "\n%s is now deinstalled.")
+;--------- MINIMUM INSTALLATION STRINGS
+(SET #App-InstMinimum "Minimum Installation")
+(SET #App-InstMaximum "Maximum Installation")
+(SET #App-InstMaximumHelp
+(CAT  "\nThe minimum installation requires around 400KB on your hard disk!"
+      " Only main program, documentation, catalogs and some drawers to save"
+      " BoulderDäsh specific data like settings, scores, your own levels,"
+      " etc."
+      "\n\nThe maximum installation requires around 8MB on your hard disk!"
+      " A complete installation will speed up the game loading! That`s all."
+      " The game play is absolute the same, even when using an 1x CDROM!"
+))
+;=============================================================================
+; German strings
+
+(IF (= @language "deutsch")
+(
+(SET default_lang 2)
+
+(SET #bad-kick "Sie benötigen Workbench 2.0 oder größer")
+(SET #bad-installer
+(CAT "Achtung! Es ist eine alte Version des Programmes 'Installer' "
+     "auf Ihrem Amiga!\n\nDie Installation benötigt mindestens Installer %ld.%ld.\n\n"
+     "Bitte überprüfen Sie Ihre Konfiguration!\n"
+))
+
+(SET #App-InstallMsg
+(CAT "\n%s Installationsskript.\n\n"
+        "Dieses Skript installiert oder deinstalliert\n"
+        "%s auf Ihrem Amiga.\n\n"
+        "Lesen Sie die Anleitungsdatei für weitere Informationen"
+        " über den Vertrieb von %s.\n\n"
+        "%s © 1999-2003 Guido Mersmann\n"
+        "Alle Rechte reserviert."
+))
+(SET #App-MainMode "Wählen Sie den gewünschten Vorgang:")
+
+(SET #App-Where
+(CAT "Wo möchten Sie %s installieren ?\n"
+        "(Ein Verzeichnis wird angelegt)"
+))
+
+(SET #App-Update
+(CAT "\nEin %s-Verzeichnis existiert im ausgewählen"
+        " Verzeichnis.\n\n Wenn Sie fortfahren,"
+        " bestätigen Sie, daß Sie die alte %s-Installation"
+        " mit der neuesten Version überschreiben wollen.\n\n"
+        "Verschiedene %s-Dateien (z.B überflüssige Dateien) werden falls nötig überschrieben!"
+))
+
+(SET #App-Main "Welche Version von %s möchten Sie installieren?")
+(SET #App-Main-help
+(CAT "Die OS2.0+ Version läuft unter allen Systemen ab OS2.0."
+     " Die OS2.1+ Version hat den Nutzen, daß sie weniger Resourcen"
+     " benutzt, wenn sich %s im Hintergrund befindet. Dazu MUß"
+     " die Locale.library eingebunden sein. Für die OS3.0+ gilt das Selbe"
+     " wie für die OS2.1 Verison. Es werden OS3.0+ Routinen benutzt, die"
+     " weiteren Speicher sparen."
+))
+
+(SET #App-Language "Welche Sprachen sollen installiert werden ?")
+
+(SET #App-Language-help
+(CAT "\nDer Amiga kann in vielen verschiedenen Sprachen"
+         " arbeiten. Um Plattenkapazität zu sparen können Sie"
+         " nur die Sprachen anwählen, die sie benötigen"
+         " Haken Sie also einfach die Sprachen ab, die Sie"
+         " Ihrem System zugänglich machen wollen."
+          @askoptions-help
+))
+
+(SET #App-Help "Welche Anleitungs- und Informationsdateien wollen Sie installieren ?")
+
+(SET #App-Keymaps "Welche Keymaps wollen Sie installieren ?")
+
+(SET #Startup-prompt    "\n\nJetzt werden für %s folgende Eintragungen in die S:User-Startup gemacht:\n\n%s")
+
+(SET #App-Exit "\n\n%s installiert!!\n\nSie finden %s im Verzeichnis \"%s\"")
+;------- DEINSTALL STRINGS
+(SET #App-DeinstallWhere "Wo liegt %s auf Ihrer Platte ?\n")
+(SET #App-Install "%s Installieren")
+(SET #App-DeInstall "%s Deinstallieren")
+(SET #bad-DeInstall "Es gibt keine %s Installation an der angegeben Position")
+(SET #StartupRemove-prompt "\n\nDie zu %s gehörenden Einträge in der User-startup werden gelöscht!")
+(SET #Deinstall-Done "\n%s ist jetzt deinstalliert!")
+;--------- MINIMUM INSTALLATION STRINGS
+(SET #App-InstMinimum "Minimale Installation")
+(SET #App-InstMaximum "Maximale Installation")
+(SET #App-InstMaximumHelp
+(CAT  "\nDie minimale Installation benötigt ca 400KB auf Ihrer Festplatte!"
+      " Es werden nur das Hauptprogramm, Anleitung und Kataloge kopiert." 
+      " Außerdem werden ein paar Verzeichnisse erstellt, die BoulderDäsh"
+      " braucht um Voreinstellungen, Hiscores und z.B Ihre eigenen Level"
+      " und Spiele zu speichern. Hiscores und z.B Ihre eigenen Level und"
+      " Spiele zu speichern."
+      "\n\nDie maximale Installation benötigt ca 8MB auf Ihrer Festplatte!"
+      " Der Vorteil liegt hier eigentlich nur im schnelleren Zugriff bei"
+      " einem langsammen CDROM-Laufwerk. Auf das Spiel selber hat das aber"
+      " keinerlei Auswirkungen, da alle Daten vor Spielbeginn geladen werden."
+))
+))
+;=============================================================================
+; français strings
+
+(IF (= @language "français")
+(
+(SET default_lang 4)
+
+(SET #bad-kick "Vous devez avoir le Workbench 2.0 au moins")
+(SET #bad-installer
+(CAT "Vous avez une ancienne version du programme 'Installer' "
+     "sur votre Amiga!\n\nLa procédure d'installation a besoin d'Installer %ld.%ld ou supérieur.\n\n"
+     "Veuillez vérifier votre configuration!\n"
+))
+
+(SET #App-InstallMsg
+(CAT "\n\nScript d'installation pour %s.\n\n"
+        "Ce script installe %s sur votre Amiga.\n\n"
+        "Lisez le guide pour de plus amples informations\n"
+        " sur cette distribution de %s.\n\n"
+        "%s © 1999-2003 Guido Mersmann\n"
+        "Tous droits réservés."
+))
+(SET #App-MainMode "Veuillez choisir le mode:")
+
+(SET #App-Where
+(CAT "Où voulez-vous installer %s ?\n"
+        "(Un tiroir sera crée)"
+))
+
+(SET #App-Update
+(CAT "\n\nUn tiroir %s existe déja dans le répertoire "
+        " sélectionné.\n\n En sélectionnant \"Continuer\", vous"
+        " indiquez que vous voulez mettre à jour l'installation"
+        " de %s par la version la plus récente.\n\n"
+        "Plusieurs fichiers spécifiques à %s vont être mis à jour!"
+))
+
+(SET #App-Main "Quelle version de %s doit être installée ?")
+(SET #App-Main-help
+(CAT "La version OS2.0+ ne devrait être utilisée que sur un système tournant sous AmigaOS 2."
+     " Les versions OS2.1+ et OS3.0+ utilisent moins de mémoire. Le système de localisation est nécéssaire!"
+     " Des fonction spéciales de l'OS3.0+ sont utilisées pour gagner plus de mémoire."
+))
+
+(SET #App-Language "Quelles langues doivent être installées ?")
+(SET #App-Language-help
+(CAT "\nL'Amiga peut être utilisé dans beaucoup de langues"
+          " différentes."
+          "Pour réduire la place utilisée par les fichiers de"
+          " localisation, vous pouvez choisir de n'avoir"
+          " que certaines langues spécifiques installées.\n\n"
+          "Sélectionnez simplement les cases à cocher correspondant aux"
+          " langues que vous voulez sur votre système.\n\n"
+          @askoptions-help
+))
+
+(SET #App-Help "Quels fichiers d'aide doivent être installés ?")
+
+(SET #App-Keymaps "Which keymaps should be installed ?")
+
+(SET #Startup-prompt    "\n\nSome lines need to be added to S:User-Startup for %s\n\n%s")
+
+(SET #App-Exit "\n\n%s est installé !!\n\n%s se trouve dans le tiroir (ou la partition) \"%s\".")
+;--------- DEINSTALLATION STRINGS
+(SET #App-DeInstallWhere "Où est situé %s ?\n")
+(SET #App-Install "Installer")
+(SET #App-DeInstall "Désinstaller")
+(SET #bad-DeInstall "Il n'y a aucune installation de %s à l'emplacement spécifié!")
+(SET #StartupRemove-prompt "\nSuppression des lignes relatives à %s dans votre user-startup?")
+(SET #Deinstall-Done "\n%s est maintenant désinstallé.")
+;--------- MINIMUM INSTALLATION STRINGS
+(SET #App-InstMinimum "Installation minimale")
+(SET #App-InstMaximum "Installation maximale")
+(SET #App-InstMaximumHelp
+(CAT  "\nThe minimum installation requires around 400KB on your hard disk!"
+      " Only main program, documentation, catalogs and some drawers to save"
+      " BoulderDäsh specific data like settings, scores, your own levels,"
+      " etc."
+      "\n\nThe maximum installation requires around 8MB on your hard disk!"
+      " A complete installation will speed up the game loading! That`s all."
+      " The game play is absolute the same, even when using an 1x CDROM!"
+))
+))
+;=============================================================================
+; Español strings
+
+(IF (= @language "español")
+(
+(SET default_lang 8)
+
+(SET #bad-kick "Necesitas al menos Workbench 2.0+")
+(SET #bad-installer
+(CAT "Tienes una versión antigua del 'Installer' "
+     "en tu Amiga!\n\nEl proceso de instalación requiere al menos el Installer %ld.%ld.\n\n"
+     "Revisa tu configuración!\n"
+))
+
+(SET #App-InstallMsg
+(CAT "\n\nGuión de instalación de %s .\n\n"
+        "Este script instala %s en tu Amiga.\n\n"
+        "Lee el amigaguide para más información\n"
+        " sobre la distribución de %s.\n\n"
+        "%s © 1999-2003 Guido Mersmann\n"
+        "Todos los derechos reservados."
+))
+(SET #App-MainMode "Elige uno de los modos:")
+
+(SET #App-Where
+(CAT "¿ Dónde quieres instalar %s ?\n"
+        "(Un cajón será creado)"
+))
+
+(SET #App-Update
+(CAT "\n\nYa existe un cajón %s en ese"
+        " directorio.\n\n Si seleccionas \"Seguir\","
+        " actualizarás la instalación %s"
+        " con la versión más reciente.\n\n"
+        "!Algunos ficheros específicos de %s serán sobreescritos¡"
+))
+
+(SET #App-Main "¿ Qué versión de %s quieres instalar ?")
+(SET #App-Main-help
+(CAT "La versión OS2.0+ sólo debería funcionar bajo sistemas con OS2."
+     " Las versiones OS2.1+ y OS3.0+ requieren menos Memoria. Necesitas Locale!"
+     " Algunas funciones del OS3.0+ reducen el consumo de memoria."
+))
+
+(SET #App-Language "¿ Qué lenguajes quieres instalar ?")
+(SET #App-Language-help
+(CAT "\nRl Amiga puede trabajar en numerosos lenguajes"
+          " diferentes."
+          "Parar reducir la cantidad de espacio necesaria para los"
+          " ficheros de lenguaje, puedes copiar sólo"
+          " los lenguajes específicos.\n\n"
+          "Marca las cajas de los lenguajes que quieras"
+          " tener disponibles en tu sistema.\n\n"
+          @askoptions-help
+))
+
+(SET #App-Help "¿Qué Amiga-guides queres instalar ?")
+
+(SET #App-Keymaps "Which keymaps should be installed ?")
+
+(SET #App-Exit "\n\n%s instalado !!\n\n%s está en el cajón \"%s\" (o partición).")
+;--------- DEINSTALLATION STRINGS
+(SET #App-DeInstallWhere "¿ En qué directorio está %s ?\n")
+(SET #App-Install "Instalar")
+(SET #App-DeInstall "Desinstalar")
+(SET #bad-DeInstall "No hay instalación de %s en el lugar indicado")
+(SET #StartupRemove-prompt "\n¿ Elimino las líneas %s de tu fichero user-startup ?")
+(SET #Deinstall-Done "\n%s ha sido desinstalado.")
+;--------- MINIMUM INSTALLATION STRINGS
+(SET #App-InstMinimum "Minimum Installation")
+(SET #App-InstMaximum "Maximum Installation")
+(SET #App-InstMaximumHelp
+(CAT  "\nThe minimum installation requires around 400KB on your hard disk!"
+      " Only main program, documentation, catalogs and some drawers to save"
+      " BoulderDäsh specific data like settings, scores, your own levels,"
+      " etc."
+      "\n\nThe maximum installation requires around 8MB on your hard disk!"
+      " A complete installation will speed up the game loading! That`s all."
+      " The game play is absolute the same, even when using an 1x CDROM!"
+))
+))
+;=============================================================================
+; Português strings
+
+(IF (= @language "português")
+(
+(SET default_lang 16)
+
+(SET #bad-kick "Você necessita pelo menos do Workbench 2.0+")
+(SET #bad-installer
+(CAT "Você tem uma versão antiga do 'Installer' "
+     "no seu Amiga!\n\nO processo de instalação requer no minimo o Installer %ld.%ld.\n\n"
+     "Por favor verifique a sua configuração!\n"
+))
+
+(SET #App-InstallMsg
+(CAT "\n\nScript de instalação %s .\n\n"
+        "Este script instala %s no seu Amiga.\n\n"
+        "Leia o documento amigaguide para mais informações\n"
+        " acerca da distribução de %s.\n\n"
+        "%s © 1999-2003 Guido Mersmann\n"
+        "Todos os direitos reservados."
+))
+(SET #App-MainMode "Por favor escolha um dos modos:")
+
+(SET #App-Where
+(CAT "Onde deseja instalar %s ?\n"
+        "(Será criado uma gaveta)"
+))
+
+(SET #App-Update
+(CAT "\n\njá existe uma gaveta %s nesse"
+        " directório.\n\n Se seleccionar \"Proceguir\", você"
+        " indicará que deseja actualizar a instalação %s"
+        " para a versão mais recente.\n\n"
+        "Alguns ficheiros específicos em %s seram sobstituidos!"
+))
+
+(SET #App-Main "Que versão de %s deseja instalar ?")
+(SET #App-Main-help
+(CAT "A versão OS2.0+ só deve ser usada em Sistemas com o OS2."
+     " As versões OS2.1+ e OS3.0+ requerem menos Memória. Necessita do Locale!"
+     " Algumas funções do OS3.0+ reduzem o consumo de memória."
+))
+
+(SET #App-Language "Que idioma deseja instalar ?")
+(SET #App-Language-help
+(CAT "\nO Amiga pode funcionar com vários idiomas"
+          " diferentes."
+          "Para reduzir a quantidade de espaço necessário para os"
+          " ficheiros de idiomas, você pode copiar só"
+          " os idiomas que quiser.\n\n"
+          "Simplesmente veja as gavetas dos idiomas que quer"
+          " ter disponíveis no seu Sistema.\n\n"
+          @askoptions-help
+))
+
+(SET #App-Help "Que documentos Amiga-guides deseja instalar ?")
+
+(SET #App-Keymaps "Which keymaps should be installed ?")
+
+(SET #Startup-prompt    "\n\nSome lines need to be added to S:User-Startup for %s\n\n%s")
+
+(SET #App-Exit "\n\n%s instalado !!\n\n%s pode ser encontrado na gaveta \"%s\" (ou partição).")
+;--------- DEINSTALLATION STRINGS
+(SET #App-DeInstallWhere "Em que directório está %s ?\n")
+(SET #App-Install "Instalar")
+(SET #App-DeInstall "Desinstalar")
+(SET #bad-DeInstall "Não existe nenhuma instalação de %s no lugar indicado")
+(SET #StartupRemove-prompt "\nRemovo as linhas %s no seu ficheiro user-startup ?")
+(SET #Deinstall-Done "\n%s foi agora desinstalado.")
+;--------- MINIMUM INSTALLATION STRINGS
+(SET #App-InstMinimum "Minimum Installation")
+(SET #App-InstMaximum "Maximum Installation")
+(SET #App-InstMaximumHelp
+(CAT  "\nThe minimum installation requires around 400KB on your hard disk!"
+      " Only main program, documentation, catalogs and some drawers to save"
+      " BoulderDäsh specific data like settings, scores, your own levels,"
+      " etc."
+      "\n\nThe maximum installation requires around 8MB on your hard disk!"
+      " A complete installation will speed up the game loading! That`s all."
+      " The game play is absolute the same, even when using an 1x CDROM!"
+))
+))
+;=============================================================================
+; Polish strings
+
+(IF (= @language "polski")
+(
+(SET default_lang 32)
+
+(SET #bad-kick "Ten program wymaga co najmniej systemu Workbench 2.0+")
+(SET #bad-installer
+(CAT "Na swojej Amidze masz starâ wersjë 'Installera' !"
+     "\nTen skrypt wymaga Installera w wersji %ld.%ld.\n\n"
+     "Proszë sprawdú swojâ konfiguracjë!\n"
+))
+
+(SET #App-InstallMsg
+(CAT "\n\nSkrypt instalujâcy %s.\n\n"
+        "Ten skrypt zainstaluje %s na Twojej Amidze.\n\n"
+        "Wiëcej informacji o dystrybucji %s\n"
+        " znajdziesz w dokumentacji.\n\n"
+        "%s © 1999-2003 Guido Mersmann\n"
+        "Wszelkie prawa zatrzeûone."
+))
+(SET #App-MainMode "Wybierz tryb:")
+
+(SET #App-Where
+(CAT "Gdzie chcesz zainstalowaê %s ?\n"
+        "(Katalog zostanie utworzony)"
+))
+
+(SET #App-Update
+(CAT "\n\nKatalog %s istnieje juû w wybranym miejscu"
+        "\n\n Wybierz  \"Proceed\", "
+        " jeûeli chcesz dokonaê aktualizacji %s"
+        " z najnowszâ dostëpnâ wersjâ.\n\n"
+        "Kilka plików %s zostanie zapisanych na nowo!"
+))
+
+(SET #App-Main "Która wersja %s powinna zostaê zainstalowana?")
+(SET #App-Main-help
+(CAT "Wersja OS2.0+ powinna byê uûywana na systemach OS2."
+     " Wersje OS2.1+ i OS3.0+ potrzebujâ mniej pamiëci. Wymagajâ jednak lokalizacji!"
+     " Specjane funkcje OS3.0+ uûywane sâ aby zmniejszyê zuûycie pamiëci."
+))
+
+(SET #App-Language "Które jëzyki powinny zostaê zainstalowane?")
+(SET #App-Language-help
+(CAT "\nAmiga moûe dziaîaê w wielu róûnych"
+          " jëzykach."
+          "Aby zmniejszyê iloôê uûywanego przez pliki"
+          " z tîumaczeniami, powinieneô wybraê tylko interesujâce"
+          " Cië pliki.\n\n"
+          "Po prostu zaznacz odpowiednie jëzyki, które chcesz"
+          " mieê zainstalowane na swoim dysku.\n\n"
+          @askoptions-help
+))
+
+(SET #App-Help "Które pliki Amiga-guide powinny zostaê zainstalowane?")
+
+(SET #App-Keymaps "Which keymaps should be installed ?")
+
+(SET #Startup-prompt    "\n\nSome lines need to be added to S:User-Startup for %s\n\n%s")
+
+(SET #App-Exit "\n\n%s zostaî zaistalowany!!\n\n%s znajdziesz w katalogu \"%s\".")
+;--------- DEINSTALLATION STRINGS
+(SET #App-DeInstallWhere "Gdzie znajduje sië %s ?\n")
+(SET #App-Install "Instaluj")
+(SET #App-DeInstall "Odinstaluj")
+(SET #bad-DeInstall "W wybranym miejscu nie ma %s !")
+(SET #StartupRemove-prompt "\nUsunâê linie %s ze swojego pliku user-startup?")
+(SET #Deinstall-Done "\n%s zostaî odinstalowany.")
+;--------- MINIMUM INSTALLATION STRINGS
+(SET #App-InstMinimum "Minimum Installation")
+(SET #App-InstMaximum "Maximum Installation")
+(SET #App-InstMaximumHelp
+(CAT  "\nThe minimum installation requires around 400KB on your hard disk!"
+      " Only main program, documentation, catalogs and some drawers to save"
+      " BoulderDäsh specific data like settings, scores, your own levels,"
+      " etc."
+      "\n\nThe maximum installation requires around 8MB on your hard disk!"
+      " A complete installation will speed up the game loading! That`s all."
+      " The game play is absolute the same, even when using an 1x CDROM!"
+))
+))
+;=============================================================================
+
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+;       P_Requirements
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+(PROCEDURE P_Requirements
+; Workbench 37 or better required
+(IF (< (/ (getversion) 65536) 37)
+(
+  (abort #bad-kick)
+)
+)
+; Check installer Version 
+(if (< @installer-version (+ (* #InstallerVersion 65536) #InstallerRevision))
+(
+(abort (#bad-installer #InstallerVersion #InstallerRevision))
+)
+) ;if
+) ;PROCDURE
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+;       P_DeInstall
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+(PROCEDURE P_DeInstall #InstallerMode
+
+(SET #Dummy             (ASKCHOICE
+                        (PROMPT #App-MainMode)
+                        (HELP @askchoice-help)
+                        (CHOICES
+                                (#App-Install #ApplicationName)
+                                (#App-Deinstall #ApplicationName)
+                        )
+                        ;(DEFAULT #Documents)
+                        )
+)
+) ;PROCDURE
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+;       GetApplicationDir
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+(PROCEDURE P_GetApplicationDir
+(SET #Dummy #ApplicationDir)
+(if (= (exists (TACKON #ApplicationDir1 #ApplicationName) (NOREQ)) 2) (SET #Dummy #ApplicationDir1))
+(if (= (exists (TACKON #ApplicationDir2 #ApplicationName) (NOREQ)) 2) (SET #Dummy #ApplicationDir2))
+(if (= (exists (TACKON #ApplicationDir3 #ApplicationName) (NOREQ)) 2) (SET #Dummy #ApplicationDir3))
+(if (= (exists (TACKON #ApplicationDir4 #ApplicationName) (NOREQ)) 2) (SET #Dummy #ApplicationDir4))
+
+(SET #ApplicationDir
+        (TACKON
+                (ASKDIR
+                        (PROMPT (#App-Where #ApplicationName))
+                        (HELP @askdir-help)
+                        (default #Dummy)
+                )
+                #ApplicationName
+        )
+)
+(SET @default-dest #ApplicationDir)
+) ;PROCEDURE
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+;       P_Expand
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+(PROCEDURE P_Expand #dummy
+ (IF (<> (Exists #dummy (noreq)) 0)
+ (
+ (SET #dummy (EXPANDPATH #dummy))
+ )
+ )
+ (SET #dummy #dummy)
+) ;PROCEDURE
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+;       GetDeinstallDir
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+(PROCEDURE P_GetDeInstallDir
+(SET #Dummy #ApplicationDir)
+(if (= (exists (TACKON #ApplicationDir1 #ApplicationName) (NOREQ)) 2) (SET #Dummy #ApplicationDir1))
+(if (= (exists (TACKON #ApplicationDir2 #ApplicationName) (NOREQ)) 2) (SET #Dummy #ApplicationDir2))
+(if (= (exists (TACKON #ApplicationDir3 #ApplicationName) (NOREQ)) 2) (SET #Dummy #ApplicationDir3))
+(if (= (exists (TACKON #ApplicationDir4 #ApplicationName) (NOREQ)) 2) (SET #Dummy #ApplicationDir4))
+
+(SET #ApplicationDir
+                (ASKDIR
+                        (PROMPT (#App-DeInstallWhere #ApplicationName))
+                        (HELP @askdir-help)
+                        (default #Dummy)
+                )
+)
+         (SET #Dummy (EXISTS (TACKON #Applicationdir #ApplicationName)))
+
+        (Select #Dummy
+         (abort (#bad-DeInstall #ApplicationName))
+         (SET #Applicationdir #Applicationdir)
+         (SET #Applicationdir (TACKON #Applicationdir #ApplicationName))
+        ) ;Select
+(SET @default-dest #ApplicationDir)
+
+) ;PROCEDURE
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+;       P_MinimumInstall
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+(PROCEDURE P_MinimumInstall #MinimumMode
+
+ (IF (= #CDMode "1")
+ (
+   (SET #Dummy             (ASKCHOICE
+                           (PROMPT #App-MinimumMode)
+                           (HELP #App-InstMaximumHelp)
+                           (CHOICES
+                                   (#App-InstMinimum #ApplicationName)
+                                   (#App-InstMaximum #ApplicationName)
+                           )
+                           ;(DEFAULT #Documents)
+                           )
+   ) ;SET
+ ))
+ 
+ (IF (= #CDMode "0")
+ (
+   (SET #Dummy "1") ;Maximum installation if not on CD
+ ))
+) ;PROCDURE
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+;       Ask for Catalogs
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+(PROCEDURE P_AskCatalogs #Language
+
+(SET #Dummy     (ASKOPTIONS
+                (PROMPT #App-Language)
+                (HELP #App-Language-help)
+                (CHOICES
+                        "English"
+                        "Deutsch"
+                        "Français"
+                        "Español"
+                )
+                (DEFAULT default_lang)
+        )
+)
+(IF (AND (> #Binary 0) (= #Dummy 0))
+ (SET #Dummy 1)
+)
+(IF (= #Binary 0)
+ (SET #Dummy (BITAND #Dummy (BITNOT 1)))
+)
+(SET #Dummy #Dummy) ;Return #Dummy
+) ;PROCEDURE
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+;       Copy Selected Catalogs
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+(PROCEDURE P_CopyCatalogs #Language
+(SET n 0)
+(SET #DestinationRoot (TACKON #ApplicationDir "Catalogs"))
+(SET #SourceRoot (TACKON #ArchiveDir "Catalogs"))
+(MAKEDIR #DestinationRoot)
+
+(while (< n 4)
+        (SET #Dummy (SELECT n "english" "deutsch" "français" "español"))
+        (
+                (IF (IN #Language n)
+                (
+        (MAKEDIR (TACKON #DestinationRoot #Dummy))
+                        (COPYFILES
+                                (SOURCE (TACKON #SourceRoot #Dummy))
+                                (DEST (TACKON #DestinationRoot #Dummy))
+                                (HELP @copyfiles-help)
+                                (ALL)
+                        )
+                )
+                )
+        )
+(SET n (+ n 1))
+)
+) ;PROCEDURE
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+;       Ask for Help
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+(PROCEDURE P_AskHelp #Documents
+(SET #Dummy             (ASKOPTIONS
+                        (PROMPT #App-Help)
+                        (HELP @askoptions-help)
+                        (CHOICES
+                                "english"
+                                "deutsch"
+                                "français"
+                        )
+                        (DEFAULT default_lang)
+                  )
+)
+) ;PROCEDURE
+
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+;       Copy Help
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+(PROCEDURE P_CopyHelp #Documents
+(SET n 0)
+(SET #DestinationRoot (TACKON #ApplicationDir "Help"))
+(SET #SourceRoot (TACKON #ArchiveDir "Help"))
+(MAKEDIR #DestinationRoot)
+
+(while (< n 3)
+        (SET #Dummy (SELECT n
+                "english"
+                "deutsch"
+                "français"
+        )
+        )
+        (
+                (IF (IN #Documents n)
+                (
+        (MAKEDIR (TACKON #DestinationRoot #Dummy))
+                        (COPYFILES
+                                (SOURCE (TACKON #SourceRoot #Dummy))
+                                (DEST (TACKON #DestinationRoot #Dummy))
+                                (HELP @copyfiles-help)
+                                (INFOS)
+                                (ALL)
+                        )
+                )
+                )
+        )
+(SET n (+ n 1))
+)
+) ;PROCEDURE
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+;       Copy_Dir (Dir)
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+(PROCEDURE P_CopyDir #Dummy
+
+(SET #DestinationRoot (TACKON #ApplicationDir #Dummy))
+(SET #SourceRoot (TACKON #ArchiveDir #Dummy))
+(MAKEDIR #DestinationRoot)
+
+                   (COPYFILES
+        (SOURCE #SourceRoot)
+        (DEST #DestinationRoot)
+        (HELP @copyfiles-help)
+        (OPTIONAL <force>)
+        (ALL)
+        (INFOS)
+                   )
+) ;PROCEDURE
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+;       Copy_Dir2 (Dir)
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+(PROCEDURE P_CopyDir2 #Dummy #Dummy2
+
+(SET #SourceRoot (TACKON #ArchiveDir #Dummy))
+(SET #DestinationRoot (TACKON #ApplicationDir #Dummy2))
+(MAKEDIR #DestinationRoot)
+
+                   (COPYFILES
+        (SOURCE #SourceRoot)
+        (DEST #DestinationRoot)
+        (HELP @copyfiles-help)
+        (OPTIONAL <force>)
+        (ALL)
+        (INFOS)
+                   )
+) ;PROCEDURE
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+;       Copy_File (Name)
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+(PROCEDURE P_CopyFile #Dummy
+
+(if (<> (exists (TACKON #ArchiveDir #Dummy) (noreq)) 0)
+(
+                   (COPYFILES
+        (SOURCE (TACKON #ArchiveDir #Dummy))
+        (DEST #ApplicationDir)
+        (HELP @copyfiles-help)
+        (OPTIONAL <force>)
+        (ALL)
+        (INFOS)
+                   )
+)
+) ;If
+) ;PROCEDURE
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+;       Copy_File2 (Name)
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+(PROCEDURE P_CopyFile2 #Dummy #Dummy2
+
+(if (<> (exists (TACKON #ArchiveDir #Dummy) (noreq)) 0) 
+(
+                   (COPYFILES
+        (SOURCE (TACKON #ArchiveDir #Dummy))
+        (DEST #ApplicationDir)
+        (NEWNAME #Dummy2)
+        (HELP @copyfiles-help)
+        (OPTIONAL <force>)
+        (ALL)
+        (INFOS)
+                   )
+)
+) ;If
+) ;PROCEDURE
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+;       P_Update
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+(PROCEDURE P_Update
+(if (= (exists #ApplicationDir) 2)
+        (message (#App-Update #ApplicationName #ApplicationName #ApplicationName))
+)
+) ;PROCEDURE
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+;       P_AskBinary
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+(PROCEDURE P_AskBinary
+
+(set #Binary 1) ;ChipSet Only!
+
+(set #Dummy (/ (getversion "devs:ahi.device" ) 65536))
+(if (>= #Dummy 1)
+ (set #Binary 2) ;We found AHI so we enable auto version
+;--- If Picasso96 or CyberGraphics is found, then we pick the correct version. 
+  (set #Dummy (/ (getversion "cybergraphics.library") 65536))
+   (if (>= #Dummy 1) (set #Binary 4))
+
+  (set #Dummy (/ (getversion "Picasso96API.library") 65536))
+   (if (>= #Dummy 1) (set #Binary 3))
+)
+;---
+
+(set #Binary (askchoice
+        (prompt (#App-Main #ApplicationName))
+        (help (#App-Main-help #ApplicationName))
+        (choices
+                        "Auto (Chipset, AHI, Picasso96, CyberGraphics)"
+                        "ChipSet Only"
+                        "AHI & Picasso96"
+                        "AHI & CyberGraphics"
+                        )
+        (default #Binary)
+            )
+)
+) ;PROCEDURE
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+;       P_CopyBinary
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+(PROCEDURE P_CopyBinary #Dummy
+
+(set #BinaryName (SELECT #Binary #Dummy (CAT "Bin/" #Dummy "_ChipSet") (CAT "Bin/" #Dummy "_AHIP96") (CAT "Bin/" #Dummy "_AHICGX") ))
+(copyfiles
+        (source (tackon #ArchiveDir #BinaryName) (infos))
+        (dest #ApplicationDir)
+        (newname #Dummy)
+        (help @copyfiles-help)
+        (optional <force>)
+)
+) ;PROCEDURE
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+;       P_MoveWBStartUp
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+(PROCEDURE P_MoveWBStartUp #Dummy
+
+        (COPYFILES
+        (SOURCE (TACKON #ArchiveDir (CAT #Dummy ".info")))
+        (DEST #WBStartUp)
+        (HELP @copyfiles-help)
+        (OPTIONAL <force>)
+        (ALL)
+        )
+
+        (TOOLTYPE
+        (DEST (TACKON #WBStartUp #Dummy))
+        (SETDEFAULTTOOL (TACKON #ApplicationDir #Dummy))
+        (SETTOOLTYPE "CX_POPUP" "NO")
+        (NOPOSITION)
+        (SAFE)
+        )
+) ;PROCEDURE
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+;       P_KeyFile
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+(PROCEDURE P_KeyFile
+
+(SET #Dummy (tackon (tackon #ArchiveDir "Keyfile") #ApplicationKeyfile))
+
+(if (<> (exists #Dummy (noreq)) 0) ((P_CopyDir "KeyFile"))
+)
+) ;PROCEDURE
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+;       P_CopyArchiveIcon
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+(PROCEDURE P_CopyArchiveIcon
+
+(SET #Dummy (CAT (CAT (TACKON #ArchiveDir "/") #ApplicationName) ".info"))
+
+(if (<> (exists #Dummy (noreq)) 0) 
+( 
+        (COPYFILES
+        (SOURCE #Dummy)
+        (DEST (TACKON #ApplicationDir "/"))
+        (HELP @copyfiles-help)
+                   )
+)) ;IF
+
+) ;PROCEDURE
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+;       P_AskBool
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+(PROCEDURE P_AskBool #dummy
+ (SET #dummy (ASKBOOL      (prompt #dummy)
+           (help @askbool-help)
+           (default 1)
+             )
+ )
+) ;PROCEDURE
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+;       P_Rename
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+(PROCEDURE P_Rename #Dummy #Dummy2
+(if (= (exists (TACKON #ApplicationDir #Dummy)) 1)
+        (rename (TACKON #ApplicationDir #Dummy) (TACKON #ApplicationDir #Dummy2))
+)
+) ;PROCEDURE
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+;       P_RealRename
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+(PROCEDURE P_RealRename #Dummy #Dummy2
+   (Set #Dummy (TACKON #ApplicationDir #Dummy))
+   (Set #Dummy2 (TACKON #ApplicationDir #Dummy2))
+   (set #Dummy (CAT "rename " #Dummy " " #Dummy2))
+        (run #Dummy)
+) ;PROCEDURE
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+;       Ask for Keymap
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+(PROCEDURE P_AskKeymap #Keymaps
+(SET #Dummy             (ASKOPTIONS
+                        (PROMPT #App-Keymaps)
+                        (HELP @askoptions-help)
+                        (CHOICES
+                                "Usa"
+                                "Usa2"
+                                "Deutsch"
+                                "Français"
+                                "British"
+                                "Español"
+                                "Svenska"
+                        )
+                        (DEFAULT 0)
+                  )
+)
+) ;PROCEDURE
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+;       Copy Keymap
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+(PROCEDURE P_CopyKeymap #Keymaps
+(SET n 0)
+(SET #DestinationRoot "Keymaps:")
+;(SET #SourceRoot (TACKON #ArchiveDir "Keymaps/"))
+(MAKEDIR #DestinationRoot)
+
+(while (< n 7)
+        (SET #Dummy (SELECT n
+                "Win_usa"
+                "Win_usa2"
+                "Win_d"
+                "Win_f"
+                "Win_gb"
+                "Win_e"
+                "Win_s"
+                     )
+        )
+        (
+                (IF (IN #Keymaps n)
+                (
+                        (COPYFILES
+                                (SOURCE (TACKON #SourceRoot #Dummy))
+                                (DEST #DestinationRoot)
+                                (HELP @copyfiles-help)
+                                (INFOS)
+                                (ALL)
+                        )
+                )
+                )
+        )
+(SET n (+ n 1))
+)
+) ;PROCEDURE
+
+;=============================================================================
+(PROCEDURE P_ShowLogo
+
+(effect "lower_right" "radial" $01384C $5398C1)
+(showmedia "BoulderDäshLogo" "BoulderDäshLogo.ilbm" "upper_left" "none" 0)
+
+) ;PROCEDURE
+
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+;       MAIN
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+;----------------------------------------------------------------------------
+(P_Requirements)
+(P_ShowLogo)
+;--- Expand all path
+(SET #ApplicationDir1 (P_Expand #ApplicationDir1))
+(SET #ApplicationDir2 (P_Expand #ApplicationDir2))
+(SET #ApplicationDir3 (P_Expand #ApplicationDir3))
+(SET #ApplicationDir4 (P_Expand #ApplicationDir4))
+
+(message (#App-installmsg #ApplicationName #ApplicationName #ApplicationName #ApplicationName))
+(SET #InstallerMode (P_DeInstall #ApplicationName))
+(welcome)
+;-----------------------------------------------
+(IF (= #InstallerMode "0")
+(
+;-----------------------------------------------
+ (SET #ApplicationDir (P_GetApplicationDir))
+ (P_Update)
+
+(COMPLETE 1)
+
+;***** Delete old Data and Prefs
+(DELETE (TACKON #ApplicationDir "ColorSets") (ALL))
+(DELETE (TACKON #ApplicationDir "ColorSets.info"))
+(DELETE (TACKON #ApplicationDir "GraphicSets/TimoHegemann/Diggers"))
+(DELETE (TACKON #ApplicationDir "GraphicSets/TimoHegemann/Diggers.info"))
+(DELETE (TACKON #ApplicationDir "GraphicSets/TimoHegemann/Diggers64"))
+(DELETE (TACKON #ApplicationDir "GraphicSets/TimoHegemann/Diggers64.info"))
+(DELETE (TACKON #ApplicationDir "Docs") (ALL))
+(DELETE (TACKON #ApplicationDir "Docs.info") (ALL))
+(DELETE (TACKON #ApplicationDir "WARNING!!!") (ALL))
+(DELETE (TACKON #ApplicationDir "WARNING!!!.info") (ALL))
+(DELETE (TACKON #ApplicationDir "AVERTISSEMENT!!!") (ALL))
+(DELETE (TACKON #ApplicationDir "AVERTISSEMENT!!!.info") (ALL))
+(DELETE (TACKON #ApplicationDir "WARNUNG!!!") (ALL))
+(DELETE (TACKON #ApplicationDir "WARNUNG!!!.info") (ALL))
+(DELETE (TACKON #ApplicationDir "Docs") (ALL))
+(DELETE (TACKON #ApplicationDir "Docs.info") (ALL))
+(DELETE (TACKON #ApplicationDir "Prefs/RTGTitleClassic.prefs") (ALL))
+(DELETE (TACKON #ApplicationDir "Prefs/RTGTitleAmiga.prefs") (ALL))
+(DELETE (TACKON #ApplicationDir "Prefs/RTGScreen.prefs") (ALL))
+;*****
+(COMPLETE 2)
+;*****
+(MAKEDIR #ApplicationDir (INFOS))
+(MAKEDIR (TACKON #ApplicationDir "Prefs"))
+(MAKEDIR (TACKON #ApplicationDir "GraphicSets/User"))
+(MAKEDIR (TACKON #ApplicationDir "SampleSets/User"))
+(MAKEDIR (TACKON #ApplicationDir "CharacterSets/User"))
+(MAKEDIR (TACKON #ApplicationDir "MusicSets/User"))
+(MAKEDIR (TACKON #ApplicationDir "Games/User"))
+(MAKEDIR (TACKON #ApplicationDir "Caves/User"))
+(MAKEDIR (TACKON #ApplicationDir "Scores"))
+(MAKEDIR (TACKON #ApplicationDir "Solves"))
+ (P_CopyFile "GraphicSets.info")
+ (P_CopyFile "CharacterSets.info")
+ (P_CopyFile "SampleSets.info")
+ (P_CopyFile "MusicSets.info")
+(COMPLETE 3)
+
+;--- **** MINIMUM INSTALLATION CHECK ****
+(SET #MinimumMode (P_MinimumInstall #ApplicationName))
+;-----------------------------------------------
+(IF (= #MinimumMode "1")
+(
+;*****************************************************************************
+;--- Normal Installation ---
+
+ (SET #Binary (P_AskBinary))
+(COMPLETE 2)
+ (SET #Language (P_AskCatalogs #Language))
+(COMPLETE 3)
+ (SET #Documents (P_AskHelp #Documents))
+(COMPLETE 4)
+
+(COMPLETE 10)
+ (P_CopyDir "Games")
+(COMPLETE 20)
+ (P_CopyDir "Caves")
+(COMPLETE 35)
+ (P_CopyDir "Title")
+ (P_CopyDir "Solves")
+ (P_CopyDir "Tools")
+(COMPLETE 45)
+ (P_CopyDir "Scores")
+(COMPLETE 55)
+ (P_CopyDir "SampleSets")
+(COMPLETE 65)
+ (P_CopyDir "MusicSets")
+(COMPLETE 75)
+ (P_CopyDir "GraphicSets")
+(COMPLETE 85)
+ (P_CopyDir "CharacterSets")
+(COMPLETE 97)
+ (P_CopyBinary #ApplicationName)
+ (P_CopyFile (CAT #ApplicationName ".info"))
+ (P_CopyCatalogs #Language)
+ (P_CopyHelp #Documents)
+
+ (P_CopyArchiveIcon)
+ (P_CopyFile "Help.info")
+ (P_CopyFile "Prefs.info")
+ (P_CopyFile "GraphicSets.info")
+ (P_CopyFile "CharacterSets.info")
+ (P_CopyFile "SampleSets.info")
+ (P_CopyFile "MusicSets.info")
+ (P_CopyFile "WARNING!!!")
+(COMPLETE 99)
+ (P_Keyfile)
+;--- CleanUp
+(DELETE (TACKON #ApplicationDir "Title.info"))
+(DELETE (TACKON #ApplicationDir "Tools.info"))
+(DELETE (TACKON #ApplicationDir "Games.info"))
+(DELETE (TACKON #ApplicationDir "Caves.info"))
+(DELETE (TACKON #ApplicationDir "Solves.info"))
+(DELETE (TACKON #ApplicationDir "Scores.info"))
+(DELETE (TACKON #ApplicationDir "KeyFile.info"))
+(DELETE (TACKON #ApplicationDir "Install.info"))
+(DELETE (TACKON #ApplicationDir "Catalogs.info"))
+(run "avail Flush")
+(COMPLETE 100)
+(message (#App-exit #ApplicationName #ApplicationName #ApplicationDir))
+(exit (QUIET))
+)) ;IF #MinimumMode = 1
+;*****************************************************************************
+(IF (= #MinimumMode "0")
+(
+;**** Minimum CD Installation! We copy the Binary, Catalogs, Help and some Icons.
+ (SET #Binary (P_AskBinary))
+(COMPLETE 25)
+ (SET #Language (P_AskCatalogs #Language))
+(COMPLETE 35)
+ (SET #Documents (P_AskHelp #Documents))
+(COMPLETE 50)
+ (P_CopyBinary #ApplicationName)
+(COMPLETE 55)
+ (P_CopyFile (CAT #ApplicationName ".info"))
+(COMPLETE 60)
+ (P_CopyCatalogs #Language)
+(COMPLETE 75)
+ (P_CopyHelp #Documents)
+(COMPLETE 80)
+ (P_CopyFile "Help.info")
+ (P_CopyFile "Prefs.info")
+ (P_CopyFile "WARNING!!!")
+(COMPLETE 99)
+ (P_Keyfile)
+)) ;IF #MinimumMode = 1
+;*****************************************************************************
+;-----------------------------------------------
+)) ;IF #InstallerMode = 0
+;-----------  Deinstallation -------------------
+(IF (= #InstallerMode "1") (
+
+(SET #ApplicationDir (P_GetDeInstallDir))
+
+(COMPLETE 30)
+(COMPLETE 80)
+(DELETE #ApplicationDir (optional FORCE) (ALL))
+(DELETE (Cat #ApplicationDir ".info"))
+(COMPLETE 100)
+
+(Message (#Deinstall-Done #ApplicationName))
+(exit (QUIET))
+;-----------------------------------------------
+)) ;IF #InstallerMode = 1
+;-----------------------------------------------
+

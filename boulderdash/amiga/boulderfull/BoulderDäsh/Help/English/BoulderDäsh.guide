@@ -1,0 +1,5699 @@
+@database BoulderDäsh.guide
+@master BoulderDäsh.guide
+@$VER: 5.25 (08.03.2008)
+@author "Silke Bormann & Guido Mersmann"
+@(c) "Guido Mersmann"
+
+@smartwrap
+
+@macro MS "@{par}@{jcenter}@{FG SHINE}$1@{par}@{JLeft}@{FG TEXT}"
+@macro MH "@{par}@{jcenter}@{FG HIGHLIGHT}$1@{par}@{JLeft}@{FG TEXT}"
+@macro MC "@{par}@{jcenter}@{FG SHINE}$1@{par}@{JLeft}@{FG TEXT}"
+@macro MU "@{par}@{jcenter}@{U}@{FG SHINE}$1@{UU}@{par}@{JLeft}@{FG TEXT}"
+
+@node "Main" "Boulder Däsh"
+@{jcenter}
+@{code}
+@{FG HIGHLIGHT}
+Boulder Däsh  V5.25
+
+(C)1987-2008 von Guido Mersmann@{FG TEXT}
+
+BOULDERDÄSH IS A SHAREWARE PRODUCT
+
+READ THE DISTRIBUTION SECTION FOR INFORMATION ON DISTRIBUTION
+
+@{FG SHINE}Contents
+----------@{FG TEXT}
+@{"           Introduction           " link "Introduction"}
+@{"         Epilepsy Warning         " link "Epilepsy"}
+@{"        System Requirements       " link "SystemRequirements"}
+@{"           Feature List           " link "FeatureList"}
+@{"           Distribution           " link "Distribution"}
+@{"          How To Register         " link "HOWTOREGISTER"}
+@{"          How To Install          " link "HowToInstall"}
+@{"            The Windows           " link "WinAll"}
+@{"             The Menus            " link "MenuAll"}
+@{"           How To Play            " link "HowToPlay"}
+@{"         The Game Elements        " link "Elements"}
+@{"         Own Graphic  Sets        " link "OwnGFX"}
+@{"        Own Character Sets        " link "OwnCHR"}
+@{"         Own  Sample Sets         " link "OwnSPL"}
+@{"            Own  Music            " link "OwnMUS"}
+@{"               FAQS               " link "FAQS"}
+@{"             History              " link "History" 1999}
+@{"              Future              " link "Future"}
+@{"             Bug List             " link "Buglist"}
+@{"              Thanx               " link "Thanx"}
+@{"            The Author            " link "Author"}
+@{"      Technical  information      " link "Technical"}
+@{"    My other amiga projects!      " link "OtherPrgs"}
+@endnode
+@node "Epilepsy" "Epileptic seizure or altered consciousness"
+
+@{MS "Epileptic seizure or altered consciousness"}
+
+A very small percentage of people have a condition that causes them to epileptic
+seizure or altered consciousness when exposed to certain light patterns or
+flashing lights, including those that appear on a television screen and while
+playing games. Such people may have no medical history of seizures or epilepsy.
+Please take the following precautions to minimise any risk:@{PAR}
+
+@{b}Prior to use:@{ub}@{PAR}
+
+° If you, or anyone in your family, has ever had an epileptic condition or has
+experienced altered consciousness when exposed to flickering light, consult your
+doctor prior to playing.@{PAR}
+
+° Sit at least 2.5m (8 ft) away from the screen.@{PAR}
+
+° If you are tired or have not had much sleep, rest and commence playing only
+after you are fully rested.@{PAR}
+
+° Make sure that the room in which you are playing is well lit.@{PAR}
+
+° Use the game on as small a television screen as possible (preferably 14" or
+smaller).@{PAR}
+
+@{b}During use:@{ub}@{PAR}
+
+° Rest for at least 10 minutes per hour while playing a game.@{PAR}
+
+° Parents should supervise their children. If you or your child experiences any
+of the following symptoms while playing: dizziness, altered vision, eye or
+muscle twitches, loss of awareness, disorientation, any involuntary movement or
+convulsions, discontinue use @{b}IMMEDIATELY@{ub} and consult your doctor.
+
+@endnode
+@node "Introduction" "Introduction"
+
+@{MS "Introduction"}
+
+BoulderDäsh is a convertation of the original BoulderDash from the good old C64.@{PAR}
+
+You may say why another BoulderDash clone? You are right, there are a lot of clones,
+but they are all not as good as the original, if you look at the graphic or the
+feeling of playing it. Even converts at PC are not very good. Also on fast PCs
+the animation speed of the objects is lowered, if there is scrolling.@{PAR}
+
+My version was tested by different independent persons and all said the same:
+This BoulderDäsh is the best. I will not praise myself here, but test it
+yourself, built your own opinion and please tell @{"me" link "Author"} about it.
+
+@endnode
+@node "Systemrequirements" "System Requirements"
+
+@{MS "System Requirements"}
+
+BoulderDäsh (should work) works on all Amigas with OS 2.0 or higher.@{PAR}
+
+Some functions are not available under 2.0, because they presume OS3.x+
+(MemoryPools,...)@{PAR}
+
+Starting with OS2.1 BoulderDäsh is able to work multilingual.@{PAR}
+
+If you want to use the additional buttons on your joypad then you`ll require the
+lowlevel.library. (part of the Amiga-OS 3.1)@{PAR}
+
+When using Amithlon, MorphOS or PCI Amigas you can also use my optional
+lowlevel.library replacement. This allows the usage of the available GamePorts
+on your system.@{PAR}
+
+To run BoulderDäsh a minimum of 1MB is required. To use all features (Ingame
+music and my internal music box) more memory is required.@{PAR}
+
+If you want to use BoulderDäsh on @{b}graphic boards@{ub} then Picasso96 or
+CyberGraphics and a 68020 as minimum is required. I suggest a 68030-25Mhz as
+minimum.@{PAR}
+
+If you want to use BoulderDäsh with @{b}sound cards@{ub} then AHI is
+required.@{PAR}
+
+In addition to that and the standard libraries nothing else is needed.@{PAR}
+
+BoulderDäsh was tested with the following configurations without any
+problems.@{PAR}
+
+   A2000-30   OS3.1   1MB Chip and   8 MB Fast@{PAR}
+   A2000      OS3.1   1MB Chip and   4 MB Fast@{PAR}
+   A2000      OS3.1   1MB Chip@{PAR}
+   A2000      OS2.1   1MB Chip and   2 MB Fast@{PAR}
+   A2000      OS2.1     1MB Chip and   4 MB Fast@{PAR}
+   A2000      OS3.0   1MB Chip and   4 MB Fast@{PAR}
+   A2000      OS3.0   1MB Chip@{PAR}
+   A2000      OS3.0   1MB Chip and  16 MB Fast@{PAR}
+   A2000      OS3.9   1MB Chip and  16 MB Fast@{PAR}
+
+   A500       OS2.0   1MB Chip@{PAR}
+   A500       OS2.1   1MB Chip@{PAR}
+   A500       OS2.1   1MB Chip and 1,8 MB Ranger Fast@{PAR}
+   A500       OS2.1   1MB Chip and   2 MB Fast@{PAR}
+
+   A1200-20   OS3.0   2MB Chip@{PAR}
+   A1200-30   OS3.0   2MB Chip@{PAR}
+   A1200-30   OS3.0   2MB Chip and   4 MB Fast@{PAR}
+   A1200-30   OS3.0   2MB Chip and   8 MB Fast@{PAR}
+   A1200-30   OS3.1   2MB Chip and   4 MB Fast@{PAR}
+   A1200-30   OS3.1   2MB Chip and   8 MB Fast@{PAR}
+
+   CD32       OS3.1   2MB Chip@{PAR}
+   CD32-SX1   OS3.1   2MB Chip and   4 MB Fast@{PAR}
+
+   A4000-30   OS3.0   2MB Chip and  16 MB  Fast@{PAR}
+   A4000-30   OS3.1   2MB Chip and  16 MB  Fast@{PAR}
+   A4000-40   OS3.1   2MB Chip and  16 MB  Fast@{PAR}
+
+   Amithlon   OS3.9   8MB Chip and  80 MB Fast@{PAR}
+
+   Pegasos    MorphOS@{PAR}
+
+   AmigaOne   OS4.0@{PAR}
+
+@endnode
+@node "Featurelist" "Features"
+
+@{MS "Features"}
+
+  ° 1:1 Clone of the Original!@{PAR}
+
+  ° Multitasking available!@{PAR}
+
+  ° Online help!@{PAR}
+
+  ° Local support.@{PAR}
+
+  ° Programmed in Commodore Styleguide.@{PAR}
+
+  ° Softscrolling and full speed  also under a MC68000.
+     (no jerking with the animation's or the scrolling)@{PAR}
+
+  ° Graphic board compatible via @{"picasso96 or cybergraphics" link "Systemrequirements"}.@{PAR}
+     Allows up to 256 colors.@{PAR}
+
+  ° Sound board compatible via @{"AHI" link "Systemrequirements"}.@{PAR}
+
+  ° more than 10000 (!!) caves included!@{PAR}
+
+  ° 36 different @{"graphic sets" link "INCGFX"}.@{PAR}
+
+  ° 6 different @{"character sets" link "INCCHR"}.@{PAR}
+
+  ° 5 different @{"sample sets" link "INCSPL"}.@{PAR}
+
+  ° 6 ingame @{"tunes" link "INCMUS"}.@{PAR}
+
+  ° All adjustments are possible per Gadtools-GUI.@{PAR}
+
+  ° Enlarged by more @{"game elements" link "Elements"} (FALSE stones, FALSE Metal,..)@{PAR}
+     So new interesting possibilities within the levels are possible.@{PAR}
+
+  ° The @{"size" link "LeVi"} of the levels is free (Under OCS/ECS/AGA it depends on ChipMem).@{PAR}
+
+  ° The @{"highscorelist" link "HiSc"} is automaticaly handled for each game.@{PAR}
+
+  ° Comfortable @{"Level Editor" link "LeEd"}.@{PAR}
+
+  ° Different gravitation directions.@{PAR}
+
+  ° @{"Game Editor" link "GaEd"} for creating complete games.@{PAR}
+
+  ° With the help of a paint program an @{"own graphics" link "OwnGFX"} can be created.@{PAR}
+
+  ° With the help of a sampler @{"own sounds" link "OwnSPL"} can be created.@{PAR}
+
+  ° Create your @{"own ingame music" link "OwnMUS"} by using Protracker.
+@endnode
+@node "Distribution" "Distribution"
+
+@{MS "Distribution"}
+
+@{b}The Official BoulderDäsh-CDROM@{ub}@{PAR}
+
+The contents of the original BoulderDäsh-CDROM isn´t Shareware! It`s not allowed
+to copy the CD or part of it!@{PAR}
+
+@{b}The shareware archive@{ub}@{PAR}
+
+This program may be published on every public medium, as long as all files in
+the archive are unchanged. If this medium is a CD I expect a free copy.
+(Aminet-CDs excluded)@{PAR}
+
+I expect from everybody, who uses BoulderDäsh regularly, to @{"register" link "HOWTOREGISTER"}
+immediatly. I think this does not hurt anybody, and I will have
+more fun to integrate new features or write a new game.@{PAR}
+
+Updates may be requested from @{b}Aminet@{ub}.@{PAR}
+
+@{b}I am not liable for injuries or data loss caused by BoulderDäsh. The use of
+BoulderDäsh is your own responsibility !!!@{ub}
+
+@endnode
+@node "HOWTOREGISTER" "How to register?"
+
+@{MS "How to register?"}
+
+BoulderDäsh registration is very easy.@{PAR}
+
+Send @{"me" link "Author" 0} following things:@{PAR}
+
+   ° Your personal data and the name of the program.@{PAR}
+   ° Shareware fee about 10 Euro@{PAR}
+
+Important:@{PAR}
+
+I need your full address with christian and surname, your street and your living
+place and very important the name of the programm you want to register.@{ub}
+
+@endnode
+@node "HowToInstall" "How to Install BoulderDäsh"
+
+@{MS "How to Install BoulderDäsh"}
+
+To install BoulderDäsh please use the original Commodore Installer. It creates a
+directory, in which BoulderDäsh is installed.@{PAR}
+
+If you do not like BoulderDäsh, you can delete the whole drawer to destroy
+BoulderDäsh completely.@{PAR}
+
+Assigns, path-adjustments or insertments into the User-Startup are not
+necessary. Only if you are so enthusiastic, that you want to start BoulderDäsh
+in the User-Startup. (-8
+
+@endnode
+@node "History" "History"
+
+@{MS "History"}
+
+This text shows like a diary, what has been changed in the different
+versions.
+
+@{MH "V1.00"}
+
+1987 written at a weekend. It was my first programm at the A500!!! It was as
+fast as the original, but it wasn't able to fasten the speed of the game. This
+was optimised by more intelligent screen routines and an optimised move
+controller. The levels were firmly integrated and there were never more than 3,
+because otherwise I had to enter them in the source as "dc.b DT_Metal,DT_Wall..."
+
+@{MH "V2.00"}
+
+1995 a complete new version (changing of the routines), addition of a move
+controller and an intelligent screen creation routine, that runs without Double
+Buffering.
+
+@{MH "V2.01"}
+
+Addition of the LevelEditor, removement of some little bugs and adaption of the
+Lowlevel library.
+
+@{MH "V2.02"}
+
+New routine for the falling of the stones with correct gravitation (for each
+direction one)
+
+@{MH "V2.03"}
+
+Little corrections in the Interrupt Blitter Routine
+
+@{MH "V2.04"}
+
+Little corrections in the routine of the falling stones. Stones also tilt down
+at the right side. (-8
+
+@{MH "V2.05"}
+
+New initialisation and less memory needed. With this step the weakest point,
+concerning the stability of the system after ending BoulderDäsh was removed.
+With the help of the asyncfunctions a GUI created, with is an interface between
+the game and OS.
+
+@{MH "V2.06"}
+
+Local texts and new mistake requester
+
+@{MH "V2.07"}
+
+Scrolling mistake in oversized levels corrected.
+
+@{MH "V2.08"}
+
+Enlarged graphics in the LevelEditor and new random-functions.@{PAR}
+Mistake (software failure) in the explosion of the twins corrected
+
+@{MH "V2.09"}
+
+Little mistakes by changing from big to small levels corrected.@{PAR}
+Little corrections in the Game-Editor.@{PAR}
+Protection-protocol included. Now you can't start my levels any more.
+
+@{MH "V2.10"}
+
+Graphic-interface included. From now on BoulderDäsh loads all graphics as
+IFF-picture.
+
+@{MH "V2.11"}
+
+Graphic and animation-scanner included. All game settings can be saved. Pattern
+in the ASL Requester. Paths and patterns will be saved in the game
+settings.
+
+@{MH "V2.12"}
+
+The graphic is completely now. Water looks like water and the magic walls are
+walls, that will be animated.
+
+@{MH "V2.13"}
+
+Little mistakes corrected : Joycontroller, time-out, LevelEditor
+
+@{MH "V2.14"}
+
+New gravitation arrows included
+
+@{MH "V2.15"}
+
+Bad bug under OS2.x corrected : Found by Andreas Vierkant
+
+@{MH "V2.16"}
+
+Small discrepancies with the original levels corrected and opting the
+LevelCompressor.
+
+@{MH "V2.17"}
+
+Small changes in the LevelEditor and the window for the LevelSettings
+
+@{MH "V2.18"}
+
+Small bugs for the Icon Starting, the ASL-Requester and the LevelEditor
+corrected: (reported by Timo Hegemann)
+
+@{MH "V2.19"}
+
+Water adjustment and slime rate changed to percent
+
+@{MH "V2.20"}
+
+Mistake in the number of players corrected. A player got a life to much indeed.
+(-8
+
+@{MH "V2.21"}
+
+Addition of the highscorelist. Every game has its own highscores now.
+
+@{MH "V2.22"}
+
+Small mistakes in the NameRequester and in the Hiscore-Save-Routine corrected.@{PAR}
+Play the game some times to fill the highscorelist.@{PAR}
+The player names will be saved with the prefs now.
+
+@{MH "V2.23"}
+
+Again some mistakes in the highscore routines found. Furthermore a player with
+the same score in the same level will be added in the highscores after the
+player, who is already there.
+
+@{MH "V2.24"}
+
+Modulo mistake in the LevelEditor corrected. From time to time the levels were
+distorted while depressing, if the running game contains a level , which was
+bigger then the one to edited. small discrepancies with the levelnumbers
+corrected. If you win in one game, for example, 20 levels and then also win the
+last one, the game starts again at the beginning and the levelnumber was set to
+1. This isn't good for your place in the highscores. Now the levelnumbers will
+be counted on.
+
+@{MH "V2.25"}
+
+Besides some small optings in the LevelEditor you can play the edited level in
+the testing mode endless, no difference, if you win the level or not. The level
+will return. The Tilulit-Effect can be switched off specially for the
+LevelEditor now.
+
+@{MH "V2.26"}
+
+Mistake in the LevelSetting requester corrected.
+
+@{MH "V2.27"}
+
+Mistake in the Scrollercontroller found, which appears in different level sizes
+in one game. 
+
+@{MH "V2.28"}
+
+Following the hint of Timo Hegemann a GameOver-Intercut after the last life was
+added. Furthermore the long existing mistake in the scroller function was
+corrected. Now you can always the entry of a cave, before Rockford
+appears.
+
+@{MH "V2.29"}
+
+Game information requester added and making the game format safe for the
+future.
+
+@{MH "V2.30"}
+
+New font routine added and creation of a font very similar to the original.@{PAR}
+IFF-Loader, prefs requester and prefs format adjusted.@{PAR}
+Mistakes in the magic wall corrected. New score line and game notices, which are
+very similar to the original. Mistakes in the game information corrected.
+
+@{MH "V2.31"}
+
+Little corrections in the documentation and in the local data done.@{PAR}
+Small graphical corrections in the LevelSetting requester done.@{PAR}
+Mistake in the sounds giving out corrected. (reported by Andreas Vierkant)
+
+@{MH "V2.32"}
+
+Worked in the mistake of saving games. Now the game version number is also
+counting. Small opting in the IFFILBM routines. GameSettings enlarged. Now you
+can choose, which game will be loaded while starting BoulderDäsh. Now I have
+found a mistake, which is also in the first Aminet Version. Every time the first
+player is always announced. This gets a little bit difficult with two players in
+the end of a game.
+
+@{MH "V2.32"}
+
+Small correction in the move controller. Now to original levels are more
+compatible and the feeling is better. Now you can't explode through a left-right
+movement under a stone by accident.
+
+@{MH "V2.34"}
+
+Changed the stone-falling routine. Now the stone fall 100% original.@{PAR}
+Furthermore I have corrected the small disorientation of the LevelScoller at the
+beginning of a new level.@{PAR}
+Mistake in the time bonus corrected and adjustment of the bonus life function to
+the original. Addition of the DoubleScan switch into the GameSettings. Now the
+owners of screens, who can only show frequencies >30Khz, can play BoulderDäsh as
+well.
+
+@{MH "V2.35"}
+
+Now the ChipSet will be resetted by LoadView(zero). Perhaps DoubleScan will run
+now, too. 300 (threehundred) new levels in 15 games added. Perhaps some levels
+are not playable, because the adjustment of the water/slime and the magic walls
+is missing.
+
+@{MH "V2.36"}
+
+Water and slime routine corrected. Now the water grows constantly and the slime
+is always pervious in the same way. Before this the rate falls by growing
+quantity of water (slime). Mistake by creating Rockford corrected. One line
+wasn't active because of a mistake in version 2.28 and hasn't been activated
+again.@{PAR}
+Mistake in the animationscroller of the magic wall corrected.@{PAR}
+Bonus life effect included.@{PAR}
+Changing water to diamonds by activating the magic wall included.@{PAR}
+Timing-problem within the start of the level corrected.@{PAR}
+The ghost-moving routine adjusted to the original. Now there are nearly no more
+incompatibilities. "Nearly no more", because all BoulderDäshs are different in
+the movement partly.@{PAR}
+A more efficient LevelCompressor included, which replaces the old one.
+
+@{MH "V2.37"}
+
+UserBlock finally included into the LevelEditor. Otherwise it would be
+senseless. @{PAR}
+The SpaceBlock can also be animated.@{PAR}
+Mistakes in the scroller by starting the level corrected. The ghosts already
+started moving while scrolling. So it could happen, that Rockford already
+exploded while he is created, because Rockford waited for the scroller, but not
+the ghosts.
+
+@{MH "V2.38"}
+
+Future-GFX included.@{PAR}
+The animation speed can the adjusted via ToolType for every graphic font.@{PAR}
+Mistake in the animation controller corrected.@{PAR}
+New icons created.
+
+@{MH "V2.39"}
+
+ExplosionRoutine improved.@{PAR}
+From now on all INs in a level will be supported. So all Rockfords coming out of
+an IN can be moved.@{PAR}
+Little improvements in the TwinRoutines.
+
+@{MH "V2.40"}
+
+Mistakes in the LevelScroller corrected, which only appears, if many Rockfords
+appear.@{PAR}
+Correction of a mistake by the creation of Rockford at the beginning of a level,@{PAR}
+which only appears with many Rockfords.
+
+@{MH "V2.41"}
+
+Now all twins explode, if a ghost thoughs them.
+
+@{MH "V2.42"}
+
+Modification in the protection protocol. Now also in the level frames In and
+Outs can be set.@{PAR}
+Small mistakes in the explosion routine corrected. Rockford could still explode
+in the Out.@{PAR}
+New PlayerName requester in the GameSettings included.@{PAR}
+Score texts are printed concentric automatically.@{PAR}
+Now the PlayerName can be distributed in stead of Player# optionally.@{PAR}
+Old name requester at the end of the game removed.@{PAR}
+New Hiscore routines included. Now there are 3 different hiscorelists for every
+game.@{PAR}
+Mistake in the linkage of the windows corrected.@{PAR}
+New LevelSetting requester included.@{PAR}
+Mistake in the New routine found.
+
+@{MH "V2.43"}
+
+Very stupid mistake in the installer script found and removed.@{PAR}
+Hiscore cycle gadget shows now only the three valid values.@{PAR}
+Old @{"cheat" link "cheats"} removed and 3 new @{"cheats" link "cheats"}
+added.
+
+@{MH "V2.44"}
+
+New async-functions added.@{PAR}
+Old sound routine replaced.@{PAR}
+New water and milling wall samples.
+
+@{MH "V2.45"}
+
+Added sample set prefs (requested by Hendrik Gels)@{PAR}
+Better asl.library handling
+
+@{MH "V2.46"}
+
+Out-Error removed (reported by Silke Bormann)@{PAR}
+WaterMilling bug removed
+
+@{MH "V2.47"}
+
+BoulderDäsh is playable by keyboard (requested by Sabine Lempert)@{PAR}
+New @{"cheat" link "Cheats"} added
+
+@{MH "V2.48"}
+
+Some adjustments to stone movement routines@{PAR}
+Delete records implemented. (requested by Andreas Vierkant)
+
+@{MH "V2.49"}
+
+Online help is now available via "HELP"-key
+
+@{MH "V2.50"}
+
+Title picture and original title theme implemented
+
+@{MH "V2.51"}
+
+Async-Requester module included and old requester routines removed
+
+@{MH "V2.52"}
+
+Now it is possible to flip back to the Workbench while the game is paused.
+(requested by Hans Bergengren)
+
+@{MH "V2.53"}
+
+Online help fixed ! (reported by Timo Hegemann)
+
+@{MH "V2.54"}
+
+Titlepicture improved.@{PAR}
+Keyfile support implemented!
+
+@{MH "V2.55"}
+
+NTSC-title picture repaired ! (reported by Rickard Sandgren)@{PAR}
+New classic title picture implemented. (requested by Rickard Sandgren)
+
+@{MH "V2.56"}
+
+Second "Load Game"-Button added! (requested by everyone (-8 )
+
+@{MH "V2.57"}
+
+NTSC-game speed adjustment (reported by Rickard Sandgren)
+
+@{MH "V2.58"}
+
+Many optimisations.
+Reassembled with Async-Functions 4.0
+
+@{MH "V2.59"}
+
+Reassembled with Async-Functions 4.1
+
+@{MH "V2.60"}
+
+Some minor changes.
+"BoulderDash II"-Game added.
+
+@{MH "V2.61"}
+
+Little "Default settings" bug removed.@{PAR}
+OS2.0 Version caused a system crash if locale.library was not present. (Reported
+by Large)@{PAR}
+"Rockford'sRevenge"-Game added.@{PAR}
+LoadGame error request fixed.@{PAR}
+Some problems with old C64-levels solved.@{PAR}
+All Rockford's are now able to push stones.
+
+@{MH "V2.62"}
+
+Leveleditor-ClearLevel is working again.@{PAR}
+Score line modified.
+
+@{MH "V2.63-V3.00"}
+
+"Clear game"-function modified. => No Hiscore damages any longer.@{PAR}
+Original C64 colors for each level. (requested by every one)@{PAR}
+Unregistred version denies playing all levels.@{PAR}
+Unregistred version denied modifying start level and lives.@{PAR}
+8 new games implemented. (Thanks to Peter Broadribb)@{PAR}
+2 new sample sets (Thanks to Thomas Sahling)@{PAR}
+1 new graphic set@{PAR}
+Sample handling bug fixed. (reported by Thomas Sahling)@{PAR}
+Virtual data handling. (Graphic, character and sample sets)@{PAR}
+Error requester fixed.@{PAR}
+Some new options.@{PAR}
+Choose graphic, character and sample set for each level.@{PAR}
+LoadLevel is able to load Original C64 Construction Kit Caves (registred version
+only)@{PAR}
+389 original C64-Caves included. (C64-Construction Kit Format) Thanks to Peter
+Broadribb and Uwe Drichel@{PAR}
+New sounds (StonePushFailed, GravitationArrow and Background)@{PAR}
+Sample set loader is now able to extract periode from sample. (requested by
+Thomas Sahling)@{PAR}
+LevelEditor: You are allowed to edit the border. (requested by Thomas Sahling)
+Little manual rework.@{PAR}
+New scroller option, to speedup scrolling. (requested by Rudolph Riedel)
+No longer blanker activation, if Boulderdäsh is returning to workbench.
+(Requested by Silke Bormann [What's this?])@{PAR}
+No longer soft freezer in pause mode. (-8@{PAR}
+New Hiscore routines and format.@{PAR}
+Some problems with C64-caves fixed.@{PAR}
+New selector Keys. (level editor)@{PAR}
+2 new blocks (Space-Fake and Space-Background)@{PAR}
+Fixed level editor animation problems. (Only with some GFX-Sets)@{PAR}
+MillingWall symbol added. (little stone)
+
+@{MH "V3.01"}
+
+Little Bugfix. (unregistred only)
+
+@{MH "V3.02-V3.04"}
+
+Some source code optimisations. 
+
+@{MH "V3.05"}
+
+Input.device handling fixed. Instead of one open and one close, this device was
+opened twice. If the game was played 9 time this causes an "ASL-requester auto
+close"-bug. [Reported by Michael]
+
+@{MH "V3.06"}
+
+Color sets implemented. Now you are able to select colors for your own levels
+.(During testing V3.0 there was not enough time to implement color sets.)
+
+@{MH "V3.07"}
+
+Small ToolType Bug removed.
+
+@{MH "V3.08"}
+
+Small game editor bug removed. An opened Level settings window causes am system
+crash after using the level editor.
+
+@{MH "V3.09"}
+
+Some game editor optimisations.
+
+@{MH "V3.10"}
+
+Color sets are now selectable via Level editor, too.
+Some internal optimisations.
+
+@{MH "V3.11"}
+
+Wrong Gadget replaced (File_kind). Now it is possible to open the color set
+selection via PopUp_kind.@{PAR}
+Forgot to sort after changing color sets name.@{PAR}
+Full FAQ-Guide rework.@{PAR}
+
+@{MH "V3.12"}
+
+Brrrr! Forgot to reactivate some level editor routines. Since V3.10 it was
+impossible to create own levels. (reported by Michael)@{PAR}
+New random routines. (Water/Slime/Earthquake)@{PAR}
+
+@{MH "V3.13-V3.20"}
+
+Music routines implemented and level support adjusted.
+
+@{MH "V3.21"}
+
+Complete new preferences windows. Now all settings are divided to many windows
+and there is also a prefs files for each window. This makes it easier to edit
+the preference and allows me to do simple modifications.
+
+@{MH "V3.50-V3.51"}
+
+Title picture is playing ProTracker modules.@{PAR}
+Additional to that, there is a music for each title mode.
+(Classic and Amiga)
+
+@{MH "V3.52"}
+
+Little window link bugs removed.
+
+@{MH "V3.53"}
+
+VBL-Frequenz is now calculated. Modified the ProTracker source to calculate
+SetSpeed commands correct.
+
+@{MH "V3.54"}
+
+BoulderDäsh default configuration depends on system configuration
+
+@{MH "V3.55"}
+
+ChipMem only music bug removed. (Reported by my good all A500-1MB)@{PAR}
+Some catalogs script optimisations
+
+@{MH "V3.56"}
+
+BoulderDäsh is now able to load Atari-BoulderDäsh Construction Kit cave files.
+(Special thanks to Achim Haertel for the information) (registered version only)@{PAR}
+Level load error requests fixed!@{PAR}
+Some water optimisations and an old random generator removed.@{PAR}
+New Water feature added. (Special thanks to Achim Haertel for the information)@{PAR}
+Now it is possible to decrease the level in delay my moving the stick. This
+feature based on C64 features. (Again! Special thanks to Achim Haertel for the
+information)@{PAR}
+Installer rework. Now it should find BoulderDäsh in the most cases.@{PAR}
+Some music routine changes. Now it should work perfect.@{PAR}
+New "in line copy"-routine. This feature is needed for the internal music
+player. (Copy music during game)@{PAR}
+New path routines to clean up my old BoulderDäsh directory structure.
+Installer script fixed.@{PAR}
+ColorSet-Requester fixed. I hope it is now working perfect.@{PAR}
+Some ColorSet-Requester enhancements.@{PAR}
+Multitasking is now available.
+
+@{MH "V3.57"}
+
+Now you are able to select between Music or Effects, if mixed mode is not
+available.@{PAR}
+Amiga-M is switching to Workbench
+
+@{MH "V3.58"}
+
+Sound disabling fixed.@{PAR}
+Music player: continues and random play included.@{PAR}
+Audiochannel allocation included
+
+@{MH "V3.59"}
+
+Interrupts and keyboard handling depends no longer on the lowlevel.library! This
+library is no longer needed.
+
+@{MH "V3.60"}
+
+Music name viewer fixed.@{PAR}
+Load/save level path is now correct.@{PAR}
+Emergency exit implemented. It is working like F1/F10, but it is also working if
+the system is sleeping during blitter wait. (Left mouse button)@{PAR}
+Little keyboard bug fixed.
+
+@{MH "V3.61"}
+
+Another keyboard bug removed.
+
+@{MH "V3.62"}
+
+New 16/32 Bit Scroller and new rockford targeting.
+
+@{MH "V3.63"}
+
+Some changes for upcoming RTG implementation.
+
+@{MH "V3.64"}
+
+Graphic set loader is now able to convert planar -> chunky
+
+@{MH "V3.65"}
+
+RTG Full screen scroller is working
+
+@{MH "V3.66"}
+
+New text drawing functions. (RTG and ECS)
+
+@{MH "V3.67"}
+
+Character set loader is now able to convert planar -> chunky
+
+@{MH "V3.68"}
+
+Some changes for upcoming RTG implementation.
+
+@{MH "V3.69-V3.75"}
+
+RTG included.@{PAR}
+Some small bugfixes.
+
+@{MH "V3.76-V3.80"}
+
+Some RTG level editor changes. Cursor control and block selection reworked. Some
+ECS functions enhanced.@{PAR}
+Screen preferences implemented.
+
+@{MH "V3.81-V3.83"}
+
+Other optimisations. (ECS and RTG functions) 
+
+@{MH "V3.84"}
+
+First version for beta testing.
+
+@{MH "V3.85"}
+
+RTG: Now screens >320*200 Points are working perfect.
+
+@{MH "V3.86"}
+
+RTG: Constructions kit cursor blinking fixed.
+
+@{MH "V3.87"}
+
+RTG: No longer mouse pointer trouble.
+
+@{MH "V3.88"}
+
+Color sets are full available.@{PAR}
+Catalogs and documentation reworked.@{PAR}
+New Levelformat is handling the new color set format and converting the old.@{PAR}
+Levels and color set updated.@{PAR}
+Bug in game saver fixed.@{PAR}
+Bug in graphics loader fixed.@{PAR}
+Level editor error handling fixed.@{PAR}
+UnBusyAllWindows does no longer delay.
+
+@{MH "V3.89"}
+
+Full RTG multitasking implemented.@{PAR}
+Construction kit block select cursor is now working perfect.@{PAR}
+Construction kit block select isn´t trashing any longer.
+
+@{MH "V3.90"}
+
+FutureC64 graphic set reworked.@{PAR}
+Color sets for the new FutureC64 created.@{PAR}
+RTG: Score line colors fixed.
+
+@{MH "V3.91"}
+
+RTG: Loader moved before open screen.@{PAR}
+Small level loader bug fixed.@{PAR}
+RTG: Title picture is now working on graphic boards.
+
+@{MH "V3.92"}
+
+Double scroll speed is selectable for the level editor separately.@{PAR}
+Full screen option is now working.@{PAR}
+Some catalog changes.
+
+@{MH "V3.93"}
+
+ECS: Standby mode is working again.@{PAR}
+RTG: Mouse pointer blank should work now.
+
+@{MH "V3.94"}
+
+ECS: Music player is working again.@{PAR}
+C64 caves are colored again.
+
+@{MH "V3.95"}
+
+RTG: Title pictures and the level window are centered now.@{PAR}
+RTG: Score clear routine fixed.
+
+@{MH "V3.96"}
+
+RTG: The screen mode requester title line is viewing more information
+about the requested screen.@{PAR}
+Fake outs are invisible again.@{PAR}
+Added 100 cave brutalo boulderdash game (20 caves * 5 levels)@{PAR}
+The combination stone-ghosts and water is working again. No longer system
+crashes. (reported by Thomas Richter)@{PAR}
+A bonus-live-score of zero is now working (= bonuslive off). (reported by Thomas
+Richter)@{PAR}
+The new input handler was making trouble, if more than one Rockford was in the
+cave. (reported by Thomas Richter)@{PAR}
+Added game, graphics and character set by Thomas Richter.@{PAR}
+No longer endless loops during switching from RTG to ECS Mode.
+
+@{MH "V3.97"}
+
+New RTGMaster.library V23 is now required.@{PAR}
+Some work arounds removed.@{PAR}
+RTG: VBlank settings implemented.
+
+@{MH "V3.98"}
+
+ColorSets wasn´t working with V4 Levels, because the level file internal version
+count wasn´t "4". All games are recompiled and working again. (Reported by Peter
+Schulz)@{PAR}
+And there was a strange bug in the gfx-stuff. ColorSets wasn´t changed until a
+new GraphicSet was used. (Reported by Peter Schulz)@{PAR}
+I fixed the strange music bug. Now there aren´t any longer noises if the music
+isn´t ready during level startup.
+
+@{MH "V3.99"}
+
+Small changes.
+
+@{MH "V4.00"}
+
+Missing drawer added. No longer write protect errors when using CD
+editions.
+
+@{MH "V4.01"}
+
+Two graphic sets and one character set included. (Thanks to Marko Suominen and
+Thomas Richter2)
+
+@{MH "V4.02"}
+
+Color sets are working perfect, even if other graphic sets are forced to be
+default.
+
+@{MH "V4.03"}
+
+The availably of the level color switch no longer depends on the level color
+switch. (game settings - Data sets)
+
+@{MH "V4.04"}
+
+Catalog fixes! Some keyboard shortcuts were defined twice.
+
+@{MH "V4.05"}
+
+ECS: Settings allow to force PAL or NTSC screen mode.
+
+@{MH "V4.10"}
+
+ = V4.05
+ 
+@{MH "V4.11"}
+S
+tone ghost animation fixed. (reported by Timo Hegemann)@{PAR}
+Atari level color support implemented. (again)
+
+@{MH "V4.12"}
+
+"Game has been changed"-requester implemented.@{PAR}
+Menu added.
+
+@{MH "V4.13"}
+
+Hard Hiscore-Bug removed. (reported by Hans-Dieter Becker and
+Thomas Richter2. So Hans-Dieter: Now your daugther should be able to create
+games without further problems. With Thomas` help I was able to reproduce this
+very old bug.)
+
+@{MH "V4.14"}
+
+Hard deinstallation bug removed. (reported by Tony Belding)@{PAR}
+@{"Game result requester" link "ShSc"} implemented. (requested by Tony
+Belding)
+
+@{MH "V4.15"}
+
+New graphic set included.@{PAR}
+New C64 caves added.
+
+@{MH "V4.16"}
+
+Epilepsy warning included.@{PAR}
+The @{"music player" link "GaMu"} should work perfekt know. (no longer endless
+loops if there is no tune when the music player is switched on)@{PAR}
+Using the next/prev track function of the music player may caused crashes.
+(Thanks to all the writers for the bug reports)@{PAR}
+The @{"Block Position Table" link "BlockPositionTable"} was incorrect (reported
+by Markus Sauermann)@{PAR}
+The magic wall sound is working perfekt now. (reported by Markus Sauermann)@{PAR}
+The @{"level editor" link "LeEd"} is now longer returning to the upper left edge
+after testing a game. (requested by Markus Sauermann)@{PAR}
+Many documentation changes.
+
+@{MH "V4.17"}
+
+Another Sound bug removed. (reported by Markus Sauermann)@{PAR}
+RTG: BoulderDäsh should work again on GFX boards, if the title picture is
+enabled. I spend 4 hours on debugging to find the problem.@{PAR}
+@{"SaveLevel" link "GaEdSaLe"} is working again. (reported by Markus
+Sauermann)
+
+@{MH "V4.18"}
+
+"Replace"-Menu implemented. Now it is possible to replace all data sets by one
+command. (requested by Thomas Richter2)@{PAR}
+Complete @{"game editor" link "GaEd"} rework.@{PAR}
+The game editor @{"menu" link "MenuGaEd"} enhanced.@{PAR}
+Many documentation changes.@{PAR}
+BoulderDäsh is saving all window positions when saving
+@{"Game Settings -Screen" link "GaSR"}@{PAR}
+ECS: The information characters of the @{"level editor" link "LeEd"} where
+misplaced. This bug appeared first when using the GraveYard-gfx.@{PAR}
+The Atari level colors weren´t correct. (Reported by Thomas Richter2 (Sorry for
+the delay, but there were other more important problems to fix first.)))@{PAR}
+The uncontrolled animation of the @{"Out & Magic Wall" link "Elements"} block is
+now part of history. (Thanks to Markus Sauermann for confirming this stupid bug)@{PAR}
+New game element! An @{"egg" link "DT_Egg"}. Drop a @{"stone" link "DT_Stone"},
+@{"diamond" link "DT_Diamond"}, or another @{"egg" link "DT_Egg"} on it and you´ll receive a diamond.@{PAR}
+The audio channel allocation cause system crashes if other programs already had
+locked audio channels. (Reported by Juha Makinen)@{PAR}
+Graphic set Diggers.gfx replaced by Grablinge.gfx and Habich.gfx. (Thanks to
+Timo Hegemann)
+
+@{MH "V4.19"}
+
+The @{"Replace sample set" link "MenuGaEdRSPL"} function fixed. (Reported by
+Thomas Richter2)@{PAR}
+New color set system (again). The will be the final one. The colors are saved in
+the IFF file of the picture and you can edit them by using the
+@{"ColorSetHandler" link "CoSH"}.@{PAR}
+The availably of the switch @{"LevelColors" link "GaSSLeCo"} no longer depends
+on the switch @{"LevelData" link "GaSSLeDa"}.@{PAR}
+Fixed some error requester bugs.@{PAR}
+Another @{"SaveLevel" link "GaEdSaLe"} rework. (bug reported by Markus
+Sauermann)@{PAR}
+Fixed a little bug that created damaged Atari background colors.@{PAR}
+Complete path handling rework. Now BoulderDäsh is starting several times
+faster.
+
+@{MH "V4.20"}
+
+ Hiscore-bug fixed. Some hiscore optimizations.@{PAR}
+New "AddPath"-Tooltype. This allows to play CD versions and save scores to HD.
+In addition to that it is possible to update a CD installation without
+installing all files.@{PAR}
+New SampleSet (Classic800XLPro) included. (Thanks to Thomas Richter2)@{PAR}
+@{"Self running demo" link "MenuMainDemo"} implemented.@{PAR}
+Online help is now supporting gadgets. So just press help above a gadget to get
+the gadget related help.@{PAR}
+Manual strongly enhanced and bugfixed.@{PAR}
+"B O N U S L I F E" text after each solved intermission. In addition to that the
+bonus life animation is activated.@{PAR}
+Now it is possible to @{"record" link "MenuGaEdReco"} and @{"playback" link "MenuGaEdPlay"}
+level solves. This allows you to give the gamer a little help on
+your caves. These Feature is only available for @{"registered" link "HOWTOREGISTER"} users.@{PAR}
+The game timing depents no longer on VBlank speed. This means that the music,
+the game and all other visual output is always running at nearly the same speed
+on all systems. (VBlank Gadget removed)@{PAR}
+The menu routines caused a bug that crashed MC68000 maschines.@{PAR}
+RTG: Screen center is now always working.@{PAR}
+Reworked the @{"game settings screen" link "GaSR"}.@{PAR}
+RTG: New switch: @{"editor full screen" link "GaSRFSEd"}.@{PAR}
+RTG: Found the old bug that caused BoulderDäsh @{b}sometimes@{ub} to crash.@{PAR}
+FutureC64 Character Set fixed.@{PAR}
+Reworked the old timing system to minimize @{"play back" link "FAQPlayProblems"}.
+
+@{MH "V4.21"}
+
+"Gods" and "Swedish" C64 caves added.@{PAR}
+A small change on the ASL @{"Load Level" link "GaEdLoLe"} pattern.@{PAR}
+MoveController optimized.@{PAR}
+RTG: Removed a bug within the "holy routines". This bug allocated (screen width
+* screen height) bytes of memory for nothing, if used on graphic board.@{PAR}
+"game/game/"-load/link game error fixed. (reported by Thomas Richter2 and Marko
+Suominen)@{PAR}
+The graphic set "GraveYard.gfx" is now supporting @{"eggs" link "DT_Egg"}!
+(Thanks to Marko Suominen [Sorry for the problems! (ColorSets)])@{PAR}
+Another manual rework. (And again: Sorry for the problems marko!)@{PAR}
+@{"Leveleditors" link "LeEd"} color set selection is always available now.
+
+@{MH "V4.22"}
+
+New manual index. (Auto created)@{PAR}
+Fixed some @{"cheat" link "Cheats"} problems.
+
+@{MH "V4.23"}
+
+Some manual fixes done. (Thanks to Markus Sauermann)@{PAR}
+The "game/game"-bug returned in the save routines. (reported by Markus
+Sauermann)@{PAR}
+The "random demo" is now more random! (Thanks to Markus Sauermann)@{PAR}
+Water and slime init routines are no fixed. The @{"solve player" link "MENUGaEdPlay"}
+is now always working. Some @{"solves" link "MENUGaEdReco"} may be recorded again.@{PAR}
+The nasty F10 bug is now fixed. (I hope) Thanks to Thomas Richter2 who supports
+me with super debugging information so this fix was done with in 10 minutes.
+(-8
+
+@{MH "V4.24"}
+
+Many new levels and many games added.@{PAR}
+Thanks to my new @{"GuideCheck" link "OtherPrgs"} tool there are no longer
+invalid \@links, unreferenced nodes and of course stupid syntax errors.@{PAR}
+Additional manual adjustments and enhancements.@{PAR}
+New french version of the manual. (Thanks to Frédéric Delacroix)@{PAR}
+Replaced Classic800XLPro graphic set and caves (Thanks to Thomas Richter2)
+
+@{MH "V4.25"}
+
+Installer script is supporting français! (Thanks to Frédéric Delacroix)@{PAR}
+Additional manual adjustments
+
+@{MH "V4.26"}
+
+LowLevel.library implemented. (again). (not required)@{PAR}
+CD32 Joypad should allow all required features. Now BoulderDäsh uses direkt
+Hardware access only, when no RTG, no LowLevel.library or no Joypad is
+available. If you are using a joystick then BD is switching to internal routines
+even if the LowLevel.library is available, because due some internal bug this is
+the only way to make BD work on A2000/500/600 when the LowLevel.library is
+installed.@{PAR}
+Internal changes on the control routines.
+
+@{MH "V4.27"}
+
+BUGFIX: Arrrrgg! Why nobody told me that there is no chance to switch off the music
+player? I just waste a CDR. )-8 BTW: It`s working now!
+
+@{MH "V4.28"}
+
+BUGFIX: Fixed a small MillingWall problem that caused the wall sometimes to be switched
+off right after activation.@{PAR}
+FEATURE: Converted new games: NoOne 6-11/19-22/30-31/40-46 (1440 new caves)@{PAR}
+FEATURE: New Block: @{"Earth - Fake" link "DT_EarthFake"}@{PAR}
+BUGFIX: Fixed the "level done" time count. Due the last changes for better @{"Record" link "MenuGaEdReco"}
+and @{"Playback" link "MenuGaEdPlay"} I created this bug. (reported by Petri Keränen)
+
+@{MH "V4.29"}
+
+BUGFIX: The lowlevel.library support caused sometime a movement repeat that caused
+Rockford to die!@{PAR}
+CHANGED: Adjusted the manual for the year 2000!@{PAR}
+CHANGED: Installer script improved!@{PAR}
+BUGFIX: Some catalog fixes!@{PAR}
+BUGFIX: Fixed title picture lowlevel support!
+
+@{MH "V4.29-V5.10"}
+
+CHANGED: Many small improvements and optimisations.@{PAR}
+CHANGED: Archiv, documentation, icons and installer are now at the latest state of art.@{PAR}
+CHANGED: Dropped the RTGMaster support. BoulderDäsh is now using Picasso96 or
+CyberGraphics if RTG is enabled.@{PAR}
+FEATURE: RTA (Retargetable Audio) implemented. BoulderDäsh is using AHI when RTA is
+turned on.@{PAR}
+FEATURE: BoulderDäsh is now full Amithlon compatible.@{PAR}
+FEATURE: Newest GUI engine version used and many new features enabled and implemented.@{PAR}
+BUGFIX: Fixed the anoying bug that sometimes caused BoulderDäsh to freeze during starting phase (ChipSet mode only).@{PAR}
+CHANGED: Reworked the whole program code (960 KB). I removed many old switches and now
+it's possible to create ChipSet only versions as well as rtx only versions.@{PAR}
+BUGFIX: Fixed the level editor block marks. Their color wasn't correct setup. Now it
+should be visible and readable within any graphic set.@{PAR}
+BUGFIX: Completly rewrote the level center calculation routine (non ChipSet only). Now the levels
+are all centered within screen and not left top in the centered level box.@{PAR}
+BUGFIX: Fixed title picture loader.@{PAR}
+FEATURE: New gadgets within the @{"audio & video" link "GaSR"} setup allow direct changes of the audio and video
+modes. Of course the old qualifier activated requesters are still available.@{PAR}
+FEATURE: The old standby mode is gone. Now the screen gets closed and the main window is used as
+restart console insteed of the workbench menu.
+
+@{MH "V5.11"}
+
+BUGFIX: Fixed catalogs.@{PAR}
+CHANGED: After a long research on my old zip disks I found the lost data files with
+the C64 to Boulderdäsh level converter. Yeeeeaaaahh!
+
+@{MH "V5.12"}
+
+FEATURE: New import code: C64 construction kit game format.@{PAR}
+FEATURE: New import code: C64 construction kit linked game format.@{PAR}
+FEATURE: New import code: BoulderDäsh LevelList format.@{PAR}
+BUGFIX: Fixed classic c64 cave loader. @{"Out" link "DT_Out"} and @{"Out blinking" link "DT_OutBlinking"}
+where swapped. I also enhanced the intermission auto detect.@{PAR}
+FEATURE: Added >5000 levels (as single caves, as single intermissions and included in games files).
+
+@{MH "V5.13"}
+
+BUGFIX: Fixed the level change text output! "B O N U S L I F E" is back!@{PAR}
+BUGFIX: Fixed bug within auto detect that caused RTG/RTA not to be used as default if available.@{PAR}
+BUGFIX: The mouse pointer will be cleared again!@{PAR}
+BUGFIX: Fixed the random fill within the level editor.@{PAR}
+BUGFIX: Fixed cursor flickering in level editor and activated the missing cursor blinking.@{PAR}
+FEATURE: Added optimized AHI/Picasso96, AHI/CyberGraphics and ChipSet only versions.@{PAR}
+CHANGED: Reworked the whole level editor and it's level management. There is no optical effect, but
+the code is much better, more readable and contains less stuid useless code. 10 years left their scratch marks
+nearly every where.@{PAR}
+FEATURE: Leveleditor now allows to use the mouse as input. Well, not full featured mouse function, but
+the level editor needs more changes to allow full mouse edit.@{PAR}
+FEATURE: F7 and F8 within the level editor allow to browse through the available levels.@{PAR}
+FEATURE: Added enhanced graphic set.
+
+@{MH "V5.14"}
+
+CHANGED: More level and game editor changes and fixes.@{PAR}
+FEATURE: F4 within the level editor allows to delete the current level.@{PAR}
+FEATURE: F5 within the level editor allows to create a new standard sized.@{PAR}
+FEATURE: With PageUp, PageDown, Numpad 9 und Numpad 3 it's possible to browse
+through level list, too!@{PAR}
+FEATURE: Now it's possible to grab the game/editor screen by pressing "TAB+F1". @{b}This feature
+is only available in RTG mode.@{ub}
+
+@{MH "V5.15"}
+
+CHANGED: Some small fixes and changes on the german catalog.@{PAR}
+BUGFIX: Fixed a very bad memory trash bug, that came up when the level editor swap between different
+sized levels.
+
+@{MH "V5.16"}
+
+BUGFIX: Fixed string bug within the ASL management. (Reported by Javier de las Rivas)@{PAR}
+FEATURE: Spanish catalog included. (Thanks to Javier de las Rivas)@{PAR}
+BUGFIX: The joystick code wasn't included within some binary versions.
+
+@{MH "V5.17"}
+
+CHANGED: Reworked the color management.@{PAR}
+FEATURE: BoulderDäsh is now able to run in a window. Of course this requires a workbench in hi or true color.@{PAR}
+BUGFIX: Fixed (again) a little startup default problem. This time it was the RTA setup. )-8@{PAR}
+BUGFIX: The title picture can now be aborted without keyboard by using the joypad/joystick. Somehow I forgot to
+reactivate the joystick support here after reworking the title picture.
+
+@{MH "V5.18"}
+
+CHANGED: Many small catalog and documentation fixes.@{PAR}
+BUGFIX: The "m" key caused the game to loop endless when the rta mode was enabled.@{PAR}
+CHANGED: The window mode is now up to 60% faster.@{PAR}
+CHANGED: Several internal changes and cleanups.
+
+@{MH "V5.19"}
+
+BUGFIX: Fixed the title picture to animate again in window mode.@{PAR}
+FEATURE: Added "no blank mode" when playing in window mode with joystick/gamepad.@{PAR}
+
+@{MH "V5.20"}
+
+BUGFIX: A simple joystick wasn't supported when lowlevel.library was installed. (reported by Harald Frank)
+
+@{MH "V5.21"}
+
+BUGFIX: Fixed standby mode crash bug.@{PAR}
+FEATURE: Added "Competition Mode" which allows to use BoulderDäsh on party's. (Modification for
+AUGS Meeting 21.06.2003)@{PAR}
+FEATURE: Added "No Quit" mode which don't allows the user to quit BoulderDäsh by using the GUI.
+Only useful when combined with competition mode. (Modification for AUGS Meeting 21.06.2003)@{PAR}
+CHANGED: Prior version didn't accept other setup than 3 lives to handle the hiscores. This restriction
+was made to avoid that someone is taking 50 lives to break the scores. This limitation is still valid, but
+it's possible to select less than 3 lives without any resriction. (Modification for AUGS Meeting 21.06.2003)@{PAR}
+BUGFIX: The window mode is not selectable or is deactivating itself, if the GUI screen is not a 16/32 bit screen.@{PAR}
+FEATURE: AUGS Competition cave added. Important: Set up one live and deactivate the endlos game mode, or the scores are
+easy beatable. (Thanks to Claude Mueller)
+
+@{MH "V5.22"}
+
+FEATURE: Now it's possible to choose the default AHI mode. Requires AHI V4. (Thanks to Martin Blom)
+
+@{MH "V5.23"}
+
+FEATURE: Fixed AHI volume problem, which cause audio output to be very low on some systems.
+
+@{MH "V5.24"}
+
+BUGFIX: Fixed MorphOS detection Problem. Which caused that some chipset
+functions were still called.
+
+@{MH "V5.25"}
+
+FEATURE: BoulderDäsh now supports Rumble (aka DualShock, ForceFeedBack). All you need is a up to date
+Poseidon and a joypad with such feature.
+
+@endnode
+@node "Future" "Future"
+
+@{MS "Future"}
+
+ ° Your personal wishes !!@{PAR}
+
+@endnode
+@node "Buglist" "Buglist"
+
+@{MS "Buglist"}
+
+@{"Keyboard problems!" link "FAQMultitasking"} @{b}(Non RTG Only)@{ub}@{PAR}
+
+The @{"Joypad" link "FAQJoypad"} isn´t working correct on some maschines.@{PAR}
+
+Earthquakes aren´t working perfect. (no shaking effect)@{PAR}
+
+@endnode
+@node "Thanx" "Thanx"
+
+@{MS "Thanx"}
+
+First I want to thank @{b}Silke Bormann@{ub} for writing a big part of the
+English translation.@{PAR}
+
+Thanks to @{b}Frédéric Delacroix@{ub} for french translating of manual.@{PAR}
+
+Also thanks to @{b}Javier de las Rivas@{ub} for the spanish catalog.@{PAR}
+
+Furthermore I want to thank @{b}Timo Hegemann@{ub}, who made an AGA/RTG test on
+BoulderDäsh and gave me proposals for improvements and suggestions.@{PAR}
+
+Special thanks to @{b}Eric Wick@{ub} for RTG beta testing.@{PAR}
+
+For beta testing, which shows some more mistakes, I want to thank @{b}Andreas
+Vierkant@{ub}.@{PAR}
+
+Also I want to thank @{b}Silke Bormann@{ub} for her confused playing, which
+delivered many bugs.@{PAR}
+
+@{b}Thomas Sahling@{ub} for so many wishes, that I couldn't release V3 in
+time.@{PAR}
+
+Thanks to @{b}Joona Palaste@{ub} for the nice graphic sets:@{PAR}
+
+        Arctic         Black&White    Christmas      Computer@{PAR}
+        Egyptian       Fantasy        Funky          Icons@{PAR}
+        Jewel          JokeAmiga      LCD            Medical@{PAR}
+        Moria          Neon1          Neon2          PacMan@{PAR}
+        Pastel         Psychedelic    Small          Space@{PAR}
+        Spooky         Techno         UnderWater     Western@{PAR}
+
+Thanks to @{b}Thomas Sahling@{ub} for the nice sample sets:@{PAR}
+
+        Classic800XL   Future@{PAR}
+
+Special thanks to @{b}Beastmaster@{ub} for the original C64 graphic:@{PAR}
+
+        ClassicC64     FutureC64      ClassicC64Pumpkin@{PAR}
+
+
+Thanks to @{b}Thomas Richter@{ub} for his graphic set and game.@{PAR}
+
+        Lemmings.gfx   Small.fnt     TRI_BD.game@{PAR}
+
+Thanks to @{b}Thomas Richter2@{ub} for his 800XL graphics.@{PAR}
+
+        Classic800XLPro.gfx   Classic800XLPro.spl@{PAR}
+
+Special thanks to @{b}Marko Suominen@{ub} for his great stuff:@{PAR}
+
+        Graveyard.gfx  Graveyard.fnt Graveyard.sampleset@{PAR}
+
+Thanks to @{b}Timo Hegemann@{ub} for his graphics:@{PAR}
+
+        Habich256.gfx      Habich64.gfx@{PAR}
+        Grablinge256.gfx   Grablinge64.gfx@{PAR}
+
+Thanks to @{b}Ruben Monteiro@{ub} for the nice music sets:@{PAR}
+
+        InGame1         InGame2     InGame3@{PAR}
+        InGame4         TitleAmiga@{PAR}
+
+Thanks to the following boys and girls. I found your caves in internet and in
+the most cases there was only your name. Maybe you contact me via E-mail.
+@{b}Uwe Drichel, Lukas Shambis, Achim Hofmann, Alex Zop, Marc Pierau, Stefan
+Schneider, Tobias Pfaff, Wilhelm Oelinger, Rolf Lange@{ub}@{PAR}
+
+Thanks to @{b}Achim Haertel@{ub} for Atari caves and cave format
+information.@{PAR}
+
+Thanks to @{b}Peter Broadribb@{ub} for the Web-pages and his support. He keeps
+Boulderdash alive.
+
+@endnode
+@node "Author" "The Author"
+
+@{MS "The Author"}
+
+If you find some bugs in BoulderDäsh, please send me a message, so that I can
+correct these bugs in the next version.@{PAR}
+
+I will also thank you for suggestions to enlarge BoulderDäsh.@{PAR}
+
+I will also welcome your own games, levels, graphic-, sample-, character sets
+and musics. I will add them in the new version after testing their quality. The
+author will also be mentioned. Please also complete the game information.@{PAR}
+
+@{b}IMPORTANT: I don't send back floppy disks !!!@{ub}@{PAR}
+
+The best you can do is sending me the files via Internet or via fidonet as
+Crash-Fileattached.@{PAR}
+
+@{b}   Guido    Mersmann@{PAR}
+   Glatzer Straße 12@{PAR}
+   48477     Hörstel@{PAR}
+             Germany@{PAR}
+
+INTERNET: geit\@gmx.de@{PAR}
+@{ub}
+@endnode
+@node "Cheats" "Tricks to Cheat Boulderdäsh"
+
+@{MS "Tricks to Cheat Boulderdäsh"}
+
+HoHo, No! Its up to you to find the cheats!@{PAR}
+
+A little tip: All cheats are requested to be in clear text, but the Where?,
+How?, and of course What? It's 100% on You. (-8@{PAR}
+
+Good luck!
+
+@endnode
+
+@node "HowToPlay" "How To Play"
+
+@{MS "How To Play"}
+
+After you have started a game, the screen scrolls to a blinking block, the
+@{"In" link "DT_In"}.@{PAR}
+
+After some seconds it explodes. @{"Rockford" link "DT_Rockford"} appears here,
+the hero of the game. It is possible to decrease this delay by moving the stick
+in one direction.@{PAR}
+
+His task is the following one: He has to collect a specific number of
+@{"diamonds" link "DT_Diamond"} in a specific time and must then move to the
+@{"Out" link "DT_Out"} to leave the level.@{PAR}
+
+It is very simple. After @{"installing" link "HowToInstall"} BoulderDäsh the
+default game (BDash_I_Level1.game) is selected. This game is a perfect beginner
+game and it should explain any questions.@{PAR}
+
+
+@{MS "Keyboard Functions"}
+
+@{b}These brackets "[]" are describing the CD32 joypad buttons@{ub}@{PAR}
+
+With the cursorkeys you can move Rockford via keyboard. The keys Shift, Alt and
+Amiga have the function of the firebutton.@{PAR}
+
+If you get into a situation with no way out, you can blow up Rockford by pushing
+the ESC-key [BLUE]. After each loss of Rockford it is the turn of the next
+player. If you play alone, it is logically your turn.@{PAR}
+
+Press the spacebar [PLAY/PAUSE] to activate and deactivate the pause.@{PAR}
+
+You are able to return to the Workbench by using the help key. You can continue the
+game at any time by pressing the @{"start game" link "MaiWStar"} within the main window.@{PAR}
+
+Pressing left Amiga and "M" is like pressing help!@{PAR}
+
+By pressing F1/F10 [GREEN and YELLOW together] you can leave the game
+immediately and get back to the menu or leveleditor. There is no way to continue
+the game !!!@{PAR}
+
+The following keys are for the music player. For further information consult the
+@{"music player" link "GaMu"} chapter.@{PAR}
+
+Press the "M" key to cycle the music @{"playing mode" link "GaMuAuMo"}. These
+playing modes are used: "Effects only", "Music only" , "Music and Effects".
+Note: Depending on the module not all modes are available.@{PAR}
+
+TAB together with F1 allows to grab the game/editor screen into t: drawer (only
+available in RTG mode)@{PAR}
+
+
+"1" : [GREEN] @{"Music player" link "GaMuMuPl"} on/off@{PAR}
+
+"2" : [FORWARD] Next music@{PAR}
+
+"3" : [REVERSE] Previous music@{PAR}
+
+"4" : [GELB] @{"Change play mode" link "GaMuPlMo"}.@{PAR}
+
+"5" : Change music @{"prefer mode" link "GaMuPref"}.
+
+@endnode
+@node "Elements" "The Game Elements"
+
+@{MS "The Game Elements"}
+
+If it is not mentioned in another way all elements have the following
+properties:@{PAR}
+
+   ° disappear, if they explode@{PAR}
+   ° Flies, ghosts or @{"rockford" link "DT_Rockford"} cannot run through them.@{PAR}
+   ° @{"stones" link "DT_Stone"}, @{"diamonds" link "DT_Diamond"} and @{"eggs" link "DT_Egg"} are unable to tilt down on one side@{PAR}
+
+   @{"Ground" link "DT_Earth"}                       @{"Ground - Fake" link "DT_EarthFake"}@{PAR}
+   @{"Space" link "DT_Space"}                        @{"Space - Fake" link "DT_SpaceFake"}@{PAR}
+   @{"Diamond" link "DT_Diamond"}                      @{"Stone" link "DT_Stone"}@{PAR}
+   @{"Egg" link "DT_Egg"}@{PAR}
+   @{"Metal" link "DT_Metal"}                        @{"Metal - Fake" link "DT_MetalFake"}@{PAR}
+   @{"Wall" link "DT_Wall"}                         @{"Magic Wall" link "DT_MagicWall"}@{PAR}
+   @{"Growing Wall - (left/right)" link "DT_GrowingWallLR"}  @{"Growing Wall - (up/down)" link "DT_GrowingWallUD"}@{PAR}
+   @{"Water" link "DT_Water"}                        @{"Slime" link "DT_Slime"}@{PAR}
+   @{"Butterfly" link "DT_DiamondGhost"}                    @{"Firefly" link "DT_Ghost"}@{PAR}
+   @{"Stonie" link "DT_Stonie"}@{PAR}
+   @{"Rockford" link "DT_Rockford"}                     @{"Rockford Twin" link "DT_Twin"}@{PAR}
+   @{"In" link "DT_In"}                           @{"Out" link "DT_Out"}@{PAR}
+   @{"Out - blinking" link "DT_OutBlinking"}               @{"Out - Fake" link "DT_OutFake"}@{PAR}
+   @{"User Block" link "DT_User"}                   @{"Gravitation Arrow" link "DT_GravitationArrow"}@{PAR}
+   @{"Space Background" link "DT_SpaceBackground"}@{PAR}
+
+@endnode
+@node "DT_Earth" "Elements: Ground"
+@toc "Elements"
+
+@{MS "Ground"}
+
+@{"Rockford" link "DT_Rockford"} can run through it and a
+@{"space" link "DT_Space"} is left on this place. @{"Stones" link "DT_Stone"}, @{"Diamonds" link "DT_Diamond"} and @{"eggs" link "DT_egg"} lay on the
+@{"ground" link "DT_Earth"} and cannot tilt down at one side.
+
+@endnode
+@node "DT_EarthFake" "Elements: Ground - Fake"
+@toc "Elements"
+
+@{MS "Ground - Fake"}
+
+@{"Rockford" link "DT_Rockford"} can`t run through it.
+@{"Stones" link "DT_Stone"}, @{"Diamonds" link "DT_Diamond"} and @{"eggs" link "DT_egg"} lay on
+this ground and cannot tilt down at one side.
+
+@endnode
+@node "DT_Space" "Elements: Space"
+@toc "Elements"
+
+@{MS "Space"}
+
+Allows @{"diamonds" link "DT_Diamond"}, @{"stones" link "DT_Stone"},
+@{"eggs" link "DT_egg"}, @{"Flies" link "DT_ghost"} and @{"rockford" link "DT_rockford"}
+free movement.
+
+@endnode
+@node "DT_SpaceFake" "Elements: Space - Fake"
+@toc "Elements"
+
+@{MS "Space - Fake"}
+
+This space works exact like a @{"wall" link "DT_Wall"} but it is
+invisible.@{PAR}
+
+@endnode
+@node "DT_Diamond" "Elements: Diamonds"
+@toc "Elements"
+
+@{MS "Diamonds"}
+
+Can be collected by @{"rockford" link "DT_rockford"}.
+
+@endnode
+@node "DT_Stone" "Elements: Stones"
+@toc "Elements"
+
+@{MS "Stones"}
+
+@{"Rockford" link "DT_Rockford"} can push them vertical to the gravitation, if
+there is a @{"space" link "DT_Space"} behind the stone in that direction, it
+should be pushed.
+
+@endnode
+@node "DT_Egg" "Elements: Eggs"
+@toc "Elements"
+
+@{MS "Eggs"}
+
+An egg is working like a @{"stone" link "DT_Stone"}. But there is one execption.
+If you drop a @{"stone" link "DT_Stone"}, @{"diamond" link "DT_Diamond"} or an
+other egg on it, the @{"egg" link "DT_Egg"} breaks and a
+@{"diamond" link "DT_Diamond"} appears.@{PAR}
+
+@endnode
+@node "DT_Metal" "Elements: Metal"
+@toc "Elements"
+
+@{MS "Metal"}
+
+Metal can not explode.
+
+@endnode
+@node "DT_MetalFake" "Elements: Metal - Fake"
+@toc "Elements"
+
+@{MS "Metal - Fake"}
+
+Acts like @{"metal" link "DT_Metal"}, but it is able to explode.
+
+@endnode
+@node "DT_Wall" "Elements: Walls"
+@toc "Elements"
+
+@{MS "Walls"}
+
+Is only an obstacle and does not help in any way. @{"stones" link "DT_Stone"},
+@{"diamonds" link "DT_Diamond"} and @{"eggs" link "DT_Egg"} are able to tilt
+down on one side, if it is allowed by the environs.
+
+@endnode
+@node "DT_MagicWall" "Elements: Magic Wall"
+@toc "Elements"
+
+@{MS "Magic Wall"}
+
+If a @{"stone" link "DT_Stone"} falls down on a magic wall and underwards the
+wall there is a @{"space" link "DT_Space"}, so the wall becomes active and
+changes the @{"stone" link "DT_Stone"} into a @{"diamond" link "DT_Diamond"}. In
+return a @{"diamond" link "DT_Diamond"} passing the magic
+@{"wall" link "DT_Wall"} changes into a @{"stone" link "DT_Stone"}. An @{"egg" link "DT_Egg"}
+will be tranformed into a @{"firefly" link "DT_DiamondGhost"}. If there is no
+space underwards the magic wall @{"stones" link "DT_Stone"}, @{"diamonds" link "DT_Diamond"}
+and @{"eggs" link "DT_Egg"} passing it will be absorbed. The
+length of @{"active time" link "LeMc"} of a magic wall can be given different in
+any level. If the magic wall has switched off itself, it cannot be activated
+again.@{PAR}
+
+@endnode
+@node "DT_GrowingWallLR" "Elements: Growing Wall (left/right)"
+@toc "Elements"
+
+@{MS "Growing Wall (left/right)"}
+
+As soon as this element discovers a @{"space" link "DT_Space"} left or right
+next to it, it grows in this direction.
+
+@endnode
+@node "DT_GrowingWallUD" "Elements: Growing Wall (up/down)"
+@toc "Elements"
+
+@{MS "Growing Wall (up/down)"}
+
+As soon as this element discovers a @{"space" link "DT_Space"} up or down next
+to it, it grows in this direction.
+
+@endnode
+@node "DT_Water" "Elements: Water"
+@toc "Elements"
+
+@{MS "Water"}
+
+Water grows after a @{"defined growing rate" link "LeWa"} and spread through
+@{"ground" link "DT_Earth"} and @{"space" link "DT_Space"}.@{PAR}
+
+As soon as a @{"defined quantity" link "LeWa"} of water is reached, all water
+elements turned to stone.
+   
+If there is no way for the water to grow more, then it will turn to @{"diamonds" link "DT_Diamond"}.
+But there is one exception: If the water was never able to grow nothing happens until one grow.@{PAR}
+
+Some levels are using a @{"special feature" link "LeWa"}. If a
+@{"magic wall" link "DT_MagicWall"} is activated all water will turn into @{"diamonds" link "DT_Diamond"}.
+
+@endnode
+@node "DT_Slime" "Elements: Slime"
+@toc "Elements"
+
+@{MS "Slime"}
+
+Slime permits @{"diamonds" link "DT_Diamond"}, @{"stones" link "DT_Stone"} and
+@{"eggs" link "DT_Egg"} to go through it , because it is viscous. This
+viscousiosity can be adjusted. This only takes place, if there is a @{"space" link "DT_Space"} under the slime.
+
+@endnode
+@node "DT_DiamondGhost" "Elements: Butterflies"
+@toc "Elements"
+
+@{MS "Butterflies"}
+
+Moves through the spaces of the whole level. If they tough @{"water" link "DT_Water"}
+or are crashed with a @{"stone" link "DT_Stone"}, they explode to
+nine @{"diamonds" link "DT_Diamond"}.@{PAR}
+
+See also: @{"firefly" link "DT_Ghost"}, @{"stonie" link "DT_Stonie"}
+
+@endnode
+@node "DT_Ghost" "Elements: Fireflies"
+@toc "Elements"
+
+@{MS "Fireflies"}
+
+Moves through the @{"space" link "DT_Space"} s of the whole level. If they tough
+@{"water" link "DT_Water"} or are crashed with a @{"stone" link "DT_Stone"},
+they explode to nine @{"spaces" link "DT_Space"}.@{PAR}
+
+See also: @{"butterfly" link "DT_DiamondGhost"}, @{"stonie" link "DT_Stonie"}@{PAR}
+
+@endnode
+@node "DT_Stonie" "Elements: Stonie"
+@toc "Elements"
+
+@{MS "Stonie"}
+
+Stonies are very social. If they are hit by a @{"stone" link "DT_Stone"} or
+tough @{"water" link "DT_Water"}, they explode to nine @{"stones" link "DT_Stone"}.@{PAR}
+
+Both things only happen if they are not asleep. Stonies stay as long asleep as
+the @{"stone" link "DT_Stone"} is without movement, so the @{"stone" link "DT_Stone"}
+cannot fall down. A sleeping stonie acts like a normal @{"stone" link "DT_Stone"}
+and can be pushed by @{"rockford" link "DT_Rockford"} as
+well.@{PAR}
+
+Once awaken stonies move through the @{"spaces" link "DT_Space"} of the whole
+level.@{PAR}
+
+See also: @{"butterfly" link "DT_DiamondGhost"}, @{"firefly" link "DT_Ghost"}
+
+@endnode
+@node "DT_Rockford" "Elements: Rockford"
+@toc "Elements"
+
+@{MS "Rockford"}
+
+Can be moved by yourself. Rockford can move through @{"space" link "DT_Space"}
+and @{"ground" link "DT_Earth"}.@{PAR}
+
+If Rockford crosses @{"ground" link "DT_Earth"}, afterwards there will be
+@{"space" link "DT_Space"}. If you press the fire button, Rockford frees the
+place next to him. He can remove one element @{"ground" link "DT_Earth"} in
+every direction without moving himself.@{PAR}
+
+If there is a @{"stone" link "DT_Stone"}, @{"egg" link "DT_Egg"} or a sleeping
+@{"stonie" link "DT_Stonie"} horizontal next to Rockford and behind the
+@{"stone" link "DT_Stone"} there is a @{"space" link "DT_Space"}, Rockford can
+push this stone(-ghosts). With the fire button Rockford can push the @{"stone" link "DT_Stone"}
+without movement.@{PAR}
+
+There is danger for Rockford because of killing by @{"butterflies" link "DT_DiamondGhost"}
+and @{"fireflies" link "DT_Ghost"}. If this happens Rockford explodes.
+
+@endnode
+@node "DT_Twin" "Elements: Rockford - Twin"
+@toc "Elements"
+
+@{MS "Rockford - Twin"}
+
+He looks like @{"rockford" link "DT_Rockford"}. If he thoughs a @{"butterfly" link "DT_DiamondGhost"}
+or a @{"firefly" link "DT_Ghost"}, the Rockford-Twin
+explodes, and with him Rockford himself, too. The twin must be protected by
+@{"rockford" link "DT_Rockford"}.
+
+@endnode
+@node "DT_In" "Elements: In"
+@toc "Elements"
+
+@{MS "In"}
+
+@{"Rockford" link "DT_Rockford"} enters the level with the help of this element.@{par}
+
+There may be a few Ins in one level. If this happens, many @{"rockford" link "DT_Rockford"}s
+enter this level. All @{"rockfords" link "DT_Rockford"} are
+controlled simultaneously by the player.
+
+@endnode
+@node "DT_Out" "Elements: Out"
+@toc "Elements"
+
+@{MS "Out"}
+
+This is the exit of the level. But it isn't blinking!
+
+@endnode
+@node "DT_OutBlinking" "Elements: Out - Blinking"
+@toc "Elements"
+
+@{MS "Out - Blinking"}
+
+This @{"out" link "DT_Out"} works exactly like a out, but this time it started
+blinking, if all @{"diamonds" link "DT_Diamond"} are collected.
+
+@endnode
+@node "DT_OutFake" "Elements: Out - Fake"
+@toc "Elements"
+
+@{MS "Out - Fake"}
+
+Starts blinking, if all @{"diamonds" link "DT_Diamond"} are collected. But it is
+not an exit.
+
+@endnode
+@node "DT_GravitationArrow" "Elements: Gravitation Arrows"
+@toc "Elements"
+
+@{MS "Gravitation Arrows"}
+
+This element is present in each direction once. If
+@{"rockford" link "DT_Rockford"} runs again such a block, the gravitation changes in the direction
+of the arrow on the element.
+
+@endnode
+@node "DT_User" "Elements: User Block"
+@toc "Elements"
+
+@{MS "User Block"}
+
+This element behaves like a normal @{"wall" link "DT_Wall"}.
+
+@endnode
+@node "DT_SpaceBackground" "Elements: Space Background"
+@toc "Elements"
+
+@{MS "Space - Background"}
+
+This Element is only important, if you want to create own caves. If you are a
+Player then skip this part.@{PAR}
+
+Space - Background is always empty but @{"rockford" link "DT_Rockford"} is not
+able to move through this element. Do not use this Block to create a labyrinth
+or something like this, because the user (player) is able to select an other
+graphic set via @{"game settings" link "GaSe"} and override your specified
+graphic set. For example "FutureAmiga" this Block is empty, but the real
+@{"space" link "DT_Space"} is full of stars.@{PAR}
+
+What are this Blocks good for?@{PAR}
+
+Since BoulderDäsh 3.0 and on a request by Thomas Sahling it is possible to
+remove the Level border. If you define a level that looks like a Circle, than
+you need something around. @{"spaces" link "DT_Space"} need cpu time, because
+there is always an animation, even if you can not see this. In addition to that
+space animations are not wished every time. Short: If you want to fill an area
+with space and @{"rockford" link "DT_Rockford"} is not able to enter this area,
+then use this block.@{PAR}
+
+If this is not 100% clear then keep a look on the included level
+"BoulderDäsh/Little.int".
+
+@endnode
+
+@node "OwnGFX" "Own Graphic Sets"
+
+@{MS "Own Graphic Sets"}
+
+Beside the @{"included graphics" link "INCGFX"} you can create own graphics,
+too. All you need is a paint program and some talent.@{PAR}
+
+If you have created own graphics, you can send them to me and I will admit them
+into my archive, after some testing.@{PAR}
+
+All graphics of BoulderDäsh are Lores-IFF-pictures. Each picture consists of a
+complete graphic. So load a picture and change the graphic then.@{PAR}
+
+Some advice you should read first, because this advice can save you a lot of
+annoyance and work.@{PAR}
+
+1. picture size@{PAR}
+
+The picture should have the loosening Lores with 8 or 256 colors and should not
+consist of masks. BoulderDäsh should not have problems with other sizes, but
+these pictures will need a lot of needless space on your hard disk. 256 Color
+graphics are available in RTG Mode only. The first color is always black. Do not
+modify colors 0 and 248-255. These colors are reserved for later use and may
+change. If you want to create a graphic set that is OCS/ECS/AGA compatible 8
+colors are the limit.@{PAR}
+
+2. Block Size@{PAR}
+
+Every block consists of 16*16 pixel.@{PAR}
+
+3. The position of the single elements@{PAR}
+
+The arrangement of the single blocks is very simple. So please look at the added
+graphics. If you need a little help, please look at the
+@{"Table" link "BlockPositionTable"}.@{PAR}
+
+4. Scanner@{PAR}
+
+The scanner is a feature, which is integrated into the routine of loading. So we
+take the animation of Rockford, for example. You paint an animation to move
+Rockford to the left and then, if you load BoulderDäsh, it recognises, that you
+have not painted the animation to move Rockford to the right. Now BoulderDäsh
+copies the animation for the left and turns it around. This work also the other
+way round.@{PAR}
+
+The following blocks will be copied:@{PAR}
+
+   @{"Earth" link "DT_Earth"} <=> @{"Fake_Earth" link "DT_EarthFake"}@{PAR}
+   @{"Metal" link "DT_Metal"} <=> @{"Fake_Metal" link "DT_MetalFake"} <=> Metal_Moving_Block@{PAR}
+   @{"Stone" link "DT_Stone"} <=> @{"Stonie" link "DT_Stonie"} asleep@{PAR}
+   @{"Wall" link "DT_Wall"} <=> @{"Growing Wall left/right" link "DT_GrowingWallLR"} <=> @{"Growing Wall up/down" link "DT_GrowingWallUD"}@{PAR}
+   @{"Rockford" link "DT_Rockford"} left <=> Rockford right  (all Animation-steps)@{PAR}
+   @{"Diamond_0" link "DT_Diamond"} <=> @{"Egg_0" link "DT_Egg"} <=> @{"Egg_1" link "DT_Egg"} <=> @{"Egg_2" link "DT_Egg"} <=> @{"Egg_3" link "DT_Egg"}@{PAR}
+
+From each of these types, there must exist one of the equivalents. If there is a
+type missing, than the requester sends the message: "Graphic incomplete"@{PAR}
+
+   @{"Out" link "DT_Out"} <=> @{"Fake Out" link "DT_OutFake"} <=> @{"In" link "DT_In"}  (not only open, but also closed)@{PAR}
+
+If there does not exist any type of In/Out, then the closed type consists of
+metal.@{PAR}
+
+   @{b}IMPORTANT:@{PAR}
+
+Each copy within a block cannot take place, if there is a pixel in it, which is
+not the colour of the background.@{PAR}
+
+Each block, which only consists of the colour of the background, is empty.@{PAR}
+
+All block, which are not mentioned here, must be available to start the
+game.@{ub}@{PAR}
+
+5. Animations@{PAR}
+
+For all animations there is space for eight steps. If you need less than eight
+steps for your animation, please take a zero (colour of the background) for all
+steps you do not need and the animation will be ended earlier. Please pay
+attention the fact, that after an empty block all the other graphics of this
+animation will be ignored.@{PAR}
+
+6. Speed of the Animations@{PAR}
+
+The speed for every animation can be adjusted. This is possible by adjusting of
+the @{"Tooltypes" link "GFXToolTypes"} in the info-data of the particular
+graphic-data.@{PAR}
+
+7. The Colors@{PAR}
+
+It is possible to create a colorful graphic set by using the
+@{"Tooltypes" link "GFXToolTypes"} and the @{"ColorSetHandler" link "CoSH"}.
+
+@endnode
+@node "INCGFX" "The Included Graphics"
+
+@{MS "The Included Graphics"}
+
+Here is a list of the single graphics and their authors:@{PAR}
+
+
+   @{b}Guido Mersmann@{ub}:@{PAR}
+
+  ClassicAmiga.gfx@{PAR}
+  FutureAmiga.gfx@{PAR}
+
+   @{b}Joona Palaste@{ub}:@{PAR}
+
+  Arctic.gfx@{PAR}
+  Black&White.gfx@{PAR}
+  Christmas.gfx@{PAR}
+  Computer.gfx@{PAR}
+  Egyptian.gfx@{PAR}
+  Fantasy.gfx@{PAR}
+  Funky.gfx@{PAR}
+  Icons.gfx@{PAR}
+  Jewel.gfx@{PAR}
+  JokeAmiga.gfx          ;like ClassicAmiga but everything twisted@{PAR}
+  LCD.gfx                ;my favourite@{PAR}
+  Medical.gfx@{PAR}
+  Moria.gfx@{PAR}
+  Neon1.gfx@{PAR}
+  Neon2.gfx@{PAR}
+  PacMan.gfx@{PAR}
+  Pastel.gfx@{PAR}
+  Psychedelic.gfx@{PAR}
+  Small.gfx@{PAR}
+  Space.gfx@{PAR}
+  Spooky.gfx@{PAR}
+  Techno.gfx@{PAR}
+  UnderWater.gfx@{PAR}
+  Western.gfx@{PAR}
+
+   @{b}Beastmaster@{ub}:@{PAR}
+
+  ClassicC64.gfx@{PAR}
+  ClassicC64Pumpkin.gfx@{PAR}
+  FutureC64.gfx@{PAR}
+
+   @{b}Thomas Richter@{ub}:@{PAR}
+
+  Lemmings.gfx@{PAR}
+
+   @{b}Thomas Richter2@{ub}:@{PAR}
+
+  Classic800XLPro.gfx@{PAR}
+
+   @{b}Marko Suominen@{ub}:@{PAR}
+
+  Graveyard.gfx                ;This is brilliant!!@{PAR}
+
+   @{b}Timo Hegemann@{ub}:@{PAR}
+
+  Habich256.gfx                ;This is brilliant (256 Colors)@{PAR}
+  Habich64.gfx@{PAR}
+  Grablinge256.gfx             ;This is brilliant (256 Colors)@{PAR}
+  Grablinge64.gfx@{PAR}
+
+   I want to thank all authors again.@{PAR}
+
+   Sometimes I have changed the arrangements of the graphics or added  new
+   ones to support new features.
+@endnode
+@node "OwnCHR" "Own Character Sets"
+
+@{MS "Own Character Sets"}
+
+Beside the @{"included character sets" link "INCCHR"} you can create own
+Characters, too. All you need is a paint program and some talent.@{PAR}
+
+The font is formatted in Lores with 1 plan and should not be filed in another
+way. BoulderDäsh can load other formatted graphics, but this files are
+needlessly long and reading them takes much more time.@{PAR}
+
+Each symbol is 16 Pixel wide and 8 Pixel high.
+
+@endnode
+@node "INCCHR" "The Included Character Sets"
+
+@{MS "The Included Character Sets"}
+
+Here is a list of the single character sets and their authors :@{PAR}
+
+
+   @{b}Guido Mersmann@{ub}:@{PAR}
+
+  ClassicAmiga.fnt@{PAR}
+  FutureAmiga.fnt@{PAR}
+
+   @{b}Beastmaster@{ub} :@{PAR}
+
+  ClassicC64.fnt@{PAR}
+  FutureC64.fnt@{PAR}
+
+   @{b}Marko Suominen@{ub} :@{PAR}
+
+  Graveyard.fnt            ;fantastic! Try this with Graveyard.gfx !!@{PAR}
+
+
+I want to thank all authors again.@{PAR}
+
+Sometimes I have changed the arrangements of the characters or added new ones to
+support new features.
+
+@endnode
+@node "OwnSPL" "Own Sample Sets"
+
+@{MS "Own Sample Sets"}
+
+If you have an own sampler and adequate software, you can create own
+@{"samples" link "INCSPL"} for your BoulderDäsh game.@{PAR}
+
+Create a new drawer in the directory "SampleSets" and copy your samples to this
+drawer. In the @{"Game Settings" link "GaSe"} you can now choose your sample
+sets and you can hear your own samples while playing.@{PAR}
+
+But you must pay attention to some important things: @{PAR}
+
+1.The samples must be in IFF 8SVX format. This shouldn't be a problem, because
+nearly every software generates this format. for Amiga it is the most used
+format.@{PAR}
+
+2."Diamond" and "TimeOut" should sound right for c octave 2. For the MED sampler
+this adjustment is default. C-2 corresponds to a hardware period of "428".@{PAR}
+
+3.BoulderDäsh also realizes which samples do exist. This are the supported
+sounds and their qualities:@{PAR}
+
+° "LevelIn"-Sound and "LevelOut"-Sound depend on each other. So if one of them
+doesn't exist, it will be replaced by the other one. This means, that after
+collecting the last needed diamond the "LevelIn"-Sound appears, if you don't
+have a "LevelOut"-Sound.@{PAR}
+
+° "StonePush"-Sound is also replaced by the "Stone"-Sound, if it doesn't
+exist.@{PAR}
+
+° "GravitationArrow"-Sound is also replaced by the "Collect"-Sound, if it
+doesn't exist.@{PAR}
+
+At the moment BoulderDäsh supports following sounds:@{PAR}
+
+        "Explosion.SND"         (I don't know (-8 )@{PAR}
+        "Stone.SND"             (Stone falls)@{PAR}
+        "Diamond.SND"           (Diamond falls)@{PAR}
+        "TimeOut.SND"           (TimeOut Sound)@{PAR}
+        "Dig_Space.SND"         (Digging through space)@{PAR}
+        "Dig_Earth.SND"         (Digging through earth)@{PAR}
+        "Water.SND"             (is played cyclic)@{PAR}
+        "MillingWall.SND"       (is played cyclic)@{PAR}
+        "Collect.SND"           (Rockford collects a Diamond)@{PAR}
+        "LevelIn.SND"           (Rockford appears into the level)@{PAR}
+        "LevelOut.SND"          (collection of the last needed diamond)@{PAR}
+        "StonePush.SND"         (sound for pushing)@{PAR}
+        "StonePushFailed.SND"   (sound for failed push)@{PAR}
+        "GravitationArrow.SND"  (ONLY if gravitation changed by Grav.arrow)@{PAR}
+        "Background.SND"        (is played cyclic)@{PAR}
+
+The names of the sounds must be written right. Otherwise BoulderDäsh doesn't
+find them.
+
+@endnode
+@node "INCSPL" "The Included Sample Sets"
+
+@{MS "The Included Sample Sets"}
+
+Here is a list of the sample sets and their authors:@{PAR}
+
+
+   @{b}Guido Mersmann@{ub}:@{PAR}
+
+  Classic           (Original C64 Sounds)@{PAR}
+
+   @{b}Thomas Sahling@{ub}:@{PAR}
+
+  Classic800XL      (Original Atari 800XL Sounds)@{PAR}
+  Future            (Selfmade)@{PAR}
+
+   @{b}Marko Suominen@{ub}:@{PAR}
+
+  GraveYard@{PAR}
+
+   @{b}Thomas Richter2@{ub}:@{PAR}
+
+  Classic800XLPro   (Original Atari 800XLPro Sounds)@{PAR}
+
+
+I want to thank all authors again.@{PAR}
+
+Sometimes I have changed the arrangements of the samples or added new ones to
+support new features.
+
+@endnode
+@node "OwnMUS" "Own Music"
+
+@{MS "Own Music"}
+
+Beside the @{"included modules" link "INCMUS"} you can create your own game
+music, too. All you need is a ProTracker compatible music editor and some
+talent.@{PAR}
+
+If you have created own module, you can send them to me and I will admit them
+into my archive, after some testing.@{PAR}
+
+After creating a music you must specify unused or not so important voices via
+@{"ToolType" link "MUSToolTypes"}. This allows BoulderDäsh to use as much voices
+as available for in game effects.
+
+@endnode
+@node "INCMUS" "The Included music"
+
+@{MS "The Included music"}
+
+Here is a list of the single modules and their authors :@{PAR}
+
+   @{b}Guido Mersmann@{ub}:@{PAR}
+
+  BoulderDäshClassic.mus@{PAR}
+
+
+   @{b}Ruben Monteiro@{ub}:@{PAR}
+
+  InGame1.mus@{PAR}
+  InGame2.mus@{PAR}
+  InGame3.mus@{PAR}
+  InGame4.mus@{PAR}
+  TitleAmiga.mus@{PAR}
+
+
+   I want to thank all authors again.
+@endnode
+
+@node "FAQS" "FAQS"
+
+@{MS "FAQS"}
+
+   The Installation:@{PAR}
+
+   @{"The game is on CD! Is it possible to save settings etc.?" link "FAQInstCD"}@{PAR}
+   @{"Is it possible to update a CD version?" link "FAQUpdCD"}@{PAR}
+
+   The game:@{PAR}
+
+   @{"BoulderDäsh does not run!" link "FAQDoesnotCompute"}@{PAR}
+   @{"After playing a while BoulderDäsh denies keyboard usage!" link "FAQMultiTasking"}@{PAR}
+   @{"The keyboard control is not very useful!" link "FAQKeyboard"}@{PAR}
+   @{"The Joypad is not working correct!" link "FAQJoypad"}@{PAR}
+   @{"Why can't I start BoulderDäsh and the Level editor?" link "FAQNoStart"}@{PAR}
+   @{"How can I speed up the game?" link "FAQScreenMode"}@{PAR}
+   @{"Memory problems on game start, but the level editor works fine!" link "FAQMemory"}@{PAR}
+   @{"While playing sometimes mysterious mistakes in the spaces appear!" link "FAQBonusLive"}@{PAR}
+   @{"All included intermissions are to big!" link "FAQBigInt"}@{PAR}
+   @{"LevelOut isn`t blinking!" link "FAQLevelOut"}@{PAR}
+
+   The CD32:@{PAR}
+
+   @{"Can I use a keyboard on my CD32?" link "FAQCD32Keyboard"}@{PAR}
+   @{"Is it possible to save scores and settings on my CD32?" link "FAQCD32Settings"}@{PAR}
+
+   Level editor:@{PAR}
+
+   @{"Why can't I start BoulderDäsh and the Level editor?" link "FAQNoStart"}@{PAR}
+   @{"Why it isn´t possible to run the level editor?" link "FAQNoLeEd"}@{PAR}
+   @{"All included games are using the same color!" link "FAQColorSets"}@{PAR}
+   @{"The color set selector is sometimes working wrong!" link "FAQColorSetSelector"}@{PAR}
+
+   Game settings:@{PAR}
+
+   @{"How can I change the RTG game/title screen mode?" link "FAQRTGScreenMode"}@{PAR}
+   @{"The player names are lost!" link "FAQNames"}@{PAR}
+
+   Hiscores:@{PAR}
+
+   @{"I don´t understand the Hiscores!" link "FAQHiscoresWhy"}@{PAR}
+   @{"Where are my scores, if I load a new game?" link "FAQHiscoresWhere"}@{PAR}
+
+   Music player:@{PAR}
+
+   @{"The music player isn´t working!" link "FAQNoMusic"}@{PAR}
+
+   @{"Record" link "MenuGaEdReco"} and @{"Playback" link "MenuGaEdPlay"} of caves:@{PAR}
+
+   @{"Why is the play feature not always working?" link "FAQPlayProblems"}@{PAR}
+
+   Own games and levels:@{PAR}
+
+   @{"Supported game and cave types" link "FAQCaveTypes"}@{PAR}
+   @{"Own levels!" link "FAQOwnLevels"}@{PAR}
+   @{"After starting a level, Rockford does not appear. Why?" link "FAQNoRockford"}@{PAR}
+   @{"The structure of the game!" link "FAQOwnGames"}@{PAR}
+
+   Own graphic and color sets:@{PAR}
+
+   @{"In my own graphics all animations are wrong!" link "FAQAnimWrong"}@{PAR}
+   @{"My animations are too short!" link "FAQAnimShort"}@{PAR}
+   @{"What is a Chunk?" link "FAQChunk"}@{PAR}
+   @{"What is a BDMP-Chunk?" link "FAQBDMP"}@{PAR}
+   @{"CMAP-Chunk not found!" link "FAQCMAP"}@{PAR}
+   @{"BODY-Chunk not found!" link "FAQBODY"}@{PAR}
+   @{"BMHD-Chunk not found!" link "FAQBMHD"}@{PAR}
+
+
+@endnode
+@node "FAQInstCD" "FAQ - The game is on CD! Is it possible to save settings etc.?"
+@toc "FAQS"
+
+@{MS "The game is on CD! Is it possible to save settings etc.?"}
+
+Create a drawer on your hard disk. e.g "games:BoulderDäsh". Now you must add the
+following line to your user-startup:@{PAR}
+
+Assign BoulderDäsh: games:BoulderDäsh@{PAR}
+
+After restarting your system you are able to play the game like you ever did,
+but all savings are done on hard disk.
+
+@endnode
+@node "FAQUpdCD" "FAQ - Is it possible to update a CD version?"
+@toc "FAQS"
+
+@{MS "Is it possible to update a CD version?"}
+
+You are playing BoulderDäsh direct on CD and you want to update this CD by a
+normal Boulderdäsh update archive? This would save much hard disk space?@{PAR}
+
+No Problem! There is no specific CD required. Just the Archive should be stored
+decrunched on CD. (Crunched is also possible by using the ARC handler, but this
+is for experts only)@{PAR}
+
+Install your update on hard disk. After installaiton add the following ToolType
+to the icon of the BoulderDäsh main program. (Of cource on hard disk.)@{PAR}
+
+AddPath=CDName:Path/BoulderDäsh@{PAR}
+
+After the equal the position of the BoulderDäsh-drawer on your CD is reuired.
+@{b}Only specify the boulderDäsh-drawer and not the BoulderDäsh file.@{ub} Your
+should also @{b}remove@{ub} the @{"BoulderDäsh:" link "FAQInstCD"}-assign, if
+you had created one.@{PAR}
+
+An other possible way is to assign "BoulderDäsh:" via user-startup:@{PAR}
+
+Assign BoulderDäsh: CDName:Path/BoulderDäsh Path@{PAR}
+
+I recomment the first version, because this user-startup assign uses memory even
+if you are not playing BoulderDäsh.@{PAR}
+
+After these adjustments it is required to start BoulderDäsh always from hard
+disk to run the newest version. The CD is also always required.
+
+@endnode
+@node "FAQDoesnotCompute" "FAQ - BoulderDäsh does not run!"
+@toc "FAQS"
+
+@{MS "BoulderDäsh does not run!"}
+
+BoulderDäsh needs some libraries, which are added at the original Workbench.
+Please guarantee , that "asl.library" and "iffparse.library" are in the
+Libs-Directory.
+
+@endnode
+@node "FAQMultitasking" "FAQ - After playing a while BoulderDäsh denies keyboard usage!"
+@toc "FAQS"
+
+@{MS "After playing a while BoulderDäsh denies keyboard usage!"}
+
+@{b}This problem effects non RTG mode only, but if you are using a Joypad then
+you should also read the @{"joypad chapter" link "FAQJoypad"}!!@{ub}@{PAR}
+
+BoulderDäsh is running in multitasking since version 3.56! This may cause
+problems, because BoulderDäsh is using the blitter hardware very intensive (up
+to 11000 blitter copies each second (NTSC 13200)), so there is no time for
+system blitter action.@{PAR}
+
+If the operating system is trying to use the blitter it is going to sleep until
+the blitter is free. BoulderDäsh is using the input.device for keyboard input
+and if the OS is sleeping there is not device activity. The point is, that you
+MUST stop all programmes that open/close windows or use the graphics.library
+(blitter) in any way.@{PAR}
+
+In the most cases these programmes are Workbench Eyes, Clock tools and of course
+awakener tools.@{PAR}
+
+@{b}In such situation press the left mouse button to quit the game. When you
+using a joypad and the lowlevel.library, the only way to quit is to press the
+green and the yellow at once.@{ub}
+
+@endnode
+@node "FAQKeyboard" "FAQ - The keyboard control is not very useful!"
+@toc "FAQS"
+
+@{MS "FAQ - The keyboard control is not very useful!"}
+
+On slow systems it may happen, that the AmigaOS has not enough time to process
+the keyboard handling. In this cases the keyboard input is delayed and a good
+gameplay is impossible. There is no way to avoid this, because this is a step
+back.@{PAR}
+
+@{b}The joystick control is always working perfect.@{ub}
+
+@endnode
+@node "FAQJoypad" "FAQ - The Joypad is not working correct!"
+@toc "FAQS"
+
+@{MS "FAQ - The Joypad is not working correct!"}
+
+Well! Make sure that the lowlevel.libary is installed! Without BoulderDäsh is
+using the Pad like a Joystick!@{PAR}
+
+It may take a while, after first using the lowlevel.library. The autodetection
+may take a few seconds. Just move around until @{"rockford" link "DT_Rockford"}
+is moving. If nothing happens something goes very wrong. This is not a
+BoulderDäsh bug.@{PAR}
+
+Note: Just try to plug your JoyPad into the other port. BoulderDäsh is detecting
+it when using the lowlevel.library. Without lowlevel.library the normal joystick
+port will be used.@{PAR}
+
+But there is a problem when using the lowlevel.library. On some systems the
+joypad isn´t working correct.@{PAR}
+
+It is very easy to describe the problem! The additional buttons (GREEN, YELLOW,
+PLAY, REVERSE, FORWARD)) aren´t working! Actually they are working when
+combined.@{PAR}
+
+Currently it seems that only ECS Systems are effected. If there are additional
+problems on other maschines let @{"me" link "Author"} know.
+
+@endnode
+@node "FAQScreenReq" "FAQ - How can I reopen the screen mode requester?"
+@toc "FAQS"
+
+@{MS "FAQ - How can I reopen the screen mode requester?"}
+
+@{b}RTG mode only!!@{ub}@{PAR}
+
+Just press the Shift-key when pressing the @{"start game" link "MaiWStar"}
+button or starting the @{"level editor" link "GaEdLeEd"}.
+
+@endnode
+@node "FAQScreenMode" "FAQ - How can I speed up the game?"
+@toc "FAQS"
+
+@{MS "FAQ - How can I speed up the game?"}
+
+@{b}Graphic board@{ub}@{PAR}
+
+If you are using a graphic board you should set the screen dimensions to
+320*200. Most boards should work fine if you only disable the @{"fullscreen" link "GaSRFSGa"}
+option. This should be enough to get full speed when using a
+68030/25Mhz. A faster computer should be able to allow bigger screens.@{PAR}
+
+@{b}Without graphic board@{ub}@{PAR}
+
+Generaly you should @{"disable RTG" link "GaSRRRTG"} to get maximum speed. If
+you simply want to check out RTG, or just want to use more than 8 colors, then
+you should reduce the screen dimensions to 320*200 and 8 colors. Some graphic
+sets (e.G.Classic#?) allow the usage of 4 colors.
+@endnode
+@node "FAQNoStart" "FAQ - Why can't I start BoulderDäsh and the Level editor?"
+@toc "FAQS"
+
+@{MS "Why can't I start BoulderDäsh and the Level editor?"}
+
+If there are no levels in memory, this buttons are blocked. Please load a game,
+or create one level as minimum.
+
+@endnode
+@node "FAQMemory" "FAQ - Memory problems on game start, but the level editor works fine!"
+@toc "FAQS"
+
+@{MS "Memory problems on game start, but the level editor works fine!"}
+
+@{b}This problem effects non RTG mode only!!@{ub}@{PAR}
+
+This is all right. BoulderDäsh needs in a game the field size of the biggest
+level and allocats this right at the beginning. If you edited in the Editor a
+size of 40*22, so there also can be a level with 40*40 in the same game. And in
+your case for this size there isn't ChipMem free. Try to close windows and
+screens to save ChipMem. If this doesn't help, quit BoulderDäsh and restart it,
+because of this ChipMem will be defragmented. If this also doesn't help, remove
+the big level from the game.
+
+@endnode
+@node "FAQBonusLive" "FAQ - While playing sometimes mysterious mistakes in the spaces appear."
+@toc "FAQS"
+
+@{MS "While playing sometimes mysterious mistakes in the spaces appear."}
+
+This effect isn't a mistake. It's the @{"bonus life" link "LePoBoLi"} animation.
+You just got an extra life.
+
+@endnode
+@node "FAQBigInt" "FAQ - All included intermissions are to big!"
+@toc "FAQS"
+
+@{MS "FAQ - All included intermissions are to big!"}
+
+@{b}This problem effects non RTG mode only!!@{ub}@{PAR}
+
+The intermissions are 100% ok. It is the game. One additional screen line and
+the game is unplayable slow, so I decided to remove this line.
+
+@endnode
+@node "FAQLevelOut" "FAQ - LevelOut isn`t blinking!"
+@toc "FAQS"
+
+@{MS "FAQ - LevelOut isn`t blinking!"}
+
+° There is a @{"level out" link "DT_Out"} that isn`t blinking. Some level
+contain this special @{"out" link "DT_OutBlinking"}.@{PAR}
+
+° The selected graphic set contains no @{"out" link "DT_OutBlinking"} animation.
+The included graphics are supporting full animation.@{PAR}
+
+But there is an additional reason why the blinking is missing:@{PAR}
+
+@{b}This problem effects RTG mode only!!@{ub}@{PAR}
+
+It may happen that your computer is to slow to update the screen 50 times a
+second. The out animation in the most cases contains 2 animation phases only
+(open/close). If the screen update requires more than 1/50 second each second
+animation phase will be skipped, so it stays closed.@{PAR}
+
+To avoid this problem read the chapter about @{"speeding up BoulderDäsh" link "FAQScreenMode"}.
+
+@endnode
+@node "FAQCD32Keyboard" "FAQ - Can I use a keyboard on my CD32?"
+@toc "FAQS"
+
+@{MS "Can I use a keyboard on my CD32?"}
+
+Yes! It is possible to connect an @{b}Amiga@{ub} Keyboard to the CD32!@{PAR}
+
+Some Amiga keyboards are already PS/2 compatible. All other (e.G the A2000)
+require a little hack!@{PAR}
+
+This can be done by using a standard PS/2 keyboard adapter. If you want to save
+money then you are able to create your own.@{PAR}
+
+@{b}I am not responsible for any hardware or software damage! You do this on
+your own risk!@{ub}@{PAR}
+
+@{b}If you want details or just other solder plans then visit the aminet
+(hard/hack or hard/misc).@{ub}@{PAR}
+
+A2000 Connector (view onto the female connector)@{PAR}
+
+   °3      °1        Pins:@{PAR}
+    °5    °4          1 Clock          4 GND@{PAR}
+       °2             2 Keyboard Data  5 +5v@{PAR}
+                      3-@{PAR}@{PAR}
+
+CD32 Connector (view onto the female connector)@{PAR}
+
+
+    °5   °6           1 _TxD           4 GND@{PAR}
+   °3     °4          2 Keyboard Data  5 _RxD@{PAR}
+     °1 °2            3 +5V            6 Clock@{PAR}
+
+Your both connectors should be numbered as well, so there won`t be any problem.
+Just connect these pins by using a 4 wire cable. Don`t forget to connect the
+shielding on one the keyboard side.@{PAR}
+
+   A2000                    CD32@{PAR}
+   1            Clock        6@{PAR}
+   2        Keyboard Data    2@{PAR}
+   4             GND         4@{PAR}
+   5             +5V         3@{PAR}
+   Shield     Shielding      not connected here@{PAR}
+
+@endnode
+@node "FAQCD32Settings" "FAQ - Is it possible to save scores and settings on my CD32?"
+@toc "FAQS"
+
+@{MS "Is it possible to save scores and settings on my CD32?"}
+
+Currently there is no way to store BoulderDäsh`s scores and settings, because
+BoulderDäsh requires a lot of space and the CD32 internal flash memory is very
+small.
+
+@endnode
+@node "FAQNoLeEd" "FAQ - Why it isn´t possible to run the level editor?"
+@toc "FAQS"
+
+@{MS "Why it isn´t possible to run the level editor?"}
+
+To edit a level you must @{"delete the original game" link "GaEdDeGa"} or you
+must @{"load" link "GaEdLoGa"} a game you have created yourself. As soon as the
+original game is no longer in memory the editor will be fully activated.
+
+@endnode
+@node "FAQColorSets" "FAQ - All included games are using the same color!"
+@toc "FAQS"
+
+@{MS "All included games are using the same color!"}
+
+There are three cases in with this may happen:@{PAR}
+
+° The @{"LevelColor" link "GaSSLeCo"} switch in the @{"Game Settings - Data Sets" link "GaSS"}-window is disabled.@{PAR}
+
+° An icon file is missing. It is not wise to delete any BoulderDäsh icon,
+because they contain important information about @{"music" link "MUSToolTypes"},
+@{"title pictures" link "TitleToolTypes"} and @{"graphics" link "GFXToolTypes"}.
+Without these information BoulderDäsh is not working perfect.@{PAR}
+
+° You killed the colors by using a paint programm. BoulderDäsh is storing the
+different level colors in the picture file itself. For more information visit
+the chapter @{"ColorSetHandler" link "CoSH"} and the @{"Chunk" link "FAQCHUNK"}-FAQ.
+
+@endnode
+@node "FAQColorsetSelector" "FAQ - The color set selector is sometimes working wrong!"
+@toc "FAQS"
+
+@{MS "The color set selector is sometimes working wrong!"}
+
+It is required to switch on the @{"Level Data" link "GaSSLeDa"} and @{"Level Colors" link "GaSSLeCo"} gadgets@{PAR}
+
+If not, the graphic set selected via level settings isn´t used.
+
+@endnode
+@node "FAQNames" "FAQ - The player names are lost!"
+@toc "FAQS"
+
+@{MS "The player names are lost!"}
+
+If you open in the @{"Game Settings" link "GaSe"} the request button @{"Name Settings" link "GaSP"}
+you can @{"change the name" link "GaSPPlay"}. Afterwards
+you have to @{"save" link "GaSPSave"} the changing, to restore them for the next
+games.
+
+@endnode
+@node "FAQHiscoresWhy" "FAQ - I don´t understand the Hiscores!"
+@toc "FAQS"
+
+@{MS "I don´t understand the Hiscores!"}
+
+In this game the aim is to absolve all caves. Theoretically someone with 1
+score, who was defeated in cave 20 can be on place 1 of the highscores.
+
+@endnode
+@node "FAQHiscoresWhere" "FAQ - Where are my scores, if I load a new game?"
+@toc "FAQS"
+
+@{MS "Where are my scores, if I load a new game?"}
+
+They are on hard disk or floppy disk. Every game contains an own score list,
+because otherwise the statements of the highscores are too complex. If you load
+the old game again, your highscores will appear again.
+
+@endnode
+@node "FAQNoMusic" "The music player isn´t working!"
+@toc "FAQS"
+
+@{MS "The music player isn´t working!"}
+
+Several thing may go wrong:@{PAR}
+
+° There is not enough memory to store the audio tracks. Disable the data cache
+via @{"Game Settings" link "GaSS"} to save memory. Do not run other
+programs!@{PAR}
+
+° The @{"music player" link "GaMu"} isn´t enabled. Change the
+@{"music player state" link "GaMuMuPl"} to "on" or "standby".
+
+@endnode
+@node "FAQPlayProblems" "Why is the play feature not always working?"
+@toc "FAQS"
+
+@{MS "Why is the play feature not always working?"}
+
+Some timing problems may cause the @{"play back" link "MenuGaEdPlay"} not to be
+successful.@{PAR}
+
+These timing problem ranges within micro seconds, but this little delay may
+cause a desaster. Under normal conditions this problem should only apear in
+caves containing @{"milling walls" link "DT_MagicWall"}, @{"water" link "DT_Water"}
+and @{"earthquakes" link "LeEq"}.@{PAR}
+
+You are able to avoid this problem! For example don´t depend on a succeed
+milling during the last @{"milling wall second" link "LeMcMiTi"}. This
+@{u}may@{uu} work on your machine, but on other faster/slower maschines your
+record @{u}may@{uu} cause that the milling wall isn´t milling this stone.@{PAR}
+
+But there is no way to avoid this bug in a water cave, when the @{"water growing time" link "LeWaWaTi"}
+expires. This rate change may come some misco seconds to
+early or to late, so there is no way workaround. In the most cases the
+@{"water growing time" link "LeWaWaTi"} indicates a game lost, so this bug doesn´t
+matter.@{PAR}
+
+I´ll try to fix this problem, but it is not very easy. The ingame timing is very
+difficult.
+
+@endnode
+@node "FAQCaveTypes" "FAQ - Supported game and cave types"
+@toc "FAQS"
+
+@{MS "Supported game and cave types"}
+
+Beside the BoulderDäsh game format BoulderDäsh is able to load a lot of
+additional file formats. There is no special import function. Just load them an
+BoulderDäsh autodetects the file format. Please note that non of the formats
+below can be written:@{par}
+
+@{MS "C64 Construction Kit Caves and Intermissions"}
+
+These are the most used files around. In the most case the files are named with ".int" or ".cav" as suffix.
+These files contain complete levels. The ".int" files are 1/4 sized ".cav" files used as bonus live intermissions in
+the original gane.
+
+@{MS "Atari Construction Kit Caves and Intermissions"}
+
+Like the C64 format but this time from atari.
+
+@{MS "C64 Construction Kit Game - List Format"}
+
+This file type (".gam") is used by the C64 Construction Kit and only contains a list of level names. Normaly they are 898
+bytes long, but sometimes they appear a little longer (1016)@{par}
+
+If you want to load your old creations, then make sure the cave are in the same directory with your ".gam" suffixed file.
+
+@{MS "C64 Construction Kit Game - Level Format"}
+
+This file was created by the C64 game editor. It's a simple linked list of normal C64 cave files at a boundary of 0x200. The filesize can be
+up to 10242 which are 20 levels at max. Well, BoulderDäsh can handle longer files as well, just in case.
+
+@{MS "BoulderDäsh Game - List Format"}
+
+Like the C64 boulderdash, BoulderDäsh is able to read a game file type which contains only a list of levels to load.@{par}
+
+You can create these files by hand. Here is a little example how to make a simple game
+from the Boulderdäsh example levels:@{par}
+
+echo "BoulderDäsh LevelList*n" to T:MyGameFile.game@{par}
+list BoulderDäsh:Caves/BoulderDäsh/#? lformat "%f%n" >>T:MyGameFile.game sort n files@{par}
+
+The first line creates the identification header. The second line creates one
+single level for each level including it's path and file name. It's possible to
+add comment lines by starting the line with ";". Empty lines are also possible.@{par}
+
+@endnode
+@node "FAQOwnLevels" "FAQ - Own levels"
+@toc "FAQS"
+
+@{MS "Own levels"}
+
+If you create own levels, do not overload them.@{par}
+
+Taking less elements is mostly more than it seems.@{par}
+
+Please do not put all elements in one level. Create your own ideas and
+make the game more interesting because of this.@{par}
+
+@endnode
+@node "FAQNoRockford" "FAQ - After starting a level, Rockford does not appear. Why?"
+@toc "FAQS"
+
+@{MS "After starting a level, Rockford does not appear. Why?"}
+
+Every level needs an @{"In" link "DT_In"}.@{PAR}
+
+You have forgotten to set one while you have edited a level.@{PAR}
+
+Add this in the @{"Level Editor" link "LeEd"} and Rockford will appear in
+the next game.@{PAR}
+
+@endnode
+@node "FAQOwnGames" "FAQ - The structure of the game"
+@toc "FAQS"
+
+@{MS "The structure of the game"}
+
+Intermissions should appear in regular intervals. This allows the player to win additional lives at known stages.@{par}
+
+This will raise the charm of the game, because a player with no more lives, who
+knows that an intermission follows the present level, where he can get a bonus
+life, can survive a lot of other levels afterwards.@{par}
+
+@endnode
+@node "FAQAnimWrong" "FAQ - In my own graphics all animations are wrong!"
+@toc "FAQS"
+
+@{MS "In my own graphics all animations are wrong!"}
+
+BoulderDäsh runs all eight steps one after another. This means that it starts
+again, when the last step is reached. Please test, if this step is fluent.
+
+@endnode
+@node "FAQAnimShort" "FAQ - My animations are too short!"
+@toc "FAQS"
+
+@{MS "My animations are too short!"}
+
+Within animations there must not be empty blocks, because BoulderDäsh thinks
+this is the end of the animation.
+
+@endnode
+@node "FAQCHUNK" "FAQ - What is a Chunk?"
+@toc "FAQS"
+
+@{MS "What is a Chunk?"}
+
+Amigas IF-Format (IFF) is very special. For example a picture is seperated in
+different sections called: Chunk!@{PAR}
+
+Each section is defined by a 4 byte name, like "BODY". The "BODY" chunk contains
+only the pixel map of a picture. In a sound file this "BODY" contains the RAW
+sample. The "CMAP" contains only colors. And so on. For each Type of data there
+is a CHUNK.@{PAR}
+
+The cheat is that there are no restrictions what chunk and how many chunks are
+included in one file. So it is possible to include sounds within a
+picture.@{PAR}
+
+But what is a paint programm doing when loading a picture containing audio
+information? Well it is searching for picture information, so it is only reading
+the "ILBM" section, with means ´Picture´. The other unknown data (e.g. "8SVX" =
+Sample) will be ignored.@{PAR}
+
+BoulderDäsh is using this feature to store additional color information within
+the graphic sets.
+
+
+@endnode
+@node "FAQBDMP" "FAQ - What is a BDMP-Chunk?"
+@toc "FAQS"
+
+@{MS "What is a BDMP-Chunk?"}
+
+BoulderDäsh is storing the colors of the different levels in the graphic set
+itself. This is done by using a new @{"Chunk" link "FAQChunk"} (BDMP). This
+chunk contains all colors and there names. It is not possible to use a paint
+program to handle the color sets, so I wrote the @{"ColorSetHandler" link "COSH"}.@{PAR}
+
+The BDMP-@{"Chunk" link "FAQCHUNK"} may be stored within a graphic set or may be
+stored in an other file specified by using the graphic set @{"tooltypes" link "GFXToolTypes"}.
+
+@endnode
+@node "FAQCMAP" "FAQ - CMAP-Chunk not found!"
+@toc "FAQS"
+
+@{MS "CMAP-Chunk not found!"}
+
+The CMAP-Chunk contains information about the colors. Normaly all pictures
+contain such a chunk. Look at the documentation of your painting program, in
+which way this information is saved into the picture.
+
+@endnode
+@node "FAQBODY" "FAQ - BODY-Chunk not found!"
+@toc "FAQS"
+
+@{MS "BODY-Chunk not found!"}
+
+The BODY-@{"Chunk" link "FAQCHUNK"} contains the real graphic. If this is
+missing, BoulderDäsh can't get information about the picture here. Look at the
+documentation of your painting program, in which way a picture is saved
+completely.
+
+@endnode
+@node "FAQBMHD" "FAQ - BMHD-Chunk not found!"
+@toc "FAQS"
+
+@{MS "BMHD-Chunk not found!"}
+
+The BMHD-@{"Chunk" link "FAQCHUNK"} contains the format of the graphic. If this
+is missing, BoulderDäsh can´t find the resolution of the picture. Look at the
+documentation of your painting program, in which way a picture is saved
+completely.
+
+@endnode
+
+@node "WinAll" "All BoulderDäsh Windows"
+
+@{MS "All BoulderDäsh Windows"}
+
+   @{" " link "MaiW"}  The Main Window@{PAR}
+     @{" " link "GaEd"}  The Game Editor@{PAR}
+        @{" " link "LeEd"}  The Level Editor@{PAR}
+        @{" " link "LeSe"}  Level Settings@{PAR}
+          @{" " link "LeVi"}  Levelsettings - Visual and Noisy@{PAR}
+            @{" " link "LeCo"}  Color Set Selection@{PAR}
+          @{" " link "LeWa"}  Level Settings - Water and Slime@{PAR}
+          @{" " link "LeEq"}  Level Settings - Earthquakes@{PAR}
+          @{" " link "LePo"}  Level Settings - Points@{PAR}
+          @{" " link "LeMc"}  Level Settings - Miscellaneous@{PAR}
+        @{" " link "GaPr"}  The Game Information@{PAR}
+     @{" " link "GaSe"}  The Game Settings@{PAR}
+       @{" " link "GaSP"}  Game Settings - Player Names@{PAR}
+       @{" " link "GaSS"}  Game Settings - Data Sets@{PAR}
+       @{" " link "GaMu"}  Game Settings - Music Player@{PAR}
+       @{" " link "GaSR"}  Game Settings - Screen@{PAR}
+       @{" " link "GaSM"}  Game Settings - Miscellaneous@{PAR}
+     @{" " link "HiSc"}  Highscores@{PAR}
+     @{" " link "ShSc"}  Game Results@{PAR}
+
+@endnode
+@node "MaiW" "The Main Window"
+@toc "Main"
+
+@{MS "The Main Window"}
+
+This window is the centre of BoulderDäsh. The Close-Gadget ends the game.@{PAR}
+
+There is also a special @{"menu" link "MenuMain"}.@{PAR}
+
+   @{" " link "MaiWGaEd"}  Game Editor@{PAR}
+   @{" " link "MaiWGaSe"}  Game Settings@{PAR}
+   @{" " link "MaiWHisc"}  Hiscores@{PAR}
+   @{" " link "MaiWLoGa"}  Load Game@{PAR}
+   @{" " link "MaiWStar"}  Start Game@{PAR}
+   @{" " link "MaiWQuit"}  Quit Game@{PAR}
+
+@endnode
+@node "MaiWGaEd" "The Main Window - Game Editor"
+@toc "MaiW"
+
+@{MS "Game Editor"}
+
+Opens the @{"game editor" link "GaEd"} window, where you can create your own
+games.
+
+@endnode
+@node "MaiWGaSe" "The Main Window - Game Settings"
+@toc "MaiW"
+
+@{MS "Game Settings"}
+
+This button opens the @{"game Setting" link "GaSe"} window, where you can
+configurate BoulderDäsh in the way you want.
+
+@endnode
+@node "MaiWHisc" "The Main Window - Hiscores"
+@toc "MaiW"
+
+@{MS "Hiscores"}
+
+With this button you get into the @{"hiscore list" link "HiSc"} of the loaded
+game.
+
+@endnode
+@node "MaiWLoGa" "The Main Window - Load Game"
+@toc "MaiW"
+
+@{MS "Load Game"}
+
+After the choice in the file requester a game with its levels will be loaded.@{par}
+
+Beside the BoulderDäsh game format it's possible to load the original C64 construction kit (898 Bytes)
+game format. Due the fakt that this format only contains level names it's required to store
+the original level files within the same drawer.@{par}
+
+@{b}All levels, that were in the memory, will be deleted.@{ub}@{par}
+
+@endnode
+@node "MaiWStar" "The Main Window - Start Game"
+@toc "MaiW"
+
+@{MS "Start Game"}
+
+Starts the loaded BoulderDäsh game. Before starting you should enter the names
+of the players in the @{"playernames" link "GaSp"} requester.@{PAR}
+
+When RTG is @{"enabled" link "GaSRRRTG"} press shift during selecting this
+button to open the screenmode requester.
+
+@endnode
+@node "MaiWQuit" "The Main Window - Quit Game"
+@toc "MaiW"
+
+@{MS "Quit Game"}
+
+This gadget quits BoulderDäsh and closes all open windows, which belong to
+BoulderDäsh.
+
+@endnode
+
+@node "GaEd" "The Game Editor"
+@toc "MaiW"
+
+@{MS "The Game Editor"}
+
+With the GameEditor you can put together to a game as much levels as you want
+and save them as a game.@{PAR}
+
+The game editor isn´working with the original games! So it is impossible to edit
+the original levels. Use @{"Delete Game" link "GaEdDeGa"} to remove the
+protection of the editor.@{PAR}
+
+You should take a look on the game editors @{"menu" link "MenuGaEd"}.@{PAR}
+
+   @{" " link "GaEdLeLi"}  Level List@{PAR}
+   @{" " link "GaEdNewL"}  New@{PAR}
+   @{" " link "GaEdDelL"}  Delete@{PAR}
+   @{" " link "GaEdLeUp"}  Level Up@{PAR}
+   @{" " link "GaEdLeDo"}  Level Down@{PAR}
+   @{" " link "GaEdLeEd"}  Edit Level@{PAR}
+   @{" " link "GaEdLeSe"}  Level Settings@{PAR}
+   @{" " link "GaEdGaPr"}  Game Information@{PAR}
+   @{" " link "GaEdLoLe"}  Load Level@{PAR}
+   @{" " link "GaEdSaLe"}  Save Level@{PAR}
+   @{" " link "GaEdLoGa"}  Load Game@{PAR}
+   @{" " link "GaEdLiGa"}  Link Game@{PAR}
+   @{" " link "GaEdSaGa"}  Save Game@{PAR}
+   @{" " link "GaEdDeGa"}  Delete Game@{PAR}
+
+@endnode
+@node "GaEdLeLi" "The Game Editor - Level List"
+@toc "GaEd"
+
+@{MS "Level List"}
+
+Here are all available levels listed. Also the current level is listed
+here.@{PAR}
+
+The first level in the list is level 1, the second level is level 2.
+
+@endnode
+@node "GaEdNewL" "The Game Editor - New Level"
+@toc "GaEd"
+
+@{MS "New"}
+
+Here a level with the size 40*22 blocks is created and is added to the list. The
+size is equivalent to the original C64-Caves.
+
+@endnode
+@node "GaEdDelL" "The Game Editor - Delete Level"
+@toc "GaEd"
+
+@{MS "Delete"}
+
+Deletes the current level
+
+@endnode
+@node "GaEdLeUp" "The Game Editor - Level Up"
+@toc "GaEd"
+
+@{MS "Up"}
+
+Moves the current level one entry up.
+
+@endnode
+@node "GaEdLeDo" "The Game Editor - Level Down"
+@toc "GaEd"
+
+@{MS "Down"}
+
+Moves the current level one entry down.
+
+@endnode
+@node "GaEdLeEd" "The Game Editor - Edit Level"
+@toc "GaEd"
+
+@{MS "Edit Level"}
+
+Starts the @{"Level Editor" link "LeEd"}.@{PAR}
+
+If @{"RTG is enabled" link "GaSRRRTG"}, then you are able to reopen the screen
+mode requester by pressing and holding the shift-key.
+
+@endnode
+@node "GaEdLeSe" "The Game Editor - Level Settings"
+@toc "GaEd"
+
+@{MS "Level Settings"}
+
+Opens the @{"LevelSetting" link "LeSe"}s-requester.
+
+@endnode
+@node "GaEdGaPr" "The Game Editor - Game Information"
+@toc "GaEd"
+
+@{MS "Game Information"}
+
+Opens the @{"GameInformation" link "GaPr"}-requester
+
+@endnode
+@node "GaEdLoLe" "The Game Editor - Load Level"
+@toc "GaEd"
+
+@{MS "Load Level"}
+
+Opens an ASL-requester, in which you can choose the level, that you want to
+load. The level will be added in the level list at the end after loading.@{PAR}
+
+It is also possible to load C64 (498 Bytes) and Atari (504 Bytes) "BoulderDash
+Construction Kit Caves".@{PAR}
+
+@endnode
+@node "GaEdSaLe" "The Game Editor - Save Level"
+@toc "GaEd"
+
+@{MS "Save Level"}
+
+Saves the currently chosen level. The LevelName is given as FileName in the
+ASL-requester.
+
+@endnode
+@node "GaEdLoGa" "The Game Editor - Load Game"
+@toc "GaEd"
+
+@{MS "Load Game"}
+
+After the choice in the file requester a game with its levels will be loaded.@{par}
+
+Beside the BoulderDäsh game format it's possible to load the original C64 construction kit (898 Bytes)
+game format. Due the fakt that this format only contains level names it's required to store
+the original level files within the same drawer.@{par}
+
+@{b}All levels, that were in the memory, will be deleted.@{ub}@{par}
+
+@endnode
+@node "GaEdLiGa" "The Game Editor - Link Game"
+@toc "GaEd"
+
+@{MS "Link Game"}
+
+Like LoadGame all levels of the new game will be added to the levels of the
+game, which is already in the memory.
+
+@endnode
+@node "GaEdSaGa" "The Game Editor - Save Game"
+@toc "GaEd"
+
+@{MS "Save Game"}
+
+Saves all levels in one data. So the levels needn't be saved particular.@{PAR}
+
+If you press the Control-key simultaneously, you save the level with protection
+identification. This protection can´t be removed. So please save the game only
+protected, if you want to give it to another person, or if you are sure, that no
+more changes are needed.
+
+@endnode
+@node "GaEdDeGa" "The Game Editor - Delete Game"
+@toc "GaEd"
+
+@{MS "Delete Game"}
+
+With this option you can delete all levels, that are in the memory. Before this
+happens a security requester appears.
+
+@endnode
+
+@node "GaSe" "Game Settings"
+@toc "MaiW"
+
+@{MS "Game Settings"}
+
+This Window is divided into two parts. On the top there are buttons to enter
+other preferences and in the bottom of this window there are some often used
+settings.@{PAR}
+
+   @{" " link "GaSeGaSP"}  Player Names@{PAR}
+   @{" " link "GaSeGaSS"}  Data Sets@{PAR}
+   @{" " link "GaSeGaMu"}  Music Player@{PAR}
+   @{" " link "GaSeGaSR"}  Screen@{PAR}
+   @{" " link "GaSeGaMc"}  Miscellaneous@{PAR}
+   @{" " link "GaSePlay"}  Number of Player@{PAR}
+   @{" " link "GaSeLive"}  Number of Lives@{PAR}
+   @{" " link "GaSeLevl"}  Start Level@{PAR}
+   @{" " link "GaSeUsei"}  Ok@{PAR}
+   @{" " link "GaSeSave"}  Save@{PAR}
+   @{" " link "GaSeCanc"}  Cancel@{PAR}
+@endnode
+@node "GaSeGaSP" "Game Settings - Player Names..."
+@toc "GaSe"
+
+@{MS "Player Names..."}
+
+This button opens the @{"Player Name Settings" link "GaSP"}-requester, in which
+you can enter all player names and where you can make further adjustments.
+
+@endnode
+@node "GaSeGaSS" "Game Settings - Data Sets..."
+@toc "GaSe"
+
+@{MS "Data Sets..."}
+
+By using this button the @{"Data Set" link "GaSS"}-requester is opening.
+
+@endnode
+@node "GaSeGaMu" "Game Settings - Music Player..."
+@toc "GaSe"
+
+@{MS "Music Player..."}
+
+To configurate the internal music player use @{"music player settings" link "GaMu"}.
+
+@endnode
+@node "GaSeGaSR" "Game Settings - Audio & Video..."
+@toc "GaSe"
+
+@{MS "Audio & Video..."}
+
+By using this button the @{"Audio & Video setup" link "GaSR"}-requester is
+opening.
+
+@endnode
+@node "GaSeGaMc" "Game Settings - Miscellaneous..."
+@toc "GaSe"
+
+@{MS "Miscellaneous..."}
+
+The @{"window" link "GaSM"} that opens here is filled with useful options.
+
+@endnode
+@node "GaSePlay" "Game Settings - Number of Players"
+@toc "GaSe"
+
+@{MS "Number of Players"}
+
+Here you can adjust the number of players, who join the game. After each life
+there is a change. (The exceptions are intermissions)
+
+@endnode
+@node "GaSeLive" "Game Settings - Number of Lives"
+@toc "GaSe"
+
+@{MS "Number of Lives"}
+
+Here you can adjust the number of lives, the players will have in the following
+games.@{PAR}
+
+Only if BoulderDäsh is played with "3" or less lives, it is possible to reach the
+game scores.@{PAR}
+
+@endnode
+@node "GaSeLevl" "Game Settings - Start Level"
+@toc "GaSe"
+
+@{MS "Start Level"}
+
+With this slider you can adjust the level, in which the game should start. Only
+if this gadget viewes "1", it is possible to reach the game scores.@{PAR}
+
+@endnode
+@node "GaSeUsei" "Game Settings - Ok"
+@toc "GaSe"
+
+@{MS "Ok"}
+
+This adjustments will be overtaken.
+
+@endnode
+@node "GaSeSave" "Game Settings - Save"
+@toc "GaSe"
+
+@{MS "Save"}
+
+This adjustments will be saved and the requester will be existed.
+
+@endnode
+@node "GaSeCanc" "Game Settings - Cancel"
+@toc "GaSe"
+
+@{MS "Cancel"}
+
+The adjustments will be rejected. The close gadget does the same.
+
+@endnode
+
+@node "GaSP" "Game Settings - Player Names"
+@toc "GaSe"
+
+@{MS "Game Settings - Player Names"}
+
+In this requester you can enter the player names and make other
+adjustments.@{PAR}
+
+   @{" " link "GaSPPlay"}  Names@{PAR}
+   @{" " link "GaSPShNa"}  Names on Level Startup@{PAR}
+   @{" " link "GaSPShRe"}  Show Score Results@{PAR}
+   @{" " link "GaSPUsei"}  Ok@{PAR}
+   @{" " link "GaSPSave"}  Save@{PAR}
+   @{" " link "GaSPCanc"}  Cancel@{PAR}
+
+@endnode
+@node "GaSPPlay" "Player Names - Names"
+@toc "GaSP"
+
+@{MS "Player 1 - (6)"}
+
+Here you can enter the names of the single players. These names will appear in
+the highscorelist and will be shown, if you enter a level.
+
+@endnode
+@node "GaSPShNa" "Player Names - Names on Level Startup"
+@toc "GaSP"
+
+@{MS "Names on Level Startup"}
+
+In this checkbox you can adjust, if the player "name" or only "player X" should
+appear while changing the levels.
+
+@endnode
+@node "GaSPShRe" "Player Names - Show Score Results"
+@toc "GaSP"
+
+@{MS "Show Score Results"}
+
+This switch is enabling a @{"result window" link "ShSc"}. This window is viewing
+all player scores after playing BoulderDäsh.
+
+@endnode
+@node "GaSPUsei" "Player Names - Ok"
+@toc "GaSP"
+
+@{MS "Ok"}
+
+This adjustments will be overtaken.
+
+@endnode
+@node "GaSPSave" "Player Names - Save"
+@toc "GaSP"
+
+@{MS "Save"}
+
+This adjustments will be saved and the requester will be existed.
+
+@endnode
+@node "GaSPCanc" "Player Names - Cancel"
+@toc "GaSP"
+
+@{MS "Cancel"}
+
+The adjustments will be rejected. The close gadget does the same.
+
+@endnode
+
+@node "GaSS" "Game Settings - Data Sets"
+@toc "GaSe"
+
+@{MS "Game Settings - Data Sets"}
+
+   @{" " link "GaSSCach"}  Data Cache@{PAR}
+   @{" " link "GaSSLeDa"}  Level Data@{PAR}
+   @{" " link "GaSSLeCo"}  Level Color@{PAR}
+   @{" " link "GaSSDGFX"}  Default Grafik Set@{PAR}
+   @{" " link "GaSSDCHR"}  Default Character Set@{PAR}
+   @{" " link "GaSSDSPL"}  Default Sample Set@{PAR}
+   @{" " link "GaSSDMUS"}  Default Music@{PAR}
+   @{" " link "GaSSUsei"}  Ok@{PAR}
+   @{" " link "GaSSSave"}  Save@{PAR}
+   @{" " link "GaSSCanc"}  Cancel@{PAR}
+
+@endnode
+@node "GaSSCach" "Data Sets - Data Cache"
+@toc "GaSS"
+
+@{MS "Data Cache"}
+
+This Gadget is very important. It specifies how BoulderDäsh is keeping graphic,
+character and sample sets, while you are not playing:@{PAR}
+
+["In game" and "game start" mean the started game/starting the game and not
+starting the program "BoulderDäsh" via Workbench/CLI.]@{PAR}
+
+"off":@{PAR}
+
+The data sets are always lost and must be loaded at every game start. You should
+activate this option only, if you haven't very much memory, or you create @{"own graphic sets" link "OwnGFX"},
+@{"own sample sets" link "OwnSPL"} or @{"own character sets" link "OwnCHR"}. This is necessary, because BoulderDäsh is
+loading the actual data sets every time from disk or harddisk.@{PAR}
+
+"only needed":@{PAR}
+
+If this option is activated, BoulderDäsh is holding all data sets, needed to
+play the actual game.@{PAR}
+
+"all":@{PAR}
+
+BoulderDäsh is holding all data sets in memory. With enough memory, this option
+rejects most disk access, because all datas are already in memory.
+
+@endnode
+@node "GaSSLeDa" "Data Sets - Level Data"
+@toc "GaSS"
+
+@{MS "Level Data"}
+
+Each level is requesting its own graphic, character and sample set. A
+deactivated gadget denies any request and the defaults are used.
+
+@endnode
+@node "GaSSLeCo" "Data Sets - Level Colors"
+@toc "GaSS"
+
+@{MS "Level Colors"}
+
+If enabled the in-game colors are used. Otherwise the graphic set default colors
+are used for each level.
+
+@endnode
+@node "GaSSDGFX" "Data Sets - Default Graphic Set"
+@toc "GaSS"
+
+@{MS "Default Graphic Set"}
+
+If BoulderDäsh is unable to locate a graphic set specified by a game @{"level" link "LeVi"},
+this graphic set is used. A deactivated @{"Level Data" link "GaSSLeDa"}
+function selected in this window forces this graphic set, too. It is
+possible to load @{"own graphics" link "OwnGFX"}.
+
+@endnode
+@node "GaSSDCHR" "Data Sets - Default Character Set"
+@toc "GaSS"
+
+@{MS "Default Character Set"}
+
+This Gadget specifies the character set, that is used in the score line, if the
+@{"level character set" link "LeVi"} is not found. A deactivated @{"Level Data" link "GaSSLeDa"}
+function selected in this window forces this character set,
+too. It is possible to load @{"own character sets" link "OwnGFX"}.
+
+@endnode
+@node "GaSSDSPL" "Data Sets - Default Sample Set"
+@toc "GaSS"
+
+@{MS "Default Sample Set"}
+
+If BoulderDäsh is unable to locale a sample set specified by a game @{"level" link "LeVi"},
+this sample set is used. A deactivated @{"Level Data" link "GaSSLeDa"}
+function selected in this window forces this sample set, too. It is
+possible to load @{"own sample sets" link "OwnSPL"}.
+
+@endnode
+@node "GaSSDMUS" "Data Sets - Default Music"
+@toc "GaSS"
+
+@{MS "Default Music"}
+
+This Gadget specifies the music, that is used, if the @{"level music" link "LeVi"} is
+not found. A deactivated @{"Level Data" link "GaSSLeDa"} function
+selected in this window forces this music, too. It is possible to load an @{"own music" link "OwnMUS"}.
+
+@endnode
+@node "GaSSUsei" "Data Sets - Ok"
+@toc "GaSS"
+
+@{MS "Ok"}
+
+This adjustments will be overtaken.
+
+@endnode
+@node "GaSSSave" "Data Sets - Save"
+@toc "GaSS"
+
+@{MS "Save"}
+
+This adjustments will be saved and the requester will be existed.
+
+@endnode
+@node "GaSSCanc" "Data Sets - Cancel"
+@toc "GaSS"
+
+@{MS "Cancel"}
+
+The adjustments will be rejected. The close gadget does the same.
+
+@endnode
+
+@node "GaMu" "Game Settings - Music Player"
+@toc "GaSe"
+
+@{MS "Game Settings - Music Player"}
+
+   @{" " link "GaMuMuLi"}  Music List@{PAR}
+   @{" " link "GaMuAuMo"}  Audio Mode@{PAR}
+   @{" " link "GaMuPref"}  Prefer@{PAR}
+   @{" " link "GaMuMuPl"}  Music Player@{PAR}
+   @{" " link "GaMuPlMo"}  Play Mode@{PAR}
+   @{" " link "GaMuUsei"}  Ok@{PAR}
+   @{" " link "GaMuSave"}  Save@{PAR}
+   @{" " link "GaMuCanc"}  Cancel@{PAR}
+
+@endnode
+@node "GaMuMuLi" "Music Player - Music List"
+@toc "GaMu"
+
+@{MS "Music List"}
+
+This gadget contains all musics.
+
+@endnode
+@node "GaMuAuMo" "Music Player - Audio Mode"
+@toc "GaMu"
+
+@{MS "Audio Mode"}
+
+This is the default audiomode for in game music. If the "music and effect" mode
+is not available for a specified music, BoulderDäsh is using your prefered.
+(next gadget)@{PAR}
+
+During the game you are able to modify this by pressing "M"!
+
+@endnode
+@node "GaMuPref" "Music Player - Prefer"
+@toc "GaMu"
+
+@{MS "Prefer"}
+
+If a music does not support the mixed mode, BoulderDäsh is switching down to
+this mode.@{PAR}
+
+During the game you are able to modify this by pressing "5"!
+
+@endnode
+@node "GaMuMuPl" "Music Player - Music Player"
+@toc "GaMu"
+
+@{MS "Music Player"}
+
+This gadget is very simple.@{PAR}
+
+   "Off"     : The music list tunes won´t be loaded.@{PAR}
+   "Standby" : Tunes will be loaded, but the player stays off.@{PAR}
+   "On"      : All musics will be loaded and Player is enabled.@{PAR}
+
+During the game you are able to modify this by pressing "1"!@{PAR}
+
+@{b}Note: If the music player is deactivated by this gadget, then it may not
+play if activated during the game, because there is no tune. The only exceptions
+is that one or more levels are using music player tunes. In this case you are
+able to play this tunes.@{ub}
+
+@endnode
+@node "GaMuPlMo" "Music Player - Play Mode"
+@toc "GaMu"
+
+@{MS "Play Mode"}
+
+   This gadget specifies the handling, if a music is played complete.@{PAR}
+   "Repeat one" : One music is played forever.@{PAR}
+   "Continues"  : All musics one after another.@{PAR}
+   "Shuffle"     : All musics are played in a random way.@{PAR}
+
+During the game you are able to modify this by pressing "4"!
+
+@endnode
+@node "GaMuUsei" "Music Player - Ok"
+@toc "GaMu"
+
+@{MS "Ok"}
+
+This adjustments will be overtaken.
+
+@endnode
+@node "GaMuSave" "Music Player - Save"
+@toc "GaMu"
+   
+@{MS "Save"}
+
+This adjustments will be saved and the requester will be existed.
+
+@endnode
+@node "GaMuCanc" "Music Player - Cancel"
+@toc "GaMu"
+
+@{MS "Cancel"}
+
+The adjustments will be rejected. The close gadget does the same.
+
+@endnode
+
+@node "GaSR" "Game Settings - Audio & Video"
+@toc "GaSe"
+
+@{MS "Game Settings - Audio & Video"}
+
+   @{" " link "GaSRRRTA"}  RTA@{PAR}
+   @{" " link "GaSRRRTG"}  RTG@{PAR}
+   @{" " link "GaSRWiMo"}  Window Mode@{PAR}
+   @{" " link "GaSRIDTi"}  Title Resolution@{PAR}
+   @{" " link "GaSRIDGa"}  Game Resolution@{PAR}
+   @{" " link "GaSRIDED"}  Editor Resolution@{PAR}
+   @{" " link "GaSRFSGa"}  View Full Level - Game@{PAR}
+   @{" " link "GaSRFSEd"}  View Full Level - Editor@{PAR}
+   @{" " link "GaSRFSTe"}  View Full Level - Editor Test Mode@{PAR}
+   @{" " link "GaSRScSp"}  Game 2x@{PAR}
+   @{" " link "GaSREdSp"}  Editor 2x@{PAR}
+   @{" " link "GaSRMode"}  Screenmode@{PAR}
+   @{" " link "GaSRUsei"}  Ok@{PAR}
+   @{" " link "GaSRSave"}  Save@{PAR}
+   @{" " link "GaSRCanc"}  Cancel@{PAR}
+
+@endnode
+@node "GaSRRRTA" "Audio & Video - RTA"
+@toc "GaSR"
+
+@{MS "RTA"}
+
+This switch is only available, if AHI is available.@{PAR}
+
+It allows BoulderDäsh to use sound cards for audio output.@{PAR}
+
+@endnode
+@node "GaSRRRTG" "Audio & Video - RTG"
+@toc "GaSR"
+
+@{MS "RTG"}
+
+This switch is only available, if Picasso96 or CyberGraphics is available and a
+68020 is are installed.@{PAR}
+
+It allows BoulderDäsh to use graphic boards with 256 colors.@{PAR}
+
+@endnode
+@node "GaSRWiMo" "Audio & Video - Window Mode"
+@toc "GaSR"
+
+@{MS "Window Mode"}
+
+This switch is only available, if Picasso96 or CyberGraphics is available and a
+68020 is are installed.@{PAR}
+
+If this switch is activ BoulderDäsh is switching to window mode. The whole game engine is running within
+a window on the same screen the GUI is opening.@{PAR}
+
+@{b}For the window mode a 16 bit screen mode is required. An eight bit mode
+delivers only 256 colors which are used by the OS for window border and icon
+drawings. When using 16, 24 or 32 Bit modes this problem does not exist.@{PAR}
+
+The window mode requires more cpu capacity than the screen mode. If the game is
+jittering or slow in any way, then use the screen mode again.@{b}@{PAR}
+
+@endnode
+@node "GaSRIDTi" "Audio & Video - Title Resolution"
+@toc "GaSR"
+
+@{MS "Title Resolution"}
+
+Under normal conditions BoulderDäsh is using a 320*200 resolution for the title
+picture. By selecting a new resolution you can override this.@{par}
+
+@endnode
+@node "GaSRIDGa" "Audio & Video - Game Resolution"
+@toc "GaSR"
+
+@{MS "Game Resolution"}
+
+Under normal conditions BoulderDäsh is using a 320*200 resolution for the game.
+By selecting a new resolution you can override this.@{par}
+
+@endnode
+@node "GaSRIDEd" "Audio & Video - Editor Resolution"
+@toc "GaSR"
+
+@{MS "Editor Resolution"}
+
+Under normal conditions BoulderDäsh is using a 320*200 resolution for the
+editor. By selecting a new resolution you can override this.@{par}
+
+@endnode
+@node "GaSRFSGa" "Audio & Video - View Full Level - Game"
+@toc "GaSR"
+
+@{MS "Game"}
+
+This check box is only available, if RTG is enabled.@{PAR}
+
+Under normal conditions BoulderDäsh is using a 320*200 resolution for the game. If you enable
+this switch you can disable this restriction.@{PAR}
+
+@endnode
+@node "GaSRFSEd" "Audio & Video - View Full Level - Level Editor"
+@toc "GaSR"
+
+@{MS "Level Editor"}
+
+This check box is only available, if RTG is enabled.@{PAR}
+
+Under normal conditions BoulderDäsh is using a 320*200 resolution for the level editor. If you enable
+this switch you can disable this restriction.@{PAR}
+
+@endnode
+@node "GaSRFSTe" "Audio & Video - View Full Level - Editor Test Mode"
+@toc "GaSR"
+
+@{MS "Editor Test Mode"}
+
+This check box is only available, if RTG is enabled.@{PAR}
+
+Under normal conditions BoulderDäsh is using a 320*200 resolution for the level
+editors test mode. If you enable this switch you can disable this
+restriction.@{PAR}
+
+@endnode
+@node "GaSRScSp" "Audio & Video - Scroll Speed 2x"
+@toc "GaSR"
+
+@{MS "Scroll Speed 2x"}
+
+This gadget doubles the in game scrolling speed.
+
+@endnode
+@node "GaSREdSp" "Audio & Video - Editor Scroll Speed 2x"
+@toc "GaSR"
+
+@{MS "Editor Scr. speed 2x"}
+
+This gadget doubles the level editor scrolling speed.
+
+@endnode
+@node "GaSRMode" "Audio & Video - Screenmode"
+@toc "GaSR"
+
+@{MS "Screenmode"}
+
+This gadgets allows to force a PAL or NTSC screen. In normal caves this gadget
+should stay on default.@{PAR}
+
+This options is e.g needed, if you are using a flicker fixer and a multiscan
+monitor. Some monitors aren´t able to synchronize 50hz (PAL) screens, so this
+feature allows to force BoulderDäsh to create a 60Hz (NTSC) output.@{PAR}
+
+This gadget is not available in RTG mode.
+
+@endnode
+@node "GaSRUsei" "Audio & Video - Ok"
+@toc "GaSR"
+
+@{MS "Ok"}
+
+This adjustments will be overtaken.
+
+@endnode
+@node "GaSRSave" "Audio & Video - Save"
+@toc "GaSR"
+
+@{MS "Save"}
+
+This adjustments will be saved and the requester will be existed.@{PAR}
+
+This Gadget also saves the all BoulderDäsh window positions. It makes no
+difference if the windows are opened or closed. The last position will be saved.
+BoulderDäsh is loading these data on the next start an all windows are exactly
+where you left them.
+
+@endnode
+@node "GaSRCanc" "Audio & Video - Cancel"
+@toc "GaSR"
+
+@{MS "Cancel"}
+
+The adjustments will be rejected. The close gadget does the same.
+
+@endnode
+
+@node "GaSM" "Game Settings - Miscellaneous"
+@toc "GaSe"
+
+@{MS "Game Settings - Miscellaneous"}
+
+   @{" " link "GaSMStGa"}  Default Game@{PAR}
+   @{" " link "GaSMTitl"}  Title Picture@{PAR}
+   @{" " link "GaSMLeTi"}  Levelchanging Tilulit@{PAR}
+   @{" " link "GaSMSiTi"}  Simple Tilulit@{PAR}
+   @{" " link "GaSMEdTi"}  Editor Tilulit@{PAR}
+   @{" " link "GaSMCoMo"}  Competition Mode@{PAR}
+   @{" " link "GaSMEnGa"}  Endless Game@{PAR}
+   @{" " link "GaSMNoQu"}  No Quit@{PAR}
+   @{" " link "GaSMUsei"}  Ok@{PAR}
+   @{" " link "GaSMSave"}  Save@{PAR}
+   @{" " link "GaSMCanc"}  Cancel@{PAR}
+
+@endnode
+@node "GaSMStGa" "Miscellaneous - Default Game"
+@toc "GaSM"
+
+@{MS "Default Game"}
+
+The default game will be loaded automatically while starting BoulderDäsh. After
+installation this game is called "BDash_I_Level1.game".
+
+@endnode
+@node "GaSMTitl" "Miscellaneous - Title Picture"
+@toc "GaSM"
+
+@{MS "Title Picture"}
+
+Here you can select and disable the startup title picture.
+
+@endnode
+@node "GaSMLeTi" "Miscellaneous - Levelchanging Tilulit"
+@toc "GaSM"
+
+@{MS "Levelchanging Tilulit"}
+
+With this button you can switch of the level changing effect.
+
+@endnode
+@node "GaSMSiTi" "Miscellaneous - Simple Tilulit"
+@toc "GaSM"
+
+@{MS "Simple Tilulit"}
+
+Here the moving blocks in the level changing will be replaced by static ones.
+You can only click on this button, if the level changing effect is active.
+
+@endnode
+@node "GaSMEdTi" "Miscellaneous - Editor Tilulit"
+@toc "GaSM"
+
+@{MS "Editor Tilulit"}
+
+With this button you can switch on the Tilulit for changing between GameEditor,
+LevelEditor and LevelEditor and TestingMode. Like the simple Tilulit this button
+can only be switched one, if the level changing effect is active.
+
+@endnode
+@node "GaSMCoMo" "Miscellaneous - Competition Mode"
+@toc "GaSM"
+
+@{MS "Competition Mode"}
+
+@{b}Attention! This mode is irreversible! If you save the settings to disk, it's
+required to delete the file "BoulderDäsh/prefs/misc.prefs" to regain full
+control.@{ub}@{par}
+
+The competition mode is designed for partys. Each time a player starts
+BoulderDäsh a name entering window pops up. The number of players is fixed to
+1.@{par}
+
+All non party conform parts will be disabled. It's no longer possible to get
+into the level editor, delete the hiscores or load another game.@{par}
+
+Before activating the competition mode you must setup the game for competition.
+It's required to select a game, choose the game graphics and sounds and the
+number of lives. You must delete the 
+hiscores now, because late the GUI is
+locked. After activating the competition mode the game settings are no longer
+available.@{par}
+
+@endnode
+@node "GaSMEnGa" "Miscellaneous - Endless Game"
+@toc "GaSM"
+
+@{MS "Endless Game"}
+
+Normaly BoulderDäsh restarts with the first level, if the player finishes the last level.
+Within a competition this may not be wished.@{par}
+
+Turning of the "Endless Game Mode" cause BoulderDäsh to return to the main window if the player
+finishes the last level.@{par}
+
+@endnode
+@node "GaSMNoQu" "Miscellaneous - No Quit"
+@toc "GaSM"
+
+@{MS "No Quit"}
+
+By activating this switch BoulderDäsh can't be closed by using the GUI.@{par}
+
+The only way to exit BoulderDäsh e.g. is to use the AmigaDos commands Status &
+Break.@{par}
+
+@endnode
+@node "GaSMUsei" "Miscellaneous - Ok"
+@toc "GaSM"
+
+@{MS "Ok"}
+
+This adjustments will be overtaken.
+
+@endnode
+@node "GaSMSave" "Miscellaneous - Save"
+@toc "GaSM"
+
+@{MS "Save"}
+
+This adjustments will be saved and the requester will be existed.
+
+@endnode
+@node "GaSMCanc" "Miscellaneous - Cancel"
+@toc "GaSM"
+
+@{MS "Cancel"}
+
+The adjustments will be rejected. The close gadget does the same.
+
+@endnode
+
+@node "HiSc" "The Highscores"
+@toc "MaiW"
+
+@{MS "The Highscorelist"}
+
+Here the highscores of the current level are shown. The list will be saved
+automatically after every new entry.@{PAR}
+
+@{b}Please note that it's required to setup 3 or less lives to enable the Game
+Records. Scores played with 4 or more @{"start lives" link "GaSeLive"} will be
+rejected. This is required to avoid a player is using 50 lives to break the
+hiscore. Level and time records aren't effected by this restriction.@{ub}@{PAR}
+
+The given scores are real. I hate imitated scores with the first place at a
+score 100000. So I have decided to add the scores played at my computer. So if
+you beat this scores you also beat myself and my testers.@{PAR}
+
+There are three different highscore lists for every game.@{PAR}
+
+° @{b}Game Records@{ub}@{PAR}
+
+The game records show the best 15 players.@{PAR}
+
+The reached level is more important than the amount of score. If you reach level
+4 and have a score of 5678, you will be added in the highscores before an entry
+with a score of 7890 in level 3.@{PAR}
+
+° @{b}Level Records@{ub}@{PAR}
+
+In the level records there is shown the best player for every level. The score
+is shown, that the player has reached with that life, that he leaves the
+level.@{PAR}
+
+° @{b}Time Records@{ub}@{PAR}
+
+Here is one entry for every level as well. So you must reach a shorter
+time.@{PAR}
+
+   @{" " link "HiScType"}  Type@{PAR}
+   @{" " link "HiScDeHi"}  Delete Scores@{PAR}
+
+@endnode
+@node "HiScType" "The Highscores - Type"
+@toc "HiSc"
+
+@{MS "Type"}
+
+With this gadget you can adjust the list, you want to see.
+
+@endnode
+@node "HiScDeHi" "The Highscores - Delete Scores"
+@toc "HiSc"
+
+@{MS "Delete Scores"}
+
+After confirming all scores of the current games are deleted.
+
+@endnode
+
+@node "ShSc" "Game results"
+
+@{MS "Game Results"}
+
+After playing BoulderDäsh this requester is viewing all player information.
+(scores and level)@{PAR}
+
+This window may be deactivated by the @{"Playername" link "GaSP"}-settings.
+
+@endnode
+@node "LeEd" "The Level Editor"
+@toc "GaEd"
+
+@{MS "The Level Editor"}
+
+@{b}These brackets "[]" are describing the CD32 joypad buttons@{ub}@{PAR}
+
+The editor screen is divided into two sections. The level takes the biggest
+part. At the top there are all @{"elements" link "elements"}, which you can
+choose in the level. Please pay attention to the fact, that you can see only
+some of the @{"elements" link "Elements"}, because you can scroll this
+selector.@{PAR}
+
+Some @{"elements" link "Elements"} are marked to be better recognised. Letters
+in the corner right up of the @{"elements" link "Elements"} show you the type.
+"I" = in "S" = Slime etc.
+   
+A "F" in the left bottom of the @{"element" link "Elements"} symbolises Fake, an
+imitation of the original block.@{PAR}
+
+With the joystick/joypad you can move trough the level and if you push the fire
+button [RED] you can set the element you have activated in the @{"element" link "Elements"} selector.@{PAR}
+
+Here are all keys, you can use in the level editor :@{PAR}
+
+   Esc [BLUE]        : Ends the LevelEditor@{PAR}
+   F1 [PLAY]         : Testing a level (if you press F1, F10 or [GREEN and YELLOW]@{PAR}
+                     : you can leave the testing mode)@{PAR}
+   Del [GREEN]       : and a following Y [RED] deletes the level@{PAR}
+   Help              : Counts all diamonds and registers then as needed.@{PAR}
+   NUMPAD 6 [FORWARD]: moves the element selector one step right@{PAR}
+   ( "-" for A600 users)@{PAR}
+   NUMPAD 4 [REVERSE]: moves the element selector one step left@{PAR}
+   ( "." for A600 users)@{PAR}@{PAR}
+
+   C                 : Space type selector:@{PAR}
+                       ° @{"Space" link "DT_Space"}@{PAR}
+                       ° @{"Space - Fake" link "DT_SpaceFake"}@{PAR}
+                       ° @{"Space - Background" link "DT_SpaceBackground"}@{PAR}
+   D                 : @{"Diamond" link "DT_Diamond"}@{PAR}
+   S                 : Stone type selector:@{PAR}
+                       ° @{"Stone" link "DT_Stone"}@{PAR}
+                       ° @{"Stonie" link "DT_Stonie"}@{PAR}
+                       ° @{"Egg" link "DT_Egg"}@{PAR}
+   E                 : @{"Ground" link "DT_Earth"} (aka Earth)@{PAR}
+   M                 : Metal type selector:@{PAR}
+                       ° @{"Metal" link "DT_Metal"}@{PAR}
+                       ° @{"Metal Fake" link "DT_MetalFake"}@{PAR}
+   W                 : @{"Wall" link "DT_Wall"}@{PAR}
+   P                 : @{"Magic Wall" link "DT_MagicWall"}@{PAR}
+   L                 : @{"Growing wall left/right" link "DT_GrowingWallLR"}@{PAR}
+   U                 : @{"Growing wall up/down" link "DT_GrowingWallUD"}@{PAR}
+   R                 : @{"Water" link "DT_Water"}@{PAR}
+   G                 : @{"Butterfly" link "DT_DiamondGhost"}@{PAR}
+   N                 : @{"Firefly" link "DT_Ghost"}@{PAR}
+   I                 : @{"In" link "DT_In"}@{PAR}
+   O                 : Out type selector:@{PAR}
+                       ° @{"Out blinking" link "DT_OutBlinking"}@{PAR}
+                       ° @{"Out not blinking" link "DT_Out"}@{PAR}
+                       ° @{"Out fake" link "DT_OutFake"}@{PAR}
+   T                 : @{"Twin" link "DT_Twin"}@{PAR}
+   Q                 : @{"Slime" link "DT_Slime"}@{PAR}
+   1                 : @{"Gravitation Arrow Up" link "DT_GravitationArrow"}@{PAR}
+   2                 : @{"Gravitation Arrow Down" link "DT_GravitationArrow"}@{PAR}
+   3                 : @{"Gravitation Arrow Left" link "DT_GravitationArrow"}@{PAR}
+   4                 : @{"Gravitation Arrow Right" link "DT_GravitationArrow"}@{PAR}
+   5                 : @{"Userblock" link "DT_User"}@{PAR}
+
+   F6                : The current element will be copied 15 times at random positions.@{PAR}
+   F7                : The previous level will be flipped into the editor.@{PAR}
+   F8                : The next level will be flipped into the editor.@{PAR}
+   F9 [YELLOW]       : Go to "Color Set Mode"@{PAR}
+                       Use CRSR left/right [FORWARD/REWIND] to view the@{PAR}
+                       color sets. Use "Y" or "J" [RED] to confirm, or@{PAR}
+                       use "N" or Escape [BLUE,YELLOW or GREEN] to undo@{PAR}
+                       all changes. @{b}NOTE: You are only able to activate@{PAR}
+                       the colors you have @{"created" link "LeCo"}.@{ub}@{PAR}
+   TAB + F1          : Save game/editor screen into t: drawer (only available in RTG mode)@{PAR}
+
+@endnode
+
+@node "LeSe" "Level Settings"
+@toc "GaEd"
+
+@{MS "Level Adjustments"}
+
+This windows allows the adjustments of all variables, BoulderDäsh allows for a
+level.@{PAR}
+
+   @{" " link "LeSeName"}  Name@{PAR}
+   @{" " link "LeSeLeVi"}  Visual and Noisy@{PAR}
+   @{" " link "LeSeLeWa"}  Water and Slime@{PAR}
+   @{" " link "LeSeLeEq"}  Earthquakes@{PAR}
+   @{" " link "LeSeLePo"}  Points@{PAR}
+   @{" " link "LeSeLeMc"}  Miscellaneous@{PAR}
+   @{" " link "LeSeUsei"}  Ok@{PAR}
+   @{" " link "LeSeCanc"}  Cancel@{PAR}
+@endnode
+@node "LeSeName" "Level Settings - Level Name"
+@toc "LeSe"
+
+@{MS "Level Name"}
+
+The name of the level. This level is only needed for the level list at the
+moment.
+
+@endnode
+@node "LeSeLeVi" "Level Settings - Visual and Noisy"
+@toc "LeSe"
+
+@{MS "Visual and Noisy"}
+
+This @{"window" link "LeVi"} allows alle visual and noisy settings for this
+level.
+
+@endnode
+@node "LeSeLeWa" "Level Settings - Water and Slime"
+@toc "LeSe"
+
+@{MS "Water and Slime"}
+
+Also this button opens a window. In this window you can make all adjustments,
+concerning @{"Water or Slime" link "LeWa"}.
+
+@endnode
+@node "LeSeLeEq" "Level Settings - Earthquakes"
+@toc "LeSe"
+
+@{MS "Earthquakes"}
+
+Using the earthquake key opens a window that allows all adjustments concerning
+@{"earthquakes" link "LeEq"}.
+
+@endnode
+@node "LeSeLePo" "Level Settings - Scores"
+@toc "LeSe"
+
+@{MS "Scores"}
+
+The @{"Score Adjustment Window" link "LePo"}, that will be opened, if you click
+at it, allows the editing of all scores, the player can get in this levels.
+
+@endnode
+@node "LeSeLeMc" "Level Settings - Miscellaneous"
+@toc "LeSe"
+
+@{MS "Miscellaneous"}
+
+This gadget opens the requester for @{"miscellaneous" link "LeMc"} things. Here
+you can adjust the width and height, level time, game speed and many more.
+
+@endnode
+@node "LeSeUsei" "Level Settings - Ok"
+@toc "LeSe"
+   
+@{MS "Ok"}
+
+With Ok the adjustment of all windows will be taken over and the level setting
+window will be closed. Windows, that where opened from here will be closed as
+well.
+
+@endnode
+@node "LeSeCanc" "Level Settings - Cancel"
+@toc "LeSe"
+    
+@{MS "Cancel"}
+
+Cancels all adjustments and ends all level setting windows.
+
+@endnode
+
+@node "LeVi" "Levelsettings - Visual and Noisy"
+@toc "LeSe"
+
+@{MS "Levelsettings - Visual and Noisy"}
+
+   @{" " link "LeViXXXX"}  Level Width@{par}
+   @{" " link "LeViYYYY"}  Level Height@{par}
+   @{" " link "LeViLGFX"}  Graphic Set@{par}
+   @{" " link "LeViLCOL"}  Color Set@{par}
+   @{" " link "LeViLCHR"}  Character Set@{par}
+   @{" " link "LeViLSPL"}  Sample Set@{par}
+   @{" " link "LeViLMUS"}  Music@{par}
+
+@endnode
+@node "LeViXXXX" "Visual and Noisy - Level Width"
+@toc "LeVi"
+
+@{MS "Level Width"}
+
+Here the width of a level can be adjusted in elements.@{PAR}
+
+@{b}WARNING : A CHANGING CAUSES THE LOSS OF THE JUST EDITED LEVEL SIZE !!!@{ub}
+
+@endnode
+@node "LeViYYYY" "Visual and Noisy - Level Height"
+@toc "LeVi"
+
+@{MS "Level Height"}
+
+Here you can adjust the height of a level in elements.@{PAR}
+
+@{b}WARNING : A CHANGING CAUSES THE LOSS OF THE ALREADY EDITED LEVEL
+SIZE!!!@{ub}
+
+@endnode
+@node "LeViLGFX" "Visual and Noisy - Graphic Set"
+@toc "LeVi"
+
+@{MS "Graphic Set"}
+
+This gadget specifies the level internal graphic set. You can also use your
+@{"Own Graphics" link "OwnGFX"}. Note: This Feature must be enabled via @{"game settings" link "GaSSLeDa"}.
+
+@endnode
+@node "LeViLCOL" "Visual and Noisy - Color Set"
+@toc "LeVi"
+
+@{MS "Color Set"}
+
+This gadget allows to specify the color set for this level. The selection is
+made by the @{"Color Set Selection" link "LeCo"}-window. Note: This Feature must
+be enabled via @{"game settings" link "GaSSLeCo"}.
+
+@endnode
+@node "LeViLCHR" "Visual and Noisy - Character Set"
+@toc "LeVi"
+
+@{MS "Character Set"}
+
+This gadget specifies the level internal character set. You can also use your
+@{"own characters" link "OwnCHR"}. Note: This Feature must be enabled via
+@{"game settings" link "GaSSLeDa"}.
+
+@endnode
+@node "LeViLSPL" "Visual and Noisy - SampleSet"
+@toc "LeVi"
+
+@{MS "Sample set"}
+
+This gadget specifies the level internal sample set. You can also use your
+@{"own sample sets" link "OwnSPL"}. Note: This Feature must be enabled via
+@{"game settings" link "GaSSLeDa"}.
+
+@endnode
+@node "LeViLMUS" "Visual and Noisy - Music"
+@toc "LeVi"
+
+@{MS "Music"}
+
+This gadget specifies the level internal music. You can also use your @{"own musics" link "OwnMUS"}.
+Note: This Feature must be enabled via @{"game settings" link "GaSSLeDa"}.
+
+@endnode
+
+@node "LeCo" "Color Set Selection"
+@toc "LeVi"
+
+@{MS "Color Set Selection"}
+
+This window allows to select new a new level color set.@{PAR}
+
+   @{" " link "LeCoCoLi"}  Color Sets@{PAR}
+   @{" " link "LeCoUsei"}  Ok@{PAR}
+   @{" " link "LeCoCanc"}  Cancel@{PAR}
+
+@endnode
+@node "LeCoCoLi" "Color Set Selection - Color Sets"
+@toc "LeCo"
+
+@{MS "Color Sets"}
+
+This listview is showing all color sets. There are separate lists for each
+graphic set, so all shown color sets are valid for the current graphic set.
+
+@endnode
+@node "LeCoUsei" "Color Set Selection - Ok"
+@toc "LeCo"
+
+@{MS "Ok"}
+
+The current level is using the selected color set.
+
+@endnode
+@node "LeCoCanc" "Color Set Selection - Cancel"
+@toc "LeCo"
+
+@{MS "Cancel"}
+
+The window is closed, without any modifications to the level colors.
+
+@endnode
+
+@node "LeWa" "Level Settings - Water and Slime"
+@toc "LeSe"
+
+@{MS "Level Settings - Water and Slime"}
+
+In this window you can make all adjustments concerning water or slime.@{PAR}
+
+   @{" " link "LeWaWaTi"}  @{"Water" link "DT_Water"} Growing Time@{PAR}
+   @{" " link "LeWaWaMa"}  Magic Water Time@{PAR}
+   @{" " link "LeWaWGRa"}  Water Growing Rate@{PAR}
+   @{" " link "LeWaWFRa"}  Water Flood Rate@{PAR}
+   @{" " link "LeWaWMax"}  Water Maximum@{PAR}
+   @{" " link "LeWaSlim"}  @{"Slime" link "DT_Slime"} Rate@{PAR}
+
+@endnode
+@node "LeWaWaTi" "Water and Slime - Water Growing time"
+@toc "LeWa"
+
+@{MS "Water Growing Time"}
+
+This time starts directly at the beginning of a level. In this time the
+@{"water" link "DT_Water"} grows in the @{"growing rate" link "LeWaWGRa"}. Are
+the adjusted seconds over, it will be changed into the @{"flood rate" link "LeWaWFRa"}.
+
+@endnode
+@node "LeWaWaMa" "Water and Slime - Magic Water Time"
+@toc "LeWa"
+
+@{MS "Magic Water Time"}
+
+This time starts directly at the beginning of a level, too. In this time it is
+possible to change all water to @{"diamonds" link "DT_Diamond"} by activating
+the @{"magic wall" link "DT_MagicWall"}.
+
+@endnode
+@node "LeWaWGRa" "Water and Slime - Water Growing Rate"
+@toc "LeWa"
+
+@{MS "Water Growing Rate"}
+
+Directly after the beginning of a level the @{"water" link "DT_Water"} grows
+with this rate.
+
+@endnode
+@node "LeWaWFRa" "Water and Slime - Water Flood Rate"
+@toc "LeWa"
+
+@{MS "Water Flood Rate"}
+
+This rate will be activated, if the @{"growing rate" link "LeWaWGRa"} time is
+over.
+
+@endnode
+@node "LeWaWMax" "Water and Slime - Water Maximum"
+@toc "LeWa"
+
+@{MS "Water Maximum"}
+
+With a special size the @{"water" link "DT_Water"} turns to @{"stone" link "DT_Stone"}.
+Here you can adjust the percent of the level size, which must be
+flooded, to turn the @{"water" link "DT_Water"} into @{"stones" link "DT_Stone"}.
+
+@endnode
+@node "LeWaSlim" "Water and Slime - Slime Rate"
+@toc "LeWa"
+
+@{MS "Slime Rate"}
+
+Here you can adjust the speed, in which the @{"stones" link "DT_Stone"},
+@{"diamonds" link "DT_Diamond"} or @{"eggs" link "DT_Egg"} slime through the
+@{"slime" link "DT_Slime"}.
+
+@endnode
+
+@node "LeEq" "Level Settings - Earthquakes"
+@toc "LeSe"
+
+@{MS "Level Settings - Earthquakes"}
+
+Here you can make all adjustments concerning earthquakes. Earthquakes shake a
+level so that @{"stones" link "DT_Stone"} falling down, which normally won't
+fall down. For example, @{"stones" link "DT_Stone"} are fall down from @{"earth" link "DT_Earth"}
+or @{"metal" link "DT_Metal"}.@{PAR}
+
+   @{" " link "LeEqMode"}  Mode@{PAR}
+   @{" " link "LeEqTime"}  Activate Time@{PAR}
+   @{" " link "LeEqDely"}  Delay@{PAR}
+   @{" " link "LeEqLeng"}  Length@{PAR}
+   @{" " link "LeEqRate"}  Force Rate@{PAR}
+
+@endnode
+@node "LeEqMode" "Earthquakes - Mode"
+@toc "LeEq"
+
+@{MS "Mode"}
+
+Here you can adjust the mode, that causes the earthquakes. The following modes
+are available:@{PAR}
+
+   Off      - no earthquakes@{PAR}
+   Random   - earthquakes appear randomly with random force and randomly@{PAR}
+              long@{PAR}
+   Once     - only one earthquake@{PAR}
+   Cyclic   - earthquakes appear regularly@{PAR}
+
+@endnode
+@node "LeEqTime" "Earthquakes - Activate Time"
+@toc "LeEq"
+
+@{MS "Activate Time"}
+
+After this time earthquakes can appear.
+
+@endnode
+@node "LeEqDely" "Earthquakes - Delay"
+@toc "LeEq"
+
+@{MS "Delay"}
+
+In the mode regular you can adjust the time between earthquakes.
+
+@endnode
+@node "LeEqLeng" "Earthquakes - Length"
+@toc "LeEq"
+
+@{MS "Length"}
+
+This is the length of time the level is shaken by an earthquake.
+
+@endnode
+@node "LeEqRate" "Earthquakes - Force Rate"
+@toc "LeEq"
+
+@{MS "Force Rate"}
+
+Here you can adjust the force of an earthquake.
+
+@endnode
+
+@node "LePo" "Level Settings - Points"
+@toc "LeSe"
+
+@{MS "Level Settings - Points"}
+
+Here you can add the scores for the different events while the level.@{PAR}
+
+   @{" " link "LePoDiam"}  @{"Diamond" link "DT_Diamond"}@{PAR}
+   @{" " link "LePoDiEx"}  Diamond extra@{PAR}
+   @{" " link "LePoDi99"}  Diamonds >99@{PAR}
+   @{" " link "LePoBoLi"}  For Bonus Live@{PAR}
+   @{" " link "LePoTiBo"}  Time Bonus@{PAR}
+
+@endnode
+@node "LePoDiam" "Points - Diamond"
+@toc "LePo"
+
+@{MS "Diamond"}
+
+Every @{"diamond" link "DT_Diamond"} gives you the score, which is adjusted
+here.
+
+@endnode
+@node "LePoDiEx" "Points - Diamond Extra"
+@toc "LePo"
+
+@{MS "Diamond Extra"}
+
+If someone has collected @{"all" link "LeMcNeed"} @{"diamonds" link "DT_Diamond"},
+he gets this score for every extra diamond.
+
+@endnode
+@node "LePoDi99" "Points - Diamonds>99"
+@toc "LePo"
+
+@{MS "Diamonds>99"}
+
+For each @{"diamond" link "DT_Diamond"} more than 99 you get this score.
+
+@endnode
+@node "LePoBoLi" "Points - For Bonus Life"
+@toc "LePo"
+
+@{MS "For Bonus Life"}
+
+Every time someone reaches this score, he gets a bonus life. If you add 1000
+here, you get a new life every time, you add to your score 1000. The counter is
+limited to the current level, that means, if you loose your life at a score of
+500, you only need a score of 500 to reach a life bonus.@{PAR}
+
+Zero means no bonus live!
+
+@endnode
+@node "LePoTiBo" "Points - Time Bonus"
+@toc "LePo"
+
+@{MS "Time Bonus"}
+
+Here you can state how much score each second should give at the @{"end" link "DT_OutBlinking"} of the level.
+
+@endnode
+
+@node "LeMc" "Level Settings - Miscellaneous"
+@toc "LeSe"
+
+@{MS "Level Settings - Miscellaneous"}
+
+   @{" " link "LeMcSped"}  Game Speed@{PAR}
+   @{" " link "LeMcTime"}  Level Time@{PAR}
+   @{" " link "LeMcMiTi"}  @{"Magic Wall" link "DT_MagicWall"} Time@{PAR}
+   @{" " link "LeMcNeed"}  @{"Diamonds" link "DT_Diamond"} Needed@{PAR}
+   @{" " link "LeMcInMi"}  Intermission@{PAR}
+   @{" " link "LeMcGrav"}  Gravitation@{PAR}
+@endnode
+@node "LeMcSped" "Miscellaneous - Game Speed"
+@toc "LeMc"
+
+@{MS "Game Speed"}
+
+Here you can adjust the game speed.
+
+@endnode
+@node "LeMcTime" "Miscellaneous - Level time"
+@toc "LeMc"
+
+@{MS "Level time"}
+
+Here you can adjust the amount of seconds a player should have to collect
+@{"all" link "LeMcNeed"} @{"diamonds" link "DT_Diamond"} and reach the @{"Out" link "DT_OutBlinking"}.
+
+@endnode
+@node "LeMcMiTi" "Miscellaneous - Magic Wall Time"
+@toc "LeMc"
+
+@{MS "Magic Wall Time"}
+
+Here you can adjust the amount of seconds the @{"magic wall" link "DT_MagicWall"} stays active after activation.
+
+@endnode
+@node "LeMcNeed" "Miscellaneous - Diamonds Needed"
+@toc "LeMc"
+
+@{MS "Diamonds Needed"}
+
+The number of the here adjusted @{"diamonds" link "DT_Diamond"} are needed to
+@{"finish" link "DT_OutBlinking"} the level.
+
+@endnode
+@node "LeMcInMi" "Miscellaneous - Intermission"
+@toc "LeMc"
+
+@{MS "Intermission"}
+
+Intermissions are levels, in which you can't loose a life. If you end the
+Intermission successfully, you will get a new life.
+
+@endnode
+@node "LeMcGrav" "Miscellaneous - Gravitation"
+@toc "LeMc"
+
+@{MS "Gravitation"}
+
+BoulderDäsh allows the adjustment of the gravitation in all directions. The
+@{"stones" link "DT_Stone"} can also fall up, left, right and as in the Classic
+BoulderDash down.
+
+@endnode
+
+@node "GaPr" "The Game Information"
+
+@{MS "Game Information"}
+
+The game information content some adjustments, that will be used for the whole
+game.@{PAR}
+
+   @{" " link "GaPrAuth"}  Author@{PAR}
+   @{" " link "GaPrComm"}  Comment@{PAR}
+   @{" " link "GaPrDate"}  Date@{PAR}
+   @{" " link "GaPrVers"}  Version@{PAR}
+   @{" " link "GaPrUsei"}  Ok@{PAR}
+   @{" " link "GaPrCanc"}  Cancel@{PAR}
+@endnode
+@node "GaPrAuth" "The Game Information - Author"
+@toc "GaPr"
+
+@{MS "Author"}
+
+Here you can enter your name.
+
+@endnode
+@node "GaPrComm" "The Game Information - Comment"
+@toc "GaPr"
+
+@{MS "Comment"}
+
+This field you can use for any text, that hasn't got any special purpose.
+
+@endnode
+@node "GaPrDate" "The Game Information - Date"
+@toc "GaPr"
+
+@{MS "Date"}
+
+This date is the time, when the game was saved. It will be changed
+automatically, if you save the game again.
+
+@endnode
+@node "GaPrVers" "The Game Information - Version"
+@toc "GaPr"
+
+@{MS "Game Version"}
+
+This entry will be changed as well, if you save the game again. It should make
+the recognition of different versions from one game easier.
+
+@endnode
+@node "GaPrUsei" "The Game Information - Ok"
+@toc "GaPr"
+
+@{MS "Ok"}
+
+By pushing this button the window will be closed and the data will overtaken.
+
+@endnode
+@node "GaPrCanc" "The Game Information - Cancel"
+@toc "GaPr"
+
+@{MS "Cancel"}
+
+With cancel all adjustments, that you have done in this window, will be
+rejected. The window will be closed.
+
+@endnode
+
+@node "CoSH" "ColorSetHandler"
+@toc "GaEd"
+
+@{MS "ColorSetHandler"}
+
+The programm "ColorSetHandler" can be found in the tools drawer of the
+BoulderDäsh installaiton. This tool is only important if you want to create own
+graphic sets.@{PAR}
+
+After starting the @{"main window" link "CSHM"} is opening. This window contains
+all colors currently loaded.@{PAR}
+
+You are able to drop CMAP-files on the window. It is also possible to load them
+manuelly, by using the @{"menu" link "MENUCOSH"}.
+
+@endnode
+@node "CSHM" "The main window of the ColorSetHandler"
+@toc "COSH"
+
+@{MS "The main window of the ColorSetHandler"}
+
+The @{"menu" link "MENUCOSH"} contains all additional functions to make your
+graphic set colored.@{PAR}
+
+  @{"ColorSet list" link "CSHMCoLi"}@{PAR}
+  @{"Load CMAP" link "CSHMLoCM"}@{PAR}
+  @{"Clone" link "CSHMClon"}@{PAR}
+  @{"Delete..." link "CSHMDeCM"}@{PAR}
+
+@endnode
+@node "CSHMCoLi" "The ColorSetHandler - The ColorSet List"
+@toc "CSHM"
+
+@{MS "The ColorSet List"}
+
+This list is viewing the current list of color sets in memory.
+
+@endnode
+@node "CSHMLoCM" "The ColorSetHandler - Load CMAP"
+@toc "CSHM"
+
+@{MS "Load CMAP"}
+
+This gadget allows to enlarge the @{"ColorSet List" link "CSHMCoLi"} by loading
+a new color set. An ASL Requester is opening and asks for an IFF file containing
+an @{"CMAP Chunk" link "FAQCMAP"}.@{PAR}
+
+@{b}Important: The ColorSetHandler isn´t checking the number of colors. You
+should not use more colors than needed. This is wasting memory and diskspace. If
+you are less colors than the graphic set contains, the game will use only these
+colors and the graphic set looks wrong. Under normal circumstances you are using
+a paint program to create color files, so this problem should not appear.@{ub}
+
+@endnode
+@node "CSHMClon" "The ColorSetHandler - Clone"
+@toc "CSHM"
+
+@{MS "Clone"}
+
+This gadget allows to copy a specified entry. This allows to create a second
+name for the same color set.@{PAR}
+
+The colors itself are not copied. Some kind of alias is used to find the real
+entry containing the color. This saves a lot of memory when creating a 256 color
+color set.
+
+@endnode
+@node "CSHMDeCM" "The ColorSetHandler - Delete"
+@toc "CSHM"
+
+@{MS "Delete"}
+
+This gadgets deletes a selected entry.@{PAR}
+
+@{b}Note: If the selected color set is a mother of clones. These clones are
+killed, too.@{ub}
+
+@endnode
+
+@node "MENUCOSH" "The ColorSetHandler Menu"
+@toc "CSHM"
+
+@{MS "The ColorSetHandler Menu"}
+
+  @{b}Project@{ub}@{PAR}
+
+  @{" " link "MENUCOSHQuit"}@{PAR}  Quit
+
+  @{b}Import@{ub}@{PAR}
+
+  @{" " link "MENUCOSHLoBD"}  Load BDMAP@{PAR}
+  @{" " link "MENUCOSHLiBD"}  Link BDMAP@{PAR}
+  @{" " link "MENUBARLABEL"}  ---------------@{PAR}
+  @{" " link "MENUCOSHLoTT"}  Load Tooltypes@{PAR}
+  @{" " link "MENUBARLABEL"}  ---------------@{PAR}
+  @{" " link "MENUCOSHLoCM"}  Load CMAP@{PAR}
+
+  @{b}Export@{ub}@{PAR}
+
+  @{" " link "MENUCOSHSaBD"}  Save BDMAP@{PAR}
+  @{" " link "MENUBARLABEL"}  --------------@{PAR}
+  @{" " link "MENUCOSHSaGX"}  Save BDMAP into Graphic Set@{PAR}
+
+@endnode
+@node "MENUCOSHQuit" "The ColorSetHandler Menu - Quit"
+@toc "MENUCOSH"
+
+@{MS "Quit"}
+
+All modifications are lost and the programm quits.
+
+@endnode
+@node "MENUCOSHLoBD" "The ColorSetHandler Menu - Import/Load BDMAP"
+@toc "MENUCOSH"
+
+@{MS "Load BDMAP"}
+
+This item allows to load a @{"BDMAP" link "FAQBDMP"}. What file is containing
+the data is irrelevant.@{PAR}
+
+@{b}All color sets in memory will be lost.@{ub}
+
+@endnode
+@node "MENUCOSHLiBD" "The ColorSetHandler Menu - Import/Link BDMAP"
+@toc "MENUCOSH"
+
+@{MS "Link BDMAP"}
+
+This menu is linking a @{"BDMAP" link "FAQBDMP"} of a file to the current list
+in memory. Dupe entries cause an @{"alias" link "CSHMClon"} creation.@{PAR}
+
+@endnode
+@node "MENUCOSHLoTT" "The ColorSetHandler Menu - Import/Load ToolTypes"
+@toc "MENUCOSH"
+
+@{MS "Load ToolTypes"}
+
+This feature allows to convert the old tooltype version of the color set format
+into the new @{"BDMAP" link "FAQBDMP"} one.@{PAR}
+
+If you want to convert an old graphic set, then load the color set by using this
+item. After this procedure you save the color set by using the
+@{"Save BDMAP to Graphic Set" link "MENUCOSHSaGX"} menu item.@{PAR}
+
+@{b}Important: The file requester expects the name of the graphic set not the
+icon name (#?.info). Just select the graphic set. Thats all.@{ub}
+
+@endnode
+@node "MENUCOSHLoCM" "The ColorSetHandler Menu - Import/Load CMAP"
+@toc "MENUCOSH"
+
+@{MS "Load CMAP"}
+
+This Item allows to enlarge the @{"ColorSet List" link "CSHMCoLi"} by loading a
+new color set. An ASL Requester is opening and asks for an IFF file containing
+an @{"CMAP Chunk" link "FAQCMAP"}.@{PAR}
+
+@{b}For more information read @{"this chapter" link "CSHMLoCM"}!@{ub}
+
+@endnode
+@node "MENUCOSHSaBD" "The ColorSetHandler Menu - Export/Save BDMAP"
+@toc "MENUCOSH"
+
+@{MS "Save BDMAP"}
+
+This allows to save the BDMAP alone. This may be useful when using a paint
+program to make modifications.@{PAR}
+
+By using the @{"graphicset tooltypes " link "GFXToolTypes"} you are able to
+connect this single BDMAP file to BoulderDäsh, without saving the color into the
+picture.@{PAR}
+
+If you want to share your graphic set to other people, then save the colors
+@{"into the graphic set" link "MENUCOSHSaGX"}. In this case don´t forget to
+remove the @{"tooltype" link "GFXToolTypes"} "ColorSet" within the icon (.info)
+file.
+
+@endnode
+@node "MENUCOSHSaGX" "The ColorSetHandler Menu - Export/Save BDMAP into Graphic Set"
+@toc "MENUCOSH"
+
+@{MS "Save BDMAP into GraphicSet"}
+
+This menu item allows to save the @{"BDMAP" link "FAQBDMP"} into the graphic
+file.@{PAR}
+
+Note: Paint programms are killing this color information during the save
+operation.@{PAR}
+
+If you want to make changes to the graphic set you should @{"load" link "MENUCOSHLoBD"}
+the colors sets by using this program and @{"save" link "MENUCOSHSaBD"} them alone.
+
+@endnode
+
+@node "MenuAll" "The Menus of BoulderDäsh"
+
+@{MS "The Menus of BoulderDäsh"}
+
+   @{" " link "MenuMain"} The @{"Main Window" link "MaiW"} Menu@{PAR}
+
+   @{" " link "MenuGaEd"} The @{"Game Editor" link "GaEd"} Menu@{PAR}
+
+@endnode
+@node "MenuMain" "The Main Window Menu"
+@toc "MaiW"
+
+@{MS "The Main Window Menu"}
+
+    @{b}Project@{ub}@{PAR}
+
+   @{" " link "MenuMainGaLo"} Load game@{PAR}
+   @{" " link "MenuBARLABEL"} ---------@{PAR}
+   @{" " link "MenuMainAbou"} About@{PAR}
+   @{" " link "MenuBARLABEL"} ---------@{PAR}
+   @{" " link "MenuMainQuit"} Quit game@{PAR}
+
+   @{b}Action@{ub}@{PAR}
+
+   @{" " link "MenuMainDemo"} Classic C64 Demo@{PAR}
+   @{" " link "MenuBARLABEL"} ----------------@{PAR}
+   @{" " link "MenuMainRaDe"} Random Demo@{PAR}
+
+@endnode
+@node "MenuMainGaLo" "The Main Window Menu: Project"
+@toc "MenuMain"
+
+@{MS "Load game"}
+
+After the choice in the file requester a game with its levels will be loaded.
+@{b}All levels, that were in the memory, will be deleted.@{ub}
+
+@endnode
+@node "MenuMainAbou" "The Main Window Menu: Project"
+@toc "MenuMain"
+
+@{MS "About"}
+
+This menu point opens an information requester. It shows the version and the
+author name and address. 
+
+@endnode
+@node "MenuMainQuit" "The Main Window Menu: Project"
+@toc "MenuMain"
+
+@{MS "Quit game"}
+
+This point ends BoulderDäsh and closes all open windows, which belong to
+BoulderDäsh.
+
+@endnode
+@node "MenuMainDemo" "The Main Window Menu: Action"
+@toc "MenuMain"
+
+@{MS "Classic C64 Demo"}
+
+This menu activates an automatic demontration of BoulderDäsh.@{PAR}
+
+This demonstration is equal to the C64 self running demo in the first
+BoulderDash game.@{PAR}
+
+It is running on all levels, but it makes only sense to use it on the first
+level of the "BDash_I_Level1.game" game.@{PAR}
+
+You are able to quit the demo by pressing F1 or F10. Pressing ESC causes a "game
+over" and takes a few seconds.
+
+@endnode
+@node "MenuMainRaDe" "The Main Window Menu: Action"
+@toc "MenuMain"
+
+@{MS "Random Demo"}
+
+This menu activates an automatic demontration of a random BoulderDäsh
+level.@{PAR}
+
+This requires at least one level containing a solution. Some games are shipped
+with solve files, but you are able to create your own solutions by using the
+@{"game editor" link "MenuGaEdReco"}.@{PAR}
+
+You are able to quit the demo by pressing F1 or F10. Pressing ESC causes a "game
+over" and takes a few seconds.
+
+@endnode
+
+@node "MenuGaEd" "The Game Editor Menu"
+@toc "GaEd"
+
+@{MS "The Game Editor Menu"}
+
+   @{b}Project@{ub}@{PAR}
+
+   @{" " link "MenuGaEdGaLo"} Load game@{PAR}
+   @{" " link "MenuGaEdGaLi"} Link game@{PAR}
+   @{" " link "MenuGaEdGaSa"} Save game@{PAR}
+   @{" " link "MenuBARLABEL"} ----------------@{PAR}
+   @{" " link "MenuGaEdGaIn"} Game information@{PAR}
+   @{" " link "MenuBARLABEL"} ----------------@{PAR}
+   @{" " link "MenuGaEdGaDe"} Delete game@{PAR}
+
+   @{b}Edit@{ub}@{PAR}
+
+   @{" " link "MenuGaEdLeEd"} Edit level@{PAR}
+   @{" " link "MenuGaEdLeSe"} Level settings@{PAR}
+   @{" " link "MenuBARLABEL"} ---------------@{PAR}
+   @{" " link "MenuGaEdLeLo"} Load level@{PAR}
+   @{" " link "MenuGaEdLeSa"} Save level@{PAR}
+   @{" " link "MenuBARLABEL"} ---------------@{PAR}
+   @{" " link "MenuGaEdLeNe"} New level@{PAR}
+   @{" " link "MenuGaEdLeDe"} Delete level@{PAR}
+
+   @{b}Replace@{ub}@{PAR}
+
+   @{" " link "MenuGaEdRGFX"} Graphic sets@{PAR}
+   @{" " link "MenuGaEdRCHR"} Character sets@{PAR}
+   @{" " link "MenuGaEdRSPL"} Sample sets@{PAR}
+   @{" " link "MenuGaEdRMUS"} Music@{PAR}
+
+   @{b}Solve@{ub}@{PAR}
+
+   @{" " link "MenuGaEdReco"} Record@{PAR}
+   @{" " link "MenuGaEdPlay"} Play@{PAR}
+   @{" " link "MenuGaEdSaSo"} Save@{PAR}
+
+@endnode
+@node "MenuBarLabel" "BarLabel"
+
+@{MS "Barlabel"}
+
+This is not realy a menu item. It is only a separator bar between different menu
+items.@{PAR}
+
+@endnode
+@node "MenuGaEdGaLo" "The Game Editor Menu: Project"
+@toc "MenuGaEd"
+
+@{MS "Load game"}
+
+After the choice in the File requester a game with its levels will be loaded.
+@{b}All levels, that were in the memory, will be deleted.@{ub}
+
+@endnode
+@node "MenuGaEdGaLi" "The Game Editor Menu: Project"
+@toc "MenuGaEd"
+
+@{MS "Link game"}
+
+Like @{"load game" link "MenuGaEdGaLo"} all levels of the new game will be added
+to the levels of the game, which is already in the memory.
+
+@endnode
+@node "MenuGaEdGaSa" "The Game Editor Menu: Project"
+@toc "MenuGaEd"
+
+@{MS "Save game"}
+
+Saves all levels in one data. So the levels needn't be saved particular.@{PAR}
+
+If you press the Control-key simultaneously, you save the level with protection
+identification. This protection can´t be removed. So please save the game only
+protected, if you want to give it to another person, or if you are sure, that no
+more changes are needed.@{PAR}
+
+@endnode
+@node "MenuGaEdGaIn" "The Game Editor Menu: Project"
+@toc "MenuGaEd"
+
+@{MS "Game information"}
+
+Opens the @{"GameInformation" link "GaPr"}-requester.
+
+@endnode
+@node "MenuGaEdGaDe" "The Game Editor Menu: Project"
+@toc "MenuGaEd"
+
+@{MS "Delete game"}
+
+With this option you can delete all levels, that are in the memory. Before this
+happens a security requester appears.
+
+@endnode
+@node "MenuGaEdLeEd" "The Game Editor Menu: Edit"
+@toc "MenuGaEd"
+
+@{MS "Edit level"}
+
+Starts the @{"Level Editor" link "LeEd"}.
+
+@endnode
+@node "MenuGaEdLeSe" "The Game Editor Menu: Edit"
+@toc "MenuGaEd"
+
+@{MS "Level settings"}
+
+Opens the @{"Level settings" link "LeSe"}-requester.
+
+@endnode
+@node "MenuGaEdLeLo" "The Game Editor Menu: Edit"
+@toc "MenuGaEd"
+
+@{MS "Load level"}
+
+Opens an ASL-requester, in which you can choose the level, that you want to
+load. The level will be added in the level list at the end after loading.@{PAR}
+
+It is also possible to load C64 (498 Bytes) and Atari (504 Bytes) "BoulderDash
+Construction Kit Caves".@{PAR}
+
+@endnode
+@node "MenuGaEdLeSa" "The Game Editor Menu: Edit"
+@toc "MenuGaEd"
+
+@{MS "Save level"}
+
+Saves the currently chosen level. The LevelName is given as FileName in the
+ASL-requester.
+
+@endnode
+@node "MenuGaEdLeNe" "The Game Editor Menu: Edit"
+@toc "MenuGaEd"
+
+@{MS "New"}
+
+Here a level with the size 40*22 blocks is created and is added to the list. The
+size is equivalent to the original C64-Caves.
+
+@endnode
+@node "MenuGaEdLeDe" "The Game Editor Menu: Edit"
+@toc "MenuGaEd"
+
+@{MS "Delete"}
+
+Deletes the current level.
+
+@endnode
+@node "MenuGaEdRGFX" "The Game Editor Menu: Replace"
+@toc "MenuGaEd"
+
+@{MS "Graphic Sets"}
+
+After a savety requester an ASL-requester opens. You choose a graphic set. This
+graphic set will be copied within all levels of the current game.@{PAR}
+
+This function is identical to the graphic set selection of the @{"level settings: Visual and Noisy" link "LeVi"}.
+The only difference is, that this menu item effects all levels of the game.
+
+@endnode
+@node "MenuGaEdRCHR" "The Game Editor Menu: Replace"
+@toc "MenuGaEd"
+
+@{MS "Character Sets"}
+
+After a savety requester an ASL-requester opens. You choose a character set.
+This character set will be copied within all levels of the current game.@{PAR}
+
+This function is identical to the character set selection of the @{"level settings: Visual and Noisy" link "LeVi"}.
+The only difference is, that this menu
+item effects all levels of the game.
+
+@endnode
+@node "MenuGaEdRSPL" "The Game Editor Menu: Replace"
+@toc "MenuGaEd"
+
+@{MS "Sample Sets"}
+
+After a savety requester an ASL-requester opens. You choose a sample set. This
+sample set will be copied within all levels of the current game.@{PAR}
+
+This function is identical to the sample set selection of the @{"level settings: Visual and Noisy" link "LeVi"}.
+The only difference is, that this menu item
+effects all levels of the game.
+
+@endnode
+@node "MenuGaEdRMUS" "The Game Editor Menu: Replace"
+@toc "MenuGaEd"
+
+@{MS "Music"}
+
+After a savety requester an ASL-requester opens. You choose a music. This music
+will be copied within all levels of the current game.@{PAR}
+
+This function is identical to the music selection of the @{"level settings: Visual and Noisy" link "LeVi"}.
+The only difference is, that this menu item
+effects all levels of the game.
+
+@endnode
+@node "MenuGaEdReco" "The Game Editor Menu: Solve"
+@toc "MenuGaEd"
+
+@{MS "Record"}
+
+@{b}Some timing @{"problems" link "FAQPlayProblems"} may cause the
+@{"play back" link "MenuGaEdPlay"} not to be successful.@{PAR}
+
+Here you are able to record a solve for the current level.@{PAR}
+
+After selecting this menu item BoulderDÄsh is starting. It is up to You to play
+the level. If you finish or just loose a life, the record operation is
+done.@{PAR}
+
+Note: You should define your name by using the @{"game settings" link "GaSP"},
+before recording. Your name will be recorded, too.@{PAR}
+
+By using the item @{"Play" link "MenuGaEdPlay"} you are able to play this
+recording a long a you wish.@{PAR}
+
+@{"Saving the game" link "MenuGaEdGaSa"} or using the menu item @{"Solve/Save" link "MenuGaEdSaSo"}
+causes a save of @{u}all@{uu} records, if created or
+loaded. When You are @{"loading a game" link "MenuGaEdGaLo"} the solvings will
+be load in, too.
+
+@endnode
+@node "MenuGaEdPlay" "The Game Editor Menu: Solve"
+@toc "MenuGaEd"
+
+@{MS "Play"}
+
+@{b}Some timing @{"problems" link "FAQPlayProblems"} may cause the @{"play back" link "MenuGaEdPlay"}
+not to be successful.@{PAR}
+
+The Menu item allows to play a @{"recorded" link "MenuGaEdReco"} solution of the
+current level.
+
+@endnode
+@node "MenuGaEdSaSo" "The Game Editor Menu: Solve"
+@toc "MenuGaEd"
+
+@{MS "Save"}
+
+This item allows to save @{u}all@{uu} solve of the current game. If you
+@{"save a game" link "MenuGaEdGaSa"} the solves are saved, too. It is impossible to save
+the included games, so this item allows to save the solutions alone.
+
+@endnode
+
+@node "BlockPositionTable" "Block Position Table"
+
+@{MS "Block Position Table"}
+
+The blocks are given from left to right and after the end of the line it will
+turn to the beginning of the next line.@{PAR}
+
+    0     Space - Background (Should be blank)@{PAR}
+    1     Ground@{PAR}
+    2     Metal@{PAR}
+    3     Metal moving (while Leveltilulit)@{PAR}
+    4     Metal Fake@{PAR}
+    5     Stone@{PAR}
+    6     Stone Ghost sleeping@{PAR}
+    7     Wall@{PAR}
+    8     Growing Wall left/right@{PAR}
+    9     Growing Wall up/down@{PAR}
+   10     Explosion 0 (The single blocks for the diamond creation explosion)@{PAR}
+   11     Explosion 1@{PAR}
+   12     Explosion 2@{PAR}
+   13     Explosion 3@{PAR}
+   14     Explosion 4@{PAR}
+   15     Plop 0      (The single blocks for the creation of Rockford and@{PAR}
+   16     Plop 1       the stone creation explosion.)@{PAR}
+   17     Plop 2@{PAR}
+   18     Twin@{PAR}
+   19     Earth Fake@{PAR}
+   20- 27 Diamond Ghost Animation        (8 Blocks)@{PAR}
+   28- 35 Diamond Animation              (8 Blocks)@{PAR}
+   36- 43 Ghost Animation                (8 Blocks)@{PAR}
+   44- 51 Water Animation                (8 Blocks)@{PAR}
+   52- 59 Slime Animation                (8 Blocks)@{PAR}
+   60- 67 Rockford left Animation        (8 Blocks)@{PAR}
+   68- 75 Rockford right Animation       (8 Blocks)@{PAR}
+   76- 83 Stone Ghost Runs Animation     (8 Blocks)@{PAR}
+   84- 91 Level In Animation             (8 Blocks)@{PAR}
+   92- 99 Level Out Animation            (8 Blocks)@{PAR}
+  100-107 Level Out Fake Animation       (8 Blocks)@{PAR}
+  108-115 Magic Wall Animation           (8 Blocks)@{PAR}
+  116-123 User Block Animation           (8 Blocks)@{PAR}
+  124-126 Rockford stands (in each case 3 half blocks for head and legs)@{PAR}
+  127     Rockford stands (Main State)@{PAR}
+  128     Gravitation Arrow Up@{PAR}
+  129     Gravitation Arrow Down@{PAR}
+  130     Gravitation Arrow Left@{PAR}
+  131     Gravitation Arrow Right@{PAR}
+  132-139 Bonus Life Animation           (8 Blocks)@{PAR}
+  140-147 Space Animation                (8 Blocks)@{PAR}
+  148     Egg@{PAR}
+  149     Egg broken 0@{PAR}
+  150     Egg broken 1@{PAR}
+  151     Egg broken 2@{PAR}
+@endnode
+
+@node "GFXToolTypes" "Tooltypes of the Graphic Set Files"
+
+@{MS "The Tooltypes of the Graphic Set Files"}
+
+At the moment the following tooltypes will be supported. In brackets there are
+the default values, that are used, if no tooltypes are found.@{PAR}
+
+
+@{b}Speed Tooltypes@{ub}@{PAR}
+
+    "Speed_ManRight"      (1)@{PAR}
+    "Speed_ManLeft"       (1)@{PAR}
+    "Speed_BonusLive"     (1)@{PAR}
+    "Speed_MagicWall"     (2)@{PAR}
+    "Speed_Diamond"       (2)@{PAR}
+    "Speed_In"            (10)@{PAR}
+    "Speed_Out"           (10)@{PAR}
+    "Speed_FakeOut"       (10)@{PAR}
+    "Speed_DiamondGhost"  (2)@{PAR}
+    "Speed_Ghost"         (3)@{PAR}
+    "Speed_Stonie"        (7)@{PAR}
+    "Speed_Water"         (7)@{PAR}
+    "Speed_Slime"         (7)@{PAR}
+    "Speed_MovingBlock"   (1)@{PAR}
+    "Speed_UserBlock"     (3)@{PAR}
+    "Speed_Space"         (1)@{PAR}
+
+These tooltypes need a value from 0 to 255. These values are the delay time. The
+higher this value is the slower will be the animation.@{PAR}
+
+   Examples:@{PAR}
+
+   Speed_Slime=4
+   Speed_MovingBlock=2@{PAR}
+
+@{b}ColorSet Tooltype@{ub}@{PAR}
+
+    "ColorSet"            (none)@{PAR}
+
+This tooltype defines the source of the @{"BDMP" link "CoSH"}-Chunk. This chunk
+contains the level colors. Under normal conditions the colors are saved within
+the graphic set. By using this tooltype you are able to define an other file as
+source.@{PAR}
+
+Why is this needed? Well, let´s have a look on the "ClassicC64Pumpkin.gfx"
+graphic set. This file isn´t containing any color set. If you take a look at the
+tooltypes you will find this: "ColorSet=ClassicC64.gfx".@{PAR}
+
+This makes color set editing much easier, because you edit one color set and all
+graphic sets are using the colors automaticaly.@{PAR}
+
+An other useful thing is that the ColorSet-tooltype is looking for the @{"BDMP" link "CoSH"}-Chunk
+only. This is very handy when making graphic set changes and
+saving the picture by using a paint programm. Under normal conditions the colors
+will be lost during the save procedure, but if you use the @{"ColorsetHandler" link "CoSH"}
+you are able to create a stand alone color set file. The only thing
+you must do is to specify this color set file by using the "colorSet"-tooltype.
+@{b}Note: It is required that the colorset file is saved within one of the
+"GraphicSets" subdirectories.@{ub}@{PAR}
+
+@{b}Please read the chapter @{"ColorSetHandler" link "CoSH"} to understand the
+color set handling. This may save time and avoids frustration.@{ub}
+
+@endnode
+@node "MUSToolTypes" "Tooltypes of the Music Files"
+
+@{MS "The Tooltypes of the Music Files"}
+
+At the moment the following tooltypes will be supported. In brackets there are
+the default values, that are used, if no tooltypes are found.@{PAR}
+
+    "MixedMode"           (0)@{PAR}
+    "IgnoreJump"          (If not specified this mode is disabled)@{PAR}
+
+The Voices are specified as follows:@{PAR}
+
+   Voice 1   = 1@{PAR}
+   Voice 2   = 2@{PAR}
+   Voice 3   = 4@{PAR}
+   Voice 4   = 8@{PAR}
+
+If your music is not using Voice 1 and 3 you should specify "MixedMode=5" to
+allow BoulderDäsh to use this voices for sound effects.@{PAR}
+
+"IgnoreJump" is used for musics that contain an intro. At the end of such music
+there is a jump command (bxx) that specifies a position right after the intro.
+If one music is played endless (Continue/Random mode), then use this tooltype to
+disable this jump.@{PAR}
+
+   Example:@{PAR}
+
+   IgnoreJump=3@{PAR}
+
+BoulderDäsh ignores a B03-jump command.
+
+@endnode
+@node "TITLEToolTypes" "The Tooltypes of the Title Screen"
+
+@{MS "The Tooltypes of the Title Screen"}
+
+At the moment the following tooltypes will be supported. In brackets there are
+the default values, that are used, if no tooltypes are found.@{PAR}
+
+   Eye_X              (10)@{PAR}
+   Eye_Y              (10)@{PAR}
+   Eye_Width          (64)@{PAR}
+   Eye_Height         (17)@{PAR}
+   Foot_X             (10)@{PAR}
+   Foot_Y             (10)@{PAR}
+   Foot_Width         (64)@{PAR}
+   Foot_Height        (17)@{PAR}
+   Music              (TitleClassic.mus)@{PAR}
+   RTGTitlePrefs      (RTGTitlexxx.Prefs)@{PAR}
+
+The X and Y values are the destination position for the elements. (pixel)
+@{b}Note:@{ub} The ECS mode allows only X coordinates and width that are factors
+of 8. (e.G 12 => 8) Within the RTG mode all coordinatinates are available.@{PAR}
+
+The height is limitated. Valid are values 1 to 17.@{PAR}
+
+The music tooltype specifies the music for this picture. This entry must not
+have a path.@{PAR}
+
+"RTGTitlePrefs" is specifying the RTG preferences name for title picture screen
+mode.This entry must not have a path, too.
+
+@endnode
+
+@node "Technical" "Technical information about BoulderDäsh"
+
+@{MS "Technical information about BoulderDäsh"}
+
+BoulderDäsh is 100% assembler coded.@{PAR}
+
+The sourcecode take more than 1455084 bytes in 146 files. BoulderDäsh is
+assembled with DevPac 3.04. DevPac needs 40 seconds and 2.35 MB each time.@{PAR}
+
+The game source files are taking 5572526 bytes in 8853 files and 54 directories.
+My personal game converter needs 13 Minutes to convert all games.@{PAR}
+
+The first versions of BoulderDäsh were created on an A500-000/7Mhz (2.8 MEG)
+then (Version 2) on an A2000-000/7Mhz (5 Meg). Since version 3.0 I'am working
+with an A2000-030/25Mhz (9 MEG). Since version 5.00 I am working on Amithlon
+Pentium3 866Mhz (128MB) which reduces the assembling time to 2 seconds.@{PAR}
+
+The paint program PPaint (4.0/6.4) was used to create graphic sets and title
+graphics. I wrote this guide using GoldEd (3.x/4.x) and his fantastic fold
+features.
+
+@endnode
+@node "OtherPrgs" "Other programs!"
+
+   @{MS "Other programs!"}
+   @{MS "BoulderDäsh   [game/jump/boulderdaesh.lha]"}
+
+Clone of the original Boulderdäsh for Amiga. It is the only version running faster on Amiga than the
+original. It looks and behaves like the original. I was asked, where the C64 is. (-8 And all this on
+a 68000 without Fastmem.
+
+   @{MS "SimpleCat   [dev/misc/simplecat.lha]"}
+
+This tool is for programmers and user. Using this program you can change catalogs of programs with
+your favourite text editor in the easiest way. These programs must include a CS file. Search for it
+in the archive of the catalogs drawer.
+
+   @{MS "Afind   [util/misc/afind.lha]"}
+
+With this program you can search for programs on your Aminet CDs in the easiest way. It is the same
+than the original tool on the CD, but here you can use AminetCDs and AminetSets mixed. So you are
+not forced to search for a program on the first 5 Aminet CDs, that is on AminetSet1 Disc b.
+
+   @{MS "AView   [util/misc/aview.lha]"}
+
+AView is a great multiview enhancement/replacement! It is working like Multiview, but you are able
+to specify a special viewer/player for each file type.
+
+   @{MS "Guideformat   [text/edit/guideformat.lha]"}
+
+GuideFormat is a simple tool. It is easy to format text blocks, even if there are "links" or other
+guide commands in.
+
+   @{MS "GuideCheck   [text/edit/guidecheck.lha]"}
+
+GuideCheck is a tool, that allows to check an entire guide file and discovers all errors!
+
+   @{MS "SiedlerBoot   [game/patch/siedlerboot.lha]"}
+
+This allows to start the Settlers direct via CD and save the scores on HD. There is no hard disc
+install required. SiedlerBoot requires the "Amiga Plus Sonderheft 9" cover CDROM.
+
+   @{MS "Execute64   [misc/emu/execute64.lha]"}
+
+Execute64 allows to transfer file direct into the C64 and to start them. This allows to play games
+an use the Amiga a big file server.
+
+   @{MS "R   [util/cli/r.lha]"}
+
+"R" creates a GUI for each DOS Program. This allows you to use DOS commands even if you aren't very
+good in reading templates.
+
+   @{MS "DVBControl   [comm/misc/dvbcontrol.lha]"}
+
+DVBControl is a software project for the Nokia MediaMaster (D-Box) and DVB2000 firmware. It allows
+to update firmware, edit channel settings and much more. So if you are using DVB2000 and an Amiga
+DVBcontrol is your only choice!
+
+   @{MS "MCControl   [hard/hack/mccontrol.lha]"}
+
+MCControl (MemoryCard Control) is a card reader for Playstation MemoryCards. It requires a little
+self made hardware (~$5) and the free software!
+
+   @{MS "VBRControl   [util/sys/vbrcontrol.lha]"}
+
+VBRControl moves the processor vector base to fast ram. This is increasing system speed.
+
+   @{MS "AvailCPU   [util/sys/availcpu.lha]"}
+
+AvailCPU is a little program that shows the CPU usage by using the Power LED!
+
+   @{MS "TrackDisplayClock   [util/time/trackdisplaycl.lha]"}
+
+A hardware track display is very useful, if you need it! The most time this type of hardware is only
+good for lighting up the room! This will be changed when using TrackDisplayClock! TrackDisplayClock
+displays the system time on your track display! Its cool, its useful and of course the time is
+always in visual range. Delete all programs using screens, windows or icons to display the time and
+of course don't forget to remove your noclick tool! TrackDisplayClock is doing all these jobs and
+your system will be faster than before! (-8
+
+   @{MS "MMKeyboard   [hard/hack/MMKeyboard.lha]"}
+
+MMKeyboard is a hardware for using IBM-PC keyboards on Amiga. It allows to use multimedia keys like
+Play or Pause. MMKeyboard supports any key on any keyboard! No special driver for each keyboard like
+on the PC! Only one small commodity for all keyboards is required to smuggle the multimedia keys
+into the system. MMKeyboard is full reset handler compatible, contains a internal hardware password,
+allows to turn your Amiga on and off by using the keyboard and much more.
+
+   @{MS "ParKeyboard   [hard/hack/ParKeyboard.lha]"}
+
+ParKeyboard is a small hard and software project that allows you to use an Amiga keyboard connected
+to the parallel port. The interface didn't contain any components. Just four wires are required to
+adapt the parallel port.
+
+   @{MS "WheelMouseSupport  [util/mouse/WheelMouseSupp.lha]"}
+
+WheelMouseSupport is a WheelBusMouse Software replacement. It allows to use the mouse wheel with most
+Amiga programs without any patches.
+
+@endnode
+
+@node "Index" "The Index"
+@index "Index"
+@{CODE}
+
+ A@{PAR}
+
+ @{"active time" link "LeMc"}
+ @{"After playing a while BoulderDäsh denies keyboard usage!" link "FAQMultiTasking"}
+ @{"After starting a level, Rockford does not appear. Why?" link "FAQNoRockford"}
+ @{"alias" link "CSHMClon"}
+ @{"All included games are using the same color!" link "FAQColorSets"}
+ @{"All included intermissions are to big!" link "FAQBigInt"}
+ @{"all" link "LeMcNeed"}@{PAR}
+
+ B@{PAR}
+
+ @{"BDMAP" link "FAQBDMP"}
+ @{"BDMP" link "CoSH"}
+ @{"Block Position Table" link "BlockPositionTable"}
+ @{"BMHD-Chunk not found!" link "FAQBMHD"}
+ @{"BODY-Chunk not found!" link "FAQBODY"}
+ @{"bonus life" link "LePoBoLi"}
+ @{"BoulderDäsh does not run!" link "FAQDoesnotCompute"}
+ @{"butterflies" link "DT_DiamondGhost"}
+ @{"Butterfly" link "DT_DiamondGhost"}@{PAR}
+
+ C@{PAR}
+
+ @{"change  the  name" link "GaSPPlay"}
+ @{"Change play mode" link "GaMuPlMo"}
+ @{"character sets" link "INCCHR"}
+ @{"Chunk" link "FAQCHUNK"}
+ @{"Clone" link "CSHMClon"}
+ @{"CMAP Chunk" link "FAQCMAP"}
+ @{"CMAP-Chunk not found!" link "FAQCMAP"}
+ @{"Color Set Selection" link "LeCo"}
+ @{"ColorSet list" link "CSHMCoLi"}
+ @{"ColorSetHandler" link "CoSH"}
+ @{"created" link "LeCo"}@{PAR}
+
+ D@{PAR}
+
+ @{"Data Set" link "GaSS"}
+ @{"defined growing rate" link "LeWa"}
+ @{"defined quantity" link "LeWa"}
+ @{"Delete Game" link "GaEdDeGa"}
+ @{"delete the original game" link "GaEdDeGa"}
+ @{"Delete..." link "CSHMDeCM"}
+ @{"Diamond" link "DT_Diamond"}
+ @{"diamonds" link "DT_Diamond"}
+ @{"Diamond_0" link "DT_Diamond"}@{PAR}
+
+ E@{PAR}
+
+ @{"earth" link "DT_Earth"}
+ @{"earthquakes" link "LeEq"}
+ @{"editor full screen" link "GaSRFSEd"}
+ @{"Egg" link "DT_Egg"}
+ @{"eggs" link "DT_Egg"}
+ @{"Egg_0" link "DT_Egg"}
+ @{"Egg_1" link "DT_Egg"}
+ @{"Egg_2" link "DT_Egg"}
+ @{"Egg_3" link "DT_Egg"}
+ @{"element" link "Elements"}
+ @{"elements" link "elements"}
+ @{"end" link "DT_OutBlinking"}@{PAR}
+
+ F@{PAR}
+
+ @{"Fake Out" link "DT_OutFake"}
+ @{"Fake_Metal" link "DT_MetalFake"}
+ @{"finish" link "DT_OutBlinking"}
+ @{"fireflies" link "DT_Ghost"}
+ @{"firefly" link "DT_DiamondGhost"}
+ @{"Firefly" link "DT_Ghost"}
+ @{"Flies" link "DT_ghost"}
+ @{"flood rate" link "LeWaWFRa"}@{PAR}
+
+ G@{PAR}
+
+ @{"game  settings" link "GaSP"}
+ @{"Game Editor" link "GaEd"}
+ @{"game editor" link "GaEd"}
+ @{"game editor" link "MenuGaEdReco"}
+ @{"Game result requester" link "ShSc"}
+ @{"game Setting" link "GaSe"}
+ @{"Game Settings - Data Sets" link "GaSS"}
+ @{"Game Settings - Screen" link "GaSR"}
+ @{"game settings screen" link "GaSR"}
+ @{"Game Settings" link "GaSe"}
+ @{"game settings" link "GaSe"}
+ @{"Game Settings" link "GaSS"}
+ @{"game settings" link "GaSSLeCo"}
+ @{"game settings" link "GaSSLeDa"}
+ @{"GameInformation" link "GaPr"}
+ @{"graphic sets" link "INCGFX"}
+ @{"graphics" link "GFXToolTypes"}
+ @{"graphicset tooltypes" link "GFXToolTypes"}
+ @{"Gravitation Arrow Down" link "DT_GravitationArrow"}
+ @{"Gravitation Arrow Left" link "DT_GravitationArrow"}
+ @{"Gravitation Arrow Right" link "DT_GravitationArrow"}
+ @{"Gravitation Arrow Up" link "DT_GravitationArrow"}
+ @{"Gravitation Arrow" link "DT_GravitationArrow"}
+ @{"Ground" link "DT_Earth"}
+ @{"growing rate" link "LeWaWGRa"}
+ @{"Growing Wall - (left/right)" link "DT_GrowingWallLR"}
+ @{"Growing Wall - (up/down)" link "DT_GrowingWallUD"}
+ @{"Growing Wall left/right" link "DT_GrowingWallLR"}
+ @{"Growing Wall up/down" link "DT_GrowingWallUD"}@{PAR}
+
+ H@{PAR}
+
+ @{"highscorelist" link "HiSc"}
+ @{"hiscore list" link "HiSc"}
+ @{"How can I change the RTG game/title screen mode?" link "FAQRTGScreenMode"}
+ @{"How To Register" link "HOWTOREGISTER"}@{PAR}
+
+ I@{PAR}
+
+ @{"I don´t understand the Hiscores!" link "FAQHiscoresWhy"}
+ @{"In my own graphics all animations are wrong!" link "FAQAnimWrong"}
+ @{"In" link "DT_In"}
+ @{"included character sets" link "INCCHR"}
+ @{"included graphics" link "INCGFX"}
+ @{"included modules" link "INCMUS"}
+ @{"installing" link "HowToInstall"}
+ @{"into the graphic set" link "MENUCOSHSaGX"}@{PAR}
+
+ K@{PAR}
+
+ @{"Keyboard problems!" link "FAQMultitasking"}@{PAR}
+
+ L@{PAR}
+
+ @{"level character set" link "LeVi"}
+ @{"Level Colors" link "GaSSLeCo"}
+ @{"Level Data" link "GaSSLeDa"}
+ @{"Level Editor" link "LeEd"}
+ @{"level editor" link "LeEd"}
+ @{"level music" link "LeVi"}
+ @{"Level settings" link "LeSe"}
+ @{"level settings: Visual and Noisy" link "LeVi"}
+ @{"level"  link  "LeVi"}
+ @{"level" link "LeVi"}
+ @{"LevelColor" link "GaSSLeCo"}
+ @{"LevelColors" link "GaSSLeCo"}
+ @{"LevelData" link "GaSSLeDa"}
+ @{"Leveleditors" link "LeEd"}
+ @{"LevelSetting" link "LeSe"}
+ @{"lives" link "GaSeLive"}
+ @{"Load CMAP" link "CSHMLoCM"}
+ @{"load game" link "MenuGaEdGaLo"}
+ @{"Load Level" link "GaEdLoLe"}
+ @{"load" link "GaEdLoGa"}
+ @{"load" link "MENUCOSHLoBD"}
+ @{"loading a game" link "MenuGaEdGaLo"}@{PAR}
+
+ M@{PAR}
+
+ @{"Magic Wall" link "DT_MagicWall"}
+ @{"main window" link "CSHM"}
+ @{"Main Window" link "MaiW"}
+ @{"Memory problems on game start, but the level editor works fine!" link "FAQMemory"}
+ @{"menu" link "MENUCOSH"}
+ @{"menu" link "MenuGaEd"}
+ @{"menu" link "MenuMain"}
+ @{"Metal - Fake" link "DT_MetalFake"}
+ @{"Metal Fake" link "DT_MetalFake"}
+ @{"Metal" link "DT_Metal"}
+ @{"milling wall second" link "LeMcMiTi"}
+ @{"milling walls" link "DT_MagicWall"}
+ @{"miscellaneous" link "LeMc"}
+ @{"music player settings" link "GaMu"}
+ @{"music player state" link "GaMuMuPl"}
+ @{"music player" link "GaMu"}
+ @{"Music player" link "GaMuMuPl"}
+ @{"music" link "MUSToolTypes"}
+ @{"My animations are too short!" link "FAQAnimShort"}@{PAR}
+
+ N@{PAR}
+
+ @{"Name Settings" link "GaSP"}
+ @{"number of lives" link "GaSeLive"}@{PAR}
+
+ O@{PAR}
+
+ @{"Out & Magic Wall" link "Elements"}
+ @{"Out - blinking" link "DT_OutBlinking"}
+ @{"Out - Fake" link "DT_OutFake"}
+ @{"Out blinking" link "DT_OutBlinking"}
+ @{"Out fake" link "DT_OutFake"}
+ @{"Out not blinking" link "DT_Out"}
+ @{"Out" link "DT_Out"}
+ @{"Out" link "DT_OutBlinking"}
+ @{"own character sets" link "OwnSPL"}
+ @{"own graphic sets" link "OwnGFX"}
+ @{"Own Graphics" link "OwnCHR"}
+ @{"own graphics" link "OwnGFX"}
+ @{"own graphics" link "OwnGFX"}
+ @{"Own Graphics" link "OwnMUS"}
+ @{"Own Graphics" link "OwnSPL"}
+ @{"own ingame music" link "OwnMUS"}
+ @{"Own levels!" link "FAQOwnLevels"}
+ @{"own music" link "OwnMUS"}
+ @{"own sample sets" link "OwnSPL"}
+ @{"own sounds" link "OwnSPL"}@{PAR}
+
+ P@{PAR}
+
+ @{"play back" link "FAQPlayProblems"}
+ @{"play back" link "MenuGaEdPlay"}
+ @{"Play Elements" link "Elements"}
+ @{"Play" link "MenuGaEdPlay"}
+ @{"Playback" link "MenuGaEdPlay"}
+ @{"Player Name Settings" link "GaSP"}
+ @{"Playername" link "GaSP"}
+ @{"playernames" link "GaSp"}
+ @{"playing mode" link "GaMuAuMo"}
+ @{"prefer mode" link "GaMuPref"}
+ @{"problems" link "FAQPlayProblems"}@{PAR}
+
+ R@{PAR}
+
+ @{"Record" link "MenuGaEdReco"}
+ @{"recorded" link "MenuGaEdReco"}
+ @{"register"  link "HOWTOREGISTER"}
+ @{"registered" link "HOWTOREGISTER"}
+ @{"registration" link "HOWTOREGISTER"}
+ @{"replace menu" link "MenuGaEd"}
+ @{"Replace sample set" link "MenuGaEdRSPL"}
+ @{"result window" link "ShSc"}
+ @{"Rockford Twin" link "DT_Twin"}
+ @{"Rockford" link "DT_Rockford"}
+ @{"rockfords" link "DT_Rockford"}
+ @{"RTG" link "GaSRRRTG"}@{PAR}
+
+ S@{PAR}
+
+ @{"sample sets" link "INCSPL"}
+ @{"samples" link "INCSPL"}
+ @{"save a game" link "MenuGaEdGaSa"}
+ @{"Save BDMAP to Graphic Set" link "MENUCOSHSaGX"}
+ @{"save" link "GaSPSave"}
+ @{"save" link "MENUCOSHSaBD"}
+ @{"SaveLevel" link "GaEdSaLe"}
+ @{"Saving the game" link "MenuGaEdGaSa"}
+ @{"Score Adjustment Window" link "LePo"}
+ @{"screen configuration" link "GaSR"}
+ @{"Self running demo" link "MenuMainDemo"}
+ @{"size" link "LeVi"}
+ @{"Slime" link "DT_Slime"}
+ @{"solve menu" link "MenuGaEd"}
+ @{"Solve/Save" link  "MenuGaEdSaSo"}
+ @{"Space - Background" link "DT_SpaceBackground"}
+ @{"Space - Fake" link "DT_SpaceFake"}
+ @{"Space Background" link "DT_SpaceBackground"}
+ @{"Space" link "DT_Space"}
+ @{"spaces" link "DT_Space"}
+ @{"special feature" link "LeWa"}
+ @{"start level" link "GaSeLevl"}
+ @{"start the game" link "MaiWStar"}
+ @{"Stone" link "DT_Stone"}
+ @{"stones" link "DT_Stone"}
+ @{"Stonie" link "DT_Stonie"}@{PAR}
+
+ T@{PAR}
+
+ @{"Table" link "BlockPositionTable"}
+ @{"The color set selector is sometimes working wrong!" link "FAQColorSetSelector"}
+ @{"The keyboard control is not very useful!" link "FAQKeyboard"}
+ @{"The music player isn´t working!" link "FAQNoMusic"}
+ @{"The player names are lost!" link "FAQNames"}
+ @{"The structure of the game!" link "FAQOwnGames"}
+ @{"this chapter" link "CSHMLoCM"}
+ @{"title picture" link "GaSMTitl"}
+ @{"title pictures" link "TitleToolTypes"}
+ @{"tooltype" link "GFXToolTypes"}
+ @{"ToolType" link "MUSToolTypes"}
+ @{"Tooltypes" link "GFXToolTypes"}
+ @{"tunes" link "INCMUS"}
+ @{"Twin" link "DT_Twin"}@{PAR}
+
+ U@{PAR}
+
+ @{"User Block" link "DT_User"}
+ @{"Userblock" link "DT_User"}@{PAR}
+
+ W@{PAR}
+
+ @{"Wall" link "DT_Wall"}
+ @{"water growing time" link "LeWaWaTi"}
+ @{"Water or Slime" link "LeWa"}
+ @{"Water" link "DT_Water"}
+ @{"What is a BDMP-Chunk?" link "FAQBDMP"}
+ @{"What is a Chunk?" link "FAQChunk"}
+ @{"Where are my scores, if I load a new game?" link "FAQHiscoresWhere"}
+ @{"While playing sometimes mysterious mistakes in the spaces appear!" link "FAQBonusLive"}
+ @{"Why can't I start BoulderDäsh and the Level editor?" link "FAQNoStart"}
+ @{"Why is the play feature not always working?" link "FAQPlayProblems"}
+ @{"Why it isn´t possible to run the level editor?" link "FAQNoLeEd"}
+ @{"window" link "GaSM"}
+ @{"window" link "LeVi"}
+@endnode
+

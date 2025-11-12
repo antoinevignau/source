@@ -2,16 +2,19 @@
 * Boulderdash
 *
 * (c) 1984, First Star
-* (s) 2022, Brutal Deluxe Software
+* (s) 2022-2025, Brutal Deluxe Software
 *
 
 KBD         EQU   $C000
 KBDSTROBE   EQU   $C010
 TAPEOUT     EQU   $C020
 SPKR        EQU   $C030
+CYAREG      EQU   $C036
 TXTCLR      EQU   $C050
+MIXCLR      EQU   $C052
 TXTPAGE1    EQU   $C054
 TXTPAGE2    EQU   $C055
+HIRES       EQU   $C057
 SETAN0      EQU   $C058
 CLRAN0      EQU   $C059
 SETAN1      EQU   $C05A
@@ -22,5 +25,17 @@ BUTN2       EQU   $C063
 PADDL0      EQU   $C064
 PADDL1      EQU   $C065
 PTRIG       EQU   $C070
-PWRUP       EQU   $FAA6
-WAIT        EQU   $FCA8
+
+PWRUP	=	$FAA6
+SETPWRC	=	$FB6F
+WAIT	=	$FCA8
+IDROUTINE	=	$FE1F
+
+ptrPREFIX	=	$280
+ptrTITLES	=	$2000
+proBUFFER	=	$b800
+
+PRODOS	=	$bf00
+
+fileTYPE	=	$5D
+auxTYPE	=	$8028

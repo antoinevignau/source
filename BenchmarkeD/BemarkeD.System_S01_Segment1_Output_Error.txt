@@ -1,0 +1,1093 @@
+------+-------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File             Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+-------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1 8enchmarkeD.s      1 | Comment     | ?? |         |   -1 | 00/FFFF               | *
+    2 |  1 8enchmarkeD.s      2 | Comment     | ?? |         |   -1 | 00/FFFF               | * Time to read a file in 8-bits
+    3 |  1 8enchmarkeD.s      3 | Comment     | ?? |         |   -1 | 00/FFFF               | *
+    4 |  1 8enchmarkeD.s      4 | Comment     | ?? |         |   -1 | 00/FFFF               | * (c) 2013-2025, Brutal Deluxe Software
+    5 |  1 8enchmarkeD.s      5 | Comment     | ?? |         |   -1 | 00/FFFF               | *
+    6 |  1 8enchmarkeD.s      6 | Comment     | ?? |         |   -1 | 00/FFFF               | * v1.1: - take less text space to see all results on one page
+    7 |  1 8enchmarkeD.s      7 | Comment     | ?? |         |   -1 | 00/FFFF               | *       - escape is also a key to cancel an action
+    8 |  1 8enchmarkeD.s      8 | Comment     | ?? |         |   -1 | 00/FFFF               | *
+    9 |  1 8enchmarkeD.s      9 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+   10 |  1 8enchmarkeD.s     10 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+   11 |  1 8enchmarkeD.s     11 | Directive   | ?? |         |   -1 | 00/FFFF               |                 mx             %11            
+   12 |  1 8enchmarkeD.s     12 | Directive   | ?? |         |   -1 | 00/FFFF               |                 typ            SYS            
+   13 |  1 8enchmarkeD.s     13 | Directive   | ?? |         |   -1 | 00/FFFF               |                 org            $2000          
+   14 |  1 8enchmarkeD.s     14 | Directive   | ?? |         |   -1 | 00/FFFF               |                 dsk            BemarkeD.System
+   15 |  1 8enchmarkeD.s     15 | Directive   | ?? |         |   -1 | 00/FFFF               |                 lst            off            
+   16 |  1 8enchmarkeD.s     16 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+   17 |  1 8enchmarkeD.s     17 | Directive   | ?? |         |   -1 | 00/FFFF               |                 use            4/Int.Macs     
+   18 |  1 8enchmarkeD.s     18 | Directive   | ?? |         |   -1 | 00/FFFF               |                 use            4/Locator.Macs 
+   19 |  1 8enchmarkeD.s     19 | Comment     | ?? |         |   -1 | 00/FFFF               | *	use	4/Mem.Macs
+   20 |  1 8enchmarkeD.s     20 | Directive   | ?? |         |   -1 | 00/FFFF               |                 use            4/Misc.Macs    
+   21 |  1 8enchmarkeD.s     21 | Directive   | ?? |         |   -1 | 00/FFFF               |                 use            4/Text.Macs    
+   22 |  1 8enchmarkeD.s     22 | Directive   | ?? |         |   -1 | 00/FFFF               |                 use            4/Util.Macs    
+   23 |  1 8enchmarkeD.s     23 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+   24 |  1 8enchmarkeD.s     24 | Comment     | ?? |         |   -1 | 00/FFFF               | *-----------------------------------
+   25 |  1 8enchmarkeD.s     25 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+   26 |  1 8enchmarkeD.s     26 | Unknown    | ?? |         |   -1 | 00/FFFF               | 0110_0101       65                            
+   27 |  1 8enchmarkeD.s     27 | Unknown    | ?? |         |   -1 | 00/FFFF               | 0100_0101       45                            
+   28 |  1 8enchmarkeD.s     28 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+   29 |  1 8enchmarkeD.s     29 | Equivalence | ?? |         |   -1 | 00/FFFF               | Debut           =              $00            
+   30 |  1 8enchmarkeD.s     30 | Equivalence | ?? |         |   -1 | 00/FFFF               | ptrPREFIX       =              $280           
+   31 |  1 8enchmarkeD.s     31 | Equivalence | ?? |         |   -1 | 00/FFFF               | ptrONLINE       =              $1000          
+   32 |  1 8enchmarkeD.s     32 | Equivalence | ?? |         |   -1 | 00/FFFF               | ptrBLOCK        =              $1000          
+   33 |  1 8enchmarkeD.s     33 | Equivalence | ?? |         |   -1 | 00/FFFF               | ptrBUFFER       =              $3000          
+   34 |  1 8enchmarkeD.s     34 | Equivalence | ?? |         |   -1 | 00/FFFF               | lenBUFFER       =              512            ; $8000
+   35 |  1 8enchmarkeD.s     35 | Equivalence | ?? |         |   -1 | 00/FFFF               | proBUFFER       =              $b800          
+   36 |  1 8enchmarkeD.s     36 | Equivalence | ?? |         |   -1 | 00/FFFF               | PRODOS          =              $bf00          
+   37 |  1 8enchmarkeD.s     37 | Equivalence | ?? |         |   -1 | 00/FFFF               | xTIMELO         =              $bf8e          
+   38 |  1 8enchmarkeD.s     38 | Equivalence | ?? |         |   -1 | 00/FFFF               | xTIMEHI         =              $bf8f          
+   39 |  1 8enchmarkeD.s     39 | Equivalence | ?? |         |   -1 | 00/FFFF               | DATELO          =              $bf90          
+   40 |  1 8enchmarkeD.s     40 | Equivalence | ?? |         |   -1 | 00/FFFF               | DATEHI          =              $bf91          
+   41 |  1 8enchmarkeD.s     41 | Equivalence | ?? |         |   -1 | 00/FFFF               | TIMELO          =              $bf92          
+   42 |  1 8enchmarkeD.s     42 | Equivalence | ?? |         |   -1 | 00/FFFF               | TIMEHI          =              $bf93          
+   43 |  1 8enchmarkeD.s     43 | Equivalence | ?? |         |   -1 | 00/FFFF               | MACHID          =              $bf98          ; The machine ID calculated by ProDOS
+   44 |  1 8enchmarkeD.s     44 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+   45 |  1 8enchmarkeD.s     45 | Equivalence | ?? |         |   -1 | 00/FFFF               | mask128K        =              %00110000      ; 01: 48K, 10: 64K, 11: 128K+
+   46 |  1 8enchmarkeD.s     46 | Equivalence | ?? |         |   -1 | 00/FFFF               | mask80COL       =              %00000010      ; 0: 40-col, 1: 80-col
+   47 |  1 8enchmarkeD.s     47 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+   48 |  1 8enchmarkeD.s     48 | Comment     | ?? |         |   -1 | 00/FFFF               | *---
+   49 |  1 8enchmarkeD.s     49 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+   50 |  1 8enchmarkeD.s     50 | Equivalence | ?? |         |   -1 | 00/FFFF               | BASIC           =              $e000          
+   51 |  1 8enchmarkeD.s     51 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+   52 |  1 8enchmarkeD.s     52 | Comment     | ?? |         |   -1 | 00/FFFF               | *--- Softswitches
+   53 |  1 8enchmarkeD.s     53 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+   54 |  1 8enchmarkeD.s     54 | Equivalence | ?? |         |   -1 | 00/FFFF               | KBD             =              $c000          
+   55 |  1 8enchmarkeD.s     55 | Equivalence | ?? |         |   -1 | 00/FFFF               | CLR80VID        =              $c00c          
+   56 |  1 8enchmarkeD.s     56 | Equivalence | ?? |         |   -1 | 00/FFFF               | KBDSTROBE       =              $c010          
+   57 |  1 8enchmarkeD.s     57 | Equivalence | ?? |         |   -1 | 00/FFFF               | VBL             =              $c019          
+   58 |  1 8enchmarkeD.s     58 | Equivalence | ?? |         |   -1 | 00/FFFF               | VERTCNT         =              $c02e          
+   59 |  1 8enchmarkeD.s     59 | Equivalence | ?? |         |   -1 | 00/FFFF               | SPKR            =              $c030          
+   60 |  1 8enchmarkeD.s     60 | Equivalence | ?? |         |   -1 | 00/FFFF               | CYAREG          =              $C036          
+   61 |  1 8enchmarkeD.s     61 | Equivalence | ?? |         |   -1 | 00/FFFF               | TXTCLR          =              $c050          
+   62 |  1 8enchmarkeD.s     62 | Equivalence | ?? |         |   -1 | 00/FFFF               | TXTSET          =              $c051          
+   63 |  1 8enchmarkeD.s     63 | Equivalence | ?? |         |   -1 | 00/FFFF               | MIXCLR          =              $c052          
+   64 |  1 8enchmarkeD.s     64 | Equivalence | ?? |         |   -1 | 00/FFFF               | MIXSET          =              $c053          
+   65 |  1 8enchmarkeD.s     65 | Equivalence | ?? |         |   -1 | 00/FFFF               | TXTPAGE1        =              $c054          
+   66 |  1 8enchmarkeD.s     66 | Equivalence | ?? |         |   -1 | 00/FFFF               | TXTPAGE2        =              $c055          
+   67 |  1 8enchmarkeD.s     67 | Equivalence | ?? |         |   -1 | 00/FFFF               | LORES           =              $c056          
+   68 |  1 8enchmarkeD.s     68 | Equivalence | ?? |         |   -1 | 00/FFFF               | HIRES           =              $c057          
+   69 |  1 8enchmarkeD.s     69 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+   70 |  1 8enchmarkeD.s     70 | Comment     | ?? |         |   -1 | 00/FFFF               | *--- The firmware routines
+   71 |  1 8enchmarkeD.s     71 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+   72 |  1 8enchmarkeD.s     72 | Equivalence | ?? |         |   -1 | 00/FFFF               | HGR             =              $F3E2          ; HGR
+   73 |  1 8enchmarkeD.s     73 | Equivalence | ?? |         |   -1 | 00/FFFF               | HPLOT           =              $F457          ; HPLOT
+   74 |  1 8enchmarkeD.s     74 | Equivalence | ?? |         |   -1 | 00/FFFF               | HILIN           =              $F53A          ; HPLOT TO
+   75 |  1 8enchmarkeD.s     75 | Equivalence | ?? |         |   -1 | 00/FFFF               | HCOLOR          =              $F6E9          ; HCOLOR= (call+3)
+   76 |  1 8enchmarkeD.s     76 | Equivalence | ?? |         |   -1 | 00/FFFF               | INIT            =              $FB2F          
+   77 |  1 8enchmarkeD.s     77 | Equivalence | ?? |         |   -1 | 00/FFFF               | TABV            =              $FB5B          
+   78 |  1 8enchmarkeD.s     78 | Equivalence | ?? |         |   -1 | 00/FFFF               | HOME            =              $FC58          
+   79 |  1 8enchmarkeD.s     79 | Equivalence | ?? |         |   -1 | 00/FFFF               | WAIT            =              $FCA8          
+   80 |  1 8enchmarkeD.s     80 | Equivalence | ?? |         |   -1 | 00/FFFF               | RDKEY           =              $FD0C          
+   81 |  1 8enchmarkeD.s     81 | Equivalence | ?? |         |   -1 | 00/FFFF               | GETLN1          =              $FD6F          
+   82 |  1 8enchmarkeD.s     82 | Equivalence | ?? |         |   -1 | 00/FFFF               | PRBYTE          =              $FDDA          
+   83 |  1 8enchmarkeD.s     83 | Equivalence | ?? |         |   -1 | 00/FFFF               | COUT            =              $FDED          
+   84 |  1 8enchmarkeD.s     84 | Equivalence | ?? |         |   -1 | 00/FFFF               | IDROUTINE       =              $FE1F          
+   85 |  1 8enchmarkeD.s     85 | Equivalence | ?? |         |   -1 | 00/FFFF               | SETNORM         =              $FE84          
+   86 |  1 8enchmarkeD.s     86 | Equivalence | ?? |         |   -1 | 00/FFFF               | SETKBD          =              $FE89          
+   87 |  1 8enchmarkeD.s     87 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+   88 |  1 8enchmarkeD.s     88 | Comment     | ?? |         |   -1 | 00/FFFF               | *-----------------------------------
+   89 |  1 8enchmarkeD.s     89 | Comment     | ?? |         |   -1 | 00/FFFF               | * MACROS
+   90 |  1 8enchmarkeD.s     90 | Comment     | ?? |         |   -1 | 00/FFFF               | *-----------------------------------
+   91 |  1 8enchmarkeD.s     91 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+   92 |  1 8enchmarkeD.s     92 | Directive   | ?? |         |   -1 | 00/FFFF               | @WriteCString   mac                           
+   93 |  1 8enchmarkeD.s     93 | Directive   | ?? |         |   -1 | 00/FFFF               |                 ldx            #>]1           
+   94 |  1 8enchmarkeD.s     94 | Directive   | ?? |         |   -1 | 00/FFFF               |                 ldy            #<]1           
+   95 |  1 8enchmarkeD.s     95 | Directive   | ?? |         |   -1 | 00/FFFF               |                 jsr            printCSTRING   
+   96 |  1 8enchmarkeD.s     96 | Directive   | ?? |         |   -1 | 00/FFFF               |                 <<<                           
+   97 |  1 8enchmarkeD.s     97 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+   98 |  1 8enchmarkeD.s     98 | Comment     | ?? |         |   -1 | 00/FFFF               | *-----------------------------------
+   99 |  1 8enchmarkeD.s     99 | Comment     | ?? |         |   -1 | 00/FFFF               | * THE PROGRAM
+  100 |  1 8enchmarkeD.s    100 | Comment     | ?? |         |   -1 | 00/FFFF               | *-----------------------------------
+  101 |  1 8enchmarkeD.s    101 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  102 |  1 8enchmarkeD.s    102 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            PRODOS         ; are we running
+  103 |  1 8enchmarkeD.s    103 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 cmp            #$4c           ; under P8?
+  104 |  1 8enchmarkeD.s    104 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 beq            onP8           
+  105 |  1 8enchmarkeD.s    105 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jmp            BASIC          ; nah!
+  106 |  1 8enchmarkeD.s    106 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  107 |  1 8enchmarkeD.s    107 | Code        | ?? |         |   -1 | 00/FFFF : 00          | onP8            jsr            PRODOS         ; get the prefix
+  108 |  1 8enchmarkeD.s    108 | Data        | ?? |         |   -1 | 00/FFFF :             |                 dfb            $c7            
+  109 |  1 8enchmarkeD.s    109 | Data        | ?? |         |   -1 | 00/FFFF :             |                 da             proGETPFX      
+  110 |  1 8enchmarkeD.s    110 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  111 |  1 8enchmarkeD.s    111 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            PRODOS         ; set it
+  112 |  1 8enchmarkeD.s    112 | Data        | ?? |         |   -1 | 00/FFFF :             |                 dfb            $c6            
+  113 |  1 8enchmarkeD.s    113 | Data        | ?? |         |   -1 | 00/FFFF :             |                 da             proGETPFX      
+  114 |  1 8enchmarkeD.s    114 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  115 |  1 8enchmarkeD.s    115 | Comment     | ?? |         |   -1 | 00/FFFF               | *--- CAN WE DO lowercase?
+  116 |  1 8enchmarkeD.s    116 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  117 |  1 8enchmarkeD.s    117 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            $fbb3          ; an Apple // with
+  118 |  1 8enchmarkeD.s    118 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 cmp            #6             ; lowercase?
+  119 |  1 8enchmarkeD.s    119 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 beq            lowerOK        ; yes
+  120 |  1 8enchmarkeD.s    120 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  121 |  1 8enchmarkeD.s    121 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            #$80           ; no
+  122 |  1 8enchmarkeD.s    122 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            fgCASE         
+  123 |  1 8enchmarkeD.s    123 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  124 |  1 8enchmarkeD.s    124 | Empty       | ?? |         |   -1 | 00/FFFF               | lowerOK                                       
+  125 |  1 8enchmarkeD.s    125 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  126 |  1 8enchmarkeD.s    126 | Comment     | ?? |         |   -1 | 00/FFFF               | *--- Clear text page
+  127 |  1 8enchmarkeD.s    127 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  128 |  1 8enchmarkeD.s    128 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            CLR80VID       
+  129 |  1 8enchmarkeD.s    129 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            INIT           ; text screen
+  130 |  1 8enchmarkeD.s    130 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            SETNORM        ; set normal text mode
+  131 |  1 8enchmarkeD.s    131 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            SETKBD         ; reset input to keyboard
+  132 |  1 8enchmarkeD.s    132 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            HOME           ; home cursor and clear to end of page
+  133 |  1 8enchmarkeD.s    133 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  134 |  1 8enchmarkeD.s    134 | Comment     | ?? |         |   -1 | 00/FFFF               | *--- Can we do 80-columns?
+  135 |  1 8enchmarkeD.s    135 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  136 |  1 8enchmarkeD.s    136 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            MACHID         ; an Apple // with
+  137 |  1 8enchmarkeD.s    137 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 and            #mask80COL     ; a 80-col card?
+  138 |  1 8enchmarkeD.s    138 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 beq            no80col        ; no
+  139 |  1 8enchmarkeD.s    139 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  140 |  1 8enchmarkeD.s    140 | Code        | ?? |         |   -1 | 00/FFFF : 00          | no80col         lda            #0             ; tell we can
+  141 |  1 8enchmarkeD.s    141 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            fg80COL        ; do 80-col
+  142 |  1 8enchmarkeD.s    142 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  143 |  1 8enchmarkeD.s    143 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            #80            ; width is 80-col
+  144 |  1 8enchmarkeD.s    144 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            theWIDTH       
+  145 |  1 8enchmarkeD.s    145 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            $c300          ; turn firmware on
+  146 |  1 8enchmarkeD.s    146 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  147 |  1 8enchmarkeD.s    147 | Comment     | ?? |         |   -1 | 00/FFFF               | *-----------------------------------
+  148 |  1 8enchmarkeD.s    148 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  149 |  1 8enchmarkeD.s    149 | Equivalence | ?? |         |   -1 | 00/FFFF               | mainLOOP        =              *              
+  150 |  1 8enchmarkeD.s    150 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  151 |  1 8enchmarkeD.s    151 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            #0             
+  152 |  1 8enchmarkeD.s    152 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            fgCANCEL       ; reset cancel flag
+  153 |  1 8enchmarkeD.s    153 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  154 |  1 8enchmarkeD.s    154 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            HOME           
+  155 |  1 8enchmarkeD.s    155 | Macro       | ?? |         |   -1 | 00/FFFF               |                 @WriteCString  #strINTRO      
+  156 |  1 8enchmarkeD.s    156 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            translateKEY   
+  157 |  1 8enchmarkeD.s    157 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  158 |  1 8enchmarkeD.s    158 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 cmp            #"1"           
+  159 |  1 8enchmarkeD.s    159 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bne            noCREATE       
+  160 |  1 8enchmarkeD.s    160 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jmp            doFCREATE      
+  161 |  1 8enchmarkeD.s    161 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  162 |  1 8enchmarkeD.s    162 | Code        | ?? |         |   -1 | 00/FFFF : 00          | noCREATE        cmp            #"2"           
+  163 |  1 8enchmarkeD.s    163 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bne            noFREAD        
+  164 |  1 8enchmarkeD.s    164 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jmp            doFREAD        
+  165 |  1 8enchmarkeD.s    165 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  166 |  1 8enchmarkeD.s    166 | Code        | ?? |         |   -1 | 00/FFFF : 00          | noFREAD         cmp            #"3"           
+  167 |  1 8enchmarkeD.s    167 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bne            noBREAD        
+  168 |  1 8enchmarkeD.s    168 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jmp            doBREADtrois   
+  169 |  1 8enchmarkeD.s    169 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  170 |  1 8enchmarkeD.s    170 | Code        | ?? |         |   -1 | 00/FFFF : 00          | noBREAD         cmp            #"D"           
+  171 |  1 8enchmarkeD.s    171 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bne            noDEBUG        
+  172 |  1 8enchmarkeD.s    172 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 brk            $bd            
+  173 |  1 8enchmarkeD.s    173 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  174 |  1 8enchmarkeD.s    174 | Code        | ?? |         |   -1 | 00/FFFF : 00          | noDEBUG         cmp            #"Q"           
+  175 |  1 8enchmarkeD.s    175 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 beq            doQUIT         
+  176 |  1 8enchmarkeD.s    176 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jmp            mainLOOP       
+  177 |  1 8enchmarkeD.s    177 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  178 |  1 8enchmarkeD.s    178 | Comment     | ?? |         |   -1 | 00/FFFF               | *---------- End of routine, wait for key
+  179 |  1 8enchmarkeD.s    179 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  180 |  1 8enchmarkeD.s    180 | Macro       | ?? |         |   -1 | 00/FFFF               | mainNEXT        @WriteCString  #strBYE        
+  181 |  1 8enchmarkeD.s    181 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            translateKEY   
+  182 |  1 8enchmarkeD.s    182 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jmp            mainLOOP       
+  183 |  1 8enchmarkeD.s    183 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  184 |  1 8enchmarkeD.s    184 | Comment     | ?? |         |   -1 | 00/FFFF               | *----------------------------
+  185 |  1 8enchmarkeD.s    185 | Comment     | ?? |         |   -1 | 00/FFFF               | * QUIT PROGRAM
+  186 |  1 8enchmarkeD.s    186 | Comment     | ?? |         |   -1 | 00/FFFF               | *----------------------------
+  187 |  1 8enchmarkeD.s    187 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  188 |  1 8enchmarkeD.s    188 | Code        | ?? |         |   -1 | 00/FFFF : 00          | doQUIT          jsr            PRODOS         ; exit
+  189 |  1 8enchmarkeD.s    189 | Data        | ?? |         |   -1 | 00/FFFF :             |                 dfb            $65            
+  190 |  1 8enchmarkeD.s    190 | Data        | ?? |         |   -1 | 00/FFFF :             |                 da             proQUIT        
+  191 |  1 8enchmarkeD.s    191 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  192 |  1 8enchmarkeD.s    192 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 brk            $bd            ; on ne se refait pas ;-)
+  193 |  1 8enchmarkeD.s    193 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  194 |  1 8enchmarkeD.s    194 | Comment     | ?? |         |   -1 | 00/FFFF               | *----------------------------
+  195 |  1 8enchmarkeD.s    195 | Comment     | ?? |         |   -1 | 00/FFFF               | * READ FILE SPEED
+  196 |  1 8enchmarkeD.s    196 | Comment     | ?? |         |   -1 | 00/FFFF               | *----------------------------
+  197 |  1 8enchmarkeD.s    197 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  198 |  1 8enchmarkeD.s    198 | Empty       | ?? |         |   -1 | 00/FFFF               | doFREAD                                       ; Read by chunks of 64KB
+  199 |  1 8enchmarkeD.s    199 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  200 |  1 8enchmarkeD.s    200 | Comment     | ?? |         |   -1 | 00/FFFF               | * 512K
+  201 |  1 8enchmarkeD.s    201 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  202 |  1 8enchmarkeD.s    202 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            #0             ; 512
+  203 |  1 8enchmarkeD.s    203 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            readFILE       
+  204 |  1 8enchmarkeD.s    204 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  205 |  1 8enchmarkeD.s    205 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            fgCANCEL       
+  206 |  1 8enchmarkeD.s    206 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bne            doFREAD1       
+  207 |  1 8enchmarkeD.s    207 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  208 |  1 8enchmarkeD.s    208 | Comment     | ?? |         |   -1 | 00/FFFF               | * 1M
+  209 |  1 8enchmarkeD.s    209 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  210 |  1 8enchmarkeD.s    210 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            #1             ; 1024
+  211 |  1 8enchmarkeD.s    211 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            readFILE       
+  212 |  1 8enchmarkeD.s    212 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  213 |  1 8enchmarkeD.s    213 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            fgCANCEL       
+  214 |  1 8enchmarkeD.s    214 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bne            doFREAD1       
+  215 |  1 8enchmarkeD.s    215 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  216 |  1 8enchmarkeD.s    216 | Comment     | ?? |         |   -1 | 00/FFFF               | * 2M
+  217 |  1 8enchmarkeD.s    217 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  218 |  1 8enchmarkeD.s    218 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            #2             ; 2048
+  219 |  1 8enchmarkeD.s    219 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            readFILE       
+  220 |  1 8enchmarkeD.s    220 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  221 |  1 8enchmarkeD.s    221 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            fgCANCEL       
+  222 |  1 8enchmarkeD.s    222 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bne            doFREAD1       
+  223 |  1 8enchmarkeD.s    223 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  224 |  1 8enchmarkeD.s    224 | Comment     | ?? |         |   -1 | 00/FFFF               | * 4M
+  225 |  1 8enchmarkeD.s    225 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  226 |  1 8enchmarkeD.s    226 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            #3             ; 4096
+  227 |  1 8enchmarkeD.s    227 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            readFILE       
+  228 |  1 8enchmarkeD.s    228 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  229 |  1 8enchmarkeD.s    229 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            fgCANCEL       
+  230 |  1 8enchmarkeD.s    230 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bne            doFREAD1       
+  231 |  1 8enchmarkeD.s    231 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  232 |  1 8enchmarkeD.s    232 | Comment     | ?? |         |   -1 | 00/FFFF               | * 8M
+  233 |  1 8enchmarkeD.s    233 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  234 |  1 8enchmarkeD.s    234 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            #4             ; 8192
+  235 |  1 8enchmarkeD.s    235 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            readFILE       
+  236 |  1 8enchmarkeD.s    236 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  237 |  1 8enchmarkeD.s    237 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            fgCANCEL       
+  238 |  1 8enchmarkeD.s    238 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bne            doFREAD1       
+  239 |  1 8enchmarkeD.s    239 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  240 |  1 8enchmarkeD.s    240 | Comment     | ?? |         |   -1 | 00/FFFF               | * 16M
+  241 |  1 8enchmarkeD.s    241 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  242 |  1 8enchmarkeD.s    242 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            #5             ; 16384
+  243 |  1 8enchmarkeD.s    243 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            readFILE       
+  244 |  1 8enchmarkeD.s    244 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  245 |  1 8enchmarkeD.s    245 | Code        | ?? |         |   -1 | 00/FFFF : 00          | doFREAD1        jmp            mainNEXT       
+  246 |  1 8enchmarkeD.s    246 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  247 |  1 8enchmarkeD.s    247 | Comment     | ?? |         |   -1 | 00/FFFF               | *----------
+  248 |  1 8enchmarkeD.s    248 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  249 |  1 8enchmarkeD.s    249 | Code        | ?? |         |   -1 | 00/FFFF : 00          | readFILE        asl                           
+  250 |  1 8enchmarkeD.s    250 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 tax                           
+  251 |  1 8enchmarkeD.s    251 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  252 |  1 8enchmarkeD.s    252 | Comment     | ?? |         |   -1 | 00/FFFF               | * pathname
+  253 |  1 8enchmarkeD.s    253 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  254 |  1 8enchmarkeD.s    254 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            tblPATHNAME,x  
+  255 |  1 8enchmarkeD.s    255 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            proOPEN+1      
+  256 |  1 8enchmarkeD.s    256 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            tblPATHNAME+1,x
+  257 |  1 8enchmarkeD.s    257 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            proOPEN+2      
+  258 |  1 8enchmarkeD.s    258 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  259 |  1 8enchmarkeD.s    259 | Comment     | ?? |         |   -1 | 00/FFFF               | *--- Check if file exists...
+  260 |  1 8enchmarkeD.s    260 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  261 |  1 8enchmarkeD.s    261 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            PRODOS         
+  262 |  1 8enchmarkeD.s    262 | Data        | ?? |         |   -1 | 00/FFFF :             |                 dfb            $c8            
+  263 |  1 8enchmarkeD.s    263 | Data        | ?? |         |   -1 | 00/FFFF :             |                 da             proOPEN        
+  264 |  1 8enchmarkeD.s    264 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bcc            readFILE1      
+  265 |  1 8enchmarkeD.s    265 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 rts                           
+  266 |  1 8enchmarkeD.s    266 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  267 |  1 8enchmarkeD.s    267 | Comment     | ?? |         |   -1 | 00/FFFF               | *---
+  268 |  1 8enchmarkeD.s    268 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  269 |  1 8enchmarkeD.s    269 | Macro       | ?? |         |   -1 | 00/FFFF               | readFILE1       @WriteCString  #strREAD       ; file exists
+  270 |  1 8enchmarkeD.s    270 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  271 |  1 8enchmarkeD.s    271 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 ldx            proOPEN+2      
+  272 |  1 8enchmarkeD.s    272 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 ldy            proOPEN+1      
+  273 |  1 8enchmarkeD.s    273 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            printPSTRING   
+  274 |  1 8enchmarkeD.s    274 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            printDATEFROM  
+  275 |  1 8enchmarkeD.s    275 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  276 |  1 8enchmarkeD.s    276 | Comment     | ?? |         |   -1 | 00/FFFF               | *----------
+  277 |  1 8enchmarkeD.s    277 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  278 |  1 8enchmarkeD.s    278 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            proOPEN+5      
+  279 |  1 8enchmarkeD.s    279 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            proREAD+1      
+  280 |  1 8enchmarkeD.s    280 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            proCLOSE+1     
+  281 |  1 8enchmarkeD.s    281 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  282 |  1 8enchmarkeD.s    282 | Code        | ?? |         |   -1 | 00/FFFF : 00          | ]lp             jsr            displayWHEEL   
+  283 |  1 8enchmarkeD.s    283 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            checkCANCEL    
+  284 |  1 8enchmarkeD.s    284 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bcs            readFILE4      
+  285 |  1 8enchmarkeD.s    285 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  286 |  1 8enchmarkeD.s    286 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            PRODOS         
+  287 |  1 8enchmarkeD.s    287 | Data        | ?? |         |   -1 | 00/FFFF :             |                 dfb            $ca            
+  288 |  1 8enchmarkeD.s    288 | Data        | ?? |         |   -1 | 00/FFFF :             |                 da             proREAD        
+  289 |  1 8enchmarkeD.s    289 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bcc            ]lp            ; until error
+  290 |  1 8enchmarkeD.s    290 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  291 |  1 8enchmarkeD.s    291 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 cmp            #$27           ; I/O error
+  292 |  1 8enchmarkeD.s    292 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bne            readFILE2      
+  293 |  1 8enchmarkeD.s    293 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  294 |  1 8enchmarkeD.s    294 | Comment     | ?? |         |   -1 | 00/FFFF               | *- Fatal I/O error!!
+  295 |  1 8enchmarkeD.s    295 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  296 |  1 8enchmarkeD.s    296 | Code        | ?? |         |   -1 | 00/FFFF : 00          | readFILE4       jsr            readFILE3      ; v1.2
+  297 |  1 8enchmarkeD.s    297 | Macro       | ?? |         |   -1 | 00/FFFF               |                 @WriteCString  #strRERR       
+  298 |  1 8enchmarkeD.s    298 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 rts                           
+  299 |  1 8enchmarkeD.s    299 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  300 |  1 8enchmarkeD.s    300 | Comment     | ?? |         |   -1 | 00/FFFF               | *- Continue
+  301 |  1 8enchmarkeD.s    301 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  302 |  1 8enchmarkeD.s    302 | Code        | ?? |         |   -1 | 00/FFFF : 00          | readFILE2       jsr            readFILE3      ; close
+  303 |  1 8enchmarkeD.s    303 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            printDATETO    
+  304 |  1 8enchmarkeD.s    304 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jmp            calcSPEED      
+  305 |  1 8enchmarkeD.s    305 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  306 |  1 8enchmarkeD.s    306 | Code        | ?? |         |   -1 | 00/FFFF : 00          | readFILE3       jsr            PRODOS         ; close
+  307 |  1 8enchmarkeD.s    307 | Data        | ?? |         |   -1 | 00/FFFF :             |                 dfb            $cc            
+  308 |  1 8enchmarkeD.s    308 | Data        | ?? |         |   -1 | 00/FFFF :             |                 da             proCLOSE       
+  309 |  1 8enchmarkeD.s    309 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 rts                           
+  310 |  1 8enchmarkeD.s    310 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  311 |  1 8enchmarkeD.s    311 | Comment     | ?? |         |   -1 | 00/FFFF               | *----------------------------
+  312 |  1 8enchmarkeD.s    312 | Comment     | ?? |         |   -1 | 00/FFFF               | * FILE CREATION
+  313 |  1 8enchmarkeD.s    313 | Comment     | ?? |         |   -1 | 00/FFFF               | *----------------------------
+  314 |  1 8enchmarkeD.s    314 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  315 |  1 8enchmarkeD.s    315 | Comment     | ?? |         |   -1 | 00/FFFF               | * Write 8 banks of 64KB
+  316 |  1 8enchmarkeD.s    316 | Comment     | ?? |         |   -1 | 00/FFFF               | * starting on bank 2
+  317 |  1 8enchmarkeD.s    317 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  318 |  1 8enchmarkeD.s    318 | Code        | ?? |         |   -1 | 00/FFFF : 00          | doFCREATE       lda            #0             
+  319 |  1 8enchmarkeD.s    319 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            fgWERR         ; reset flag
+  320 |  1 8enchmarkeD.s    320 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  321 |  1 8enchmarkeD.s    321 | Comment     | ?? |         |   -1 | 00/FFFF               | * 512K
+  322 |  1 8enchmarkeD.s    322 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  323 |  1 8enchmarkeD.s    323 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            #0             ; 512
+  324 |  1 8enchmarkeD.s    324 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            createFILE     
+  325 |  1 8enchmarkeD.s    325 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  326 |  1 8enchmarkeD.s    326 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            fgWERR         ; why create a file
+  327 |  1 8enchmarkeD.s    327 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 ora            fgCANCEL       
+  328 |  1 8enchmarkeD.s    328 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bne            doFCREATE9     ; when there is no room?
+  329 |  1 8enchmarkeD.s    329 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  330 |  1 8enchmarkeD.s    330 | Comment     | ?? |         |   -1 | 00/FFFF               | * 1M
+  331 |  1 8enchmarkeD.s    331 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  332 |  1 8enchmarkeD.s    332 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            #1             ; 1024
+  333 |  1 8enchmarkeD.s    333 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            createFILE     
+  334 |  1 8enchmarkeD.s    334 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  335 |  1 8enchmarkeD.s    335 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            fgWERR         
+  336 |  1 8enchmarkeD.s    336 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 ora            fgCANCEL       
+  337 |  1 8enchmarkeD.s    337 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bne            doFCREATE9     
+  338 |  1 8enchmarkeD.s    338 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  339 |  1 8enchmarkeD.s    339 | Comment     | ?? |         |   -1 | 00/FFFF               | * 2M
+  340 |  1 8enchmarkeD.s    340 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  341 |  1 8enchmarkeD.s    341 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            #2             ; 2048
+  342 |  1 8enchmarkeD.s    342 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            createFILE     
+  343 |  1 8enchmarkeD.s    343 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  344 |  1 8enchmarkeD.s    344 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            fgWERR         
+  345 |  1 8enchmarkeD.s    345 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 ora            fgCANCEL       
+  346 |  1 8enchmarkeD.s    346 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bne            doFCREATE9     
+  347 |  1 8enchmarkeD.s    347 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  348 |  1 8enchmarkeD.s    348 | Comment     | ?? |         |   -1 | 00/FFFF               | * 4M
+  349 |  1 8enchmarkeD.s    349 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  350 |  1 8enchmarkeD.s    350 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            #3             ; 4096
+  351 |  1 8enchmarkeD.s    351 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            createFILE     
+  352 |  1 8enchmarkeD.s    352 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  353 |  1 8enchmarkeD.s    353 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            fgWERR         
+  354 |  1 8enchmarkeD.s    354 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 ora            fgCANCEL       
+  355 |  1 8enchmarkeD.s    355 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bne            doFCREATE9     
+  356 |  1 8enchmarkeD.s    356 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  357 |  1 8enchmarkeD.s    357 | Comment     | ?? |         |   -1 | 00/FFFF               | * 8M
+  358 |  1 8enchmarkeD.s    358 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  359 |  1 8enchmarkeD.s    359 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            #4             ; 8192
+  360 |  1 8enchmarkeD.s    360 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            createFILE     
+  361 |  1 8enchmarkeD.s    361 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  362 |  1 8enchmarkeD.s    362 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            fgWERR         
+  363 |  1 8enchmarkeD.s    363 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 ora            fgCANCEL       
+  364 |  1 8enchmarkeD.s    364 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bne            doFCREATE9     
+  365 |  1 8enchmarkeD.s    365 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  366 |  1 8enchmarkeD.s    366 | Comment     | ?? |         |   -1 | 00/FFFF               | * 16M
+  367 |  1 8enchmarkeD.s    367 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  368 |  1 8enchmarkeD.s    368 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            #5             ; 16384
+  369 |  1 8enchmarkeD.s    369 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            createFILE     
+  370 |  1 8enchmarkeD.s    370 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  371 |  1 8enchmarkeD.s    371 | Code        | ?? |         |   -1 | 00/FFFF : 00          | doFCREATE9      jmp            mainNEXT       
+  372 |  1 8enchmarkeD.s    372 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  373 |  1 8enchmarkeD.s    373 | Comment     | ?? |         |   -1 | 00/FFFF               | *----------
+  374 |  1 8enchmarkeD.s    374 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  375 |  1 8enchmarkeD.s    375 | Code        | ?? |         |   -1 | 00/FFFF : 00          | createFILE      asl                           
+  376 |  1 8enchmarkeD.s    376 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 tax                           
+  377 |  1 8enchmarkeD.s    377 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  378 |  1 8enchmarkeD.s    378 | Comment     | ?? |         |   -1 | 00/FFFF               | * pathname
+  379 |  1 8enchmarkeD.s    379 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  380 |  1 8enchmarkeD.s    380 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            tblPATHNAME,x  
+  381 |  1 8enchmarkeD.s    381 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            proDESTROY+1   
+  382 |  1 8enchmarkeD.s    382 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            proCREATE+1    
+  383 |  1 8enchmarkeD.s    383 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            proOPEN+1      
+  384 |  1 8enchmarkeD.s    384 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            tblPATHNAME+1,x
+  385 |  1 8enchmarkeD.s    385 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            proDESTROY+2   
+  386 |  1 8enchmarkeD.s    386 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            proCREATE+2    
+  387 |  1 8enchmarkeD.s    387 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            proOPEN+2      
+  388 |  1 8enchmarkeD.s    388 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  389 |  1 8enchmarkeD.s    389 | Comment     | ?? |         |   -1 | 00/FFFF               | * filesize in KB
+  390 |  1 8enchmarkeD.s    390 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  391 |  1 8enchmarkeD.s    391 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            tblFILESIZE,x  
+  392 |  1 8enchmarkeD.s    392 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            filesize       
+  393 |  1 8enchmarkeD.s    393 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            tblFILESIZE+1,x
+  394 |  1 8enchmarkeD.s    394 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            filesize+1     
+  395 |  1 8enchmarkeD.s    395 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  396 |  1 8enchmarkeD.s    396 | Comment     | ?? |         |   -1 | 00/FFFF               | * number of 32K blocks
+  397 |  1 8enchmarkeD.s    397 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  398 |  1 8enchmarkeD.s    398 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            tblMAXINDEX,x  
+  399 |  1 8enchmarkeD.s    399 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            maxINDEX       
+  400 |  1 8enchmarkeD.s    400 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            tblMAXINDEX+1,x
+  401 |  1 8enchmarkeD.s    401 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            maxINDEX+1     
+  402 |  1 8enchmarkeD.s    402 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  403 |  1 8enchmarkeD.s    403 | Comment     | ?? |         |   -1 | 00/FFFF               | *----------
+  404 |  1 8enchmarkeD.s    404 | Comment     | ?? |         |   -1 | 00/FFFF               | * First, delete file
+  405 |  1 8enchmarkeD.s    405 | Comment     | ?? |         |   -1 | 00/FFFF               | * Must not be taken into account
+  406 |  1 8enchmarkeD.s    406 | Comment     | ?? |         |   -1 | 00/FFFF               | * in the file creation process
+  407 |  1 8enchmarkeD.s    407 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  408 |  1 8enchmarkeD.s    408 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            PRODOS         
+  409 |  1 8enchmarkeD.s    409 | Data        | ?? |         |   -1 | 00/FFFF :             |                 dfb            $c1            
+  410 |  1 8enchmarkeD.s    410 | Data        | ?? |         |   -1 | 00/FFFF :             |                 da             proDESTROY     
+  411 |  1 8enchmarkeD.s    411 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  412 |  1 8enchmarkeD.s    412 | Comment     | ?? |         |   -1 | 00/FFFF               | *--- Check if we can create a file
+  413 |  1 8enchmarkeD.s    413 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  414 |  1 8enchmarkeD.s    414 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            PRODOS         
+  415 |  1 8enchmarkeD.s    415 | Data        | ?? |         |   -1 | 00/FFFF :             |                 dfb            $c0            
+  416 |  1 8enchmarkeD.s    416 | Data        | ?? |         |   -1 | 00/FFFF :             |                 da             proCREATE      
+  417 |  1 8enchmarkeD.s    417 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bcc            createFILE1    
+  418 |  1 8enchmarkeD.s    418 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 rts                           ; nope, volume full probably...
+  419 |  1 8enchmarkeD.s    419 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  420 |  1 8enchmarkeD.s    420 | Comment     | ?? |         |   -1 | 00/FFFF               | *---
+  421 |  1 8enchmarkeD.s    421 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  422 |  1 8enchmarkeD.s    422 | Macro       | ?? |         |   -1 | 00/FFFF               | createFILE1     @WriteCString  #strCREATE     ; yes, we can
+  423 |  1 8enchmarkeD.s    423 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  424 |  1 8enchmarkeD.s    424 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 ldx            proOPEN+2      
+  425 |  1 8enchmarkeD.s    425 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 ldy            proOPEN+1      
+  426 |  1 8enchmarkeD.s    426 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            printPSTRING   
+  427 |  1 8enchmarkeD.s    427 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            printDATEFROM  
+  428 |  1 8enchmarkeD.s    428 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  429 |  1 8enchmarkeD.s    429 | Comment     | ?? |         |   -1 | 00/FFFF               | *---
+  430 |  1 8enchmarkeD.s    430 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  431 |  1 8enchmarkeD.s    431 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            PRODOS         
+  432 |  1 8enchmarkeD.s    432 | Data        | ?? |         |   -1 | 00/FFFF :             |                 dfb            $c8            
+  433 |  1 8enchmarkeD.s    433 | Data        | ?? |         |   -1 | 00/FFFF :             |                 da             proOPEN        
+  434 |  1 8enchmarkeD.s    434 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  435 |  1 8enchmarkeD.s    435 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            proOPEN+5      
+  436 |  1 8enchmarkeD.s    436 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            proWRITE+1     
+  437 |  1 8enchmarkeD.s    437 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            proCLOSE+1     
+  438 |  1 8enchmarkeD.s    438 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  439 |  1 8enchmarkeD.s    439 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            #0             
+  440 |  1 8enchmarkeD.s    440 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            theINDEX       
+  441 |  1 8enchmarkeD.s    441 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            theINDEX+1     
+  442 |  1 8enchmarkeD.s    442 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  443 |  1 8enchmarkeD.s    443 | Code        | ?? |         |   -1 | 00/FFFF : 00          | ]lp             jsr            displayWHEEL   
+  444 |  1 8enchmarkeD.s    444 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            checkCANCEL    
+  445 |  1 8enchmarkeD.s    445 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bcs            createFILE2    
+  446 |  1 8enchmarkeD.s    446 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  447 |  1 8enchmarkeD.s    447 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            PRODOS         
+  448 |  1 8enchmarkeD.s    448 | Data        | ?? |         |   -1 | 00/FFFF :             |                 dfb            $cb            
+  449 |  1 8enchmarkeD.s    449 | Data        | ?? |         |   -1 | 00/FFFF :             |                 da             proWRITE       
+  450 |  1 8enchmarkeD.s    450 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bcc            createFILE3    
+  451 |  1 8enchmarkeD.s    451 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  452 |  1 8enchmarkeD.s    452 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 cmp            #$48           
+  453 |  1 8enchmarkeD.s    453 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bne            createFILE3    
+  454 |  1 8enchmarkeD.s    454 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  455 |  1 8enchmarkeD.s    455 | Comment     | ?? |         |   -1 | 00/FFFF               | *--- Special case: we encountered a volume full error
+  456 |  1 8enchmarkeD.s    456 | Comment     | ?? |         |   -1 | 00/FFFF               | * we will close the file and delete it...
+  457 |  1 8enchmarkeD.s    457 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  458 |  1 8enchmarkeD.s    458 | Macro       | ?? |         |   -1 | 00/FFFF               |                 @WriteCString  #strWERR       
+  459 |  1 8enchmarkeD.s    459 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  460 |  1 8enchmarkeD.s    460 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            #1             ; set the error flag
+  461 |  1 8enchmarkeD.s    461 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            fgWERR         ; for other file creations
+  462 |  1 8enchmarkeD.s    462 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  463 |  1 8enchmarkeD.s    463 | Code        | ?? |         |   -1 | 00/FFFF : 00          | createFILE2     jsr            PRODOS         ; errrooorrrrrrrr #$48...
+  464 |  1 8enchmarkeD.s    464 | Data        | ?? |         |   -1 | 00/FFFF :             |                 dfb            $cc            
+  465 |  1 8enchmarkeD.s    465 | Data        | ?? |         |   -1 | 00/FFFF :             |                 da             proCLOSE       
+  466 |  1 8enchmarkeD.s    466 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  467 |  1 8enchmarkeD.s    467 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            PRODOS         
+  468 |  1 8enchmarkeD.s    468 | Data        | ?? |         |   -1 | 00/FFFF :             |                 dfb            $c1            
+  469 |  1 8enchmarkeD.s    469 | Data        | ?? |         |   -1 | 00/FFFF :             |                 da             proDESTROY     
+  470 |  1 8enchmarkeD.s    470 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 rts                           
+  471 |  1 8enchmarkeD.s    471 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  472 |  1 8enchmarkeD.s    472 | Comment     | ?? |         |   -1 | 00/FFFF               | *---
+  473 |  1 8enchmarkeD.s    473 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  474 |  1 8enchmarkeD.s    474 | Code        | ?? |         |   -1 | 00/FFFF : 00          | createFILE3     inc            theINDEX       ; let's go on
+  475 |  1 8enchmarkeD.s    475 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bne            createFILE4    
+  476 |  1 8enchmarkeD.s    476 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 inc            theINDEX+1     
+  477 |  1 8enchmarkeD.s    477 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  478 |  1 8enchmarkeD.s    478 | Code        | ?? |         |   -1 | 00/FFFF : 00          | createFILE4     lda            theINDEX+1     
+  479 |  1 8enchmarkeD.s    479 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 cmp            maxINDEX+1     ; 32*8*64 = 16M
+  480 |  1 8enchmarkeD.s    480 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bcc            ]lp            
+  481 |  1 8enchmarkeD.s    481 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            theINDEX       
+  482 |  1 8enchmarkeD.s    482 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 cmp            maxINDEX       
+  483 |  1 8enchmarkeD.s    483 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 blt            ]lp            
+  484 |  1 8enchmarkeD.s    484 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  485 |  1 8enchmarkeD.s    485 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            PRODOS         
+  486 |  1 8enchmarkeD.s    486 | Data        | ?? |         |   -1 | 00/FFFF :             |                 dfb            $cc            
+  487 |  1 8enchmarkeD.s    487 | Data        | ?? |         |   -1 | 00/FFFF :             |                 da             proCLOSE       
+  488 |  1 8enchmarkeD.s    488 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  489 |  1 8enchmarkeD.s    489 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            printDATETO    
+  490 |  1 8enchmarkeD.s    490 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jmp            calcSPEED      
+  491 |  1 8enchmarkeD.s    491 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  492 |  1 8enchmarkeD.s    492 | Comment     | ?? |         |   -1 | 00/FFFF               | *----------------------------
+  493 |  1 8enchmarkeD.s    493 | Comment     | ?? |         |   -1 | 00/FFFF               | * READ BLOCK SPEED
+  494 |  1 8enchmarkeD.s    494 | Comment     | ?? |         |   -1 | 00/FFFF               | *----------------------------
+  495 |  1 8enchmarkeD.s    495 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  496 |  1 8enchmarkeD.s    496 | Comment     | ?? |         |   -1 | 00/FFFF               | *----------------------------
+  497 |  1 8enchmarkeD.s    497 | Comment     | ?? |         |   -1 | 00/FFFF               | * Entry point for menu 3
+  498 |  1 8enchmarkeD.s    498 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  499 |  1 8enchmarkeD.s    499 | Empty       | ?? |         |   -1 | 00/FFFF               | doBREADtrois                                  
+  500 |  1 8enchmarkeD.s    500 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  501 |  1 8enchmarkeD.s    501 | Comment     | ?? |         |   -1 | 00/FFFF               | *----------------------------
+  502 |  1 8enchmarkeD.s    502 | Comment     | ?? |         |   -1 | 00/FFFF               | * Common routine
+  503 |  1 8enchmarkeD.s    503 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  504 |  1 8enchmarkeD.s    504 | Empty       | ?? |         |   -1 | 00/FFFF               | doBREADgo                                     
+  505 |  1 8enchmarkeD.s    505 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  506 |  1 8enchmarkeD.s    506 | Comment     | ?? |         |   -1 | 00/FFFF               | *--- First, get our prefix
+  507 |  1 8enchmarkeD.s    507 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  508 |  1 8enchmarkeD.s    508 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            PRODOS         ; get the prefix
+  509 |  1 8enchmarkeD.s    509 | Data        | ?? |         |   -1 | 00/FFFF :             |                 dfb            $c7            
+  510 |  1 8enchmarkeD.s    510 | Data        | ?? |         |   -1 | 00/FFFF :             |                 da             proGETPFX      
+  511 |  1 8enchmarkeD.s    511 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  512 |  1 8enchmarkeD.s    512 | Comment     | ?? |         |   -1 | 00/FFFF               | *--- Shift left the prefix
+  513 |  1 8enchmarkeD.s    513 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  514 |  1 8enchmarkeD.s    514 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 ldx            #0             
+  515 |  1 8enchmarkeD.s    515 | Code        | ?? |         |   -1 | 00/FFFF : 00          | ]lp             lda            ptrPREFIX+2,x  
+  516 |  1 8enchmarkeD.s    516 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            ptrPREFIX+1,x  
+  517 |  1 8enchmarkeD.s    517 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 inx                           
+  518 |  1 8enchmarkeD.s    518 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 cpx            ptrPREFIX      
+  519 |  1 8enchmarkeD.s    519 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bcc            ]lp            
+  520 |  1 8enchmarkeD.s    520 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  521 |  1 8enchmarkeD.s    521 | Comment     | ?? |         |   -1 | 00/FFFF               | *--- Make it a volume name
+  522 |  1 8enchmarkeD.s    522 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  523 |  1 8enchmarkeD.s    523 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 dec            ptrPREFIX      ; remove leading '/'
+  524 |  1 8enchmarkeD.s    524 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 dec            ptrPREFIX      ; remove trailing '/'
+  525 |  1 8enchmarkeD.s    525 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  526 |  1 8enchmarkeD.s    526 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 ldx            #1             ; find the first /
+  527 |  1 8enchmarkeD.s    527 | Code        | ?? |         |   -1 | 00/FFFF : 00          | ]lp             lda            ptrPREFIX,x    
+  528 |  1 8enchmarkeD.s    528 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 cmp            #'/'           
+  529 |  1 8enchmarkeD.s    529 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 beq            doBREAD1       ; we'll get a volume name
+  530 |  1 8enchmarkeD.s    530 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 inx                           
+  531 |  1 8enchmarkeD.s    531 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 cpx            ptrPREFIX      
+  532 |  1 8enchmarkeD.s    532 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bcc            ]lp            
+  533 |  1 8enchmarkeD.s    533 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  534 |  1 8enchmarkeD.s    534 | Code        | ?? |         |   -1 | 00/FFFF : 00          | doBREAD1        stx            ptrPREFIX      ; save new length
+  535 |  1 8enchmarkeD.s    535 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  536 |  1 8enchmarkeD.s    536 | Comment     | ?? |         |   -1 | 00/FFFF               | *--- Browse the list of devices and get our devnum
+  537 |  1 8enchmarkeD.s    537 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  538 |  1 8enchmarkeD.s    538 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            PRODOS         
+  539 |  1 8enchmarkeD.s    539 | Data        | ?? |         |   -1 | 00/FFFF :             |                 dfb            $c5            
+  540 |  1 8enchmarkeD.s    540 | Data        | ?? |         |   -1 | 00/FFFF :             |                 da             proONLINE      
+  541 |  1 8enchmarkeD.s    541 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  542 |  1 8enchmarkeD.s    542 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            #<ptrONLINE    
+  543 |  1 8enchmarkeD.s    543 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            buildVOL1+1    
+  544 |  1 8enchmarkeD.s    544 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            buildVOL4+1    
+  545 |  1 8enchmarkeD.s    545 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            buildVOL5+1    
+  546 |  1 8enchmarkeD.s    546 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  547 |  1 8enchmarkeD.s    547 | Code        | ?? |         |   -1 | 00/FFFF : 00          | buildVOL1       lda            ptrONLINE      ; compare lengths
+  548 |  1 8enchmarkeD.s    548 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 and            #$0f           
+  549 |  1 8enchmarkeD.s    549 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 cmp            ptrPREFIX      
+  550 |  1 8enchmarkeD.s    550 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 beq            buildVOL3      ; same length
+  551 |  1 8enchmarkeD.s    551 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  552 |  1 8enchmarkeD.s    552 | Code        | ?? |         |   -1 | 00/FFFF : 00          | buildVOL2       lda            buildVOL1+1    ; next volume please
+  553 |  1 8enchmarkeD.s    553 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 clc                           
+  554 |  1 8enchmarkeD.s    554 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 adc            #16            
+  555 |  1 8enchmarkeD.s    555 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            buildVOL1+1    
+  556 |  1 8enchmarkeD.s    556 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            buildVOL4+1    
+  557 |  1 8enchmarkeD.s    557 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            buildVOL5+1    
+  558 |  1 8enchmarkeD.s    558 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bcc            buildVOL1      
+  559 |  1 8enchmarkeD.s    559 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  560 |  1 8enchmarkeD.s    560 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jmp            mainNEXT       ; done and not found!
+  561 |  1 8enchmarkeD.s    561 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  562 |  1 8enchmarkeD.s    562 | Comment     | ?? |         |   -1 | 00/FFFF               | *--- Check volume name
+  563 |  1 8enchmarkeD.s    563 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  564 |  1 8enchmarkeD.s    564 | Code        | ?? |         |   -1 | 00/FFFF : 00          | buildVOL3       ldx            #1             ; string
+  565 |  1 8enchmarkeD.s    565 | Code        | ?? |         |   -1 | 00/FFFF : 00          | buildVOL4       lda            ptrONLINE,x    
+  566 |  1 8enchmarkeD.s    566 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 and            #%1101_1111    ; <= P8 v2.5a returns
+  567 |  1 8enchmarkeD.s    567 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 cmp            ptrPREFIX,x    ; case sensitive volumes
+  568 |  1 8enchmarkeD.s    568 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bne            buildVOL2      ; in ON_LINE but not in
+  569 |  1 8enchmarkeD.s    569 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 inx                           ; GET_PREFIX
+  570 |  1 8enchmarkeD.s    570 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 cpx            ptrPREFIX      
+  571 |  1 8enchmarkeD.s    571 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bne            buildVOL4      
+  572 |  1 8enchmarkeD.s    572 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  573 |  1 8enchmarkeD.s    573 | Comment     | ?? |         |   -1 | 00/FFFF               | *--- Here we have our volume, yeah!
+  574 |  1 8enchmarkeD.s    574 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  575 |  1 8enchmarkeD.s    575 | Code        | ?? |         |   -1 | 00/FFFF : 00          | buildVOL5       lda            ptrONLINE      
+  576 |  1 8enchmarkeD.s    576 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 and            #$f0           
+  577 |  1 8enchmarkeD.s    577 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            proREADBLOCK+1 ; = proWRITEBLOCK
+  578 |  1 8enchmarkeD.s    578 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  579 |  1 8enchmarkeD.s    579 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            #0             
+  580 |  1 8enchmarkeD.s    580 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            proREADBLOCK+4 
+  581 |  1 8enchmarkeD.s    581 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            proREADBLOCK+5 
+  582 |  1 8enchmarkeD.s    582 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  583 |  1 8enchmarkeD.s    583 | Comment     | ?? |         |   -1 | 00/FFFF               | * TO DO
+  584 |  1 8enchmarkeD.s    584 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  585 |  1 8enchmarkeD.s    585 | Comment     | ?? |         |   -1 | 00/FFFF               | *--- Prepare speed calculation
+  586 |  1 8enchmarkeD.s    586 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  587 |  1 8enchmarkeD.s    587 | Comment     | ?? |         |   -1 | 00/FFFF               | *               lda       proVOLUME+$0a
+  588 |  1 8enchmarkeD.s    588 | Comment     | ?? |         |   -1 | 00/FFFF               | *               lsr
+  589 |  1 8enchmarkeD.s    589 | Comment     | ?? |         |   -1 | 00/FFFF               | *               inc
+  590 |  1 8enchmarkeD.s    590 | Comment     | ?? |         |   -1 | 00/FFFF               | *               sta       filesize
+  591 |  1 8enchmarkeD.s    591 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  592 |  1 8enchmarkeD.s    592 | Comment     | ?? |         |   -1 | 00/FFFF               | *--- TO DO
+  593 |  1 8enchmarkeD.s    593 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  594 |  1 8enchmarkeD.s    594 | Comment     | ?? |         |   -1 | 00/FFFF               | *               PushLong  proVOLUME+$0a
+  595 |  1 8enchmarkeD.s    595 | Comment     | ?? |         |   -1 | 00/FFFF               | *               PushLong  #strNBBLOCKS
+  596 |  1 8enchmarkeD.s    596 | Comment     | ?? |         |   -1 | 00/FFFF               | *               PushWord  #5                   ; 65536 blocks max
+  597 |  1 8enchmarkeD.s    597 | Comment     | ?? |         |   -1 | 00/FFFF               | *               PushWord  #0
+  598 |  1 8enchmarkeD.s    598 | Comment     | ?? |         |   -1 | 00/FFFF               | *               _Long2Dec
+  599 |  1 8enchmarkeD.s    599 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  600 |  1 8enchmarkeD.s    600 | Comment     | ?? |         |   -1 | 00/FFFF               | *--- Now, shome some data
+  601 |  1 8enchmarkeD.s    601 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  602 |  1 8enchmarkeD.s    602 | Macro       | ?? |         |   -1 | 00/FFFF               |                 @WriteCString  #strREAD       
+  603 |  1 8enchmarkeD.s    603 | Macro       | ?? |         |   -1 | 00/FFFF               |                 @WriteCString  #strNBBLOCKS   
+  604 |  1 8enchmarkeD.s    604 | Macro       | ?? |         |   -1 | 00/FFFF               |                 @WriteCString  #strBLOCKS     
+  605 |  1 8enchmarkeD.s    605 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            printDATEFROM  
+  606 |  1 8enchmarkeD.s    606 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  607 |  1 8enchmarkeD.s    607 | Comment     | ?? |         |   -1 | 00/FFFF               | *---
+  608 |  1 8enchmarkeD.s    608 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  609 |  1 8enchmarkeD.s    609 | Code        | ?? |         |   -1 | 00/FFFF : 00          | doBREAD2        jsr            displayWHEEL   
+  610 |  1 8enchmarkeD.s    610 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            checkCANCEL    
+  611 |  1 8enchmarkeD.s    611 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bcs            doBREAD9       
+  612 |  1 8enchmarkeD.s    612 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  613 |  1 8enchmarkeD.s    613 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            PRODOS         
+  614 |  1 8enchmarkeD.s    614 | Data        | ?? |         |   -1 | 00/FFFF :             |                 dfb            $80            
+  615 |  1 8enchmarkeD.s    615 | Data        | ?? |         |   -1 | 00/FFFF :             |                 da             proREADBLOCK   
+  616 |  1 8enchmarkeD.s    616 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  617 |  1 8enchmarkeD.s    617 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 cmp            #$27           ; I/O error
+  618 |  1 8enchmarkeD.s    618 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 beq            doBREAD9       ; the end of reading
+  619 |  1 8enchmarkeD.s    619 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  620 |  1 8enchmarkeD.s    620 | Comment     | ?? |         |   -1 | 00/FFFF               | *- Continue
+  621 |  1 8enchmarkeD.s    621 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  622 |  1 8enchmarkeD.s    622 | Code        | ?? |         |   -1 | 00/FFFF : 00          | doBREAD4        inc            proREADBLOCK+4 
+  623 |  1 8enchmarkeD.s    623 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bne            doBREAD2       
+  624 |  1 8enchmarkeD.s    624 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 inc            proREADBLOCK+5 
+  625 |  1 8enchmarkeD.s    625 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bne            doBREAD2       ; and loop
+  626 |  1 8enchmarkeD.s    626 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  627 |  1 8enchmarkeD.s    627 | Comment     | ?? |         |   -1 | 00/FFFF               | *- Yes, we did!
+  628 |  1 8enchmarkeD.s    628 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  629 |  1 8enchmarkeD.s    629 | Code        | ?? |         |   -1 | 00/FFFF : 00          | doBREAD9        jsr            printDATETO    
+  630 |  1 8enchmarkeD.s    630 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            calcSPEED      
+  631 |  1 8enchmarkeD.s    631 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jmp            mainNEXT       
+  632 |  1 8enchmarkeD.s    632 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  633 |  1 8enchmarkeD.s    633 | Comment     | ?? |         |   -1 | 00/FFFF               | *--- Some data
+  634 |  1 8enchmarkeD.s    634 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  635 |  1 8enchmarkeD.s    635 | Data        | ?? |         |   -1 | 00/FFFF :             | strNBBLOCKS     ds             10             ; 8+2 trailer 00
+  636 |  1 8enchmarkeD.s    636 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  637 |  1 8enchmarkeD.s    637 | Comment     | ?? |         |   -1 | 00/FFFF               | *----------------------------
+  638 |  1 8enchmarkeD.s    638 | Comment     | ?? |         |   -1 | 00/FFFF               | * SOME MISC ROUTINES
+  639 |  1 8enchmarkeD.s    639 | Comment     | ?? |         |   -1 | 00/FFFF               | *----------------------------
+  640 |  1 8enchmarkeD.s    640 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  641 |  1 8enchmarkeD.s    641 | Code        | ?? |         |   -1 | 00/FFFF : 00          | checkCANCEL     lda            KBD            ; Did user cancel?
+  642 |  1 8enchmarkeD.s    642 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bpl            check2         ; no
+  643 |  1 8enchmarkeD.s    643 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            KBDSTROBE      
+  644 |  1 8enchmarkeD.s    644 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  645 |  1 8enchmarkeD.s    645 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 cmp            #$83           ; CTRL-C
+  646 |  1 8enchmarkeD.s    646 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 beq            check1         
+  647 |  1 8enchmarkeD.s    647 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 cmp            #$9b           ; escape
+  648 |  1 8enchmarkeD.s    648 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bne            check2         
+  649 |  1 8enchmarkeD.s    649 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  650 |  1 8enchmarkeD.s    650 | Macro       | ?? |         |   -1 | 00/FFFF               | check1          @WriteCString  #strCANCEL     ; we cancel
+  651 |  1 8enchmarkeD.s    651 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  652 |  1 8enchmarkeD.s    652 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 inc            fgCANCEL       
+  653 |  1 8enchmarkeD.s    653 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sec                           
+  654 |  1 8enchmarkeD.s    654 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 rts                           
+  655 |  1 8enchmarkeD.s    655 | Code        | ?? |         |   -1 | 00/FFFF : 00          | check2          clc                           ; we continue
+  656 |  1 8enchmarkeD.s    656 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 rts                           
+  657 |  1 8enchmarkeD.s    657 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  658 |  1 8enchmarkeD.s    658 | Comment     | ?? |         |   -1 | 00/FFFF               | *----------------------------
+  659 |  1 8enchmarkeD.s    659 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  660 |  1 8enchmarkeD.s    660 | Code        | ?? |         |   -1 | 00/FFFF : 00          | displayWHEEL    inc            indexWHEEL     ; Show there's something...
+  661 |  1 8enchmarkeD.s    661 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            indexWHEEL     
+  662 |  1 8enchmarkeD.s    662 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 and            #%0000_0011    
+  663 |  1 8enchmarkeD.s    663 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 tax                           
+  664 |  1 8enchmarkeD.s    664 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            strWHEEL,x     
+  665 |  1 8enchmarkeD.s    665 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            $426           ; last char of text line 0
+  666 |  1 8enchmarkeD.s    666 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 rts                           
+  667 |  1 8enchmarkeD.s    667 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  668 |  1 8enchmarkeD.s    668 | Data        | ?? |         |   -1 | 00/FFFF :             | indexWHEEL      dfb            $ff            
+  669 |  1 8enchmarkeD.s    669 | Data        | ?? |         |   -1 | 00/FFFF :             | strWHEEL        asc            "|/-\"         
+  670 |  1 8enchmarkeD.s    670 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  671 |  1 8enchmarkeD.s    671 | Comment     | ?? |         |   -1 | 00/FFFF               | *----------------------------
+  672 |  1 8enchmarkeD.s    672 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  673 |  1 8enchmarkeD.s    673 | Code        | ?? |         |   -1 | 00/FFFF : 00          | printCSTRING    sty            pcs1+1         
+  674 |  1 8enchmarkeD.s    674 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 stx            pcs1+2         
+  675 |  1 8enchmarkeD.s    675 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  676 |  1 8enchmarkeD.s    676 | Code        | ?? |         |   -1 | 00/FFFF : 00          | pcs1            lda            $ffff          
+  677 |  1 8enchmarkeD.s    677 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 beq            pcs3           
+  678 |  1 8enchmarkeD.s    678 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  679 |  1 8enchmarkeD.s    679 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bit            fgCASE         ; can we do lowercase?
+  680 |  1 8enchmarkeD.s    680 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bpl            pcs2           ; yes
+  681 |  1 8enchmarkeD.s    681 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 tax                           ; from lower to upper
+  682 |  1 8enchmarkeD.s    682 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            tblKEY,x       
+  683 |  1 8enchmarkeD.s    683 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  684 |  1 8enchmarkeD.s    684 | Code        | ?? |         |   -1 | 00/FFFF : 00          | pcs2            jsr            COUT           
+  685 |  1 8enchmarkeD.s    685 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  686 |  1 8enchmarkeD.s    686 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 inc            pcs1+1         
+  687 |  1 8enchmarkeD.s    687 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bne            pcs1           
+  688 |  1 8enchmarkeD.s    688 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 inc            pcs1+2         
+  689 |  1 8enchmarkeD.s    689 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bne            pcs1           
+  690 |  1 8enchmarkeD.s    690 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  691 |  1 8enchmarkeD.s    691 | Code        | ?? |         |   -1 | 00/FFFF : 00          | pcs3            rts                           
+  692 |  1 8enchmarkeD.s    692 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  693 |  1 8enchmarkeD.s    693 | Comment     | ?? |         |   -1 | 00/FFFF               | *--------
+  694 |  1 8enchmarkeD.s    694 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  695 |  1 8enchmarkeD.s    695 | Data        | ?? |         |   -1 | 00/FFFF :             | fgCASE          ds             1              ; $00 lower OK, $80 otherwise
+  696 |  1 8enchmarkeD.s    696 | Data        | ?? |         |   -1 | 00/FFFF :             | theWIDTH        dfb            40             ; nb columns
+  697 |  1 8enchmarkeD.s    697 | Data        | ?? |         |   -1 | 00/FFFF :             | theLENGTH       ds             1              ; string length
+  698 |  1 8enchmarkeD.s    698 | Data        | ?? |         |   -1 | 00/FFFF :             | fg80COL         dfb            $80            ; we cannot do 80-col by default
+  699 |  1 8enchmarkeD.s    699 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  700 |  1 8enchmarkeD.s    700 | Comment     | ?? |         |   -1 | 00/FFFF               | *----------------------------
+  701 |  1 8enchmarkeD.s    701 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  702 |  1 8enchmarkeD.s    702 | Code        | ?? |         |   -1 | 00/FFFF : 00          | printPSTRING    sty            pps1+1         
+  703 |  1 8enchmarkeD.s    703 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 stx            pps1+2         
+  704 |  1 8enchmarkeD.s    704 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  705 |  1 8enchmarkeD.s    705 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            pps1           
+  706 |  1 8enchmarkeD.s    706 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            theLENGTH      
+  707 |  1 8enchmarkeD.s    707 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  708 |  1 8enchmarkeD.s    708 | Code        | ?? |         |   -1 | 00/FFFF : 00          | ]lp             jsr            pps1           
+  709 |  1 8enchmarkeD.s    709 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bit            fgCASE         ; can we do lowercase?
+  710 |  1 8enchmarkeD.s    710 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bpl            pps2           ; yes
+  711 |  1 8enchmarkeD.s    711 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 tax                           ; from lower to upper
+  712 |  1 8enchmarkeD.s    712 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            tblKEY,x       
+  713 |  1 8enchmarkeD.s    713 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  714 |  1 8enchmarkeD.s    714 | Code        | ?? |         |   -1 | 00/FFFF : 00          | pps2            jsr            COUT           
+  715 |  1 8enchmarkeD.s    715 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  716 |  1 8enchmarkeD.s    716 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 dec            theLENGTH      
+  717 |  1 8enchmarkeD.s    717 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bne            ]lp            
+  718 |  1 8enchmarkeD.s    718 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 rts                           
+  719 |  1 8enchmarkeD.s    719 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  720 |  1 8enchmarkeD.s    720 | Comment     | ?? |         |   -1 | 00/FFFF               | *--- Read a byte
+  721 |  1 8enchmarkeD.s    721 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  722 |  1 8enchmarkeD.s    722 | Code        | ?? |         |   -1 | 00/FFFF : 00          | pps1            lda            $ffff          
+  723 |  1 8enchmarkeD.s    723 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  724 |  1 8enchmarkeD.s    724 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 inc            pps1+1         
+  725 |  1 8enchmarkeD.s    725 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bne            pps3           
+  726 |  1 8enchmarkeD.s    726 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 inc            pps1+2         
+  727 |  1 8enchmarkeD.s    727 | Code        | ?? |         |   -1 | 00/FFFF : 00          | pps3            rts                           
+  728 |  1 8enchmarkeD.s    728 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  729 |  1 8enchmarkeD.s    729 | Comment     | ?? |         |   -1 | 00/FFFF               | *----------------------------
+  730 |  1 8enchmarkeD.s    730 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  731 |  1 8enchmarkeD.s    731 | Macro       | ?? |         |   -1 | 00/FFFF               | printDATEFROM   @WriteCString  #strFROM       
+  732 |  1 8enchmarkeD.s    732 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  733 |  1 8enchmarkeD.s    733 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            PRODOS         
+  734 |  1 8enchmarkeD.s    734 | Data        | ?? |         |   -1 | 00/FFFF :             |                 dfb            $82            
+  735 |  1 8enchmarkeD.s    735 | Data        | ?? |         |   -1 | 00/FFFF :             |                 da             $0000          ; no param list
+  736 |  1 8enchmarkeD.s    736 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  737 |  1 8enchmarkeD.s    737 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            printASCIITIME 
+  738 |  1 8enchmarkeD.s    738 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  739 |  1 8enchmarkeD.s    739 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            DATELO         
+  740 |  1 8enchmarkeD.s    740 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            hextime1       
+  741 |  1 8enchmarkeD.s    741 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            DATEHI         
+  742 |  1 8enchmarkeD.s    742 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            hextime1+1     
+  743 |  1 8enchmarkeD.s    743 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            TIMELO         
+  744 |  1 8enchmarkeD.s    744 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            hextime1+2     
+  745 |  1 8enchmarkeD.s    745 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            TIMEHI         
+  746 |  1 8enchmarkeD.s    746 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            hextime1+3     
+  747 |  1 8enchmarkeD.s    747 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            xTIMELO        
+  748 |  1 8enchmarkeD.s    748 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            hextime1+4     
+  749 |  1 8enchmarkeD.s    749 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            xTIMEHI        
+  750 |  1 8enchmarkeD.s    750 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            hextime1+5     
+  751 |  1 8enchmarkeD.s    751 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 rts                           
+  752 |  1 8enchmarkeD.s    752 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  753 |  1 8enchmarkeD.s    753 | Comment     | ?? |         |   -1 | 00/FFFF               | *----------------------------
+  754 |  1 8enchmarkeD.s    754 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  755 |  1 8enchmarkeD.s    755 | Macro       | ?? |         |   -1 | 00/FFFF               | printDATETO     @WriteCString  #strTO         
+  756 |  1 8enchmarkeD.s    756 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  757 |  1 8enchmarkeD.s    757 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            PRODOS         
+  758 |  1 8enchmarkeD.s    758 | Data        | ?? |         |   -1 | 00/FFFF :             |                 dfb            $82            
+  759 |  1 8enchmarkeD.s    759 | Data        | ?? |         |   -1 | 00/FFFF :             |                 da             $0000          ; no param list
+  760 |  1 8enchmarkeD.s    760 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  761 |  1 8enchmarkeD.s    761 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            printASCIITIME 
+  762 |  1 8enchmarkeD.s    762 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  763 |  1 8enchmarkeD.s    763 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            DATELO         
+  764 |  1 8enchmarkeD.s    764 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            hextime2       
+  765 |  1 8enchmarkeD.s    765 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            DATEHI         
+  766 |  1 8enchmarkeD.s    766 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            hextime2+1     
+  767 |  1 8enchmarkeD.s    767 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            TIMELO         
+  768 |  1 8enchmarkeD.s    768 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            hextime2+2     
+  769 |  1 8enchmarkeD.s    769 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            TIMEHI         
+  770 |  1 8enchmarkeD.s    770 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            hextime2+3     
+  771 |  1 8enchmarkeD.s    771 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            xTIMELO        
+  772 |  1 8enchmarkeD.s    772 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            hextime2+4     
+  773 |  1 8enchmarkeD.s    773 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            xTIMEHI        
+  774 |  1 8enchmarkeD.s    774 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            hextime2+5     
+  775 |  1 8enchmarkeD.s    775 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 rts                           
+  776 |  1 8enchmarkeD.s    776 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  777 |  1 8enchmarkeD.s    777 | Comment     | ?? |         |   -1 | 00/FFFF               | *-----------------------------------
+  778 |  1 8enchmarkeD.s    778 | Comment     | ?? |         |   -1 | 00/FFFF               | * translateKEY (lower -> upper)
+  779 |  1 8enchmarkeD.s    779 | Comment     | ?? |         |   -1 | 00/FFFF               | *-----------------------------------
+  780 |  1 8enchmarkeD.s    780 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  781 |  1 8enchmarkeD.s    781 | Code        | ?? |         |   -1 | 00/FFFF : 00          | translateKEY    jsr            RDKEY          
+  782 |  1 8enchmarkeD.s    782 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 tax                           
+  783 |  1 8enchmarkeD.s    783 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            tblKEY,x       
+  784 |  1 8enchmarkeD.s    784 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 rts                           
+  785 |  1 8enchmarkeD.s    785 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  786 |  1 8enchmarkeD.s    786 | Data        | ?? |         |   -1 | 00/FFFF :             | tblKEY          hex            00,01,02,03,04,05,06,07,08,09,0A,0B,0C,0D,0E,0F
+  787 |  1 8enchmarkeD.s    787 | Data        | ?? |         |   -1 | 00/FFFF :             |                 hex            10,11,12,13,14,15,16,17,18,19,1A,1B,1C,1D,1E,1F
+  788 |  1 8enchmarkeD.s    788 | Data        | ?? |         |   -1 | 00/FFFF :             |                 hex            20,21,22,23,24,25,26,27,28,29,2A,2B,2C,2D,2E,2F
+  789 |  1 8enchmarkeD.s    789 | Data        | ?? |         |   -1 | 00/FFFF :             |                 hex            30,31,32,33,34,35,36,37,38,39,3A,3B,3C,3D,3E,3F
+  790 |  1 8enchmarkeD.s    790 | Data        | ?? |         |   -1 | 00/FFFF :             |                 hex            40,41,42,43,44,45,46,47,48,49,4A,4B,4C,4D,4E,4F
+  791 |  1 8enchmarkeD.s    791 | Data        | ?? |         |   -1 | 00/FFFF :             |                 hex            50,51,52,53,54,55,56,57,58,59,5A,5B,5C,5D,5E,5F
+  792 |  1 8enchmarkeD.s    792 | Data        | ?? |         |   -1 | 00/FFFF :             |                 hex            60,61,62,63,64,65,66,67,68,69,6A,6B,6C,6D,6E,6F
+  793 |  1 8enchmarkeD.s    793 | Data        | ?? |         |   -1 | 00/FFFF :             |                 hex            70,71,72,73,74,75,76,77,78,79,7A,7B,7C,7D,7E,7F
+  794 |  1 8enchmarkeD.s    794 | Data        | ?? |         |   -1 | 00/FFFF :             |                 hex            80,81,82,83,84,85,86,87,88,89,8A,8B,8C,8D,8E,8F
+  795 |  1 8enchmarkeD.s    795 | Data        | ?? |         |   -1 | 00/FFFF :             |                 hex            90,91,92,93,94,95,96,97,98,99,9A,9B,9C,9D,9E,9F
+  796 |  1 8enchmarkeD.s    796 | Data        | ?? |         |   -1 | 00/FFFF :             |                 hex            A0,A1,A2,A3,A4,A5,A6,A7,A8,A9,AA,AB,AC,AD,AE,AF
+  797 |  1 8enchmarkeD.s    797 | Data        | ?? |         |   -1 | 00/FFFF :             |                 hex            B0,B1,B2,B3,B4,B5,B6,B7,B8,B9,BA,BB,BC,BD,BE,BF
+  798 |  1 8enchmarkeD.s    798 | Data        | ?? |         |   -1 | 00/FFFF :             |                 hex            C0,C1,C2,C3,C4,C5,C6,C7,C8,C9,CA,CB,CC,CD,CE,CF
+  799 |  1 8enchmarkeD.s    799 | Data        | ?? |         |   -1 | 00/FFFF :             |                 hex            D0,D1,D2,D3,D4,D5,D6,D7,D8,D9,DA,DB,DC,DD,DE,DF
+  800 |  1 8enchmarkeD.s    800 | Data        | ?? |         |   -1 | 00/FFFF :             |                 hex            E0,C1,C2,C3,C4,C5,C6,C7,C8,C9,CA,CB,CC,CD,CE,CF
+  801 |  1 8enchmarkeD.s    801 | Data        | ?? |         |   -1 | 00/FFFF :             |                 hex            D0,D1,D2,D3,D4,D5,D6,D7,D8,D9,DA,FB,FC,FD,FE,FF
+  802 |  1 8enchmarkeD.s    802 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  803 |  1 8enchmarkeD.s    803 | Comment     | ?? |         |   -1 | 00/FFFF               | *--------------------------------------
+  804 |  1 8enchmarkeD.s    804 | Comment     | ?? |         |   -1 | 00/FFFF               | * printASCIITIME
+  805 |  1 8enchmarkeD.s    805 | Comment     | ?? |         |   -1 | 00/FFFF               | *
+  806 |  1 8enchmarkeD.s    806 | Comment     | ?? |         |   -1 | 00/FFFF               | * Affiche le temps de ProDOS en ASCII
+  807 |  1 8enchmarkeD.s    807 | Comment     | ?? |         |   -1 | 00/FFFF               | *--------------------------------------
+  808 |  1 8enchmarkeD.s    808 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  809 |  1 8enchmarkeD.s    809 | Code        | ?? |         |   -1 | 00/FFFF : 00          | printASCIITIME  lda            DATELO         ; dd
+  810 |  1 8enchmarkeD.s    810 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 and            #%00011111     ; bits 5-0
+  811 |  1 8enchmarkeD.s    811 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            getDECIMAL     
+  812 |  1 8enchmarkeD.s    812 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            PRBYTE         
+  813 |  1 8enchmarkeD.s    813 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            #"/"           
+  814 |  1 8enchmarkeD.s    814 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            COUT           
+  815 |  1 8enchmarkeD.s    815 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  816 |  1 8enchmarkeD.s    816 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            DATEHI         ; mm
+  817 |  1 8enchmarkeD.s    817 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lsr                           
+  818 |  1 8enchmarkeD.s    818 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            DATELO         
+  819 |  1 8enchmarkeD.s    819 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 rol                           
+  820 |  1 8enchmarkeD.s    820 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 rol                           
+  821 |  1 8enchmarkeD.s    821 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 rol                           
+  822 |  1 8enchmarkeD.s    822 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 rol                           
+  823 |  1 8enchmarkeD.s    823 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 and            #%00001111     
+  824 |  1 8enchmarkeD.s    824 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            getDECIMAL     
+  825 |  1 8enchmarkeD.s    825 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            PRBYTE         
+  826 |  1 8enchmarkeD.s    826 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            #"/"           
+  827 |  1 8enchmarkeD.s    827 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            COUT           
+  828 |  1 8enchmarkeD.s    828 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  829 |  1 8enchmarkeD.s    829 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            DATEHI         ; yy
+  830 |  1 8enchmarkeD.s    830 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lsr                           
+  831 |  1 8enchmarkeD.s    831 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 and            #%01111111     
+  832 |  1 8enchmarkeD.s    832 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 clc                           
+  833 |  1 8enchmarkeD.s    833 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 adc            #$64           
+  834 |  1 8enchmarkeD.s    834 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            getDECIMAL     
+  835 |  1 8enchmarkeD.s    835 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            PRBYTE         
+  836 |  1 8enchmarkeD.s    836 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            #" "           
+  837 |  1 8enchmarkeD.s    837 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            COUT           
+  838 |  1 8enchmarkeD.s    838 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  839 |  1 8enchmarkeD.s    839 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            TIMEHI         ; hh
+  840 |  1 8enchmarkeD.s    840 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 and            #%00011111     
+  841 |  1 8enchmarkeD.s    841 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            getDECIMAL     
+  842 |  1 8enchmarkeD.s    842 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            PRBYTE         
+  843 |  1 8enchmarkeD.s    843 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            #":"           
+  844 |  1 8enchmarkeD.s    844 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            COUT           
+  845 |  1 8enchmarkeD.s    845 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  846 |  1 8enchmarkeD.s    846 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            TIMELO         ; mm
+  847 |  1 8enchmarkeD.s    847 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 and            #%00111111     
+  848 |  1 8enchmarkeD.s    848 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            getDECIMAL     
+  849 |  1 8enchmarkeD.s    849 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            PRBYTE         
+  850 |  1 8enchmarkeD.s    850 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            #":"           
+  851 |  1 8enchmarkeD.s    851 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            COUT           
+  852 |  1 8enchmarkeD.s    852 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  853 |  1 8enchmarkeD.s    853 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            xTIMEHI        ; ss
+  854 |  1 8enchmarkeD.s    854 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lsr                           
+  855 |  1 8enchmarkeD.s    855 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lsr                           
+  856 |  1 8enchmarkeD.s    856 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 and            #%00111111     
+  857 |  1 8enchmarkeD.s    857 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jsr            getDECIMAL     
+  858 |  1 8enchmarkeD.s    858 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jmp            PRBYTE         
+  859 |  1 8enchmarkeD.s    859 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  860 |  1 8enchmarkeD.s    860 | Comment     | ?? |         |   -1 | 00/FFFF               | *--------------------------------------
+  861 |  1 8enchmarkeD.s    861 | Comment     | ?? |         |   -1 | 00/FFFF               | * getDECIMAL
+  862 |  1 8enchmarkeD.s    862 | Comment     | ?? |         |   -1 | 00/FFFF               | *
+  863 |  1 8enchmarkeD.s    863 | Comment     | ?? |         |   -1 | 00/FFFF               | * Transforme une valeur hexa en dec
+  864 |  1 8enchmarkeD.s    864 | Comment     | ?? |         |   -1 | 00/FFFF               | * A: nombre en hex en entrée
+  865 |  1 8enchmarkeD.s    865 | Comment     | ?? |         |   -1 | 00/FFFF               | *--------------------------------------
+  866 |  1 8enchmarkeD.s    866 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  867 |  1 8enchmarkeD.s    867 | Empty       | ?? |         |   -1 | 00/FFFF               | getDECIMAL                                    
+  868 |  1 8enchmarkeD.s    868 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 ldx            #0             ; valeur de sortie
+  869 |  1 8enchmarkeD.s    869 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 stx            valDEC+1       
+  870 |  1 8enchmarkeD.s    870 | Code        | ?? |         |   -1 | 00/FFFF : 00          | ]lp             stx            valDEC         
+  871 |  1 8enchmarkeD.s    871 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  872 |  1 8enchmarkeD.s    872 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 cmp            #100           ; <100 ?
+  873 |  1 8enchmarkeD.s    873 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bcc            getDECIMAL1    
+  874 |  1 8enchmarkeD.s    874 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 inc            valDEC+1       
+  875 |  1 8enchmarkeD.s    875 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sec                           
+  876 |  1 8enchmarkeD.s    876 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sbc            #100           
+  877 |  1 8enchmarkeD.s    877 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  878 |  1 8enchmarkeD.s    878 | Code        | ?? |         |   -1 | 00/FFFF : 00          | getDECIMAL1     cmp            #10            ; <10 ?
+  879 |  1 8enchmarkeD.s    879 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 bcc            getDECIMAL2    ; on sort
+  880 |  1 8enchmarkeD.s    880 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sec                           ; on enlève 10
+  881 |  1 8enchmarkeD.s    881 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sbc            #10            
+  882 |  1 8enchmarkeD.s    882 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 tay                           ; sauve
+  883 |  1 8enchmarkeD.s    883 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 txa                           
+  884 |  1 8enchmarkeD.s    884 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 clc                           
+  885 |  1 8enchmarkeD.s    885 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 adc            #$10           ; on ajoute #$10
+  886 |  1 8enchmarkeD.s    886 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 tax                           
+  887 |  1 8enchmarkeD.s    887 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 tya                           ; restaure
+  888 |  1 8enchmarkeD.s    888 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 jmp            ]lp            
+  889 |  1 8enchmarkeD.s    889 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  890 |  1 8enchmarkeD.s    890 | Code        | ?? |         |   -1 | 00/FFFF : 00          | getDECIMAL2     clc                           ; on ajoute le reste < 10
+  891 |  1 8enchmarkeD.s    891 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 adc            valDEC         
+  892 |  1 8enchmarkeD.s    892 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            valDEC         
+  893 |  1 8enchmarkeD.s    893 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 rts                           ; et on retourne la valeur
+  894 |  1 8enchmarkeD.s    894 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  895 |  1 8enchmarkeD.s    895 | Comment     | ?? |         |   -1 | 00/FFFF               | *--- Data
+  896 |  1 8enchmarkeD.s    896 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  897 |  1 8enchmarkeD.s    897 | Data        | ?? |         |   -1 | 00/FFFF :             | valDEC          ds             2              ; on se limite à 0-255
+  898 |  1 8enchmarkeD.s    898 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  899 |  1 8enchmarkeD.s    899 | Comment     | ?? |         |   -1 | 00/FFFF               | *----------------------------
+  900 |  1 8enchmarkeD.s    900 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  901 |  1 8enchmarkeD.s    901 | Empty       | ?? |         |   -1 | 00/FFFF               | calcSPEED                                     
+  902 |  1 8enchmarkeD.s    902 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  903 |  1 8enchmarkeD.s    903 | Comment     | ?? |         |   -1 | 00/FFFF               | * TO DO
+  904 |  1 8enchmarkeD.s    904 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 rts                           
+  905 |  1 8enchmarkeD.s    905 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  906 |  1 8enchmarkeD.s    906 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 pha                           
+  907 |  1 8enchmarkeD.s    907 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 pha                           
+  908 |  1 8enchmarkeD.s    908 | Macro       | ?? |         |   -1 | 00/FFFF               |                 PushWord       #1             ; from readtimehex to seconds
+  909 |  1 8enchmarkeD.s    909 | Macro       | ?? |         |   -1 | 00/FFFF               |                 PushLong       #0             ; ignore
+  910 |  1 8enchmarkeD.s    910 | Macro       | ?? |         |   -1 | 00/FFFF               |                 PushLong       #hextime1      
+  911 |  1 8enchmarkeD.s    911 | Macro       | ?? |         |   -1 | 00/FFFF               |                 _ConvSeconds                  
+  912 |  1 8enchmarkeD.s    912 | Macro       | ?? |         |   -1 | 00/FFFF               |                 PullLong       seconds1       
+  913 |  1 8enchmarkeD.s    913 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  914 |  1 8enchmarkeD.s    914 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 pha                           
+  915 |  1 8enchmarkeD.s    915 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 pha                           
+  916 |  1 8enchmarkeD.s    916 | Macro       | ?? |         |   -1 | 00/FFFF               |                 PushWord       #1             ; from readtimehex to seconds
+  917 |  1 8enchmarkeD.s    917 | Macro       | ?? |         |   -1 | 00/FFFF               |                 PushLong       #0             ; ignore
+  918 |  1 8enchmarkeD.s    918 | Macro       | ?? |         |   -1 | 00/FFFF               |                 PushLong       #hextime2      
+  919 |  1 8enchmarkeD.s    919 | Macro       | ?? |         |   -1 | 00/FFFF               |                 _ConvSeconds                  
+  920 |  1 8enchmarkeD.s    920 | Macro       | ?? |         |   -1 | 00/FFFF               |                 PullLong       seconds2       
+  921 |  1 8enchmarkeD.s    921 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  922 |  1 8enchmarkeD.s    922 | Comment     | ?? |         |   -1 | 00/FFFF               | * Now, get the time in seconds
+  923 |  1 8enchmarkeD.s    923 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            seconds2       ; take low word only
+  924 |  1 8enchmarkeD.s    924 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sec                           
+  925 |  1 8enchmarkeD.s    925 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sbc            seconds1       
+  926 |  1 8enchmarkeD.s    926 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            seconds        
+  927 |  1 8enchmarkeD.s    927 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  928 |  1 8enchmarkeD.s    928 | Comment     | ?? |         |   -1 | 00/FFFF               | * Operation in seconds, now
+  929 |  1 8enchmarkeD.s    929 | Comment     | ?? |         |   -1 | 00/FFFF               | * calculate the speed
+  930 |  1 8enchmarkeD.s    930 | Comment     | ?? |         |   -1 | 00/FFFF               | * filesize / speed = nb bytes per second
+  931 |  1 8enchmarkeD.s    931 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  932 |  1 8enchmarkeD.s    932 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 pha                           
+  933 |  1 8enchmarkeD.s    933 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 pha                           
+  934 |  1 8enchmarkeD.s    934 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 pha                           
+  935 |  1 8enchmarkeD.s    935 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 pha                           
+  936 |  1 8enchmarkeD.s    936 | Macro       | ?? |         |   -1 | 00/FFFF               |                 PushLong       filesize       
+  937 |  1 8enchmarkeD.s    937 | Macro       | ?? |         |   -1 | 00/FFFF               |                 PushLong       seconds        
+  938 |  1 8enchmarkeD.s    938 | Macro       | ?? |         |   -1 | 00/FFFF               |                 _LongDivide                   
+  939 |  1 8enchmarkeD.s    939 | Macro       | ?? |         |   -1 | 00/FFFF               |                 PullLong       kbs            ; quotient
+  940 |  1 8enchmarkeD.s    940 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 pla                           ; remainder
+  941 |  1 8enchmarkeD.s    941 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 pla                           
+  942 |  1 8enchmarkeD.s    942 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  943 |  1 8enchmarkeD.s    943 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 lda            #'0'           ; clear string
+  944 |  1 8enchmarkeD.s    944 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            strCALCKBS     
+  945 |  1 8enchmarkeD.s    945 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            strCALCKBS+1   
+  946 |  1 8enchmarkeD.s    946 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            strCALCKBS+2   
+  947 |  1 8enchmarkeD.s    947 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 sta            strCALCKBS+3   
+  948 |  1 8enchmarkeD.s    948 | Comment     | ?? |         |   -1 | 00/FFFF               | 			; let a trailing x00
+  949 |  1 8enchmarkeD.s    949 | Macro       | ?? |         |   -1 | 00/FFFF               |                 PushWord       kbs            
+  950 |  1 8enchmarkeD.s    950 | Macro       | ?? |         |   -1 | 00/FFFF               |                 PushLong       #strCALCKBS    
+  951 |  1 8enchmarkeD.s    951 | Macro       | ?? |         |   -1 | 00/FFFF               |                 PushWord       #4             
+  952 |  1 8enchmarkeD.s    952 | Macro       | ?? |         |   -1 | 00/FFFF               |                 PushWord       #0             
+  953 |  1 8enchmarkeD.s    953 | Macro       | ?? |         |   -1 | 00/FFFF               |                 _Int2Dec                      
+  954 |  1 8enchmarkeD.s    954 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  955 |  1 8enchmarkeD.s    955 | Comment     | ?? |         |   -1 | 00/FFFF               | *----------
+  956 |  1 8enchmarkeD.s    956 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  957 |  1 8enchmarkeD.s    957 | Macro       | ?? |         |   -1 | 00/FFFF               |                 @WriteCString  #strSPEED      ; params set above
+  958 |  1 8enchmarkeD.s    958 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  959 |  1 8enchmarkeD.s    959 | Macro       | ?? |         |   -1 | 00/FFFF               |                 @WriteCString  #strCALCKBS    ; params set above
+  960 |  1 8enchmarkeD.s    960 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  961 |  1 8enchmarkeD.s    961 | Macro       | ?? |         |   -1 | 00/FFFF               |                 @WriteCString  #strKBS        ; params set above
+  962 |  1 8enchmarkeD.s    962 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                 rts                           
+  963 |  1 8enchmarkeD.s    963 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  964 |  1 8enchmarkeD.s    964 | Comment     | ?? |         |   -1 | 00/FFFF               | *----------------------------
+  965 |  1 8enchmarkeD.s    965 | Comment     | ?? |         |   -1 | 00/FFFF               | * DATA
+  966 |  1 8enchmarkeD.s    966 | Comment     | ?? |         |   -1 | 00/FFFF               | *----------------------------
+  967 |  1 8enchmarkeD.s    967 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  968 |  1 8enchmarkeD.s    968 | Comment     | ?? |         |   -1 | 00/FFFF               | *	asc	"1234567890123456789012345678901234567890"
+  969 |  1 8enchmarkeD.s    969 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  970 |  1 8enchmarkeD.s    970 | Data        | ?? |         |   -1 | 00/FFFF :             | strINTRO        asc            "BenchmarkeD 8-bits v1.2"0d
+  971 |  1 8enchmarkeD.s    971 | Data        | ?? |         |   -1 | 00/FFFF :             |                 asc            "(c) 2025, Brutal Deluxe Software"0d0d
+  972 |  1 8enchmarkeD.s    972 | Data        | ?? |         |   -1 | 00/FFFF :             |                 asc            "File options"0d
+  973 |  1 8enchmarkeD.s    973 | Data        | ?? |         |   -1 | 00/FFFF :             |                 asc            " 1- Write speed"0d
+  974 |  1 8enchmarkeD.s    974 | Data        | ?? |         |   -1 | 00/FFFF :             |                 asc            " 2- Read speed"0d
+  975 |  1 8enchmarkeD.s    975 | Data        | ?? |         |   -1 | 00/FFFF :             |                 asc            "Block options"0d
+  976 |  1 8enchmarkeD.s    976 | Data        | ?? |         |   -1 | 00/FFFF :             |                 asc            " 3- Read block-by-block"0d
+  977 |  1 8enchmarkeD.s    977 | Data        | ?? |         |   -1 | 00/FFFF :             |                 asc            0d             
+  978 |  1 8enchmarkeD.s    978 | Data        | ?? |         |   -1 | 00/FFFF :             |                 asc            "Input your choice (Q to quit) >"00
+  979 |  1 8enchmarkeD.s    979 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  980 |  1 8enchmarkeD.s    980 | Data        | ?? |         |   -1 | 00/FFFF :             | strBYE          asc            0d0d"Thank you. Press a key to continue..."00
+  981 |  1 8enchmarkeD.s    981 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  982 |  1 8enchmarkeD.s    982 | Data        | ?? |         |   -1 | 00/FFFF :             | strREAD         asc            0d0d"Now reading... "00
+  983 |  1 8enchmarkeD.s    983 | Data        | ?? |         |   -1 | 00/FFFF :             | strCREATE       asc            0d0d"Now creating... "00
+  984 |  1 8enchmarkeD.s    984 | Data        | ?? |         |   -1 | 00/FFFF :             | strRERR         asc            0d"=== Read failed! ==="00
+  985 |  1 8enchmarkeD.s    985 | Data        | ?? |         |   -1 | 00/FFFF :             | strWERR         asc            0d"=== Write failed! ==="00
+  986 |  1 8enchmarkeD.s    986 | Data        | ?? |         |   -1 | 00/FFFF :             | strCANCEL       asc            0d"=== Cancelled! ==="00
+  987 |  1 8enchmarkeD.s    987 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  988 |  1 8enchmarkeD.s    988 | Comment     | ?? |         |   -1 | 00/FFFF               | *	asc	"1234567890123456789012345678901234567890"
+  989 |  1 8enchmarkeD.s    989 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  990 |  1 8enchmarkeD.s    990 | Data        | ?? |         |   -1 | 00/FFFF :             | strFROM         asc            ", started at "00
+  991 |  1 8enchmarkeD.s    991 | Data        | ?? |         |   -1 | 00/FFFF :             | strTO           asc            0d"Ended at "00
+  992 |  1 8enchmarkeD.s    992 | Data        | ?? |         |   -1 | 00/FFFF :             | strSPEED        asc            ", for an average speed of "00
+  993 |  1 8enchmarkeD.s    993 | Data        | ?? |         |   -1 | 00/FFFF :             | strKBS          asc            " KB/s"00      
+  994 |  1 8enchmarkeD.s    994 | Data        | ?? |         |   -1 | 00/FFFF :             | strBLOCKS       asc            " blocks"00    
+  995 |  1 8enchmarkeD.s    995 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  996 |  1 8enchmarkeD.s    996 | Comment     | ?? |         |   -1 | 00/FFFF               | *----------
+  997 |  1 8enchmarkeD.s    997 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+  998 |  1 8enchmarkeD.s    998 | Data        | ?? |         |   -1 | 00/FFFF :             | tblPATHNAME     da             pathname1,pathname2,pathname3
+  999 |  1 8enchmarkeD.s    999 | Data        | ?? |         |   -1 | 00/FFFF :             |                 da             pathname4,pathname5,pathname6
+ 1000 |  1 8enchmarkeD.s   1000 | Data        | ?? |         |   -1 | 00/FFFF :             | tblFILESIZE     dw             512,1024,2048,4096,8192,16384
+ 1001 |  1 8enchmarkeD.s   1001 | Data        | ?? |         |   -1 | 00/FFFF :             | tblMAXINDEX     dw             16,32,64,128,256,512
+ 1002 |  1 8enchmarkeD.s   1002 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+ 1003 |  1 8enchmarkeD.s   1003 | Data        | ?? |         |   -1 | 00/FFFF :             | pathname1       str            "File512K"     
+ 1004 |  1 8enchmarkeD.s   1004 | Data        | ?? |         |   -1 | 00/FFFF :             | pathname2       str            "File1M"       
+ 1005 |  1 8enchmarkeD.s   1005 | Data        | ?? |         |   -1 | 00/FFFF :             | pathname3       str            "File2M"       
+ 1006 |  1 8enchmarkeD.s   1006 | Data        | ?? |         |   -1 | 00/FFFF :             | pathname4       str            "File4M"       
+ 1007 |  1 8enchmarkeD.s   1007 | Data        | ?? |         |   -1 | 00/FFFF :             | pathname5       str            "File8M"       
+ 1008 |  1 8enchmarkeD.s   1008 | Data        | ?? |         |   -1 | 00/FFFF :             | pathname6       str            "File16M"      
+ 1009 |  1 8enchmarkeD.s   1009 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+ 1010 |  1 8enchmarkeD.s   1010 | Data        | ?? |         |   -1 | 00/FFFF :             | fgWERR          ds             1              
+ 1011 |  1 8enchmarkeD.s   1011 | Data        | ?? |         |   -1 | 00/FFFF :             | fgCANCEL        ds             1              
+ 1012 |  1 8enchmarkeD.s   1012 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+ 1013 |  1 8enchmarkeD.s   1013 | Comment     | ?? |         |   -1 | 00/FFFF               | *----------
+ 1014 |  1 8enchmarkeD.s   1014 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+ 1015 |  1 8enchmarkeD.s   1015 | Data        | ?? |         |   -1 | 00/FFFF :             | proQUIT         dfb            $4             
+ 1016 |  1 8enchmarkeD.s   1016 | Data        | ?? |         |   -1 | 00/FFFF :             |                 ds             1              
+ 1017 |  1 8enchmarkeD.s   1017 | Data        | ?? |         |   -1 | 00/FFFF :             |                 ds             2              
+ 1018 |  1 8enchmarkeD.s   1018 | Data        | ?? |         |   -1 | 00/FFFF :             |                 ds             1              
+ 1019 |  1 8enchmarkeD.s   1019 | Data        | ?? |         |   -1 | 00/FFFF :             |                 ds             2              
+ 1020 |  1 8enchmarkeD.s   1020 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+ 1021 |  1 8enchmarkeD.s   1021 | Data        | ?? |         |   -1 | 00/FFFF :             | proREADBLOCK    dfb            $3             
+ 1022 |  1 8enchmarkeD.s   1022 | Data        | ?? |         |   -1 | 00/FFFF :             |                 ds             1              ; +1 unit_num
+ 1023 |  1 8enchmarkeD.s   1023 | Data        | ?? |         |   -1 | 00/FFFF :             |                 da             ptrBLOCK       ; +2 data_buffer
+ 1024 |  1 8enchmarkeD.s   1024 | Data        | ?? |         |   -1 | 00/FFFF :             |                 ds             2              ; +4 block_num
+ 1025 |  1 8enchmarkeD.s   1025 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+ 1026 |  1 8enchmarkeD.s   1026 | Data        | ?? |         |   -1 | 00/FFFF :             | proWRITEBLOCK   dfb            $3             
+ 1027 |  1 8enchmarkeD.s   1027 | Data        | ?? |         |   -1 | 00/FFFF :             |                 ds             1              ; +1 unit_num
+ 1028 |  1 8enchmarkeD.s   1028 | Data        | ?? |         |   -1 | 00/FFFF :             |                 da             ptrBLOCK       ; +2 data_buffer
+ 1029 |  1 8enchmarkeD.s   1029 | Data        | ?? |         |   -1 | 00/FFFF :             |                 ds             2              ; +4 block_num
+ 1030 |  1 8enchmarkeD.s   1030 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+ 1031 |  1 8enchmarkeD.s   1031 | Data        | ?? |         |   -1 | 00/FFFF :             | proDESTROY      dfb            $1             
+ 1032 |  1 8enchmarkeD.s   1032 | Data        | ?? |         |   -1 | 00/FFFF :             |                 da             pathname1      
+ 1033 |  1 8enchmarkeD.s   1033 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+ 1034 |  1 8enchmarkeD.s   1034 | Data        | ?? |         |   -1 | 00/FFFF :             | proCREATE       dfb            $7             
+ 1035 |  1 8enchmarkeD.s   1035 | Data        | ?? |         |   -1 | 00/FFFF :             |                 da             pathname1      
+ 1036 |  1 8enchmarkeD.s   1036 | Data        | ?? |         |   -1 | 00/FFFF :             |                 dfb            $e3            ; access
+ 1037 |  1 8enchmarkeD.s   1037 | Data        | ?? |         |   -1 | 00/FFFF :             |                 dfb            $06            ; file_type (bin)
+ 1038 |  1 8enchmarkeD.s   1038 | Data        | ?? |         |   -1 | 00/FFFF :             |                 dw             $bdbd          ; aux_type
+ 1039 |  1 8enchmarkeD.s   1039 | Data        | ?? |         |   -1 | 00/FFFF :             |                 ds             1              ; storage_type
+ 1040 |  1 8enchmarkeD.s   1040 | Data        | ?? |         |   -1 | 00/FFFF :             |                 ds             2              ; create_date
+ 1041 |  1 8enchmarkeD.s   1041 | Data        | ?? |         |   -1 | 00/FFFF :             |                 ds             2              ; create_time
+ 1042 |  1 8enchmarkeD.s   1042 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+ 1043 |  1 8enchmarkeD.s   1043 | Data        | ?? |         |   -1 | 00/FFFF :             | proONLINE       dfb            $2             
+ 1044 |  1 8enchmarkeD.s   1044 | Data        | ?? |         |   -1 | 00/FFFF :             |                 dfb            $0             
+ 1045 |  1 8enchmarkeD.s   1045 | Data        | ?? |         |   -1 | 00/FFFF :             |                 da             ptrONLINE      
+ 1046 |  1 8enchmarkeD.s   1046 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+ 1047 |  1 8enchmarkeD.s   1047 | Empty       | ?? |         |   -1 | 00/FFFF               | proGETPFX                                     
+ 1048 |  1 8enchmarkeD.s   1048 | Empty       | ?? |         |   -1 | 00/FFFF               | proSETPFX                                     
+ 1049 |  1 8enchmarkeD.s   1049 | Data        | ?? |         |   -1 | 00/FFFF :             |                 dfb            $1             
+ 1050 |  1 8enchmarkeD.s   1050 | Data        | ?? |         |   -1 | 00/FFFF :             |                 da             ptrPREFIX      
+ 1051 |  1 8enchmarkeD.s   1051 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+ 1052 |  1 8enchmarkeD.s   1052 | Data        | ?? |         |   -1 | 00/FFFF :             | proOPEN         dfb            $3             
+ 1053 |  1 8enchmarkeD.s   1053 | Data        | ?? |         |   -1 | 00/FFFF :             |                 da             pathname1      ; pathname (par défaut, le moteur)
+ 1054 |  1 8enchmarkeD.s   1054 | Data        | ?? |         |   -1 | 00/FFFF :             |                 da             proBUFFER      ; io_buffer
+ 1055 |  1 8enchmarkeD.s   1055 | Data        | ?? |         |   -1 | 00/FFFF :             |                 ds             1              ; ref_num
+ 1056 |  1 8enchmarkeD.s   1056 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+ 1057 |  1 8enchmarkeD.s   1057 | Empty       | ?? |         |   -1 | 00/FFFF               | proREAD                                       
+ 1058 |  1 8enchmarkeD.s   1058 | Empty       | ?? |         |   -1 | 00/FFFF               | proWRITE                                      
+ 1059 |  1 8enchmarkeD.s   1059 | Data        | ?? |         |   -1 | 00/FFFF :             |                 dfb            $4             
+ 1060 |  1 8enchmarkeD.s   1060 | Data        | ?? |         |   -1 | 00/FFFF :             |                 ds             1              ; ref_num
+ 1061 |  1 8enchmarkeD.s   1061 | Data        | ?? |         |   -1 | 00/FFFF :             |                 da             ptrBUFFER      ; data_buffer
+ 1062 |  1 8enchmarkeD.s   1062 | Data        | ?? |         |   -1 | 00/FFFF :             |                 dw             lenBUFFER      ; request_count
+ 1063 |  1 8enchmarkeD.s   1063 | Data        | ?? |         |   -1 | 00/FFFF :             |                 ds             2              ; transfer_count
+ 1064 |  1 8enchmarkeD.s   1064 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+ 1065 |  1 8enchmarkeD.s   1065 | Data        | ?? |         |   -1 | 00/FFFF :             | proCLOSE        dfb            $1             
+ 1066 |  1 8enchmarkeD.s   1066 | Data        | ?? |         |   -1 | 00/FFFF :             |                 ds             1              ; ref_num
+ 1067 |  1 8enchmarkeD.s   1067 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+ 1068 |  1 8enchmarkeD.s   1068 | Comment     | ?? |         |   -1 | 00/FFFF               | *----------
+ 1069 |  1 8enchmarkeD.s   1069 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+ 1070 |  1 8enchmarkeD.s   1070 | Data        | ?? |         |   -1 | 00/FFFF :             | asciitime       ds             32             
+ 1071 |  1 8enchmarkeD.s   1071 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+ 1072 |  1 8enchmarkeD.s   1072 | Data        | ?? |         |   -1 | 00/FFFF :             | hextime1        ds             6              
+ 1073 |  1 8enchmarkeD.s   1073 | Data        | ?? |         |   -1 | 00/FFFF :             | hextime2        ds             6              
+ 1074 |  1 8enchmarkeD.s   1074 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+ 1075 |  1 8enchmarkeD.s   1075 | Data        | ?? |         |   -1 | 00/FFFF :             | seconds1        ds             4              
+ 1076 |  1 8enchmarkeD.s   1076 | Data        | ?? |         |   -1 | 00/FFFF :             | seconds2        ds             4              
+ 1077 |  1 8enchmarkeD.s   1077 | Data        | ?? |         |   -1 | 00/FFFF :             | seconds         ds             4              
+ 1078 |  1 8enchmarkeD.s   1078 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+ 1079 |  1 8enchmarkeD.s   1079 | Data        | ?? |         |   -1 | 00/FFFF :             | kbs             ds             4              
+ 1080 |  1 8enchmarkeD.s   1080 | Data        | ?? |         |   -1 | 00/FFFF :             | strCALCKBS      ds             8              
+ 1081 |  1 8enchmarkeD.s   1081 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+ 1082 |  1 8enchmarkeD.s   1082 | Comment     | ?? |         |   -1 | 00/FFFF               | *----------
+ 1083 |  1 8enchmarkeD.s   1083 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+ 1084 |  1 8enchmarkeD.s   1084 | Data        | ?? |         |   -1 | 00/FFFF :             | theINDEX        ds             2              
+ 1085 |  1 8enchmarkeD.s   1085 | Data        | ?? |         |   -1 | 00/FFFF :             | maxINDEX        ds             2              
+ 1086 |  1 8enchmarkeD.s   1086 | Data        | ?? |         |   -1 | 00/FFFF :             | filesize        ds             2              ; in KB
+ 1087 |  1 8enchmarkeD.s   1087 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+ 1088 |  1 8enchmarkeD.s   1088 | Comment     | ?? |         |   -1 | 00/FFFF               | *----------
+ 1089 |  1 8enchmarkeD.s   1089 | Empty       | ?? |         |   -1 | 00/FFFF               |                                               
+------+-------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

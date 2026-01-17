@@ -27,6 +27,8 @@ COUT	=	$FDED
 
 *-------------- EQUATES
 
+VERSION	=	2	; v0.2
+
 T	=	0
 T1	=	1
 T2	=	2
@@ -206,14 +208,18 @@ printSTRING	sty	printSTRING1+1
 	stx	printSTRING1+2
 
 printSTRING1	lda	$bdbd
-	beq	printSTRING3
+	beq	printSTRING4
 
+	ldx	#VERSION
+	cmp	#"@"
+	beq	printSTRING2
+	ldx	theSLOT
 	cmp	#"#"
-	bne	printSTRING2
-	lda	theSLOT
+	bne	printSTRING3
+printSTRING2	txa
 	ora	#"0"
 
-printSTRING2	jsr	COUT
+printSTRING3	jsr	COUT
 	
 	inc	printSTRING1+1
 	bne	printSTRING1
@@ -222,7 +228,7 @@ printSTRING2	jsr	COUT
 	cmp	#$c0	; if we reach $C000
 	bcc	printSTRING1
 
-printSTRING3	rts
+printSTRING4	rts
 
 *------- gotoXY
 
@@ -243,9 +249,9 @@ theLOOP	ds	1
 theSLOT	ds	1	; 0..7
 theSLOT16	ds	1	; 10=slot 1, ..., 70=slot 7
 
-strHELLO	asc	"Brutal Timer Test"8d
+strHELLO	asc	"Brutal Timer Test v0.@"8d
 	asc	"(c) 2026, Plamen Vaysilov &"8d
-	asc	"Brutal Deluxe"8d00
+	asc	"Brutal Deluxe Software"8d00
 
 *	asc	"1234567890123456789012345"
 

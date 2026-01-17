@@ -27,7 +27,7 @@ COUT	=	$FDED
 
 *-------------- EQUATES
 
-VERSION	=	7	; v0.x
+VERSION	=	8	; v0.x
 
 T	=	0
 T1	=	1
@@ -312,7 +312,14 @@ printTIMER2	@printSTRING	#strTIMER2
 printTIMER	@printSTRING	#strTIMER
 
 printTIMER1	ldx	theSLOT16
-	lda	$c088,x
+	lda	theTIMER
+	cmp	#T1
+	beq	printTIMER3
+	cmp	#T2
+	beq	printTIMER4
+	rts
+
+printTIMER3	lda	$c088,x	; T1
 	sta	valTIMER
 	lda	$c089,x
 	sta	valTIMER+1
@@ -320,8 +327,18 @@ printTIMER1	ldx	theSLOT16
 	sta	valTIMER+2
 	lda	$c08b,x
 	sta	valTIMER+3
+	jmp	printTIMER5
 
-	jsr	PRBYTE
+printTIMER4	lda	$c08c,x	; T2
+	sta	valTIMER
+	lda	$c08d,x
+	sta	valTIMER+1
+	lda	$c08e,x
+	sta	valTIMER+2
+	lda	$c08f,x
+	sta	valTIMER+3
+
+printTIMER5	jsr	PRBYTE
 	lda	valTIMER+2
 	jsr	PRBYTE
 	lda	valTIMER+1
@@ -380,8 +397,8 @@ waitFORKEY	lda	KBD
 *-------------- DATA
 
 theTIMER	ds	1	; 1..2
-theFREQ	ds	1	; 0..2
-theLOOP	ds	1
+theFREQ	ds	1	; 0..3
+theLOOP	ds	1	; 0..255
 theSLOT	ds	1	; 0..7
 theSLOT16	ds	1	; 10=slot 1, ..., 70=slot 7
 

@@ -27,11 +27,15 @@ COUT	=	$FDED
 
 *-------------- EQUATES
 
-VERSION	=	3	; v0.3
+VERSION	=	4	; v0.x
 
 T	=	0
 T1	=	1
 T2	=	2
+
+F1	=	0
+F1X	=	1
+F35	=	2
 
 *-------------- MACROS
 
@@ -66,11 +70,23 @@ noTEST0	cmp	#"1"
 	
 noTEST1	cmp	#"2"
 	bne	noTEST2
-	jmp	doONESHOT
+	jmp	doONESHOTT1
 
 noTEST2	cmp	#"3"
+	bne	noTEST3
+	jmp	doLOOPT1
+
+noTEST3	cmp	#"4"
+	bne	noTEST4
+	jmp	doSETFREQ
+	
+noTEST4	cmp	#"5"
+	bne	noTEST5
+	jmp	doONESHOTT2
+
+noTEST5	cmp	#"6"
 	bne	loopTEST
-	jmp	doLOOP
+	jmp	doLOOPT2
 
 *-------------- SET SLOT
 
@@ -91,11 +107,31 @@ doSETSLOT	@printSTRING	#strSETSLOT
 	sta	theSLOT16
 	jmp	loopTEST
 	
+*-------------- SET T2 FREQUENCY
+
+doSETFREQ	@printSTRING	#strSETFREQ
+	jsr	RDKEY
+	cmp	#"1"
+	bcc	doSETFREQ
+	cmp	#"3"+1
+	bcs	doSETFREQ
+
+	sec
+	sbc	#"1"	; 1..3 -> 0..2
+	sta	theFREQ
+	jsr	setT2FREQUENCY
+	jmp	loopTEST
+	
 *-------------- ONE SHOT
 
 	ds	\
 
-doONESHOT	jsr	resetTIMER
+doONESHOTT1	lda	#T1
+	bne	doONESHOT
+doONESHOTT2	lda	#T2
+
+doONESHOT	sta	theTIMER
+	jsr	resetTIMER
 	jsr	startTIMER
 	jsr	doTEST
 	jsr	stopTIMER
@@ -107,6 +143,10 @@ doONESHOT	jsr	resetTIMER
 
 	ds	\
 	
+doLOOPT1	lda	#T1
+	bne	doLOOP
+doLOOPT2	lda	#T2
+
 doLOOP	jsr	resetTIMER
 
 	lda	#0
@@ -142,32 +182,39 @@ doTEST	lup	200
 
 *-------------- BRUTAL TIMER ROUTINES
 
-*------- Reset T1
+*------- Reset TIMER
 
 resetTIMER	ldx	theSLOT16
-	lda	#T
+	lda	theTIMER
 	sta	$c080,x
 	rts
 
-*------- Start T1
+*------- Start TIMER
 
 startTIMER	ldx	theSLOT16
-	lda	#T1
+	lda	theTIMER
 	sta	$C081,x
 	rts
 
-*------- Pause T1
+*------- Pause TIMER
 
 pauseTIMER	ldx	theSLOT16
-	lda	#T1
-	sta	$C082,x
+	lda	theTIMER
+	sta	$c082,x
 	rts
 
-*------- Stop T1
+*------- Stop TIMER
 
 stopTIMER	ldx	theSLOT16
-	lda	#T1
-	sta	$c081,x
+	lda	theTIMER
+	sta	$c082,x
+	rts
+
+*------- Set T2 frequency
+
+setT2FREQUENCY	ldx	theSLOT16
+	lda	theFREQ
+	sta	$c084,x
 	rts
 
 *------- Print timer value
@@ -179,20 +226,20 @@ printTIMER	@printSTRING	#strTIMER
 
 printTIMER1	ldx	theSLOT16
 	lda	$c088,x
-	sta	theTIMER
+	sta	valTIMER
 	lda	$c089,x
-	sta	theTIMER+1
+	sta	valTIMER+1
 	lda	$c08a,x
-	sta	theTIMER+2
+	sta	valTIMER+2
 	lda	$c08b,x
-	sta	theTIMER+3
+	sta	valTIMER+3
 
 	jsr	PRBYTE
-	lda	theTIMER+2
+	lda	valTIMER+2
 	jsr	PRBYTE
-	lda	theTIMER+1
+	lda	valTIMER+1
 	jsr	PRBYTE
-	lda	theTIMER
+	lda	valTIMER
 	jmp	PRBYTE
 	
 *---
@@ -200,7 +247,7 @@ printTIMER1	ldx	theSLOT16
 strTHELOOP	asc	8d"Loop: "00
 strTIMER2	asc	" / Timer: "00
 strTIMER	asc	8d"Timer: "00
-theTIMER	ds	4	; the 32-bit value
+valTIMER	ds	4	; the 32-bit value
 
 *------- Miscellaneous
 
@@ -245,6 +292,8 @@ waitFORKEY	lda	KBD
 
 *-------------- DATA
 
+theTIMER	ds	1	; 1..2
+theFREQ	ds	1	; 0..2
 theLOOP	ds	1
 theSLOT	ds	1	; 0..7
 theSLOT16	ds	1	; 10=slot 1, ..., 70=slot 7
@@ -257,11 +306,20 @@ strHELLO	asc	"Brutal Timer Test v0.@"8d
 
 strMENU	asc	8d
 	asc	"1- Set slot (#)"8d
-	asc	"2- One-shot test"8d
-	asc	"3- Loop test"8d
+	asc	"2- T1 One-shot test"8d
+	asc	"3- T1 Loop test"8d
+	asc	"4- T2 Set frequency"8d
+	asc	"5- T2 One-shot test"8d
+	asc	"6- T2 Loop test"8d
 	asc	"Select entry (0 to exit) > "00
 
 strSETSLOT	asc	8d
 	asc	"Set slot (1-7) > "00
+
+strSETFREQ	asc	8d
+	asc	"1- Set 1 MHz"8d
+	asc	"2- Set 1.xx MHz"8d
+	asc	"3- Set 3.5 MHz"8d
+	asc	"Set frequency (1-3) > "00
 
 strGOODBYE	asc	8d"Good bye!"00

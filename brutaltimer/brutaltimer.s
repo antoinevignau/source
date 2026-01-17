@@ -27,7 +27,7 @@ COUT	=	$FDED
 
 *-------------- EQUATES
 
-VERSION	=	5	; v0.x
+VERSION	=	6	; v0.x
 
 T	=	0
 T1	=	1
@@ -117,11 +117,11 @@ doSETFREQ	@printSTRING	#strSETFREQ
 	jsr	RDKEY
 	cmp	#"1"
 	bcc	doSETFREQ
-	cmp	#"3"+1
+	cmp	#"4"+1
 	bcs	doSETFREQ
 
 	sec
-	sbc	#"1"	; 1..3 -> 0..2
+	sbc	#"1"	; 1..4 -> 0..3
 	sta	theFREQ
 	jsr	setT2FREQUENCY
 	jmp	loopTEST
@@ -163,7 +163,11 @@ doSTATUS6	cmp	#%1000_0000
 	bne	doSTATUS7
 	@printSTRING	#strT2FREQ2
 
-doSTATUS7	jmp	loopTEST
+doSTATUS7	cmp	#%1100_0000
+	bne	doSTATUS8
+	@printSTRING	#strT2FREQ3
+
+doSTATUS8	jmp	loopTEST
 
 *-------------- ONE SHOT
 
@@ -367,6 +371,7 @@ strMENU	asc	8d
 	asc	"4- T2 Set frequency"8d
 	asc	"5- T2 One-shot test"8d
 	asc	"6- T2 Loop test"8d
+	asc	"7- Status"8d
 	asc	"Select entry (0 to exit) > "00
 
 strSETSLOT	asc	8d
@@ -376,7 +381,8 @@ strSETFREQ	asc	8d
 	asc	"1- Set 1 MHz"8d
 	asc	"2- Set 1.xx MHz"8d
 	asc	"3- Set 3.5 MHz"8d
-	asc	"Set frequency (1-3) > "00
+	asc	"4- Set Custom External"8d
+	asc	"Set frequency (1-4) > "00
 
 strT1ON	asc	8d"Timer 1 is  on"00
 strT1OFF	asc	8d"Timer 1 is off"00
@@ -387,5 +393,6 @@ strT2FREQ	asc	8d"Timer 2 frequency is: "00
 strT2FREQ0	asc	"1 MHz"00
 strT2FREQ1	asc	"1.xx MHz"00
 strT2FREQ2	asc	"3.5 Mhz"00
+strT2FREQ3	asc	"Custom External"00
 
 strGOODBYE	asc	8d"Good bye!"00

@@ -30,7 +30,7 @@
    27 |  1 brutaltimer.s     27 | Empty       | 11 |         |    0 | 00/2000               |                                            
    28 |  1 brutaltimer.s     28 | Comment     | 11 |         |    0 | 00/2000               | *-------------- EQUATES
    29 |  1 brutaltimer.s     29 | Empty       | 11 |         |    0 | 00/2000               |                                            
-   30 |  1 brutaltimer.s     30 | Equivalence | 11 |         |    0 | 00/2000               | VERSION       =             2              ; v0.2
+   30 |  1 brutaltimer.s     30 | Equivalence | 11 |         |    0 | 00/2000               | VERSION       =             3              ; v0.3
    31 |  1 brutaltimer.s     31 | Empty       | 11 |         |    0 | 00/2000               |                                            
    32 |  1 brutaltimer.s     32 | Equivalence | 11 |         |    0 | 00/2000               | T             =             0              
    33 |  1 brutaltimer.s     33 | Equivalence | 11 |         |    0 | 00/2000               | T1            =             1              
@@ -546,7 +546,7 @@
   379 |  1 brutaltimer.s    167 | Empty       | 11 |         |    0 | 00/241B               |                                            
   380 |  1 brutaltimer.s    168 | Code        | 11 |         |    3 | 00/241B : AE C4 24    | stopTIMER     ldx           theSLOT16      
   381 |  1 brutaltimer.s    169 | Code        | 11 |         |    2 | 00/241E : A9 01       |               lda           #{1}           
-  382 |  1 brutaltimer.s    170 | Code        | 11 |         |    3 | 00/2420 : 9D 80 C0    |               sta           $c080,x        
+  382 |  1 brutaltimer.s    170 | Code        | 11 |         |    3 | 00/2420 : 9D 81 C0    |               sta           $c081,x        
   383 |  1 brutaltimer.s    171 | Code        | 11 |         |    1 | 00/2423 : 60          |               rts                          
   384 |  1 brutaltimer.s    172 | Empty       | 11 |         |    0 | 00/2424               |                                            
   385 |  1 brutaltimer.s    173 | Comment     | 11 |         |    0 | 00/2424               | *------- Print timer value
@@ -600,7 +600,7 @@
   428 |  1 brutaltimer.s    210 | Code        | 11 |         |    3 | 00/248B : AD BD BD    | printSTRING1  lda           $bdbd          
   429 |  1 brutaltimer.s    211 | Code        | 11 |         |    2 | 00/248E : F0 22       |               beq           printSTRING4   
   430 |  1 brutaltimer.s    212 | Empty       | 11 |         |    0 | 00/2490               |                                            
-  431 |  1 brutaltimer.s    213 | Code        | 11 |         |    2 | 00/2490 : A2 02       |               ldx           #{2}           
+  431 |  1 brutaltimer.s    213 | Code        | 11 |         |    2 | 00/2490 : A2 03       |               ldx           #{3}           
   432 |  1 brutaltimer.s    214 | Code        | 11 |         |    2 | 00/2492 : C9 C0       |               cmp           #"@"           
   433 |  1 brutaltimer.s    215 | Code        | 11 |         |    2 | 00/2494 : F0 07       |               beq           printSTRING2   
   434 |  1 brutaltimer.s    216 | Code        | 11 |         |    3 | 00/2496 : AE C3 24    |               ldx           theSLOT        

@@ -27,7 +27,7 @@ COUT	=	$FDED
 
 *-------------- EQUATES
 
-VERSION	=	2	; v0.2
+VERSION	=	3	; v0.3
 
 T	=	0
 T1	=	1
@@ -167,7 +167,7 @@ pauseTIMER	ldx	theSLOT16
 
 stopTIMER	ldx	theSLOT16
 	lda	#T1
-	sta	$c080,x
+	sta	$c081,x
 	rts
 
 *------- Print timer value

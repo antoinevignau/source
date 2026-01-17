@@ -157,14 +157,17 @@ doSTATUS4	@printSTRING	#strT2FREQ
 	cmp	#%0000_0000
 	bne	doSTATUS5
 	@printSTRING	#strT2FREQ0
+	jmp	doSTATUS8
 
 doSTATUS5	cmp	#%0100_0000
 	bne	doSTATUS6
 	@printSTRING	#strT2FREQ1
+	jmp	doSTATUS8
 
 doSTATUS6	cmp	#%1000_0000
 	bne	doSTATUS7
 	@printSTRING	#strT2FREQ2
+	jmp	doSTATUS8
 
 doSTATUS7	cmp	#%1100_0000
 	bne	doSTATUS8

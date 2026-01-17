@@ -27,7 +27,7 @@ COUT	=	$FDED
 
 *-------------- EQUATES
 
-VERSION	=	4	; v0.x
+VERSION	=	5	; v0.x
 
 T	=	0
 T1	=	1
@@ -64,29 +64,33 @@ loopTEST	@printSTRING	#strMENU
 	@printSTRING	#strGOODBYE
 	rts
 
-noTEST0	cmp	#"1"
+noTEST0	cmp	#"1"	; set slot
 	bne	noTEST1
 	jmp	doSETSLOT
 	
-noTEST1	cmp	#"2"
+noTEST1	cmp	#"2"	; T1 one-shot
 	bne	noTEST2
 	jmp	doONESHOTT1
 
-noTEST2	cmp	#"3"
+noTEST2	cmp	#"3"	; T1 loop
 	bne	noTEST3
 	jmp	doLOOPT1
 
-noTEST3	cmp	#"4"
+noTEST3	cmp	#"4"	; set frequency
 	bne	noTEST4
 	jmp	doSETFREQ
 	
-noTEST4	cmp	#"5"
+noTEST4	cmp	#"5"	; T2 one-shot
 	bne	noTEST5
 	jmp	doONESHOTT2
 
-noTEST5	cmp	#"6"
-	bne	loopTEST
+noTEST5	cmp	#"6"	; T2 loop
+	bne	noTEST6
 	jmp	doLOOPT2
+
+noTEST6	cmp	#"7"
+	bne	loopTEST
+	jmp	doSTATUS
 
 *-------------- SET SLOT
 
@@ -121,7 +125,46 @@ doSETFREQ	@printSTRING	#strSETFREQ
 	sta	theFREQ
 	jsr	setT2FREQUENCY
 	jmp	loopTEST
-	
+
+*-------------- STATUS
+
+doSTATUS	jsr	readSTATUS
+
+*--- Timers status
+
+	pha
+	bpl	doSTATUS1	; T1 is off
+	@printSTRING	#strT1ON
+	jmp	doSTATUS2
+doSTATUS1	@printSTRING	#strT1OFF
+
+doSTATUS2	pla
+	asl
+	bpl	doSTATUS3	; T1 is off
+	@printSTRING	#strT2ON
+	jmp	doSTATUS4
+doSTATUS3	@printSTRING	#strT2OFF
+
+*--- Frequency
+
+doSTATUS4	@printSTRING	#strT2FREQ
+
+	jsr	readFREQUENCY
+	and	#%1100_0000
+	cmp	#%0000_0000
+	bne	doSTATUS5
+	@printSTRING	#strT2FREQ0
+
+doSTATUS5	cmp	#%0100_0000
+	bne	doSTATUS6
+	@printSTRING	#strT2FREQ1
+
+doSTATUS6	cmp	#%1000_0000
+	bne	doSTATUS7
+	@printSTRING	#strT2FREQ2
+
+doSTATUS7	jmp	loopTEST
+
 *-------------- ONE SHOT
 
 	ds	\
@@ -147,7 +190,8 @@ doLOOPT1	lda	#T1
 	bne	doLOOP
 doLOOPT2	lda	#T2
 
-doLOOP	jsr	resetTIMER
+doLOOP	sta	theTIMER
+	jsr	resetTIMER
 
 	lda	#0
 	sta	theLOOP
@@ -215,6 +259,18 @@ stopTIMER	ldx	theSLOT16
 setT2FREQUENCY	ldx	theSLOT16
 	lda	theFREQ
 	sta	$c084,x
+	rts
+
+*------- Read TIMER status
+
+readSTATUS	ldx	theSLOT16
+	lda	$c081,x
+	rts
+
+*------- Read TIMER frequency
+
+readFREQUENCY	ldx	theSLOT16
+	lda	$c084,x
 	rts
 
 *------- Print timer value
@@ -321,5 +377,15 @@ strSETFREQ	asc	8d
 	asc	"2- Set 1.xx MHz"8d
 	asc	"3- Set 3.5 MHz"8d
 	asc	"Set frequency (1-3) > "00
+
+strT1ON	asc	8d"Timer 1 is  on"00
+strT1OFF	asc	8d"Timer 1 is off"00
+strT2ON	asc	8d"Timer 2 is  on"00
+strT2OFF	asc	8d"Timer 2 is off"00
+
+strT2FREQ	asc	8d"Timer 2 frequency is: "00
+strT2FREQ0	asc	"1 MHz"00
+strT2FREQ1	asc	"1.xx MHz"00
+strT2FREQ2	asc	"3.5 Mhz"00
 
 strGOODBYE	asc	8d"Good bye!"00

@@ -27,7 +27,7 @@ COUT	=	$FDED
 
 *-------------- EQUATES
 
-VERSION	=	6	; v0.x
+VERSION	=	7	; v0.x
 
 T	=	0
 T1	=	1
@@ -36,6 +36,9 @@ T2	=	2
 F1	=	0
 F1X	=	1
 F35	=	2
+
+FALSE	=	0
+TRUE	=	255
 
 *-------------- MACROS
 
@@ -174,7 +177,7 @@ doSTATUS8	jmp	loopTEST
 	ds	\
 
 doONESHOTT1	lda	#T1
-	bne	doONESHOT
+	jmp	doONESHOT
 doONESHOTT2	lda	#T2
 
 doONESHOT	sta	theTIMER
@@ -191,10 +194,31 @@ doONESHOT	sta	theTIMER
 	ds	\
 	
 doLOOPT1	lda	#T1
-	bne	doLOOP
+	jmp	doLOOP
 doLOOPT2	lda	#T2
 
 doLOOP	sta	theTIMER
+
+*--- We have the timer to handle, was it active?
+
+	ldx	theTIMER
+	lda	theT1LOOP-1,x
+	cmp	#FALSE
+	beq	doLOOPSTART
+
+*--- Stop it now
+
+	lda	#FALSE
+	sta	theT1LOOP-1,x
+	jsr	stopTIMER
+	jsr	printTIMER
+	jmp	loopTEST
+
+*--- Start it now
+
+doLOOPSTART	lda	#TRUE	; start it
+	sta	theT1LOOP-1,x
+
 	jsr	resetTIMER
 
 	lda	#0
@@ -214,7 +238,7 @@ doLOOP	sta	theTIMER
 	lda	KBD
 	bpl	]lp
 	sta	KBDSTROBE
-	jsr	stopTIMER
+*	jsr	stopTIMER
 	jmp	loopTEST
 
 *-------------- THE TEST
@@ -241,7 +265,7 @@ resetTIMER	ldx	theSLOT16
 
 startTIMER	ldx	theSLOT16
 	lda	theTIMER
-	sta	$C081,x
+	sta	$c081,x
 	rts
 
 *------- Pause TIMER
@@ -358,6 +382,9 @@ theLOOP	ds	1
 theSLOT	ds	1	; 0..7
 theSLOT16	ds	1	; 10=slot 1, ..., 70=slot 7
 
+theT1LOOP	ds	1	; 0: off, 1: on
+theT2LOOP	ds	1	; 0: off, 1: on
+
 strHELLO	asc	"Brutal Timer Test v0.@"8d
 	asc	"(c) 2026, Plamen Vaysilov &"8d
 	asc	"Brutal Deluxe Software"8d00
@@ -378,10 +405,10 @@ strSETSLOT	asc	8d
 	asc	"Set slot (1-7) > "00
 
 strSETFREQ	asc	8d
-	asc	"1- Set 1 MHz"8d
-	asc	"2- Set 1.xx MHz"8d
-	asc	"3- Set 3.5 MHz"8d
-	asc	"4- Set Custom External"8d
+	asc	"1- A2-F0 clock"8d
+	asc	"2- A2-3.5 MHz"8d
+	asc	"3- 20 MHz clock"8d
+	asc	"4- Custom quartz"8d
 	asc	"Set frequency (1-4) > "00
 
 strT1ON	asc	8d"Timer 1 is  on"00
@@ -390,9 +417,9 @@ strT2ON	asc	8d"Timer 2 is  on"00
 strT2OFF	asc	8d"Timer 2 is off"00
 
 strT2FREQ	asc	8d"Timer 2 frequency is: "00
-strT2FREQ0	asc	"1 MHz"00
-strT2FREQ1	asc	"1.xx MHz"00
-strT2FREQ2	asc	"3.5 Mhz"00
-strT2FREQ3	asc	"Custom External"00
+strT2FREQ0	asc	"A2-F0 clock"00
+strT2FREQ1	asc	"A2-3.5 MHz"00
+strT2FREQ2	asc	"20 MHz clock"00
+strT2FREQ3	asc	"Custom quartz"00
 
 strGOODBYE	asc	8d"Good bye!"00

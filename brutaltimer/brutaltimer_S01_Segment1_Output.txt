@@ -1,0 +1,678 @@
+------+-------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File             Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+-------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1 brutaltimer.s      1 | Comment     | 11 |         |    0 | 00/8000               | *
+    2 |  1 brutaltimer.s      2 | Comment     | 11 |         |    0 | 00/8000               | * Brutal Timer Test
+    3 |  1 brutaltimer.s      3 | Comment     | 11 |         |    0 | 00/8000               | * by Plamen Vaysilov
+    4 |  1 brutaltimer.s      4 | Comment     | 11 |         |    0 | 00/8000               | *
+    5 |  1 brutaltimer.s      5 | Comment     | 11 |         |    0 | 00/8000               | * (c) 2026, Brutal Deluxe Software
+    6 |  1 brutaltimer.s      6 | Comment     | 11 |         |    0 | 00/8000               | *
+    7 |  1 brutaltimer.s      7 | Empty       | 11 |         |    0 | 00/8000               |                                            
+    8 |  1 brutaltimer.s      8 | Directive   | 11 |         |    0 | 00/8000               |               typ           BIN            
+    9 |  1 brutaltimer.s      9 | Directive   | 11 |         |    0 | 00/8000               |               org           $2000          
+   10 |  1 brutaltimer.s     10 | Directive   | 11 |         |    0 | 00/2000               |               lst           off            
+   11 |  1 brutaltimer.s     11 | Directive   | 11 |         |    0 | 00/2000               |               dsk           brutaltimer    
+   12 |  1 brutaltimer.s     12 | Empty       | 11 |         |    0 | 00/2000               |                                            
+   13 |  1 brutaltimer.s     13 | Comment     | 11 |         |    0 | 00/2000               | *-------------- FIRMWARE
+   14 |  1 brutaltimer.s     14 | Empty       | 11 |         |    0 | 00/2000               |                                            
+   15 |  1 brutaltimer.s     15 | Equivalence | 11 |         |    0 | 00/2000               | CH            =             $24            
+   16 |  1 brutaltimer.s     16 | Equivalence | 11 |         |    0 | 00/2000               | CV            =             $25            
+   17 |  1 brutaltimer.s     17 | Empty       | 11 |         |    0 | 00/2000               |                                            
+   18 |  1 brutaltimer.s     18 | Equivalence | 11 |         |    0 | 00/2000               | KBD           =             $C000          
+   19 |  1 brutaltimer.s     19 | Equivalence | 11 |         |    0 | 00/2000               | KBDSTROBE     =             $C010          
+   20 |  1 brutaltimer.s     20 | Empty       | 11 |         |    0 | 00/2000               |                                            
+   21 |  1 brutaltimer.s     21 | Equivalence | 11 |         |    0 | 00/2000               | TABV          =             $FB5B          
+   22 |  1 brutaltimer.s     22 | Equivalence | 11 |         |    0 | 00/2000               | HOME          =             $FC58          
+   23 |  1 brutaltimer.s     23 | Equivalence | 11 |         |    0 | 00/2000               | WAIT          =             $FCA8          
+   24 |  1 brutaltimer.s     24 | Equivalence | 11 |         |    0 | 00/2000               | RDKEY         =             $FD0C          
+   25 |  1 brutaltimer.s     25 | Equivalence | 11 |         |    0 | 00/2000               | PRBYTE        =             $FDDA          
+   26 |  1 brutaltimer.s     26 | Equivalence | 11 |         |    0 | 00/2000               | COUT          =             $FDED          
+   27 |  1 brutaltimer.s     27 | Empty       | 11 |         |    0 | 00/2000               |                                            
+   28 |  1 brutaltimer.s     28 | Comment     | 11 |         |    0 | 00/2000               | *-------------- MACROS
+   29 |  1 brutaltimer.s     29 | Empty       | 11 |         |    0 | 00/2000               |                                            
+   30 |  1 brutaltimer.s     30 | Directive   | 11 |         |    0 | 00/2000               | @printSTRING  mac                          
+   31 |  1 brutaltimer.s     31 | Directive   | 11 |         |    0 | 00/2000               |               ldx           #>]1           
+   32 |  1 brutaltimer.s     32 | Directive   | 11 |         |    0 | 00/2000               |               ldy           #<]1           
+   33 |  1 brutaltimer.s     33 | Directive   | 11 |         |    0 | 00/2000               |               jsr           printSTRING    
+   34 |  1 brutaltimer.s     34 | Directive   | 11 |         |    0 | 00/2000               |               <<<                          
+   35 |  1 brutaltimer.s     35 | Empty       | 11 |         |    0 | 00/2000               |                                            
+   36 |  1 brutaltimer.s     36 | Directive   | 11 |         |    0 | 00/2000               | @gotoxy       mac                          
+   37 |  1 brutaltimer.s     37 | Directive   | 11 |         |    0 | 00/2000               |               ldx           #]1            
+   38 |  1 brutaltimer.s     38 | Directive   | 11 |         |    0 | 00/2000               |               ldy           #]2            
+   39 |  1 brutaltimer.s     39 | Directive   | 11 |         |    0 | 00/2000               |               jsr           gotoxy         
+   40 |  1 brutaltimer.s     40 | Directive   | 11 |         |    0 | 00/2000               |               <<<                          
+   41 |  1 brutaltimer.s     41 | Empty       | 11 |         |    0 | 00/2000               |                                            
+   42 |  1 brutaltimer.s     42 | Comment     | 11 |         |    0 | 00/2000               | *-------------- CODE
+   43 |  1 brutaltimer.s     43 | Empty       | 11 |         |    0 | 00/2000               |                                            
+   44 |  1 brutaltimer.s     44 | Code        | 11 |         |    3 | 00/2000 : 20 58 FC    |               jsr           {$FC58}        
+   45 |  1 brutaltimer.s     45 | Macro       | 11 |         |    0 | 00/2003               |               @printSTRING  #strHELLO      
+   46 |  1 brutaltimer.s     45 | Code        | 11 |         |    2 | 00/2003 : A2 24       |               ldx           #>#strHELLO    
+   47 |  1 brutaltimer.s     45 | Code        | 11 |         |    2 | 00/2005 : A0 B8       |               ldy           #<#strHELLO    
+   48 |  1 brutaltimer.s     45 | Code        | 11 |         |    3 | 00/2007 : 20 7F 24    |               jsr           printSTRING    
+   49 |  1 brutaltimer.s     46 | Empty       | 11 |         |    0 | 00/200A               |                                            
+   50 |  1 brutaltimer.s     47 | Macro       | 11 |         |    0 | 00/200A               | loopTEST      @printSTRING  #strMENU       
+   51 |  1 brutaltimer.s     47 | Code        | 11 |         |    2 | 00/200A : A2 24       |               ldx           #>#strMENU     
+   52 |  1 brutaltimer.s     47 | Code        | 11 |         |    2 | 00/200C : A0 F5       |               ldy           #<#strMENU     
+   53 |  1 brutaltimer.s     47 | Code        | 11 |         |    3 | 00/200E : 20 7F 24    |               jsr           printSTRING    
+   54 |  1 brutaltimer.s     48 | Code        | 11 |         |    3 | 00/2011 : 20 0C FD    |               jsr           {$FD0C}        
+   55 |  1 brutaltimer.s     49 | Code        | 11 |         |    2 | 00/2014 : C9 B0       |               cmp           #"0"           
+   56 |  1 brutaltimer.s     50 | Code        | 11 |         |    2 | 00/2016 : D0 08       |               bne           noTEST0        
+   57 |  1 brutaltimer.s     51 | Empty       | 11 |         |    0 | 00/2018               |                                            
+   58 |  1 brutaltimer.s     52 | Macro       | 11 |         |    0 | 00/2018               |               @printSTRING  #strGOODBYE    
+   59 |  1 brutaltimer.s     52 | Code        | 11 |         |    2 | 00/2018 : A2 25       |               ldx           #>#strGOODBYE  
+   60 |  1 brutaltimer.s     52 | Code        | 11 |         |    2 | 00/201A : A0 53       |               ldy           #<#strGOODBYE  
+   61 |  1 brutaltimer.s     52 | Code        | 11 |         |    3 | 00/201C : 20 7F 24    |               jsr           printSTRING    
+   62 |  1 brutaltimer.s     53 | Code        | 11 |         |    1 | 00/201F : 60          |               rts                          
+   63 |  1 brutaltimer.s     54 | Empty       | 11 |         |    0 | 00/2020               |                                            
+   64 |  1 brutaltimer.s     55 | Code        | 11 |         |    2 | 00/2020 : C9 B1       | noTEST0       cmp           #"1"           
+   65 |  1 brutaltimer.s     56 | Code        | 11 |         |    2 | 00/2022 : D0 03       |               bne           noTEST1        
+   66 |  1 brutaltimer.s     57 | Code        | 11 |         |    3 | 00/2024 : 4C 35 20    |               jmp           doSETSLOT      
+   67 |  1 brutaltimer.s     58 | Empty       | 11 |         |    0 | 00/2027               |                                            
+   68 |  1 brutaltimer.s     59 | Code        | 11 |         |    2 | 00/2027 : C9 B2       | noTEST1       cmp           #"2"           
+   69 |  1 brutaltimer.s     60 | Code        | 11 |         |    2 | 00/2029 : D0 03       |               bne           noTEST2        
+   70 |  1 brutaltimer.s     61 | Code        | 11 |         |    3 | 00/202B : 4C 00 21    |               jmp           doONESHOT      
+   71 |  1 brutaltimer.s     62 | Empty       | 11 |         |    0 | 00/202E               |                                            
+   72 |  1 brutaltimer.s     63 | Code        | 11 |         |    2 | 00/202E : C9 B3       | noTEST2       cmp           #"3"           
+   73 |  1 brutaltimer.s     64 | Code        | 11 |         |    2 | 00/2030 : D0 D8       |               bne           loopTEST       
+   74 |  1 brutaltimer.s     65 | Code        | 11 |         |    3 | 00/2032 : 4C 00 22    |               jmp           doLOOP         
+   75 |  1 brutaltimer.s     66 | Empty       | 11 |         |    0 | 00/2035               |                                            
+   76 |  1 brutaltimer.s     67 | Comment     | 11 |         |    0 | 00/2035               | *-------------- SET SLOT
+   77 |  1 brutaltimer.s     68 | Empty       | 11 |         |    0 | 00/2035               |                                            
+   78 |  1 brutaltimer.s     69 | Macro       | 11 |         |    0 | 00/2035               | doSETSLOT     @printSTRING  #strSETSLOT    
+   79 |  1 brutaltimer.s     69 | Code        | 11 |         |    2 | 00/2035 : A2 25       |               ldx           #>#strSETSLOT  
+   80 |  1 brutaltimer.s     69 | Code        | 11 |         |    2 | 00/2037 : A0 40       |               ldy           #<#strSETSLOT  
+   81 |  1 brutaltimer.s     69 | Code        | 11 |         |    3 | 00/2039 : 20 7F 24    |               jsr           printSTRING    
+   82 |  1 brutaltimer.s     70 | Code        | 11 |         |    3 | 00/203C : 20 0C FD    |               jsr           {$FD0C}        
+   83 |  1 brutaltimer.s     71 | Code        | 11 |         |    2 | 00/203F : C9 B1       |               cmp           #"1"           
+   84 |  1 brutaltimer.s     72 | Code        | 11 |         |    2 | 00/2041 : 90 F2       |               bcc           doSETSLOT      
+   85 |  1 brutaltimer.s     73 | Code        | 11 |         |    2 | 00/2043 : C9 B8       |               cmp           #"7"+1         
+   86 |  1 brutaltimer.s     74 | Code        | 11 |         |    2 | 00/2045 : B0 EE       |               bcs           doSETSLOT      
+   87 |  1 brutaltimer.s     75 | Empty       | 11 |         |    0 | 00/2047               |                                            
+   88 |  1 brutaltimer.s     76 | Code        | 11 |         |    1 | 00/2047 : 38          |               sec                          
+   89 |  1 brutaltimer.s     77 | Code        | 11 |         |    2 | 00/2048 : E9 B0       |               sbc           #"0"           
+   90 |  1 brutaltimer.s     78 | Code        | 11 |         |    3 | 00/204A : 8D B6 24    |               sta           theSLOT        
+   91 |  1 brutaltimer.s     79 | Code        | 11 |         |    1 | 00/204D : 0A          |               asl                          
+   92 |  1 brutaltimer.s     80 | Code        | 11 |         |    1 | 00/204E : 0A          |               asl                          
+   93 |  1 brutaltimer.s     81 | Code        | 11 |         |    1 | 00/204F : 0A          |               asl                          
+   94 |  1 brutaltimer.s     82 | Code        | 11 |         |    1 | 00/2050 : 0A          |               asl                          
+   95 |  1 brutaltimer.s     83 | Code        | 11 |         |    3 | 00/2051 : 8D B7 24    |               sta           theSLOT16      
+   96 |  1 brutaltimer.s     84 | Code        | 11 |         |    3 | 00/2054 : 4C 0A 20    |               jmp           loopTEST       
+   97 |  1 brutaltimer.s     85 | Empty       | 11 |         |    0 | 00/2057               |                                            
+   98 |  1 brutaltimer.s     86 | Comment     | 11 |         |    0 | 00/2057               | *-------------- ONE SHOT
+   99 |  1 brutaltimer.s     87 | Empty       | 11 |         |    0 | 00/2057               |                                            
+  100 |  1 brutaltimer.s     88 | Data        | 11 |         |  169 | 00/2057 : 00 00 00 00 |               ds            \              
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00          |
+  101 |  1 brutaltimer.s     89 | Empty       | 11 |         |    0 | 00/2100               |                                            
+  102 |  1 brutaltimer.s     90 | Code        | 11 |         |    3 | 00/2100 : 20 00 24    | doONESHOT     jsr           resetTIMER     
+  103 |  1 brutaltimer.s     91 | Code        | 11 |         |    3 | 00/2103 : 20 07 24    |               jsr           startTIMER     
+  104 |  1 brutaltimer.s     92 | Code        | 11 |         |    3 | 00/2106 : 20 00 23    |               jsr           doTEST         
+  105 |  1 brutaltimer.s     93 | Code        | 11 |         |    3 | 00/2109 : 20 17 24    |               jsr           stopTIMER      
+  106 |  1 brutaltimer.s     94 | Code        | 11 |         |    3 | 00/210C : 20 28 24    |               jsr           printTIMER     
+  107 |  1 brutaltimer.s     95 | Code        | 11 |         |    3 | 00/210F : 20 AC 24    |               jsr           waitFORKEY     
+  108 |  1 brutaltimer.s     96 | Code        | 11 |         |    3 | 00/2112 : 4C 0A 20    |               jmp           loopTEST       
+  109 |  1 brutaltimer.s     97 | Empty       | 11 |         |    0 | 00/2115               |                                            
+  110 |  1 brutaltimer.s     98 | Comment     | 11 |         |    0 | 00/2115               | *-------------- LOOP TEST
+  111 |  1 brutaltimer.s     99 | Empty       | 11 |         |    0 | 00/2115               |                                            
+  112 |  1 brutaltimer.s    100 | Data        | 11 |         |  235 | 00/2115 : 00 00 00 00 |               ds            \              
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00    |
+  113 |  1 brutaltimer.s    101 | Empty       | 11 |         |    0 | 00/2200               |                                            
+  114 |  1 brutaltimer.s    102 | Code        | 11 |         |    3 | 00/2200 : 20 00 24    | doLOOP        jsr           resetTIMER     
+  115 |  1 brutaltimer.s    103 | Empty       | 11 |         |    0 | 00/2203               |                                            
+  116 |  1 brutaltimer.s    104 | Code        | 11 |         |    2 | 00/2203 : A9 00       |               lda           #0             
+  117 |  1 brutaltimer.s    105 | Code        | 11 |         |    3 | 00/2205 : 8D B5 24    |               sta           theLOOP        
+  118 |  1 brutaltimer.s    106 | Empty       | 11 |         |    0 | 00/2208               |                                            
+  119 |  1 brutaltimer.s    107 | Code        | 11 |         |    3 | 00/2208 : 20 07 24    | ozunid_1      jsr           startTIMER     
+  120 |  1 brutaltimer.s    108 | Code        | 11 |         |    3 | 00/220B : 20 00 23    |               jsr           doTEST         
+  121 |  1 brutaltimer.s    109 | Code        | 11 |         |    3 | 00/220E : 20 10 24    |               jsr           pauseTIMER     
+  122 |  1 brutaltimer.s    110 | Empty       | 11 |         |    0 | 00/2211               |                                            
+  123 |  1 brutaltimer.s    111 | Macro       | 11 |         |    0 | 00/2211               |               @printSTRING  #strTHELOOP    
+  124 |  1 brutaltimer.s    111 | Code        | 11 |         |    2 | 00/2211 : A2 24       |               ldx           #>#strTHELOOP  
+  125 |  1 brutaltimer.s    111 | Code        | 11 |         |    2 | 00/2213 : A0 5F       |               ldy           #<#strTHELOOP  
+  126 |  1 brutaltimer.s    111 | Code        | 11 |         |    3 | 00/2215 : 20 7F 24    |               jsr           printSTRING    
+  127 |  1 brutaltimer.s    112 | Code        | 11 |         |    3 | 00/2218 : AD B5 24    |               lda           theLOOP        
+  128 |  1 brutaltimer.s    113 | Code        | 11 |         |    3 | 00/221B : 20 DA FD    |               jsr           {$FDDA}        
+  129 |  1 brutaltimer.s    114 | Code        | 11 |         |    3 | 00/221E : 20 1E 24    |               jsr           printTIMER2    
+  130 |  1 brutaltimer.s    115 | Empty       | 11 |         |    0 | 00/2221               |                                            
+  131 |  1 brutaltimer.s    116 | Code        | 11 |         |    3 | 00/2221 : EE B5 24    |               inc           theLOOP        
+  132 |  1 brutaltimer.s    117 | Empty       | 11 |         |    0 | 00/2224               |                                            
+  133 |  1 brutaltimer.s    118 | Code        | 11 |         |    3 | 00/2224 : AD 00 C0    |               lda           {$C000}        
+  134 |  1 brutaltimer.s    119 | Code        | 11 |         |    2 | 00/2227 : 10 DF       |               bpl           ozunid_1       
+  135 |  1 brutaltimer.s    120 | Code        | 11 |         |    3 | 00/2229 : 8D 10 C0    |               sta           {$C010}        
+  136 |  1 brutaltimer.s    121 | Code        | 11 |         |    3 | 00/222C : 20 17 24    |               jsr           stopTIMER      
+  137 |  1 brutaltimer.s    122 | Code        | 11 |         |    3 | 00/222F : 4C 0A 20    |               jmp           loopTEST       
+  138 |  1 brutaltimer.s    123 | Empty       | 11 |         |    0 | 00/2232               |                                            
+  139 |  1 brutaltimer.s    124 | Comment     | 11 |         |    0 | 00/2232               | *-------------- THE TEST
+  140 |  1 brutaltimer.s    125 | Empty       | 11 |         |    0 | 00/2232               |                                            
+  141 |  1 brutaltimer.s    126 | Data        | 11 |         |  206 | 00/2232 : 00 00 00 00 |               ds            \              ; page aligned
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00       |
+  142 |  1 brutaltimer.s    127 | Empty       | 11 |         |    0 | 00/2300               |                                            
+  143 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2300 : EA          | doTEST        nop                          ; 2 cycles x 200
+  144 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2301 : EA          |               nop                          ; 2 cycles x 200
+  145 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2302 : EA          |               nop                          ; 2 cycles x 200
+  146 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2303 : EA          |               nop                          ; 2 cycles x 200
+  147 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2304 : EA          |               nop                          ; 2 cycles x 200
+  148 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2305 : EA          |               nop                          ; 2 cycles x 200
+  149 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2306 : EA          |               nop                          ; 2 cycles x 200
+  150 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2307 : EA          |               nop                          ; 2 cycles x 200
+  151 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2308 : EA          |               nop                          ; 2 cycles x 200
+  152 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2309 : EA          |               nop                          ; 2 cycles x 200
+  153 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/230A : EA          |               nop                          ; 2 cycles x 200
+  154 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/230B : EA          |               nop                          ; 2 cycles x 200
+  155 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/230C : EA          |               nop                          ; 2 cycles x 200
+  156 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/230D : EA          |               nop                          ; 2 cycles x 200
+  157 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/230E : EA          |               nop                          ; 2 cycles x 200
+  158 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/230F : EA          |               nop                          ; 2 cycles x 200
+  159 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2310 : EA          |               nop                          ; 2 cycles x 200
+  160 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2311 : EA          |               nop                          ; 2 cycles x 200
+  161 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2312 : EA          |               nop                          ; 2 cycles x 200
+  162 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2313 : EA          |               nop                          ; 2 cycles x 200
+  163 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2314 : EA          |               nop                          ; 2 cycles x 200
+  164 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2315 : EA          |               nop                          ; 2 cycles x 200
+  165 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2316 : EA          |               nop                          ; 2 cycles x 200
+  166 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2317 : EA          |               nop                          ; 2 cycles x 200
+  167 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2318 : EA          |               nop                          ; 2 cycles x 200
+  168 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2319 : EA          |               nop                          ; 2 cycles x 200
+  169 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/231A : EA          |               nop                          ; 2 cycles x 200
+  170 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/231B : EA          |               nop                          ; 2 cycles x 200
+  171 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/231C : EA          |               nop                          ; 2 cycles x 200
+  172 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/231D : EA          |               nop                          ; 2 cycles x 200
+  173 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/231E : EA          |               nop                          ; 2 cycles x 200
+  174 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/231F : EA          |               nop                          ; 2 cycles x 200
+  175 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2320 : EA          |               nop                          ; 2 cycles x 200
+  176 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2321 : EA          |               nop                          ; 2 cycles x 200
+  177 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2322 : EA          |               nop                          ; 2 cycles x 200
+  178 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2323 : EA          |               nop                          ; 2 cycles x 200
+  179 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2324 : EA          |               nop                          ; 2 cycles x 200
+  180 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2325 : EA          |               nop                          ; 2 cycles x 200
+  181 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2326 : EA          |               nop                          ; 2 cycles x 200
+  182 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2327 : EA          |               nop                          ; 2 cycles x 200
+  183 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2328 : EA          |               nop                          ; 2 cycles x 200
+  184 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2329 : EA          |               nop                          ; 2 cycles x 200
+  185 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/232A : EA          |               nop                          ; 2 cycles x 200
+  186 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/232B : EA          |               nop                          ; 2 cycles x 200
+  187 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/232C : EA          |               nop                          ; 2 cycles x 200
+  188 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/232D : EA          |               nop                          ; 2 cycles x 200
+  189 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/232E : EA          |               nop                          ; 2 cycles x 200
+  190 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/232F : EA          |               nop                          ; 2 cycles x 200
+  191 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2330 : EA          |               nop                          ; 2 cycles x 200
+  192 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2331 : EA          |               nop                          ; 2 cycles x 200
+  193 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2332 : EA          |               nop                          ; 2 cycles x 200
+  194 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2333 : EA          |               nop                          ; 2 cycles x 200
+  195 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2334 : EA          |               nop                          ; 2 cycles x 200
+  196 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2335 : EA          |               nop                          ; 2 cycles x 200
+  197 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2336 : EA          |               nop                          ; 2 cycles x 200
+  198 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2337 : EA          |               nop                          ; 2 cycles x 200
+  199 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2338 : EA          |               nop                          ; 2 cycles x 200
+  200 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2339 : EA          |               nop                          ; 2 cycles x 200
+  201 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/233A : EA          |               nop                          ; 2 cycles x 200
+  202 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/233B : EA          |               nop                          ; 2 cycles x 200
+  203 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/233C : EA          |               nop                          ; 2 cycles x 200
+  204 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/233D : EA          |               nop                          ; 2 cycles x 200
+  205 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/233E : EA          |               nop                          ; 2 cycles x 200
+  206 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/233F : EA          |               nop                          ; 2 cycles x 200
+  207 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2340 : EA          |               nop                          ; 2 cycles x 200
+  208 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2341 : EA          |               nop                          ; 2 cycles x 200
+  209 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2342 : EA          |               nop                          ; 2 cycles x 200
+  210 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2343 : EA          |               nop                          ; 2 cycles x 200
+  211 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2344 : EA          |               nop                          ; 2 cycles x 200
+  212 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2345 : EA          |               nop                          ; 2 cycles x 200
+  213 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2346 : EA          |               nop                          ; 2 cycles x 200
+  214 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2347 : EA          |               nop                          ; 2 cycles x 200
+  215 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2348 : EA          |               nop                          ; 2 cycles x 200
+  216 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2349 : EA          |               nop                          ; 2 cycles x 200
+  217 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/234A : EA          |               nop                          ; 2 cycles x 200
+  218 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/234B : EA          |               nop                          ; 2 cycles x 200
+  219 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/234C : EA          |               nop                          ; 2 cycles x 200
+  220 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/234D : EA          |               nop                          ; 2 cycles x 200
+  221 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/234E : EA          |               nop                          ; 2 cycles x 200
+  222 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/234F : EA          |               nop                          ; 2 cycles x 200
+  223 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2350 : EA          |               nop                          ; 2 cycles x 200
+  224 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2351 : EA          |               nop                          ; 2 cycles x 200
+  225 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2352 : EA          |               nop                          ; 2 cycles x 200
+  226 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2353 : EA          |               nop                          ; 2 cycles x 200
+  227 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2354 : EA          |               nop                          ; 2 cycles x 200
+  228 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2355 : EA          |               nop                          ; 2 cycles x 200
+  229 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2356 : EA          |               nop                          ; 2 cycles x 200
+  230 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2357 : EA          |               nop                          ; 2 cycles x 200
+  231 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2358 : EA          |               nop                          ; 2 cycles x 200
+  232 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2359 : EA          |               nop                          ; 2 cycles x 200
+  233 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/235A : EA          |               nop                          ; 2 cycles x 200
+  234 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/235B : EA          |               nop                          ; 2 cycles x 200
+  235 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/235C : EA          |               nop                          ; 2 cycles x 200
+  236 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/235D : EA          |               nop                          ; 2 cycles x 200
+  237 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/235E : EA          |               nop                          ; 2 cycles x 200
+  238 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/235F : EA          |               nop                          ; 2 cycles x 200
+  239 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2360 : EA          |               nop                          ; 2 cycles x 200
+  240 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2361 : EA          |               nop                          ; 2 cycles x 200
+  241 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2362 : EA          |               nop                          ; 2 cycles x 200
+  242 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2363 : EA          |               nop                          ; 2 cycles x 200
+  243 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2364 : EA          |               nop                          ; 2 cycles x 200
+  244 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2365 : EA          |               nop                          ; 2 cycles x 200
+  245 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2366 : EA          |               nop                          ; 2 cycles x 200
+  246 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2367 : EA          |               nop                          ; 2 cycles x 200
+  247 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2368 : EA          |               nop                          ; 2 cycles x 200
+  248 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2369 : EA          |               nop                          ; 2 cycles x 200
+  249 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/236A : EA          |               nop                          ; 2 cycles x 200
+  250 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/236B : EA          |               nop                          ; 2 cycles x 200
+  251 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/236C : EA          |               nop                          ; 2 cycles x 200
+  252 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/236D : EA          |               nop                          ; 2 cycles x 200
+  253 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/236E : EA          |               nop                          ; 2 cycles x 200
+  254 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/236F : EA          |               nop                          ; 2 cycles x 200
+  255 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2370 : EA          |               nop                          ; 2 cycles x 200
+  256 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2371 : EA          |               nop                          ; 2 cycles x 200
+  257 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2372 : EA          |               nop                          ; 2 cycles x 200
+  258 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2373 : EA          |               nop                          ; 2 cycles x 200
+  259 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2374 : EA          |               nop                          ; 2 cycles x 200
+  260 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2375 : EA          |               nop                          ; 2 cycles x 200
+  261 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2376 : EA          |               nop                          ; 2 cycles x 200
+  262 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2377 : EA          |               nop                          ; 2 cycles x 200
+  263 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2378 : EA          |               nop                          ; 2 cycles x 200
+  264 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2379 : EA          |               nop                          ; 2 cycles x 200
+  265 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/237A : EA          |               nop                          ; 2 cycles x 200
+  266 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/237B : EA          |               nop                          ; 2 cycles x 200
+  267 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/237C : EA          |               nop                          ; 2 cycles x 200
+  268 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/237D : EA          |               nop                          ; 2 cycles x 200
+  269 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/237E : EA          |               nop                          ; 2 cycles x 200
+  270 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/237F : EA          |               nop                          ; 2 cycles x 200
+  271 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2380 : EA          |               nop                          ; 2 cycles x 200
+  272 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2381 : EA          |               nop                          ; 2 cycles x 200
+  273 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2382 : EA          |               nop                          ; 2 cycles x 200
+  274 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2383 : EA          |               nop                          ; 2 cycles x 200
+  275 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2384 : EA          |               nop                          ; 2 cycles x 200
+  276 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2385 : EA          |               nop                          ; 2 cycles x 200
+  277 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2386 : EA          |               nop                          ; 2 cycles x 200
+  278 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2387 : EA          |               nop                          ; 2 cycles x 200
+  279 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2388 : EA          |               nop                          ; 2 cycles x 200
+  280 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2389 : EA          |               nop                          ; 2 cycles x 200
+  281 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/238A : EA          |               nop                          ; 2 cycles x 200
+  282 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/238B : EA          |               nop                          ; 2 cycles x 200
+  283 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/238C : EA          |               nop                          ; 2 cycles x 200
+  284 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/238D : EA          |               nop                          ; 2 cycles x 200
+  285 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/238E : EA          |               nop                          ; 2 cycles x 200
+  286 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/238F : EA          |               nop                          ; 2 cycles x 200
+  287 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2390 : EA          |               nop                          ; 2 cycles x 200
+  288 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2391 : EA          |               nop                          ; 2 cycles x 200
+  289 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2392 : EA          |               nop                          ; 2 cycles x 200
+  290 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2393 : EA          |               nop                          ; 2 cycles x 200
+  291 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2394 : EA          |               nop                          ; 2 cycles x 200
+  292 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2395 : EA          |               nop                          ; 2 cycles x 200
+  293 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2396 : EA          |               nop                          ; 2 cycles x 200
+  294 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2397 : EA          |               nop                          ; 2 cycles x 200
+  295 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2398 : EA          |               nop                          ; 2 cycles x 200
+  296 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/2399 : EA          |               nop                          ; 2 cycles x 200
+  297 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/239A : EA          |               nop                          ; 2 cycles x 200
+  298 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/239B : EA          |               nop                          ; 2 cycles x 200
+  299 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/239C : EA          |               nop                          ; 2 cycles x 200
+  300 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/239D : EA          |               nop                          ; 2 cycles x 200
+  301 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/239E : EA          |               nop                          ; 2 cycles x 200
+  302 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/239F : EA          |               nop                          ; 2 cycles x 200
+  303 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23A0 : EA          |               nop                          ; 2 cycles x 200
+  304 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23A1 : EA          |               nop                          ; 2 cycles x 200
+  305 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23A2 : EA          |               nop                          ; 2 cycles x 200
+  306 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23A3 : EA          |               nop                          ; 2 cycles x 200
+  307 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23A4 : EA          |               nop                          ; 2 cycles x 200
+  308 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23A5 : EA          |               nop                          ; 2 cycles x 200
+  309 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23A6 : EA          |               nop                          ; 2 cycles x 200
+  310 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23A7 : EA          |               nop                          ; 2 cycles x 200
+  311 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23A8 : EA          |               nop                          ; 2 cycles x 200
+  312 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23A9 : EA          |               nop                          ; 2 cycles x 200
+  313 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23AA : EA          |               nop                          ; 2 cycles x 200
+  314 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23AB : EA          |               nop                          ; 2 cycles x 200
+  315 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23AC : EA          |               nop                          ; 2 cycles x 200
+  316 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23AD : EA          |               nop                          ; 2 cycles x 200
+  317 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23AE : EA          |               nop                          ; 2 cycles x 200
+  318 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23AF : EA          |               nop                          ; 2 cycles x 200
+  319 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23B0 : EA          |               nop                          ; 2 cycles x 200
+  320 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23B1 : EA          |               nop                          ; 2 cycles x 200
+  321 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23B2 : EA          |               nop                          ; 2 cycles x 200
+  322 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23B3 : EA          |               nop                          ; 2 cycles x 200
+  323 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23B4 : EA          |               nop                          ; 2 cycles x 200
+  324 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23B5 : EA          |               nop                          ; 2 cycles x 200
+  325 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23B6 : EA          |               nop                          ; 2 cycles x 200
+  326 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23B7 : EA          |               nop                          ; 2 cycles x 200
+  327 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23B8 : EA          |               nop                          ; 2 cycles x 200
+  328 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23B9 : EA          |               nop                          ; 2 cycles x 200
+  329 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23BA : EA          |               nop                          ; 2 cycles x 200
+  330 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23BB : EA          |               nop                          ; 2 cycles x 200
+  331 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23BC : EA          |               nop                          ; 2 cycles x 200
+  332 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23BD : EA          |               nop                          ; 2 cycles x 200
+  333 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23BE : EA          |               nop                          ; 2 cycles x 200
+  334 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23BF : EA          |               nop                          ; 2 cycles x 200
+  335 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23C0 : EA          |               nop                          ; 2 cycles x 200
+  336 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23C1 : EA          |               nop                          ; 2 cycles x 200
+  337 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23C2 : EA          |               nop                          ; 2 cycles x 200
+  338 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23C3 : EA          |               nop                          ; 2 cycles x 200
+  339 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23C4 : EA          |               nop                          ; 2 cycles x 200
+  340 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23C5 : EA          |               nop                          ; 2 cycles x 200
+  341 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23C6 : EA          |               nop                          ; 2 cycles x 200
+  342 |  1 brutaltimer.s    129 | Code        | 11 |         |    1 | 00/23C7 : EA          |               nop                          ; 2 cycles x 200
+  343 |  1 brutaltimer.s    131 | Code        | 11 |         |    1 | 00/23C8 : 60          |               rts                          ; 6
+  344 |  1 brutaltimer.s    132 | Empty       | 11 |         |    0 | 00/23C9               |                                            
+  345 |  1 brutaltimer.s    133 | Data        | 11 |         |   55 | 00/23C9 : 00 00 00 00 |               ds            \              
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00    |
+  346 |  1 brutaltimer.s    134 | Empty       | 11 |         |    0 | 00/2400               |                                            
+  347 |  1 brutaltimer.s    135 | Comment     | 11 |         |    0 | 00/2400               | *-------------- BRUTAL TIMER ROUTINES
+  348 |  1 brutaltimer.s    136 | Empty       | 11 |         |    0 | 00/2400               |                                            
+  349 |  1 brutaltimer.s    137 | Comment     | 11 |         |    0 | 00/2400               | *------- Reset T1
+  350 |  1 brutaltimer.s    138 | Empty       | 11 |         |    0 | 00/2400               |                                            
+  351 |  1 brutaltimer.s    139 | Code        | 11 |         |    3 | 00/2400 : AE B7 24    | resetTIMER    ldx           theSLOT16      
+  352 |  1 brutaltimer.s    140 | Code        | 11 |         |    3 | 00/2403 : 9D 80 C0    |               sta           $c080,x        
+  353 |  1 brutaltimer.s    141 | Code        | 11 |         |    1 | 00/2406 : 60          |               rts                          
+  354 |  1 brutaltimer.s    142 | Empty       | 11 |         |    0 | 00/2407               |                                            
+  355 |  1 brutaltimer.s    143 | Comment     | 11 |         |    0 | 00/2407               | *------- Start T1
+  356 |  1 brutaltimer.s    144 | Empty       | 11 |         |    0 | 00/2407               |                                            
+  357 |  1 brutaltimer.s    145 | Code        | 11 |         |    3 | 00/2407 : AE B7 24    | startTIMER    ldx           theSLOT16      
+  358 |  1 brutaltimer.s    146 | Code        | 11 |         |    2 | 00/240A : A9 01       |               lda           #1             
+  359 |  1 brutaltimer.s    147 | Code        | 11 |         |    3 | 00/240C : 9D 81 C0    |               sta           $C081,x        
+  360 |  1 brutaltimer.s    148 | Code        | 11 |         |    1 | 00/240F : 60          |               rts                          
+  361 |  1 brutaltimer.s    149 | Empty       | 11 |         |    0 | 00/2410               |                                            
+  362 |  1 brutaltimer.s    150 | Comment     | 11 |         |    0 | 00/2410               | *------- Pause T1
+  363 |  1 brutaltimer.s    151 | Empty       | 11 |         |    0 | 00/2410               |                                            
+  364 |  1 brutaltimer.s    152 | Code        | 11 |         |    3 | 00/2410 : AE B7 24    | pauseTIMER    ldx           theSLOT16      
+  365 |  1 brutaltimer.s    153 | Code        | 11 |         |    3 | 00/2413 : 9D 82 C0    |               sta           $C082,x        
+  366 |  1 brutaltimer.s    154 | Code        | 11 |         |    1 | 00/2416 : 60          |               rts                          
+  367 |  1 brutaltimer.s    155 | Empty       | 11 |         |    0 | 00/2417               |                                            
+  368 |  1 brutaltimer.s    156 | Comment     | 11 |         |    0 | 00/2417               | *------- Stop T1
+  369 |  1 brutaltimer.s    157 | Empty       | 11 |         |    0 | 00/2417               |                                            
+  370 |  1 brutaltimer.s    158 | Code        | 11 |         |    3 | 00/2417 : AE B7 24    | stopTIMER     ldx           theSLOT16      
+  371 |  1 brutaltimer.s    159 | Code        | 11 |         |    3 | 00/241A : 9D 80 C0    |               sta           $c080,x        
+  372 |  1 brutaltimer.s    160 | Code        | 11 |         |    1 | 00/241D : 60          |               rts                          
+  373 |  1 brutaltimer.s    161 | Empty       | 11 |         |    0 | 00/241E               |                                            
+  374 |  1 brutaltimer.s    162 | Comment     | 11 |         |    0 | 00/241E               | *------- Print timer value
+  375 |  1 brutaltimer.s    163 | Empty       | 11 |         |    0 | 00/241E               |                                            
+  376 |  1 brutaltimer.s    164 | Macro       | 11 |         |    0 | 00/241E               | printTIMER2   @printSTRING  #strTIMER2     
+  377 |  1 brutaltimer.s    164 | Code        | 11 |         |    2 | 00/241E : A2 24       |               ldx           #>#strTIMER2   
+  378 |  1 brutaltimer.s    164 | Code        | 11 |         |    2 | 00/2420 : A0 67       |               ldy           #<#strTIMER2   
+  379 |  1 brutaltimer.s    164 | Code        | 11 |         |    3 | 00/2422 : 20 7F 24    |               jsr           printSTRING    
+  380 |  1 brutaltimer.s    165 | Code        | 11 |         |    3 | 00/2425 : 4C 2F 24    |               jmp           printTIMER1    
+  381 |  1 brutaltimer.s    166 | Empty       | 11 |         |    0 | 00/2428               |                                            
+  382 |  1 brutaltimer.s    167 | Macro       | 11 |         |    0 | 00/2428               | printTIMER    @printSTRING  #strTIMER      
+  383 |  1 brutaltimer.s    167 | Code        | 11 |         |    2 | 00/2428 : A2 24       |               ldx           #>#strTIMER    
+  384 |  1 brutaltimer.s    167 | Code        | 11 |         |    2 | 00/242A : A0 72       |               ldy           #<#strTIMER    
+  385 |  1 brutaltimer.s    167 | Code        | 11 |         |    3 | 00/242C : 20 7F 24    |               jsr           printSTRING    
+  386 |  1 brutaltimer.s    168 | Empty       | 11 |         |    0 | 00/242F               |                                            
+  387 |  1 brutaltimer.s    169 | Code        | 11 |         |    3 | 00/242F : AE B7 24    | printTIMER1   ldx           theSLOT16      
+  388 |  1 brutaltimer.s    170 | Code        | 11 |         |    3 | 00/2432 : BD 84 C0    |               lda           $c084,x        
+  389 |  1 brutaltimer.s    171 | Code        | 11 |         |    3 | 00/2435 : 8D 7B 24    |               sta           theTIMER       
+  390 |  1 brutaltimer.s    172 | Code        | 11 |         |    3 | 00/2438 : BD 85 C0    |               lda           $c085,x        
+  391 |  1 brutaltimer.s    173 | Code        | 11 |         |    3 | 00/243B : 8D 7C 24    |               sta           theTIMER+1     
+  392 |  1 brutaltimer.s    174 | Code        | 11 |         |    3 | 00/243E : BD 86 C0    |               lda           $c086,x        
+  393 |  1 brutaltimer.s    175 | Code        | 11 |         |    3 | 00/2441 : 8D 7D 24    |               sta           theTIMER+2     
+  394 |  1 brutaltimer.s    176 | Code        | 11 |         |    3 | 00/2444 : BD 87 C0    |               lda           $c087,x        
+  395 |  1 brutaltimer.s    177 | Code        | 11 |         |    3 | 00/2447 : 8D 7E 24    |               sta           theTIMER+3     
+  396 |  1 brutaltimer.s    178 | Empty       | 11 |         |    0 | 00/244A               |                                            
+  397 |  1 brutaltimer.s    179 | Code        | 11 |         |    3 | 00/244A : 20 DA FD    |               jsr           {$FDDA}        
+  398 |  1 brutaltimer.s    180 | Code        | 11 |         |    3 | 00/244D : AD 7D 24    |               lda           theTIMER+2     
+  399 |  1 brutaltimer.s    181 | Code        | 11 |         |    3 | 00/2450 : 20 DA FD    |               jsr           {$FDDA}        
+  400 |  1 brutaltimer.s    182 | Code        | 11 |         |    3 | 00/2453 : AD 7C 24    |               lda           theTIMER+1     
+  401 |  1 brutaltimer.s    183 | Code        | 11 |         |    3 | 00/2456 : 20 DA FD    |               jsr           {$FDDA}        
+  402 |  1 brutaltimer.s    184 | Code        | 11 |         |    3 | 00/2459 : AD 7B 24    |               lda           theTIMER       
+  403 |  1 brutaltimer.s    185 | Code        | 11 |         |    3 | 00/245C : 4C DA FD    |               jmp           {$FDDA}        
+  404 |  1 brutaltimer.s    186 | Empty       | 11 |         |    0 | 00/245F               |                                            
+  405 |  1 brutaltimer.s    187 | Comment     | 11 |         |    0 | 00/245F               | *---
+  406 |  1 brutaltimer.s    188 | Empty       | 11 |         |    0 | 00/245F               |                                            
+  407 |  1 brutaltimer.s    189 | Data        | 11 |         |    8 | 00/245F : 8D CC EF EF | strTHELOOP    asc           8d"Loop: "00   
+      |                         |             |    |         |      |           F0 BA A0 00 |
+  408 |  1 brutaltimer.s    190 | Data        | 11 |         |   11 | 00/2467 : A0 AF A0 D4 | strTIMER2     asc           " / Timer: "00 
+      |                         |             |    |         |      |           E9 ED E5 F2 |
+      |                         |             |    |         |      |           BA A0 00    |
+  409 |  1 brutaltimer.s    191 | Data        | 11 |         |    9 | 00/2472 : 8D D4 E9 ED | strTIMER      asc           8d"Timer: "00  
+      |                         |             |    |         |      |           E5 F2 BA A0 |
+      |                         |             |    |         |      |           00          |
+  410 |  1 brutaltimer.s    192 | Data        | 11 |         |    4 | 00/247B : 00 00 00 00 | theTIMER      ds            4              ; the 32-bit value
+  411 |  1 brutaltimer.s    193 | Empty       | 11 |         |    0 | 00/247F               |                                            
+  412 |  1 brutaltimer.s    194 | Comment     | 11 |         |    0 | 00/247F               | *------- Miscellaneous
+  413 |  1 brutaltimer.s    195 | Empty       | 11 |         |    0 | 00/247F               |                                            
+  414 |  1 brutaltimer.s    196 | Code        | 11 |         |    3 | 00/247F : 8C 86 24    | printSTRING   sty           printSTRING1+1 
+  415 |  1 brutaltimer.s    197 | Code        | 11 |         |    3 | 00/2482 : 8E 87 24    |               stx           printSTRING1+2 
+  416 |  1 brutaltimer.s    198 | Empty       | 11 |         |    0 | 00/2485               |                                            
+  417 |  1 brutaltimer.s    199 | Code        | 11 |         |    3 | 00/2485 : AD BD BD    | printSTRING1  lda           $bdbd          
+  418 |  1 brutaltimer.s    200 | Code        | 11 |         |    2 | 00/2488 : F0 1B       |               beq           printSTRING3   
+  419 |  1 brutaltimer.s    201 | Empty       | 11 |         |    0 | 00/248A               |                                            
+  420 |  1 brutaltimer.s    202 | Code        | 11 |         |    2 | 00/248A : C9 A3       |               cmp           #"#"           
+  421 |  1 brutaltimer.s    203 | Code        | 11 |         |    2 | 00/248C : D0 05       |               bne           printSTRING2   
+  422 |  1 brutaltimer.s    204 | Code        | 11 |         |    3 | 00/248E : AD B6 24    |               lda           theSLOT        
+  423 |  1 brutaltimer.s    205 | Code        | 11 |         |    2 | 00/2491 : 09 B0       |               ora           #"0"           
+  424 |  1 brutaltimer.s    206 | Empty       | 11 |         |    0 | 00/2493               |                                            
+  425 |  1 brutaltimer.s    207 | Code        | 11 |         |    3 | 00/2493 : 20 ED FD    | printSTRING2  jsr           {$FDED}        
+  426 |  1 brutaltimer.s    208 | Empty       | 11 |         |    0 | 00/2496               |                                            
+  427 |  1 brutaltimer.s    209 | Code        | 11 |         |    3 | 00/2496 : EE 86 24    |               inc           printSTRING1+1 
+  428 |  1 brutaltimer.s    210 | Code        | 11 |         |    2 | 00/2499 : D0 EA       |               bne           printSTRING1   
+  429 |  1 brutaltimer.s    211 | Code        | 11 |         |    3 | 00/249B : EE 87 24    |               inc           printSTRING1+2 
+  430 |  1 brutaltimer.s    212 | Code        | 11 |         |    3 | 00/249E : AD 87 24    |               lda           printSTRING1+2 ; force end of routine
+  431 |  1 brutaltimer.s    213 | Code        | 11 |         |    2 | 00/24A1 : C9 C0       |               cmp           #$c0           ; if we reach $C000
+  432 |  1 brutaltimer.s    214 | Code        | 11 |         |    2 | 00/24A3 : 90 E0       |               bcc           printSTRING1   
+  433 |  1 brutaltimer.s    215 | Empty       | 11 |         |    0 | 00/24A5               |                                            
+  434 |  1 brutaltimer.s    216 | Code        | 11 |         |    1 | 00/24A5 : 60          | printSTRING3  rts                          
+  435 |  1 brutaltimer.s    217 | Empty       | 11 |         |    0 | 00/24A6               |                                            
+  436 |  1 brutaltimer.s    218 | Comment     | 11 |         |    0 | 00/24A6               | *------- gotoXY
+  437 |  1 brutaltimer.s    219 | Empty       | 11 |         |    0 | 00/24A6               |                                            
+  438 |  1 brutaltimer.s    220 | Code        | 11 |         |    2 | 00/24A6 : 86 24       | gotoxy        stx           {$24}          
+  439 |  1 brutaltimer.s    221 | Code        | 11 |         |    1 | 00/24A8 : 98          |               tya                          
+  440 |  1 brutaltimer.s    222 | Code        | 11 |         |    3 | 00/24A9 : 4C 5B FB    |               jmp           {$FB5B}        
+  441 |  1 brutaltimer.s    223 | Empty       | 11 |         |    0 | 00/24AC               |                                            
+  442 |  1 brutaltimer.s    224 | Comment     | 11 |         |    0 | 00/24AC               | *------- waitFORKEY
+  443 |  1 brutaltimer.s    225 | Empty       | 11 |         |    0 | 00/24AC               |                                            
+  444 |  1 brutaltimer.s    226 | Code        | 11 |         |    3 | 00/24AC : AD 00 C0    | waitFORKEY    lda           {$C000}        
+  445 |  1 brutaltimer.s    227 | Code        | 11 |         |    2 | 00/24AF : 10 FB       |               bpl           waitFORKEY     
+  446 |  1 brutaltimer.s    228 | Code        | 11 |         |    3 | 00/24B1 : 8D 10 C0    |               sta           {$C010}        
+  447 |  1 brutaltimer.s    229 | Code        | 11 |         |    1 | 00/24B4 : 60          |               rts                          
+  448 |  1 brutaltimer.s    230 | Empty       | 11 |         |    0 | 00/24B5               |                                            
+  449 |  1 brutaltimer.s    231 | Comment     | 11 |         |    0 | 00/24B5               | *-------------- DATA
+  450 |  1 brutaltimer.s    232 | Empty       | 11 |         |    0 | 00/24B5               |                                            
+  451 |  1 brutaltimer.s    233 | Data        | 11 |         |    1 | 00/24B5 : 00          | theLOOP       ds            1              
+  452 |  1 brutaltimer.s    234 | Data        | 11 |         |    1 | 00/24B6 : 00          | theSLOT       ds            1              ; 0..7
+  453 |  1 brutaltimer.s    235 | Data        | 11 |         |    1 | 00/24B7 : 00          | theSLOT16     ds            1              ; 10=slot 1, ..., 70=slot 7
+  454 |  1 brutaltimer.s    236 | Empty       | 11 |         |    0 | 00/24B8               |                                            
+  455 |  1 brutaltimer.s    237 | Data        | 11 |         |   18 | 00/24B8 : C2 F2 F5 F4 | strHELLO      asc           "Brutal Timer Test"8d
+      |                         |             |    |         |      |           E1 EC A0 D4 |
+      |                         |             |    |         |      |           E9 ED E5 F2 |
+      |                         |             |    |         |      |           A0 D4 E5 F3 |
+      |                         |             |    |         |      |           F4 8D       |
+  456 |  1 brutaltimer.s    238 | Data        | 11 |         |   28 | 00/24CA : A8 E3 A9 A0 |               asc           "(c) 2026, Plamen Vaysilov &"8d
+      |                         |             |    |         |      |           B2 B0 B2 B6 |
+      |                         |             |    |         |      |           AC A0 D0 EC |
+      |                         |             |    |         |      |           E1 ED E5 EE |
+      |                         |             |    |         |      |           A0 D6 E1 F9 |
+      |                         |             |    |         |      |           F3 E9 EC EF |
+      |                         |             |    |         |      |           F6 A0 A6 8D |
+  457 |  1 brutaltimer.s    239 | Data        | 11 |         |   15 | 00/24E6 : C2 F2 F5 F4 |               asc           "Brutal Deluxe"8d00
+      |                         |             |    |         |      |           E1 EC A0 C4 |
+      |                         |             |    |         |      |           E5 EC F5 F8 |
+      |                         |             |    |         |      |           E5 8D 00    |
+  458 |  1 brutaltimer.s    240 | Empty       | 11 |         |    0 | 00/24F5               |                                            
+  459 |  1 brutaltimer.s    241 | Comment     | 11 |         |    0 | 00/24F5               | *	asc	"1234567890123456789012345"
+  460 |  1 brutaltimer.s    242 | Empty       | 11 |         |    0 | 00/24F5               |                                            
+  461 |  1 brutaltimer.s    243 | Data        | 11 |         |    1 | 00/24F5 : 8D          | strMENU       asc           8d             
+  462 |  1 brutaltimer.s    244 | Data        | 11 |         |   16 | 00/24F6 : B1 AD A0 D3 |               asc           "1- Set slot (#)"8d
+      |                         |             |    |         |      |           E5 F4 A0 F3 |
+      |                         |             |    |         |      |           EC EF F4 A0 |
+      |                         |             |    |         |      |           A8 A3 A9 8D |
+  463 |  1 brutaltimer.s    245 | Data        | 11 |         |   17 | 00/2506 : B2 AD A0 CF |               asc           "2- One-shot test"8d
+      |                         |             |    |         |      |           EE E5 AD F3 |
+      |                         |             |    |         |      |           E8 EF F4 A0 |
+      |                         |             |    |         |      |           F4 E5 F3 F4 |
+      |                         |             |    |         |      |           8D          |
+  464 |  1 brutaltimer.s    246 | Data        | 11 |         |   13 | 00/2517 : B3 AD A0 CC |               asc           "3- Loop test"8d
+      |                         |             |    |         |      |           EF EF F0 A0 |
+      |                         |             |    |         |      |           F4 E5 F3 F4 |
+      |                         |             |    |         |      |           8D          |
+  465 |  1 brutaltimer.s    247 | Data        | 11 |         |   28 | 00/2524 : D3 E5 EC E5 |               asc           "Select entry (0 to exit) > "00
+      |                         |             |    |         |      |           E3 F4 A0 E5 |
+      |                         |             |    |         |      |           EE F4 F2 F9 |
+      |                         |             |    |         |      |           A0 A8 B0 A0 |
+      |                         |             |    |         |      |           F4 EF A0 E5 |
+      |                         |             |    |         |      |           F8 E9 F4 A9 |
+      |                         |             |    |         |      |           A0 BE A0 00 |
+  466 |  1 brutaltimer.s    248 | Empty       | 11 |         |    0 | 00/2540               |                                            
+  467 |  1 brutaltimer.s    249 | Data        | 11 |         |    1 | 00/2540 : 8D          | strSETSLOT    asc           8d             
+  468 |  1 brutaltimer.s    250 | Data        | 11 |         |   18 | 00/2541 : D3 E5 F4 A0 |               asc           "Set slot (1-7) > "00
+      |                         |             |    |         |      |           F3 EC EF F4 |
+      |                         |             |    |         |      |           A0 A8 B1 AD |
+      |                         |             |    |         |      |           B7 A9 A0 BE |
+      |                         |             |    |         |      |           A0 00       |
+  469 |  1 brutaltimer.s    251 | Empty       | 11 |         |    0 | 00/2553               |                                            
+  470 |  1 brutaltimer.s    252 | Data        | 11 |         |   11 | 00/2553 : 8D C7 EF EF | strGOODBYE    asc           8d"Good bye!"00
+      |                         |             |    |         |      |           E4 A0 E2 F9 |
+      |                         |             |    |         |      |           E5 A1 00    |
+------+-------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

@@ -1,0 +1,250 @@
+------+-------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File             Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+-------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1 brutaltimer.s      1 | Comment     | ?? |         |   -1 | 00/FFFF               | *
+    2 |  1 brutaltimer.s      2 | Comment     | ?? |         |   -1 | 00/FFFF               | * Brutal Timer Test
+    3 |  1 brutaltimer.s      3 | Comment     | ?? |         |   -1 | 00/FFFF               | * by Plamen Vaysilov
+    4 |  1 brutaltimer.s      4 | Comment     | ?? |         |   -1 | 00/FFFF               | *
+    5 |  1 brutaltimer.s      5 | Comment     | ?? |         |   -1 | 00/FFFF               | * (c) 2026, Brutal Deluxe Software
+    6 |  1 brutaltimer.s      6 | Comment     | ?? |         |   -1 | 00/FFFF               | *
+    7 |  1 brutaltimer.s      7 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+    8 |  1 brutaltimer.s      8 | Directive   | ?? |         |   -1 | 00/FFFF               |               typ           BIN            
+    9 |  1 brutaltimer.s      9 | Directive   | ?? |         |   -1 | 00/FFFF               |               org           $2000          
+   10 |  1 brutaltimer.s     10 | Directive   | ?? |         |   -1 | 00/FFFF               |               lst           off            
+   11 |  1 brutaltimer.s     11 | Directive   | ?? |         |   -1 | 00/FFFF               |               dsk           brutaltimer    
+   12 |  1 brutaltimer.s     12 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+   13 |  1 brutaltimer.s     13 | Comment     | ?? |         |   -1 | 00/FFFF               | *-------------- FIRMWARE
+   14 |  1 brutaltimer.s     14 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+   15 |  1 brutaltimer.s     15 | Equivalence | ?? |         |   -1 | 00/FFFF               | CH            =             $24            
+   16 |  1 brutaltimer.s     16 | Equivalence | ?? |         |   -1 | 00/FFFF               | CV            =             $25            
+   17 |  1 brutaltimer.s     17 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+   18 |  1 brutaltimer.s     18 | Equivalence | ?? |         |   -1 | 00/FFFF               | KBD           =             $C000          
+   19 |  1 brutaltimer.s     19 | Equivalence | ?? |         |   -1 | 00/FFFF               | KBDSTROBE     =             $C010          
+   20 |  1 brutaltimer.s     20 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+   21 |  1 brutaltimer.s     21 | Equivalence | ?? |         |   -1 | 00/FFFF               | TABV          =             $FB5B          
+   22 |  1 brutaltimer.s     22 | Equivalence | ?? |         |   -1 | 00/FFFF               | HOME          =             $FC58          
+   23 |  1 brutaltimer.s     23 | Equivalence | ?? |         |   -1 | 00/FFFF               | WAIT          =             $FCA8          
+   24 |  1 brutaltimer.s     24 | Equivalence | ?? |         |   -1 | 00/FFFF               | RDKEY         =             $FD0C          
+   25 |  1 brutaltimer.s     25 | Equivalence | ?? |         |   -1 | 00/FFFF               | PRBYTE        =             $FDDA          
+   26 |  1 brutaltimer.s     26 | Equivalence | ?? |         |   -1 | 00/FFFF               | COUT          =             $FDED          
+   27 |  1 brutaltimer.s     27 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+   28 |  1 brutaltimer.s     28 | Comment     | ?? |         |   -1 | 00/FFFF               | *-------------- MACROS
+   29 |  1 brutaltimer.s     29 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+   30 |  1 brutaltimer.s     30 | Directive   | ?? |         |   -1 | 00/FFFF               | @printSTRING  mac                          
+   31 |  1 brutaltimer.s     31 | Directive   | ?? |         |   -1 | 00/FFFF               |               ldx           #>]1           
+   32 |  1 brutaltimer.s     32 | Directive   | ?? |         |   -1 | 00/FFFF               |               ldy           #<]1           
+   33 |  1 brutaltimer.s     33 | Directive   | ?? |         |   -1 | 00/FFFF               |               jsr           printSTRING    
+   34 |  1 brutaltimer.s     34 | Directive   | ?? |         |   -1 | 00/FFFF               |               <<<                          
+   35 |  1 brutaltimer.s     35 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+   36 |  1 brutaltimer.s     36 | Directive   | ?? |         |   -1 | 00/FFFF               | @gotoxy       mac                          
+   37 |  1 brutaltimer.s     37 | Directive   | ?? |         |   -1 | 00/FFFF               |               ldx           #]1            
+   38 |  1 brutaltimer.s     38 | Directive   | ?? |         |   -1 | 00/FFFF               |               ldy           #]2            
+   39 |  1 brutaltimer.s     39 | Directive   | ?? |         |   -1 | 00/FFFF               |               jsr           gotoxy         
+   40 |  1 brutaltimer.s     40 | Directive   | ?? |         |   -1 | 00/FFFF               |               <<<                          
+   41 |  1 brutaltimer.s     41 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+   42 |  1 brutaltimer.s     42 | Comment     | ?? |         |   -1 | 00/FFFF               | *-------------- CODE
+   43 |  1 brutaltimer.s     43 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+   44 |  1 brutaltimer.s     44 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               jsr           HOME           
+   45 |  1 brutaltimer.s     45 | Macro       | ?? |         |   -1 | 00/FFFF               |               @printSTRING  #strHELLO      
+   46 |  1 brutaltimer.s     46 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+   47 |  1 brutaltimer.s     47 | Macro       | ?? |         |   -1 | 00/FFFF               | noTEST        @printSTRING  #strMENU       
+   48 |  1 brutaltimer.s     48 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               jsr           RDKEY          
+   49 |  1 brutaltimer.s     49 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               cmp           #"0"           
+   50 |  1 brutaltimer.s     50 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               bne           noTEST0        
+   51 |  1 brutaltimer.s     51 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+   52 |  1 brutaltimer.s     52 | Macro       | ?? |         |   -1 | 00/FFFF               |               @printSTRING  #strGOODBYE    
+   53 |  1 brutaltimer.s     53 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               rts                          
+   54 |  1 brutaltimer.s     54 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+   55 |  1 brutaltimer.s     55 | Code        | ?? |         |   -1 | 00/FFFF : 00          | noTEST0       cmp           #"1"           
+   56 |  1 brutaltimer.s     56 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               bne           noTEST1        
+   57 |  1 brutaltimer.s     57 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               jmp           doSETSLOT      
+   58 |  1 brutaltimer.s     58 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+   59 |  1 brutaltimer.s     59 | Code        | ?? |         |   -1 | 00/FFFF : 00          | noTEST1       cmp           #"2"           
+   60 |  1 brutaltimer.s     60 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               bne           noTEST2        
+   61 |  1 brutaltimer.s     61 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               jmp           doONESHOT      
+   62 |  1 brutaltimer.s     62 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+   63 |  1 brutaltimer.s     63 | Code        | ?? |         |   -1 | 00/FFFF : 00          | noTEST2       cmp           #"3"           
+   64 |  1 brutaltimer.s     64 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               bne           loopTEST       
+   65 |  1 brutaltimer.s     65 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               jmp           doLOOP         
+   66 |  1 brutaltimer.s     66 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+   67 |  1 brutaltimer.s     67 | Comment     | ?? |         |   -1 | 00/FFFF               | *-------------- SET SLOT
+   68 |  1 brutaltimer.s     68 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+   69 |  1 brutaltimer.s     69 | Macro       | ?? |         |   -1 | 00/FFFF               | doSETSLOT     @printSTRING  #strSETSLOT    
+   70 |  1 brutaltimer.s     70 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               jsr           RDKEY          
+   71 |  1 brutaltimer.s     71 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               cmp           #"1"           
+   72 |  1 brutaltimer.s     72 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               bcc           doSETSLOT      
+   73 |  1 brutaltimer.s     73 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               cmp           #"7"+1         
+   74 |  1 brutaltimer.s     74 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               bcs           doSETSLOT      
+   75 |  1 brutaltimer.s     75 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+   76 |  1 brutaltimer.s     76 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               sec                          
+   77 |  1 brutaltimer.s     77 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               sbc           #"0"           
+   78 |  1 brutaltimer.s     78 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               sta           theSLOT        
+   79 |  1 brutaltimer.s     79 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               asl                          
+   80 |  1 brutaltimer.s     80 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               asl                          
+   81 |  1 brutaltimer.s     81 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               asl                          
+   82 |  1 brutaltimer.s     82 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               asl                          
+   83 |  1 brutaltimer.s     83 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               sta           theSLOT16      
+   84 |  1 brutaltimer.s     84 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               jmp           loopTEST       
+   85 |  1 brutaltimer.s     85 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+   86 |  1 brutaltimer.s     86 | Comment     | ?? |         |   -1 | 00/FFFF               | *-------------- ONE SHOT
+   87 |  1 brutaltimer.s     87 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+   88 |  1 brutaltimer.s     88 | Data        | ?? |         |   -1 | 00/FFFF :             |               ds            \              
+   89 |  1 brutaltimer.s     89 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+   90 |  1 brutaltimer.s     90 | Code        | ?? |         |   -1 | 00/FFFF : 00          | doONESHOT     jsr           resetTIMER     
+   91 |  1 brutaltimer.s     91 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               jsr           startTIMER     
+   92 |  1 brutaltimer.s     92 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               jsr           doTEST         
+   93 |  1 brutaltimer.s     93 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               jsr           stopTIMER      
+   94 |  1 brutaltimer.s     94 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               jsr           printTIMER     
+   95 |  1 brutaltimer.s     95 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               jsr           waitFORKEY     
+   96 |  1 brutaltimer.s     96 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               jmp           loopTEST       
+   97 |  1 brutaltimer.s     97 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+   98 |  1 brutaltimer.s     98 | Comment     | ?? |         |   -1 | 00/FFFF               | *-------------- LOOP TEST
+   99 |  1 brutaltimer.s     99 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  100 |  1 brutaltimer.s    100 | Data        | ?? |         |   -1 | 00/FFFF :             |               ds            \              
+  101 |  1 brutaltimer.s    101 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  102 |  1 brutaltimer.s    102 | Code        | ?? |         |   -1 | 00/FFFF : 00          | doLOOP        jsr           resetTIMER     
+  103 |  1 brutaltimer.s    103 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  104 |  1 brutaltimer.s    104 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               lda           #0             
+  105 |  1 brutaltimer.s    105 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               sta           theLOOP        
+  106 |  1 brutaltimer.s    106 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  107 |  1 brutaltimer.s    107 | Code        | ?? |         |   -1 | 00/FFFF : 00          | ]lp           jsr           startTIMER     
+  108 |  1 brutaltimer.s    108 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               jsr           doTEST         
+  109 |  1 brutaltimer.s    109 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               jsr           pauseTIMER     
+  110 |  1 brutaltimer.s    110 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  111 |  1 brutaltimer.s    111 | Unknown    | ?? |         |   -1 | 00/FFFF               |               @printstring  #strTHELOOP    
+  112 |  1 brutaltimer.s    112 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               lda           theLOOP        
+  113 |  1 brutaltimer.s    113 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               jsr           PRBYTE         
+  114 |  1 brutaltimer.s    114 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               jsr           printTIMER2    
+  115 |  1 brutaltimer.s    115 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  116 |  1 brutaltimer.s    116 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               inc           theLOOP        
+  117 |  1 brutaltimer.s    117 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  118 |  1 brutaltimer.s    118 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               lda           KBD            
+  119 |  1 brutaltimer.s    119 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               bpl           ]lp            
+  120 |  1 brutaltimer.s    120 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               sta           KBDSTROBE      
+  121 |  1 brutaltimer.s    121 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               jsr           stopTIMER      
+  122 |  1 brutaltimer.s    122 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               jmp           loopTEST       
+  123 |  1 brutaltimer.s    123 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  124 |  1 brutaltimer.s    124 | Comment     | ?? |         |   -1 | 00/FFFF               | *-------------- THE TEST
+  125 |  1 brutaltimer.s    125 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  126 |  1 brutaltimer.s    126 | Data        | ?? |         |   -1 | 00/FFFF :             |               ds            \              ; page aligned
+  127 |  1 brutaltimer.s    127 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  128 |  1 brutaltimer.s    128 | Directive   | ?? |         |   -1 | 00/FFFF               | doTEST        lup           200            
+  129 |  1 brutaltimer.s    129 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               nop                          ; 2 cycles x 200
+  130 |  1 brutaltimer.s    130 | Directive   | ?? |         |   -1 | 00/FFFF               |               --^                          
+  131 |  1 brutaltimer.s    131 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               rts                          ; 6
+  132 |  1 brutaltimer.s    132 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  133 |  1 brutaltimer.s    133 | Data        | ?? |         |   -1 | 00/FFFF :             |               ds            \              
+  134 |  1 brutaltimer.s    134 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  135 |  1 brutaltimer.s    135 | Comment     | ?? |         |   -1 | 00/FFFF               | *-------------- BRUTAL TIMER ROUTINES
+  136 |  1 brutaltimer.s    136 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  137 |  1 brutaltimer.s    137 | Comment     | ?? |         |   -1 | 00/FFFF               | *------- Reset T1
+  138 |  1 brutaltimer.s    138 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  139 |  1 brutaltimer.s    139 | Code        | ?? |         |   -1 | 00/FFFF : 00          | resetTIMER    ldx           theSLOT16      
+  140 |  1 brutaltimer.s    140 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               sta           $c080,x        
+  141 |  1 brutaltimer.s    141 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               rts                          
+  142 |  1 brutaltimer.s    142 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  143 |  1 brutaltimer.s    143 | Comment     | ?? |         |   -1 | 00/FFFF               | *------- Start T1
+  144 |  1 brutaltimer.s    144 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  145 |  1 brutaltimer.s    145 | Code        | ?? |         |   -1 | 00/FFFF : 00          | startTIMER    ldx           theSLOT16      
+  146 |  1 brutaltimer.s    146 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               lda           #1             
+  147 |  1 brutaltimer.s    147 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               sta           $C081,x        
+  148 |  1 brutaltimer.s    148 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               rts                          
+  149 |  1 brutaltimer.s    149 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  150 |  1 brutaltimer.s    150 | Comment     | ?? |         |   -1 | 00/FFFF               | *------- Pause T1
+  151 |  1 brutaltimer.s    151 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  152 |  1 brutaltimer.s    152 | Code        | ?? |         |   -1 | 00/FFFF : 00          | pauseTIMER    ldx           theSLOT16      
+  153 |  1 brutaltimer.s    153 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               sta           $C082,x        
+  154 |  1 brutaltimer.s    154 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               rts                          
+  155 |  1 brutaltimer.s    155 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  156 |  1 brutaltimer.s    156 | Comment     | ?? |         |   -1 | 00/FFFF               | *------- Stop T1
+  157 |  1 brutaltimer.s    157 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  158 |  1 brutaltimer.s    158 | Code        | ?? |         |   -1 | 00/FFFF : 00          | stopTIMER     ldx           theSLOT16      
+  159 |  1 brutaltimer.s    159 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               sta           $c080,x        
+  160 |  1 brutaltimer.s    160 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               rts                          
+  161 |  1 brutaltimer.s    161 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  162 |  1 brutaltimer.s    162 | Comment     | ?? |         |   -1 | 00/FFFF               | *------- Print timer value
+  163 |  1 brutaltimer.s    163 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  164 |  1 brutaltimer.s    164 | Macro       | ?? |         |   -1 | 00/FFFF               | printTIMER2   @printSTRING  #strTIMER2     
+  165 |  1 brutaltimer.s    165 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               jmp           printTIMER1    
+  166 |  1 brutaltimer.s    166 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  167 |  1 brutaltimer.s    167 | Macro       | ?? |         |   -1 | 00/FFFF               | printTIMER    @printSTRING  #strTIMER      
+  168 |  1 brutaltimer.s    168 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  169 |  1 brutaltimer.s    169 | Code        | ?? |         |   -1 | 00/FFFF : 00          | printTIMER1   ldx           theSLOT16      
+  170 |  1 brutaltimer.s    170 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               lda           $c084,x        
+  171 |  1 brutaltimer.s    171 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               sta           theTIMER       
+  172 |  1 brutaltimer.s    172 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               lda           $c085,x        
+  173 |  1 brutaltimer.s    173 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               sta           theTIMER+1     
+  174 |  1 brutaltimer.s    174 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               lda           $c086,x        
+  175 |  1 brutaltimer.s    175 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               sta           theTIMER+2     
+  176 |  1 brutaltimer.s    176 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               lda           $c087,x        
+  177 |  1 brutaltimer.s    177 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               sta           theTIMER+3     
+  178 |  1 brutaltimer.s    178 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  179 |  1 brutaltimer.s    179 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               jsr           PRBYTE         
+  180 |  1 brutaltimer.s    180 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               lda           theTIMER+2     
+  181 |  1 brutaltimer.s    181 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               jsr           PRBYTE         
+  182 |  1 brutaltimer.s    182 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               lda           theTIMER+1     
+  183 |  1 brutaltimer.s    183 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               jsr           PRBYTE         
+  184 |  1 brutaltimer.s    184 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               lda           theTIMER       
+  185 |  1 brutaltimer.s    185 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               jmp           PRBYTE         
+  186 |  1 brutaltimer.s    186 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  187 |  1 brutaltimer.s    187 | Comment     | ?? |         |   -1 | 00/FFFF               | *---
+  188 |  1 brutaltimer.s    188 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  189 |  1 brutaltimer.s    189 | Data        | ?? |         |   -1 | 00/FFFF :             | strTHELOOP    asc           8d"Loop: "00   
+  190 |  1 brutaltimer.s    190 | Data        | ?? |         |   -1 | 00/FFFF :             | strTIMER2     asc           " / Timer: "00 
+  191 |  1 brutaltimer.s    191 | Data        | ?? |         |   -1 | 00/FFFF :             | strTIMER      asc           8d"Timer: "00  
+  192 |  1 brutaltimer.s    192 | Data        | ?? |         |   -1 | 00/FFFF :             | theTIMER      ds            4              ; the 32-bit value
+  193 |  1 brutaltimer.s    193 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  194 |  1 brutaltimer.s    194 | Comment     | ?? |         |   -1 | 00/FFFF               | *------- Miscellaneous
+  195 |  1 brutaltimer.s    195 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  196 |  1 brutaltimer.s    196 | Code        | ?? |         |   -1 | 00/FFFF : 00          | printSTRING   sty           printSTRING1+1 
+  197 |  1 brutaltimer.s    197 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               stx           printSTRING1+2 
+  198 |  1 brutaltimer.s    198 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  199 |  1 brutaltimer.s    199 | Code        | ?? |         |   -1 | 00/FFFF : 00          | printSTRING1  lda           $bdbd          
+  200 |  1 brutaltimer.s    200 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               beq           printSTRING3   
+  201 |  1 brutaltimer.s    201 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  202 |  1 brutaltimer.s    202 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               cmp           #"#"           
+  203 |  1 brutaltimer.s    203 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               bne           printSTRING2   
+  204 |  1 brutaltimer.s    204 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               lda           theSLOT        
+  205 |  1 brutaltimer.s    205 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               ora           #"0"           
+  206 |  1 brutaltimer.s    206 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  207 |  1 brutaltimer.s    207 | Code        | ?? |         |   -1 | 00/FFFF : 00          | printSTRING2  jsr           COUT           
+  208 |  1 brutaltimer.s    208 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  209 |  1 brutaltimer.s    209 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               inc           printSTRING1+1 
+  210 |  1 brutaltimer.s    210 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               bne           printSTRING1   
+  211 |  1 brutaltimer.s    211 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               inc           printSTRING1+2 
+  212 |  1 brutaltimer.s    212 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               lda           printSTRING1+2 ; force end of routine
+  213 |  1 brutaltimer.s    213 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               cmp           #$c0           ; if we reach $C000
+  214 |  1 brutaltimer.s    214 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               bcc           printSTRING1   
+  215 |  1 brutaltimer.s    215 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  216 |  1 brutaltimer.s    216 | Code        | ?? |         |   -1 | 00/FFFF : 00          | printSTRING3  rts                          
+  217 |  1 brutaltimer.s    217 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  218 |  1 brutaltimer.s    218 | Comment     | ?? |         |   -1 | 00/FFFF               | *------- gotoXY
+  219 |  1 brutaltimer.s    219 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  220 |  1 brutaltimer.s    220 | Code        | ?? |         |   -1 | 00/FFFF : 00          | gotoxy        stx           CH             
+  221 |  1 brutaltimer.s    221 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               tya                          
+  222 |  1 brutaltimer.s    222 | Code        | ?? |         |   -1 | 00/FFFF : 00          |               jmp           TABV           
+  223 |  1 brutaltimer.s    223 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  224 |  1 brutaltimer.s    224 | Comment     | ?? |         |   -1 | 00/FFFF               | *-------------- DATA
+  225 |  1 brutaltimer.s    225 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  226 |  1 brutaltimer.s    226 | Data        | ?? |         |   -1 | 00/FFFF :             | theSLOT       ds            1              ; 0..7
+  227 |  1 brutaltimer.s    227 | Data        | ?? |         |   -1 | 00/FFFF :             | theSLOT16     ds            1              ; 10=slot 1, ..., 70=slot 7
+  228 |  1 brutaltimer.s    228 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  229 |  1 brutaltimer.s    229 | Data        | ?? |         |   -1 | 00/FFFF :             | strHELLO      asc           "Brutal Timer Test"8d
+  230 |  1 brutaltimer.s    230 | Data        | ?? |         |   -1 | 00/FFFF :             |               asc           "(c) 2026 by"8d
+  231 |  1 brutaltimer.s    231 | Data        | ?? |         |   -1 | 00/FFFF :             |               asc           "Plamen Vaysilov &"8d
+  232 |  1 brutaltimer.s    232 | Data        | ?? |         |   -1 | 00/FFFF :             |               asc           "Brutal Deluxe"8d00
+  233 |  1 brutaltimer.s    233 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  234 |  1 brutaltimer.s    234 | Comment     | ?? |         |   -1 | 00/FFFF               | *	asc	"1234567890123456789012345"
+  235 |  1 brutaltimer.s    235 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  236 |  1 brutaltimer.s    236 | Data        | ?? |         |   -1 | 00/FFFF :             | strMENU       asc           8d             
+  237 |  1 brutaltimer.s    237 | Data        | ?? |         |   -1 | 00/FFFF :             |               asc           "0- Exit"8d    
+  238 |  1 brutaltimer.s    238 | Data        | ?? |         |   -1 | 00/FFFF :             |               asc           "1- Set slot (#)"8d
+  239 |  1 brutaltimer.s    239 | Data        | ?? |         |   -1 | 00/FFFF :             |               asc           "2- One-shot test"8d
+  240 |  1 brutaltimer.s    240 | Data        | ?? |         |   -1 | 00/FFFF :             |               asc           "3- Loop test"8d
+  241 |  1 brutaltimer.s    241 | Data        | ?? |         |   -1 | 00/FFFF :             |               asc           "Select entry > "00
+  242 |  1 brutaltimer.s    242 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  243 |  1 brutaltimer.s    243 | Data        | ?? |         |   -1 | 00/FFFF :             | strSETSLOT    asc           8d             
+  244 |  1 brutaltimer.s    244 | Data        | ?? |         |   -1 | 00/FFFF :             |               asc           "Set slot (1-7) > "00
+  245 |  1 brutaltimer.s    245 | Empty       | ?? |         |   -1 | 00/FFFF               |                                            
+  246 |  1 brutaltimer.s    246 | Data        | ?? |         |   -1 | 00/FFFF :             | strGOODBYE    asc           8d"Good bye!"00
+------+-------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

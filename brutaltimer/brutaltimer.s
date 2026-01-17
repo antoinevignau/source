@@ -25,6 +25,12 @@ RDKEY	=	$FD0C
 PRBYTE	=	$FDDA
 COUT	=	$FDED
 
+*-------------- EQUATES
+
+T	=	0
+T1	=	1
+T2	=	2
+
 *-------------- MACROS
 
 @printSTRING	mac
@@ -137,25 +143,28 @@ doTEST	lup	200
 *------- Reset T1
 
 resetTIMER	ldx	theSLOT16
+	lda	#T
 	sta	$c080,x
 	rts
 
 *------- Start T1
 
 startTIMER	ldx	theSLOT16
-	lda	#1
+	lda	#T1
 	sta	$C081,x
 	rts
 
 *------- Pause T1
 
 pauseTIMER	ldx	theSLOT16
+	lda	#T1
 	sta	$C082,x
 	rts
 
 *------- Stop T1
 
 stopTIMER	ldx	theSLOT16
+	lda	#T1
 	sta	$c080,x
 	rts
 
@@ -167,13 +176,13 @@ printTIMER2	@printSTRING	#strTIMER2
 printTIMER	@printSTRING	#strTIMER
 
 printTIMER1	ldx	theSLOT16
-	lda	$c084,x
+	lda	$c088,x
 	sta	theTIMER
-	lda	$c085,x
+	lda	$c089,x
 	sta	theTIMER+1
-	lda	$c086,x
+	lda	$c08a,x
 	sta	theTIMER+2
-	lda	$c087,x
+	lda	$c08b,x
 	sta	theTIMER+3
 
 	jsr	PRBYTE

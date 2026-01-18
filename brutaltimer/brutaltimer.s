@@ -12,12 +12,19 @@
 	
 *-------------- FIRMWARE
 
+WNDLFT	=	$20
+WNDWDTH	=	$21
+WNDTOP	=	$22
+WNDBTM	=	$23
 CH	=	$24
 CV	=	$25
+
+maxY	=	22
 
 KBD	=	$C000
 KBDSTROBE	=	$C010
 
+INIT	=	$FB2F
 TABV	=	$FB5B
 HOME	=	$FC58
 WAIT	=	$FCA8
@@ -27,7 +34,7 @@ COUT	=	$FDED
 
 *-------------- EQUATES
 
-VERSION	=	8	; v0.x
+VERSION	=	9	; v0.x
 
 T	=	0
 T1	=	1
@@ -57,15 +64,19 @@ TRUE	=	255
 *-------------- CODE
 
 	jsr	HOME
+	lda	#maxY	; last line for status
+	sta	WNDBTM
 	@printSTRING	#strHELLO
 
+*---
+
 loopTEST	@printSTRING	#strMENU
-	jsr	RDKEY
+	jsr	readKEY
 	cmp	#"0"
 	bne	noTEST0
 
 	@printSTRING	#strGOODBYE
-	rts
+	jmp	INIT
 
 noTEST0	cmp	#"1"	; set slot
 	bne	noTEST1
@@ -94,6 +105,68 @@ noTEST5	cmp	#"6"	; T2 loop
 noTEST6	cmp	#"7"
 	bne	loopTEST
 	jmp	doSTATUS
+
+*-------------- READ KEY
+
+readKEY	lda	CH
+	sta	saveCH
+	lda	CV
+	sta	saveCV
+
+readKEY_LOOP	lda	KBD
+	bpl	readKEY1
+	sta	KBDSTROBE
+	
+	pha		; restore cursor position
+	ldx	saveCH
+	ldy	saveCV
+	jsr	gotoxy
+	pla
+	rts
+
+readKEY1	lda	theSLOT	; skip if slot not set
+	beq	readKEY_LOOP
+	
+	@gotoxy	#0;#23
+	@printSTRING	#strT1
+
+	jsr	readSTATUS	; check T1
+	bpl	readKEY2	; T1 is not running
+	lda	#T1	; T1 is running
+	jsr	pauseTIMER2
+	jsr	readT1
+	jsr	printTIMER_ALT
+	lda	#T1
+	jsr	startTIMER2
+	jmp	readKEY3
+
+readKEY2	@printSTRING	#strNOT
+
+readKEY3	@printSTRING	#strT2
+	jsr	readSTATUS	; check T2
+	asl
+	bpl	readKEY4	; T2 is not running
+	lda	#T2	; T2 is running
+	jsr	pauseTIMER2
+	jsr	readT2
+	jsr	printTIMER_ALT
+	lda	#T2
+	jsr	startTIMER2
+	jmp	readKEY5
+
+readKEY4	@printSTRING	#strNOT
+
+readKEY5	jmp	readKEY_LOOP	; loop until a keypress
+
+
+*---
+
+saveCH	ds	1
+saveCV	ds	1
+
+strT1	asc	"T1: "00
+strT2	asc	" / T2: "00
+strNOT	asc	"--------"00
 
 *-------------- SET SLOT
 
@@ -213,8 +286,9 @@ doLOOP	sta	theTIMER
 
 	lda	#FALSE
 	sta	theT1LOOP-1,x
+
 	jsr	stopTIMER
-	jsr	printTIMER
+*	jsr	printTIMER
 	jmp	loopTEST
 
 *--- Start it now
@@ -222,27 +296,30 @@ doLOOP	sta	theTIMER
 doLOOPSTART	lda	#TRUE	; start it
 	sta	theT1LOOP-1,x
 
-	jsr	resetTIMER
-
-	lda	#0
-	sta	theLOOP
-
-]lp	jsr	startTIMER
-	jsr	doTEST
-	jsr	pauseTIMER
-	
-	@printSTRING	#strTHELOOP
-	lda	theLOOP
-	jsr	PRBYTE
-	jsr	printTIMER2
-
-	inc	theLOOP
-
-	lda	KBD
-	bpl	]lp
-	sta	KBDSTROBE
-*	jsr	stopTIMER
+	jsr	startTIMER
 	jmp	loopTEST
+	
+*	jsr	resetTIMER
+*
+*	lda	#0
+*	sta	theLOOP
+*
+*]lp	jsr	startTIMER
+*	jsr	doTEST
+*	jsr	pauseTIMER
+*	
+*	@printSTRING	#strTHELOOP
+*	lda	theLOOP
+*	jsr	PRBYTE
+*	jsr	printTIMER2
+*
+*	inc	theLOOP
+*
+*	lda	KBD
+*	bpl	]lp
+*	sta	KBDSTROBE
+*	jsr	stopTIMER
+*	jmp	loopTEST
 
 *-------------- THE TEST
 
@@ -259,6 +336,7 @@ doTEST	lup	200
 
 *------- Reset TIMER
 
+resetTIMER2	sta	theTIMER
 resetTIMER	ldx	theSLOT16
 	lda	theTIMER
 	sta	$c080,x
@@ -266,6 +344,7 @@ resetTIMER	ldx	theSLOT16
 
 *------- Start TIMER
 
+startTIMER2	sta	theTIMER
 startTIMER	ldx	theSLOT16
 	lda	theTIMER
 	sta	$c081,x
@@ -273,6 +352,7 @@ startTIMER	ldx	theSLOT16
 
 *------- Pause TIMER
 
+pauseTIMER2	sta	theTIMER
 pauseTIMER	ldx	theSLOT16
 	lda	theTIMER
 	sta	$c082,x
@@ -280,6 +360,7 @@ pauseTIMER	ldx	theSLOT16
 
 *------- Stop TIMER
 
+stopTIMER2	sta	theTIMER
 stopTIMER	ldx	theSLOT16
 	lda	theTIMER
 	sta	$c082,x
@@ -287,6 +368,7 @@ stopTIMER	ldx	theSLOT16
 
 *------- Set T2 frequency
 
+setT2FREQUENCY2	sta	theFREQ
 setT2FREQUENCY	ldx	theSLOT16
 	lda	theFREQ
 	sta	$c084,x
@@ -304,10 +386,36 @@ readFREQUENCY	ldx	theSLOT16
 	lda	$c084,x
 	rts
 
+*------- Read T1 value
+
+readT1	ldx	theSLOT16
+	lda	$c088,x	; T1
+	sta	valTIMER
+	lda	$c089,x
+	sta	valTIMER+1
+	lda	$c08a,x
+	sta	valTIMER+2
+	lda	$c08b,x
+	sta	valTIMER+3
+	rts
+
+*------- Read T2 value
+
+readT2	ldx	theSLOT16
+	lda	$c08c,x	; T2
+	sta	valTIMER
+	lda	$c08d,x
+	sta	valTIMER+1
+	lda	$c08e,x
+	sta	valTIMER+2
+	lda	$c08f,x
+	sta	valTIMER+3
+	rts
+
 *------- Print timer value
 
-printTIMER2	@printSTRING	#strTIMER2
-	jmp	printTIMER1
+*printTIMER2	@printSTRING	#strTIMER2
+*	jmp	printTIMER1
 
 printTIMER	@printSTRING	#strTIMER
 
@@ -319,26 +427,14 @@ printTIMER1	ldx	theSLOT16
 	beq	printTIMER4
 	rts
 
-printTIMER3	lda	$c088,x	; T1
-	sta	valTIMER
-	lda	$c089,x
-	sta	valTIMER+1
-	lda	$c08a,x
-	sta	valTIMER+2
-	lda	$c08b,x
-	sta	valTIMER+3
+printTIMER3	jsr	readT1	; T1
 	jmp	printTIMER5
 
-printTIMER4	lda	$c08c,x	; T2
-	sta	valTIMER
-	lda	$c08d,x
-	sta	valTIMER+1
-	lda	$c08e,x
-	sta	valTIMER+2
-	lda	$c08f,x
-	sta	valTIMER+3
+printTIMER4	jsr	readT2	; T2
 
-printTIMER5	jsr	PRBYTE
+printTIMER_ALT
+printTIMER5	lda	valTIMER+3
+	jsr	PRBYTE
 	lda	valTIMER+2
 	jsr	PRBYTE
 	lda	valTIMER+1

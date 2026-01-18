@@ -258,11 +258,11 @@ doONESHOTT2	lda	#T2
 
 doONESHOT	sta	theTIMER
 	jsr	resetTIMER
-	jsr	startTIMER
-	jsr	doTEST
-	jsr	stopTIMER
-	jsr	printTIMER
-	jsr	waitFORKEY
+	jsr	startTIMER	;           6 =   6 (rts)
+	jsr	doTEST	; 6 + 400 + 6 = 412 (jsr + nop + rts)
+	jsr	stopTIMER	;     6 +  13 =  19 (jsr + lda + ldx + sta)
+	jsr	printTIMER	;               ---
+	jsr	waitFORKEY	;               437
 	jmp	loopTEST
 
 *-------------- LOOP TEST
@@ -345,10 +345,10 @@ resetTIMER	ldx	theSLOT16
 *------- Start TIMER
 
 startTIMER2	sta	theTIMER
-startTIMER	ldx	theSLOT16
-	lda	theTIMER
-	sta	$c081,x
-	rts
+startTIMER	ldx	theSLOT16	; 4 ** no **
+	lda	theTIMER	; 4 ** no **
+	sta	$c081,x	; 5
+	rts		; 6
 
 *------- Pause TIMER
 
@@ -361,9 +361,9 @@ pauseTIMER	ldx	theSLOT16
 *------- Stop TIMER
 
 stopTIMER2	sta	theTIMER
-stopTIMER	ldx	theSLOT16
-	lda	theTIMER
-	sta	$c082,x
+stopTIMER	ldx	theSLOT16	; 4 ** yes **
+	lda	theTIMER	; 4 ** yes **
+	sta	$c082,x	; 5 ** yes **
 	rts
 
 *------- Set T2 frequency

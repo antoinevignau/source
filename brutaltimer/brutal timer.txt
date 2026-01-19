@@ -255,6 +255,11 @@ C0x4 write #2	set T2 frequency to 20 MHz clock
 C0x4 write #3	set T2 frequency to Custom quartz
   => Use T2 frequency of A2-F0 clock to count 6502 cycles
 
+C0x5 write #0	stop T1 display
+C0x5 write #1	show T1 display
+  -> The default state is off
+  -> Read status is not implemented due to chip size limit
+  
 C0x4 read T2 frequency
 	bits 7-6
 	00: T2 frequency is A2-F0 clock
@@ -271,6 +276,27 @@ C0xC read 7-0	read T2 value
 C0xD read 15-8
 C0xE read 23-16
 C0xF read 31-24
+
+-----------------
+
+On cold (power up) and warm resets, the counters are stopped and cleared, and the T2 frequency is set to A2-F0 clock.
+To count cycles accurately, set the T2 frequency to the A2-F0 clock.
+
+If you want to count cycles, note that the Brutal Timer counter begins after the STA $C081,X, and the counter ends after the $C082,X.
+In the following example, let's consider that the counters are zero and the timers are not running:
+
+	LDX	#SLOT16	; 2 cycles not counted
+	LDA	#1	; 2 not counted - Set T2 freq to A2-F0
+	STA	$C084,X	; 5 not counted
+	LDA	#2	; 2 not counted	- Start T2
+	STA	$C081,X	; 5 not counted
+	NOP		; -> 2 counted
+	NOP		;    2 counted
+	NOP		;    2 counted
+	LDA	#2	;    2 counted - Stop T2
+	STA	$C082,X	;    5 counted <-
+
+For the Brutal Timer card, the number of cycles of the above routine is 13 cycles.
 
 -----------------
 
@@ -331,4 +357,12 @@ end	RTS
 	STA	$C082,X	; yes, stop it
 end	RTS
 
+- STOP DISPLAY
+	LDA	#0	; stop timer display
+	STA	$C085,X
+	RTS
 
+- START DISPLAY
+	LDA	#1	; start timer display
+	STA	$C085,X
+	RTS

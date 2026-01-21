@@ -1,0 +1,469 @@
+------+--------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File              Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+--------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1 brutaltester.s      1 | Comment     | ?? |         |   -1 | 00/FFFF               | *
+    2 |  1 brutaltester.s      2 | Comment     | ?? |         |   -1 | 00/FFFF               | * Brutal Timer Test
+    3 |  1 brutaltester.s      3 | Comment     | ?? |         |   -1 | 00/FFFF               | * by Plamen Vaysilov
+    4 |  1 brutaltester.s      4 | Comment     | ?? |         |   -1 | 00/FFFF               | *
+    5 |  1 brutaltester.s      5 | Comment     | ?? |         |   -1 | 00/FFFF               | * (c) 2026, Brutal Deluxe Software
+    6 |  1 brutaltester.s      6 | Comment     | ?? |         |   -1 | 00/FFFF               | *
+    7 |  1 brutaltester.s      7 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+    8 |  1 brutaltester.s      8 | Directive   | ?? |         |   -1 | 00/FFFF               |                  typ             BIN            
+    9 |  1 brutaltester.s      9 | Unknown    | ?? |         |   -1 | 00/FFFF               |                  auxtype         $2000          
+   10 |  1 brutaltester.s     10 | Directive   | ?? |         |   -1 | 00/FFFF               |                  org             $2000          
+   11 |  1 brutaltester.s     11 | Directive   | ?? |         |   -1 | 00/FFFF               |                  lst             off            
+   12 |  1 brutaltester.s     12 | Directive   | ?? |         |   -1 | 00/FFFF               |                  dsk             brutaltester   
+   13 |  1 brutaltester.s     13 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+   14 |  1 brutaltester.s     14 | Comment     | ?? |         |   -1 | 00/FFFF               | *-------------- FIRMWARE
+   15 |  1 brutaltester.s     15 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+   16 |  1 brutaltester.s     16 | Equivalence | ?? |         |   -1 | 00/FFFF               | WNDLFT           =               $20            
+   17 |  1 brutaltester.s     17 | Equivalence | ?? |         |   -1 | 00/FFFF               | WNDWDTH          =               $21            
+   18 |  1 brutaltester.s     18 | Equivalence | ?? |         |   -1 | 00/FFFF               | WNDTOP           =               $22            
+   19 |  1 brutaltester.s     19 | Equivalence | ?? |         |   -1 | 00/FFFF               | WNDBTM           =               $23            
+   20 |  1 brutaltester.s     20 | Equivalence | ?? |         |   -1 | 00/FFFF               | CH               =               $24            
+   21 |  1 brutaltester.s     21 | Equivalence | ?? |         |   -1 | 00/FFFF               | CV               =               $25            
+   22 |  1 brutaltester.s     22 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+   23 |  1 brutaltester.s     23 | Equivalence | ?? |         |   -1 | 00/FFFF               | dpSTRING         =               $fc            
+   24 |  1 brutaltester.s     24 | Equivalence | ?? |         |   -1 | 00/FFFF               | dpDFTVALUE       =               $fe            
+   25 |  1 brutaltester.s     25 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+   26 |  1 brutaltester.s     26 | Equivalence | ?? |         |   -1 | 00/FFFF               | KBD              =               $C000          
+   27 |  1 brutaltester.s     27 | Equivalence | ?? |         |   -1 | 00/FFFF               | KBDSTROBE        =               $C010          
+   28 |  1 brutaltester.s     28 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+   29 |  1 brutaltester.s     29 | Equivalence | ?? |         |   -1 | 00/FFFF               | INIT             =               $FB2F          
+   30 |  1 brutaltester.s     30 | Equivalence | ?? |         |   -1 | 00/FFFF               | TABV             =               $FB5B          
+   31 |  1 brutaltester.s     31 | Equivalence | ?? |         |   -1 | 00/FFFF               | HOME             =               $FC58          
+   32 |  1 brutaltester.s     32 | Equivalence | ?? |         |   -1 | 00/FFFF               | WAIT             =               $FCA8          
+   33 |  1 brutaltester.s     33 | Equivalence | ?? |         |   -1 | 00/FFFF               | RDKEY            =               $FD0C          
+   34 |  1 brutaltester.s     34 | Equivalence | ?? |         |   -1 | 00/FFFF               | PRBYTE           =               $FDDA          
+   35 |  1 brutaltester.s     35 | Equivalence | ?? |         |   -1 | 00/FFFF               | COUT             =               $FDED          
+   36 |  1 brutaltester.s     36 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+   37 |  1 brutaltester.s     37 | Comment     | ?? |         |   -1 | 00/FFFF               | *-------------- EQUATES
+   38 |  1 brutaltester.s     38 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+   39 |  1 brutaltester.s     39 | Equivalence | ?? |         |   -1 | 00/FFFF               | VERSION          =               1              ; v0.x
+   40 |  1 brutaltester.s     40 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+   41 |  1 brutaltester.s     41 | Equivalence | ?? |         |   -1 | 00/FFFF               | T0               =               0              
+   42 |  1 brutaltester.s     42 | Equivalence | ?? |         |   -1 | 00/FFFF               | T1               =               1              
+   43 |  1 brutaltester.s     43 | Equivalence | ?? |         |   -1 | 00/FFFF               | T2               =               2              
+   44 |  1 brutaltester.s     44 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+   45 |  1 brutaltester.s     45 | Equivalence | ?? |         |   -1 | 00/FFFF               | FREQ_A2F0        =               0              
+   46 |  1 brutaltester.s     46 | Equivalence | ?? |         |   -1 | 00/FFFF               | FREQ_A235        =               1              
+   47 |  1 brutaltester.s     47 | Equivalence | ?? |         |   -1 | 00/FFFF               | FREQ_20MHZ       =               2              
+   48 |  1 brutaltester.s     48 | Equivalence | ?? |         |   -1 | 00/FFFF               | FREQ_CUSTOM      =               3              
+   49 |  1 brutaltester.s     49 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+   50 |  1 brutaltester.s     50 | Equivalence | ?? |         |   -1 | 00/FFFF               | T2_DISP_OFF      =               0              
+   51 |  1 brutaltester.s     51 | Equivalence | ?? |         |   -1 | 00/FFFF               | T2_DISP_ON       =               1              
+   52 |  1 brutaltester.s     52 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+   53 |  1 brutaltester.s     53 | Equivalence | ?? |         |   -1 | 00/FFFF               | FALSE            =               0              
+   54 |  1 brutaltester.s     54 | Equivalence | ?? |         |   -1 | 00/FFFF               | TRUE             =               255            
+   55 |  1 brutaltester.s     55 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+   56 |  1 brutaltester.s     56 | Comment     | ?? |         |   -1 | 00/FFFF               | *-------------- MACROS
+   57 |  1 brutaltester.s     57 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+   58 |  1 brutaltester.s     58 | Directive   | ?? |         |   -1 | 00/FFFF               | @printSTRING     mac                            
+   59 |  1 brutaltester.s     59 | Directive   | ?? |         |   -1 | 00/FFFF               |                  ldx             #>]1           
+   60 |  1 brutaltester.s     60 | Directive   | ?? |         |   -1 | 00/FFFF               |                  ldy             #<]1           
+   61 |  1 brutaltester.s     61 | Directive   | ?? |         |   -1 | 00/FFFF               |                  jsr             printSTRING    
+   62 |  1 brutaltester.s     62 | Directive   | ?? |         |   -1 | 00/FFFF               |                  <<<                            
+   63 |  1 brutaltester.s     63 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+   64 |  1 brutaltester.s     64 | Directive   | ?? |         |   -1 | 00/FFFF               | @setDPSTRING     mac                            
+   65 |  1 brutaltester.s     65 | Directive   | ?? |         |   -1 | 00/FFFF               |                  ldx             #>]1           
+   66 |  1 brutaltester.s     66 | Directive   | ?? |         |   -1 | 00/FFFF               |                  stx             dpSTRING+1     
+   67 |  1 brutaltester.s     67 | Directive   | ?? |         |   -1 | 00/FFFF               |                  ldy             #<]1           
+   68 |  1 brutaltester.s     68 | Directive   | ?? |         |   -1 | 00/FFFF               |                  sty             dpSTRING       
+   69 |  1 brutaltester.s     69 | Directive   | ?? |         |   -1 | 00/FFFF               |                  <<<                            
+   70 |  1 brutaltester.s     70 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+   71 |  1 brutaltester.s     71 | Directive   | ?? |         |   -1 | 00/FFFF               | @setDPDFTVALUE   mac                            
+   72 |  1 brutaltester.s     72 | Directive   | ?? |         |   -1 | 00/FFFF               |                  ldx             #>]1           
+   73 |  1 brutaltester.s     73 | Directive   | ?? |         |   -1 | 00/FFFF               |                  stx             dpDFTVALUE+1   
+   74 |  1 brutaltester.s     74 | Directive   | ?? |         |   -1 | 00/FFFF               |                  ldy             #<]1           
+   75 |  1 brutaltester.s     75 | Directive   | ?? |         |   -1 | 00/FFFF               |                  sty             dpDFTVALUE     
+   76 |  1 brutaltester.s     76 | Directive   | ?? |         |   -1 | 00/FFFF               |                  <<<                            
+   77 |  1 brutaltester.s     77 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+   78 |  1 brutaltester.s     78 | Comment     | ?? |         |   -1 | 00/FFFF               | *-------------- CODE
+   79 |  1 brutaltester.s     79 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+   80 |  1 brutaltester.s     80 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jsr             HOME           
+   81 |  1 brutaltester.s     81 | Macro       | ?? |         |   -1 | 00/FFFF               |                  @printSTRING    #strHELLO      
+   82 |  1 brutaltester.s     82 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+   83 |  1 brutaltester.s     83 | Comment     | ?? |         |   -1 | 00/FFFF               | *---
+   84 |  1 brutaltester.s     84 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+   85 |  1 brutaltester.s     85 | Macro       | ?? |         |   -1 | 00/FFFF               | loopTEST         @printSTRING    #strMENU       
+   86 |  1 brutaltester.s     86 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jsr             RDKEY          
+   87 |  1 brutaltester.s     87 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jsr             COUT           
+   88 |  1 brutaltester.s     88 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  cmp             #"0"           
+   89 |  1 brutaltester.s     89 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  bne             noTEST0        
+   90 |  1 brutaltester.s     90 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+   91 |  1 brutaltester.s     91 | Macro       | ?? |         |   -1 | 00/FFFF               |                  @printSTRING    #strGOODBYE    
+   92 |  1 brutaltester.s     92 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jmp             INIT           
+   93 |  1 brutaltester.s     93 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+   94 |  1 brutaltester.s     94 | Code        | ?? |         |   -1 | 00/FFFF : 00          | noTEST0          cmp             #"1"           ; set slot & launch tests
+   95 |  1 brutaltester.s     95 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  bne             noTEST1        
+   96 |  1 brutaltester.s     96 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jmp             doSETSLOT      
+   97 |  1 brutaltester.s     97 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+   98 |  1 brutaltester.s     98 | Code        | ?? |         |   -1 | 00/FFFF : 00          | noTEST1          cmp             #"2"           ; launch tests
+   99 |  1 brutaltester.s     99 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  bne             loopTEST       
+  100 |  1 brutaltester.s    100 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jmp             doTEST         
+  101 |  1 brutaltester.s    101 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  102 |  1 brutaltester.s    102 | Comment     | ?? |         |   -1 | 00/FFFF               | *-------------- SET SLOT AND LAUNCH TESTS...
+  103 |  1 brutaltester.s    103 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  104 |  1 brutaltester.s    104 | Macro       | ?? |         |   -1 | 00/FFFF               | doSETSLOT        @printSTRING    #strSETSLOT    
+  105 |  1 brutaltester.s    105 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jsr             RDKEY          
+  106 |  1 brutaltester.s    106 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jsr             COUT           
+  107 |  1 brutaltester.s    107 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  cmp             #"1"           
+  108 |  1 brutaltester.s    108 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  bcc             doSETSLOT      
+  109 |  1 brutaltester.s    109 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  cmp             #"7"+1         
+  110 |  1 brutaltester.s    110 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  bcs             doSETSLOT      
+  111 |  1 brutaltester.s    111 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  112 |  1 brutaltester.s    112 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  sec                            
+  113 |  1 brutaltester.s    113 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  sbc             #"0"           
+  114 |  1 brutaltester.s    114 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  sta             theSLOT        
+  115 |  1 brutaltester.s    115 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  asl                            
+  116 |  1 brutaltester.s    116 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  asl                            
+  117 |  1 brutaltester.s    117 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  asl                            
+  118 |  1 brutaltester.s    118 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  asl                            
+  119 |  1 brutaltester.s    119 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  sta             theSLOT16      
+  120 |  1 brutaltester.s    120 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  121 |  1 brutaltester.s    121 | Comment     | ?? |         |   -1 | 00/FFFF               | *	jmp	loopTEST
+  122 |  1 brutaltester.s    122 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  123 |  1 brutaltester.s    123 | Comment     | ?? |         |   -1 | 00/FFFF               | *-------------- DO ALL TESTS
+  124 |  1 brutaltester.s    124 | Comment     | ?? |         |   -1 | 00/FFFF               | * 1- reset T1, start/stop/display/compare/reset to 0
+  125 |  1 brutaltester.s    125 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  126 |  1 brutaltester.s    126 | Comment     | ?? |         |   -1 | 00/FFFF               | * Can you write simple test program for automatic check cart 
+  127 |  1 brutaltester.s    127 | Comment     | ?? |         |   -1 | 00/FFFF               | * ( Start/Stop timer and check value for T1. Clear and check if 0 , 
+  128 |  1 brutaltester.s    128 | Comment     | ?? |         |   -1 | 00/FFFF               | * Start/Stop T2 and check value , change Source freq and check again value . 
+  129 |  1 brutaltester.s    129 | Comment     | ?? |         |   -1 | 00/FFFF               | * On/Off display )
+  130 |  1 brutaltester.s    130 | Comment     | ?? |         |   -1 | 00/FFFF               | * .This can be automatic . I will provide values of timer for different Freq .
+  131 |  1 brutaltester.s    131 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  132 |  1 brutaltester.s    132 | Code        | ?? |         |   -1 | 00/FFFF : 00          | doTESTS          lda             #T0            ; reset all timers
+  133 |  1 brutaltester.s    133 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jsr             resetTIMER2    
+  134 |  1 brutaltester.s    134 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  135 |  1 brutaltester.s    135 | Macro       | ?? |         |   -1 | 00/FFFF               |                  @setDPSTRING    #strT1dft      ; test T1
+  136 |  1 brutaltester.s    136 | Macro       | ?? |         |   -1 | 00/FFFF               |                  @setDPDFTVALUE  #dftT1         
+  137 |  1 brutaltester.s    137 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  138 |  1 brutaltester.s    138 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  lda             #T1            ; do it
+  139 |  1 brutaltester.s    139 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jsr             testTIMER      
+  140 |  1 brutaltester.s    140 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  141 |  1 brutaltester.s    141 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  lda             #0             ; test T2
+  142 |  1 brutaltester.s    142 | Code        | ?? |         |   -1 | 00/FFFF : 00          | ]lp              sta             theFREQ        
+  143 |  1 brutaltester.s    143 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  asl                            
+  144 |  1 brutaltester.s    144 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  tax                            
+  145 |  1 brutaltester.s    145 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  lda             tblSTRT2,x     ; default string
+  146 |  1 brutaltester.s    146 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  sta             dpSTRING       
+  147 |  1 brutaltester.s    147 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  lda             tblSTRT2+1,x   
+  148 |  1 brutaltester.s    148 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  sta             dpSTRING+1     
+  149 |  1 brutaltester.s    149 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  150 |  1 brutaltester.s    150 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  lda             tblDFTT2,x     ; default expected value
+  151 |  1 brutaltester.s    151 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  sta             dpDFTVALUE     
+  152 |  1 brutaltester.s    152 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  lda             tblDFTT2+1,x   
+  153 |  1 brutaltester.s    153 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  sta             dpDFTVALUE+1   
+  154 |  1 brutaltester.s    154 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  155 |  1 brutaltester.s    155 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  lda             theFREQ        ; set frequency
+  156 |  1 brutaltester.s    156 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jsr             setT2FREQUENCY2
+  157 |  1 brutaltester.s    157 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  lda             #T2            ; do it
+  158 |  1 brutaltester.s    158 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jsr             testTIMER      
+  159 |  1 brutaltester.s    159 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  lda             theFREQ        ; next frequency
+  160 |  1 brutaltester.s    160 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  clc                            
+  161 |  1 brutaltester.s    161 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  adc             #1             
+  162 |  1 brutaltester.s    162 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  cmp             #3+1           
+  163 |  1 brutaltester.s    163 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  bcc             ]lp            
+  164 |  1 brutaltester.s    164 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  165 |  1 brutaltester.s    165 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jsr             testDISPLAY    ; test the display
+  166 |  1 brutaltester.s    166 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jmp             loopTEST       ; exit
+  167 |  1 brutaltester.s    167 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  168 |  1 brutaltester.s    168 | Comment     | ?? |         |   -1 | 00/FFFF               | *---
+  169 |  1 brutaltester.s    169 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  170 |  1 brutaltester.s    170 | Data        | ?? |         |   -1 | 00/FFFF :             | strT1dft         asc             "000001B5"00   
+  171 |  1 brutaltester.s    171 | Data        | ?? |         |   -1 | 00/FFFF :             | strT2F0dft       asc             "00000000"00   
+  172 |  1 brutaltester.s    172 | Data        | ?? |         |   -1 | 00/FFFF :             | strT2F1dft       asc             "00000100"00   
+  173 |  1 brutaltester.s    173 | Data        | ?? |         |   -1 | 00/FFFF :             | strT2F2dft       asc             "00000200"00   
+  174 |  1 brutaltester.s    174 | Data        | ?? |         |   -1 | 00/FFFF :             | strT2F3dft       asc             "00000300"00   
+  175 |  1 brutaltester.s    175 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  176 |  1 brutaltester.s    176 | Data        | ?? |         |   -1 | 00/FFFF :             | tblSTRT2         da              strT2F0dft     
+  177 |  1 brutaltester.s    177 | Data        | ?? |         |   -1 | 00/FFFF :             |                  da              strT2F1dft     
+  178 |  1 brutaltester.s    178 | Data        | ?? |         |   -1 | 00/FFFF :             |                  da              strT2F2dft     
+  179 |  1 brutaltester.s    179 | Data        | ?? |         |   -1 | 00/FFFF :             |                  da              strT2F3dft     
+  180 |  1 brutaltester.s    180 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  181 |  1 brutaltester.s    181 | Data        | ?? |         |   -1 | 00/FFFF :             | tblDFTT2         da              dftT2F0        
+  182 |  1 brutaltester.s    182 | Data        | ?? |         |   -1 | 00/FFFF :             |                  da              dftT2F1        
+  183 |  1 brutaltester.s    183 | Data        | ?? |         |   -1 | 00/FFFF :             |                  da              dftT2F2        
+  184 |  1 brutaltester.s    184 | Data        | ?? |         |   -1 | 00/FFFF :             |                  da              dftT2F3        
+  185 |  1 brutaltester.s    185 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  186 |  1 brutaltester.s    186 | Data        | ?? |         |   -1 | 00/FFFF :             | dftT1            adrl            437            
+  187 |  1 brutaltester.s    187 | Data        | ?? |         |   -1 | 00/FFFF :             | dftT2F0          adrl            $000           
+  188 |  1 brutaltester.s    188 | Data        | ?? |         |   -1 | 00/FFFF :             | dftT2F1          adrl            $100           
+  189 |  1 brutaltester.s    189 | Data        | ?? |         |   -1 | 00/FFFF :             | dftT2F2          adrl            $200           
+  190 |  1 brutaltester.s    190 | Data        | ?? |         |   -1 | 00/FFFF :             | dftT2F3          adrl            $300           
+  191 |  1 brutaltester.s    191 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  192 |  1 brutaltester.s    192 | Comment     | ?? |         |   -1 | 00/FFFF               | *-------------- TEST DISPLAY
+  193 |  1 brutaltester.s    193 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  194 |  1 brutaltester.s    194 | Code        | ?? |         |   -1 | 00/FFFF : 00          | testDISPLAY      lda             #0             ; set to 1MHz
+  195 |  1 brutaltester.s    195 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jsr             setT2FREQUENCY2
+  196 |  1 brutaltester.s    196 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  197 |  1 brutaltester.s    197 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  lda             #T2            ; select T2
+  198 |  1 brutaltester.s    198 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jsr             resetTIMER2    
+  199 |  1 brutaltester.s    199 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  200 |  1 brutaltester.s    200 | Macro       | ?? |         |   -1 | 00/FFFF               |                  @printSTRING    #strDISPLAYOFF ; tell it
+  201 |  1 brutaltester.s    201 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  lda             #T2_DISP_OFF   ; turn display off
+  202 |  1 brutaltester.s    202 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jsr             doDISPLAY      ; test
+  203 |  1 brutaltester.s    203 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  204 |  1 brutaltester.s    204 | Macro       | ?? |         |   -1 | 00/FFFF               |                  @printSTRING    #strDISPLAYON  
+  205 |  1 brutaltester.s    205 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  lda             #T2_DISP_ON    ; turn display on
+  206 |  1 brutaltester.s    206 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jsr             doDISPLAY      ; test
+  207 |  1 brutaltester.s    207 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  208 |  1 brutaltester.s    208 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jsr             waitFORKEY     ; wait
+  209 |  1 brutaltester.s    209 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jmp             loopTEST       ; and return
+  210 |  1 brutaltester.s    210 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  211 |  1 brutaltester.s    211 | Comment     | ?? |         |   -1 | 00/FFFF               | *---
+  212 |  1 brutaltester.s    212 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  213 |  1 brutaltester.s    213 | Equivalence | ?? |         |   -1 | 00/FFFF               | NBTESTS          =               15             
+  214 |  1 brutaltester.s    214 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  215 |  1 brutaltester.s    215 | Code        | ?? |         |   -1 | 00/FFFF : 00          | doDISPLAY        jsr             setT2DISPLAY2  ; turn display on/off
+  216 |  1 brutaltester.s    216 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  217 |  1 brutaltester.s    217 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  lda             #T2            ; start timer
+  218 |  1 brutaltester.s    218 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jsr             startTIMER2    
+  219 |  1 brutaltester.s    219 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  ldx             #0             ; make 10 loops
+  220 |  1 brutaltester.s    220 | Code        | ?? |         |   -1 | 00/FFFF : 00          | ]lp              lda             #"."           ; show it
+  221 |  1 brutaltester.s    221 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jsr             COUT           
+  222 |  1 brutaltester.s    222 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jsr             doTEST         ; make the test
+  223 |  1 brutaltester.s    223 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  inx                            
+  224 |  1 brutaltester.s    224 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  cpx             #NBTESTS       
+  225 |  1 brutaltester.s    225 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  bcc             ]lp            ; loop
+  226 |  1 brutaltester.s    226 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  227 |  1 brutaltester.s    227 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  lda             #T2            ; stop the timer
+  228 |  1 brutaltester.s    228 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jmp             stopTIMER2     ; we do not reset it
+  229 |  1 brutaltester.s    229 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  230 |  1 brutaltester.s    230 | Comment     | ?? |         |   -1 | 00/FFFF               | *---
+  231 |  1 brutaltester.s    231 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  232 |  1 brutaltester.s    232 | Data        | ?? |         |   -1 | 00/FFFF :             | strDISPLAYOFF    asc             8d"Display is off "00
+  233 |  1 brutaltester.s    233 | Data        | ?? |         |   -1 | 00/FFFF :             | strDISPLAYON     asc             8d"Display is  on "00
+  234 |  1 brutaltester.s    234 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  235 |  1 brutaltester.s    235 | Comment     | ?? |         |   -1 | 00/FFFF               | *-------------- TEST & COMPARE
+  236 |  1 brutaltester.s    236 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  237 |  1 brutaltester.s    237 | Data        | ?? |         |   -1 | 00/FFFF :             |                  ds              \              
+  238 |  1 brutaltester.s    238 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  239 |  1 brutaltester.s    239 | Code        | ?? |         |   -1 | 00/FFFF : 00          | testTIMER        sta             theTIMER       
+  240 |  1 brutaltester.s    240 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jsr             resetTIMER     ; make it 0
+  241 |  1 brutaltester.s    241 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jsr             startTIMER     ; start it
+  242 |  1 brutaltester.s    242 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jsr             doTEST         ; do the test
+  243 |  1 brutaltester.s    243 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jsr             stopTIMER      ; stop it
+  244 |  1 brutaltester.s    244 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jsr             readTIMER      ; read value
+  245 |  1 brutaltester.s    245 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  246 |  1 brutaltester.s    246 | Macro       | ?? |         |   -1 | 00/FFFF               |                  @printSTRING    #strTVALUE     ; Tx want
+  247 |  1 brutaltester.s    247 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  ldx             dpSTRING+1     
+  248 |  1 brutaltester.s    248 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  ldy             dpSTRING       ; aabbccdd
+  249 |  1 brutaltester.s    249 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jsr             printSTRING    
+  250 |  1 brutaltester.s    250 | Macro       | ?? |         |   -1 | 00/FFFF               |                  @printSTRING    #strTREAD      ; read...
+  251 |  1 brutaltester.s    251 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jsr             printTIMER     ; show read value
+  252 |  1 brutaltester.s    252 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  253 |  1 brutaltester.s    253 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  ldy             #0             
+  254 |  1 brutaltester.s    254 | Code        | ?? |         |   -1 | 00/FFFF : 00          | ]lp              lda             (dpDFTVALUE),y 
+  255 |  1 brutaltester.s    255 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  cmp             valTIMER,y     
+  256 |  1 brutaltester.s    256 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  bne             notTHESAME     
+  257 |  1 brutaltester.s    257 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  iny                            
+  258 |  1 brutaltester.s    258 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  cpy             #4             
+  259 |  1 brutaltester.s    259 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  bcc             ]lp            
+  260 |  1 brutaltester.s    260 | Macro       | ?? |         |   -1 | 00/FFFF               |                  @printSTRING    #strOK         
+  261 |  1 brutaltester.s    261 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jmp             testRESET      
+  262 |  1 brutaltester.s    262 | Macro       | ?? |         |   -1 | 00/FFFF               | notTHESAME       @printSTRING    #strNOTOK      
+  263 |  1 brutaltester.s    263 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  264 |  1 brutaltester.s    264 | Comment     | ?? |         |   -1 | 00/FFFF               | *--- test the reset
+  265 |  1 brutaltester.s    265 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  266 |  1 brutaltester.s    266 | Code        | ?? |         |   -1 | 00/FFFF : 00          | testRESET        jsr             resetTIMER     
+  267 |  1 brutaltester.s    267 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jsr             readTIMER      
+  268 |  1 brutaltester.s    268 | Macro       | ?? |         |   -1 | 00/FFFF               |                  @printSTRING    #strRESET      
+  269 |  1 brutaltester.s    269 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  270 |  1 brutaltester.s    270 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  lda             valTIMER       
+  271 |  1 brutaltester.s    271 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  ora             valTIMER+1     
+  272 |  1 brutaltester.s    272 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  ora             valTIMER+2     
+  273 |  1 brutaltester.s    273 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  ora             valTIMER+3     
+  274 |  1 brutaltester.s    274 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  bne             notRESET       
+  275 |  1 brutaltester.s    275 | Macro       | ?? |         |   -1 | 00/FFFF               |                  @printSTRING    #strOK         
+  276 |  1 brutaltester.s    276 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  rts                            
+  277 |  1 brutaltester.s    277 | Macro       | ?? |         |   -1 | 00/FFFF               | notRESET         @printSTRING    #strNOTOK      
+  278 |  1 brutaltester.s    278 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  rts                            
+  279 |  1 brutaltester.s    279 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  280 |  1 brutaltester.s    280 | Comment     | ?? |         |   -1 | 00/FFFF               | *---
+  281 |  1 brutaltester.s    281 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  282 |  1 brutaltester.s    282 | Data        | ?? |         |   -1 | 00/FFFF :             | strTVALUE        asc             8d"T% want "00 
+  283 |  1 brutaltester.s    283 | Data        | ?? |         |   -1 | 00/FFFF :             | strTREAD         asc             " read "00     
+  284 |  1 brutaltester.s    284 | Data        | ?? |         |   -1 | 00/FFFF :             | strOK            asc             " OK"00        
+  285 |  1 brutaltester.s    285 | Data        | ?? |         |   -1 | 00/FFFF :             | strNOTOK         asc             " NOT OK"00    
+  286 |  1 brutaltester.s    286 | Data        | ?? |         |   -1 | 00/FFFF :             | strRESET         asc             8d"   Reset"00 
+  287 |  1 brutaltester.s    287 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  288 |  1 brutaltester.s    288 | Comment     | ?? |         |   -1 | 00/FFFF               | *-------------- THE TEST
+  289 |  1 brutaltester.s    289 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  290 |  1 brutaltester.s    290 | Data        | ?? |         |   -1 | 00/FFFF :             |                  ds              \              ; page aligned
+  291 |  1 brutaltester.s    291 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  292 |  1 brutaltester.s    292 | Directive   | ?? |         |   -1 | 00/FFFF               | doTEST           lup             200            
+  293 |  1 brutaltester.s    293 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  nop                            ; 2 cycles x 200
+  294 |  1 brutaltester.s    294 | Directive   | ?? |         |   -1 | 00/FFFF               |                  --^                            
+  295 |  1 brutaltester.s    295 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  rts                            ; 6
+  296 |  1 brutaltester.s    296 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  297 |  1 brutaltester.s    297 | Data        | ?? |         |   -1 | 00/FFFF :             |                  ds              \              
+  298 |  1 brutaltester.s    298 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  299 |  1 brutaltester.s    299 | Comment     | ?? |         |   -1 | 00/FFFF               | *-------------- BRUTAL TIMER ROUTINES
+  300 |  1 brutaltester.s    300 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  301 |  1 brutaltester.s    301 | Comment     | ?? |         |   -1 | 00/FFFF               | *------- Reset TIMER
+  302 |  1 brutaltester.s    302 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  303 |  1 brutaltester.s    303 | Code        | ?? |         |   -1 | 00/FFFF : 00          | resetTIMER2      sta             theTIMER       
+  304 |  1 brutaltester.s    304 | Code        | ?? |         |   -1 | 00/FFFF : 00          | resetTIMER       ldx             theSLOT16      
+  305 |  1 brutaltester.s    305 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  lda             theTIMER       
+  306 |  1 brutaltester.s    306 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  sta             $c080,x        
+  307 |  1 brutaltester.s    307 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  rts                            
+  308 |  1 brutaltester.s    308 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  309 |  1 brutaltester.s    309 | Comment     | ?? |         |   -1 | 00/FFFF               | *------- Start TIMER
+  310 |  1 brutaltester.s    310 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  311 |  1 brutaltester.s    311 | Code        | ?? |         |   -1 | 00/FFFF : 00          | startTIMER2      sta             theTIMER       
+  312 |  1 brutaltester.s    312 | Code        | ?? |         |   -1 | 00/FFFF : 00          | startTIMER       ldx             theSLOT16      ; 4 ** no **
+  313 |  1 brutaltester.s    313 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  lda             theTIMER       ; 4 ** no **
+  314 |  1 brutaltester.s    314 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  sta             $c081,x        ; 5
+  315 |  1 brutaltester.s    315 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  rts                            ; 6
+  316 |  1 brutaltester.s    316 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  317 |  1 brutaltester.s    317 | Comment     | ?? |         |   -1 | 00/FFFF               | *------- Pause TIMER
+  318 |  1 brutaltester.s    318 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  319 |  1 brutaltester.s    319 | Code        | ?? |         |   -1 | 00/FFFF : 00          | pauseTIMER2      sta             theTIMER       
+  320 |  1 brutaltester.s    320 | Code        | ?? |         |   -1 | 00/FFFF : 00          | pauseTIMER       ldx             theSLOT16      
+  321 |  1 brutaltester.s    321 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  lda             theTIMER       
+  322 |  1 brutaltester.s    322 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  sta             $c082,x        
+  323 |  1 brutaltester.s    323 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  rts                            
+  324 |  1 brutaltester.s    324 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  325 |  1 brutaltester.s    325 | Comment     | ?? |         |   -1 | 00/FFFF               | *------- Stop TIMER
+  326 |  1 brutaltester.s    326 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  327 |  1 brutaltester.s    327 | Code        | ?? |         |   -1 | 00/FFFF : 00          | stopTIMER2       sta             theTIMER       
+  328 |  1 brutaltester.s    328 | Code        | ?? |         |   -1 | 00/FFFF : 00          | stopTIMER        ldx             theSLOT16      ; 4 ** yes **
+  329 |  1 brutaltester.s    329 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  lda             theTIMER       ; 4 ** yes **
+  330 |  1 brutaltester.s    330 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  sta             $c082,x        ; 5 ** yes **
+  331 |  1 brutaltester.s    331 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  rts                            
+  332 |  1 brutaltester.s    332 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  333 |  1 brutaltester.s    333 | Comment     | ?? |         |   -1 | 00/FFFF               | *------- Set T2 frequency
+  334 |  1 brutaltester.s    334 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  335 |  1 brutaltester.s    335 | Code        | ?? |         |   -1 | 00/FFFF : 00          | setT2FREQUENCY2  sta             theFREQ        
+  336 |  1 brutaltester.s    336 | Code        | ?? |         |   -1 | 00/FFFF : 00          | setT2FREQUENCY   ldx             theSLOT16      
+  337 |  1 brutaltester.s    337 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  lda             theFREQ        
+  338 |  1 brutaltester.s    338 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  sta             $c084,x        
+  339 |  1 brutaltester.s    339 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  rts                            
+  340 |  1 brutaltester.s    340 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  341 |  1 brutaltester.s    341 | Comment     | ?? |         |   -1 | 00/FFFF               | *------- Turn off/on display
+  342 |  1 brutaltester.s    342 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  343 |  1 brutaltester.s    343 | Code        | ?? |         |   -1 | 00/FFFF : 00          | setT2DISPLAY2    sta             theDISPLAY     
+  344 |  1 brutaltester.s    344 | Code        | ?? |         |   -1 | 00/FFFF : 00          | setT2DISPLAY     ldx             theSLOT16      
+  345 |  1 brutaltester.s    345 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  lda             theDISPLAY     
+  346 |  1 brutaltester.s    346 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  sta             $c085,x        
+  347 |  1 brutaltester.s    347 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  rts                            
+  348 |  1 brutaltester.s    348 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  349 |  1 brutaltester.s    349 | Comment     | ?? |         |   -1 | 00/FFFF               | *------- Read T1 value
+  350 |  1 brutaltester.s    350 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  351 |  1 brutaltester.s    351 | Code        | ?? |         |   -1 | 00/FFFF : 00          | readTIMER        lda             theTIMER       
+  352 |  1 brutaltester.s    352 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  cmp             #T1            
+  353 |  1 brutaltester.s    353 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  beq             readT1         
+  354 |  1 brutaltester.s    354 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  cmp             #T2            
+  355 |  1 brutaltester.s    355 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  beq             readT2         
+  356 |  1 brutaltester.s    356 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  rts                            
+  357 |  1 brutaltester.s    357 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  358 |  1 brutaltester.s    358 | Code        | ?? |         |   -1 | 00/FFFF : 00          | readT1           ldx             theSLOT16      
+  359 |  1 brutaltester.s    359 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  lda             $c088,x        ; T1
+  360 |  1 brutaltester.s    360 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  sta             valTIMER       
+  361 |  1 brutaltester.s    361 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  lda             $c089,x        
+  362 |  1 brutaltester.s    362 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  sta             valTIMER+1     
+  363 |  1 brutaltester.s    363 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  lda             $c08a,x        
+  364 |  1 brutaltester.s    364 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  sta             valTIMER+2     
+  365 |  1 brutaltester.s    365 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  lda             $c08b,x        
+  366 |  1 brutaltester.s    366 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  sta             valTIMER+3     
+  367 |  1 brutaltester.s    367 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  rts                            
+  368 |  1 brutaltester.s    368 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  369 |  1 brutaltester.s    369 | Comment     | ?? |         |   -1 | 00/FFFF               | *------- Read T2 value
+  370 |  1 brutaltester.s    370 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  371 |  1 brutaltester.s    371 | Code        | ?? |         |   -1 | 00/FFFF : 00          | readT2           ldx             theSLOT16      
+  372 |  1 brutaltester.s    372 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  lda             $c08c,x        ; T2
+  373 |  1 brutaltester.s    373 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  sta             valTIMER       
+  374 |  1 brutaltester.s    374 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  lda             $c08d,x        
+  375 |  1 brutaltester.s    375 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  sta             valTIMER+1     
+  376 |  1 brutaltester.s    376 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  lda             $c08e,x        
+  377 |  1 brutaltester.s    377 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  sta             valTIMER+2     
+  378 |  1 brutaltester.s    378 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  lda             $c08f,x        
+  379 |  1 brutaltester.s    379 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  sta             valTIMER+3     
+  380 |  1 brutaltester.s    380 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  rts                            
+  381 |  1 brutaltester.s    381 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  382 |  1 brutaltester.s    382 | Comment     | ?? |         |   -1 | 00/FFFF               | *------- Print timer value
+  383 |  1 brutaltester.s    383 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  384 |  1 brutaltester.s    384 | Code        | ?? |         |   -1 | 00/FFFF : 00          | printTIMER       lda             valTIMER+3     
+  385 |  1 brutaltester.s    385 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jsr             PRBYTE         
+  386 |  1 brutaltester.s    386 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  lda             valTIMER+2     
+  387 |  1 brutaltester.s    387 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jsr             PRBYTE         
+  388 |  1 brutaltester.s    388 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  lda             valTIMER+1     
+  389 |  1 brutaltester.s    389 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jsr             PRBYTE         
+  390 |  1 brutaltester.s    390 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  lda             valTIMER       
+  391 |  1 brutaltester.s    391 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  jmp             PRBYTE         
+  392 |  1 brutaltester.s    392 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  393 |  1 brutaltester.s    393 | Comment     | ?? |         |   -1 | 00/FFFF               | *---
+  394 |  1 brutaltester.s    394 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  395 |  1 brutaltester.s    395 | Data        | ?? |         |   -1 | 00/FFFF :             | strTHELOOP       asc             8d"Loop: "00   
+  396 |  1 brutaltester.s    396 | Data        | ?? |         |   -1 | 00/FFFF :             | strTIMER2        asc             " / Timer: "00 
+  397 |  1 brutaltester.s    397 | Data        | ?? |         |   -1 | 00/FFFF :             | strTIMER         asc             8d"Timer: "00  
+  398 |  1 brutaltester.s    398 | Data        | ?? |         |   -1 | 00/FFFF :             | valTIMER         ds              4              ; the 32-bit value
+  399 |  1 brutaltester.s    399 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  400 |  1 brutaltester.s    400 | Comment     | ?? |         |   -1 | 00/FFFF               | *------- Miscellaneous
+  401 |  1 brutaltester.s    401 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  402 |  1 brutaltester.s    402 | Code        | ?? |         |   -1 | 00/FFFF : 00          | printSTRING      sty             printSTRING1+1 
+  403 |  1 brutaltester.s    403 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  stx             printSTRING1+2 
+  404 |  1 brutaltester.s    404 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  405 |  1 brutaltester.s    405 | Code        | ?? |         |   -1 | 00/FFFF : 00          | printSTRING1     lda             $bdbd          
+  406 |  1 brutaltester.s    406 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  beq             printSTRING4   
+  407 |  1 brutaltester.s    407 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  408 |  1 brutaltester.s    408 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  ldx             theTIMER       
+  409 |  1 brutaltester.s    409 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  cmp             #"%"           
+  410 |  1 brutaltester.s    410 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  beq             printSTRING2   
+  411 |  1 brutaltester.s    411 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  ldx             #VERSION       
+  412 |  1 brutaltester.s    412 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  cmp             #"@"           
+  413 |  1 brutaltester.s    413 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  beq             printSTRING2   
+  414 |  1 brutaltester.s    414 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  ldx             theSLOT        
+  415 |  1 brutaltester.s    415 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  cmp             #"#"           
+  416 |  1 brutaltester.s    416 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  bne             printSTRING3   
+  417 |  1 brutaltester.s    417 | Code        | ?? |         |   -1 | 00/FFFF : 00          | printSTRING2     txa                            
+  418 |  1 brutaltester.s    418 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  ora             #"0"           
+  419 |  1 brutaltester.s    419 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  420 |  1 brutaltester.s    420 | Code        | ?? |         |   -1 | 00/FFFF : 00          | printSTRING3     jsr             COUT           
+  421 |  1 brutaltester.s    421 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  422 |  1 brutaltester.s    422 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  inc             printSTRING1+1 
+  423 |  1 brutaltester.s    423 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  bne             printSTRING1   
+  424 |  1 brutaltester.s    424 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  inc             printSTRING1+2 
+  425 |  1 brutaltester.s    425 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  lda             printSTRING1+2 ; force end of routine
+  426 |  1 brutaltester.s    426 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  cmp             #$c0           ; if we reach $C000
+  427 |  1 brutaltester.s    427 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  bcc             printSTRING1   
+  428 |  1 brutaltester.s    428 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  429 |  1 brutaltester.s    429 | Code        | ?? |         |   -1 | 00/FFFF : 00          | printSTRING4     rts                            
+  430 |  1 brutaltester.s    430 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  431 |  1 brutaltester.s    431 | Comment     | ?? |         |   -1 | 00/FFFF               | *------- waitFORKEY
+  432 |  1 brutaltester.s    432 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  433 |  1 brutaltester.s    433 | Code        | ?? |         |   -1 | 00/FFFF : 00          | waitFORKEY       lda             KBD            
+  434 |  1 brutaltester.s    434 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  bpl             waitFORKEY     
+  435 |  1 brutaltester.s    435 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  sta             KBDSTROBE      
+  436 |  1 brutaltester.s    436 | Code        | ?? |         |   -1 | 00/FFFF : 00          |                  rts                            
+  437 |  1 brutaltester.s    437 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  438 |  1 brutaltester.s    438 | Comment     | ?? |         |   -1 | 00/FFFF               | *-------------- DATA
+  439 |  1 brutaltester.s    439 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  440 |  1 brutaltester.s    440 | Data        | ?? |         |   -1 | 00/FFFF :             | theTIMER         ds              1              ; 1..2
+  441 |  1 brutaltester.s    441 | Data        | ?? |         |   -1 | 00/FFFF :             | theFREQ          ds              1              ; 0..3
+  442 |  1 brutaltester.s    442 | Data        | ?? |         |   -1 | 00/FFFF :             | theDISPLAY       ds              1              ; 0..1
+  443 |  1 brutaltester.s    443 | Data        | ?? |         |   -1 | 00/FFFF :             | theSLOT          dfb             7              ; 0..7
+  444 |  1 brutaltester.s    444 | Data        | ?? |         |   -1 | 00/FFFF :             | theSLOT16        dfb             $70            ; 10=slot 1, ..., 70=slot 7
+  445 |  1 brutaltester.s    445 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  446 |  1 brutaltester.s    446 | Data        | ?? |         |   -1 | 00/FFFF :             | strHELLO         asc             "Brutal Timer Auto Test v0.@"8d
+  447 |  1 brutaltester.s    447 | Data        | ?? |         |   -1 | 00/FFFF :             |                  asc             "(c) 2026, Plamen Vaysilov &"8d
+  448 |  1 brutaltester.s    448 | Data        | ?? |         |   -1 | 00/FFFF :             |                  asc             "Brutal Deluxe Software"8d00
+  449 |  1 brutaltester.s    449 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  450 |  1 brutaltester.s    450 | Comment     | ?? |         |   -1 | 00/FFFF               | *	asc	"1234567890123456789012345"
+  451 |  1 brutaltester.s    451 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  452 |  1 brutaltester.s    452 | Data        | ?? |         |   -1 | 00/FFFF :             | strMENU          asc             8d             
+  453 |  1 brutaltester.s    453 | Data        | ?? |         |   -1 | 00/FFFF :             |                  asc             "1- Set slot & Test (#)"8d
+  454 |  1 brutaltester.s    454 | Data        | ?? |         |   -1 | 00/FFFF :             |                  asc             "2- Launch tests"8d
+  455 |  1 brutaltester.s    455 | Data        | ?? |         |   -1 | 00/FFFF :             |                  asc             "Select entry (0 to exit) > "00
+  456 |  1 brutaltester.s    456 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  457 |  1 brutaltester.s    457 | Data        | ?? |         |   -1 | 00/FFFF :             | strSETSLOT       asc             8d             
+  458 |  1 brutaltester.s    458 | Data        | ?? |         |   -1 | 00/FFFF :             |                  asc             "Set slot (1-7) > "00
+  459 |  1 brutaltester.s    459 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  460 |  1 brutaltester.s    460 | Data        | ?? |         |   -1 | 00/FFFF :             | strT2FREQ0       asc             "A2-F0 clock"00
+  461 |  1 brutaltester.s    461 | Data        | ?? |         |   -1 | 00/FFFF :             | strT2FREQ1       asc             "A2-3.5 MHz"00 
+  462 |  1 brutaltester.s    462 | Data        | ?? |         |   -1 | 00/FFFF :             | strT2FREQ2       asc             "20 MHz clock"00
+  463 |  1 brutaltester.s    463 | Data        | ?? |         |   -1 | 00/FFFF :             | strT2FREQ3       asc             "Custom quartz"00
+  464 |  1 brutaltester.s    464 | Empty       | ?? |         |   -1 | 00/FFFF               |                                                 
+  465 |  1 brutaltester.s    465 | Data        | ?? |         |   -1 | 00/FFFF :             | strGOODBYE       asc             8d"Good bye!"00
+------+--------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

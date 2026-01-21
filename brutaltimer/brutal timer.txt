@@ -255,9 +255,9 @@ C0x4 write #2	set T2 frequency to 20 MHz clock
 C0x4 write #3	set T2 frequency to Custom quartz
   => Use T2 frequency of A2-F0 clock to count 6502 cycles
 
-C0x5 write #0	stop T1 display
-C0x5 write #1	show T1 display
-  -> The default state is off
+C0x5 write #0	stop T2 display
+C0x5 write #1	show T2 display
+  -> The default state is stopped
   -> Read status is not implemented due to chip size limit
   
 C0x4 read T2 frequency
@@ -297,6 +297,10 @@ In the following example, let's consider that the counters are zero and the time
 	STA	$C082,X	;    5 counted <-
 
 For the Brutal Timer card, the number of cycles of the above routine is 13 cycles.
+The cycle count is correct when you run at 1.0xx MHz (xx being the PAL/NTSC difference), but if you run on an accelerated Apple II, then you must take the speed difference into consideration.
+
+The timebase is constant and does not change over computers, except for the PAL/NTSC difference in frequency for F0 -> 14.318/14 or 14.250/14.
+To detect the presence of PAL or NTSC, you can use a 20MHz for T2, and compute the time difference between the two results.
 
 -----------------
 
@@ -358,11 +362,11 @@ end	RTS
 end	RTS
 
 - STOP DISPLAY
-	LDA	#0	; stop timer display
+	LDA	#0	; stop T2 display
 	STA	$C085,X
 	RTS
 
 - START DISPLAY
-	LDA	#1	; start timer display
+	LDA	#1	; start T2 display
 	STA	$C085,X
 	RTS

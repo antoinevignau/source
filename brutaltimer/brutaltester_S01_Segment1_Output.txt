@@ -38,7 +38,7 @@
    35 |  1 brutaltester.s     35 | Empty       | 11 |         |    0 | 00/2000               |                                                 
    36 |  1 brutaltester.s     36 | Comment     | 11 |         |    0 | 00/2000               | *-------------- EQUATES
    37 |  1 brutaltester.s     37 | Empty       | 11 |         |    0 | 00/2000               |                                                 
-   38 |  1 brutaltester.s     38 | Equivalence | 11 |         |    0 | 00/2000               | VERSION          =               2              ; v0.x
+   38 |  1 brutaltester.s     38 | Equivalence | 11 |         |    0 | 00/2000               | VERSION          =               3              ; v0.x
    39 |  1 brutaltester.s     39 | Empty       | 11 |         |    0 | 00/2000               |                                                 
    40 |  1 brutaltester.s     40 | Equivalence | 11 |         |    0 | 00/2000               | T0               =               0              
    41 |  1 brutaltester.s     41 | Equivalence | 11 |         |    0 | 00/2000               | T1               =               1              
@@ -347,7 +347,7 @@
   269 |  1 brutaltester.s    243 | Code        | 11 |         |    1 | 00/2248 : E8          |                  inx                            
   270 |  1 brutaltester.s    244 | Code        | 11 |         |    2 | 00/2249 : D0 FA       |                  bne             ozunid_3       ; loop
   271 |  1 brutaltester.s    245 | Code        | 11 |         |    1 | 00/224B : C8          |                  iny                            
-  272 |  1 brutaltester.s    246 | Code        | 11 |         |    2 | 00/224C : C0 28       |                  cpy             #40            ; 40x250x200 = 2 seconds
+  272 |  1 brutaltester.s    246 | Code        | 11 |         |    2 | 00/224C : C0 0A       |                  cpy             #10            ; 10x250x200 = 2 seconds
   273 |  1 brutaltester.s    247 | Code        | 11 |         |    2 | 00/224E : 90 F5       |                  bcc             ozunid_3       
   274 |  1 brutaltester.s    248 | Code        | 11 |         |    1 | 00/2250 : 60          |                  rts                            
   275 |  1 brutaltester.s    249 | Empty       | 11 |         |    0 | 00/2251               |                                                 
@@ -362,16 +362,16 @@
       |                          |             |    |         |      |           E7 A0 C4 E9 |
       |                          |             |    |         |      |           F3 F0 EC E1 |
       |                          |             |    |         |      |           F9 AE AE AE |
-  282 |  1 brutaltester.s    256 | Data        | 11 |         |   21 | 00/226B : 8D A0 C2 EC |                  asc             8d" Blinking 5 x 2 sec"00
+  282 |  1 brutaltester.s    256 | Data        | 11 |         |   23 | 00/226B : 8D A0 C2 EC |                  asc             8d" Blinking 5 x 0.5 sec"00
       |                          |             |    |         |      |           E9 EE EB E9 |
       |                          |             |    |         |      |           EE E7 A0 B5 |
-      |                          |             |    |         |      |           A0 F8 A0 B2 |
-      |                          |             |    |         |      |           A0 F3 E5 E3 |
-      |                          |             |    |         |      |           00          |
-  283 |  1 brutaltester.s    257 | Empty       | 11 |         |    0 | 00/2280               |                                                 
-  284 |  1 brutaltester.s    258 | Comment     | 11 |         |    0 | 00/2280               | *-------------- TEST & COMPARE
-  285 |  1 brutaltester.s    259 | Empty       | 11 |         |    0 | 00/2280               |                                                 
-  286 |  1 brutaltester.s    260 | Data        | 11 |         |  128 | 00/2280 : 00 00 00 00 |                  ds              \              
+      |                          |             |    |         |      |           A0 F8 A0 B0 |
+      |                          |             |    |         |      |           AE B5 A0 F3 |
+      |                          |             |    |         |      |           E5 E3 00    |
+  283 |  1 brutaltester.s    257 | Empty       | 11 |         |    0 | 00/2282               |                                                 
+  284 |  1 brutaltester.s    258 | Comment     | 11 |         |    0 | 00/2282               | *-------------- TEST & COMPARE
+  285 |  1 brutaltester.s    259 | Empty       | 11 |         |    0 | 00/2282               |                                                 
+  286 |  1 brutaltester.s    260 | Data        | 11 |         |  126 | 00/2282 : 00 00 00 00 |                  ds              \              
       |                          |             |    |         |      |           00 00 00 00 |
       |                          |             |    |         |      |           00 00 00 00 |
       |                          |             |    |         |      |           00 00 00 00 |
@@ -402,7 +402,7 @@
       |                          |             |    |         |      |           00 00 00 00 |
       |                          |             |    |         |      |           00 00 00 00 |
       |                          |             |    |         |      |           00 00 00 00 |
-      |                          |             |    |         |      |           00 00 00 00 |
+      |                          |             |    |         |      |           00 00       |
   287 |  1 brutaltester.s    261 | Empty       | 11 |         |    0 | 00/2300               |                                                 
   288 |  1 brutaltester.s    262 | Code        | 11 |         |    3 | 00/2300 : 8D EF 26    | testTIMER        sta             theTIMER       
   289 |  1 brutaltester.s    263 | Code        | 11 |         |    3 | 00/2303 : 20 03 26    |                  jsr             resetTIMER     ; make it 0
@@ -930,7 +930,7 @@
   730 |  1 brutaltester.s    471 | Code        | 11 |         |    3 | 00/26BC : AE EF 26    |                  ldx             theTIMER       
   731 |  1 brutaltester.s    472 | Code        | 11 |         |    2 | 00/26BF : C9 A5       |                  cmp             #"%"           
   732 |  1 brutaltester.s    473 | Code        | 11 |         |    2 | 00/26C1 : F0 0D       |                  beq             printSTRING2   
-  733 |  1 brutaltester.s    474 | Code        | 11 |         |    2 | 00/26C3 : A2 02       |                  ldx             #{2}           
+  733 |  1 brutaltester.s    474 | Code        | 11 |         |    2 | 00/26C3 : A2 03       |                  ldx             #{3}           
   734 |  1 brutaltester.s    475 | Code        | 11 |         |    2 | 00/26C5 : C9 C0       |                  cmp             #"@"           
   735 |  1 brutaltester.s    476 | Code        | 11 |         |    2 | 00/26C7 : F0 07       |                  beq             printSTRING2   
   736 |  1 brutaltester.s    477 | Code        | 11 |         |    3 | 00/26C9 : AE F2 26    |                  ldx             theSLOT        

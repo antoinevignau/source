@@ -35,7 +35,7 @@ COUT	=	$FDED
 
 *-------------- EQUATES
 
-VERSION	=	2	; v0.x
+VERSION	=	3	; v0.x
 
 T0	=	0
 T1	=	1
@@ -243,7 +243,7 @@ doDISPLAY	jsr	setT2DISPLAY2	; turn display on/off
 	inx
 	bne	]lp	; loop
 	iny
-	cpy	#40	; 40x250x200 = 2 seconds
+	cpy	#10	; 10x250x200 = 2 seconds
 	bcc	]lp
 	rts
 	
@@ -253,7 +253,7 @@ fgDISPLAY	ds	1	; 0..1
 loopDISPLAY	ds	1	; 0..4 (5x2s max)
 
 strDISPLAY	asc	8d"---- Testing Display..."
-	asc	8d" Blinking 5 x 2 sec"00
+	asc	8d" Blinking 5 x 0.5 sec"00
 
 *-------------- TEST & COMPARE
 

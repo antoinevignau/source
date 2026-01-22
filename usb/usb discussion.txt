@@ -1,0 +1,21 @@
+I can make USB host card using generic USB host chip and give access to it registers for example but all other work can be make with software , this is a many work for all kind of usb hardware , for example for Mass storage device (USB flash ) you can write support for SCSI commands and then convert it to GS compatible data format for rread write files ( file system) .
+
+---
+
+About USB I can make simple board with MAX3421E that will give to you paralel access to all registers of chip and interrupt .
+This is common chip that arduino users use it before 10+ year to access storage and mouse and etc...
+And on internet is have many examples and sources . but you needed to write ( rewrite ) full USB stack . This give you freedom to access all USB cases of device but it is many work .
+Do you write in C ? or assembler only ?
+
+This chip is give all freedom to make what you want ! It give to you aware layer for USB communication and small data buffer , all other is a your responsibility but USB stack I no so easy to write , also the interrupt is strongly needed .
+
+About adress space , the registers of this chips is 32 :-)
+ and needed to make some sub register access if needed to use only 16 addresses .
+Of course can be provided ROM that can have watermark or all you want to be easy detect and handle the card .
+But as say the USB stack is not be easy way on Asm. 
+You can Google and see some example in C++ of the common USB stack for this chip (not the hardware access to registers )
+It is possible to use CSXX address space for registers of USB chip .due to the chip has a 32 registers and using usb register access will be slowdown comunication ( usb register is one address select register and on another get/set data )
+I can make simple protothype with minimal components to prove that all will work and after this can be extended or redesign for final project .
+
+-> https://www.analog.com/media/en/technical-documentation/data-sheets/max3421e.pdf
+

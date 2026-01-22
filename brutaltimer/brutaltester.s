@@ -35,7 +35,7 @@ COUT	=	$FDED
 
 *-------------- EQUATES
 
-VERSION	=	1	; v0.x
+VERSION	=	2	; v0.x
 
 T0	=	0
 T1	=	1
@@ -131,12 +131,11 @@ doSETSLOT	@printSTRING	#strSETSLOT
 * On/Off display )
 * .This can be automatic . I will provide values of timer for different Freq .
 
-doTESTS	lda	#T0	; reset all timers
+doTESTS	@printSTRING	#strTESTFREQ
+
+	lda	#T0	; reset all timers
 	jsr	resetTIMER2
 
-	lda	#chrRET	; want a CR
-	jsr	COUT
-	
 	@setDPSTRING	#strT1dft	; test T1
 	@setDPDFTVALUE	#dftT1
 
@@ -164,37 +163,43 @@ doTESTS	lda	#T0	; reset all timers
 	lda	theFREQ	; next frequency
 	clc
 	adc	#1
-	cmp	#3+1
+	cmp	#2+1	; do not test Custom Quartz
 	bcc	]lp
 
+*---
+
+	jsr	testCLEAR	; test the clear
 	jsr	testDISPLAY	; test the display
 	jmp	loopTEST	; exit
 
 *---
 
-strT1dft	asc	"000001B5"00
-strT2F0dft	asc	"00000000"00
-strT2F1dft	asc	"00000100"00
-strT2F2dft	asc	"00000200"00
-strT2F3dft	asc	"00000300"00
+strTESTFREQ	asc	8d"---- Testing frequencies..."00
+strT1dft	asc	"0000219B"00
+strT2F0dft	asc	"000001B5"00
+strT2F1dft	asc	"00000BF9"00
+strT2F2dft	asc	"0000219B"00
+*strT2F3dft	asc	"00000300"00
 
 tblSTRT2	da	strT2F0dft
 	da	strT2F1dft
 	da	strT2F2dft
-	da	strT2F3dft
+*	da	strT2F3dft
 
 tblDFTT2	da	dftT2F0
 	da	dftT2F1
 	da	dftT2F2
-	da	dftT2F3
+*	da	dftT2F3
 
-dftT1	adrl	437
-dftT2F0	adrl	$000
-dftT2F1	adrl	$100
-dftT2F2	adrl	$200
-dftT2F3	adrl	$300
+dftT1	adrl	$219B
+dftT2F0	adrl	$01B5
+dftT2F1	adrl	$0BF9
+dftT2F2	adrl	$219B
+*dftT2F3	adrl	$3000
 
 *-------------- TEST DISPLAY
+
+	ds	\
 
 testDISPLAY	lda	#0	; set to 1MHz
 	jsr	setT2FREQUENCY2
@@ -202,40 +207,53 @@ testDISPLAY	lda	#0	; set to 1MHz
 	lda	#T2	; select T2
 	jsr	resetTIMER2
 
-	@printSTRING	#strDISPLAYOFF	; tell it
-	lda	#T2_DISP_OFF	; turn display off
-	jsr	doDISPLAY	; test
+	@printSTRING	#strDISPLAY	; tell it
 
-	@printSTRING	#strDISPLAYON
-	lda	#T2_DISP_ON	; turn display on
-	jsr	doDISPLAY	; test
-
-	jsr	waitFORKEY	; wait
-	jmp	loopTEST	; and return
-	
-*---
-
-NBTESTS	=	15
-
-doDISPLAY	jsr	setT2DISPLAY2	; turn display on/off
+	lda	#T2_DISP_ON	; display on by default
+	sta	fgDISPLAY
+	lda	#0	; first loop
+	sta	loopDISPLAY
 
 	lda	#T2	; start timer
 	jsr	startTIMER2
-	ldx	#0	; make 10 loops
-]lp	lda	#"."	; show it
-	jsr	COUT
-	jsr	doTEST	; make the test
-	inx
-	cpx	#NBTESTS
-	bcc	]lp	; loop
 
-	lda	#T2	; stop the timer
-	jmp	stopTIMER2	; we do not reset it
+]lp	lda	fgDISPLAY	; get display mode
+	jsr	doDISPLAY	; test
 
+	lda	fgDISPLAY	; blink display
+	eor	#1
+	sta	fgDISPLAY
+	
+	inc	loopDISPLAY	; next 2s loop
+	lda	loopDISPLAY
+	cmp	#5
+	bcc	]lp
+
+	lda	#T2	; start timer
+	jsr	stopTIMER2
+	rts
+	
 *---
 
-strDISPLAYOFF	asc	8d"Display is off "00
-strDISPLAYON	asc	8d"Display is  on "00
+doDISPLAY	jsr	setT2DISPLAY2	; turn display on/off
+
+	ldy	#0	; make 10 loops
+	ldx	#0
+]lp	jsr	doTEST	; make the test
+	inx
+	bne	]lp	; loop
+	iny
+	cpy	#40	; 40x250x200 = 2 seconds
+	bcc	]lp
+	rts
+	
+*---
+
+fgDISPLAY	ds	1	; 0..1
+loopDISPLAY	ds	1	; 0..4 (5x2s max)
+
+strDISPLAY	asc	8d"---- Testing Display..."
+	asc	8d" Blinking 5 x 2 sec"00
 
 *-------------- TEST & COMPARE
 
@@ -262,17 +280,53 @@ testTIMER	sta	theTIMER
 	iny
 	cpy	#4
 	bcc	]lp
-	@printSTRING	#strOK
-	jmp	testRESET
-notTHESAME	@printSTRING	#strNOTOK
+sameVALUE	@printSTRING	#strOK
+	rts
+notTHESAME	lda	valTIMER,y	; if diff<4
+	sec		; tell it is OK
+	sbc	(dpDFTVALUE),y
+	cmp	#4
+	bcc	sameVALUE
+	@printSTRING	#strNOTOK
+	rts
 
-*--- test the reset
+*-------------- TEST CLEAR
 
-testRESET	jsr	resetTIMER
-	jsr	readTIMER
-	@printSTRING	#strRESET
+	ds	\
 	
-	lda	valTIMER
+testCLEAR	lda	#T0
+	jsr	stopTIMER2
+
+	@printSTRING	#strCLEAR
+
+	lda	#T1
+	jsr	resetTIMER2
+	jsr	readTIMER
+	@printSTRING	#strT1RESET
+	jsr	checkCLEAR
+
+	lda	#T2
+	jsr	resetTIMER2
+	jsr	readTIMER
+	@printSTRING	#strT2RESET
+	jsr	checkCLEAR
+
+	@printSTRING	#strT0RESET
+	lda	#T0
+	jsr	resetTIMER2
+	lda	#T1
+	jsr	readTIMER
+	@printSTRING	#strT1RESET
+	jsr	checkCLEAR
+	lda	#T2
+	jsr	readTIMER
+	@printSTRING	#strT2RESET
+	jsr	checkCLEAR
+	rts
+
+*---
+
+checkCLEAR	lda	valTIMER
 	ora	valTIMER+1
 	ora	valTIMER+2
 	ora	valTIMER+3
@@ -284,11 +338,17 @@ notRESET	@printSTRING	#strNOTOK
 
 *---
 
-strTVALUE	asc	8d"T% want "00
+strTVALUE	asc	8d" T% want "00
 strTREAD	asc	" read "00
+
 strOK	asc	" OK"00
 strNOTOK	asc	" NOT OK"00
-strRESET	asc	8d"   Reset"00
+
+strCLEAR	asc	8d"---- Testing Clear..."
+	asc	8d" T1 then T2 clear:"00
+strT0RESET	asc	8d" T1 and T2 clear:"00
+strT1RESET	asc	8d"  T1 Clear"00
+strT2RESET	asc	8d"  T2 Clear"00
 
 *-------------- THE TEST
 
@@ -353,6 +413,7 @@ setT2DISPLAY	ldx	theSLOT16
 
 *------- Read T1 value
 
+readTIMER2	sta	theTIMER
 readTIMER	lda	theTIMER
 	cmp	#T1
 	beq	readT1
@@ -397,9 +458,6 @@ printTIMER	lda	valTIMER+3
 
 *---
 
-strTHELOOP	asc	8d"Loop: "00
-strTIMER2	asc	" / Timer: "00
-strTIMER	asc	8d"Timer: "00
 valTIMER	ds	4	; the 32-bit value
 
 *------- Miscellaneous
@@ -463,7 +521,7 @@ strSETSLOT	asc	8d
 	asc	"Set slot (1-7) > "00
 
 strT2FREQ0	asc	"A2-F0 clock"00
-strT2FREQ1	asc	"A2-3.5 MHz"00
+strT2FREQ1	asc	"A2-7 MHz"00
 strT2FREQ2	asc	"20 MHz clock"00
 strT2FREQ3	asc	"Custom quartz"00
 

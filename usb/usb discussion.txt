@@ -19,3 +19,36 @@ I can make simple protothype with minimal components to prove that all will work
 
 -> https://www.analog.com/media/en/technical-documentation/data-sheets/max3421e.pdf
 
+There are 32 8-bits registers:
+R0..R20	max3420e peripheral registers
+ R0..R4	internal FIFOS
+ R5..R20	control magisters
+
+R21..R31	max3421e host registers
+ R21/2/3/4/7	in peripheral mode
+ R21..R31	in host mode
+
+SPI interface @ https://www.analog.com/en/resources/analog-dialogue/articles/introduction-to-spi-interface.html
+TinyUSB @ https://github.com/hathach/tinyusb?tab=readme-ov-file
+MicroBridge @ https://github.com/iseroid/microbridge_nios2/tree/master
+
+About USB, I took time to read the documentation on analog.com
+The MAX3421E chip is interesting (peripheral and host modes), a SPI interface, 32 8-bits registers. I also took time to read code for USB stack and host support (TinyUSB, MicroBridge). That sounds feasible and interesting to try. I am in for that project!
+
+Let's begin with a simple interface (no watermark) to communicate with the chip. From my experience with Apple II cards, there are a couple of ways to communicate with a card, and we can select the one you are more at ease with. What I see from my readings:
+- one $Cs8x to set the register index (R0..R21..R31)
+- one $Cs8y to read or write data to the selected register
+- one $Cs8z to get status bits
+Standard approach (SSC) is:
+- $Cs88 Data
+- $Cs89 Status
+- $Cs8A Command
+- $Cs8B Control
+
+The dark areas still:
+- how to set/use interrupts
+- how to use the chip buffer memories (EPx or FIFO memory)
+(must read more)
+
+INTERRUPTS
+https://www.eevblog.com/forum/projects/max3421e-usb-host-irq-issue/

@@ -1,0 +1,746 @@
+------+-----------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File           Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+-----------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1 deviation.s      1 | Comment     | 11 |         |    0 | 00/8000               | *
+    2 |  1 deviation.s      2 | Comment     | 11 |         |    0 | 00/8000               | * Brutal Timer Test
+    3 |  1 deviation.s      3 | Comment     | 11 |         |    0 | 00/8000               | * by Plamen Vaysilov
+    4 |  1 deviation.s      4 | Comment     | 11 |         |    0 | 00/8000               | *
+    5 |  1 deviation.s      5 | Comment     | 11 |         |    0 | 00/8000               | * (c) 2026, Brutal Deluxe Software
+    6 |  1 deviation.s      6 | Comment     | 11 |         |    0 | 00/8000               | *
+    7 |  1 deviation.s      7 | Empty       | 11 |         |    0 | 00/8000               |                                            
+    8 |  1 deviation.s      8 | Directive   | 11 |         |    0 | 00/8000               |               typ           BIN            
+    9 |  1 deviation.s      9 | Directive   | 11 |         |    0 | 00/8000               |               org           $2000          
+   10 |  1 deviation.s     10 | Directive   | 11 |         |    0 | 00/2000               |               lst           off            
+   11 |  1 deviation.s     11 | Directive   | 11 |         |    0 | 00/2000               |               dsk           deviation      
+   12 |  1 deviation.s     12 | Empty       | 11 |         |    0 | 00/2000               |                                            
+   13 |  1 deviation.s     13 | Comment     | 11 |         |    0 | 00/2000               | *-------------- FIRMWARE
+   14 |  1 deviation.s     14 | Empty       | 11 |         |    0 | 00/2000               |                                            
+   15 |  1 deviation.s     15 | Equivalence | 11 |         |    0 | 00/2000               | CH            =             $24            
+   16 |  1 deviation.s     16 | Equivalence | 11 |         |    0 | 00/2000               | CV            =             $25            
+   17 |  1 deviation.s     17 | Empty       | 11 |         |    0 | 00/2000               |                                            
+   18 |  1 deviation.s     18 | Equivalence | 11 |         |    0 | 00/2000               | KBD           =             $C000          
+   19 |  1 deviation.s     19 | Equivalence | 11 |         |    0 | 00/2000               | KBDSTROBE     =             $C010          
+   20 |  1 deviation.s     20 | Empty       | 11 |         |    0 | 00/2000               |                                            
+   21 |  1 deviation.s     21 | Equivalence | 11 |         |    0 | 00/2000               | INIT          =             $FB2F          
+   22 |  1 deviation.s     22 | Equivalence | 11 |         |    0 | 00/2000               | TABV          =             $FB5B          
+   23 |  1 deviation.s     23 | Equivalence | 11 |         |    0 | 00/2000               | HOME          =             $FC58          
+   24 |  1 deviation.s     24 | Equivalence | 11 |         |    0 | 00/2000               | WAIT          =             $FCA8          
+   25 |  1 deviation.s     25 | Equivalence | 11 |         |    0 | 00/2000               | RDKEY         =             $FD0C          
+   26 |  1 deviation.s     26 | Equivalence | 11 |         |    0 | 00/2000               | PRBYTE        =             $FDDA          
+   27 |  1 deviation.s     27 | Equivalence | 11 |         |    0 | 00/2000               | COUT          =             $FDED          
+   28 |  1 deviation.s     28 | Empty       | 11 |         |    0 | 00/2000               |                                            
+   29 |  1 deviation.s     29 | Comment     | 11 |         |    0 | 00/2000               | *-------------- EQUATES
+   30 |  1 deviation.s     30 | Empty       | 11 |         |    0 | 00/2000               |                                            
+   31 |  1 deviation.s     31 | Equivalence | 11 |         |    0 | 00/2000               | VERSION       =             1              ; v0.x
+   32 |  1 deviation.s     32 | Empty       | 11 |         |    0 | 00/2000               |                                            
+   33 |  1 deviation.s     33 | Equivalence | 11 |         |    0 | 00/2000               | NB_ENTRIES    =             20             ; array size
+   34 |  1 deviation.s     34 | Empty       | 11 |         |    0 | 00/2000               |                                            
+   35 |  1 deviation.s     35 | Equivalence | 11 |         |    0 | 00/2000               | T0            =             0              
+   36 |  1 deviation.s     36 | Equivalence | 11 |         |    0 | 00/2000               | T1            =             1              
+   37 |  1 deviation.s     37 | Equivalence | 11 |         |    0 | 00/2000               | T2            =             2              
+   38 |  1 deviation.s     38 | Empty       | 11 |         |    0 | 00/2000               |                                            
+   39 |  1 deviation.s     39 | Equivalence | 11 |         |    0 | 00/2000               | F1            =             0              
+   40 |  1 deviation.s     40 | Equivalence | 11 |         |    0 | 00/2000               | F1X           =             1              
+   41 |  1 deviation.s     41 | Equivalence | 11 |         |    0 | 00/2000               | F35           =             2              
+   42 |  1 deviation.s     42 | Empty       | 11 |         |    0 | 00/2000               |                                            
+   43 |  1 deviation.s     43 | Equivalence | 11 |         |    0 | 00/2000               | FALSE         =             0              
+   44 |  1 deviation.s     44 | Equivalence | 11 |         |    0 | 00/2000               | TRUE          =             255            
+   45 |  1 deviation.s     45 | Empty       | 11 |         |    0 | 00/2000               |                                            
+   46 |  1 deviation.s     46 | Comment     | 11 |         |    0 | 00/2000               | *-------------- MACROS
+   47 |  1 deviation.s     47 | Empty       | 11 |         |    0 | 00/2000               |                                            
+   48 |  1 deviation.s     48 | Directive   | 11 |         |    0 | 00/2000               | @printSTRING  mac                          
+   49 |  1 deviation.s     49 | Directive   | 11 |         |    0 | 00/2000               |               ldx           #>]1           
+   50 |  1 deviation.s     50 | Directive   | 11 |         |    0 | 00/2000               |               ldy           #<]1           
+   51 |  1 deviation.s     51 | Directive   | 11 |         |    0 | 00/2000               |               jsr           printSTRING    
+   52 |  1 deviation.s     52 | Directive   | 11 |         |    0 | 00/2000               |               <<<                          
+   53 |  1 deviation.s     53 | Empty       | 11 |         |    0 | 00/2000               |                                            
+   54 |  1 deviation.s     54 | Directive   | 11 |         |    0 | 00/2000               | @gotoxy       mac                          
+   55 |  1 deviation.s     55 | Directive   | 11 |         |    0 | 00/2000               |               ldx           #]1            
+   56 |  1 deviation.s     56 | Directive   | 11 |         |    0 | 00/2000               |               ldy           #]2            
+   57 |  1 deviation.s     57 | Directive   | 11 |         |    0 | 00/2000               |               jsr           gotoxy         
+   58 |  1 deviation.s     58 | Directive   | 11 |         |    0 | 00/2000               |               <<<                          
+   59 |  1 deviation.s     59 | Empty       | 11 |         |    0 | 00/2000               |                                            
+   60 |  1 deviation.s     60 | Comment     | 11 |         |    0 | 00/2000               | *-------------- CODE
+   61 |  1 deviation.s     61 | Empty       | 11 |         |    0 | 00/2000               |                                            
+   62 |  1 deviation.s     62 | Code        | 11 |         |    3 | 00/2000 : 20 58 FC    | loopMAIN      jsr           {$FC58}        
+   63 |  1 deviation.s     63 | Macro       | 11 |         |    0 | 00/2003               |               @printSTRING  #strHELLO      
+   64 |  1 deviation.s     63 | Code        | 11 |         |    2 | 00/2003 : A2 24       |               ldx           #>#strHELLO    
+   65 |  1 deviation.s     63 | Code        | 11 |         |    2 | 00/2005 : A0 A4       |               ldy           #<#strHELLO    
+   66 |  1 deviation.s     63 | Code        | 11 |         |    3 | 00/2007 : 20 5F 24    |               jsr           printSTRING    
+   67 |  1 deviation.s     64 | Empty       | 11 |         |    0 | 00/200A               |                                            
+   68 |  1 deviation.s     65 | Comment     | 11 |         |    0 | 00/200A               | *---
+   69 |  1 deviation.s     66 | Empty       | 11 |         |    0 | 00/200A               |                                            
+   70 |  1 deviation.s     67 | Macro       | 11 |         |    0 | 00/200A               | loopTEST      @printSTRING  #strMENU       
+   71 |  1 deviation.s     67 | Code        | 11 |         |    2 | 00/200A : A2 24       |               ldx           #>#strMENU     
+   72 |  1 deviation.s     67 | Code        | 11 |         |    2 | 00/200C : A0 F4       |               ldy           #<#strMENU     
+   73 |  1 deviation.s     67 | Code        | 11 |         |    3 | 00/200E : 20 5F 24    |               jsr           printSTRING    
+   74 |  1 deviation.s     68 | Code        | 11 |         |    3 | 00/2011 : 20 0C FD    |               jsr           {$FD0C}        
+   75 |  1 deviation.s     69 | Code        | 11 |         |    3 | 00/2014 : 20 ED FD    |               jsr           {$FDED}        
+   76 |  1 deviation.s     70 | Code        | 11 |         |    2 | 00/2017 : C9 B0       |               cmp           #"0"           
+   77 |  1 deviation.s     71 | Code        | 11 |         |    2 | 00/2019 : D0 0A       |               bne           noTEST0        
+   78 |  1 deviation.s     72 | Empty       | 11 |         |    0 | 00/201B               |                                            
+   79 |  1 deviation.s     73 | Macro       | 11 |         |    0 | 00/201B               |               @printSTRING  #strGOODBYE    
+   80 |  1 deviation.s     73 | Code        | 11 |         |    2 | 00/201B : A2 25       |               ldx           #>#strGOODBYE  
+   81 |  1 deviation.s     73 | Code        | 11 |         |    2 | 00/201D : A0 46       |               ldy           #<#strGOODBYE  
+   82 |  1 deviation.s     73 | Code        | 11 |         |    3 | 00/201F : 20 5F 24    |               jsr           printSTRING    
+   83 |  1 deviation.s     74 | Code        | 11 |         |    3 | 00/2022 : 4C 2F FB    |               jmp           {$FB2F}        
+   84 |  1 deviation.s     75 | Empty       | 11 |         |    0 | 00/2025               |                                            
+   85 |  1 deviation.s     76 | Code        | 11 |         |    2 | 00/2025 : C9 B1       | noTEST0       cmp           #"1"           ; set slot
+   86 |  1 deviation.s     77 | Code        | 11 |         |    2 | 00/2027 : D0 03       |               bne           noTEST1        
+   87 |  1 deviation.s     78 | Code        | 11 |         |    3 | 00/2029 : 4C 33 20    |               jmp           doSETSLOT      
+   88 |  1 deviation.s     79 | Empty       | 11 |         |    0 | 00/202C               |                                            
+   89 |  1 deviation.s     80 | Code        | 11 |         |    2 | 00/202C : C9 B2       | noTEST1       cmp           #"2"           ; test
+   90 |  1 deviation.s     81 | Code        | 11 |         |    2 | 00/202E : D0 DA       |               bne           loopTEST       
+   91 |  1 deviation.s     82 | Code        | 11 |         |    3 | 00/2030 : 4C 00 21    |               jmp           doDEVIATION    
+   92 |  1 deviation.s     83 | Empty       | 11 |         |    0 | 00/2033               |                                            
+   93 |  1 deviation.s     84 | Comment     | 11 |         |    0 | 00/2033               | *-------------- SET SLOT
+   94 |  1 deviation.s     85 | Empty       | 11 |         |    0 | 00/2033               |                                            
+   95 |  1 deviation.s     86 | Macro       | 11 |         |    0 | 00/2033               | doSETSLOT     @printSTRING  #strSETSLOT    
+   96 |  1 deviation.s     86 | Code        | 11 |         |    2 | 00/2033 : A2 25       |               ldx           #>#strSETSLOT  
+   97 |  1 deviation.s     86 | Code        | 11 |         |    2 | 00/2035 : A0 33       |               ldy           #<#strSETSLOT  
+   98 |  1 deviation.s     86 | Code        | 11 |         |    3 | 00/2037 : 20 5F 24    |               jsr           printSTRING    
+   99 |  1 deviation.s     87 | Code        | 11 |         |    3 | 00/203A : 20 0C FD    |               jsr           {$FD0C}        
+  100 |  1 deviation.s     88 | Code        | 11 |         |    3 | 00/203D : 20 ED FD    |               jsr           {$FDED}        
+  101 |  1 deviation.s     89 | Code        | 11 |         |    2 | 00/2040 : C9 B1       |               cmp           #"1"           
+  102 |  1 deviation.s     90 | Code        | 11 |         |    2 | 00/2042 : 90 EF       |               bcc           doSETSLOT      
+  103 |  1 deviation.s     91 | Code        | 11 |         |    2 | 00/2044 : C9 B8       |               cmp           #"7"+1         
+  104 |  1 deviation.s     92 | Code        | 11 |         |    2 | 00/2046 : B0 EB       |               bcs           doSETSLOT      
+  105 |  1 deviation.s     93 | Empty       | 11 |         |    0 | 00/2048               |                                            
+  106 |  1 deviation.s     94 | Code        | 11 |         |    1 | 00/2048 : 38          |               sec                          
+  107 |  1 deviation.s     95 | Code        | 11 |         |    2 | 00/2049 : E9 B0       |               sbc           #"0"           
+  108 |  1 deviation.s     96 | Code        | 11 |         |    3 | 00/204B : 8D 9E 24    |               sta           theSLOT        
+  109 |  1 deviation.s     97 | Code        | 11 |         |    1 | 00/204E : 0A          |               asl                          
+  110 |  1 deviation.s     98 | Code        | 11 |         |    1 | 00/204F : 0A          |               asl                          
+  111 |  1 deviation.s     99 | Code        | 11 |         |    1 | 00/2050 : 0A          |               asl                          
+  112 |  1 deviation.s    100 | Code        | 11 |         |    1 | 00/2051 : 0A          |               asl                          
+  113 |  1 deviation.s    101 | Code        | 11 |         |    3 | 00/2052 : 8D 9F 24    |               sta           theSLOT16      
+  114 |  1 deviation.s    102 | Code        | 11 |         |    3 | 00/2055 : 4C 0A 20    |               jmp           loopTEST       
+  115 |  1 deviation.s    103 | Empty       | 11 |         |    0 | 00/2058               |                                            
+  116 |  1 deviation.s    104 | Comment     | 11 |         |    0 | 00/2058               | *-------------- DEVIATION TEST
+  117 |  1 deviation.s    105 | Empty       | 11 |         |    0 | 00/2058               |                                            
+  118 |  1 deviation.s    106 | Data        | 11 |         |  168 | 00/2058 : 00 00 00 00 |               ds            \              
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+  119 |  1 deviation.s    107 | Empty       | 11 |         |    0 | 00/2100               |                                            
+  120 |  1 deviation.s    108 | Code        | 11 |         |    2 | 00/2100 : A9 00       | doDEVIATION   lda           #{0}           ; stop
+  121 |  1 deviation.s    109 | Code        | 11 |         |    3 | 00/2102 : 20 1A 24    |               jsr           stopTIMER2     
+  122 |  1 deviation.s    110 | Code        | 11 |         |    3 | 00/2105 : 20 03 24    |               jsr           clearTIMER     ; reset both timers
+  123 |  1 deviation.s    111 | Code        | 11 |         |    2 | 00/2108 : A9 01       |               lda           #{1}           ; we work with T1 now
+  124 |  1 deviation.s    112 | Code        | 11 |         |    3 | 00/210A : 8D 9C 24    |               sta           theTIMER       
+  125 |  1 deviation.s    113 | Empty       | 11 |         |    0 | 00/210D               |                                            
+  126 |  1 deviation.s    114 | Comment     | 11 |         |    0 | 00/210D               | *--- Clear all entries
+  127 |  1 deviation.s    115 | Empty       | 11 |         |    0 | 00/210D               |                                            
+  128 |  1 deviation.s    116 | Code        | 11 |         |    2 | 00/210D : A2 00       |               ldx           #0             
+  129 |  1 deviation.s    117 | Code        | 11 |         |    1 | 00/210F : 8A          |               txa                          
+  130 |  1 deviation.s    118 | Code        | 11 |         |    3 | 00/2110 : 8D E3 21    |               sta           nbENTRIES      ; current nb entries
+  131 |  1 deviation.s    119 | Code        | 11 |         |    3 | 00/2113 : 9D 00 22    | ozunid_1      sta           devTIMER,x     
+  132 |  1 deviation.s    120 | Code        | 11 |         |    3 | 00/2116 : 9D 50 22    |               sta           cntTIMER,x     
+  133 |  1 deviation.s    121 | Code        | 11 |         |    1 | 00/2119 : E8          |               inx                          
+  134 |  1 deviation.s    122 | Code        | 11 |         |    2 | 00/211A : E0 50       |               cpx           #{20}*4        
+  135 |  1 deviation.s    123 | Code        | 11 |         |    2 | 00/211C : 90 F5       |               bcc           ozunid_1       
+  136 |  1 deviation.s    124 | Empty       | 11 |         |    0 | 00/211E               |                                            
+  137 |  1 deviation.s    125 | Comment     | 11 |         |    0 | 00/211E               | *--- Perform the test
+  138 |  1 deviation.s    126 | Empty       | 11 |         |    0 | 00/211E               |                                            
+  139 |  1 deviation.s    127 | Comment     | 11 |         |    0 | 00/211E               | * When you have time if it possible to write simple program to show histogram of deviation of 20Mhz timer ( T1 or 2 no matter ) .
+  140 |  1 deviation.s    128 | Comment     | 11 |         |    0 | 00/211E               | * clear - start - count -wait - stop -  store value and count how times this value is existing.  loop.... 
+  141 |  1 deviation.s    129 | Comment     | 11 |         |    0 | 00/211E               | * ( can be use simple array of 20 values the increment location of array is Current Value - mimimum possible value .
+  142 |  1 deviation.s    130 | Comment     | 11 |         |    0 | 00/211E               | * And after this show this 20 (or 10) values . and loop until keypressed . 
+  143 |  1 deviation.s    131 | Comment     | 11 |         |    0 | 00/211E               | * -> expect 100, read value, see what you get
+  144 |  1 deviation.s    132 | Empty       | 11 |         |    0 | 00/211E               |                                            
+  145 |  1 deviation.s    133 | Code        | 11 |         |    3 | 00/211E : 20 03 24    | ozunid_2      jsr           clearTIMER     ; clear the timer
+  146 |  1 deviation.s    134 | Code        | 11 |         |    3 | 00/2121 : 20 10 24    |               jsr           startTIMER     ; start it
+  147 |  1 deviation.s    135 | Empty       | 11 |         |    0 | 00/2124               |                                            
+  148 |  1 deviation.s    136 | Code        | 11 |         |    3 | 00/2124 : 20 00 23    |               jsr           doTEST         ; execute the test : 6 + 6 + 400 + 6 + 400 + 6
+  149 |  1 deviation.s    137 | Empty       | 11 |         |    0 | 00/2127               |                                            
+  150 |  1 deviation.s    138 | Comment     | 11 |         |    0 | 00/2127               | *	lda	#200	; wait
+  151 |  1 deviation.s    139 | Comment     | 11 |         |    0 | 00/2127               | *	jsr	WAIT
+  152 |  1 deviation.s    140 | Empty       | 11 |         |    0 | 00/2127               |                                            
+  153 |  1 deviation.s    141 | Code        | 11 |         |    3 | 00/2127 : 20 1D 24    |               jsr           stopTIMER      
+  154 |  1 deviation.s    142 | Empty       | 11 |         |    0 | 00/212A               |                                            
+  155 |  1 deviation.s    143 | Code        | 11 |         |    3 | 00/212A : 20 3B 21    |               jsr           addVALUE       
+  156 |  1 deviation.s    144 | Empty       | 11 |         |    0 | 00/212D               |                                            
+  157 |  1 deviation.s    145 | Code        | 11 |         |    3 | 00/212D : AD 00 C0    |               lda           {$C000}        ; loop until keypress
+  158 |  1 deviation.s    146 | Code        | 11 |         |    2 | 00/2130 : 10 EC       |               bpl           ozunid_2       
+  159 |  1 deviation.s    147 | Empty       | 11 |         |    0 | 00/2132               |                                            
+  160 |  1 deviation.s    148 | Comment     | 11 |         |    0 | 00/2132               | *--- Exit
+  161 |  1 deviation.s    149 | Empty       | 11 |         |    0 | 00/2132               |                                            
+  162 |  1 deviation.s    150 | Code        | 11 |         |    3 | 00/2132 : 8D 10 C0    |               sta           {$C010}        
+  163 |  1 deviation.s    151 | Code        | 11 |         |    3 | 00/2135 : 20 93 24    |               jsr           waitFORKEY     ; wait for a key
+  164 |  1 deviation.s    152 | Code        | 11 |         |    3 | 00/2138 : 4C 00 20    |               jmp           loopMAIN       ; return to main menu
+  165 |  1 deviation.s    153 | Empty       | 11 |         |    0 | 00/213B               |                                            
+  166 |  1 deviation.s    154 | Comment     | 11 |         |    0 | 00/213B               | *--- Add value
+  167 |  1 deviation.s    155 | Empty       | 11 |         |    0 | 00/213B               |                                            
+  168 |  1 deviation.s    156 | Code        | 11 |         |    3 | 00/213B : 20 27 24    | addVALUE      jsr           readT1         ; read T1
+  169 |  1 deviation.s    157 | Empty       | 11 |         |    0 | 00/213E               |                                            
+  170 |  1 deviation.s    158 | Code        | 11 |         |    2 | 00/213E : A0 00       |               ldy           #0             ; nb of entries
+  171 |  1 deviation.s    159 | Code        | 11 |         |    2 | 00/2140 : A2 FC       |               ldx           #0-4           ; start offset
+  172 |  1 deviation.s    160 | Empty       | 11 |         |    0 | 00/2142               |                                            
+  173 |  1 deviation.s    161 | Code        | 11 |         |    1 | 00/2142 : C8          | ozunid_3      iny                          
+  174 |  1 deviation.s    162 | Code        | 11 |         |    1 | 00/2143 : 8A          |               txa                          ; index in array
+  175 |  1 deviation.s    163 | Code        | 11 |         |    1 | 00/2144 : 18          |               clc                          
+  176 |  1 deviation.s    164 | Code        | 11 |         |    2 | 00/2145 : 69 04       |               adc           #4             
+  177 |  1 deviation.s    165 | Code        | 11 |         |    1 | 00/2147 : AA          |               tax                          
+  178 |  1 deviation.s    166 | Code        | 11 |         |    3 | 00/2148 : BD 00 22    |               lda           devTIMER,x     ; check if value is already present
+  179 |  1 deviation.s    167 | Code        | 11 |         |    3 | 00/214B : CD A0 24    |               cmp           valTIMER       
+  180 |  1 deviation.s    168 | Code        | 11 |         |    2 | 00/214E : D0 2C       |               bne           tryNEXT        
+  181 |  1 deviation.s    169 | Code        | 11 |         |    3 | 00/2150 : BD 01 22    |               lda           devTIMER+1,x   
+  182 |  1 deviation.s    170 | Code        | 11 |         |    3 | 00/2153 : CD A1 24    |               cmp           valTIMER+1     
+  183 |  1 deviation.s    171 | Code        | 11 |         |    2 | 00/2156 : D0 24       |               bne           tryNEXT        
+  184 |  1 deviation.s    172 | Code        | 11 |         |    3 | 00/2158 : BD 02 22    |               lda           devTIMER+2,x   
+  185 |  1 deviation.s    173 | Code        | 11 |         |    3 | 00/215B : CD A2 24    |               cmp           valTIMER+2     
+  186 |  1 deviation.s    174 | Code        | 11 |         |    2 | 00/215E : D0 1C       |               bne           tryNEXT        
+  187 |  1 deviation.s    175 | Code        | 11 |         |    3 | 00/2160 : BD 02 22    |               lda           devTIMER+2,x   
+  188 |  1 deviation.s    176 | Code        | 11 |         |    3 | 00/2163 : CD A2 24    |               cmp           valTIMER+2     
+  189 |  1 deviation.s    177 | Code        | 11 |         |    2 | 00/2166 : D0 14       |               bne           tryNEXT        
+  190 |  1 deviation.s    178 | Empty       | 11 |         |    0 | 00/2168               |                                            
+  191 |  1 deviation.s    179 | Code        | 11 |         |    3 | 00/2168 : BD 50 22    |               lda           cntTIMER,x     ; found it, increment
+  192 |  1 deviation.s    180 | Code        | 11 |         |    1 | 00/216B : 18          |               clc                          
+  193 |  1 deviation.s    181 | Code        | 11 |         |    2 | 00/216C : 69 01       |               adc           #1             
+  194 |  1 deviation.s    182 | Code        | 11 |         |    3 | 00/216E : 9D 50 22    |               sta           cntTIMER,x     
+  195 |  1 deviation.s    183 | Code        | 11 |         |    3 | 00/2171 : BD 51 22    |               lda           cntTIMER+1,x   
+  196 |  1 deviation.s    184 | Code        | 11 |         |    2 | 00/2174 : 69 00       |               adc           #0             
+  197 |  1 deviation.s    185 | Code        | 11 |         |    3 | 00/2176 : 9D 51 22    |               sta           cntTIMER+1,x   
+  198 |  1 deviation.s    186 | Code        | 11 |         |    3 | 00/2179 : 4C A7 21    |               jmp           printARRAY     ; and print
+  199 |  1 deviation.s    187 | Empty       | 11 |         |    0 | 00/217C               |                                            
+  200 |  1 deviation.s    188 | Code        | 11 |         |    3 | 00/217C : CC E3 21    | tryNEXT       cpy           nbENTRIES      ; are we at the end of the array?
+  201 |  1 deviation.s    189 | Code        | 11 |         |    2 | 00/217F : 90 C1       |               bcc           ozunid_3       ; no, check other entries
+  202 |  1 deviation.s    190 | Empty       | 11 |         |    0 | 00/2181               |                                            
+  203 |  1 deviation.s    191 | Code        | 11 |         |    1 | 00/2181 : C8          |               iny                          
+  204 |  1 deviation.s    192 | Code        | 11 |         |    2 | 00/2182 : C0 14       |               cpy           #{20}          
+  205 |  1 deviation.s    193 | Code        | 11 |         |    2 | 00/2184 : 90 01       |               bcc           saveIT         
+  206 |  1 deviation.s    194 | Code        | 11 |         |    1 | 00/2186 : 60          |               rts                          ; array is full!
+  207 |  1 deviation.s    195 | Empty       | 11 |         |    0 | 00/2187               |                                            
+  208 |  1 deviation.s    196 | Code        | 11 |         |    3 | 00/2187 : 8C E3 21    | saveIT        sty           nbENTRIES      ; new number of entries
+  209 |  1 deviation.s    197 | Empty       | 11 |         |    0 | 00/218A               |                                            
+  210 |  1 deviation.s    198 | Code        | 11 |         |    3 | 00/218A : AD A0 24    |               lda           valTIMER       
+  211 |  1 deviation.s    199 | Code        | 11 |         |    3 | 00/218D : 9D 00 22    |               sta           devTIMER,X     
+  212 |  1 deviation.s    200 | Code        | 11 |         |    3 | 00/2190 : AD A1 24    |               lda           valTIMER+1     
+  213 |  1 deviation.s    201 | Code        | 11 |         |    3 | 00/2193 : 9D 01 22    |               sta           devTIMER+1,X   
+  214 |  1 deviation.s    202 | Code        | 11 |         |    3 | 00/2196 : AD A2 24    |               lda           valTIMER+2     
+  215 |  1 deviation.s    203 | Code        | 11 |         |    3 | 00/2199 : 9D 02 22    |               sta           devTIMER+2,X   
+  216 |  1 deviation.s    204 | Code        | 11 |         |    3 | 00/219C : AD A3 24    |               lda           valTIMER+3     
+  217 |  1 deviation.s    205 | Code        | 11 |         |    3 | 00/219F : 9D 03 22    |               sta           devTIMER+3,X   
+  218 |  1 deviation.s    206 | Empty       | 11 |         |    0 | 00/21A2               |                                            
+  219 |  1 deviation.s    207 | Code        | 11 |         |    2 | 00/21A2 : A9 01       |               lda           #1             
+  220 |  1 deviation.s    208 | Code        | 11 |         |    3 | 00/21A4 : 9D 50 22    |               sta           cntTIMER,x     ; and go below...
+  221 |  1 deviation.s    209 | Empty       | 11 |         |    0 | 00/21A7               |                                            
+  222 |  1 deviation.s    210 | Comment     | 11 |         |    0 | 00/21A7               | *--- Print array
+  223 |  1 deviation.s    211 | Empty       | 11 |         |    0 | 00/21A7               |                                            
+  224 |  1 deviation.s    212 | Code        | 11 |         |    3 | 00/21A7 : 20 58 FC    | printARRAY    jsr           {$FC58}        
+  225 |  1 deviation.s    213 | Empty       | 11 |         |    0 | 00/21AA               |                                            
+  226 |  1 deviation.s    214 | Code        | 11 |         |    2 | 00/21AA : A2 00       |               ldx           #0             
+  227 |  1 deviation.s    215 | Code        | 11 |         |    3 | 00/21AC : BD 03 22    | ozunid_4      lda           devTIMER+3,x   ; 32-bits
+  228 |  1 deviation.s    216 | Code        | 11 |         |    3 | 00/21AF : 20 DA FD    |               jsr           {$FDDA}        
+  229 |  1 deviation.s    217 | Code        | 11 |         |    3 | 00/21B2 : BD 02 22    |               lda           devTIMER+2,x   
+  230 |  1 deviation.s    218 | Code        | 11 |         |    3 | 00/21B5 : 20 DA FD    |               jsr           {$FDDA}        
+  231 |  1 deviation.s    219 | Code        | 11 |         |    3 | 00/21B8 : BD 01 22    |               lda           devTIMER+1,x   
+  232 |  1 deviation.s    220 | Code        | 11 |         |    3 | 00/21BB : 20 DA FD    |               jsr           {$FDDA}        
+  233 |  1 deviation.s    221 | Code        | 11 |         |    3 | 00/21BE : BD 00 22    |               lda           devTIMER,x     
+  234 |  1 deviation.s    222 | Code        | 11 |         |    3 | 00/21C1 : 20 DA FD    |               jsr           {$FDDA}        
+  235 |  1 deviation.s    223 | Code        | 11 |         |    2 | 00/21C4 : A9 A0       |               lda           #" "           
+  236 |  1 deviation.s    224 | Code        | 11 |         |    3 | 00/21C6 : 20 ED FD    |               jsr           {$FDED}        
+  237 |  1 deviation.s    225 | Empty       | 11 |         |    0 | 00/21C9               |                                            
+  238 |  1 deviation.s    226 | Code        | 11 |         |    3 | 00/21C9 : BD 51 22    |               lda           cntTIMER+1,x   ; 16-bits only
+  239 |  1 deviation.s    227 | Code        | 11 |         |    3 | 00/21CC : 20 DA FD    |               jsr           {$FDDA}        
+  240 |  1 deviation.s    228 | Code        | 11 |         |    3 | 00/21CF : BD A0 24    |               lda           valTIMER,x     
+  241 |  1 deviation.s    229 | Code        | 11 |         |    3 | 00/21D2 : 20 DA FD    |               jsr           {$FDDA}        
+  242 |  1 deviation.s    230 | Code        | 11 |         |    2 | 00/21D5 : A9 8D       |               lda           #$8d           
+  243 |  1 deviation.s    231 | Code        | 11 |         |    3 | 00/21D7 : 20 ED FD    |               jsr           {$FDED}        
+  244 |  1 deviation.s    232 | Empty       | 11 |         |    0 | 00/21DA               |                                            
+  245 |  1 deviation.s    233 | Code        | 11 |         |    1 | 00/21DA : E8          |               inx                          
+  246 |  1 deviation.s    234 | Code        | 11 |         |    1 | 00/21DB : E8          |               inx                          
+  247 |  1 deviation.s    235 | Code        | 11 |         |    1 | 00/21DC : E8          |               inx                          
+  248 |  1 deviation.s    236 | Code        | 11 |         |    1 | 00/21DD : E8          |               inx                          
+  249 |  1 deviation.s    237 | Code        | 11 |         |    2 | 00/21DE : E0 50       |               cpx           #4*{20}        
+  250 |  1 deviation.s    238 | Code        | 11 |         |    2 | 00/21E0 : 90 CA       |               bcc           ozunid_4       
+  251 |  1 deviation.s    239 | Code        | 11 |         |    1 | 00/21E2 : 60          |               rts                          
+  252 |  1 deviation.s    240 | Empty       | 11 |         |    0 | 00/21E3               |                                            
+  253 |  1 deviation.s    241 | Comment     | 11 |         |    0 | 00/21E3               | *--- Data
+  254 |  1 deviation.s    242 | Empty       | 11 |         |    0 | 00/21E3               |                                            
+  255 |  1 deviation.s    243 | Data        | 11 |         |    1 | 00/21E3 : 00          | nbENTRIES     ds            1              ; current active entries
+  256 |  1 deviation.s    244 | Empty       | 11 |         |    0 | 00/21E4               |                                            
+  257 |  1 deviation.s    245 | Data        | 11 |         |   28 | 00/21E4 : 00 00 00 00 |               ds            \              
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+  258 |  1 deviation.s    246 | Empty       | 11 |         |    0 | 00/2200               |                                            
+  259 |  1 deviation.s    247 | Data        | 11 |         |   80 | 00/2200 : 00 00 00 00 | devTIMER      ds            4*{20}         ; deviation read
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+  260 |  1 deviation.s    248 | Data        | 11 |         |   80 | 00/2250 : 00 00 00 00 | cntTIMER      ds            4*{20}         ; number of occurrences
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+  261 |  1 deviation.s    249 | Empty       | 11 |         |    0 | 00/22A0               |                                            
+  262 |  1 deviation.s    250 | Comment     | 11 |         |    0 | 00/22A0               | *-------------- THE TEST
+  263 |  1 deviation.s    251 | Empty       | 11 |         |    0 | 00/22A0               |                                            
+  264 |  1 deviation.s    252 | Data        | 11 |         |   96 | 00/22A0 : 00 00 00 00 |               ds            \              ; page aligned
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+  265 |  1 deviation.s    253 | Empty       | 11 |         |    0 | 00/2300               |                                            
+  266 |  1 deviation.s    254 | Code        | 11 |         |    3 | 00/2300 : 20 03 23    | doTEST        jsr           doTEST2        ; 6 + 400 + 6 + 400 + 6
+  267 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2303 : EA          | doTEST2       nop                          ; 2 cycles x 200
+  268 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2304 : EA          |               nop                          ; 2 cycles x 200
+  269 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2305 : EA          |               nop                          ; 2 cycles x 200
+  270 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2306 : EA          |               nop                          ; 2 cycles x 200
+  271 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2307 : EA          |               nop                          ; 2 cycles x 200
+  272 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2308 : EA          |               nop                          ; 2 cycles x 200
+  273 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2309 : EA          |               nop                          ; 2 cycles x 200
+  274 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/230A : EA          |               nop                          ; 2 cycles x 200
+  275 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/230B : EA          |               nop                          ; 2 cycles x 200
+  276 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/230C : EA          |               nop                          ; 2 cycles x 200
+  277 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/230D : EA          |               nop                          ; 2 cycles x 200
+  278 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/230E : EA          |               nop                          ; 2 cycles x 200
+  279 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/230F : EA          |               nop                          ; 2 cycles x 200
+  280 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2310 : EA          |               nop                          ; 2 cycles x 200
+  281 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2311 : EA          |               nop                          ; 2 cycles x 200
+  282 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2312 : EA          |               nop                          ; 2 cycles x 200
+  283 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2313 : EA          |               nop                          ; 2 cycles x 200
+  284 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2314 : EA          |               nop                          ; 2 cycles x 200
+  285 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2315 : EA          |               nop                          ; 2 cycles x 200
+  286 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2316 : EA          |               nop                          ; 2 cycles x 200
+  287 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2317 : EA          |               nop                          ; 2 cycles x 200
+  288 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2318 : EA          |               nop                          ; 2 cycles x 200
+  289 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2319 : EA          |               nop                          ; 2 cycles x 200
+  290 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/231A : EA          |               nop                          ; 2 cycles x 200
+  291 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/231B : EA          |               nop                          ; 2 cycles x 200
+  292 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/231C : EA          |               nop                          ; 2 cycles x 200
+  293 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/231D : EA          |               nop                          ; 2 cycles x 200
+  294 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/231E : EA          |               nop                          ; 2 cycles x 200
+  295 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/231F : EA          |               nop                          ; 2 cycles x 200
+  296 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2320 : EA          |               nop                          ; 2 cycles x 200
+  297 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2321 : EA          |               nop                          ; 2 cycles x 200
+  298 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2322 : EA          |               nop                          ; 2 cycles x 200
+  299 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2323 : EA          |               nop                          ; 2 cycles x 200
+  300 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2324 : EA          |               nop                          ; 2 cycles x 200
+  301 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2325 : EA          |               nop                          ; 2 cycles x 200
+  302 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2326 : EA          |               nop                          ; 2 cycles x 200
+  303 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2327 : EA          |               nop                          ; 2 cycles x 200
+  304 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2328 : EA          |               nop                          ; 2 cycles x 200
+  305 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2329 : EA          |               nop                          ; 2 cycles x 200
+  306 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/232A : EA          |               nop                          ; 2 cycles x 200
+  307 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/232B : EA          |               nop                          ; 2 cycles x 200
+  308 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/232C : EA          |               nop                          ; 2 cycles x 200
+  309 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/232D : EA          |               nop                          ; 2 cycles x 200
+  310 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/232E : EA          |               nop                          ; 2 cycles x 200
+  311 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/232F : EA          |               nop                          ; 2 cycles x 200
+  312 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2330 : EA          |               nop                          ; 2 cycles x 200
+  313 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2331 : EA          |               nop                          ; 2 cycles x 200
+  314 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2332 : EA          |               nop                          ; 2 cycles x 200
+  315 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2333 : EA          |               nop                          ; 2 cycles x 200
+  316 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2334 : EA          |               nop                          ; 2 cycles x 200
+  317 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2335 : EA          |               nop                          ; 2 cycles x 200
+  318 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2336 : EA          |               nop                          ; 2 cycles x 200
+  319 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2337 : EA          |               nop                          ; 2 cycles x 200
+  320 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2338 : EA          |               nop                          ; 2 cycles x 200
+  321 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2339 : EA          |               nop                          ; 2 cycles x 200
+  322 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/233A : EA          |               nop                          ; 2 cycles x 200
+  323 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/233B : EA          |               nop                          ; 2 cycles x 200
+  324 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/233C : EA          |               nop                          ; 2 cycles x 200
+  325 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/233D : EA          |               nop                          ; 2 cycles x 200
+  326 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/233E : EA          |               nop                          ; 2 cycles x 200
+  327 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/233F : EA          |               nop                          ; 2 cycles x 200
+  328 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2340 : EA          |               nop                          ; 2 cycles x 200
+  329 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2341 : EA          |               nop                          ; 2 cycles x 200
+  330 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2342 : EA          |               nop                          ; 2 cycles x 200
+  331 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2343 : EA          |               nop                          ; 2 cycles x 200
+  332 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2344 : EA          |               nop                          ; 2 cycles x 200
+  333 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2345 : EA          |               nop                          ; 2 cycles x 200
+  334 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2346 : EA          |               nop                          ; 2 cycles x 200
+  335 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2347 : EA          |               nop                          ; 2 cycles x 200
+  336 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2348 : EA          |               nop                          ; 2 cycles x 200
+  337 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2349 : EA          |               nop                          ; 2 cycles x 200
+  338 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/234A : EA          |               nop                          ; 2 cycles x 200
+  339 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/234B : EA          |               nop                          ; 2 cycles x 200
+  340 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/234C : EA          |               nop                          ; 2 cycles x 200
+  341 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/234D : EA          |               nop                          ; 2 cycles x 200
+  342 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/234E : EA          |               nop                          ; 2 cycles x 200
+  343 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/234F : EA          |               nop                          ; 2 cycles x 200
+  344 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2350 : EA          |               nop                          ; 2 cycles x 200
+  345 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2351 : EA          |               nop                          ; 2 cycles x 200
+  346 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2352 : EA          |               nop                          ; 2 cycles x 200
+  347 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2353 : EA          |               nop                          ; 2 cycles x 200
+  348 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2354 : EA          |               nop                          ; 2 cycles x 200
+  349 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2355 : EA          |               nop                          ; 2 cycles x 200
+  350 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2356 : EA          |               nop                          ; 2 cycles x 200
+  351 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2357 : EA          |               nop                          ; 2 cycles x 200
+  352 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2358 : EA          |               nop                          ; 2 cycles x 200
+  353 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2359 : EA          |               nop                          ; 2 cycles x 200
+  354 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/235A : EA          |               nop                          ; 2 cycles x 200
+  355 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/235B : EA          |               nop                          ; 2 cycles x 200
+  356 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/235C : EA          |               nop                          ; 2 cycles x 200
+  357 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/235D : EA          |               nop                          ; 2 cycles x 200
+  358 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/235E : EA          |               nop                          ; 2 cycles x 200
+  359 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/235F : EA          |               nop                          ; 2 cycles x 200
+  360 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2360 : EA          |               nop                          ; 2 cycles x 200
+  361 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2361 : EA          |               nop                          ; 2 cycles x 200
+  362 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2362 : EA          |               nop                          ; 2 cycles x 200
+  363 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2363 : EA          |               nop                          ; 2 cycles x 200
+  364 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2364 : EA          |               nop                          ; 2 cycles x 200
+  365 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2365 : EA          |               nop                          ; 2 cycles x 200
+  366 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2366 : EA          |               nop                          ; 2 cycles x 200
+  367 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2367 : EA          |               nop                          ; 2 cycles x 200
+  368 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2368 : EA          |               nop                          ; 2 cycles x 200
+  369 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2369 : EA          |               nop                          ; 2 cycles x 200
+  370 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/236A : EA          |               nop                          ; 2 cycles x 200
+  371 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/236B : EA          |               nop                          ; 2 cycles x 200
+  372 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/236C : EA          |               nop                          ; 2 cycles x 200
+  373 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/236D : EA          |               nop                          ; 2 cycles x 200
+  374 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/236E : EA          |               nop                          ; 2 cycles x 200
+  375 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/236F : EA          |               nop                          ; 2 cycles x 200
+  376 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2370 : EA          |               nop                          ; 2 cycles x 200
+  377 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2371 : EA          |               nop                          ; 2 cycles x 200
+  378 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2372 : EA          |               nop                          ; 2 cycles x 200
+  379 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2373 : EA          |               nop                          ; 2 cycles x 200
+  380 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2374 : EA          |               nop                          ; 2 cycles x 200
+  381 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2375 : EA          |               nop                          ; 2 cycles x 200
+  382 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2376 : EA          |               nop                          ; 2 cycles x 200
+  383 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2377 : EA          |               nop                          ; 2 cycles x 200
+  384 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2378 : EA          |               nop                          ; 2 cycles x 200
+  385 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2379 : EA          |               nop                          ; 2 cycles x 200
+  386 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/237A : EA          |               nop                          ; 2 cycles x 200
+  387 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/237B : EA          |               nop                          ; 2 cycles x 200
+  388 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/237C : EA          |               nop                          ; 2 cycles x 200
+  389 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/237D : EA          |               nop                          ; 2 cycles x 200
+  390 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/237E : EA          |               nop                          ; 2 cycles x 200
+  391 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/237F : EA          |               nop                          ; 2 cycles x 200
+  392 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2380 : EA          |               nop                          ; 2 cycles x 200
+  393 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2381 : EA          |               nop                          ; 2 cycles x 200
+  394 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2382 : EA          |               nop                          ; 2 cycles x 200
+  395 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2383 : EA          |               nop                          ; 2 cycles x 200
+  396 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2384 : EA          |               nop                          ; 2 cycles x 200
+  397 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2385 : EA          |               nop                          ; 2 cycles x 200
+  398 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2386 : EA          |               nop                          ; 2 cycles x 200
+  399 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2387 : EA          |               nop                          ; 2 cycles x 200
+  400 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2388 : EA          |               nop                          ; 2 cycles x 200
+  401 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2389 : EA          |               nop                          ; 2 cycles x 200
+  402 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/238A : EA          |               nop                          ; 2 cycles x 200
+  403 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/238B : EA          |               nop                          ; 2 cycles x 200
+  404 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/238C : EA          |               nop                          ; 2 cycles x 200
+  405 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/238D : EA          |               nop                          ; 2 cycles x 200
+  406 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/238E : EA          |               nop                          ; 2 cycles x 200
+  407 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/238F : EA          |               nop                          ; 2 cycles x 200
+  408 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2390 : EA          |               nop                          ; 2 cycles x 200
+  409 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2391 : EA          |               nop                          ; 2 cycles x 200
+  410 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2392 : EA          |               nop                          ; 2 cycles x 200
+  411 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2393 : EA          |               nop                          ; 2 cycles x 200
+  412 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2394 : EA          |               nop                          ; 2 cycles x 200
+  413 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2395 : EA          |               nop                          ; 2 cycles x 200
+  414 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2396 : EA          |               nop                          ; 2 cycles x 200
+  415 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2397 : EA          |               nop                          ; 2 cycles x 200
+  416 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2398 : EA          |               nop                          ; 2 cycles x 200
+  417 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/2399 : EA          |               nop                          ; 2 cycles x 200
+  418 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/239A : EA          |               nop                          ; 2 cycles x 200
+  419 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/239B : EA          |               nop                          ; 2 cycles x 200
+  420 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/239C : EA          |               nop                          ; 2 cycles x 200
+  421 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/239D : EA          |               nop                          ; 2 cycles x 200
+  422 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/239E : EA          |               nop                          ; 2 cycles x 200
+  423 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/239F : EA          |               nop                          ; 2 cycles x 200
+  424 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23A0 : EA          |               nop                          ; 2 cycles x 200
+  425 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23A1 : EA          |               nop                          ; 2 cycles x 200
+  426 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23A2 : EA          |               nop                          ; 2 cycles x 200
+  427 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23A3 : EA          |               nop                          ; 2 cycles x 200
+  428 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23A4 : EA          |               nop                          ; 2 cycles x 200
+  429 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23A5 : EA          |               nop                          ; 2 cycles x 200
+  430 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23A6 : EA          |               nop                          ; 2 cycles x 200
+  431 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23A7 : EA          |               nop                          ; 2 cycles x 200
+  432 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23A8 : EA          |               nop                          ; 2 cycles x 200
+  433 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23A9 : EA          |               nop                          ; 2 cycles x 200
+  434 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23AA : EA          |               nop                          ; 2 cycles x 200
+  435 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23AB : EA          |               nop                          ; 2 cycles x 200
+  436 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23AC : EA          |               nop                          ; 2 cycles x 200
+  437 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23AD : EA          |               nop                          ; 2 cycles x 200
+  438 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23AE : EA          |               nop                          ; 2 cycles x 200
+  439 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23AF : EA          |               nop                          ; 2 cycles x 200
+  440 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23B0 : EA          |               nop                          ; 2 cycles x 200
+  441 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23B1 : EA          |               nop                          ; 2 cycles x 200
+  442 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23B2 : EA          |               nop                          ; 2 cycles x 200
+  443 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23B3 : EA          |               nop                          ; 2 cycles x 200
+  444 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23B4 : EA          |               nop                          ; 2 cycles x 200
+  445 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23B5 : EA          |               nop                          ; 2 cycles x 200
+  446 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23B6 : EA          |               nop                          ; 2 cycles x 200
+  447 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23B7 : EA          |               nop                          ; 2 cycles x 200
+  448 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23B8 : EA          |               nop                          ; 2 cycles x 200
+  449 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23B9 : EA          |               nop                          ; 2 cycles x 200
+  450 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23BA : EA          |               nop                          ; 2 cycles x 200
+  451 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23BB : EA          |               nop                          ; 2 cycles x 200
+  452 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23BC : EA          |               nop                          ; 2 cycles x 200
+  453 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23BD : EA          |               nop                          ; 2 cycles x 200
+  454 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23BE : EA          |               nop                          ; 2 cycles x 200
+  455 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23BF : EA          |               nop                          ; 2 cycles x 200
+  456 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23C0 : EA          |               nop                          ; 2 cycles x 200
+  457 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23C1 : EA          |               nop                          ; 2 cycles x 200
+  458 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23C2 : EA          |               nop                          ; 2 cycles x 200
+  459 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23C3 : EA          |               nop                          ; 2 cycles x 200
+  460 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23C4 : EA          |               nop                          ; 2 cycles x 200
+  461 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23C5 : EA          |               nop                          ; 2 cycles x 200
+  462 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23C6 : EA          |               nop                          ; 2 cycles x 200
+  463 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23C7 : EA          |               nop                          ; 2 cycles x 200
+  464 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23C8 : EA          |               nop                          ; 2 cycles x 200
+  465 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23C9 : EA          |               nop                          ; 2 cycles x 200
+  466 |  1 deviation.s    256 | Code        | 11 |         |    1 | 00/23CA : EA          |               nop                          ; 2 cycles x 200
+  467 |  1 deviation.s    258 | Code        | 11 |         |    1 | 00/23CB : 60          |               rts                          ; 6
+  468 |  1 deviation.s    259 | Empty       | 11 |         |    0 | 00/23CC               |                                            
+  469 |  1 deviation.s    260 | Data        | 11 |         |   52 | 00/23CC : 00 00 00 00 |               ds            \              
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+      |                       |             |    |         |      |           00 00 00 00 |
+  470 |  1 deviation.s    261 | Empty       | 11 |         |    0 | 00/2400               |                                            
+  471 |  1 deviation.s    262 | Comment     | 11 |         |    0 | 00/2400               | *-------------- BRUTAL TIMER ROUTINES
+  472 |  1 deviation.s    263 | Empty       | 11 |         |    0 | 00/2400               |                                            
+  473 |  1 deviation.s    264 | Comment     | 11 |         |    0 | 00/2400               | *------- Clear TIMER
+  474 |  1 deviation.s    265 | Empty       | 11 |         |    0 | 00/2400               |                                            
+  475 |  1 deviation.s    266 | Code        | 11 |         |    3 | 00/2400 : 8D 9C 24    | clearTIMER2   sta           theTIMER       
+  476 |  1 deviation.s    267 | Code        | 11 |         |    3 | 00/2403 : AE 9F 24    | clearTIMER    ldx           theSLOT16      
+  477 |  1 deviation.s    268 | Code        | 11 |         |    3 | 00/2406 : AD 9C 24    |               lda           theTIMER       
+  478 |  1 deviation.s    269 | Code        | 11 |         |    3 | 00/2409 : 9D 80 C0    |               sta           $c080,x        
+  479 |  1 deviation.s    270 | Code        | 11 |         |    1 | 00/240C : 60          |               rts                          
+  480 |  1 deviation.s    271 | Empty       | 11 |         |    0 | 00/240D               |                                            
+  481 |  1 deviation.s    272 | Comment     | 11 |         |    0 | 00/240D               | *------- Start TIMER
+  482 |  1 deviation.s    273 | Empty       | 11 |         |    0 | 00/240D               |                                            
+  483 |  1 deviation.s    274 | Code        | 11 |         |    3 | 00/240D : 8D 9C 24    | startTIMER2   sta           theTIMER       
+  484 |  1 deviation.s    275 | Code        | 11 |         |    3 | 00/2410 : AE 9F 24    | startTIMER    ldx           theSLOT16      ; 4 ** no **
+  485 |  1 deviation.s    276 | Code        | 11 |         |    3 | 00/2413 : AD 9C 24    |               lda           theTIMER       ; 4 ** no **
+  486 |  1 deviation.s    277 | Code        | 11 |         |    3 | 00/2416 : 9D 81 C0    |               sta           $c081,x        ; 5
+  487 |  1 deviation.s    278 | Code        | 11 |         |    1 | 00/2419 : 60          |               rts                          ; 6
+  488 |  1 deviation.s    279 | Empty       | 11 |         |    0 | 00/241A               |                                            
+  489 |  1 deviation.s    280 | Comment     | 11 |         |    0 | 00/241A               | *------- Stop TIMER
+  490 |  1 deviation.s    281 | Empty       | 11 |         |    0 | 00/241A               |                                            
+  491 |  1 deviation.s    282 | Code        | 11 |         |    3 | 00/241A : 8D 9C 24    | stopTIMER2    sta           theTIMER       
+  492 |  1 deviation.s    283 | Code        | 11 |         |    3 | 00/241D : AE 9F 24    | stopTIMER     ldx           theSLOT16      ; 4 ** yes **
+  493 |  1 deviation.s    284 | Code        | 11 |         |    3 | 00/2420 : AD 9C 24    |               lda           theTIMER       ; 4 ** yes **
+  494 |  1 deviation.s    285 | Code        | 11 |         |    3 | 00/2423 : 9D 82 C0    |               sta           $c082,x        ; 5 ** yes **
+  495 |  1 deviation.s    286 | Code        | 11 |         |    1 | 00/2426 : 60          |               rts                          
+  496 |  1 deviation.s    287 | Empty       | 11 |         |    0 | 00/2427               |                                            
+  497 |  1 deviation.s    288 | Comment     | 11 |         |    0 | 00/2427               | *------- Read T1 value
+  498 |  1 deviation.s    289 | Empty       | 11 |         |    0 | 00/2427               |                                            
+  499 |  1 deviation.s    290 | Code        | 11 |         |    3 | 00/2427 : AE 9F 24    | readT1        ldx           theSLOT16      
+  500 |  1 deviation.s    291 | Code        | 11 |         |    3 | 00/242A : BD 88 C0    |               lda           $c088,x        ; T1
+  501 |  1 deviation.s    292 | Code        | 11 |         |    3 | 00/242D : 8D A0 24    |               sta           valTIMER       
+  502 |  1 deviation.s    293 | Code        | 11 |         |    3 | 00/2430 : BD 89 C0    |               lda           $c089,x        
+  503 |  1 deviation.s    294 | Code        | 11 |         |    3 | 00/2433 : 8D A1 24    |               sta           valTIMER+1     
+  504 |  1 deviation.s    295 | Code        | 11 |         |    3 | 00/2436 : BD 8A C0    |               lda           $c08a,x        
+  505 |  1 deviation.s    296 | Code        | 11 |         |    3 | 00/2439 : 8D A2 24    |               sta           valTIMER+2     
+  506 |  1 deviation.s    297 | Code        | 11 |         |    3 | 00/243C : BD 8B C0    |               lda           $c08b,x        
+  507 |  1 deviation.s    298 | Code        | 11 |         |    3 | 00/243F : 8D A3 24    |               sta           valTIMER+3     
+  508 |  1 deviation.s    299 | Code        | 11 |         |    1 | 00/2442 : 60          |               rts                          
+  509 |  1 deviation.s    300 | Empty       | 11 |         |    0 | 00/2443               |                                            
+  510 |  1 deviation.s    301 | Comment     | 11 |         |    0 | 00/2443               | *------- Read T2 value
+  511 |  1 deviation.s    302 | Empty       | 11 |         |    0 | 00/2443               |                                            
+  512 |  1 deviation.s    303 | Code        | 11 |         |    3 | 00/2443 : AE 9F 24    | readT2        ldx           theSLOT16      
+  513 |  1 deviation.s    304 | Code        | 11 |         |    3 | 00/2446 : BD 8C C0    |               lda           $c08c,x        ; T2
+  514 |  1 deviation.s    305 | Code        | 11 |         |    3 | 00/2449 : 8D A0 24    |               sta           valTIMER       
+  515 |  1 deviation.s    306 | Code        | 11 |         |    3 | 00/244C : BD 8D C0    |               lda           $c08d,x        
+  516 |  1 deviation.s    307 | Code        | 11 |         |    3 | 00/244F : 8D A1 24    |               sta           valTIMER+1     
+  517 |  1 deviation.s    308 | Code        | 11 |         |    3 | 00/2452 : BD 8E C0    |               lda           $c08e,x        
+  518 |  1 deviation.s    309 | Code        | 11 |         |    3 | 00/2455 : 8D A2 24    |               sta           valTIMER+2     
+  519 |  1 deviation.s    310 | Code        | 11 |         |    3 | 00/2458 : BD 8F C0    |               lda           $c08f,x        
+  520 |  1 deviation.s    311 | Code        | 11 |         |    3 | 00/245B : 8D A3 24    |               sta           valTIMER+3     
+  521 |  1 deviation.s    312 | Code        | 11 |         |    1 | 00/245E : 60          |               rts                          
+  522 |  1 deviation.s    313 | Empty       | 11 |         |    0 | 00/245F               |                                            
+  523 |  1 deviation.s    314 | Comment     | 11 |         |    0 | 00/245F               | *------- Miscellaneous
+  524 |  1 deviation.s    315 | Empty       | 11 |         |    0 | 00/245F               |                                            
+  525 |  1 deviation.s    316 | Code        | 11 |         |    3 | 00/245F : 8C 66 24    | printSTRING   sty           printSTRING1+1 
+  526 |  1 deviation.s    317 | Code        | 11 |         |    3 | 00/2462 : 8E 67 24    |               stx           printSTRING1+2 
+  527 |  1 deviation.s    318 | Empty       | 11 |         |    0 | 00/2465               |                                            
+  528 |  1 deviation.s    319 | Code        | 11 |         |    3 | 00/2465 : AD BD BD    | printSTRING1  lda           $bdbd          
+  529 |  1 deviation.s    320 | Code        | 11 |         |    2 | 00/2468 : F0 22       |               beq           printSTRING4   
+  530 |  1 deviation.s    321 | Empty       | 11 |         |    0 | 00/246A               |                                            
+  531 |  1 deviation.s    322 | Code        | 11 |         |    2 | 00/246A : A2 01       |               ldx           #{1}           
+  532 |  1 deviation.s    323 | Code        | 11 |         |    2 | 00/246C : C9 C0       |               cmp           #"@"           
+  533 |  1 deviation.s    324 | Code        | 11 |         |    2 | 00/246E : F0 07       |               beq           printSTRING2   
+  534 |  1 deviation.s    325 | Code        | 11 |         |    3 | 00/2470 : AE 9E 24    |               ldx           theSLOT        
+  535 |  1 deviation.s    326 | Code        | 11 |         |    2 | 00/2473 : C9 A3       |               cmp           #"#"           
+  536 |  1 deviation.s    327 | Code        | 11 |         |    2 | 00/2475 : D0 03       |               bne           printSTRING3   
+  537 |  1 deviation.s    328 | Code        | 11 |         |    1 | 00/2477 : 8A          | printSTRING2  txa                          
+  538 |  1 deviation.s    329 | Code        | 11 |         |    2 | 00/2478 : 09 B0       |               ora           #"0"           
+  539 |  1 deviation.s    330 | Empty       | 11 |         |    0 | 00/247A               |                                            
+  540 |  1 deviation.s    331 | Code        | 11 |         |    3 | 00/247A : 20 ED FD    | printSTRING3  jsr           {$FDED}        
+  541 |  1 deviation.s    332 | Empty       | 11 |         |    0 | 00/247D               |                                            
+  542 |  1 deviation.s    333 | Code        | 11 |         |    3 | 00/247D : EE 66 24    |               inc           printSTRING1+1 
+  543 |  1 deviation.s    334 | Code        | 11 |         |    2 | 00/2480 : D0 E3       |               bne           printSTRING1   
+  544 |  1 deviation.s    335 | Code        | 11 |         |    3 | 00/2482 : EE 67 24    |               inc           printSTRING1+2 
+  545 |  1 deviation.s    336 | Code        | 11 |         |    3 | 00/2485 : AD 67 24    |               lda           printSTRING1+2 ; force end of routine
+  546 |  1 deviation.s    337 | Code        | 11 |         |    2 | 00/2488 : C9 C0       |               cmp           #$c0           ; if we reach $C000
+  547 |  1 deviation.s    338 | Code        | 11 |         |    2 | 00/248A : 90 D9       |               bcc           printSTRING1   
+  548 |  1 deviation.s    339 | Empty       | 11 |         |    0 | 00/248C               |                                            
+  549 |  1 deviation.s    340 | Code        | 11 |         |    1 | 00/248C : 60          | printSTRING4  rts                          
+  550 |  1 deviation.s    341 | Empty       | 11 |         |    0 | 00/248D               |                                            
+  551 |  1 deviation.s    342 | Comment     | 11 |         |    0 | 00/248D               | *------- gotoXY
+  552 |  1 deviation.s    343 | Empty       | 11 |         |    0 | 00/248D               |                                            
+  553 |  1 deviation.s    344 | Code        | 11 |         |    2 | 00/248D : 86 24       | gotoxy        stx           {$24}          
+  554 |  1 deviation.s    345 | Code        | 11 |         |    1 | 00/248F : 98          |               tya                          
+  555 |  1 deviation.s    346 | Code        | 11 |         |    3 | 00/2490 : 4C 5B FB    |               jmp           {$FB5B}        
+  556 |  1 deviation.s    347 | Empty       | 11 |         |    0 | 00/2493               |                                            
+  557 |  1 deviation.s    348 | Comment     | 11 |         |    0 | 00/2493               | *------- waitFORKEY
+  558 |  1 deviation.s    349 | Empty       | 11 |         |    0 | 00/2493               |                                            
+  559 |  1 deviation.s    350 | Code        | 11 |         |    3 | 00/2493 : AD 00 C0    | waitFORKEY    lda           {$C000}        
+  560 |  1 deviation.s    351 | Code        | 11 |         |    2 | 00/2496 : 10 FB       |               bpl           waitFORKEY     
+  561 |  1 deviation.s    352 | Code        | 11 |         |    3 | 00/2498 : 8D 10 C0    |               sta           {$C010}        
+  562 |  1 deviation.s    353 | Code        | 11 |         |    1 | 00/249B : 60          |               rts                          
+  563 |  1 deviation.s    354 | Empty       | 11 |         |    0 | 00/249C               |                                            
+  564 |  1 deviation.s    355 | Comment     | 11 |         |    0 | 00/249C               | *-------------- DATA
+  565 |  1 deviation.s    356 | Empty       | 11 |         |    0 | 00/249C               |                                            
+  566 |  1 deviation.s    357 | Data        | 11 |         |    1 | 00/249C : 00          | theTIMER      ds            1              ; 1..2
+  567 |  1 deviation.s    358 | Data        | 11 |         |    1 | 00/249D : 00          | theFREQ       ds            1              ; 0..3
+  568 |  1 deviation.s    359 | Data        | 11 |         |    1 | 00/249E : 00          | theSLOT       ds            1              ; 0..7
+  569 |  1 deviation.s    360 | Data        | 11 |         |    1 | 00/249F : 00          | theSLOT16     ds            1              ; 10=slot 1, ..., 70=slot 7
+  570 |  1 deviation.s    361 | Data        | 11 |         |    4 | 00/24A0 : 00 00 00 00 | valTIMER      ds            4              
+  571 |  1 deviation.s    362 | Empty       | 11 |         |    0 | 00/24A4               |                                            
+  572 |  1 deviation.s    363 | Data        | 11 |         |   28 | 00/24A4 : C2 F2 F5 F4 | strHELLO      asc           "Brutal Timer Deviation v0.@"8d
+      |                       |             |    |         |      |           E1 EC A0 D4 |
+      |                       |             |    |         |      |           E9 ED E5 F2 |
+      |                       |             |    |         |      |           A0 C4 E5 F6 |
+      |                       |             |    |         |      |           E9 E1 F4 E9 |
+      |                       |             |    |         |      |           EF EE A0 F6 |
+      |                       |             |    |         |      |           B0 AE C0 8D |
+  573 |  1 deviation.s    364 | Data        | 11 |         |   28 | 00/24C0 : A8 E3 A9 A0 |               asc           "(c) 2026, Plamen Vaysilov &"8d
+      |                       |             |    |         |      |           B2 B0 B2 B6 |
+      |                       |             |    |         |      |           AC A0 D0 EC |
+      |                       |             |    |         |      |           E1 ED E5 EE |
+      |                       |             |    |         |      |           A0 D6 E1 F9 |
+      |                       |             |    |         |      |           F3 E9 EC EF |
+      |                       |             |    |         |      |           F6 A0 A6 8D |
+  574 |  1 deviation.s    365 | Data        | 11 |         |   24 | 00/24DC : C2 F2 F5 F4 |               asc           "Brutal Deluxe Software"8d00
+      |                       |             |    |         |      |           E1 EC A0 C4 |
+      |                       |             |    |         |      |           E5 EC F5 F8 |
+      |                       |             |    |         |      |           E5 A0 D3 EF |
+      |                       |             |    |         |      |           E6 F4 F7 E1 |
+      |                       |             |    |         |      |           F2 E5 8D 00 |
+  575 |  1 deviation.s    366 | Empty       | 11 |         |    0 | 00/24F4               |                                            
+  576 |  1 deviation.s    367 | Comment     | 11 |         |    0 | 00/24F4               | *	asc	"1234567890123456789012345"
+  577 |  1 deviation.s    368 | Empty       | 11 |         |    0 | 00/24F4               |                                            
+  578 |  1 deviation.s    369 | Data        | 11 |         |    1 | 00/24F4 : 8D          | strMENU       asc           8d             
+  579 |  1 deviation.s    370 | Data        | 11 |         |   16 | 00/24F5 : B1 AD A0 D3 |               asc           "1- Set slot (#)"8d
+      |                       |             |    |         |      |           E5 F4 A0 F3 |
+      |                       |             |    |         |      |           EC EF F4 A0 |
+      |                       |             |    |         |      |           A8 A3 A9 8D |
+  580 |  1 deviation.s    371 | Data        | 11 |         |   18 | 00/2505 : B2 AD A0 D4 |               asc           "2- Test deviation"8d
+      |                       |             |    |         |      |           E5 F3 F4 A0 |
+      |                       |             |    |         |      |           E4 E5 F6 E9 |
+      |                       |             |    |         |      |           E1 F4 E9 EF |
+      |                       |             |    |         |      |           EE 8D       |
+  581 |  1 deviation.s    372 | Data        | 11 |         |   28 | 00/2517 : D3 E5 EC E5 |               asc           "Select entry (0 to exit) > "00
+      |                       |             |    |         |      |           E3 F4 A0 E5 |
+      |                       |             |    |         |      |           EE F4 F2 F9 |
+      |                       |             |    |         |      |           A0 A8 B0 A0 |
+      |                       |             |    |         |      |           F4 EF A0 E5 |
+      |                       |             |    |         |      |           F8 E9 F4 A9 |
+      |                       |             |    |         |      |           A0 BE A0 00 |
+  582 |  1 deviation.s    373 | Empty       | 11 |         |    0 | 00/2533               |                                            
+  583 |  1 deviation.s    374 | Data        | 11 |         |    1 | 00/2533 : 8D          | strSETSLOT    asc           8d             
+  584 |  1 deviation.s    375 | Data        | 11 |         |   18 | 00/2534 : D3 E5 F4 A0 |               asc           "Set slot (1-7) > "00
+      |                       |             |    |         |      |           F3 EC EF F4 |
+      |                       |             |    |         |      |           A0 A8 B1 AD |
+      |                       |             |    |         |      |           B7 A9 A0 BE |
+      |                       |             |    |         |      |           A0 00       |
+  585 |  1 deviation.s    376 | Empty       | 11 |         |    0 | 00/2546               |                                            
+  586 |  1 deviation.s    377 | Data        | 11 |         |   11 | 00/2546 : 8D C7 EF EF | strGOODBYE    asc           8d"Good bye!"00
+      |                       |             |    |         |      |           E4 A0 E2 F9 |
+      |                       |             |    |         |      |           E5 A1 00    |
+------+-----------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

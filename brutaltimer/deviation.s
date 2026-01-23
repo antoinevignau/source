@@ -28,7 +28,7 @@ COUT	=	$FDED
 
 *-------------- EQUATES
 
-VERSION	=	1	; v0.x
+VERSION	=	2	; v0.x
 
 NB_ENTRIES	=	20	; array size
 
@@ -105,7 +105,9 @@ doSETSLOT	@printSTRING	#strSETSLOT
 
 	ds	\
 
-doDEVIATION	lda	#T0	; stop 
+doDEVIATION	jsr	HOME
+
+	lda	#T0	; stop 
 	jsr	stopTIMER2
 	jsr	clearTIMER	; reset both timers
 	lda	#T1	; we work with T1 now
@@ -183,6 +185,12 @@ addVALUE	jsr	readT1	; read T1
 	lda	cntTIMER+1,x
 	adc	#0
 	sta	cntTIMER+1,x
+	lda	cntTIMER+2,x
+	adc	#0
+	sta	cntTIMER+2,x
+	lda	cntTIMER+3,x
+	adc	#0
+	sta	cntTIMER+3,x
 	jmp	printARRAY	; and print
 
 tryNEXT	cpy	nbENTRIES	; are we at the end of the array?
@@ -209,9 +217,11 @@ saveIT	sty	nbENTRIES	; new number of entries
 
 *--- Print array
 
-printARRAY	jsr	HOME
+printARRAY	@gotoxy	#0;#0
 
+	ldy	#0
 	ldx	#0
+
 ]lp	lda	devTIMER+3,x	; 32-bits
 	jsr	PRBYTE
 	lda	devTIMER+2,x
@@ -223,9 +233,13 @@ printARRAY	jsr	HOME
 	lda	#" "
 	jsr	COUT
 
-	lda	cntTIMER+1,x	; 16-bits only
+	lda	cntTIMER+3,x	; 32-bits
 	jsr	PRBYTE
-	lda	valTIMER,x
+	lda	cntTIMER+2,x
+	jsr	PRBYTE
+	lda	cntTIMER+1,x
+	jsr	PRBYTE
+	lda	cntTIMER,x
 	jsr	PRBYTE
 	lda	#$8d
 	jsr	COUT
@@ -234,7 +248,9 @@ printARRAY	jsr	HOME
 	inx
 	inx
 	inx
-	cpx	#4*NB_ENTRIES
+	
+	iny
+	cpy	nbENTRIES
 	bcc	]lp
 	rts
 

@@ -155,7 +155,7 @@ doDEVIATION	lda	#T0	; stop
 
 addVALUE	jsr	readT1	; read T1
 
-	ldy	#0	; nb of entries
+	ldy	#0-1	; nb of entries
 	ldx	#0-4	; start offset
 	
 ]lp	iny

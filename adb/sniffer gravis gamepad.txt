@@ -82,10 +82,10 @@ If the Combine Corners option is active, diagonals values are returned:
 	1: set towards buttons
 	
 ---- Opened the serial port /dev/tty.usbserial-A50285BI ----
-T,2,3,2 6805
-T,2,3,2 6205
-L,2,3,2 0FFE
-L,14,3,2 0FFE
+T,2,3,2 6805	0110_1000_0000_0101
+T,2,3,2 6205	0110_0010_0000_0101
+L,2,3,2 0FFE	0000_1111_1111_1110 F/FE change address to address F
+L,14,3,2 0FFE	change address to F
 L,15,3,2 0EFE
 L,14,3,2 03FE
 L,3,3,2 0EFE
@@ -147,8 +147,8 @@ L,14,3,2 02FE
 T,3,3,2 6201
 L,2,3,2 0034
 T,2,3,2 6734
-T,15,0,2 24FF
-T,15,0,2 A4FF
+T,15,0,2 24FF	perform a self-test
+T,15,0,2 A4FF	perform a self-test
 T,3,0,2 8081
 T,3,0,2 FF81
 T,3,0,2 FF81

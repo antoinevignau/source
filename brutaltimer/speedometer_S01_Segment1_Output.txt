@@ -1,0 +1,1060 @@
+------+-------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File             Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+-------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1 speedometer.s      1 | Comment     | 11 |         |    0 | 00/0000               | *
+    2 |  1 speedometer.s      2 | Comment     | 11 |         |    0 | 00/0000               | * Speedometer: Time to read a file
+    3 |  1 speedometer.s      3 | Comment     | 11 |         |    0 | 00/0000               | *
+    4 |  1 speedometer.s      4 | Comment     | 11 |         |    0 | 00/0000               | * (c) 2013-2025, Brutal Deluxe Software
+    5 |  1 speedometer.s      5 | Comment     | 11 |         |    0 | 00/0000               | *
+    6 |  1 speedometer.s      6 | Comment     | 11 |         |    0 | 00/0000               | * v1.0 - 20251209
+    7 |  1 speedometer.s      7 | Comment     | 11 |         |    0 | 00/0000               | * v1.1 - 20260303
+    8 |  1 speedometer.s      8 | Comment     | 11 |         |    0 | 00/0000               | *
+    9 |  1 speedometer.s      9 | Empty       | 11 |         |    0 | 00/0000               |                                          
+   10 |  1 speedometer.s     10 | Directive   | 11 |         |    0 | 00/0000               |                 xc                       
+   11 |  1 speedometer.s     11 | Directive   | 11 |         |    0 | 00/0000               |                 xc                       
+   12 |  1 speedometer.s     12 | Directive   | 00 |         |    0 | 00/0000               |                 mx        %00            
+   13 |  1 speedometer.s     13 | Empty       | 00 |         |    0 | 00/0000               |                                          
+   14 |  1 speedometer.s     14 | Directive   | 00 |         |    0 | 00/0000               |                 rel                      
+   15 |  1 speedometer.s     15 | Directive   | 00 |         |    0 | 00/0000               |                 typ       S16            
+   16 |  1 speedometer.s     16 | Directive   | 00 |         |    0 | 00/0000               |                 dsk       speedometer.l  
+   17 |  1 speedometer.s     17 | Directive   | 00 |         |    0 | 00/0000               |                 lst       off            
+   18 |  1 speedometer.s     18 | Empty       | 00 |         |    0 | 00/0000               |                                          
+   19 |  1 speedometer.s     19 | Comment     | 00 |         |    0 | 00/0000               | *----------
+   20 |  1 speedometer.s     20 | Empty       | 00 |         |    0 | 00/0000               |                                          
+   21 |  1 speedometer.s     21 | Directive   | 00 |         |    0 | 00/0000               |                 use       4/Int.Macs     
+   22 |  1 speedometer.s     22 | Directive   | 00 |         |    0 | 00/0000               |                 use       4/Locator.Macs 
+   23 |  1 speedometer.s     23 | Directive   | 00 |         |    0 | 00/0000               |                 use       4/Mem.Macs     
+   24 |  1 speedometer.s     24 | Directive   | 00 |         |    0 | 00/0000               |                 use       4/Misc.Macs    
+   25 |  1 speedometer.s     25 | Directive   | 00 |         |    0 | 00/0000               |                 use       4/Text.Macs    
+   26 |  1 speedometer.s     26 | Directive   | 00 |         |    0 | 00/0000               |                 use       4/Util.Macs    
+   27 |  1 speedometer.s     27 | Empty       | 00 |         |    0 | 00/0000               |                                          
+   28 |  1 speedometer.s     28 | Equivalence | 00 |         |    0 | 00/0000               | Debut           =         $00            
+   29 |  1 speedometer.s     29 | Equivalence | 00 |         |    0 | 00/0000               | proDOS          =         $e100a8        
+   30 |  1 speedometer.s     30 | Empty       | 00 |         |    0 | 00/0000               |                                          
+   31 |  1 speedometer.s     31 | Comment     | 00 |         |    0 | 00/0000               | *----------
+   32 |  1 speedometer.s     32 | Empty       | 00 |         |    0 | 00/0000               |                                          
+   33 |  1 speedometer.s     33 | Code        | 00 |         |    1 | 00/0000 : 4B          |                 phk                      
+   34 |  1 speedometer.s     34 | Code        | 00 |         |    1 | 00/0001 : AB          |                 plb                      
+   35 |  1 speedometer.s     35 | Empty       | 00 |         |    0 | 00/0002               |                                          
+   36 |  1 speedometer.s     36 | Code        | 00 |         |    1 | 00/0002 : 7B          |                 tdc                      
+   37 |  1 speedometer.s     37 | Code        | 00 |  2      |    3 | 00/0003 : 8D 8B 07    |                 sta       myDP           
+   38 |  1 speedometer.s     38 | Empty       | 00 |         |    0 | 00/0006               |                                          
+   39 |  1 speedometer.s     39 | Macro       | 00 |         |    0 | 00/0006               |                 _TLStartUp                 
+   41 |  1 speedometer.s     39 | Code        | 00 |         |    3 | 00/0006 : A2 01 02    |                 LDX       #$201          ; load tool call #
+   42 |  1 speedometer.s     39 | Code        | 00 |         |    4 | 00/0009 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+   43 |  1 speedometer.s     40 | Code        | 00 |         |    1 | 00/000D : 48          |                 pha                      
+   44 |  1 speedometer.s     41 | Macro       | 00 |         |    0 | 00/000E               |                 _MMStartUp                 
+   46 |  1 speedometer.s     41 | Code        | 00 |         |    3 | 00/000E : A2 02 02    |                 LDX       #$202          ; load tool call #
+   47 |  1 speedometer.s     41 | Code        | 00 |         |    4 | 00/0011 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+   48 |  1 speedometer.s     42 | Code        | 00 |         |    1 | 00/0015 : 68          |                 pla                      
+   49 |  1 speedometer.s     43 | Code        | 00 |  2      |    3 | 00/0016 : 8D 87 07    |                 sta       appID          
+   50 |  1 speedometer.s     44 | Code        | 00 |         |    3 | 00/0019 : 09 00 01    |                 ora       #$0100         
+   51 |  1 speedometer.s     45 | Code        | 00 |  2      |    3 | 00/001C : 8D 89 07    |                 sta       myID           
+   52 |  1 speedometer.s     46 | Empty       | 00 |         |    0 | 00/001F               |                                          
+   53 |  1 speedometer.s     47 | Macro       | 00 |         |    0 | 00/001F               |                 _MTStartUp                 
+   55 |  1 speedometer.s     47 | Code        | 00 |         |    3 | 00/001F : A2 03 02    |                 LDX       #$203          ; load tool call #
+   56 |  1 speedometer.s     47 | Code        | 00 |         |    4 | 00/0022 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+   57 |  1 speedometer.s     48 | Macro       | 00 |         |    0 | 00/0026               |                 _TextStartUp                 
+   59 |  1 speedometer.s     48 | Code        | 00 |         |    3 | 00/0026 : A2 0C 02    |                 LDX       #$20C          ; load tool call #
+   60 |  1 speedometer.s     48 | Code        | 00 |         |    4 | 00/0029 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+   61 |  1 speedometer.s     49 | Empty       | 00 |         |    0 | 00/002D               |                                          
+   62 |  1 speedometer.s     50 | Macro       | 00 |         |    0 | 00/002D               |                 _IMStartUp                 
+   64 |  1 speedometer.s     50 | Code        | 00 |         |    3 | 00/002D : A2 0B 02    |                 LDX       #$20B          ; load tool call #
+   65 |  1 speedometer.s     50 | Code        | 00 |         |    4 | 00/0030 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+   66 |  1 speedometer.s     51 | Empty       | 00 |         |    0 | 00/0034               |                                          
+   67 |  1 speedometer.s     52 | Comment     | 00 |         |    0 | 00/0034               | * Get 64KB and make it our read buffer
+   68 |  1 speedometer.s     53 | Empty       | 00 |         |    0 | 00/0034               |                                          
+   69 |  1 speedometer.s     54 | Code        | 00 |         |    1 | 00/0034 : 48          |                 pha                      
+   70 |  1 speedometer.s     55 | Code        | 00 |         |    1 | 00/0035 : 48          |                 pha                      
+   71 |  1 speedometer.s     56 | Macro       | 00 |         |    0 | 00/0036               |                 PushLong  #$010000       
+   75 |  1 speedometer.s     56 | Code        | 00 |         |    3 | 00/0036 : F4 01 00    |                 PEA       #^#$010000     
+   82 |  1 speedometer.s     56 | Code        | 00 |         |    3 | 00/0039 : F4 00 00    |                 PEA       #$010000       
+   85 |  1 speedometer.s     57 | Macro       | 00 |         |    0 | 00/003C               |                 PushWord  myID           
+   90 |  1 speedometer.s     57 | Code        | 00 |  2      |    3 | 00/003C : AD 89 07    |                 LDA       myID           
+   91 |  1 speedometer.s     57 | Code        | 00 |         |    1 | 00/003F : 48          |                 PHA                      
+   93 |  1 speedometer.s     58 | Macro       | 00 |         |    0 | 00/0040               |                 PushWord  #%11000000_00011100
+   95 |  1 speedometer.s     58 | Code        | 00 |         |    3 | 00/0040 : F4 1C C0    |                 PEA       #%11000000_00011100
+   98 |  1 speedometer.s     59 | Macro       | 00 |         |    0 | 00/0043               |                 PushLong  #0             
+  102 |  1 speedometer.s     59 | Code        | 00 |         |    3 | 00/0043 : F4 00 00    |                 PEA       #^#0           
+  109 |  1 speedometer.s     59 | Code        | 00 |         |    3 | 00/0046 : F4 00 00    |                 PEA       #0             
+  112 |  1 speedometer.s     60 | Macro       | 00 |         |    0 | 00/0049               |                 _NewHandle                 
+  114 |  1 speedometer.s     60 | Code        | 00 |         |    3 | 00/0049 : A2 02 09    |                 LDX       #$902          ; load tool call #
+  115 |  1 speedometer.s     60 | Code        | 00 |         |    4 | 00/004C : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  116 |  1 speedometer.s     61 | Code        | 00 |         |    1 | 00/0050 : 0B          |                 phd                      
+  117 |  1 speedometer.s     62 | Code        | 00 |         |    1 | 00/0051 : 3B          |                 tsc                      
+  118 |  1 speedometer.s     63 | Code        | 00 |         |    1 | 00/0052 : 5B          |                 tcd                      
+  119 |  1 speedometer.s     64 | Code        | 00 |         |    2 | 00/0053 : A7 03       |                 lda       [3]            
+  120 |  1 speedometer.s     65 | Code        | 00 |  2      |    3 | 00/0055 : 8D 8D 07    |                 sta       ptrBUFFER      
+  121 |  1 speedometer.s     66 | Code        | 00 |         |    3 | 00/0058 : A0 02 00    |                 ldy       #2             
+  122 |  1 speedometer.s     67 | Code        | 00 |         |    2 | 00/005B : B7 03       |                 lda       [3],y          
+  123 |  1 speedometer.s     68 | Code        | 00 |  2      |    3 | 00/005D : 8D 8F 07    |                 sta       ptrBUFFER+2    
+  124 |  1 speedometer.s     69 | Code        | 00 |         |    1 | 00/0060 : 2B          |                 pld                      
+  125 |  1 speedometer.s     70 | Code        | 00 |         |    1 | 00/0061 : 7A          |                 ply                      
+  126 |  1 speedometer.s     71 | Code        | 00 |  2      |    3 | 00/0062 : 8C 91 07    |                 sty       haBUFFER       
+  127 |  1 speedometer.s     72 | Code        | 00 |         |    1 | 00/0065 : FA          |                 plx                      
+  128 |  1 speedometer.s     73 | Code        | 00 |  2      |    3 | 00/0066 : 8E 93 07    |                 stx       haBUFFER+2     
+  129 |  1 speedometer.s     74 | Empty       | 00 |         |    0 | 00/0069               |                                          
+  130 |  1 speedometer.s     75 | Comment     | 00 |         |    0 | 00/0069               | *----------
+  131 |  1 speedometer.s     76 | Empty       | 00 |         |    0 | 00/0069               |                                          
+  132 |  1 speedometer.s     77 | Macro       | 00 |         |    0 | 00/0069               |                 PushLong  #myHEARTBEAT   
+  136 |  1 speedometer.s     77 | Code        | 00 |  1 >>16 |    3 | 00/0069 : F4 00 00    |                 PEA       #^#myHEARTBEAT 
+  143 |  1 speedometer.s     77 | Code        | 00 |  2      |    3 | 00/006C : F4 CE 02    |                 PEA       #myHEARTBEAT   
+  146 |  1 speedometer.s     78 | Macro       | 00 |         |    0 | 00/006F               |                 _SetHeartBeat                 
+  148 |  1 speedometer.s     78 | Code        | 00 |         |    3 | 00/006F : A2 03 12    |                 LDX       #$1203         ; load tool call #
+  149 |  1 speedometer.s     78 | Code        | 00 |         |    4 | 00/0072 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  150 |  1 speedometer.s     79 | Empty       | 00 |         |    0 | 00/0076               |                                          
+  151 |  1 speedometer.s     80 | Comment     | 00 |         |    0 | 00/0076               | *----------
+  152 |  1 speedometer.s     81 | Empty       | 00 |         |    0 | 00/0076               |                                          
+  153 |  1 speedometer.s     82 | Macro       | 00 |         |    0 | 00/0076               |                 PushWord  #$00FF         
+  155 |  1 speedometer.s     82 | Code        | 00 |         |    3 | 00/0076 : F4 FF 00    |                 PEA       #$00FF         
+  158 |  1 speedometer.s     83 | Macro       | 00 |         |    0 | 00/0079               |                 PushWord  #$0080         
+  160 |  1 speedometer.s     83 | Code        | 00 |         |    3 | 00/0079 : F4 80 00    |                 PEA       #$0080         
+  163 |  1 speedometer.s     84 | Macro       | 00 |         |    0 | 00/007C               |                 _SetInGlobals                 
+  165 |  1 speedometer.s     84 | Code        | 00 |         |    3 | 00/007C : A2 0C 09    |                 LDX       #$90C          ; load tool call #
+  166 |  1 speedometer.s     84 | Code        | 00 |         |    4 | 00/007F : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  167 |  1 speedometer.s     85 | Macro       | 00 |         |    0 | 00/0083               |                 PushWord  #$00FF         
+  169 |  1 speedometer.s     85 | Code        | 00 |         |    3 | 00/0083 : F4 FF 00    |                 PEA       #$00FF         
+  172 |  1 speedometer.s     86 | Macro       | 00 |         |    0 | 00/0086               |                 PushWord  #$0080         
+  174 |  1 speedometer.s     86 | Code        | 00 |         |    3 | 00/0086 : F4 80 00    |                 PEA       #$0080         
+  177 |  1 speedometer.s     87 | Macro       | 00 |         |    0 | 00/0089               |                 _SetOutGlobals                 
+  179 |  1 speedometer.s     87 | Code        | 00 |         |    3 | 00/0089 : A2 0C 0A    |                 LDX       #$A0C          ; load tool call #
+  180 |  1 speedometer.s     87 | Code        | 00 |         |    4 | 00/008C : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  181 |  1 speedometer.s     88 | Macro       | 00 |         |    0 | 00/0090               |                 PushWord  #$00FF         
+  183 |  1 speedometer.s     88 | Code        | 00 |         |    3 | 00/0090 : F4 FF 00    |                 PEA       #$00FF         
+  186 |  1 speedometer.s     89 | Macro       | 00 |         |    0 | 00/0093               |                 PushWord  #$0080         
+  188 |  1 speedometer.s     89 | Code        | 00 |         |    3 | 00/0093 : F4 80 00    |                 PEA       #$0080         
+  191 |  1 speedometer.s     90 | Macro       | 00 |         |    0 | 00/0096               |                 _SetErrGlobals                 
+  193 |  1 speedometer.s     90 | Code        | 00 |         |    3 | 00/0096 : A2 0C 0B    |                 LDX       #$B0C          ; load tool call #
+  194 |  1 speedometer.s     90 | Code        | 00 |         |    4 | 00/0099 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  195 |  1 speedometer.s     91 | Empty       | 00 |         |    0 | 00/009D               |                                          
+  196 |  1 speedometer.s     92 | Macro       | 00 |         |    0 | 00/009D               |                 PushWord  #0             
+  198 |  1 speedometer.s     92 | Code        | 00 |         |    3 | 00/009D : F4 00 00    |                 PEA       #0             
+  201 |  1 speedometer.s     93 | Macro       | 00 |         |    0 | 00/00A0               |                 PushLong  #3             
+  205 |  1 speedometer.s     93 | Code        | 00 |         |    3 | 00/00A0 : F4 00 00    |                 PEA       #^#3           
+  212 |  1 speedometer.s     93 | Code        | 00 |         |    3 | 00/00A3 : F4 03 00    |                 PEA       #3             
+  215 |  1 speedometer.s     94 | Macro       | 00 |         |    0 | 00/00A6               |                 _SetInputDevice                 
+  217 |  1 speedometer.s     94 | Code        | 00 |         |    3 | 00/00A6 : A2 0C 0F    |                 LDX       #$F0C          ; load tool call #
+  218 |  1 speedometer.s     94 | Code        | 00 |         |    4 | 00/00A9 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  219 |  1 speedometer.s     95 | Macro       | 00 |         |    0 | 00/00AD               |                 PushWord  #0             
+  221 |  1 speedometer.s     95 | Code        | 00 |         |    3 | 00/00AD : F4 00 00    |                 PEA       #0             
+  224 |  1 speedometer.s     96 | Macro       | 00 |         |    0 | 00/00B0               |                 PushLong  #3             
+  228 |  1 speedometer.s     96 | Code        | 00 |         |    3 | 00/00B0 : F4 00 00    |                 PEA       #^#3           
+  235 |  1 speedometer.s     96 | Code        | 00 |         |    3 | 00/00B3 : F4 03 00    |                 PEA       #3             
+  238 |  1 speedometer.s     97 | Macro       | 00 |         |    0 | 00/00B6               |                 _SetOutputDevice                 
+  240 |  1 speedometer.s     97 | Code        | 00 |         |    3 | 00/00B6 : A2 0C 10    |                 LDX       #$100C         ; load tool call #
+  241 |  1 speedometer.s     97 | Code        | 00 |         |    4 | 00/00B9 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  242 |  1 speedometer.s     98 | Macro       | 00 |         |    0 | 00/00BD               |                 PushWord  #0             
+  244 |  1 speedometer.s     98 | Code        | 00 |         |    3 | 00/00BD : F4 00 00    |                 PEA       #0             
+  247 |  1 speedometer.s     99 | Macro       | 00 |         |    0 | 00/00C0               |                 PushLong  #3             
+  251 |  1 speedometer.s     99 | Code        | 00 |         |    3 | 00/00C0 : F4 00 00    |                 PEA       #^#3           
+  258 |  1 speedometer.s     99 | Code        | 00 |         |    3 | 00/00C3 : F4 03 00    |                 PEA       #3             
+  261 |  1 speedometer.s    100 | Macro       | 00 |         |    0 | 00/00C6               |                 _SetErrorDevice                 
+  263 |  1 speedometer.s    100 | Code        | 00 |         |    3 | 00/00C6 : A2 0C 11    |                 LDX       #$110C         ; load tool call #
+  264 |  1 speedometer.s    100 | Code        | 00 |         |    4 | 00/00C9 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  265 |  1 speedometer.s    101 | Empty       | 00 |         |    0 | 00/00CD               |                                          
+  266 |  1 speedometer.s    102 | Macro       | 00 |         |    0 | 00/00CD               |                 PushWord  #0             
+  268 |  1 speedometer.s    102 | Code        | 00 |         |    3 | 00/00CD : F4 00 00    |                 PEA       #0             
+  271 |  1 speedometer.s    103 | Macro       | 00 |         |    0 | 00/00D0               |                 _InitTextDev                 
+  273 |  1 speedometer.s    103 | Code        | 00 |         |    3 | 00/00D0 : A2 0C 15    |                 LDX       #$150C         ; load tool call #
+  274 |  1 speedometer.s    103 | Code        | 00 |         |    4 | 00/00D3 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  275 |  1 speedometer.s    104 | Macro       | 00 |         |    0 | 00/00D7               |                 PushWord  #1             
+  277 |  1 speedometer.s    104 | Code        | 00 |         |    3 | 00/00D7 : F4 01 00    |                 PEA       #1             
+  280 |  1 speedometer.s    105 | Macro       | 00 |         |    0 | 00/00DA               |                 _InitTextDev                 
+  282 |  1 speedometer.s    105 | Code        | 00 |         |    3 | 00/00DA : A2 0C 15    |                 LDX       #$150C         ; load tool call #
+  283 |  1 speedometer.s    105 | Code        | 00 |         |    4 | 00/00DD : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  284 |  1 speedometer.s    106 | Macro       | 00 |         |    0 | 00/00E1               |                 PushWord  #2             
+  286 |  1 speedometer.s    106 | Code        | 00 |         |    3 | 00/00E1 : F4 02 00    |                 PEA       #2             
+  289 |  1 speedometer.s    107 | Macro       | 00 |         |    0 | 00/00E4               |                 _InitTextDev                 
+  291 |  1 speedometer.s    107 | Code        | 00 |         |    3 | 00/00E4 : A2 0C 15    |                 LDX       #$150C         ; load tool call #
+  292 |  1 speedometer.s    107 | Code        | 00 |         |    4 | 00/00E7 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  293 |  1 speedometer.s    108 | Empty       | 00 |         |    0 | 00/00EB               |                                          
+  294 |  1 speedometer.s    109 | Comment     | 00 |         |    0 | 00/00EB               | *----------
+  295 |  1 speedometer.s    110 | Empty       | 00 |         |    0 | 00/00EB               |                                          
+  296 |  1 speedometer.s    111 | Macro       | 00 |         |    0 | 00/00EB               | mainLOOP        PushWord  #$0c           ; home
+  298 |  1 speedometer.s    111 | Code        | 00 |         |    3 | 00/00EB : F4 0C 00    |                 PEA       #$0c           
+  301 |  1 speedometer.s    112 | Macro       | 00 |         |    0 | 00/00EE               |                 _WriteChar                 
+  303 |  1 speedometer.s    112 | Code        | 00 |         |    3 | 00/00EE : A2 0C 18    |                 LDX       #$180C         ; load tool call #
+  304 |  1 speedometer.s    112 | Code        | 00 |         |    4 | 00/00F1 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  305 |  1 speedometer.s    113 | Empty       | 00 |         |    0 | 00/00F5               |                                          
+  306 |  1 speedometer.s    114 | Macro       | 00 |         |    0 | 00/00F5               |                 PushLong  #strINTRO      
+  310 |  1 speedometer.s    114 | Code        | 00 |  1 >>16 |    3 | 00/00F5 : F4 00 00    |                 PEA       #^#strINTRO    
+  317 |  1 speedometer.s    114 | Code        | 00 |  2      |    3 | 00/00F8 : F4 0B 04    |                 PEA       #strINTRO      
+  320 |  1 speedometer.s    115 | Macro       | 00 |         |    0 | 00/00FB               |                 _WriteCString                 
+  322 |  1 speedometer.s    115 | Code        | 00 |         |    3 | 00/00FB : A2 0C 20    |                 LDX       #$200C         ; load tool call #
+  323 |  1 speedometer.s    115 | Code        | 00 |         |    4 | 00/00FE : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  324 |  1 speedometer.s    116 | Empty       | 00 |         |    0 | 00/0102               |                                          
+  325 |  1 speedometer.s    117 | Macro       | 00 |         |    0 | 00/0102               |                 PushWord  #0             ; wait for key
+  327 |  1 speedometer.s    117 | Code        | 00 |         |    3 | 00/0102 : F4 00 00    |                 PEA       #0             
+  330 |  1 speedometer.s    118 | Macro       | 00 |         |    0 | 00/0105               |                 PushWord  #1             ; echo char
+  332 |  1 speedometer.s    118 | Code        | 00 |         |    3 | 00/0105 : F4 01 00    |                 PEA       #1             
+  335 |  1 speedometer.s    119 | Macro       | 00 |         |    0 | 00/0108               |                 _ReadChar                 
+  337 |  1 speedometer.s    119 | Code        | 00 |         |    3 | 00/0108 : A2 0C 22    |                 LDX       #$220C         ; load tool call #
+  338 |  1 speedometer.s    119 | Code        | 00 |         |    4 | 00/010B : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  339 |  1 speedometer.s    120 | Code        | 00 |         |    1 | 00/010F : 68          |                 pla                      
+  340 |  1 speedometer.s    121 | Code        | 00 |         |    3 | 00/0110 : 29 FF 00    |                 and       #$ff           ; mask bits 15-8
+  341 |  1 speedometer.s    122 | Empty       | 00 |         |    0 | 00/0113               |                                          
+  342 |  1 speedometer.s    123 | Code        | 00 |         |    3 | 00/0113 : C9 B1 00    |                 cmp       #"1"           
+  343 |  1 speedometer.s    124 | Code        | 00 |         |    2 | 00/0116 : D0 03       |                 bne       noFREAD64K     
+  344 |  1 speedometer.s    125 | Code        | 00 |  2      |    3 | 00/0118 : 4C A1 01    |                 jmp       doFREAD64K     
+  345 |  1 speedometer.s    126 | Empty       | 00 |         |    0 | 00/011B               |                                          
+  346 |  1 speedometer.s    127 | Code        | 00 |         |    3 | 00/011B : C9 B2 00    | noFREAD64K      cmp       #"2"           
+  347 |  1 speedometer.s    128 | Code        | 00 |         |    2 | 00/011E : D0 03       |                 bne       noFREAD512B    
+  348 |  1 speedometer.s    129 | Code        | 00 |  2      |    3 | 00/0120 : 4C 10 02    |                 jmp       doFREAD512B    
+  349 |  1 speedometer.s    130 | Empty       | 00 |         |    0 | 00/0123               |                                          
+  350 |  1 speedometer.s    131 | Code        | 00 |         |    3 | 00/0123 : C9 B3 00    | noFREAD512B     cmp       #"3"           
+  351 |  1 speedometer.s    132 | Code        | 00 |         |    2 | 00/0126 : D0 03       |                 bne       noBREAD        
+  352 |  1 speedometer.s    133 | Code        | 00 |  2      |    3 | 00/0128 : 4C D7 02    |                 jmp       doBREAD        
+  353 |  1 speedometer.s    134 | Empty       | 00 |         |    0 | 00/012B               |                                          
+  354 |  1 speedometer.s    135 | Code        | 00 |         |    3 | 00/012B : C9 F1 00    | noBREAD         cmp       #"q"           
+  355 |  1 speedometer.s    136 | Code        | 00 |         |    2 | 00/012E : F0 26       |                 beq       doQUIT         
+  356 |  1 speedometer.s    137 | Code        | 00 |         |    3 | 00/0130 : C9 D1 00    |                 cmp       #"Q"           
+  357 |  1 speedometer.s    138 | Code        | 00 |         |    2 | 00/0133 : F0 21       |                 beq       doQUIT         
+  358 |  1 speedometer.s    139 | Empty       | 00 |         |    0 | 00/0135               |                                          
+  359 |  1 speedometer.s    140 | Code        | 00 |  2      |    3 | 00/0135 : 4C EB 00    |                 jmp       mainLOOP       
+  360 |  1 speedometer.s    141 | Empty       | 00 |         |    0 | 00/0138               |                                          
+  361 |  1 speedometer.s    142 | Comment     | 00 |         |    0 | 00/0138               | *---------- End of routine, wait for key
+  362 |  1 speedometer.s    143 | Empty       | 00 |         |    0 | 00/0138               |                                          
+  363 |  1 speedometer.s    144 | Macro       | 00 |         |    0 | 00/0138               | mainNEXT        PushLong  #strBYE        
+  367 |  1 speedometer.s    144 | Code        | 00 |  1 >>16 |    3 | 00/0138 : F4 00 00    |                 PEA       #^#strBYE      
+  374 |  1 speedometer.s    144 | Code        | 00 |  2      |    3 | 00/013B : F4 A6 04    |                 PEA       #strBYE        
+  377 |  1 speedometer.s    145 | Macro       | 00 |         |    0 | 00/013E               |                 _WriteCString                 
+  379 |  1 speedometer.s    145 | Code        | 00 |         |    3 | 00/013E : A2 0C 20    |                 LDX       #$200C         ; load tool call #
+  380 |  1 speedometer.s    145 | Code        | 00 |         |    4 | 00/0141 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  381 |  1 speedometer.s    146 | Empty       | 00 |         |    0 | 00/0145               |                                          
+  382 |  1 speedometer.s    147 | Macro       | 00 |         |    0 | 00/0145               |                 PushWord  #0             
+  384 |  1 speedometer.s    147 | Code        | 00 |         |    3 | 00/0145 : F4 00 00    |                 PEA       #0             
+  387 |  1 speedometer.s    148 | Macro       | 00 |         |    0 | 00/0148               |                 PushWord  #0             
+  389 |  1 speedometer.s    148 | Code        | 00 |         |    3 | 00/0148 : F4 00 00    |                 PEA       #0             
+  392 |  1 speedometer.s    149 | Macro       | 00 |         |    0 | 00/014B               |                 _ReadChar                 
+  394 |  1 speedometer.s    149 | Code        | 00 |         |    3 | 00/014B : A2 0C 22    |                 LDX       #$220C         ; load tool call #
+  395 |  1 speedometer.s    149 | Code        | 00 |         |    4 | 00/014E : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  396 |  1 speedometer.s    150 | Code        | 00 |         |    1 | 00/0152 : 68          |                 pla                      
+  397 |  1 speedometer.s    151 | Code        | 00 |  2      |    3 | 00/0153 : 4C EB 00    |                 jmp       mainLOOP       
+  398 |  1 speedometer.s    152 | Empty       | 00 |         |    0 | 00/0156               |                                          
+  399 |  1 speedometer.s    153 | Comment     | 00 |         |    0 | 00/0156               | *----------------------------
+  400 |  1 speedometer.s    154 | Comment     | 00 |         |    0 | 00/0156               | * QUIT PROGRAM
+  401 |  1 speedometer.s    155 | Comment     | 00 |         |    0 | 00/0156               | *----------------------------
+  402 |  1 speedometer.s    156 | Empty       | 00 |         |    0 | 00/0156               |                                          
+  403 |  1 speedometer.s    157 | Macro       | 00 |         |    0 | 00/0156               | doQUIT          PushLong  #myHEARTBEAT   
+  407 |  1 speedometer.s    157 | Code        | 00 |  1 >>16 |    3 | 00/0156 : F4 00 00    |                 PEA       #^#myHEARTBEAT 
+  414 |  1 speedometer.s    157 | Code        | 00 |  2      |    3 | 00/0159 : F4 CE 02    |                 PEA       #myHEARTBEAT   
+  417 |  1 speedometer.s    158 | Macro       | 00 |         |    0 | 00/015C               |                 _DelHeartBeat                 
+  419 |  1 speedometer.s    158 | Code        | 00 |         |    3 | 00/015C : A2 03 13    |                 LDX       #$1303         ; load tool call #
+  420 |  1 speedometer.s    158 | Code        | 00 |         |    4 | 00/015F : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  421 |  1 speedometer.s    159 | Empty       | 00 |         |    0 | 00/0163               |                                          
+  422 |  1 speedometer.s    160 | Macro       | 00 |         |    0 | 00/0163               |                 _IMShutDown                 
+  424 |  1 speedometer.s    160 | Code        | 00 |         |    3 | 00/0163 : A2 0B 03    |                 LDX       #$30B          ; load tool call #
+  425 |  1 speedometer.s    160 | Code        | 00 |         |    4 | 00/0166 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  426 |  1 speedometer.s    161 | Macro       | 00 |         |    0 | 00/016A               |                 _TextShutDown                 
+  428 |  1 speedometer.s    161 | Code        | 00 |         |    3 | 00/016A : A2 0C 03    |                 LDX       #$30C          ; load tool call #
+  429 |  1 speedometer.s    161 | Code        | 00 |         |    4 | 00/016D : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  430 |  1 speedometer.s    162 | Macro       | 00 |         |    0 | 00/0171               |                 _MTShutDown                 
+  432 |  1 speedometer.s    162 | Code        | 00 |         |    3 | 00/0171 : A2 03 03    |                 LDX       #$303          ; load tool call #
+  433 |  1 speedometer.s    162 | Code        | 00 |         |    4 | 00/0174 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  434 |  1 speedometer.s    163 | Empty       | 00 |         |    0 | 00/0178               |                                          
+  435 |  1 speedometer.s    164 | Macro       | 00 |         |    0 | 00/0178               |                 PushWord  myID           
+  440 |  1 speedometer.s    164 | Code        | 00 |  2      |    3 | 00/0178 : AD 89 07    |                 LDA       myID           
+  441 |  1 speedometer.s    164 | Code        | 00 |         |    1 | 00/017B : 48          |                 PHA                      
+  443 |  1 speedometer.s    165 | Macro       | 00 |         |    0 | 00/017C               |                 _DisposeAll                 
+  445 |  1 speedometer.s    165 | Code        | 00 |         |    3 | 00/017C : A2 02 11    |                 LDX       #$1102         ; load tool call #
+  446 |  1 speedometer.s    165 | Code        | 00 |         |    4 | 00/017F : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  447 |  1 speedometer.s    166 | Empty       | 00 |         |    0 | 00/0183               |                                          
+  448 |  1 speedometer.s    167 | Macro       | 00 |         |    0 | 00/0183               |                 PushWord  appID          
+  453 |  1 speedometer.s    167 | Code        | 00 |  2      |    3 | 00/0183 : AD 87 07    |                 LDA       appID          
+  454 |  1 speedometer.s    167 | Code        | 00 |         |    1 | 00/0186 : 48          |                 PHA                      
+  456 |  1 speedometer.s    168 | Macro       | 00 |         |    0 | 00/0187               |                 _MMShutDown                 
+  458 |  1 speedometer.s    168 | Code        | 00 |         |    3 | 00/0187 : A2 02 03    |                 LDX       #$302          ; load tool call #
+  459 |  1 speedometer.s    168 | Code        | 00 |         |    4 | 00/018A : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  460 |  1 speedometer.s    169 | Empty       | 00 |         |    0 | 00/018E               |                                          
+  461 |  1 speedometer.s    170 | Macro       | 00 |         |    0 | 00/018E               |                 _TLShutDown                 
+  463 |  1 speedometer.s    170 | Code        | 00 |         |    3 | 00/018E : A2 01 03    |                 LDX       #$301          ; load tool call #
+  464 |  1 speedometer.s    170 | Code        | 00 |         |    4 | 00/0191 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  465 |  1 speedometer.s    171 | Empty       | 00 |         |    0 | 00/0195               |                                          
+  466 |  1 speedometer.s    172 | Code        | 00 |         |    4 | 00/0195 : 22 A8 00 E1 |                 jsl       {$e100a8}      
+  467 |  1 speedometer.s    173 | Data        | 00 |         |    2 | 00/0199 : 29 20       |                 dw        $2029          
+  468 |  1 speedometer.s    174 | Data        | 00 |  3      |    4 | 00/019B : C1 05 00 00 |                 adrl      proQUIT        
+  469 |  1 speedometer.s    175 | Empty       | 00 |         |    0 | 00/019F               |                                          
+  470 |  1 speedometer.s    176 | Code        | 00 |         |    2 | 00/019F : 00 BD       |                 brk       $bd            
+  471 |  1 speedometer.s    177 | Empty       | 00 |         |    0 | 00/01A1               |                                          
+  472 |  1 speedometer.s    178 | Comment     | 00 |         |    0 | 00/01A1               | *----------------------------
+  473 |  1 speedometer.s    179 | Comment     | 00 |         |    0 | 00/01A1               | * READ FILE SPEED 64K
+  474 |  1 speedometer.s    180 | Comment     | 00 |         |    0 | 00/01A1               | *----------------------------
+  475 |  1 speedometer.s    181 | Empty       | 00 |         |    0 | 00/01A1               |                                          
+  476 |  1 speedometer.s    182 | Code        | 00 |  2      |    3 | 00/01A1 : A9 64 05    | doFREAD64K      lda       #pathname1     ; the file
+  477 |  1 speedometer.s    183 | Code        | 00 |  2      |    3 | 00/01A4 : 8D 75 05    |                 sta       proOPEN+4      
+  478 |  1 speedometer.s    184 | Empty       | 00 |         |    0 | 00/01A7               |                                          
+  479 |  1 speedometer.s    185 | Code        | 00 |  2      |    3 | 00/01A7 : AD 8D 07    |                 lda       ptrBUFFER      ; the buffer
+  480 |  1 speedometer.s    186 | Code        | 00 |  2      |    3 | 00/01AA : 8D AF 05    |                 sta       proREAD+4      
+  481 |  1 speedometer.s    187 | Code        | 00 |  2      |    3 | 00/01AD : AD 8F 07    |                 lda       ptrBUFFER+2    
+  482 |  1 speedometer.s    188 | Code        | 00 |  2      |    3 | 00/01B0 : 8D B1 05    |                 sta       proREAD+6      
+  483 |  1 speedometer.s    189 | Empty       | 00 |         |    0 | 00/01B3               |                                          
+  484 |  1 speedometer.s    190 | Code        | 00 |         |    3 | 00/01B3 : A9 00 00    |                 lda       #0             ; the size
+  485 |  1 speedometer.s    191 | Code        | 00 |  2      |    3 | 00/01B6 : 8D B3 05    |                 sta       proREAD+8      
+  486 |  1 speedometer.s    192 | Code        | 00 |         |    3 | 00/01B9 : A9 01 00    |                 lda       #1             
+  487 |  1 speedometer.s    193 | Code        | 00 |  2      |    3 | 00/01BC : 8D B5 05    |                 sta       proREAD+10     
+  488 |  1 speedometer.s    194 | Empty       | 00 |         |    0 | 00/01BF               |                                          
+  489 |  1 speedometer.s    195 | Code        | 00 |  2      |    3 | 00/01BF : A9 C2 04    |                 lda       #strBeforeOpen 
+  490 |  1 speedometer.s    196 | Code        | 00 |  2      |    3 | 00/01C2 : 20 9C 02    |                 jsr       showTICK       
+  491 |  1 speedometer.s    197 | Empty       | 00 |         |    0 | 00/01C5               |                                          
+  492 |  1 speedometer.s    198 | Code        | 00 |         |    4 | 00/01C5 : 22 A8 00 E1 |                 jsl       {$e100a8}      ; open
+  493 |  1 speedometer.s    199 | Data        | 00 |         |    2 | 00/01C9 : 10 20       |                 dw        $2010          
+  494 |  1 speedometer.s    200 | Data        | 00 |  3      |    4 | 00/01CB : 71 05 00 00 |                 adrl      proOPEN        
+  495 |  1 speedometer.s    201 | Empty       | 00 |         |    0 | 00/01CF               |                                          
+  496 |  1 speedometer.s    202 | Code        | 00 |  2      |    3 | 00/01CF : A9 D4 04    |                 lda       #strAfterOpen  
+  497 |  1 speedometer.s    203 | Code        | 00 |  2      |    3 | 00/01D2 : 20 9C 02    |                 jsr       showTICK       
+  498 |  1 speedometer.s    204 | Empty       | 00 |         |    0 | 00/01D5               |                                          
+  499 |  1 speedometer.s    205 | Comment     | 00 |         |    0 | 00/01D5               | *--------------
+  500 |  1 speedometer.s    206 | Empty       | 00 |         |    0 | 00/01D5               |                                          
+  501 |  1 speedometer.s    207 | Code        | 00 |  2      |    3 | 00/01D5 : AD 73 05    |                 lda       proOPEN+2      
+  502 |  1 speedometer.s    208 | Code        | 00 |  2      |    3 | 00/01D8 : 8D AD 05    |                 sta       proREAD+2      
+  503 |  1 speedometer.s    209 | Empty       | 00 |         |    0 | 00/01DB               |                                          
+  504 |  1 speedometer.s    210 | Code        | 00 |  2      |    3 | 00/01DB : A9 E6 04    |                 lda       #strBeforeRead 
+  505 |  1 speedometer.s    211 | Code        | 00 |  2      |    3 | 00/01DE : 20 9C 02    |                 jsr       showTICK       
+  506 |  1 speedometer.s    212 | Empty       | 00 |         |    0 | 00/01E1               |                                          
+  507 |  1 speedometer.s    213 | Code        | 00 |         |    4 | 00/01E1 : 22 A8 00 E1 |                 jsl       {$e100a8}      ; read
+  508 |  1 speedometer.s    214 | Data        | 00 |         |    2 | 00/01E5 : 12 20       |                 dw        $2012          
+  509 |  1 speedometer.s    215 | Data        | 00 |  3      |    4 | 00/01E7 : AB 05 00 00 |                 adrl      proREAD        
+  510 |  1 speedometer.s    216 | Empty       | 00 |         |    0 | 00/01EB               |                                          
+  511 |  1 speedometer.s    217 | Code        | 00 |  2      |    3 | 00/01EB : A9 F8 04    |                 lda       #strAfterRead  
+  512 |  1 speedometer.s    218 | Code        | 00 |  2      |    3 | 00/01EE : 20 9C 02    |                 jsr       showTICK       
+  513 |  1 speedometer.s    219 | Empty       | 00 |         |    0 | 00/01F1               |                                          
+  514 |  1 speedometer.s    220 | Empty       | 00 |         |    0 | 00/01F1               |                                          
+  515 |  1 speedometer.s    221 | Comment     | 00 |         |    0 | 00/01F1               | *--------------
+  516 |  1 speedometer.s    222 | Empty       | 00 |         |    0 | 00/01F1               |                                          
+  517 |  1 speedometer.s    223 | Code        | 00 |  2      |    3 | 00/01F1 : AD 73 05    |                 lda       proOPEN+2      
+  518 |  1 speedometer.s    224 | Code        | 00 |  2      |    3 | 00/01F4 : 8D BF 05    |                 sta       proCLOSE+2     
+  519 |  1 speedometer.s    225 | Empty       | 00 |         |    0 | 00/01F7               |                                          
+  520 |  1 speedometer.s    226 | Code        | 00 |  2      |    3 | 00/01F7 : A9 0A 05    |                 lda       #strBeforeClose
+  521 |  1 speedometer.s    227 | Code        | 00 |  2      |    3 | 00/01FA : 20 9C 02    |                 jsr       showTICK       
+  522 |  1 speedometer.s    228 | Empty       | 00 |         |    0 | 00/01FD               |                                          
+  523 |  1 speedometer.s    229 | Code        | 00 |         |    4 | 00/01FD : 22 A8 00 E1 |                 jsl       {$e100a8}      ; close
+  524 |  1 speedometer.s    230 | Data        | 00 |         |    2 | 00/0201 : 14 20       |                 dw        $2014          
+  525 |  1 speedometer.s    231 | Data        | 00 |  3      |    4 | 00/0203 : BD 05 00 00 |                 adrl      proCLOSE       
+  526 |  1 speedometer.s    232 | Empty       | 00 |         |    0 | 00/0207               |                                          
+  527 |  1 speedometer.s    233 | Code        | 00 |  2      |    3 | 00/0207 : A9 1C 05    |                 lda       #strAfterClose 
+  528 |  1 speedometer.s    234 | Code        | 00 |  2      |    3 | 00/020A : 20 9C 02    |                 jsr       showTICK       
+  529 |  1 speedometer.s    235 | Empty       | 00 |         |    0 | 00/020D               |                                          
+  530 |  1 speedometer.s    236 | Code        | 00 |  2      |    3 | 00/020D : 4C 38 01    |                 jmp       mainNEXT       
+  531 |  1 speedometer.s    237 | Empty       | 00 |         |    0 | 00/0210               |                                          
+  532 |  1 speedometer.s    238 | Comment     | 00 |         |    0 | 00/0210               | *----------------------------
+  533 |  1 speedometer.s    239 | Comment     | 00 |         |    0 | 00/0210               | * READ FILE SPEED 512B
+  534 |  1 speedometer.s    240 | Comment     | 00 |         |    0 | 00/0210               | *----------------------------
+  535 |  1 speedometer.s    241 | Empty       | 00 |         |    0 | 00/0210               |                                          
+  536 |  1 speedometer.s    242 | Code        | 00 |  2      |    3 | 00/0210 : A9 64 05    | doFREAD512B     lda       #pathname1     ; the file
+  537 |  1 speedometer.s    243 | Code        | 00 |  2      |    3 | 00/0213 : 8D 75 05    |                 sta       proOPEN+4      
+  538 |  1 speedometer.s    244 | Empty       | 00 |         |    0 | 00/0216               |                                          
+  539 |  1 speedometer.s    245 | Code        | 00 |  2      |    3 | 00/0216 : AD 8D 07    |                 lda       ptrBUFFER      ; the buffer
+  540 |  1 speedometer.s    246 | Code        | 00 |  2      |    3 | 00/0219 : 8D AF 05    |                 sta       proREAD+4      
+  541 |  1 speedometer.s    247 | Code        | 00 |  2      |    3 | 00/021C : AD 8F 07    |                 lda       ptrBUFFER+2    
+  542 |  1 speedometer.s    248 | Code        | 00 |  2      |    3 | 00/021F : 8D B1 05    |                 sta       proREAD+6      
+  543 |  1 speedometer.s    249 | Empty       | 00 |         |    0 | 00/0222               |                                          
+  544 |  1 speedometer.s    250 | Code        | 00 |         |    3 | 00/0222 : A9 00 02    |                 lda       #512           ; the size
+  545 |  1 speedometer.s    251 | Code        | 00 |  2      |    3 | 00/0225 : 8D B3 05    |                 sta       proREAD+8      
+  546 |  1 speedometer.s    252 | Code        | 00 |         |    3 | 00/0228 : A9 00 00    |                 lda       #0             
+  547 |  1 speedometer.s    253 | Code        | 00 |  2      |    3 | 00/022B : 8D B5 05    |                 sta       proREAD+10     
+  548 |  1 speedometer.s    254 | Empty       | 00 |         |    0 | 00/022E               |                                          
+  549 |  1 speedometer.s    255 | Code        | 00 |  2      |    3 | 00/022E : A9 C2 04    |                 lda       #strBeforeOpen 
+  550 |  1 speedometer.s    256 | Code        | 00 |  2      |    3 | 00/0231 : 20 9C 02    |                 jsr       showTICK       
+  551 |  1 speedometer.s    257 | Empty       | 00 |         |    0 | 00/0234               |                                          
+  552 |  1 speedometer.s    258 | Code        | 00 |         |    4 | 00/0234 : 22 A8 00 E1 |                 jsl       {$e100a8}      ; open
+  553 |  1 speedometer.s    259 | Data        | 00 |         |    2 | 00/0238 : 10 20       |                 dw        $2010          
+  554 |  1 speedometer.s    260 | Data        | 00 |  3      |    4 | 00/023A : 71 05 00 00 |                 adrl      proOPEN        
+  555 |  1 speedometer.s    261 | Empty       | 00 |         |    0 | 00/023E               |                                          
+  556 |  1 speedometer.s    262 | Code        | 00 |  2      |    3 | 00/023E : A9 D4 04    |                 lda       #strAfterOpen  
+  557 |  1 speedometer.s    263 | Code        | 00 |  2      |    3 | 00/0241 : 20 9C 02    |                 jsr       showTICK       
+  558 |  1 speedometer.s    264 | Empty       | 00 |         |    0 | 00/0244               |                                          
+  559 |  1 speedometer.s    265 | Comment     | 00 |         |    0 | 00/0244               | *--------------
+  560 |  1 speedometer.s    266 | Empty       | 00 |         |    0 | 00/0244               |                                          
+  561 |  1 speedometer.s    267 | Code        | 00 |  2      |    3 | 00/0244 : AD 73 05    |                 lda       proOPEN+2      
+  562 |  1 speedometer.s    268 | Code        | 00 |  2      |    3 | 00/0247 : 8D AD 05    |                 sta       proREAD+2      
+  563 |  1 speedometer.s    269 | Empty       | 00 |         |    0 | 00/024A               |                                          
+  564 |  1 speedometer.s    270 | Code        | 00 |  2      |    3 | 00/024A : A9 E6 04    |                 lda       #strBeforeRead 
+  565 |  1 speedometer.s    271 | Code        | 00 |  2      |    3 | 00/024D : 20 9C 02    |                 jsr       showTICK       
+  566 |  1 speedometer.s    272 | Empty       | 00 |         |    0 | 00/0250               |                                          
+  567 |  1 speedometer.s    273 | Macro       | 00 |         |    0 | 00/0250               |                 PushWord  #$0d           
+  569 |  1 speedometer.s    273 | Code        | 00 |         |    3 | 00/0250 : F4 0D 00    |                 PEA       #$0d           
+  572 |  1 speedometer.s    274 | Macro       | 00 |         |    0 | 00/0253               |                 _WriteChar                 
+  574 |  1 speedometer.s    274 | Code        | 00 |         |    3 | 00/0253 : A2 0C 18    |                 LDX       #$180C         ; load tool call #
+  575 |  1 speedometer.s    274 | Code        | 00 |         |    4 | 00/0256 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  576 |  1 speedometer.s    275 | Empty       | 00 |         |    0 | 00/025A               |                                          
+  577 |  1 speedometer.s    276 | Code        | 00 |         |    4 | 00/025A : 22 A8 00 E1 | ozunid_1        jsl       {$e100a8}      ; read
+  578 |  1 speedometer.s    277 | Data        | 00 |         |    2 | 00/025E : 12 20       |                 dw        $2012          
+  579 |  1 speedometer.s    278 | Data        | 00 |  3      |    4 | 00/0260 : AB 05 00 00 |                 adrl      proREAD        
+  580 |  1 speedometer.s    279 | Code        | 00 |         |    2 | 00/0264 : B0 06       |                 bcs       doFREAD512B2   
+  581 |  1 speedometer.s    280 | Empty       | 00 |         |    0 | 00/0266               |                                          
+  582 |  1 speedometer.s    281 | Code        | 00 |  2      |    3 | 00/0266 : 20 8B 02    |                 jsr       showTICK_ALT   
+  583 |  1 speedometer.s    282 | Code        | 00 |  2      |    3 | 00/0269 : 4C 5A 02    |                 jmp       ozunid_1       
+  584 |  1 speedometer.s    283 | Empty       | 00 |         |    0 | 00/026C               |                                          
+  585 |  1 speedometer.s    284 | Comment     | 00 |         |    0 | 00/026C               | *--------------
+  586 |  1 speedometer.s    285 | Empty       | 00 |         |    0 | 00/026C               |                                          
+  587 |  1 speedometer.s    286 | Code        | 00 |  2      |    3 | 00/026C : AD 73 05    | doFREAD512B2    lda       proOPEN+2      
+  588 |  1 speedometer.s    287 | Code        | 00 |  2      |    3 | 00/026F : 8D BF 05    |                 sta       proCLOSE+2     
+  589 |  1 speedometer.s    288 | Empty       | 00 |         |    0 | 00/0272               |                                          
+  590 |  1 speedometer.s    289 | Code        | 00 |  2      |    3 | 00/0272 : A9 0A 05    |                 lda       #strBeforeClose
+  591 |  1 speedometer.s    290 | Code        | 00 |  2      |    3 | 00/0275 : 20 9C 02    |                 jsr       showTICK       
+  592 |  1 speedometer.s    291 | Empty       | 00 |         |    0 | 00/0278               |                                          
+  593 |  1 speedometer.s    292 | Code        | 00 |         |    4 | 00/0278 : 22 A8 00 E1 |                 jsl       {$e100a8}      ; close
+  594 |  1 speedometer.s    293 | Data        | 00 |         |    2 | 00/027C : 14 20       |                 dw        $2014          
+  595 |  1 speedometer.s    294 | Data        | 00 |  3      |    4 | 00/027E : BD 05 00 00 |                 adrl      proCLOSE       
+  596 |  1 speedometer.s    295 | Empty       | 00 |         |    0 | 00/0282               |                                          
+  597 |  1 speedometer.s    296 | Code        | 00 |  2      |    3 | 00/0282 : A9 1C 05    |                 lda       #strAfterClose 
+  598 |  1 speedometer.s    297 | Code        | 00 |  2      |    3 | 00/0285 : 20 9C 02    |                 jsr       showTICK       
+  599 |  1 speedometer.s    298 | Empty       | 00 |         |    0 | 00/0288               |                                          
+  600 |  1 speedometer.s    299 | Code        | 00 |  2      |    3 | 00/0288 : 4C 38 01    |                 jmp       mainNEXT       
+  601 |  1 speedometer.s    300 | Empty       | 00 |         |    0 | 00/028B               |                                          
+  602 |  1 speedometer.s    301 | Comment     | 00 |         |    0 | 00/028B               | *----------------------------
+  603 |  1 speedometer.s    302 | Comment     | 00 |         |    0 | 00/028B               | * SHOW TICK
+  604 |  1 speedometer.s    303 | Comment     | 00 |         |    0 | 00/028B               | *----------------------------
+  605 |  1 speedometer.s    304 | Empty       | 00 |         |    0 | 00/028B               |                                          
+  606 |  1 speedometer.s    305 | Code        | 00 |  2      |    3 | 00/028B : 20 A7 02    | showTICK_ALT    jsr       showTICK2      
+  607 |  1 speedometer.s    306 | Empty       | 00 |         |    0 | 00/028E               |                                          
+  608 |  1 speedometer.s    307 | Macro       | 00 |         |    0 | 00/028E               |                 PushLong  #strEmpty      
+  612 |  1 speedometer.s    307 | Code        | 00 |  1 >>16 |    3 | 00/028E : F4 00 00    |                 PEA       #^#strEmpty    
+  619 |  1 speedometer.s    307 | Code        | 00 |  2      |    3 | 00/0291 : F4 2E 05    |                 PEA       #strEmpty      
+  622 |  1 speedometer.s    308 | Macro       | 00 |         |    0 | 00/0294               |                 _WriteCString                 
+  624 |  1 speedometer.s    308 | Code        | 00 |         |    3 | 00/0294 : A2 0C 20    |                 LDX       #$200C         ; load tool call #
+  625 |  1 speedometer.s    308 | Code        | 00 |         |    4 | 00/0297 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  626 |  1 speedometer.s    309 | Code        | 00 |         |    1 | 00/029B : 60          |                 rts                      
+  627 |  1 speedometer.s    310 | Empty       | 00 |         |    0 | 00/029C               |                                          
+  628 |  1 speedometer.s    311 | Code        | 00 |  1 >>16 |    3 | 00/029C : F4 00 00    | showTICK        pea       ^strBeforeOpen 
+  629 |  1 speedometer.s    312 | Code        | 00 |         |    1 | 00/029F : 48          |                 pha                      
+  630 |  1 speedometer.s    313 | Macro       | 00 |         |    0 | 00/02A0               |                 _WriteCString                 
+  632 |  1 speedometer.s    313 | Code        | 00 |         |    3 | 00/02A0 : A2 0C 20    |                 LDX       #$200C         ; load tool call #
+  633 |  1 speedometer.s    313 | Code        | 00 |         |    4 | 00/02A3 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  634 |  1 speedometer.s    314 | Empty       | 00 |         |    0 | 00/02A7               |                                          
+  635 |  1 speedometer.s    315 | Code        | 00 |         |    1 | 00/02A7 : 48          | showTICK2       pha                      
+  636 |  1 speedometer.s    316 | Code        | 00 |         |    1 | 00/02A8 : 48          |                 pha                      
+  637 |  1 speedometer.s    317 | Macro       | 00 |         |    0 | 00/02A9               |                 _GetTick                 
+  639 |  1 speedometer.s    317 | Code        | 00 |         |    3 | 00/02A9 : A2 03 25    |                 LDX       #$2503         ; load tool call #
+  640 |  1 speedometer.s    317 | Code        | 00 |         |    4 | 00/02AC : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  641 |  1 speedometer.s    318 | Macro       | 00 |         |    0 | 00/02B0               |                 PushLong  #strTick       
+  645 |  1 speedometer.s    318 | Code        | 00 |  1 >>16 |    3 | 00/02B0 : F4 00 00    |                 PEA       #^#strTick     
+  652 |  1 speedometer.s    318 | Code        | 00 |  2      |    3 | 00/02B3 : F4 31 05    |                 PEA       #strTick       
+  655 |  1 speedometer.s    319 | Macro       | 00 |         |    0 | 00/02B6               |                 PushWord  #8             
+  657 |  1 speedometer.s    319 | Code        | 00 |         |    3 | 00/02B6 : F4 08 00    |                 PEA       #8             
+  660 |  1 speedometer.s    320 | Macro       | 00 |         |    0 | 00/02B9               |                 _Long2Hex                 
+  662 |  1 speedometer.s    320 | Code        | 00 |         |    3 | 00/02B9 : A2 0B 23    |                 LDX       #$230B         ; load tool call #
+  663 |  1 speedometer.s    320 | Code        | 00 |         |    4 | 00/02BC : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  664 |  1 speedometer.s    321 | Empty       | 00 |         |    0 | 00/02C0               |                                          
+  665 |  1 speedometer.s    322 | Macro       | 00 |         |    0 | 00/02C0               |                 PushLong  #strTick       
+  669 |  1 speedometer.s    322 | Code        | 00 |  1 >>16 |    3 | 00/02C0 : F4 00 00    |                 PEA       #^#strTick     
+  676 |  1 speedometer.s    322 | Code        | 00 |  2      |    3 | 00/02C3 : F4 31 05    |                 PEA       #strTick       
+  679 |  1 speedometer.s    323 | Macro       | 00 |         |    0 | 00/02C6               |                 _WriteCString                 
+  681 |  1 speedometer.s    323 | Code        | 00 |         |    3 | 00/02C6 : A2 0C 20    |                 LDX       #$200C         ; load tool call #
+  682 |  1 speedometer.s    323 | Code        | 00 |         |    4 | 00/02C9 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  683 |  1 speedometer.s    324 | Code        | 00 |         |    1 | 00/02CD : 60          |                 rts                      
+  684 |  1 speedometer.s    325 | Empty       | 00 |         |    0 | 00/02CE               |                                          
+  685 |  1 speedometer.s    326 | Comment     | 00 |         |    0 | 00/02CE               | *----------------------------
+  686 |  1 speedometer.s    327 | Comment     | 00 |         |    0 | 00/02CE               | * HEARTBEAT
+  687 |  1 speedometer.s    328 | Comment     | 00 |         |    0 | 00/02CE               | *----------------------------
+  688 |  1 speedometer.s    329 | Empty       | 00 |         |    0 | 00/02CE               |                                          
+  689 |  1 speedometer.s    330 | Data        | 00 |         |    4 | 00/02CE : 00 00 00 00 | myHEARTBEAT     ds        4              ; it does nothing
+  690 |  1 speedometer.s    331 | Data        | 00 |         |    2 | 00/02D2 : 00 00       |                 dw        $0000          
+  691 |  1 speedometer.s    332 | Data        | 00 |         |    2 | 00/02D4 : 5A A5       |                 dw        $a55a          
+  692 |  1 speedometer.s    333 | Empty       | 00 |         |    0 | 00/02D6               |                                          
+  693 |  1 speedometer.s    334 | Code        | 00 |         |    1 | 00/02D6 : 6B          |                 rtl                      
+  694 |  1 speedometer.s    335 | Empty       | 00 |         |    0 | 00/02D7               |                                          
+  695 |  1 speedometer.s    336 | Comment     | 00 |         |    0 | 00/02D7               | *----------------------------
+  696 |  1 speedometer.s    337 | Comment     | 00 |         |    0 | 00/02D7               | * READ BLOCK SPEED
+  697 |  1 speedometer.s    338 | Comment     | 00 |         |    0 | 00/02D7               | *----------------------------
+  698 |  1 speedometer.s    339 | Empty       | 00 |         |    0 | 00/02D7               |                                          
+  699 |  1 speedometer.s    340 | Comment     | 00 |         |    0 | 00/02D7               | *----------------------------
+  700 |  1 speedometer.s    341 | Comment     | 00 |         |    0 | 00/02D7               | * Entry point for menu 3
+  701 |  1 speedometer.s    342 | Empty       | 00 |         |    0 | 00/02D7               |                                          
+  702 |  1 speedometer.s    343 | Code        | 00 |  2      |    3 | 00/02D7 : A9 5C 05    | doBREAD         lda       #pathname      ; the file
+  703 |  1 speedometer.s    344 | Code        | 00 |  2      |    3 | 00/02DA : 8D 75 05    |                 sta       proOPEN+4      
+  704 |  1 speedometer.s    345 | Empty       | 00 |         |    0 | 00/02DD               |                                          
+  705 |  1 speedometer.s    346 | Code        | 00 |  2      |    3 | 00/02DD : A9 95 07    |                 lda       #dataBUFFER    
+  706 |  1 speedometer.s    347 | Code        | 00 |  2      |    3 | 00/02E0 : 8D AF 05    |                 sta       proREAD+4      ; the DATA folder buffer then
+  707 |  1 speedometer.s    348 | Code        | 00 |  2      |    3 | 00/02E3 : 8D E3 05    |                 sta       proDREAD+4     ; the key block pointer block
+  708 |  1 speedometer.s    349 | Code        | 00 |  1 >>16 |    3 | 00/02E6 : A9 00 00    |                 lda       #^dataBUFFER   
+  709 |  1 speedometer.s    350 | Code        | 00 |  2      |    3 | 00/02E9 : 8D B1 05    |                 sta       proREAD+6      
+  710 |  1 speedometer.s    351 | Code        | 00 |  2      |    3 | 00/02EC : 8D E5 05    |                 sta       proDREAD+6     
+  711 |  1 speedometer.s    352 | Empty       | 00 |         |    0 | 00/02EF               |                                          
+  712 |  1 speedometer.s    353 | Code        | 00 |  2      |    3 | 00/02EF : 9C EB 05    |                 stz       proDREAD+12    ; init block pointer
+  713 |  1 speedometer.s    354 | Code        | 00 |  2      |    3 | 00/02F2 : 9C ED 05    |                 stz       proDREAD+14    
+  714 |  1 speedometer.s    355 | Empty       | 00 |         |    0 | 00/02F5               |                                          
+  715 |  1 speedometer.s    356 | Comment     | 00 |         |    0 | 00/02F5               | *--- First, get our prefix
+  716 |  1 speedometer.s    357 | Empty       | 00 |         |    0 | 00/02F5               |                                          
+  717 |  1 speedometer.s    358 | Code        | 00 |         |    4 | 00/02F5 : 22 A8 00 E1 |                 jsl       {$e100a8}      ; get our prefix
+  718 |  1 speedometer.s    359 | Data        | 00 |         |    2 | 00/02F9 : 0A 20       |                 dw        $200a          
+  719 |  1 speedometer.s    360 | Data        | 00 |  3      |    4 | 00/02FB : C9 05 00 00 |                 adrl      proGETPREFIX   
+  720 |  1 speedometer.s    361 | Empty       | 00 |         |    0 | 00/02FF               |                                          
+  721 |  1 speedometer.s    362 | Comment     | 00 |         |    0 | 00/02FF               | *--- Make it a volume name
+  722 |  1 speedometer.s    363 | Empty       | 00 |         |    0 | 00/02FF               |                                          
+  723 |  1 speedometer.s    364 | Code        | 10 |         |    2 | 00/02FF : E2 20       |                 sep       #$20           ; make a short one
+  724 |  1 speedometer.s    365 | Empty       | 10 |         |    0 | 00/0301               |                                          
+  725 |  1 speedometer.s    366 | Code        | 10 |  2      |    3 | 00/0301 : CE 41 06    |                 dec       pfxNAMEopen    ; remove final ':'
+  726 |  1 speedometer.s    367 | Empty       | 10 |         |    0 | 00/0304               |                                          
+  727 |  1 speedometer.s    368 | Code        | 10 |         |    3 | 00/0304 : A2 01 00    |                 ldx       #1             ; find the first :
+  728 |  1 speedometer.s    369 | Code        | 10 |  2      |    3 | 00/0307 : BD 43 06    | ozunid_2        lda       pfxNAMEopen2,x 
+  729 |  1 speedometer.s    370 | Code        | 10 |         |    2 | 00/030A : C9 3A       |                 cmp       #':'           
+  730 |  1 speedometer.s    371 | Code        | 10 |         |    2 | 00/030C : F0 06       |                 beq       doBREAD1       ; we'll get a volume name
+  731 |  1 speedometer.s    372 | Empty       | 10 |         |    0 | 00/030E               |                                          
+  732 |  1 speedometer.s    373 | Code        | 10 |         |    1 | 00/030E : E8          |                 inx                      
+  733 |  1 speedometer.s    374 | Code        | 10 |  2      |    3 | 00/030F : EC 41 06    |                 cpx       pfxNAMEopen    
+  734 |  1 speedometer.s    375 | Code        | 10 |         |    2 | 00/0312 : D0 F3       |                 bne       ozunid_2       
+  735 |  1 speedometer.s    376 | Empty       | 10 |         |    0 | 00/0314               |                                          
+  736 |  1 speedometer.s    377 | Code        | 10 |  2      |    3 | 00/0314 : 8E 41 06    | doBREAD1        stx       pfxNAMEopen    ; save new length
+  737 |  1 speedometer.s    378 | Empty       | 10 |         |    0 | 00/0317               |                                          
+  738 |  1 speedometer.s    379 | Code        | 00 |         |    2 | 00/0317 : C2 20       |                 rep       #$20           
+  739 |  1 speedometer.s    380 | Empty       | 00 |         |    0 | 00/0319               |                                          
+  740 |  1 speedometer.s    381 | Comment     | 00 |         |    0 | 00/0319               | *--- Browse the list of devices and get our devnum
+  741 |  1 speedometer.s    382 | Empty       | 00 |         |    0 | 00/0319               |                                          
+  742 |  1 speedometer.s    383 | Code        | 00 |         |    3 | 00/0319 : A9 01 00    |                 lda       #1             ; start with device 1
+  743 |  1 speedometer.s    384 | Code        | 00 |  2      |    3 | 00/031C : 8D D3 05    |                 sta       proDINFO+2     
+  744 |  1 speedometer.s    385 | Empty       | 00 |         |    0 | 00/031F               |                                          
+  745 |  1 speedometer.s    386 | Code        | 00 |         |    4 | 00/031F : 22 A8 00 E1 | buildVOL1       jsl       {$e100a8}      ; get device info
+  746 |  1 speedometer.s    387 | Data        | 00 |         |    2 | 00/0323 : 2C 20       |                 dw        $202C          
+  747 |  1 speedometer.s    388 | Data        | 00 |  3      |    4 | 00/0325 : D1 05 00 00 |                 adrl      proDINFO       
+  748 |  1 speedometer.s    389 | Code        | 00 |         |    2 | 00/0329 : 90 0F       |                 bcc       buildVOL3      
+  749 |  1 speedometer.s    390 | Empty       | 00 |         |    0 | 00/032B               |                                          
+  750 |  1 speedometer.s    391 | Code        | 00 |         |    3 | 00/032B : C9 11 00    |                 cmp       #$0011         ; no more devices
+  751 |  1 speedometer.s    392 | Code        | 00 |         |    2 | 00/032E : D0 05       |                 bne       buildVOL9      
+  752 |  1 speedometer.s    393 | Empty       | 00 |         |    0 | 00/0330               |                                          
+  753 |  1 speedometer.s    394 | Code        | 00 |         |    2 | 00/0330 : 00 CC       |                 brk       $cc            
+  754 |  1 speedometer.s    395 | Code        | 00 |  2      |    3 | 00/0332 : 4C 38 01    |                 jmp       mainNEXT       ; done and not found!
+  755 |  1 speedometer.s    396 | Empty       | 00 |         |    0 | 00/0335               |                                          
+  756 |  1 speedometer.s    397 | Code        | 00 |  2      |    3 | 00/0335 : EE D3 05    | buildVOL9       inc       proDINFO+2     
+  757 |  1 speedometer.s    398 | Code        | 00 |         |    2 | 00/0338 : 80 E5       |                 bra       buildVOL1      
+  758 |  1 speedometer.s    399 | Empty       | 00 |         |    0 | 00/033A               |                                          
+  759 |  1 speedometer.s    400 | Comment     | 00 |         |    0 | 00/033A               | *--- Check the block device
+  760 |  1 speedometer.s    401 | Empty       | 00 |         |    0 | 00/033A               |                                          
+  761 |  1 speedometer.s    402 | Code        | 00 |  2      |    3 | 00/033A : AD D9 05    | buildVOL3       lda       proDINFO+8     
+  762 |  1 speedometer.s    403 | Code        | 00 |         |    3 | 00/033D : 29 80 00    |                 and       #$0080         ; block device + read allowed
+  763 |  1 speedometer.s    404 | Code        | 00 |         |    2 | 00/0340 : F0 F3       |                 beq       buildVOL9      ; not a block device
+  764 |  1 speedometer.s    405 | Empty       | 00 |         |    0 | 00/0342               |                                          
+  765 |  1 speedometer.s    406 | Code        | 00 |         |    4 | 00/0342 : 22 A8 00 E1 |                 jsl       {$e100a8}      
+  766 |  1 speedometer.s    407 | Data        | 00 |         |    2 | 00/0346 : 08 20       |                 dw        $2008          
+  767 |  1 speedometer.s    408 | Data        | 00 |  3      |    4 | 00/0348 : F5 05 00 00 |                 adrl      proVOLUME      
+  768 |  1 speedometer.s    409 | Code        | 00 |         |    2 | 00/034C : B0 E7       |                 bcs       buildVOL9      ; probably no disk in drive
+  769 |  1 speedometer.s    410 | Empty       | 00 |         |    0 | 00/034E               |                                          
+  770 |  1 speedometer.s    411 | Comment     | 00 |         |    0 | 00/034E               | *--- Is it a ProDOS file system (for v2 ;-))
+  771 |  1 speedometer.s    412 | Empty       | 00 |         |    0 | 00/034E               |                                          
+  772 |  1 speedometer.s    413 | Code        | 00 |  2      |    3 | 00/034E : AD 07 06    |                 lda       proVOLUME+$12  
+  773 |  1 speedometer.s    414 | Code        | 00 |         |    3 | 00/0351 : C9 01 00    |                 cmp       #1             ; ProDOS
+  774 |  1 speedometer.s    415 | Code        | 00 |         |    2 | 00/0354 : D0 DF       |                 bne       buildVOL9      
+  775 |  1 speedometer.s    416 | Empty       | 00 |         |    0 | 00/0356               |                                          
+  776 |  1 speedometer.s    417 | Code        | 00 |  2      |    3 | 00/0356 : AD 09 06    |                 lda       proVOLUME+$14  
+  777 |  1 speedometer.s    418 | Code        | 00 |         |    3 | 00/0359 : C9 00 02    |                 cmp       #512           ; blockSize
+  778 |  1 speedometer.s    419 | Code        | 00 |         |    2 | 00/035C : D0 D7       |                 bne       buildVOL9      
+  779 |  1 speedometer.s    420 | Empty       | 00 |         |    0 | 00/035E               |                                          
+  780 |  1 speedometer.s    421 | Comment     | 00 |         |    0 | 00/035E               | *--- Now compare
+  781 |  1 speedometer.s    422 | Empty       | 00 |         |    0 | 00/035E               |                                          
+  782 |  1 speedometer.s    423 | Code        | 00 |  2      |    3 | 00/035E : AD 41 06    | buildVOL4       lda       pfxNAMEopen    ; length...
+  783 |  1 speedometer.s    424 | Code        | 00 |  2      |    3 | 00/0361 : CD 05 07    |                 cmp       volNAMEopen    
+  784 |  1 speedometer.s    425 | Code        | 00 |         |    2 | 00/0364 : D0 CF       |                 bne       buildVOL9      
+  785 |  1 speedometer.s    426 | Empty       | 00 |         |    0 | 00/0366               |                                          
+  786 |  1 speedometer.s    427 | Code        | 00 |         |    3 | 00/0366 : A2 00 00    |                 ldx       #0             ; string
+  787 |  1 speedometer.s    428 | Code        | 00 |  2      |    3 | 00/0369 : BD 41 06    | ozunid_3        lda       pfxNAMEopen,x  
+  788 |  1 speedometer.s    429 | Code        | 00 |  2      |    3 | 00/036C : DD 05 07    |                 cmp       volNAMEopen,x  
+  789 |  1 speedometer.s    430 | Code        | 00 |         |    2 | 00/036F : D0 C4       |                 bne       buildVOL9      
+  790 |  1 speedometer.s    431 | Code        | 00 |         |    1 | 00/0371 : E8          |                 inx                      
+  791 |  1 speedometer.s    432 | Code        | 00 |  2      |    3 | 00/0372 : EC 41 06    |                 cpx       pfxNAMEopen    
+  792 |  1 speedometer.s    433 | Code        | 00 |         |    2 | 00/0375 : D0 F2       |                 bne       ozunid_3       
+  793 |  1 speedometer.s    434 | Empty       | 00 |         |    0 | 00/0377               |                                          
+  794 |  1 speedometer.s    435 | Comment     | 00 |         |    0 | 00/0377               | *--- Here we have our volume, yeah!
+  795 |  1 speedometer.s    436 | Empty       | 00 |         |    0 | 00/0377               |                                          
+  796 |  1 speedometer.s    437 | Code        | 00 |  2      |    3 | 00/0377 : AD D3 05    |                 lda       proDINFO+2     ; Get the device ID
+  797 |  1 speedometer.s    438 | Code        | 00 |  2      |    3 | 00/037A : 8D E1 05    |                 sta       proDREAD+2     
+  798 |  1 speedometer.s    439 | Empty       | 00 |         |    0 | 00/037D               |                                          
+  799 |  1 speedometer.s    440 | Comment     | 00 |         |    0 | 00/037D               | *--- Read the DATA folder
+  800 |  1 speedometer.s    441 | Empty       | 00 |         |    0 | 00/037D               |                                          
+  801 |  1 speedometer.s    442 | Code        | 00 |         |    4 | 00/037D : 22 A8 00 E1 |                 jsl       {$e100a8}      ; open
+  802 |  1 speedometer.s    443 | Data        | 00 |         |    2 | 00/0381 : 10 20       |                 dw        $2010          
+  803 |  1 speedometer.s    444 | Data        | 00 |  3      |    4 | 00/0383 : 71 05 00 00 |                 adrl      proOPEN        
+  804 |  1 speedometer.s    445 | Empty       | 00 |         |    0 | 00/0387               |                                          
+  805 |  1 speedometer.s    446 | Code        | 00 |  2      |    3 | 00/0387 : AD 73 05    |                 lda       proOPEN+2      
+  806 |  1 speedometer.s    447 | Code        | 00 |  2      |    3 | 00/038A : 8D AD 05    |                 sta       proREAD+2      
+  807 |  1 speedometer.s    448 | Code        | 00 |  2      |    3 | 00/038D : 8D BF 05    |                 sta       proCLOSE+2     
+  808 |  1 speedometer.s    449 | Empty       | 00 |         |    0 | 00/0390               |                                          
+  809 |  1 speedometer.s    450 | Code        | 00 |         |    4 | 00/0390 : 22 A8 00 E1 |                 jsl       {$e100a8}      ; read
+  810 |  1 speedometer.s    451 | Data        | 00 |         |    2 | 00/0394 : 12 20       |                 dw        $2012          
+  811 |  1 speedometer.s    452 | Data        | 00 |  3      |    4 | 00/0396 : AB 05 00 00 |                 adrl      proREAD        
+  812 |  1 speedometer.s    453 | Empty       | 00 |         |    0 | 00/039A               |                                          
+  813 |  1 speedometer.s    454 | Code        | 00 |         |    4 | 00/039A : 22 A8 00 E1 |                 jsl       {$e100a8}      ; close
+  814 |  1 speedometer.s    455 | Data        | 00 |         |    2 | 00/039E : 14 20       |                 dw        $2014          
+  815 |  1 speedometer.s    456 | Data        | 00 |  3      |    4 | 00/03A0 : BD 05 00 00 |                 adrl      proCLOSE       
+  816 |  1 speedometer.s    457 | Empty       | 00 |         |    0 | 00/03A4               |                                          
+  817 |  1 speedometer.s    458 | Comment     | 00 |         |    0 | 00/03A4               | *--- What is the key block pointer of File?
+  818 |  1 speedometer.s    459 | Empty       | 00 |         |    0 | 00/03A4               |                                          
+  819 |  1 speedometer.s    460 | Code        | 00 |         |    3 | 00/03A4 : A0 3C 00    |                 ldy       #$3c           
+  820 |  1 speedometer.s    461 | Code        | 00 |  2      |    3 | 00/03A7 : B9 95 07    |                 lda       dataBUFFER,y   
+  821 |  1 speedometer.s    462 | Code        | 00 |  2      |    3 | 00/03AA : 8D EB 05    |                 sta       proDREAD+12    
+  822 |  1 speedometer.s    463 | Empty       | 00 |         |    0 | 00/03AD               |                                          
+  823 |  1 speedometer.s    464 | Code        | 00 |         |    4 | 00/03AD : 22 A8 00 E1 |                 jsl       {$e100a8}      
+  824 |  1 speedometer.s    465 | Data        | 00 |         |    2 | 00/03B1 : 2F 20       |                 dw        $202f          ; DRead
+  825 |  1 speedometer.s    466 | Data        | 00 |  3      |    4 | 00/03B3 : DF 05 00 00 |                 adrl      proDREAD       
+  826 |  1 speedometer.s    467 | Empty       | 00 |         |    0 | 00/03B7               |                                          
+  827 |  1 speedometer.s    468 | Comment     | 00 |         |    0 | 00/03B7               | *--- We have the File block pointer at dataBUFFER now
+  828 |  1 speedometer.s    469 | Empty       | 00 |         |    0 | 00/03B7               |                                          
+  829 |  1 speedometer.s    470 | Code        | 00 |  2      |    3 | 00/03B7 : 9C 7F 07    |                 stz       theINDEX       
+  830 |  1 speedometer.s    471 | Empty       | 00 |         |    0 | 00/03BA               |                                          
+  831 |  1 speedometer.s    472 | Code        | 00 |  2      |    3 | 00/03BA : AD 8D 07    |                 lda       ptrBUFFER      ; the buffer
+  832 |  1 speedometer.s    473 | Code        | 00 |  2      |    3 | 00/03BD : 8D E3 05    |                 sta       proDREAD+4     
+  833 |  1 speedometer.s    474 | Code        | 00 |  2      |    3 | 00/03C0 : AD 8F 07    |                 lda       ptrBUFFER+2    
+  834 |  1 speedometer.s    475 | Code        | 00 |  2      |    3 | 00/03C3 : 8D E5 05    |                 sta       proDREAD+6     
+  835 |  1 speedometer.s    476 | Empty       | 00 |         |    0 | 00/03C6               |                                          
+  836 |  1 speedometer.s    477 | Code        | 00 |  2      |    3 | 00/03C6 : A9 E6 04    |                 lda       #strBeforeRead 
+  837 |  1 speedometer.s    478 | Code        | 00 |  2      |    3 | 00/03C9 : 20 9C 02    |                 jsr       showTICK       
+  838 |  1 speedometer.s    479 | Empty       | 00 |         |    0 | 00/03CC               |                                          
+  839 |  1 speedometer.s    480 | Macro       | 00 |         |    0 | 00/03CC               |                 PushWord  #$0d           
+  841 |  1 speedometer.s    480 | Code        | 00 |         |    3 | 00/03CC : F4 0D 00    |                 PEA       #$0d           
+  844 |  1 speedometer.s    481 | Macro       | 00 |         |    0 | 00/03CF               |                 _WriteChar                 
+  846 |  1 speedometer.s    481 | Code        | 00 |         |    3 | 00/03CF : A2 0C 18    |                 LDX       #$180C         ; load tool call #
+  847 |  1 speedometer.s    481 | Code        | 00 |         |    4 | 00/03D2 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  848 |  1 speedometer.s    482 | Empty       | 00 |         |    0 | 00/03D6               |                                          
+  849 |  1 speedometer.s    483 | Comment     | 00 |         |    0 | 00/03D6               | *---
+  850 |  1 speedometer.s    484 | Empty       | 00 |         |    0 | 00/03D6               |                                          
+  851 |  1 speedometer.s    485 | Code        | 00 |  2      |    3 | 00/03D6 : AC 7F 07    | ozunid_4        ldy       theINDEX       ; get block to read
+  852 |  1 speedometer.s    486 | Code        | 10 |         |    2 | 00/03D9 : E2 20       |                 sep       #$20           
+  853 |  1 speedometer.s    487 | Code        | 10 |  2      |    3 | 00/03DB : B9 95 07    |                 lda       dataBUFFER,y   
+  854 |  1 speedometer.s    488 | Code        | 10 |  2      |    3 | 00/03DE : 8D EB 05    |                 sta       proDREAD+12    
+  855 |  1 speedometer.s    489 | Code        | 10 |  2      |    3 | 00/03E1 : B9 95 08    |                 lda       dataBUFFER+256,y
+  856 |  1 speedometer.s    490 | Code        | 10 |  2      |    3 | 00/03E4 : 8D EC 05    |                 sta       proDREAD+13    
+  857 |  1 speedometer.s    491 | Code        | 00 |         |    2 | 00/03E7 : C2 20       |                 rep       #$20           
+  858 |  1 speedometer.s    492 | Empty       | 00 |         |    0 | 00/03E9               |                                          
+  859 |  1 speedometer.s    493 | Code        | 00 |  2      |    3 | 00/03E9 : AD EB 05    |                 lda       proDREAD+12    
+  860 |  1 speedometer.s    494 | Code        | 00 |         |    2 | 00/03EC : D0 09       |                 bne       doBREAD3       
+  861 |  1 speedometer.s    495 | Empty       | 00 |         |    0 | 00/03EE               |                                          
+  862 |  1 speedometer.s    496 | Code        | 00 |  2      |    3 | 00/03EE : A9 F8 04    | doBREAD2        lda       #strAfterRead  
+  863 |  1 speedometer.s    497 | Code        | 00 |  2      |    3 | 00/03F1 : 20 9C 02    |                 jsr       showTICK       
+  864 |  1 speedometer.s    498 | Code        | 00 |  2      |    3 | 00/03F4 : 4C 38 01    |                 jmp       mainNEXT       
+  865 |  1 speedometer.s    499 | Empty       | 00 |         |    0 | 00/03F7               |                                          
+  866 |  1 speedometer.s    500 | Code        | 00 |         |    4 | 00/03F7 : 22 A8 00 E1 | doBREAD3        jsl       {$e100a8}      
+  867 |  1 speedometer.s    501 | Data        | 00 |         |    2 | 00/03FB : 2F 20       |                 dw        $202f          ; DRead
+  868 |  1 speedometer.s    502 | Data        | 00 |  3      |    4 | 00/03FD : DF 05 00 00 |                 adrl      proDREAD       
+  869 |  1 speedometer.s    503 | Code        | 00 |         |    2 | 00/0401 : B0 EB       |                 bcs       doBREAD2       ; the end
+  870 |  1 speedometer.s    504 | Empty       | 00 |         |    0 | 00/0403               |                                          
+  871 |  1 speedometer.s    505 | Code        | 00 |  2      |    3 | 00/0403 : 20 8B 02    |                 jsr       showTICK_ALT   
+  872 |  1 speedometer.s    506 | Empty       | 00 |         |    0 | 00/0406               |                                          
+  873 |  1 speedometer.s    507 | Code        | 00 |  2      |    3 | 00/0406 : EE 7F 07    |                 inc       theINDEX       
+  874 |  1 speedometer.s    508 | Code        | 00 |         |    2 | 00/0409 : 80 CB       |                 bra       ozunid_4       
+  875 |  1 speedometer.s    509 | Empty       | 00 |         |    0 | 00/040B               |                                          
+  876 |  1 speedometer.s    510 | Comment     | 00 |         |    0 | 00/040B               | *----------------------------
+  877 |  1 speedometer.s    511 | Comment     | 00 |         |    0 | 00/040B               | * DATA
+  878 |  1 speedometer.s    512 | Comment     | 00 |         |    0 | 00/040B               | *----------------------------
+  879 |  1 speedometer.s    513 | Empty       | 00 |         |    0 | 00/040B               |                                          
+  880 |  1 speedometer.s    514 | Data        | 00 |         |   38 | 00/040B : 53 70 65 65 | strINTRO        asc       'Speedometer by Brutal Deluxe Software'0d
+      |                         |             |    |         |      |           64 6F 6D 65 |
+      |                         |             |    |         |      |           74 65 72 20 |
+      |                         |             |    |         |      |           62 79 20 42 |
+      |                         |             |    |         |      |           72 75 74 61 |
+      |                         |             |    |         |      |           6C 20 44 65 |
+      |                         |             |    |         |      |           6C 75 78 65 |
+      |                         |             |    |         |      |           20 53 6F 66 |
+      |                         |             |    |         |      |           74 77 61 72 |
+      |                         |             |    |         |      |           65 0D       |
+  881 |  1 speedometer.s    515 | Data        | 00 |         |   30 | 00/0431 : 20 31 2D 20 |                 asc       ' 1- Read 64K file in one pass'0d
+      |                         |             |    |         |      |           52 65 61 64 |
+      |                         |             |    |         |      |           20 36 34 4B |
+      |                         |             |    |         |      |           20 66 69 6C |
+      |                         |             |    |         |      |           65 20 69 6E |
+      |                         |             |    |         |      |           20 6F 6E 65 |
+      |                         |             |    |         |      |           20 70 61 73 |
+      |                         |             |    |         |      |           73 0D       |
+  882 |  1 speedometer.s    516 | Data        | 00 |         |   32 | 00/044F : 20 32 2D 20 |                 asc       ' 2- Read 64K file per 512 bytes'0d
+      |                         |             |    |         |      |           52 65 61 64 |
+      |                         |             |    |         |      |           20 36 34 4B |
+      |                         |             |    |         |      |           20 66 69 6C |
+      |                         |             |    |         |      |           65 20 70 65 |
+      |                         |             |    |         |      |           72 20 35 31 |
+      |                         |             |    |         |      |           32 20 62 79 |
+      |                         |             |    |         |      |           74 65 73 0D |
+  883 |  1 speedometer.s    517 | Data        | 00 |         |   23 | 00/046F : 20 33 2D 20 |                 asc       ' 3- Read 64K per block'0d
+      |                         |             |    |         |      |           52 65 61 64 |
+      |                         |             |    |         |      |           20 36 34 4B |
+      |                         |             |    |         |      |           20 70 65 72 |
+      |                         |             |    |         |      |           20 62 6C 6F |
+      |                         |             |    |         |      |           63 6B 0D    |
+  884 |  1 speedometer.s    518 | Data        | 00 |         |   32 | 00/0486 : 49 6E 70 75 |                 asc       'Input your choice (Q to quit) >'00
+      |                         |             |    |         |      |           74 20 79 6F |
+      |                         |             |    |         |      |           75 72 20 63 |
+      |                         |             |    |         |      |           68 6F 69 63 |
+      |                         |             |    |         |      |           65 20 28 51 |
+      |                         |             |    |         |      |           20 74 6F 20 |
+      |                         |             |    |         |      |           71 75 69 74 |
+      |                         |             |    |         |      |           29 20 3E 00 |
+  885 |  1 speedometer.s    519 | Empty       | 00 |         |    0 | 00/04A6               |                                          
+  886 |  1 speedometer.s    520 | Data        | 00 |         |   28 | 00/04A6 : 0D 50 72 65 | strBYE          asc       0d'Press a key to continue...'00
+      |                         |             |    |         |      |           73 73 20 61 |
+      |                         |             |    |         |      |           20 6B 65 79 |
+      |                         |             |    |         |      |           20 74 6F 20 |
+      |                         |             |    |         |      |           63 6F 6E 74 |
+      |                         |             |    |         |      |           69 6E 75 65 |
+      |                         |             |    |         |      |           2E 2E 2E 00 |
+  887 |  1 speedometer.s    521 | Empty       | 00 |         |    0 | 00/04C2               |                                          
+  888 |  1 speedometer.s    522 | Data        | 00 |         |   18 | 00/04C2 : 0D 42 65 66 | strBeforeOpen   asc       0d'Before  open... '00
+      |                         |             |    |         |      |           6F 72 65 20 |
+      |                         |             |    |         |      |           20 6F 70 65 |
+      |                         |             |    |         |      |           6E 2E 2E 2E |
+      |                         |             |    |         |      |           20 00       |
+  889 |  1 speedometer.s    523 | Data        | 00 |         |   18 | 00/04D4 : 0D 20 41 66 | strAfterOpen    asc       0d' After  open... '00
+      |                         |             |    |         |      |           74 65 72 20 |
+      |                         |             |    |         |      |           20 6F 70 65 |
+      |                         |             |    |         |      |           6E 2E 2E 2E |
+      |                         |             |    |         |      |           20 00       |
+  890 |  1 speedometer.s    524 | Data        | 00 |         |   18 | 00/04E6 : 0D 42 65 66 | strBeforeRead   asc       0d'Before  read... '00
+      |                         |             |    |         |      |           6F 72 65 20 |
+      |                         |             |    |         |      |           20 72 65 61 |
+      |                         |             |    |         |      |           64 2E 2E 2E |
+      |                         |             |    |         |      |           20 00       |
+  891 |  1 speedometer.s    525 | Data        | 00 |         |   18 | 00/04F8 : 0D 20 41 66 | strAfterRead    asc       0d' After  read... '00
+      |                         |             |    |         |      |           74 65 72 20 |
+      |                         |             |    |         |      |           20 72 65 61 |
+      |                         |             |    |         |      |           64 2E 2E 2E |
+      |                         |             |    |         |      |           20 00       |
+  892 |  1 speedometer.s    526 | Data        | 00 |         |   18 | 00/050A : 0D 42 65 66 | strBeforeClose  asc       0d'Before close... '00
+      |                         |             |    |         |      |           6F 72 65 20 |
+      |                         |             |    |         |      |           63 6C 6F 73 |
+      |                         |             |    |         |      |           65 2E 2E 2E |
+      |                         |             |    |         |      |           20 00       |
+  893 |  1 speedometer.s    527 | Data        | 00 |         |   18 | 00/051C : 0D 20 41 66 | strAfterClose   asc       0d' After close... '00
+      |                         |             |    |         |      |           74 65 72 20 |
+      |                         |             |    |         |      |           63 6C 6F 73 |
+      |                         |             |    |         |      |           65 2E 2E 2E |
+      |                         |             |    |         |      |           20 00       |
+  894 |  1 speedometer.s    528 | Data        | 00 |         |    3 | 00/052E : 20 20 00    | strEmpty        asc       '  '00         
+  895 |  1 speedometer.s    529 | Empty       | 00 |         |    0 | 00/0531               |                                          
+  896 |  1 speedometer.s    530 | Data        | 00 |         |    9 | 00/0531 : 20 20 20 20 | strTick         asc       '        '00   
+      |                         |             |    |         |      |           20 20 20 20 |
+      |                         |             |    |         |      |           00          |
+  897 |  1 speedometer.s    531 | Empty       | 00 |         |    0 | 00/053A               |                                          
+  898 |  1 speedometer.s    532 | Data        | 00 |         |    9 | 00/053A : 52 65 61 64 | strREAD         asc       'Read... '00   
+      |                         |             |    |         |      |           2E 2E 2E 20 |
+      |                         |             |    |         |      |           00          |
+  899 |  1 speedometer.s    533 | Data        | 00 |         |    7 | 00/0543 : 42 6C 6F 63 | strBLOCKS       asc       'Blocks'00     
+      |                         |             |    |         |      |           6B 73 00    |
+  900 |  1 speedometer.s    534 | Data        | 00 |         |   11 | 00/054A : 52 65 61 64 | strRERR         asc       'Read error'00 
+      |                         |             |    |         |      |           20 65 72 72 |
+      |                         |             |    |         |      |           6F 72 00    |
+  901 |  1 speedometer.s    535 | Data        | 00 |         |    7 | 00/0555 : 43 61 6E 63 | strCANCEL       asc       'Cancel'00     
+      |                         |             |    |         |      |           65 6C 00    |
+  902 |  1 speedometer.s    536 | Empty       | 00 |         |    0 | 00/055C               |                                          
+  903 |  1 speedometer.s    537 | Comment     | 00 |         |    0 | 00/055C               | *----------
+  904 |  1 speedometer.s    538 | Empty       | 00 |         |    0 | 00/055C               |                                          
+  905 |  1 speedometer.s    539 | Data        | 00 |         |    8 | 00/055C : 06 00 31 2F | pathname        strl      '1/Data'       ; this is a folder
+      |                         |             |    |         |      |           44 61 74 61 |
+  906 |  1 speedometer.s    540 | Data        | 00 |         |   13 | 00/0564 : 0B 00 31 2F | pathname1       strl      '1/Data/File'  ; this ia a file
+      |                         |             |    |         |      |           44 61 74 61 |
+      |                         |             |    |         |      |           2F 46 69 6C |
+      |                         |             |    |         |      |           65          |
+  907 |  1 speedometer.s    541 | Empty       | 00 |         |    0 | 00/0571               |                                          
+  908 |  1 speedometer.s    542 | Comment     | 00 |         |    0 | 00/0571               | *----------
+  909 |  1 speedometer.s    543 | Empty       | 00 |         |    0 | 00/0571               |                                          
+  910 |  1 speedometer.s    544 | Data        | 00 |         |    2 | 00/0571 : 0F 00       | proOPEN         dw        15             ; pcount
+  911 |  1 speedometer.s    545 | Data        | 00 |         |    2 | 00/0573 : 00 00       |                 ds        2              ; ref_num
+  912 |  1 speedometer.s    546 | Data        | 00 |  3      |    4 | 00/0575 : 64 05 00 00 |                 adrl      pathname1      ; pathname
+  913 |  1 speedometer.s    547 | Data        | 00 |         |    2 | 00/0579 : 00 00       |                 ds        2              ; request_access
+  914 |  1 speedometer.s    548 | Data        | 00 |         |    2 | 00/057B : 00 00       |                 ds        2              ; resource_num
+  915 |  1 speedometer.s    549 | Data        | 00 |         |    2 | 00/057D : 00 00       |                 ds        2              ; access
+  916 |  1 speedometer.s    550 | Data        | 00 |         |    2 | 00/057F : 00 00       |                 ds        2              ; file_type
+  917 |  1 speedometer.s    551 | Data        | 00 |         |    4 | 00/0581 : 00 00 00 00 |                 ds        4              ; aux_type
+  918 |  1 speedometer.s    552 | Data        | 00 |         |    2 | 00/0585 : 00 00       |                 ds        2              ; storage_type
+  919 |  1 speedometer.s    553 | Data        | 00 |         |    8 | 00/0587 : 00 00 00 00 |                 ds        8              ; create_td
+      |                         |             |    |         |      |           00 00 00 00 |
+  920 |  1 speedometer.s    554 | Data        | 00 |         |    8 | 00/058F : 00 00 00 00 |                 ds        8              ; modify_td
+      |                         |             |    |         |      |           00 00 00 00 |
+  921 |  1 speedometer.s    555 | Data        | 00 |         |    4 | 00/0597 : 00 00 00 00 |                 ds        4              ; option_list
+  922 |  1 speedometer.s    556 | Data        | 00 |         |    4 | 00/059B : 00 00 00 00 |                 ds        4              ; eof
+  923 |  1 speedometer.s    557 | Data        | 00 |         |    4 | 00/059F : 00 00 00 00 |                 ds        4              ; blocks_used
+  924 |  1 speedometer.s    558 | Data        | 00 |         |    4 | 00/05A3 : 00 00 00 00 |                 ds        4              ; resource_eof
+  925 |  1 speedometer.s    559 | Data        | 00 |         |    4 | 00/05A7 : 00 00 00 00 |                 ds        4              ; resource_blocks
+  926 |  1 speedometer.s    560 | Empty       | 00 |         |    0 | 00/05AB               |                                          
+  927 |  1 speedometer.s    561 | Data        | 00 |         |    2 | 00/05AB : 05 00       | proREAD         dw        5              ; +00 pcount
+  928 |  1 speedometer.s    562 | Data        | 00 |         |    2 | 00/05AD : 00 00       |                 ds        2              ; +02 ref_num
+  929 |  1 speedometer.s    563 | Data        | 00 |         |    4 | 00/05AF : 00 00 00 00 |                 ds        4              ; +04 data_buffer
+  930 |  1 speedometer.s    564 | Data        | 00 |         |    4 | 00/05B3 : 00 00 01 00 |                 adrl      $00010000      ; +08 request_count
+  931 |  1 speedometer.s    565 | Data        | 00 |         |    4 | 00/05B7 : 00 00 00 00 |                 ds        4              ; +12 transfer_count
+  932 |  1 speedometer.s    566 | Data        | 00 |         |    2 | 00/05BB : 01 00       |                 dw        1              ; +16 cache_priority
+  933 |  1 speedometer.s    567 | Empty       | 00 |         |    0 | 00/05BD               |                                          
+  934 |  1 speedometer.s    568 | Data        | 00 |         |    2 | 00/05BD : 01 00       | proCLOSE        dw        1              ; pcount
+  935 |  1 speedometer.s    569 | Data        | 00 |         |    2 | 00/05BF : 00 00       |                 ds        2              ; ref_num
+  936 |  1 speedometer.s    570 | Empty       | 00 |         |    0 | 00/05C1               |                                          
+  937 |  1 speedometer.s    571 | Data        | 00 |         |    2 | 00/05C1 : 02 00       | proQUIT         dw        2              ; pcount
+  938 |  1 speedometer.s    572 | Data        | 00 |         |    4 | 00/05C3 : 00 00 00 00 |                 ds        4              ; pathname
+  939 |  1 speedometer.s    573 | Data        | 00 |         |    2 | 00/05C7 : 00 00       |                 ds        2              ; flags
+  940 |  1 speedometer.s    574 | Empty       | 00 |         |    0 | 00/05C9               |                                          
+  941 |  1 speedometer.s    575 | Comment     | 00 |         |    0 | 00/05C9               | *----------
+  942 |  1 speedometer.s    576 | Empty       | 00 |         |    0 | 00/05C9               |                                          
+  943 |  1 speedometer.s    577 | Data        | 00 |         |    2 | 00/05C9 : 02 00       | proGETPREFIX    dw        2              ; Parms for GetPrefix
+  944 |  1 speedometer.s    578 | Data        | 00 |         |    2 | 00/05CB : 01 00       |                 dw        1              ; 02 prefix num
+  945 |  1 speedometer.s    579 | Data        | 00 |  3      |    4 | 00/05CD : 3F 06 00 00 |                 adrl      pfxOPEN        ; 04 prefix
+  946 |  1 speedometer.s    580 | Empty       | 00 |         |    0 | 00/05D1               |                                          
+  947 |  1 speedometer.s    581 | Data        | 00 |         |    2 | 00/05D1 : 04 00       | proDINFO        dw        4              ; Parms for DInfo
+  948 |  1 speedometer.s    582 | Data        | 00 |         |    2 | 00/05D3 : 00 00       |                 ds        2              ; 02 device num
+  949 |  1 speedometer.s    583 | Data        | 00 |  3      |    4 | 00/05D5 : 0B 06 00 00 |                 adrl      devOPEN        ; 04 device name
+  950 |  1 speedometer.s    584 | Data        | 00 |         |    2 | 00/05D9 : 00 00       |                 ds        2              ; 08 characteristics
+  951 |  1 speedometer.s    585 | Data        | 00 |         |    4 | 00/05DB : 00 00 00 00 |                 ds        4              ; 0A total blocks
+  952 |  1 speedometer.s    586 | Empty       | 00 |         |    0 | 00/05DF               |                                          
+  953 |  1 speedometer.s    587 | Data        | 00 |         |    2 | 00/05DF : 06 00       | proDREAD        dw        6              ; Parms for DRead
+  954 |  1 speedometer.s    588 | Data        | 00 |         |    2 | 00/05E1 : 00 00       |                 ds        2              ; 02 device num
+  955 |  1 speedometer.s    589 | Data        | 00 |         |    4 | 00/05E3 : 00 00 00 00 |                 ds        4              ; 04 buffer
+  956 |  1 speedometer.s    590 | Data        | 00 |         |    4 | 00/05E7 : 00 02 00 00 |                 adrl      512            ; 08 request count
+  957 |  1 speedometer.s    591 | Data        | 00 |         |    4 | 00/05EB : 00 00 00 00 |                 ds        4              ; 0C starting block
+  958 |  1 speedometer.s    592 | Data        | 00 |         |    2 | 00/05EF : 00 02       |                 dw        512            ; 10 block size
+  959 |  1 speedometer.s    593 | Data        | 00 |         |    4 | 00/05F1 : 00 00 00 00 |                 ds        4              ; 12 transfer count
+  960 |  1 speedometer.s    594 | Empty       | 00 |         |    0 | 00/05F5               |                                          
+  961 |  1 speedometer.s    595 | Data        | 00 |         |    2 | 00/05F5 : 06 00       | proVOLUME       dw        6              ; Parms for Volume
+  962 |  1 speedometer.s    596 | Data        | 00 |  3      |    4 | 00/05F7 : 0D 06 00 00 |                 adrl      devNAMEopen    ;02  device name
+  963 |  1 speedometer.s    597 | Data        | 00 |  3      |    4 | 00/05FB : 03 07 00 00 |                 adrl      volOPEN        ; 06 volume name
+  964 |  1 speedometer.s    598 | Data        | 00 |         |    4 | 00/05FF : 00 00 00 00 |                 ds        4              ; 0A total blocks
+  965 |  1 speedometer.s    599 | Data        | 00 |         |    4 | 00/0603 : 00 00 00 00 |                 ds        4              ; 0E free blocks
+  966 |  1 speedometer.s    600 | Data        | 00 |         |    2 | 00/0607 : 00 00       |                 ds        2              ; 12 file_sys_id
+  967 |  1 speedometer.s    601 | Data        | 00 |         |    2 | 00/0609 : 00 00       |                 ds        2              ; 14 block_size
+  968 |  1 speedometer.s    602 | Empty       | 00 |         |    0 | 00/060B               |                                          
+  969 |  1 speedometer.s    603 | Data        | 00 |         |    2 | 00/060B : 32 00       | devOPEN         dw        $0032          ; buffer size
+  970 |  1 speedometer.s    604 | Data        | 00 |         |    1 | 00/060D : 00          | devNAMEopen     db        $00            ; length
+  971 |  1 speedometer.s    605 | Data        | 00 |         |    1 | 00/060E : 00          | devNAMEopen1    db        $00            
+  972 |  1 speedometer.s    606 | Data        | 00 |         |   48 | 00/060F : 00 00 00 00 | devNAMEopen2    ds        $30            ; data
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+  973 |  1 speedometer.s    607 | Empty       | 00 |         |    0 | 00/063F               |                                          
+  974 |  1 speedometer.s    608 | Data        | 00 |         |    2 | 00/063F : C2 00       | pfxOPEN         dw        $00c2          ; buffer size
+  975 |  1 speedometer.s    609 | Data        | 00 |         |    1 | 00/0641 : 00          | pfxNAMEopen     db        $00            ; length
+  976 |  1 speedometer.s    610 | Data        | 00 |         |    1 | 00/0642 : 00          | pfxNAMEopen1    db        $00            
+  977 |  1 speedometer.s    611 | Data        | 00 |         |  192 | 00/0643 : 00 00 00 00 | pfxNAMEopen2    ds        $c0            ; data
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+  978 |  1 speedometer.s    612 | Empty       | 00 |         |    0 | 00/0703               |                                          
+  979 |  1 speedometer.s    613 | Data        | 00 |         |    2 | 00/0703 : 32 00       | volOPEN         dw        $0032          ; buffer size
+  980 |  1 speedometer.s    614 | Data        | 00 |         |    1 | 00/0705 : 00          | volNAMEopen     db        $00            ; length
+  981 |  1 speedometer.s    615 | Data        | 00 |         |    1 | 00/0706 : 00          | volNAMEopen1    db        $00            
+  982 |  1 speedometer.s    616 | Data        | 00 |         |   48 | 00/0707 : 00 00 00 00 | volNAMEopen2    ds        $30            ; data
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+  983 |  1 speedometer.s    617 | Empty       | 00 |         |    0 | 00/0737               |                                          
+  984 |  1 speedometer.s    618 | Comment     | 00 |         |    0 | 00/0737               | *----------
+  985 |  1 speedometer.s    619 | Empty       | 00 |         |    0 | 00/0737               |                                          
+  986 |  1 speedometer.s    620 | Data        | 00 |         |   32 | 00/0737 : 00 00 00 00 | asciitime       ds        32             
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+  987 |  1 speedometer.s    621 | Empty       | 00 |         |    0 | 00/0757               |                                          
+  988 |  1 speedometer.s    622 | Data        | 00 |         |    8 | 00/0757 : 00 00 00 00 | hextime1        ds        8              
+      |                         |             |    |         |      |           00 00 00 00 |
+  989 |  1 speedometer.s    623 | Data        | 00 |         |    8 | 00/075F : 00 00 00 00 | hextime2        ds        8              
+      |                         |             |    |         |      |           00 00 00 00 |
+  990 |  1 speedometer.s    624 | Empty       | 00 |         |    0 | 00/0767               |                                          
+  991 |  1 speedometer.s    625 | Data        | 00 |         |    4 | 00/0767 : 00 00 00 00 | seconds1        ds        4              
+  992 |  1 speedometer.s    626 | Data        | 00 |         |    4 | 00/076B : 00 00 00 00 | seconds2        ds        4              
+  993 |  1 speedometer.s    627 | Data        | 00 |         |    4 | 00/076F : 00 00 00 00 | seconds         ds        4              
+  994 |  1 speedometer.s    628 | Empty       | 00 |         |    0 | 00/0773               |                                          
+  995 |  1 speedometer.s    629 | Data        | 00 |         |    4 | 00/0773 : 00 00 00 00 | kbs             ds        4              
+  996 |  1 speedometer.s    630 | Data        | 00 |         |    8 | 00/0777 : 00 00 00 00 | strCALCKBS      ds        8              
+      |                         |             |    |         |      |           00 00 00 00 |
+  997 |  1 speedometer.s    631 | Empty       | 00 |         |    0 | 00/077F               |                                          
+  998 |  1 speedometer.s    632 | Comment     | 00 |         |    0 | 00/077F               | *----------
+  999 |  1 speedometer.s    633 | Empty       | 00 |         |    0 | 00/077F               |                                          
+ 1000 |  1 speedometer.s    634 | Data        | 00 |         |    2 | 00/077F : 00 00       | theINDEX        ds        2              
+ 1001 |  1 speedometer.s    635 | Data        | 00 |         |    2 | 00/0781 : 00 00       | maxINDEX        ds        2              
+ 1002 |  1 speedometer.s    636 | Data        | 00 |         |    4 | 00/0783 : 00 00 00 00 | filesize        ds        4              ; in KB
+ 1003 |  1 speedometer.s    637 | Empty       | 00 |         |    0 | 00/0787               |                                          
+ 1004 |  1 speedometer.s    638 | Comment     | 00 |         |    0 | 00/0787               | *----------
+ 1005 |  1 speedometer.s    639 | Empty       | 00 |         |    0 | 00/0787               |                                          
+ 1006 |  1 speedometer.s    640 | Data        | 00 |         |    2 | 00/0787 : 00 00       | appID           ds        2              
+ 1007 |  1 speedometer.s    641 | Data        | 00 |         |    2 | 00/0789 : 00 00       | myID            ds        2              
+ 1008 |  1 speedometer.s    642 | Empty       | 00 |         |    0 | 00/078B               |                                          
+ 1009 |  1 speedometer.s    643 | Data        | 00 |         |    2 | 00/078B : 00 00       | myDP            ds        2              
+ 1010 |  1 speedometer.s    644 | Data        | 00 |         |    4 | 00/078D : 00 00 00 00 | ptrBUFFER       ds        4              
+ 1011 |  1 speedometer.s    645 | Data        | 00 |         |    4 | 00/0791 : 00 00 00 00 | haBUFFER        ds        4              
+ 1012 |  1 speedometer.s    646 | Empty       | 00 |         |    0 | 00/0795               |                                          
+ 1013 |  1 speedometer.s    647 | Comment     | 00 |         |    0 | 00/0795               | *----------
+ 1014 |  1 speedometer.s    648 | Empty       | 00 |         |    0 | 00/0795               |                                          
+ 1015 |  1 speedometer.s    649 | Data        | 00 |         |  512 | 00/0795 : 00 00 00 00 | dataBUFFER      ds        512            
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+ 1016 |  1 speedometer.s    650 | Empty       | 00 |         |    0 | 00/0995               |                                          
+------+-------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

@@ -1,20 +1,15 @@
 *
-* Speedometer: Time to read a file
+* Speedometer: Time to read a 64K file
 *
-* (c) 2013-2025, Brutal Deluxe Software
+* (c) 2013-2026, Brutal Deluxe Software
 *
 * v1.0 - 20251209
-* v1.1 - 20260303
+* v1.1 - 20260303 with Brutal Timer
 *
 
 	xc
 	xc
 	mx	%00
-
-	rel
-	typ	S16
-	dsk	speedometer.l
-	lst	off
 
 *----------
 
@@ -24,6 +19,25 @@
 	use	4/Misc.Macs
 	use	4/Text.Macs
 	use	4/Util.Macs
+
+*-------------- EQUATES
+
+T0	=	0
+T1	=	1
+T2	=	2
+
+FREQ_A2F0	=	0
+FREQ_A235	=	1
+FREQ_20MHZ	=	2
+FREQ_CUSTOM	=	3
+
+T2_DISP_OFF	=	0
+T2_DISP_ON	=	1
+
+FALSE	=	0
+TRUE	=	255
+
+*----------
 
 Debut	=	$00
 proDOS	=	$e100a8
@@ -74,8 +88,8 @@ proDOS	=	$e100a8
 
 *----------
 
-	PushLong	#myHEARTBEAT
-	_SetHeartBeat
+*	PushLong	#myHEARTBEAT
+*	_SetHeartBeat
 
 *----------
 
@@ -132,7 +146,11 @@ noFREAD512B	cmp	#"3"
 	bne	noBREAD
 	jmp	doBREAD
 
-noBREAD	cmp	#"q"
+noBREAD	cmp	#"4"
+	bne	noBTSLOT
+	jmp	setBTSLOT
+	
+noBTSLOT	cmp	#"q"
 	beq	doQUIT
 	cmp	#"Q"
 	beq	doQUIT
@@ -141,7 +159,10 @@ noBREAD	cmp	#"q"
 
 *---------- End of routine, wait for key
 
-mainNEXT	PushLong	#strBYE
+mainNEXT	lda	#T2
+	jsr	stopTIMER2
+
+	PushLong	#strBYE
 	_WriteCString
 
 	PushWord	#0
@@ -154,8 +175,9 @@ mainNEXT	PushLong	#strBYE
 * QUIT PROGRAM
 *----------------------------
 
-doQUIT	PushLong	#myHEARTBEAT
-	_DelHeartBeat
+doQUIT
+*	PushLong	#myHEARTBEAT
+*	_DelHeartBeat
 	
 	_IMShutDown
 	_TextShutDown
@@ -176,10 +198,42 @@ doQUIT	PushLong	#myHEARTBEAT
 	brk	$bd
 
 *----------------------------
+* SET BRUTAL TIMER SLOT
+*----------------------------
+
+setBTSLOT	PushLong	#strBTSLOT
+	_WriteCString
+
+	PushWord	#0	; wait for key
+	PushWord	#1	; echo char
+	_ReadChar
+	pla
+	and	#$ff	; mask bits 15-8
+	cmp	#"1"
+	bcc	exitBTSLOT
+	cmp	#"7"+1
+	bcs	exitBTSLOT
+
+	sec
+	sbc	#"0"
+	sta	theSLOT
+	asl
+	asl
+	asl
+	asl
+	sta	theSLOT16
+
+exitBTSLOT	jmp	mainLOOP
+
+*----------------------------
 * READ FILE SPEED 64K
 *----------------------------
 
-doFREAD64K	lda	#pathname1	; the file
+doFREAD64K	jsr	resetTICK
+	bcc	doFREAD64L
+	jmp	mainNEXT
+
+doFREAD64L	lda	#pathname1	; the file
 	sta	proOPEN+4
 
 	lda	ptrBUFFER	; the buffer
@@ -239,7 +293,11 @@ doFREAD64K	lda	#pathname1	; the file
 * READ FILE SPEED 512B
 *----------------------------
 
-doFREAD512B	lda	#pathname1	; the file
+doFREAD512B	jsr	resetTICK
+	bcc	doFREAD512C
+	jmp	mainNEXT
+
+doFREAD512C	lda	#pathname1	; the file
 	sta	proOPEN+4
 
 	lda	ptrBUFFER	; the buffer
@@ -299,31 +357,6 @@ doFREAD512B2	lda	proOPEN+2
 	jmp	mainNEXT
 
 *----------------------------
-* SHOW TICK
-*----------------------------
-
-showTICK_ALT	jsr	showTICK2
-
-	PushLong	#strEmpty
-	_WriteCString
-	rts
-	
-showTICK	pea	^strBeforeOpen
-	pha
-	_WriteCString
-
-showTICK2	pha
-	pha
-	_GetTick
-	PushLong	#strTick
-	PushWord	#8
-	_Long2Hex
-	
-	PushLong	#strTick
-	_WriteCString
-	rts
-
-*----------------------------
 * HEARTBEAT
 *----------------------------
 
@@ -340,7 +373,11 @@ myHEARTBEAT	ds	4	; it does nothing
 *----------------------------
 * Entry point for menu 3
 
-doBREAD	lda	#pathname	; the file
+doBREAD	jsr	resetTICK
+	bcc	doBREADOK
+	jmp	mainNEXT
+
+doBREADOK	lda	#pathname	; the file
 	sta	proOPEN+4
 
 	lda	#dataBUFFER
@@ -508,6 +545,173 @@ doBREAD3	jsl	proDOS
 	bra	]lp
 
 *----------------------------
+* SHOW TICK
+*----------------------------
+
+showTICK_ALT
+	jsr	showTICK2
+
+	PushLong	#strEmpty
+	_WriteCString
+	rts
+	
+showTICK	pea	^strBeforeOpen
+	pha
+	_WriteCString
+
+showTICK2	lda	#T2
+	jsr	stopTIMER2
+	
+	lda	#T2
+	jsr	readTIMER2
+
+	lda	valTIMER+2
+	pha
+	lda	valTIMER
+	pha
+	PushLong	#strTick
+	PushWord	#8
+	_Long2Hex
+	
+	PushLong	#strTick
+	_WriteCString
+
+	lda	#T2
+	jsr	startTIMER2
+	rts
+
+*----------------------------
+* CODE
+*----------------------------
+
+resetTICK	lda	theSLOT	; Brutal Timer slot not set
+	bne	resetTICKOK
+	sec
+	rts
+
+resetTICKOK	lda	#FREQ_20MHZ	; set to 20MHz
+	jsr	setT2FREQUENCY2
+
+	lda	#T2	; select T2
+	jsr	resetTIMER2
+	
+	lda	#T2_DISP_ON
+	jsr	setT2DISPLAY2
+	
+	clc
+	rts
+
+*-------------- BRUTAL TIMER ROUTINES
+
+*------- Reset TIMER
+
+resetTIMER2	sep	#$30
+	sta	theTIMER
+resetTIMER	sep	#$30
+	ldx	theSLOT16
+	lda	theTIMER
+	stal	$c080,x
+	rep	#$30
+	rts
+
+*------- Start TIMER
+
+startTIMER2	sep	#$30
+	sta	theTIMER
+startTIMER	sep	#$30
+	ldx	theSLOT16	; 4 ** no **
+	lda	theTIMER	; 4 ** no **
+	stal	$c081,x	; 5
+	rep	#$30
+	rts		; 6
+
+*------- Pause TIMER
+
+pauseTIMER2	sep	#$30
+	sta	theTIMER
+pauseTIMER	sep	#$30
+	ldx	theSLOT16
+	lda	theTIMER
+	stal	$c082,x
+	rep	#$30
+	rts
+
+*------- Stop TIMER
+
+stopTIMER2	sep	#$30
+	sta	theTIMER
+stopTIMER	sep	#$30
+	ldx	theSLOT16	; 4 ** yes **
+	lda	theTIMER	; 4 ** yes **
+	stal	$c082,x	; 5 ** yes **
+	rep	#$30
+	rep	#$30
+	rts
+
+*------- Set T2 frequency
+
+setT2FREQUENCY2	sep	#$30
+	sta	theFREQ
+setT2FREQUENCY	sep	#$30
+	ldx	theSLOT16
+	lda	theFREQ
+	stal	$c084,x
+	rep	#$30
+	rts
+
+*------- Turn off/on display
+
+setT2DISPLAY2	sep	#$30
+	sta	theDISPLAY
+setT2DISPLAY	sep	#$30
+	ldx	theSLOT16
+	lda	theDISPLAY
+	stal	$c085,x
+	rep	#$30
+	rts
+
+*------- Read T1 value
+
+readTIMER2	sep	#$30
+	sta	theTIMER
+readTIMER	sep	#$30
+	lda	theTIMER
+	cmp	#T1
+	beq	readT1
+	cmp	#T2
+	beq	readT2
+	rep	#$30
+	rts
+
+readT1	sep	#$30
+	ldx	theSLOT16
+	ldal	$c088,x	; T1
+	sta	valTIMER
+	ldal	$c089,x
+	sta	valTIMER+1
+	ldal	$c08a,x
+	sta	valTIMER+2
+	ldal	$c08b,x
+	sta	valTIMER+3
+	rep	#$30
+	rts
+
+*------- Read T2 value
+
+readT2	sep	#$30
+	ldx	theSLOT16
+	ldal	$c08c,x	; T2
+	sta	valTIMER
+	ldal	$c08d,x
+	sta	valTIMER+1
+	ldal	$c08e,x
+	sta	valTIMER+2
+	ldal	$c08f,x
+	sta	valTIMER+3
+	rep	#$30
+	rts
+	
+*----------------------------
 * DATA
 *----------------------------
 
@@ -515,7 +719,10 @@ strINTRO	asc	'Speedometer by Brutal Deluxe Software'0d
 	asc	' 1- Read 64K file in one pass'0d
 	asc	' 2- Read 64K file per 512 bytes'0d
 	asc	' 3- Read 64K per block'0d
+	asc	' 4- Set Brutal Timer slot'0d
 	asc	'Input your choice (Q to quit) >'00
+
+strBTSLOT	asc	0d'Brutal Timer slot (1-7) >'00
 
 strBYE	asc	0d'Press a key to continue...'00
 
@@ -628,6 +835,15 @@ seconds	ds	4
 
 kbs	ds	4
 strCALCKBS	ds	8
+
+*----------
+
+valTIMER	ds	4
+theTIMER	ds	2	; 1..2
+theFREQ	ds	2	; 0..3
+theDISPLAY	ds	2	; 0..1
+theSLOT	ds	2	; 0..7
+theSLOT16	ds	2	; 10=slot 1, ..., 70=slot 7
 
 *----------
 

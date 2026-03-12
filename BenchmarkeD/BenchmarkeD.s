@@ -6,14 +6,14 @@
 * v1.1: - take less text space to see all results on one page
 *       - escape is also a key to cancel an action
 *
-
+* v2.0: - adding Brutal Timer support
+*         If a slot is set, use the card,
+*         Otherwise, use the v1 method.
+*
 
                xc
                xc
                mx        %00
-
-               rel
-               dsk       BenchmarkeD.l
                lst       off
 
 *----------
@@ -24,6 +24,8 @@
                use       4/Misc.Macs
                use       4/Text.Macs
                use       4/Util.Macs
+
+               use       BrutalTimer.equ
 
 Debut          =         $00
 proDOS         =         $e100a8
@@ -137,25 +139,31 @@ mainLOOP       =         *
 
                cmp       #"1"
                bne       noCREATE
-
                jmp       doFCREATE
 
 noCREATE       cmp       #"2"
                bne       noFREAD
-
                jmp       doFREAD
 
 noFREAD        cmp       #"3"
                bne       noBREAD3
-
                jmp       doBREADtrois
 
 noBREAD3       cmp       #"4"
                bne       noBREAD4
-
                jmp       doBREADquatre
 
-noBREAD4       cmp       #"q"
+noBREAD4	cmp	#"5"
+	bne	noBREAD5
+	jsr	setBTSLOT
+	jmp	mainLOOP
+
+noBREAD5	cmp	#"6"
+	bne	noBREAD9
+	jsr	setBTFREQ
+	jmp	mainLOOP
+
+noBREAD9       cmp       #"q"
                beq       doQUIT
                cmp       #"Q"
                beq       doQUIT
@@ -883,17 +891,28 @@ calcSPEED      =         *
                rts
 
 *----------------------------
+* BRUTAL TIMER
+*----------------------------
+
+	put	BrutalTimer16.s
+
+*----------------------------
 * DATA
 *----------------------------
 
-strINTRO       asc       'BenchmarkeD v1.1'0d
-               asc       '(c) 2013-2025, Brutal Deluxe Software'0d0d
+strINTRO       asc       'BenchmarkeD v2'0d
+               asc       '(c) 2013-2026, Brutal Deluxe Software'0d0d
                asc       'File options'0d
                asc       ' 1- Write speed'0d
                asc       ' 2- Read speed'0d
                asc       'Block options'0d
                asc       ' 3- Read with 64K buffer'0d
                asc       ' 4- Read block-by-block'0d
+               asc       'Brutal Timer'0d
+               asc       ' 5- Set slot ('
+btSLOT         asc       '0)'0d
+               asc       ' 6- Set frequency ('
+btFREQ         asc       '0)'0d
                asc       0d
                asc       'Input your choice (Q to quit) >'00
 

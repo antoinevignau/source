@@ -548,8 +548,7 @@ doBREAD3	jsl	proDOS
 * SHOW TICK
 *----------------------------
 
-showTICK_ALT
-	jsr	showTICK2
+showTICK_ALT	jsr	showTICK2
 
 	PushLong	#strEmpty
 	_WriteCString
@@ -645,7 +644,6 @@ stopTIMER	sep	#$30
 	lda	theTIMER	; 4 ** yes **
 	stal	$c082,x	; 5 ** yes **
 	rep	#$30
-	rep	#$30
 	rts
 
 *------- Set T2 frequency
@@ -710,7 +708,16 @@ readT2	sep	#$30
 	sta	valTIMER+3
 	rep	#$30
 	rts
-	
+
+*------- Data
+
+valTIMER	ds	4
+theTIMER	ds	2	; 1..2
+theFREQ	ds	2	; 0..3
+theDISPLAY	ds	2	; 0..1
+theSLOT	ds	2	; 0..7
+theSLOT16	ds	2	; 10=slot 1, ..., 70=slot 7
+
 *----------------------------
 * DATA
 *----------------------------
@@ -835,15 +842,6 @@ seconds	ds	4
 
 kbs	ds	4
 strCALCKBS	ds	8
-
-*----------
-
-valTIMER	ds	4
-theTIMER	ds	2	; 1..2
-theFREQ	ds	2	; 0..3
-theDISPLAY	ds	2	; 0..1
-theSLOT	ds	2	; 0..7
-theSLOT16	ds	2	; 10=slot 1, ..., 70=slot 7
 
 *----------
 

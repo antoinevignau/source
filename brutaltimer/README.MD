@@ -1,14 +1,13 @@
-Brutal Timer,
-(c) 2026, Plamen Vaysilov from a2heaven
-(c) 2026, Brutal Deluxe Software
+Brutal Timer, 
+(c) 2026 Plamen Vaysilov from a2heaven & Brutal Deluxe Software
 
 The Brutal Timer card was designed for benchmarking purposes on the Apple II. It offers two independent timers which counts up to 2^32 bits. Its easy programming interface allows a programmer to benchmark the throughput of a disk interface card, the speed of a 6502 routine, and many other possibilities.
 
 The Timer 1 (T1) runs at 20 MHz which makes a step of 50ns whereas the Timer 2 (T2) can be set to run at different speeds:
-- A2-F0 at 1MHz, step is 1ms
-- A2-7MHz at 7MHz, step is 143ns
-- 20 MHz, step is 50ns, similar to T1
-- Custom speed up to 100 MHz, step is as low as 10ns
+	A2-F0 at 1MHz, step is 1ms
+	A2-7MHz at 7MHz, step is 143ns
+	20 MHz, step is 50ns, similar to T1
+	Custom speed up to 100 MHz, step is as low as 10ns
 
 The Brutal Timer card can be connected to an external LCD display to print the value of T2.
 

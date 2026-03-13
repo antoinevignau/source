@@ -33,7 +33,7 @@ Communication------------------------------------
 	C0x2 write #2	stop T2
 	
 	C0x4 write #0	set T2 frequency to A2-F0 clock
-	C0x4 write #1	set T2 frequency to A2-3.5 MHz
+	C0x4 write #1	set T2 frequency to A2-7 MHz
 	C0x4 write #2	set T2 frequency to 20 MHz clock
 	C0x4 write #3	set T2 frequency to Custom quartz
 	  => Use T2 frequency of A2-F0 clock to count 6502 cycles
@@ -46,7 +46,7 @@ Communication------------------------------------
 	C0x4 read T2 frequency
 		bits 7-6
 		00: T2 frequency is A2-F0 clock
-		01: T2 frequency is A2-3.5 MHz
+		01: T2 frequency is A2-7 MHz
 		10: T2 frequency is 20 MHz clock
 		11: T2 frequency is Custom quartz
 	

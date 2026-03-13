@@ -522,7 +522,7 @@ strSETSLOT	asc	8d
 
 strSETFREQ	asc	8d
 	asc	"1- A2-F0 clock"8d
-	asc	"2- A2-3.5 MHz"8d
+	asc	"2- A2-7 MHz"8d
 	asc	"3- 20 MHz clock"8d
 	asc	"4- Custom quartz"8d
 	asc	"Set frequency (1-4) > "00
@@ -534,7 +534,7 @@ strT2OFF	asc	8d"Timer 2 is off"00
 
 strT2FREQ	asc	8d"Timer 2 frequency is: "00
 strT2FREQ0	asc	"A2-F0 clock"00
-strT2FREQ1	asc	"A2-3.5 MHz"00
+strT2FREQ1	asc	"A2-7 MHz"00
 strT2FREQ2	asc	"20 MHz clock"00
 strT2FREQ3	asc	"Custom quartz"00
 

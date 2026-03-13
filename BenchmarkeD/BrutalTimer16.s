@@ -205,7 +205,7 @@ strSETSLOT	asc	8d
 
 strSETFREQ	asc	8d
 	asc	"1- A2-F0 clock"8d
-	asc	"2- A2-3.5 MHz"8d
+	asc	"2- A2-7 MHz"8d
 	asc	"3- 20 MHz clock"8d
 	asc	"4- Custom quartz"8d
 	asc	"Set frequency (1-4) > "00

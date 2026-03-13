@@ -1,0 +1,105 @@
+ADB
+
+Device
+	Address	:	4-bits, values 0 to F
+	Handler	:	
+
+Address resolution
+
+Registers	:	2 bits, values 0 to 3
+	0	:	used to hold date that needs to be fetched by the machine
+	1	:	device specific
+	2	:	device specific
+	3	:	used to get/set data
+
+The bits in register 3 are defined by the ADB Manager. Figure 5-5 shows the defined bits for register 3, which include the default ADB device address, the device handler ID, a service request enable field, an exceptional event field, and several reserved bits.
+
+Table 5-2 provides a description of each bit in register 3.
+
+Table 5-2 Bits in device register 3
+Bit	Description
+15	Reserved; must be 0
+14	Exceptional event, device specific; always 1 if not used
+13	Service request enable; 1 = enabled
+12	Reserved; must be 0
+11Ð8	ADB device address
+7Ð0	Device handler ID
+
+Table 5-3 Defined default ADB device addresses
+Default
+address 	Device type			Example
+$0		Reserved for the Macintosh computer
+$1		Protection devices		Software execution control devices
+$2		Encoded devices			Keyboards
+$3		Relative-position devices	Mouse devices
+$4		Absolute-position devices	Tablets
+$5		Data transfer devices		Low-speed ADB modems
+$6		Any other			Reserved
+$7		Any other			Appliances/miscellaneous
+$8 to $E	Reserved for dynamically relocating devices
+
+Table 5-4 Special device handler IDs
+ID value	Description
+$FF		Instructs the device to initiate a self-test.
+$FE		Instructs the device to change its ADB device address (as stored in bits 8Ð11 
+		of register 3) to the new address set in the command if no collision has been 
+		detected.
+$FD		Instructs the device to change its ADB device address (as stored in bits 8Ð11 
+		of register 3) to the new address set in the command if the activator is 
+		pressed. (See Guide to the Macintosh Family Hardware, second edition, for 
+		complete details on activators.)
+$00		Instructs the device to change its ADB device address (as stored in bits 8Ð11 
+		of register 3) and enable bit (bit 13) to the new values set in the command.
+
+Actions
+Change a device handler ID
+	Send a Listen Register 3 command with the new handler ID
+	If accepted, the new handler ID is returned by the device
+
+Typical ADB device table at initialization
+Index
+Device handler ID
+Current address
+Default address
+Address of device handler routine
+Address of handler's data area
+
+--------------------------------------------
+Address resolution
+Each ADB device has a default ADB device address and initially responds to all ADB commands at that address.
+
+At system startup, the ADB Manager polls all ADB devices at each ADB address and begins the process of building the ADB device table by sending a Talk Register 3 command to each device. Each ADB device at a specific address attempts to respond by sending a random device address. If more than one ADB device shares an address, however, each device that detects a collision immediately stops transmitting data. The device that has not detected the collision completes sending its random address across the bus.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

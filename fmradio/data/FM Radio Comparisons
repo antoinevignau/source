@@ -1,0 +1,142 @@
+SetFrequency
+
++0044  00474A  MOVE.B     #$03,$000C(A2)                           | 157C 0003 000C
++004A  004750  MOVE.B     #$41,$000D(A2)      ; 'A'                | 157C 0041 000D
++0050  004756  MOVE.W     $0004(A2),D0                             | 302A 0004
++0054  00475A  ORI.W      #$000A,D0                                | 0040 000A
++0058  00475E  MOVE.W     D0,-(A7)                                 | 3F00
++005A  004760  PEA        $000C(A2)                                | 486A 000C
++005E  004764  CLR.L      -(A7)                                    | 42A7
++0060  004766  CLR.L      -(A7)                                    | 42A7
++0062  004768  JSR        ADBOperation(char *, char *, char *, short); 000042B6| 4EBA FB4C
+
+FindTuner
+
++0090  0043B2  MOVEA.L    A0,A2                                    | 2448
++0092  0043B4  CLR.B      $0006(A2)                                | 422A 0006
++0096  0043B8  MOVE.W     D6,D0                                    | 3006
++0098  0043BA  ORI.W      #$000D,D0                                | 0040 000D
++009C  0043BE  MOVE.W     D0,-(A7)                                 | 3F00
++009E  0043C0  PEA        $0006(A2)                                | 486A 0006
++00A2  0043C4  CLR.L      -(A7)                                    | 42A7
++00A4  0043C6  CLR.L      -(A7)                                    | 42A7
++00A6  0043C8  JSR        ADBOperation(char *, char *, char *, short); 000042B6| 4EBA FEEC
+
+SetInput
+
++0030  00482A  ORI.B      #$01,$0009(A2)                           | 002A 0001 0009
+or
++0038  004832  ORI.B      #$02,$0009(A2)                           | 002A 0002 0009
++003E  004838  MOVE.B     #$03,$0006(A2)                           | 157C 0003 0006
++0044  00483E  MOVE.W     $0004(A2),D0                             | 302A 0004
++0048  004842  ORI.W      #$0009,D0                                | 0040 0009
++004C  004846  MOVE.W     D0,-(A7)                                 | 3F00
++004E  004848  PEA        $0006(A2)                                | 486A 0006
++0052  00484C  CLR.L      -(A7)                                    | 42A7
++0054  00484E  CLR.L      -(A7)                                    | 42A7
++0056  004850  JSR        ADBOperation(char *, char *, char *, short); 000042B6| 4EBA FA64
+
+SetMute
+
++004E  0049A2  ANDI.B     #$7F,$0009(A2)      ; ''                | 022A 007F 0009
++0054  0049A8  MOVE.W     $0004(A2),D0                             | 302A 0004
++0058  0049AC  ORI.W      #$0009,D0                                | 0040 0009
++005C  0049B0  MOVE.W     D0,-(A7)                                 | 3F00
++005E  0049B2  PEA        $0006(A2)                                | 486A 0006
++0062  0049B6  CLR.L      -(A7)                                    | 42A7
++0064  0049B8  CLR.L      -(A7)                                    | 42A7
++0066  0049BA  JSR        ADBOperation(char *, char *, char *, short); 000042B6| 4EBA F8FA
+
+ReadFrequency
+
++0004  004A14  MOVE.L     A2,-(A7)                                 | 2F0A
++0006  004A16  MOVEA.L    $0008(A6),A2                             | 246E 0008
++000A  004A1A  CLR.B      $000C(A2)                                | 422A 000C
++000E  004A1E  MOVE.W     $0004(A2),D0                             | 302A 0004
++0012  004A22  ORI.W      #$000E,D0                                | 0040 000E
++0016  004A26  MOVE.W     D0,-(A7)                                 | 3F00
++0018  004A28  PEA        $000C(A2)                                | 486A 000C
++001C  004A2C  CLR.L      -(A7)                                    | 42A7
++001E  004A2E  CLR.L      -(A7)                                    | 42A7
++0020  004A30  JSR        ADBOperation(char *, char *, char *, short); 000042B6| 4EBA F884
+
+SetSoundVolume
+
++0014  004DF0  MOVE.B     #$03,$0006(A2)                           | 157C 0003 0006
++001A  004DF6  MOVE.B     D3,D0                                    | 1003
++001C  004DF8  LSL.B      #$4,D0                                   | E908
++001E  004DFA  ANDI.B     #$F0,D0                                  | 0200 00F0
++0022  004DFE  ANDI.B     #$0F,$0007(A2)                           | 022A 000F 0007
++0028  004E04  OR.B       D0,$0007(A2)                             | 812A 0007
++002C  004E08  MOVE.B     $000F(A6),D0                             | 102E 000F
++0030  004E0C  ANDI.B     #$0F,D0                                  | 0200 000F
++0034  004E10  ANDI.B     #$F0,$0007(A2)                           | 022A 00F0 0007
++003A  004E16  OR.B       D0,$0007(A2)                             | 812A 0007
++003E  004E1A  MOVE.W     $0004(A2),D0                             | 302A 0004
++0042  004E1E  ORI.W      #$0009,D0                                | 0040 0009
++0046  004E22  MOVE.W     D0,-(A7)                                 | 3F00
++0048  004E24  PEA        $0006(A2)                                | 486A 0006
++004C  004E28  CLR.L      -(A7)                                    | 42A7
++004E  004E2A  CLR.L      -(A7)                                    | 42A7
++0050  004E2C  JSR        ADBOperation(char *, char *, char *, short); 000042B6| 4EBA F488
+
+SetBassTrebble
+
++000E  004F58  MOVE.B     #$03,$0006(A2)                           | 157C 0003 0006
++0014  004F5E  MOVE.B     $000F(A6),D0                             | 102E 000F
++0018  004F62  LSL.B      #$4,D0                                   | E908
++001A  004F64  ANDI.B     #$70,D0             ; 'p'                | 0200 0070
++001E  004F68  ANDI.B     #$8F,$0008(A2)                           | 022A 008F 0008
++0024  004F6E  OR.B       D0,$0008(A2)                             | 812A 0008
++0028  004F72  MOVE.B     $000D(A6),D0                             | 102E 000D
++002C  004F76  ANDI.B     #$07,D0                                  | 0200 0007
++0030  004F7A  ANDI.B     #$F8,$0008(A2)                           | 022A 00F8 0008
++0036  004F80  OR.B       D0,$0008(A2)                             | 812A 0008
++003A  004F84  MOVE.W     $0004(A2),D0                             | 302A 0004
++003E  004F88  ORI.W      #$0009,D0                                | 0040 0009
++0042  004F8C  MOVE.W     D0,-(A7)                                 | 3F00
++0044  004F8E  PEA        $0006(A2)                                | 486A 0006
++0048  004F92  CLR.L      -(A7)                                    | 42A7
++004A  004F94  CLR.L      -(A7)                                    | 42A7
++004C  004F96  JSR        ADBOperation(char *, char *, char *, short); 000042B6| 4EBA F31E
+
+ReadSound
+
++0004  00501E  MOVE.L     A2,-(A7)                                 | 2F0A
++0006  005020  MOVEA.L    $0008(A6),A2                             | 246E 0008
++000A  005024  CLR.B      $0006(A2)                                | 422A 0006
++000E  005028  MOVE.W     $0004(A2),D0                             | 302A 0004
++0012  00502C  ORI.W      #$000D,D0                                | 0040 000D
++0016  005030  MOVE.W     D0,-(A7)                                 | 3F00
++0018  005032  PEA        $0006(A2)                                | 486A 0006
++001C  005036  CLR.L      -(A7)                                    | 42A7
++001E  005038  CLR.L      -(A7)                                    | 42A7
++0020  00503A  JSR        ADBOperation(char *, char *, char *, short); 000042B6| 4EBA F27A
+
+WakeUp
+
++0042  0050EC  MOVE.B     #$03,$0006(A2)                           | 157C 0003 0006
++0048  0050F2  MOVE.W     $0004(A2),D0                             | 302A 0004
++004C  0050F6  ORI.W      #$0009,D0                                | 0040 0009
++0050  0050FA  MOVE.W     D0,-(A7)                                 | 3F00
++0052  0050FC  PEA        $0006(A2)                                | 486A 0006
++0056  005100  CLR.L      -(A7)                                    | 42A7
++0058  005102  CLR.L      -(A7)                                    | 42A7
++005A  005104  JSR        ADBOperation(char *, char *, char *, short); 000042B6| 4EBA F1B0
+
+SetAttenuation
+
++000E  0052B0  MOVE.B     $000D(A6),D0                             | 102E 000D
++0012  0052B4  LSL.B      #$5,D0                                   | EB08
++0014  0052B6  ANDI.B     #$60,D0             ; '`'                | 0200 0060
++0018  0052BA  ANDI.B     #$9F,$0009(A2)                           | 022A 009F 0009
++001E  0052C0  OR.B       D0,$0009(A2)                             | 812A 0009
++0022  0052C4  MOVE.B     #$03,$0006(A2)                           | 157C 0003 0006
++0028  0052CA  MOVE.W     $0004(A2),D0                             | 302A 0004
++002C  0052CE  ORI.W      #$0009,D0                                | 0040 0009
++0030  0052D2  MOVE.W     D0,-(A7)                                 | 3F00
++0032  0052D4  PEA        $0006(A2)                                | 486A 0006
++0036  0052D8  CLR.L      -(A7)                                    | 42A7
++0038  0052DA  CLR.L      -(A7)                                    | 42A7
++003A  0052DC  JSR        ADBOperation(char *, char *, char *, short); 000042B6| 4EBA EFD8
+

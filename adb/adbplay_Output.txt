@@ -1,0 +1,305 @@
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File         Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1 adbplay.s      1 | Comment     | 11 |         |    0 | 00/8000               | *
+    2 |  1 adbplay.s      2 | Comment     | 11 |         |    0 | 00/8000               | * ADB Play
+    3 |  1 adbplay.s      3 | Comment     | 11 |         |    0 | 00/8000               | *
+    4 |  1 adbplay.s      4 | Comment     | 11 |         |    0 | 00/8000               | * (c) 2023, Brutal Deluxe Software
+    5 |  1 adbplay.s      5 | Comment     | 11 |         |    0 | 00/8000               | *
+    6 |  1 adbplay.s      6 | Empty       | 11 |         |    0 | 00/8000               |                                           
+    7 |  1 adbplay.s      7 | Comment     | 11 |         |    0 | 00/8000               | * Talk: from a device to the host
+    8 |  1 adbplay.s      8 | Comment     | 11 |         |    0 | 00/8000               | * Listen: from the host to a device
+    9 |  1 adbplay.s      9 | Comment     | 11 |         |    0 | 00/8000               | *
+   10 |  1 adbplay.s     10 | Empty       | 11 |         |    0 | 00/8000               |                                           
+   11 |  1 adbplay.s     11 | Directive   | 00 |         |    0 | 00/8000               |                      mx    %00            
+   12 |  1 adbplay.s     12 | Directive   | 00 |         |    0 | 00/8000               |                      org   $1000          
+   13 |  1 adbplay.s     13 | Directive   | 00 |         |    0 | 00/1000               |                      lst   off            
+   14 |  1 adbplay.s     14 | Empty       | 00 |         |    0 | 00/1000               |                                           
+   15 |  1 adbplay.s     15 | Comment     | 00 |         |    0 | 00/1000               | *-----------
+   16 |  1 adbplay.s     16 | Empty       | 00 |         |    0 | 00/1000               |                                           
+   17 |  1 adbplay.s     17 | Equivalence | 00 |         |    0 | 00/1000               | dpLISTEN             =     $fc            
+   18 |  1 adbplay.s     18 | Equivalence | 00 |         |    0 | 00/1000               | dpTALK               =     {$fc}+2        
+   19 |  1 adbplay.s     19 | Empty       | 00 |         |    0 | 00/1000               |                                           
+   20 |  1 adbplay.s     20 | Comment     | 00 |         |    0 | 00/1000               | *-----------
+   21 |  1 adbplay.s     21 | Empty       | 00 |         |    0 | 00/1000               |                                           
+   22 |  1 adbplay.s     22 | Equivalence | 00 |         |    0 | 00/1000               | DATAREG              =     $c026          
+   23 |  1 adbplay.s     23 | Equivalence | 00 |         |    0 | 00/1000               | CMDREG               =     {$c026}        
+   24 |  1 adbplay.s     24 | Equivalence | 00 |         |    0 | 00/1000               | KMSTATUS             =     {{$c026}}+1    
+   25 |  1 adbplay.s     25 | Empty       | 00 |         |    0 | 00/1000               |                                           
+   26 |  1 adbplay.s     26 | Comment     | 00 |         |    0 | 00/1000               | * DATAREG bits defined as follows
+   27 |  1 adbplay.s     27 | Comment     | 00 |         |    0 | 00/1000               | *    bit 7,6,5,4,3,2,1,0 = data to/from keyboard micro
+   28 |  1 adbplay.s     28 | Comment     | 00 |         |    0 | 00/1000               | *
+   29 |  1 adbplay.s     29 | Comment     | 00 |         |    0 | 00/1000               | * Data at interrupt time in this register is defined as
+   30 |  1 adbplay.s     30 | Comment     | 00 |         |    0 | 00/1000               | *    bit 7= Response byte if set, otherwise status byte
+   31 |  1 adbplay.s     31 | Comment     | 00 |         |    0 | 00/1000               | *    bit 6= ABORT valid if set and all other bits reset
+   32 |  1 adbplay.s     32 | Comment     | 00 |         |    0 | 00/1000               | *    bit 5= Desktop manager key sequence pressed
+   33 |  1 adbplay.s     33 | Comment     | 00 |         |    0 | 00/1000               | *    bit 4= Flush buffer key sequence pressed
+   34 |  1 adbplay.s     34 | Comment     | 00 |         |    0 | 00/1000               | *    bit 3= SRQ valid if set
+   35 |  1 adbplay.s     35 | Comment     | 00 |         |    0 | 00/1000               | *    bit 2,1,0 If all bits clear then no FDB data valid,
+   36 |  1 adbplay.s     36 | Comment     | 00 |         |    0 | 00/1000               | *              else the bits indicate the number of valid
+   37 |  1 adbplay.s     37 | Comment     | 00 |         |    0 | 00/1000               | *              bytes received minus 1. (2-8 bytes total)
+   38 |  1 adbplay.s     38 | Empty       | 00 |         |    0 | 00/1000               |                                           
+   39 |  1 adbplay.s     39 | Comment     | 00 |         |    0 | 00/1000               | * KMSTATUS bits defined as follows
+   40 |  1 adbplay.s     40 | Comment     | 00 |         |    0 | 00/1000               | *    bit 7= 1 if mouse register full
+   41 |  1 adbplay.s     41 | Comment     | 00 |         |    0 | 00/1000               | *    bit 6= mouse interrupt disable/enable
+   42 |  1 adbplay.s     42 | Comment     | 00 |         |    0 | 00/1000               | *    bit 5= 1 if data register full
+   43 |  1 adbplay.s     43 | Comment     | 00 |         |    0 | 00/1000               | *    bit 4= data interrupt enable
+   44 |  1 adbplay.s     44 | Comment     | 00 |         |    0 | 00/1000               | *    bit 3= 1 if key data full  <<<<<------NEVER USE, WON'T WORK
+   45 |  1 adbplay.s     45 | Comment     | 00 |         |    0 | 00/1000               | *    bit 2= key data interrupt enable  <<<<<------NEVER USE, WON'T WORK
+   46 |  1 adbplay.s     46 | Comment     | 00 |         |    0 | 00/1000               | *    bit 1= 0 = mouse 'X' register data available
+   47 |  1 adbplay.s     47 | Comment     | 00 |         |    0 | 00/1000               | *           1 = mouse 'Y' register data available
+   48 |  1 adbplay.s     48 | Comment     | 00 |         |    0 | 00/1000               | *    bit 0= Command register full
+   49 |  1 adbplay.s     49 | Empty       | 00 |         |    0 | 00/1000               |                                           
+   50 |  1 adbplay.s     50 | Comment     | 00 |         |    0 | 00/1000               | * UC status (for $C026)
+   51 |  1 adbplay.s     51 | Empty       | 00 |         |    0 | 00/1000               |                                           
+   52 |  1 adbplay.s     52 | Equivalence | 00 |         |    0 | 00/1000               | STATUSBIT            =     %1000_0000     
+   53 |  1 adbplay.s     53 | Equivalence | 00 |         |    0 | 00/1000               | ABORTBIT             =     %0100_0000     
+   54 |  1 adbplay.s     54 | Equivalence | 00 |         |    0 | 00/1000               | DESKBIT              =     %0010_0000     
+   55 |  1 adbplay.s     55 | Equivalence | 00 |         |    0 | 00/1000               | FLUSHBIT             =     %0001_0000     
+   56 |  1 adbplay.s     56 | Equivalence | 00 |         |    0 | 00/1000               | SRQBIT               =     %0000_1000     
+   57 |  1 adbplay.s     57 | Empty       | 00 |         |    0 | 00/1000               |                                           
+   58 |  1 adbplay.s     58 | Comment     | 00 |         |    0 | 00/1000               | * Keygloo status (for $C027)
+   59 |  1 adbplay.s     59 | Empty       | 00 |         |    0 | 00/1000               |                                           
+   60 |  1 adbplay.s     60 | Equivalence | 00 |         |    0 | 00/1000               | DATAFULL             =     %0010_0000     
+   61 |  1 adbplay.s     61 | Equivalence | 00 |         |    0 | 00/1000               | CMDFULL              =     %0000_0001     
+   62 |  1 adbplay.s     62 | Empty       | 00 |         |    0 | 00/1000               |                                           
+   63 |  1 adbplay.s     63 | Comment     | 00 |         |    0 | 00/1000               | * ADB commands masks
+   64 |  1 adbplay.s     64 | Empty       | 00 |         |    0 | 00/1000               |                                           
+   65 |  1 adbplay.s     65 | Equivalence | 00 |         |    0 | 00/1000               | IDREG                =     %1111_0000     
+   66 |  1 adbplay.s     66 | Equivalence | 00 |         |    0 | 00/1000               | DISSRQ               =     %0111_0000     
+   67 |  1 adbplay.s     67 | Equivalence | 00 |         |    0 | 00/1000               | ENSRQ                =     %0101_0000     
+   68 |  1 adbplay.s     68 | Equivalence | 00 |         |    0 | 00/1000               | TALKCMD              =     %1100_0000     
+   69 |  1 adbplay.s     69 | Empty       | 00 |         |    0 | 00/1000               |                                           
+   70 |  1 adbplay.s     70 | Comment     | 00 |         |    0 | 00/1000               | *-----------
+   71 |  1 adbplay.s     71 | Empty       | 00 |         |    0 | 00/1000               |                                           
+   72 |  1 adbplay.s     72 | Code        | 00 |         |    1 | 00/1000 : 18          |                      clc                  
+   73 |  1 adbplay.s     73 | Code        | 00 |         |    1 | 00/1001 : FB          |                      xce                  
+   74 |  1 adbplay.s     74 | Code        | 00 |         |    2 | 00/1002 : C2 30       |                      rep   #$30           
+   75 |  1 adbplay.s     75 | Empty       | 00 |         |    0 | 00/1004               |                                           
+   76 |  1 adbplay.s     76 | Code        | 00 |         |    3 | 00/1004 : A9 00 00    |                      lda   #0             ; ensure all high byte is 0
+   77 |  1 adbplay.s     77 | Code        | 00 |         |    1 | 00/1007 : AA          |                      tax                  
+   78 |  1 adbplay.s     78 | Code        | 00 |         |    1 | 00/1008 : A8          |                      tay                  
+   79 |  1 adbplay.s     79 | Empty       | 00 |         |    0 | 00/1009               |                                           
+   80 |  1 adbplay.s     80 | Code        | 10 |         |    2 | 00/1009 : E2 20       |                      sep   #$20           
+   81 |  1 adbplay.s     81 | Code        | 10 |         |    3 | 00/100B : 20 13 10    |                      jsr   playADB        
+   82 |  1 adbplay.s     82 | Empty       | 10 |         |    0 | 00/100E               |                                           
+   83 |  1 adbplay.s     83 | Code        | 10 |         |    1 | 00/100E : 38          |                      sec                  
+   84 |  1 adbplay.s     84 | Code        | 11 |         |    1 | 00/100F : FB          |                      xce                  
+   85 |  1 adbplay.s     85 | Code        | 11 |         |    2 | 00/1010 : E2 30       |                      sep   #$30           
+   86 |  1 adbplay.s     86 | Code        | 11 |         |    1 | 00/1012 : 60          |                      rts                  
+   87 |  1 adbplay.s     87 | Empty       | 11 |         |    0 | 00/1013               |                                           
+   88 |  1 adbplay.s     88 | Directive   | 10 |         |    0 | 00/1013               |                      mx    %10            ; A=8, XY=16
+   89 |  1 adbplay.s     89 | Empty       | 10 |         |    0 | 00/1013               |                                           
+   90 |  1 adbplay.s     90 | Comment     | 10 |         |    0 | 00/1013               | *-----------
+   91 |  1 adbplay.s     91 | Empty       | 10 |         |    0 | 00/1013               |                                           
+   92 |  1 adbplay.s     92 | Empty       | 10 |         |    0 | 00/1013               | playADB                                   
+   93 |  1 adbplay.s     93 | Code        | 10 |         |    2 | 00/1013 : 80 10       |                      bra   play_ok1       
+   94 |  1 adbplay.s     94 | Empty       | 10 |         |    0 | 00/1015               |                                           
+   95 |  1 adbplay.s     95 | Comment     | 10 |         |    0 | 00/1015               | * LISTEN, REG=1, ADR=7
+   96 |  1 adbplay.s     96 | Code        | 10 |         |    2 | 00/1015 : A9 97       |                      lda   #%10010111     ; xxrraaaa 10 01 0111
+   97 |  1 adbplay.s     97 | Code        | 10 |         |    3 | 00/1017 : A2 03 00    |                      ldx   #3             ; how many bytes to send after command
+   98 |  1 adbplay.s     98 | Code        | 10 |         |    3 | 00/101A : A0 40 10    |                      ldy   #bufLISTEN     ; the data to send
+   99 |  1 adbplay.s     99 | Code        | 10 |         |    3 | 00/101D : 20 50 10    |                      jsr   SEND           
+  100 |  1 adbplay.s    100 | Code        | 10 |         |    2 | 00/1020 : 90 03       |                      bcc   play_ok1       
+  101 |  1 adbplay.s    101 | Code        | 10 |         |    3 | 00/1022 : 20 DA FD    |                      jsr   $FDDA          
+  102 |  1 adbplay.s    102 | Empty       | 10 |         |    0 | 00/1025               | play_ok1                                  
+  103 |  1 adbplay.s    103 | Empty       | 10 |         |    0 | 00/1025               |                                           
+  104 |  1 adbplay.s    104 | Comment     | 10 |         |    0 | 00/1025               | * TALK, REG=1, ADR=7
+  105 |  1 adbplay.s    105 | Code        | 10 |         |    2 | 00/1025 : A9 D7       |                      lda   #%11010111     ; xxrraaaa 11 01 0111
+  106 |  1 adbplay.s    106 | Code        | 10 |         |    3 | 00/1027 : A2 04 00    |                      ldx   #4             ; how many bytes to receive
+  107 |  1 adbplay.s    107 | Code        | 10 |         |    3 | 00/102A : A0 48 10    |                      ldy   #bufTALK       ; the data to receive
+  108 |  1 adbplay.s    108 | Code        | 10 |         |    3 | 00/102D : 20 67 10    |                      jsr   RECEIVE        
+  109 |  1 adbplay.s    109 | Code        | 10 |         |    2 | 00/1030 : 90 03       |                      bcc   play_ok2       
+  110 |  1 adbplay.s    110 | Code        | 10 |         |    3 | 00/1032 : 20 DA FD    |                      jsr   $FDDA          
+  111 |  1 adbplay.s    111 | Empty       | 10 |         |    0 | 00/1035               | play_ok2                                  
+  112 |  1 adbplay.s    112 | Code        | 10 |         |    1 | 00/1035 : 60          |                      rts                  
+  113 |  1 adbplay.s    113 | Empty       | 10 |         |    0 | 00/1036               |                                           
+  114 |  1 adbplay.s    114 | Data        | 10 |         |   10 | 00/1036 : AD AD C2 D5 |                      asc   "--BUFFER--"   
+      |                     |             |    |         |      |           C6 C6 C5 D2 |
+      |                     |             |    |         |      |           AD AD       |
+  115 |  1 adbplay.s    115 | Data        | 10 |         |    8 | 00/1040 : 00 00 00 00 | bufLISTEN            hex   00,00,00,00,00,00,00,00
+      |                     |             |    |         |      |           00 00 00 00 |
+  116 |  1 adbplay.s    116 | Data        | 10 |         |    8 | 00/1048 : 00 00 00 00 | bufTALK              hex   00,00,00,00,00,00,00,00
+      |                     |             |    |         |      |           00 00 00 00 |
+  117 |  1 adbplay.s    117 | Empty       | 10 |         |    0 | 00/1050               |                                           
+  118 |  1 adbplay.s    118 | Comment     | 10 |         |    0 | 00/1050               | *-----------------------------------
+  119 |  1 adbplay.s    119 | Comment     | 10 |         |    0 | 00/1050               | *
+  120 |  1 adbplay.s    120 | Comment     | 10 |         |    0 | 00/1050               | * ADB ROUTINES
+  121 |  1 adbplay.s    121 | Comment     | 10 |         |    0 | 00/1050               | *
+  122 |  1 adbplay.s    122 | Comment     | 10 |         |    0 | 00/1050               | *-----------------------------------
+  123 |  1 adbplay.s    123 | Empty       | 10 |         |    0 | 00/1050               |                                           
+  124 |  1 adbplay.s    124 | Comment     | 10 |         |    0 | 00/1050               | *-----------------------
+  125 |  1 adbplay.s    125 | Comment     | 10 |         |    0 | 00/1050               | * SEND - aka LISTEN
+  126 |  1 adbplay.s    126 | Comment     | 10 |         |    0 | 00/1050               | * Sends a full command to a device
+  127 |  1 adbplay.s    127 | Empty       | 10 |         |    0 | 00/1050               |                                           
+  128 |  1 adbplay.s    128 | Empty       | 10 |         |    0 | 00/1050               | SEND                                      
+  129 |  1 adbplay.s    129 | Code        | 10 |         |    3 | 00/1050 : 8D F9 10    |                      sta   theCOMMAND     
+  130 |  1 adbplay.s    130 | Code        | 10 |         |    3 | 00/1053 : 8E FB 10    |                      stx   howMANY        
+  131 |  1 adbplay.s    131 | Code        | 10 |         |    2 | 00/1056 : 84 FC       |                      sty   {$fc}          
+  132 |  1 adbplay.s    132 | Empty       | 10 |         |    0 | 00/1058               |                                           
+  133 |  1 adbplay.s    133 | Code        | 10 |         |    3 | 00/1058 : 20 87 10    |                      jsr   send_command   
+  134 |  1 adbplay.s    134 | Code        | 10 |         |    2 | 00/105B : B0 06       |                      bcs   error          
+  135 |  1 adbplay.s    135 | Code        | 10 |         |    3 | 00/105D : 20 92 10    |                      jsr   send_command_string
+  136 |  1 adbplay.s    136 | Code        | 10 |         |    2 | 00/1060 : B0 01       |                      bcs   error          
+  137 |  1 adbplay.s    137 | Code        | 10 |         |    1 | 00/1062 : 60          |                      rts                  
+  138 |  1 adbplay.s    138 | Empty       | 10 |         |    0 | 00/1063               |                                           
+  139 |  1 adbplay.s    139 | Code        | 10 |         |    3 | 00/1063 : EE 34 C0    | error                inc   $c034          
+  140 |  1 adbplay.s    140 | Code        | 10 |         |    1 | 00/1066 : 60          |                      rts                  
+  141 |  1 adbplay.s    141 | Empty       | 10 |         |    0 | 00/1067               |                                           
+  142 |  1 adbplay.s    142 | Comment     | 10 |         |    0 | 00/1067               | *-----------------------
+  143 |  1 adbplay.s    143 | Comment     | 10 |         |    0 | 00/1067               | * RECEIVE - aka TALK
+  144 |  1 adbplay.s    144 | Comment     | 10 |         |    0 | 00/1067               | * Receives data from a device
+  145 |  1 adbplay.s    145 | Empty       | 10 |         |    0 | 00/1067               |                                           
+  146 |  1 adbplay.s    146 | Empty       | 10 |         |    0 | 00/1067               | RECEIVE                                   
+  147 |  1 adbplay.s    147 | Code        | 10 |         |    3 | 00/1067 : 8D F9 10    |                      sta   theCOMMAND     
+  148 |  1 adbplay.s    148 | Code        | 10 |         |    3 | 00/106A : 8E FB 10    |                      stx   howMANY        
+  149 |  1 adbplay.s    149 | Code        | 10 |         |    2 | 00/106D : 84 FE       |                      sty   {{$fc}+2}      
+  150 |  1 adbplay.s    150 | Empty       | 10 |         |    0 | 00/106F               |                                           
+  151 |  1 adbplay.s    151 | Code        | 10 |         |    3 | 00/106F : 20 87 10    |                      jsr   send_command   ; send the command
+  152 |  1 adbplay.s    152 | Code        | 10 |         |    2 | 00/1072 : B0 EF       |                      bcs   error          
+  153 |  1 adbplay.s    153 | Empty       | 10 |         |    0 | 00/1074               |                                           
+  154 |  1 adbplay.s    154 | Code        | 10 |         |    3 | 00/1074 : 20 D7 10    |                      jsr   read_response  
+  155 |  1 adbplay.s    155 | Code        | 10 |         |    1 | 00/1077 : 60          |                      rts                  
+  156 |  1 adbplay.s    156 | Empty       | 10 |         |    0 | 00/1078               |                                           
+  157 |  1 adbplay.s    157 | Code        | 10 |         |    3 | 00/1078 : A0 00 00    |                      ldy   #0             ; set up data counter
+  158 |  1 adbplay.s    158 | Code        | 10 |         |    3 | 00/107B : 20 C3 10    | ozunid_1             jsr   receive_data   ; get data
+  159 |  1 adbplay.s    159 | Code        | 10 |         |    2 | 00/107E : 91 FE       |                      sta   ({{$fc}+2}),y  ; save data
+  160 |  1 adbplay.s    160 | Code        | 10 |         |    1 | 00/1080 : C8          |                      iny                  
+  161 |  1 adbplay.s    161 | Code        | 10 |         |    3 | 00/1081 : CC FB 10    |                      cpy   howMANY        
+  162 |  1 adbplay.s    162 | Code        | 10 |         |    2 | 00/1084 : 90 F5       |                      bcc   ozunid_1       
+  163 |  1 adbplay.s    163 | Code        | 10 |         |    1 | 00/1086 : 60          |                      rts                  
+  164 |  1 adbplay.s    164 | Empty       | 10 |         |    0 | 00/1087               |                                           
+  165 |  1 adbplay.s    165 | Comment     | 10 |         |    0 | 00/1087               | *-----------------------
+  166 |  1 adbplay.s    166 | Comment     | 10 |         |    0 | 00/1087               | * SEND_COMMAND
+  167 |  1 adbplay.s    167 | Comment     | 10 |         |    0 | 00/1087               | * Sends a command to the uC and cleans data reg for response
+  168 |  1 adbplay.s    168 | Empty       | 10 |         |    0 | 00/1087               |                                           
+  169 |  1 adbplay.s    169 | Empty       | 10 |         |    0 | 00/1087               | send_command                              
+  170 |  1 adbplay.s    170 | Code        | 10 |         |    3 | 00/1087 : 20 AB 10    |                      jsr   send_data      
+  171 |  1 adbplay.s    171 | Code        | 10 |         |    2 | 00/108A : 29 20       |                      and   #{%0010_0000}  ; test if data reg full (bit 5)
+  172 |  1 adbplay.s    172 | Code        | 10 |         |    2 | 00/108C : F0 03       |                      beq   sc_ret         ; if 0, is empty
+  173 |  1 adbplay.s    173 | Empty       | 10 |         |    0 | 00/108E               |                                           
+  174 |  1 adbplay.s    174 | Code        | 10 |         |    3 | 00/108E : AD 26 C0    |                      lda   {$c026}        ; read it to clear it
+  175 |  1 adbplay.s    175 | Code        | 10 |         |    1 | 00/1091 : 60          | sc_ret               rts                  
+  176 |  1 adbplay.s    176 | Empty       | 10 |         |    0 | 00/1092               |                                           
+  177 |  1 adbplay.s    177 | Comment     | 10 |         |    0 | 00/1092               | *-----------------------
+  178 |  1 adbplay.s    178 | Comment     | 10 |         |    0 | 00/1092               | * SEND_COMMAND_STRING
+  179 |  1 adbplay.s    179 | Comment     | 10 |         |    0 | 00/1092               | * Sends any bytes after the initial command byte
+  180 |  1 adbplay.s    180 | Empty       | 10 |         |    0 | 00/1092               |                                           
+  181 |  1 adbplay.s    181 | Empty       | 10 |         |    0 | 00/1092               | send_command_string                       
+  182 |  1 adbplay.s    182 | Code        | 10 |         |    3 | 00/1092 : A0 00 00    |                      ldy   #0             ; set up data counter
+  183 |  1 adbplay.s    183 | Code        | 10 |         |    2 | 00/1095 : B1 FC       |                      lda   ({$fc}),y      ; get data
+  184 |  1 adbplay.s    184 | Code        | 10 |         |    3 | 00/1097 : 20 AB 10    |                      jsr   send_data      ; send data
+  185 |  1 adbplay.s    185 | Code        | 10 |         |    2 | 00/109A : B0 07       |                      bcs   scs_err        
+  186 |  1 adbplay.s    186 | Code        | 10 |         |    1 | 00/109C : C8          |                      iny                  
+  187 |  1 adbplay.s    187 | Code        | 10 |         |    3 | 00/109D : CC FB 10    |                      cpy   howMANY        
+  188 |  1 adbplay.s    188 | Code        | 10 |         |    2 | 00/10A0 : 90 D9       |                      bcc   ozunid_1       
+  189 |  1 adbplay.s    189 | Code        | 10 |         |    1 | 00/10A2 : 18          |                      clc                  
+  190 |  1 adbplay.s    190 | Code        | 10 |         |    1 | 00/10A3 : 60          | scs_err              rts                  
+  191 |  1 adbplay.s    191 | Empty       | 10 |         |    0 | 00/10A4               |                                           
+  192 |  1 adbplay.s    192 | Comment     | 10 |         |    0 | 00/10A4               | *-----------------------
+  193 |  1 adbplay.s    193 | Comment     | 10 |         |    0 | 00/10A4               | * CHECK_PING
+  194 |  1 adbplay.s    194 | Comment     | 10 |         |    0 | 00/10A4               | * Reads response to if ping flag is set
+  195 |  1 adbplay.s    195 | Empty       | 10 |         |    0 | 00/10A4               |                                           
+  196 |  1 adbplay.s    196 | Empty       | 10 |         |    0 | 00/10A4               | check_ping                                
+  197 |  1 adbplay.s    197 | Code        | 10 |         |    3 | 00/10A4 : 20 D7 10    |                      jsr   read_response  
+  198 |  1 adbplay.s    198 | Code        | 10 |         |    2 | 00/10A7 : B0 01       |                      bcs   cp_err         
+  199 |  1 adbplay.s    199 | Code        | 10 |         |    1 | 00/10A9 : 18          |                      clc                  
+  200 |  1 adbplay.s    200 | Code        | 10 |         |    1 | 00/10AA : 60          | cp_err               rts                  
+  201 |  1 adbplay.s    201 | Empty       | 10 |         |    0 | 00/10AB               |                                           
+  202 |  1 adbplay.s    202 | Comment     | 10 |         |    0 | 00/10AB               | *-----------------------
+  203 |  1 adbplay.s    203 | Comment     | 10 |         |    0 | 00/10AB               | * SEND_DATA
+  204 |  1 adbplay.s    204 | Comment     | 10 |         |    0 | 00/10AB               | * Sends data or command to the uC using the command reg
+  205 |  1 adbplay.s    205 | Empty       | 10 |         |    0 | 00/10AB               |                                           
+  206 |  1 adbplay.s    206 | Empty       | 10 |         |    0 | 00/10AB               | send_data                                 
+  207 |  1 adbplay.s    207 | Code        | 10 |         |    1 | 00/10AB : AA          |                      tax                  ; save off data
+  208 |  1 adbplay.s    208 | Code        | 10 |         |    3 | 00/10AC : AD 27 C0    |                      lda   {{{$c026}}+1}  ; get command reg full bit (bit 0)
+  209 |  1 adbplay.s    209 | Code        | 10 |         |    1 | 00/10AF : 6A          |                      ror                  ; in carry
+  210 |  1 adbplay.s    210 | Code        | 10 |         |    1 | 00/10B0 : 8A          |                      txa                  ; get data back
+  211 |  1 adbplay.s    211 | Code        | 10 |         |    2 | 00/10B1 : B0 0F       |                      bcs   sd_err         ; still full, error
+  212 |  1 adbplay.s    212 | Empty       | 10 |         |    0 | 00/10B3               |                                           
+  213 |  1 adbplay.s    213 | Code        | 10 |         |    3 | 00/10B3 : 8D 26 C0    |                      sta   {{$c026}}      ; store away new command (or data)
+  214 |  1 adbplay.s    214 | Empty       | 10 |         |    0 | 00/10B6               |                                           
+  215 |  1 adbplay.s    215 | Code        | 10 |         |    3 | 00/10B6 : A2 4C 1D    |                      ldx   #7500          ; time out of 30ms
+  216 |  1 adbplay.s    216 | Code        | 10 |         |    1 | 00/10B9 : CA          | ozunid_2             dex                  
+  217 |  1 adbplay.s    217 | Code        | 10 |         |    2 | 00/10BA : F0 19       |                      beq   adb_timeout    
+  218 |  1 adbplay.s    218 | Code        | 10 |         |    3 | 00/10BC : AD 27 C0    |                      lda   {{{$c026}}+1}  ; get command reg full bit (bit 0)
+  219 |  1 adbplay.s    219 | Code        | 10 |         |    1 | 00/10BF : 6A          |                      ror                  
+  220 |  1 adbplay.s    220 | Code        | 10 |         |    2 | 00/10C0 : B0 F7       |                      bcs   ozunid_2       
+  221 |  1 adbplay.s    221 | Code        | 10 |         |    1 | 00/10C2 : 60          | sd_err               rts                  
+  222 |  1 adbplay.s    222 | Empty       | 10 |         |    0 | 00/10C3               |                                           
+  223 |  1 adbplay.s    223 | Empty       | 10 |         |    0 | 00/10C3               |                                           
+  224 |  1 adbplay.s    224 | Comment     | 10 |         |    0 | 00/10C3               | *-----------------------
+  225 |  1 adbplay.s    225 | Comment     | 10 |         |    0 | 00/10C3               | * RECEIVE_DATA
+  226 |  1 adbplay.s    226 | Comment     | 10 |         |    0 | 00/10C3               | * Gets data from the data register
+  227 |  1 adbplay.s    227 | Comment     | 10 |         |    0 | 00/10C3               | * Assumes the data register does not contain status
+  228 |  1 adbplay.s    228 | Comment     | 10 |         |    0 | 00/10C3               | *
+  229 |  1 adbplay.s    229 | Empty       | 10 |         |    0 | 00/10C3               |                                           
+  230 |  1 adbplay.s    230 | Empty       | 10 |         |    0 | 00/10C3               | receive_data                              
+  231 |  1 adbplay.s    231 | Code        | 10 |         |    1 | 00/10C3 : 18          |                      clc                  
+  232 |  1 adbplay.s    232 | Code        | 10 |         |    3 | 00/10C4 : A2 4C 1D    |                      ldx   #7500          ; time out of 30ms
+  233 |  1 adbplay.s    233 | Code        | 10 |         |    1 | 00/10C7 : CA          | ozunid_3             dex                  
+  234 |  1 adbplay.s    234 | Code        | 10 |         |    2 | 00/10C8 : F0 0B       |                      beq   adb_timeout    
+  235 |  1 adbplay.s    235 | Empty       | 10 |         |    0 | 00/10CA               |                                           
+  236 |  1 adbplay.s    236 | Code        | 10 |         |    3 | 00/10CA : AD 27 C0    |                      lda   {{{$c026}}+1}  ; get data reg full bit (bit 5)
+  237 |  1 adbplay.s    237 | Code        | 10 |         |    2 | 00/10CD : 29 20       |                      and   #{%0010_0000}  ; and test
+  238 |  1 adbplay.s    238 | Code        | 10 |         |    2 | 00/10CF : F0 F6       |                      beq   ozunid_3       ; still full
+  239 |  1 adbplay.s    239 | Empty       | 10 |         |    0 | 00/10D1               |                                           
+  240 |  1 adbplay.s    240 | Code        | 10 |         |    3 | 00/10D1 : AD 26 C0    |                      lda   {$c026}        ; empty, get new data
+  241 |  1 adbplay.s    241 | Code        | 10 |         |    1 | 00/10D4 : 60          |                      rts                  
+  242 |  1 adbplay.s    242 | Empty       | 10 |         |    0 | 00/10D5               |                                           
+  243 |  1 adbplay.s    243 | Comment     | 10 |         |    0 | 00/10D5               | *---
+  244 |  1 adbplay.s    244 | Empty       | 10 |         |    0 | 00/10D5               |                                           
+  245 |  1 adbplay.s    245 | Code        | 10 |         |    1 | 00/10D5 : 38          | adb_timeout          sec                  
+  246 |  1 adbplay.s    246 | Code        | 10 |         |    1 | 00/10D6 : 60          |                      rts                  
+  247 |  1 adbplay.s    247 | Empty       | 10 |         |    0 | 00/10D7               |                                           
+  248 |  1 adbplay.s    248 | Comment     | 10 |         |    0 | 00/10D7               | *-----------------------
+  249 |  1 adbplay.s    249 | Comment     | 10 |         |    0 | 00/10D7               | * READ_RESPONSE
+  250 |  1 adbplay.s    250 | Comment     | 10 |         |    0 | 00/10D7               | * Reads a response from a FDB pending command
+  251 |  1 adbplay.s    251 | Comment     | 10 |         |    0 | 00/10D7               | *
+  252 |  1 adbplay.s    252 | Empty       | 10 |         |    0 | 00/10D7               |                                           
+  253 |  1 adbplay.s    253 | Empty       | 10 |         |    0 | 00/10D7               | read_response                             
+  254 |  1 adbplay.s    254 | Code        | 10 |         |    3 | 00/10D7 : 20 C3 10    | ozunid_4             jsr   receive_data   
+  255 |  1 adbplay.s    255 | Code        | 10 |         |    2 | 00/10DA : B0 13       |                      bcs   rr_err         ; time out error
+  256 |  1 adbplay.s    256 | Code        | 10 |         |    2 | 00/10DC : 10 F9       |                      bpl   ozunid_4       ; got status byte if bit 7 = 0
+  257 |  1 adbplay.s    257 | Empty       | 10 |         |    0 | 00/10DE               |                                           
+  258 |  1 adbplay.s    258 | Comment     | 10 |         |    0 | 00/10DE               | *	and	#%0111_1111	; clear response bit
+  259 |  1 adbplay.s    259 | Code        | 10 |         |    2 | 00/10DE : 29 07       |                      and   #%0000_0111    ; get count
+  260 |  1 adbplay.s    260 | Code        | 10 |         |    2 | 00/10E0 : F0 0D       |                      beq   rr_err         ; 0 means error
+  261 |  1 adbplay.s    261 | Code        | 10 |         |    1 | 00/10E2 : A8          |                      tay                  
+  262 |  1 adbplay.s    262 | Code        | 10 |         |    1 | 00/10E3 : C8          |                      iny                  ; count+1
+  263 |  1 adbplay.s    263 | Code        | 10 |         |    3 | 00/10E4 : 20 C3 10    | ozunid_5             jsr   receive_data   ; get data
+  264 |  1 adbplay.s    264 | Code        | 10 |         |    2 | 00/10E7 : B0 06       |                      bcs   rr_err         
+  265 |  1 adbplay.s    265 | Code        | 10 |         |    2 | 00/10E9 : 91 FE       |                      sta   ({{$fc}+2}),y  ; and save it
+  266 |  1 adbplay.s    266 | Code        | 10 |         |    1 | 00/10EB : 88          |                      dey                  
+  267 |  1 adbplay.s    267 | Code        | 10 |         |    2 | 00/10EC : D0 F6       |                      bne   ozunid_5       
+  268 |  1 adbplay.s    268 | Code        | 10 |         |    1 | 00/10EE : 18          |                      clc                  
+  269 |  1 adbplay.s    269 | Code        | 10 |         |    1 | 00/10EF : 60          | rr_err               rts                  
+  270 |  1 adbplay.s    270 | Empty       | 10 |         |    0 | 00/10F0               |                                           
+  271 |  1 adbplay.s    271 | Comment     | 10 |         |    0 | 00/10F0               | *-----------------------
+  272 |  1 adbplay.s    272 | Comment     | 10 |         |    0 | 00/10F0               | * DATA
+  273 |  1 adbplay.s    273 | Comment     | 10 |         |    0 | 00/10F0               | *
+  274 |  1 adbplay.s    274 | Empty       | 10 |         |    0 | 00/10F0               |                                           
+  275 |  1 adbplay.s    275 | Data        | 10 |         |    9 | 00/10F0 : A0 C3 CD C4 |                      asc   " CMD NBR "    
+      |                     |             |    |         |      |           A0 CE C2 D2 |
+      |                     |             |    |         |      |           A0          |
+  276 |  1 adbplay.s    276 | Data        | 10 |         |    2 | 00/10F9 : 00 00       | theCOMMAND           ds    2              
+  277 |  1 adbplay.s    277 | Data        | 10 |         |    2 | 00/10FB : 00 00       | howMANY              ds    2              
+  278 |  1 adbplay.s    278 | Data        | 10 |         |    4 | 00/10FD : 00 00 00 00 |                      ds    4              
+  279 |  1 adbplay.s    279 | Empty       | 10 |         |    0 | 00/1101               |                                           
+  280 |  1 adbplay.s    280 | Data        | 10 |         |    7 | 00/1101 : AD CC C9 D3 |                      asc   "-LISTEN"      
+      |                     |             |    |         |      |           D4 C5 CE    |
+  281 |  1 adbplay.s    281 | Data        | 10 |         |   16 | 00/1108 : 00 00 00 00 | ptrLISTEN            ds    16             
+      |                     |             |    |         |      |           00 00 00 00 |
+      |                     |             |    |         |      |           00 00 00 00 |
+      |                     |             |    |         |      |           00 00 00 00 |
+  282 |  1 adbplay.s    282 | Empty       | 10 |         |    0 | 00/1118               |                                           
+  283 |  1 adbplay.s    283 | Data        | 10 |         |    8 | 00/1118 : AD AD D4 C1 |                      asc   "--TALK--"     
+      |                     |             |    |         |      |           CC CB AD AD |
+  284 |  1 adbplay.s    284 | Data        | 10 |         |   16 | 00/1120 : 00 00 00 00 | ptrTALK              ds    16             
+      |                     |             |    |         |      |           00 00 00 00 |
+      |                     |             |    |         |      |           00 00 00 00 |
+      |                     |             |    |         |      |           00 00 00 00 |
+  285 |  1 adbplay.s    285 | Empty       | 10 |         |    0 | 00/1130               |                                           
+  286 |  1 adbplay.s    286 | Data        | 10 |         |    2 | 00/1130 : BD BD       |                      dw    $bdbd          ; Its's the end!
+  287 |  1 adbplay.s    287 | Empty       | 10 |         |    0 | 00/1132               |                                           
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

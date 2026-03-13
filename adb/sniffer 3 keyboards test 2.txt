@@ -1,0 +1,99 @@
+Collision detection
+
+Format: command (Talk / Listen), device address, register, byte count, data
+
+T,2,3,2 6305	Talk to device at address 2 via register 3 with value 0110_0011_00000101
+T,2,3,2 6705	Talk to device at address 2 via register 3 with value 0110_0111_00000101
+L,2,3,2 0FFE	Listen to device at address 2 via register 3 with value 0000_1111_11111110
+			Ask to change address from 2 to 15
+L,14,3,2 0FFE	Listen to device at address 14 via register 3 with value 0000_1111_11111110
+			Ask to change address from 14 to 15
+L,13,3,2 0EFE	Listen to device at address 13 via register 3 with value 0000_1110_11111110
+			Ask to change address from 3 to 13
+L,3,3,2 0DFE	Listen to device at address 3 via register 3 with value 0000_1101_11111110
+L,13,3,2 0FFE	Listen to device at address 13 via register 3 with value 0000_1111_11111110
+L,14,3,2 0DFE	14 to 13
+L,13,3,2 02FE	13 to 2
+L,15,3,2 0DFE	15 to 13
+L,13,3,2 03FE	13 to 3
+L,2,3,2 0DFE	2 to 13
+L,13,3,2 0EFE	13 to 14
+L,3,3,2 0DFE	3 to 13
+L,13,3,2 0FFE	13 to 15
+L,14,3,2 0DFE	14 to 13	
+L,13,3,2 02FE	13 to 2
+L,15,3,2 0DFE	15 to 13
+L,13,3,2 03FE	13 to 3
+L,2,3,2 0DFE	2 to 13
+L,13,3,2 0EFE	13 to 14
+L,3,3,2 0DFE	3 to 13
+L,13,3,2 0FFE	13 to 15
+L,14,3,2 0DFE	14 to 13
+L,13,3,2 02FE	13 to 2
+L,15,3,2 0DFE	15 to 13
+L,13,3,2 03FE	13 to 3
+L,2,3,2 0DFE	2 to 13
+L,13,3,2 0EFE	...
+L,3,3,2 0DFE	
+L,13,3,2 0FFE	
+L,14,3,2 0DFE	
+L,13,3,2 02FE	
+L,15,3,2 0DFE	
+L,13,3,2 03FE	
+L,2,3,2 0DFE	
+L,13,3,2 0EFE	
+L,3,3,2 0DFE	
+L,13,3,2 0FFE	
+L,14,3,2 0DFE	
+L,13,3,2 02FE	
+L,15,3,2 0DFE	
+L,13,3,2 03FE	
+L,2,3,2 0DFE	
+L,13,3,2 0EFE	
+L,3,3,2 0DFE	
+L,13,3,2 0FFE	
+L,14,3,2 0DFE	
+L,13,3,2 02FE	
+L,15,3,2 0DFE	
+L,13,3,2 03FE	
+L,2,3,2 0DFE	
+L,13,3,2 0EFE	
+L,3,3,2 0DFE	
+L,13,3,2 0FFE	
+L,14,3,2 0DFE	
+L,13,3,2 02FE	
+L,15,3,2 0DFE	
+L,13,3,2 03FE	
+L,2,3,2 0DFE	
+L,13,3,2 0EFE	
+L,3,3,2 0DFE	
+L,13,3,2 0FFE	
+L,14,3,2 0DFE	
+L,13,3,2 02FE	
+L,15,3,2 0DFE	
+L,13,3,2 03FE	
+L,2,3,2 0DFE	
+L,13,3,2 0EFE	
+L,3,3,2 0DFE	
+L,13,3,2 0FFE	
+L,14,3,2 0DFE	
+L,13,3,2 02FE	
+L,15,3,2 0DFE	
+L,13,3,2 03FE	
+L,2,3,2 0DFE	
+L,13,3,2 0EFE	
+L,3,3,2 0DFE	
+L,13,3,2 0FFE	
+L,14,3,2 0DFE	
+L,13,3,2 02FE	
+L,15,3,2 0DFE	
+T,3,3,2 6302	0110_0011_00000010
+L,3,3,2 0023	0000_0000_00100010
+T,3,3,2 6602	0110_0110_00000010
+
+T,15,0,2 4CFF	; keyboard 1
+T,15,0,2 CCFF
+T,14,0,2 4CFF	; keyboard 2
+T,14,0,2 CCFF
+T,2,0,2 4CFF	; keyboard 3
+T,2,0,2 CCFF

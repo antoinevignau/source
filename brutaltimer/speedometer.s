@@ -27,7 +27,7 @@ T1	=	1
 T2	=	2
 
 FREQ_A2F0	=	0
-FREQ_A235	=	1
+FREQ_7MHZ	=	1
 FREQ_20MHZ	=	2
 FREQ_CUSTOM	=	3
 
@@ -125,8 +125,8 @@ proDOS	=	$e100a8
 mainLOOP	PushWord	#$0c	; home
 	_WriteChar
 
-	PushLong	#strINTRO
-	_WriteCString
+	lda	#strINTRO
+	jsr	printCSTRING
 
 	PushWord	#0	; wait for key
 	PushWord	#1	; echo char
@@ -134,22 +134,26 @@ mainLOOP	PushWord	#$0c	; home
 	pla
 	and	#$ff	; mask bits 15-8
 
-	cmp	#"1"
+	cmp	#"3"	; file read in one page
 	bne	noFREAD64K
 	jmp	doFREAD64K
 
-noFREAD64K	cmp	#"2"
+noFREAD64K	cmp	#"4"	; file read in 512 chunks
 	bne	noFREAD512B
 	jmp	doFREAD512B
 
-noFREAD512B	cmp	#"3"
+noFREAD512B	cmp	#"5"	; file read per block
 	bne	noBREAD
 	jmp	doBREAD
 
-noBREAD	cmp	#"4"
+noBREAD	cmp	#"1"	; set file size
+	bne	noFILESIZE
+	jmp	doFILESIZE
+
+noFILESIZE	cmp	#"2"	; set Brutal Timer slot
 	bne	noBTSLOT
 	jmp	setBTSLOT
-	
+
 noBTSLOT	cmp	#"q"
 	beq	doQUIT
 	cmp	#"Q"
@@ -198,6 +202,40 @@ doQUIT
 	brk	$bd
 
 *----------------------------
+* PRINT C STRING
+*----------------------------
+
+printCSTRING	sta	Debut
+
+]lp	lda	(Debut)
+	and	#$ff
+	bne	pcs1
+	rts
+	
+pcs1	cmp	#'$'
+	bne	pcs2
+	lda	theSLOT
+	ora	#'0'
+	bra	pcs3
+pcs2	cmp	#'#'
+	bne	pcs3
+
+	pea	^ptrSIZE
+	lda	theSIZE
+	asl
+	tax
+	lda	ptrSIZE,x
+	pha
+	_WriteCString
+	bra	pcs4
+	
+pcs3	pha
+	_WriteChar
+
+pcs4	inc	Debut
+	bra	]lp
+
+*----------------------------
 * SET BRUTAL TIMER SLOT
 *----------------------------
 
@@ -233,7 +271,7 @@ doFREAD64K	jsr	resetTICK
 	bcc	doFREAD64L
 	jmp	mainNEXT
 
-doFREAD64L	lda	#pathname1	; the file
+doFREAD64L	lda	#pathname64	; the file
 	sta	proOPEN+4
 
 	lda	ptrBUFFER	; the buffer
@@ -297,7 +335,7 @@ doFREAD512B	jsr	resetTICK
 	bcc	doFREAD512C
 	jmp	mainNEXT
 
-doFREAD512C	lda	#pathname1	; the file
+doFREAD512C	lda	#pathname64	; the file
 	sta	proOPEN+4
 
 	lda	ptrBUFFER	; the buffer
@@ -356,6 +394,17 @@ doFREAD512B2	lda	proOPEN+2
 	
 	jmp	mainNEXT
 
+*----------------------------
+* CHANGE FILE SIZE
+*----------------------------
+
+doFILESIZE	lda	theSIZE
+	clc
+	adc	#1
+	and	#3
+	sta	theSIZE
+	jmp	mainLOOP
+	
 *----------------------------
 * HEARTBEAT
 *----------------------------
@@ -588,7 +637,7 @@ resetTICK	lda	theSLOT	; Brutal Timer slot not set
 	sec
 	rts
 
-resetTICKOK	lda	#FREQ_20MHZ	; set to 20MHz
+resetTICKOK	lda	#FREQ_A2F0	; set to 1MHz
 	jsr	setT2FREQUENCY2
 
 	lda	#T2	; select T2
@@ -723,10 +772,11 @@ theSLOT16	ds	2	; 10=slot 1, ..., 70=slot 7
 *----------------------------
 
 strINTRO	asc	'Speedometer by Brutal Deluxe Software'0d
-	asc	' 1- Read 64K file in one pass'0d
-	asc	' 2- Read 64K file per 512 bytes'0d
-	asc	' 3- Read 64K per block'0d
-	asc	' 4- Set Brutal Timer slot'0d
+	asc	' 1- File size is #K'0d
+	asc	' 2- Set Brutal Timer slot ($)'0d
+	asc	' 3- Read file in one pass'0d
+	asc	' 4- Read file per 512 bytes'0d
+	asc	' 5- Read file per block'0d
 	asc	'Input your choice (Q to quit) >'00
 
 strBTSLOT	asc	0d'Brutal Timer slot (1-7) >'00
@@ -751,13 +801,39 @@ strCANCEL	asc	'Cancel'00
 *----------
 
 pathname	strl	'1/Data'	; this is a folder
-pathname1	strl	'1/Data/File'	; this ia a file
+pathname64	strl	'1/Data/File64'	; this ia a 64K file
+pathname128	strl	'1/Data/File128'	; this ia a 128K file
+pathname256	strl	'1/Data/File256'	; this ia a 256K file
+
+ptrFILE	da	file64	; pointer to file names to check for read block
+	da	file128
+	da	file256
+
+file64	asc	'FILE64'00
+file128	asc	'FILE128'00
+file256	asc	'FILE256'00
+
+ptrSIZE	da	size64	; pointer to size strings for menu display
+	da	size128
+	da	size256
+
+size64	asc	'64'00
+size128	asc	'128'00
+size256	asc	'256'00
+
+ptrCSV	da	csv64
+	da	csv128
+	da	csv256
+
+csv64	strl	'1/Output/File64.csv'
+csv128	strl	'1/Output/File128.csv'
+csv256	strl	'1/Output/File256.csv'
 
 *----------
 
 proOPEN	dw	15	; pcount
 	ds	2	; ref_num
-	adrl	pathname1	; pathname
+	adrl	pathname64	; pathname
 	ds	2	; request_access
 	ds	2	; resource_num
 	ds	2	; access
@@ -844,6 +920,8 @@ kbs	ds	4
 strCALCKBS	ds	8
 
 *----------
+
+theSIZE	ds	2	; 0..2 for 64, 128, and 256K
 
 theINDEX	ds	2
 maxINDEX	ds	2

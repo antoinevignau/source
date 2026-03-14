@@ -1,0 +1,616 @@
+------+-----------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File     Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+-----------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1 nda.s      1 | Comment     | 11 |         |    0 | 00/0000               | *
+    2 |  1 nda.s      2 | Comment     | 11 |         |    0 | 00/0000               | * FM Radio NDA
+    3 |  1 nda.s      3 | Comment     | 11 |         |    0 | 00/0000               | *
+    4 |  1 nda.s      4 | Comment     | 11 |         |    0 | 00/0000               | * (c) 2026, Brutal Deluxe Software
+    5 |  1 nda.s      5 | Comment     | 11 |         |    0 | 00/0000               | *
+    6 |  1 nda.s      6 | Comment     | 11 |         |    0 | 00/0000               | * v1.0 - 2026
+    7 |  1 nda.s      7 | Comment     | 11 |         |    0 | 00/0000               | *
+    8 |  1 nda.s      8 | Empty       | 11 |         |    0 | 00/0000               |                                                
+    9 |  1 nda.s      9 | Directive   | 11 |         |    0 | 00/0000               |                       xc                       
+   10 |  1 nda.s     10 | Directive   | 11 |         |    0 | 00/0000               |                       xc                       
+   11 |  1 nda.s     11 | Directive   | 00 |         |    0 | 00/0000               |                       mx        %00            
+   12 |  1 nda.s     12 | Empty       | 00 |         |    0 | 00/0000               |                                                
+   13 |  1 nda.s     13 | Comment     | 00 |         |    0 | 00/0000               | *-------------- 
+   14 |  1 nda.s     14 | Empty       | 00 |         |    0 | 00/0000               |                                                
+   15 |  1 nda.s     15 | Directive   | 00 |         |    0 | 00/0000               |                       use       4/Ctl.Macs     
+   16 |  1 nda.s     16 | Directive   | 00 |         |    0 | 00/0000               |                       use       4/Int.Macs     
+   17 |  1 nda.s     17 | Directive   | 00 |         |    0 | 00/0000               |                       use       4/Locator.Macs 
+   18 |  1 nda.s     18 | Directive   | 00 |         |    0 | 00/0000               |                       use       4/Mem.Macs     
+   19 |  1 nda.s     19 | Directive   | 00 |         |    0 | 00/0000               |                       use       4/Misc.Macs    
+   20 |  1 nda.s     20 | Directive   | 00 |         |    0 | 00/0000               |                       use       4/QD.Macs      
+   21 |  1 nda.s     21 | Directive   | 00 |         |    0 | 00/0000               |                       use       4/QDAux.Macs   
+   22 |  1 nda.s     22 | Directive   | 00 |         |    0 | 00/0000               |                       use       4/Resource.Macs
+   23 |  1 nda.s     23 | Directive   | 00 |         |    0 | 00/0000               |                       use       4/Text.Macs    
+   24 |  1 nda.s     24 | Directive   | 00 |         |    0 | 00/0000               |                       use       4/Util.Macs    
+   25 |  1 nda.s     25 | Directive   | 00 |         |    0 | 00/0000               |                       use       4/Window.Macs  
+   26 |  1 nda.s     26 | Empty       | 00 |         |    0 | 00/0000               |                                                
+   27 |  1 nda.s     27 | Comment     | 00 |         |    0 | 00/0000               | *----------------------------
+   28 |  1 nda.s     28 | Comment     | 00 |         |    0 | 00/0000               | * EQUATES
+   29 |  1 nda.s     29 | Comment     | 00 |         |    0 | 00/0000               | *----------------------------
+   30 |  1 nda.s     30 | Empty       | 00 |         |    0 | 00/0000               |                                                
+   31 |  1 nda.s     31 | Equivalence | 00 |         |    0 | 00/0000               | Debut                 =         $00            
+   32 |  1 nda.s     32 | Equivalence | 00 |         |    0 | 00/0000               | GSOS                  =         $e100a8        
+   33 |  1 nda.s     33 | Empty       | 00 |         |    0 | 00/0000               |                                                
+   34 |  1 nda.s     34 | Comment     | 00 |         |    0 | 00/0000               | *-------------- GUI
+   35 |  1 nda.s     35 | Empty       | 00 |         |    0 | 00/0000               |                                                
+   36 |  1 nda.s     36 | Equivalence | 00 |         |    0 | 00/0000               | wMAIN                 =         1              
+   37 |  1 nda.s     37 | Equivalence | 00 |         |    0 | 00/0000               | refIsPointer          =         0              
+   38 |  1 nda.s     38 | Equivalence | 00 |         |    0 | 00/0000               | refIsHandle           =         1              
+   39 |  1 nda.s     39 | Equivalence | 00 |         |    0 | 00/0000               | refIsResource         =         2              
+   40 |  1 nda.s     40 | Empty       | 00 |         |    0 | 00/0000               |                                                
+   41 |  1 nda.s     41 | Comment     | 00 |         |    0 | 00/0000               | *-------------- NDA
+   42 |  1 nda.s     42 | Empty       | 00 |         |    0 | 00/0000               |                                                
+   43 |  1 nda.s     43 | Equivalence | 00 |         |    0 | 00/0000               | Period                =         60             ; every second
+   44 |  1 nda.s     44 | Equivalence | 00 |         |    0 | 00/0000               | EventMask             =         $ffff          ; get all events
+   45 |  1 nda.s     45 | Empty       | 00 |         |    0 | 00/0000               |                                                
+   46 |  1 nda.s     46 | Equivalence | 00 |         |    0 | 00/0000               | eventAction           =         1              ; action routine, in A register
+   47 |  1 nda.s     47 | Equivalence | 00 |         |    0 | 00/0000               | runAction             =         2              
+   48 |  1 nda.s     48 | Equivalence | 00 |         |    0 | 00/0000               | cursorAction          =         3              
+   49 |  1 nda.s     49 | Equivalence | 00 |         |    0 | 00/0000               | menuAction            =         4              ; does nothing
+   50 |  1 nda.s     50 | Equivalence | 00 |         |    0 | 00/0000               | undoAction            =         5              
+   51 |  1 nda.s     51 | Equivalence | 00 |         |    0 | 00/0000               | cutAction             =         6              
+   52 |  1 nda.s     52 | Equivalence | 00 |         |    0 | 00/0000               | copyAction            =         7              
+   53 |  1 nda.s     53 | Equivalence | 00 |         |    0 | 00/0000               | pasteAction           =         8              
+   54 |  1 nda.s     54 | Equivalence | 00 |         |    0 | 00/0000               | clearAction           =         9              
+   55 |  1 nda.s     55 | Equivalence | 00 |         |    0 | 00/0000               | sysClickAction        =         10             
+   56 |  1 nda.s     56 | Equivalence | 00 |         |    0 | 00/0000               | optionalCloseAction   =         11             
+   57 |  1 nda.s     57 | Equivalence | 00 |         |    0 | 00/0000               | reOpenAction          =         12             
+   58 |  1 nda.s     58 | Empty       | 00 |         |    0 | 00/0000               |                                                
+   59 |  1 nda.s     59 | Equivalence | 00 |         |    0 | 00/0000               | ndaShutdown           =         0              ; init routine, in A register, non-zero for Startup
+   60 |  1 nda.s     60 | Empty       | 00 |         |    0 | 00/0000               |                                                
+   61 |  1 nda.s     61 | Equivalence | 00 |         |    0 | 00/0000               | readWrite             =         0              ; open access flags for OpenResourceFileByID
+   62 |  1 nda.s     62 | Equivalence | 00 |         |    0 | 00/0000               | readOnly              =         1              
+   63 |  1 nda.s     63 | Empty       | 00 |         |    0 | 00/0000               |                                                
+   64 |  1 nda.s     64 | Comment     | 00 |         |    0 | 00/0000               | *-------------- QuickDraw II
+   65 |  1 nda.s     65 | Empty       | 00 |         |    0 | 00/0000               |                                                
+   66 |  1 nda.s     66 | Equivalence | 00 |         |    0 | 00/0000               | MINQDVERSION          =         $0307          ; for 6.0
+   67 |  1 nda.s     67 | Empty       | 00 |         |    0 | 00/0000               |                                                
+   68 |  1 nda.s     68 | Comment     | 00 |         |    0 | 00/0000               | *----------------------------
+   69 |  1 nda.s     69 | Comment     | 00 |         |    0 | 00/0000               | * CODE
+   70 |  1 nda.s     70 | Comment     | 00 |         |    0 | 00/0000               | *----------------------------
+   71 |  1 nda.s     71 | Empty       | 00 |         |    0 | 00/0000               |                                                
+   72 |  1 nda.s     72 | Data        | 00 |  3      |    4 | 00/0000 : 24 00 00 00 |                       adrl      ndaOPEN        
+   73 |  1 nda.s     73 | Data        | 00 |  3      |    4 | 00/0004 : A0 00 00 00 |                       adrl      ndaCLOSE       
+   74 |  1 nda.s     74 | Data        | 00 |  3      |    4 | 00/0008 : F0 00 00 00 |                       adrl      ndaACTION      
+   75 |  1 nda.s     75 | Data        | 00 |  3      |    4 | 00/000C : 67 01 00 00 |                       adrl      ndaINIT        
+   76 |  1 nda.s     76 | Data        | 00 |         |    2 | 00/0010 : 3C 00       |                       dw        {60}           
+   77 |  1 nda.s     77 | Data        | 00 |         |    2 | 00/0012 : FF FF       |                       dw        {$ffff}        
+   78 |  1 nda.s     78 | Data        | 00 |         |   16 | 00/0014 : 20 20 46 4D |                       asc       '  FM Radio \H**'00
+      |                 |             |    |         |      |           20 52 61 64 |
+      |                 |             |    |         |      |           69 6F 20 5C |
+      |                 |             |    |         |      |           48 2A 2A 00 |
+   79 |  1 nda.s     79 | Empty       | 00 |         |    0 | 00/0024               |                                                
+   80 |  1 nda.s     80 | Comment     | 00 |         |    0 | 00/0024               | *----------------------------
+   81 |  1 nda.s     81 | Comment     | 00 |         |    0 | 00/0024               | * OPEN ROUTINE
+   82 |  1 nda.s     82 | Comment     | 00 |         |    0 | 00/0024               | *----------------------------
+   83 |  1 nda.s     83 | Empty       | 00 |         |    0 | 00/0024               |                                                
+   84 |  1 nda.s     84 | Equivalence | 00 |         |    0 | 00/0024               | result                =         5              ; window pointer result
+   85 |  1 nda.s     85 | Empty       | 00 |         |    0 | 00/0024               |                                                
+   86 |  1 nda.s     86 | Code        | 00 |         |    1 | 00/0024 : 8B          | ndaOPEN               phb                      
+   87 |  1 nda.s     87 | Code        | 00 |         |    1 | 00/0025 : 4B          |                       phk                      
+   88 |  1 nda.s     88 | Code        | 00 |         |    1 | 00/0026 : AB          |                       plb                      
+   89 |  1 nda.s     89 | Empty       | 00 |         |    0 | 00/0027               |                                                
+   90 |  1 nda.s     90 | Code        | 00 |         |    3 | 00/0027 : A9 00 00    |                       lda       #0             
+   91 |  1 nda.s     91 | Code        | 00 |         |    2 | 00/002A : 83 05       |                       sta       {5},s          
+   92 |  1 nda.s     92 | Code        | 00 |         |    2 | 00/002C : 83 07       |                       sta       {5}+2,s        
+   93 |  1 nda.s     93 | Empty       | 00 |         |    0 | 00/002E               |                                                
+   94 |  1 nda.s     94 | Code        | 00 |  2      |    3 | 00/002E : 20 BB 01    |                       jsr       checkQDVersion 
+   95 |  1 nda.s     95 | Code        | 00 |         |    2 | 00/0031 : B0 02       |                       bcs       ndaOPEN1       
+   96 |  1 nda.s     96 | Code        | 00 |         |    1 | 00/0033 : AB          |                       plb                      
+   97 |  1 nda.s     97 | Code        | 00 |         |    1 | 00/0034 : 6B          |                       rtl                      
+   98 |  1 nda.s     98 | Empty       | 00 |         |    0 | 00/0035               |                                                
+   99 |  1 nda.s     99 | Comment     | 00 |         |    0 | 00/0035               | *--- Open our window
+  100 |  1 nda.s    100 | Empty       | 00 |         |    0 | 00/0035               |                                                
+  101 |  1 nda.s    101 | Macro       | 00 |         |    0 | 00/0035               | ndaOPEN1              PushLong  #0             
+  105 |  1 nda.s    101 | Code        | 00 |         |    3 | 00/0035 : F4 00 00    |                       PEA       #^#0           
+  112 |  1 nda.s    101 | Code        | 00 |         |    3 | 00/0038 : F4 00 00    |                       PEA       #0             
+  115 |  1 nda.s    102 | Macro       | 00 |         |    0 | 00/003B               |                       _GetPort                 
+  117 |  1 nda.s    102 | Code        | 00 |         |    3 | 00/003B : A2 04 1C    |                       LDX       #$1C04         ; load tool call #
+  118 |  1 nda.s    102 | Code        | 00 |         |    4 | 00/003E : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  119 |  1 nda.s    103 | Macro       | 00 |         |    0 | 00/0042               |                       PullLong  curPORT        
+  122 |  1 nda.s    103 | Code        | 00 |         |    1 | 00/0042 : 68          |                       PLA                      
+  124 |  1 nda.s    103 | Code        | 00 |  2      |    3 | 00/0043 : 8D 16 03    |                       STA       curPORT        
+  129 |  1 nda.s    103 | Code        | 00 |         |    1 | 00/0046 : 68          |                       PLA                      
+  131 |  1 nda.s    103 | Code        | 00 |  2      |    3 | 00/0047 : 8D 18 03    |                       STA       curPORT+2      
+  137 |  1 nda.s    104 | Macro       | 00 |         |    0 | 00/004A               |                       _WaitCursor                 
+  139 |  1 nda.s    104 | Code        | 00 |         |    3 | 00/004A : A2 12 0A    |                       LDX       #$A12          ; load tool call #
+  140 |  1 nda.s    104 | Code        | 00 |         |    4 | 00/004D : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  141 |  1 nda.s    105 | Empty       | 00 |         |    0 | 00/0051               |                                                
+  142 |  1 nda.s    106 | Macro       | 00 |         |    0 | 00/0051               |                       PushWord  #0             
+  144 |  1 nda.s    106 | Code        | 00 |         |    3 | 00/0051 : F4 00 00    |                       PEA       #0             
+  147 |  1 nda.s    107 | Macro       | 00 |         |    0 | 00/0054               |                       _GetCurResourceApp                 
+  149 |  1 nda.s    107 | Code        | 00 |         |    3 | 00/0054 : A2 1E 14    |                       LDX       #$141E         ; load tool call #
+  150 |  1 nda.s    107 | Code        | 00 |         |    4 | 00/0057 : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  151 |  1 nda.s    108 | Macro       | 00 |         |    0 | 00/005B               |                       PullWord  curRESID       
+  152 |  1 nda.s    108 | Code        | 00 |         |    1 | 00/005B : 68          |                       PLA                      
+  154 |  1 nda.s    108 | Code        | 00 |  2      |    3 | 00/005C : 8D 20 03    |                       STA       curRESID       
+  158 |  1 nda.s    109 | Code        | 00 |         |    2 | 00/005F : B0 1C       |                       bcs       ndaOPEN9       
+  159 |  1 nda.s    110 | Empty       | 00 |         |    0 | 00/0061               |                                                
+  160 |  1 nda.s    111 | Code        | 00 |  2      |    3 | 00/0061 : 20 6E 02    |                       jsr       startResourceManager
+  161 |  1 nda.s    112 | Code        | 00 |         |    2 | 00/0064 : B0 17       |                       bcs       ndaOPEN9       
+  162 |  1 nda.s    113 | Code        | 00 |  2      |    3 | 00/0066 : 20 CD 01    |                       jsr       makeMainWindow 
+  163 |  1 nda.s    114 | Empty       | 00 |         |    0 | 00/0069               |                                                
+  164 |  1 nda.s    115 | Code        | 00 |  2      |    3 | 00/0069 : AD 1C 03    |                       lda       myWINDOW+2     
+  165 |  1 nda.s    116 | Code        | 00 |         |    2 | 00/006C : 83 07       |                       sta       {5}+2,s        
+  166 |  1 nda.s    117 | Code        | 00 |  2      |    3 | 00/006E : AD 1A 03    |                       lda       myWINDOW       
+  167 |  1 nda.s    118 | Code        | 00 |         |    2 | 00/0071 : 83 05       |                       sta       {5},s          
+  168 |  1 nda.s    119 | Empty       | 00 |         |    0 | 00/0073               |                                                
+  169 |  1 nda.s    120 | Code        | 00 |         |    3 | 00/0073 : A9 01 00    |                       lda       #1             
+  170 |  1 nda.s    121 | Code        | 00 |  2      |    3 | 00/0076 : 8D 28 03    |                       sta       fgOPEN         
+  171 |  1 nda.s    122 | Code        | 00 |         |    4 | 00/0079 : 8F 00 03 00 |                       stal      $300           
+  172 |  1 nda.s    123 | Empty       | 00 |         |    0 | 00/007D               |                                                
+  173 |  1 nda.s    124 | Macro       | 00 |         |    0 | 00/007D               | ndaOPEN9              PushWord  curRESID       
+  178 |  1 nda.s    124 | Code        | 00 |  2      |    3 | 00/007D : AD 20 03    |                       LDA       curRESID       
+  179 |  1 nda.s    124 | Code        | 00 |         |    1 | 00/0080 : 48          |                       PHA                      
+  181 |  1 nda.s    125 | Macro       | 00 |         |    0 | 00/0081               |                       _SetCurResourceApp                 
+  183 |  1 nda.s    125 | Code        | 00 |         |    3 | 00/0081 : A2 1E 13    |                       LDX       #$131E         ; load tool call #
+  184 |  1 nda.s    125 | Code        | 00 |         |    4 | 00/0084 : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  185 |  1 nda.s    126 | Macro       | 00 |         |    0 | 00/0088               |                       PushLong  curPORT        
+  193 |  1 nda.s    126 | Code        | 00 |  2      |    3 | 00/0088 : AD 18 03    |                       LDA       curPORT+2      
+  194 |  1 nda.s    126 | Code        | 00 |         |    1 | 00/008B : 48          |                       PHA                      
+  202 |  1 nda.s    126 | Code        | 00 |  2      |    3 | 00/008C : AD 16 03    |                       LDA       curPORT        
+  203 |  1 nda.s    126 | Code        | 00 |         |    1 | 00/008F : 48          |                       PHA                      
+  205 |  1 nda.s    127 | Macro       | 00 |         |    0 | 00/0090               |                       _SetPort                 
+  207 |  1 nda.s    127 | Code        | 00 |         |    3 | 00/0090 : A2 04 1B    |                       LDX       #$1B04         ; load tool call #
+  208 |  1 nda.s    127 | Code        | 00 |         |    4 | 00/0093 : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  209 |  1 nda.s    128 | Macro       | 00 |         |    0 | 00/0097               |                       _InitCursor                 
+  211 |  1 nda.s    128 | Code        | 00 |         |    3 | 00/0097 : A2 04 CA    |                       LDX       #$CA04         ; load tool call #
+  212 |  1 nda.s    128 | Code        | 00 |         |    4 | 00/009A : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  213 |  1 nda.s    129 | Empty       | 00 |         |    0 | 00/009E               |                                                
+  214 |  1 nda.s    130 | Code        | 00 |         |    1 | 00/009E : AB          |                       plb                      
+  215 |  1 nda.s    131 | Code        | 00 |         |    1 | 00/009F : 6B          |                       rtl                      
+  216 |  1 nda.s    132 | Empty       | 00 |         |    0 | 00/00A0               |                                                
+  217 |  1 nda.s    133 | Comment     | 00 |         |    0 | 00/00A0               | *----------------------------
+  218 |  1 nda.s    134 | Comment     | 00 |         |    0 | 00/00A0               | * CLOSE ROUTINE
+  219 |  1 nda.s    135 | Comment     | 00 |         |    0 | 00/00A0               | *----------------------------
+  220 |  1 nda.s    136 | Empty       | 00 |         |    0 | 00/00A0               |                                                
+  221 |  1 nda.s    137 | Code        | 00 |         |    1 | 00/00A0 : 8B          | ndaCLOSE              phb                      
+  222 |  1 nda.s    138 | Code        | 00 |         |    1 | 00/00A1 : 4B          |                       phk                      
+  223 |  1 nda.s    139 | Code        | 00 |         |    1 | 00/00A2 : AB          |                       plb                      
+  224 |  1 nda.s    140 | Empty       | 00 |         |    0 | 00/00A3               |                                                
+  225 |  1 nda.s    141 | Code        | 00 |  2      |    3 | 00/00A3 : AD 28 03    |                       lda       fgOPEN         
+  226 |  1 nda.s    142 | Code        | 00 |         |    2 | 00/00A6 : F0 46       |                       beq       ndaCLOSE9      
+  227 |  1 nda.s    143 | Empty       | 00 |         |    0 | 00/00A8               |                                                
+  228 |  1 nda.s    144 | Macro       | 00 |         |    0 | 00/00A8               |                       PushWord  #0             
+  230 |  1 nda.s    144 | Code        | 00 |         |    3 | 00/00A8 : F4 00 00    |                       PEA       #0             
+  233 |  1 nda.s    145 | Macro       | 00 |         |    0 | 00/00AB               |                       _GetCurResourceFile                 
+  235 |  1 nda.s    145 | Code        | 00 |         |    3 | 00/00AB : A2 1E 12    |                       LDX       #$121E         ; load tool call #
+  236 |  1 nda.s    145 | Code        | 00 |         |    4 | 00/00AE : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  237 |  1 nda.s    146 | Macro       | 00 |         |    0 | 00/00B2               |                       PushWord  myRESID        
+  242 |  1 nda.s    146 | Code        | 00 |  2      |    3 | 00/00B2 : AD 26 03    |                       LDA       myRESID        
+  243 |  1 nda.s    146 | Code        | 00 |         |    1 | 00/00B5 : 48          |                       PHA                      
+  245 |  1 nda.s    147 | Macro       | 00 |         |    0 | 00/00B6               |                       _SetCurResourceFile                 
+  247 |  1 nda.s    147 | Code        | 00 |         |    3 | 00/00B6 : A2 1E 11    |                       LDX       #$111E         ; load tool call #
+  248 |  1 nda.s    147 | Code        | 00 |         |    4 | 00/00B9 : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  249 |  1 nda.s    148 | Empty       | 00 |         |    0 | 00/00BD               |                                                
+  250 |  1 nda.s    149 | Macro       | 00 |         |    0 | 00/00BD               |                       PushLong  myWINDOW       
+  258 |  1 nda.s    149 | Code        | 00 |  2      |    3 | 00/00BD : AD 1C 03    |                       LDA       myWINDOW+2     
+  259 |  1 nda.s    149 | Code        | 00 |         |    1 | 00/00C0 : 48          |                       PHA                      
+  267 |  1 nda.s    149 | Code        | 00 |  2      |    3 | 00/00C1 : AD 1A 03    |                       LDA       myWINDOW       
+  268 |  1 nda.s    149 | Code        | 00 |         |    1 | 00/00C4 : 48          |                       PHA                      
+  270 |  1 nda.s    150 | Macro       | 00 |         |    0 | 00/00C5               |                       _HideWindow                 
+  272 |  1 nda.s    150 | Code        | 00 |         |    3 | 00/00C5 : A2 0E 12    |                       LDX       #$120E         ; load tool call #
+  273 |  1 nda.s    150 | Code        | 00 |         |    4 | 00/00C8 : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  274 |  1 nda.s    151 | Macro       | 00 |         |    0 | 00/00CC               |                       PushLong  myWINDOW       
+  282 |  1 nda.s    151 | Code        | 00 |  2      |    3 | 00/00CC : AD 1C 03    |                       LDA       myWINDOW+2     
+  283 |  1 nda.s    151 | Code        | 00 |         |    1 | 00/00CF : 48          |                       PHA                      
+  291 |  1 nda.s    151 | Code        | 00 |  2      |    3 | 00/00D0 : AD 1A 03    |                       LDA       myWINDOW       
+  292 |  1 nda.s    151 | Code        | 00 |         |    1 | 00/00D3 : 48          |                       PHA                      
+  294 |  1 nda.s    152 | Macro       | 00 |         |    0 | 00/00D4               |                       _CloseWindow                 
+  296 |  1 nda.s    152 | Code        | 00 |         |    3 | 00/00D4 : A2 0E 0B    |                       LDX       #$B0E          ; load tool call #
+  297 |  1 nda.s    152 | Code        | 00 |         |    4 | 00/00D7 : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  298 |  1 nda.s    153 | Empty       | 00 |         |    0 | 00/00DB               |                                                
+  299 |  1 nda.s    154 | Code        | 00 |  2      |    3 | 00/00DB : 9C 1A 03    |                       stz       myWINDOW       
+  300 |  1 nda.s    155 | Code        | 00 |  2      |    3 | 00/00DE : 9C 1C 03    |                       stz       myWINDOW+2     
+  301 |  1 nda.s    156 | Code        | 00 |  2      |    3 | 00/00E1 : 9C 28 03    |                       stz       fgOPEN         
+  302 |  1 nda.s    157 | Empty       | 00 |         |    0 | 00/00E4               |                                                
+  303 |  1 nda.s    158 | Macro       | 00 |         |    0 | 00/00E4               |                       _SetCurResourceFile                 
+  305 |  1 nda.s    158 | Code        | 00 |         |    3 | 00/00E4 : A2 1E 11    |                       LDX       #$111E         ; load tool call #
+  306 |  1 nda.s    158 | Code        | 00 |         |    4 | 00/00E7 : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  307 |  1 nda.s    159 | Code        | 00 |  2      |    3 | 00/00EB : 20 97 02    |                       jsr       stopResourceManager
+  308 |  1 nda.s    160 | Empty       | 00 |         |    0 | 00/00EE               |                                                
+  309 |  1 nda.s    161 | Code        | 00 |         |    1 | 00/00EE : AB          | ndaCLOSE9             plb                      
+  310 |  1 nda.s    162 | Code        | 00 |         |    1 | 00/00EF : 6B          |                       rtl                      
+  311 |  1 nda.s    163 | Empty       | 00 |         |    0 | 00/00F0               |                                                
+  312 |  1 nda.s    164 | Comment     | 00 |         |    0 | 00/00F0               | *----------------------------
+  313 |  1 nda.s    165 | Comment     | 00 |         |    0 | 00/00F0               | * ACTION ROUTINE
+  314 |  1 nda.s    166 | Comment     | 00 |         |    0 | 00/00F0               | *----------------------------
+  315 |  1 nda.s    167 | Empty       | 00 |         |    0 | 00/00F0               |                                                
+  316 |  1 nda.s    168 | Equivalence | 00 |         |    0 | 00/00F0               | actionCode            =         5              
+  317 |  1 nda.s    169 | Empty       | 00 |         |    0 | 00/00F0               |                                                
+  318 |  1 nda.s    170 | Comment     | 00 |         |    0 | 00/00F0               | *---
+  319 |  1 nda.s    171 | Empty       | 00 |         |    0 | 00/00F0               |                                                
+  320 |  1 nda.s    172 | Code        | 00 |         |    1 | 00/00F0 : 0B          | ndaACTION             phd                      
+  321 |  1 nda.s    173 | Code        | 00 |         |    1 | 00/00F1 : 8B          |                       phb                      
+  322 |  1 nda.s    174 | Code        | 00 |         |    1 | 00/00F2 : 4B          |                       phk                      
+  323 |  1 nda.s    175 | Code        | 00 |         |    1 | 00/00F3 : AB          |                       plb                      
+  324 |  1 nda.s    176 | Code        | 00 |         |    1 | 00/00F4 : 48          |                       pha                      ; action   = <5
+  325 |  1 nda.s    177 | Code        | 00 |         |    1 | 00/00F5 : 5A          |                       phy                      ; ptr high = <3
+  326 |  1 nda.s    178 | Code        | 00 |         |    1 | 00/00F6 : DA          |                       phx                      ; ptr  low = <1
+  327 |  1 nda.s    179 | Code        | 00 |         |    1 | 00/00F7 : 3B          |                       tsc                      
+  328 |  1 nda.s    180 | Code        | 00 |         |    1 | 00/00F8 : 5B          |                       tcd                      
+  329 |  1 nda.s    181 | Empty       | 00 |         |    0 | 00/00F9               |                                                
+  330 |  1 nda.s    182 | Macro       | 00 |         |    0 | 00/00F9               |                       PushWord  #0             
+  332 |  1 nda.s    182 | Code        | 00 |         |    3 | 00/00F9 : F4 00 00    |                       PEA       #0             
+  335 |  1 nda.s    183 | Macro       | 00 |         |    0 | 00/00FC               |                       _GetCurResourceFile                 
+  337 |  1 nda.s    183 | Code        | 00 |         |    3 | 00/00FC : A2 1E 12    |                       LDX       #$121E         ; load tool call #
+  338 |  1 nda.s    183 | Code        | 00 |         |    4 | 00/00FF : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  339 |  1 nda.s    184 | Macro       | 00 |         |    0 | 00/0103               |                       PushWord  myRESID        
+  344 |  1 nda.s    184 | Code        | 00 |  2      |    3 | 00/0103 : AD 26 03    |                       LDA       myRESID        
+  345 |  1 nda.s    184 | Code        | 00 |         |    1 | 00/0106 : 48          |                       PHA                      
+  347 |  1 nda.s    185 | Macro       | 00 |         |    0 | 00/0107               |                       _SetCurResourceFile                 
+  349 |  1 nda.s    185 | Code        | 00 |         |    3 | 00/0107 : A2 1E 11    |                       LDX       #$111E         ; load tool call #
+  350 |  1 nda.s    185 | Code        | 00 |         |    4 | 00/010A : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  351 |  1 nda.s    186 | Empty       | 00 |         |    0 | 00/010E               |                                                
+  352 |  1 nda.s    187 | Macro       | 00 |         |    0 | 00/010E               |                       PushLong  #0             
+  356 |  1 nda.s    187 | Code        | 00 |         |    3 | 00/010E : F4 00 00    |                       PEA       #^#0           
+  363 |  1 nda.s    187 | Code        | 00 |         |    3 | 00/0111 : F4 00 00    |                       PEA       #0             
+  366 |  1 nda.s    188 | Macro       | 00 |         |    0 | 00/0114               |                       _GetPort                 
+  368 |  1 nda.s    188 | Code        | 00 |         |    3 | 00/0114 : A2 04 1C    |                       LDX       #$1C04         ; load tool call #
+  369 |  1 nda.s    188 | Code        | 00 |         |    4 | 00/0117 : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  370 |  1 nda.s    189 | Macro       | 00 |         |    0 | 00/011B               |                       PushLong  myWINDOW       
+  378 |  1 nda.s    189 | Code        | 00 |  2      |    3 | 00/011B : AD 1C 03    |                       LDA       myWINDOW+2     
+  379 |  1 nda.s    189 | Code        | 00 |         |    1 | 00/011E : 48          |                       PHA                      
+  387 |  1 nda.s    189 | Code        | 00 |  2      |    3 | 00/011F : AD 1A 03    |                       LDA       myWINDOW       
+  388 |  1 nda.s    189 | Code        | 00 |         |    1 | 00/0122 : 48          |                       PHA                      
+  390 |  1 nda.s    190 | Macro       | 00 |         |    0 | 00/0123               |                       _SetPort                 
+  392 |  1 nda.s    190 | Code        | 00 |         |    3 | 00/0123 : A2 04 1B    |                       LDX       #$1B04         ; load tool call #
+  393 |  1 nda.s    190 | Code        | 00 |         |    4 | 00/0126 : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  394 |  1 nda.s    191 | Empty       | 00 |         |    0 | 00/012A               |                                                
+  395 |  1 nda.s    192 | Code        | 00 |         |    2 | 00/012A : A5 05       |                       lda       {5}            
+  396 |  1 nda.s    193 | Code        | 00 |         |    1 | 00/012C : 0A          |                       asl                      
+  397 |  1 nda.s    194 | Code        | 00 |         |    1 | 00/012D : AA          |                       tax                      
+  398 |  1 nda.s    195 | Code        | 00 |         |    3 | 00/012E : C9 1A 00    |                       cmp       #tblACTION2-tblACTION
+  399 |  1 nda.s    196 | Code        | 00 |         |    2 | 00/0131 : B0 03       |                       bcs       ndaACTION1     
+  400 |  1 nda.s    197 | Empty       | 00 |         |    0 | 00/0133               |                                                
+  401 |  1 nda.s    198 | Code        | 00 |  2      |    3 | 00/0133 : FC 4D 01    |                       jsr       (tblACTION,x)  
+  402 |  1 nda.s    199 | Empty       | 00 |         |    0 | 00/0136               |                                                
+  403 |  1 nda.s    200 | Macro       | 00 |         |    0 | 00/0136               | ndaACTION1            _SetPort                 
+  405 |  1 nda.s    200 | Code        | 00 |         |    3 | 00/0136 : A2 04 1B    |                       LDX       #$1B04         ; load tool call #
+  406 |  1 nda.s    200 | Code        | 00 |         |    4 | 00/0139 : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  407 |  1 nda.s    201 | Macro       | 00 |         |    0 | 00/013D               |                       _SetCurResourceFile                 
+  409 |  1 nda.s    201 | Code        | 00 |         |    3 | 00/013D : A2 1E 11    |                       LDX       #$111E         ; load tool call #
+  410 |  1 nda.s    201 | Code        | 00 |         |    4 | 00/0140 : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  411 |  1 nda.s    202 | Empty       | 00 |         |    0 | 00/0144               |                                                
+  412 |  1 nda.s    203 | Code        | 00 |         |    1 | 00/0144 : FA          |                       plx                      ; restore parms
+  413 |  1 nda.s    204 | Code        | 00 |         |    1 | 00/0145 : 7A          |                       ply                      
+  414 |  1 nda.s    205 | Code        | 00 |         |    1 | 00/0146 : 68          |                       pla                      
+  415 |  1 nda.s    206 | Code        | 00 |         |    1 | 00/0147 : AB          |                       plb                      
+  416 |  1 nda.s    207 | Code        | 00 |         |    1 | 00/0148 : 2B          |                       pld                      
+  417 |  1 nda.s    208 | Code        | 00 |         |    3 | 00/0149 : A9 00 00    |                       lda       #0             
+  418 |  1 nda.s    209 | Code        | 00 |         |    1 | 00/014C : 6B          |                       rtl                      
+  419 |  1 nda.s    210 | Empty       | 00 |         |    0 | 00/014D               |                                                
+  420 |  1 nda.s    211 | Comment     | 00 |         |    0 | 00/014D               | *--------------
+  421 |  1 nda.s    212 | Empty       | 00 |         |    0 | 00/014D               |                                                
+  422 |  1 nda.s    213 | Data        | 00 |  2      |    2 | 00/014D : B3 01       | tblACTION             da        doNULL         ; 0
+  423 |  1 nda.s    214 | Data        | 00 |  2      |    2 | 00/014F : B3 01       |                       da        doEVENT        ; 1
+  424 |  1 nda.s    215 | Data        | 00 |  2      |    2 | 00/0151 : B3 01       |                       da        doRUN          ; 2
+  425 |  1 nda.s    216 | Data        | 00 |  2      |    2 | 00/0153 : B3 01       |                       da        doCURSOR       ; 3
+  426 |  1 nda.s    217 | Data        | 00 |  2      |    2 | 00/0155 : B3 01       |                       da        doNULL         ; 4
+  427 |  1 nda.s    218 | Data        | 00 |  2      |    2 | 00/0157 : B3 01       |                       da        doUNDO         ; 5
+  428 |  1 nda.s    219 | Data        | 00 |  2      |    2 | 00/0159 : B3 01       |                       da        doCUT          ; 6
+  429 |  1 nda.s    220 | Data        | 00 |  2      |    2 | 00/015B : B3 01       |                       da        doCOPY         ; 7
+  430 |  1 nda.s    221 | Data        | 00 |  2      |    2 | 00/015D : B3 01       |                       da        doPASTE        ; 8
+  431 |  1 nda.s    222 | Data        | 00 |  2      |    2 | 00/015F : B3 01       |                       da        doCLEAR        ; 9
+  432 |  1 nda.s    223 | Data        | 00 |  2      |    2 | 00/0161 : B3 01       |                       da        doSYSCLICK     ; 10
+  433 |  1 nda.s    224 | Data        | 00 |  2      |    2 | 00/0163 : B3 01       |                       da        doOPTIONALCLOSE; 11
+  434 |  1 nda.s    225 | Data        | 00 |  2      |    2 | 00/0165 : B3 01       |                       da        doREOPEN       ; 12
+  435 |  1 nda.s    226 | Empty       | 00 |         |    0 | 00/0167               | tblACTION2                                     
+  436 |  1 nda.s    227 | Empty       | 00 |         |    0 | 00/0167               |                                                
+  437 |  1 nda.s    228 | Comment     | 00 |         |    0 | 00/0167               | *----------------------------
+  438 |  1 nda.s    229 | Comment     | 00 |         |    0 | 00/0167               | * INIT ROUTINE
+  439 |  1 nda.s    230 | Comment     | 00 |         |    0 | 00/0167               | *----------------------------
+  440 |  1 nda.s    231 | Empty       | 00 |         |    0 | 00/0167               |                                                
+  441 |  1 nda.s    232 | Code        | 00 |         |    1 | 00/0167 : 8B          | ndaINIT               phb                      
+  442 |  1 nda.s    233 | Code        | 00 |         |    1 | 00/0168 : 4B          |                       phk                      
+  443 |  1 nda.s    234 | Code        | 00 |         |    1 | 00/0169 : AB          |                       plb                      
+  444 |  1 nda.s    235 | Code        | 00 |  2      |    3 | 00/016A : 8D 1E 03    |                       sta       theCODE        
+  445 |  1 nda.s    236 | Empty       | 00 |         |    0 | 00/016D               |                                                
+  446 |  1 nda.s    237 | Code        | 00 |  2      |    3 | 00/016D : 20 BB 01    |                       jsr       checkQDVersion ; check version
+  447 |  1 nda.s    238 | Code        | 00 |         |    2 | 00/0170 : B0 02       |                       bcs       ndaINIT1       
+  448 |  1 nda.s    239 | Code        | 00 |         |    1 | 00/0172 : AB          |                       plb                      ; too low
+  449 |  1 nda.s    240 | Code        | 00 |         |    1 | 00/0173 : 6B          |                       rtl                      
+  450 |  1 nda.s    241 | Empty       | 00 |         |    0 | 00/0174               |                                                
+  451 |  1 nda.s    242 | Code        | 00 |  2      |    3 | 00/0174 : AD 1E 03    | ndaINIT1              lda       theCODE        ; check action code
+  452 |  1 nda.s    243 | Code        | 00 |         |    3 | 00/0177 : C9 00 00    |                       cmp       #{0}           
+  453 |  1 nda.s    244 | Code        | 00 |         |    2 | 00/017A : F0 14       |                       beq       ndaINITShutDown
+  454 |  1 nda.s    245 | Empty       | 00 |         |    0 | 00/017C               |                                                
+  455 |  1 nda.s    246 | Code        | 00 |         |    1 | 00/017C : 48          |                       pha                      ; start up
+  456 |  1 nda.s    247 | Macro       | 00 |         |    0 | 00/017D               |                       _MMStartUp                 
+  458 |  1 nda.s    247 | Code        | 00 |         |    3 | 00/017D : A2 02 02    |                       LDX       #$202          ; load tool call #
+  459 |  1 nda.s    247 | Code        | 00 |         |    4 | 00/0180 : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  460 |  1 nda.s    248 | Code        | 00 |         |    1 | 00/0184 : 68          |                       pla                      
+  461 |  1 nda.s    249 | Code        | 00 |  2      |    3 | 00/0185 : 8D 22 03    |                       sta       appID          
+  462 |  1 nda.s    250 | Code        | 00 |         |    3 | 00/0188 : 09 00 01    |                       ora       #$0100         
+  463 |  1 nda.s    251 | Code        | 00 |  2      |    3 | 00/018B : 8D 24 03    |                       sta       myID           
+  464 |  1 nda.s    252 | Code        | 00 |         |    1 | 00/018E : AB          |                       plb                      
+  465 |  1 nda.s    253 | Code        | 00 |         |    1 | 00/018F : 6B          |                       rtl                      
+  466 |  1 nda.s    254 | Empty       | 00 |         |    0 | 00/0190               |                                                
+  467 |  1 nda.s    255 | Macro       | 00 |         |    0 | 00/0190               | ndaINITShutDown       PushWord  myID           ; shut down
+  472 |  1 nda.s    255 | Code        | 00 |  2      |    3 | 00/0190 : AD 24 03    |                       LDA       myID           
+  473 |  1 nda.s    255 | Code        | 00 |         |    1 | 00/0193 : 48          |                       PHA                      
+  475 |  1 nda.s    256 | Macro       | 00 |         |    0 | 00/0194               |                       _DisposeAll                 
+  477 |  1 nda.s    256 | Code        | 00 |         |    3 | 00/0194 : A2 02 11    |                       LDX       #$1102         ; load tool call #
+  478 |  1 nda.s    256 | Code        | 00 |         |    4 | 00/0197 : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  479 |  1 nda.s    257 | Macro       | 00 |         |    0 | 00/019B               |                       PushWord  appID          
+  484 |  1 nda.s    257 | Code        | 00 |  2      |    3 | 00/019B : AD 22 03    |                       LDA       appID          
+  485 |  1 nda.s    257 | Code        | 00 |         |    1 | 00/019E : 48          |                       PHA                      
+  487 |  1 nda.s    258 | Macro       | 00 |         |    0 | 00/019F               |                       _DisposeAll                 
+  489 |  1 nda.s    258 | Code        | 00 |         |    3 | 00/019F : A2 02 11    |                       LDX       #$1102         ; load tool call #
+  490 |  1 nda.s    258 | Code        | 00 |         |    4 | 00/01A2 : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  491 |  1 nda.s    259 | Macro       | 00 |         |    0 | 00/01A6               |                       PushWord  appID          
+  496 |  1 nda.s    259 | Code        | 00 |  2      |    3 | 00/01A6 : AD 22 03    |                       LDA       appID          
+  497 |  1 nda.s    259 | Code        | 00 |         |    1 | 00/01A9 : 48          |                       PHA                      
+  499 |  1 nda.s    260 | Macro       | 00 |         |    0 | 00/01AA               |                       _MMShutDown                 
+  501 |  1 nda.s    260 | Code        | 00 |         |    3 | 00/01AA : A2 02 03    |                       LDX       #$302          ; load tool call #
+  502 |  1 nda.s    260 | Code        | 00 |         |    4 | 00/01AD : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  503 |  1 nda.s    261 | Code        | 00 |         |    1 | 00/01B1 : AB          |                       plb                      
+  504 |  1 nda.s    262 | Code        | 00 |         |    1 | 00/01B2 : 6B          |                       rtl                      
+  505 |  1 nda.s    263 | Empty       | 00 |         |    0 | 00/01B3               |                                                
+  506 |  1 nda.s    264 | Comment     | 00 |         |    0 | 00/01B3               | *----------------------------
+  507 |  1 nda.s    265 | Comment     | 00 |         |    0 | 00/01B3               | * NDA ROUTINES
+  508 |  1 nda.s    266 | Comment     | 00 |         |    0 | 00/01B3               | *----------------------------
+  509 |  1 nda.s    267 | Empty       | 00 |         |    0 | 00/01B3               |                                                
+  510 |  1 nda.s    268 | Empty       | 00 |         |    0 | 00/01B3               | doNULL                                         
+  511 |  1 nda.s    269 | Empty       | 00 |         |    0 | 00/01B3               | doEVENT                                        
+  512 |  1 nda.s    270 | Empty       | 00 |         |    0 | 00/01B3               | doRUN                                          
+  513 |  1 nda.s    271 | Empty       | 00 |         |    0 | 00/01B3               | doCURSOR                                       
+  514 |  1 nda.s    272 | Empty       | 00 |         |    0 | 00/01B3               | doUNDO                                         
+  515 |  1 nda.s    273 | Empty       | 00 |         |    0 | 00/01B3               | doCUT                                          
+  516 |  1 nda.s    274 | Empty       | 00 |         |    0 | 00/01B3               | doCOPY                                         
+  517 |  1 nda.s    275 | Empty       | 00 |         |    0 | 00/01B3               | doPASTE                                        
+  518 |  1 nda.s    276 | Empty       | 00 |         |    0 | 00/01B3               | doCLEAR                                        
+  519 |  1 nda.s    277 | Empty       | 00 |         |    0 | 00/01B3               | doSYSCLICK                                     
+  520 |  1 nda.s    278 | Empty       | 00 |         |    0 | 00/01B3               | doOPTIONALCLOSE                                
+  521 |  1 nda.s    279 | Empty       | 00 |         |    0 | 00/01B3               | doREOPEN                                       
+  522 |  1 nda.s    280 | Code        | 00 |         |    3 | 00/01B3 : A9 02 00    |                       lda       #2             
+  523 |  1 nda.s    281 | Code        | 00 |         |    4 | 00/01B6 : 8F 00 03 00 |                       stal      $300           
+  524 |  1 nda.s    282 | Code        | 00 |         |    1 | 00/01BA : 60          |                       rts                      
+  525 |  1 nda.s    283 | Empty       | 00 |         |    0 | 00/01BB               |                                                
+  526 |  1 nda.s    284 | Comment     | 00 |         |    0 | 00/01BB               | *----------------------------
+  527 |  1 nda.s    285 | Comment     | 00 |         |    0 | 00/01BB               | * CHECK QD VERSION
+  528 |  1 nda.s    286 | Comment     | 00 |         |    0 | 00/01BB               | *----------------------------
+  529 |  1 nda.s    287 | Empty       | 00 |         |    0 | 00/01BB               |                                                
+  530 |  1 nda.s    288 | Macro       | 00 |         |    0 | 00/01BB               | checkQDVersion        PushWord  #0             
+  532 |  1 nda.s    288 | Code        | 00 |         |    3 | 00/01BB : F4 00 00    |                       PEA       #0             
+  535 |  1 nda.s    289 | Macro       | 00 |         |    0 | 00/01BE               |                       _QDVersion                 
+  537 |  1 nda.s    289 | Code        | 00 |         |    3 | 00/01BE : A2 04 04    |                       LDX       #$404          ; load tool call #
+  538 |  1 nda.s    289 | Code        | 00 |         |    4 | 00/01C1 : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  539 |  1 nda.s    290 | Code        | 00 |         |    1 | 00/01C5 : 68          |                       pla                      
+  540 |  1 nda.s    291 | Code        | 00 |         |    3 | 00/01C6 : 29 FF 0F    |                       and       #$0fff         
+  541 |  1 nda.s    292 | Code        | 00 |         |    3 | 00/01C9 : C9 07 03    |                       cmp       #{$0307}       
+  542 |  1 nda.s    293 | Code        | 00 |         |    1 | 00/01CC : 60          |                       rts                      
+  543 |  1 nda.s    294 | Empty       | 00 |         |    0 | 00/01CD               |                                                
+  544 |  1 nda.s    295 | Comment     | 00 |         |    0 | 00/01CD               | *----------------------------
+  545 |  1 nda.s    296 | Comment     | 00 |         |    0 | 00/01CD               | * MAKE MAIN WINDOW
+  546 |  1 nda.s    297 | Comment     | 00 |         |    0 | 00/01CD               | *----------------------------
+  547 |  1 nda.s    298 | Empty       | 00 |         |    0 | 00/01CD               |                                                
+  548 |  1 nda.s    299 | Macro       | 00 |         |    0 | 00/01CD               | makeMainWindow        PushWord  #0             
+  550 |  1 nda.s    299 | Code        | 00 |         |    3 | 00/01CD : F4 00 00    |                       PEA       #0             
+  553 |  1 nda.s    300 | Macro       | 00 |         |    0 | 00/01D0               |                       _GetCurResourceFile                 
+  555 |  1 nda.s    300 | Code        | 00 |         |    3 | 00/01D0 : A2 1E 12    |                       LDX       #$121E         ; load tool call #
+  556 |  1 nda.s    300 | Code        | 00 |         |    4 | 00/01D3 : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  557 |  1 nda.s    301 | Macro       | 00 |         |    0 | 00/01D7               |                       PushWord  myRESID        
+  562 |  1 nda.s    301 | Code        | 00 |  2      |    3 | 00/01D7 : AD 26 03    |                       LDA       myRESID        
+  563 |  1 nda.s    301 | Code        | 00 |         |    1 | 00/01DA : 48          |                       PHA                      
+  565 |  1 nda.s    302 | Macro       | 00 |         |    0 | 00/01DB               |                       _SetCurResourceFile                 
+  567 |  1 nda.s    302 | Code        | 00 |         |    3 | 00/01DB : A2 1E 11    |                       LDX       #$111E         ; load tool call #
+  568 |  1 nda.s    302 | Code        | 00 |         |    4 | 00/01DE : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  569 |  1 nda.s    303 | Empty       | 00 |         |    0 | 00/01E2               |                                                
+  570 |  1 nda.s    304 | Code        | 00 |         |    1 | 00/01E2 : 48          |                       pha                      
+  571 |  1 nda.s    305 | Code        | 00 |         |    1 | 00/01E3 : 48          |                       pha                      
+  572 |  1 nda.s    306 | Macro       | 00 |         |    0 | 00/01E4               |                       PushLong  #0             
+  576 |  1 nda.s    306 | Code        | 00 |         |    3 | 00/01E4 : F4 00 00    |                       PEA       #^#0           
+  583 |  1 nda.s    306 | Code        | 00 |         |    3 | 00/01E7 : F4 00 00    |                       PEA       #0             
+  586 |  1 nda.s    307 | Macro       | 00 |         |    0 | 00/01EA               |                       PushLong  #{1}           
+  590 |  1 nda.s    307 | Code        | 00 |         |    3 | 00/01EA : F4 00 00    |                       PEA       #^#{1}         
+  597 |  1 nda.s    307 | Code        | 00 |         |    3 | 00/01ED : F4 01 00    |                       PEA       #{1}           
+  600 |  1 nda.s    308 | Macro       | 00 |         |    0 | 00/01F0               |                       PushLong  #PAINTMAIN     
+  604 |  1 nda.s    308 | Code        | 00 |  1 >>16 |    3 | 00/01F0 : F4 00 00    |                       PEA       #^#PAINTMAIN   
+  611 |  1 nda.s    308 | Code        | 00 |  2      |    3 | 00/01F3 : F4 B2 02    |                       PEA       #PAINTMAIN     
+  614 |  1 nda.s    309 | Macro       | 00 |         |    0 | 00/01F6               |                       PushLong  #0             
+  618 |  1 nda.s    309 | Code        | 00 |         |    3 | 00/01F6 : F4 00 00    |                       PEA       #^#0           
+  625 |  1 nda.s    309 | Code        | 00 |         |    3 | 00/01F9 : F4 00 00    |                       PEA       #0             
+  628 |  1 nda.s    310 | Macro       | 00 |         |    0 | 00/01FC               |                       PushWord  #{2}           
+  630 |  1 nda.s    310 | Code        | 00 |         |    3 | 00/01FC : F4 02 00    |                       PEA       #{2}           
+  633 |  1 nda.s    311 | Macro       | 00 |         |    0 | 00/01FF               |                       PushLong  #{1}           
+  637 |  1 nda.s    311 | Code        | 00 |         |    3 | 00/01FF : F4 00 00    |                       PEA       #^#{1}         
+  644 |  1 nda.s    311 | Code        | 00 |         |    3 | 00/0202 : F4 01 00    |                       PEA       #{1}           
+  647 |  1 nda.s    312 | Macro       | 00 |         |    0 | 00/0205               |                       PushWord  #$800e         
+  649 |  1 nda.s    312 | Code        | 00 |         |    3 | 00/0205 : F4 0E 80    |                       PEA       #$800e         
+  652 |  1 nda.s    313 | Macro       | 00 |         |    0 | 00/0208               |                       _NewWindow2                 
+  654 |  1 nda.s    313 | Code        | 00 |         |    3 | 00/0208 : A2 0E 61    |                       LDX       #$610E         ; load tool call #
+  655 |  1 nda.s    313 | Code        | 00 |         |    4 | 00/020B : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  656 |  1 nda.s    314 | Macro       | 00 |         |    0 | 00/020F               |                       PullLong  myWINDOW       
+  659 |  1 nda.s    314 | Code        | 00 |         |    1 | 00/020F : 68          |                       PLA                      
+  661 |  1 nda.s    314 | Code        | 00 |  2      |    3 | 00/0210 : 8D 1A 03    |                       STA       myWINDOW       
+  666 |  1 nda.s    314 | Code        | 00 |         |    1 | 00/0213 : 68          |                       PLA                      
+  668 |  1 nda.s    314 | Code        | 00 |  2      |    3 | 00/0214 : 8D 1C 03    |                       STA       myWINDOW+2     
+  674 |  1 nda.s    315 | Empty       | 00 |         |    0 | 00/0217               |                                                
+  675 |  1 nda.s    316 | Macro       | 00 |         |    0 | 00/0217               |                       PushLong  myWINDOW       
+  683 |  1 nda.s    316 | Code        | 00 |  2      |    3 | 00/0217 : AD 1C 03    |                       LDA       myWINDOW+2     
+  684 |  1 nda.s    316 | Code        | 00 |         |    1 | 00/021A : 48          |                       PHA                      
+  692 |  1 nda.s    316 | Code        | 00 |  2      |    3 | 00/021B : AD 1A 03    |                       LDA       myWINDOW       
+  693 |  1 nda.s    316 | Code        | 00 |         |    1 | 00/021E : 48          |                       PHA                      
+  695 |  1 nda.s    317 | Macro       | 00 |         |    0 | 00/021F               |                       _SetSysWindow                 
+  697 |  1 nda.s    317 | Code        | 00 |         |    3 | 00/021F : A2 0E 4B    |                       LDX       #$4B0E         ; load tool call #
+  698 |  1 nda.s    317 | Code        | 00 |         |    4 | 00/0222 : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  699 |  1 nda.s    318 | Macro       | 00 |         |    0 | 00/0226               |                       PushLong  myWINDOW       
+  707 |  1 nda.s    318 | Code        | 00 |  2      |    3 | 00/0226 : AD 1C 03    |                       LDA       myWINDOW+2     
+  708 |  1 nda.s    318 | Code        | 00 |         |    1 | 00/0229 : 48          |                       PHA                      
+  716 |  1 nda.s    318 | Code        | 00 |  2      |    3 | 00/022A : AD 1A 03    |                       LDA       myWINDOW       
+  717 |  1 nda.s    318 | Code        | 00 |         |    1 | 00/022D : 48          |                       PHA                      
+  719 |  1 nda.s    319 | Macro       | 00 |         |    0 | 00/022E               |                       _SetPort                 
+  721 |  1 nda.s    319 | Code        | 00 |         |    3 | 00/022E : A2 04 1B    |                       LDX       #$1B04         ; load tool call #
+  722 |  1 nda.s    319 | Code        | 00 |         |    4 | 00/0231 : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  723 |  1 nda.s    320 | Empty       | 00 |         |    0 | 00/0235               |                                                
+  724 |  1 nda.s    321 | Macro       | 00 |         |    0 | 00/0235               |                       PushLong  myWINDOW       
+  732 |  1 nda.s    321 | Code        | 00 |  2      |    3 | 00/0235 : AD 1C 03    |                       LDA       myWINDOW+2     
+  733 |  1 nda.s    321 | Code        | 00 |         |    1 | 00/0238 : 48          |                       PHA                      
+  741 |  1 nda.s    321 | Code        | 00 |  2      |    3 | 00/0239 : AD 1A 03    |                       LDA       myWINDOW       
+  742 |  1 nda.s    321 | Code        | 00 |         |    1 | 00/023C : 48          |                       PHA                      
+  744 |  1 nda.s    322 | Macro       | 00 |         |    0 | 00/023D               |                       _ShowWindow                 
+  746 |  1 nda.s    322 | Code        | 00 |         |    3 | 00/023D : A2 0E 13    |                       LDX       #$130E         ; load tool call #
+  747 |  1 nda.s    322 | Code        | 00 |         |    4 | 00/0240 : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  748 |  1 nda.s    323 | Macro       | 00 |         |    0 | 00/0244               |                       PushLong  myWINDOW       
+  756 |  1 nda.s    323 | Code        | 00 |  2      |    3 | 00/0244 : AD 1C 03    |                       LDA       myWINDOW+2     
+  757 |  1 nda.s    323 | Code        | 00 |         |    1 | 00/0247 : 48          |                       PHA                      
+  765 |  1 nda.s    323 | Code        | 00 |  2      |    3 | 00/0248 : AD 1A 03    |                       LDA       myWINDOW       
+  766 |  1 nda.s    323 | Code        | 00 |         |    1 | 00/024B : 48          |                       PHA                      
+  768 |  1 nda.s    324 | Macro       | 00 |         |    0 | 00/024C               |                       _BeginUpdate                 
+  770 |  1 nda.s    324 | Code        | 00 |         |    3 | 00/024C : A2 0E 1E    |                       LDX       #$1E0E         ; load tool call #
+  771 |  1 nda.s    324 | Code        | 00 |         |    4 | 00/024F : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  772 |  1 nda.s    325 | Code        | 00 |  3      |    4 | 00/0253 : 22 B2 02 00 |                       jsl       PAINTMAIN      
+  773 |  1 nda.s    326 | Macro       | 00 |         |    0 | 00/0257               |                       PushLong  myWINDOW       
+  781 |  1 nda.s    326 | Code        | 00 |  2      |    3 | 00/0257 : AD 1C 03    |                       LDA       myWINDOW+2     
+  782 |  1 nda.s    326 | Code        | 00 |         |    1 | 00/025A : 48          |                       PHA                      
+  790 |  1 nda.s    326 | Code        | 00 |  2      |    3 | 00/025B : AD 1A 03    |                       LDA       myWINDOW       
+  791 |  1 nda.s    326 | Code        | 00 |         |    1 | 00/025E : 48          |                       PHA                      
+  793 |  1 nda.s    327 | Macro       | 00 |         |    0 | 00/025F               |                       _EndUpdate                 
+  795 |  1 nda.s    327 | Code        | 00 |         |    3 | 00/025F : A2 0E 1F    |                       LDX       #$1F0E         ; load tool call #
+  796 |  1 nda.s    327 | Code        | 00 |         |    4 | 00/0262 : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  797 |  1 nda.s    328 | Empty       | 00 |         |    0 | 00/0266               |                                                
+  798 |  1 nda.s    329 | Macro       | 00 |         |    0 | 00/0266               |                       _SetCurResourceFile                 
+  800 |  1 nda.s    329 | Code        | 00 |         |    3 | 00/0266 : A2 1E 11    |                       LDX       #$111E         ; load tool call #
+  801 |  1 nda.s    329 | Code        | 00 |         |    4 | 00/0269 : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  802 |  1 nda.s    330 | Empty       | 00 |         |    0 | 00/026D               |                                                
+  803 |  1 nda.s    331 | Code        | 00 |         |    1 | 00/026D : 60          |                       rts                      
+  804 |  1 nda.s    332 | Empty       | 00 |         |    0 | 00/026E               |                                                
+  805 |  1 nda.s    333 | Comment     | 00 |         |    0 | 00/026E               | *----------------------------
+  806 |  1 nda.s    334 | Comment     | 00 |         |    0 | 00/026E               | * START RESOURCE MANAGER
+  807 |  1 nda.s    335 | Comment     | 00 |         |    0 | 00/026E               | *----------------------------
+  808 |  1 nda.s    336 | Empty       | 00 |         |    0 | 00/026E               |                                                
+  809 |  1 nda.s    337 | Empty       | 00 |         |    0 | 00/026E               | startResourceManager                           
+  810 |  1 nda.s    338 | Code        | 00 |         |    1 | 00/026E : 18          |                       clc                      
+  811 |  1 nda.s    339 | Code        | 00 |  2      |    3 | 00/026F : AD 26 03    |                       lda       myRESID        
+  812 |  1 nda.s    340 | Code        | 00 |         |    2 | 00/0272 : D0 22       |                       bne       startRM1       ; already started
+  813 |  1 nda.s    341 | Empty       | 00 |         |    0 | 00/0274               |                                                
+  814 |  1 nda.s    342 | Macro       | 00 |         |    0 | 00/0274               |                       PushWord  #0             ; space for result
+  816 |  1 nda.s    342 | Code        | 00 |         |    3 | 00/0274 : F4 00 00    |                       PEA       #0             
+  819 |  1 nda.s    343 | Macro       | 00 |         |    0 | 00/0277               |                       PushWord  #{1}           ; openAccess (no need to write)
+  821 |  1 nda.s    343 | Code        | 00 |         |    3 | 00/0277 : F4 01 00    |                       PEA       #{1}           
+  824 |  1 nda.s    344 | Macro       | 00 |         |    0 | 00/027A               |                       PushWord  appID          ; userID
+  829 |  1 nda.s    344 | Code        | 00 |  2      |    3 | 00/027A : AD 22 03    |                       LDA       appID          
+  830 |  1 nda.s    344 | Code        | 00 |         |    1 | 00/027D : 48          |                       PHA                      
+  832 |  1 nda.s    345 | Macro       | 00 |         |    0 | 00/027E               |                       _OpenResourceFileByID                 
+  834 |  1 nda.s    345 | Code        | 00 |         |    3 | 00/027E : A2 1E 2E    |                       LDX       #$2E1E         ; load tool call #
+  835 |  1 nda.s    345 | Code        | 00 |         |    4 | 00/0281 : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  836 |  1 nda.s    346 | Code        | 00 |         |    1 | 00/0285 : 68          |                       pla                      
+  837 |  1 nda.s    347 | Code        | 00 |         |    2 | 00/0286 : B0 0E       |                       bcs       startRM1       
+  838 |  1 nda.s    348 | Empty       | 00 |         |    0 | 00/0288               |                                                
+  839 |  1 nda.s    349 | Macro       | 00 |         |    0 | 00/0288               |                       PushWord  #0             
+  841 |  1 nda.s    349 | Code        | 00 |         |    3 | 00/0288 : F4 00 00    |                       PEA       #0             
+  844 |  1 nda.s    350 | Macro       | 00 |         |    0 | 00/028B               |                       _GetCurResourceFile                 
+  846 |  1 nda.s    350 | Code        | 00 |         |    3 | 00/028B : A2 1E 12    |                       LDX       #$121E         ; load tool call #
+  847 |  1 nda.s    350 | Code        | 00 |         |    4 | 00/028E : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  848 |  1 nda.s    351 | Macro       | 00 |         |    0 | 00/0292               |                       PullWord  myRESID        
+  849 |  1 nda.s    351 | Code        | 00 |         |    1 | 00/0292 : 68          |                       PLA                      
+  851 |  1 nda.s    351 | Code        | 00 |  2      |    3 | 00/0293 : 8D 26 03    |                       STA       myRESID        
+  855 |  1 nda.s    352 | Code        | 00 |         |    1 | 00/0296 : 60          | startRM1              rts                      
+  856 |  1 nda.s    353 | Empty       | 00 |         |    0 | 00/0297               |                                                
+  857 |  1 nda.s    354 | Comment     | 00 |         |    0 | 00/0297               | *----------------------------
+  858 |  1 nda.s    355 | Comment     | 00 |         |    0 | 00/0297               | * STOP RESOURCE MANAGER
+  859 |  1 nda.s    356 | Comment     | 00 |         |    0 | 00/0297               | *----------------------------
+  860 |  1 nda.s    357 | Empty       | 00 |         |    0 | 00/0297               |                                                
+  861 |  1 nda.s    358 | Empty       | 00 |         |    0 | 00/0297               | stopResourceManager                            
+  862 |  1 nda.s    359 | Code        | 00 |  2      |    3 | 00/0297 : AD 26 03    |                       lda       myRESID        
+  863 |  1 nda.s    360 | Code        | 00 |         |    2 | 00/029A : F0 15       |                       beq       stopRM1        ; not started
+  864 |  1 nda.s    361 | Code        | 00 |         |    3 | 00/029C : 09 00 80    |                       ora       #$8000         ; force it closed
+  865 |  1 nda.s    362 | Code        | 00 |         |    1 | 00/029F : 48          |                       pha                      
+  866 |  1 nda.s    363 | Macro       | 00 |         |    0 | 00/02A0               |                       _CloseResourceFile                 
+  868 |  1 nda.s    363 | Code        | 00 |         |    3 | 00/02A0 : A2 1E 0B    |                       LDX       #$B1E          ; load tool call #
+  869 |  1 nda.s    363 | Code        | 00 |         |    4 | 00/02A3 : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  870 |  1 nda.s    364 | Code        | 00 |  2      |    3 | 00/02A7 : 9C 26 03    |                       stz       myRESID        
+  871 |  1 nda.s    365 | Macro       | 00 |         |    0 | 00/02AA               |                       _ResourceShutDown                 
+  873 |  1 nda.s    365 | Code        | 00 |         |    3 | 00/02AA : A2 1E 03    |                       LDX       #$31E          ; load tool call #
+  874 |  1 nda.s    365 | Code        | 00 |         |    4 | 00/02AD : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  875 |  1 nda.s    366 | Code        | 00 |         |    1 | 00/02B1 : 60          | stopRM1               rts                      
+  876 |  1 nda.s    367 | Empty       | 00 |         |    0 | 00/02B2               |                                                
+  877 |  1 nda.s    368 | Comment     | 00 |         |    0 | 00/02B2               | *----------------------------
+  878 |  1 nda.s    369 | Comment     | 00 |         |    0 | 00/02B2               | * DRAW THE WINDOW
+  879 |  1 nda.s    370 | Comment     | 00 |         |    0 | 00/02B2               | *----------------------------
+  880 |  1 nda.s    371 | Empty       | 00 |         |    0 | 00/02B2               |                                                
+  881 |  1 nda.s    372 | Code        | 00 |         |    1 | 00/02B2 : 48          | PAINTMAIN             pha                      
+  882 |  1 nda.s    373 | Macro       | 00 |         |    0 | 00/02B3               |                       _GetCurResourceFile                 
+  884 |  1 nda.s    373 | Code        | 00 |         |    3 | 00/02B3 : A2 1E 12    |                       LDX       #$121E         ; load tool call #
+  885 |  1 nda.s    373 | Code        | 00 |         |    4 | 00/02B6 : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  886 |  1 nda.s    374 | Empty       | 00 |         |    0 | 00/02BA               |                                                
+  887 |  1 nda.s    375 | Code        | 00 |  3      |    4 | 00/02BA : AF 26 03 00 |                       ldal      myRESID        ; bank register not set
+  888 |  1 nda.s    376 | Code        | 00 |         |    1 | 00/02BE : 48          |                       pha                      
+  889 |  1 nda.s    377 | Macro       | 00 |         |    0 | 00/02BF               |                       _SetCurResourceFile                 
+  891 |  1 nda.s    377 | Code        | 00 |         |    3 | 00/02BF : A2 1E 11    |                       LDX       #$111E         ; load tool call #
+  892 |  1 nda.s    377 | Code        | 00 |         |    4 | 00/02C2 : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  893 |  1 nda.s    378 | Empty       | 00 |         |    0 | 00/02C6               |                                                
+  894 |  1 nda.s    379 | Code        | 00 |         |    1 | 00/02C6 : 48          |                       pha                      
+  895 |  1 nda.s    380 | Code        | 00 |         |    1 | 00/02C7 : 48          |                       pha                      
+  896 |  1 nda.s    381 | Macro       | 00 |         |    0 | 00/02C8               |                       _GetPort                 
+  898 |  1 nda.s    381 | Code        | 00 |         |    3 | 00/02C8 : A2 04 1C    |                       LDX       #$1C04         ; load tool call #
+  899 |  1 nda.s    381 | Code        | 00 |         |    4 | 00/02CB : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  900 |  1 nda.s    382 | Macro       | 00 |         |    0 | 00/02CF               |                       _DrawControls                 
+  902 |  1 nda.s    382 | Code        | 00 |         |    3 | 00/02CF : A2 10 10    |                       LDX       #$1010         ; load tool call #
+  903 |  1 nda.s    382 | Code        | 00 |         |    4 | 00/02D2 : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  904 |  1 nda.s    383 | Empty       | 00 |         |    0 | 00/02D6               |                                                
+  905 |  1 nda.s    384 | Macro       | 00 |         |    0 | 00/02D6               |                       _SetCurResourceFile                 
+  907 |  1 nda.s    384 | Code        | 00 |         |    3 | 00/02D6 : A2 1E 11    |                       LDX       #$111E         ; load tool call #
+  908 |  1 nda.s    384 | Code        | 00 |         |    4 | 00/02D9 : 22 00 00 E1 |                       JSL       $E10000        ; go to dispatcher
+  909 |  1 nda.s    385 | Code        | 00 |         |    1 | 00/02DD : 6B          |                       rtl                      
+  910 |  1 nda.s    386 | Empty       | 00 |         |    0 | 00/02DE               |                                                
+  911 |  1 nda.s    387 | Comment     | 00 |         |    0 | 00/02DE               | *----------------------------
+  912 |  1 nda.s    388 | Comment     | 00 |         |    0 | 00/02DE               | * GET SYS PREFS
+  913 |  1 nda.s    389 | Comment     | 00 |         |    0 | 00/02DE               | *----------------------------
+  914 |  1 nda.s    390 | Empty       | 00 |         |    0 | 00/02DE               |                                                
+  915 |  1 nda.s    391 | Code        | 00 |         |    4 | 00/02DE : 22 A8 00 E1 | getSYSPREFS           jsl       {$e100a8}      ; the old prefs
+  916 |  1 nda.s    392 | Data        | 00 |         |    2 | 00/02E2 : 0F 20       |                       dw        $200f          
+  917 |  1 nda.s    393 | Data        | 00 |  3      |    4 | 00/02E4 : 0E 03 00 00 |                       adrl      proGETSYSPREFS 
+  918 |  1 nda.s    394 | Empty       | 00 |         |    0 | 00/02E8               |                                                
+  919 |  1 nda.s    395 | Code        | 00 |  2      |    3 | 00/02E8 : AD 10 03    |                       lda       proGETSYSPREFS+2
+  920 |  1 nda.s    396 | Code        | 00 |         |    3 | 00/02EB : 29 FF 1F    |                       and       #$1fff         
+  921 |  1 nda.s    397 | Code        | 00 |         |    3 | 00/02EE : 09 00 C0    |                       ora       #$c000         
+  922 |  1 nda.s    398 | Code        | 00 |  2      |    3 | 00/02F1 : 8D 14 03    |                       sta       proSETSYSPREFS+2
+  923 |  1 nda.s    399 | Empty       | 00 |         |    0 | 00/02F4               |                                                
+  924 |  1 nda.s    400 | Code        | 00 |         |    4 | 00/02F4 : 22 A8 00 E1 |                       jsl       {$e100a8}      ; the new prefs
+  925 |  1 nda.s    401 | Data        | 00 |         |    2 | 00/02F8 : 0C 20       |                       dw        $200c          
+  926 |  1 nda.s    402 | Data        | 00 |  3      |    4 | 00/02FA : 12 03 00 00 |                       adrl      proSETSYSPREFS 
+  927 |  1 nda.s    403 | Code        | 00 |         |    1 | 00/02FE : 60          |                       rts                      
+  928 |  1 nda.s    404 | Empty       | 00 |         |    0 | 00/02FF               |                                                
+  929 |  1 nda.s    405 | Comment     | 00 |         |    0 | 00/02FF               | *----------------------------
+  930 |  1 nda.s    406 | Comment     | 00 |         |    0 | 00/02FF               | * SET SYS PREFS
+  931 |  1 nda.s    407 | Comment     | 00 |         |    0 | 00/02FF               | *----------------------------
+  932 |  1 nda.s    408 | Empty       | 00 |         |    0 | 00/02FF               |                                                
+  933 |  1 nda.s    409 | Code        | 00 |         |    1 | 00/02FF : 08          | restoreSYSPREFS       php                      
+  934 |  1 nda.s    410 | Code        | 00 |         |    1 | 00/0300 : 48          |                       pha                      
+  935 |  1 nda.s    411 | Code        | 00 |         |    4 | 00/0301 : 22 A8 00 E1 |                       jsl       {$e100a8}      ; restore  the old prefs
+  936 |  1 nda.s    412 | Data        | 00 |         |    2 | 00/0305 : 0C 20       |                       dw        $200c          
+  937 |  1 nda.s    413 | Data        | 00 |  3      |    4 | 00/0307 : 0E 03 00 00 |                       adrl      proGETSYSPREFS 
+  938 |  1 nda.s    414 | Code        | 00 |         |    1 | 00/030B : 68          |                       pla                      
+  939 |  1 nda.s    415 | Code        | 00 |         |    1 | 00/030C : 28          |                       plp                      
+  940 |  1 nda.s    416 | Code        | 00 |         |    1 | 00/030D : 60          |                       rts                      
+  941 |  1 nda.s    417 | Empty       | 00 |         |    0 | 00/030E               |                                                
+  942 |  1 nda.s    418 | Comment     | 00 |         |    0 | 00/030E               | *---
+  943 |  1 nda.s    419 | Empty       | 00 |         |    0 | 00/030E               |                                                
+  944 |  1 nda.s    420 | Data        | 00 |         |    2 | 00/030E : 01 00       | proGETSYSPREFS        dw        1              
+  945 |  1 nda.s    421 | Data        | 00 |         |    2 | 00/0310 : 00 00       |                       ds        2              
+  946 |  1 nda.s    422 | Empty       | 00 |         |    0 | 00/0312               |                                                
+  947 |  1 nda.s    423 | Data        | 00 |         |    2 | 00/0312 : 01 00       | proSETSYSPREFS        dw        1              
+  948 |  1 nda.s    424 | Data        | 00 |         |    2 | 00/0314 : 00 00       |                       ds        2              
+  949 |  1 nda.s    425 | Empty       | 00 |         |    0 | 00/0316               |                                                
+  950 |  1 nda.s    426 | Comment     | 00 |         |    0 | 00/0316               | *----------------------------
+  951 |  1 nda.s    427 | Comment     | 00 |         |    0 | 00/0316               | * DATA
+  952 |  1 nda.s    428 | Comment     | 00 |         |    0 | 00/0316               | *----------------------------
+  953 |  1 nda.s    429 | Empty       | 00 |         |    0 | 00/0316               |                                                
+  954 |  1 nda.s    430 | Data        | 00 |         |    4 | 00/0316 : 00 00 00 00 | curPORT               ds        4              
+  955 |  1 nda.s    431 | Data        | 00 |         |    4 | 00/031A : 00 00 00 00 | myWINDOW              ds        4              
+  956 |  1 nda.s    432 | Empty       | 00 |         |    0 | 00/031E               |                                                
+  957 |  1 nda.s    433 | Data        | 00 |         |    2 | 00/031E : 00 00       | theCODE               ds        2              ; A register from Desk Manager
+  958 |  1 nda.s    434 | Data        | 00 |         |    2 | 00/0320 : 00 00       | curRESID              ds        2              ; the curent resource file ID
+  959 |  1 nda.s    435 | Empty       | 00 |         |    0 | 00/0322               |                                                
+  960 |  1 nda.s    436 | Data        | 00 |         |    2 | 00/0322 : 00 00       | appID                 ds        2              
+  961 |  1 nda.s    437 | Data        | 00 |         |    2 | 00/0324 : 00 00       | myID                  ds        2              
+  962 |  1 nda.s    438 | Data        | 00 |         |    2 | 00/0326 : 00 00       | myRESID               ds        2              
+  963 |  1 nda.s    439 | Data        | 00 |         |    2 | 00/0328 : 00 00       | fgOPEN                ds        2              ; 0: not open
+  964 |  1 nda.s    440 | Empty       | 00 |         |    0 | 00/032A               |                                                
+  965 |  1 nda.s    441 | Empty       | 00 |         |    0 | 00/032A               |                                                
+------+-----------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

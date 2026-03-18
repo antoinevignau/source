@@ -1,9 +1,9 @@
 *
-* FM Radio NDA
+* NDA Skeleton
 *
 * (c) 2026, Brutal Deluxe Software
 *
-* v1.0 - 2026
+* v1.0 - 202603
 *
 
 	xc
@@ -60,6 +60,7 @@ ndaShutdown	=	0	; init routine, in A register, non-zero for Startup
 
 readWrite	=	0	; open access flags for OpenResourceFileByID
 readOnly	=	1
+fstAppleShare	=	13	; Appleshare FST ID ($0D)
 
 *-------------- QuickDraw II
 
@@ -264,19 +265,7 @@ ndaINITShutDown	PushWord	myID	; shut down
 * NDA ROUTINES
 *----------------------------
 
-doNULL
-doEVENT
-doRUN
-doCURSOR
-doUNDO
-doCUT
-doCOPY
-doPASTE
-doCLEAR
-doSYSCLICK
-doOPTIONALCLOSE
-doREOPEN
-	rts
+	put	nda_fmradio_routines.s
 
 *----------------------------
 * CHECK QD VERSION
@@ -337,9 +326,11 @@ startResourceManager
 	bne	startRM1	; already started
 
 	PushWord	#0	; space for result
-	PushWord	#readOnly	; openAccess (no need to write)
+	jsr	accessREQUEST	; openAccess (read or read/write)
 	PushWord	appID	; userID
+	jsr	getsetSYSPREFS
 	_OpenResourceFileByID
+	jsr	restoreSYSPREFS
 	pla
 	bcs	startRM1
 	
@@ -382,10 +373,10 @@ PAINTMAIN	pha
 	rtl
 
 *----------------------------
-* GET SYS PREFS
+* GET AND SET SYS PREFS
 *----------------------------
 
-getSYSPREFS	jsl	GSOS	; the old prefs
+getsetSYSPREFS	jsl	GSOS	; the old prefs
 	dw	$200f
 	adrl	proGETSYSPREFS
 	
@@ -400,7 +391,7 @@ getSYSPREFS	jsl	GSOS	; the old prefs
 	rts
 
 *----------------------------
-* SET SYS PREFS
+* RESTORE SYS PREFS
 *----------------------------
 
 restoreSYSPREFS	php
@@ -411,18 +402,62 @@ restoreSYSPREFS	php
 	pla
 	plp
 	rts
-	
-*---
 
+*----------------------------
+* RESTORE SYS PREFS
+*----------------------------
+
+accessREQUEST	jsl	GSOS
+	dw	$202c
+	adrl	proDINFO
+	bcs	arASALLOWED
+	
+	jsl	GSOS
+	dw	$2008
+	adrl	proVOLUME
+	bcs	arASALLOWED
+
+	lda	proVOLUME+$12
+	cmp	#fstAppleShare
+	bne	arASALLOWED
+	
+	lda	#readOnly
+	rts
+arASALLOWED	lda	#readWrite
+	rts
+	
+*----------------------------
+* DATA
+*----------------------------
+
+*--- GS/OS
+
+proVOLUME	dw	5
+	adrl	devName2
+	adrl	volName
+	ds	4
+	ds	4
+	ds	2
+s
 proGETSYSPREFS	dw	1
 	ds	2
 
 proSETSYSPREFS	dw	1
 	ds	2
 
-*----------------------------
-* DATA
-*----------------------------
+proDINFO	dw	2
+	dw	1	; device number
+	adrl	devName
+
+devName	dw	36
+devName2	dw	0
+	ds	32
+
+volName	dw	36
+volName2	dw	0
+	ds	32
+
+*---
 
 curPORT	ds	4
 myWINDOW	ds	4

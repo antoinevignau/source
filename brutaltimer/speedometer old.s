@@ -1,11 +1,10 @@
 *
-* Speedometer: Time to read a xxK file
+* Speedometer: Time to read a 64K file
 *
 * (c) 2013-2026, Brutal Deluxe Software
 *
 * v1.0 - 20251209
 * v1.1 - 20260303 with Brutal Timer
-* v1.2 - 20260319 with CSV file generation
 *
 
 	xc
@@ -41,11 +40,7 @@ TRUE	=	255
 *----------
 
 Debut	=	$00
-Arrivee	=	$04
-
-dpCSV	=	$08	; where we output text
-
-GSOS	=	$e100a8
+proDOS	=	$e100a8
 
 *----------
 
@@ -68,13 +63,13 @@ GSOS	=	$e100a8
 
 	_IMStartUp
 
-* Get 256KB and make it our read buffer
+* Get 64KB and make it our read buffer
 
 	pha
 	pha
-	PushLong	#$040000	; demande 256k finalement
+	PushLong	#$010000
 	PushWord	myID
-	PushWord	#%11000000_00001100
+	PushWord	#%11000000_00011100
 	PushLong	#0
 	_NewHandle
 	phd
@@ -90,29 +85,6 @@ GSOS	=	$e100a8
 	sty	haBUFFER
 	plx
 	stx	haBUFFER+2
-
-	pha
-	pha
-	PushLong	#$010000	; demande 64K pour le texte
-	PushWord	myID
-	PushWord	#%11000000_00011100
-	PushLong	#0
-	_NewHandle
-	phd
-	tsc
-	tcd
-	lda	[3]
-	sta	ptrCSV
-	sta	proWRITECSV+4
-	ldy	#2
-	lda	[3],y
-	sta	ptrCSV+2
-	sta	proWRITECSV+6
-	pld
-	ply
-	sty	haCSV
-	plx
-	stx	haCSV+2
 
 *----------
 
@@ -156,17 +128,11 @@ mainLOOP	PushWord	#$0c	; home
 	lda	#strINTRO
 	jsr	printCSTRING
 
-	lda	ptrCSV	; reset pointer to CSV buffer
-	sta	dpCSV
-	lda	ptrCSV+2
-	sta	dpCSV+2
-	
 	PushWord	#0	; wait for key
 	PushWord	#1	; echo char
 	_ReadChar
 	pla
 	and	#$ff	; mask bits 15-8
-	sta	theKEY
 
 	cmp	#"3"	; file read in one page
 	bne	noFREAD64K
@@ -200,8 +166,6 @@ noBTSLOT	cmp	#"q"
 mainNEXT	lda	#T2
 	jsr	stopTIMER2
 
-	jsr	saveCSV
-
 	PushLong	#strBYE
 	_WriteCString
 
@@ -231,101 +195,12 @@ doQUIT
 
 	_TLShutDown
 
-	jsl	GSOS
+	jsl	proDOS
 	dw	$2029
 	adrl	proQUIT
 
 	brk	$bd
 
-*----------------------------
-* SAVE CSV FILE
-*----------------------------
-
-saveCSV	lda	theSIZE	; pointer to file
-	asl
-	tax
-	lda	ptrCSVFILE,x
-	sta	proCREATECSV+2
-	sta	proOPENCSV+4
-
-	lda	dpCSV	; calculate data size
-	sec
-	sbc	ptrCSV
-	sta	proWRITECSV+8
-	stz	proWRITECSV+10
-	
-	jsl	GSOS
-	dw	$2001
-	adrl	proCREATECSV
-	
-	jsl	GSOS
-	dw	$2010
-	adrl	proOPENCSV
-	bcs	saveKO99
-
-	lda	proOPENCSV+2
-*	sta	proGETEOFCSV+2
-	sta	proSETMARKCSV+2
-	sta	proWRITECSV+2
-	sta	proCLOSECSV+2
-
-*	jsl	GSOS
-*	dw	$2019
-*	adrl	proGETEOF
-*	
-*	lda	proGETEOF+4
-*	sta	proSETMARKCSV+6
-*	lda	proGETEOF+6
-*	sta	proSETMARKCSV+8
-
-	jsl	GSOS	; base 1 + disp 0 = GET_EOF :-)
-	dw	$2016
-	adrl	proSETMARKCSV
-	
-	jsl	GSOS
-	dw	$2013
-	adrl	proWRITECSV
-	
-	jsl	GSOS
-	dw	$2014
-	adrl	proCLOSECSV
-
-saveKO99	rts
-
-*---
-
-proCREATECSV	dw	7	; pcount
-	adrl	csv64	; pathname
-	dw	$c3	; access_code
-	dw	$4	; file_type (TXT)
-	ds	4	; aux_type
-	ds	2	; storage_type
-	ds	4	; eof
-	ds	4	; resource_eof
-
-proOPENCSV	dw	2	; 0 - pcount
-	ds	2	; 2 - ref_num
-	adrl	csv64	; 4 - pathname
-
-proWRITECSV	dw	5	; 0 - pcount
-	ds	2	; 2 - ref_num
-	ds	4	; 4 - data_buffer
-	ds	4	; 8 - request_count
-	ds	4	; C - transfer_count
-	dw	1	; cache_priority
-
-proCLOSECSV	dw	1	; 0 - pcount
-	ds	2	; 2 - ref_num
-
-proSETMARKCSV	dw	3	; 0 - pcount
-	ds	2	; 2 - ref_num
-	dw	1	; 4 - base (1 = EOF - displacement)
-	ds	4	; 6 - displacement (0)
-
-*proGETEOFCSV	dw	2	; 0 - pcount
-*	ds	2	; 2 - ref_num
-*	ds	4	; 4 - eof
-	
 *----------------------------
 * PRINT C STRING
 *----------------------------
@@ -389,18 +264,14 @@ setBTSLOT	PushLong	#strBTSLOT
 exitBTSLOT	jmp	mainLOOP
 
 *----------------------------
-* READ FILE SPEED xxK
+* READ FILE SPEED 64K
 *----------------------------
 
 doFREAD64K	jsr	resetTICK
 	bcc	doFREAD64L
 	jmp	mainNEXT
 
-doFREAD64L	lda	theSIZE
-	asl
-	tax
-	lda	ptrPATHNAME,x
-*	lda	#pathname64
+doFREAD64L	lda	#pathname64	; the file
 	sta	proOPEN+4
 
 	lda	ptrBUFFER	; the buffer
@@ -410,16 +281,13 @@ doFREAD64L	lda	theSIZE
 
 	lda	#0	; the size
 	sta	proREAD+8
-*	lda	#1
-	lda	fileSIZE,x
+	lda	#1
 	sta	proREAD+10
 
-	jsr	showHEADER
-	
 	lda	#strBeforeOpen
 	jsr	showTICK
 
-	jsl	GSOS	; open
+	jsl	proDOS	; open
 	dw	$2010
 	adrl	proOPEN
 
@@ -434,7 +302,7 @@ doFREAD64L	lda	theSIZE
 	lda	#strBeforeRead
 	jsr	showTICK
 
-	jsl	GSOS	; read
+	jsl	proDOS	; read
 	dw	$2012
 	adrl	proREAD
 
@@ -450,7 +318,7 @@ doFREAD64L	lda	theSIZE
 	lda	#strBeforeClose
 	jsr	showTICK
 
-	jsl	GSOS	; close
+	jsl	proDOS	; close
 	dw	$2014
 	adrl	proCLOSE
 
@@ -467,11 +335,7 @@ doFREAD512B	jsr	resetTICK
 	bcc	doFREAD512C
 	jmp	mainNEXT
 
-doFREAD512C	lda	theSIZE
-	asl
-	tax
-	lda	ptrPATHNAME,x
-*	lda	#pathname64	; the file
+doFREAD512C	lda	#pathname64	; the file
 	sta	proOPEN+4
 
 	lda	ptrBUFFER	; the buffer
@@ -484,12 +348,10 @@ doFREAD512C	lda	theSIZE
 	lda	#0
 	sta	proREAD+10
 	
-	jsr	showHEADER
-	
 	lda	#strBeforeOpen
 	jsr	showTICK
 
-	jsl	GSOS	; open
+	jsl	proDOS	; open
 	dw	$2010
 	adrl	proOPEN
 
@@ -501,19 +363,18 @@ doFREAD512C	lda	theSIZE
 	lda	proOPEN+2
 	sta	proREAD+2
 	
-]lp	lda	#strBeforeRead
+	lda	#strBeforeRead
 	jsr	showTICK
 
-*	PushWord	#$0d
-*	_WriteChar
+	PushWord	#$0d
+	_WriteChar
 
-	jsl	GSOS	; read
+]lp	jsl	proDOS	; read
 	dw	$2012
 	adrl	proREAD
 	bcs	doFREAD512B2
 	
-	lda	#strAfterRead
-	jsr	showTICK
+	jsr	showTICK_ALT
 	jmp	]lp
 
 *--------------
@@ -524,7 +385,7 @@ doFREAD512B2	lda	proOPEN+2
 	lda	#strBeforeClose
 	jsr	showTICK
 
-	jsl	GSOS	; close
+	jsl	proDOS	; close
 	dw	$2014
 	adrl	proCLOSE
 
@@ -537,24 +398,22 @@ doFREAD512B2	lda	proOPEN+2
 * CHANGE FILE SIZE
 *----------------------------
 
-doFILESIZE	lda	theSIZE	; 0: 64K
-	clc		; 1: 128K
-	adc	#1	; 2: 256K
-	cmp	#3
-	bcc	doFS1
-	lda	#0
-doFS1	sta	theSIZE
+doFILESIZE	lda	theSIZE
+	clc
+	adc	#1
+	and	#3
+	sta	theSIZE
 	jmp	mainLOOP
 	
 *----------------------------
 * HEARTBEAT
 *----------------------------
 
-*myHEARTBEAT	ds	4	; it does nothing
-*	dw	$0000
-*	dw	$a55a
-*
-*	rtl
+myHEARTBEAT	ds	4	; it does nothing
+	dw	$0000
+	dw	$a55a
+
+	rtl
 
 *----------------------------
 * READ BLOCK SPEED
@@ -565,9 +424,9 @@ doFS1	sta	theSIZE
 
 doBREAD	jsr	resetTICK
 	bcc	doBREADOK
-*	jmp	mainNEXT
+	jmp	mainNEXT
 
-doBREADOK	lda	#pathname	; the folder as a file
+doBREADOK	lda	#pathname	; the file
 	sta	proOPEN+4
 
 	lda	#dataBUFFER
@@ -582,7 +441,7 @@ doBREADOK	lda	#pathname	; the folder as a file
 	
 *--- First, get our prefix
 
-	jsl	GSOS	; get our prefix
+	jsl	proDOS	; get our prefix
 	dw	$200a
 	adrl	proGETPREFIX
 
@@ -610,13 +469,15 @@ doBREAD1	stx	pfxNAMEopen	; save new length
 	lda	#1	; start with device 1
 	sta	proDINFO+2
 
-buildVOL1	jsl	GSOS	; get device info
+buildVOL1	jsl	proDOS	; get device info
 	dw	$202C
 	adrl	proDINFO
 	bcc	buildVOL3
 
 	cmp	#$0011	; no more devices
 	bne	buildVOL9
+
+	brk	$cc
 	jmp	mainNEXT	; done and not found!
 
 buildVOL9	inc	proDINFO+2
@@ -628,15 +489,15 @@ buildVOL3	lda	proDINFO+8
 	and	#$0080	; block device + read allowed
 	beq	buildVOL9	; not a block device
 
-	jsl	GSOS
+	jsl	proDOS
 	dw	$2008
 	adrl	proVOLUME
 	bcs	buildVOL9	; probably no disk in drive
 
-*--- Is it a GSOS file system (for v2 ;-))
+*--- Is it a ProDOS file system (for v2 ;-))
 
 	lda	proVOLUME+$12
-	cmp	#1	; GSOS
+	cmp	#1	; ProDOS
 	bne	buildVOL9
 
 	lda	proVOLUME+$14
@@ -664,7 +525,7 @@ buildVOL4	lda	pfxNAMEopen	; length...
 
 *--- Read the DATA folder
 
-	jsl	GSOS	; open
+	jsl	proDOS	; open
 	dw	$2010
 	adrl	proOPEN
 
@@ -672,87 +533,24 @@ buildVOL4	lda	pfxNAMEopen	; length...
 	sta	proREAD+2
 	sta	proCLOSE+2
 	
-	jsl	GSOS	; read
+	jsl	proDOS	; read
 	dw	$2012
 	adrl	proREAD
 
-	jsl	GSOS	; close
+	jsl	proDOS	; close
 	dw	$2014
 	adrl	proCLOSE
 
-*--- Where is the file?
-
-	lda	#dataBUFFER	; first file points here
-	clc
-	adc	#$2b
-	sta	Debut
-
-	lda	theSIZE	; file to compare to is here
-	asl
-	tax
-	lda	ptrFILE,x
-	sta	Arrivee
-	lda	maxBLOCKS,x
-	sta	maxINDEX
-	
-	sep	#$30
-	
-findFILE	ldy	#0
-	lda	(Debut)	; compare lengths
-	and	#$0f
-	sta	theLENGTH
-	cmp	(Arrivee)
-	bne	findNEXT	; not the same length = different file
-	lda	(Debut)
-	and	#$f0
-	lsr
-	lsr
-	lsr
-	lsr
-	sta	theKIND	; either 2 or 3
-
-	ldy	#1
-]lp	lda	(Debut),y
-	cmp	(Arrivee),y
-	bne	findNEXT
-	iny
-	cpy	theLENGTH
-	bcc	]lp
-	beq	]lp
-	bra	foundIT
-
-findNEXT	lda	Debut
-	clc
-	adc	#$27
-	sta	Debut
-	bcc	findFILE
-	
-	rep	#$30
-	jmp	mainNEXT	; file not found!
-
 *--- What is the key block pointer of File?
 
-foundIT	rep	#$30
-
-	lda	#blocksTOREAD	; where to put the blocks
-	sta	Arrivee
-	
-	ldy	#$11	; read the key pointer block
-	lda	(Debut),y
+	ldy	#$3c
+	lda	dataBUFFER,y
 	sta	proDREAD+12
-	
-	jsl	GSOS
+
+	jsl	proDOS
 	dw	$202f	; DRead
 	adrl	proDREAD
 
-	lda	theKIND
-	cmp	#2	; simple file for 64/128
-	beq	simpleREAD
-
-	jsr	makeTYPE3	; advanced type for 256
-	
-simpleREAD	jsr	makeTABLE
-	
 *--- We have the File block pointer at dataBUFFER now
 
 	stz	theINDEX
@@ -762,125 +560,54 @@ simpleREAD	jsr	makeTABLE
 	lda	ptrBUFFER+2
 	sta	proDREAD+6
 
-	jsr	showHEADER
-	
+	lda	#strBeforeRead
+	jsr	showTICK
 
-*	PushWord	#$0d
-*	_WriteChar
+	PushWord	#$0d
+	_WriteChar
 
 *---
 
-]lp	lda	#strBeforeBlockRead
-	jsr	showTICK
-
-	lda	theINDEX	; get block to read
-	asl
-	tay
-	lda	blocksTOREAD,y
+]lp	ldy	theINDEX	; get block to read
+	sep	#$20
+	lda	dataBUFFER,y
 	sta	proDREAD+12
+	lda	dataBUFFER+256,y
+	sta	proDREAD+13
+	rep	#$20
 
-doBREAD3	jsl	GSOS
+	lda	proDREAD+12
+	bne	doBREAD3
+
+doBREAD2	lda	#strAfterRead
+	jsr	showTICK
+	jmp	mainNEXT
+
+doBREAD3	jsl	proDOS
 	dw	$202f	; DRead
 	adrl	proDREAD
 	bcs	doBREAD2	; the end
 
-	lda	#strAfterBlockRead
-	jsr	showTICK
+	jsr	showTICK_ALT
 
 	inc	theINDEX
-	lda	theINDEX
-	cmp	maxINDEX
-	bcc	]lp
-
-doBREAD2	jmp	mainNEXT
-
-*--- double read of blocks for type 3
-
-makeTYPE3	sep	#$30	; get the pointers
-	lda	dataBUFFER
-	sta	firstBLOCK
-	lda	dataBUFFER+256
-	sta	firstBLOCK+1
-	
-	lda	dataBUFFER+1
-	sta	secondBLOCK
-	lda	dataBUFFER+257
-	sta	secondBLOCK+1
-	rep	#$30
-
-	lda	firstBLOCK	; read first block
-	sta	proDREAD+12
-	jsl	GSOS
-	dw	$202f
-	adrl	proDREAD
-	jsr	makeTABLE	; make first table
-
-	lda	secondBLOCK	; read second block
-	sta	proDREAD+12
-	jsl	GSOS
-	dw	$202f
-	adrl	proDREAD
-	rts		; and return
-
-*--- get 256 blocks pointers and put them in blockstoread
-
-makeTABLE	sep	#$30
-	ldy	#0
-]lp	lda	dataBUFFER,y
-	sta	(Arrivee)
-	inc	Arrivee
-	lda	dataBUFFER+256,y
-	sta	(Arrivee)
-	inc	Arrivee
-	bne	mt2
-	inc	Arrivee+1
-mt2	iny
-	bne	]lp
-	rep	#$30
-	rts
-
-*----------------------------
-* SHOW HEADER
-*----------------------------
-
-showHEADER	lda	theKEY
-	sec
-	sbc	#"3"
-	asl
-	tay
-	lda	ptrSTRTESTTYPE,y
-	jsr	outputCSV
-
-	lda	theSIZE
-	asl
-	tay
-	lda	ptrSTRFILESIZE,y	; we slip below...
-
-*----------------------------
-* OUTPUT CSV
-*----------------------------
-
-outputCSV	sta	outputCSV1+1
-
-	ldx	#0
-outputCSV1	lda	$ffff,x
-	and	#$ff
-	beq	outputCSV9
-	sep	#$20
-	sta	[dpCSV]
-	rep	#$20
-	inc	dpCSV
-	inx
-	bne	outputCSV1
-outputCSV9	rts
+	bra	]lp
 
 *----------------------------
 * SHOW TICK
 *----------------------------
 
-showTICK	jsr	outputCSV
+showTICK_ALT	jsr	showTICK2
 
-	lda	#T2
+	PushLong	#strEmpty
+	_WriteCString
+	rts
+	
+showTICK	pea	^strBeforeOpen
+	pha
+	_WriteCString
+
+showTICK2	lda	#T2
 	jsr	stopTIMER2
 	
 	lda	#T2
@@ -893,12 +620,13 @@ showTICK	jsr	outputCSV
 	PushLong	#strTick
 	PushWord	#8
 	_Long2Hex
-
-	lda	#strTick
-	jsr	outputCSV
+	
+	PushLong	#strTick
+	_WriteCString
 
 	lda	#T2
-	jmp	startTIMER2
+	jsr	startTIMER2
+	rts
 
 *----------------------------
 * CODE
@@ -1055,76 +783,51 @@ strBTSLOT	asc	0d'Brutal Timer slot (1-7) >'00
 
 strBYE	asc	0d'Press a key to continue...'00
 
-strBeforeOpen	asc	'Open entry,'00
-strAfterOpen	asc	'Open exit,'00
-strBeforeRead	asc	'Read entry,'00
-strAfterRead	asc	'Read exit,'00
-strBeforeClose	asc	'Close entry,'00
-strAfterClose	asc	'Close exit,'00
-strBeforeBlockRead asc	'Block read entry,'00
-strAfterBlockRead asc	'Block read exit,'00
+strBeforeOpen	asc	0d'Before  open... '00
+strAfterOpen	asc	0d' After  open... '00
+strBeforeRead	asc	0d'Before  read... '00
+strAfterRead	asc	0d' After  read... '00
+strBeforeClose	asc	0d'Before close... '00
+strAfterClose	asc	0d' After close... '00
+strEmpty	asc	'  '00
 
-strTick	asc	'        '0d00
+strTick	asc	'        '00
 
 strREAD	asc	'Read... '00
 strBLOCKS	asc	'Blocks'00
 strRERR	asc	'Read error'00
 strCANCEL	asc	'Cancel'00
 
-ptrSTRFILESIZE	da	strFILE64
-	da	strFILE128
-	da	strFILE256
-
-strFILE64	asc	'File size is 64Kb'0d00
-strFILE128	asc	'File size is 128Kb'0d00
-strFILE256	asc	'File size is 256Kb'0d00
-
-ptrSTRTESTTYPE	da	strTESTTYPE1
-	da	strTESTTYPE2
-	da	strTESTTYPE3
-
-strTESTTYPE1	asc	'Read file in one pass,'00
-strTESTTYPE2	asc	'Read file per 512 bytes,'00
-strTESTTYPE3	asc	'Read file block-by-block,'00
-
 *----------
 
-ptrPATHNAME	da	pathname64
-	da	pathname128
-	da	pathname256
-	
 pathname	strl	'1/Data'	; this is a folder
 pathname64	strl	'1/Data/File64'	; this ia a 64K file
 pathname128	strl	'1/Data/File128'	; this ia a 128K file
 pathname256	strl	'1/Data/File256'	; this ia a 256K file
 
-fileSIZE	dw	1,2,4	; 64K, 128K, 256
-
 ptrFILE	da	file64	; pointer to file names to check for read block
 	da	file128
 	da	file256
 
-file64	str	'FILE64'
-file128	str	'FILE128'
-file256	str	'FILE256'
+file64	asc	'FILE64'00
+file128	asc	'FILE128'00
+file256	asc	'FILE256'00
 
 ptrSIZE	da	size64	; pointer to size strings for menu display
 	da	size128
 	da	size256
 
-maxBLOCKS	dw	128,256,512
-
 size64	asc	'64'00
 size128	asc	'128'00
 size256	asc	'256'00
 
-ptrCSVFILE	da	csv64
+ptrCSV	da	csv64
 	da	csv128
 	da	csv256
 
-csv64	strl	'1/File64.csv'
-csv128	strl	'1/File128.csv'
-csv256	strl	'1/File256.csv'
+csv64	strl	'1/Output/File64.csv'
+csv128	strl	'1/Output/File128.csv'
+csv256	strl	'1/Output/File256.csv'
 
 *----------
 
@@ -1218,18 +921,11 @@ strCALCKBS	ds	8
 
 *----------
 
-theKEY	ds	2	; selected key
-
 theSIZE	ds	2	; 0..2 for 64, 128, and 256K
-theLENGTH	ds	2	; filename length 6 or 7
-theKIND	ds	2	; 2 or 3
 
 theINDEX	ds	2
 maxINDEX	ds	2
 filesize	ds	4	; in KB
-
-firstBLOCK	ds	2
-secondBLOCK	ds	2
 
 *----------
 
@@ -1240,10 +936,6 @@ myDP	ds	2
 ptrBUFFER	ds	4
 haBUFFER	ds	4
 
-ptrCSV	ds	4
-haCSV	ds	4
-
 *----------
 
-blocksTOREAD	ds	1024	; up to 512 16-bit blocks to read
-dataBUFFER	ds	1024	; 2 blocks for type 3 files
+dataBUFFER	ds	512

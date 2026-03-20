@@ -697,8 +697,7 @@ buildVOL4	lda	pfxNAMEopen	; length...
 	
 	sep	#$30
 	
-findFILE	ldy	#0
-	lda	(Debut)	; compare lengths
+findFILE	lda	(Debut)	; compare lengths
 	and	#$0f
 	sta	theLENGTH
 	cmp	(Arrivee)
@@ -829,7 +828,9 @@ makeTABLE	sep	#$30
 ]lp	lda	dataBUFFER,y
 	sta	(Arrivee)
 	inc	Arrivee
-	lda	dataBUFFER+256,y
+	bne	mt1
+	inc	Arrivee+1
+mt1	lda	dataBUFFER+256,y
 	sta	(Arrivee)
 	inc	Arrivee
 	bne	mt2

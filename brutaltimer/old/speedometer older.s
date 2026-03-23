@@ -6,7 +6,6 @@
 * v1.0 - 20251209
 * v1.1 - 20260303 with Brutal Timer
 * v1.2 - 20260319 with CSV file generation
-* v1.3 - 20260321 with low-level GS/OS calls
 *
 
 	xc
@@ -181,11 +180,7 @@ noFREAD512B	cmp	#"5"	; file read per block
 	bne	noBREAD
 	jmp	doBREAD
 
-noBREAD	cmp	#"6"	; file read per block
-	bne	noLLREAD	; using GS/OS low-levels calls
-	jmp	doLLREAD
-	
-noLLREAD	cmp	#"1"	; set file size
+noBREAD	cmp	#"1"	; set file size
 	bne	noFILESIZE
 	jmp	doFILESIZE
 
@@ -446,6 +441,7 @@ doFREAD64L	lda	theSIZE
 	lda	#strAfterRead
 	jsr	showTICK
 	
+
 *--------------
 
 	lda	proOPEN+2
@@ -583,12 +579,7 @@ doBREADOK	lda	#pathname	; the folder as a file
 	
 	stz	proDREAD+12	; init block pointer
 	stz	proDREAD+14
-
-	jsr	showHEADER
 	
-	lda	#strBeforeOpen
-	jsr	showTICK
-
 *--- First, get our prefix
 
 	jsl	GSOS	; get our prefix
@@ -760,7 +751,7 @@ foundIT	rep	#$30
 	jsr	makeTYPE3	; advanced type for 256
 	
 simpleREAD	jsr	makeTABLE
-
+	
 *--- We have the File block pointer at dataBUFFER now
 
 	stz	theINDEX
@@ -770,8 +761,8 @@ simpleREAD	jsr	makeTABLE
 	lda	ptrBUFFER+2
 	sta	proDREAD+6
 
-	lda	#strAfterOpen
-	jsr	showTICK
+	jsr	showHEADER
+	
 
 *	PushWord	#$0d
 *	_WriteChar
@@ -800,13 +791,7 @@ doBREAD3	jsl	GSOS
 	cmp	maxINDEX
 	bcc	]lp
 
-doBREAD2	lda	#strBeforeClose
-	jsr	showTICK
-
-	lda	#strAfterClose
-	jsr	showTICK
-
-	jmp	mainNEXT
+doBREAD2	jmp	mainNEXT
 
 *--- double read of blocks for type 3
 
@@ -855,168 +840,6 @@ mt2	iny
 	rep	#$30
 	rts
 
-*----------------------------
-* READ BLOCK SPEED LOW-LEVEL
-*----------------------------
-
-GSOSBusy	=	$E100BE
-DEREF	=	$01FC38
-FIND_VCR	=	$01FC48
-FIND_FCR	=	$01FC4C
-
-*---
-
-doLLREAD	jsr	resetTICK
-	bcc	doLLREAD1
-	jmp	mainNEXT
-
-doLLREAD1	lda	theSIZE
-	asl
-	tax
-	lda	ptrPATHNAME,x
-	sta	proOPEN+4
-
-	lda	ptrBUFFER	; the buffer
-	sta	proDREAD+4
-	lda	ptrBUFFER+2
-	sta	proDREAD+6
-
-	lda	theSIZE	; file to compare to is here
-	asl
-	tax
-	lda	maxBLOCKS,x
-	sta	maxINDEX
-
-	jsr	showHEADER
-	
-	lda	#strBeforeOpen
-	jsr	showTICK
-
-	jsl	GSOS	; open
-	dw	$2010
-	adrl	proOPEN
-
-*-------------- The low-level part
-
-]lp	ldal	GSOSBusy	; Thank you Window Manager
-	bmi	]lp
-	ora	#$8000
-	stal	GSOSBusy
-
-	phd
-	lda	#$bd00
-	tcd
-
-	sep	#$20
-	ldal	$e0c068
-	pha
-	ldal	$e0c08b
-	ldal	$e0c08b
-	rep	#$20
-
-	lda	proOPEN+2
-	jsl	FIND_FCR
-	jsl	DEREF
-	stx	theFCR+1
-	stx	theFCRVOL+1
-	sep	#$10
-	sty	theFCR+3
-	sty	theFCRVOL+3
-	rep	#$10
-
-	ldx	#8	; indirectly get the device ID
-theFCRVOL	ldal	$bdbdbd,x	; of the volume ID
-	jsl	FIND_VCR	; of the FCR ID
-	jsl	DEREF
-	stx	theVCR+1
-	sep	#$10
-	sty	theVCR+3
-	rep	#$10
-
-	sep	#$20
-	pla
-	stal	$e0c068
-	rep	#$20
-
-	pld
-
-	ldal	GSOSBusy
-	asl
-	lsr
-	stal	GSOSBusy
-
-*--- FCR: get key block pointer
-
-	ldx	#31	; key block pointer from the FCR
-theFCR	ldal	$bdbdbd,x
-	sta	proDREAD+12
-
-	ldx	#12	; device ID from the VCR
-theVCR	ldal	$bdbdbd,x
-	sta	proDREAD+2
-	
-	jsl	GSOS	; Now, read the key block pointer
-	dw	$202f	; DRead
-	adrl	proDREAD
-
-*-------------- Now, onto block read
-
-	lda	#blocksTOREAD	; where to put the blocks
-	sta	Arrivee
-	
-	lda	theSIZE
-	cmp	#2	; simple file for 64/128
-	beq	doLL1
-
-	jsr	makeTYPE3	; advanced type for 256
-	
-doLL1	jsr	makeTABLE
-
-	lda	#strAfterOpen
-	jsr	showTICK
-
-*--- We have the File block pointer at dataBUFFER now
-
-	stz	theINDEX
-
-]lp	lda	#strBeforeBlockRead
-	jsr	showTICK
-
-	lda	theINDEX	; get block to read
-	asl
-	tay
-	lda	blocksTOREAD,y
-	sta	proDREAD+12
-
-	jsl	GSOS
-	dw	$202f	; DRead
-	adrl	proDREAD
-	bcs	doLLEND	; the end
-
-	lda	#strAfterBlockRead
-	jsr	showTICK
-
-	inc	theINDEX
-	lda	theINDEX
-	cmp	maxINDEX
-	bcc	]lp
-
-*--------------
-
-doLLEND	lda	proOPEN+2
-	sta	proCLOSE+2
-
-	lda	#strBeforeClose
-	jsr	showTICK
-
-	jsl	GSOS	; close
-	dw	$2014
-	adrl	proCLOSE
-
-	lda	#strAfterClose
-	jsr	showTICK
-	jmp	mainNEXT
-		
 *----------------------------
 * SHOW HEADER
 *----------------------------
@@ -1227,7 +1050,6 @@ strINTRO	asc	'Speedometer by Brutal Deluxe Software'0d
 	asc	' 3- Read file in one pass'0d
 	asc	' 4- Read file per 512 bytes'0d
 	asc	' 5- Read file per block'0d
-	asc	' 6- Low-level read file per block'0d
 	asc	'Input your choice (Q to quit) >'00
 
 strBTSLOT	asc	0d'Brutal Timer slot (1-7) >'00
@@ -1261,12 +1083,10 @@ strFILE256	asc	'File size is 256Kb'0d00
 ptrSTRTESTTYPE	da	strTESTTYPE1
 	da	strTESTTYPE2
 	da	strTESTTYPE3
-	da	strTESTTYPE4
-	
+
 strTESTTYPE1	asc	'Read file in one pass,'00
 strTESTTYPE2	asc	'Read file per 512 bytes,'00
 strTESTTYPE3	asc	'Read file block-by-block,'00
-strTESTTYPE4	asc	'Read file b-by-b low level,'00
 
 *----------
 

@@ -6,7 +6,9 @@
 * v1.0 - 20251209
 * v1.1 - 20260303 with Brutal Timer
 * v1.2 - 20260319 with CSV file generation
-* v1.3 - 20260321 with low-level GS/OS calls
+* v1.3 - 20260321 with low-level GS/OS calls (does not help)
+*      I am sure GS/OS does many useful things in the OPEN call
+*      Yes, I found it ;-)
 *
 
 	xc
@@ -246,7 +248,10 @@ doQUIT
 * SAVE CSV FILE
 *----------------------------
 
-saveCSV	lda	theSIZE	; pointer to file
+saveCSV	PushLong	#strENDOFPROCESS
+	_WriteCString
+
+	lda	theSIZE	; pointer to file
 	asl
 	tax
 	lda	ptrCSVFILE,x
@@ -569,17 +574,15 @@ doFS1	sta	theSIZE
 
 doBREAD	jsr	resetTICK
 	bcc	doBREADOK
-*	jmp	mainNEXT
+	jmp	mainNEXT
 
 doBREADOK	lda	#pathname	; the folder as a file
 	sta	proOPEN+4
 
 	lda	#dataBUFFER
 	sta	proREAD+4	; the DATA folder buffer then
-	sta	proDREAD+4	; the key block pointer block
 	lda	#^dataBUFFER
 	sta	proREAD+6
-	sta	proDREAD+6
 	
 	stz	proDREAD+12	; init block pointer
 	stz	proDREAD+14
@@ -765,11 +768,6 @@ simpleREAD	jsr	makeTABLE
 
 	stz	theINDEX
 
-	lda	ptrBUFFER	; the buffer
-	sta	proDREAD+4
-	lda	ptrBUFFER+2
-	sta	proDREAD+6
-
 	lda	#strAfterOpen
 	jsr	showTICK
 
@@ -864,6 +862,19 @@ DEREF	=	$01FC38
 FIND_VCR	=	$01FC48
 FIND_FCR	=	$01FC4C
 
+*
+* a ProDOS FCR has the following useful information:
+* 9A75 FCR		+$0
+* 9AC4 master_blk_num	+$4F	** not useful **
+* 9AC8 io_start		+$53	** useful **
+*	pour un type 3, contient l'index vers les deux blocs
+*	sachant que le premier est dŽjˆ en mŽmoire dessous...
+* 9CC8 data_size 	+$253	** useful **
+*	...contient le premier bloc d'index
+* 9EC8 index_size	+$453	** not useful **
+* A0C8 master_size	+$653	** not useful **
+*
+
 *---
 
 doLLREAD	jsr	resetTICK
@@ -875,11 +886,6 @@ doLLREAD1	lda	theSIZE
 	tax
 	lda	ptrPATHNAME,x
 	sta	proOPEN+4
-
-	lda	ptrBUFFER	; the buffer
-	sta	proDREAD+4
-	lda	ptrBUFFER+2
-	sta	proDREAD+6
 
 	lda	theSIZE	; file to compare to is here
 	asl
@@ -917,11 +923,11 @@ doLLREAD1	lda	theSIZE
 	lda	proOPEN+2
 	jsl	FIND_FCR
 	jsl	DEREF
-	stx	theFCR+1
 	stx	theFCRVOL+1
+	stx	ptrFCR
 	sep	#$10
-	sty	theFCR+3
 	sty	theFCRVOL+3
+	sty	ptrFCR+2
 	rep	#$10
 
 	ldx	#8	; indirectly get the device ID
@@ -945,34 +951,56 @@ theFCRVOL	ldal	$bdbdbd,x	; of the volume ID
 	lsr
 	stal	GSOSBusy
 
-*--- FCR: get key block pointer
-
-	ldx	#31	; key block pointer from the FCR
-theFCR	ldal	$bdbdbd,x
-	sta	proDREAD+12
+*--- VCR : rŽcupre le device ID
 
 	ldx	#12	; device ID from the VCR
 theVCR	ldal	$bdbdbd,x
 	sta	proDREAD+2
+
+*--- FCR : recopie le premier block ID
+
+	lda	ptrFCR	; pointeur
+	sta	Debut
+	lda	ptrFCR+2
+	sta	Debut+2
 	
-	jsl	GSOS	; Now, read the key block pointer
-	dw	$202f	; DRead
-	adrl	proDREAD
+	ldy	#$253	; key block pointer from the FCR
+	ldx	#512-2
+]lp	lda	[Debut],y
+	sta	dataBUFFER-$253,y
+	iny
+	iny
+	dex
+	dex
+	bpl	]lp
 
 *-------------- Now, onto block read
 
 	lda	#blocksTOREAD	; where to put the blocks
 	sta	Arrivee
 	
+	jsr	makeTABLE	; on doit toujours faire une table
+
 	lda	theSIZE
 	cmp	#2	; simple file for 64/128
-	beq	doLL1
+	bne	doLL1	; on sort
 
-	jsr	makeTYPE3	; advanced type for 256
+	sep	#$20	; on lit le prochain bloc
+	ldy	#$54
+	lda	[Debut],y
+	sta	proDREAD+12
+	ldy	#$154
+	lda	[Debut],y
+	sta	proDREAD+13
+	rep	#$20
+
+	jsl	GSOS
+	dw	$202f
+	adrl	proDREAD
 	
-doLL1	jsr	makeTABLE
+	jsr	makeTABLE	; et on complte la table
 
-	lda	#strAfterOpen
+doLL1	lda	#strAfterOpen
 	jsr	showTICK
 
 *--- We have the File block pointer at dataBUFFER now
@@ -1016,7 +1044,7 @@ doLLEND	lda	proOPEN+2
 	lda	#strAfterClose
 	jsr	showTICK
 	jmp	mainNEXT
-		
+	
 *----------------------------
 * SHOW HEADER
 *----------------------------
@@ -1232,6 +1260,7 @@ strINTRO	asc	'Speedometer by Brutal Deluxe Software'0d
 
 strBTSLOT	asc	0d'Brutal Timer slot (1-7) >'00
 
+strENDOFPROCESS	asc	0d'End of process... Saving...'00
 strBYE	asc	0d'Press a key to continue...'00
 
 strBeforeOpen	asc	'Open entry,'00
@@ -1307,6 +1336,8 @@ csv64	strl	'1/File64.csv'
 csv128	strl	'1/File128.csv'
 csv256	strl	'1/File256.csv'
 
+ptrFCR	ds	4
+
 *----------
 
 proOPEN	dw	15	; pcount
@@ -1354,7 +1385,7 @@ proDINFO	dw	4	; Parms for DInfo
 
 proDREAD	dw	6	; Parms for DRead
 	ds	2	; 02 device num
-	ds	4	; 04 buffer
+	adrl	dataBUFFER	; 04 buffer
 	adrl	512	; 08 request count
 	ds	4	; 0C starting block
 	dw	512	; 10 block size

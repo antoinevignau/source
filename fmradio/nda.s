@@ -268,6 +268,215 @@ ndaINITShutDown	PushWord	myID	; shut down
 	put	nda_fmradio_routines.s
 
 *----------------------------
+* DIGITS
+*----------------------------
+
+
+dhPL	=	18	;width of large picture
+dvPL	=	17	;height of large picture
+penMode	=	0
+
+*---
+
+LocInfoL	dw	$80	;port SCB
+	ds	4	;Picture ptr
+	dw	5	;Picture width (bytes)
+PictRectL	dw	0,0,dvPL,dhPL	;bounds rect
+
+*---
+
+PictMapL	adrl	Pict0L
+	adrl	Pict1L
+	adrl	Pict2L
+	adrl	Pict3L
+	adrl	Pict4L
+	adrl	Pict5L
+	adrl	Pict6L
+	adrl	Pict7L
+	adrl	Pict8L
+	adrl	Pict9L
+
+Pict0L	hex	0fffffff00	;large 0
+	hex	f0fffff0f0
+	hex	ff00000ff0
+	hex	ff00000ff0
+	hex	ff00000ff0
+	hex	ff00000ff0
+	hex	ff00000ff0
+	hex	f0000000f0
+	hex	0000000000
+	hex	f0000000f0
+	hex	ff00000ff0
+	hex	ff00000ff0
+	hex	ff00000ff0
+	hex	ff00000ff0
+	hex	ff00000ff0
+	hex	f0fffff0f0
+	hex	0fffffff00
+
+Pict1L	hex	0000000000	;large 1
+	hex	00000000f0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	00000000f0
+	hex	0000000000
+	hex	00000000f0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	00000000f0
+	hex	0000000000
+
+Pict2L	hex	0fffffff00	;large 2
+	hex	00fffff0f0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	00000000f0
+	hex	0fffffff00
+	hex	f0fffff000
+	hex	ff00000000
+	hex	ff00000000
+	hex	ff00000000
+	hex	ff00000000
+	hex	ff00000000
+	hex	f0fffff000
+	hex	0fffffff00
+
+Pict3L	hex	0fffffff00	;large 3
+	hex	00fffff0f0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	00000000f0
+	hex	0fffffff00
+	hex	00fffff0f0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	00fffff0f0
+	hex	0fffffff00
+
+Pict4L	hex	0000000000	;large 4
+	hex	f0000000f0
+	hex	ff00000ff0
+	hex	ff00000ff0
+	hex	ff00000ff0
+	hex	ff00000ff0
+	hex	ff00000ff0
+	hex	f0000000f0
+	hex	0fffffff00
+	hex	00fffff0f0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	00000000f0
+	hex	0000000000
+
+Pict5L	hex	0fffffff00	;large 5
+	hex	f0fffff000
+	hex	ff00000000
+	hex	ff00000000
+	hex	ff00000000
+	hex	ff00000000
+	hex	ff00000000
+	hex	f000000000
+	hex	0fffffff00
+	hex	00fffff0f0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	00fffff0f0
+	hex	0fffffff00
+
+Pict6L	hex	0fffffff00	;large 6
+	hex	f0fffff000
+	hex	ff00000000
+	hex	ff00000000
+	hex	ff00000000
+	hex	ff00000000
+	hex	ff00000000
+	hex	f000000000
+	hex	0fffffff00
+	hex	f0fffff0f0
+	hex	ff00000ff0
+	hex	ff00000ff0
+	hex	ff00000ff0
+	hex	ff00000ff0
+	hex	ff00000ff0
+	hex	f0fffff0f0
+	hex	0fffffff00
+
+Pict7L	hex	0fffffff00	;large 7
+	hex	00fffff0f0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	00000000f0
+	hex	0000000000
+	hex	00000000f0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	00000000f0
+	hex	0000000000
+
+Pict8L	hex	0fffffff00	;large 8
+	hex	f0fffff0f0
+	hex	ff00000ff0
+	hex	ff00000ff0
+	hex	ff00000ff0
+	hex	ff00000ff0
+	hex	ff00000ff0
+	hex	f0000000f0
+	hex	0fffffff00
+	hex	f0fffff0f0
+	hex	ff00000ff0
+	hex	ff00000ff0
+	hex	ff00000ff0
+	hex	ff00000ff0
+	hex	ff00000ff0
+	hex	f0fffff0f0
+	hex	0fffffff00
+
+Pict9L	hex	0fffffff00	;large 9
+	hex	f0fffff0f0
+	hex	ff00000ff0
+	hex	ff00000ff0
+	hex	ff00000ff0
+	hex	ff00000ff0
+	hex	ff00000ff0
+	hex	f0000000f0
+	hex	0fffffff00
+	hex	00fffff0f0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	0000000ff0
+	hex	00fffff0f0
+	hex	0fffffff00
+
+*----------------------------
 * CHECK QD VERSION
 *----------------------------
 

@@ -16,6 +16,7 @@
 	use	4/Int.Macs
 	use	4/Locator.Macs
 	use	4/Mem.Macs
+	use	4/Menu.Macs
 	use	4/Misc.Macs
 	use	4/QD.Macs
 	use	4/QDAux.Macs
@@ -37,6 +38,50 @@ wMAIN	=	1
 refIsPointer	=	0
 refIsHandle	=	1
 refIsResource	=	2
+
+*-------------- EVENT/WINDOW MANAGER
+
+nullEvt	=	$00	; Event Code -  
+mouseDownEvt	=	$01	; Event Code -  
+mouseUpEvt	=	$02	; Event Code -  
+keyDownEvt	=	$03	; Event Code -  
+autoKeyEvt	=	$05	; Event Code -  
+updateEvt	=	$06	; Event Code -  
+activateEvt	=	$08	; Event Code -  
+switchEvt	=	$09	; Event Code -  
+deskAccEvt	=	$0a	; Event Code -  
+driverEvt	=	$0b	; Event Code -  
+app1Evt	=	$0c	; Event Code -  
+app2Evt	=	$0d	; Event Code -  
+app3Evt	=	$0e	; Event Code -  
+app4Evt	=	$0f	; Event Code -  
+
+wNoHit	=	$00
+inNull	=	$00
+inKey	=	$03
+inButtDwn	=	$01
+inUpdate	=	$06
+
+wInDesk	=	$10
+wInMenuBar	=	$11
+wClickCalled	=	$12
+wInContent	=	$13
+wInDrag	=	$14
+wInGrow	=	$15
+wInGoAway	=	$16
+wInZoom	=	$17
+wInInfo	=	$18
+wInSpecial	=	$19
+wInDeskItem	=	$1a
+wInFrame	=	$1b
+wInactMenu	=	$1c
+wCloseNDA	=	$1d
+wCalledSysEdit	=	$1e
+wTrackZoom	=	$1f
+wHitFrame	=	$20
+wInControl	=	$21
+wInControlMenu	=	$22
+wInSysWindow	=	$8000
 
 *-------------- NDA
 
@@ -103,7 +148,7 @@ ndaOPEN1	PushLong	#0
 	_GetPort
 	PullLong	curPORT
 	_WaitCursor
-	
+
 	PushWord	#0
 	_GetCurResourceApp
 	PullWord	curRESID
@@ -126,7 +171,6 @@ ndaOPEN9	PushWord	curRESID
 	PushLong	curPORT
 	_SetPort
 	_InitCursor
-
 	plb
 	rtl
 
@@ -165,6 +209,7 @@ ndaCLOSE9	plb
 * ACTION ROUTINE
 *----------------------------
 
+eventPtr	=	1
 actionCode	=	5
 
 *---
@@ -199,7 +244,7 @@ ndaACTION	phd
 
 ndaACTION1	_SetPort
 	_SetCurResourceFile
-
+	
 	plx	; restore parms
 	ply
 	pla
@@ -258,6 +303,7 @@ ndaINITShutDown	PushWord	myID	; shut down
 	_DisposeAll
 	PushWord	appID
 	_MMShutDown
+
 	plb
 	rtl
 
@@ -536,6 +582,7 @@ startResourceManager
 
 	PushWord	#0	; space for result
 	jsr	accessREQUEST	; openAccess (read or read/write)
+	pha
 	PushWord	appID	; userID
 	jsr	getsetSYSPREFS
 	_OpenResourceFileByID

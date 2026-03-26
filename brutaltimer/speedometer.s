@@ -8,7 +8,8 @@
 * v1.2 - 20260319 with CSV file generation
 * v1.3 - 20260321 with low-level GS/OS calls (does not help)
 *      I am sure GS/OS does many useful things in the OPEN call
-*      Yes, I found it ;-)
+*      Yes, it does... I found what!
+* v1.4 - 20260326 with SetMark support
 *
 
 	xc
@@ -454,6 +455,21 @@ doFREAD64L	lda	theSIZE
 *--------------
 
 	lda	proOPEN+2
+	sta	proSETMARK+2
+	
+	lda	#strBeforeSetMark
+	jsr	showTICK
+
+	jsl	GSOS
+	dw	$2016
+	adrl	proSETMARK
+
+	lda	#strAfterSetMark
+	jsr	showTICK
+
+*---
+
+	lda	proOPEN+2
 	sta	proCLOSE+2
 
 	lda	#strBeforeClose
@@ -528,6 +544,21 @@ doFREAD512C	lda	theSIZE
 *--------------
 
 doFREAD512B2	lda	proOPEN+2
+	sta	proSETMARK+2
+	
+	lda	#strBeforeSetMark
+	jsr	showTICK
+
+	jsl	GSOS
+	dw	$2016
+	adrl	proSETMARK
+
+	lda	#strAfterSetMark
+	jsr	showTICK
+
+*---
+
+	lda	proOPEN+2
 	sta	proCLOSE+2
 
 	lda	#strBeforeClose
@@ -798,7 +829,13 @@ doBREAD3	jsl	GSOS
 	cmp	maxINDEX
 	bcc	]lp
 
-doBREAD2	lda	#strBeforeClose
+doBREAD2	lda	#strBeforeSetMark	; DO NOTHING
+	jsr	showTICK
+
+	lda	#strAfterSetMark
+	jsr	showTICK
+
+	lda	#strBeforeClose
 	jsr	showTICK
 
 	lda	#strAfterClose
@@ -1032,6 +1069,19 @@ doLL1	lda	#strAfterOpen
 *--------------
 
 doLLEND	lda	proOPEN+2
+	sta	proSETMARK+2
+	
+	lda	#strBeforeSetMark
+	jsr	showTICK
+
+	jsl	GSOS
+	dw	$2016
+	adrl	proSETMARK
+
+	lda	#strAfterSetMark
+	jsr	showTICK
+
+	lda	proOPEN+2
 	sta	proCLOSE+2
 
 	lda	#strBeforeClose
@@ -1271,6 +1321,8 @@ strBeforeClose	asc	'Close entry,'00
 strAfterClose	asc	'Close exit,'00
 strBeforeBlockRead asc	'Block read entry,'00
 strAfterBlockRead asc	'Block read exit,'00
+strBeforeSetMark asc	'Set mark entry,'00
+strAfterSetMark	asc	'Set mark exit,'00
 
 strTick	asc	'        '0d00
 
@@ -1366,6 +1418,11 @@ proREAD	dw	5	; +00 pcount
 
 proCLOSE	dw	1	; pcount
 	ds	2	; ref_num
+
+proSETMARK	dw	3	; 0 - pcount
+	ds	2	; 2 - ref_num
+	dw	0	; 4 - base (0 = displacement)
+	ds	4	; 6 - displacement (0)
 
 proQUIT	dw	2	; pcount
 	ds	4	; pathname

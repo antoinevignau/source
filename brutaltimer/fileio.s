@@ -104,6 +104,12 @@ FIND_FCR	=	$01fc4c
 * ENTRY POINT
 *----------------------------
 
+	ext	ptrRAM
+	ext	callSTARTUP
+	ext	callSHUTDOWN
+	ext	callREAD
+	ext	callSEEK
+
 ptrRAM	ent		; where to load data in RAM
 	ds	4	
 

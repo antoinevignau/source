@@ -11,199 +11,192 @@
 *         Otherwise, use the v1 method.
 *
 
-               xc
-               xc
-               mx        %00
-               lst       off
+	xc
+	xc
+	mx	%00
+	lst	off
 
 *----------
 
-               use       4/Int.Macs
-               use       4/Locator.Macs
-               use       4/Mem.Macs
-               use       4/Misc.Macs
-               use       4/Text.Macs
-               use       4/Util.Macs
+	use	4/Int.Macs
+	use	4/Locator.Macs
+	use	4/Mem.Macs
+	use	4/Misc.Macs
+	use	4/Text.Macs
+	use	4/Util.Macs
 
-               use       BrutalTimer.equ
+	use	BrutalTimer.equ
 
-Debut          =         $00
-proDOS         =         $e100a8
+Debut	=	$00
+proDOS	=	$e100a8
+
+REF_1MHZ	=	1023000
 
 *----------
 
-               phk
-               plb
-
-               tdc
-               sta       myDP
-
-               _TLStartUp
-               pha
-               _MMStartUp
-               pla
-               sta       appID
-               ora       #$0100
-               sta       myID
-
-               _MTStartUp
-               _TextStartUp
-
-               _IMStartUp
+	phk
+	plb
+	
+	tdc
+	sta	myDP
+	
+	_TLStartUp
+	pha
+	_MMStartUp
+	pla
+	sta	appID
+	ora	#$0100
+	sta	myID
+	
+	_MTStartUp
+	_TextStartUp
+	
+	_IMStartUp
 
 * Get 64KB and make it our read buffer
 
-               pha
-               pha
-               PushLong  #$010000
-               PushWord  myID
-               PushWord  #%11000000_00011100
-               PushLong  #0
-               _NewHandle
-               phd
-               tsc
-               tcd
-               lda       [3]
-               sta       proREAD+4            ; file buffer
-               sta       proDREAD+4           ; block buffer
-               ldy       #2
-               lda       [3],y
-               sta       proREAD+6
-               sta       proDREAD+6
-               pld
-               ply
-               sty       haBUFFER
-               plx
-               stx       haBUFFER+2
+	pha
+	pha
+	PushLong  #$010000
+	PushWord  myID
+	PushWord  #%11000000_00011100
+	PushLong  #0
+	_NewHandle
+	phd
+	tsc
+	tcd
+	lda	[3]
+	sta	proREAD+4	; file buffer
+	sta	proDREAD+4	; block buffer
+	ldy	#2
+	lda	[3],y
+	sta	proREAD+6
+	sta	proDREAD+6
+	pld
+	ply
+	sty	haBUFFER
+	plx
+	stx	haBUFFER+2
 
 *----------
 
-               jsl       proDOS
-               dw        $202a
-               adrl      proVERSION
+	jsl	proDOS
+	dw	$202a
+	adrl	proVERSION
+	          	
+	lda	proVERSION+2
+	and	#$0fff
+	cmp	#$0400	; System 6.0.1
+	bge	versionOK
 
-               lda       proVERSION+2
-               and       #$0fff
-               cmp       #$0400               ; System 6.0.1
-               bge       versionOK
-
-               jmp       doQUIT               ; Ouch...
-
-*----------
-
-versionOK      =         *
-               PushWord  #$00FF
-               PushWord  #$0080
-               _SetInGlobals
-               PushWord  #$00FF
-               PushWord  #$0080
-               _SetOutGlobals
-               PushWord  #$00FF
-               PushWord  #$0080
-               _SetErrGlobals
-
-               PushWord  #0
-               PushLong  #3
-               _SetInputDevice
-               PushWord  #0
-               PushLong  #3
-               _SetOutputDevice
-               PushWord  #0
-               PushLong  #3
-               _SetErrorDevice
-
-               PushWord  #0
-               _InitTextDev
-               PushWord  #1
-               _InitTextDev
-               PushWord  #2
-               _InitTextDev
+	jmp	doQUIT	; Ouch...
 
 *----------
 
-mainLOOP       =         *
+versionOK	PushWord	#$00FF
+	PushWord	#$0080
+	_SetInGlobals
+	PushWord	#$00FF
+	PushWord	#$0080
+	_SetOutGlobals
+	PushWord	#$00FF
+	PushWord	#$0080
+	_SetErrGlobals
+	
+	PushWord	#0
+	PushLong	#3
+	_SetInputDevice
+	PushWord	#0
+	PushLong	#3
+	_SetOutputDevice
+	PushWord	#0
+	PushLong	#3
+	_SetErrorDevice
+	
+	PushWord	#0
+	_InitTextDev
+	PushWord	#1
+	_InitTextDev
+	PushWord	#2
+	_InitTextDev
 
-               stz       fgCANCEL             ; reset cancel flag
+*----------
 
-               PushWord  #$0c                 ; home
-               _WriteChar
+mainLOOP	stz	fgCANCEL	; reset cancel flag
 
-               PushLong  #strINTRO
-               _WriteCString
+	PushWord	#$0c	; home
+	_WriteChar
 
-               PushWord  #0                   ; wait for key
-               PushWord  #1                   ; echo char
-               _ReadChar
-               pla
-               and       #$ff                 ; mask bits 15-8
+	PushLong	#strINTRO
+	_WriteCString
 
-               cmp       #"1"
-               bne       noCREATE
-               jmp       doFCREATE
+	PushWord	#0	; wait for key
+	PushWord	#1	; echo char
+	_ReadChar
+	pla
+	and	#$ff	; mask bits 15-8
 
-noCREATE       cmp       #"2"
-               bne       noFREAD
-               jmp       doFREAD
+	cmp	#"1"
+	bne	noCREATE
+	jmp	doFCREATE
 
-noFREAD        cmp       #"3"
-               bne       noBREAD3
-               jmp       doBREADtrois
+noCREATE	cmp	#"2"
+	bne	noFREAD
+	jmp	doFREAD
 
-noBREAD3       cmp       #"4"
-               bne       noBREAD4
-               jmp       doBREADquatre
+noFREAD	cmp	#"3"
+	bne	noBREAD3
+	jmp	doBREADtrois
+
+noBREAD3	cmp	#"4"
+	bne	noBREAD4
+	jmp	doBREADquatre
 
 noBREAD4	cmp	#"5"
 	bne	noBREAD5
 	jsr	setBTSLOT
 	jmp	mainLOOP
 
-noBREAD5	cmp	#"6"
-	bne	noBREAD9
-	jsr	setBTFREQ
+noBREAD5
+noBREAD9	cmp	#"q"
+	beq	doQUIT
+	cmp	#"Q"
+	beq	doQUIT
+
 	jmp	mainLOOP
-
-noBREAD9       cmp       #"q"
-               beq       doQUIT
-               cmp       #"Q"
-               beq       doQUIT
-
-               jmp       mainLOOP
 
 *---------- End of routine, wait for key
 
-mainNEXT       =         *
-               PushLong  #strBYE
-               _WriteCString
+mainNEXT	PushLong	#strBYE
+	_WriteCString
 
-               PushWord  #0
-               PushWord  #0
-               _ReadChar
-               pla
-               jmp       mainLOOP
+	PushWord	#0
+	PushWord	#0
+	_ReadChar
+	pla
+	jmp	mainLOOP
 
 *----------------------------
 * QUIT PROGRAM
 *----------------------------
 
-doQUIT         =         *
-               _IMShutDown
-               _TextShutDown
-               _MTShutDown
+doQUIT	_IMShutDown
+	_TextShutDown
+	_MTShutDown
 
-               PushWord  myID
-               _DisposeAll
+	PushWord	myID
+	_DisposeAll
 
-               PushWord  appID
-               _MMShutDown
+	PushWord	appID
+	_MMShutDown
 
-               _TLShutDown
+	_TLShutDown
 
-               jsl       proDOS
-               dw        $2029
-               adrl      proQUIT
+	jsl	proDOS
+	dw	$2029
+	adrl	proQUIT
 
-               brk       $bd
+	brk	$bd
 
 *----------------------------
 * READ FILE SPEED
@@ -262,9 +255,7 @@ doFREAD1       jmp       mainNEXT
 
 *----------
 
-readFILE       =         *
-
-               sta       proOPEN+4            ; file pointer
+readFILE       sta       proOPEN+4            ; file pointer
                sty       filesize             ; filesize in KB
 
 *--- Check if file exists...
@@ -278,8 +269,7 @@ readFILE       =         *
 
 *---
 
-readFILE1      =         *                    ; file exists
-               PushLong  #strREAD
+readFILE1	PushLong  #strREAD	; file existe
                _WriteCString
 
                ldx       proOPEN+6
@@ -753,142 +743,184 @@ strWHEEL       asc       "|/-\"
 
 *----------------------------
 
-printC1        =         *                    ; Print a C1 string
-
-* Pointer
-               phx
-               stx       Debut+2
-               phy
-               sty       Debut
+printC1	phx		; Print a C1 string
+	stx	Debut+2
+	phy
+	sty	Debut
 
 * Offset (is 2 because STRL)
-               PushWord  #2
+	PushWord	#2
 
 * Length
-               lda       [Debut]
-               pha
-               _TextWriteBlock
-               rts
+	lda	[Debut]
+	pha
+	_TextWriteBlock
+	rts
 
 *----------------------------
 
-printDATEFROM  =         *
-               PushLong  #strFROM
-               _WriteCString
+printDATEFROM	PushLong	#strFROM
+	_WriteCString
 
-               PushLong  #asciitime
-               _ReadAsciiTime
+	PushLong	#asciitime
+	_ReadAsciiTime
 
-               pha                            ; read time in hex format
-               pha                            ; for a later conversion
-               pha
-               pha
-               _ReadTimeHex
-               pla
-               sta       hextime1
-               pla
-               sta       hextime1+2
-               pla
-               sta       hextime1+4
-               pla
-               sta       hextime1+6
+	pha                            ; read time in hex format
+	pha                            ; for a later conversion
+	pha
+	pha
+	_ReadTimeHex
+	pla
+	sta	hextime1
+	pla
+	sta	hextime1+2
+	pla
+	sta	hextime1+4
+	pla
+	sta	hextime1+6
+	
+	PushLong	#asciitime
+	PushWord	#0
+	PushWord	#20
+	_TextWriteBlock
 
-               PushLong  #asciitime
-               PushWord  #0
-               PushWord  #20
-               _TextWriteBlock
-               rts
+*---
 
-*----------------------------
+	lda	theSLOT	; v2 - Start the BT timer if present
+	bne	pdfBT
+	rts
 
-printDATETO    =         *
-               PushLong  #strTO
-               _WriteCString
-
-               PushLong  #asciitime
-               _ReadAsciiTime
-
-               pha                            ; read time in hex format
-               pha                            ; for a later conversion
-               pha
-               pha
-               _ReadTimeHex
-               pla
-               sta       hextime2
-               pla
-               sta       hextime2+2
-               pla
-               sta       hextime2+4
-               pla
-               sta       hextime2+6
-
-               PushLong  #asciitime
-               PushWord  #0
-               PushWord  #20
-               _TextWriteBlock
-               rts
+pdfBT	lda	#T0	; stop all timers
+	jsr	stopTIMER2
+	lda	#T0	; reset all timers
+	jsr	resetTIMER2
+	
+	lda	#T2	; set T2 as active timer
+	sta	theTIMER
+	
+	lda	#FREQ_A2F0	; set 1MHz frequency
+	jsr	setT2FREQUENCY
+	lda	#T2_DISP_ON	; turn T2 display on
+	jsr	setT2DISPLAY2
+	jmp	startTIMER	; start timer
 
 *----------------------------
 
-calcSPEED      =         *
-               pha
-               pha
-               PushWord  #1                   ; from readtimehex to seconds
-               PushLong  #0                   ; ignore
-               PushLong  #hextime1
-               _ConvSeconds
-               PullLong  seconds1
+printDATETO	lda	theSLOT	; v2 - Stop the BT timer if present
+	beq	pdtNOBT
 
-               pha
-               pha
-               PushWord  #1                   ; from readtimehex to seconds
-               PushLong  #0                   ; ignore
-               PushLong  #hextime2
-               _ConvSeconds
-               PullLong  seconds2
+	jsr	stopTIMER	; stop T2
 
+*---
+
+pdtNOBT	PushLong	#strTO
+	_WriteCString
+	
+	PushLong	#asciitime
+	_ReadAsciiTime
+	
+	pha		; read time in hex format
+	pha		; for a later conversion
+	pha
+	pha
+	_ReadTimeHex
+	pla
+	sta	hextime2
+	pla
+	sta	hextime2+2
+	pla
+	sta	hextime2+4
+	pla
+	sta	hextime2+6
+	
+	PushLong	#asciitime
+	PushWord	#0
+	PushWord	#20
+	_TextWriteBlock
+	rts
+
+*----------------------------
+
+calcSPEED	lda	theSLOT	; v2 - Calc speed with BT timer
+	beq	csNOBT
+
+* kbps = filesize / (valTIMER / 1023000)
+
+	jsr	readTIMER	; value in valTIMER
+
+	pha
+	pha
+	pha
+	pha
+	PushLong	valTIMER
+	PushLong	#REF_1MHZ
+	_LongDivide
+	PullLong	seconds	; quotient
+	pla		; remainder
+	pla
+	jmp	csCOMMONCODE
+
+*---
+
+csNOBT	pha
+	pha
+	PushWord	#1	; from readtimehex to seconds
+	PushLong	#0	; ignore
+	PushLong	#hextime1
+	_ConvSeconds
+	PullLong  seconds1
+	
+	pha
+	pha
+	PushWord	#1	; from readtimehex to seconds
+	PushLong	#0	; ignore
+	PushLong	#hextime2
+	_ConvSeconds
+	PullLong  seconds2
+	
 * Now, get the time in seconds
-               lda       seconds2             ; take low word only
-               sec
-               sbc       seconds1
-               sta       seconds
+
+	lda	seconds2	; take low word only
+	sec
+	sbc	seconds1
+	sta	seconds
 
 * Operation in seconds, now
 * calculate the speed
 * filesize / speed = nb bytes per second
 
-               pha
-               pha
-               pha
-               pha
-               PushLong  filesize
-               PushLong  seconds
-               _LongDivide
-               PullLong  kbs                  ; quotient
-               pla                            ; remainder
-               pla
+csCOMMONCODE	pha
+	pha
+	pha
+	pha
+	PushLong	filesize
+	PushLong	seconds
+	_LongDivide
+	PullLong	kbs	; quotient
+	pla		; remainder
+	pla
 
-               lda       #'00'                ; clear string
-               sta       strCALCKBS
-               sta       strCALCKBS+2
-                                              ; let a trailing x00
-               PushWord  kbs
-               PushLong  #strCALCKBS
-               PushWord  #4
-               PushWord  #0
-               _Int2Dec
+	lda	#'00'	; clear string
+	sta	strCALCKBS
+	sta	strCALCKBS+2	; let a trailing x00
+
+	PushWord	kbs
+	PushLong	#strCALCKBS
+	PushWord	#4
+	PushWord	#0
+	_Int2Dec
 
 *----------
 
-               PushLong  #strSPEED
-               _WriteCString                  ; params set above
+	PushLong	#strSPEED
+	_WriteCString		; params set above
 
-               PushLong  #strCALCKBS
-               _WriteCString                  ; params set above
+	PushLong	#strCALCKBS
+               _WriteCString		; params set above
 
-               PushLong  #strKBS
-               _WriteCString                  ; params set above
-               rts
+	PushLong	#strKBS
+	_WriteCString		; params set above
+	rts
 
 *----------------------------
 * BRUTAL TIMER
@@ -900,50 +932,49 @@ calcSPEED      =         *
 * DATA
 *----------------------------
 
-strINTRO       asc       'BenchmarkeD v2'0d
-               asc       '(c) 2013-2026, Brutal Deluxe Software'0d0d
-               asc       'File options'0d
-               asc       ' 1- Write speed'0d
-               asc       ' 2- Read speed'0d
-               asc       'Block options'0d
-               asc       ' 3- Read with 64K buffer'0d
-               asc       ' 4- Read block-by-block'0d
-               asc       'Brutal Timer'0d
-               asc       ' 5- Set slot ('
-btSLOT         asc       '0)'0d
-               asc       ' 6- Set frequency ('
-btFREQ         asc       '0)'0d
-               asc       0d
-               asc       'Input your choice (Q to quit) >'00
+strINTRO	asc	'BenchmarkeD v2'0d
+	asc	'(c) 2013-2026, Brutal Deluxe Software'0d
+	asc	0d
+	asc	'File options'0d
+	asc	' 1- Write speed'0d
+	asc	' 2- Read speed'0d
+	asc	'Block options'0d
+	asc	' 3- Read with 64K buffer'0d
+	asc	' 4- Read block-by-block'0d
+	asc	'Brutal Timer'0d
+	asc	' 5- Set Brutal Timer slot ('
+btSLOT	asc	'0)'0d
+	asc	0d
+	asc	'Input your choice (Q to quit) >'00
 
-strBYE         asc       0d0d'Thank you. Press a key to continue...'00
+strBYE	asc	0d0d'Thank you. Press a key to continue...'00
 
-strREAD        asc       0d0d'Now reading... '00
-strCREATE      asc       0d0d'Now creating... '00
-strRERR        asc       0d'=== Read failed! ==='00
-strWERR        asc       0d'=== Write failed! ==='00
-strCANCEL      asc       0d'=== Cancelled! ==='00
+strREAD	asc	0d0d'Now reading... '00
+strCREATE	asc	0d0d'Now creating... '00
+strRERR	asc	0d'=== Read failed! ==='00
+strWERR	asc	0d'=== Write failed! ==='00
+strCANCEL	asc	0d'=== Cancelled! ==='00
 
-*strFROM        asc       0d' Started at '00
-*strTO          asc       0d'   Ended at '00
+*strFROM	asc	0d' Started at '00
+*strTO	asc	0d'   Ended at '00
 
-strFROM        asc       ', started at '00
-strTO          asc       0d'Ended at '00
-strSPEED       asc       ', for an average speed of '00
-strKBS         asc       ' KB/s'00
-strBLOCKS      asc       ' blocks'00
+strFROM	asc	', started at '00
+strTO	asc	0d'Ended at '00
+strSPEED	asc	', for an average speed of '00
+strKBS	asc	' KB/s'00
+strBLOCKS	asc	' blocks'00
 
 *----------
 
-pathname1      strl      '1/File512K'
-pathname2      strl      '1/File1M'
-pathname3      strl      '1/File2M'
-pathname4      strl      '1/File4M'
-pathname5      strl      '1/File8M'
-pathname6      strl      '1/File16M'
+pathname1	strl	'1/File512K'
+pathname2	strl	'1/File1M'
+pathname3	strl	'1/File2M'
+pathname4	strl	'1/File4M'
+pathname5	strl	'1/File8M'
+pathname6	strl	'1/File16M'
 
-fgWERR         ds        2
-fgCANCEL       ds        2
+fgWERR	ds	2
+fgCANCEL	ds	2
 
 *----------
 

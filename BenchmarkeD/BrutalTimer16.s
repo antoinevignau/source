@@ -19,7 +19,7 @@ setBTSLOT	PushLong	#strSETSLOT
 	_ReadChar
 	pla
 	and	#$ff	; mask bits 15-8
-	cmp	#"1"
+	cmp	#"0"
 	bcc	exitBTSLOT
 	cmp	#"7"+1
 	bcs	exitBTSLOT
@@ -43,28 +43,28 @@ exitBTSLOT	rts
 * SET BRUTAL TIMER FREQUENCY
 *----------------------------
 
-setBTFREQ	PushLong	#strSETFREQ
-	_WriteCString
-
-	PushWord	#0	; wait for key
-	PushWord	#1	; echo char
-	_ReadChar
-	pla
-	and	#$ff	; mask bits 15-8
-	cmp	#"1"
-	bcc	exitBTFREQ
-	cmp	#"4"+1
-	bcs	exitBTFREQ
-
-	sep	#$30
-	sta	btFREQ
-	rep	#$30
-
-	sec
-	sbc	#"1"	; 1..4 -> 0..3
-	sta	theFREQ
-	jsr	setT2FREQUENCY
-exitBTFREQ	rts
+*setBTFREQ	PushLong	#strSETFREQ
+*	_WriteCString
+*
+*	PushWord	#0	; wait for key
+*	PushWord	#1	; echo char
+*	_ReadChar
+*	pla
+*	and	#$ff	; mask bits 15-8
+*	cmp	#"1"
+*	bcc	exitBTFREQ
+*	cmp	#"4"+1
+*	bcs	exitBTFREQ
+*
+*	sep	#$30
+*	sta	btFREQ
+*	rep	#$30
+*
+*	sec
+*	sbc	#"1"	; 1..4 -> 0..3
+*	sta	theFREQ
+*	jsr	setT2FREQUENCY
+*exitBTFREQ	rts
 
 *----------------------------
 * CODE
@@ -201,15 +201,14 @@ readT2	sep	#$30
 *----------------------------
 
 strSETSLOT	asc	8d
-	asc	"Set slot (1-7) > "00
+	asc	"Set slot (0-7) > "00
 
-strSETFREQ	asc	8d
-	asc	"1- A2-F0 clock"8d
-	asc	"2- A2-7 MHz"8d
-	asc	"3- 20 MHz clock"8d
-	asc	"4- Custom quartz"8d
-	asc	"Set frequency (1-4) > "00
-
+*strSETFREQ	asc	8d
+*	asc	"1- A2-F0 clock"8d
+*	asc	"2- A2-7 MHz"8d
+*	asc	"3- 20 MHz clock"8d
+*	asc	"4- Custom quartz"8d
+*	asc	"Set frequency (1-4) > "00
 
 *------- Data
 

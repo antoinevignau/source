@@ -1,10 +1,11 @@
 *
 * Time to read a file in 8-bits
 *
-* (c) 2013-2025, Brutal Deluxe Software
+* (c) 2013-2026, Brutal Deluxe Software
 *
 * v1.1: - take less text space to see all results on one page
 *       - escape is also a key to cancel an action
+* v2 - 20260330 - Uses Brutal Timer & LongDivide & Int2Dec routines
 *
 
 
@@ -14,14 +15,11 @@
 	dsk	BemarkeD.System
 	lst	off
 
-	use	4/Int.Macs
-	use	4/Locator.Macs
-*	use	4/Mem.Macs
-	use	4/Misc.Macs
-	use	4/Text.Macs
-	use	4/Util.Macs
+	use	BrutalTimer.equ
 
 *-----------------------------------
+
+REF_1MHZ	=	1023000
 
 Debut	=	$00
 ptrPREFIX	=	$280
@@ -143,9 +141,7 @@ no80col	lda	#0	; tell we can
 
 *-----------------------------------
 
-mainLOOP       =         *
-
-	lda	#0
+mainLOOP	lda	#0
 	sta	fgCANCEL	; reset cancel flag
 
 	jsr	HOME
@@ -164,7 +160,12 @@ noFREAD	cmp	#"3"
 	bne	noBREAD
 	jmp	doBREADtrois
 
-noBREAD	cmp	#"D"
+noBREAD	cmp	#"4"
+	bne	noBTSLOT
+	jsr	setBTSLOT
+	jmp	mainLOOP
+	
+noBTSLOT	cmp	#"D"
 	bne	noDEBUG
 	brk	$bd
 
@@ -252,6 +253,13 @@ readFILE	asl
 	sta	proOPEN+1
 	lda	tblPATHNAME+1,x
 	sta	proOPEN+2
+
+* filesize in KB
+
+	lda	tblFILESIZE,x
+	sta	filesize
+	lda	tblFILESIZE+1,x
+	sta	filesize+1
 
 *--- Check if file exists...
 
@@ -741,23 +749,49 @@ printDATEFROM	@WriteCString	#strFROM
 
 	jsr	printASCIITIME
 
-	lda	DATELO
+	lda	DATELO	; month day
 	sta	hextime1
-	lda	DATEHI
+	lda	DATEHI	; year
 	sta	hextime1+1
-	lda	TIMELO
+	lda	TIMELO	; minute
 	sta	hextime1+2
-	lda	TIMEHI
+	lda	TIMEHI	; hour
 	sta	hextime1+3
-	lda	xTIMELO
-	sta	hextime1+4
-	lda	xTIMEHI
-	sta	hextime1+5
+*	lda	xTIMELO	; ms
+*	sta	hextime1+4
+*	lda	xTIMEHI	; ms
+*	sta	hextime1+5
+
+*---
+
+	lda	theSLOT
+	bne	pdfBT
 	rts
+
+pdfBT	lda	#T0	; stop all timers
+	jsr	stopTIMER2
+	lda	#T0	; reset all timers
+	jsr	resetTIMER2
+	
+	lda	#T2	; set T2 as active timer
+	sta	theTIMER
+	
+	lda	#FREQ_A2F0	; set 1MHz frequency
+	jsr	setT2FREQUENCY
+	lda	#T2_DISP_ON	; turn T2 display on
+	jsr	setT2DISPLAY2
+	jmp	startTIMER	; start timer
 
 *----------------------------
 
-printDATETO	@WriteCString	#strTO
+printDATETO	lda	theSLOT	; v2 - Stop the BT timer if present
+	beq	pdtNOBT
+	
+	jsr	stopTIMER	; stop T2
+
+*---
+
+pdtNOBT	@WriteCString	#strTO
 
 	jsr	PRODOS
 	dfb	$82
@@ -765,18 +799,18 @@ printDATETO	@WriteCString	#strTO
 
 	jsr	printASCIITIME
 
-	lda	DATELO
+	lda	DATELO	; month day
 	sta	hextime2
-	lda	DATEHI
+	lda	DATEHI	; year
 	sta	hextime2+1
-	lda	TIMELO
+	lda	TIMELO	; minute
 	sta	hextime2+2
-	lda	TIMEHI
+	lda	TIMEHI	; hour
 	sta	hextime2+3
-	lda	xTIMELO
-	sta	hextime2+4
-	lda	xTIMEHI
-	sta	hextime2+5
+*	lda	xTIMELO
+*	sta	hextime2+4
+*	lda	xTIMEHI
+*	sta	hextime2+5
 	rts
 
 *-----------------------------------
@@ -811,14 +845,14 @@ tblKEY	hex	00,01,02,03,04,05,06,07,08,09,0A,0B,0C,0D,0E,0F
 * Affiche le temps de ProDOS en ASCII
 *--------------------------------------
 
-printASCIITIME	lda	DATELO	; dd
+printASCIITIME	lda	DATELO	; day
 	and	#%00011111	; bits 4-0
 	jsr	getDECIMAL
 	jsr	PRBYTE
 	lda	#"/"
 	jsr	COUT
 
-	lda	DATEHI	; mm
+	lda	DATEHI	; month
 	lsr		; bits 5-8
 	lda	DATELO
 	rol
@@ -831,11 +865,11 @@ printASCIITIME	lda	DATELO	; dd
 	lda	#"/"
 	jsr	COUT
 
-	lda	DATEHI	; yy
+	lda	DATEHI	; year
 	lsr		; bits 7-1
 	and	#%01111111
-*	clc
-*	adc	#$64
+	clc
+	adc	#$64
 	jsr	getDECIMAL
 	jsr	PRBYTE
 	lda	#" "
@@ -852,15 +886,17 @@ printASCIITIME	lda	DATELO	; dd
 	and	#%00111111
 	jsr	getDECIMAL
 	jsr	PRBYTE
-	lda	#":"
-	jsr	COUT
+*	lda	#":"
+*	jsr	COUT
+*
+*	lda	xTIMEHI	; ss
+*	lsr
+*	lsr
+*	and	#%00111111
+*	jsr	getDECIMAL
+*	jmp	PRBYTE
 
-	lda	xTIMEHI	; ss
-	lsr
-	lsr
-	and	#%00111111
-	jsr	getDECIMAL
-	jmp	PRBYTE
+	rts
 
 *--------------------------------------
 * getDECIMAL
@@ -902,27 +938,80 @@ getDECIMAL2	clc		; on ajoute le reste < 10
 valDEC	ds	2	; on se limite ˆ 0-255
 
 *----------------------------
+* BRUTAL TIMER
+*----------------------------
 
-calcSPEED
+	put	BrutalTimer8.s
+	
+*----------------------------
 
-* TO DO
-	rts
+calcSPEED	lda	theSLOT
+	beq	csNOBT
 
-               pha
-               pha
-               PushWord  #1                   ; from readtimehex to seconds
-               PushLong  #0                   ; ignore
-               PushLong  #hextime1
-               _ConvSeconds
-               PullLong  seconds1
+* kbps = filesize / (valTIMER / 1023000)
 
-               pha
-               pha
-               PushWord  #1                   ; from readtimehex to seconds
-               PushLong  #0                   ; ignore
-               PushLong  #hextime2
-               _ConvSeconds
-               PullLong  seconds2
+	jsr	readTIMER	; value in valTIMER
+
+	lda	valTIMER
+	sta	numerator
+	lda	valTIMER+1
+	sta	numerator+1
+	lda	valTIMER+2
+	sta	numerator+2
+	lda	valTIMER+3
+	sta	numerator+3
+
+	lda	myREF1MHZ	; divided by 1MHZ
+	sta	denominator
+	lda	myREF1MHZ+1
+	sta	denominator+1
+	lda	myREF1MHZ+2
+	sta	denominator+2
+	lda	myREF1MHZ+3
+	sta	denominator+3
+
+	jsr	LongDivide	; result in quotient
+
+	lda	quotient
+	sta	seconds
+	lda	quotient+1
+	sta	seconds+1
+	lda	quotient+2
+	sta	seconds+2
+	lda	quotient+3
+	sta	seconds+3
+	jmp	csCOMMONCODE
+
+*---
+* hour = hextime + 3
+* minute = hextime +2
+
+csNOBT	lda	#0
+	sta	seconds
+	sta	seconds+1
+	sta	seconds+2
+	sta	seconds+3
+	sta	numerator
+	sta	numerator+1
+	sta	numerator+2
+	sta	numerator+3
+	jmp	csNOBT2
+
+*               pha
+*               pha
+*               PushWord  #1                   ; from readtimehex to seconds
+*               PushLong  #0                   ; ignore
+*               PushLong  #hextime1
+*               _ConvSeconds
+*               PullLong  seconds1
+*
+*               pha
+*               pha
+*               PushWord  #1                   ; from readtimehex to seconds
+*               PushLong  #0                   ; ignore
+*               PushLong  #hextime2
+*               _ConvSeconds
+*               PullLong  seconds2
 
 * Now, get the time in seconds
                lda       seconds2             ; take low word only
@@ -934,36 +1023,190 @@ calcSPEED
 * calculate the speed
 * filesize / speed = nb bytes per second
 
-	pha
-	pha
-	pha
-	pha
-	PushLong  filesize
-	PushLong  seconds
-	_LongDivide
-	PullLong  kbs                  ; quotient
-	pla                            ; remainder
-	pla
+csCOMMONCODE	lda	filesize
+	sta	numerator
+	lda	filesize+1
+	sta	numerator+1
+	lda	#0
+	sta	numerator+2
+	lda	#0
+	sta	numerator+3
 
-	lda	#'0'	; clear string
+csNOBT2	lda	seconds
+	sta	denominator
+	lda	seconds+1
+	sta	denominator+1
+	lda	seconds+2
+	sta	denominator+2
+	lda	seconds+3
+	sta	denominator+3
+
+	jsr	LongDivide	; result in quotient
+	
+	lda	#"0"	; clear string
 	sta	strCALCKBS
 	sta	strCALCKBS+1
 	sta	strCALCKBS+2
-	sta	strCALCKBS+3
-			; let a trailing x00
-               PushWord  kbs
-               PushLong  #strCALCKBS
-               PushWord  #4
-               PushWord  #0
-               _Int2Dec
+	sta	strCALCKBS+3	; let a trailing x00
+
+	ldx	#>strCALCKBS
+	ldy	#<strCALCKBS
+	jsr	Int2Dec
 
 *----------
 
-	@WriteCString	#strSPEED	; params set above
-
+csNOSTRING	@WriteCString	#strSPEED	; params set above
 	@WriteCString	#strCALCKBS	; params set above
-
 	@WriteCString	#strKBS	; params set above
+	rts
+
+*----------------------------
+* SOME MATH
+*----------------------------
+
+LongDivide	lda	#0	; zero remainder
+	sta	remainder
+	sta	remainder+1
+	sta	remainder+2
+	sta	remainder+3
+
+	lda	numerator	; copy numerator to quotient
+	sta	quotient
+	lda	numerator+1
+	sta	quotient+1
+	lda	numerator+2
+	sta	quotient+2
+	lda	numerator+3
+	sta	quotient+3
+
+	lda	denominator
+	ora	denominator+1
+	ora	denominator+2
+	ora	denominator+3
+	bne	LongDivide1
+	sec
+	rts
+
+LongDivide1	ldy	#32	; there are 32 bits
+	sec
+]lp	rol	quotient
+	rol	quotient+1
+	rol	quotient+2
+	rol	quotient+3
+	rol	remainder
+	rol	remainder+1
+	rol	remainder+2
+	rol	remainder+3
+	
+	sec		; temp = remainder - denominator
+	lda	remainder
+	sbc	denominator
+	sta	temp
+	lda	remainder+1
+	sbc	denominator+1
+	sta	temp+1
+	lda	remainder+2
+	sbc	denominator+2
+*	sta	temp+2
+	tax
+	lda	remainder+3
+	sbc	denominator+3
+*	sta	temp+3
+
+	bcc	LongDivide2	; remainder > denominator?
+
+	sta	remainder+3	; yes, remainder = temp
+	stx	remainder+2
+	lda	temp	; yes, remainder = temp
+	sta	remainder
+	lda	temp+1
+	sta	remainder+1
+*	lda	temp+2
+*	sta	remainder+2
+*	lda	temp+3
+*	sta	remainder+3
+
+LongDivide2	dey
+	bne	]lp
+
+	rol	quotient
+	rol	quotient+1
+	rol	quotient+2
+	rol	quotient+3
+	clc
+	rts
+
+*---
+
+myREF1MHZ	adrl	REF_1MHZ
+
+denominator	ds	4	; unsigned longint divisor
+numerator	ds	4	; unsigned longint dividend
+quotient	ds	4
+remainder	ds	4
+temp	ds	4
+digit	ds	2
+
+*----------------------------
+
+Int2Dec	lda	quotient
+	sta	temp
+	lda	quotient+1
+	sta	temp+1
+
+	sty	Debut	; string pointer
+	stx	Debut+1
+	
+	ldy	#4	; force 4
+Int2DecLoop	dey
+	bmi	Int2DecErr
+
+	lda	#0
+	sta	digit
+	sta	digit+1
+	
+	ldx	#16
+	clc
+Int2DecDivLoop	rol	temp
+	rol	temp+1
+	rol	digit
+	rol	digit+1
+	
+	sec		; dividend - divisor
+	lda	digit
+	sbc	#10
+	sta	temp+2
+	lda	digit+1
+	sbc	#0
+	bcc	Int2DecDivCont	; branch if dividend < divisor
+	sta	digit+1	; dividend = dividend - divisor
+	lda	temp+2
+	sta	digit
+Int2DecDivCont	dex
+	bne	Int2DecDivLoop
+
+	rol	temp
+	rol	temp+1
+	
+	lda	digit
+	clc
+	adc	#"0"
+	sta	(Debut),y
+	
+	lda	temp
+	ora	temp+1
+	bne	Int2DecLoop
+
+	dey
+	bmi	Int2DecDone
+	lda	#" "
+]lp	sta	(Debut),y
+	dey
+	bpl	]lp
+
+Int2DecDone	clc
+	rts
+Int2DecErr	sec
 	rts
 
 *----------------------------
@@ -972,30 +1215,33 @@ calcSPEED
 
 *	asc	"1234567890123456789012345678901234567890"
 
-strINTRO	asc	"BenchmarkeD 8-bits v1.2"0d
-	asc	"(c) 2025, Brutal Deluxe Software"0d0d
-	asc	"File options"0d
-	asc	" 1- Write speed"0d
-	asc	" 2- Read speed"0d
-	asc	"Block options"0d
-	asc	" 3- Read block-by-block"0d
-	asc	0d
+strINTRO	asc	"BenchmarkeD 8-bits v2"8d
+	asc	"(c) 2026, Brutal Deluxe Software"8d8d
+	asc	"File options"8d
+	asc	" 1- Write speed"8d
+	asc	" 2- Read speed"8d
+	asc	"Block options"8d
+	asc	" 3- Read block-by-block"8d
+	asc	"Brutal Timer"8d
+	asc	" 4- Set Brutal Timer slot ("
+btSLOT	asc	"0)"8d
+	asc	8d
 	asc	"Input your choice (Q to quit) >"00
 
-strBYE	asc	0d0d"Thank you. Press a key to continue..."00
+strBYE	asc	8d8d"Thank you. Press a key to continue..."00
 
-strREAD	asc	0d0d"Now reading... "00
-strREADUNK	asc	0d0d"Now reading an unknown block count"00
-strWEREAD	asc	0d"The block count was $"00
-strCREATE	asc	0d0d"Now creating... "00
-strRERR	asc	0d"=== Read failed! ==="00
-strWERR	asc	0d"=== Write failed! ==="00
-strCANCEL	asc	0d"=== Cancelled! ==="00
+strREAD	asc	8d8d"Now reading... "00
+strREADUNK	asc	8d8d"Now reading an unknown block count"00
+strWEREAD	asc	8d"The block count was $"00
+strCREATE	asc	8d8d"Now creating... "00
+strRERR	asc	8d"=== Read failed! ==="00
+strWERR	asc	8d"=== Write failed! ==="00
+strCANCEL	asc	8d"=== Cancelled! ==="00
 
 *	asc	"1234567890123456789012345678901234567890"
 
 strFROM	asc	", started at "00
-strTO	asc	0d"Ended at "00
+strTO	asc	8d"Ended at "00
 strSPEED	asc	", for an average speed of "00
 strKBS	asc	" KB/s"00
 strBLOCKS	asc	" blocks"00

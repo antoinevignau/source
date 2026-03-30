@@ -6,8 +6,9 @@
 * v1.1: - take less text space to see all results on one page
 *       - escape is also a key to cancel an action
 * v2 - 20260330 - Uses Brutal Timer & LongDivide & Int2Dec routines
+*    Must add buffer size for ProDOS 8
+*    Throughput is 170 KB/s with a $4000 read buffer and 64 KB/s with a $200
 *
-
 
 	mx	%11
 	typ	SYS
@@ -26,7 +27,7 @@ ptrPREFIX	=	$280
 ptrONLINE	=	$1000
 ptrBLOCK	=	$1000
 ptrBUFFER	=	$3000
-lenBUFFER	=	$4000
+lenBUFFER	=	512	; on lit par blocs de 512 octets
 proBUFFER	=	$b800
 PRODOS	=	$bf00
 xTIMELO	=	$bf8e
@@ -300,7 +301,11 @@ readFILE1	@WriteCString	#strREAD	; file exists
 
 readFILE4	jsr	readFILE3	; v1.2
 	@WriteCString	#strRERR
-	rts
+	
+	lda	theSLOT	; v2 - Stop the BT timer if present
+	beq	readFILE4B
+	jsr	stopTIMER	; stop T2
+readFILE4B	rts
 
 *- Continue
 
@@ -472,7 +477,11 @@ createFILE2	jsr	PRODOS	; errrooorrrrrrrr #$48...
 	jsr	PRODOS
 	dfb	$c1
 	da	proDESTROY
-	rts
+	
+	lda	theSLOT	; v2 - Stop the BT timer if present
+	beq	createFILE2B
+	jsr	stopTIMER	; stop T2
+createFILE2B	rts
 
 *---
 

@@ -251,7 +251,10 @@ doFREAD        =         *
                ldy       #16384
                jsr       readFILE
 
-doFREAD1       jmp       mainNEXT
+doFREAD1	lda	theSLOT	; v2 - Stop the BT timer if present
+	beq	doFREAD1B
+	jsr	stopTIMER	; stop T2
+doFREAD1B	jmp	mainNEXT
 
 *----------
 
@@ -376,7 +379,10 @@ doFCREATE      =         *
                ldy       #16384
                jsr       createFILE
 
-doFCREATE9     jmp       mainNEXT
+doFCREATE9	lda	theSLOT	; v2 - Stop the BT timer if present
+	beq	doFCREATE9B
+	jsr	stopTIMER	; stop T2
+doFCREATE9B	jmp	mainNEXT
 
 *----------
 
@@ -664,7 +670,10 @@ doBREAD2       jsr       displayWHEEL
                PushLong  #strRERR
                _WriteCString
 
-doBREAD3       jmp       mainNEXT
+doBREAD3       	lda	theSLOT	; v2 - Stop the BT timer if present
+	beq	doBREAD3B
+	jsr	stopTIMER	; stop T2
+doBREAD3B	jmp	mainNEXT
 
 *- Continue
 

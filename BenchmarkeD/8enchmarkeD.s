@@ -5,10 +5,8 @@
 *
 * v1.1: - take less text space to see all results on one page
 *       - escape is also a key to cancel an action
-* v2 - 20260330 - Uses Brutal Timer & LongDivide & Int2Dec routines
-*    Must add buffer size for ProDOS 8
-*    Throughput is 170 KB/s with a $4000 read buffer and 64 KB/s with a $200
-*
+* v2 - 20260330 - Uses Brutal Timer & LongDivide & Int2Dec routines & buffer size
+*   must validate the read block option before making releasing the beast
 
 	mx	%11
 	typ	SYS
@@ -27,7 +25,10 @@ ptrPREFIX	=	$280
 ptrONLINE	=	$1000
 ptrBLOCK	=	$1000
 ptrBUFFER	=	$3000
-lenBUFFER	=	512	; on lit par blocs de 512 octets
+
+lenREAD	=	512	; 0,5K for read
+lenWRITE	=	32768	; 32K for write
+
 proBUFFER	=	$b800
 PRODOS	=	$bf00
 xTIMELO	=	$bf8e
@@ -165,8 +166,12 @@ noBREAD	cmp	#"4"
 	bne	noBTSLOT
 	jsr	setBTSLOT
 	jmp	mainLOOP
-	
-noBTSLOT	cmp	#"D"
+
+noBTSLOT	cmp	#"5"
+	bne	noRRC
+	jmp	setRRC
+
+noRRC	cmp	#"D"
 	bne	noDEBUG
 	brk	$bd
 
@@ -191,11 +196,26 @@ doQUIT	jsr	PRODOS	; exit
 	brk	$bd	; on ne se refait pas ;-)
 
 *----------------------------
+* SET READ REQUEST COUNT
+*----------------------------
+
+setRRC	@WriteCString	#strRRC
+	jsr	translateKEY
+	cmp	#"1"
+	bcc	exitRRC
+	cmp	#"7"+1
+	bcs	exitRRC
+	sec
+	sbc	#"1"
+	sta	theRRC
+exitRRC	jmp	mainLOOP
+	
+*----------------------------
 * READ FILE SPEED
 *----------------------------
 
-doFREAD			; Read by chunks of 64KB
-
+doFREAD			; Read by chunks of xKB
+	
 * 512K
 
 	lda	#0	; 512
@@ -245,7 +265,8 @@ doFREAD1	jmp	mainNEXT
 
 *----------
 
-readFILE	asl
+readFILE	sta	theFILE
+	asl
 	tax
 
 * pathname
@@ -262,6 +283,35 @@ readFILE	asl
 	lda	tblFILESIZE+1,x
 	sta	filesize+1
 
+* set read request count (512 to 32K)
+
+	lda	theRRC
+	asl
+	tax
+	lda	tblFILESIZE,x
+	sta	proREAD+4
+	lda	tblFILESIZE+1,x
+	sta	proREAD+5
+	
+*--- Set exit condition
+
+	lda	theFILE	; file index x 8
+	asl
+	asl
+	asl
+	clc
+	adc	theRRC	; + RRC
+	asl		; *2
+	tax
+	lda	matrixINDEX,x	; = nb of iterations
+	sta	maxINDEX
+	lda	matrixINDEX+1,x
+	sta	maxINDEX+1
+	
+	lda	#0	; start at 0
+	sta	theINDEX
+	sta	theINDEX+1
+	
 *--- Check if file exists...
 
 	jsr	PRODOS
@@ -270,14 +320,27 @@ readFILE	asl
 	bcc	readFILE1
 	rts
 
-*---
+*--- Display header + filename
 
 readFILE1	@WriteCString	#strREAD	; file exists
 
 	ldx	proOPEN+2
 	ldy	proOPEN+1
 	jsr	printPSTRING
-	jsr	printDATEFROM
+
+*--- Display buffer information
+	
+	@WriteCString	#strBUFFER	; buffer
+
+	lda	theRRC
+	asl
+	tax
+	ldy	tblSTRRRC,x
+	lda	tblSTRRRC+1,x
+	tax
+	jsr	printCSTRING
+
+	jsr	printDATEFROM	; ...and the date
 
 *----------
 
@@ -292,8 +355,22 @@ readFILE1	@WriteCString	#strREAD	; file exists
 	jsr	PRODOS
 	dfb	$ca
 	da	proREAD
-	bcc	]lp	; until error
+	bcs	readFILEERR	; read error?
 
+	inc	theINDEX	; exit condition
+	bne	readFILE1A
+	inc	theINDEX+1
+readFILE1A	lda	theINDEX+1
+	cmp	maxINDEX+1
+	bcc	]lp
+	lda	theINDEX
+	cmp	maxINDEX
+	blt	]lp
+	jmp	readFILE2
+	
+readFILEERR	cmp	#$4c	; we had an error, check which one
+	beq	readFILE2
+	
 	cmp	#$27	; I/O error
 	bne	readFILE2
 
@@ -410,6 +487,13 @@ createFILE	asl
 	lda	tblMAXINDEX+1,x
 	sta	maxINDEX+1
 
+* set 32K buffer size for write
+
+	lda	#<lenWRITE
+	sta	proWRITE+4
+	lda	#>lenWRITE
+	sta	proWRITE+5
+	
 *----------
 * First, delete file
 * Must not be taken into account
@@ -697,20 +781,51 @@ printCSTRING	sty	pcs1+1
 	
 pcs1	lda	$ffff
 	beq	pcs3
+
+	cmp	#"#"	; RRC
+	bne	pcs1a
+	jsr	pcsRRC	; print RRC string value
+	jmp	pcs2a
 	
-	bit	fgCASE	; can we do lowercase?
+pcs1a	cmp	#"$"	; BT slot
+	bne	pcs1b
+	lda	theSLOT
+	ora	#"0"
+
+pcs1b	bit	fgCASE	; can we do lowercase?
 	bpl	pcs2	; yes
 	tax		; from lower to upper
 	lda	tblKEY,x
 	
 pcs2	jsr	COUT
 	
-	inc	pcs1+1
+pcs2a	inc	pcs1+1
 	bne	pcs1
 	inc	pcs1+2
 	bne	pcs1
 	
 pcs3	rts
+
+*---
+
+pcsRRC	lda	pcs1+2
+	pha
+	lda	pcs1+1
+	pha
+	
+	lda	theRRC
+	asl
+	tax
+	ldy	tblSTRRRC,x
+	lda	tblSTRRRC+1,x
+	tax
+	jsr	printCSTRING
+	
+	pla
+	sta	pcs1+1
+	pla
+	sta	pcs1+2
+	rts
 
 *--------
 
@@ -829,7 +944,9 @@ pdtNOBT	@WriteCString	#strTO
 translateKEY	jsr	RDKEY
 	tax
 	lda	tblKEY,x
-	rts
+	jmp	COUT	; print character
+
+*---
 
 tblKEY	hex	00,01,02,03,04,05,06,07,08,09,0A,0B,0C,0D,0E,0F
 	hex	10,11,12,13,14,15,16,17,18,19,1A,1B,1C,1D,1E,1F
@@ -1231,11 +1348,31 @@ strINTRO	asc	"BenchmarkeD 8-bits v2"8d
 	asc	" 2- Read speed"8d
 	asc	"Block options"8d
 	asc	" 3- Read block-by-block"8d
-	asc	"Brutal Timer"8d
-	asc	" 4- Set Brutal Timer slot ("
-btSLOT	asc	"0)"8d
+	asc	"Configuration"8d
+	asc	" 4- Set Brutal Timer slot ($)"8d
+	asc	" 5- Set Read Request count (#)"8d
 	asc	8d
 	asc	"Input your choice (Q to quit) >"00
+
+strRRC	asc	8d"Select Read Request count:"8d
+	asc	" 1- 512 bytes"8d
+	asc	" 2- 1K"8d
+	asc	" 3- 2K"8d
+	asc	" 4- 4K"8d
+	asc	" 5- 8K"8d
+	asc	" 6- 16K"8d
+	asc	" 7- 32K"8d
+	asc	8d
+	asc	"Input your choice (1-7) >"00
+
+tblSTRRRC	da	strRRC1,strRRC2,strRRC3,strRRC4,strRRC5,strRRC6,strRRC7
+strRRC1	asc	"512B"00
+strRRC2	asc	"1K"00
+strRRC3	asc	"2K"00
+strRRC4	asc	"4K"00
+strRRC5	asc	"8K"00
+strRRC6	asc	"16"00
+strRRC7	asc	"32K"00
 
 strBYE	asc	8d8d"Thank you. Press a key to continue..."00
 
@@ -1246,6 +1383,8 @@ strCREATE	asc	8d8d"Now creating... "00
 strRERR	asc	8d"=== Read failed! ==="00
 strWERR	asc	8d"=== Write failed! ==="00
 strCANCEL	asc	8d"=== Cancelled! ==="00
+
+strBUFFER	asc	", buffer "00
 
 *	asc	"1234567890123456789012345678901234567890"
 
@@ -1259,8 +1398,23 @@ strBLOCKS	asc	" blocks"00
 
 tblPATHNAME	da	pathname1,pathname2,pathname3
 	da	pathname4,pathname5,pathname6
-tblFILESIZE	dw	512,1024,2048,4096,8192,16384
-tblMAXINDEX	dw	16,32,64,128,256,512
+
+theRRC	dw	0	; 0..6 (default is 512 bytes)
+tblFILESIZE	dw	512,1024,2048,4096,8192,16384,32768	; invert table for max count
+tblMAXINDEX	dw	16,32,64,128,256,512,1024
+
+* Taille de RRC		512,1024,2048,4096,8192,16384,32768
+	
+matrixINDEX	dw	01024,00512,0256,0128,0064,0032,016,008	; 512K
+	dw	02048,01024,0512,0256,0128,0064,032,016	; 1M
+	dw	04096,02048,1024,0512,0256,0128,064,032	; 2M
+	dw	08192,04096,2048,1024,0512,0256,128,064	; 4M
+	dw	16384,08192,4096,2048,1024,0512,256,128	; 8M
+	dw	32768,16384,8192,4096,2048,1024,512,256	; 16M
+
+*---
+
+theFILE	ds	2	; file index
 
 pathname1	str	"File512K"
 pathname2	str	"File1M"
@@ -1321,7 +1475,7 @@ proWRITE
 	dfb	$4
 	ds	1	; ref_num
 	da	ptrBUFFER	; data_buffer
-	dw	lenBUFFER	; request_count
+	ds	2	; request_count ** variable **
 	ds	2	; transfer_count
 
 proCLOSE	dfb	$1

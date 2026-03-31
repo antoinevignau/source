@@ -18,7 +18,7 @@ setBTSLOT	@WriteCString	#strSETSLOT
 	cmp	#"7"+1
 	bcs	exitBTSLOT
 
-	sta	btSLOT
+*	sta	btSLOT
 
 	sec
 	sbc	#"0"
@@ -177,5 +177,3 @@ theFREQ	ds	2	; 0..3
 theDISPLAY	ds	2	; 0..1
 theSLOT	ds	2	; 0..7
 theSLOT16	ds	2	; 10=slot 1, ..., 70=slot 7
-
-

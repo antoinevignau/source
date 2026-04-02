@@ -132,7 +132,7 @@ result	=	5	; window pointer result
 ndaOPEN	phb
 	phk
 	plb
-	
+
 	lda	#0
 	sta	result,s
 	sta	result+2,s

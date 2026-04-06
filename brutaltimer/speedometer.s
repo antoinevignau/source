@@ -10,6 +10,7 @@
 *      I am sure GS/OS does many useful things in the OPEN call
 *      Yes, it does... I found what!
 * v1.4 - 20260326 with SetMark support
+* v1.5 - 20260406 decimal CSV export
 *
 
 	xc
@@ -249,7 +250,11 @@ doQUIT
 * SAVE CSV FILE
 *----------------------------
 
-saveCSV	PushLong	#strENDOFPROCESS
+saveCSV	lda	theSLOT	; Brutal Timer slot not set
+	bne	saveCSVOK
+	rts		; do not save, go buy one, ask Plamen!
+	
+saveCSVOK	PushLong	#strENDOFPROCESS
 	_WriteCString
 
 	lda	theSIZE	; pointer to file
@@ -425,17 +430,18 @@ doFREAD64L	lda	theSIZE
 	lda	fileSIZE,x
 	sta	proREAD+10
 
+	jsr	initMINMAX
 	jsr	showHEADER
 	
 	lda	#strBeforeOpen
-	jsr	showTICK
+	jsr	showTICKIN
 
 	jsl	GSOS	; open
 	dw	$2010
 	adrl	proOPEN
 
 	lda	#strAfterOpen
-	jsr	showTICK
+	jsr	showTICKOUT
 	
 *--------------
 
@@ -443,14 +449,14 @@ doFREAD64L	lda	theSIZE
 	sta	proREAD+2
 	
 	lda	#strBeforeRead
-	jsr	showTICK
+	jsr	showTICKIN
 
 	jsl	GSOS	; read
 	dw	$2012
 	adrl	proREAD
 
 	lda	#strAfterRead
-	jsr	showTICK
+	jsr	showTICKOUT
 	
 *--------------
 
@@ -458,14 +464,14 @@ doFREAD64L	lda	theSIZE
 	sta	proSETMARK+2
 	
 	lda	#strBeforeSetMark
-	jsr	showTICK
+	jsr	showTICKIN
 
 	jsl	GSOS
 	dw	$2016
 	adrl	proSETMARK
 
 	lda	#strAfterSetMark
-	jsr	showTICK
+	jsr	showTICKOUT
 
 *---
 
@@ -473,14 +479,14 @@ doFREAD64L	lda	theSIZE
 	sta	proCLOSE+2
 
 	lda	#strBeforeClose
-	jsr	showTICK
+	jsr	showTICKIN
 
 	jsl	GSOS	; close
 	dw	$2014
 	adrl	proCLOSE
 
 	lda	#strAfterClose
-	jsr	showTICK
+	jsr	showTICKOUT
 	
 	jmp	mainNEXT
 
@@ -509,17 +515,18 @@ doFREAD512C	lda	theSIZE
 	lda	#0
 	sta	proREAD+10
 	
+	jsr	initMINMAX
 	jsr	showHEADER
 	
 	lda	#strBeforeOpen
-	jsr	showTICK
+	jsr	showTICKIN
 
 	jsl	GSOS	; open
 	dw	$2010
 	adrl	proOPEN
 
 	lda	#strAfterOpen
-	jsr	showTICK
+	jsr	showTICKOUT
 	
 *--------------
 
@@ -527,7 +534,7 @@ doFREAD512C	lda	theSIZE
 	sta	proREAD+2
 	
 ]lp	lda	#strBeforeRead
-	jsr	showTICK
+	jsr	showTICKIN
 
 *	PushWord	#$0d
 *	_WriteChar
@@ -538,23 +545,29 @@ doFREAD512C	lda	theSIZE
 	bcs	doFREAD512B2
 	
 	lda	#strAfterRead
-	jsr	showTICK
+	jsr	showTICKOUT
+	jsr	calcMINMAX
 	jmp	]lp
 
 *--------------
 
-doFREAD512B2	lda	proOPEN+2
+doFREAD512B2	lda	#strAfterRead
+	jsr	showTICKOUT
+	jsr	calcMINMAX
+	jsr	showMINMAX
+
+	lda	proOPEN+2
 	sta	proSETMARK+2
 	
 	lda	#strBeforeSetMark
-	jsr	showTICK
+	jsr	showTICKIN
 
 	jsl	GSOS
 	dw	$2016
 	adrl	proSETMARK
 
 	lda	#strAfterSetMark
-	jsr	showTICK
+	jsr	showTICKOUT
 
 *---
 
@@ -562,14 +575,14 @@ doFREAD512B2	lda	proOPEN+2
 	sta	proCLOSE+2
 
 	lda	#strBeforeClose
-	jsr	showTICK
+	jsr	showTICKIN
 
 	jsl	GSOS	; close
 	dw	$2014
 	adrl	proCLOSE
 
 	lda	#strAfterClose
-	jsr	showTICK
+	jsr	showTICKOUT
 	
 	jmp	mainNEXT
 
@@ -618,10 +631,11 @@ doBREADOK	lda	#pathname	; the folder as a file
 	stz	proDREAD+12	; init block pointer
 	stz	proDREAD+14
 
+	jsr	initMINMAX
 	jsr	showHEADER
 	
 	lda	#strBeforeOpen
-	jsr	showTICK
+	jsr	showTICKIN
 
 *--- First, get our prefix
 
@@ -800,7 +814,7 @@ simpleREAD	jsr	makeTABLE
 	stz	theINDEX
 
 	lda	#strAfterOpen
-	jsr	showTICK
+	jsr	showTICKOUT
 
 *	PushWord	#$0d
 *	_WriteChar
@@ -808,7 +822,7 @@ simpleREAD	jsr	makeTABLE
 *---
 
 ]lp	lda	#strBeforeBlockRead
-	jsr	showTICK
+	jsr	showTICKIN
 
 	lda	theINDEX	; get block to read
 	asl
@@ -819,27 +833,35 @@ simpleREAD	jsr	makeTABLE
 doBREAD3	jsl	GSOS
 	dw	$202f	; DRead
 	adrl	proDREAD
-	bcs	doBREAD2	; the end
+	bcs	doBREAD3B	; the end
 
 	lda	#strAfterBlockRead
-	jsr	showTICK
+	jsr	showTICKOUT
+	jsr	calcMINMAX
 
 	inc	theINDEX
 	lda	theINDEX
 	cmp	maxINDEX
 	bcc	]lp
+	jmp	doBREAD2
 
-doBREAD2	lda	#strBeforeSetMark	; DO NOTHING
-	jsr	showTICK
+doBREAD3B	lda	#strAfterBlockRead
+	jsr	showTICKOUT
+	jsr	calcMINMAX
+
+doBREAD2	jsr	showMINMAX
+
+	lda	#strBeforeSetMark	; DO NOTHING
+	jsr	showTICKIN
 
 	lda	#strAfterSetMark
-	jsr	showTICK
+	jsr	showTICKOUT
 
 	lda	#strBeforeClose
-	jsr	showTICK
+	jsr	showTICKIN
 
 	lda	#strAfterClose
-	jsr	showTICK
+	jsr	showTICKOUT
 
 	jmp	mainNEXT
 
@@ -930,10 +952,11 @@ doLLREAD1	lda	theSIZE
 	lda	maxBLOCKS,x
 	sta	maxINDEX
 
+	jsr	initMINMAX
 	jsr	showHEADER
 	
 	lda	#strBeforeOpen
-	jsr	showTICK
+	jsr	showTICKIN
 
 	jsl	GSOS	; open
 	dw	$2010
@@ -1038,14 +1061,14 @@ theVCR	ldal	$bdbdbd,x
 	jsr	makeTABLE	; et on complète la table
 
 doLL1	lda	#strAfterOpen
-	jsr	showTICK
+	jsr	showTICKOUT
 
 *--- We have the File block pointer at dataBUFFER now
 
 	stz	theINDEX
 
 ]lp	lda	#strBeforeBlockRead
-	jsr	showTICK
+	jsr	showTICKIN
 
 	lda	theINDEX	; get block to read
 	asl
@@ -1056,45 +1079,96 @@ doLL1	lda	#strAfterOpen
 	jsl	GSOS
 	dw	$202f	; DRead
 	adrl	proDREAD
-	bcs	doLLEND	; the end
+	bcs	doLLENDERR	; the end
 
 	lda	#strAfterBlockRead
-	jsr	showTICK
+	jsr	showTICKOUT
+	jsr	calcMINMAX
 
 	inc	theINDEX
 	lda	theINDEX
 	cmp	maxINDEX
 	bcc	]lp
+	jmp	doLLEND
 
+doLLENDERR	lda	#strAfterBlockRead
+	jsr	showTICKOUT
+	jsr	calcMINMAX
+	
 *--------------
 
-doLLEND	lda	proOPEN+2
+doLLEND	jsr	showMINMAX
+
+	lda	proOPEN+2
 	sta	proSETMARK+2
 	
 	lda	#strBeforeSetMark
-	jsr	showTICK
+	jsr	showTICKIN
 
 	jsl	GSOS
 	dw	$2016
 	adrl	proSETMARK
 
 	lda	#strAfterSetMark
-	jsr	showTICK
+	jsr	showTICKOUT
 
 	lda	proOPEN+2
 	sta	proCLOSE+2
 
 	lda	#strBeforeClose
-	jsr	showTICK
+	jsr	showTICKIN
 
 	jsl	GSOS	; close
 	dw	$2014
 	adrl	proCLOSE
 
 	lda	#strAfterClose
-	jsr	showTICK
+	jsr	showTICKOUT
 	jmp	mainNEXT
-	
+
+*----------------------------
+* INIT MIN & MAX
+*----------------------------
+
+initMINMAX	lda	#-1
+	sta	theMIN
+	sta	theMIN+2
+
+	stz	theMAX
+	stz	theMAX+2
+	rts
+
+*----------------------------
+* CALCULATE MIN & MAX
+*----------------------------
+
+calcMINMAX	ldx	valTIMEROUT+2
+	ldy	valTIMEROUT
+
+	cpx	theMIN+2
+	bcc	newMIN
+	cpy	theMIN
+	bcc	newMIN
+	bcs	calcMAX
+
+newMIN	stx	theMIN+2
+	sty	theMIN
+
+calcMAX	cpx	theMAX+2
+	bcc	exitMAX
+	cpy	theMAX
+	bcc	exitMAX
+	beq	exitMAX
+
+	stx	theMAX+2
+	sty	theMAX
+exitMAX	rts
+
+*---
+
+theMIN	ds	4
+theMAX	ds	4
+
 *----------------------------
 * SHOW HEADER
 *----------------------------
@@ -1110,8 +1184,8 @@ showHEADER	lda	theKEY
 	lda	theSIZE
 	asl
 	tay
-	lda	ptrSTRFILESIZE,y	; we slip below...
-
+	lda	ptrSTRFILESIZE,y	; and slip below...
+	
 *----------------------------
 * OUTPUT CSV
 *----------------------------
@@ -1130,11 +1204,28 @@ outputCSV1	lda	$ffff,x
 	bne	outputCSV1
 outputCSV9	rts
 
+*--- output only digits
+
+outputCSVDIGIT	sta	outputCSVD1+1
+	ldx	#0
+outputCSVD1	lda	$ffff,x
+	and	#$ff
+	beq	outputCSVD9
+	cmp	#' '
+	beq	outputCSVD2
+	sep	#$20
+	sta	[dpCSV]
+	rep	#$20
+	inc	dpCSV
+outputCSVD2	inx
+	bne	outputCSVD1
+outputCSVD9	rts
+
 *----------------------------
-* SHOW TICK
+* SHOW TICK IN
 *----------------------------
 
-showTICK	jsr	outputCSV
+showTICKIN	jsr	outputCSV
 
 	lda	#T2
 	jsr	stopTIMER2
@@ -1142,16 +1233,189 @@ showTICK	jsr	outputCSV
 	lda	#T2
 	jsr	readTIMER2
 
+*--- Output decimal value
+
+	lda	#'  '	; init string
+	sta	strTick
+	sta	strTick+2
+	sta	strTick+4
+	sta	strTick+6
+	sta	strTick+8
+	
 	lda	valTIMER+2
 	pha
 	lda	valTIMER
 	pha
 	PushLong	#strTick
-	PushWord	#8
-	_Long2Hex
+	PushWord	#10
+	PushWord	#FALSE
+	_Long2Dec
+
+	lda	valTIMER	; save start value
+	sta	valTIMERIN	; for later
+	lda	valTIMER+2
+	sta	valTIMERIN+2
+	
+	lda	#strTick
+	jsr	outputCSVDIGIT
+
+*--- Output end of in line
+
+	lda	#strComma	; output one comma
+	jsr	outputCSV
+	
+	lda	#strReturn	; output end of line
+	jsr	outputCSV
+	
+	lda	#T2
+	jmp	startTIMER2
+
+*---
+
+valTIMERIN	ds	4
+
+*----------------------------
+* SHOW TICK OUT
+*----------------------------
+
+showTICKOUT	jsr	outputCSV
+
+	lda	#T2
+	jsr	stopTIMER2
+	
+	lda	#T2
+	jsr	readTIMER2
+
+*--- Output decimal value
+
+	lda	#'  '	; init string
+	sta	strTick
+	sta	strTick+2
+	sta	strTick+4
+	sta	strTick+6
+	sta	strTick+8
+	
+	lda	valTIMER+2
+	pha
+	lda	valTIMER
+	pha
+	PushLong	#strTick
+	PushWord	#10
+	PushWord	#FALSE
+	_Long2Dec
 
 	lda	#strTick
+	jsr	outputCSVDIGIT
+
+	lda	#strComma	; output one comma
 	jsr	outputCSV
+
+*--- Now calculate difference and show it
+
+	lda	#'  '	; init string
+	sta	strTick
+	sta	strTick+2
+	sta	strTick+4
+	sta	strTick+6
+	sta	strTick+8
+	
+	lda	valTIMER
+	sec
+	sbc	valTIMERIN
+	sta	valTIMEROUT
+	tay
+	lda	valTIMER+2
+	sbc	valTIMERIN+2
+	sta	valTIMEROUT+2
+	
+	pha
+	phy
+	PushLong	#strTick
+	PushWord	#10
+	PushWord	#FALSE
+	_Long2Dec
+
+	lda	#strTick
+	jsr	outputCSVDIGIT
+
+	lda	#strReturn	; output end of line
+	jsr	outputCSV
+	
+*--- Restart timer
+
+	lda	#T2
+	jmp	startTIMER2
+
+*---
+
+valTIMEROUT	ds	4	; the calculated difference (out - in)
+
+*----------------------------
+* SHOW MIN & MAX
+*----------------------------
+
+showMINMAX	lda	#T2
+	jsr	stopTIMER2
+	
+*--- Output decimal value of MIN
+
+	lda	#'  '	; init string
+	sta	strTick
+	sta	strTick+2
+	sta	strTick+4
+	sta	strTick+6
+	sta	strTick+8
+	
+	lda	theMIN+2
+	pha
+	lda	theMIN
+	pha
+	PushLong	#strTick
+	PushWord	#10
+	PushWord	#FALSE
+	_Long2Dec
+
+	lda	#strMin
+	jsr	outputCSV
+
+	lda	#strTick
+	jsr	outputCSVDIGIT
+
+	lda	#strComma
+	jsr	outputCSV
+	lda	#strReturn
+	jsr	outputCSV
+
+*--- Output decimal value of MAX
+
+	lda	#'  '	; init string
+	sta	strTick
+	sta	strTick+2
+	sta	strTick+4
+	sta	strTick+6
+	sta	strTick+8
+	
+	lda	theMAX+2
+	pha
+	lda	theMAX
+	pha
+	PushLong	#strTick
+	PushWord	#10
+	PushWord	#FALSE
+	_Long2Dec
+
+	lda	#strMax
+	jsr	outputCSV
+
+	lda	#strTick
+	jsr	outputCSVDIGIT
+
+	lda	#strComma
+	jsr	outputCSV
+	lda	#strReturn
+	jsr	outputCSV
+
+*--- Restart timer
 
 	lda	#T2
 	jmp	startTIMER2
@@ -1324,7 +1588,15 @@ strAfterBlockRead asc	'Block read exit,'00
 strBeforeSetMark asc	'Set mark entry,'00
 strAfterSetMark	asc	'Set mark exit,'00
 
-strTick	asc	'        '0d00
+strMin	asc	'min,'00
+strMax	asc	'max,'00
+
+* WHAT, time in decimal, <empty>
+* what, time in decimal, difference
+
+strTick	asc	'          '00
+strComma	asc	','00
+strReturn	asc	0d00
 
 strREAD	asc	'Read... '00
 strBLOCKS	asc	'Blocks'00
@@ -1335,9 +1607,9 @@ ptrSTRFILESIZE	da	strFILE64
 	da	strFILE128
 	da	strFILE256
 
-strFILE64	asc	'File size is 64Kb'0d00
-strFILE128	asc	'File size is 128Kb'0d00
-strFILE256	asc	'File size is 256Kb'0d00
+strFILE64	asc	'File size is 64Kb,'0d00
+strFILE128	asc	'File size is 128Kb,'0d00
+strFILE256	asc	'File size is 256Kb,'0d00
 
 ptrSTRTESTTYPE	da	strTESTTYPE1
 	da	strTESTTYPE2

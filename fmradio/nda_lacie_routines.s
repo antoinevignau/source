@@ -209,26 +209,21 @@ lacie_setVOLUME
 	PushWord	theVOL	; volume x 100
 	PushWord	#10	
 	_Multiply
-	
-*	PushWord	#0	; 0..100
-*	PushWord	#0	; 0..15
-*	phx
+
 	PushWord	#66	; =100/15
 	_UDivide
 	pla
-	pla
+	plx
+	
 	sep	#$20
 	
-*	lda	theVOL
-	lsr		; /8
-	lsr
-	lsr
-	and	#$000f	; 000v
+	and	#$0f	; 000v
 	sta	volume
 	asl
 	asl
 	asl
 	asl
+	and	#$f0	; ahem
 	ora	volume
 	sta	volume	; 00vv
 
@@ -241,28 +236,22 @@ nomute	sta	mute
 
 *--- Set the register
 
-	ldx	#NB_RETRY
-]lp	phx
-	jsr	FMTalkRegister1
-	plx
-	dex
-	bne	]lp
+*	ldx	#NB_RETRY
+*]lp	phx
+*	jsr	FMTalkRegister1
+*	plx
+*	dex
+*	bne	]lp
 
 ok_setVOL1	jsr	FMListenRegister1
 
-	ldx	#NB_RETRY
-]lp	phx
+*	ldx	#NB_RETRY
+*]lp	phx
 	jsr	FMTalkRegister1
-	bcc	ok_setVOL2
-	plx
-	dex
-	bne	]lp
-
-	sep	#$20
-	ldal	$c034
-	inc
-	stal	$c034
-	rep	#$20
+*	plx
+*	bcc	ok_setVOL2
+*	dex
+*	bne	]lp
 
 ok_setVOL2	lda	dataTalk1	; volume + bass/treble equal?
 	cmp	dataListen1+1
@@ -298,16 +287,10 @@ ok_setFREQ1	jsr	FMListenRegister2
 	ldx	#NB_RETRY
 ]lp	phx
 	jsr	FMTalkRegister2
-	bcc	ok_setFREQ2
 	plx
+	bcc	ok_setFREQ2
 	dex
 	bne	]lp
-
-	sep	#$20
-	ldal	$c034
-	inc
-	stal	$c034
-	rep	#$20
 
 ok_setFREQ2	lda	dataTalk2+1	; are frequencies equal?
 	cmp	dataListen2+2

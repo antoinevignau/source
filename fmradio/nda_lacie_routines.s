@@ -164,6 +164,7 @@ ok_getINFO1	jsr	FMListenRegister3	; reset please
 ]lp	phx
 	jsr	FMTalkRegister3
 	plx
+	bcc	ok_getINFO2
 	dex
 	bne	]lp
 
@@ -217,15 +218,14 @@ lacie_setVOLUME
 	
 	sep	#$20
 	
-	and	#$0f	; 000v
+	and	#$0f	; 0v
 	sta	volume
 	asl
 	asl
 	asl
 	asl
-	and	#$f0	; ahem
 	ora	volume
-	sta	volume	; 00vv
+	sta	volume	; vv
 
 	lda	fgMUTE	; mute
 	beq	nomute
@@ -245,13 +245,13 @@ nomute	sta	mute
 
 ok_setVOL1	jsr	FMListenRegister1
 
-*	ldx	#NB_RETRY
-*]lp	phx
+	ldx	#NB_RETRY
+]lp	phx
 	jsr	FMTalkRegister1
-*	plx
-*	bcc	ok_setVOL2
-*	dex
-*	bne	]lp
+	plx
+	bcc	ok_setVOL2
+	dex
+	bne	]lp
 
 ok_setVOL2	lda	dataTalk1	; volume + bass/treble equal?
 	cmp	dataListen1+1
@@ -275,12 +275,12 @@ lacie_setFREQUENCY
 
 *--- Set the register
 	
-	ldx	#NB_RETRY
-]lp	phx
-	jsr	FMTalkRegister2
-	plx
-	dex
-	bne	]lp
+*	ldx	#NB_RETRY
+*]lp	phx
+*	jsr	FMTalkRegister2
+*	plx
+*	dex
+*	bne	]lp
 
 ok_setFREQ1	jsr	FMListenRegister2
 
@@ -296,6 +296,52 @@ ok_setFREQ2	lda	dataTalk2+1	; are frequencies equal?
 	cmp	dataListen2+2
 	bne	ok_setFREQ1
 	rts		; yes, exit
+
+*----------------------------
+* DISPLAY FREQUENCY
+*----------------------------
+* Formula = (76 x 100) + (theFREQ x 5)
+
+lacie_printFREQUENCY
+	lda	#'00'
+	sta	strFREQUENCY
+	
+	lda	theFREQ	; convert to string
+	asl
+	asl
+	clc
+	adc	theFREQ
+	adc	#76*100
+	pha
+	PushLong	#strFREQUENCY
+	PushWord	#5
+	PushWord	#FALSE
+	_Int2Dec
+
+	PushWord	#10
+	PushWord	#30
+	_MoveTo
+
+*
+* Font: LED.24 font, ID#32671, from BRCC Font #4 disk
+*
+
+	jsr	lacie_printNEW
+	rts
+
+	PushWord #$1800
+	PushWord #32671		; LED.24
+	PushWord #0
+	_InstallFont
+
+	PushLong	#strFREQUENCY
+	_DrawCString
+	rts
+
+*---
+
+valFREQUENCY	ds	4	; Formula (max 650*5 + 7600)
+strFREQUENCY	asc	'00000'00	; '10550'
 
 *----------------------------
 * FREQUENCY TABLE

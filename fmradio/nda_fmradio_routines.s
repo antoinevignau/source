@@ -54,30 +54,37 @@ doREOPEN
 * doRUN
 *----------------------------
 
-doRUN	PushWord	#10
-	PushWord	#10
-	_MoveTo
+doRUN	rts
 
-	lda	theTICK
-	bne	doRUN2
-
-	PushLong	#strNULL
-
-doRUN1	_DrawString
-	
-	lda	theTICK
-	eor	#DFT_ON
-	sta	theTICK
-	rts
-
-doRUN2	PushLong	#strNONZERO
-	bra	doRUN1
-
+*	PushWord	#10
+*	PushWord	#10
+*	_MoveTo
+*
+*	PushWord #$0800
+*	PushWord #65534		; Shaston.8
+*	PushWord #0
+*	_InstallFont
+*
+*	lda	theTICK
+*	bne	doRUN2
+*
+*	PushLong	#strNULL
+*
+*doRUN1	_DrawString
+*	
+*	lda	theTICK
+*	eor	#DFT_ON
+*	sta	theTICK
+*	rts
+*
+*doRUN2	PushLong	#strNONZERO
+*	bra	doRUN1
+*
 *---
-
-theTICK	ds	2
-strNULL	str	'------'
-strNONZERO	str	'Brutal'
+*
+*theTICK	ds	2
+*strNULL	str	'------'
+*strNONZERO	str	'Brutal'
 
 *----------------------------
 * doEVENT
@@ -298,7 +305,8 @@ ctlFREQ	pha
 	_GetCtlValueByID
 	pla
 	sta	theFREQ
-	jmp	lacie_setFREQUENCY
+	jsr	lacie_setFREQUENCY
+	jmp	lacie_printFREQUENCY
 
 *----------------------------
 * SPECIFIC CHIP ROUTINES
@@ -357,7 +365,8 @@ doFREQ_MINUS	ldx	#SC_FREQ
 	ldx	#SC_FREQ
 	lda	theFREQ
 	jsr	refreshTHUMB
-	jmp	lacie_setFREQUENCY
+	jsr	lacie_setFREQUENCY
+	jmp	lacie_printFREQUENCY
 endFREQ_MINUS	rts
 
 *----------------------------
@@ -375,7 +384,8 @@ doFREQ_PLUS	ldx	#SC_FREQ
 	ldx	#SC_FREQ
 	lda	theFREQ
 	jsr	refreshTHUMB
-	jmp	lacie_setFREQUENCY
+	jsr	lacie_setFREQUENCY
+	jmp	lacie_printFREQUENCY
 endFREQ_PLUS	rts
 
 *----------------------------

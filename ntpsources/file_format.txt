@@ -1,0 +1,66 @@
+GOALs:
++ new file format
+++ allow up to 31 MOD instruments (or more)
+++ add stopper bytes to instruments where needed
+++ pre-split instruments
+++ pre-shift instruments
+++ store sound ram positions of instruments
++ allow 5 octaves
++ store output channel (2x4ensoniq cards)
++ allow 1-15 channels (instead of always 14 for soundsmith)
++ store only the tracks that are needed
++ add all Protracker effects (except filter and maybe sample offset)
++ add missing e-effects except 0 and F (not really possible)
++ fix frequency problems
++ when instruments have the right size (256,512,1024,...) use free run for loops, no interrupts
+
+-------------------------
+
+header:
++ 4 bytes: identifier "nfc!"
++ 1 byte: version (currently 0)
++ 1 byte: number of tracks (1-15)
++ 1 byte: number of instruments (1-255)
++ 1 byte: number of patterns (1-255)
++ 1 byte: length of pattern order (1-255)
+
+track data:
++ 1 byte: output channel for every track
+          0= Front left
+          1= Front right
+          2= Surround left
+          3= Surround right
+          4= Front height left
+          5= Front height right
+          6= Surround back left
+          7= Surround back right
+
+instrument data:
++ 1 byte: type, consisting of bits %00000xyy
+          with x:
+          0= random size
+          1= size matches an ideal size (256, 512, 1024, ...)
+          with yy:
+          0= not looped
+          1= looped (entire instrument is one loop)
+          2= loop header (the next instrument is of type 3)
+          3= the loop
++ 2 bytes: length in bytes, GS style big endian first, not Amiga
++ 1 byte: volume (0-64)
++ 1 byte: finetune value (-8...7)
++ 1 byte: position in doc ram (page number)
++ 1 byte: wavelen/wavesize, the doc register
+
+pattern order:
++ n bytes: list of pattern numbers
+
+pattern data:
++ 4 bytes x number_of_tracks x 64 lines per pattern x number of patterns
+++ 1 byte note (0-255)
+++ 1 byte sample (0-255)
+++ 1 byte effect (0-15)
+++ 1 byte effect parameter (0-255)
+
+sample data:
++ n bytes, use length from instrument data
++ the sample data includes the stopper bytes if needed and is shifted to be doc usable

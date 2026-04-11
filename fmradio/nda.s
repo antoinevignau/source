@@ -12,6 +12,7 @@
 
 *-------------- 
 
+	use	4/ADB.Macs
 	use	4/Ctl.Macs
 	use	4/Int.Macs
 	use	4/Locator.Macs
@@ -31,6 +32,10 @@
 
 Debut	=	$00
 GSOS	=	$e100a8
+
+*-------------- FIRMWARE
+
+KEYMODREG	=	$c025
 
 *-------------- GUI
 
@@ -136,15 +141,20 @@ ndaOPEN	phb
 	lda	#0
 	sta	result,s
 	sta	result+2,s
-	
-	jsr	checkQDVersion
-	bcs	ndaOPEN1
-	plb
+
+*--- Do we have the FM Radio installed?
+
+	jsr	lacie_getINFO
+	bne	ndaOPEN1	; no
+
+	jsr	checkQDVersion	; yes
+	bcs	ndaOPEN2
+ndaOPEN1	plb
 	rtl
 
 *--- Open our window
 
-ndaOPEN1	PushLong	#0
+ndaOPEN2	PushLong	#0
 	_GetPort
 	PullLong	curPORT
 	_WaitCursor
@@ -166,6 +176,10 @@ ndaOPEN1	PushLong	#0
 	lda	#1
 	sta	fgOPEN
 	
+	jsr	lacie_setDFTVAL	; set default values
+	jsr	lacie_setVOLUME	; set the volume
+	jsr	lacie_setFREQUENCY	; and the frequency
+	
 ndaOPEN9	PushWord	curRESID
 	_SetCurResourceApp
 	PushLong	curPORT
@@ -185,7 +199,15 @@ ndaCLOSE	phb
 	lda	fgOPEN
 	beq	ndaCLOSE9
 
-	PushWord	#0
+	sep	#$20
+	ldal	KEYMODREG
+	rep	#$20
+	and	#$40	; is option key down?
+	bne	ndaCLOSE1	; do not turn the radio off
+
+	jsr	lacie_switchOFF	; turn FM Radio off
+
+ndaCLOSE1	PushWord	#0
 	_GetCurResourceFile
 	PushWord	myRESID
 	_SetCurResourceFile
@@ -314,9 +336,14 @@ ndaINITShutDown	PushWord	myID	; shut down
 	put	nda_fmradio_routines.s
 
 *----------------------------
-* DIGITS
+* FM CHIP ROUTINES
 *----------------------------
 
+	put	nda_lacie_routines.s
+
+*----------------------------
+* DIGITS
+*----------------------------
 
 dhPL	=	18	;width of large picture
 dvPL	=	17	;height of large picture
@@ -593,6 +620,9 @@ startResourceManager
 	PushWord	#0
 	_GetCurResourceFile
 	PullWord	myRESID
+	
+	_ADBStartUp
+
 startRM1	rts
 
 *----------------------------
@@ -607,6 +637,9 @@ stopResourceManager
 	_CloseResourceFile
 	stz	myRESID
 	_ResourceShutDown
+	
+	_ADBShutDown
+	
 stopRM1	rts
 
 *----------------------------

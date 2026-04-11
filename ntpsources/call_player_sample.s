@@ -1,0 +1,38 @@
+; example on how to use NinjaTrackerPlus
+
+NinjaTrackerPlus        =   $f0000
+NTPprepare              =   NinjaTrackerPlus
+NTPplay                 =   NinjaTrackerPlus+3
+NTPstop                 =   NinjaTrackerPlus+6
+NTPgetvuptr             =   NinjaTrackerPlus+9
+NTPgete8ptr             =   NinjaTrackerPlus+12
+NTPforcesongpos         =   NinjaTrackerPlus+15
+NTPgetsongpos           =   NinjaTrackerPlus+18
+NTPsetplayvolume        =   NinjaTrackerPlus+21
+
+song_ptr                =   $100000
+
+                        dsk ntpcall
+                        org $300
+
+                        clc
+                        xce
+                        rep #$30
+                        mx  %00
+
+                        ldx #song_ptr
+                        ldy #^song_ptr
+                        jsl NTPprepare
+                        bcc okgo
+                        
+                        ldx #$dead          ;there has been an error
+                        txa
+                        txy
+                        brk 0
+
+okgo                    lda #0
+                        jsl NTPplay
+                        sec
+                        xce
+                        sep #$30
+                        rtl

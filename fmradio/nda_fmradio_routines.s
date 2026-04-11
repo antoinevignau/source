@@ -286,7 +286,7 @@ ctlVOL	pha
 	_GetCtlValueByID
 	pla
 	sta	theVOL
-	rts
+	jmp	lacie_setVOLUME
 
 *----------------------------
 * CONTROL 2: FREQUENCY SCROLL BAR
@@ -298,7 +298,7 @@ ctlFREQ	pha
 	_GetCtlValueByID
 	pla
 	sta	theFREQ
-	rts
+	jmp	lacie_setFREQUENCY
 
 *----------------------------
 * SPECIFIC CHIP ROUTINES
@@ -319,7 +319,8 @@ doVOL_MINUS	ldx	#SC_VOL
 	jsr	setCTLVALUE
 	ldx	#SC_VOL
 	lda	theVOL
-	jmp	refreshTHUMB
+	jsr	refreshTHUMB
+	jmp	lacie_setVOLUME
 endVOL_MINUS	rts
 
 *----------------------------
@@ -336,7 +337,8 @@ doVOL_PLUS	ldx	#SC_VOL
 	jsr	setCTLVALUE
 	ldx	#SC_VOL
 	lda	theVOL
-	jmp	refreshTHUMB
+	jsr	refreshTHUMB
+	jmp	lacie_setVOLUME
 endVOL_PLUS	rts
 
 *----------------------------
@@ -354,7 +356,8 @@ doFREQ_MINUS	ldx	#SC_FREQ
 	jsr	setCTLVALUE
 	ldx	#SC_FREQ
 	lda	theFREQ
-	jmp	refreshTHUMB
+	jsr	refreshTHUMB
+	jmp	lacie_setFREQUENCY
 endFREQ_MINUS	rts
 
 *----------------------------
@@ -371,7 +374,8 @@ doFREQ_PLUS	ldx	#SC_FREQ
 	jsr	setCTLVALUE
 	ldx	#SC_FREQ
 	lda	theFREQ
-	jmp	refreshTHUMB
+	jsr	refreshTHUMB
+	jmp	lacie_setFREQUENCY
 endFREQ_PLUS	rts
 
 *----------------------------
@@ -390,13 +394,13 @@ doRDS	lda	fgRDS
 doMUTE	lda	fgMUTE
 	eor	#DFT_ON
 	sta	fgMUTE
-	rts
+	jmp	lacie_setVOLUME
 
 *----------------------------
 * DATA
 *----------------------------
 
-theVOL	ds	DFT_VOL
-theFREQ	ds	DFT_FREQ
+theVOL	dw	DFT_VOL
+theFREQ	dw	DFT_FREQ
 fgMUTE	dw	DFT_OFF	; 0: off, 1: on
 fgRDS	dw	DFT_ON	; 0: off, 1: on

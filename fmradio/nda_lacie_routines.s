@@ -151,20 +151,21 @@ NB_RETRY	=	8
 *----------------------------
 
 lacie_getINFO
-	ldx	#NB_RETRY
+	ldx	#NB_RETRY*2
 ]lp	phx
 	jsr	FMTalkRegister3
 	plx
+*	bcc	ok_getINFO1
 	dex
 	bne	]lp
 
 ok_getINFO1	jsr	FMListenRegister3	; reset please
 
-	ldx	#NB_RETRY
+	ldx	#NB_RETRY*2
 ]lp	phx
 	jsr	FMTalkRegister3
 	plx
-	bcc	ok_getINFO2
+*	bcc	ok_getINFO2
 	dex
 	bne	]lp
 
@@ -303,9 +304,7 @@ ok_setFREQ2	lda	dataTalk2+1	; are frequencies equal?
 * Formula = (76 x 100) + (theFREQ x 5)
 
 lacie_printFREQUENCY
-	lda	#'00'
-	sta	strFREQUENCY
-	
+
 	lda	theFREQ	; convert to string
 	asl
 	asl
@@ -318,28 +317,71 @@ lacie_printFREQUENCY
 	PushWord	#FALSE
 	_Int2Dec
 
-	PushWord	#10
-	PushWord	#30
-	_MoveTo
-
 *
 * Font: LED.24 font, ID#32671, from BRCC Font #4 disk
 *
 
-	jsr	lacie_printNEW
-	rts
+yFREQUENCY	=	30
+
+	stz	theINDEX
+
+	PushLong	#rectFREQUENCY
+	PushWord	#$ffff
+	PushWord	#$ffff
+	_SpecialRect
 
 	PushWord #$1800
 	PushWord #32671		; LED.24
 	PushWord #0
 	_InstallFont
 
-	PushLong	#strFREQUENCY
-	_DrawCString
+]lp	ldy	theINDEX
+	lda	xFREQUENCY,y
+	and	#$ff
+	tax
+
+	lda	strFREQUENCY,y
+	and	#$ff
+	cmp	#' '
+	beq	printF2
+	pha
+	cmp	#'1'
+	bne	printF1
+
+	txa		; slide the 1 to the right
+	clc
+	adc	#10
+	tax
+	
+printF1	phx
+	PushWord	#yFREQUENCY
+	_MoveTo
+	
+	_DrawChar
+	
+printF2	lda	theINDEX
+	cmp	#2	; did we print the unité?
+	bne	printF3	; no, skip
+	
+	PushWord	#100	; yes, print the separator
+	PushWord	#yFREQUENCY
+	_MoveTo
+	PushWord	#'.'
+	_DrawChar
+	
+printF3	inc	theINDEX
+	lda	theINDEX
+	cmp	#5
+	bcc	]lp
+
 	rts
 
 *---
 
+rectFREQUENCY	dw	5,20,35,167
+xFREQUENCY	dfb	10,40,70,110,140	; put the dot at 100
+
+theINDEX	ds	2
 valFREQUENCY	ds	4	; Formula (max 650*5 + 7600)
 strFREQUENCY	asc	'00000'00	; '10550'
 

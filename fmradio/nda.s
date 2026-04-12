@@ -208,9 +208,9 @@ ndaCLOSE	phb
 	ldal	KEYMODREG
 	rep	#$20
 	and	#$40	; is option key down?
-	bne	ndaCLOSE1	; do not turn the radio off
+	beq	ndaCLOSE1	; no, do not turn the radio off
 
-	jsr	lacie_switchOFF	; turn FM Radio off
+	jsr	lacie_switchOFF	; yes, turn the FM Radio off
 
 ndaCLOSE1	PushWord	#0
 	_GetCurResourceFile
@@ -349,281 +349,281 @@ ndaINITShutDown	PushWord	myID	; shut down
 	put	nda_lacie_routines.s
 
 *----------------------------
-* DIGITS
+* DIGITS - We do not use!
 *----------------------------
-
-dhPL	=	18	;width of large picture
-dvPL	=	17	;height of large picture
-penMode	=	0
-
-*---
-
-	mx	%00
-	
-lacie_printNEW	pha
-	_GetMasterSCB		;check for 320 mode
-	pla
-	and	#$0080
-	sta	LocInfoL
-
-*---
-
-	lda	#10
-	sta	destX
-
-	ldx	#0
-]lp	phx
-	lda	strFREQUENCY,x
-	and	#$ff
-	cmp	#' '
-	bne	lacie_pn1
-	lda	#'9'+1
-lacie_pn1	sec
-	sbc	#'0'
-	asl
-	tay
-	lda	PictMapL,y
-	sta	LocInfoL+2
-
-	PushLong	#LocInfoL
-	PushLong	#PictRectL
-	PushWord	destX
-	PushWord	destY
-	PushWord	#penMode
-	_PPToPort		;draw digit 2
-
-	lda	destX
-	clc
-	adc	#24
-	sta	destX
-
-	plx
-	inx
-	cpx	#5
-	bcc	]lp
-	rts
-
-*---
-
-LocInfoL	dw	$80	;port SCB
-	adrl	Pict0L	;Picture ptr
-	dw	5	;Picture width (bytes)
-PictRectL	dw	0,0,dvPL,dhPL	;bounds rect
-
-destX	dw	10
-destY	dw	10
-
-*---
-
-PictMapL	da	Pict0L
-	da	Pict1L
-	da	Pict2L
-	da	Pict3L
-	da	Pict4L
-	da	Pict5L
-	da	Pict6L
-	da	Pict7L
-	da	Pict8L
-	da	Pict9L
-	da	Pict10L	; the space character
-	
-Pict0L	hex	f0000000ff	;large 0
-	hex	0f00000f0f
-	hex	00fffff00f
-	hex	00fffff00f
-	hex	00fffff00f
-	hex	00fffff00f
-	hex	00fffff00f
-	hex	0fffffff0f
-	hex	ffffffffff
-	hex	0fffffff0f
-	hex	00fffff00f
-	hex	00fffff00f
-	hex	00fffff00f
-	hex	00fffff00f
-	hex	00fffff00f
-	hex	0f00000f0f
-	hex	f0000000ff
-
-Pict1L	hex	ffffffffff	;large 1
-	hex	ffffffff0f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	ffffffff0f
-	hex	ffffffffff
-	hex	ffffffff0f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	ffffffff0f
-	hex	ffffffffff
-
-Pict2L	hex	f0000000ff	;large 2
-	hex	ff00000f0f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	ffffffff0f
-	hex	f0000000ff
-	hex	0f00000fff
-	hex	00ffffffff
-	hex	00ffffffff
-	hex	00ffffffff
-	hex	00ffffffff
-	hex	00ffffffff
-	hex	0f00000fff
-	hex	f0000000ff
-
-Pict3L	hex	f0000000ff	;large 3
-	hex	ff00000f0f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	ffffffff0f
-	hex	f0000000ff
-	hex	ff00000f0f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	ff00000f0f
-	hex	f0000000ff
-
-Pict4L	hex	ffffffffff	;large 4
-	hex	0fffffff0f
-	hex	00fffff00f
-	hex	00fffff00f
-	hex	00fffff00f
-	hex	00fffff00f
-	hex	00fffff00f
-	hex	0fffffff0f
-	hex	f0000000ff
-	hex	ff00000f0f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	ffffffff0f
-	hex	ffffffffff
-
-Pict5L	hex	f0000000ff	;large 5
-	hex	0f00000fff
-	hex	00ffffffff
-	hex	00ffffffff
-	hex	00ffffffff
-	hex	00ffffffff
-	hex	00ffffffff
-	hex	0fffffffff
-	hex	f0000000ff
-	hex	ff00000f0f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	ff00000f0f
-	hex	f0000000ff
-
-Pict6L	hex	f0000000ff	;large 6
-	hex	0f00000fff
-	hex	00ffffffff
-	hex	00ffffffff
-	hex	00ffffffff
-	hex	00ffffffff
-	hex	00ffffffff
-	hex	0fffffffff
-	hex	f0000000ff
-	hex	0f00000f0f
-	hex	00fffff00f
-	hex	00fffff00f
-	hex	00fffff00f
-	hex	00fffff00f
-	hex	00fffff00f
-	hex	0f00000f0f
-	hex	f0000000ff
-
-Pict7L	hex	f0000000ff	;large 7
-	hex	ff00000f0f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	ffffffff0f
-	hex	ffffffffff
-	hex	ffffffff0f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	ffffffff0f
-	hex	ffffffffff
-
-Pict8L	hex	f0000000ff	;large 8
-	hex	0f00000f0f
-	hex	00fffff00f
-	hex	00fffff00f
-	hex	00fffff00f
-	hex	00fffff00f
-	hex	00fffff00f
-	hex	0fffffff0f
-	hex	f0000000ff
-	hex	0f00000f0f
-	hex	00fffff00f
-	hex	00fffff00f
-	hex	00fffff00f
-	hex	00fffff00f
-	hex	00fffff00f
-	hex	0f00000f0f
-	hex	f0000000ff
-
-Pict9L	hex	f0000000ff	;large 9
-	hex	0f00000f0f
-	hex	00fffff00f
-	hex	00fffff00f
-	hex	00fffff00f
-	hex	00fffff00f
-	hex	00fffff00f
-	hex	0fffffff0f
-	hex	f0000000ff
-	hex	ff00000f0f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	fffffff00f
-	hex	ff00000f0f
-	hex	f0000000ff
-
-Pict10L	hex	ffffffffff	;space character
-	hex	ffffffffff
-	hex	ffffffffff
-	hex	ffffffffff
-	hex	ffffffffff
-	hex	ffffffffff
-	hex	ffffffffff
-	hex	ffffffffff
-	hex	ffffffffff
-	hex	ffffffffff
-	hex	ffffffffff
-	hex	ffffffffff
-	hex	ffffffffff
-	hex	ffffffffff
-	hex	ffffffffff
-	hex	ffffffffff
-	hex	ffffffffff
+*
+*dhPL	=	18	;width of large picture
+*dvPL	=	17	;height of large picture
+*penMode	=	0
+*
+**---
+*
+*	mx	%00
+*	
+*lacie_printNEW	pha
+*	_GetMasterSCB		;check for 320 mode
+*	pla
+*	and	#$0080
+*	sta	LocInfoL
+*
+**---
+*
+*	lda	#10
+*	sta	destX
+*
+*	ldx	#0
+*]lp	phx
+*	lda	strFREQUENCY,x
+*	and	#$ff
+*	cmp	#' '
+*	bne	lacie_pn1
+*	lda	#'9'+1
+*lacie_pn1	sec
+*	sbc	#'0'
+*	asl
+*	tay
+*	lda	PictMapL,y
+*	sta	LocInfoL+2
+*
+*	PushLong	#LocInfoL
+*	PushLong	#PictRectL
+*	PushWord	destX
+*	PushWord	destY
+*	PushWord	#penMode
+*	_PPToPort		;draw digit 2
+*
+*	lda	destX
+*	clc
+*	adc	#24
+*	sta	destX
+*
+*	plx
+*	inx
+*	cpx	#5
+*	bcc	]lp
+*	rts
+*
+**---
+*
+*LocInfoL	dw	$80	;port SCB
+*	adrl	Pict0L	;Picture ptr
+*	dw	5	;Picture width (bytes)
+*PictRectL	dw	0,0,dvPL,dhPL	;bounds rect
+*
+*destX	dw	10
+*destY	dw	10
+*
+**---
+*
+*PictMapL	da	Pict0L
+*	da	Pict1L
+*	da	Pict2L
+*	da	Pict3L
+*	da	Pict4L
+*	da	Pict5L
+*	da	Pict6L
+*	da	Pict7L
+*	da	Pict8L
+*	da	Pict9L
+*	da	Pict10L	; the space character
+*	
+*Pict0L	hex	f0000000ff	;large 0
+*	hex	0f00000f0f
+*	hex	00fffff00f
+*	hex	00fffff00f
+*	hex	00fffff00f
+*	hex	00fffff00f
+*	hex	00fffff00f
+*	hex	0fffffff0f
+*	hex	ffffffffff
+*	hex	0fffffff0f
+*	hex	00fffff00f
+*	hex	00fffff00f
+*	hex	00fffff00f
+*	hex	00fffff00f
+*	hex	00fffff00f
+*	hex	0f00000f0f
+*	hex	f0000000ff
+*
+*Pict1L	hex	ffffffffff	;large 1
+*	hex	ffffffff0f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	ffffffff0f
+*	hex	ffffffffff
+*	hex	ffffffff0f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	ffffffff0f
+*	hex	ffffffffff
+*
+*Pict2L	hex	f0000000ff	;large 2
+*	hex	ff00000f0f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	ffffffff0f
+*	hex	f0000000ff
+*	hex	0f00000fff
+*	hex	00ffffffff
+*	hex	00ffffffff
+*	hex	00ffffffff
+*	hex	00ffffffff
+*	hex	00ffffffff
+*	hex	0f00000fff
+*	hex	f0000000ff
+*
+*Pict3L	hex	f0000000ff	;large 3
+*	hex	ff00000f0f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	ffffffff0f
+*	hex	f0000000ff
+*	hex	ff00000f0f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	ff00000f0f
+*	hex	f0000000ff
+*
+*Pict4L	hex	ffffffffff	;large 4
+*	hex	0fffffff0f
+*	hex	00fffff00f
+*	hex	00fffff00f
+*	hex	00fffff00f
+*	hex	00fffff00f
+*	hex	00fffff00f
+*	hex	0fffffff0f
+*	hex	f0000000ff
+*	hex	ff00000f0f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	ffffffff0f
+*	hex	ffffffffff
+*
+*Pict5L	hex	f0000000ff	;large 5
+*	hex	0f00000fff
+*	hex	00ffffffff
+*	hex	00ffffffff
+*	hex	00ffffffff
+*	hex	00ffffffff
+*	hex	00ffffffff
+*	hex	0fffffffff
+*	hex	f0000000ff
+*	hex	ff00000f0f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	ff00000f0f
+*	hex	f0000000ff
+*
+*Pict6L	hex	f0000000ff	;large 6
+*	hex	0f00000fff
+*	hex	00ffffffff
+*	hex	00ffffffff
+*	hex	00ffffffff
+*	hex	00ffffffff
+*	hex	00ffffffff
+*	hex	0fffffffff
+*	hex	f0000000ff
+*	hex	0f00000f0f
+*	hex	00fffff00f
+*	hex	00fffff00f
+*	hex	00fffff00f
+*	hex	00fffff00f
+*	hex	00fffff00f
+*	hex	0f00000f0f
+*	hex	f0000000ff
+*
+*Pict7L	hex	f0000000ff	;large 7
+*	hex	ff00000f0f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	ffffffff0f
+*	hex	ffffffffff
+*	hex	ffffffff0f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	ffffffff0f
+*	hex	ffffffffff
+*
+*Pict8L	hex	f0000000ff	;large 8
+*	hex	0f00000f0f
+*	hex	00fffff00f
+*	hex	00fffff00f
+*	hex	00fffff00f
+*	hex	00fffff00f
+*	hex	00fffff00f
+*	hex	0fffffff0f
+*	hex	f0000000ff
+*	hex	0f00000f0f
+*	hex	00fffff00f
+*	hex	00fffff00f
+*	hex	00fffff00f
+*	hex	00fffff00f
+*	hex	00fffff00f
+*	hex	0f00000f0f
+*	hex	f0000000ff
+*
+*Pict9L	hex	f0000000ff	;large 9
+*	hex	0f00000f0f
+*	hex	00fffff00f
+*	hex	00fffff00f
+*	hex	00fffff00f
+*	hex	00fffff00f
+*	hex	00fffff00f
+*	hex	0fffffff0f
+*	hex	f0000000ff
+*	hex	ff00000f0f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	fffffff00f
+*	hex	ff00000f0f
+*	hex	f0000000ff
+*
+*Pict10L	hex	ffffffffff	;space character
+*	hex	ffffffffff
+*	hex	ffffffffff
+*	hex	ffffffffff
+*	hex	ffffffffff
+*	hex	ffffffffff
+*	hex	ffffffffff
+*	hex	ffffffffff
+*	hex	ffffffffff
+*	hex	ffffffffff
+*	hex	ffffffffff
+*	hex	ffffffffff
+*	hex	ffffffffff
+*	hex	ffffffffff
+*	hex	ffffffffff
+*	hex	ffffffffff
+*	hex	ffffffffff
 
 *----------------------------
 * CHECK QD VERSION

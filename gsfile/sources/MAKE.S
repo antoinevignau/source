@@ -1,0 +1,75 @@
+*
+* GSFile
+*
+* (c) 1997, SofWood Company
+* (s) 2026, Brutal Deluxe Software
+*
+
+* Expansion linker file
+
+	DSK 	GSFile2026
+	TYP	S16
+	XPL
+	
+* Assemble files
+
+	ASM	SEG1.S
+	KND	$0000
+	SNA	SEG1
+
+	ASM	A.S
+	KND	$0000
+	SNA	A
+
+	ASM	SEG2.S
+	KND	$0000
+	SNA	SEG2
+
+	ASM	B.S
+	KND	$0000
+	SNA	B
+
+	ASM	SEG2K.S
+	KND	$0000
+	SNA	SEG2K
+
+	ASM	C.S
+	KND	$0000
+	SNA	C
+
+	ASM	SEG3.S
+	KND	$0000
+	SNA	SEG3
+
+	ASM	D.S
+	KND	$0000
+	SNA	D
+
+	ASM	SEG3K.S
+	KND	$0000
+	SNA	SEG3K
+
+	ASM	E.S
+	KND	$0000
+	SNA	E
+
+	ASM	SEG4.S
+	KND	$0000
+	SNA	SEG4
+
+	ASM	F.S
+	KND	$0000
+	SNA	F
+
+	ASM	SEG4K.S
+	KND	$0000
+	SNA	SEG4K
+
+	ASM	ARRAYS.S
+	KND	$0000
+	SNA	ARRAYS
+
+	ASM	GLOBALS.S
+	KND	$0000
+	SNA	GLOBALS
+

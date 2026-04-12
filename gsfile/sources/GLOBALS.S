@@ -1,0 +1,1344 @@
+*
+* GSFile
+*
+* (c) 1997, SofWood Company
+* (s) 2026, Brutal Deluxe Software
+*
+
+	mx	%00
+	rel
+	lst	off
+
+*----------------------------------- Macros
+
+	use	4/Ctl.Macs
+	use	4/Desk.Macs
+	use	4/Dialog.Macs
+	use	4/DOS.16.Macs
+	use	4/Event.Macs
+	use	4/Int.Macs
+	use	4/Line.Macs
+	use	4/List.Macs
+	use	4/Locator.Macs
+	use	4/Mem.Macs
+	use	4/Menu.Macs
+	use	4/MIDISyn.Macs
+	use	4/Misc.Macs
+	use	4/QD.Macs
+	use	4/QDAux.Macs
+	use	4/SANE.Macs
+	use	4/Sound.Macs
+	use	4/Std.Macs
+	use	4/Text.Macs
+	use	4/Util.Macs
+	use	4/Window.Macs
+
+GSOS	=	$E100A8
+
+*-----------------------------------
+
+L0F0000     ENT
+            DB    $00
+            DB    $00
+L0F0002     ENT
+            DB    $00
+            DB    $00
+L0F0004     ENT
+            DB    $00
+            DB    $00
+L0F0006     ENT
+            DB    $00
+            DB    $00
+L0F0008     ENT
+            DB    $00
+            DB    $00
+L0F000A     ENT
+            DB    $00
+            DB    $00
+L0F000C     ENT
+            DB    $00
+            DB    $00
+L0F000E     ENT
+            DB    $01
+            DB    $00
+L0F0010     ENT
+            DB    $00
+            DB    $00
+L0F0012     ENT
+            DB    $00
+            DB    $00
+L0F0014     ENT
+            DB    $00
+            DB    $00
+L0F0016     ENT
+            DB    $00
+            DB    $00
+L0F0018     ENT
+            DB    $00
+            DB    $00
+L0F001A     ENT
+            DB    $00
+            DB    $00
+L0F001C     ENT
+            DB    $00
+            DB    $00
+L0F001E     ENT
+            DW    $0000
+L0F0020     ENT
+            DW    $0000
+L0F0022     ENT
+            DB    $00
+            DB    $00
+L0F0024     ENT
+            DB    $00
+            DB    $00
+L0F0026     ENT
+            DB    $00
+            DB    $00
+L0F0028     ENT
+            DB    $00
+            DB    $00
+L0F002A     ENT
+            DB    $00
+            DB    $00
+L0F002C     ENT
+            DB    $00
+            DB    $00
+L0F002E     ENT
+            DB    $00
+            DB    $00
+L0F0030     ENT
+            DB    $00
+            DB    $00
+L0F0032     ENT
+            DB    $00
+            DB    $00
+L0F0034     ENT
+            DB    $00
+            DB    $00
+L0F0036     ENT
+            DB    $00
+            DB    $00
+L0F0038     ENT
+            DB    $00
+            DB    $00
+L0F003A     ENT
+            DB    $00
+            DB    $00
+L0F003C     ENT
+            DB    $00
+            DB    $00
+L0F003E     ENT
+            DB    $00
+            DB    $00
+L0F0040     ENT
+            DB    $00
+            DB    $00
+L0F0042     ENT
+            DB    $00
+            DB    $00
+L0F0044     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L0F004A     ENT
+            DB    $00
+            DB    $00
+L0F004C     ENT
+            DB    $00
+            DB    $00
+L0F004E     ENT
+            DB    $00
+            DB    $00
+L0F0050     ENT
+            DB    $00
+            DB    $00
+L0F0052     ENT
+            DB    $00
+            DB    $00
+L0F0054     ENT
+            DB    $00
+            DB    $00
+L0F0056     ENT
+            DB    $00
+            DB    $00
+L0F0058     ENT
+            DB    $00
+            DB    $00
+L0F005A     ENT
+            DB    $00
+            DB    $00
+L0F005C     ENT
+            DB    $00
+            DB    $00
+L0F005E     ENT
+            DB    $00
+            DB    $00
+L0F0060     ENT
+            DB    $00
+            DB    $00
+L0F0062     ENT
+            DB    $00
+            DB    $00
+L0F0064     ENT
+            DB    $01
+            DB    $00
+L0F0066     ENT
+            DB    $00
+            DB    $00
+L0F0068     ENT
+            DB    $FF
+            DB    $FF
+L0F006A     ENT
+            DB    $FF
+            DB    $FF
+L0F006C     ENT
+            DB    $00
+            DB    $00
+L0F006E     ENT
+            DB    $00
+            DB    $00
+L0F0070     ENT
+            DB    $FF
+            DB    $FF
+L0F0072     ENT
+            DB    $00
+            DB    $00
+L0F0074     ENT
+            DB    $00
+            DB    $00
+L0F0076     ENT
+            DB    $00
+            DB    $00
+L0F0078     ENT
+            DB    $00
+            DB    $00
+L0F007A     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L0F007E     ENT
+            DB    $00
+            DB    $00
+L0F0080     ENT
+            DB    $00
+            DB    $00
+L0F0082     ENT
+            DB    $00
+            DB    $00
+L0F0084     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L0F0088     ENT
+            DB    $00
+            DB    $00
+L0F008A     ENT
+            DB    $00
+            DB    $00
+L0F008C     ENT
+            DB    $00
+            DB    $00
+L0F008E     ENT
+            DB    $00
+            DB    $00
+L0F0090     ENT
+            DB    $00
+            DB    $00
+L0F0092     ENT
+            DB    $00
+            DB    $00
+L0F0094     ENT
+            DB    $00
+            DB    $00
+L0F0096     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L0F009C     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L0F00A8     ENT
+            DB    $00
+            DB    $00
+L0F00AA     ENT
+            DB    $00
+L0F00AB     ENT
+            DB    $00
+            DB    $00
+L0F00AD     ENT
+            DB    $00
+            DB    $00
+L0F00AF     ENT
+            DB    $00
+            DB    $00
+L0F00B1     ENT
+            DB    $00
+            DB    $00
+L0F00B3     ENT
+            DB    $00
+            DB    $00
+L0F00B5     ENT
+            DB    $00
+            DB    $00
+L0F00B7     ENT
+            DB    $00
+            DB    $00
+L0F00B9     ENT
+            DB    $00
+            DB    $00
+L0F00BB     ENT
+            DB    $00
+            DB    $00
+L0F00BD     ENT
+            DB    $00
+            DB    $00
+L0F00BF     ENT
+            DB    $00
+            DB    $00
+L0F00C1     ENT
+            DB    $00
+            DB    $00
+L0F00C3     ENT
+            DB    $00
+            DB    $00
+L0F00C5     ENT
+            DB    $00
+            DB    $00
+L0F00C7     ENT
+            DB    $00
+            DB    $00
+L0F00C9     ENT
+            DB    $00
+            DB    $00
+L0F00CB     ENT
+            DB    $00
+            DB    $00
+L0F00CD     ENT
+            DB    $00
+            DB    $00
+L0F00CF     ENT
+            DB    $00
+            DB    $00
+L0F00D1     ENT
+            DB    $00
+            DB    $00
+L0F00D3     ENT
+            DB    $00
+            DB    $00
+L0F00D5     ENT
+            DB    $00
+            DB    $00
+L0F00D7     ENT
+            DB    $00
+            DB    $00
+L0F00D9     ENT
+            DB    $00
+            DB    $00
+L0F00DB     ENT
+            DB    $00
+            DB    $00
+L0F00DD     ENT
+            DB    $00
+            DB    $00
+L0F00DF     ENT
+            DB    $00
+            DB    $00
+L0F00E1     ENT
+            DB    $00
+            DB    $00
+L0F00E3     ENT
+            DB    $00
+            DB    $00
+L0F00E5     ENT
+            DB    $00
+            DB    $00
+L0F00E7     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L0F00ED     ENT
+            DB    $00
+            DB    $00
+L0F00EF     ENT
+            DB    $00
+            DB    $00
+L0F00F1     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L0F00F9     ENT
+            DB    $00
+            DB    $00
+L0F00FB     ENT
+            DB    $00
+            DB    $00
+L0F00FD     ENT
+            DB    $00
+            DB    $00
+L0F00FF     ENT
+            DB    $00
+            DB    $00
+L0F0101     ENT
+            DB    $00
+            DB    $00
+L0F0103     ENT
+            DB    $00
+            DB    $00
+L0F0105     ENT
+            DB    $00
+            DB    $00
+L0F0107     ENT
+            DB    $00
+            DB    $00
+L0F0109     ENT
+            DB    $00
+            DB    $00
+L0F010B     ENT
+            DB    $00
+            DB    $00
+L0F010D     ENT
+            DB    $00
+            DB    $00
+L0F010F     ENT
+            DB    $00
+            DB    $00
+L0F0111     ENT
+            DB    $00
+            DB    $00
+L0F0113     ENT
+            DB    $00
+            DB    $00
+L0F0115     ENT
+            DB    $00
+            DB    $00
+L0F0117     ENT
+            DB    $00
+            DB    $00
+L0F0119     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L0F0121     ENT
+            DB    $00
+            DB    $00
+L0F0123     ENT
+            DB    $00
+            DB    $00
+L0F0125     ENT
+            DB    $00
+            DB    $00
+L0F0127     ENT
+            DB    $00
+            DB    $00
+L0F0129     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L0F012F     ENT
+            DB    $00
+            DB    $00
+L0F0131     ENT
+            DB    $00
+            DB    $00
+L0F0133     ENT
+            DB    $00
+            DB    $00
+L0F0135     ENT
+            DB    $00
+            DB    $00
+L0F0137     ENT
+            DB    $00
+            DB    $00
+L0F0139     ENT
+            DB    $00
+            DB    $00
+L0F013B     ENT
+            DB    $00
+            DB    $00
+L0F013D     ENT
+            DB    $00
+            DB    $00
+L0F013F     ENT
+            DB    $00
+            DB    $00
+L0F0141     ENT
+            DB    $00
+            DB    $00
+L0F0143     ENT
+            DB    $00
+            DB    $00
+L0F0145     ENT
+            DB    $00
+            DB    $00
+L0F0147     ENT
+            DB    $00
+            DB    $00
+L0F0149     ENT
+            DB    $00
+            DB    $00
+L0F014B     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L0F0151     ENT
+            DB    $00
+            DB    $00
+L0F0153     ENT
+            DB    $00
+            DB    $00
+L0F0155     ENT
+            DB    $00
+            DB    $00
+L0F0157     ENT
+            DB    $00
+            DB    $00
+L0F0159     ENT
+            DB    $00
+            DB    $00
+L0F015B     ENT
+            DB    $00
+            DB    $00
+L0F015D     ENT
+            DB    $00
+            DB    $00
+L0F015F     ENT
+            DB    $00
+            DB    $00
+L0F0161     ENT
+            ASC   '>L@\XN1'0D
+            ASC   ' LSystem Status\N257'0D
+            ASC   ' LMemory\N258V'0D
+            ASC   ' LDefault Numeric Format\N260'0D
+            ASC   ' LDefault Date Format\N261V'0D
+            ASC   ' LAbout\N262V'0D
+            ASC   '.'
+L0F01D6     ENT
+            ASC   '>L File \N2'0D
+            ASC   ' LOpen\N263*Oo'0D
+            ASC   ' LNew\N264'0D
+            ASC   ' LSave\N265*Ss'0D
+            ASC   ' LSave As\N266'0D
+            ASC   ' LAbandon\N267V'0D
+            ASC   ' LOpen Appleworks Def.\N269'0D
+            ASC   ' LOpen Appleworks Data\N308V'0D
+            ASC   ' LOpen Ascii\N268'0D
+            ASC   ' LSave Mail/Merge\N270V'0D
+            ASC   ' LRename\N271'0D
+            ASC   ' LDelete\N272V'0D
+            ASC   ' LTitle List\N273V'0D
+            ASC   ' LQuit\N274*Qq'0D
+            ASC   '.'
+L0F02CD     ENT
+            ASC   '>L Column \N3'0D
+            ASC   ' LShow\N275'0D
+            ASC   ' LHide\N276V'0D
+            ASC   ' LShow All\N277'0D
+            ASC   ' LHide All\N278V'0D
+            ASC   ' LLeft\N279C*'0D
+            ASC   ' LCenter\N280C*'0D
+            ASC   ' LRight\N281C*V'0D
+            ASC   ' LDisplay Format\N282V'0D
+            ASC   ' LDefine Data\N283*Dd'0D
+            ASC   ' LDefine Calc\N284V*Cc'0D
+            ASC   ' LDelete\N285'0D
+            ASC   '.'
+L0F0396     ENT
+            ASC   '>L Select \N4'0D
+            ASC   ' LBy Example\N286*Ee'0D
+            ASC   ' LBy Range\N287*RrV'0D
+            ASC   ' LAll Items\N288C*'0D
+            ASC   ' LSelected Items\N289C*'0D
+            ASC   '.'
+L0F03F9     ENT
+            ASC   '>L Sort \N5'0D
+            ASC   ' LLow To High\N290'0D
+            ASC   ' LHigh To Low\N291V'0D
+            ASC   ' LSingle Column\N292C*'0D
+            ASC   ' LProgressive\N293C*'0D
+            ASC   '.'
+L0F0459     ENT
+            ASC   '>L Options \N6'0D
+            ASC   ' LForm\N294*Ff'0D
+            ASC   ' LList\N295*LlV'0D
+            ASC   ' LAuto Capitalize\N296C**Uu'0D
+            ASC   ' LGrid On/Off\N297C**Gg'0D
+            ASC   ' LRepeat Data Entry\N298C*V'0D
+            ASC   ' LField Info\N259*Hh'0D
+            ASC   '.'
+L0F04ED     ENT
+            ASC   '>L Print \N7'0D
+            ASC   ' LTo Printer\N299*Pp'0D
+            ASC   ' LTo Ascii File\N300V'0D
+            ASC   ' LPage Setup\N301'0D
+            ASC   '.'
+L0F0538     ENT
+            ASC   '>L Views \N8'0D
+            ASC   ' LOpen\N302*Vv'0D
+            ASC   ' LNew\N303'0D
+            ASC   ' LSave\N304'0D
+            ASC   ' LSave As\N305V'0D
+            ASC   ' LRename\N306'0D
+            ASC   ' LDelete\N307'0D
+            ASC   '.'
+L0F0598     ENT
+            DB    $00
+            DB    $00
+L0F059A     ENT
+            DB    $00
+            DB    $00
+L0F059C     ENT
+            DB    $00
+            DB    $00
+L0F059E     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L0F05A4     ENT
+            DB    $00
+            DB    $00
+L0F05A6     ENT
+            DB    $00
+            DB    $00
+L0F05A8     ENT
+            DB    $00
+L0F05A9     ENT
+            DB    $00
+            DB    $00
+L0F05AB     ENT
+            DB    $00
+            DB    $00
+L0F05AD     ENT
+            DB    $00
+            DB    $00
+L0F05AF     ENT
+            DB    $00
+            DB    $00
+L0F05B1     ENT
+            DB    $00
+            DB    $00
+L0F05B3     ENT
+            ASC   'CON:'00
+L0F05B8     ENT
+            ASC   'PRT:'00
+L0F05BD     ENT
+            ASC   'AUX:'00
+L0F05C2     ENT
+            ASC   'CON:'00
+L0F05C7     ENT
+            ASC   'PRT:'00
+L0F05CC     ENT
+            ASC   'AUX:'00
+L0F05D1     ENT
+            DB    $00
+            DB    $00
+L0F05D3     ENT
+            DB    $00
+            DB    $00
+L0F05D5     ENT
+            ASC   'r'00
+L0F05D7     ENT
+            ASC   'a'00
+L0F05D9     ENT
+            ASC   'w'00
+L0F05DB     ENT
+            DB    $00
+            DB    $00
+L0F05DD     ENT
+            DB    $00
+            DB    $00
+L0F05DF     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $09
+            DB    $00
+            DB    $00
+            DB    $83
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L0F05F3     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $02
+            DB    $01
+            DB    $00
+            DB    $83
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $02
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $02
+            DB    $01
+            DB    $00
+            DB    $83
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $02
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L0F067F     ENT
+            DB    $00
+            DB    $02
+L0F0681     ENT
+            ASC   '%d'00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            ASC   'MALLOC: returning NULL'00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $80
+            DB    $FF
+            DB    $3F
+L0F06A9     ENT
+            DB    $00
+            DB    $00
+L0F06AB     ENT
+            DB    $00
+            DB    $00
+L0F06AD     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L0F0729     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L0F0779     ENT
+            DW    $0000
+L0F077B     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L0F0783     ENT
+            DB    $00
+            DB    $00
+L0F0785     ENT
+            DB    $00
+            DB    $00
+L0F0787     ENT
+            DB    $00
+            DB    $00
+L0F0789     ENT
+            DB    $00
+            DB    $00
+L0F078B     ENT
+            DB    $00
+L0F078C     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L0F07A9     ENT
+            DB    $00
+            DB    $00
+L0F07AB     ENT
+            DB    $00
+            DB    $00
+L0F07AD     ENT
+            DB    $00
+            DB    $00
+L0F07AF     ENT
+            DB    $00
+            DB    $00
+L0F07B1     ENT
+            DB    $00
+            DB    $00
+L0F07B3     ENT
+            DB    $00
+            DB    $00
+L0F07B5     ENT
+            DB    $00
+            DB    $00
+L0F07B7     ENT
+            DB    $00
+            DB    $00
+L0F07B9     ENT
+            DB    $00
+            DB    $00
+L0F07BB     ENT
+            DB    $00
+            DB    $00
+L0F07BD     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L0F07C5     ENT
+            DB    $00
+            DB    $00
+L0F07C7     ENT
+            DB    $00
+            DB    $00
+L0F07C9     ENT
+            DB    $00
+            DB    $00
+L0F07CB     ENT
+            DB    $00
+            DB    $00
+L0F07CD     ENT
+            DB    $00
+            DB    $00
+L0F07CF     ENT
+            DB    $00
+            DB    $00
+L0F07D1     ENT
+            DB    $00
+            DB    $00
+L0F07D3     ENT
+            DB    $00
+            DB    $00
+L0F07D5     ENT
+            DB    $00
+            DB    $00
+L0F07D7     ENT
+            DB    $00
+            DB    $00
+L0F07D9     ENT
+            DB    $00
+            DB    $00
+L0F07DB     ENT
+            DB    $00
+            DB    $00
+L0F07DD     ENT
+            DB    $00
+            DB    $00
+L0F07DF     ENT
+            DB    $00
+            DB    $00
+L0F07E1     ENT
+            DB    $00
+            DB    $00
+L0F07E3     ENT
+            DB    $00
+            DB    $00
+L0F07E5     ENT
+            DB    $00
+            DB    $00
+L0F07E7     ENT
+            DB    $00
+            DB    $00
+L0F07E9     ENT
+            DB    $00
+            DB    $00
+L0F07EB     ENT
+            DB    $00
+            DB    $00
+L0F07ED     ENT
+            DB    $00
+            DB    $00
+L0F07EF     ENT
+            DB    $00
+            DB    $00
+L0F07F1     ENT
+            DB    $00
+            DB    $00
+L0F07F3     ENT
+            DB    $00
+            DB    $00
+L0F07F5     ENT
+            DB    $00
+            DB    $00
+L0F07F7     ENT
+            DB    $00
+            DB    $00
+L0F07F9     ENT
+            DB    $00
+            DB    $00
+L0F07FB     ENT
+            DB    $00
+            DB    $00
+L0F07FD     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L0F0825     ENT
+            DB    $00
+            DB    $00
+L0F0827     ENT
+            DB    $00
+            DB    $00
+L0F0829     ENT
+            DB    $00
+            DB    $00
+L0F082B     ENT
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+            DB    $00
+L0F0831     ENT
+            PHB
+            PLA
+            XBA
+            STAL  L0F0866
+            PLA
+            STAL  L0F0866+1
+            PLA
+            STAL  L0F0852
+            PLA
+            STAL  L0F0852+2
+            PLA
+            STAL  L0F0850
+            JSL   GSOS
+L0F0850     DW    $0000
+L0F0852     ADRL  $00000000
+            STA   L0F0779
+            LDAL  L0F0866+1
+            PHA
+            PHB
+            LDAL  L0F0866
+            STA   $01,S
+            RTL
+
+L0F0866     ADR   $000000
+

@@ -1,0 +1,939 @@
+------+-----------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File     Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+-----------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1   B.S      1 | Comment     | 11 |         |    0 | 00/0000               | *
+    2 |  1   B.S      2 | Comment     | 11 |         |    0 | 00/0000               | * GSFile
+    3 |  1   B.S      3 | Comment     | 11 |         |    0 | 00/0000               | *
+    4 |  1   B.S      4 | Comment     | 11 |         |    0 | 00/0000               | * (c) 1997, SofWood Company
+    5 |  1   B.S      5 | Comment     | 11 |         |    0 | 00/0000               | * (s) 2026, Brutal Deluxe Software
+    6 |  1   B.S      6 | Comment     | 11 |         |    0 | 00/0000               | *
+    7 |  1   B.S      7 | Empty       | 11 |         |    0 | 00/0000               |                                  
+    8 |  1   B.S      8 | Directive   | 00 |         |    0 | 00/0000               |             mx    %00            
+    9 |  1   B.S      9 | Directive   | 00 |         |    0 | 00/0000               |             rel                  
+   10 |  1   B.S     10 | Directive   | 00 |         |    0 | 00/0000               |             lst   off            
+   11 |  1   B.S     11 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   12 |  1   B.S     12 | Comment     | 00 |         |    0 | 00/0000               | *----------------------------------- Macros
+   13 |  1   B.S     13 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   14 |  1   B.S     14 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Ctl.Macs     
+   15 |  1   B.S     15 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Desk.Macs    
+   16 |  1   B.S     16 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Dialog.Macs  
+   17 |  1   B.S     17 | Directive   | 00 |         |    0 | 00/0000               |             use   4/DOS.16.Macs  
+   18 |  1   B.S     18 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Event.Macs   
+   19 |  1   B.S     19 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Int.Macs     
+   20 |  1   B.S     20 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Line.Macs    
+   21 |  1   B.S     21 | Directive   | 00 |         |    0 | 00/0000               |             use   4/List.Macs    
+   22 |  1   B.S     22 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Locator.Macs 
+   23 |  1   B.S     23 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Mem.Macs     
+   24 |  1   B.S     24 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Menu.Macs    
+   25 |  1   B.S     25 | Directive   | 00 |         |    0 | 00/0000               |             use   4/MIDISyn.Macs 
+   26 |  1   B.S     26 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Misc.Macs    
+   27 |  1   B.S     27 | Directive   | 00 |         |    0 | 00/0000               |             use   4/QD.Macs      
+   28 |  1   B.S     28 | Directive   | 00 |         |    0 | 00/0000               |             use   4/QDAux.Macs   
+   29 |  1   B.S     29 | Directive   | 00 |         |    0 | 00/0000               |             use   4/SANE.Macs    
+   30 |  1   B.S     30 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Sound.Macs   
+   31 |  1   B.S     31 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Std.Macs     
+   32 |  1   B.S     32 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Text.Macs    
+   33 |  1   B.S     33 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Util.Macs    
+   34 |  1   B.S     34 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Window.Macs  
+   35 |  1   B.S     35 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   36 |  1   B.S     36 | Directive   | 00 |         |    0 | 00/0000               |             use   B.X.S          
+   37 |  2 B.X.S      1 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   38 |  2 B.X.S      2 | Comment     | 00 |         |    0 | 00/0000               | * TFBD generated externals
+   39 |  2 B.X.S      3 | Comment     | 00 |         |    0 | 00/0000               | *     (c) PHC 1992,93
+   40 |  2 B.X.S      4 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   41 |  2 B.X.S      5 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   42 |  2 B.X.S      6 | External    | 00 |         |    0 | 00/0000               | L0F0779     EXT                  
+   43 |  2 B.X.S      7 | External    | 00 |         |    0 | 00/0000               | L0F0060     EXT                  
+   44 |  2 B.X.S      8 | External    | 00 |         |    0 | 00/0000               | L0F005E     EXT                  
+   45 |  2 B.X.S      9 | External    | 00 |         |    0 | 00/0000               | L0E4A4C     EXT                  
+   46 |  2 B.X.S     10 | External    | 00 |         |    0 | 00/0000               | L0D1CCB     EXT                  
+   47 |  2 B.X.S     11 | External    | 00 |         |    0 | 00/0000               | L0F00E1     EXT                  
+   48 |  2 B.X.S     12 | External    | 00 |         |    0 | 00/0000               | L0F0012     EXT                  
+   49 |  2 B.X.S     13 | External    | 00 |         |    0 | 00/0000               | L011C24     EXT                  
+   50 |  2 B.X.S     14 | External    | 00 |         |    0 | 00/0000               | L0D0000     EXT                  
+   51 |  2 B.X.S     15 | External    | 00 |         |    0 | 00/0000               | L0F0034     EXT                  
+   52 |  2 B.X.S     16 | External    | 00 |         |    0 | 00/0000               | L0F0032     EXT                  
+   53 |  2 B.X.S     17 | External    | 00 |         |    0 | 00/0000               | L0D1573     EXT                  
+   54 |  2 B.X.S     18 | External    | 00 |         |    0 | 00/0000               | L0F002C     EXT                  
+   55 |  2 B.X.S     19 | External    | 00 |         |    0 | 00/0000               | L0F002A     EXT                  
+   56 |  2 B.X.S     20 | External    | 00 |         |    0 | 00/0000               | L0C04CD     EXT                  
+   57 |  2 B.X.S     21 | External    | 00 |         |    0 | 00/0000               | L0D1710     EXT                  
+   58 |  2 B.X.S     22 | External    | 00 |         |    0 | 00/0000               | L0D1452     EXT                  
+   59 |  2 B.X.S     23 | External    | 00 |         |    0 | 00/0000               | L0D1705     EXT                  
+   60 |  2 B.X.S     24 | External    | 00 |         |    0 | 00/0000               | L0D1BB9     EXT                  
+   61 |  2 B.X.S     25 | External    | 00 |         |    0 | 00/0000               | L0D1C7E     EXT                  
+   62 |  2 B.X.S     26 | External    | 00 |         |    0 | 00/0000               | L0D142A     EXT                  
+   63 |  2 B.X.S     27 | External    | 00 |         |    0 | 00/0000               | L0D139E     EXT                  
+   64 |  2 B.X.S     28 | External    | 00 |         |    0 | 00/0000               | L0D148E     EXT                  
+   65 |  2 B.X.S     29 | External    | 00 |         |    0 | 00/0000               | L0D1402     EXT                  
+   66 |  2 B.X.S     30 | External    | 00 |         |    0 | 00/0000               | L0F000C     EXT                  
+   67 |  2 B.X.S     31 | External    | 00 |         |    0 | 00/0000               | L0F000A     EXT                  
+   68 |  2 B.X.S     32 | External    | 00 |         |    0 | 00/0000               | L0C0863     EXT                  
+   69 |  2 B.X.S     33 | External    | 00 |         |    0 | 00/0000               | L081620     EXT                  
+   70 |  2 B.X.S     34 | External    | 00 |         |    0 | 00/0000               | L0F00AD     EXT                  
+   71 |  2 B.X.S     35 | External    | 00 |         |    0 | 00/0000               | L0F00AB     EXT                  
+   72 |  2 B.X.S     36 | External    | 00 |         |    0 | 00/0000               | L0F00C1     EXT                  
+   73 |  2 B.X.S     37 | External    | 00 |         |    0 | 00/0000               | L0F00BF     EXT                  
+   74 |  2 B.X.S     38 | External    | 00 |         |    0 | 00/0000               | L0F00D3     EXT                  
+   75 |  2 B.X.S     39 | External    | 00 |         |    0 | 00/0000               | L0F00D1     EXT                  
+   76 |  2 B.X.S     40 | External    | 00 |         |    0 | 00/0000               | L0F00CF     EXT                  
+   77 |  2 B.X.S     41 | External    | 00 |         |    0 | 00/0000               | L0F00CD     EXT                  
+   78 |  2 B.X.S     42 | External    | 00 |         |    0 | 00/0000               | L0D13C6     EXT                  
+   79 |  2 B.X.S     43 | External    | 00 |         |    0 | 00/0000               | L0E2A36     EXT                  
+   80 |  2 B.X.S     44 | External    | 00 |         |    0 | 00/0000               | L0E0046     EXT                  
+   81 |  2 B.X.S     45 | External    | 00 |         |    0 | 00/0000               | L0E0A9E     EXT                  
+   82 |  2 B.X.S     46 | External    | 00 |         |    0 | 00/0000               | L0721E0     EXT                  
+   83 |  2 B.X.S     47 | External    | 00 |         |    0 | 00/0000               | L01141C     EXT                  
+   84 |  2 B.X.S     48 | External    | 00 |         |    0 | 00/0000               | L0D1BE1     EXT                  
+   85 |  2 B.X.S     49 | External    | 00 |         |    0 | 00/0000               | L0E50CC     EXT                  
+   86 |  2 B.X.S     50 | External    | 00 |         |    0 | 00/0000               | L0E50D2     EXT                  
+   87 |  2 B.X.S     51 | External    | 00 |         |    0 | 00/0000               | L0E50D6     EXT                  
+   88 |  2 B.X.S     52 | External    | 00 |         |    0 | 00/0000               | L0E50D9     EXT                  
+   89 |  2 B.X.S     53 | External    | 00 |         |    0 | 00/0000               | L0E50DD     EXT                  
+   90 |  2 B.X.S     54 | External    | 00 |         |    0 | 00/0000               | L0E50E1     EXT                  
+   91 |  2 B.X.S     55 | External    | 00 |         |    0 | 00/0000               | L0E5107     EXT                  
+   92 |  2 B.X.S     56 | External    | 00 |         |    0 | 00/0000               | L0E5108     EXT                  
+   93 |  2 B.X.S     57 | External    | 00 |         |    0 | 00/0000               | L0E50E5     EXT                  
+   94 |  2 B.X.S     58 | External    | 00 |         |    0 | 00/0000               | L0E3009     EXT                  
+   95 |  2 B.X.S     59 | External    | 00 |         |    0 | 00/0000               | L0E301F     EXT                  
+   96 |  2 B.X.S     60 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   97 |  2 B.X.S     61 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   98 |  1   B.S     37 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   99 |  1   B.S     38 | Equivalence | 00 |         |    0 | 00/0000               | GSOS        =     $E100A8        
+  100 |  1   B.S     39 | Empty       | 00 |         |    0 | 00/0000               |                                  
+  101 |  1   B.S     40 | Comment     | 00 |         |    0 | 00/0000               | *-----------------------------------
+  102 |  1   B.S     41 | Empty       | 00 |         |    0 | 00/0000               |                                  
+  103 |  1   B.S     42 | Global      | 00 |         |    0 | 00/0000               | L040000     ENT                  
+  104 |  1   B.S     43 | Code        | 00 |         |    1 | 00/0000 : 0B          |             PHD                  
+  105 |  1   B.S     44 | Code        | 00 |         |    1 | 00/0001 : 3B          |             TSC                  
+  106 |  1   B.S     45 | Code        | 00 |         |    1 | 00/0002 : 38          |             SEC                  
+  107 |  1   B.S     46 | Code        | 00 |         |    3 | 00/0003 : E9 F3 00    |             SBC   #$00F3         
+  108 |  1   B.S     47 | Code        | 00 |         |    1 | 00/0006 : 5B          |             TCD                  
+  109 |  1   B.S     48 | Code        | 00 |         |    3 | 00/0007 : 69 BF 00    |             ADC   #$00BF         
+  110 |  1   B.S     49 | Code        | 00 |         |    1 | 00/000A : 1B          |             TCS                  
+  111 |  1   B.S     50 | Code        | 00 |E 2      |    3 | 00/000B : A9 9E 0A    |             LDA   #L0E0A9E       
+  112 |  1   B.S     51 | Code        | 00 |E 1 >>16 |    3 | 00/000E : A2 00 00    |             LDX   #^L0E0A9E      
+  113 |  1   B.S     52 | Code        | 00 |E 2      |    3 | 00/0011 : 8E 34 00    |             STX   L0F0034        
+  114 |  1   B.S     53 | Code        | 00 |E 2      |    3 | 00/0014 : 8D 32 00    |             STA   L0F0032        
+  115 |  1   B.S     54 | Code        | 00 |E 2      |    3 | 00/0017 : AE 34 00    |             LDX   L0F0034        
+  116 |  1   B.S     55 | Code        | 00 |E 2      |    3 | 00/001A : AD 32 00    |             LDA   L0F0032        
+  117 |  1   B.S     56 | Code        | 00 |         |    2 | 00/001D : 85 F0       |             STA   $F0            
+  118 |  1   B.S     57 | Code        | 00 |         |    2 | 00/001F : 86 F2       |             STX   $F2            
+  119 |  1   B.S     58 | Code        | 00 |         |    2 | 00/0021 : A6 F2       |             LDX   $F2            
+  120 |  1   B.S     59 | Code        | 00 |         |    3 | 00/0023 : A9 BA 00    |             LDA   #$00BA         
+  121 |  1   B.S     60 | Code        | 00 |         |    1 | 00/0026 : 18          |             CLC                  
+  122 |  1   B.S     61 | Code        | 00 |         |    2 | 00/0027 : 65 F0       |             ADC   $F0            
+  123 |  1   B.S     62 | Code        | 00 |         |    2 | 00/0029 : 90 01       |             BCC   L04002C        
+  124 |  1   B.S     63 | Code        | 00 |         |    1 | 00/002B : E8          |             INX                  
+  125 |  1   B.S     64 | Code        | 00 |         |    1 | 00/002C : DA          | L04002C     PHX                  
+  126 |  1   B.S     65 | Code        | 00 |         |    1 | 00/002D : 48          |             PHA                  
+  127 |  1   B.S     66 | Code        | 00 |E 2      |    3 | 00/002E : AE 34 00    |             LDX   L0F0034        
+  128 |  1   B.S     67 | Code        | 00 |E 2      |    3 | 00/0031 : AD 32 00    |             LDA   L0F0032        
+  129 |  1   B.S     68 | Code        | 00 |         |    2 | 00/0034 : 85 F0       |             STA   $F0            
+  130 |  1   B.S     69 | Code        | 00 |         |    2 | 00/0036 : 86 F2       |             STX   $F2            
+  131 |  1   B.S     70 | Code        | 00 |         |    1 | 00/0038 : 68          |             PLA                  
+  132 |  1   B.S     71 | Code        | 00 |         |    1 | 00/0039 : FA          |             PLX                  
+  133 |  1   B.S     72 | Code        | 00 |         |    3 | 00/003A : A0 10 0A    |             LDY   #$0A10         
+  134 |  1   B.S     73 | Code        | 00 |         |    1 | 00/003D : 48          |             PHA                  
+  135 |  1   B.S     74 | Code        | 00 |         |    1 | 00/003E : 8A          |             TXA                  
+  136 |  1   B.S     75 | Code        | 00 |         |    2 | 00/003F : 97 F0       |             STA   [$F0],Y        
+  137 |  1   B.S     76 | Code        | 00 |         |    1 | 00/0041 : 68          |             PLA                  
+  138 |  1   B.S     77 | Code        | 00 |         |    3 | 00/0042 : A0 0E 0A    |             LDY   #$0A0E         
+  139 |  1   B.S     78 | Code        | 00 |         |    2 | 00/0045 : 97 F0       |             STA   [$F0],Y        
+  140 |  1   B.S     79 | Code        | 00 |E 2      |    3 | 00/0047 : AE 0C 00    |             LDX   L0F000C        
+  141 |  1   B.S     80 | Code        | 00 |E 2      |    3 | 00/004A : AD 0A 00    |             LDA   L0F000A        
+  142 |  1   B.S     81 | Code        | 00 |         |    2 | 00/004D : 85 F0       |             STA   $F0            
+  143 |  1   B.S     82 | Code        | 00 |         |    2 | 00/004F : 86 F2       |             STX   $F2            
+  144 |  1   B.S     83 | Code        | 00 |         |    2 | 00/0051 : A6 F2       |             LDX   $F2            
+  145 |  1   B.S     84 | Code        | 00 |         |    3 | 00/0053 : A9 5C 04    |             LDA   #$045C         
+  146 |  1   B.S     85 | Code        | 00 |         |    1 | 00/0056 : 18          |             CLC                  
+  147 |  1   B.S     86 | Code        | 00 |         |    2 | 00/0057 : 65 F0       |             ADC   $F0            
+  148 |  1   B.S     87 | Code        | 00 |         |    2 | 00/0059 : 90 01       |             BCC   L04005C        
+  149 |  1   B.S     88 | Code        | 00 |         |    1 | 00/005B : E8          |             INX                  
+  150 |  1   B.S     89 | Code        | 00 |E 2      |    3 | 00/005C : 8E 2C 00    | L04005C     STX   L0F002C        
+  151 |  1   B.S     90 | Code        | 00 |E 2      |    3 | 00/005F : 8D 2A 00    |             STA   L0F002A        
+  152 |  1   B.S     91 | Code        | 00 |         |    3 | 00/0062 : F4 00 00    |             PEA   $0000          
+  153 |  1   B.S     92 | Code        | 00 |         |    3 | 00/0065 : F4 00 00    |             PEA   $0000          
+  154 |  1   B.S     93 | Code        | 00 |         |    2 | 00/0068 : A5 F9       |             LDA   $F9            
+  155 |  1   B.S     94 | Code        | 00 |         |    1 | 00/006A : 0A          |             ASL                  
+  156 |  1   B.S     95 | Code        | 00 |         |    1 | 00/006B : AA          |             TAX                  
+  157 |  1   B.S     96 | Code        | 00 |E 3      |    4 | 00/006C : BF 46 00 0F |             LDAL  L0E0046,X      
+  158 |  1   B.S     97 | Code        | 00 |         |    1 | 00/0070 : 48          |             PHA                  
+  159 |  1   B.S     98 | Code        | 00 |         |    3 | 00/0071 : F4 01 00    |             PEA   $0001          
+  160 |  1   B.S     99 | Code        | 00 |E 3      |    4 | 00/0074 : 22 20 16 09 |             JSL   L081620        
+  161 |  1   B.S    100 | Code        | 00 |         |    1 | 00/0078 : 7A          |             PLY                  
+  162 |  1   B.S    101 | Code        | 00 |         |    1 | 00/0079 : 7A          |             PLY                  
+  163 |  1   B.S    102 | Code        | 00 |         |    1 | 00/007A : 7A          |             PLY                  
+  164 |  1   B.S    103 | Code        | 00 |         |    1 | 00/007B : 7A          |             PLY                  
+  165 |  1   B.S    104 | Code        | 00 |E 2      |    3 | 00/007C : AE C1 00    |             LDX   L0F00C1        
+  166 |  1   B.S    105 | Code        | 00 |E 2      |    3 | 00/007F : AD BF 00    |             LDA   L0F00BF        
+  167 |  1   B.S    106 | Code        | 00 |         |    2 | 00/0082 : 86 D6       |             STX   $D6            
+  168 |  1   B.S    107 | Code        | 00 |         |    2 | 00/0084 : 85 D4       |             STA   $D4            
+  169 |  1   B.S    108 | Code        | 00 |E 2      |    3 | 00/0086 : AE C1 00    |             LDX   L0F00C1        
+  170 |  1   B.S    109 | Code        | 00 |E 2      |    3 | 00/0089 : AD BF 00    |             LDA   L0F00BF        
+  171 |  1   B.S    110 | Code        | 00 |         |    2 | 00/008C : 85 F0       |             STA   $F0            
+  172 |  1   B.S    111 | Code        | 00 |         |    2 | 00/008E : 86 F2       |             STX   $F2            
+  173 |  1   B.S    112 | Code        | 00 |         |    3 | 00/0090 : A0 08 00    |             LDY   #$0008         
+  174 |  1   B.S    113 | Code        | 00 |         |    2 | 00/0093 : B7 F0       |             LDA   [$F0],Y        
+  175 |  1   B.S    114 | Code        | 00 |         |    3 | 00/0095 : A2 00 00    |             LDX   #$0000         
+  176 |  1   B.S    115 | Code        | 00 |         |    1 | 00/0098 : A8          |             TAY                  
+  177 |  1   B.S    116 | Code        | 00 |         |    2 | 00/0099 : 10 01       |             BPL   L04009C        
+  178 |  1   B.S    117 | Code        | 00 |         |    1 | 00/009B : CA          |             DEX                  
+  179 |  1   B.S    118 | Code        | 00 |         |    1 | 00/009C : DA          | L04009C     PHX                  
+  180 |  1   B.S    119 | Code        | 00 |         |    1 | 00/009D : 48          |             PHA                  
+  181 |  1   B.S    120 | Code        | 00 |         |    2 | 00/009E : A6 D6       |             LDX   $D6            
+  182 |  1   B.S    121 | Code        | 00 |         |    2 | 00/00A0 : A5 D4       |             LDA   $D4            
+  183 |  1   B.S    122 | Code        | 00 |E 3      |    4 | 00/00A2 : 22 73 15 0E |             JSL   L0D1573        
+  184 |  1   B.S    123 | Code        | 00 |         |    1 | 00/00A6 : 68          |             PLA                  
+  185 |  1   B.S    124 | Code        | 00 |         |    1 | 00/00A7 : FA          |             PLX                  
+  186 |  1   B.S    125 | Code        | 00 |         |    2 | 00/00A8 : 86 D6       |             STX   $D6            
+  187 |  1   B.S    126 | Code        | 00 |         |    2 | 00/00AA : 85 D4       |             STA   $D4            
+  188 |  1   B.S    127 | Code        | 00 |         |    2 | 00/00AC : D4 D6       |             PEI   $D6            
+  189 |  1   B.S    128 | Code        | 00 |         |    2 | 00/00AE : D4 D4       |             PEI   $D4            
+  190 |  1   B.S    129 | Code        | 00 |E 3      |    4 | 00/00B0 : 22 CD 04 0D |             JSL   L0C04CD        
+  191 |  1   B.S    130 | Code        | 00 |         |    1 | 00/00B4 : 7A          |             PLY                  
+  192 |  1   B.S    131 | Code        | 00 |         |    1 | 00/00B5 : 7A          |             PLY                  
+  193 |  1   B.S    132 | Code        | 00 |         |    2 | 00/00B6 : 85 EE       |             STA   $EE            
+  194 |  1   B.S    133 | Code        | 00 |         |    2 | 00/00B8 : 64 EC       |             STZ   $EC            
+  195 |  1   B.S    134 | Code        | 00 |E 2      |    3 | 00/00BA : A9 36 2A    |             LDA   #L0E2A36       
+  196 |  1   B.S    135 | Code        | 00 |E 1 >>16 |    3 | 00/00BD : A2 00 00    |             LDX   #^L0E2A36      
+  197 |  1   B.S    136 | Code        | 00 |         |    2 | 00/00C0 : 86 D2       |             STX   $D2            
+  198 |  1   B.S    137 | Code        | 00 |         |    2 | 00/00C2 : 85 D0       |             STA   $D0            
+  199 |  1   B.S    138 | Code        | 00 |         |    3 | 00/00C4 : F4 00 00    |             PEA   $0000          
+  200 |  1   B.S    139 | Code        | 00 |E 3      |    4 | 00/00C7 : 22 1C 14 02 |             JSL   L01141C        
+  201 |  1   B.S    140 | Code        | 00 |         |    1 | 00/00CB : 7A          |             PLY                  
+  202 |  1   B.S    141 | Code        | 00 |         |    3 | 00/00CC : F4 00 00    |             PEA   $0000          
+  203 |  1   B.S    142 | Code        | 00 |         |    3 | 00/00CF : F4 00 00    |             PEA   $0000          
+  204 |  1   B.S    143 | Code        | 00 |         |    3 | 00/00D2 : F4 00 00    |             PEA   $0000          
+  205 |  1   B.S    144 | Code        | 00 |         |    3 | 00/00D5 : F4 00 00    |             PEA   $0000          
+  206 |  1   B.S    145 | Code        | 00 |         |    3 | 00/00D8 : F4 00 00    |             PEA   $0000          
+  207 |  1   B.S    146 | Code        | 00 |E 1 >>16 |    3 | 00/00DB : F4 00 00    |             PEA   ^L0F00CD       
+  208 |  1   B.S    147 | Code        | 00 |E 2      |    3 | 00/00DE : F4 CD 00    |             PEA   L0F00CD        
+  209 |  1   B.S    148 | Code        | 00 |E 3      |    4 | 00/00E1 : 22 10 17 0E |             JSL   L0D1710        
+  210 |  1   B.S    149 | Code        | 00 |         |    1 | 00/00E5 : 7A          |             PLY                  
+  211 |  1   B.S    150 | Code        | 00 |         |    1 | 00/00E6 : 7A          |             PLY                  
+  212 |  1   B.S    151 | Code        | 00 |         |    1 | 00/00E7 : 7A          |             PLY                  
+  213 |  1   B.S    152 | Code        | 00 |         |    1 | 00/00E8 : 7A          |             PLY                  
+  214 |  1   B.S    153 | Code        | 00 |         |    1 | 00/00E9 : 7A          |             PLY                  
+  215 |  1   B.S    154 | Code        | 00 |         |    3 | 00/00EA : A9 01 00    | L0400EA     LDA   #$0001         
+  216 |  1   B.S    155 | Code        | 00 |         |    2 | 00/00ED : D0 03       |             BNE   L0400F2        
+  217 |  1   B.S    156 | Code        | 00 |         |    3 | 00/00EF : 82 81 04    |             BRL   L040573        
+  218 |  1   B.S    157 | Code        | 00 |         |    2 | 00/00F2 : A5 EC       | L0400F2     LDA   $EC            
+  219 |  1   B.S    158 | Code        | 00 |         |    1 | 00/00F4 : 38          |             SEC                  
+  220 |  1   B.S    159 | Code        | 00 |         |    2 | 00/00F5 : E5 EE       |             SBC   $EE            
+  221 |  1   B.S    160 | Code        | 00 |         |    2 | 00/00F7 : 70 03       |             BVS   L0400FC        
+  222 |  1   B.S    161 | Code        | 00 |         |    3 | 00/00F9 : 49 00 80    |             EOR   #$8000         
+  223 |  1   B.S    162 | Code        | 00 |         |    2 | 00/00FC : 30 03       | L0400FC     BMI   L040101        
+  224 |  1   B.S    163 | Code        | 00 |         |    3 | 00/00FE : 82 D1 00    |             BRL   L0401D2        
+  225 |  1   B.S    164 | Code        | 00 |         |    3 | 00/0101 : F4 00 00    | L040101     PEA   $0000          
+  226 |  1   B.S    165 | Code        | 00 |         |    3 | 00/0104 : F4 08 00    |             PEA   $0008          
+  227 |  1   B.S    166 | Code        | 00 |E 2      |    3 | 00/0107 : A9 CD 00    |             LDA   #L0F00CD       
+  228 |  1   B.S    167 | Code        | 00 |E 1 >>16 |    3 | 00/010A : A2 00 00    |             LDX   #^L0F00CD      
+  229 |  1   B.S    168 | Code        | 00 |         |    1 | 00/010D : DA          |             PHX                  
+  230 |  1   B.S    169 | Code        | 00 |         |    1 | 00/010E : 48          |             PHA                  
+  231 |  1   B.S    170 | Code        | 00 |         |    3 | 00/010F : A2 00 00    |             LDX   #$0000         
+  232 |  1   B.S    171 | Code        | 00 |         |    3 | 00/0112 : A9 08 00    |             LDA   #$0008         
+  233 |  1   B.S    172 | Code        | 00 |         |    1 | 00/0115 : DA          |             PHX                  
+  234 |  1   B.S    173 | Code        | 00 |         |    1 | 00/0116 : 48          |             PHA                  
+  235 |  1   B.S    174 | Code        | 00 |         |    2 | 00/0117 : A6 D2       |             LDX   $D2            
+  236 |  1   B.S    175 | Code        | 00 |         |    2 | 00/0119 : A5 D0       |             LDA   $D0            
+  237 |  1   B.S    176 | Code        | 00 |E 3      |    4 | 00/011B : 22 05 17 0E |             JSL   L0D1705        
+  238 |  1   B.S    177 | Code        | 00 |         |    1 | 00/011F : 68          |             PLA                  
+  239 |  1   B.S    178 | Code        | 00 |         |    1 | 00/0120 : FA          |             PLX                  
+  240 |  1   B.S    179 | Code        | 00 |         |    1 | 00/0121 : DA          |             PHX                  
+  241 |  1   B.S    180 | Code        | 00 |         |    1 | 00/0122 : 48          |             PHA                  
+  242 |  1   B.S    181 | Code        | 00 |E 3      |    4 | 00/0123 : 22 63 08 0D |             JSL   L0C0863        
+  243 |  1   B.S    182 | Code        | 00 |         |    1 | 00/0127 : A8          |             TAY                  
+  244 |  1   B.S    183 | Code        | 00 |         |    1 | 00/0128 : 3B          |             TSC                  
+  245 |  1   B.S    184 | Code        | 00 |         |    1 | 00/0129 : 18          |             CLC                  
+  246 |  1   B.S    185 | Code        | 00 |         |    3 | 00/012A : 69 0C 00    |             ADC   #$000C         
+  247 |  1   B.S    186 | Code        | 00 |         |    1 | 00/012D : 1B          |             TCS                  
+  248 |  1   B.S    187 | Code        | 00 |         |    1 | 00/012E : 98          |             TYA                  
+  249 |  1   B.S    188 | Code        | 00 |E 2      |    3 | 00/012F : AD D3 00    |             LDA   L0F00D3        
+  250 |  1   B.S    189 | Code        | 00 |         |    1 | 00/0132 : 48          |             PHA                  
+  251 |  1   B.S    190 | Code        | 00 |E 2      |    3 | 00/0133 : AD D1 00    |             LDA   L0F00D1        
+  252 |  1   B.S    191 | Code        | 00 |         |    1 | 00/0136 : 48          |             PHA                  
+  253 |  1   B.S    192 | Code        | 00 |E 2      |    3 | 00/0137 : AD CF 00    |             LDA   L0F00CF        
+  254 |  1   B.S    193 | Code        | 00 |         |    1 | 00/013A : 48          |             PHA                  
+  255 |  1   B.S    194 | Code        | 00 |E 2      |    3 | 00/013B : AD CD 00    |             LDA   L0F00CD        
+  256 |  1   B.S    195 | Code        | 00 |         |    1 | 00/013E : 48          |             PHA                  
+  257 |  1   B.S    196 | Code        | 00 |E 3      |    4 | 00/013F : 22 52 14 0E |             JSL   L0D1452        
+  258 |  1   B.S    197 | Code        | 00 |E 1 >>16 |    3 | 00/0143 : F4 00 00    |             PEA   ^L0E50CC       
+  259 |  1   B.S    198 | Code        | 00 |E 2      |    3 | 00/0146 : F4 CC 50    |             PEA   L0E50CC        
+  260 |  1   B.S    199 | Code        | 00 |         |    2 | 00/0149 : D4 FD       |             PEI   $FD            
+  261 |  1   B.S    200 | Code        | 00 |         |    2 | 00/014B : D4 FB       |             PEI   $FB            
+  262 |  1   B.S    201 | Code        | 00 |E 3      |    4 | 00/014D : 22 B9 1B 0E |             JSL   L0D1BB9        
+  263 |  1   B.S    202 | Code        | 00 |         |    1 | 00/0151 : A8          |             TAY                  
+  264 |  1   B.S    203 | Code        | 00 |         |    1 | 00/0152 : 3B          |             TSC                  
+  265 |  1   B.S    204 | Code        | 00 |         |    1 | 00/0153 : 18          |             CLC                  
+  266 |  1   B.S    205 | Code        | 00 |         |    3 | 00/0154 : 69 12 00    |             ADC   #$0012         
+  267 |  1   B.S    206 | Code        | 00 |         |    1 | 00/0157 : 1B          |             TCS                  
+  268 |  1   B.S    207 | Code        | 00 |         |    1 | 00/0158 : 98          |             TYA                  
+  269 |  1   B.S    208 | Code        | 00 |         |    3 | 00/0159 : F4 00 00    |             PEA   $0000          
+  270 |  1   B.S    209 | Code        | 00 |         |    3 | 00/015C : F4 00 00    |             PEA   $0000          
+  271 |  1   B.S    210 | Code        | 00 |         |    3 | 00/015F : F4 00 00    |             PEA   $0000          
+  272 |  1   B.S    211 | Code        | 00 |         |    3 | 00/0162 : F4 00 00    |             PEA   $0000          
+  273 |  1   B.S    212 | Code        | 00 |         |    3 | 00/0165 : F4 00 00    |             PEA   $0000          
+  274 |  1   B.S    213 | Code        | 00 |E 2      |    3 | 00/0168 : AD D3 00    |             LDA   L0F00D3        
+  275 |  1   B.S    214 | Code        | 00 |         |    1 | 00/016B : 48          |             PHA                  
+  276 |  1   B.S    215 | Code        | 00 |E 2      |    3 | 00/016C : AD D1 00    |             LDA   L0F00D1        
+  277 |  1   B.S    216 | Code        | 00 |         |    1 | 00/016F : 48          |             PHA                  
+  278 |  1   B.S    217 | Code        | 00 |E 2      |    3 | 00/0170 : AD CF 00    |             LDA   L0F00CF        
+  279 |  1   B.S    218 | Code        | 00 |         |    1 | 00/0173 : 48          |             PHA                  
+  280 |  1   B.S    219 | Code        | 00 |E 2      |    3 | 00/0174 : AD CD 00    |             LDA   L0F00CD        
+  281 |  1   B.S    220 | Code        | 00 |         |    1 | 00/0177 : 48          |             PHA                  
+  282 |  1   B.S    221 | Code        | 00 |E 3      |    4 | 00/0178 : 22 52 14 0E |             JSL   L0D1452        
+  283 |  1   B.S    222 | Code        | 00 |E 3      |    4 | 00/017C : 22 C6 13 0E |             JSL   L0D13C6        
+  284 |  1   B.S    223 | Code        | 00 |         |    2 | 00/0180 : F0 02       |             BEQ   L040184        
+  285 |  1   B.S    224 | Code        | 00 |         |    2 | 00/0182 : 80 12       |             BRA   L040196        
+  286 |  1   B.S    225 | Code        | 00 |E 1 >>16 |    3 | 00/0184 : F4 00 00    | L040184     PEA   ^L0E50D2       
+  287 |  1   B.S    226 | Code        | 00 |E 2      |    3 | 00/0187 : F4 D2 50    |             PEA   L0E50D2        
+  288 |  1   B.S    227 | Code        | 00 |         |    2 | 00/018A : D4 FD       |             PEI   $FD            
+  289 |  1   B.S    228 | Code        | 00 |         |    2 | 00/018C : D4 FB       |             PEI   $FB            
+  290 |  1   B.S    229 | Code        | 00 |E 3      |    4 | 00/018E : 22 CB 1C 0E |             JSL   L0D1CCB        
+  291 |  1   B.S    230 | Code        | 00 |         |    1 | 00/0192 : 7A          |             PLY                  
+  292 |  1   B.S    231 | Code        | 00 |         |    1 | 00/0193 : 7A          |             PLY                  
+  293 |  1   B.S    232 | Code        | 00 |         |    1 | 00/0194 : 7A          |             PLY                  
+  294 |  1   B.S    233 | Code        | 00 |         |    1 | 00/0195 : 7A          |             PLY                  
+  295 |  1   B.S    234 | Code        | 00 |E 1 >>16 |    3 | 00/0196 : F4 00 00    | L040196     PEA   ^L0E50D6       
+  296 |  1   B.S    235 | Code        | 00 |E 2      |    3 | 00/0199 : F4 D6 50    |             PEA   L0E50D6        
+  297 |  1   B.S    236 | Code        | 00 |         |    2 | 00/019C : D4 FD       |             PEI   $FD            
+  298 |  1   B.S    237 | Code        | 00 |         |    2 | 00/019E : D4 FB       |             PEI   $FB            
+  299 |  1   B.S    238 | Code        | 00 |E 3      |    4 | 00/01A0 : 22 7E 1C 0E |             JSL   L0D1C7E        
+  300 |  1   B.S    239 | Code        | 00 |         |    1 | 00/01A4 : 7A          |             PLY                  
+  301 |  1   B.S    240 | Code        | 00 |         |    1 | 00/01A5 : 7A          |             PLY                  
+  302 |  1   B.S    241 | Code        | 00 |         |    1 | 00/01A6 : 7A          |             PLY                  
+  303 |  1   B.S    242 | Code        | 00 |         |    1 | 00/01A7 : 7A          |             PLY                  
+  304 |  1   B.S    243 | Code        | 00 |         |    3 | 00/01A8 : C9 00 00    |             CMP   #$0000         
+  305 |  1   B.S    244 | Code        | 00 |         |    2 | 00/01AB : D0 12       |             BNE   L0401BF        
+  306 |  1   B.S    245 | Code        | 00 |E 1 >>16 |    3 | 00/01AD : F4 00 00    |             PEA   ^L0E50D9       
+  307 |  1   B.S    246 | Code        | 00 |E 2      |    3 | 00/01B0 : F4 D9 50    |             PEA   L0E50D9        
+  308 |  1   B.S    247 | Code        | 00 |         |    2 | 00/01B3 : D4 FD       |             PEI   $FD            
+  309 |  1   B.S    248 | Code        | 00 |         |    2 | 00/01B5 : D4 FB       |             PEI   $FB            
+  310 |  1   B.S    249 | Code        | 00 |E 3      |    4 | 00/01B7 : 22 CB 1C 0E |             JSL   L0D1CCB        
+  311 |  1   B.S    250 | Code        | 00 |         |    1 | 00/01BB : 7A          |             PLY                  
+  312 |  1   B.S    251 | Code        | 00 |         |    1 | 00/01BC : 7A          |             PLY                  
+  313 |  1   B.S    252 | Code        | 00 |         |    1 | 00/01BD : 7A          |             PLY                  
+  314 |  1   B.S    253 | Code        | 00 |         |    1 | 00/01BE : 7A          |             PLY                  
+  315 |  1   B.S    254 | Code        | 00 |         |    2 | 00/01BF : D4 FD       | L0401BF     PEI   $FD            
+  316 |  1   B.S    255 | Code        | 00 |         |    2 | 00/01C1 : D4 FB       |             PEI   $FB            
+  317 |  1   B.S    256 | Code        | 00 |E 3      |    4 | 00/01C3 : 22 CD 04 0D |             JSL   L0C04CD        
+  318 |  1   B.S    257 | Code        | 00 |         |    1 | 00/01C7 : 7A          |             PLY                  
+  319 |  1   B.S    258 | Code        | 00 |         |    1 | 00/01C8 : 7A          |             PLY                  
+  320 |  1   B.S    259 | Code        | 00 |         |    3 | 00/01C9 : 82 A7 03    |             BRL   L040573        
+  321 |  1   B.S    260 | Code        | 00 |         |    3 | 00/01CC : 82 A4 03    |             BRL   L040573        
+  322 |  1   B.S    261 | Code        | 00 |         |    3 | 00/01CF : 82 9E 03    |             BRL   L040570        
+  323 |  1   B.S    262 | Code        | 00 |         |    2 | 00/01D2 : A7 D4       | L0401D2     LDA   [$D4]          
+  324 |  1   B.S    263 | Code        | 00 |         |    3 | 00/01D4 : 29 FF 00    |             AND   #$00FF         
+  325 |  1   B.S    264 | Code        | 00 |         |    2 | 00/01D7 : 85 EA       |             STA   $EA            
+  326 |  1   B.S    265 | Code        | 00 |         |    2 | 00/01D9 : A5 EA       |             LDA   $EA            
+  327 |  1   B.S    266 | Code        | 00 |         |    3 | 00/01DB : C9 7E 00    |             CMP   #$007E         
+  328 |  1   B.S    267 | Code        | 00 |         |    2 | 00/01DE : F0 03       |             BEQ   L0401E3        
+  329 |  1   B.S    268 | Code        | 00 |         |    3 | 00/01E0 : 82 06 02    |             BRL   L0403E9        
+  330 |  1   B.S    269 | Code        | 00 |         |    3 | 00/01E3 : A2 00 00    | L0401E3     LDX   #$0000         
+  331 |  1   B.S    270 | Code        | 00 |         |    3 | 00/01E6 : A9 08 00    |             LDA   #$0008         
+  332 |  1   B.S    271 | Code        | 00 |         |    1 | 00/01E9 : DA          |             PHX                  
+  333 |  1   B.S    272 | Code        | 00 |         |    1 | 00/01EA : 48          |             PHA                  
+  334 |  1   B.S    273 | Code        | 00 |         |    2 | 00/01EB : A6 D2       |             LDX   $D2            
+  335 |  1   B.S    274 | Code        | 00 |         |    2 | 00/01ED : A5 D0       |             LDA   $D0            
+  336 |  1   B.S    275 | Code        | 00 |E 3      |    4 | 00/01EF : 22 05 17 0E |             JSL   L0D1705        
+  337 |  1   B.S    276 | Code        | 00 |         |    1 | 00/01F3 : 68          |             PLA                  
+  338 |  1   B.S    277 | Code        | 00 |         |    1 | 00/01F4 : FA          |             PLX                  
+  339 |  1   B.S    278 | Code        | 00 |         |    2 | 00/01F5 : 86 D2       |             STX   $D2            
+  340 |  1   B.S    279 | Code        | 00 |         |    2 | 00/01F7 : 85 D0       |             STA   $D0            
+  341 |  1   B.S    280 | Code        | 00 |         |    3 | 00/01F9 : F4 00 00    |             PEA   $0000          
+  342 |  1   B.S    281 | Code        | 00 |         |    3 | 00/01FC : F4 08 00    |             PEA   $0008          
+  343 |  1   B.S    282 | Code        | 00 |         |    3 | 00/01FF : A2 00 00    |             LDX   #$0000         
+  344 |  1   B.S    283 | Code        | 00 |         |    1 | 00/0202 : 7B          |             TDC                  
+  345 |  1   B.S    284 | Code        | 00 |         |    1 | 00/0203 : 18          |             CLC                  
+  346 |  1   B.S    285 | Code        | 00 |         |    3 | 00/0204 : 69 D8 00    |             ADC   #$00D8         
+  347 |  1   B.S    286 | Code        | 00 |         |    1 | 00/0207 : DA          |             PHX                  
+  348 |  1   B.S    287 | Code        | 00 |         |    1 | 00/0208 : 48          |             PHA                  
+  349 |  1   B.S    288 | Code        | 00 |         |    2 | 00/0209 : D4 D2       |             PEI   $D2            
+  350 |  1   B.S    289 | Code        | 00 |         |    2 | 00/020B : D4 D0       |             PEI   $D0            
+  351 |  1   B.S    290 | Code        | 00 |E 3      |    4 | 00/020D : 22 63 08 0D |             JSL   L0C0863        
+  352 |  1   B.S    291 | Code        | 00 |         |    1 | 00/0211 : A8          |             TAY                  
+  353 |  1   B.S    292 | Code        | 00 |         |    1 | 00/0212 : 3B          |             TSC                  
+  354 |  1   B.S    293 | Code        | 00 |         |    1 | 00/0213 : 18          |             CLC                  
+  355 |  1   B.S    294 | Code        | 00 |         |    3 | 00/0214 : 69 0C 00    |             ADC   #$000C         
+  356 |  1   B.S    295 | Code        | 00 |         |    1 | 00/0217 : 1B          |             TCS                  
+  357 |  1   B.S    296 | Code        | 00 |         |    1 | 00/0218 : 98          |             TYA                  
+  358 |  1   B.S    297 | Code        | 00 |         |    3 | 00/0219 : A2 00 00    |             LDX   #$0000         
+  359 |  1   B.S    298 | Code        | 00 |         |    3 | 00/021C : A9 08 00    |             LDA   #$0008         
+  360 |  1   B.S    299 | Code        | 00 |         |    1 | 00/021F : DA          |             PHX                  
+  361 |  1   B.S    300 | Code        | 00 |         |    1 | 00/0220 : 48          |             PHA                  
+  362 |  1   B.S    301 | Code        | 00 |         |    2 | 00/0221 : A6 D2       |             LDX   $D2            
+  363 |  1   B.S    302 | Code        | 00 |         |    2 | 00/0223 : A5 D0       |             LDA   $D0            
+  364 |  1   B.S    303 | Code        | 00 |E 3      |    4 | 00/0225 : 22 05 17 0E |             JSL   L0D1705        
+  365 |  1   B.S    304 | Code        | 00 |         |    1 | 00/0229 : 68          |             PLA                  
+  366 |  1   B.S    305 | Code        | 00 |         |    1 | 00/022A : FA          |             PLX                  
+  367 |  1   B.S    306 | Code        | 00 |         |    2 | 00/022B : 86 D2       |             STX   $D2            
+  368 |  1   B.S    307 | Code        | 00 |         |    2 | 00/022D : 85 D0       |             STA   $D0            
+  369 |  1   B.S    308 | Code        | 00 |         |    3 | 00/022F : F4 00 00    |             PEA   $0000          
+  370 |  1   B.S    309 | Code        | 00 |         |    3 | 00/0232 : F4 08 00    |             PEA   $0008          
+  371 |  1   B.S    310 | Code        | 00 |         |    3 | 00/0235 : A2 00 00    |             LDX   #$0000         
+  372 |  1   B.S    311 | Code        | 00 |         |    1 | 00/0238 : 7B          |             TDC                  
+  373 |  1   B.S    312 | Code        | 00 |         |    1 | 00/0239 : 18          |             CLC                  
+  374 |  1   B.S    313 | Code        | 00 |         |    3 | 00/023A : 69 E0 00    |             ADC   #$00E0         
+  375 |  1   B.S    314 | Code        | 00 |         |    1 | 00/023D : DA          |             PHX                  
+  376 |  1   B.S    315 | Code        | 00 |         |    1 | 00/023E : 48          |             PHA                  
+  377 |  1   B.S    316 | Code        | 00 |         |    2 | 00/023F : D4 D2       |             PEI   $D2            
+  378 |  1   B.S    317 | Code        | 00 |         |    2 | 00/0241 : D4 D0       |             PEI   $D0            
+  379 |  1   B.S    318 | Code        | 00 |E 3      |    4 | 00/0243 : 22 63 08 0D |             JSL   L0C0863        
+  380 |  1   B.S    319 | Code        | 00 |         |    1 | 00/0247 : A8          |             TAY                  
+  381 |  1   B.S    320 | Code        | 00 |         |    1 | 00/0248 : 3B          |             TSC                  
+  382 |  1   B.S    321 | Code        | 00 |         |    1 | 00/0249 : 18          |             CLC                  
+  383 |  1   B.S    322 | Code        | 00 |         |    3 | 00/024A : 69 0C 00    |             ADC   #$000C         
+  384 |  1   B.S    323 | Code        | 00 |         |    1 | 00/024D : 1B          |             TCS                  
+  385 |  1   B.S    324 | Code        | 00 |         |    1 | 00/024E : 98          |             TYA                  
+  386 |  1   B.S    325 | Code        | 00 |         |    3 | 00/024F : A2 00 00    |             LDX   #$0000         
+  387 |  1   B.S    326 | Code        | 00 |         |    3 | 00/0252 : A9 01 00    |             LDA   #$0001         
+  388 |  1   B.S    327 | Code        | 00 |         |    1 | 00/0255 : DA          |             PHX                  
+  389 |  1   B.S    328 | Code        | 00 |         |    1 | 00/0256 : 48          |             PHA                  
+  390 |  1   B.S    329 | Code        | 00 |         |    2 | 00/0257 : A6 D6       |             LDX   $D6            
+  391 |  1   B.S    330 | Code        | 00 |         |    2 | 00/0259 : A5 D4       |             LDA   $D4            
+  392 |  1   B.S    331 | Code        | 00 |E 3      |    4 | 00/025B : 22 73 15 0E |             JSL   L0D1573        
+  393 |  1   B.S    332 | Code        | 00 |         |    1 | 00/025F : 68          |             PLA                  
+  394 |  1   B.S    333 | Code        | 00 |         |    1 | 00/0260 : FA          |             PLX                  
+  395 |  1   B.S    334 | Code        | 00 |         |    2 | 00/0261 : 85 F0       |             STA   $F0            
+  396 |  1   B.S    335 | Code        | 00 |         |    2 | 00/0263 : 86 F2       |             STX   $F2            
+  397 |  1   B.S    336 | Code        | 00 |         |    2 | 00/0265 : A7 F0       |             LDA   [$F0]          
+  398 |  1   B.S    337 | Code        | 00 |         |    3 | 00/0267 : 29 FF 00    |             AND   #$00FF         
+  399 |  1   B.S    338 | Code        | 10 |         |    2 | 00/026A : E2 20       |             SEP   #$20           
+  400 |  1   B.S    339 | Code        | 10 |         |    2 | 00/026C : 85 CD       |             STA   $CD            
+  401 |  1   B.S    340 | Code        | 00 |         |    2 | 00/026E : C2 20       |             REP   #$20           
+  402 |  1   B.S    341 | Code        | 00 |         |    2 | 00/0270 : A5 CD       |             LDA   $CD            
+  403 |  1   B.S    342 | Code        | 00 |         |    3 | 00/0272 : 29 FF 00    |             AND   #$00FF         
+  404 |  1   B.S    343 | Code        | 00 |         |    2 | 00/0275 : 85 CE       |             STA   $CE            
+  405 |  1   B.S    344 | Code        | 00 |         |    3 | 00/0277 : A2 00 00    |             LDX   #$0000         
+  406 |  1   B.S    345 | Code        | 00 |         |    3 | 00/027A : A9 02 00    |             LDA   #$0002         
+  407 |  1   B.S    346 | Code        | 00 |         |    1 | 00/027D : DA          |             PHX                  
+  408 |  1   B.S    347 | Code        | 00 |         |    1 | 00/027E : 48          |             PHA                  
+  409 |  1   B.S    348 | Code        | 00 |         |    2 | 00/027F : A6 D6       |             LDX   $D6            
+  410 |  1   B.S    349 | Code        | 00 |         |    2 | 00/0281 : A5 D4       |             LDA   $D4            
+  411 |  1   B.S    350 | Code        | 00 |E 3      |    4 | 00/0283 : 22 73 15 0E |             JSL   L0D1573        
+  412 |  1   B.S    351 | Code        | 00 |         |    1 | 00/0287 : 68          |             PLA                  
+  413 |  1   B.S    352 | Code        | 00 |         |    1 | 00/0288 : FA          |             PLX                  
+  414 |  1   B.S    353 | Code        | 00 |         |    2 | 00/0289 : 86 D6       |             STX   $D6            
+  415 |  1   B.S    354 | Code        | 00 |         |    2 | 00/028B : 85 D4       |             STA   $D4            
+  416 |  1   B.S    355 | Code        | 00 |         |    2 | 00/028D : A5 EC       |             LDA   $EC            
+  417 |  1   B.S    356 | Code        | 00 |         |    1 | 00/028F : 18          |             CLC                  
+  418 |  1   B.S    357 | Code        | 00 |         |    3 | 00/0290 : 69 02 00    |             ADC   #$0002         
+  419 |  1   B.S    358 | Code        | 00 |         |    2 | 00/0293 : 85 EC       |             STA   $EC            
+  420 |  1   B.S    359 | Code        | 00 |         |    2 | 00/0295 : A5 CE       |             LDA   $CE            
+  421 |  1   B.S    360 | Code        | 00 |         |    3 | 00/0297 : C9 2B 00    |             CMP   #$002B         
+  422 |  1   B.S    361 | Code        | 00 |         |    2 | 00/029A : F0 02       |             BEQ   L04029E        
+  423 |  1   B.S    362 | Code        | 00 |         |    2 | 00/029C : 80 30       |             BRA   L0402CE        
+  424 |  1   B.S    363 | Code        | 00 |         |    2 | 00/029E : D4 E6       | L04029E     PEI   $E6            
+  425 |  1   B.S    364 | Code        | 00 |         |    2 | 00/02A0 : D4 E4       |             PEI   $E4            
+  426 |  1   B.S    365 | Code        | 00 |         |    2 | 00/02A2 : D4 E2       |             PEI   $E2            
+  427 |  1   B.S    366 | Code        | 00 |         |    2 | 00/02A4 : D4 E0       |             PEI   $E0            
+  428 |  1   B.S    367 | Code        | 00 |E 3      |    4 | 00/02A6 : 22 52 14 0E |             JSL   L0D1452        
+  429 |  1   B.S    368 | Code        | 00 |         |    2 | 00/02AA : D4 DE       |             PEI   $DE            
+  430 |  1   B.S    369 | Code        | 00 |         |    2 | 00/02AC : D4 DC       |             PEI   $DC            
+  431 |  1   B.S    370 | Code        | 00 |         |    2 | 00/02AE : D4 DA       |             PEI   $DA            
+  432 |  1   B.S    371 | Code        | 00 |         |    2 | 00/02B0 : D4 D8       |             PEI   $D8            
+  433 |  1   B.S    372 | Code        | 00 |E 3      |    4 | 00/02B2 : 22 52 14 0E |             JSL   L0D1452        
+  434 |  1   B.S    373 | Code        | 00 |E 3      |    4 | 00/02B6 : 22 9E 13 0E |             JSL   L0D139E        
+  435 |  1   B.S    374 | Code        | 00 |E 1 >>16 |    3 | 00/02BA : F4 00 00    |             PEA   ^L0F00CD       
+  436 |  1   B.S    375 | Code        | 00 |E 2      |    3 | 00/02BD : F4 CD 00    |             PEA   L0F00CD        
+  437 |  1   B.S    376 | Code        | 00 |E 3      |    4 | 00/02C0 : 22 10 17 0E |             JSL   L0D1710        
+  438 |  1   B.S    377 | Code        | 00 |         |    1 | 00/02C4 : 7A          |             PLY                  
+  439 |  1   B.S    378 | Code        | 00 |         |    1 | 00/02C5 : 7A          |             PLY                  
+  440 |  1   B.S    379 | Code        | 00 |         |    1 | 00/02C6 : 7A          |             PLY                  
+  441 |  1   B.S    380 | Code        | 00 |         |    1 | 00/02C7 : 7A          |             PLY                  
+  442 |  1   B.S    381 | Code        | 00 |         |    1 | 00/02C8 : 7A          |             PLY                  
+  443 |  1   B.S    382 | Code        | 00 |         |    3 | 00/02C9 : 82 E4 00    |             BRL   L0403B0        
+  444 |  1   B.S    383 | Code        | 00 |         |    2 | 00/02CC : 80 07       |             BRA   L0402D5        
+  445 |  1   B.S    384 | Code        | 00 |         |    3 | 00/02CE : C9 2D 00    | L0402CE     CMP   #$002D         
+  446 |  1   B.S    385 | Code        | 00 |         |    2 | 00/02D1 : F0 02       |             BEQ   L0402D5        
+  447 |  1   B.S    386 | Code        | 00 |         |    2 | 00/02D3 : 80 30       |             BRA   L040305        
+  448 |  1   B.S    387 | Code        | 00 |         |    2 | 00/02D5 : D4 E6       | L0402D5     PEI   $E6            
+  449 |  1   B.S    388 | Code        | 00 |         |    2 | 00/02D7 : D4 E4       |             PEI   $E4            
+  450 |  1   B.S    389 | Code        | 00 |         |    2 | 00/02D9 : D4 E2       |             PEI   $E2            
+  451 |  1   B.S    390 | Code        | 00 |         |    2 | 00/02DB : D4 E0       |             PEI   $E0            
+  452 |  1   B.S    391 | Code        | 00 |E 3      |    4 | 00/02DD : 22 52 14 0E |             JSL   L0D1452        
+  453 |  1   B.S    392 | Code        | 00 |         |    2 | 00/02E1 : D4 DE       |             PEI   $DE            
+  454 |  1   B.S    393 | Code        | 00 |         |    2 | 00/02E3 : D4 DC       |             PEI   $DC            
+  455 |  1   B.S    394 | Code        | 00 |         |    2 | 00/02E5 : D4 DA       |             PEI   $DA            
+  456 |  1   B.S    395 | Code        | 00 |         |    2 | 00/02E7 : D4 D8       |             PEI   $D8            
+  457 |  1   B.S    396 | Code        | 00 |E 3      |    4 | 00/02E9 : 22 52 14 0E |             JSL   L0D1452        
+  458 |  1   B.S    397 | Code        | 00 |E 3      |    4 | 00/02ED : 22 8E 14 0E |             JSL   L0D148E        
+  459 |  1   B.S    398 | Code        | 00 |E 1 >>16 |    3 | 00/02F1 : F4 00 00    |             PEA   ^L0F00CD       
+  460 |  1   B.S    399 | Code        | 00 |E 2      |    3 | 00/02F4 : F4 CD 00    |             PEA   L0F00CD        
+  461 |  1   B.S    400 | Code        | 00 |E 3      |    4 | 00/02F7 : 22 10 17 0E |             JSL   L0D1710        
+  462 |  1   B.S    401 | Code        | 00 |         |    1 | 00/02FB : 7A          |             PLY                  
+  463 |  1   B.S    402 | Code        | 00 |         |    1 | 00/02FC : 7A          |             PLY                  
+  464 |  1   B.S    403 | Code        | 00 |         |    1 | 00/02FD : 7A          |             PLY                  
+  465 |  1   B.S    404 | Code        | 00 |         |    1 | 00/02FE : 7A          |             PLY                  
+  466 |  1   B.S    405 | Code        | 00 |         |    1 | 00/02FF : 7A          |             PLY                  
+  467 |  1   B.S    406 | Code        | 00 |         |    3 | 00/0300 : 82 AD 00    |             BRL   L0403B0        
+  468 |  1   B.S    407 | Code        | 00 |         |    2 | 00/0303 : 80 07       |             BRA   L04030C        
+  469 |  1   B.S    408 | Code        | 00 |         |    3 | 00/0305 : C9 2A 00    | L040305     CMP   #$002A         
+  470 |  1   B.S    409 | Code        | 00 |         |    2 | 00/0308 : F0 02       |             BEQ   L04030C        
+  471 |  1   B.S    410 | Code        | 00 |         |    2 | 00/030A : 80 30       |             BRA   L04033C        
+  472 |  1   B.S    411 | Code        | 00 |         |    2 | 00/030C : D4 E6       | L04030C     PEI   $E6            
+  473 |  1   B.S    412 | Code        | 00 |         |    2 | 00/030E : D4 E4       |             PEI   $E4            
+  474 |  1   B.S    413 | Code        | 00 |         |    2 | 00/0310 : D4 E2       |             PEI   $E2            
+  475 |  1   B.S    414 | Code        | 00 |         |    2 | 00/0312 : D4 E0       |             PEI   $E0            
+  476 |  1   B.S    415 | Code        | 00 |E 3      |    4 | 00/0314 : 22 52 14 0E |             JSL   L0D1452        
+  477 |  1   B.S    416 | Code        | 00 |         |    2 | 00/0318 : D4 DE       |             PEI   $DE            
+  478 |  1   B.S    417 | Code        | 00 |         |    2 | 00/031A : D4 DC       |             PEI   $DC            
+  479 |  1   B.S    418 | Code        | 00 |         |    2 | 00/031C : D4 DA       |             PEI   $DA            
+  480 |  1   B.S    419 | Code        | 00 |         |    2 | 00/031E : D4 D8       |             PEI   $D8            
+  481 |  1   B.S    420 | Code        | 00 |E 3      |    4 | 00/0320 : 22 52 14 0E |             JSL   L0D1452        
+  482 |  1   B.S    421 | Code        | 00 |E 3      |    4 | 00/0324 : 22 2A 14 0E |             JSL   L0D142A        
+  483 |  1   B.S    422 | Code        | 00 |E 1 >>16 |    3 | 00/0328 : F4 00 00    |             PEA   ^L0F00CD       
+  484 |  1   B.S    423 | Code        | 00 |E 2      |    3 | 00/032B : F4 CD 00    |             PEA   L0F00CD        
+  485 |  1   B.S    424 | Code        | 00 |E 3      |    4 | 00/032E : 22 10 17 0E |             JSL   L0D1710        
+  486 |  1   B.S    425 | Code        | 00 |         |    1 | 00/0332 : 7A          |             PLY                  
+  487 |  1   B.S    426 | Code        | 00 |         |    1 | 00/0333 : 7A          |             PLY                  
+  488 |  1   B.S    427 | Code        | 00 |         |    1 | 00/0334 : 7A          |             PLY                  
+  489 |  1   B.S    428 | Code        | 00 |         |    1 | 00/0335 : 7A          |             PLY                  
+  490 |  1   B.S    429 | Code        | 00 |         |    1 | 00/0336 : 7A          |             PLY                  
+  491 |  1   B.S    430 | Code        | 00 |         |    3 | 00/0337 : 82 76 00    |             BRL   L0403B0        
+  492 |  1   B.S    431 | Code        | 00 |         |    2 | 00/033A : 80 08       |             BRA   L040344        
+  493 |  1   B.S    432 | Code        | 00 |         |    3 | 00/033C : C9 2F 00    | L04033C     CMP   #$002F         
+  494 |  1   B.S    433 | Code        | 00 |         |    2 | 00/033F : F0 03       |             BEQ   L040344        
+  495 |  1   B.S    434 | Code        | 00 |         |    3 | 00/0341 : 82 6C 00    |             BRL   L0403B0        
+  496 |  1   B.S    435 | Code        | 00 |         |    3 | 00/0344 : F4 00 00    | L040344     PEA   $0000          
+  497 |  1   B.S    436 | Code        | 00 |         |    3 | 00/0347 : F4 00 00    |             PEA   $0000          
+  498 |  1   B.S    437 | Code        | 00 |         |    3 | 00/034A : F4 00 00    |             PEA   $0000          
+  499 |  1   B.S    438 | Code        | 00 |         |    3 | 00/034D : F4 00 00    |             PEA   $0000          
+  500 |  1   B.S    439 | Code        | 00 |         |    3 | 00/0350 : F4 00 00    |             PEA   $0000          
+  501 |  1   B.S    440 | Code        | 00 |         |    2 | 00/0353 : D4 DE       |             PEI   $DE            
+  502 |  1   B.S    441 | Code        | 00 |         |    2 | 00/0355 : D4 DC       |             PEI   $DC            
+  503 |  1   B.S    442 | Code        | 00 |         |    2 | 00/0357 : D4 DA       |             PEI   $DA            
+  504 |  1   B.S    443 | Code        | 00 |         |    2 | 00/0359 : D4 D8       |             PEI   $D8            
+  505 |  1   B.S    444 | Code        | 00 |E 3      |    4 | 00/035B : 22 52 14 0E |             JSL   L0D1452        
+  506 |  1   B.S    445 | Code        | 00 |E 3      |    4 | 00/035F : 22 C6 13 0E |             JSL   L0D13C6        
+  507 |  1   B.S    446 | Code        | 00 |         |    2 | 00/0363 : F0 2D       |             BEQ   L040392        
+  508 |  1   B.S    447 | Code        | 00 |         |    2 | 00/0365 : D4 E6       |             PEI   $E6            
+  509 |  1   B.S    448 | Code        | 00 |         |    2 | 00/0367 : D4 E4       |             PEI   $E4            
+  510 |  1   B.S    449 | Code        | 00 |         |    2 | 00/0369 : D4 E2       |             PEI   $E2            
+  511 |  1   B.S    450 | Code        | 00 |         |    2 | 00/036B : D4 E0       |             PEI   $E0            
+  512 |  1   B.S    451 | Code        | 00 |E 3      |    4 | 00/036D : 22 52 14 0E |             JSL   L0D1452        
+  513 |  1   B.S    452 | Code        | 00 |         |    2 | 00/0371 : D4 DE       |             PEI   $DE            
+  514 |  1   B.S    453 | Code        | 00 |         |    2 | 00/0373 : D4 DC       |             PEI   $DC            
+  515 |  1   B.S    454 | Code        | 00 |         |    2 | 00/0375 : D4 DA       |             PEI   $DA            
+  516 |  1   B.S    455 | Code        | 00 |         |    2 | 00/0377 : D4 D8       |             PEI   $D8            
+  517 |  1   B.S    456 | Code        | 00 |E 3      |    4 | 00/0379 : 22 52 14 0E |             JSL   L0D1452        
+  518 |  1   B.S    457 | Code        | 00 |E 3      |    4 | 00/037D : 22 02 14 0E |             JSL   L0D1402        
+  519 |  1   B.S    458 | Code        | 00 |E 1 >>16 |    3 | 00/0381 : F4 00 00    |             PEA   ^L0F00CD       
+  520 |  1   B.S    459 | Code        | 00 |E 2      |    3 | 00/0384 : F4 CD 00    |             PEA   L0F00CD        
+  521 |  1   B.S    460 | Code        | 00 |E 3      |    4 | 00/0387 : 22 10 17 0E |             JSL   L0D1710        
+  522 |  1   B.S    461 | Code        | 00 |         |    1 | 00/038B : 7A          |             PLY                  
+  523 |  1   B.S    462 | Code        | 00 |         |    1 | 00/038C : 7A          |             PLY                  
+  524 |  1   B.S    463 | Code        | 00 |         |    1 | 00/038D : 7A          |             PLY                  
+  525 |  1   B.S    464 | Code        | 00 |         |    1 | 00/038E : 7A          |             PLY                  
+  526 |  1   B.S    465 | Code        | 00 |         |    1 | 00/038F : 7A          |             PLY                  
+  527 |  1   B.S    466 | Code        | 00 |         |    2 | 00/0390 : 80 1E       |             BRA   L0403B0        
+  528 |  1   B.S    467 | Code        | 00 |         |    3 | 00/0392 : F4 00 00    | L040392     PEA   $0000          
+  529 |  1   B.S    468 | Code        | 00 |         |    3 | 00/0395 : F4 00 00    |             PEA   $0000          
+  530 |  1   B.S    469 | Code        | 00 |         |    3 | 00/0398 : F4 00 00    |             PEA   $0000          
+  531 |  1   B.S    470 | Code        | 00 |         |    3 | 00/039B : F4 00 00    |             PEA   $0000          
+  532 |  1   B.S    471 | Code        | 00 |         |    3 | 00/039E : F4 00 00    |             PEA   $0000          
+  533 |  1   B.S    472 | Code        | 00 |E 1 >>16 |    3 | 00/03A1 : F4 00 00    |             PEA   ^L0F00CD       
+  534 |  1   B.S    473 | Code        | 00 |E 2      |    3 | 00/03A4 : F4 CD 00    |             PEA   L0F00CD        
+  535 |  1   B.S    474 | Code        | 00 |E 3      |    4 | 00/03A7 : 22 10 17 0E |             JSL   L0D1710        
+  536 |  1   B.S    475 | Code        | 00 |         |    1 | 00/03AB : 7A          |             PLY                  
+  537 |  1   B.S    476 | Code        | 00 |         |    1 | 00/03AC : 7A          |             PLY                  
+  538 |  1   B.S    477 | Code        | 00 |         |    1 | 00/03AD : 7A          |             PLY                  
+  539 |  1   B.S    478 | Code        | 00 |         |    1 | 00/03AE : 7A          |             PLY                  
+  540 |  1   B.S    479 | Code        | 00 |         |    1 | 00/03AF : 7A          |             PLY                  
+  541 |  1   B.S    480 | Code        | 00 |         |    3 | 00/03B0 : F4 00 00    | L0403B0     PEA   $0000          
+  542 |  1   B.S    481 | Code        | 00 |         |    3 | 00/03B3 : F4 08 00    |             PEA   $0008          
+  543 |  1   B.S    482 | Code        | 00 |         |    2 | 00/03B6 : D4 D2       |             PEI   $D2            
+  544 |  1   B.S    483 | Code        | 00 |         |    2 | 00/03B8 : D4 D0       |             PEI   $D0            
+  545 |  1   B.S    484 | Code        | 00 |E 2      |    3 | 00/03BA : A9 CD 00    |             LDA   #L0F00CD       
+  546 |  1   B.S    485 | Code        | 00 |E 1 >>16 |    3 | 00/03BD : A2 00 00    |             LDX   #^L0F00CD      
+  547 |  1   B.S    486 | Code        | 00 |         |    1 | 00/03C0 : DA          |             PHX                  
+  548 |  1   B.S    487 | Code        | 00 |         |    1 | 00/03C1 : 48          |             PHA                  
+  549 |  1   B.S    488 | Code        | 00 |E 3      |    4 | 00/03C2 : 22 63 08 0D |             JSL   L0C0863        
+  550 |  1   B.S    489 | Code        | 00 |         |    1 | 00/03C6 : A8          |             TAY                  
+  551 |  1   B.S    490 | Code        | 00 |         |    1 | 00/03C7 : 3B          |             TSC                  
+  552 |  1   B.S    491 | Code        | 00 |         |    1 | 00/03C8 : 18          |             CLC                  
+  553 |  1   B.S    492 | Code        | 00 |         |    3 | 00/03C9 : 69 0C 00    |             ADC   #$000C         
+  554 |  1   B.S    493 | Code        | 00 |         |    1 | 00/03CC : 1B          |             TCS                  
+  555 |  1   B.S    494 | Code        | 00 |         |    1 | 00/03CD : 98          |             TYA                  
+  556 |  1   B.S    495 | Code        | 00 |         |    3 | 00/03CE : A2 00 00    |             LDX   #$0000         
+  557 |  1   B.S    496 | Code        | 00 |         |    3 | 00/03D1 : A9 08 00    |             LDA   #$0008         
+  558 |  1   B.S    497 | Code        | 00 |         |    1 | 00/03D4 : DA          |             PHX                  
+  559 |  1   B.S    498 | Code        | 00 |         |    1 | 00/03D5 : 48          |             PHA                  
+  560 |  1   B.S    499 | Code        | 00 |         |    2 | 00/03D6 : A6 D2       |             LDX   $D2            
+  561 |  1   B.S    500 | Code        | 00 |         |    2 | 00/03D8 : A5 D0       |             LDA   $D0            
+  562 |  1   B.S    501 | Code        | 00 |E 3      |    4 | 00/03DA : 22 73 15 0E |             JSL   L0D1573        
+  563 |  1   B.S    502 | Code        | 00 |         |    1 | 00/03DE : 68          |             PLA                  
+  564 |  1   B.S    503 | Code        | 00 |         |    1 | 00/03DF : FA          |             PLX                  
+  565 |  1   B.S    504 | Code        | 00 |         |    2 | 00/03E0 : 86 D2       |             STX   $D2            
+  566 |  1   B.S    505 | Code        | 00 |         |    2 | 00/03E2 : 85 D0       |             STA   $D0            
+  567 |  1   B.S    506 | Code        | 00 |         |    3 | 00/03E4 : 82 89 01    |             BRL   L040570        
+  568 |  1   B.S    507 | Code        | 00 |         |    2 | 00/03E7 : 80 08       |             BRA   L0403F1        
+  569 |  1   B.S    508 | Code        | 00 |         |    3 | 00/03E9 : C9 7F 00    | L0403E9     CMP   #$007F         
+  570 |  1   B.S    509 | Code        | 00 |         |    2 | 00/03EC : F0 03       |             BEQ   L0403F1        
+  571 |  1   B.S    510 | Code        | 00 |         |    3 | 00/03EE : 82 7C 01    |             BRL   L04056D        
+  572 |  1   B.S    511 | Code        | 00 |         |    3 | 00/03F1 : A2 00 00    | L0403F1     LDX   #$0000         
+  573 |  1   B.S    512 | Code        | 00 |         |    3 | 00/03F4 : A9 01 00    |             LDA   #$0001         
+  574 |  1   B.S    513 | Code        | 00 |         |    1 | 00/03F7 : DA          |             PHX                  
+  575 |  1   B.S    514 | Code        | 00 |         |    1 | 00/03F8 : 48          |             PHA                  
+  576 |  1   B.S    515 | Code        | 00 |         |    2 | 00/03F9 : A6 D6       |             LDX   $D6            
+  577 |  1   B.S    516 | Code        | 00 |         |    2 | 00/03FB : A5 D4       |             LDA   $D4            
+  578 |  1   B.S    517 | Code        | 00 |E 3      |    4 | 00/03FD : 22 73 15 0E |             JSL   L0D1573        
+  579 |  1   B.S    518 | Code        | 00 |         |    1 | 00/0401 : 68          |             PLA                  
+  580 |  1   B.S    519 | Code        | 00 |         |    1 | 00/0402 : FA          |             PLX                  
+  581 |  1   B.S    520 | Code        | 00 |         |    2 | 00/0403 : 85 F0       |             STA   $F0            
+  582 |  1   B.S    521 | Code        | 00 |         |    2 | 00/0405 : 86 F2       |             STX   $F2            
+  583 |  1   B.S    522 | Code        | 00 |         |    2 | 00/0407 : A7 F0       |             LDA   [$F0]          
+  584 |  1   B.S    523 | Code        | 00 |         |    3 | 00/0409 : 29 FF 00    |             AND   #$00FF         
+  585 |  1   B.S    524 | Code        | 00 |         |    2 | 00/040C : 85 E8       |             STA   $E8            
+  586 |  1   B.S    525 | Code        | 00 |         |    2 | 00/040E : A5 E8       |             LDA   $E8            
+  587 |  1   B.S    526 | Code        | 00 |         |    1 | 00/0410 : 38          |             SEC                  
+  588 |  1   B.S    527 | Code        | 00 |         |    3 | 00/0411 : E9 30 00    |             SBC   #$0030         
+  589 |  1   B.S    528 | Code        | 00 |         |    2 | 00/0414 : 85 E8       |             STA   $E8            
+  590 |  1   B.S    529 | Code        | 00 |         |    2 | 00/0416 : D4 E8       |             PEI   $E8            
+  591 |  1   B.S    530 | Code        | 00 |  3      |    4 | 00/0418 : 22 7D 05 00 |             JSL   L04057D        
+  592 |  1   B.S    531 | Code        | 00 |         |    1 | 00/041C : 7A          |             PLY                  
+  593 |  1   B.S    532 | Code        | 00 |         |    3 | 00/041D : F4 00 00    |             PEA   $0000          
+  594 |  1   B.S    533 | Code        | 00 |         |    3 | 00/0420 : F4 08 00    |             PEA   $0008          
+  595 |  1   B.S    534 | Code        | 00 |         |    2 | 00/0423 : D4 D2       |             PEI   $D2            
+  596 |  1   B.S    535 | Code        | 00 |         |    2 | 00/0425 : D4 D0       |             PEI   $D0            
+  597 |  1   B.S    536 | Code        | 00 |E 2      |    3 | 00/0427 : A9 CD 00    |             LDA   #L0F00CD       
+  598 |  1   B.S    537 | Code        | 00 |E 1 >>16 |    3 | 00/042A : A2 00 00    |             LDX   #^L0F00CD      
+  599 |  1   B.S    538 | Code        | 00 |         |    1 | 00/042D : DA          |             PHX                  
+  600 |  1   B.S    539 | Code        | 00 |         |    1 | 00/042E : 48          |             PHA                  
+  601 |  1   B.S    540 | Code        | 00 |E 3      |    4 | 00/042F : 22 63 08 0D |             JSL   L0C0863        
+  602 |  1   B.S    541 | Code        | 00 |         |    1 | 00/0433 : A8          |             TAY                  
+  603 |  1   B.S    542 | Code        | 00 |         |    1 | 00/0434 : 3B          |             TSC                  
+  604 |  1   B.S    543 | Code        | 00 |         |    1 | 00/0435 : 18          |             CLC                  
+  605 |  1   B.S    544 | Code        | 00 |         |    3 | 00/0436 : 69 0C 00    |             ADC   #$000C         
+  606 |  1   B.S    545 | Code        | 00 |         |    1 | 00/0439 : 1B          |             TCS                  
+  607 |  1   B.S    546 | Code        | 00 |         |    1 | 00/043A : 98          |             TYA                  
+  608 |  1   B.S    547 | Code        | 00 |         |    3 | 00/043B : A2 00 00    |             LDX   #$0000         
+  609 |  1   B.S    548 | Code        | 00 |         |    3 | 00/043E : A9 08 00    |             LDA   #$0008         
+  610 |  1   B.S    549 | Code        | 00 |         |    1 | 00/0441 : DA          |             PHX                  
+  611 |  1   B.S    550 | Code        | 00 |         |    1 | 00/0442 : 48          |             PHA                  
+  612 |  1   B.S    551 | Code        | 00 |         |    2 | 00/0443 : A6 D2       |             LDX   $D2            
+  613 |  1   B.S    552 | Code        | 00 |         |    2 | 00/0445 : A5 D0       |             LDA   $D0            
+  614 |  1   B.S    553 | Code        | 00 |E 3      |    4 | 00/0447 : 22 73 15 0E |             JSL   L0D1573        
+  615 |  1   B.S    554 | Code        | 00 |         |    1 | 00/044B : 68          |             PLA                  
+  616 |  1   B.S    555 | Code        | 00 |         |    1 | 00/044C : FA          |             PLX                  
+  617 |  1   B.S    556 | Code        | 00 |         |    2 | 00/044D : 86 D2       |             STX   $D2            
+  618 |  1   B.S    557 | Code        | 00 |         |    2 | 00/044F : 85 D0       |             STA   $D0            
+  619 |  1   B.S    558 | Code        | 00 |         |    3 | 00/0451 : A2 00 00    |             LDX   #$0000         
+  620 |  1   B.S    559 | Code        | 00 |         |    3 | 00/0454 : A9 02 00    |             LDA   #$0002         
+  621 |  1   B.S    560 | Code        | 00 |         |    1 | 00/0457 : DA          |             PHX                  
+  622 |  1   B.S    561 | Code        | 00 |         |    1 | 00/0458 : 48          |             PHA                  
+  623 |  1   B.S    562 | Code        | 00 |         |    2 | 00/0459 : A6 D6       |             LDX   $D6            
+  624 |  1   B.S    563 | Code        | 00 |         |    2 | 00/045B : A5 D4       |             LDA   $D4            
+  625 |  1   B.S    564 | Code        | 00 |E 3      |    4 | 00/045D : 22 73 15 0E |             JSL   L0D1573        
+  626 |  1   B.S    565 | Code        | 00 |         |    1 | 00/0461 : 68          |             PLA                  
+  627 |  1   B.S    566 | Code        | 00 |         |    1 | 00/0462 : FA          |             PLX                  
+  628 |  1   B.S    567 | Code        | 00 |         |    2 | 00/0463 : 86 D6       |             STX   $D6            
+  629 |  1   B.S    568 | Code        | 00 |         |    2 | 00/0465 : 85 D4       |             STA   $D4            
+  630 |  1   B.S    569 | Code        | 00 |         |    2 | 00/0467 : A5 EC       |             LDA   $EC            
+  631 |  1   B.S    570 | Code        | 00 |         |    1 | 00/0469 : 18          |             CLC                  
+  632 |  1   B.S    571 | Code        | 00 |         |    3 | 00/046A : 69 02 00    |             ADC   #$0002         
+  633 |  1   B.S    572 | Code        | 00 |         |    2 | 00/046D : 85 EC       |             STA   $EC            
+  634 |  1   B.S    573 | Code        | 00 |         |    3 | 00/046F : 82 FE 00    |             BRL   L040570        
+  635 |  1   B.S    574 | Code        | 00 |         |    2 | 00/0472 : A5 EA       | L040472     LDA   $EA            
+  636 |  1   B.S    575 | Code        | 00 |         |    3 | 00/0474 : A2 00 00    |             LDX   #$0000         
+  637 |  1   B.S    576 | Code        | 00 |         |    1 | 00/0477 : DA          |             PHX                  
+  638 |  1   B.S    577 | Code        | 00 |         |    1 | 00/0478 : 48          |             PHA                  
+  639 |  1   B.S    578 | Code        | 00 |         |    2 | 00/0479 : A6 D6       |             LDX   $D6            
+  640 |  1   B.S    579 | Code        | 00 |         |    2 | 00/047B : A5 D4       |             LDA   $D4            
+  641 |  1   B.S    580 | Code        | 00 |E 3      |    4 | 00/047D : 22 73 15 0E |             JSL   L0D1573        
+  642 |  1   B.S    581 | Code        | 00 |         |    1 | 00/0481 : 68          |             PLA                  
+  643 |  1   B.S    582 | Code        | 00 |         |    1 | 00/0482 : FA          |             PLX                  
+  644 |  1   B.S    583 | Code        | 00 |         |    2 | 00/0483 : 85 F0       |             STA   $F0            
+  645 |  1   B.S    584 | Code        | 00 |         |    2 | 00/0485 : 86 F2       |             STX   $F2            
+  646 |  1   B.S    585 | Code        | 00 |         |    2 | 00/0487 : A7 F0       |             LDA   [$F0]          
+  647 |  1   B.S    586 | Code        | 00 |         |    3 | 00/0489 : 29 FF 00    |             AND   #$00FF         
+  648 |  1   B.S    587 | Code        | 00 |         |    3 | 00/048C : C9 25 00    |             CMP   #$0025         
+  649 |  1   B.S    588 | Code        | 00 |         |    2 | 00/048F : D0 07       |             BNE   L040498        
+  650 |  1   B.S    589 | Code        | 00 |         |    3 | 00/0491 : A9 01 00    |             LDA   #$0001         
+  651 |  1   B.S    590 | Code        | 00 |         |    2 | 00/0494 : 85 C3       |             STA   $C3            
+  652 |  1   B.S    591 | Code        | 00 |         |    2 | 00/0496 : 80 02       |             BRA   L04049A        
+  653 |  1   B.S    592 | Code        | 00 |         |    2 | 00/0498 : 64 C3       | L040498     STZ   $C3            
+  654 |  1   B.S    593 | Code        | 00 |         |    3 | 00/049A : F4 00 00    | L04049A     PEA   $0000          
+  655 |  1   B.S    594 | Code        | 00 |         |    1 | 00/049D : 7B          |             TDC                  
+  656 |  1   B.S    595 | Code        | 00 |         |    1 | 00/049E : 18          |             CLC                  
+  657 |  1   B.S    596 | Code        | 00 |         |    3 | 00/049F : 69 C5 00    |             ADC   #$00C5         
+  658 |  1   B.S    597 | Code        | 00 |         |    1 | 00/04A2 : 48          |             PHA                  
+  659 |  1   B.S    598 | Code        | 00 |E 1 >>16 |    3 | 00/04A3 : F4 00 00    |             PEA   ^L0E50DD       
+  660 |  1   B.S    599 | Code        | 00 |E 2      |    3 | 00/04A6 : F4 DD 50    |             PEA   L0E50DD        
+  661 |  1   B.S    600 | Code        | 00 |         |    3 | 00/04A9 : A2 00 00    |             LDX   #$0000         
+  662 |  1   B.S    601 | Code        | 00 |         |    3 | 00/04AC : A9 01 00    |             LDA   #$0001         
+  663 |  1   B.S    602 | Code        | 00 |         |    1 | 00/04AF : DA          |             PHX                  
+  664 |  1   B.S    603 | Code        | 00 |         |    1 | 00/04B0 : 48          |             PHA                  
+  665 |  1   B.S    604 | Code        | 00 |         |    2 | 00/04B1 : A6 D6       |             LDX   $D6            
+  666 |  1   B.S    605 | Code        | 00 |         |    2 | 00/04B3 : A5 D4       |             LDA   $D4            
+  667 |  1   B.S    606 | Code        | 00 |E 3      |    4 | 00/04B5 : 22 73 15 0E |             JSL   L0D1573        
+  668 |  1   B.S    607 | Code        | 00 |         |    1 | 00/04B9 : 68          |             PLA                  
+  669 |  1   B.S    608 | Code        | 00 |         |    1 | 00/04BA : FA          |             PLX                  
+  670 |  1   B.S    609 | Code        | 00 |         |    1 | 00/04BB : DA          |             PHX                  
+  671 |  1   B.S    610 | Code        | 00 |         |    1 | 00/04BC : 48          |             PHA                  
+  672 |  1   B.S    611 | Code        | 00 |E 3      |    4 | 00/04BD : 22 E1 1B 0E |             JSL   L0D1BE1        
+  673 |  1   B.S    612 | Code        | 00 |         |    1 | 00/04C1 : A8          |             TAY                  
+  674 |  1   B.S    613 | Code        | 00 |         |    1 | 00/04C2 : 3B          |             TSC                  
+  675 |  1   B.S    614 | Code        | 00 |         |    1 | 00/04C3 : 18          |             CLC                  
+  676 |  1   B.S    615 | Code        | 00 |         |    3 | 00/04C4 : 69 0C 00    |             ADC   #$000C         
+  677 |  1   B.S    616 | Code        | 00 |         |    1 | 00/04C7 : 1B          |             TCS                  
+  678 |  1   B.S    617 | Code        | 00 |         |    1 | 00/04C8 : 98          |             TYA                  
+  679 |  1   B.S    618 | Code        | 00 |         |    2 | 00/04C9 : A5 C3       |             LDA   $C3            
+  680 |  1   B.S    619 | Code        | 00 |         |    2 | 00/04CB : F0 31       |             BEQ   L0404FE        
+  681 |  1   B.S    620 | Code        | 00 |         |    2 | 00/04CD : D4 CB       |             PEI   $CB            
+  682 |  1   B.S    621 | Code        | 00 |         |    2 | 00/04CF : D4 C9       |             PEI   $C9            
+  683 |  1   B.S    622 | Code        | 00 |         |    2 | 00/04D1 : D4 C7       |             PEI   $C7            
+  684 |  1   B.S    623 | Code        | 00 |         |    2 | 00/04D3 : D4 C5       |             PEI   $C5            
+  685 |  1   B.S    624 | Code        | 00 |E 3      |    4 | 00/04D5 : 22 52 14 0E |             JSL   L0D1452        
+  686 |  1   B.S    625 | Code        | 00 |         |    3 | 00/04D9 : F4 05 40    |             PEA   $4005          
+  687 |  1   B.S    626 | Code        | 00 |         |    3 | 00/04DC : F4 00 C8    |             PEA   $C800          
+  688 |  1   B.S    627 | Code        | 00 |         |    3 | 00/04DF : F4 00 00    |             PEA   $0000          
+  689 |  1   B.S    628 | Code        | 00 |         |    3 | 00/04E2 : F4 00 00    |             PEA   $0000          
+  690 |  1   B.S    629 | Code        | 00 |         |    3 | 00/04E5 : F4 00 00    |             PEA   $0000          
+  691 |  1   B.S    630 | Code        | 00 |E 3      |    4 | 00/04E8 : 22 02 14 0E |             JSL   L0D1402        
+  692 |  1   B.S    631 | Code        | 00 |         |    3 | 00/04EC : F4 00 00    |             PEA   $0000          
+  693 |  1   B.S    632 | Code        | 00 |         |    1 | 00/04EF : 7B          |             TDC                  
+  694 |  1   B.S    633 | Code        | 00 |         |    1 | 00/04F0 : 18          |             CLC                  
+  695 |  1   B.S    634 | Code        | 00 |         |    3 | 00/04F1 : 69 C5 00    |             ADC   #$00C5         
+  696 |  1   B.S    635 | Code        | 00 |         |    1 | 00/04F4 : 48          |             PHA                  
+  697 |  1   B.S    636 | Code        | 00 |E 3      |    4 | 00/04F5 : 22 10 17 0E |             JSL   L0D1710        
+  698 |  1   B.S    637 | Code        | 00 |         |    1 | 00/04F9 : 7A          |             PLY                  
+  699 |  1   B.S    638 | Code        | 00 |         |    1 | 00/04FA : 7A          |             PLY                  
+  700 |  1   B.S    639 | Code        | 00 |         |    1 | 00/04FB : 7A          |             PLY                  
+  701 |  1   B.S    640 | Code        | 00 |         |    1 | 00/04FC : 7A          |             PLY                  
+  702 |  1   B.S    641 | Code        | 00 |         |    1 | 00/04FD : 7A          |             PLY                  
+  703 |  1   B.S    642 | Code        | 00 |         |    3 | 00/04FE : F4 00 00    | L0404FE     PEA   $0000          
+  704 |  1   B.S    643 | Code        | 00 |         |    3 | 00/0501 : F4 08 00    |             PEA   $0008          
+  705 |  1   B.S    644 | Code        | 00 |         |    2 | 00/0504 : D4 D2       |             PEI   $D2            
+  706 |  1   B.S    645 | Code        | 00 |         |    2 | 00/0506 : D4 D0       |             PEI   $D0            
+  707 |  1   B.S    646 | Code        | 00 |         |    3 | 00/0508 : A2 00 00    |             LDX   #$0000         
+  708 |  1   B.S    647 | Code        | 00 |         |    1 | 00/050B : 7B          |             TDC                  
+  709 |  1   B.S    648 | Code        | 00 |         |    1 | 00/050C : 18          |             CLC                  
+  710 |  1   B.S    649 | Code        | 00 |         |    3 | 00/050D : 69 C5 00    |             ADC   #$00C5         
+  711 |  1   B.S    650 | Code        | 00 |         |    1 | 00/0510 : DA          |             PHX                  
+  712 |  1   B.S    651 | Code        | 00 |         |    1 | 00/0511 : 48          |             PHA                  
+  713 |  1   B.S    652 | Code        | 00 |E 3      |    4 | 00/0512 : 22 63 08 0D |             JSL   L0C0863        
+  714 |  1   B.S    653 | Code        | 00 |         |    1 | 00/0516 : A8          |             TAY                  
+  715 |  1   B.S    654 | Code        | 00 |         |    1 | 00/0517 : 3B          |             TSC                  
+  716 |  1   B.S    655 | Code        | 00 |         |    1 | 00/0518 : 18          |             CLC                  
+  717 |  1   B.S    656 | Code        | 00 |         |    3 | 00/0519 : 69 0C 00    |             ADC   #$000C         
+  718 |  1   B.S    657 | Code        | 00 |         |    1 | 00/051C : 1B          |             TCS                  
+  719 |  1   B.S    658 | Code        | 00 |         |    1 | 00/051D : 98          |             TYA                  
+  720 |  1   B.S    659 | Code        | 00 |         |    2 | 00/051E : A5 EA       |             LDA   $EA            
+  721 |  1   B.S    660 | Code        | 00 |         |    3 | 00/0520 : A2 00 00    |             LDX   #$0000         
+  722 |  1   B.S    661 | Code        | 00 |         |    1 | 00/0523 : A8          |             TAY                  
+  723 |  1   B.S    662 | Code        | 00 |         |    2 | 00/0524 : 10 01       |             BPL   L040527        
+  724 |  1   B.S    663 | Code        | 00 |         |    1 | 00/0526 : CA          |             DEX                  
+  725 |  1   B.S    664 | Code        | 00 |         |    1 | 00/0527 : 18          | L040527     CLC                  
+  726 |  1   B.S    665 | Code        | 00 |         |    3 | 00/0528 : 69 01 00    |             ADC   #$0001         
+  727 |  1   B.S    666 | Code        | 00 |         |    1 | 00/052B : 48          |             PHA                  
+  728 |  1   B.S    667 | Code        | 00 |         |    1 | 00/052C : 8A          |             TXA                  
+  729 |  1   B.S    668 | Code        | 00 |         |    3 | 00/052D : 69 00 00    |             ADC   #$0000         
+  730 |  1   B.S    669 | Code        | 00 |         |    1 | 00/0530 : AA          |             TAX                  
+  731 |  1   B.S    670 | Code        | 00 |         |    1 | 00/0531 : 68          |             PLA                  
+  732 |  1   B.S    671 | Code        | 00 |         |    1 | 00/0532 : DA          |             PHX                  
+  733 |  1   B.S    672 | Code        | 00 |         |    1 | 00/0533 : 48          |             PHA                  
+  734 |  1   B.S    673 | Code        | 00 |         |    2 | 00/0534 : A6 D6       |             LDX   $D6            
+  735 |  1   B.S    674 | Code        | 00 |         |    2 | 00/0536 : A5 D4       |             LDA   $D4            
+  736 |  1   B.S    675 | Code        | 00 |E 3      |    4 | 00/0538 : 22 73 15 0E |             JSL   L0D1573        
+  737 |  1   B.S    676 | Code        | 00 |         |    1 | 00/053C : 68          |             PLA                  
+  738 |  1   B.S    677 | Code        | 00 |         |    1 | 00/053D : FA          |             PLX                  
+  739 |  1   B.S    678 | Code        | 00 |         |    2 | 00/053E : 86 D6       |             STX   $D6            
+  740 |  1   B.S    679 | Code        | 00 |         |    2 | 00/0540 : 85 D4       |             STA   $D4            
+  741 |  1   B.S    680 | Code        | 00 |         |    2 | 00/0542 : A5 EA       |             LDA   $EA            
+  742 |  1   B.S    681 | Code        | 00 |         |    1 | 00/0544 : 18          |             CLC                  
+  743 |  1   B.S    682 | Code        | 00 |         |    3 | 00/0545 : 69 01 00    |             ADC   #$0001         
+  744 |  1   B.S    683 | Code        | 00 |         |    1 | 00/0548 : 48          |             PHA                  
+  745 |  1   B.S    684 | Code        | 00 |         |    2 | 00/0549 : A5 EC       |             LDA   $EC            
+  746 |  1   B.S    685 | Code        | 00 |         |    1 | 00/054B : FA          |             PLX                  
+  747 |  1   B.S    686 | Code        | 00 |         |    2 | 00/054C : 86 F0       |             STX   $F0            
+  748 |  1   B.S    687 | Code        | 00 |         |    1 | 00/054E : 18          |             CLC                  
+  749 |  1   B.S    688 | Code        | 00 |         |    2 | 00/054F : 65 F0       |             ADC   $F0            
+  750 |  1   B.S    689 | Code        | 00 |         |    2 | 00/0551 : 85 EC       |             STA   $EC            
+  751 |  1   B.S    690 | Code        | 00 |         |    3 | 00/0553 : A2 00 00    |             LDX   #$0000         
+  752 |  1   B.S    691 | Code        | 00 |         |    3 | 00/0556 : A9 08 00    |             LDA   #$0008         
+  753 |  1   B.S    692 | Code        | 00 |         |    1 | 00/0559 : DA          |             PHX                  
+  754 |  1   B.S    693 | Code        | 00 |         |    1 | 00/055A : 48          |             PHA                  
+  755 |  1   B.S    694 | Code        | 00 |         |    2 | 00/055B : A6 D2       |             LDX   $D2            
+  756 |  1   B.S    695 | Code        | 00 |         |    2 | 00/055D : A5 D0       |             LDA   $D0            
+  757 |  1   B.S    696 | Code        | 00 |E 3      |    4 | 00/055F : 22 73 15 0E |             JSL   L0D1573        
+  758 |  1   B.S    697 | Code        | 00 |         |    1 | 00/0563 : 68          |             PLA                  
+  759 |  1   B.S    698 | Code        | 00 |         |    1 | 00/0564 : FA          |             PLX                  
+  760 |  1   B.S    699 | Code        | 00 |         |    2 | 00/0565 : 86 D2       |             STX   $D2            
+  761 |  1   B.S    700 | Code        | 00 |         |    2 | 00/0567 : 85 D0       |             STA   $D0            
+  762 |  1   B.S    701 | Code        | 00 |         |    2 | 00/0569 : 80 05       |             BRA   L040570        
+  763 |  1   B.S    702 | Code        | 00 |         |    2 | 00/056B : 80 03       |             BRA   L040570        
+  764 |  1   B.S    703 | Code        | 00 |         |    3 | 00/056D : 82 02 FF    | L04056D     BRL   L040472        
+  765 |  1   B.S    704 | Code        | 00 |         |    3 | 00/0570 : 82 77 FB    | L040570     BRL   L0400EA        
+  766 |  1   B.S    705 | Code        | 00 |         |    1 | 00/0573 : A8          | L040573     TAY                  
+  767 |  1   B.S    706 | Code        | 00 |         |    1 | 00/0574 : 7B          |             TDC                  
+  768 |  1   B.S    707 | Code        | 00 |         |    1 | 00/0575 : 18          |             CLC                  
+  769 |  1   B.S    708 | Code        | 00 |         |    3 | 00/0576 : 69 F3 00    |             ADC   #$00F3         
+  770 |  1   B.S    709 | Code        | 00 |         |    1 | 00/0579 : 1B          |             TCS                  
+  771 |  1   B.S    710 | Code        | 00 |         |    1 | 00/057A : 98          |             TYA                  
+  772 |  1   B.S    711 | Code        | 00 |         |    1 | 00/057B : 2B          |             PLD                  
+  773 |  1   B.S    712 | Code        | 00 |         |    1 | 00/057C : 6B          |             RTL                  
+  774 |  1   B.S    713 | Empty       | 00 |         |    0 | 00/057D               |                                  
+  775 |  1   B.S    714 | Code        | 00 |         |    1 | 00/057D : 0B          | L04057D     PHD                  
+  776 |  1   B.S    715 | Code        | 00 |         |    1 | 00/057E : 3B          |             TSC                  
+  777 |  1   B.S    716 | Code        | 00 |         |    1 | 00/057F : 38          |             SEC                  
+  778 |  1   B.S    717 | Code        | 00 |         |    3 | 00/0580 : E9 F9 00    |             SBC   #$00F9         
+  779 |  1   B.S    718 | Code        | 00 |         |    1 | 00/0583 : 5B          |             TCD                  
+  780 |  1   B.S    719 | Code        | 00 |         |    3 | 00/0584 : 69 F2 00    |             ADC   #$00F2         
+  781 |  1   B.S    720 | Code        | 00 |         |    1 | 00/0587 : 1B          |             TCS                  
+  782 |  1   B.S    721 | Code        | 00 |E 2      |    3 | 00/0588 : AE 34 00    |             LDX   L0F0034        
+  783 |  1   B.S    722 | Code        | 00 |E 2      |    3 | 00/058B : AD 32 00    |             LDA   L0F0032        
+  784 |  1   B.S    723 | Code        | 00 |         |    2 | 00/058E : 85 F6       |             STA   $F6            
+  785 |  1   B.S    724 | Code        | 00 |         |    2 | 00/0590 : 86 F8       |             STX   $F8            
+  786 |  1   B.S    725 | Code        | 00 |         |    2 | 00/0592 : A5 F6       |             LDA   $F6            
+  787 |  1   B.S    726 | Code        | 00 |         |    2 | 00/0594 : A6 F8       |             LDX   $F8            
+  788 |  1   B.S    727 | Code        | 00 |         |    1 | 00/0596 : 18          |             CLC                  
+  789 |  1   B.S    728 | Code        | 00 |         |    3 | 00/0597 : 69 0E 09    |             ADC   #$090E         
+  790 |  1   B.S    729 | Code        | 00 |         |    2 | 00/059A : 90 01       |             BCC   L04059D        
+  791 |  1   B.S    730 | Code        | 00 |         |    1 | 00/059C : E8          |             INX                  
+  792 |  1   B.S    731 | Code        | 00 |         |    1 | 00/059D : DA          | L04059D     PHX                  
+  793 |  1   B.S    732 | Code        | 00 |         |    1 | 00/059E : 48          |             PHA                  
+  794 |  1   B.S    733 | Code        | 00 |E 2      |    3 | 00/059F : AE AD 00    |             LDX   L0F00AD        
+  795 |  1   B.S    734 | Code        | 00 |E 2      |    3 | 00/05A2 : AD AB 00    |             LDA   L0F00AB        
+  796 |  1   B.S    735 | Code        | 00 |         |    1 | 00/05A5 : DA          |             PHX                  
+  797 |  1   B.S    736 | Code        | 00 |         |    1 | 00/05A6 : 48          |             PHA                  
+  798 |  1   B.S    737 | Code        | 00 |         |    3 | 00/05A7 : F4 00 00    |             PEA   $0000          
+  799 |  1   B.S    738 | Code        | 00 |         |    1 | 00/05AA : 7B          |             TDC                  
+  800 |  1   B.S    739 | Code        | 00 |         |    1 | 00/05AB : 18          |             CLC                  
+  801 |  1   B.S    740 | Code        | 00 |         |    3 | 00/05AC : 69 F4 00    |             ADC   #$00F4         
+  802 |  1   B.S    741 | Code        | 00 |         |    1 | 00/05AF : 48          |             PHA                  
+  803 |  1   B.S    742 | Code        | 00 |         |    2 | 00/05B0 : D4 FF       |             PEI   $FF            
+  804 |  1   B.S    743 | Code        | 00 |E 3      |    4 | 00/05B2 : 22 E0 21 08 |             JSL   L0721E0        
+  805 |  1   B.S    744 | Code        | 00 |         |    1 | 00/05B6 : A8          |             TAY                  
+  806 |  1   B.S    745 | Code        | 00 |         |    1 | 00/05B7 : 3B          |             TSC                  
+  807 |  1   B.S    746 | Code        | 00 |         |    1 | 00/05B8 : 18          |             CLC                  
+  808 |  1   B.S    747 | Code        | 00 |         |    3 | 00/05B9 : 69 0E 00    |             ADC   #$000E         
+  809 |  1   B.S    748 | Code        | 00 |         |    1 | 00/05BC : 1B          |             TCS                  
+  810 |  1   B.S    749 | Code        | 00 |         |    1 | 00/05BD : 98          |             TYA                  
+  811 |  1   B.S    750 | Code        | 00 |         |    2 | 00/05BE : A5 F4       |             LDA   $F4            
+  812 |  1   B.S    751 | Code        | 00 |         |    1 | 00/05C0 : 38          |             SEC                  
+  813 |  1   B.S    752 | Code        | 00 |         |    3 | 00/05C1 : E9 02 00    |             SBC   #$0002         
+  814 |  1   B.S    753 | Code        | 00 |         |    2 | 00/05C4 : 70 03       |             BVS   L0405C9        
+  815 |  1   B.S    754 | Code        | 00 |         |    3 | 00/05C6 : 49 00 80    |             EOR   #$8000         
+  816 |  1   B.S    755 | Code        | 00 |         |    2 | 00/05C9 : 30 20       | L0405C9     BMI   L0405EB        
+  817 |  1   B.S    756 | Code        | 00 |         |    3 | 00/05CB : F4 00 00    |             PEA   $0000          
+  818 |  1   B.S    757 | Code        | 00 |         |    3 | 00/05CE : F4 00 00    |             PEA   $0000          
+  819 |  1   B.S    758 | Code        | 00 |         |    3 | 00/05D1 : F4 00 00    |             PEA   $0000          
+  820 |  1   B.S    759 | Code        | 00 |         |    3 | 00/05D4 : F4 00 00    |             PEA   $0000          
+  821 |  1   B.S    760 | Code        | 00 |         |    3 | 00/05D7 : F4 00 00    |             PEA   $0000          
+  822 |  1   B.S    761 | Code        | 00 |E 1 >>16 |    3 | 00/05DA : F4 00 00    |             PEA   ^L0F00CD       
+  823 |  1   B.S    762 | Code        | 00 |E 2      |    3 | 00/05DD : F4 CD 00    |             PEA   L0F00CD        
+  824 |  1   B.S    763 | Code        | 00 |E 3      |    4 | 00/05E0 : 22 10 17 0E |             JSL   L0D1710        
+  825 |  1   B.S    764 | Code        | 00 |         |    1 | 00/05E4 : 7A          |             PLY                  
+  826 |  1   B.S    765 | Code        | 00 |         |    1 | 00/05E5 : 7A          |             PLY                  
+  827 |  1   B.S    766 | Code        | 00 |         |    1 | 00/05E6 : 7A          |             PLY                  
+  828 |  1   B.S    767 | Code        | 00 |         |    1 | 00/05E7 : 7A          |             PLY                  
+  829 |  1   B.S    768 | Code        | 00 |         |    1 | 00/05E8 : 7A          |             PLY                  
+  830 |  1   B.S    769 | Code        | 00 |         |    2 | 00/05E9 : 80 2F       |             BRA   L04061A        
+  831 |  1   B.S    770 | Code        | 00 |E 1 >>16 |    3 | 00/05EB : F4 00 00    | L0405EB     PEA   ^L0F00CD       
+  832 |  1   B.S    771 | Code        | 00 |E 2      |    3 | 00/05EE : F4 CD 00    |             PEA   L0F00CD        
+  833 |  1   B.S    772 | Code        | 00 |E 1 >>16 |    3 | 00/05F1 : F4 00 00    |             PEA   ^L0E50E1       
+  834 |  1   B.S    773 | Code        | 00 |E 2      |    3 | 00/05F4 : F4 E1 50    |             PEA   L0E50E1        
+  835 |  1   B.S    774 | Code        | 00 |E 2      |    3 | 00/05F7 : AE 34 00    |             LDX   L0F0034        
+  836 |  1   B.S    775 | Code        | 00 |E 2      |    3 | 00/05FA : AD 32 00    |             LDA   L0F0032        
+  837 |  1   B.S    776 | Code        | 00 |         |    2 | 00/05FD : 85 F6       |             STA   $F6            
+  838 |  1   B.S    777 | Code        | 00 |         |    2 | 00/05FF : 86 F8       |             STX   $F8            
+  839 |  1   B.S    778 | Code        | 00 |         |    2 | 00/0601 : A5 F6       |             LDA   $F6            
+  840 |  1   B.S    779 | Code        | 00 |         |    2 | 00/0603 : A6 F8       |             LDX   $F8            
+  841 |  1   B.S    780 | Code        | 00 |         |    1 | 00/0605 : 18          |             CLC                  
+  842 |  1   B.S    781 | Code        | 00 |         |    3 | 00/0606 : 69 0E 09    |             ADC   #$090E         
+  843 |  1   B.S    782 | Code        | 00 |         |    2 | 00/0609 : 90 01       |             BCC   L04060C        
+  844 |  1   B.S    783 | Code        | 00 |         |    1 | 00/060B : E8          |             INX                  
+  845 |  1   B.S    784 | Code        | 00 |         |    1 | 00/060C : DA          | L04060C     PHX                  
+  846 |  1   B.S    785 | Code        | 00 |         |    1 | 00/060D : 48          |             PHA                  
+  847 |  1   B.S    786 | Code        | 00 |E 3      |    4 | 00/060E : 22 E1 1B 0E |             JSL   L0D1BE1        
+  848 |  1   B.S    787 | Code        | 00 |         |    1 | 00/0612 : A8          |             TAY                  
+  849 |  1   B.S    788 | Code        | 00 |         |    1 | 00/0613 : 3B          |             TSC                  
+  850 |  1   B.S    789 | Code        | 00 |         |    1 | 00/0614 : 18          |             CLC                  
+  851 |  1   B.S    790 | Code        | 00 |         |    3 | 00/0615 : 69 0C 00    |             ADC   #$000C         
+  852 |  1   B.S    791 | Code        | 00 |         |    1 | 00/0618 : 1B          |             TCS                  
+  853 |  1   B.S    792 | Code        | 00 |         |    1 | 00/0619 : 98          |             TYA                  
+  854 |  1   B.S    793 | Code        | 00 |         |    1 | 00/061A : 7B          | L04061A     TDC                  
+  855 |  1   B.S    794 | Code        | 00 |         |    1 | 00/061B : 18          |             CLC                  
+  856 |  1   B.S    795 | Code        | 00 |         |    3 | 00/061C : 69 F9 00    |             ADC   #$00F9         
+  857 |  1   B.S    796 | Code        | 00 |         |    1 | 00/061F : 1B          |             TCS                  
+  858 |  1   B.S    797 | Code        | 00 |         |    1 | 00/0620 : 2B          |             PLD                  
+  859 |  1   B.S    798 | Code        | 00 |         |    1 | 00/0621 : 6B          |             RTL                  
+  860 |  1   B.S    799 | Empty       | 00 |         |    0 | 00/0622               |                                  
+  861 |  1   B.S    800 | Global      | 00 |         |    0 | 00/0622               | L040622     ENT                  
+  862 |  1   B.S    801 | Code        | 00 |         |    1 | 00/0622 : 0B          |             PHD                  
+  863 |  1   B.S    802 | Code        | 00 |         |    1 | 00/0623 : 3B          |             TSC                  
+  864 |  1   B.S    803 | Code        | 00 |         |    1 | 00/0624 : 38          |             SEC                  
+  865 |  1   B.S    804 | Code        | 00 |         |    3 | 00/0625 : E9 F9 00    |             SBC   #$00F9         
+  866 |  1   B.S    805 | Code        | 00 |         |    1 | 00/0628 : 5B          |             TCD                  
+  867 |  1   B.S    806 | Code        | 00 |         |    3 | 00/0629 : 69 F4 00    |             ADC   #$00F4         
+  868 |  1   B.S    807 | Code        | 00 |         |    1 | 00/062C : 1B          |             TCS                  
+  869 |  1   B.S    808 | Code        | 00 |         |    3 | 00/062D : A9 01 00    |             LDA   #$0001         
+  870 |  1   B.S    809 | Code        | 10 |         |    2 | 00/0630 : E2 20       |             SEP   #$20           
+  871 |  1   B.S    810 | Code        | 10 |E 3      |    4 | 00/0632 : 8F 07 51 0F |             STAL  L0E5107        
+  872 |  1   B.S    811 | Code        | 00 |         |    2 | 00/0636 : C2 20       |             REP   #$20           
+  873 |  1   B.S    812 | Code        | 00 |         |    2 | 00/0638 : A5 FF       |             LDA   $FF            
+  874 |  1   B.S    813 | Code        | 00 |         |    3 | 00/063A : 29 FF 00    |             AND   #$00FF         
+  875 |  1   B.S    814 | Code        | 10 |         |    2 | 00/063D : E2 20       |             SEP   #$20           
+  876 |  1   B.S    815 | Code        | 10 |E 3      |    4 | 00/063F : 8F 08 51 0F |             STAL  L0E5108        
+  877 |  1   B.S    816 | Code        | 00 |         |    2 | 00/0643 : C2 20       |             REP   #$20           
+  878 |  1   B.S    817 | Code        | 00 |E 2      |    3 | 00/0645 : A9 9E 0A    |             LDA   #L0E0A9E       
+  879 |  1   B.S    818 | Code        | 00 |E 1 >>16 |    3 | 00/0648 : A2 00 00    |             LDX   #^L0E0A9E      
+  880 |  1   B.S    819 | Code        | 00 |E 2      |    3 | 00/064B : 8E 34 00    |             STX   L0F0034        
+  881 |  1   B.S    820 | Code        | 00 |E 2      |    3 | 00/064E : 8D 32 00    |             STA   L0F0032        
+  882 |  1   B.S    821 | Code        | 00 |         |    3 | 00/0651 : F4 00 00    |             PEA   $0000          
+  883 |  1   B.S    822 | Code        | 00 |E 3      |    4 | 00/0654 : 22 24 1C 02 |             JSL   L011C24        
+  884 |  1   B.S    823 | Code        | 00 |         |    1 | 00/0658 : 7A          |             PLY                  
+  885 |  1   B.S    824 | Code        | 00 |         |    3 | 00/0659 : F4 82 00    |             PEA   $0082          
+  886 |  1   B.S    825 | Code        | 00 |         |    3 | 00/065C : F4 2C 00    |             PEA   $002C          
+  887 |  1   B.S    826 | Code        | 00 |E 1 >>16 |    3 | 00/065F : F4 00 00    |             PEA   ^L0E50E5       
+  888 |  1   B.S    827 | Code        | 00 |E 2      |    3 | 00/0662 : F4 E5 50    |             PEA   L0E50E5        
+  889 |  1   B.S    828 | Code        | 00 |         |    3 | 00/0665 : F4 00 00    |             PEA   $0000          
+  890 |  1   B.S    829 | Code        | 00 |         |    3 | 00/0668 : F4 00 00    |             PEA   $0000          
+  891 |  1   B.S    830 | Code        | 00 |E 1 >>16 |    3 | 00/066B : F4 00 00    |             PEA   ^L0E5107       
+  892 |  1   B.S    831 | Code        | 00 |E 2      |    3 | 00/066E : F4 07 51    |             PEA   L0E5107        
+  893 |  1   B.S    832 | Code        | 00 |E 1 >>16 |    3 | 00/0671 : F4 00 00    |             PEA   ^L0E3009       
+  894 |  1   B.S    833 | Code        | 00 |E 2      |    3 | 00/0674 : F4 09 30    |             PEA   L0E3009        
+  895 |  1   B.S    834 | Macro       | 00 |         |    0 | 00/0677               |             _SFGetFile                 
+  897 |  1   B.S    834 | Code        | 00 |         |    3 | 00/0677 : A2 17 09    |             LDX   #$917          ; load tool call #
+  898 |  1   B.S    834 | Code        | 00 |         |    4 | 00/067A : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  899 |  1   B.S    835 | Code        | 00 |E 2      |    3 | 00/067E : 8D 79 07    |             STA   L0F0779        
+  900 |  1   B.S    836 | Code        | 00 |E 2      |    3 | 00/0681 : AE 60 00    |             LDX   L0F0060        
+  901 |  1   B.S    837 | Code        | 00 |E 2      |    3 | 00/0684 : AD 5E 00    |             LDA   L0F005E        
+  902 |  1   B.S    838 | Code        | 00 |         |    1 | 00/0687 : DA          |             PHX                  
+  903 |  1   B.S    839 | Code        | 00 |         |    1 | 00/0688 : 48          |             PHA                  
+  904 |  1   B.S    840 | Macro       | 00 |         |    0 | 00/0689               |             _SetPort                 
+  906 |  1   B.S    840 | Code        | 00 |         |    3 | 00/0689 : A2 04 1B    |             LDX   #$1B04         ; load tool call #
+  907 |  1   B.S    840 | Code        | 00 |         |    4 | 00/068C : 22 00 00 E1 |             JSL   $E10000        ; go to dispatcher
+  908 |  1   B.S    841 | Code        | 00 |E 2      |    3 | 00/0690 : 8D 79 07    |             STA   L0F0779        
+  909 |  1   B.S    842 | Code        | 00 |E 3      |    4 | 00/0693 : AF 09 30 0F |             LDAL  L0E3009        
+  910 |  1   B.S    843 | Code        | 00 |         |    2 | 00/0697 : F0 1F       |             BEQ   L0406B8        
+  911 |  1   B.S    844 | Code        | 00 |E 1 >>16 |    3 | 00/0699 : F4 00 00    |             PEA   ^L0E301F       
+  912 |  1   B.S    845 | Code        | 00 |E 2      |    3 | 00/069C : F4 1F 30    |             PEA   L0E301F        
+  913 |  1   B.S    846 | Code        | 00 |E 1 >>16 |    3 | 00/069F : F4 00 00    |             PEA   ^L0E4A4C       
+  914 |  1   B.S    847 | Code        | 00 |E 2      |    3 | 00/06A2 : F4 4C 4A    |             PEA   L0E4A4C        
+  915 |  1   B.S    848 | Code        | 00 |E 3      |    4 | 00/06A5 : 22 00 00 0E |             JSL   L0D0000        
+  916 |  1   B.S    849 | Code        | 00 |         |    1 | 00/06A9 : 7A          |             PLY                  
+  917 |  1   B.S    850 | Code        | 00 |         |    1 | 00/06AA : 7A          |             PLY                  
+  918 |  1   B.S    851 | Code        | 00 |         |    1 | 00/06AB : 7A          |             PLY                  
+  919 |  1   B.S    852 | Code        | 00 |         |    1 | 00/06AC : 7A          |             PLY                  
+  920 |  1   B.S    853 | Code        | 00 |         |    3 | 00/06AD : A9 08 00    |             LDA   #$0008         
+  921 |  1   B.S    854 | Code        | 00 |E 2      |    3 | 00/06B0 : 8D 12 00    |             STA   L0F0012        
+  922 |  1   B.S    855 | Code        | 00 |E 2      |    3 | 00/06B3 : 9C E1 00    |             STZ   L0F00E1        
+  923 |  1   B.S    856 | Code        | 00 |         |    2 | 00/06B6 : 80 06       |             BRA   L0406BE        
+  924 |  1   B.S    857 | Code        | 00 |         |    3 | 00/06B8 : A9 01 00    | L0406B8     LDA   #$0001         
+  925 |  1   B.S    858 | Code        | 00 |E 2      |    3 | 00/06BB : 8D E1 00    |             STA   L0F00E1        
+  926 |  1   B.S    859 | Code        | 00 |         |    3 | 00/06BE : F4 00 00    | L0406BE     PEA   $0000          
+  927 |  1   B.S    860 | Code        | 00 |E 3      |    4 | 00/06C1 : 22 1C 14 02 |             JSL   L01141C        
+  928 |  1   B.S    861 | Code        | 00 |         |    1 | 00/06C5 : 7A          |             PLY                  
+  929 |  1   B.S    862 | Code        | 00 |         |    1 | 00/06C6 : 7B          |             TDC                  
+  930 |  1   B.S    863 | Code        | 00 |         |    1 | 00/06C7 : 18          |             CLC                  
+  931 |  1   B.S    864 | Code        | 00 |         |    3 | 00/06C8 : 69 F9 00    |             ADC   #$00F9         
+  932 |  1   B.S    865 | Code        | 00 |         |    1 | 00/06CB : 1B          |             TCS                  
+  933 |  1   B.S    866 | Code        | 00 |         |    1 | 00/06CC : 2B          |             PLD                  
+  934 |  1   B.S    867 | Code        | 00 |         |    1 | 00/06CD : 6B          |             RTL                  
+  935 |  1   B.S    868 | Empty       | 00 |         |    0 | 00/06CE               |                                  
+  936 |  1   B.S    869 | Empty       | 00 |         |    0 | 00/06CE               |                                  
+  937 |  1   B.S    870 | Empty       | 00 |         |    0 | 00/06CE               |                                  
+------+-----------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

@@ -1,0 +1,1586 @@
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File         Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1 GLOBALS.S      1 | Comment     | 11 |         |    0 | 00/0000               | *
+    2 |  1 GLOBALS.S      2 | Comment     | 11 |         |    0 | 00/0000               | * GSFile
+    3 |  1 GLOBALS.S      3 | Comment     | 11 |         |    0 | 00/0000               | *
+    4 |  1 GLOBALS.S      4 | Comment     | 11 |         |    0 | 00/0000               | * (c) 1997, SofWood Company
+    5 |  1 GLOBALS.S      5 | Comment     | 11 |         |    0 | 00/0000               | * (s) 2026, Brutal Deluxe Software
+    6 |  1 GLOBALS.S      6 | Comment     | 11 |         |    0 | 00/0000               | *
+    7 |  1 GLOBALS.S      7 | Empty       | 11 |         |    0 | 00/0000               |                                  
+    8 |  1 GLOBALS.S      8 | Directive   | 00 |         |    0 | 00/0000               |             mx    %00            
+    9 |  1 GLOBALS.S      9 | Directive   | 00 |         |    0 | 00/0000               |             rel                  
+   10 |  1 GLOBALS.S     10 | Directive   | 00 |         |    0 | 00/0000               |             lst   off            
+   11 |  1 GLOBALS.S     11 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   12 |  1 GLOBALS.S     12 | Comment     | 00 |         |    0 | 00/0000               | *----------------------------------- Macros
+   13 |  1 GLOBALS.S     13 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   14 |  1 GLOBALS.S     14 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Ctl.Macs     
+   15 |  1 GLOBALS.S     15 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Desk.Macs    
+   16 |  1 GLOBALS.S     16 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Dialog.Macs  
+   17 |  1 GLOBALS.S     17 | Directive   | 00 |         |    0 | 00/0000               |             use   4/DOS.16.Macs  
+   18 |  1 GLOBALS.S     18 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Event.Macs   
+   19 |  1 GLOBALS.S     19 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Int.Macs     
+   20 |  1 GLOBALS.S     20 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Line.Macs    
+   21 |  1 GLOBALS.S     21 | Directive   | 00 |         |    0 | 00/0000               |             use   4/List.Macs    
+   22 |  1 GLOBALS.S     22 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Locator.Macs 
+   23 |  1 GLOBALS.S     23 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Mem.Macs     
+   24 |  1 GLOBALS.S     24 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Menu.Macs    
+   25 |  1 GLOBALS.S     25 | Directive   | 00 |         |    0 | 00/0000               |             use   4/MIDISyn.Macs 
+   26 |  1 GLOBALS.S     26 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Misc.Macs    
+   27 |  1 GLOBALS.S     27 | Directive   | 00 |         |    0 | 00/0000               |             use   4/QD.Macs      
+   28 |  1 GLOBALS.S     28 | Directive   | 00 |         |    0 | 00/0000               |             use   4/QDAux.Macs   
+   29 |  1 GLOBALS.S     29 | Directive   | 00 |         |    0 | 00/0000               |             use   4/SANE.Macs    
+   30 |  1 GLOBALS.S     30 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Sound.Macs   
+   31 |  1 GLOBALS.S     31 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Std.Macs     
+   32 |  1 GLOBALS.S     32 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Text.Macs    
+   33 |  1 GLOBALS.S     33 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Util.Macs    
+   34 |  1 GLOBALS.S     34 | Directive   | 00 |         |    0 | 00/0000               |             use   4/Window.Macs  
+   35 |  1 GLOBALS.S     35 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   36 |  1 GLOBALS.S     36 | Equivalence | 00 |         |    0 | 00/0000               | GSOS        =     $E100A8        
+   37 |  1 GLOBALS.S     37 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   38 |  1 GLOBALS.S     38 | Comment     | 00 |         |    0 | 00/0000               | *-----------------------------------
+   39 |  1 GLOBALS.S     39 | Empty       | 00 |         |    0 | 00/0000               |                                  
+   40 |  1 GLOBALS.S     40 | Global      | 00 |         |    0 | 00/0000               | L0F0000     ENT                  
+   41 |  1 GLOBALS.S     41 | Data        | 00 |         |    1 | 00/0000 : 00          |             DB    $00            
+   42 |  1 GLOBALS.S     42 | Data        | 00 |         |    1 | 00/0001 : 00          |             DB    $00            
+   43 |  1 GLOBALS.S     43 | Global      | 00 |         |    0 | 00/0002               | L0F0002     ENT                  
+   44 |  1 GLOBALS.S     44 | Data        | 00 |         |    1 | 00/0002 : 00          |             DB    $00            
+   45 |  1 GLOBALS.S     45 | Data        | 00 |         |    1 | 00/0003 : 00          |             DB    $00            
+   46 |  1 GLOBALS.S     46 | Global      | 00 |         |    0 | 00/0004               | L0F0004     ENT                  
+   47 |  1 GLOBALS.S     47 | Data        | 00 |         |    1 | 00/0004 : 00          |             DB    $00            
+   48 |  1 GLOBALS.S     48 | Data        | 00 |         |    1 | 00/0005 : 00          |             DB    $00            
+   49 |  1 GLOBALS.S     49 | Global      | 00 |         |    0 | 00/0006               | L0F0006     ENT                  
+   50 |  1 GLOBALS.S     50 | Data        | 00 |         |    1 | 00/0006 : 00          |             DB    $00            
+   51 |  1 GLOBALS.S     51 | Data        | 00 |         |    1 | 00/0007 : 00          |             DB    $00            
+   52 |  1 GLOBALS.S     52 | Global      | 00 |         |    0 | 00/0008               | L0F0008     ENT                  
+   53 |  1 GLOBALS.S     53 | Data        | 00 |         |    1 | 00/0008 : 00          |             DB    $00            
+   54 |  1 GLOBALS.S     54 | Data        | 00 |         |    1 | 00/0009 : 00          |             DB    $00            
+   55 |  1 GLOBALS.S     55 | Global      | 00 |         |    0 | 00/000A               | L0F000A     ENT                  
+   56 |  1 GLOBALS.S     56 | Data        | 00 |         |    1 | 00/000A : 00          |             DB    $00            
+   57 |  1 GLOBALS.S     57 | Data        | 00 |         |    1 | 00/000B : 00          |             DB    $00            
+   58 |  1 GLOBALS.S     58 | Global      | 00 |         |    0 | 00/000C               | L0F000C     ENT                  
+   59 |  1 GLOBALS.S     59 | Data        | 00 |         |    1 | 00/000C : 00          |             DB    $00            
+   60 |  1 GLOBALS.S     60 | Data        | 00 |         |    1 | 00/000D : 00          |             DB    $00            
+   61 |  1 GLOBALS.S     61 | Global      | 00 |         |    0 | 00/000E               | L0F000E     ENT                  
+   62 |  1 GLOBALS.S     62 | Data        | 00 |         |    1 | 00/000E : 01          |             DB    $01            
+   63 |  1 GLOBALS.S     63 | Data        | 00 |         |    1 | 00/000F : 00          |             DB    $00            
+   64 |  1 GLOBALS.S     64 | Global      | 00 |         |    0 | 00/0010               | L0F0010     ENT                  
+   65 |  1 GLOBALS.S     65 | Data        | 00 |         |    1 | 00/0010 : 00          |             DB    $00            
+   66 |  1 GLOBALS.S     66 | Data        | 00 |         |    1 | 00/0011 : 00          |             DB    $00            
+   67 |  1 GLOBALS.S     67 | Global      | 00 |         |    0 | 00/0012               | L0F0012     ENT                  
+   68 |  1 GLOBALS.S     68 | Data        | 00 |         |    1 | 00/0012 : 00          |             DB    $00            
+   69 |  1 GLOBALS.S     69 | Data        | 00 |         |    1 | 00/0013 : 00          |             DB    $00            
+   70 |  1 GLOBALS.S     70 | Global      | 00 |         |    0 | 00/0014               | L0F0014     ENT                  
+   71 |  1 GLOBALS.S     71 | Data        | 00 |         |    1 | 00/0014 : 00          |             DB    $00            
+   72 |  1 GLOBALS.S     72 | Data        | 00 |         |    1 | 00/0015 : 00          |             DB    $00            
+   73 |  1 GLOBALS.S     73 | Global      | 00 |         |    0 | 00/0016               | L0F0016     ENT                  
+   74 |  1 GLOBALS.S     74 | Data        | 00 |         |    1 | 00/0016 : 00          |             DB    $00            
+   75 |  1 GLOBALS.S     75 | Data        | 00 |         |    1 | 00/0017 : 00          |             DB    $00            
+   76 |  1 GLOBALS.S     76 | Global      | 00 |         |    0 | 00/0018               | L0F0018     ENT                  
+   77 |  1 GLOBALS.S     77 | Data        | 00 |         |    1 | 00/0018 : 00          |             DB    $00            
+   78 |  1 GLOBALS.S     78 | Data        | 00 |         |    1 | 00/0019 : 00          |             DB    $00            
+   79 |  1 GLOBALS.S     79 | Global      | 00 |         |    0 | 00/001A               | L0F001A     ENT                  
+   80 |  1 GLOBALS.S     80 | Data        | 00 |         |    1 | 00/001A : 00          |             DB    $00            
+   81 |  1 GLOBALS.S     81 | Data        | 00 |         |    1 | 00/001B : 00          |             DB    $00            
+   82 |  1 GLOBALS.S     82 | Global      | 00 |         |    0 | 00/001C               | L0F001C     ENT                  
+   83 |  1 GLOBALS.S     83 | Data        | 00 |         |    1 | 00/001C : 00          |             DB    $00            
+   84 |  1 GLOBALS.S     84 | Data        | 00 |         |    1 | 00/001D : 00          |             DB    $00            
+   85 |  1 GLOBALS.S     85 | Global      | 00 |         |    0 | 00/001E               | L0F001E     ENT                  
+   86 |  1 GLOBALS.S     86 | Data        | 00 |         |    2 | 00/001E : 00 00       |             DW    $0000          
+   87 |  1 GLOBALS.S     87 | Global      | 00 |         |    0 | 00/0020               | L0F0020     ENT                  
+   88 |  1 GLOBALS.S     88 | Data        | 00 |         |    2 | 00/0020 : 00 00       |             DW    $0000          
+   89 |  1 GLOBALS.S     89 | Global      | 00 |         |    0 | 00/0022               | L0F0022     ENT                  
+   90 |  1 GLOBALS.S     90 | Data        | 00 |         |    1 | 00/0022 : 00          |             DB    $00            
+   91 |  1 GLOBALS.S     91 | Data        | 00 |         |    1 | 00/0023 : 00          |             DB    $00            
+   92 |  1 GLOBALS.S     92 | Global      | 00 |         |    0 | 00/0024               | L0F0024     ENT                  
+   93 |  1 GLOBALS.S     93 | Data        | 00 |         |    1 | 00/0024 : 00          |             DB    $00            
+   94 |  1 GLOBALS.S     94 | Data        | 00 |         |    1 | 00/0025 : 00          |             DB    $00            
+   95 |  1 GLOBALS.S     95 | Global      | 00 |         |    0 | 00/0026               | L0F0026     ENT                  
+   96 |  1 GLOBALS.S     96 | Data        | 00 |         |    1 | 00/0026 : 00          |             DB    $00            
+   97 |  1 GLOBALS.S     97 | Data        | 00 |         |    1 | 00/0027 : 00          |             DB    $00            
+   98 |  1 GLOBALS.S     98 | Global      | 00 |         |    0 | 00/0028               | L0F0028     ENT                  
+   99 |  1 GLOBALS.S     99 | Data        | 00 |         |    1 | 00/0028 : 00          |             DB    $00            
+  100 |  1 GLOBALS.S    100 | Data        | 00 |         |    1 | 00/0029 : 00          |             DB    $00            
+  101 |  1 GLOBALS.S    101 | Global      | 00 |         |    0 | 00/002A               | L0F002A     ENT                  
+  102 |  1 GLOBALS.S    102 | Data        | 00 |         |    1 | 00/002A : 00          |             DB    $00            
+  103 |  1 GLOBALS.S    103 | Data        | 00 |         |    1 | 00/002B : 00          |             DB    $00            
+  104 |  1 GLOBALS.S    104 | Global      | 00 |         |    0 | 00/002C               | L0F002C     ENT                  
+  105 |  1 GLOBALS.S    105 | Data        | 00 |         |    1 | 00/002C : 00          |             DB    $00            
+  106 |  1 GLOBALS.S    106 | Data        | 00 |         |    1 | 00/002D : 00          |             DB    $00            
+  107 |  1 GLOBALS.S    107 | Global      | 00 |         |    0 | 00/002E               | L0F002E     ENT                  
+  108 |  1 GLOBALS.S    108 | Data        | 00 |         |    1 | 00/002E : 00          |             DB    $00            
+  109 |  1 GLOBALS.S    109 | Data        | 00 |         |    1 | 00/002F : 00          |             DB    $00            
+  110 |  1 GLOBALS.S    110 | Global      | 00 |         |    0 | 00/0030               | L0F0030     ENT                  
+  111 |  1 GLOBALS.S    111 | Data        | 00 |         |    1 | 00/0030 : 00          |             DB    $00            
+  112 |  1 GLOBALS.S    112 | Data        | 00 |         |    1 | 00/0031 : 00          |             DB    $00            
+  113 |  1 GLOBALS.S    113 | Global      | 00 |         |    0 | 00/0032               | L0F0032     ENT                  
+  114 |  1 GLOBALS.S    114 | Data        | 00 |         |    1 | 00/0032 : 00          |             DB    $00            
+  115 |  1 GLOBALS.S    115 | Data        | 00 |         |    1 | 00/0033 : 00          |             DB    $00            
+  116 |  1 GLOBALS.S    116 | Global      | 00 |         |    0 | 00/0034               | L0F0034     ENT                  
+  117 |  1 GLOBALS.S    117 | Data        | 00 |         |    1 | 00/0034 : 00          |             DB    $00            
+  118 |  1 GLOBALS.S    118 | Data        | 00 |         |    1 | 00/0035 : 00          |             DB    $00            
+  119 |  1 GLOBALS.S    119 | Global      | 00 |         |    0 | 00/0036               | L0F0036     ENT                  
+  120 |  1 GLOBALS.S    120 | Data        | 00 |         |    1 | 00/0036 : 00          |             DB    $00            
+  121 |  1 GLOBALS.S    121 | Data        | 00 |         |    1 | 00/0037 : 00          |             DB    $00            
+  122 |  1 GLOBALS.S    122 | Global      | 00 |         |    0 | 00/0038               | L0F0038     ENT                  
+  123 |  1 GLOBALS.S    123 | Data        | 00 |         |    1 | 00/0038 : 00          |             DB    $00            
+  124 |  1 GLOBALS.S    124 | Data        | 00 |         |    1 | 00/0039 : 00          |             DB    $00            
+  125 |  1 GLOBALS.S    125 | Global      | 00 |         |    0 | 00/003A               | L0F003A     ENT                  
+  126 |  1 GLOBALS.S    126 | Data        | 00 |         |    1 | 00/003A : 00          |             DB    $00            
+  127 |  1 GLOBALS.S    127 | Data        | 00 |         |    1 | 00/003B : 00          |             DB    $00            
+  128 |  1 GLOBALS.S    128 | Global      | 00 |         |    0 | 00/003C               | L0F003C     ENT                  
+  129 |  1 GLOBALS.S    129 | Data        | 00 |         |    1 | 00/003C : 00          |             DB    $00            
+  130 |  1 GLOBALS.S    130 | Data        | 00 |         |    1 | 00/003D : 00          |             DB    $00            
+  131 |  1 GLOBALS.S    131 | Global      | 00 |         |    0 | 00/003E               | L0F003E     ENT                  
+  132 |  1 GLOBALS.S    132 | Data        | 00 |         |    1 | 00/003E : 00          |             DB    $00            
+  133 |  1 GLOBALS.S    133 | Data        | 00 |         |    1 | 00/003F : 00          |             DB    $00            
+  134 |  1 GLOBALS.S    134 | Global      | 00 |         |    0 | 00/0040               | L0F0040     ENT                  
+  135 |  1 GLOBALS.S    135 | Data        | 00 |         |    1 | 00/0040 : 00          |             DB    $00            
+  136 |  1 GLOBALS.S    136 | Data        | 00 |         |    1 | 00/0041 : 00          |             DB    $00            
+  137 |  1 GLOBALS.S    137 | Global      | 00 |         |    0 | 00/0042               | L0F0042     ENT                  
+  138 |  1 GLOBALS.S    138 | Data        | 00 |         |    1 | 00/0042 : 00          |             DB    $00            
+  139 |  1 GLOBALS.S    139 | Data        | 00 |         |    1 | 00/0043 : 00          |             DB    $00            
+  140 |  1 GLOBALS.S    140 | Global      | 00 |         |    0 | 00/0044               | L0F0044     ENT                  
+  141 |  1 GLOBALS.S    141 | Data        | 00 |         |    1 | 00/0044 : 00          |             DB    $00            
+  142 |  1 GLOBALS.S    142 | Data        | 00 |         |    1 | 00/0045 : 00          |             DB    $00            
+  143 |  1 GLOBALS.S    143 | Data        | 00 |         |    1 | 00/0046 : 00          |             DB    $00            
+  144 |  1 GLOBALS.S    144 | Data        | 00 |         |    1 | 00/0047 : 00          |             DB    $00            
+  145 |  1 GLOBALS.S    145 | Data        | 00 |         |    1 | 00/0048 : 00          |             DB    $00            
+  146 |  1 GLOBALS.S    146 | Data        | 00 |         |    1 | 00/0049 : 00          |             DB    $00            
+  147 |  1 GLOBALS.S    147 | Global      | 00 |         |    0 | 00/004A               | L0F004A     ENT                  
+  148 |  1 GLOBALS.S    148 | Data        | 00 |         |    1 | 00/004A : 00          |             DB    $00            
+  149 |  1 GLOBALS.S    149 | Data        | 00 |         |    1 | 00/004B : 00          |             DB    $00            
+  150 |  1 GLOBALS.S    150 | Global      | 00 |         |    0 | 00/004C               | L0F004C     ENT                  
+  151 |  1 GLOBALS.S    151 | Data        | 00 |         |    1 | 00/004C : 00          |             DB    $00            
+  152 |  1 GLOBALS.S    152 | Data        | 00 |         |    1 | 00/004D : 00          |             DB    $00            
+  153 |  1 GLOBALS.S    153 | Global      | 00 |         |    0 | 00/004E               | L0F004E     ENT                  
+  154 |  1 GLOBALS.S    154 | Data        | 00 |         |    1 | 00/004E : 00          |             DB    $00            
+  155 |  1 GLOBALS.S    155 | Data        | 00 |         |    1 | 00/004F : 00          |             DB    $00            
+  156 |  1 GLOBALS.S    156 | Global      | 00 |         |    0 | 00/0050               | L0F0050     ENT                  
+  157 |  1 GLOBALS.S    157 | Data        | 00 |         |    1 | 00/0050 : 00          |             DB    $00            
+  158 |  1 GLOBALS.S    158 | Data        | 00 |         |    1 | 00/0051 : 00          |             DB    $00            
+  159 |  1 GLOBALS.S    159 | Global      | 00 |         |    0 | 00/0052               | L0F0052     ENT                  
+  160 |  1 GLOBALS.S    160 | Data        | 00 |         |    1 | 00/0052 : 00          |             DB    $00            
+  161 |  1 GLOBALS.S    161 | Data        | 00 |         |    1 | 00/0053 : 00          |             DB    $00            
+  162 |  1 GLOBALS.S    162 | Global      | 00 |         |    0 | 00/0054               | L0F0054     ENT                  
+  163 |  1 GLOBALS.S    163 | Data        | 00 |         |    1 | 00/0054 : 00          |             DB    $00            
+  164 |  1 GLOBALS.S    164 | Data        | 00 |         |    1 | 00/0055 : 00          |             DB    $00            
+  165 |  1 GLOBALS.S    165 | Global      | 00 |         |    0 | 00/0056               | L0F0056     ENT                  
+  166 |  1 GLOBALS.S    166 | Data        | 00 |         |    1 | 00/0056 : 00          |             DB    $00            
+  167 |  1 GLOBALS.S    167 | Data        | 00 |         |    1 | 00/0057 : 00          |             DB    $00            
+  168 |  1 GLOBALS.S    168 | Global      | 00 |         |    0 | 00/0058               | L0F0058     ENT                  
+  169 |  1 GLOBALS.S    169 | Data        | 00 |         |    1 | 00/0058 : 00          |             DB    $00            
+  170 |  1 GLOBALS.S    170 | Data        | 00 |         |    1 | 00/0059 : 00          |             DB    $00            
+  171 |  1 GLOBALS.S    171 | Global      | 00 |         |    0 | 00/005A               | L0F005A     ENT                  
+  172 |  1 GLOBALS.S    172 | Data        | 00 |         |    1 | 00/005A : 00          |             DB    $00            
+  173 |  1 GLOBALS.S    173 | Data        | 00 |         |    1 | 00/005B : 00          |             DB    $00            
+  174 |  1 GLOBALS.S    174 | Global      | 00 |         |    0 | 00/005C               | L0F005C     ENT                  
+  175 |  1 GLOBALS.S    175 | Data        | 00 |         |    1 | 00/005C : 00          |             DB    $00            
+  176 |  1 GLOBALS.S    176 | Data        | 00 |         |    1 | 00/005D : 00          |             DB    $00            
+  177 |  1 GLOBALS.S    177 | Global      | 00 |         |    0 | 00/005E               | L0F005E     ENT                  
+  178 |  1 GLOBALS.S    178 | Data        | 00 |         |    1 | 00/005E : 00          |             DB    $00            
+  179 |  1 GLOBALS.S    179 | Data        | 00 |         |    1 | 00/005F : 00          |             DB    $00            
+  180 |  1 GLOBALS.S    180 | Global      | 00 |         |    0 | 00/0060               | L0F0060     ENT                  
+  181 |  1 GLOBALS.S    181 | Data        | 00 |         |    1 | 00/0060 : 00          |             DB    $00            
+  182 |  1 GLOBALS.S    182 | Data        | 00 |         |    1 | 00/0061 : 00          |             DB    $00            
+  183 |  1 GLOBALS.S    183 | Global      | 00 |         |    0 | 00/0062               | L0F0062     ENT                  
+  184 |  1 GLOBALS.S    184 | Data        | 00 |         |    1 | 00/0062 : 00          |             DB    $00            
+  185 |  1 GLOBALS.S    185 | Data        | 00 |         |    1 | 00/0063 : 00          |             DB    $00            
+  186 |  1 GLOBALS.S    186 | Global      | 00 |         |    0 | 00/0064               | L0F0064     ENT                  
+  187 |  1 GLOBALS.S    187 | Data        | 00 |         |    1 | 00/0064 : 01          |             DB    $01            
+  188 |  1 GLOBALS.S    188 | Data        | 00 |         |    1 | 00/0065 : 00          |             DB    $00            
+  189 |  1 GLOBALS.S    189 | Global      | 00 |         |    0 | 00/0066               | L0F0066     ENT                  
+  190 |  1 GLOBALS.S    190 | Data        | 00 |         |    1 | 00/0066 : 00          |             DB    $00            
+  191 |  1 GLOBALS.S    191 | Data        | 00 |         |    1 | 00/0067 : 00          |             DB    $00            
+  192 |  1 GLOBALS.S    192 | Global      | 00 |         |    0 | 00/0068               | L0F0068     ENT                  
+  193 |  1 GLOBALS.S    193 | Data        | 00 |         |    1 | 00/0068 : FF          |             DB    $FF            
+  194 |  1 GLOBALS.S    194 | Data        | 00 |         |    1 | 00/0069 : FF          |             DB    $FF            
+  195 |  1 GLOBALS.S    195 | Global      | 00 |         |    0 | 00/006A               | L0F006A     ENT                  
+  196 |  1 GLOBALS.S    196 | Data        | 00 |         |    1 | 00/006A : FF          |             DB    $FF            
+  197 |  1 GLOBALS.S    197 | Data        | 00 |         |    1 | 00/006B : FF          |             DB    $FF            
+  198 |  1 GLOBALS.S    198 | Global      | 00 |         |    0 | 00/006C               | L0F006C     ENT                  
+  199 |  1 GLOBALS.S    199 | Data        | 00 |         |    1 | 00/006C : 00          |             DB    $00            
+  200 |  1 GLOBALS.S    200 | Data        | 00 |         |    1 | 00/006D : 00          |             DB    $00            
+  201 |  1 GLOBALS.S    201 | Global      | 00 |         |    0 | 00/006E               | L0F006E     ENT                  
+  202 |  1 GLOBALS.S    202 | Data        | 00 |         |    1 | 00/006E : 00          |             DB    $00            
+  203 |  1 GLOBALS.S    203 | Data        | 00 |         |    1 | 00/006F : 00          |             DB    $00            
+  204 |  1 GLOBALS.S    204 | Global      | 00 |         |    0 | 00/0070               | L0F0070     ENT                  
+  205 |  1 GLOBALS.S    205 | Data        | 00 |         |    1 | 00/0070 : FF          |             DB    $FF            
+  206 |  1 GLOBALS.S    206 | Data        | 00 |         |    1 | 00/0071 : FF          |             DB    $FF            
+  207 |  1 GLOBALS.S    207 | Global      | 00 |         |    0 | 00/0072               | L0F0072     ENT                  
+  208 |  1 GLOBALS.S    208 | Data        | 00 |         |    1 | 00/0072 : 00          |             DB    $00            
+  209 |  1 GLOBALS.S    209 | Data        | 00 |         |    1 | 00/0073 : 00          |             DB    $00            
+  210 |  1 GLOBALS.S    210 | Global      | 00 |         |    0 | 00/0074               | L0F0074     ENT                  
+  211 |  1 GLOBALS.S    211 | Data        | 00 |         |    1 | 00/0074 : 00          |             DB    $00            
+  212 |  1 GLOBALS.S    212 | Data        | 00 |         |    1 | 00/0075 : 00          |             DB    $00            
+  213 |  1 GLOBALS.S    213 | Global      | 00 |         |    0 | 00/0076               | L0F0076     ENT                  
+  214 |  1 GLOBALS.S    214 | Data        | 00 |         |    1 | 00/0076 : 00          |             DB    $00            
+  215 |  1 GLOBALS.S    215 | Data        | 00 |         |    1 | 00/0077 : 00          |             DB    $00            
+  216 |  1 GLOBALS.S    216 | Global      | 00 |         |    0 | 00/0078               | L0F0078     ENT                  
+  217 |  1 GLOBALS.S    217 | Data        | 00 |         |    1 | 00/0078 : 00          |             DB    $00            
+  218 |  1 GLOBALS.S    218 | Data        | 00 |         |    1 | 00/0079 : 00          |             DB    $00            
+  219 |  1 GLOBALS.S    219 | Global      | 00 |         |    0 | 00/007A               | L0F007A     ENT                  
+  220 |  1 GLOBALS.S    220 | Data        | 00 |         |    1 | 00/007A : 00          |             DB    $00            
+  221 |  1 GLOBALS.S    221 | Data        | 00 |         |    1 | 00/007B : 00          |             DB    $00            
+  222 |  1 GLOBALS.S    222 | Data        | 00 |         |    1 | 00/007C : 00          |             DB    $00            
+  223 |  1 GLOBALS.S    223 | Data        | 00 |         |    1 | 00/007D : 00          |             DB    $00            
+  224 |  1 GLOBALS.S    224 | Global      | 00 |         |    0 | 00/007E               | L0F007E     ENT                  
+  225 |  1 GLOBALS.S    225 | Data        | 00 |         |    1 | 00/007E : 00          |             DB    $00            
+  226 |  1 GLOBALS.S    226 | Data        | 00 |         |    1 | 00/007F : 00          |             DB    $00            
+  227 |  1 GLOBALS.S    227 | Global      | 00 |         |    0 | 00/0080               | L0F0080     ENT                  
+  228 |  1 GLOBALS.S    228 | Data        | 00 |         |    1 | 00/0080 : 00          |             DB    $00            
+  229 |  1 GLOBALS.S    229 | Data        | 00 |         |    1 | 00/0081 : 00          |             DB    $00            
+  230 |  1 GLOBALS.S    230 | Global      | 00 |         |    0 | 00/0082               | L0F0082     ENT                  
+  231 |  1 GLOBALS.S    231 | Data        | 00 |         |    1 | 00/0082 : 00          |             DB    $00            
+  232 |  1 GLOBALS.S    232 | Data        | 00 |         |    1 | 00/0083 : 00          |             DB    $00            
+  233 |  1 GLOBALS.S    233 | Global      | 00 |         |    0 | 00/0084               | L0F0084     ENT                  
+  234 |  1 GLOBALS.S    234 | Data        | 00 |         |    1 | 00/0084 : 00          |             DB    $00            
+  235 |  1 GLOBALS.S    235 | Data        | 00 |         |    1 | 00/0085 : 00          |             DB    $00            
+  236 |  1 GLOBALS.S    236 | Data        | 00 |         |    1 | 00/0086 : 00          |             DB    $00            
+  237 |  1 GLOBALS.S    237 | Data        | 00 |         |    1 | 00/0087 : 00          |             DB    $00            
+  238 |  1 GLOBALS.S    238 | Global      | 00 |         |    0 | 00/0088               | L0F0088     ENT                  
+  239 |  1 GLOBALS.S    239 | Data        | 00 |         |    1 | 00/0088 : 00          |             DB    $00            
+  240 |  1 GLOBALS.S    240 | Data        | 00 |         |    1 | 00/0089 : 00          |             DB    $00            
+  241 |  1 GLOBALS.S    241 | Global      | 00 |         |    0 | 00/008A               | L0F008A     ENT                  
+  242 |  1 GLOBALS.S    242 | Data        | 00 |         |    1 | 00/008A : 00          |             DB    $00            
+  243 |  1 GLOBALS.S    243 | Data        | 00 |         |    1 | 00/008B : 00          |             DB    $00            
+  244 |  1 GLOBALS.S    244 | Global      | 00 |         |    0 | 00/008C               | L0F008C     ENT                  
+  245 |  1 GLOBALS.S    245 | Data        | 00 |         |    1 | 00/008C : 00          |             DB    $00            
+  246 |  1 GLOBALS.S    246 | Data        | 00 |         |    1 | 00/008D : 00          |             DB    $00            
+  247 |  1 GLOBALS.S    247 | Global      | 00 |         |    0 | 00/008E               | L0F008E     ENT                  
+  248 |  1 GLOBALS.S    248 | Data        | 00 |         |    1 | 00/008E : 00          |             DB    $00            
+  249 |  1 GLOBALS.S    249 | Data        | 00 |         |    1 | 00/008F : 00          |             DB    $00            
+  250 |  1 GLOBALS.S    250 | Global      | 00 |         |    0 | 00/0090               | L0F0090     ENT                  
+  251 |  1 GLOBALS.S    251 | Data        | 00 |         |    1 | 00/0090 : 00          |             DB    $00            
+  252 |  1 GLOBALS.S    252 | Data        | 00 |         |    1 | 00/0091 : 00          |             DB    $00            
+  253 |  1 GLOBALS.S    253 | Global      | 00 |         |    0 | 00/0092               | L0F0092     ENT                  
+  254 |  1 GLOBALS.S    254 | Data        | 00 |         |    1 | 00/0092 : 00          |             DB    $00            
+  255 |  1 GLOBALS.S    255 | Data        | 00 |         |    1 | 00/0093 : 00          |             DB    $00            
+  256 |  1 GLOBALS.S    256 | Global      | 00 |         |    0 | 00/0094               | L0F0094     ENT                  
+  257 |  1 GLOBALS.S    257 | Data        | 00 |         |    1 | 00/0094 : 00          |             DB    $00            
+  258 |  1 GLOBALS.S    258 | Data        | 00 |         |    1 | 00/0095 : 00          |             DB    $00            
+  259 |  1 GLOBALS.S    259 | Global      | 00 |         |    0 | 00/0096               | L0F0096     ENT                  
+  260 |  1 GLOBALS.S    260 | Data        | 00 |         |    1 | 00/0096 : 00          |             DB    $00            
+  261 |  1 GLOBALS.S    261 | Data        | 00 |         |    1 | 00/0097 : 00          |             DB    $00            
+  262 |  1 GLOBALS.S    262 | Data        | 00 |         |    1 | 00/0098 : 00          |             DB    $00            
+  263 |  1 GLOBALS.S    263 | Data        | 00 |         |    1 | 00/0099 : 00          |             DB    $00            
+  264 |  1 GLOBALS.S    264 | Data        | 00 |         |    1 | 00/009A : 00          |             DB    $00            
+  265 |  1 GLOBALS.S    265 | Data        | 00 |         |    1 | 00/009B : 00          |             DB    $00            
+  266 |  1 GLOBALS.S    266 | Global      | 00 |         |    0 | 00/009C               | L0F009C     ENT                  
+  267 |  1 GLOBALS.S    267 | Data        | 00 |         |    1 | 00/009C : 00          |             DB    $00            
+  268 |  1 GLOBALS.S    268 | Data        | 00 |         |    1 | 00/009D : 00          |             DB    $00            
+  269 |  1 GLOBALS.S    269 | Data        | 00 |         |    1 | 00/009E : 00          |             DB    $00            
+  270 |  1 GLOBALS.S    270 | Data        | 00 |         |    1 | 00/009F : 00          |             DB    $00            
+  271 |  1 GLOBALS.S    271 | Data        | 00 |         |    1 | 00/00A0 : 00          |             DB    $00            
+  272 |  1 GLOBALS.S    272 | Data        | 00 |         |    1 | 00/00A1 : 00          |             DB    $00            
+  273 |  1 GLOBALS.S    273 | Data        | 00 |         |    1 | 00/00A2 : 00          |             DB    $00            
+  274 |  1 GLOBALS.S    274 | Data        | 00 |         |    1 | 00/00A3 : 00          |             DB    $00            
+  275 |  1 GLOBALS.S    275 | Data        | 00 |         |    1 | 00/00A4 : 00          |             DB    $00            
+  276 |  1 GLOBALS.S    276 | Data        | 00 |         |    1 | 00/00A5 : 00          |             DB    $00            
+  277 |  1 GLOBALS.S    277 | Data        | 00 |         |    1 | 00/00A6 : 00          |             DB    $00            
+  278 |  1 GLOBALS.S    278 | Data        | 00 |         |    1 | 00/00A7 : 00          |             DB    $00            
+  279 |  1 GLOBALS.S    279 | Global      | 00 |         |    0 | 00/00A8               | L0F00A8     ENT                  
+  280 |  1 GLOBALS.S    280 | Data        | 00 |         |    1 | 00/00A8 : 00          |             DB    $00            
+  281 |  1 GLOBALS.S    281 | Data        | 00 |         |    1 | 00/00A9 : 00          |             DB    $00            
+  282 |  1 GLOBALS.S    282 | Global      | 00 |         |    0 | 00/00AA               | L0F00AA     ENT                  
+  283 |  1 GLOBALS.S    283 | Data        | 00 |         |    1 | 00/00AA : 00          |             DB    $00            
+  284 |  1 GLOBALS.S    284 | Global      | 00 |         |    0 | 00/00AB               | L0F00AB     ENT                  
+  285 |  1 GLOBALS.S    285 | Data        | 00 |         |    1 | 00/00AB : 00          |             DB    $00            
+  286 |  1 GLOBALS.S    286 | Data        | 00 |         |    1 | 00/00AC : 00          |             DB    $00            
+  287 |  1 GLOBALS.S    287 | Global      | 00 |         |    0 | 00/00AD               | L0F00AD     ENT                  
+  288 |  1 GLOBALS.S    288 | Data        | 00 |         |    1 | 00/00AD : 00          |             DB    $00            
+  289 |  1 GLOBALS.S    289 | Data        | 00 |         |    1 | 00/00AE : 00          |             DB    $00            
+  290 |  1 GLOBALS.S    290 | Global      | 00 |         |    0 | 00/00AF               | L0F00AF     ENT                  
+  291 |  1 GLOBALS.S    291 | Data        | 00 |         |    1 | 00/00AF : 00          |             DB    $00            
+  292 |  1 GLOBALS.S    292 | Data        | 00 |         |    1 | 00/00B0 : 00          |             DB    $00            
+  293 |  1 GLOBALS.S    293 | Global      | 00 |         |    0 | 00/00B1               | L0F00B1     ENT                  
+  294 |  1 GLOBALS.S    294 | Data        | 00 |         |    1 | 00/00B1 : 00          |             DB    $00            
+  295 |  1 GLOBALS.S    295 | Data        | 00 |         |    1 | 00/00B2 : 00          |             DB    $00            
+  296 |  1 GLOBALS.S    296 | Global      | 00 |         |    0 | 00/00B3               | L0F00B3     ENT                  
+  297 |  1 GLOBALS.S    297 | Data        | 00 |         |    1 | 00/00B3 : 00          |             DB    $00            
+  298 |  1 GLOBALS.S    298 | Data        | 00 |         |    1 | 00/00B4 : 00          |             DB    $00            
+  299 |  1 GLOBALS.S    299 | Global      | 00 |         |    0 | 00/00B5               | L0F00B5     ENT                  
+  300 |  1 GLOBALS.S    300 | Data        | 00 |         |    1 | 00/00B5 : 00          |             DB    $00            
+  301 |  1 GLOBALS.S    301 | Data        | 00 |         |    1 | 00/00B6 : 00          |             DB    $00            
+  302 |  1 GLOBALS.S    302 | Global      | 00 |         |    0 | 00/00B7               | L0F00B7     ENT                  
+  303 |  1 GLOBALS.S    303 | Data        | 00 |         |    1 | 00/00B7 : 00          |             DB    $00            
+  304 |  1 GLOBALS.S    304 | Data        | 00 |         |    1 | 00/00B8 : 00          |             DB    $00            
+  305 |  1 GLOBALS.S    305 | Global      | 00 |         |    0 | 00/00B9               | L0F00B9     ENT                  
+  306 |  1 GLOBALS.S    306 | Data        | 00 |         |    1 | 00/00B9 : 00          |             DB    $00            
+  307 |  1 GLOBALS.S    307 | Data        | 00 |         |    1 | 00/00BA : 00          |             DB    $00            
+  308 |  1 GLOBALS.S    308 | Global      | 00 |         |    0 | 00/00BB               | L0F00BB     ENT                  
+  309 |  1 GLOBALS.S    309 | Data        | 00 |         |    1 | 00/00BB : 00          |             DB    $00            
+  310 |  1 GLOBALS.S    310 | Data        | 00 |         |    1 | 00/00BC : 00          |             DB    $00            
+  311 |  1 GLOBALS.S    311 | Global      | 00 |         |    0 | 00/00BD               | L0F00BD     ENT                  
+  312 |  1 GLOBALS.S    312 | Data        | 00 |         |    1 | 00/00BD : 00          |             DB    $00            
+  313 |  1 GLOBALS.S    313 | Data        | 00 |         |    1 | 00/00BE : 00          |             DB    $00            
+  314 |  1 GLOBALS.S    314 | Global      | 00 |         |    0 | 00/00BF               | L0F00BF     ENT                  
+  315 |  1 GLOBALS.S    315 | Data        | 00 |         |    1 | 00/00BF : 00          |             DB    $00            
+  316 |  1 GLOBALS.S    316 | Data        | 00 |         |    1 | 00/00C0 : 00          |             DB    $00            
+  317 |  1 GLOBALS.S    317 | Global      | 00 |         |    0 | 00/00C1               | L0F00C1     ENT                  
+  318 |  1 GLOBALS.S    318 | Data        | 00 |         |    1 | 00/00C1 : 00          |             DB    $00            
+  319 |  1 GLOBALS.S    319 | Data        | 00 |         |    1 | 00/00C2 : 00          |             DB    $00            
+  320 |  1 GLOBALS.S    320 | Global      | 00 |         |    0 | 00/00C3               | L0F00C3     ENT                  
+  321 |  1 GLOBALS.S    321 | Data        | 00 |         |    1 | 00/00C3 : 00          |             DB    $00            
+  322 |  1 GLOBALS.S    322 | Data        | 00 |         |    1 | 00/00C4 : 00          |             DB    $00            
+  323 |  1 GLOBALS.S    323 | Global      | 00 |         |    0 | 00/00C5               | L0F00C5     ENT                  
+  324 |  1 GLOBALS.S    324 | Data        | 00 |         |    1 | 00/00C5 : 00          |             DB    $00            
+  325 |  1 GLOBALS.S    325 | Data        | 00 |         |    1 | 00/00C6 : 00          |             DB    $00            
+  326 |  1 GLOBALS.S    326 | Global      | 00 |         |    0 | 00/00C7               | L0F00C7     ENT                  
+  327 |  1 GLOBALS.S    327 | Data        | 00 |         |    1 | 00/00C7 : 00          |             DB    $00            
+  328 |  1 GLOBALS.S    328 | Data        | 00 |         |    1 | 00/00C8 : 00          |             DB    $00            
+  329 |  1 GLOBALS.S    329 | Global      | 00 |         |    0 | 00/00C9               | L0F00C9     ENT                  
+  330 |  1 GLOBALS.S    330 | Data        | 00 |         |    1 | 00/00C9 : 00          |             DB    $00            
+  331 |  1 GLOBALS.S    331 | Data        | 00 |         |    1 | 00/00CA : 00          |             DB    $00            
+  332 |  1 GLOBALS.S    332 | Global      | 00 |         |    0 | 00/00CB               | L0F00CB     ENT                  
+  333 |  1 GLOBALS.S    333 | Data        | 00 |         |    1 | 00/00CB : 00          |             DB    $00            
+  334 |  1 GLOBALS.S    334 | Data        | 00 |         |    1 | 00/00CC : 00          |             DB    $00            
+  335 |  1 GLOBALS.S    335 | Global      | 00 |         |    0 | 00/00CD               | L0F00CD     ENT                  
+  336 |  1 GLOBALS.S    336 | Data        | 00 |         |    1 | 00/00CD : 00          |             DB    $00            
+  337 |  1 GLOBALS.S    337 | Data        | 00 |         |    1 | 00/00CE : 00          |             DB    $00            
+  338 |  1 GLOBALS.S    338 | Global      | 00 |         |    0 | 00/00CF               | L0F00CF     ENT                  
+  339 |  1 GLOBALS.S    339 | Data        | 00 |         |    1 | 00/00CF : 00          |             DB    $00            
+  340 |  1 GLOBALS.S    340 | Data        | 00 |         |    1 | 00/00D0 : 00          |             DB    $00            
+  341 |  1 GLOBALS.S    341 | Global      | 00 |         |    0 | 00/00D1               | L0F00D1     ENT                  
+  342 |  1 GLOBALS.S    342 | Data        | 00 |         |    1 | 00/00D1 : 00          |             DB    $00            
+  343 |  1 GLOBALS.S    343 | Data        | 00 |         |    1 | 00/00D2 : 00          |             DB    $00            
+  344 |  1 GLOBALS.S    344 | Global      | 00 |         |    0 | 00/00D3               | L0F00D3     ENT                  
+  345 |  1 GLOBALS.S    345 | Data        | 00 |         |    1 | 00/00D3 : 00          |             DB    $00            
+  346 |  1 GLOBALS.S    346 | Data        | 00 |         |    1 | 00/00D4 : 00          |             DB    $00            
+  347 |  1 GLOBALS.S    347 | Global      | 00 |         |    0 | 00/00D5               | L0F00D5     ENT                  
+  348 |  1 GLOBALS.S    348 | Data        | 00 |         |    1 | 00/00D5 : 00          |             DB    $00            
+  349 |  1 GLOBALS.S    349 | Data        | 00 |         |    1 | 00/00D6 : 00          |             DB    $00            
+  350 |  1 GLOBALS.S    350 | Global      | 00 |         |    0 | 00/00D7               | L0F00D7     ENT                  
+  351 |  1 GLOBALS.S    351 | Data        | 00 |         |    1 | 00/00D7 : 00          |             DB    $00            
+  352 |  1 GLOBALS.S    352 | Data        | 00 |         |    1 | 00/00D8 : 00          |             DB    $00            
+  353 |  1 GLOBALS.S    353 | Global      | 00 |         |    0 | 00/00D9               | L0F00D9     ENT                  
+  354 |  1 GLOBALS.S    354 | Data        | 00 |         |    1 | 00/00D9 : 00          |             DB    $00            
+  355 |  1 GLOBALS.S    355 | Data        | 00 |         |    1 | 00/00DA : 00          |             DB    $00            
+  356 |  1 GLOBALS.S    356 | Global      | 00 |         |    0 | 00/00DB               | L0F00DB     ENT                  
+  357 |  1 GLOBALS.S    357 | Data        | 00 |         |    1 | 00/00DB : 00          |             DB    $00            
+  358 |  1 GLOBALS.S    358 | Data        | 00 |         |    1 | 00/00DC : 00          |             DB    $00            
+  359 |  1 GLOBALS.S    359 | Global      | 00 |         |    0 | 00/00DD               | L0F00DD     ENT                  
+  360 |  1 GLOBALS.S    360 | Data        | 00 |         |    1 | 00/00DD : 00          |             DB    $00            
+  361 |  1 GLOBALS.S    361 | Data        | 00 |         |    1 | 00/00DE : 00          |             DB    $00            
+  362 |  1 GLOBALS.S    362 | Global      | 00 |         |    0 | 00/00DF               | L0F00DF     ENT                  
+  363 |  1 GLOBALS.S    363 | Data        | 00 |         |    1 | 00/00DF : 00          |             DB    $00            
+  364 |  1 GLOBALS.S    364 | Data        | 00 |         |    1 | 00/00E0 : 00          |             DB    $00            
+  365 |  1 GLOBALS.S    365 | Global      | 00 |         |    0 | 00/00E1               | L0F00E1     ENT                  
+  366 |  1 GLOBALS.S    366 | Data        | 00 |         |    1 | 00/00E1 : 00          |             DB    $00            
+  367 |  1 GLOBALS.S    367 | Data        | 00 |         |    1 | 00/00E2 : 00          |             DB    $00            
+  368 |  1 GLOBALS.S    368 | Global      | 00 |         |    0 | 00/00E3               | L0F00E3     ENT                  
+  369 |  1 GLOBALS.S    369 | Data        | 00 |         |    1 | 00/00E3 : 00          |             DB    $00            
+  370 |  1 GLOBALS.S    370 | Data        | 00 |         |    1 | 00/00E4 : 00          |             DB    $00            
+  371 |  1 GLOBALS.S    371 | Global      | 00 |         |    0 | 00/00E5               | L0F00E5     ENT                  
+  372 |  1 GLOBALS.S    372 | Data        | 00 |         |    1 | 00/00E5 : 00          |             DB    $00            
+  373 |  1 GLOBALS.S    373 | Data        | 00 |         |    1 | 00/00E6 : 00          |             DB    $00            
+  374 |  1 GLOBALS.S    374 | Global      | 00 |         |    0 | 00/00E7               | L0F00E7     ENT                  
+  375 |  1 GLOBALS.S    375 | Data        | 00 |         |    1 | 00/00E7 : 00          |             DB    $00            
+  376 |  1 GLOBALS.S    376 | Data        | 00 |         |    1 | 00/00E8 : 00          |             DB    $00            
+  377 |  1 GLOBALS.S    377 | Data        | 00 |         |    1 | 00/00E9 : 00          |             DB    $00            
+  378 |  1 GLOBALS.S    378 | Data        | 00 |         |    1 | 00/00EA : 00          |             DB    $00            
+  379 |  1 GLOBALS.S    379 | Data        | 00 |         |    1 | 00/00EB : 00          |             DB    $00            
+  380 |  1 GLOBALS.S    380 | Data        | 00 |         |    1 | 00/00EC : 00          |             DB    $00            
+  381 |  1 GLOBALS.S    381 | Global      | 00 |         |    0 | 00/00ED               | L0F00ED     ENT                  
+  382 |  1 GLOBALS.S    382 | Data        | 00 |         |    1 | 00/00ED : 00          |             DB    $00            
+  383 |  1 GLOBALS.S    383 | Data        | 00 |         |    1 | 00/00EE : 00          |             DB    $00            
+  384 |  1 GLOBALS.S    384 | Global      | 00 |         |    0 | 00/00EF               | L0F00EF     ENT                  
+  385 |  1 GLOBALS.S    385 | Data        | 00 |         |    1 | 00/00EF : 00          |             DB    $00            
+  386 |  1 GLOBALS.S    386 | Data        | 00 |         |    1 | 00/00F0 : 00          |             DB    $00            
+  387 |  1 GLOBALS.S    387 | Global      | 00 |         |    0 | 00/00F1               | L0F00F1     ENT                  
+  388 |  1 GLOBALS.S    388 | Data        | 00 |         |    1 | 00/00F1 : 00          |             DB    $00            
+  389 |  1 GLOBALS.S    389 | Data        | 00 |         |    1 | 00/00F2 : 00          |             DB    $00            
+  390 |  1 GLOBALS.S    390 | Data        | 00 |         |    1 | 00/00F3 : 00          |             DB    $00            
+  391 |  1 GLOBALS.S    391 | Data        | 00 |         |    1 | 00/00F4 : 00          |             DB    $00            
+  392 |  1 GLOBALS.S    392 | Data        | 00 |         |    1 | 00/00F5 : 00          |             DB    $00            
+  393 |  1 GLOBALS.S    393 | Data        | 00 |         |    1 | 00/00F6 : 00          |             DB    $00            
+  394 |  1 GLOBALS.S    394 | Data        | 00 |         |    1 | 00/00F7 : 00          |             DB    $00            
+  395 |  1 GLOBALS.S    395 | Data        | 00 |         |    1 | 00/00F8 : 00          |             DB    $00            
+  396 |  1 GLOBALS.S    396 | Global      | 00 |         |    0 | 00/00F9               | L0F00F9     ENT                  
+  397 |  1 GLOBALS.S    397 | Data        | 00 |         |    1 | 00/00F9 : 00          |             DB    $00            
+  398 |  1 GLOBALS.S    398 | Data        | 00 |         |    1 | 00/00FA : 00          |             DB    $00            
+  399 |  1 GLOBALS.S    399 | Global      | 00 |         |    0 | 00/00FB               | L0F00FB     ENT                  
+  400 |  1 GLOBALS.S    400 | Data        | 00 |         |    1 | 00/00FB : 00          |             DB    $00            
+  401 |  1 GLOBALS.S    401 | Data        | 00 |         |    1 | 00/00FC : 00          |             DB    $00            
+  402 |  1 GLOBALS.S    402 | Global      | 00 |         |    0 | 00/00FD               | L0F00FD     ENT                  
+  403 |  1 GLOBALS.S    403 | Data        | 00 |         |    1 | 00/00FD : 00          |             DB    $00            
+  404 |  1 GLOBALS.S    404 | Data        | 00 |         |    1 | 00/00FE : 00          |             DB    $00            
+  405 |  1 GLOBALS.S    405 | Global      | 00 |         |    0 | 00/00FF               | L0F00FF     ENT                  
+  406 |  1 GLOBALS.S    406 | Data        | 00 |         |    1 | 00/00FF : 00          |             DB    $00            
+  407 |  1 GLOBALS.S    407 | Data        | 00 |         |    1 | 00/0100 : 00          |             DB    $00            
+  408 |  1 GLOBALS.S    408 | Global      | 00 |         |    0 | 00/0101               | L0F0101     ENT                  
+  409 |  1 GLOBALS.S    409 | Data        | 00 |         |    1 | 00/0101 : 00          |             DB    $00            
+  410 |  1 GLOBALS.S    410 | Data        | 00 |         |    1 | 00/0102 : 00          |             DB    $00            
+  411 |  1 GLOBALS.S    411 | Global      | 00 |         |    0 | 00/0103               | L0F0103     ENT                  
+  412 |  1 GLOBALS.S    412 | Data        | 00 |         |    1 | 00/0103 : 00          |             DB    $00            
+  413 |  1 GLOBALS.S    413 | Data        | 00 |         |    1 | 00/0104 : 00          |             DB    $00            
+  414 |  1 GLOBALS.S    414 | Global      | 00 |         |    0 | 00/0105               | L0F0105     ENT                  
+  415 |  1 GLOBALS.S    415 | Data        | 00 |         |    1 | 00/0105 : 00          |             DB    $00            
+  416 |  1 GLOBALS.S    416 | Data        | 00 |         |    1 | 00/0106 : 00          |             DB    $00            
+  417 |  1 GLOBALS.S    417 | Global      | 00 |         |    0 | 00/0107               | L0F0107     ENT                  
+  418 |  1 GLOBALS.S    418 | Data        | 00 |         |    1 | 00/0107 : 00          |             DB    $00            
+  419 |  1 GLOBALS.S    419 | Data        | 00 |         |    1 | 00/0108 : 00          |             DB    $00            
+  420 |  1 GLOBALS.S    420 | Global      | 00 |         |    0 | 00/0109               | L0F0109     ENT                  
+  421 |  1 GLOBALS.S    421 | Data        | 00 |         |    1 | 00/0109 : 00          |             DB    $00            
+  422 |  1 GLOBALS.S    422 | Data        | 00 |         |    1 | 00/010A : 00          |             DB    $00            
+  423 |  1 GLOBALS.S    423 | Global      | 00 |         |    0 | 00/010B               | L0F010B     ENT                  
+  424 |  1 GLOBALS.S    424 | Data        | 00 |         |    1 | 00/010B : 00          |             DB    $00            
+  425 |  1 GLOBALS.S    425 | Data        | 00 |         |    1 | 00/010C : 00          |             DB    $00            
+  426 |  1 GLOBALS.S    426 | Global      | 00 |         |    0 | 00/010D               | L0F010D     ENT                  
+  427 |  1 GLOBALS.S    427 | Data        | 00 |         |    1 | 00/010D : 00          |             DB    $00            
+  428 |  1 GLOBALS.S    428 | Data        | 00 |         |    1 | 00/010E : 00          |             DB    $00            
+  429 |  1 GLOBALS.S    429 | Global      | 00 |         |    0 | 00/010F               | L0F010F     ENT                  
+  430 |  1 GLOBALS.S    430 | Data        | 00 |         |    1 | 00/010F : 00          |             DB    $00            
+  431 |  1 GLOBALS.S    431 | Data        | 00 |         |    1 | 00/0110 : 00          |             DB    $00            
+  432 |  1 GLOBALS.S    432 | Global      | 00 |         |    0 | 00/0111               | L0F0111     ENT                  
+  433 |  1 GLOBALS.S    433 | Data        | 00 |         |    1 | 00/0111 : 00          |             DB    $00            
+  434 |  1 GLOBALS.S    434 | Data        | 00 |         |    1 | 00/0112 : 00          |             DB    $00            
+  435 |  1 GLOBALS.S    435 | Global      | 00 |         |    0 | 00/0113               | L0F0113     ENT                  
+  436 |  1 GLOBALS.S    436 | Data        | 00 |         |    1 | 00/0113 : 00          |             DB    $00            
+  437 |  1 GLOBALS.S    437 | Data        | 00 |         |    1 | 00/0114 : 00          |             DB    $00            
+  438 |  1 GLOBALS.S    438 | Global      | 00 |         |    0 | 00/0115               | L0F0115     ENT                  
+  439 |  1 GLOBALS.S    439 | Data        | 00 |         |    1 | 00/0115 : 00          |             DB    $00            
+  440 |  1 GLOBALS.S    440 | Data        | 00 |         |    1 | 00/0116 : 00          |             DB    $00            
+  441 |  1 GLOBALS.S    441 | Global      | 00 |         |    0 | 00/0117               | L0F0117     ENT                  
+  442 |  1 GLOBALS.S    442 | Data        | 00 |         |    1 | 00/0117 : 00          |             DB    $00            
+  443 |  1 GLOBALS.S    443 | Data        | 00 |         |    1 | 00/0118 : 00          |             DB    $00            
+  444 |  1 GLOBALS.S    444 | Global      | 00 |         |    0 | 00/0119               | L0F0119     ENT                  
+  445 |  1 GLOBALS.S    445 | Data        | 00 |         |    1 | 00/0119 : 00          |             DB    $00            
+  446 |  1 GLOBALS.S    446 | Data        | 00 |         |    1 | 00/011A : 00          |             DB    $00            
+  447 |  1 GLOBALS.S    447 | Data        | 00 |         |    1 | 00/011B : 00          |             DB    $00            
+  448 |  1 GLOBALS.S    448 | Data        | 00 |         |    1 | 00/011C : 00          |             DB    $00            
+  449 |  1 GLOBALS.S    449 | Data        | 00 |         |    1 | 00/011D : 00          |             DB    $00            
+  450 |  1 GLOBALS.S    450 | Data        | 00 |         |    1 | 00/011E : 00          |             DB    $00            
+  451 |  1 GLOBALS.S    451 | Data        | 00 |         |    1 | 00/011F : 00          |             DB    $00            
+  452 |  1 GLOBALS.S    452 | Data        | 00 |         |    1 | 00/0120 : 00          |             DB    $00            
+  453 |  1 GLOBALS.S    453 | Global      | 00 |         |    0 | 00/0121               | L0F0121     ENT                  
+  454 |  1 GLOBALS.S    454 | Data        | 00 |         |    1 | 00/0121 : 00          |             DB    $00            
+  455 |  1 GLOBALS.S    455 | Data        | 00 |         |    1 | 00/0122 : 00          |             DB    $00            
+  456 |  1 GLOBALS.S    456 | Global      | 00 |         |    0 | 00/0123               | L0F0123     ENT                  
+  457 |  1 GLOBALS.S    457 | Data        | 00 |         |    1 | 00/0123 : 00          |             DB    $00            
+  458 |  1 GLOBALS.S    458 | Data        | 00 |         |    1 | 00/0124 : 00          |             DB    $00            
+  459 |  1 GLOBALS.S    459 | Global      | 00 |         |    0 | 00/0125               | L0F0125     ENT                  
+  460 |  1 GLOBALS.S    460 | Data        | 00 |         |    1 | 00/0125 : 00          |             DB    $00            
+  461 |  1 GLOBALS.S    461 | Data        | 00 |         |    1 | 00/0126 : 00          |             DB    $00            
+  462 |  1 GLOBALS.S    462 | Global      | 00 |         |    0 | 00/0127               | L0F0127     ENT                  
+  463 |  1 GLOBALS.S    463 | Data        | 00 |         |    1 | 00/0127 : 00          |             DB    $00            
+  464 |  1 GLOBALS.S    464 | Data        | 00 |         |    1 | 00/0128 : 00          |             DB    $00            
+  465 |  1 GLOBALS.S    465 | Global      | 00 |         |    0 | 00/0129               | L0F0129     ENT                  
+  466 |  1 GLOBALS.S    466 | Data        | 00 |         |    1 | 00/0129 : 00          |             DB    $00            
+  467 |  1 GLOBALS.S    467 | Data        | 00 |         |    1 | 00/012A : 00          |             DB    $00            
+  468 |  1 GLOBALS.S    468 | Data        | 00 |         |    1 | 00/012B : 00          |             DB    $00            
+  469 |  1 GLOBALS.S    469 | Data        | 00 |         |    1 | 00/012C : 00          |             DB    $00            
+  470 |  1 GLOBALS.S    470 | Data        | 00 |         |    1 | 00/012D : 00          |             DB    $00            
+  471 |  1 GLOBALS.S    471 | Data        | 00 |         |    1 | 00/012E : 00          |             DB    $00            
+  472 |  1 GLOBALS.S    472 | Global      | 00 |         |    0 | 00/012F               | L0F012F     ENT                  
+  473 |  1 GLOBALS.S    473 | Data        | 00 |         |    1 | 00/012F : 00          |             DB    $00            
+  474 |  1 GLOBALS.S    474 | Data        | 00 |         |    1 | 00/0130 : 00          |             DB    $00            
+  475 |  1 GLOBALS.S    475 | Global      | 00 |         |    0 | 00/0131               | L0F0131     ENT                  
+  476 |  1 GLOBALS.S    476 | Data        | 00 |         |    1 | 00/0131 : 00          |             DB    $00            
+  477 |  1 GLOBALS.S    477 | Data        | 00 |         |    1 | 00/0132 : 00          |             DB    $00            
+  478 |  1 GLOBALS.S    478 | Global      | 00 |         |    0 | 00/0133               | L0F0133     ENT                  
+  479 |  1 GLOBALS.S    479 | Data        | 00 |         |    1 | 00/0133 : 00          |             DB    $00            
+  480 |  1 GLOBALS.S    480 | Data        | 00 |         |    1 | 00/0134 : 00          |             DB    $00            
+  481 |  1 GLOBALS.S    481 | Global      | 00 |         |    0 | 00/0135               | L0F0135     ENT                  
+  482 |  1 GLOBALS.S    482 | Data        | 00 |         |    1 | 00/0135 : 00          |             DB    $00            
+  483 |  1 GLOBALS.S    483 | Data        | 00 |         |    1 | 00/0136 : 00          |             DB    $00            
+  484 |  1 GLOBALS.S    484 | Global      | 00 |         |    0 | 00/0137               | L0F0137     ENT                  
+  485 |  1 GLOBALS.S    485 | Data        | 00 |         |    1 | 00/0137 : 00          |             DB    $00            
+  486 |  1 GLOBALS.S    486 | Data        | 00 |         |    1 | 00/0138 : 00          |             DB    $00            
+  487 |  1 GLOBALS.S    487 | Global      | 00 |         |    0 | 00/0139               | L0F0139     ENT                  
+  488 |  1 GLOBALS.S    488 | Data        | 00 |         |    1 | 00/0139 : 00          |             DB    $00            
+  489 |  1 GLOBALS.S    489 | Data        | 00 |         |    1 | 00/013A : 00          |             DB    $00            
+  490 |  1 GLOBALS.S    490 | Global      | 00 |         |    0 | 00/013B               | L0F013B     ENT                  
+  491 |  1 GLOBALS.S    491 | Data        | 00 |         |    1 | 00/013B : 00          |             DB    $00            
+  492 |  1 GLOBALS.S    492 | Data        | 00 |         |    1 | 00/013C : 00          |             DB    $00            
+  493 |  1 GLOBALS.S    493 | Global      | 00 |         |    0 | 00/013D               | L0F013D     ENT                  
+  494 |  1 GLOBALS.S    494 | Data        | 00 |         |    1 | 00/013D : 00          |             DB    $00            
+  495 |  1 GLOBALS.S    495 | Data        | 00 |         |    1 | 00/013E : 00          |             DB    $00            
+  496 |  1 GLOBALS.S    496 | Global      | 00 |         |    0 | 00/013F               | L0F013F     ENT                  
+  497 |  1 GLOBALS.S    497 | Data        | 00 |         |    1 | 00/013F : 00          |             DB    $00            
+  498 |  1 GLOBALS.S    498 | Data        | 00 |         |    1 | 00/0140 : 00          |             DB    $00            
+  499 |  1 GLOBALS.S    499 | Global      | 00 |         |    0 | 00/0141               | L0F0141     ENT                  
+  500 |  1 GLOBALS.S    500 | Data        | 00 |         |    1 | 00/0141 : 00          |             DB    $00            
+  501 |  1 GLOBALS.S    501 | Data        | 00 |         |    1 | 00/0142 : 00          |             DB    $00            
+  502 |  1 GLOBALS.S    502 | Global      | 00 |         |    0 | 00/0143               | L0F0143     ENT                  
+  503 |  1 GLOBALS.S    503 | Data        | 00 |         |    1 | 00/0143 : 00          |             DB    $00            
+  504 |  1 GLOBALS.S    504 | Data        | 00 |         |    1 | 00/0144 : 00          |             DB    $00            
+  505 |  1 GLOBALS.S    505 | Global      | 00 |         |    0 | 00/0145               | L0F0145     ENT                  
+  506 |  1 GLOBALS.S    506 | Data        | 00 |         |    1 | 00/0145 : 00          |             DB    $00            
+  507 |  1 GLOBALS.S    507 | Data        | 00 |         |    1 | 00/0146 : 00          |             DB    $00            
+  508 |  1 GLOBALS.S    508 | Global      | 00 |         |    0 | 00/0147               | L0F0147     ENT                  
+  509 |  1 GLOBALS.S    509 | Data        | 00 |         |    1 | 00/0147 : 00          |             DB    $00            
+  510 |  1 GLOBALS.S    510 | Data        | 00 |         |    1 | 00/0148 : 00          |             DB    $00            
+  511 |  1 GLOBALS.S    511 | Global      | 00 |         |    0 | 00/0149               | L0F0149     ENT                  
+  512 |  1 GLOBALS.S    512 | Data        | 00 |         |    1 | 00/0149 : 00          |             DB    $00            
+  513 |  1 GLOBALS.S    513 | Data        | 00 |         |    1 | 00/014A : 00          |             DB    $00            
+  514 |  1 GLOBALS.S    514 | Global      | 00 |         |    0 | 00/014B               | L0F014B     ENT                  
+  515 |  1 GLOBALS.S    515 | Data        | 00 |         |    1 | 00/014B : 00          |             DB    $00            
+  516 |  1 GLOBALS.S    516 | Data        | 00 |         |    1 | 00/014C : 00          |             DB    $00            
+  517 |  1 GLOBALS.S    517 | Data        | 00 |         |    1 | 00/014D : 00          |             DB    $00            
+  518 |  1 GLOBALS.S    518 | Data        | 00 |         |    1 | 00/014E : 00          |             DB    $00            
+  519 |  1 GLOBALS.S    519 | Data        | 00 |         |    1 | 00/014F : 00          |             DB    $00            
+  520 |  1 GLOBALS.S    520 | Data        | 00 |         |    1 | 00/0150 : 00          |             DB    $00            
+  521 |  1 GLOBALS.S    521 | Global      | 00 |         |    0 | 00/0151               | L0F0151     ENT                  
+  522 |  1 GLOBALS.S    522 | Data        | 00 |         |    1 | 00/0151 : 00          |             DB    $00            
+  523 |  1 GLOBALS.S    523 | Data        | 00 |         |    1 | 00/0152 : 00          |             DB    $00            
+  524 |  1 GLOBALS.S    524 | Global      | 00 |         |    0 | 00/0153               | L0F0153     ENT                  
+  525 |  1 GLOBALS.S    525 | Data        | 00 |         |    1 | 00/0153 : 00          |             DB    $00            
+  526 |  1 GLOBALS.S    526 | Data        | 00 |         |    1 | 00/0154 : 00          |             DB    $00            
+  527 |  1 GLOBALS.S    527 | Global      | 00 |         |    0 | 00/0155               | L0F0155     ENT                  
+  528 |  1 GLOBALS.S    528 | Data        | 00 |         |    1 | 00/0155 : 00          |             DB    $00            
+  529 |  1 GLOBALS.S    529 | Data        | 00 |         |    1 | 00/0156 : 00          |             DB    $00            
+  530 |  1 GLOBALS.S    530 | Global      | 00 |         |    0 | 00/0157               | L0F0157     ENT                  
+  531 |  1 GLOBALS.S    531 | Data        | 00 |         |    1 | 00/0157 : 00          |             DB    $00            
+  532 |  1 GLOBALS.S    532 | Data        | 00 |         |    1 | 00/0158 : 00          |             DB    $00            
+  533 |  1 GLOBALS.S    533 | Global      | 00 |         |    0 | 00/0159               | L0F0159     ENT                  
+  534 |  1 GLOBALS.S    534 | Data        | 00 |         |    1 | 00/0159 : 00          |             DB    $00            
+  535 |  1 GLOBALS.S    535 | Data        | 00 |         |    1 | 00/015A : 00          |             DB    $00            
+  536 |  1 GLOBALS.S    536 | Global      | 00 |         |    0 | 00/015B               | L0F015B     ENT                  
+  537 |  1 GLOBALS.S    537 | Data        | 00 |         |    1 | 00/015B : 00          |             DB    $00            
+  538 |  1 GLOBALS.S    538 | Data        | 00 |         |    1 | 00/015C : 00          |             DB    $00            
+  539 |  1 GLOBALS.S    539 | Global      | 00 |         |    0 | 00/015D               | L0F015D     ENT                  
+  540 |  1 GLOBALS.S    540 | Data        | 00 |         |    1 | 00/015D : 00          |             DB    $00            
+  541 |  1 GLOBALS.S    541 | Data        | 00 |         |    1 | 00/015E : 00          |             DB    $00            
+  542 |  1 GLOBALS.S    542 | Global      | 00 |         |    0 | 00/015F               | L0F015F     ENT                  
+  543 |  1 GLOBALS.S    543 | Data        | 00 |         |    1 | 00/015F : 00          |             DB    $00            
+  544 |  1 GLOBALS.S    544 | Data        | 00 |         |    1 | 00/0160 : 00          |             DB    $00            
+  545 |  1 GLOBALS.S    545 | Global      | 00 |         |    0 | 00/0161               | L0F0161     ENT                  
+  546 |  1 GLOBALS.S    546 | Data        | 00 |         |    8 | 00/0161 : 3E 4C 40 5C |             ASC   '>L@\XN1'0D    
+      |                     |             |    |         |      |           58 4E 31 0D |
+  547 |  1 GLOBALS.S    547 | Data        | 00 |         |   21 | 00/0169 : 20 4C 53 79 |             ASC   ' LSystem Status\N257'0D
+      |                     |             |    |         |      |           73 74 65 6D |
+      |                     |             |    |         |      |           20 53 74 61 |
+      |                     |             |    |         |      |           74 75 73 5C |
+      |                     |             |    |         |      |           4E 32 35 37 |
+      |                     |             |    |         |      |           0D          |
+  548 |  1 GLOBALS.S    548 | Data        | 00 |         |   15 | 00/017E : 20 4C 4D 65 |             ASC   ' LMemory\N258V'0D
+      |                     |             |    |         |      |           6D 6F 72 79 |
+      |                     |             |    |         |      |           5C 4E 32 35 |
+      |                     |             |    |         |      |           38 56 0D    |
+  549 |  1 GLOBALS.S    549 | Data        | 00 |         |   30 | 00/018D : 20 4C 44 65 |             ASC   ' LDefault Numeric Format\N260'0D
+      |                     |             |    |         |      |           66 61 75 6C |
+      |                     |             |    |         |      |           74 20 4E 75 |
+      |                     |             |    |         |      |           6D 65 72 69 |
+      |                     |             |    |         |      |           63 20 46 6F |
+      |                     |             |    |         |      |           72 6D 61 74 |
+      |                     |             |    |         |      |           5C 4E 32 36 |
+      |                     |             |    |         |      |           30 0D       |
+  550 |  1 GLOBALS.S    550 | Data        | 00 |         |   28 | 00/01AB : 20 4C 44 65 |             ASC   ' LDefault Date Format\N261V'0D
+      |                     |             |    |         |      |           66 61 75 6C |
+      |                     |             |    |         |      |           74 20 44 61 |
+      |                     |             |    |         |      |           74 65 20 46 |
+      |                     |             |    |         |      |           6F 72 6D 61 |
+      |                     |             |    |         |      |           74 5C 4E 32 |
+      |                     |             |    |         |      |           36 31 56 0D |
+  551 |  1 GLOBALS.S    551 | Data        | 00 |         |   14 | 00/01C7 : 20 4C 41 62 |             ASC   ' LAbout\N262V'0D
+      |                     |             |    |         |      |           6F 75 74 5C |
+      |                     |             |    |         |      |           4E 32 36 32 |
+      |                     |             |    |         |      |           56 0D       |
+  552 |  1 GLOBALS.S    552 | Data        | 00 |         |    1 | 00/01D5 : 2E          |             ASC   '.'            
+  553 |  1 GLOBALS.S    553 | Global      | 00 |         |    0 | 00/01D6               | L0F01D6     ENT                  
+  554 |  1 GLOBALS.S    554 | Data        | 00 |         |   12 | 00/01D6 : 3E 4C 20 46 |             ASC   '>L File \N2'0D
+      |                     |             |    |         |      |           69 6C 65 20 |
+      |                     |             |    |         |      |           5C 4E 32 0D |
+  555 |  1 GLOBALS.S    555 | Data        | 00 |         |   15 | 00/01E2 : 20 4C 4F 70 |             ASC   ' LOpen\N263*Oo'0D
+      |                     |             |    |         |      |           65 6E 5C 4E |
+      |                     |             |    |         |      |           32 36 33 2A |
+      |                     |             |    |         |      |           4F 6F 0D    |
+  556 |  1 GLOBALS.S    556 | Data        | 00 |         |   11 | 00/01F1 : 20 4C 4E 65 |             ASC   ' LNew\N264'0D 
+      |                     |             |    |         |      |           77 5C 4E 32 |
+      |                     |             |    |         |      |           36 34 0D    |
+  557 |  1 GLOBALS.S    557 | Data        | 00 |         |   15 | 00/01FC : 20 4C 53 61 |             ASC   ' LSave\N265*Ss'0D
+      |                     |             |    |         |      |           76 65 5C 4E |
+      |                     |             |    |         |      |           32 36 35 2A |
+      |                     |             |    |         |      |           53 73 0D    |
+  558 |  1 GLOBALS.S    558 | Data        | 00 |         |   15 | 00/020B : 20 4C 53 61 |             ASC   ' LSave As\N266'0D
+      |                     |             |    |         |      |           76 65 20 41 |
+      |                     |             |    |         |      |           73 5C 4E 32 |
+      |                     |             |    |         |      |           36 36 0D    |
+  559 |  1 GLOBALS.S    559 | Data        | 00 |         |   16 | 00/021A : 20 4C 41 62 |             ASC   ' LAbandon\N267V'0D
+      |                     |             |    |         |      |           61 6E 64 6F |
+      |                     |             |    |         |      |           6E 5C 4E 32 |
+      |                     |             |    |         |      |           36 37 56 0D |
+  560 |  1 GLOBALS.S    560 | Data        | 00 |         |   28 | 00/022A : 20 4C 4F 70 |             ASC   ' LOpen Appleworks Def.\N269'0D
+      |                     |             |    |         |      |           65 6E 20 41 |
+      |                     |             |    |         |      |           70 70 6C 65 |
+      |                     |             |    |         |      |           77 6F 72 6B |
+      |                     |             |    |         |      |           73 20 44 65 |
+      |                     |             |    |         |      |           66 2E 5C 4E |
+      |                     |             |    |         |      |           32 36 39 0D |
+  561 |  1 GLOBALS.S    561 | Data        | 00 |         |   29 | 00/0246 : 20 4C 4F 70 |             ASC   ' LOpen Appleworks Data\N308V'0D
+      |                     |             |    |         |      |           65 6E 20 41 |
+      |                     |             |    |         |      |           70 70 6C 65 |
+      |                     |             |    |         |      |           77 6F 72 6B |
+      |                     |             |    |         |      |           73 20 44 61 |
+      |                     |             |    |         |      |           74 61 5C 4E |
+      |                     |             |    |         |      |           33 30 38 56 |
+      |                     |             |    |         |      |           0D          |
+  562 |  1 GLOBALS.S    562 | Data        | 00 |         |   18 | 00/0263 : 20 4C 4F 70 |             ASC   ' LOpen Ascii\N268'0D
+      |                     |             |    |         |      |           65 6E 20 41 |
+      |                     |             |    |         |      |           73 63 69 69 |
+      |                     |             |    |         |      |           5C 4E 32 36 |
+      |                     |             |    |         |      |           38 0D       |
+  563 |  1 GLOBALS.S    563 | Data        | 00 |         |   24 | 00/0275 : 20 4C 53 61 |             ASC   ' LSave Mail/Merge\N270V'0D
+      |                     |             |    |         |      |           76 65 20 4D |
+      |                     |             |    |         |      |           61 69 6C 2F |
+      |                     |             |    |         |      |           4D 65 72 67 |
+      |                     |             |    |         |      |           65 5C 4E 32 |
+      |                     |             |    |         |      |           37 30 56 0D |
+  564 |  1 GLOBALS.S    564 | Data        | 00 |         |   14 | 00/028D : 20 4C 52 65 |             ASC   ' LRename\N271'0D
+      |                     |             |    |         |      |           6E 61 6D 65 |
+      |                     |             |    |         |      |           5C 4E 32 37 |
+      |                     |             |    |         |      |           31 0D       |
+  565 |  1 GLOBALS.S    565 | Data        | 00 |         |   15 | 00/029B : 20 4C 44 65 |             ASC   ' LDelete\N272V'0D
+      |                     |             |    |         |      |           6C 65 74 65 |
+      |                     |             |    |         |      |           5C 4E 32 37 |
+      |                     |             |    |         |      |           32 56 0D    |
+  566 |  1 GLOBALS.S    566 | Data        | 00 |         |   19 | 00/02AA : 20 4C 54 69 |             ASC   ' LTitle List\N273V'0D
+      |                     |             |    |         |      |           74 6C 65 20 |
+      |                     |             |    |         |      |           4C 69 73 74 |
+      |                     |             |    |         |      |           5C 4E 32 37 |
+      |                     |             |    |         |      |           33 56 0D    |
+  567 |  1 GLOBALS.S    567 | Data        | 00 |         |   15 | 00/02BD : 20 4C 51 75 |             ASC   ' LQuit\N274*Qq'0D
+      |                     |             |    |         |      |           69 74 5C 4E |
+      |                     |             |    |         |      |           32 37 34 2A |
+      |                     |             |    |         |      |           51 71 0D    |
+  568 |  1 GLOBALS.S    568 | Data        | 00 |         |    1 | 00/02CC : 2E          |             ASC   '.'            
+  569 |  1 GLOBALS.S    569 | Global      | 00 |         |    0 | 00/02CD               | L0F02CD     ENT                  
+  570 |  1 GLOBALS.S    570 | Data        | 00 |         |   14 | 00/02CD : 3E 4C 20 43 |             ASC   '>L Column \N3'0D
+      |                     |             |    |         |      |           6F 6C 75 6D |
+      |                     |             |    |         |      |           6E 20 5C 4E |
+      |                     |             |    |         |      |           33 0D       |
+  571 |  1 GLOBALS.S    571 | Data        | 00 |         |   12 | 00/02DB : 20 4C 53 68 |             ASC   ' LShow\N275'0D
+      |                     |             |    |         |      |           6F 77 5C 4E |
+      |                     |             |    |         |      |           32 37 35 0D |
+  572 |  1 GLOBALS.S    572 | Data        | 00 |         |   13 | 00/02E7 : 20 4C 48 69 |             ASC   ' LHide\N276V'0D
+      |                     |             |    |         |      |           64 65 5C 4E |
+      |                     |             |    |         |      |           32 37 36 56 |
+      |                     |             |    |         |      |           0D          |
+  573 |  1 GLOBALS.S    573 | Data        | 00 |         |   16 | 00/02F4 : 20 4C 53 68 |             ASC   ' LShow All\N277'0D
+      |                     |             |    |         |      |           6F 77 20 41 |
+      |                     |             |    |         |      |           6C 6C 5C 4E |
+      |                     |             |    |         |      |           32 37 37 0D |
+  574 |  1 GLOBALS.S    574 | Data        | 00 |         |   17 | 00/0304 : 20 4C 48 69 |             ASC   ' LHide All\N278V'0D
+      |                     |             |    |         |      |           64 65 20 41 |
+      |                     |             |    |         |      |           6C 6C 5C 4E |
+      |                     |             |    |         |      |           32 37 38 56 |
+      |                     |             |    |         |      |           0D          |
+  575 |  1 GLOBALS.S    575 | Data        | 00 |         |   14 | 00/0315 : 20 4C 4C 65 |             ASC   ' LLeft\N279C*'0D
+      |                     |             |    |         |      |           66 74 5C 4E |
+      |                     |             |    |         |      |           32 37 39 43 |
+      |                     |             |    |         |      |           2A 0D       |
+  576 |  1 GLOBALS.S    576 | Data        | 00 |         |   16 | 00/0323 : 20 4C 43 65 |             ASC   ' LCenter\N280C*'0D
+      |                     |             |    |         |      |           6E 74 65 72 |
+      |                     |             |    |         |      |           5C 4E 32 38 |
+      |                     |             |    |         |      |           30 43 2A 0D |
+  577 |  1 GLOBALS.S    577 | Data        | 00 |         |   16 | 00/0333 : 20 4C 52 69 |             ASC   ' LRight\N281C*V'0D
+      |                     |             |    |         |      |           67 68 74 5C |
+      |                     |             |    |         |      |           4E 32 38 31 |
+      |                     |             |    |         |      |           43 2A 56 0D |
+  578 |  1 GLOBALS.S    578 | Data        | 00 |         |   23 | 00/0343 : 20 4C 44 69 |             ASC   ' LDisplay Format\N282V'0D
+      |                     |             |    |         |      |           73 70 6C 61 |
+      |                     |             |    |         |      |           79 20 46 6F |
+      |                     |             |    |         |      |           72 6D 61 74 |
+      |                     |             |    |         |      |           5C 4E 32 38 |
+      |                     |             |    |         |      |           32 56 0D    |
+  579 |  1 GLOBALS.S    579 | Data        | 00 |         |   22 | 00/035A : 20 4C 44 65 |             ASC   ' LDefine Data\N283*Dd'0D
+      |                     |             |    |         |      |           66 69 6E 65 |
+      |                     |             |    |         |      |           20 44 61 74 |
+      |                     |             |    |         |      |           61 5C 4E 32 |
+      |                     |             |    |         |      |           38 33 2A 44 |
+      |                     |             |    |         |      |           64 0D       |
+  580 |  1 GLOBALS.S    580 | Data        | 00 |         |   23 | 00/0370 : 20 4C 44 65 |             ASC   ' LDefine Calc\N284V*Cc'0D
+      |                     |             |    |         |      |           66 69 6E 65 |
+      |                     |             |    |         |      |           20 43 61 6C |
+      |                     |             |    |         |      |           63 5C 4E 32 |
+      |                     |             |    |         |      |           38 34 56 2A |
+      |                     |             |    |         |      |           43 63 0D    |
+  581 |  1 GLOBALS.S    581 | Data        | 00 |         |   14 | 00/0387 : 20 4C 44 65 |             ASC   ' LDelete\N285'0D
+      |                     |             |    |         |      |           6C 65 74 65 |
+      |                     |             |    |         |      |           5C 4E 32 38 |
+      |                     |             |    |         |      |           35 0D       |
+  582 |  1 GLOBALS.S    582 | Data        | 00 |         |    1 | 00/0395 : 2E          |             ASC   '.'            
+  583 |  1 GLOBALS.S    583 | Global      | 00 |         |    0 | 00/0396               | L0F0396     ENT                  
+  584 |  1 GLOBALS.S    584 | Data        | 00 |         |   14 | 00/0396 : 3E 4C 20 53 |             ASC   '>L Select \N4'0D
+      |                     |             |    |         |      |           65 6C 65 63 |
+      |                     |             |    |         |      |           74 20 5C 4E |
+      |                     |             |    |         |      |           34 0D       |
+  585 |  1 GLOBALS.S    585 | Data        | 00 |         |   21 | 00/03A4 : 20 4C 42 79 |             ASC   ' LBy Example\N286*Ee'0D
+      |                     |             |    |         |      |           20 45 78 61 |
+      |                     |             |    |         |      |           6D 70 6C 65 |
+      |                     |             |    |         |      |           5C 4E 32 38 |
+      |                     |             |    |         |      |           36 2A 45 65 |
+      |                     |             |    |         |      |           0D          |
+  586 |  1 GLOBALS.S    586 | Data        | 00 |         |   20 | 00/03B9 : 20 4C 42 79 |             ASC   ' LBy Range\N287*RrV'0D
+      |                     |             |    |         |      |           20 52 61 6E |
+      |                     |             |    |         |      |           67 65 5C 4E |
+      |                     |             |    |         |      |           32 38 37 2A |
+      |                     |             |    |         |      |           52 72 56 0D |
+  587 |  1 GLOBALS.S    587 | Data        | 00 |         |   19 | 00/03CD : 20 4C 41 6C |             ASC   ' LAll Items\N288C*'0D
+      |                     |             |    |         |      |           6C 20 49 74 |
+      |                     |             |    |         |      |           65 6D 73 5C |
+      |                     |             |    |         |      |           4E 32 38 38 |
+      |                     |             |    |         |      |           43 2A 0D    |
+  588 |  1 GLOBALS.S    588 | Data        | 00 |         |   24 | 00/03E0 : 20 4C 53 65 |             ASC   ' LSelected Items\N289C*'0D
+      |                     |             |    |         |      |           6C 65 63 74 |
+      |                     |             |    |         |      |           65 64 20 49 |
+      |                     |             |    |         |      |           74 65 6D 73 |
+      |                     |             |    |         |      |           5C 4E 32 38 |
+      |                     |             |    |         |      |           39 43 2A 0D |
+  589 |  1 GLOBALS.S    589 | Data        | 00 |         |    1 | 00/03F8 : 2E          |             ASC   '.'            
+  590 |  1 GLOBALS.S    590 | Global      | 00 |         |    0 | 00/03F9               | L0F03F9     ENT                  
+  591 |  1 GLOBALS.S    591 | Data        | 00 |         |   12 | 00/03F9 : 3E 4C 20 53 |             ASC   '>L Sort \N5'0D
+      |                     |             |    |         |      |           6F 72 74 20 |
+      |                     |             |    |         |      |           5C 4E 35 0D |
+  592 |  1 GLOBALS.S    592 | Data        | 00 |         |   19 | 00/0405 : 20 4C 4C 6F |             ASC   ' LLow To High\N290'0D
+      |                     |             |    |         |      |           77 20 54 6F |
+      |                     |             |    |         |      |           20 48 69 67 |
+      |                     |             |    |         |      |           68 5C 4E 32 |
+      |                     |             |    |         |      |           39 30 0D    |
+  593 |  1 GLOBALS.S    593 | Data        | 00 |         |   20 | 00/0418 : 20 4C 48 69 |             ASC   ' LHigh To Low\N291V'0D
+      |                     |             |    |         |      |           67 68 20 54 |
+      |                     |             |    |         |      |           6F 20 4C 6F |
+      |                     |             |    |         |      |           77 5C 4E 32 |
+      |                     |             |    |         |      |           39 31 56 0D |
+  594 |  1 GLOBALS.S    594 | Data        | 00 |         |   23 | 00/042C : 20 4C 53 69 |             ASC   ' LSingle Column\N292C*'0D
+      |                     |             |    |         |      |           6E 67 6C 65 |
+      |                     |             |    |         |      |           20 43 6F 6C |
+      |                     |             |    |         |      |           75 6D 6E 5C |
+      |                     |             |    |         |      |           4E 32 39 32 |
+      |                     |             |    |         |      |           43 2A 0D    |
+  595 |  1 GLOBALS.S    595 | Data        | 00 |         |   21 | 00/0443 : 20 4C 50 72 |             ASC   ' LProgressive\N293C*'0D
+      |                     |             |    |         |      |           6F 67 72 65 |
+      |                     |             |    |         |      |           73 73 69 76 |
+      |                     |             |    |         |      |           65 5C 4E 32 |
+      |                     |             |    |         |      |           39 33 43 2A |
+      |                     |             |    |         |      |           0D          |
+  596 |  1 GLOBALS.S    596 | Data        | 00 |         |    1 | 00/0458 : 2E          |             ASC   '.'            
+  597 |  1 GLOBALS.S    597 | Global      | 00 |         |    0 | 00/0459               | L0F0459     ENT                  
+  598 |  1 GLOBALS.S    598 | Data        | 00 |         |   15 | 00/0459 : 3E 4C 20 4F |             ASC   '>L Options \N6'0D
+      |                     |             |    |         |      |           70 74 69 6F |
+      |                     |             |    |         |      |           6E 73 20 5C |
+      |                     |             |    |         |      |           4E 36 0D    |
+  599 |  1 GLOBALS.S    599 | Data        | 00 |         |   15 | 00/0468 : 20 4C 46 6F |             ASC   ' LForm\N294*Ff'0D
+      |                     |             |    |         |      |           72 6D 5C 4E |
+      |                     |             |    |         |      |           32 39 34 2A |
+      |                     |             |    |         |      |           46 66 0D    |
+  600 |  1 GLOBALS.S    600 | Data        | 00 |         |   16 | 00/0477 : 20 4C 4C 69 |             ASC   ' LList\N295*LlV'0D
+      |                     |             |    |         |      |           73 74 5C 4E |
+      |                     |             |    |         |      |           32 39 35 2A |
+      |                     |             |    |         |      |           4C 6C 56 0D |
+  601 |  1 GLOBALS.S    601 | Data        | 00 |         |   28 | 00/0487 : 20 4C 41 75 |             ASC   ' LAuto Capitalize\N296C**Uu'0D
+      |                     |             |    |         |      |           74 6F 20 43 |
+      |                     |             |    |         |      |           61 70 69 74 |
+      |                     |             |    |         |      |           61 6C 69 7A |
+      |                     |             |    |         |      |           65 5C 4E 32 |
+      |                     |             |    |         |      |           39 36 43 2A |
+      |                     |             |    |         |      |           2A 55 75 0D |
+  602 |  1 GLOBALS.S    602 | Data        | 00 |         |   24 | 00/04A3 : 20 4C 47 72 |             ASC   ' LGrid On/Off\N297C**Gg'0D
+      |                     |             |    |         |      |           69 64 20 4F |
+      |                     |             |    |         |      |           6E 2F 4F 66 |
+      |                     |             |    |         |      |           66 5C 4E 32 |
+      |                     |             |    |         |      |           39 37 43 2A |
+      |                     |             |    |         |      |           2A 47 67 0D |
+  603 |  1 GLOBALS.S    603 | Data        | 00 |         |   28 | 00/04BB : 20 4C 52 65 |             ASC   ' LRepeat Data Entry\N298C*V'0D
+      |                     |             |    |         |      |           70 65 61 74 |
+      |                     |             |    |         |      |           20 44 61 74 |
+      |                     |             |    |         |      |           61 20 45 6E |
+      |                     |             |    |         |      |           74 72 79 5C |
+      |                     |             |    |         |      |           4E 32 39 38 |
+      |                     |             |    |         |      |           43 2A 56 0D |
+  604 |  1 GLOBALS.S    604 | Data        | 00 |         |   21 | 00/04D7 : 20 4C 46 69 |             ASC   ' LField Info\N259*Hh'0D
+      |                     |             |    |         |      |           65 6C 64 20 |
+      |                     |             |    |         |      |           49 6E 66 6F |
+      |                     |             |    |         |      |           5C 4E 32 35 |
+      |                     |             |    |         |      |           39 2A 48 68 |
+      |                     |             |    |         |      |           0D          |
+  605 |  1 GLOBALS.S    605 | Data        | 00 |         |    1 | 00/04EC : 2E          |             ASC   '.'            
+  606 |  1 GLOBALS.S    606 | Global      | 00 |         |    0 | 00/04ED               | L0F04ED     ENT                  
+  607 |  1 GLOBALS.S    607 | Data        | 00 |         |   13 | 00/04ED : 3E 4C 20 50 |             ASC   '>L Print \N7'0D
+      |                     |             |    |         |      |           72 69 6E 74 |
+      |                     |             |    |         |      |           20 5C 4E 37 |
+      |                     |             |    |         |      |           0D          |
+  608 |  1 GLOBALS.S    608 | Data        | 00 |         |   21 | 00/04FA : 20 4C 54 6F |             ASC   ' LTo Printer\N299*Pp'0D
+      |                     |             |    |         |      |           20 50 72 69 |
+      |                     |             |    |         |      |           6E 74 65 72 |
+      |                     |             |    |         |      |           5C 4E 32 39 |
+      |                     |             |    |         |      |           39 2A 50 70 |
+      |                     |             |    |         |      |           0D          |
+  609 |  1 GLOBALS.S    609 | Data        | 00 |         |   22 | 00/050F : 20 4C 54 6F |             ASC   ' LTo Ascii File\N300V'0D
+      |                     |             |    |         |      |           20 41 73 63 |
+      |                     |             |    |         |      |           69 69 20 46 |
+      |                     |             |    |         |      |           69 6C 65 5C |
+      |                     |             |    |         |      |           4E 33 30 30 |
+      |                     |             |    |         |      |           56 0D       |
+  610 |  1 GLOBALS.S    610 | Data        | 00 |         |   18 | 00/0525 : 20 4C 50 61 |             ASC   ' LPage Setup\N301'0D
+      |                     |             |    |         |      |           67 65 20 53 |
+      |                     |             |    |         |      |           65 74 75 70 |
+      |                     |             |    |         |      |           5C 4E 33 30 |
+      |                     |             |    |         |      |           31 0D       |
+  611 |  1 GLOBALS.S    611 | Data        | 00 |         |    1 | 00/0537 : 2E          |             ASC   '.'            
+  612 |  1 GLOBALS.S    612 | Global      | 00 |         |    0 | 00/0538               | L0F0538     ENT                  
+  613 |  1 GLOBALS.S    613 | Data        | 00 |         |   13 | 00/0538 : 3E 4C 20 56 |             ASC   '>L Views \N8'0D
+      |                     |             |    |         |      |           69 65 77 73 |
+      |                     |             |    |         |      |           20 5C 4E 38 |
+      |                     |             |    |         |      |           0D          |
+  614 |  1 GLOBALS.S    614 | Data        | 00 |         |   15 | 00/0545 : 20 4C 4F 70 |             ASC   ' LOpen\N302*Vv'0D
+      |                     |             |    |         |      |           65 6E 5C 4E |
+      |                     |             |    |         |      |           33 30 32 2A |
+      |                     |             |    |         |      |           56 76 0D    |
+  615 |  1 GLOBALS.S    615 | Data        | 00 |         |   11 | 00/0554 : 20 4C 4E 65 |             ASC   ' LNew\N303'0D 
+      |                     |             |    |         |      |           77 5C 4E 33 |
+      |                     |             |    |         |      |           30 33 0D    |
+  616 |  1 GLOBALS.S    616 | Data        | 00 |         |   12 | 00/055F : 20 4C 53 61 |             ASC   ' LSave\N304'0D
+      |                     |             |    |         |      |           76 65 5C 4E |
+      |                     |             |    |         |      |           33 30 34 0D |
+  617 |  1 GLOBALS.S    617 | Data        | 00 |         |   16 | 00/056B : 20 4C 53 61 |             ASC   ' LSave As\N305V'0D
+      |                     |             |    |         |      |           76 65 20 41 |
+      |                     |             |    |         |      |           73 5C 4E 33 |
+      |                     |             |    |         |      |           30 35 56 0D |
+  618 |  1 GLOBALS.S    618 | Data        | 00 |         |   14 | 00/057B : 20 4C 52 65 |             ASC   ' LRename\N306'0D
+      |                     |             |    |         |      |           6E 61 6D 65 |
+      |                     |             |    |         |      |           5C 4E 33 30 |
+      |                     |             |    |         |      |           36 0D       |
+  619 |  1 GLOBALS.S    619 | Data        | 00 |         |   14 | 00/0589 : 20 4C 44 65 |             ASC   ' LDelete\N307'0D
+      |                     |             |    |         |      |           6C 65 74 65 |
+      |                     |             |    |         |      |           5C 4E 33 30 |
+      |                     |             |    |         |      |           37 0D       |
+  620 |  1 GLOBALS.S    620 | Data        | 00 |         |    1 | 00/0597 : 2E          |             ASC   '.'            
+  621 |  1 GLOBALS.S    621 | Global      | 00 |         |    0 | 00/0598               | L0F0598     ENT                  
+  622 |  1 GLOBALS.S    622 | Data        | 00 |         |    1 | 00/0598 : 00          |             DB    $00            
+  623 |  1 GLOBALS.S    623 | Data        | 00 |         |    1 | 00/0599 : 00          |             DB    $00            
+  624 |  1 GLOBALS.S    624 | Global      | 00 |         |    0 | 00/059A               | L0F059A     ENT                  
+  625 |  1 GLOBALS.S    625 | Data        | 00 |         |    1 | 00/059A : 00          |             DB    $00            
+  626 |  1 GLOBALS.S    626 | Data        | 00 |         |    1 | 00/059B : 00          |             DB    $00            
+  627 |  1 GLOBALS.S    627 | Global      | 00 |         |    0 | 00/059C               | L0F059C     ENT                  
+  628 |  1 GLOBALS.S    628 | Data        | 00 |         |    1 | 00/059C : 00          |             DB    $00            
+  629 |  1 GLOBALS.S    629 | Data        | 00 |         |    1 | 00/059D : 00          |             DB    $00            
+  630 |  1 GLOBALS.S    630 | Global      | 00 |         |    0 | 00/059E               | L0F059E     ENT                  
+  631 |  1 GLOBALS.S    631 | Data        | 00 |         |    1 | 00/059E : 00          |             DB    $00            
+  632 |  1 GLOBALS.S    632 | Data        | 00 |         |    1 | 00/059F : 00          |             DB    $00            
+  633 |  1 GLOBALS.S    633 | Data        | 00 |         |    1 | 00/05A0 : 00          |             DB    $00            
+  634 |  1 GLOBALS.S    634 | Data        | 00 |         |    1 | 00/05A1 : 00          |             DB    $00            
+  635 |  1 GLOBALS.S    635 | Data        | 00 |         |    1 | 00/05A2 : 00          |             DB    $00            
+  636 |  1 GLOBALS.S    636 | Data        | 00 |         |    1 | 00/05A3 : 00          |             DB    $00            
+  637 |  1 GLOBALS.S    637 | Global      | 00 |         |    0 | 00/05A4               | L0F05A4     ENT                  
+  638 |  1 GLOBALS.S    638 | Data        | 00 |         |    1 | 00/05A4 : 00          |             DB    $00            
+  639 |  1 GLOBALS.S    639 | Data        | 00 |         |    1 | 00/05A5 : 00          |             DB    $00            
+  640 |  1 GLOBALS.S    640 | Global      | 00 |         |    0 | 00/05A6               | L0F05A6     ENT                  
+  641 |  1 GLOBALS.S    641 | Data        | 00 |         |    1 | 00/05A6 : 00          |             DB    $00            
+  642 |  1 GLOBALS.S    642 | Data        | 00 |         |    1 | 00/05A7 : 00          |             DB    $00            
+  643 |  1 GLOBALS.S    643 | Global      | 00 |         |    0 | 00/05A8               | L0F05A8     ENT                  
+  644 |  1 GLOBALS.S    644 | Data        | 00 |         |    1 | 00/05A8 : 00          |             DB    $00            
+  645 |  1 GLOBALS.S    645 | Global      | 00 |         |    0 | 00/05A9               | L0F05A9     ENT                  
+  646 |  1 GLOBALS.S    646 | Data        | 00 |         |    1 | 00/05A9 : 00          |             DB    $00            
+  647 |  1 GLOBALS.S    647 | Data        | 00 |         |    1 | 00/05AA : 00          |             DB    $00            
+  648 |  1 GLOBALS.S    648 | Global      | 00 |         |    0 | 00/05AB               | L0F05AB     ENT                  
+  649 |  1 GLOBALS.S    649 | Data        | 00 |         |    1 | 00/05AB : 00          |             DB    $00            
+  650 |  1 GLOBALS.S    650 | Data        | 00 |         |    1 | 00/05AC : 00          |             DB    $00            
+  651 |  1 GLOBALS.S    651 | Global      | 00 |         |    0 | 00/05AD               | L0F05AD     ENT                  
+  652 |  1 GLOBALS.S    652 | Data        | 00 |         |    1 | 00/05AD : 00          |             DB    $00            
+  653 |  1 GLOBALS.S    653 | Data        | 00 |         |    1 | 00/05AE : 00          |             DB    $00            
+  654 |  1 GLOBALS.S    654 | Global      | 00 |         |    0 | 00/05AF               | L0F05AF     ENT                  
+  655 |  1 GLOBALS.S    655 | Data        | 00 |         |    1 | 00/05AF : 00          |             DB    $00            
+  656 |  1 GLOBALS.S    656 | Data        | 00 |         |    1 | 00/05B0 : 00          |             DB    $00            
+  657 |  1 GLOBALS.S    657 | Global      | 00 |         |    0 | 00/05B1               | L0F05B1     ENT                  
+  658 |  1 GLOBALS.S    658 | Data        | 00 |         |    1 | 00/05B1 : 00          |             DB    $00            
+  659 |  1 GLOBALS.S    659 | Data        | 00 |         |    1 | 00/05B2 : 00          |             DB    $00            
+  660 |  1 GLOBALS.S    660 | Global      | 00 |         |    0 | 00/05B3               | L0F05B3     ENT                  
+  661 |  1 GLOBALS.S    661 | Data        | 00 |         |    5 | 00/05B3 : 43 4F 4E 3A |             ASC   'CON:'00       
+      |                     |             |    |         |      |           00          |
+  662 |  1 GLOBALS.S    662 | Global      | 00 |         |    0 | 00/05B8               | L0F05B8     ENT                  
+  663 |  1 GLOBALS.S    663 | Data        | 00 |         |    5 | 00/05B8 : 50 52 54 3A |             ASC   'PRT:'00       
+      |                     |             |    |         |      |           00          |
+  664 |  1 GLOBALS.S    664 | Global      | 00 |         |    0 | 00/05BD               | L0F05BD     ENT                  
+  665 |  1 GLOBALS.S    665 | Data        | 00 |         |    5 | 00/05BD : 41 55 58 3A |             ASC   'AUX:'00       
+      |                     |             |    |         |      |           00          |
+  666 |  1 GLOBALS.S    666 | Global      | 00 |         |    0 | 00/05C2               | L0F05C2     ENT                  
+  667 |  1 GLOBALS.S    667 | Data        | 00 |         |    5 | 00/05C2 : 43 4F 4E 3A |             ASC   'CON:'00       
+      |                     |             |    |         |      |           00          |
+  668 |  1 GLOBALS.S    668 | Global      | 00 |         |    0 | 00/05C7               | L0F05C7     ENT                  
+  669 |  1 GLOBALS.S    669 | Data        | 00 |         |    5 | 00/05C7 : 50 52 54 3A |             ASC   'PRT:'00       
+      |                     |             |    |         |      |           00          |
+  670 |  1 GLOBALS.S    670 | Global      | 00 |         |    0 | 00/05CC               | L0F05CC     ENT                  
+  671 |  1 GLOBALS.S    671 | Data        | 00 |         |    5 | 00/05CC : 41 55 58 3A |             ASC   'AUX:'00       
+      |                     |             |    |         |      |           00          |
+  672 |  1 GLOBALS.S    672 | Global      | 00 |         |    0 | 00/05D1               | L0F05D1     ENT                  
+  673 |  1 GLOBALS.S    673 | Data        | 00 |         |    1 | 00/05D1 : 00          |             DB    $00            
+  674 |  1 GLOBALS.S    674 | Data        | 00 |         |    1 | 00/05D2 : 00          |             DB    $00            
+  675 |  1 GLOBALS.S    675 | Global      | 00 |         |    0 | 00/05D3               | L0F05D3     ENT                  
+  676 |  1 GLOBALS.S    676 | Data        | 00 |         |    1 | 00/05D3 : 00          |             DB    $00            
+  677 |  1 GLOBALS.S    677 | Data        | 00 |         |    1 | 00/05D4 : 00          |             DB    $00            
+  678 |  1 GLOBALS.S    678 | Global      | 00 |         |    0 | 00/05D5               | L0F05D5     ENT                  
+  679 |  1 GLOBALS.S    679 | Data        | 00 |         |    2 | 00/05D5 : 72 00       |             ASC   'r'00          
+  680 |  1 GLOBALS.S    680 | Global      | 00 |         |    0 | 00/05D7               | L0F05D7     ENT                  
+  681 |  1 GLOBALS.S    681 | Data        | 00 |         |    2 | 00/05D7 : 61 00       |             ASC   'a'00          
+  682 |  1 GLOBALS.S    682 | Global      | 00 |         |    0 | 00/05D9               | L0F05D9     ENT                  
+  683 |  1 GLOBALS.S    683 | Data        | 00 |         |    2 | 00/05D9 : 77 00       |             ASC   'w'00          
+  684 |  1 GLOBALS.S    684 | Global      | 00 |         |    0 | 00/05DB               | L0F05DB     ENT                  
+  685 |  1 GLOBALS.S    685 | Data        | 00 |         |    1 | 00/05DB : 00          |             DB    $00            
+  686 |  1 GLOBALS.S    686 | Data        | 00 |         |    1 | 00/05DC : 00          |             DB    $00            
+  687 |  1 GLOBALS.S    687 | Global      | 00 |         |    0 | 00/05DD               | L0F05DD     ENT                  
+  688 |  1 GLOBALS.S    688 | Data        | 00 |         |    1 | 00/05DD : 00          |             DB    $00            
+  689 |  1 GLOBALS.S    689 | Data        | 00 |         |    1 | 00/05DE : 00          |             DB    $00            
+  690 |  1 GLOBALS.S    690 | Global      | 00 |         |    0 | 00/05DF               | L0F05DF     ENT                  
+  691 |  1 GLOBALS.S    691 | Data        | 00 |         |    1 | 00/05DF : 00          |             DB    $00            
+  692 |  1 GLOBALS.S    692 | Data        | 00 |         |    1 | 00/05E0 : 00          |             DB    $00            
+  693 |  1 GLOBALS.S    693 | Data        | 00 |         |    1 | 00/05E1 : 00          |             DB    $00            
+  694 |  1 GLOBALS.S    694 | Data        | 00 |         |    1 | 00/05E2 : 00          |             DB    $00            
+  695 |  1 GLOBALS.S    695 | Data        | 00 |         |    1 | 00/05E3 : 00          |             DB    $00            
+  696 |  1 GLOBALS.S    696 | Data        | 00 |         |    1 | 00/05E4 : 00          |             DB    $00            
+  697 |  1 GLOBALS.S    697 | Data        | 00 |         |    1 | 00/05E5 : 00          |             DB    $00            
+  698 |  1 GLOBALS.S    698 | Data        | 00 |         |    1 | 00/05E6 : 00          |             DB    $00            
+  699 |  1 GLOBALS.S    699 | Data        | 00 |         |    1 | 00/05E7 : 00          |             DB    $00            
+  700 |  1 GLOBALS.S    700 | Data        | 00 |         |    1 | 00/05E8 : 00          |             DB    $00            
+  701 |  1 GLOBALS.S    701 | Data        | 00 |         |    1 | 00/05E9 : 09          |             DB    $09            
+  702 |  1 GLOBALS.S    702 | Data        | 00 |         |    1 | 00/05EA : 00          |             DB    $00            
+  703 |  1 GLOBALS.S    703 | Data        | 00 |         |    1 | 00/05EB : 00          |             DB    $00            
+  704 |  1 GLOBALS.S    704 | Data        | 00 |         |    1 | 00/05EC : 83          |             DB    $83            
+  705 |  1 GLOBALS.S    705 | Data        | 00 |         |    1 | 00/05ED : 00          |             DB    $00            
+  706 |  1 GLOBALS.S    706 | Data        | 00 |         |    1 | 00/05EE : 00          |             DB    $00            
+  707 |  1 GLOBALS.S    707 | Data        | 00 |         |    1 | 00/05EF : 00          |             DB    $00            
+  708 |  1 GLOBALS.S    708 | Data        | 00 |         |    1 | 00/05F0 : 00          |             DB    $00            
+  709 |  1 GLOBALS.S    709 | Data        | 00 |         |    1 | 00/05F1 : 00          |             DB    $00            
+  710 |  1 GLOBALS.S    710 | Data        | 00 |         |    1 | 00/05F2 : 00          |             DB    $00            
+  711 |  1 GLOBALS.S    711 | Global      | 00 |         |    0 | 00/05F3               | L0F05F3     ENT                  
+  712 |  1 GLOBALS.S    712 | Data        | 00 |         |    1 | 00/05F3 : 00          |             DB    $00            
+  713 |  1 GLOBALS.S    713 | Data        | 00 |         |    1 | 00/05F4 : 00          |             DB    $00            
+  714 |  1 GLOBALS.S    714 | Data        | 00 |         |    1 | 00/05F5 : 00          |             DB    $00            
+  715 |  1 GLOBALS.S    715 | Data        | 00 |         |    1 | 00/05F6 : 00          |             DB    $00            
+  716 |  1 GLOBALS.S    716 | Data        | 00 |         |    1 | 00/05F7 : 00          |             DB    $00            
+  717 |  1 GLOBALS.S    717 | Data        | 00 |         |    1 | 00/05F8 : 00          |             DB    $00            
+  718 |  1 GLOBALS.S    718 | Data        | 00 |         |    1 | 00/05F9 : 00          |             DB    $00            
+  719 |  1 GLOBALS.S    719 | Data        | 00 |         |    1 | 00/05FA : 00          |             DB    $00            
+  720 |  1 GLOBALS.S    720 | Data        | 00 |         |    1 | 00/05FB : 00          |             DB    $00            
+  721 |  1 GLOBALS.S    721 | Data        | 00 |         |    1 | 00/05FC : 00          |             DB    $00            
+  722 |  1 GLOBALS.S    722 | Data        | 00 |         |    1 | 00/05FD : 02          |             DB    $02            
+  723 |  1 GLOBALS.S    723 | Data        | 00 |         |    1 | 00/05FE : 01          |             DB    $01            
+  724 |  1 GLOBALS.S    724 | Data        | 00 |         |    1 | 00/05FF : 00          |             DB    $00            
+  725 |  1 GLOBALS.S    725 | Data        | 00 |         |    1 | 00/0600 : 83          |             DB    $83            
+  726 |  1 GLOBALS.S    726 | Data        | 00 |         |    1 | 00/0601 : 00          |             DB    $00            
+  727 |  1 GLOBALS.S    727 | Data        | 00 |         |    1 | 00/0602 : 00          |             DB    $00            
+  728 |  1 GLOBALS.S    728 | Data        | 00 |         |    1 | 00/0603 : 00          |             DB    $00            
+  729 |  1 GLOBALS.S    729 | Data        | 00 |         |    1 | 00/0604 : 00          |             DB    $00            
+  730 |  1 GLOBALS.S    730 | Data        | 00 |         |    1 | 00/0605 : 00          |             DB    $00            
+  731 |  1 GLOBALS.S    731 | Data        | 00 |         |    1 | 00/0606 : 02          |             DB    $02            
+  732 |  1 GLOBALS.S    732 | Data        | 00 |         |    1 | 00/0607 : 00          |             DB    $00            
+  733 |  1 GLOBALS.S    733 | Data        | 00 |         |    1 | 00/0608 : 00          |             DB    $00            
+  734 |  1 GLOBALS.S    734 | Data        | 00 |         |    1 | 00/0609 : 00          |             DB    $00            
+  735 |  1 GLOBALS.S    735 | Data        | 00 |         |    1 | 00/060A : 00          |             DB    $00            
+  736 |  1 GLOBALS.S    736 | Data        | 00 |         |    1 | 00/060B : 00          |             DB    $00            
+  737 |  1 GLOBALS.S    737 | Data        | 00 |         |    1 | 00/060C : 00          |             DB    $00            
+  738 |  1 GLOBALS.S    738 | Data        | 00 |         |    1 | 00/060D : 00          |             DB    $00            
+  739 |  1 GLOBALS.S    739 | Data        | 00 |         |    1 | 00/060E : 00          |             DB    $00            
+  740 |  1 GLOBALS.S    740 | Data        | 00 |         |    1 | 00/060F : 00          |             DB    $00            
+  741 |  1 GLOBALS.S    741 | Data        | 00 |         |    1 | 00/0610 : 00          |             DB    $00            
+  742 |  1 GLOBALS.S    742 | Data        | 00 |         |    1 | 00/0611 : 02          |             DB    $02            
+  743 |  1 GLOBALS.S    743 | Data        | 00 |         |    1 | 00/0612 : 01          |             DB    $01            
+  744 |  1 GLOBALS.S    744 | Data        | 00 |         |    1 | 00/0613 : 00          |             DB    $00            
+  745 |  1 GLOBALS.S    745 | Data        | 00 |         |    1 | 00/0614 : 83          |             DB    $83            
+  746 |  1 GLOBALS.S    746 | Data        | 00 |         |    1 | 00/0615 : 00          |             DB    $00            
+  747 |  1 GLOBALS.S    747 | Data        | 00 |         |    1 | 00/0616 : 00          |             DB    $00            
+  748 |  1 GLOBALS.S    748 | Data        | 00 |         |    1 | 00/0617 : 00          |             DB    $00            
+  749 |  1 GLOBALS.S    749 | Data        | 00 |         |    1 | 00/0618 : 00          |             DB    $00            
+  750 |  1 GLOBALS.S    750 | Data        | 00 |         |    1 | 00/0619 : 00          |             DB    $00            
+  751 |  1 GLOBALS.S    751 | Data        | 00 |         |    1 | 00/061A : 02          |             DB    $02            
+  752 |  1 GLOBALS.S    752 | Data        | 00 |         |    1 | 00/061B : 00          |             DB    $00            
+  753 |  1 GLOBALS.S    753 | Data        | 00 |         |    1 | 00/061C : 00          |             DB    $00            
+  754 |  1 GLOBALS.S    754 | Data        | 00 |         |    1 | 00/061D : 00          |             DB    $00            
+  755 |  1 GLOBALS.S    755 | Data        | 00 |         |    1 | 00/061E : 00          |             DB    $00            
+  756 |  1 GLOBALS.S    756 | Data        | 00 |         |    1 | 00/061F : 00          |             DB    $00            
+  757 |  1 GLOBALS.S    757 | Data        | 00 |         |    1 | 00/0620 : 00          |             DB    $00            
+  758 |  1 GLOBALS.S    758 | Data        | 00 |         |    1 | 00/0621 : 00          |             DB    $00            
+  759 |  1 GLOBALS.S    759 | Data        | 00 |         |    1 | 00/0622 : 00          |             DB    $00            
+  760 |  1 GLOBALS.S    760 | Data        | 00 |         |    1 | 00/0623 : 00          |             DB    $00            
+  761 |  1 GLOBALS.S    761 | Data        | 00 |         |    1 | 00/0624 : 00          |             DB    $00            
+  762 |  1 GLOBALS.S    762 | Data        | 00 |         |    1 | 00/0625 : 00          |             DB    $00            
+  763 |  1 GLOBALS.S    763 | Data        | 00 |         |    1 | 00/0626 : 00          |             DB    $00            
+  764 |  1 GLOBALS.S    764 | Data        | 00 |         |    1 | 00/0627 : 00          |             DB    $00            
+  765 |  1 GLOBALS.S    765 | Data        | 00 |         |    1 | 00/0628 : 00          |             DB    $00            
+  766 |  1 GLOBALS.S    766 | Data        | 00 |         |    1 | 00/0629 : 00          |             DB    $00            
+  767 |  1 GLOBALS.S    767 | Data        | 00 |         |    1 | 00/062A : 00          |             DB    $00            
+  768 |  1 GLOBALS.S    768 | Data        | 00 |         |    1 | 00/062B : 00          |             DB    $00            
+  769 |  1 GLOBALS.S    769 | Data        | 00 |         |    1 | 00/062C : 00          |             DB    $00            
+  770 |  1 GLOBALS.S    770 | Data        | 00 |         |    1 | 00/062D : 00          |             DB    $00            
+  771 |  1 GLOBALS.S    771 | Data        | 00 |         |    1 | 00/062E : 00          |             DB    $00            
+  772 |  1 GLOBALS.S    772 | Data        | 00 |         |    1 | 00/062F : 00          |             DB    $00            
+  773 |  1 GLOBALS.S    773 | Data        | 00 |         |    1 | 00/0630 : 00          |             DB    $00            
+  774 |  1 GLOBALS.S    774 | Data        | 00 |         |    1 | 00/0631 : 00          |             DB    $00            
+  775 |  1 GLOBALS.S    775 | Data        | 00 |         |    1 | 00/0632 : 00          |             DB    $00            
+  776 |  1 GLOBALS.S    776 | Data        | 00 |         |    1 | 00/0633 : 00          |             DB    $00            
+  777 |  1 GLOBALS.S    777 | Data        | 00 |         |    1 | 00/0634 : 00          |             DB    $00            
+  778 |  1 GLOBALS.S    778 | Data        | 00 |         |    1 | 00/0635 : 00          |             DB    $00            
+  779 |  1 GLOBALS.S    779 | Data        | 00 |         |    1 | 00/0636 : 00          |             DB    $00            
+  780 |  1 GLOBALS.S    780 | Data        | 00 |         |    1 | 00/0637 : 00          |             DB    $00            
+  781 |  1 GLOBALS.S    781 | Data        | 00 |         |    1 | 00/0638 : 00          |             DB    $00            
+  782 |  1 GLOBALS.S    782 | Data        | 00 |         |    1 | 00/0639 : 00          |             DB    $00            
+  783 |  1 GLOBALS.S    783 | Data        | 00 |         |    1 | 00/063A : 00          |             DB    $00            
+  784 |  1 GLOBALS.S    784 | Data        | 00 |         |    1 | 00/063B : 00          |             DB    $00            
+  785 |  1 GLOBALS.S    785 | Data        | 00 |         |    1 | 00/063C : 00          |             DB    $00            
+  786 |  1 GLOBALS.S    786 | Data        | 00 |         |    1 | 00/063D : 00          |             DB    $00            
+  787 |  1 GLOBALS.S    787 | Data        | 00 |         |    1 | 00/063E : 00          |             DB    $00            
+  788 |  1 GLOBALS.S    788 | Data        | 00 |         |    1 | 00/063F : 00          |             DB    $00            
+  789 |  1 GLOBALS.S    789 | Data        | 00 |         |    1 | 00/0640 : 00          |             DB    $00            
+  790 |  1 GLOBALS.S    790 | Data        | 00 |         |    1 | 00/0641 : 00          |             DB    $00            
+  791 |  1 GLOBALS.S    791 | Data        | 00 |         |    1 | 00/0642 : 00          |             DB    $00            
+  792 |  1 GLOBALS.S    792 | Data        | 00 |         |    1 | 00/0643 : 00          |             DB    $00            
+  793 |  1 GLOBALS.S    793 | Data        | 00 |         |    1 | 00/0644 : 00          |             DB    $00            
+  794 |  1 GLOBALS.S    794 | Data        | 00 |         |    1 | 00/0645 : 00          |             DB    $00            
+  795 |  1 GLOBALS.S    795 | Data        | 00 |         |    1 | 00/0646 : 00          |             DB    $00            
+  796 |  1 GLOBALS.S    796 | Data        | 00 |         |    1 | 00/0647 : 00          |             DB    $00            
+  797 |  1 GLOBALS.S    797 | Data        | 00 |         |    1 | 00/0648 : 00          |             DB    $00            
+  798 |  1 GLOBALS.S    798 | Data        | 00 |         |    1 | 00/0649 : 00          |             DB    $00            
+  799 |  1 GLOBALS.S    799 | Data        | 00 |         |    1 | 00/064A : 00          |             DB    $00            
+  800 |  1 GLOBALS.S    800 | Data        | 00 |         |    1 | 00/064B : 00          |             DB    $00            
+  801 |  1 GLOBALS.S    801 | Data        | 00 |         |    1 | 00/064C : 00          |             DB    $00            
+  802 |  1 GLOBALS.S    802 | Data        | 00 |         |    1 | 00/064D : 00          |             DB    $00            
+  803 |  1 GLOBALS.S    803 | Data        | 00 |         |    1 | 00/064E : 00          |             DB    $00            
+  804 |  1 GLOBALS.S    804 | Data        | 00 |         |    1 | 00/064F : 00          |             DB    $00            
+  805 |  1 GLOBALS.S    805 | Data        | 00 |         |    1 | 00/0650 : 00          |             DB    $00            
+  806 |  1 GLOBALS.S    806 | Data        | 00 |         |    1 | 00/0651 : 00          |             DB    $00            
+  807 |  1 GLOBALS.S    807 | Data        | 00 |         |    1 | 00/0652 : 00          |             DB    $00            
+  808 |  1 GLOBALS.S    808 | Data        | 00 |         |    1 | 00/0653 : 00          |             DB    $00            
+  809 |  1 GLOBALS.S    809 | Data        | 00 |         |    1 | 00/0654 : 00          |             DB    $00            
+  810 |  1 GLOBALS.S    810 | Data        | 00 |         |    1 | 00/0655 : 00          |             DB    $00            
+  811 |  1 GLOBALS.S    811 | Data        | 00 |         |    1 | 00/0656 : 00          |             DB    $00            
+  812 |  1 GLOBALS.S    812 | Data        | 00 |         |    1 | 00/0657 : 00          |             DB    $00            
+  813 |  1 GLOBALS.S    813 | Data        | 00 |         |    1 | 00/0658 : 00          |             DB    $00            
+  814 |  1 GLOBALS.S    814 | Data        | 00 |         |    1 | 00/0659 : 00          |             DB    $00            
+  815 |  1 GLOBALS.S    815 | Data        | 00 |         |    1 | 00/065A : 00          |             DB    $00            
+  816 |  1 GLOBALS.S    816 | Data        | 00 |         |    1 | 00/065B : 00          |             DB    $00            
+  817 |  1 GLOBALS.S    817 | Data        | 00 |         |    1 | 00/065C : 00          |             DB    $00            
+  818 |  1 GLOBALS.S    818 | Data        | 00 |         |    1 | 00/065D : 00          |             DB    $00            
+  819 |  1 GLOBALS.S    819 | Data        | 00 |         |    1 | 00/065E : 00          |             DB    $00            
+  820 |  1 GLOBALS.S    820 | Data        | 00 |         |    1 | 00/065F : 00          |             DB    $00            
+  821 |  1 GLOBALS.S    821 | Data        | 00 |         |    1 | 00/0660 : 00          |             DB    $00            
+  822 |  1 GLOBALS.S    822 | Data        | 00 |         |    1 | 00/0661 : 00          |             DB    $00            
+  823 |  1 GLOBALS.S    823 | Data        | 00 |         |    1 | 00/0662 : 00          |             DB    $00            
+  824 |  1 GLOBALS.S    824 | Data        | 00 |         |    1 | 00/0663 : 00          |             DB    $00            
+  825 |  1 GLOBALS.S    825 | Data        | 00 |         |    1 | 00/0664 : 00          |             DB    $00            
+  826 |  1 GLOBALS.S    826 | Data        | 00 |         |    1 | 00/0665 : 00          |             DB    $00            
+  827 |  1 GLOBALS.S    827 | Data        | 00 |         |    1 | 00/0666 : 00          |             DB    $00            
+  828 |  1 GLOBALS.S    828 | Data        | 00 |         |    1 | 00/0667 : 00          |             DB    $00            
+  829 |  1 GLOBALS.S    829 | Data        | 00 |         |    1 | 00/0668 : 00          |             DB    $00            
+  830 |  1 GLOBALS.S    830 | Data        | 00 |         |    1 | 00/0669 : 00          |             DB    $00            
+  831 |  1 GLOBALS.S    831 | Data        | 00 |         |    1 | 00/066A : 00          |             DB    $00            
+  832 |  1 GLOBALS.S    832 | Data        | 00 |         |    1 | 00/066B : 00          |             DB    $00            
+  833 |  1 GLOBALS.S    833 | Data        | 00 |         |    1 | 00/066C : 00          |             DB    $00            
+  834 |  1 GLOBALS.S    834 | Data        | 00 |         |    1 | 00/066D : 00          |             DB    $00            
+  835 |  1 GLOBALS.S    835 | Data        | 00 |         |    1 | 00/066E : 00          |             DB    $00            
+  836 |  1 GLOBALS.S    836 | Data        | 00 |         |    1 | 00/066F : 00          |             DB    $00            
+  837 |  1 GLOBALS.S    837 | Data        | 00 |         |    1 | 00/0670 : 00          |             DB    $00            
+  838 |  1 GLOBALS.S    838 | Data        | 00 |         |    1 | 00/0671 : 00          |             DB    $00            
+  839 |  1 GLOBALS.S    839 | Data        | 00 |         |    1 | 00/0672 : 00          |             DB    $00            
+  840 |  1 GLOBALS.S    840 | Data        | 00 |         |    1 | 00/0673 : 00          |             DB    $00            
+  841 |  1 GLOBALS.S    841 | Data        | 00 |         |    1 | 00/0674 : 00          |             DB    $00            
+  842 |  1 GLOBALS.S    842 | Data        | 00 |         |    1 | 00/0675 : 00          |             DB    $00            
+  843 |  1 GLOBALS.S    843 | Data        | 00 |         |    1 | 00/0676 : 00          |             DB    $00            
+  844 |  1 GLOBALS.S    844 | Data        | 00 |         |    1 | 00/0677 : 00          |             DB    $00            
+  845 |  1 GLOBALS.S    845 | Data        | 00 |         |    1 | 00/0678 : 00          |             DB    $00            
+  846 |  1 GLOBALS.S    846 | Data        | 00 |         |    1 | 00/0679 : 00          |             DB    $00            
+  847 |  1 GLOBALS.S    847 | Data        | 00 |         |    1 | 00/067A : 00          |             DB    $00            
+  848 |  1 GLOBALS.S    848 | Data        | 00 |         |    1 | 00/067B : 00          |             DB    $00            
+  849 |  1 GLOBALS.S    849 | Data        | 00 |         |    1 | 00/067C : 00          |             DB    $00            
+  850 |  1 GLOBALS.S    850 | Data        | 00 |         |    1 | 00/067D : 00          |             DB    $00            
+  851 |  1 GLOBALS.S    851 | Data        | 00 |         |    1 | 00/067E : 00          |             DB    $00            
+  852 |  1 GLOBALS.S    852 | Global      | 00 |         |    0 | 00/067F               | L0F067F     ENT                  
+  853 |  1 GLOBALS.S    853 | Data        | 00 |         |    1 | 00/067F : 00          |             DB    $00            
+  854 |  1 GLOBALS.S    854 | Data        | 00 |         |    1 | 00/0680 : 02          |             DB    $02            
+  855 |  1 GLOBALS.S    855 | Global      | 00 |         |    0 | 00/0681               | L0F0681     ENT                  
+  856 |  1 GLOBALS.S    856 | Data        | 00 |         |    3 | 00/0681 : 25 64 00    |             ASC   '%d'00         
+  857 |  1 GLOBALS.S    857 | Data        | 00 |         |    1 | 00/0684 : 00          |             DB    $00            
+  858 |  1 GLOBALS.S    858 | Data        | 00 |         |    1 | 00/0685 : 00          |             DB    $00            
+  859 |  1 GLOBALS.S    859 | Data        | 00 |         |    1 | 00/0686 : 00          |             DB    $00            
+  860 |  1 GLOBALS.S    860 | Data        | 00 |         |    1 | 00/0687 : 00          |             DB    $00            
+  861 |  1 GLOBALS.S    861 | Data        | 00 |         |   23 | 00/0688 : 4D 41 4C 4C |             ASC   'MALLOC: returning NULL'00
+      |                     |             |    |         |      |           4F 43 3A 20 |
+      |                     |             |    |         |      |           72 65 74 75 |
+      |                     |             |    |         |      |           72 6E 69 6E |
+      |                     |             |    |         |      |           67 20 4E 55 |
+      |                     |             |    |         |      |           4C 4C 00    |
+  862 |  1 GLOBALS.S    862 | Data        | 00 |         |    1 | 00/069F : 00          |             DB    $00            
+  863 |  1 GLOBALS.S    863 | Data        | 00 |         |    1 | 00/06A0 : 00          |             DB    $00            
+  864 |  1 GLOBALS.S    864 | Data        | 00 |         |    1 | 00/06A1 : 00          |             DB    $00            
+  865 |  1 GLOBALS.S    865 | Data        | 00 |         |    1 | 00/06A2 : 00          |             DB    $00            
+  866 |  1 GLOBALS.S    866 | Data        | 00 |         |    1 | 00/06A3 : 00          |             DB    $00            
+  867 |  1 GLOBALS.S    867 | Data        | 00 |         |    1 | 00/06A4 : 00          |             DB    $00            
+  868 |  1 GLOBALS.S    868 | Data        | 00 |         |    1 | 00/06A5 : 00          |             DB    $00            
+  869 |  1 GLOBALS.S    869 | Data        | 00 |         |    1 | 00/06A6 : 80          |             DB    $80            
+  870 |  1 GLOBALS.S    870 | Data        | 00 |         |    1 | 00/06A7 : FF          |             DB    $FF            
+  871 |  1 GLOBALS.S    871 | Data        | 00 |         |    1 | 00/06A8 : 3F          |             DB    $3F            
+  872 |  1 GLOBALS.S    872 | Global      | 00 |         |    0 | 00/06A9               | L0F06A9     ENT                  
+  873 |  1 GLOBALS.S    873 | Data        | 00 |         |    1 | 00/06A9 : 00          |             DB    $00            
+  874 |  1 GLOBALS.S    874 | Data        | 00 |         |    1 | 00/06AA : 00          |             DB    $00            
+  875 |  1 GLOBALS.S    875 | Global      | 00 |         |    0 | 00/06AB               | L0F06AB     ENT                  
+  876 |  1 GLOBALS.S    876 | Data        | 00 |         |    1 | 00/06AB : 00          |             DB    $00            
+  877 |  1 GLOBALS.S    877 | Data        | 00 |         |    1 | 00/06AC : 00          |             DB    $00            
+  878 |  1 GLOBALS.S    878 | Global      | 00 |         |    0 | 00/06AD               | L0F06AD     ENT                  
+  879 |  1 GLOBALS.S    879 | Data        | 00 |         |    1 | 00/06AD : 00          |             DB    $00            
+  880 |  1 GLOBALS.S    880 | Data        | 00 |         |    1 | 00/06AE : 00          |             DB    $00            
+  881 |  1 GLOBALS.S    881 | Data        | 00 |         |    1 | 00/06AF : 00          |             DB    $00            
+  882 |  1 GLOBALS.S    882 | Data        | 00 |         |    1 | 00/06B0 : 00          |             DB    $00            
+  883 |  1 GLOBALS.S    883 | Data        | 00 |         |    1 | 00/06B1 : 00          |             DB    $00            
+  884 |  1 GLOBALS.S    884 | Data        | 00 |         |    1 | 00/06B2 : 00          |             DB    $00            
+  885 |  1 GLOBALS.S    885 | Data        | 00 |         |    1 | 00/06B3 : 00          |             DB    $00            
+  886 |  1 GLOBALS.S    886 | Data        | 00 |         |    1 | 00/06B4 : 00          |             DB    $00            
+  887 |  1 GLOBALS.S    887 | Data        | 00 |         |    1 | 00/06B5 : 00          |             DB    $00            
+  888 |  1 GLOBALS.S    888 | Data        | 00 |         |    1 | 00/06B6 : 00          |             DB    $00            
+  889 |  1 GLOBALS.S    889 | Data        | 00 |         |    1 | 00/06B7 : 00          |             DB    $00            
+  890 |  1 GLOBALS.S    890 | Data        | 00 |         |    1 | 00/06B8 : 00          |             DB    $00            
+  891 |  1 GLOBALS.S    891 | Data        | 00 |         |    1 | 00/06B9 : 00          |             DB    $00            
+  892 |  1 GLOBALS.S    892 | Data        | 00 |         |    1 | 00/06BA : 00          |             DB    $00            
+  893 |  1 GLOBALS.S    893 | Data        | 00 |         |    1 | 00/06BB : 00          |             DB    $00            
+  894 |  1 GLOBALS.S    894 | Data        | 00 |         |    1 | 00/06BC : 00          |             DB    $00            
+  895 |  1 GLOBALS.S    895 | Data        | 00 |         |    1 | 00/06BD : 00          |             DB    $00            
+  896 |  1 GLOBALS.S    896 | Data        | 00 |         |    1 | 00/06BE : 00          |             DB    $00            
+  897 |  1 GLOBALS.S    897 | Data        | 00 |         |    1 | 00/06BF : 00          |             DB    $00            
+  898 |  1 GLOBALS.S    898 | Data        | 00 |         |    1 | 00/06C0 : 00          |             DB    $00            
+  899 |  1 GLOBALS.S    899 | Data        | 00 |         |    1 | 00/06C1 : 00          |             DB    $00            
+  900 |  1 GLOBALS.S    900 | Data        | 00 |         |    1 | 00/06C2 : 00          |             DB    $00            
+  901 |  1 GLOBALS.S    901 | Data        | 00 |         |    1 | 00/06C3 : 00          |             DB    $00            
+  902 |  1 GLOBALS.S    902 | Data        | 00 |         |    1 | 00/06C4 : 00          |             DB    $00            
+  903 |  1 GLOBALS.S    903 | Data        | 00 |         |    1 | 00/06C5 : 00          |             DB    $00            
+  904 |  1 GLOBALS.S    904 | Data        | 00 |         |    1 | 00/06C6 : 00          |             DB    $00            
+  905 |  1 GLOBALS.S    905 | Data        | 00 |         |    1 | 00/06C7 : 00          |             DB    $00            
+  906 |  1 GLOBALS.S    906 | Data        | 00 |         |    1 | 00/06C8 : 00          |             DB    $00            
+  907 |  1 GLOBALS.S    907 | Data        | 00 |         |    1 | 00/06C9 : 00          |             DB    $00            
+  908 |  1 GLOBALS.S    908 | Data        | 00 |         |    1 | 00/06CA : 00          |             DB    $00            
+  909 |  1 GLOBALS.S    909 | Data        | 00 |         |    1 | 00/06CB : 00          |             DB    $00            
+  910 |  1 GLOBALS.S    910 | Data        | 00 |         |    1 | 00/06CC : 00          |             DB    $00            
+  911 |  1 GLOBALS.S    911 | Data        | 00 |         |    1 | 00/06CD : 00          |             DB    $00            
+  912 |  1 GLOBALS.S    912 | Data        | 00 |         |    1 | 00/06CE : 00          |             DB    $00            
+  913 |  1 GLOBALS.S    913 | Data        | 00 |         |    1 | 00/06CF : 00          |             DB    $00            
+  914 |  1 GLOBALS.S    914 | Data        | 00 |         |    1 | 00/06D0 : 00          |             DB    $00            
+  915 |  1 GLOBALS.S    915 | Data        | 00 |         |    1 | 00/06D1 : 00          |             DB    $00            
+  916 |  1 GLOBALS.S    916 | Data        | 00 |         |    1 | 00/06D2 : 00          |             DB    $00            
+  917 |  1 GLOBALS.S    917 | Data        | 00 |         |    1 | 00/06D3 : 00          |             DB    $00            
+  918 |  1 GLOBALS.S    918 | Data        | 00 |         |    1 | 00/06D4 : 00          |             DB    $00            
+  919 |  1 GLOBALS.S    919 | Data        | 00 |         |    1 | 00/06D5 : 00          |             DB    $00            
+  920 |  1 GLOBALS.S    920 | Data        | 00 |         |    1 | 00/06D6 : 00          |             DB    $00            
+  921 |  1 GLOBALS.S    921 | Data        | 00 |         |    1 | 00/06D7 : 00          |             DB    $00            
+  922 |  1 GLOBALS.S    922 | Data        | 00 |         |    1 | 00/06D8 : 00          |             DB    $00            
+  923 |  1 GLOBALS.S    923 | Data        | 00 |         |    1 | 00/06D9 : 00          |             DB    $00            
+  924 |  1 GLOBALS.S    924 | Data        | 00 |         |    1 | 00/06DA : 00          |             DB    $00            
+  925 |  1 GLOBALS.S    925 | Data        | 00 |         |    1 | 00/06DB : 00          |             DB    $00            
+  926 |  1 GLOBALS.S    926 | Data        | 00 |         |    1 | 00/06DC : 00          |             DB    $00            
+  927 |  1 GLOBALS.S    927 | Data        | 00 |         |    1 | 00/06DD : 00          |             DB    $00            
+  928 |  1 GLOBALS.S    928 | Data        | 00 |         |    1 | 00/06DE : 00          |             DB    $00            
+  929 |  1 GLOBALS.S    929 | Data        | 00 |         |    1 | 00/06DF : 00          |             DB    $00            
+  930 |  1 GLOBALS.S    930 | Data        | 00 |         |    1 | 00/06E0 : 00          |             DB    $00            
+  931 |  1 GLOBALS.S    931 | Data        | 00 |         |    1 | 00/06E1 : 00          |             DB    $00            
+  932 |  1 GLOBALS.S    932 | Data        | 00 |         |    1 | 00/06E2 : 00          |             DB    $00            
+  933 |  1 GLOBALS.S    933 | Data        | 00 |         |    1 | 00/06E3 : 00          |             DB    $00            
+  934 |  1 GLOBALS.S    934 | Data        | 00 |         |    1 | 00/06E4 : 00          |             DB    $00            
+  935 |  1 GLOBALS.S    935 | Data        | 00 |         |    1 | 00/06E5 : 00          |             DB    $00            
+  936 |  1 GLOBALS.S    936 | Data        | 00 |         |    1 | 00/06E6 : 00          |             DB    $00            
+  937 |  1 GLOBALS.S    937 | Data        | 00 |         |    1 | 00/06E7 : 00          |             DB    $00            
+  938 |  1 GLOBALS.S    938 | Data        | 00 |         |    1 | 00/06E8 : 00          |             DB    $00            
+  939 |  1 GLOBALS.S    939 | Data        | 00 |         |    1 | 00/06E9 : 00          |             DB    $00            
+  940 |  1 GLOBALS.S    940 | Data        | 00 |         |    1 | 00/06EA : 00          |             DB    $00            
+  941 |  1 GLOBALS.S    941 | Data        | 00 |         |    1 | 00/06EB : 00          |             DB    $00            
+  942 |  1 GLOBALS.S    942 | Data        | 00 |         |    1 | 00/06EC : 00          |             DB    $00            
+  943 |  1 GLOBALS.S    943 | Data        | 00 |         |    1 | 00/06ED : 00          |             DB    $00            
+  944 |  1 GLOBALS.S    944 | Data        | 00 |         |    1 | 00/06EE : 00          |             DB    $00            
+  945 |  1 GLOBALS.S    945 | Data        | 00 |         |    1 | 00/06EF : 00          |             DB    $00            
+  946 |  1 GLOBALS.S    946 | Data        | 00 |         |    1 | 00/06F0 : 00          |             DB    $00            
+  947 |  1 GLOBALS.S    947 | Data        | 00 |         |    1 | 00/06F1 : 00          |             DB    $00            
+  948 |  1 GLOBALS.S    948 | Data        | 00 |         |    1 | 00/06F2 : 00          |             DB    $00            
+  949 |  1 GLOBALS.S    949 | Data        | 00 |         |    1 | 00/06F3 : 00          |             DB    $00            
+  950 |  1 GLOBALS.S    950 | Data        | 00 |         |    1 | 00/06F4 : 00          |             DB    $00            
+  951 |  1 GLOBALS.S    951 | Data        | 00 |         |    1 | 00/06F5 : 00          |             DB    $00            
+  952 |  1 GLOBALS.S    952 | Data        | 00 |         |    1 | 00/06F6 : 00          |             DB    $00            
+  953 |  1 GLOBALS.S    953 | Data        | 00 |         |    1 | 00/06F7 : 00          |             DB    $00            
+  954 |  1 GLOBALS.S    954 | Data        | 00 |         |    1 | 00/06F8 : 00          |             DB    $00            
+  955 |  1 GLOBALS.S    955 | Data        | 00 |         |    1 | 00/06F9 : 00          |             DB    $00            
+  956 |  1 GLOBALS.S    956 | Data        | 00 |         |    1 | 00/06FA : 00          |             DB    $00            
+  957 |  1 GLOBALS.S    957 | Data        | 00 |         |    1 | 00/06FB : 00          |             DB    $00            
+  958 |  1 GLOBALS.S    958 | Data        | 00 |         |    1 | 00/06FC : 00          |             DB    $00            
+  959 |  1 GLOBALS.S    959 | Data        | 00 |         |    1 | 00/06FD : 00          |             DB    $00            
+  960 |  1 GLOBALS.S    960 | Data        | 00 |         |    1 | 00/06FE : 00          |             DB    $00            
+  961 |  1 GLOBALS.S    961 | Data        | 00 |         |    1 | 00/06FF : 00          |             DB    $00            
+  962 |  1 GLOBALS.S    962 | Data        | 00 |         |    1 | 00/0700 : 00          |             DB    $00            
+  963 |  1 GLOBALS.S    963 | Data        | 00 |         |    1 | 00/0701 : 00          |             DB    $00            
+  964 |  1 GLOBALS.S    964 | Data        | 00 |         |    1 | 00/0702 : 00          |             DB    $00            
+  965 |  1 GLOBALS.S    965 | Data        | 00 |         |    1 | 00/0703 : 00          |             DB    $00            
+  966 |  1 GLOBALS.S    966 | Data        | 00 |         |    1 | 00/0704 : 00          |             DB    $00            
+  967 |  1 GLOBALS.S    967 | Data        | 00 |         |    1 | 00/0705 : 00          |             DB    $00            
+  968 |  1 GLOBALS.S    968 | Data        | 00 |         |    1 | 00/0706 : 00          |             DB    $00            
+  969 |  1 GLOBALS.S    969 | Data        | 00 |         |    1 | 00/0707 : 00          |             DB    $00            
+  970 |  1 GLOBALS.S    970 | Data        | 00 |         |    1 | 00/0708 : 00          |             DB    $00            
+  971 |  1 GLOBALS.S    971 | Data        | 00 |         |    1 | 00/0709 : 00          |             DB    $00            
+  972 |  1 GLOBALS.S    972 | Data        | 00 |         |    1 | 00/070A : 00          |             DB    $00            
+  973 |  1 GLOBALS.S    973 | Data        | 00 |         |    1 | 00/070B : 00          |             DB    $00            
+  974 |  1 GLOBALS.S    974 | Data        | 00 |         |    1 | 00/070C : 00          |             DB    $00            
+  975 |  1 GLOBALS.S    975 | Data        | 00 |         |    1 | 00/070D : 00          |             DB    $00            
+  976 |  1 GLOBALS.S    976 | Data        | 00 |         |    1 | 00/070E : 00          |             DB    $00            
+  977 |  1 GLOBALS.S    977 | Data        | 00 |         |    1 | 00/070F : 00          |             DB    $00            
+  978 |  1 GLOBALS.S    978 | Data        | 00 |         |    1 | 00/0710 : 00          |             DB    $00            
+  979 |  1 GLOBALS.S    979 | Data        | 00 |         |    1 | 00/0711 : 00          |             DB    $00            
+  980 |  1 GLOBALS.S    980 | Data        | 00 |         |    1 | 00/0712 : 00          |             DB    $00            
+  981 |  1 GLOBALS.S    981 | Data        | 00 |         |    1 | 00/0713 : 00          |             DB    $00            
+  982 |  1 GLOBALS.S    982 | Data        | 00 |         |    1 | 00/0714 : 00          |             DB    $00            
+  983 |  1 GLOBALS.S    983 | Data        | 00 |         |    1 | 00/0715 : 00          |             DB    $00            
+  984 |  1 GLOBALS.S    984 | Data        | 00 |         |    1 | 00/0716 : 00          |             DB    $00            
+  985 |  1 GLOBALS.S    985 | Data        | 00 |         |    1 | 00/0717 : 00          |             DB    $00            
+  986 |  1 GLOBALS.S    986 | Data        | 00 |         |    1 | 00/0718 : 00          |             DB    $00            
+  987 |  1 GLOBALS.S    987 | Data        | 00 |         |    1 | 00/0719 : 00          |             DB    $00            
+  988 |  1 GLOBALS.S    988 | Data        | 00 |         |    1 | 00/071A : 00          |             DB    $00            
+  989 |  1 GLOBALS.S    989 | Data        | 00 |         |    1 | 00/071B : 00          |             DB    $00            
+  990 |  1 GLOBALS.S    990 | Data        | 00 |         |    1 | 00/071C : 00          |             DB    $00            
+  991 |  1 GLOBALS.S    991 | Data        | 00 |         |    1 | 00/071D : 00          |             DB    $00            
+  992 |  1 GLOBALS.S    992 | Data        | 00 |         |    1 | 00/071E : 00          |             DB    $00            
+  993 |  1 GLOBALS.S    993 | Data        | 00 |         |    1 | 00/071F : 00          |             DB    $00            
+  994 |  1 GLOBALS.S    994 | Data        | 00 |         |    1 | 00/0720 : 00          |             DB    $00            
+  995 |  1 GLOBALS.S    995 | Data        | 00 |         |    1 | 00/0721 : 00          |             DB    $00            
+  996 |  1 GLOBALS.S    996 | Data        | 00 |         |    1 | 00/0722 : 00          |             DB    $00            
+  997 |  1 GLOBALS.S    997 | Data        | 00 |         |    1 | 00/0723 : 00          |             DB    $00            
+  998 |  1 GLOBALS.S    998 | Data        | 00 |         |    1 | 00/0724 : 00          |             DB    $00            
+  999 |  1 GLOBALS.S    999 | Data        | 00 |         |    1 | 00/0725 : 00          |             DB    $00            
+ 1000 |  1 GLOBALS.S   1000 | Data        | 00 |         |    1 | 00/0726 : 00          |             DB    $00            
+ 1001 |  1 GLOBALS.S   1001 | Data        | 00 |         |    1 | 00/0727 : 00          |             DB    $00            
+ 1002 |  1 GLOBALS.S   1002 | Data        | 00 |         |    1 | 00/0728 : 00          |             DB    $00            
+ 1003 |  1 GLOBALS.S   1003 | Global      | 00 |         |    0 | 00/0729               | L0F0729     ENT                  
+ 1004 |  1 GLOBALS.S   1004 | Data        | 00 |         |    1 | 00/0729 : 00          |             DB    $00            
+ 1005 |  1 GLOBALS.S   1005 | Data        | 00 |         |    1 | 00/072A : 00          |             DB    $00            
+ 1006 |  1 GLOBALS.S   1006 | Data        | 00 |         |    1 | 00/072B : 00          |             DB    $00            
+ 1007 |  1 GLOBALS.S   1007 | Data        | 00 |         |    1 | 00/072C : 00          |             DB    $00            
+ 1008 |  1 GLOBALS.S   1008 | Data        | 00 |         |    1 | 00/072D : 00          |             DB    $00            
+ 1009 |  1 GLOBALS.S   1009 | Data        | 00 |         |    1 | 00/072E : 00          |             DB    $00            
+ 1010 |  1 GLOBALS.S   1010 | Data        | 00 |         |    1 | 00/072F : 00          |             DB    $00            
+ 1011 |  1 GLOBALS.S   1011 | Data        | 00 |         |    1 | 00/0730 : 00          |             DB    $00            
+ 1012 |  1 GLOBALS.S   1012 | Data        | 00 |         |    1 | 00/0731 : 00          |             DB    $00            
+ 1013 |  1 GLOBALS.S   1013 | Data        | 00 |         |    1 | 00/0732 : 00          |             DB    $00            
+ 1014 |  1 GLOBALS.S   1014 | Data        | 00 |         |    1 | 00/0733 : 00          |             DB    $00            
+ 1015 |  1 GLOBALS.S   1015 | Data        | 00 |         |    1 | 00/0734 : 00          |             DB    $00            
+ 1016 |  1 GLOBALS.S   1016 | Data        | 00 |         |    1 | 00/0735 : 00          |             DB    $00            
+ 1017 |  1 GLOBALS.S   1017 | Data        | 00 |         |    1 | 00/0736 : 00          |             DB    $00            
+ 1018 |  1 GLOBALS.S   1018 | Data        | 00 |         |    1 | 00/0737 : 00          |             DB    $00            
+ 1019 |  1 GLOBALS.S   1019 | Data        | 00 |         |    1 | 00/0738 : 00          |             DB    $00            
+ 1020 |  1 GLOBALS.S   1020 | Data        | 00 |         |    1 | 00/0739 : 00          |             DB    $00            
+ 1021 |  1 GLOBALS.S   1021 | Data        | 00 |         |    1 | 00/073A : 00          |             DB    $00            
+ 1022 |  1 GLOBALS.S   1022 | Data        | 00 |         |    1 | 00/073B : 00          |             DB    $00            
+ 1023 |  1 GLOBALS.S   1023 | Data        | 00 |         |    1 | 00/073C : 00          |             DB    $00            
+ 1024 |  1 GLOBALS.S   1024 | Data        | 00 |         |    1 | 00/073D : 00          |             DB    $00            
+ 1025 |  1 GLOBALS.S   1025 | Data        | 00 |         |    1 | 00/073E : 00          |             DB    $00            
+ 1026 |  1 GLOBALS.S   1026 | Data        | 00 |         |    1 | 00/073F : 00          |             DB    $00            
+ 1027 |  1 GLOBALS.S   1027 | Data        | 00 |         |    1 | 00/0740 : 00          |             DB    $00            
+ 1028 |  1 GLOBALS.S   1028 | Data        | 00 |         |    1 | 00/0741 : 00          |             DB    $00            
+ 1029 |  1 GLOBALS.S   1029 | Data        | 00 |         |    1 | 00/0742 : 00          |             DB    $00            
+ 1030 |  1 GLOBALS.S   1030 | Data        | 00 |         |    1 | 00/0743 : 00          |             DB    $00            
+ 1031 |  1 GLOBALS.S   1031 | Data        | 00 |         |    1 | 00/0744 : 00          |             DB    $00            
+ 1032 |  1 GLOBALS.S   1032 | Data        | 00 |         |    1 | 00/0745 : 00          |             DB    $00            
+ 1033 |  1 GLOBALS.S   1033 | Data        | 00 |         |    1 | 00/0746 : 00          |             DB    $00            
+ 1034 |  1 GLOBALS.S   1034 | Data        | 00 |         |    1 | 00/0747 : 00          |             DB    $00            
+ 1035 |  1 GLOBALS.S   1035 | Data        | 00 |         |    1 | 00/0748 : 00          |             DB    $00            
+ 1036 |  1 GLOBALS.S   1036 | Data        | 00 |         |    1 | 00/0749 : 00          |             DB    $00            
+ 1037 |  1 GLOBALS.S   1037 | Data        | 00 |         |    1 | 00/074A : 00          |             DB    $00            
+ 1038 |  1 GLOBALS.S   1038 | Data        | 00 |         |    1 | 00/074B : 00          |             DB    $00            
+ 1039 |  1 GLOBALS.S   1039 | Data        | 00 |         |    1 | 00/074C : 00          |             DB    $00            
+ 1040 |  1 GLOBALS.S   1040 | Data        | 00 |         |    1 | 00/074D : 00          |             DB    $00            
+ 1041 |  1 GLOBALS.S   1041 | Data        | 00 |         |    1 | 00/074E : 00          |             DB    $00            
+ 1042 |  1 GLOBALS.S   1042 | Data        | 00 |         |    1 | 00/074F : 00          |             DB    $00            
+ 1043 |  1 GLOBALS.S   1043 | Data        | 00 |         |    1 | 00/0750 : 00          |             DB    $00            
+ 1044 |  1 GLOBALS.S   1044 | Data        | 00 |         |    1 | 00/0751 : 00          |             DB    $00            
+ 1045 |  1 GLOBALS.S   1045 | Data        | 00 |         |    1 | 00/0752 : 00          |             DB    $00            
+ 1046 |  1 GLOBALS.S   1046 | Data        | 00 |         |    1 | 00/0753 : 00          |             DB    $00            
+ 1047 |  1 GLOBALS.S   1047 | Data        | 00 |         |    1 | 00/0754 : 00          |             DB    $00            
+ 1048 |  1 GLOBALS.S   1048 | Data        | 00 |         |    1 | 00/0755 : 00          |             DB    $00            
+ 1049 |  1 GLOBALS.S   1049 | Data        | 00 |         |    1 | 00/0756 : 00          |             DB    $00            
+ 1050 |  1 GLOBALS.S   1050 | Data        | 00 |         |    1 | 00/0757 : 00          |             DB    $00            
+ 1051 |  1 GLOBALS.S   1051 | Data        | 00 |         |    1 | 00/0758 : 00          |             DB    $00            
+ 1052 |  1 GLOBALS.S   1052 | Data        | 00 |         |    1 | 00/0759 : 00          |             DB    $00            
+ 1053 |  1 GLOBALS.S   1053 | Data        | 00 |         |    1 | 00/075A : 00          |             DB    $00            
+ 1054 |  1 GLOBALS.S   1054 | Data        | 00 |         |    1 | 00/075B : 00          |             DB    $00            
+ 1055 |  1 GLOBALS.S   1055 | Data        | 00 |         |    1 | 00/075C : 00          |             DB    $00            
+ 1056 |  1 GLOBALS.S   1056 | Data        | 00 |         |    1 | 00/075D : 00          |             DB    $00            
+ 1057 |  1 GLOBALS.S   1057 | Data        | 00 |         |    1 | 00/075E : 00          |             DB    $00            
+ 1058 |  1 GLOBALS.S   1058 | Data        | 00 |         |    1 | 00/075F : 00          |             DB    $00            
+ 1059 |  1 GLOBALS.S   1059 | Data        | 00 |         |    1 | 00/0760 : 00          |             DB    $00            
+ 1060 |  1 GLOBALS.S   1060 | Data        | 00 |         |    1 | 00/0761 : 00          |             DB    $00            
+ 1061 |  1 GLOBALS.S   1061 | Data        | 00 |         |    1 | 00/0762 : 00          |             DB    $00            
+ 1062 |  1 GLOBALS.S   1062 | Data        | 00 |         |    1 | 00/0763 : 00          |             DB    $00            
+ 1063 |  1 GLOBALS.S   1063 | Data        | 00 |         |    1 | 00/0764 : 00          |             DB    $00            
+ 1064 |  1 GLOBALS.S   1064 | Data        | 00 |         |    1 | 00/0765 : 00          |             DB    $00            
+ 1065 |  1 GLOBALS.S   1065 | Data        | 00 |         |    1 | 00/0766 : 00          |             DB    $00            
+ 1066 |  1 GLOBALS.S   1066 | Data        | 00 |         |    1 | 00/0767 : 00          |             DB    $00            
+ 1067 |  1 GLOBALS.S   1067 | Data        | 00 |         |    1 | 00/0768 : 00          |             DB    $00            
+ 1068 |  1 GLOBALS.S   1068 | Data        | 00 |         |    1 | 00/0769 : 00          |             DB    $00            
+ 1069 |  1 GLOBALS.S   1069 | Data        | 00 |         |    1 | 00/076A : 00          |             DB    $00            
+ 1070 |  1 GLOBALS.S   1070 | Data        | 00 |         |    1 | 00/076B : 00          |             DB    $00            
+ 1071 |  1 GLOBALS.S   1071 | Data        | 00 |         |    1 | 00/076C : 00          |             DB    $00            
+ 1072 |  1 GLOBALS.S   1072 | Data        | 00 |         |    1 | 00/076D : 00          |             DB    $00            
+ 1073 |  1 GLOBALS.S   1073 | Data        | 00 |         |    1 | 00/076E : 00          |             DB    $00            
+ 1074 |  1 GLOBALS.S   1074 | Data        | 00 |         |    1 | 00/076F : 00          |             DB    $00            
+ 1075 |  1 GLOBALS.S   1075 | Data        | 00 |         |    1 | 00/0770 : 00          |             DB    $00            
+ 1076 |  1 GLOBALS.S   1076 | Data        | 00 |         |    1 | 00/0771 : 00          |             DB    $00            
+ 1077 |  1 GLOBALS.S   1077 | Data        | 00 |         |    1 | 00/0772 : 00          |             DB    $00            
+ 1078 |  1 GLOBALS.S   1078 | Data        | 00 |         |    1 | 00/0773 : 00          |             DB    $00            
+ 1079 |  1 GLOBALS.S   1079 | Data        | 00 |         |    1 | 00/0774 : 00          |             DB    $00            
+ 1080 |  1 GLOBALS.S   1080 | Data        | 00 |         |    1 | 00/0775 : 00          |             DB    $00            
+ 1081 |  1 GLOBALS.S   1081 | Data        | 00 |         |    1 | 00/0776 : 00          |             DB    $00            
+ 1082 |  1 GLOBALS.S   1082 | Data        | 00 |         |    1 | 00/0777 : 00          |             DB    $00            
+ 1083 |  1 GLOBALS.S   1083 | Data        | 00 |         |    1 | 00/0778 : 00          |             DB    $00            
+ 1084 |  1 GLOBALS.S   1084 | Global      | 00 |         |    0 | 00/0779               | L0F0779     ENT                  
+ 1085 |  1 GLOBALS.S   1085 | Data        | 00 |         |    2 | 00/0779 : 00 00       |             DW    $0000          
+ 1086 |  1 GLOBALS.S   1086 | Global      | 00 |         |    0 | 00/077B               | L0F077B     ENT                  
+ 1087 |  1 GLOBALS.S   1087 | Data        | 00 |         |    1 | 00/077B : 00          |             DB    $00            
+ 1088 |  1 GLOBALS.S   1088 | Data        | 00 |         |    1 | 00/077C : 00          |             DB    $00            
+ 1089 |  1 GLOBALS.S   1089 | Data        | 00 |         |    1 | 00/077D : 00          |             DB    $00            
+ 1090 |  1 GLOBALS.S   1090 | Data        | 00 |         |    1 | 00/077E : 00          |             DB    $00            
+ 1091 |  1 GLOBALS.S   1091 | Data        | 00 |         |    1 | 00/077F : 00          |             DB    $00            
+ 1092 |  1 GLOBALS.S   1092 | Data        | 00 |         |    1 | 00/0780 : 00          |             DB    $00            
+ 1093 |  1 GLOBALS.S   1093 | Data        | 00 |         |    1 | 00/0781 : 00          |             DB    $00            
+ 1094 |  1 GLOBALS.S   1094 | Data        | 00 |         |    1 | 00/0782 : 00          |             DB    $00            
+ 1095 |  1 GLOBALS.S   1095 | Global      | 00 |         |    0 | 00/0783               | L0F0783     ENT                  
+ 1096 |  1 GLOBALS.S   1096 | Data        | 00 |         |    1 | 00/0783 : 00          |             DB    $00            
+ 1097 |  1 GLOBALS.S   1097 | Data        | 00 |         |    1 | 00/0784 : 00          |             DB    $00            
+ 1098 |  1 GLOBALS.S   1098 | Global      | 00 |         |    0 | 00/0785               | L0F0785     ENT                  
+ 1099 |  1 GLOBALS.S   1099 | Data        | 00 |         |    1 | 00/0785 : 00          |             DB    $00            
+ 1100 |  1 GLOBALS.S   1100 | Data        | 00 |         |    1 | 00/0786 : 00          |             DB    $00            
+ 1101 |  1 GLOBALS.S   1101 | Global      | 00 |         |    0 | 00/0787               | L0F0787     ENT                  
+ 1102 |  1 GLOBALS.S   1102 | Data        | 00 |         |    1 | 00/0787 : 00          |             DB    $00            
+ 1103 |  1 GLOBALS.S   1103 | Data        | 00 |         |    1 | 00/0788 : 00          |             DB    $00            
+ 1104 |  1 GLOBALS.S   1104 | Global      | 00 |         |    0 | 00/0789               | L0F0789     ENT                  
+ 1105 |  1 GLOBALS.S   1105 | Data        | 00 |         |    1 | 00/0789 : 00          |             DB    $00            
+ 1106 |  1 GLOBALS.S   1106 | Data        | 00 |         |    1 | 00/078A : 00          |             DB    $00            
+ 1107 |  1 GLOBALS.S   1107 | Global      | 00 |         |    0 | 00/078B               | L0F078B     ENT                  
+ 1108 |  1 GLOBALS.S   1108 | Data        | 00 |         |    1 | 00/078B : 00          |             DB    $00            
+ 1109 |  1 GLOBALS.S   1109 | Global      | 00 |         |    0 | 00/078C               | L0F078C     ENT                  
+ 1110 |  1 GLOBALS.S   1110 | Data        | 00 |         |    1 | 00/078C : 00          |             DB    $00            
+ 1111 |  1 GLOBALS.S   1111 | Data        | 00 |         |    1 | 00/078D : 00          |             DB    $00            
+ 1112 |  1 GLOBALS.S   1112 | Data        | 00 |         |    1 | 00/078E : 00          |             DB    $00            
+ 1113 |  1 GLOBALS.S   1113 | Data        | 00 |         |    1 | 00/078F : 00          |             DB    $00            
+ 1114 |  1 GLOBALS.S   1114 | Data        | 00 |         |    1 | 00/0790 : 00          |             DB    $00            
+ 1115 |  1 GLOBALS.S   1115 | Data        | 00 |         |    1 | 00/0791 : 00          |             DB    $00            
+ 1116 |  1 GLOBALS.S   1116 | Data        | 00 |         |    1 | 00/0792 : 00          |             DB    $00            
+ 1117 |  1 GLOBALS.S   1117 | Data        | 00 |         |    1 | 00/0793 : 00          |             DB    $00            
+ 1118 |  1 GLOBALS.S   1118 | Data        | 00 |         |    1 | 00/0794 : 00          |             DB    $00            
+ 1119 |  1 GLOBALS.S   1119 | Data        | 00 |         |    1 | 00/0795 : 00          |             DB    $00            
+ 1120 |  1 GLOBALS.S   1120 | Data        | 00 |         |    1 | 00/0796 : 00          |             DB    $00            
+ 1121 |  1 GLOBALS.S   1121 | Data        | 00 |         |    1 | 00/0797 : 00          |             DB    $00            
+ 1122 |  1 GLOBALS.S   1122 | Data        | 00 |         |    1 | 00/0798 : 00          |             DB    $00            
+ 1123 |  1 GLOBALS.S   1123 | Data        | 00 |         |    1 | 00/0799 : 00          |             DB    $00            
+ 1124 |  1 GLOBALS.S   1124 | Data        | 00 |         |    1 | 00/079A : 00          |             DB    $00            
+ 1125 |  1 GLOBALS.S   1125 | Data        | 00 |         |    1 | 00/079B : 00          |             DB    $00            
+ 1126 |  1 GLOBALS.S   1126 | Data        | 00 |         |    1 | 00/079C : 00          |             DB    $00            
+ 1127 |  1 GLOBALS.S   1127 | Data        | 00 |         |    1 | 00/079D : 00          |             DB    $00            
+ 1128 |  1 GLOBALS.S   1128 | Data        | 00 |         |    1 | 00/079E : 00          |             DB    $00            
+ 1129 |  1 GLOBALS.S   1129 | Data        | 00 |         |    1 | 00/079F : 00          |             DB    $00            
+ 1130 |  1 GLOBALS.S   1130 | Data        | 00 |         |    1 | 00/07A0 : 00          |             DB    $00            
+ 1131 |  1 GLOBALS.S   1131 | Data        | 00 |         |    1 | 00/07A1 : 00          |             DB    $00            
+ 1132 |  1 GLOBALS.S   1132 | Data        | 00 |         |    1 | 00/07A2 : 00          |             DB    $00            
+ 1133 |  1 GLOBALS.S   1133 | Data        | 00 |         |    1 | 00/07A3 : 00          |             DB    $00            
+ 1134 |  1 GLOBALS.S   1134 | Data        | 00 |         |    1 | 00/07A4 : 00          |             DB    $00            
+ 1135 |  1 GLOBALS.S   1135 | Data        | 00 |         |    1 | 00/07A5 : 00          |             DB    $00            
+ 1136 |  1 GLOBALS.S   1136 | Data        | 00 |         |    1 | 00/07A6 : 00          |             DB    $00            
+ 1137 |  1 GLOBALS.S   1137 | Data        | 00 |         |    1 | 00/07A7 : 00          |             DB    $00            
+ 1138 |  1 GLOBALS.S   1138 | Data        | 00 |         |    1 | 00/07A8 : 00          |             DB    $00            
+ 1139 |  1 GLOBALS.S   1139 | Global      | 00 |         |    0 | 00/07A9               | L0F07A9     ENT                  
+ 1140 |  1 GLOBALS.S   1140 | Data        | 00 |         |    1 | 00/07A9 : 00          |             DB    $00            
+ 1141 |  1 GLOBALS.S   1141 | Data        | 00 |         |    1 | 00/07AA : 00          |             DB    $00            
+ 1142 |  1 GLOBALS.S   1142 | Global      | 00 |         |    0 | 00/07AB               | L0F07AB     ENT                  
+ 1143 |  1 GLOBALS.S   1143 | Data        | 00 |         |    1 | 00/07AB : 00          |             DB    $00            
+ 1144 |  1 GLOBALS.S   1144 | Data        | 00 |         |    1 | 00/07AC : 00          |             DB    $00            
+ 1145 |  1 GLOBALS.S   1145 | Global      | 00 |         |    0 | 00/07AD               | L0F07AD     ENT                  
+ 1146 |  1 GLOBALS.S   1146 | Data        | 00 |         |    1 | 00/07AD : 00          |             DB    $00            
+ 1147 |  1 GLOBALS.S   1147 | Data        | 00 |         |    1 | 00/07AE : 00          |             DB    $00            
+ 1148 |  1 GLOBALS.S   1148 | Global      | 00 |         |    0 | 00/07AF               | L0F07AF     ENT                  
+ 1149 |  1 GLOBALS.S   1149 | Data        | 00 |         |    1 | 00/07AF : 00          |             DB    $00            
+ 1150 |  1 GLOBALS.S   1150 | Data        | 00 |         |    1 | 00/07B0 : 00          |             DB    $00            
+ 1151 |  1 GLOBALS.S   1151 | Global      | 00 |         |    0 | 00/07B1               | L0F07B1     ENT                  
+ 1152 |  1 GLOBALS.S   1152 | Data        | 00 |         |    1 | 00/07B1 : 00          |             DB    $00            
+ 1153 |  1 GLOBALS.S   1153 | Data        | 00 |         |    1 | 00/07B2 : 00          |             DB    $00            
+ 1154 |  1 GLOBALS.S   1154 | Global      | 00 |         |    0 | 00/07B3               | L0F07B3     ENT                  
+ 1155 |  1 GLOBALS.S   1155 | Data        | 00 |         |    1 | 00/07B3 : 00          |             DB    $00            
+ 1156 |  1 GLOBALS.S   1156 | Data        | 00 |         |    1 | 00/07B4 : 00          |             DB    $00            
+ 1157 |  1 GLOBALS.S   1157 | Global      | 00 |         |    0 | 00/07B5               | L0F07B5     ENT                  
+ 1158 |  1 GLOBALS.S   1158 | Data        | 00 |         |    1 | 00/07B5 : 00          |             DB    $00            
+ 1159 |  1 GLOBALS.S   1159 | Data        | 00 |         |    1 | 00/07B6 : 00          |             DB    $00            
+ 1160 |  1 GLOBALS.S   1160 | Global      | 00 |         |    0 | 00/07B7               | L0F07B7     ENT                  
+ 1161 |  1 GLOBALS.S   1161 | Data        | 00 |         |    1 | 00/07B7 : 00          |             DB    $00            
+ 1162 |  1 GLOBALS.S   1162 | Data        | 00 |         |    1 | 00/07B8 : 00          |             DB    $00            
+ 1163 |  1 GLOBALS.S   1163 | Global      | 00 |         |    0 | 00/07B9               | L0F07B9     ENT                  
+ 1164 |  1 GLOBALS.S   1164 | Data        | 00 |         |    1 | 00/07B9 : 00          |             DB    $00            
+ 1165 |  1 GLOBALS.S   1165 | Data        | 00 |         |    1 | 00/07BA : 00          |             DB    $00            
+ 1166 |  1 GLOBALS.S   1166 | Global      | 00 |         |    0 | 00/07BB               | L0F07BB     ENT                  
+ 1167 |  1 GLOBALS.S   1167 | Data        | 00 |         |    1 | 00/07BB : 00          |             DB    $00            
+ 1168 |  1 GLOBALS.S   1168 | Data        | 00 |         |    1 | 00/07BC : 00          |             DB    $00            
+ 1169 |  1 GLOBALS.S   1169 | Global      | 00 |         |    0 | 00/07BD               | L0F07BD     ENT                  
+ 1170 |  1 GLOBALS.S   1170 | Data        | 00 |         |    1 | 00/07BD : 00          |             DB    $00            
+ 1171 |  1 GLOBALS.S   1171 | Data        | 00 |         |    1 | 00/07BE : 00          |             DB    $00            
+ 1172 |  1 GLOBALS.S   1172 | Data        | 00 |         |    1 | 00/07BF : 00          |             DB    $00            
+ 1173 |  1 GLOBALS.S   1173 | Data        | 00 |         |    1 | 00/07C0 : 00          |             DB    $00            
+ 1174 |  1 GLOBALS.S   1174 | Data        | 00 |         |    1 | 00/07C1 : 00          |             DB    $00            
+ 1175 |  1 GLOBALS.S   1175 | Data        | 00 |         |    1 | 00/07C2 : 00          |             DB    $00            
+ 1176 |  1 GLOBALS.S   1176 | Data        | 00 |         |    1 | 00/07C3 : 00          |             DB    $00            
+ 1177 |  1 GLOBALS.S   1177 | Data        | 00 |         |    1 | 00/07C4 : 00          |             DB    $00            
+ 1178 |  1 GLOBALS.S   1178 | Global      | 00 |         |    0 | 00/07C5               | L0F07C5     ENT                  
+ 1179 |  1 GLOBALS.S   1179 | Data        | 00 |         |    1 | 00/07C5 : 00          |             DB    $00            
+ 1180 |  1 GLOBALS.S   1180 | Data        | 00 |         |    1 | 00/07C6 : 00          |             DB    $00            
+ 1181 |  1 GLOBALS.S   1181 | Global      | 00 |         |    0 | 00/07C7               | L0F07C7     ENT                  
+ 1182 |  1 GLOBALS.S   1182 | Data        | 00 |         |    1 | 00/07C7 : 00          |             DB    $00            
+ 1183 |  1 GLOBALS.S   1183 | Data        | 00 |         |    1 | 00/07C8 : 00          |             DB    $00            
+ 1184 |  1 GLOBALS.S   1184 | Global      | 00 |         |    0 | 00/07C9               | L0F07C9     ENT                  
+ 1185 |  1 GLOBALS.S   1185 | Data        | 00 |         |    1 | 00/07C9 : 00          |             DB    $00            
+ 1186 |  1 GLOBALS.S   1186 | Data        | 00 |         |    1 | 00/07CA : 00          |             DB    $00            
+ 1187 |  1 GLOBALS.S   1187 | Global      | 00 |         |    0 | 00/07CB               | L0F07CB     ENT                  
+ 1188 |  1 GLOBALS.S   1188 | Data        | 00 |         |    1 | 00/07CB : 00          |             DB    $00            
+ 1189 |  1 GLOBALS.S   1189 | Data        | 00 |         |    1 | 00/07CC : 00          |             DB    $00            
+ 1190 |  1 GLOBALS.S   1190 | Global      | 00 |         |    0 | 00/07CD               | L0F07CD     ENT                  
+ 1191 |  1 GLOBALS.S   1191 | Data        | 00 |         |    1 | 00/07CD : 00          |             DB    $00            
+ 1192 |  1 GLOBALS.S   1192 | Data        | 00 |         |    1 | 00/07CE : 00          |             DB    $00            
+ 1193 |  1 GLOBALS.S   1193 | Global      | 00 |         |    0 | 00/07CF               | L0F07CF     ENT                  
+ 1194 |  1 GLOBALS.S   1194 | Data        | 00 |         |    1 | 00/07CF : 00          |             DB    $00            
+ 1195 |  1 GLOBALS.S   1195 | Data        | 00 |         |    1 | 00/07D0 : 00          |             DB    $00            
+ 1196 |  1 GLOBALS.S   1196 | Global      | 00 |         |    0 | 00/07D1               | L0F07D1     ENT                  
+ 1197 |  1 GLOBALS.S   1197 | Data        | 00 |         |    1 | 00/07D1 : 00          |             DB    $00            
+ 1198 |  1 GLOBALS.S   1198 | Data        | 00 |         |    1 | 00/07D2 : 00          |             DB    $00            
+ 1199 |  1 GLOBALS.S   1199 | Global      | 00 |         |    0 | 00/07D3               | L0F07D3     ENT                  
+ 1200 |  1 GLOBALS.S   1200 | Data        | 00 |         |    1 | 00/07D3 : 00          |             DB    $00            
+ 1201 |  1 GLOBALS.S   1201 | Data        | 00 |         |    1 | 00/07D4 : 00          |             DB    $00            
+ 1202 |  1 GLOBALS.S   1202 | Global      | 00 |         |    0 | 00/07D5               | L0F07D5     ENT                  
+ 1203 |  1 GLOBALS.S   1203 | Data        | 00 |         |    1 | 00/07D5 : 00          |             DB    $00            
+ 1204 |  1 GLOBALS.S   1204 | Data        | 00 |         |    1 | 00/07D6 : 00          |             DB    $00            
+ 1205 |  1 GLOBALS.S   1205 | Global      | 00 |         |    0 | 00/07D7               | L0F07D7     ENT                  
+ 1206 |  1 GLOBALS.S   1206 | Data        | 00 |         |    1 | 00/07D7 : 00          |             DB    $00            
+ 1207 |  1 GLOBALS.S   1207 | Data        | 00 |         |    1 | 00/07D8 : 00          |             DB    $00            
+ 1208 |  1 GLOBALS.S   1208 | Global      | 00 |         |    0 | 00/07D9               | L0F07D9     ENT                  
+ 1209 |  1 GLOBALS.S   1209 | Data        | 00 |         |    1 | 00/07D9 : 00          |             DB    $00            
+ 1210 |  1 GLOBALS.S   1210 | Data        | 00 |         |    1 | 00/07DA : 00          |             DB    $00            
+ 1211 |  1 GLOBALS.S   1211 | Global      | 00 |         |    0 | 00/07DB               | L0F07DB     ENT                  
+ 1212 |  1 GLOBALS.S   1212 | Data        | 00 |         |    1 | 00/07DB : 00          |             DB    $00            
+ 1213 |  1 GLOBALS.S   1213 | Data        | 00 |         |    1 | 00/07DC : 00          |             DB    $00            
+ 1214 |  1 GLOBALS.S   1214 | Global      | 00 |         |    0 | 00/07DD               | L0F07DD     ENT                  
+ 1215 |  1 GLOBALS.S   1215 | Data        | 00 |         |    1 | 00/07DD : 00          |             DB    $00            
+ 1216 |  1 GLOBALS.S   1216 | Data        | 00 |         |    1 | 00/07DE : 00          |             DB    $00            
+ 1217 |  1 GLOBALS.S   1217 | Global      | 00 |         |    0 | 00/07DF               | L0F07DF     ENT                  
+ 1218 |  1 GLOBALS.S   1218 | Data        | 00 |         |    1 | 00/07DF : 00          |             DB    $00            
+ 1219 |  1 GLOBALS.S   1219 | Data        | 00 |         |    1 | 00/07E0 : 00          |             DB    $00            
+ 1220 |  1 GLOBALS.S   1220 | Global      | 00 |         |    0 | 00/07E1               | L0F07E1     ENT                  
+ 1221 |  1 GLOBALS.S   1221 | Data        | 00 |         |    1 | 00/07E1 : 00          |             DB    $00            
+ 1222 |  1 GLOBALS.S   1222 | Data        | 00 |         |    1 | 00/07E2 : 00          |             DB    $00            
+ 1223 |  1 GLOBALS.S   1223 | Global      | 00 |         |    0 | 00/07E3               | L0F07E3     ENT                  
+ 1224 |  1 GLOBALS.S   1224 | Data        | 00 |         |    1 | 00/07E3 : 00          |             DB    $00            
+ 1225 |  1 GLOBALS.S   1225 | Data        | 00 |         |    1 | 00/07E4 : 00          |             DB    $00            
+ 1226 |  1 GLOBALS.S   1226 | Global      | 00 |         |    0 | 00/07E5               | L0F07E5     ENT                  
+ 1227 |  1 GLOBALS.S   1227 | Data        | 00 |         |    1 | 00/07E5 : 00          |             DB    $00            
+ 1228 |  1 GLOBALS.S   1228 | Data        | 00 |         |    1 | 00/07E6 : 00          |             DB    $00            
+ 1229 |  1 GLOBALS.S   1229 | Global      | 00 |         |    0 | 00/07E7               | L0F07E7     ENT                  
+ 1230 |  1 GLOBALS.S   1230 | Data        | 00 |         |    1 | 00/07E7 : 00          |             DB    $00            
+ 1231 |  1 GLOBALS.S   1231 | Data        | 00 |         |    1 | 00/07E8 : 00          |             DB    $00            
+ 1232 |  1 GLOBALS.S   1232 | Global      | 00 |         |    0 | 00/07E9               | L0F07E9     ENT                  
+ 1233 |  1 GLOBALS.S   1233 | Data        | 00 |         |    1 | 00/07E9 : 00          |             DB    $00            
+ 1234 |  1 GLOBALS.S   1234 | Data        | 00 |         |    1 | 00/07EA : 00          |             DB    $00            
+ 1235 |  1 GLOBALS.S   1235 | Global      | 00 |         |    0 | 00/07EB               | L0F07EB     ENT                  
+ 1236 |  1 GLOBALS.S   1236 | Data        | 00 |         |    1 | 00/07EB : 00          |             DB    $00            
+ 1237 |  1 GLOBALS.S   1237 | Data        | 00 |         |    1 | 00/07EC : 00          |             DB    $00            
+ 1238 |  1 GLOBALS.S   1238 | Global      | 00 |         |    0 | 00/07ED               | L0F07ED     ENT                  
+ 1239 |  1 GLOBALS.S   1239 | Data        | 00 |         |    1 | 00/07ED : 00          |             DB    $00            
+ 1240 |  1 GLOBALS.S   1240 | Data        | 00 |         |    1 | 00/07EE : 00          |             DB    $00            
+ 1241 |  1 GLOBALS.S   1241 | Global      | 00 |         |    0 | 00/07EF               | L0F07EF     ENT                  
+ 1242 |  1 GLOBALS.S   1242 | Data        | 00 |         |    1 | 00/07EF : 00          |             DB    $00            
+ 1243 |  1 GLOBALS.S   1243 | Data        | 00 |         |    1 | 00/07F0 : 00          |             DB    $00            
+ 1244 |  1 GLOBALS.S   1244 | Global      | 00 |         |    0 | 00/07F1               | L0F07F1     ENT                  
+ 1245 |  1 GLOBALS.S   1245 | Data        | 00 |         |    1 | 00/07F1 : 00          |             DB    $00            
+ 1246 |  1 GLOBALS.S   1246 | Data        | 00 |         |    1 | 00/07F2 : 00          |             DB    $00            
+ 1247 |  1 GLOBALS.S   1247 | Global      | 00 |         |    0 | 00/07F3               | L0F07F3     ENT                  
+ 1248 |  1 GLOBALS.S   1248 | Data        | 00 |         |    1 | 00/07F3 : 00          |             DB    $00            
+ 1249 |  1 GLOBALS.S   1249 | Data        | 00 |         |    1 | 00/07F4 : 00          |             DB    $00            
+ 1250 |  1 GLOBALS.S   1250 | Global      | 00 |         |    0 | 00/07F5               | L0F07F5     ENT                  
+ 1251 |  1 GLOBALS.S   1251 | Data        | 00 |         |    1 | 00/07F5 : 00          |             DB    $00            
+ 1252 |  1 GLOBALS.S   1252 | Data        | 00 |         |    1 | 00/07F6 : 00          |             DB    $00            
+ 1253 |  1 GLOBALS.S   1253 | Global      | 00 |         |    0 | 00/07F7               | L0F07F7     ENT                  
+ 1254 |  1 GLOBALS.S   1254 | Data        | 00 |         |    1 | 00/07F7 : 00          |             DB    $00            
+ 1255 |  1 GLOBALS.S   1255 | Data        | 00 |         |    1 | 00/07F8 : 00          |             DB    $00            
+ 1256 |  1 GLOBALS.S   1256 | Global      | 00 |         |    0 | 00/07F9               | L0F07F9     ENT                  
+ 1257 |  1 GLOBALS.S   1257 | Data        | 00 |         |    1 | 00/07F9 : 00          |             DB    $00            
+ 1258 |  1 GLOBALS.S   1258 | Data        | 00 |         |    1 | 00/07FA : 00          |             DB    $00            
+ 1259 |  1 GLOBALS.S   1259 | Global      | 00 |         |    0 | 00/07FB               | L0F07FB     ENT                  
+ 1260 |  1 GLOBALS.S   1260 | Data        | 00 |         |    1 | 00/07FB : 00          |             DB    $00            
+ 1261 |  1 GLOBALS.S   1261 | Data        | 00 |         |    1 | 00/07FC : 00          |             DB    $00            
+ 1262 |  1 GLOBALS.S   1262 | Global      | 00 |         |    0 | 00/07FD               | L0F07FD     ENT                  
+ 1263 |  1 GLOBALS.S   1263 | Data        | 00 |         |    1 | 00/07FD : 00          |             DB    $00            
+ 1264 |  1 GLOBALS.S   1264 | Data        | 00 |         |    1 | 00/07FE : 00          |             DB    $00            
+ 1265 |  1 GLOBALS.S   1265 | Data        | 00 |         |    1 | 00/07FF : 00          |             DB    $00            
+ 1266 |  1 GLOBALS.S   1266 | Data        | 00 |         |    1 | 00/0800 : 00          |             DB    $00            
+ 1267 |  1 GLOBALS.S   1267 | Data        | 00 |         |    1 | 00/0801 : 00          |             DB    $00            
+ 1268 |  1 GLOBALS.S   1268 | Data        | 00 |         |    1 | 00/0802 : 00          |             DB    $00            
+ 1269 |  1 GLOBALS.S   1269 | Data        | 00 |         |    1 | 00/0803 : 00          |             DB    $00            
+ 1270 |  1 GLOBALS.S   1270 | Data        | 00 |         |    1 | 00/0804 : 00          |             DB    $00            
+ 1271 |  1 GLOBALS.S   1271 | Data        | 00 |         |    1 | 00/0805 : 00          |             DB    $00            
+ 1272 |  1 GLOBALS.S   1272 | Data        | 00 |         |    1 | 00/0806 : 00          |             DB    $00            
+ 1273 |  1 GLOBALS.S   1273 | Data        | 00 |         |    1 | 00/0807 : 00          |             DB    $00            
+ 1274 |  1 GLOBALS.S   1274 | Data        | 00 |         |    1 | 00/0808 : 00          |             DB    $00            
+ 1275 |  1 GLOBALS.S   1275 | Data        | 00 |         |    1 | 00/0809 : 00          |             DB    $00            
+ 1276 |  1 GLOBALS.S   1276 | Data        | 00 |         |    1 | 00/080A : 00          |             DB    $00            
+ 1277 |  1 GLOBALS.S   1277 | Data        | 00 |         |    1 | 00/080B : 00          |             DB    $00            
+ 1278 |  1 GLOBALS.S   1278 | Data        | 00 |         |    1 | 00/080C : 00          |             DB    $00            
+ 1279 |  1 GLOBALS.S   1279 | Data        | 00 |         |    1 | 00/080D : 00          |             DB    $00            
+ 1280 |  1 GLOBALS.S   1280 | Data        | 00 |         |    1 | 00/080E : 00          |             DB    $00            
+ 1281 |  1 GLOBALS.S   1281 | Data        | 00 |         |    1 | 00/080F : 00          |             DB    $00            
+ 1282 |  1 GLOBALS.S   1282 | Data        | 00 |         |    1 | 00/0810 : 00          |             DB    $00            
+ 1283 |  1 GLOBALS.S   1283 | Data        | 00 |         |    1 | 00/0811 : 00          |             DB    $00            
+ 1284 |  1 GLOBALS.S   1284 | Data        | 00 |         |    1 | 00/0812 : 00          |             DB    $00            
+ 1285 |  1 GLOBALS.S   1285 | Data        | 00 |         |    1 | 00/0813 : 00          |             DB    $00            
+ 1286 |  1 GLOBALS.S   1286 | Data        | 00 |         |    1 | 00/0814 : 00          |             DB    $00            
+ 1287 |  1 GLOBALS.S   1287 | Data        | 00 |         |    1 | 00/0815 : 00          |             DB    $00            
+ 1288 |  1 GLOBALS.S   1288 | Data        | 00 |         |    1 | 00/0816 : 00          |             DB    $00            
+ 1289 |  1 GLOBALS.S   1289 | Data        | 00 |         |    1 | 00/0817 : 00          |             DB    $00            
+ 1290 |  1 GLOBALS.S   1290 | Data        | 00 |         |    1 | 00/0818 : 00          |             DB    $00            
+ 1291 |  1 GLOBALS.S   1291 | Data        | 00 |         |    1 | 00/0819 : 00          |             DB    $00            
+ 1292 |  1 GLOBALS.S   1292 | Data        | 00 |         |    1 | 00/081A : 00          |             DB    $00            
+ 1293 |  1 GLOBALS.S   1293 | Data        | 00 |         |    1 | 00/081B : 00          |             DB    $00            
+ 1294 |  1 GLOBALS.S   1294 | Data        | 00 |         |    1 | 00/081C : 00          |             DB    $00            
+ 1295 |  1 GLOBALS.S   1295 | Data        | 00 |         |    1 | 00/081D : 00          |             DB    $00            
+ 1296 |  1 GLOBALS.S   1296 | Data        | 00 |         |    1 | 00/081E : 00          |             DB    $00            
+ 1297 |  1 GLOBALS.S   1297 | Data        | 00 |         |    1 | 00/081F : 00          |             DB    $00            
+ 1298 |  1 GLOBALS.S   1298 | Data        | 00 |         |    1 | 00/0820 : 00          |             DB    $00            
+ 1299 |  1 GLOBALS.S   1299 | Data        | 00 |         |    1 | 00/0821 : 00          |             DB    $00            
+ 1300 |  1 GLOBALS.S   1300 | Data        | 00 |         |    1 | 00/0822 : 00          |             DB    $00            
+ 1301 |  1 GLOBALS.S   1301 | Data        | 00 |         |    1 | 00/0823 : 00          |             DB    $00            
+ 1302 |  1 GLOBALS.S   1302 | Data        | 00 |         |    1 | 00/0824 : 00          |             DB    $00            
+ 1303 |  1 GLOBALS.S   1303 | Global      | 00 |         |    0 | 00/0825               | L0F0825     ENT                  
+ 1304 |  1 GLOBALS.S   1304 | Data        | 00 |         |    1 | 00/0825 : 00          |             DB    $00            
+ 1305 |  1 GLOBALS.S   1305 | Data        | 00 |         |    1 | 00/0826 : 00          |             DB    $00            
+ 1306 |  1 GLOBALS.S   1306 | Global      | 00 |         |    0 | 00/0827               | L0F0827     ENT                  
+ 1307 |  1 GLOBALS.S   1307 | Data        | 00 |         |    1 | 00/0827 : 00          |             DB    $00            
+ 1308 |  1 GLOBALS.S   1308 | Data        | 00 |         |    1 | 00/0828 : 00          |             DB    $00            
+ 1309 |  1 GLOBALS.S   1309 | Global      | 00 |         |    0 | 00/0829               | L0F0829     ENT                  
+ 1310 |  1 GLOBALS.S   1310 | Data        | 00 |         |    1 | 00/0829 : 00          |             DB    $00            
+ 1311 |  1 GLOBALS.S   1311 | Data        | 00 |         |    1 | 00/082A : 00          |             DB    $00            
+ 1312 |  1 GLOBALS.S   1312 | Global      | 00 |         |    0 | 00/082B               | L0F082B     ENT                  
+ 1313 |  1 GLOBALS.S   1313 | Data        | 00 |         |    1 | 00/082B : 00          |             DB    $00            
+ 1314 |  1 GLOBALS.S   1314 | Data        | 00 |         |    1 | 00/082C : 00          |             DB    $00            
+ 1315 |  1 GLOBALS.S   1315 | Data        | 00 |         |    1 | 00/082D : 00          |             DB    $00            
+ 1316 |  1 GLOBALS.S   1316 | Data        | 00 |         |    1 | 00/082E : 00          |             DB    $00            
+ 1317 |  1 GLOBALS.S   1317 | Data        | 00 |         |    1 | 00/082F : 00          |             DB    $00            
+ 1318 |  1 GLOBALS.S   1318 | Data        | 00 |         |    1 | 00/0830 : 00          |             DB    $00            
+ 1319 |  1 GLOBALS.S   1319 | Global      | 00 |         |    0 | 00/0831               | L0F0831     ENT                  
+ 1320 |  1 GLOBALS.S   1320 | Code        | 00 |         |    1 | 00/0831 : 8B          |             PHB                  
+ 1321 |  1 GLOBALS.S   1321 | Code        | 00 |         |    1 | 00/0832 : 68          |             PLA                  
+ 1322 |  1 GLOBALS.S   1322 | Code        | 00 |         |    1 | 00/0833 : EB          |             XBA                  
+ 1323 |  1 GLOBALS.S   1323 | Code        | 00 |  3      |    4 | 00/0834 : 8F 66 08 00 |             STAL  L0F0866        
+ 1324 |  1 GLOBALS.S   1324 | Code        | 00 |         |    1 | 00/0838 : 68          |             PLA                  
+ 1325 |  1 GLOBALS.S   1325 | Code        | 00 |  3      |    4 | 00/0839 : 8F 67 08 00 |             STAL  L0F0866+1      
+ 1326 |  1 GLOBALS.S   1326 | Code        | 00 |         |    1 | 00/083D : 68          |             PLA                  
+ 1327 |  1 GLOBALS.S   1327 | Code        | 00 |  3      |    4 | 00/083E : 8F 52 08 00 |             STAL  L0F0852        
+ 1328 |  1 GLOBALS.S   1328 | Code        | 00 |         |    1 | 00/0842 : 68          |             PLA                  
+ 1329 |  1 GLOBALS.S   1329 | Code        | 00 |  3      |    4 | 00/0843 : 8F 54 08 00 |             STAL  L0F0852+2      
+ 1330 |  1 GLOBALS.S   1330 | Code        | 00 |         |    1 | 00/0847 : 68          |             PLA                  
+ 1331 |  1 GLOBALS.S   1331 | Code        | 00 |  3      |    4 | 00/0848 : 8F 50 08 00 |             STAL  L0F0850        
+ 1332 |  1 GLOBALS.S   1332 | Code        | 00 |         |    4 | 00/084C : 22 A8 00 E1 |             JSL   {$E100A8}      
+ 1333 |  1 GLOBALS.S   1333 | Data        | 00 |         |    2 | 00/0850 : 00 00       | L0F0850     DW    $0000          
+ 1334 |  1 GLOBALS.S   1334 | Data        | 00 |         |    4 | 00/0852 : 00 00 00 00 | L0F0852     ADRL  $00000000      
+ 1335 |  1 GLOBALS.S   1335 | Code        | 00 |  2      |    3 | 00/0856 : 8D 79 07    |             STA   L0F0779        
+ 1336 |  1 GLOBALS.S   1336 | Code        | 00 |  3      |    4 | 00/0859 : AF 67 08 00 |             LDAL  L0F0866+1      
+ 1337 |  1 GLOBALS.S   1337 | Code        | 00 |         |    1 | 00/085D : 48          |             PHA                  
+ 1338 |  1 GLOBALS.S   1338 | Code        | 00 |         |    1 | 00/085E : 8B          |             PHB                  
+ 1339 |  1 GLOBALS.S   1339 | Code        | 00 |  3      |    4 | 00/085F : AF 66 08 00 |             LDAL  L0F0866        
+ 1340 |  1 GLOBALS.S   1340 | Code        | 00 |         |    2 | 00/0863 : 83 01       |             STA   $01,S          
+ 1341 |  1 GLOBALS.S   1341 | Code        | 00 |         |    1 | 00/0865 : 6B          |             RTL                  
+ 1342 |  1 GLOBALS.S   1342 | Empty       | 00 |         |    0 | 00/0866               |                                  
+ 1343 |  1 GLOBALS.S   1343 | Data        | 00 |         |    3 | 00/0866 : 00 00 00    | L0F0866     ADR   $000000        
+ 1344 |  1 GLOBALS.S   1344 | Empty       | 00 |         |    0 | 00/0869               |                                  
+ 1345 |  1 GLOBALS.S   1345 | Empty       | 00 |         |    0 | 00/0869               |                                  
+------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

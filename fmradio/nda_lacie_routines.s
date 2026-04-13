@@ -310,7 +310,7 @@ lacie_printFREQUENCY
 	asl
 	clc
 	adc	theFREQ
-	adc	#76*100
+	adc	#8750	; 76*100
 	pha
 	PushLong	#strFREQUENCY
 	PushWord	#5
@@ -321,13 +321,13 @@ lacie_printFREQUENCY
 * Font: LED.24 font, ID#32671, from BRCC Font #4 disk
 *
 
-yFREQUENCY	=	30
+yFREQUENCY	=	27	; was 30
 
 	stz	theINDEX
 
 	PushLong	#rectFREQUENCY
-	PushWord	#$ffff
-	PushWord	#$ffff
+	PushWord	#$ffff	; frameColor
+	PushWord	#$ffff	; fillColor
 	_SpecialRect
 
 	PushWord #$1800
@@ -374,15 +374,20 @@ printF3	inc	theINDEX
 	cmp	#5
 	bcc	]lp
 
+	PushWord #$0800
+	PushWord #65534		; Shaston.8
+	PushWord #0
+	_InstallFont
+
 	rts
 
 *---
 
-rectFREQUENCY	dw	5,20,35,167
+rectFREQUENCY	dw	2,20,32,169
 xFREQUENCY	dfb	10,40,70,110,140	; put the dot at 100
 
 theINDEX	ds	2
-valFREQUENCY	ds	4	; Formula (max 650*5 + 7600)
+valFREQUENCY	ds	4	; Formula (max 410*5 + 8750)
 strFREQUENCY	asc	'00000'00	; '10550'
 
 *----------------------------
@@ -390,8 +395,8 @@ strFREQUENCY	asc	'00000'00	; '10550'
 *----------------------------
 
 tblFREQUENCY
-]theFREQ	=	$1b18
-	lup	650
+]theFREQ	=	$1eb0	; $1eb0 = 87.5 MHz & $1b18 = 76 MHz
+	lup	411
 	dw	]theFREQ
 ]theFREQ	=	]theFREQ+4
 	--^

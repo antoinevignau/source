@@ -44,6 +44,8 @@ KEYMODREG	=	$c025
 *-------------- GUI
 
 wMAIN	=	1
+wCHANNEL	=	2
+
 refIsPointer	=	0
 refIsHandle	=	1
 refIsResource	=	2
@@ -179,11 +181,22 @@ ndaOPEN2	PushLong	#0
 
 	lda	#1
 	sta	fgOPEN
+
+	lda	#doPOPUP
+	stal	$300
+	lda	#^doPOPUP
+	stal	$302
 	
-	jsr	lacie_setDFTVAL	; set default values
-	jsr	lacie_setVOLUME	; set the volume
+	lda	#loadCHANNELS
+	stal	$308
+	lda	#^loadCHANNELS
+	stal	$30a
+	
+	jsr	loadCHANNELS		; load the stored channels
+	jsr	lacie_setDFTVAL		; set default values
+	jsr	lacie_setVOLUME		; set the volume
 	jsr	lacie_setFREQUENCY	; and the frequency
-	jsr	lacie_printFREQUENCY
+	jsr	lacie_printFREQUENCY	; and print it
 
 ndaOPEN9	PushWord	curRESID
 	_SetCurResourceApp
@@ -675,6 +688,53 @@ makeMainWindow	PushWord	#0
 	rts
 	
 *----------------------------
+* MAKE CHANNEL WINDOW
+*----------------------------
+
+makeChannelWindow
+	PushWord	#0
+	_GetCurResourceFile
+	PushWord	myRESID
+	_SetCurResourceFile
+	
+	pha
+	pha
+	PushLong	#0
+	PushLong	#wCHANNEL
+	PushLong	#PAINTCHANNEL
+	PushLong	#0
+	PushWord	#refIsResource
+	PushLong	#wCHANNEL
+	PushWord	#$800e
+	_NewWindow2
+	PullLong	myWINDOW2
+
+	_SetCurResourceFile
+
+	rts
+
+*----------------------------
+* CLOSE CHANNEL WINDOW
+*----------------------------
+
+closeChannelWindow
+	pha
+	_GetCurResourceFile
+	PushWord	myRESID
+	_SetCurResourceFile
+
+	PushLong	myWINDOW2
+	_HideWindow
+	PushLong	myWINDOW2
+	_CloseWindow
+	
+	stz	myWINDOW2
+	stz	myWINDOW2+2
+
+	_SetCurResourceFile
+	rts
+
+*----------------------------
 * START RESOURCE MANAGER
 *----------------------------
 
@@ -728,8 +788,31 @@ PAINTMAIN	phb
 	
 	pha
 	_GetCurResourceFile
-	
+
 	lda	myRESID
+	pha
+	_SetCurResourceFile
+
+	pha
+	pha
+	_GetPort
+	_DrawControls
+
+	jsr	lacie_printFREQUENCY
+
+	_SetCurResourceFile
+	
+	plb
+	rtl
+
+*----------------------------
+* DRAW THE WINDOW
+*----------------------------
+
+PAINTCHANNEL	pha
+	_GetCurResourceFile
+
+	ldal	myRESID	; bank register not set
 	pha
 	_SetCurResourceFile
 	
@@ -738,11 +821,8 @@ PAINTMAIN	phb
 	_GetPort
 	_DrawControls
 
-	jsr	lacie_printFREQUENCY
-	
 	_SetCurResourceFile
 	
-	plb
 	rtl
 
 *----------------------------
@@ -833,8 +913,8 @@ volName2	dw	0
 *---
 
 curPORT	ds	4
-myWINDOW	ds	4
-
+myWINDOW	ds	4	; the Main window
+myWINDOW2	ds	4	; the Channel window
 theCODE	ds	2	; A register from Desk Manager
 curRESID	ds	2	; the curent resource file ID
 

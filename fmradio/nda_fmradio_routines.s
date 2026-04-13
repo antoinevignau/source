@@ -35,7 +35,7 @@ BTN_VOL_MINUS	=	5
 BTN_VOL_PLUS	=	6
 STAT_LOW	=	7	; 87.5
 STAT_HIGH	=	8	; 108
-POPUP_FREQ	=	9	; liste des fréquences enregistrées
+POPUP_FREQ	=	$1740	; liste des fréquences enregistrées
 BTN_REMOVE	=	10	; remove a station from the list
 BTN_ADD	=	11	; add a station to the list
 STAT_CHANNEL	=	12	; enter name:
@@ -43,9 +43,9 @@ LE_NAME	=	13	; line edit
 BTN_CANCEL	=	14	; cancel
 BTN_SAVE	=	15	; save
 
-MENU_CHANNEL	=	1	; the channel menu ID
+MENU_CHANNEL	=	$1740	; the channel menu ID
 RES_CHANNEL	=	$bd	; the resource type+ID that holds saved channels
-FIRST_ITEM	=	$bd00	; the first menu ID in the pop-up
+FIRST_ITEM	=	$1780	; the first menu ID in the pop-up
 
 *----------------------------
 * NDA ROUTINES
@@ -457,12 +457,12 @@ popupFOUND	lda	channelFREQ1,x	; get the frequency
 * REMOVE STATION
 *----------------------------
 
-doSTAT_MINUS
-	sep	#$20
-	ldal	$c034
-	inc
-	stal	$c034
-	rep	#$20
+doSTAT_MINUS	pha
+	pha
+	PushLong	myWINDOW
+	PushLong	#POPUP_FREQ
+	_GetCtlHandleFromID
+	_DrawOneCtl
 	rts
 
 *----------------------------
@@ -490,7 +490,19 @@ doSTAT_PLUS	jsr	makeChannelWindow
 	bne	]lp
 
 	jsr	addCHANNEL
-	
+	jsr	closeChannelWindow
+
+	PushLong	myWINDOW
+	_ShowWindow
+
+	pha
+	pha
+	PushLong	myWINDOW
+	PushLong	#POPUP_FREQ
+	_GetCtlHandleFromID
+	_DrawOneCtl
+	rts
+
 doSP_END	jmp	closeChannelWindow
 
 *----------------------------
@@ -529,6 +541,13 @@ exitPOPUP	PushWord	#0
 	PushWord	#0
 	PushWord	#MENU_CHANNEL
 	_CalcMenuSize
+
+	pha
+	pha
+	PushLong	myWINDOW
+	PushLong	#POPUP_FREQ
+	_GetCtlHandleFromID
+	_DrawOneCtl
 	
 	_SetCurResourceFile
 	rts
@@ -624,7 +643,7 @@ addFOUND	stx	theINDEX
 	adc	#menuITEM1
 	pha
 	PushWord	#$ffff	; insertAfter
-	PushWord	#POPUP_FREQ
+	PushWord	#MENU_CHANNEL
 	_InsertMItem2		; add the menu item
 	
 *--- Update the resource

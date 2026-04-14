@@ -44,6 +44,7 @@ BTN_CANCEL	=	14	; cancel
 BTN_SAVE	=	15	; save
 
 MENU_CHANNEL	=	$1740	; the channel menu ID
+ITEM_CHANNEL	=	$1741	; the channel menu item ID
 RES_CHANNEL	=	$bd	; the resource type+ID that holds saved channels
 FIRST_ITEM	=	$1780	; the first menu ID in the pop-up
 
@@ -68,36 +69,6 @@ doREOPEN
 *----------------------------
 
 doRUN	rts
-
-*	PushWord	#10
-*	PushWord	#10
-*	_MoveTo
-*
-*	PushWord #$0800
-*	PushWord #65534		; Shaston.8
-*	PushWord #0
-*	_InstallFont
-*
-*	lda	theTICK
-*	bne	doRUN2
-*
-*	PushLong	#strNULL
-*
-*doRUN1	_DrawString
-*	
-*	lda	theTICK
-*	eor	#DFT_ON
-*	sta	theTICK
-*	rts
-*
-*doRUN2	PushLong	#strNONZERO
-*	bra	doRUN1
-*
-*---
-*
-*theTICK	ds	2
-*strNULL	str	'------'
-*strNONZERO	str	'Brutal'
 
 *----------------------------
 * doEVENT
@@ -139,7 +110,10 @@ doEVENT	pei	eventPtr+2
 	jmp	ctlKEYS
 
 doCONTROL	lda	taskDATA4
-	asl
+	cmp	#POPUP_FREQ	; handle $1740...
+	bne	doCONTROL1
+	lda	#9
+doCONTROL1	asl
 	tax
 	cmp	#tblCONTROL2-tblCONTROL
 	bcs	endEVENT
@@ -148,7 +122,7 @@ endEVENT	rts
 
 *--- Control table
 
-tblCONTROL	da	ctlNULL	; 0
+tblCONTROL	da	ctlNULL	;  0
 	da	ctlVOL	;  1 - Volume scroll bar (0-100)
 	da	ctlFREQ	;  2 - Frequency scroll bar (0-641)
 	da	doFREQ_MINUS	;  3 - Frequency--
@@ -157,7 +131,7 @@ tblCONTROL	da	ctlNULL	; 0
 	da	doVOL_PLUS	;  6 - Volume++
 	da	ctlNULL	;  7 - 87.5
 	da	ctlNULL	;  8 - 108
-	da	doPOPUP	;  9 - Pop-up menu
+	da	doPOPUP	;  9 - Pop-up menu (is $7140)
 	da	doSTAT_MINUS	; 10 - Remove station
 	da	doSTAT_PLUS	; 11 - Add station
 tblCONTROL2
@@ -305,11 +279,8 @@ thePARAM	ds	4
 * CONTROL 1: VOLUME SCROLL BAR
 *----------------------------
 
-ctlVOL	pha
-	PushLong	myWINDOW
-	PushLong	#SC_VOL
-	_GetCtlValueByID
-	pla
+ctlVOL	ldx	#SC_VOL
+	jsr	getCTLVALUE
 	sta	theVOL
 	jmp	lacie_setVOLUME
 
@@ -317,11 +288,8 @@ ctlVOL	pha
 * CONTROL 2: FREQUENCY SCROLL BAR
 *----------------------------
 
-ctlFREQ	pha
-	PushLong	myWINDOW
-	PushLong	#SC_FREQ
-	_GetCtlValueByID
-	pla
+ctlFREQ	ldx	#SC_FREQ
+	jsr	getCTLVALUE
 	sta	theFREQ
 	jsr	lacie_setFREQUENCY
 	jmp	lacie_printFREQUENCY
@@ -428,17 +396,14 @@ doMUTE	lda	fgMUTE
 * STATION POP-UP
 *----------------------------
 
-doPOPUP	pha		; get the menu ID
-	PushLong	myWINDOW2
-	PushLong	#POPUP_FREQ
-	_GetCtlValueByID
-	pla
-	sta	theINDEX
-	
+doPOPUP	ldx	#POPUP_FREQ
+	jsr	getCTLVALUE
+	sta	theMENU
+
 	ldx	#0	; compare menu IDs
 ]lp	lda	menuITEM1+2,x
 	beq	popupEXIT
-	cmp	theINDEX
+	cmp	theMENU
 	beq	popupFOUND	; we're good
 	bcs	popupEXIT	; we're above
 	txa
@@ -446,24 +411,111 @@ doPOPUP	pha		; get the menu ID
 	adc	#16
 	tax
 	cpx	#256
-	bcc	]lp
+	bne	]lp
 popupEXIT	rts		; not found
 
-popupFOUND	lda	channelFREQ1,x	; get the frequency
+popupFOUND	lda	channelFREQ1,x	; get the frequency index
 	beq	popupEXIT	; if it exists...
-	jmp	POPUP_FREQ	; and jumps to it
+	jmp	change_FREQ	; and jumps to it
 
 *----------------------------
 * REMOVE STATION
 *----------------------------
 
-doSTAT_MINUS	pha
+doSTAT_MINUS	ldx	#POPUP_FREQ
+	jsr	getCTLVALUE
+	cmp	#ITEM_CHANNEL	; is this the first entry?
+	bne	doSM_2	; no, a real entry
+doSM_1	rts		; yes, exit
+
+doSM_2	sta	theMENU	; the menu item ID
+
+	ldx	#0	; find it into the list
+]lp	lda	menuITEM1+2,x
+	beq	doSM_1
+	cmp	theMENU
+	beq	doSM_3	; we're good
+	bcs	doSM_1	; we're above
+	txa
+	clc
+	adc	#16
+	tax
+	cpx	#256
+	bcc	]lp
+	bcs	doSM_1
+
+doSM_3	stx	theINDEX	; we save the index of the entry (0..16..32)
+	
+* menu templates do not change: delete the last entry from the end to the beginning
+
+	ldx	#256-16
+]lp	lda	menuITEM1+2,x
+	bne	doSM_4	; found an entry
+	txa
+	sec
+	sbc	#16
+	tax
+	bpl	]lp
+	bmi	doSM_5
+
+doSM_4	stz	menuITEM1+2,x
+
+* must move all channel entries up by one entry
+
+doSM_5	ldx	theINDEX	; special case: the last entry
+	cpx	#256-16
+	beq	doSM_6	; we just erase the last entry
+
+	lda	theINDEX	; from
+	clc
+	adc	#16
+	tay
+	ldx	theINDEX	; to
+	
+]lp	lda	channelFREQ1,y	; menuITEM1,x = menuITEM1,y
+	sta	channelFREQ1,x	; until the end of the array
+	iny
+	iny
+	inx
+	inx
+	cpy	#256	; y > x de 16
+	bne	]lp	; si Y=256 alors X=240
+
+doSM_6	stz	channelFREQ1,x	; clear the last array
+	inx
+	inx
+	cpx	#256
+	bne	doSM_6
+
+* set the resource file
+
 	pha
-	PushLong	myWINDOW
-	PushLong	#POPUP_FREQ
-	_GetCtlHandleFromID
-	_DrawOneCtl
-	rts
+	_GetCurResourceFile
+	PushWord	myRESID
+	_SetCurResourceFile
+
+* rebuild the menu
+
+	jsr	setMENUBAR	; set my bar
+
+	lda	#16
+	sta	theINDEX
+	lda	#FIRST_ITEM	; menu item ID
+	sta	theMENU
+	
+]lp	PushWord	theMENU
+	_DeleteMItem
+	bcs	doSM_7
+	inc	theMENU
+	dec	theINDEX
+	bne	]lp
+	
+doSM_7	jsr	buildMENU	; build the menu
+
+	lda	#ITEM_CHANNEL	; refresh menu entry
+	sta	theMENUID
+
+	jmp	markRESOURCE	; update & exit
 
 *----------------------------
 * ADD STATION
@@ -489,19 +541,19 @@ doSTAT_PLUS	jsr	makeChannelWindow
 	cmp	#BTN_SAVE
 	bne	]lp
 
-	jsr	addCHANNEL
+	ldx	#16-2	; pre-clear the buffer
+]lp	stz	theNAME,x	; if the LineEdit is empty
+	dex
+	dex
+	bpl	]lp
+
+	PushLong	myWINDOW2	; get the name
+	PushLong	#LE_NAME
+	PushLong	#theNAME
+	_GetLETextByID
+
 	jsr	closeChannelWindow
-
-	PushLong	myWINDOW
-	_ShowWindow
-
-	pha
-	pha
-	PushLong	myWINDOW
-	PushLong	#POPUP_FREQ
-	_GetCtlHandleFromID
-	_DrawOneCtl
-	rts
+	jmp	addCHANNEL
 
 doSP_END	jmp	closeChannelWindow
 
@@ -509,7 +561,8 @@ doSP_END	jmp	closeChannelWindow
 * LOAD SAVED CHANNELS
 *----------------------------
 
-loadCHANNELS	pha
+loadCHANNELS
+	pha
 	_GetCurResourceFile
 	PushWord	myRESID
 	_SetCurResourceFile
@@ -523,39 +576,78 @@ loadCHANNELS	pha
 	sta	haRESOURCE
 	pla
 	sta	haRESOURCE+2
+	bcc	loadOK
 
-	PushLong	haRESOURCE	; copy it
+	jsr	createRESOURCE	; create the resource if missing
+	
+loadOK	PushLong	haRESOURCE	; copy it
 	PushLong	#channelFREQ1
 	PushLong	#256
 	_HandToPtr
 
-*--- Create the menu items
+	jsr	setMENUBAR	; set my menu bar
+	jsr	buildMENU	; create the menu
 
-	ldx	#0
-]lp	lda	channelFREQ1,x
-	bne	loadFOUND
+	lda	#ITEM_CHANNEL
+	sta	theMENUID
 
-*---
+*--- The common end (used by different routines)
 
 exitPOPUP	PushWord	#0
 	PushWord	#0
 	PushWord	#MENU_CHANNEL
 	_CalcMenuSize
 
-	pha
-	pha
-	PushLong	myWINDOW
-	PushLong	#POPUP_FREQ
-	_GetCtlHandleFromID
-	_DrawOneCtl
-	
+	lda	theMENUID
+	ldx	#POPUP_FREQ
+	jsr	setCTLVALUE
+
 	_SetCurResourceFile
 	rts
 
 *---
 
-loadFOUND	stx	theINDEX
+theMENUID	ds	2
+haRESOURCE	ds	4
 
+*----------------------------
+* MENU BAR
+*----------------------------
+
+*--- Set my menu bar
+
+setMENUBAR      pha
+                pha
+                _GetMenuBar
+                PullLong	theMENUBAR
+
+	pha
+	pha
+                PushLong	myWINDOW
+                PushLong	#POPUP_FREQ
+                _GetCtlHandleFromID
+                _SetMenuBar
+	rts
+
+*--- Restore the previous menu bar
+
+restoreMENUBAR	PushLong	theMENUBAR
+	_SetMenuBar
+	rts
+
+*---
+
+theMENUBAR	ds	4
+
+*----------------------------
+* BUILD THE MENUS
+*----------------------------
+
+buildMENU	ldx	#0
+]lp	lda	channelFREQ1,x
+	beq	exitBUILDMENU
+
+	stx	theINDEX
 	txa
 	lsr
 	lsr
@@ -575,18 +667,13 @@ loadFOUND	stx	theINDEX
 	PushWord	#MENU_CHANNEL
 	_InsertMItem2		; add the menu item
 
-	ldx	theINDEX
-	txa
+	lda	theINDEX
 	clc
 	adc	#16
 	tax
 	cpx	#256
-	bcc	]lp
-	bcs	exitPOPUP
-
-*---
-
-haRESOURCE	ds	4
+	bne	]lp
+exitBUILDMENU	rts
 
 *----------------------------
 * INSERT NEW STATION
@@ -619,19 +706,31 @@ addFOUND	stx	theINDEX
 
 *---
 
-	ldx	#16-2	; pre-clear the buffer
-]lp	stz	theNAME,x	; if the LineEdit is empty
-	dex
-	dex
-	bpl	]lp
+	pha
+	_GetCurResourceFile
+	PushWord	myRESID
+	_SetCurResourceFile
 
-	PushLong	myWINDOW2
-	PushLong	#LE_NAME
-	PushLong	#theNAME
-	_GetLETextByID
+
+*--- Copy channel frequency and name
+
+	ldx	theINDEX	; copy the frequency
+	lda	theFREQ
+	sta	channelFREQ1,x
+	
+	PushLong	#theNAME	; copy the channel name
+	pea	^channelNAME1
+	lda	theINDEX
+	clc
+	adc	#channelNAME1
+	pha
+	PushLong	#16
+	_BlockMove
 
 *--- Create the menu item
 
+	jsr	setMENUBAR
+	
 	ldx	theINDEX	; save the menu item ID
 	lda	theMENU
 	sta	menuITEM1+2,x
@@ -645,26 +744,23 @@ addFOUND	stx	theINDEX
 	PushWord	#$ffff	; insertAfter
 	PushWord	#MENU_CHANNEL
 	_InsertMItem2		; add the menu item
+
+	lda	theMENU
+	sta	theMENUID
 	
 *--- Update the resource
 
-	PushLong	#channelFREQ1
+markRESOURCE	PushLong	#channelFREQ1
 	PushLong	haRESOURCE
 	PushLong	#256
 	_PtrToHand
-
-	pha
-	_GetCurResourceFile
-	PushWord	myRESID
-	_SetCurResourceFile
 
 	PushWord	#$ffff	; tell the resource has changed
 	PushWord	#RES_CHANNEL
 	PushLong	#1
 	_MarkResourceChange
 
-	_SetCurResourceFile
-	rts
+	jmp	exitPOPUP	; refresh the menu and restore data
 
 *---
 
@@ -672,11 +768,42 @@ theMENU	ds	2	; the menu index
 theNAME	ds	16	; channel name
 
 *----------------------------
+* CREATE RESOURCE
+*----------------------------
+
+createRESOURCE	pha		; ask for 256 bytes
+	pha
+	PushLong	#256
+	PushWord	myID
+	PushWord	#%1000_0000_0001_1100
+	PushLong	#0
+	_NewHandle
+	PullLong	haRESOURCE
+
+	PushLong	#channelFREQ1	; copy the data into the handle
+	PushLong	haRESOURCE
+	PushLong	#256
+	_PtrToHand
+
+	PushLong	haRESOURCE	; add the resource
+	PushWord	#%1000_0000_0001_1100
+	PushWord	#RES_CHANNEL
+	PushLong	#1
+	_AddResource
+
+	PushWord	#$ffff	; tell the resource has changed
+	PushWord	#RES_CHANNEL
+	PushLong	#1
+	_MarkResourceChange
+
+	rts
+
+*----------------------------
 * DATA
 *----------------------------
 
 theVOL	dw	DFT_VOL
-theFREQ	dw	DFT_FREQ
+theFREQ	dw	DFT_FREQ	; the index of the frequency, not the frequency :-(
 fgMUTE	dw	DFT_OFF	; 0: off, 1: on
 fgRDS	dw	DFT_ON	; 0: off, 1: on
 
@@ -781,4 +908,3 @@ menuITEM16	ds	10
 	ds	2
 
 *--- Ce n'est pas beau mais bon...
-

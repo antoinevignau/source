@@ -160,12 +160,13 @@ ndaOPEN1	plb
 
 *--- Open our window
 
-ndaOPEN2	PushLong	#0
+ndaOPEN2	pha
+	pha
 	_GetPort
 	PullLong	curPORT
 	_WaitCursor
 
-	PushWord	#0
+	pha
 	_GetCurResourceApp
 	PullWord	curRESID
 	bcs	ndaOPEN9
@@ -182,16 +183,6 @@ ndaOPEN2	PushLong	#0
 	lda	#1
 	sta	fgOPEN
 
-	lda	#doPOPUP
-	stal	$300
-	lda	#^doPOPUP
-	stal	$302
-	
-	lda	#loadCHANNELS
-	stal	$308
-	lda	#^loadCHANNELS
-	stal	$30a
-	
 	jsr	loadCHANNELS		; load the stored channels
 	jsr	lacie_setDFTVAL		; set default values
 	jsr	lacie_setVOLUME		; set the volume
@@ -225,7 +216,7 @@ ndaCLOSE	phb
 
 	jsr	lacie_switchOFF	; yes, turn the FM Radio off
 
-ndaCLOSE1	PushWord	#0
+ndaCLOSE1	pha
 	_GetCurResourceFile
 	PushWord	myRESID
 	_SetCurResourceFile
@@ -264,12 +255,13 @@ ndaACTION	phd
 	tsc
 	tcd
 	
-	PushWord	#0
+	pha
 	_GetCurResourceFile
 	PushWord	myRESID
 	_SetCurResourceFile
 	
-	PushLong	#0
+	pha
+	pha
 	_GetPort
 	PushLong	myWINDOW
 	_SetPort
@@ -642,7 +634,7 @@ ndaINITShutDown	PushWord	myID	; shut down
 * CHECK QD VERSION
 *----------------------------
 
-checkQDVersion	PushWord	#0
+checkQDVersion	pha
 	_QDVersion
 	pla
 	and	#$0fff
@@ -653,10 +645,11 @@ checkQDVersion	PushWord	#0
 * MAKE MAIN WINDOW
 *----------------------------
 
-makeMainWindow	PushWord	#0
-	_GetCurResourceFile
-	PushWord	myRESID
-	_SetCurResourceFile
+makeMainWindow
+*	pha
+*	_GetCurResourceFile
+*	PushWord	myRESID
+*	_SetCurResourceFile
 	
 	pha
 	pha
@@ -683,7 +676,7 @@ makeMainWindow	PushWord	#0
 	PushLong	myWINDOW
 	_EndUpdate
 	
-	_SetCurResourceFile
+*	_SetCurResourceFile
 
 	rts
 	
@@ -692,10 +685,10 @@ makeMainWindow	PushWord	#0
 *----------------------------
 
 makeChannelWindow
-	PushWord	#0
-	_GetCurResourceFile
-	PushWord	myRESID
-	_SetCurResourceFile
+*	pha
+*	_GetCurResourceFile
+*	PushWord	myRESID
+*	_SetCurResourceFile
 	
 	pha
 	pha
@@ -709,7 +702,45 @@ makeChannelWindow
 	_NewWindow2
 	PullLong	myWINDOW2
 
-	_SetCurResourceFile
+*--- The default name is the frequency of the channel
+
+	ldx	#16-2	; pre-clear the buffer
+]lp	stz	theNAME,x	; if the LineEdit is empty
+	dex
+	dex
+	bpl	]lp
+
+	sep	#$30
+	
+	ldx	#0
+	txy
+]lp	lda	strFREQUENCY,x
+	cmp	#' '
+	beq	mcw_NEXT
+	cpx	#3	; arrive-t-on au séparateur ?
+	bne	mcw_GOOD
+	pha		; save digit
+	lda	#'.'	; output .
+	sta	theNAME+1,y
+	iny
+	pla		; and output digit
+mcw_GOOD	sta	theNAME+1,y
+	iny
+mcw_NEXT	inx
+	cpx	#5
+	bcc	]lp
+
+	sty	theNAME	; save the length
+	rep	#$30
+
+	PushLong	myWINDOW2	; get the name
+	PushLong	#LE_NAME
+	PushLong	#theNAME
+	_SetLETextByID
+
+*---
+	
+*	_SetCurResourceFile
 
 	rts
 
@@ -718,10 +749,10 @@ makeChannelWindow
 *----------------------------
 
 closeChannelWindow
-	pha
-	_GetCurResourceFile
-	PushWord	myRESID
-	_SetCurResourceFile
+*	pha
+*	_GetCurResourceFile
+*	PushWord	myRESID
+*	_SetCurResourceFile
 
 	PushLong	myWINDOW2
 	_HideWindow
@@ -731,7 +762,7 @@ closeChannelWindow
 	stz	myWINDOW2
 	stz	myWINDOW2+2
 
-	_SetCurResourceFile
+*	_SetCurResourceFile
 	rts
 
 *----------------------------
@@ -753,7 +784,7 @@ startResourceManager
 	pla
 	bcs	startRM1
 	
-	PushWord	#0
+	pha
 	_GetCurResourceFile
 	PullWord	myRESID
 	
@@ -891,7 +922,7 @@ proVOLUME	dw	5
 	ds	4
 	ds	4
 	ds	2
-s
+
 proGETSYSPREFS	dw	1
 	ds	2
 

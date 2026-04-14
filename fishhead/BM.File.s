@@ -2,181 +2,181 @@
 * BatchMan : Standard File
 *----------------------------------------
 
-ButtonItem = $0a
-StatText = $0f
-EditLine = $11
-UserItem = $14
-ItemDisable = $8000
+ButtonItem    =         $0a
+StatText      =         $0f
+EditLine      =         $11
+UserItem      =         $14
+ItemDisable   =         $8000
 
 *----------------------------------- Standard open
 * Used to open one file
 *
 
-stdOPEN jsr GSOSsetPFXopen
+stdOPEN       jsr       GSOSsetPFXopen
 
- PushWord #120
- PushWord #43
- PushWord #refIsResource
- PushLong #loadSTR
- PushLong #0
- PushLong #0 ; fileLIST
- PushLong #replyPTR
- _SFGetFile2
+              PushWord  #120
+              PushWord  #43
+              PushWord  #refIsResource
+              PushLong  #loadSTR
+              PushLong  #0
+              PushLong  #0              ; fileLIST
+              PushLong  #replyPTR
+              _SFGetFile2
 
- jsr GSOSgetPFXopen
+              jsr       GSOSgetPFXopen
 
- lda replyPTR
- bne stdOPEN1
- sec
- rts
-stdOPEN1 clc
- rts
+              lda       replyPTR
+              bne       stdOPEN1
+              sec
+              rts
+stdOPEN1      clc
+              rts
 
 *----------------------------------- Standard save
 * Used to save one file
 *
 
-stdSAVE jsr GSOSsetPFXsave
+stdSAVE       jsr       GSOSsetPFXsave
 
- PushWord #160
- PushWord #40
- PushWord #refIsResource
- PushLong #saveSTR
- PushWord #0
- PushLong #namePTR1
- PushLong #replyPTR
- _SFPutFile2
+              PushWord  #160
+              PushWord  #40
+              PushWord  #refIsResource
+              PushLong  #saveSTR
+              PushWord  #0
+              PushLong  #namePTR1
+              PushLong  #replyPTR
+              _SFPutFile2
 
- jsr GSOSgetPFXsave
+              jsr       GSOSgetPFXsave
 
- lda replyPTR
- bne stdSAVE1
- sec
- rts
-stdSAVE1 clc
- rts
+              lda       replyPTR
+              bne       stdSAVE1
+              sec
+              rts
+stdSAVE1      clc
+              rts
 
 *----------------------------------- Personal open
 * Used to open one file
 *
 
-stdOPEN2 jsr GSOSsetPFXopen
+stdOPEN2      jsr       GSOSsetPFXopen
 
- PushWord #120 ; whereX
- PushWord #33 ; whereY
- PushLong #0 ; itemDrawPtr
- PushWord #refIsResource ; promptRefDesc
- PushLong #loadSTR ; promptRef
- PushLong #0 ; filterProcPtr
- PushLong #openLIST ; typeListPtr
- PushLong #0 ; dialogTempPtr
- PushLong #0 ; dialogHookPtr
- PushLong #replyPTR ; replyPtr
- _SFPGetFile2
+              PushWord  #120            ; whereX
+              PushWord  #33             ; whereY
+              PushLong  #0              ; itemDrawPtr
+              PushWord  #refIsResource  ; promptRefDesc
+              PushLong  #loadSTR        ; promptRef
+              PushLong  #0              ; filterProcPtr
+              PushLong  #openLIST       ; typeListPtr
+              PushLong  #0              ; dialogTempPtr
+              PushLong  #0              ; dialogHookPtr
+              PushLong  #replyPTR       ; replyPtr
+              _SFPGetFile2
 
- jsr GSOSgetPFXopen
+              jsr       GSOSgetPFXopen
 
- lda replyPTR
- bne stdOPEN3
- sec
- rts
-stdOPEN3 clc
- rts
+              lda       replyPTR
+              bne       stdOPEN3
+              sec
+              rts
+stdOPEN3      clc
+              rts
 
 *----------------------------------- Personal save
 * Used by the second modal window
 * in the selection of the destination folder
 *
 
-stdSAVE2 jsr GSOSsetPFXsave
+stdSAVE2      jsr       GSOSsetPFXsave
 
- PushWord #160 ; whereX
- PushWord #40 ; whereY
- PushLong #0 ; itemDrawPtr
- PushWord #refIsResource ; promptRefDesc
- PushLong #folderSTR ; promptRef
- PushWord #refIsPointer ; filenameRefDesc
- PushLong #namePTR1 ; filenameRef
- PushLong #saveLIST ; dialogTempPtr
- PushLong #0 ; dialogHookPtr
- PushLong #replyPTR ; replyPtr
- _SFPPutFile2
+              PushWord  #160            ; whereX
+              PushWord  #40             ; whereY
+              PushLong  #0              ; itemDrawPtr
+              PushWord  #refIsResource  ; promptRefDesc
+              PushLong  #folderSTR      ; promptRef
+              PushWord  #refIsPointer   ; filenameRefDesc
+              PushLong  #namePTR1       ; filenameRef
+              PushLong  #saveLIST       ; dialogTempPtr
+              PushLong  #0              ; dialogHookPtr
+              PushLong  #replyPTR       ; replyPtr
+              _SFPPutFile2
 
- jsr GSOSgetPFXsave
+              jsr       GSOSgetPFXsave
 
- lda replyPTR
- bne stdSAVE3
- sec
- rts
-stdSAVE3 clc
- rts
+              lda       replyPTR
+              bne       stdSAVE3
+              sec
+              rts
+stdSAVE3      clc
+              rts
 
 *----------------------------------- Multi open
 * Used to select multiple files
 *
 
-stdOPEN4 jsr GSOSsetPFXopen
+stdOPEN4      jsr       GSOSsetPFXopen
 
- PushWord #120
- PushWord #43
- PushWord #refIsResource
- PushLong #loadSTR
- PushLong #0
- PushLong #0
- PushLong #multiPTR
- _SFMultiGet2
+              PushWord  #120
+              PushWord  #43
+              PushWord  #refIsResource
+              PushLong  #loadSTR
+              PushLong  #0
+              PushLong  #0
+              PushLong  #multiPTR
+              _SFMultiGet2
 
- jsr GSOSgetPFXopen
+              jsr       GSOSgetPFXopen
 
- jsr doMULTIha
+              jsr       doMULTIha
 
- lda multiPTR
- bne stdOPEN5
- sec
- rts
-stdOPEN5 clc
- rts
+              lda       multiPTR
+              bne       stdOPEN5
+              sec
+              rts
+stdOPEN5      clc
+              rts
 
 *----------------------------------- Multi save
 * Used by the second modal window
 * in the selection of the destination folder
 *
 
-stdSAVE4 jsr GSOSsetPFXsave
+stdSAVE4      jsr       GSOSsetPFXsave
 
- PushWord #120
- PushWord #43
- PushWord #refIsResource
- PushLong #saveSTR
- PushLong #0
- PushLong #0
- PushLong #multiPTR
- _SFMultiGet2
+              PushWord  #120
+              PushWord  #43
+              PushWord  #refIsResource
+              PushLong  #saveSTR
+              PushLong  #0
+              PushLong  #0
+              PushLong  #multiPTR
+              _SFMultiGet2
 
- jsr GSOSgetPFXsave
+              jsr       GSOSgetPFXsave
 
- jsr doMULTIha
+              jsr       doMULTIha
 
- lda multiPTR
- bne stdSAVE5
- sec
- rts
-stdSAVE5 clc
- rts
+              lda       multiPTR
+              bne       stdSAVE5
+              sec
+              rts
+stdSAVE5      clc
+              rts
 
 *--------------
 * v1.0b7
 
-doMULTIha lda multiPTR+2
- ora multiPTR+4
- bne doMULTIha1
- rts
-doMULTIha1 lda multiPTR+4
- pha
- lda multiPTR+2
- pha
- _DisposeHandle
- rts
+doMULTIha     lda       multiPTR+2
+              ora       multiPTR+4
+              bne       doMULTIha1
+              rts
+doMULTIha1    lda       multiPTR+4
+              pha
+              lda       multiPTR+2
+              pha
+              _DisposeHandle
+              rts
 
 *---------------------------------------
 * DIALOG HOOKS
@@ -617,85 +617,85 @@ doMULTIha1 lda multiPTR+4
 
 *--------------
 
-strSAVE str 'Save'
-strOPEN str 'Open'
-strCLOSE str 'Close'
-strNEXT str 'Disk'
-strCANCEL str 'Accept'
+strSAVE       str       'Save'
+strOPEN       str       'Open'
+strCLOSE      str       'Close'
+strNEXT       str       'Disk'
+strCANCEL     str       'Accept'
 *strCANCEL str 'Cancel'
-strACCEPT str 'Accept'
-strFREE str '^0 free of ^1 k.'
-strFOLDER str 'New Folder'
+strACCEPT     str       'Accept'
+strFREE       str       '^0 free of ^1 k.'
+strFOLDER     str       'New Folder'
 
-openLIST dw 0,0,134,400
- dw -1
- dw 0,0
- adrl openOPEN
- adrl openCLOSE
- adrl openNEXT
- adrl openCANCEL
- adrl openSCROLL
- adrl openPATH
- adrl openFILES
- adrl openPROMPT
+openLIST      dw        0,0,134,400
+              dw        -1
+              dw        0,0
+              adrl      openOPEN
+              adrl      openCLOSE
+              adrl      openNEXT
+              adrl      openCANCEL
+              adrl      openSCROLL
+              adrl      openPATH
+              adrl      openFILES
+              adrl      openPROMPT
 * adrl openPOPUP
- adrl 0
+              adrl      0
 
-openOPEN dw 1
- dw 61,265,73,375
- dw ButtonItem
- adrl strOPEN
- dw 0,0
- adrl 0
+openOPEN      dw        1
+              dw        61,265,73,375
+              dw        ButtonItem
+              adrl      strOPEN
+              dw        0,0
+              adrl      0
 
-openCLOSE dw 2
- dw 79,265,91,375
- dw ButtonItem
- adrl strCLOSE
- dw 0,0
- adrl 0
+openCLOSE     dw        2
+              dw        79,265,91,375
+              dw        ButtonItem
+              adrl      strCLOSE
+              dw        0,0
+              adrl      0
 
-openNEXT dw 3
- dw 25,265,37,375
- dw ButtonItem
- adrl strNEXT
- dw 0,0
- adrl 0
+openNEXT      dw        3
+              dw        25,265,37,375
+              dw        ButtonItem
+              adrl      strNEXT
+              dw        0,0
+              adrl      0
 
-openCANCEL dw 4
- dw 97,265,109,375
- dw ButtonItem
- adrl strCANCEL
- dw 0,0
- adrl 0
+openCANCEL    dw        4
+              dw        97,265,109,375
+              dw        ButtonItem
+              adrl      strCANCEL
+              dw        0,0
+              adrl      0
 
-openSCROLL dw 5
- dw 43,265,55,375
- dw ButtonItem
- adrl strACCEPT
- dw 0,0
- adrl 0
+openSCROLL    dw        5
+              dw        43,265,55,375
+              dw        ButtonItem
+              adrl      strACCEPT
+              dw        0,0
+              adrl      0
 
-openPATH dw 6
- dw 12,15,24,395
- dw UserItem
- adrl 0
- dw 0,0
- adrl 0
+openPATH      dw        6
+              dw        12,15,24,395
+              dw        UserItem
+              adrl      0
+              dw        0,0
+              adrl      0
 
-openFILES dw 7
- dw 25,18,107,215
- dw UserItem+ItemDisable
- adrl 0
- dw 0,0
- adrl 0
+openFILES     dw        7
+              dw        25,18,107,215
+              dw        UserItem+ItemDisable
+              adrl      0
+              dw        0,0
+              adrl      0
 
-openPROMPT dw 8
- dw 3,15,12,395
- dw StatText+ItemDisable
- adrl 0
- dw 0,0
- adrl 0
+openPROMPT    dw        8
+              dw        3,15,12,395
+              dw        StatText+ItemDisable
+              adrl      0
+              dw        0,0
+              adrl      0
 
 *openPOPUP dw 100
 * dw 112,18,128,273
@@ -741,108 +741,108 @@ openPROMPT dw 8
 
 *---
 
-saveLIST dw 0,0,120,320
- dw -1
- dw 0,0
- adrl saveSAVE
- adrl saveOPEN
- adrl saveCLOSE
- adrl saveNEXT
- adrl saveCANCEL
- adrl saveSCROLL
- adrl savePATH
- adrl saveFILES
- adrl savePROMPT
- adrl saveFILENAME
- adrl saveFREE
- adrl saveFOLDER
+saveLIST      dw        0,0,120,320
+              dw        -1
+              dw        0,0
+              adrl      saveSAVE
+              adrl      saveOPEN
+              adrl      saveCLOSE
+              adrl      saveNEXT
+              adrl      saveCANCEL
+              adrl      saveSCROLL
+              adrl      savePATH
+              adrl      saveFILES
+              adrl      savePROMPT
+              adrl      saveFILENAME
+              adrl      saveFREE
+              adrl      saveFOLDER
 * adrl savePOPUP1
 * adrl savePOPUP10
- adrl $00000000
+              adrl      $00000000
 
-saveSAVE dw 1
- dw 87,204,99,310
- dw ButtonItem
- adrl strSAVE
- dw 0,0
- adrl 0
+saveSAVE      dw        1
+              dw        87,204,99,310
+              dw        ButtonItem
+              adrl      strSAVE
+              dw        0,0
+              adrl      0
 
-saveOPEN dw 2
- dw 49,204,61,310
- dw ButtonItem
- adrl strOPEN
- dw 0,0
- adrl 0
+saveOPEN      dw        2
+              dw        49,204,61,310
+              dw        ButtonItem
+              adrl      strOPEN
+              dw        0,0
+              adrl      0
 
-saveCLOSE dw 3
- dw 64,204,76,310
- dw ButtonItem
- adrl strCLOSE
- dw 0,0
- adrl 0
+saveCLOSE     dw        3
+              dw        64,204,76,310
+              dw        ButtonItem
+              adrl      strCLOSE
+              dw        0,0
+              adrl      0
 
-saveNEXT dw 4
- dw 15,204,27,310
- dw ButtonItem
- adrl strNEXT
- dw 0,0
- adrl 0
+saveNEXT      dw        4
+              dw        15,204,27,310
+              dw        ButtonItem
+              adrl      strNEXT
+              dw        0,0
+              adrl      0
 
-saveCANCEL dw 5
- dw 104,204,116,310
- dw ButtonItem
- adrl strCANCEL
- dw 0,0
- adrl 0
+saveCANCEL    dw        5
+              dw        104,204,116,310
+              dw        ButtonItem
+              adrl      strCANCEL
+              dw        0,0
+              adrl      0
 
-saveSCROLL dw 6
- dw 0,0,0,0
- dw UserItem
- adrl 0
- dw 0,0
- adrl 0
+saveSCROLL    dw        6
+              dw        0,0,0,0
+              dw        UserItem
+              adrl      0
+              dw        0,0
+              adrl      0
 
-savePATH dw 7
- dw 0,10,12,315
- dw UserItem
- adrl 0
- dw 0,0
- adrl 0
+savePATH      dw        7
+              dw        0,10,12,315
+              dw        UserItem
+              adrl      0
+              dw        0,0
+              adrl      0
 
-saveFILES dw 8
- dw 26,10,88,170
- dw UserItem+ItemDisable
- adrl 0
- dw 0,0
- adrl 0
+saveFILES     dw        8
+              dw        26,10,88,170
+              dw        UserItem+ItemDisable
+              adrl      0
+              dw        0,0
+              adrl      0
 
-savePROMPT dw 9
- dw 88,10,100,200
- dw StatText+ItemDisable
- adrl 0
- dw 0,0
- adrl 0
+savePROMPT    dw        9
+              dw        88,10,100,200
+              dw        StatText+ItemDisable
+              adrl      0
+              dw        0,0
+              adrl      0
 
-saveFILENAME dw 10
- dw 100,10,118,194
- dw EditLine+ItemDisable
- adrl 0
- dw 0,0
- adrl 0
+saveFILENAME  dw        10
+              dw        100,10,118,194
+              dw        EditLine+ItemDisable
+              adrl      0
+              dw        0,0
+              adrl      0
 
-saveFREE dw 11
- dw 12,10,22,200
- dw StatText+ItemDisable
- adrl strFREE
- dw 0,0
- adrl 0
+saveFREE      dw        11
+              dw        12,10,22,200
+              dw        StatText+ItemDisable
+              adrl      strFREE
+              dw        0,0
+              adrl      0
 
-saveFOLDER dw 12
- dw 29,204,41,310
- dw ButtonItem
- adrl strFOLDER
- dw 0,0
- adrl 0
+saveFOLDER    dw        12
+              dw        29,204,41,310
+              dw        ButtonItem
+              adrl      strFOLDER
+              dw        0,0
+              adrl      0
 
 *savePOPUP1 dw 200
 * dw 122,10,138,171
@@ -942,19 +942,20 @@ saveFOLDER dw 12
 * dw $00f1
 * adrl $0004
 
-multiPTR ds 2 ; good
- ds 4 ; namesHandle
+multiPTR      ds        2               ; good
+              ds        4               ; namesHandle
 
-replyPTR ds 2 ; good
- ds 2 ; fileType
- ds 4 ; auxType
- ds 2 ; nameRefDesc
- adrl namePTR ; nameRef
- ds 2 ; pathRefDesc
- adrl pathPTR ; pathRef
+replyPTR      ds        2               ; good
+              ds        2               ; fileType
+              ds        4               ; auxType
+              ds        2               ; nameRefDesc
+              adrl      namePTR         ; nameRef
+              ds        2               ; pathRefDesc
+              adrl      pathPTR         ; pathRef
 
-namePTR dw 512
-namePTR1 ds 510
+namePTR       dw        512
+namePTR1      ds        510
 
-pathPTR dw 512
-pathPTR1 ds 510
+pathPTR       dw        512
+pathPTR1      ds        510
+

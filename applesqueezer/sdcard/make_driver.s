@@ -3,7 +3,7 @@
 
 	DSK	ASSDDriver
 	TYP	$BB
-	AUX	$0101
+	AUX	$0104
          
 * Assemble files
 

@@ -72,7 +72,10 @@ tblDISPATCH	da	DStartup		; 0 Driver_Startup
 * Driver_Startup
 *
 
-DStartup	ldal	FL_IDLE
+DStartup	lda	fgSTARTED	; we've been here
+	bne	DStartend	; avoid scanning other devices
+
+	ldal	FL_IDLE
 	and	#$ff
 	cmp	#$01
 	bne	DShutdown	; no AS found
@@ -82,27 +85,17 @@ DStartup	ldal	FL_IDLE
 	cmp	#minVERSION
 	bcc	DShutdown	; no minimum version
 
+	jsr	checkVOLUME	; what kind of volume do we have here?
+	
 	lda	#1	; we're on
 	sta	fgSTARTED
-
-*	PushWord	#0
-*	PushLong	#myTASK
-*	_SchAddTask
-*	pla
-
-*---
-
-	lda	#firstBLOCK
-	stal	$328
-	lda	#^firstBLOCK
-	stal	$32a
-	rts
+DStartend	rts
 	
 *
 * Driver_Shutdown
 *
 
-DShutdown	stz	fgSTARTED
+DShutdown	stz	fgSTARTED	; we're off
 
 *
 * Driver_Open
@@ -126,15 +119,14 @@ DRead	jsr	doSETUP
 *--- The AS magic is here
 
 dr1
-
 dr2	sep	#$20
-	lda	blockNum+3
+	lda	myBlockNum+3
 	stal	SD_ADDRESS_SET_MSB
-	lda	blockNum+2
+	lda	myBlockNum+2
 	stal	SD_ADDRESS_SET_MSB_1
-	lda	blockNum+1
+	lda	myBlockNum+1
 	stal	SD_ADDRESS_SET_MSB_2
-	lda	blockNum
+	lda	myBlockNum
 	stal	SD_ADDRESS_SET_MSB_3
 
 	lda	#1
@@ -153,18 +145,14 @@ dr2	sep	#$20
 	adc	#>blockSIZE
 	sta	bufferPtr+1
 	
-	inc	blockNum
+	inc	myBlockNum
 	bne	dr3
-	inc	blockNum+2
+	inc	myBlockNum+2
 	
 dr3	dex
 	bne	dr2
 	
-	lda	oblockNum
-	sta	blockNum
-	lda	oblockNum+2
-	sta	blockNum+2
-	lda	obufferPtr+1
+	lda	myBufferPtr
 	sta	bufferPtr+1
 	rts
 
@@ -180,81 +168,53 @@ DWrite	jsr	doSETUP
 
 *--- The AS magic is here
 
-dw1	lda	#$bd01
-	stal	$300
-
-	stz	theY
-	
+dw1
 dw2	sep	#$20
-	lda	blockNum+3
+	lda	myBlockNum+3
 	stal	SD_ADDRESS_SET_MSB
-	lda	blockNum+2
+	lda	myBlockNum+2
 	stal	SD_ADDRESS_SET_MSB_1
-	lda	blockNum+1
+	lda	myBlockNum+1
 	stal	SD_ADDRESS_SET_MSB_2
-	lda	blockNum
+	lda	myBlockNum
 	stal	SD_ADDRESS_SET_MSB_3
 
 	lda	#1
 	stal	SD_START_WRITE
 
-*---
-
-	ldy	#64	; waste time
-@10	lda	#102
-@20	dec
-	bne	@20
-	dey
-	bne	@10
-
-*--
-	
-	ldy	theY	; write one block
+	ldy	#0	; write one block
 ]lp	lda	[bufferPtr],y
 	stal	SD_ACCESS
-	
-	ldy	theY	; wasted time again
 	iny
-	sty	theY
 	cpy	#blockSIZE
-	bne	]lp
+	bcc	]lp
 
-	lda	#$05
-	stal	$300
+	rep	#$20
 	
-	rep	#$20	; move destination pointer
-	lda	bufferPtr+1
+	lda	#blockSIZE	; LoGo - DEBUG for now
+	sta	transferCount
+	stz	transferCount+2
+	rts
+
+************************
+* DEBUG
+************************
+	
+	lda	bufferPtr+1	; move destination pointer
 	clc
 	adc	#>blockSIZE
 	sta	bufferPtr+1
 	
-	lda	#$bd06
-	stal	$300
-	
-	inc	blockNum
+	inc	myBlockNum
 	bne	dw3
-	inc	blockNum+2
+	inc	myBlockNum+2
 	
-dw3	lda	#$bd07
-	stal	$300
-	
-	dex
+dw3	dex
 	bne	dw2
 	
-	lda	#$bd08
-	stal	$300
-	
-	lda	oblockNum
-	sta	blockNum
-	lda	oblockNum+2
-	sta	blockNum+2
-	lda	obufferPtr+1
+	lda	myBufferPtr
 	sta	bufferPtr+1
 	rts
-
-*---
-
-theY	ds	2
 
 *--- The AS magic ends here
 
@@ -295,14 +255,35 @@ SGetStatus	lda	#2		; GetDeviceStatus
 	lda	#6
 	sta	transferCount
 
-	ldy	#2		; we can send the number of blocks
-	lda	#maxBLOCKS
-	sta	[statusListPtr],y
-	iny
-	iny
-	lda	#^maxBLOCKS
-	sta	[statusListPtr],y
+*	ldy	#2		; we can send the number of blocks
+*	lda	#maxBLOCKS
+*	sta	[statusListPtr],y
+*	iny
+*	iny
+*	lda	#^maxBLOCKS
+*	sta	[statusListPtr],y
 
+	lda	dibPointer
+	stal	$310
+	lda	dibPointer+2
+	stal	$312
+	
+	ldy	#48		; we can send the number of blocks v2
+	lda	[dibPointer],y
+	dec
+	asl
+	asl
+	asl
+	asl			; *16
+	tax
+	ldy	#2
+	lda	tblPARTITION+4,x
+	sta	[statusListPtr],y
+	iny
+	iny
+	lda	tblPARTITION+6,x
+	sta	[statusListPtr],y
+	
 SGS1	ldx	#diskInDriveBit
 	lda	fgSTARTED		; send the status of the driver
 	bne	SGS2
@@ -391,11 +372,7 @@ ds2	lda	requestCount	; nb of bytes to read
 
 *--- requestcount : $0200 => 1
 
-ds4	lda	requestCount+1	; number of pages
-	lsr
-	tax
-
-	lda	requestCount	; multiple of $0200
+ds4	lda	requestCount	; multiple of $0200
 	and	#blockSIZE-1
 	beq	ds6
 
@@ -414,11 +391,31 @@ ds6	lda	requestCount	; assume transfer=request
 *--- Save data
 
 	lda	bufferPtr+1
-	sta	obufferPtr+1
-	lda	blockNum+2
-	sta	oblockNum+2
-	lda	blockNum
-	sta	oblockNum
+	sta	myBufferPtr
+
+*--- Prepare the real block value
+
+	ldy	#48
+	lda	[dibPointer],y
+	dec
+	asl
+	asl
+	asl
+	asl		; *16
+	tax
+	lda	tblPARTITION,x
+	clc
+	adc	blockNum
+	sta	myBlockNum
+	lda	tblPARTITION+2,x
+	adc	blockNum+2
+	sta	myBlockNum+2
+
+*--- Number of pages to read (is always a multiple of 2)
+	
+	lda	requestCount+1
+	lsr
+	tax
 
 	clc
 	rts
@@ -428,7 +425,19 @@ ds6	lda	requestCount	; assume transfer=request
 checkSWITCHED	lda	fgSTARTED
 	bne	cs1
 
-	jsl	SET_DISKSW
+*	ldy	#48
+*	lda	[dibPointer],y
+*	dec
+*	asl
+*	asl
+*	asl
+*	asl		; *16
+*	tax
+*	lda	tblPARTITION+8,x
+*	cmp	#TRUE
+*	bne	cs1
+	
+	jsl	SET_DISKSW	; partition is inactive
 
 	lda	#1
 	sta	fgSTARTED
@@ -439,23 +448,153 @@ checkSWITCHED	lda	fgSTARTED
 
 cs1	clc
 	rts
+
+*----------------------------
+* CHECK VOLUME
+*----------------------------
+
+VOL_SIG	=	$aa55
+BOOT_SIG1	=	$e9
+BOOT_SIG2	=	$eb
+GSOS_PART	=	$af	; really HFS and HFS+
+
+checkVOLUME	lda	#checkVOLUME
+	stal	$300
+	lda	#^checkVOLUME
+	stal	$302
+
+*--- Erase partition data
+
+	ldx	#PART_END-PART_BEGIN-2
+]lp	stz	tblPARTITION,x
+	dex
+	dex
+	bpl	]lp
+	
+*--- Read block 0
+
+	sep	#$20
+	lda	#0
+	stal	SD_ADDRESS_SET_MSB
+	stal	SD_ADDRESS_SET_MSB_1
+	stal	SD_ADDRESS_SET_MSB_2
+	stal	SD_ADDRESS_SET_MSB_3
+
+	lda	#1
+	stal	SD_START_READ
+
+	ldy	#0
+]lp	ldal	SD_ACCESS
+	sta	firstBLOCK,y
+	iny
+	cpy	#blockSIZE
+	bcc	]lp
+	rep	#$20
+	
+*--- Do we have a MBR?
+
+	lda	firstBLOCK+$1fe
+	cmp	#VOL_SIG
+	beq	cv_MBR	; yes
+
+cv_STD	lda	#maxBLOCKS	; partition 1 begins at block 0
+	sta	tblPARTITION+4	; and is a big one
+	lda	#^maxBLOCKS
+	sta	tblPARTITION+6
+	lda	#TRUE
+	sta	tblPARTITION+8
+	lda	#GSOS_PART
+	sta	tblPARTITION+10
+	rts
+
+*--- Do we really have a MBR?
+
+cv_MBR	lda	firstBLOCK
+	and	#$ff
+	cmp	#BOOT_SIG1
+	beq	cv_STD	; yes
+	cmp	#BOOT_SIG2
+	beq	cv_STD	; yes
+	cmp	#0
+	bne	cv_STD	; at least, not a partition map
+
+*--- We believe we have a partition map, let's check it
+
+PART1_OFFSET	=	$1be
+NB_PARTITIONS	=	4
+
+	ldy	#0
+	ldx	#PART1_OFFSET
+]lp	lda	firstBLOCK+4,x
+	and	#$ff	; empty partition
+	beq	cv_NEXT
+	
+	lda	firstBLOCK+8,x	; copy 1st LBA sector
+	sta	tblPARTITION,y	; and number of sectors
+	lda	firstBLOCK+10,x	; of partition
+	sta	tblPARTITION+2,y
+	lda	firstBLOCK+12,x
+	sta	tblPARTITION+4,y
+	lda	firstBLOCK+14,x
+	sta	tblPARTITION+6,y
+	lda	#TRUE	; partition is active
+	sta	tblPARTITION+8,y
+	lda	firstBLOCK+4,x	; partition ID
+	and	#$ff
+	sta	tblPARTITION+10,y
+	tya
+	clc
+	adc	#8
+	tay
+
+cv_NEXT	txa
+	clc
+	adc	#16
+	tax
+	cpx	#$1fe
+	bcc	]lp
+
+*--- Copy the block count to the DIBs
+
+	ldx	#0
+	txy
+]lp	lda	tblPARTITION+4,x
+	sta	MyDIB+10,y
+	lda	tblPARTITION+6,x
+	sta	MyDIB+12,y
+
+	txa
+	clc
+	adc	#8
+	tax
+	
+	tya
+	clc
+	adc	#64
+	tay
+	cpy	#64*NB_PARTITIONS
+	bcc	]lp
+
+*--- We're done! Pas vraiment mais bon...
+
+	rts
+	
 *----------------------------
 
 fgSTARTED	ds	2	; 0: not started, 1: started
 errCODE	ds	2
-thePAGE	ds	4	; page to read/write: $hh/ll00
 
-obufferPtr	ds	4
-oblockNum	ds	4
+myBufferPtr	ds	2
+myBlockNum	ds	4	; requested block number + LBA 1st sector
 
-*----------------------------
+*---------------------------- My DIBs
 
-MyDIB	ds	4	; +00 pointer to the next DIB
+MyDIB	adrl	MyDIB2	; +00 pointer to the next DIB
 	adrl	entryPOINT	; +04 driver entry point
 	dw	dftCHAR	; +08 characteristics
 	adrl	maxBLOCKS	; +0A block count
-	str	'ASSDDEVICE'	; +0E device name
-	ds	21	; 32 - 11 = 21
+	str	'ASSDDEVICEA'	; +0E device name
+	ds	20	; 32 - 11 = 21
 	dw	dftSLOT	; +2E slot number
 	dw	$0001	; +30 unit number
 	dw	dftVERSION	; +32 version
@@ -464,11 +603,60 @@ MyDIB	ds	4	; +00 pointer to the next DIB
 	dw	$0000	; +38 next linked device
 	ds	4	; +3A extended DIB ptr
 	dw	$0000	; +3E device number
-*
-* My DIB extension
-*
-ExtDIB	ds	2	; kind of image data (FAT, MacOS...)
-	ds	4	; first sector of image data
+
+MyDIB2	adrl	MyDIB3	; +00 pointer to the next DIB
+	adrl	entryPOINT	; +04 driver entry point
+	dw	dftCHAR	; +08 characteristics
+	adrl	maxBLOCKS	; +0A block count
+	str	'ASSDDEVICEB'	; +0E device name
+	ds	20	; 32 - 11 = 21
+	dw	dftSLOT	; +2E slot number
+	dw	$0002	; +30 unit number
+	dw	dftVERSION	; +32 version
+	dw	dftHDD	; +34 device ID
+	dw	$0000	; +36 first linked device
+	dw	$0000	; +38 next linked device
+	ds	4	; +3A extended DIB ptr
+	dw	$0000	; +3E device number
+
+MyDIB3	adrl	MyDIB4	; +00 pointer to the next DIB
+	adrl	entryPOINT	; +04 driver entry point
+	dw	dftCHAR	; +08 characteristics
+	adrl	maxBLOCKS	; +0A block count
+	str	'ASSDDEVICEC'	; +0E device name
+	ds	20	; 32 - 11 = 21
+	dw	dftSLOT	; +2E slot number
+	dw	$0003	; +30 unit number
+	dw	dftVERSION	; +32 version
+	dw	dftHDD	; +34 device ID
+	dw	$0000	; +36 first linked device
+	dw	$0000	; +38 next linked device
+	ds	4	; +3A extended DIB ptr
+	dw	$0000	; +3E device number
+
+MyDIB4	ds	4	; +00 pointer to the next DIB
+	adrl	entryPOINT	; +04 driver entry point
+	dw	dftCHAR	; +08 characteristics
+	adrl	maxBLOCKS	; +0A block count
+	str	'ASSDDEVICED'	; +0E device name
+	ds	20	; 32 - 11 = 21
+	dw	dftSLOT	; +2E slot number
+	dw	$0004	; +30 unit number
+	dw	dftVERSION	; +32 version
+	dw	dftHDD	; +34 device ID
+	dw	$0000	; +36 first linked device
+	dw	$0000	; +38 next linked device
+	ds	4	; +3A extended DIB ptr
+	dw	$0000	; +3E device number
+
+*----------------------------
+
+PART_BEGIN
+tblPARTITION	ds	16	; offset (32-bit), size in blocks (32-bit), active (16-bit), partition ID (16-bit)
+	ds	16
+	ds	16
+	ds	16
+PART_END
 
 *--- End of code
 

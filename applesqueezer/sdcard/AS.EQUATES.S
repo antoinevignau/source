@@ -87,7 +87,7 @@ ddevnumber	=	$3e
 * AS DRIVER EQUATES
 *-----------------------------------
 
-maxIMAGES	=	1	; no more than N images
+maxIMAGES	=	4	; no more than N images
 blockSIZE	=	512	; ProDOS 8 block size
 maxBLOCKS	=	$ffff	; that is a huge number of blocks
 

@@ -125,7 +125,9 @@ DRead	jsr	doSETUP
 
 *--- The AS magic is here
 
-dr1	sep	#$20
+dr1
+
+dr2	sep	#$20
 	lda	blockNum+3
 	stal	SD_ADDRESS_SET_MSB
 	lda	blockNum+2
@@ -145,7 +147,25 @@ dr1	sep	#$20
 	cpy	#blockSIZE
 	bne	]lp
 
-	rep	#$20
+	rep	#$20	; move destination pointer
+	lda	bufferPtr+1
+	clc
+	adc	#>blockSIZE
+	sta	bufferPtr+1
+	
+	inc	blockNum
+	bne	dr3
+	inc	blockNum+2
+	
+dr3	dex
+	bne	dr2
+	
+	lda	oblockNum
+	sta	blockNum
+	lda	oblockNum+2
+	sta	blockNum+2
+	lda	obufferPtr+1
+	sta	bufferPtr+1
 	rts
 
 *--- The AS magic ends here
@@ -160,7 +180,12 @@ DWrite	jsr	doSETUP
 
 *--- The AS magic is here
 
-dw1	sep	#$20
+dw1	lda	#$bd01
+	stal	$300
+
+	stz	theY
+	
+dw2	sep	#$20
 	lda	blockNum+3
 	stal	SD_ADDRESS_SET_MSB
 	lda	blockNum+2
@@ -173,15 +198,63 @@ dw1	sep	#$20
 	lda	#1
 	stal	SD_START_WRITE
 
-	ldy	#0	; read one block
+*---
+
+	ldy	#64	; waste time
+@10	lda	#102
+@20	dec
+	bne	@20
+	dey
+	bne	@10
+
+*--
+	
+	ldy	theY	; write one block
 ]lp	lda	[bufferPtr],y
 	stal	SD_ACCESS
+	
+	ldy	theY	; wasted time again
 	iny
+	sty	theY
 	cpy	#blockSIZE
 	bne	]lp
 
+	lda	#$05
+	stal	$300
+	
 	rep	#$20	; move destination pointer
+	lda	bufferPtr+1
+	clc
+	adc	#>blockSIZE
+	sta	bufferPtr+1
+	
+	lda	#$bd06
+	stal	$300
+	
+	inc	blockNum
+	bne	dw3
+	inc	blockNum+2
+	
+dw3	lda	#$bd07
+	stal	$300
+	
+	dex
+	bne	dw2
+	
+	lda	#$bd08
+	stal	$300
+	
+	lda	oblockNum
+	sta	blockNum
+	lda	oblockNum+2
+	sta	blockNum+2
+	lda	obufferPtr+1
+	sta	bufferPtr+1
 	rts
+
+*---
+
+theY	ds	2
 
 *--- The AS magic ends here
 
@@ -316,16 +389,17 @@ ds2	lda	requestCount	; nb of bytes to read
 	sec
 	rts
 
-* $0102_0400 = 
-
 *--- requestcount : $0200 => 1
-*--- From a Block to a RAM address
 
-ds4	lda	requestCount	; multiple of $0200
+ds4	lda	requestCount+1	; number of pages
+	lsr
+	tax
+
+	lda	requestCount	; multiple of $0200
 	and	#blockSIZE-1
 	beq	ds6
 
-	lda	#$002D		; bad block count
+	lda	#$002D	; bad block count
 	sta	errCODE
 	sec
 	rts
@@ -336,6 +410,15 @@ ds6	lda	requestCount	; assume transfer=request
 	sta	transferCount
 	lda	requestCount+2
 	sta	transferCount+2
+
+*--- Save data
+
+	lda	bufferPtr+1
+	sta	obufferPtr+1
+	lda	blockNum+2
+	sta	oblockNum+2
+	lda	blockNum
+	sta	oblockNum
 
 	clc
 	rts
@@ -356,52 +439,14 @@ checkSWITCHED	lda	fgSTARTED
 
 cs1	clc
 	rts
-
-*---------------------------- Check RAMDISK was init'ed
-
-myTASK	PushLong	#proVOLUME
-	PushWord	#$2008
-	jsl	GSOS2
-*	bcc	myTASK1
-*
-*	PushLong	#proFORMAT
-*	PushWord	#$2024
-*	jsl	GSOS2
-*
-*	lda	#1	; tell the driver we've been there
-*	stal	fgFORMAT	; a format will now be a real format
-*
-*	lda	#$4000	; no more silent formatting
-*	stal	proFORMAT+14
-
-myTASK1	rtl
-
-*---------------------------- GS/OS
-
-proVOLUME	dw	2
-	adrl	proDEVNAME
-	adrl	outVOLNAME
-
-proFORMAT	dw	5	; +00
-	adrl	proDEVNAME	; +02
-	adrl	proVOLNAME	; +06
-	dw	6	; +10
-	dw	6	; +12 - Default is ProDOS
-	dw	$2000	; +14 - Cant rename, can change selection, silent formatting
-
-proDEVNAME	strl	'.ASSDDEVICE'
-proVOLNAME	strl	':AppleSDqueezer'
-
-outVOLNAME	dw	36	; (word) output buffer
-	ds	34	; (word) strl + (array) string
-
 *----------------------------
 
 fgSTARTED	ds	2	; 0: not started, 1: started
-fgFORMAT	ds	2	; 0: GS/OS Format never called, 1 instead
 errCODE	ds	2
 thePAGE	ds	4	; page to read/write: $hh/ll00
-nbPAGES	ds	2	; number of blockSIZEP pages to copy
+
+obufferPtr	ds	4
+oblockNum	ds	4
 
 *----------------------------
 

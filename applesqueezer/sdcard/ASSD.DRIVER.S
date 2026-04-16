@@ -26,6 +26,7 @@
 
 	use	AS.EQUATES.S
 	
+	use	4/Sch.Macs
 	use	4/Util.Macs
 
 *-----------------------------------------------
@@ -44,27 +45,28 @@ RAMDisk	da	MyDIB-RAMDisk	; offset to 1st DIB
 
 entryPOINT	phk			; Dispatch
 	plb
-	cmp	#$0009
+	cmp	#8+1
 	bcc	L0012
 	lda	#$0020
 	bra	L001D
+
 L0012	asl
 	tax
 	stz	errCODE
 	jsr	(tblDISPATCH,x)
-	lda	errCODE
+	lda	errCODE	
 L001D	cmp	#$0001
 	rtl
 
-tblDISPATCH	da	DStartup		; Driver_Startup
-	da	DOpen   		; Driver_Open
-	da	DRead   		; Driver_Read
-	da	DWrite  		; Driver_Write
-	da	DClose  		; Driver_Close
-	da	DStatus 		; Driver_Status
-	da	DControl		; Driver_Control
-	da	DFlush  		; Driver_Flush
-	da	DShutdown		; Driver_Shutdown
+tblDISPATCH	da	DStartup		; 0 Driver_Startup
+	da	DOpen   		; 1 Driver_Open
+	da	DRead   		; 2 Driver_Read
+	da	DWrite  		; 3 Driver_Write
+	da	DClose  		; 4 Driver_Close
+	da	DStatus 		; 5 Driver_Status
+	da	DControl		; 6 Driver_Control
+	da	DFlush  		; 7 Driver_Flush
+	da	DShutdown		; 8 Driver_Shutdown
 
 *
 * Driver_Startup
@@ -74,7 +76,7 @@ DStartup	ldal	FL_IDLE
 	and	#$ff
 	cmp	#$01
 	bne	DShutdown	; no AS found
-
+	
 	ldal	FL_VERSION
 	and	#$ff
 	cmp	#minVERSION
@@ -82,6 +84,18 @@ DStartup	ldal	FL_IDLE
 
 	lda	#1	; we're on
 	sta	fgSTARTED
+
+*	PushWord	#0
+*	PushLong	#myTASK
+*	_SchAddTask
+*	pla
+
+*---
+
+	lda	#firstBLOCK
+	stal	$328
+	lda	#^firstBLOCK
+	stal	$32a
 	rts
 	
 *
@@ -129,8 +143,8 @@ dr1	sep	#$20
 	sta	[bufferPtr],y
 	iny
 	cpy	#blockSIZE
-	bcc	]lp
-	
+	bne	]lp
+
 	rep	#$20
 	rts
 
@@ -164,7 +178,7 @@ dw1	sep	#$20
 	stal	SD_ACCESS
 	iny
 	cpy	#blockSIZE
-	bcc	]lp
+	bne	]lp
 
 	rep	#$20	; move destination pointer
 	rts
@@ -189,11 +203,11 @@ DStatus1	asl
 	jsr	(tblSTATUS,x)
 	rts
 
-tblSTATUS	da	SGetStatus	; GetDeviceStatus
-	da	SGet	; GetConfigParameters
-	da	SGet	; GetWaitStatus
-	da	SGet	; GetFormatOptions
-	da	SNada	; GetPartitionMap
+tblSTATUS	da	SGetStatus	; 0 GetDeviceStatus
+	da	SGet	; 1 GetConfigParameters
+	da	SGet	; 2 GetWaitStatus
+	da	SGet	; 3 GetFormatOptions
+	da	SNada	; 4 GetPartitionMap
 
 SNada	rts
 
@@ -202,7 +216,7 @@ SNada	rts
 SGetStatus	lda	#2		; GetDeviceStatus
 	sta	transferCount
 	
-	lda	requestCount	; check length of buffer
+	lda	requestCount		; check length of buffer
 	cmp	#6
 	bcc	SGS1
 	lda	#6
@@ -296,7 +310,7 @@ doSETUP	jsr	checkSWITCHED
 ds2	lda	requestCount	; nb of bytes to read
 	ora	requestCount+2
 	bne	ds4
-
+	
 	lda	#$002C	; invalidByteCount
 	sta	errCODE
 	sec
@@ -330,7 +344,7 @@ ds6	lda	requestCount	; assume transfer=request
 
 checkSWITCHED	lda	fgSTARTED
 	bne	cs1
-	
+
 	jsl	SET_DISKSW
 
 	lda	#1
@@ -343,24 +357,74 @@ checkSWITCHED	lda	fgSTARTED
 cs1	clc
 	rts
 
+*---------------------------- Check RAMDISK was init'ed
+
+myTASK	PushLong	#proVOLUME
+	PushWord	#$2008
+	jsl	GSOS2
+*	bcc	myTASK1
+*
+*	PushLong	#proFORMAT
+*	PushWord	#$2024
+*	jsl	GSOS2
+*
+*	lda	#1	; tell the driver we've been there
+*	stal	fgFORMAT	; a format will now be a real format
+*
+*	lda	#$4000	; no more silent formatting
+*	stal	proFORMAT+14
+
+myTASK1	rtl
+
+*---------------------------- GS/OS
+
+proVOLUME	dw	2
+	adrl	proDEVNAME
+	adrl	outVOLNAME
+
+proFORMAT	dw	5	; +00
+	adrl	proDEVNAME	; +02
+	adrl	proVOLNAME	; +06
+	dw	6	; +10
+	dw	6	; +12 - Default is ProDOS
+	dw	$2000	; +14 - Cant rename, can change selection, silent formatting
+
+proDEVNAME	strl	'.ASSDDEVICE'
+proVOLNAME	strl	':AppleSDqueezer'
+
+outVOLNAME	dw	36	; (word) output buffer
+	ds	34	; (word) strl + (array) string
+
 *----------------------------
 
 fgSTARTED	ds	2	; 0: not started, 1: started
+fgFORMAT	ds	2	; 0: GS/OS Format never called, 1 instead
 errCODE	ds	2
 thePAGE	ds	4	; page to read/write: $hh/ll00
 nbPAGES	ds	2	; number of blockSIZEP pages to copy
 
+*----------------------------
+
 MyDIB	ds	4	; +00 pointer to the next DIB
 	adrl	entryPOINT	; +04 driver entry point
 	dw	dftCHAR	; +08 characteristics
-	ds	4	; +0A block count
-	str	'ASSDDevice'	; +0E device name
+	adrl	maxBLOCKS	; +0A block count
+	str	'ASSDDEVICE'	; +0E device name
 	ds	21	; 32 - 11 = 21
-	dw	$8000	; +2E slot number
+	dw	dftSLOT	; +2E slot number
 	dw	$0001	; +30 unit number
 	dw	dftVERSION	; +32 version
 	dw	dftHDD	; +34 device ID
 	dw	$0000	; +36 first linked device
 	dw	$0000	; +38 next linked device
-	adrl	$00000000	; +3A extended DIB ptr
+	ds	4	; +3A extended DIB ptr
 	dw	$0000	; +3E device number
+*
+* My DIB extension
+*
+ExtDIB	ds	2	; kind of image data (FAT, MacOS...)
+	ds	4	; first sector of image data
+
+*--- End of code
+
+firstBLOCK	ds	512

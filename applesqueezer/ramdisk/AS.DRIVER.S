@@ -490,7 +490,6 @@ outVOLNAME	dw	36	; (word) output buffer
 
 *----------------------------
 
-
 formatOptionsTable
 
 * 8 bytes

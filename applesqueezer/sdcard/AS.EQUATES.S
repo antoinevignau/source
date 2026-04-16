@@ -2,7 +2,7 @@
 * AppleSqueezer - Equates
 *
 * (c) 2023, Niek Van Suchtelen
-* (c) 2023, Brutal Deluxe Software
+* (c) 2023-2026, Brutal Deluxe Software
 *
 
 *-----------------------------------
@@ -75,7 +75,8 @@ diskSwitchedBit	=	$0001
 diskInDriveBit	=	$0010
 diskModifyBit	=	$0100
 
-dftHDD	=	$0013		; device ID for HDD (generic)
+spHDD	=	$02	; smartport ProFile-type hard disk
+dftHDD	=	$02	; $0e device ID for HDD (generic)
 
 dchar	=	$08
 dblockcount	=	$0a
@@ -88,15 +89,16 @@ ddevnumber	=	$3e
 
 maxIMAGES	=	1	; no more than N images
 blockSIZE	=	512	; ProDOS 8 block size
-maxBLOCKS	=	$ffffffff	; that is a huge number of blocks
+maxBLOCKS	=	$ffff	; that is a huge number of blocks
 
-* 0 0000 => 4 4000 generated device
-* B 1011 => B 1011 restartable + not speed dependent
-* A 1010 => E 1110 block device | write allowed | read allowed
-* 0 0000 => 8 1000 format allowed
+* 8 1000 => RAM nor ROM disk | no generated device | no linked device | no device busy
+* B 1011 => not speed dependent
+* E 1110 => block device | write allowed | read allowed
+* C 1100 => format allowed | removable media
 
-dftCHAR	=	$4BE8	; default characteristics 0BA8
-dftVERSION	=	$1020	; v1
+dftCHAR	=	$83EC	; default characteristics
+dftSLOT	=	$8000	; independent of slot hw
+dftVERSION	=	$1030	; version
 
 *-----------------------------------
 * GS/OS DIRECT PAGE

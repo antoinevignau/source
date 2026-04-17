@@ -54,7 +54,7 @@ STA_NODISK	=	2	; No medium in the drive
 TRUE	=	1
 FALSE	=	0
 
-minVERSION	=	7	; minimum core version to handle the driver
+minVERSION	=	13	; minimum core version to handle the driver
 
 *--- Speed settings
 * From 233 (3 MHz) to 255 (full speed)
@@ -96,7 +96,8 @@ maxBLOCKS	=	$ffff	; that is a huge number of blocks
 * E 1110 => block device | write allowed | read allowed
 * C 1100 => format allowed | removable media
 
-dftCHAR	=	$83EC	; default characteristics
+dftCHAR	=	$83E4	; default characteristics with no disk
+dftCHARWITHDISK	=	$83EC	; default chars with disk present
 dftSLOT	=	$8000	; independent of slot hw
 dftVERSION	=	$1030	; version
 

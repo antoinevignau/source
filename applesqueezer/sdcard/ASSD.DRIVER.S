@@ -18,6 +18,11 @@
 *   We read/write 512 bytes only
 *   I know what a partition map is...
 *
+* v1.3 (202604) - AV
+*   Read/Write/Erase/Format
+*   MBR partition map support
+*   That's cool!
+*
 
 	mx	%00
 	rel
@@ -26,7 +31,6 @@
 
 	use	AS.EQUATES.S
 	
-	use	4/Sch.Macs
 	use	4/Util.Macs
 
 *-----------------------------------------------
@@ -78,18 +82,26 @@ DStartup	lda	fgSTARTED	; we've been here
 	ldal	FL_IDLE
 	and	#$ff
 	cmp	#$01
-	bne	DShutdown	; no AS found
+	bne	DStarterr	; no AS found
 	
 	ldal	FL_VERSION
 	and	#$ff
 	cmp	#minVERSION
-	bcc	DShutdown	; no minimum version
+	bcc	DStarterr	; no minimum version
 
+	ldal	SD_CARD_INSERTED
+	and	#$ff
+	beq	DStarterr	; no SD card found (oops)
+	
 	jsr	checkVOLUME	; what kind of volume do we have here?
 	
 	lda	#1	; we're on
 	sta	fgSTARTED
 DStartend	rts
+	
+DStarterr	lda	#$0028	; no device connected. Goodbye!
+	sta	errCODE
+	rts
 	
 *
 * Driver_Shutdown
@@ -189,18 +201,8 @@ dw2	sep	#$20
 	cpy	#blockSIZE
 	bcc	]lp
 
-	rep	#$20
-	
-	lda	#blockSIZE	; LoGo - DEBUG for now
-	sta	transferCount
-	stz	transferCount+2
-	rts
-
-************************
-* DEBUG
-************************
-	
-	lda	bufferPtr+1	; move destination pointer
+	rep	#$20	; move destination pointer
+	lda	bufferPtr+1
 	clc
 	adc	#>blockSIZE
 	sta	bufferPtr+1
@@ -239,7 +241,7 @@ DStatus1	asl
 tblSTATUS	da	SGetStatus	; 0 GetDeviceStatus
 	da	SGet	; 1 GetConfigParameters
 	da	SGet	; 2 GetWaitStatus
-	da	SGet	; 3 GetFormatOptions
+	da	SGetFormatOptions	; 3 GetFormatOptions
 	da	SNada	; 4 GetPartitionMap
 
 SNada	rts
@@ -263,11 +265,6 @@ SGetStatus	lda	#2		; GetDeviceStatus
 *	lda	#^maxBLOCKS
 *	sta	[statusListPtr],y
 
-	lda	dibPointer
-	stal	$310
-	lda	dibPointer+2
-	stal	$312
-	
 	ldy	#48		; we can send the number of blocks v2
 	lda	[dibPointer],y
 	dec
@@ -301,6 +298,24 @@ SGet	lda	#0                           ; GetConfigParameters
 	sta	transferCount
 	rts
 
+*----------- GetFormatOptions
+
+SGetFormatOptions
+	lda	requestCount	; check size of buffer
+	cmp	#formatOptionsTableEnd-formatOptionsTable
+	bcc	SGetFormat1
+
+	ldy	#0		; and move data
+]lp	lda	formatOptionsTable,y
+	sta	[statusListPtr],y
+	iny
+	iny
+	cpy	#formatOptionsTableEnd-formatOptionsTable
+	bcc	]lp
+	sty	transferCount	; save size
+
+SGetFormat1	rts
+
 *
 * Driver_Control
 *
@@ -325,17 +340,79 @@ DControl2	asl
 	rts
 
 tblCONTROL	da	CNada	; 0 ResetDevice
-	da	CNada	; 1 FormatDevice
+	da	CFormatDevice	; 1 FormatDevice
 	da	CNada	; 2 EjectMedium
 	da	CSet	; 3 SetConfigParameters
 	da	CSet	; 4 SetWaitStatus
-	da	CSet	; 5 SetFormatOptions
+	da	CSetFormatOptions	; 5 SetFormatOptions
 	da	CNada	; 6 AssignPartitionOwner
 	da	CNada	; 7 ArmSignal
 	da	CNada	; 8 DisarmSignal
 	da	CNada	; 9 SetPartitionMap
 
 CNada	rts
+
+*----------- FormatDevice
+
+CFormatDevice	ldy	#48	; get the first block of the partition
+	lda	[dibPointer],y
+	dec
+	asl
+	asl
+	asl
+	asl		; *16
+	tax
+	lda	tblPARTITION,x
+	sta	myBlockNum
+	lda	tblPARTITION+2,x
+	sta	myBlockNum+2
+
+*---
+
+	ldx	#0	; 65536 blocks to format
+	
+cf2	sep	#$20	; set the block
+	lda	myBlockNum+3
+	stal	SD_ADDRESS_SET_MSB
+	lda	myBlockNum+2
+	stal	SD_ADDRESS_SET_MSB_1
+	lda	myBlockNum+1
+	stal	SD_ADDRESS_SET_MSB_2
+	lda	myBlockNum
+	stal	SD_ADDRESS_SET_MSB_3
+
+	lda	#1
+	stal	SD_START_WRITE
+
+	ldy	#512	; format the block
+	lda	#0
+]lp	stal	SD_ACCESS
+	dey
+	bne	]lp
+
+	rep	#$20	; next block
+	inc	myBlockNum
+	bne	cf3
+	inc	myBlockNum+2
+	
+cf3	dex		; until the end
+	bne	cf2
+	rts
+
+*----------- SetFormatOptions
+
+CSetFormatOptions
+	lda	[controlListPtr]
+	beq	CSFO9	; empty option is not ours
+	cmp	#3	; 1-2 only
+	bcs	CSFO9
+
+	ldy	#maxBLOCKS	; it is 1, default values for ProDOS
+	sty	fBlockCount
+	ldx	#^maxBLOCKS
+	stx	fBlockCount+2
+
+CSFO9	rts
 
 *----------- SetConfigParameters / SetWaitStatus
 
@@ -422,25 +499,41 @@ ds6	lda	requestCount	; assume transfer=request
 	
 *----------------------------
 
-checkSWITCHED	lda	fgSTARTED
+checkSWITCHED
+	lda	fgSTARTED
 	bne	cs1
 
-*	ldy	#48
-*	lda	[dibPointer],y
-*	dec
-*	asl
-*	asl
-*	asl
-*	asl		; *16
-*	tax
-*	lda	tblPARTITION+8,x
-*	cmp	#TRUE
-*	bne	cs1
+	ldy	#48
+	lda	[dibPointer],y
+	dec
+	asl
+	asl
+	asl
+	asl		; *16
+	tax
+	lda	tblPARTITION+8,x
+	cmp	#TRUE	; is partition active?
+	beq	cs1	; yes, exit
+
+	lda	tblPARTITION+12,x
+	cmp	#TRUE	; is switched already done?
+	beq	cs1	; yes, exit
 	
 	jsl	SET_DISKSW	; partition is inactive
 
-	lda	#1
-	sta	fgSTARTED
+	ldy	#48
+	lda	[dibPointer],y
+	dec
+	asl
+	asl
+	asl
+	asl		; *16
+	tax
+	lda	#TRUE	; set switched done
+	sta	tblPARTITION+12,x
+	
+*	lda	#1
+*	sta	fgSTARTED
 	lda	#$002e
 	sta	errCODE
 	sec
@@ -456,21 +549,35 @@ cs1	clc
 VOL_SIG	=	$aa55
 BOOT_SIG1	=	$e9
 BOOT_SIG2	=	$eb
-GSOS_PART	=	$af	; really HFS and HFS+
+GSOS_PART	=	$20	; reserved but unused partition ID
+SIZE_PART	=	16
+SIZE_DIB	=	64
 
-checkVOLUME	lda	#checkVOLUME
-	stal	$300
-	lda	#^checkVOLUME
-	stal	$302
+*---
 
-*--- Erase partition data
+checkVOLUME
+
+*--- Reset partition and DIB data
 
 	ldx	#PART_END-PART_BEGIN-2
 ]lp	stz	tblPARTITION,x
 	dex
 	dex
 	bpl	]lp
-	
+
+	ldx	#0	; reset DIB data (chars and block count)
+]lp	lda	#dftCHAR	; no disk
+	sta	MyDIB+8,x
+	stz	MyDIB+10,x	; size is 0
+	stz	MyDIB+12,x
+
+	txa
+	clc
+	adc	#SIZE_DIB
+	tax
+	cpx	#64*NB_PARTITIONS
+	bcc	]lp
+
 *--- Read block 0
 
 	sep	#$20
@@ -499,12 +606,17 @@ checkVOLUME	lda	#checkVOLUME
 
 cv_STD	lda	#maxBLOCKS	; partition 1 begins at block 0
 	sta	tblPARTITION+4	; and is a big one
+	sta	MyDIB+10
 	lda	#^maxBLOCKS
 	sta	tblPARTITION+6
+	sta	MyDIB+12
 	lda	#TRUE
-	sta	tblPARTITION+8
+	sta	tblPARTITION+8	; partition exists
+	sta	tblPARTITION+12	; disk is inserted
 	lda	#GSOS_PART
-	sta	tblPARTITION+10
+	sta	tblPARTITION+10	; define a GS/OS partition
+	lda	#dftCHARWITHDISK ; we have a disk in it
+	sta	MyDIB+8
 	rts
 
 *--- Do we really have a MBR?
@@ -525,9 +637,8 @@ NB_PARTITIONS	=	4
 
 	ldy	#0
 	ldx	#PART1_OFFSET
-]lp	lda	firstBLOCK+4,x
-	and	#$ff	; empty partition
-	beq	cv_NEXT
+]lp	jsr	checkPARTID	; check partition ID
+	bcs	cv_NEXT	; not authorized
 	
 	lda	firstBLOCK+8,x	; copy 1st LBA sector
 	sta	tblPARTITION,y	; and number of sectors
@@ -542,35 +653,40 @@ NB_PARTITIONS	=	4
 	lda	firstBLOCK+4,x	; partition ID
 	and	#$ff
 	sta	tblPARTITION+10,y
-	tya
-	clc
-	adc	#8
+	tya		; we do not set switchedStatus
+	clc		; it is already set to 0
+	adc	#SIZE_PART
 	tay
 
 cv_NEXT	txa
 	clc
-	adc	#16
+	adc	#SIZE_PART
 	tax
 	cpx	#$1fe
 	bcc	]lp
 
-*--- Copy the block count to the DIBs
+*--- Update the DIBs if needed
 
 	ldx	#0
 	txy
-]lp	lda	tblPARTITION+4,x
+]lp	lda	tblPARTITION+8,x	; do we have a partition?
+	cmp	#TRUE
+	bne	cv_NOUPDATE		; no
+	lda	#dftCHARWITHDISK	; yes, we have a disk in it
+	sta	MyDIB+8,y
+	lda	tblPARTITION+4,x	; and copy block count
 	sta	MyDIB+10,y
 	lda	tblPARTITION+6,x
 	sta	MyDIB+12,y
 
-	txa
+cv_NOUPDATE	txa
 	clc
-	adc	#8
+	adc	#SIZE_PART
 	tax
 	
 	tya
 	clc
-	adc	#64
+	adc	#SIZE_DIB
 	tay
 	cpy	#64*NB_PARTITIONS
 	bcc	]lp
@@ -578,7 +694,56 @@ cv_NEXT	txa
 *--- We're done! Pas vraiment mais bon...
 
 	rts
+
+*--- Check if the partition ID is in my authorized list
+
+checkPARTID	phy
+	sep	#$20
 	
+	ldy	#0
+]lp	lda	listPARTID,y
+	cmp	#$ff	; end of list
+	beq	cpid_KO
+	
+	cmp	firstBLOCK+4,x	; is it in my list?
+	beq	cpid_OK	; yes, authorized
+	iny		; next one, please
+	bne	]lp
+
+cpid_KO	rep	#$20	; not in my list
+	ply
+	sec
+	rts
+cpid_OK	rep	#$20	; in my list
+	ply
+	clc
+	rts
+
+*----------------------------
+
+formatOptionsTable
+
+* 8 bytes
+	dw	1	; numOptions
+	dw	1	; numDisplayed
+	dw	1	; recommendedOption
+	dw	1	; currentOption
+
+* 16 bytes
+	dw	1	; formatOptionNum
+	dw	0	; linkRefNum
+	dw	9	; flags 1001 - MB size - Apple format
+	adrl	maxBLOCKS	; blockCount is 491520 for HFS
+	dw	blockSIZE	; blockSize is 512 bytes
+	dw	0	; interleaveFactor
+	dw	32	; mediaSize 1000 - MB size
+
+formatOptionsTableEnd
+
+*--- Default formatting options
+
+fBlockCount	adrl	maxBLOCKS
+
 *----------------------------
 
 fgSTARTED	ds	2	; 0: not started, 1: started
@@ -651,10 +816,15 @@ MyDIB4	ds	4	; +00 pointer to the next DIB
 
 *----------------------------
 
+listPARTID	dfb	$01,$04,$06,$0b,$0c,$0e,$0f
+	dfb	$11,$14,$16,$1b,$1c,$1e,$1f
+	dfb	GSOS_PART,$af
+	dfb	$ff	; end of list and a part ID I do not support
+	
 PART_BEGIN
-tblPARTITION	ds	16	; offset (32-bit), size in blocks (32-bit), active (16-bit), partition ID (16-bit)
-	ds	16
-	ds	16
+tblPARTITION	ds	16	;  +0: offset (32-bit),  +4: size in blocks (32-bit)
+	ds	16	;  +8: active (16-bit), +10: partition ID (16-bit)
+	ds	16	; +12: switchedStatus (16-bit) (from 0 to 1)
 	ds	16
 PART_END
 

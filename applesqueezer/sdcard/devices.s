@@ -164,7 +164,8 @@ doQUIT            _IMShutDown
 *----------------------------
 
 pollDEVICES       lda       #1                   ; start with device 1
-                  sta       proDINFO+2
+                  sta	proDINFO+2
+	  sta	proDSTATUS+2
 
 ]lp               jsl       GSOS                 ; do a DInfo
                   dw        $202c
@@ -180,12 +181,16 @@ loop              inc       proDINFO+2
 
 *---------- Show device
 
-found             lda       proDINFO+8           ; not removable
-                  and       #dcBLOCKDEVICE
-                  beq       loop
+found             lda	proDINFO+8           ; not a block device
+                  and	#dcBLOCKDEVICE
+                  beq	loop
 
-                  jsr       showDEVICEINFO
-	      bra       loop
+	  jsl	GSOS
+	  dw	$202d
+	  adrl	proDSTATUS
+
+	  jsr	showDEVICEINFO
+	  bra	loop
 
 *--- Sub routines
 *
@@ -250,6 +255,18 @@ showDEVICEINFO
                   PushLong  #strDEV              ; show the string
                   _WriteCString
 
+*--- status
+
+	lda	devSTATUS
+	pha
+	pha
+	pha
+	_HexIt
+	PullLong	strDEVID
+	
+	PushLong	#strDEV
+	_WriteCString
+	
 *--- name
 
                   lda       devINFO1             ; from a STRL to a STR
@@ -312,6 +329,16 @@ devINFO           dw        $0032                ; buffer size
 devINFO1          db        $00                  ; length
 devINFO2          db        $00
 devINFO3          ds        $30                  ; data
+
+proDSTATUS	dw	5	; pCount
+	ds	2	; devNum
+	dw	0	; code: device status
+	adrl	devSTATUS	; list
+	adrl	6	; requestCount
+	ds	4	; transferCount
+
+devSTATUS	ds	2	; status
+	ds	4	; max blocks
 
 *----------
 

@@ -23,6 +23,9 @@
 *   MBR partition map support
 *   That's cool!
 *
+* v1.4 (202604) - AV
+*   Niek wants unrolled loops
+*
 
 	mx	%00
 	rel
@@ -148,8 +151,53 @@ dr2	sep	#$20
 ]lp	ldal	SD_ACCESS
 	sta	[bufferPtr],y
 	iny
+	ldal	SD_ACCESS
+	sta	[bufferPtr],y
+	iny
+	ldal	SD_ACCESS
+	sta	[bufferPtr],y
+	iny
+	ldal	SD_ACCESS
+	sta	[bufferPtr],y
+	iny
+	ldal	SD_ACCESS
+	sta	[bufferPtr],y
+	iny
+	ldal	SD_ACCESS
+	sta	[bufferPtr],y
+	iny
+	ldal	SD_ACCESS
+	sta	[bufferPtr],y
+	iny
+	ldal	SD_ACCESS
+	sta	[bufferPtr],y
+	iny
+	ldal	SD_ACCESS
+	sta	[bufferPtr],y
+	iny
+	ldal	SD_ACCESS
+	sta	[bufferPtr],y
+	iny
+	ldal	SD_ACCESS
+	sta	[bufferPtr],y
+	iny
+	ldal	SD_ACCESS
+	sta	[bufferPtr],y
+	iny
+	ldal	SD_ACCESS
+	sta	[bufferPtr],y
+	iny
+	ldal	SD_ACCESS
+	sta	[bufferPtr],y
+	iny
+	ldal	SD_ACCESS
+	sta	[bufferPtr],y
+	iny
+	ldal	SD_ACCESS
+	sta	[bufferPtr],y
+	iny
 	cpy	#blockSIZE
-	bne	]lp
+	bcc	]lp
 
 	rep	#$20	; move destination pointer
 	lda	bufferPtr+1
@@ -162,9 +210,10 @@ dr2	sep	#$20
 	inc	myBlockNum+2
 	
 dr3	dex
-	bne	dr2
+	beq	dr4
+	jmp	dr2
 	
-	lda	myBufferPtr
+dr4	lda	myBufferPtr
 	sta	bufferPtr+1
 	rts
 
@@ -198,6 +247,51 @@ dw2	sep	#$20
 ]lp	lda	[bufferPtr],y
 	stal	SD_ACCESS
 	iny
+	lda	[bufferPtr],y
+	stal	SD_ACCESS
+	iny
+	lda	[bufferPtr],y
+	stal	SD_ACCESS
+	iny
+	lda	[bufferPtr],y
+	stal	SD_ACCESS
+	iny
+	lda	[bufferPtr],y
+	stal	SD_ACCESS
+	iny
+	lda	[bufferPtr],y
+	stal	SD_ACCESS
+	iny
+	lda	[bufferPtr],y
+	stal	SD_ACCESS
+	iny
+	lda	[bufferPtr],y
+	stal	SD_ACCESS
+	iny
+	lda	[bufferPtr],y
+	stal	SD_ACCESS
+	iny
+	lda	[bufferPtr],y
+	stal	SD_ACCESS
+	iny
+	lda	[bufferPtr],y
+	stal	SD_ACCESS
+	iny
+	lda	[bufferPtr],y
+	stal	SD_ACCESS
+	iny
+	lda	[bufferPtr],y
+	stal	SD_ACCESS
+	iny
+	lda	[bufferPtr],y
+	stal	SD_ACCESS
+	iny
+	lda	[bufferPtr],y
+	stal	SD_ACCESS
+	iny
+	lda	[bufferPtr],y
+	stal	SD_ACCESS
+	iny
 	cpy	#blockSIZE
 	bcc	]lp
 
@@ -212,9 +306,10 @@ dw2	sep	#$20
 	inc	myBlockNum+2
 	
 dw3	dex
-	bne	dw2
+	beq	dw4
+	jmp	dw2
 	
-	lda	myBufferPtr
+dw4	lda	myBufferPtr
 	sta	bufferPtr+1
 	rts
 
@@ -256,14 +351,6 @@ SGetStatus	lda	#2		; GetDeviceStatus
 	bcc	SGS1
 	lda	#6
 	sta	transferCount
-
-*	ldy	#2		; we can send the number of blocks
-*	lda	#maxBLOCKS
-*	sta	[statusListPtr],y
-*	iny
-*	iny
-*	lda	#^maxBLOCKS
-*	sta	[statusListPtr],y
 
 	ldy	#48		; we can send the number of blocks v2
 	lda	[dibPointer],y
@@ -500,8 +587,8 @@ ds6	lda	requestCount	; assume transfer=request
 *----------------------------
 
 checkSWITCHED
-	lda	fgSTARTED
-	bne	cs1
+*	lda	fgSTARTED
+*	bne	cs1
 
 	ldy	#48
 	lda	[dibPointer],y
@@ -515,27 +602,31 @@ checkSWITCHED
 	cmp	#TRUE	; is partition active?
 	beq	cs1	; yes, exit
 
-	lda	tblPARTITION+12,x
-	cmp	#TRUE	; is switched already done?
-	beq	cs1	; yes, exit
-	
-	jsl	SET_DISKSW	; partition is inactive
+	lda	#$0028	; no device connected. Goodbye!
+	sta	errCODE
 
-	ldy	#48
-	lda	[dibPointer],y
-	dec
-	asl
-	asl
-	asl
-	asl		; *16
-	tax
-	lda	#TRUE	; set switched done
-	sta	tblPARTITION+12,x
-	
+*	lda	tblPARTITION+12,x
+*	cmp	#TRUE	; is switched already done?
+*	beq	cs1	; yes, exit
+*	
+*	jsl	SET_DISKSW	; partition is inactive
+*
+*	ldy	#48
+*	lda	[dibPointer],y
+*	dec
+*	asl
+*	asl
+*	asl
+*	asl		; *16
+*	tax
+*	lda	#TRUE	; set switched done
+*	sta	tblPARTITION+12,x
+*	
 *	lda	#1
 *	sta	fgSTARTED
-	lda	#$002e
-	sta	errCODE
+*	lda	#$002e
+*	sta	errCODE
+
 	sec
 	rts
 

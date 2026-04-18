@@ -1,0 +1,25 @@
+*
+* After returning the device status list check for an OFFLINE
+* or DISKSW state.  If either of these conditions exist then
+* the driver must call SET_DISKSW via the system service call
+* table.
+*
+		ldy	#driver_unit	; internal device #
+		lda	<drvr_blk_size	; is this a 512 byte access?
+		cmp	#512
+		beq	dont_set_bf	; yes, block count is valid!
+		cmp	#256		; is this a 256 byte access?
+		beq	dont_set_bf	; yes, block count is valid!
+		lda	[<drvr_slist_ptr]
+		ora	#$8000		; dont know if block count is valid!
+		sta	[<drvr_slist_ptr]
+dont_set_bf
+		lda	[<drvr_slist_ptr]
+		eor	#$0010		; convert online to offline
+		and	#$0011		; offline or disk switched?
+		beq	not_blk_stat	; no
+		jsl	set_disksw	; else call system service
+not_blk_stat
+		brl	set_xfer_cnt	; update xfer count & exit
+
+		eject

@@ -172,7 +172,7 @@
   169 |  1 ASSD.DRIVER.S     42 | Comment     | 00 |         |    0 | 00/0000               | * Entry point
   170 |  1 ASSD.DRIVER.S     43 | Comment     | 00 |         |    0 | 00/0000               | *
   171 |  1 ASSD.DRIVER.S     44 | Empty       | 00 |         |    0 | 00/0000               |                                                      
-  172 |  1 ASSD.DRIVER.S     45 | Data        | 00 |         |    2 | 00/0000 : D9 04       | RAMDisk                       da    MyDIB-RAMDisk    ; offset to 1st DIB
+  172 |  1 ASSD.DRIVER.S     45 | Data        | 00 |         |    2 | 00/0000 : 0F 05       | RAMDisk                       da    MyDIB-RAMDisk    ; offset to 1st DIB
   173 |  1 ASSD.DRIVER.S     46 | Data        | 00 |         |    2 | 00/0002 : 04 00       |                               dw    {4}              ; number of devices
   174 |  1 ASSD.DRIVER.S     47 | Data        | 00 |         |    2 | 00/0004 : 00 00       |                               dw    $0000            ; no configuration list
   175 |  1 ASSD.DRIVER.S     48 | Empty       | 00 |         |    0 | 00/0006               |                                                      
@@ -189,9 +189,9 @@
   186 |  1 ASSD.DRIVER.S     59 | Empty       | 00 |         |    0 | 00/0012               |                                                      
   187 |  1 ASSD.DRIVER.S     60 | Code        | 00 |         |    1 | 00/0012 : 0A          | L0012                         asl                    
   188 |  1 ASSD.DRIVER.S     61 | Code        | 00 |         |    1 | 00/0013 : AA          |                               tax                    
-  189 |  1 ASSD.DRIVER.S     62 | Code        | 00 |  2      |    3 | 00/0014 : 9C D1 04    |                               stz   errCODE          
+  189 |  1 ASSD.DRIVER.S     62 | Code        | 00 |  2      |    3 | 00/0014 : 9C 07 05    |                               stz   errCODE          
   190 |  1 ASSD.DRIVER.S     63 | Code        | 00 |  2      |    3 | 00/0017 : FC 21 00    |                               jsr   (tblDISPATCH,x)  
-  191 |  1 ASSD.DRIVER.S     64 | Code        | 00 |  2      |    3 | 00/001A : AD D1 04    |                               lda   errCODE          
+  191 |  1 ASSD.DRIVER.S     64 | Code        | 00 |  2      |    3 | 00/001A : AD 07 05    |                               lda   errCODE          
   192 |  1 ASSD.DRIVER.S     65 | Code        | 00 |         |    3 | 00/001D : C9 01 00    | L001D                         cmp   #$0001           
   193 |  1 ASSD.DRIVER.S     66 | Code        | 00 |         |    1 | 00/0020 : 6B          |                               rtl                    
   194 |  1 ASSD.DRIVER.S     67 | Empty       | 00 |         |    0 | 00/0021               |                                                      
@@ -201,7 +201,7 @@
   198 |  1 ASSD.DRIVER.S     71 | Data        | 00 |  2      |    2 | 00/0027 : 2E 01       |                               da    DWrite           ; 3 Driver_Write
   199 |  1 ASSD.DRIVER.S     72 | Data        | 00 |  2      |    2 | 00/0029 : 6D 00       |                               da    DClose           ; 4 Driver_Close
   200 |  1 ASSD.DRIVER.S     73 | Data        | 00 |  2      |    2 | 00/002B : EE 01       |                               da    DStatus          ; 5 Driver_Status
-  201 |  1 ASSD.DRIVER.S     74 | Data        | 00 |  2      |    2 | 00/002D : 70 02       |                               da    DControl         ; 6 Driver_Control
+  201 |  1 ASSD.DRIVER.S     74 | Data        | 00 |  2      |    2 | 00/002D : AA 02       |                               da    DControl         ; 6 Driver_Control
   202 |  1 ASSD.DRIVER.S     75 | Data        | 00 |  2      |    2 | 00/002F : 6D 00       |                               da    DFlush           ; 7 Driver_Flush
   203 |  1 ASSD.DRIVER.S     76 | Data        | 00 |  2      |    2 | 00/0031 : 6A 00       |                               da    DShutdown        ; 8 Driver_Shutdown
   204 |  1 ASSD.DRIVER.S     77 | Empty       | 00 |         |    0 | 00/0033               |                                                      
@@ -209,7 +209,7 @@
   206 |  1 ASSD.DRIVER.S     79 | Comment     | 00 |         |    0 | 00/0033               | * Driver_Startup
   207 |  1 ASSD.DRIVER.S     80 | Comment     | 00 |         |    0 | 00/0033               | *
   208 |  1 ASSD.DRIVER.S     81 | Empty       | 00 |         |    0 | 00/0033               |                                                      
-  209 |  1 ASSD.DRIVER.S     82 | Code        | 00 |  2      |    3 | 00/0033 : AD CF 04    | DStartup                      lda   fgSTARTED        ; we've been here
+  209 |  1 ASSD.DRIVER.S     82 | Code        | 00 |  2      |    3 | 00/0033 : AD 05 05    | DStartup                      lda   fgSTARTED        ; we've been here
   210 |  1 ASSD.DRIVER.S     83 | Code        | 00 |         |    2 | 00/0036 : D0 2A       |                               bne   DStartend        ; avoid scanning other devices
   211 |  1 ASSD.DRIVER.S     84 | Empty       | 00 |         |    0 | 00/0038               |                                                      
   212 |  1 ASSD.DRIVER.S     85 | Code        | 00 |         |    4 | 00/0038 : AF 0A 00 E2 |                               ldal  {$e2000a}        
@@ -226,21 +226,21 @@
   223 |  1 ASSD.DRIVER.S     96 | Code        | 00 |         |    3 | 00/0054 : 29 FF 00    |                               and   #$ff             
   224 |  1 ASSD.DRIVER.S     97 | Code        | 00 |         |    2 | 00/0057 : F0 0A       |                               beq   DStarterr        ; no SD card found (oops)
   225 |  1 ASSD.DRIVER.S     98 | Empty       | 00 |         |    0 | 00/0059               |                                                      
-  226 |  1 ASSD.DRIVER.S     99 | Code        | 00 |  2      |    3 | 00/0059 : 20 8C 03    |                               jsr   checkVOLUME      ; what kind of volume do we have here?
+  226 |  1 ASSD.DRIVER.S     99 | Code        | 00 |  2      |    3 | 00/0059 : 20 C6 03    |                               jsr   checkVOLUME      ; what kind of volume do we have here?
   227 |  1 ASSD.DRIVER.S    100 | Empty       | 00 |         |    0 | 00/005C               |                                                      
   228 |  1 ASSD.DRIVER.S    101 | Code        | 00 |         |    3 | 00/005C : A9 01 00    |                               lda   #1               ; we're on
-  229 |  1 ASSD.DRIVER.S    102 | Code        | 00 |  2      |    3 | 00/005F : 8D CF 04    |                               sta   fgSTARTED        
+  229 |  1 ASSD.DRIVER.S    102 | Code        | 00 |  2      |    3 | 00/005F : 8D 05 05    |                               sta   fgSTARTED        
   230 |  1 ASSD.DRIVER.S    103 | Code        | 00 |         |    1 | 00/0062 : 60          | DStartend                     rts                    
   231 |  1 ASSD.DRIVER.S    104 | Empty       | 00 |         |    0 | 00/0063               |                                                      
   232 |  1 ASSD.DRIVER.S    105 | Code        | 00 |         |    3 | 00/0063 : A9 28 00    | DStarterr                     lda   #$0028           ; no device connected. Goodbye!
-  233 |  1 ASSD.DRIVER.S    106 | Code        | 00 |  2      |    3 | 00/0066 : 8D D1 04    |                               sta   errCODE          
+  233 |  1 ASSD.DRIVER.S    106 | Code        | 00 |  2      |    3 | 00/0066 : 8D 07 05    |                               sta   errCODE          
   234 |  1 ASSD.DRIVER.S    107 | Code        | 00 |         |    1 | 00/0069 : 60          |                               rts                    
   235 |  1 ASSD.DRIVER.S    108 | Empty       | 00 |         |    0 | 00/006A               |                                                      
   236 |  1 ASSD.DRIVER.S    109 | Comment     | 00 |         |    0 | 00/006A               | *
   237 |  1 ASSD.DRIVER.S    110 | Comment     | 00 |         |    0 | 00/006A               | * Driver_Shutdown
   238 |  1 ASSD.DRIVER.S    111 | Comment     | 00 |         |    0 | 00/006A               | *
   239 |  1 ASSD.DRIVER.S    112 | Empty       | 00 |         |    0 | 00/006A               |                                                      
-  240 |  1 ASSD.DRIVER.S    113 | Code        | 00 |  2      |    3 | 00/006A : 9C CF 04    | DShutdown                     stz   fgSTARTED        ; we're off
+  240 |  1 ASSD.DRIVER.S    113 | Code        | 00 |  2      |    3 | 00/006A : 9C 05 05    | DShutdown                     stz   fgSTARTED        ; we're off
   241 |  1 ASSD.DRIVER.S    114 | Empty       | 00 |         |    0 | 00/006D               |                                                      
   242 |  1 ASSD.DRIVER.S    115 | Comment     | 00 |         |    0 | 00/006D               | *
   243 |  1 ASSD.DRIVER.S    116 | Comment     | 00 |         |    0 | 00/006D               | * Driver_Open
@@ -257,7 +257,7 @@
   254 |  1 ASSD.DRIVER.S    127 | Comment     | 00 |         |    0 | 00/006E               | * Driver_Read
   255 |  1 ASSD.DRIVER.S    128 | Comment     | 00 |         |    0 | 00/006E               | *
   256 |  1 ASSD.DRIVER.S    129 | Empty       | 00 |         |    0 | 00/006E               |                                                      
-  257 |  1 ASSD.DRIVER.S    130 | Code        | 00 |  2      |    3 | 00/006E : 20 1D 03    | DRead                         jsr   doSETUP          
+  257 |  1 ASSD.DRIVER.S    130 | Code        | 00 |  2      |    3 | 00/006E : 20 57 03    | DRead                         jsr   doSETUP          
   258 |  1 ASSD.DRIVER.S    131 | Code        | 00 |         |    2 | 00/0071 : 90 01       |                               bcc   dr1              
   259 |  1 ASSD.DRIVER.S    132 | Code        | 00 |         |    1 | 00/0073 : 60          |                               rts                    
   260 |  1 ASSD.DRIVER.S    133 | Empty       | 00 |         |    0 | 00/0074               |                                                      
@@ -265,13 +265,13 @@
   262 |  1 ASSD.DRIVER.S    135 | Empty       | 00 |         |    0 | 00/0074               |                                                      
   263 |  1 ASSD.DRIVER.S    136 | Empty       | 00 |         |    0 | 00/0074               | dr1                                                  
   264 |  1 ASSD.DRIVER.S    137 | Code        | 10 |         |    2 | 00/0074 : E2 20       | dr2                           sep   #$20             
-  265 |  1 ASSD.DRIVER.S    138 | Code        | 10 |  2      |    3 | 00/0076 : AD D8 04    |                               lda   myBlockNum+3     
+  265 |  1 ASSD.DRIVER.S    138 | Code        | 10 |  2      |    3 | 00/0076 : AD 0E 05    |                               lda   myBlockNum+3     
   266 |  1 ASSD.DRIVER.S    139 | Code        | 10 |         |    4 | 00/0079 : 8F 00 00 E4 |                               stal  {$e40000}        
-  267 |  1 ASSD.DRIVER.S    140 | Code        | 10 |  2      |    3 | 00/007D : AD D7 04    |                               lda   myBlockNum+2     
+  267 |  1 ASSD.DRIVER.S    140 | Code        | 10 |  2      |    3 | 00/007D : AD 0D 05    |                               lda   myBlockNum+2     
   268 |  1 ASSD.DRIVER.S    141 | Code        | 10 |         |    4 | 00/0080 : 8F 02 00 E4 |                               stal  {$e40002}        
-  269 |  1 ASSD.DRIVER.S    142 | Code        | 10 |  2      |    3 | 00/0084 : AD D6 04    |                               lda   myBlockNum+1     
+  269 |  1 ASSD.DRIVER.S    142 | Code        | 10 |  2      |    3 | 00/0084 : AD 0C 05    |                               lda   myBlockNum+1     
   270 |  1 ASSD.DRIVER.S    143 | Code        | 10 |         |    4 | 00/0087 : 8F 04 00 E4 |                               stal  {$e40004}        
-  271 |  1 ASSD.DRIVER.S    144 | Code        | 10 |  2      |    3 | 00/008B : AD D5 04    |                               lda   myBlockNum       
+  271 |  1 ASSD.DRIVER.S    144 | Code        | 10 |  2      |    3 | 00/008B : AD 0B 05    |                               lda   myBlockNum       
   272 |  1 ASSD.DRIVER.S    145 | Code        | 10 |         |    4 | 00/008E : 8F 06 00 E4 |                               stal  {$e40006}        
   273 |  1 ASSD.DRIVER.S    146 | Empty       | 10 |         |    0 | 00/0092               |                                                      
   274 |  1 ASSD.DRIVER.S    147 | Code        | 10 |         |    2 | 00/0092 : A9 01       |                               lda   #1               
@@ -335,15 +335,15 @@
   332 |  1 ASSD.DRIVER.S    205 | Code        | 00 |         |    3 | 00/0115 : 69 02 00    |                               adc   #>{512}          
   333 |  1 ASSD.DRIVER.S    206 | Code        | 00 |         |    2 | 00/0118 : 85 05       |                               sta   {$04}+1          
   334 |  1 ASSD.DRIVER.S    207 | Empty       | 00 |         |    0 | 00/011A               |                                                      
-  335 |  1 ASSD.DRIVER.S    208 | Code        | 00 |  2      |    3 | 00/011A : EE D5 04    |                               inc   myBlockNum       
+  335 |  1 ASSD.DRIVER.S    208 | Code        | 00 |  2      |    3 | 00/011A : EE 0B 05    |                               inc   myBlockNum       
   336 |  1 ASSD.DRIVER.S    209 | Code        | 00 |         |    2 | 00/011D : D0 03       |                               bne   dr3              
-  337 |  1 ASSD.DRIVER.S    210 | Code        | 00 |  2      |    3 | 00/011F : EE D7 04    |                               inc   myBlockNum+2     
+  337 |  1 ASSD.DRIVER.S    210 | Code        | 00 |  2      |    3 | 00/011F : EE 0D 05    |                               inc   myBlockNum+2     
   338 |  1 ASSD.DRIVER.S    211 | Empty       | 00 |         |    0 | 00/0122               |                                                      
   339 |  1 ASSD.DRIVER.S    212 | Code        | 00 |         |    1 | 00/0122 : CA          | dr3                           dex                    
   340 |  1 ASSD.DRIVER.S    213 | Code        | 00 |         |    2 | 00/0123 : F0 03       |                               beq   dr4              
   341 |  1 ASSD.DRIVER.S    214 | Code        | 00 |  2      |    3 | 00/0125 : 4C 74 00    |                               jmp   dr2              
   342 |  1 ASSD.DRIVER.S    215 | Empty       | 00 |         |    0 | 00/0128               |                                                      
-  343 |  1 ASSD.DRIVER.S    216 | Code        | 00 |  2      |    3 | 00/0128 : AD D3 04    | dr4                           lda   myBufferPtr      
+  343 |  1 ASSD.DRIVER.S    216 | Code        | 00 |  2      |    3 | 00/0128 : AD 09 05    | dr4                           lda   myBufferPtr      
   344 |  1 ASSD.DRIVER.S    217 | Code        | 00 |         |    2 | 00/012B : 85 05       |                               sta   {$04}+1          
   345 |  1 ASSD.DRIVER.S    218 | Code        | 00 |         |    1 | 00/012D : 60          |                               rts                    
   346 |  1 ASSD.DRIVER.S    219 | Empty       | 00 |         |    0 | 00/012E               |                                                      
@@ -353,7 +353,7 @@
   350 |  1 ASSD.DRIVER.S    223 | Comment     | 00 |         |    0 | 00/012E               | * Driver_Write
   351 |  1 ASSD.DRIVER.S    224 | Comment     | 00 |         |    0 | 00/012E               | *
   352 |  1 ASSD.DRIVER.S    225 | Empty       | 00 |         |    0 | 00/012E               |                                                      
-  353 |  1 ASSD.DRIVER.S    226 | Code        | 00 |  2      |    3 | 00/012E : 20 1D 03    | DWrite                        jsr   doSETUP          
+  353 |  1 ASSD.DRIVER.S    226 | Code        | 00 |  2      |    3 | 00/012E : 20 57 03    | DWrite                        jsr   doSETUP          
   354 |  1 ASSD.DRIVER.S    227 | Code        | 00 |         |    2 | 00/0131 : 90 01       |                               bcc   dw1              
   355 |  1 ASSD.DRIVER.S    228 | Code        | 00 |         |    1 | 00/0133 : 60          |                               rts                    
   356 |  1 ASSD.DRIVER.S    229 | Empty       | 00 |         |    0 | 00/0134               |                                                      
@@ -361,13 +361,13 @@
   358 |  1 ASSD.DRIVER.S    231 | Empty       | 00 |         |    0 | 00/0134               |                                                      
   359 |  1 ASSD.DRIVER.S    232 | Empty       | 00 |         |    0 | 00/0134               | dw1                                                  
   360 |  1 ASSD.DRIVER.S    233 | Code        | 10 |         |    2 | 00/0134 : E2 20       | dw2                           sep   #$20             
-  361 |  1 ASSD.DRIVER.S    234 | Code        | 10 |  2      |    3 | 00/0136 : AD D8 04    |                               lda   myBlockNum+3     
+  361 |  1 ASSD.DRIVER.S    234 | Code        | 10 |  2      |    3 | 00/0136 : AD 0E 05    |                               lda   myBlockNum+3     
   362 |  1 ASSD.DRIVER.S    235 | Code        | 10 |         |    4 | 00/0139 : 8F 00 00 E4 |                               stal  {$e40000}        
-  363 |  1 ASSD.DRIVER.S    236 | Code        | 10 |  2      |    3 | 00/013D : AD D7 04    |                               lda   myBlockNum+2     
+  363 |  1 ASSD.DRIVER.S    236 | Code        | 10 |  2      |    3 | 00/013D : AD 0D 05    |                               lda   myBlockNum+2     
   364 |  1 ASSD.DRIVER.S    237 | Code        | 10 |         |    4 | 00/0140 : 8F 02 00 E4 |                               stal  {$e40002}        
-  365 |  1 ASSD.DRIVER.S    238 | Code        | 10 |  2      |    3 | 00/0144 : AD D6 04    |                               lda   myBlockNum+1     
+  365 |  1 ASSD.DRIVER.S    238 | Code        | 10 |  2      |    3 | 00/0144 : AD 0C 05    |                               lda   myBlockNum+1     
   366 |  1 ASSD.DRIVER.S    239 | Code        | 10 |         |    4 | 00/0147 : 8F 04 00 E4 |                               stal  {$e40004}        
-  367 |  1 ASSD.DRIVER.S    240 | Code        | 10 |  2      |    3 | 00/014B : AD D5 04    |                               lda   myBlockNum       
+  367 |  1 ASSD.DRIVER.S    240 | Code        | 10 |  2      |    3 | 00/014B : AD 0B 05    |                               lda   myBlockNum       
   368 |  1 ASSD.DRIVER.S    241 | Code        | 10 |         |    4 | 00/014E : 8F 06 00 E4 |                               stal  {$e40006}        
   369 |  1 ASSD.DRIVER.S    242 | Empty       | 10 |         |    0 | 00/0152               |                                                      
   370 |  1 ASSD.DRIVER.S    243 | Code        | 10 |         |    2 | 00/0152 : A9 01       |                               lda   #1               
@@ -431,15 +431,15 @@
   428 |  1 ASSD.DRIVER.S    301 | Code        | 00 |         |    3 | 00/01D5 : 69 02 00    |                               adc   #>{512}          
   429 |  1 ASSD.DRIVER.S    302 | Code        | 00 |         |    2 | 00/01D8 : 85 05       |                               sta   {$04}+1          
   430 |  1 ASSD.DRIVER.S    303 | Empty       | 00 |         |    0 | 00/01DA               |                                                      
-  431 |  1 ASSD.DRIVER.S    304 | Code        | 00 |  2      |    3 | 00/01DA : EE D5 04    |                               inc   myBlockNum       
+  431 |  1 ASSD.DRIVER.S    304 | Code        | 00 |  2      |    3 | 00/01DA : EE 0B 05    |                               inc   myBlockNum       
   432 |  1 ASSD.DRIVER.S    305 | Code        | 00 |         |    2 | 00/01DD : D0 03       |                               bne   dw3              
-  433 |  1 ASSD.DRIVER.S    306 | Code        | 00 |  2      |    3 | 00/01DF : EE D7 04    |                               inc   myBlockNum+2     
+  433 |  1 ASSD.DRIVER.S    306 | Code        | 00 |  2      |    3 | 00/01DF : EE 0D 05    |                               inc   myBlockNum+2     
   434 |  1 ASSD.DRIVER.S    307 | Empty       | 00 |         |    0 | 00/01E2               |                                                      
   435 |  1 ASSD.DRIVER.S    308 | Code        | 00 |         |    1 | 00/01E2 : CA          | dw3                           dex                    
   436 |  1 ASSD.DRIVER.S    309 | Code        | 00 |         |    2 | 00/01E3 : F0 03       |                               beq   dw4              
   437 |  1 ASSD.DRIVER.S    310 | Code        | 00 |  2      |    3 | 00/01E5 : 4C 34 01    |                               jmp   dw2              
   438 |  1 ASSD.DRIVER.S    311 | Empty       | 00 |         |    0 | 00/01E8               |                                                      
-  439 |  1 ASSD.DRIVER.S    312 | Code        | 00 |  2      |    3 | 00/01E8 : AD D3 04    | dw4                           lda   myBufferPtr      
+  439 |  1 ASSD.DRIVER.S    312 | Code        | 00 |  2      |    3 | 00/01E8 : AD 09 05    | dw4                           lda   myBufferPtr      
   440 |  1 ASSD.DRIVER.S    313 | Code        | 00 |         |    2 | 00/01EB : 85 05       |                               sta   {$04}+1          
   441 |  1 ASSD.DRIVER.S    314 | Code        | 00 |         |    1 | 00/01ED : 60          |                               rts                    
   442 |  1 ASSD.DRIVER.S    315 | Empty       | 00 |         |    0 | 00/01EE               |                                                      
@@ -453,7 +453,7 @@
   450 |  1 ASSD.DRIVER.S    323 | Code        | 00 |         |    3 | 00/01F0 : C9 05 00    |                               cmp   #4+1             
   451 |  1 ASSD.DRIVER.S    324 | Code        | 00 |         |    2 | 00/01F3 : 90 07       |                               bcc   DStatus1         
   452 |  1 ASSD.DRIVER.S    325 | Code        | 00 |         |    3 | 00/01F5 : A9 21 00    |                               lda   #$0021           ; drvrBadCode
-  453 |  1 ASSD.DRIVER.S    326 | Code        | 00 |  2      |    3 | 00/01F8 : 8D D1 04    |                               sta   errCODE          
+  453 |  1 ASSD.DRIVER.S    326 | Code        | 00 |  2      |    3 | 00/01F8 : 8D 07 05    |                               sta   errCODE          
   454 |  1 ASSD.DRIVER.S    327 | Code        | 00 |         |    1 | 00/01FB : 60          |                               rts                    
   455 |  1 ASSD.DRIVER.S    328 | Empty       | 00 |         |    0 | 00/01FC               |                                                      
   456 |  1 ASSD.DRIVER.S    329 | Code        | 00 |         |    1 | 00/01FC : 0A          | DStatus1                      asl                    
@@ -491,15 +491,15 @@
   488 |  1 ASSD.DRIVER.S    361 | Code        | 00 |         |    1 | 00/022B : 0A          |                               asl                    ; *16
   489 |  1 ASSD.DRIVER.S    362 | Code        | 00 |         |    1 | 00/022C : AA          |                               tax                    
   490 |  1 ASSD.DRIVER.S    363 | Code        | 00 |         |    3 | 00/022D : A0 02 00    |                               ldy   #2               
-  491 |  1 ASSD.DRIVER.S    364 | Code        | 00 |  2      |    3 | 00/0230 : BD EE 05    |                               lda   tblPARTITION+4,x 
+  491 |  1 ASSD.DRIVER.S    364 | Code        | 00 |  2      |    3 | 00/0230 : BD 24 06    |                               lda   tblPARTITION+4,x 
   492 |  1 ASSD.DRIVER.S    365 | Code        | 00 |         |    2 | 00/0233 : 97 04       |                               sta   [{$04}],y        
   493 |  1 ASSD.DRIVER.S    366 | Code        | 00 |         |    1 | 00/0235 : C8          |                               iny                    
   494 |  1 ASSD.DRIVER.S    367 | Code        | 00 |         |    1 | 00/0236 : C8          |                               iny                    
-  495 |  1 ASSD.DRIVER.S    368 | Code        | 00 |  2      |    3 | 00/0237 : BD F0 05    |                               lda   tblPARTITION+6,x 
+  495 |  1 ASSD.DRIVER.S    368 | Code        | 00 |  2      |    3 | 00/0237 : BD 26 06    |                               lda   tblPARTITION+6,x 
   496 |  1 ASSD.DRIVER.S    369 | Code        | 00 |         |    2 | 00/023A : 97 04       |                               sta   [{$04}],y        
   497 |  1 ASSD.DRIVER.S    370 | Empty       | 00 |         |    0 | 00/023C               |                                                      
   498 |  1 ASSD.DRIVER.S    371 | Code        | 00 |         |    3 | 00/023C : A2 10 00    | SGS1                          ldx   #{$0010}         
-  499 |  1 ASSD.DRIVER.S    372 | Code        | 00 |  2      |    3 | 00/023F : AD CF 04    |                               lda   fgSTARTED        ; send the status of the driver
+  499 |  1 ASSD.DRIVER.S    372 | Code        | 00 |  2      |    3 | 00/023F : AD 05 05    |                               lda   fgSTARTED        ; send the status of the driver
   500 |  1 ASSD.DRIVER.S    373 | Code        | 00 |         |    2 | 00/0242 : D0 01       |                               bne   SGS2             
   501 |  1 ASSD.DRIVER.S    374 | Code        | 00 |         |    1 | 00/0244 : E8          |                               inx                    
   502 |  1 ASSD.DRIVER.S    375 | Code        | 00 |         |    1 | 00/0245 : 8A          | SGS2                          txa                    
@@ -520,576 +520,608 @@
   517 |  1 ASSD.DRIVER.S    390 | Empty       | 00 |         |    0 | 00/0257               | SGetFormatOptions                                    
   518 |  1 ASSD.DRIVER.S    391 | Code        | 00 |         |    2 | 00/0257 : A5 08       |                               lda   {$08}            ; check size of buffer
   519 |  1 ASSD.DRIVER.S    392 | Code        | 00 |         |    3 | 00/0259 : C9 18 00    |                               cmp   #formatOptionsTableEnd-formatOptionsTable
-  520 |  1 ASSD.DRIVER.S    393 | Code        | 00 |         |    2 | 00/025C : 90 11       |                               bcc   SGetFormat1      
+  520 |  1 ASSD.DRIVER.S    393 | Code        | 00 |         |    2 | 00/025C : 90 47       |                               bcc   SGetFormat1      
   521 |  1 ASSD.DRIVER.S    394 | Empty       | 00 |         |    0 | 00/025E               |                                                      
-  522 |  1 ASSD.DRIVER.S    395 | Code        | 00 |         |    3 | 00/025E : A0 00 00    |                               ldy   #0               ; and move data
-  523 |  1 ASSD.DRIVER.S    396 | Code        | 00 |  2      |    3 | 00/0261 : B9 B3 04    | ozunid_3                      lda   formatOptionsTable,y
-  524 |  1 ASSD.DRIVER.S    397 | Code        | 00 |         |    2 | 00/0264 : 97 04       |                               sta   [{$04}],y        
-  525 |  1 ASSD.DRIVER.S    398 | Code        | 00 |         |    1 | 00/0266 : C8          |                               iny                    
-  526 |  1 ASSD.DRIVER.S    399 | Code        | 00 |         |    1 | 00/0267 : C8          |                               iny                    
-  527 |  1 ASSD.DRIVER.S    400 | Code        | 00 |         |    3 | 00/0268 : C0 18 00    |                               cpy   #formatOptionsTableEnd-formatOptionsTable
-  528 |  1 ASSD.DRIVER.S    401 | Code        | 00 |         |    2 | 00/026B : 90 F4       |                               bcc   ozunid_3         
-  529 |  1 ASSD.DRIVER.S    402 | Code        | 00 |         |    2 | 00/026D : 84 0C       |                               sty   {$0C}            ; save size
-  530 |  1 ASSD.DRIVER.S    403 | Empty       | 00 |         |    0 | 00/026F               |                                                      
-  531 |  1 ASSD.DRIVER.S    404 | Code        | 00 |         |    1 | 00/026F : 60          | SGetFormat1                   rts                    
-  532 |  1 ASSD.DRIVER.S    405 | Empty       | 00 |         |    0 | 00/0270               |                                                      
-  533 |  1 ASSD.DRIVER.S    406 | Comment     | 00 |         |    0 | 00/0270               | *
-  534 |  1 ASSD.DRIVER.S    407 | Comment     | 00 |         |    0 | 00/0270               | * Driver_Control
-  535 |  1 ASSD.DRIVER.S    408 | Comment     | 00 |         |    0 | 00/0270               | *
-  536 |  1 ASSD.DRIVER.S    409 | Empty       | 00 |         |    0 | 00/0270               |                                                      
-  537 |  1 ASSD.DRIVER.S    410 | Code        | 00 |  2      |    3 | 00/0270 : 20 6F 03    | DControl                      jsr   checkSWITCHED    
-  538 |  1 ASSD.DRIVER.S    411 | Code        | 00 |         |    2 | 00/0273 : 90 01       |                               bcc   DControl1        
-  539 |  1 ASSD.DRIVER.S    412 | Code        | 00 |         |    1 | 00/0275 : 60          |                               rts                    
-  540 |  1 ASSD.DRIVER.S    413 | Empty       | 00 |         |    0 | 00/0276               |                                                      
-  541 |  1 ASSD.DRIVER.S    414 | Code        | 00 |         |    2 | 00/0276 : A5 16       | DControl1                     lda   {$16}            
-  542 |  1 ASSD.DRIVER.S    415 | Code        | 00 |         |    3 | 00/0278 : C9 0A 00    |                               cmp   #9+1             
-  543 |  1 ASSD.DRIVER.S    416 | Code        | 00 |         |    2 | 00/027B : 90 07       |                               bcc   DControl2        
-  544 |  1 ASSD.DRIVER.S    417 | Empty       | 00 |         |    0 | 00/027D               |                                                      
-  545 |  1 ASSD.DRIVER.S    418 | Code        | 00 |         |    3 | 00/027D : A9 21 00    |                               lda   #$0021           
-  546 |  1 ASSD.DRIVER.S    419 | Code        | 00 |  2      |    3 | 00/0280 : 8D D1 04    |                               sta   errCODE          
-  547 |  1 ASSD.DRIVER.S    420 | Code        | 00 |         |    1 | 00/0283 : 60          |                               rts                    
-  548 |  1 ASSD.DRIVER.S    421 | Empty       | 00 |         |    0 | 00/0284               |                                                      
-  549 |  1 ASSD.DRIVER.S    422 | Code        | 00 |         |    1 | 00/0284 : 0A          | DControl2                     asl                    
-  550 |  1 ASSD.DRIVER.S    423 | Code        | 00 |         |    1 | 00/0285 : AA          |                               tax                    
-  551 |  1 ASSD.DRIVER.S    424 | Code        | 00 |         |    2 | 00/0286 : 64 0C       |                               stz   {$0C}            
-  552 |  1 ASSD.DRIVER.S    425 | Code        | 00 |         |    2 | 00/0288 : 64 0E       |                               stz   {$0C}+2          
-  553 |  1 ASSD.DRIVER.S    426 | Code        | 00 |  2      |    3 | 00/028A : FC 8E 02    |                               jsr   (tblCONTROL,x)   
-  554 |  1 ASSD.DRIVER.S    427 | Code        | 00 |         |    1 | 00/028D : 60          |                               rts                    
-  555 |  1 ASSD.DRIVER.S    428 | Empty       | 00 |         |    0 | 00/028E               |                                                      
-  556 |  1 ASSD.DRIVER.S    429 | Data        | 00 |  2      |    2 | 00/028E : A2 02       | tblCONTROL                    da    CNada            ; 0 ResetDevice
-  557 |  1 ASSD.DRIVER.S    430 | Data        | 00 |  2      |    2 | 00/0290 : A3 02       |                               da    CFormatDevice    ; 1 FormatDevice
-  558 |  1 ASSD.DRIVER.S    431 | Data        | 00 |  2      |    2 | 00/0292 : A2 02       |                               da    CNada            ; 2 EjectMedium
-  559 |  1 ASSD.DRIVER.S    432 | Data        | 00 |  2      |    2 | 00/0294 : 11 03       |                               da    CSet             ; 3 SetConfigParameters
-  560 |  1 ASSD.DRIVER.S    433 | Data        | 00 |  2      |    2 | 00/0296 : 11 03       |                               da    CSet             ; 4 SetWaitStatus
-  561 |  1 ASSD.DRIVER.S    434 | Data        | 00 |  2      |    2 | 00/0298 : FB 02       |                               da    CSetFormatOptions; 5 SetFormatOptions
-  562 |  1 ASSD.DRIVER.S    435 | Data        | 00 |  2      |    2 | 00/029A : A2 02       |                               da    CNada            ; 6 AssignPartitionOwner
-  563 |  1 ASSD.DRIVER.S    436 | Data        | 00 |  2      |    2 | 00/029C : A2 02       |                               da    CNada            ; 7 ArmSignal
-  564 |  1 ASSD.DRIVER.S    437 | Data        | 00 |  2      |    2 | 00/029E : A2 02       |                               da    CNada            ; 8 DisarmSignal
-  565 |  1 ASSD.DRIVER.S    438 | Data        | 00 |  2      |    2 | 00/02A0 : A2 02       |                               da    CNada            ; 9 SetPartitionMap
-  566 |  1 ASSD.DRIVER.S    439 | Empty       | 00 |         |    0 | 00/02A2               |                                                      
-  567 |  1 ASSD.DRIVER.S    440 | Code        | 00 |         |    1 | 00/02A2 : 60          | CNada                         rts                    
-  568 |  1 ASSD.DRIVER.S    441 | Empty       | 00 |         |    0 | 00/02A3               |                                                      
-  569 |  1 ASSD.DRIVER.S    442 | Comment     | 00 |         |    0 | 00/02A3               | *----------- FormatDevice
-  570 |  1 ASSD.DRIVER.S    443 | Empty       | 00 |         |    0 | 00/02A3               |                                                      
-  571 |  1 ASSD.DRIVER.S    444 | Code        | 00 |         |    3 | 00/02A3 : A0 30 00    | CFormatDevice                 ldy   #48              ; get the first block of the partition
-  572 |  1 ASSD.DRIVER.S    445 | Code        | 00 |         |    2 | 00/02A6 : B7 20       |                               lda   [{$20}],y        
-  573 |  1 ASSD.DRIVER.S    446 | Code        | 00 |         |    1 | 00/02A8 : 3A          |                               dec                    
-  574 |  1 ASSD.DRIVER.S    447 | Code        | 00 |         |    1 | 00/02A9 : 0A          |                               asl                    
-  575 |  1 ASSD.DRIVER.S    448 | Code        | 00 |         |    1 | 00/02AA : 0A          |                               asl                    
-  576 |  1 ASSD.DRIVER.S    449 | Code        | 00 |         |    1 | 00/02AB : 0A          |                               asl                    
-  577 |  1 ASSD.DRIVER.S    450 | Code        | 00 |         |    1 | 00/02AC : 0A          |                               asl                    ; *16
-  578 |  1 ASSD.DRIVER.S    451 | Code        | 00 |         |    1 | 00/02AD : AA          |                               tax                    
-  579 |  1 ASSD.DRIVER.S    452 | Code        | 00 |  2      |    3 | 00/02AE : BD EA 05    |                               lda   tblPARTITION,x   
-  580 |  1 ASSD.DRIVER.S    453 | Code        | 00 |  2      |    3 | 00/02B1 : 8D D5 04    |                               sta   myBlockNum       
-  581 |  1 ASSD.DRIVER.S    454 | Code        | 00 |  2      |    3 | 00/02B4 : BD EC 05    |                               lda   tblPARTITION+2,x 
-  582 |  1 ASSD.DRIVER.S    455 | Code        | 00 |  2      |    3 | 00/02B7 : 8D D7 04    |                               sta   myBlockNum+2     
-  583 |  1 ASSD.DRIVER.S    456 | Empty       | 00 |         |    0 | 00/02BA               |                                                      
-  584 |  1 ASSD.DRIVER.S    457 | Comment     | 00 |         |    0 | 00/02BA               | *---
-  585 |  1 ASSD.DRIVER.S    458 | Empty       | 00 |         |    0 | 00/02BA               |                                                      
-  586 |  1 ASSD.DRIVER.S    459 | Code        | 00 |         |    3 | 00/02BA : A2 00 00    |                               ldx   #0               ; 65536 blocks to format
-  587 |  1 ASSD.DRIVER.S    460 | Empty       | 00 |         |    0 | 00/02BD               |                                                      
-  588 |  1 ASSD.DRIVER.S    461 | Code        | 10 |         |    2 | 00/02BD : E2 20       | cf2                           sep   #$20             ; set the block
-  589 |  1 ASSD.DRIVER.S    462 | Code        | 10 |  2      |    3 | 00/02BF : AD D8 04    |                               lda   myBlockNum+3     
-  590 |  1 ASSD.DRIVER.S    463 | Code        | 10 |         |    4 | 00/02C2 : 8F 00 00 E4 |                               stal  {$e40000}        
-  591 |  1 ASSD.DRIVER.S    464 | Code        | 10 |  2      |    3 | 00/02C6 : AD D7 04    |                               lda   myBlockNum+2     
-  592 |  1 ASSD.DRIVER.S    465 | Code        | 10 |         |    4 | 00/02C9 : 8F 02 00 E4 |                               stal  {$e40002}        
-  593 |  1 ASSD.DRIVER.S    466 | Code        | 10 |  2      |    3 | 00/02CD : AD D6 04    |                               lda   myBlockNum+1     
-  594 |  1 ASSD.DRIVER.S    467 | Code        | 10 |         |    4 | 00/02D0 : 8F 04 00 E4 |                               stal  {$e40004}        
-  595 |  1 ASSD.DRIVER.S    468 | Code        | 10 |  2      |    3 | 00/02D4 : AD D5 04    |                               lda   myBlockNum       
-  596 |  1 ASSD.DRIVER.S    469 | Code        | 10 |         |    4 | 00/02D7 : 8F 06 00 E4 |                               stal  {$e40006}        
-  597 |  1 ASSD.DRIVER.S    470 | Empty       | 10 |         |    0 | 00/02DB               |                                                      
-  598 |  1 ASSD.DRIVER.S    471 | Code        | 10 |         |    2 | 00/02DB : A9 01       |                               lda   #1               
-  599 |  1 ASSD.DRIVER.S    472 | Code        | 10 |         |    4 | 00/02DD : 8F 0C 00 E4 |                               stal  {$e4000c}        
-  600 |  1 ASSD.DRIVER.S    473 | Empty       | 10 |         |    0 | 00/02E1               |                                                      
-  601 |  1 ASSD.DRIVER.S    474 | Code        | 10 |         |    3 | 00/02E1 : A0 00 02    |                               ldy   #512             ; format the block
-  602 |  1 ASSD.DRIVER.S    475 | Code        | 10 |         |    2 | 00/02E4 : A9 00       |                               lda   #0               
-  603 |  1 ASSD.DRIVER.S    476 | Code        | 10 |         |    4 | 00/02E6 : 8F 0A 00 E4 | ozunid_4                      stal  {$e4000a}        
-  604 |  1 ASSD.DRIVER.S    477 | Code        | 10 |         |    1 | 00/02EA : 88          |                               dey                    
-  605 |  1 ASSD.DRIVER.S    478 | Code        | 10 |         |    2 | 00/02EB : D0 F9       |                               bne   ozunid_4         
-  606 |  1 ASSD.DRIVER.S    479 | Empty       | 10 |         |    0 | 00/02ED               |                                                      
-  607 |  1 ASSD.DRIVER.S    480 | Code        | 00 |         |    2 | 00/02ED : C2 20       |                               rep   #$20             ; next block
-  608 |  1 ASSD.DRIVER.S    481 | Code        | 00 |  2      |    3 | 00/02EF : EE D5 04    |                               inc   myBlockNum       
-  609 |  1 ASSD.DRIVER.S    482 | Code        | 00 |         |    2 | 00/02F2 : D0 03       |                               bne   cf3              
-  610 |  1 ASSD.DRIVER.S    483 | Code        | 00 |  2      |    3 | 00/02F4 : EE D7 04    |                               inc   myBlockNum+2     
-  611 |  1 ASSD.DRIVER.S    484 | Empty       | 00 |         |    0 | 00/02F7               |                                                      
-  612 |  1 ASSD.DRIVER.S    485 | Code        | 00 |         |    1 | 00/02F7 : CA          | cf3                           dex                    ; until the end
-  613 |  1 ASSD.DRIVER.S    486 | Code        | 00 |         |    2 | 00/02F8 : D0 C3       |                               bne   cf2              
-  614 |  1 ASSD.DRIVER.S    487 | Code        | 00 |         |    1 | 00/02FA : 60          |                               rts                    
-  615 |  1 ASSD.DRIVER.S    488 | Empty       | 00 |         |    0 | 00/02FB               |                                                      
-  616 |  1 ASSD.DRIVER.S    489 | Comment     | 00 |         |    0 | 00/02FB               | *----------- SetFormatOptions
-  617 |  1 ASSD.DRIVER.S    490 | Empty       | 00 |         |    0 | 00/02FB               |                                                      
-  618 |  1 ASSD.DRIVER.S    491 | Empty       | 00 |         |    0 | 00/02FB               | CSetFormatOptions                                    
-  619 |  1 ASSD.DRIVER.S    492 | Code        | 00 |         |    2 | 00/02FB : A7 04       |                               lda   [{$04}]          
-  620 |  1 ASSD.DRIVER.S    493 | Code        | 00 |         |    2 | 00/02FD : F0 11       |                               beq   CSFO9            ; empty option is not ours
-  621 |  1 ASSD.DRIVER.S    494 | Code        | 00 |         |    3 | 00/02FF : C9 03 00    |                               cmp   #3               ; 1-2 only
-  622 |  1 ASSD.DRIVER.S    495 | Code        | 00 |         |    2 | 00/0302 : B0 0C       |                               bcs   CSFO9            
-  623 |  1 ASSD.DRIVER.S    496 | Empty       | 00 |         |    0 | 00/0304               |                                                      
-  624 |  1 ASSD.DRIVER.S    497 | Code        | 00 |         |    3 | 00/0304 : A0 FF FF    |                               ldy   #{$ffff}         ; it is 1, default values for ProDOS
-  625 |  1 ASSD.DRIVER.S    498 | Code        | 00 |  2      |    3 | 00/0307 : 8C CB 04    |                               sty   fBlockCount      
-  626 |  1 ASSD.DRIVER.S    499 | Code        | 00 |         |    3 | 00/030A : A2 00 00    |                               ldx   #^{$ffff}        
-  627 |  1 ASSD.DRIVER.S    500 | Code        | 00 |  2      |    3 | 00/030D : 8E CD 04    |                               stx   fBlockCount+2    
-  628 |  1 ASSD.DRIVER.S    501 | Empty       | 00 |         |    0 | 00/0310               |                                                      
-  629 |  1 ASSD.DRIVER.S    502 | Code        | 00 |         |    1 | 00/0310 : 60          | CSFO9                         rts                    
-  630 |  1 ASSD.DRIVER.S    503 | Empty       | 00 |         |    0 | 00/0311               |                                                      
-  631 |  1 ASSD.DRIVER.S    504 | Comment     | 00 |         |    0 | 00/0311               | *----------- SetConfigParameters / SetWaitStatus
-  632 |  1 ASSD.DRIVER.S    505 | Empty       | 00 |         |    0 | 00/0311               |                                                      
-  633 |  1 ASSD.DRIVER.S    506 | Code        | 00 |         |    2 | 00/0311 : A7 04       | CSet                          lda   [{$04}]          ; SetConfigParameters
-  634 |  1 ASSD.DRIVER.S    507 | Code        | 00 |         |    2 | 00/0313 : D0 01       |                               bne   CSetERR          ; SetWaitStatus
-  635 |  1 ASSD.DRIVER.S    508 | Code        | 00 |         |    1 | 00/0315 : 60          |                               rts                    
-  636 |  1 ASSD.DRIVER.S    509 | Code        | 00 |         |    3 | 00/0316 : A9 22 00    | CSetERR                       lda   #$0022           
-  637 |  1 ASSD.DRIVER.S    510 | Code        | 00 |  2      |    3 | 00/0319 : 8D D1 04    |                               sta   errCODE          
-  638 |  1 ASSD.DRIVER.S    511 | Code        | 00 |         |    1 | 00/031C : 60          |                               rts                    
-  639 |  1 ASSD.DRIVER.S    512 | Empty       | 00 |         |    0 | 00/031D               |                                                      
-  640 |  1 ASSD.DRIVER.S    513 | Comment     | 00 |         |    0 | 00/031D               | *----------------------------
-  641 |  1 ASSD.DRIVER.S    514 | Empty       | 00 |         |    0 | 00/031D               |                                                      
-  642 |  1 ASSD.DRIVER.S    515 | Comment     | 00 |         |    0 | 00/031D               | * Status flag of the current device
-  643 |  1 ASSD.DRIVER.S    516 | Comment     | 00 |         |    0 | 00/031D               | * $0001: image has been switched (disk switched)
-  644 |  1 ASSD.DRIVER.S    517 | Comment     | 00 |         |    0 | 00/031D               | * $0010: image is active (disk in drive)
-  645 |  1 ASSD.DRIVER.S    518 | Comment     | 00 |         |    0 | 00/031D               | * $0100: image has been modified
-  646 |  1 ASSD.DRIVER.S    519 | Empty       | 00 |         |    0 | 00/031D               |                                                      
-  647 |  1 ASSD.DRIVER.S    520 | Comment     | 00 |         |    0 | 00/031D               | *
-  648 |  1 ASSD.DRIVER.S    521 | Comment     | 00 |         |    0 | 00/031D               | * Checks everything is OK
-  649 |  1 ASSD.DRIVER.S    522 | Comment     | 00 |         |    0 | 00/031D               | *
-  650 |  1 ASSD.DRIVER.S    523 | Empty       | 00 |         |    0 | 00/031D               |                                                      
-  651 |  1 ASSD.DRIVER.S    524 | Code        | 00 |  2      |    3 | 00/031D : 20 6F 03    | doSETUP                       jsr   checkSWITCHED    
-  652 |  1 ASSD.DRIVER.S    525 | Code        | 00 |         |    2 | 00/0320 : 90 01       |                               bcc   ds2              
-  653 |  1 ASSD.DRIVER.S    526 | Code        | 00 |         |    1 | 00/0322 : 60          |                               rts                    
-  654 |  1 ASSD.DRIVER.S    527 | Empty       | 00 |         |    0 | 00/0323               |                                                      
-  655 |  1 ASSD.DRIVER.S    528 | Code        | 00 |         |    2 | 00/0323 : A5 08       | ds2                           lda   {$08}            ; nb of bytes to read
-  656 |  1 ASSD.DRIVER.S    529 | Code        | 00 |         |    2 | 00/0325 : 05 0A       |                               ora   {$08}+2          
-  657 |  1 ASSD.DRIVER.S    530 | Code        | 00 |         |    2 | 00/0327 : D0 08       |                               bne   ds4              
-  658 |  1 ASSD.DRIVER.S    531 | Empty       | 00 |         |    0 | 00/0329               |                                                      
-  659 |  1 ASSD.DRIVER.S    532 | Code        | 00 |         |    3 | 00/0329 : A9 2C 00    |                               lda   #$002C           ; invalidByteCount
-  660 |  1 ASSD.DRIVER.S    533 | Code        | 00 |  2      |    3 | 00/032C : 8D D1 04    |                               sta   errCODE          
-  661 |  1 ASSD.DRIVER.S    534 | Code        | 00 |         |    1 | 00/032F : 38          |                               sec                    
-  662 |  1 ASSD.DRIVER.S    535 | Code        | 00 |         |    1 | 00/0330 : 60          |                               rts                    
-  663 |  1 ASSD.DRIVER.S    536 | Empty       | 00 |         |    0 | 00/0331               |                                                      
-  664 |  1 ASSD.DRIVER.S    537 | Comment     | 00 |         |    0 | 00/0331               | *--- requestcount : $0200 => 1
-  665 |  1 ASSD.DRIVER.S    538 | Empty       | 00 |         |    0 | 00/0331               |                                                      
-  666 |  1 ASSD.DRIVER.S    539 | Code        | 00 |         |    2 | 00/0331 : A5 08       | ds4                           lda   {$08}            ; multiple of $0200
-  667 |  1 ASSD.DRIVER.S    540 | Code        | 00 |         |    3 | 00/0333 : 29 FF 01    |                               and   #{512}-1         
-  668 |  1 ASSD.DRIVER.S    541 | Code        | 00 |         |    2 | 00/0336 : F0 08       |                               beq   ds6              
-  669 |  1 ASSD.DRIVER.S    542 | Empty       | 00 |         |    0 | 00/0338               |                                                      
-  670 |  1 ASSD.DRIVER.S    543 | Code        | 00 |         |    3 | 00/0338 : A9 2D 00    |                               lda   #$002D           ; bad block count
-  671 |  1 ASSD.DRIVER.S    544 | Code        | 00 |  2      |    3 | 00/033B : 8D D1 04    |                               sta   errCODE          
-  672 |  1 ASSD.DRIVER.S    545 | Code        | 00 |         |    1 | 00/033E : 38          |                               sec                    
-  673 |  1 ASSD.DRIVER.S    546 | Code        | 00 |         |    1 | 00/033F : 60          |                               rts                    
-  674 |  1 ASSD.DRIVER.S    547 | Empty       | 00 |         |    0 | 00/0340               |                                                      
-  675 |  1 ASSD.DRIVER.S    548 | Comment     | 00 |         |    0 | 00/0340               | *--- Generic transfer now
-  676 |  1 ASSD.DRIVER.S    549 | Empty       | 00 |         |    0 | 00/0340               |                                                      
-  677 |  1 ASSD.DRIVER.S    550 | Code        | 00 |         |    2 | 00/0340 : A5 08       | ds6                           lda   {$08}            ; assume transfer=request
-  678 |  1 ASSD.DRIVER.S    551 | Code        | 00 |         |    2 | 00/0342 : 85 0C       |                               sta   {$0C}            
-  679 |  1 ASSD.DRIVER.S    552 | Code        | 00 |         |    2 | 00/0344 : A5 0A       |                               lda   {$08}+2          
-  680 |  1 ASSD.DRIVER.S    553 | Code        | 00 |         |    2 | 00/0346 : 85 0E       |                               sta   {$0C}+2          
-  681 |  1 ASSD.DRIVER.S    554 | Empty       | 00 |         |    0 | 00/0348               |                                                      
-  682 |  1 ASSD.DRIVER.S    555 | Comment     | 00 |         |    0 | 00/0348               | *--- Save data
-  683 |  1 ASSD.DRIVER.S    556 | Empty       | 00 |         |    0 | 00/0348               |                                                      
-  684 |  1 ASSD.DRIVER.S    557 | Code        | 00 |         |    2 | 00/0348 : A5 05       |                               lda   {$04}+1          
-  685 |  1 ASSD.DRIVER.S    558 | Code        | 00 |  2      |    3 | 00/034A : 8D D3 04    |                               sta   myBufferPtr      
-  686 |  1 ASSD.DRIVER.S    559 | Empty       | 00 |         |    0 | 00/034D               |                                                      
-  687 |  1 ASSD.DRIVER.S    560 | Comment     | 00 |         |    0 | 00/034D               | *--- Prepare the real block value
-  688 |  1 ASSD.DRIVER.S    561 | Empty       | 00 |         |    0 | 00/034D               |                                                      
-  689 |  1 ASSD.DRIVER.S    562 | Code        | 00 |         |    3 | 00/034D : A0 30 00    |                               ldy   #48              
-  690 |  1 ASSD.DRIVER.S    563 | Code        | 00 |         |    2 | 00/0350 : B7 20       |                               lda   [{$20}],y        
-  691 |  1 ASSD.DRIVER.S    564 | Code        | 00 |         |    1 | 00/0352 : 3A          |                               dec                    
-  692 |  1 ASSD.DRIVER.S    565 | Code        | 00 |         |    1 | 00/0353 : 0A          |                               asl                    
-  693 |  1 ASSD.DRIVER.S    566 | Code        | 00 |         |    1 | 00/0354 : 0A          |                               asl                    
-  694 |  1 ASSD.DRIVER.S    567 | Code        | 00 |         |    1 | 00/0355 : 0A          |                               asl                    
-  695 |  1 ASSD.DRIVER.S    568 | Code        | 00 |         |    1 | 00/0356 : 0A          |                               asl                    ; *16
-  696 |  1 ASSD.DRIVER.S    569 | Code        | 00 |         |    1 | 00/0357 : AA          |                               tax                    
-  697 |  1 ASSD.DRIVER.S    570 | Code        | 00 |  2      |    3 | 00/0358 : BD EA 05    |                               lda   tblPARTITION,x   
-  698 |  1 ASSD.DRIVER.S    571 | Code        | 00 |         |    1 | 00/035B : 18          |                               clc                    
-  699 |  1 ASSD.DRIVER.S    572 | Code        | 00 |         |    2 | 00/035C : 65 10       |                               adc   {$10}            
-  700 |  1 ASSD.DRIVER.S    573 | Code        | 00 |  2      |    3 | 00/035E : 8D D5 04    |                               sta   myBlockNum       
-  701 |  1 ASSD.DRIVER.S    574 | Code        | 00 |  2      |    3 | 00/0361 : BD EC 05    |                               lda   tblPARTITION+2,x 
-  702 |  1 ASSD.DRIVER.S    575 | Code        | 00 |         |    2 | 00/0364 : 65 12       |                               adc   {$10}+2          
-  703 |  1 ASSD.DRIVER.S    576 | Code        | 00 |  2      |    3 | 00/0366 : 8D D7 04    |                               sta   myBlockNum+2     
-  704 |  1 ASSD.DRIVER.S    577 | Empty       | 00 |         |    0 | 00/0369               |                                                      
-  705 |  1 ASSD.DRIVER.S    578 | Comment     | 00 |         |    0 | 00/0369               | *--- Number of pages to read (is always a multiple of 2)
-  706 |  1 ASSD.DRIVER.S    579 | Empty       | 00 |         |    0 | 00/0369               |                                                      
-  707 |  1 ASSD.DRIVER.S    580 | Code        | 00 |         |    2 | 00/0369 : A5 09       |                               lda   {$08}+1          
-  708 |  1 ASSD.DRIVER.S    581 | Code        | 00 |         |    1 | 00/036B : 4A          |                               lsr                    
-  709 |  1 ASSD.DRIVER.S    582 | Code        | 00 |         |    1 | 00/036C : AA          |                               tax                    
-  710 |  1 ASSD.DRIVER.S    583 | Empty       | 00 |         |    0 | 00/036D               |                                                      
-  711 |  1 ASSD.DRIVER.S    584 | Code        | 00 |         |    1 | 00/036D : 18          |                               clc                    
-  712 |  1 ASSD.DRIVER.S    585 | Code        | 00 |         |    1 | 00/036E : 60          |                               rts                    
-  713 |  1 ASSD.DRIVER.S    586 | Empty       | 00 |         |    0 | 00/036F               |                                                      
-  714 |  1 ASSD.DRIVER.S    587 | Comment     | 00 |         |    0 | 00/036F               | *----------------------------
-  715 |  1 ASSD.DRIVER.S    588 | Empty       | 00 |         |    0 | 00/036F               |                                                      
-  716 |  1 ASSD.DRIVER.S    589 | Empty       | 00 |         |    0 | 00/036F               | checkSWITCHED                                        
-  717 |  1 ASSD.DRIVER.S    590 | Comment     | 00 |         |    0 | 00/036F               | *	lda	fgSTARTED
-  718 |  1 ASSD.DRIVER.S    591 | Comment     | 00 |         |    0 | 00/036F               | *	bne	cs1
-  719 |  1 ASSD.DRIVER.S    592 | Empty       | 00 |         |    0 | 00/036F               |                                                      
-  720 |  1 ASSD.DRIVER.S    593 | Code        | 00 |         |    3 | 00/036F : A0 30 00    |                               ldy   #48              
-  721 |  1 ASSD.DRIVER.S    594 | Code        | 00 |         |    2 | 00/0372 : B7 20       |                               lda   [{$20}],y        
-  722 |  1 ASSD.DRIVER.S    595 | Code        | 00 |         |    1 | 00/0374 : 3A          |                               dec                    
-  723 |  1 ASSD.DRIVER.S    596 | Code        | 00 |         |    1 | 00/0375 : 0A          |                               asl                    
-  724 |  1 ASSD.DRIVER.S    597 | Code        | 00 |         |    1 | 00/0376 : 0A          |                               asl                    
-  725 |  1 ASSD.DRIVER.S    598 | Code        | 00 |         |    1 | 00/0377 : 0A          |                               asl                    
-  726 |  1 ASSD.DRIVER.S    599 | Code        | 00 |         |    1 | 00/0378 : 0A          |                               asl                    ; *16
-  727 |  1 ASSD.DRIVER.S    600 | Code        | 00 |         |    1 | 00/0379 : AA          |                               tax                    
-  728 |  1 ASSD.DRIVER.S    601 | Code        | 00 |  2      |    3 | 00/037A : BD F2 05    |                               lda   tblPARTITION+8,x 
-  729 |  1 ASSD.DRIVER.S    602 | Code        | 00 |         |    3 | 00/037D : C9 01 00    |                               cmp   #{1}             ; is partition active?
-  730 |  1 ASSD.DRIVER.S    603 | Code        | 00 |         |    2 | 00/0380 : F0 08       |                               beq   cs1              ; yes, exit
-  731 |  1 ASSD.DRIVER.S    604 | Empty       | 00 |         |    0 | 00/0382               |                                                      
-  732 |  1 ASSD.DRIVER.S    605 | Code        | 00 |         |    3 | 00/0382 : A9 28 00    |                               lda   #$0028           ; no device connected. Goodbye!
-  733 |  1 ASSD.DRIVER.S    606 | Code        | 00 |  2      |    3 | 00/0385 : 8D D1 04    |                               sta   errCODE          
-  734 |  1 ASSD.DRIVER.S    607 | Empty       | 00 |         |    0 | 00/0388               |                                                      
-  735 |  1 ASSD.DRIVER.S    608 | Comment     | 00 |         |    0 | 00/0388               | *	lda	tblPARTITION+12,x
-  736 |  1 ASSD.DRIVER.S    609 | Comment     | 00 |         |    0 | 00/0388               | *	cmp	#TRUE	; is switched already done?
-  737 |  1 ASSD.DRIVER.S    610 | Comment     | 00 |         |    0 | 00/0388               | *	beq	cs1	; yes, exit
-  738 |  1 ASSD.DRIVER.S    611 | Comment     | 00 |         |    0 | 00/0388               | *	
-  739 |  1 ASSD.DRIVER.S    612 | Comment     | 00 |         |    0 | 00/0388               | *	jsl	SET_DISKSW	; partition is inactive
-  740 |  1 ASSD.DRIVER.S    613 | Comment     | 00 |         |    0 | 00/0388               | *
-  741 |  1 ASSD.DRIVER.S    614 | Comment     | 00 |         |    0 | 00/0388               | *	ldy	#48
-  742 |  1 ASSD.DRIVER.S    615 | Comment     | 00 |         |    0 | 00/0388               | *	lda	[dibPointer],y
-  743 |  1 ASSD.DRIVER.S    616 | Comment     | 00 |         |    0 | 00/0388               | *	dec
-  744 |  1 ASSD.DRIVER.S    617 | Comment     | 00 |         |    0 | 00/0388               | *	asl
-  745 |  1 ASSD.DRIVER.S    618 | Comment     | 00 |         |    0 | 00/0388               | *	asl
-  746 |  1 ASSD.DRIVER.S    619 | Comment     | 00 |         |    0 | 00/0388               | *	asl
-  747 |  1 ASSD.DRIVER.S    620 | Comment     | 00 |         |    0 | 00/0388               | *	asl		; *16
-  748 |  1 ASSD.DRIVER.S    621 | Comment     | 00 |         |    0 | 00/0388               | *	tax
-  749 |  1 ASSD.DRIVER.S    622 | Comment     | 00 |         |    0 | 00/0388               | *	lda	#TRUE	; set switched done
-  750 |  1 ASSD.DRIVER.S    623 | Comment     | 00 |         |    0 | 00/0388               | *	sta	tblPARTITION+12,x
-  751 |  1 ASSD.DRIVER.S    624 | Comment     | 00 |         |    0 | 00/0388               | *	
-  752 |  1 ASSD.DRIVER.S    625 | Comment     | 00 |         |    0 | 00/0388               | *	lda	#1
-  753 |  1 ASSD.DRIVER.S    626 | Comment     | 00 |         |    0 | 00/0388               | *	sta	fgSTARTED
-  754 |  1 ASSD.DRIVER.S    627 | Comment     | 00 |         |    0 | 00/0388               | *	lda	#$002e
-  755 |  1 ASSD.DRIVER.S    628 | Comment     | 00 |         |    0 | 00/0388               | *	sta	errCODE
-  756 |  1 ASSD.DRIVER.S    629 | Empty       | 00 |         |    0 | 00/0388               |                                                      
-  757 |  1 ASSD.DRIVER.S    630 | Code        | 00 |         |    1 | 00/0388 : 38          |                               sec                    
-  758 |  1 ASSD.DRIVER.S    631 | Code        | 00 |         |    1 | 00/0389 : 60          |                               rts                    
-  759 |  1 ASSD.DRIVER.S    632 | Empty       | 00 |         |    0 | 00/038A               |                                                      
-  760 |  1 ASSD.DRIVER.S    633 | Code        | 00 |         |    1 | 00/038A : 18          | cs1                           clc                    
-  761 |  1 ASSD.DRIVER.S    634 | Code        | 00 |         |    1 | 00/038B : 60          |                               rts                    
-  762 |  1 ASSD.DRIVER.S    635 | Empty       | 00 |         |    0 | 00/038C               |                                                      
-  763 |  1 ASSD.DRIVER.S    636 | Comment     | 00 |         |    0 | 00/038C               | *----------------------------
-  764 |  1 ASSD.DRIVER.S    637 | Comment     | 00 |         |    0 | 00/038C               | * CHECK VOLUME
-  765 |  1 ASSD.DRIVER.S    638 | Comment     | 00 |         |    0 | 00/038C               | *----------------------------
-  766 |  1 ASSD.DRIVER.S    639 | Empty       | 00 |         |    0 | 00/038C               |                                                      
-  767 |  1 ASSD.DRIVER.S    640 | Equivalence | 00 |         |    0 | 00/038C               | VOL_SIG                       =     $aa55            
-  768 |  1 ASSD.DRIVER.S    641 | Equivalence | 00 |         |    0 | 00/038C               | BOOT_SIG1                     =     $e9              
-  769 |  1 ASSD.DRIVER.S    642 | Equivalence | 00 |         |    0 | 00/038C               | BOOT_SIG2                     =     $eb              
-  770 |  1 ASSD.DRIVER.S    643 | Equivalence | 00 |         |    0 | 00/038C               | GSOS_PART                     =     $20              ; reserved but unused partition ID
-  771 |  1 ASSD.DRIVER.S    644 | Equivalence | 00 |         |    0 | 00/038C               | SIZE_PART                     =     16               
-  772 |  1 ASSD.DRIVER.S    645 | Equivalence | 00 |         |    0 | 00/038C               | SIZE_DIB                      =     64               
-  773 |  1 ASSD.DRIVER.S    646 | Empty       | 00 |         |    0 | 00/038C               |                                                      
-  774 |  1 ASSD.DRIVER.S    647 | Comment     | 00 |         |    0 | 00/038C               | *---
-  775 |  1 ASSD.DRIVER.S    648 | Empty       | 00 |         |    0 | 00/038C               |                                                      
-  776 |  1 ASSD.DRIVER.S    649 | Empty       | 00 |         |    0 | 00/038C               | checkVOLUME                                          
-  777 |  1 ASSD.DRIVER.S    650 | Empty       | 00 |         |    0 | 00/038C               |                                                      
-  778 |  1 ASSD.DRIVER.S    651 | Comment     | 00 |         |    0 | 00/038C               | *--- Reset partition and DIB data
-  779 |  1 ASSD.DRIVER.S    652 | Empty       | 00 |         |    0 | 00/038C               |                                                      
-  780 |  1 ASSD.DRIVER.S    653 | Code        | 00 |         |    3 | 00/038C : A2 3E 00    |                               ldx   #PART_END-PART_BEGIN-2
-  781 |  1 ASSD.DRIVER.S    654 | Code        | 00 |  2      |    3 | 00/038F : 9E EA 05    | ozunid_5                      stz   tblPARTITION,x   
-  782 |  1 ASSD.DRIVER.S    655 | Code        | 00 |         |    1 | 00/0392 : CA          |                               dex                    
-  783 |  1 ASSD.DRIVER.S    656 | Code        | 00 |         |    1 | 00/0393 : CA          |                               dex                    
-  784 |  1 ASSD.DRIVER.S    657 | Code        | 00 |         |    2 | 00/0394 : 10 F9       |                               bpl   ozunid_5         
-  785 |  1 ASSD.DRIVER.S    658 | Empty       | 00 |         |    0 | 00/0396               |                                                      
-  786 |  1 ASSD.DRIVER.S    659 | Code        | 00 |         |    3 | 00/0396 : A2 00 00    |                               ldx   #0               ; reset DIB data (chars and block count)
-  787 |  1 ASSD.DRIVER.S    660 | Code        | 00 |         |    3 | 00/0399 : A9 E4 83    | ozunid_6                      lda   #{$83E4}         ; no disk
-  788 |  1 ASSD.DRIVER.S    661 | Code        | 00 |  2      |    3 | 00/039C : 9D E1 04    |                               sta   MyDIB+8,x        
-  789 |  1 ASSD.DRIVER.S    662 | Code        | 00 |  2      |    3 | 00/039F : 9E E3 04    |                               stz   MyDIB+10,x       ; size is 0
-  790 |  1 ASSD.DRIVER.S    663 | Code        | 00 |  2      |    3 | 00/03A2 : 9E E5 04    |                               stz   MyDIB+12,x       
-  791 |  1 ASSD.DRIVER.S    664 | Empty       | 00 |         |    0 | 00/03A5               |                                                      
-  792 |  1 ASSD.DRIVER.S    665 | Code        | 00 |         |    1 | 00/03A5 : 8A          |                               txa                    
-  793 |  1 ASSD.DRIVER.S    666 | Code        | 00 |         |    1 | 00/03A6 : 18          |                               clc                    
-  794 |  1 ASSD.DRIVER.S    667 | Code        | 00 |         |    3 | 00/03A7 : 69 40 00    |                               adc   #{64}            
-  795 |  1 ASSD.DRIVER.S    668 | Code        | 00 |         |    1 | 00/03AA : AA          |                               tax                    
-  796 |  1 ASSD.DRIVER.S    669 | Code        | 00 |         |    3 | 00/03AB : E0 00 01    |                               cpx   #64*{4}          
-  797 |  1 ASSD.DRIVER.S    670 | Code        | 00 |         |    2 | 00/03AE : 90 E9       |                               bcc   ozunid_6         
-  798 |  1 ASSD.DRIVER.S    671 | Empty       | 00 |         |    0 | 00/03B0               |                                                      
-  799 |  1 ASSD.DRIVER.S    672 | Comment     | 00 |         |    0 | 00/03B0               | *--- Read block 0
-  800 |  1 ASSD.DRIVER.S    673 | Empty       | 00 |         |    0 | 00/03B0               |                                                      
-  801 |  1 ASSD.DRIVER.S    674 | Code        | 10 |         |    2 | 00/03B0 : E2 20       |                               sep   #$20             
-  802 |  1 ASSD.DRIVER.S    675 | Code        | 10 |         |    2 | 00/03B2 : A9 00       |                               lda   #0               
-  803 |  1 ASSD.DRIVER.S    676 | Code        | 10 |         |    4 | 00/03B4 : 8F 00 00 E4 |                               stal  {$e40000}        
-  804 |  1 ASSD.DRIVER.S    677 | Code        | 10 |         |    4 | 00/03B8 : 8F 02 00 E4 |                               stal  {$e40002}        
-  805 |  1 ASSD.DRIVER.S    678 | Code        | 10 |         |    4 | 00/03BC : 8F 04 00 E4 |                               stal  {$e40004}        
-  806 |  1 ASSD.DRIVER.S    679 | Code        | 10 |         |    4 | 00/03C0 : 8F 06 00 E4 |                               stal  {$e40006}        
-  807 |  1 ASSD.DRIVER.S    680 | Empty       | 10 |         |    0 | 00/03C4               |                                                      
-  808 |  1 ASSD.DRIVER.S    681 | Code        | 10 |         |    2 | 00/03C4 : A9 01       |                               lda   #1               
-  809 |  1 ASSD.DRIVER.S    682 | Code        | 10 |         |    4 | 00/03C6 : 8F 08 00 E4 |                               stal  {$e40008}        
-  810 |  1 ASSD.DRIVER.S    683 | Empty       | 10 |         |    0 | 00/03CA               |                                                      
-  811 |  1 ASSD.DRIVER.S    684 | Code        | 10 |         |    3 | 00/03CA : A0 00 00    |                               ldy   #0               
-  812 |  1 ASSD.DRIVER.S    685 | Code        | 10 |         |    4 | 00/03CD : AF 0A 00 E4 | ozunid_7                      ldal  {$e4000a}        
-  813 |  1 ASSD.DRIVER.S    686 | Code        | 10 |  2      |    3 | 00/03D1 : 99 2A 06    |                               sta   firstBLOCK,y     
-  814 |  1 ASSD.DRIVER.S    687 | Code        | 10 |         |    1 | 00/03D4 : C8          |                               iny                    
-  815 |  1 ASSD.DRIVER.S    688 | Code        | 10 |         |    3 | 00/03D5 : C0 00 02    |                               cpy   #{512}           
-  816 |  1 ASSD.DRIVER.S    689 | Code        | 10 |         |    2 | 00/03D8 : 90 F3       |                               bcc   ozunid_7         
-  817 |  1 ASSD.DRIVER.S    690 | Code        | 00 |         |    2 | 00/03DA : C2 20       |                               rep   #$20             
-  818 |  1 ASSD.DRIVER.S    691 | Empty       | 00 |         |    0 | 00/03DC               |                                                      
-  819 |  1 ASSD.DRIVER.S    692 | Comment     | 00 |         |    0 | 00/03DC               | *--- Do we have a MBR?
-  820 |  1 ASSD.DRIVER.S    693 | Empty       | 00 |         |    0 | 00/03DC               |                                                      
-  821 |  1 ASSD.DRIVER.S    694 | Code        | 00 |  2      |    3 | 00/03DC : AD 28 08    |                               lda   firstBLOCK+$1fe  
-  822 |  1 ASSD.DRIVER.S    695 | Code        | 00 |         |    3 | 00/03DF : C9 55 AA    |                               cmp   #{$aa55}         
-  823 |  1 ASSD.DRIVER.S    696 | Code        | 00 |         |    2 | 00/03E2 : F0 28       |                               beq   cv_MBR           ; yes
-  824 |  1 ASSD.DRIVER.S    697 | Empty       | 00 |         |    0 | 00/03E4               |                                                      
-  825 |  1 ASSD.DRIVER.S    698 | Code        | 00 |         |    3 | 00/03E4 : A9 FF FF    | cv_STD                        lda   #{$ffff}         ; partition 1 begins at block 0
-  826 |  1 ASSD.DRIVER.S    699 | Code        | 00 |  2      |    3 | 00/03E7 : 8D EE 05    |                               sta   tblPARTITION+4   ; and is a big one
-  827 |  1 ASSD.DRIVER.S    700 | Code        | 00 |  2      |    3 | 00/03EA : 8D E3 04    |                               sta   MyDIB+10         
-  828 |  1 ASSD.DRIVER.S    701 | Code        | 00 |         |    3 | 00/03ED : A9 00 00    |                               lda   #^{$ffff}        
-  829 |  1 ASSD.DRIVER.S    702 | Code        | 00 |  2      |    3 | 00/03F0 : 8D F0 05    |                               sta   tblPARTITION+6   
-  830 |  1 ASSD.DRIVER.S    703 | Code        | 00 |  2      |    3 | 00/03F3 : 8D E5 04    |                               sta   MyDIB+12         
-  831 |  1 ASSD.DRIVER.S    704 | Code        | 00 |         |    3 | 00/03F6 : A9 01 00    |                               lda   #{1}             
-  832 |  1 ASSD.DRIVER.S    705 | Code        | 00 |  2      |    3 | 00/03F9 : 8D F2 05    |                               sta   tblPARTITION+8   ; partition exists
-  833 |  1 ASSD.DRIVER.S    706 | Code        | 00 |  2      |    3 | 00/03FC : 8D F6 05    |                               sta   tblPARTITION+12  ; disk is inserted
-  834 |  1 ASSD.DRIVER.S    707 | Code        | 00 |         |    3 | 00/03FF : A9 20 00    |                               lda   #{$20}           
-  835 |  1 ASSD.DRIVER.S    708 | Code        | 00 |  2      |    3 | 00/0402 : 8D F4 05    |                               sta   tblPARTITION+10  ; define a GS/OS partition
-  836 |  1 ASSD.DRIVER.S    709 | Code        | 00 |         |    3 | 00/0405 : A9 EC 83    |                               lda   #{$83EC}         ; we have a disk in it
-  837 |  1 ASSD.DRIVER.S    710 | Code        | 00 |  2      |    3 | 00/0408 : 8D E1 04    |                               sta   MyDIB+8          
-  838 |  1 ASSD.DRIVER.S    711 | Code        | 00 |         |    1 | 00/040B : 60          |                               rts                    
-  839 |  1 ASSD.DRIVER.S    712 | Empty       | 00 |         |    0 | 00/040C               |                                                      
-  840 |  1 ASSD.DRIVER.S    713 | Comment     | 00 |         |    0 | 00/040C               | *--- Do we really have a MBR?
-  841 |  1 ASSD.DRIVER.S    714 | Empty       | 00 |         |    0 | 00/040C               |                                                      
-  842 |  1 ASSD.DRIVER.S    715 | Code        | 00 |  2      |    3 | 00/040C : AD 2A 06    | cv_MBR                        lda   firstBLOCK       
-  843 |  1 ASSD.DRIVER.S    716 | Code        | 00 |         |    3 | 00/040F : 29 FF 00    |                               and   #$ff             
-  844 |  1 ASSD.DRIVER.S    717 | Code        | 00 |         |    3 | 00/0412 : C9 E9 00    |                               cmp   #{$e9}           
-  845 |  1 ASSD.DRIVER.S    718 | Code        | 00 |         |    2 | 00/0415 : F0 CD       |                               beq   cv_STD           ; yes
-  846 |  1 ASSD.DRIVER.S    719 | Code        | 00 |         |    3 | 00/0417 : C9 EB 00    |                               cmp   #{$eb}           
-  847 |  1 ASSD.DRIVER.S    720 | Code        | 00 |         |    2 | 00/041A : F0 C8       |                               beq   cv_STD           ; yes
-  848 |  1 ASSD.DRIVER.S    721 | Code        | 00 |         |    3 | 00/041C : C9 00 00    |                               cmp   #0               
-  849 |  1 ASSD.DRIVER.S    722 | Code        | 00 |         |    2 | 00/041F : D0 C3       |                               bne   cv_STD           ; at least, not a partition map
-  850 |  1 ASSD.DRIVER.S    723 | Empty       | 00 |         |    0 | 00/0421               |                                                      
-  851 |  1 ASSD.DRIVER.S    724 | Comment     | 00 |         |    0 | 00/0421               | *--- We believe we have a partition map, let's check it
-  852 |  1 ASSD.DRIVER.S    725 | Empty       | 00 |         |    0 | 00/0421               |                                                      
-  853 |  1 ASSD.DRIVER.S    726 | Equivalence | 00 |         |    0 | 00/0421               | PART1_OFFSET                  =     $1be             
-  854 |  1 ASSD.DRIVER.S    727 | Equivalence | 00 |         |    0 | 00/0421               | NB_PARTITIONS                 =     4                
-  855 |  1 ASSD.DRIVER.S    728 | Empty       | 00 |         |    0 | 00/0421               |                                                      
-  856 |  1 ASSD.DRIVER.S    729 | Code        | 00 |         |    3 | 00/0421 : A0 00 00    |                               ldy   #0               
-  857 |  1 ASSD.DRIVER.S    730 | Code        | 00 |         |    3 | 00/0424 : A2 BE 01    |                               ldx   #{$1be}          
-  858 |  1 ASSD.DRIVER.S    731 | Code        | 00 |  2      |    3 | 00/0427 : 20 94 04    | ozunid_8                      jsr   checkPARTID      ; check partition ID
-  859 |  1 ASSD.DRIVER.S    732 | Code        | 00 |         |    2 | 00/042A : B0 2D       |                               bcs   cv_NEXT          ; not authorized
-  860 |  1 ASSD.DRIVER.S    733 | Empty       | 00 |         |    0 | 00/042C               |                                                      
-  861 |  1 ASSD.DRIVER.S    734 | Code        | 00 |  2      |    3 | 00/042C : BD 32 06    |                               lda   firstBLOCK+8,x   ; copy 1st LBA sector
-  862 |  1 ASSD.DRIVER.S    735 | Code        | 00 |  2      |    3 | 00/042F : 99 EA 05    |                               sta   tblPARTITION,y   ; and number of sectors
-  863 |  1 ASSD.DRIVER.S    736 | Code        | 00 |  2      |    3 | 00/0432 : BD 34 06    |                               lda   firstBLOCK+10,x  ; of partition
-  864 |  1 ASSD.DRIVER.S    737 | Code        | 00 |  2      |    3 | 00/0435 : 99 EC 05    |                               sta   tblPARTITION+2,y 
-  865 |  1 ASSD.DRIVER.S    738 | Code        | 00 |  2      |    3 | 00/0438 : BD 36 06    |                               lda   firstBLOCK+12,x  
-  866 |  1 ASSD.DRIVER.S    739 | Code        | 00 |  2      |    3 | 00/043B : 99 EE 05    |                               sta   tblPARTITION+4,y 
-  867 |  1 ASSD.DRIVER.S    740 | Code        | 00 |  2      |    3 | 00/043E : BD 38 06    |                               lda   firstBLOCK+14,x  
-  868 |  1 ASSD.DRIVER.S    741 | Code        | 00 |  2      |    3 | 00/0441 : 99 F0 05    |                               sta   tblPARTITION+6,y 
-  869 |  1 ASSD.DRIVER.S    742 | Code        | 00 |         |    3 | 00/0444 : A9 01 00    |                               lda   #{1}             ; partition is active
-  870 |  1 ASSD.DRIVER.S    743 | Code        | 00 |  2      |    3 | 00/0447 : 99 F2 05    |                               sta   tblPARTITION+8,y 
-  871 |  1 ASSD.DRIVER.S    744 | Code        | 00 |  2      |    3 | 00/044A : BD 2E 06    |                               lda   firstBLOCK+4,x   ; partition ID
-  872 |  1 ASSD.DRIVER.S    745 | Code        | 00 |         |    3 | 00/044D : 29 FF 00    |                               and   #$ff             
-  873 |  1 ASSD.DRIVER.S    746 | Code        | 00 |  2      |    3 | 00/0450 : 99 F4 05    |                               sta   tblPARTITION+10,y
-  874 |  1 ASSD.DRIVER.S    747 | Code        | 00 |         |    1 | 00/0453 : 98          |                               tya                    ; we do not set switchedStatus
-  875 |  1 ASSD.DRIVER.S    748 | Code        | 00 |         |    1 | 00/0454 : 18          |                               clc                    ; it is already set to 0
-  876 |  1 ASSD.DRIVER.S    749 | Code        | 00 |         |    3 | 00/0455 : 69 10 00    |                               adc   #{16}            
-  877 |  1 ASSD.DRIVER.S    750 | Code        | 00 |         |    1 | 00/0458 : A8          |                               tay                    
-  878 |  1 ASSD.DRIVER.S    751 | Empty       | 00 |         |    0 | 00/0459               |                                                      
-  879 |  1 ASSD.DRIVER.S    752 | Code        | 00 |         |    1 | 00/0459 : 8A          | cv_NEXT                       txa                    
-  880 |  1 ASSD.DRIVER.S    753 | Code        | 00 |         |    1 | 00/045A : 18          |                               clc                    
-  881 |  1 ASSD.DRIVER.S    754 | Code        | 00 |         |    3 | 00/045B : 69 10 00    |                               adc   #{16}            
-  882 |  1 ASSD.DRIVER.S    755 | Code        | 00 |         |    1 | 00/045E : AA          |                               tax                    
-  883 |  1 ASSD.DRIVER.S    756 | Code        | 00 |         |    3 | 00/045F : E0 FE 01    |                               cpx   #$1fe            
-  884 |  1 ASSD.DRIVER.S    757 | Code        | 00 |         |    2 | 00/0462 : 90 C3       |                               bcc   ozunid_8         
-  885 |  1 ASSD.DRIVER.S    758 | Empty       | 00 |         |    0 | 00/0464               |                                                      
-  886 |  1 ASSD.DRIVER.S    759 | Comment     | 00 |         |    0 | 00/0464               | *--- Update the DIBs if needed
-  887 |  1 ASSD.DRIVER.S    760 | Empty       | 00 |         |    0 | 00/0464               |                                                      
-  888 |  1 ASSD.DRIVER.S    761 | Code        | 00 |         |    3 | 00/0464 : A2 00 00    |                               ldx   #0               
-  889 |  1 ASSD.DRIVER.S    762 | Code        | 00 |         |    1 | 00/0467 : 9B          |                               txy                    
-  890 |  1 ASSD.DRIVER.S    763 | Code        | 00 |  2      |    3 | 00/0468 : BD F2 05    | ozunid_9                      lda   tblPARTITION+8,x ; do we have a partition?
-  891 |  1 ASSD.DRIVER.S    764 | Code        | 00 |         |    3 | 00/046B : C9 01 00    |                               cmp   #{1}             
-  892 |  1 ASSD.DRIVER.S    765 | Code        | 00 |         |    2 | 00/046E : D0 12       |                               bne   cv_NOUPDATE      ; no
-  893 |  1 ASSD.DRIVER.S    766 | Code        | 00 |         |    3 | 00/0470 : A9 EC 83    |                               lda   #{$83EC}         ; yes, we have a disk in it
-  894 |  1 ASSD.DRIVER.S    767 | Code        | 00 |  2      |    3 | 00/0473 : 99 E1 04    |                               sta   MyDIB+8,y        
-  895 |  1 ASSD.DRIVER.S    768 | Code        | 00 |  2      |    3 | 00/0476 : BD EE 05    |                               lda   tblPARTITION+4,x ; and copy block count
-  896 |  1 ASSD.DRIVER.S    769 | Code        | 00 |  2      |    3 | 00/0479 : 99 E3 04    |                               sta   MyDIB+10,y       
-  897 |  1 ASSD.DRIVER.S    770 | Code        | 00 |  2      |    3 | 00/047C : BD F0 05    |                               lda   tblPARTITION+6,x 
-  898 |  1 ASSD.DRIVER.S    771 | Code        | 00 |  2      |    3 | 00/047F : 99 E5 04    |                               sta   MyDIB+12,y       
-  899 |  1 ASSD.DRIVER.S    772 | Empty       | 00 |         |    0 | 00/0482               |                                                      
-  900 |  1 ASSD.DRIVER.S    773 | Code        | 00 |         |    1 | 00/0482 : 8A          | cv_NOUPDATE                   txa                    
-  901 |  1 ASSD.DRIVER.S    774 | Code        | 00 |         |    1 | 00/0483 : 18          |                               clc                    
-  902 |  1 ASSD.DRIVER.S    775 | Code        | 00 |         |    3 | 00/0484 : 69 10 00    |                               adc   #{16}            
-  903 |  1 ASSD.DRIVER.S    776 | Code        | 00 |         |    1 | 00/0487 : AA          |                               tax                    
-  904 |  1 ASSD.DRIVER.S    777 | Empty       | 00 |         |    0 | 00/0488               |                                                      
-  905 |  1 ASSD.DRIVER.S    778 | Code        | 00 |         |    1 | 00/0488 : 98          |                               tya                    
-  906 |  1 ASSD.DRIVER.S    779 | Code        | 00 |         |    1 | 00/0489 : 18          |                               clc                    
-  907 |  1 ASSD.DRIVER.S    780 | Code        | 00 |         |    3 | 00/048A : 69 40 00    |                               adc   #{64}            
-  908 |  1 ASSD.DRIVER.S    781 | Code        | 00 |         |    1 | 00/048D : A8          |                               tay                    
-  909 |  1 ASSD.DRIVER.S    782 | Code        | 00 |         |    3 | 00/048E : C0 00 01    |                               cpy   #64*{4}          
-  910 |  1 ASSD.DRIVER.S    783 | Code        | 00 |         |    2 | 00/0491 : 90 D5       |                               bcc   ozunid_9         
-  911 |  1 ASSD.DRIVER.S    784 | Empty       | 00 |         |    0 | 00/0493               |                                                      
-  912 |  1 ASSD.DRIVER.S    785 | Comment     | 00 |         |    0 | 00/0493               | *--- We're done! Pas vraiment mais bon...
-  913 |  1 ASSD.DRIVER.S    786 | Empty       | 00 |         |    0 | 00/0493               |                                                      
-  914 |  1 ASSD.DRIVER.S    787 | Code        | 00 |         |    1 | 00/0493 : 60          |                               rts                    
-  915 |  1 ASSD.DRIVER.S    788 | Empty       | 00 |         |    0 | 00/0494               |                                                      
-  916 |  1 ASSD.DRIVER.S    789 | Comment     | 00 |         |    0 | 00/0494               | *--- Check if the partition ID is in my authorized list
-  917 |  1 ASSD.DRIVER.S    790 | Empty       | 00 |         |    0 | 00/0494               |                                                      
-  918 |  1 ASSD.DRIVER.S    791 | Code        | 00 |         |    1 | 00/0494 : 5A          | checkPARTID                   phy                    
-  919 |  1 ASSD.DRIVER.S    792 | Code        | 10 |         |    2 | 00/0495 : E2 20       |                               sep   #$20             
-  920 |  1 ASSD.DRIVER.S    793 | Empty       | 10 |         |    0 | 00/0497               |                                                      
-  921 |  1 ASSD.DRIVER.S    794 | Code        | 10 |         |    3 | 00/0497 : A0 00 00    |                               ldy   #0               
-  922 |  1 ASSD.DRIVER.S    795 | Code        | 10 |  2      |    3 | 00/049A : B9 D9 05    | ozunid_10                     lda   listPARTID,y     
-  923 |  1 ASSD.DRIVER.S    796 | Code        | 10 |         |    2 | 00/049D : C9 FF       |                               cmp   #$ff             ; end of list
-  924 |  1 ASSD.DRIVER.S    797 | Code        | 10 |         |    2 | 00/049F : F0 08       |                               beq   cpid_KO          
-  925 |  1 ASSD.DRIVER.S    798 | Empty       | 10 |         |    0 | 00/04A1               |                                                      
-  926 |  1 ASSD.DRIVER.S    799 | Code        | 10 |  2      |    3 | 00/04A1 : DD 2E 06    |                               cmp   firstBLOCK+4,x   ; is it in my list?
-  927 |  1 ASSD.DRIVER.S    800 | Code        | 10 |         |    2 | 00/04A4 : F0 08       |                               beq   cpid_OK          ; yes, authorized
-  928 |  1 ASSD.DRIVER.S    801 | Code        | 10 |         |    1 | 00/04A6 : C8          |                               iny                    ; next one, please
-  929 |  1 ASSD.DRIVER.S    802 | Code        | 10 |         |    2 | 00/04A7 : D0 F1       |                               bne   ozunid_10        
-  930 |  1 ASSD.DRIVER.S    803 | Empty       | 10 |         |    0 | 00/04A9               |                                                      
-  931 |  1 ASSD.DRIVER.S    804 | Code        | 00 |         |    2 | 00/04A9 : C2 20       | cpid_KO                       rep   #$20             ; not in my list
-  932 |  1 ASSD.DRIVER.S    805 | Code        | 00 |         |    1 | 00/04AB : 7A          |                               ply                    
-  933 |  1 ASSD.DRIVER.S    806 | Code        | 00 |         |    1 | 00/04AC : 38          |                               sec                    
-  934 |  1 ASSD.DRIVER.S    807 | Code        | 00 |         |    1 | 00/04AD : 60          |                               rts                    
-  935 |  1 ASSD.DRIVER.S    808 | Code        | 00 |         |    2 | 00/04AE : C2 20       | cpid_OK                       rep   #$20             ; in my list
-  936 |  1 ASSD.DRIVER.S    809 | Code        | 00 |         |    1 | 00/04B0 : 7A          |                               ply                    
-  937 |  1 ASSD.DRIVER.S    810 | Code        | 00 |         |    1 | 00/04B1 : 18          |                               clc                    
-  938 |  1 ASSD.DRIVER.S    811 | Code        | 00 |         |    1 | 00/04B2 : 60          |                               rts                    
-  939 |  1 ASSD.DRIVER.S    812 | Empty       | 00 |         |    0 | 00/04B3               |                                                      
-  940 |  1 ASSD.DRIVER.S    813 | Comment     | 00 |         |    0 | 00/04B3               | *----------------------------
-  941 |  1 ASSD.DRIVER.S    814 | Empty       | 00 |         |    0 | 00/04B3               |                                                      
-  942 |  1 ASSD.DRIVER.S    815 | Empty       | 00 |         |    0 | 00/04B3               | formatOptionsTable                                   
-  943 |  1 ASSD.DRIVER.S    816 | Empty       | 00 |         |    0 | 00/04B3               |                                                      
-  944 |  1 ASSD.DRIVER.S    817 | Comment     | 00 |         |    0 | 00/04B3               | * 8 bytes
-  945 |  1 ASSD.DRIVER.S    818 | Data        | 00 |         |    2 | 00/04B3 : 01 00       |                               dw    1                ; numOptions
-  946 |  1 ASSD.DRIVER.S    819 | Data        | 00 |         |    2 | 00/04B5 : 01 00       |                               dw    1                ; numDisplayed
-  947 |  1 ASSD.DRIVER.S    820 | Data        | 00 |         |    2 | 00/04B7 : 01 00       |                               dw    1                ; recommendedOption
-  948 |  1 ASSD.DRIVER.S    821 | Data        | 00 |         |    2 | 00/04B9 : 01 00       |                               dw    1                ; currentOption
-  949 |  1 ASSD.DRIVER.S    822 | Empty       | 00 |         |    0 | 00/04BB               |                                                      
-  950 |  1 ASSD.DRIVER.S    823 | Comment     | 00 |         |    0 | 00/04BB               | * 16 bytes
-  951 |  1 ASSD.DRIVER.S    824 | Data        | 00 |         |    2 | 00/04BB : 01 00       |                               dw    1                ; formatOptionNum
-  952 |  1 ASSD.DRIVER.S    825 | Data        | 00 |         |    2 | 00/04BD : 00 00       |                               dw    0                ; linkRefNum
-  953 |  1 ASSD.DRIVER.S    826 | Data        | 00 |         |    2 | 00/04BF : 09 00       |                               dw    9                ; flags 1001 - MB size - Apple format
-  954 |  1 ASSD.DRIVER.S    827 | Data        | 00 |         |    4 | 00/04C1 : FF FF 00 00 |                               adrl  {$ffff}          ; blockCount is 491520 for HFS
-  955 |  1 ASSD.DRIVER.S    828 | Data        | 00 |         |    2 | 00/04C5 : 00 02       |                               dw    {512}            ; blockSize is 512 bytes
-  956 |  1 ASSD.DRIVER.S    829 | Data        | 00 |         |    2 | 00/04C7 : 00 00       |                               dw    0                ; interleaveFactor
-  957 |  1 ASSD.DRIVER.S    830 | Data        | 00 |         |    2 | 00/04C9 : 20 00       |                               dw    32               ; mediaSize 1000 - MB size
-  958 |  1 ASSD.DRIVER.S    831 | Empty       | 00 |         |    0 | 00/04CB               |                                                      
-  959 |  1 ASSD.DRIVER.S    832 | Empty       | 00 |         |    0 | 00/04CB               | formatOptionsTableEnd                                
-  960 |  1 ASSD.DRIVER.S    833 | Empty       | 00 |         |    0 | 00/04CB               |                                                      
-  961 |  1 ASSD.DRIVER.S    834 | Comment     | 00 |         |    0 | 00/04CB               | *--- Default formatting options
-  962 |  1 ASSD.DRIVER.S    835 | Empty       | 00 |         |    0 | 00/04CB               |                                                      
-  963 |  1 ASSD.DRIVER.S    836 | Data        | 00 |         |    4 | 00/04CB : FF FF 00 00 | fBlockCount                   adrl  {$ffff}          
-  964 |  1 ASSD.DRIVER.S    837 | Empty       | 00 |         |    0 | 00/04CF               |                                                      
-  965 |  1 ASSD.DRIVER.S    838 | Comment     | 00 |         |    0 | 00/04CF               | *----------------------------
-  966 |  1 ASSD.DRIVER.S    839 | Empty       | 00 |         |    0 | 00/04CF               |                                                      
-  967 |  1 ASSD.DRIVER.S    840 | Data        | 00 |         |    2 | 00/04CF : 00 00       | fgSTARTED                     ds    2                ; 0: not started, 1: started
-  968 |  1 ASSD.DRIVER.S    841 | Data        | 00 |         |    2 | 00/04D1 : 00 00       | errCODE                       ds    2                
-  969 |  1 ASSD.DRIVER.S    842 | Empty       | 00 |         |    0 | 00/04D3               |                                                      
-  970 |  1 ASSD.DRIVER.S    843 | Data        | 00 |         |    2 | 00/04D3 : 00 00       | myBufferPtr                   ds    2                
-  971 |  1 ASSD.DRIVER.S    844 | Data        | 00 |         |    4 | 00/04D5 : 00 00 00 00 | myBlockNum                    ds    4                ; requested block number + LBA 1st sector
-  972 |  1 ASSD.DRIVER.S    845 | Empty       | 00 |         |    0 | 00/04D9               |                                                      
-  973 |  1 ASSD.DRIVER.S    846 | Comment     | 00 |         |    0 | 00/04D9               | *---------------------------- My DIBs
-  974 |  1 ASSD.DRIVER.S    847 | Empty       | 00 |         |    0 | 00/04D9               |                                                      
-  975 |  1 ASSD.DRIVER.S    848 | Data        | 00 |  3      |    4 | 00/04D9 : 19 05 00 00 | MyDIB                         adrl  MyDIB2           ; +00 pointer to the next DIB
-  976 |  1 ASSD.DRIVER.S    849 | Data        | 00 |  3      |    4 | 00/04DD : 06 00 00 00 |                               adrl  entryPOINT       ; +04 driver entry point
-  977 |  1 ASSD.DRIVER.S    850 | Data        | 00 |         |    2 | 00/04E1 : E4 83       |                               dw    {$83E4}          ; +08 characteristics
-  978 |  1 ASSD.DRIVER.S    851 | Data        | 00 |         |    4 | 00/04E3 : FF FF 00 00 |                               adrl  {$ffff}          ; +0A block count
-  979 |  1 ASSD.DRIVER.S    852 | Data        | 00 |         |   12 | 00/04E7 : 0B 41 53 53 |                               str   'ASSDDEVICEA'    ; +0E device name
+  522 |  1 ASSD.DRIVER.S    395 | Code        | 00 |         |    3 | 00/025E : A0 30 00    |                               ldy   #48              ; set the size for option 2
+  523 |  1 ASSD.DRIVER.S    396 | Code        | 00 |         |    2 | 00/0261 : B7 20       |                               lda   [{$20}],y        
+  524 |  1 ASSD.DRIVER.S    397 | Code        | 00 |         |    1 | 00/0263 : 3A          |                               dec                    
+  525 |  1 ASSD.DRIVER.S    398 | Code        | 00 |         |    1 | 00/0264 : 0A          |                               asl                    
+  526 |  1 ASSD.DRIVER.S    399 | Code        | 00 |         |    1 | 00/0265 : 0A          |                               asl                    
+  527 |  1 ASSD.DRIVER.S    400 | Code        | 00 |         |    1 | 00/0266 : 0A          |                               asl                    
+  528 |  1 ASSD.DRIVER.S    401 | Code        | 00 |         |    1 | 00/0267 : 0A          |                               asl                    ; *16
+  529 |  1 ASSD.DRIVER.S    402 | Code        | 00 |         |    1 | 00/0268 : AA          |                               tax                    
+  530 |  1 ASSD.DRIVER.S    403 | Code        | 00 |  2      |    3 | 00/0269 : BD 24 06    |                               lda   tblPARTITION+4,x 
+  531 |  1 ASSD.DRIVER.S    404 | Code        | 00 |  2      |    3 | 00/026C : 8D FB 04    |                               sta   fot_1+6          ; save block count
+  532 |  1 ASSD.DRIVER.S    405 | Code        | 00 |  2      |    3 | 00/026F : 8D A6 02    |                               sta   dataBS           
+  533 |  1 ASSD.DRIVER.S    406 | Code        | 00 |  2      |    3 | 00/0272 : BD 26 06    |                               lda   tblPARTITION+6,x 
+  534 |  1 ASSD.DRIVER.S    407 | Code        | 00 |  2      |    3 | 00/0275 : 8D FD 04    |                               sta   fot_1+8          
+  535 |  1 ASSD.DRIVER.S    408 | Code        | 00 |  2      |    3 | 00/0278 : 8D A8 02    |                               sta   dataBS+2         
+  536 |  1 ASSD.DRIVER.S    409 | Empty       | 00 |         |    0 | 00/027B               |                                                      
+  537 |  1 ASSD.DRIVER.S    410 | Code        | 00 |         |    1 | 00/027B : 18          |                               clc                    ; /8
+  538 |  1 ASSD.DRIVER.S    411 | Code        | 00 |  2      |    3 | 00/027C : 4E A8 02    |                               lsr   dataBS+2         
+  539 |  1 ASSD.DRIVER.S    412 | Code        | 00 |  2      |    3 | 00/027F : 6E A6 02    |                               ror   dataBS           
+  540 |  1 ASSD.DRIVER.S    413 | Code        | 00 |  2      |    3 | 00/0282 : 4E A8 02    |                               lsr   dataBS+2         
+  541 |  1 ASSD.DRIVER.S    414 | Code        | 00 |  2      |    3 | 00/0285 : 6E A6 02    |                               ror   dataBS           
+  542 |  1 ASSD.DRIVER.S    415 | Code        | 00 |  2      |    3 | 00/0288 : 4E A8 02    |                               lsr   dataBS+2         
+  543 |  1 ASSD.DRIVER.S    416 | Code        | 00 |  2      |    3 | 00/028B : 6E A6 02    |                               ror   dataBS           
+  544 |  1 ASSD.DRIVER.S    417 | Empty       | 00 |         |    0 | 00/028E               |                                                      
+  545 |  1 ASSD.DRIVER.S    418 | Code        | 00 |  2      |    3 | 00/028E : AD A7 02    |                               lda   dataBS+1         ; save media size in MB
+  546 |  1 ASSD.DRIVER.S    419 | Code        | 00 |  2      |    3 | 00/0291 : 8D 03 05    |                               sta   fot_1+14         
+  547 |  1 ASSD.DRIVER.S    420 | Empty       | 00 |         |    0 | 00/0294               |                                                      
+  548 |  1 ASSD.DRIVER.S    421 | Code        | 00 |         |    3 | 00/0294 : A0 00 00    |                               ldy   #0               ; and move data
+  549 |  1 ASSD.DRIVER.S    422 | Code        | 00 |  2      |    3 | 00/0297 : B9 ED 04    | ozunid_3                      lda   formatOptionsTable,y
+  550 |  1 ASSD.DRIVER.S    423 | Code        | 00 |         |    2 | 00/029A : 97 04       |                               sta   [{$04}],y        
+  551 |  1 ASSD.DRIVER.S    424 | Code        | 00 |         |    1 | 00/029C : C8          |                               iny                    
+  552 |  1 ASSD.DRIVER.S    425 | Code        | 00 |         |    1 | 00/029D : C8          |                               iny                    
+  553 |  1 ASSD.DRIVER.S    426 | Code        | 00 |         |    3 | 00/029E : C0 18 00    |                               cpy   #formatOptionsTableEnd-formatOptionsTable
+  554 |  1 ASSD.DRIVER.S    427 | Code        | 00 |         |    2 | 00/02A1 : 90 F4       |                               bcc   ozunid_3         
+  555 |  1 ASSD.DRIVER.S    428 | Code        | 00 |         |    2 | 00/02A3 : 84 0C       |                               sty   {$0C}            ; save size
+  556 |  1 ASSD.DRIVER.S    429 | Empty       | 00 |         |    0 | 00/02A5               |                                                      
+  557 |  1 ASSD.DRIVER.S    430 | Code        | 00 |         |    1 | 00/02A5 : 60          | SGetFormat1                   rts                    
+  558 |  1 ASSD.DRIVER.S    431 | Empty       | 00 |         |    0 | 00/02A6               |                                                      
+  559 |  1 ASSD.DRIVER.S    432 | Comment     | 00 |         |    0 | 00/02A6               | *---
+  560 |  1 ASSD.DRIVER.S    433 | Empty       | 00 |         |    0 | 00/02A6               |                                                      
+  561 |  1 ASSD.DRIVER.S    434 | Data        | 00 |         |    4 | 00/02A6 : 00 00 00 00 | dataBS                        ds    4                
+  562 |  1 ASSD.DRIVER.S    435 | Empty       | 00 |         |    0 | 00/02AA               |                                                      
+  563 |  1 ASSD.DRIVER.S    436 | Comment     | 00 |         |    0 | 00/02AA               | *
+  564 |  1 ASSD.DRIVER.S    437 | Comment     | 00 |         |    0 | 00/02AA               | * Driver_Control
+  565 |  1 ASSD.DRIVER.S    438 | Comment     | 00 |         |    0 | 00/02AA               | *
+  566 |  1 ASSD.DRIVER.S    439 | Empty       | 00 |         |    0 | 00/02AA               |                                                      
+  567 |  1 ASSD.DRIVER.S    440 | Code        | 00 |  2      |    3 | 00/02AA : 20 A9 03    | DControl                      jsr   checkSWITCHED    
+  568 |  1 ASSD.DRIVER.S    441 | Code        | 00 |         |    2 | 00/02AD : 90 01       |                               bcc   DControl1        
+  569 |  1 ASSD.DRIVER.S    442 | Code        | 00 |         |    1 | 00/02AF : 60          |                               rts                    
+  570 |  1 ASSD.DRIVER.S    443 | Empty       | 00 |         |    0 | 00/02B0               |                                                      
+  571 |  1 ASSD.DRIVER.S    444 | Code        | 00 |         |    2 | 00/02B0 : A5 16       | DControl1                     lda   {$16}            
+  572 |  1 ASSD.DRIVER.S    445 | Code        | 00 |         |    3 | 00/02B2 : C9 0A 00    |                               cmp   #9+1             
+  573 |  1 ASSD.DRIVER.S    446 | Code        | 00 |         |    2 | 00/02B5 : 90 07       |                               bcc   DControl2        
+  574 |  1 ASSD.DRIVER.S    447 | Empty       | 00 |         |    0 | 00/02B7               |                                                      
+  575 |  1 ASSD.DRIVER.S    448 | Code        | 00 |         |    3 | 00/02B7 : A9 21 00    |                               lda   #$0021           
+  576 |  1 ASSD.DRIVER.S    449 | Code        | 00 |  2      |    3 | 00/02BA : 8D 07 05    |                               sta   errCODE          
+  577 |  1 ASSD.DRIVER.S    450 | Code        | 00 |         |    1 | 00/02BD : 60          |                               rts                    
+  578 |  1 ASSD.DRIVER.S    451 | Empty       | 00 |         |    0 | 00/02BE               |                                                      
+  579 |  1 ASSD.DRIVER.S    452 | Code        | 00 |         |    1 | 00/02BE : 0A          | DControl2                     asl                    
+  580 |  1 ASSD.DRIVER.S    453 | Code        | 00 |         |    1 | 00/02BF : AA          |                               tax                    
+  581 |  1 ASSD.DRIVER.S    454 | Code        | 00 |         |    2 | 00/02C0 : 64 0C       |                               stz   {$0C}            
+  582 |  1 ASSD.DRIVER.S    455 | Code        | 00 |         |    2 | 00/02C2 : 64 0E       |                               stz   {$0C}+2          
+  583 |  1 ASSD.DRIVER.S    456 | Code        | 00 |  2      |    3 | 00/02C4 : FC C8 02    |                               jsr   (tblCONTROL,x)   
+  584 |  1 ASSD.DRIVER.S    457 | Code        | 00 |         |    1 | 00/02C7 : 60          |                               rts                    
+  585 |  1 ASSD.DRIVER.S    458 | Empty       | 00 |         |    0 | 00/02C8               |                                                      
+  586 |  1 ASSD.DRIVER.S    459 | Data        | 00 |  2      |    2 | 00/02C8 : DC 02       | tblCONTROL                    da    CNada            ; 0 ResetDevice
+  587 |  1 ASSD.DRIVER.S    460 | Data        | 00 |  2      |    2 | 00/02CA : DD 02       |                               da    CFormatDevice    ; 1 FormatDevice
+  588 |  1 ASSD.DRIVER.S    461 | Data        | 00 |  2      |    2 | 00/02CC : DC 02       |                               da    CNada            ; 2 EjectMedium
+  589 |  1 ASSD.DRIVER.S    462 | Data        | 00 |  2      |    2 | 00/02CE : 4B 03       |                               da    CSet             ; 3 SetConfigParameters
+  590 |  1 ASSD.DRIVER.S    463 | Data        | 00 |  2      |    2 | 00/02D0 : 4B 03       |                               da    CSet             ; 4 SetWaitStatus
+  591 |  1 ASSD.DRIVER.S    464 | Data        | 00 |  2      |    2 | 00/02D2 : 4B 03       |                               da    CSet             ; 5 SetFormatOptions
+  592 |  1 ASSD.DRIVER.S    465 | Data        | 00 |  2      |    2 | 00/02D4 : DC 02       |                               da    CNada            ; 6 AssignPartitionOwner
+  593 |  1 ASSD.DRIVER.S    466 | Data        | 00 |  2      |    2 | 00/02D6 : DC 02       |                               da    CNada            ; 7 ArmSignal
+  594 |  1 ASSD.DRIVER.S    467 | Data        | 00 |  2      |    2 | 00/02D8 : DC 02       |                               da    CNada            ; 8 DisarmSignal
+  595 |  1 ASSD.DRIVER.S    468 | Data        | 00 |  2      |    2 | 00/02DA : DC 02       |                               da    CNada            ; 9 SetPartitionMap
+  596 |  1 ASSD.DRIVER.S    469 | Empty       | 00 |         |    0 | 00/02DC               |                                                      
+  597 |  1 ASSD.DRIVER.S    470 | Code        | 00 |         |    1 | 00/02DC : 60          | CNada                         rts                    
+  598 |  1 ASSD.DRIVER.S    471 | Empty       | 00 |         |    0 | 00/02DD               |                                                      
+  599 |  1 ASSD.DRIVER.S    472 | Comment     | 00 |         |    0 | 00/02DD               | *----------- FormatDevice
+  600 |  1 ASSD.DRIVER.S    473 | Empty       | 00 |         |    0 | 00/02DD               |                                                      
+  601 |  1 ASSD.DRIVER.S    474 | Code        | 00 |         |    3 | 00/02DD : A0 30 00    | CFormatDevice                 ldy   #48              ; get the first block of the partition
+  602 |  1 ASSD.DRIVER.S    475 | Code        | 00 |         |    2 | 00/02E0 : B7 20       |                               lda   [{$20}],y        
+  603 |  1 ASSD.DRIVER.S    476 | Code        | 00 |         |    1 | 00/02E2 : 3A          |                               dec                    
+  604 |  1 ASSD.DRIVER.S    477 | Code        | 00 |         |    1 | 00/02E3 : 0A          |                               asl                    
+  605 |  1 ASSD.DRIVER.S    478 | Code        | 00 |         |    1 | 00/02E4 : 0A          |                               asl                    
+  606 |  1 ASSD.DRIVER.S    479 | Code        | 00 |         |    1 | 00/02E5 : 0A          |                               asl                    
+  607 |  1 ASSD.DRIVER.S    480 | Code        | 00 |         |    1 | 00/02E6 : 0A          |                               asl                    ; *16
+  608 |  1 ASSD.DRIVER.S    481 | Code        | 00 |         |    1 | 00/02E7 : AA          |                               tax                    
+  609 |  1 ASSD.DRIVER.S    482 | Code        | 00 |  2      |    3 | 00/02E8 : BD 20 06    |                               lda   tblPARTITION,x   ; set first and last block
+  610 |  1 ASSD.DRIVER.S    483 | Code        | 00 |  2      |    3 | 00/02EB : 8D 0B 05    |                               sta   myBlockNum       
+  611 |  1 ASSD.DRIVER.S    484 | Code        | 00 |  2      |    3 | 00/02EE : 7D 24 06    |                               adc   tblPARTITION+4,x 
+  612 |  1 ASSD.DRIVER.S    485 | Code        | 00 |  2      |    3 | 00/02F1 : 8D A6 02    |                               sta   dataBS           
+  613 |  1 ASSD.DRIVER.S    486 | Code        | 00 |  2      |    3 | 00/02F4 : BD 22 06    |                               lda   tblPARTITION+2,x 
+  614 |  1 ASSD.DRIVER.S    487 | Code        | 00 |  2      |    3 | 00/02F7 : 8D 0D 05    |                               sta   myBlockNum+2     
+  615 |  1 ASSD.DRIVER.S    488 | Code        | 00 |  2      |    3 | 00/02FA : 7D 26 06    |                               adc   tblPARTITION+6,x 
+  616 |  1 ASSD.DRIVER.S    489 | Code        | 00 |  2      |    3 | 00/02FD : 8D A8 02    |                               sta   dataBS+2         
+  617 |  1 ASSD.DRIVER.S    490 | Empty       | 00 |         |    0 | 00/0300               |                                                      
+  618 |  1 ASSD.DRIVER.S    491 | Comment     | 00 |         |    0 | 00/0300               | *---
+  619 |  1 ASSD.DRIVER.S    492 | Empty       | 00 |         |    0 | 00/0300               |                                                      
+  620 |  1 ASSD.DRIVER.S    493 | Code        | 10 |         |    2 | 00/0300 : E2 20       | cf2                           sep   #$20             ; set the block
+  621 |  1 ASSD.DRIVER.S    494 | Code        | 10 |  2      |    3 | 00/0302 : AD 0E 05    |                               lda   myBlockNum+3     
+  622 |  1 ASSD.DRIVER.S    495 | Code        | 10 |         |    4 | 00/0305 : 8F 00 00 E4 |                               stal  {$e40000}        
+  623 |  1 ASSD.DRIVER.S    496 | Code        | 10 |  2      |    3 | 00/0309 : AD 0D 05    |                               lda   myBlockNum+2     
+  624 |  1 ASSD.DRIVER.S    497 | Code        | 10 |         |    4 | 00/030C : 8F 02 00 E4 |                               stal  {$e40002}        
+  625 |  1 ASSD.DRIVER.S    498 | Code        | 10 |  2      |    3 | 00/0310 : AD 0C 05    |                               lda   myBlockNum+1     
+  626 |  1 ASSD.DRIVER.S    499 | Code        | 10 |         |    4 | 00/0313 : 8F 04 00 E4 |                               stal  {$e40004}        
+  627 |  1 ASSD.DRIVER.S    500 | Code        | 10 |  2      |    3 | 00/0317 : AD 0B 05    |                               lda   myBlockNum       
+  628 |  1 ASSD.DRIVER.S    501 | Code        | 10 |         |    4 | 00/031A : 8F 06 00 E4 |                               stal  {$e40006}        
+  629 |  1 ASSD.DRIVER.S    502 | Empty       | 10 |         |    0 | 00/031E               |                                                      
+  630 |  1 ASSD.DRIVER.S    503 | Code        | 10 |         |    2 | 00/031E : A9 01       |                               lda   #1               
+  631 |  1 ASSD.DRIVER.S    504 | Code        | 10 |         |    4 | 00/0320 : 8F 0C 00 E4 |                               stal  {$e4000c}        
+  632 |  1 ASSD.DRIVER.S    505 | Empty       | 10 |         |    0 | 00/0324               |                                                      
+  633 |  1 ASSD.DRIVER.S    506 | Code        | 10 |         |    3 | 00/0324 : A0 00 02    |                               ldy   #512             ; format the block
+  634 |  1 ASSD.DRIVER.S    507 | Code        | 10 |         |    2 | 00/0327 : A9 00       |                               lda   #0               
+  635 |  1 ASSD.DRIVER.S    508 | Code        | 10 |         |    4 | 00/0329 : 8F 0A 00 E4 | ozunid_4                      stal  {$e4000a}        
+  636 |  1 ASSD.DRIVER.S    509 | Code        | 10 |         |    1 | 00/032D : 88          |                               dey                    
+  637 |  1 ASSD.DRIVER.S    510 | Code        | 10 |         |    2 | 00/032E : D0 F9       |                               bne   ozunid_4         
+  638 |  1 ASSD.DRIVER.S    511 | Empty       | 10 |         |    0 | 00/0330               |                                                      
+  639 |  1 ASSD.DRIVER.S    512 | Code        | 00 |         |    2 | 00/0330 : C2 20       |                               rep   #$20             ; next block
+  640 |  1 ASSD.DRIVER.S    513 | Code        | 00 |  2      |    3 | 00/0332 : EE 0B 05    |                               inc   myBlockNum       
+  641 |  1 ASSD.DRIVER.S    514 | Code        | 00 |         |    2 | 00/0335 : D0 03       |                               bne   cf3              
+  642 |  1 ASSD.DRIVER.S    515 | Code        | 00 |  2      |    3 | 00/0337 : EE 0D 05    |                               inc   myBlockNum+2     
+  643 |  1 ASSD.DRIVER.S    516 | Empty       | 00 |         |    0 | 00/033A               |                                                      
+  644 |  1 ASSD.DRIVER.S    517 | Code        | 00 |  2      |    3 | 00/033A : AD 0B 05    | cf3                           lda   myBlockNum       ; until the end
+  645 |  1 ASSD.DRIVER.S    518 | Code        | 00 |  2      |    3 | 00/033D : CD A6 02    |                               cmp   dataBS           
+  646 |  1 ASSD.DRIVER.S    519 | Code        | 00 |         |    2 | 00/0340 : 90 BE       |                               bcc   cf2              
+  647 |  1 ASSD.DRIVER.S    520 | Code        | 00 |  2      |    3 | 00/0342 : AD 0D 05    |                               lda   myBlockNum+2     
+  648 |  1 ASSD.DRIVER.S    521 | Code        | 00 |  2      |    3 | 00/0345 : CD A8 02    |                               cmp   dataBS+2         
+  649 |  1 ASSD.DRIVER.S    522 | Code        | 00 |         |    2 | 00/0348 : 90 B6       |                               bcc   cf2              
+  650 |  1 ASSD.DRIVER.S    523 | Code        | 00 |         |    1 | 00/034A : 60          |                               rts                    
+  651 |  1 ASSD.DRIVER.S    524 | Empty       | 00 |         |    0 | 00/034B               |                                                      
+  652 |  1 ASSD.DRIVER.S    525 | Comment     | 00 |         |    0 | 00/034B               | *----------- SetFormatOptions
+  653 |  1 ASSD.DRIVER.S    526 | Comment     | 00 |         |    0 | 00/034B               | *
+  654 |  1 ASSD.DRIVER.S    527 | Comment     | 00 |         |    0 | 00/034B               | *CSetFormatOptions
+  655 |  1 ASSD.DRIVER.S    528 | Comment     | 00 |         |    0 | 00/034B               | *	lda	[controlListPtr]
+  656 |  1 ASSD.DRIVER.S    529 | Comment     | 00 |         |    0 | 00/034B               | *	beq	CSFO9	; empty option is not ours
+  657 |  1 ASSD.DRIVER.S    530 | Comment     | 00 |         |    0 | 00/034B               | *	cmp	#3	; 1-2 only
+  658 |  1 ASSD.DRIVER.S    531 | Comment     | 00 |         |    0 | 00/034B               | *	bcs	CSFO9
+  659 |  1 ASSD.DRIVER.S    532 | Comment     | 00 |         |    0 | 00/034B               | *
+  660 |  1 ASSD.DRIVER.S    533 | Comment     | 00 |         |    0 | 00/034B               | *	ldy	#maxBLOCKS	; it is 1, default values for ProDOS
+  661 |  1 ASSD.DRIVER.S    534 | Comment     | 00 |         |    0 | 00/034B               | *	sty	fBlockCount
+  662 |  1 ASSD.DRIVER.S    535 | Comment     | 00 |         |    0 | 00/034B               | *	ldx	#^maxBLOCKS
+  663 |  1 ASSD.DRIVER.S    536 | Comment     | 00 |         |    0 | 00/034B               | *	stx	fBlockCount+2
+  664 |  1 ASSD.DRIVER.S    537 | Comment     | 00 |         |    0 | 00/034B               | *
+  665 |  1 ASSD.DRIVER.S    538 | Comment     | 00 |         |    0 | 00/034B               | *CSFO9	rts
+  666 |  1 ASSD.DRIVER.S    539 | Comment     | 00 |         |    0 | 00/034B               | *
+  667 |  1 ASSD.DRIVER.S    540 | Comment     | 00 |         |    0 | 00/034B               | *----------- SetConfigParameters / SetWaitStatus
+  668 |  1 ASSD.DRIVER.S    541 | Empty       | 00 |         |    0 | 00/034B               |                                                      
+  669 |  1 ASSD.DRIVER.S    542 | Code        | 00 |         |    2 | 00/034B : A7 04       | CSet                          lda   [{$04}]          ; SetConfigParameters
+  670 |  1 ASSD.DRIVER.S    543 | Code        | 00 |         |    2 | 00/034D : D0 01       |                               bne   CSetERR          ; SetWaitStatus
+  671 |  1 ASSD.DRIVER.S    544 | Code        | 00 |         |    1 | 00/034F : 60          |                               rts                    
+  672 |  1 ASSD.DRIVER.S    545 | Code        | 00 |         |    3 | 00/0350 : A9 22 00    | CSetERR                       lda   #$0022           
+  673 |  1 ASSD.DRIVER.S    546 | Code        | 00 |  2      |    3 | 00/0353 : 8D 07 05    |                               sta   errCODE          
+  674 |  1 ASSD.DRIVER.S    547 | Code        | 00 |         |    1 | 00/0356 : 60          |                               rts                    
+  675 |  1 ASSD.DRIVER.S    548 | Empty       | 00 |         |    0 | 00/0357               |                                                      
+  676 |  1 ASSD.DRIVER.S    549 | Comment     | 00 |         |    0 | 00/0357               | *----------------------------
+  677 |  1 ASSD.DRIVER.S    550 | Empty       | 00 |         |    0 | 00/0357               |                                                      
+  678 |  1 ASSD.DRIVER.S    551 | Comment     | 00 |         |    0 | 00/0357               | * Status flag of the current device
+  679 |  1 ASSD.DRIVER.S    552 | Comment     | 00 |         |    0 | 00/0357               | * $0001: image has been switched (disk switched)
+  680 |  1 ASSD.DRIVER.S    553 | Comment     | 00 |         |    0 | 00/0357               | * $0010: image is active (disk in drive)
+  681 |  1 ASSD.DRIVER.S    554 | Comment     | 00 |         |    0 | 00/0357               | * $0100: image has been modified
+  682 |  1 ASSD.DRIVER.S    555 | Empty       | 00 |         |    0 | 00/0357               |                                                      
+  683 |  1 ASSD.DRIVER.S    556 | Comment     | 00 |         |    0 | 00/0357               | *
+  684 |  1 ASSD.DRIVER.S    557 | Comment     | 00 |         |    0 | 00/0357               | * Checks everything is OK
+  685 |  1 ASSD.DRIVER.S    558 | Comment     | 00 |         |    0 | 00/0357               | *
+  686 |  1 ASSD.DRIVER.S    559 | Empty       | 00 |         |    0 | 00/0357               |                                                      
+  687 |  1 ASSD.DRIVER.S    560 | Code        | 00 |  2      |    3 | 00/0357 : 20 A9 03    | doSETUP                       jsr   checkSWITCHED    
+  688 |  1 ASSD.DRIVER.S    561 | Code        | 00 |         |    2 | 00/035A : 90 01       |                               bcc   ds2              
+  689 |  1 ASSD.DRIVER.S    562 | Code        | 00 |         |    1 | 00/035C : 60          |                               rts                    
+  690 |  1 ASSD.DRIVER.S    563 | Empty       | 00 |         |    0 | 00/035D               |                                                      
+  691 |  1 ASSD.DRIVER.S    564 | Code        | 00 |         |    2 | 00/035D : A5 08       | ds2                           lda   {$08}            ; nb of bytes to read
+  692 |  1 ASSD.DRIVER.S    565 | Code        | 00 |         |    2 | 00/035F : 05 0A       |                               ora   {$08}+2          
+  693 |  1 ASSD.DRIVER.S    566 | Code        | 00 |         |    2 | 00/0361 : D0 08       |                               bne   ds4              
+  694 |  1 ASSD.DRIVER.S    567 | Empty       | 00 |         |    0 | 00/0363               |                                                      
+  695 |  1 ASSD.DRIVER.S    568 | Code        | 00 |         |    3 | 00/0363 : A9 2C 00    |                               lda   #$002C           ; invalidByteCount
+  696 |  1 ASSD.DRIVER.S    569 | Code        | 00 |  2      |    3 | 00/0366 : 8D 07 05    |                               sta   errCODE          
+  697 |  1 ASSD.DRIVER.S    570 | Code        | 00 |         |    1 | 00/0369 : 38          |                               sec                    
+  698 |  1 ASSD.DRIVER.S    571 | Code        | 00 |         |    1 | 00/036A : 60          |                               rts                    
+  699 |  1 ASSD.DRIVER.S    572 | Empty       | 00 |         |    0 | 00/036B               |                                                      
+  700 |  1 ASSD.DRIVER.S    573 | Comment     | 00 |         |    0 | 00/036B               | *--- requestcount : $0200 => 1
+  701 |  1 ASSD.DRIVER.S    574 | Empty       | 00 |         |    0 | 00/036B               |                                                      
+  702 |  1 ASSD.DRIVER.S    575 | Code        | 00 |         |    2 | 00/036B : A5 08       | ds4                           lda   {$08}            ; multiple of $0200
+  703 |  1 ASSD.DRIVER.S    576 | Code        | 00 |         |    3 | 00/036D : 29 FF 01    |                               and   #{512}-1         
+  704 |  1 ASSD.DRIVER.S    577 | Code        | 00 |         |    2 | 00/0370 : F0 08       |                               beq   ds6              
+  705 |  1 ASSD.DRIVER.S    578 | Empty       | 00 |         |    0 | 00/0372               |                                                      
+  706 |  1 ASSD.DRIVER.S    579 | Code        | 00 |         |    3 | 00/0372 : A9 2D 00    |                               lda   #$002D           ; bad block count
+  707 |  1 ASSD.DRIVER.S    580 | Code        | 00 |  2      |    3 | 00/0375 : 8D 07 05    |                               sta   errCODE          
+  708 |  1 ASSD.DRIVER.S    581 | Code        | 00 |         |    1 | 00/0378 : 38          |                               sec                    
+  709 |  1 ASSD.DRIVER.S    582 | Code        | 00 |         |    1 | 00/0379 : 60          |                               rts                    
+  710 |  1 ASSD.DRIVER.S    583 | Empty       | 00 |         |    0 | 00/037A               |                                                      
+  711 |  1 ASSD.DRIVER.S    584 | Comment     | 00 |         |    0 | 00/037A               | *--- Generic transfer now
+  712 |  1 ASSD.DRIVER.S    585 | Empty       | 00 |         |    0 | 00/037A               |                                                      
+  713 |  1 ASSD.DRIVER.S    586 | Code        | 00 |         |    2 | 00/037A : A5 08       | ds6                           lda   {$08}            ; assume transfer=request
+  714 |  1 ASSD.DRIVER.S    587 | Code        | 00 |         |    2 | 00/037C : 85 0C       |                               sta   {$0C}            
+  715 |  1 ASSD.DRIVER.S    588 | Code        | 00 |         |    2 | 00/037E : A5 0A       |                               lda   {$08}+2          
+  716 |  1 ASSD.DRIVER.S    589 | Code        | 00 |         |    2 | 00/0380 : 85 0E       |                               sta   {$0C}+2          
+  717 |  1 ASSD.DRIVER.S    590 | Empty       | 00 |         |    0 | 00/0382               |                                                      
+  718 |  1 ASSD.DRIVER.S    591 | Comment     | 00 |         |    0 | 00/0382               | *--- Save data
+  719 |  1 ASSD.DRIVER.S    592 | Empty       | 00 |         |    0 | 00/0382               |                                                      
+  720 |  1 ASSD.DRIVER.S    593 | Code        | 00 |         |    2 | 00/0382 : A5 05       |                               lda   {$04}+1          
+  721 |  1 ASSD.DRIVER.S    594 | Code        | 00 |  2      |    3 | 00/0384 : 8D 09 05    |                               sta   myBufferPtr      
+  722 |  1 ASSD.DRIVER.S    595 | Empty       | 00 |         |    0 | 00/0387               |                                                      
+  723 |  1 ASSD.DRIVER.S    596 | Comment     | 00 |         |    0 | 00/0387               | *--- Prepare the real block value
+  724 |  1 ASSD.DRIVER.S    597 | Empty       | 00 |         |    0 | 00/0387               |                                                      
+  725 |  1 ASSD.DRIVER.S    598 | Code        | 00 |         |    3 | 00/0387 : A0 30 00    |                               ldy   #48              
+  726 |  1 ASSD.DRIVER.S    599 | Code        | 00 |         |    2 | 00/038A : B7 20       |                               lda   [{$20}],y        
+  727 |  1 ASSD.DRIVER.S    600 | Code        | 00 |         |    1 | 00/038C : 3A          |                               dec                    
+  728 |  1 ASSD.DRIVER.S    601 | Code        | 00 |         |    1 | 00/038D : 0A          |                               asl                    
+  729 |  1 ASSD.DRIVER.S    602 | Code        | 00 |         |    1 | 00/038E : 0A          |                               asl                    
+  730 |  1 ASSD.DRIVER.S    603 | Code        | 00 |         |    1 | 00/038F : 0A          |                               asl                    
+  731 |  1 ASSD.DRIVER.S    604 | Code        | 00 |         |    1 | 00/0390 : 0A          |                               asl                    ; *16
+  732 |  1 ASSD.DRIVER.S    605 | Code        | 00 |         |    1 | 00/0391 : AA          |                               tax                    
+  733 |  1 ASSD.DRIVER.S    606 | Code        | 00 |  2      |    3 | 00/0392 : BD 20 06    |                               lda   tblPARTITION,x   
+  734 |  1 ASSD.DRIVER.S    607 | Code        | 00 |         |    1 | 00/0395 : 18          |                               clc                    
+  735 |  1 ASSD.DRIVER.S    608 | Code        | 00 |         |    2 | 00/0396 : 65 10       |                               adc   {$10}            
+  736 |  1 ASSD.DRIVER.S    609 | Code        | 00 |  2      |    3 | 00/0398 : 8D 0B 05    |                               sta   myBlockNum       
+  737 |  1 ASSD.DRIVER.S    610 | Code        | 00 |  2      |    3 | 00/039B : BD 22 06    |                               lda   tblPARTITION+2,x 
+  738 |  1 ASSD.DRIVER.S    611 | Code        | 00 |         |    2 | 00/039E : 65 12       |                               adc   {$10}+2          
+  739 |  1 ASSD.DRIVER.S    612 | Code        | 00 |  2      |    3 | 00/03A0 : 8D 0D 05    |                               sta   myBlockNum+2     
+  740 |  1 ASSD.DRIVER.S    613 | Empty       | 00 |         |    0 | 00/03A3               |                                                      
+  741 |  1 ASSD.DRIVER.S    614 | Comment     | 00 |         |    0 | 00/03A3               | *--- Number of pages to read (is always a multiple of 2)
+  742 |  1 ASSD.DRIVER.S    615 | Empty       | 00 |         |    0 | 00/03A3               |                                                      
+  743 |  1 ASSD.DRIVER.S    616 | Code        | 00 |         |    2 | 00/03A3 : A5 09       |                               lda   {$08}+1          
+  744 |  1 ASSD.DRIVER.S    617 | Code        | 00 |         |    1 | 00/03A5 : 4A          |                               lsr                    
+  745 |  1 ASSD.DRIVER.S    618 | Code        | 00 |         |    1 | 00/03A6 : AA          |                               tax                    
+  746 |  1 ASSD.DRIVER.S    619 | Empty       | 00 |         |    0 | 00/03A7               |                                                      
+  747 |  1 ASSD.DRIVER.S    620 | Code        | 00 |         |    1 | 00/03A7 : 18          |                               clc                    
+  748 |  1 ASSD.DRIVER.S    621 | Code        | 00 |         |    1 | 00/03A8 : 60          |                               rts                    
+  749 |  1 ASSD.DRIVER.S    622 | Empty       | 00 |         |    0 | 00/03A9               |                                                      
+  750 |  1 ASSD.DRIVER.S    623 | Comment     | 00 |         |    0 | 00/03A9               | *----------------------------
+  751 |  1 ASSD.DRIVER.S    624 | Empty       | 00 |         |    0 | 00/03A9               |                                                      
+  752 |  1 ASSD.DRIVER.S    625 | Empty       | 00 |         |    0 | 00/03A9               | checkSWITCHED                                        
+  753 |  1 ASSD.DRIVER.S    626 | Comment     | 00 |         |    0 | 00/03A9               | *	lda	fgSTARTED
+  754 |  1 ASSD.DRIVER.S    627 | Comment     | 00 |         |    0 | 00/03A9               | *	bne	cs1
+  755 |  1 ASSD.DRIVER.S    628 | Empty       | 00 |         |    0 | 00/03A9               |                                                      
+  756 |  1 ASSD.DRIVER.S    629 | Code        | 00 |         |    3 | 00/03A9 : A0 30 00    |                               ldy   #48              
+  757 |  1 ASSD.DRIVER.S    630 | Code        | 00 |         |    2 | 00/03AC : B7 20       |                               lda   [{$20}],y        
+  758 |  1 ASSD.DRIVER.S    631 | Code        | 00 |         |    1 | 00/03AE : 3A          |                               dec                    
+  759 |  1 ASSD.DRIVER.S    632 | Code        | 00 |         |    1 | 00/03AF : 0A          |                               asl                    
+  760 |  1 ASSD.DRIVER.S    633 | Code        | 00 |         |    1 | 00/03B0 : 0A          |                               asl                    
+  761 |  1 ASSD.DRIVER.S    634 | Code        | 00 |         |    1 | 00/03B1 : 0A          |                               asl                    
+  762 |  1 ASSD.DRIVER.S    635 | Code        | 00 |         |    1 | 00/03B2 : 0A          |                               asl                    ; *16
+  763 |  1 ASSD.DRIVER.S    636 | Code        | 00 |         |    1 | 00/03B3 : AA          |                               tax                    
+  764 |  1 ASSD.DRIVER.S    637 | Code        | 00 |  2      |    3 | 00/03B4 : BD 28 06    |                               lda   tblPARTITION+8,x 
+  765 |  1 ASSD.DRIVER.S    638 | Code        | 00 |         |    3 | 00/03B7 : C9 01 00    |                               cmp   #{1}             ; is partition active?
+  766 |  1 ASSD.DRIVER.S    639 | Code        | 00 |         |    2 | 00/03BA : F0 08       |                               beq   cs1              ; yes, exit
+  767 |  1 ASSD.DRIVER.S    640 | Empty       | 00 |         |    0 | 00/03BC               |                                                      
+  768 |  1 ASSD.DRIVER.S    641 | Code        | 00 |         |    3 | 00/03BC : A9 28 00    |                               lda   #$0028           ; no device connected. Goodbye!
+  769 |  1 ASSD.DRIVER.S    642 | Code        | 00 |  2      |    3 | 00/03BF : 8D 07 05    |                               sta   errCODE          
+  770 |  1 ASSD.DRIVER.S    643 | Empty       | 00 |         |    0 | 00/03C2               |                                                      
+  771 |  1 ASSD.DRIVER.S    644 | Comment     | 00 |         |    0 | 00/03C2               | *	lda	tblPARTITION+12,x
+  772 |  1 ASSD.DRIVER.S    645 | Comment     | 00 |         |    0 | 00/03C2               | *	cmp	#TRUE	; is switched already done?
+  773 |  1 ASSD.DRIVER.S    646 | Comment     | 00 |         |    0 | 00/03C2               | *	beq	cs1	; yes, exit
+  774 |  1 ASSD.DRIVER.S    647 | Comment     | 00 |         |    0 | 00/03C2               | *	
+  775 |  1 ASSD.DRIVER.S    648 | Comment     | 00 |         |    0 | 00/03C2               | *	jsl	SET_DISKSW	; partition is inactive
+  776 |  1 ASSD.DRIVER.S    649 | Comment     | 00 |         |    0 | 00/03C2               | *
+  777 |  1 ASSD.DRIVER.S    650 | Comment     | 00 |         |    0 | 00/03C2               | *	ldy	#48
+  778 |  1 ASSD.DRIVER.S    651 | Comment     | 00 |         |    0 | 00/03C2               | *	lda	[dibPointer],y
+  779 |  1 ASSD.DRIVER.S    652 | Comment     | 00 |         |    0 | 00/03C2               | *	dec
+  780 |  1 ASSD.DRIVER.S    653 | Comment     | 00 |         |    0 | 00/03C2               | *	asl
+  781 |  1 ASSD.DRIVER.S    654 | Comment     | 00 |         |    0 | 00/03C2               | *	asl
+  782 |  1 ASSD.DRIVER.S    655 | Comment     | 00 |         |    0 | 00/03C2               | *	asl
+  783 |  1 ASSD.DRIVER.S    656 | Comment     | 00 |         |    0 | 00/03C2               | *	asl		; *16
+  784 |  1 ASSD.DRIVER.S    657 | Comment     | 00 |         |    0 | 00/03C2               | *	tax
+  785 |  1 ASSD.DRIVER.S    658 | Comment     | 00 |         |    0 | 00/03C2               | *	lda	#TRUE	; set switched done
+  786 |  1 ASSD.DRIVER.S    659 | Comment     | 00 |         |    0 | 00/03C2               | *	sta	tblPARTITION+12,x
+  787 |  1 ASSD.DRIVER.S    660 | Comment     | 00 |         |    0 | 00/03C2               | *	
+  788 |  1 ASSD.DRIVER.S    661 | Comment     | 00 |         |    0 | 00/03C2               | *	lda	#1
+  789 |  1 ASSD.DRIVER.S    662 | Comment     | 00 |         |    0 | 00/03C2               | *	sta	fgSTARTED
+  790 |  1 ASSD.DRIVER.S    663 | Comment     | 00 |         |    0 | 00/03C2               | *	lda	#$002e
+  791 |  1 ASSD.DRIVER.S    664 | Comment     | 00 |         |    0 | 00/03C2               | *	sta	errCODE
+  792 |  1 ASSD.DRIVER.S    665 | Empty       | 00 |         |    0 | 00/03C2               |                                                      
+  793 |  1 ASSD.DRIVER.S    666 | Code        | 00 |         |    1 | 00/03C2 : 38          |                               sec                    
+  794 |  1 ASSD.DRIVER.S    667 | Code        | 00 |         |    1 | 00/03C3 : 60          |                               rts                    
+  795 |  1 ASSD.DRIVER.S    668 | Empty       | 00 |         |    0 | 00/03C4               |                                                      
+  796 |  1 ASSD.DRIVER.S    669 | Code        | 00 |         |    1 | 00/03C4 : 18          | cs1                           clc                    
+  797 |  1 ASSD.DRIVER.S    670 | Code        | 00 |         |    1 | 00/03C5 : 60          |                               rts                    
+  798 |  1 ASSD.DRIVER.S    671 | Empty       | 00 |         |    0 | 00/03C6               |                                                      
+  799 |  1 ASSD.DRIVER.S    672 | Comment     | 00 |         |    0 | 00/03C6               | *----------------------------
+  800 |  1 ASSD.DRIVER.S    673 | Comment     | 00 |         |    0 | 00/03C6               | * CHECK VOLUME
+  801 |  1 ASSD.DRIVER.S    674 | Comment     | 00 |         |    0 | 00/03C6               | *----------------------------
+  802 |  1 ASSD.DRIVER.S    675 | Empty       | 00 |         |    0 | 00/03C6               |                                                      
+  803 |  1 ASSD.DRIVER.S    676 | Equivalence | 00 |         |    0 | 00/03C6               | VOL_SIG                       =     $aa55            
+  804 |  1 ASSD.DRIVER.S    677 | Equivalence | 00 |         |    0 | 00/03C6               | BOOT_SIG1                     =     $e9              
+  805 |  1 ASSD.DRIVER.S    678 | Equivalence | 00 |         |    0 | 00/03C6               | BOOT_SIG2                     =     $eb              
+  806 |  1 ASSD.DRIVER.S    679 | Equivalence | 00 |         |    0 | 00/03C6               | GSOS_PART                     =     $20              ; reserved but unused partition ID
+  807 |  1 ASSD.DRIVER.S    680 | Equivalence | 00 |         |    0 | 00/03C6               | SIZE_PART                     =     16               
+  808 |  1 ASSD.DRIVER.S    681 | Equivalence | 00 |         |    0 | 00/03C6               | SIZE_DIB                      =     64               
+  809 |  1 ASSD.DRIVER.S    682 | Empty       | 00 |         |    0 | 00/03C6               |                                                      
+  810 |  1 ASSD.DRIVER.S    683 | Comment     | 00 |         |    0 | 00/03C6               | *---
+  811 |  1 ASSD.DRIVER.S    684 | Empty       | 00 |         |    0 | 00/03C6               |                                                      
+  812 |  1 ASSD.DRIVER.S    685 | Empty       | 00 |         |    0 | 00/03C6               | checkVOLUME                                          
+  813 |  1 ASSD.DRIVER.S    686 | Empty       | 00 |         |    0 | 00/03C6               |                                                      
+  814 |  1 ASSD.DRIVER.S    687 | Comment     | 00 |         |    0 | 00/03C6               | *--- Reset partition and DIB data
+  815 |  1 ASSD.DRIVER.S    688 | Empty       | 00 |         |    0 | 00/03C6               |                                                      
+  816 |  1 ASSD.DRIVER.S    689 | Code        | 00 |         |    3 | 00/03C6 : A2 3E 00    |                               ldx   #PART_END-PART_BEGIN-2
+  817 |  1 ASSD.DRIVER.S    690 | Code        | 00 |  2      |    3 | 00/03C9 : 9E 20 06    | ozunid_5                      stz   tblPARTITION,x   
+  818 |  1 ASSD.DRIVER.S    691 | Code        | 00 |         |    1 | 00/03CC : CA          |                               dex                    
+  819 |  1 ASSD.DRIVER.S    692 | Code        | 00 |         |    1 | 00/03CD : CA          |                               dex                    
+  820 |  1 ASSD.DRIVER.S    693 | Code        | 00 |         |    2 | 00/03CE : 10 F9       |                               bpl   ozunid_5         
+  821 |  1 ASSD.DRIVER.S    694 | Empty       | 00 |         |    0 | 00/03D0               |                                                      
+  822 |  1 ASSD.DRIVER.S    695 | Code        | 00 |         |    3 | 00/03D0 : A2 00 00    |                               ldx   #0               ; reset DIB data (chars and block count)
+  823 |  1 ASSD.DRIVER.S    696 | Code        | 00 |         |    3 | 00/03D3 : A9 E4 83    | ozunid_6                      lda   #{$83E4}         ; no disk
+  824 |  1 ASSD.DRIVER.S    697 | Code        | 00 |  2      |    3 | 00/03D6 : 9D 17 05    |                               sta   MyDIB+8,x        
+  825 |  1 ASSD.DRIVER.S    698 | Code        | 00 |  2      |    3 | 00/03D9 : 9E 19 05    |                               stz   MyDIB+10,x       ; size is 0
+  826 |  1 ASSD.DRIVER.S    699 | Code        | 00 |  2      |    3 | 00/03DC : 9E 1B 05    |                               stz   MyDIB+12,x       
+  827 |  1 ASSD.DRIVER.S    700 | Empty       | 00 |         |    0 | 00/03DF               |                                                      
+  828 |  1 ASSD.DRIVER.S    701 | Code        | 00 |         |    1 | 00/03DF : 8A          |                               txa                    
+  829 |  1 ASSD.DRIVER.S    702 | Code        | 00 |         |    1 | 00/03E0 : 18          |                               clc                    
+  830 |  1 ASSD.DRIVER.S    703 | Code        | 00 |         |    3 | 00/03E1 : 69 40 00    |                               adc   #{64}            
+  831 |  1 ASSD.DRIVER.S    704 | Code        | 00 |         |    1 | 00/03E4 : AA          |                               tax                    
+  832 |  1 ASSD.DRIVER.S    705 | Code        | 00 |         |    3 | 00/03E5 : E0 00 01    |                               cpx   #64*{4}          
+  833 |  1 ASSD.DRIVER.S    706 | Code        | 00 |         |    2 | 00/03E8 : 90 E9       |                               bcc   ozunid_6         
+  834 |  1 ASSD.DRIVER.S    707 | Empty       | 00 |         |    0 | 00/03EA               |                                                      
+  835 |  1 ASSD.DRIVER.S    708 | Comment     | 00 |         |    0 | 00/03EA               | *--- Read block 0
+  836 |  1 ASSD.DRIVER.S    709 | Empty       | 00 |         |    0 | 00/03EA               |                                                      
+  837 |  1 ASSD.DRIVER.S    710 | Code        | 10 |         |    2 | 00/03EA : E2 20       |                               sep   #$20             
+  838 |  1 ASSD.DRIVER.S    711 | Code        | 10 |         |    2 | 00/03EC : A9 00       |                               lda   #0               
+  839 |  1 ASSD.DRIVER.S    712 | Code        | 10 |         |    4 | 00/03EE : 8F 00 00 E4 |                               stal  {$e40000}        
+  840 |  1 ASSD.DRIVER.S    713 | Code        | 10 |         |    4 | 00/03F2 : 8F 02 00 E4 |                               stal  {$e40002}        
+  841 |  1 ASSD.DRIVER.S    714 | Code        | 10 |         |    4 | 00/03F6 : 8F 04 00 E4 |                               stal  {$e40004}        
+  842 |  1 ASSD.DRIVER.S    715 | Code        | 10 |         |    4 | 00/03FA : 8F 06 00 E4 |                               stal  {$e40006}        
+  843 |  1 ASSD.DRIVER.S    716 | Empty       | 10 |         |    0 | 00/03FE               |                                                      
+  844 |  1 ASSD.DRIVER.S    717 | Code        | 10 |         |    2 | 00/03FE : A9 01       |                               lda   #1               
+  845 |  1 ASSD.DRIVER.S    718 | Code        | 10 |         |    4 | 00/0400 : 8F 08 00 E4 |                               stal  {$e40008}        
+  846 |  1 ASSD.DRIVER.S    719 | Empty       | 10 |         |    0 | 00/0404               |                                                      
+  847 |  1 ASSD.DRIVER.S    720 | Code        | 10 |         |    3 | 00/0404 : A0 00 00    |                               ldy   #0               
+  848 |  1 ASSD.DRIVER.S    721 | Code        | 10 |         |    4 | 00/0407 : AF 0A 00 E4 | ozunid_7                      ldal  {$e4000a}        
+  849 |  1 ASSD.DRIVER.S    722 | Code        | 10 |  2      |    3 | 00/040B : 99 60 06    |                               sta   firstBLOCK,y     
+  850 |  1 ASSD.DRIVER.S    723 | Code        | 10 |         |    1 | 00/040E : C8          |                               iny                    
+  851 |  1 ASSD.DRIVER.S    724 | Code        | 10 |         |    3 | 00/040F : C0 00 02    |                               cpy   #{512}           
+  852 |  1 ASSD.DRIVER.S    725 | Code        | 10 |         |    2 | 00/0412 : 90 F3       |                               bcc   ozunid_7         
+  853 |  1 ASSD.DRIVER.S    726 | Code        | 00 |         |    2 | 00/0414 : C2 20       |                               rep   #$20             
+  854 |  1 ASSD.DRIVER.S    727 | Empty       | 00 |         |    0 | 00/0416               |                                                      
+  855 |  1 ASSD.DRIVER.S    728 | Comment     | 00 |         |    0 | 00/0416               | *--- Do we have a MBR?
+  856 |  1 ASSD.DRIVER.S    729 | Empty       | 00 |         |    0 | 00/0416               |                                                      
+  857 |  1 ASSD.DRIVER.S    730 | Code        | 00 |  2      |    3 | 00/0416 : AD 5E 08    |                               lda   firstBLOCK+$1fe  
+  858 |  1 ASSD.DRIVER.S    731 | Code        | 00 |         |    3 | 00/0419 : C9 55 AA    |                               cmp   #{$aa55}         
+  859 |  1 ASSD.DRIVER.S    732 | Code        | 00 |         |    2 | 00/041C : F0 28       |                               beq   cv_MBR           ; yes
+  860 |  1 ASSD.DRIVER.S    733 | Empty       | 00 |         |    0 | 00/041E               |                                                      
+  861 |  1 ASSD.DRIVER.S    734 | Code        | 00 |         |    3 | 00/041E : A9 FF FF    | cv_STD                        lda   #{$ffff}         ; partition 1 begins at block 0
+  862 |  1 ASSD.DRIVER.S    735 | Code        | 00 |  2      |    3 | 00/0421 : 8D 24 06    |                               sta   tblPARTITION+4   ; and is a big one
+  863 |  1 ASSD.DRIVER.S    736 | Code        | 00 |  2      |    3 | 00/0424 : 8D 19 05    |                               sta   MyDIB+10         
+  864 |  1 ASSD.DRIVER.S    737 | Code        | 00 |         |    3 | 00/0427 : A9 00 00    |                               lda   #^{$ffff}        
+  865 |  1 ASSD.DRIVER.S    738 | Code        | 00 |  2      |    3 | 00/042A : 8D 26 06    |                               sta   tblPARTITION+6   
+  866 |  1 ASSD.DRIVER.S    739 | Code        | 00 |  2      |    3 | 00/042D : 8D 1B 05    |                               sta   MyDIB+12         
+  867 |  1 ASSD.DRIVER.S    740 | Code        | 00 |         |    3 | 00/0430 : A9 01 00    |                               lda   #{1}             
+  868 |  1 ASSD.DRIVER.S    741 | Code        | 00 |  2      |    3 | 00/0433 : 8D 28 06    |                               sta   tblPARTITION+8   ; partition exists
+  869 |  1 ASSD.DRIVER.S    742 | Code        | 00 |  2      |    3 | 00/0436 : 8D 2C 06    |                               sta   tblPARTITION+12  ; disk is inserted
+  870 |  1 ASSD.DRIVER.S    743 | Code        | 00 |         |    3 | 00/0439 : A9 20 00    |                               lda   #{$20}           
+  871 |  1 ASSD.DRIVER.S    744 | Code        | 00 |  2      |    3 | 00/043C : 8D 2A 06    |                               sta   tblPARTITION+10  ; define a GS/OS partition
+  872 |  1 ASSD.DRIVER.S    745 | Code        | 00 |         |    3 | 00/043F : A9 EC 83    |                               lda   #{$83EC}         ; we have a disk in it
+  873 |  1 ASSD.DRIVER.S    746 | Code        | 00 |  2      |    3 | 00/0442 : 8D 17 05    |                               sta   MyDIB+8          
+  874 |  1 ASSD.DRIVER.S    747 | Code        | 00 |         |    1 | 00/0445 : 60          |                               rts                    
+  875 |  1 ASSD.DRIVER.S    748 | Empty       | 00 |         |    0 | 00/0446               |                                                      
+  876 |  1 ASSD.DRIVER.S    749 | Comment     | 00 |         |    0 | 00/0446               | *--- Do we really have a MBR?
+  877 |  1 ASSD.DRIVER.S    750 | Empty       | 00 |         |    0 | 00/0446               |                                                      
+  878 |  1 ASSD.DRIVER.S    751 | Code        | 00 |  2      |    3 | 00/0446 : AD 60 06    | cv_MBR                        lda   firstBLOCK       
+  879 |  1 ASSD.DRIVER.S    752 | Code        | 00 |         |    3 | 00/0449 : 29 FF 00    |                               and   #$ff             
+  880 |  1 ASSD.DRIVER.S    753 | Code        | 00 |         |    3 | 00/044C : C9 E9 00    |                               cmp   #{$e9}           
+  881 |  1 ASSD.DRIVER.S    754 | Code        | 00 |         |    2 | 00/044F : F0 CD       |                               beq   cv_STD           ; yes
+  882 |  1 ASSD.DRIVER.S    755 | Code        | 00 |         |    3 | 00/0451 : C9 EB 00    |                               cmp   #{$eb}           
+  883 |  1 ASSD.DRIVER.S    756 | Code        | 00 |         |    2 | 00/0454 : F0 C8       |                               beq   cv_STD           ; yes
+  884 |  1 ASSD.DRIVER.S    757 | Code        | 00 |         |    3 | 00/0456 : C9 00 00    |                               cmp   #0               
+  885 |  1 ASSD.DRIVER.S    758 | Code        | 00 |         |    2 | 00/0459 : D0 C3       |                               bne   cv_STD           ; at least, not a partition map
+  886 |  1 ASSD.DRIVER.S    759 | Empty       | 00 |         |    0 | 00/045B               |                                                      
+  887 |  1 ASSD.DRIVER.S    760 | Comment     | 00 |         |    0 | 00/045B               | *--- We believe we have a partition map, let's check it
+  888 |  1 ASSD.DRIVER.S    761 | Empty       | 00 |         |    0 | 00/045B               |                                                      
+  889 |  1 ASSD.DRIVER.S    762 | Equivalence | 00 |         |    0 | 00/045B               | PART1_OFFSET                  =     $1be             
+  890 |  1 ASSD.DRIVER.S    763 | Equivalence | 00 |         |    0 | 00/045B               | NB_PARTITIONS                 =     4                
+  891 |  1 ASSD.DRIVER.S    764 | Empty       | 00 |         |    0 | 00/045B               |                                                      
+  892 |  1 ASSD.DRIVER.S    765 | Code        | 00 |         |    3 | 00/045B : A0 00 00    |                               ldy   #0               
+  893 |  1 ASSD.DRIVER.S    766 | Code        | 00 |         |    3 | 00/045E : A2 BE 01    |                               ldx   #{$1be}          
+  894 |  1 ASSD.DRIVER.S    767 | Code        | 00 |  2      |    3 | 00/0461 : 20 CE 04    | ozunid_8                      jsr   checkPARTID      ; check partition ID
+  895 |  1 ASSD.DRIVER.S    768 | Code        | 00 |         |    2 | 00/0464 : B0 2D       |                               bcs   cv_NEXT          ; not authorized
+  896 |  1 ASSD.DRIVER.S    769 | Empty       | 00 |         |    0 | 00/0466               |                                                      
+  897 |  1 ASSD.DRIVER.S    770 | Code        | 00 |  2      |    3 | 00/0466 : BD 68 06    |                               lda   firstBLOCK+8,x   ; copy 1st LBA sector
+  898 |  1 ASSD.DRIVER.S    771 | Code        | 00 |  2      |    3 | 00/0469 : 99 20 06    |                               sta   tblPARTITION,y   ; and number of sectors
+  899 |  1 ASSD.DRIVER.S    772 | Code        | 00 |  2      |    3 | 00/046C : BD 6A 06    |                               lda   firstBLOCK+10,x  ; of partition
+  900 |  1 ASSD.DRIVER.S    773 | Code        | 00 |  2      |    3 | 00/046F : 99 22 06    |                               sta   tblPARTITION+2,y 
+  901 |  1 ASSD.DRIVER.S    774 | Code        | 00 |  2      |    3 | 00/0472 : BD 6C 06    |                               lda   firstBLOCK+12,x  
+  902 |  1 ASSD.DRIVER.S    775 | Code        | 00 |  2      |    3 | 00/0475 : 99 24 06    |                               sta   tblPARTITION+4,y 
+  903 |  1 ASSD.DRIVER.S    776 | Code        | 00 |  2      |    3 | 00/0478 : BD 6E 06    |                               lda   firstBLOCK+14,x  
+  904 |  1 ASSD.DRIVER.S    777 | Code        | 00 |  2      |    3 | 00/047B : 99 26 06    |                               sta   tblPARTITION+6,y 
+  905 |  1 ASSD.DRIVER.S    778 | Code        | 00 |         |    3 | 00/047E : A9 01 00    |                               lda   #{1}             ; partition is active
+  906 |  1 ASSD.DRIVER.S    779 | Code        | 00 |  2      |    3 | 00/0481 : 99 28 06    |                               sta   tblPARTITION+8,y 
+  907 |  1 ASSD.DRIVER.S    780 | Code        | 00 |  2      |    3 | 00/0484 : BD 64 06    |                               lda   firstBLOCK+4,x   ; partition ID
+  908 |  1 ASSD.DRIVER.S    781 | Code        | 00 |         |    3 | 00/0487 : 29 FF 00    |                               and   #$ff             
+  909 |  1 ASSD.DRIVER.S    782 | Code        | 00 |  2      |    3 | 00/048A : 99 2A 06    |                               sta   tblPARTITION+10,y
+  910 |  1 ASSD.DRIVER.S    783 | Code        | 00 |         |    1 | 00/048D : 98          |                               tya                    ; we do not set switchedStatus
+  911 |  1 ASSD.DRIVER.S    784 | Code        | 00 |         |    1 | 00/048E : 18          |                               clc                    ; it is already set to 0
+  912 |  1 ASSD.DRIVER.S    785 | Code        | 00 |         |    3 | 00/048F : 69 10 00    |                               adc   #{16}            
+  913 |  1 ASSD.DRIVER.S    786 | Code        | 00 |         |    1 | 00/0492 : A8          |                               tay                    
+  914 |  1 ASSD.DRIVER.S    787 | Empty       | 00 |         |    0 | 00/0493               |                                                      
+  915 |  1 ASSD.DRIVER.S    788 | Code        | 00 |         |    1 | 00/0493 : 8A          | cv_NEXT                       txa                    
+  916 |  1 ASSD.DRIVER.S    789 | Code        | 00 |         |    1 | 00/0494 : 18          |                               clc                    
+  917 |  1 ASSD.DRIVER.S    790 | Code        | 00 |         |    3 | 00/0495 : 69 10 00    |                               adc   #{16}            
+  918 |  1 ASSD.DRIVER.S    791 | Code        | 00 |         |    1 | 00/0498 : AA          |                               tax                    
+  919 |  1 ASSD.DRIVER.S    792 | Code        | 00 |         |    3 | 00/0499 : E0 FE 01    |                               cpx   #$1fe            
+  920 |  1 ASSD.DRIVER.S    793 | Code        | 00 |         |    2 | 00/049C : 90 C3       |                               bcc   ozunid_8         
+  921 |  1 ASSD.DRIVER.S    794 | Empty       | 00 |         |    0 | 00/049E               |                                                      
+  922 |  1 ASSD.DRIVER.S    795 | Comment     | 00 |         |    0 | 00/049E               | *--- Update the DIBs if needed
+  923 |  1 ASSD.DRIVER.S    796 | Empty       | 00 |         |    0 | 00/049E               |                                                      
+  924 |  1 ASSD.DRIVER.S    797 | Code        | 00 |         |    3 | 00/049E : A2 00 00    |                               ldx   #0               
+  925 |  1 ASSD.DRIVER.S    798 | Code        | 00 |         |    1 | 00/04A1 : 9B          |                               txy                    
+  926 |  1 ASSD.DRIVER.S    799 | Code        | 00 |  2      |    3 | 00/04A2 : BD 28 06    | ozunid_9                      lda   tblPARTITION+8,x ; do we have a partition?
+  927 |  1 ASSD.DRIVER.S    800 | Code        | 00 |         |    3 | 00/04A5 : C9 01 00    |                               cmp   #{1}             
+  928 |  1 ASSD.DRIVER.S    801 | Code        | 00 |         |    2 | 00/04A8 : D0 12       |                               bne   cv_NOUPDATE      ; no
+  929 |  1 ASSD.DRIVER.S    802 | Code        | 00 |         |    3 | 00/04AA : A9 EC 83    |                               lda   #{$83EC}         ; yes, we have a disk in it
+  930 |  1 ASSD.DRIVER.S    803 | Code        | 00 |  2      |    3 | 00/04AD : 99 17 05    |                               sta   MyDIB+8,y        
+  931 |  1 ASSD.DRIVER.S    804 | Code        | 00 |  2      |    3 | 00/04B0 : BD 24 06    |                               lda   tblPARTITION+4,x ; and copy block count
+  932 |  1 ASSD.DRIVER.S    805 | Code        | 00 |  2      |    3 | 00/04B3 : 99 19 05    |                               sta   MyDIB+10,y       
+  933 |  1 ASSD.DRIVER.S    806 | Code        | 00 |  2      |    3 | 00/04B6 : BD 26 06    |                               lda   tblPARTITION+6,x 
+  934 |  1 ASSD.DRIVER.S    807 | Code        | 00 |  2      |    3 | 00/04B9 : 99 1B 05    |                               sta   MyDIB+12,y       
+  935 |  1 ASSD.DRIVER.S    808 | Empty       | 00 |         |    0 | 00/04BC               |                                                      
+  936 |  1 ASSD.DRIVER.S    809 | Code        | 00 |         |    1 | 00/04BC : 8A          | cv_NOUPDATE                   txa                    
+  937 |  1 ASSD.DRIVER.S    810 | Code        | 00 |         |    1 | 00/04BD : 18          |                               clc                    
+  938 |  1 ASSD.DRIVER.S    811 | Code        | 00 |         |    3 | 00/04BE : 69 10 00    |                               adc   #{16}            
+  939 |  1 ASSD.DRIVER.S    812 | Code        | 00 |         |    1 | 00/04C1 : AA          |                               tax                    
+  940 |  1 ASSD.DRIVER.S    813 | Empty       | 00 |         |    0 | 00/04C2               |                                                      
+  941 |  1 ASSD.DRIVER.S    814 | Code        | 00 |         |    1 | 00/04C2 : 98          |                               tya                    
+  942 |  1 ASSD.DRIVER.S    815 | Code        | 00 |         |    1 | 00/04C3 : 18          |                               clc                    
+  943 |  1 ASSD.DRIVER.S    816 | Code        | 00 |         |    3 | 00/04C4 : 69 40 00    |                               adc   #{64}            
+  944 |  1 ASSD.DRIVER.S    817 | Code        | 00 |         |    1 | 00/04C7 : A8          |                               tay                    
+  945 |  1 ASSD.DRIVER.S    818 | Code        | 00 |         |    3 | 00/04C8 : C0 00 01    |                               cpy   #64*{4}          
+  946 |  1 ASSD.DRIVER.S    819 | Code        | 00 |         |    2 | 00/04CB : 90 D5       |                               bcc   ozunid_9         
+  947 |  1 ASSD.DRIVER.S    820 | Empty       | 00 |         |    0 | 00/04CD               |                                                      
+  948 |  1 ASSD.DRIVER.S    821 | Comment     | 00 |         |    0 | 00/04CD               | *--- We're done! Pas vraiment mais bon...
+  949 |  1 ASSD.DRIVER.S    822 | Empty       | 00 |         |    0 | 00/04CD               |                                                      
+  950 |  1 ASSD.DRIVER.S    823 | Code        | 00 |         |    1 | 00/04CD : 60          |                               rts                    
+  951 |  1 ASSD.DRIVER.S    824 | Empty       | 00 |         |    0 | 00/04CE               |                                                      
+  952 |  1 ASSD.DRIVER.S    825 | Comment     | 00 |         |    0 | 00/04CE               | *--- Check if the partition ID is in my authorized list
+  953 |  1 ASSD.DRIVER.S    826 | Empty       | 00 |         |    0 | 00/04CE               |                                                      
+  954 |  1 ASSD.DRIVER.S    827 | Code        | 00 |         |    1 | 00/04CE : 5A          | checkPARTID                   phy                    
+  955 |  1 ASSD.DRIVER.S    828 | Code        | 10 |         |    2 | 00/04CF : E2 20       |                               sep   #$20             
+  956 |  1 ASSD.DRIVER.S    829 | Empty       | 10 |         |    0 | 00/04D1               |                                                      
+  957 |  1 ASSD.DRIVER.S    830 | Code        | 10 |         |    3 | 00/04D1 : A0 00 00    |                               ldy   #0               
+  958 |  1 ASSD.DRIVER.S    831 | Code        | 10 |  2      |    3 | 00/04D4 : B9 0F 06    | ozunid_10                     lda   listPARTID,y     
+  959 |  1 ASSD.DRIVER.S    832 | Code        | 10 |         |    2 | 00/04D7 : C9 FF       |                               cmp   #$ff             ; end of list
+  960 |  1 ASSD.DRIVER.S    833 | Code        | 10 |         |    2 | 00/04D9 : F0 08       |                               beq   cpid_KO          
+  961 |  1 ASSD.DRIVER.S    834 | Empty       | 10 |         |    0 | 00/04DB               |                                                      
+  962 |  1 ASSD.DRIVER.S    835 | Code        | 10 |  2      |    3 | 00/04DB : DD 64 06    |                               cmp   firstBLOCK+4,x   ; is it in my list?
+  963 |  1 ASSD.DRIVER.S    836 | Code        | 10 |         |    2 | 00/04DE : F0 08       |                               beq   cpid_OK          ; yes, authorized
+  964 |  1 ASSD.DRIVER.S    837 | Code        | 10 |         |    1 | 00/04E0 : C8          |                               iny                    ; next one, please
+  965 |  1 ASSD.DRIVER.S    838 | Code        | 10 |         |    2 | 00/04E1 : D0 F1       |                               bne   ozunid_10        
+  966 |  1 ASSD.DRIVER.S    839 | Empty       | 10 |         |    0 | 00/04E3               |                                                      
+  967 |  1 ASSD.DRIVER.S    840 | Code        | 00 |         |    2 | 00/04E3 : C2 20       | cpid_KO                       rep   #$20             ; not in my list
+  968 |  1 ASSD.DRIVER.S    841 | Code        | 00 |         |    1 | 00/04E5 : 7A          |                               ply                    
+  969 |  1 ASSD.DRIVER.S    842 | Code        | 00 |         |    1 | 00/04E6 : 38          |                               sec                    
+  970 |  1 ASSD.DRIVER.S    843 | Code        | 00 |         |    1 | 00/04E7 : 60          |                               rts                    
+  971 |  1 ASSD.DRIVER.S    844 | Code        | 00 |         |    2 | 00/04E8 : C2 20       | cpid_OK                       rep   #$20             ; in my list
+  972 |  1 ASSD.DRIVER.S    845 | Code        | 00 |         |    1 | 00/04EA : 7A          |                               ply                    
+  973 |  1 ASSD.DRIVER.S    846 | Code        | 00 |         |    1 | 00/04EB : 18          |                               clc                    
+  974 |  1 ASSD.DRIVER.S    847 | Code        | 00 |         |    1 | 00/04EC : 60          |                               rts                    
+  975 |  1 ASSD.DRIVER.S    848 | Empty       | 00 |         |    0 | 00/04ED               |                                                      
+  976 |  1 ASSD.DRIVER.S    849 | Comment     | 00 |         |    0 | 00/04ED               | *----------------------------
+  977 |  1 ASSD.DRIVER.S    850 | Empty       | 00 |         |    0 | 00/04ED               |                                                      
+  978 |  1 ASSD.DRIVER.S    851 | Empty       | 00 |         |    0 | 00/04ED               | formatOptionsTable                                   
+  979 |  1 ASSD.DRIVER.S    852 | Empty       | 00 |         |    0 | 00/04ED               |                                                      
+  980 |  1 ASSD.DRIVER.S    853 | Comment     | 00 |         |    0 | 00/04ED               | * 8 bytes
+  981 |  1 ASSD.DRIVER.S    854 | Data        | 00 |         |    2 | 00/04ED : 01 00       |                               dw    1                ; +0 numOptions
+  982 |  1 ASSD.DRIVER.S    855 | Data        | 00 |         |    2 | 00/04EF : 01 00       |                               dw    1                ; +2 numDisplayed
+  983 |  1 ASSD.DRIVER.S    856 | Data        | 00 |         |    2 | 00/04F1 : 01 00       |                               dw    1                ; +4 recommendedOption
+  984 |  1 ASSD.DRIVER.S    857 | Data        | 00 |         |    2 | 00/04F3 : 01 00       |                               dw    1                ; +6 currentOption
+  985 |  1 ASSD.DRIVER.S    858 | Empty       | 00 |         |    0 | 00/04F5               |                                                      
+  986 |  1 ASSD.DRIVER.S    859 | Comment     | 00 |         |    0 | 00/04F5               | * 16 bytes
+  987 |  1 ASSD.DRIVER.S    860 | Data        | 00 |         |    2 | 00/04F5 : 01 00       | fot_1                         dw    1                ; formatOptionNum
+  988 |  1 ASSD.DRIVER.S    861 | Data        | 00 |         |    2 | 00/04F7 : 00 00       |                               dw    0                ; linkRefNum (=0)
+  989 |  1 ASSD.DRIVER.S    862 | Data        | 00 |         |    2 | 00/04F9 : 09 00       |                               dw    9                ; flags 1001 - MB size - Apple format
+  990 |  1 ASSD.DRIVER.S    863 | Data        | 00 |         |    4 | 00/04FB : 00 00 00 00 |                               ds    4                ; blockCount is 491520 for HFS
+  991 |  1 ASSD.DRIVER.S    864 | Data        | 00 |         |    2 | 00/04FF : 00 02       |                               dw    {512}            ; blockSize is 512 bytes
+  992 |  1 ASSD.DRIVER.S    865 | Data        | 00 |         |    2 | 00/0501 : 00 00       |                               dw    0                ; interleaveFactor
+  993 |  1 ASSD.DRIVER.S    866 | Data        | 00 |         |    2 | 00/0503 : 00 00       |                               ds    2                ; mediaSize 1000 - MB size
+  994 |  1 ASSD.DRIVER.S    867 | Empty       | 00 |         |    0 | 00/0505               |                                                      
+  995 |  1 ASSD.DRIVER.S    868 | Empty       | 00 |         |    0 | 00/0505               | formatOptionsTableEnd                                
+  996 |  1 ASSD.DRIVER.S    869 | Empty       | 00 |         |    0 | 00/0505               |                                                      
+  997 |  1 ASSD.DRIVER.S    870 | Comment     | 00 |         |    0 | 00/0505               | *----------------------------
+  998 |  1 ASSD.DRIVER.S    871 | Empty       | 00 |         |    0 | 00/0505               |                                                      
+  999 |  1 ASSD.DRIVER.S    872 | Data        | 00 |         |    2 | 00/0505 : 00 00       | fgSTARTED                     ds    2                ; 0: not started, 1: started
+ 1000 |  1 ASSD.DRIVER.S    873 | Data        | 00 |         |    2 | 00/0507 : 00 00       | errCODE                       ds    2                
+ 1001 |  1 ASSD.DRIVER.S    874 | Empty       | 00 |         |    0 | 00/0509               |                                                      
+ 1002 |  1 ASSD.DRIVER.S    875 | Data        | 00 |         |    2 | 00/0509 : 00 00       | myBufferPtr                   ds    2                
+ 1003 |  1 ASSD.DRIVER.S    876 | Data        | 00 |         |    4 | 00/050B : 00 00 00 00 | myBlockNum                    ds    4                ; requested block number + LBA 1st sector
+ 1004 |  1 ASSD.DRIVER.S    877 | Empty       | 00 |         |    0 | 00/050F               |                                                      
+ 1005 |  1 ASSD.DRIVER.S    878 | Comment     | 00 |         |    0 | 00/050F               | *---------------------------- My DIBs
+ 1006 |  1 ASSD.DRIVER.S    879 | Empty       | 00 |         |    0 | 00/050F               |                                                      
+ 1007 |  1 ASSD.DRIVER.S    880 | Data        | 00 |  3      |    4 | 00/050F : 4F 05 00 00 | MyDIB                         adrl  MyDIB2           ; +00 pointer to the next DIB
+ 1008 |  1 ASSD.DRIVER.S    881 | Data        | 00 |  3      |    4 | 00/0513 : 06 00 00 00 |                               adrl  entryPOINT       ; +04 driver entry point
+ 1009 |  1 ASSD.DRIVER.S    882 | Data        | 00 |         |    2 | 00/0517 : E4 83       |                               dw    {$83E4}          ; +08 characteristics
+ 1010 |  1 ASSD.DRIVER.S    883 | Data        | 00 |         |    4 | 00/0519 : FF FF 00 00 |                               adrl  {$ffff}          ; +0A block count
+ 1011 |  1 ASSD.DRIVER.S    884 | Data        | 00 |         |   12 | 00/051D : 0B 41 53 53 |                               str   'ASSDDEVICEA'    ; +0E device name
       |                         |             |    |         |      |           44 44 45 56 |
       |                         |             |    |         |      |           49 43 45 41 |
-  980 |  1 ASSD.DRIVER.S    853 | Data        | 00 |         |   20 | 00/04F3 : 00 00 00 00 |                               ds    20               ; 32 - 11 = 21
+ 1012 |  1 ASSD.DRIVER.S    885 | Data        | 00 |         |   20 | 00/0529 : 00 00 00 00 |                               ds    20               ; 32 - 11 = 21
       |                         |             |    |         |      |           00 00 00 00 |
       |                         |             |    |         |      |           00 00 00 00 |
       |                         |             |    |         |      |           00 00 00 00 |
       |                         |             |    |         |      |           00 00 00 00 |
-  981 |  1 ASSD.DRIVER.S    854 | Data        | 00 |         |    2 | 00/0507 : 00 80       |                               dw    {$8000}          ; +2E slot number
-  982 |  1 ASSD.DRIVER.S    855 | Data        | 00 |         |    2 | 00/0509 : 01 00       |                               dw    $0001            ; +30 unit number
-  983 |  1 ASSD.DRIVER.S    856 | Data        | 00 |         |    2 | 00/050B : 30 10       |                               dw    {$1030}          ; +32 version
-  984 |  1 ASSD.DRIVER.S    857 | Data        | 00 |         |    2 | 00/050D : 02 00       |                               dw    {$02}            ; +34 device ID
-  985 |  1 ASSD.DRIVER.S    858 | Data        | 00 |         |    2 | 00/050F : 00 00       |                               dw    $0000            ; +36 first linked device
-  986 |  1 ASSD.DRIVER.S    859 | Data        | 00 |         |    2 | 00/0511 : 00 00       |                               dw    $0000            ; +38 next linked device
-  987 |  1 ASSD.DRIVER.S    860 | Data        | 00 |         |    4 | 00/0513 : 00 00 00 00 |                               ds    4                ; +3A extended DIB ptr
-  988 |  1 ASSD.DRIVER.S    861 | Data        | 00 |         |    2 | 00/0517 : 00 00       |                               dw    $0000            ; +3E device number
-  989 |  1 ASSD.DRIVER.S    862 | Empty       | 00 |         |    0 | 00/0519               |                                                      
-  990 |  1 ASSD.DRIVER.S    863 | Data        | 00 |  3      |    4 | 00/0519 : 59 05 00 00 | MyDIB2                        adrl  MyDIB3           ; +00 pointer to the next DIB
-  991 |  1 ASSD.DRIVER.S    864 | Data        | 00 |  3      |    4 | 00/051D : 06 00 00 00 |                               adrl  entryPOINT       ; +04 driver entry point
-  992 |  1 ASSD.DRIVER.S    865 | Data        | 00 |         |    2 | 00/0521 : E4 83       |                               dw    {$83E4}          ; +08 characteristics
-  993 |  1 ASSD.DRIVER.S    866 | Data        | 00 |         |    4 | 00/0523 : FF FF 00 00 |                               adrl  {$ffff}          ; +0A block count
-  994 |  1 ASSD.DRIVER.S    867 | Data        | 00 |         |   12 | 00/0527 : 0B 41 53 53 |                               str   'ASSDDEVICEB'    ; +0E device name
+ 1013 |  1 ASSD.DRIVER.S    886 | Data        | 00 |         |    2 | 00/053D : 00 80       |                               dw    {$8000}          ; +2E slot number
+ 1014 |  1 ASSD.DRIVER.S    887 | Data        | 00 |         |    2 | 00/053F : 01 00       |                               dw    $0001            ; +30 unit number
+ 1015 |  1 ASSD.DRIVER.S    888 | Data        | 00 |         |    2 | 00/0541 : 30 10       |                               dw    {$1030}          ; +32 version
+ 1016 |  1 ASSD.DRIVER.S    889 | Data        | 00 |         |    2 | 00/0543 : 02 00       |                               dw    {$02}            ; +34 device ID
+ 1017 |  1 ASSD.DRIVER.S    890 | Data        | 00 |         |    2 | 00/0545 : 00 00       |                               dw    $0000            ; +36 first linked device
+ 1018 |  1 ASSD.DRIVER.S    891 | Data        | 00 |         |    2 | 00/0547 : 00 00       |                               dw    $0000            ; +38 next linked device
+ 1019 |  1 ASSD.DRIVER.S    892 | Data        | 00 |         |    4 | 00/0549 : 00 00 00 00 |                               ds    4                ; +3A extended DIB ptr
+ 1020 |  1 ASSD.DRIVER.S    893 | Data        | 00 |         |    2 | 00/054D : 00 00       |                               dw    $0000            ; +3E device number
+ 1021 |  1 ASSD.DRIVER.S    894 | Empty       | 00 |         |    0 | 00/054F               |                                                      
+ 1022 |  1 ASSD.DRIVER.S    895 | Data        | 00 |  3      |    4 | 00/054F : 8F 05 00 00 | MyDIB2                        adrl  MyDIB3           ; +00 pointer to the next DIB
+ 1023 |  1 ASSD.DRIVER.S    896 | Data        | 00 |  3      |    4 | 00/0553 : 06 00 00 00 |                               adrl  entryPOINT       ; +04 driver entry point
+ 1024 |  1 ASSD.DRIVER.S    897 | Data        | 00 |         |    2 | 00/0557 : E4 83       |                               dw    {$83E4}          ; +08 characteristics
+ 1025 |  1 ASSD.DRIVER.S    898 | Data        | 00 |         |    4 | 00/0559 : FF FF 00 00 |                               adrl  {$ffff}          ; +0A block count
+ 1026 |  1 ASSD.DRIVER.S    899 | Data        | 00 |         |   12 | 00/055D : 0B 41 53 53 |                               str   'ASSDDEVICEB'    ; +0E device name
       |                         |             |    |         |      |           44 44 45 56 |
       |                         |             |    |         |      |           49 43 45 42 |
-  995 |  1 ASSD.DRIVER.S    868 | Data        | 00 |         |   20 | 00/0533 : 00 00 00 00 |                               ds    20               ; 32 - 11 = 21
+ 1027 |  1 ASSD.DRIVER.S    900 | Data        | 00 |         |   20 | 00/0569 : 00 00 00 00 |                               ds    20               ; 32 - 11 = 21
       |                         |             |    |         |      |           00 00 00 00 |
       |                         |             |    |         |      |           00 00 00 00 |
       |                         |             |    |         |      |           00 00 00 00 |
       |                         |             |    |         |      |           00 00 00 00 |
-  996 |  1 ASSD.DRIVER.S    869 | Data        | 00 |         |    2 | 00/0547 : 00 80       |                               dw    {$8000}          ; +2E slot number
-  997 |  1 ASSD.DRIVER.S    870 | Data        | 00 |         |    2 | 00/0549 : 02 00       |                               dw    $0002            ; +30 unit number
-  998 |  1 ASSD.DRIVER.S    871 | Data        | 00 |         |    2 | 00/054B : 30 10       |                               dw    {$1030}          ; +32 version
-  999 |  1 ASSD.DRIVER.S    872 | Data        | 00 |         |    2 | 00/054D : 02 00       |                               dw    {$02}            ; +34 device ID
- 1000 |  1 ASSD.DRIVER.S    873 | Data        | 00 |         |    2 | 00/054F : 00 00       |                               dw    $0000            ; +36 first linked device
- 1001 |  1 ASSD.DRIVER.S    874 | Data        | 00 |         |    2 | 00/0551 : 00 00       |                               dw    $0000            ; +38 next linked device
- 1002 |  1 ASSD.DRIVER.S    875 | Data        | 00 |         |    4 | 00/0553 : 00 00 00 00 |                               ds    4                ; +3A extended DIB ptr
- 1003 |  1 ASSD.DRIVER.S    876 | Data        | 00 |         |    2 | 00/0557 : 00 00       |                               dw    $0000            ; +3E device number
- 1004 |  1 ASSD.DRIVER.S    877 | Empty       | 00 |         |    0 | 00/0559               |                                                      
- 1005 |  1 ASSD.DRIVER.S    878 | Data        | 00 |  3      |    4 | 00/0559 : 99 05 00 00 | MyDIB3                        adrl  MyDIB4           ; +00 pointer to the next DIB
- 1006 |  1 ASSD.DRIVER.S    879 | Data        | 00 |  3      |    4 | 00/055D : 06 00 00 00 |                               adrl  entryPOINT       ; +04 driver entry point
- 1007 |  1 ASSD.DRIVER.S    880 | Data        | 00 |         |    2 | 00/0561 : E4 83       |                               dw    {$83E4}          ; +08 characteristics
- 1008 |  1 ASSD.DRIVER.S    881 | Data        | 00 |         |    4 | 00/0563 : FF FF 00 00 |                               adrl  {$ffff}          ; +0A block count
- 1009 |  1 ASSD.DRIVER.S    882 | Data        | 00 |         |   12 | 00/0567 : 0B 41 53 53 |                               str   'ASSDDEVICEC'    ; +0E device name
+ 1028 |  1 ASSD.DRIVER.S    901 | Data        | 00 |         |    2 | 00/057D : 00 80       |                               dw    {$8000}          ; +2E slot number
+ 1029 |  1 ASSD.DRIVER.S    902 | Data        | 00 |         |    2 | 00/057F : 02 00       |                               dw    $0002            ; +30 unit number
+ 1030 |  1 ASSD.DRIVER.S    903 | Data        | 00 |         |    2 | 00/0581 : 30 10       |                               dw    {$1030}          ; +32 version
+ 1031 |  1 ASSD.DRIVER.S    904 | Data        | 00 |         |    2 | 00/0583 : 02 00       |                               dw    {$02}            ; +34 device ID
+ 1032 |  1 ASSD.DRIVER.S    905 | Data        | 00 |         |    2 | 00/0585 : 00 00       |                               dw    $0000            ; +36 first linked device
+ 1033 |  1 ASSD.DRIVER.S    906 | Data        | 00 |         |    2 | 00/0587 : 00 00       |                               dw    $0000            ; +38 next linked device
+ 1034 |  1 ASSD.DRIVER.S    907 | Data        | 00 |         |    4 | 00/0589 : 00 00 00 00 |                               ds    4                ; +3A extended DIB ptr
+ 1035 |  1 ASSD.DRIVER.S    908 | Data        | 00 |         |    2 | 00/058D : 00 00       |                               dw    $0000            ; +3E device number
+ 1036 |  1 ASSD.DRIVER.S    909 | Empty       | 00 |         |    0 | 00/058F               |                                                      
+ 1037 |  1 ASSD.DRIVER.S    910 | Data        | 00 |  3      |    4 | 00/058F : CF 05 00 00 | MyDIB3                        adrl  MyDIB4           ; +00 pointer to the next DIB
+ 1038 |  1 ASSD.DRIVER.S    911 | Data        | 00 |  3      |    4 | 00/0593 : 06 00 00 00 |                               adrl  entryPOINT       ; +04 driver entry point
+ 1039 |  1 ASSD.DRIVER.S    912 | Data        | 00 |         |    2 | 00/0597 : E4 83       |                               dw    {$83E4}          ; +08 characteristics
+ 1040 |  1 ASSD.DRIVER.S    913 | Data        | 00 |         |    4 | 00/0599 : FF FF 00 00 |                               adrl  {$ffff}          ; +0A block count
+ 1041 |  1 ASSD.DRIVER.S    914 | Data        | 00 |         |   12 | 00/059D : 0B 41 53 53 |                               str   'ASSDDEVICEC'    ; +0E device name
       |                         |             |    |         |      |           44 44 45 56 |
       |                         |             |    |         |      |           49 43 45 43 |
- 1010 |  1 ASSD.DRIVER.S    883 | Data        | 00 |         |   20 | 00/0573 : 00 00 00 00 |                               ds    20               ; 32 - 11 = 21
+ 1042 |  1 ASSD.DRIVER.S    915 | Data        | 00 |         |   20 | 00/05A9 : 00 00 00 00 |                               ds    20               ; 32 - 11 = 21
       |                         |             |    |         |      |           00 00 00 00 |
       |                         |             |    |         |      |           00 00 00 00 |
       |                         |             |    |         |      |           00 00 00 00 |
       |                         |             |    |         |      |           00 00 00 00 |
- 1011 |  1 ASSD.DRIVER.S    884 | Data        | 00 |         |    2 | 00/0587 : 00 80       |                               dw    {$8000}          ; +2E slot number
- 1012 |  1 ASSD.DRIVER.S    885 | Data        | 00 |         |    2 | 00/0589 : 03 00       |                               dw    $0003            ; +30 unit number
- 1013 |  1 ASSD.DRIVER.S    886 | Data        | 00 |         |    2 | 00/058B : 30 10       |                               dw    {$1030}          ; +32 version
- 1014 |  1 ASSD.DRIVER.S    887 | Data        | 00 |         |    2 | 00/058D : 02 00       |                               dw    {$02}            ; +34 device ID
- 1015 |  1 ASSD.DRIVER.S    888 | Data        | 00 |         |    2 | 00/058F : 00 00       |                               dw    $0000            ; +36 first linked device
- 1016 |  1 ASSD.DRIVER.S    889 | Data        | 00 |         |    2 | 00/0591 : 00 00       |                               dw    $0000            ; +38 next linked device
- 1017 |  1 ASSD.DRIVER.S    890 | Data        | 00 |         |    4 | 00/0593 : 00 00 00 00 |                               ds    4                ; +3A extended DIB ptr
- 1018 |  1 ASSD.DRIVER.S    891 | Data        | 00 |         |    2 | 00/0597 : 00 00       |                               dw    $0000            ; +3E device number
- 1019 |  1 ASSD.DRIVER.S    892 | Empty       | 00 |         |    0 | 00/0599               |                                                      
- 1020 |  1 ASSD.DRIVER.S    893 | Data        | 00 |         |    4 | 00/0599 : 00 00 00 00 | MyDIB4                        ds    4                ; +00 pointer to the next DIB
- 1021 |  1 ASSD.DRIVER.S    894 | Data        | 00 |  3      |    4 | 00/059D : 06 00 00 00 |                               adrl  entryPOINT       ; +04 driver entry point
- 1022 |  1 ASSD.DRIVER.S    895 | Data        | 00 |         |    2 | 00/05A1 : E4 83       |                               dw    {$83E4}          ; +08 characteristics
- 1023 |  1 ASSD.DRIVER.S    896 | Data        | 00 |         |    4 | 00/05A3 : FF FF 00 00 |                               adrl  {$ffff}          ; +0A block count
- 1024 |  1 ASSD.DRIVER.S    897 | Data        | 00 |         |   12 | 00/05A7 : 0B 41 53 53 |                               str   'ASSDDEVICED'    ; +0E device name
+ 1043 |  1 ASSD.DRIVER.S    916 | Data        | 00 |         |    2 | 00/05BD : 00 80       |                               dw    {$8000}          ; +2E slot number
+ 1044 |  1 ASSD.DRIVER.S    917 | Data        | 00 |         |    2 | 00/05BF : 03 00       |                               dw    $0003            ; +30 unit number
+ 1045 |  1 ASSD.DRIVER.S    918 | Data        | 00 |         |    2 | 00/05C1 : 30 10       |                               dw    {$1030}          ; +32 version
+ 1046 |  1 ASSD.DRIVER.S    919 | Data        | 00 |         |    2 | 00/05C3 : 02 00       |                               dw    {$02}            ; +34 device ID
+ 1047 |  1 ASSD.DRIVER.S    920 | Data        | 00 |         |    2 | 00/05C5 : 00 00       |                               dw    $0000            ; +36 first linked device
+ 1048 |  1 ASSD.DRIVER.S    921 | Data        | 00 |         |    2 | 00/05C7 : 00 00       |                               dw    $0000            ; +38 next linked device
+ 1049 |  1 ASSD.DRIVER.S    922 | Data        | 00 |         |    4 | 00/05C9 : 00 00 00 00 |                               ds    4                ; +3A extended DIB ptr
+ 1050 |  1 ASSD.DRIVER.S    923 | Data        | 00 |         |    2 | 00/05CD : 00 00       |                               dw    $0000            ; +3E device number
+ 1051 |  1 ASSD.DRIVER.S    924 | Empty       | 00 |         |    0 | 00/05CF               |                                                      
+ 1052 |  1 ASSD.DRIVER.S    925 | Data        | 00 |         |    4 | 00/05CF : 00 00 00 00 | MyDIB4                        ds    4                ; +00 pointer to the next DIB
+ 1053 |  1 ASSD.DRIVER.S    926 | Data        | 00 |  3      |    4 | 00/05D3 : 06 00 00 00 |                               adrl  entryPOINT       ; +04 driver entry point
+ 1054 |  1 ASSD.DRIVER.S    927 | Data        | 00 |         |    2 | 00/05D7 : E4 83       |                               dw    {$83E4}          ; +08 characteristics
+ 1055 |  1 ASSD.DRIVER.S    928 | Data        | 00 |         |    4 | 00/05D9 : FF FF 00 00 |                               adrl  {$ffff}          ; +0A block count
+ 1056 |  1 ASSD.DRIVER.S    929 | Data        | 00 |         |   12 | 00/05DD : 0B 41 53 53 |                               str   'ASSDDEVICED'    ; +0E device name
       |                         |             |    |         |      |           44 44 45 56 |
       |                         |             |    |         |      |           49 43 45 44 |
- 1025 |  1 ASSD.DRIVER.S    898 | Data        | 00 |         |   20 | 00/05B3 : 00 00 00 00 |                               ds    20               ; 32 - 11 = 21
+ 1057 |  1 ASSD.DRIVER.S    930 | Data        | 00 |         |   20 | 00/05E9 : 00 00 00 00 |                               ds    20               ; 32 - 11 = 21
       |                         |             |    |         |      |           00 00 00 00 |
       |                         |             |    |         |      |           00 00 00 00 |
       |                         |             |    |         |      |           00 00 00 00 |
       |                         |             |    |         |      |           00 00 00 00 |
- 1026 |  1 ASSD.DRIVER.S    899 | Data        | 00 |         |    2 | 00/05C7 : 00 80       |                               dw    {$8000}          ; +2E slot number
- 1027 |  1 ASSD.DRIVER.S    900 | Data        | 00 |         |    2 | 00/05C9 : 04 00       |                               dw    $0004            ; +30 unit number
- 1028 |  1 ASSD.DRIVER.S    901 | Data        | 00 |         |    2 | 00/05CB : 30 10       |                               dw    {$1030}          ; +32 version
- 1029 |  1 ASSD.DRIVER.S    902 | Data        | 00 |         |    2 | 00/05CD : 02 00       |                               dw    {$02}            ; +34 device ID
- 1030 |  1 ASSD.DRIVER.S    903 | Data        | 00 |         |    2 | 00/05CF : 00 00       |                               dw    $0000            ; +36 first linked device
- 1031 |  1 ASSD.DRIVER.S    904 | Data        | 00 |         |    2 | 00/05D1 : 00 00       |                               dw    $0000            ; +38 next linked device
- 1032 |  1 ASSD.DRIVER.S    905 | Data        | 00 |         |    4 | 00/05D3 : 00 00 00 00 |                               ds    4                ; +3A extended DIB ptr
- 1033 |  1 ASSD.DRIVER.S    906 | Data        | 00 |         |    2 | 00/05D7 : 00 00       |                               dw    $0000            ; +3E device number
- 1034 |  1 ASSD.DRIVER.S    907 | Empty       | 00 |         |    0 | 00/05D9               |                                                      
- 1035 |  1 ASSD.DRIVER.S    908 | Comment     | 00 |         |    0 | 00/05D9               | *----------------------------
- 1036 |  1 ASSD.DRIVER.S    909 | Empty       | 00 |         |    0 | 00/05D9               |                                                      
- 1037 |  1 ASSD.DRIVER.S    910 | Data        | 00 |         |    7 | 00/05D9 : 01 04 06 0B | listPARTID                    dfb   $01,$04,$06,$0b,$0c,$0e,$0f
+ 1058 |  1 ASSD.DRIVER.S    931 | Data        | 00 |         |    2 | 00/05FD : 00 80       |                               dw    {$8000}          ; +2E slot number
+ 1059 |  1 ASSD.DRIVER.S    932 | Data        | 00 |         |    2 | 00/05FF : 04 00       |                               dw    $0004            ; +30 unit number
+ 1060 |  1 ASSD.DRIVER.S    933 | Data        | 00 |         |    2 | 00/0601 : 30 10       |                               dw    {$1030}          ; +32 version
+ 1061 |  1 ASSD.DRIVER.S    934 | Data        | 00 |         |    2 | 00/0603 : 02 00       |                               dw    {$02}            ; +34 device ID
+ 1062 |  1 ASSD.DRIVER.S    935 | Data        | 00 |         |    2 | 00/0605 : 00 00       |                               dw    $0000            ; +36 first linked device
+ 1063 |  1 ASSD.DRIVER.S    936 | Data        | 00 |         |    2 | 00/0607 : 00 00       |                               dw    $0000            ; +38 next linked device
+ 1064 |  1 ASSD.DRIVER.S    937 | Data        | 00 |         |    4 | 00/0609 : 00 00 00 00 |                               ds    4                ; +3A extended DIB ptr
+ 1065 |  1 ASSD.DRIVER.S    938 | Data        | 00 |         |    2 | 00/060D : 00 00       |                               dw    $0000            ; +3E device number
+ 1066 |  1 ASSD.DRIVER.S    939 | Empty       | 00 |         |    0 | 00/060F               |                                                      
+ 1067 |  1 ASSD.DRIVER.S    940 | Comment     | 00 |         |    0 | 00/060F               | *----------------------------
+ 1068 |  1 ASSD.DRIVER.S    941 | Empty       | 00 |         |    0 | 00/060F               |                                                      
+ 1069 |  1 ASSD.DRIVER.S    942 | Data        | 00 |         |    7 | 00/060F : 01 04 06 0B | listPARTID                    dfb   $01,$04,$06,$0b,$0c,$0e,$0f
       |                         |             |    |         |      |           0C 0E 0F    |
- 1038 |  1 ASSD.DRIVER.S    911 | Data        | 00 |         |    7 | 00/05E0 : 11 14 16 1B |                               dfb   $11,$14,$16,$1b,$1c,$1e,$1f
+ 1070 |  1 ASSD.DRIVER.S    943 | Data        | 00 |         |    7 | 00/0616 : 11 14 16 1B |                               dfb   $11,$14,$16,$1b,$1c,$1e,$1f
       |                         |             |    |         |      |           1C 1E 1F    |
- 1039 |  1 ASSD.DRIVER.S    912 | Data        | 00 |         |    2 | 00/05E7 : 20 AF       |                               dfb   {$20},$af        
- 1040 |  1 ASSD.DRIVER.S    913 | Data        | 00 |         |    1 | 00/05E9 : FF          |                               dfb   $ff              ; end of list and a part ID I do not support
- 1041 |  1 ASSD.DRIVER.S    914 | Empty       | 00 |         |    0 | 00/05EA               |                                                      
- 1042 |  1 ASSD.DRIVER.S    915 | Empty       | 00 |         |    0 | 00/05EA               | PART_BEGIN                                           
- 1043 |  1 ASSD.DRIVER.S    916 | Data        | 00 |         |   16 | 00/05EA : 00 00 00 00 | tblPARTITION                  ds    16               ;  +0: offset (32-bit),  +4: size in blocks (32-bit)
+ 1071 |  1 ASSD.DRIVER.S    944 | Data        | 00 |         |    2 | 00/061D : 20 AF       |                               dfb   {$20},$af        
+ 1072 |  1 ASSD.DRIVER.S    945 | Data        | 00 |         |    1 | 00/061F : FF          |                               dfb   $ff              ; end of list and a part ID I do not support
+ 1073 |  1 ASSD.DRIVER.S    946 | Empty       | 00 |         |    0 | 00/0620               |                                                      
+ 1074 |  1 ASSD.DRIVER.S    947 | Empty       | 00 |         |    0 | 00/0620               | PART_BEGIN                                           
+ 1075 |  1 ASSD.DRIVER.S    948 | Data        | 00 |         |   16 | 00/0620 : 00 00 00 00 | tblPARTITION                  ds    16               ;  +0: offset (32-bit),  +4: size in blocks (32-bit)
       |                         |             |    |         |      |           00 00 00 00 |
       |                         |             |    |         |      |           00 00 00 00 |
       |                         |             |    |         |      |           00 00 00 00 |
- 1044 |  1 ASSD.DRIVER.S    917 | Data        | 00 |         |   16 | 00/05FA : 00 00 00 00 |                               ds    16               ;  +8: active (16-bit), +10: partition ID (16-bit)
+ 1076 |  1 ASSD.DRIVER.S    949 | Data        | 00 |         |   16 | 00/0630 : 00 00 00 00 |                               ds    16               ;  +8: active (16-bit), +10: partition ID (16-bit)
       |                         |             |    |         |      |           00 00 00 00 |
       |                         |             |    |         |      |           00 00 00 00 |
       |                         |             |    |         |      |           00 00 00 00 |
- 1045 |  1 ASSD.DRIVER.S    918 | Data        | 00 |         |   16 | 00/060A : 00 00 00 00 |                               ds    16               ; +12: switchedStatus (16-bit) (from 0 to 1)
+ 1077 |  1 ASSD.DRIVER.S    950 | Data        | 00 |         |   16 | 00/0640 : 00 00 00 00 |                               ds    16               ; +12: switchedStatus (16-bit) (from 0 to 1)
       |                         |             |    |         |      |           00 00 00 00 |
       |                         |             |    |         |      |           00 00 00 00 |
       |                         |             |    |         |      |           00 00 00 00 |
- 1046 |  1 ASSD.DRIVER.S    919 | Data        | 00 |         |   16 | 00/061A : 00 00 00 00 |                               ds    16               
+ 1078 |  1 ASSD.DRIVER.S    951 | Data        | 00 |         |   16 | 00/0650 : 00 00 00 00 |                               ds    16               
       |                         |             |    |         |      |           00 00 00 00 |
       |                         |             |    |         |      |           00 00 00 00 |
       |                         |             |    |         |      |           00 00 00 00 |
- 1047 |  1 ASSD.DRIVER.S    920 | Empty       | 00 |         |    0 | 00/062A               | PART_END                                             
- 1048 |  1 ASSD.DRIVER.S    921 | Empty       | 00 |         |    0 | 00/062A               |                                                      
- 1049 |  1 ASSD.DRIVER.S    922 | Comment     | 00 |         |    0 | 00/062A               | *--- End of code
- 1050 |  1 ASSD.DRIVER.S    923 | Empty       | 00 |         |    0 | 00/062A               |                                                      
- 1051 |  1 ASSD.DRIVER.S    924 | Data        | 00 |         |  512 | 00/062A : 00 00 00 00 | firstBLOCK                    ds    512              
+ 1079 |  1 ASSD.DRIVER.S    952 | Empty       | 00 |         |    0 | 00/0660               | PART_END                                             
+ 1080 |  1 ASSD.DRIVER.S    953 | Empty       | 00 |         |    0 | 00/0660               |                                                      
+ 1081 |  1 ASSD.DRIVER.S    954 | Comment     | 00 |         |    0 | 00/0660               | *--- End of code
+ 1082 |  1 ASSD.DRIVER.S    955 | Empty       | 00 |         |    0 | 00/0660               |                                                      
+ 1083 |  1 ASSD.DRIVER.S    956 | Data        | 00 |         |  512 | 00/0660 : 00 00 00 00 | firstBLOCK                    ds    512              
       |                         |             |    |         |      |           00 00 00 00 |
       |                         |             |    |         |      |           00 00 00 00 |
       |                         |             |    |         |      |           00 00 00 00 |
@@ -1217,5 +1249,5 @@
       |                         |             |    |         |      |           00 00 00 00 |
       |                         |             |    |         |      |           00 00 00 00 |
       |                         |             |    |         |      |           00 00 00 00 |
- 1052 |  1 ASSD.DRIVER.S    925 | Empty       | 00 |         |    0 | 00/082A               |                                                      
+ 1084 |  1 ASSD.DRIVER.S    957 | Empty       | 00 |         |    0 | 00/0860               |                                                      
 ------+-------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

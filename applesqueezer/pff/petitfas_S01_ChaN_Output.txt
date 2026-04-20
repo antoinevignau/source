@@ -1,0 +1,754 @@
+------+------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File            Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1    wrapper.s      1 | Comment     | 11 |         |    0 | 00/0000               | *
+    2 |  1    wrapper.s      2 | Comment     | 11 |         |    0 | 00/0000               | * Petit FAT File System Module
+    3 |  1    wrapper.s      3 | Comment     | 11 |         |    0 | 00/0000               | *
+    4 |  1    wrapper.s      4 | Comment     | 11 |         |    0 | 00/0000               | * (c) 2014, ChaN
+    5 |  1    wrapper.s      5 | Comment     | 11 |         |    0 | 00/0000               | * (v) 2024, Brutal Deluxe Software
+    6 |  1    wrapper.s      6 | Comment     | 11 |         |    0 | 00/0000               | * Visit brutaldeluxe.fr
+    7 |  1    wrapper.s      7 | Comment     | 11 |         |    0 | 00/0000               | *
+    8 |  1    wrapper.s      8 | Empty       | 11 |         |    0 | 00/0000               |                                                        
+    9 |  1    wrapper.s      9 | Directive   | 11 |         |    0 | 00/0000               |                               xc                       
+   10 |  1    wrapper.s     10 | Directive   | 11 |         |    0 | 00/0000               |                               xc                       
+   11 |  1    wrapper.s     11 | Directive   | 00 |         |    0 | 00/0000               |                               mx    %00                
+   12 |  1    wrapper.s     12 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+   13 |  1    wrapper.s     13 | Directive   | 00 |         |    0 | 00/0000               |                               use   AS.EQUATES.S       
+   14 |  2 AS.EQUATES.S      1 | Comment     | 00 |         |    0 | 00/0000               | *
+   15 |  2 AS.EQUATES.S      2 | Comment     | 00 |         |    0 | 00/0000               | * AppleSqueezer - Equates
+   16 |  2 AS.EQUATES.S      3 | Comment     | 00 |         |    0 | 00/0000               | *
+   17 |  2 AS.EQUATES.S      4 | Comment     | 00 |         |    0 | 00/0000               | * (c) 2023, Niek Van Suchtelen
+   18 |  2 AS.EQUATES.S      5 | Comment     | 00 |         |    0 | 00/0000               | * (c) 2023-2026, Brutal Deluxe Software
+   19 |  2 AS.EQUATES.S      6 | Comment     | 00 |         |    0 | 00/0000               | *
+   20 |  2 AS.EQUATES.S      7 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+   21 |  2 AS.EQUATES.S      8 | Comment     | 00 |         |    0 | 00/0000               | *-----------------------------------
+   22 |  2 AS.EQUATES.S      9 | Comment     | 00 |         |    0 | 00/0000               | * APPLESQUEEZER EQUATES
+   23 |  2 AS.EQUATES.S     10 | Comment     | 00 |         |    0 | 00/0000               | *-----------------------------------
+   24 |  2 AS.EQUATES.S     11 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+   25 |  2 AS.EQUATES.S     12 | Comment     | 00 |         |    0 | 00/0000               | * data
+   26 |  2 AS.EQUATES.S     13 | Comment     | 00 |         |    0 | 00/0000               | * bit 0: 1 if Acceralation is enabled
+   27 |  2 AS.EQUATES.S     14 | Comment     | 00 |         |    0 | 00/0000               | * bit 1: 1 if Built-RAM is enabled
+   28 |  2 AS.EQUATES.S     15 | Comment     | 00 |         |    0 | 00/0000               | * bit 2: 1 if Extra RAM is enabled
+   29 |  2 AS.EQUATES.S     16 | Comment     | 00 |         |    0 | 00/0000               | * bit 3-7: values unknown
+   30 |  2 AS.EQUATES.S     17 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+   31 |  2 AS.EQUATES.S     18 | Equivalence | 00 |         |    0 | 00/0000               | FL_WRITE                      =     $e20000            
+   32 |  2 AS.EQUATES.S     19 | Equivalence | 00 |         |    0 | 00/0000               | FL_READ_REQUEST               =     $e20002            
+   33 |  2 AS.EQUATES.S     20 | Equivalence | 00 |         |    0 | 00/0000               | FL_READ                       =     $e20004            
+   34 |  2 AS.EQUATES.S     21 | Equivalence | 00 |         |    0 | 00/0000               | FL_CS                         =     $e20006            
+   35 |  2 AS.EQUATES.S     22 | Equivalence | 00 |         |    0 | 00/0000               | FL_READY                      =     $e20008            
+   36 |  2 AS.EQUATES.S     23 | Equivalence | 00 |         |    0 | 00/0000               | FL_IDLE                       =     $e2000a            
+   37 |  2 AS.EQUATES.S     24 | Equivalence | 00 |         |    0 | 00/0000               | FL_VERSION                    =     $e2000c            
+   38 |  2 AS.EQUATES.S     25 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+   39 |  2 AS.EQUATES.S     26 | Equivalence | 00 |         |    0 | 00/0000               | CMD_WRITE_ENABLE              =     $06                
+   40 |  2 AS.EQUATES.S     27 | Equivalence | 00 |         |    0 | 00/0000               | CMD_WRITE_DISABLE             =     $04                
+   41 |  2 AS.EQUATES.S     28 | Equivalence | 00 |         |    0 | 00/0000               | CMD_PAGE_PROGRAM              =     $02                
+   42 |  2 AS.EQUATES.S     29 | Equivalence | 00 |         |    0 | 00/0000               | CMD_SECTOR_ERASE              =     $d8                
+   43 |  2 AS.EQUATES.S     30 | Equivalence | 00 |         |    0 | 00/0000               | CMD_BULK_ERASE                =     $c7                
+   44 |  2 AS.EQUATES.S     31 | Equivalence | 00 |         |    0 | 00/0000               | CMD_READ_DATA_BYTES           =     $03                
+   45 |  2 AS.EQUATES.S     32 | Equivalence | 00 |         |    0 | 00/0000               | CMD_READ_STATUS_REGISTER      =     $05                
+   46 |  2 AS.EQUATES.S     33 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+   47 |  2 AS.EQUATES.S     34 | Equivalence | 00 |         |    0 | 00/0000               | exdram_address_set_main_bank  =     $e30000            ; 00..0E
+   48 |  2 AS.EQUATES.S     35 | Equivalence | 00 |         |    0 | 00/0000               | exdram_address_set_addr_low   =     $e30002            ; 00/00xx
+   49 |  2 AS.EQUATES.S     36 | Equivalence | 00 |         |    0 | 00/0000               | exdram_address_set_addr_high  =     $e30004            ; 00/xx00
+   50 |  2 AS.EQUATES.S     37 | Equivalence | 00 |         |    0 | 00/0000               | exdram_address_set_addr_bank  =     $e30006            ; xx/0000
+   51 |  2 AS.EQUATES.S     38 | Equivalence | 00 |         |    0 | 00/0000               | exdram_address_access         =     $e30008            ; R/W auto-increment to end of main bank
+   52 |  2 AS.EQUATES.S     39 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+   53 |  2 AS.EQUATES.S     40 | Equivalence | 00 |         |    0 | 00/0000               | SD_ADDRESS_SET_MSB            =     $e40000            
+   54 |  2 AS.EQUATES.S     41 | Equivalence | 00 |         |    0 | 00/0000               | SD_ADDRESS_SET_MSB_1          =     $e40002            
+   55 |  2 AS.EQUATES.S     42 | Equivalence | 00 |         |    0 | 00/0000               | SD_ADDRESS_SET_MSB_2          =     $e40004            
+   56 |  2 AS.EQUATES.S     43 | Equivalence | 00 |         |    0 | 00/0000               | SD_ADDRESS_SET_MSB_3          =     $e40006            
+   57 |  2 AS.EQUATES.S     44 | Equivalence | 00 |         |    0 | 00/0000               | SD_START_READ                 =     $e40008            ; starts reading the sector (if it was idle)
+   58 |  2 AS.EQUATES.S     45 | Equivalence | 00 |         |    0 | 00/0000               | SD_ACCESS                     =     $e4000a            ; read or write
+   59 |  2 AS.EQUATES.S     46 | Equivalence | 00 |         |    0 | 00/0000               | SD_START_WRITE                =     $e4000c            ; starts writing the sector (if it was idle)
+   60 |  2 AS.EQUATES.S     47 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+   61 |  2 AS.EQUATES.S     48 | Equivalence | 00 |         |    0 | 00/0000               | SD_IDLE                       =     $e4000e            
+   62 |  2 AS.EQUATES.S     49 | Equivalence | 00 |         |    0 | 00/0000               | SD_CARD_INSERTED              =     $e40012            ; 0: no card inserted, 1: card inserted
+   63 |  2 AS.EQUATES.S     50 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+   64 |  2 AS.EQUATES.S     51 | Equivalence | 00 |         |    0 | 00/0000               | STA_NOINIT                    =     1                  ; Drive not initialized
+   65 |  2 AS.EQUATES.S     52 | Equivalence | 00 |         |    0 | 00/0000               | STA_NODISK                    =     2                  ; No medium in the drive
+   66 |  2 AS.EQUATES.S     53 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+   67 |  2 AS.EQUATES.S     54 | Equivalence | 00 |         |    0 | 00/0000               | TRUE                          =     1                  
+   68 |  2 AS.EQUATES.S     55 | Equivalence | 00 |         |    0 | 00/0000               | FALSE                         =     0                  
+   69 |  2 AS.EQUATES.S     56 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+   70 |  2 AS.EQUATES.S     57 | Equivalence | 00 |         |    0 | 00/0000               | minVERSION                    =     13                 ; minimum core version to handle the driver
+   71 |  2 AS.EQUATES.S     58 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+   72 |  2 AS.EQUATES.S     59 | Comment     | 00 |         |    0 | 00/0000               | *--- Speed settings
+   73 |  2 AS.EQUATES.S     60 | Comment     | 00 |         |    0 | 00/0000               | * From 233 (3 MHz) to 255 (full speed)
+   74 |  2 AS.EQUATES.S     61 | Comment     | 00 |         |    0 | 00/0000               | * Setting is not preserved
+   75 |  2 AS.EQUATES.S     62 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+   76 |  2 AS.EQUATES.S     63 | Equivalence | 00 |         |    0 | 00/0000               | AS_SPEED                      =     $e50000            ; just write a speed byte
+   77 |  2 AS.EQUATES.S     64 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+   78 |  2 AS.EQUATES.S     65 | Comment     | 00 |         |    0 | 00/0000               | *-----------------------------------
+   79 |  2 AS.EQUATES.S     66 | Comment     | 00 |         |    0 | 00/0000               | * GS/OS EQUATES
+   80 |  2 AS.EQUATES.S     67 | Comment     | 00 |         |    0 | 00/0000               | *-----------------------------------
+   81 |  2 AS.EQUATES.S     68 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+   82 |  2 AS.EQUATES.S     69 | Equivalence | 00 |         |    0 | 00/0000               | GSOS2                         =     $E100B0            
+   83 |  2 AS.EQUATES.S     70 | Equivalence | 00 |         |    0 | 00/0000               | MOVE_INFO                     =     $01FC70            
+   84 |  2 AS.EQUATES.S     71 | Equivalence | 00 |         |    0 | 00/0000               | SET_DISKSW                    =     $01FC90            
+   85 |  2 AS.EQUATES.S     72 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+   86 |  2 AS.EQUATES.S     73 | Equivalence | 00 |         |    0 | 00/0000               | uncertainBlockCountBit        =     $8000              
+   87 |  2 AS.EQUATES.S     74 | Equivalence | 00 |         |    0 | 00/0000               | diskSwitchedBit               =     $0001              
+   88 |  2 AS.EQUATES.S     75 | Equivalence | 00 |         |    0 | 00/0000               | diskInDriveBit                =     $0010              
+   89 |  2 AS.EQUATES.S     76 | Equivalence | 00 |         |    0 | 00/0000               | diskModifyBit                 =     $0100              
+   90 |  2 AS.EQUATES.S     77 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+   91 |  2 AS.EQUATES.S     78 | Equivalence | 00 |         |    0 | 00/0000               | spHDD                         =     $02                ; smartport ProFile-type hard disk
+   92 |  2 AS.EQUATES.S     79 | Equivalence | 00 |         |    0 | 00/0000               | dftHDD                        =     $02                ; $0e device ID for HDD (generic)
+   93 |  2 AS.EQUATES.S     80 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+   94 |  2 AS.EQUATES.S     81 | Equivalence | 00 |         |    0 | 00/0000               | dchar                         =     $08                
+   95 |  2 AS.EQUATES.S     82 | Equivalence | 00 |         |    0 | 00/0000               | dblockcount                   =     $0a                
+   96 |  2 AS.EQUATES.S     83 | Equivalence | 00 |         |    0 | 00/0000               | ddeviceid                     =     $34                
+   97 |  2 AS.EQUATES.S     84 | Equivalence | 00 |         |    0 | 00/0000               | ddevnumber                    =     $3e                
+   98 |  2 AS.EQUATES.S     85 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+   99 |  2 AS.EQUATES.S     86 | Comment     | 00 |         |    0 | 00/0000               | *-----------------------------------
+  100 |  2 AS.EQUATES.S     87 | Comment     | 00 |         |    0 | 00/0000               | * AS DRIVER EQUATES
+  101 |  2 AS.EQUATES.S     88 | Comment     | 00 |         |    0 | 00/0000               | *-----------------------------------
+  102 |  2 AS.EQUATES.S     89 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+  103 |  2 AS.EQUATES.S     90 | Equivalence | 00 |         |    0 | 00/0000               | maxIMAGES                     =     4                  ; no more than N images
+  104 |  2 AS.EQUATES.S     91 | Equivalence | 00 |         |    0 | 00/0000               | blockSIZE                     =     512                ; ProDOS 8 block size
+  105 |  2 AS.EQUATES.S     92 | Equivalence | 00 |         |    0 | 00/0000               | maxBLOCKS                     =     $ffff              ; that is a huge number of blocks
+  106 |  2 AS.EQUATES.S     93 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+  107 |  2 AS.EQUATES.S     94 | Comment     | 00 |         |    0 | 00/0000               | * 8 1000 => RAM nor ROM disk | no generated device | no linked device | no device busy
+  108 |  2 AS.EQUATES.S     95 | Comment     | 00 |         |    0 | 00/0000               | * B 1011 => not speed dependent
+  109 |  2 AS.EQUATES.S     96 | Comment     | 00 |         |    0 | 00/0000               | * E 1110 => block device | write allowed | read allowed
+  110 |  2 AS.EQUATES.S     97 | Comment     | 00 |         |    0 | 00/0000               | * C 1100 => format allowed | removable media
+  111 |  2 AS.EQUATES.S     98 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+  112 |  2 AS.EQUATES.S     99 | Equivalence | 00 |         |    0 | 00/0000               | dftCHAR                       =     $83E4              ; default characteristics with no disk
+  113 |  2 AS.EQUATES.S    100 | Equivalence | 00 |         |    0 | 00/0000               | dftCHARWITHDISK               =     $83EC              ; default chars with disk present
+  114 |  2 AS.EQUATES.S    101 | Equivalence | 00 |         |    0 | 00/0000               | dftSLOT                       =     $8000              ; independent of slot hw
+  115 |  2 AS.EQUATES.S    102 | Equivalence | 00 |         |    0 | 00/0000               | dftVERSION                    =     $1030              ; version
+  116 |  2 AS.EQUATES.S    103 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+  117 |  2 AS.EQUATES.S    104 | Comment     | 00 |         |    0 | 00/0000               | *-----------------------------------
+  118 |  2 AS.EQUATES.S    105 | Comment     | 00 |         |    0 | 00/0000               | * GS/OS DIRECT PAGE
+  119 |  2 AS.EQUATES.S    106 | Comment     | 00 |         |    0 | 00/0000               | *-----------------------------------
+  120 |  2 AS.EQUATES.S    107 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+  121 |  2 AS.EQUATES.S    108 | Equivalence | 00 |         |    0 | 00/0000               | deviceNum                     =     $00                
+  122 |  2 AS.EQUATES.S    109 | Equivalence | 00 |         |    0 | 00/0000               | callNum                       =     $02                
+  123 |  2 AS.EQUATES.S    110 | Equivalence | 00 |         |    0 | 00/0000               | bufferPtr                     =     $04                
+  124 |  2 AS.EQUATES.S    111 | Equivalence | 00 |         |    0 | 00/0000               | statusListPtr                 =     $04                
+  125 |  2 AS.EQUATES.S    112 | Equivalence | 00 |         |    0 | 00/0000               | controlListPtr                =     $04                
+  126 |  2 AS.EQUATES.S    113 | Equivalence | 00 |         |    0 | 00/0000               | requestCount                  =     $08                
+  127 |  2 AS.EQUATES.S    114 | Equivalence | 00 |         |    0 | 00/0000               | transferCount                 =     $0C                
+  128 |  2 AS.EQUATES.S    115 | Equivalence | 00 |         |    0 | 00/0000               | blockNum                      =     $10                
+  129 |  2 AS.EQUATES.S    116 | Equivalence | 00 |         |    0 | 00/0000               | blockSize                     =     $14                
+  130 |  2 AS.EQUATES.S    117 | Equivalence | 00 |         |    0 | 00/0000               | FSTNum                        =     $16                ; *
+  131 |  2 AS.EQUATES.S    118 | Equivalence | 00 |         |    0 | 00/0000               | statusCode                    =     $16                ; *
+  132 |  2 AS.EQUATES.S    119 | Equivalence | 00 |         |    0 | 00/0000               | controlCode                   =     $16                ; *
+  133 |  2 AS.EQUATES.S    120 | Equivalence | 00 |         |    0 | 00/0000               | volumeID                      =     $18                
+  134 |  2 AS.EQUATES.S    121 | Equivalence | 00 |         |    0 | 00/0000               | cachePriority                 =     $1A                
+  135 |  2 AS.EQUATES.S    122 | Equivalence | 00 |         |    0 | 00/0000               | cachePointer                  =     $1C                
+  136 |  2 AS.EQUATES.S    123 | Equivalence | 00 |         |    0 | 00/0000               | dibPointer                    =     $20                
+  137 |  2 AS.EQUATES.S    124 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+  138 |  2 AS.EQUATES.S    125 | Equivalence | 00 |         |    0 | 00/0000               | workSpace                     =     $6a                ; Thank you common.equ.src
+  139 |  2 AS.EQUATES.S    126 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+  140 |  2 AS.EQUATES.S    127 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+  141 |  1    wrapper.s     14 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+  142 |  1    wrapper.s     15 | Directive   | 00 |         |    0 | 00/0000               |                               put   pff.s              
+  143 |  3        pff.s      1 | Comment     | 00 |         |    0 | 00/0000               | *
+  144 |  3        pff.s      2 | Comment     | 00 |         |    0 | 00/0000               | * Petit FAT File System Module: pff
+  145 |  3        pff.s      3 | Comment     | 00 |         |    0 | 00/0000               | *
+  146 |  3        pff.s      4 | Comment     | 00 |         |    0 | 00/0000               | * (c) 2014, ChaN
+  147 |  3        pff.s      5 | Comment     | 00 |         |    0 | 00/0000               | * (v) 2024, Brutal Deluxe Software
+  148 |  3        pff.s      6 | Comment     | 00 |         |    0 | 00/0000               | * Visit brutaldeluxe.fr
+  149 |  3        pff.s      7 | Comment     | 00 |         |    0 | 00/0000               | *
+  150 |  3        pff.s      8 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+  151 |  3        pff.s      9 | Directive   | 00 |         |    0 | 00/0000               |                               mx    %00                
+  152 |  3        pff.s     10 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+  153 |  3        pff.s     11 | Comment     | 00 |         |    0 | 00/0000               | *-------------------------------
+  154 |  3        pff.s     12 | Comment     | 00 |         |    0 | 00/0000               | * EQUATES
+  155 |  3        pff.s     13 | Comment     | 00 |         |    0 | 00/0000               | *-------------------------------
+  156 |  3        pff.s     14 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+  157 |  3        pff.s     15 | Comment     | 00 |         |    0 | 00/0000               | *-------------- Direct page
+  158 |  3        pff.s     16 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+  159 |  3        pff.s     17 | Equivalence | 00 |         |    0 | 00/0000               | dp_start                      =     $80                ; everything is long
+  160 |  3        pff.s     18 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+  161 |  3        pff.s     19 | Equivalence | 00 |         |    0 | 00/0000               | buff                          =     {$80}              ; long
+  162 |  3        pff.s     20 | Equivalence | 00 |         |    0 | 00/0000               | sector                        =     {{$80}}+4          ; long
+  163 |  3        pff.s     21 | Equivalence | 00 |         |    0 | 00/0000               | sc                            =     {{$80}}+4          ; long
+  164 |  3        pff.s     22 | Equivalence | 00 |         |    0 | 00/0000               | offset                        =     {{{$80}}+4}+4      ; word used
+  165 |  3        pff.s     23 | Equivalence | 00 |         |    0 | 00/0000               | count                         =     {{{{$80}}+4}+4}+4  ; word used
+  166 |  3        pff.s     24 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+  167 |  3        pff.s     25 | Equivalence | 00 |         |    0 | 00/0000               | dp_temp                       =     {$80}+64           
+  168 |  3        pff.s     26 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+  169 |  3        pff.s     27 | Equivalence | 00 |         |    0 | 00/0000               | bc                            =     {{$80}+64}         ; long
+  170 |  3        pff.s     28 | Equivalence | 00 |         |    0 | 00/0000               | wc                            =     {{{$80}+64}}+4     ; word used
+  171 |  3        pff.s     29 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+  172 |  3        pff.s     30 | Comment     | 00 |         |    0 | 00/0000               | *-------------- Petit FAT
+  173 |  3        pff.s     31 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+  174 |  3        pff.s     32 | Equivalence | 00 |         |    0 | 00/0000               | FS_OK                         =     0                  
+  175 |  3        pff.s     33 | Equivalence | 00 |         |    0 | 00/0000               | FS_NOT_FAT                    =     1                  
+  176 |  3        pff.s     34 | Equivalence | 00 |         |    0 | 00/0000               | FS_NOT_BR                     =     2                  
+  177 |  3        pff.s     35 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+  178 |  3        pff.s     36 | Equivalence | 00 |         |    0 | 00/0000               | PF_USE_READ                   =     1                  
+  179 |  3        pff.s     37 | Equivalence | 00 |         |    0 | 00/0000               | PF_USE_DIR                    =     0                  
+  180 |  3        pff.s     38 | Equivalence | 00 |         |    0 | 00/0000               | PF_USE_LSEEK                  =     0                  
+  181 |  3        pff.s     39 | Equivalence | 00 |         |    0 | 00/0000               | PF_USE_WRITE                  =     0                  
+  182 |  3        pff.s     40 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+  183 |  3        pff.s     41 | Equivalence | 00 |         |    0 | 00/0000               | PF_FS_FAT12                   =     1                  
+  184 |  3        pff.s     42 | Equivalence | 00 |         |    0 | 00/0000               | PF_FS_FAT16                   =     1                  
+  185 |  3        pff.s     43 | Equivalence | 00 |         |    0 | 00/0000               | PF_FS_FAT32                   =     1                  
+  186 |  3        pff.s     44 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+  187 |  3        pff.s     45 | Equivalence | 00 |         |    0 | 00/0000               | PF_USE_LCC                    =     0                  
+  188 |  3        pff.s     46 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+  189 |  3        pff.s     47 | Equivalence | 00 |         |    0 | 00/0000               | FR_OK                         =     0                  
+  190 |  3        pff.s     48 | Equivalence | 00 |         |    0 | 00/0000               | FR_DISK_ERR                   =     1                  
+  191 |  3        pff.s     49 | Equivalence | 00 |         |    0 | 00/0000               | FR_NOT_READY                  =     2                  
+  192 |  3        pff.s     50 | Equivalence | 00 |         |    0 | 00/0000               | FR_NO_FILE                    =     3                  
+  193 |  3        pff.s     51 | Equivalence | 00 |         |    0 | 00/0000               | FR_NOT_OPENED                 =     4                  
+  194 |  3        pff.s     52 | Equivalence | 00 |         |    0 | 00/0000               | FR_NOT_ENABLED                =     5                  
+  195 |  3        pff.s     53 | Equivalence | 00 |         |    0 | 00/0000               | FR_NO_FILESYSTEM              =     6                  
+  196 |  3        pff.s     54 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+  197 |  3        pff.s     55 | Equivalence | 00 |         |    0 | 00/0000               | FA_OPENED                     =     $01                
+  198 |  3        pff.s     56 | Equivalence | 00 |         |    0 | 00/0000               | FA_WPRT                       =     $02                
+  199 |  3        pff.s     57 | Equivalence | 00 |         |    0 | 00/0000               | FA_WIP                        =     $40                
+  200 |  3        pff.s     58 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+  201 |  3        pff.s     59 | Equivalence | 00 |         |    0 | 00/0000               | FS_FAT12                      =     1                  
+  202 |  3        pff.s     60 | Equivalence | 00 |         |    0 | 00/0000               | FS_FAT16                      =     2                  
+  203 |  3        pff.s     61 | Equivalence | 00 |         |    0 | 00/0000               | FS_FAT32                      =     3                  
+  204 |  3        pff.s     62 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+  205 |  3        pff.s     63 | Equivalence | 00 |         |    0 | 00/0000               | AM_RDO                        =     $01                
+  206 |  3        pff.s     64 | Equivalence | 00 |         |    0 | 00/0000               | AM_HID                        =     $02                
+  207 |  3        pff.s     65 | Equivalence | 00 |         |    0 | 00/0000               | AM_SYS                        =     $04                
+  208 |  3        pff.s     66 | Equivalence | 00 |         |    0 | 00/0000               | AM_VOL                        =     $08                
+  209 |  3        pff.s     67 | Equivalence | 00 |         |    0 | 00/0000               | AM_LFN                        =     $0F                
+  210 |  3        pff.s     68 | Equivalence | 00 |         |    0 | 00/0000               | AM_DIR                        =     $10                
+  211 |  3        pff.s     69 | Equivalence | 00 |         |    0 | 00/0000               | AM_ARC                        =     $20                
+  212 |  3        pff.s     70 | Equivalence | 00 |         |    0 | 00/0000               | AM_MASK                       =     $3F                
+  213 |  3        pff.s     71 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+  214 |  3        pff.s     72 | Comment     | 00 |         |    0 | 00/0000               | *--------------
+  215 |  3        pff.s     73 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+  216 |  3        pff.s     74 | Equivalence | 00 |         |    0 | 00/0000               | BS_jmpBoot                    =     0                  
+  217 |  3        pff.s     75 | Equivalence | 00 |         |    0 | 00/0000               | BS_OEMName                    =     3                  
+  218 |  3        pff.s     76 | Equivalence | 00 |         |    0 | 00/0000               | BPB_BytsPerSec                =     11                 
+  219 |  3        pff.s     77 | Equivalence | 00 |         |    0 | 00/0000               | BPB_SecPerClus                =     13                 
+  220 |  3        pff.s     78 | Equivalence | 00 |         |    0 | 00/0000               | BPB_RsvdSecCnt                =     14                 
+  221 |  3        pff.s     79 | Equivalence | 00 |         |    0 | 00/0000               | BPB_NumFATs                   =     16                 
+  222 |  3        pff.s     80 | Equivalence | 00 |         |    0 | 00/0000               | BPB_RootEntCnt                =     17                 
+  223 |  3        pff.s     81 | Equivalence | 00 |         |    0 | 00/0000               | BPB_TotSec16                  =     19                 
+  224 |  3        pff.s     82 | Equivalence | 00 |         |    0 | 00/0000               | BPB_Media                     =     21                 
+  225 |  3        pff.s     83 | Equivalence | 00 |         |    0 | 00/0000               | BPB_FATSz16                   =     22                 
+  226 |  3        pff.s     84 | Equivalence | 00 |         |    0 | 00/0000               | BPB_SecPerTrk                 =     24                 
+  227 |  3        pff.s     85 | Equivalence | 00 |         |    0 | 00/0000               | BPB_NumHeads                  =     26                 
+  228 |  3        pff.s     86 | Equivalence | 00 |         |    0 | 00/0000               | BPB_HiddSec                   =     28                 
+  229 |  3        pff.s     87 | Equivalence | 00 |         |    0 | 00/0000               | BPB_TotSec32                  =     32                 
+  230 |  3        pff.s     88 | Equivalence | 00 |         |    0 | 00/0000               | BS_55AA                       =     510                
+  231 |  3        pff.s     89 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+  232 |  3        pff.s     90 | Equivalence | 00 |         |    0 | 00/0000               | BS_DrvNum                     =     36                 
+  233 |  3        pff.s     91 | Equivalence | 00 |         |    0 | 00/0000               | BS_BootSig                    =     38                 
+  234 |  3        pff.s     92 | Equivalence | 00 |         |    0 | 00/0000               | BS_VolID                      =     39                 
+  235 |  3        pff.s     93 | Equivalence | 00 |         |    0 | 00/0000               | BS_VolLab                     =     43                 
+  236 |  3        pff.s     94 | Equivalence | 00 |         |    0 | 00/0000               | BS_FilSysType                 =     54                 
+  237 |  3        pff.s     95 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+  238 |  3        pff.s     96 | Equivalence | 00 |         |    0 | 00/0000               | BPB_FATSz32                   =     36                 
+  239 |  3        pff.s     97 | Equivalence | 00 |         |    0 | 00/0000               | BPB_ExtFlags                  =     40                 
+  240 |  3        pff.s     98 | Equivalence | 00 |         |    0 | 00/0000               | BPB_FSVer                     =     42                 
+  241 |  3        pff.s     99 | Equivalence | 00 |         |    0 | 00/0000               | BPB_RootClus                  =     44                 
+  242 |  3        pff.s    100 | Equivalence | 00 |         |    0 | 00/0000               | BPB_FSInfo                    =     48                 
+  243 |  3        pff.s    101 | Equivalence | 00 |         |    0 | 00/0000               | BPB_BkBootSec                 =     50                 
+  244 |  3        pff.s    102 | Equivalence | 00 |         |    0 | 00/0000               | BS_DrvNum32                   =     64                 
+  245 |  3        pff.s    103 | Equivalence | 00 |         |    0 | 00/0000               | BS_BootSig32                  =     66                 
+  246 |  3        pff.s    104 | Equivalence | 00 |         |    0 | 00/0000               | BS_VolID32                    =     67                 
+  247 |  3        pff.s    105 | Equivalence | 00 |         |    0 | 00/0000               | BS_VolLab32                   =     71                 
+  248 |  3        pff.s    106 | Equivalence | 00 |         |    0 | 00/0000               | BS_FilSysType32               =     82                 
+  249 |  3        pff.s    107 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+  250 |  3        pff.s    108 | Equivalence | 00 |         |    0 | 00/0000               | MBR_Table                     =     446                
+  251 |  3        pff.s    109 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+  252 |  3        pff.s    110 | Equivalence | 00 |         |    0 | 00/0000               | DIR_Name                      =     0                  
+  253 |  3        pff.s    111 | Equivalence | 00 |         |    0 | 00/0000               | DIR_Attr                      =     11                 
+  254 |  3        pff.s    112 | Equivalence | 00 |         |    0 | 00/0000               | DIR_NTres                     =     12                 
+  255 |  3        pff.s    113 | Equivalence | 00 |         |    0 | 00/0000               | DIR_CrtTime                   =     14                 
+  256 |  3        pff.s    114 | Equivalence | 00 |         |    0 | 00/0000               | DIR_CrtDate                   =     16                 
+  257 |  3        pff.s    115 | Equivalence | 00 |         |    0 | 00/0000               | DIR_FstClusHI                 =     20                 
+  258 |  3        pff.s    116 | Equivalence | 00 |         |    0 | 00/0000               | DIR_WrtTime                   =     22                 
+  259 |  3        pff.s    117 | Equivalence | 00 |         |    0 | 00/0000               | DIR_WrtDate                   =     24                 
+  260 |  3        pff.s    118 | Equivalence | 00 |         |    0 | 00/0000               | DIR_FstClusLO                 =     26                 
+  261 |  3        pff.s    119 | Equivalence | 00 |         |    0 | 00/0000               | DIR_FileSize                  =     28                 
+  262 |  3        pff.s    120 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+  263 |  3        pff.s    121 | Comment     | 00 |         |    0 | 00/0000               | *-------------------------------
+  264 |  3        pff.s    122 | Comment     | 00 |         |    0 | 00/0000               | * Check File System
+  265 |  3        pff.s    123 | Comment     | 00 |         |    0 | 00/0000               | *-------------------------------
+  266 |  3        pff.s    124 | Comment     | 00 |         |    0 | 00/0000               | * 0: The FAT boot record
+  267 |  3        pff.s    125 | Comment     | 00 |         |    0 | 00/0000               | * 1: Valid boot record but not a FAT
+  268 |  3        pff.s    126 | Comment     | 00 |         |    0 | 00/0000               | * 2: Not a boot record
+  269 |  3        pff.s    127 | Comment     | 00 |         |    0 | 00/0000               | * 3: Error
+  270 |  3        pff.s    128 | Empty       | 00 |         |    0 | 00/0000               |                                                        
+  271 |  3        pff.s    129 | Code        | 00 |         |    3 | 00/0000 : AD 7E 02    | check_fs                      lda   {{$80}}+{510}      ; check record signature
+  272 |  3        pff.s    130 | Code        | 00 |         |    3 | 00/0003 : C9 55 AA    |                               cmp   #$aa55             
+  273 |  3        pff.s    131 | Code        | 00 |         |    2 | 00/0006 : F0 05       |                               beq   cfs_1              
+  274 |  3        pff.s    132 | Empty       | 00 |         |    0 | 00/0008               |                                                        
+  275 |  3        pff.s    133 | Code        | 00 |         |    3 | 00/0008 : A9 02 00    |                               lda   #{2}               
+  276 |  3        pff.s    134 | Code        | 00 |         |    1 | 00/000B : 38          |                               sec                      
+  277 |  3        pff.s    135 | Code        | 00 |         |    1 | 00/000C : 60          |                               rts                      
+  278 |  3        pff.s    136 | Empty       | 00 |         |    0 | 00/000D               |                                                        
+  279 |  3        pff.s    137 | Code        | 00 |         |    2 | 00/000D : A5 B6       | cfs_1                         lda   {{$80}}+{54}       ; check FAT12/16
+  280 |  3        pff.s    138 | Code        | 00 |         |    3 | 00/000F : C9 46 41    |                               cmp   #$4146             
+  281 |  3        pff.s    139 | Code        | 00 |         |    2 | 00/0012 : F0 07       |                               beq   cfs_ok             
+  282 |  3        pff.s    140 | Empty       | 00 |         |    0 | 00/0014               |                                                        
+  283 |  3        pff.s    141 | Code        | 00 |         |    2 | 00/0014 : A5 D2       |                               lda   {{$80}}+{82}       ; check FAT32
+  284 |  3        pff.s    142 | Code        | 00 |         |    3 | 00/0016 : C9 46 41    |                               cmp   #$4146             
+  285 |  3        pff.s    143 | Code        | 00 |         |    2 | 00/0019 : D0 05       |                               bne   cfs_2              
+  286 |  3        pff.s    144 | Empty       | 00 |         |    0 | 00/001B               |                                                        
+  287 |  3        pff.s    145 | Code        | 00 |         |    3 | 00/001B : A9 00 00    | cfs_ok                        lda   #{0}               ; we have a FAT
+  288 |  3        pff.s    146 | Code        | 00 |         |    1 | 00/001E : 18          |                               clc                      
+  289 |  3        pff.s    147 | Code        | 00 |         |    1 | 00/001F : 60          |                               rts                      
+  290 |  3        pff.s    148 | Empty       | 00 |         |    0 | 00/0020               |                                                        
+  291 |  3        pff.s    149 | Code        | 00 |         |    3 | 00/0020 : A9 01 00    | cfs_2                         lda   #{1}               ; we do not have a FAT
+  292 |  3        pff.s    150 | Code        | 00 |         |    1 | 00/0023 : 38          |                               sec                      
+  293 |  3        pff.s    151 | Code        | 00 |         |    1 | 00/0024 : 60          |                               rts                      
+  294 |  3        pff.s    152 | Empty       | 00 |         |    0 | 00/0025               |                                                        
+  295 |  3        pff.s    153 | Comment     | 00 |         |    0 | 00/0025               | *-------------------------------
+  296 |  3        pff.s    154 | Comment     | 00 |         |    0 | 00/0025               | * Mount/Unmount a logical drive
+  297 |  3        pff.s    155 | Comment     | 00 |         |    0 | 00/0025               | *-------------------------------
+  298 |  3        pff.s    156 | Empty       | 00 |         |    0 | 00/0025               |                                                        
+  299 |  3        pff.s    157 | Code        | 00 |         |    4 | 00/0025 : AF 12 00 E4 | pf_mount                      ldal  {$e40012}          
+  300 |  3        pff.s    158 | Code        | 00 |         |    3 | 00/0029 : 29 FF 00    |                               and   #$ff               
+  301 |  3        pff.s    159 | Code        | 00 |         |    3 | 00/002C : C9 01 00    |                               cmp   #1                 ; disk inserted?
+  302 |  3        pff.s    160 | Code        | 00 |         |    2 | 00/002F : F0 05       |                               beq   pfm_1              
+  303 |  3        pff.s    161 | Empty       | 00 |         |    0 | 00/0031               |                                                        
+  304 |  3        pff.s    162 | Code        | 00 |         |    3 | 00/0031 : A9 02 00    |                               lda   #{2}               
+  305 |  3        pff.s    163 | Code        | 00 |         |    1 | 00/0034 : 38          |                               sec                      
+  306 |  3        pff.s    164 | Code        | 00 |         |    1 | 00/0035 : 60          |                               rts                      
+  307 |  3        pff.s    165 | Empty       | 00 |         |    0 | 00/0036               |                                                        
+  308 |  3        pff.s    166 | Code        | 00 |         |    3 | 00/0036 : A2 00 00    | pfm_1                         ldx   #0                 ; read MBR
+  309 |  3        pff.s    167 | Code        | 00 |         |    3 | 00/0039 : A0 00 00    |                               ldy   #0                 
+  310 |  3        pff.s    168 | Code        | 00 |  2      |    3 | 00/003C : 20 5E 01    |                               jsr   disk_read          
+  311 |  3        pff.s    169 | Code        | 00 |         |    2 | 00/003F : 90 05       |                               bcc   pfm_2              
+  312 |  3        pff.s    170 | Empty       | 00 |         |    0 | 00/0041               |                                                        
+  313 |  3        pff.s    171 | Code        | 00 |         |    3 | 00/0041 : A9 01 00    |                               lda   #{1}               
+  314 |  3        pff.s    172 | Code        | 00 |         |    1 | 00/0044 : 38          |                               sec                      
+  315 |  3        pff.s    173 | Code        | 00 |         |    1 | 00/0045 : 60          |                               rts                      
+  316 |  3        pff.s    174 | Empty       | 00 |         |    0 | 00/0046               |                                                        
+  317 |  3        pff.s    175 | Code        | 00 |  2      |    3 | 00/0046 : 20 00 00    | pfm_2                         jsr   check_fs           
+  318 |  3        pff.s    176 | Code        | 00 |  2      |    3 | 00/0049 : 8D 84 00    |                               sta   fmt                
+  319 |  3        pff.s    177 | Empty       | 00 |         |    0 | 00/004C               |                                                        
+  320 |  3        pff.s    178 | Comment     | 00 |         |    0 | 00/004C               | * if (fmt == 1)
+  321 |  3        pff.s    179 | Empty       | 00 |         |    0 | 00/004C               |                                                        
+  322 |  3        pff.s    180 | Code        | 00 |         |    3 | 00/004C : C9 01 00    |                               cmp   #1                 
+  323 |  3        pff.s    181 | Code        | 00 |         |    2 | 00/004F : D0 1E       |                               bne   pfm_next           
+  324 |  3        pff.s    182 | Empty       | 00 |         |    0 | 00/0051               |                                                        
+  325 |  3        pff.s    183 | Code        | 00 |         |    3 | 00/0051 : AD 42 02    |                               lda   {{$80}}+{446}+4    ; is the partition existing?
+  326 |  3        pff.s    184 | Code        | 00 |         |    3 | 00/0054 : 29 FF 00    |                               and   #$ff               
+  327 |  3        pff.s    185 | Code        | 00 |         |    2 | 00/0057 : F0 16       |                               beq   pfm_next           
+  328 |  3        pff.s    186 | Empty       | 00 |         |    0 | 00/0059               |                                                        
+  329 |  3        pff.s    187 | Code        | 00 |         |    3 | 00/0059 : AE 48 02    |                               ldx   {{$80}}+{446}+10   ; partition offset in LBA
+  330 |  3        pff.s    188 | Code        | 00 |         |    3 | 00/005C : AC 46 02    |                               ldy   {{$80}}+{446}+8    
+  331 |  3        pff.s    189 | Code        | 00 |  2      |    3 | 00/005F : 20 5E 01    |                               jsr   disk_read          
+  332 |  3        pff.s    190 | Code        | 00 |         |    2 | 00/0062 : 90 05       |                               bcc   pfm_3              
+  333 |  3        pff.s    191 | Empty       | 00 |         |    0 | 00/0064               |                                                        
+  334 |  3        pff.s    192 | Code        | 00 |         |    3 | 00/0064 : A9 03 00    |                               lda   #3                 
+  335 |  3        pff.s    193 | Code        | 00 |         |    2 | 00/0067 : 80 03       |                               bra   pfm_4              
+  336 |  3        pff.s    194 | Empty       | 00 |         |    0 | 00/0069               |                                                        
+  337 |  3        pff.s    195 | Code        | 00 |  2      |    3 | 00/0069 : 20 00 00    | pfm_3                         jsr   check_fs           
+  338 |  3        pff.s    196 | Code        | 00 |  2      |    3 | 00/006C : 8D 84 00    | pfm_4                         sta   fmt                
+  339 |  3        pff.s    197 | Empty       | 00 |         |    0 | 00/006F               |                                                        
+  340 |  3        pff.s    198 | Comment     | 00 |         |    0 | 00/006F               | *---
+  341 |  3        pff.s    199 | Empty       | 00 |         |    0 | 00/006F               |                                                        
+  342 |  3        pff.s    200 | Code        | 00 |  2      |    3 | 00/006F : AD 84 00    | pfm_next                      lda   fmt                
+  343 |  3        pff.s    201 | Code        | 00 |         |    2 | 00/0072 : F0 0E       |                               beq   pfm_next_ok        
+  344 |  3        pff.s    202 | Empty       | 00 |         |    0 | 00/0074               |                                                        
+  345 |  3        pff.s    203 | Code        | 00 |         |    3 | 00/0074 : A2 01 00    |                               ldx   #{1}               ; no valid FAT partition is found
+  346 |  3        pff.s    204 | Code        | 00 |         |    3 | 00/0077 : C9 03 00    |                               cmp   #3                 
+  347 |  3        pff.s    205 | Code        | 00 |         |    2 | 00/007A : F0 03       |                               beq   pfm_next_err       
+  348 |  3        pff.s    206 | Code        | 00 |         |    3 | 00/007C : A2 06 00    |                               ldx   #{6}               
+  349 |  3        pff.s    207 | Code        | 00 |         |    1 | 00/007F : 8A          | pfm_next_err                  txa                      
+  350 |  3        pff.s    208 | Code        | 00 |         |    1 | 00/0080 : 38          |                               sec                      
+  351 |  3        pff.s    209 | Code        | 00 |         |    1 | 00/0081 : 60          |                               rts                      
+  352 |  3        pff.s    210 | Empty       | 00 |         |    0 | 00/0082               |                                                        
+  353 |  3        pff.s    211 | Comment     | 00 |         |    0 | 00/0082               | *--- Initialize the file system object
+  354 |  3        pff.s    212 | Empty       | 00 |         |    0 | 00/0082               |                                                        
+  355 |  3        pff.s    213 | Code        | 00 |         |    1 | 00/0082 : 18          | pfm_next_ok                   clc                      
+  356 |  3        pff.s    214 | Code        | 00 |         |    1 | 00/0083 : 60          |                               rts                      
+  357 |  3        pff.s    215 | Empty       | 00 |         |    0 | 00/0084               |                                                        
+  358 |  3        pff.s    216 | Comment     | 00 |         |    0 | 00/0084               | *-------------- Data
+  359 |  3        pff.s    217 | Empty       | 00 |         |    0 | 00/0084               |                                                        
+  360 |  3        pff.s    218 | Data        | 00 |         |    2 | 00/0084 : 00 00       | fmt                           ds    2                  
+  361 |  3        pff.s    219 | Comment     | 00 |         |    0 | 00/0086               | *sector	ds	4
+  362 |  3        pff.s    220 | Data        | 00 |         |    4 | 00/0086 : 00 00 00 00 | bsect                         ds    4                  
+  363 |  3        pff.s    221 | Data        | 00 |         |    4 | 00/008A : 00 00 00 00 | fsize                         ds    4                  
+  364 |  3        pff.s    222 | Data        | 00 |         |    4 | 00/008E : 00 00 00 00 | tsect                         ds    4                  
+  365 |  3        pff.s    223 | Data        | 00 |         |    4 | 00/0092 : 00 00 00 00 | mclst                         ds    4                  
+  366 |  3        pff.s    224 | Empty       | 00 |         |    0 | 00/0096               |                                                        
+  367 |  3        pff.s    225 | Comment     | 00 |         |    0 | 00/0096               | *-------------------------------
+  368 |  3        pff.s    226 | Comment     | 00 |         |    0 | 00/0096               | * Open a file
+  369 |  3        pff.s    227 | Comment     | 00 |         |    0 | 00/0096               | *-------------------------------
+  370 |  3        pff.s    228 | Empty       | 00 |         |    0 | 00/0096               |                                                        
+  371 |  3        pff.s    229 | Empty       | 00 |         |    0 | 00/0096               | pf_open                                                
+  372 |  3        pff.s    230 | Code        | 00 |         |    1 | 00/0096 : 60          |                               rts                      
+  373 |  3        pff.s    231 | Empty       | 00 |         |    0 | 00/0097               |                                                        
+  374 |  3        pff.s    232 | Comment     | 00 |         |    0 | 00/0097               | *-------------------------------
+  375 |  3        pff.s    233 | Comment     | 00 |         |    0 | 00/0097               | * Read data from the open file
+  376 |  3        pff.s    234 | Comment     | 00 |         |    0 | 00/0097               | *-------------------------------
+  377 |  3        pff.s    235 | Empty       | 00 |         |    0 | 00/0097               |                                                        
+  378 |  3        pff.s    236 | Empty       | 00 |         |    0 | 00/0097               | pf_read                                                
+  379 |  3        pff.s    237 | Code        | 00 |         |    1 | 00/0097 : 60          |                               rts                      
+  380 |  3        pff.s    238 | Empty       | 00 |         |    0 | 00/0098               |                                                        
+  381 |  3        pff.s    239 | Comment     | 00 |         |    0 | 00/0098               | *-------------------------------
+  382 |  3        pff.s    240 | Comment     | 00 |         |    0 | 00/0098               | * Write data to the open file
+  383 |  3        pff.s    241 | Comment     | 00 |         |    0 | 00/0098               | *-------------------------------
+  384 |  3        pff.s    242 | Empty       | 00 |         |    0 | 00/0098               |                                                        
+  385 |  3        pff.s    243 | Empty       | 00 |         |    0 | 00/0098               | pf_write                                               
+  386 |  3        pff.s    244 | Code        | 00 |         |    1 | 00/0098 : 60          |                               rts                      
+  387 |  3        pff.s    245 | Empty       | 00 |         |    0 | 00/0099               |                                                        
+  388 |  3        pff.s    246 | Comment     | 00 |         |    0 | 00/0099               | *-------------------------------
+  389 |  3        pff.s    247 | Comment     | 00 |         |    0 | 00/0099               | * Move the pointer of the open file
+  390 |  3        pff.s    248 | Comment     | 00 |         |    0 | 00/0099               | *-------------------------------
+  391 |  3        pff.s    249 | Empty       | 00 |         |    0 | 00/0099               |                                                        
+  392 |  3        pff.s    250 | Empty       | 00 |         |    0 | 00/0099               | pf_lseek                                               
+  393 |  3        pff.s    251 | Code        | 00 |         |    1 | 00/0099 : 60          |                               rts                      
+  394 |  3        pff.s    252 | Empty       | 00 |         |    0 | 00/009A               |                                                        
+  395 |  3        pff.s    253 | Comment     | 00 |         |    0 | 00/009A               | *-------------------------------
+  396 |  3        pff.s    254 | Comment     | 00 |         |    0 | 00/009A               | * Open a directory
+  397 |  3        pff.s    255 | Comment     | 00 |         |    0 | 00/009A               | *-------------------------------
+  398 |  3        pff.s    256 | Empty       | 00 |         |    0 | 00/009A               |                                                        
+  399 |  3        pff.s    257 | Empty       | 00 |         |    0 | 00/009A               | pf_opendir                                             
+  400 |  3        pff.s    258 | Code        | 00 |         |    1 | 00/009A : 60          |                               rts                      
+  401 |  3        pff.s    259 | Empty       | 00 |         |    0 | 00/009B               |                                                        
+  402 |  3        pff.s    260 | Comment     | 00 |         |    0 | 00/009B               | *-------------------------------
+  403 |  3        pff.s    261 | Comment     | 00 |         |    0 | 00/009B               | * Read a directory item from the open directory
+  404 |  3        pff.s    262 | Comment     | 00 |         |    0 | 00/009B               | *-------------------------------
+  405 |  3        pff.s    263 | Empty       | 00 |         |    0 | 00/009B               |                                                        
+  406 |  3        pff.s    264 | Empty       | 00 |         |    0 | 00/009B               | pf_readdir                                             
+  407 |  3        pff.s    265 | Code        | 00 |         |    1 | 00/009B : 60          |                               rts                      
+  408 |  3        pff.s    266 | Empty       | 00 |         |    0 | 00/009C               |                                                        
+  409 |  3        pff.s    267 | Comment     | 00 |         |    0 | 00/009C               | *-------------------------------
+  410 |  3        pff.s    268 | Comment     | 00 |         |    0 | 00/009C               | * DATA
+  411 |  3        pff.s    269 | Comment     | 00 |         |    0 | 00/009C               | *-------------------------------
+  412 |  3        pff.s    270 | Empty       | 00 |         |    0 | 00/009C               |                                                        
+  413 |  1    wrapper.s     16 | Directive   | 00 |         |    0 | 00/009C               |                               put   diskio.s           
+  414 |  4     diskio.s      1 | Comment     | 00 |         |    0 | 00/009C               | *
+  415 |  4     diskio.s      2 | Comment     | 00 |         |    0 | 00/009C               | * Petit FAT File System Module: diskio
+  416 |  4     diskio.s      3 | Comment     | 00 |         |    0 | 00/009C               | *
+  417 |  4     diskio.s      4 | Comment     | 00 |         |    0 | 00/009C               | * (c) 2014, ChaN
+  418 |  4     diskio.s      5 | Comment     | 00 |         |    0 | 00/009C               | * (v) 2024, Brutal Deluxe Software
+  419 |  4     diskio.s      6 | Comment     | 00 |         |    0 | 00/009C               | * Visit brutaldeluxe.fr
+  420 |  4     diskio.s      7 | Comment     | 00 |         |    0 | 00/009C               | *
+  421 |  4     diskio.s      8 | Empty       | 00 |         |    0 | 00/009C               |                                                        
+  422 |  4     diskio.s      9 | Directive   | 00 |         |    0 | 00/009C               |                               xc                       
+  423 |  4     diskio.s     10 | Directive   | 00 |         |    0 | 00/009C               |                               xc                       
+  424 |  4     diskio.s     11 | Directive   | 00 |         |    0 | 00/009C               |                               mx    %00                
+  425 |  4     diskio.s     12 | Empty       | 00 |         |    0 | 00/009C               |                                                        
+  426 |  4     diskio.s     13 | Comment     | 00 |         |    0 | 00/009C               | *-------------------------------
+  427 |  4     diskio.s     14 | Comment     | 00 |         |    0 | 00/009C               | * EQUATES
+  428 |  4     diskio.s     15 | Comment     | 00 |         |    0 | 00/009C               | *-------------------------------
+  429 |  4     diskio.s     16 | Empty       | 00 |         |    0 | 00/009C               |                                                        
+  430 |  4     diskio.s     17 | Equivalence | 00 |         |    0 | 00/009C               | RES_OK                        =     0                  
+  431 |  4     diskio.s     18 | Equivalence | 00 |         |    0 | 00/009C               | RES_ERROR                     =     1                  
+  432 |  4     diskio.s     19 | Equivalence | 00 |         |    0 | 00/009C               | RES_NOTRDY                    =     2                  
+  433 |  4     diskio.s     20 | Equivalence | 00 |         |    0 | 00/009C               | RES_PARERR                    =     3                  
+  434 |  4     diskio.s     21 | Empty       | 00 |         |    0 | 00/009C               |                                                        
+  435 |  4     diskio.s     22 | Equivalence | 00 |         |    0 | 00/009C               | SIZE_SECTOR                   =     512                
+  436 |  4     diskio.s     23 | Empty       | 00 |         |    0 | 00/009C               |                                                        
+  437 |  4     diskio.s     24 | Comment     | 00 |         |    0 | 00/009C               | *-------------------------------
+  438 |  4     diskio.s     25 | Comment     | 00 |         |    0 | 00/009C               | * INITIALIZE DISK DRIVE
+  439 |  4     diskio.s     26 | Comment     | 00 |         |    0 | 00/009C               | *-------------------------------
+  440 |  4     diskio.s     27 | Empty       | 00 |         |    0 | 00/009C               |                                                        
+  441 |  4     diskio.s     28 | Directive   | 00 |         |    0 | 00/009C               |                               mx    %00                
+  442 |  4     diskio.s     29 | Empty       | 00 |         |    0 | 00/009C               |                                                        
+  443 |  4     diskio.s     30 | Empty       | 00 |         |    0 | 00/009C               | disk_initialize                                        
+  444 |  4     diskio.s     31 | Code        | 00 |         |    3 | 00/009C : A9 00 00    |                               lda   #{0}               
+  445 |  4     diskio.s     32 | Code        | 00 |         |    1 | 00/009F : 18          |                               clc                      
+  446 |  4     diskio.s     33 | Code        | 00 |         |    1 | 00/00A0 : 60          |                               rts                      
+  447 |  4     diskio.s     34 | Empty       | 00 |         |    0 | 00/00A1               |                                                        
+  448 |  4     diskio.s     35 | Comment     | 00 |         |    0 | 00/00A1               | *-------------------------------
+  449 |  4     diskio.s     36 | Comment     | 00 |         |    0 | 00/00A1               | * SKIP BYTES (Y)
+  450 |  4     diskio.s     37 | Comment     | 00 |         |    0 | 00/00A1               | *-------------------------------
+  451 |  4     diskio.s     38 | Empty       | 00 |         |    0 | 00/00A1               |                                                        
+  452 |  4     diskio.s     39 | Directive   | 11 |         |    0 | 00/00A1               |                               mx    %11                
+  453 |  4     diskio.s     40 | Empty       | 11 |         |    0 | 00/00A1               |                                                        
+  454 |  4     diskio.s     41 | Code        | 11 |         |    4 | 00/00A1 : AF 0A 00 E4 | skip                          ldal  {$e4000a}          
+  455 |  4     diskio.s     42 | Code        | 11 |         |    1 | 00/00A5 : 88          |                               dey                      
+  456 |  4     diskio.s     43 | Code        | 11 |         |    2 | 00/00A6 : D0 F9       |                               bne   skip               
+  457 |  4     diskio.s     44 | Code        | 11 |         |    1 | 00/00A8 : 60          |                               rts                      
+  458 |  4     diskio.s     45 | Empty       | 11 |         |    0 | 00/00A9               |                                                        
+  459 |  4     diskio.s     46 | Comment     | 11 |         |    0 | 00/00A9               | *-------------------------------
+  460 |  4     diskio.s     47 | Comment     | 11 |         |    0 | 00/00A9               | * READ PARTIAL SECTOR
+  461 |  4     diskio.s     48 | Comment     | 11 |         |    0 | 00/00A9               | *-------------------------------
+  462 |  4     diskio.s     49 | Empty       | 11 |         |    0 | 00/00A9               |                                                        
+  463 |  4     diskio.s     50 | Directive   | 00 |         |    0 | 00/00A9               |                               mx    %00                
+  464 |  4     diskio.s     51 | Empty       | 00 |         |    0 | 00/00A9               |                                                        
+  465 |  4     diskio.s     52 | Code        | 00 |         |    4 | 00/00A9 : AF 12 00 E4 | disk_readp                    ldal  {$e40012}          
+  466 |  4     diskio.s     53 | Code        | 00 |         |    3 | 00/00AD : 29 FF 00    |                               and   #$ff               
+  467 |  4     diskio.s     54 | Code        | 00 |         |    2 | 00/00B0 : D0 05       |                               bne   drp_0              
+  468 |  4     diskio.s     55 | Empty       | 00 |         |    0 | 00/00B2               |                                                        
+  469 |  4     diskio.s     56 | Code        | 00 |         |    3 | 00/00B2 : A9 01 00    |                               lda   #{1}               ; no card inserted
+  470 |  4     diskio.s     57 | Code        | 00 |         |    1 | 00/00B5 : 38          |                               sec                      
+  471 |  4     diskio.s     58 | Code        | 00 |         |    1 | 00/00B6 : 60          |                               rts                      
+  472 |  4     diskio.s     59 | Empty       | 00 |         |    0 | 00/00B7               |                                                        
+  473 |  4     diskio.s     60 | Code        | 10 |         |    2 | 00/00B7 : E2 20       | drp_0                         sep   #$20               
+  474 |  4     diskio.s     61 | Code        | 10 |         |    2 | 00/00B9 : A5 87       |                               lda   {{{$80}}+4}+3      
+  475 |  4     diskio.s     62 | Code        | 10 |         |    4 | 00/00BB : 8F 00 00 E4 |                               stal  {$e40000}          
+  476 |  4     diskio.s     63 | Code        | 10 |         |    2 | 00/00BF : A5 86       |                               lda   {{{$80}}+4}+2      
+  477 |  4     diskio.s     64 | Code        | 10 |         |    4 | 00/00C1 : 8F 01 00 E4 |                               stal  {$e40000}+1        
+  478 |  4     diskio.s     65 | Code        | 10 |         |    2 | 00/00C5 : A5 85       |                               lda   {{{$80}}+4}+1      
+  479 |  4     diskio.s     66 | Code        | 10 |         |    4 | 00/00C7 : 8F 02 00 E4 |                               stal  {$e40000}+2        
+  480 |  4     diskio.s     67 | Code        | 10 |         |    2 | 00/00CB : A5 84       |                               lda   {{{$80}}+4}        
+  481 |  4     diskio.s     68 | Code        | 10 |         |    4 | 00/00CD : 8F 03 00 E4 |                               stal  {$e40000}+3        
+  482 |  4     diskio.s     69 | Empty       | 10 |         |    0 | 00/00D1               |                                                        
+  483 |  4     diskio.s     70 | Code        | 10 |         |    2 | 00/00D1 : A9 01       |                               lda   #1                 ; dummy data
+  484 |  4     diskio.s     71 | Code        | 10 |         |    4 | 00/00D3 : 8F 08 00 E4 |                               stal  {$e40008}          
+  485 |  4     diskio.s     72 | Empty       | 10 |         |    0 | 00/00D7               |                                                        
+  486 |  4     diskio.s     73 | Code        | 00 |         |    2 | 00/00D7 : C2 20       |                               rep   #$20               ; bc = 512 - offset - count
+  487 |  4     diskio.s     74 | Code        | 00 |         |    3 | 00/00D9 : A9 00 02    |                               lda   #{512}             
+  488 |  4     diskio.s     75 | Code        | 00 |         |    1 | 00/00DC : 38          |                               sec                      
+  489 |  4     diskio.s     76 | Code        | 00 |         |    2 | 00/00DD : E5 88       |                               sbc   {{{{$80}}+4}+4}    
+  490 |  4     diskio.s     77 | Code        | 00 |         |    2 | 00/00DF : E5 8C       |                               sbc   {{{{{$80}}+4}+4}+4}
+  491 |  4     diskio.s     78 | Code        | 00 |         |    2 | 00/00E1 : 85 C0       |                               sta   {{{$80}+64}}       
+  492 |  4     diskio.s     79 | Empty       | 00 |         |    0 | 00/00E3               |                                                        
+  493 |  4     diskio.s     80 | Code        | 00 |         |    2 | 00/00E3 : A5 8C       |                               lda   {{{{{$80}}+4}+4}+4}
+  494 |  4     diskio.s     81 | Code        | 00 |         |    1 | 00/00E5 : 4A          |                               lsr                      
+  495 |  4     diskio.s     82 | Code        | 00 |         |    1 | 00/00E6 : 4A          |                               lsr                      
+  496 |  4     diskio.s     83 | Code        | 00 |         |    1 | 00/00E7 : 4A          |                               lsr                      
+  497 |  4     diskio.s     84 | Code        | 00 |         |    1 | 00/00E8 : AA          |                               tax                      ; count8 = count / 8
+  498 |  4     diskio.s     85 | Code        | 10 |         |    2 | 00/00E9 : E2 20       |                               sep   #$20               
+  499 |  4     diskio.s     86 | Empty       | 10 |         |    0 | 00/00EB               |                                                        
+  500 |  4     diskio.s     87 | Code        | 10 |         |    2 | 00/00EB : A4 88       |                               ldy   {{{{$80}}+4}+4}    ; if(offset)
+  501 |  4     diskio.s     88 | Code        | 10 |         |    2 | 00/00ED : F0 03       |                               beq   drp_1              
+  502 |  4     diskio.s     89 | Code        | 10 |  2      |    3 | 00/00EF : 20 A1 00    |                               jsr   skip               ; skip(offset)
+  503 |  4     diskio.s     90 | Empty       | 10 |         |    0 | 00/00F2               |                                                        
+  504 |  4     diskio.s     91 | Code        | 10 |         |    3 | 00/00F2 : E0 00 00    | drp_1                         cpx   #0                 ; if(count8)
+  505 |  4     diskio.s     92 | Code        | 10 |         |    2 | 00/00F5 : F0 4A       |                               beq   drp_2              
+  506 |  4     diskio.s     93 | Empty       | 10 |         |    0 | 00/00F7               |                                                        
+  507 |  4     diskio.s     94 | Code        | 10 |         |    3 | 00/00F7 : A0 00 00    |                               ldy   #0                 
+  508 |  4     diskio.s     95 | Code        | 10 |         |    4 | 00/00FA : AF 0A 00 E4 | ozunid_1                      ldal  {$e4000a}          
+  509 |  4     diskio.s     96 | Code        | 10 |         |    2 | 00/00FE : 97 80       |                               sta   [{{$80}}],y        
+  510 |  4     diskio.s     97 | Code        | 10 |         |    1 | 00/0100 : C8          |                               iny                      
+  511 |  4     diskio.s     98 | Code        | 10 |         |    4 | 00/0101 : AF 0A 00 E4 |                               ldal  {$e4000a}          
+  512 |  4     diskio.s     99 | Code        | 10 |         |    2 | 00/0105 : 97 80       |                               sta   [{{$80}}],y        
+  513 |  4     diskio.s    100 | Code        | 10 |         |    1 | 00/0107 : C8          |                               iny                      
+  514 |  4     diskio.s    101 | Code        | 10 |         |    4 | 00/0108 : AF 0A 00 E4 |                               ldal  {$e4000a}          
+  515 |  4     diskio.s    102 | Code        | 10 |         |    2 | 00/010C : 97 80       |                               sta   [{{$80}}],y        
+  516 |  4     diskio.s    103 | Code        | 10 |         |    1 | 00/010E : C8          |                               iny                      
+  517 |  4     diskio.s    104 | Code        | 10 |         |    4 | 00/010F : AF 0A 00 E4 |                               ldal  {$e4000a}          
+  518 |  4     diskio.s    105 | Code        | 10 |         |    2 | 00/0113 : 97 80       |                               sta   [{{$80}}],y        
+  519 |  4     diskio.s    106 | Code        | 10 |         |    1 | 00/0115 : C8          |                               iny                      
+  520 |  4     diskio.s    107 | Code        | 10 |         |    4 | 00/0116 : AF 0A 00 E4 |                               ldal  {$e4000a}          
+  521 |  4     diskio.s    108 | Code        | 10 |         |    2 | 00/011A : 97 80       |                               sta   [{{$80}}],y        
+  522 |  4     diskio.s    109 | Code        | 10 |         |    1 | 00/011C : C8          |                               iny                      
+  523 |  4     diskio.s    110 | Code        | 10 |         |    4 | 00/011D : AF 0A 00 E4 |                               ldal  {$e4000a}          
+  524 |  4     diskio.s    111 | Code        | 10 |         |    2 | 00/0121 : 97 80       |                               sta   [{{$80}}],y        
+  525 |  4     diskio.s    112 | Code        | 10 |         |    1 | 00/0123 : C8          |                               iny                      
+  526 |  4     diskio.s    113 | Code        | 10 |         |    4 | 00/0124 : AF 0A 00 E4 |                               ldal  {$e4000a}          
+  527 |  4     diskio.s    114 | Code        | 10 |         |    2 | 00/0128 : 97 80       |                               sta   [{{$80}}],y        
+  528 |  4     diskio.s    115 | Code        | 10 |         |    1 | 00/012A : C8          |                               iny                      
+  529 |  4     diskio.s    116 | Code        | 10 |         |    4 | 00/012B : AF 0A 00 E4 |                               ldal  {$e4000a}          
+  530 |  4     diskio.s    117 | Code        | 10 |         |    2 | 00/012F : 97 80       |                               sta   [{{$80}}],y        
+  531 |  4     diskio.s    118 | Code        | 10 |         |    1 | 00/0131 : C8          |                               iny                      
+  532 |  4     diskio.s    119 | Empty       | 10 |         |    0 | 00/0132               |                                                        
+  533 |  4     diskio.s    120 | Code        | 00 |         |    2 | 00/0132 : C2 20       |                               rep   #$20               ; count -= 8
+  534 |  4     diskio.s    121 | Code        | 00 |         |    2 | 00/0134 : A5 8C       |                               lda   {{{{{$80}}+4}+4}+4}
+  535 |  4     diskio.s    122 | Code        | 00 |         |    1 | 00/0136 : 38          |                               sec                      
+  536 |  4     diskio.s    123 | Code        | 00 |         |    3 | 00/0137 : E9 08 00    |                               sbc   #8                 
+  537 |  4     diskio.s    124 | Code        | 00 |         |    2 | 00/013A : 85 8C       |                               sta   {{{{{$80}}+4}+4}+4}
+  538 |  4     diskio.s    125 | Code        | 10 |         |    2 | 00/013C : E2 20       |                               sep   #$20               
+  539 |  4     diskio.s    126 | Empty       | 10 |         |    0 | 00/013E               |                                                        
+  540 |  4     diskio.s    127 | Code        | 10 |         |    1 | 00/013E : CA          |                               dex                      ; while (--count8)
+  541 |  4     diskio.s    128 | Code        | 10 |         |    2 | 00/013F : D0 B9       |                               bne   ozunid_1           
+  542 |  4     diskio.s    129 | Empty       | 10 |         |    0 | 00/0141               |                                                        
+  543 |  4     diskio.s    130 | Code        | 10 |         |    2 | 00/0141 : A6 8C       | drp_2                         ldx   {{{{{$80}}+4}+4}+4}; if(count)
+  544 |  4     diskio.s    131 | Code        | 10 |         |    2 | 00/0143 : F0 0D       |                               beq   drp_3              
+  545 |  4     diskio.s    132 | Code        | 10 |         |    3 | 00/0145 : A0 00 00    |                               ldy   #0                 
+  546 |  4     diskio.s    133 | Code        | 10 |         |    4 | 00/0148 : AF 0A 00 E4 | ozunid_2                      ldal  {$e4000a}          
+  547 |  4     diskio.s    134 | Code        | 10 |         |    2 | 00/014C : 97 80       |                               sta   [{{$80}}],y        
+  548 |  4     diskio.s    135 | Code        | 10 |         |    1 | 00/014E : C8          |                               iny                      
+  549 |  4     diskio.s    136 | Code        | 10 |         |    1 | 00/014F : CA          |                               dex                      ; while (--count)
+  550 |  4     diskio.s    137 | Code        | 10 |         |    2 | 00/0150 : D0 F6       |                               bne   ozunid_2           
+  551 |  4     diskio.s    138 | Empty       | 10 |         |    0 | 00/0152               |                                                        
+  552 |  4     diskio.s    139 | Code        | 10 |         |    2 | 00/0152 : A4 C0       | drp_3                         ldy   {{{$80}+64}}       ; skip(bc)
+  553 |  4     diskio.s    140 | Code        | 10 |  2      |    3 | 00/0154 : 20 A1 00    |                               jsr   skip               
+  554 |  4     diskio.s    141 | Empty       | 10 |         |    0 | 00/0157               |                                                        
+  555 |  4     diskio.s    142 | Code        | 00 |         |    2 | 00/0157 : C2 20       |                               rep   #$20               
+  556 |  4     diskio.s    143 | Code        | 00 |         |    3 | 00/0159 : A9 00 00    |                               lda   #{0}               
+  557 |  4     diskio.s    144 | Code        | 00 |         |    1 | 00/015C : 18          |                               clc                      
+  558 |  4     diskio.s    145 | Code        | 00 |         |    1 | 00/015D : 60          |                               rts                      
+  559 |  4     diskio.s    146 | Empty       | 00 |         |    0 | 00/015E               |                                                        
+  560 |  4     diskio.s    147 | Comment     | 00 |         |    0 | 00/015E               | *-------------------------------
+  561 |  4     diskio.s    148 | Comment     | 00 |         |    0 | 00/015E               | * READ SECTOR
+  562 |  4     diskio.s    149 | Comment     | 00 |         |    0 | 00/015E               | *-------------------------------
+  563 |  4     diskio.s    150 | Empty       | 00 |         |    0 | 00/015E               |                                                        
+  564 |  4     diskio.s    151 | Directive   | 00 |         |    0 | 00/015E               |                               mx    %00                
+  565 |  4     diskio.s    152 | Empty       | 00 |         |    0 | 00/015E               |                                                        
+  566 |  4     diskio.s    153 | Code        | 00 |         |    4 | 00/015E : AF 12 00 E4 | disk_read                     ldal  {$e40012}          
+  567 |  4     diskio.s    154 | Code        | 00 |         |    3 | 00/0162 : 29 FF 00    |                               and   #$ff               
+  568 |  4     diskio.s    155 | Code        | 00 |         |    2 | 00/0165 : D0 05       |                               bne   dr_0               
+  569 |  4     diskio.s    156 | Empty       | 00 |         |    0 | 00/0167               |                                                        
+  570 |  4     diskio.s    157 | Code        | 00 |         |    3 | 00/0167 : A9 01 00    |                               lda   #{1}               ; no card inserted
+  571 |  4     diskio.s    158 | Code        | 00 |         |    1 | 00/016A : 38          |                               sec                      
+  572 |  4     diskio.s    159 | Code        | 00 |         |    1 | 00/016B : 60          |                               rts                      
+  573 |  4     diskio.s    160 | Empty       | 00 |         |    0 | 00/016C               |                                                        
+  574 |  4     diskio.s    161 | Code        | 00 |         |    2 | 00/016C : 84 84       | dr_0                          sty   {{{$80}}+4}        
+  575 |  4     diskio.s    162 | Code        | 00 |         |    2 | 00/016E : 86 86       |                               stx   {{{$80}}+4}+2      
+  576 |  4     diskio.s    163 | Empty       | 00 |         |    0 | 00/0170               |                                                        
+  577 |  4     diskio.s    164 | Code        | 10 |         |    2 | 00/0170 : E2 20       |                               sep   #$20               
+  578 |  4     diskio.s    165 | Code        | 10 |         |    2 | 00/0172 : A5 87       |                               lda   {{{$80}}+4}+3      
+  579 |  4     diskio.s    166 | Code        | 10 |         |    4 | 00/0174 : 8F 00 00 E4 |                               stal  {$e40000}          
+  580 |  4     diskio.s    167 | Code        | 10 |         |    2 | 00/0178 : A5 86       |                               lda   {{{$80}}+4}+2      
+  581 |  4     diskio.s    168 | Code        | 10 |         |    4 | 00/017A : 8F 01 00 E4 |                               stal  {$e40000}+1        
+  582 |  4     diskio.s    169 | Code        | 10 |         |    2 | 00/017E : A5 85       |                               lda   {{{$80}}+4}+1      
+  583 |  4     diskio.s    170 | Code        | 10 |         |    4 | 00/0180 : 8F 02 00 E4 |                               stal  {$e40000}+2        
+  584 |  4     diskio.s    171 | Code        | 10 |         |    2 | 00/0184 : A5 84       |                               lda   {{{$80}}+4}        
+  585 |  4     diskio.s    172 | Code        | 10 |         |    4 | 00/0186 : 8F 03 00 E4 |                               stal  {$e40000}+3        
+  586 |  4     diskio.s    173 | Empty       | 10 |         |    0 | 00/018A               |                                                        
+  587 |  4     diskio.s    174 | Code        | 10 |         |    2 | 00/018A : A9 01       |                               lda   #1                 ; dummy data
+  588 |  4     diskio.s    175 | Code        | 10 |         |    4 | 00/018C : 8F 08 00 E4 |                               stal  {$e40008}          
+  589 |  4     diskio.s    176 | Empty       | 10 |         |    0 | 00/0190               |                                                        
+  590 |  4     diskio.s    177 | Code        | 10 |         |    3 | 00/0190 : A0 00 00    |                               ldy   #0                 
+  591 |  4     diskio.s    178 | Code        | 10 |         |    4 | 00/0193 : AF 0A 00 E4 | ozunid_3                      ldal  {$e4000a}          
+  592 |  4     diskio.s    179 | Code        | 10 |         |    2 | 00/0197 : 97 80       |                               sta   [{{$80}}],y        
+  593 |  4     diskio.s    180 | Code        | 10 |         |    1 | 00/0199 : C8          |                               iny                      
+  594 |  4     diskio.s    181 | Code        | 10 |         |    4 | 00/019A : AF 0A 00 E4 |                               ldal  {$e4000a}          
+  595 |  4     diskio.s    182 | Code        | 10 |         |    2 | 00/019E : 97 80       |                               sta   [{{$80}}],y        
+  596 |  4     diskio.s    183 | Code        | 10 |         |    1 | 00/01A0 : C8          |                               iny                      
+  597 |  4     diskio.s    184 | Code        | 10 |         |    4 | 00/01A1 : AF 0A 00 E4 |                               ldal  {$e4000a}          
+  598 |  4     diskio.s    185 | Code        | 10 |         |    2 | 00/01A5 : 97 80       |                               sta   [{{$80}}],y        
+  599 |  4     diskio.s    186 | Code        | 10 |         |    1 | 00/01A7 : C8          |                               iny                      
+  600 |  4     diskio.s    187 | Code        | 10 |         |    4 | 00/01A8 : AF 0A 00 E4 |                               ldal  {$e4000a}          
+  601 |  4     diskio.s    188 | Code        | 10 |         |    2 | 00/01AC : 97 80       |                               sta   [{{$80}}],y        
+  602 |  4     diskio.s    189 | Code        | 10 |         |    1 | 00/01AE : C8          |                               iny                      
+  603 |  4     diskio.s    190 | Code        | 10 |         |    4 | 00/01AF : AF 0A 00 E4 |                               ldal  {$e4000a}          
+  604 |  4     diskio.s    191 | Code        | 10 |         |    2 | 00/01B3 : 97 80       |                               sta   [{{$80}}],y        
+  605 |  4     diskio.s    192 | Code        | 10 |         |    1 | 00/01B5 : C8          |                               iny                      
+  606 |  4     diskio.s    193 | Code        | 10 |         |    4 | 00/01B6 : AF 0A 00 E4 |                               ldal  {$e4000a}          
+  607 |  4     diskio.s    194 | Code        | 10 |         |    2 | 00/01BA : 97 80       |                               sta   [{{$80}}],y        
+  608 |  4     diskio.s    195 | Code        | 10 |         |    1 | 00/01BC : C8          |                               iny                      
+  609 |  4     diskio.s    196 | Code        | 10 |         |    4 | 00/01BD : AF 0A 00 E4 |                               ldal  {$e4000a}          
+  610 |  4     diskio.s    197 | Code        | 10 |         |    2 | 00/01C1 : 97 80       |                               sta   [{{$80}}],y        
+  611 |  4     diskio.s    198 | Code        | 10 |         |    1 | 00/01C3 : C8          |                               iny                      
+  612 |  4     diskio.s    199 | Code        | 10 |         |    4 | 00/01C4 : AF 0A 00 E4 |                               ldal  {$e4000a}          
+  613 |  4     diskio.s    200 | Code        | 10 |         |    2 | 00/01C8 : 97 80       |                               sta   [{{$80}}],y        
+  614 |  4     diskio.s    201 | Code        | 10 |         |    1 | 00/01CA : C8          |                               iny                      
+  615 |  4     diskio.s    202 | Code        | 10 |         |    3 | 00/01CB : C0 00 02    |                               cpy   #{512}             
+  616 |  4     diskio.s    203 | Code        | 10 |         |    2 | 00/01CE : 90 C3       |                               bcc   ozunid_3           
+  617 |  4     diskio.s    204 | Empty       | 10 |         |    0 | 00/01D0               |                                                        
+  618 |  4     diskio.s    205 | Code        | 00 |         |    2 | 00/01D0 : C2 20       |                               rep   #$20               
+  619 |  4     diskio.s    206 | Code        | 00 |         |    3 | 00/01D2 : A9 00 00    |                               lda   #{0}               
+  620 |  4     diskio.s    207 | Code        | 00 |         |    1 | 00/01D5 : 18          |                               clc                      
+  621 |  4     diskio.s    208 | Code        | 00 |         |    1 | 00/01D6 : 60          |                               rts                      
+  622 |  4     diskio.s    209 | Empty       | 00 |         |    0 | 00/01D7               |                                                        
+  623 |  4     diskio.s    210 | Comment     | 00 |         |    0 | 00/01D7               | *-------------------------------
+  624 |  4     diskio.s    211 | Comment     | 00 |         |    0 | 00/01D7               | * WRITE PARTIAL SECTOR
+  625 |  4     diskio.s    212 | Comment     | 00 |         |    0 | 00/01D7               | *-------------------------------
+  626 |  4     diskio.s    213 | Empty       | 00 |         |    0 | 00/01D7               |                                                        
+  627 |  4     diskio.s    214 | Directive   | 00 |         |    0 | 00/01D7               |                               mx    %00                
+  628 |  4     diskio.s    215 | Empty       | 00 |         |    0 | 00/01D7               |                                                        
+  629 |  4     diskio.s    216 | Code        | 00 |         |    4 | 00/01D7 : AF 12 00 E4 | disk_writep                   ldal  {$e40012}          
+  630 |  4     diskio.s    217 | Code        | 00 |         |    3 | 00/01DB : 29 FF 00    |                               and   #$ff               
+  631 |  4     diskio.s    218 | Code        | 00 |         |    2 | 00/01DE : D0 05       |                               bne   dwp_0              
+  632 |  4     diskio.s    219 | Empty       | 00 |         |    0 | 00/01E0               |                                                        
+  633 |  4     diskio.s    220 | Code        | 00 |         |    3 | 00/01E0 : A9 01 00    |                               lda   #{1}               ; no card inserted
+  634 |  4     diskio.s    221 | Code        | 00 |         |    1 | 00/01E3 : 38          |                               sec                      
+  635 |  4     diskio.s    222 | Code        | 00 |         |    1 | 00/01E4 : 60          |                               rts                      
+  636 |  4     diskio.s    223 | Empty       | 00 |         |    0 | 00/01E5               |                                                        
+  637 |  4     diskio.s    224 | Code        | 00 |         |    2 | 00/01E5 : A5 80       | dwp_0                         lda   {{$80}}            ; if(!buff)
+  638 |  4     diskio.s    225 | Code        | 00 |         |    2 | 00/01E7 : 05 82       |                               ora   {{$80}}+2          
+  639 |  4     diskio.s    226 | Code        | 00 |         |    2 | 00/01E9 : D0 40       |                               bne   dwp_2              
+  640 |  4     diskio.s    227 | Empty       | 00 |         |    0 | 00/01EB               |                                                        
+  641 |  4     diskio.s    228 | Code        | 00 |         |    2 | 00/01EB : A5 84       |                               lda   {{{$80}}+4}        ; if(sc)
+  642 |  4     diskio.s    229 | Code        | 00 |         |    2 | 00/01ED : 05 86       |                               ora   {{{$80}}+4}+2      
+  643 |  4     diskio.s    230 | Code        | 00 |         |    2 | 00/01EF : F0 2A       |                               beq   dwp_1              
+  644 |  4     diskio.s    231 | Empty       | 00 |         |    0 | 00/01F1               |                                                        
+  645 |  4     diskio.s    232 | Code        | 10 |         |    2 | 00/01F1 : E2 20       |                               sep   #$20               
+  646 |  4     diskio.s    233 | Code        | 10 |         |    2 | 00/01F3 : A5 87       |                               lda   {{{$80}}+4}+3      
+  647 |  4     diskio.s    234 | Code        | 10 |         |    4 | 00/01F5 : 8F 00 00 E4 |                               stal  {$e40000}          
+  648 |  4     diskio.s    235 | Code        | 10 |         |    2 | 00/01F9 : A5 86       |                               lda   {{{$80}}+4}+2      
+  649 |  4     diskio.s    236 | Code        | 10 |         |    4 | 00/01FB : 8F 01 00 E4 |                               stal  {$e40000}+1        
+  650 |  4     diskio.s    237 | Code        | 10 |         |    2 | 00/01FF : A5 85       |                               lda   {{{$80}}+4}+1      
+  651 |  4     diskio.s    238 | Code        | 10 |         |    4 | 00/0201 : 8F 02 00 E4 |                               stal  {$e40000}+2        
+  652 |  4     diskio.s    239 | Code        | 10 |         |    2 | 00/0205 : A5 84       |                               lda   {{{$80}}+4}        
+  653 |  4     diskio.s    240 | Code        | 10 |         |    4 | 00/0207 : 8F 03 00 E4 |                               stal  {$e40000}+3        
+  654 |  4     diskio.s    241 | Empty       | 10 |         |    0 | 00/020B               |                                                        
+  655 |  4     diskio.s    242 | Code        | 10 |         |    2 | 00/020B : A9 01       |                               lda   #1                 ; dummy data
+  656 |  4     diskio.s    243 | Code        | 10 |         |    4 | 00/020D : 8F 0C 00 E4 |                               stal  {$e4000c}          
+  657 |  4     diskio.s    244 | Empty       | 10 |         |    0 | 00/0211               |                                                        
+  658 |  4     diskio.s    245 | Code        | 00 |         |    2 | 00/0211 : C2 20       |                               rep   #$20               ; /* Set byte counter */
+  659 |  4     diskio.s    246 | Code        | 00 |         |    3 | 00/0213 : A9 00 02    |                               lda   #{512}             
+  660 |  4     diskio.s    247 | Code        | 00 |         |    2 | 00/0216 : 85 C4       |                               sta   {{{{$80}+64}}+4}   
+  661 |  4     diskio.s    248 | Code        | 00 |  2      |    3 | 00/0218 : 4C 3C 02    |                               jmp   dwp_ok             
+  662 |  4     diskio.s    249 | Empty       | 00 |         |    0 | 00/021B               |                                                        
+  663 |  4     diskio.s    250 | Code        | 10 |         |    2 | 00/021B : E2 20       | dwp_1                         sep   #$20               ; // Finalize write process
+  664 |  4     diskio.s    251 | Code        | 10 |         |    2 | 00/021D : A6 C4       |                               ldx   {{{{$80}+64}}+4}   
+  665 |  4     diskio.s    252 | Code        | 10 |         |    2 | 00/021F : A9 00       |                               lda   #0                 
+  666 |  4     diskio.s    253 | Code        | 10 |         |    4 | 00/0221 : 8F 0A 00 E4 | ozunid_4                      stal  {$e4000a}          
+  667 |  4     diskio.s    254 | Code        | 10 |         |    1 | 00/0225 : CA          |                               dex                      
+  668 |  4     diskio.s    255 | Code        | 10 |         |    2 | 00/0226 : D0 F9       |                               bne   ozunid_4           
+  669 |  4     diskio.s    256 | Code        | 10 |  2      |    3 | 00/0228 : 4C 3C 02    |                               jmp   dwp_ok             
+  670 |  4     diskio.s    257 | Empty       | 10 |         |    0 | 00/022B               |                                                        
+  671 |  4     diskio.s    258 | Code        | 10 |         |    2 | 00/022B : E2 20       | dwp_2                         sep   #$20               ; /* Send data bytes to the card
+  672 |  4     diskio.s    259 | Code        | 10 |         |    3 | 00/022D : A0 00 00    |                               ldy   #0                 
+  673 |  4     diskio.s    260 | Code        | 10 |         |    2 | 00/0230 : A6 84       |                               ldx   {{{$80}}+4}        
+  674 |  4     diskio.s    261 | Code        | 10 |         |    2 | 00/0232 : B7 80       | ozunid_5                      lda   [{{$80}}],y        
+  675 |  4     diskio.s    262 | Code        | 10 |         |    4 | 00/0234 : 8F 0A 00 E4 |                               stal  {$e4000a}          
+  676 |  4     diskio.s    263 | Code        | 10 |         |    1 | 00/0238 : C8          |                               iny                      
+  677 |  4     diskio.s    264 | Code        | 10 |         |    1 | 00/0239 : CA          |                               dex                      
+  678 |  4     diskio.s    265 | Code        | 10 |         |    2 | 00/023A : D0 F6       |                               bne   ozunid_5           
+  679 |  4     diskio.s    266 | Empty       | 10 |         |    0 | 00/023C               |                                                        
+  680 |  4     diskio.s    267 | Comment     | 10 |         |    0 | 00/023C               | *---
+  681 |  4     diskio.s    268 | Empty       | 10 |         |    0 | 00/023C               |                                                        
+  682 |  4     diskio.s    269 | Code        | 00 |         |    2 | 00/023C : C2 20       | dwp_ok                        rep   #$20               
+  683 |  4     diskio.s    270 | Code        | 00 |         |    3 | 00/023E : A9 00 00    |                               lda   #{0}               
+  684 |  4     diskio.s    271 | Code        | 00 |         |    1 | 00/0241 : 18          |                               clc                      
+  685 |  4     diskio.s    272 | Code        | 00 |         |    1 | 00/0242 : 60          |                               rts                      
+  686 |  4     diskio.s    273 | Empty       | 00 |         |    0 | 00/0243               |                                                        
+  687 |  4     diskio.s    274 | Comment     | 00 |         |    0 | 00/0243               | *-------------------------------
+  688 |  4     diskio.s    275 | Comment     | 00 |         |    0 | 00/0243               | * WRITE SECTOR
+  689 |  4     diskio.s    276 | Comment     | 00 |         |    0 | 00/0243               | *-------------------------------
+  690 |  4     diskio.s    277 | Empty       | 00 |         |    0 | 00/0243               |                                                        
+  691 |  4     diskio.s    278 | Directive   | 00 |         |    0 | 00/0243               |                               mx    %00                
+  692 |  4     diskio.s    279 | Empty       | 00 |         |    0 | 00/0243               |                                                        
+  693 |  4     diskio.s    280 | Code        | 00 |         |    4 | 00/0243 : AF 12 00 E4 | disk_write                    ldal  {$e40012}          
+  694 |  4     diskio.s    281 | Code        | 00 |         |    3 | 00/0247 : 29 FF 00    |                               and   #$ff               
+  695 |  4     diskio.s    282 | Code        | 00 |         |    2 | 00/024A : D0 05       |                               bne   dw_0               
+  696 |  4     diskio.s    283 | Empty       | 00 |         |    0 | 00/024C               |                                                        
+  697 |  4     diskio.s    284 | Code        | 00 |         |    3 | 00/024C : A9 01 00    |                               lda   #{1}               ; no card inserted
+  698 |  4     diskio.s    285 | Code        | 00 |         |    1 | 00/024F : 38          |                               sec                      
+  699 |  4     diskio.s    286 | Code        | 00 |         |    1 | 00/0250 : 60          |                               rts                      
+  700 |  4     diskio.s    287 | Empty       | 00 |         |    0 | 00/0251               |                                                        
+  701 |  4     diskio.s    288 | Code        | 00 |         |    2 | 00/0251 : 84 84       | dw_0                          sty   {{{$80}}+4}        
+  702 |  4     diskio.s    289 | Code        | 00 |         |    2 | 00/0253 : 86 86       |                               stx   {{{$80}}+4}+2      
+  703 |  4     diskio.s    290 | Empty       | 00 |         |    0 | 00/0255               |                                                        
+  704 |  4     diskio.s    291 | Code        | 10 |         |    2 | 00/0255 : E2 20       |                               sep   #$20               
+  705 |  4     diskio.s    292 | Code        | 10 |         |    2 | 00/0257 : A5 87       |                               lda   {{{$80}}+4}+3      
+  706 |  4     diskio.s    293 | Code        | 10 |         |    4 | 00/0259 : 8F 00 00 E4 |                               stal  {$e40000}          
+  707 |  4     diskio.s    294 | Code        | 10 |         |    2 | 00/025D : A5 86       |                               lda   {{{$80}}+4}+2      
+  708 |  4     diskio.s    295 | Code        | 10 |         |    4 | 00/025F : 8F 01 00 E4 |                               stal  {$e40000}+1        
+  709 |  4     diskio.s    296 | Code        | 10 |         |    2 | 00/0263 : A5 85       |                               lda   {{{$80}}+4}+1      
+  710 |  4     diskio.s    297 | Code        | 10 |         |    4 | 00/0265 : 8F 02 00 E4 |                               stal  {$e40000}+2        
+  711 |  4     diskio.s    298 | Code        | 10 |         |    2 | 00/0269 : A5 84       |                               lda   {{{$80}}+4}        
+  712 |  4     diskio.s    299 | Code        | 10 |         |    4 | 00/026B : 8F 03 00 E4 |                               stal  {$e40000}+3        
+  713 |  4     diskio.s    300 | Empty       | 10 |         |    0 | 00/026F               |                                                        
+  714 |  4     diskio.s    301 | Code        | 10 |         |    2 | 00/026F : A9 01       |                               lda   #1                 ; dummy data
+  715 |  4     diskio.s    302 | Code        | 10 |         |    4 | 00/0271 : 8F 0C 00 E4 |                               stal  {$e4000c}          
+  716 |  4     diskio.s    303 | Empty       | 10 |         |    0 | 00/0275               |                                                        
+  717 |  4     diskio.s    304 | Code        | 10 |         |    3 | 00/0275 : A0 00 00    |                               ldy   #0                 
+  718 |  4     diskio.s    305 | Code        | 10 |         |    2 | 00/0278 : B7 80       | ozunid_6                      lda   [{{$80}}],y        
+  719 |  4     diskio.s    306 | Code        | 10 |         |    4 | 00/027A : 8F 0A 00 E4 |                               stal  {$e4000a}          
+  720 |  4     diskio.s    307 | Code        | 10 |         |    1 | 00/027E : C8          |                               iny                      
+  721 |  4     diskio.s    308 | Code        | 10 |         |    2 | 00/027F : B7 80       |                               lda   [{{$80}}],y        
+  722 |  4     diskio.s    309 | Code        | 10 |         |    4 | 00/0281 : 8F 0A 00 E4 |                               stal  {$e4000a}          
+  723 |  4     diskio.s    310 | Code        | 10 |         |    1 | 00/0285 : C8          |                               iny                      
+  724 |  4     diskio.s    311 | Code        | 10 |         |    2 | 00/0286 : B7 80       |                               lda   [{{$80}}],y        
+  725 |  4     diskio.s    312 | Code        | 10 |         |    4 | 00/0288 : 8F 0A 00 E4 |                               stal  {$e4000a}          
+  726 |  4     diskio.s    313 | Code        | 10 |         |    1 | 00/028C : C8          |                               iny                      
+  727 |  4     diskio.s    314 | Code        | 10 |         |    2 | 00/028D : B7 80       |                               lda   [{{$80}}],y        
+  728 |  4     diskio.s    315 | Code        | 10 |         |    4 | 00/028F : 8F 0A 00 E4 |                               stal  {$e4000a}          
+  729 |  4     diskio.s    316 | Code        | 10 |         |    1 | 00/0293 : C8          |                               iny                      
+  730 |  4     diskio.s    317 | Code        | 10 |         |    2 | 00/0294 : B7 80       |                               lda   [{{$80}}],y        
+  731 |  4     diskio.s    318 | Code        | 10 |         |    4 | 00/0296 : 8F 0A 00 E4 |                               stal  {$e4000a}          
+  732 |  4     diskio.s    319 | Code        | 10 |         |    1 | 00/029A : C8          |                               iny                      
+  733 |  4     diskio.s    320 | Code        | 10 |         |    2 | 00/029B : B7 80       |                               lda   [{{$80}}],y        
+  734 |  4     diskio.s    321 | Code        | 10 |         |    4 | 00/029D : 8F 0A 00 E4 |                               stal  {$e4000a}          
+  735 |  4     diskio.s    322 | Code        | 10 |         |    1 | 00/02A1 : C8          |                               iny                      
+  736 |  4     diskio.s    323 | Code        | 10 |         |    2 | 00/02A2 : B7 80       |                               lda   [{{$80}}],y        
+  737 |  4     diskio.s    324 | Code        | 10 |         |    4 | 00/02A4 : 8F 0A 00 E4 |                               stal  {$e4000a}          
+  738 |  4     diskio.s    325 | Code        | 10 |         |    1 | 00/02A8 : C8          |                               iny                      
+  739 |  4     diskio.s    326 | Code        | 10 |         |    2 | 00/02A9 : B7 80       |                               lda   [{{$80}}],y        
+  740 |  4     diskio.s    327 | Code        | 10 |         |    4 | 00/02AB : 8F 0A 00 E4 |                               stal  {$e4000a}          
+  741 |  4     diskio.s    328 | Code        | 10 |         |    1 | 00/02AF : C8          |                               iny                      
+  742 |  4     diskio.s    329 | Code        | 10 |         |    3 | 00/02B0 : C0 00 02    |                               cpy   #{512}             
+  743 |  4     diskio.s    330 | Code        | 10 |         |    2 | 00/02B3 : 90 C3       |                               bcc   ozunid_6           
+  744 |  4     diskio.s    331 | Empty       | 10 |         |    0 | 00/02B5               |                                                        
+  745 |  4     diskio.s    332 | Code        | 00 |         |    2 | 00/02B5 : C2 20       |                               rep   #$20               
+  746 |  4     diskio.s    333 | Code        | 00 |         |    3 | 00/02B7 : A9 00 00    |                               lda   #{0}               
+  747 |  4     diskio.s    334 | Code        | 00 |         |    1 | 00/02BA : 18          |                               clc                      
+  748 |  4     diskio.s    335 | Code        | 00 |         |    1 | 00/02BB : 60          |                               rts                      
+  749 |  4     diskio.s    336 | Empty       | 00 |         |    0 | 00/02BC               |                                                        
+  750 |  1    wrapper.s     17 | Empty       | 00 |         |    0 | 00/02BC               |                                                        
+------+------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

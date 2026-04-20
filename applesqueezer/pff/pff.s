@@ -12,6 +12,23 @@
 * EQUATES
 *-------------------------------
 
+*-------------- Direct page
+
+dp_start	=	$80	; everything is long
+
+buff	=	dp_start	; long
+sector	=	buff+4	; long
+sc	=	buff+4	; long
+offset	=	sector+4	; word used
+count	=	offset+4	; word used
+
+dp_temp	=	dp_start+64
+
+bc	=	dp_temp	; long
+wc	=	bc+4	; word used
+
+*-------------- Petit FAT
+
 FS_OK	=	0
 FS_NOT_FAT	=	1
 FS_NOT_BR	=	2
@@ -19,7 +36,7 @@ FS_NOT_BR	=	2
 PF_USE_READ	=	1
 PF_USE_DIR	=	0
 PF_USE_LSEEK	=	0
-PF_USE_WRITE	=	0
+PF_USE_WRITE	=	1
 
 PF_FS_FAT12	=	1
 PF_FS_FAT16	=	1
@@ -199,7 +216,7 @@ pfm_next_ok	clc
 *-------------- Data
 
 fmt	ds	2
-sector	ds	4
+*sector	ds	4
 bsect	ds	4
 fsize	ds	4
 tsect	ds	4
@@ -250,5 +267,3 @@ pf_readdir
 *-------------------------------
 * DATA
 *-------------------------------
-
-buff	ds	SIZE_SECTOR

@@ -392,6 +392,32 @@ SGetFormatOptions
 	cmp	#formatOptionsTableEnd-formatOptionsTable
 	bcc	SGetFormat1
 
+	ldy	#48	; set the size for option 2
+	lda	[dibPointer],y
+	dec
+	asl
+	asl
+	asl
+	asl		; *16
+	tax
+	lda	tblPARTITION+4,x
+	sta	fot_1+6	; save block count
+	sta	dataBS
+	lda	tblPARTITION+6,x
+	sta	fot_1+8
+	sta	dataBS+2
+
+	clc		; /8
+	lsr	dataBS+2
+	ror	dataBS
+	lsr	dataBS+2
+	ror	dataBS
+	lsr	dataBS+2
+	ror	dataBS
+
+	lda	dataBS+1	; save media size in MB
+	sta	fot_1+14
+
 	ldy	#0		; and move data
 ]lp	lda	formatOptionsTable,y
 	sta	[statusListPtr],y
@@ -402,6 +428,10 @@ SGetFormatOptions
 	sty	transferCount	; save size
 
 SGetFormat1	rts
+
+*---
+
+dataBS	ds	4
 
 *
 * Driver_Control
@@ -431,7 +461,7 @@ tblCONTROL	da	CNada	; 0 ResetDevice
 	da	CNada	; 2 EjectMedium
 	da	CSet	; 3 SetConfigParameters
 	da	CSet	; 4 SetWaitStatus
-	da	CSetFormatOptions	; 5 SetFormatOptions
+	da	CSet	; 5 SetFormatOptions
 	da	CNada	; 6 AssignPartitionOwner
 	da	CNada	; 7 ArmSignal
 	da	CNada	; 8 DisarmSignal
@@ -449,14 +479,16 @@ CFormatDevice	ldy	#48	; get the first block of the partition
 	asl
 	asl		; *16
 	tax
-	lda	tblPARTITION,x
+	lda	tblPARTITION,x	; set first and last block
 	sta	myBlockNum
+	adc	tblPARTITION+4,x
+	sta	dataBS
 	lda	tblPARTITION+2,x
 	sta	myBlockNum+2
+	adc	tblPARTITION+6,x
+	sta	dataBS+2
 
 *---
-
-	ldx	#0	; 65536 blocks to format
 	
 cf2	sep	#$20	; set the block
 	lda	myBlockNum+3
@@ -482,25 +514,29 @@ cf2	sep	#$20	; set the block
 	bne	cf3
 	inc	myBlockNum+2
 	
-cf3	dex		; until the end
-	bne	cf2
+cf3	lda	myBlockNum	; until the end
+	cmp	dataBS
+	bcc	cf2
+	lda	myBlockNum+2
+	cmp	dataBS+2
+	bcc	cf2
 	rts
 
 *----------- SetFormatOptions
-
-CSetFormatOptions
-	lda	[controlListPtr]
-	beq	CSFO9	; empty option is not ours
-	cmp	#3	; 1-2 only
-	bcs	CSFO9
-
-	ldy	#maxBLOCKS	; it is 1, default values for ProDOS
-	sty	fBlockCount
-	ldx	#^maxBLOCKS
-	stx	fBlockCount+2
-
-CSFO9	rts
-
+*
+*CSetFormatOptions
+*	lda	[controlListPtr]
+*	beq	CSFO9	; empty option is not ours
+*	cmp	#3	; 1-2 only
+*	bcs	CSFO9
+*
+*	ldy	#maxBLOCKS	; it is 1, default values for ProDOS
+*	sty	fBlockCount
+*	ldx	#^maxBLOCKS
+*	stx	fBlockCount+2
+*
+*CSFO9	rts
+*
 *----------- SetConfigParameters / SetWaitStatus
 
 CSet	lda	[controlListPtr]                 ; SetConfigParameters
@@ -815,25 +851,21 @@ cpid_OK	rep	#$20	; in my list
 formatOptionsTable
 
 * 8 bytes
-	dw	1	; numOptions
-	dw	1	; numDisplayed
-	dw	1	; recommendedOption
-	dw	1	; currentOption
+	dw	1	; +0 numOptions
+	dw	1	; +2 numDisplayed
+	dw	1	; +4 recommendedOption
+	dw	1	; +6 currentOption
 
 * 16 bytes
-	dw	1	; formatOptionNum
-	dw	0	; linkRefNum
+fot_1	dw	1	; formatOptionNum
+	dw	0	; linkRefNum (=0)
 	dw	9	; flags 1001 - MB size - Apple format
-	adrl	maxBLOCKS	; blockCount is 491520 for HFS
+	ds	4	; blockCount is 491520 for HFS
 	dw	blockSIZE	; blockSize is 512 bytes
 	dw	0	; interleaveFactor
-	dw	32	; mediaSize 1000 - MB size
+	ds	2	; mediaSize 1000 - MB size
 
 formatOptionsTableEnd
-
-*--- Default formatting options
-
-fBlockCount	adrl	maxBLOCKS
 
 *----------------------------
 

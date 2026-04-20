@@ -1,0 +1,53 @@
+EB FE 90	jmpBoot		Code
+2020202020202020		OEMName	/ OEM ID
+00 02		BytsPerSec	bytes per sector - normally 512 bytes
+08		SecPerClus	sectors per cluster - 1, 2, 4, 8, 16, 32, 64, 128 - cluster_size
+01 00		RsvdSecCnt	number of reserved sectors including the boot sector
+02		NumFATs		number of FAT copies
+00 02 		RootEntCnt	FAT12 & FAT16: count of 32-byte directory entries in the root directory
+				FAT32: 0
+00 00		TotSec16	FAT12/FAT16: total count of sectors on the volume
+				FAT32: 0
+F8		Media		F8 means non removable media, F0 means removable media
+EA 00		FATSz16		FAT12/FAT16: 16-bit count of sectors occupied by one FAT
+				FAT32: 0, use FATSz32 at offset 36d which is a long
+20 00 		SecPerTrk	sectors per track
+02 00 		NumHeads	number of heads
+00 00 00 00 	HiddSec		count of hidden sectors
+00 50 07 00 	TotSec32	total number of sectors on the volume
+				if 0, use TotSec16
+				for FAT32, must be non-zero
+
+Offset 36 for FAT12/FAT16
+
+00		DrvNum
+00		Reserved1
+29		BootSig
+78 56 34 12	VolID
+2020202020202020202020		VolLab
+4641543136202020		FilSysType - "FATxx   "
+
+Offset 36 for FAT32
+
+MS-DOS FST----------------
+
+FAT_count = 2
+FAT_size = EA
+reserved_sectors = 1
+root_dir_block = FAT_count x FAT_size + reserved_sectors = 1D5
+	offset in image is 1D5 x 200 = 3AA00
+root_dir_size = root_dir_count / 10h = 200 / 10 = 20 (32d)
+20*2
+FatSz --------------------
+
+If(BPB_FATSz16 != 0)
+  FATSz = BPB_FATSz16;
+Else
+  FATSz = BPB_FATSz32;
+
+FirstDataSector = BPB_ResvdSecCnt + (BPB_NumFATs * FATSz) + RootDirSectors;
+
+-----------------------------------------
+* DIRECTORY
+*----------------------------------------
+

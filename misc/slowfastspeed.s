@@ -21,6 +21,8 @@ IDROUTINE	=	$fe1f
 *----------------------------
 * Force slow speed
 
+	mx	%11
+	
 setSLOWSPEED	sec		; are we on a IIgs?
 	jsr	IDROUTINE
 	bcc	IIgs	; yes
@@ -54,6 +56,8 @@ exitNOW	sec
 *----------------------------
 * Restore speed
 
+	mx	%11
+	
 restoreSPEED	sec		; are we on a IIgs?
 	jsr	IDROUTINE
 	bcc	IIgs2	; yes

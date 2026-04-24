@@ -2,7 +2,7 @@
 * AppleSqueezer - SD Driver
 *
 * (c) 2023, Niek Van Suchtelen
-* (c) 2023-24, Brutal Deluxe Software
+* (c) 2023-26, Brutal Deluxe Software
 *
 
 * v1.0 (202304) - AV
@@ -25,6 +25,9 @@
 *
 * v1.4 (202604) - AV
 *   Niek wants unrolled loops
+*
+* v1.5 (202604) - AV
+*   Don't duplicate if booted as a ROMDISK
 *
 
 	mx	%00
@@ -670,6 +673,36 @@ cs1	clc
 	rts
 
 *----------------------------
+* CHECK ROMDISK
+*----------------------------
+*
+* If we have a ROMDISK, consider it is ours
+* and that we must not duplicate the device
+*
+
+checkROMDISK	phx
+
+	ldx	#7-2
+]lp	ldal	$f00000,x
+	cmp	strROMDISK,x
+	bne	crd_good
+	dex
+	bpl	]lp
+
+	plx
+	sec		; a ROMDISK, don't duplicate
+	rts
+
+crd_good	plx
+	clc		; no ROMDISK, we're good
+	rts
+	
+*---
+
+*	asc	"0123456"
+strROMDISK	asc	"ROMDISK"	; Signature
+
+*----------------------------
 * CHECK VOLUME
 *----------------------------
 
@@ -766,8 +799,15 @@ NB_PARTITIONS	=	4
 	ldx	#PART1_OFFSET
 ]lp	jsr	checkPARTID	; check partition ID
 	bcs	cv_NEXT	; not authorized
-	
-	lda	firstBLOCK+8,x	; copy 1st LBA sector
+
+	jsr	checkROMDISK	; do we have a ROMDISK?
+	bcc	cv_OK	; no, we're good
+
+	cpx	#PART1_OFFSET	; yes, is it the first partition?
+	beq	cv_NEXT	; yes, skip it to avoid duplicate
+			; because romdisk & assd part 1 are the same
+
+cv_OK	lda	firstBLOCK+8,x	; copy 1st LBA sector
 	sta	tblPARTITION,y	; and number of sectors
 	lda	firstBLOCK+10,x	; of partition
 	sta	tblPARTITION+2,y

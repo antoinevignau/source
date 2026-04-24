@@ -1,22 +1,22 @@
 EB FE 90	jmpBoot		Code
-2020202020202020		OEMName	/ OEM ID
+2020202020202020	OEMName	/ OEM ID
 00 02		BytsPerSec	bytes per sector - normally 512 bytes
 08		SecPerClus	sectors per cluster - 1, 2, 4, 8, 16, 32, 64, 128 - cluster_size
 01 00		RsvdSecCnt	number of reserved sectors including the boot sector
-02		NumFATs		number of FAT copies
+02		NumFATs	number of FAT copies
 00 02 		RootEntCnt	FAT12 & FAT16: count of 32-byte directory entries in the root directory
-				FAT32: 0
+			FAT32: 0
 00 00		TotSec16	FAT12/FAT16: total count of sectors on the volume
-				FAT32: 0
-F8		Media		F8 means non removable media, F0 means removable media
-EA 00		FATSz16		FAT12/FAT16: 16-bit count of sectors occupied by one FAT
-				FAT32: 0, use FATSz32 at offset 36d which is a long
+			FAT32: 0
+F8		Media	F8 means non removable media, F0 means removable media
+EA 00		FATSz16	FAT12/FAT16: 16-bit count of sectors occupied by one FAT
+			FAT32: 0, use FATSz32 at offset 36d which is a long
 20 00 		SecPerTrk	sectors per track
 02 00 		NumHeads	number of heads
 00 00 00 00 	HiddSec		count of hidden sectors
 00 50 07 00 	TotSec32	total number of sectors on the volume
-				if 0, use TotSec16
-				for FAT32, must be non-zero
+			if 0, use TotSec16
+			for FAT32, must be non-zero
 
 Offset 36 for FAT12/FAT16
 
@@ -38,14 +38,61 @@ root_dir_block = FAT_count x FAT_size + reserved_sectors = 1D5
 	offset in image is 1D5 x 200 = 3AA00
 root_dir_size = root_dir_count / 10h = 200 / 10 = 20 (32d)
 20*2
+
+RootDirSectors = ((BPB_RootEntCnt * 32) + (BPB_BytsPerSec - 1)) / BPB_BytsPerSec
+			$11			$0B			$0B
+	FAT12		$00E0 * 20	+	$0200 - 1	/	$0200	=	$000E
+	FAT16		$0200 * 20	+	$0200 - 1	/	$0200	=	$0020
+	FAT32		$0000 * 20	+	$0200 - 1	/	$0200	=	$0000
+
 FatSz --------------------
 
 If(BPB_FATSz16 != 0)
-  FATSz = BPB_FATSz16;
+  FATSz = BPB_FATSz16;		offset $16
 Else
-  FATSz = BPB_FATSz32;
+  FATSz = BPB_FATSz32;		offset $24
 
 FirstDataSector = BPB_ResvdSecCnt + (BPB_NumFATs * FATSz) + RootDirSectors;
+			$0E		$10
+	FAT12		$0001	+	$02 *	$0009	+	$000E	=	$0021	=	$004200
+	FAT16		$0001	+	$02 *	$00EA	+	$0020	=	$01F5	=	$03EA00
+	FAT32		$048C	+	$02 *	$1DBA	+	$0000	=	$4000	=	$800000
+
+FirstSectorOfCluster = ((N - 2) * BPB_SecPerClus) + FirstDataSector
+		N = cluster		$0D	  +
+	FAT12			*	01	  +	$004200
+	FAT16			*	08	  +	$03EA00
+	FAT32			*	40	  +	$800000
+
+-----------------------------------------
+Which FAT type?
+
+RootDirSectors = ((BPB_RootEntCnt * 32) + (BPB_BytsPerSec - 1)) / BPB_BytsPerSec
+			$11			$0B			$0B
+	FAT12		$00E0 * 20	+	$0200 - 1	/	$0200	=	$000E
+	FAT16		$0200 * 20	+	$0200 - 1	/	$0200	=	$0020
+	FAT32		$0000 * 20	+	$0200 - 1	/	$0200	=	$0000
+
+If(BPB_FATSz16 != 0)
+  FATSz = BPB_FATSz16;		offset $16
+Else
+  FATSz = BPB_FATSz32;		offset $24
+
+If(BPB_TotSec16 != 0)
+  TotSec = BPB_TotSec16;	offset $13
+Else
+  TotSec = BPB_TotSec32;	offset $20
+
+DataSec = TotSec 	-	FirstDataSector
+FAT12	  $0B40		- 	$0021		=	$0000B1F
+FAT16	  $00075000	-	$01F5		=	$0074E0B
+FAT32	  $03B76000	-	$4000		=	$3B72000
+
+CountOfClusters	=	DataSec		/	BPB_SecPerClus
+						$0D
+	FAT12		$0000B1F	/	$01		=	$000B1F		2847	<4085  = $0FF5
+	FAT16		$0074E0B	/	$08		=	$00E9C1		59841	<65525 = $FFF5
+	FAT32		$3B72000	/	$40		=	$0EDC80		973952
 
 -----------------------------------------
 * DIRECTORY

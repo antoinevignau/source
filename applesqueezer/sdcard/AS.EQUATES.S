@@ -54,7 +54,7 @@ STA_NODISK	=	2	; No medium in the drive
 TRUE	=	1
 FALSE	=	0
 
-minVERSION	=	13	; minimum core version to handle the driver
+minVERSION	=	14	; minimum core version to handle the driver
 
 *--- Speed settings
 * From 233 (3 MHz) to 255 (full speed)

@@ -86,45 +86,130 @@ srqListFull	=	$0984	; SRQ list full
 * A: device address (0..F)
 * X: register to talk to (0..3)
 
-ADBGetInfo	jsr	ADBSetAddress
+ADBGetInfo	lda	theDEVICE
+	jsr	ADBGetInfo_0
+	lda	theDEVICE
+	jsr	ADBGetInfo_1
+	lda	theDEVICE
+	jsr	ADBGetInfo_2
+	lda	theDEVICE
+	jmp	ADBGetInfo_3
 
-	stz	dataTalk
-	stz	dataTalk+2
-	stz	dataTalk+4
-	stz	dataTalk+6
+*-----------------------
+* GET DEVICE INFO REGISTER 0
+*-----------------------
+* Talk to a device
+*
+* A: device address (0..F)
+* X: register to talk to (0..3)
 
-	ldx	#NB_RETRY
-]lp	phx
-	jsr	ADBTalkRegister3
-	plx
-	bcc	ADBGetInfo1
-	dex
+ADBGetInfo_0	jsr	ADBSetAddress
+
+*	stz	dataTalk
+*	stz	dataTalk+2
+*	stz	dataTalk+4
+*	stz	dataTalk+6
+
+	ldy	#NB_RETRY
+]lp	phy
+
+	lda	theDEVICE
+	asl
+	tax
+	jsr	(ptrTalkRegister_0,x)
+
+	ply
+	dey
 	bne	]lp
 
-ADBGetInfo1	rts
+ADBGetInfo_0_1	rts
 
-*	lda	#2	; two bytes for a reset
-*	jsr	ADBListenRegister3
+*-----------------------
+* GET DEVICE INFO REGISTER 1
+*-----------------------
+* Talk to a device
 *
-*	ldx	#NB_RETRY
-*]lp	phx
-*	jsr	ADBTalkRegister3
-*	plx
-*	dex
-*	bne	]lp
-*	
-*	plx
-*	txa
-*	and	#%0000_0011
-*	asl
-*	tax
-*	jsr	(ADBTalkPtr,x)
-*	rts
+* A: device address (0..F)
+* X: register to talk to (0..3)
 
-ADBGetInfo3	asl
+ADBGetInfo_1	jsr	ADBSetAddress
+
+*	stz	dataTalk
+*	stz	dataTalk+2
+*	stz	dataTalk+4
+*	stz	dataTalk+6
+
+	ldy	#NB_RETRY
+]lp	phy
+
+	lda	theDEVICE
+	asl
 	tax
-	jsr	(ptrTalkRegister3,x)
-	rts
+	jsr	(ptrTalkRegister_1,x)
+
+	ply
+	dey
+	bne	]lp
+
+ADBGetInfo_1_1	rts
+
+*-----------------------
+* GET DEVICE INFO REGISTER 2
+*-----------------------
+* Talk to a device
+*
+* A: device address (0..F)
+* X: register to talk to (0..3)
+
+ADBGetInfo_2	jsr	ADBSetAddress
+
+*	stz	dataTalk
+*	stz	dataTalk+2
+*	stz	dataTalk+4
+*	stz	dataTalk+6
+
+	ldy	#NB_RETRY
+]lp	phy
+
+	lda	theDEVICE
+	asl
+	tax
+	jsr	(ptrTalkRegister_2,x)
+
+	ply
+	dey
+	bne	]lp
+
+ADBGetInfo_2_1	rts
+
+*-----------------------
+* GET DEVICE INFO REGISTER 3
+*-----------------------
+* Talk to a device
+*
+* A: device address (0..F)
+* X: register to talk to (0..3)
+
+ADBGetInfo_3	jsr	ADBSetAddress
+
+*	stz	dataTalk
+*	stz	dataTalk+2
+*	stz	dataTalk+4
+*	stz	dataTalk+6
+
+	ldy	#NB_RETRY
+]lp	phy
+
+	lda	theDEVICE
+	asl
+	tax
+	jsr	(ptrTalkRegister_3,x)
+
+	ply
+	dey
+	bne	]lp
+
+ADBGetInfo_3_1	rts
 
 *-----------------------
 * SET ADDRESS
@@ -308,305 +393,980 @@ dataListen3	dfb	%0000_10_11	; ADB command: Address (0000) + Listen (10) + Regist
 * TALK routines to get
 * data from the device
 *-----------------------
-
-ADBTalkPtr	da	ADBTalkRegister0
-	da	ADBTalkRegister1
-	da	ADBTalkRegister2
-	da	ADBTalkRegister3
-
+*
+*ADBTalkPtr	da	ADBTalkRegister0
+*	da	ADBTalkRegister1
+*	da	ADBTalkRegister2
+*	da	ADBTalkRegister3
+*
+*-----------------------
+* TALK TO REGISTER 0
+*-----------------------
+*
+*ADBTalkRegister0
+*
+*	lda	#dataTalk0
+*	sta	cpBuffer+1
+*
+*	lda	#NB_RETRY
+*	sta	errCNT
+*	
+*]lp	PushLong	#completionRoutine
+*	lda	#%11_00_0000	; talk (11) + register (00) + address (0000)
+*	ora	addLOW
+*	pha
+*	_AsyncADBReceive
+*	bcc	FMTR0OK
+*	dec	errCNT
+*	beq	FMTR0OK
+*	cmp	#adbBusy
+*	beq	]lp
+*FMTR0OK	rts
+*
+*-----------
+*
+*dataTalk0	ds	8	; unknown format
+*
+*-----------------------
+* TALK TO REGISTER 1
+*-----------------------
+*
+*ADBTalkRegister1
+*
+*	lda	#dataTalk1
+*	sta	cpBuffer+1
+*
+*	lda	#NB_RETRY
+*	sta	errCNT
+*	
+*]lp	PushLong	#completionRoutine
+*	lda	#%11_01_0000	; talk (11) + register (01) + address (0000)
+*	ora	addLOW
+*	pha
+*	_AsyncADBReceive
+*	bcc	FMTR1OK
+*	dec	errCNT
+*	beq	FMTR1OK
+*	cmp	#adbBusy
+*	beq	]lp
+*FMTR1OK	rts
+*
+*-----------
+*
+*dataTalk1	ds	8
+*
+*-----------------------
+* TALK TO REGISTER 2
+*-----------------------
+*
+*ADBTalkRegister2
+*
+*	lda	#dataTalk2
+*	sta	cpBuffer+1
+*
+*	lda	#NB_RETRY
+*	sta	errCNT
+*	
+*]lp	PushLong	#completionRoutine
+*	lda	#%11_10_0000	; talk (11) + register (10) + address (0000)
+*	ora	addLOW
+*	pha
+*	_AsyncADBReceive
+*	bcc	FMTR2OK
+*	dec	errCNT
+*	beq	FMTR2OK
+*	cmp	#adbBusy
+*	beq	]lp
+*FMTR2OK	rts
+*
+*-----------
+*
+*dataTalk2	ds	8
+*
 *-----------------------
 * TALK TO REGISTER 0
 *-----------------------
 
-ADBTalkRegister0
-
-*	lda	#dataTalk0
-*	sta	cpBuffer+1
-
-	lda	#NB_RETRY
-	sta	errCNT
-	
-]lp	PushLong	#completionRoutine
-	lda	#%11_00_0000	; talk (11) + register (00) + address (0000)
-	ora	addLOW
-	pha
-	_AsyncADBReceive
-	bcc	FMTR0OK
-	dec	errCNT
-	beq	FMTR0OK
-	cmp	#adbBusy
-	beq	]lp
-FMTR0OK	rts
+ptrTalkRegister_0
+	da	ADBTalkRegister_0_0
+	da	ADBTalkRegister_0_1
+	da	ADBTalkRegister_0_2
+	da	ADBTalkRegister_0_3
+	da	ADBTalkRegister_0_4
+	da	ADBTalkRegister_0_5
+	da	ADBTalkRegister_0_6
+	da	ADBTalkRegister_0_7
+	da	ADBTalkRegister_0_8
+	da	ADBTalkRegister_0_9
+	da	ADBTalkRegister_0_10
+	da	ADBTalkRegister_0_11
+	da	ADBTalkRegister_0_12
+	da	ADBTalkRegister_0_13
+	da	ADBTalkRegister_0_14
+	da	ADBTalkRegister_0_15
 
 *-----------
+*
+*ADBTalkRegister3
+*
+*	lda	#dataTalk3
+*	sta	cpBuffer+1
+*
+*	lda	#NB_RETRY
+*	sta	errCNT
+*	
+*]lp	PushLong	#completionRoutine
+*	lda	#%11_00_0000	; talk (11) + register (10) + address (0000)
+*	ora	addLOW
+*	pha
+*	_AsyncADBReceive
+*	bcc	FMTR3OK
+*	dec	errCNT
+*	beq	FMTR3OK
+*	cmp	#adbBusy
+*	beq	]lp
+*FMTR3OK	rts
+*
+*-----------
 
-dataTalk0	ds	8	; unknown format
+ADBTalkRegister_0_0
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_0_0
+	PushWord	#%11_00_0000	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_0_0
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_0_1
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_0_1
+	PushWord	#%11_00_0001	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_0_1
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_0_2
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_0_2
+	PushWord	#%11_00_0010	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_0_2
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_0_3
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_0_3
+	PushWord	#%11_00_0011	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_0_3
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_0_4
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_0_4
+	PushWord	#%11_00_0100	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_0_4
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_0_5
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_0_5
+	PushWord	#%11_00_0101	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_0_5
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_0_6
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_0_6
+	PushWord	#%11_00_0110	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_0_6
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_0_7
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_0_7
+	PushWord	#%11_00_0111	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_0_7
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_0_8
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_0_8
+	PushWord	#%11_00_1000	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_0_8
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_0_9
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_0_9
+	PushWord	#%11_00_1001	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_0_9
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_0_10
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_0_10
+	PushWord	#%11_00_1010	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_0_10
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_0_11
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_0_11
+	PushWord	#%11_00_1011	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_0_11
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_0_12
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_0_12
+	PushWord	#%11_00_1100	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_0_12
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_0_13
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_0_13
+	PushWord	#%11_00_1101	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_0_13
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_0_14
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_0_14
+	PushWord	#%11_00_1110	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_0_14
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_0_15
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_0_15
+	PushWord	#%11_00_1111	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_0_15
+	cmp	#adbBusy
+	beq	]lp
+	rts
 
 *-----------------------
 * TALK TO REGISTER 1
 *-----------------------
 
-ADBTalkRegister1
-
-*	lda	#dataTalk1
-*	sta	cpBuffer+1
-
-	lda	#NB_RETRY
-	sta	errCNT
-	
-]lp	PushLong	#completionRoutine
-	lda	#%11_01_0000	; talk (11) + register (01) + address (0000)
-	ora	addLOW
-	pha
-	_AsyncADBReceive
-	bcc	FMTR1OK
-	dec	errCNT
-	beq	FMTR1OK
-	cmp	#adbBusy
-	beq	]lp
-FMTR1OK	rts
+ptrTalkRegister_1
+	da	ADBTalkRegister_1_0
+	da	ADBTalkRegister_1_1
+	da	ADBTalkRegister_1_2
+	da	ADBTalkRegister_1_3
+	da	ADBTalkRegister_1_4
+	da	ADBTalkRegister_1_5
+	da	ADBTalkRegister_1_6
+	da	ADBTalkRegister_1_7
+	da	ADBTalkRegister_1_8
+	da	ADBTalkRegister_1_9
+	da	ADBTalkRegister_1_10
+	da	ADBTalkRegister_1_11
+	da	ADBTalkRegister_1_12
+	da	ADBTalkRegister_1_13
+	da	ADBTalkRegister_1_14
+	da	ADBTalkRegister_1_15
 
 *-----------
+*
+*ADBTalkRegister3
+*
+*	lda	#dataTalk3
+*	sta	cpBuffer+1
+*
+*	lda	#NB_RETRY
+*	sta	errCNT
+*	
+*]lp	PushLong	#completionRoutine
+*	lda	#%11_01_0000	; talk (11) + register (10) + address (0000)
+*	ora	addLOW
+*	pha
+*	_AsyncADBReceive
+*	bcc	FMTR3OK
+*	dec	errCNT
+*	beq	FMTR3OK
+*	cmp	#adbBusy
+*	beq	]lp
+*FMTR3OK	rts
+*
+*-----------
 
-dataTalk1	ds	8
+ADBTalkRegister_1_0
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_1_0
+	PushWord	#%11_01_0000	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_1_0
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_1_1
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_1_1
+	PushWord	#%11_01_0001	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_1_1
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_1_2
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_1_2
+	PushWord	#%11_01_0010	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_1_2
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_1_3
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_1_3
+	PushWord	#%11_01_0011	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_1_3
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_1_4
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_1_4
+	PushWord	#%11_01_0100	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_1_4
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_1_5
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_1_5
+	PushWord	#%11_01_0101	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_1_5
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_1_6
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_1_6
+	PushWord	#%11_01_0110	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_1_6
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_1_7
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_1_7
+	PushWord	#%11_01_0111	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_1_7
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_1_8
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_1_8
+	PushWord	#%11_01_1000	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_1_8
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_1_9
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_1_9
+	PushWord	#%11_01_1001	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_1_9
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_1_10
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_1_10
+	PushWord	#%11_01_1010	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_1_10
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_1_11
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_1_11
+	PushWord	#%11_01_1011	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_1_11
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_1_12
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_1_12
+	PushWord	#%11_01_1100	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_1_12
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_1_13
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_1_13
+	PushWord	#%11_01_1101	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_1_13
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_1_14
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_1_14
+	PushWord	#%11_01_1110	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_1_14
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_1_15
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_1_15
+	PushWord	#%11_01_1111	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_1_15
+	cmp	#adbBusy
+	beq	]lp
+	rts
 
 *-----------------------
 * TALK TO REGISTER 2
 *-----------------------
 
-ADBTalkRegister2
-
-*	lda	#dataTalk2
-*	sta	cpBuffer+1
-
-	lda	#NB_RETRY
-	sta	errCNT
-	
-]lp	PushLong	#completionRoutine
-	lda	#%11_10_0000	; talk (11) + register (10) + address (0000)
-	ora	addLOW
-	pha
-	_AsyncADBReceive
-	bcc	FMTR2OK
-	dec	errCNT
-	beq	FMTR2OK
-	cmp	#adbBusy
-	beq	]lp
-FMTR2OK	rts
+ptrTalkRegister_2
+	da	ADBTalkRegister_2_0
+	da	ADBTalkRegister_2_1
+	da	ADBTalkRegister_2_2
+	da	ADBTalkRegister_2_3
+	da	ADBTalkRegister_2_4
+	da	ADBTalkRegister_2_5
+	da	ADBTalkRegister_2_6
+	da	ADBTalkRegister_2_7
+	da	ADBTalkRegister_2_8
+	da	ADBTalkRegister_2_9
+	da	ADBTalkRegister_2_10
+	da	ADBTalkRegister_2_11
+	da	ADBTalkRegister_2_12
+	da	ADBTalkRegister_2_13
+	da	ADBTalkRegister_2_14
+	da	ADBTalkRegister_2_15
 
 *-----------
+*
+*ADBTalkRegister3
+*
+*	lda	#dataTalk3
+*	sta	cpBuffer+1
+*
+*	lda	#NB_RETRY
+*	sta	errCNT
+*	
+*]lp	PushLong	#completionRoutine
+*	lda	#%11_10_0000	; talk (11) + register (10) + address (0000)
+*	ora	addLOW
+*	pha
+*	_AsyncADBReceive
+*	bcc	FMTR3OK
+*	dec	errCNT
+*	beq	FMTR3OK
+*	cmp	#adbBusy
+*	beq	]lp
+*FMTR3OK	rts
+*
+*-----------
 
-dataTalk2	ds	8
-	
+ADBTalkRegister_2_0
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_2_0
+	PushWord	#%11_10_0000	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_2_0
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_2_1
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_2_1
+	PushWord	#%11_10_0001	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_2_1
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_2_2
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_2_2
+	PushWord	#%11_10_0010	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_2_2
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_2_3
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_2_3
+	PushWord	#%11_10_0011	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_2_3
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_2_4
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_2_4
+	PushWord	#%11_10_0100	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_2_4
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_2_5
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_2_5
+	PushWord	#%11_10_0101	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_2_5
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_2_6
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_2_6
+	PushWord	#%11_10_0110	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_2_6
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_2_7
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_2_7
+	PushWord	#%11_10_0111	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_2_7
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_2_8
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_2_8
+	PushWord	#%11_10_1000	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_2_8
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_2_9
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_2_9
+	PushWord	#%11_10_1001	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_2_9
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_2_10
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_2_10
+	PushWord	#%11_10_1010	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_2_10
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_2_11
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_2_11
+	PushWord	#%11_10_1011	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_2_11
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_2_12
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_2_12
+	PushWord	#%11_10_1100	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_2_12
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_2_13
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_2_13
+	PushWord	#%11_10_1101	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_2_13
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_2_14
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_2_14
+	PushWord	#%11_10_1110	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_2_14
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_2_15
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_2_15
+	PushWord	#%11_10_1111	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_2_15
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
 *-----------------------
 * TALK TO REGISTER 3
 *-----------------------
 
-NADA	rts
+ptrTalkRegister_3
+	da	ADBTalkRegister_3_0
+	da	ADBTalkRegister_3_1
+	da	ADBTalkRegister_3_2
+	da	ADBTalkRegister_3_3
+	da	ADBTalkRegister_3_4
+	da	ADBTalkRegister_3_5
+	da	ADBTalkRegister_3_6
+	da	ADBTalkRegister_3_7
+	da	ADBTalkRegister_3_8
+	da	ADBTalkRegister_3_9
+	da	ADBTalkRegister_3_10
+	da	ADBTalkRegister_3_11
+	da	ADBTalkRegister_3_12
+	da	ADBTalkRegister_3_13
+	da	ADBTalkRegister_3_14
+	da	ADBTalkRegister_3_15
 
-ptrTalkRegister3
-	da	NADA
-	da	ADBTalkRegister3_1
-	da	ADBTalkRegister3_2
-	da	ADBTalkRegister3_3
-	da	ADBTalkRegister3_4
-	da	ADBTalkRegister3_5
-	da	ADBTalkRegister3_6
-	da	ADBTalkRegister3_7
-	da	ADBTalkRegister3_8
-	da	ADBTalkRegister3_9
-	da	ADBTalkRegister3_10
-	da	ADBTalkRegister3_11
-	da	ADBTalkRegister3_12
-	da	ADBTalkRegister3_13
-	da	ADBTalkRegister3_14
-	da	ADBTalkRegister3_15
-	
 *-----------
-
-ADBTalkRegister3
-
+*
+*ADBTalkRegister3
+*
 *	lda	#dataTalk3
 *	sta	cpBuffer+1
-
-	lda	#NB_RETRY
-	sta	errCNT
-	
-]lp	PushLong	#completionRoutine
-	lda	#%11_10_0000	; talk (11) + register (10) + address (0000)
-	ora	addLOW
-	pha
-	_AsyncADBReceive
-	bcc	FMTR3OK
-	dec	errCNT
-	beq	FMTR3OK
-	cmp	#adbBusy
-	beq	]lp
-FMTR3OK	rts
-
+*
+*	lda	#NB_RETRY
+*	sta	errCNT
+*	
+*]lp	PushLong	#completionRoutine
+*	lda	#%11_10_0000	; talk (11) + register (10) + address (0000)
+*	ora	addLOW
+*	pha
+*	_AsyncADBReceive
+*	bcc	FMTR3OK
+*	dec	errCNT
+*	beq	FMTR3OK
+*	cmp	#adbBusy
+*	beq	]lp
+*FMTR3OK	rts
+*
 *-----------
 
-ADBTalkRegister3_1
+ADBTalkRegister_3_0
 	lda	#NB_RETRY
 	sta	errCNT
-]lp	PushLong	#completionRoutine_1
+]lp	PushLong	#completionRoutine_3_0
+	PushWord	#%11_11_0000	; talk (11) + register (11) + address (0000)
+	_AsyncADBReceive
+	sta	errCODE_3_0
+	cmp	#adbBusy
+	beq	]lp
+	rts
+
+ADBTalkRegister_3_1
+	lda	#NB_RETRY
+	sta	errCNT
+]lp	PushLong	#completionRoutine_3_1
 	PushWord	#%11_11_0001	; talk (11) + register (11) + address (0000)
 	_AsyncADBReceive
-	sta	errCODE_1
+	sta	errCODE_3_1
 	cmp	#adbBusy
 	beq	]lp
 	rts
 
-ADBTalkRegister3_2
+ADBTalkRegister_3_2
 	lda	#NB_RETRY
 	sta	errCNT
-]lp	PushLong	#completionRoutine_2
+]lp	PushLong	#completionRoutine_3_2
 	PushWord	#%11_11_0010	; talk (11) + register (11) + address (0000)
 	_AsyncADBReceive
-	sta	errCODE_2
+	sta	errCODE_3_2
 	cmp	#adbBusy
 	beq	]lp
 	rts
 
-ADBTalkRegister3_3
+ADBTalkRegister_3_3
 	lda	#NB_RETRY
 	sta	errCNT
-]lp	PushLong	#completionRoutine_3
+]lp	PushLong	#completionRoutine_3_3
 	PushWord	#%11_11_0011	; talk (11) + register (11) + address (0000)
 	_AsyncADBReceive
-	sta	errCODE_3
+	sta	errCODE_3_3
 	cmp	#adbBusy
 	beq	]lp
 	rts
 
-ADBTalkRegister3_4
+ADBTalkRegister_3_4
 	lda	#NB_RETRY
 	sta	errCNT
-]lp	PushLong	#completionRoutine_4
+]lp	PushLong	#completionRoutine_3_4
 	PushWord	#%11_11_0100	; talk (11) + register (11) + address (0000)
 	_AsyncADBReceive
-	sta	errCODE_4
+	sta	errCODE_3_4
 	cmp	#adbBusy
 	beq	]lp
 	rts
 
-ADBTalkRegister3_5
+ADBTalkRegister_3_5
 	lda	#NB_RETRY
 	sta	errCNT
-]lp	PushLong	#completionRoutine_5
+]lp	PushLong	#completionRoutine_3_5
 	PushWord	#%11_11_0101	; talk (11) + register (11) + address (0000)
 	_AsyncADBReceive
-	sta	errCODE_5
+	sta	errCODE_3_5
 	cmp	#adbBusy
 	beq	]lp
 	rts
 
-ADBTalkRegister3_6
+ADBTalkRegister_3_6
 	lda	#NB_RETRY
 	sta	errCNT
-]lp	PushLong	#completionRoutine_6
+]lp	PushLong	#completionRoutine_3_6
 	PushWord	#%11_11_0110	; talk (11) + register (11) + address (0000)
 	_AsyncADBReceive
-	sta	errCODE_6
+	sta	errCODE_3_6
 	cmp	#adbBusy
 	beq	]lp
 	rts
 
-ADBTalkRegister3_7
+ADBTalkRegister_3_7
 	lda	#NB_RETRY
 	sta	errCNT
-]lp	PushLong	#completionRoutine_7
+]lp	PushLong	#completionRoutine_3_7
 	PushWord	#%11_11_0111	; talk (11) + register (11) + address (0000)
 	_AsyncADBReceive
-	sta	errCODE_7
+	sta	errCODE_3_7
 	cmp	#adbBusy
 	beq	]lp
 	rts
 
-ADBTalkRegister3_8
+ADBTalkRegister_3_8
 	lda	#NB_RETRY
 	sta	errCNT
-]lp	PushLong	#completionRoutine_8
+]lp	PushLong	#completionRoutine_3_8
 	PushWord	#%11_11_1000	; talk (11) + register (11) + address (0000)
 	_AsyncADBReceive
-	sta	errCODE_8
+	sta	errCODE_3_8
 	cmp	#adbBusy
 	beq	]lp
 	rts
 
-ADBTalkRegister3_9
+ADBTalkRegister_3_9
 	lda	#NB_RETRY
 	sta	errCNT
-]lp	PushLong	#completionRoutine_9
+]lp	PushLong	#completionRoutine_3_9
 	PushWord	#%11_11_1001	; talk (11) + register (11) + address (0000)
 	_AsyncADBReceive
-	sta	errCODE_9
+	sta	errCODE_3_9
 	cmp	#adbBusy
 	beq	]lp
 	rts
 
-ADBTalkRegister3_10
+ADBTalkRegister_3_10
 	lda	#NB_RETRY
 	sta	errCNT
-]lp	PushLong	#completionRoutine_10
+]lp	PushLong	#completionRoutine_3_10
 	PushWord	#%11_11_1010	; talk (11) + register (11) + address (0000)
 	_AsyncADBReceive
-	sta	errCODE_10
+	sta	errCODE_3_10
 	cmp	#adbBusy
 	beq	]lp
 	rts
 
-ADBTalkRegister3_11
+ADBTalkRegister_3_11
 	lda	#NB_RETRY
 	sta	errCNT
-]lp	PushLong	#completionRoutine_11
+]lp	PushLong	#completionRoutine_3_11
 	PushWord	#%11_11_1011	; talk (11) + register (11) + address (0000)
 	_AsyncADBReceive
-	sta	errCODE_11
+	sta	errCODE_3_11
 	cmp	#adbBusy
 	beq	]lp
 	rts
 
-ADBTalkRegister3_12
+ADBTalkRegister_3_12
 	lda	#NB_RETRY
 	sta	errCNT
-]lp	PushLong	#completionRoutine_12
+]lp	PushLong	#completionRoutine_3_12
 	PushWord	#%11_11_1100	; talk (11) + register (11) + address (0000)
 	_AsyncADBReceive
-	sta	errCODE_12
+	sta	errCODE_3_12
 	cmp	#adbBusy
 	beq	]lp
 	rts
 
-ADBTalkRegister3_13
+ADBTalkRegister_3_13
 	lda	#NB_RETRY
 	sta	errCNT
-]lp	PushLong	#completionRoutine_13
+]lp	PushLong	#completionRoutine_3_13
 	PushWord	#%11_11_1101	; talk (11) + register (11) + address (0000)
 	_AsyncADBReceive
-	sta	errCODE_13
+	sta	errCODE_3_13
 	cmp	#adbBusy
 	beq	]lp
 	rts
 
-ADBTalkRegister3_14
+ADBTalkRegister_3_14
 	lda	#NB_RETRY
 	sta	errCNT
-]lp	PushLong	#completionRoutine_14
+]lp	PushLong	#completionRoutine_3_14
 	PushWord	#%11_11_1110	; talk (11) + register (11) + address (0000)
 	_AsyncADBReceive
-	sta	errCODE_14
+	sta	errCODE_3_14
 	cmp	#adbBusy
 	beq	]lp
 	rts
 
-ADBTalkRegister3_15
+ADBTalkRegister_3_15
 	lda	#NB_RETRY
 	sta	errCNT
-]lp	PushLong	#completionRoutine_15
+]lp	PushLong	#completionRoutine_3_15
 	PushWord	#%11_11_1111	; talk (11) + register (11) + address (0000)
 	_AsyncADBReceive
-	sta	errCODE_15
+	sta	errCODE_3_15
 	cmp	#adbBusy
 	beq	]lp
 	rts
@@ -620,327 +1380,1305 @@ dataTalk3	ds	1	; address
 	ds	1	; 79 = handler ID
 	ds	6	; padding
 
-*-----------------------
+*----------------------- REGISTER 0
 
 	mx	%11	; enter the 8-bit world
 
-completionRoutine		; nearly standard ADB completion routine
+completionRoutine_0_0		; nearly standard ADB completion routine
 	phd
 	tsc
 	tcd
 	lda	[6]
-	beq	endpool
+	beq	endpool_0_0
 	tay
 	iny
 	tya
-	stal	adbLENGTH
+	stal	adbLENGTH_0_0
 ]lp	lda	[6],y
 	tyx
 	dex
-	stal	dataTalk,x	; patch this address please
+	stal	dataTalk_0_0,x	; patch this address please
 	dey
 	bne	]lp
-endpool	pld
+endpool_0_0	pld
 	clc
 	rtl
 	
-completionRoutine_1		; nearly standard ADB completion routine
+completionRoutine_0_1		; nearly standard ADB completion routine
 	phd
 	tsc
 	tcd
 	lda	[6]
-	beq	endpool_1
+	beq	endpool_0_1
 	tay
 	iny
 	tya
-	stal	adbLENGTH_1
+	stal	adbLENGTH_0_1
 ]lp	lda	[6],y
 	tyx
 	dex
-	stal	dataTalk_1,x	; patch this address please
+	stal	dataTalk_0_1,x	; patch this address please
 	dey
 	bne	]lp
-endpool_1	pld
+endpool_0_1	pld
 	clc
 	rtl
 	
-completionRoutine_2		; nearly standard ADB completion routine
+completionRoutine_0_2		; nearly standard ADB completion routine
 	phd
 	tsc
 	tcd
 	lda	[6]
-	beq	endpool_2
+	beq	endpool_0_2
 	tay
 	iny
 	tya
-	stal	adbLENGTH_2
+	stal	adbLENGTH_0_2
 ]lp	lda	[6],y
 	tyx
 	dex
-	stal	dataTalk_2,x	; patch this address please
+	stal	dataTalk_0_2,x	; patch this address please
 	dey
 	bne	]lp
-endpool_2	pld
+endpool_0_2	pld
 	clc
 	rtl
 	
-completionRoutine_3		; nearly standard ADB completion routine
+completionRoutine_0_3		; nearly standard ADB completion routine
 	phd
 	tsc
 	tcd
 	lda	[6]
-	beq	endpool_3
+	beq	endpool_0_3
 	tay
 	iny
 	tya
-	stal	adbLENGTH_3
+	stal	adbLENGTH_0_3
 ]lp	lda	[6],y
 	tyx
 	dex
-	stal	dataTalk_3,x	; patch this address please
+	stal	dataTalk_0_3,x	; patch this address please
 	dey
 	bne	]lp
-endpool_3	pld
+endpool_0_3	pld
 	clc
 	rtl
 	
-completionRoutine_4		; nearly standard ADB completion routine
+completionRoutine_0_4		; nearly standard ADB completion routine
 	phd
 	tsc
 	tcd
 	lda	[6]
-	beq	endpool_4
+	beq	endpool_0_4
 	tay
 	iny
 	tya
-	stal	adbLENGTH_4
+	stal	adbLENGTH_0_4
 ]lp	lda	[6],y
 	tyx
 	dex
-	stal	dataTalk_4,x	; patch this address please
+	stal	dataTalk_0_4,x	; patch this address please
 	dey
 	bne	]lp
-endpool_4	pld
+endpool_0_4	pld
 	clc
 	rtl
 	
-completionRoutine_5		; nearly standard ADB completion routine
+completionRoutine_0_5		; nearly standard ADB completion routine
 	phd
 	tsc
 	tcd
 	lda	[6]
-	beq	endpool_5
+	beq	endpool_0_5
 	tay
 	iny
 	tya
-	stal	adbLENGTH_5
+	stal	adbLENGTH_0_5
 ]lp	lda	[6],y
 	tyx
 	dex
-	stal	dataTalk_5,x	; patch this address please
+	stal	dataTalk_0_5,x	; patch this address please
 	dey
 	bne	]lp
-endpool_5	pld
+endpool_0_5	pld
 	clc
 	rtl
 	
-completionRoutine_6		; nearly standard ADB completion routine
+completionRoutine_0_6		; nearly standard ADB completion routine
 	phd
 	tsc
 	tcd
 	lda	[6]
-	beq	endpool_6
+	beq	endpool_0_6
 	tay
 	iny
 	tya
-	stal	adbLENGTH_6
+	stal	adbLENGTH_0_6
 ]lp	lda	[6],y
 	tyx
 	dex
-	stal	dataTalk_6,x	; patch this address please
+	stal	dataTalk_0_6,x	; patch this address please
 	dey
 	bne	]lp
-endpool_6	pld
+endpool_0_6	pld
 	clc
 	rtl
 	
-completionRoutine_7		; nearly standard ADB completion routine
+completionRoutine_0_7		; nearly standard ADB completion routine
 	phd
 	tsc
 	tcd
 	lda	[6]
-	beq	endpool_7
+	beq	endpool_0_7
 	tay
 	iny
 	tya
-	stal	adbLENGTH_7
+	stal	adbLENGTH_0_7
 ]lp	lda	[6],y
 	tyx
 	dex
-	stal	dataTalk_7,x	; patch this address please
+	stal	dataTalk_0_7,x	; patch this address please
 	dey
 	bne	]lp
-endpool_7	pld
+endpool_0_7	pld
 	clc
 	rtl
 	
-completionRoutine_8		; nearly standard ADB completion routine
+completionRoutine_0_8		; nearly standard ADB completion routine
 	phd
 	tsc
 	tcd
 	lda	[6]
-	beq	endpool_8
+	beq	endpool_0_8
 	tay
 	iny
 	tya
-	stal	adbLENGTH_8
+	stal	adbLENGTH_0_8
 ]lp	lda	[6],y
 	tyx
 	dex
-	stal	dataTalk_8,x	; patch this address please
+	stal	dataTalk_0_8,x	; patch this address please
 	dey
 	bne	]lp
-endpool_8	pld
+endpool_0_8	pld
 	clc
 	rtl
 	
-completionRoutine_9		; nearly standard ADB completion routine
+completionRoutine_0_9		; nearly standard ADB completion routine
 	phd
 	tsc
 	tcd
 	lda	[6]
-	beq	endpool_9
+	beq	endpool_0_9
 	tay
 	iny
 	tya
-	stal	adbLENGTH_9
+	stal	adbLENGTH_0_9
 ]lp	lda	[6],y
 	tyx
 	dex
-	stal	dataTalk_9,x	; patch this address please
+	stal	dataTalk_0_9,x	; patch this address please
 	dey
 	bne	]lp
-endpool_9	pld
+endpool_0_9	pld
 	clc
 	rtl
 	
-completionRoutine_10		; nearly standard ADB completion routine
+completionRoutine_0_10		; nearly standard ADB completion routine
 	phd
 	tsc
 	tcd
 	lda	[6]
-	beq	endpool_10
+	beq	endpool_0_10
 	tay
 	iny
 	tya
-	stal	adbLENGTH_10
+	stal	adbLENGTH_0_10
 ]lp	lda	[6],y
 	tyx
 	dex
-	stal	dataTalk_10,x	; patch this address please
+	stal	dataTalk_0_10,x	; patch this address please
 	dey
 	bne	]lp
-endpool_10	pld
+endpool_0_10	pld
 	clc
 	rtl
 	
-completionRoutine_11		; nearly standard ADB completion routine
+completionRoutine_0_11		; nearly standard ADB completion routine
 	phd
 	tsc
 	tcd
 	lda	[6]
-	beq	endpool_11
+	beq	endpool_0_11
 	tay
 	iny
 	tya
-	stal	adbLENGTH_11
+	stal	adbLENGTH_0_11
 ]lp	lda	[6],y
 	tyx
 	dex
-	stal	dataTalk_11,x	; patch this address please
+	stal	dataTalk_0_11,x	; patch this address please
 	dey
 	bne	]lp
-endpool_11	pld
+endpool_0_11	pld
 	clc
 	rtl
 	
-completionRoutine_12		; nearly standard ADB completion routine
+completionRoutine_0_12		; nearly standard ADB completion routine
 	phd
 	tsc
 	tcd
 	lda	[6]
-	beq	endpool_12
+	beq	endpool_0_12
 	tay
 	iny
 	tya
-	stal	adbLENGTH_12
+	stal	adbLENGTH_0_12
 ]lp	lda	[6],y
 	tyx
 	dex
-	stal	dataTalk_12,x	; patch this address please
+	stal	dataTalk_0_12,x	; patch this address please
 	dey
 	bne	]lp
-endpool_12	pld
+endpool_0_12	pld
 	clc
 	rtl
 	
-completionRoutine_13		; nearly standard ADB completion routine
+completionRoutine_0_13		; nearly standard ADB completion routine
 	phd
 	tsc
 	tcd
 	lda	[6]
-	beq	endpool_13
+	beq	endpool_0_13
 	tay
 	iny
 	tya
-	stal	adbLENGTH_13
+	stal	adbLENGTH_0_13
 ]lp	lda	[6],y
 	tyx
 	dex
-	stal	dataTalk_13,x	; patch this address please
+	stal	dataTalk_0_13,x	; patch this address please
 	dey
 	bne	]lp
-endpool_13	pld
+endpool_0_13	pld
 	clc
 	rtl
 	
-completionRoutine_14		; nearly standard ADB completion routine
+completionRoutine_0_14		; nearly standard ADB completion routine
 	phd
 	tsc
 	tcd
 	lda	[6]
-	beq	endpool_14
+	beq	endpool_0_14
 	tay
 	iny
 	tya
-	stal	adbLENGTH_14
+	stal	adbLENGTH_0_14
 ]lp	lda	[6],y
 	tyx
 	dex
-	stal	dataTalk_14,x	; patch this address please
+	stal	dataTalk_0_14,x	; patch this address please
 	dey
 	bne	]lp
-endpool_14	pld
+endpool_0_14	pld
 	clc
 	rtl
 	
-completionRoutine_15		; nearly standard ADB completion routine
+completionRoutine_0_15		; nearly standard ADB completion routine
 	phd
 	tsc
 	tcd
 	lda	[6]
-	beq	endpool_15
+	beq	endpool_0_15
 	tay
 	iny
 	tya
-	stal	adbLENGTH_15
+	stal	adbLENGTH_0_15
 ]lp	lda	[6],y
 	tyx
 	dex
-	stal	dataTalk_15,x	; patch this address please
+	stal	dataTalk_0_15,x	; patch this address please
 	dey
 	bne	]lp
-endpool_15	pld
+endpool_0_15	pld
+	clc
+	rtl
+	
+	mx	%00	; back to the 16-bit world
+	
+*----------------------- REGISTER 1
+
+	mx	%11	; enter the 8-bit world
+
+completionRoutine_1_0		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_1_0
+	tay
+	iny
+	tya
+	stal	adbLENGTH_1_0
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_1_0,x	; patch this address please
+	dey
+	bne	]lp
+endpool_1_0	pld
+	clc
+	rtl
+	
+completionRoutine_1_1		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_1_1
+	tay
+	iny
+	tya
+	stal	adbLENGTH_1_1
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_1_1,x	; patch this address please
+	dey
+	bne	]lp
+endpool_1_1	pld
+	clc
+	rtl
+	
+completionRoutine_1_2		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_1_2
+	tay
+	iny
+	tya
+	stal	adbLENGTH_1_2
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_1_2,x	; patch this address please
+	dey
+	bne	]lp
+endpool_1_2	pld
+	clc
+	rtl
+	
+completionRoutine_1_3		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_1_3
+	tay
+	iny
+	tya
+	stal	adbLENGTH_1_3
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_1_3,x	; patch this address please
+	dey
+	bne	]lp
+endpool_1_3	pld
+	clc
+	rtl
+	
+completionRoutine_1_4		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_1_4
+	tay
+	iny
+	tya
+	stal	adbLENGTH_1_4
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_1_4,x	; patch this address please
+	dey
+	bne	]lp
+endpool_1_4	pld
+	clc
+	rtl
+	
+completionRoutine_1_5		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_1_5
+	tay
+	iny
+	tya
+	stal	adbLENGTH_1_5
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_1_5,x	; patch this address please
+	dey
+	bne	]lp
+endpool_1_5	pld
+	clc
+	rtl
+	
+completionRoutine_1_6		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_1_6
+	tay
+	iny
+	tya
+	stal	adbLENGTH_1_6
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_1_6,x	; patch this address please
+	dey
+	bne	]lp
+endpool_1_6	pld
+	clc
+	rtl
+	
+completionRoutine_1_7		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_1_7
+	tay
+	iny
+	tya
+	stal	adbLENGTH_1_7
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_1_7,x	; patch this address please
+	dey
+	bne	]lp
+endpool_1_7	pld
+	clc
+	rtl
+	
+completionRoutine_1_8		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_1_8
+	tay
+	iny
+	tya
+	stal	adbLENGTH_1_8
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_1_8,x	; patch this address please
+	dey
+	bne	]lp
+endpool_1_8	pld
+	clc
+	rtl
+	
+completionRoutine_1_9		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_1_9
+	tay
+	iny
+	tya
+	stal	adbLENGTH_1_9
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_1_9,x	; patch this address please
+	dey
+	bne	]lp
+endpool_1_9	pld
+	clc
+	rtl
+	
+completionRoutine_1_10		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_1_10
+	tay
+	iny
+	tya
+	stal	adbLENGTH_1_10
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_1_10,x	; patch this address please
+	dey
+	bne	]lp
+endpool_1_10	pld
+	clc
+	rtl
+	
+completionRoutine_1_11		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_1_11
+	tay
+	iny
+	tya
+	stal	adbLENGTH_1_11
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_1_11,x	; patch this address please
+	dey
+	bne	]lp
+endpool_1_11	pld
+	clc
+	rtl
+	
+completionRoutine_1_12		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_1_12
+	tay
+	iny
+	tya
+	stal	adbLENGTH_1_12
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_1_12,x	; patch this address please
+	dey
+	bne	]lp
+endpool_1_12	pld
+	clc
+	rtl
+	
+completionRoutine_1_13		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_1_13
+	tay
+	iny
+	tya
+	stal	adbLENGTH_1_13
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_1_13,x	; patch this address please
+	dey
+	bne	]lp
+endpool_1_13	pld
+	clc
+	rtl
+	
+completionRoutine_1_14		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_1_14
+	tay
+	iny
+	tya
+	stal	adbLENGTH_1_14
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_1_14,x	; patch this address please
+	dey
+	bne	]lp
+endpool_1_14	pld
+	clc
+	rtl
+	
+completionRoutine_1_15		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_1_15
+	tay
+	iny
+	tya
+	stal	adbLENGTH_1_15
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_1_15,x	; patch this address please
+	dey
+	bne	]lp
+endpool_1_15	pld
+	clc
+	rtl
+	
+	mx	%00	; back to the 16-bit world
+	
+*----------------------- REGISTER 2
+
+	mx	%11	; enter the 8-bit world
+
+completionRoutine_2_0		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_2_0
+	tay
+	iny
+	tya
+	stal	adbLENGTH_2_0
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_2_0,x	; patch this address please
+	dey
+	bne	]lp
+endpool_2_0	pld
+	clc
+	rtl
+	
+completionRoutine_2_1		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_2_1
+	tay
+	iny
+	tya
+	stal	adbLENGTH_2_1
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_2_1,x	; patch this address please
+	dey
+	bne	]lp
+endpool_2_1	pld
+	clc
+	rtl
+	
+completionRoutine_2_2		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_2_2
+	tay
+	iny
+	tya
+	stal	adbLENGTH_2_2
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_2_2,x	; patch this address please
+	dey
+	bne	]lp
+endpool_2_2	pld
+	clc
+	rtl
+	
+completionRoutine_2_3		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_2_3
+	tay
+	iny
+	tya
+	stal	adbLENGTH_2_3
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_2_3,x	; patch this address please
+	dey
+	bne	]lp
+endpool_2_3	pld
+	clc
+	rtl
+	
+completionRoutine_2_4		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_2_4
+	tay
+	iny
+	tya
+	stal	adbLENGTH_2_4
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_2_4,x	; patch this address please
+	dey
+	bne	]lp
+endpool_2_4	pld
+	clc
+	rtl
+	
+completionRoutine_2_5		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_2_5
+	tay
+	iny
+	tya
+	stal	adbLENGTH_2_5
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_2_5,x	; patch this address please
+	dey
+	bne	]lp
+endpool_2_5	pld
+	clc
+	rtl
+	
+completionRoutine_2_6		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_2_6
+	tay
+	iny
+	tya
+	stal	adbLENGTH_2_6
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_2_6,x	; patch this address please
+	dey
+	bne	]lp
+endpool_2_6	pld
+	clc
+	rtl
+	
+completionRoutine_2_7		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_2_7
+	tay
+	iny
+	tya
+	stal	adbLENGTH_2_7
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_2_7,x	; patch this address please
+	dey
+	bne	]lp
+endpool_2_7	pld
+	clc
+	rtl
+	
+completionRoutine_2_8		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_2_8
+	tay
+	iny
+	tya
+	stal	adbLENGTH_2_8
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_2_8,x	; patch this address please
+	dey
+	bne	]lp
+endpool_2_8	pld
+	clc
+	rtl
+	
+completionRoutine_2_9		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_2_9
+	tay
+	iny
+	tya
+	stal	adbLENGTH_2_9
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_2_9,x	; patch this address please
+	dey
+	bne	]lp
+endpool_2_9	pld
+	clc
+	rtl
+	
+completionRoutine_2_10		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_2_10
+	tay
+	iny
+	tya
+	stal	adbLENGTH_2_10
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_2_10,x	; patch this address please
+	dey
+	bne	]lp
+endpool_2_10	pld
+	clc
+	rtl
+	
+completionRoutine_2_11		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_2_11
+	tay
+	iny
+	tya
+	stal	adbLENGTH_2_11
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_2_11,x	; patch this address please
+	dey
+	bne	]lp
+endpool_2_11	pld
+	clc
+	rtl
+	
+completionRoutine_2_12		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_2_12
+	tay
+	iny
+	tya
+	stal	adbLENGTH_2_12
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_2_12,x	; patch this address please
+	dey
+	bne	]lp
+endpool_2_12	pld
+	clc
+	rtl
+	
+completionRoutine_2_13		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_2_13
+	tay
+	iny
+	tya
+	stal	adbLENGTH_2_13
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_2_13,x	; patch this address please
+	dey
+	bne	]lp
+endpool_2_13	pld
+	clc
+	rtl
+	
+completionRoutine_2_14		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_2_14
+	tay
+	iny
+	tya
+	stal	adbLENGTH_2_14
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_2_14,x	; patch this address please
+	dey
+	bne	]lp
+endpool_2_14	pld
+	clc
+	rtl
+	
+completionRoutine_2_15		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_2_15
+	tay
+	iny
+	tya
+	stal	adbLENGTH_2_15
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_2_15,x	; patch this address please
+	dey
+	bne	]lp
+endpool_2_15	pld
+	clc
+	rtl
+	
+	mx	%00	; back to the 16-bit world
+	
+*----------------------- REGISTER 3
+
+	mx	%11	; enter the 8-bit world
+
+completionRoutine_3_0		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_3_0
+	tay
+	iny
+	tya
+	stal	adbLENGTH_3_0
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_3_0,x	; patch this address please
+	dey
+	bne	]lp
+endpool_3_0	pld
+	clc
+	rtl
+	
+completionRoutine_3_1		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_3_1
+	tay
+	iny
+	tya
+	stal	adbLENGTH_3_1
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_3_1,x	; patch this address please
+	dey
+	bne	]lp
+endpool_3_1	pld
+	clc
+	rtl
+	
+completionRoutine_3_2		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_3_2
+	tay
+	iny
+	tya
+	stal	adbLENGTH_3_2
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_3_2,x	; patch this address please
+	dey
+	bne	]lp
+endpool_3_2	pld
+	clc
+	rtl
+	
+completionRoutine_3_3		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_3_3
+	tay
+	iny
+	tya
+	stal	adbLENGTH_3_3
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_3_3,x	; patch this address please
+	dey
+	bne	]lp
+endpool_3_3	pld
+	clc
+	rtl
+	
+completionRoutine_3_4		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_3_4
+	tay
+	iny
+	tya
+	stal	adbLENGTH_3_4
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_3_4,x	; patch this address please
+	dey
+	bne	]lp
+endpool_3_4	pld
+	clc
+	rtl
+	
+completionRoutine_3_5		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_3_5
+	tay
+	iny
+	tya
+	stal	adbLENGTH_3_5
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_3_5,x	; patch this address please
+	dey
+	bne	]lp
+endpool_3_5	pld
+	clc
+	rtl
+	
+completionRoutine_3_6		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_3_6
+	tay
+	iny
+	tya
+	stal	adbLENGTH_3_6
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_3_6,x	; patch this address please
+	dey
+	bne	]lp
+endpool_3_6	pld
+	clc
+	rtl
+	
+completionRoutine_3_7		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_3_7
+	tay
+	iny
+	tya
+	stal	adbLENGTH_3_7
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_3_7,x	; patch this address please
+	dey
+	bne	]lp
+endpool_3_7	pld
+	clc
+	rtl
+	
+completionRoutine_3_8		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_3_8
+	tay
+	iny
+	tya
+	stal	adbLENGTH_3_8
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_3_8,x	; patch this address please
+	dey
+	bne	]lp
+endpool_3_8	pld
+	clc
+	rtl
+	
+completionRoutine_3_9		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_3_9
+	tay
+	iny
+	tya
+	stal	adbLENGTH_3_9
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_3_9,x	; patch this address please
+	dey
+	bne	]lp
+endpool_3_9	pld
+	clc
+	rtl
+	
+completionRoutine_3_10		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_3_10
+	tay
+	iny
+	tya
+	stal	adbLENGTH_3_10
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_3_10,x	; patch this address please
+	dey
+	bne	]lp
+endpool_3_10	pld
+	clc
+	rtl
+	
+completionRoutine_3_11		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_3_11
+	tay
+	iny
+	tya
+	stal	adbLENGTH_3_11
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_3_11,x	; patch this address please
+	dey
+	bne	]lp
+endpool_3_11	pld
+	clc
+	rtl
+	
+completionRoutine_3_12		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_3_12
+	tay
+	iny
+	tya
+	stal	adbLENGTH_3_12
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_3_12,x	; patch this address please
+	dey
+	bne	]lp
+endpool_3_12	pld
+	clc
+	rtl
+	
+completionRoutine_3_13		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_3_13
+	tay
+	iny
+	tya
+	stal	adbLENGTH_3_13
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_3_13,x	; patch this address please
+	dey
+	bne	]lp
+endpool_3_13	pld
+	clc
+	rtl
+	
+completionRoutine_3_14		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_3_14
+	tay
+	iny
+	tya
+	stal	adbLENGTH_3_14
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_3_14,x	; patch this address please
+	dey
+	bne	]lp
+endpool_3_14	pld
+	clc
+	rtl
+	
+completionRoutine_3_15		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool_3_15
+	tay
+	iny
+	tya
+	stal	adbLENGTH_3_15
+]lp	lda	[6],y
+	tyx
+	dex
+	stal	dataTalk_3_15,x	; patch this address please
+	dey
+	bne	]lp
+endpool_3_15	pld
 	clc
 	rtl
 	
@@ -948,75 +2686,301 @@ endpool_15	pld
 	
 *--- ADB Data
 
-errCODE	ds	2	; value
-errCODE_1	ds	2
-errCODE_2	ds	2
-errCODE_3	ds	2
-errCODE_4	ds	2
-errCODE_5	ds	2
-errCODE_6	ds	2
-errCODE_7	ds	2
-errCODE_8	ds	2
-errCODE_9	ds	2
-errCODE_10	ds	2
-errCODE_11	ds	2
-errCODE_12	ds	2
-errCODE_13	ds	2
-errCODE_14	ds	2
-errCODE_15	ds	2
+tblERR	da	errCODE_0_0
+	da	errCODE_1_0
+	da	errCODE_2_0
+	da	errCODE_3_0
+	
+tblLENGTH	da	adbLENGTH_0_0
+	da	adbLENGTH_1_0
+	da	adbLENGTH_2_0
+	da	adbLENGTH_3_0
 
-adbLENGTH	ds	2	; value
-adbLENGTH_1	ds	2
-adbLENGTH_2	ds	2
-adbLENGTH_3	ds	2
-adbLENGTH_4	ds	2
-adbLENGTH_5	ds	2
-adbLENGTH_6	ds	2
-adbLENGTH_7	ds	2
-adbLENGTH_8	ds	2
-adbLENGTH_9	ds	2
-adbLENGTH_10	ds	2
-adbLENGTH_11	ds	2
-adbLENGTH_12	ds	2
-adbLENGTH_13	ds	2
-adbLENGTH_14	ds	2
-adbLENGTH_15	ds	2
+tblTALK	da	ptrTalk_0
+	da	ptrTalk_1
+	da	ptrTalk_2
+	da	ptrTalk_3
 
-ptrTalk	da	dataTalk
-	da	dataTalk_1
-	da	dataTalk_2
-	da	dataTalk_3
-	da	dataTalk_4
-	da	dataTalk_5
-	da	dataTalk_6
-	da	dataTalk_7
-	da	dataTalk_8
-	da	dataTalk_9
-	da	dataTalk_10
-	da	dataTalk_11
-	da	dataTalk_12
-	da	dataTalk_13
-	da	dataTalk_14
-	da	dataTalk_15
+errCODE_0_0	ds	2	; value
+errCODE_0_1	ds	2
+errCODE_0_2	ds	2
+errCODE_0_3	ds	2
+errCODE_0_4	ds	2
+errCODE_0_5	ds	2
+errCODE_0_6	ds	2
+errCODE_0_7	ds	2
+errCODE_0_8	ds	2
+errCODE_0_9	ds	2
+errCODE_0_10	ds	2
+errCODE_0_11	ds	2
+errCODE_0_12	ds	2
+errCODE_0_13	ds	2
+errCODE_0_14	ds	2
+errCODE_0_15	ds	2
 
-dataTalk	adrl	dataTalk	; pointer
-dataTalk_1	ds	8
-dataTalk_2	ds	8
-dataTalk_3	ds	8
-dataTalk_4	ds	8
-dataTalk_5	ds	8
-dataTalk_6	ds	8
-dataTalk_7	ds	8
-dataTalk_8	ds	8
-dataTalk_9	ds	8
-dataTalk_10	ds	8
-dataTalk_11	ds	8
-dataTalk_12	ds	8
-dataTalk_13	ds	8
-dataTalk_14	ds	8
-dataTalk_15	ds	8
+errCODE_1_0	ds	2	; value
+errCODE_1_1	ds	2
+errCODE_1_2	ds	2
+errCODE_1_3	ds	2
+errCODE_1_4	ds	2
+errCODE_1_5	ds	2
+errCODE_1_6	ds	2
+errCODE_1_7	ds	2
+errCODE_1_8	ds	2
+errCODE_1_9	ds	2
+errCODE_1_10	ds	2
+errCODE_1_11	ds	2
+errCODE_1_12	ds	2
+errCODE_1_13	ds	2
+errCODE_1_14	ds	2
+errCODE_1_15	ds	2
+
+errCODE_2_0	ds	2	; value
+errCODE_2_1	ds	2
+errCODE_2_2	ds	2
+errCODE_2_3	ds	2
+errCODE_2_4	ds	2
+errCODE_2_5	ds	2
+errCODE_2_6	ds	2
+errCODE_2_7	ds	2
+errCODE_2_8	ds	2
+errCODE_2_9	ds	2
+errCODE_2_10	ds	2
+errCODE_2_11	ds	2
+errCODE_2_12	ds	2
+errCODE_2_13	ds	2
+errCODE_2_14	ds	2
+errCODE_2_15	ds	2
+
+errCODE_3_0	ds	2	; value
+errCODE_3_1	ds	2
+errCODE_3_2	ds	2
+errCODE_3_3	ds	2
+errCODE_3_4	ds	2
+errCODE_3_5	ds	2
+errCODE_3_6	ds	2
+errCODE_3_7	ds	2
+errCODE_3_8	ds	2
+errCODE_3_9	ds	2
+errCODE_3_10	ds	2
+errCODE_3_11	ds	2
+errCODE_3_12	ds	2
+errCODE_3_13	ds	2
+errCODE_3_14	ds	2
+errCODE_3_15	ds	2
+
+adbLENGTH_0_0	ds	2	; value
+adbLENGTH_0_1	ds	2
+adbLENGTH_0_2	ds	2
+adbLENGTH_0_3	ds	2
+adbLENGTH_0_4	ds	2
+adbLENGTH_0_5	ds	2
+adbLENGTH_0_6	ds	2
+adbLENGTH_0_7	ds	2
+adbLENGTH_0_8	ds	2
+adbLENGTH_0_9	ds	2
+adbLENGTH_0_10	ds	2
+adbLENGTH_0_11	ds	2
+adbLENGTH_0_12	ds	2
+adbLENGTH_0_13	ds	2
+adbLENGTH_0_14	ds	2
+adbLENGTH_0_15	ds	2
+
+adbLENGTH_1_0	ds	2	; value
+adbLENGTH_1_1	ds	2
+adbLENGTH_1_2	ds	2
+adbLENGTH_1_3	ds	2
+adbLENGTH_1_4	ds	2
+adbLENGTH_1_5	ds	2
+adbLENGTH_1_6	ds	2
+adbLENGTH_1_7	ds	2
+adbLENGTH_1_8	ds	2
+adbLENGTH_1_9	ds	2
+adbLENGTH_1_10	ds	2
+adbLENGTH_1_11	ds	2
+adbLENGTH_1_12	ds	2
+adbLENGTH_1_13	ds	2
+adbLENGTH_1_14	ds	2
+adbLENGTH_1_15	ds	2
+
+adbLENGTH_2_0	ds	2	; value
+adbLENGTH_2_1	ds	2
+adbLENGTH_2_2	ds	2
+adbLENGTH_2_3	ds	2
+adbLENGTH_2_4	ds	2
+adbLENGTH_2_5	ds	2
+adbLENGTH_2_6	ds	2
+adbLENGTH_2_7	ds	2
+adbLENGTH_2_8	ds	2
+adbLENGTH_2_9	ds	2
+adbLENGTH_2_10	ds	2
+adbLENGTH_2_11	ds	2
+adbLENGTH_2_12	ds	2
+adbLENGTH_2_13	ds	2
+adbLENGTH_2_14	ds	2
+adbLENGTH_2_15	ds	2
+
+adbLENGTH_3_0	ds	2	; value
+adbLENGTH_3_1	ds	2
+adbLENGTH_3_2	ds	2
+adbLENGTH_3_3	ds	2
+adbLENGTH_3_4	ds	2
+adbLENGTH_3_5	ds	2
+adbLENGTH_3_6	ds	2
+adbLENGTH_3_7	ds	2
+adbLENGTH_3_8	ds	2
+adbLENGTH_3_9	ds	2
+adbLENGTH_3_10	ds	2
+adbLENGTH_3_11	ds	2
+adbLENGTH_3_12	ds	2
+adbLENGTH_3_13	ds	2
+adbLENGTH_3_14	ds	2
+adbLENGTH_3_15	ds	2
+
+ptrTalk_0	da	dataTalk_0_0
+	da	dataTalk_0_1
+	da	dataTalk_0_2
+	da	dataTalk_0_3
+	da	dataTalk_0_4
+	da	dataTalk_0_5
+	da	dataTalk_0_6
+	da	dataTalk_0_7
+	da	dataTalk_0_8
+	da	dataTalk_0_9
+	da	dataTalk_0_10
+	da	dataTalk_0_11
+	da	dataTalk_0_12
+	da	dataTalk_0_13
+	da	dataTalk_0_14
+	da	dataTalk_0_15
+
+dataTalk_0_0	ds	8
+dataTalk_0_1	ds	8
+dataTalk_0_2	ds	8
+dataTalk_0_3	ds	8
+dataTalk_0_4	ds	8
+dataTalk_0_5	ds	8
+dataTalk_0_6	ds	8
+dataTalk_0_7	ds	8
+dataTalk_0_8	ds	8
+dataTalk_0_9	ds	8
+dataTalk_0_10	ds	8
+dataTalk_0_11	ds	8
+dataTalk_0_12	ds	8
+dataTalk_0_13	ds	8
+dataTalk_0_14	ds	8
+dataTalk_0_15	ds	8
+
+ptrTalk_1	da	dataTalk_1_0
+	da	dataTalk_1_1
+	da	dataTalk_1_2
+	da	dataTalk_1_3
+	da	dataTalk_1_4
+	da	dataTalk_1_5
+	da	dataTalk_1_6
+	da	dataTalk_1_7
+	da	dataTalk_1_8
+	da	dataTalk_1_9
+	da	dataTalk_1_10
+	da	dataTalk_1_11
+	da	dataTalk_1_12
+	da	dataTalk_1_13
+	da	dataTalk_1_14
+	da	dataTalk_1_15
+
+dataTalk_1_0	ds	8
+dataTalk_1_1	ds	8
+dataTalk_1_2	ds	8
+dataTalk_1_3	ds	8
+dataTalk_1_4	ds	8
+dataTalk_1_5	ds	8
+dataTalk_1_6	ds	8
+dataTalk_1_7	ds	8
+dataTalk_1_8	ds	8
+dataTalk_1_9	ds	8
+dataTalk_1_10	ds	8
+dataTalk_1_11	ds	8
+dataTalk_1_12	ds	8
+dataTalk_1_13	ds	8
+dataTalk_1_14	ds	8
+dataTalk_1_15	ds	8
+
+ptrTalk_2	da	dataTalk_2_0
+	da	dataTalk_2_1
+	da	dataTalk_2_2
+	da	dataTalk_2_3
+	da	dataTalk_2_4
+	da	dataTalk_2_5
+	da	dataTalk_2_6
+	da	dataTalk_2_7
+	da	dataTalk_2_8
+	da	dataTalk_2_9
+	da	dataTalk_2_10
+	da	dataTalk_2_11
+	da	dataTalk_2_12
+	da	dataTalk_2_13
+	da	dataTalk_2_14
+	da	dataTalk_2_15
+
+dataTalk_2_0	ds	8
+dataTalk_2_1	ds	8
+dataTalk_2_2	ds	8
+dataTalk_2_3	ds	8
+dataTalk_2_4	ds	8
+dataTalk_2_5	ds	8
+dataTalk_2_6	ds	8
+dataTalk_2_7	ds	8
+dataTalk_2_8	ds	8
+dataTalk_2_9	ds	8
+dataTalk_2_10	ds	8
+dataTalk_2_11	ds	8
+dataTalk_2_12	ds	8
+dataTalk_2_13	ds	8
+dataTalk_2_14	ds	8
+dataTalk_2_15	ds	8
+
+ptrTalk_3	da	dataTalk_3_0
+	da	dataTalk_3_1
+	da	dataTalk_3_2
+	da	dataTalk_3_3
+	da	dataTalk_3_4
+	da	dataTalk_3_5
+	da	dataTalk_3_6
+	da	dataTalk_3_7
+	da	dataTalk_3_8
+	da	dataTalk_3_9
+	da	dataTalk_3_10
+	da	dataTalk_3_11
+	da	dataTalk_3_12
+	da	dataTalk_3_13
+	da	dataTalk_3_14
+	da	dataTalk_3_15
+
+dataTalk_3_0	ds	8
+dataTalk_3_1	ds	8
+dataTalk_3_2	ds	8
+dataTalk_3_3	ds	8
+dataTalk_3_4	ds	8
+dataTalk_3_5	ds	8
+dataTalk_3_6	ds	8
+dataTalk_3_7	ds	8
+dataTalk_3_8	ds	8
+dataTalk_3_9	ds	8
+dataTalk_3_10	ds	8
+dataTalk_3_11	ds	8
+dataTalk_3_12	ds	8
+dataTalk_3_13	ds	8
+dataTalk_3_14	ds	8
+dataTalk_3_15	ds	8
+
+dataTalk_0	adrl	dataTalk_0	; pointer
+dataTalk_1	adrl	dataTalk_1	; pointer
+dataTalk_2	adrl	dataTalk_2	; pointer
+dataTalk_3	adrl	dataTalk_3	; pointer
 
 dataListen	ds	8
+errCODE	ds	2
+adbLENGTH	ds	2
 errCNT	ds	2	; this is an error counter word!
 addLOW	ds	2	; 0000aaaa
 addHIGH	ds	2	; aaaa0000

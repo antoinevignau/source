@@ -31,7 +31,11 @@ GSOS	=	$e100a8
 
 *----------
 
-maxDEVICES        =         16		; really 15 b/c 0 is reserved
+maxDEVICES	=	16	; really 15 b/c 0 is reserved
+firstDEVICE	=	0	; 
+
+maxREGISTERS	=	4
+firstREGISTER	=	0
 
 *----------
 
@@ -103,6 +107,7 @@ mainMENU	PushLong	#strMAINMENU
 
 	jsr	pollDEVICES	; show ADB devices
 	jsr	showRESULTS
+	jsr	waitFORKEY
 	jmp	mainMENU
 
 *--- Data
@@ -110,7 +115,7 @@ mainMENU	PushLong	#strMAINMENU
 strMAINMENU	asc	'Show ADB devices'0d
 	asc	'(c) 2026, Brutal Deluxe Software'0d
 	asc	' 1. Poll ADB devices'0d
-	asc	' Q. Quit'0d00
+	asc	' Q. Quit     >'00
 
 *----------------------------
 * QUIT PROGRAM
@@ -139,10 +144,10 @@ doQUIT	_ADBShutDown
 * POLL DEVICES
 *----------------------------
 
-pollDEVICES	lda	#1	; start with device 1
+pollDEVICES	lda	#firstDEVICE	; start with device 1
 	sta	theDEVICE
-
-]lp	jsr	ADBGetInfo3	; register 3
+	
+]lp	jsr	ADBGetInfo	; all registers
 	
 	inc	theDEVICE
 	lda	theDEVICE
@@ -154,14 +159,15 @@ pollDEVICES	lda	#1	; start with device 1
 * SHOW RESULTS
 *----------------------------
 
-showRESULTS	PushLong	#strPRESSAKEY
-	_WriteCString
-	jsr	waitFORKEY
+showRESULTS
+*	PushLong	#strPRESSAKEY
+*	_WriteCString
+*	jsr	waitFORKEY
 
 	PushLong	#strDEVICES
 	_WriteCString
 
-	lda	#1	; start with device 1
+	lda	#firstDEVICE	; start with device 1
 	sta	theDEVICE
 
 ]lp	jsr	showDEVICEINFO
@@ -177,57 +183,73 @@ showRESULTS	PushLong	#strPRESSAKEY
 strPRESSAKEY	asc	0d'Press a key to see the results... '0d00
 
 strDEVICES	asc	0d
-	asc	'Address  Error  Length Register 3'0d00
-	asc	'$00      $0000  $00    $00000000000000000000'00
-
-theDEVICE	ds	2
-
+	asc	'Ad Register 0       Register 1       Register 2       Register 3'0d00
+	asc	'00 0011223344556677 0011223344556677 0011223344556677 0011223344556677'00
+*	asc	'01234567890123456789012345678901234567890123456789012345678901234567890123456789'
+theDEVICE	ds	2	; 0..F
+theREGISTER	ds	2	; 0..3
 *----------------------------
 * SHOW DEVICE INFO
 *----------------------------
 
 showDEVICEINFO	asl
 	tax
-	lda	errCODE,x
-	sta	errCODE
-	
-	lda	adbLENGTH,x
-	sta	adbLENGTH
 
-	lda	ptrTalk,x
-	sta	dataTalk
+*	lda	theREGISTER
+*	asl
+*	tay
+*	lda	tblERR,y
+*	sta	sdi_err+1
+*	lda	tblLENGTH,y
+*	sta	sdi_length+1
+*	lda	tblTALK,y
+*	sta	sdi_talk+1
+
+*sdi_err	lda	errCODE_0_0,x
+*	sta	errCODE
+*	
+*sdi_length	lda	adbLENGTH_0_0,x
+*	sta	adbLENGTH
+
+sdi_talk0	lda	ptrTalk_0,x
+	sta	dataTalk_0
+	lda	ptrTalk_1,x
+	sta	dataTalk_1
+	lda	ptrTalk_2,x
+	sta	dataTalk_2
+	lda	ptrTalk_3,x
+	sta	dataTalk_3
 	
-	PushWord	#'$'
-	_WriteChar
 	lda	theDEVICE
 	jsr	showBYTE
 
-	PushLong	#strSPACE6	; $xxxxxxxxxxxxxxxx
-	_WriteCString
-	lda	errCODE
-	jsr	showWORD
+	PushWord	#' '
+	_WriteChar
+	ldx	dataTalk_0+2
+	ldy	dataTalk_0
+	jsr	showHEX
 	
-	PushLong	#strSPACE2	; $xxxxxxxxxxxxxxxx
-	_WriteCString
-	lda	adbLENGTH
-	jsr	showBYTE
+	PushWord	#' '
+	_WriteChar
+	ldx	dataTalk_1+2
+	ldy	dataTalk_1
+	jsr	showHEX
 	
-	PushLong	#strSPACE4	; $xxxxxxxxxxxxxxxx
-	_WriteCString
-	ldx	dataTalk+2
-	ldy	dataTalk
+	PushWord	#' '
+	_WriteChar
+	ldx	dataTalk_2+2
+	ldy	dataTalk_2
+	jsr	showHEX
+	
+	PushWord	#' '
+	_WriteChar
+	ldx	dataTalk_3+2
+	ldy	dataTalk_3
 	jsr	showHEX
 	
 	PushWord	#$0d	; carriage return
 	_WriteChar
 	rts
-
-*---------- Data
-
-strSPACE6	asc	'  '
-strSPACE4	asc	'  '
-strSPACE2	asc	'  '
-	asc	'$'00
 
 *----------------------------
 * ADB ROUTINES

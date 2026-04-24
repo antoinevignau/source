@@ -245,6 +245,27 @@ doREAD1	rep	#$10
 ]lp	ldal	SD_ACCESS
 	sta	[spBUFFER],y
 	iny
+	ldal	SD_ACCESS
+	sta	[spBUFFER],y
+	iny
+	ldal	SD_ACCESS
+	sta	[spBUFFER],y
+	iny
+	ldal	SD_ACCESS
+	sta	[spBUFFER],y
+	iny
+	ldal	SD_ACCESS
+	sta	[spBUFFER],y
+	iny
+	ldal	SD_ACCESS
+	sta	[spBUFFER],y
+	iny
+	ldal	SD_ACCESS
+	sta	[spBUFFER],y
+	iny
+	ldal	SD_ACCESS
+	sta	[spBUFFER],y
+	iny
 	cpy	#blockSIZE
 	bcc	]lp
 	
@@ -271,6 +292,27 @@ doWRITE1	rep	#$10	; from RAM to ROM
 	
 	ldy	#0
 ]lp	lda	[spBUFFER],y
+	stal	SD_ACCESS
+	iny
+	lda	[spBUFFER],y
+	stal	SD_ACCESS
+	iny
+	lda	[spBUFFER],y
+	stal	SD_ACCESS
+	iny
+	lda	[spBUFFER],y
+	stal	SD_ACCESS
+	iny
+	lda	[spBUFFER],y
+	stal	SD_ACCESS
+	iny
+	lda	[spBUFFER],y
+	stal	SD_ACCESS
+	iny
+	lda	[spBUFFER],y
+	stal	SD_ACCESS
+	iny
+	lda	[spBUFFER],y
 	stal	SD_ACCESS
 	iny
 	cpy	#blockSIZE
@@ -547,9 +589,15 @@ DIBdata        hex   07                 ; ID string length
                dw    $0100              ; version word
 DIBdata2       =     *
 
-*---
+*--- Internal signature
 
+*	asc	0d
+*	asc	'Antoine Vignau & Olivier Zardini'0d
+*	asc	'Brutal Deluxe Software, 2026'
+*	asc	0d
 	ds	\
+
+*---
 	
 firstBLOCK	ds	blockSIZE
 

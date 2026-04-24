@@ -1,0 +1,383 @@
+------+-------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File             Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+-------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1 ensoniqloop.s      1 | Comment     | 11 |         |    0 | 00/8000               | *
+    2 |  1 ensoniqloop.s      2 | Comment     | 11 |         |    0 | 00/8000               | * ensoniq 64k
+    3 |  1 ensoniqloop.s      3 | Comment     | 11 |         |    0 | 00/8000               | *
+    4 |  1 ensoniqloop.s      4 | Comment     | 11 |         |    0 | 00/8000               | * (c) 2023, Brutal Deluxe Software
+    5 |  1 ensoniqloop.s      5 | Comment     | 11 |         |    0 | 00/8000               | *
+    6 |  1 ensoniqloop.s      6 | Empty       | 11 |         |    0 | 00/8000               |                                        
+    7 |  1 ensoniqloop.s      7 | Directive   | 11 |         |    0 | 00/8000               |                   mx    %11            
+    8 |  1 ensoniqloop.s      8 | Directive   | 11 |         |    0 | 00/8000               |                   org   $1000          
+    9 |  1 ensoniqloop.s      9 | Directive   | 11 |         |    0 | 00/1000               |                   lst   off            
+   10 |  1 ensoniqloop.s     10 | Directive   | 11 |         |    0 | 00/1000               |                   dsk   ensoniqloop    
+   11 |  1 ensoniqloop.s     11 | Directive   | 11 |         |    0 | 00/1000               |                   typ   BIN            
+   12 |  1 ensoniqloop.s     12 | Empty       | 11 |         |    0 | 00/1000               |                                        
+   13 |  1 ensoniqloop.s     13 | Comment     | 11 |         |    0 | 00/1000               | *-----------------------------------
+   14 |  1 ensoniqloop.s     14 | Comment     | 11 |         |    0 | 00/1000               | * EQUATES
+   15 |  1 ensoniqloop.s     15 | Comment     | 11 |         |    0 | 00/1000               | *-----------------------------------
+   16 |  1 ensoniqloop.s     16 | Empty       | 11 |         |    0 | 00/1000               |                                        
+   17 |  1 ensoniqloop.s     17 | Equivalence | 11 |         |    0 | 00/1000               | thePAGE           =     $ff            ; ZP
+   18 |  1 ensoniqloop.s     18 | Empty       | 11 |         |    0 | 00/1000               |                                        
+   19 |  1 ensoniqloop.s     19 | Equivalence | 11 |         |    0 | 00/1000               | KBD               =     $c000          
+   20 |  1 ensoniqloop.s     20 | Equivalence | 11 |         |    0 | 00/1000               | KBDSTROBE         =     $c010          
+   21 |  1 ensoniqloop.s     21 | Equivalence | 11 |         |    0 | 00/1000               | SOUNDCTL          =     $c03c          
+   22 |  1 ensoniqloop.s     22 | Equivalence | 11 |         |    0 | 00/1000               | SOUNDDATA         =     $c03d          
+   23 |  1 ensoniqloop.s     23 | Equivalence | 11 |         |    0 | 00/1000               | SOUNDADRL         =     $c03e          
+   24 |  1 ensoniqloop.s     24 | Equivalence | 11 |         |    0 | 00/1000               | SOUNDADRH         =     $c03f          
+   25 |  1 ensoniqloop.s     25 | Empty       | 11 |         |    0 | 00/1000               |                                        
+   26 |  1 ensoniqloop.s     26 | Comment     | 11 |         |    0 | 00/1000               | *-----------------------------------
+   27 |  1 ensoniqloop.s     27 | Comment     | 11 |         |    0 | 00/1000               | * ENTRY POINT
+   28 |  1 ensoniqloop.s     28 | Comment     | 11 |         |    0 | 00/1000               | *-----------------------------------
+   29 |  1 ensoniqloop.s     29 | Empty       | 11 |         |    0 | 00/1000               |                                        
+   30 |  1 ensoniqloop.s     30 | Code        | 11 |         |    1 | 00/1000 : 18          |                   clc                  
+   31 |  1 ensoniqloop.s     31 | Code        | 11 |         |    1 | 00/1001 : FB          |                   xce                  
+   32 |  1 ensoniqloop.s     32 | Code        | 11 |         |    2 | 00/1002 : E2 30       |                   sep   #$30           
+   33 |  1 ensoniqloop.s     33 | Empty       | 11 |         |    0 | 00/1004               |                                        
+   34 |  1 ensoniqloop.s     34 | Code        | 11 |         |    2 | 00/1004 : 64 FF       |                   stz   {$ff}          ; page 0
+   35 |  1 ensoniqloop.s     35 | Empty       | 11 |         |    0 | 00/1006               |                                        
+   36 |  1 ensoniqloop.s     36 | Code        | 11 |         |    3 | 00/1006 : 20 A0 10    |                   jsr   init_doc       
+   37 |  1 ensoniqloop.s     37 | Code        | 11 |         |    3 | 00/1009 : 20 28 10    |                   jsr   read_doc2      
+   38 |  1 ensoniqloop.s     38 | Code        | 11 |         |    3 | 00/100C : 4C 20 10    |                   jmp   theEND         
+   39 |  1 ensoniqloop.s     39 | Empty       | 11 |         |    0 | 00/100F               |                                        
+   40 |  1 ensoniqloop.s     40 | Code        | 11 |         |    3 | 00/100F : 20 55 10    | ozunid_1          jsr   read_doc       
+   41 |  1 ensoniqloop.s     41 | Code        | 11 |         |    3 | 00/1012 : 20 7B 10    |                   jsr   push_doc       
+   42 |  1 ensoniqloop.s     42 | Code        | 11 |         |    3 | 00/1015 : 20 1A 11    |                   jsr   play_doc       
+   43 |  1 ensoniqloop.s     43 | Empty       | 11 |         |    0 | 00/1018               |                                        
+   44 |  1 ensoniqloop.s     44 | Code        | 11 |         |    3 | 00/1018 : AD 00 C0    |                   lda   {$c000}        
+   45 |  1 ensoniqloop.s     45 | Code        | 11 |         |    2 | 00/101B : 10 F2       |                   bpl   ozunid_1       
+   46 |  1 ensoniqloop.s     46 | Code        | 11 |         |    3 | 00/101D : 8D 10 C0    |                   sta   {$c010}        
+   47 |  1 ensoniqloop.s     47 | Empty       | 11 |         |    0 | 00/1020               |                                        
+   48 |  1 ensoniqloop.s     48 | Code        | 11 |         |    3 | 00/1020 : 20 46 11    | theEND            jsr   stop_oscillators
+   49 |  1 ensoniqloop.s     49 | Empty       | 11 |         |    0 | 00/1023               |                                        
+   50 |  1 ensoniqloop.s     50 | Code        | 11 |         |    1 | 00/1023 : 38          |                   sec                  
+   51 |  1 ensoniqloop.s     51 | Code        | 11 |         |    1 | 00/1024 : FB          |                   xce                  
+   52 |  1 ensoniqloop.s     52 | Code        | 11 |         |    2 | 00/1025 : E2 30       |                   sep   #$30           
+   53 |  1 ensoniqloop.s     53 | Code        | 11 |         |    1 | 00/1027 : 60          |                   rts                  
+   54 |  1 ensoniqloop.s     54 | Empty       | 11 |         |    0 | 00/1028               |                                        
+   55 |  1 ensoniqloop.s     55 | Comment     | 11 |         |    0 | 00/1028               | *-----------------------------------
+   56 |  1 ensoniqloop.s     56 | Comment     | 11 |         |    0 | 00/1028               | * READ 65536 BYTES
+   57 |  1 ensoniqloop.s     57 | Comment     | 11 |         |    0 | 00/1028               | *-----------------------------------
+   58 |  1 ensoniqloop.s     58 | Empty       | 11 |         |    0 | 00/1028               |                                        
+   59 |  1 ensoniqloop.s     59 | Code        | 10 |         |    2 | 00/1028 : C2 10       | read_doc2         rep   #$10           
+   60 |  1 ensoniqloop.s     60 | Empty       | 10 |         |    0 | 00/102A               |                                        
+   61 |  1 ensoniqloop.s     61 | Code        | 10 |         |    4 | 00/102A : AF CA 00 E1 |                   ldal  $e100ca        
+   62 |  1 ensoniqloop.s     62 | Code        | 10 |         |    2 | 00/102E : 29 0F       |                   and   #%0000_1111    ; to DOC registers, no auto increment
+   63 |  1 ensoniqloop.s     63 | Code        | 10 |         |    3 | 00/1030 : 8D 3C C0    |                   sta   {$c03c}        
+   64 |  1 ensoniqloop.s     64 | Empty       | 10 |         |    0 | 00/1033               |                                        
+   65 |  1 ensoniqloop.s     65 | Code        | 10 |         |    3 | 00/1033 : A2 00 00    |                   ldx   #0             
+   66 |  1 ensoniqloop.s     66 | Code        | 10 |         |    2 | 00/1036 : A9 E2       |                   lda   #$e2           
+   67 |  1 ensoniqloop.s     67 | Code        | 10 |         |    3 | 00/1038 : 8D 3E C0    |                   sta   {$c03e}        
+   68 |  1 ensoniqloop.s     68 | Code        | 10 |         |    3 | 00/103B : AD 3D C0    |                   lda   {$c03d}        
+   69 |  1 ensoniqloop.s     69 | Code        | 10 |         |    3 | 00/103E : AD 3D C0    | ozunid_2          lda   {$c03d}        
+   70 |  1 ensoniqloop.s     70 | Code        | 10 |         |    2 | 00/1041 : D0 02       |                   bne   read_doc2_ok   
+   71 |  1 ensoniqloop.s     71 | Code        | 10 |         |    2 | 00/1043 : A9 01       |                   lda   #1             
+   72 |  1 ensoniqloop.s     72 | Code        | 10 |         |    4 | 00/1045 : 9F 00 00 02 | read_doc2_ok      stal  $020000,x      
+   73 |  1 ensoniqloop.s     73 | Empty       | 10 |         |    0 | 00/1049               |                                        
+   74 |  1 ensoniqloop.s     74 | Code        | 10 |         |    3 | 00/1049 : A0 20 00    |                   ldy   #32            
+   75 |  1 ensoniqloop.s     75 | Code        | 10 |         |    1 | 00/104C : 88          | ozunid_3          dey                  
+   76 |  1 ensoniqloop.s     76 | Code        | 10 |         |    2 | 00/104D : D0 FD       |                   bne   ozunid_3       
+   77 |  1 ensoniqloop.s     77 | Empty       | 10 |         |    0 | 00/104F               |                                        
+   78 |  1 ensoniqloop.s     78 | Code        | 10 |         |    1 | 00/104F : E8          |                   inx                  
+   79 |  1 ensoniqloop.s     79 | Code        | 10 |         |    2 | 00/1050 : D0 FA       |                   bne   ozunid_3       
+   80 |  1 ensoniqloop.s     80 | Empty       | 10 |         |    0 | 00/1052               |                                        
+   81 |  1 ensoniqloop.s     81 | Code        | 11 |         |    2 | 00/1052 : E2 10       |                   sep   #$10           
+   82 |  1 ensoniqloop.s     82 | Code        | 11 |         |    1 | 00/1054 : 60          |                   rts                  
+   83 |  1 ensoniqloop.s     83 | Empty       | 11 |         |    0 | 00/1055               |                                        
+   84 |  1 ensoniqloop.s     84 | Comment     | 11 |         |    0 | 00/1055               | *-----------------------------------
+   85 |  1 ensoniqloop.s     85 | Comment     | 11 |         |    0 | 00/1055               | * READ 256 BYTES
+   86 |  1 ensoniqloop.s     86 | Comment     | 11 |         |    0 | 00/1055               | *-----------------------------------
+   87 |  1 ensoniqloop.s     87 | Empty       | 11 |         |    0 | 00/1055               |                                        
+   88 |  1 ensoniqloop.s     88 | Code        | 11 |         |    4 | 00/1055 : AF CA 00 E1 | read_doc          ldal  $e100ca        
+   89 |  1 ensoniqloop.s     89 | Code        | 11 |         |    2 | 00/1059 : 29 0F       |                   and   #%0000_1111    ; to DOC registers, no auto increment
+   90 |  1 ensoniqloop.s     90 | Code        | 11 |         |    3 | 00/105B : 8D 3C C0    |                   sta   {$c03c}        
+   91 |  1 ensoniqloop.s     91 | Empty       | 11 |         |    0 | 00/105E               |                                        
+   92 |  1 ensoniqloop.s     92 | Code        | 11 |         |    2 | 00/105E : A2 00       |                   ldx   #0             
+   93 |  1 ensoniqloop.s     93 | Code        | 11 |         |    2 | 00/1060 : A9 E2       |                   lda   #$e2           
+   94 |  1 ensoniqloop.s     94 | Code        | 11 |         |    3 | 00/1062 : 8D 3E C0    |                   sta   {$c03e}        
+   95 |  1 ensoniqloop.s     95 | Code        | 11 |         |    3 | 00/1065 : AD 3D C0    |                   lda   {$c03d}        
+   96 |  1 ensoniqloop.s     96 | Code        | 11 |         |    3 | 00/1068 : AD 3D C0    | ozunid_4          lda   {$c03d}        
+   97 |  1 ensoniqloop.s     97 | Code        | 11 |         |    2 | 00/106B : D0 02       |                   bne   read_doc_ok    
+   98 |  1 ensoniqloop.s     98 | Code        | 11 |         |    2 | 00/106D : A9 01       |                   lda   #1             
+   99 |  1 ensoniqloop.s     99 | Code        | 11 |         |    3 | 00/106F : 9D 00 12    | read_doc_ok       sta   myPAGE,x       
+  100 |  1 ensoniqloop.s    100 | Empty       | 11 |         |    0 | 00/1072               |                                        
+  101 |  1 ensoniqloop.s    101 | Code        | 11 |         |    2 | 00/1072 : A0 20       |                   ldy   #32            
+  102 |  1 ensoniqloop.s    102 | Code        | 11 |         |    1 | 00/1074 : 88          | ozunid_5          dey                  
+  103 |  1 ensoniqloop.s    103 | Code        | 11 |         |    2 | 00/1075 : D0 FD       |                   bne   ozunid_5       
+  104 |  1 ensoniqloop.s    104 | Empty       | 11 |         |    0 | 00/1077               |                                        
+  105 |  1 ensoniqloop.s    105 | Code        | 11 |         |    1 | 00/1077 : E8          |                   inx                  
+  106 |  1 ensoniqloop.s    106 | Code        | 11 |         |    2 | 00/1078 : D0 FA       |                   bne   ozunid_5       
+  107 |  1 ensoniqloop.s    107 | Empty       | 11 |         |    0 | 00/107A               |                                        
+  108 |  1 ensoniqloop.s    108 | Code        | 11 |         |    1 | 00/107A : 60          |                   rts                  
+  109 |  1 ensoniqloop.s    109 | Empty       | 11 |         |    0 | 00/107B               |                                        
+  110 |  1 ensoniqloop.s    110 | Comment     | 11 |         |    0 | 00/107B               | *-----------------------------------
+  111 |  1 ensoniqloop.s    111 | Comment     | 11 |         |    0 | 00/107B               | * MOVE SOUND DATA TO DOC RAM BANK 0
+  112 |  1 ensoniqloop.s    112 | Comment     | 11 |         |    0 | 00/107B               | *-----------------------------------
+  113 |  1 ensoniqloop.s    113 | Empty       | 11 |         |    0 | 00/107B               |                                        
+  114 |  1 ensoniqloop.s    114 | Code        | 11 |         |    4 | 00/107B : AF CA 00 E1 | push_doc          ldal  $e100ca        
+  115 |  1 ensoniqloop.s    115 | Code        | 11 |         |    2 | 00/107F : 29 0F       |                   and   #%0000_1111    ; keep sound level
+  116 |  1 ensoniqloop.s    116 | Code        | 11 |         |    2 | 00/1081 : 09 60       |                   ora   #%0110_0000    ; to DOC RAM + auto increment + bank 0
+  117 |  1 ensoniqloop.s    117 | Code        | 11 |         |    3 | 00/1083 : 8D 3C C0    |                   sta   {$c03c}        
+  118 |  1 ensoniqloop.s    118 | Empty       | 11 |         |    0 | 00/1086               |                                        
+  119 |  1 ensoniqloop.s    119 | Code        | 11 |         |    2 | 00/1086 : A9 00       |                   lda   #0             
+  120 |  1 ensoniqloop.s    120 | Code        | 11 |         |    3 | 00/1088 : 8D 3E C0    |                   sta   {$c03e}        
+  121 |  1 ensoniqloop.s    121 | Code        | 11 |         |    2 | 00/108B : A5 FF       |                   lda   {$ff}          ; 0 or 1
+  122 |  1 ensoniqloop.s    122 | Code        | 11 |         |    3 | 00/108D : 8D 3F C0    |                   sta   {$c03f}        
+  123 |  1 ensoniqloop.s    123 | Code        | 11 |         |    2 | 00/1090 : 49 01       |                   eor   #1             
+  124 |  1 ensoniqloop.s    124 | Code        | 11 |         |    2 | 00/1092 : 85 FF       |                   sta   {$ff}          
+  125 |  1 ensoniqloop.s    125 | Empty       | 11 |         |    0 | 00/1094               |                                        
+  126 |  1 ensoniqloop.s    126 | Code        | 11 |         |    2 | 00/1094 : A2 00       |                   ldx   #0             
+  127 |  1 ensoniqloop.s    127 | Code        | 11 |         |    3 | 00/1096 : BD 00 12    | ozunid_6          lda   myPAGE,x       
+  128 |  1 ensoniqloop.s    128 | Code        | 11 |         |    3 | 00/1099 : 8D 3D C0    |                   sta   {$c03d}        
+  129 |  1 ensoniqloop.s    129 | Code        | 11 |         |    1 | 00/109C : E8          |                   inx                  
+  130 |  1 ensoniqloop.s    130 | Code        | 11 |         |    2 | 00/109D : D0 F7       |                   bne   ozunid_6       
+  131 |  1 ensoniqloop.s    131 | Empty       | 11 |         |    0 | 00/109F               |                                        
+  132 |  1 ensoniqloop.s    132 | Code        | 11 |         |    1 | 00/109F : 60          |                   rts                  
+  133 |  1 ensoniqloop.s    133 | Empty       | 11 |         |    0 | 00/10A0               |                                        
+  134 |  1 ensoniqloop.s    134 | Comment     | 11 |         |    0 | 00/10A0               | *-----------------------------------
+  135 |  1 ensoniqloop.s    135 | Comment     | 11 |         |    0 | 00/10A0               | * INIT DOC
+  136 |  1 ensoniqloop.s    136 | Comment     | 11 |         |    0 | 00/10A0               | *-----------------------------------
+  137 |  1 ensoniqloop.s    137 | Empty       | 11 |         |    0 | 00/10A0               |                                        
+  138 |  1 ensoniqloop.s    138 | Code        | 11 |         |    4 | 00/10A0 : AF CA 00 E1 | init_doc          ldal  $e100ca        
+  139 |  1 ensoniqloop.s    139 | Code        | 11 |         |    2 | 00/10A4 : 29 0F       |                   and   #%0000_1111    ; to DOC registers, no auto increment
+  140 |  1 ensoniqloop.s    140 | Code        | 11 |         |    3 | 00/10A6 : 8D 3C C0    |                   sta   {$c03c}        
+  141 |  1 ensoniqloop.s    141 | Empty       | 11 |         |    0 | 00/10A9               |                                        
+  142 |  1 ensoniqloop.s    142 | Code        | 11 |         |    2 | 00/10A9 : A0 00       |                   ldy   #0             ; the first oscillator
+  143 |  1 ensoniqloop.s    143 | Empty       | 11 |         |    0 | 00/10AB               |                                        
+  144 |  1 ensoniqloop.s    144 | Comment     | 11 |         |    0 | 00/10AB               | *---------------------- Frequency is $D1 for the two oscillators
+  145 |  1 ensoniqloop.s    145 | Empty       | 11 |         |    0 | 00/10AB               |                                        
+  146 |  1 ensoniqloop.s    146 | Code        | 11 |         |    1 | 00/10AB : 98          |                   tya                  
+  147 |  1 ensoniqloop.s    147 | Code        | 11 |         |    3 | 00/10AC : 8D 3E C0    |                   sta   {$c03e}        
+  148 |  1 ensoniqloop.s    148 | Code        | 11 |         |    2 | 00/10AF : A9 D1       |                   lda   #$d1           
+  149 |  1 ensoniqloop.s    149 | Code        | 11 |         |    3 | 00/10B1 : 8D 3D C0    |                   sta   {$c03d}        
+  150 |  1 ensoniqloop.s    150 | Code        | 11 |         |    1 | 00/10B4 : 98          |                   tya                  
+  151 |  1 ensoniqloop.s    151 | Code        | 11 |         |    2 | 00/10B5 : 09 01       |                   ora   #$01           
+  152 |  1 ensoniqloop.s    152 | Code        | 11 |         |    3 | 00/10B7 : 8D 3E C0    |                   sta   {$c03e}        
+  153 |  1 ensoniqloop.s    153 | Code        | 11 |         |    2 | 00/10BA : A9 D1       |                   lda   #$d1           
+  154 |  1 ensoniqloop.s    154 | Code        | 11 |         |    3 | 00/10BC : 8D 3D C0    |                   sta   {$c03d}        
+  155 |  1 ensoniqloop.s    155 | Empty       | 11 |         |    0 | 00/10BF               |                                        
+  156 |  1 ensoniqloop.s    156 | Code        | 11 |         |    1 | 00/10BF : 98          |                   tya                  
+  157 |  1 ensoniqloop.s    157 | Code        | 11 |         |    2 | 00/10C0 : 09 20       |                   ora   #$20           
+  158 |  1 ensoniqloop.s    158 | Code        | 11 |         |    3 | 00/10C2 : 8D 3E C0    |                   sta   {$c03e}        
+  159 |  1 ensoniqloop.s    159 | Code        | 11 |         |    2 | 00/10C5 : A9 00       |                   lda   #0             
+  160 |  1 ensoniqloop.s    160 | Code        | 11 |         |    3 | 00/10C7 : 8D 3D C0    |                   sta   {$c03d}        
+  161 |  1 ensoniqloop.s    161 | Code        | 11 |         |    1 | 00/10CA : 98          |                   tya                  
+  162 |  1 ensoniqloop.s    162 | Code        | 11 |         |    2 | 00/10CB : 09 21       |                   ora   #$21           
+  163 |  1 ensoniqloop.s    163 | Code        | 11 |         |    4 | 00/10CD : 8F 3E C0 00 |                   stal  {$c03e}        
+  164 |  1 ensoniqloop.s    164 | Code        | 11 |         |    2 | 00/10D1 : A9 00       |                   lda   #0             
+  165 |  1 ensoniqloop.s    165 | Code        | 11 |         |    4 | 00/10D3 : 8F 3D C0 00 |                   stal  {$c03d}        
+  166 |  1 ensoniqloop.s    166 | Empty       | 11 |         |    0 | 00/10D7               |                                        
+  167 |  1 ensoniqloop.s    167 | Comment     | 11 |         |    0 | 00/10D7               | *---------------------- Volume is $FF for the two oscillators
+  168 |  1 ensoniqloop.s    168 | Empty       | 11 |         |    0 | 00/10D7               |                                        
+  169 |  1 ensoniqloop.s    169 | Code        | 11 |         |    1 | 00/10D7 : 98          |                   tya                  
+  170 |  1 ensoniqloop.s    170 | Code        | 11 |         |    2 | 00/10D8 : 09 40       |                   ora   #$40           
+  171 |  1 ensoniqloop.s    171 | Code        | 11 |         |    3 | 00/10DA : 8D 3E C0    |                   sta   {$c03e}        
+  172 |  1 ensoniqloop.s    172 | Code        | 11 |         |    2 | 00/10DD : A9 FF       |                   lda   #$ff           
+  173 |  1 ensoniqloop.s    173 | Code        | 11 |         |    3 | 00/10DF : 8D 3D C0    |                   sta   {$c03d}        
+  174 |  1 ensoniqloop.s    174 | Code        | 11 |         |    1 | 00/10E2 : 98          |                   tya                  
+  175 |  1 ensoniqloop.s    175 | Code        | 11 |         |    2 | 00/10E3 : 09 41       |                   ora   #$41           
+  176 |  1 ensoniqloop.s    176 | Code        | 11 |         |    3 | 00/10E5 : 8D 3E C0    |                   sta   {$c03e}        
+  177 |  1 ensoniqloop.s    177 | Code        | 11 |         |    2 | 00/10E8 : A9 FF       |                   lda   #$ff           
+  178 |  1 ensoniqloop.s    178 | Code        | 11 |         |    3 | 00/10EA : 8D 3D C0    |                   sta   {$c03d}        
+  179 |  1 ensoniqloop.s    179 | Empty       | 11 |         |    0 | 00/10ED               |                                        
+  180 |  1 ensoniqloop.s    180 | Comment     | 11 |         |    0 | 00/10ED               | *---------------------- DOC RAM address
+  181 |  1 ensoniqloop.s    181 | Empty       | 11 |         |    0 | 00/10ED               |                                        
+  182 |  1 ensoniqloop.s    182 | Code        | 11 |         |    1 | 00/10ED : 98          |                   tya                  
+  183 |  1 ensoniqloop.s    183 | Code        | 11 |         |    2 | 00/10EE : 09 80       |                   ora   #$80           
+  184 |  1 ensoniqloop.s    184 | Code        | 11 |         |    3 | 00/10F0 : 8D 3E C0    |                   sta   {$c03e}        
+  185 |  1 ensoniqloop.s    185 | Code        | 11 |         |    2 | 00/10F3 : A9 00       |                   lda   #0             ; $0000 for the first oscillator
+  186 |  1 ensoniqloop.s    186 | Code        | 11 |         |    3 | 00/10F5 : 8D 3D C0    |                   sta   {$c03d}        
+  187 |  1 ensoniqloop.s    187 | Code        | 11 |         |    1 | 00/10F8 : 98          |                   tya                  
+  188 |  1 ensoniqloop.s    188 | Code        | 11 |         |    2 | 00/10F9 : 09 81       |                   ora   #$81           
+  189 |  1 ensoniqloop.s    189 | Code        | 11 |         |    3 | 00/10FB : 8D 3E C0    |                   sta   {$c03e}        
+  190 |  1 ensoniqloop.s    190 | Code        | 11 |         |    2 | 00/10FE : A9 01       |                   lda   #1             ; $0100 for the second oscillator
+  191 |  1 ensoniqloop.s    191 | Code        | 11 |         |    3 | 00/1100 : 8D 3D C0    |                   sta   {$c03d}        
+  192 |  1 ensoniqloop.s    192 | Empty       | 11 |         |    0 | 00/1103               |                                        
+  193 |  1 ensoniqloop.s    193 | Comment     | 11 |         |    0 | 00/1103               | *---------------------- Waveform table size / Resolution and Bank Select
+  194 |  1 ensoniqloop.s    194 | Empty       | 11 |         |    0 | 00/1103               |                                        
+  195 |  1 ensoniqloop.s    195 | Code        | 11 |         |    1 | 00/1103 : 98          |                   tya                  
+  196 |  1 ensoniqloop.s    196 | Code        | 11 |         |    2 | 00/1104 : 09 C0       |                   ora   #$c0           
+  197 |  1 ensoniqloop.s    197 | Code        | 11 |         |    3 | 00/1106 : 8D 3E C0    |                   sta   {$c03e}        
+  198 |  1 ensoniqloop.s    198 | Code        | 11 |         |    2 | 00/1109 : A9 00       |                   lda   #%0000_0000    ; Bank 0, Table size 32K, Resolution 32K
+  199 |  1 ensoniqloop.s    199 | Code        | 11 |         |    3 | 00/110B : 8D 3D C0    |                   sta   {$c03d}        
+  200 |  1 ensoniqloop.s    200 | Code        | 11 |         |    1 | 00/110E : 98          |                   tya                  
+  201 |  1 ensoniqloop.s    201 | Code        | 11 |         |    2 | 00/110F : 09 C1       |                   ora   #$c1           
+  202 |  1 ensoniqloop.s    202 | Code        | 11 |         |    3 | 00/1111 : 8D 3E C0    |                   sta   {$c03e}        
+  203 |  1 ensoniqloop.s    203 | Code        | 11 |         |    2 | 00/1114 : A9 00       |                   lda   #%0000_0000    ; Bank 0, Table size 32K, Resolution 32K
+  204 |  1 ensoniqloop.s    204 | Code        | 11 |         |    3 | 00/1116 : 8D 3D C0    |                   sta   {$c03d}        
+  205 |  1 ensoniqloop.s    205 | Empty       | 11 |         |    0 | 00/1119               |                                        
+  206 |  1 ensoniqloop.s    206 | Code        | 11 |         |    1 | 00/1119 : 60          |                   rts                  
+  207 |  1 ensoniqloop.s    207 | Empty       | 11 |         |    0 | 00/111A               |                                        
+  208 |  1 ensoniqloop.s    208 | Comment     | 11 |         |    0 | 00/111A               | *-----------------------------------
+  209 |  1 ensoniqloop.s    209 | Comment     | 11 |         |    0 | 00/111A               | * PLAY DOC
+  210 |  1 ensoniqloop.s    210 | Comment     | 11 |         |    0 | 00/111A               | *-----------------------------------
+  211 |  1 ensoniqloop.s    211 | Empty       | 11 |         |    0 | 00/111A               |                                        
+  212 |  1 ensoniqloop.s    212 | Code        | 11 |         |    4 | 00/111A : AF CA 00 E1 | play_doc          ldal  $e100ca        
+  213 |  1 ensoniqloop.s    213 | Code        | 11 |         |    2 | 00/111E : 29 0F       |                   and   #%0000_1111    ; to DOC registers, no auto increment
+  214 |  1 ensoniqloop.s    214 | Code        | 11 |         |    3 | 00/1120 : 8D 3C C0    |                   sta   {$c03c}        
+  215 |  1 ensoniqloop.s    215 | Empty       | 11 |         |    0 | 00/1123               |                                        
+  216 |  1 ensoniqloop.s    216 | Comment     | 11 |         |    0 | 00/1123               | *---------------------- Control register: start the sound
+  217 |  1 ensoniqloop.s    217 | Empty       | 11 |         |    0 | 00/1123               |                                        
+  218 |  1 ensoniqloop.s    218 | Code        | 11 |         |    2 | 00/1123 : A5 FF       |                   lda   {$ff}          
+  219 |  1 ensoniqloop.s    219 | Code        | 11 |         |    2 | 00/1125 : F0 0B       |                   beq   play_doc_1     ; 0 to 1, 1 to 0
+  220 |  1 ensoniqloop.s    220 | Empty       | 11 |         |    0 | 00/1127               |                                        
+  221 |  1 ensoniqloop.s    221 | Code        | 11 |         |    2 | 00/1127 : A9 A0       |                   lda   #$a0           
+  222 |  1 ensoniqloop.s    222 | Code        | 11 |         |    3 | 00/1129 : 8D 3E C0    |                   sta   {$c03e}        
+  223 |  1 ensoniqloop.s    223 | Code        | 11 |         |    2 | 00/112C : A9 02       |                   lda   #%0000_0010    ; Channel 0, One-shot
+  224 |  1 ensoniqloop.s    224 | Code        | 11 |         |    3 | 00/112E : 8D 3D C0    |                   sta   {$c03d}        
+  225 |  1 ensoniqloop.s    225 | Code        | 11 |         |    1 | 00/1131 : 60          |                   rts                  
+  226 |  1 ensoniqloop.s    226 | Empty       | 11 |         |    0 | 00/1132               |                                        
+  227 |  1 ensoniqloop.s    227 | Code        | 11 |         |    2 | 00/1132 : A9 A1       | play_doc_1        lda   #$a1           
+  228 |  1 ensoniqloop.s    228 | Code        | 11 |         |    3 | 00/1134 : 8D 3E C0    |                   sta   {$c03e}        
+  229 |  1 ensoniqloop.s    229 | Code        | 11 |         |    2 | 00/1137 : A9 02       |                   lda   #%0000_0010    ; Channel 0, One-shot
+  230 |  1 ensoniqloop.s    230 | Code        | 11 |         |    3 | 00/1139 : 8D 3D C0    |                   sta   {$c03d}        
+  231 |  1 ensoniqloop.s    231 | Code        | 11 |         |    1 | 00/113C : 60          |                   rts                  
+  232 |  1 ensoniqloop.s    232 | Empty       | 11 |         |    0 | 00/113D               |                                        
+  233 |  1 ensoniqloop.s    233 | Comment     | 11 |         |    0 | 00/113D               | *---------------------- Frequency is $D1 for the two oscillators
+  234 |  1 ensoniqloop.s    234 | Empty       | 11 |         |    0 | 00/113D               |                                        
+  235 |  1 ensoniqloop.s    235 | Comment     | 11 |         |    0 | 00/113D               | *-----------------------------------
+  236 |  1 ensoniqloop.s    236 | Comment     | 11 |         |    0 | 00/113D               | * WAIT FOR A KEYPRESS
+  237 |  1 ensoniqloop.s    237 | Comment     | 11 |         |    0 | 00/113D               | *-----------------------------------
+  238 |  1 ensoniqloop.s    238 | Empty       | 11 |         |    0 | 00/113D               |                                        
+  239 |  1 ensoniqloop.s    239 | Empty       | 11 |         |    0 | 00/113D               | wait_for_key                           
+  240 |  1 ensoniqloop.s    240 | Code        | 11 |         |    3 | 00/113D : AD 00 C0    | ozunid_7          lda   {$c000}        
+  241 |  1 ensoniqloop.s    241 | Code        | 11 |         |    2 | 00/1140 : 10 FB       |                   bpl   ozunid_7       
+  242 |  1 ensoniqloop.s    242 | Code        | 11 |         |    3 | 00/1142 : 8D 10 C0    |                   sta   {$c010}        
+  243 |  1 ensoniqloop.s    243 | Code        | 11 |         |    1 | 00/1145 : 60          |                   rts                  
+  244 |  1 ensoniqloop.s    244 | Empty       | 11 |         |    0 | 00/1146               |                                        
+  245 |  1 ensoniqloop.s    245 | Comment     | 11 |         |    0 | 00/1146               | *-----------------------------------
+  246 |  1 ensoniqloop.s    246 | Comment     | 11 |         |    0 | 00/1146               | * STOP THE OSCILLATORS
+  247 |  1 ensoniqloop.s    247 | Comment     | 11 |         |    0 | 00/1146               | *-----------------------------------
+  248 |  1 ensoniqloop.s    248 | Empty       | 11 |         |    0 | 00/1146               |                                        
+  249 |  1 ensoniqloop.s    249 | Empty       | 11 |         |    0 | 00/1146               | stop_oscillators                       
+  250 |  1 ensoniqloop.s    250 | Code        | 11 |         |    3 | 00/1146 : AD CA 00    |                   lda   $e100ca        
+  251 |  1 ensoniqloop.s    251 | Code        | 11 |         |    2 | 00/1149 : 29 0F       |                   and   #%0000_1111    ; to DOC registers, no auto increment
+  252 |  1 ensoniqloop.s    252 | Code        | 11 |         |    3 | 00/114B : 8D 3C C0    |                   sta   {$c03c}        
+  253 |  1 ensoniqloop.s    253 | Empty       | 11 |         |    0 | 00/114E               |                                        
+  254 |  1 ensoniqloop.s    254 | Code        | 11 |         |    2 | 00/114E : A0 00       |                   ldy   #0             ; the first oscillator
+  255 |  1 ensoniqloop.s    255 | Empty       | 11 |         |    0 | 00/1150               |                                        
+  256 |  1 ensoniqloop.s    256 | Comment     | 11 |         |    0 | 00/1150               | *---------------------- Control register: stop the sound
+  257 |  1 ensoniqloop.s    257 | Empty       | 11 |         |    0 | 00/1150               |                                        
+  258 |  1 ensoniqloop.s    258 | Code        | 11 |         |    1 | 00/1150 : 98          |                   tya                  
+  259 |  1 ensoniqloop.s    259 | Code        | 11 |         |    2 | 00/1151 : 09 A0       |                   ora   #$a0           
+  260 |  1 ensoniqloop.s    260 | Code        | 11 |         |    3 | 00/1153 : 8D 3E C0    |                   sta   {$c03e}        
+  261 |  1 ensoniqloop.s    261 | Code        | 11 |         |    2 | 00/1156 : A9 01       |                   lda   #%0000_0001    ; stop oscillator
+  262 |  1 ensoniqloop.s    262 | Code        | 11 |         |    3 | 00/1158 : 8D 3D C0    |                   sta   {$c03d}        
+  263 |  1 ensoniqloop.s    263 | Code        | 11 |         |    1 | 00/115B : 98          |                   tya                  
+  264 |  1 ensoniqloop.s    264 | Code        | 11 |         |    2 | 00/115C : 09 A1       |                   ora   #$a1           
+  265 |  1 ensoniqloop.s    265 | Code        | 11 |         |    3 | 00/115E : 8D 3E C0    |                   sta   {$c03e}        
+  266 |  1 ensoniqloop.s    266 | Code        | 11 |         |    2 | 00/1161 : A9 11       |                   lda   #%0001_0001    ; stop oscillator
+  267 |  1 ensoniqloop.s    267 | Code        | 11 |         |    3 | 00/1163 : 8D 3D C0    |                   sta   {$c03d}        
+  268 |  1 ensoniqloop.s    268 | Empty       | 11 |         |    0 | 00/1166               |                                        
+  269 |  1 ensoniqloop.s    269 | Code        | 11 |         |    1 | 00/1166 : 60          |                   rts                  
+  270 |  1 ensoniqloop.s    270 | Empty       | 11 |         |    0 | 00/1167               |                                        
+  271 |  1 ensoniqloop.s    271 | Comment     | 11 |         |    0 | 00/1167               | *-----------------------------------
+  272 |  1 ensoniqloop.s    272 | Comment     | 11 |         |    0 | 00/1167               | * DATA
+  273 |  1 ensoniqloop.s    273 | Comment     | 11 |         |    0 | 00/1167               | *-----------------------------------
+  274 |  1 ensoniqloop.s    274 | Empty       | 11 |         |    0 | 00/1167               |                                        
+  275 |  1 ensoniqloop.s    275 | Data        | 11 |         |  153 | 00/1167 : 00 00 00 00 |                   ds    \              
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00          |
+  276 |  1 ensoniqloop.s    276 | Data        | 11 |         |  256 | 00/1200 : 00 00 00 00 | myPAGE            ds    256            
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+      |                         |             |    |         |      |           00 00 00 00 |
+  277 |  1 ensoniqloop.s    277 | Empty       | 11 |         |    0 | 00/1300               |                                        
+  278 |  1 ensoniqloop.s    278 | Empty       | 11 |         |    0 | 00/1300               |                                        
+------+-------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

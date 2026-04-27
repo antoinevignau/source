@@ -121,7 +121,7 @@ DCDSTATE	DS	1	;flag. Non-zero means no DCD.
 
 * Default baud rate
 
-BAUD	DFB	7	;1=300, 2=1200, 3=2400
+BAUD	DFB	5	;1=300, 2=1200, 3=2400
 			;4=4800, 5=9600, 6=19200
 			;7=38400, 8=57600.
 
@@ -559,9 +559,9 @@ CLRMBUF	SEI
 
 ** stuff deleted (fix buffer pointers)
 
-	LDA	GSDATAB	ensure	no	data	in	SCC
-	LDA	GSDATAB	by	reading	data	3	times
-	LDA	GSDATAB	(it	has	a	3	byte	fifo)
+	LDA	GSDATAB	;ensure no data in SCC
+	LDA	GSDATAB	;by reading data 3 times
+	LDA	GSDATAB	;(it has a 3 byte fifo)
 
 :EXIT	CLI
 	RTS

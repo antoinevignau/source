@@ -1,0 +1,1446 @@
+------+-----------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File     Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+-----------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1 SP1.S      1 | Comment     | ?? |         |   -1 | 00/FFFF               | *
+    2 |  1 SP1.S      2 | Comment     | ?? |         |   -1 | 00/FFFF               | * ShellPlay v0.71
+    3 |  1 SP1.S      3 | Comment     | ?? |         |   -1 | 00/FFFF               | *
+    4 |  1 SP1.S      4 | Comment     | ?? |         |   -1 | 00/FFFF               | * (c) 1993, Brian Bening
+    5 |  1 SP1.S      5 | Comment     | ?? |         |   -1 | 00/FFFF               | * (s) 2026, Brutal Deluxe Software
+    6 |  1 SP1.S      6 | Comment     | ?? |         |   -1 | 00/FFFF               | *
+    7 |  1 SP1.S      7 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+    8 |  1 SP1.S      8 | Directive   | ?? |         |   -1 | 00/FFFF               |             mx    %00            
+    9 |  1 SP1.S      9 | Directive   | ?? |         |   -1 | 00/FFFF               |             lst   off            
+   10 |  1 SP1.S     10 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+   11 |  1 SP1.S     11 | Comment     | ?? |         |   -1 | 00/FFFF               | *-------------------------------
+   12 |  1 SP1.S     12 | Comment     | ?? |         |   -1 | 00/FFFF               | * TOOLS
+   13 |  1 SP1.S     13 | Comment     | ?? |         |   -1 | 00/FFFF               | *-------------------------------
+   14 |  1 SP1.S     14 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+   15 |  1 SP1.S     15 | Directive   | ?? |         |   -1 | 00/FFFF               |             use   4/Int.Macs     
+   16 |  1 SP1.S     16 | Directive   | ?? |         |   -1 | 00/FFFF               |             use   4/Mem.Macs     
+   17 |  1 SP1.S     17 | Directive   | ?? |         |   -1 | 00/FFFF               |             use   4/Text.Macs    
+   18 |  1 SP1.S     18 | Directive   | ?? |         |   -1 | 00/FFFF               |             use   4/Util.Macs    
+   19 |  1 SP1.S     19 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+   20 |  1 SP1.S     20 | Comment     | ?? |         |   -1 | 00/FFFF               | *-------------------------------
+   21 |  1 SP1.S     21 | Comment     | ?? |         |   -1 | 00/FFFF               | * EQUATES
+   22 |  1 SP1.S     22 | Comment     | ?? |         |   -1 | 00/FFFF               | *-------------------------------
+   23 |  1 SP1.S     23 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+   24 |  1 SP1.S     24 | Equivalence | ?? |         |   -1 | 00/FFFF               | GSOS        EQU   $E100A8        
+   25 |  1 SP1.S     25 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+   26 |  1 SP1.S     26 | Comment     | ?? |         |   -1 | 00/FFFF               | *-------------------------------
+   27 |  1 SP1.S     27 | Comment     | ?? |         |   -1 | 00/FFFF               | * EXTERNALS
+   28 |  1 SP1.S     28 | Comment     | ?? |         |   -1 | 00/FFFF               | *-------------------------------
+   29 |  1 SP1.S     29 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+   30 |  1 SP1.S     30 | External    | ?? |         |   -1 | 00/FFFF               | L030000     EXT                  
+   31 |  1 SP1.S     31 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+   32 |  1 SP1.S     32 | Comment     | ?? |         |   -1 | 00/FFFF               | *-------------------------------
+   33 |  1 SP1.S     33 | Comment     | ?? |         |   -1 | 00/FFFF               | * CODE
+   34 |  1 SP1.S     34 | Comment     | ?? |         |   -1 | 00/FFFF               | *-------------------------------
+   35 |  1 SP1.S     35 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+   36 |  1 SP1.S     36 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHK                  
+   37 |  1 SP1.S     37 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLB                  
+   38 |  1 SP1.S     38 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   L02078E        
+   39 |  1 SP1.S     39 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STY   $00            
+   40 |  1 SP1.S     40 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STX   $02            
+   41 |  1 SP1.S     41 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSR   L020112        
+   42 |  1 SP1.S     42 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BCC   L020011        
+   43 |  1 SP1.S     43 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRL   L0200C5        
+   44 |  1 SP1.S     44 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020011     JSR   L0206D5        
+   45 |  1 SP1.S     45 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BCC   L020019        
+   46 |  1 SP1.S     46 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRL   L0200C5        
+   47 |  1 SP1.S     47 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020019     PHA                  
+   48 |  1 SP1.S     48 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+   49 |  1 SP1.S     49 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   #$0001         
+   50 |  1 SP1.S     50 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSL   L030000        
+   51 |  1 SP1.S     51 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLX                  
+   52 |  1 SP1.S     52 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLX                  
+   53 |  1 SP1.S     53 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BCC   L020087        
+   54 |  1 SP1.S     54 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CMP   #$8103         
+   55 |  1 SP1.S     55 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L02005E        
+   56 |  1 SP1.S     56 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRA   L02004E        
+   57 |  1 SP1.S     57 | Data        | ?? |         |   -1 | 00/FFFF :             | L02002D     STR   'Sound toolset is already active.'
+   58 |  1 SP1.S     58 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L02004E     PEA   ^L02002D       
+   59 |  1 SP1.S     59 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   L02002D        
+   60 |  1 SP1.S     60 | Macro       | ?? |         |   -1 | 00/FFFF               |             _WriteLine                 
+   61 |  1 SP1.S     61 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRL   L0200C5        
+   62 |  1 SP1.S     62 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L02005E     BRA   L020077        
+   63 |  1 SP1.S     63 | Data        | ?? |         |   -1 | 00/FFFF :             | L020060     STR   'Unable to allocate DP.'
+   64 |  1 SP1.S     64 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020077     PEA   ^L020060       
+   65 |  1 SP1.S     65 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   L020060        
+   66 |  1 SP1.S     66 | Macro       | ?? |         |   -1 | 00/FFFF               |             _WriteLine                 
+   67 |  1 SP1.S     67 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRL   L0200C5        
+   68 |  1 SP1.S     68 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020087     LDA   #$0001         
+   69 |  1 SP1.S     69 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   L02078C        
+   70 |  1 SP1.S     70 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   #$0000         
+   71 |  1 SP1.S     71 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   L02078A        
+   72 |  1 SP1.S     72 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSR   L020167        
+   73 |  1 SP1.S     73 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BCC   L02009B        
+   74 |  1 SP1.S     74 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRL   L0200C5        
+   75 |  1 SP1.S     75 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L02009B     LDA   L020774        
+   76 |  1 SP1.S     76 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L0200BC        
+   77 |  1 SP1.S     77 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEI   $0E            
+   78 |  1 SP1.S     78 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEI   $0C            
+   79 |  1 SP1.S     79 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   $06            
+   80 |  1 SP1.S     80 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+   81 |  1 SP1.S     81 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   $04            
+   82 |  1 SP1.S     82 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+   83 |  1 SP1.S     83 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   L020774        
+   84 |  1 SP1.S     84 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+   85 |  1 SP1.S     85 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   #$0005         
+   86 |  1 SP1.S     86 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSL   L030000        
+   87 |  1 SP1.S     87 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLX                  
+   88 |  1 SP1.S     88 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLX                  
+   89 |  1 SP1.S     89 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLX                  
+   90 |  1 SP1.S     90 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLX                  
+   91 |  1 SP1.S     91 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLX                  
+   92 |  1 SP1.S     92 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BCS   L0200CA        
+   93 |  1 SP1.S     93 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0200BC     LDA   #$0001         
+   94 |  1 SP1.S     94 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   L02078A        
+   95 |  1 SP1.S     95 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSR   L020167        
+   96 |  1 SP1.S     96 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0200C5     CLC                  
+   97 |  1 SP1.S     97 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   #$0000         
+   98 |  1 SP1.S     98 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTL                  
+   99 |  1 SP1.S     99 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  100 |  1 SP1.S    100 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0200CA     PHA                  
+  101 |  1 SP1.S    101 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   ^L020790       
+  102 |  1 SP1.S    102 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   L020790        
+  103 |  1 SP1.S    103 | Macro       | ?? |         |   -1 | 00/FFFF               |             _WriteString                 
+  104 |  1 SP1.S    104 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSR   L0200E1        
+  105 |  1 SP1.S    105 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLA                  
+  106 |  1 SP1.S    106 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSR   L020102        
+  107 |  1 SP1.S    107 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRA   L0200C5        
+  108 |  1 SP1.S    108 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0200E1     LDA   $03,S          
+  109 |  1 SP1.S    109 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+  110 |  1 SP1.S    110 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   ^L0207B1       
+  111 |  1 SP1.S    111 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   L0207B1        
+  112 |  1 SP1.S    112 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   $0004          
+  113 |  1 SP1.S    113 | Macro       | ?? |         |   -1 | 00/FFFF               |             _Int2Hex                 
+  114 |  1 SP1.S    114 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   ^L0207B0       
+  115 |  1 SP1.S    115 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   L0207B0        
+  116 |  1 SP1.S    116 | Macro       | ?? |         |   -1 | 00/FFFF               |             _WriteString                 
+  117 |  1 SP1.S    117 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTS                  
+  118 |  1 SP1.S    118 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  119 |  1 SP1.S    119 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020102     PEA   ^L0207AF       
+  120 |  1 SP1.S    120 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   L0207AF        
+  121 |  1 SP1.S    121 | Macro       | ?? |         |   -1 | 00/FFFF               |             _WriteLine                 
+  122 |  1 SP1.S    122 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTS                  
+  123 |  1 SP1.S    123 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  124 |  1 SP1.S    124 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CLC                  
+  125 |  1 SP1.S    125 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTS                  
+  126 |  1 SP1.S    126 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  127 |  1 SP1.S    127 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020112     STZ   L020770        
+  128 |  1 SP1.S    128 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDY   #$0006         
+  129 |  1 SP1.S    129 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020118     LDA   L020CFB,Y      
+  130 |  1 SP1.S    130 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CMP   [$00],Y        
+  131 |  1 SP1.S    131 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L020126        
+  132 |  1 SP1.S    132 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             DEY                  
+  133 |  1 SP1.S    133 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             DEY                  
+  134 |  1 SP1.S    134 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BPL   L020118        
+  135 |  1 SP1.S    135 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             INC   L020770        
+  136 |  1 SP1.S    136 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020126     STZ   L020774        
+  137 |  1 SP1.S    137 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STZ   L020776        
+  138 |  1 SP1.S    138 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+  139 |  1 SP1.S    139 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+  140 |  1 SP1.S    140 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   #$0000         
+  141 |  1 SP1.S    141 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+  142 |  1 SP1.S    142 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+  143 |  1 SP1.S    143 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   L02078E        
+  144 |  1 SP1.S    144 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+  145 |  1 SP1.S    145 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   $0000          
+  146 |  1 SP1.S    146 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+  147 |  1 SP1.S    147 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+  148 |  1 SP1.S    148 | Macro       | ?? |         |   -1 | 00/FFFF               |             _NewHandle                 
+  149 |  1 SP1.S    149 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLX                  
+  150 |  1 SP1.S    150 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STX   $04            
+  151 |  1 SP1.S    151 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLX                  
+  152 |  1 SP1.S    152 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STX   $06            
+  153 |  1 SP1.S    153 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+  154 |  1 SP1.S    154 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+  155 |  1 SP1.S    155 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   #$0000         
+  156 |  1 SP1.S    156 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+  157 |  1 SP1.S    157 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+  158 |  1 SP1.S    158 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   L02078E        
+  159 |  1 SP1.S    159 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+  160 |  1 SP1.S    160 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   $0000          
+  161 |  1 SP1.S    161 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+  162 |  1 SP1.S    162 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+  163 |  1 SP1.S    163 | Macro       | ?? |         |   -1 | 00/FFFF               |             _NewHandle                 
+  164 |  1 SP1.S    164 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLX                  
+  165 |  1 SP1.S    165 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STX   $0C            
+  166 |  1 SP1.S    166 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLX                  
+  167 |  1 SP1.S    167 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STX   $0E            
+  168 |  1 SP1.S    168 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTS                  
+  169 |  1 SP1.S    169 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  170 |  1 SP1.S    170 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020167     LDY   #$0008         
+  171 |  1 SP1.S    171 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSR   L0201CB        
+  172 |  1 SP1.S    172 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSR   L0201E5        
+  173 |  1 SP1.S    173 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020170     CMP   #$002D         
+  174 |  1 SP1.S    174 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L02017E        
+  175 |  1 SP1.S    175 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   L02077A        
+  176 |  1 SP1.S    176 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             INY                  
+  177 |  1 SP1.S    177 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSR   L02024B        
+  178 |  1 SP1.S    178 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRA   L0201C0        
+  179 |  1 SP1.S    179 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L02017E     CMP   #$002B         
+  180 |  1 SP1.S    180 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L02018C        
+  181 |  1 SP1.S    181 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   L02077A        
+  182 |  1 SP1.S    182 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             INY                  
+  183 |  1 SP1.S    183 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSR   L02024B        
+  184 |  1 SP1.S    184 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRA   L0201C0        
+  185 |  1 SP1.S    185 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L02018C     CMP   #$0022         
+  186 |  1 SP1.S    186 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L0201A0        
+  187 |  1 SP1.S    187 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   L02077C        
+  188 |  1 SP1.S    188 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   #$0001         
+  189 |  1 SP1.S    189 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   L020780        
+  190 |  1 SP1.S    190 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             INY                  
+  191 |  1 SP1.S    191 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSR   L0204F2        
+  192 |  1 SP1.S    192 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRA   L0201C0        
+  193 |  1 SP1.S    193 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0201A0     CMP   #$0027         
+  194 |  1 SP1.S    194 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L0201B1        
+  195 |  1 SP1.S    195 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   L02077C        
+  196 |  1 SP1.S    196 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STZ   L020780        
+  197 |  1 SP1.S    197 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             INY                  
+  198 |  1 SP1.S    198 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSR   L0204F2        
+  199 |  1 SP1.S    199 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRA   L0201C0        
+  200 |  1 SP1.S    200 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0201B1     LDA   #$0001         
+  201 |  1 SP1.S    201 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   L020780        
+  202 |  1 SP1.S    202 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   #$0020         
+  203 |  1 SP1.S    203 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   L02077C        
+  204 |  1 SP1.S    204 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSR   L0204F2        
+  205 |  1 SP1.S    205 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0201C0     BCS   L0201C9        
+  206 |  1 SP1.S    206 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSR   L0201E5        
+  207 |  1 SP1.S    207 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L020170        
+  208 |  1 SP1.S    208 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CLC                  
+  209 |  1 SP1.S    209 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTS                  
+  210 |  1 SP1.S    210 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  211 |  1 SP1.S    211 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0201C9     SEC                  
+  212 |  1 SP1.S    212 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTS                  
+  213 |  1 SP1.S    213 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  214 |  1 SP1.S    214 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0201CB     LDA   #$0020         
+  215 |  1 SP1.S    215 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             SEP   #$20           
+  216 |  1 SP1.S    216 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   L02077E        
+  217 |  1 SP1.S    217 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRA   L0201D6        
+  218 |  1 SP1.S    218 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0201D5     INY                  
+  219 |  1 SP1.S    219 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0201D6     LDA   [$00],Y        
+  220 |  1 SP1.S    220 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L0201DF        
+  221 |  1 SP1.S    221 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CMP   L02077E        
+  222 |  1 SP1.S    222 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L0201D5        
+  223 |  1 SP1.S    223 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0201DF     REP   #$20           
+  224 |  1 SP1.S    224 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             AND   #$00FF         
+  225 |  1 SP1.S    225 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTS                  
+  226 |  1 SP1.S    226 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  227 |  1 SP1.S    227 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0201E5     SEP   #$20           
+  228 |  1 SP1.S    228 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRA   L0201EA        
+  229 |  1 SP1.S    229 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0201E9     INY                  
+  230 |  1 SP1.S    230 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0201EA     LDA   [$00],Y        
+  231 |  1 SP1.S    231 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L0201F2        
+  232 |  1 SP1.S    232 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CMP   #$20           
+  233 |  1 SP1.S    233 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L0201E9        
+  234 |  1 SP1.S    234 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0201F2     REP   #$30           
+  235 |  1 SP1.S    235 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             AND   #$00FF         
+  236 |  1 SP1.S    236 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTS                  
+  237 |  1 SP1.S    237 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  238 |  1 SP1.S    238 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0201F8     SEP   #$20           
+  239 |  1 SP1.S    239 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDX   #$0000         
+  240 |  1 SP1.S    240 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             INY                  
+  241 |  1 SP1.S    241 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   [$00],Y        
+  242 |  1 SP1.S    242 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CMP   #$2D           
+  243 |  1 SP1.S    243 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020202     BNE   L020209        
+  244 |  1 SP1.S    244 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   L0207B1,X      
+  245 |  1 SP1.S    245 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             INX                  
+  246 |  1 SP1.S    246 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             INY                  
+  247 |  1 SP1.S    247 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020209     JSR   L020233        
+  248 |  1 SP1.S    248 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BCS   L020230        
+  249 |  1 SP1.S    249 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L02020E     JSR   L020233        
+  250 |  1 SP1.S    250 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BCC   L02020E        
+  251 |  1 SP1.S    251 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CPX   #$0007         
+  252 |  1 SP1.S    252 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BCS   L020230        
+  253 |  1 SP1.S    253 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             REP   #$20           
+  254 |  1 SP1.S    254 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHY                  
+  255 |  1 SP1.S    255 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+  256 |  1 SP1.S    256 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   ^L0207B1       
+  257 |  1 SP1.S    257 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   L0207B1        
+  258 |  1 SP1.S    258 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHX                  
+  259 |  1 SP1.S    259 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   $0001          
+  260 |  1 SP1.S    260 | Macro       | ?? |         |   -1 | 00/FFFF               |             _Dec2Int                 
+  261 |  1 SP1.S    261 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLA                  
+  262 |  1 SP1.S    262 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLY                  
+  263 |  1 SP1.S    263 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             DEY                  
+  264 |  1 SP1.S    264 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020230     REP   #$20           
+  265 |  1 SP1.S    265 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTS                  
+  266 |  1 SP1.S    266 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  267 |  1 SP1.S    267 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020233     LDA   [$00],Y        
+  268 |  1 SP1.S    268 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CMP   #$9030         
+  269 |  1 SP1.S    269 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BPL   L020202+1      
+  270 |  1 SP1.S    270 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             DEC                  
+  271 |  1 SP1.S    271 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BCS   L020249        
+  272 |  1 SP1.S    272 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CPX   #$0006         
+  273 |  1 SP1.S    273 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BCS   L020245        
+  274 |  1 SP1.S    274 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   L0207B1,X      
+  275 |  1 SP1.S    275 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020245     INX                  
+  276 |  1 SP1.S    276 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             INY                  
+  277 |  1 SP1.S    277 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CLC                  
+  278 |  1 SP1.S    278 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTS                  
+  279 |  1 SP1.S    279 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  280 |  1 SP1.S    280 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020249     SEC                  
+  281 |  1 SP1.S    281 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTS                  
+  282 |  1 SP1.S    282 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  283 |  1 SP1.S    283 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L02024B     LDA   [$00],Y        
+  284 |  1 SP1.S    284 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             AND   #$00FF         
+  285 |  1 SP1.S    285 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L020257        
+  286 |  1 SP1.S    286 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CMP   #$0020         
+  287 |  1 SP1.S    287 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L02025A        
+  288 |  1 SP1.S    288 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020257     BRL   L0202DA        
+  289 |  1 SP1.S    289 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L02025A     PHY                  
+  290 |  1 SP1.S    290 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   L0202D0+2      
+  291 |  1 SP1.S    291 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CMP   #$004B         
+  292 |  1 SP1.S    292 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L020266        
+  293 |  1 SP1.S    293 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRL   L0203AA        
+  294 |  1 SP1.S    294 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020266     CMP   #$0074         
+  295 |  1 SP1.S    295 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L02026E        
+  296 |  1 SP1.S    296 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRL   L0203BC        
+  297 |  1 SP1.S    297 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L02026E     CMP   #$0043         
+  298 |  1 SP1.S    298 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L020276        
+  299 |  1 SP1.S    299 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRL   L02039C        
+  300 |  1 SP1.S    300 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020276     CMP   #$0073         
+  301 |  1 SP1.S    301 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L02027E        
+  302 |  1 SP1.S    302 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRL   L020368        
+  303 |  1 SP1.S    303 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L02027E     CMP   #$0048         
+  304 |  1 SP1.S    304 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L020286        
+  305 |  1 SP1.S    305 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRL   L02034A        
+  306 |  1 SP1.S    306 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020286     CMP   #$0053         
+  307 |  1 SP1.S    307 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L02028E        
+  308 |  1 SP1.S    308 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRL   L0202FC        
+  309 |  1 SP1.S    309 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L02028E     CMP   #$0056         
+  310 |  1 SP1.S    310 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L020296        
+  311 |  1 SP1.S    311 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRL   L020316        
+  312 |  1 SP1.S    312 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020296     BRA   L0202A0        
+  313 |  1 SP1.S    313 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CMP   #$0045         
+  314 |  1 SP1.S    314 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L0202A0        
+  315 |  1 SP1.S    315 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRL   L020330        
+  316 |  1 SP1.S    316 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0202A0     CMP   #$0072         
+  317 |  1 SP1.S    317 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L0202A8        
+  318 |  1 SP1.S    318 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRL   L020470        
+  319 |  1 SP1.S    319 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0202A8     CMP   #$0062         
+  320 |  1 SP1.S    320 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L0202B0        
+  321 |  1 SP1.S    321 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRL   L02048E        
+  322 |  1 SP1.S    322 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0202B0     CMP   #$0063         
+  323 |  1 SP1.S    323 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L0202B8        
+  324 |  1 SP1.S    324 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRL   L0204AC        
+  325 |  1 SP1.S    325 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0202B8     CMP   #$006C         
+  326 |  1 SP1.S    326 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L0202C0        
+  327 |  1 SP1.S    327 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRL   L0204BA        
+  328 |  1 SP1.S    328 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0202C0     CMP   #$0067         
+  329 |  1 SP1.S    329 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L0202C8        
+  330 |  1 SP1.S    330 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRL   L0204C8        
+  331 |  1 SP1.S    331 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0202C8     CMP   #$003F         
+  332 |  1 SP1.S    332 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L0202D0        
+  333 |  1 SP1.S    333 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRL   L0204E8        
+  334 |  1 SP1.S    334 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0202D0     BRL   L020404        
+  335 |  1 SP1.S    335 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLY                  
+  336 |  1 SP1.S    336 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BCS   L0202DB        
+  337 |  1 SP1.S    337 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             INY                  
+  338 |  1 SP1.S    338 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRL   L02024B        
+  339 |  1 SP1.S    339 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0202DA     CLC                  
+  340 |  1 SP1.S    340 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0202DB     RTS                  
+  341 |  1 SP1.S    341 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  342 |  1 SP1.S    342 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0202DC     BRA   L0202ED        
+  343 |  1 SP1.S    343 | Data        | ?? |         |   -1 | 00/FFFF :             | L0202DE     STR   'Illegal value.'
+  344 |  1 SP1.S    344 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0202ED     PEA   ^L0202DE       
+  345 |  1 SP1.S    345 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   L0202DE        
+  346 |  1 SP1.S    346 | Macro       | ?? |         |   -1 | 00/FFFF               |             _WriteLine                 
+  347 |  1 SP1.S    347 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             SEC                  
+  348 |  1 SP1.S    348 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTS                  
+  349 |  1 SP1.S    349 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  350 |  1 SP1.S    350 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0202FC     JSR   L0201F8        
+  351 |  1 SP1.S    351 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BCS   L0202DC        
+  352 |  1 SP1.S    352 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+  353 |  1 SP1.S    353 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             TYA                  
+  354 |  1 SP1.S    354 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   $05,S          
+  355 |  1 SP1.S    355 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   L02078A        
+  356 |  1 SP1.S    356 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CLC                  
+  357 |  1 SP1.S    357 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L020312        
+  358 |  1 SP1.S    358 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   #$000C         
+  359 |  1 SP1.S    359 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSL   L030000        
+  360 |  1 SP1.S    360 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020312     PLA                  
+  361 |  1 SP1.S    361 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BCS   L0202DC        
+  362 |  1 SP1.S    362 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTS                  
+  363 |  1 SP1.S    363 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  364 |  1 SP1.S    364 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020316     JSR   L0201F8        
+  365 |  1 SP1.S    365 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BCS   L0202DC        
+  366 |  1 SP1.S    366 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+  367 |  1 SP1.S    367 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             TYA                  
+  368 |  1 SP1.S    368 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   $05,S          
+  369 |  1 SP1.S    369 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   L02078A        
+  370 |  1 SP1.S    370 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CLC                  
+  371 |  1 SP1.S    371 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L02032C        
+  372 |  1 SP1.S    372 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   #$000B         
+  373 |  1 SP1.S    373 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSL   L030000        
+  374 |  1 SP1.S    374 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L02032C     PLA                  
+  375 |  1 SP1.S    375 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BCS   L0202DC        
+  376 |  1 SP1.S    376 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTS                  
+  377 |  1 SP1.S    377 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  378 |  1 SP1.S    378 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020330     JSR   L0201F8        
+  379 |  1 SP1.S    379 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BCS   L0202DC        
+  380 |  1 SP1.S    380 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+  381 |  1 SP1.S    381 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             TYA                  
+  382 |  1 SP1.S    382 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   $05,S          
+  383 |  1 SP1.S    383 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   L02078A        
+  384 |  1 SP1.S    384 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CLC                  
+  385 |  1 SP1.S    385 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L020346        
+  386 |  1 SP1.S    386 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   #$000D         
+  387 |  1 SP1.S    387 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSL   L030000        
+  388 |  1 SP1.S    388 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020346     PLA                  
+  389 |  1 SP1.S    389 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BCS   L0202DC        
+  390 |  1 SP1.S    390 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTS                  
+  391 |  1 SP1.S    391 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  392 |  1 SP1.S    392 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L02034A     LDA   L02078A        
+  393 |  1 SP1.S    393 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L0203BA        
+  394 |  1 SP1.S    394 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDY   #$FFFF         
+  395 |  1 SP1.S    395 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   L02077A        
+  396 |  1 SP1.S    396 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CMP   #$002B         
+  397 |  1 SP1.S    397 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L02035D        
+  398 |  1 SP1.S    398 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDY   #$0000         
+  399 |  1 SP1.S    399 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L02035D     PHY                  
+  400 |  1 SP1.S    400 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   #$000A         
+  401 |  1 SP1.S    401 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSL   L030000        
+  402 |  1 SP1.S    402 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLY                  
+  403 |  1 SP1.S    403 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CLC                  
+  404 |  1 SP1.S    404 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTS                  
+  405 |  1 SP1.S    405 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  406 |  1 SP1.S    406 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020368     LDA   L02078A        
+  407 |  1 SP1.S    407 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L0203BA        
+  408 |  1 SP1.S    408 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   L02078C        
+  409 |  1 SP1.S    409 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L0203BA        
+  410 |  1 SP1.S    410 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDX   #$0000         
+  411 |  1 SP1.S    411 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020375     INY                  
+  412 |  1 SP1.S    412 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             INX                  
+  413 |  1 SP1.S    413 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   [$00],Y        
+  414 |  1 SP1.S    414 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             AND   #$007F         
+  415 |  1 SP1.S    415 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CMP   #$0073         
+  416 |  1 SP1.S    416 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L020375        
+  417 |  1 SP1.S    417 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             DEY                  
+  418 |  1 SP1.S    418 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             TYA                  
+  419 |  1 SP1.S    419 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   $03,S          
+  420 |  1 SP1.S    420 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             TXA                  
+  421 |  1 SP1.S    421 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDY   L02077A        
+  422 |  1 SP1.S    422 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CPY   #$002B         
+  423 |  1 SP1.S    423 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L020392        
+  424 |  1 SP1.S    424 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             EOR   #$FFFF         
+  425 |  1 SP1.S    425 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             INC                  
+  426 |  1 SP1.S    426 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020392     PHA                  
+  427 |  1 SP1.S    427 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   #$0009         
+  428 |  1 SP1.S    428 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSL   L030000        
+  429 |  1 SP1.S    429 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLA                  
+  430 |  1 SP1.S    430 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTS                  
+  431 |  1 SP1.S    431 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  432 |  1 SP1.S    432 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L02039C     LDA   L02078A        
+  433 |  1 SP1.S    433 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L0203BA        
+  434 |  1 SP1.S    434 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   #$0008         
+  435 |  1 SP1.S    435 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSL   L030000        
+  436 |  1 SP1.S    436 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CLC                  
+  437 |  1 SP1.S    437 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTS                  
+  438 |  1 SP1.S    438 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  439 |  1 SP1.S    439 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0203AA     LDA   L02078C        
+  440 |  1 SP1.S    440 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L0203B8        
+  441 |  1 SP1.S    441 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSL   L020D03        
+  442 |  1 SP1.S    442 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   $00            
+  443 |  1 SP1.S    443 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   L02078C        
+  444 |  1 SP1.S    444 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0203B8     SEC                  
+  445 |  1 SP1.S    445 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTS                  
+  446 |  1 SP1.S    446 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  447 |  1 SP1.S    447 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0203BA     CLC                  
+  448 |  1 SP1.S    448 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTS                  
+  449 |  1 SP1.S    449 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  450 |  1 SP1.S    450 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0203BC     INY                  
+  451 |  1 SP1.S    451 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             TYA                  
+  452 |  1 SP1.S    452 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   $03,S          
+  453 |  1 SP1.S    453 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   [$00],Y        
+  454 |  1 SP1.S    454 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             AND   #$00FF         
+  455 |  1 SP1.S    455 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             TAX                  
+  456 |  1 SP1.S    456 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             SEC                  
+  457 |  1 SP1.S    457 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             SBC   #$0030         
+  458 |  1 SP1.S    458 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CMP   #$0005         
+  459 |  1 SP1.S    459 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BCC   L0203EF        
+  460 |  1 SP1.S    460 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   #$0000         
+  461 |  1 SP1.S    461 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CPX   #$0073         
+  462 |  1 SP1.S    462 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L0203EF        
+  463 |  1 SP1.S    463 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             INC                  
+  464 |  1 SP1.S    464 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CPX   #$0070         
+  465 |  1 SP1.S    465 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L0203EF        
+  466 |  1 SP1.S    466 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             INC                  
+  467 |  1 SP1.S    467 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CPX   #$0063         
+  468 |  1 SP1.S    468 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L0203EF        
+  469 |  1 SP1.S    469 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             INC                  
+  470 |  1 SP1.S    470 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CPX   #$0035         
+  471 |  1 SP1.S    471 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L0203EF        
+  472 |  1 SP1.S    472 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             INC                  
+  473 |  1 SP1.S    473 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CPX   #$0036         
+  474 |  1 SP1.S    474 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L020448        
+  475 |  1 SP1.S    475 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0203EF     LDX   L02078A        
+  476 |  1 SP1.S    476 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L0203BA        
+  477 |  1 SP1.S    477 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDX   L02078C        
+  478 |  1 SP1.S    478 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L0203BA        
+  479 |  1 SP1.S    479 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+  480 |  1 SP1.S    480 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   #$0007         
+  481 |  1 SP1.S    481 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSL   L030000        
+  482 |  1 SP1.S    482 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLA                  
+  483 |  1 SP1.S    483 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CLC                  
+  484 |  1 SP1.S    484 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTS                  
+  485 |  1 SP1.S    485 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  486 |  1 SP1.S    486 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020404     LDA   L02078A        
+  487 |  1 SP1.S    487 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L0203BA        
+  488 |  1 SP1.S    488 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRA   L020418        
+  489 |  1 SP1.S    489 | Data        | ?? |         |   -1 | 00/FFFF :             | L02040B     STR   'Bad option: ' 
+  490 |  1 SP1.S    490 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020418     PEA   ^L02040B       
+  491 |  1 SP1.S    491 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   L02040B        
+  492 |  1 SP1.S    492 | Macro       | ?? |         |   -1 | 00/FFFF               |             _WriteString                 
+  493 |  1 SP1.S    493 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   $03,S          
+  494 |  1 SP1.S    494 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             TAY                  
+  495 |  1 SP1.S    495 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   [$00],Y        
+  496 |  1 SP1.S    496 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             AND   #$00FF         
+  497 |  1 SP1.S    497 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+  498 |  1 SP1.S    498 | Macro       | ?? |         |   -1 | 00/FFFF               |             _WriteChar                 
+  499 |  1 SP1.S    499 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRA   L020439        
+  500 |  1 SP1.S    500 | Data        | ?? |         |   -1 | 00/FFFF :             | L020437     STR   '.'            
+  501 |  1 SP1.S    501 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020439     PEA   ^L020437       
+  502 |  1 SP1.S    502 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   L020437        
+  503 |  1 SP1.S    503 | Macro       | ?? |         |   -1 | 00/FFFF               |             _WriteLine                 
+  504 |  1 SP1.S    504 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             SEC                  
+  505 |  1 SP1.S    505 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTS                  
+  506 |  1 SP1.S    506 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  507 |  1 SP1.S    507 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020448     BRA   L020461        
+  508 |  1 SP1.S    508 | Data        | ?? |         |   -1 | 00/FFFF :             | L02044A     STR   'Invalid tempo setting.'
+  509 |  1 SP1.S    509 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020461     PEA   ^L02044A       
+  510 |  1 SP1.S    510 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   L02044A        
+  511 |  1 SP1.S    511 | Macro       | ?? |         |   -1 | 00/FFFF               |             _WriteLine                 
+  512 |  1 SP1.S    512 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             SEC                  
+  513 |  1 SP1.S    513 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTS                  
+  514 |  1 SP1.S    514 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  515 |  1 SP1.S    515 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020470     LDA   L02078A        
+  516 |  1 SP1.S    516 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L02048C        
+  517 |  1 SP1.S    517 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDY   #$0001         
+  518 |  1 SP1.S    518 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   L02077A        
+  519 |  1 SP1.S    519 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CMP   #$002B         
+  520 |  1 SP1.S    520 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L020483        
+  521 |  1 SP1.S    521 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDY   #$0000         
+  522 |  1 SP1.S    522 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020483     PHY                  
+  523 |  1 SP1.S    523 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   #$000E         
+  524 |  1 SP1.S    524 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSL   L030000        
+  525 |  1 SP1.S    525 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLA                  
+  526 |  1 SP1.S    526 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L02048C     CLC                  
+  527 |  1 SP1.S    527 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTS                  
+  528 |  1 SP1.S    528 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  529 |  1 SP1.S    529 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L02048E     LDA   L02078A        
+  530 |  1 SP1.S    530 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L0204AA        
+  531 |  1 SP1.S    531 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDY   #$0001         
+  532 |  1 SP1.S    532 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   L02077A        
+  533 |  1 SP1.S    533 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CMP   #$002B         
+  534 |  1 SP1.S    534 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L0204A1        
+  535 |  1 SP1.S    535 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDY   #$0000         
+  536 |  1 SP1.S    536 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0204A1     PHY                  
+  537 |  1 SP1.S    537 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   #$000F         
+  538 |  1 SP1.S    538 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSL   L030000        
+  539 |  1 SP1.S    539 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLA                  
+  540 |  1 SP1.S    540 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0204AA     CLC                  
+  541 |  1 SP1.S    541 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTS                  
+  542 |  1 SP1.S    542 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  543 |  1 SP1.S    543 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0204AC     LDA   L02078A        
+  544 |  1 SP1.S    544 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L0204B8        
+  545 |  1 SP1.S    545 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   #$0011         
+  546 |  1 SP1.S    546 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSL   L030000        
+  547 |  1 SP1.S    547 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0204B8     CLC                  
+  548 |  1 SP1.S    548 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTS                  
+  549 |  1 SP1.S    549 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  550 |  1 SP1.S    550 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0204BA     LDA   L02078A        
+  551 |  1 SP1.S    551 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L0204B8        
+  552 |  1 SP1.S    552 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   #$0010         
+  553 |  1 SP1.S    553 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSL   L030000        
+  554 |  1 SP1.S    554 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CLC                  
+  555 |  1 SP1.S    555 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTS                  
+  556 |  1 SP1.S    556 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  557 |  1 SP1.S    557 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0204C8     JSR   L0201F8        
+  558 |  1 SP1.S    558 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BCC   L0204D0        
+  559 |  1 SP1.S    559 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRL   L0202DC        
+  560 |  1 SP1.S    560 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0204D0     PHA                  
+  561 |  1 SP1.S    561 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             TYA                  
+  562 |  1 SP1.S    562 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   $05,S          
+  563 |  1 SP1.S    563 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   L02078A        
+  564 |  1 SP1.S    564 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CLC                  
+  565 |  1 SP1.S    565 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L0204E1        
+  566 |  1 SP1.S    566 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   #$0012         
+  567 |  1 SP1.S    567 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSL   L030000        
+  568 |  1 SP1.S    568 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0204E1     PLA                  
+  569 |  1 SP1.S    569 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BCC   L0204E7        
+  570 |  1 SP1.S    570 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRL   L0202DC        
+  571 |  1 SP1.S    571 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0204E7     RTS                  
+  572 |  1 SP1.S    572 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  573 |  1 SP1.S    573 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0204E8     LDA   L02078A        
+  574 |  1 SP1.S    574 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L0204F0        
+  575 |  1 SP1.S    575 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSR   L0206E4        
+  576 |  1 SP1.S    576 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0204F0     CLC                  
+  577 |  1 SP1.S    577 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTS                  
+  578 |  1 SP1.S    578 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  579 |  1 SP1.S    579 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0204F2     STY   L020788        
+  580 |  1 SP1.S    580 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDX   #$0001         
+  581 |  1 SP1.S    581 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             SEP   #$20           
+  582 |  1 SP1.S    582 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0204FA     LDA   [$00],Y        
+  583 |  1 SP1.S    583 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L020501        
+  584 |  1 SP1.S    584 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRL   L02061D        
+  585 |  1 SP1.S    585 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020501     CMP   L02077C        
+  586 |  1 SP1.S    586 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L020515        
+  587 |  1 SP1.S    587 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CPX   #$0041         
+  588 |  1 SP1.S    588 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BCC   L02050E        
+  589 |  1 SP1.S    589 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRL   L02065B        
+  590 |  1 SP1.S    590 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L02050E     STA   L0207C1,X      
+  591 |  1 SP1.S    591 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             INX                  
+  592 |  1 SP1.S    592 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             INY                  
+  593 |  1 SP1.S    593 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRA   L0204FA        
+  594 |  1 SP1.S    594 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020515     TYX                  
+  595 |  1 SP1.S    595 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             INX                  
+  596 |  1 SP1.S    596 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020517     REP   #$20           
+  597 |  1 SP1.S    597 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHX                  
+  598 |  1 SP1.S    598 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   L02078A        
+  599 |  1 SP1.S    599 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L020549        
+  600 |  1 SP1.S    600 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             TYA                  
+  601 |  1 SP1.S    601 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             SEC                  
+  602 |  1 SP1.S    602 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             SBC   L020788        
+  603 |  1 SP1.S    603 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             SEP   #$20           
+  604 |  1 SP1.S    604 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   L0207C1        
+  605 |  1 SP1.S    605 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             REP   #$20           
+  606 |  1 SP1.S    606 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L020551        
+  607 |  1 SP1.S    607 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STZ   L020772        
+  608 |  1 SP1.S    608 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   L020770        
+  609 |  1 SP1.S    609 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L02053A        
+  610 |  1 SP1.S    610 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   L020780        
+  611 |  1 SP1.S    611 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L02053F        
+  612 |  1 SP1.S    612 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L02053A     JSR   L0205B6        
+  613 |  1 SP1.S    613 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRA   L020542        
+  614 |  1 SP1.S    614 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L02053F     JSR   L020584        
+  615 |  1 SP1.S    615 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020542     BCS   L02054C        
+  616 |  1 SP1.S    616 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   L020772        
+  617 |  1 SP1.S    617 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L020551        
+  618 |  1 SP1.S    618 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020549     LDA   #$0000         
+  619 |  1 SP1.S    619 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L02054C     PLY                  
+  620 |  1 SP1.S    620 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CMP   #$0001         
+  621 |  1 SP1.S    621 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTS                  
+  622 |  1 SP1.S    622 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  623 |  1 SP1.S    623 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020551     PEA   ^L020925       
+  624 |  1 SP1.S    624 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   L020925        
+  625 |  1 SP1.S    625 | Macro       | ?? |         |   -1 | 00/FFFF               |             _WriteString                 
+  626 |  1 SP1.S    626 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   ^L0207C1       
+  627 |  1 SP1.S    627 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   L0207C1        
+  628 |  1 SP1.S    628 | Macro       | ?? |         |   -1 | 00/FFFF               |             _WriteString                 
+  629 |  1 SP1.S    629 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   $000D          
+  630 |  1 SP1.S    630 | Macro       | ?? |         |   -1 | 00/FFFF               |             _WriteChar                 
+  631 |  1 SP1.S    631 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   $000A          
+  632 |  1 SP1.S    632 | Macro       | ?? |         |   -1 | 00/FFFF               |             _WriteChar                 
+  633 |  1 SP1.S    633 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   #$9000         
+  634 |  1 SP1.S    634 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRA   L02054C        
+  635 |  1 SP1.S    635 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020584     JSL   GSOS           
+  636 |  1 SP1.S    636 | Data        | ?? |         |   -1 | 00/FFFF :             |             DW    $0109          ; Shell: Init_Wildcard
+  637 |  1 SP1.S    637 | Data        | ?? |         |   -1 | 00/FFFF :             |             ADRL  $0207B7        
+  638 |  1 SP1.S    638 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L02058E     JSL   GSOS           
+  639 |  1 SP1.S    639 | Data        | ?? |         |   -1 | 00/FFFF :             |             DW    $010A          ; Shell: Next_Wildcard
+  640 |  1 SP1.S    640 | Data        | ?? |         |   -1 | 00/FFFF :             |             ADRL  $0207BD        
+  641 |  1 SP1.S    641 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   L020805        
+  642 |  1 SP1.S    642 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             AND   #$00FF         
+  643 |  1 SP1.S    643 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L0205B4        
+  644 |  1 SP1.S    644 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             INC   L020772        
+  645 |  1 SP1.S    645 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   L020804        
+  646 |  1 SP1.S    646 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             XBA                  
+  647 |  1 SP1.S    647 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             AND   #$00FF         
+  648 |  1 SP1.S    648 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   L020804        
+  649 |  1 SP1.S    649 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSR   L020682        
+  650 |  1 SP1.S    650 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BCS   L0205B5        
+  651 |  1 SP1.S    651 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRA   L02058E        
+  652 |  1 SP1.S    652 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0205B4     CLC                  
+  653 |  1 SP1.S    653 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0205B5     RTS                  
+  654 |  1 SP1.S    654 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  655 |  1 SP1.S    655 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0205B6     STZ   L020804        
+  656 |  1 SP1.S    656 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   L0207C2        
+  657 |  1 SP1.S    657 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             AND   #$00FF         
+  658 |  1 SP1.S    658 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CMP   #$002F         
+  659 |  1 SP1.S    659 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L0205D5        
+  660 |  1 SP1.S    660 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CMP   #$003A         
+  661 |  1 SP1.S    661 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L0205D5        
+  662 |  1 SP1.S    662 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSL   GSOS           
+  663 |  1 SP1.S    663 | Data        | ?? |         |   -1 | 00/FFFF :             |             DW    $200A          ; GetPrefix
+  664 |  1 SP1.S    664 | Data        | ?? |         |   -1 | 00/FFFF :             |             ADRL  $020915        
+  665 |  1 SP1.S    665 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BCS   L02061C        
+  666 |  1 SP1.S    666 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0205D5     LDA   L0207C1        
+  667 |  1 SP1.S    667 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             AND   #$00FF         
+  668 |  1 SP1.S    668 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CLC                  
+  669 |  1 SP1.S    669 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             ADC   L020804        
+  670 |  1 SP1.S    670 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CMP   #$0100         
+  671 |  1 SP1.S    671 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BCS   L02061C        
+  672 |  1 SP1.S    672 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             TAY                  
+  673 |  1 SP1.S    673 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   L020804        
+  674 |  1 SP1.S    674 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CLC                  
+  675 |  1 SP1.S    675 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             ADC   #L020806       
+  676 |  1 SP1.S    676 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   $18            
+  677 |  1 SP1.S    677 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STY   L020804        
+  678 |  1 SP1.S    678 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             SEP   #$30           
+  679 |  1 SP1.S    679 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDY   L0207C1        
+  680 |  1 SP1.S    680 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             DEY                  
+  681 |  1 SP1.S    681 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0205F7     LDA   L0207C2,Y      
+  682 |  1 SP1.S    682 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CMP   #$2F           
+  683 |  1 SP1.S    683 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L020600        
+  684 |  1 SP1.S    684 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   #$3A           
+  685 |  1 SP1.S    685 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020600     STA   ($18),Y        
+  686 |  1 SP1.S    686 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             DEY                  
+  687 |  1 SP1.S    687 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BPL   L0205F7        
+  688 |  1 SP1.S    688 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             REP   #$30           
+  689 |  1 SP1.S    689 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSL   GSOS           
+  690 |  1 SP1.S    690 | Data        | ?? |         |   -1 | 00/FFFF :             |             DW    $2006          ; GetFileInfo
+  691 |  1 SP1.S    691 | Data        | ?? |         |   -1 | 00/FFFF :             |             ADRL  $02091D        
+  692 |  1 SP1.S    692 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BCS   L02061B        
+  693 |  1 SP1.S    693 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             INC   L020772        
+  694 |  1 SP1.S    694 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSR   L020682        
+  695 |  1 SP1.S    695 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BCS   L02061C        
+  696 |  1 SP1.S    696 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L02061B     CLC                  
+  697 |  1 SP1.S    697 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L02061C     RTS                  
+  698 |  1 SP1.S    698 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  699 |  1 SP1.S    699 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L02061D     REP   #$20           
+  700 |  1 SP1.S    700 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   L02077C        
+  701 |  1 SP1.S    701 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CMP   #$0020         
+  702 |  1 SP1.S    702 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L02062B        
+  703 |  1 SP1.S    703 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             TYX                  
+  704 |  1 SP1.S    704 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRL   L020517        
+  705 |  1 SP1.S    705 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L02062B     BRA   L020638        
+  706 |  1 SP1.S    706 | Data        | ?? |         |   -1 | 00/FFFF :             | L02062D     STR   'Unmatched '   
+  707 |  1 SP1.S    707 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020638     PEA   ^L02062D       
+  708 |  1 SP1.S    708 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   L02062D        
+  709 |  1 SP1.S    709 | Macro       | ?? |         |   -1 | 00/FFFF               |             _WriteString                 
+  710 |  1 SP1.S    710 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   L02077C        
+  711 |  1 SP1.S    711 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+  712 |  1 SP1.S    712 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   $0000          
+  713 |  1 SP1.S    713 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   $0001          
+  714 |  1 SP1.S    714 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   $0000          
+  715 |  1 SP1.S    715 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSL   L020D4B        
+  716 |  1 SP1.S    716 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020656     LDA   #$8000         
+  717 |  1 SP1.S    717 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             SEC                  
+  718 |  1 SP1.S    718 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTS                  
+  719 |  1 SP1.S    719 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  720 |  1 SP1.S    720 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L02065B     REP   #$20           
+  721 |  1 SP1.S    721 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRA   L020673        
+  722 |  1 SP1.S    722 | Data        | ?? |         |   -1 | 00/FFFF :             | L02065F     STR   'Parameter too long.'
+  723 |  1 SP1.S    723 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020673     PEA   ^L02065F       
+  724 |  1 SP1.S    724 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   L02065F        
+  725 |  1 SP1.S    725 | Macro       | ?? |         |   -1 | 00/FFFF               |             _WriteLine                 
+  726 |  1 SP1.S    726 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRA   L020656        
+  727 |  1 SP1.S    727 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020682     LDA   L020786        
+  728 |  1 SP1.S    728 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L02068A        
+  729 |  1 SP1.S    729 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRL   L0206CE        
+  730 |  1 SP1.S    730 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L02068A     INC   L020774        
+  731 |  1 SP1.S    731 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   L020774        
+  732 |  1 SP1.S    732 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CMP   #$0FFF         
+  733 |  1 SP1.S    733 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BCC   L02069B        
+  734 |  1 SP1.S    734 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   #$8102         
+  735 |  1 SP1.S    735 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRL   L0206D0        
+  736 |  1 SP1.S    736 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L02069B     PEI   $0E            
+  737 |  1 SP1.S    737 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEI   $0C            
+  738 |  1 SP1.S    738 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   ^L020905       
+  739 |  1 SP1.S    739 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   L020905        
+  740 |  1 SP1.S    740 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   $0000          
+  741 |  1 SP1.S    741 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   $0010          
+  742 |  1 SP1.S    742 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSL   L0206FA        
+  743 |  1 SP1.S    743 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BCC   L0206B3        
+  744 |  1 SP1.S    744 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRA   L0206CF        
+  745 |  1 SP1.S    745 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0206B3     PEI   $06            
+  746 |  1 SP1.S    746 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEI   $04            
+  747 |  1 SP1.S    747 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   ^L020804       
+  748 |  1 SP1.S    748 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   L020804        
+  749 |  1 SP1.S    749 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   $0000          
+  750 |  1 SP1.S    750 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   L020804        
+  751 |  1 SP1.S    751 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             INC                  
+  752 |  1 SP1.S    752 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             INC                  
+  753 |  1 SP1.S    753 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+  754 |  1 SP1.S    754 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSL   L0206FA        
+  755 |  1 SP1.S    755 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BCC   L0206CE        
+  756 |  1 SP1.S    756 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRA   L0206CF        
+  757 |  1 SP1.S    757 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0206CE     CLC                  
+  758 |  1 SP1.S    758 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0206CF     RTS                  
+  759 |  1 SP1.S    759 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  760 |  1 SP1.S    760 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0206D0     DEC   L020774        
+  761 |  1 SP1.S    761 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRA   L0206CF        
+  762 |  1 SP1.S    762 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0206D5     LDY   #$0008         
+  763 |  1 SP1.S    763 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSR   L0201CB        
+  764 |  1 SP1.S    764 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L0206E4        
+  765 |  1 SP1.S    765 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSR   L0201E5        
+  766 |  1 SP1.S    766 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L0206E4        
+  767 |  1 SP1.S    767 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CLC                  
+  768 |  1 SP1.S    768 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTS                  
+  769 |  1 SP1.S    769 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  770 |  1 SP1.S    770 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0206E4     PEA   ^L020930       
+  771 |  1 SP1.S    771 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   L020932        
+  772 |  1 SP1.S    772 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   $0000          
+  773 |  1 SP1.S    773 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   L020930        
+  774 |  1 SP1.S    774 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+  775 |  1 SP1.S    775 | Macro       | ?? |         |   -1 | 00/FFFF               |             _TextWriteBlock                 
+  776 |  1 SP1.S    776 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             SEC                  
+  777 |  1 SP1.S    777 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTS                  
+  778 |  1 SP1.S    778 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  779 |  1 SP1.S    779 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L0206FA     PHD                  
+  780 |  1 SP1.S    780 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+  781 |  1 SP1.S    781 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+  782 |  1 SP1.S    782 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             TSC                  
+  783 |  1 SP1.S    783 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             INC                  
+  784 |  1 SP1.S    784 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             TCD                  
+  785 |  1 SP1.S    785 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEI   $13            
+  786 |  1 SP1.S    786 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEI   $11            
+  787 |  1 SP1.S    787 | Macro       | ?? |         |   -1 | 00/FFFF               |             _GetHandleSize                 
+  788 |  1 SP1.S    788 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CLC                  
+  789 |  1 SP1.S    789 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   $00            
+  790 |  1 SP1.S    790 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             ADC   $09            
+  791 |  1 SP1.S    791 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             TAX                  
+  792 |  1 SP1.S    792 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   $02            
+  793 |  1 SP1.S    793 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             ADC   $0B            
+  794 |  1 SP1.S    794 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+  795 |  1 SP1.S    795 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHX                  
+  796 |  1 SP1.S    796 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEI   $13            
+  797 |  1 SP1.S    797 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEI   $11            
+  798 |  1 SP1.S    798 | Macro       | ?? |         |   -1 | 00/FFFF               |             _SetHandleSize                 
+  799 |  1 SP1.S    799 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BCS   L020759        
+  800 |  1 SP1.S    800 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDY   #$0004         
+  801 |  1 SP1.S    801 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   [$11],Y        
+  802 |  1 SP1.S    802 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             ORA   #$8000         
+  803 |  1 SP1.S    803 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   [$11],Y        
+  804 |  1 SP1.S    804 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEI   $0F            
+  805 |  1 SP1.S    805 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEI   $0D            
+  806 |  1 SP1.S    806 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CLC                  
+  807 |  1 SP1.S    807 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   [$11]          
+  808 |  1 SP1.S    808 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             ADC   $00            
+  809 |  1 SP1.S    809 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             TAX                  
+  810 |  1 SP1.S    810 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDY   #$0002         
+  811 |  1 SP1.S    811 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   [$11],Y        
+  812 |  1 SP1.S    812 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             ADC   $02            
+  813 |  1 SP1.S    813 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+  814 |  1 SP1.S    814 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHX                  
+  815 |  1 SP1.S    815 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEI   $0B            
+  816 |  1 SP1.S    816 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEI   $09            
+  817 |  1 SP1.S    817 | Macro       | ?? |         |   -1 | 00/FFFF               |             _BlockMove                 
+  818 |  1 SP1.S    818 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDY   #$0004         
+  819 |  1 SP1.S    819 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   [$11],Y        
+  820 |  1 SP1.S    820 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             AND   #$7FFF         
+  821 |  1 SP1.S    821 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   [$11],Y        
+  822 |  1 SP1.S    822 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   #$0000         
+  823 |  1 SP1.S    823 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020759     TAY                  
+  824 |  1 SP1.S    824 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   $07            
+  825 |  1 SP1.S    825 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   $13            
+  826 |  1 SP1.S    826 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   $06            
+  827 |  1 SP1.S    827 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   $12            
+  828 |  1 SP1.S    828 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   $04            
+  829 |  1 SP1.S    829 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             TCD                  
+  830 |  1 SP1.S    830 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             TSC                  
+  831 |  1 SP1.S    831 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CLC                  
+  832 |  1 SP1.S    832 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             ADC   #$0012         
+  833 |  1 SP1.S    833 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             TCS                  
+  834 |  1 SP1.S    834 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             TYA                  
+  835 |  1 SP1.S    835 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CMP   #$0001         
+  836 |  1 SP1.S    836 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTL                  
+  837 |  1 SP1.S    837 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+  838 |  1 SP1.S    838 | Data        | ?? |         |   -1 | 00/FFFF :             | L020770     DB    $00            
+  839 |  1 SP1.S    839 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  840 |  1 SP1.S    840 | Data        | ?? |         |   -1 | 00/FFFF :             | L020772     DB    $00            
+  841 |  1 SP1.S    841 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  842 |  1 SP1.S    842 | Data        | ?? |         |   -1 | 00/FFFF :             | L020774     DB    $00            
+  843 |  1 SP1.S    843 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  844 |  1 SP1.S    844 | Data        | ?? |         |   -1 | 00/FFFF :             | L020776     DB    $00            
+  845 |  1 SP1.S    845 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  846 |  1 SP1.S    846 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  847 |  1 SP1.S    847 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  848 |  1 SP1.S    848 | Data        | ?? |         |   -1 | 00/FFFF :             | L02077A     DB    $00            
+  849 |  1 SP1.S    849 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  850 |  1 SP1.S    850 | Data        | ?? |         |   -1 | 00/FFFF :             | L02077C     DB    $00            
+  851 |  1 SP1.S    851 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  852 |  1 SP1.S    852 | Data        | ?? |         |   -1 | 00/FFFF :             | L02077E     DB    $00            
+  853 |  1 SP1.S    853 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  854 |  1 SP1.S    854 | Data        | ?? |         |   -1 | 00/FFFF :             | L020780     DB    $00            
+  855 |  1 SP1.S    855 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  856 |  1 SP1.S    856 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  857 |  1 SP1.S    857 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  858 |  1 SP1.S    858 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $01            
+  859 |  1 SP1.S    859 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  860 |  1 SP1.S    860 | Data        | ?? |         |   -1 | 00/FFFF :             | L020786     DB    $01            
+  861 |  1 SP1.S    861 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  862 |  1 SP1.S    862 | Data        | ?? |         |   -1 | 00/FFFF :             | L020788     DB    $00            
+  863 |  1 SP1.S    863 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  864 |  1 SP1.S    864 | Data        | ?? |         |   -1 | 00/FFFF :             | L02078A     DB    $00            
+  865 |  1 SP1.S    865 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  866 |  1 SP1.S    866 | Data        | ?? |         |   -1 | 00/FFFF :             | L02078C     DB    $00            
+  867 |  1 SP1.S    867 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  868 |  1 SP1.S    868 | Global      | ?? |         |   -1 | 00/FFFF               | L02078E     ENT                  
+  869 |  1 SP1.S    869 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  870 |  1 SP1.S    870 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  871 |  1 SP1.S    871 | Data        | ?? |         |   -1 | 00/FFFF :             | L020790     STR   'Unable to add songs to list: $'
+  872 |  1 SP1.S    872 | Data        | ?? |         |   -1 | 00/FFFF :             | L0207AF     DB    $00            
+  873 |  1 SP1.S    873 | Data        | ?? |         |   -1 | 00/FFFF :             | L0207B0     DB    $04            
+  874 |  1 SP1.S    874 | Data        | ?? |         |   -1 | 00/FFFF :             | L0207B1     DB    $00            
+  875 |  1 SP1.S    875 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  876 |  1 SP1.S    876 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  877 |  1 SP1.S    877 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  878 |  1 SP1.S    878 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  879 |  1 SP1.S    879 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  880 |  1 SP1.S    880 | Data        | ?? |         |   -1 | 00/FFFF :             |             ADRL  L0207C1        ;  file name
+  881 |  1 SP1.S    881 | Data        | ?? |         |   -1 | 00/FFFF :             |             DW    $0000          ;  flags
+  882 |  1 SP1.S    882 | Data        | ?? |         |   -1 | 00/FFFF :             |             ADRL  L020805        ;  file name
+  883 |  1 SP1.S    883 | Data        | ?? |         |   -1 | 00/FFFF :             | L0207C1     DB    $00            
+  884 |  1 SP1.S    884 | Data        | ?? |         |   -1 | 00/FFFF :             | L0207C2     DB    $00            
+  885 |  1 SP1.S    885 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  886 |  1 SP1.S    886 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  887 |  1 SP1.S    887 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  888 |  1 SP1.S    888 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  889 |  1 SP1.S    889 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  890 |  1 SP1.S    890 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  891 |  1 SP1.S    891 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  892 |  1 SP1.S    892 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  893 |  1 SP1.S    893 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  894 |  1 SP1.S    894 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  895 |  1 SP1.S    895 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  896 |  1 SP1.S    896 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  897 |  1 SP1.S    897 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  898 |  1 SP1.S    898 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  899 |  1 SP1.S    899 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  900 |  1 SP1.S    900 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  901 |  1 SP1.S    901 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  902 |  1 SP1.S    902 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  903 |  1 SP1.S    903 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  904 |  1 SP1.S    904 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  905 |  1 SP1.S    905 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  906 |  1 SP1.S    906 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  907 |  1 SP1.S    907 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  908 |  1 SP1.S    908 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  909 |  1 SP1.S    909 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  910 |  1 SP1.S    910 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  911 |  1 SP1.S    911 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  912 |  1 SP1.S    912 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  913 |  1 SP1.S    913 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  914 |  1 SP1.S    914 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  915 |  1 SP1.S    915 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  916 |  1 SP1.S    916 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  917 |  1 SP1.S    917 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  918 |  1 SP1.S    918 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  919 |  1 SP1.S    919 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  920 |  1 SP1.S    920 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  921 |  1 SP1.S    921 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  922 |  1 SP1.S    922 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  923 |  1 SP1.S    923 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  924 |  1 SP1.S    924 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  925 |  1 SP1.S    925 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  926 |  1 SP1.S    926 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  927 |  1 SP1.S    927 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  928 |  1 SP1.S    928 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  929 |  1 SP1.S    929 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  930 |  1 SP1.S    930 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  931 |  1 SP1.S    931 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  932 |  1 SP1.S    932 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  933 |  1 SP1.S    933 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  934 |  1 SP1.S    934 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  935 |  1 SP1.S    935 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  936 |  1 SP1.S    936 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  937 |  1 SP1.S    937 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  938 |  1 SP1.S    938 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  939 |  1 SP1.S    939 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  940 |  1 SP1.S    940 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  941 |  1 SP1.S    941 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  942 |  1 SP1.S    942 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  943 |  1 SP1.S    943 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  944 |  1 SP1.S    944 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  945 |  1 SP1.S    945 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  946 |  1 SP1.S    946 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  947 |  1 SP1.S    947 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  948 |  1 SP1.S    948 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $02            
+  949 |  1 SP1.S    949 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $01            
+  950 |  1 SP1.S    950 | Data        | ?? |         |   -1 | 00/FFFF :             | L020804     DB    $00            
+  951 |  1 SP1.S    951 | Data        | ?? |         |   -1 | 00/FFFF :             | L020805     DB    $00            
+  952 |  1 SP1.S    952 | Data        | ?? |         |   -1 | 00/FFFF :             | L020806     DB    $00            
+  953 |  1 SP1.S    953 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  954 |  1 SP1.S    954 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  955 |  1 SP1.S    955 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  956 |  1 SP1.S    956 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  957 |  1 SP1.S    957 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  958 |  1 SP1.S    958 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  959 |  1 SP1.S    959 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  960 |  1 SP1.S    960 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  961 |  1 SP1.S    961 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  962 |  1 SP1.S    962 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  963 |  1 SP1.S    963 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  964 |  1 SP1.S    964 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  965 |  1 SP1.S    965 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  966 |  1 SP1.S    966 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  967 |  1 SP1.S    967 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  968 |  1 SP1.S    968 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  969 |  1 SP1.S    969 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  970 |  1 SP1.S    970 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  971 |  1 SP1.S    971 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  972 |  1 SP1.S    972 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  973 |  1 SP1.S    973 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  974 |  1 SP1.S    974 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  975 |  1 SP1.S    975 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  976 |  1 SP1.S    976 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  977 |  1 SP1.S    977 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  978 |  1 SP1.S    978 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  979 |  1 SP1.S    979 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  980 |  1 SP1.S    980 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  981 |  1 SP1.S    981 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  982 |  1 SP1.S    982 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  983 |  1 SP1.S    983 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  984 |  1 SP1.S    984 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  985 |  1 SP1.S    985 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  986 |  1 SP1.S    986 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  987 |  1 SP1.S    987 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  988 |  1 SP1.S    988 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  989 |  1 SP1.S    989 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  990 |  1 SP1.S    990 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  991 |  1 SP1.S    991 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  992 |  1 SP1.S    992 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  993 |  1 SP1.S    993 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  994 |  1 SP1.S    994 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  995 |  1 SP1.S    995 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  996 |  1 SP1.S    996 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  997 |  1 SP1.S    997 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  998 |  1 SP1.S    998 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+  999 |  1 SP1.S    999 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1000 |  1 SP1.S   1000 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1001 |  1 SP1.S   1001 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1002 |  1 SP1.S   1002 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1003 |  1 SP1.S   1003 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1004 |  1 SP1.S   1004 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1005 |  1 SP1.S   1005 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1006 |  1 SP1.S   1006 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1007 |  1 SP1.S   1007 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1008 |  1 SP1.S   1008 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1009 |  1 SP1.S   1009 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1010 |  1 SP1.S   1010 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1011 |  1 SP1.S   1011 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1012 |  1 SP1.S   1012 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1013 |  1 SP1.S   1013 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1014 |  1 SP1.S   1014 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1015 |  1 SP1.S   1015 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1016 |  1 SP1.S   1016 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1017 |  1 SP1.S   1017 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1018 |  1 SP1.S   1018 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1019 |  1 SP1.S   1019 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1020 |  1 SP1.S   1020 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1021 |  1 SP1.S   1021 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1022 |  1 SP1.S   1022 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1023 |  1 SP1.S   1023 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1024 |  1 SP1.S   1024 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1025 |  1 SP1.S   1025 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1026 |  1 SP1.S   1026 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1027 |  1 SP1.S   1027 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1028 |  1 SP1.S   1028 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1029 |  1 SP1.S   1029 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1030 |  1 SP1.S   1030 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1031 |  1 SP1.S   1031 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1032 |  1 SP1.S   1032 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1033 |  1 SP1.S   1033 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1034 |  1 SP1.S   1034 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1035 |  1 SP1.S   1035 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1036 |  1 SP1.S   1036 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1037 |  1 SP1.S   1037 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1038 |  1 SP1.S   1038 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1039 |  1 SP1.S   1039 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1040 |  1 SP1.S   1040 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1041 |  1 SP1.S   1041 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1042 |  1 SP1.S   1042 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1043 |  1 SP1.S   1043 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1044 |  1 SP1.S   1044 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1045 |  1 SP1.S   1045 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1046 |  1 SP1.S   1046 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1047 |  1 SP1.S   1047 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1048 |  1 SP1.S   1048 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1049 |  1 SP1.S   1049 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1050 |  1 SP1.S   1050 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1051 |  1 SP1.S   1051 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1052 |  1 SP1.S   1052 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1053 |  1 SP1.S   1053 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1054 |  1 SP1.S   1054 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1055 |  1 SP1.S   1055 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1056 |  1 SP1.S   1056 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1057 |  1 SP1.S   1057 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1058 |  1 SP1.S   1058 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1059 |  1 SP1.S   1059 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1060 |  1 SP1.S   1060 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1061 |  1 SP1.S   1061 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1062 |  1 SP1.S   1062 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1063 |  1 SP1.S   1063 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1064 |  1 SP1.S   1064 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1065 |  1 SP1.S   1065 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1066 |  1 SP1.S   1066 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1067 |  1 SP1.S   1067 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1068 |  1 SP1.S   1068 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1069 |  1 SP1.S   1069 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1070 |  1 SP1.S   1070 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1071 |  1 SP1.S   1071 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1072 |  1 SP1.S   1072 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1073 |  1 SP1.S   1073 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1074 |  1 SP1.S   1074 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1075 |  1 SP1.S   1075 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1076 |  1 SP1.S   1076 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1077 |  1 SP1.S   1077 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1078 |  1 SP1.S   1078 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1079 |  1 SP1.S   1079 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1080 |  1 SP1.S   1080 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1081 |  1 SP1.S   1081 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1082 |  1 SP1.S   1082 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1083 |  1 SP1.S   1083 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1084 |  1 SP1.S   1084 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1085 |  1 SP1.S   1085 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1086 |  1 SP1.S   1086 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1087 |  1 SP1.S   1087 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1088 |  1 SP1.S   1088 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1089 |  1 SP1.S   1089 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1090 |  1 SP1.S   1090 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1091 |  1 SP1.S   1091 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1092 |  1 SP1.S   1092 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1093 |  1 SP1.S   1093 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1094 |  1 SP1.S   1094 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1095 |  1 SP1.S   1095 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1096 |  1 SP1.S   1096 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1097 |  1 SP1.S   1097 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1098 |  1 SP1.S   1098 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1099 |  1 SP1.S   1099 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1100 |  1 SP1.S   1100 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1101 |  1 SP1.S   1101 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1102 |  1 SP1.S   1102 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1103 |  1 SP1.S   1103 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1104 |  1 SP1.S   1104 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1105 |  1 SP1.S   1105 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1106 |  1 SP1.S   1106 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1107 |  1 SP1.S   1107 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1108 |  1 SP1.S   1108 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1109 |  1 SP1.S   1109 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1110 |  1 SP1.S   1110 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1111 |  1 SP1.S   1111 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1112 |  1 SP1.S   1112 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1113 |  1 SP1.S   1113 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1114 |  1 SP1.S   1114 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1115 |  1 SP1.S   1115 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1116 |  1 SP1.S   1116 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1117 |  1 SP1.S   1117 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1118 |  1 SP1.S   1118 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1119 |  1 SP1.S   1119 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1120 |  1 SP1.S   1120 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1121 |  1 SP1.S   1121 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1122 |  1 SP1.S   1122 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1123 |  1 SP1.S   1123 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1124 |  1 SP1.S   1124 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1125 |  1 SP1.S   1125 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1126 |  1 SP1.S   1126 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1127 |  1 SP1.S   1127 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1128 |  1 SP1.S   1128 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1129 |  1 SP1.S   1129 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1130 |  1 SP1.S   1130 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1131 |  1 SP1.S   1131 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1132 |  1 SP1.S   1132 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1133 |  1 SP1.S   1133 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1134 |  1 SP1.S   1134 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1135 |  1 SP1.S   1135 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1136 |  1 SP1.S   1136 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1137 |  1 SP1.S   1137 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1138 |  1 SP1.S   1138 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1139 |  1 SP1.S   1139 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1140 |  1 SP1.S   1140 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1141 |  1 SP1.S   1141 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1142 |  1 SP1.S   1142 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1143 |  1 SP1.S   1143 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1144 |  1 SP1.S   1144 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1145 |  1 SP1.S   1145 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1146 |  1 SP1.S   1146 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1147 |  1 SP1.S   1147 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1148 |  1 SP1.S   1148 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1149 |  1 SP1.S   1149 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1150 |  1 SP1.S   1150 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1151 |  1 SP1.S   1151 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1152 |  1 SP1.S   1152 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1153 |  1 SP1.S   1153 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1154 |  1 SP1.S   1154 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1155 |  1 SP1.S   1155 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1156 |  1 SP1.S   1156 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1157 |  1 SP1.S   1157 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1158 |  1 SP1.S   1158 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1159 |  1 SP1.S   1159 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1160 |  1 SP1.S   1160 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1161 |  1 SP1.S   1161 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1162 |  1 SP1.S   1162 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1163 |  1 SP1.S   1163 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1164 |  1 SP1.S   1164 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1165 |  1 SP1.S   1165 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1166 |  1 SP1.S   1166 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1167 |  1 SP1.S   1167 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1168 |  1 SP1.S   1168 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1169 |  1 SP1.S   1169 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1170 |  1 SP1.S   1170 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1171 |  1 SP1.S   1171 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1172 |  1 SP1.S   1172 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1173 |  1 SP1.S   1173 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1174 |  1 SP1.S   1174 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1175 |  1 SP1.S   1175 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1176 |  1 SP1.S   1176 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1177 |  1 SP1.S   1177 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1178 |  1 SP1.S   1178 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1179 |  1 SP1.S   1179 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1180 |  1 SP1.S   1180 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1181 |  1 SP1.S   1181 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1182 |  1 SP1.S   1182 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1183 |  1 SP1.S   1183 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1184 |  1 SP1.S   1184 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1185 |  1 SP1.S   1185 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1186 |  1 SP1.S   1186 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1187 |  1 SP1.S   1187 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1188 |  1 SP1.S   1188 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1189 |  1 SP1.S   1189 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1190 |  1 SP1.S   1190 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1191 |  1 SP1.S   1191 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1192 |  1 SP1.S   1192 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1193 |  1 SP1.S   1193 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1194 |  1 SP1.S   1194 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1195 |  1 SP1.S   1195 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1196 |  1 SP1.S   1196 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1197 |  1 SP1.S   1197 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1198 |  1 SP1.S   1198 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1199 |  1 SP1.S   1199 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1200 |  1 SP1.S   1200 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1201 |  1 SP1.S   1201 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1202 |  1 SP1.S   1202 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1203 |  1 SP1.S   1203 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1204 |  1 SP1.S   1204 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1205 |  1 SP1.S   1205 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1206 |  1 SP1.S   1206 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1207 |  1 SP1.S   1207 | Data        | ?? |         |   -1 | 00/FFFF :             | L020905     DB    $00            
+ 1208 |  1 SP1.S   1208 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1209 |  1 SP1.S   1209 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1210 |  1 SP1.S   1210 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1211 |  1 SP1.S   1211 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1212 |  1 SP1.S   1212 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1213 |  1 SP1.S   1213 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1214 |  1 SP1.S   1214 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1215 |  1 SP1.S   1215 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1216 |  1 SP1.S   1216 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1217 |  1 SP1.S   1217 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1218 |  1 SP1.S   1218 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1219 |  1 SP1.S   1219 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1220 |  1 SP1.S   1220 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1221 |  1 SP1.S   1221 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1222 |  1 SP1.S   1222 | Data        | ?? |         |   -1 | 00/FFFF :             |             DB    $00            
+ 1223 |  1 SP1.S   1223 | Data        | ?? |         |   -1 | 00/FFFF :             |             DW    $0002          ; Parms for GetPrefix
+ 1224 |  1 SP1.S   1224 | Data        | ?? |         |   -1 | 00/FFFF :             |             DW    $0000          ;  prefix num
+ 1225 |  1 SP1.S   1225 | Data        | ?? |         |   -1 | 00/FFFF :             |             ADRL  $020802        ;  prefix ptr
+ 1226 |  1 SP1.S   1226 | Data        | ?? |         |   -1 | 00/FFFF :             |             DW    $0002          ; Parms for GetFileInfo
+ 1227 |  1 SP1.S   1227 | Data        | ?? |         |   -1 | 00/FFFF :             |             ADRL  L020804        ;  file name
+ 1228 |  1 SP1.S   1228 | Data        | ?? |         |   -1 | 00/FFFF :             |             DW    $0000          ;  access
+ 1229 |  1 SP1.S   1229 | Data        | ?? |         |   -1 | 00/FFFF :             | L020925     STR   'No match: '   
+ 1230 |  1 SP1.S   1230 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+ 1231 |  1 SP1.S   1231 | Data        | ?? |         |   -1 | 00/FFFF :             | L020930     DW    L020CFB-L020932; $03C9
+ 1232 |  1 SP1.S   1232 | Data        | ?? |         |   -1 | 00/FFFF :             | L020932     ASC   '---'0D0A      
+ 1233 |  1 SP1.S   1233 | Data        | ?? |         |   -1 | 00/FFFF :             |             ASC   '      Shellplay  v0.71    Copyright (c) '
+ 1234 |  1 SP1.S   1234 | Data        | ?? |         |   -1 | 00/FFFF :             |             ASC   '1993 by Brian C Bening    Freeware'0D0A
+ 1235 |  1 SP1.S   1235 | Data        | ?? |         |   -1 | 00/FFFF :             |             ASC   '     (19:45  23 Jun 93)   All rights res'
+ 1236 |  1 SP1.S   1236 | Data        | ?? |         |   -1 | 00/FFFF :             |             ASC   'erved.'0D0A0D0A
+ 1237 |  1 SP1.S   1237 | Data        | ?? |         |   -1 | 00/FFFF :             |             ASC   'usage: sp [option(s)] [MODfile(s)] [ [op'
+ 1238 |  1 SP1.S   1238 | Data        | ?? |         |   -1 | 00/FFFF :             |             ASC   'tion(s)] [MODfile(s)] [...] ]'0D0A
+ 1239 |  1 SP1.S   1239 | Data        | ?? |         |   -1 | 00/FFFF :             |             ASC   'options:'0D0A 
+ 1240 |  1 SP1.S   1240 | Data        | ?? |         |   -1 | 00/FFFF :             |             ASC   '   -ts smart PT/constant tempo          '
+ 1241 |  1 SP1.S   1241 | Data        | ?? |         |   -1 | 00/FFFF :             |             ASC   '  + -s  change current song'0D0A
+ 1242 |  1 SP1.S   1242 | Data        | ?? |         |   -1 | 00/FFFF :             |             ASC   '   -tp force protracker tempo           '
+ 1243 |  1 SP1.S   1243 | Data        | ?? |         |   -1 | 00/FFFF :             |             ASC   '    -r  don'27't use random play'0D0A
+ 1244 |  1 SP1.S   1244 | Data        | ?? |         |   -1 | 00/FFFF :             |             ASC   '   -tc force constant tempo             '
+ 1245 |  1 SP1.S   1245 | Data        | ?? |         |   -1 | 00/FFFF :             |             ASC   '    +r  random play / re-randomize'0D0A
+ 1246 |  1 SP1.S   1246 | Data        | ?? |         |   -1 | 00/FFFF :             |             ASC   '   -t5 constant tempo is PAL 50Hz       '
+ 1247 |  1 SP1.S   1247 | Data        | ?? |         |   -1 | 00/FFFF :             |             ASC   '    -C  clear playlist'0D0A
+ 1248 |  1 SP1.S   1248 | Data        | ?? |         |   -1 | 00/FFFF :             |             ASC   '   -t6 constant tempo is NTSC 60Hz      '
+ 1249 |  1 SP1.S   1249 | Data        | ?? |         |   -1 | 00/FFFF :             |             ASC   '    -K  kill and remove shellplay'0D0A
+ 1250 |  1 SP1.S   1250 | Data        | ?? |         |   -1 | 00/FFFF :             |             ASC   '   -VX set volume percent (0..100)      '
+ 1251 |  1 SP1.S   1251 | Data        | ?? |         |   -1 | 00/FFFF :             |             ASC   '    -gX goto song X'0D0A
+ 1252 |  1 SP1.S   1252 | Data        | ?? |         |   -1 | 00/FFFF :             |             ASC   '   -SX set percent stereo (-200..200)   '
+ 1253 |  1 SP1.S   1253 | Data        | ?? |         |   -1 | 00/FFFF :             |             ASC   '    -l  print playlist'0D0A
+ 1254 |  1 SP1.S   1254 | Data        | ?? |         |   -1 | 00/FFFF :             |             ASC   ' +|-b  follow position jumps            '
+ 1255 |  1 SP1.S   1255 | Data        | ?? |         |   -1 | 00/FFFF :             |             ASC   '    -c  print current MODfile'0D0A
+ 1256 |  1 SP1.S   1256 | Data        | ?? |         |   -1 | 00/FFFF :             |             ASC   '   -?  print this option list           '
+ 1257 |  1 SP1.S   1257 | Data        | ?? |         |   -1 | 00/FFFF :             |             ASC   '  +|-H  modem port hardware handshaking'0D0A0D0A
+ 1258 |  1 SP1.S   1258 | Data        | ?? |         |   -1 | 00/FFFF :             |             ASC   'default options: sp -H -r -b -ts -t5 -S7'
+ 1259 |  1 SP1.S   1259 | Data        | ?? |         |   -1 | 00/FFFF :             |             ASC   '0 -V60'0D0A0D0A
+ 1260 |  1 SP1.S   1260 | Data        | ?? |         |   -1 | 00/FFFF :             |             ASC   'send comments, suggestions, bug reports '
+ 1261 |  1 SP1.S   1261 | Data        | ?? |         |   -1 | 00/FFFF :             |             ASC   'to: vacc0001@student.tc.umn.edu'0D0A
+ 1262 |  1 SP1.S   1262 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+ 1263 |  1 SP1.S   1263 | Data        | ?? |         |   -1 | 00/FFFF :             | L020CFB     ASC   'BYTEWRKS'     
+ 1264 |  1 SP1.S   1264 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+ 1265 |  1 SP1.S   1265 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020D03     LDA   #$0002         
+ 1266 |  1 SP1.S   1266 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSL   L030000        
+ 1267 |  1 SP1.S   1267 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+ 1268 |  1 SP1.S   1268 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+ 1269 |  1 SP1.S   1269 | Macro       | ?? |         |   -1 | 00/FFFF               |             _DisposeAll                 
+ 1270 |  1 SP1.S   1270 | Unknown    | ?? |         |   -1 | 00/FFFF               |             _DeleteID                 
+ 1271 |  1 SP1.S   1271 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTL                  
+ 1272 |  1 SP1.S   1272 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+ 1273 |  1 SP1.S   1273 | Global      | ?? |         |   -1 | 00/FFFF               | L020D1B     ENT                  
+ 1274 |  1 SP1.S   1274 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             TSC                  
+ 1275 |  1 SP1.S   1275 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHD                  
+ 1276 |  1 SP1.S   1276 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             TCD                  
+ 1277 |  1 SP1.S   1277 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   ^L020DD6       
+ 1278 |  1 SP1.S   1278 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   L020DD6        
+ 1279 |  1 SP1.S   1279 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   $0A            
+ 1280 |  1 SP1.S   1280 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSL   L020DBF        
+ 1281 |  1 SP1.S   1281 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   ^L020DD6       
+ 1282 |  1 SP1.S   1282 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   L020DD6        
+ 1283 |  1 SP1.S   1283 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   $08            
+ 1284 |  1 SP1.S   1284 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+ 1285 |  1 SP1.S   1285 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   $06            
+ 1286 |  1 SP1.S   1286 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+ 1287 |  1 SP1.S   1287 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   $04            
+ 1288 |  1 SP1.S   1288 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+ 1289 |  1 SP1.S   1289 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSL   L020D7A        
+ 1290 |  1 SP1.S   1290 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   $02            
+ 1291 |  1 SP1.S   1291 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   $0A            
+ 1292 |  1 SP1.S   1292 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   $00            
+ 1293 |  1 SP1.S   1293 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   $08            
+ 1294 |  1 SP1.S   1294 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLD                  
+ 1295 |  1 SP1.S   1295 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLA                  
+ 1296 |  1 SP1.S   1296 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLA                  
+ 1297 |  1 SP1.S   1297 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLA                  
+ 1298 |  1 SP1.S   1298 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLA                  
+ 1299 |  1 SP1.S   1299 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTL                  
+ 1300 |  1 SP1.S   1300 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+ 1301 |  1 SP1.S   1301 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020D4B     TSC                  
+ 1302 |  1 SP1.S   1302 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHD                  
+ 1303 |  1 SP1.S   1303 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             TCD                  
+ 1304 |  1 SP1.S   1304 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   #$0001         
+ 1305 |  1 SP1.S   1305 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   L020DD7        
+ 1306 |  1 SP1.S   1306 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   $0A            
+ 1307 |  1 SP1.S   1307 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   L020DD8        
+ 1308 |  1 SP1.S   1308 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   ^L020DD6       
+ 1309 |  1 SP1.S   1309 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   L020DD6        
+ 1310 |  1 SP1.S   1310 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   $08            
+ 1311 |  1 SP1.S   1311 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+ 1312 |  1 SP1.S   1312 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   $06            
+ 1313 |  1 SP1.S   1313 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+ 1314 |  1 SP1.S   1314 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   $04            
+ 1315 |  1 SP1.S   1315 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+ 1316 |  1 SP1.S   1316 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSL   L020D7A        
+ 1317 |  1 SP1.S   1317 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   $02            
+ 1318 |  1 SP1.S   1318 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   $0A            
+ 1319 |  1 SP1.S   1319 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   $00            
+ 1320 |  1 SP1.S   1320 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   $08            
+ 1321 |  1 SP1.S   1321 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLD                  
+ 1322 |  1 SP1.S   1322 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLA                  
+ 1323 |  1 SP1.S   1323 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLA                  
+ 1324 |  1 SP1.S   1324 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLA                  
+ 1325 |  1 SP1.S   1325 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLA                  
+ 1326 |  1 SP1.S   1326 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTL                  
+ 1327 |  1 SP1.S   1327 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+ 1328 |  1 SP1.S   1328 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020D7A     TSC                  
+ 1329 |  1 SP1.S   1329 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHD                  
+ 1330 |  1 SP1.S   1330 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             TCD                  
+ 1331 |  1 SP1.S   1331 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             INC   $0A            
+ 1332 |  1 SP1.S   1332 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L020D83        
+ 1333 |  1 SP1.S   1333 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             INC   $0C            
+ 1334 |  1 SP1.S   1334 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020D83     LDA   [$0A]          
+ 1335 |  1 SP1.S   1335 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             AND   #$00FF         
+ 1336 |  1 SP1.S   1336 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             SEC                  
+ 1337 |  1 SP1.S   1337 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             SBC   $08            
+ 1338 |  1 SP1.S   1338 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BPL   L020D97        
+ 1339 |  1 SP1.S   1339 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             EOR   #$FFFF         
+ 1340 |  1 SP1.S   1340 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             INC                  
+ 1341 |  1 SP1.S   1341 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDY   $04            
+ 1342 |  1 SP1.S   1342 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSL   L020E75        
+ 1343 |  1 SP1.S   1343 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020D97     LDA   $0C            
+ 1344 |  1 SP1.S   1344 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+ 1345 |  1 SP1.S   1345 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   $0A            
+ 1346 |  1 SP1.S   1346 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+ 1347 |  1 SP1.S   1347 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   $06            
+ 1348 |  1 SP1.S   1348 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             EOR   #$0001         
+ 1349 |  1 SP1.S   1349 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             ASL                  
+ 1350 |  1 SP1.S   1350 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             ORA   $04            
+ 1351 |  1 SP1.S   1351 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             XBA                  
+ 1352 |  1 SP1.S   1352 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CLC                  
+ 1353 |  1 SP1.S   1353 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             ADC   #$1A0C         ; WriteLine
+ 1354 |  1 SP1.S   1354 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             TAX                  
+ 1355 |  1 SP1.S   1355 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSL   LE10000        
+ 1356 |  1 SP1.S   1356 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   $02            
+ 1357 |  1 SP1.S   1357 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   $0C            
+ 1358 |  1 SP1.S   1358 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   $00            
+ 1359 |  1 SP1.S   1359 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   $0A            
+ 1360 |  1 SP1.S   1360 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLD                  
+ 1361 |  1 SP1.S   1361 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CLC                  
+ 1362 |  1 SP1.S   1362 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             TSC                  
+ 1363 |  1 SP1.S   1363 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             ADC   #$000A         
+ 1364 |  1 SP1.S   1364 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             TCS                  
+ 1365 |  1 SP1.S   1365 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTL                  
+ 1366 |  1 SP1.S   1366 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+ 1367 |  1 SP1.S   1367 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020DBF     PHA                  
+ 1368 |  1 SP1.S   1368 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   ^L020E00       
+ 1369 |  1 SP1.S   1369 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   L020E00        
+ 1370 |  1 SP1.S   1370 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   $0028          
+ 1371 |  1 SP1.S   1371 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PEA   $0001          
+ 1372 |  1 SP1.S   1372 | Macro       | ?? |         |   -1 | 00/FFFF               |             _Int2Dec                 
+ 1373 |  1 SP1.S   1373 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JMP   L020E28        
+ 1374 |  1 SP1.S   1374 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+ 1375 |  1 SP1.S   1375 | Data        | ?? |         |   -1 | 00/FFFF :             | L020DD6     DB    $28            
+ 1376 |  1 SP1.S   1376 | Data        | ?? |         |   -1 | 00/FFFF :             | L020DD7     DB    $00            
+ 1377 |  1 SP1.S   1377 | Data        | ?? |         |   -1 | 00/FFFF :             | L020DD8     DS    $28            
+ 1378 |  1 SP1.S   1378 | Data        | ?? |         |   -1 | 00/FFFF :             | L020E00     DS    $28            
+ 1379 |  1 SP1.S   1379 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+ 1380 |  1 SP1.S   1380 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020E28     PHD                  
+ 1381 |  1 SP1.S   1381 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             TSC                  
+ 1382 |  1 SP1.S   1382 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             TCD                  
+ 1383 |  1 SP1.S   1383 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             SEP   #$20           
+ 1384 |  1 SP1.S   1384 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDX   #$0000         
+ 1385 |  1 SP1.S   1385 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   #$20           
+ 1386 |  1 SP1.S   1386 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020E32     CMPL  L020E00,X      
+ 1387 |  1 SP1.S   1387 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L020E3B        
+ 1388 |  1 SP1.S   1388 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             INX                  
+ 1389 |  1 SP1.S   1389 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRA   L020E32        
+ 1390 |  1 SP1.S   1390 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020E3B     REP   #$20           
+ 1391 |  1 SP1.S   1391 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             TXA                  
+ 1392 |  1 SP1.S   1392 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             SEC                  
+ 1393 |  1 SP1.S   1393 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             SBC   #$0028         
+ 1394 |  1 SP1.S   1394 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             EOR   #$FFFF         
+ 1395 |  1 SP1.S   1395 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             INC                  
+ 1396 |  1 SP1.S   1396 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             SEP   #$20           
+ 1397 |  1 SP1.S   1397 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CMP   [$06]          
+ 1398 |  1 SP1.S   1398 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BEQ   L020E4E        
+ 1399 |  1 SP1.S   1399 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BCS   L020E65        
+ 1400 |  1 SP1.S   1400 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020E4E     LDY   #$0001         
+ 1401 |  1 SP1.S   1401 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   [$06],Y        
+ 1402 |  1 SP1.S   1402 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020E53     LDAL  L020E00,X      
+ 1403 |  1 SP1.S   1403 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             INY                  
+ 1404 |  1 SP1.S   1404 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   [$06],Y        
+ 1405 |  1 SP1.S   1405 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             INX                  
+ 1406 |  1 SP1.S   1406 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CPX   #$0028         
+ 1407 |  1 SP1.S   1407 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BCC   L020E53        
+ 1408 |  1 SP1.S   1408 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             REP   #$20           
+ 1409 |  1 SP1.S   1409 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CLV                  
+ 1410 |  1 SP1.S   1410 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BRA   L020E69        
+ 1411 |  1 SP1.S   1411 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020E65     REP   #$20           
+ 1412 |  1 SP1.S   1412 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             SEP   #$40           
+ 1413 |  1 SP1.S   1413 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020E69     LDA   $02,S          
+ 1414 |  1 SP1.S   1414 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   $06,S          
+ 1415 |  1 SP1.S   1415 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDA   $04,S          
+ 1416 |  1 SP1.S   1416 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             STA   $08,S          
+ 1417 |  1 SP1.S   1417 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLD                  
+ 1418 |  1 SP1.S   1418 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLA                  
+ 1419 |  1 SP1.S   1419 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLA                  
+ 1420 |  1 SP1.S   1420 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTL                  
+ 1421 |  1 SP1.S   1421 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+ 1422 |  1 SP1.S   1422 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020E75     PHA                  
+ 1423 |  1 SP1.S   1423 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             TYA                  
+ 1424 |  1 SP1.S   1424 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             XBA                  
+ 1425 |  1 SP1.S   1425 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             CLC                  
+ 1426 |  1 SP1.S   1426 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             ADC   #$180C         
+ 1427 |  1 SP1.S   1427 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHA                  
+ 1428 |  1 SP1.S   1428 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PHD                  
+ 1429 |  1 SP1.S   1429 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             TSC                  
+ 1430 |  1 SP1.S   1430 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             TCD                  
+ 1431 |  1 SP1.S   1431 | Code        | ?? |         |   -1 | 00/FFFF : 00          | L020E80     PEA   $0020          
+ 1432 |  1 SP1.S   1432 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             LDX   $03            
+ 1433 |  1 SP1.S   1433 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             JSL   LE10000        
+ 1434 |  1 SP1.S   1434 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             DEC   $05            
+ 1435 |  1 SP1.S   1435 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             BNE   L020E80        
+ 1436 |  1 SP1.S   1436 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLD                  
+ 1437 |  1 SP1.S   1437 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLA                  
+ 1438 |  1 SP1.S   1438 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             PLA                  
+ 1439 |  1 SP1.S   1439 | Code        | ?? |         |   -1 | 00/FFFF : 00          |             RTL                  
+ 1440 |  1 SP1.S   1440 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+ 1441 |  1 SP1.S   1441 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+ 1442 |  1 SP1.S   1442 | Empty       | ?? |         |   -1 | 00/FFFF               |                                  
+------+-----------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

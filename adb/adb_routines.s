@@ -92,8 +92,18 @@ ADBGetInfo	lda	theDEVICE
 	jsr	ADBGetInfo_1
 	lda	theDEVICE
 	jsr	ADBGetInfo_2
+	
+	lda	fgADDRESS3
+	bne	ADBGetInfo1
+	
 	lda	theDEVICE
-	jmp	ADBGetInfo_3
+	jsr	ADBGetInfo_3
+
+ADBGetInfo1	rts
+
+*---
+
+fgADDRESS3	ds	2	; 0: poll it, <>0: skip polling it
 
 *-----------------------
 * GET DEVICE INFO REGISTER 0
@@ -287,7 +297,7 @@ FMLR0OK	rts
 
 dataLength0	ds	2	; length of data
 dataListen0	dfb	%0000_10_00	; ADB command: Address (0000) + Listen (10) + Register (00)
-	ds	7
+	ds	8
 	
 *-----------------------
 * LISTEN TO REGISTER 1
@@ -320,8 +330,8 @@ FMLR1OK	rts
 
 dataLength1	ds	2	; length of data
 dataListen1	dfb	%0000_10_01	; ADB command: Address (0000) + Listen (10) + Register (01)
-	ds	7
-	
+	ds	8
+
 *-----------------------
 * LISTEN TO REGISTER 2
 *-----------------------
@@ -353,7 +363,8 @@ FMLR2OK	rts
 
 dataLength2	ds	2	; length of data
 dataListen2	dfb	%0000_10_10	; ADB command: Address (0000) + Listen (10) + Register (10)
-	ds	7
+	ds	8
+	ds	2
 
 *-----------------------
 * LISTEN TO REGISTER 3
@@ -365,7 +376,7 @@ ADBListenRegister3
 	lda	#NB_RETRY
 	sta	errCNT
 
-]lp	lda	#1	; command (1) + data (1)
+]lp	lda	#1	; command (1) + data (x)
 	clc
 	adc	dataLength3
 	pha
@@ -384,11 +395,12 @@ FMLR3OK	rts
 
 *-----------
 
-dataLength3	ds	2	; length of data
+dataLength3	dw	2	; length of data
 dataListen3	dfb	%0000_10_11	; ADB command: Address (0000) + Listen (10) + Register (11)
-	dfb	%1111_1111
+	dfb	%0000_0001	; change to handler ID++
+	dfb	%0000_0011	; the device at address 3
 	ds	6
-
+	
 *-----------------------
 * TALK routines to get
 * data from the device

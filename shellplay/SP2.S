@@ -226,7 +226,7 @@ L030140     CMP   #$00C9	; +/- 200
 *-------------------------------
 
 L030150     LDA   $04,S
-            CMP   #$00F1	; q
+            CMP   #$00F1	; 240
             BCS   L03015D
             STAL  L031576	; 0..240
             BRA   L03015E
@@ -507,14 +507,16 @@ L03037A     PHB
             LDA   L03002D
             STA   $0002
             BRL   L03048A
+
 L03039F     PHA
             _SoundToolStatus
             PLA
             BEQ   L0303B2
-            PLP
+*            PLP
             LDA   #$8103
             SEC
             BRL   L03048A
+
 L0303B2     PHA
             PEA   $1000
             _GetNewID
@@ -535,6 +537,7 @@ L0303B2     PHA
             PLX
             PLX
             BRL   L03048C
+
 L0303E1     PHD
             TSC
             TCD
@@ -550,6 +553,7 @@ L0303E1     PHD
             _SoundStartUp
             JSL   L0323AE
             PLA
+
             LDA   #$0000
             PHA
             PHA
@@ -565,6 +569,7 @@ L0303E1     PHD
             STA   L03000C
             PLA
             STA   L03000C+2
+
             LDA   #$0000
             PHA
             PHA
@@ -580,6 +585,7 @@ L0303E1     PHD
             STA   L030010
             PLA
             STA   L030010+2
+
             PHA
             PHA
             PEA   ^L030000
@@ -1438,16 +1444,16 @@ L030B09     STZ   L0310A4
             LDA   #$043C
             STA   L0310A6
             LDA   L03152A
-            CMP   #$2E4D
+            CMP   #$2E4D	; M.
             BNE   L030B22
             LDA   L03152C
-            CMP   #$2E4B
+            CMP   #$2E4B	; K.
             BEQ   L030B76
 L030B22     LDA   L03152A
-            CMP   #$4C46
+            CMP   #$4C46	; FL
             BNE   L030B3A
             LDA   L03152C
-            CMP   #$3454
+            CMP   #$3454	; T4
             BNE   L030B3A
             LDA   #$FFFF
             STA   L0310A4
@@ -2050,9 +2056,11 @@ L031077     PHB
 L03107F     JSR   L031092
             CMP   #$001B
             BEQ   L03108F
+            php
             SEI
             JSL   L0325DB
-            CLI
+*            CLI
+            plp
             BRA   L03107F
 L03108F     PLD
             PLB
@@ -6788,6 +6796,7 @@ L0323AE     LDA   #$0002
             LDA   $04,S
             STAL  L0315AC
             JSL   L032401
+            php
             SEI		; bug
             SEP   #$30
             LDAL  $E100CA
@@ -6804,7 +6813,8 @@ L0323E0     STAL  $E1C03D
             INC
             DEX
             BNE   L0323E0
-            CLI
+*            CLI
+            plp
             REP   #$30
             PEA   $000B
             PEA   ^L0322E0
@@ -6854,11 +6864,12 @@ L032449     LDAL  $E1C03D
             PLP
             RTL
 
+            MX    %00
 L032451     LSR
             TAX
             LDA   L031DC4,X
-            AND   #$FF
-            BRK   $0A
+            AND   #$00FF
+            ASL
             TAY
             LDA   L031CE8,Y
             STA   $10
@@ -6962,7 +6973,7 @@ L032538     LDA   $08
             RTS
 
             MX    %11
-            PHA
+L032542     PHA
             LDAL  CYAREG
             AND   #$7F
             STAL  CYAREG
@@ -7043,9 +7054,10 @@ L0325BE     LDA   $12
             RTL
 
 L0325D3     DA    L033211
-            DA    $3712
+            DA    L033211	; LoGo - L033712
             DA    L033211
             DA    L033211
+
 L0325DB     LDA   L0315B0
             INC
             STA   L0315B0

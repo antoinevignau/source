@@ -1,8 +1,9 @@
 
 * Expansion linker file
 
-         dsk	ShellPlay
+         dsk	SP
          typ	EXE
+         aux	$0100
 
 * Assemble files
 

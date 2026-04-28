@@ -184,13 +184,13 @@ L020126     STZ   L020774
 L020167     LDY   #$0008
             JSR   L0201CB
             JSR   L0201E5
-L020170     CMP   #$002D	; - 8
+L020170     CMP   #'-'	; - 8
             BNE   L02017E
             STA   L02077A
             INY
             JSR   L02024B
             BRA   L0201C0
-L02017E     CMP   #$002B	; + 9
+L02017E     CMP   #'+'	; + 9
             BNE   L02018C
             STA   L02077A
             INY
@@ -253,7 +253,7 @@ L0201F2     REP   #$30
 * String to number
 *-------------------------------
 
-            MX    %11
+            MX    %00
 L0201F8     SEP   #$20
             LDX   #$0000
             INY
@@ -304,55 +304,57 @@ L020249     SEC
 *-------------------------------
 
             MX    %00
+            
 L02024B     LDA   [$00],Y
             AND   #$00FF
             BEQ   L020257
-            CMP   #$0020	; space
+            CMP   #' '	; space
             BNE   L02025A
 L020257     BRL   L0202DA
 L02025A     PHY
             PEA   L0202D3-1
-            CMP   #$004B	; K - stop shellplay and remove it from memory
+            CMP   #'K'	; K - stop shellplay and remove it from memory
             BNE   L020266
             BRL   L0203AA
-L020266     CMP   #$0074	; t - guess the tempo method
+L020266     CMP   #'t'	; t - guess the tempo method
             BNE   L02026E
             BRL   L0203BC
-L02026E     CMP   #$0043	; C - clear all songs from the playlist
+L02026E     CMP   #'C'	; C - clear all songs from the playlist
             BNE   L020276
             BRL   L02039C
-L020276     CMP   #$0073	; s - skip to the previous/next song
+L020276     CMP   #'s'	; s - skip to the previous/next song
             BNE   L02027E
             BRL   L020368
-L02027E     CMP   #$0048	; H - hardware handshaking on the modem port
+L02027E     CMP   #'H'	; H - hardware handshaking on the modem port
             BNE   L020286
             BRL   L02034A
-L020286     CMP   #$0053	; S - use X% stereo
+L020286     CMP   #'S'	; S - use X% stereo
             BNE   L02028E
             BRL   L0202FC
-L02028E     CMP   #$0056	; V - set the volume to X% of the maximum
+L02028E     CMP   #'V'	; V - set the volume to X% of the maximum
             BNE   L020296
             BRL   L020316
-L020296     BRA   L0202A0
-            CMP   #$0045	; E ** not active **
+L020296
+*     BRA   L0202A0
+            CMP   #'E'	; E - unknown feature
             BNE   L0202A0
             BRL   L020330
-L0202A0     CMP   #$0072	; r - play MODs randomly/sequentially
+L0202A0     CMP   #'r'	; r - play MODs randomly/sequentially
             BNE   L0202A8
             BRL   L020470
-L0202A8     CMP   #$0062	; b - do/don't follow position jumps
+L0202A8     CMP   #'b'	; b - do/don't follow position jumps
             BNE   L0202B0
             BRL   L02048E
-L0202B0     CMP   #$0063	; c - print the name of the MOD currently being played
+L0202B0     CMP   #'c'	; c - print the name of the MOD currently being played
             BNE   L0202B8
             BRL   L0204AC
-L0202B8     CMP   #$006C	; l - print out the playlist
+L0202B8     CMP   #'l'	; l - print out the playlist
             BNE   L0202C0
             BRL   L0204BA
-L0202C0     CMP   #$0067	; g - goto song number X
+L0202C0     CMP   #'g'	; g - goto song number X
             BNE   L0202C8
             BRL   L0204C8
-L0202C8     CMP   #$003F	; ? - print a brief option summary
+L0202C8     CMP   #'?'	; ? - print a brief option summary
             BNE   L0202D0
             BRL   L0204E8
 L0202D0     BRL   L020404
@@ -437,7 +439,7 @@ L02034A     LDA   L02078A
             BNE   L0203BA
             LDY   #$FFFF
             LDA   L02077A
-            CMP   #$002B	; +
+            CMP   #'+'	; +
             BEQ   L02035D
             LDY   #$0000
 L02035D     PHY
@@ -467,7 +469,7 @@ L020375     INY
             STA   $03,S
             TXA
             LDY   L02077A
-            CPY   #$002B	; +
+            CPY   #'+'	; +
             BEQ   L020392
             EOR   #$FFFF
             INC
@@ -590,7 +592,7 @@ L020470     LDA   L02078A
             BNE   L02048C
             LDY   #$0001	; 0001: randomly
             LDA   L02077A
-            CMP   #$002B	; +
+            CMP   #'+'	; +
             BEQ   L020483
             LDY   #$0000	; 0000: sequentially
 L020483     PHY
@@ -608,7 +610,7 @@ L02048E     LDA   L02078A
             BEQ   L0204AA
             LDY   #$0001
             LDA   L02077A
-            CMP   #$002B
+            CMP   #'+'
             BEQ   L0204A1
             LDY   #$0000
 L0204A1     PHY
@@ -728,10 +730,10 @@ L020551     PEA   ^L020925
             BRA   L02054C
 L020584     JSL   GSOS
             DW    $0109       ; Shell: Init_Wildcard
-            ADRL  $0207B7
+            ADRL  L0207B7
 L02058E     JSL   GSOS
             DW    $010A       ; Shell: Next_Wildcard
-            ADRL  $0207BD
+            ADRL  L0207BD
             LDA   L020805
             AND   #$00FF
             BEQ   L0205B4
@@ -755,7 +757,7 @@ L0205B6     STZ   L020804
             BEQ   L0205D5
             JSL   GSOS
             DW    $200A       ; GetPrefix
-            ADRL  $020915
+            ADRL  L020915
             BCS   L02061C
 L0205D5     LDA   L0207C1
             AND   #$00FF
@@ -782,7 +784,7 @@ L020600     STA   ($18),Y
             REP   #$30
             JSL   GSOS
             DW    $2006       ; GetFileInfo
-            ADRL  $02091D
+            ADRL  L02091D
             BCS   L02061B
             INC   L020772
             JSR   L020682
@@ -954,8 +956,7 @@ L020786     DB    $01
             DB    $00
 L020788     DB    $00
             DB    $00
-L02078A     DB    $00
-            DB    $00
+L02078A     DW    $0000
 L02078C     DB    $00
             DB    $00
 L02078E     ENT
@@ -970,9 +971,9 @@ L0207B1     DB    $00
             DB    $00
             DB    $00
             DB    $00
-            ADRL  L0207C1     ;  file name
+L0207B7     ADRL  L0207C1     ;  file name
             DW    $0000       ;  flags
-            ADRL  L020805     ;  file name
+L0207BD     ADRL  L020805     ;  file name
 L0207C1     DB    $00
 L0207C2     DB    $00
             DB    $00
@@ -1038,8 +1039,7 @@ L0207C2     DB    $00
             DB    $00
             DB    $00
             DB    $00
-            DB    $02
-            DB    $01
+L020802     DW    $0102
 L020804     DB    $00
 L020805     DB    $00
 L020806     DB    $00
@@ -1313,45 +1313,31 @@ L020905     DB    $00
             DB    $00
             DB    $00
             DB    $00
-            DW    $0002       ; Parms for GetPrefix
+L020915     DW    $0002       ; Parms for GetPrefix
             DW    $0000       ;  prefix num
-            ADRL  $020802     ;  prefix ptr
-            DW    $0002       ; Parms for GetFileInfo
+            ADRL  L020802     ;  prefix ptr
+L02091D     DW    $0002       ; Parms for GetFileInfo
             ADRL  L020804     ;  file name
             DW    $0000       ;  access
 L020925     STR   'No match: '
 
 L020930     DW    L020CFB-L020932	; $03C9
 L020932     ASC   '---'0D0A
-            ASC   '      Shellplay  v0.71    Copyright (c) '
-            ASC   '1993 by Brian C Bening    Freeware'0D0A
-            ASC   '     (19:45  23 Jun 93)   All rights res'
-            ASC   'erved.'0D0A0D0A
-            ASC   'usage: sp [option(s)] [MODfile(s)] [ [op'
-            ASC   'tion(s)] [MODfile(s)] [...] ]'0D0A
+            ASC   '      Shellplay  v0.71    Copyright (c) 1993 by Brian C Bening    Freeware'0D0A
+            ASC   '     (19:45  23 Jun 93)   All rights reserved.'0D0A0D0A
+            ASC   'usage: sp [option(s)] [MODfile(s)] [ [option(s)] [MODfile(s)] [...] ]'0D0A
             ASC   'options:'0D0A
-            ASC   '   -ts smart PT/constant tempo          '
-            ASC   '  + -s  change current song'0D0A
-            ASC   '   -tp force protracker tempo           '
-            ASC   '    -r  don'27't use random play'0D0A
-            ASC   '   -tc force constant tempo             '
-            ASC   '    +r  random play / re-randomize'0D0A
-            ASC   '   -t5 constant tempo is PAL 50Hz       '
-            ASC   '    -C  clear playlist'0D0A
-            ASC   '   -t6 constant tempo is NTSC 60Hz      '
-            ASC   '    -K  kill and remove shellplay'0D0A
-            ASC   '   -VX set volume percent (0..100)      '
-            ASC   '    -gX goto song X'0D0A
-            ASC   '   -SX set percent stereo (-200..200)   '
-            ASC   '    -l  print playlist'0D0A
-            ASC   ' +|-b  follow position jumps            '
-            ASC   '    -c  print current MODfile'0D0A
-            ASC   '   -?  print this option list           '
-            ASC   '  +|-H  modem port hardware handshaking'0D0A0D0A
-            ASC   'default options: sp -H -r -b -ts -t5 -S7'
-            ASC   '0 -V60'0D0A0D0A
-            ASC   'send comments, suggestions, bug reports '
-            ASC   'to: vacc0001@student.tc.umn.edu'0D0A
+            ASC   '   -ts smart PT/constant tempo            +|-s  change current song'0D0A
+            ASC   '   -tp force protracker tempo               -r  don'27't use random play'0D0A
+            ASC   '   -tc force constant tempo                 +r  random play / re-randomize'0D0A
+            ASC   '   -t5 constant tempo is PAL 50Hz           -C  clear playlist'0D0A
+            ASC   '   -t6 constant tempo is NTSC 60Hz          -K  kill and remove shellplay'0D0A
+            ASC   '   -VX set volume percent (0..100)          -gX goto song X'0D0A
+            ASC   '   -SX set percent stereo (-200..200)       -l  print playlist'0D0A
+            ASC   ' +|-b  follow position jumps                -c  print current MODfile'0D0A
+            ASC   '   -?  print this option list             +|-H  modem port hardware handshaking'0D0A0D0A
+            ASC   'default options: sp -H -r -b -ts -t5 -S70 -V60'0D0A0D0A
+            ASC   'send comments, suggestions, bug reports to: vacc0001@student.tc.umn.edu'0D0A
 
 L020CFB     ASC   'BYTEWRKS'
 

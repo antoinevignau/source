@@ -1,0 +1,145 @@
+------+----------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File          Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+----------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1 fileio64.s      1 | Comment     | 11 |         |    0 | 00/0000               | *
+    2 |  1 fileio64.s      2 | Comment     | 11 |         |    0 | 00/0000               | * FileIO
+    3 |  1 fileio64.s      3 | Comment     | 11 |         |    0 | 00/0000               | *
+    4 |  1 fileio64.s      4 | Comment     | 11 |         |    0 | 00/0000               | * (c) 2026, Brutal Deluxe Software
+    5 |  1 fileio64.s      5 | Comment     | 11 |         |    0 | 00/0000               | *
+    6 |  1 fileio64.s      6 | Comment     | 11 |         |    0 | 00/0000               | * v1.0 - 20260328 based on speedometer
+    7 |  1 fileio64.s      7 | Comment     | 11 |         |    0 | 00/0000               | * v1.1 - 20260501 (pfou, le 1er-Mai)
+    8 |  1 fileio64.s      8 | Comment     | 11 |         |    0 | 00/0000               | *
+    9 |  1 fileio64.s      9 | Empty       | 11 |         |    0 | 00/0000               |                                      
+   10 |  1 fileio64.s     10 | Directive   | 11 |         |    0 | 00/0000               |                 xc                   
+   11 |  1 fileio64.s     11 | Directive   | 11 |         |    0 | 00/0000               |                 xc                   
+   12 |  1 fileio64.s     12 | Directive   | 00 |         |    0 | 00/0000               |                 mx    %00            
+   13 |  1 fileio64.s     13 | Empty       | 00 |         |    0 | 00/0000               |                                      
+   14 |  1 fileio64.s     14 | Comment     | 00 |         |    0 | 00/0000               | *----------------------------
+   15 |  1 fileio64.s     15 | Comment     | 00 |         |    0 | 00/0000               | * EQUATES
+   16 |  1 fileio64.s     16 | Comment     | 00 |         |    0 | 00/0000               | *----------------------------
+   17 |  1 fileio64.s     17 | Empty       | 00 |         |    0 | 00/0000               |                                      
+   18 |  1 fileio64.s     18 | Equivalence | 00 |         |    0 | 00/0000               | GSOS            =     $e100a8        
+   19 |  1 fileio64.s     19 | Empty       | 00 |         |    0 | 00/0000               |                                      
+   20 |  1 fileio64.s     20 | Comment     | 00 |         |    0 | 00/0000               | *----------------------------
+   21 |  1 fileio64.s     21 | Comment     | 00 |         |    0 | 00/0000               | * HOW-TO USE
+   22 |  1 fileio64.s     22 | Comment     | 00 |         |    0 | 00/0000               | *----------------------------
+   23 |  1 fileio64.s     23 | Comment     | 00 |         |    0 | 00/0000               | *
+   24 |  1 fileio64.s     24 | Comment     | 00 |         |    0 | 00/0000               | * 	LDA  ptrRAM+2
+   25 |  1 fileio64.s     25 | Comment     | 00 |         |    0 | 00/0000               | *	LDX  #myFILE
+   26 |  1 fileio64.s     26 | Comment     | 00 |         |    0 | 00/0000               | *	JSR  fileOPEN
+   27 |  1 fileio64.s     27 | Comment     | 00 |         |    0 | 00/0000               | *	STA  nbBLOCKS
+   28 |  1 fileio64.s     28 | Comment     | 00 |         |    0 | 00/0000               | *
+   29 |  1 fileio64.s     29 | Comment     | 00 |         |    0 | 00/0000               | *	JSR  fileREAD
+   30 |  1 fileio64.s     30 | Comment     | 00 |         |    0 | 00/0000               | *	STA  ptrRAM
+   31 |  1 fileio64.s     31 | Comment     | 00 |         |    0 | 00/0000               | *
+   32 |  1 fileio64.s     32 | Comment     | 00 |         |    0 | 00/0000               | *	JSR  fileCLOSE
+   33 |  1 fileio64.s     33 | Comment     | 00 |         |    0 | 00/0000               | *
+   34 |  1 fileio64.s     34 | Comment     | 00 |         |    0 | 00/0000               | * ptrRAM	DS   4
+   35 |  1 fileio64.s     35 | Comment     | 00 |         |    0 | 00/0000               | * myFILE	STRL '8/JoliFichier'
+   36 |  1 fileio64.s     36 | Comment     | 00 |         |    0 | 00/0000               | *               
+   37 |  1 fileio64.s     37 | Comment     | 00 |         |    0 | 00/0000               | *----------------------------
+   38 |  1 fileio64.s     38 | Empty       | 00 |         |    0 | 00/0000               |                                      
+   39 |  1 fileio64.s     39 | Comment     | 00 |         |    0 | 00/0000               | *----------------------------
+   40 |  1 fileio64.s     40 | Comment     | 00 |         |    0 | 00/0000               | * VECTORS
+   41 |  1 fileio64.s     41 | Comment     | 00 |         |    0 | 00/0000               | *----------------------------
+   42 |  1 fileio64.s     42 | Empty       | 00 |         |    0 | 00/0000               |                                      
+   43 |  1 fileio64.s     43 | Code        | 00 |  2      |    3 | 00/0000 : 4C 09 00    | fileOPEN        jmp   file64OPEN     ;  In A: @RAM haut ($0012 if $12/0000)
+   44 |  1 fileio64.s     44 | Comment     | 00 |         |    0 | 00/0003               | 			;     Y: @GSOSFileName (strl)
+   45 |  1 fileio64.s     45 | Comment     | 00 |         |    0 | 00/0003               | 			; Out A: 0 = file error
+   46 |  1 fileio64.s     46 | Comment     | 00 |         |    0 | 00/0003               | 			;       >0 = nb of 512-byte blocks
+   47 |  1 fileio64.s     47 | Comment     | 00 |         |    0 | 00/0003               | 			;     C: carry clear or set
+   48 |  1 fileio64.s     48 | Code        | 00 |  2      |    3 | 00/0003 : 4C 2D 00    | fileREAD        jmp   file64READ     ; Out A: @RAM  bas ($1100 if $12/1100)
+   49 |  1 fileio64.s     49 | Comment     | 00 |         |    0 | 00/0006               | 			;     C: carry clear or set
+   50 |  1 fileio64.s     50 | Code        | 00 |  2      |    3 | 00/0006 : 4C 43 00    | fileCLOSE       jmp   file64CLOSE    ; Out C: carry clear or set
+   51 |  1 fileio64.s     51 | Empty       | 00 |         |    0 | 00/0009               |                                      
+   52 |  1 fileio64.s     52 | Comment     | 00 |         |    0 | 00/0009               | *----------------------------
+   53 |  1 fileio64.s     53 | Comment     | 00 |         |    0 | 00/0009               | * OPEN
+   54 |  1 fileio64.s     54 | Comment     | 00 |         |    0 | 00/0009               | *----------------------------
+   55 |  1 fileio64.s     55 | Empty       | 00 |         |    0 | 00/0009               |                                      
+   56 |  1 fileio64.s     56 | Code        | 00 |  2      |    3 | 00/0009 : 8D 84 00    | file64OPEN      sta   proREAD+6      
+   57 |  1 fileio64.s     57 | Code        | 00 |  2      |    3 | 00/000C : 8D 4E 00    |                 sta   RAMBANK        
+   58 |  1 fileio64.s     58 | Empty       | 00 |         |    0 | 00/000F               |                                      
+   59 |  1 fileio64.s     59 | Code        | 00 |         |    4 | 00/000F : 22 A8 00 E1 |                 jsl   {$e100a8}      
+   60 |  1 fileio64.s     60 | Data        | 00 |         |    2 | 00/0013 : 10 20       |                 dw    $2010          
+   61 |  1 fileio64.s     61 | Data        | 00 |  3      |    4 | 00/0015 : 50 00 00 00 |                 adrl  proOPEN        
+   62 |  1 fileio64.s     62 | Code        | 00 |         |    2 | 00/0019 : B0 11       |                 bcs   file64OPEN_ERR 
+   63 |  1 fileio64.s     63 | Empty       | 00 |         |    0 | 00/001B               |                                      
+   64 |  1 fileio64.s     64 | Code        | 00 |  2      |    3 | 00/001B : AD 52 00    |                 lda   proOPEN+2      
+   65 |  1 fileio64.s     65 | Code        | 00 |  2      |    3 | 00/001E : 8D 80 00    |                 sta   proREAD+2      
+   66 |  1 fileio64.s     66 | Code        | 00 |  2      |    3 | 00/0021 : 8D 92 00    |                 sta   proCLOSE+2     
+   67 |  1 fileio64.s     67 | Code        | 00 |  2      |    3 | 00/0024 : 8D 96 00    |                 sta   proSETMARK+2   
+   68 |  1 fileio64.s     68 | Empty       | 00 |         |    0 | 00/0027               |                                      
+   69 |  1 fileio64.s     69 | Code        | 00 |  2      |    3 | 00/0027 : AD 7B 00    |                 lda   proOPEN+43     ; file size <<8
+   70 |  1 fileio64.s     70 | Code        | 00 |         |    1 | 00/002A : 1A          |                 inc                  ; +1
+   71 |  1 fileio64.s     71 | Code        | 00 |         |    1 | 00/002B : 4A          |                 lsr                  ; /2 = number of blocks
+   72 |  1 fileio64.s     72 | Code        | 00 |         |    1 | 00/002C : 60          | file64OPEN_ERR  rts                  ; assume a file is 512 bytes at least
+   73 |  1 fileio64.s     73 | Empty       | 00 |         |    0 | 00/002D               |                                      
+   74 |  1 fileio64.s     74 | Comment     | 00 |         |    0 | 00/002D               | *----------------------------
+   75 |  1 fileio64.s     75 | Comment     | 00 |         |    0 | 00/002D               | * READ
+   76 |  1 fileio64.s     76 | Comment     | 00 |         |    0 | 00/002D               | *----------------------------
+   77 |  1 fileio64.s     77 | Empty       | 00 |         |    0 | 00/002D               |                                      
+   78 |  1 fileio64.s     78 | Code        | 00 |         |    4 | 00/002D : 22 A8 00 E1 | file64READ      jsl   {$e100a8}      
+   79 |  1 fileio64.s     79 | Data        | 00 |         |    2 | 00/0031 : 12 20       |                 dw    $2012          
+   80 |  1 fileio64.s     80 | Data        | 00 |  3      |    4 | 00/0033 : 7E 00 00 00 |                 adrl  proREAD        
+   81 |  1 fileio64.s     81 | Code        | 00 |         |    2 | 00/0037 : B0 09       |                 bcs   file64READ_ERR 
+   82 |  1 fileio64.s     82 | Empty       | 00 |         |    0 | 00/0039               |                                      
+   83 |  1 fileio64.s     83 | Code        | 00 |  2      |    3 | 00/0039 : AD 82 00    |                 lda   proREAD+4      ; return low RAM pointer
+   84 |  1 fileio64.s     84 | Code        | 00 |  2      |    3 | 00/003C : EE 83 00    |                 inc   proREAD+5      ; +512 bytes
+   85 |  1 fileio64.s     85 | Code        | 00 |  2      |    3 | 00/003F : EE 83 00    |                 inc   proREAD+5      
+   86 |  1 fileio64.s     86 | Code        | 00 |         |    1 | 00/0042 : 60          | file64READ_ERR  rts                  
+   87 |  1 fileio64.s     87 | Empty       | 00 |         |    0 | 00/0043               |                                      
+   88 |  1 fileio64.s     88 | Comment     | 00 |         |    0 | 00/0043               | *----------------------------
+   89 |  1 fileio64.s     89 | Comment     | 00 |         |    0 | 00/0043               | * CLOSE
+   90 |  1 fileio64.s     90 | Comment     | 00 |         |    0 | 00/0043               | *----------------------------
+   91 |  1 fileio64.s     91 | Empty       | 00 |         |    0 | 00/0043               |                                      
+   92 |  1 fileio64.s     92 | Code        | 00 |         |    4 | 00/0043 : 22 A8 00 E1 | file64CLOSE     jsl   {$e100a8}      
+   93 |  1 fileio64.s     93 | Data        | 00 |         |    2 | 00/0047 : 14 20       |                 dw    $2014          
+   94 |  1 fileio64.s     94 | Data        | 00 |  3      |    4 | 00/0049 : 90 00 00 00 |                 adrl  proCLOSE       
+   95 |  1 fileio64.s     95 | Code        | 00 |         |    1 | 00/004D : 60          |                 rts                  
+   96 |  1 fileio64.s     96 | Empty       | 00 |         |    0 | 00/004E               |                                      
+   97 |  1 fileio64.s     97 | Comment     | 00 |         |    0 | 00/004E               | *----------------------------
+   98 |  1 fileio64.s     98 | Comment     | 00 |         |    0 | 00/004E               | * DATA
+   99 |  1 fileio64.s     99 | Comment     | 00 |         |    0 | 00/004E               | *----------------------------
+  100 |  1 fileio64.s    100 | Empty       | 00 |         |    0 | 00/004E               |                                      
+  101 |  1 fileio64.s    101 | Empty       | 00 |         |    0 | 00/004E               | DATA_IN                              
+  102 |  1 fileio64.s    102 | Empty       | 00 |         |    0 | 00/004E               |                                      
+  103 |  1 fileio64.s    103 | Comment     | 00 |         |    0 | 00/004E               | *--- Memory
+  104 |  1 fileio64.s    104 | Empty       | 00 |         |    0 | 00/004E               |                                      
+  105 |  1 fileio64.s    105 | Data        | 00 |         |    2 | 00/004E : 00 00       | RAMBANK         ds    2              ; where a file is loaded in RAM
+  106 |  1 fileio64.s    106 | Empty       | 00 |         |    0 | 00/0050               |                                      
+  107 |  1 fileio64.s    107 | Comment     | 00 |         |    0 | 00/0050               | *--- GS/OS
+  108 |  1 fileio64.s    108 | Empty       | 00 |         |    0 | 00/0050               |                                      
+  109 |  1 fileio64.s    109 | Data        | 00 |         |    2 | 00/0050 : 0C 00       | proOPEN         dw    12             ;  +0 pcount
+  110 |  1 fileio64.s    110 | Data        | 00 |         |    2 | 00/0052 : 00 00       |                 ds    2              ;  +2 ref_num
+  111 |  1 fileio64.s    111 | Data        | 00 |  3      |    4 | 00/0054 : 50 00 00 00 |                 adrl  proOPEN        ;  +4 pathname
+  112 |  1 fileio64.s    112 | Data        | 00 |         |    2 | 00/0058 : 00 00       |                 ds    2              ;  +8 request_access
+  113 |  1 fileio64.s    113 | Data        | 00 |         |    2 | 00/005A : 00 00       |                 ds    2              ; +10 resource_num
+  114 |  1 fileio64.s    114 | Data        | 00 |         |    2 | 00/005C : 00 00       |                 ds    2              ; +12 access
+  115 |  1 fileio64.s    115 | Data        | 00 |         |    2 | 00/005E : 00 00       |                 ds    2              ; +14 file_type
+  116 |  1 fileio64.s    116 | Data        | 00 |         |    4 | 00/0060 : 00 00 00 00 |                 ds    4              ; +16 aux_type
+  117 |  1 fileio64.s    117 | Data        | 00 |         |    2 | 00/0064 : 00 00       |                 ds    2              ; +20 storage_type
+  118 |  1 fileio64.s    118 | Data        | 00 |         |    8 | 00/0066 : 00 00 00 00 |                 ds    8              ; +22 create_td
+      |                      |             |    |         |      |           00 00 00 00 |
+  119 |  1 fileio64.s    119 | Data        | 00 |         |    8 | 00/006E : 00 00 00 00 |                 ds    8              ; +30 modify_td
+      |                      |             |    |         |      |           00 00 00 00 |
+  120 |  1 fileio64.s    120 | Data        | 00 |         |    4 | 00/0076 : 00 00 00 00 |                 ds    4              ; +38 option_list
+  121 |  1 fileio64.s    121 | Data        | 00 |         |    4 | 00/007A : 00 00 00 00 |                 ds    4              ; +42 eof
+  122 |  1 fileio64.s    122 | Empty       | 00 |         |    0 | 00/007E               |                                      
+  123 |  1 fileio64.s    123 | Data        | 00 |         |    2 | 00/007E : 05 00       | proREAD         dw    5              ;  +0 pcount
+  124 |  1 fileio64.s    124 | Data        | 00 |         |    2 | 00/0080 : 00 00       |                 ds    2              ;  +2 ref_num
+  125 |  1 fileio64.s    125 | Data        | 00 |         |    4 | 00/0082 : 00 00 00 00 |                 ds    4              ;  +4 data_buffer
+  126 |  1 fileio64.s    126 | Data        | 00 |         |    4 | 00/0086 : 00 02 00 00 |                 adrl  512            ;  +8 request_count
+  127 |  1 fileio64.s    127 | Data        | 00 |         |    4 | 00/008A : 00 00 00 00 |                 ds    4              ; +12 transfer_count
+  128 |  1 fileio64.s    128 | Data        | 00 |         |    2 | 00/008E : 01 00       |                 dw    1              ; +16 cache_priority
+  129 |  1 fileio64.s    129 | Empty       | 00 |         |    0 | 00/0090               |                                      
+  130 |  1 fileio64.s    130 | Data        | 00 |         |    2 | 00/0090 : 01 00       | proCLOSE        dw    1              ; +0 pcount
+  131 |  1 fileio64.s    131 | Data        | 00 |         |    2 | 00/0092 : 00 00       |                 ds    2              ; +2 ref_num
+  132 |  1 fileio64.s    132 | Empty       | 00 |         |    0 | 00/0094               |                                      
+  133 |  1 fileio64.s    133 | Data        | 00 |         |    2 | 00/0094 : 03 00       | proSETMARK      dw    3              ; +0 pcount
+  134 |  1 fileio64.s    134 | Data        | 00 |         |    2 | 00/0096 : 00 00       |                 ds    2              ; +2 ref_num
+  135 |  1 fileio64.s    135 | Data        | 00 |         |    2 | 00/0098 : 00 00       |                 dw    0              ; +4 base (0 = displacement)
+  136 |  1 fileio64.s    136 | Data        | 00 |         |    4 | 00/009A : 00 00 00 00 |                 ds    4              ; +6 displacement (0)
+  137 |  1 fileio64.s    137 | Empty       | 00 |         |    0 | 00/009E               |                                      
+  138 |  1 fileio64.s    138 | Comment     | 00 |         |    0 | 00/009E               | *--- End of code
+  139 |  1 fileio64.s    139 | Empty       | 00 |         |    0 | 00/009E               |                                      
+------+----------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

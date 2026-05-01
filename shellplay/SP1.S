@@ -1,4 +1,4 @@
-*
+	*
 * ShellPlay v0.71
 *
 * (c) 1993, Brian Bening
@@ -40,6 +40,12 @@ GSOS        EQU   $E100A8
             STA   L02078E
             STY   $00
             STX   $02
+
+	lda	#L030000
+	stal	$300
+	lda	#^L030000
+	stal	$302
+	
             JSR   L020112	; get memory
             BCC   L020011
             BRL   L0200C5
@@ -253,7 +259,7 @@ L0201F2     REP   #$30
 * String to number
 *-------------------------------
 
-            MX    %00
+            MX    %10
 L0201F8     SEP   #$20
             LDX   #$0000
             INY
@@ -335,7 +341,7 @@ L02028E     CMP   #'V'	; V - set the volume to X% of the maximum
             BNE   L020296
             BRL   L020316
 L020296
-*     BRA   L0202A0
+*            BRA   L0202A0
             CMP   #'E'	; E - unknown feature
             BNE   L0202A0
             BRL   L020330
@@ -1323,7 +1329,7 @@ L020925     STR   'No match: '
 
 L020930     DW    L020CFB-L020932	; $03C9
 L020932     ASC   '---'0D0A
-            ASC   '      Shellplay  v0.71    Copyright (c) 1993 by Brian C Bening    Freeware'0D0A
+            ASC   '      Shellplay  v0.72    Copyright (c) 1993 by Brian C Bening    Freeware'0D0A
             ASC   '     (19:45  23 Jun 93)   All rights reserved.'0D0A0D0A
             ASC   'usage: sp [option(s)] [MODfile(s)] [ [option(s)] [MODfile(s)] [...] ]'0D0A
             ASC   'options:'0D0A

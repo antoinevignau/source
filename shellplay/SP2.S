@@ -46,15 +46,11 @@ GSOSBusy    EQU   $E100BE
 
 L030000     ENT
             BRL   L030105
-            DB    $00
-L030004     DB    $00
-            DB    $00
-L030006     DB    $00
-            DB    $00
-L030008     DB    $00
-            DB    $00
-L03000A     DB    $00
-            DB    $00
+*            DB    $00
+L030004     DW    $0000
+L030006     DW    $0000
+L030008     DW    $0000
+L03000A     DW    $0000
 L03000C     ADRL  $00000000
 L030010     ADRL  $00000000
 L030014     DB    $00
@@ -72,27 +68,23 @@ L030020     DB    $00
             DB    $00
 L030022     DB    $00
             DB    $00
-L030024     DW    $0000
+L030024     DW    $0000	; mem ID
 L030026     DW    $0000
-L030028     DB    $00
-            DB    $00
+L030028     DW    $0000
+
 L03002A     DW    $0000
 L03002C     DB    $00
 L03002D     DB    $00
 L03002E     DB    $00
             DB    $00
-L030030     DB    $00
-            DB    $00
-L030032     DB    $00
-            DB    $00
+L030030     ADRL  $00000000
+
 L030034     DB    $00
 L030035     STR   'Song list is empty.'
+
 L030049     DW    $002B
             STR   'Xplayer crime scene, do not disturb.'
-L030070     DB    $00
-            DB    $00
-L030072     DB    $00
-            DB    $00
+L030070     ADRL  $00000000
             DB    $00
             DB    $00
 L030076     DB    $00
@@ -153,6 +145,7 @@ L0300D0     DW    $0000
             RTL
 
             MX    %00
+
 L0300E1     DA    L03037A	;  1 - StartUp
             DA    L03034A	;  2 - ShutDown
             DA    L030124	;  3 - nada
@@ -172,6 +165,8 @@ L0300E1     DA    L03037A	;  1 - StartUp
             DA    L030899	; 11 - Print current song name
             DA    L0309D7	; 12 - Goto song number X
 
+            MX    %00
+
 L030105     CMP   #$0013
             BCC   L030111
             LDA   #$8101
@@ -180,12 +175,12 @@ L030105     CMP   #$0013
 L030111     DEC
             ASL
             TAX
-            PHP
-            PHP
-            PLA
-            AND   #$0004
-            EOR   #$0004
-            STAL  L030028
+*            PHP
+*            PHP
+*            PLA
+*            AND   #$0004	; 0100 = i flag => 0: IRQ on, 1: IRQ off
+*            EOR   #$0004	; 1: IRQ on, 0: IRQ off
+*            STAL  L030028
             JMP   (L0300E1,X)
 
 *-------------------------------
@@ -477,13 +472,13 @@ L03034A     PHB
             _DelHeartBeat
             JSL   L0323FC
             _SoundShutDown
-            PEA   $0003
-            LDA   L03002A
+            PEA   $0003	; delete
+            LDA   L03002A	; message ID
             PHA
-            PHA
+            PHA		; handle is not used
             PHA
             _MessageCenter
-            LDA   L030024
+            LDA   L030024	; return mem ID
             PLB
             RTL
 
@@ -496,6 +491,7 @@ L03037A     PHB
             PLB
             JSR   L03049C
             BCS   L03039F
+	brk	$bd
             LDA   L03002E
             STA   $07,S
             LDA   L03002C
@@ -505,14 +501,15 @@ L03037A     PHB
             ORA   #$005C
             STA   L030000
             LDA   L03002D
-            STA   $0002
+            STA   L030000+2
             BRL   L03048A
 
-L03039F     PHA
+L03039F	brk	$be
+            PHA
             _SoundToolStatus
             PLA
             BEQ   L0303B2
-*            PLP
+            PLP		; LoGo - BUG
             LDA   #$8103
             SEC
             BRL   L03048A
@@ -521,7 +518,7 @@ L0303B2     PHA
             PEA   $1000
             _GetNewID
             PLA
-            STA   L030024
+            STA   L030024	; save mem ID
             STA   L0310C0
             LDX   #$0000
             PHA
@@ -585,7 +582,7 @@ L0303E1     PHD
             STA   L030010
             PLA
             STA   L030010+2
-
+	
             PHA
             PHA
             PEA   ^L030000
@@ -595,24 +592,25 @@ L0303E1     PHD
             TSC
             TCD
             LDY   #$0006
-            LDA   L030024
+            LDA   L030024	; mem ID
             STA   [$03],Y
             PLD
             PLA
             PLA
             LDA   #^L030000
-            STA   L030072
+            STA   L030070+2
             LDA   #L030000
             STA   L030070
+            PHA		; space for result
             PHA
-            PHA
-            PEA   $0001
-            PEA   ^L030049
+            PEA   $0001	; create message
+            PEA   ^L030049	; record pointer
             PEA   L030049
             _MessageByName
             PLA
-            STA   L03002A
-            PLA
+            STA   L03002A	; message ID
+            PLA		; create flag
+
             PEA   ^L0300CC
             PEA   L0300CC
             _SetHeartBeat
@@ -628,19 +626,21 @@ L03048C     PHA
             PLA
             SEC
             BRA   L03048A
+
 L03049C     STZ   L03002C
             STZ   L03002E
             STZ   L03002A
+            PHA		; space for result
             PHA
-            PHA
-            PEA   $0000
-            PEA   ^L030049
+            PEA   $0000	; do not create message
+            PEA   ^L030049	; recordPointer
             PEA   L030049
             _MessageByName
-            PLY
+            PLY		; message ID
             PLA
             BCS   L030524
             STY   L03002A
+
             PEA   $0002
             PHY
             PHA
@@ -655,11 +655,11 @@ L03049C     STZ   L03002C
             PHA
             _NewHandle
             LDA   $03,S
-            STA   L030032
+            STA   L030030+2
             LDA   $01,S
             STA   L030030
             _MessageCenter
-            LDA   L030032
+            LDA   L030030+2
             PHA
             LDA   L030030
             PHA
@@ -682,7 +682,7 @@ L03049C     STZ   L03002C
             PLD
             PLA
             PLA
-            LDA   L030032
+            LDA   L030030+2
             PHA
             LDA   L030030
             PHA
@@ -1059,7 +1059,7 @@ L0307A1     INC
             _HLock
             LDA   L030010+2
             PHA
-L0307BD     LDA   L030010
+            LDA   L030010
             PHA
 L0307C1     _HLock
 L0307C8     LDA   L030024
@@ -2102,8 +2102,7 @@ L0310BC     DB    $00
             DB    $00
 L0310BE     DB    $00
             DB    $00
-L0310C0     DB    $00
-            DB    $00
+L0310C0     DW    $0000
 L0310C2     DW    $0003        ; Parms for SetMark
 L0310C4     DW    $0000        ;  ref num
 L0310C6     DW    $0000        ;  base
@@ -7053,10 +7052,10 @@ L0325BE     LDA   $12
             STA   $0E
             RTL
 
-L0325D3     DA    L033211
-            DA    L033211	; LoGo - L033712
-            DA    L033211
-            DA    L033211
+L0325D3     DA    L033211	; move page
+            DA    L033211	; LoGo - What is that??? L033712
+            DA    L033211	; move page
+            DA    L033211	; move page
 
 L0325DB     LDA   L0315B0
             INC
@@ -7291,22 +7290,23 @@ L0327C0     LDA   $23
             TAX
             JMP   (L0327CB,X)
 
-L0327CB     DA    L032782
-            DA    L032782
-            DA    L032782
-            DA    L032782
-            DA    L032782
-            DA    L0327F1
-            DA    L032782
-            DA    L032782
-            DA    L032782
-            DA    L032782
-            DA    L032782
-            DA    L032782
-            DA    L032782
-            DA    L0327EB
-            DA    L032782
-            DA    L032782
+L0327CB     DA    L032782	; 0
+            DA    L032782	; 1
+            DA    L032782	; 2
+            DA    L032782	; 3
+            DA    L032782	; 4
+            DA    L0327F1	; 5*
+            DA    L032782	; 6
+            DA    L032782	; 7
+            DA    L032782	; 8
+            DA    L032782	; 9
+            DA    L032782	; A
+            DA    L032782	; B
+            DA    L032782	; C
+            DA    L0327EB	; D*
+            DA    L032782	; E
+            DA    L032782	; F
+
 L0327EB     LDA   #$80
             STA   L031B3C,Y
             RTS
@@ -7516,17 +7516,20 @@ L0328C2     LDA   L031A88,Y
             REP   #$30
             RTS
 
-L0329C8     LDA   #$8F03
-            AND   $E1C0,X
-            LDA   #$5902
-            PEI   $1C
+            MX    %11
+            
+L0329C8     LDA   #$03
+            STAL  $E1C03D
+            LDA   #$02
+            EOR   L031CD4,Y
             STAL  $E1C03D
             LDA   L031CD5,Y
-            ORA   #$8F02
-            AND   $E1C0,X
+            ORA   #$02
+            STAL  $E1C03D
             REP   #$20
             RTS
 
+            MX    %00
             REP   #$20
             RTS
 
@@ -7797,22 +7800,23 @@ L032C02     JSR   L032EC2
             REP   #$30
             RTS
 
-L032C19     DA    L032C5E
-            DA    L032C5E
-            DA    L032C5E
-            DA    L032F02
-            DA    L032C5E
-            DA    L032F02
-            DA    L032C5E
-            DA    L032C5E
-            DA    L032C5E
-            DA    L032C5E
-            DA    L032C5E
-            DA    L032C5E
-            DA    L032D84
-            DA    L032C5E
-            DA    L032C5F
-            DA    L032FC1
+L032C19     DA    L032C5E	; 
+            DA    L032C5E	; 
+            DA    L032C5E	; 
+            DA    L032F02	; 
+            DA    L032C5E	; 
+            DA    L032F02	; 
+            DA    L032C5E	; 
+            DA    L032C5E	; 
+            DA    L032C5E	; 
+            DA    L032C5E	; 
+            DA    L032C5E	; 
+            DA    L032C5E	; 
+            DA    L032D84	; 
+            DA    L032C5E	; 
+            DA    L032C5F	; 
+            DA    L032FC1	; 
+            
 L032C39     SEP   #$30
             LDA   L0315AE
             INC
@@ -7845,38 +7849,40 @@ L032C5F     LDA   L031CAD,Y
             TAX
             JMP   (L032C8B,X)
 
-L032C6B     DA    L03317F
-            DA    L032D9F
-            DA    L032DCE
-            DA    L032F35
-            DA    L03303A
-            DA    L032F2F
-            DA    L033034
-            DA    L0330E3
-            DA    L032C5E
-            DA    L032C5E
-            DA    L032E02
-            DA    L032C5E
-            DA    L032C5E
-            DA    L032C5E
-            DA    L032C5F
-            DA    L032C5E
-L032C8B     DA    L032CAB
-            DA    L032D93
-            DA    L032DC2
-            DA    L032D68
-            DA    L0330D0
-            DA    L032C5E
-            DA    L032C5E
-            DA    L03316C
-            DA    L032C5E
-            DA    L032CC1
-            DA    L032DEA
-            DA    L032DF6
-            DA    L032D71
-            DA    L032D31
-            DA    L032C5E
-            DA    L032C5E
+L032C6B     DA    L03317F	; 
+            DA    L032D9F	; 
+            DA    L032DCE	; 
+            DA    L032F35	; 
+            DA    L03303A	; 
+            DA    L032F2F	; 
+            DA    L033034	; 
+            DA    L0330E3	; 
+            DA    L032C5E	; 
+            DA    L032C5E	; 
+            DA    L032E02	; 
+            DA    L032C5E	; 
+            DA    L032C5E	; 
+            DA    L032C5E	; 
+            DA    L032C5F	; 
+            DA    L032C5E	; 
+
+L032C8B     DA    L032CAB	; 
+            DA    L032D93	; 
+            DA    L032DC2	; 
+            DA    L032D68	; 
+            DA    L0330D0	; 
+            DA    L032C5E	; 
+            DA    L032C5E	; 
+            DA    L03316C	; 
+            DA    L032C5E	; 
+            DA    L032CC1	; 
+            DA    L032DEA	; 
+            DA    L032DF6	; 
+            DA    L032D71	; 
+            DA    L032D31	; 
+            DA    L032C5E	; 
+            DA    L032C5E	; 
+
             MX    %11
 L032CAB     LDA   L0315A4
             BEQ   L032CC0
@@ -8014,6 +8020,7 @@ L032DD1     REP   #$20
 L032DE2     STA   L031D9C,Y
             SEP   #$20
             BRL   L032EC2
+
 L032DEA     LDA   L0315B0
             BNE   L032DC1
             LDA   L031CAD,Y
@@ -8156,6 +8163,9 @@ L032F26     LDA   #$0000
 
 L032F2F     JSR   L032F42
             BRL   L032E02
+
+            MX    %11
+            
 L032F35     LDA   L031CAD,Y
             BEQ   L032F42
             STA   L031C70,Y
@@ -8293,6 +8303,7 @@ L033056     LDX   L031C48,Y
 L03305C     DA    L033062
             DA    L03306F
             DA    L033079
+
 L033062     LDA   L031C49,Y
             LSR
             LSR
@@ -8382,6 +8393,7 @@ L033105     LDX   L031C20,Y
 L03310B     DA    L033111
             DA    L03311E
             DA    L033128
+
 L033111     LDA   L031C21,Y
             LSR
             LSR
@@ -9030,5 +9042,5 @@ L033211     LDA   |$0000,Y
             LDA   |$00FF,Y
             STA   $3D
 L033711     RTS
-
+L033712			; Seriously?
 

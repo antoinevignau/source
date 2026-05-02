@@ -15,6 +15,7 @@
 * EQUATES
 *----------------------------
 
+BLOCKSIZE	=	512
 GSOS	=	$e100a8
 
 *----------------------------
@@ -53,9 +54,10 @@ fileCLOSE	jmp	file64CLOSE	; Out C: carry clear or set
 * OPEN
 *----------------------------
 
-file64OPEN	sta	proREAD+6
-	sta	RAMBANK
-
+file64OPEN	stz	proREAD+4	; low RAM pointer is always 0
+	sta	proREAD+6
+	sty	proOPEN+4
+	
 	jsl	GSOS
 	dw	$2010
 	adrl	proOPEN
@@ -64,7 +66,6 @@ file64OPEN	sta	proREAD+6
 	lda	proOPEN+2
 	sta	proREAD+2
 	sta	proCLOSE+2
-	sta	proSETMARK+2
 
 	lda	proOPEN+43	; file size <<8
 	inc		; +1
@@ -103,10 +104,6 @@ file64CLOSE	jsl	GSOS
 
 DATA_IN
 
-*--- Memory
-
-RAMBANK	ds	2	; where a file is loaded in RAM
-
 *--- GS/OS
 
 proOPEN	dw	12	;  +0 pcount
@@ -126,16 +123,11 @@ proOPEN	dw	12	;  +0 pcount
 proREAD	dw	5	;  +0 pcount
 	ds	2	;  +2 ref_num
 	ds	4	;  +4 data_buffer
-	adrl	512	;  +8 request_count
+	adrl	BLOCKSIZE	;  +8 request_count
 	ds	4	; +12 transfer_count
 	dw	1	; +16 cache_priority
 
 proCLOSE	dw	1	; +0 pcount
 	ds	2	; +2 ref_num
-
-proSETMARK	dw	3	; +0 pcount
-	ds	2	; +2 ref_num
-	dw	0	; +4 base (0 = displacement)
-	ds	4	; +6 displacement (0)
 
 *--- End of code

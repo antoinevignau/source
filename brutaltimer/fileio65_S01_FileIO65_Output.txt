@@ -1,0 +1,523 @@
+------+----------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File          Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+----------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1 fileio65.s      1 | Comment     | 11 |         |    0 | 00/0000               | *
+    2 |  1 fileio65.s      2 | Comment     | 11 |         |    0 | 00/0000               | * FileIO65
+    3 |  1 fileio65.s      3 | Comment     | 11 |         |    0 | 00/0000               | *
+    4 |  1 fileio65.s      4 | Comment     | 11 |         |    0 | 00/0000               | * (c) 2026, Brutal Deluxe Software
+    5 |  1 fileio65.s      5 | Comment     | 11 |         |    0 | 00/0000               | *
+    6 |  1 fileio65.s      6 | Comment     | 11 |         |    0 | 00/0000               | * v1.0 - 20260328 based on speedometer
+    7 |  1 fileio65.s      7 | Comment     | 11 |         |    0 | 00/0000               | * v1.1 - 20260501 (pfou, le 1er-Mai)
+    8 |  1 fileio65.s      8 | Comment     | 11 |         |    0 | 00/0000               | * v1.2 - 20260502
+    9 |  1 fileio65.s      9 | Comment     | 11 |         |    0 | 00/0000               | *
+   10 |  1 fileio65.s     10 | Empty       | 11 |         |    0 | 00/0000               |                                       
+   11 |  1 fileio65.s     11 | Directive   | 11 |         |    0 | 00/0000               |                 xc                    
+   12 |  1 fileio65.s     12 | Directive   | 11 |         |    0 | 00/0000               |                 xc                    
+   13 |  1 fileio65.s     13 | Directive   | 00 |         |    0 | 00/0000               |                 mx    %00             
+   14 |  1 fileio65.s     14 | Empty       | 00 |         |    0 | 00/0000               |                                       
+   15 |  1 fileio65.s     15 | Comment     | 00 |         |    0 | 00/0000               | *----------------------------
+   16 |  1 fileio65.s     16 | Comment     | 00 |         |    0 | 00/0000               | * EQUATES
+   17 |  1 fileio65.s     17 | Comment     | 00 |         |    0 | 00/0000               | *----------------------------
+   18 |  1 fileio65.s     18 | Empty       | 00 |         |    0 | 00/0000               |                                       
+   19 |  1 fileio65.s     19 | Equivalence | 00 |         |    0 | 00/0000               | Debut           =     $80             
+   20 |  1 fileio65.s     20 | Equivalence | 00 |         |    0 | 00/0000               | BLOCKSIZE       =     512             
+   21 |  1 fileio65.s     21 | Empty       | 00 |         |    0 | 00/0000               |                                       
+   22 |  1 fileio65.s     22 | Equivalence | 00 |         |    0 | 00/0000               | GSOS            =     $e100a8         
+   23 |  1 fileio65.s     23 | Equivalence | 00 |         |    0 | 00/0000               | GSOSBusy        =     $e100be         
+   24 |  1 fileio65.s     24 | Equivalence | 00 |         |    0 | 00/0000               | DEREF           =     $01fc38         
+   25 |  1 fileio65.s     25 | Equivalence | 00 |         |    0 | 00/0000               | FIND_VCR        =     $01fc48         
+   26 |  1 fileio65.s     26 | Equivalence | 00 |         |    0 | 00/0000               | FIND_FCR        =     $01fc4c         
+   27 |  1 fileio65.s     27 | Empty       | 00 |         |    0 | 00/0000               |                                       
+   28 |  1 fileio65.s     28 | Comment     | 00 |         |    0 | 00/0000               | *----------------------------
+   29 |  1 fileio65.s     29 | Comment     | 00 |         |    0 | 00/0000               | * HOW-TO USE
+   30 |  1 fileio65.s     30 | Comment     | 00 |         |    0 | 00/0000               | *----------------------------
+   31 |  1 fileio65.s     31 | Comment     | 00 |         |    0 | 00/0000               | *
+   32 |  1 fileio65.s     32 | Comment     | 00 |         |    0 | 00/0000               | * 	LDA  ptrRAM+2
+   33 |  1 fileio65.s     33 | Comment     | 00 |         |    0 | 00/0000               | *	LDX  #myFILE
+   34 |  1 fileio65.s     34 | Comment     | 00 |         |    0 | 00/0000               | *	JSR  fileOPEN
+   35 |  1 fileio65.s     35 | Comment     | 00 |         |    0 | 00/0000               | *	STA  nbBLOCKS
+   36 |  1 fileio65.s     36 | Comment     | 00 |         |    0 | 00/0000               | *
+   37 |  1 fileio65.s     37 | Comment     | 00 |         |    0 | 00/0000               | *	JSR  fileREAD
+   38 |  1 fileio65.s     38 | Comment     | 00 |         |    0 | 00/0000               | *	STA  ptrRAM
+   39 |  1 fileio65.s     39 | Comment     | 00 |         |    0 | 00/0000               | *
+   40 |  1 fileio65.s     40 | Comment     | 00 |         |    0 | 00/0000               | *	JSR  fileCLOSE
+   41 |  1 fileio65.s     41 | Comment     | 00 |         |    0 | 00/0000               | *
+   42 |  1 fileio65.s     42 | Comment     | 00 |         |    0 | 00/0000               | * ptrRAM	DS   4
+   43 |  1 fileio65.s     43 | Comment     | 00 |         |    0 | 00/0000               | * myFILE	STRL '8/JoliFichier'
+   44 |  1 fileio65.s     44 | Comment     | 00 |         |    0 | 00/0000               | *               
+   45 |  1 fileio65.s     45 | Comment     | 00 |         |    0 | 00/0000               | *----------------------------
+   46 |  1 fileio65.s     46 | Empty       | 00 |         |    0 | 00/0000               |                                       
+   47 |  1 fileio65.s     47 | Comment     | 00 |         |    0 | 00/0000               | *----------------------------
+   48 |  1 fileio65.s     48 | Comment     | 00 |         |    0 | 00/0000               | * VECTORS
+   49 |  1 fileio65.s     49 | Comment     | 00 |         |    0 | 00/0000               | *----------------------------
+   50 |  1 fileio65.s     50 | Empty       | 00 |         |    0 | 00/0000               |                                       
+   51 |  1 fileio65.s     51 | Code        | 00 |  2      |    3 | 00/0000 : 4C 09 00    | fileOPEN        jmp   file65OPEN      ;  In A: @RAM haut ($0012 if $12/0000)
+   52 |  1 fileio65.s     52 | Comment     | 00 |         |    0 | 00/0003               | 			;     Y: @GSOSFileName (strl)
+   53 |  1 fileio65.s     53 | Comment     | 00 |         |    0 | 00/0003               | 			; Out A: 0 = file error
+   54 |  1 fileio65.s     54 | Comment     | 00 |         |    0 | 00/0003               | 			;       >0 = nb of 512-byte blocks
+   55 |  1 fileio65.s     55 | Comment     | 00 |         |    0 | 00/0003               | 			;     C: carry clear or set
+   56 |  1 fileio65.s     56 | Code        | 00 |  2      |    3 | 00/0003 : 4C D5 00    | fileREAD        jmp   file65READ      ; Out A: @RAM  bas ($1100 if $12/1100)
+   57 |  1 fileio65.s     57 | Comment     | 00 |         |    0 | 00/0006               | 			;     C: carry clear or set
+   58 |  1 fileio65.s     58 | Code        | 00 |  2      |    3 | 00/0006 : 4C 1C 01    | fileCLOSE       jmp   file65CLOSE     ; Out C: carry clear or set
+   59 |  1 fileio65.s     59 | Empty       | 00 |         |    0 | 00/0009               |                                       
+   60 |  1 fileio65.s     60 | Comment     | 00 |         |    0 | 00/0009               | *----------------------------
+   61 |  1 fileio65.s     61 | Comment     | 00 |         |    0 | 00/0009               | * OPEN
+   62 |  1 fileio65.s     62 | Comment     | 00 |         |    0 | 00/0009               | *----------------------------
+   63 |  1 fileio65.s     63 | Empty       | 00 |         |    0 | 00/0009               |                                       
+   64 |  1 fileio65.s     64 | Code        | 00 |  2      |    3 | 00/0009 : 9C 5D 01    | file65OPEN      stz   proDREAD+4      
+   65 |  1 fileio65.s     65 | Code        | 00 |  2      |    3 | 00/000C : 8D 5F 01    |                 sta   proDREAD+6      ; RAM pointer
+   66 |  1 fileio65.s     66 | Code        | 00 |  2      |    3 | 00/000F : 8C 2B 01    |                 sty   proOPEN+4       ; filename pointer
+   67 |  1 fileio65.s     67 | Code        | 00 |  2      |    3 | 00/0012 : 9C 6F 01    |                 stz   blockCOUNTER    ; 0..127
+   68 |  1 fileio65.s     68 | Empty       | 00 |         |    0 | 00/0015               |                                       
+   69 |  1 fileio65.s     69 | Comment     | 00 |         |    0 | 00/0015               | *--- Get file info
+   70 |  1 fileio65.s     70 | Empty       | 00 |         |    0 | 00/0015               |                                       
+   71 |  1 fileio65.s     71 | Code        | 00 |         |    4 | 00/0015 : 22 A8 00 E1 |                 jsl   {$e100a8}       
+   72 |  1 fileio65.s     72 | Data        | 00 |         |    2 | 00/0019 : 10 20       |                 dw    $2010           
+   73 |  1 fileio65.s     73 | Data        | 00 |  3      |    4 | 00/001B : 27 01 00 00 |                 adrl  proOPEN         
+   74 |  1 fileio65.s     74 | Code        | 00 |         |    2 | 00/001F : 90 04       |                 bcc   file65OPEN_1    
+   75 |  1 fileio65.s     75 | Code        | 00 |         |    3 | 00/0021 : A9 00 00    |                 lda   #0              
+   76 |  1 fileio65.s     76 | Code        | 00 |         |    1 | 00/0024 : 60          |                 rts                   
+   77 |  1 fileio65.s     77 | Empty       | 00 |         |    0 | 00/0025               |                                       
+   78 |  1 fileio65.s     78 | Code        | 00 |  2      |    3 | 00/0025 : AD 29 01    | file65OPEN_1    lda   proOPEN+2       
+   79 |  1 fileio65.s     79 | Code        | 00 |  2      |    3 | 00/0028 : 8D 57 01    |                 sta   proCLOSE+2      
+   80 |  1 fileio65.s     80 | Empty       | 00 |         |    0 | 00/002B               |                                       
+   81 |  1 fileio65.s     81 | Comment     | 00 |         |    0 | 00/002B               | *--- Du GS/OS bas niveau maintenant
+   82 |  1 fileio65.s     82 | Empty       | 00 |         |    0 | 00/002B               |                                       
+   83 |  1 fileio65.s     83 | Code        | 00 |         |    4 | 00/002B : AF BE 00 E1 | ozunid_1        ldal  {$e100be}       ; Thank you Window Manager
+   84 |  1 fileio65.s     84 | Code        | 00 |         |    2 | 00/002F : 30 FA       |                 bmi   ozunid_1        
+   85 |  1 fileio65.s     85 | Code        | 00 |         |    3 | 00/0031 : 09 00 80    |                 ora   #$8000          
+   86 |  1 fileio65.s     86 | Code        | 00 |         |    4 | 00/0034 : 8F BE 00 E1 |                 stal  {$e100be}       
+   87 |  1 fileio65.s     87 | Empty       | 00 |         |    0 | 00/0038               |                                       
+   88 |  1 fileio65.s     88 | Code        | 00 |         |    1 | 00/0038 : 0B          |                 phd                   
+   89 |  1 fileio65.s     89 | Code        | 00 |         |    3 | 00/0039 : A9 00 BD    |                 lda   #$bd00          
+   90 |  1 fileio65.s     90 | Code        | 00 |         |    1 | 00/003C : 5B          |                 tcd                   
+   91 |  1 fileio65.s     91 | Empty       | 00 |         |    0 | 00/003D               |                                       
+   92 |  1 fileio65.s     92 | Code        | 10 |         |    2 | 00/003D : E2 20       |                 sep   #$20            
+   93 |  1 fileio65.s     93 | Code        | 10 |         |    4 | 00/003F : AF 68 C0 E0 |                 ldal  $e0c068         
+   94 |  1 fileio65.s     94 | Code        | 10 |         |    1 | 00/0043 : 48          |                 pha                   
+   95 |  1 fileio65.s     95 | Code        | 10 |         |    4 | 00/0044 : AF 8B C0 E0 |                 ldal  $e0c08b         
+   96 |  1 fileio65.s     96 | Code        | 10 |         |    4 | 00/0048 : AF 8B C0 E0 |                 ldal  $e0c08b         
+   97 |  1 fileio65.s     97 | Code        | 00 |         |    2 | 00/004C : C2 20       |                 rep   #$20            
+   98 |  1 fileio65.s     98 | Empty       | 00 |         |    0 | 00/004E               |                                       
+   99 |  1 fileio65.s     99 | Code        | 00 |  2      |    3 | 00/004E : AD 29 01    |                 lda   proOPEN+2       ; get the FCR
+  100 |  1 fileio65.s    100 | Code        | 00 |         |    4 | 00/0051 : 22 4C FC 01 |                 jsl   {$01fc4c}       
+  101 |  1 fileio65.s    101 | Code        | 00 |         |    4 | 00/0055 : 22 38 FC 01 |                 jsl   {$01fc38}       ; dereference it
+  102 |  1 fileio65.s    102 | Code        | 00 |  2      |    3 | 00/0059 : 8E 6D 00    |                 stx   theFCRVOL+1     ; save its address
+  103 |  1 fileio65.s    103 | Code        | 00 |  2      |    3 | 00/005C : 8E A3 00    |                 stx   doSTARTUP5+1    
+  104 |  1 fileio65.s    104 | Code        | 01 |         |    2 | 00/005F : E2 10       |                 sep   #$10            
+  105 |  1 fileio65.s    105 | Code        | 01 |  2      |    3 | 00/0061 : 8C 6F 00    |                 sty   theFCRVOL+3     
+  106 |  1 fileio65.s    106 | Code        | 01 |  2      |    3 | 00/0064 : 8C A5 00    |                 sty   doSTARTUP5+3    
+  107 |  1 fileio65.s    107 | Code        | 00 |         |    2 | 00/0067 : C2 10       |                 rep   #$10            
+  108 |  1 fileio65.s    108 | Empty       | 00 |         |    0 | 00/0069               |                                       
+  109 |  1 fileio65.s    109 | Code        | 00 |         |    3 | 00/0069 : A2 08 00    |                 ldx   #8              ; indirectly get the device ID
+  110 |  1 fileio65.s    110 | Code        | 00 |         |    4 | 00/006C : BF BD BD BD | theFCRVOL       ldal  $bdbdbd,x       ; of the volume ID
+  111 |  1 fileio65.s    111 | Code        | 00 |         |    4 | 00/0070 : 22 48 FC 01 |                 jsl   {$01fc48}       ; of the FCR ID
+  112 |  1 fileio65.s    112 | Code        | 00 |         |    4 | 00/0074 : 22 38 FC 01 |                 jsl   {$01fc38}       ; dereference it
+  113 |  1 fileio65.s    113 | Code        | 00 |  2      |    3 | 00/0078 : 8E 96 00    |                 stx   theVCR+1        
+  114 |  1 fileio65.s    114 | Code        | 11 |         |    2 | 00/007B : E2 30       |                 sep   #$30            
+  115 |  1 fileio65.s    115 | Code        | 11 |  2      |    3 | 00/007D : 8C 98 00    |                 sty   theVCR+3        
+  116 |  1 fileio65.s    116 | Empty       | 11 |         |    0 | 00/0080               |                                       
+  117 |  1 fileio65.s    117 | Code        | 11 |         |    1 | 00/0080 : 68          |                 pla                   
+  118 |  1 fileio65.s    118 | Code        | 11 |         |    4 | 00/0081 : 8F 68 C0 E0 |                 stal  $e0c068         
+  119 |  1 fileio65.s    119 | Code        | 00 |         |    2 | 00/0085 : C2 30       |                 rep   #$30            
+  120 |  1 fileio65.s    120 | Empty       | 00 |         |    0 | 00/0087               |                                       
+  121 |  1 fileio65.s    121 | Code        | 00 |         |    1 | 00/0087 : 2B          |                 pld                   
+  122 |  1 fileio65.s    122 | Empty       | 00 |         |    0 | 00/0088               |                                       
+  123 |  1 fileio65.s    123 | Code        | 00 |         |    4 | 00/0088 : AF BE 00 E1 |                 ldal  {$e100be}       
+  124 |  1 fileio65.s    124 | Code        | 00 |         |    1 | 00/008C : 0A          |                 asl                   
+  125 |  1 fileio65.s    125 | Code        | 00 |         |    1 | 00/008D : 4A          |                 lsr                   
+  126 |  1 fileio65.s    126 | Code        | 00 |         |    4 | 00/008E : 8F BE 00 E1 |                 stal  {$e100be}       
+  127 |  1 fileio65.s    127 | Empty       | 00 |         |    0 | 00/0092               |                                       
+  128 |  1 fileio65.s    128 | Comment     | 00 |         |    0 | 00/0092               | *--- VCR : récupère le device ID
+  129 |  1 fileio65.s    129 | Empty       | 00 |         |    0 | 00/0092               |                                       
+  130 |  1 fileio65.s    130 | Code        | 00 |         |    3 | 00/0092 : A2 0C 00    |                 ldx   #12             ; device ID from the VCR
+  131 |  1 fileio65.s    131 | Code        | 00 |         |    4 | 00/0095 : BF BD BD BD | theVCR          ldal  $bdbdbd,x       
+  132 |  1 fileio65.s    132 | Code        | 00 |  2      |    3 | 00/0099 : 8D 5B 01    |                 sta   proDREAD+2      
+  133 |  1 fileio65.s    133 | Empty       | 00 |         |    0 | 00/009C               |                                       
+  134 |  1 fileio65.s    134 | Comment     | 00 |         |    0 | 00/009C               | *--- FCR : recopie le block ID
+  135 |  1 fileio65.s    135 | Empty       | 00 |         |    0 | 00/009C               |                                       
+  136 |  1 fileio65.s    136 | Code        | 00 |         |    3 | 00/009C : A2 53 02    |                 ldx   #$253           ; key block pointer from the FCR
+  137 |  1 fileio65.s    137 | Code        | 00 |         |    3 | 00/009F : A0 FE 01    |                 ldy   #512-2          
+  138 |  1 fileio65.s    138 | Code        | 00 |         |    4 | 00/00A2 : BF BD BD BD | doSTARTUP5      ldal  $bdbdbd,x       
+  139 |  1 fileio65.s    139 | Code        | 00 |  2      |    3 | 00/00A6 : 9D 1E 01    |                 sta   dataBUFFER-$253,x
+  140 |  1 fileio65.s    140 | Code        | 00 |         |    1 | 00/00A9 : E8          |                 inx                   
+  141 |  1 fileio65.s    141 | Code        | 00 |         |    1 | 00/00AA : E8          |                 inx                   
+  142 |  1 fileio65.s    142 | Code        | 00 |         |    1 | 00/00AB : 88          |                 dey                   
+  143 |  1 fileio65.s    143 | Code        | 00 |         |    1 | 00/00AC : 88          |                 dey                   
+  144 |  1 fileio65.s    144 | Code        | 00 |         |    2 | 00/00AD : 10 F3       |                 bpl   doSTARTUP5      
+  145 |  1 fileio65.s    145 | Empty       | 00 |         |    0 | 00/00AF               |                                       
+  146 |  1 fileio65.s    146 | Comment     | 00 |         |    0 | 00/00AF               | *--- Convertit les index de blocs ProDOS en liste séquentielle
+  147 |  1 fileio65.s    147 | Empty       | 00 |         |    0 | 00/00AF               |                                       
+  148 |  1 fileio65.s    148 | Code        | 11 |         |    2 | 00/00AF : E2 30       |                 sep   #$30            
+  149 |  1 fileio65.s    149 | Code        | 11 |         |    2 | 00/00B1 : A0 00       |                 ldy   #0              
+  150 |  1 fileio65.s    150 | Code        | 11 |         |    1 | 00/00B3 : BB          |                 tyx                   
+  151 |  1 fileio65.s    151 | Code        | 11 |  2      |    3 | 00/00B4 : B9 71 03    | ozunid_2        lda   dataBUFFER,y    ; 0-0, 1-2, 2-4
+  152 |  1 fileio65.s    152 | Code        | 11 |  2      |    3 | 00/00B7 : 9D 71 01    |                 sta   blockINDEX,x    
+  153 |  1 fileio65.s    153 | Code        | 11 |         |    1 | 00/00BA : E8          |                 inx                   
+  154 |  1 fileio65.s    154 | Code        | 11 |         |    1 | 00/00BB : E8          |                 inx                   
+  155 |  1 fileio65.s    155 | Code        | 11 |         |    1 | 00/00BC : C8          |                 iny                   
+  156 |  1 fileio65.s    156 | Code        | 11 |         |    2 | 00/00BD : 10 F5       |                 bpl   ozunid_2        
+  157 |  1 fileio65.s    157 | Empty       | 11 |         |    0 | 00/00BF               |                                       
+  158 |  1 fileio65.s    158 | Code        | 11 |         |    2 | 00/00BF : A0 00       |                 ldy   #0              
+  159 |  1 fileio65.s    159 | Code        | 11 |         |    1 | 00/00C1 : BB          |                 tyx                   
+  160 |  1 fileio65.s    160 | Code        | 11 |  2      |    3 | 00/00C2 : B9 71 04    | ozunid_3        lda   dataBUFFER+256,y; 0-1, 1-3, 2-5
+  161 |  1 fileio65.s    161 | Code        | 11 |  2      |    3 | 00/00C5 : 9D 72 01    |                 sta   blockINDEX+1,x  
+  162 |  1 fileio65.s    162 | Code        | 11 |         |    1 | 00/00C8 : E8          |                 inx                   
+  163 |  1 fileio65.s    163 | Code        | 11 |         |    1 | 00/00C9 : E8          |                 inx                   
+  164 |  1 fileio65.s    164 | Code        | 11 |         |    1 | 00/00CA : C8          |                 iny                   
+  165 |  1 fileio65.s    165 | Code        | 11 |         |    2 | 00/00CB : 10 F5       |                 bpl   ozunid_3        
+  166 |  1 fileio65.s    166 | Empty       | 11 |         |    0 | 00/00CD               |                                       
+  167 |  1 fileio65.s    167 | Code        | 00 |         |    2 | 00/00CD : C2 30       |                 rep   #$30            
+  168 |  1 fileio65.s    168 | Empty       | 00 |         |    0 | 00/00CF               |                                       
+  169 |  1 fileio65.s    169 | Comment     | 00 |         |    0 | 00/00CF               | *--- Return file size in blocks
+  170 |  1 fileio65.s    170 | Empty       | 00 |         |    0 | 00/00CF               |                                       
+  171 |  1 fileio65.s    171 | Code        | 00 |  2      |    3 | 00/00CF : AD 52 01    |                 lda   proOPEN+43      ; file size <<8
+  172 |  1 fileio65.s    172 | Code        | 00 |         |    1 | 00/00D2 : 1A          |                 inc                   ; +1
+  173 |  1 fileio65.s    173 | Code        | 00 |         |    1 | 00/00D3 : 4A          |                 lsr                   ; /2 = number of blocks
+  174 |  1 fileio65.s    174 | Code        | 00 |         |    1 | 00/00D4 : 60          |                 rts                   ; assume a file is 512 bytes at least
+  175 |  1 fileio65.s    175 | Empty       | 00 |         |    0 | 00/00D5               |                                       
+  176 |  1 fileio65.s    176 | Comment     | 00 |         |    0 | 00/00D5               | *----------------------------
+  177 |  1 fileio65.s    177 | Comment     | 00 |         |    0 | 00/00D5               | * READ
+  178 |  1 fileio65.s    178 | Comment     | 00 |         |    0 | 00/00D5               | *----------------------------
+  179 |  1 fileio65.s    179 | Empty       | 00 |         |    0 | 00/00D5               |                                       
+  180 |  1 fileio65.s    180 | Code        | 00 |  2      |    3 | 00/00D5 : AD 6F 01    | file65READ      lda   blockCOUNTER    
+  181 |  1 fileio65.s    181 | Code        | 00 |  2      |    3 | 00/00D8 : EE 6F 01    |                 inc   blockCOUNTER    
+  182 |  1 fileio65.s    182 | Code        | 00 |         |    1 | 00/00DB : 0A          |                 asl                   
+  183 |  1 fileio65.s    183 | Code        | 00 |         |    1 | 00/00DC : AA          |                 tax                   
+  184 |  1 fileio65.s    184 | Code        | 00 |  2      |    3 | 00/00DD : BD 71 01    |                 lda   blockINDEX,x    ; end of file
+  185 |  1 fileio65.s    185 | Code        | 00 |         |    2 | 00/00E0 : F0 19       |                 beq   file65READ_BLK  ; a blank block
+  186 |  1 fileio65.s    186 | Code        | 00 |  2      |    3 | 00/00E2 : 8D 65 01    |                 sta   proDREAD+12     
+  187 |  1 fileio65.s    187 | Empty       | 00 |         |    0 | 00/00E5               |                                       
+  188 |  1 fileio65.s    188 | Code        | 00 |         |    4 | 00/00E5 : 22 A8 00 E1 |                 jsl   {$e100a8}       
+  189 |  1 fileio65.s    189 | Data        | 00 |         |    2 | 00/00E9 : 2F 20       |                 dw    $202f           
+  190 |  1 fileio65.s    190 | Data        | 00 |  3      |    4 | 00/00EB : 59 01 00 00 |                 adrl  proDREAD        
+  191 |  1 fileio65.s    191 | Code        | 00 |         |    2 | 00/00EF : B0 27       |                 bcs   file65READ_ERR  
+  192 |  1 fileio65.s    192 | Empty       | 00 |         |    0 | 00/00F1               |                                       
+  193 |  1 fileio65.s    193 | Code        | 00 |  2      |    3 | 00/00F1 : AD 5D 01    | file65READ_XIT  lda   proDREAD+4      ; return low RAM pointer
+  194 |  1 fileio65.s    194 | Code        | 00 |  2      |    3 | 00/00F4 : EE 5E 01    |                 inc   proDREAD+5      ; +512 bytes
+  195 |  1 fileio65.s    195 | Code        | 00 |  2      |    3 | 00/00F7 : EE 5E 01    |                 inc   proDREAD+5      
+  196 |  1 fileio65.s    196 | Code        | 00 |         |    1 | 00/00FA : 60          |                 rts                   
+  197 |  1 fileio65.s    197 | Empty       | 00 |         |    0 | 00/00FB               |                                       
+  198 |  1 fileio65.s    198 | Code        | 00 |  2      |    3 | 00/00FB : AD 5D 01    | file65READ_BLK  lda   proDREAD+4      ; we have an empty block!
+  199 |  1 fileio65.s    199 | Code        | 00 |  2      |    3 | 00/00FE : 8D 0E 01    |                 sta   file65READ_PTR+1
+  200 |  1 fileio65.s    200 | Code        | 00 |  2      |    3 | 00/0101 : AD 5E 01    |                 lda   proDREAD+5      
+  201 |  1 fileio65.s    201 | Code        | 00 |  2      |    3 | 00/0104 : 8D 0F 01    |                 sta   file65READ_PTR+2
+  202 |  1 fileio65.s    202 | Empty       | 00 |         |    0 | 00/0107               |                                       
+  203 |  1 fileio65.s    203 | Code        | 00 |         |    3 | 00/0107 : A2 FE 01    |                 ldx   #{512}-2        
+  204 |  1 fileio65.s    204 | Code        | 00 |         |    3 | 00/010A : A9 00 00    |                 lda   #0              
+  205 |  1 fileio65.s    205 | Code        | 00 |         |    4 | 00/010D : 9F BD BD BD | file65READ_PTR  stal  $bdbdbd,x       
+  206 |  1 fileio65.s    206 | Code        | 00 |         |    1 | 00/0111 : CA          |                 dex                   
+  207 |  1 fileio65.s    207 | Code        | 00 |         |    1 | 00/0112 : CA          |                 dex                   
+  208 |  1 fileio65.s    208 | Code        | 00 |         |    2 | 00/0113 : 10 F8       |                 bpl   file65READ_PTR  
+  209 |  1 fileio65.s    209 | Code        | 00 |  2      |    3 | 00/0115 : 4C F1 00    |                 jmp   file65READ_XIT  
+  210 |  1 fileio65.s    210 | Empty       | 00 |         |    0 | 00/0118               |                                       
+  211 |  1 fileio65.s    211 | Code        | 00 |         |    3 | 00/0118 : A9 00 00    | file65READ_ERR  lda   #0              
+  212 |  1 fileio65.s    212 | Code        | 00 |         |    1 | 00/011B : 60          |                 rts                   
+  213 |  1 fileio65.s    213 | Empty       | 00 |         |    0 | 00/011C               |                                       
+  214 |  1 fileio65.s    214 | Comment     | 00 |         |    0 | 00/011C               | *----------------------------
+  215 |  1 fileio65.s    215 | Comment     | 00 |         |    0 | 00/011C               | * CLOSE
+  216 |  1 fileio65.s    216 | Comment     | 00 |         |    0 | 00/011C               | *----------------------------
+  217 |  1 fileio65.s    217 | Empty       | 00 |         |    0 | 00/011C               |                                       
+  218 |  1 fileio65.s    218 | Code        | 00 |         |    4 | 00/011C : 22 A8 00 E1 | file65CLOSE     jsl   {$e100a8}       
+  219 |  1 fileio65.s    219 | Data        | 00 |         |    2 | 00/0120 : 14 20       |                 dw    $2014           
+  220 |  1 fileio65.s    220 | Data        | 00 |  3      |    4 | 00/0122 : 55 01 00 00 |                 adrl  proCLOSE        
+  221 |  1 fileio65.s    221 | Code        | 00 |         |    1 | 00/0126 : 60          |                 rts                   
+  222 |  1 fileio65.s    222 | Empty       | 00 |         |    0 | 00/0127               |                                       
+  223 |  1 fileio65.s    223 | Comment     | 00 |         |    0 | 00/0127               | *----------------------------
+  224 |  1 fileio65.s    224 | Comment     | 00 |         |    0 | 00/0127               | * DATA
+  225 |  1 fileio65.s    225 | Comment     | 00 |         |    0 | 00/0127               | *----------------------------
+  226 |  1 fileio65.s    226 | Empty       | 00 |         |    0 | 00/0127               |                                       
+  227 |  1 fileio65.s    227 | Empty       | 00 |         |    0 | 00/0127               | DATA_IN                               
+  228 |  1 fileio65.s    228 | Empty       | 00 |         |    0 | 00/0127               |                                       
+  229 |  1 fileio65.s    229 | Comment     | 00 |         |    0 | 00/0127               | *--- GS/OS
+  230 |  1 fileio65.s    230 | Empty       | 00 |         |    0 | 00/0127               |                                       
+  231 |  1 fileio65.s    231 | Data        | 00 |         |    2 | 00/0127 : 0C 00       | proOPEN         dw    12              ;  +0 pcount
+  232 |  1 fileio65.s    232 | Data        | 00 |         |    2 | 00/0129 : 00 00       |                 ds    2               ;  +2 ref_num
+  233 |  1 fileio65.s    233 | Data        | 00 |  3      |    4 | 00/012B : 27 01 00 00 |                 adrl  proOPEN         ;  +4 pathname
+  234 |  1 fileio65.s    234 | Data        | 00 |         |    2 | 00/012F : 00 00       |                 ds    2               ;  +8 request_access
+  235 |  1 fileio65.s    235 | Data        | 00 |         |    2 | 00/0131 : 00 00       |                 ds    2               ; +10 resource_num
+  236 |  1 fileio65.s    236 | Data        | 00 |         |    2 | 00/0133 : 00 00       |                 ds    2               ; +12 access
+  237 |  1 fileio65.s    237 | Data        | 00 |         |    2 | 00/0135 : 00 00       |                 ds    2               ; +14 file_type
+  238 |  1 fileio65.s    238 | Data        | 00 |         |    4 | 00/0137 : 00 00 00 00 |                 ds    4               ; +16 aux_type
+  239 |  1 fileio65.s    239 | Data        | 00 |         |    2 | 00/013B : 00 00       |                 ds    2               ; +20 storage_type
+  240 |  1 fileio65.s    240 | Data        | 00 |         |    8 | 00/013D : 00 00 00 00 |                 ds    8               ; +22 create_td
+      |                      |             |    |         |      |           00 00 00 00 |
+  241 |  1 fileio65.s    241 | Data        | 00 |         |    8 | 00/0145 : 00 00 00 00 |                 ds    8               ; +30 modify_td
+      |                      |             |    |         |      |           00 00 00 00 |
+  242 |  1 fileio65.s    242 | Data        | 00 |         |    4 | 00/014D : 00 00 00 00 |                 ds    4               ; +38 option_list
+  243 |  1 fileio65.s    243 | Data        | 00 |         |    4 | 00/0151 : 00 00 00 00 |                 ds    4               ; +42 eof
+  244 |  1 fileio65.s    244 | Empty       | 00 |         |    0 | 00/0155               |                                       
+  245 |  1 fileio65.s    245 | Data        | 00 |         |    2 | 00/0155 : 01 00       | proCLOSE        dw    1               ; +0 pcount
+  246 |  1 fileio65.s    246 | Data        | 00 |         |    2 | 00/0157 : 00 00       |                 ds    2               ; +2 ref_num
+  247 |  1 fileio65.s    247 | Empty       | 00 |         |    0 | 00/0159               |                                       
+  248 |  1 fileio65.s    248 | Data        | 00 |         |    2 | 00/0159 : 06 00       | proDREAD        dw    6               ; Parms for DRead
+  249 |  1 fileio65.s    249 | Data        | 00 |         |    2 | 00/015B : 00 00       |                 ds    2               ;  +2 device num
+  250 |  1 fileio65.s    250 | Data        | 00 |         |    4 | 00/015D : 00 00 00 00 |                 ds    4               ;  +4 buffer
+  251 |  1 fileio65.s    251 | Data        | 00 |         |    4 | 00/0161 : 00 02 00 00 |                 adrl  {512}           ;  +8 request count
+  252 |  1 fileio65.s    252 | Data        | 00 |         |    4 | 00/0165 : 00 00 00 00 |                 ds    4               ; +12 starting block
+  253 |  1 fileio65.s    253 | Data        | 00 |         |    2 | 00/0169 : 00 02       |                 dw    {512}           ; +16 block size
+  254 |  1 fileio65.s    254 | Data        | 00 |         |    4 | 00/016B : 00 00 00 00 |                 ds    4               ; +18 transfer count
+  255 |  1 fileio65.s    255 | Empty       | 00 |         |    0 | 00/016F               |                                       
+  256 |  1 fileio65.s    256 | Comment     | 00 |         |    0 | 00/016F               | *--- Block data
+  257 |  1 fileio65.s    257 | Empty       | 00 |         |    0 | 00/016F               |                                       
+  258 |  1 fileio65.s    258 | Data        | 00 |         |    2 | 00/016F : 00 00       | blockCOUNTER    ds    2               ; 0..127
+  259 |  1 fileio65.s    259 | Data        | 00 |         |  512 | 00/0171 : 00 00 00 00 | blockINDEX      ds    {512}           
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+  260 |  1 fileio65.s    260 | Data        | 00 |         |  512 | 00/0371 : 00 00 00 00 | dataBUFFER      ds    {512}           
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+      |                      |             |    |         |      |           00 00 00 00 |
+  261 |  1 fileio65.s    261 | Empty       | 00 |         |    0 | 00/0571               |                                       
+  262 |  1 fileio65.s    262 | Comment     | 00 |         |    0 | 00/0571               | *--- End of code
+  263 |  1 fileio65.s    263 | Empty       | 00 |         |    0 | 00/0571               |                                       
+------+----------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

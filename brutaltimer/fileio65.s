@@ -169,12 +169,11 @@ doSTARTUP5	ldal	$bdbdbd,x
 *--- Return file size in blocks
 
 	ldx	#9
+	lda	proOPEN+42	; file size <<9
 ]lp	lsr	proOPEN+44
-	ror	proOPEN+42
+	ror
 	dex
 	bne	]lp
-	
-	lda	proOPEN+42	; file size <<9
 	rts
 
 *----------------------------

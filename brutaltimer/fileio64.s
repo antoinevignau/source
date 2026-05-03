@@ -67,14 +67,18 @@ file64OPEN	stz	proREAD+4	; low RAM pointer is always 0
 	sta	proREAD+2
 	sta	proCLOSE+2
 
-	lda	proOPEN+43	; file size <<8
-	inc		; +1
-	lsr		; /2 = number of blocks
-	rts		; assume a file is 512 bytes at least
-
-file64OPEN_ERR	lda	#0	; 0 means an error
-	rts
+	ldx	#9
+]lp	lsr	proOPEN+44
+	ror	proOPEN+42
+	dex
+	bne	]lp
 	
+	lda	proOPEN+42	; file size <<9
+	rts
+
+file64OPEN_ERR	lda	#0	; 0 means error
+	rts
+
 *----------------------------
 * READ
 *----------------------------

@@ -168,10 +168,14 @@ doSTARTUP5	ldal	$bdbdbd,x
 
 *--- Return file size in blocks
 
-	lda	proOPEN+43	; file size <<8
-	inc		; +1
-	lsr		; /2 = number of blocks
-	rts		; assume a file is 512 bytes at least
+	ldx	#9
+]lp	lsr	proOPEN+44
+	ror	proOPEN+42
+	dex
+	bne	]lp
+	
+	lda	proOPEN+42	; file size <<9
+	rts
 
 *----------------------------
 * READ

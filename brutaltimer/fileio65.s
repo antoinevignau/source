@@ -168,6 +168,8 @@ doSTARTUP5	ldal	$bdbdbd,x
 
 *--- Return file size in blocks
 
+	inc	proOPEN+43	; pour la gestion paire/impaire
+
 	ldx	#9
 	lda	proOPEN+42	; file size <<9
 ]lp	lsr	proOPEN+44

@@ -67,13 +67,14 @@ file64OPEN	stz	proREAD+4	; low RAM pointer is always 0
 	sta	proREAD+2
 	sta	proCLOSE+2
 
+	inc	proOPEN+43	; pour la gestion paire/impaire
+
 	ldx	#9
+	lda	proOPEN+42	; file size <<9
 ]lp	lsr	proOPEN+44
-	ror	proOPEN+42
+	ror
 	dex
 	bne	]lp
-	
-	lda	proOPEN+42	; file size <<9
 	rts
 
 file64OPEN_ERR	lda	#0	; 0 means error

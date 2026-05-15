@@ -43,10 +43,10 @@ IIgs	clc		; full 16-bit
 	_WriteBParam
 
 	sep	#$20
-	lda	CYAREG
+	ldal	CYAREG
 	sta	firmSPEED
 	and	#%0111_1111
-	sta	firmSPEED
+	stal	CYAREG
 	
 exitNOW	sec
 	xce
@@ -73,7 +73,7 @@ IIgs2	clc		; full 16-bit
 
 	sep	#$20
 	lda	firmSPEED
-	sta	CYAREG
+	stal	CYAREG
 	
 	sec
 	xce

@@ -63,7 +63,10 @@ introduction1	lda	#pANIMATION	; charge l'animation
 	
 	jsr	animIT
 
-	jsr	playCRESCENDO	; play the sirene sound
+	bit	playCRESCENDO	; play the sirene sound
+
+	lda	#3
+	jsr	nowWAIT
 
 *--- We were here!
 
@@ -80,7 +83,7 @@ introduction1	lda	#pANIMATION	; charge l'animation
 	ldy	#64
 	jsr	PRINTCSTRING
 	
-	lda	#5
+	lda	#2
 	jmp	nowWAIT
 
 *---

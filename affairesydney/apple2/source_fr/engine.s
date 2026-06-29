@@ -674,7 +674,7 @@ playCRESCENDO1	phx
 
 	lda	#idxSNDSIRENE
 	jsr	playSOUND
-	
+
 ]lp	PushWord	#0	; has sound ended?
 	PushWord	#7
 	_FFSoundDoneStatus
@@ -724,7 +724,7 @@ playDECRESCENDO1 phx
 	pla
 	cmp	#-1
 	bne	]lp
-
+	
 	pha
 	PushWord #%11111111_11111111
 	PushLong #taskREC

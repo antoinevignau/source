@@ -60,10 +60,13 @@ introduction1	lda	#pANIMATION	; charge l'animation
 
 	lda	#indexBLACK
 	jsr	setBORDER
-	
+
 	jsr	animIT
 
-	jsr	playCRESCENDO	; play the sirene sound
+	bit	playCRESCENDO	; play the sirene sound
+
+	lda	#3
+	jsr	nowWAIT
 
 *--- We were here!
 
@@ -80,7 +83,7 @@ introduction1	lda	#pANIMATION	; charge l'animation
 	ldy	#64
 	jsr	PRINTCSTRING
 	
-	lda	#5
+	lda	#2
 	jmp	nowWAIT
 
 *---
@@ -189,4 +192,8 @@ stdANIM9	plb
 *--- introduction
 
 pANIMATION	strl	'@/data/introduction'
+
+*--- Save SCB + Palette
+
+saveAREA	ds	768
 

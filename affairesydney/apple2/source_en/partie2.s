@@ -1842,7 +1842,7 @@ doACCUSATION	jsr	afficheFOND2	; fond2 avec refresh de l'ecran
 	jsr	RESTORE
 	jsr	:1390
 
-	jsr	playDECRESCENDO
+	bit	playDECRESCENDO
 	jsr	RDKEYONLY
 	jmp	QUIT
 

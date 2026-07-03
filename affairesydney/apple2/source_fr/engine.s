@@ -668,7 +668,7 @@ INSTR_OK	rep	#$30	; FALSE means different
 
 playCRESCENDO	lda	#15
 	sta	patchSIRENE+2
-	
+
 	ldx	#1	; boucle 12 fois
 playCRESCENDO1	phx
 
@@ -683,8 +683,8 @@ playCRESCENDO1	phx
 	bne	]lp
 
 	pha
-	PushWord #%11111111_11111111
-	PushLong #taskREC
+	PushWord	#%11111111_11111111
+	PushLong	#taskREC
 	_GetNextEvent
 	pla
 	beq	playCRESCENDO2
@@ -704,9 +704,10 @@ playCRESCENDO2 	lda	patchSIRENE+2	; volume plus important
 	bcc	playCRESCENDO1
 	beq	playCRESCENDO1
 	rts
+
 playCRESCENDO9	plx
 	rts
-	
+
 *-------------------------------
 
 playDECRESCENDO	lda	#255

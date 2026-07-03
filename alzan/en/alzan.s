@@ -31,7 +31,7 @@ chrRET2	=	$8d
 chrSPC2	=	$a0
 TEXTBUFFER	=	$200
 
-chrOUI	=	"O"
+chrOUI	=	"Y"
 chrNON	=	"N"
 
 PRODOS	=	$bf00
@@ -1717,7 +1717,7 @@ tblD2H	dfb	0,10,20,30,40,50,60,70,80,90
 * LES AUTRES FICHIERS
 *-----------------------------------
 
-	put	fr.s
+	put	en.s
 	put	../common/musiques.s
 
 *--- It's the end

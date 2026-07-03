@@ -1,8 +1,8 @@
 *
-* Alzan
+* City of Alzan
 *
 * (c) 1981, The pocket ZX81 book
-* (c) 2023, Brutal Deluxe Software (Apple II)
+* (c) 2023-26, Brutal Deluxe Software (Apple II)
 *
 
 	mx	%11

@@ -149,7 +149,7 @@ strLEMANOIR
 	asc	8d
 	asc	"Your quest is to find a way out of the"8d
 	asc	"city before they grab you, or before"8d
-	asc	"the plage takes hold of you."8d
+	asc	"the plague takes hold of you."8d
 	asc	8d
 	asc	"Unfortunately, the city is surrounded"8d
 	asc	"by extremely high walls and so you must"8d

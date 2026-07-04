@@ -17,7 +17,7 @@
 *-----------------------------------
 
 strVOUSDETENEZ
-	asc	8D"You are holding: "00
+	asc	8D"You are holding:"00
 
 strVOUSRIEN
 	asc	8D"You are carrying nothing."00

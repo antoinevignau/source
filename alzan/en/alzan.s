@@ -115,7 +115,9 @@ lowerOK
 *	jsr	:51000	; le disclaimer
 *	jsr	:40000	; les instructions
 	
-REPLAY
+REPLAY	ldx	#$ff	; reset stack pointer
+	txs
+
 	jsr	initALL
 	jsr	HOME
 
@@ -641,14 +643,15 @@ tbl4000	da	:4000,:4100,:4200,:4300,:4400,:4500,:4600,:4700,:4800,:4900
 	
 	@print	#strCOMMA
 
-:4060	lda	G
+:4060	@print	#strSPACE
+
+	lda	G
 	asl
 	tax
 	ldy	tblO$,x
 	lda	tblO$+1,x
 	tax
 	jsr	printCSTRING
-	@print	#strSPACE
 
 	inc	H
 	

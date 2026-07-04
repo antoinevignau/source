@@ -52,7 +52,7 @@ str7080	asc	"The manhole cover is shut."00
 str7090	asc	"The shopkeeper is bigger than"8d"you..."00
 str7100	asc	"You will need a ladder to get"8d"over these walls."00
 str7110	asc	"It is already on."00
-str7120	asc	"What a stroke of genius"00
+str7120	asc	"What a stroke of genius!"00
 str7130	asc	"You catch the guards unaware and"8d"manage to snatch a wad of notes."8d"No-one has noticed (funny lot,"8d"these Alzans)"00
 str7140	asc	"You have taken all there is."00
 str7150	asc	"I don"A7"t see a torch?"00
@@ -156,8 +156,9 @@ strLEMANOIR
 	asc	"find a way to scale them."8d
 	asc	8d
 	asc	8d
-	asc	"Apple II version in 2026"8d
-	asc	"by Brutal Deluxe Software"00
+	asc	"Apple II version written in 2026"8d
+	asc	"by Brutal Deluxe Software"8d
+	asc	"Antoine Vignau & Olivier Zardini"00
 
 *	asc	"1234567890123456789012345678901234567890"
 *

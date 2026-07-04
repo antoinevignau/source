@@ -641,14 +641,18 @@ tbl4000	da	:4000,:4100,:4200,:4300,:4400,:4500,:4600,:4700,:4800,:4900
 	
 	@print	#strCOMMA
 
-:4060	lda	G
+:4060	lda	H
+	beq	:4065
+	
+	@print	#strSPACE
+
+:4065	lda	G
 	asl
 	tax
 	ldy	tblO$,x
 	lda	tblO$+1,x
 	tax
 	jsr	printCSTRING
-	@print	#strSPACE
 
 	inc	H
 	
@@ -1477,21 +1481,21 @@ tblKEY
 	hex	90,91,92,93,94,95,96,97,98,99,9A,9B,9C,9D,9E,9F
 	hex	A0,A1,A2,A3,A4,A5,A6,A7,A8,A9,AA,AB,AC,AD,AE,AF
 	hex	B0,B1,B2,B3,B4,B5,B6,B7,B8,B9,BA,BB,BC,BD,BE,BF
-	hex	C0,C1,C2,C3,C4,C5,C6,C7,C8,C9,CA,CB,CC,CD,CE,CF
-	hex	D0,D1,D2,D3,D4,D5,D6,D7,D8,D9,DA,DB,DC,DD,DE,DF
+	hex	C1,C1,C2,C3,C4,C5,C6,C7,C8,C9,CA,CB,CC,CD,CE,CF
+	hex	D0,D1,D2,D3,D4,D5,D6,D7,D8,D9,DA,DB,C3,DD,DE,DF
 	hex	E0,C1,C2,C3,C4,C5,C6,C7,C8,C9,CA,CB,CC,CD,CE,CF
-	hex	D0,D1,D2,D3,D4,D5,D6,D7,D8,D9,DA,FB,FC,FD,FE,FF
+	hex	D0,D1,D2,D3,D4,D5,D6,D7,D8,D9,DA,C5,D5,C5,FE,FF
 	
 *-----------------------------------
 * VARIABLES
 *-----------------------------------
 
-V	=	45+3
+V	=	46+3
 
 tblV$	da	$bdbd
 	da	V$1,V$2,V$3,V$4,V$5,V$6,V$7,V$8,V$9
 	da	V$10,V$11,V$12,V$13,V$13B,V$14,V$15,V$16,V$17,V$18,V$19
-	da	V$20,V$21,V$22,V$23,V$24,V$25,V$26,V$27,V$28,V$29
+	da	V$20,V$21,V$21B,V$22,V$23,V$24,V$25,V$26,V$27,V$28,V$29
 	da	V$30,V$31,V$32,V$33,V$34,V$35,V$36,V$37,V$37B,V$38,V$39
 	da	V$40,V$41,V$42,V$43
 	da	V$73,V$74,V$75
@@ -1499,7 +1503,7 @@ tblV$	da	$bdbd
 tblV	dfb	$bd
 	dfb	01,01,02,02,03,03,04,04,05
 	dfb	05,06,06,13,13,14,14,15,15,16,16
-	dfb	16,17,18,19,20,20,22,22,23,50	; 50 and not 05
+	dfb	16,17,17,18,19,20,20,22,22,23,50	; 50 and not 05
 	dfb	50,29,29,30,30,31,31,32,32,33,34
 	dfb	34,35,36,37
 	dfb	59,60,61

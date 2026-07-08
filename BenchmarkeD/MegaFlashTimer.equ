@@ -1,0 +1,33 @@
+*
+* MegaFlash Timer
+* Equates
+*
+* (c) 2026, Brutal Deluxe Software
+*
+
+*-------------- TIMER MODES
+
+TIMER_NONE	=	0
+TIMER_BRUTAL	=	1
+TIMER_MEGAFLASH	=	2
+
+*-------------- MEGAFLASH I/O
+
+CMDREG		=	$c0c0
+STATUSREG	=	$c0c0
+PARAMREG	=	$c0c1
+DATAREG		=	$c0c2
+IDREG		=	$c0c3
+
+*-------------- MEGAFLASH COMMANDS
+
+CMD_GETDEVINFO	=	$10
+CMD_RESETTIMER_US	=	$40
+CMD_GETTIMER_US	=	$41
+
+SIGNATURE1	=	$88
+SIGNATURE2	=	$74
+
+*-------------- TIMING
+
+REF_1US		=	1000000

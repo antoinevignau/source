@@ -1,8 +1,8 @@
 *
 * NTP Player
-* v1.1.1.1.1.1.1.1.1......
+* v1.2
 *
-* (c) 2019-2025, Brutal Deluxe Software
+* (c) 2019-2026, Brutal Deluxe Software
 *
 
 * v1.0b0 - 20190523
@@ -29,10 +29,14 @@
 *   control-option-command-space to stop music
 *   fix of the srqGoAway code (my bad...)
 *
+* v1.2 - 20260726
+*   control-S to stop music
+*
 
 	mx	%00
 	rel
 	typ	$B6
+	aux	$0001
 	dsk	NTPPlayer
 	lst	off
 
@@ -224,18 +228,18 @@ doOPEN4	PushWord	#0	; no loop
 doKEYHIT	ldal	fgTOOL222	; was tool started?
 	beq	doKEYHIT9	; no
 
+	ldy	#4
+	lda	[dataIn],y	; control?
+	and	#%00010000_00000000
+	cmp	#%00010000_00000000
+	bne	doKEYHIT9
 	ldy	#2	; yes, check key combination
 	lda	[dataIn],y
 	and	#$ff
-	cmp	#$20	; space character?
-	bne	doKEYHIT9
-	ldy	#4
-	lda	[dataIn],y	; control-option-command?
-	and	#%00011001_00000000
-	cmp	#%00011001_00000000
+	cmp	#$13	; s
 	bne	doKEYHIT9
 	
-	_NTPStopMusic		; stop the muwak
+	_NTPStopMusic		; stop the muzak
 	brl	myREQUEST3	; and exit
 	
 doKEYHIT9	brl	myREQUEST4	; not for me
@@ -253,4 +257,4 @@ pathSONG2	ds	768	; STR to the NTP tool
 
 myBRUTAL	str	'BrutalDeluxe~NTPPlayer~'
 
-mySTRING	asc	'NTPPlayer             v01.11  by Brutal Deluxe'00
+mySTRING	asc	'NTPPlayer             v01.2   by Brutal Deluxe'00

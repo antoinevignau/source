@@ -5,8 +5,7 @@
 *
 * v1.1: - take less text space to see all results on one page
 *       - escape is also a key to cancel an action
-* v2 - 20260330 - Uses Brutal Timer & LongDivide & Int2Dec routines & buffer size
-*   must validate the read block option before making releasing the beast
+* v2.1 - MegaFlash high-resolution timer auto-detect (IIc)
 
 	mx	%11
 	typ	SYS
@@ -15,6 +14,7 @@
 	lst	off
 
 	use	BrutalTimer.equ
+	use	MegaFlashTimer.equ
 
 *-----------------------------------
 
@@ -141,6 +141,10 @@ no80col	lda	#0	; tell we can
 	lda	#80	; width is 80-col
 	sta	theWIDTH
 	jsr	$c300	; turn firmware on
+
+*--- Detect MegaFlash high-resolution timer
+
+	jsr	initMegaFlash
 
 *-----------------------------------
 
@@ -391,8 +395,9 @@ readFILEERR	cmp	#$4c	; we had an error, check which one
 readFILE4	jsr	readFILE3	; v1.2
 	@WriteCString	#strRERR
 	
-	lda	theSLOT	; v2 - Stop the BT timer if present
-	beq	readFILE4B
+	lda	theTIMERMODE
+	cmp	#TIMER_BRUTAL
+	bne	readFILE4B
 	jsr	stopTIMER	; stop T2
 readFILE4B	rts
 
@@ -610,8 +615,9 @@ createFILE2	jsr	PRODOS	; errrooorrrrrrrr #$48...
 	dfb	$c1
 	da	proDESTROY
 	
-	lda	theSLOT	; v2 - Stop the BT timer if present
-	beq	createFILE2B
+	lda	theTIMERMODE
+	cmp	#TIMER_BRUTAL
+	bne	createFILE2B
 	jsr	stopTIMER	; stop T2
 createFILE2B	rts
 
@@ -835,9 +841,14 @@ pcs1	lda	$ffff
 	jsr	pcsRRC	; print RRC string value
 	jmp	pcs2a
 	
-pcs1a	cmp	#"$"	; BT slot
+pcs1a	cmp	#"$"	; BT slot or MegaFlash
 	bne	pcs1b
-	lda	theSLOT
+	lda	theTIMERMODE
+	cmp	#TIMER_MEGAFLASH
+	bne	pcsBT
+	lda	#"M"
+	jmp	pcs2
+pcsBT	lda	theSLOT
 	ora	#"0"
 
 pcs1b	bit	fgCASE	; can we do lowercase?
@@ -921,24 +932,18 @@ printDATEFROM	@WriteCString	#strFROM
 
 	jsr	printASCIITIME
 
-	lda	DATELO	; month day
-	sta	hextime1
-	lda	DATEHI	; year
-	sta	hextime1+1
-	lda	TIMELO	; minute
-	sta	hextime1+2
-	lda	TIMEHI	; hour
-	sta	hextime1+3
-*	lda	xTIMELO	; ms
-*	sta	hextime1+4
-*	lda	xTIMEHI	; ms
-*	sta	hextime1+5
+	lda	#0
+	jsr	snapshotProDOS
 
 *---
 
-	lda	theSLOT
-	bne	pdfBT
-	rts
+	lda	theTIMERMODE
+	cmp	#TIMER_MEGAFLASH
+	bne	pdfNotMF
+	jmp	resetMFTimer
+
+pdfNotMF	cmp	#TIMER_BRUTAL
+	bne	pdfDone
 
 pdfBT	lda	#T0	; stop all timers
 	jsr	stopTIMER2
@@ -954,14 +959,15 @@ pdfBT	lda	#T0	; stop all timers
 	jsr	setT2DISPLAY2
 	jmp	startTIMER	; start timer
 
+pdfDone	rts
+
 *----------------------------
 
-printDATETO	lda	theSLOT	; v2 - Stop the BT timer if present
-	beq	pdtNOBT
+printDATETO	lda	theTIMERMODE
+	cmp	#TIMER_BRUTAL
+	bne	pdtNOBT
 	
 	jsr	stopTIMER	; stop T2
-
-*---
 
 pdtNOBT	@WriteCString	#strTO
 
@@ -971,19 +977,216 @@ pdtNOBT	@WriteCString	#strTO
 
 	jsr	printASCIITIME
 
-	lda	DATELO	; month day
-	sta	hextime2
-	lda	DATEHI	; year
-	sta	hextime2+1
-	lda	TIMELO	; minute
-	sta	hextime2+2
-	lda	TIMEHI	; hour
-	sta	hextime2+3
-*	lda	xTIMELO
-*	sta	hextime2+4
-*	lda	xTIMEHI
-*	sta	hextime2+5
+	lda	#1
+	jsr	snapshotProDOS
 	rts
+
+*----------------------------
+* SNAPSHOT PRODOS TIME
+* A=0 -> hextime1, A!=0 -> hextime2
+*----------------------------
+
+snapshotProDOS	beq	snapH1
+		ldy	$bfff
+		cpy	#$25
+		bcc	snap2Classic
+		ldx	#0
+]snap2	lda	$bf8e,x
+		sta	hextime2,x
+		inx
+		cpx	#6
+		bcc	]snap2
+		rts
+snap2Classic	lda	DATELO
+		sta	hextime2
+		lda	DATEHI
+		sta	hextime2+1
+		lda	TIMELO
+		sta	hextime2+2
+		lda	TIMEHI
+		sta	hextime2+3
+		lda	#0
+		sta	hextime2+4
+		sta	hextime2+5
+		rts
+snapH1		ldy	$bfff
+		cpy	#$25
+		bcc	snapClassic
+		ldx	#0
+]snap1	lda	$bf8e,x
+		sta	hextime1,x
+		inx
+		cpx	#6
+		bcc	]snap1
+		rts
+snapClassic	lda	DATELO
+		sta	hextime1
+		lda	DATEHI
+		sta	hextime1+1
+		lda	TIMELO
+		sta	hextime1+2
+		lda	TIMEHI
+		sta	hextime1+3
+		lda	#0
+		sta	hextime1+4
+		sta	hextime1+5
+		rts
+
+*----------------------------
+* PRODOS ELAPSED TIME (SOFTWARE CLOCK)
+*----------------------------
+
+calcProDOSElapsed
+		jsr	cpeSecOfDay1
+		jsr	cpeSecOfDay2
+
+		lda	seconds2
+		sec
+		sbc	seconds1
+		sta	seconds
+		lda	seconds2+1
+		sbc	seconds1+1
+		sta	seconds+1
+
+		lda	seconds
+		ora	seconds+1
+		bne	cpePad
+		ldy	$bfff
+		cpy	#$25
+		bcc	cpeMin1
+		lda	hextime2
+		sec
+		sbc	hextime1
+		sta	temp
+		bcc	cpeMin1
+		beq	cpeMin1
+		lda	#0
+		sta	numerator+1
+		sta	numerator+2
+		sta	numerator+3
+		sta	denominator+1
+		sta	denominator+2
+		sta	denominator+3
+		sta	numerator
+		sta	denominator
+		lda	temp
+		sta	numerator
+		lda	#250
+		sta	denominator
+		jsr	LongDivide
+		lda	quotient
+		ora	quotient+1
+		beq	cpeMin1
+		sta	seconds
+		lda	quotient+1
+		sta	seconds+1
+cpePad		lda	seconds
+		ora	seconds+1
+		bne	cpePadZ
+		inc	seconds
+cpePadZ		lda	#0
+		sta	seconds+2
+		sta	seconds+3
+		rts
+cpeMin1		lda	#1
+		sta	seconds
+		lda	#0
+		sta	seconds+1
+		sta	seconds+2
+		sta	seconds+3
+		rts
+
+cpeSecOfDay1	ldx	#0
+		stx	cpeIdx
+		jmp	cpeSecBody
+cpeSecOfDay2	ldx	#6
+		stx	cpeIdx
+cpeSecBody	ldx	cpeIdx
+		ldy	$bfff
+		cpy	#$25
+		bcc	cpeSecCls
+		lda	hextime1+1,x
+		sta	cpeSec
+		lda	hextime1+2,x
+		and	#$3f
+		sta	cpeMin
+		lda	hextime1+2,x
+		lsr
+		lsr
+		lsr
+		lsr
+		lsr
+		lsr
+		sta	cpeHour
+		lda	hextime1+3,x
+		and	#$07
+		asl
+		asl
+		ora	cpeHour
+		sta	cpeHour
+		jmp	cpeSecCalc
+cpeSecCls	lda	hextime1+2,x
+		and	#$3f
+		sta	cpeMin
+		lda	hextime1+3,x
+		and	#$1f
+		sta	cpeHour
+		lda	#0
+		sta	cpeSec
+cpeSecCalc	lda	#0
+		sta	cpeTmp+1
+		lda	cpeSec
+		sta	cpeTmp
+		lda	cpeMin
+		jsr	cpeMul60
+		clc
+		adc	cpeTmp
+		sta	cpeTmp
+		txa
+		adc	cpeTmp+1
+		sta	cpeTmp+1
+		ldy	cpeHour
+		beq	cpeSecDone
+]cpeH	lda	cpeTmp
+		clc
+		adc	#$10
+		sta	cpeTmp
+		lda	cpeTmp+1
+		adc	#$0e
+		sta	cpeTmp+1
+		dey
+		bne	]cpeH
+cpeSecDone
+		lda	cpeIdx
+		bne	cpeStore2
+		lda	cpeTmp
+		sta	seconds1
+		lda	cpeTmp+1
+		sta	seconds1+1
+		lda	#0
+		sta	seconds1+2
+		sta	seconds1+3
+		rts
+cpeStore2	lda	cpeTmp
+		sta	seconds2
+		lda	cpeTmp+1
+		sta	seconds2+1
+		lda	#0
+		sta	seconds2+2
+		sta	seconds2+3
+		rts
+
+cpeMul60	sta	cpeM
+		lda	#0
+		tax
+		ldy	#60
+]cpeM	clc
+		adc	cpeM
+		bcc	cpeMc
+		inx
+cpeMc	dey
+		bne	]cpeM
+		rts
 
 *-----------------------------------
 * translateKEY (lower -> upper)
@@ -1076,7 +1279,7 @@ printASCIITIME	lda	DATELO	; day
 * getDECIMAL
 *
 * Transforme une valeur hexa en dec
-* A: nombre en hex en entrée
+* A: nombre en hex en entr?e
 *--------------------------------------
 
 getDECIMAL
@@ -1092,7 +1295,7 @@ getDECIMAL
 	
 getDECIMAL1	cmp	#10	; <10 ?
 	bcc	getDECIMAL2	; on sort
-	sec		; on enlève 10
+	sec		; on enl?ve 10
 	sbc	#10
 	tay		; sauve
 	txa
@@ -1109,7 +1312,13 @@ getDECIMAL2	clc		; on ajoute le reste < 10
 
 *--- Data
 
-valDEC	ds	2	; on se limite à 0-255
+valDEC	ds	2	; on se limite ? 0-255
+
+*----------------------------
+* MEGAFLASH TIMER
+*----------------------------
+
+	put	MegaFlashTimer8.s
 
 *----------------------------
 * BRUTAL TIMER
@@ -1119,12 +1328,46 @@ valDEC	ds	2	; on se limite à 0-255
 	
 *----------------------------
 
-calcSPEED	lda	theSLOT
-	beq	csNOBT
+calcSPEED	lda	theTIMERMODE
+	cmp	#TIMER_MEGAFLASH
+	beq	csMF
+	cmp	#TIMER_BRUTAL
+	beq	csBT
+	jmp	csNOBT
 
-* kbps = filesize / (valTIMER / 1023000)
+csMF	jsr	readMFTimer
 
-	jsr	readTIMER	; value in valTIMER
+	lda	valTIMER
+	sta	numerator
+	lda	valTIMER+1
+	sta	numerator+1
+	lda	valTIMER+2
+	sta	numerator+2
+	lda	valTIMER+3
+	sta	numerator+3
+
+	lda	myREF1US
+	sta	denominator
+	lda	myREF1US+1
+	sta	denominator+1
+	lda	myREF1US+2
+	sta	denominator+2
+	lda	myREF1US+3
+	sta	denominator+3
+
+	jsr	LongDivide
+
+	lda	quotient
+	sta	seconds
+	lda	quotient+1
+	sta	seconds+1
+	lda	quotient+2
+	sta	seconds+2
+	lda	quotient+3
+	sta	seconds+3
+	jmp	csCOMMONCODE
+
+csBT	jsr	readTIMER	; value in valTIMER
 
 	lda	valTIMER
 	sta	numerator
@@ -1157,19 +1400,13 @@ calcSPEED	lda	theSLOT
 	jmp	csCOMMONCODE
 
 *---
+
+csNOBT	jsr	calcProDOSElapsed
+	jmp	csCOMMONCODE
+
+*---
 * hour = hextime + 3
 * minute = hextime +2
-
-csNOBT	lda	#0
-	sta	seconds
-	sta	seconds+1
-	sta	seconds+2
-	sta	seconds+3
-	sta	numerator
-	sta	numerator+1
-	sta	numerator+2
-	sta	numerator+3
-	jmp	csNOBT2
 
 *               pha
 *               pha
@@ -1188,10 +1425,11 @@ csNOBT	lda	#0
 *               PullLong  seconds2
 
 * Now, get the time in seconds
-               lda       seconds2             ; take low word only
-               sec
-               sbc       seconds1
-               sta       seconds
+
+*               lda       seconds2             ; take low word only
+*               sec
+*               sbc       seconds1
+*               sta       seconds
 
 * Operation in seconds, now
 * calculate the speed
@@ -1313,6 +1551,14 @@ LongDivide2	dey
 *---
 
 myREF1MHZ	adrl	REF_1MHZ
+myREF1US	adrl	REF_1US
+
+cpeIdx		ds	1
+cpeSec		ds	1
+cpeMin		ds	1
+cpeHour		ds	1
+cpeTmp		ds	2
+cpeM		ds	1
 
 denominator	ds	4	; unsigned longint divisor
 numerator	ds	4	; unsigned longint dividend
@@ -1389,7 +1635,7 @@ Int2DecErr	sec
 
 *	asc	"1234567890123456789012345678901234567890"
 
-strINTRO	asc	"BenchmarkeD 8-bits v2 DEBUG 16M"8d
+strINTRO	asc	"BenchmarkeD 8-bits v2.1 DEBUG 16M"8d
 	asc	"(c) 2026, Brutal Deluxe Software"8d8d
 	asc	"File options"8d
 	asc	" 1- Write speed"8d
@@ -1514,7 +1760,7 @@ proSETPFX
 	da	ptrPREFIX	; +1 prefix
 
 proOPEN	dfb	$3
-	da	pathname1	; +1 pathname (par défaut, le moteur)
+	da	pathname1	; +1 pathname (par d?faut, le moteur)
 	da	proBUFFER	; +3 io_buffer
 	ds	1	; +5 ref_num
 

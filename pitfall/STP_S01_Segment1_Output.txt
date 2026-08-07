@@ -61,7 +61,7 @@
    58 |  1 stp.s     58 | Empty       | 00 |         |    0 | 00/0000               |                                                   
    59 |  1 stp.s     59 | Equivalence | 00 |         |    0 | 00/0000               | NUM_AUDIO_SOURCES  =         7                    
    60 |  1 stp.s     60 | Empty       | 00 |         |    0 | 00/0000               |                                                   
-   61 |  1 stp.s     61 | Equivalence | 00 |         |    0 | 00/0000               | NUM_OSCILLATORS    =         {7}*2                ; leave the last 2 alone
+   61 |  1 stp.s     61 | Equivalence | 00 |         |    0 | 00/0000               | NUM_OSCILLATORS    =         {7}*2                ; number of oscillators to configure
    62 |  1 stp.s     62 | Empty       | 00 |         |    0 | 00/0000               |                                                   
    63 |  1 stp.s     63 | Comment     | 00 |         |    0 | 00/0000               | *-----------------------------------
    64 |  1 stp.s     64 | Comment     | 00 |         |    0 | 00/0000               | * ENTRY POINT
@@ -1963,35 +1963,35 @@
       |                 |             |    |         |      |           64 62 61 6E |
       |                 |             |    |         |      |           6B          |
  2096 |  1 stp.s    846 | Empty       | 00 |         |    0 | 00/0F8A               |                                                   
- 2097 |  1 stp.s    847 | Data        | 00 |         |   16 | 00/0F8A : 0E 00 31 2F | pVINE              strl      '1/snd/vine.snd'     
+ 2097 |  1 stp.s    847 | Data        | 00 |         |   16 | 00/0F8A : 0E 00 31 2F | pVINE              strl      '1/snd/vine.snd'     ; in soundbank
       |                 |             |    |         |      |           73 6E 64 2F |
       |                 |             |    |         |      |           76 69 6E 65 |
       |                 |             |    |         |      |           2E 73 6E 64 |
- 2098 |  1 stp.s    848 | Data        | 00 |         |   16 | 00/0F9A : 0E 00 31 2F | pJUMP              strl      '1/snd/jump.snd'     
+ 2098 |  1 stp.s    848 | Data        | 00 |         |   16 | 00/0F9A : 0E 00 31 2F | pJUMP              strl      '1/snd/jump.snd'     ; in soundbank
       |                 |             |    |         |      |           73 6E 64 2F |
       |                 |             |    |         |      |           6A 75 6D 70 |
       |                 |             |    |         |      |           2E 73 6E 64 |
- 2099 |  1 stp.s    849 | Data        | 00 |         |   20 | 00/0FAA : 12 00 31 2F | pTREASURE          strl      '1/snd/treasure.snd' 
+ 2099 |  1 stp.s    849 | Data        | 00 |         |   20 | 00/0FAA : 12 00 31 2F | pTREASURE          strl      '1/snd/treasure.snd' ; in soundbank
       |                 |             |    |         |      |           73 6E 64 2F |
       |                 |             |    |         |      |           74 72 65 61 |
       |                 |             |    |         |      |           73 75 72 65 |
       |                 |             |    |         |      |           2E 73 6E 64 |
- 2100 |  1 stp.s    850 | Data        | 00 |         |   18 | 00/0FBE : 10 00 31 2F | pDAMAGE            strl      '1/snd/damage.snd'   
+ 2100 |  1 stp.s    850 | Data        | 00 |         |   18 | 00/0FBE : 10 00 31 2F | pDAMAGE            strl      '1/snd/damage.snd'   ; in soundbank
       |                 |             |    |         |      |           73 6E 64 2F |
       |                 |             |    |         |      |           64 61 6D 61 |
       |                 |             |    |         |      |           67 65 2E 73 |
       |                 |             |    |         |      |           6E 64       |
- 2101 |  1 stp.s    851 | Data        | 00 |         |   19 | 00/0FD0 : 11 00 31 2F | pDAMAGE2           strl      '1/snd/damage2.snd'  
+ 2101 |  1 stp.s    851 | Data        | 00 |         |   19 | 00/0FD0 : 11 00 31 2F | pDAMAGE2           strl      '1/snd/damage2.snd'  ; in soundbank
       |                 |             |    |         |      |           73 6E 64 2F |
       |                 |             |    |         |      |           64 61 6D 61 |
       |                 |             |    |         |      |           67 65 32 2E |
       |                 |             |    |         |      |           73 6E 64    |
- 2102 |  1 stp.s    852 | Data        | 00 |         |   19 | 00/0FE3 : 11 00 31 2F | pFALLING           strl      '1/snd/falling.snd'  
+ 2102 |  1 stp.s    852 | Data        | 00 |         |   19 | 00/0FE3 : 11 00 31 2F | pFALLING           strl      '1/snd/falling.snd'  ; in soundbank
       |                 |             |    |         |      |           73 6E 64 2F |
       |                 |             |    |         |      |           66 61 6C 6C |
       |                 |             |    |         |      |           69 6E 67 2E |
       |                 |             |    |         |      |           73 6E 64    |
- 2103 |  1 stp.s    853 | Data        | 00 |         |   17 | 00/0FF6 : 0F 00 31 2F | pDEATH             strl      '1/snd/death.snd'    
+ 2103 |  1 stp.s    853 | Data        | 00 |         |   17 | 00/0FF6 : 0F 00 31 2F | pDEATH             strl      '1/snd/death.snd'    ; loaded
       |                 |             |    |         |      |           73 6E 64 2F |
       |                 |             |    |         |      |           64 65 61 74 |
       |                 |             |    |         |      |           68 2E 73 6E |

@@ -58,11 +58,15 @@ NB_RETRY	=	8
 
 *---------- Apple IIgs SendInfo ADB Commands (the ADB Tool Set *only*)
 
-transmitADBBytes =	%01000111	; $47
-enableSRQ	=	%01010000	; $50
-disableSRQ	=	%01110000	; $70
-listen	=	%10000000	; $80
-talk	=	%11000000	; $C0
+transmit2ADBBytes =	%1000_0000	; $80
+disableSRQ	=	%0111_0000	; $70
+flushADBDevBuf	=	%0110_0000	; $60
+enableSRQ	=	%0101_0000	; $50
+transmitADBBytes =	%0100_0111	; $47
+resetADB	=	%0100_0000	; $40
+
+listen	=	%1000_0000	; $80
+talk	=	%1100_0000	; $C0
 
 *---------- Error codes
 
@@ -397,10 +401,10 @@ FMLR3OK	rts
 
 dataLength3	dw	2	; length of data
 dataListen3	dfb	%0000_10_11	; ADB command: Address (0000) + Listen (10) + Register (11)
-	dfb	%0000_0001	; change to handler ID++
-	dfb	%0000_0011	; the device at address 3
+	dfb	%0000_0001	; change to handler ID++ 	$FE
+	dfb	%0000_0011	; the device at address 3	$07
 	ds	6
-	
+
 *-----------------------
 * TALK routines to get
 * data from the device
@@ -518,7 +522,7 @@ ptrTalkRegister_0
 	da	ADBTalkRegister_0_15
 
 *-----------
-*
+
 *ADBTalkRegister3
 *
 *	lda	#dataTalk3
@@ -1395,6 +1399,26 @@ dataTalk3	ds	1	; address
 *----------------------- REGISTER 0
 
 	mx	%11	; enter the 8-bit world
+
+completionRoutine		; nearly standard ADB completion routine
+	phd
+	tsc
+	tcd
+	lda	[6]
+	beq	endpool
+	tay
+	iny
+	tya
+	stal	adbLENGTH
+]lp	lda	[6],y
+	tyx
+	dex
+cpBuffer	stal	dataTalk_0_0,x	; patch this address please
+	dey
+	bne	]lp
+endpool	pld
+	clc
+	rtl
 
 completionRoutine_0_0		; nearly standard ADB completion routine
 	phd

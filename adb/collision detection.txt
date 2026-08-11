@@ -41,7 +41,7 @@ $8 to $E	Reserved for dynamically relocating devices
 Table 5-4 Special device handler IDs
 ID value	Description
 $FF		Instructs the device to initiate a self-test.
-$FE		Instructs the device to change its ADB device address (as stored in bits 8Ð11 
+$FE		Instructs the device to change its ADB device address (as stored in bits 8Ð11	<- use this
 		of register 3) to the new address set in the command if no collision has been 
 		detected.
 $FD		Instructs the device to change its ADB device address (as stored in bits 8Ð11 
@@ -70,14 +70,51 @@ Each ADB device has a default ADB device address and initially responds to all A
 
 At system startup, the ADB Manager polls all ADB devices at each ADB address and begins the process of building the ADB device table by sending a Talk Register 3 command to each device. Each ADB device at a specific address attempts to respond by sending a random device address. If more than one ADB device shares an address, however, each device that detects a collision immediately stops transmitting data. The device that has not detected the collision completes sending its random address across the bus.
 
+for D0 = 0 to 15
+  Talk R3 to address D0
+  If there was an answer
+    save data to the device table
+	set device address to D0 in the device table
+  Else if there was not an answer
+    do nothing
+next D0
 
+D1 = 16
+for D0 = 0 to 7
 
+// ChgNext:
+	D1 = D1 - 1
 
+// issue Listen R3 to move the device from D0 to D1
+ 	Listen R3 from D0 to D1
 
+// then Talk R3 at D0 to see if there are remaining devices at D0
+  	Talk R3 at D0
 
+// if no timeout then there is still a device at D0, move it to the next D1 by looping
+	Goto ChgNext
 
+// if timeout then there is no device at D0, it was moved for nothing, restore to the original position
+	Listen R3 from D1 to D0
 
+// now, check new address
+	Talk R3 at D1
 
+// no timeout means the device is still at that address
+	add device to the list for address D1
+	D0++
+	Goto ChgNext
+
+/ timeout means no device at that address
+	D0++
+	Goto Loop
+
+Talk R3
+
+Listen R3 from D0 to D1 to change address
+	dataListen3 contains the current address is the high four bits
+	dataListen3 + 1 contains the special handler ID #$FE
+	dataListen3 + 2 contains the new address
 
 
 

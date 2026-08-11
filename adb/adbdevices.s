@@ -125,11 +125,16 @@ mainFOUR	cmp	#"4"
 	jmp	increaseHANDLER	; increase handler ID
 
 mainFIVE	cmp	#"5"
-	bne	mainQUIT
+	bne	mainSIX
 
 	jmp	initTURBOMOUSE	; init Turbo Mouse
+
+mainSIX	cmp	#"6"
+	bne	mainNINE
 	
-mainQUIT	cmp	#"Q"
+	jmp	changeADDRESS
+
+mainNINE	cmp	#"Q"
 	beq	doQUIT
 	cmp	#"q"
 	bne	mainMENU
@@ -166,6 +171,7 @@ strMAINMENU	asc	'Show ADB devices'0d
 	asc	' 3. Change to handler 4'0d
 	asc	' 4. Increase handler'0d
 	asc	' 5. Init Turbo Mouse'0d
+	asc	' 6. Set new address'0d
 	asc	' Q. Quit     >'00
 
 *----------------------------
@@ -257,6 +263,142 @@ data1	hex	E7,8C,00,00,00,FF,FF,94
 data2	hex	A5,14,00,00,69,FF,FF,27
 
 *----------------------------
+* CHANGE ADDRESS
+*----------------------------
+
+changeADDRESS	PushLong	#strSOURCEADDRESS	; Get the source address
+	_WriteCString
+	jsr	waitFORKEY
+	cmp	#"0"
+	bne	cod_1
+	jmp	mainMENU
+
+cod_1	cmp	#"1"
+	bcc	changeADDRESS
+	cmp	#"9"+1
+	bcs	cod_2
+	sec
+	sbc	#"0"
+	jmp	cod_3
+
+cod_2	cmp	#"A"
+	bcc	changeADDRESS
+	cmp	#"F"+1
+	bcs	changeADDRESS
+	sec
+	sbc	#"A"-10
+
+cod_3	sta	theSOURCE
+
+*---
+
+]lp	PushLong	#strDESTINATIONADDRESS	; Get the destination address
+	_WriteCString
+	jsr	waitFORKEY
+	cmp	#"0"
+	bne	ccd_1
+	jmp	mainMENU
+
+ccd_1	cmp	#"1"
+	bcc	]lp
+	cmp	#"9"+1
+	bcs	ccd_2
+	sec
+	sbc	#"0"
+	jmp	ccd_3
+
+ccd_2	cmp	#"A"
+	bcc	]lp
+	cmp	#"F"+1
+	bcs	]lp
+	sec
+	sbc	#"A"-10
+
+ccd_3	sta	theDESTINATION
+
+*--- Talk to the current address for register 3
+
+	lda	#dataTalk3
+	sta	cpBuffer+1
+
+	PushLong	#completionRoutine
+	lda	#%11_11_0000	; talk (11) + register (10) + address (0000)
+	ora	theSOURCE
+	pha
+	_AsyncADBReceive
+	jsr	printERRCODE
+
+*--- Set new address for device at address source
+
+	sep	#$20
+	lda	theSOURCE
+	and	#%0000_1111
+	asl
+	asl
+	asl
+	asl
+	ora	#%0000_1011	; listen register 3
+	sta	DATABUF
+
+	lda	#%1111_1110
+	sta	DATABUF+1
+
+	lda	theDESTINATION
+	and	#%0000_1111
+	sta	DATABUF+2
+	rep	#$20
+
+*--- Execute the command
+		
+	PushWord	#3	; 1 command + 2 data
+	PushLong	#DATABUF
+	PushWord	#transmitADBBytes+2
+	_SendInfo
+	jsr	printERRCODE
+
+*--- Talk to the new address for register 3
+
+	lda	#dataTalk3
+	sta	cpBuffer+1
+
+	PushLong	#completionRoutine
+	lda	#%11_11_0000	; talk (11) + register (10) + address (0000)
+	ora	theDESTINATION
+	pha
+	_AsyncADBReceive
+	jsr	printERRCODE
+
+*--- The end
+	
+	jsr	waitFORKEY
+	jmp	mainMENU		; return... Talk 3 must show a device at address 15
+
+*--- Print the return code
+
+printERRCODE	pha
+	PushLong	#strERRORCODE
+	_WriteCString
+	pla
+	jsr	showWORD
+	rts
+
+*---
+
+strSOURCEADDRESS
+	asc	0d'Select source address (0..F) >'00
+
+strDESTINATIONADDRESS
+	asc	0d'Select destination address (0..F) >'00
+
+strERRORCODE
+	asc	0d'> Error code $'00
+	
+theSOURCE	ds	2
+theDESTINATION	ds	2
+
+DATABUF	ds	8
+
+*----------------------------
 * POLL DEVICE
 *----------------------------
 
@@ -294,9 +436,13 @@ pod_3	sta	theDEVICE
 
 	ldal	KBD-1
 	bpl	]lp
+	xba
+	and	#$ff
 	sep	#$20
 	stal	KBDSTROBE
 	rep	#$20
+	cmp	#$9b
+	bne	]lp
 	jmp	mainMENU
 
 *---

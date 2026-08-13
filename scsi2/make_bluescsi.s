@@ -1,7 +1,7 @@
 
 * Expansion linker file
 
-	DSK	BueSCSI
+	DSK	BlueSCSI
 	TYP	S16
 	AUX	$0000
 

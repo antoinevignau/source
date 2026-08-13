@@ -261,6 +261,19 @@ ADBSetAddress	and	#%0000_1111
 	rts
 
 *-----------------------
+* RESET routine
+*-----------------------
+
+ADBReset	PushWord	#1	; command is 1
+	PushLong	#dataReset
+	PushWord	#resetADB
+	_SendInfo
+	rts
+
+dataReset	dfb	%0000_00_00	; ADB command: Address (0000) + Reset (0000)
+	ds	8
+
+*-----------------------
 * LISTEN routines
 * to send data
 *-----------------------

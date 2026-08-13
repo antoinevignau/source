@@ -316,6 +316,11 @@ ccd_2	cmp	#"A"
 
 ccd_3	sta	theDESTINATION
 
+*--- Reset the ADB bus
+
+	jsr	ADBReset
+	jsr	printERRCODE
+
 *--- Talk to the current address for register 3
 
 	lda	#dataTalk3
@@ -331,7 +336,7 @@ ccd_3	sta	theDESTINATION
 *--- Set new address for device at address source
 
 	sep	#$20
-	lda	theSOURCE
+	lda	theSOURCE	; current address
 	and	#%0000_1111
 	asl
 	asl
@@ -340,10 +345,10 @@ ccd_3	sta	theDESTINATION
 	ora	#%0000_1011	; listen register 3
 	sta	DATABUF
 
-	lda	#%1111_1110
+	lda	#%1111_1110	; #$FE
 	sta	DATABUF+1
 
-	lda	theDESTINATION
+	lda	theDESTINATION	; new address
 	and	#%0000_1111
 	sta	DATABUF+2
 	rep	#$20

@@ -18,6 +18,7 @@
 	use	4/Locator.Macs
 	use	4/Mem.Macs
 	use	4/Misc.Macs
+	use	4/Text.Macs
 	use	4/Util.Macs
 
 GSOS	=	$e100a8
@@ -53,6 +54,7 @@ dcINQUIRY	=	$8012	; ** bluescsi **
 doMODESELECT	=	$8015
 dcMODESENSE6	=	$801a	; ** bluescsi **
 dcSTARTSTOP	=	$801b
+dcRECEIVEDIAG	=	$801c	; ** bluescsi **
 dcREADCAPACITY	=	$8025
 dcSUBCHANNEL	=	$8042
 dcREADTOC	=	$8043
@@ -80,6 +82,12 @@ BLUESCSI_TOOLBOX_SET_NEXT_CD	=	$d8
 BLUESCSI_TOOLBOX_METADATA	=	$d9
 TOOLBOX_SUBCMD_LIST_DEVICES	=	$00
 BLUESCSI_TOOLBOX_COUNT_CDS	=	$da
+
+SCSI_NETWORK_WIFI_CMD_SCAN	=	$01	; first
+SCSI_NETWORK_WIFI_CMD_COMPLETE	=	$02	; check if complete
+SCSI_NETWORK_WIFI_CMD_SCAN_RESULTS =	$03	; print results if done
+SCSI_NETWORK_WIFI_CMD_INFO	=	$04
+SCSI_NETWORK_WIFI_CMD_JOIN	=	$05
 
 TOOLBOX_SUBCMD_GET_CAPABILITIES	=	$01
 TOOLBOX_SUBCMD_SET_WORKING_DIR	=	$02
@@ -179,6 +187,11 @@ TOOLBOX_API_VERSION	=	0
                   lda       ptrBUFFER+2
                   stal      $306
 
+	  lda	#doWIFI
+	  stal	$310
+	  lda	#^doWIFI
+	  stal	$312
+	  
 *----------------------------
 * MAIN MENU
 *----------------------------
@@ -373,7 +386,7 @@ deviceMENU	lda	theDEVICE            ; get our ID
 	bcc	]lp
 	bne	deviceMENU2
 	jmp	searchMENU	; or even 0 to exit
-deviceMENU2	cmp	#"8"+1
+deviceMENU2	cmp	#"9"+1
 	bcs	]lp
 
 	sec		; call the routines
@@ -386,6 +399,8 @@ deviceMENU3	jsr	$bdbd
 	jmp	deviceMENU
 
 ptrCOMMANDS	da	doINQUIRY
+	da	doSENSE
+	da	doWIFI
 	da	doCAPACITY
 	da	doAUDIOPARMS
 	da	doREADTOC
@@ -647,11 +662,49 @@ doINQUIRY1
                   ldx       #4
                   jsr       showTEXT
 
-                  jmp       waitKEY
+*--- Check if we have a BlueSCSI device
+
+	ldy	#0	; no BS by default
+
+	sep	#$20
+	ldx	#8-1	; is one on Vendor ID?
+]lp	lda	commandBUFF+8,x
+	cmp	refBLUESCSI,x
+	bne	checkBS2
+	dex
+	bpl	]lp
+	bra	foundBS
+	
+checkBS2	ldx	#8-1	; or on Product ID?
+]lp	lda	commandBUFF+16,x
+	cmp	refBLUESCSI,x
+	bne	nofoundBS
+	dex
+	bpl	]lp
+
+foundBS	ldy	#-1
+nofoundBS	rep	#$20
+	sty	fgBLUESCSI
+
+*--- Say it now...
+
+	PushLong	#strBS
+	_WriteCString
+
+	lda	fgBLUESCSI
+	beq	noBSFOUND
+	
+	PushLong	#strYES
+	_WriteCString
+	jmp	waitKEY
+
+noBSFOUND	PushLong	#strNO
+	_WriteCString
+	jmp	waitKEY
 
 *--- Data
 
-scsiINQUIRY	hex	12,01,31,00,00,00	; page x31 for BlueSCSI
+scsiINQUIRY	hex	12,00,00,00,00,00
 
 strPQ	asc	0d' Peripheral qualifier: '00
 strPDT	asc	' - Peripheral device type : '00
@@ -673,6 +726,198 @@ strSFTRE	asc	' - SftRe: '00
 strVI	asc	0d' Vendor identification: '00
 strPI	asc	0d' Product identification: '00
 strPRL	asc	0d' Product revision level: '00
+
+strBS	asc	0d' BlueSCSI: '00
+strYES	asc	'Yes'00
+strNO	asc	'No'00
+
+refBLUESCSI	asc	'BlueSCSI'00
+
+fgBLUESCSI	ds	2
+
+*----------------
+
+doSENSE	jsr	initCOMMANDDATA
+
+	ldx	#6-2	; put the stop data
+]lp	lda	scsiSENSE,x
+	sta	commandDATA,x
+	dex
+	dex
+	bpl	]lp
+
+	lda	#dcMODESENSE6	; MODE SENSE(10)
+	jsr	statusCALL
+	bcc	doSENSE1
+	rts
+
+doSENSE1
+
+*--- We begin at +12 (this could have been better handled)
+
+* Byte 0 - Page code
+
+	PushLong	#strPAGECODE
+	_WriteCString
+
+	lda	commandBUFF+12
+	jsr	showBYTE
+
+* Byte 1 - Page length
+
+	PushLong	#strPAGELENGTH
+	_WriteCString
+	
+	lda	commandBUFF+12+1
+	jsr	showDECIMAL
+
+* Byte 2 - Text
+
+	PushLong	#strVENDORPAGE
+	_WriteCString
+
+	lda	#12+2	; offset
+	ldx	#41	; length
+	jsr	showTEXT
+
+*--- Now compare
+
+	ldy	#0	; not the right page by default
+
+	ldx	#42	; compare with the ref page
+]lp	lda	commandBUFF+12,x
+	cmp	refVENDORPAGE,x
+	bne	noGOODPAGE
+	dex
+	dex
+	bpl	]lp
+	
+	ldy	#-1	; we have one
+noGOODPAGE	sty	fgBLUESCSI2
+
+*--- Tell the world!
+
+	PushLong	#strBS
+	_WriteCString
+
+	lda	fgBLUESCSI
+	beq	noBSFOUND2
+	
+	PushLong	#strYES
+	_WriteCString
+	jmp	waitKEY
+
+noBSFOUND2	PushLong	#strNO
+	_WriteCString
+	jmp	waitKEY
+
+*--- Data
+
+scsiSENSE	hex	1a,00,31,00,00,00	; want page $31, was $4E for PC "changeable values"
+
+strPAGECODE	asc	0d' Page code: '00
+strPAGELENGTH	asc	0d' Page length: '00
+strVENDORPAGE	asc	0d' Vendor data: '00
+
+refVENDORPAGE	hex	31
+	dfb	42
+	asc	'BlueSCSI is the BEST STOLEN FROM BLUESCSI'
+	dfb	0
+
+fgBLUESCSI2	ds	2
+
+*----------------
+
+LEN_WIFI	=	10
+
+doWIFI	jsr	initCOMMANDDATA
+
+	ldx	#LEN_WIFI-2	; init string
+]lp	lda	refWIFI,x
+	sta	scsiWIFI,x
+	sta	commandDATA,x
+	dex
+	dex
+	bpl	]lp
+
+	lda	#dcRECEIVEDIAG	; RECEIVE DIAGNOSTIC RESULTS
+	jsr	statusCALL	; a status command
+
+	lda	commandBUFF
+	jsr	showBYTE
+	
+*--- Execute the scan
+
+	PushLong	#strSCANWIFI
+	_WriteCString
+
+	ldx	#SCSI_NETWORK_WIFI_CMD_SCAN
+	lda	#2	; length
+	jsr	execWIFI
+
+	lda	commandBUFF
+	jsr	showBYTE
+
+*--- Check if it has ended and say it so...
+
+	ldx	#SCSI_NETWORK_WIFI_CMD_COMPLETE
+	lda	#2	; length
+	jsr	execWIFI
+
+	lda	commandBUFF
+	jsr	showBYTE
+
+	PushLong	#strSCANDONE
+	_WriteCString
+
+*--- See if we have access points. If so, display them
+
+	ldx	#SCSI_NETWORK_WIFI_CMD_SCAN_RESULTS
+	lda	#1000	; length (70 x 10 max)
+	jsr	execWIFI
+
+	lda	commandBUFF
+	jsr	showBYTE
+	jmp	waitKEY
+
+*--- Execute Wi-Fi command
+
+execWIFI	xba		; length
+*	sta	scsiWIFI+3
+	sep	#$10	; sub-command
+	stx	scsiWIFI+1
+	rep	#$10
+
+	ldx	#LEN_WIFI-2	; init string
+]lp	lda	scsiWIFI,x
+	sta	commandDATA,x
+	dex
+	dex
+	bpl	]lp
+
+	lda	#dcRECEIVEDIAG	; RECEIVE DIAGNOSTIC RESULTS
+	jsr	statusCALL	; a status command
+	rts
+	
+*--- Data
+
+refWIFI	hex	1c,00,00,00,00,00,00,00,00,00
+
+scsiWIFI	hex	1c
+	hex	00	; +1: sub-command
+	hex	00
+	hex	00,00	; +3/4: length
+	hex	00,00,00,00,00
+
+strSCANWIFI	asc	0d' Start Wi-Fi scan for access points...'00
+strSCANDONE	asc	0d' Finished!'0d00
+
+strSSID	asc	0d' SSID: '00
+strBSSID	asc	0d' BSSID: '00
+strRSSI	asc	0d' RSSI: '00
+strCHANNEL	asc	0d' Channel: '00
+strFLAGS	asc	0d' Flags: '00
+strPADDING	asc	0d' Padding: '00
 
 *----------------
 
@@ -1871,6 +2116,13 @@ initCOMMANDDATA                                  ; clear SCSI command buffer
                   bpl       ]lp
                   rts
 
+initSTATUSDATA    ldx	#12-2	; clear SCSI status buffer
+]lp               stz	statusDATA,x
+                  dex
+                  dex
+                  bpl	]lp
+                  rts
+
 *--- DStatus
 * Uses the DControl parm buffer
 
@@ -1885,17 +2137,17 @@ statusCALL        sta       proCONTROL+4         ; SCSI driver command
                   bra       showERR
 
 *--- DStatus
-* Uses the DControl parm buffer
+* Uses the DStatus parm buffer
 
-statusCALL2       sta       proSTATUS+4          ; SCSI driver command
-                  sep       #$20                 ; SCSI commands are 8-bit
-                  sta       statusDATA           ; SCSI command
-                  rep       #$20
+statusCALL2       sta	proSTATUS+4	; SCSI driver command
+                  sep	#$20	; SCSI commands are 8-bit
+                  sta	statusDATA	; SCSI command
+                  rep	#$20
 
-                  jsl       GSOS                 ; call it
-                  dw        $202d
-                  adrl      proSTATUS
-                  rts
+                  jsl	GSOS	; call it
+                  dw	$202d
+                  adrl	proSTATUS
+                  bra	showERR
 
 *--- DControl
 
@@ -1940,18 +2192,20 @@ trackLAST         ds        2
 indexTOC          ds        2
 nbSONGS           ds        2                    ; nb of songs on disc
 
-strDEVICEMENU
-                  asc       0d'Using SCSI CD-ROM device $'
-strDEVMENU        asc       '0000'0d
-                  asc       ' 0. Go back to previous menu'0d
-                  asc       ' 1. Inquiry disk'0d
-                  asc       ' 2. Disk capacity'0d
-                  asc       ' 3. Audio control parameters'0d
-                  asc       ' 4. Read TOC'0d
-                  asc       ' 5. Read Sub Channel'0d
-                  asc       ' 6. Play/Stop disk'0d
-                  asc       ' 7. Pause/Resume'0d
-                  asc       ' 8. Insert/Eject disk'0d00
+strDEVICEMENU     asc	0d'Using SCSI device $'
+strDEVMENU        asc	'0000'0d
+                  asc	' 0. Go back to previous menu'0d
+                  asc	' 1. Inquiry disk'0d
+                  asc	' 2. Sense page $31'0d
+                  asc	' 3. Show Wi-Fi access points'0d
+	  dfb	00
+                  asc       ' 3. Disk capacity'0d
+                  asc       ' 4. Audio control parameters'0d
+                  asc       ' 5. Read TOC'0d
+                  asc       ' 6. Read Sub Channel'0d
+                  asc       ' 7. Play/Stop disk'0d
+                  asc       ' 8. Pause/Resume'0d
+                  asc       ' 9. Insert/Eject disk'0d00
 
 *----------------------------
 * TEXT ROUTINES

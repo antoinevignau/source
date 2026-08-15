@@ -68,6 +68,7 @@ dcWRITE	=	$800a	; ** daynaport ** ie. SEND MESSAGE 6 - from initiator to target
 chrPOINT	=	'.'
 chrDEUXPOINTS	=	':'
 chrRETURN	=	$0d
+chrRETURN2	=	$8d
 
 *-------------------------------
 * BLUESCSI EQUATES
@@ -1097,9 +1098,6 @@ apMENU4	sta	offsetNETWORK	; we point to the SSID information
 apMENU10	cmp	#"1"	; 1 to connect
 	bne	]lp
 
-	PushLong	#strSCANDONE
-	_WriteCString		; LoGo
-
 *--- Enter credentials...
 
 	PushLong	#strTHEKEY
@@ -1114,14 +1112,22 @@ apMENU10	cmp	#"1"	; 1 to connect
 	PushWord	#0
 	PushLong	#theKEY
 	PushWord	#MAX_KEY
-	PushWord	#chrRETURN
+	PushWord	#chrRETURN2
 	PushWord	#1
 	_ReadLine
 	pla
 	jsr	showWORD
-	
-	PushWord	#chrRETURN
-	_WriteChar
+
+* Rewrite the key (bit 7)
+
+	ldx	#64-1
+	sep	#$20
+]lp	lda	theKEY,x
+	and	#%0111_1111
+	sta	theKEY,x
+	dex
+	bpl	]lp
+	rep	#$20
 	
 	lda	#^theSSID
 	jsr	showWORD
@@ -1160,7 +1166,7 @@ scsiWIFI	hex	1c
 	hex	00
 	hex	00,00,00,00
 
-strSCANWIFI	asc	0d' Start Wi-Fi scan for access points...'00
+strSCANWIFI	asc	0d'Start Wi-Fi scan for access points...'00
 strSCANDONE	asc	' Finished!'00
 strNOWIFI	asc	' No access points found!'00
 strYESWIFI	asc	' Access points found!'00
@@ -1173,20 +1179,20 @@ strCHANNEL	asc	0d' Channel: '00
 strFLAGS	asc	0d' Flags: '00
 strPADDING	asc	0d' Padding: '00
 
-strRESULT0	asc	0d'SCSI_NETWORK_WIFI... '00
-strRESULT1	asc	0d'SCSI_NETWORK_WIFI_CMD_SCAN...'00
-strRESULT2	asc	0d'SCSI_NETWORK_WIFI_CMD_COMPLETE...'00
-strRESULT3	asc	0d'SCSI_NETWORK_WIFI_CMD_SCAN_RESULTS...'00
+strRESULT0	asc	0d' SCSI_NETWORK_WIFI... '00
+strRESULT1	asc	0d' SCSI_NETWORK_WIFI_CMD_SCAN...'00
+strRESULT2	asc	0d' SCSI_NETWORK_WIFI_CMD_COMPLETE...'00
+strRESULT3	asc	0d' SCSI_NETWORK_WIFI_CMD_SCAN_RESULTS...'00
 
 strIDNETWORK	asc	0d' 1. '00
 
 idNETWORK	ds	2
 offsetNETWORK	ds	2
 
-strSELECTAP	asc	0d'Select an access point'
+strSELECTAP	asc	0d0d'Select an access point'
 	asc	0d' 0. Go back to previous menu'00
 
-strDOWHATNOW	asc	0d'Select an action'
+strDOWHATNOW	asc	0d0d'Select an action'
 	asc	0d' 0. Go back to previous menu'
 	asc	0d' 1. Connect to the access point'0d00
 
@@ -2645,12 +2651,15 @@ showMAC	stx	showMAC1+1	; len
 
 	PushWord	#chrDEUXPOINTS
 	_WriteChar
-	inc	fgDEUXPOINTS
 
 showMAC0	plx
 	phx
 	lda	commandBUFF,x
 	jsr	showBYTE
+
+	lda	#1
+	sta	fgDEUXPOINTS	; we want a separator
+
 	plx
 	inx
 showMAC1	cpx	#8	; number of bytes to print

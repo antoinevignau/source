@@ -62,6 +62,11 @@ dcPATI	=	$8048
 dcPAUSERESUME	=	$804b
 dcMODESENSE10	=	$805a
 
+dcREAD	=	$8008	; ** daynaport ** ie. GET MESSAGE 6 - from target to initiator
+dcWRITE	=	$800a	; ** daynaport ** ie. SEND MESSAGE 6 - from initiator to target
+
+chrPOINT	=	'.'
+chrDEUXPOINTS	=	':'
 chrRETURN	=	$0d
 
 *-------------------------------
@@ -85,11 +90,13 @@ BLUESCSI_TOOLBOX_METADATA	=	$d9
 TOOLBOX_SUBCMD_LIST_DEVICES	=	$00
 BLUESCSI_TOOLBOX_COUNT_CDS	=	$da
 
-SCSI_NETWORK_WIFI_CMD_SCAN	=	$01	; first
-SCSI_NETWORK_WIFI_CMD_COMPLETE	=	$02	; check if complete
+* The RECEIVE DIAGNOSTIC RESULT sub-commands...
+
+SCSI_NETWORK_WIFI_CMD_SCAN	=	$01	; first, wait for non-zero
+SCSI_NETWORK_WIFI_CMD_COMPLETE	=	$02	; check if complete, wait for non-zero
 SCSI_NETWORK_WIFI_CMD_SCAN_RESULTS =	$03	; print results if done
-SCSI_NETWORK_WIFI_CMD_INFO	=	$04
-SCSI_NETWORK_WIFI_CMD_JOIN	=	$05
+SCSI_NETWORK_WIFI_CMD_INFO	=	$04	; 
+SCSI_NETWORK_WIFI_CMD_JOIN	=	$05	; 
 
 TOOLBOX_SUBCMD_GET_CAPABILITIES	=	$01
 TOOLBOX_SUBCMD_SET_WORKING_DIR	=	$02
@@ -848,13 +855,16 @@ doWIFI	jsr	initCOMMANDDATA
 	PushLong	#strSCANWIFI
 	_WriteCString
 
+	PushLong	#strRESULT1
+	_WriteCString
+
 ]lp	ldx	#SCSI_NETWORK_WIFI_CMD_SCAN
 	lda	#2	; length
 	jsr	execWIFI
 
-	PushLong	#strRESULT1
-	_WriteCString
-
+	PushWord	#chrPOINT
+	_WriteChar
+	
 	lda	commandBUFF	; non-zero is scan has started
 	and	#$ff
 	beq	]lp
@@ -866,13 +876,16 @@ doWIFI	jsr	initCOMMANDDATA
 
 	stz	commandBUFF
 	
+	PushLong	#strRESULT2
+	_WriteCString
+
 ]lp	ldx	#SCSI_NETWORK_WIFI_CMD_COMPLETE
 	lda	#2	; length
 	jsr	execWIFI
 
-	PushLong	#strRESULT2
-	_WriteCString
-
+	PushWord	#chrPOINT
+	_WriteChar
+	
 	lda	commandBUFF	; non-zero if scan has finished
 	and	#$ff
 	beq	]lp
@@ -898,14 +911,30 @@ doWIFI	jsr	initCOMMANDDATA
 	_WriteCString
 	jmp	waitKEY
 
-*--- We have Wi-Fi access points
+*--- We have Wi-Fi access points, show the names
 
 MAX_SSID	=	10
+SIZE_STRSSID	=	64	; len of string
 SIZE_SSID	=	74	; 64 + 6 + 1 + 1 + 1 + 1
+SIZE_JOIN_REQ	=	130
+MAX_KEY	=	64	; a key limit
 
-wehavedata	PushWord	#strYESWIFI
+* Clear the join request structure
+
+wehavedata	ldx	#SIZE_JOIN_REQ-2
+]lp	stz	theSSID,x
+	dex
+	dex
+	bpl	]lp
+
+* We found one, tell the world
+	
+	PushLong	#strYESWIFI	; AP found
 	_WriteCString
 
+	PushLong	#strSELECTAP	; print header
+	_WriteCString
+	
 	lda	#1	; start with first AP
 	sta	idNETWORK
 	lda	#2	; offset from commandBUFF
@@ -914,7 +943,7 @@ wehavedata	PushWord	#strYESWIFI
 ]lp	sep	#$20
 	lda	idNETWORK
 	ora	#'0'
-	sta	strIDNETWORK+1
+	sta	strIDNETWORK+2
 	rep	#$20
 
 	ldx	offsetNETWORK	; did we reach the end?
@@ -923,7 +952,7 @@ wehavedata	PushWord	#strYESWIFI
 	cmp	#$ff
 	beq	lastaccesspoint
 	
-	PushLong	#strIDNETWORK	; show header
+	PushLong	#strIDNETWORK	; show ID
 	_WriteCString
 
 	lda	offsetNETWORK	; show SSID
@@ -941,17 +970,16 @@ wehavedata	PushWord	#strYESWIFI
 	bcc	]lp
 	beq	]lp
 
-lastaccesspoint	PushWord	#chrRETURN
+lastaccesspoint	PushWord	#chrRETURN	; a last return
 	_WriteChar
 	
-
 *--- Let the user select one access point
 
 ]lp	jsr	waitFORKEY	; is it 0-9
 	cmp	#"0"
 	bcc	]lp
 	bne	apMENU2
-	jmp	mainMENU	; or even 0 to exit
+	jmp	deviceMENU	; or even 0 to exit
 apMENU2	sec		; we have a value
 	sbc	#"0"
 	cmp	idNETWORK	; number of entries
@@ -970,9 +998,25 @@ apMENU3	tax
 	bra	]lp
 
 apMENU4	sta	offsetNETWORK	; we point to the SSID information
+
+* Copy the SSID name
+
+	tax
+	ldy	#0
+	sep	#$20
+]lp	lda	commandBUFF,x
+	sta	theSSID,y
+	inx
+	iny
+	cpy	#SIZE_STRSSID
+	bcc	]lp
+	rep	#$20
 	
 *--- Print the details of the SSID access point
 
+	PushLong	#strDETAILAP
+	_WriteCString
+	
 * +0 - SSID(64)
 
 	PushLong	#strSSID
@@ -980,8 +1024,8 @@ apMENU4	sta	offsetNETWORK	; we point to the SSID information
 	lda	offsetNETWORK
 	ldx	#64
 	jsr	showTEXT
-
-* +64 - BSSID(6)	
+	
+* +64 - BSSID(6) - The MAC address
 
 	PushLong	#strBSSID
 	_WriteCString
@@ -989,7 +1033,7 @@ apMENU4	sta	offsetNETWORK	; we point to the SSID information
 	clc
 	adc	#64
 	ldx	#6
-	jsr	showTEXT
+	jsr	showMAC
 
 * +70 - RSSI(1)
 
@@ -1011,6 +1055,9 @@ apMENU4	sta	offsetNETWORK	; we point to the SSID information
 	adc	#71
 	tax
 	lda	commandBUFF,x
+	sep	#$20
+	sta	theCHANNEL
+	rep	#$20
 	jsr	showBYTE
 
 * +72 - FLAGS(1)
@@ -1033,9 +1080,12 @@ apMENU4	sta	offsetNETWORK	; we point to the SSID information
 	adc	#73
 	tax
 	lda	commandBUFF,x
+	sep	#$20
+	sta	thePADDING
+	rep	#$20
 	jsr	showBYTE
 
-*--- Let the user decide what s/he wants to do now
+*--- Let the user decide what to do now
 
 	PushLong	#strDOWHATNOW
 	_WriteCString
@@ -1049,6 +1099,35 @@ apMENU10	cmp	#"1"	; 1 to connect
 
 	PushLong	#strSCANDONE
 	_WriteCString		; LoGo
+
+*--- Enter credentials...
+
+	PushLong	#strTHEKEY
+	_WriteCString
+		
+*	PushLong	#theKEY
+*	PushWord	#0
+*	PushWord	#MAX_KEY
+*	PushWord	#1
+*	_TextReadBlock
+
+	PushWord	#0
+	PushLong	#theKEY
+	PushWord	#MAX_KEY
+	PushWord	#chrRETURN
+	PushWord	#1
+	_ReadLine
+	pla
+	jsr	showWORD
+	
+	PushWord	#chrRETURN
+	_WriteChar
+	
+	lda	#^theSSID
+	jsr	showWORD
+	lda	#theSSID
+	jsr	showWORD
+	
 	jmp	waitKEY
 
 *--- Execute Wi-Fi command
@@ -1086,9 +1165,10 @@ strSCANDONE	asc	' Finished!'00
 strNOWIFI	asc	' No access points found!'00
 strYESWIFI	asc	' Access points found!'00
 
-strSSID	asc	0d' SSID: '00
-strBSSID	asc	0d' BSSID: '00
-strRSSI	asc	0d' RSSI: '00
+strDETAILAP	asc	0d'Details of the access point:'
+strSSID	asc	0d' Service Set IDentifier: '00
+strBSSID	asc	0d' Basic Service Set IDentifier: '00
+strRSSI	asc	0d' Received Signal Strength Indicator: '00
 strCHANNEL	asc	0d' Channel: '00
 strFLAGS	asc	0d' Flags: '00
 strPADDING	asc	0d' Padding: '00
@@ -1098,14 +1178,26 @@ strRESULT1	asc	0d'SCSI_NETWORK_WIFI_CMD_SCAN...'00
 strRESULT2	asc	0d'SCSI_NETWORK_WIFI_CMD_COMPLETE...'00
 strRESULT3	asc	0d'SCSI_NETWORK_WIFI_CMD_SCAN_RESULTS...'00
 
-strIDNETWORK	asc	0d'1 - '00
+strIDNETWORK	asc	0d' 1. '00
 
 idNETWORK	ds	2
 offsetNETWORK	ds	2
-theSSID	ds	2	; the selected SSID
 
-strDOWHATNOW	asc	0d' 0. Go back to previous menu'
+strSELECTAP	asc	0d'Select an access point'
+	asc	0d' 0. Go back to previous menu'00
+
+strDOWHATNOW	asc	0d'Select an action'
+	asc	0d' 0. Go back to previous menu'
 	asc	0d' 1. Connect to the access point'0d00
+
+strTHEKEY	asc	0d'Enter the key to connect: '00
+
+*--- The wifi_join_request
+
+theSSID	ds	64
+theKEY	ds	64
+theCHANNEL	ds	1
+thePADDING	ds	1
 
 *----------------
 
@@ -2404,6 +2496,30 @@ strDEVMENU        asc	'0000'0d
 * X: nb of chars to print
 * offset from commandBUFF
 
+showCTEXT	stx	showCTEXT1+1	; limit
+	ldy	#0	; index
+	tax		; offset
+]lp	lda	commandBUFF,x	; get buffer
+	and	#$ff
+	beq	showCTEXT2	; exit if 0
+	phy
+	phx
+	pha
+	_WriteChar		; output char
+	plx
+	inx
+	ply
+	iny
+showCTEXT1	cpy	#0	; next char until limit
+	bcc	]lp
+
+showCTEXT2	rts
+
+*---------- Display in string offset
+* A: offset in
+* X: nb of chars to print
+* offset from commandBUFF
+
 showTEXT          ldy       #^commandBUFF
                   phy
                   clc
@@ -2509,6 +2625,41 @@ showWORD          pha                            ; from a word to a string
 *--- Data
 
 strHEX            asc       '0000'00
+
+*---------- Display N bytes
+* X: number of bytes
+* A: offset from commandBUFF
+
+showMAC	stx	showMAC1+1	; len
+	tax
+	clc
+	adc	showMAC1+1	; + offset
+	sta	showMAC1+1	; = end
+	
+	stz	fgDEUXPOINTS	; n'affiche pas les premiers deux points
+	
+]lp	phx
+
+	lda	fgDEUXPOINTS
+	beq	showMAC0
+
+	PushWord	#chrDEUXPOINTS
+	_WriteChar
+	inc	fgDEUXPOINTS
+
+showMAC0	plx
+	phx
+	lda	commandBUFF,x
+	jsr	showBYTE
+	plx
+	inx
+showMAC1	cpx	#8	; number of bytes to print
+	bcc	]lp
+	rts
+
+*--- Data
+
+fgDEUXPOINTS	ds	2
 
 *---------- Wait for a key in a range 0-Acc
 * A: high key

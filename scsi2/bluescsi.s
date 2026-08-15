@@ -1171,7 +1171,7 @@ strSCANDONE	asc	' Finished!'00
 strNOWIFI	asc	' No access points found!'00
 strYESWIFI	asc	' Access points found!'00
 
-strDETAILAP	asc	0d'Details of the access point:'
+strDETAILAP	asc	0d'Details of the access point:'00
 strSSID	asc	0d' Service Set IDentifier: '00
 strBSSID	asc	0d' Basic Service Set IDentifier: '00
 strRSSI	asc	0d' Received Signal Strength Indicator: '00

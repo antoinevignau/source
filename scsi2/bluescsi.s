@@ -265,12 +265,12 @@ searchMENU2	cmp	#"9"+1
 	bcc	searchMENU3
 	bne	]lp
 
-searchMENU3       dec
-                  asl
-                  tax
-                  lda       tblDEVICES,x
-                  sta       theDEVICE	; we have our device now
-                  jmp       deviceMENU
+searchMENU3	dec
+	asl
+	tax
+	lda	tblDEVICES,x
+	sta	theDEVICE	; we have our device now
+	jmp	deviceMENU
 
 *---------- Routines
 
@@ -279,17 +279,17 @@ pollSCSI	stz	nbDEVICES	; number of SCSI devices found
 	lda	#1	; start with device 1
 	sta	proDINFO+2
 
-]lp               jsl       GSOS	; do a DInfo
-                  dw        $202c
-                  adrl      proDINFO
-                  bcc       found
+]lp	jsl	GSOS	; do a DInfo
+	dw	$202c
+	adrl	proDINFO
+	bcc	found
 
-                  cmp       #$0011	; no more devices
-                  bne       loop
-                  rts
+	cmp	#$0011	; no more devices
+	bne	loop
+	rts
 
-loop              inc       proDINFO+2
-                  bra       ]lp
+loop	inc	proDINFO+2
+	bra	]lp
 
 *---------- Check it is a CD-ROM
 *
@@ -828,62 +828,229 @@ fgBLUESCSI2	ds	2
 
 *----------------
 
-LEN_WIFI	=	10
+LEN_WIFI	=	6
 
 doWIFI	jsr	initCOMMANDDATA
 
 	ldx	#LEN_WIFI-2	; init string
 ]lp	lda	refWIFI,x
 	sta	scsiWIFI,x
-	sta	commandDATA,x
 	dex
 	dex
 	bpl	]lp
 
-	lda	#dcRECEIVEDIAG	; RECEIVE DIAGNOSTIC RESULTS
-	jsr	statusCALL	; a status command
-
-	lda	commandBUFF
-	jsr	showBYTE
-	
 *--- Execute the scan
+
+	stz	commandBUFF
 
 	PushLong	#strSCANWIFI
 	_WriteCString
 
-	ldx	#SCSI_NETWORK_WIFI_CMD_SCAN
+]lp	ldx	#SCSI_NETWORK_WIFI_CMD_SCAN
 	lda	#2	; length
 	jsr	execWIFI
 
-	lda	commandBUFF
-	jsr	showBYTE
+	PushLong	#strRESULT1
+	_WriteCString
+
+	lda	commandBUFF	; non-zero is scan has started
+	and	#$ff
+	beq	]lp
+
+	PushLong	#strSCANDONE
+	_WriteCString
 
 *--- Check if it has ended and say it so...
 
-	ldx	#SCSI_NETWORK_WIFI_CMD_COMPLETE
+	stz	commandBUFF
+	
+]lp	ldx	#SCSI_NETWORK_WIFI_CMD_COMPLETE
 	lda	#2	; length
 	jsr	execWIFI
 
-	lda	commandBUFF
-	jsr	showBYTE
+	PushLong	#strRESULT2
+	_WriteCString
+
+	lda	commandBUFF	; non-zero if scan has finished
+	and	#$ff
+	beq	]lp
 
 	PushLong	#strSCANDONE
 	_WriteCString
 
 *--- See if we have access points. If so, display them
 
+	stz	commandBUFF
+
 	ldx	#SCSI_NETWORK_WIFI_CMD_SCAN_RESULTS
 	lda	#1000	; length (70 x 10 max)
 	jsr	execWIFI
 
+	PushLong	#strRESULT3
+	_WriteCString
+
 	lda	commandBUFF
+	bne	wehavedata
+	
+	PushWord	#strNOWIFI
+	_WriteCString
+	jmp	waitKEY
+
+*--- We have Wi-Fi access points
+
+MAX_SSID	=	10
+SIZE_SSID	=	74	; 64 + 6 + 1 + 1 + 1 + 1
+
+wehavedata	PushWord	#strYESWIFI
+	_WriteCString
+
+	lda	#1	; start with first AP
+	sta	idNETWORK
+	lda	#2	; offset from commandBUFF
+	sta	offsetNETWORK
+
+]lp	sep	#$20
+	lda	idNETWORK
+	ora	#'0'
+	sta	strIDNETWORK+1
+	rep	#$20
+
+	ldx	idNETWORK	; did we reach the end?
+	lda	commandBUFF,x
+	and	#$ff
+	cmp	#$ff
+	beq	lastaccesspoint
+	
+	PushLong	#strIDNETWORK	; show header
+	_WriteCString
+
+	lda	offsetNETWORK	; show SSID
+	ldx	#64
+	jsr	showTEXT
+
+	lda	offsetNETWORK	; next entry
+	clc
+	adc	#SIZE_SSID
+	sta	offsetNETWORK
+	
+	inc	idNETWORK	; next network
+	lda	idNETWORK
+	cmp	#MAX_SSID
+	bcc	]lp
+	beq	]lp
+
+lastaccesspoint
+
+*--- Let the user select one access point
+
+]lp	jsr	waitFORKEY	; is it 0-9
+	cmp	#"0"
+	bcc	]lp
+	bne	apMENU2
+	jmp	mainMENU	; or even 0 to exit
+apMENU2	sec		; we have a value
+	sbc	#"0"
+	cmp	idNETWORK	; number of entries
+	bcc	apMENU3	; found it
+	bne	]lp
+
+*--- Calculate the address of the selected SSID information
+
+apMENU3	tax
+	lda	#2	; offset is 2
+]lp	dex
+	cpx	#0	; done adding
+	beq	apMENU4
+	clc
+	adc	#SIZE_SSID
+	bra	]lp
+
+apMENU4	sta	offsetNETWORK	; we point to the SSID information
+	
+*--- Print the details of the SSID access point
+
+* +0 - SSID(64)
+
+	PushLong	#strSSID
+	_WriteCString
+	lda	offsetNETWORK
+	ldx	#64
+	jsr	showTEXT
+
+* +64 - BSSID(6)	
+
+	PushLong	#strBSSID
+	_WriteCString
+	lda	offsetNETWORK
+	clc
+	adc	#64
+	ldx	#6
+	jsr	showTEXT
+
+* +70 - RSSI(1)
+
+	PushLong	#strRSSI
+	_WriteCString
+	lda	offsetNETWORK
+	clc
+	adc	#70
+	tax
+	lda	commandBUFF,x
 	jsr	showBYTE
+
+* +71 - CHANNEL(1)
+
+	PushLong	#strCHANNEL
+	_WriteCString
+	lda	offsetNETWORK
+	clc
+	adc	#71
+	tax
+	lda	commandBUFF,x
+	jsr	showBYTE
+
+* +72 - FLAGS(1)
+
+	PushLong	#strFLAGS
+	_WriteCString
+	lda	offsetNETWORK
+	clc
+	adc	#72
+	tax
+	lda	commandBUFF,x
+	jsr	showBYTE
+
+* +73 - PADDING(1)
+
+	PushLong	#strPADDING
+	_WriteCString
+	lda	offsetNETWORK
+	clc
+	adc	#73
+	tax
+	lda	commandBUFF,x
+	jsr	showBYTE
+
+*--- Let the user decide what s/he wants to do now
+
+	PushLong	#strDOWHATNOW
+	_WriteCString
+
+]lp	jsr	waitFORKEY	; is it 0-1
+	cmp	#"0"	; 0 to return
+	bne	apMENU10
+	jmp	deviceMENU
+apMENU10	cmp	#"1"	; 1 to connect
+	bne	]lp
+
+	PushLong	#strSCANDONE
+	_WriteCString		; LoGo
 	jmp	waitKEY
 
 *--- Execute Wi-Fi command
 
 execWIFI	xba		; length
-*	sta	scsiWIFI+3
+	sta	scsiWIFI+3
 	sep	#$10	; sub-command
 	stx	scsiWIFI+1
 	rep	#$10
@@ -907,10 +1074,13 @@ scsiWIFI	hex	1c
 	hex	00	; +1: sub-command
 	hex	00
 	hex	00,00	; +3/4: length
-	hex	00,00,00,00,00
+	hex	00
+	hex	00,00,00,00
 
 strSCANWIFI	asc	0d' Start Wi-Fi scan for access points...'00
-strSCANDONE	asc	0d' Finished!'0d00
+strSCANDONE	asc	' Finished!'00
+strNOWIFI	asc	' No access points found!'00
+strYESWIFI	asc	' Access points found!'00
 
 strSSID	asc	0d' SSID: '00
 strBSSID	asc	0d' BSSID: '00
@@ -918,6 +1088,20 @@ strRSSI	asc	0d' RSSI: '00
 strCHANNEL	asc	0d' Channel: '00
 strFLAGS	asc	0d' Flags: '00
 strPADDING	asc	0d' Padding: '00
+
+strRESULT0	asc	0d'SCSI_NETWORK_WIFI... '00
+strRESULT1	asc	0d'SCSI_NETWORK_WIFI_CMD_SCAN...'00
+strRESULT2	asc	0d'SCSI_NETWORK_WIFI_CMD_COMPLETE...'00
+strRESULT3	asc	0d'SCSI_NETWORK_WIFI_CMD_SCAN_RESULTS...'00
+
+strIDNETWORK	asc	0d'1 - '00
+
+idNETWORK	ds	2
+offsetNETWORK	ds	2
+theSSID	ds	2	; the selected SSID
+
+strDOWHATNOW	asc	0d' 0. Go back to previous menu'
+	asc	0d' 1. Connect to the access point'0d00
 
 *----------------
 

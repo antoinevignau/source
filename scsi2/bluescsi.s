@@ -62,6 +62,8 @@ dcPATI	=	$8048
 dcPAUSERESUME	=	$804b
 dcMODESENSE10	=	$805a
 
+chrRETURN	=	$0d
+
 *-------------------------------
 * BLUESCSI EQUATES
 *-------------------------------
@@ -915,7 +917,7 @@ wehavedata	PushWord	#strYESWIFI
 	sta	strIDNETWORK+1
 	rep	#$20
 
-	ldx	idNETWORK	; did we reach the end?
+	ldx	offsetNETWORK	; did we reach the end?
 	lda	commandBUFF,x
 	and	#$ff
 	cmp	#$ff
@@ -939,7 +941,9 @@ wehavedata	PushWord	#strYESWIFI
 	bcc	]lp
 	beq	]lp
 
-lastaccesspoint
+lastaccesspoint	PushWord	#chrRETURN
+	_WriteChar
+	
 
 *--- Let the user select one access point
 

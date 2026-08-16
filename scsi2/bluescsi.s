@@ -55,6 +55,7 @@ doMODESELECT	=	$8015
 dcMODESENSE6	=	$801a	; ** bluescsi **
 dcSTARTSTOP	=	$801b
 dcRECEIVEDIAG	=	$801c	; ** bluescsi **
+dcSENDDIAG	=	$801d
 dcREADCAPACITY	=	$8025
 dcSUBCHANNEL	=	$8042
 dcREADTOC	=	$8043
@@ -69,6 +70,8 @@ chrPOINT	=	'.'
 chrDEUXPOINTS	=	':'
 chrRETURN	=	$0d
 chrRETURN2	=	$8d
+
+SIZE_DATA	=	2048	; more than a MTU, please
 
 *-------------------------------
 * BLUESCSI EQUATES
@@ -97,7 +100,7 @@ SCSI_NETWORK_WIFI_CMD_SCAN	=	$01	; first, wait for non-zero
 SCSI_NETWORK_WIFI_CMD_COMPLETE	=	$02	; check if complete, wait for non-zero
 SCSI_NETWORK_WIFI_CMD_SCAN_RESULTS =	$03	; print results if done
 SCSI_NETWORK_WIFI_CMD_INFO	=	$04	; 
-SCSI_NETWORK_WIFI_CMD_JOIN	=	$05	; 
+SCSI_NETWORK_WIFI_CMD_JOIN	=	$05	; join network
 
 TOOLBOX_SUBCMD_GET_CAPABILITIES	=	$01
 TOOLBOX_SUBCMD_SET_WORKING_DIR	=	$02
@@ -187,21 +190,26 @@ TOOLBOX_API_VERSION	=	0
 
 * DEBUG
 
-                  lda       #proCONTROL
-                  stal      $300
-                  lda       #^proCONTROL
-                  stal      $302
+*	lda	#doWIFI
+*	stal	$300
+*	lda	#^doWIFI
+*	stal	$302
 
-                  lda       ptrBUFFER
-                  stal      $304
-                  lda       ptrBUFFER+2
-                  stal      $306
+*	lda	#theSSID
+*	stal	$304
+*	lda	#^theSSID
+*	stal	$306
 
-	  lda	#doWIFI
-	  stal	$310
-	  lda	#^doWIFI
-	  stal	$312
-	  
+*	lda	#finalCALL
+*	stal	$310
+*	lda	#^finalCALL
+*	stal	$312
+	
+*	lda	#proCONTROL
+*	stal	$318
+*	lda	#^proCONTROL
+*	stal	$31a
+	
 *----------------------------
 * MAIN MENU
 *----------------------------
@@ -411,6 +419,7 @@ deviceMENU3	jsr	$bdbd
 ptrCOMMANDS	da	doINQUIRY
 	da	doSENSE
 	da	doWIFI
+*	da	doFAKE
 	da	doCAPACITY
 	da	doAUDIOPARMS
 	da	doREADTOC
@@ -838,7 +847,7 @@ fgBLUESCSI2	ds	2
 
 *----------------
 
-LEN_WIFI	=	6
+LEN_WIFI	=	6	; len of the SCSI command (Apple's doc is wrong)
 
 doWIFI	jsr	initCOMMANDDATA
 
@@ -1103,12 +1112,6 @@ apMENU10	cmp	#"1"	; 1 to connect
 	PushLong	#strTHEKEY
 	_WriteCString
 		
-*	PushLong	#theKEY
-*	PushWord	#0
-*	PushWord	#MAX_KEY
-*	PushWord	#1
-*	_TextReadBlock
-
 	PushWord	#0
 	PushLong	#theKEY
 	PushWord	#MAX_KEY
@@ -1116,11 +1119,15 @@ apMENU10	cmp	#"1"	; 1 to connect
 	PushWord	#1
 	_ReadLine
 	pla
-	jsr	showWORD
+	bne	apMENU20
+	jmp	apMENUEND
+
+apMENU20	PushLong	#strCONNECTING
+	_WriteCString
 
 * Rewrite the key (bit 7)
 
-	ldx	#64-1
+finalCALL	ldx	#MAX_KEY-1
 	sep	#$20
 ]lp	lda	theKEY,x
 	and	#%0111_1111
@@ -1128,13 +1135,67 @@ apMENU10	cmp	#"1"	; 1 to connect
 	dex
 	bpl	]lp
 	rep	#$20
+
+*--- THE END!! Connect to the network
+
+* Prepare the SCSI command
+
+	lda	#SIZE_JOIN_REQ	; set the size
+	xba		; could have been put
+	sta	scsiWIFIJOIN+3	; in the command directly
 	
-	lda	#^theSSID
-	jsr	showWORD
-	lda	#theSSID
-	jsr	showWORD
-	
+	ldx	#LEN_WIFI-2	; copy SCSI string
+]lp	lda	scsiWIFIJOIN,x
+	sta	commandDATA,x
+	dex
+	dex
+	bpl	]lp
+
+* Copy the AP join network data to the buffer
+
+	ldx	#SIZE_JOIN_REQ-2
+]lp	lda	theSSID,x
+	sta	commandBUFF,x
+	dex
+	dex
+	bpl	]lp
+
+	lda	#dcRECEIVEDIAG	; RECEIVE DIAGNOSTIC RESULTS
+	jsr	controlCALL	; now a control command!!
+
+apMENUEND	PushLong	#strPRESSAKEY
+	_WriteCString
 	jmp	waitKEY
+
+************************************************
+* FAKE ME
+************************************************
+
+doFAKE	lda	#SIZE_JOIN_REQ	; set the size
+	xba		; could have been put
+	sta	scsiWIFIJOIN+3	; in the command directly
+	
+	ldx	#LEN_WIFI-2	; copy SCSI string
+]lp	lda	scsiWIFIJOIN,x
+	sta	commandDATA,x
+	dex
+	dex
+	bpl	]lp
+
+	ldx	#SIZE_JOIN_REQ-2
+]lp	lda	fakeSSID,x
+	sta	commandBUFF,x
+	dex
+	dex
+	bpl	]lp
+
+	lda	#dcRECEIVEDIAG	; RECEIVE DIAGNOSTIC RESULTS
+	jsr	controlCALL	; now a control command!!
+
+	PushLong	#strPRESSAKEY
+	_WriteCString
+	jmp	waitKEY
+
 
 *--- Execute Wi-Fi command
 
@@ -1166,6 +1227,15 @@ scsiWIFI	hex	1c
 	hex	00
 	hex	00,00,00,00
 
+scsiWIFIJOIN	hex	1c
+	dfb	SCSI_NETWORK_WIFI_CMD_JOIN
+	hex	00
+	hex	00,00	; +3/4: length 130d = 82h
+	hex	00
+	hex	00,00,00,00
+
+*--- Strings
+
 strSCANWIFI	asc	0d'Start Wi-Fi scan for access points...'00
 strSCANDONE	asc	' Finished!'00
 strNOWIFI	asc	' No access points found!'00
@@ -1186,9 +1256,6 @@ strRESULT3	asc	0d' SCSI_NETWORK_WIFI_CMD_SCAN_RESULTS...'00
 
 strIDNETWORK	asc	0d' 1. '00
 
-idNETWORK	ds	2
-offsetNETWORK	ds	2
-
 strSELECTAP	asc	0d0d'Select an access point'
 	asc	0d' 0. Go back to previous menu'00
 
@@ -1198,12 +1265,25 @@ strDOWHATNOW	asc	0d0d'Select an action'
 
 strTHEKEY	asc	0d'Enter the key to connect: '00
 
+strCONNECTING	asc	0d0d'Connecting to the access point...'00
+strPRESSAKEY	asc	0d'Press a key.'00
+
+idNETWORK	ds	2
+offsetNETWORK	ds	2
+
 *--- The wifi_join_request
 
 theSSID	ds	64
 theKEY	ds	64
 theCHANNEL	ds	1
 thePADDING	ds	1
+
+fakeSSID	asc	'AppleIIgs '	; SSID
+	ds	54
+	asc	'AppleIIgs '	; KEY
+	ds	54
+	dfb	1	; CHANNEL
+	dfb	0	; PADDING
 
 *----------------
 
@@ -2481,10 +2561,11 @@ nbSONGS           ds        2                    ; nb of songs on disc
 strDEVICEMENU     asc	0d'Using SCSI device $'
 strDEVMENU        asc	'0000'0d
                   asc	' 0. Go back to previous menu'0d
-                  asc	' 1. Inquiry disk'0d
+                  asc	' 1. Inquiry device'0d
                   asc	' 2. Sense page $31'0d
                   asc	' 3. Show Wi-Fi access points'0d
-	  dfb	00
+	  dfb	00	  
+	  asc	' 4. Fake Me'0d
                   asc       ' 3. Disk capacity'0d
                   asc       ' 4. Audio control parameters'0d
                   asc       ' 5. Read TOC'0d
@@ -2762,56 +2843,56 @@ proDINFO          dw        8                    ; Parms for DInfo
                   ds        2                    ; 12 version
                   ds        2                    ; 14 device id
 
-devINFO           dw        $0032                ; buffer size
-devINFO1          db        $00                  ; length
+devINFO           dw        $0032	; buffer size
+devINFO1          db        $00		; length
 devINFO2          db        $00
-devINFO3          ds        $30                  ; data
+devINFO3          ds        $30		; data
 
-proSTATUS         dw        5                    ; 00 pcount
-                  ds        2                    ; 02 device num
-                  dw        $8000                ; 04 status/control code
-                  adrl      statusLIST           ; 06 status list
-                  adrl      1024                 ; 0A request count
-                  ds        4                    ; 0E transfer count
+proSTATUS         dw        5		; 00 pcount
+                  ds        2		; 02 device num
+                  dw        $8000	; 04 status/control code
+                  adrl      statusLIST	; 06 status list
+                  adrl      SIZE_DATA	; 0A request count
+                  ds        4		; 0E transfer count
 
-statusLIST        ds        2                    ; always 0000
-statusDATA        hex       00                   ; 00
-                  hex       00                   ; 01
-                  hex       00                   ; 02
-                  hex       00                   ; 03
-                  hex       00                   ; 04
-                  hex       00                   ; 05
-                  hex       00                   ; 06
-                  hex       00                   ; 07
-                  hex       00                   ; 08
-                  hex       00                   ; 09
-                  hex       00                   ; 10
-                  hex       00                   ; 11
+statusLIST        ds        2		; always 0000
+statusDATA        hex       00		; 00
+                  hex       00		; 01
+                  hex       00		; 02
+                  hex       00		; 03
+                  hex       00		; 04
+                  hex       00		; 05
+                  hex       00		; 06
+                  hex       00		; 07
+                  hex       00		; 08
+                  hex       00		; 09
+                  hex       00		; 10
+                  hex       00		; 11
                   adrl      statusBUFF
-statusBUFF        ds        1234                 ; more than 1024
+statusBUFF        ds        SIZE_DATA	; more than 1024
 
-proCONTROL        dw        5                    ; 00 pcount
-                  ds        2                    ; 02 device num
-                  dw        $8000                ; 04 status/control code
-                  adrl      controlLIST          ; 06 status list
-                  adrl      1024                 ; 0A request count
-                  ds        4                    ; 0E transfer count
+proCONTROL        dw        5		; 00 pcount
+                  ds        2		; 02 device num
+                  dw        $8000	; 04 status/control code
+                  adrl      controlLIST	; 06 status list
+                  adrl      SIZE_DATA	; 0A request count
+                  ds        4		; 0E transfer count
 
-controlLIST       ds        2                    ; always 0000
-commandDATA       hex       00                   ; 00
-                  hex       00                   ; 01
-                  hex       00                   ; 02
-                  hex       00                   ; 03
-                  hex       00                   ; 04
-                  hex       00                   ; 05
-                  hex       00                   ; 06
-                  hex       00                   ; 07
-                  hex       00                   ; 08
-                  hex       00                   ; 09
-                  hex       00                   ; 10
-                  hex       00                   ; 11
+controlLIST       ds        2		; always 0000
+commandDATA       hex       00		; 00
+                  hex       00		; 01
+                  hex       00		; 02
+                  hex       00		; 03
+                  hex       00		; 04
+                  hex       00		; 05
+                  hex       00		; 06
+                  hex       00		; 07
+                  hex       00		; 08
+                  hex       00		; 09
+                  hex       00  	; 10
+                  hex       00		; 11
 commandPTR        adrl      commandBUFF
-commandBUFF       ds        1234                 ; more than 1024
+commandBUFF       ds        SIZE_DATA	; more than 1024
 
 *-------------------------------
 * BLUESCSI DATA

@@ -1,7 +1,7 @@
 *
 * BlueSCSI
 *
-* (c) 2016, Brutal Deluxe Software
+* (c) 2026, Brutal Deluxe Software
 * Antoine Vignau & Olivier Zardini
 * Visit brutaldeluxe.fr
 *

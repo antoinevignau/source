@@ -1,0 +1,793 @@
+Segment Name;Segment Line;File Name;File Line;Address;Name;Type;Data Type;Size;MX;Reloc
+BlueSCSI;135;bluescsi.s;135;00/0003;;Code;;3;00;2
+BlueSCSI;147;bluescsi.s;141;00/0016;;Code;;3;00;2
+BlueSCSI;149;bluescsi.s;143;00/001C;;Code;;3;00;2
+BlueSCSI;186;bluescsi.s;153;00/003C;;Code;;3;00;2
+BlueSCSI;216;bluescsi.s;161;00/0055;;Code;;3;00;2
+BlueSCSI;219;bluescsi.s;164;00/005D;;Code;;3;00;2
+BlueSCSI;222;bluescsi.s;167;00/0062;;Code;;3;00;2
+BlueSCSI;224;bluescsi.s;169;00/0066;;Code;;3;00;2
+BlueSCSI;381;bluescsi.s;205;00/00E8;;Code;;3;00;2
+BlueSCSI;383;bluescsi.s;207;00/00EF;;Code;;3;00;1 >>16
+BlueSCSI;386;bluescsi.s;210;00/00F6;;Code;;3;00;2
+BlueSCSI;388;bluescsi.s;212;00/00FD;;Code;;3;00;1 >>16
+BlueSCSI;405;bluescsi.s;229;00/0104;mainMENU;Code;;3;00;
+BlueSCSI;409;bluescsi.s;229;00/0104;;Code;;3;00;1 >>16
+BlueSCSI;416;bluescsi.s;229;00/0107;;Code;;3;00;2
+BlueSCSI;424;bluescsi.s;232;00/0111;;Code;;3;00;2
+BlueSCSI;438;bluescsi.s;246;00/012D;;Code;;3;00;2
+BlueSCSI;444;bluescsi.s;252;00/0130;doRESTART;Code;;3;00;1 >>16
+BlueSCSI;445;bluescsi.s;253;00/0133;;Code;;4;00;3
+BlueSCSI;446;bluescsi.s;254;00/0137;;Code;;3;00;2
+BlueSCSI;447;bluescsi.s;255;00/013A;;Code;;4;00;3
+BlueSCSI;449;bluescsi.s;257;00/013E;doQUIT;Code;;3;00;
+BlueSCSI;467;bluescsi.s;261;00/0153;;Code;;3;00;2
+BlueSCSI;480;bluescsi.s;264;00/015E;;Code;;3;00;2
+BlueSCSI;495;bluescsi.s;271;00/0176;;Data;adrl;4;00;3
+BlueSCSI;501;bluescsi.s;277;00/017C;strMAINMENU;Data;asc;10;00;
+BlueSCSI;511;bluescsi.s;287;00/01D8;searchMENU;Code;;3;00;
+BlueSCSI;515;bluescsi.s;287;00/01D8;;Code;;3;00;1 >>16
+BlueSCSI;522;bluescsi.s;287;00/01DB;;Code;;3;00;2
+BlueSCSI;530;bluescsi.s;290;00/01E5;;Code;;3;00;2
+BlueSCSI;532;bluescsi.s;292;00/01E8;ozunid_1;Code;;3;00;2
+BlueSCSI;535;bluescsi.s;295;00/01F0;;Code;;3;00;2
+BlueSCSI;536;bluescsi.s;296;00/01F3;searchMENU2;Code;;3;00;
+BlueSCSI;543;bluescsi.s;303;00/0201;;Code;;3;00;2
+BlueSCSI;547;bluescsi.s;307;00/0208;searchMENU3;Code;;1;00;
+BlueSCSI;550;bluescsi.s;310;00/020B;;Code;;3;00;2
+BlueSCSI;551;bluescsi.s;311;00/020E;;Code;;3;00;2
+BlueSCSI;552;bluescsi.s;312;00/0211;;Code;;3;00;2
+BlueSCSI;556;bluescsi.s;316;00/0214;pollSCSI;Code;;3;00;2
+BlueSCSI;559;bluescsi.s;319;00/021A;;Code;;3;00;2
+BlueSCSI;561;bluescsi.s;321;00/021D;ozunid_2;Code;;4;00;
+BlueSCSI;563;bluescsi.s;323;00/0223;;Data;adrl;4;00;3
+BlueSCSI;570;bluescsi.s;330;00/022F;loop;Code;;3;00;2
+BlueSCSI;585;bluescsi.s;345;00/0234;found;Code;;3;00;2
+BlueSCSI;588;bluescsi.s;348;00/0239;;Code;;3;00;2
+BlueSCSI;589;bluescsi.s;349;00/023C;;Code;;3;00;2
+BlueSCSI;591;bluescsi.s;351;00/023F;;Code;;3;00;2
+BlueSCSI;593;bluescsi.s;353;00/0242;;Code;;3;00;2
+BlueSCSI;594;bluescsi.s;354;00/0245;;Code;;3;00;2
+BlueSCSI;603;bluescsi.s;363;00/024E;showDEVICEINFO;Code;;1;00;
+BlueSCSI;615;bluescsi.s;367;00/0259;;Code;;3;00;2
+BlueSCSI;622;bluescsi.s;367;00/025D;;Code;;3;00;2
+BlueSCSI;639;bluescsi.s;372;00/026A;;Code;;3;00;2
+BlueSCSI;652;bluescsi.s;378;00/0279;;Code;;3;00;1 >>16
+BlueSCSI;659;bluescsi.s;378;00/027C;;Code;;3;00;2
+BlueSCSI;667;bluescsi.s;381;00/0286;;Code;;3;00;2
+BlueSCSI;669;bluescsi.s;383;00/028A;;Code;;3;00;2
+BlueSCSI;675;bluescsi.s;385;00/028D;;Code;;3;00;1 >>16
+BlueSCSI;682;bluescsi.s;385;00/0290;;Code;;3;00;2
+BlueSCSI;703;bluescsi.s;394;00/02A5;strDEV;Data;asc;4;00;
+BlueSCSI;704;bluescsi.s;395;00/02A9;strDEVID;Data;asc;8;00;
+BlueSCSI;706;bluescsi.s;397;00/02B1;nbDEVICES;Data;ds;2;00;
+BlueSCSI;707;bluescsi.s;398;00/02B3;theDEVICE;Data;ds;2;00;
+BlueSCSI;708;bluescsi.s;399;00/02B5;tblDEVICES;Data;ds;32;00;
+BlueSCSI;710;bluescsi.s;401;00/02D5;strSEARCHMENU;Data;asc;31;00;
+BlueSCSI;717;bluescsi.s;408;00/0311;deviceMENU;Code;;3;00;2
+BlueSCSI;718;bluescsi.s;409;00/0314;;Code;;3;00;2
+BlueSCSI;719;bluescsi.s;410;00/0317;;Code;;3;00;2
+BlueSCSI;733;bluescsi.s;416;00/0325;;Code;;3;00;2
+BlueSCSI;740;bluescsi.s;416;00/0329;;Code;;3;00;2
+BlueSCSI;751;bluescsi.s;418;00/032C;;Code;;3;00;1 >>16
+BlueSCSI;758;bluescsi.s;418;00/032F;;Code;;3;00;2
+BlueSCSI;768;bluescsi.s;423;00/0339;ozunid_3;Code;;3;00;2
+BlueSCSI;771;bluescsi.s;426;00/0341;;Code;;3;00;2
+BlueSCSI;772;bluescsi.s;427;00/0344;deviceMENU2;Code;;3;00;
+BlueSCSI;781;bluescsi.s;436;00/0354;;Code;;3;00;2
+BlueSCSI;782;bluescsi.s;437;00/0357;;Code;;3;00;2
+BlueSCSI;783;bluescsi.s;438;00/035A;deviceMENU3;Code;;3;00;
+BlueSCSI;784;bluescsi.s;439;00/035D;;Code;;3;00;2
+BlueSCSI;786;bluescsi.s;441;00/0360;ptrCOMMANDS;Data;da;2;00;2
+BlueSCSI;787;bluescsi.s;442;00/0362;;Data;da;2;00;2
+BlueSCSI;788;bluescsi.s;443;00/0364;;Data;da;2;00;2
+BlueSCSI;789;bluescsi.s;444;00/0366;;Data;da;2;00;2
+BlueSCSI;793;bluescsi.s;448;00/0368;strDEVICEMENU;Data;asc;20;00;
+BlueSCSI;794;bluescsi.s;449;00/037C;strDEVMENU;Data;asc;5;00;
+BlueSCSI;806;bluescsi.s;461;00/03F6;doINQUIRY;Code;;3;00;2
+BlueSCSI;809;bluescsi.s;464;00/03FC;ozunid_4;Code;;3;00;2
+BlueSCSI;810;bluescsi.s;465;00/03FF;;Code;;3;00;2
+BlueSCSI;816;bluescsi.s;471;00/0409;;Code;;3;00;2
+BlueSCSI;820;bluescsi.s;475;00/040F;doINQUIRY1;Code;;3;00;
+BlueSCSI;830;bluescsi.s;481;00/040F;;Code;;3;00;1 >>16
+BlueSCSI;837;bluescsi.s;481;00/0412;;Code;;3;00;2
+BlueSCSI;845;bluescsi.s;484;00/041C;;Code;;3;00;2
+BlueSCSI;849;bluescsi.s;488;00/0426;;Code;;3;00;2
+BlueSCSI;855;bluescsi.s;490;00/0429;;Code;;3;00;1 >>16
+BlueSCSI;862;bluescsi.s;490;00/042C;;Code;;3;00;2
+BlueSCSI;870;bluescsi.s;493;00/0436;;Code;;3;00;2
+BlueSCSI;877;bluescsi.s;500;00/0443;;Code;;3;00;2
+BlueSCSI;885;bluescsi.s;504;00/0446;;Code;;3;00;1 >>16
+BlueSCSI;892;bluescsi.s;504;00/0449;;Code;;3;00;2
+BlueSCSI;900;bluescsi.s;507;00/0453;;Code;;3;00;2
+BlueSCSI;904;bluescsi.s;511;00/045D;;Code;;3;00;2
+BlueSCSI;910;bluescsi.s;513;00/0460;;Code;;3;00;1 >>16
+BlueSCSI;917;bluescsi.s;513;00/0463;;Code;;3;00;2
+BlueSCSI;925;bluescsi.s;516;00/046D;;Code;;3;00;2
+BlueSCSI;930;bluescsi.s;521;00/0478;;Code;;3;00;2
+BlueSCSI;938;bluescsi.s;525;00/047B;;Code;;3;00;1 >>16
+BlueSCSI;945;bluescsi.s;525;00/047E;;Code;;3;00;2
+BlueSCSI;953;bluescsi.s;528;00/0488;;Code;;3;00;2
+BlueSCSI;957;bluescsi.s;532;00/0492;;Code;;3;00;2
+BlueSCSI;963;bluescsi.s;534;00/0495;;Code;;3;00;1 >>16
+BlueSCSI;970;bluescsi.s;534;00/0498;;Code;;3;00;2
+BlueSCSI;978;bluescsi.s;537;00/04A2;;Code;;3;00;2
+BlueSCSI;984;bluescsi.s;543;00/04AE;;Code;;3;00;2
+BlueSCSI;990;bluescsi.s;545;00/04B1;;Code;;3;00;1 >>16
+BlueSCSI;997;bluescsi.s;545;00/04B4;;Code;;3;00;2
+BlueSCSI;1005;bluescsi.s;548;00/04BE;;Code;;3;00;2
+BlueSCSI;1014;bluescsi.s;557;00/04CD;;Code;;3;00;2
+BlueSCSI;1022;bluescsi.s;561;00/04D0;;Code;;3;00;1 >>16
+BlueSCSI;1029;bluescsi.s;561;00/04D3;;Code;;3;00;2
+BlueSCSI;1037;bluescsi.s;564;00/04DD;;Code;;3;00;2
+BlueSCSI;1041;bluescsi.s;568;00/04E7;;Code;;3;00;2
+BlueSCSI;1047;bluescsi.s;570;00/04EA;;Code;;3;00;1 >>16
+BlueSCSI;1054;bluescsi.s;570;00/04ED;;Code;;3;00;2
+BlueSCSI;1062;bluescsi.s;573;00/04F7;;Code;;3;00;2
+BlueSCSI;1067;bluescsi.s;578;00/0502;;Code;;3;00;2
+BlueSCSI;1073;bluescsi.s;580;00/0505;;Code;;3;00;1 >>16
+BlueSCSI;1080;bluescsi.s;580;00/0508;;Code;;3;00;2
+BlueSCSI;1088;bluescsi.s;583;00/0512;;Code;;3;00;2
+BlueSCSI;1096;bluescsi.s;591;00/0520;;Code;;3;00;2
+BlueSCSI;1106;bluescsi.s;597;00/0523;;Code;;3;00;1 >>16
+BlueSCSI;1113;bluescsi.s;597;00/0526;;Code;;3;00;2
+BlueSCSI;1121;bluescsi.s;600;00/0530;;Code;;3;00;2
+BlueSCSI;1125;bluescsi.s;604;00/053A;;Code;;3;00;2
+BlueSCSI;1131;bluescsi.s;606;00/053D;;Code;;3;00;1 >>16
+BlueSCSI;1138;bluescsi.s;606;00/0540;;Code;;3;00;2
+BlueSCSI;1146;bluescsi.s;609;00/054A;;Code;;3;00;2
+BlueSCSI;1151;bluescsi.s;614;00/0555;;Code;;3;00;2
+BlueSCSI;1157;bluescsi.s;616;00/0558;;Code;;3;00;1 >>16
+BlueSCSI;1164;bluescsi.s;616;00/055B;;Code;;3;00;2
+BlueSCSI;1172;bluescsi.s;619;00/0565;;Code;;3;00;2
+BlueSCSI;1178;bluescsi.s;625;00/0571;;Code;;3;00;2
+BlueSCSI;1184;bluescsi.s;627;00/0574;;Code;;3;00;1 >>16
+BlueSCSI;1191;bluescsi.s;627;00/0577;;Code;;3;00;2
+BlueSCSI;1199;bluescsi.s;630;00/0581;;Code;;3;00;2
+BlueSCSI;1206;bluescsi.s;637;00/058E;;Code;;3;00;2
+BlueSCSI;1212;bluescsi.s;639;00/0591;;Code;;3;00;1 >>16
+BlueSCSI;1219;bluescsi.s;639;00/0594;;Code;;3;00;2
+BlueSCSI;1227;bluescsi.s;642;00/059E;;Code;;3;00;2
+BlueSCSI;1235;bluescsi.s;650;00/05AC;;Code;;3;00;2
+BlueSCSI;1241;bluescsi.s;652;00/05AF;;Code;;3;00;1 >>16
+BlueSCSI;1248;bluescsi.s;652;00/05B2;;Code;;3;00;2
+BlueSCSI;1256;bluescsi.s;655;00/05BC;;Code;;3;00;2
+BlueSCSI;1266;bluescsi.s;665;00/05CC;;Code;;3;00;2
+BlueSCSI;1272;bluescsi.s;667;00/05CF;;Code;;3;00;1 >>16
+BlueSCSI;1279;bluescsi.s;667;00/05D2;;Code;;3;00;2
+BlueSCSI;1287;bluescsi.s;670;00/05DC;;Code;;3;00;2
+BlueSCSI;1298;bluescsi.s;681;00/05ED;;Code;;3;00;2
+BlueSCSI;1306;bluescsi.s;685;00/05F0;;Code;;3;00;1 >>16
+BlueSCSI;1313;bluescsi.s;685;00/05F3;;Code;;3;00;2
+BlueSCSI;1323;bluescsi.s;690;00/0601;;Code;;3;00;2
+BlueSCSI;1331;bluescsi.s;694;00/0604;;Code;;3;00;1 >>16
+BlueSCSI;1338;bluescsi.s;694;00/0607;;Code;;3;00;2
+BlueSCSI;1348;bluescsi.s;699;00/0615;;Code;;3;00;2
+BlueSCSI;1356;bluescsi.s;703;00/0618;;Code;;3;00;1 >>16
+BlueSCSI;1363;bluescsi.s;703;00/061B;;Code;;3;00;2
+BlueSCSI;1373;bluescsi.s;708;00/062B;;Code;;3;00;2
+BlueSCSI;1381;bluescsi.s;716;00/0636;ozunid_5;Code;;3;10;2
+BlueSCSI;1382;bluescsi.s;717;00/0639;;Code;;3;10;2
+BlueSCSI;1388;bluescsi.s;723;00/0643;checkBS2;Code;;3;10;
+BlueSCSI;1389;bluescsi.s;724;00/0646;ozunid_6;Code;;3;10;2
+BlueSCSI;1390;bluescsi.s;725;00/0649;;Code;;3;10;2
+BlueSCSI;1395;bluescsi.s;730;00/0651;foundBS;Code;;3;10;
+BlueSCSI;1396;bluescsi.s;731;00/0654;nofoundBS;Code;;2;00;
+BlueSCSI;1397;bluescsi.s;732;00/0656;;Code;;3;00;2
+BlueSCSI;1405;bluescsi.s;736;00/0659;;Code;;3;00;1 >>16
+BlueSCSI;1412;bluescsi.s;736;00/065C;;Code;;3;00;2
+BlueSCSI;1420;bluescsi.s;739;00/0666;;Code;;3;00;2
+BlueSCSI;1427;bluescsi.s;742;00/066B;;Code;;3;00;1 >>16
+BlueSCSI;1434;bluescsi.s;742;00/066E;;Code;;3;00;2
+BlueSCSI;1441;bluescsi.s;744;00/0678;;Code;;3;00;2
+BlueSCSI;1443;bluescsi.s;746;00/067B;noBSFOUND;Code;;3;00;
+BlueSCSI;1447;bluescsi.s;746;00/067B;;Code;;3;00;1 >>16
+BlueSCSI;1454;bluescsi.s;746;00/067E;;Code;;3;00;2
+BlueSCSI;1461;bluescsi.s;748;00/0688;;Code;;3;00;2
+BlueSCSI;1465;bluescsi.s;752;00/068B;scsiINQUIRY;Data;hex;6;00;
+BlueSCSI;1467;bluescsi.s;754;00/0691;strPQ;Data;asc;25;00;
+BlueSCSI;1468;bluescsi.s;755;00/06AA;strPDT;Data;asc;29;00;
+BlueSCSI;1469;bluescsi.s;756;00/06C7;strRMB;Data;asc;8;00;
+BlueSCSI;1470;bluescsi.s;757;00/06CF;strDTM;Data;asc;26;00;
+BlueSCSI;1471;bluescsi.s;758;00/06E9;strISO;Data;asc;16;00;
+BlueSCSI;1472;bluescsi.s;759;00/06F9;strECMA;Data;asc;18;00;
+BlueSCSI;1473;bluescsi.s;760;00/070B;strANSI;Data;asc;27;00;
+BlueSCSI;1474;bluescsi.s;761;00/0726;strAENC;Data;asc;9;00;
+BlueSCSI;1475;bluescsi.s;762;00/072F;strTRMIOP;Data;asc;12;00;
+BlueSCSI;1476;bluescsi.s;763;00/073B;strRDF;Data;asc;26;00;
+BlueSCSI;1477;bluescsi.s;764;00/0755;strRELADR;Data;asc;11;00;
+BlueSCSI;1478;bluescsi.s;765;00/0760;strWBUS32;Data;asc;12;00;
+BlueSCSI;1479;bluescsi.s;766;00/076C;strWBUS16;Data;asc;12;00;
+BlueSCSI;1480;bluescsi.s;767;00/0778;strSYNC;Data;asc;10;00;
+BlueSCSI;1481;bluescsi.s;768;00/0782;strLINKED;Data;asc;11;00;
+BlueSCSI;1482;bluescsi.s;769;00/078D;strCMDQUE;Data;asc;12;00;
+BlueSCSI;1483;bluescsi.s;770;00/0799;strSFTRE;Data;asc;11;00;
+BlueSCSI;1484;bluescsi.s;771;00/07A4;strVI;Data;asc;26;00;
+BlueSCSI;1485;bluescsi.s;772;00/07BE;strPI;Data;asc;27;00;
+BlueSCSI;1486;bluescsi.s;773;00/07D9;strPRL;Data;asc;27;00;
+BlueSCSI;1488;bluescsi.s;775;00/07F4;strBS;Data;asc;13;00;
+BlueSCSI;1489;bluescsi.s;776;00/0801;strYES;Data;asc;4;00;
+BlueSCSI;1490;bluescsi.s;777;00/0805;strNO;Data;asc;3;00;
+BlueSCSI;1492;bluescsi.s;779;00/0808;refBLUESCSI;Data;asc;9;00;
+BlueSCSI;1494;bluescsi.s;781;00/0811;fgBLUESCSI;Data;ds;2;00;
+BlueSCSI;1500;bluescsi.s;787;00/0813;doSENSE;Code;;3;00;2
+BlueSCSI;1503;bluescsi.s;790;00/0819;ozunid_7;Code;;3;00;2
+BlueSCSI;1504;bluescsi.s;791;00/081C;;Code;;3;00;2
+BlueSCSI;1510;bluescsi.s;797;00/0826;;Code;;3;00;2
+BlueSCSI;1514;bluescsi.s;801;00/082C;doSENSE1;Code;;3;00;
+BlueSCSI;1524;bluescsi.s;807;00/082C;;Code;;3;00;1 >>16
+BlueSCSI;1531;bluescsi.s;807;00/082F;;Code;;3;00;2
+BlueSCSI;1539;bluescsi.s;810;00/0839;;Code;;3;00;2
+BlueSCSI;1540;bluescsi.s;811;00/083C;;Code;;3;00;2
+BlueSCSI;1548;bluescsi.s;815;00/083F;;Code;;3;00;1 >>16
+BlueSCSI;1555;bluescsi.s;815;00/0842;;Code;;3;00;2
+BlueSCSI;1563;bluescsi.s;818;00/084C;;Code;;3;00;2
+BlueSCSI;1564;bluescsi.s;819;00/084F;;Code;;3;00;2
+BlueSCSI;1572;bluescsi.s;823;00/0852;;Code;;3;00;1 >>16
+BlueSCSI;1579;bluescsi.s;823;00/0855;;Code;;3;00;2
+BlueSCSI;1589;bluescsi.s;828;00/0865;;Code;;3;00;2
+BlueSCSI;1596;bluescsi.s;835;00/086E;ozunid_8;Code;;3;00;2
+BlueSCSI;1597;bluescsi.s;836;00/0871;;Code;;3;00;2
+BlueSCSI;1604;bluescsi.s;843;00/087D;noGOODPAGE;Code;;3;00;2
+BlueSCSI;1612;bluescsi.s;847;00/0880;;Code;;3;00;1 >>16
+BlueSCSI;1619;bluescsi.s;847;00/0883;;Code;;3;00;2
+BlueSCSI;1627;bluescsi.s;850;00/088D;;Code;;3;00;2
+BlueSCSI;1634;bluescsi.s;853;00/0892;;Code;;3;00;1 >>16
+BlueSCSI;1641;bluescsi.s;853;00/0895;;Code;;3;00;2
+BlueSCSI;1648;bluescsi.s;855;00/089F;;Code;;3;00;2
+BlueSCSI;1650;bluescsi.s;857;00/08A2;noBSFOUND2;Code;;3;00;
+BlueSCSI;1654;bluescsi.s;857;00/08A2;;Code;;3;00;1 >>16
+BlueSCSI;1661;bluescsi.s;857;00/08A5;;Code;;3;00;2
+BlueSCSI;1668;bluescsi.s;859;00/08AF;;Code;;3;00;2
+BlueSCSI;1672;bluescsi.s;863;00/08B2;scsiSENSE;Data;hex;6;00;
+BlueSCSI;1674;bluescsi.s;865;00/08B8;strPAGECODE;Data;asc;14;00;
+BlueSCSI;1675;bluescsi.s;866;00/08C6;strPAGELENGTH;Data;asc;16;00;
+BlueSCSI;1676;bluescsi.s;867;00/08D6;strVENDORPAGE;Data;asc;16;00;
+BlueSCSI;1678;bluescsi.s;869;00/08E6;refVENDORPAGE;Data;hex;1;00;
+BlueSCSI;1683;bluescsi.s;874;00/0912;fgBLUESCSI2;Data;ds;2;00;
+BlueSCSI;1699;bluescsi.s;890;00/0914;doWIFI;Code;;3;00;2
+BlueSCSI;1702;bluescsi.s;893;00/091A;ozunid_9;Code;;3;00;2
+BlueSCSI;1703;bluescsi.s;894;00/091D;;Code;;3;00;2
+BlueSCSI;1710;bluescsi.s;901;00/0924;;Code;;3;00;2
+BlueSCSI;1711;bluescsi.s;902;00/0927;;Code;;3;00;2
+BlueSCSI;1717;bluescsi.s;904;00/092A;;Code;;3;00;1 >>16
+BlueSCSI;1724;bluescsi.s;904;00/092D;;Code;;3;00;2
+BlueSCSI;1736;bluescsi.s;907;00/0937;;Code;;3;00;1 >>16
+BlueSCSI;1743;bluescsi.s;907;00/093A;;Code;;3;00;2
+BlueSCSI;1751;bluescsi.s;910;00/0944;ozunid_10;Code;;3;00;
+BlueSCSI;1753;bluescsi.s;912;00/094A;;Code;;3;00;2
+BlueSCSI;1765;bluescsi.s;917;00/0957;;Code;;3;00;2
+BlueSCSI;1766;bluescsi.s;918;00/095A;;Code;;3;00;2
+BlueSCSI;1770;bluescsi.s;922;00/0962;;Code;;3;00;2
+BlueSCSI;1778;bluescsi.s;926;00/096A;;Code;;3;00;1 >>16
+BlueSCSI;1785;bluescsi.s;926;00/096D;;Code;;3;00;2
+BlueSCSI;1795;bluescsi.s;931;00/0977;;Code;;3;00;2
+BlueSCSI;1796;bluescsi.s;932;00/097A;;Code;;3;00;2
+BlueSCSI;1802;bluescsi.s;934;00/097D;;Code;;3;00;1 >>16
+BlueSCSI;1809;bluescsi.s;934;00/0980;;Code;;3;00;2
+BlueSCSI;1817;bluescsi.s;937;00/098A;ozunid_11;Code;;3;00;
+BlueSCSI;1819;bluescsi.s;939;00/0990;;Code;;3;00;2
+BlueSCSI;1831;bluescsi.s;944;00/099D;;Code;;3;00;2
+BlueSCSI;1832;bluescsi.s;945;00/09A0;;Code;;3;00;2
+BlueSCSI;1836;bluescsi.s;949;00/09A8;;Code;;3;00;2
+BlueSCSI;1844;bluescsi.s;953;00/09B0;;Code;;3;00;1 >>16
+BlueSCSI;1851;bluescsi.s;953;00/09B3;;Code;;3;00;2
+BlueSCSI;1861;bluescsi.s;958;00/09BD;;Code;;3;00;2
+BlueSCSI;1865;bluescsi.s;962;00/09C6;;Code;;3;00;2
+BlueSCSI;1871;bluescsi.s;964;00/09C9;;Code;;3;00;1 >>16
+BlueSCSI;1878;bluescsi.s;964;00/09CC;;Code;;3;00;2
+BlueSCSI;1886;bluescsi.s;967;00/09D6;;Code;;3;00;2
+BlueSCSI;1891;bluescsi.s;972;00/09DB;doWIFI_EXITERR;Code;;3;00;
+BlueSCSI;1895;bluescsi.s;972;00/09DB;;Code;;3;00;1 >>16
+BlueSCSI;1902;bluescsi.s;972;00/09DE;;Code;;3;00;2
+BlueSCSI;1909;bluescsi.s;974;00/09E8;;Code;;3;00;2
+BlueSCSI;1915;bluescsi.s;980;00/09EB;wehavedata;Code;;3;00;
+BlueSCSI;1916;bluescsi.s;981;00/09EE;ozunid_12;Code;;3;00;2
+BlueSCSI;1927;bluescsi.s;988;00/09F5;;Code;;3;00;1 >>16
+BlueSCSI;1934;bluescsi.s;988;00/09F8;;Code;;3;00;2
+BlueSCSI;1946;bluescsi.s;991;00/0A02;;Code;;3;00;1 >>16
+BlueSCSI;1953;bluescsi.s;991;00/0A05;;Code;;3;00;2
+BlueSCSI;1962;bluescsi.s;995;00/0A12;;Code;;3;00;2
+BlueSCSI;1964;bluescsi.s;997;00/0A18;;Code;;3;00;2
+BlueSCSI;1966;bluescsi.s;999;00/0A1B;ozunid_13;Code;;2;10;
+BlueSCSI;1967;bluescsi.s;1000;00/0A1D;;Code;;3;10;2
+BlueSCSI;1969;bluescsi.s;1002;00/0A22;;Code;;3;10;2
+BlueSCSI;1972;bluescsi.s;1005;00/0A27;;Code;;3;00;2
+BlueSCSI;1973;bluescsi.s;1006;00/0A2A;;Code;;3;00;2
+BlueSCSI;1982;bluescsi.s;1011;00/0A35;;Code;;3;00;1 >>16
+BlueSCSI;1989;bluescsi.s;1011;00/0A38;;Code;;3;00;2
+BlueSCSI;1997;bluescsi.s;1014;00/0A42;;Code;;3;00;2
+BlueSCSI;1999;bluescsi.s;1016;00/0A48;;Code;;3;00;2
+BlueSCSI;2001;bluescsi.s;1018;00/0A4B;;Code;;3;00;2
+BlueSCSI;2004;bluescsi.s;1021;00/0A52;;Code;;3;00;2
+BlueSCSI;2006;bluescsi.s;1023;00/0A55;;Code;;3;00;2
+BlueSCSI;2007;bluescsi.s;1024;00/0A58;;Code;;3;00;2
+BlueSCSI;2012;bluescsi.s;1029;00/0A62;lastaccesspoint;Code;;3;00;
+BlueSCSI;2024;bluescsi.s;1034;00/0A6C;ozunid_14;Code;;3;00;2
+BlueSCSI;2027;bluescsi.s;1037;00/0A74;;Code;;3;00;2
+BlueSCSI;2028;bluescsi.s;1038;00/0A77;apMENU2;Code;;3;00;
+BlueSCSI;2032;bluescsi.s;1042;00/0A80;;Code;;3;00;2
+BlueSCSI;2038;bluescsi.s;1048;00/0A87;apMENU3;Code;;1;00;
+BlueSCSI;2040;bluescsi.s;1050;00/0A8B;ozunid_15;Code;;1;00;
+BlueSCSI;2047;bluescsi.s;1057;00/0A97;apMENU4;Code;;3;00;2
+BlueSCSI;2054;bluescsi.s;1064;00/0AA0;ozunid_16;Code;;3;10;2
+BlueSCSI;2055;bluescsi.s;1065;00/0AA3;;Code;;3;10;2
+BlueSCSI;2068;bluescsi.s;1074;00/0AAF;;Code;;3;00;1 >>16
+BlueSCSI;2075;bluescsi.s;1074;00/0AB2;;Code;;3;00;2
+BlueSCSI;2089;bluescsi.s;1079;00/0ABC;;Code;;3;00;1 >>16
+BlueSCSI;2096;bluescsi.s;1079;00/0ABF;;Code;;3;00;2
+BlueSCSI;2103;bluescsi.s;1081;00/0AC9;;Code;;3;00;2
+BlueSCSI;2105;bluescsi.s;1083;00/0ACF;;Code;;3;00;2
+BlueSCSI;2113;bluescsi.s;1087;00/0AD2;;Code;;3;00;1 >>16
+BlueSCSI;2120;bluescsi.s;1087;00/0AD5;;Code;;3;00;2
+BlueSCSI;2127;bluescsi.s;1089;00/0ADF;;Code;;3;00;2
+BlueSCSI;2131;bluescsi.s;1093;00/0AE9;;Code;;3;00;2
+BlueSCSI;2139;bluescsi.s;1097;00/0AEC;;Code;;3;00;1 >>16
+BlueSCSI;2146;bluescsi.s;1097;00/0AEF;;Code;;3;00;2
+BlueSCSI;2153;bluescsi.s;1099;00/0AF9;;Code;;3;00;2
+BlueSCSI;2157;bluescsi.s;1103;00/0B01;;Code;;3;00;2
+BlueSCSI;2158;bluescsi.s;1104;00/0B04;;Code;;3;00;2
+BlueSCSI;2166;bluescsi.s;1108;00/0B07;;Code;;3;00;1 >>16
+BlueSCSI;2173;bluescsi.s;1108;00/0B0A;;Code;;3;00;2
+BlueSCSI;2180;bluescsi.s;1110;00/0B14;;Code;;3;00;2
+BlueSCSI;2184;bluescsi.s;1114;00/0B1C;;Code;;3;00;2
+BlueSCSI;2186;bluescsi.s;1116;00/0B21;;Code;;3;10;2
+BlueSCSI;2188;bluescsi.s;1118;00/0B26;;Code;;3;00;2
+BlueSCSI;2196;bluescsi.s;1122;00/0B29;;Code;;3;00;1 >>16
+BlueSCSI;2203;bluescsi.s;1122;00/0B2C;;Code;;3;00;2
+BlueSCSI;2210;bluescsi.s;1124;00/0B36;;Code;;3;00;2
+BlueSCSI;2214;bluescsi.s;1128;00/0B3E;;Code;;3;00;2
+BlueSCSI;2215;bluescsi.s;1129;00/0B41;;Code;;3;00;2
+BlueSCSI;2223;bluescsi.s;1133;00/0B44;;Code;;3;00;1 >>16
+BlueSCSI;2230;bluescsi.s;1133;00/0B47;;Code;;3;00;2
+BlueSCSI;2237;bluescsi.s;1135;00/0B51;;Code;;3;00;2
+BlueSCSI;2241;bluescsi.s;1139;00/0B59;;Code;;3;00;2
+BlueSCSI;2243;bluescsi.s;1141;00/0B5E;;Code;;3;10;2
+BlueSCSI;2245;bluescsi.s;1143;00/0B63;;Code;;3;00;2
+BlueSCSI;2253;bluescsi.s;1147;00/0B66;;Code;;3;00;1 >>16
+BlueSCSI;2260;bluescsi.s;1147;00/0B69;;Code;;3;00;2
+BlueSCSI;2268;bluescsi.s;1150;00/0B73;ozunid_17;Code;;3;00;2
+BlueSCSI;2271;bluescsi.s;1153;00/0B7B;;Code;;3;00;2
+BlueSCSI;2272;bluescsi.s;1154;00/0B7E;apMENU10;Code;;3;00;
+BlueSCSI;2281;bluescsi.s;1159;00/0B83;;Code;;3;00;1 >>16
+BlueSCSI;2288;bluescsi.s;1159;00/0B86;;Code;;3;00;2
+BlueSCSI;2305;bluescsi.s;1163;00/0B93;;Code;;3;00;1 >>16
+BlueSCSI;2312;bluescsi.s;1163;00/0B96;;Code;;3;00;2
+BlueSCSI;2336;bluescsi.s;1170;00/0BAC;;Code;;3;00;2
+BlueSCSI;2338;bluescsi.s;1172;00/0BAF;apMENU20;Code;;3;00;
+BlueSCSI;2342;bluescsi.s;1172;00/0BAF;;Code;;3;00;1 >>16
+BlueSCSI;2349;bluescsi.s;1172;00/0BB2;;Code;;3;00;2
+BlueSCSI;2359;bluescsi.s;1177;00/0BBC;finalCALL;Code;;3;00;
+BlueSCSI;2361;bluescsi.s;1179;00/0BC1;ozunid_18;Code;;3;10;2
+BlueSCSI;2363;bluescsi.s;1181;00/0BC6;;Code;;3;10;2
+BlueSCSI;2374;bluescsi.s;1192;00/0BD2;;Code;;3;00;2
+BlueSCSI;2377;bluescsi.s;1195;00/0BD8;ozunid_19;Code;;3;00;2
+BlueSCSI;2378;bluescsi.s;1196;00/0BDB;;Code;;3;00;2
+BlueSCSI;2386;bluescsi.s;1204;00/0BE5;ozunid_20;Code;;3;00;2
+BlueSCSI;2387;bluescsi.s;1205;00/0BE8;;Code;;3;00;2
+BlueSCSI;2393;bluescsi.s;1211;00/0BF2;;Code;;3;00;2
+BlueSCSI;2395;bluescsi.s;1213;00/0BF5;apMENUEND;Code;;3;00;
+BlueSCSI;2399;bluescsi.s;1213;00/0BF5;;Code;;3;00;1 >>16
+BlueSCSI;2406;bluescsi.s;1213;00/0BF8;;Code;;3;00;2
+BlueSCSI;2413;bluescsi.s;1215;00/0C02;;Code;;3;00;2
+BlueSCSI;2417;bluescsi.s;1219;00/0C05;execWIFI;Code;;1;00;
+BlueSCSI;2418;bluescsi.s;1220;00/0C06;;Code;;3;00;2
+BlueSCSI;2420;bluescsi.s;1222;00/0C0B;;Code;;3;01;2
+BlueSCSI;2424;bluescsi.s;1226;00/0C13;ozunid_21;Code;;3;00;2
+BlueSCSI;2425;bluescsi.s;1227;00/0C16;;Code;;3;00;2
+BlueSCSI;2431;bluescsi.s;1233;00/0C20;;Code;;3;00;2
+BlueSCSI;2436;bluescsi.s;1238;00/0C24;refWIFI;Data;hex;10;00;
+BlueSCSI;2438;bluescsi.s;1240;00/0C2E;scsiWIFI;Data;hex;1;00;
+BlueSCSI;2445;bluescsi.s;1247;00/0C38;scsiWIFIJOIN;Data;hex;1;00;
+BlueSCSI;2454;bluescsi.s;1256;00/0C42;strSCANWIFI;Data;asc;39;00;
+BlueSCSI;2455;bluescsi.s;1257;00/0C69;strSCANDONE;Data;asc;11;00;
+BlueSCSI;2456;bluescsi.s;1258;00/0C74;strNOWIFI;Data;asc;25;00;
+BlueSCSI;2457;bluescsi.s;1259;00/0C8D;strYESWIFI;Data;asc;22;00;
+BlueSCSI;2459;bluescsi.s;1261;00/0CA3;strDETAILAP;Data;asc;30;00;
+BlueSCSI;2460;bluescsi.s;1262;00/0CC1;strSSID;Data;asc;27;00;
+BlueSCSI;2461;bluescsi.s;1263;00/0CDC;strBSSID;Data;asc;33;00;
+BlueSCSI;2462;bluescsi.s;1264;00/0CFD;strRSSI;Data;asc;39;00;
+BlueSCSI;2463;bluescsi.s;1265;00/0D24;strCHANNEL;Data;asc;12;00;
+BlueSCSI;2464;bluescsi.s;1266;00/0D30;strFLAGS;Data;asc;10;00;
+BlueSCSI;2465;bluescsi.s;1267;00/0D3A;strPADDING;Data;asc;12;00;
+BlueSCSI;2467;bluescsi.s;1269;00/0D46;strRESULT0;Data;asc;24;00;
+BlueSCSI;2468;bluescsi.s;1270;00/0D5E;strRESULT1;Data;asc;32;00;
+BlueSCSI;2469;bluescsi.s;1271;00/0D7E;strRESULT2;Data;asc;36;00;
+BlueSCSI;2470;bluescsi.s;1272;00/0DA2;strRESULT3;Data;asc;40;00;
+BlueSCSI;2472;bluescsi.s;1274;00/0DCA;strIDNETWORK;Data;asc;6;00;
+BlueSCSI;2474;bluescsi.s;1276;00/0DD0;strSELECTAP;Data;asc;24;00;
+BlueSCSI;2477;bluescsi.s;1279;00/0E05;strDOWHATNOW;Data;asc;18;00;
+BlueSCSI;2481;bluescsi.s;1283;00/0E55;strTHEKEY;Data;asc;28;00;
+BlueSCSI;2483;bluescsi.s;1285;00/0E71;strCONNECTING;Data;asc;36;00;
+BlueSCSI;2484;bluescsi.s;1286;00/0E95;strPRESSAKEY;Data;asc;14;00;
+BlueSCSI;2486;bluescsi.s;1288;00/0EA3;idNETWORK;Data;ds;2;00;
+BlueSCSI;2487;bluescsi.s;1289;00/0EA5;offsetNETWORK;Data;ds;2;00;
+BlueSCSI;2488;bluescsi.s;1290;00/0EA7;nbTRIES;Data;ds;2;00;
+BlueSCSI;2492;bluescsi.s;1294;00/0EA9;theSSID;Data;ds;64;00;
+BlueSCSI;2493;bluescsi.s;1295;00/0EE9;theKEY;Data;ds;64;00;
+BlueSCSI;2494;bluescsi.s;1296;00/0F29;theCHANNEL;Data;ds;1;00;
+BlueSCSI;2495;bluescsi.s;1297;00/0F2A;thePADDING;Data;ds;1;00;
+BlueSCSI;2505;bluescsi.s;1307;00/0F2B;doTOOLBOX;Code;;1;00;
+BlueSCSI;2507;bluescsi.s;1309;00/0F2D;;Code;;3;00;1 >>16
+BlueSCSI;2518;bluescsi.s;1312;00/0F39;;Code;;3;00;2
+BlueSCSI;2525;bluescsi.s;1312;00/0F3D;;Code;;3;00;2
+BlueSCSI;2534;bluescsi.s;1316;00/0F42;;Code;;3;00;2
+BlueSCSI;2545;bluescsi.s;1319;00/0F4E;;Code;;3;00;2
+BlueSCSI;2552;bluescsi.s;1319;00/0F52;;Code;;3;00;2
+BlueSCSI;2563;bluescsi.s;1321;00/0F55;;Code;;3;00;1 >>16
+BlueSCSI;2570;bluescsi.s;1321;00/0F58;;Code;;3;00;2
+BlueSCSI;2580;bluescsi.s;1326;00/0F62;ozunid_22;Code;;3;00;2
+BlueSCSI;2583;bluescsi.s;1329;00/0F6A;;Code;;3;00;2
+BlueSCSI;2584;bluescsi.s;1330;00/0F6D;doTOOLBOX1;Code;;3;00;
+BlueSCSI;2596;bluescsi.s;1342;00/0F88;doTOOLBOX1OK;Code;;3;00;
+BlueSCSI;2597;bluescsi.s;1343;00/0F8B;doTOOLBOX2;Code;;1;00;
+BlueSCSI;2601;bluescsi.s;1347;00/0F91;;Code;;3;00;2
+BlueSCSI;2602;bluescsi.s;1348;00/0F94;;Code;;3;00;2
+BlueSCSI;2603;bluescsi.s;1349;00/0F97;doTOOLBOX3;Code;;3;00;
+BlueSCSI;2604;bluescsi.s;1350;00/0F9A;;Code;;3;00;2
+BlueSCSI;2606;bluescsi.s;1352;00/0F9D;ptrTOOLBOX;Data;da;2;00;2
+BlueSCSI;2607;bluescsi.s;1353;00/0F9F;;Data;da;2;00;2
+BlueSCSI;2608;bluescsi.s;1354;00/0FA1;;Data;da;2;00;2
+BlueSCSI;2609;bluescsi.s;1355;00/0FA3;;Data;da;2;00;2
+BlueSCSI;2610;bluescsi.s;1356;00/0FA5;;Data;da;2;00;2
+BlueSCSI;2611;bluescsi.s;1357;00/0FA7;;Data;da;2;00;2
+BlueSCSI;2612;bluescsi.s;1358;00/0FA9;;Data;da;2;00;2
+BlueSCSI;2613;bluescsi.s;1359;00/0FAB;;Data;da;2;00;2
+BlueSCSI;2614;bluescsi.s;1360;00/0FAD;;Data;da;2;00;2
+BlueSCSI;2615;bluescsi.s;1361;00/0FAF;;Data;da;2;00;2
+BlueSCSI;2616;bluescsi.s;1362;00/0FB1;;Data;da;2;00;2
+BlueSCSI;2620;bluescsi.s;1366;00/0FB3;strTOOLBOX;Data;asc;20;00;
+BlueSCSI;2621;bluescsi.s;1367;00/0FC7;strTOOLBOXHIGH;Data;asc;4;00;
+BlueSCSI;2622;bluescsi.s;1368;00/0FCB;strTOOLBOXLOW;Data;asc;6;00;
+BlueSCSI;2641;bluescsi.s;1387;00/10D8;toolboxRTS;Code;;1;00;
+BlueSCSI;2647;bluescsi.s;1393;00/10D9;toolboxD0;Code;;3;00;2
+BlueSCSI;2653;bluescsi.s;1395;00/10DC;;Code;;3;00;1 >>16
+BlueSCSI;2660;bluescsi.s;1395;00/10DF;;Code;;3;00;2
+BlueSCSI;2669;bluescsi.s;1399;00/10EC;ozunid_23;Code;;3;00;2
+BlueSCSI;2670;bluescsi.s;1400;00/10EF;;Code;;3;00;2
+BlueSCSI;2676;bluescsi.s;1406;00/10F9;;Code;;3;00;2
+BlueSCSI;2681;bluescsi.s;1411;00/10FD;scsiTOOLBOXD0;Data;dfb;1;00;
+BlueSCSI;2684;bluescsi.s;1414;00/1107;strTOOLBOXD0;Data;asc;19;00;
+BlueSCSI;2690;bluescsi.s;1420;00/111A;toolboxD1;Code;;3;00;2
+BlueSCSI;2696;bluescsi.s;1422;00/111D;;Code;;3;00;1 >>16
+BlueSCSI;2703;bluescsi.s;1422;00/1120;;Code;;3;00;2
+BlueSCSI;2712;bluescsi.s;1426;00/112D;ozunid_24;Code;;3;00;2
+BlueSCSI;2713;bluescsi.s;1427;00/1130;;Code;;3;00;2
+BlueSCSI;2719;bluescsi.s;1433;00/113A;;Code;;3;00;2
+BlueSCSI;2720;bluescsi.s;1434;00/113D;;Code;;3;00;2
+BlueSCSI;2724;bluescsi.s;1438;00/1140;scsiTOOLBOXD1;Data;dfb;1;00;
+BlueSCSI;2727;bluescsi.s;1441;00/114A;strTOOLBOXD1;Data;asc;17;00;
+BlueSCSI;2733;bluescsi.s;1447;00/115B;toolboxD2;Code;;3;00;2
+BlueSCSI;2739;bluescsi.s;1449;00/115E;;Code;;3;00;1 >>16
+BlueSCSI;2746;bluescsi.s;1449;00/1161;;Code;;3;00;2
+BlueSCSI;2755;bluescsi.s;1453;00/116E;ozunid_25;Code;;3;00;2
+BlueSCSI;2756;bluescsi.s;1454;00/1171;;Code;;3;00;2
+BlueSCSI;2762;bluescsi.s;1460;00/117B;;Code;;3;00;2
+BlueSCSI;2768;bluescsi.s;1462;00/117E;;Code;;3;00;1 >>16
+BlueSCSI;2775;bluescsi.s;1462;00/1181;;Code;;3;00;2
+BlueSCSI;2783;bluescsi.s;1465;00/118B;;Code;;3;00;2
+BlueSCSI;2785;bluescsi.s;1467;00/1191;;Code;;3;00;2
+BlueSCSI;2786;bluescsi.s;1468;00/1194;;Code;;3;00;2
+BlueSCSI;2790;bluescsi.s;1472;00/1197;scsiTOOLBOXD2;Data;dfb;1;00;
+BlueSCSI;2793;bluescsi.s;1475;00/11A1;strTOOLBOXD2;Data;asc;20;00;
+BlueSCSI;2794;bluescsi.s;1476;00/11B5;strCOUNTFILES;Data;asc;19;00;
+BlueSCSI;2800;bluescsi.s;1482;00/11C8;toolboxD3;Code;;3;00;2
+BlueSCSI;2806;bluescsi.s;1484;00/11CB;;Code;;3;00;1 >>16
+BlueSCSI;2813;bluescsi.s;1484;00/11CE;;Code;;3;00;2
+BlueSCSI;2822;bluescsi.s;1488;00/11DB;ozunid_26;Code;;3;00;2
+BlueSCSI;2823;bluescsi.s;1489;00/11DE;;Code;;3;00;2
+BlueSCSI;2829;bluescsi.s;1495;00/11E8;;Code;;3;00;2
+BlueSCSI;2830;bluescsi.s;1496;00/11EB;;Code;;3;00;2
+BlueSCSI;2834;bluescsi.s;1500;00/11EE;scsiTOOLBOXD3;Data;dfb;1;00;
+BlueSCSI;2837;bluescsi.s;1503;00/11F8;strTOOLBOXD3;Data;asc;23;00;
+BlueSCSI;2843;bluescsi.s;1509;00/120F;toolboxD4;Code;;3;00;2
+BlueSCSI;2849;bluescsi.s;1511;00/1212;;Code;;3;00;1 >>16
+BlueSCSI;2856;bluescsi.s;1511;00/1215;;Code;;3;00;2
+BlueSCSI;2865;bluescsi.s;1515;00/1222;ozunid_27;Code;;3;00;2
+BlueSCSI;2866;bluescsi.s;1516;00/1225;;Code;;3;00;2
+BlueSCSI;2872;bluescsi.s;1522;00/122F;;Code;;3;00;2
+BlueSCSI;2873;bluescsi.s;1523;00/1232;;Code;;3;00;2
+BlueSCSI;2877;bluescsi.s;1527;00/1235;scsiTOOLBOXD4;Data;dfb;1;00;
+BlueSCSI;2880;bluescsi.s;1530;00/123F;strTOOLBOXD4;Data;asc;18;00;
+BlueSCSI;2886;bluescsi.s;1536;00/1251;toolboxD5;Code;;3;00;2
+BlueSCSI;2892;bluescsi.s;1538;00/1254;;Code;;3;00;1 >>16
+BlueSCSI;2899;bluescsi.s;1538;00/1257;;Code;;3;00;2
+BlueSCSI;2908;bluescsi.s;1542;00/1264;ozunid_28;Code;;3;00;2
+BlueSCSI;2909;bluescsi.s;1543;00/1267;;Code;;3;00;2
+BlueSCSI;2915;bluescsi.s;1549;00/1271;;Code;;3;00;2
+BlueSCSI;2916;bluescsi.s;1550;00/1274;;Code;;3;00;2
+BlueSCSI;2920;bluescsi.s;1554;00/1277;scsiTOOLBOXD5;Data;dfb;1;00;
+BlueSCSI;2923;bluescsi.s;1557;00/1281;strTOOLBOXD5;Data;asc;22;00;
+BlueSCSI;2929;bluescsi.s;1563;00/1297;toolboxD6;Code;;3;00;2
+BlueSCSI;2931;bluescsi.s;1565;00/129A;toolboxD6_loop;Code;;3;00;2
+BlueSCSI;2937;bluescsi.s;1567;00/129D;;Code;;3;00;1 >>16
+BlueSCSI;2944;bluescsi.s;1567;00/12A0;;Code;;3;00;2
+BlueSCSI;2952;bluescsi.s;1570;00/12AA;ozunid_29;Code;;3;00;2
+BlueSCSI;2955;bluescsi.s;1573;00/12B2;;Code;;3;00;2
+BlueSCSI;2956;bluescsi.s;1574;00/12B5;toolboxD62;Code;;3;00;
+BlueSCSI;2965;bluescsi.s;1583;00/12C5;;Code;;3;00;2
+BlueSCSI;2966;bluescsi.s;1584;00/12C8;;Code;;3;00;2
+BlueSCSI;2967;bluescsi.s;1585;00/12CB;toolboxD63;Code;;3;00;
+BlueSCSI;2968;bluescsi.s;1586;00/12CE;;Code;;3;00;2
+BlueSCSI;2970;bluescsi.s;1588;00/12D1;subTOOLBOXD6;Data;da;2;00;2
+BlueSCSI;2971;bluescsi.s;1589;00/12D3;;Data;da;2;00;2
+BlueSCSI;2972;bluescsi.s;1590;00/12D5;;Data;da;2;00;2
+BlueSCSI;2978;bluescsi.s;1596;00/12D7;toolboxD6_1;Code;;2;10;
+BlueSCSI;2980;bluescsi.s;1598;00/12DB;;Code;;3;10;2
+BlueSCSI;2982;bluescsi.s;1600;00/12E0;;Code;;3;10;2
+BlueSCSI;2985;bluescsi.s;1603;00/12E5;;Code;;3;00;2
+BlueSCSI;2992;bluescsi.s;1610;00/12E9;toolboxD6_2;Code;;2;10;
+BlueSCSI;2994;bluescsi.s;1612;00/12ED;;Code;;3;10;2
+BlueSCSI;2996;bluescsi.s;1614;00/12F2;;Code;;3;10;2
+BlueSCSI;2999;bluescsi.s;1617;00/12F7;;Code;;3;00;2
+BlueSCSI;3006;bluescsi.s;1624;00/12FB;toolboxD6_3;Code;;2;10;
+BlueSCSI;3008;bluescsi.s;1626;00/12FF;;Code;;3;10;2
+BlueSCSI;3009;bluescsi.s;1627;00/1302;;Code;;3;10;2
+BlueSCSI;3012;bluescsi.s;1630;00/1307;;Code;;3;00;2
+BlueSCSI;3014;bluescsi.s;1632;00/130A;;Code;;3;00;2
+BlueSCSI;3024;bluescsi.s;1639;00/131A;;Code;;3;00;2
+BlueSCSI;3028;bluescsi.s;1643;00/131F;;Code;;3;00;2
+BlueSCSI;3035;bluescsi.s;1650;00/1323;execD6;Code;;3;00;
+BlueSCSI;3036;bluescsi.s;1651;00/1326;ozunid_30;Code;;3;00;2
+BlueSCSI;3037;bluescsi.s;1652;00/1329;;Code;;3;00;2
+BlueSCSI;3043;bluescsi.s;1658;00/1333;;Code;;3;00;2
+BlueSCSI;3047;bluescsi.s;1662;00/1336;scsiTOOLBOXD6;Data;dfb;1;00;
+BlueSCSI;3050;bluescsi.s;1665;00/1340;strTOOLBOXD6;Data;asc;20;00;
+BlueSCSI;3055;bluescsi.s;1670;00/13AA;strDEBUGSTATUS;Data;asc;4;00;
+BlueSCSI;3061;bluescsi.s;1676;00/13AE;toolboxD7;Code;;3;00;2
+BlueSCSI;3067;bluescsi.s;1678;00/13B1;;Code;;3;00;1 >>16
+BlueSCSI;3074;bluescsi.s;1678;00/13B4;;Code;;3;00;2
+BlueSCSI;3083;bluescsi.s;1682;00/13C1;ozunid_31;Code;;3;00;2
+BlueSCSI;3084;bluescsi.s;1683;00/13C4;;Code;;3;00;2
+BlueSCSI;3090;bluescsi.s;1689;00/13CE;;Code;;3;00;2
+BlueSCSI;3091;bluescsi.s;1690;00/13D1;;Code;;3;00;2
+BlueSCSI;3095;bluescsi.s;1694;00/13D4;scsiTOOLBOXD7;Data;dfb;1;00;
+BlueSCSI;3098;bluescsi.s;1697;00/13DE;strTOOLBOXD7;Data;asc;17;00;
+BlueSCSI;3104;bluescsi.s;1703;00/13EF;toolboxD8;Code;;3;00;2
+BlueSCSI;3110;bluescsi.s;1705;00/13F2;;Code;;3;00;1 >>16
+BlueSCSI;3117;bluescsi.s;1705;00/13F5;;Code;;3;00;2
+BlueSCSI;3126;bluescsi.s;1709;00/1402;ozunid_32;Code;;3;00;2
+BlueSCSI;3127;bluescsi.s;1710;00/1405;;Code;;3;00;2
+BlueSCSI;3133;bluescsi.s;1716;00/140F;;Code;;3;00;2
+BlueSCSI;3134;bluescsi.s;1717;00/1412;;Code;;3;00;2
+BlueSCSI;3138;bluescsi.s;1721;00/1415;scsiTOOLBOXD8;Data;dfb;1;00;
+BlueSCSI;3141;bluescsi.s;1724;00/141F;strTOOLBOXD8;Data;asc;20;00;
+BlueSCSI;3147;bluescsi.s;1730;00/1433;toolboxD9;Code;;3;00;2
+BlueSCSI;3153;bluescsi.s;1732;00/1436;;Code;;3;00;1 >>16
+BlueSCSI;3160;bluescsi.s;1732;00/1439;;Code;;3;00;2
+BlueSCSI;3168;bluescsi.s;1735;00/1443;ozunid_33;Code;;3;00;2
+BlueSCSI;3171;bluescsi.s;1738;00/144B;;Code;;3;00;2
+BlueSCSI;3172;bluescsi.s;1739;00/144E;toolboxD92;Code;;3;00;
+BlueSCSI;3181;bluescsi.s;1748;00/145E;;Code;;3;00;2
+BlueSCSI;3182;bluescsi.s;1749;00/1461;;Code;;3;00;2
+BlueSCSI;3183;bluescsi.s;1750;00/1464;toolboxD93;Code;;3;00;
+BlueSCSI;3184;bluescsi.s;1751;00/1467;;Code;;3;00;2
+BlueSCSI;3186;bluescsi.s;1753;00/146A;subTOOLBOXD9;Data;da;2;00;2
+BlueSCSI;3187;bluescsi.s;1754;00/146C;;Data;da;2;00;2
+BlueSCSI;3188;bluescsi.s;1755;00/146E;;Data;da;2;00;2
+BlueSCSI;3189;bluescsi.s;1756;00/1470;;Data;da;2;00;2
+BlueSCSI;3195;bluescsi.s;1762;00/1472;toolboxD9_0;Code;;2;10;
+BlueSCSI;3197;bluescsi.s;1764;00/1476;;Code;;3;10;2
+BlueSCSI;3200;bluescsi.s;1767;00/147B;;Code;;3;00;2
+BlueSCSI;3206;bluescsi.s;1769;00/147E;;Code;;3;00;1 >>16
+BlueSCSI;3213;bluescsi.s;1769;00/1481;;Code;;3;00;2
+BlueSCSI;3225;bluescsi.s;1776;00/148D;ozunid_34;Code;;3;00;
+BlueSCSI;3229;bluescsi.s;1776;00/148D;;Code;;3;00;1 >>16
+BlueSCSI;3236;bluescsi.s;1776;00/1490;;Code;;3;00;2
+BlueSCSI;3245;bluescsi.s;1780;00/149C;;Code;;3;00;2
+BlueSCSI;3251;bluescsi.s;1782;00/149F;;Code;;3;00;1 >>16
+BlueSCSI;3258;bluescsi.s;1782;00/14A2;;Code;;3;00;2
+BlueSCSI;3267;bluescsi.s;1786;00/14AE;;Code;;3;00;2
+BlueSCSI;3273;bluescsi.s;1792;00/14BB;;Code;;3;00;1 >>16
+BlueSCSI;3274;bluescsi.s;1793;00/14BE;;Code;;3;00;2
+BlueSCSI;3281;bluescsi.s;1797;00/14C9;toolboxD9_0L;Code;;2;00;
+BlueSCSI;3285;bluescsi.s;1801;00/14D2;;Code;;3;00;2
+BlueSCSI;3287;bluescsi.s;1803;00/14D5;toolboxD9_0NO;Code;;3;00;
+BlueSCSI;3291;bluescsi.s;1803;00/14D5;;Code;;3;00;1 >>16
+BlueSCSI;3298;bluescsi.s;1803;00/14D8;;Code;;3;00;2
+BlueSCSI;3305;bluescsi.s;1805;00/14E2;;Code;;3;00;2
+BlueSCSI;3309;bluescsi.s;1809;00/14E5;strLISTDEVICES;Data;asc;15;00;
+BlueSCSI;3310;bluescsi.s;1810;00/14F4;strCFG;Data;asc;6;00;
+BlueSCSI;3311;bluescsi.s;1811;00/14FA;strCFG_SEP;Data;asc;4;00;
+BlueSCSI;3313;bluescsi.s;1813;00/14FE;tblCFG;Data;da;8;00;2
+BlueSCSI;3314;bluescsi.s;1814;00/1506;;Data;da;8;00;2
+BlueSCSI;3316;bluescsi.s;1816;00/150E;strCFG00;Data;asc;11;00;
+BlueSCSI;3317;bluescsi.s;1817;00/1519;strCFG01;Data;asc;15;00;
+BlueSCSI;3318;bluescsi.s;1818;00/1528;strCFG02;Data;asc;13;00;
+BlueSCSI;3319;bluescsi.s;1819;00/1535;strCFG03;Data;asc;12;00;
+BlueSCSI;3320;bluescsi.s;1820;00/1541;strCFG04;Data;asc;21;00;
+BlueSCSI;3321;bluescsi.s;1821;00/1556;strCFG05;Data;asc;31;00;
+BlueSCSI;3322;bluescsi.s;1822;00/1575;strCFG06;Data;asc;30;00;
+BlueSCSI;3323;bluescsi.s;1823;00/1593;strCFG07;Data;asc;12;00;
+BlueSCSI;3324;bluescsi.s;1824;00/159F;strNODEVICE;Data;asc;10;00;
+BlueSCSI;3332;bluescsi.s;1832;00/15A9;toolboxD9_1;Code;;2;10;
+BlueSCSI;3334;bluescsi.s;1834;00/15AD;;Code;;3;10;2
+BlueSCSI;3336;bluescsi.s;1836;00/15B2;;Code;;3;10;2
+BlueSCSI;3339;bluescsi.s;1839;00/15B7;;Code;;3;00;2
+BlueSCSI;3349;bluescsi.s;1845;00/15BA;;Code;;3;00;1 >>16
+BlueSCSI;3356;bluescsi.s;1845;00/15BD;;Code;;3;00;2
+BlueSCSI;3364;bluescsi.s;1848;00/15C7;;Code;;3;00;2
+BlueSCSI;3365;bluescsi.s;1849;00/15CA;;Code;;3;00;2
+BlueSCSI;3373;bluescsi.s;1853;00/15CD;;Code;;3;00;1 >>16
+BlueSCSI;3380;bluescsi.s;1853;00/15D0;;Code;;3;00;2
+BlueSCSI;3394;bluescsi.s;1858;00/15DA;;Code;;3;00;1 >>16
+BlueSCSI;3401;bluescsi.s;1858;00/15DD;;Code;;3;00;2
+BlueSCSI;3409;bluescsi.s;1861;00/15E7;;Code;;3;00;2
+BlueSCSI;3411;bluescsi.s;1863;00/15ED;;Code;;3;00;2
+BlueSCSI;3419;bluescsi.s;1867;00/15F0;;Code;;3;00;1 >>16
+BlueSCSI;3426;bluescsi.s;1867;00/15F3;;Code;;3;00;2
+BlueSCSI;3434;bluescsi.s;1870;00/15FD;;Code;;3;00;2
+BlueSCSI;3436;bluescsi.s;1872;00/1603;;Code;;3;00;2
+BlueSCSI;3444;bluescsi.s;1876;00/1606;;Code;;3;00;1 >>16
+BlueSCSI;3451;bluescsi.s;1876;00/1609;;Code;;3;00;2
+BlueSCSI;3459;bluescsi.s;1879;00/1613;;Code;;3;00;2
+BlueSCSI;3461;bluescsi.s;1881;00/1619;;Code;;3;00;2
+BlueSCSI;3462;bluescsi.s;1882;00/161C;;Code;;3;00;2
+BlueSCSI;3466;bluescsi.s;1886;00/161F;toolboxD9_BIT;Code;;3;00;
+BlueSCSI;3473;bluescsi.s;1889;00/1624;;Code;;3;00;1 >>16
+BlueSCSI;3480;bluescsi.s;1889;00/1627;;Code;;3;00;2
+BlueSCSI;3489;bluescsi.s;1893;00/1632;toolboxD9_BITOK;Code;;3;00;
+BlueSCSI;3493;bluescsi.s;1893;00/1632;;Code;;3;00;1 >>16
+BlueSCSI;3500;bluescsi.s;1893;00/1635;;Code;;3;00;2
+BlueSCSI;3511;bluescsi.s;1899;00/1640;strAPIVERSION;Data;asc;17;00;
+BlueSCSI;3512;bluescsi.s;1900;00/1651;strCAPABILITY;Data;asc;20;00;
+BlueSCSI;3513;bluescsi.s;1901;00/1665;strBIT0;Data;asc;26;00;
+BlueSCSI;3514;bluescsi.s;1902;00/167F;strBIT1;Data;asc;20;00;
+BlueSCSI;3515;bluescsi.s;1903;00/1693;strBIT2;Data;asc;25;00;
+BlueSCSI;3517;bluescsi.s;1905;00/16AC;strSUPPORTED;Data;asc;10;00;
+BlueSCSI;3518;bluescsi.s;1906;00/16B6;strNOTSUPPORTED;Data;asc;14;00;
+BlueSCSI;3526;bluescsi.s;1914;00/16C4;toolboxD9_2;Code;;2;10;
+BlueSCSI;3528;bluescsi.s;1916;00/16C8;;Code;;3;10;2
+BlueSCSI;3530;bluescsi.s;1918;00/16CD;;Code;;3;10;2
+BlueSCSI;3537;bluescsi.s;1921;00/16D2;;Code;;3;00;1 >>16
+BlueSCSI;3544;bluescsi.s;1921;00/16D5;;Code;;3;00;2
+BlueSCSI;3553;bluescsi.s;1925;00/16DF;;Code;;3;00;2
+BlueSCSI;3557;bluescsi.s;1929;00/16E2;strSETWD;Data;asc;19;00;
+BlueSCSI;3565;bluescsi.s;1937;00/16F5;toolboxD9_3;Code;;2;10;
+BlueSCSI;3567;bluescsi.s;1939;00/16F9;;Code;;3;10;2
+BlueSCSI;3569;bluescsi.s;1941;00/16FE;;Code;;3;10;2
+BlueSCSI;3572;bluescsi.s;1944;00/1703;;Code;;3;00;2
+BlueSCSI;3578;bluescsi.s;1946;00/1706;;Code;;3;00;1 >>16
+BlueSCSI;3585;bluescsi.s;1946;00/1709;;Code;;3;00;2
+BlueSCSI;3597;bluescsi.s;1949;00/1713;;Code;;3;00;1 >>16
+BlueSCSI;3604;bluescsi.s;1949;00/1716;;Code;;3;00;2
+BlueSCSI;3611;bluescsi.s;1951;00/1720;;Code;;3;00;2
+BlueSCSI;3615;bluescsi.s;1955;00/1723;strGETWD;Data;asc;19;00;
+BlueSCSI;3622;bluescsi.s;1962;00/1739;execD9_STATUS;Code;;3;00;
+BlueSCSI;3623;bluescsi.s;1963;00/173C;ozunid_35;Code;;3;00;2
+BlueSCSI;3624;bluescsi.s;1964;00/173F;;Code;;3;00;2
+BlueSCSI;3630;bluescsi.s;1970;00/1749;;Code;;3;00;2
+BlueSCSI;3634;bluescsi.s;1974;00/174C;execD9_CONTROL;Code;;3;00;
+BlueSCSI;3635;bluescsi.s;1975;00/174F;ozunid_36;Code;;3;00;2
+BlueSCSI;3636;bluescsi.s;1976;00/1752;;Code;;3;00;2
+BlueSCSI;3642;bluescsi.s;1982;00/175C;;Code;;3;00;2
+BlueSCSI;3646;bluescsi.s;1986;00/175F;scsiTOOLBOXD9;Data;dfb;1;00;
+BlueSCSI;3649;bluescsi.s;1989;00/1769;strTOOLBOXD9;Data;asc;16;00;
+BlueSCSI;3660;bluescsi.s;2000;00/17F0;toolboxDA;Code;;3;00;2
+BlueSCSI;3666;bluescsi.s;2002;00/17F3;;Code;;3;00;1 >>16
+BlueSCSI;3673;bluescsi.s;2002;00/17F6;;Code;;3;00;2
+BlueSCSI;3682;bluescsi.s;2006;00/1803;ozunid_37;Code;;3;00;2
+BlueSCSI;3683;bluescsi.s;2007;00/1806;;Code;;3;00;2
+BlueSCSI;3689;bluescsi.s;2013;00/1810;;Code;;3;00;2
+BlueSCSI;3695;bluescsi.s;2015;00/1813;;Code;;3;00;1 >>16
+BlueSCSI;3702;bluescsi.s;2015;00/1816;;Code;;3;00;2
+BlueSCSI;3710;bluescsi.s;2018;00/1820;;Code;;3;00;2
+BlueSCSI;3711;bluescsi.s;2019;00/1823;;Code;;3;00;2
+BlueSCSI;3712;bluescsi.s;2020;00/1826;;Code;;3;00;2
+BlueSCSI;3716;bluescsi.s;2024;00/1829;scsiTOOLBOXDA;Data;dfb;1;00;
+BlueSCSI;3719;bluescsi.s;2027;00/1833;strTOOLBOXDA;Data;asc;18;00;
+BlueSCSI;3720;bluescsi.s;2028;00/1845;strCOUNTCDS;Data;asc;17;00;
+BlueSCSI;3726;bluescsi.s;2034;00/1856;initCOMMANDDATA;Code;;3;00;
+BlueSCSI;3728;bluescsi.s;2036;00/1859;ozunid_38;Code;;3;00;2
+BlueSCSI;3734;bluescsi.s;2042;00/1863;ozunid_39;Code;;3;00;2
+BlueSCSI;3742;bluescsi.s;2050;00/186B;initSTATUSDATA;Code;;3;00;
+BlueSCSI;3744;bluescsi.s;2052;00/186E;ozunid_40;Code;;3;00;2
+BlueSCSI;3753;bluescsi.s;2061;00/1876;statusCALL;Code;;3;00;2
+BlueSCSI;3755;bluescsi.s;2063;00/187B;;Code;;3;10;2
+BlueSCSI;3760;bluescsi.s;2068;00/1886;;Data;adrl;4;00;3
+BlueSCSI;3766;bluescsi.s;2074;00/188C;statusCALL2;Code;;3;00;2
+BlueSCSI;3768;bluescsi.s;2076;00/1891;;Code;;3;10;2
+BlueSCSI;3773;bluescsi.s;2081;00/189C;;Data;adrl;4;00;3
+BlueSCSI;3778;bluescsi.s;2086;00/18A2;controlCALL;Code;;3;00;2
+BlueSCSI;3780;bluescsi.s;2088;00/18A7;;Code;;3;10;2
+BlueSCSI;3785;bluescsi.s;2093;00/18B2;;Data;adrl;4;00;3
+BlueSCSI;3789;bluescsi.s;2097;00/18B6;showERR;Code;;2;00;
+BlueSCSI;3790;bluescsi.s;2098;00/18B8;;Code;;3;00;2
+BlueSCSI;3796;bluescsi.s;2100;00/18BB;;Code;;3;00;1 >>16
+BlueSCSI;3803;bluescsi.s;2100;00/18BE;;Code;;3;00;2
+BlueSCSI;3811;bluescsi.s;2103;00/18C8;;Code;;3;00;2
+BlueSCSI;3812;bluescsi.s;2104;00/18CB;;Code;;3;00;2
+BlueSCSI;3824;bluescsi.s;2109;00/18D9;showNOERR;Code;;1;00;
+BlueSCSI;3837;bluescsi.s;2122;00/18DA;showCTEXT;Code;;3;00;2
+BlueSCSI;3840;bluescsi.s;2125;00/18E1;ozunid_41;Code;;3;00;2
+BlueSCSI;3854;bluescsi.s;2136;00/18F7;showCTEXT1;Code;;3;00;
+BlueSCSI;3857;bluescsi.s;2139;00/18FC;showCTEXT2;Code;;1;00;
+BlueSCSI;3864;bluescsi.s;2146;00/18FD;showTEXT;Code;;3;00;1 >>16
+BlueSCSI;3867;bluescsi.s;2149;00/1902;;Code;;3;00;2
+BlueSCSI;3884;bluescsi.s;2159;00/1912;showDECIMAL;Code;;3;00;
+BlueSCSI;3888;bluescsi.s;2163;00/1919;;Code;;3;00;2
+BlueSCSI;3894;bluescsi.s;2165;00/191C;;Code;;3;00;1 >>16
+BlueSCSI;3901;bluescsi.s;2165;00/191F;;Code;;3;00;2
+BlueSCSI;3923;bluescsi.s;2170;00/192F;;Code;;3;00;1 >>16
+BlueSCSI;3930;bluescsi.s;2170;00/1932;;Code;;3;00;2
+BlueSCSI;3941;bluescsi.s;2176;00/193D;strDECIMAL;Data;asc;3;00;
+BlueSCSI;3947;bluescsi.s;2182;00/1940;showBITS;Code;;3;00;
+BlueSCSI;3951;bluescsi.s;2186;00/1946;showBITS0;Code;;3;00;
+BlueSCSI;3952;bluescsi.s;2187;00/1949;ozunid_42;Code;;1;00;
+BlueSCSI;3958;bluescsi.s;2193;00/1952;showBITS1;Code;;3;00;
+BlueSCSI;3959;bluescsi.s;2194;00/1955;showBITS2;Code;;3;00;2
+BlueSCSI;3968;bluescsi.s;2203;00/1961;;Code;;3;00;2
+BlueSCSI;3974;bluescsi.s;2205;00/1964;;Code;;3;00;1 >>16
+BlueSCSI;3981;bluescsi.s;2205;00/1967;;Code;;3;00;2
+BlueSCSI;3992;bluescsi.s;2211;00/1972;strBITS;Data;ds;18;00;
+BlueSCSI;3996;bluescsi.s;2215;00/1984;showBYTE;Code;;1;00;
+BlueSCSI;4005;bluescsi.s;2221;00/1991;;Code;;3;00;2
+BlueSCSI;4009;bluescsi.s;2225;00/1996;;Code;;3;00;2
+BlueSCSI;4015;bluescsi.s;2227;00/1999;;Code;;3;00;1 >>16
+BlueSCSI;4022;bluescsi.s;2227;00/199C;;Code;;3;00;2
+BlueSCSI;4033;bluescsi.s;2233;00/19A7;strBYTEP;Data;dfb;1;00;
+BlueSCSI;4034;bluescsi.s;2234;00/19A8;strBYTE;Data;asc;2;00;
+BlueSCSI;4038;bluescsi.s;2238;00/19AA;showWORD;Code;;1;00;
+BlueSCSI;4050;bluescsi.s;2242;00/19B5;;Code;;3;00;2
+BlueSCSI;4057;bluescsi.s;2242;00/19B9;;Code;;3;00;2
+BlueSCSI;4068;bluescsi.s;2244;00/19BC;;Code;;3;00;1 >>16
+BlueSCSI;4075;bluescsi.s;2244;00/19BF;;Code;;3;00;2
+BlueSCSI;4086;bluescsi.s;2250;00/19CA;strHEX;Data;asc;5;00;
+BlueSCSI;4092;bluescsi.s;2256;00/19CF;showMAC;Code;;3;00;2
+BlueSCSI;4095;bluescsi.s;2259;00/19D4;;Code;;3;00;2
+BlueSCSI;4096;bluescsi.s;2260;00/19D7;;Code;;3;00;2
+BlueSCSI;4098;bluescsi.s;2262;00/19DA;;Code;;3;00;2
+BlueSCSI;4100;bluescsi.s;2264;00/19DD;ozunid_43;Code;;1;00;
+BlueSCSI;4102;bluescsi.s;2266;00/19DE;;Code;;3;00;2
+BlueSCSI;4115;bluescsi.s;2272;00/19ED;showMAC0;Code;;1;00;
+BlueSCSI;4117;bluescsi.s;2274;00/19EF;;Code;;3;00;2
+BlueSCSI;4118;bluescsi.s;2275;00/19F2;;Code;;3;00;2
+BlueSCSI;4121;bluescsi.s;2278;00/19F8;;Code;;3;00;2
+BlueSCSI;4125;bluescsi.s;2282;00/19FD;showMAC1;Code;;3;00;
+BlueSCSI;4131;bluescsi.s;2288;00/1A03;fgDEUXPOINTS;Data;ds;2;00;
+BlueSCSI;4138;bluescsi.s;2295;00/1A05;keyINRANGE;Code;;3;00;2
+BlueSCSI;4139;bluescsi.s;2296;00/1A08;;Code;;3;00;2
+BlueSCSI;4140;bluescsi.s;2297;00/1A0B;;Code;;3;00;2
+BlueSCSI;4142;bluescsi.s;2299;00/1A0E;ozunid_44;Macro;;0;00;
+BlueSCSI;4150;bluescsi.s;2299;00/1A0E;;Code;;3;00;2
+BlueSCSI;4159;bluescsi.s;2299;00/1A12;;Code;;3;00;2
+BlueSCSI;4185;bluescsi.s;2309;00/1A33;;Code;;3;00;2
+BlueSCSI;4190;bluescsi.s;2314;00/1A3C;keyINRANGE9;Code;;1;00;
+BlueSCSI;4197;bluescsi.s;2321;00/1A43;strKEY;Data;ds;4;00;
+BlueSCSI;4198;bluescsi.s;2322;00/1A47;keyHIGH;Data;ds;2;00;
+BlueSCSI;4202;bluescsi.s;2326;00/1A49;waitKEY;Code;;3;00;
+BlueSCSI;4230;bluescsi.s;2336;00/1A62;waitFORKEY;Code;;3;00;
+BlueSCSI;4234;bluescsi.s;2336;00/1A62;;Code;;3;00;1 >>16
+BlueSCSI;4241;bluescsi.s;2336;00/1A65;;Code;;3;00;2
+BlueSCSI;4264;bluescsi.s;2343;00/1A7C;waitKEY1;Code;;2;00;
+BlueSCSI;4270;bluescsi.s;2349;00/1A88;waitKEY8;Code;;3;00;
+BlueSCSI;4280;bluescsi.s;2352;00/1A92;waitKEY9;Code;;1;00;
+BlueSCSI;4285;bluescsi.s;2357;00/1A94;strINPUT;Data;asc;18;00;
+BlueSCSI;4291;bluescsi.s;2363;00/1AA6;errCODE;Data;ds;2;00;
+BlueSCSI;4292;bluescsi.s;2364;00/1AA8;strERROR;Data;asc;24;00;
+BlueSCSI;4296;bluescsi.s;2368;00/1AC0;strlMYAPP;Data;strl;12;00;
+BlueSCSI;4298;bluescsi.s;2370;00/1ACC;proQUIT;Data;dw;2;00;
+BlueSCSI;4302;bluescsi.s;2374;00/1AD4;proDINFO;Data;dw;2;00;
+BlueSCSI;4304;bluescsi.s;2376;00/1AD8;;Data;adrl;4;00;3
+BlueSCSI;4312;bluescsi.s;2384;00/1AEA;devINFO;Data;dw;2;00;
+BlueSCSI;4313;bluescsi.s;2385;00/1AEC;devINFO1;Data;db;1;00;
+BlueSCSI;4314;bluescsi.s;2386;00/1AED;devINFO2;Data;db;1;00;
+BlueSCSI;4315;bluescsi.s;2387;00/1AEE;devINFO3;Data;ds;48;00;
+BlueSCSI;4317;bluescsi.s;2389;00/1B1E;proSTATUS;Data;dw;2;00;
+BlueSCSI;4320;bluescsi.s;2392;00/1B24;;Data;adrl;4;00;3
+BlueSCSI;4324;bluescsi.s;2396;00/1B30;statusLIST;Data;ds;2;00;
+BlueSCSI;4325;bluescsi.s;2397;00/1B32;statusDATA;Data;hex;1;00;
+BlueSCSI;4337;bluescsi.s;2409;00/1B3E;;Data;adrl;4;00;3
+BlueSCSI;4338;bluescsi.s;2410;00/1B42;statusBUFF;Data;ds;4096;00;
+BlueSCSI;4340;bluescsi.s;2412;00/2B42;proCONTROL;Data;dw;2;00;
+BlueSCSI;4343;bluescsi.s;2415;00/2B48;;Data;adrl;4;00;3
+BlueSCSI;4347;bluescsi.s;2419;00/2B54;controlLIST;Data;ds;2;00;
+BlueSCSI;4348;bluescsi.s;2420;00/2B56;commandDATA;Data;hex;1;00;
+BlueSCSI;4360;bluescsi.s;2432;00/2B62;commandPTR;Data;adrl;4;00;3
+BlueSCSI;4361;bluescsi.s;2433;00/2B66;commandBUFF;Data;ds;4096;00;
+BlueSCSI;4367;bluescsi.s;2439;00/3B66;BlueSCSIVendorPage;Data;dfb;1;00;
+BlueSCSI;4377;bluescsi.s;2449;00/3B92;appID;Data;ds;2;00;
+BlueSCSI;4378;bluescsi.s;2450;00/3B94;myID;Data;ds;2;00;
+BlueSCSI;4380;bluescsi.s;2452;00/3B96;myDP;Data;ds;2;00;
+BlueSCSI;4381;bluescsi.s;2453;00/3B98;ptrBUFFER;Data;ds;4;00;
+BlueSCSI;4382;bluescsi.s;2454;00/3B9C;haBUFFER;Data;ds;4;00;

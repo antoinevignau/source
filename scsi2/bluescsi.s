@@ -41,37 +41,43 @@ GSOS	=	$e100a8
 *
 
 *-------------------------------
-* CODE
+* DIRECT PAGE
 *-------------------------------
 
-dcREMOVE	=	$0004
-dcONLINE	=	$0010
-devCDROM	=	$0007
+theINDEX	=	$00
 
-maxDEVICES	=	8
+*-------------------------------
+* SCSI EQUATES
+*-------------------------------
+
+MAX_DEVICES	=	8
+MAX_SCSI_ID	=	8	; 0..7
 
 dcINQUIRY	=	$8012	; ** bluescsi **
-doMODESELECT	=	$8015
 dcMODESENSE6	=	$801a	; ** bluescsi **
-dcSTARTSTOP	=	$801b
 dcRECEIVEDIAG	=	$801c	; ** bluescsi **
-dcSENDDIAG	=	$801d
-dcREADCAPACITY	=	$8025
-dcSUBCHANNEL	=	$8042
-dcREADTOC	=	$8043
-dcPATI	=	$8048
-dcPAUSERESUME	=	$804b
-dcMODESENSE10	=	$805a
 
-dcREAD	=	$8008	; ** daynaport ** ie. GET MESSAGE 6 - from target to initiator
-dcWRITE	=	$800a	; ** daynaport ** ie. SEND MESSAGE 6 - from initiator to target
+dcBLUESCSI_TOOLBOX_LIST_FILES	=	$80d0
+dcBLUESCSI_TOOLBOX_GET_FILE	=	$80d1
+dcBLUESCSI_TOOLBOX_COUNT_FILES	=	$80d2
+dcBLUESCSI_TOOLBOX_SEND_FILE_PREP	=	$80d3
+dcBLUESCSI_TOOLBOX_SEND_FILE	=	$80d4
+dcBLUESCSI_TOOLBOX_SEND_FILE_END	=	$80d5
+dcBLUESCSI_TOOLBOX_TOGGLE_DEBUG	=	$80d6
+dcBLUESCSI_TOOLBOX_LIST_CDS	=	$80d7
+dcBLUESCSI_TOOLBOX_SET_NEXT_CD	=	$80d8
+dcBLUESCSI_TOOLBOX_METADATA	=	$80d9
+dcTOOLBOX_SUBCMD_LIST_DEVICES	=	$8000
+dcBLUESCSI_TOOLBOX_COUNT_CDS	=	$80da
+
+*---
 
 chrPOINT	=	'.'
 chrDEUXPOINTS	=	':'
 chrRETURN	=	$0d
 chrRETURN2	=	$8d
 
-SIZE_DATA	=	2048	; more than a MTU, please
+SIZE_DATA	=	4096	; more than a MTU, please
 
 *-------------------------------
 * BLUESCSI EQUATES
@@ -85,13 +91,16 @@ BLUESCSI_TOOLBOX_LIST_FILES	=	$d0
 BLUESCSI_TOOLBOX_GET_FILE	=	$d1
 BLUESCSI_TOOLBOX_COUNT_FILES	=	$d2
 BLUESCSI_TOOLBOX_SEND_FILE_PREP	=	$d3
-BLUESCSI_TOOLBOX_SEND_FILE_10	=	$d4
+BLUESCSI_TOOLBOX_SEND_FILE	=	$d4
 BLUESCSI_TOOLBOX_SEND_FILE_END	=	$d5
 BLUESCSI_TOOLBOX_TOGGLE_DEBUG	=	$d6
+TOOLBOX_SUBCMD_DEBUG_SET_STATUS	=	$00
+TOOLBOX_SUBCMD_DEBUG_GET_STATUS	=	$01
+TOOLBOX_SUBCMD_DEBUG_ON	=	$00
+TOOLBOX_SUBCMD_DEBUG_OFF	=	$01
 BLUESCSI_TOOLBOX_LIST_CDS	=	$d7
 BLUESCSI_TOOLBOX_SET_NEXT_CD	=	$d8
 BLUESCSI_TOOLBOX_METADATA	=	$d9
-TOOLBOX_SUBCMD_LIST_DEVICES	=	$00
 BLUESCSI_TOOLBOX_COUNT_CDS	=	$da
 
 * The RECEIVE DIAGNOSTIC RESULT sub-commands...
@@ -102,6 +111,9 @@ SCSI_NETWORK_WIFI_CMD_SCAN_RESULTS =	$03	; print results if done
 SCSI_NETWORK_WIFI_CMD_INFO	=	$04	; 
 SCSI_NETWORK_WIFI_CMD_JOIN	=	$05	; join network
 
+* The METADATA sub-commands...
+
+TOOLBOX_SUBCMD_LIST_DEVICES	=	$00
 TOOLBOX_SUBCMD_GET_CAPABILITIES	=	$01
 TOOLBOX_SUBCMD_SET_WORKING_DIR	=	$02
 TOOLBOX_SUBCMD_GET_WORKING_DIR	=	$03
@@ -190,15 +202,15 @@ TOOLBOX_API_VERSION	=	0
 
 * DEBUG
 
-*	lda	#doWIFI
-*	stal	$300
-*	lda	#^doWIFI
-*	stal	$302
+	lda	#doTOOLBOX
+	stal	$300
+	lda	#^doTOOLBOX
+	stal	$302
 
-*	lda	#theSSID
-*	stal	$304
-*	lda	#^theSSID
-*	stal	$306
+	lda	#commandBUFF
+	stal	$308
+	lda	#^commandBUFF
+	stal	$30a
 
 *	lda	#finalCALL
 *	stal	$310
@@ -214,32 +226,34 @@ TOOLBOX_API_VERSION	=	0
 * MAIN MENU
 *----------------------------
 
-mainMENU          =         *
+mainMENU	PushLong  #strMAINMENU
+	_WriteCString
 
-                  PushLong  #strMAINMENU
-                  _WriteCString
+	jsr	waitFORKEY
+	cmp	#"R"
+	beq	doRESTART
+	cmp	#"r"
+	beq	doRESTART
 
-                  jsr       waitFORKEY
-                  cmp       #"Q"
-                  beq       doQUIT
-                  cmp       #"q"
-                  beq       doQUIT
-                  cmp       #"1"
-                  bne       mainMENU
+	cmp	#"Q"
+	beq	doQUIT
+	cmp	#"q"
+	beq	doQUIT
 
-                  jmp       searchMENU
+	cmp	#"1"
+	bne	mainMENU
 
-*--- Data
-
-strMAINMENU	asc	0d'BlueSCSI'0d
-	asc	'(c) 2026, Brutal Deluxe Software'0d
-	asc	' 1. Search for devices'0d
-	asc	' Q. Quit'0d00
+	jmp	searchMENU
 
 *----------------------------
-* QUIT PROGRAM
+* RESTART/QUIT PROGRAM
 *----------------------------
 
+doRESTART	lda	#^strlMYAPP
+	stal	proQUIT+4
+	lda	#strlMYAPP
+	stal	proQUIT+2
+	
 doQUIT	_IMShutDown
 	_TextShutDown
 	_MTShutDown
@@ -258,23 +272,30 @@ doQUIT	_IMShutDown
 
 	brk	$bd
 
+*--- Data
+
+strMAINMENU	asc	0d'BlueSCSI'0d
+	asc	'(c) 2026, Brutal Deluxe Software'0d
+	asc	' 1. Search for devices'0d
+	asc	' Q. Quit'0d
+	asc	' R. Restart app'0d00
+
 *----------------------------
 * SEARCH MENU
 *----------------------------
 
-searchMENU	jsr	initFG	; init flags
-
-	PushLong	#strSEARCHMENU
+searchMENU	PushLong	#strSEARCHMENU
 	_WriteCString
 
 	jsr	pollSCSI	; show SCSI devices
 
 ]lp	jsr	waitFORKEY	; is it 0-9
-	cmp	#"0"
-	bcc	]lp
+	cmp	#"R"
 	bne	searchMENU2
 	jmp	mainMENU	; or even 0 to exit
-searchMENU2	cmp	#"9"+1
+searchMENU2	cmp	#"0"
+	bcc	]lp
+	cmp	#"9"+1
 	bcs	]lp
 
 	sec		; we have our device ID
@@ -331,7 +352,7 @@ found	lda	nbDEVICES
 
 	inc	nbDEVICES
 	lda	nbDEVICES
-	cmp	#maxDEVICES
+	cmp	#MAX_DEVICES
 	bcc	loop	; loop again
 	rts
 
@@ -378,7 +399,7 @@ theDEVICE	ds	2	; the device to play with
 tblDEVICES	ds	16*2	; we authorize 16 devices
 
 strSEARCHMENU	asc	0d'Searching for SCSI devices...'0d
-	asc	' 0. Go back to previous menu'0d00
+	asc	' R. Return to previous menu'0d00
 
 *----------------------------
 * DEVICE MENU
@@ -400,11 +421,12 @@ deviceMENU	lda	theDEVICE            ; get our ID
 *---
 
 ]lp	jsr	waitFORKEY	; is it 0-9
-	cmp	#"0"
-	bcc	]lp
+	cmp	#"R"
 	bne	deviceMENU2
 	jmp	searchMENU	; or even 0 to exit
-deviceMENU2	cmp	#"9"+1
+deviceMENU2	cmp	#"0"
+	bcc	]lp
+	cmp	#"4"+1
 	bcs	]lp
 
 	sec		; call the routines
@@ -419,18 +441,22 @@ deviceMENU3	jsr	$bdbd
 ptrCOMMANDS	da	doINQUIRY
 	da	doSENSE
 	da	doWIFI
-*	da	doFAKE
-	da	doCAPACITY
-	da	doAUDIOPARMS
-	da	doREADTOC
-	da	doSUBCHANNEL
-	da	doPLAYSTOP
-	da	doPAUSERESUME
-	da	doINSERTEJECT
+	da	doTOOLBOX
 
-*----------------
-* SCSI COMMANDS
-*----------------
+*--- Data
+
+strDEVICEMENU     asc	0d'Using SCSI device $'
+strDEVMENU        asc	'0000'0d
+                  asc	' R. Return to previous menu'0d
+                  asc	' 1. Inquiry device'0d
+                  asc	' 2. Sense page $31'0d
+                  asc	' 3. Show Wi-Fi access points'0d
+	  asc	' 4. Toolbox commands'0d
+	  dfb	00	  
+
+*-----------------------------------------------
+* INQUIRY
+*-----------------------------------------------
 
 doINQUIRY	jsr	initCOMMANDDATA
 
@@ -754,7 +780,9 @@ refBLUESCSI	asc	'BlueSCSI'00
 
 fgBLUESCSI	ds	2
 
-*----------------
+*-----------------------------------------------
+* SENSE PAGE $31
+*-----------------------------------------------
 
 doSENSE	jsr	initCOMMANDDATA
 
@@ -845,9 +873,19 @@ refVENDORPAGE	hex	31
 
 fgBLUESCSI2	ds	2
 
-*----------------
+*-----------------------------------------------
+* WIFI
+*-----------------------------------------------
 
 LEN_WIFI	=	6	; len of the SCSI command (Apple's doc is wrong)
+MAX_SSID	=	10
+SIZE_STRSSID	=	64	; len of string
+SIZE_SSID	=	74	; 64 + 6 + 1 + 1 + 1 + 1
+SIZE_JOIN_REQ	=	130
+MAX_KEY	=	64	; a key limit
+MAX_RETRIES	=	64	; number of tries before we cancel
+
+*--- Code
 
 doWIFI	jsr	initCOMMANDDATA
 
@@ -861,7 +899,8 @@ doWIFI	jsr	initCOMMANDDATA
 *--- Execute the scan
 
 	stz	commandBUFF
-
+	stz	nbTRIES
+	
 	PushLong	#strSCANWIFI
 	_WriteCString
 
@@ -875,6 +914,11 @@ doWIFI	jsr	initCOMMANDDATA
 	PushWord	#chrPOINT
 	_WriteChar
 	
+	inc	nbTRIES
+	lda	nbTRIES
+	cmp	#MAX_RETRIES
+	bcs	doWIFI_EXITERR
+
 	lda	commandBUFF	; non-zero is scan has started
 	and	#$ff
 	beq	]lp
@@ -885,6 +929,7 @@ doWIFI	jsr	initCOMMANDDATA
 *--- Check if it has ended and say it so...
 
 	stz	commandBUFF
+	stz	nbTRIES
 	
 	PushLong	#strRESULT2
 	_WriteCString
@@ -895,7 +940,12 @@ doWIFI	jsr	initCOMMANDDATA
 
 	PushWord	#chrPOINT
 	_WriteChar
-	
+
+	inc	nbTRIES
+	lda	nbTRIES
+	cmp	#MAX_RETRIES
+	bcs	doWIFI_EXITERR
+
 	lda	commandBUFF	; non-zero if scan has finished
 	and	#$ff
 	beq	]lp
@@ -916,18 +966,14 @@ doWIFI	jsr	initCOMMANDDATA
 
 	lda	commandBUFF
 	bne	wehavedata
-	
-	PushWord	#strNOWIFI
+
+*--- We have found nothing, exit gracefully
+
+doWIFI_EXITERR	PushLong	#strNOWIFI
 	_WriteCString
 	jmp	waitKEY
 
 *--- We have Wi-Fi access points, show the names
-
-MAX_SSID	=	10
-SIZE_STRSSID	=	64	; len of string
-SIZE_SSID	=	74	; 64 + 6 + 1 + 1 + 1 + 1
-SIZE_JOIN_REQ	=	130
-MAX_KEY	=	64	; a key limit
 
 * Clear the join request structure
 
@@ -986,11 +1032,12 @@ lastaccesspoint	PushWord	#chrRETURN	; a last return
 *--- Let the user select one access point
 
 ]lp	jsr	waitFORKEY	; is it 0-9
-	cmp	#"0"
-	bcc	]lp
+	cmp	#"R"
 	bne	apMENU2
 	jmp	deviceMENU	; or even 0 to exit
-apMENU2	sec		; we have a value
+apMENU2	cmp	#"0"
+	bcc	]lp
+	sec		; we have a value
 	sbc	#"0"
 	cmp	idNETWORK	; number of entries
 	bcc	apMENU3	; found it
@@ -1101,7 +1148,7 @@ apMENU4	sta	offsetNETWORK	; we point to the SSID information
 	_WriteCString
 
 ]lp	jsr	waitFORKEY	; is it 0-1
-	cmp	#"0"	; 0 to return
+	cmp	#"R"	; R to return
 	bne	apMENU10
 	jmp	deviceMENU
 apMENU10	cmp	#"1"	; 1 to connect
@@ -1167,36 +1214,6 @@ apMENUEND	PushLong	#strPRESSAKEY
 	_WriteCString
 	jmp	waitKEY
 
-************************************************
-* FAKE ME
-************************************************
-
-doFAKE	lda	#SIZE_JOIN_REQ	; set the size
-	xba		; could have been put
-	sta	scsiWIFIJOIN+3	; in the command directly
-	
-	ldx	#LEN_WIFI-2	; copy SCSI string
-]lp	lda	scsiWIFIJOIN,x
-	sta	commandDATA,x
-	dex
-	dex
-	bpl	]lp
-
-	ldx	#SIZE_JOIN_REQ-2
-]lp	lda	fakeSSID,x
-	sta	commandBUFF,x
-	dex
-	dex
-	bpl	]lp
-
-	lda	#dcRECEIVEDIAG	; RECEIVE DIAGNOSTIC RESULTS
-	jsr	controlCALL	; now a control command!!
-
-	PushLong	#strPRESSAKEY
-	_WriteCString
-	jmp	waitKEY
-
-
 *--- Execute Wi-Fi command
 
 execWIFI	xba		; length
@@ -1257,10 +1274,10 @@ strRESULT3	asc	0d' SCSI_NETWORK_WIFI_CMD_SCAN_RESULTS...'00
 strIDNETWORK	asc	0d' 1. '00
 
 strSELECTAP	asc	0d0d'Select an access point'
-	asc	0d' 0. Go back to previous menu'00
+	asc	0d' R. Return to previous menu'00
 
 strDOWHATNOW	asc	0d0d'Select an action'
-	asc	0d' 0. Go back to previous menu'
+	asc	0d' R. Return to previous menu'
 	asc	0d' 1. Connect to the access point'0d00
 
 strTHEKEY	asc	0d'Enter the key to connect: '00
@@ -1270,6 +1287,7 @@ strPRESSAKEY	asc	0d'Press a key.'00
 
 idNETWORK	ds	2
 offsetNETWORK	ds	2
+nbTRIES	ds	2	; number of tries before we cancel
 
 *--- The wifi_join_request
 
@@ -1278,1216 +1296,764 @@ theKEY	ds	64
 theCHANNEL	ds	1
 thePADDING	ds	1
 
-fakeSSID	asc	'AppleIIgs '	; SSID
-	ds	54
-	asc	'AppleIIgs '	; KEY
-	ds	54
-	dfb	1	; CHANNEL
-	dfb	0	; PADDING
-
-*----------------
-
-doCAPACITY        =         *
-
-                  jsr       initCOMMANDDATA
-
-                  ldx       #10-2                ; put the pause data
-]lp               lda       scsiCAPACITY,x
-                  sta       commandDATA,x
-                  dex
-                  dex
-                  bpl       ]lp
-
-                  lda       #dcREADCAPACITY
-                  jsr       statusCALL
-                  bcc       doCAPACITY1
-                  rts
-
-doCAPACITY1
-
-*--- Display number of blocks
-
-                  PushLong  #strNBBLOCKS
-                  _WriteCString
-
-                  lda       commandBUFF
-                  xba
-                  jsr       showWORD
-
-                  lda       commandBUFF+2
-                  xba
-                  jsr       showWORD
-
-*--- Display block length
-
-                  PushLong  #strBLOCKSIZE
-                  _WriteCString
-
-                  lda       commandBUFF+4
-                  xba
-                  jsr       showWORD
-
-                  lda       commandBUFF+6
-                  xba
-                  jsr       showWORD
-
-*--- We're done
-
-                  jmp       waitKEY
-
-*--- Data
-
-scsiCAPACITY      hex       25,00,00,00,00,00,00,00,00,00
-
-strNBBLOCKS       asc       0d' Number of blocks: $'00
-strBLOCKSIZE      asc       0d' Size of a block: $'00
-
-*----------------
-
-doAUDIOPARMS      =         *
-
-                  jsr       initCOMMANDDATA
-
-*--- Execute command
-
-                  ldx       #6-2                 ; put the stop data
-]lp               lda       scsiAP,x
-                  sta       commandDATA,x
-                  dex
-                  dex
-                  bpl       ]lp
-
-                  lda       #dcMODESENSE6        ; MODE SENSE(10)
-                  jsr       statusCALL
-                  bcc       doAP1
-                  rts
-
-doAP1
-
-*--- Header
-
-                  PushLong  #strAPMT             ; Medium type
-                  _WriteCString
-
-                  lda       commandBUFF+1
-                  jsr       showBYTE
-
-                  PushLong  #strAPDPOFUA
-                  _WriteCString
-
-                  lda       commandBUFF+2
-                  and       #%00010000
-                  asl
-                  asl
-                  asl
-                  xba
-                  ldx       #1
-                  jsr       showBITS
-
-                  PushLong  #strAPEBC
-                  _WriteCString
-
-                  lda       commandBUFF+2
-                  and       #%00000001
-                  asl
-                  asl
-                  asl
-                  asl
-                  asl
-                  asl
-                  asl
-                  xba
-                  ldx       #1
-                  jsr       showBITS
-
-*--- Parameter block descriptor
-
-*- Density code
-
-                  PushLong  #strAPDC
-                  _WriteCString
-
-                  lda       commandBUFF+4
-                  jsr       showBYTE
-
-*- Number of blocks
-
-                  PushLong  #strNBBLOCKS
-                  _WriteCString
-
-                  lda       commandBUFF+5
-                  xba
-                  jsr       showWORD
-
-                  lda       commandBUFF+7
-                  jsr       showBYTE
-
-*- Block length
-
-                  PushLong  #strBLOCKSIZE
-                  _WriteCString
-
-                  lda       commandBUFF+9
-                  xba
-                  jsr       showWORD
-
-                  lda       commandBUFF+11
-                  jsr       showBYTE
-
-*--- We begin at +12 (this could have been better handled)
-
-* Byte 0
-
-                  PushLong  #strAPPS
-                  _WriteCString
-
-                  lda       commandBUFF+12
-                  and       #%10000000
-                  xba
-                  ldx       #1
-                  jsr       showBITS
-
-                  PushLong  #strAPPC
-                  _WriteCString
-
-                  lda       commandBUFF+12
-                  and       #%00111111
-                  asl
-                  asl
-                  xba
-                  ldx       #6
-                  jsr       showBITS
-
-* Byte 2
-
-                  PushLong  #strAPIMMED
-                  _WriteCString
-
-                  lda       commandBUFF+12+1
-                  and       #%00000100
-                  asl
-                  asl
-                  asl
-                  asl
-                  asl
-                  xba
-                  ldx       #1
-                  jsr       showBITS
-
-                  PushLong  #strAPSOTC
-                  _WriteCString
-
-                  lda       commandBUFF+12+1
-                  and       #%00000010
-                  asl
-                  asl
-                  asl
-                  asl
-                  asl
-                  asl
-                  xba
-                  ldx       #1
-                  jsr       showBITS
-
-* Byte 5
-
-                  PushLong  #strAPAPR
-                  _WriteCString
-
-                  lda       commandBUFF+12+5
-                  and       #%10000000
-                  xba
-                  ldx       #1
-                  jsr       showBITS
-
-                  PushLong  #strAPLBA
-                  _WriteCString
-
-                  lda       commandBUFF+12+5
-                  and       #%00001111
-                  jsr       showBYTE
-
-* Byte 6
-
-                  PushLong  #strAPLBPS
-                  _WriteCString
-
-                  lda       commandBUFF+12+6
-                  xba
-                  jsr       showWORD
-
-* Bytes 8/9
-
-                  PushLong  #strAP0C
-                  _WriteCString
-
-                  lda       commandBUFF+12+8
-                  and       #%00001111
-                  jsr       showBYTE
-
-                  PushLong  #strAP0V
-                  _WriteCString
-
-                  lda       commandBUFF+12+9
-                  and       #%11111111
-                  jsr       showBYTE
-
-* Bytes 10/11
-
-                  PushLong  #strAP1C
-                  _WriteCString
-
-                  lda       commandBUFF+12+10
-                  and       #%00001111
-                  jsr       showBYTE
-
-                  PushLong  #strAP1V
-                  _WriteCString
-
-                  lda       commandBUFF+12+11
-                  and       #%11111111
-                  jsr       showBYTE
-
-* Byte 12/13
-
-                  PushLong  #strAP2C
-                  _WriteCString
-
-                  lda       commandBUFF+12+12
-                  and       #%00001111
-                  jsr       showBYTE
-
-                  PushLong  #strAP2V
-                  _WriteCString
-
-                  lda       commandBUFF+12+13
-                  and       #%11111111
-                  jsr       showBYTE
-
-* Byte 14/15
-
-                  PushLong  #strAP3C
-                  _WriteCString
-
-                  lda       commandBUFF+12+14
-                  and       #%00001111
-                  jsr       showBYTE
-
-                  PushLong  #strAP3V
-                  _WriteCString
-
-                  lda       commandBUFF+12+15
-                  and       #%11111111
-                  jsr       showBYTE
-
-*--- We're done
-
-                  jmp       waitKEY
-
-*--- Data
-* 4e is PC= changeable values, 0e=audio control parameters page
-
-scsiAP            hex       1a,00,4e,00,00,00
-
-strAPMT           asc       0d' Medium type: $'00
-strAPDC           asc       0d' Density code: $'00
-strAPDPOFUA       asc       0d' DPOFUA: '00
-strAPEBC          asc       ' - EBC: '00
-ascAPDC           asc       0d' CD-ROM density code: $'00
-strAPPS           asc       0d' Parameters savable: '00
-strAPPC           asc       ' - Page code: '00
-strAPIMMED        asc       0d' Immed: '00
-strAPSOTC         asc       ' - SOTC: '00
-strAPAPR          asc       0d' APRVal '00
-strAPLBA          asc       ' - Format of LBA/Sec.: '00
-strAPLBPS         asc       0d' Logical blocks per second of audio playback: $'00
-strAP0C           asc       0d' Output port 0 / Channel selection: $'00
-strAP0V           asc       ' - Volume: $'00
-strAP1C           asc       0d' Output port 1 / Channel selection: $'00
-strAP1V           asc       ' - Volume: $'00
-strAP2C           asc       0d' Output port 2 / Channel selection: $'00
-strAP2V           asc       ' - Volume: $'00
-strAP3C           asc       0d' Output port 3 / Channel selection: $'00
-strAP3V           asc       ' - Volume: $'00
-
-*----------------
-
-doREADTOC         =         *
-
-                  jsr       initCOMMANDDATA
-
-*--- Select mode
-
-                  lda       #"1"                 ; max key
-                  ldx       #^strMSFMODE
-                  ldy       #strMSFMODE
-                  jsr       keyINRANGE
-                  sta       fgMSF                ; in return
-
-                  asl                            ; 0 means block
-                  sep       #$20                 ; 1 means MSF
-                  sta       scsiTOC+1
-                  rep       #$20
-
-*--- Execute command
-
-                  ldx       #10-2                ; put the stop data
-]lp               lda       scsiTOC,x
-                  sta       commandDATA,x
-                  dex
-                  dex
-                  bpl       ]lp
-
-                  lda       #dcREADTOC           ; READ TOC
-                  jsr       statusCALL
-                  bcc       doREADTOC1
-                  rts
-
-doREADTOC1
-
-*--- The TOC is read now
-
-                  sep       #$20                 ; get track index
-                  lda       commandBUFF+2
-                  sta       trackFIRST
-                  lda       commandBUFF+3
-                  sta       trackLAST
-                  sta       nbSONGS
-                  rep       #$20
-
-*--- Check track number
-
-                  lda       nbSONGS
-                  cmp       #64
-                  bcc       doREADTOC2
-                  rts
-
-doREADTOC2
-
-*--- Display the header
-
-                  PushLong  #strFIRSTT
-                  _WriteCString
-
-                  lda       trackFIRST
-                  jsr       showDECIMAL
-
-                  PushLong  #strLASTT
-                  _WriteCString
-
-                  lda       trackLAST
-                  jsr       showDECIMAL
-
-                  PushWord  #$0d
-                  _WriteChar
-
-                  jsr       printLINE            ; print the entry list
-                  jsr       waitKEY
-
-*--- The end
-
-                  lda       #1
-                  sta       fgTOCREAD            ; say the TOC was read
-                  rts
-
-*--- Print the song list
-
-printLINE         lda       fgMSF                ; 0 for block
-                  bne       printLINE1           ; 1 for MSF
-
-                  PushLong  #strSEPL
-                  _WriteCString
-                  PushWord  #$0d
-                  _WriteChar
-                  PushLong  #strHBLOCK
-                  _WriteCString
-                  PushLong  #strSEPL
-                  bra       printLINE2
-
-printLINE1        PushLong  #strSEPL1
-                  _WriteCString
-                  PushWord  #$0d
-                  _WriteChar
-                  PushLong  #strHMSF
-                  _WriteCString
-                  PushLong  #strSEPL1
-
-printLINE2        _WriteCString
-
-                  PushWord  #$0d
-                  _WriteChar
-
-*--- Now, print each entry
-
-                  lda       #4                   ; index is 4
-                  sta       indexTOC
-
-printLINE5        PushLong  #strSEPC
-                  _WriteCString
-
-                  ldy       indexTOC
-                  lda       commandBUFF+2,y
-                  and       #$ff
-                  jsr       showDECIMAL
-
-                  PushLong  #strSEPC
-                  _WriteCString
-
-                  ldy       indexTOC             ; ADR
-                  lda       commandBUFF+1,y
-                  and       #%11110000
-                  xba
-                  ldx       #4
-                  jsr       showBITS
-
-                  PushLong  #strSEPC
-                  _WriteCString
-
-                  ldy       indexTOC             ; CONTROL
-                  lda       commandBUFF+1,y
-                  and       #%00001111
-                  asl
-                  asl
-                  asl
-                  asl
-                  xba
-                  ldx       #4
-                  jsr       showBITS
-
-                  PushLong  #strSEPC
-                  _WriteCString
-
-*--- Block or MSF
-
-                  lda       fgMSF                ; 0 for block
-                  bne       printLINE6           ; 1 for MSF
-
-                  ldy       indexTOC
-                  lda       commandBUFF+4,y
-                  xba
-                  jsr       showWORD
-
-                  ldy       indexTOC
-                  lda       commandBUFF+6,y
-                  xba
-                  jsr       showWORD
-                  brl       printLINE8
-
-*--- Show minute:second:frame
-
-printLINE6        ldy       indexTOC             ; minute
-                  lda       commandBUFF+5,y
-                  and       #$ff
-                  sta       minFROM
-                  jsr       showDECIMAL
-                  jsr       printSEP
-
-                  ldy       indexTOC             ; second
-                  lda       commandBUFF+6,y
-                  and       #$ff
-                  sta       secFROM
-                  jsr       showDECIMAL
-                  jsr       printSEP
-
-                  ldy       indexTOC
-                  lda       commandBUFF+7,y
-                  and       #$ff
-                  jsr       showDECIMAL
-
-*--- Now, show length
-
-                  PushLong  #strSEPC
-                  _WriteCString
-
-                  ldy       indexTOC             ; second
-                  lda       commandBUFF+13,y
-                  and       #$ff
-                  sta       minTO
-
-                  lda       commandBUFF+14,y
-                  and       #$ff
-                  sta       secTO
-
-*- Calc length
-
-                  lda       minTO                ; minutes
-                  sec
-                  sbc       minFROM
-                  sta       minTO
-
-                  lda       secTO
-                  sec
-                  sbc       secFROM
-                  sta       secTO
-                  bpl       printLINE7           ; secTO < secFROM
-
-                  clc                            ; if so,
-                  adc       #60                  ; correct
-                  sta       secTO
-                  dec       minTO
-
-*- Subtract the 2 sec gap of the beginning
-
-printLINE7        lda       secTO
-                  sec
-                  sbc       #2
-                  sta       secTO
-                  bpl       printLINE7B          ; secTO < secFROM
-
-                  clc                            ; if so,
-                  adc       #60                  ; correct
-                  sta       secTO                ; again
-                  dec       minTO
-
-*- Show results
-
-printLINE7B       lda       minTO
-                  jsr       showDECIMAL
-                  jsr       printSEP
-                  lda       secTO
-                  jsr       showDECIMAL
-
-*--- End of line
-
-printLINE8        PushLong  #strSEPC
-                  _WriteCString
-
-                  PushWord  #$0d
-                  _WriteChar
-
-                  lda       indexTOC             ; next index
-                  clc
-                  adc       #8
-                  sta       indexTOC
-
-                  dec       nbSONGS              ; nb songs--
-                  bmi       printLINE9           ; another check
-                  beq       printLINE9
-                  jmp       printLINE5
-
-printLINE9        lda       fgMSF
-                  bne       printLINEA
-
-                  PushLong  #strSEPL
-                  _WriteCString
-                  rts
-
-printLINEA        PushLong  #strSEPL1
-                  _WriteCString
-                  rts
+*-----------------------------------------------
+* TOOLBOX
+*-----------------------------------------------
+
+LEN_CMD_TOOLBOX	=	10
+
+*--- Code
+
+doTOOLBOX	pha
+	pha
+	lda	#^commandBUFF
+	pha
+	_HexIt
+	PullLong	strTOOLBOXHIGH
+
+	pha
+	pha
+	lda	#commandBUFF
+	pha
+	_HexIt
+	PullLong	strTOOLBOXLOW
+
+	PushLong	#strTOOLBOX
+	_WriteCString
 
 *---
 
-printSEP          PushWord  #':'
-                  _WriteChar
-                  rts
+]lp	jsr	waitFORKEY	; is it 0-9
+	cmp	#"R"
+	bne	doTOOLBOX1
+	jmp	deviceMENU	; or even 0 to exit
+doTOOLBOX1	cmp	#"0"
+	bcc	]lp
+	cmp	#"9"
+	bcc	doTOOLBOX2
+	beq	doTOOLBOX2
+	cmp	#"A"+1
+	bcs	]lp
+	cmp	#"A"
+	beq	doTOOLBOX1OK
+	cmp	#"a"
+	bne	]lp
+
+doTOOLBOX1OK	lda	#"9"+1	; for call $DA
+doTOOLBOX2	sec		; call the routines
+	sbc	#"0"
+	asl
+	tax
+	lda	ptrTOOLBOX,x
+	sta	doTOOLBOX3+1
+doTOOLBOX3	jsr	$bdbd
+	jmp	doTOOLBOX
+
+ptrTOOLBOX	da	toolboxD0	; $D0
+	da	toolboxD1	; $D1
+	da	toolboxD2	; $D2
+	da	toolboxD3	; $D3
+	da	toolboxD4	; $D4
+	da	toolboxD5	; $D5
+	da	toolboxD6	; $D6
+	da	toolboxD7	; $D7
+	da	toolboxD8	; $D8
+	da	toolboxD9	; $D9
+	da	toolboxDA	; $DA
 
 *--- Data
 
-scsiTOC           hex       43,00,00,00,00,00,00,00,00,00
+strTOOLBOX	asc	0d'Toolbox commands ($'
+strTOOLBOXHIGH	asc	'0000'
+strTOOLBOXLOW	asc	'0000)'0d
+	asc	' R. Return to previous menu'0d
+	asc	' 0. $D0 - List files'0d
+	asc	' 1. $D1 - Get file'0d
+	asc	' 2. $D2 - Count files'0d
+	asc	' 3. $D3 - Send file prep'0d
+	asc	' 4. $D4 - Send file'0d
+	asc	' 5. $D5 - Send file end'0d
+	asc	' 6. $D6 - Toggle debug'0d
+	asc	' 7. $D7 - List CDs'0d
+	asc	' 8. $D8 - Set next CD'0d
+	asc	' 9. $D9 - Metadata'0d
+	asc	' A. $DA - Count CDs'0d
+	dfb	00	  
 
-strMSFMODE        asc       0d'Select mode (0=block, 1=MSF) '00
+*-------------------------------
+* A SIMPLE RTS
+*-------------------------------
 
-strFIRSTT         asc       ' First track: '00
-strLASTT          asc       '  Last track: '00
+toolboxRTS	rts
 
-strHBLOCK         asc       ' | Tr | ADR  | Ctrl | Abs Addr |'0d00
-strHMSF           asc       ' | Tr | ADR  | Ctrl | Mi:Se:Fr | Duree |'0d00
-strSEPL           asc       ' +=============================+'00
-strSEPL1          asc       ' +=====================================+'00
-strSEPC           asc       ' | '00
+*-------------------------------
+* $D0 - BLUESCSI_TOOLBOX_LIST_FILES
+*-------------------------------
 
-minFROM           ds        2
-secFROM           ds        2
-minTO             ds        2
-secTO             ds        2
+toolboxD0	jsr	initCOMMANDDATA
 
-*----------------
+	PushLong	#strTOOLBOXD0
+	_WriteCString
+	
+	ldx	#LEN_CMD_TOOLBOX-2
+]lp	lda	scsiTOOLBOXD0,x
+	sta	commandDATA,x
+	dex
+	dex
+	bpl	]lp
 
-doSUBCHANNEL      =         *
-
-                  jsr       initCOMMANDDATA
-
-*--- Select mode Block or MSF
-
-                  lda       #"1"                 ; max key
-                  ldx       #^strMSFMODE
-                  ldy       #strMSFMODE
-                  jsr       keyINRANGE
-
-                  sta       fgMSF                ; in return
-                  asl                            ; 0 means block
-                  sep       #$20                 ; 1 means MSF
-                  sta       scsiSUB+1
-                  rep       #$20
-
-*--- Select SubQ
-
-                  lda       #"1"                 ; max key
-                  ldx       #^strSUBQ
-                  ldy       #strSUBQ
-                  jsr       keyINRANGE
-
-                  asl
-                  asl
-                  asl
-                  asl
-                  asl
-                  asl
-                  sep       #$20
-                  sta       scsiSUB+2
-                  rep       #$20
-
-*--- Select mode
-
-                  lda       #"3"                 ; max key
-                  ldx       #^strSUBMODE
-                  ldy       #strSUBMODE
-                  jsr       keyINRANGE
-
-                  sep       #$20                 ; 0-3
-                  sta       scsiSUB+3
-                  rep       #$20
-
-*--- Sometimes, the track is needed
-
-                  sep       #$20
-                  lda       #1
-                  sta       scsiSUB+6
-                  rep       #$20
-
-*--- Check current status and replace the track
-
-                  jsr       getCURRENTSTATUS
-                  bcs       doREADSUB1
-
-                  sep       #$20                 ; set the track
-                  lda       statusBUFF+6
-                  sta       scsiSUB+6
-                  rep       #$20
-
-doREADSUB1
-
-*--- Execute command
-
-                  ldx       #10-2                ; put the sub data
-]lp               lda       scsiSUB,x
-                  sta       commandDATA,x
-                  dex
-                  dex
-                  bpl       ]lp
-
-                  lda       #dcSUBCHANNEL        ; READ SUB CHANNEL
-                  jsr       statusCALL
-                  bcc       doREADSUB2
-                  rts
-
-doREADSUB2
-
-*--- The SUB CHANNEL is read now
-
-                  jsr       doSUBHEADER
-                  jsr       subBYTE04            ; for all
-
-*- Allow 0-3
-
-                  lda       commandBUFF+4
-                  and       #$ff
-                  cmp       #4
-                  bcs       doREADSUB9
-                  asl
-                  tax
-                  lda       ptrSUB,x
-                  sta       doREADSUB8+1
-doREADSUB8        jsr       $bdbd
-doREADSUB9        jmp       waitKEY
-
-ptrSUB            da        doSUB00
-                  da        doSUB01
-                  da        doSUB02
-                  da        doSUB03
-
-*--- Audio status always returned
-
-doSUBHEADER
-                  PushLong  #strAUDIOSTATUS
-                  _WriteCString
-
-                  lda       commandBUFF+1
-                  and       #$ff
-                  pha
-                  jsr       showBYTE
-                  pla
-
-                  ldx       #-2
-]lp               inx
-                  inx
-                  cmp       tblAUDIOSTATUS,x
-                  bmi       noAUDIOSTATUS
-                  bne       ]lp
-
-                  lda       #^strAUDIOS00
-                  pha
-                  lda       ptrAUDIOSTATUS,x
-                  pha
-                  _WriteCString
-
-noAUDIOSTATUS
-                  rts
+	lda	#dcBLUESCSI_TOOLBOX_LIST_FILES
+	jsr	statusCALL	; a status command
+	rts
 
 *--- Data
 
-tblAUDIOSTATUS
-                  dw        $0000
-                  dw        $0011
-                  dw        $0012
-                  dw        $0013
-                  dw        $0014
-                  dw        $0015
-                  dw        $ffff                ; end of table
+scsiTOOLBOXD0	dfb	BLUESCSI_TOOLBOX_LIST_FILES
+	hex	00,00,00,00,00,00,00,00,00
 
-ptrAUDIOSTATUS
-                  da        strAUDIOS00
-                  da        strAUDIOS11
-                  da        strAUDIOS12
-                  da        strAUDIOS13
-                  da        strAUDIOS14
-                  da        strAUDIOS15
+strTOOLBOXD0	asc	0d'LIST_FILES ($D0)'0d00
 
-strAUDIOSTATUS    asc       0d' Audio status $'00
-strAUDIOS00       asc       ' (Audio status byte not supported or not valid)'00
-strAUDIOS11       asc       ' (Audio play operation in progress)'00
-strAUDIOS12       asc       ' (Audio play operation paused)'00
-strAUDIOS13       asc       ' (Audio play operation successfully completed)'00
-strAUDIOS14       asc       ' (Audio play operation stopped due to error)'00
-strAUDIOS15       asc       ' (No current audio status to return)'00
+*-------------------------------
+* $D1 - BLUESCSI_TOOLBOX_GET_FILE
+*-------------------------------
 
-*--- Sub-Q channel data format for mode 00
+toolboxD1	jsr	initCOMMANDDATA
 
-doSUB00
-                  jsr       doSUB01              ; re-use
+	PushLong	#strTOOLBOXD1
+	_WriteCString
+	
+	ldx	#LEN_CMD_TOOLBOX-2
+]lp	lda	scsiTOOLBOXD1,x
+	sta	commandDATA,x
+	dex
+	dex
+	bpl	]lp
 
-                  lda       #0                   ; UPC/Barcode
-                  ldx       #16                  ; at offset 16
-                  jsr       checkMCTC
-
-                  lda       #1                   ; T ISRC
-                  ldx       #32                  ; at offset 32
-                  jmp       checkMCTC
-
-*--- Sub-Q channel data format for mode 01
-
-doSUB01
-                  jsr       subBYTE05
-                  jsr       subBYTE06
-                  jsr       subBYTE07
-
-*- Show Absolute CD-ROM address
-
-                  PushLong  #strABSADR
-                  _WriteCString
-
-                  lda       scsiSUB+1
-                  and       #%00000010
-                  bne       doSUB01A
-
-                  PushWord  #'$'                 ; show in blocks
-                  _WriteChar
-
-                  lda       commandBUFF+8
-                  xba
-                  jsr       showWORD
-                  lda       commandBUFF+10
-                  xba
-                  jsr       showWORD
-                  bra       doSUB01B
-
-doSUB01A          lda       commandBUFF+9
-                  jsr       showDECIMAL
-                  jsr       printSEP
-                  lda       commandBUFF+10
-                  jsr       showDECIMAL
-                  jsr       printSEP
-                  lda       commandBUFF+11
-                  jsr       showDECIMAL
-
-*- Show Track relative CD-ROM address
-
-doSUB01B          PushLong  #strTRELADR
-                  _WriteCString
-
-                  lda       scsiSUB+1
-                  and       #%00000010
-                  bne       doSUB01C
-
-                  PushWord  #'$'                 ; show in blocks
-                  _WriteChar
-
-                  lda       commandBUFF+12
-                  xba
-                  jsr       showWORD
-                  lda       commandBUFF+14
-                  xba
-                  jmp       showWORD
-
-doSUB01C          lda       commandBUFF+13
-                  jsr       showDECIMAL
-                  jsr       printSEP
-                  lda       commandBUFF+14
-                  jsr       showDECIMAL
-                  jsr       printSEP
-                  lda       commandBUFF+15
-                  jmp       showDECIMAL
+	lda	#dcBLUESCSI_TOOLBOX_GET_FILE
+	jsr	statusCALL	; a status command
+	jmp	waitKEY
 
 *--- Data
 
-strABSADR         asc       0d' Absolute CD-ROM address: '00
-strTRELADR        asc       0d' Track relative CD-ROM address: '00
+scsiTOOLBOXD1	dfb	BLUESCSI_TOOLBOX_GET_FILE
+	hex	00,00,00,00,00,00,00,00,00
 
-*--- Sub-Q channel data format for mode 02
+strTOOLBOXD1	asc	0d'GET_FILE ($D1)'0d00
 
-doSUB02
-                  lda       #0                   ; UPC/Barcode
-                  ldx       #8                   ; at offset 8
-                  jmp       checkMCTC
+*-------------------------------
+* $D2 - BLUESCSI_TOOLBOX_COUNT_FILES
+*-------------------------------
 
-*--- Sub-Q channel data format for mode 03
+toolboxD2	jsr	initCOMMANDDATA
 
-doSUB03
-                  jsr       subBYTE05
-                  jsr       subBYTE06
-                  lda       #1                   ; T ISRC
-                  ldx       #8                   ; at offset 8
-                  jmp       checkMCTC
+	PushLong	#strTOOLBOXD2
+	_WriteCString
+	
+	ldx	#LEN_CMD_TOOLBOX-2
+]lp	lda	scsiTOOLBOXD2,x
+	sta	commandDATA,x
+	dex
+	dex
+	bpl	]lp
 
-*--- Show sub channel data format code
+	lda	#dcBLUESCSI_TOOLBOX_COUNT_FILES
+	jsr	statusCALL	; a status command
 
-subBYTE04         PushLong  #strSCDFC
-                  _WriteCString
-
-                  lda       commandBUFF+4
-                  jmp       showBYTE
-
-*--- Data
-
-strSCDFC          asc       0d' Sub channel data format code: $'00
-
-*--- Show ADR and CONTROL
-
-subBYTE05         PushLong  #strADR
-                  _WriteCString
-
-*- ADR
-
-                  lda       commandBUFF+5
-                  and       #%11110000
-                  xba
-                  ldx       #4
-                  jsr       showBITS
-
-*- Control
-
-                  PushLong  #strCONTROL
-                  _WriteCString
-
-                  lda       commandBUFF+5
-                  and       #%00001111
-                  asl
-                  asl
-                  asl
-                  asl
-                  xba
-                  ldx       #4
-                  jmp       showBITS
+	PushLong	#strCOUNTFILES
+	_WriteCString
+	
+	lda	commandBUFF
+	and	#$ff
+	jsr	showDECIMAL
+	jmp	waitKEY
 
 *--- Data
 
-strADR            asc       0d' ADR: '00
-strCONTROL        asc       ' - Control: '00
+scsiTOOLBOXD2	dfb	BLUESCSI_TOOLBOX_COUNT_FILES
+	hex	00,00,00,00,00,00,00,00,00
 
-*--- Show Track number
+strTOOLBOXD2	asc	0d'COUNT_FILES ($D2)'0d00
+strCOUNTFILES	asc	' Number of files: '00
 
-subBYTE06         PushLong  #strTNUMBER
-                  _WriteCString
+*-------------------------------
+* $D3 - BLUESCSI_TOOLBOX_SEND_FILE_PREP
+*-------------------------------
 
-                  lda       commandBUFF+6
-                  jmp       showBYTE
+toolboxD3	jsr	initCOMMANDDATA
 
-*--- Data
+	PushLong	#strTOOLBOXD3
+	_WriteCString
+	
+	ldx	#LEN_CMD_TOOLBOX-2
+]lp	lda	scsiTOOLBOXD3,x
+	sta	commandDATA,x
+	dex
+	dex
+	bpl	]lp
 
-strTNUMBER        asc       0d' Track number : $'00
-
-*--- Show index number
-
-subBYTE07         PushLong  #strINUMBER
-                  _WriteCString
-
-                  lda       commandBUFF+7
-                  jmp       showBYTE
-
-*--- Data
-
-strINUMBER        asc       0d' Index number: $'00
-
-*--- Check and display MCVal or TCVal
-
-*- Show MCVal or TCVal: data is valid if 1
-
-checkMCTC         pha                            ; A is MC=0 or TC=1
-                  phx                            ; X is index
-
-                  cmp       #1
-                  beq       checkMCTC1
-
-                  PushLong  #strMCVal
-                  bra       checkMCTC2
-checkMCTC1        PushLong  #strTCVal
-checkMCTC2        _WriteCString
-
-                  plx                            ; show bit MC/TCVal
-                  phx
-
-                  lda       commandBUFF,x
-                  xba
-                  ldx       #1
-                  jsr       showBITS
-
-                  plx
-                  pla
-                  phx
-
-*- Show string now
-
-                  cmp       #1
-                  beq       checkMCTC5
-
-                  PushLong  #strMCN
-                  bra       checkMCTC6
-checkMCTC5        PushLong  #strTISRC
-checkMCTC6        _WriteCString
-
-*- If the bit is 0, no valid data, but show anyway
-
-                  plx
-
-* lda commandBUFF,x
-* and #%10000000
-* beq checkMCTC9
-
-                  inx                            ; offset is in X, add 1
-                  txa
-                  ldx       #15                  ; length is 15
-                  jsr       showTEXT
-checkMCTC9        rts
+	lda	#dcBLUESCSI_TOOLBOX_SEND_FILE_PREP
+	jsr	controlCALL	; a control command
+	jmp	waitKEY
 
 *--- Data
 
-strMCVal          asc       0d' MCVal: '00
-strTCVal          asc       0d' TCVal: '00
-strMCN            asc       0d' Media catalogue number: '00
-strTISRC          asc       0d' Track ISRC: '00
+scsiTOOLBOXD3	dfb	BLUESCSI_TOOLBOX_SEND_FILE_PREP
+	hex	00,00,00,00,00,00,00,00,00
+
+strTOOLBOXD3	asc	0d'SEND_FILE_PREP ($D3)'0d00
+
+*-------------------------------
+* $D4 - BLUESCSI_TOOLBOX_SEND_FILE
+*-------------------------------
+
+toolboxD4	jsr	initCOMMANDDATA
+
+	PushLong	#strTOOLBOXD4
+	_WriteCString
+	
+	ldx	#LEN_CMD_TOOLBOX-2
+]lp	lda	scsiTOOLBOXD4,x
+	sta	commandDATA,x
+	dex
+	dex
+	bpl	]lp
+
+	lda	#dcBLUESCSI_TOOLBOX_SEND_FILE
+	jsr	controlCALL	; a control command
+	jmp	waitKEY
 
 *--- Data
 
-scsiSUB           hex       42,00,00,00,00,00,00,00,00,00
+scsiTOOLBOXD4	dfb	BLUESCSI_TOOLBOX_SEND_FILE
+	hex	00,00,00,00,00,00,00,00,00
 
-strSUBQ           asc       'Select SubQ (0=off, 1=on) '00
-strSUBMODE        asc       'Select Data mode'0d
-                  asc       ' 0- Sub-Q channel data'0d
-                  asc       ' 1- CD-ROM current position'0d
-                  asc       ' 2- Media catalogue number (UPC/bar code)'0d
-                  asc       ' 3- Track international standard recording code (ISRC)'0d
-                  asc       'Select an entry: '00
+strTOOLBOXD4	asc	0d'SEND_FILE ($D4)'0d00
 
-*----------------
+*-------------------------------
+* $D5 - BLUESCSI_TOOLBOX_SEND_FILE_END
+*-------------------------------
 
-doPLAYSTOP        =         *
+toolboxD5	jsr	initCOMMANDDATA
 
-                  jsr       initCOMMANDDATA
+	PushLong	#strTOOLBOXD5
+	_WriteCString
+	
+	ldx	#LEN_CMD_TOOLBOX-2
+]lp	lda	scsiTOOLBOXD5,x
+	sta	commandDATA,x
+	dex
+	dex
+	bpl	]lp
 
-                  lda       fgPLAY
-                  eor       #1
-                  sta       fgPLAY
-                  bne       doPLAY
+	lda	#dcBLUESCSI_TOOLBOX_SEND_FILE_END
+	jsr	controlCALL	; a control command
+	jmp	waitKEY
 
-                  ldx       #6-2                 ; put the stop data
-]lp               lda       scsiSTOP,x
-                  sta       commandDATA,x
-                  dex
-                  dex
-                  bpl       ]lp
+*--- Data
 
-                  lda       #dcSTARTSTOP
-                  jmp       controlCALL
+scsiTOOLBOXD5	dfb	BLUESCSI_TOOLBOX_SEND_FILE_END
+	hex	00,00,00,00,00,00,00,00,00
 
-*- Was TOC read?
+strTOOLBOXD5	asc	0d'SEND_FILE_END ($D6)'0d00
 
-doPLAY            lda       fgTOCREAD            ; was TOC already read for this disk?
-                  bne       doPLAY1              ; yes
+*-------------------------------
+* $D6 - BLUESCSI_TOOLBOX_TOGGLE_DEBUG
+*-------------------------------
 
-                  jsr       doREADTOC
-                  bcc       doPLAY1
+toolboxD6	jsr	initCOMMANDDATA
 
-                  lda       #1                   ; error, say first track
-                  sta       trackFIRST
-                  sta       trackLAST
+toolboxD6_loop	jsr	toolboxD6_3	; first, get debug status
 
-doPLAY1           sep       #$20                 ; copy first/last tracks
-                  lda       trackFIRST
-                  sta       scsiPLAY+4
-                  lda       trackLAST
-                  sta       scsiPLAY+7
-                  rep       #$20
+	PushLong	#strTOOLBOXD6
+	_WriteCString
+
+]lp	jsr	waitFORKEY	; is it 0-9
+	cmp	#"R"
+	bne	toolboxD62
+	jmp	doTOOLBOX	; or even 0 to exit
+toolboxD62	cmp	#"1"
+	bcc	]lp
+	cmp	#"2"+1
+	bcs	]lp
+
+	sec		; call the routines
+	sbc	#"1"
+	asl
+	tax
+	lda	subTOOLBOXD6,x
+	sta	toolboxD63+1
+toolboxD63	jsr	$bdbd
+	jmp	toolboxD6_loop	; always update status
+
+subTOOLBOXD6	da	toolboxD6_1	; Set debug on
+	da	toolboxD6_2	; Set debug off
+	da	toolboxD6_3	; Get debug status
+
+*---------------
+* SET DEBUG ON
+*---------------
+
+toolboxD6_1	sep	#$20
+	lda	#TOOLBOX_SUBCMD_DEBUG_SET_STATUS
+	sta	scsiTOOLBOXD6+1
+	lda	#TOOLBOX_SUBCMD_DEBUG_ON
+	sta	scsiTOOLBOXD6+2
+	rep	#$20
+	
+	jsr	execD6
+	rts
+
+*---------------
+* SET DEBUG OFF
+*---------------
+
+toolboxD6_2	sep	#$20
+	lda	#TOOLBOX_SUBCMD_DEBUG_SET_STATUS
+	sta	scsiTOOLBOXD6+1
+	lda	#TOOLBOX_SUBCMD_DEBUG_OFF
+	sta	scsiTOOLBOXD6+2
+	rep	#$20
+	
+	jsr	execD6
+	rts
+
+*---------------
+* GET DEBUG STATUS
+*---------------
+
+toolboxD6_3	sep	#$20
+	lda	#TOOLBOX_SUBCMD_DEBUG_GET_STATUS
+	sta	scsiTOOLBOXD6+1
+	stz	scsiTOOLBOXD6+2
+	rep	#$20
+	
+	jsr	execD6
+
+	lda	commandBUFF
+	pha		; from a byte to a string
+	pha
+	pha		; <= here, really
+	_HexIt
+
+	lda	#'  '	; empty string by default
+	sta	strDEBUGSTATUS
+
+	pla		; we don't use
+	pla
+	sta	strDEBUGSTATUS
+	rts
+
+*---------------
+* EXEC COMMAND
+*---------------
+
+execD6	ldx	#LEN_CMD_TOOLBOX-2
+]lp	lda	scsiTOOLBOXD6,x
+	sta	commandDATA,x
+	dex
+	dex
+	bpl	]lp
+
+	lda	#dcBLUESCSI_TOOLBOX_TOGGLE_DEBUG
+	jmp	statusCALL	; a status command
+
+*--- Data
+
+scsiTOOLBOXD6	dfb	BLUESCSI_TOOLBOX_TOGGLE_DEBUG
+	hex	00,00,00,00,00,00,00,00,00
+
+strTOOLBOXD6	asc	0d'TOGGLE_DEBUG ($D6)'0d
+	asc	' R. Return to previous menu'0d
+	asc	' 1. Set debug on'0d
+	asc	' 2. Set debug off'0d
+	asc	' 3. Debug status is : $'
+strDEBUGSTATUS	asc	'00'0d00
+	
+*-------------------------------
+* $D7 - BLUESCSI_TOOLBOX_LIST_CDS
+*-------------------------------
+
+toolboxD7	jsr	initCOMMANDDATA
+
+	PushLong	#strTOOLBOXD7
+	_WriteCString
+	
+	ldx	#LEN_CMD_TOOLBOX-2
+]lp	lda	scsiTOOLBOXD7,x
+	sta	commandDATA,x
+	dex
+	dex
+	bpl	]lp
+
+	lda	#dcBLUESCSI_TOOLBOX_LIST_CDS
+	jsr	statusCALL	; a status command
+	jmp	waitKEY
+
+*--- Data
+
+scsiTOOLBOXD7	dfb	BLUESCSI_TOOLBOX_LIST_CDS
+	hex	00,00,00,00,00,00,00,00,00
+
+strTOOLBOXD7	asc	0d'LIST_CDS ($D7)'0d00
+
+*-------------------------------
+* $D8 - BLUESCSI_TOOLBOX_SET_NEXT_CD
+*-------------------------------
+
+toolboxD8	jsr	initCOMMANDDATA
+
+	PushLong	#strTOOLBOXD8
+	_WriteCString
+	
+	ldx	#LEN_CMD_TOOLBOX-2
+]lp	lda	scsiTOOLBOXD8,x
+	sta	commandDATA,x
+	dex
+	dex
+	bpl	]lp
+
+	lda	#dcBLUESCSI_TOOLBOX_SET_NEXT_CD
+	jsr	statusCALL	; a status command
+	jmp	waitKEY
+
+*--- Data
+
+scsiTOOLBOXD8	dfb	BLUESCSI_TOOLBOX_SET_NEXT_CD
+	hex	00,00,00,00,00,00,00,00,00
+
+strTOOLBOXD8	asc	0d'SET_NEXT_CD ($D8)'0d00
+
+*-------------------------------
+* $D9 - BLUESCSI_TOOLBOX_METADATA
+*-------------------------------
+
+toolboxD9	jsr	initCOMMANDDATA
+
+	PushLong	#strTOOLBOXD9
+	_WriteCString
+
+]lp	jsr	waitFORKEY	; is it 0-9
+	cmp	#"R"
+	bne	toolboxD92
+	jmp	doTOOLBOX	; or even 0 to exit
+toolboxD92	cmp	#"0"
+	bcc	]lp
+	cmp	#"3"+1
+	bcs	]lp
+
+	sec		; call the routines
+	sbc	#"0"
+	asl
+	tax
+	lda	subTOOLBOXD9,x
+	sta	toolboxD93+1
+toolboxD93	jsr	$bdbd
+	jmp	toolboxD9
+
+subTOOLBOXD9	da	toolboxD9_0	; list devices
+	da	toolboxD9_1	; get capabilities
+	da	toolboxD9_2	; set working directory
+	da	toolboxD9_3	; get working directory
+
+*---------------
+* LIST_DEVICES
+*---------------
+
+toolboxD9_0	sep	#$20
+	lda	#TOOLBOX_SUBCMD_LIST_DEVICES
+	sta	scsiTOOLBOXD9+1
+	rep	#$20
+	
+	jsr	execD9_STATUS
+
+	PushLong	#strLISTDEVICES
+	_WriteCString
+
+*--- Show results
+
+	stz	theINDEX
+	
+]lp	PushLong	#strCFG
+	_WriteCString
+	
+	lda	theINDEX
+	jsr	showDECIMAL
+	
+	PushLong	#strCFG_SEP
+	_WriteCString
+	
+	ldx	theINDEX
+	lda	commandBUFF,x
+	and	#$ff
+	cmp	#$ff
+	beq	toolboxD9_0NO
+	asl
+	tax
+	pea	^strCFG00
+	lda	tblCFG,x
+	pha
+	_WriteCString
+
+toolboxD9_0L	inc	theINDEX
+	lda	theINDEX
+	cmp	#MAX_SCSI_ID
+	bcc	]lp
+	jmp	waitKEY
+
+toolboxD9_0NO	PushLong	#strNODEVICE
+	_WriteCString
+	jmp	toolboxD9_0L
+	
+*--- Data
+
+strLISTDEVICES	asc	0d'List devices:'00
+strCFG	asc	0d' ID '00
+strCFG_SEP	asc	' - '00
+
+tblCFG	da	strCFG00,strCFG01,strCFG02,strCFG03,
+	da	strCFG04,strCFG05,strCFG06,strCFG07
+
+strCFG00	asc	'Fixed disk'00
+strCFG01	asc	'Removable disk'00
+strCFG02	asc	'Optical disc'00
+strCFG03	asc	'Floppy disk'00
+strCFG04	asc	'Magneto-optical disk'00
+strCFG05	asc	'Sequential access media (tape)'00
+strCFG06	asc	'Network interface (DaynaPORT)'00
+strCFG07	asc	'ZIP100 disk'00
+strNODEVICE	asc	'No device'00
+
+*---------------
+* GET CAPABILITIES
+*---------------
+
+NB_BYTES	=	8
+
+toolboxD9_1	sep	#$20
+	lda	#TOOLBOX_SUBCMD_GET_CAPABILITIES
+	sta	scsiTOOLBOXD9+1
+	lda	#NB_BYTES
+	sta	scsiTOOLBOXD9+8
+	rep	#$20
+	
+	jsr	execD9_STATUS
+
+*--- Show results
+
+* Byte 0 - API Version
+
+	PushLong	#strAPIVERSION
+	_WriteCString
+
+	lda	commandBUFF
+	jsr	showBYTE
+
+* Byte 1 - Capability Flags
+
+	PushLong	#strCAPABILITY
+	_WriteCString
+	
+* Byte 1 Bit 0 - CAP_LARGE_TRANSFERS
+
+	PushLong	#strBIT0
+	_WriteCString
+
+	lda	commandBUFF+1
+	and	#%00000000_00000001
+	jsr	toolboxD9_BIT
+
+* Byte 1 Bit 1 - CAP_LARGE_SEND
+
+	PushLong	#strBIT1
+	_WriteCString
+	
+	lda	commandBUFF+1
+	and	#%00000000_00000010
+	jsr	toolboxD9_BIT
+
+* Byte 1 Bit 2 - CAP_SET_WORKING_DIR
+
+	PushLong	#strBIT2
+	_WriteCString
+
+	lda	commandBUFF+1
+	and	#%00000000_00000100
+	jsr	toolboxD9_BIT
+	jmp	waitKEY
+
+*--- Print Supported/Not supported
+
+toolboxD9_BIT	cmp	#0
+	bne	toolboxD9_BITOK
+
+	PushLong	#strNOTSUPPORTED
+	_WriteCString
+	rts
+
+toolboxD9_BITOK	PushLong	#strSUPPORTED
+	_WriteCString
+	rts
+
+*--- Data
+
+strAPIVERSION	asc	0d' API version: $'00
+strCAPABILITY	asc	0d' Capability flags:'00
+strBIT0	asc	0d'  CAP_LARGE_TRANSFERTS: '00
+strBIT1	asc	0d'  CAP_LARGE_SEND: '00
+strBIT2	asc	0d'  CAP_SET_WORKING_DIR: '00
+
+strSUPPORTED	asc	'Supported'00
+strNOTSUPPORTED	asc	'Not supported'00
+
+*---------------
+* SET WORKING DIRECTORY
+*---------------
+
+MAX_SET_WD	=	64
+
+toolboxD9_2	sep	#$20
+	lda	#TOOLBOX_SUBCMD_SET_WORKING_DIR
+	sta	scsiTOOLBOXD9+1
+	lda	#MAX_SET_WD
+	sta	scsiTOOLBOXD9+8
+	rep	#$20
+
+	PushLong	#strSETWD
+	_WriteCString
+
+*	jsr	execD9_CONTROL
+	jmp	waitKEY
 
 *---
 
-                  ldx       #10-2                ; put the play data
-]lp               lda       scsiPLAY,x
-                  sta       commandDATA,x
-                  dex
-                  dex
-                  bpl       ]lp
+strSETWD	asc	0d'TO BE IMPLEMENTED'00
 
-                  lda       #dcPATI              ; PLAY AUDIO TRACK INDEX
-                  jmp       controlCALL
+*---------------
+* GET WORKING DIRECTORY
+*---------------
 
-*--- Data
+MAX_GET_WD	=	128
 
-scsiPLAY          hex       48,00,00,00,01,00,00,02,00,00
+toolboxD9_3	sep	#$20
+	lda	#TOOLBOX_SUBCMD_GET_WORKING_DIR
+	sta	scsiTOOLBOXD9+1
+	lda	#MAX_GET_WD
+	sta	scsiTOOLBOXD9+8
+	rep	#$20
+	
+	jsr	execD9_STATUS
 
-*----------------
+	PushLong	#strGETWD
+	_WriteCString
 
-doPAUSERESUME     =         *
+	PushLong	#commandBUFF
+	_WriteCString
+	jmp	waitKEY
 
-                  jsr       initCOMMANDDATA
+*---
 
-                  lda       fgPAUSE
-                  eor       #1
-                  sta       fgPAUSE
-                  bne       doPAUSE
+strGETWD	asc	0d'Working directory:'
+	asc	0d' '00
 
-                  ldx       #10-2                ; put the resume data
-]lp               lda       scsiRESUME,x
-                  sta       commandDATA,x
-                  dex
-                  dex
-                  bpl       ]lp
+*---------------
+* EXEC COMMAND
+*---------------
 
-                  lda       #dcPAUSERESUME
-                  jmp       controlCALL
+execD9_STATUS	ldx	#LEN_CMD_TOOLBOX-2
+]lp	lda	scsiTOOLBOXD9,x
+	sta	commandDATA,x
+	dex
+	dex
+	bpl	]lp
 
-doPAUSE           ldx       #10-2                ; put the pause data
-]lp               lda       scsiPAUSE,x
-                  sta       commandDATA,x
-                  dex
-                  dex
-                  bpl       ]lp
+	lda	#dcBLUESCSI_TOOLBOX_METADATA
+	jmp	statusCALL	; a status command
 
-                  lda       #dcPAUSERESUME
-                  jmp       controlCALL
+*---
 
-*--- Data
+execD9_CONTROL	ldx	#LEN_CMD_TOOLBOX-2
+]lp	lda	scsiTOOLBOXD9,x
+	sta	commandDATA,x
+	dex
+	dex
+	bpl	]lp
 
-scsiPAUSE         hex       4b,00,00,00,00,00,00,00,00,00
-scsiRESUME        hex       4b,00,00,00,00,00,00,00,01,00
-
-*----------------
-* The standard way would be
-* to check if a media is online
-
-doINSERTEJECT     =         *
-
-                  jsr       initCOMMANDDATA
-
-                  lda       fgINSERT
-                  eor       #1
-                  sta       fgINSERT
-                  beq       doINSERT
-
-                  ldx       #6-2                 ; put the eject data
-]lp               lda       scsiEJECT,x
-                  sta       commandDATA,x
-                  dex
-                  dex
-                  bpl       ]lp
-
-                  lda       #dcSTARTSTOP
-                  jmp       controlCALL
-
-doINSERT          ldx       #6-2                 ; put the insert data
-]lp               lda       scsiINSERT,x
-                  sta       commandDATA,x
-                  dex
-                  dex
-                  bpl       ]lp
-
-                  lda       #dcSTARTSTOP
-                  jmp       controlCALL
+	lda	#dcBLUESCSI_TOOLBOX_METADATA
+	jmp	controlCALL	; a control command
 
 *--- Data
 
-scsiINSERT        hex       1b,00,00,00,03,00
-scsiEJECT         hex       1b,00,00,00,02,00
-scsiREADY         hex       1b,00,00,00,01,00
-scsiSTOP          hex       1b,00,00,00,00,00
+scsiTOOLBOXD9	dfb	BLUESCSI_TOOLBOX_METADATA
+	hex	00,00,00,00,00,00,00,00,00
 
-*--- Are we already playing?
+strTOOLBOXD9	asc	0d'METADATA ($D9)'0d
+	asc	' R. Return to previous menu'0d
+	asc	' 0. List devices'0d
+	asc	' 1. Get capabilities'0d
+	asc	' 2. Set working directory'0d
+	asc	' 3. Get working directory'0d00
 
-getCURRENTSTATUS
+*-------------------------------
+* $DA - BLUESCSI_TOOLBOX_COUNT_CDS
+*-------------------------------
 
-                  ldx       #10-2                ; put the sub data
-]lp               lda       scsiSTATUS,x
-                  sta       statusDATA,x
-                  dex
-                  dex
-                  bpl       ]lp
+toolboxDA	jsr	initCOMMANDDATA
 
-                  lda       #dcSUBCHANNEL        ; READ SUB CHANNEL
-                  jsr       statusCALL2
-                  bcc       getCS1
-                  rts
+	PushLong	#strTOOLBOXDA
+	_WriteCString
+	
+	ldx	#LEN_CMD_TOOLBOX-2
+]lp	lda	scsiTOOLBOXDA,x
+	sta	commandDATA,x
+	dex
+	dex
+	bpl	]lp
 
-getCS1            lda       statusBUFF+1
-                  and       #$ff
-                  cmp       #$11                 ; play in progress
-                  beq       getCS2
-                  cmp       #$12
-                  beq       getCS2
-                  sec                            ; error
-                  hex       24
-getCS2            clc                            ; we're playing
-                  rts
+	lda	#dcBLUESCSI_TOOLBOX_COUNT_CDS
+	jsr	statusCALL	; a status command
+	
+	PushLong	#strCOUNTCDS
+	_WriteCString
+
+	lda	commandBUFF
+	jsr	showDECIMAL
+	jmp	waitKEY
 
 *--- Data
 
-scsiSTATUS        hex       42,00,40,01,00,00,00,00,00,00
+scsiTOOLBOXDA	dfb	BLUESCSI_TOOLBOX_COUNT_CDS
+	hex	00,00,00,00,00,00,00,00,00
 
-*--- Routines
+strTOOLBOXDA	asc	0d'COUNT_CDS ($DA)'0d00
+strCOUNTCDS	asc	' Number of CDs: '00
 
-initFG            stz       fgMSF                ; init all flags
-                  stz       fgSUB
-                  stz       fgPLAY
-                  stz       fgPAUSE
-                  stz       fgINSERT
-                  stz       fgTOCREAD            ; consider TOC was not read
-                  rts
+*-----------------------------------------------
+* SCSI ROUTINES
+*-----------------------------------------------
 
-*--- SCSI routines
+initCOMMANDDATA			; clear SCSI command buffer
+	ldx	#12-2
+]lp	stz	commandDATA,x
+	dex
+	dex
+	bpl	]lp
+	  
+	ldx	#SIZE_DATA-2	; clear the buffer as well
+]lp	stz	commandBUFF,x
+	dex
+	dex
+	bpl	]lp
+	rts
 
-initCOMMANDDATA                                  ; clear SCSI command buffer
-                  ldx       #12-2
-]lp               stz       commandDATA,x
-                  dex
-                  dex
-                  bpl       ]lp
-                  rts
+*---
 
-initSTATUSDATA    ldx	#12-2	; clear SCSI status buffer
-]lp               stz	statusDATA,x
-                  dex
-                  dex
-                  bpl	]lp
-                  rts
+initSTATUSDATA
+	ldx	#12-2	; clear SCSI status buffer
+]lp	stz	statusDATA,x
+	dex
+	dex
+	bpl	]lp
+	rts
 
 *--- DStatus
 * Uses the DControl parm buffer
@@ -2543,36 +2109,6 @@ showERR           bcc       showNOERR
 showNOERR         rts
 
 *--- Data
-
-fgMSF             ds        2                    ; 0/1
-fgSUB             ds        2                    ; 0/1/2/3
-fgPLAY            ds        2                    ; 0/1
-fgPAUSE           ds        2                    ; 0/1
-fgINSERT          ds        2                    ; 0/1
-
-* For music
-
-fgTOCREAD         ds        2                    ; was TOC read?
-trackFIRST        ds        2
-trackLAST         ds        2
-indexTOC          ds        2
-nbSONGS           ds        2                    ; nb of songs on disc
-
-strDEVICEMENU     asc	0d'Using SCSI device $'
-strDEVMENU        asc	'0000'0d
-                  asc	' 0. Go back to previous menu'0d
-                  asc	' 1. Inquiry device'0d
-                  asc	' 2. Sense page $31'0d
-                  asc	' 3. Show Wi-Fi access points'0d
-	  dfb	00	  
-	  asc	' 4. Fake Me'0d
-                  asc       ' 3. Disk capacity'0d
-                  asc       ' 4. Audio control parameters'0d
-                  asc       ' 5. Read TOC'0d
-                  asc       ' 6. Read Sub Channel'0d
-                  asc       ' 7. Play/Stop disk'0d
-                  asc       ' 8. Pause/Resume'0d
-                  asc       ' 9. Insert/Eject disk'0d00
 
 *----------------------------
 * TEXT ROUTINES
@@ -2828,6 +2364,8 @@ errCODE           ds        2                    ; GS/OS error code
 strERROR          asc       0d'<!> GS/OS error code $'00
 
 *---
+
+strlMYAPP	strl	'1/BlueSCSI'
 
 proQUIT           dw        2                    ; pcount
                   ds        4                    ; pathname
